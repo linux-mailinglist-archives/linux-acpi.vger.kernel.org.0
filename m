@@ -1,72 +1,48 @@
-Return-Path: <linux-acpi+bounces-12626-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12627-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E6E0A78358
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 22:35:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86743A783AA
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 22:54:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A42DF163114
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 20:34:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E78A7A2BC4
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 20:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD84214202;
-	Tue,  1 Apr 2025 20:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2FE20C48A;
+	Tue,  1 Apr 2025 20:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="SSuFcG0F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZLEmug0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4307520126C
-	for <linux-acpi@vger.kernel.org>; Tue,  1 Apr 2025 20:34:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B557B1E9B39
+	for <linux-acpi@vger.kernel.org>; Tue,  1 Apr 2025 20:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743539691; cv=none; b=ZCUzTvfsjizl/BW/1aQ0n+wW25qxoBa7ThBrQtgYI+t8t8eKxw60dOuBRE7+StDAuDLmsHsuETSwMLNSaSh6cnJHKtcvVr24TEujWIUB0KkPtkKVQvd4lxqDciBgOnugmGjuoIjfpM2eTAGjmwrNpKf0Wjim/AVMv7UHDBJ1DZw=
+	t=1743540867; cv=none; b=qFYzUE3G8tQBpwglTt9iQhLGFhke7URieqzkES3Z0eaPOjfBCjadJBNIN5EX5JjOF88SyAKpWqRr0aKHrEvBQa5cnIs/cncSP1Us3EjEc1/sX3ANj4y4eNQPX45cji9KfNc5rRhKR2QhWY0nWTIs3X5zTI8eY4zY6t2dN+RMJJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743539691; c=relaxed/simple;
-	bh=5y0j8RkNWMDeG/LqeB5Q+awyT5yqB2yaLvaDNNl6jzA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=LtaNn3jupN1HB5nKhSRlYCbbOW+DrKFmcwd3c9ItgHae1ScOcLLQYFVK89ZbE6fsdWx8Hf7ehyTgf00BHRWLh4cZpyICLUkrfN9kEDismYgha/100SPLLeWijjfsRfFGkdn18pN6BDVQfLoKhZMwTpeexF01Ps+gBSn51T4cSQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=SSuFcG0F; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250401203446euoutp01940b19ad6edc9ab04e6b4c1d76b860e0~yTBt3n4kJ1873718737euoutp01z
-	for <linux-acpi@vger.kernel.org>; Tue,  1 Apr 2025 20:34:46 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250401203446euoutp01940b19ad6edc9ab04e6b4c1d76b860e0~yTBt3n4kJ1873718737euoutp01z
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1743539686;
-	bh=0H8A293uJpSgajdKcRdI/f0ZLs9XeRQ/DZKILdHiCvU=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=SSuFcG0FILsA6auQw3HwZN2Jh+os1BdnIoCCYxTG56A6qRyHQztPjJhPRkyuGDwJQ
-	 rd9HWAq6nxPEPvgLxdM7e3cespBi353rtmB7ieh4AM1Ws9dd1sD/N4luZGdtMEzWxt
-	 xZI8BgsJvBWMs1J72g9qi1RsXVFgyfIyGpmYoRiM=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-	20250401203445eucas1p140ff2f20263e7a8c112a8470f2cb7ae8~yTBtIOLKq2958829588eucas1p1g;
-	Tue,  1 Apr 2025 20:34:45 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-	eusmges1new.samsung.com (EUCPMTA) with SMTP id 77.02.20821.5ED4CE76; Tue,  1
-	Apr 2025 21:34:45 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250401203444eucas1p1e6112a37ce7d27cddf1fd185cdf95a10~yTBr5ij012654626546eucas1p1n;
-	Tue,  1 Apr 2025 20:34:44 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20250401203444eusmtrp189dc97ca8dde20072567ddf6741a3947~yTBr3DNxs0963609636eusmtrp1o;
-	Tue,  1 Apr 2025 20:34:44 +0000 (GMT)
-X-AuditID: cbfec7f2-b11c470000005155-b6-67ec4de5c01b
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-	eusmgms1.samsung.com (EUCPMTA) with SMTP id 87.4D.19920.4ED4CE76; Tue,  1
-	Apr 2025 21:34:44 +0100 (BST)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250401203441eusmtip16b2f51205bda47286f7023a313fdecf7~yTBpdWcE30550505505eusmtip1T;
-	Tue,  1 Apr 2025 20:34:41 +0000 (GMT)
-Message-ID: <16234667-a9fd-4530-853f-ce594670f5dc@samsung.com>
-Date: Tue, 1 Apr 2025 22:34:40 +0200
+	s=arc-20240116; t=1743540867; c=relaxed/simple;
+	bh=tB6Ls/wDfKx3NJEoT05dVlHSfiytCrMvopvO6ZFx4nY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cQsUEoSsk9bhJZWa1aeE+YcpdKUA3Hq35luriffSlRaDGkFpKborDQkaxe0mTjAhx2OURbGcIB55NpzMsNWuzl73Qm5lORtpCzD5IT5WR0vUDatzRUh2TpYZsjC0VRqxyyQH7kwnXV+NRgkv2oM7hUlP4/Qf1MuEjQGjpLQnU7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZLEmug0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7882FC4CEE4;
+	Tue,  1 Apr 2025 20:54:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743540867;
+	bh=tB6Ls/wDfKx3NJEoT05dVlHSfiytCrMvopvO6ZFx4nY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LZLEmug0NzwU5VIkSOpazBEFJaFUpLFlMlZnps/nhCfHVFSZVK38ePKTlB51+fZe3
+	 GAkuYNdT1kkqBqwDeeeTzTkYMZPtYq31fMznGqdYrGqnVA/1ThVSpTv3tWCBrIkhYb
+	 V7zPjKDVqHtYvbPPaTFrpMTchAA2dOLpkFvv5EwZXKv4oi0lOMtzNMGXKH9aa1L8Bm
+	 FPpGAqMEvd0aaksCjfYEq+4BoWSFMf7qTncjZMuuXjE0zpVvJ4fJdvnnZI0HoEk2XN
+	 XsLSM0SC7yVxGunEvd6ihOCxjKHcN8w11kI5EhPE8+/zeH8uUsaohEdS8Za+ZR/9Z9
+	 /664NNQOxs1ng==
+Message-ID: <8cdc5a58-2221-4332-9a47-e0f5b7832922@kernel.org>
+Date: Tue, 1 Apr 2025 15:54:24 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -74,252 +50,266 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] iommu: Get DT/ACPI parsing into the proper probe
- path
-To: Robin Murphy <robin.murphy@arm.com>, Lorenzo Pieralisi
-	<lpieralisi@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla
-	<sudeep.holla@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
-	<lenb@kernel.org>, Russell King <linux@armlinux.org.uk>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, Stuart
-	Yoder <stuyoder@gmail.com>, Nipun Gupta <nipun.gupta@amd.com>, Nikhil
-	Agarwal <nikhil.agarwal@amd.com>, Joerg Roedel <joro@8bytes.org>, Will
-	Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>, Saravana Kannan
-	<saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>
-Cc: linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-pci@vger.kernel.org, Charan Teja Kalla
-	<quic_charante@quicinc.com>
+Subject: Re: [PATCH] ACPI: EC: Set ec_no_wakeup for Lenovo Go S
+To: Antheas Kapenekakis <lkml@antheas.dev>
+Cc: mario.limonciello@amd.com, rafael@kernel.org,
+ Xino JS1 Ni <nijs1@lenovo.com>, linux-acpi@vger.kernel.org,
+ "derekjohn.clark@gmail.com" <derekjohn.clark@gmail.com>
+References: <20250331204442.1727618-1-superm1@kernel.org>
+ <CAGwozwHyRiyVkX8rsc69gkALScWdtXNAvAGn7c2aEXW_qgdWsA@mail.gmail.com>
+ <CAGwozwEiCXFDi73qAPSm2K9A8OZutE7dbjFfCmbUSAOTaz8SEA@mail.gmail.com>
+ <50cc3227-93eb-4cb8-8151-23e52ca91f80@kernel.org>
+ <CAGwozwH7r-7uELUB1fiftAf3ziU6irgW92qiHHNOpuJ-87=WJw@mail.gmail.com>
+ <90d704dc-51ea-4c98-ba4a-f95460f65061@kernel.org>
+ <CAGwozwEoCc_nRodt2=6R5K5UOzhW+5Gx1uLS3H3ON4ZS_12gBg@mail.gmail.com>
+ <1eb121e5-c0d3-49a8-9579-6ea5543ad4f9@kernel.org>
+ <CAGwozwFgRO=6a=NNfbTtz1E5sroH27sxyXJQuV9QbTMfAttO6w@mail.gmail.com>
+ <6a9268de-4072-4ef2-9f33-95cc783a8595@kernel.org>
+ <CAGwozwF6iFkgvS54KYGMg554S9DTD83rq2ctH=UtFO-b8c1H1Q@mail.gmail.com>
+ <dc2ae336-6a26-4e3e-a901-15afbe7fc611@kernel.org>
+ <CAGwozwF=ZfJ31_UBXV==x_0og+yzf2nLnrb4xG9ca027y-S_Sg@mail.gmail.com>
 Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <135390b1-c0c5-4595-a3f3-1fb376473872@arm.com>
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <CAGwozwF=ZfJ31_UBXV==x_0og+yzf2nLnrb4xG9ca027y-S_Sg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0xTVxzHd3pvbx9JzbWinCCZSeNrJtZ1keZkJQ7dkt0tkjDcMtmWzIZe
-	CxktrFf2cLIxaBU7wktBKNKWwmS6IqwUpFhwLbgODdUBY9i4KbOwweymtmyxgoxyceO/z+/7
-	+31/j5PDx8QniQR+tvYQrdMqcySEEO/67qF/+2TqXfWzI/ptqLkoC/1Rc49AlgE/FxU3tRHI
-	46rjoWgEoeP17TzkmggRqKWvHCDHnTEuGuk5TaAhs49A3upegPRzehzVdkvR7HQNjtosGtQQ
-	qcbQgrubhzz3glxk9M4vdvwmgKGWK9040t9MSoFU0GPmUIbheYKym+2AGhn7AaNcpp95lNWR
-	T+kHQlzKce44QV1qsPOojubPqN876gBV6f6UCjueThO9JUxW0TnZH9C6HbsOCLP8/ht4nivl
-	o7OV6wtBZ5IRCPiQ3Amj314AMRaTXwFoNxw0AuEiRwAcLlvgsEEYQP3ZfvDE8ctEAGMTLQBG
-	H9h5bHAfwFbHLBGrEpG7YNmNr7EY4+RGeHlwYFlfDQfrgniM15Ib4K1ALS/Ga8h98E/jryDW
-	KI40cGH/lG1pBEZOAtj+4/iSGyPjYSBo4cSYIGXQGDIu6QJSAWv6JrlszQZY3Fm/ZIakUQiL
-	uhqXF38Jdji7CJbXwBmfk8dyIrx6ohRnDccAtD66xWGDCgALfwssuxXwpj+66OYvjngGtvXs
-	YOXd0BiuxmIyJFfB8dBqdolVsKrr1LIsgiVHxWz1Zmjynf9vrOf6MFYBJKYVD2NacaZpxTmm
-	/+daAX4OxNP5jEZNMzIt/aGUUWqYfK1ampmrcYDFj3v1se9BN2iYuS/1Ag4feAHkY5I40f7Z
-	abVYpFJ+fJjW5b6ry8+hGS9Yz8cl8SLbJYNaTKqVh+j3aDqP1j3JcviChEJO5mhviKiq2esU
-	q2xb6OLr49SZjIuyBKZ9SpftLMveWXhk6P3IXPxshsuxpzPDTb+mTh54u9xi8zGZ8qQFztzz
-	J6bWHqivTf9yNFO+rk/+cqOsoGRW+2LT1pOXn/tcIdcfPDoqZATff1L0U3iP+1jJOPeL9qFN
-	bzxMuH3GHXlnpnTmzuGs7UcuCNITd9en1G2RTsqaE0WKSlvUbLX35m5umr5yrbdf+6r5hXRx
-	9m1nqiqyv7H8bkHr6Z4UTmsVcf51RWnypDOpInFj2iuOiUfBgkGPqlTTKp/CsH5LZVrQ+tSm
-	vcb5sXXc6mtbFeG/43KaO9y8N4Opj/MuOv/5S1NmOCXBmSylbBumY5T/AjbMVg0nBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrOKsWRmVeSWpSXmKPExsVy+t/xu7pPfN+kGzx6LGyxpCnD4vW0D2wW
-	84+cY7VoXryezeLgzpnsFr++WFh0zt7AbrHz4Vs2i+X7+hktNj2+xmpxedccNouz846zWRya
-	upfRouVPC4vFjB16Fl9fTmOxWD8/12Lul6nMFv/37GC3OPjhCatF16G/QBM33mK2WH5qB4tF
-	yx1TBwmPJwfnMXm0XvrL5rFm3hpGj8vXLjJ77Jx1l91jwaZSj5Yjb1k9Nq3qZPPYP3cNu8fm
-	JfUeLzbPZPSYuKfO4/MmuQDeKD2bovzSklSFjPziElulaEMLIz1DSws9IxNLPUNj81grI1Ml
-	fTublNSczLLUIn27BL2Mc+dushTsdKhYOVG6gXGraRcjJ4eEgInEvYe3mLsYuTiEBJYySjw9
-	8JARIiEjcXJaAyuELSzx51oXG0TRe0aJX5+mghXxCthJ9N1czQxiswioSBw9eYQNIi4ocXLm
-	ExYQW1RAXuL+rRnsILawQLDEu65HjCCDRAQ6WSV69jwAW80s8JRR4sv5Z6xQd7BKvFn/HayF
-	WUBc4taT+UwgNpuAoUTX2y6wFZwC1hLT9j1lhagxk+ja2sUIYctLNG+dzTyBUWgWkktmIRk1
-	C0nLLCQtCxhZVjGKpJYW56bnFhvqFSfmFpfmpesl5+duYgSmmG3Hfm7ewTjv1Ue9Q4xMHIyH
-	GCU4mJVEeCO+vkwX4k1JrKxKLcqPLyrNSS0+xGgKDI6JzFKiyfnAJJdXEm9oZmBqaGJmaWBq
-	aWasJM7rdvl8mpBAemJJanZqakFqEUwfEwenVAOTSu9PXdHi4xo3Vh+5yTz7Gb+f2xHjTLcy
-	DWuJnRVbZp1ikSvlVQzoMb+x+0Nep6PvednfQTpfn9rc9lp2N+upPr/D0ccPxb/sUhYW6/Br
-	ubs9vv7ri2fmsX7CE9N4syfsrBJy7mrcF5b6fdImS3tWM2EmbkbfM5vVuDewtyXm8aZsmdh1
-	kYth8vYC3+fGXu9Vgl9vkmlbZb2ytIPxAtcNMc+HR9+cbdvb9uPXf/v907MKuD9HJUZFrpxi
-	28Opv2q/RvTpfzn9sz78Ode05t6nr6+aQx5zJSj98y97evXPSd/F6hOFRD45n5/yOtFnioJi
-	Ee+UTGavPxZeDKvmHj9fcGSW3bkstgPfrLZ+eLBJiaU4I9FQi7moOBEA4Sua07oDAAA=
-X-CMS-MailID: 20250401203444eucas1p1e6112a37ce7d27cddf1fd185cdf95a10
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250313095633eucas1p29cb55f2504b4bcf67c16b3bd3fa9b8cd
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20250313095633eucas1p29cb55f2504b4bcf67c16b3bd3fa9b8cd
-References: <cover.1740753261.git.robin.murphy@arm.com>
-	<e3b191e6fd6ca9a1e84c5e5e40044faf97abb874.1740753261.git.robin.murphy@arm.com>
-	<CGME20250313095633eucas1p29cb55f2504b4bcf67c16b3bd3fa9b8cd@eucas1p2.samsung.com>
-	<9b358d68-332e-404e-9a75-740297f7b28d@samsung.com>
-	<417d6f59-0d78-4e81-ad0b-e06846f786b0@arm.com>
-	<bf2adf5d-1432-4bb7-846c-e1bcfa84858b@samsung.com>
-	<016bb7ca-f0d3-464e-ac74-46e6f78e90d7@arm.com>
-	<b63ff6b4-9dc3-42ea-8b87-d4fdead8d0eb@arm.com>
-	<cdc333e4-25bb-4171-9f6e-01f1de947db3@samsung.com>
-	<d6cd5e64-e2c0-4c6e-9c89-ce8b3e0a4a5b@arm.com>
-	<ace3a01f-4700-4455-ada3-0f88fc8ea4cd@samsung.com>
-	<135390b1-c0c5-4595-a3f3-1fb376473872@arm.com>
 
-On 21.03.2025 17:48, Robin Murphy wrote:
-> On 21/03/2025 12:15 pm, Marek Szyprowski wrote:
->> On 17.03.2025 19:22, Robin Murphy wrote:
->>> On 17/03/2025 7:37 am, Marek Szyprowski wrote:
->>>> On 13.03.2025 15:12, Robin Murphy wrote:
->>>>> On 2025-03-13 1:06 pm, Robin Murphy wrote:
->>>>>> On 2025-03-13 12:23 pm, Marek Szyprowski wrote:
->>>>>>> On 13.03.2025 12:01, Robin Murphy wrote:
->>>>>>>> On 2025-03-13 9:56 am, Marek Szyprowski wrote:
->>>>>>>> [...]
->>>>>>>>> This patch landed in yesterday's linux-next as commit 
->>>>>>>>> bcb81ac6ae3c
->>>>>>>>> ("iommu: Get DT/ACPI parsing into the proper probe path"). In my
->>>>>>>>> tests I
->>>>>>>>> found it breaks booting of ARM64 RK3568-based Odroid-M1 board
->>>>>>>>> (arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts). Here is the
->>>>>>>>> relevant kernel log:
->>>>>>>>
->>>>>>>> ...and the bug-flushing-out begins!
->>>>>>>>
->>>>>>>>> Unable to handle kernel NULL pointer dereference at virtual 
->>>>>>>>> address
->>>>>>>>> 00000000000003e8
->>>>>>>>> Mem abort info:
->>>>>>>>>        ESR = 0x0000000096000004
->>>>>>>>>        EC = 0x25: DABT (current EL), IL = 32 bits
->>>>>>>>>        SET = 0, FnV = 0
->>>>>>>>>        EA = 0, S1PTW = 0
->>>>>>>>>        FSC = 0x04: level 0 translation fault
->>>>>>>>> Data abort info:
->>>>>>>>>        ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
->>>>>>>>>        CM = 0, WnR = 0, TnD = 0, TagAccess = 0
->>>>>>>>>        GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
->>>>>>>>> [00000000000003e8] user address but active_mm is swapper
->>>>>>>>> Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
->>>>>>>>> Modules linked in:
->>>>>>>>> CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.14.0-rc3+ 
->>>>>>>>> #15533
->>>>>>>>> Hardware name: Hardkernel ODROID-M1 (DT)
->>>>>>>>> pstate: 00400009 (nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->>>>>>>>> pc : devm_kmalloc+0x2c/0x114
->>>>>>>>> lr : rk_iommu_of_xlate+0x30/0x90
->>>>>>>>> ...
->>>>>>>>> Call trace:
->>>>>>>>>       devm_kmalloc+0x2c/0x114 (P)
->>>>>>>>>       rk_iommu_of_xlate+0x30/0x90
->>>>>>>>
->>>>>>>> Yeah, looks like this is doing something a bit questionable which
->>>>>>>> can't
->>>>>>>> work properly. TBH the whole dma_dev thing could probably be
->>>>>>>> cleaned up
->>>>>>>> now that we have proper instances, but for now does this work?
->>>>>>>
->>>>>>> Yes, this patch fixes the problem I've observed.
->>>>>>>
->>>>>>> Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
->>>>>>> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
->>>>>>>
->>>>>>> BTW, this dma_dev idea has been borrowed from my exynos_iommu 
->>>>>>> driver
->>>>>>> and
->>>>>>> I doubt it can be cleaned up.
->>>>>>
->>>>>> On the contrary I suspect they both can - it all dates back to when
->>>>>> we had the single global platform bus iommu_ops and the SoC drivers
->>>>>> were forced to bodge their own notion of multiple instances, but 
->>>>>> with
->>>>>> the modern core code, ops are always called via a valid IOMMU
->>>>>> instance or domain, so in principle it should always be possible to
->>>>>> get at an appropriate IOMMU device now. IIRC it was mostly about
->>>>>> allocating and DMA-mapping the pagetables in domain_alloc, where the
->>>>>> private notion of instances didn't have enough information, but
->>>>>> domain_alloc_paging solves that.
->>>>>
->>>>> Bah, in fact I think I am going to have to do that now, since 
->>>>> although
->>>>> it doesn't crash, rk_domain_alloc_paging() will also be failing for
->>>>> the same reason. Time to find a PSU for the RK3399 board, I guess...
->>>>>
->>>>> (Or maybe just move the dma_dev assignment earlier to match Exynos?)
->>>>
->>>> Well I just found that Exynos IOMMU is also broken on some on my test
->>>> boards. It looks that the runtime pm links are somehow not correctly
->>>> established. I will try to analyze this later in the afternoon.
->>>
->>> Hmm, I tried to get an Odroid-XU3 up and running, but it seems unable
->>> to boot my original 6.14-rc3-based branch - even with the IOMMU driver
->>> disabled, it's consistently dying somewhere near (or just after) init
->>> with what looks like some catastrophic memory corruption issue - very
->>> occasionally it's managed to print the first line of various different
->>> panics.
->>>
->>> Before that point though, with the IOMMU driver enabled it does appear
->>> to show signs of working OK:
->>>
->>> [    0.649703] exynos-sysmmu 14650000.sysmmu: hardware version: 3.3
->>> [    0.654220] platform 14450000.mixer: Adding to iommu group 1
->>> ...
->>> [    2.680920] exynos-mixer 14450000.mixer:
->>> exynos_iommu_attach_device: Attached IOMMU with pgtable 0x42924000
->>> ...
->>> [    5.196674] exynos-mixer 14450000.mixer:
->>> exynos_iommu_identity_attach: Restored IOMMU to IDENTITY from pgtable
->>> 0x42924000
->>> [    5.207091] exynos-mixer 14450000.mixer:
->>> exynos_iommu_attach_device: Attached IOMMU with pgtable 0x42884000
->>>
->>>
->>> The multi-instance stuff in probe/release does look a bit suspect,
->>> however - seems like the second instance probe would overwrite the
->>> first instance's links, and then there would be a double-del() if the
->>> device were ever actually released again? I may have made that much
->>> more likely to happen, but I suspect it was already possible with
->>> async driver probe...
+On 4/1/2025 1:39 PM, Antheas Kapenekakis wrote:
+> On Tue, 1 Apr 2025 at 17:24, Mario Limonciello <superm1@kernel.org> wrote:
 >>
->> That is really strange. My Odroid XU3 boots fine from commit
->> bcb81ac6ae3c ("iommu: Get DT/ACPI parsing into the proper probe path"),
->> although the IOMMU seems not to be working correctly. I've tested this
->> with 14450000.mixer device (one need to attach HDMI cable to get it
->> activated) and it looks that the video data are not being read from
->> memory at all (the lack of VSYNC is reported, no IOMMU fault). However,
->> from time to time, everything initializes and works properly.
->
-> Urgh, seems my mistake was assuming exynos_defconfig was the right 
-> thing to begin from - bcb81ac6ae3c with that still dies in the same 
-> way (this time I saw a hint of spin_bug() being hit...), however a 
-> multi_v7_defconfig build does get to userspace OK again with no 
-> obvious signs of distress:
->
-> [root@alarm ~]# grep -Hr . /sys/kernel/iommu_groups/*/type
-> /sys/kernel/iommu_groups/0/type:identity
-> /sys/kernel/iommu_groups/1/type:identity
-> /sys/kernel/iommu_groups/10/type:identity
-> /sys/kernel/iommu_groups/2/type:identity
-> /sys/kernel/iommu_groups/3/type:identity
-> /sys/kernel/iommu_groups/4/type:identity
-> /sys/kernel/iommu_groups/5/type:identity
-> /sys/kernel/iommu_groups/6/type:identity
-> /sys/kernel/iommu_groups/7/type:identity
-> /sys/kernel/iommu_groups/8/type:identity
-> /sys/kernel/iommu_groups/9/type:identity
->
-> Annoyingly I do have an adapter for the fiddly micro-HDMI, but it's at 
-> home :(
->
->> It looks that this is somehow related to the different IOMMU/DMA-mapping
->> glue code, as the other boards (ARM64 based) with exactly the same
->> Exynos IOMMU driver always work fine. I've tried to figure out what
->> actually happens, but so far I didn't get anything for sure. Disabling
->> the call to dev->bus->dma_configure(dev) from iommu_init_device() seems
->> to be fixing this, but this is almost equal to the revert of the
->> $subject patch. I don't get why calling it in iommu_init_device() causes
->> problems. It also doesn't look that this is anyhow related to the
->> multi-instance stuff, as the same happens if I only leave a single
->> exynos-sysmmu instance and its client (only 14450000.mixer device in the
->> system).
->
-> On a hunch I stuck a print in exynos_iommu_probe_device(), and it 
-> looks like in fact device_link_add() isn't getting called at all, and 
-> indeed your symptoms do sound like they could be explained by the 
-> IOMMU not being reliably resumed... lemme stare at 
-> exynos_iommu_of_xlate() a bit longer...
+>> On 4/1/2025 10:03 AM, Antheas Kapenekakis wrote:
+>>> On Tue, 1 Apr 2025 at 16:09, Mario Limonciello <superm1@kernel.org> wrote:
+>>>>
+>>>> On 4/1/2025 7:45 AM, Antheas Kapenekakis wrote:
+>>>>> On Tue, 1 Apr 2025 at 14:30, Mario Limonciello <superm1@kernel.org> wrote:
+>>>>>>
+>>>>>>>> Here are tags for linking to your patch development to be picked up.
+>>>>>>>>
+>>>>>>>> Link:
+>>>>>>>> https://github.com/bazzite-org/patchwork/commit/95b93b2852718ee1e808c72e6b1836da4a95fc63
+>>>>>>>> Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
+>>>>>>>> Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+>>>>>>>
+>>>>>>
+>>>>>> I don't believe that b4 will pick these up, so I will send out a v2 with
+>>>>>> them and mark this patch as superceded in patchwork so that Rafael
+>>>>>> doesn't have to pull everything out of this thread manually.
+>>>>
+>>>> FTR I don't have permission on patchwork for linux-acpi.
+>>>>
+>>>> I sent out v2 though.
+>>>>
+>>>>>>
+>>>>>>>
+>>>>>>> And to avoid having this conversation again, there is another Legion
+>>>>>>> Go S [3] patch you nacked and froze the testing for, so you could go
+>>>>>>> on the manhunt for the real cause of this one. But it will probably be
+>>>>>>> needed and you will find that as you get TDP controls going. So if you
+>>>>>>> want me to prepare that in a timely manner, because that one actually
+>>>>>>> needs rewriting to be posted, now is the time to say so.
+>>>>>>
+>>>>>> Can you please propose what you have in mind on the mailing lists to
+>>>>>> discuss?  It's relatively expensive (in the unit of tech debt) to add
+>>>>>> quirk infrastructure and so we need to make sure it is the right solution.
+>>>>>>
+>>>>>> Derek is working on CPU coefficient tuning in a completely separate
+>>>>>> driver.  If there are issues with that, I would generally prefer the
+>>>>>> fixes to be in that driver.
+>>>>>
+>>>>> CPU coefficient tuning? If you mean the lenovo-wmi-driver, yes I will
+>>>>> try to make sure the quirk can be potentially added there, or in any
+>>>>> driver*.
+>>>>
+>>>> Yes things like fPPT, sPPT, STAPM, STT limits.
+>>>>
+>>>>>
+>>>>> The idea is to rewrite the patch series to just add a simple delay
+>>>>> field on the s2idle quirk struct. Then the biggest delay wins and gets
+>>>>> placed in ->begin. We have been using that series for ~6 months now,
+>>>>> and it turns out that having a delay system for every call is quite
+>>>>> pointless. But there are also situations where you might have a device
+>>>>> such as the Z13 Folio which looks like a USB device but listens to
+>>>>> s2idle notifications through ACPI, so the hid subsystem might need to
+>>>>> be able to inject a small delay there.
+>>>>
+>>>> So the "general" problem with injecting delays is they are typically not
+>>>> scalable as they're usually empirically measured and there is no
+>>>> handshake with the firmware.
+>>>>
+>>>> Say for example the EC has some hardcoded value of 200ms to wait for
+>>>> something.  IIRC the Linux timer infrastructure can be off by ~13%.  So
+>>>> if you put 175ms it might work sometimes.  You get some reports of this,
+>>>> so you extend it to 200ms.  Great it works 100% of the time because the
+>>>> old hardcoded value in the EC was 200ms.
+>>>>
+>>>> Now say a new EC firmware comes out that for $REASONS changes it to
+>>>> 250ms.  Your old empirically measured value stops working, spend a bunch
+>>>> of cycles debugging it, measure the new one.  You change it to 250ms,
+>>>> but people with the old one have a problem now because the timing changed.
+>>>>
+>>>> So now you have to add infrastructure to say what version of the
+>>>> firmware gets what delay.
+>>>>
+>>>> Then you find out there is another SKU of that model which needs a
+>>>> different delay, so your complexity has ballooned.
+>>>>
+>>>> What if all these "delays" were FW timeouts from failing to service an
+>>>> interrupt?  Or what if they were a flow problem like the device expected
+>>>> you to issue a STOP command before a RESET command?
+>>>>
+>>>> So we need to be /incredibly careful/ with delays and 100% they are the
+>>>> right answer to a problem.
+>>>
+>>> I do get your points. In this case though we sideskirt through a lot
+>>> of the points because of where the delay is placed.
+>>>
+>>> If the instrumentation is in-place, this delay happens before sleep
+>>> after the screen of the device has turned off (due to early DPMS), the
+>>> keyboard backlight has turned off (DIsplay off call), and the suspend
+>>> light pulses (Sleep Entry). So it does not affect device behavior and
+>>> you can be quite liberal. The user has left the device alone.
+>>>
+>>> If the device needs e.g., 250ms you will not put 250ms, you will put
+>>> 500ms. Still unsure, you bump it to 750ms. Also, even if the
+>>> manufacturer comes up with a new firmware that fixes this issue, you
+>>> can keep the delay for the life of the product, because keeping it
+>>> does not affect device behavior, and writing kernel patches takes time.
+>>>
+>>> This is how I think about it, at least. A universal delay might be
+>>> needed eventually. But for now, limiting the scope to some devices and
+>>> seeing how that goes should be enough.
+>>>
+>>> Antheas
+>>
+>> My take is that "universal" delays are never popular.  IE hardware that
+>> "previously" worked perfectly is now slower.  So if there /must/ be a
+>> delay it should be as narrow as possible and justified.
+>>
+>> Let me give you an example of another case I'm *actively considering* a
+>> delay.
+>>
+>> I have an OEM's system that if you enter and exit s0i3 too quickly you
+>> can trigger the over voltage protection (OVP) feature of the VR module.
+>> When OVP is tripped the system is forced off immediately. This *only
+>> happens* on the VR module in that vendor's systems. "Normal" Linux
+>> userspace suspend/resume can't trip it.  But connecting a dock "does"
+>> trip it.
+>>
+>> If you look on a scope you can see SLP_S3# pin is toggling faster than
+>> spec says it should.  Naïvely you would say well the easy solution is to
+>> add a delay somewhere so that SLP_S3# stays in spec.  I have a patch
+>> that does just that.
+>>
+>> diff --git a/drivers/platform/x86/amd/pmc/pmc.c
+>> b/drivers/platform/x86/amd/pmc/pmc.c
+>> index e6124498b195f..97387ddb281e1 100644
+>> --- a/drivers/platform/x86/amd/pmc/pmc.c
+>> +++ b/drivers/platform/x86/amd/pmc/pmc.c
+>> @@ -724,10 +724,20 @@ static void amd_pmc_s2idle_check(void)
+>>           struct smu_metrics table;
+>>           int rc;
+>>
+>> -       /* CZN: Ensure that future s0i3 entry attempts at least 10ms
+>> passed */
+>> -       if (pdev->cpu_id == AMD_CPU_ID_CZN && !get_metrics_table(pdev,
+>> &table) &&
+>> -           table.s0i3_last_entry_status)
+>> -               usleep_range(10000, 20000);
+>> +       if (!get_metrics_table(pdev, &table) &&
+>> table.s0i3_last_entry_status) {
+>> +               switch (pdev->cpu_id) {
+>> +               /* CZN: Ensure that future s0i3 entry attempts at least
+>> 10ms passed */
+>> +               case AMD_CPU_ID_CZN:
+>> +                       usleep_range(10000, 20000);
+>> +                       break;
+>> +               /* PHX/HPT: Ensure enough time to avoid VR OVP */
+>> +               case AMD_CPU_ID_PS:
+>> +                       msleep(2500);
+>> +                       break;
+>> +               default:
+>> +                       break;
+>> +               }
+>> +       }
+>>
+>> This stops all the failures, but it also has an impact that any time the
+>> EC SCI is raised for any reason (like plug in power adapter) the system
+>> will take 2.5s to go back into s0i3.
+>>
+>> Digging further - the intended behavior by the EC and BIOS was to wake
+>> the system when the dock is connected.
+>>
+>> That is the reason this happens is because the EC SCI is raised when the
+>> dock is connected, but the Notify() the EC sent wasn't received by any
+>> driver.  I've got a patch I'll be sending out soon that adds support for
+>> the correct driver to wake up on this event.
+>>
+>> This prevents the case of the OVP and now we don't *need* to penalize
+>> everyone to wait 2.5s after EC SCI events and going back to s0i3.  If I
+>> find out there are other ways to trip the problem I still have that
+>> option though.
+> 
+> So you are talking about missing the AC/DC burst feature of Windows
+> here right? I do agree with you that yeah for most devices it is not
+> necessary.
 
-Just to let everyone know. The $subject change is okay. This is a bug in 
-exynos-iommu driver, fixed by the following patch:
+No; I wasn't talking about that, my point was that timing delays are a 
+tempting to solution to a problem, but they're very often papering over 
+something else and a hint to dive deeper.
 
-https://lore.kernel.org/all/20250401202731.2810474-1-m.szyprowski@samsung.com/
+> 
+> But Microsoft guarantees 5 seconds. We already have the original Ally
+> unit which gets stuck in prochot due to this so it would be nice to
+> fix. For the Ally X I am unsure what Asus did but it stays awake for a
+> nice three seconds after you plug/unplug the charger so it has no
+> issues.
+> 
+> So if devices keep getting issues like we will have to eat it and do
+> AC/DC bursts with all of them.
+> 
+> And it is the same with entering s0i3 too fast. Some devices just need
+> a tiny amount of time to do whatever it is their manufacturer
+> programmed them to do after the Modern Standby notifications. For
+> handhelds, it is to turn off the controllers because XInput. Asus put
+> the fade animation so that takes 300ms and if you do it earlier the
+> controller gets cut before it saves its state and starts to do weird
+> RGB stuff. Other manufacturers typically do not malfunction but they
+> still use the notification.
+> 
+> Only MSI does not, but that controller is quirky before/after sleep
+> and they released a firmware update today saying something about
+> controller S3/S4 improvements so they probably do that too now, I need
+> to check.
+> 
+> For the Go S, it sets itself to 5W after sleep entry and turns off the
+> fan. A little delay went a long way in fixing the hang there, which I
+> suspect is due to aggressive tuning. But I do not know if you guys get
+> that. We did when we did the initial testing for it and carry the
+> delay now so I cannot tell you either way. So you should max out the
+> TDP, run stress -c 16, and make the device sleep 100-200 times to make
+> sure that is not an issue.
+> 
+> I do have a plan for trying to rework AC/DC bursts, but first the
+> s2idle ordering needs to be fixed and I need to rewrite the series for
+> that. The series we have for that works _fine_ so it is not a priority
+> to rework but it is not upstreamable in its current state so if you
+> need that (for the Go S) I need to know now.
+> 
+> For ACDC my idea would be after the reordering is done to have a quirk
+> that makes the kernel resume, fire the sleep exit notification, loop
+> for 5 (maybe 3?) seconds inside the device suspend section prior to
+> userspace resume, and then as long as a wakeup did not arrive restart
+> the suspend sequence to sleep again. I would also combine that with
+> the little s2idle wakeup device you made, so that userspace can enable
+> wakeups for that if it wants to do resume on dock connection. But that
+> has a lot of moving parts, including moving the DPMS action to happen
+> even earlier than your patch does and making sure display on/off does
+> not fire so that the keyboard backlight does not do weird stuff.
+> 
+> Antheas
 
-
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+I think a good start for what you're talking about would be to rebase 
+your series that reworked s2idle flow on 6.15 code (maybe it's a clean 
+rebase, idk) and then if/when all of us on LKML are happy with it we can 
+layer other concepts on top of that.
 
