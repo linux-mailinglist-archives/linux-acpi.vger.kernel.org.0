@@ -1,280 +1,221 @@
-Return-Path: <linux-acpi+bounces-12582-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12583-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A3EA77718
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 11:01:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD99A77A70
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 14:14:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23F4D1886830
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 09:01:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C23C3A79D5
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 12:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8741BBBFD;
-	Tue,  1 Apr 2025 09:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B33202C43;
+	Tue,  1 Apr 2025 12:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="ZyemjEUs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m/m2p2JW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux1587.grserver.gr (linux1587.grserver.gr [185.138.42.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B0F2E3398
-	for <linux-acpi@vger.kernel.org>; Tue,  1 Apr 2025 09:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.138.42.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089111F91CD;
+	Tue,  1 Apr 2025 12:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743498091; cv=none; b=OpzT7isRNbLggoYi00HZE9HpEXVba+lz80lMJuHA7YTg28XhUoAuujS7Fp6cXiaQaS1oBUA86e5kI7jiUOvToRFOtpvDtZf6AJOIEOyppJvua+ADSQ424Zv1DAS2EEYufg9awLRi520M7lUx90HwxIlj6TgRiDb8wXQqK+bNN9I=
+	t=1743509648; cv=none; b=odbC3U4GVkP1U3P+PwuGJoFnh6kSqWBDMv9OZ8yIlmJtBoMQmZZGqxWrfF54aoDQyIQn/R/QLzdZIMPi5KRGHVBkEihp+kBhmZ86N+2z20seRfMI9oqVqiXuyV+cb5hIJjp9WDvVgbK7VTLZ2v1p1xiCur66FX6gpH5WahUFAB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743498091; c=relaxed/simple;
-	bh=N3ElgbiDnvb7GdfFMoLSzmundiB4BzhzWkvDbWPscUA=;
+	s=arc-20240116; t=1743509648; c=relaxed/simple;
+	bh=cW+SgWG4t5icqmSDD5B28BvPyfh8yfBleexRLseF73k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UHDqfo0Sp9LB3TmB9qQ/OEpLjFSJqLf7D5zdthuRaM9XUuL1S3dzE4mcA1o8V2G/k0MlrLPfZXy0+sCxrTrdG0k9tJefcEI6a80MwNeC8HfE2CTkD5UQbcOlugFGo7ekIBR5rmr5DLR2cqqyfdQFS2OUo6FBdsq1h1sntZ2SvAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=pass (1024-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=ZyemjEUs; arc=none smtp.client-ip=185.138.42.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	by linux1587.grserver.gr (Postfix) with ESMTPSA id C4FDE2E03400
-	for <linux-acpi@vger.kernel.org>; Tue,  1 Apr 2025 12:01:20 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1743498082;
-	bh=KOA+JFhQfuTndbxIAfzLYBZtbFSXG1GCW6ZDTptVtyQ=;
-	h=Received:From:Subject:To;
-	b=ZyemjEUsDIIcBdm7XCEs/XN4l4GmAoscG7s/TioZksx4UxdZTBkcvlw/GIkqXN2nR
-	 eyvFeU+/mpLBcmQ0Sk4ZGfivgQnNtaPpIJqaZrIR0rbhuaAsHATzENNm9f6NyMtzQP
-	 aKmUJYRraxudZXeSbsEYOElZils5qUCkqZVJV0RI=
-Authentication-Results: linux1587.grserver.gr;
-        spf=pass (sender IP is 209.85.208.181) smtp.mailfrom=lkml@antheas.dev smtp.helo=mail-lj1-f181.google.com
-Received-SPF: pass (linux1587.grserver.gr: connection is authenticated)
-Received: by mail-lj1-f181.google.com with SMTP id
- 38308e7fff4ca-30bf8632052so46525511fa.0
-        for <linux-acpi@vger.kernel.org>;
- Tue, 01 Apr 2025 02:01:20 -0700 (PDT)
-X-Forwarded-Encrypted: i=1;
- AJvYcCW0bRHtRgfIEsaPoPTalzSi4K9EE/mbtj9d5lxS94VQpqhdYzbGxekLyaYr86hfGE07m74aToA1wSV9@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu+xDVc0vtb/YIjZZLQhdwPXZNGnMnb3metmJ0t7G2hkar8EVc
-	AOr4AY5DjjsM7htzbvze3fUNYvpOlSwY6v2ySWW+ThRTBVJXLpzvGRWFJVIOwgNYyD4paLOm+7Y
-	2d2z1reEi8i1izT/Nee5SV3CSAIs=
-X-Google-Smtp-Source: 
- AGHT+IE8fncfzTW93YEyNKtZcfGZy0juTDKppiugl9+HWMcG9rUItJIMinFj5cR5MaEaX+vM8icy5dqaPp6R76vXZYQ=
-X-Received: by 2002:a2e:bd03:0:b0:302:48fd:6922 with SMTP id
- 38308e7fff4ca-30de02f8562mr41010261fa.37.1743498079851; Tue, 01 Apr 2025
- 02:01:19 -0700 (PDT)
+	 To:Cc:Content-Type; b=Z7IduuxXE6+B03ZWxDxhXZtOyxF3EIh21tfOgn8mOSIk85iQCpleZZI+Ut1KJV68ChvdRIbf3Th+PBJCuY9oGRsfj0cTp/PeqcpmTvAwZMHm1XVXihkFeXQXgDhZvORfffnRwn/2KRsB5Mtvfk69uqXh1+BrOumBBZal1qg+LsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m/m2p2JW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C69DC4CEED;
+	Tue,  1 Apr 2025 12:14:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743509646;
+	bh=cW+SgWG4t5icqmSDD5B28BvPyfh8yfBleexRLseF73k=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=m/m2p2JWYS9MkVHRFy5prVSfpIMH5SY3jiiWZrPRgGhfd0KNH/PA1tOg7S+KrJxkk
+	 JSX0cD90OB4srHDpp2NCGpyjzGIwACeD0oMeDEI8FNeU3Te/nSYZJ7IQ8PWzdUMktP
+	 CDXdXN96p45hx7W98t9osxv7ohk1bS66TN+4GeSI2mFN8/2rYf0/Ma6kRPhVynCyUW
+	 70E0A1eIbNihkaJVcogpm4i7xO3+1O18jP3ZXUGFwY/oCWWK2b3Xjxd35+2ElDER5Q
+	 hbUeOONMmPAY/FcwTQ0BwB/gJZhc+EhEcCLduC0klRJrH0mL52uS+E/hvi0irNyREs
+	 YZcmhVD7KYUvA==
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-2c818343646so3537995fac.3;
+        Tue, 01 Apr 2025 05:14:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUMrZQzrAu7UkbdnV/sC/nmXueENngvryKfXSR8c7+lxXDHT3/NNRI306Q0JNOctq+FympXMSN+I4U=@vger.kernel.org, AJvYcCWFhajWfdqvZaYPT/zH0Vj5js9X4Gqa3IKNn6/w1fTswFzj2pOvnSLz3y5vXLCJkglVOlxLJTJ5yAfn@vger.kernel.org, AJvYcCXI9bZWAUzTvzL4n7lb4DLNJNkiNwFK/d3j1sy3icOgrgAySbVKKbZJouOVn+rBnfGRttABtWWjQLF+zjJB@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywhi0w1DlNHixMHdFhSJxS3ibbmRy8phzYa/n0PS+XwaunhDKAn
+	1DNa2yJFo6P/dnsAxSytlBRcrjQlEqvvIFjok9RRooez/jvxpMNmigIwnjQiLXyG2DZz3lY3gHi
+	krl3gTgaVXEMh12dBaLf00FNzqnE=
+X-Google-Smtp-Source: AGHT+IGOlogupRrW1ILu3k/BWzEUrlfnOQdl3bgoOraLGfT5cXQwFCdTo4dpWOe+YYaMJLSMdHaLzj7VnVnNwllSJKU=
+X-Received: by 2002:a05:6870:330a:b0:29e:69a9:8311 with SMTP id
+ 586e51a60fabf-2cbcf7e09acmr7956746fac.36.1743509645617; Tue, 01 Apr 2025
+ 05:14:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250331204442.1727618-1-superm1@kernel.org>
- <CAGwozwHyRiyVkX8rsc69gkALScWdtXNAvAGn7c2aEXW_qgdWsA@mail.gmail.com>
- <CAGwozwEiCXFDi73qAPSm2K9A8OZutE7dbjFfCmbUSAOTaz8SEA@mail.gmail.com>
- <50cc3227-93eb-4cb8-8151-23e52ca91f80@kernel.org>
- <CAGwozwH7r-7uELUB1fiftAf3ziU6irgW92qiHHNOpuJ-87=WJw@mail.gmail.com>
- <90d704dc-51ea-4c98-ba4a-f95460f65061@kernel.org>
-In-Reply-To: <90d704dc-51ea-4c98-ba4a-f95460f65061@kernel.org>
-From: Antheas Kapenekakis <lkml@antheas.dev>
-Date: Tue, 1 Apr 2025 11:01:08 +0200
-X-Gmail-Original-Message-ID: 
- <CAGwozwEoCc_nRodt2=6R5K5UOzhW+5Gx1uLS3H3ON4ZS_12gBg@mail.gmail.com>
-X-Gm-Features: AQ5f1JrI2CWOug-xvvgIUfOusyAiA8Wac7hHGkQ65mSB1s_S8bpopsgnKqHTTkc
-Message-ID: 
- <CAGwozwEoCc_nRodt2=6R5K5UOzhW+5Gx1uLS3H3ON4ZS_12gBg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: EC: Set ec_no_wakeup for Lenovo Go S
-To: Mario Limonciello <superm1@kernel.org>
-Cc: mario.limonciello@amd.com, rafael@kernel.org,
-	Xino JS1 Ni <nijs1@lenovo.com>, linux-acpi@vger.kernel.org
+References: <20250328143040.9348-1-ggherdovich@suse.cz> <20250328143040.9348-2-ggherdovich@suse.cz>
+ <SJ0PR11MB66228319834B1C7B48FCE52EF5AD2@SJ0PR11MB6622.namprd11.prod.outlook.com>
+ <CAJZ5v0gC3DzanSdPqQiJ4JQppgNeRA7Z9Cge7NxmTO_shoUyOA@mail.gmail.com> <7a14ea42462a346958954f328933f583dcf9cb52.camel@intel.com>
+In-Reply-To: <7a14ea42462a346958954f328933f583dcf9cb52.camel@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 1 Apr 2025 14:13:54 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0juH2kYx-fyyfoFLBTjg30y59Dwj1wBYXxuHvU2c7X31w@mail.gmail.com>
+X-Gm-Features: AQ5f1JqInvfmF-dEU2O33yfuIWE_7Znqodgm49GlPYWEkfdKphYD_-K3cc_SD6g
+Message-ID: <CAJZ5v0juH2kYx-fyyfoFLBTjg30y59Dwj1wBYXxuHvU2c7X31w@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ACPI: processor: idle: Remove obsolete comment
+To: "Zhang, Rui" <rui.zhang@intel.com>
+Cc: "rafael@kernel.org" <rafael@kernel.org>, "ggherdovich@suse.cz" <ggherdovich@suse.cz>, 
+	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, "lenb@kernel.org" <lenb@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-PPP-Message-ID: 
- <174349808156.20047.366346506954148941@linux1587.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 0.103.11 at linux1587.grserver.gr
-X-Virus-Status: Clean
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 1 Apr 2025 at 04:40, Mario Limonciello <superm1@kernel.org> wrote:
+On Tue, Apr 1, 2025 at 2:25=E2=80=AFAM Zhang, Rui <rui.zhang@intel.com> wro=
+te:
 >
-> On 3/31/2025 4:16 PM, Antheas Kapenekakis wrote:
-> > On Mon, 31 Mar 2025 at 22:55, Mario Limonciello <superm1@kernel.org> wrote:
-> >>
-> >> On 3/31/2025 3:53 PM, Antheas Kapenekakis wrote:
-> >>> On Mon, 31 Mar 2025 at 22:51, Antheas Kapenekakis <lkml@antheas.dev> wrote:
-> >>>>
-> >>>> On Mon, 31 Mar 2025 at 22:44, Mario Limonciello <superm1@kernel.org> wrote:
-> >>>>>
-> >>>>> From: Mario Limonciello <mario.limonciello@amd.com>
-> >>>>>
-> >>>>> When AC adapter is unplugged or plugged in EC wakes from
-> >>>>> HW sleep but APU doesn't enter back into HW sleep.
-> >>>>>
-> >>>>> The reason this hapens is that when APU exits HW sleep the power
-> >>>>> rails the EC controls will power up the TCON.  The TCON has a
-> >>>>> GPIO that will be toggled during this time.  The GPIO is not marked
-> >>>>> as a wakeup source however GPIO controller still has an unserviced
-> >>>>> interrupt and it will block entering HW sleep again. Clearing the
-> >>>>> GPIO doesn't help, the TCON raises it again until it's been initialized
-> >>>>> by i2c-hid.
-> >>>>>
-> >>>>> Fixing this would require TCON F/W changes and it's already broken
-> >>>>> in the wild on production hardware.
-> >>>>>
-> >>>>> To avoid triggering this issue add a quirk to avoid letting EC wake
-> >>>>> up system at all.  The power button still works properly on this system.
-> >>>>
-> >>>> Hi Mario,
-> >>>> I reported this issue to you early in January, did all the debugging
-> >>>> for it, found the cause, made this patch, tested it, and finally
-> >>>> deployed it as well. Then sent it to Xino.
-> >>>>
-> >>>> Then you pushed back for perfectly valid reasons, and we had a
-> >>>> multi-week long back and forth trying to find the proper cause for
-> >>>> this.
-> >>>>
-> >>>> So from my side I do not get why I am just a reported-by here. This is
-> >>>> my patch. We also had a discussion about this out of band.
-> >>>>
-> >>>> Antheas
-> >>>
-> >>> It is interesting you ended up finding the cause. Which makes
-> >>> attributing this a bit murkier.
-> >>>
-> >>> Antheas
-> >>
-> >> Hi Antheas,
-> >>
-> >> FWIW - you and I separately created very similar patches.
+> On Mon, 2025-03-31 at 14:07 +0200, Rafael J. Wysocki wrote:
+> > On Mon, Mar 31, 2025 at 9:38=E2=80=AFAM Zhang, Rui <rui.zhang@intel.com=
+> wrote:
+> > >
+> > > > -----Original Message-----
+> > > > From: Giovanni Gherdovich <ggherdovich@suse.cz>
+> > > > Sent: Friday, March 28, 2025 10:31 PM
+> > > > To: Rafael J . Wysocki <rafael@kernel.org>; Zhang, Rui
+> > > > <rui.zhang@intel.com>
+> > > > Cc: Len Brown <lenb@kernel.org>; Giovanni Gherdovich
+> > > > <ggherdovich@suse.cz>; linux-acpi@vger.kernel.org; linux-
+> > > > kernel@vger.kernel.org; linux-pm@vger.kernel.org
+> > > > Subject: [PATCH 2/2] ACPI: processor: idle: Remove obsolete comment
+> > > > Importance: High
+> > > >
+> > > > Since commit 496121c02127e9c460b436244c38260b044cc45a ("ACPI:
+> > > > processor:
+> > > > idle: Allow probing on platforms with one ACPI C-state"), the
+> > > > comment
+> > > > doesn't reflect the code anymore; remove it.
+> > > >
+> > > > Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
+> > > > ---
+> > > >  drivers/acpi/processor_idle.c | 4 ----
+> > > >  1 file changed, 4 deletions(-)
+> > > >
+> > > > diff --git a/drivers/acpi/processor_idle.c
+> > > > b/drivers/acpi/processor_idle.c
+> > > > index b181f7fc2090..2a076c7a825a 100644
+> > > > --- a/drivers/acpi/processor_idle.c
+> > > > +++ b/drivers/acpi/processor_idle.c
+> > > > @@ -482,10 +482,6 @@ static int
+> > > > acpi_processor_get_cstate_info(struct
+> > > > acpi_processor *pr)
+> > > >
+> > > >       pr->power.count =3D acpi_processor_power_verify(pr);
+> > > >
+> > > > -     /*
+> > > > -      * if one state of type C2 or C3 is available, mark this
+> > > > -      * CPU as being "idle manageable"
+> > > > -      */
+> > > >       for (i =3D 1; i < ACPI_PROCESSOR_MAX_POWER; i++) {
+> > > >               if (pr->power.states[i].valid) {
+> > > >                       pr->power.count =3D i;
+> > > > --
+> > > > 2.43.0
+> > >
+> > > I think we can clean up a bit more. How about the patch below?
+> > >
+> > > From 115d3a07febff32eed49f9343ef111e7e1452f9d Mon Sep 17 00:00:00
+> > > 2001
+> > > From: "Zhang, Rui" <rui.zhang@intel.com>
+> > > Date: Mon, 31 Mar 2025 07:29:57 +0000
+> > > Subject: [PATCH] ACPI: processor: idle: Simplify
+> > >  acpi_processor_get_cstate_info() logic
+> > >
+> > > Since commit 496121c02127 ("ACPI: processor: idle: Allow probing on
+> > > platforms with one ACPI C-state"), acpi_idle driver can be probed
+> > > with
+> > > C1 only.
+> > >
+> > > Optimize the logic for setting pr->power.count and pr->flags.power by
+> > > 1. unconditionally set pr->flags.power leveraging the fact that C1 is
+> > >    always valid after acpi_processor_get_power_info_default().
+> > > 2. update acpi_processor_power_verify() to return the highest valid
+> > >    C-state directly.
+> > >
+> > > No functional change intended.
+> > >
+> > > Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+> > > ---
+> > >  drivers/acpi/processor_idle.c | 15 ++-------------
+> > >  1 file changed, 2 insertions(+), 13 deletions(-)
+> > >
+> > > diff --git a/drivers/acpi/processor_idle.c
+> > > b/drivers/acpi/processor_idle.c
+> > > index 698897b29de2..7ce8c3802937 100644
+> > > --- a/drivers/acpi/processor_idle.c
+> > > +++ b/drivers/acpi/processor_idle.c
+> > > @@ -442,7 +442,7 @@ static int acpi_processor_power_verify(struct
+> > > acpi_processor *pr)
+> > >
+> > >                 lapic_timer_check_state(i, pr, cx);
+> > >                 tsc_check_state(cx->type);
+> > > -               working++;
+> > > +               working =3D i;
 > >
-> > There is only one way to write a no_ec_wakeup patch after I reported
-> > to you that it fixes it, here [1] mine is the same, even the DMI order
-> > is the same.
+> > What if some states are skipped because they are invalid?  'working'
+> > can be less than 'i' then AFAICS.
 >
-> You mean the same order as my patch for GoS that applied to acp-6x?
+> yes, but please refer to my comments here and below,
 >
-> commit b9a8ea185f3f8 ("ASoC: acp: Support microphone from Lenovo Go S")
-
-Yes, which was submitted, accepted, and prior work at the time, so you
-do not get to be credited for it as part of this patch as well.
-
-> >
-> >> There has been more debugging that is not public (as you can see from
-> >> the content of this commit message).
-> >>
-> >> What tag would you like in this case?
-> >
-> > I think co-developed-by since you also worked very hard on fixing
-> > this. I do not know if b4 picks up co-developed tags.
-> >
->
-> Here are tags for linking to your patch development to be picked up.
->
-> Link:
-> https://github.com/bazzite-org/patchwork/commit/95b93b2852718ee1e808c72e6b1836da4a95fc63
-> Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
-> Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-
-Anyways, you got what my problem here was. You nacked and bikeshed
-this patch for 2 months, and that was after I did all the background
-research, testing and deployed it [1], so you could find the real
-cause, which I let you do as a _professional courtesy_. Then, out of a
-sudden you are the primary author on a patch I authored and you nacked
-and started testing after it was done [2].
-
-I guess a nicer way of saying this is that you make it hard to
-collaborate on kernel development. When I bring up issues to you, do
-the background research, bisect, and general grunt work for them, you
-do a minor cleanup which is easy for you as a kernel developer, then
-strip the credit for them and I have to hunt you down to get some of
-it back. This is not a productive environment, I cannot work like
-this.
-
-I think this is the 6th or 8th time this happened but this time it is
-particularly egregious, because you had me spend 20 hours debugging
-offshoots after my patch was already done in random directions trying
-to find a real cause, only to see me get dropped to a normal reported
-by, and that is after I told you off very harshly because of [2].
-Otherwise the reported-by might have been missing too.
-
-In any case, there is no point in rehashing this over and over.
-Authorship in this series is mostly fine now, so it can go through.
-
-And to avoid having this conversation again, there is another Legion
-Go S [3] patch you nacked and froze the testing for, so you could go
-on the manhunt for the real cause of this one. But it will probably be
-needed and you will find that as you get TDP controls going. So if you
-want me to prepare that in a timely manner, because that one actually
-needs rewriting to be posted, now is the time to say so.
-
-Antheas
-
-[1] https://github.com/bazzite-org/kernel-bazzite/releases/tag/6.12.12-201
-[2] https://gitlab.com/evlaV/linux-integration/-/commit/6c5a3a96be9b061f07bf9a1bcc33156c932ddf67
-[3] https://gitlab.freedesktop.org/drm/amd/-/issues/3929#note_2764760
-
-> > Not that I am content with it, which you might have noticed with my
-> > absence in the amd/drm issue tracker.
-> >
-> > So, was it the touchscreen after all? Did you verify this by tweaking
-> > its firmware?
->
-> Yes it's the touchscreen causing this issue.  It was confirmed by a
-> hardware rework.
+> 1. 'working' is used as return value only in acpi_processor_power_verify(=
+).
 >
 > >
-> > Antheas
-> >
-> > [1] https://github.com/bazzite-org/patchwork/commit/95b93b2852718ee1e808c72e6b1836da4a95fc63
-> >
-> >
-> >> Thanks,
-> >>
-> >>>>
-> >>>>> Cc: Xino JS1 Ni <nijs1@lenovo.com>
-> >>>>> Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
-> >>>>> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3929
-> >>>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> >>>>> ---
-> >>>>>    drivers/acpi/ec.c | 28 ++++++++++++++++++++++++++++
-> >>>>>    1 file changed, 28 insertions(+)
-> >>>>>
-> >>>>> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-> >>>>> index 8db09d81918fb..3c5f34892734e 100644
-> >>>>> --- a/drivers/acpi/ec.c
-> >>>>> +++ b/drivers/acpi/ec.c
-> >>>>> @@ -2301,6 +2301,34 @@ static const struct dmi_system_id acpi_ec_no_wakeup[] = {
-> >>>>>                           DMI_MATCH(DMI_PRODUCT_FAMILY, "103C_5336AN HP ZHAN 66 Pro"),
-> >>>>>                   },
-> >>>>>           },
-> >>>>> +       /*
-> >>>>> +        * Lenovo Legion Go S; touchscreen blocks HW sleep when woken up from EC
-> >>>>> +        * https://gitlab.freedesktop.org/drm/amd/-/issues/3929
-> >>>>> +        */
-> >>>>> +       {
-> >>>>> +               .matches = {
-> >>>>> +                       DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> >>>>> +                       DMI_MATCH(DMI_PRODUCT_NAME, "83L3"),
-> >>>>> +               }
-> >>>>> +       },
-> >>>>> +       {
-> >>>>> +               .matches = {
-> >>>>> +                       DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> >>>>> +                       DMI_MATCH(DMI_PRODUCT_NAME, "83N6"),
-> >>>>> +               }
-> >>>>> +       },
-> >>>>> +       {
-> >>>>> +               .matches = {
-> >>>>> +                       DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> >>>>> +                       DMI_MATCH(DMI_PRODUCT_NAME, "83Q2"),
-> >>>>> +               }
-> >>>>> +       },
-> >>>>> +       {
-> >>>>> +               .matches = {
-> >>>>> +                       DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> >>>>> +                       DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
-> >>>>> +               }
-> >>>>> +       },
-> >>>>>           { },
-> >>>>>    };
-> >>>>>
-> >>>>> --
-> >>>>> 2.43.0
-> >>>>>
-> >>
+> > >         }
+> > >
+> > >         if (buggy_latency) {
+> > > @@ -457,7 +457,6 @@ static int acpi_processor_power_verify(struct
+> > > acpi_processor *pr)
+> > >
+> > >  static int acpi_processor_get_cstate_info(struct acpi_processor *pr)
+> > >  {
+> > > -       unsigned int i;
+> > >         int result;
+> > >
+> > >
+> > > @@ -477,17 +476,7 @@ static int acpi_processor_get_cstate_info(struct
+> > > acpi_processor *pr)
+> > >         acpi_processor_get_power_info_default(pr);
+> > >
+> > >         pr->power.count =3D acpi_processor_power_verify(pr);
 >
+> 2. acpi_processor_get_cstate_info(), which is the only caller of
+> acpi_processor_power_verify(), use this return value to set
+> pr->power.count.
+
+So far so good.
+
+> > > -
+> > > -       /*
+> > > -        * if one state of type C2 or C3 is available, mark this
+> > > -        * CPU as being "idle manageable"
+> > > -        */
+> > > -       for (i =3D 1; i < ACPI_PROCESSOR_MAX_POWER; i++) {
+> > > -               if (pr->power.states[i].valid) {
+> > > -                       pr->power.count =3D i;
+>
+> 3. use a loop to override pr->power.count with the index of the highest
+> valid state
+
+I see.
+
+> So I'm proposing to return the index of the highest valid state directly
+> in acpi_processor_power_verify() and then we don't need this loop any
+> more.
+
+OK, so I'd prefer to first rename power.count to power.max_index
+(which it really is) and then make the changes you have proposed.
 
