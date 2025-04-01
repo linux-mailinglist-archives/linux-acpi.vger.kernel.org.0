@@ -1,167 +1,288 @@
-Return-Path: <linux-acpi+bounces-12589-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12590-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1175A77C98
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 15:49:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C66A77CEF
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 15:56:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD1157A4713
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 13:48:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64EF1167516
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 13:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A53204594;
-	Tue,  1 Apr 2025 13:49:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CNEHXotH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833AA204696;
+	Tue,  1 Apr 2025 13:56:19 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B4120371A
-	for <linux-acpi@vger.kernel.org>; Tue,  1 Apr 2025 13:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331624501A;
+	Tue,  1 Apr 2025 13:56:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743515345; cv=none; b=tCId4xodrqJzpZgmL0hS9/O3zX6eYyZjrtGflPwPQ2v/MiX9UK0zM6725USiqWrZbMIJQNLx+EkHZM2xrAbElsLlcOZDWcnjCtQD2Ua/9FMFVc2Cj2lP3oPef81h8v/G37inbbZNdGXKu+g06Y8lM31ZDDTwCGntKXLyTcnYKHo=
+	t=1743515779; cv=none; b=tJmXkMORLr5qi1gTLrBoWVJPyNM8wUQPmrph4siLX2il8uib3VdN+yxvBfwsqqZ9PhE4mTa8RK1+UMZ1Y87AADsRbyGOyND5/fr4V2rHYVAOQJB1KanwC7deQ26YdwsTHNNb4vOlgzF9vSD+jNtjC8kMmOuYAtWKyCclMIvRtaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743515345; c=relaxed/simple;
-	bh=HPtKIlt9O7URXt5LvOect8Ci9k7l7R3g8A6nOABjSfo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZfzT8NMPrrgaDjRgWxq889eC2Q/sOcR8WqYbyoX0NATzZsaG2zh4AnAMmIcIotPOxIBCwUhsWr8Q4pNGa11TgBvmyig1T+Yp50sWZmB5RhRMVgg66U5QmlyKF1iarg7vNr/QrNudz9KYd2Zs/qm9uxRtFnjxR59Ql4B7roI4lqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CNEHXotH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADBE5C4CEEE
-	for <linux-acpi@vger.kernel.org>; Tue,  1 Apr 2025 13:49:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743515344;
-	bh=HPtKIlt9O7URXt5LvOect8Ci9k7l7R3g8A6nOABjSfo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CNEHXotHEwOl7gFXRCRS2aKj7ljBFP2HJ7O26frhqie+Ro0Z2DX6sAPxfOT+9qoAW
-	 Y75gaUXod0UyVJsN1Fj4PxJshPaKqxVHpV1xpUYJlSQi7yiCvdQva8zzFpsdV2sPhP
-	 IP0PR6mmAVm21KBs7/lGjpXcIduc407qO7joTfNXH6JoXkdX6HSMmM/Zye6+UK+GPR
-	 ps4TKKz8Fjt3rD5r6GJThbJjoHHskJKn2POs6PGJA8i10v803JiUmBTsbVWxyVVtDu
-	 Ai4wtVBDEWp0ysxaZD8XcMCIi2RMnLaMGbu4Dcco7d3PlZdNFbSsNjHuUHYgtQ8AFX
-	 rfrdjZb50S0AQ==
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-72bd828f18dso1645435a34.2
-        for <linux-acpi@vger.kernel.org>; Tue, 01 Apr 2025 06:49:04 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXn0j7KTxYvyOmfuJSyD641NZtndHFrDJFcGqBIxhwBI7OF+xEtiVe3xrjomy9n491/BHHRHBdgYBS3@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy87cLiN9CWyx9g8XesMmpZVjFsd6Cz/nxvNhYatbMw3HIVYSrr
-	zDz5rqTZyLjy/OHMyppS8gIiMRlaTqhTOFMCBtPPtUYE5SicQtQrcMgm33exbQLXL6Fe7QxRs/A
-	8tjFNfCVy4On0/V/g3z40pcmdjgk=
-X-Google-Smtp-Source: AGHT+IGX1rb50c4rWOgNKQJQxdInSnxK92MWvW7iSbCN6sahFJ07M3Rx1Kdk2OegnW8w3KvZhcFYfWLbuqqPtVi20eU=
-X-Received: by 2002:a05:6830:4391:b0:72c:320c:d4ed with SMTP id
- 46e09a7af769-72c63817c41mr7360902a34.22.1743515343967; Tue, 01 Apr 2025
- 06:49:03 -0700 (PDT)
+	s=arc-20240116; t=1743515779; c=relaxed/simple;
+	bh=tjpdGmk7PsTYQICyO1o16SjzRJ5VUSgEoghI+wvraLw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=f0i6/jTyIrGrTtxy/UnO87pYFmNG0dnULD17L4mbGRfihBuhXtNualvIzvDeZ3Q2Ts3FczrNb2YP1w0x5+e3sufFRNEGxsboMtiLXId+ZPVxu6Ibk9nJE9ucY/spBfRTqx/MxQWe7NwTiC/rfbScV727SeC0rRbpALYCUDA5SjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4ZRqHp4HlwztRR6;
+	Tue,  1 Apr 2025 21:54:46 +0800 (CST)
+Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id E1C7C180116;
+	Tue,  1 Apr 2025 21:56:11 +0800 (CST)
+Received: from [10.67.121.90] (10.67.121.90) by kwepemh100008.china.huawei.com
+ (7.202.181.93) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 1 Apr
+ 2025 21:56:11 +0800
+Message-ID: <4a87269d-542e-4d4d-9c46-780f9eb55193@huawei.com>
+Date: Tue, 1 Apr 2025 21:56:10 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250401133858.1892077-1-superm1@kernel.org>
-In-Reply-To: <20250401133858.1892077-1-superm1@kernel.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 1 Apr 2025 15:48:51 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gqFhUSu5_JiA3Z3qZACcqa+9Tdqv6DqHCq_b5HGbF7Sg@mail.gmail.com>
-X-Gm-Features: AQ5f1Jofr8zmqTLSu-biMb2OPpFbWD8SIe_Bx6z1LDjkJmd0IgkQJQvudkgdI5Q
-Message-ID: <CAJZ5v0gqFhUSu5_JiA3Z3qZACcqa+9Tdqv6DqHCq_b5HGbF7Sg@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: EC: Set ec_no_wakeup for Lenovo Go S
-To: Mario Limonciello <superm1@kernel.org>
-Cc: mario.limonciello@amd.com, rafael@kernel.org, 
-	Xino JS1 Ni <nijs1@lenovo.com>, Antheas Kapenekakis <lkml@antheas.dev>, linux-acpi@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch 0/5] Support Autonomous Selection mode in cppc_cpufreq
+To: Sumit Gupta <sumitg@nvidia.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+CC: <lenb@kernel.org>, <robert.moore@intel.com>, <corbet@lwn.net>,
+	<linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <acpica-devel@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+	<treding@nvidia.com>, <jonathanh@nvidia.com>, <sashal@nvidia.com>,
+	<vsethi@nvidia.com>, <ksitaraman@nvidia.com>, <sanjayc@nvidia.com>,
+	<bbasu@nvidia.com>
+References: <20250211103737.447704-1-sumitg@nvidia.com>
+ <20250211104428.dibsnxmkiluzixvz@vireshk-i7>
+ <b45d0d81-e4f7-474e-a146-0075a6145cc2@huawei.com>
+ <868d4c2a-583a-4cbb-a572-d884090a7134@nvidia.com>
+ <8d5e0035-d8fe-49ef-bda5-f5881ff96657@huawei.com>
+ <94bdab73-adc4-4b43-9037-5639f23e3d1e@nvidia.com>
+ <CAJZ5v0iAg6HFROHctYQwW=V9XiV8p3XVYgeKUcX4qBgfwQK6Ow@mail.gmail.com>
+ <e58a20f8-e8bf-409c-a878-af2bd3c7d243@nvidia.com>
+ <73fbf483-7afa-4cd2-84d1-6ace36549c53@huawei.com>
+ <f0f1b31b-a0fc-4d21-8b79-c896833dae35@nvidia.com>
+From: "zhenglifeng (A)" <zhenglifeng1@huawei.com>
+In-Reply-To: <f0f1b31b-a0fc-4d21-8b79-c896833dae35@nvidia.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemh100008.china.huawei.com (7.202.181.93)
 
-On Tue, Apr 1, 2025 at 3:39=E2=80=AFPM Mario Limonciello <superm1@kernel.or=
-g> wrote:
->
-> From: Mario Limonciello <mario.limonciello@amd.com>
->
-> When AC adapter is unplugged or plugged in EC wakes from
-> HW sleep but APU doesn't enter back into HW sleep.
->
-> The reason this happens is that when APU exits HW sleep the power rails
-> the EC controls will power up the TCON.
+Sorry for the delay.
 
-I think that the above should be
+On 2025/3/14 20:48, Sumit Gupta wrote:
+> 
+> 
+>>>>
+>>>> There seems to be some quite fundamental disagreement on how this
+>>>> should be done, so I'm afraid I cannot do much about it ATM.
+>>>>
+>>>> Please agree on a common approach and come back to me when you are ready.
+>>>>
+>>>> Sending two concurrent patchsets under confusingly similar names again
+>>>> and again isn't particularly helpful.
+>>>>
+>>>> Thanks!
+>>>
+>>> Hi Rafael,
+>>>
+>>> Thank you for looking into this.
+>>>
+>>> Hi Lifeng,
+>>>
+>>> As per the discussion, we can make the driver future extensible and
+>>> also can optimize the register read/write access.
+>>>
+>>> I gave some thought and below is my proposal.
+>>>
+>>> 1) Pick 'Patch 1-7' from your patch series [1] which optimize API's
+>>>     to read/write a cpc register.
+>>>
+>>> 2) Pick my patches in [2]:
+>>>     - Patch 1-4: Keep all cpc registers together under acpi_cppc sysfs.
+>>>                  Also, update existing API's to read/write regs in batch.
+>>>     - Patch 5: Creates 'cppc_cpufreq_epp_driver' instance for booting
+>>>       all CPU's in Auto mode and set registers with right values.
+>>>       They can be updated after boot from sysfs to change hints to HW.
+>>>       I can use the optimized API's from [1] where required in [2].
+>>>
+>>> Let me know if you are okay with this proposal.
+>>> I can also send an updated patch series with all the patches combined?
+>>>
+>>> [1] https://lore.kernel.org/all/20250206131428.3261578-1-zhenglifeng1@huawei.com/
+>>> [2] https://lore.kernel.org/lkml/20250211103737.447704-1-sumitg@nvidia.com/
+>>>
+>>> Regards,
+>>> Sumit Gupta
+>>>
+>>
+>> Hi Sumit,
+>>
+>> Over the past few days, I've been thinking about your proposal and
+>> scenario.
+>>
+>> I think we both agree that PATCH 1-7 in [1] doesn't conflicts with [2], so
+>> the rest of the discussion focuses on the differences between [2] and the
+>> PATCH 8 in [1].
+>>
+>> We both tried to support autonomous selection mode in cppc_cpufreq but on
+>> different ways. I think the differences between these two approaches can be
+>> summarized into three questions:
+>>
+>> 1. Which sysfs files to expose? I think this is not a problem, we can keep
+>> all of them.
+>>
+>> 2. Where to expose these sysfs files? I understand your willing to keep all
+>> cpc registers together under acpi_cppc sysfs. But in my opinion, it is more
+>> suitable to expose them under cppc_cpufreq_attr, for these reasons:
+>>
+>>    1) It may probably introduce concurrency and data consistency issues, as
+>> I mentioned before.
+>>
+> 
+> As explained in previous reply, this will be solved with the ifdef
+> check to enable the attributes for only those CPUFREQ drivers which want
+> to use the generic nodes.
+>  e.g: '#ifdef CONFIG_ACPI_CPPC_CPUFREQ' for 'cppc_cpufreq'.
+>            
+> These CPC register read/write sysfs nodes are generic as per the ACPI
+> specification and without any vendor specific logic.
+> So, adding them in the lib file 'cppc_acpi.c'(CONFIG_ACPI_CPPC_LIB) will
+> avoid code duplication if a different or new ACPI based CPUFREQ driver
+> also wants to use them just by adding their macro check. Such ifdef check is also used in other places for attributes creation like below.
+> So, don't look like a problem.
+>  $ grep -A4 "acpi_cpufreq_attr\[" drivers/cpufreq/acpi-cpufreq.c
+>  static struct freq_attr *acpi_cpufreq_attr[] = {
+>     &freqdomain_cpus,
+>  #ifdef CONFIG_X86_ACPI_CPUFREQ_CPB
+>     &cpb,
+>  #endif
 
-"The reason this happens is that, when the APU exits HW sleep, the
-power rails controlled by the EC will power up the TCON."
+So in the future, we will see:
 
-If I'm not mistaken, please let me know and I'll make this change when
-applying the patch.
+static struct attribute *cppc_attrs[] = {
+	...
+#ifdef CONFIG_XXX
+	&xxx.attr,
+	&xxx.attr,
+#endif
+#ifdef CONFIG_XXX
+	&xxx.attr,
+#endif
+#ifdef CONFIG_XXX
+	&xxx.attr,
+	...
+};
 
-> The TCON has a GPIO that will
-> be toggled during this time.  The GPIO is not marked as a wakeup source,
-> however GPIO controller still has an unserviced interrupt. Unserviced
-> interrupts will block entering HW sleep again. Clearing the GPIO doesn't
-> help as the TCON continues to assert it until it's been initialized by
-> i2c-hid.
->
-> Fixing this would require TCON F/W changes and it's already broken
-> in the wild on production hardware.
->
-> To avoid triggering this issue add a quirk to avoid letting EC wake
-> up system at all.  The power button still works properly on this system.
->
-> Cc: Xino JS1 Ni <nijs1@lenovo.com>
-> Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
-> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3929
-> Link: https://github.com/bazzite-org/patchwork/commit/95b93b2852718ee1e80=
-8c72e6b1836da4a95fc63
-> Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
-> Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
-> v2:
->  Add more tags
->  Fix a typo and grammar in commit
-> ---
->  drivers/acpi/ec.c | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
->
-> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-> index 8db09d81918fb..3c5f34892734e 100644
-> --- a/drivers/acpi/ec.c
-> +++ b/drivers/acpi/ec.c
-> @@ -2301,6 +2301,34 @@ static const struct dmi_system_id acpi_ec_no_wakeu=
-p[] =3D {
->                         DMI_MATCH(DMI_PRODUCT_FAMILY, "103C_5336AN HP ZHA=
-N 66 Pro"),
->                 },
->         },
-> +       /*
-> +        * Lenovo Legion Go S; touchscreen blocks HW sleep when woken up =
-from EC
-> +        * https://gitlab.freedesktop.org/drm/amd/-/issues/3929
-> +        */
-> +       {
-> +               .matches =3D {
-> +                       DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> +                       DMI_MATCH(DMI_PRODUCT_NAME, "83L3"),
-> +               }
-> +       },
-> +       {
-> +               .matches =3D {
-> +                       DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> +                       DMI_MATCH(DMI_PRODUCT_NAME, "83N6"),
-> +               }
-> +       },
-> +       {
-> +               .matches =3D {
-> +                       DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> +                       DMI_MATCH(DMI_PRODUCT_NAME, "83Q2"),
-> +               }
-> +       },
-> +       {
-> +               .matches =3D {
-> +                       DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> +                       DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
-> +               }
-> +       },
->         { },
->  };
->
-> --
-> 2.43.0
->
+I think you are making things more complicated.
+
+> 
+>>    2) The store functions call cpufreq_cpu_get() to get policy and update
+>> the driver_data which is a cppc_cpudata. Only the driver_data in
+>> cppc_cpufreq's policy is a cppc_cpudata! These operations are inappropriate
+>> in cppc_acpi. This file currently provides interfaces for cpufreq drivers
+>> to use. Reverse calls might mess up call relationships, break code
+>> structures, and cause problems that are hard to pinpoint the root cause!
+>>
+> 
+> If we don't want to update the cpufreq policy from 'cppc_acpi.c' and only update it from within the cpufreq,    then this could be one valid
+> point to not add the write syfs nodes in 'cppc_acpi.c' lib file.
+> 
+> @Rafael, @Viresh : Do you have any comments on this?
+
+I think updating cpufreq policy from 'cppc_acpi.c' should be forbidden.
+
+> 
+>>    3) Difficult to extend. Different cpufreq drivers may have different
+>> processing logic when reading from and writing to these CPC registers.
+>> Limiting all sysfs here makes it difficult for each cpufreq driver to
+>> extend. I think this is why there are only read-only interfaces under
+>> cppc_attrs before.
+>>
+> 
+> We are updating the CPC registers as per the generic ACPI specification.
+> So, any ACPI based CPUFREQ driver can use these generic nodes to
+> read/write reg's until they have a vendor specific requirement or
+> implementation.
+> As explained above, If someone wants to update in different way and use
+> their own CPUFREQ driver then these generic attributes won't be created
+> due to the CPUFREQ driver macro check.
+> I think AMD and Intel are doing more than just reading/updating the registers. That's why they needed their driver specific implementations.
+> 
+>> Adding a 'ifdef' is not a good way to solve these problems. Defining this
+>> config does not necessarily mean that the cpufreq driver is cppc_cpufreq.
+>>
+> 
+> It means that only.
+>  ./drivers/cpufreq/Makefile:obj-$(CONFIG_ACPI_CPPC_CPUFREQ) += cppc_cpufreq.o
+
+Compile this file does not mean that the cpufreq driver is cppc_cpufreq.
+Driver registration may fail, and the actually loaded driver may be
+another. It'll be dangerous to expose these sysfs files for users to update
+registers' value in this case.
+
+> 
+>> 3. Is it necessary to add a new driver instance? [1] exposed the sysfs
+>> files to support users dynamically change the auto selection mode of each
+>> policy. Each policy can be operated seperately. It seems to me that if you
+>> want to boot all CPUs in auto mode, it should be sufficient to set all
+>> relevant registers to the correct values at boot time. I can't see why the
+>> new instance is necessary unless you explain it further. Could you explain
+>> more about why you add a new instance starting from answer these questions:
+>>
+>> For a specific CPU, what is the difference between using the two instances
+>> when auto_sel is 1? And what is the difference when auto_sel is 0?
+>>
+> 
+> Explained this in previous reply. Let me elaborate more.
+> 
+> For hundred's of CPU's, we don't need to explicitly set multiple sysfs
+> after boot to enable and configure Auto mode with right params. That's why an easy option is to pass boot argument or module param for enabling
+> and configuration.
+> A separate instance 'cppc_cpufreq_epp' of the 'cppc_cpufreq' driver is
+> added because policy min/max need to be updated to the min/max_perf
+> and not nominal/lowest nonlinear perf which is done by the default
+> init hook. Min_perf value can be lower than lowest nonlinear perf and Max_perf can be higher than nominal perf.
+> If some CPU is booted with epp instance and later the auto mode is disabled or min/max_perf is changed from sysfs then also the policy
+> min/max need to be updated accordingly.
+> 
+> Another is that in Autonomous mode the freq selection and setting is
+> done by HW. So, cpufreq_driver->target() hook is not needed.
+> These are few reasons which I am aware of as of now.
+> I think in future there can be more. Having a separate instance
+> reflecting a HW based Autonomous frequency selection will make it easy
+> for any future changes.
+
+So CPUs will act totally differently under these two instance. But what if
+I want part of the CPUs in HW mode and others in SW mode? Should I boot on
+HW mode and set some policies' auto_set to false or the other way? It seems
+like the effects of theses two approaches are completely different. In my
+opinion, this new instance is more like a completely different driver than
+cppc_cpufreq.
+
+> 
+>> If it turns out that the new instance is necessary, I think we can reach a
+>> common approach by adding this new cpufreq driver instance and place the
+>> attributes in 'cppc_cpufreq_epp_attr', like amd-pstate did.
+>>
+>> What do you think?
+> 
+> I initially thought about this but there was a problem.
+> What if we boot with non-epp instance which doesn't have these attributes and later want to enable Auto mode for few CPU's from sysfs.
+
+That's the problem. CPUs can be set to Auto mode with or without this new
+instance. So what's the point of it?
+
+> 
+> 
+> Best Regards,
+> Sumit Gupta
+
 
