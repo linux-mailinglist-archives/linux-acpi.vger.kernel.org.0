@@ -1,57 +1,94 @@
-Return-Path: <linux-acpi+bounces-12614-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12615-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FBB2A78257
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 20:38:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCEFCA78252
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 20:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA6603B14F1
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 18:35:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAC4618813D2
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Apr 2025 18:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7CA1E32CF;
-	Tue,  1 Apr 2025 18:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B102222AC;
+	Tue,  1 Apr 2025 18:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DAHRh+/o"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="bxgVL3n3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B651D63DD;
-	Tue,  1 Apr 2025 18:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A66221F34
+	for <linux-acpi@vger.kernel.org>; Tue,  1 Apr 2025 18:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743532232; cv=none; b=Aai4LBEA1PpDBiTYUr3KJyBY1m/3m+LkPF692MgZIk/7yhTlaWKKJhBSzsZR/Tkbtz6s5qWSY0HZbXut3SE2QQtzW6JCHzHueD82m0jk7ga4FEzGcv4fWSkptpUoe8wmNeLvttjpvNtwQuNLM/lvi6T7dA9WjXp4LadbUDXcFv0=
+	t=1743532443; cv=none; b=Ct5bBFZ+pDVjBdGtDqONusUp4NoFiQrCIeSjPsJ1JaxnftSMuJP2YbWdZ02h6zTmFgz2BS29L4k64FVK0ACiv/eUeThrruKSKwowjTWLKuy8XgL7ukTkoWGVDkmAgIcTKZ0en5nEjsYK7t29kZkY0+SWS1zS7r5+flK4qlKZlLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743532232; c=relaxed/simple;
-	bh=4os2+XbhmtioCCLMDuFXfGu111eWd2jMSbaGOz3FyPc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=dCABcmK5f2bgqgySRVR76T66SpRPtxYWLlVSKhCBLLy4S2UlFHvJ0G3hsVklnagrfgyWz4xFavt+sbUY3RNtXGWlkcQSr/F1p0sD1Iiu2AsCE6aNhE3LRI1PJOzKbeRjVlTG7FmuXfyjdb9RiyTkqHT2I+0pUcVWvk5lATLYP7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DAHRh+/o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5CDC4CEE4;
-	Tue,  1 Apr 2025 18:30:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743532231;
-	bh=4os2+XbhmtioCCLMDuFXfGu111eWd2jMSbaGOz3FyPc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=DAHRh+/oTEELBMDZFuJyitH+sbvoLVMs1xVnGHazWk23/GFAxn/k8udDP/jhl34wI
-	 jE3e5UIZQForRM9/zCaHFU4mHsFJ/0LZw/B2SNHn40suKvJTjxz47Gv1BrlSiZPWsl
-	 XeTpOtwry9aP1jdvbMrFbaDJiPvbXgPAZ9rfbUvNWxgIE0gVYdswG2V1VWQxuWv06y
-	 KPILXd4N5DS/ymQcjhXui8Lu0XQf0YWftEKl0pi4j9wh8hC4PvdCxUJJSx8fSCgNJx
-	 qHGFzu/MgaH9Ymm7i9fzlot8fMKjJ5I8Cgl0Lhkby8688D7EAN6/xl4q/iTDcF+3KX
-	 qjuircOLlW5kw==
-Date: Tue, 1 Apr 2025 13:30:30 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Anshuman Gupta <anshuman.gupta@intel.com>
-Cc: intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
-	bhelgaas@google.com, ilpo.jarvinen@linux.intel.com,
-	lucas.demarchi@intel.com, rodrigo.vivi@intel.com,
-	badal.nilawar@intel.com, varun.gupta@intel.com,
-	ville.syrjala@linux.intel.com, uma.shankar@intel.com
-Subject: Re: [PATCH 02/12] PCI/ACPI: Add PERST# Assertion Delay _DSM method
-Message-ID: <20250401183030.GA1676293@bhelgaas>
+	s=arc-20240116; t=1743532443; c=relaxed/simple;
+	bh=X8LDjNcfXQ4Bn/njeKqzo2cM5/0QgsnINerxJbWT884=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DkKn78Xbu41flDA4zTsygBfXxVLzrX22y7iHi7dQsJ4zNgDtWnCNaM+JrAIxGBEdyhhH3znp0DgA61X60MheCIAH0OwRZYURSOfwcj2eDGhn2aIWHf+9pMxOD4BJlC9gdTSAV0vsx/gvIXajrfDJc1WoJyRqW8VtfwgMwnm8eag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=bxgVL3n3; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-47663aeff1bso55821331cf.0
+        for <linux-acpi@vger.kernel.org>; Tue, 01 Apr 2025 11:34:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1743532440; x=1744137240; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SvFO86uOfXys++aHN99bumZHLvFpFBrUvW1hjDZlBME=;
+        b=bxgVL3n3e+PDofbiAT4TqUKsTxcbwLnTYM1Kre0JlfHg5Z0Bkxi3iW1a1jd+RZMkZc
+         gY+gineO8xxaAMpBpe40zMhix/aQhNuJyM8x+5OzAeeV3WuL4QWtqWSI/ukQPNR+SNAm
+         1lbty8gnJBtWHKHpkx72Xd1sqsum7XdZJy9+tDCgPoed2a5DdZbPxxm1C9Xvpw7QJmUe
+         8Q6GIMZtc7E1zn8AdSqbJMhCBiGBWrLp8P7Jzvd/tBbEXFO7VLX8g+RxBk2NSM2BdAEF
+         et9xn2ZXhYHicb3oCMFnHqFCdMv/E3hG1i/FTfWOfgB44ArZLhm0f3EilcHaHpOIZmCa
+         k/hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743532440; x=1744137240;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SvFO86uOfXys++aHN99bumZHLvFpFBrUvW1hjDZlBME=;
+        b=nSrGMlq3c3SrQrDN4yVA3mr+pvmIQb1vOzYRFJj7Da9oMlyeQ4BBLiDlGFAWDP/5Vv
+         X4e4PqzVoRV1JhKhesfNqMQni5HY0rHDeffBzgO/xTO08EMpnu0debvv/7pmGRPBoUxb
+         Wym4H5gt81Zq9EYQ/XqH/uV17h5Rd52UIP6BIri/AyxQVtOyuha2W5pNvcSSYsF33b9p
+         RackfDUmfFOBlPzML8h3xCtsRJViVcbK+A3JDQcKRrttKvtv+jYu9nISRJiDVwo0iHA8
+         gruvMLPjAX0SbPL7aCOVg7c2MAfGqNUos8EOrNfrqow20FV0ePafQt3PcFHpN728x46N
+         0dpA==
+X-Forwarded-Encrypted: i=1; AJvYcCURW/ODgfbXwUUYvR7YRCu/8R+qrW9Hz7UBNLOPUlVcAImHQkeb+bqB/+n/MdtebzuDcSCSssb/bcrp@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaG1yT24ZVJ8mgs5wdq93GLo9KLZNIbG74Jq+/yTxUOZD25XA9
+	9he0MONwHOXnLKiNOA3ZJtOI2EuEkJhAAG8MDC8+isjYNHoKqiCAhu19MFGLP18=
+X-Gm-Gg: ASbGncv7ng5wNAszN2JA1XV3xyhDQ0oxDVHpi2p8s3vNaO51DYIxQOVwwJO9D05dxyy
+	W1IqyPMaFh6SkfHgKFKyp2GmZaJrmJw3Dqua0m4t5KG2c1nazUvg0rqgEPpmJ/DPdqOrNFN2kme
+	Wz9I8dDE9DvOvLfE3KzUIadcYoN2aVwmT1xEpswqaHa16GMhBNetnplAc2LBKxJ/pw542/t1Lh4
+	6R5VlWlPWfWv+hqH86OEafAxv0Qbcn32o2NpKBmu5tWAROKvYixDevbquZbBwlGFLeMQmZEwzGQ
+	Qh6o6Ki9o3lE870ntrD8GcrtiocBpJmzQxJgt4690xLBly+J2bCp+VW5fqeTz+lflTuRcPahEfh
+	fSzbzu1msgyA8RKhIb738JTZbnfo=
+X-Google-Smtp-Source: AGHT+IEIYtaOaF9anjPimhqDpAgFdltbw1UzV5b/pfKJo08pDKfU/jOer4wWpo31Zghqh/X5Dhy8Cw==
+X-Received: by 2002:a05:622a:1a01:b0:476:7b0b:3110 with SMTP id d75a77b69052e-477ed72a711mr245214581cf.20.1743532440314;
+        Tue, 01 Apr 2025 11:34:00 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-477831a6579sm68620191cf.73.2025.04.01.11.33.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Apr 2025 11:33:59 -0700 (PDT)
+Date: Tue, 1 Apr 2025 14:33:57 -0400
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org, linux-acpi@vger.kernel.org
+Cc: kernel-team@meta.com, x86@kernel.org, linux-kernel@vger.kernel.org,
+	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
+	rafael@kernel.org, lenb@kernel.org, david@redhat.com,
+	osalvador@suse.de, gregkh@linuxfoundation.org,
+	akpm@linux-foundation.org, dan.j.williams@intel.com,
+	Jonathan.Cameron@huawei.com, alison.schofield@intel.com,
+	rrichter@amd.com, rppt@kernel.org, bfaccini@nvidia.com,
+	haibo1.xu@intel.com, dave.jiang@intel.com,
+	Ira Weiny <ira.weiny@intel.com>, Fan Ni <fan.ni@samsung.com>
+Subject: Re: [PATCH v8 0/3] memory,x86,acpi: hotplug memory alignment
+ advisement
+Message-ID: <Z-wxlQBIIjqbbPqu@gourry-fedora-PF4VCD3F>
+References: <20250127153405.3379117-1-gourry@gourry.net>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -60,90 +97,79 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250401153225.96379-3-anshuman.gupta@intel.com>
+In-Reply-To: <20250127153405.3379117-1-gourry@gourry.net>
 
-On Tue, Apr 01, 2025 at 09:02:15PM +0530, Anshuman Gupta wrote:
-> Implement _DSM Method 11 as per PCI firmware specs
-> section 4.6.11 Rev 3.3.
-
-"PCI Firmware r3.3, sec 4.6.11" so the citation is major to minor.
-
-"0xb" or "0Bh" to match spec usage.
-
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> ---
->  drivers/pci/pci-acpi.c   | 53 ++++++++++++++++++++++++++++++++++++++++
->  include/linux/pci-acpi.h |  7 ++++++
->  2 files changed, 60 insertions(+)
+On Mon, Jan 27, 2025 at 10:34:02AM -0500, Gregory Price wrote:
+> v8: nits and tag pickups
 > 
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index ebd49e43457e..04149f037664 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -1499,6 +1499,59 @@ int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power)
->  }
->  EXPORT_SYMBOL(pci_acpi_request_d3cold_aux_power);
->  
-> +/**
-> + * pci_acpi_add_perst_assertion_delay - Request PERST# delay via ACPI DSM
-> + * @dev: PCI device instance
-> + * @delay_us: Requested delay_us
-> + *
-> + * This function sends a request to the host BIOS via ACPI _DSM to grant the
-> + * required PERST# delay for the specified PCI device. It evaluates the _DSM
-> + * to request the PERST# delay and handles the response accordingly.
-> + *
-> + * Return: returns 0 on success and errno on failure.
-> + */
-> +int pci_acpi_add_perst_assertion_delay(struct pci_dev *dev, u32 delay_us)
-> +{
-> +	union acpi_object in_obj = {
-> +		.integer.type = ACPI_TYPE_INTEGER,
-> +		.integer.value = delay_us,
-> +	};
-> +
-> +	union acpi_object *out_obj;
-> +	acpi_handle handle;
-> +	int result, ret = -EINVAL;
-> +
-> +	if (!dev || !ACPI_HANDLE(&dev->dev))
-> +		return -EINVAL;
-> +
-> +	handle = ACPI_HANDLE(&dev->dev);
 
-acpi_check_dsm().
+I apparently already cleaned up the remaining nits. So this has been
+stable.  Just did a rebase on mm-unstable and it was clean, so this
+should pluck cleanly.
 
-> +	out_obj = acpi_evaluate_dsm_typed(handle, &pci_acpi_dsm_guid, 4,
-> +					  DSM_PCI_PERST_ASSERTION_DELAY,
-> +					  &in_obj, ACPI_TYPE_INTEGER);
-> +	if (!out_obj)
-> +		return -EINVAL;
-> +
-> +	result = out_obj->integer.value;
-> +
-> +	if (result == delay_us) {
-> +		dev_info(&dev->dev, "PERST# Assertion Delay set to"
-> +			 "%u microseconds\n", delay_us);
+Andrew, do you think this should go through mm or another subsystem?
 
-pci_info().
+~Gregory
 
-Join these into a single string, even though they won't fit in a line
-without wrapping.  This is to make them easier to grep for when a user
-reports seeing the message.  (Do this on the previous patch too, where
-I forgot to mention it.)
-
-> +		ret = 0;
-> +	} else if (result == 0) {
-> +		dev_warn(&dev->dev, "PERST# Assertion Delay request failed,"
-> +			 "no previous valid request\n");
-> +	} else {
-> +		dev_warn(&dev->dev,
-> +			 "PERST# Assertion Delay request failed"
-> +			 "Previous valid delay: %u microseconds\n", result);
-> +	}
-> +
-> +	ACPI_FREE(out_obj);
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL(pci_acpi_add_perst_assertion_delay);
+> When physical address regions are not aligned to memory block size,
+> the misaligned portion is lost (stranded capacity).
+> 
+> Block size (min/max/selected) is architecture defined. Most architectures
+> tend to use the minimum block size or some simplistic heurist. On x86,
+> memory block size increases up to 2GB, and is otherwise fitted to the
+> alignment of non-hotplug (i.e. not special purpose memory).
+> 
+> CXL exposes its memory for management through the ACPI CEDT (CXL Early
+> Detection Table) in a field called the CXL Fixed Memory Window.  Per
+> the CXL specification, this memory must be aligned to at least 256MB.
+> 
+> When a CFMW aligns on a size less than the block size, this causes a
+> loss of up to 2GB per CFMW on x86.  It is not uncommon for CFMW to be
+> allocated per-device - though this behavior is BIOS defined.
+> 
+> This patch set provides 3 things:
+>  1) implement advise/query functions in driverse/base/memory.c to
+>     report/query architecture agnostic hotplug block alignment advice.
+>  2) update x86 memblock size logic to consider the hotplug advice
+>  3) add code in acpi/numa/srat.c to report CFMW alignment advice
+> 
+> The advisement interfaces are design to be called during arch_init
+> code prior to allocator and smp_init.  start_kernel will call these
+> through setup_arch() (via acpi and mm/init_64.c on x86), which occurs
+> prior to mm_core_init and smp_init - so no need for atomics.
+> 
+> There's an attempt to signal callers to advise() that query has already
+> occurred, but this is predicated on the notion that query actually
+> occurs (which presently only happens on the x86 arch). This is to
+> assist debugging future users.  Otherwise, the advise() call has
+> been marked __init to help static discovery of bad call times.
+> 
+> Once query is called the first time, it will always return the same value.
+> 
+> Interfaces return -EBUSY and 0 respectively on systems without hotplug.
+> 
+> Suggested-by: Ira Weiny <ira.weiny@intel.com>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Suggested-by: Dan Williams <dan.j.williams@intel.com>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Acked-by: Dan Williams <dan.j.williams@intel.com>
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> Tested-by: Fan Ni <fan.ni@samsung.com>
+> 
+> Gregory Price (3):
+>   memory: implement memory_block_advise/probe_max_size
+>   x86: probe memory block size advisement value during mm init
+>   acpi,srat: give memory block size advice based on CFMWS alignment
+> 
+>  arch/x86/mm/init_64.c    | 15 ++++++++----
+>  drivers/acpi/numa/srat.c | 12 ++++++++-
+>  drivers/base/memory.c    | 53 ++++++++++++++++++++++++++++++++++++++++
+>  include/linux/memory.h   | 10 ++++++++
+>  4 files changed, 84 insertions(+), 6 deletions(-)
+> 
+> -- 
+> 2.48.1
+> 
 
