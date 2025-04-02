@@ -1,234 +1,376 @@
-Return-Path: <linux-acpi+bounces-12659-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12660-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86BFEA7956A
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 20:48:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6A9A795C9
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 21:19:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EA05170A94
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 18:48:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7D6916E299
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 19:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD5E1B3F3D;
-	Wed,  2 Apr 2025 18:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA6C1E1A32;
+	Wed,  2 Apr 2025 19:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rVa5JJDz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNqWbS0w"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E745F5C96;
-	Wed,  2 Apr 2025 18:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663AE1442F4
+	for <linux-acpi@vger.kernel.org>; Wed,  2 Apr 2025 19:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743619729; cv=none; b=krGB/TaCnaL3Snmrg9cY+PCAllI4Zp6DBm8J13vDoZQKFE0OVLGE3kAMrHaIPckNKDfBUZnTPnBLDOUEE7CEDjKSuOYLl8foUx9xHhTwrSvEERSDMv8lhyv5ckM0buM724oMllmM2GGpWpLBgVkFLAa9/VhB1aNwNhb3inKhGvc=
+	t=1743621590; cv=none; b=oRzNii4TRIzuAsvYD4r12btfDvbxBK5nJnso0nMQKbvjN+7s6Uvva3ltd12jopCFwfeh8Y4BaN2+jK9X9WYyMc7QBJOdHorXnVNJAkq8Ambe8n9mT1a9pN4xQt5fTZsoW7+uWulzPdJNpSb5R7b6lA74+xfDjnwPOnY2vcsaaPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743619729; c=relaxed/simple;
-	bh=9n+nahJDE/U1RQG5JyQjbtq0snxTgb1Z/IfOzLAX1bk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=aeVLllGvu5k8eaM9qGpdF3RNl49s7i+fYHTLV63IaWR35FbnTdXG2I6MkqrFWH7B+J1Ys7qyw2svfJMmOsCiXIv7dFIo4VtEBebX/N3nucV20icdry/5AMn8uWfFpy2Et2JKhaobLIeSX8DYIuV0zPxM4ETVoB6b2+5C1GvbgOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rVa5JJDz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA4DC4CEDD;
-	Wed,  2 Apr 2025 18:48:48 +0000 (UTC)
+	s=arc-20240116; t=1743621590; c=relaxed/simple;
+	bh=nx+a0CY30Wmy2Ley7lnuDvT8OVIMgu5Uq4vgJTEeTLk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tgT7lvVJ704tsHkscbsi2B9hUQgkzVDkYUo9nqh4O88aTkE1kBs1BWCbjXvNTykJdSr3HCcnZEVFicxWCaM0eQLBE0WeDhO16SIj5cFZot44sGcAypRQt6AADibMpAgjawlAz1JeysrXaegedCQ0BHTqI6YAdLIUO6L+cWAes18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNqWbS0w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F9B1C4CEDD;
+	Wed,  2 Apr 2025 19:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743619728;
-	bh=9n+nahJDE/U1RQG5JyQjbtq0snxTgb1Z/IfOzLAX1bk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=rVa5JJDzpVwSKYnz03saVOFl0CreqGqb9yKZ8Vsm+TxUyXdWfzzvCEUovr9kprDou
-	 G4twRthSXLB9LKNyWC10G07q9hlw7QQ9u4z3i5TolnkYcswSLXnOWQZ6KHpTvXzYH5
-	 Yf9W/05TCnw5mH74S3fUIckcXjPVdANll5idffeeEl4mIvHQ0OQa+AAMWpsCFW3/QX
-	 S6jU5t+ShZvU6X+GdmJanq+oRF8L6lRB5H12Z0qTtBR+wkLFjel1+qamT+b8y4QJvb
-	 jhbw1hQC+hq5Ey/3P92djiKBsaxFfCiYVODv6mHwWOaRWmOiSfJDcwkgHSJUsB3Dc8
-	 q0aUw4x/bfOtg==
-Date: Wed, 2 Apr 2025 13:48:47 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Anshuman Gupta <anshuman.gupta@intel.com>,
-	intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, lenb@kernel.org, bhelgaas@google.com,
-	ilpo.jarvinen@linux.intel.com, lucas.demarchi@intel.com,
-	rodrigo.vivi@intel.com, badal.nilawar@intel.com,
-	varun.gupta@intel.com, ville.syrjala@linux.intel.com,
-	uma.shankar@intel.com
-Subject: Re: [PATCH 02/12] PCI/ACPI: Add PERST# Assertion Delay _DSM method
-Message-ID: <20250402184847.GA1737363@bhelgaas>
+	s=k20201202; t=1743621589;
+	bh=nx+a0CY30Wmy2Ley7lnuDvT8OVIMgu5Uq4vgJTEeTLk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lNqWbS0wiOI2iPIDLZ/FDDJU6y98BxQPB8PcO5DEtExcL+q3SZ+dgy76WP33Up74P
+	 Nf4CHcfRb9AONeSMR1ytq+U3Dk4Ft7K3bc/cLjqWxUL3rJvQQmDS5UzKeLXaEKBizP
+	 hre1Agm5UEbFsDaj+Ke03bHhfH+kLTWk/ec0Hil0QupH3zCSfFsW9miyEQezfnab0W
+	 jLeai1Jl+WU25VQ197gtsVzUJZQKdplEkqfaNuPnPbo03naS8pKmIpuKRBzSAp5zVP
+	 y0sWVnjmOUly8+/tT9/Jas6Hq0g1DUgvTFmhu+ExmdbFDOtVOjTAMZnkYaNeEm/SJD
+	 BX4kAlLs8SUjw==
+Message-ID: <411633ba-b693-4d08-81cf-426d20326434@kernel.org>
+Date: Wed, 2 Apr 2025 14:19:48 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: EC: Set ec_no_wakeup for Lenovo Go S
+To: Antheas Kapenekakis <lkml@antheas.dev>
+Cc: mario.limonciello@amd.com, rafael@kernel.org,
+ Xino JS1 Ni <nijs1@lenovo.com>, linux-acpi@vger.kernel.org,
+ "derekjohn.clark@gmail.com" <derekjohn.clark@gmail.com>
+References: <20250331204442.1727618-1-superm1@kernel.org>
+ <CAGwozwHyRiyVkX8rsc69gkALScWdtXNAvAGn7c2aEXW_qgdWsA@mail.gmail.com>
+ <CAGwozwEiCXFDi73qAPSm2K9A8OZutE7dbjFfCmbUSAOTaz8SEA@mail.gmail.com>
+ <50cc3227-93eb-4cb8-8151-23e52ca91f80@kernel.org>
+ <CAGwozwH7r-7uELUB1fiftAf3ziU6irgW92qiHHNOpuJ-87=WJw@mail.gmail.com>
+ <90d704dc-51ea-4c98-ba4a-f95460f65061@kernel.org>
+ <CAGwozwEoCc_nRodt2=6R5K5UOzhW+5Gx1uLS3H3ON4ZS_12gBg@mail.gmail.com>
+ <1eb121e5-c0d3-49a8-9579-6ea5543ad4f9@kernel.org>
+ <CAGwozwFgRO=6a=NNfbTtz1E5sroH27sxyXJQuV9QbTMfAttO6w@mail.gmail.com>
+ <6a9268de-4072-4ef2-9f33-95cc783a8595@kernel.org>
+ <CAGwozwF6iFkgvS54KYGMg554S9DTD83rq2ctH=UtFO-b8c1H1Q@mail.gmail.com>
+ <dc2ae336-6a26-4e3e-a901-15afbe7fc611@kernel.org>
+ <CAGwozwF=ZfJ31_UBXV==x_0og+yzf2nLnrb4xG9ca027y-S_Sg@mail.gmail.com>
+ <8cdc5a58-2221-4332-9a47-e0f5b7832922@kernel.org>
+ <CAGwozwFoM+Wtd85Yx6_XxTv2e+qMY6wMRJSd2V+LsVn-GZUruA@mail.gmail.com>
+Content-Language: en-US
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <CAGwozwFoM+Wtd85Yx6_XxTv2e+qMY6wMRJSd2V+LsVn-GZUruA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0h+oaw48B4EcrbNTtcKKY=1BwLdTcXoS0CkKFypnOs3cA@mail.gmail.com>
 
-On Wed, Apr 02, 2025 at 07:51:29PM +0200, Rafael J. Wysocki wrote:
-> On Wed, Apr 2, 2025 at 5:50 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > On Wed, Apr 02, 2025 at 04:52:55PM +0200, Rafael J. Wysocki wrote:
-> > > On Wed, Apr 2, 2025 at 4:21 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > > On Wed, Apr 02, 2025 at 01:06:42PM +0200, Rafael J. Wysocki wrote:
-> > > > > On Tue, Apr 1, 2025 at 5:36 PM Anshuman Gupta <anshuman.gupta@intel.com> wrote:
-> > > > > >
-> > > > > > Implement _DSM Method 11 as per PCI firmware specs
-> > > > > > section 4.6.11 Rev 3.3.
-> > > >
-> > > > > > +int pci_acpi_add_perst_assertion_delay(struct pci_dev *dev, u32 delay_us)
-> > > > > > +{
-> > > > > > +       union acpi_object in_obj = {
-> > > > > > +               .integer.type = ACPI_TYPE_INTEGER,
-> > > > > > +               .integer.value = delay_us,
-> > > > > > +       };
-> > > > > > +
-> > > > > > +       union acpi_object *out_obj;
-> > > > > > +       acpi_handle handle;
-> > > > > > +       int result, ret = -EINVAL;
-> > > > > > +
-> > > > > > +       if (!dev || !ACPI_HANDLE(&dev->dev))
-> > > > > > +               return -EINVAL;
-> > > > > > +
-> > > > > > +       handle = ACPI_HANDLE(&dev->dev);
-> > > > > > +
-> > > > > > +       out_obj = acpi_evaluate_dsm_typed(handle, &pci_acpi_dsm_guid, 4,
-> > > > >
-> > > > > This is something I haven't noticed in the previous patch, but also
-> > > > > applies to it.
-> > > > >
-> > > > > Why is rev 4 of the interface hard-coded here?
-> > > >
-> > > > Thanks for asking this because it's related to the whole _DSM revision
-> > > > question that I don't understand.
-> > > >
-> > > > If we didn't use rev 4 here, what should we use?  The PCI Firmware
-> > > > spec, r3.3, sec 4.6.11, documents this interface and says "lowest
-> > > > valid Revision ID value is 4", so that's the source of the 4.
-> > >
-> > > Well, the "lowest valid Revision ID" does not generally mean the "only
-> > > valid Revision ID".
-> >
-> > True, but why should the kernel change from using the tested revision
-> > ID to some other revision ID?  What would be the benefit of using rev
-> > 5?
+On 4/1/2025 5:06 PM, Antheas Kapenekakis wrote:
+> On Tue, 1 Apr 2025 at 22:54, Mario Limonciello <superm1@kernel.org> wrote:
+>>
+>> On 4/1/2025 1:39 PM, Antheas Kapenekakis wrote:
+>>> On Tue, 1 Apr 2025 at 17:24, Mario Limonciello <superm1@kernel.org> wrote:
+>>>>
+>>>> On 4/1/2025 10:03 AM, Antheas Kapenekakis wrote:
+>>>>> On Tue, 1 Apr 2025 at 16:09, Mario Limonciello <superm1@kernel.org> wrote:
+>>>>>>
+>>>>>> On 4/1/2025 7:45 AM, Antheas Kapenekakis wrote:
+>>>>>>> On Tue, 1 Apr 2025 at 14:30, Mario Limonciello <superm1@kernel.org> wrote:
+>>>>>>>>
+>>>>>>>>>> Here are tags for linking to your patch development to be picked up.
+>>>>>>>>>>
+>>>>>>>>>> Link:
+>>>>>>>>>> https://github.com/bazzite-org/patchwork/commit/95b93b2852718ee1e808c72e6b1836da4a95fc63
+>>>>>>>>>> Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
+>>>>>>>>>> Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+>>>>>>>>>
+>>>>>>>>
+>>>>>>>> I don't believe that b4 will pick these up, so I will send out a v2 with
+>>>>>>>> them and mark this patch as superceded in patchwork so that Rafael
+>>>>>>>> doesn't have to pull everything out of this thread manually.
+>>>>>>
+>>>>>> FTR I don't have permission on patchwork for linux-acpi.
+>>>>>>
+>>>>>> I sent out v2 though.
+>>>>>>
+>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> And to avoid having this conversation again, there is another Legion
+>>>>>>>>> Go S [3] patch you nacked and froze the testing for, so you could go
+>>>>>>>>> on the manhunt for the real cause of this one. But it will probably be
+>>>>>>>>> needed and you will find that as you get TDP controls going. So if you
+>>>>>>>>> want me to prepare that in a timely manner, because that one actually
+>>>>>>>>> needs rewriting to be posted, now is the time to say so.
+>>>>>>>>
+>>>>>>>> Can you please propose what you have in mind on the mailing lists to
+>>>>>>>> discuss?  It's relatively expensive (in the unit of tech debt) to add
+>>>>>>>> quirk infrastructure and so we need to make sure it is the right solution.
+>>>>>>>>
+>>>>>>>> Derek is working on CPU coefficient tuning in a completely separate
+>>>>>>>> driver.  If there are issues with that, I would generally prefer the
+>>>>>>>> fixes to be in that driver.
+>>>>>>>
+>>>>>>> CPU coefficient tuning? If you mean the lenovo-wmi-driver, yes I will
+>>>>>>> try to make sure the quirk can be potentially added there, or in any
+>>>>>>> driver*.
+>>>>>>
+>>>>>> Yes things like fPPT, sPPT, STAPM, STT limits.
+>>>>>>
+>>>>>>>
+>>>>>>> The idea is to rewrite the patch series to just add a simple delay
+>>>>>>> field on the s2idle quirk struct. Then the biggest delay wins and gets
+>>>>>>> placed in ->begin. We have been using that series for ~6 months now,
+>>>>>>> and it turns out that having a delay system for every call is quite
+>>>>>>> pointless. But there are also situations where you might have a device
+>>>>>>> such as the Z13 Folio which looks like a USB device but listens to
+>>>>>>> s2idle notifications through ACPI, so the hid subsystem might need to
+>>>>>>> be able to inject a small delay there.
+>>>>>>
+>>>>>> So the "general" problem with injecting delays is they are typically not
+>>>>>> scalable as they're usually empirically measured and there is no
+>>>>>> handshake with the firmware.
+>>>>>>
+>>>>>> Say for example the EC has some hardcoded value of 200ms to wait for
+>>>>>> something.  IIRC the Linux timer infrastructure can be off by ~13%.  So
+>>>>>> if you put 175ms it might work sometimes.  You get some reports of this,
+>>>>>> so you extend it to 200ms.  Great it works 100% of the time because the
+>>>>>> old hardcoded value in the EC was 200ms.
+>>>>>>
+>>>>>> Now say a new EC firmware comes out that for $REASONS changes it to
+>>>>>> 250ms.  Your old empirically measured value stops working, spend a bunch
+>>>>>> of cycles debugging it, measure the new one.  You change it to 250ms,
+>>>>>> but people with the old one have a problem now because the timing changed.
+>>>>>>
+>>>>>> So now you have to add infrastructure to say what version of the
+>>>>>> firmware gets what delay.
+>>>>>>
+>>>>>> Then you find out there is another SKU of that model which needs a
+>>>>>> different delay, so your complexity has ballooned.
+>>>>>>
+>>>>>> What if all these "delays" were FW timeouts from failing to service an
+>>>>>> interrupt?  Or what if they were a flow problem like the device expected
+>>>>>> you to issue a STOP command before a RESET command?
+>>>>>>
+>>>>>> So we need to be /incredibly careful/ with delays and 100% they are the
+>>>>>> right answer to a problem.
+>>>>>
+>>>>> I do get your points. In this case though we sideskirt through a lot
+>>>>> of the points because of where the delay is placed.
+>>>>>
+>>>>> If the instrumentation is in-place, this delay happens before sleep
+>>>>> after the screen of the device has turned off (due to early DPMS), the
+>>>>> keyboard backlight has turned off (DIsplay off call), and the suspend
+>>>>> light pulses (Sleep Entry). So it does not affect device behavior and
+>>>>> you can be quite liberal. The user has left the device alone.
+>>>>>
+>>>>> If the device needs e.g., 250ms you will not put 250ms, you will put
+>>>>> 500ms. Still unsure, you bump it to 750ms. Also, even if the
+>>>>> manufacturer comes up with a new firmware that fixes this issue, you
+>>>>> can keep the delay for the life of the product, because keeping it
+>>>>> does not affect device behavior, and writing kernel patches takes time.
+>>>>>
+>>>>> This is how I think about it, at least. A universal delay might be
+>>>>> needed eventually. But for now, limiting the scope to some devices and
+>>>>> seeing how that goes should be enough.
+>>>>>
+>>>>> Antheas
+>>>>
+>>>> My take is that "universal" delays are never popular.  IE hardware that
+>>>> "previously" worked perfectly is now slower.  So if there /must/ be a
+>>>> delay it should be as narrow as possible and justified.
+>>>>
+>>>> Let me give you an example of another case I'm *actively considering* a
+>>>> delay.
+>>>>
+>>>> I have an OEM's system that if you enter and exit s0i3 too quickly you
+>>>> can trigger the over voltage protection (OVP) feature of the VR module.
+>>>> When OVP is tripped the system is forced off immediately. This *only
+>>>> happens* on the VR module in that vendor's systems. "Normal" Linux
+>>>> userspace suspend/resume can't trip it.  But connecting a dock "does"
+>>>> trip it.
+>>>>
+>>>> If you look on a scope you can see SLP_S3# pin is toggling faster than
+>>>> spec says it should.  Naïvely you would say well the easy solution is to
+>>>> add a delay somewhere so that SLP_S3# stays in spec.  I have a patch
+>>>> that does just that.
+>>>>
+>>>> diff --git a/drivers/platform/x86/amd/pmc/pmc.c
+>>>> b/drivers/platform/x86/amd/pmc/pmc.c
+>>>> index e6124498b195f..97387ddb281e1 100644
+>>>> --- a/drivers/platform/x86/amd/pmc/pmc.c
+>>>> +++ b/drivers/platform/x86/amd/pmc/pmc.c
+>>>> @@ -724,10 +724,20 @@ static void amd_pmc_s2idle_check(void)
+>>>>            struct smu_metrics table;
+>>>>            int rc;
+>>>>
+>>>> -       /* CZN: Ensure that future s0i3 entry attempts at least 10ms
+>>>> passed */
+>>>> -       if (pdev->cpu_id == AMD_CPU_ID_CZN && !get_metrics_table(pdev,
+>>>> &table) &&
+>>>> -           table.s0i3_last_entry_status)
+>>>> -               usleep_range(10000, 20000);
+>>>> +       if (!get_metrics_table(pdev, &table) &&
+>>>> table.s0i3_last_entry_status) {
+>>>> +               switch (pdev->cpu_id) {
+>>>> +               /* CZN: Ensure that future s0i3 entry attempts at least
+>>>> 10ms passed */
+>>>> +               case AMD_CPU_ID_CZN:
+>>>> +                       usleep_range(10000, 20000);
+>>>> +                       break;
+>>>> +               /* PHX/HPT: Ensure enough time to avoid VR OVP */
+>>>> +               case AMD_CPU_ID_PS:
+>>>> +                       msleep(2500);
+>>>> +                       break;
+>>>> +               default:
+>>>> +                       break;
+>>>> +               }
+>>>> +       }
+>>>>
+>>>> This stops all the failures, but it also has an impact that any time the
+>>>> EC SCI is raised for any reason (like plug in power adapter) the system
+>>>> will take 2.5s to go back into s0i3.
+>>>>
+>>>> Digging further - the intended behavior by the EC and BIOS was to wake
+>>>> the system when the dock is connected.
+>>>>
+>>>> That is the reason this happens is because the EC SCI is raised when the
+>>>> dock is connected, but the Notify() the EC sent wasn't received by any
+>>>> driver.  I've got a patch I'll be sending out soon that adds support for
+>>>> the correct driver to wake up on this event.
+>>>>
+>>>> This prevents the case of the OVP and now we don't *need* to penalize
+>>>> everyone to wait 2.5s after EC SCI events and going back to s0i3.  If I
+>>>> find out there are other ways to trip the problem I still have that
+>>>> option though.
+>>>
+>>> So you are talking about missing the AC/DC burst feature of Windows
+>>> here right? I do agree with you that yeah for most devices it is not
+>>> necessary.
+>>
+>> No; I wasn't talking about that, my point was that timing delays are a
+>> tempting to solution to a problem, but they're very often papering over
+>> something else and a hint to dive deeper.
 > 
-> TBH I'm not exactly buying the "tested revision ID" concept because
-> what does it really mean?
+> What I gleaned from what you said is that X manufacturer has a problem
+> due to missing AC/DC bursts in linux, where all AC/DC burst is is a 5s
+> delay.
 > 
-> If a given _DSM interface has been tested on one platform, does it
-> necessarily mean that it will work on all of the other platforms
-> implementing it?
-
-No, all we can say is that this OS rev 4 code works on the platforms
-we've tested.  Other platforms might have their own defects.
-
-My point is that this OS code was written to the rev 4 spec and has
-been tested, and we shouldn't change the code or the revision it uses
-unless we're fixing something.
-
-> > > Now, I'm not sure how likely it is for the PCI Firmware spec to
-> > > bump up the revision of this interface (I suppose that it will
-> > > do so if a new function is defined), but even if it does so, the
-> > > kernel will have to check both the new revision and rev 4
-> > > anyway, in case the firmware doesn't know about the new
-> > > revision.
-> >
-> > I guess the reason the OS would check both rev 5 and rev 4 would
-> > be that a new platform might implement
-> > DSM_PCI_PERST_ASSERTION_DELAY only at rev 5?  I think this would
-> > be a real mistake in terms of implementing something to the spec.
+> The intended behavior of AC/DC bursts is to fully wake up the kernel
+> for 5 seconds, and then sleep again. In windows, if a power supply is
+> connected, userspace wakes up too, and then the Windows power manager
+> sleeps the system again if there is no user activity for 5 seconds.
+> However, this should not affect device drivers, so we may consider it
+> optional on the Linux side until DEs get support for it and enable it
+> themselves I would say.
 > 
-> This is a real possibility, however, because there's nothing to
-> prevent this kind of spec interpretation.
+> So in effect, AC/DC bursts are Windows' solution to problems like the
+> one you faced.
 > 
-> I didn't mean this, though.
+> I am not saying penalize everyone. If I do make a patch for AC/DC it
+> will be device specific. But after a point, if random devices start
+> getting issues and the quirk list starts to grow, it might become
+> inevitable to force it for all of them.
 > 
-> Say the kernel wants to use a function that is only defined at rev
-> 5.  It will invoke function 0 at rev 5 to see if this function is
-> available, but then it may as well see if the other functions it
-> wants to use are available at rev 5 because it will get this
-> information from the same _DSM call.  If the platform firmware
-> responds that they all are implemented, why won't the kernel use
-> them all at rev 5?
-
-This is an unnecessary change, since the OS tested its rev 4 code and
-now we're saying the OS should use rev 5 instead, which the OS did not
-test.  The reason rev 5 exists at all is probably that some completely
-unrelated new function was added, and somebody decided it should be
-rev 5.
-
-I guess function 0 *could* have been defined to answer "yes/no" about
-whether a single (function, revision) is implemented.  Then we
-probably wouldn't be having this conversation.
-
-But we do get an entire bitmask of implemented functions back from
-function 0, which allows the possibility of using the same revision
-for all the functions.  I suppose we could have a boot-time function
-that calls function 0 with rev 0, 1, 2, ..., until it gets an empty
-bitmask, and saves the highest rev with a non-empty mask.
-
-In PCI we don't do that; instead, we call acpi_check_dsm() before
-every acpi_evaluate_dsm().  The main reason is that I don't think it's
-safe to change the function X rev just because function Y was added
-later with a higher revision.
-
-> > The spec documents DSM_PCI_PERST_ASSERTION_DELAY rev 4.  Some
-> > platforms implemented and tested DSM_PCI_PERST_ASSERTION_DELAY rev
-> > 4.  Linux added and tested support for
-> > DSM_PCI_PERST_ASSERTION_DELAY rev 4.  I propose new platforms
-> > should also implement and test DSM_PCI_PERST_ASSERTION_DELAY rev
-> > 4.
-> >
-> > If a new platform implements only DSM_PCI_PERST_ASSERTION_DELAY
-> > rev 5, there is no actual documentation for that rev other than
-> > the spec assertion that "rev 5 must support all functions defined
-> > by previous revs of the UUID."  IMO this is nonsense.  The
-> > platform might have no need to implement all the functions defined
-> > for the UUID.
+> I do get what you are saying with delays though. We had to merge one
+> of the initial SOF delay patch variants for the Steam Deck which
+> prevents audio crashing on resume, and that was definitely a bandage.
 > 
-> Sure.  That's why function 0 should always be used.
 
-Yes.  But the requirement that rev 5 must support all functions ever
-previously documented for the UUID still makes no sense to me.  I
-don't think there's any requirement that a platform implement ALL of
-the documented PCI functions.
+Maybe I'm failing at my search-engine-foo, could you point me at some 
+docs about this AC/DC burst stuff?
 
-Maybe the intent is that this only applies to a given platform, i.e.,
-that new firmware for that platform must continue to support all
-functions and revisions that were ever supported on that platform?
-That seems obvious to me and hardly worth mentioning.
+[
+And FTR unfortunately it's seeming that my proposal for the alternate 
+wake source has negative side effects to other machines, so I'm going 
+back to exploring a timing based quirk tied to SMBIOS data again too :( ]
 
-> > Even if the platform makes all its functions valid for "the lowest
-> > valid Revision ID" through the "current Revision ID", there's
-> > nothing other than the spec assertion to guarantee that they all
-> > behave the same.  And dealing with multiple revisions that are
-> > "supposed" to be the same just makes work and risk for the OS.
+>>>
+>>> But Microsoft guarantees 5 seconds. We already have the original Ally
+>>> unit which gets stuck in prochot due to this so it would be nice to
+>>> fix. For the Ally X I am unsure what Asus did but it stays awake for a
+>>> nice three seconds after you plug/unplug the charger so it has no
+>>> issues.
+>>>
+>>> So if devices keep getting issues like we will have to eat it and do
+>>> AC/DC bursts with all of them.
+>>>
+>>> And it is the same with entering s0i3 too fast. Some devices just need
+>>> a tiny amount of time to do whatever it is their manufacturer
+>>> programmed them to do after the Modern Standby notifications. For
+>>> handhelds, it is to turn off the controllers because XInput. Asus put
+>>> the fade animation so that takes 300ms and if you do it earlier the
+>>> controller gets cut before it saves its state and starts to do weird
+>>> RGB stuff. Other manufacturers typically do not malfunction but they
+>>> still use the notification.
+>>>
+>>> Only MSI does not, but that controller is quirky before/after sleep
+>>> and they released a firmware update today saying something about
+>>> controller S3/S4 improvements so they probably do that too now, I need
+>>> to check.
+>>>
+>>> For the Go S, it sets itself to 5W after sleep entry and turns off the
+>>> fan. A little delay went a long way in fixing the hang there, which I
+>>> suspect is due to aggressive tuning. But I do not know if you guys get
+>>> that. We did when we did the initial testing for it and carry the
+>>> delay now so I cannot tell you either way. So you should max out the
+>>> TDP, run stress -c 16, and make the device sleep 100-200 times to make
+>>> sure that is not an issue.
+>>>
+>>> I do have a plan for trying to rework AC/DC bursts, but first the
+>>> s2idle ordering needs to be fixed and I need to rewrite the series for
+>>> that. The series we have for that works _fine_ so it is not a priority
+>>> to rework but it is not upstreamable in its current state so if you
+>>> need that (for the Go S) I need to know now.
+>>>
+>>> For ACDC my idea would be after the reordering is done to have a quirk
+>>> that makes the kernel resume, fire the sleep exit notification, loop
+>>> for 5 (maybe 3?) seconds inside the device suspend section prior to
+>>> userspace resume, and then as long as a wakeup did not arrive restart
+>>> the suspend sequence to sleep again. I would also combine that with
+>>> the little s2idle wakeup device you made, so that userspace can enable
+>>> wakeups for that if it wants to do resume on dock connection. But that
+>>> has a lot of moving parts, including moving the DPMS action to happen
+>>> even earlier than your patch does and making sure display on/off does
+>>> not fire so that the keyboard backlight does not do weird stuff.
+>>>
+>>> Antheas
+>>
+>> I think a good start for what you're talking about would be to rebase
+>> your series that reworked s2idle flow on 6.15 code (maybe it's a clean
+>> rebase, idk) and then if/when all of us on LKML are happy with it we can
+>> layer other concepts on top of that.
 > 
-> You seem to be questioning the interface versioning at large by
-> saying that there is no real guarantee of backwards compatibility
-> between consecutive interface revisions on the same platform.
+> Yeah, I will try to do that. However, I have around 30 submitted
+> patches in the air right now, and we are about to add another 5-6 to
+> the list for the Claw. So it will probably be after a bunch of those
+> merge. For the interest of sustainability, if nothing else. So let's
+> put a dot on this and pick up the discussion again mid 6.16 in a month
+> or so.
+> 
+> Unless you need this series for the Go S, in which case I can try to
+> re-order stuff around. So, one of you should use the red light TDP
+> mode with an artificial load (or actual, such as a game) and see if
+> sleep works properly. Do that on battery.
 
-That's exactly what I'm saying, although I think problems are more
-likely across different platforms.  There's the requirement in the
-spec, but that's just words on a page.  There's no way to enforce or
-validate it.
+Take your time and get to it when you get to it.  I just want to make 
+sure we build a clean foundation for big changes like you have in mind.
 
-> Presumably, though, the interface is adhering to some specification
-> which defines the behavior of the functions (and the set of
-> available functions in the first place) for all of the valid
-> revisions of it.  The OS and the platform firmware both follow the
-> same spec and so they should be mutually compatible.  If this
-> particular spec defines rev 5 to be an exact superset of rev 4,
-> there is no reason to expect anything else.
+> 
+> I would do at least 100 suspends with this, as most users do 50-70
+> suspends per reboot. I think I did around 300 to validate the Go S
+> quirk.
+> 
+> Antheas
 
-I don't *expect* rev 5 to be different.  But as a user of it, why
-would I change working, tested code that is not broken?
-
-The PCI DPC function 0xc is an example where rev 5 (per ECN) and rev 6
-(per r3.3) are not compatible.
-
-If the OS implemented rev 5, then learns via function 0 that function
-0xc is also supported at rev 6, and starts using the same OS code with
-rev 6, the OS is broken.
-
-Bjorn
 
