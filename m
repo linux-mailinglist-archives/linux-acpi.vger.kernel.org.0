@@ -1,69 +1,85 @@
-Return-Path: <linux-acpi+bounces-12652-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12653-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5083A7919A
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 17:00:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7FA1A791C3
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 17:02:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D0C216F48B
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 15:00:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 100011711E2
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 15:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14348635A;
-	Wed,  2 Apr 2025 15:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22AE23BCF0;
+	Wed,  2 Apr 2025 15:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jv20uYzl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FRVJTw3B"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979E123AE7C;
-	Wed,  2 Apr 2025 15:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5277081C;
+	Wed,  2 Apr 2025 15:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743606006; cv=none; b=VBqzHDtM77OT1iAg2Kfo8r//C6VwgNJ8ope0nrl++weB3B+EWFF6DEDJg1/zIKcsoXAokMEahd1+CYzyAhoDHiRqR02+MXvVvxlOpWSgbSCqY61NGIUTYwLYrruDJvyXVLDtYA6VtFpYvBsKoLC8sWpJFiEMHAvQ6wa26uCZl3I=
+	t=1743606087; cv=none; b=flpObtyjLTQaVq/K8N0V0/1gPtUD6hhGIsFnpbFDekpcJirGwILtZ0ZdHIRHTIIwxmOrfnnGq1lpT/tJF85dfMbAEIAUvE6GpwD4b54YZutiqWuMlbJPzov3XZxXLM63pJM4VjBjiXGmcc46Aksn2vYGNkicM6cyRG4mvz8xw7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743606006; c=relaxed/simple;
-	bh=gkTDlBLspVsDUeTz3Xteu6bE9B4OIpL6/8gC3s6pajo=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=eMZgqLqhpQ8aUZhVbxYHOoXJ3476J4gROh87uCo6RGMQUowVIQtCcMFxR2+xmzIMlkdAu5PcEZhz72VtM2DhVT4Y8HnTWHJ9vz4EtZduZxACzICaouJdftz4pUZ4+FkCmVNDd/aC6/tRVI9ydtUUVswOmUYK3K+srfFoLqxovKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jv20uYzl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F0BC4CEDD;
-	Wed,  2 Apr 2025 15:00:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743606006;
-	bh=gkTDlBLspVsDUeTz3Xteu6bE9B4OIpL6/8gC3s6pajo=;
-	h=From:Date:Subject:To:Cc:From;
-	b=jv20uYzl2hoDJG0WGnpQd0St6H3Z19cQwZoGZFRMV+cAWQ7qNV4kFy2iz7RoqGYUy
-	 CFNub+wuodsMfYahnE4BPzgSpUkpXql94e9NBxrk8BnNPCyvgCIdTwV/tyv+vh0LUP
-	 fzD8l1PcmEoVdZt/uSZbzCaqb0NMF3Sdfx8r270w4NBj+R50HqjToEZLrTKM+IK97Q
-	 jqr4pKwlPwnFVTPOspOAZIh1T3EVoalR0MaYeacpCjHzvw0GzvqZjTYJAapkZ7JQgy
-	 ln+L7wUr9X4IBI/vyMvhrDzuFCF3Rlqnp9J9NWqMo+myaP9mgt3QIfiXV7uTqvsPAE
-	 P80z3+u3bHLMQ==
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-72c14138668so1637624a34.2;
-        Wed, 02 Apr 2025 08:00:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWVuaS66E/7uo3JyDtMo/VCSyHLLcFo7EaNpjFxHd7Cg2MOu2xmtZeJy/s4sfTdUF4uP5dXODJlXg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwsU8O1Yd84BjcykT4/9jkmNucTQI0qXVnjBv/KS2P6PrmOPR2
-	jolCWYK9PygsWo/5Q9ZARDuqFDKEmOAEndq80WtNoR8lLGqsOukGaWoEPtkGma1ZTIPIq8Nv8Li
-	cg+lpnZ5y6GOqM/uhjStVPsujZ6E=
-X-Google-Smtp-Source: AGHT+IE5oqwISwQehu9eNdF5AQbKiisSs0JngsBv/p6GfDXWgEdO8QaFWKWkkdBaXlSbn+xOdgrKkwqIkcYT6J8tKuE=
-X-Received: by 2002:a05:6830:4129:b0:72b:9196:c15c with SMTP id
- 46e09a7af769-72c6376d558mr8869774a34.6.1743606005216; Wed, 02 Apr 2025
- 08:00:05 -0700 (PDT)
+	s=arc-20240116; t=1743606087; c=relaxed/simple;
+	bh=Pay5SvCgNwdBymfzqKMZrYyLmxZ7nRMRW2EgfFyo61s=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=MIwTcLv92UH2TM5mSry+SxuNgUQYM9PHnxF/IN/BuYk1Hcd/B9HzqoP1FV8SoxMlmkGv2APin5BDfIVkRTFNKI9OxauU1+ESk1mQkfIlZJn3GhTh2jsMmYW8hyqD4JbhvDJj9uxy9zzxRQilQAFonIZOZKcjYRJkNnv6+kMeugE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FRVJTw3B; arc=none smtp.client-ip=209.85.160.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-2c7f876b321so1981811fac.1;
+        Wed, 02 Apr 2025 08:01:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743606085; x=1744210885; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BkJd7ujSnv4CgArdpWVGlVRCnEQfxLIx1UY5sjCYk9Y=;
+        b=FRVJTw3BhzMyZ0pA8Ek2En0Wg2DA9h2BqCwL46l0qCHAc038fSFuOSc4f838dtirjE
+         2Ocx5S1cGZ3hOqh0yoQXtirje2C8k5E8AWjJ3V1ba5YPGUTNzYcmxbyKcLnjcXIy+bjH
+         LxhtWGH5V7YSRZ/a1C1q5AgPDyi6+mSIOJBDK54MG6nFSLpT2KPXwAo1ZepbBC47NAFj
+         uHO2aQ2U6vHLXfdU28UVhwyioyLtaT4oVPVOXkRP2c08IC5P0IfyMGAsBrzGz2lSa5SA
+         IBeaTsHt0AgcIIKSjAw6NoO0A9ovrjYDH4lgyjhEiHfI7v7hkSkz3nIFrVnCs+JDO8zn
+         6XKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743606085; x=1744210885;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BkJd7ujSnv4CgArdpWVGlVRCnEQfxLIx1UY5sjCYk9Y=;
+        b=nHQmEoVmL3+y0P0eY2s6WLXwfUHTeFZr3E/KBQUpTlN8IK+QWvDFOJvpjJES3uZe2r
+         pn5tdt0hGMfEU07LAKxx7N28EUdiTihwiYxTIyJYegNA7GotL48qrr6W4vv5kNGzDaRi
+         bLpM6urQQY+rK73fNgv39woje34nGrIhD55C8hFHAnLhxDtF8cbzwkOLVR9Hpr3Q5piU
+         E35vxP5TdaCwXrP/Llz31NondClpJ+2mIPiDNUSWWq67te34HzwYJRtJ6JL/rqB4S0kH
+         SojzaXxTjfyLRX8BleDMZ/ZvwL1zBa3K9DsD/SvktU8cM4WhdUmKympVdcE66yE0yg3J
+         8G/A==
+X-Forwarded-Encrypted: i=1; AJvYcCW1sY9MA01OGETjJLZoyaWrHT+f0LIa1lM2TUmbBUVdI7fh4uI/FGCK4LTogqaNEfYiv4KgMYE93jak@vger.kernel.org, AJvYcCWPSG+oHI5ZpTtDSUh/SdL+wlsi49rTUNwUf2azoOnJvrwAzsdT/lMY+/niDs4SkcCCRGYnpbQaMcbcOZO9@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLKL0lGqhiVJVknN02qnLQu2KtG8RXWjy9Xjop6uZJ5Wvl+COG
+	ZvilU2nP3VlKuPfjCtnNo6neyRq9PfJQ8Ml3sTFYBh/CExG3TkqXwAYwHV+nKNIN4/MCnGxCUvO
+	RA5axU3G61C0YUsjs0BZjCKhDP3+JCXLl
+X-Gm-Gg: ASbGncuw8FPVmsAbze2S/wQ5knNYj6UQyw0oRtHcMbCgSbRtZ0iSwGn1Hq5YVCDqSrd
+	4ZkIRNl433U+MVhidQ7Z59riQOVnLoQIzlm8AnL4xHYUxUqQt+6jfItMhX2CYpwt9GsADngCUOh
+	ej6y5uR6pDcpmNWdGuBaroGwZ0zA==
+X-Google-Smtp-Source: AGHT+IHkGPensKtSx0Kqhjq8p/pZzlVb+CzAEvvywG9S0Ch8RxC+IU6YVIn0JYYRbxp8HgoYDYLzHs6VVSvT5sWqR+Y=
+X-Received: by 2002:a05:6871:530e:b0:2c8:3411:df19 with SMTP id
+ 586e51a60fabf-2cbcf7afa78mr9983218fac.37.1743606084913; Wed, 02 Apr 2025
+ 08:01:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 2 Apr 2025 16:59:54 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gtr2acS0ZNux5TzHrawoxC6jD474H1s-_MHBQPAe3fkA@mail.gmail.com>
-X-Gm-Features: AQ5f1JpH3iy5XIProJMzMZmb6DlVsrpsMkn9qtpwW6zLuKbMA1JwtDfUPBV2pg0
-Message-ID: <CAJZ5v0gtr2acS0ZNux5TzHrawoxC6jD474H1s-_MHBQPAe3fkA@mail.gmail.com>
-Subject: [GIT PULL] More ACPI updates for v6.15-rc1
+From: =?UTF-8?Q?Rafa=C5=82_Wysocki?= <rjwysocki@gmail.com>
+Date: Wed, 2 Apr 2025 17:01:14 +0200
+X-Gm-Features: AQ5f1JrX9cFvgUplNqLWVYYVGPY3K08rmNKx-VLmzjhOGeX9vQ6lj-rEvKLJtUM
+Message-ID: <CAJZ5v0gEidr++vOdw9rAe3z=TCU5jfAY6_6WJrm3_VD1nq=8Kw@mail.gmail.com>
+Subject: [GIT PULL] Power management fix for v6.15-rc1
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>
+Cc: Linux PM <linux-pm@vger.kernel.org>, 
+	ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
 Hi Linus,
@@ -71,84 +87,34 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.15-rc1-2
+ pm-6.15-rc1-2
 
-with top-most commit 5bf46fe2b84cda662062f7aca73e15602c76a844
+with top-most commit 9e4e249018d208678888bdf22f6b652728106528
 
- Merge branches 'acpi-video', 'acpi-platform-profile' and 'acpi-misc'
+ cpufreq: Reference count policy in cpufreq_update_limits()
 
-on top of commit 21e0ff5b10ec1b61fda435d42db4ba80d0cdfded
+on top of commit 7d20aa5c32ac8bd272b5470ddbd7ac6e0cb35714
 
- Merge tag 'acpi-6.15-rc1' of
+ Merge tag 'pm-6.15-rc1' of
 git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
 
-to receive more ACPI/PNP updates for 6.15-rc1.
+to receive a power management fix for 6.15-rc1.
 
-These are fixes and cleanups on top of the previous ACPI material for
-6.15-rc1 merged recently:
-
- - Extend the Lenovo Yoga Tab 3 ACPI quirk to skip GPIO event-handlers
-   along with ACPI AC and battery which makes it work with Linux when
-   started in the Windows mode (Hans de Goede).
-
- - Prevent the ACPI processor idle driver from being used on systems
-   without _CST and with invalid C2/C3 in FADT in order to restore its
-   previous (and expected) behavior that has been altered inadvertently
-   by a recent code change (Giovanni Gherdovich).
-
- - Skip ACPI IRQ override on ASUS Vivobook 14 X1404VAP to make the
-   internal keyboard work on it (Paul Menzel).
-
- - Make the ACPI backlight driver handle fetching EDID passed as
-   ACPI_TYPE_PACKAGE which is not specification-compliant, but
-   has been encountered in the field (Gergo Koteles).
-
- - Simplify the aggregation of choices in the ACPI platform-profile
-   driver which has been unlocked by recent modifications of that
-   driver (Kurt Borja).
-
- - Use str_enabled_disabled() instead of hardcoded strings in the ACPI
-   code related to NUMA (Thorsten Blum).
-
- - Add Intel OC Watchdog device IDs to non-PNP device list to prevent
-   PNP from claiming the devices that carry these IDs in which case
-   non-PNP drivers cannot bind to them (Diogo Ivo).
+This prevents cpufreq_update_limits() from crashing the kernel due
+to a NULL pointer dereference when it is called before registering
+a cpufreq driver, for instance as a result of a notification
+triggered by the platform firmware (Rafael Wysocki).
 
 Thanks!
 
 
 ---------------
 
-Diogo Ivo (1):
-      ACPI: PNP: Add Intel OC Watchdog IDs to non-PNP device list
-
-Gergo Koteles (1):
-      ACPI: video: Handle fetching EDID as ACPI_TYPE_PACKAGE
-
-Giovanni Gherdovich (1):
-      ACPI: processor: idle: Return an error if both P_LVL{2,3} idle
-states are invalid
-
-Hans de Goede (1):
-      ACPI: x86: Extend Lenovo Yoga Tab 3 quirk with skip GPIO event-handlers
-
-Kurt Borja (1):
-      ACPI: platform_profile: Optimize _aggregate_choices()
-
-Paul Menzel (1):
-      ACPI: resource: Skip IRQ override on ASUS Vivobook 14 X1404VAP
-
-Thorsten Blum (1):
-      ACPI: NUMA: Use str_enabled_disabled() helper function
+Rafael J. Wysocki (1):
+      cpufreq: Reference count policy in cpufreq_update_limits()
 
 ---------------
 
- drivers/acpi/acpi_pnp.c         |  2 ++
- drivers/acpi/acpi_video.c       |  9 ++++++++-
- drivers/acpi/numa/srat.c        | 22 ++++++++--------------
- drivers/acpi/platform_profile.c | 13 +++++--------
- drivers/acpi/processor_idle.c   |  4 ++++
- drivers/acpi/resource.c         |  7 +++++++
- drivers/acpi/x86/utils.c        |  3 ++-
- 7 files changed, 36 insertions(+), 24 deletions(-)
+ drivers/cpufreq/cpufreq.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
