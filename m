@@ -1,174 +1,145 @@
-Return-Path: <linux-acpi+bounces-12639-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12640-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822E8A78D01
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 13:24:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D1A0A78DBF
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 14:03:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99BA73A74E2
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 11:24:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49FC71671FE
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 12:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21B9F2376E9;
-	Wed,  2 Apr 2025 11:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nT7o9CTE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A7E237701;
+	Wed,  2 Apr 2025 12:03:04 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7A1230BF1;
-	Wed,  2 Apr 2025 11:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215D321480E;
+	Wed,  2 Apr 2025 12:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743593050; cv=none; b=bJ6PJEIRqVNqZSmtIbk52ywaXjUYtILeWveFR4xIteUySXehQNGJAQ7oI4ia7nD+vogM2eTNC2BxMF6agdBU9bLVYiF1kEUkOsKnoC4wKnJ/D8bOzVOOgZ8WO8ZgFfX9lPHK0kWKKZEft/d8sv8HHf3SWAyxLgnzObEGIJzIhVQ=
+	t=1743595384; cv=none; b=g0llpdb6PqSCzyljwlzwou26op1rJrryN37ka8YuDv07pOCtW2VOpr/8i6oAyCYUv1PHKyjx6FY5angqtGO2qvFeLbc+23l0Xsf8J/UbbcV5X7DxyUb4m3GojR8qJSc4IkjCd3FhK3+kZZtRnZCLMOdhXpRDPb7Oq7xULnttw5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743593050; c=relaxed/simple;
-	bh=EPzhky8croBlcg3eXw8ESbq4G0rLFB2FIRqwovbykyQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JhZC9qz6sOz89+3WeWmjQGwj5ag1dvrxzRnQS+ep3UD3Q70xNq/EKm3wAbChoIAy+GVyFc/sa2dR8C577mlry7iGxeIMk3fXnt88y+WhLALvTAJckASfEWunY0vVDvN4wluzXXjcXza3RYbztziGjZuaGmRvWZ/R6CajVTNZf0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nT7o9CTE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B53AC4CEEF;
-	Wed,  2 Apr 2025 11:24:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743593049;
-	bh=EPzhky8croBlcg3eXw8ESbq4G0rLFB2FIRqwovbykyQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nT7o9CTEBu3Ik6VwdtBopclTuAxO298exnHL6+jFEuTzhJTvH0bDo76mTOHnKZpMx
-	 WWQsVsporobcTVHT1pRGtxHnqyomX2UaPnk8V1tyTxCdg1ayYNPZQa+JCgYfqw8aIs
-	 c1ffxYaIz5l5yl18dxyBORcOCB6B0XeTCsLCYmtjSYW62IA6EuUnqGSIGGOWxjhnq6
-	 B4dmmUiP1EmaIqwow/sYNT/HoLpQs/F/Nzf2zCNHFyhZHM2F37vOgY7nbE9+wpPJdX
-	 c1/15kWCz8nmm+5Nvgs9Zm0K9Pqv0uUsEbujmNnqu3ky/ewT0/9EdCS9KRCeB5z7PT
-	 aQRBoifZsNSNA==
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-2c77a5747e0so3793917fac.2;
-        Wed, 02 Apr 2025 04:24:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUeXN6Ue17KitnA9nNdie3MoO8PJOOlQRT+rwpQ+dv7HOSJS9fYXACB/OquEsPJos2cJhSe9A0NHgdQ@vger.kernel.org, AJvYcCVnBqNQvNPjSW1uxPmO5kQwmkvpUae2TE/7qewfXME6J1HjGceAOSLroNA7+Rzepq4wkYP8VRkzPyJe@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMq6S9O7RfMX8NG5cTJKo7Ox3Plfvtv825fzc8coJuD1zxJPPB
-	gHnDj67R60Km6a0pHw5EF0L458Pm5qnxjx2PRoVXnOyaOv6eFM7XcGg2NiQyOEdfkJjH6DOEP8R
-	nsA/AbcKVXvJ9V1rDVrfm23PcTbo=
-X-Google-Smtp-Source: AGHT+IGSQqFvL1910IXuvRtcou/I3UYbe7Y4dIVCIemMKHGWcy8OEIN0tGE8/B6eMTj/nIzTwWHfCa0qWM4/ll5bAaA=
-X-Received: by 2002:a05:6870:d14f:b0:29e:3921:b1ea with SMTP id
- 586e51a60fabf-2cc60d5c606mr1151048fac.30.1743593048601; Wed, 02 Apr 2025
- 04:24:08 -0700 (PDT)
+	s=arc-20240116; t=1743595384; c=relaxed/simple;
+	bh=6Uirm4+1R84g08my0RgMU5SWWSZorcx4qDdRmB+DzJY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RMVjLqiWPd/yB3rRmWnLJkK7hYgSb8e+5anUnfeX9k43TcX36ICFPaAElLjdn4/XpSf77fOQ0eapTTicqYJ5jPYryxSGIOJnhoGutEtw3lm0zXkPp5OFSujWZYKVHSYzvVeKS03TWAisPejgm5F1ByYSG5PYgFw0WsvJZOjrkpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZSNh25PrKz6M4my;
+	Wed,  2 Apr 2025 19:59:14 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
+	by mail.maildlp.com (Postfix) with ESMTPS id 852EB140736;
+	Wed,  2 Apr 2025 20:02:53 +0800 (CST)
+Received: from P_UKIT01-A7bmah.china.huawei.com (10.126.171.80) by
+ frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 2 Apr 2025 14:02:51 +0200
+From: <shiju.jose@huawei.com>
+To: <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>
+CC: <bp@alien8.de>, <rafael@kernel.org>, <tony.luck@intel.com>,
+	<lenb@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
+	<mchehab@kernel.org>, <jonathan.cameron@huawei.com>, <linux-mm@kvack.org>,
+	<linuxarm@huawei.com>, <rientjes@google.com>, <jiaqiyan@google.com>,
+	<Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
+	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
+	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<dferguson@amperecomputing.com>, <wbs@os.amperecomputing.com>,
+	<nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
+	<roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
+	<wanghuiqiang@huawei.com>, <shiju.jose@huawei.com>
+Subject: [PATCH v3 0/3] ACPI: Add support for ACPI RAS2 feature table
+Date: Wed, 2 Apr 2025 13:02:26 +0100
+Message-ID: <20250402120230.596-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.43.0.windows.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250401153225.96379-4-anshuman.gupta@intel.com> <20250401201349.GA1676401@bhelgaas>
-In-Reply-To: <20250401201349.GA1676401@bhelgaas>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 2 Apr 2025 13:23:56 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0irNFX6dFrStinNXamrhP143=yjjfx4iK0pY+-dTEkviw@mail.gmail.com>
-X-Gm-Features: AQ5f1JpD5yN41W6zicEv53RCDwYurpfQc2ba6-PISKF2FZ8VNX9mAf1AbD1wLQ0
-Message-ID: <CAJZ5v0irNFX6dFrStinNXamrhP143=yjjfx4iK0pY+-dTEkviw@mail.gmail.com>
-Subject: Re: [PATCH 03/12] PCI/ACPI: Add aux power grant notifier
-To: Bjorn Helgaas <helgaas@kernel.org>, Anshuman Gupta <anshuman.gupta@intel.com>
-Cc: intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org, 
-	linux-pci@vger.kernel.org, rafael@kernel.org, lenb@kernel.org, 
-	bhelgaas@google.com, ilpo.jarvinen@linux.intel.com, lucas.demarchi@intel.com, 
-	rodrigo.vivi@intel.com, badal.nilawar@intel.com, varun.gupta@intel.com, 
-	ville.syrjala@linux.intel.com, uma.shankar@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ frapeml500007.china.huawei.com (7.182.85.172)
 
-On Tue, Apr 1, 2025 at 10:13=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org> =
-wrote:
->
-> On Tue, Apr 01, 2025 at 09:02:16PM +0530, Anshuman Gupta wrote:
-> > Adding a notifier to notify all PCIe child devices about the
-> > block main power removal. It is needed because theoretically
-> > multiple PCIe Endpoint devices on same Root Port
-> > can request for AUX power and _DSM method can return with
-> > 80000000h signifies that the hierarchy connected via
-> > the slot cannot support main power removal when in D3Cold.
->
-> I wish the spec used different language here.  "D3cold" *means* "main
-> power is removed" (PCIe r6.0, sec 5.3.1.4.2), so it doesn't make sense
-> to say that "the slot cannot support main power removal when in
-> D3cold".  If a device is in D3cold, its main power has been removed by
-> definition.
->
-> I suppose the spec is trying to say if the driver has called this _DSM
-> with 80000000h, it means the platform must not remove main power from
-> the device while the system is in S0?  Is that what you think it
-> means?
->
-> The 2h return value description says it "indicates that the platform
-> will not remove main power from the slot while the system is in S0,"
-> so I guess that must be it.
->
-> In this series, pci_acpi_aux_power_setup() only supplies a 16-bit
-> aux_pwr_limit value, so the driver cannot *request* that the platform
-> not remove main power.
->
-> So I guess the only scenario where the _DSM returns 80000000h is when
-> the platform itself or other devices prevent the removal of main
-> power.  And the point of the notifier is to tell devices that their
-> main power will never be removed while the system is in S0.  Is that
-> right?
->
-> > This may disrupt functionality of other child device.
->
-> What sort of disruption could happen?  I would think that if the _DSM
-> returns 80000000h, it just means the device will not have main power
-> removed, so it won't see that power state transition.  The only
-> "disruption" would be that we're using more power.
->
-> > Let's notify all PCIe devices requested Aux power resource
-> > and Let PCIe End Point driver handle it in its callback.
->
-> Wrap to fill 75 columns.
->
-> s/Adding/Add/
-> s/Let's notify/Notify/
-> s/and Let/and let/
-> s/End Point/Endpoint/ (several places here and below)
->
-> > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> > ---
-> >  drivers/pci/pci-acpi.c   | 34 +++++++++++++++++++++++++++++++---
-> >  include/linux/pci-acpi.h | 13 +++++++++++++
-> >  2 files changed, 44 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> > index 04149f037664..d1ca1649e6e8 100644
-> > --- a/drivers/pci/pci-acpi.c
-> > +++ b/drivers/pci/pci-acpi.c
-> > @@ -1421,6 +1421,32 @@ static void pci_acpi_optimize_delay(struct pci_d=
-ev *pdev,
-> >       ACPI_FREE(obj);
-> >  }
-> >
-> > +static BLOCKING_NOTIFIER_HEAD(pci_acpi_aux_power_notify_list);
-> > +
-> > +/**
-> > + * pci_acpi_register_aux_power_notifier - Register driver notifier
-> > + * @nb: notifier block
-> > + *
-> > + * This function shall be called by PCIe End Point device requested th=
-e Aux
-> > + * power resource in order to handle the any scenario gracefully when =
-other
-> > + * child PCIe devices Aux power request returns with No main power rem=
-oval.
-> > + * PCIe devices which register this notifier shall handle No main powe=
-r
-> > + * removal scenario accordingly.
->
-> This would actually be called by the *driver* (not by the device).
+From: Shiju Jose <shiju.jose@huawei.com>
 
-Apart from this, there seems to be a design issue here because it
-won't notify every driver that has requested the Aux power, just the
-ones that have also registered notifiers.
+Add support for ACPI RAS2 feature table (RAS2) defined in the
+ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
+scrubbing feature.
 
-So this appears to be an opt-in from getting notifications on Aux
-power request rejection responses to requests from other drivers
-requesting Aux power for the same Root Port, but the changelog of the
-first patch already claimed that the aggregation of requests was not
-supported.  So if only one driver will be allowed to request the Aux
-power for the given Root Port, why would the notifiers be necessary
-after all?
+ACPI RAS2 patches were part of the EDAC series [1].
+
+The code is based on ras.git: edac-cxl branch [2].
+
+1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
+2. https://web.git.kernel.org/pub/scm/linux/kernel/git/ras/ras.git/log/?h=edac-cxl
+
+Changes
+=======
+v2 -> v3:
+1. Rename RAS2 table structure and field names in 
+   include/acpi/actbl2.h limited to only necessary
+   for RAS2 scrub feature. Not for merging.
+   Corresponding changes are merged in the acpica:
+   https://github.com/acpica/acpica/commit/2c8a38f747de9d977491a494faf0dfaf799b777b
+2. Changes for feedbacks from Jonathan on v2.
+3. Daniel reported a known behaviour: when readback 'size' attribute after
+   setting in, returns 0 before starting scrubbing via 'addr' attribute.
+   Changes added to fix this.
+4. Daniel reported that firmware cannot update status of demand scrubbing
+   via the 'Actual Address Range (OUTPUT)', thus add workaround in the
+   kernel to update sysfs 'addr' attribute with the status of demand
+   scrubbing.
+5. Optimized logic in ras2_check_pcc_chan() function
+   (patch - ACPI:RAS2: Add ACPI RAS2 driver).
+6. Add PCC channel lock to struct ras2_pcc_subspace and change
+   lock in ras2_mem_ctx as a pointer to pcc channel lock to make sure
+   writing to PCC subspace shared memory is protected from race conditions.
+   
+v1 -> v2:
+1.  Changes for feedbacks from Borislav.
+    - Shorten ACPI RAS2 structures and variables names.
+    - Shorten some of the other variables in the RAS2 drivers.
+    - Fixed few CamelCases.
+
+2.  Changes for feedbacks from Yazen.
+    - Added newline after number of '}' and return statements.
+    - Changed return type for "ras2_add_aux_device() to 'int'.
+    - Deleted a duplication of acpi_get_table("RAS2",...) in the ras2_acpi_parse_table().
+    - Add "FW_WARN" to few error logs in the ras2_acpi_parse_table().
+    - Rename ras2_acpi_init() to acpi_ras2_init() and modified to call acpi_ras2_init()
+      function from the acpi_init().
+    - Moved scrub related variables from the struct ras2_mem_ctx from  patch
+      "ACPI:RAS2: Add ACPI RAS2 driver" to "ras: mem: Add memory ACPI RAS2 driver".  
+
+Shiju Jose (3):
+  ACPI: ACPI 6.5: RAS2: Rename RAS2 table structure and field names
+  ACPI:RAS2: Add ACPI RAS2 driver
+  ras: mem: Add memory ACPI RAS2 driver
+
+ Documentation/edac/scrub.rst |  76 +++++++
+ drivers/acpi/Kconfig         |  11 +
+ drivers/acpi/Makefile        |   1 +
+ drivers/acpi/bus.c           |   3 +
+ drivers/acpi/ras2.c          | 420 +++++++++++++++++++++++++++++++++++
+ drivers/ras/Kconfig          |  11 +
+ drivers/ras/Makefile         |   1 +
+ drivers/ras/acpi_ras2.c      | 406 +++++++++++++++++++++++++++++++++
+ include/acpi/actbl2.h        |  16 +-
+ include/acpi/ras2.h          |  51 +++++
+ 10 files changed, 988 insertions(+), 8 deletions(-)
+ create mode 100644 drivers/acpi/ras2.c
+ create mode 100644 drivers/ras/acpi_ras2.c
+ create mode 100644 include/acpi/ras2.h
+
+-- 
+2.43.0
+
 
