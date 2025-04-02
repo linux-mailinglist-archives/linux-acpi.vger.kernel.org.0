@@ -1,142 +1,154 @@
-Return-Path: <linux-acpi+bounces-12651-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12652-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334B9A7917B
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 16:53:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5083A7919A
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 17:00:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF1D57A306F
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 14:52:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D0C216F48B
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 15:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D62623814E;
-	Wed,  2 Apr 2025 14:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14348635A;
+	Wed,  2 Apr 2025 15:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aaFJsyO7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jv20uYzl"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051711DFF7;
-	Wed,  2 Apr 2025 14:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979E123AE7C;
+	Wed,  2 Apr 2025 15:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743605588; cv=none; b=WF+MFxKw/vNlDHe75Tf2SBtJlg1Bx9lXBdi9wt0sSMiru6rCG2u0/D/TO67tVeRXBXZUORRe7AEE0Mh6XvrIB3NtElZO+CtKfsGyMRz5lT6Xgy3a2eNJKJHcbfSmgMRhbaRduWegN4ZLpyVpsREY5Yq3QBssVVyUX/aRjZ2Y4U0=
+	t=1743606006; cv=none; b=VBqzHDtM77OT1iAg2Kfo8r//C6VwgNJ8ope0nrl++weB3B+EWFF6DEDJg1/zIKcsoXAokMEahd1+CYzyAhoDHiRqR02+MXvVvxlOpWSgbSCqY61NGIUTYwLYrruDJvyXVLDtYA6VtFpYvBsKoLC8sWpJFiEMHAvQ6wa26uCZl3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743605588; c=relaxed/simple;
-	bh=3psBfHa6q9GaR3lB9SNaBK+ExW2OnGalIiGqg6cGeFc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GDz+IGIlAziornQQZm0ni4+qpe0FX44l0PF4bzS3KUlwVuON3zjDoSD3KHFxwCN+D46MPXM1uBIKrkF9HD53ekDpPutCV7JKbHbDA9BLXqophkrRuHYWb7VYd4W0moqPLQP31/E25ea5VtjKqkXlWU1NNuNqZUM2eXzKtx/iwDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aaFJsyO7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DE1C4CEE7;
-	Wed,  2 Apr 2025 14:53:07 +0000 (UTC)
+	s=arc-20240116; t=1743606006; c=relaxed/simple;
+	bh=gkTDlBLspVsDUeTz3Xteu6bE9B4OIpL6/8gC3s6pajo=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=eMZgqLqhpQ8aUZhVbxYHOoXJ3476J4gROh87uCo6RGMQUowVIQtCcMFxR2+xmzIMlkdAu5PcEZhz72VtM2DhVT4Y8HnTWHJ9vz4EtZduZxACzICaouJdftz4pUZ4+FkCmVNDd/aC6/tRVI9ydtUUVswOmUYK3K+srfFoLqxovKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jv20uYzl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F0BC4CEDD;
+	Wed,  2 Apr 2025 15:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743605587;
-	bh=3psBfHa6q9GaR3lB9SNaBK+ExW2OnGalIiGqg6cGeFc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=aaFJsyO75XOvD+hkgGkC/pjLpQ9z44qG+qB0EPuhY3h3NNu8SgKYRZLHi6vyZxdls
-	 hcRjnwqclfoecT1i/EUU1Nm0lh2GUpdyQ/1G32FXT3z1uGEo7nWg+W1TKtqTlNx7jG
-	 zKsMGUgDCr70CcvlJSK4hUlLED3u1GAogAS9kGr5rSkQYqrKaC74TpZrS8uQIn06gM
-	 DFRVlzOchg3DEzYUYNDfKdLbklYoLZc1hBrL1i3XDgyQ4T6Ch1pLbXKJF5w3K22+q+
-	 72SZLw8sL0GBYcA/QuGKvqh7dbODeshnW9zm59gWnNKT5unlsCTtB5wJ3m8RrYpd4H
-	 a0AhjqwjqNuaw==
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-72c0b4a038fso4170435a34.0;
-        Wed, 02 Apr 2025 07:53:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVbRCyFgQrv+Lv53vNdbmyZ7E+nxSOTtNTusb6mfKTX49pUtHkwMBVOyAlmkP6T2GvescNgpExD/zd9@vger.kernel.org, AJvYcCWn3PhBpalWAd/iZ6Or1mNLNBtgSdP6hUALfY4hqNqTa4wmSNSiRHC5wKlYa/HAMLtahFNENJxebUi4@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiGUxe2iC8tZIglv/zqSFEQxbciKk2PR07KjOS9hkfHsOadleM
-	rAunHEfmnFqVH7g5etWd3XsYMpyCDbESHdhq/yUKQrMMjUobzXLj0LdyYpTxSYzLNoijAqhZVxa
-	WTRwtqr7CEPHcoU8c0t3kiaFz1ws=
-X-Google-Smtp-Source: AGHT+IEyltbLYDPynv/VzQLX4Ebg0HBz7/B1jIHBOb6/zoWxfWgXBGwqoQ25Jo6yLQIb7QUWPetgCorPQQQ39N8GVbc=
-X-Received: by 2002:a9d:3e56:0:b0:72b:8e84:3150 with SMTP id
- 46e09a7af769-72dae74a540mr4148634a34.24.1743605586573; Wed, 02 Apr 2025
- 07:53:06 -0700 (PDT)
+	s=k20201202; t=1743606006;
+	bh=gkTDlBLspVsDUeTz3Xteu6bE9B4OIpL6/8gC3s6pajo=;
+	h=From:Date:Subject:To:Cc:From;
+	b=jv20uYzl2hoDJG0WGnpQd0St6H3Z19cQwZoGZFRMV+cAWQ7qNV4kFy2iz7RoqGYUy
+	 CFNub+wuodsMfYahnE4BPzgSpUkpXql94e9NBxrk8BnNPCyvgCIdTwV/tyv+vh0LUP
+	 fzD8l1PcmEoVdZt/uSZbzCaqb0NMF3Sdfx8r270w4NBj+R50HqjToEZLrTKM+IK97Q
+	 jqr4pKwlPwnFVTPOspOAZIh1T3EVoalR0MaYeacpCjHzvw0GzvqZjTYJAapkZ7JQgy
+	 ln+L7wUr9X4IBI/vyMvhrDzuFCF3Rlqnp9J9NWqMo+myaP9mgt3QIfiXV7uTqvsPAE
+	 P80z3+u3bHLMQ==
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-72c14138668so1637624a34.2;
+        Wed, 02 Apr 2025 08:00:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWVuaS66E/7uo3JyDtMo/VCSyHLLcFo7EaNpjFxHd7Cg2MOu2xmtZeJy/s4sfTdUF4uP5dXODJlXg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwsU8O1Yd84BjcykT4/9jkmNucTQI0qXVnjBv/KS2P6PrmOPR2
+	jolCWYK9PygsWo/5Q9ZARDuqFDKEmOAEndq80WtNoR8lLGqsOukGaWoEPtkGma1ZTIPIq8Nv8Li
+	cg+lpnZ5y6GOqM/uhjStVPsujZ6E=
+X-Google-Smtp-Source: AGHT+IE5oqwISwQehu9eNdF5AQbKiisSs0JngsBv/p6GfDXWgEdO8QaFWKWkkdBaXlSbn+xOdgrKkwqIkcYT6J8tKuE=
+X-Received: by 2002:a05:6830:4129:b0:72b:9196:c15c with SMTP id
+ 46e09a7af769-72c6376d558mr8869774a34.6.1743606005216; Wed, 02 Apr 2025
+ 08:00:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAJZ5v0hN1qRzU96uAGf1+BoQyqF-1=C4XbCcPA-0xtGt8gj7qQ@mail.gmail.com>
- <20250402142104.GA1714299@bhelgaas>
-In-Reply-To: <20250402142104.GA1714299@bhelgaas>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 2 Apr 2025 16:52:55 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0juJFTbPJh2rTmFe4gF9LzXsfao0k3ne2eXd5OqubtwCw@mail.gmail.com>
-X-Gm-Features: AQ5f1JobU1rpqVnO-t8Fh7ASRqyLnoweW7rZorW3wSWSFIFzCBWC5KgtSMi94XI
-Message-ID: <CAJZ5v0juJFTbPJh2rTmFe4gF9LzXsfao0k3ne2eXd5OqubtwCw@mail.gmail.com>
-Subject: Re: [PATCH 02/12] PCI/ACPI: Add PERST# Assertion Delay _DSM method
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Anshuman Gupta <anshuman.gupta@intel.com>, 
-	intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org, 
-	linux-pci@vger.kernel.org, lenb@kernel.org, bhelgaas@google.com, 
-	ilpo.jarvinen@linux.intel.com, lucas.demarchi@intel.com, 
-	rodrigo.vivi@intel.com, badal.nilawar@intel.com, varun.gupta@intel.com, 
-	ville.syrjala@linux.intel.com, uma.shankar@intel.com
+Date: Wed, 2 Apr 2025 16:59:54 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gtr2acS0ZNux5TzHrawoxC6jD474H1s-_MHBQPAe3fkA@mail.gmail.com>
+X-Gm-Features: AQ5f1JpH3iy5XIProJMzMZmb6DlVsrpsMkn9qtpwW6zLuKbMA1JwtDfUPBV2pg0
+Message-ID: <CAJZ5v0gtr2acS0ZNux5TzHrawoxC6jD474H1s-_MHBQPAe3fkA@mail.gmail.com>
+Subject: [GIT PULL] More ACPI updates for v6.15-rc1
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 2, 2025 at 4:21=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org> w=
-rote:
->
-> On Wed, Apr 02, 2025 at 01:06:42PM +0200, Rafael J. Wysocki wrote:
-> > On Tue, Apr 1, 2025 at 5:36=E2=80=AFPM Anshuman Gupta <anshuman.gupta@i=
-ntel.com> wrote:
-> > >
-> > > Implement _DSM Method 11 as per PCI firmware specs
-> > > section 4.6.11 Rev 3.3.
->
-> > > +int pci_acpi_add_perst_assertion_delay(struct pci_dev *dev, u32 dela=
-y_us)
-> > > +{
-> > > +       union acpi_object in_obj =3D {
-> > > +               .integer.type =3D ACPI_TYPE_INTEGER,
-> > > +               .integer.value =3D delay_us,
-> > > +       };
-> > > +
-> > > +       union acpi_object *out_obj;
-> > > +       acpi_handle handle;
-> > > +       int result, ret =3D -EINVAL;
-> > > +
-> > > +       if (!dev || !ACPI_HANDLE(&dev->dev))
-> > > +               return -EINVAL;
-> > > +
-> > > +       handle =3D ACPI_HANDLE(&dev->dev);
-> > > +
-> > > +       out_obj =3D acpi_evaluate_dsm_typed(handle, &pci_acpi_dsm_gui=
-d, 4,
-> >
-> > This is something I haven't noticed in the previous patch, but also
-> > applies to it.
-> >
-> > Why is rev 4 of the interface hard-coded here?
->
-> Thanks for asking this because it's related to the whole _DSM revision
-> question that I don't understand.
->
-> If we didn't use rev 4 here, what should we use?  The PCI Firmware
-> spec, r3.3, sec 4.6.11, documents this interface and says "lowest
-> valid Revision ID value is 4", so that's the source of the 4.
+Hi Linus,
 
-Well, the "lowest vaild Revision ID" does not generally mean the "only
-valid Revision ID".
+Please pull from the tag
 
-> My argument is that the spec documents rev 4, the kernel code was
-> tested with rev 4, so what would be the benefit of using a different
-> revision here?
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.15-rc1-2
 
-I'm talking about using a symbol to represent the number 4, not about
-possibly using a different number, along the lines of using, say,
-ACPI_FADT_LOW_POWER_S0 instead of putting BIT(21) directly into the
-code.
+with top-most commit 5bf46fe2b84cda662062f7aca73e15602c76a844
 
-The value is not likely to change, but using a symbol for representing
-it has merit (it can be meaningfully used in searches, it can be
-documented etc.).
+ Merge branches 'acpi-video', 'acpi-platform-profile' and 'acpi-misc'
 
-Now, I'm not sure how likely it is for the PCI Firmware spec to bump
-up the revision of this interface (I suppose that it will do so if a
-new function is defined), but even if it does so, the kernel will have
-to check both the new revision and rev 4 anyway, in case the firmware
-doesn't know about the new revision.
+on top of commit 21e0ff5b10ec1b61fda435d42db4ba80d0cdfded
+
+ Merge tag 'acpi-6.15-rc1' of
+git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+
+to receive more ACPI/PNP updates for 6.15-rc1.
+
+These are fixes and cleanups on top of the previous ACPI material for
+6.15-rc1 merged recently:
+
+ - Extend the Lenovo Yoga Tab 3 ACPI quirk to skip GPIO event-handlers
+   along with ACPI AC and battery which makes it work with Linux when
+   started in the Windows mode (Hans de Goede).
+
+ - Prevent the ACPI processor idle driver from being used on systems
+   without _CST and with invalid C2/C3 in FADT in order to restore its
+   previous (and expected) behavior that has been altered inadvertently
+   by a recent code change (Giovanni Gherdovich).
+
+ - Skip ACPI IRQ override on ASUS Vivobook 14 X1404VAP to make the
+   internal keyboard work on it (Paul Menzel).
+
+ - Make the ACPI backlight driver handle fetching EDID passed as
+   ACPI_TYPE_PACKAGE which is not specification-compliant, but
+   has been encountered in the field (Gergo Koteles).
+
+ - Simplify the aggregation of choices in the ACPI platform-profile
+   driver which has been unlocked by recent modifications of that
+   driver (Kurt Borja).
+
+ - Use str_enabled_disabled() instead of hardcoded strings in the ACPI
+   code related to NUMA (Thorsten Blum).
+
+ - Add Intel OC Watchdog device IDs to non-PNP device list to prevent
+   PNP from claiming the devices that carry these IDs in which case
+   non-PNP drivers cannot bind to them (Diogo Ivo).
+
+Thanks!
+
+
+---------------
+
+Diogo Ivo (1):
+      ACPI: PNP: Add Intel OC Watchdog IDs to non-PNP device list
+
+Gergo Koteles (1):
+      ACPI: video: Handle fetching EDID as ACPI_TYPE_PACKAGE
+
+Giovanni Gherdovich (1):
+      ACPI: processor: idle: Return an error if both P_LVL{2,3} idle
+states are invalid
+
+Hans de Goede (1):
+      ACPI: x86: Extend Lenovo Yoga Tab 3 quirk with skip GPIO event-handlers
+
+Kurt Borja (1):
+      ACPI: platform_profile: Optimize _aggregate_choices()
+
+Paul Menzel (1):
+      ACPI: resource: Skip IRQ override on ASUS Vivobook 14 X1404VAP
+
+Thorsten Blum (1):
+      ACPI: NUMA: Use str_enabled_disabled() helper function
+
+---------------
+
+ drivers/acpi/acpi_pnp.c         |  2 ++
+ drivers/acpi/acpi_video.c       |  9 ++++++++-
+ drivers/acpi/numa/srat.c        | 22 ++++++++--------------
+ drivers/acpi/platform_profile.c | 13 +++++--------
+ drivers/acpi/processor_idle.c   |  4 ++++
+ drivers/acpi/resource.c         |  7 +++++++
+ drivers/acpi/x86/utils.c        |  3 ++-
+ 7 files changed, 36 insertions(+), 24 deletions(-)
 
