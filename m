@@ -1,127 +1,119 @@
-Return-Path: <linux-acpi+bounces-12632-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12633-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8BCA7892F
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 09:54:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62981A78B39
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 11:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2C1218924BE
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 07:54:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2634A7A4DD5
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Apr 2025 09:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9004C23371F;
-	Wed,  2 Apr 2025 07:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 381F4236458;
+	Wed,  2 Apr 2025 09:39:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KE+8UrCx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEAC2F5A;
-	Wed,  2 Apr 2025 07:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC00236453;
+	Wed,  2 Apr 2025 09:39:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743580443; cv=none; b=nVYB+bcOfO8No9ggDgcv3DXglAQF28k6gApfc8B/QcN5qS9F+PWG52Xer4q0gdUeUwbMgWsLPGaB7SK4RPHxMchLGTlsc/tmJ59KTCDLIjE8xq6kJOfaCstW9RRWCFKPyyjskuQB8r3oBRhCPoiP+ObQUu67O67sl35Ek9fT5oI=
+	t=1743586797; cv=none; b=BFN0UvsbCUPHJ6m4Cp2ZaYgYUFEgEQgFpRXEDDshaXF07Ji2dQKxjvtqIfrQGHyROpSarQ2FhUr2LoqMAM3zxyb6ZQJ9KY2Jpt67MhGWEdURAgHHajP8HBGSW6x/SDGe0ZeMRy30WgukJN4ODz+VOW3IBDILQgROnYD4OmtFYBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743580443; c=relaxed/simple;
-	bh=GXpIJY0qTn6iM4clIdE2Rbm3NHxaqOO6tpSO2HXyIB8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NI3W6lYk0vWTDDc730zW5q1c4C4AlA2AD3blJ5IhHvDbmhpnC/M4GlDrwf66LDC7R4T6CRa90P9cKMCtPSFAfbqwuftYlfS9ymvZ5oS6dDRGU5Wl64+yho2tbT1yG+kzchPPUCe+quKM3Ugt0jtSYQvSiOBVr4Z/KFYhKdRcgW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 9e1615c00f9711f0a216b1d71e6e1362-20250402
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD
-	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_T1
-	AMN_GOOD, AMN_C_TI, AMN_C_BU
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:c06ae3ba-5694-49c2-afbe-f9a4d98934ad,IP:0,U
-	RL:0,TC:0,Content:31,EDM:0,RT:0,SF:5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:36
-X-CID-INFO: VERSION:1.1.45,REQID:c06ae3ba-5694-49c2-afbe-f9a4d98934ad,IP:0,URL
-	:0,TC:0,Content:31,EDM:0,RT:0,SF:5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:36
-X-CID-META: VersionHash:6493067,CLOUDID:34959bcfc0261e44c3041503def90f69,BulkI
-	D:250402155354VL5IRVCQ,BulkQuantity:0,Recheck:0,SF:19|38|66|72|78|102,TC:n
-	il,Content:4|50,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:ni
-	l,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FSD
-X-UUID: 9e1615c00f9711f0a216b1d71e6e1362-20250402
-X-User: luriwen@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <luriwen@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1010428196; Wed, 02 Apr 2025 15:53:51 +0800
-From: Riwen Lu <luriwen@kylinos.cn>
-To: o-takashi@sakamocchi.jp,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	robert.moore@intel.com
-Cc: linux1394-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	yu.c.chen@intel.com,
-	Riwen Lu <luriwen@kylinos.cn>,
-	k2ci <kernel-bot@kylinos.cn>
-Subject: [PATCH v2] tools: Restore built-in rules for subdirectory tool compilation
-Date: Wed,  2 Apr 2025 15:52:53 +0800
-Message-Id: <20250402075253.1772541-1-luriwen@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1743586797; c=relaxed/simple;
+	bh=SmCXw4v07fnCF2PMedutweCHBi3wxPPlB3+QMVFkasw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oDyhda0YgLXLjgd3JYJSu1RIplL2VK1drvSBHHll3/e0ouh04UCjCMdSpXMCjAkTzujoafSZIL20Ce8M0XhHNoGlmi5ndNiNlPRaTUo2Zk/1js3BeX3SkgYpp0biKIbigNiw7fJFwvyHDyehe3rzTImFykT6ztdkMjrz+7vjygY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KE+8UrCx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36093C4CEE9;
+	Wed,  2 Apr 2025 09:39:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743586796;
+	bh=SmCXw4v07fnCF2PMedutweCHBi3wxPPlB3+QMVFkasw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KE+8UrCxpQpzzo9nSQtehkHNB7tuKWLbhx5ScuFdQHr9Vy48cdtSapFzSd5/MzI46
+	 TmsRR9Y4Qi1OSKhoQKGdy71N9j4c1QO2raQiRofMm7xpEnXrUZqJU2dDK1DZ9NrRsj
+	 diZGh5Wsr+G230J/VIof4zTVM7M0CA+TxufFTytfLJgpWqcDqrWI1lYYldFEbb2qhC
+	 a9F71uE4jfGVon9zoohpBmF+oWNNJZRL9Dh2IV8mnTMhmtG3v24TxOpttBy0XBDlpp
+	 IbH0GnGNeeMIXBrX2wYNJZKp25QcZycUk6brDJP90cyFSju7o/agepf1hDlvtEmBg7
+	 CVWlRNZMEQHkA==
+Date: Wed, 2 Apr 2025 12:39:44 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: Oscar Salvador <osalvador@suse.de>, Gregory Price <gourry@gourry.net>,
+	linux-mm@kvack.org, linux-acpi@vger.kernel.org,
+	kernel-team@meta.com, x86@kernel.org, linux-kernel@vger.kernel.org,
+	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
+	rafael@kernel.org, lenb@kernel.org, gregkh@linuxfoundation.org,
+	akpm@linux-foundation.org, dan.j.williams@intel.com,
+	Jonathan.Cameron@huawei.com, alison.schofield@intel.com,
+	rrichter@amd.com, bfaccini@nvidia.com, haibo1.xu@intel.com,
+	dave.jiang@intel.com, Ira Weiny <ira.weiny@intel.com>,
+	Fan Ni <fan.ni@samsung.com>
+Subject: Re: [PATCH v8 0/3] memory,x86,acpi: hotplug memory alignment
+ advisement
+Message-ID: <Z-0F4Fm0byd0Co3v@kernel.org>
+References: <20250127153405.3379117-1-gourry@gourry.net>
+ <Z-w2O8O9MGJ1Ok78@localhost.localdomain>
+ <01d8cde7-0973-4303-bb5d-3d377a6862cb@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <01d8cde7-0973-4303-bb5d-3d377a6862cb@redhat.com>
 
-Prior to commit d1d096312176 ("tools: fix annoying "mkdir -p ..." logs
-when building tools in parallel"), the top-level MAKEFLAGS=-rR
-(disabling built-in rules/variables) was overridden by
-subdirectory-specific MAKEFLAGS during tools compilation. This allowed
-tools like pfrut and firewire to implicitly rely on Make's built-in rules.
+On Tue, Apr 01, 2025 at 09:08:31PM +0200, David Hildenbrand wrote:
+> On 01.04.25 20:53, Oscar Salvador wrote:
+> > On Mon, Jan 27, 2025 at 10:34:02AM -0500, Gregory Price wrote:
+> > > v8: nits and tag pickups
+> > > 
+> > > When physical address regions are not aligned to memory block size,
+> > > the misaligned portion is lost (stranded capacity).
+> > > 
+> > > Block size (min/max/selected) is architecture defined. Most architectures
+> > > tend to use the minimum block size or some simplistic heurist. On x86,
+> > > memory block size increases up to 2GB, and is otherwise fitted to the
+> > > alignment of non-hotplug (i.e. not special purpose memory).
+> > 
+> > I wonder if something like this could help us in improving the
+> > ridiculous situation of having 16MB memory-block size on powerpc.
+> 
+> They have this granularity because ... they want to add/remove memory in
+> 16MiB on some powerpc dlpar machines :(
 
-After the aforementioned commit, the -rR flags from the top-level
-Makefile began propagating to subdirectory builds. This broke tools
-depending on implicit rules because:
-1. -r (--no-builtin-rules) disabled implicit .c -> .o rules
-2. -R (--no-builtin-variables) hid critical implicit variables like CC
+I'm not sure they do it today, there's a comment in near define of that 16M
+in arch/powerpc/mm/init_64.c:
 
-Fix this by filtering out -rR from MAKEFLAGS.
-
-Fixes: d1d096312176 ("tools: fix annoying "mkdir -p ..." logs when building tools in parallel")
-Reported-by: k2ci <kernel-bot@kylinos.cn>
-Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
----
- Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index d138b17b8840..abf9cfebaf4f 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1431,11 +1431,11 @@ endif
+/*
+ * Outside hotplug the kernel uses this value to map the kernel direct map
+ * with radix. To be compatible with older kernels, let's keep this value
+ * as 16M which is also SECTION_SIZE with SPARSEMEM. We can ideally map
+ * things with 1GB size in the case where we don't support hotplug.
+ */
  
- tools/: FORCE
- 	$(Q)mkdir -p $(objtree)/tools
--	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
-+	$(Q)$(MAKE) LDFLAGS= MAKEFLAGS="$(filter-out rR,$(MAKEFLAGS))" O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/
- 
- tools/%: FORCE
- 	$(Q)mkdir -p $(objtree)/tools
--	$(Q)$(MAKE) LDFLAGS= O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
-+	$(Q)$(MAKE) LDFLAGS= MAKEFLAGS="$(filter-out rR,$(MAKEFLAGS))" O=$(abspath $(objtree)) subdir=tools -C $(srctree)/tools/ $*
- 
- # ---------------------------------------------------------------------------
- # Kernel selftest
+and their SECTION_SIZE didn't change since 2005. 
+Quite possible that they'll be fine with increasing their
+DEFAULT_MEMORY_BLOCK_SIZE.
+
+> probe_memory_block_size() can query the hypervisor on the actual hot(un)plug
+> size. IIRC, QEMU sets it to 256 MiB.
+> 
+> -- 
+> Cheers,
+> 
+> David / dhildenb
+> 
+
 -- 
-2.25.1
-
+Sincerely yours,
+Mike.
 
