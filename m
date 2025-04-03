@@ -1,119 +1,126 @@
-Return-Path: <linux-acpi+bounces-12677-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12678-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDAAAA7A184
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 13:01:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83AD4A7A18B
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 13:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEBBC1896335
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 11:01:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E1BB7A6054
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 11:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709F21F5825;
-	Thu,  3 Apr 2025 11:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131F224BBF8;
+	Thu,  3 Apr 2025 11:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="asSofXP0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZVJ0kbxE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC7E1DF975
-	for <linux-acpi@vger.kernel.org>; Thu,  3 Apr 2025 11:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968291DF975;
+	Thu,  3 Apr 2025 11:04:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743678092; cv=none; b=Gxnt+9KnpXVMgB1WjwXShle9/z4idGfklRMdhyY9qaUYr2m23jNaPH/TiR/CXLaOnmm75jN+9AINS+iwA+Eg6+WxETP+iUSq8JE6HPwIeNe6e5isj82h2wWZ9KgNFEMX+tVcOI+f9305RS/IEqnBXLvl9ekfH0brTVdLmDQBPi4=
+	t=1743678251; cv=none; b=KSPxhS5YbhYqXfREKPbJUeRjA9kP10zVFkdokLu3isF8d6WRlKXz2n0QmZdlkSZkh5RTgHhNGG0Zfc1E5ynuUwVNdPCm1GwSFfQop/36AylXUwDt0ESNVXAmUAx6bnom1HGgljd47X0rukm8hyJte8IMRq6QP6A+4Vmq35QFuC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743678092; c=relaxed/simple;
-	bh=Eu0WUd0SjMWveoRl42wgkNPlQjAMBGviMsvLw55JReg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Gb+ode9ZdNDbSI2t7afi24qtBkrMufAshPMrzovHuamPftgoNHoqNtlStwaMEkzFVyNmubgaMruSMVYQObQg9dKhs4ftbclYVhWj6DJWVGLE7YXe3mPaG6JX/WKVk8dT5VLcagDaRCimBqvqfT8LgUDo30lJgodIQiW5nzGSaVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=asSofXP0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5383C4CEE8
-	for <linux-acpi@vger.kernel.org>; Thu,  3 Apr 2025 11:01:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743678091;
-	bh=Eu0WUd0SjMWveoRl42wgkNPlQjAMBGviMsvLw55JReg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=asSofXP0IM+MVuVBAFlxdecCsjWXhIKsUZNoDokWHSstv76diPNKWcDkQYFiLVJaU
-	 iHGdY3VpaNHKf6RizLFLPJHnirRNJTKdO29ZcBMw/sjnzAvWV05OSpv4Epflk+DP9y
-	 feB+WNeEnhrh0ukdQvqhHjgcBlt4Jh6HvuAXZlsUUOFdLmEZWL8RWFlgOEA+y6OhJP
-	 kipgUlx0EEi0EEzUuQkUZCEFd9VtFpOasyyOYBRKOjXihvG1xKdduqGrzjUj+MTZab
-	 tu7dI9izl1eE2U9oE2uCQ029B+C+KuG9FLdpZxiuJ5zmexriL1+hrV9tAO3Up7x2C/
-	 fKP8MfZ4x8hJg==
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-2c873231e7bso406830fac.3
-        for <linux-acpi@vger.kernel.org>; Thu, 03 Apr 2025 04:01:31 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU05EuulfhamTI+6LfezqU5tvoUjDBfQE563/0V0SahO8HZAK6Q3zN9Ie+NhKkSxMLS17QewSWLtbtT@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8Fr48A03hXXFruAZzRIIq9IbkRBZlDNWx2+eqGln3XQNuW1wn
-	8U/Rpthk6aXr5z9y/jio+9JvVwljHvF/x2f7r7w94g92FVu43Z629CdXP7vZElpIhQ/pS5JaVvF
-	SUtZhljE6JR9A0FlgMwtkO90Irzg=
-X-Google-Smtp-Source: AGHT+IGrOuAHqOznZmuWvFw35x3ofsHpGnMYAGiqCbe9w3RxyT+Gm0b3kYghvVErPVEEoE6HEaQLMD0AU+3TeskFNjc=
-X-Received: by 2002:a05:6870:d60b:b0:29e:65ed:5c70 with SMTP id
- 586e51a60fabf-2cc7f8abce9mr1192902fac.30.1743678091122; Thu, 03 Apr 2025
- 04:01:31 -0700 (PDT)
+	s=arc-20240116; t=1743678251; c=relaxed/simple;
+	bh=2QeHOZ6m87E61wZmiIQ6dYN/+s8hph8dBv0jhrWmjoA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TyKSeyWGF3tVXSIPc52mNNjZdoymGOc7M9b88Zhr9RBpM0C5hvReoUxTYQomKYkrliOv6N3m78BjzLYagwtSQJPVxlzwr1qhKfDxzb/8Q1Dd05X30TT9fBM4SX3pmu9gqE45Mmy1wlpvvMJs8JxZYyJaNyk1Fn8i0hpVEc6JiOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZVJ0kbxE; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743678250; x=1775214250;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2QeHOZ6m87E61wZmiIQ6dYN/+s8hph8dBv0jhrWmjoA=;
+  b=ZVJ0kbxEImOnfFIzc/Sd+c/XeD5jvzYrhMyC2KsMiltVVZwqRWBMYKd1
+   la/946NJXpcBhUnaoplO6y7ZGrrJBA6QL0Kghs+JItiYlICuj6+2SyHXv
+   bEfF5cYdmgcTT0Og7s2tEZrYogcW67wP4xQnKs6VEHcHFjE1PXXHf3+zL
+   raPQlphUrGrf8nY6rWEFuT5hTZRLq6jInMdx4YGpM+nw1e+xrPcJwzcYs
+   1na2AvfyL3SBXCG8M6xNW6fEEi9l0IUw4D+O3AqqtdNZGerHERX7whBOa
+   9WZvpdhjQyQDz66y/dEF7nEhaZxwDXjw+xzLc+e7h19ZuKctoh+qPcakO
+   Q==;
+X-CSE-ConnectionGUID: 0is1ai8CSPCvQpSK/Z8eZQ==
+X-CSE-MsgGUID: JuX1BePuTfKYiUxG5NMUZw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11392"; a="48740823"
+X-IronPort-AV: E=Sophos;i="6.15,184,1739865600"; 
+   d="scan'208";a="48740823"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2025 04:04:09 -0700
+X-CSE-ConnectionGUID: qSt/64BKQAmw5vyD1Khd4g==
+X-CSE-MsgGUID: Q0DRHy/oQj2zZvNDnTCN6g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,184,1739865600"; 
+   d="scan'208";a="126779340"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2025 04:04:07 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1u0IMe-00000008mZK-11Kl;
+	Thu, 03 Apr 2025 14:04:04 +0300
+Date: Thu, 3 Apr 2025 14:04:04 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mika Westerberg <westeri@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v1 4/5] gpiolib: acpi: Reuse struct acpi_gpio_params in
+ struct acpi_gpio_lookup
+Message-ID: <Z-5rJDWaSJd58lTa@smile.fi.intel.com>
+References: <20250402122301.1517463-1-andriy.shevchenko@linux.intel.com>
+ <20250402122301.1517463-5-andriy.shevchenko@linux.intel.com>
+ <20250403103506.GJ3152277@black.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250403023459.62055-1-shitao@kylinos.cn>
-In-Reply-To: <20250403023459.62055-1-shitao@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 3 Apr 2025 13:01:19 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hVQTq8f0bgeSa4+qYWosBHXADXLXviMxNnpafAV0NCmw@mail.gmail.com>
-X-Gm-Features: AQ5f1JoEJdXN9qlAuthIahcCpZXsxPwmpu66I5DjknrXT6dTRuzIzdcTI9wmVls
-Message-ID: <CAJZ5v0hVQTq8f0bgeSa4+qYWosBHXADXLXviMxNnpafAV0NCmw@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI / battery: Use rounding to optimize the power calculation
-To: shitao <shitao@kylinos.cn>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250403103506.GJ3152277@black.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, Apr 3, 2025 at 4:35=E2=80=AFAM shitao <shitao@kylinos.cn> wrote:
->
-> Some batteries may have the problem of aging and losing power too quickly=
-,
-> and users may immediately display 99% battery level after unplugging
-> the charger.
-> This will bring some unnecessary misunderstandings or troubles to users.
->
-> Use rounding to optimize the power calculation, and expect to display 100=
-%
-> when capacity_now is only slightly less than full_charge_capacity.
->
-> Try to avoid unnecessary feedback from users about the battery not being
-> fully charged or dropping out too quickly.
+On Thu, Apr 03, 2025 at 01:35:06PM +0300, Mika Westerberg wrote:
+> On Wed, Apr 02, 2025 at 03:21:19PM +0300, Andy Shevchenko wrote:
+> > Some of the contents of struct acpi_gpio_lookup repeats what we have
+> > in the struct acpi_gpio_params. Reuse the latter in the former.
 
-My problem statement for this would be that if the difference between
-capacity_now and full_capacity is within 0.5%, 100% is arguably a
-better number to expose than 99% and exposing the latter may confuse
-the user to think that there's something wrong with the battery.
+> > +	struct acpi_gpio_params par;
+> 
+> params is better name
 
-> Signed-off-by: shitao  <shitao@kylinos.cn>
-> ---
->  drivers/acpi/battery.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-> index 6760330a8af5..8eb9dc98c2c4 100644
-> --- a/drivers/acpi/battery.c
-> +++ b/drivers/acpi/battery.c
-> @@ -279,8 +279,8 @@ static int acpi_battery_get_property(struct power_sup=
-ply *psy,
->                     full_capacity =3D=3D ACPI_BATTERY_VALUE_UNKNOWN)
->                         ret =3D -ENODEV;
->                 else
-> -                       val->intval =3D battery->capacity_now * 100/
-> -                                       full_capacity;
-> +                       val->intval =3D DIV_ROUND_CLOSEST_ULL((uint64_t)b=
-attery->capacity_now *
-> +                                       100, full_capacity);
+It's been already used elsewhere in the code. Do you want renaming there as
+well for consistency's sake?
 
-If you use 100ULL, the explicit type cast will not be necessary.
+...
 
->                 break;
->         case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
->                 if (battery->state & ACPI_BATTERY_STATE_CRITICAL)
-> --
+> >  	struct acpi_gpio_lookup *lookup = data;
+> > +	struct acpi_gpio_params *par = &lookup->par;
+> 
+> These are not changed I guess so can this be const?
+
+They are, see below. So the answer, it can't.
+
+But I will double check and add const where it makes sense.
+
+...
+
+> >  		if (lookup->info.quirks & ACPI_GPIO_QUIRK_ONLY_GPIOIO && gpioint)
+> > -			lookup->index++;
+> > +			par->crs_entry_index++;
+
+E.g., ^^^
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
