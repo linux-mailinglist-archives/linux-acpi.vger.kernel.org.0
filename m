@@ -1,349 +1,226 @@
-Return-Path: <linux-acpi+bounces-12704-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12705-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87D7A7A919
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 20:15:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD56A7A996
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 20:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4087176443
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 18:15:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77D183A7EA5
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 18:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC87C253331;
-	Thu,  3 Apr 2025 18:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BA92528FC;
+	Thu,  3 Apr 2025 18:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fBEfLS5p"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bFIBEEKO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C054824E012;
-	Thu,  3 Apr 2025 18:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743704123; cv=none; b=f7x0/lxsdoeaO6r/HrZNRFqV9oXsqzpexDr/g7RFXFYlJjo+upZr8YbBOaMpi9vzXk0g05IGQcKGfHMT7QNW53XS+f2PUpCNl8IwefonyOlcidKqYi3LLhQFEsTWEdzNiuCWLLWnGZggYumQdN04Jk6kFVTgJaTySVK4HhnS1co=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743704123; c=relaxed/simple;
-	bh=IHvXA/4ffeiIOCG6zsvNkcvaxlsrzA7Y1aHdH6cANCI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sr3n2gtqzdrgXUYGBpELegmv007/qY79bUTwWTr7fR5IK6FsaVgHN0K1PqPpAt2uOEepZm/dSv+OAU9JWc+GihiLEPKI0oY0W8lWMIwgeXO3/i5fEVshtebRNHbnrxfTUq9SLlJDhUplG5g5eNDLn0LP/3PosibTIyz1TcdAdbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fBEfLS5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED0DC4AF0B;
-	Thu,  3 Apr 2025 18:15:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743704123;
-	bh=IHvXA/4ffeiIOCG6zsvNkcvaxlsrzA7Y1aHdH6cANCI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=fBEfLS5pKLgOq5wdDD9ngMrdMHzFXELzKtddY+e61np67N9CTcG0zNfLITOjRCP6O
-	 087dp2dAslrH+AOZIqccVFUCpDFZrWCzxtXsXSCagoch0CWdahQ76j+5mwtn01o1pW
-	 bBW6mNNEgFKDbb+3FVCUB5g2ZcrUnkuxyfb/VqoP0F8e+07P0YYxlKM8iwBF5YRIoY
-	 iw68bPwd2VS6d6EbH/2Mfr/rSyXjKtxoMwN2sSlT/rlN3GrBAjP0jouVJ+tVpCulah
-	 NwUUL2GT1Fol9OqhxE9rznWTSid/ptgfk5PzwTZxRN7AcnaS9mZVkvTTSbqxAVjlO1
-	 kwUGuYwmGlRFg==
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-72c13802133so347076a34.3;
-        Thu, 03 Apr 2025 11:15:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWnbb+glfytaPFyVgYxFI96XaAMu4w0rgm3YB2+HTjkuq6y7zM/YNUVYw/10uDssZA4nqeT5dZBZ5ny@vger.kernel.org, AJvYcCXONoM3ODlCwtb93AWaKqFk4bsu2Vj1Ds+7UzTrNd1iFIvQGxZuR9vEDRUj+BvrHEfaKXO0R+1N4MB6@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOn3hk+CGRVIENn0v1QMGe1Il86gKeht38Qw51aHNQm2xNawlw
-	OM06FAKJP/+QUIcJREWWbYObA2iO3GrY6KfP0A7LOziF+YO+h4vUcv84QnnZ+VY7pjMPizwTILO
-	YXWe8F2uxbjClUxf2MqUT0WsP8YQ=
-X-Google-Smtp-Source: AGHT+IGrK2wpNc2eDmJ11ljJ/U6Ot5pRbJzbsDnWyAxDlhKPPT5nv5jHvdx5iRteP505Sf/T8C/Mb2YQFbcuL7ovc1E=
-X-Received: by 2002:a05:6830:6e97:b0:72b:9387:84b2 with SMTP id
- 46e09a7af769-72e36973f5fmr392572a34.27.1743704122428; Thu, 03 Apr 2025
- 11:15:22 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF902500DE;
+	Thu,  3 Apr 2025 18:37:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743705443; cv=fail; b=PPbMJNilz+oonnVtihuqZD4xsVH/8NaCfJMx68PUJXqdZy2hQPg6x+V/hKGClWVLV1OxxFBs0H7SlFIRLKmrrT9h1OCbky+pNyGrRB8TBaDuE9s0BLMdHCS1M95s0Tf3/WGV2c5AINPTQ4FU5BmI3qFVEtA5TKBeFQUZPIqsuTs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743705443; c=relaxed/simple;
+	bh=mtxQG9HCy6eKO9J8VpSetH+mFFFZYSIu2nRwp4CYW0Q=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=kTcdB9M9uAbW5fTPGppdpFvJLuUyn/9WLWvNuB0T8mWkzyZbVskI/r1cRxz+OshHjwUy3J3Iw6dmZM6V09qTWyee66xKsjDfGuxIbsLTYKoxp5f9quetQyYkIj0BIN33GEFl2bATUPjqnGBjNakTwmFi1oSqbza8M9xyed5VnnQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bFIBEEKO; arc=fail smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743705440; x=1775241440;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=mtxQG9HCy6eKO9J8VpSetH+mFFFZYSIu2nRwp4CYW0Q=;
+  b=bFIBEEKOtSGOUJPJr26gcdGhNkYRC3c3ZVzi6lFGmNhCR2geownhyXnq
+   LHbqlwxGFWQjQ6ZGcrc5mbhFr9xNTlrSuxYK9nsULbDN2+xNNM4fKOECs
+   fgA3C8AXGgam+6tbisQdwTobOUz8ATYh4XJLkUjbHABAyVu+NKhy0l398
+   Ex+rR7MGj5+qYbM284s6Emrm4dCHmJbqyNXdu8P3be0Sft06zq/jpXNTM
+   2YbW+o2ChSkl47SelTOoQgZyDpYmlMYkdsuCDURcR/Ae3qAf+I/pzOfVv
+   eQS0dn8AH5xduqM4fPT+FWPbHoyTKey4xHWE9AodiK7YMucBO9iLDOZFC
+   w==;
+X-CSE-ConnectionGUID: c4THQgQvR+Sk3C94P2Pbhg==
+X-CSE-MsgGUID: pDCSFx1BR1WDrqnKprtUaA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11393"; a="45016929"
+X-IronPort-AV: E=Sophos;i="6.15,186,1739865600"; 
+   d="scan'208";a="45016929"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2025 11:37:19 -0700
+X-CSE-ConnectionGUID: ZMXqrKbyTHqDg3sEEiusrA==
+X-CSE-MsgGUID: ko7ArauVRTiyQPrTOlZp6g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,186,1739865600"; 
+   d="scan'208";a="126870390"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2025 11:37:18 -0700
+Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.1544.14; Thu, 3 Apr 2025 11:37:18 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Thu, 3 Apr 2025 11:37:18 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.170)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Thu, 3 Apr 2025 11:37:16 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QmPk0MflmxT+DfRF6xeGgB8MGBBHR8koUtq9Gx4Gqxe8rDunGqz44zrnpiEBDJD8UEUJNb+3ZwZCxIfR8aPPD5ol4Mbl+AiTFj/bbSkPmQcPW8zdCq51X3RySQaQWCkXxgbxSOzBQqi7VVqyn3wV53oxZbbNK+fiVyGnKZMSLgLu9wi8squGzURIm8uHeFlLjIE+fBcNikE0x+aQeqyFJHcg9BWErr3q6VL0/D+MbdYjxmC2l2lCY84TRkrMkNvKTyOkYoAL2D2c1rUowR9vhq/ws9l6Xig2bQ0WwoYNRjQ0SKQcp0jZbP94KMxkDFMxMfEdH4XxoABJeRI1h0blLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aazDlQYQXHzcsrsz/z+H8iKPSDuKtwQrxT8uf8TKhGs=;
+ b=k2V7kPjmzPCIe7DNkKbPH1O6CqrL4UqZNib6Fj68hvr+lS6KOu4OxaDfkDQ2WuDlmCqE2pF46pijBr5y48mJhFnEvZavHdjNaqiyJyzYhklTmDDJwHb1sTEqUOLUPqh/NPHcK6mLfXqKFlyMCHnVJUHR05W1PKc2HQT2kGxm1Ke+QgFI5RpRJunQy64u7m4LitFeqypZVnU7Ozh3uXKsP/YLUrfK6eiCkbnCsdzHNwnwoMc5KB7SvClsuumjBVgYiUEcKyMfOx2BpiLZaBDpUjX4Z2EeJik9AlsE1O9xMpQYFwijPE9HQRMXX/vSkPJt+oDchWDSsIwnp5cJx6GAxA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA1PR11MB8794.namprd11.prod.outlook.com (2603:10b6:806:46a::5)
+ by SJ0PR11MB7701.namprd11.prod.outlook.com (2603:10b6:a03:4e4::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8583.42; Thu, 3 Apr
+ 2025 18:37:14 +0000
+Received: from SA1PR11MB8794.namprd11.prod.outlook.com
+ ([fe80::a3d4:9d67:2f5d:6720]) by SA1PR11MB8794.namprd11.prod.outlook.com
+ ([fe80::a3d4:9d67:2f5d:6720%4]) with mapi id 15.20.8583.041; Thu, 3 Apr 2025
+ 18:37:14 +0000
+Date: Thu, 3 Apr 2025 11:37:03 -0700
+From: Alison Schofield <alison.schofield@intel.com>
+To: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+CC: <Jonathan.Cameron@huawei.com>, <dan.j.williams@intel.com>,
+	<rppt@kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<akpm@linux-foundation.org>, <rrichter@amd.com>, <bfaccini@nvidia.com>,
+	<haibo1.xu@intel.com>, <david@redhat.com>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<chenbaozi@phytium.com.cn>
+Subject: Re: [PATCH v2] mm: numa_memblks: introduce numa_add_reserved_memblk
+Message-ID: <Z-7VT0KQFMQLBnZT@aschofie-mobl2.lan>
+References: <20250328092132.2695299-1-wangyuquan1236@phytium.com.cn>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20250328092132.2695299-1-wangyuquan1236@phytium.com.cn>
+X-ClientProxiedBy: MW4PR04CA0285.namprd04.prod.outlook.com
+ (2603:10b6:303:89::20) To SA1PR11MB8794.namprd11.prod.outlook.com
+ (2603:10b6:806:46a::5)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250401153225.96379-4-anshuman.gupta@intel.com>
- <20250401201349.GA1676401@bhelgaas> <CAJZ5v0irNFX6dFrStinNXamrhP143=yjjfx4iK0pY+-dTEkviw@mail.gmail.com>
- <CY5PR11MB6211021207DE5ECAA43BF26595AE2@CY5PR11MB6211.namprd11.prod.outlook.com>
- <CAJZ5v0inCpM2UhzZ_pD52S0Hf8aaEMa40CyE-dwzVmO1n3PMwA@mail.gmail.com> <MN0PR11MB6207F55ABAA2187609BB872695AE2@MN0PR11MB6207.namprd11.prod.outlook.com>
-In-Reply-To: <MN0PR11MB6207F55ABAA2187609BB872695AE2@MN0PR11MB6207.namprd11.prod.outlook.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 3 Apr 2025 20:15:10 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gKBYa_N-dA1JwF0yVbc6XSmQEy1LpVytDM7uc9kbZ8fA@mail.gmail.com>
-X-Gm-Features: AQ5f1Jp4RPnbi6Bs3PiB6NEgqUjb48BxQsVIREqIl0ymQIEeIELbrdMMQIZxQPk
-Message-ID: <CAJZ5v0gKBYa_N-dA1JwF0yVbc6XSmQEy1LpVytDM7uc9kbZ8fA@mail.gmail.com>
-Subject: Re: [PATCH 03/12] PCI/ACPI: Add aux power grant notifier
-To: "Gupta, Anshuman" <anshuman.gupta@intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, 
-	"intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "lenb@kernel.org" <lenb@kernel.org>, 
-	"bhelgaas@google.com" <bhelgaas@google.com>, 
-	"ilpo.jarvinen@linux.intel.com" <ilpo.jarvinen@linux.intel.com>, 
-	"De Marchi, Lucas" <lucas.demarchi@intel.com>, "Vivi, Rodrigo" <rodrigo.vivi@intel.com>, 
-	"Nilawar, Badal" <badal.nilawar@intel.com>, "Gupta, Varun" <varun.gupta@intel.com>, 
-	"ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>, "Shankar, Uma" <uma.shankar@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR11MB8794:EE_|SJ0PR11MB7701:EE_
+X-MS-Office365-Filtering-Correlation-Id: eb4ac0ae-5950-46f0-9158-08dd72de8d86
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?rt2UAPcedjUHVhNGogAUhUiUdv5Ga4YWvIHUURL1+ryWXH9JRSrwMpWfLNHo?=
+ =?us-ascii?Q?gAVAVgXbtJRbEK9kj25TJatRdpqoSgfAgeNoSbLkTobQk3sXnLl7xrw/1Nlo?=
+ =?us-ascii?Q?8jsUjanHdrkLGk1tjFozIJCq+xLP4AFi/MCIFKM5vB++Sl+WUkOugGhDuokk?=
+ =?us-ascii?Q?lG7C9cwlmIHB2ZEKto+IDE8FAanHn9wFEH2krm8Bxshzv+Bal7aTRBA0wh5s?=
+ =?us-ascii?Q?yjVA3uz4B/NRuwDyjFRKJrutVloGVLYhNJ9ta+V3hxBWpuyjv0Fra6dt1mCs?=
+ =?us-ascii?Q?4XtozzvX7OmlfhDnyVAUtHUeAnDBeZX3UAnjy3TBRm814AblOUE3yoXd66rM?=
+ =?us-ascii?Q?e28b+0JuQc9sdpWjS5cELczHQ6p/yDGPKB6cGZnddTgz/77a/zp3WYZ543OI?=
+ =?us-ascii?Q?8KUqdMjtiiYPAb+5rfZaz0zLIVJXDbpxwBlGI1thlUPdpm64awCgRQXszDoq?=
+ =?us-ascii?Q?IO76onJq4P/8nYeT60wvMPn2gm77WIOgCE8FNrl9EQExOrw5CQcWN7vME4zp?=
+ =?us-ascii?Q?t5ctXTsohg3B005I9yjoXAs5x4lBhA2UynNv4aM53iNzdKrj/maukj14wcmZ?=
+ =?us-ascii?Q?s2LBAlcxpBXA0SPSXx/OxFiME9CkdHfk4NFvofclE/iNCcu3br48gF55ARZe?=
+ =?us-ascii?Q?YMRbxDhOpS81Lf/5R8w8po3gm6oYl9UXDDo7i+7B2QI8qZc2Mn+TxG/J/xuG?=
+ =?us-ascii?Q?LyweNMtKoh8FrtrmIiZy56mcoU6D3RP2+t7EvjQ9u4pexlxeNBIx6WFiEGgF?=
+ =?us-ascii?Q?727zSnQ02oQHREzNw+oXVp4q4pAicq1Hz6WpBaU4eEu8QS73rvLNL3BSspNS?=
+ =?us-ascii?Q?Q9MA9I1az3POulnzWmFsJtZ7nkOO7RNwEONdkmoLwAMqTEHmOwBq6DWKynq9?=
+ =?us-ascii?Q?dyphBZCa0FcnohZkSQjzY+uUgZdrZnVWoCwLAk9pU0o9nKcIEj/XnwMiYWnB?=
+ =?us-ascii?Q?cjra5SmA9HmWU9IJrFsmbU4a7tkO3rcFVmKI9ZrIG0fHxwhUAMeIy2uK9Qog?=
+ =?us-ascii?Q?42+QSYJ/mPcVP0hm9Arwx1CBDNsmyFcd7P25lxoO3sWzYbeAPK4RzNTXfAzJ?=
+ =?us-ascii?Q?mhqbrOQK8imX6bgDI57nubXn+ZlTSltN67Ws0bMAKcQ41WCd/l9VPWP/SSGS?=
+ =?us-ascii?Q?iiPkhpn/ywsFe6JcnDSTVPC1ToT7L8HtpMxuESSkPDusVj4RVh1+ewMP6lrw?=
+ =?us-ascii?Q?Lza67TH+E69etF/32NEG1hn5xQXgjZ5JGESaMaVQKCZpROjDUXs2yP4KjkkO?=
+ =?us-ascii?Q?tYow+edNM/Qs9Jqnvp70WAWm0w2uYE7wUhwQ6j5s5XFEQlIn+WavNc2DRBzL?=
+ =?us-ascii?Q?pkSBgb09TDl6DKIl947BYkZvuQl9V9QYIFcDZQPjib//4RtZ7W3YeO8k6jkY?=
+ =?us-ascii?Q?aGb8/rs1qyLCqvn9ij7HWvtTfugYiMyO3stKc2qwc+97i6C9j2AHG2KzTiAa?=
+ =?us-ascii?Q?7x38zW8ksWQ=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB8794.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?0Ap3i+7maLuoLSz0yM990U0dknwZpgvPWEwW98XgvdqVsrcaJVIKAGw1UKNL?=
+ =?us-ascii?Q?kJ/TM7euYmg6eUSraxQ60DMbk8x5rGvc41mUJJM1r0Rbkac7ZMyfsn64AYLh?=
+ =?us-ascii?Q?Ws0CfS1g2iOEa+KwxXRgg3yIRRz4g7fkEzrVI0t8zpZfn6QByT/ELnuv5/sA?=
+ =?us-ascii?Q?pKTg9XFhjqvIwfK+ziGFy10U3Z+mYSTDONsitvI92O6/hRs55tLLKd354PQS?=
+ =?us-ascii?Q?mKlojQWTRGHg483X0akDMXZqMGU2zxoLQmDCAHPoBrQyd/7GHCcVgEP8QJV3?=
+ =?us-ascii?Q?fvEyKzL0OWbhE3pYb3XUHYl5HcQWDx70/IJK/V/kcIouTMA5ZnDzVtZlx4Ao?=
+ =?us-ascii?Q?V4+SFtBIiddnqjT6XmP5XPTqW6LEs3K1xiFw73FzYbrjSi29IHM26nWI+3M9?=
+ =?us-ascii?Q?I9ayAMIn4LWbcPbabgUjCtXeDsz0UEwljagdCVakAdaeJnwUimilR5yK7Von?=
+ =?us-ascii?Q?5W/0P3h8LGolOnBp/Il3icPPy4OHDKB2su1nSn5NqDpNWITTIDZ/llHmi8uu?=
+ =?us-ascii?Q?zRrWt4UrtwWRNWFYNDLfFyihgCHBrs7062aW90Al4HJgz1uZbfASX9JMGWK9?=
+ =?us-ascii?Q?yEqn74lzkOF0cUlX1taJNymIXBG0Trr5aVoIq3OcF8PcDdqKloAySrBlVqyf?=
+ =?us-ascii?Q?cHS0uul47Czo9CP9QEi2Hd5Dj+sCLjn9bgiOF1q22jIJKnnqAwgmMTbpTFIE?=
+ =?us-ascii?Q?kQ+Of1Lc+2kkCMtEc1eeEIe4/FrywHwjOpGUX0wRHm00nRoWp49Yjo6CX2pn?=
+ =?us-ascii?Q?fu2lFo4x3yNEn4CvuSN9j8v15xYMNUDHuEkTL+hqmPS/4WdfPQ0T62L7Pd7u?=
+ =?us-ascii?Q?R1P+qg97hWeVk6GFiL/9wD0/3Bd7Tm/MeJEylELTSDBQtHr9uJwjgLkGIYd9?=
+ =?us-ascii?Q?n+NxExIVgZD+kQ61+Sbg1qlgGtTTlaw7wIT1B6p4nW/26fp/cYVCf9MgE65P?=
+ =?us-ascii?Q?+q9zZ8sjL3CWkXMSHO6blk6wxHVUvA8jhdWHjKFRVe8Yxhc6rkCB63lAexeq?=
+ =?us-ascii?Q?ro9kAD1OrdrUCuZaNDzsxF6V9A/I8ZLaiAzMFEaNBdzrRsyyqV8l58LbBuO7?=
+ =?us-ascii?Q?ZCAc8AOvZ+T3d8Eap5tJmpghhHbI8KJlepmsA2RWn7vipUvnGQlU/Z3/aBL2?=
+ =?us-ascii?Q?F/cOHFLcTHwHsQ3KfYgIiFJgyRtrQQAqs5/Z/l6p9szi6H6HK23DwFVZknli?=
+ =?us-ascii?Q?EcwhfgEy1KMfg4U6CV91gYbH6P1uYTlJehq4NMc9VZ0fudjnjS8sD2+glrvm?=
+ =?us-ascii?Q?85NjnFVuQxZEP+6C8dWOUbcbMwr2uxGfqrV/tALsLnHsQSVsKk8VIr+QG1h8?=
+ =?us-ascii?Q?NBshEzyijs1KAlp0ySKv7/8TtHmZwxMINv5tEqrKG4wPZNzEMQVcGoUT6UMb?=
+ =?us-ascii?Q?zgcnjKmO37b/d7fQt7rlrlS5N+qq0gCA4MU/qtk050+WRL3cSgs4JDkyXbqf?=
+ =?us-ascii?Q?B/NDhWsEANd20JlpaiTDwTo1yX3qiFFMdl5dWGHZDLIsYAWWbx/q+axY1Qry?=
+ =?us-ascii?Q?7YbAmp9MIc0rEVsN2hgzEvmGdClrPw10gaV952gSi7/lK+PNEqIprjiWI4gE?=
+ =?us-ascii?Q?whym8UGykTj5MWOnoNpYrBwYUb9yYMpvuhofjKVztkU159ynqRx7nxUCBYR7?=
+ =?us-ascii?Q?Kw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb4ac0ae-5950-46f0-9158-08dd72de8d86
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB8794.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2025 18:37:14.1764
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eKHEnmsb5AB5fwilWPZY3CKdbYaP/LZOwh/gkVi2Izb6LIj64mvEtqAxVHkkyzNfYd/MRJFYlJxAVZSiPrhLcpOdg7tSdZoVF5cTNy2qggw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB7701
+X-OriginatorOrg: intel.com
 
-On Thu, Apr 3, 2025 at 6:09=E2=80=AFPM Gupta, Anshuman <anshuman.gupta@inte=
-l.com> wrote:
->
-> > -----Original Message-----
-> > From: Rafael J. Wysocki <rafael@kernel.org>
-> > Sent: Thursday, April 3, 2025 7:04 PM
-> > To: Gupta, Anshuman <anshuman.gupta@intel.com>
-> > Cc: Rafael J. Wysocki <rafael@kernel.org>; Bjorn Helgaas
-> > <helgaas@kernel.org>; intel-xe@lists.freedesktop.org; linux-
-> > acpi@vger.kernel.org; linux-pci@vger.kernel.org; lenb@kernel.org;
-> > bhelgaas@google.com; ilpo.jarvinen@linux.intel.com; De Marchi, Lucas
-> > <lucas.demarchi@intel.com>; Vivi, Rodrigo <rodrigo.vivi@intel.com>; Nil=
-awar,
-> > Badal <badal.nilawar@intel.com>; Gupta, Varun <varun.gupta@intel.com>;
-> > ville.syrjala@linux.intel.com; Shankar, Uma <uma.shankar@intel.com>
-> > Subject: Re: [PATCH 03/12] PCI/ACPI: Add aux power grant notifier
-> >
-> > On Thu, Apr 3, 2025 at 1:30=E2=80=AFPM Gupta, Anshuman
-> > <anshuman.gupta@intel.com> wrote:
-> > >
-> > > > -----Original Message-----
-> > > > From: Rafael J. Wysocki <rafael@kernel.org>
-> > > > Sent: Wednesday, April 2, 2025 4:54 PM
-> > > > To: Bjorn Helgaas <helgaas@kernel.org>; Gupta, Anshuman
-> > > > <anshuman.gupta@intel.com>
-> > > > Cc: intel-xe@lists.freedesktop.org; linux-acpi@vger.kernel.org;
-> > > > linux- pci@vger.kernel.org; rafael@kernel.org; lenb@kernel.org;
-> > > > bhelgaas@google.com; ilpo.jarvinen@linux.intel.com; De Marchi, Luca=
-s
-> > > > <lucas.demarchi@intel.com>; Vivi, Rodrigo <rodrigo.vivi@intel.com>;
-> > > > Nilawar, Badal <badal.nilawar@intel.com>; Gupta, Varun
-> > > > <varun.gupta@intel.com>; ville.syrjala@linux.intel.com; Shankar, Um=
-a
-> > > > <uma.shankar@intel.com>
-> > > > Subject: Re: [PATCH 03/12] PCI/ACPI: Add aux power grant notifier
-> > > >
-> > > > On Tue, Apr 1, 2025 at 10:13=E2=80=AFPM Bjorn Helgaas <helgaas@kern=
-el.org>
-> > wrote:
-> > > > >
-> > > > > On Tue, Apr 01, 2025 at 09:02:16PM +0530, Anshuman Gupta wrote:
-> > > > > > Adding a notifier to notify all PCIe child devices about the
-> > > > > > block main power removal. It is needed because theoretically
-> > > > > > multiple PCIe Endpoint devices on same Root Port can request fo=
-r
-> > > > > > AUX power and _DSM method can return with 80000000h signifies
-> > > > > > that the hierarchy connected via the slot cannot support main
-> > > > > > power removal when in D3Cold.
-> > > > >
-> > > > > I wish the spec used different language here.  "D3cold" *means*
-> > > > > "main power is removed" (PCIe r6.0, sec 5.3.1.4.2), so it doesn't
-> > > > > make sense to say that "the slot cannot support main power remova=
-l
-> > > > > when in D3cold".  If a device is in D3cold, its main power has
-> > > > > been removed by definition.
-> > > > >
-> > > > > I suppose the spec is trying to say if the driver has called this
-> > > > > _DSM with 80000000h, it means the platform must not remove main
-> > > > > power from the device while the system is in S0?  Is that what yo=
-u
-> > > > > think it means?
-> > > > >
-> > > > > The 2h return value description says it "indicates that the
-> > > > > platform will not remove main power from the slot while the syste=
-m is in
-> > S0,"
-> > > > > so I guess that must be it.
-> > > > >
-> > > > > In this series, pci_acpi_aux_power_setup() only supplies a 16-bit
-> > > > > aux_pwr_limit value, so the driver cannot *request* that the
-> > > > > platform not remove main power.
-> > > > >
-> > > > > So I guess the only scenario where the _DSM returns 80000000h is
-> > > > > when the platform itself or other devices prevent the removal of
-> > > > > main power.  And the point of the notifier is to tell devices tha=
-t
-> > > > > their main power will never be removed while the system is in S0.
-> > > > > Is that right?
-> > > > >
-> > > > > > This may disrupt functionality of other child device.
-> > > > >
-> > > > > What sort of disruption could happen?  I would think that if the
-> > > > > _DSM returns 80000000h, it just means the device will not have
-> > > > > main power removed, so it won't see that power state transition.
-> > > > > The only "disruption" would be that we're using more power.
-> > > > >
-> > > > > > Let's notify all PCIe devices requested Aux power resource and
-> > > > > > Let PCIe End Point driver handle it in its callback.
-> > > > >
-> > > > > Wrap to fill 75 columns.
-> > > > >
-> > > > > s/Adding/Add/
-> > > > > s/Let's notify/Notify/
-> > > > > s/and Let/and let/
-> > > > > s/End Point/Endpoint/ (several places here and below)
-> > > > >
-> > > > > > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> > > > > > ---
-> > > > > >  drivers/pci/pci-acpi.c   | 34 +++++++++++++++++++++++++++++++-=
---
-> > > > > >  include/linux/pci-acpi.h | 13 +++++++++++++
-> > > > > >  2 files changed, 44 insertions(+), 3 deletions(-)
-> > > > > >
-> > > > > > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> > > > > > index
-> > > > > > 04149f037664..d1ca1649e6e8 100644
-> > > > > > --- a/drivers/pci/pci-acpi.c
-> > > > > > +++ b/drivers/pci/pci-acpi.c
-> > > > > > @@ -1421,6 +1421,32 @@ static void
-> > > > > > pci_acpi_optimize_delay(struct
-> > > > pci_dev *pdev,
-> > > > > >       ACPI_FREE(obj);
-> > > > > >  }
-> > > > > >
-> > > > > > +static BLOCKING_NOTIFIER_HEAD(pci_acpi_aux_power_notify_list);
-> > > > > > +
-> > > > > > +/**
-> > > > > > + * pci_acpi_register_aux_power_notifier - Register driver
-> > > > > > +notifier
-> > > > > > + * @nb: notifier block
-> > > > > > + *
-> > > > > > + * This function shall be called by PCIe End Point device
-> > > > > > +requested the Aux
-> > > > > > + * power resource in order to handle the any scenario
-> > > > > > +gracefully when other
-> > > > > > + * child PCIe devices Aux power request returns with No main
-> > > > > > +power
-> > > > removal.
-> > > > > > + * PCIe devices which register this notifier shall handle No
-> > > > > > +main power
-> > > > > > + * removal scenario accordingly.
-> > > > >
-> > > > > This would actually be called by the *driver* (not by the device)=
-.
-> > > >
-> > > Hi Rafael,
-> > > Thanks for review.
-> > > > Apart from this, there seems to be a design issue here because it
-> > > > won't notify every driver that has requested the Aux power, just th=
-e
-> > > > ones that have also registered notifiers.
-> > > IMHO that is what intended, if any device has functional impact in ou=
-r
-> > > case it is INTEL GPU has functional impact if other PCIe device's (on
-> > > same root port) Aux Power request returns with 0x2. We need to handle
-> > such case to handle it gracefully.
-> > > >
-> > > > So this appears to be an opt-in from getting notifications on Aux
-> > > > power request rejection responses to requests from other drivers
-> > > > requesting Aux power for the same Root Port, but the changelog of
-> > > > the first patch already claimed that the aggregation of requests wa=
-s
-> > > > not supported.  So if only one driver will be allowed to request th=
-e
-> > > > Aux power for the given Root Port, why would the notifiers be neces=
-sary
-> > after all?
-> > > >
-> > > Please guide us, if we remove the above limitation from the commit lo=
-g.
-> > > Then do we have any design issue with notifier approach ?
-> >
-> > Exactly like I said: If you only allow one driver to use the _DSM to re=
-quest the
-> > Aux power from a given Root Port, it will have all of the information a=
-nd does
-> > not need to be notified about any changes.  Since no one else is allowe=
-d to use
-> > this interface for that Root Port, no one else will need a notifier eit=
-her.  For this
-> > to work, you need some mechanism allowing drivers to claim the interfac=
-e so
-> > no one else can use it (on a per Root Port basis) which is currently mi=
-ssing
-> > AFAICS.
->
-> IMHO such kind of mechanism will require to add Root Port specific data s=
-tructure to claim
-> the interface. But real problem is the criteria  to claim the interface.
-> Is first PCIe Non-Bridge Endpoint Function 0 driver can be criteria  to c=
-laim the
-> Interface. Or first come and first serve approach ?
+On Fri, Mar 28, 2025 at 05:21:32PM +0800, Yuquan Wang wrote:
 
-IMV, the first PCIe Non-Bridge Endpoint Function 0 driver approach
-would be sort of fragile and cumbersome to enforce.
+Commit message from v1 needs updating to reflect what this v2
+is doing: 'add empty CFMWS ranges to numa_reserved_meminfo"
 
-First come, first serve is much simpler and should be sufficient for now AF=
-AICS.
+> With numa_add_reserved_memblk(), kernel could add numa_memblk into
+> numa_reserved_meminfo directly.
+above comes last in commit log.
 
-> > I think that this is the option you want to pursue.
-> >
-> We will prefer to stick with this option, if it can guaranty that XeKMD w=
-ill the only driver
-> allowed to request Aux power to enable VRSR.
->
-> > OTOH, if you want to allow multiple drivers to use this interface for t=
-he same
-> > Root Port, you need to aggregate the requests (as required by the spec =
-IIUC) in
-> > the first place, or else the users can override each other's request.  =
-In that case
->
-> INHO how Linux Kernel will aggregate the Aux Power request, without knowi=
-ng the
-> total Aux power budget. AFAIU aggregated Aux power request without knowle=
-dge of total
-> power budget can also be denied by BIOS[1].
-> Therefore how aggregation can be useful ?
+ie. State the issue like this:
+> 
+> acpi_parse_cfmws() currently adds empty CFMWS ranges to numa_meminfo
+> with the expectation that numa_cleanup_meminfo moves them to
+> numa_reserved_meminfo. There is no need for that indirection when it is
+> known in advance that these unpopulated ranges are meant for
+> numa_reserved_meminfo in suppot of future hotplug / CXL provisioning.
+'support'
+> 
 
-Say two drivers request the Aux power from the same Root Port and each
-of them passes a limit sufficient for its device.  Without
-aggregation, what guarantees that the last limit passed will be
-sufficient for both devices?
+Then the resolution:
 
-Also see the spec provision regarding retries below.
+Introduce and use numa_add_reserved_memblk() to add the empty CFMWS
+ranges directly.
 
-> [1]As per r3.3 Section 4.6.10
-> Platform Firmware Budgeting of Aux Power Availability:
-> Platform firmware must not grant more power than what is available within=
- the system. For
-> example, a board may be designed with four CEM slots (one x16 slot, one x=
-4 slot, and two x1
-> slots). The board may implement a power delivery circuit capable of suppl=
-ying 2 W of power for
-> the 3.3 Vaux rail supplying all 4 slots. The 3.3 Vaux pins on each CEM sl=
-ot can supply 1 W each.
-> Platform firmware may use the retry mechanism to prioritize requests from=
- devices in preferred
-> slots in the following manner:
->
-> -> Requests from a device in the highest priority slot (e.g., x16) are gr=
-anted immediately, if
-> available.
->
-> -> Requests from devices in lower priority slots (e.g., x2, x1) are initi=
-ally rejected, with a retry
-> interval inversely proportional to the slot priority. For instance, if th=
-e x2 slot is higher priority
-> than the x1 slots, so the retry interval for the x2 slot may be 4 seconds=
-, and the x1 slots may be
-> 8 and 10 seconds.
->
-> ->As requests are granted, the granted values are subtracted from the ava=
-ilable budget.
->  Retried requests are granted based on the remaining power budget or deni=
-ed if insufficient
-> power budget is available. Another retry is not permitted.
->
-> -> When there is insufficient power budget for a request, firmware may ch=
-oose to keep main
-> power on and return no power removal (2h).
 
-This means that the platform firmware is supposed to do its own
-aggregation, but at the system (board) level, not at the Root Port
-level.
+> Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
 
-The algorithm is described above and my understanding of it is that
-once a request has been granted, it cannot be retracted later.  Also
-it appears to assume a 1:1 correspondence between PCIe slots and Root
-Ports.
+With the above commit message and log updates, and +linux-cxl mail list,
+add:
 
-The guys who haven't been granted their requests at once may be asked
-to try again later and there may not be enough Aux power for the last
-guys at all, so they will not get it and they will stay on the main
-power.  And again, this appears to be at the Root Port granularity.
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+
+> ---
+snip
+
 
