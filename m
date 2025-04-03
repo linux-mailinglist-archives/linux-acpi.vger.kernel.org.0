@@ -1,110 +1,122 @@
-Return-Path: <linux-acpi+bounces-12674-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12675-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E39A7A136
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 12:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBCFA7A159
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 12:50:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0004A16DB7B
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 10:43:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16C981759E6
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 10:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA4F24A071;
-	Thu,  3 Apr 2025 10:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830E824BBE8;
+	Thu,  3 Apr 2025 10:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a594eN2p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NMKtZdyJ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F315D1F4CBA;
-	Thu,  3 Apr 2025 10:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C40724A07E
+	for <linux-acpi@vger.kernel.org>; Thu,  3 Apr 2025 10:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743676994; cv=none; b=Be+pHeo3YyeqdLBzVSM4wkjlPHIXnS9ityv3vsph5hxpsAO28BRROBcLZgIEq7L6SQIzTbhCjHS7oGSr5q1sVqUkG8KtghcIrg39hDzTTUuMeEKCiaxb60+HGY6X5STjnZDZARL1jrasH6GWnQPB97kiZGA2s0prW5kszPd9JcM=
+	t=1743677349; cv=none; b=XOt0T3fCnkEyATrjYnYbqXshK1ER9y2+aJ3jALRyVcSAHJ6EaLQcH3HeK/Uov7O3hM4AxwkO2RLUOt6YMb9BCXXAyq6sP0GdqxPjRfAwzRuASSPkiC8z7RZpktlbaXK9kW1qJwzndNtkcYEA2SL76iSLX+IbjgIBOf//rJFUcvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743676994; c=relaxed/simple;
-	bh=Zqp997HLp8WyLh7fXbv/lo9UezZBRX9g065XQWLDcjE=;
+	s=arc-20240116; t=1743677349; c=relaxed/simple;
+	bh=TTun2fI+wjPp/f5wThcc4U4+DSqWm8djxZ/J+Ds9fZc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t0qD2nlyWow0MmRVoJl6E+f/sgHT7+pLL4MH4bTJtdo3OpjKp55kos0jJAZtAEefcPDBUrjPBH5mdlQPU0boPg4OtvHkGRfxjkcmIKY0CE4QQxbX7Mgb1IvFmns1NRJ63HDwt55CBADwtmA7cCDRym6EaRch/+el8FYmHwk9rZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a594eN2p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77211C4AF0B;
-	Thu,  3 Apr 2025 10:43:13 +0000 (UTC)
+	 To:Cc:Content-Type; b=Mw1BSbqqLKL03dqIpTBANiB48yK3jSLOjARbylzWXiSX023r0mUNs5QwyjXMhB2MMD5IIai3wTjtEWfuoAMyCne151vpdHm/QjbYfslxiGUpfPEF1Q9yDITbwKDLxMM19tEWM+8dwSjPEZ34hItGfMpkayHkXbXzvHdvImhoih8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NMKtZdyJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2E4C4CEE7
+	for <linux-acpi@vger.kernel.org>; Thu,  3 Apr 2025 10:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743676993;
-	bh=Zqp997HLp8WyLh7fXbv/lo9UezZBRX9g065XQWLDcjE=;
+	s=k20201202; t=1743677348;
+	bh=TTun2fI+wjPp/f5wThcc4U4+DSqWm8djxZ/J+Ds9fZc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=a594eN2p0ofJIrF0IfEXOc7t4aIzGzvjJ9gbksLaJxBKHMJLVtuTuTF8EQV6rU5nH
-	 MrE3xcozsL5w3kf1rxLZcdhpTgLZbXQu5locovy97vEooK6ywGgH2AThZsU/i7UZ0u
-	 KvZJaf6O4eL9+0XiGtjPvmO/acgMCafnp/1ianiS9wBSTmTjBIXnkxAf4MDrydG9HH
-	 NuGanR3xur1Oy6lZFKB+xCaUDUVfwdJawxxhat9VXahBFOlcNMtdo90mM2a4JzTKQ6
-	 nLIUHr90g9lEy33qPhEld+DSMQIwnMil0GrvKPaM7dZ/e0Mnckq5lesSjs92iuH7Fz
-	 8nFSbaYqgL5rg==
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-72c172f1de1so459678a34.3;
-        Thu, 03 Apr 2025 03:43:13 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUjGcOrcZoMeWDtdhicZW8/gP0bXWg7FZE4rMIDeC62Xc/hr1OT3xAyaSlUGhLosG/6lOEd6/h9WvHpencI@vger.kernel.org, AJvYcCXoU1Hb7cufiTsqhPS2TVT3glLjaX7LwXkVJ1abdmMNn6nCkmXZF8rpreXjb21x3HPXEBgJvshI6Ss=@vger.kernel.org, AJvYcCXuMfVCo5heIv+dQZ7nJxIyXyjPo8KZInBe22LS5qI8gyTqL6cjng8oFTrV2opSgnbkUeCk98TsexXq@vger.kernel.org
-X-Gm-Message-State: AOJu0YycYEktGtNvSLPWOCtn9REro3qZmhGgFXqVzEAucHDO3AMsjyvK
-	jONQUVKWWqd3IvhCaN3VfbLnG5Sd+N3gEtqc60o5WJEwOZJA+oswCImAFMrcHhyj9PKoCDAx27r
-	ThgGhlRRyexK3Fr5M+bfkWLtOevM=
-X-Google-Smtp-Source: AGHT+IG3AWB7CaPZwf0Tb0Ajn3mv8KyCE2OKLilFuXZicoSYb86Eb+BE+cNvbfGSivr8mtIxQOT9rNbcg1Tvna0Ct4k=
-X-Received: by 2002:a9d:4788:0:b0:72b:8fd3:e2dc with SMTP id
- 46e09a7af769-72c63816953mr12541972a34.21.1743676992741; Thu, 03 Apr 2025
- 03:43:12 -0700 (PDT)
+	b=NMKtZdyJrL8Put3lIEW5riJwCw06ARxrk2FOHeTfHsyZown6icg8UeRDXhhoXedlD
+	 GMmaFe7L0pOnwsA1kGkzXUqXw52VvTIQL9ZQq4V6+aO2KqrzNsN1FtRkOlqIbN2rp1
+	 f0+xQ/3vkXmioExAHuNN44npi4a34pZMpUBdsGJxXIwYn8IyGumgUo0Hp/8lKjtSMj
+	 dLXtfZae+/tZ0NZLGvbSzgHbYKnjPF5f+vj5XNuRlevBalRxg1VE5IZtt/6rj8svKb
+	 Op6Y/gumbrYmp0HWGpJgjJC/Av4n7UqOH2+iMOEamWRC1gey3yPXgFXToXxBP7+Gm/
+	 mDyRYp51Kl3bA==
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-2c1c9b7bd9aso426772fac.0
+        for <linux-acpi@vger.kernel.org>; Thu, 03 Apr 2025 03:49:08 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yzc5vuvNficZmbhTYtC/LNcqA0qQYjQMoGf5Mdc5Sli0DdtQaVQ
+	gwQJDLaOlHwvjCFr7/cgzTivjzT42J5BkuqV5ZNQPr9szN0y8fhD6QcCPlZNBsvH1TU/cMxYg39
+	YBnhh5SYgaw2VYYjXF2d5RdZCKRA=
+X-Google-Smtp-Source: AGHT+IHIyPEm7yReliRi/GAllmuF9B/3iuT7gwoOQaebvrKhTtwlG4UjSnVRYBqwhYe1ekseMsek0YBveJcFNx9dqFA=
+X-Received: by 2002:a05:6871:36c3:b0:2c8:33ab:e80e with SMTP id
+ 586e51a60fabf-2cbcf5acda8mr11439667fac.19.1743677348110; Thu, 03 Apr 2025
+ 03:49:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250328143040.9348-1-ggherdovich@suse.cz> <20250328143040.9348-2-ggherdovich@suse.cz>
- <SJ0PR11MB66228319834B1C7B48FCE52EF5AD2@SJ0PR11MB6622.namprd11.prod.outlook.com>
- <CAJZ5v0gC3DzanSdPqQiJ4JQppgNeRA7Z9Cge7NxmTO_shoUyOA@mail.gmail.com>
- <7a14ea42462a346958954f328933f583dcf9cb52.camel@intel.com>
- <CAJZ5v0juH2kYx-fyyfoFLBTjg30y59Dwj1wBYXxuHvU2c7X31w@mail.gmail.com> <29626e175f3238ae04451477e38bad875794a61c.camel@intel.com>
-In-Reply-To: <29626e175f3238ae04451477e38bad875794a61c.camel@intel.com>
+References: <548ec422-e504-4171-8780-cbd83f877b3e@mail.com>
+In-Reply-To: <548ec422-e504-4171-8780-cbd83f877b3e@mail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 3 Apr 2025 12:42:59 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0g0mBTkxeHBWff0koYG4NhkN2wFwkKR5_4XUq-1U0maFg@mail.gmail.com>
-X-Gm-Features: AQ5f1JrbzgGfC6WbwtpYyvFFJNoFRh9ods5kRfcRZ2ufljOl_lvM5LSdxrCl_Wo
-Message-ID: <CAJZ5v0g0mBTkxeHBWff0koYG4NhkN2wFwkKR5_4XUq-1U0maFg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ACPI: processor: idle: Remove obsolete comment
-To: "Zhang, Rui" <rui.zhang@intel.com>
-Cc: "rafael@kernel.org" <rafael@kernel.org>, "ggherdovich@suse.cz" <ggherdovich@suse.cz>, 
-	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, "lenb@kernel.org" <lenb@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Date: Thu, 3 Apr 2025 12:48:55 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hbA6bqxHupTh4NZR-GVSb9M5RL7JSb2yQgvYYJg+z2aQ@mail.gmail.com>
+X-Gm-Features: AQ5f1JqxraZCfxx8BCMoe1ujJ2sOLVwprigCeww7Iu6Rhht1AwAeTKjML9VgI94
+Message-ID: <CAJZ5v0hbA6bqxHupTh4NZR-GVSb9M5RL7JSb2yQgvYYJg+z2aQ@mail.gmail.com>
+Subject: Re: kernel-6.15 randomly shutting down system on bogus power button events
+To: Ian Laurie <nixuser@mail.com>
+Cc: linux-acpi@vger.kernel.org, Mario Limonciello <mario.limonciello@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 3, 2025 at 4:54=E2=80=AFAM Zhang, Rui <rui.zhang@intel.com> wro=
-te:
+On Thu, Apr 3, 2025 at 1:30=E2=80=AFAM Ian Laurie <nixuser@mail.com> wrote:
 >
-> On Tue, 2025-04-01 at 14:13 +0200, Rafael J. Wysocki wrote:
-> >
-> > > So I'm proposing to return the index of the highest valid state
-> > > directly
-> > > in acpi_processor_power_verify() and then we don't need this loop any
-> > > more.
-> >
-> > OK, so I'd prefer to first rename power.count to power.max_index
-> > (which it really is) and then make the changes you have proposed.
+> I am seeing an issue where (in Fedora Rawhide) the following kernels:
 >
-> well, in other cases, like in acpi_processor_evaluate_cst() and in the
-> _LPI case, power.count is still set and used as the total number of
-> cstates.
+> kernel-6.15.0-0.rc0.20250327git1a9239bb4253.5.fc43.x86_64
+> kernel-6.15.0-0.rc0.20250401git08733088b566.8.fc43.x86_64
 >
-> in this acpi_processor_get_cstate_info() case, maybe we should drop this
-> change
-> -               working++;
-> +               working =3D i;
-> So power.count is still consistent in all these cases.
+> are randomly shutting the system down because bogus power button events
+> are being received every 10 minutes to about 2 hours.  My actual power
+> button generates an event2, while the bogus events are arriving as event1=
+.
+>
+> Latest available 6.14 kernel:
+>
+> kernel-6.14.0-0.rc7.20250321gitb3ee1e460951.60.fc43.x86_64
+>
+> does not suffer from this issue.
+>
+> Using 'sudo evtest --grab /dev/input/event1' I am able to prevent the
+> system from shutting down and also record the bogus events.
+>
+> The RedHat Bugzilla entry has more details and also links to a thread on
+> the Fedora test mailing list:
+>
+> https://bugzilla.redhat.com/show_bug.cgi?id=3D2357044
 
-OK
+I would try to revert the following commit and see if that helps:
 
-> For the current for loop that overrides power.count, I think we can just
-> drop it, because no one checks power.count after it, which means no one
-> actually uses power.count as max_index.
+commit a7e23ec17feecc7bac0d500cea900cace7b50129
+Author: Mario Limonciello <mario.limonciello@amd.com>
+Date:   Mon Mar 3 15:27:09 2025 -0600
 
-Sounds good to me.
+   ACPI: button: Install notifier for system events as well
+
+   On some systems when the system is put to sleep pressing the ACPI power
+   button will cause the EC SCI to try to wake the system by a Notify(DEV, =
+0x2)
+   with an intention to wake the system up from suspend.
+
+   This behavior matches the ACPI specification in ACPI 6.4 section
+   4.8.3.1.1.2 which describes that the AML handler would generate a Notify=
+()
+   with a code of 0x2 to indicate it was responsible for waking the system.
+
+   This currently doesn't work because acpi_button_add() only configured
+   `ACPI_DEVICE_NOTIFY` which means that device handler notifications
+   0x80 through 0xFF are handled.
+
+   To fix the wakeups on such systems, adjust the ACPI button handler to
+   use `ACPI_ALL_NOTIFY` which will handle all events 0x00 through 0x7F.
 
