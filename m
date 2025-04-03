@@ -1,129 +1,114 @@
-Return-Path: <linux-acpi+bounces-12707-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12708-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8819EA7AFEB
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 23:04:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA94BA7B071
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 23:17:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD64A189AD8F
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 20:59:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A0D017A074
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 21:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DCBC25A635;
-	Thu,  3 Apr 2025 19:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC301FF1DF;
+	Thu,  3 Apr 2025 20:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BZpnJ5jS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MFv6r25F"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F0F25A62E
-	for <linux-acpi@vger.kernel.org>; Thu,  3 Apr 2025 19:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5170F1FF1CA;
+	Thu,  3 Apr 2025 20:36:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743710217; cv=none; b=gJnKnrQQUYbwFNlYfZ2+/9zn0yArpSUdqHQXZs8j8ey6JZK8AgLdpVSqNi1naDOzCEtWODIGd2oqOomRcwbog6QWLk3vzo2TQ0aBXC5Bon3fP4yv7mUWU+dMj8u3TOxKYTtymZW8Ct34D7L/0EyXYDr24c/FOFIuB56C0deATI4=
+	t=1743712615; cv=none; b=dDBDyxhhH7yZphSMYtBWMba/3MltyyUbeNGcke8PUatuWUtxDiDal7Ru8QooHGJ4mpHhSg2lehqaoaTqbc8ylDfBnUo6EWMtAhjRWeloEU9Konk1LCHyR/sK3SMCtKX2eXK5cVf21EP/OQecFRsulALq6gtpu0cd/EiJgmxWzGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743710217; c=relaxed/simple;
-	bh=QsfGg77/4wcXyQi/oDNqF6H4MrgvSDK8UQvAfwzGYtQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Qcsna+74LSYDCg61cqUYB3W8M7rC86bQLPcr7zPkv5VoRMVFJSD46WWUVoInp1FqGnDT3bZDL4Jtys8szuazjE36QihS2qbAbBgq8su6nmo2QyFjSnzixIB5PIaZPdxmKFxSAQVfMpgzYBEmqGdBWyxwlFuuj0Ybg2LTREdtiEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BZpnJ5jS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04CACC4CEE3;
-	Thu,  3 Apr 2025 19:56:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743710216;
-	bh=QsfGg77/4wcXyQi/oDNqF6H4MrgvSDK8UQvAfwzGYtQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BZpnJ5jSl9OtB0RRAj4C/YiHrCyUWlggp0EXAh1oUK/XdMb03JOSIAuRIeV3fVRcb
-	 nSXs6AOj/dFRe+BXOLncRWHWV+peNRStozPzQwdIYYO/TVI/Q9UNUYoqBehUe3YWhs
-	 70PmtnpTsmSwxZefd9pJqAzpWslLX+vVXpkHbgTCPcWBgpygpuwLuWBS/+FT8swTmc
-	 cEZIJpYsNblUSvNtGqnUP7PIMHr5s4mnI1Fyq5Z7dm98iJuDGqgNHgjF43UQx8djw1
-	 +1jWNkqaiyBw5I9Mj2A9JK3Vnb+skL84OvFB5aBMupammtwk/Y+v3KxjvfxsMTMDMt
-	 WIKB6ji0yBZyg==
-Message-ID: <e128ae3c-8d15-4a0d-ab1a-350e062c0a51@kernel.org>
-Date: Thu, 3 Apr 2025 14:56:54 -0500
+	s=arc-20240116; t=1743712615; c=relaxed/simple;
+	bh=BppNu7Me1+y1qANtVpWRom0H5KnptNr4MLRjpUZuDi8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cqtTzTXDPO8RrVc6tqsWd7ln+eKiZxswpwf9L/14yTIjn8gW8Ce+vN8OEP+4GqjucrAFiYYPqE8qqhq/T6keZ47cv64Wfkvecn1MhN61bgWQ25vT9EuDMb5VSEI3MEE3u6H+oVb+Xd9D35RfCnRA2dLKKk7p45FLUKTShRrZkz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MFv6r25F; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2ff53b26af2so214892a91.0;
+        Thu, 03 Apr 2025 13:36:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743712613; x=1744317413; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BppNu7Me1+y1qANtVpWRom0H5KnptNr4MLRjpUZuDi8=;
+        b=MFv6r25FHaUwyWCtC/6j2qLmcOx4ne1j+sKhvLOb+3jBdZ6+CguxVaPV8z8UPHdBdq
+         YeP3Hsh/h5+9Oo8O65NGRBiIql0a6aYPtqSNO3cWz21LTvQMXxwWmaaMgyJYKP1MXWYf
+         OKj3tWIiqZ2d2v3+EtVrrpr4vy5m88WNrDH26bmCeF5gdg9vQ+a8ue8drCHOeGZlZTxO
+         LyizUvSZ1SOq6dvKRSs2ALAuL0nwp7wmzCFwBzUKMfxdLDRnAnX9cIgerMKVe+x/l27A
+         5IUWc676TANDKw890OeHmDVoXQxCCg2+EqNQblhy3GOeKznbUi6MdNnJDhDgHHkYQwzl
+         TcEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743712613; x=1744317413;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BppNu7Me1+y1qANtVpWRom0H5KnptNr4MLRjpUZuDi8=;
+        b=lJyCe9BaSyT+2kaYmzKHg+79YcEmASb44vv3sWito/DcjWQQhGXhy76EFRF+eL9/Dz
+         YksGnGiHJ3IIOJxB6H9vv9SVAWk3KWI+SboKuZXrjU8pc9OI6flrg1TqVVOJLWyCtB+/
+         jBL5WH2FPnSwTYo/SJGOf0eVw9w60uRRBSOgLjL8x8c01jdrYd2Z8jGpKiBTbndOaZoJ
+         SurOlQ4f+pnT144wxozfYtYCFUChYfFKJLD69qcCevMyHPvPu4Z4ri5tEl6JNIvTfKNU
+         ychb1t3JRNEkQgs66OiXqr74UFLGAmkaEgV18uWBMhQXH2gFCLdthuGJVb6yC0P2QQnZ
+         jAcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVMZm2yTHqfeYRD41diNVRVCXycpF6vX8ytnGpczBmNNxbm/3jQT0qs2sjpaw9VLJAKMzaM46pgxGc+2A==@vger.kernel.org, AJvYcCW5LoQIVh+bVf4KKmDMrzsnzEMvpz2TuRVVYzCX/I3RhZ1V1hmiIY6TzVp4wTTnDW6luqFJGdp1yd2HFfLC@vger.kernel.org, AJvYcCWkmG0DyMgS7eebdscRcjhcZT0h+bdlxVjDkOSrtME2onaYJ0ItXLXdG2FKQqpsbxd3aTNqJYsMmsCg@vger.kernel.org, AJvYcCXs0MuY2pa/qj6ia8CtKTv9jNqfxLwS+mCDGiRNnW8BeKJuzFqDSkDl9F9MC9Bkh7Mkr4Y0kVIjOqpg5mv0kow=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNn7qB1Eh4XS8n7EVGhW1B+XP2ecQ5vIkAgGo7cb5s1QWSPIV0
+	aExEKkPGFvIRyuBvquGHrBDXle/lRDcfNiEZwaPC2uvBnGVJt6DPlQbtKmHhLce4MY6EPaLfYxR
+	0y83sHW4tpFMdivr2L51CP5HUI3o=
+X-Gm-Gg: ASbGncv6+ZwNiTxY7YDh/btcyBpwtG+eoPNvr4mXgxXS8GXdB31zgq57cvMlBXOa1ER
+	yuatkZhLo/hNIzYf0zfyLr3CLTtYTm6Z3dOw6NNxoDsYOd/burZOQ1EOMPH0toLPd8R/8bai+la
+	bXWmOADk1ohKoU4cFZTkCeHfjtkA==
+X-Google-Smtp-Source: AGHT+IFUqqbzGb4SQKutumz1ZzcvzJ1fzw2t9YPUt4FlFYvaChfi94wViOQAF2zeZ+yWVNNsiYR6kCFprhocxgUNro4=
+X-Received: by 2002:a17:90b:224e:b0:2ee:6563:20b5 with SMTP id
+ 98e67ed59e1d1-306a477443bmr499789a91.0.1743712613272; Thu, 03 Apr 2025
+ 13:36:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: EC: Set ec_no_wakeup for Lenovo Go S
-To: Antheas Kapenekakis <lkml@antheas.dev>
-Cc: mario.limonciello@amd.com, rafael@kernel.org,
- Xino JS1 Ni <nijs1@lenovo.com>, linux-acpi@vger.kernel.org,
- "derekjohn.clark@gmail.com" <derekjohn.clark@gmail.com>
-References: <20250331204442.1727618-1-superm1@kernel.org>
- <CAGwozwEiCXFDi73qAPSm2K9A8OZutE7dbjFfCmbUSAOTaz8SEA@mail.gmail.com>
- <50cc3227-93eb-4cb8-8151-23e52ca91f80@kernel.org>
- <CAGwozwH7r-7uELUB1fiftAf3ziU6irgW92qiHHNOpuJ-87=WJw@mail.gmail.com>
- <90d704dc-51ea-4c98-ba4a-f95460f65061@kernel.org>
- <CAGwozwEoCc_nRodt2=6R5K5UOzhW+5Gx1uLS3H3ON4ZS_12gBg@mail.gmail.com>
- <1eb121e5-c0d3-49a8-9579-6ea5543ad4f9@kernel.org>
- <CAGwozwFgRO=6a=NNfbTtz1E5sroH27sxyXJQuV9QbTMfAttO6w@mail.gmail.com>
- <6a9268de-4072-4ef2-9f33-95cc783a8595@kernel.org>
- <CAGwozwF6iFkgvS54KYGMg554S9DTD83rq2ctH=UtFO-b8c1H1Q@mail.gmail.com>
- <dc2ae336-6a26-4e3e-a901-15afbe7fc611@kernel.org>
- <CAGwozwF=ZfJ31_UBXV==x_0og+yzf2nLnrb4xG9ca027y-S_Sg@mail.gmail.com>
- <8cdc5a58-2221-4332-9a47-e0f5b7832922@kernel.org>
- <CAGwozwFoM+Wtd85Yx6_XxTv2e+qMY6wMRJSd2V+LsVn-GZUruA@mail.gmail.com>
- <411633ba-b693-4d08-81cf-426d20326434@kernel.org>
- <CAGwozwFbnSwVxO4y+_XtMVGcAC+TZByzerqx9j-vVCw+VWotZA@mail.gmail.com>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <CAGwozwFbnSwVxO4y+_XtMVGcAC+TZByzerqx9j-vVCw+VWotZA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250326171411.590681-1-remo@buenzli.dev> <20250326171411.590681-4-remo@buenzli.dev>
+ <Z-UPJyD41LOMM3o2@smile.fi.intel.com> <CAL_Jsq+tJvGsbw1dGdgmBM8+cL4vN71OMTvX9tkmBLNk=6T9KQ@mail.gmail.com>
+ <Z-60LwRrw30cq4YE@smile.fi.intel.com> <CAL_JsqKiYCh7ukDoqc_toyn75=3wOM4WyOTGvogoOfdz9T_7Ow@mail.gmail.com>
+ <Z-7LcXoGw7uNWBUE@smile.fi.intel.com> <CAL_JsqLCa8AjwsUpS-N9FWymG67w7DjmmBZCKW7G7BAfY78vWw@mail.gmail.com>
+In-Reply-To: <CAL_JsqLCa8AjwsUpS-N9FWymG67w7DjmmBZCKW7G7BAfY78vWw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 3 Apr 2025 22:36:40 +0200
+X-Gm-Features: ATxdqUFQzyzFDIUd15N-qaG4eeA0ujxuGg9ZAeaFdtFtoYw8fth86HH_5Xp9cUo
+Message-ID: <CANiq72=iD5ogB2Qjn=WNbghouuER5ypND9=Y_wFiTDfPC2NgFA@mail.gmail.com>
+Subject: Re: [PATCH 03/10] device property: Add fwnode_property_read_int_array()
+To: Rob Herring <robh@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Remo Senekowitsch <remo@buenzli.dev>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Saravana Kannan <saravanak@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, devicetree@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 4/2/2025 3:37 PM, Antheas Kapenekakis wrote:
+On Thu, Apr 3, 2025 at 8:48=E2=80=AFPM Rob Herring <robh@kernel.org> wrote:
+>
+> Looks there are RUST_BINDGEN or __BINDGEN__ define which could be used
+> here. Don't need a header, just wrap the declaration. No idea which
+> one would be preferred as there's exactly 1 use of each. Miguel?
 
->> Maybe I'm failing at my search-engine-foo, could you point me at some
->> docs about this AC/DC burst stuff?
-> 
-> AC/DC Burst/AC/DC Burst Suppresed are the events in Sleep Study
-> https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/modern-standby-sleepstudy
-> 
-> You can see those when running a sleep study and unplugging a
-> connector. I think suppressed is unplugging
-> 
-> Then here is the description for plugging in a charger
-> https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/modern-standby-wake-sources#environmental-context-changes-1
-> 
->> The Windows power manager will turn on the display when the battery subsystem has indicated
->> AC power has been connected. The GPIO interrupt for power source changes must cause the
->> ACPI _PSR method under the power supply device to be executed. The power subsystem must
->> wake the SoC any time the power source changes, including when the system is attached or
->> removed from a dock that has a battery or AC power source. After AC power is connected,
->> the display will remain on for five seconds, unless there is input to the system during this five-second window.
-> 
-> And here for unplugging:
-> https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/modern-standby-wake-sources#environmental-context-changes-2
-> 
->> The GPIO interrupt for power source changes must cause the ACPI _PSR method under
->> the power supply device to be executed. The power subsystem must wake the SoC any time
->> the power source changes, including when the system is attached or removed from a dock
->> that has a battery or AC power source.
+If you mean bcachefs' `RUST_BINDGEN`, then I think that one comes from
+bcachefs-tools, i.e. we don't define it.
 
-I suppose this could actually just be another way to say that there is a 
-flurry of EC activity as a result of the ACPI SCI and they characterize 
-that activity as a "burst" associated with unplug or plug.  It would be 
-good to find actual documentation though instead of guessing.
-
-> 
-> I guess from the description it is not clear that the device stays on
-> for 5 seconds when unplugging, but from empirical testing I want to
-> say it does. It has been a while. I left 3 devices like an hour ago on
-> Windows and none of them managed to sleep, so I cannot verify this at
-> the moment though.
-> 
-
-During "display off" there is other activity that goes on until reaching 
-resiliency on Microsoft side.  So it's not really cut and dry periods of 
-time.
-
-If I was to hypothesize when the screen off wakeup occurs the OS looks 
-at the amount of time that has passed and if there was any scheduled 
-tasks for the next wakeup gets them done before going back down.
+Cheers,
+Miguel
 
