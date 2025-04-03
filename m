@@ -1,117 +1,219 @@
-Return-Path: <linux-acpi+bounces-12672-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12673-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1EFA7A09C
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 12:04:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2556A7A120
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 12:37:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73BB63B02E5
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 10:04:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E7AC175135
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Apr 2025 10:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1ECC23ED76;
-	Thu,  3 Apr 2025 10:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE15B24A054;
+	Thu,  3 Apr 2025 10:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TGMt9W7q"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LEGHM2gP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8931C3C0B;
-	Thu,  3 Apr 2025 10:04:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85D52417D7;
+	Thu,  3 Apr 2025 10:35:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743674652; cv=none; b=VOai8XpGqcd10HO/KHkBhXGAFW8tnO7SjJG8zePhh0/TB70kLJgZS/Y9fYl2XfxN1hnzWJbj6+g/lRguh1bUf2d6TOYLBADqgBDPHRC5KQx50cW00YS99ILja9S7q0ci8b6uEPGjx8E8Am9zHBjID4aIn+lUa3lXORsn5fkUNmA=
+	t=1743676512; cv=none; b=pMzpokjbbpw5tQh1HBGIgVtpcS53iZB40bDx1ix3p0frHQHpDvtE3ulqZZcl+NDfGhaSWfyAjPwh1U/c7qY7rjEQPgvt+0FHOCkyRdMNlv0Ir7DlzZMp1a1g9C4I4Ecl+4r0nsgQYTfPvAjA7Iw5LbDbTNt2PtjIRnNlG6QSzpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743674652; c=relaxed/simple;
-	bh=ZiOGN/OBjYN9SLKaZnhOxhyU1UOpniwU2ApSXRy0phU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=K6BJNriPRDh6xRwnC3ETHA2fMPofHx9XZ0x0umK3aIow33Y3mbFYO/xjS9DfCB4sP9kRR8QpE4kPY77o+KJ5l299bMUsq/1PWoYySmwCyK8sQJbMmZYONEPonvvMQT4GxXNFv7nq798nACSrMovOmSi6BHkwClloVOhftyqr1QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TGMt9W7q; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5339sEqC029964;
-	Thu, 3 Apr 2025 10:04:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ZiOGN/OBjYN9SLKaZnhOxhyU1UOpniwU2ApSXRy0phU=; b=TGMt9W7qrlRXQzUI
-	XvGPhEWkGZNwQU8K9NNy+I5ltUafAokMz6sMKZ9bJeLPbY0ua+08ioAGyS0dYj2I
-	j/BbnbtG5SYc6EQKfSLklWH9P6/+WvGQmpKlN0dJFOYx6Vtrfur1h2u/2nMU0wFi
-	TBMUTrcH98yCf+qtnbwnS5naldC8AlF3d5IrOTAZ/OpA1yNdRy2ddokJUhwMtYeE
-	xbxwL4T0nUn77Q0fVUQRpymEua7sa4f0JuGZ9fcvBqEx0iLrKS5C5YktIakJt8k4
-	u0MOJzm8g1xEu5Ia0J/AjkiQwdEUXt8iohiYsOU+PNXooQmMarqcIFX75RMrlJ7z
-	ccuLHg==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45rbpyycdv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Apr 2025 10:04:04 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 533A43Jl016439
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 3 Apr 2025 10:04:03 GMT
-Received: from [10.133.33.118] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 3 Apr 2025
- 03:04:00 -0700
-Message-ID: <b2f13a6d-e876-4cd2-b814-6cbc0b5f862e@quicinc.com>
-Date: Thu, 3 Apr 2025 18:03:57 +0800
+	s=arc-20240116; t=1743676512; c=relaxed/simple;
+	bh=GD8GtdqYWV9GQMQcIMlkLPP31qBj8F+7qvyBxc/kjXY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TuRY9kjxBQdNFiIIlx4dn1NORoaqhdBaGZqpSDO3UOAVN+kHkJlEC4mJi6AprxEqhWHO+fi5UM6nQ1xbNUsc/53dzPgt7ORkzin6pLA6eDiT8m0eWxa1MArIfVFYIyXGQlptDzw+fHwZsk0sp9ujLcSr7ZnAN3kx8Q/hKMhwrZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LEGHM2gP; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743676511; x=1775212511;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GD8GtdqYWV9GQMQcIMlkLPP31qBj8F+7qvyBxc/kjXY=;
+  b=LEGHM2gPOv2D4AxvwmODVuZCmSZQetQkTnaFJEb9vgAT2frCspXXj3Ik
+   ccFDJ+uBKxINfgA5E628RGyp1zGcO+AeU61x9eOjcrGVXUDHz2SVb5ZNI
+   lElmECOxTCPF4CJHOgk/MHSnfTADWrQPlghNUa0GA8YGZSwBRmfhJUTmH
+   1rmgtjS4c9tKOLzk5Z2E1SHFNtIbp2IburfxGsOK0Bj4ZBl1K8CE9VTjF
+   69qN0bVGd5gzEU9wGR3LRCj0txkTOV1im23cnb68f0Nw/pEaftqklO/Y6
+   aduH7tThVDkb7nFMbyLM0/tq4AolV2jdoRHfPqqEOzcHuYaN/aGg6GB2H
+   w==;
+X-CSE-ConnectionGUID: IzfXKdOeSGCmr8dfcNXgiw==
+X-CSE-MsgGUID: qlMWPMqDREyfUQ9Vu5VkBA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11392"; a="44227536"
+X-IronPort-AV: E=Sophos;i="6.15,184,1739865600"; 
+   d="scan'208";a="44227536"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2025 03:35:09 -0700
+X-CSE-ConnectionGUID: Fs2oP0QHTh+jV+HiJSaPDg==
+X-CSE-MsgGUID: V5NhXtbBR7mKH2yr3Zp2wg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,184,1739865600"; 
+   d="scan'208";a="157960777"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa001.fm.intel.com with ESMTP; 03 Apr 2025 03:35:07 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id A5ED8E2; Thu, 03 Apr 2025 13:35:06 +0300 (EEST)
+Date: Thu, 3 Apr 2025 13:35:06 +0300
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mika Westerberg <westeri@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v1 4/5] gpiolib: acpi: Reuse struct acpi_gpio_params in
+ struct acpi_gpio_lookup
+Message-ID: <20250403103506.GJ3152277@black.fi.intel.com>
+References: <20250402122301.1517463-1-andriy.shevchenko@linux.intel.com>
+ <20250402122301.1517463-5-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] device property: Add a note to the fwnode.h
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus
-	<heikki.krogerus@linux.intel.com>,
-        Sakari Ailus
-	<sakari.ailus@linux.intel.com>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        Danilo Krummrich <dakr@kernel.org>,
-        Laurent
- Pinchart <laurent.pinchart@ideasonboard.com>
-References: <20250331163540.280606-1-andriy.shevchenko@linux.intel.com>
-Content-Language: en-US
-From: Zijun Hu <quic_zijuhu@quicinc.com>
-In-Reply-To: <20250331163540.280606-1-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: xbljt1kvYHgqpeK5RPT4rt33JbyO5TAD
-X-Proofpoint-ORIG-GUID: xbljt1kvYHgqpeK5RPT4rt33JbyO5TAD
-X-Authority-Analysis: v=2.4 cv=ZNLXmW7b c=1 sm=1 tr=0 ts=67ee5d14 cx=c_pps a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=owBPNj5rwqKd82W3GFkA:9 a=QEXdDO2ut3YA:10 a=QYH75iMubAgA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-03_04,2025-04-02_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- lowpriorityscore=0 clxscore=1011 mlxscore=0 adultscore=0 mlxlogscore=733
- priorityscore=1501 bulkscore=0 suspectscore=0 malwarescore=0 phishscore=0
- impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504030035
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250402122301.1517463-5-andriy.shevchenko@linux.intel.com>
 
-On 4/1/2025 12:35 AM, Andy Shevchenko wrote:
-> + * Note, this header is not meant to be used by the leaf drivers.
-> + * It provides the low level data types and definitions for the firmware
-> + * and device property providers. The respective API headers should
-> + * guarantee all the required data types and definitions without including
-> + * this header directly into the driver.
-> + *
+On Wed, Apr 02, 2025 at 03:21:19PM +0300, Andy Shevchenko wrote:
+> Some of the contents of struct acpi_gpio_lookup repeats what we have
+> in the struct acpi_gpio_params. Reuse the latter in the former.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/gpio/gpiolib-acpi.c | 34 ++++++++++++++++++----------------
+>  1 file changed, 18 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+> index afeb8d1c7102..750724601106 100644
+> --- a/drivers/gpio/gpiolib-acpi.c
+> +++ b/drivers/gpio/gpiolib-acpi.c
+> @@ -744,9 +744,7 @@ static int acpi_gpio_update_gpiod_lookup_flags(unsigned long *lookupflags,
+>  
+>  struct acpi_gpio_lookup {
+>  	struct acpi_gpio_info info;
+> -	int index;
+> -	u16 pin_index;
+> -	bool active_low;
+> +	struct acpi_gpio_params par;
 
-sorry, i don't understand both "leaf drivers" and "respective API
-headers". could you have examples ?
+params is better name
 
+>  	struct gpio_desc *desc;
+>  	int n;
+>  };
+> @@ -754,6 +752,7 @@ struct acpi_gpio_lookup {
+>  static int acpi_populate_gpio_lookup(struct acpi_resource *ares, void *data)
+>  {
+>  	struct acpi_gpio_lookup *lookup = data;
+> +	struct acpi_gpio_params *par = &lookup->par;
 
+These are not changed I guess so can this be const?
+
+Ditto everywhere.
+
+>  
+>  	if (ares->type != ACPI_RESOURCE_TYPE_GPIO)
+>  		return 1;
+> @@ -765,12 +764,12 @@ static int acpi_populate_gpio_lookup(struct acpi_resource *ares, void *data)
+>  		u16 pin_index;
+>  
+>  		if (lookup->info.quirks & ACPI_GPIO_QUIRK_ONLY_GPIOIO && gpioint)
+> -			lookup->index++;
+> +			par->crs_entry_index++;
+>  
+> -		if (lookup->n++ != lookup->index)
+> +		if (lookup->n++ != par->crs_entry_index)
+>  			return 1;
+>  
+> -		pin_index = lookup->pin_index;
+> +		pin_index = par->line_index;
+>  		if (pin_index >= agpio->pin_table_length)
+>  			return 1;
+>  
+> @@ -796,7 +795,7 @@ static int acpi_populate_gpio_lookup(struct acpi_resource *ares, void *data)
+>  			lookup->info.polarity = agpio->polarity;
+>  			lookup->info.triggering = agpio->triggering;
+>  		} else {
+> -			lookup->info.polarity = lookup->active_low;
+> +			lookup->info.polarity = par->active_low;
+>  		}
+>  
+>  		lookup->info.flags = acpi_gpio_to_gpiod_flags(agpio, lookup->info.polarity);
+> @@ -834,7 +833,8 @@ static int acpi_gpio_property_lookup(struct fwnode_handle *fwnode, const char *p
+>  				     struct acpi_gpio_lookup *lookup)
+>  {
+>  	struct fwnode_reference_args args;
+> -	unsigned int index = lookup->index;
+> +	struct acpi_gpio_params *par = &lookup->par;
+> +	unsigned int index = par->crs_entry_index;
+>  	unsigned int quirks = 0;
+>  	int ret;
+>  
+> @@ -857,9 +857,9 @@ static int acpi_gpio_property_lookup(struct fwnode_handle *fwnode, const char *p
+>  	if (args.nargs != 3)
+>  		return -EPROTO;
+>  
+> -	lookup->index = args.args[0];
+> -	lookup->pin_index = args.args[1];
+> -	lookup->active_low = !!args.args[2];
+> +	par->crs_entry_index = args.args[0];
+> +	par->line_index = args.args[1];
+> +	par->active_low = !!args.args[2];
+>  
+>  	lookup->info.adev = to_acpi_device_node(args.fwnode);
+>  	lookup->info.quirks = quirks;
+> @@ -897,10 +897,11 @@ static struct gpio_desc *acpi_get_gpiod_by_index(struct acpi_device *adev,
+>  						 struct acpi_gpio_info *info)
+>  {
+>  	struct acpi_gpio_lookup lookup;
+> +	struct acpi_gpio_params *par = &lookup.par;
+>  	int ret;
+>  
+>  	memset(&lookup, 0, sizeof(lookup));
+> -	lookup.index = index;
+> +	par->crs_entry_index = index;
+>  
+>  	if (propname) {
+>  		dev_dbg(&adev->dev, "GPIO: looking up %s\n", propname);
+> @@ -909,9 +910,9 @@ static struct gpio_desc *acpi_get_gpiod_by_index(struct acpi_device *adev,
+>  		if (ret)
+>  			return ERR_PTR(ret);
+>  
+> -		dev_dbg(&adev->dev, "GPIO: _DSD returned %s %d %u %u\n",
+> -			dev_name(&lookup.info.adev->dev), lookup.index,
+> -			lookup.pin_index, lookup.active_low);
+> +		dev_dbg(&adev->dev, "GPIO: _DSD returned %s %u %u %u\n",
+> +			dev_name(&lookup.info.adev->dev),
+> +			par->crs_entry_index, par->line_index, par->active_low);
+>  	} else {
+>  		dev_dbg(&adev->dev, "GPIO: looking up %d in _CRS\n", index);
+>  		lookup.info.adev = adev;
+> @@ -943,6 +944,7 @@ static struct gpio_desc *acpi_get_gpiod_from_data(struct fwnode_handle *fwnode,
+>  						  struct acpi_gpio_info *info)
+>  {
+>  	struct acpi_gpio_lookup lookup;
+> +	struct acpi_gpio_params *par = &lookup.par;
+>  	int ret;
+>  
+>  	if (!is_acpi_data_node(fwnode))
+> @@ -952,7 +954,7 @@ static struct gpio_desc *acpi_get_gpiod_from_data(struct fwnode_handle *fwnode,
+>  		return ERR_PTR(-EINVAL);
+>  
+>  	memset(&lookup, 0, sizeof(lookup));
+> -	lookup.index = index;
+> +	par->crs_entry_index = index;
+>  
+>  	ret = acpi_gpio_property_lookup(fwnode, propname, &lookup);
+>  	if (ret)
+> -- 
+> 2.47.2
 
