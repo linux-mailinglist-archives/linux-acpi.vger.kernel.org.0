@@ -1,124 +1,130 @@
-Return-Path: <linux-acpi+bounces-12748-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12749-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D238CA7BBAA
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Apr 2025 13:36:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7167CA7BCA8
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Apr 2025 14:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FD96189C425
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Apr 2025 11:37:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31FB33B4FCB
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Apr 2025 12:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3823A1DE2D6;
-	Fri,  4 Apr 2025 11:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FvLlnSbP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C194F1E1E1B;
+	Fri,  4 Apr 2025 12:30:11 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111AA1DE2CC
-	for <linux-acpi@vger.kernel.org>; Fri,  4 Apr 2025 11:36:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5091F1EB5DA;
+	Fri,  4 Apr 2025 12:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743766607; cv=none; b=n+HWx+swScHd+smMAGBt5Dv9nfS3AHYvu4oRGbWVMYHsxWBNzQlJDXHMRXNjQXT9l37qzpgzizx8BczgbGOy4ujty2Wm9S1bhrGgKIYlH7e25fH5D7ORn482NL2/qYPRw8HPqMVnx688S7TJcvsH04uTwoUgfDTmPukDV1lwQb0=
+	t=1743769811; cv=none; b=fWXgeWURqcScdDz3YU7J4GTvchGtNTUvwhtFS8eMvMt/D7EoRtpPDJ3m5l+JvrpIrYZe/98NdKojRKZULH4/aKQmBg0zaeuDIaogqU8TJwgozDmXmTBaZXfzqcH3GlfH6gNJhA7vrW17W31MUX33XI0e8wlFJQdomDeyGdv+UJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743766607; c=relaxed/simple;
-	bh=YVenVswWu/KfCSg2BjOxGhkObMElMTKp4uCcjFmEeIc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gr3GFmtn4ZGn64LSDdb/JpNXaQP5tfhtdddvsQ4ET+8Qf2x/FfFSpjkpRyI0YiPjRazc7vAnzz5lxS/TVZR0gYOQCtdHIj0urY46bN93INTJl62LFLBoHBzoFWBNidgKYtGxL84cr0sbjWa2XWJXgzIMUB98zJEiPkdsDkPu5Ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FvLlnSbP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A4EC4CEE9;
-	Fri,  4 Apr 2025 11:36:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743766606;
-	bh=YVenVswWu/KfCSg2BjOxGhkObMElMTKp4uCcjFmEeIc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=FvLlnSbPyOAo/6VsKIjiIFVxXiUqM9VTYZh4eessehRAPTERhj6b7IBASfivChS+r
-	 1WM+KfRcILwdNLkv4XpLJK+6uumGFuPGc401vyC6OngVRubw7WgjBH96/1dHLFi0Jq
-	 HJUItqRQtNT5NQYjpPuZPjbEIOrvkQb6b3wesu3JsQciMuV6byn0YZFtAc1TJ4U88Q
-	 s5NVsauHThJQPonTgPl4uhKigWqqGppBvN2zZkQkyN4fgW4/EzK0fXtsP5/SGXdoYI
-	 NpWdsU6G7a05p6DALpNuhunUWzZxR0Zz2kvnJW+ucrdhcL1I8JUT80RubA0NzM0ExM
-	 0butrA0XZzXnw==
-From: Mario Limonciello <superm1@kernel.org>
-To: mario.limonciello@amd.com,
-	rafael@kernel.org
-Cc: Ian Laurie <nixuser@mail.com>,
-	Yijun Shen <yijun_shen@dell.com>,
-	Richard Gong <richard_gong@amd.com>,
-	rafael.j.wysocki@intel.com,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH] ACPI: button: Only send `KEY_POWER` when suspended
-Date: Fri,  4 Apr 2025 06:36:35 -0500
-Message-ID: <20250404113636.2390281-1-superm1@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1743769811; c=relaxed/simple;
+	bh=JeuacFG/T5IzwJvxG1MoFQp4VLhHpIBovq2dABSnT4Q=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=i2d6hGBLw65LDTos2czsqJjy1qaZoYghZywtvOMjy+uRRZ67e6tKoSMscQCF0caS5j9IUyWBMbB/UhO+oaKDAGEvXBjAzNOQOXY4/9b1M+TOk7G4w1KJ98SogOLbfOrG9LzynL0aXWJpPFCeYyzP/nx4Gx6vQYBw48zc8tRChCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4ZTdGh1m1wz9s3R;
+	Fri,  4 Apr 2025 14:30:04 +0200 (CEST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 04 Apr 2025 14:29:56 +0200
+Message-Id: <D8XUSXKGAPBL.HFZUETKB6YQ1@buenzli.dev>
+Cc: "Daniel Scally" <djrscally@gmail.com>, "Heikki Krogerus"
+ <heikki.krogerus@linux.intel.com>, "Sakari Ailus"
+ <sakari.ailus@linux.intel.com>, "Dirk Behme" <dirk.behme@de.bosch.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>, "Saravana
+ Kannan" <saravanak@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 03/10] device property: Add
+ fwnode_property_read_int_array()
+From: "Remo Senekowitsch" <remo@buenzli.dev>
+To: "Rob Herring" <robh@kernel.org>, "Andy Shevchenko"
+ <andriy.shevchenko@linux.intel.com>
+References: <20250326171411.590681-1-remo@buenzli.dev>
+ <20250326171411.590681-4-remo@buenzli.dev>
+ <Z-UPJyD41LOMM3o2@smile.fi.intel.com>
+ <D8WA3WIHEQRN.3LQS84K8Z46OW@buenzli.dev>
+ <Z-6NG7fSfyKH-vW_@smile.fi.intel.com>
+ <CAL_JsqLPZc1LB09auMOJp90hbhJin75Yaa09h12ziZZgExSsBg@mail.gmail.com>
+In-Reply-To: <CAL_JsqLPZc1LB09auMOJp90hbhJin75Yaa09h12ziZZgExSsBg@mail.gmail.com>
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+On Thu Apr 3, 2025 at 6:08 PM CEST, Rob Herring wrote:
+> On Thu, Apr 3, 2025 at 8:29=E2=80=AFAM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+>>
+>> On Wed, Apr 02, 2025 at 06:04:13PM +0200, Remo Senekowitsch wrote:
+>> > On Thu Mar 27, 2025 at 9:41 AM CET, Andy Shevchenko wrote:
+>> > > On Wed, Mar 26, 2025 at 06:13:42PM +0100, Remo Senekowitsch wrote:
+>> > >> The rust bindings for reading device properties has a single
+>> > >> implementation supporting differing sizes of integers. The fwnode C=
+ API
+>> > >> already has a similar interface, but it is not exposed with the
+>> > >> fwnode_property_ API. Add the fwnode_property_read_int_array() wrap=
+per.
+>>
+>> ...
+>>
+>> > >> +EXPORT_SYMBOL_GPL(fwnode_property_read_int_array);
+>> > >
+>> > > I'm not sure about this. We have a lot of assumptions in the code th=
+at the
+>> > > arrays beneath are only represented by the selected number of intege=
+r types.
+>> > > This opens a Pandora's box, e.g., reading in u24, which is not suppo=
+rted by
+>> > > the upper layers..
+>> > >
+>> > >> +int fwnode_property_read_int_array(const struct fwnode_handle *fwn=
+ode, const char *propname,
+>> > >> +                             unsigned int elem_size, void *val, si=
+ze_t nval);
+>> >
+>> > Here's an alternative approach using a macro to map each integer type =
+explicitly
+>> > to its corresponding read function. There are some additional changes =
+that will
+>> > be necessary to make the rest work, but this is the gist of it.
+>>
+>> I don;'t know Rust to tell anything about this, but at least it feels mu=
+ch
+>> better approach.
+>
+> I know a little Rust and it is much worse. It is implementing the same
+> code 8 times instead of 1 time just to work-around the C API.
 
-commit a7e23ec17feec ("ACPI: button: Install notifier for system events
-as well") modified the ACPI button behavior to send
-`ACPI_BUTTON_NOTIFY_WAKE` events.  This caused a regression on a
-"Dell Optiplex 3040" sending `KEY_POWER` randomly at runtime.
+Can you please elaborate on this concern?
 
-Adjust logic so that `ACPI_BUTTON_NOTIFY_WAKE` can not send `KEY_POWER`
-unless system is suspended.
+The previous approach uses generics, which means the function is also
+"copy-pasted" for each concrete type it is used with at compile time,
+just like with a macro. So using a macro wouldn't be worse than generics
+if binary size is the concern.
 
-Fixes: a7e23ec17feec ("ACPI: button: Install notifier for system events as well")
-Reported-by: Ian Laurie <nixuser@mail.com>
-Closes: https://lore.kernel.org/linux-acpi/CAJZ5v0hbA6bqxHupTh4NZR-GVSb9M5RL7JSb2yQgvYYJg+z2aQ@mail.gmail.com/T/#md8071e480212201f23e4929607386750d3b6bc13
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2357044
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
-Cc: Yijun Shen <yijun_shen@dell.com>
-Cc: Richard Gong <richard_gong@amd.com>
----
- drivers/acpi/button.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+If the concern is about readability, I have managed to move all logic
+outside the macro body, all that remains is the association between type
+and `*_read_array` function.
 
-diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
-index 90b09840536dd..515224943c3cf 100644
---- a/drivers/acpi/button.c
-+++ b/drivers/acpi/button.c
-@@ -444,10 +444,18 @@ static void acpi_button_notify(acpi_handle handle, u32 event, void *data)
- 	struct input_dev *input;
- 	int keycode;
- 
-+	button = acpi_driver_data(device);
-+
- 	switch (event) {
- 	case ACPI_BUTTON_NOTIFY_STATUS:
-+		acpi_pm_wakeup_event(&device->dev);
-+		if (button->suspended)
-+			return;
- 		break;
- 	case ACPI_BUTTON_NOTIFY_WAKE:
-+		acpi_pm_wakeup_event(&device->dev);
-+		if (!button->suspended)
-+			return;
- 		break;
- 	default:
- 		acpi_handle_debug(device->handle, "Unsupported event [0x%x]\n",
-@@ -455,12 +463,6 @@ static void acpi_button_notify(acpi_handle handle, u32 event, void *data)
- 		return;
- 	}
- 
--	acpi_pm_wakeup_event(&device->dev);
--
--	button = acpi_driver_data(device);
--	if (button->suspended)
--		return;
--
- 	input = button->input;
- 	keycode = test_bit(KEY_SLEEP, input->keybit) ? KEY_SLEEP : KEY_POWER;
- 
--- 
-2.43.0
-
+Remo
 
