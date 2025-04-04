@@ -1,117 +1,133 @@
-Return-Path: <linux-acpi+bounces-12733-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12734-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE55A7B8CE
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Apr 2025 10:25:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E871A7B90E
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Apr 2025 10:39:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3BEB16E6D4
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Apr 2025 08:25:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C531C189ED20
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Apr 2025 08:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0F61991D2;
-	Fri,  4 Apr 2025 08:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF90A199FB0;
+	Fri,  4 Apr 2025 08:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Le2M4XuM"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="awDtH6Sm"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E533F18BBB0;
-	Fri,  4 Apr 2025 08:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4DC1993B7
+	for <linux-acpi@vger.kernel.org>; Fri,  4 Apr 2025 08:38:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743755133; cv=none; b=WjcaEjBn5+ycbYYN8PvYT0sxw3gbbeSZDmTra1zkdnWnRyEZWD6agRV4FwJDmR0NwuGBeWJEvE3r5+K3fxjDZ6PDeVUWpjEyL0w4iTVMdYTNMsGZ/0FfCj4X1Ak+/var4eUOpzwJIKsJdUGFxkj+BdJ4YuCFeZsfPPslqlRkqL8=
+	t=1743755899; cv=none; b=l5VJ17Ieim3avBRXKXeEWWe2nHQUhoI3o89YhDMIKYCs0kvFFUh3rKDru4FYs9nlLBY009MpO45dxxtHnOyXbYsmmvoKA0nC5g9fQwdZZ/5sYWOQ3d9piGmefphaanlWpXztyXtqoji/p3zxxC5EVc1Pg1CHGS+d8+N9xuXf+2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743755133; c=relaxed/simple;
-	bh=Pd54fnZYvN0IF3kAJsE/tgFL69YD0dJcke+lyp9URmU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IzhDxPWrKS72LqqOr47v+RkY/0Br6cOkxoYIraFztvs7hugmvylSFhxtJtUBkPkhoqaE4wQsPYerMuYjbggPs1q4U8S44y4FIc+jhFHfScgGtlhYddVMu/up4kxkcP/aedcXOjo4LuJVGiN9Lnx4LEqBP725DnVDJTn85GOylCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Le2M4XuM; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5eb5ecf3217so3098134a12.3;
-        Fri, 04 Apr 2025 01:25:30 -0700 (PDT)
+	s=arc-20240116; t=1743755899; c=relaxed/simple;
+	bh=OktGT+TBkq3WfpZd1me7J15mRYBZ6g9T1DYDBuhe3d8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fN8vuvOoEMa/msXlfrt+G/Q5JqeI6haluVtjm1rPTJEcRC9/xnLb+j9NlhugkbCC85XdCU6tsldclOdxSI/VjY+UvW816LH3nq0P0Kc9aYRBuc1QUkloKef2/BtjBd7ice2N8GRkmKmdfBm+O2uQ4Wr+VvfS41xKiuY0FeQVrsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=awDtH6Sm; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-30c416cdcc0so15134411fa.2
+        for <linux-acpi@vger.kernel.org>; Fri, 04 Apr 2025 01:38:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743755129; x=1744359929; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1uH1IX2xHGor+jIVcJKBUYPSchHEkklHprBp/7Y2BGQ=;
-        b=Le2M4XuMAWSnqM8Wp9EbvutSpoDARpjonepbFI9DS8vFgBXEUFV3hQCgcKo4jgoUWy
-         oaNp6HXbdtP7045ufFd1VxBKhasd9sL2QkceWy/ikMPPF0MXPbLONAjIZ6miC/FP/JYp
-         oqyoiotMYeZEi8E4qyHE8F6UtQR0tHZ3eiHOJIpcDk8EJfuoaqlJUckWaveMtql7SSP8
-         4kuhdZamFugyZtaee/7rpq2Cs08wCwrZr+wGd+Oqvbccff36lyKEZNtIPUn8osZGs2oC
-         oboEm+dzkYccfsbw35NKI9bF29hEZozQq4TWaEI+IGUEoPTnFTZ86CKYQ0VWKxBNTTqH
-         Cqhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743755129; x=1744359929;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1743755896; x=1744360696; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1uH1IX2xHGor+jIVcJKBUYPSchHEkklHprBp/7Y2BGQ=;
-        b=eTE2qHc+wYCB1I12wqFl878sxSlsmEaqVJPBQXQY7AzkO9YOQXG/FZrFz4A7ZTAAjw
-         bNUxWU1GURX5ZOxMJAWkVbdTIo5Sisxq5qeYKRniuOY9r2MZ3CLVIKVpXcclLSE1JIa1
-         2H3Sdv8fmHScSA1FhAxEGYED0hhA9WHFPmGbEx1RQD8dCfhOHnj9h5vzIRv1BfoZsJ93
-         gG1uQZki/C5d9WvQbEYuQSOFi2hJ26nXlQADbO4XuYFkjIJQ98u67F3VdfsYtp4OD6SH
-         Nc+w8mQrTNQ+dYWUKhcjvswJPLufA8BUcJvvmWU57EWxTegbdotvj6t3BIOwIIRNWPf+
-         4k2w==
-X-Forwarded-Encrypted: i=1; AJvYcCWEERQhjUd71dXkCL7+usfkz5xyfQiYXY9YdBXpVojGYD+NFRBgpPiDanRGIy4ihr7nlmnVWV2sU2AJLW3K@vger.kernel.org, AJvYcCWZfZurGHOvGJEp16ogxn2wQh4Vpw9UBcdI4jtCQTZov6/Fh4XnwGiDZODlVNMPRumUt8MXxBaICvwR@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFkWztG7k3Bt/TlXIq193U09k6uAZv37z4n7G6WaC7RnCnBStW
-	aLXzV2MlEgdyT1WakBWJ+tyJio8vEsojfFM3VAvAr1aJLKGK6ZDV40p6/s+/sXc=
-X-Gm-Gg: ASbGncstrBTrUkYFTh+WSjkIO0LdWGOLidpwK93Xa6g6HensYGV2BfGVzoL6x4v4cgX
-	RrBXLkMyvIlgN31E0UFVhNnjb1+Fb4LDR0SnQTCRUlqU+sTlLnIoj69XVlrOjG3McmWdG5jWWfD
-	FQS8rT0UrpmjWfgwjQR3eYWW6c+Yrmxgjp2diVbkHVeHsH6eJ2fHGYoh+K91Jvhrb8e+9DUr5zh
-	HuniUaso9ARhvV3b/WPHogmWEpYOJTlH0BtMVOCgrkQMTe1m2xUrmeJnETmKcBWdg1enSTs6Q5O
-	yhVDLQv/fayPU+PvcR9CO4/tOi1Vcme1Xg==
-X-Google-Smtp-Source: AGHT+IFVdlyUKzMf5Pb5awlp9iNJ1Cr8z/mFGTAH8E9fTJUEvs97KMGKq+hbLu5ymPdFCE1kusouSQ==
-X-Received: by 2002:a05:6402:51ca:b0:5e6:23c:a242 with SMTP id 4fb4d7f45d1cf-5f0b3bd0a10mr1826431a12.18.1743755128931;
-        Fri, 04 Apr 2025 01:25:28 -0700 (PDT)
-Received: from localhost ([95.85.21.12])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-5f087714df0sm1954318a12.14.2025.04.04.01.25.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Apr 2025 01:25:28 -0700 (PDT)
-Date: Fri, 4 Apr 2025 10:25:26 +0200
-From: Ahmed Salem <x0rw3ll@gmail.com>
-To: robert.moore@intel.com, rafael.j.wysocki@intel.com, lenb@kernel.org
-Cc: skhan@linuxfoundation.org, 
-	linux-kernel-mentees@lists.linuxfoundation.org, linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] ACPI: sysfs: apply ACPI_NONSTRING annotation
-Message-ID: <dcc3a018fb28899b277df2e154740d59d4e404af.1743754416.git.x0rw3ll@gmail.com>
-References: <cover.1743754416.git.x0rw3ll@gmail.com>
+        bh=mjK7W0Om4uq93pjMJtCwW0RKoP5OEp/tohd8eg66f0s=;
+        b=awDtH6Sm4pWEr6KInTiEOOi8NnZyDAmshppMr4eQwj9VhLy2EshRGyZ/WmootQn0oj
+         OoQJLc8jRb9Xmlz/YA2gJyLUJyP+HXn1PAeaToVeOFSD4ladaH7FKdNv/3gu5iKjoCav
+         VOHBvwklezw7I9mkfDBZB2JIjwtglcKweoGjK+Co1oYmycg2ZwgoFgBaBrpRtSsMJTZF
+         Yt8JBAI/qKPyvjVQGwAFaCvBeCQIifzPIbixUKxoTv2wJvBCi1Ks28q9K4iPhzKxzOP5
+         yZT/gHo43HobB1gghIk3cWNKFxJEnOL+BiBLeWq61RABgDaFc1x1vXn6HdlT/+ouJZBp
+         /H5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743755896; x=1744360696;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mjK7W0Om4uq93pjMJtCwW0RKoP5OEp/tohd8eg66f0s=;
+        b=WcMzojAHp+xN41zDv8cdDvK0IxiNgaVMtxNMtMt33Tt/p3tSuXbGJkpbbfeoJFocbH
+         gMWzZE0yV+0Y4RUch5WLqqe80NCYI4sLOKGQ3+l+EFBODTrE/2HeVXZdWqfZ4I5sKJDd
+         mjLQW8FTAbgYxNu/jnmIj+KvUK7VR1ICLtd5ku9+xvaFfP1CofhQA2zYqJSZl60g2G3s
+         iI6vE2vMkmewPXM0zvDSn2D/TWo977kXqz+7C4kS6J+yf9qG58RXlm8ItXN3pSHx6jov
+         bK0nRX/g7Av9MK2xedviKbRoRPa//KmHiIM3+HQAaeL5whELyh1Bigg1rzSrYCzgSLsf
+         jkPg==
+X-Forwarded-Encrypted: i=1; AJvYcCWvk5qL9iSeUDtZcKYx7PNHxsu7+1ylbTPkGHI0W7FjFCP56h4n809ldEu68kefx3GkPUD6OdjXR77S@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxh7RZb9CfrSlv3QPWp2/hznG5N2N6A5omJVNBu0y9EK1Cmyx5u
+	HSY6ZdlW08xpvXks8Dku4jsTO5rj6TPOWE5nTFUb3SF4e5m5zOn0i1bc7Q7ZQ4s+VaCU46oKUh9
+	DNjBpuYqkEw+T032Rt1cQBEXBZFwBGIWzMnQK5g==
+X-Gm-Gg: ASbGncui2t4+tMAEO6BXGnpNS7J/LEQ3OQYGADnt+Ji7OqxEiMIYNxKqSbRmaOdy22f
+	Nk+2C1mEslCjCuIhrR4wuhDfN20OcEKSBIHcFk+RXsJAzp9D1XnERqCWsdKqH6V5qRd3axR4l6W
+	RGs3lDN99zP8iWkLJPVS9mPBzVryXRGsAckyCb8A5Ch4rtajoKt+lIfxeMyg==
+X-Google-Smtp-Source: AGHT+IFo1yqcfYeeSlc8DpjiZKDyI9rcLin3wb9oxxwP6e5Vf0xIJMSzOKpz/A/vVvQ7XboHvE1K21R5AhhVXknfqdg=
+X-Received: by 2002:a2e:a588:0:b0:30d:dad4:e06f with SMTP id
+ 38308e7fff4ca-30f0a0f0da0mr7997421fa.2.1743755895678; Fri, 04 Apr 2025
+ 01:38:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1743754416.git.x0rw3ll@gmail.com>
+References: <20250403160034.2680485-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20250403160034.2680485-1-andriy.shevchenko@linux.intel.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Fri, 4 Apr 2025 10:38:04 +0200
+X-Gm-Features: AQ5f1JoFgmR-MJjXIiICCtTNAV6gI4tCP6L06BPqgDcRNqu4WYtSJEQRY5AjDtI
+Message-ID: <CAMRc=Mf8AyxAeNbBbiQn1HdkrEdODmTAhTmrtiAp6H3=HUPSWg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] gpiolib: acpi: Refactor to shrink the code by ~8%
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, linux-gpio@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Mika Westerberg <westeri@kernel.org>, Linus Walleij <linus.walleij@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Mark ACPI_COPY_NAMESEG() destination char arrays with the ACPI_NONSTRING
-annotation.
+On Thu, Apr 3, 2025 at 6:00=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> A simple refactoring of the GPIO ACPI library parts to get an impressive
+> ~8% code shrink on x86_64 and ~2% on x86_32. Also reduces a C code a bit.
+>
+> add/remove: 0/2 grow/shrink: 0/5 up/down: 0/-1221 (-1221)
+> Function                                     old     new   delta
+> acpi_gpio_property_lookup                    425     414     -11
+> acpi_find_gpio.__UNIQUE_ID_ddebug478          56       -     -56
+> acpi_dev_gpio_irq_wake_get_by.__UNIQUE_ID_ddebug480      56       -     -=
+56
+> acpi_find_gpio                               354     216    -138
+> acpi_get_gpiod_by_index                      462     307    -155
+> __acpi_find_gpio                             877     638    -239
+> acpi_dev_gpio_irq_wake_get_by                695     129    -566
+> Total: Before=3D15375, After=3D14154, chg -7.94%
+>
+> In v2:
+> - renamed par to params (Mika, Bart)
+>
+> Andy Shevchenko (6):
+>   gpiolib: acpi: Improve struct acpi_gpio_info memory footprint
+>   gpiolib: acpi: Remove index parameter from acpi_gpio_property_lookup()
+>   gpiolib: acpi: Reduce memory footprint for struct acpi_gpio_params
+>   gpiolib: acpi: Rename par to params for better readability
+>   gpiolib: acpi: Reuse struct acpi_gpio_params in struct
+>     acpi_gpio_lookup
+>   gpiolib: acpi: Deduplicate some code in __acpi_find_gpio()
+>
+>  drivers/gpio/gpiolib-acpi.c   | 146 +++++++++++++++++-----------------
+>  include/linux/gpio/consumer.h |   2 +-
+>  2 files changed, 72 insertions(+), 76 deletions(-)
+>
+> --
+> 2.47.2
+>
 
-Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
+Will you take it through your tree or do you want me to pick it up next wee=
+k?
 
-diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-index a48ebbf768f9..8a5af261129a 100644
---- a/drivers/acpi/sysfs.c
-+++ b/drivers/acpi/sysfs.c
-@@ -307,9 +307,9 @@ static struct kobject *hotplug_kobj;
- 
- struct acpi_table_attr {
- 	struct bin_attribute attr;
--	char name[ACPI_NAMESEG_SIZE];
-+	char name[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;
- 	int instance;
--	char filename[ACPI_NAMESEG_SIZE+ACPI_INST_SIZE];
-+	char filename[ACPI_NAMESEG_SIZE+ACPI_INST_SIZE] ACPI_NONSTRING;
- 	struct list_head node;
- };
- 
--- 
-2.47.2
-
+Bart
 
