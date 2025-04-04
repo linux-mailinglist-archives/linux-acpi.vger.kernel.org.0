@@ -1,129 +1,114 @@
-Return-Path: <linux-acpi+bounces-12728-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12729-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43DDBA7B662
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Apr 2025 05:04:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7807A7B6F6
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Apr 2025 06:43:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3CAB189CFE4
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Apr 2025 03:02:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2064F7A5AA0
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Apr 2025 04:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F34E1A3147;
-	Fri,  4 Apr 2025 02:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF4B2629D;
+	Fri,  4 Apr 2025 04:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="icb1fn/E"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZUwl9Mhd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from pv50p00im-zteg10021401.me.com (pv50p00im-zteg10021401.me.com [17.58.6.47])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24ACD19DFB4
-	for <linux-acpi@vger.kernel.org>; Fri,  4 Apr 2025 02:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A471448D5;
+	Fri,  4 Apr 2025 04:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743735595; cv=none; b=bFk/JDTzZeC0qn0E9kru0xvjm5bXV1J3o1nnFJ5TuHFROD0cQiTHYfEHcrQjeQRbu6fmZTbJDom/BuPzIk4daTGp1OcMUUUcCYKr7MWKhW3VFiCb6m5uSS/2/ji6T8lz4EGMUYP6Xa9eWcnEYAzk/yWO7IPl990m5iaTeph3PoM=
+	t=1743741808; cv=none; b=um9LeikhahAFPFZ/SQAW1j1nayK+4pV0IGLQCdeLej9kkiyopvhA1Zn9KbUrpPqP24NUYZTp5nwIkEeRGvszxxwLdoLqUqrzK1aMtiLmNji2mxL/HFJ9e5UQoZXhMMqtXTiUH6JwYwL00ukHhkt/8Ye1RpHEpsXsOrc8sKlvIqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743735595; c=relaxed/simple;
-	bh=a59/dCArZpjmdu1CA2ns6K7frhrEdPJ4+b5B41x0SKk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UlIA7WAlw4ZXHGnfNPtmR5saSurP721NWJ7EJE5pdZPCvvNHfMFfbVvuqqHihAfU91pauJxQnN+93AQzvyjLTEd7b1PAQQp5TW3ipYGMyBA1UFy4COfzsxtrf6uQ2IwlG3jzhARFE36L8e3hyvY9QJZA7+Y22Qf67zTSLAuwmqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=icb1fn/E; arc=none smtp.client-ip=17.58.6.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; bh=fG3CGqe+hvK5S3evRDdon69vZKGIehTLbtFqN3Fym2M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
-	b=icb1fn/E/NlnyCRVqy/8M6PrlMWO6CDU4dX2glMzFngDDg711ZTkm8yHSclRy4MLI
-	 L1ik1qVKxj2mCQwCACsTWjShOr3e0RyxuAel4INOws1+b5ATIj98vfmN3TWcDkIpws
-	 lcUY+C1ZNkFfaOgszw8/yPvGM0XP9zcs3R2rlrDIn93WzW8Jrep/Jnbk102H1kq83d
-	 MEBTReNAwVjSY3n91Nh9HG9VQP6j8VJiBBvle1Y+4tU3xkB2cTC3QUxPda51piDn1u
-	 cCbhJbCFDp3bhYdlXsKS9SErKeVbO9o3lxNdUtnA2+QbYAdqA/OujAHKuxsHKG1EUC
-	 iHa+kBrOv+caQ==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-zteg10021401.me.com (Postfix) with ESMTPSA id D3BB88E0091;
-	Fri,  4 Apr 2025 02:59:45 +0000 (UTC)
-Message-ID: <f6dd3667-8528-4597-963f-75e78d7be733@icloud.com>
-Date: Fri, 4 Apr 2025 10:59:41 +0800
+	s=arc-20240116; t=1743741808; c=relaxed/simple;
+	bh=yOFP6WyBvsmJomlapRb3VVI2bxBHvehWdst6fSGFPYQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cvGVFfLl2UuP+aWoCWLemMUbcGUShiBwfkByd9QdExt1cnOVOHPqPlgGjb5nmYsPcSMqidjE6g4AyyZAPb3ZalysLpsmellzjIJwJ+BBN1Ixclph6wUl8xeVGo33YH4BXojuUO/atv+yMacH95VfqkRtvvIJLod73GaR7rqEfG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZUwl9Mhd; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743741807; x=1775277807;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yOFP6WyBvsmJomlapRb3VVI2bxBHvehWdst6fSGFPYQ=;
+  b=ZUwl9MhdaCuNyxH1DyhYtsrNOt4AntXvxBJoUZCTVSwV+YBQAuu4GvBa
+   X/GXnnnDTIy3ydtAv90oRiv9FMU1sOcBbGYHQ2m7hkNmwj5RkpBjMO7wQ
+   Y7rlvMZ85Xj2fmd/H0zLiU29YG2lRZeYfhk4pPcFHLl+IRldRYxC0IPVn
+   9gCm0VtheX4fkMZbMADqxmIlPcdGZI7fnusvRgSqeSDtrHGU9F8jEHoSO
+   6azxuuEoE/YIqk7sPM4wZSUQenE7vW2rHbSo8rzR60STLHgI7eTduclq5
+   mm0RIcvCpaTHu+FKljiyoXzU7NIwsEyUJ57sGifCvSPGClPKQcmS29oni
+   g==;
+X-CSE-ConnectionGUID: aakOP+3BQHuJF453rDv7/w==
+X-CSE-MsgGUID: 1UuHOrvESW29k17M8iEN0A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11393"; a="45348980"
+X-IronPort-AV: E=Sophos;i="6.15,187,1739865600"; 
+   d="scan'208";a="45348980"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2025 21:43:22 -0700
+X-CSE-ConnectionGUID: o2F2cX8WSia7cBJ2AnsCHg==
+X-CSE-MsgGUID: +1RCCa9DRZuGs3fmv8VukQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,187,1739865600"; 
+   d="scan'208";a="126985059"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa009.jf.intel.com with ESMTP; 03 Apr 2025 21:43:19 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id 5A50F141; Fri, 04 Apr 2025 07:43:18 +0300 (EEST)
+Date: Fri, 4 Apr 2025 07:43:18 +0300
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mika Westerberg <westeri@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v2 0/6] gpiolib: acpi: Refactor to shrink the code by ~8%
+Message-ID: <20250404044318.GL3152277@black.fi.intel.com>
+References: <20250403160034.2680485-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] device property: Add a note to the fwnode.h
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Zijun Hu <quic_zijuhu@quicinc.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-References: <20250331163540.280606-1-andriy.shevchenko@linux.intel.com>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <20250331163540.280606-1-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: 1U1YPAE7jr6a27fniVEr3Z9tVBQ1j0QS
-X-Proofpoint-ORIG-GUID: 1U1YPAE7jr6a27fniVEr3Z9tVBQ1j0QS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-04_01,2025-04-03_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0
- mlxlogscore=999 malwarescore=0 bulkscore=0 mlxscore=0 clxscore=1011
- suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2308100000 definitions=main-2504040020
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250403160034.2680485-1-andriy.shevchenko@linux.intel.com>
 
-On 2025/4/1 00:35, Andy Shevchenko wrote:
-> Add a note to the fwnode.h that the header should not be used
-> directly in the leaf drivers, they all should use the higher
-> level APIs and the respective headers.
+On Thu, Apr 03, 2025 at 06:59:11PM +0300, Andy Shevchenko wrote:
+> A simple refactoring of the GPIO ACPI library parts to get an impressive
+> ~8% code shrink on x86_64 and ~2% on x86_32. Also reduces a C code a bit.
 > 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
+> add/remove: 0/2 grow/shrink: 0/5 up/down: 0/-1221 (-1221)
+> Function                                     old     new   delta
+> acpi_gpio_property_lookup                    425     414     -11
+> acpi_find_gpio.__UNIQUE_ID_ddebug478          56       -     -56
+> acpi_dev_gpio_irq_wake_get_by.__UNIQUE_ID_ddebug480      56       -     -56
+> acpi_find_gpio                               354     216    -138
+> acpi_get_gpiod_by_index                      462     307    -155
+> __acpi_find_gpio                             877     638    -239
+> acpi_dev_gpio_irq_wake_get_by                695     129    -566
+> Total: Before=15375, After=14154, chg -7.94%
 > 
-> v2: added "...into the driver" piece at the end to remove ambiguity
+> In v2:
+> - renamed par to params (Mika, Bart)
 > 
->  include/linux/fwnode.h | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-> index 6fa0a268d538..4c4d3f93534c 100644
-> --- a/include/linux/fwnode.h
-> +++ b/include/linux/fwnode.h
-> @@ -2,6 +2,12 @@
->  /*
->   * fwnode.h - Firmware device node object handle type definition.
->   *
-> + * Note, this header is not meant to be used by the leaf drivers.
-> + * It provides the low level data types and definitions for the firmware
+> Andy Shevchenko (6):
+>   gpiolib: acpi: Improve struct acpi_gpio_info memory footprint
+>   gpiolib: acpi: Remove index parameter from acpi_gpio_property_lookup()
+>   gpiolib: acpi: Reduce memory footprint for struct acpi_gpio_params
+>   gpiolib: acpi: Rename par to params for better readability
+>   gpiolib: acpi: Reuse struct acpi_gpio_params in struct
+>     acpi_gpio_lookup
+>   gpiolib: acpi: Deduplicate some code in __acpi_find_gpio()
 
-Ack
+Looks good now,
 
-> + * and device property providers. The respective API headers should
-> + * guarantee all the required data types and definitions without including
-> + * this header directly into the driver.
-
-device property(include/linux/property.h)
-	       ^
-	       |
-firmware node(include/linux/fwnode.h)
-   ^           ^         ^        ^
-   |           |         |        |
-   DT         ACPI     SWNODE    ...
-
-
-For various firmware implementations(DT|ACPI|SWNODE...), i feel we may
-allow them include fwnode.h by their header or source files.
-
-> + *
->   * Copyright (C) 2015, Intel Corporation
->   * Author: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->   */
-
+Acked-by: Mika Westerberg <westeri@kernel.org>
 
