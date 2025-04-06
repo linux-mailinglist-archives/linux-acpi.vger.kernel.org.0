@@ -1,68 +1,68 @@
-Return-Path: <linux-acpi+bounces-12764-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12765-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B012A7CE06
-	for <lists+linux-acpi@lfdr.de>; Sun,  6 Apr 2025 15:13:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E40D1A7CE1C
+	for <lists+linux-acpi@lfdr.de>; Sun,  6 Apr 2025 15:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F172A16B175
-	for <lists+linux-acpi@lfdr.de>; Sun,  6 Apr 2025 13:13:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75A7C3B0C19
+	for <lists+linux-acpi@lfdr.de>; Sun,  6 Apr 2025 13:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF191A0B0E;
-	Sun,  6 Apr 2025 13:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6480201103;
+	Sun,  6 Apr 2025 13:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U3uUTHYI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZX0owmjh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485F079CF;
-	Sun,  6 Apr 2025 13:13:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027432AEE0;
+	Sun,  6 Apr 2025 13:24:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743945195; cv=none; b=XsQ66SVaJVZ+tAZNMRVailszvKokAL7eDvaOnGAYrvYRurmi0lC8QRKxqwnDRUni4B+4zdSblNM6iZ6qZgFC3GkXL8XBqGlDk4K8LObz0A2C9YhEw2rk1Vo4ukqjGuKb1LRhhgkg7jqecJypYBBzAbb2JuoMtun/JmMdgrMbskg=
+	t=1743945889; cv=none; b=K3XkX0G4EytFxN4FOCWDfaA2M1BFlIH7pR1NZCTKcwmIF859jc8vtI0ndtm9n5EAnqGeBtOjeBmZFKT3Od02qgiErTmdSHZ9GkKkEjPvR4R5N5mBI4eQi32Q5qvLvy7EXB3jBtYY/QjLiFiaa0plOYv9fdTWlzzBRyV9kEZIkmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743945195; c=relaxed/simple;
-	bh=Ej2Hq7jpSOIG7V6PCnu6LxemPiYhAtlxrkIWOUAG6UY=;
+	s=arc-20240116; t=1743945889; c=relaxed/simple;
+	bh=HhYS6ZrofSFsRGvKxqef7mHm63j09x/tSq4gjLfSKeg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eoPBRVRWm/I9a7xvugMTWsJeh322IhAO2Xjb51n18S5OgRyGRzgg+3u+VG2fesH1tEzOXGi5zG0GTWx1742MczRrVNp97bdgJDnwjFG5n3TQsg/cQtRx6KxHZvGJ8bz1NEEgmHWGUj+xrq94CapZXTXBUA1o+J/0qdrBOB2Zw6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U3uUTHYI; arc=none smtp.client-ip=198.175.65.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=eLwUdcE97a2xxV+3dRanpKH02Wzsob8+4NLK2TXJyU2w9qccAC439KKTmFAsBOSoYHR6PlSv1GXYWtZjDPHgZDw5vZkzlF74NGNCtQPprVYwBItLwGZHCgB05VSmUf1NqJRtCeYJtBZlYfCZZyl8+7+6ST5BDTiQaWCQA9PY9sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZX0owmjh; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743945193; x=1775481193;
+  t=1743945888; x=1775481888;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Ej2Hq7jpSOIG7V6PCnu6LxemPiYhAtlxrkIWOUAG6UY=;
-  b=U3uUTHYIxUXTuHT8y1l7M+dH/T7zrI5+LnEwQG5zJ0460+oR18jiDhM3
-   m3oZOUWQVxa5cXGs6CBWoi45KHELHJ5piax4TwgwYME3D70BccWw63X0F
-   gANVEWCYLKR+PwqkJ5ubvXxu6iDTesDvBiZdBgtFW72eTl0LAs7LPmltF
-   DqwjP19JGoYfrUKvTNrwpDNxImVd9haDxgfZGzv3iKAFogtkEyLdBLynY
-   1Mg6uUj1GO3bYv2deAoSiVkaxpKQLRW/SeGHtoU9zobi/vjGfI72PYYZn
-   4MItEj1VMzTbpK0mX4rl9kep1lvi3qX4JjW1Xz0/1YTMy57aLT98pwMK0
+  bh=HhYS6ZrofSFsRGvKxqef7mHm63j09x/tSq4gjLfSKeg=;
+  b=ZX0owmjhKYbiLVvdmsfK/jjnRsnmTLN9AQZW0KT0CwbYIq4GbsuyArN1
+   qfrIVzN1azd35e+SkWPu0NUs0bmiWk5+eNAZveRWPiJHTfznafILPiQc7
+   XzzXGqKTAJfCPeww9+o366u9au2JApr+9z5DIB0Qu1ajzIppqs+LbYyiS
+   NDuYxAVB85FcMMwb3/zpZSCeiyvVdB1x6o4nM9yYqdqM6ob1ttuDBtBYM
+   1S4blK70g1stuOAo4gaUiTDqO6pDmDNjhuvWm+LmWydaZcrCaQcj7EE3R
+   2XOUAGy6vsKgLGaVyg0zwYE0wSnuJiKHKPaYnCEa+5xvuUh8LYn86oqDY
    w==;
-X-CSE-ConnectionGUID: sGv3FeLHTc2vYIMHFRxg2w==
-X-CSE-MsgGUID: qSI+SCBYS/aOC4LLsLAySA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11396"; a="48987472"
+X-CSE-ConnectionGUID: lOpIb5XoTemTFwZcE/yOPA==
+X-CSE-MsgGUID: gZk7neS+QhCDSpVp0QPVPg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11396"; a="45216491"
 X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; 
-   d="scan'208";a="48987472"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2025 06:13:12 -0700
-X-CSE-ConnectionGUID: TDuQPgYhRYSZ8dgoaSFKIA==
-X-CSE-MsgGUID: ktbfnMUaQCWrkrOy7iYplw==
+   d="scan'208";a="45216491"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2025 06:24:48 -0700
+X-CSE-ConnectionGUID: 0lNWP3+WQPmia3rIZbkSKg==
+X-CSE-MsgGUID: kPAqTsPkQ4ybufdJujVFbw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; 
-   d="scan'208";a="158688730"
+   d="scan'208";a="158690058"
 Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2025 06:13:09 -0700
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2025 06:24:44 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1u1Po9-00000009ksD-1l2a;
-	Sun, 06 Apr 2025 16:13:05 +0300
-Date: Sun, 6 Apr 2025 16:13:05 +0300
+	id 1u1PzN-00000009l9w-18j1;
+	Sun, 06 Apr 2025 16:24:41 +0300
+Date: Sun, 6 Apr 2025 16:24:41 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: syzbot <syzbot+2ff22910687ee0dfd48e@syzkaller.appspotmail.com>
 Cc: dakr@kernel.org, djrscally@gmail.com, gregkh@linuxfoundation.org,
@@ -73,7 +73,7 @@ Cc: dakr@kernel.org, djrscally@gmail.com, gregkh@linuxfoundation.org,
 	syzkaller-bugs@googlegroups.com, yi.l.liu@intel.com
 Subject: Re: [syzbot] [acpi?] KASAN: slab-use-after-free Read in
  software_node_notify_remove
-Message-ID: <Z_J94Up33luYw6Xg@smile.fi.intel.com>
+Message-ID: <Z_KAmSNLsAhctKv8@smile.fi.intel.com>
 References: <67f26778.050a0220.0a13.0265.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -105,11 +105,7 @@ On Sun, Apr 06, 2025 at 04:37:28AM -0700, syzbot wrote:
 > vmlinux: https://storage.googleapis.com/syzbot-assets/3d19beb8bb92/vmlinux-acc4d5ff.xz
 > kernel image: https://storage.googleapis.com/syzbot-assets/e7298ccc6331/bzImage-acc4d5ff.xz
 
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
-
-#syz test: git@bitbucket.org:andy-shev/linux.git test-swnode
+#syz test: https://bitbucket.org/andy-shev/linux.git test-swnode
 
 -- 
 With Best Regards,
