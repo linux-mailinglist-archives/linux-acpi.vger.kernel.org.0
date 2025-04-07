@@ -1,50 +1,50 @@
-Return-Path: <linux-acpi+bounces-12771-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12772-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8D7A7D1F0
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 04:07:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB4EA7D1F9
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 04:09:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C2353ABFEB
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 02:07:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0BA3188D0C6
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 02:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A252135A3;
-	Mon,  7 Apr 2025 02:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87FDA214230;
+	Mon,  7 Apr 2025 02:07:32 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDF8212FA8
-	for <linux-acpi@vger.kernel.org>; Mon,  7 Apr 2025 02:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981262135CF
+	for <linux-acpi@vger.kernel.org>; Mon,  7 Apr 2025 02:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.0.225.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743991648; cv=none; b=pZ9a3GHg8Zxjy5co/Za/nIvQH7lW1IVobLyZFrshoHatfdp1NGpRtO9w3eVDi+ug4fIRbgnmoR6lztzGY9rvj12rjzKis60w8AuR2XgeLEPtSOUvVc+E1xvgLXA+k4j74K7MIT2B3AS70QwGtNHmwLjwtjoSgZL2LyjHYq3Nlqo=
+	t=1743991652; cv=none; b=uCKd/Eq4WrHqD+AxPkeF/FqMQHfTEUTsSTBesMLsCwcVET66CCCFt7/qOUgxcBku31iRth18SlOSt+4ThyQR5cPTKlP2E6dKwryH92j8hkAHZ6adCHGmeBZYUNWzKBlgheABbM16oHihazeLMTIZPBsbhGiosjCVhyvAo0OVb9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743991648; c=relaxed/simple;
-	bh=v+XmZ2KqPRp5EmGTIn9tSyg8cYsDYB9TmrdHK15WHHY=;
+	s=arc-20240116; t=1743991652; c=relaxed/simple;
+	bh=LI1xxYswTZGnREaBh49kFITjcqbPBpNgdy0MRsQJsEE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O3X83KQBOZYuDSAC+0ZKBs59lLOKsopacmotZrcChFNRtIPmY9p413NWPgY/noenZTzU+jp+IUbE7gP2fG4/myvfgFye3EamP6/gSki26IpTcOb+l4FdpFH520YmejyNSMRV5notxV7wfDGCq6PQwveK2PoBh0gO0EcugRMmnJE=
+	 MIME-Version:Content-Type; b=AIwqWAN+fzSkcjeidq8UgAhilO0OHyVd2ZaEUKbPwLZd9OgcxGiAUQv+cAXhPl9a9ATVoxNJHsD6thlXokE7t5MS7VQQ5luDorQZ6fvAqJkOl40YNzVhXCzJjutn3ZnLaeEXvQIeWB4ZE78MxJPLFT1YBimWwiZWed4OMgUU5Og=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=210.0.225.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1743991636-086e2365b73eef0001-I98ny2
-Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx1.zhaoxin.com with ESMTP id Avv6ZhqOzy6NHmEd (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Mon, 07 Apr 2025 10:07:16 +0800 (CST)
+X-ASG-Debug-ID: 1743991639-086e2365b83ef00001-I98ny2
+Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by mx1.zhaoxin.com with ESMTP id pCU9HxyFP6hAAIVa (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Mon, 07 Apr 2025 10:07:19 +0800 (CST)
 X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Received: from ZXSHMBX3.zhaoxin.com (10.28.252.165) by ZXSHMBX3.zhaoxin.com
- (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Received: from ZXSHMBX3.zhaoxin.com (10.28.252.165) by ZXSHMBX2.zhaoxin.com
+ (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Mon, 7 Apr
- 2025 10:07:16 +0800
+ 2025 10:07:19 +0800
 Received: from ZXSHMBX3.zhaoxin.com ([fe80::8cc5:5bc6:24ec:65f2]) by
  ZXSHMBX3.zhaoxin.com ([fe80::8cc5:5bc6:24ec:65f2%6]) with mapi id
- 15.01.2507.044; Mon, 7 Apr 2025 10:07:16 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+ 15.01.2507.044; Mon, 7 Apr 2025 10:07:19 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
 Received: from xin.lan (10.32.64.1) by ZXBJMBX03.zhaoxin.com (10.29.252.7)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Mon, 7 Apr
- 2025 10:06:01 +0800
+ 2025 10:06:03 +0800
 From: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
 To: <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
 	<tony.luck@intel.com>, <bp@alien8.de>, <bhelgaas@google.com>,
@@ -53,10 +53,10 @@ To: <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
 	<linux-pci@vger.kernel.org>, <acpica-devel@lists.linux.dev>
 CC: <CobeChen@zhaoxin.com>, <TonyWWang@zhaoxin.com>, <ErosZhang@zhaoxin.com>,
 	<leoliu@zhaoxin.com>, LeoLiuoc <LeoLiu-oc@zhaoxin.com>
-Subject: [PATCH v6 2/4] ACPI: APEI: Add new hest_parse_pcie_aer()
-Date: Mon, 7 Apr 2025 10:05:55 +0800
-X-ASG-Orig-Subj: [PATCH v6 2/4] ACPI: APEI: Add new hest_parse_pcie_aer()
-Message-ID: <20250407020557.1225166-3-LeoLiu-oc@zhaoxin.com>
+Subject: [PATCH v6 3/4] PCI: Add AER bits #defines for PCIe to PCI/PCI-X Bridge
+Date: Mon, 7 Apr 2025 10:05:56 +0800
+X-ASG-Orig-Subj: [PATCH v6 3/4] PCI: Add AER bits #defines for PCIe to PCI/PCI-X Bridge
+Message-ID: <20250407020557.1225166-4-LeoLiu-oc@zhaoxin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250407020557.1225166-1-LeoLiu-oc@zhaoxin.com>
 References: <20250407020557.1225166-1-LeoLiu-oc@zhaoxin.com>
@@ -70,13 +70,13 @@ Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
 X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
  ZXBJMBX03.zhaoxin.com (10.29.252.7)
-X-Moderation-Data: 4/7/2025 10:07:15 AM
-X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
-X-Barracuda-Start-Time: 1743991636
+X-Moderation-Data: 4/7/2025 10:07:18 AM
+X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
+X-Barracuda-Start-Time: 1743991639
 X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
 X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
 X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 3372
+X-Barracuda-Scan-Msg-Size: 1201
 X-Barracuda-BRTS-Status: 1
 X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
 X-Barracuda-Spam-Score: -2.02
@@ -88,123 +88,33 @@ X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.139599
 
 From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
 
-The purpose of the function apei_hest_parse_aer() is used to parse and
-extract register value from HEST PCIe AER structures. This applies to
-all hardware platforms that has a PCI Express AER structure in HEST.
+Define secondary uncorrectable error mask register, secondary
+uncorrectable error severity register and secondary error capabilities and
+control register bits in AER capability for PCIe to PCI/PCI-X Bridge.
+Please refer to PCIe to PCI/PCI-X Bridge Specification r1.0, sec 5.2.3.2,
+5.2.3.3 and 5.2.3.4.
 
 Signed-off-by: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
 ---
- drivers/acpi/apei/hest.c | 52 ++++++++++++++++++++++++++++++++++++++++
- include/acpi/apei.h      | 10 ++++++++
- 2 files changed, 62 insertions(+)
+ include/uapi/linux/pci_regs.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
-index 05ab4388cd4b..e7a15d60ecc1 100644
---- a/drivers/acpi/apei/hest.c
-+++ b/drivers/acpi/apei/hest.c
-@@ -22,6 +22,7 @@
- #include <linux/kdebug.h>
- #include <linux/highmem.h>
- #include <linux/io.h>
-+#include <linux/pci.h>
- #include <linux/platform_device.h>
- #include <acpi/apei.h>
- #include <acpi/ghes.h>
-@@ -132,6 +133,57 @@ static bool is_ghes_assist_struct(struct acpi_hest_hea=
-der *hest_hdr)
- 	return false;
- }
+diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+index ba326710f9c8..96dc910dc0eb 100644
+--- a/include/uapi/linux/pci_regs.h
++++ b/include/uapi/linux/pci_regs.h
+@@ -814,6 +814,9 @@
+ #define  PCI_ERR_ROOT_AER_IRQ		0xf8000000 /* Advanced Error Interrupt Mess=
+age Number */
+ #define PCI_ERR_ROOT_ERR_SRC	0x34	/* Error Source Identification */
+ #define PCI_ERR_PREFIX_LOG	0x38	/* TLP Prefix LOG Register (up to 16 bytes=
+) */
++#define PCI_ERR_UNCOR_MASK2	0x30	/* PCIe to PCI/PCI-X Bridge */
++#define PCI_ERR_UNCOR_SEVER2	0x34	/* PCIe to PCI/PCI-X Bridge */
++#define PCI_ERR_CAP2		0x38	/* PCIe to PCI/PCI-X Bridge */
 =20
-+static bool hest_match_pci_devfn(struct acpi_hest_aer_common *p, struct pc=
-i_dev *dev)
-+{
-+	return ACPI_HEST_SEGMENT(p->bus) =3D=3D pci_domain_nr(dev->bus) &&
-+	       ACPI_HEST_BUS(p->bus)     =3D=3D dev->bus->number &&
-+	       p->device                 =3D=3D PCI_SLOT(dev->devfn) &&
-+	       p->function               =3D=3D PCI_FUNC(dev->devfn);
-+}
-+
-+static bool hest_source_is_pcie_aer(struct acpi_hest_header *hest_hdr, str=
-uct pci_dev *dev)
-+{
-+	u16 hest_type =3D hest_hdr->type;
-+	u8 pcie_type =3D pci_pcie_type(dev);
-+	struct acpi_hest_aer_common *common =3D (struct acpi_hest_aer_common *)(h=
-est_hdr + 1);
-+
-+	switch (hest_type) {
-+	case ACPI_HEST_TYPE_AER_ROOT_PORT:
-+		if (pcie_type !=3D PCI_EXP_TYPE_ROOT_PORT)
-+			return false;
-+		break;
-+	case ACPI_HEST_TYPE_AER_ENDPOINT:
-+		if (pcie_type !=3D PCI_EXP_TYPE_ENDPOINT)
-+			return false;
-+		break;
-+	case ACPI_HEST_TYPE_AER_BRIDGE:
-+		if (pcie_type !=3D PCI_EXP_TYPE_PCI_BRIDGE && pcie_type !=3D PCI_EXP_TYP=
-E_PCIE_BRIDGE)
-+			return false;
-+		break;
-+	default:
-+		return false;
-+	}
-+
-+	if (common->flags & ACPI_HEST_GLOBAL)
-+		return true;
-+
-+	if (hest_match_pci_devfn(common, dev))
-+		return true;
-+
-+	return false;
-+}
-+
-+int hest_parse_pcie_aer(struct acpi_hest_header *hest_hdr, void *data)
-+{
-+	struct hest_parse_aer_info *info =3D data;
-+
-+	info->data =3D (void *)hest_hdr;
-+	if (!hest_source_is_pcie_aer(hest_hdr, info->pci_dev))
-+		return 0;
-+	else
-+		return 1;
-+}
-+
- int apei_hest_parse(apei_hest_func_t func, void *data)
- {
- 	struct acpi_hest_header *hest_hdr;
-diff --git a/include/acpi/apei.h b/include/acpi/apei.h
-index da8fe0d9758a..137d99760e23 100644
---- a/include/acpi/apei.h
-+++ b/include/acpi/apei.h
-@@ -23,6 +23,11 @@ enum hest_status {
- 	HEST_NOT_FOUND,
- };
-=20
-+struct hest_parse_aer_info {
-+	struct pci_dev *pci_dev;
-+	void *data;
-+};
-+
- extern int hest_disable;
- extern int erst_disable;
- #ifdef CONFIG_ACPI_APEI_GHES
-@@ -35,8 +40,13 @@ static inline void acpi_ghes_init(void) { }
-=20
- #ifdef CONFIG_ACPI_APEI
- void __init acpi_hest_init(void);
-+int hest_parse_pcie_aer(struct acpi_hest_header *hest_hdr, void *data);
- #else
- static inline void acpi_hest_init(void) { }
-+static inline int hest_parse_pcie_aer(struct acpi_hest_header *hest_hdr, v=
-oid *data)
-+{
-+	return 0;
-+}
- #endif
-=20
- typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *d=
-ata);
+ /* Virtual Channel */
+ #define PCI_VC_PORT_CAP1	0x04
 --=20
 2.34.1
 
