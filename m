@@ -1,118 +1,115 @@
-Return-Path: <linux-acpi+bounces-12807-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12808-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 927A0A7EB4A
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 20:50:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D677CA7EBC8
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 21:00:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE0207A3583
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 18:46:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA0F5188B8E5
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 18:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E784277026;
-	Mon,  7 Apr 2025 18:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3FE21B19E;
+	Mon,  7 Apr 2025 18:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FjoMQOEa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M8lwMuu3"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A3E277006;
-	Mon,  7 Apr 2025 18:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E73213E99;
+	Mon,  7 Apr 2025 18:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049851; cv=none; b=orn3z9vo1dDRyGKkGloIaQVl4Xs31w1lV3d9OrFJ/v9+uqbzZmJRJON5keb6yrbSMXTXWdiE+z/eRa/usVTZfmYhhGohwSk3uL1aaHRltgQnl4hYD1v1W7vWS7nvLmtTyII6AL9XjQIN3vg1S+szt76pohFlBJXJl6Hv7qsqDBo=
+	t=1744050370; cv=none; b=nmEzNY01TXRfKDctGcRiUgSIc/Rl0fpFPv5L489n5QqXlpKr8sY8t88E/uzEFX4f4j+aUD+kaYQgUWUKIBULZe6B4xjtmernL3yduOuwFLIOthS1gsfkKGEttYwxE0XX1pBsPp5LM73pyAyvg9WTykgiFapeB9HzzWmy6PHkz1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049851; c=relaxed/simple;
-	bh=73k/0BVysXl85xBXV2b3hE1PzEdgiYsKHfcYo5esxL8=;
+	s=arc-20240116; t=1744050370; c=relaxed/simple;
+	bh=olO9oaDx1GoQ7ivZvRHmbadSGi3duuSuYlEI+kfpHWs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VQ/ZbdWbKuEcXXcVkdUw/ZHMgs90PacpIWil0yPsYbNCCcAwr648gg85oZhpSAlAyQvRvrCgwYFtZfITtFEwe2owI34XogFbbDW+LEU8HzYLJCG9uKSoSluJXXST4geTrb/4gcl1DlGeWNLLYcQTb4tbVs/45d2Ca12hT4FwPQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FjoMQOEa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78793C4CEED;
-	Mon,  7 Apr 2025 18:17:29 +0000 (UTC)
+	 To:Cc:Content-Type; b=XYebq+mHTD0LVk6NfqQG1HY0Jmmg30oeys0bPb1xWW82kmNASPYJ4PSGC59CiJk/KlxAY1Bbn4VfnRKl9R9HTtts4FFenROj7Ft5vvQYi8GVWDcOkrjvLeUB6Yfa+JFfu50OthJPDU7S06kuIPBH0fbPqeuazGP4ea51xs+yk8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M8lwMuu3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65771C4AF09;
+	Mon,  7 Apr 2025 18:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049849;
-	bh=73k/0BVysXl85xBXV2b3hE1PzEdgiYsKHfcYo5esxL8=;
+	s=k20201202; t=1744050369;
+	bh=olO9oaDx1GoQ7ivZvRHmbadSGi3duuSuYlEI+kfpHWs=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=FjoMQOEaRJFMQew/UUTFr2hKYDO6hv9g7+V3MPFy4GRbB+KyPzDtsQWqb0ld8BikB
-	 y4LOg5TQyvYkQ8DJEbOPLLHoNeXgNkaPA0XwvhaLhVigaC6TXI8n8dn2M/PqeuGdHA
-	 Xptdo1g80NJBvl9UvVJB59gIpvH0zApI2/kIxk67R88d6xbXktWgXPN+0bBAFkg4aD
-	 MwIM52NSOjHFBfQnFLQNpvkhhVV5/4onKM0L4oziKs1qU03odqFfrlgJ5v4KfkckJL
-	 UEhEhThzNlSVLUJ9c9Q6bYL7LZdoxwaggU3+38Zb3VLBN0h+MI7vRA0LDmCsLGwzNJ
-	 jSLIy7VvcmllQ==
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2b2b6019a74so2383896fac.0;
-        Mon, 07 Apr 2025 11:17:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWwH2S+Wq0m6hVmuZKgXvg7ZQOmcuaGcwDYkh5tmpEcB0KYir28z+Y37wcFUGkjy6OX90K3bFWaiMSz06Hb@vger.kernel.org, AJvYcCXtkojFCJsejYO43bZheHnLugFWjgvfHRX6G3HFn/9bbXACh7ffN8iuF09IpienUeqWayE+RhXNwqkd@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQjds19HVLhAMTsVOyel4EXN/CRqClmpDpk4ta7D3puqdO0Tv4
-	+dq4odWBBA2B0f72X0gy/oGWfMwRgcQxGoique570Qbsp4jM1cNYruFRx9wu/sIeRDe5E+VKAEP
-	f36iymT4gkvrUx9p4Fdo92Yw4kfs=
-X-Google-Smtp-Source: AGHT+IHb7HQkxQkd/RpdZWzCI+chrPYGzOX2Ou3UAUShksSZYvBwUdp6Xd5oT0itTCl6KmJPHoPBw1Y1/y2y6HBpHOY=
-X-Received: by 2002:a05:6871:2012:b0:2b8:e4b9:47a3 with SMTP id
- 586e51a60fabf-2cca19bec51mr7257158fac.22.1744049848789; Mon, 07 Apr 2025
- 11:17:28 -0700 (PDT)
+	b=M8lwMuu34nsLsCCWFTK9rbkw2g4kW3woTke46HyqCO+DQtr+K97LprLYIaMfkalg/
+	 XUBcqm4lzCatPE4MYF+qtNpmlZGmJ30f/xyvYS41c+QFvjKvAdQ+FBN4xHxdpALouP
+	 xcbb8/IEJdi1EToGPMcRf07K8LCNbVkPT3qBttfBk9D66rCxghHkOnpa+3vQrYu16D
+	 myXNAzMzmqAFrQ8S/8W+V2PL0ZGWsOAfaFH+LXTdOIBCoHZISawwdhF0jqz+wPQDZq
+	 8ydNdJyfhRbturDW21kQW6cAKEWBthQ6jiTO7qmM5ussFcEQMtOGD+GhQM7VcP9vKE
+	 N6wZPQos2Motg==
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-72b7a53ceb6so2540508a34.0;
+        Mon, 07 Apr 2025 11:26:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV4T0T1TkqHvqhqcpZzXLheYCBC7jfrZ/mBWAGLpltdvoRKcXkgNlh+ZIsN8EoLdDw4vpcHUTHhcL7TBnvj@vger.kernel.org, AJvYcCW7ymQ2rA0Iimdsnj37mhFapZa1d4VFRLIafnPelXgwbSSSIa4RJYNJYbQpPRWpU4oeM28IcSYmruPt@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrcEXhuD6b0eZMxf6PlTm+R+ai2QO8MOvoYx9lGIFEJWOX4TDq
+	+J/pLXt95knmavO/7eRjjf3AFeKYIV1ar6qTdFjNiW0qYQJ8xS5PXyMrsR4fzzMZZ5CFSND7F1m
+	Lt3zqNDXVIZ6rdPPn7U4TqYwBQAY=
+X-Google-Smtp-Source: AGHT+IEcX0VH8ZU90iBSKORw+3GwDPJVmd2pUmn2aWr7n/gmmHIx/FPCgUAwkXtPasuewod5E7ViwdEazon9ShW2Q8I=
+X-Received: by 2002:a05:6830:1bf9:b0:72a:b2a:476 with SMTP id
+ 46e09a7af769-72e64a3d4c3mr308372a34.3.1744050368683; Mon, 07 Apr 2025
+ 11:26:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250331163227.280501-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20250331163227.280501-1-andriy.shevchenko@linux.intel.com>
+References: <20250402001542.2600671-1-jmeurin@google.com>
+In-Reply-To: <20250402001542.2600671-1-jmeurin@google.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 7 Apr 2025 20:17:17 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gcbnWA4Whyn-x7uaqEbPow9Sqa3_GO4Z_cBcpYLcF3RQ@mail.gmail.com>
-X-Gm-Features: ATxdqUH4SH0U0ivnL3XXp1HsH_vqZucars30DOB9bNLycYszvuikvDD20zwIRSY
-Message-ID: <CAJZ5v0gcbnWA4Whyn-x7uaqEbPow9Sqa3_GO4Z_cBcpYLcF3RQ@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] device property: Add a note to the fwnode.h
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Len Brown <lenb@kernel.org>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Mon, 7 Apr 2025 20:25:57 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gGjfomEJAJ8c6HwQz9oOqZk+gYfJM4q9XTWy5vHLzoSA@mail.gmail.com>
+X-Gm-Features: ATxdqUENPsmh4QE5Zc_Hji6ZwnpQ2pNcLKhBpPJG0jtAYF-R_1YQdpb0-806YBU
+Message-ID: <CAJZ5v0gGjfomEJAJ8c6HwQz9oOqZk+gYfJM4q9XTWy5vHLzoSA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI PPTT: Fix typos in a couple of sizeof() calls.
+To: Jean-Marc Eurin <jmeurin@google.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Sudeep Holla <sudeep.holla@arm.com>, 
+	Pierre Gondois <pierre.gondois@arm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 31, 2025 at 6:32=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Wed, Apr 2, 2025 at 2:15=E2=80=AFAM Jean-Marc Eurin <jmeurin@google.com>=
+ wrote:
 >
-> Add a note to the fwnode.h that the header should not be used
-> directly in the leaf drivers, they all should use the higher
-> level APIs and the respective headers.
-
-This sounds like a solution to a problem, but the problem statement is miss=
-ing.
-
-What's your motivation?
-
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> The end of table checks should be done with the structure size,
+> but 2 of the 3 similar calls use the pointer size.
+>
+> Signed-off-by: Jean-Marc Eurin <jmeurin@google.com>
 > ---
->  include/linux/fwnode.h | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  drivers/acpi/pptt.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-> index 6fa0a268d538..da537c7c30dc 100644
-> --- a/include/linux/fwnode.h
-> +++ b/include/linux/fwnode.h
-> @@ -2,6 +2,12 @@
->  /*
->   * fwnode.h - Firmware device node object handle type definition.
->   *
-> + * Note, this header is not meant to be used by the leaf drivers.
-> + * It provides the low level data types and definitions for the firmware
-> + * and device property providers. The respective API headers should
-> + * guarantee all the required data types and definitions without includi=
-ng
-> + * this header directly.
-> + *
->   * Copyright (C) 2015, Intel Corporation
->   * Author: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->   */
+> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> index a35dd0e41c27..f73ce6e13065 100644
+> --- a/drivers/acpi/pptt.c
+> +++ b/drivers/acpi/pptt.c
+> @@ -229,7 +229,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_head=
+er *table_hdr,
+>         node_entry =3D ACPI_PTR_DIFF(node, table_hdr);
+>         entry =3D ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+>                              sizeof(struct acpi_table_pptt));
+> -       proc_sz =3D sizeof(struct acpi_pptt_processor *);
+> +       proc_sz =3D sizeof(struct acpi_pptt_processor);
+>
+>         while ((unsigned long)entry + proc_sz < table_end) {
+>                 cpu_node =3D (struct acpi_pptt_processor *)entry;
+> @@ -270,7 +270,7 @@ static struct acpi_pptt_processor *acpi_find_processo=
+r_node(struct acpi_table_he
+>         table_end =3D (unsigned long)table_hdr + table_hdr->length;
+>         entry =3D ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+>                              sizeof(struct acpi_table_pptt));
+> -       proc_sz =3D sizeof(struct acpi_pptt_processor *);
+> +       proc_sz =3D sizeof(struct acpi_pptt_processor);
+>
+>         /* find the processor structure associated with this cpuid */
+>         while ((unsigned long)entry + proc_sz < table_end) {
 > --
-> 2.47.2
->
->
+
+Applied as 6.15-rc material with a couple of edits in the subject.
+
+Thanks!
 
