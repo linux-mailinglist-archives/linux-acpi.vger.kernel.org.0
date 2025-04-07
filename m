@@ -1,116 +1,126 @@
-Return-Path: <linux-acpi+bounces-12777-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12776-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 996FBA7DF14
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 15:27:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 156F4A7DF21
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 15:28:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B73FB7A3038
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 13:25:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 673A03ABA0F
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 13:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4E0253B76;
-	Mon,  7 Apr 2025 13:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2CC253F05;
+	Mon,  7 Apr 2025 13:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b="kxxOzJQ0"
+	dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b="Y0tXSlgk";
+	dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b="Y0tXSlgk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from gmmr-3.centrum.cz (gmmr-3.centrum.cz [46.255.225.205])
+Received: from gmmr-2.centrum.cz (gmmr-2.centrum.cz [46.255.227.203])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8B023C8A7;
-	Mon,  7 Apr 2025 13:26:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.225.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EB28F6E;
+	Mon,  7 Apr 2025 13:25:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.227.203
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744032393; cv=none; b=RBm/2YXF5/CgXWgeD94cGatTRwux6mHDVffVbhud59iid92f+jstv4rqpJ4APxEIzarRPk941p/VarPEOUh7jLYWw2FONomkU8GR3ZvvVTfY0W6ra9qpoffXwkGVVl9gVB89PneQeJK0WGvsS68ApZRxD8hnIygqIUMLnSES6dg=
+	t=1744032323; cv=none; b=kqw8yKp0PDLmQNrYfpaHirKsfGIdov83i4nl8NQQ1phYGdgPtPxo+i/2ew8OvtgxCyzCye6wo3FPym7OHEMKsgYAvtcNKEZ39rozougt9xo2b8omXkRMWCvMRvBDscGaYVuj4qmAxCdUfp48VKJwWR3ufIG1CKnQU4LoV6YqAg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744032393; c=relaxed/simple;
-	bh=oVcbyNbVpWntVn2cBpxzRPa8JBTsDG5aDFBPFGq4DIg=;
+	s=arc-20240116; t=1744032323; c=relaxed/simple;
+	bh=jgqlR/RZXRnBn7wdj7Cpp/D/3y/l34/oVH7lZ/6BnIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ae9aj7y5dH/FbaOaKp1dXH6jYyvT3AAUFwY1MYFseedfcprQNMYzrsQx9/MwUO46R3HMCXPpFbUiKrGwe4q4NS3/A6elc7WxQ43LsAN86VLOoTKdDTRkzPpwuPc4LBp+lCyv/vKpFKKu3OBgWylqzIWRQiKvlifm88KMr/KKIPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atlas.cz; spf=pass smtp.mailfrom=atlas.cz; dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b=kxxOzJQ0; arc=none smtp.client-ip=46.255.225.205
+	 MIME-Version:Content-Type; b=Dz03bVgJJncA2B53ryHJAiQOootFDikdIW+9IyTX2n291cnOEV/C3AUBRid+qvinia8LNxpD41iQCXhImtXlm/CbsZV88p4YvXcD0x1GXD6n1kK5p78N6Pd1aUJLhJWpp+kkyrSPVUQNr5C2vOKiu+CsNRfcizZeZJAFQ2O/MeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atlas.cz; spf=pass smtp.mailfrom=atlas.cz; dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b=Y0tXSlgk; dkim=pass (1024-bit key) header.d=atlas.cz header.i=@atlas.cz header.b=Y0tXSlgk; arc=none smtp.client-ip=46.255.227.203
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atlas.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atlas.cz
-Received: from gmmr-3.centrum.cz (localhost [127.0.0.1])
-	by gmmr-3.centrum.cz (Postfix) with ESMTP id 8BD86205DA3A;
-	Mon,  7 Apr 2025 15:25:03 +0200 (CEST)
+Received: from gmmr-1.centrum.cz (envoy-stl.cent [10.32.56.18])
+	by gmmr-2.centrum.cz (Postfix) with ESMTP id EC1DA2078CDF;
+	Mon,  7 Apr 2025 15:25:07 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=atlas.cz; s=mail;
-	t=1744032303; bh=kiYJQhPO9bK188tvzcgK+tflLcoJpt76+LU/uqMEgG0=;
+	t=1744032307; bh=M/srLozqjowrKwxtWCSUenY0UgmwFAtRY3NtZmGhjoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kxxOzJQ0P6GLAuQTlOjnqZNKg/UGOpr+RUEKzDYxwBBcPfASASQ0pfF1lriUHs51g
-	 gXZuldOPgZmnoDXdyZs0JQWUWQkbvnVN6cQpwlmG7LcmQPcmbqnzHZmnkNF/uiQ5Bt
-	 FXyFjFa/8ScmHKobTu//880y/QwKnJgALZDVo88A=
-Received: from antispam31.centrum.cz (antispam31.cent [10.30.208.31])
-	by gmmr-3.centrum.cz (Postfix) with ESMTP id 44D60205DA48;
-	Mon,  7 Apr 2025 15:25:03 +0200 (CEST)
-X-CSE-ConnectionGUID: JISPTSTgQ0+NWz5v7Bd6/g==
-X-CSE-MsgGUID: WG/Zq+uhSNeWMb8Z2bJYQQ==
+	b=Y0tXSlgkErRtODYBiUMGYNczgBWjKYFksC5143OmPUFkyQ0py/iJvocinpd0MJ7DR
+	 n0BuqzTbY/xeYcSWAURax2xclTD7SGgGJQLwWjG8Xc+nC3y7QqnxagS59kOe4GT+Hi
+	 xKLbtottagnJ/BxrCuTMYiu/tBzEFZwaJmMnImIA=
+Received: from gmmr-1.centrum.cz (localhost [127.0.0.1])
+	by gmmr-1.centrum.cz (Postfix) with ESMTP id E8F7F1A6;
+	Mon,  7 Apr 2025 15:25:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=atlas.cz; s=mail;
+	t=1744032307; bh=M/srLozqjowrKwxtWCSUenY0UgmwFAtRY3NtZmGhjoU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Y0tXSlgkErRtODYBiUMGYNczgBWjKYFksC5143OmPUFkyQ0py/iJvocinpd0MJ7DR
+	 n0BuqzTbY/xeYcSWAURax2xclTD7SGgGJQLwWjG8Xc+nC3y7QqnxagS59kOe4GT+Hi
+	 xKLbtottagnJ/BxrCuTMYiu/tBzEFZwaJmMnImIA=
+Received: from antispam30.centrum.cz (antispam30.cent [10.30.208.30])
+	by gmmr-1.centrum.cz (Postfix) with ESMTP id E5FA219E;
+	Mon,  7 Apr 2025 15:25:07 +0200 (CEST)
+X-CSE-ConnectionGUID: JocpOiqgRoW7s7bex2I8zA==
+X-CSE-MsgGUID: pHnCKEnUQlCmrY9o+Cl+1Q==
 X-ThreatScanner-Verdict: Negative
-X-IPAS-Result: =?us-ascii?q?A2EHAADz0PNn/0vj/y5aGgEBAQEBAQEBAQEDAQEBARIBA?=
- =?us-ascii?q?QEBAgIBAQEBQAmBOAMBAQEBCwGDM4ZGkXIDi3aGM4tqgX4PAQEBAQEBAQEBC?=
- =?us-ascii?q?UQEAQGEfQoCiyonNgcOAQIEAQEBAQMCAwEBAQEBAQEBAQ0BAQYBAQEBAQEGB?=
- =?us-ascii?q?gECgR2FNVOCYgGDfwEBAQECASMPAUYFCwsNAQoCAiYCAlYGgxWCMAERI6wwe?=
- =?us-ascii?q?oEyGgJl3HACgSNkgSmBGi4BiE8BhHxwG4RcQoINgRWCeTE+hBuEA4JpBIItR?=
- =?us-ascii?q?VWUEoxjSAp7HANZLAFVEw0KCwcFgSlDAzUMCy4VIw9EBTMdgXyDcoU4ghGBX?=
- =?us-ascii?q?AMDIgGDFXUchG6EWi1PgzM8HUADCxgNSBEsNxQbBj0BbgeadFmBWwo+AsdOh?=
- =?us-ascii?q?CWETZx7GjOXUh4DkmSYfqRLhGiBbguCBDMiMIMjURmOaMwBgTICBwEKAQEDC?=
- =?us-ascii?q?YI7jS4zgUsBAQ?=
-IronPort-PHdr: A9a23:/eJw7xHX04iMZwfbeyb7tJ1Gf35KhN3EVzX9CrIZgr5DOp6u447ld
- BSGo6k21hmRBc6Bs6oe26L/iOPJZy8p2d65qncMcZhBBVcuqP49uEgNJvDAImDAaMDQUiohA
- c5ZX0Vk9XzoeWJcGcL5ekGA6ibqtW1aFRrwLxd6KfroEYDOkcu3y/qy+5rOaAlUmTaxe7x/I
- RuooQnLqsUanYRuJrgtxhfVvHdFePldyH91K16Ugxvz6cC88YJ5/S9Nofwh7clAUav7f6Q8U
- 7NVCSktPn426sP2qxTNVBOD6HQEXGoZixZFHQfL4gziUpj+riX1uOx92DKHPcLtVrA7RS6i7
- 6ZwRxD2jioMKiM0/3vWisx0i6JbvQ6hqhliyIPafI2ZKPxzdb7GcNgEWWROQNpeVy1ZAoO9c
- YQPCfYBPf1FpIX5vlcCsAeyCRWpCO7p1zRGhGL53bci3uohDw/LwhEuEdwNvnrTrtr1OqgdX
- vy6wqTT0TXObOlb1Svn5YTUcB0sp+yHU7JqccrWzEkiDxnLgUuMqYz/Ijia2f4Cs26F6upjS
- OmijHQoqxtyoje1w8cjkJPJi5kPxVDY8SV22p01KcekR096eNOpFoZbuC6GOYVsWMwiX31ot
- zggyr0AoZO3YTQGxZsnyRLCb/GJc5WF7w7jWuieLjp1h3Nodb2wihiy8kWt1OLyW8q23VtEr
- ydIktbBum0O2hHR68WLV/hw80G80jiMzwDe8u5JLEEumabFK5MswqQ8moQNvUnBBCP7mkX7g
- LeIekk59OWk8frrbqv6qpOGKYN5hR3yPr4ql8G+B+kzLxIAUHKB+eum0b3u5Uj5QLJXgfIoi
- qTZq5XaJdgDpq6+Hg9Vzp4v6xahADei19QVhXYHLFdcdBKciojpJ0nOLO3lAfuln1ujjjFrx
- +zcPr38B5XBNGTMkbb5cbZ87U5T1hYzwMhQ6p9VEL0NPvL+V0/ruNDGEBM0MRa4zuTnBdll0
- 4MRQ2OPAquXMKPItl+I4/oiLPOWZI8Wojn9LuIq5+T1gHAjhV8debOm3YANZH+kH/VqO1+Zb
- mb0gtcdDWcKuRIzQ/bwiF2BSzFTYmy9X7gn6z4hFIKmCZ3MRpu3jLOd3Sa3BodWaXxeClCQD
- XfocJ2JVO0KaC2POM9ujDIFWaK9RI8m0hGurBH1y6BpI+fP5iIYtI7j1MJ05+zcjx096Tt0D
- 8GF32GXU250hn8IRyMx3K1nrk1wyVaO3LN7g/NGD9xT4e1GUgMgOZ7b1ex6BMj+WhjdcdeRV
- FamXtKmDCktTtI+x98PbF1wG9GjjhDFwiqqH6UVl7uNBJw1/aPQxWX+KNhlx3bcyKYhl0UmQ
- tdINWC+ia9w6Q7TC5fUnEqHiaala6Ac0TXJ9GeC1mqOoFpYXBR/UKrbW3AfflHWrdP75kzcU
- 7CuFa4rMgxbyc6NMqdKcMHmjU1aRPf/P9TTe2Cxm2iqBRaP3bOMd5Hne34A3CXGFkcIiRwc/
- XGDNQQmHCeuv3reDCByFVLoe07s9eh+qHWmTk471g2FdVFu16K0+hMOm/ycRO0c3qgetCcit
- Tp0BlC90MzSC9aaoAphZqpcbcsn4FhbzWLZqxB9Ppu4IqBmh14edRl3vkz32xV0FIpAi84qo
- 20uzAdpN6KY301OdymC0ZDzJLLXMG/y8w6ra6LM3VHeytmWqe8z76EEq1LmtRrhOU4v8mVh3
- sMdh2eT4oXiCAsUTI7rVUA25152queJTDM64tbs2GF2eZe9tJzBk4YgHugszx+6V95DNKqfU
- gTgRZ5JT/OyIfAnzgD6JikPO/pfoettZ5vOSg==
-IronPort-Data: A9a23:qYR9uqv9Qc3XtNVlAKtlOG8abefnVKtfMUV32f8akzHdYApBsoF/q
- tZmKWqAaPmCMGv2L913YdjioUIOvsPWytIyHlM/+3szQi8WgMeUXt7xwmUcns+xwm8vaGo9s
- q3yv/GZdJhcokf0/0rrb/646yEhiMlkf5KkYMbcICd9WAR4fykojBNnioYRj5Vh6TSDK1rlV
- eja/YuGZTdJ5xYuajhJs/7b90sz1BjPkGpwUmIWNK0jUGD2yCF94KI3fcmZM3b+S49IKe+2L
- 86r5K255G7Q4yA2AdqjlLvhGmVSKlIFFVXmZtJ+AsBOszAazsAA+v9T2Mk0NS+7vw60c+VZk
- 72hg7TrEFt0Yfec8Agqe0Iw/ylWZcWq8VJcSJS1mZT7I0buKxMAzxjyZa2f0EJxFutfWAlzG
- fIkxD8lTDG4v96N/L2CEqpKudZ+MpbBMN1YtSQ1pd3ZJa5OrZHrTKCP/tpExG5pwMtDG+rEe
- s9fYigHgBboP0MJYApKTshkw6H32xETcBUBwL6RjaMt4GHWxRZZ2aTpOcGTcc7iqcB9xx7F9
- jqWoz6kav0cHOOwjgicsW+svcnCogbxCLBIHp+Jz8c/1TV/wURWUnX6T2CTqOO6g0u3QfpWN
- 0gd4Wwlv8Aa/UqnVNTiGRa/p2aJpEU0UNtMCewqrgqKz8L881bHLmsJVDhMbJohrsBebSAl0
- k+hm9LvGCB1t7uUWTSR+9+8vT60fCQYM2IGTSsFVhcepcnuppkpiRDCRcolF7S65vX3Fiv32
- CuitzUlivMYistj/6G6+03XxjunvpnhUAE4/EPUU3ij4wc/Y5SqD6Ss6F7G/bNDIZyfQ12po
- ncJgY6d4foIAJXLkzaCKM0WALij4/utLjLRmxhsEoMn+jDr/GSsFb28+xkiegEzb5tCI2W2J
- hCO0e9M2KJu0LKRRfcfS+qM5w4CkMAMyfyNuijoU+dz
-IronPort-HdrOrdr: A9a23:7g/t9KFVCio9xU1RpLqE5ceALOsnbusQ8zAXPo5KJSC9Ffbo8P
- xG/c5rsSMc5wx+ZJhNo7q90ey7MBDhHP1OkOws1NWZPTUO0VHAROpfBMnZsl/d8kbFmdK1u5
- 0MT0EHMr3NMWQ=
-X-Talos-CUID: 9a23:SieH+GBevB5e4mn6EwtGz3YoIfwqSyWe6kjCflHnI2o3D7LAHA==
-X-Talos-MUID: 9a23:y4XipQiW3w/A4lkwXJIGTsMpC+gv0b3tFUA2t5g5nsPUB3Z6GQaktWHi
+X-IPAS-Result: =?us-ascii?q?A2EDAADz0PNn/0vj/y5aGQEBAQEBAQEBAQEBAQEBAQEBA?=
+ =?us-ascii?q?RIBAQEBAQEBAQEBAQFACYE3AwEBAQEBCwGDM4FxhFWRcmGLGIYzi2qBcwsPA?=
+ =?us-ascii?q?QEBAQEBAQEBCS4WBAEBPwaEOAoCiyonNQgOAQIEAQEBAQMCAwEBAQEBAQEBA?=
+ =?us-ascii?q?Q0BAQYBAQEBAQEGBgECgR2FNVOCYgGEAAIBAwEiDwFGEBgBDAImAgInLwYTg?=
+ =?us-ascii?q?wKCMAEDMa0qgTIaAmXccAJJBVVkgSmBGi4BiE8BhHxwhHdCgg2BFYE7gT5vh?=
+ =?us-ascii?q?BoBhAOCaQSDR4RTkgWKHUiBBRwDWSwBVRMNCgsHBYFsAzUMCy4VMkQ4HYF8g?=
+ =?us-ascii?q?3KFOIIRggSJFYRaLU+Dbx1AAwsYDUgRLDcUGwY9AW4Hll+EDQcBWTR7dniQS?=
+ =?us-ascii?q?7YLhCWETZUEh3caM5dSHgOSZJh+pEuEaIFoAYIUMyIwgyJSGY48FhbMAXY8A?=
+ =?us-ascii?q?gcBCgEBAwmCO40tATOBSwEB?=
+IronPort-PHdr: A9a23:BaswThdmsij45968CuU390jxlGM+7djLVj580XLHo4xHfqnrxZn+J
+ kuXvawr0ASTG92DoKgc07CG+4nbGkU+or+5+EgYd5JNUxJXwe43pCcHROOjNwjQAcWuURYHG
+ t9fXkRu5XCxPBsdMs//Y1rPvi/6tmZKSV3wOgVvO+v6BJPZgdip2OCu4Z3TZBhDiCagbb9oI
+ xi7oxvdutMKjYd+Jao91AfFrmdWd+lV2GhlOU+dkxHg68i/+5Ju7z5esO87+c5aVqX6caU4T
+ bhGAzkjLms4+s7luwTdQAWW/ncSXX0YnRVRDwXb4x/0Q4/9vSTmuOVz3imaJtD2QqsvWTu+9
+ adrSQTnhzkBOjUk7WzYkM1wjKZcoBK8uxxyxpPfbY+JOPZieK7WYMgXTnRdUMlPSyNBA5u8b
+ 4oRAOoHIeZYtJT2q18XoRejGQWgGObjxzlVjXH0wKI6yfwsHwHY0gE+AtwAvnfaotL3O6ccX
+ u+60KbGwC7fb/5Vwzrx9JLFfgwjrPyKQLl+cdDRyU4qFw7dlFuft5DlPymI3esCqWeb6fRlV
+ eGygGMgsQ5xuDuvyd0piobTnIIY0UrL9Tl9wIkvPt20UlJ0YN+9HZZWqiqVOJd4TNk4TGF0p
+ CY11KcGuZijcSQX1JgqyB7RZ+GDfoaI/x/uSOafLzh3iX9meb+yiBm//0ijx+DiWce501RHo
+ yREn9TMuX0Byh/e58qGR/dg/Uqs3yuE2QPL6uxcLk05lLDXJ4Ahz7MwjJYfr1rPEy3slEj0j
+ KKablso9vWm5uj9fLnquIOQO5VqhgzxLqgigMiyDOU+PwMTRWaU4/6826fm/UDhRbVKieA5n
+ bfBvZDBIMQbura5AwhI0oY/8xq/Dymp0NAfnXQfI1JFfQuLj5PsO1HSOPD0EOqzj06wnzh1w
+ fDGIqfhAojILnTZjLjgfK5x609ayAUt0dBS/51ZB7AbLP7tWkL8tMbUAgEnPwG22erqCtVw2
+ psbWW2VA6+ZNK3SsUWP5uIqO+SDfpUVuDXnJPgg/fHul2Q0lkUBfamtx5QXc2q0EehnIkmBe
+ 3rjns8BEXsWvgo5VOHlkkeCUT1JaHa3Ra08/Co2B5i6DYfHXI+tm6aN0zu6H5FOfGBJFkiME
+ Wv0d4WDQ/oDciSSLdJ7kjMaW7mtUZMu1RaptA/i1bVnNOTZ9zYEupLiyNh1/ezTlB4o+TNoC
+ MSd1nmBT3tokWMQWz82wKd/rFRyy1qA0KV1mP9YGsJJ5/NPTAg6MYTQz+tgC9D9Qg7BZMuGS
+ E66QtW6BjE8Vs4xw9AKY0dyANiiihHD3yy3A78JjbyLA5o08qPT3nTrOsly1W7K1LM9gFk+X
+ stPKWqmi7Zw9gfNAY7FiliWmLi0dasC2C7A72ODzWuVvEFESw58S6rEUm4ZZkvOt9T54UHCQ
+ KGyBrQ7KAdBztSCKqRSZt3zkVpGXOvjOMjZY2+pmWewCgyIxrSXbIrxYGgdxzjdCFManAwJ4
+ XmGMg0+Cj+7o23CFDxuCU7vY0T0/Ol6qXO7SFI0zg6TY0J7y7W14h8ViOeCS/McwL0Eoj0tq
+ zZqE1an2dLZFd6AqxBmfKVGbtMx+E1H2n7BtwxhIpygKLhvhlofcwRxokPv2Ax7CoZensgwq
+ nMl0g5yJLmG0FNOaTyYx4r8Or7JJWno+hCgdarW1kvZ0NaM9adcoMg//mnjuwSgDQIN93hmw
+ 99YyTPI+prOHCIWUJTsTlww8Rlq4b3XNHoT/YTRgEVhLbP8jDbEeNFhUOI/yR+lds13Ob+AH
+ RS0GN9MVJvmE/Ajh1X8NkFMB+tV7qNhepr+L5O7
+IronPort-Data: A9a23:ws5s2qz7AqqBuXO7cth6t+fKxyrEfRIJ4+MujC+fZmUNrF6WrkVWz
+ 2YcUD+PPf2JZzTyKtF+aoywo0pVusOEyNRnSgNu+FhgHilAwSbn6XV1DatS0we6dJCroJdPt
+ p1GAjX4BJlpCCKa/1H1b+WJQUBUjcmgXqD7BPPPJhd/TAplTDZJoR94kobVuKYx6TSCK13L4
+ I6aT/H3Ygf/hmYoaj1Mt8pvlTs21BjMkGJF1rABTa8T1LPuvyF9JI4SI6i3M0z5TuF8dsamR
+ /zOxa2O5WjQ+REgELuNyt4XpWVXKlJ6FVHmZkt+A8BOsDAbzsAB+vpT2M4nVKtio27hc+ZZk
+ 4wR6MPqGW/FCYWX8AgVe0Ew/yiTpsSq8pefSZS0mZT7I0Er7xIAahihZa07FdRwxwp5PY1B3
+ d4fIygqbwmMveWJn6nkQOR83OVzPuC+aevzulk4pd3YJfkjBIvGX72TvJlT0TEsnN1LW/3MD
+ yYbQWYxKk6dPlsVYAhRV89WcOSA3xETdxVRslGcoKMty2HPyAVqlrP/WDbQUofTH5QJwRbF+
+ woq+UzhIhcxF/GZ9AOB2Xe2t77I3gj/G9srQejQGvlCxQf7KnYoIBQMVlK+qOORg1K6UskZI
+ F580iMoobI/6wqgSd7lUgfjiHWFogQdS5xbFOhSwBHdlILX7hyfC2xCSSROAPQ6u8smbTgr0
+ EKVhdTvBCwpvLD9YWKQ8PKYoC2/PQARLHQefmkUQA0d+d7hrYovyBXVQb5LEqGvicbuMSrt2
+ D3Mpy87750XjMgWx+Cy9kjGqyyjq4KPTQMv4AjTGGW/4WtRYI+jepzt6lXB6/tEBJiWQ0PHv
+ 3UencWaqucUAvmljzCESuEANK+m6uzDMzDGh1NrWZ47+FyQF2WLId4WumwjYh0zbYBbJFcFf
+ XPuhO+Y37cLVFPCUEO9S9/Z5xgCpUQ4KenYaw==
+IronPort-HdrOrdr: A9a23:wZCehaMFyYxuqsBcTsyjsMiBIKoaSvp037Dk7SxMoHtuA6ulfq
+ GV7ZAmPHDP5gr5NEtLpTnEAtjifZq+z+8R3WByB9aftWDd0QPCEGgh1/qB/9SKIULDH4BmuJ
+ uIC5IfNOHN
+X-Talos-CUID: 9a23:d87GiGz6gwMWXhBoyF7GBgU2Hcs9VXzEw03XHBCjVmxkWOe0GU25rfY=
+X-Talos-MUID: 9a23:Vt6T6wajnKiKdeBTrx/qrxJPMvpR54+rEnFcltYtv4rdDHkl
 X-IronPort-Anti-Spam-Filtered: true
 X-IronPort-AV: E=Sophos;i="6.15,194,1739833200"; 
-   d="scan'208";a="105808425"
+   d="scan'208";a="312947855"
 Received: from unknown (HELO gm-smtp11.centrum.cz) ([46.255.227.75])
-  by antispam31.centrum.cz with ESMTP; 07 Apr 2025 15:25:02 +0200
+  by antispam30.centrum.cz with ESMTP; 07 Apr 2025 15:25:07 +0200
 Received: from localhost.localdomain (ip-213-220-240-96.bb.vodafone.cz [213.220.240.96])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by gm-smtp11.centrum.cz (Postfix) with ESMTPSA id B408C100AE104;
-	Mon,  7 Apr 2025 15:25:02 +0200 (CEST)
+	by gm-smtp11.centrum.cz (Postfix) with ESMTPSA id F2BC0100AE2A3;
+	Mon,  7 Apr 2025 15:25:06 +0200 (CEST)
 From: =?UTF-8?q?Petr=20Van=C4=9Bk?= <arkamar@atlas.cz>
 To: Thomas Gleixner <tglx@linutronix.de>
 Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
@@ -121,12 +131,13 @@ Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
 	x86@kernel.org,
 	xen-devel@lists.xenproject.org,
 	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 1/1] x86/cpu/topology: Don't limit CPUs to 1 for Xen PV guests due to disabled APIC
-Date: Mon,  7 Apr 2025 15:24:26 +0200
-Message-ID: <20250407132445.6732-1-arkamar@atlas.cz>
+Subject: [PATCH v2 1/1] x86/acpi: Don't limit CPUs to 1 for Xen PV guests due to disabled ACPI
+Date: Mon,  7 Apr 2025 15:24:27 +0200
+Message-ID: <20250407132445.6732-2-arkamar@atlas.cz>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <87ecy5wqjm.ffs@tglx>
+In-Reply-To: <20250407132445.6732-1-arkamar@atlas.cz>
 References: <87ecy5wqjm.ffs@tglx>
+ <20250407132445.6732-1-arkamar@atlas.cz>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -136,46 +147,59 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On Sun, Apr 06, 2025 at 12:08:29PM +0200, Thomas Gleixner wrote:
-> On Sat, Apr 05 2025 at 20:16, Petr Vaněk wrote:
-> 
-> > Xen PV guests in DomU have APIC disabled by design, which causes
-> > topology_apply_cmdline_limits_early() to limit the number of possible
-> > CPUs to 1, regardless of the configured number of vCPUs.
-> 
-> PV guests have a APIC emulation and there is no code which actually
-> disables the APIC by design unconditionally. There is one way though,
-> which disables the APIC indirectly.
+Xen disables ACPI for PV guests in DomU, which causes acpi_mps_check()
+to return 1 when CONFIG_X86_MPPARSE is not set. As a result, APIC is
+disabled and the guest is later limited to a single vCPU, despite being
+configured with more.
 
-It seems I have got a bit lost in APIC/ACPI abbreviations. Sorry.
+This regression was introduced in version 6.9 in commit 7c0edad3643f
+("x86/cpu/topology: Rework possible CPU management"), which added an
+early check that limits CPUs to 1 if apic_is_disabled.
 
-> xen_arch_setup() disables ACPI, which in turn causes acpi_mps_check() to
-> return 1, which disables the APIC. This only happens when the kernel
-> configuration has:
-> 
->      CONFIG_X86_MPPARSE=n
->      CONFIG_ACPI=y
-> 
-> If you enable MPPARSE the problem goes away, no?
+This patch updates acpi_mps_check() logic to return 0 early when running
+as a Xen PV guest in DomU, preventing APIC from being disabled in this
+specific case and restoring correct multi-vCPU behaviour.
 
-Yes, it goes away.
+Fixes: 7c0edad3643f ("x86/cpu/topology: Rework possible CPU management")
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: x86@kernel.org
+Cc: xen-devel@lists.xenproject.org
+Cc: stable@vger.kernel.org # 6.9+
+Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
+---
+ arch/x86/kernel/acpi/boot.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-> > +	/* 'maxcpus=0' 'nosmp' 'nolapic'
-> > +	 *
-> > +	 * The apic_is_disabled check is ignored for Xen PV domains because Xen
-> > +	 * disables ACPI in unprivileged PV DomU guests, which would otherwise limit
-> > +	 * CPUs to 1, even if multiple vCPUs were configured.
-> 
-> This is the wrong place as it invalidates the effect of 'nolapic' on the
-> kernel command line for XEN PV.
-> 
-> You actually explain in the comment that XEN disables ACPI, so why are
-> you slapping this xen check into this code instead of doing the obvious
-> and prevent acpi_mps_check() to cause havoc?
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index dae6a73be40e..9fa321a95eb3 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -23,6 +23,8 @@
+ #include <linux/serial_core.h>
+ #include <linux/pgtable.h>
+ 
++#include <xen/xen.h>
++
+ #include <asm/e820/api.h>
+ #include <asm/irqdomain.h>
+ #include <asm/pci_x86.h>
+@@ -1729,6 +1731,15 @@ int __init acpi_mps_check(void)
+ {
+ #if defined(CONFIG_X86_LOCAL_APIC) && !defined(CONFIG_X86_MPPARSE)
+ /* mptable code is not built-in*/
++
++	/*
++	 * Xen disables ACPI in PV DomU guests but it still emulates APIC and
++	 * supports SMP. Returning early here ensures that APIC is not disabled
++	 * unnecessarily and the guest is not limited to a single vCPU.
++	 */
++	if (xen_pv_domain() && !xen_initial_domain())
++		return 0;
++
+ 	if (acpi_disabled || acpi_noirq) {
+ 		pr_warn("MPS support code is not built-in, using acpi=off or acpi=noirq or pci=noacpi may have problem\n");
+ 		return 1;
+-- 
+2.48.1
 
-Thank you for your explanation and suggestion. I will correct acpi_mps_check()
-in following patch.
-
-Thanks,
-Petr
 
