@@ -1,110 +1,116 @@
-Return-Path: <linux-acpi+bounces-12773-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12774-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0D0A7D20F
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 04:13:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D1FA7D459
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 08:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50BD1188AD84
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 02:13:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C76E43AAD62
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 06:41:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592D4212F82;
-	Mon,  7 Apr 2025 02:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D60A2253E9;
+	Mon,  7 Apr 2025 06:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mail.com header.i=nixuser@mail.com header.b="Vrs8IRpI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gWfKNRQj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.mail.com (mout.mail.com [74.208.4.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F72A1A8F60
-	for <linux-acpi@vger.kernel.org>; Mon,  7 Apr 2025 02:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589B12135A4;
+	Mon,  7 Apr 2025 06:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743992007; cv=none; b=RF1qZRcqSxdBL/lqo0y3mHH9jZ+eQFW7Weevi5qVywYKSajExrHHOfX6luPHbhAFh+d0kyCa4ZyDdHwRLtQdyyhAa8JMchONxmDU/4yMxqlwzvPnPGcJYKUuPHWh9sQthUn7H8tE3DqZ0mCGCuv1Bs3MEgiR1ylnmugeZXO8xHA=
+	t=1744008109; cv=none; b=IHMXjnsmvqeFTMxFwdk+AiIe9j/GXapSzXjO9MDglAGwMuyZk6Z6w+QDDBmZRYITKVKznX1ra7zdBOPpSk/NX/rMJPrSFEUDJngfVifEG/WiSmOLc7FHuLfCdH8uGkby1UoV9+07mZH943eSFviV2iy73nBRiWm403aQCz15WGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743992007; c=relaxed/simple;
-	bh=ArXCt0z1Jv+mXtLkUy2ZQa5kROOUYveJFQ7YMWCAy1s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=un3Y8I9wraXv6OD/01okXulV8/PCAqc4HOJaBfrqHSMATtn3g2AlD7lgGNRGHA+hr+MzBPo4bUvIjW+K1dAO8PV6Rc8lSu3M7O/odcjDF8nJi/e+edlIWIAev+ZrXNdpdB9z/vOqLVkllIStPETDgFQ4oPVToa0vJpH39bJV44k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.com; spf=pass smtp.mailfrom=mail.com; dkim=pass (2048-bit key) header.d=mail.com header.i=nixuser@mail.com header.b=Vrs8IRpI; arc=none smtp.client-ip=74.208.4.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mail.com;
-	s=s1089575; t=1743991998; x=1744596798; i=nixuser@mail.com;
-	bh=ArXCt0z1Jv+mXtLkUy2ZQa5kROOUYveJFQ7YMWCAy1s=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=Vrs8IRpIkVc6nN7ANacN6SWghAtgCfiVO48INmDNT4LHTGcCQWgHJ3H8t+Cpt528
-	 u9amDMyby9Fek6nwXOGbquseOvSSlzmgC8MY7EC8RcC9Wzb8gluC+JvJzfCCmVqVD
-	 Oe0Jvc3BEfVfBylvKMb3696eZ6NPU7MU3qh7INPUcaEB8dcIjiYkNnsiS3mqg0ct9
-	 RuRorvyuhzEQi5biOYHR9U6smwQe0JgXqg62Yg+rldPYYWojV/vUfPWBoSKPBHQWB
-	 ywKVLIx9DrvkAhtUkxPYsLOKCON3qtbwZ4tx90PrjufjCZ7pUVADul1XPBbimLvPD
-	 NwPo8CAP7dWcYVFdNg==
-X-UI-Sender-Class: f2cb72be-343f-493d-8ec3-b1efb8d6185a
-Received: from [192.168.16.65] ([163.53.147.46]) by smtp.mail.com (mrgmxus005
- [74.208.5.15]) with ESMTPSA (Nemesis) id 0LpttR-1tOPLV1jnD-00a8IR; Mon, 07
- Apr 2025 04:13:18 +0200
-Message-ID: <b08a4411-0bce-412b-b69a-13c060f1d0cb@mail.com>
-Date: Mon, 7 Apr 2025 12:13:14 +1000
+	s=arc-20240116; t=1744008109; c=relaxed/simple;
+	bh=PCQiGG6B2DNaakC53prIZJdI+gBuGzvVt2GLvpU+2cE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tTGBA/v3X/ej8jxDBOouuXn83CtoFkCXqp94DWRftffZ4dDuM/I2+sGV2BL0aHPnAeUq00oyk85eLvd498SEpFsRRNcKOiJQgwztoLfMAfmWnx6m3dztNEpOYyVLjozC80l+3+l/sDYFwkQ7/hqj6WU4XWdZR7Cpw8pKZ/kJ1KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gWfKNRQj; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744008108; x=1775544108;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=PCQiGG6B2DNaakC53prIZJdI+gBuGzvVt2GLvpU+2cE=;
+  b=gWfKNRQjv7tDSGmUXG0+teaqCvd1+vV2KP0WX7wzDcnivYdYKWDWt/zj
+   kGnq/KKlUEPlx7fHskHlu220fYFrneVXjm3W9H/KEeosPUzGEboJMxud5
+   JWwhhAtC7LGI7uEJZHHti5Hg885Q6Okc2glezjQKb6AXffGzUVQ9UMWnf
+   JlQb5bGpzzMBBjJ8ZYTJa5TQkGvFlXBTIAzd+2TQsN1C0anc3JDcThiiZ
+   cgwFaQ4ZDozJH8qf6BKZKho3hthnu9DDESgwvDnYVOdpXZ73BeJFZoP3r
+   UP17hmtt3eq6ks5Yvq4j6oXyLzYcgWIuPbaM9wJKEiqJWeRXtTmRuCm+F
+   Q==;
+X-CSE-ConnectionGUID: CSJ9rAG7T82RQ6MVRr6EVQ==
+X-CSE-MsgGUID: kOVNx4PGSA2YfHVL9G2xuQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11396"; a="56739012"
+X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; 
+   d="scan'208";a="56739012"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2025 23:41:47 -0700
+X-CSE-ConnectionGUID: 4PuUPLd0TvK25LbH6hG7Nw==
+X-CSE-MsgGUID: RR+H+9wGQgGAI79CRQ80Aw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; 
+   d="scan'208";a="158831349"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2025 23:41:44 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1u1gAv-00000009yco-3xUB;
+	Mon, 07 Apr 2025 09:41:41 +0300
+Date: Mon, 7 Apr 2025 09:41:41 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mika Westerberg <westeri@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v2 0/6] gpiolib: acpi: Refactor to shrink the code by ~8%
+Message-ID: <Z_NzpTUiXMPffXmI@smile.fi.intel.com>
+References: <20250403160034.2680485-1-andriy.shevchenko@linux.intel.com>
+ <20250404044318.GL3152277@black.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ACPI: button: Only send `KEY_POWER` for
- `ACPI_BUTTON_NOTIFY_STATUS`
-To: Mario Limonciello <superm1@kernel.org>, mario.limonciello@amd.com,
- rafael@kernel.org
-Cc: Yijun Shen <yijun_shen@dell.com>, Richard Gong <richard.gong@amd.com>,
- rafael.j.wysocki@intel.com, linux-acpi@vger.kernel.org
-References: <20250404145034.2608574-1-superm1@kernel.org>
-Content-Language: en-US
-From: Ian Laurie <nixuser@mail.com>
-In-Reply-To: <20250404145034.2608574-1-superm1@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:MQgLhT4nkZb2S+LAbkykGreYqWbJivl6nlXGIjL5s5OlJrAAjry
- T8nhIk/515in0IGM+mA/Z7gwT2q6XWd9k3xPGxCMTgENGZApPW3FP6164SKF3Coxx0Ag182
- k7FB7p64O0mrEtTyUWkr5GsRLisoc1MG4bWVE7AN0ZSwXjCUXN/HauEPwi/qy1TS0VoE7Hk
- RsZMEkt9jZyUlao+m7tXA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Mjm4YxbUpCA=;0D6pX0ZS9/7HdaibAKoZpUjvtzp
- 4EWCb/3ZptSKafWrdbzZwsw/0J9Hk0cq2O5fNx6LRnreojSovrzaYFVa36A+kEBOe1GKDMmlH
- EaY2hyX2FUFpMFOB+tLS7a/s4xjTDPB2ly6tu24veWJYoIcScpfd+MAAgPlK3fhSMxZRamxVx
- qzhFe7V+FHLXLZuSJmuBQllyb6IIoIXPutX4t0zcojk+3z2J75ewMAmtInm2kI1/HCGkg31qX
- mvewF3dqlBHUFgSn0xUJKNEmOjDeFhzT16QFXK6Syr9GOATDaohdHZW1Z7CpQl7xnph+5liYW
- x3N1PhnJYUZvD2Sr5bPnL07FAAet/pUqE5c+5CryXWC0pAe3mu1QI4f5AOczDaSum4xIsa+K0
- E2yIbUBD9E3/aJRHDQCgsEwak08WTPLAQUYguOY0ClNjAoYUON+4XVu8oRW6m6e9EV88TS/ss
- RygGqcclCy7rtBC/FiTnqnSfnke1NenJW7o9QHpECjYWVf1rtIFlX0D78Twh0OY7yrl+q0qo+
- ONC3QfjH1pyOQDf9AQH1uLpw4BBqwOeR2Y2JSCarTGKv7Byouz7utXyYFfULApN/KbrnyG87Y
- lIzI7TE542RwYFvBN/I23i2cNVRFm32babavGCEgfThJJWaZDNr3hTfnyrl9tCcpjO1IIZESj
- BLJbgmmtl+PGNGmESQM3k7i/hKCXpiXQI6a7d8ObX6dWKxZi7CLRjG/hFu2zjcFWuXuglYzB3
- IO+5wRkIE7gE+uMNiXdaWznBzTA6zZBfwmQORtBZIC6ho21UUCdTNh5yrRQ+0YDu6UZn6PHi1
- 3Sg6GJHmAfjIRh2e3cY9pJ8PrUjxHQS9jaeXAGW0sGhdUIPnXLQcvUdAIDQkOkXLdBanXNOVg
- 868hisg0cE/GvmmYMX7f7joN5AXGfh5TfJomSb8mi7GmbqnlAzJ7VYMiSdfmplkpl6MhWj9Cv
- QpAdhTb2xonLcDXy6GRR/DJvRL2SnOPckEEniMH8PL4/f6vFdayhyJ/KLoeyiHnbPr9R39pJv
- g714z3mAvuJwcTwZgKwMq0JnvUXyAkYCiIZpleGarZPUmkmXVGi9gjTNfhTSioW8iKVVIT6I5
- Z9GvoGd6ydcpgVruMYWuLyLbZnCuhPD4n5/52V6LLaeXECZNTq0tanRMk4mwqIEz9UtEjGJrO
- /kUwrKeVOLp+gOBnvf+atulpOvjmz1sLKq3J2JbekADVGwJPUKi2w3QGSfmtjYFM+9QGaMd1u
- 3l+wpyffSGsNTZhAsv8ePrERxSBDZecmca6VBomeAD/Sfu2+Bf3Y2UfYJA3cF55PBfSiKykYK
- JQCGXYs8QqnJDP6bB+0Y6Qa0D1D7jcC1zpXhrfT1x13dPV5EJsxgOqIQdmfJujRZiEOU6iI2o
- y9Be7XvsoyWu9MPgilvQedi26iBatVoEuGVIUoQ4t/E4nsUV4gyayVG+cf92u5pm9d9G3FRNt
- FZL2+1w==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250404044318.GL3152277@black.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Downloaded the build Justin did on Koji, looks good after 24 hours, no
-bugus events.
+On Fri, Apr 04, 2025 at 07:43:18AM +0300, Mika Westerberg wrote:
+> On Thu, Apr 03, 2025 at 06:59:11PM +0300, Andy Shevchenko wrote:
+> > A simple refactoring of the GPIO ACPI library parts to get an impressive
+> > ~8% code shrink on x86_64 and ~2% on x86_32. Also reduces a C code a bit.
+> > 
+> > add/remove: 0/2 grow/shrink: 0/5 up/down: 0/-1221 (-1221)
+> > Function                                     old     new   delta
+> > acpi_gpio_property_lookup                    425     414     -11
+> > acpi_find_gpio.__UNIQUE_ID_ddebug478          56       -     -56
+> > acpi_dev_gpio_irq_wake_get_by.__UNIQUE_ID_ddebug480      56       -     -56
+> > acpi_find_gpio                               354     216    -138
+> > acpi_get_gpiod_by_index                      462     307    -155
+> > __acpi_find_gpio                             877     638    -239
+> > acpi_dev_gpio_irq_wake_get_by                695     129    -566
+> > Total: Before=15375, After=14154, chg -7.94%
 
-Tested-by: Ian Laurie <nixuser@mail.com>
+> Looks good now,
+> 
+> Acked-by: Mika Westerberg <westeri@kernel.org>
 
-=2D-
-Ian Laurie
-FAS: nixuser | IRC: nixuser
-TZ: Australia/Sydney
+
+Pushed to my review and testing queue, thanks!
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
