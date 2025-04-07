@@ -1,248 +1,110 @@
-Return-Path: <linux-acpi+bounces-12770-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12773-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E026A7D1F2
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 04:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E0D0A7D20F
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 04:13:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B66D8188D47F
-	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 02:07:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50BD1188AD84
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 02:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607B021325C;
-	Mon,  7 Apr 2025 02:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592D4212F82;
+	Mon,  7 Apr 2025 02:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=mail.com header.i=nixuser@mail.com header.b="Vrs8IRpI"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
+Received: from mout.mail.com (mout.mail.com [74.208.4.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AB2213221
-	for <linux-acpi@vger.kernel.org>; Mon,  7 Apr 2025 02:07:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F72A1A8F60
+	for <linux-acpi@vger.kernel.org>; Mon,  7 Apr 2025 02:13:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743991648; cv=none; b=hCIzLti5ak/432JxCHDlwEiFMAzKmtogD9xFmD6eW/RT3VrYvBQ+Yd5gP8DzwiZad0uzcPFUM/VxDThY20q5R8NcX4nyCCQckt6eG4qp5WzwHWpgwPDmxK3Oxu8XBYneo7EEFgkUnSLrErtLVmv7r9vtk5qrFpu9OvzmGI+RKr4=
+	t=1743992007; cv=none; b=RF1qZRcqSxdBL/lqo0y3mHH9jZ+eQFW7Weevi5qVywYKSajExrHHOfX6luPHbhAFh+d0kyCa4ZyDdHwRLtQdyyhAa8JMchONxmDU/4yMxqlwzvPnPGcJYKUuPHWh9sQthUn7H8tE3DqZ0mCGCuv1Bs3MEgiR1ylnmugeZXO8xHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743991648; c=relaxed/simple;
-	bh=MGi4qtb6SLMs94x+IvcEx7bVKqBnqXah0fRCJh5j1lM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hGqYLumSs1bpYHjXI29Nb4A11gRknA3r9+9+bdGUWTc9CdI5SUDG1vYrCDE4MA3tpFXJ++kQhT2BBH0B/zqBpqkRJYCwX8bqxLDsKiE/PTQsII/u3B748dFZUrNyjSTMekN/Azx743ZuLt4oFO8uhiT7YyixTyZHvoD0UKgF5hU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1743991642-1eb14e119e07000001-I98ny2
-Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by mx2.zhaoxin.com with ESMTP id vIuMEgiPZyEdy58z (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Mon, 07 Apr 2025 10:07:22 +0800 (CST)
-X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Received: from ZXSHMBX3.zhaoxin.com (10.28.252.165) by ZXSHMBX2.zhaoxin.com
- (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Mon, 7 Apr
- 2025 10:07:22 +0800
-Received: from ZXSHMBX3.zhaoxin.com ([fe80::8cc5:5bc6:24ec:65f2]) by
- ZXSHMBX3.zhaoxin.com ([fe80::8cc5:5bc6:24ec:65f2%6]) with mapi id
- 15.01.2507.044; Mon, 7 Apr 2025 10:07:22 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Received: from xin.lan (10.32.64.1) by ZXBJMBX03.zhaoxin.com (10.29.252.7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Mon, 7 Apr
- 2025 10:06:04 +0800
-From: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
-To: <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
-	<tony.luck@intel.com>, <bp@alien8.de>, <bhelgaas@google.com>,
-	<robert.moore@intel.com>, <yazen.ghannam@amd.com>, <avadhut.naik@amd.com>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, <acpica-devel@lists.linux.dev>
-CC: <CobeChen@zhaoxin.com>, <TonyWWang@zhaoxin.com>, <ErosZhang@zhaoxin.com>,
-	<leoliu@zhaoxin.com>, LeoLiuoc <LeoLiu-oc@zhaoxin.com>
-Subject: [PATCH v6 4/4] PCI: ACPI: Add new pci_acpi_program_hest_aer_params()
-Date: Mon, 7 Apr 2025 10:05:57 +0800
-X-ASG-Orig-Subj: [PATCH v6 4/4] PCI: ACPI: Add new pci_acpi_program_hest_aer_params()
-Message-ID: <20250407020557.1225166-5-LeoLiu-oc@zhaoxin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250407020557.1225166-1-LeoLiu-oc@zhaoxin.com>
-References: <20250407020557.1225166-1-LeoLiu-oc@zhaoxin.com>
+	s=arc-20240116; t=1743992007; c=relaxed/simple;
+	bh=ArXCt0z1Jv+mXtLkUy2ZQa5kROOUYveJFQ7YMWCAy1s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=un3Y8I9wraXv6OD/01okXulV8/PCAqc4HOJaBfrqHSMATtn3g2AlD7lgGNRGHA+hr+MzBPo4bUvIjW+K1dAO8PV6Rc8lSu3M7O/odcjDF8nJi/e+edlIWIAev+ZrXNdpdB9z/vOqLVkllIStPETDgFQ4oPVToa0vJpH39bJV44k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.com; spf=pass smtp.mailfrom=mail.com; dkim=pass (2048-bit key) header.d=mail.com header.i=nixuser@mail.com header.b=Vrs8IRpI; arc=none smtp.client-ip=74.208.4.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mail.com;
+	s=s1089575; t=1743991998; x=1744596798; i=nixuser@mail.com;
+	bh=ArXCt0z1Jv+mXtLkUy2ZQa5kROOUYveJFQ7YMWCAy1s=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=Vrs8IRpIkVc6nN7ANacN6SWghAtgCfiVO48INmDNT4LHTGcCQWgHJ3H8t+Cpt528
+	 u9amDMyby9Fek6nwXOGbquseOvSSlzmgC8MY7EC8RcC9Wzb8gluC+JvJzfCCmVqVD
+	 Oe0Jvc3BEfVfBylvKMb3696eZ6NPU7MU3qh7INPUcaEB8dcIjiYkNnsiS3mqg0ct9
+	 RuRorvyuhzEQi5biOYHR9U6smwQe0JgXqg62Yg+rldPYYWojV/vUfPWBoSKPBHQWB
+	 ywKVLIx9DrvkAhtUkxPYsLOKCON3qtbwZ4tx90PrjufjCZ7pUVADul1XPBbimLvPD
+	 NwPo8CAP7dWcYVFdNg==
+X-UI-Sender-Class: f2cb72be-343f-493d-8ec3-b1efb8d6185a
+Received: from [192.168.16.65] ([163.53.147.46]) by smtp.mail.com (mrgmxus005
+ [74.208.5.15]) with ESMTPSA (Nemesis) id 0LpttR-1tOPLV1jnD-00a8IR; Mon, 07
+ Apr 2025 04:13:18 +0200
+Message-ID: <b08a4411-0bce-412b-b69a-13c060f1d0cb@mail.com>
+Date: Mon, 7 Apr 2025 12:13:14 +1000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ACPI: button: Only send `KEY_POWER` for
+ `ACPI_BUTTON_NOTIFY_STATUS`
+To: Mario Limonciello <superm1@kernel.org>, mario.limonciello@amd.com,
+ rafael@kernel.org
+Cc: Yijun Shen <yijun_shen@dell.com>, Richard Gong <richard.gong@amd.com>,
+ rafael.j.wysocki@intel.com, linux-acpi@vger.kernel.org
+References: <20250404145034.2608574-1-superm1@kernel.org>
+Content-Language: en-US
+From: Ian Laurie <nixuser@mail.com>
+In-Reply-To: <20250404145034.2608574-1-superm1@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
- ZXBJMBX03.zhaoxin.com (10.29.252.7)
-X-Moderation-Data: 4/7/2025 10:07:21 AM
-X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
-X-Barracuda-Start-Time: 1743991642
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 5073
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.139598
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
+X-Provags-ID: V03:K1:MQgLhT4nkZb2S+LAbkykGreYqWbJivl6nlXGIjL5s5OlJrAAjry
+ T8nhIk/515in0IGM+mA/Z7gwT2q6XWd9k3xPGxCMTgENGZApPW3FP6164SKF3Coxx0Ag182
+ k7FB7p64O0mrEtTyUWkr5GsRLisoc1MG4bWVE7AN0ZSwXjCUXN/HauEPwi/qy1TS0VoE7Hk
+ RsZMEkt9jZyUlao+m7tXA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Mjm4YxbUpCA=;0D6pX0ZS9/7HdaibAKoZpUjvtzp
+ 4EWCb/3ZptSKafWrdbzZwsw/0J9Hk0cq2O5fNx6LRnreojSovrzaYFVa36A+kEBOe1GKDMmlH
+ EaY2hyX2FUFpMFOB+tLS7a/s4xjTDPB2ly6tu24veWJYoIcScpfd+MAAgPlK3fhSMxZRamxVx
+ qzhFe7V+FHLXLZuSJmuBQllyb6IIoIXPutX4t0zcojk+3z2J75ewMAmtInm2kI1/HCGkg31qX
+ mvewF3dqlBHUFgSn0xUJKNEmOjDeFhzT16QFXK6Syr9GOATDaohdHZW1Z7CpQl7xnph+5liYW
+ x3N1PhnJYUZvD2Sr5bPnL07FAAet/pUqE5c+5CryXWC0pAe3mu1QI4f5AOczDaSum4xIsa+K0
+ E2yIbUBD9E3/aJRHDQCgsEwak08WTPLAQUYguOY0ClNjAoYUON+4XVu8oRW6m6e9EV88TS/ss
+ RygGqcclCy7rtBC/FiTnqnSfnke1NenJW7o9QHpECjYWVf1rtIFlX0D78Twh0OY7yrl+q0qo+
+ ONC3QfjH1pyOQDf9AQH1uLpw4BBqwOeR2Y2JSCarTGKv7Byouz7utXyYFfULApN/KbrnyG87Y
+ lIzI7TE542RwYFvBN/I23i2cNVRFm32babavGCEgfThJJWaZDNr3hTfnyrl9tCcpjO1IIZESj
+ BLJbgmmtl+PGNGmESQM3k7i/hKCXpiXQI6a7d8ObX6dWKxZi7CLRjG/hFu2zjcFWuXuglYzB3
+ IO+5wRkIE7gE+uMNiXdaWznBzTA6zZBfwmQORtBZIC6ho21UUCdTNh5yrRQ+0YDu6UZn6PHi1
+ 3Sg6GJHmAfjIRh2e3cY9pJ8PrUjxHQS9jaeXAGW0sGhdUIPnXLQcvUdAIDQkOkXLdBanXNOVg
+ 868hisg0cE/GvmmYMX7f7joN5AXGfh5TfJomSb8mi7GmbqnlAzJ7VYMiSdfmplkpl6MhWj9Cv
+ QpAdhTb2xonLcDXy6GRR/DJvRL2SnOPckEEniMH8PL4/f6vFdayhyJ/KLoeyiHnbPr9R39pJv
+ g714z3mAvuJwcTwZgKwMq0JnvUXyAkYCiIZpleGarZPUmkmXVGi9gjTNfhTSioW8iKVVIT6I5
+ Z9GvoGd6ydcpgVruMYWuLyLbZnCuhPD4n5/52V6LLaeXECZNTq0tanRMk4mwqIEz9UtEjGJrO
+ /kUwrKeVOLp+gOBnvf+atulpOvjmz1sLKq3J2JbekADVGwJPUKi2w3QGSfmtjYFM+9QGaMd1u
+ 3l+wpyffSGsNTZhAsv8ePrERxSBDZecmca6VBomeAD/Sfu2+Bf3Y2UfYJA3cF55PBfSiKykYK
+ JQCGXYs8QqnJDP6bB+0Y6Qa0D1D7jcC1zpXhrfT1x13dPV5EJsxgOqIQdmfJujRZiEOU6iI2o
+ y9Be7XvsoyWu9MPgilvQedi26iBatVoEuGVIUoQ4t/E4nsUV4gyayVG+cf92u5pm9d9G3FRNt
+ FZL2+1w==
 
-From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
+Downloaded the build Justin did on Koji, looks good after 24 hours, no
+bugus events.
 
-Call the func pci_acpi_program_hest_aer_params() for every PCIe device,
-the purpose of this function is to extract register value from HEST PCIe
-AER structures and program them into AER Capabilities. This function
-applies to all hardware platforms that has a PCI Express AER structure
-in HEST.
+Tested-by: Ian Laurie <nixuser@mail.com>
 
-Signed-off-by: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
----
- drivers/pci/pci-acpi.c | 88 ++++++++++++++++++++++++++++++++++++++++++
- drivers/pci/pci.h      |  6 +++
- drivers/pci/probe.c    |  1 +
- 3 files changed, 95 insertions(+)
-
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index af370628e583..027057faca33 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -19,6 +19,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/pm_qos.h>
- #include <linux/rwsem.h>
-+#include <acpi/apei.h>
- #include "pci.h"
-=20
- /*
-@@ -806,6 +807,93 @@ int pci_acpi_program_hp_params(struct pci_dev *dev)
- 	return -ENODEV;
- }
-=20
-+#ifdef CONFIG_ACPI_APEI
-+/*
-+ * program_hest_aer_common() - configure AER common registers for Root Por=
-ts,
-+ * Endpoints and PCIe to PCI/PCI-X bridges
-+ */
-+static void program_hest_aer_common(struct acpi_hest_aer_common aer_common=
-, struct pci_dev *dev,
-+				    int pos)
-+{
-+	u32 uncor_mask =3D aer_common.uncorrectable_mask;
-+	u32 uncor_severity =3D aer_common.uncorrectable_severity;
-+	u32 cor_mask =3D aer_common.correctable_mask;
-+	u32 adv_cap =3D aer_common.advanced_capabilities;
-+
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK, uncor_mask);
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_SEVER, uncor_severity);
-+	pci_write_config_dword(dev, pos + PCI_ERR_COR_MASK, cor_mask);
-+	pci_write_config_dword(dev, pos + PCI_ERR_CAP, adv_cap);
-+}
-+
-+static void program_hest_aer_root(struct acpi_hest_aer_root *aer_root, str=
-uct pci_dev *dev, int pos)
-+{
-+	u32 root_err_cmd =3D aer_root->root_error_command;
-+
-+	pci_write_config_dword(dev, pos + PCI_ERR_ROOT_COMMAND, root_err_cmd);
-+}
-+
-+static void program_hest_aer_bridge(struct acpi_hest_aer_bridge *hest_aer_=
-bridge,
-+				    struct pci_dev *dev, int pos)
-+{
-+	u32 uncor_mask2 =3D hest_aer_bridge->uncorrectable_mask2;
-+	u32 uncor_severity2 =3D hest_aer_bridge->uncorrectable_severity2;
-+	u32 adv_cap2 =3D hest_aer_bridge->advanced_capabilities2;
-+
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK2, uncor_mask2);
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_SEVER2, uncor_severity2);
-+	pci_write_config_dword(dev, pos + PCI_ERR_CAP2, adv_cap2);
-+}
-+
-+static void program_hest_aer_params(struct hest_parse_aer_info info)
-+{
-+	struct pci_dev *dev;
-+	int port_type;
-+	int pos;
-+	struct acpi_hest_aer_root *hest_aer_root;
-+	struct acpi_hest_aer *hest_aer_endpoint;
-+	struct acpi_hest_aer_bridge *hest_aer_bridge;
-+
-+	dev =3D info.pci_dev;
-+	port_type =3D pci_pcie_type(dev);
-+	pos =3D pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ERR);
-+	if (!pos)
-+		return;
-+
-+	switch (port_type) {
-+	case PCI_EXP_TYPE_ROOT_PORT:
-+		hest_aer_root =3D (struct acpi_hest_aer_root *)info.data;
-+		program_hest_aer_common(hest_aer_root->aer, dev, pos);
-+		program_hest_aer_root(hest_aer_root, dev, pos);
-+		break;
-+	case PCI_EXP_TYPE_ENDPOINT:
-+		hest_aer_endpoint =3D (struct acpi_hest_aer *)info.data;
-+		program_hest_aer_common(hest_aer_endpoint->aer, dev, pos);
-+		break;
-+	case PCI_EXP_TYPE_PCI_BRIDGE:
-+		hest_aer_bridge =3D (struct acpi_hest_aer_bridge *)info.data;
-+		program_hest_aer_common(hest_aer_bridge->aer, dev, pos);
-+		program_hest_aer_bridge(hest_aer_bridge, dev, pos);
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
-+void pci_acpi_program_hest_aer_params(struct pci_dev *dev)
-+{
-+	struct hest_parse_aer_info info =3D {
-+		.pci_dev =3D dev
-+	};
-+
-+	if (!pci_is_pcie(dev))
-+		return;
-+
-+	if (apei_hest_parse(hest_parse_pcie_aer, &info) > 0)
-+		program_hest_aer_params(info);
-+}
-+#endif
-+
- /**
-  * pciehp_is_native - Check whether a hotplug port is handled by the OS
-  * @bridge: Hotplug port to check
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index b81e99cd4b62..46af751878f5 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -977,6 +977,12 @@ static inline void pci_save_aer_state(struct pci_dev *=
-dev) { }
- static inline void pci_restore_aer_state(struct pci_dev *dev) { }
- #endif
-=20
-+#ifdef CONFIG_ACPI_APEI
-+void pci_acpi_program_hest_aer_params(struct pci_dev *dev);
-+#else
-+static inline void pci_acpi_program_hest_aer_params(struct pci_dev *dev) {=
- }
-+#endif
-+
- #ifdef CONFIG_ACPI
- bool pci_acpi_preserve_config(struct pci_host_bridge *bridge);
- int pci_acpi_program_hp_params(struct pci_dev *dev);
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 364fa2a514f8..77477a9a7d83 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2366,6 +2366,7 @@ static void pci_configure_device(struct pci_dev *dev)
- 	pci_configure_serr(dev);
-=20
- 	pci_acpi_program_hp_params(dev);
-+	pci_acpi_program_hest_aer_params(dev);
- }
-=20
- static void pci_release_capabilities(struct pci_dev *dev)
---=20
-2.34.1
-
+=2D-
+Ian Laurie
+FAS: nixuser | IRC: nixuser
+TZ: Australia/Sydney
 
