@@ -1,251 +1,144 @@
-Return-Path: <linux-acpi+bounces-12767-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12769-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE6DDA7CE5E
-	for <lists+linux-acpi@lfdr.de>; Sun,  6 Apr 2025 16:09:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D1AA7D1EC
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 04:07:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D1CD188ED01
-	for <lists+linux-acpi@lfdr.de>; Sun,  6 Apr 2025 14:09:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61DD73AC0B4
+	for <lists+linux-acpi@lfdr.de>; Mon,  7 Apr 2025 02:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A25218EB4;
-	Sun,  6 Apr 2025 14:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C115C212D8D;
+	Mon,  7 Apr 2025 02:07:25 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A489218E83
-	for <linux-acpi@vger.kernel.org>; Sun,  6 Apr 2025 14:09:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1829D212D65
+	for <linux-acpi@vger.kernel.org>; Mon,  7 Apr 2025 02:07:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743948547; cv=none; b=lW9o8zdnKO6MqVeR/jmwtr8lTByppcXNmDWvywiLeSFue2UghBWzqHZyhlX+8R97L3UMfQKP7Piap80zqsrbYNawf8h7clI8dlRnm+SVkurUGCCB+Zg5ljv4ZhiOOl/tY/2F+Sc3ZcjCnLEYEFnCQzYBpxm11cCTJ+7DzyXgZag=
+	t=1743991645; cv=none; b=gXcQV4C6auZQ5NVPhAC13x/4CmQLmXYZRsL/c6MaprScVd393BCA+5PCNqIPVtirZIaX/reBEEKiIWVpC4si3Ml5KhY7rlg9XTGX06DzPCjQXksnAtenLC+f5g9F+CeEIvrVxp0tV+VZI/hpE4LSu/JWh6SIom9oxjnv1kvNe/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743948547; c=relaxed/simple;
-	bh=m+4+9HmLA1W3Y+XP5CFi2fuTRL+IGVBbugonxbcYCbA=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=gwVGzWqsA/B9Q5xh3a49OLxC5W/JevcgE4mfbSM31EWdP9jMQU+Gv1idVSJMHPGLUmxhJgQzq8JUhmqE9k7Y2MJKv62adEklpvf5cGvhjnGQe54jI3uD0PGYdy6/l95H8zx6EHQqAJW73K0dJ9Pu9CSKdRsz3+5+HREL+zZDk4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-85e318dc464so757428039f.1
-        for <linux-acpi@vger.kernel.org>; Sun, 06 Apr 2025 07:09:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743948545; x=1744553345;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dlnz3QUWVHoJAB4rH18Hc6CGYwZXQHnTUZNR/puT8KM=;
-        b=lHsOMpSGUE8hK8Qx7PMvYCjqMTTJX17DkwCcRD/52uO2yQbsOHGQS/cIY29idjEiXT
-         lfyIslJK3G0jCmEKgL80wuuMTCBiVdcrA8y9rAVkRiVCUEVB+8gCvAoYXeyuFdL/iYzD
-         YXdtUBW/tXifxNedO5vQrF1ZrqrfgNalXwOKNFNMexkOYE8zWNrjyjob1G/1Mzkc57Xe
-         i2gy3m3S0FtCPBqGD6t8NsO7vMsuxCLWviEAGwwRsHdLiqDfsBC3tjcp0zzkxiMjJ6Ic
-         RMvFqqcfVlljB6ZTPIV5o7SwhdMHCUeb7LdLCo773Gsrop2qLwy35NKYw6FBPhvboQ2K
-         EhAw==
-X-Forwarded-Encrypted: i=1; AJvYcCV4q4rc/ApXqEWHuOiPJICa/zF/O0U0gAgQQfPAIdxUa/5LrGeQc2Heu1MjdeYoH2FWoGXagtjfUKzN@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy23VpvGr5PAUw3D9f1e4Yo5WBKopQLaB48T0XLR0K9TlGuTRKk
-	ESkxCdua7iEgbzEaegO2EJKX2nrLIT8+yBWQnUY1DaTQXoGmg92ExHx7ghtsbUxe73R7y0da+Km
-	tvq0eelswD4zHtYqvz6ZB2ImeXV+zwawv6RxBIKrgHdZOPqkrsQY/eto=
-X-Google-Smtp-Source: AGHT+IFVk6B3KojEZ3HHyDg7b7Q2KgR8+e22Z3aTgtBeq8fXrlmEnRT2d1Mw60kBpCc7sQyRFyMLKPSIDt3XS/IeWyV6D7w8upDr
+	s=arc-20240116; t=1743991645; c=relaxed/simple;
+	bh=TTpNxi60rOS9cwxZpQdBYdmkZyVazYfR2C92mh+98r8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KYRBoZnBrVSBwrzuaH0f0G9qKxZvju2MIZGpUrJ74YkdcUXjDOysuPWMe2xE8AK9aMNT9m4cbb43pOfALnwff3LdJwCD26hkIIrOAUPGIOSl8d9ifMKwlXDxYOsQ3zUgEAtmkk+Rut4QhpVCxdIVUhhzqFpfbnKl5UzOIrBWWEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1743991630-1eb14e119c07020001-I98ny2
+Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx2.zhaoxin.com with ESMTP id 11kl4D0J42PEHCEC (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Mon, 07 Apr 2025 10:07:10 +0800 (CST)
+X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from ZXSHMBX3.zhaoxin.com (10.28.252.165) by ZXSHMBX3.zhaoxin.com
+ (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.44; Mon, 7 Apr
+ 2025 10:07:10 +0800
+Received: from ZXSHMBX3.zhaoxin.com ([fe80::8cc5:5bc6:24ec:65f2]) by
+ ZXSHMBX3.zhaoxin.com ([fe80::8cc5:5bc6:24ec:65f2%6]) with mapi id
+ 15.01.2507.044; Mon, 7 Apr 2025 10:07:10 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
+Received: from xin.lan (10.32.64.1) by ZXBJMBX03.zhaoxin.com (10.29.252.7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Mon, 7 Apr
+ 2025 10:05:58 +0800
+From: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
+To: <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
+	<tony.luck@intel.com>, <bp@alien8.de>, <bhelgaas@google.com>,
+	<robert.moore@intel.com>, <yazen.ghannam@amd.com>, <avadhut.naik@amd.com>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>, <acpica-devel@lists.linux.dev>
+CC: <CobeChen@zhaoxin.com>, <TonyWWang@zhaoxin.com>, <ErosZhang@zhaoxin.com>,
+	<leoliu@zhaoxin.com>, LeoLiuoc <LeoLiu-oc@zhaoxin.com>
+Subject: [PATCH v6 0/4]  Parse the HEST PCIe AER and set to relevant registers
+Date: Mon, 7 Apr 2025 10:05:53 +0800
+X-ASG-Orig-Subj: [PATCH v6 0/4]  Parse the HEST PCIe AER and set to relevant registers
+Message-ID: <20250407020557.1225166-1-LeoLiu-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a92:c24f:0:b0:3d3:dcfd:2768 with SMTP id
- e9e14a558f8ab-3d6e3eea7d0mr105686255ab.4.1743948544799; Sun, 06 Apr 2025
- 07:09:04 -0700 (PDT)
-Date: Sun, 06 Apr 2025 07:09:04 -0700
-In-Reply-To: <Z_KAmSNLsAhctKv8@smile.fi.intel.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67f28b00.050a0220.0a13.026a.GAE@google.com>
-Subject: Re: [syzbot] [acpi?] KASAN: slab-use-after-free Read in software_node_notify_remove
-From: syzbot <syzbot+2ff22910687ee0dfd48e@syzkaller.appspotmail.com>
-To: andriy.shevchenko@linux.intel.com, dakr@kernel.org, djrscally@gmail.com, 
-	gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com, jgg@nvidia.com, 
-	kevin.tian@intel.com, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, nicolinc@nvidia.com, rafael@kernel.org, 
-	sakari.ailus@linux.intel.com, syzkaller-bugs@googlegroups.com, 
-	yi.l.liu@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ ZXBJMBX03.zhaoxin.com (10.29.252.7)
+X-Moderation-Data: 4/7/2025 10:07:08 AM
+X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
+X-Barracuda-Start-Time: 1743991630
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 2157
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.139598
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
 
-Hello,
+From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
 
-syzbot has tested the proposed patch but the reproducer is still triggering an issue:
-KASAN: slab-use-after-free Read in set_secondary_fwnode
+According to the Section 18.3.2.4, 18.3.2.5 and 18.3.2.6 in ACPI SPEC r6.5,
+the register value form HEST PCI Express AER Structure should be written to
+relevant PCIe Device's AER Capabilities. So the purpose of the patch set is
+to extract register value from HEST PCI Express AER structures and program
+them into PCIe Device's AER registers. Refer to the ACPI SPEC r6.5 for the
+more detailed description.
 
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000002
-R13: 0000000000000000 R14: 00007f0934da5fa0 R15: 00007ffe7c9dc778
- </TASK>
-iommufd_mock iommufd_mock0: Adding to iommu group 0
-==================================================================
-BUG: KASAN: slab-use-after-free in fwnode_is_primary drivers/base/core.c:5105 [inline]
-BUG: KASAN: slab-use-after-free in set_secondary_fwnode+0x89/0xd0 drivers/base/core.c:5167
-Read of size 8 at addr ffff8880358f0440 by task syz.0.19/6201
+Changes in v2:
+- Move the definition of structure "hest_parse_aer_info" to file apei.h.
+- Link to v1: https://lore.kernel.org/all/20231115091612.580685-1-LeoLiu-oc=
+@zhaoxin.com/
 
-CPU: 0 UID: 0 PID: 6201 Comm: syz.0.19 Not tainted 6.14.0-syzkaller-13525-g22ea69445c54 #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0x16e/0x5b0 mm/kasan/report.c:521
- kasan_report+0x143/0x180 mm/kasan/report.c:634
- fwnode_is_primary drivers/base/core.c:5105 [inline]
- set_secondary_fwnode+0x89/0xd0 drivers/base/core.c:5167
- software_node_notify_remove+0x1a8/0x1e0 drivers/base/swnode.c:1112
- device_platform_notify_remove drivers/base/core.c:2387 [inline]
- device_del+0x594/0x9b0 drivers/base/core.c:3858
- device_unregister+0x20/0xc0 drivers/base/core.c:3896
- mock_dev_destroy drivers/iommu/iommufd/selftest.c:960 [inline]
- iommufd_test_mock_domain drivers/iommu/iommufd/selftest.c:1022 [inline]
- iommufd_test+0x3715/0x56a0 drivers/iommu/iommufd/selftest.c:1866
- iommufd_fops_ioctl+0x4fc/0x610 drivers/iommu/iommufd/main.c:419
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:906 [inline]
- __se_sys_ioctl+0xf1/0x160 fs/ioctl.c:892
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f0934b8d169
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f0935a12038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f0934da5fa0 RCX: 00007f0934b8d169
-RDX: 0000200000000200 RSI: 0000000000003ba0 RDI: 0000000000000003
-RBP: 00007f0935a12090 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000002
-R13: 0000000000000000 R14: 00007f0934da5fa0 R15: 00007ffe7c9dc778
- </TASK>
+Changes in v3:
+- The applicable hardware for this patch is added to the commit
+  information.
+- Change the function name "program_hest_aer_endpoint" to
+  "program_hest_aer_common".
+- Add the comment to function "program_hest_aer_common".
+- Remove the "PCI_EXP_TYPE_PCIE_BRIDGE" branch handling in function
+  "program_hest_aer_params".
+- Link to v2: https://lore.kernel.org/all/20231218030430.783495-1-LeoLiu-oc=
+@zhaoxin.com/
 
-Allocated by task 6201:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
- __kasan_kmalloc+0x9d/0xb0 mm/kasan/common.c:394
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __kmalloc_cache_noprof+0x236/0x370 mm/slub.c:4362
- kmalloc_noprof include/linux/slab.h:905 [inline]
- kzalloc_noprof include/linux/slab.h:1039 [inline]
- swnode_register+0x5a/0x540 drivers/base/swnode.c:790
- fwnode_create_software_node+0x199/0x1f0 drivers/base/swnode.c:949
- device_create_managed_software_node+0xd5/0x1f0 drivers/base/swnode.c:1060
- mock_dev_create drivers/iommu/iommufd/selftest.c:942 [inline]
- iommufd_test_mock_domain drivers/iommu/iommufd/selftest.c:989 [inline]
- iommufd_test+0x3335/0x56a0 drivers/iommu/iommufd/selftest.c:1866
- iommufd_fops_ioctl+0x4fc/0x610 drivers/iommu/iommufd/main.c:419
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:906 [inline]
- __se_sys_ioctl+0xf1/0x160 fs/ioctl.c:892
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Changes in v4:
+- Fix some compilation warnings.
+- Link to v3: https://lore.kernel.org/all/20240718062405.30571-1-LeoLiu-oc@=
+zhaoxin.com/
 
-Freed by task 6201:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
- kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:576
- poison_slab_object mm/kasan/common.c:247 [inline]
- __kasan_slab_free+0x59/0x70 mm/kasan/common.c:264
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2389 [inline]
- slab_free mm/slub.c:4646 [inline]
- kfree+0x198/0x430 mm/slub.c:4845
- kobject_cleanup lib/kobject.c:689 [inline]
- kobject_release lib/kobject.c:720 [inline]
- kref_put include/linux/kref.h:65 [inline]
- kobject_put+0x22f/0x480 lib/kobject.c:737
- software_node_notify_remove+0x18d/0x1e0 drivers/base/swnode.c:1109
- device_platform_notify_remove drivers/base/core.c:2387 [inline]
- device_del+0x594/0x9b0 drivers/base/core.c:3858
- device_unregister+0x20/0xc0 drivers/base/core.c:3896
- mock_dev_destroy drivers/iommu/iommufd/selftest.c:960 [inline]
- iommufd_test_mock_domain drivers/iommu/iommufd/selftest.c:1022 [inline]
- iommufd_test+0x3715/0x56a0 drivers/iommu/iommufd/selftest.c:1866
- iommufd_fops_ioctl+0x4fc/0x610 drivers/iommu/iommufd/main.c:419
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:906 [inline]
- __se_sys_ioctl+0xf1/0x160 fs/ioctl.c:892
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Changes in v5:
+- Optimize the code according to the suggestions.
+- Link to v4: https://lore.kernel.org/all/20241205114048.60291-1-LeoLiu-oc@=
+zhaoxin.com/
 
-The buggy address belongs to the object at ffff8880358f0400
- which belongs to the cache kmalloc-512 of size 512
-The buggy address is located 64 bytes inside of
- freed 512-byte region [ffff8880358f0400, ffff8880358f0600)
+Changes in v6:
+- Fix the issue that the first patch in the patch set fails to compile indi=
+vidually.
+- Link to v5: https://lore.kernel.org/all/20250226121838.364533-1-LeoLiu-oc=
+@zhaoxin.com/
 
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x358f0
-head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
-page_type: f5(slab)
-raw: 00fff00000000040 ffff88801b041c80 dead000000000100 dead000000000122
-raw: 0000000000000000 0000000000100010 00000000f5000000 0000000000000000
-head: 00fff00000000040 ffff88801b041c80 dead000000000100 dead000000000122
-head: 0000000000000000 0000000000100010 00000000f5000000 0000000000000000
-head: 00fff00000000002 ffffea0000d63c01 00000000ffffffff 00000000ffffffff
-head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000004
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 2, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5211, tgid 5211 (udevd), ts 44437391568, free_ts 41364354329
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0x1f4/0x240 mm/page_alloc.c:1717
- prep_new_page mm/page_alloc.c:1725 [inline]
- get_page_from_freelist+0x352b/0x36c0 mm/page_alloc.c:3652
- __alloc_frozen_pages_noprof+0x211/0x5b0 mm/page_alloc.c:4934
- alloc_pages_mpol+0x339/0x690 mm/mempolicy.c:2301
- alloc_slab_page mm/slub.c:2459 [inline]
- allocate_slab+0x8f/0x3a0 mm/slub.c:2623
- new_slab mm/slub.c:2676 [inline]
- ___slab_alloc+0xc3b/0x1500 mm/slub.c:3862
- __slab_alloc+0x58/0xa0 mm/slub.c:3952
- __slab_alloc_node mm/slub.c:4027 [inline]
- slab_alloc_node mm/slub.c:4188 [inline]
- __kmalloc_cache_noprof+0x26a/0x370 mm/slub.c:4357
- kmalloc_noprof include/linux/slab.h:905 [inline]
- kzalloc_noprof include/linux/slab.h:1039 [inline]
- kernfs_fop_open+0x3a3/0xdf0 fs/kernfs/file.c:623
- do_dentry_open+0xdec/0x1960 fs/open.c:956
- vfs_open+0x3b/0x370 fs/open.c:1086
- do_open fs/namei.c:3845 [inline]
- path_openat+0x2caf/0x35d0 fs/namei.c:4004
- do_filp_open+0x284/0x4e0 fs/namei.c:4031
- do_sys_openat2+0x12b/0x1d0 fs/open.c:1429
- do_sys_open fs/open.c:1444 [inline]
- __do_sys_openat fs/open.c:1460 [inline]
- __se_sys_openat fs/open.c:1455 [inline]
- __x64_sys_openat+0x249/0x2a0 fs/open.c:1455
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/syscall_64.c:94
-page last free pid 5213 tgid 5213 stack trace:
- create_dummy_stack mm/page_owner.c:94 [inline]
- register_dummy_stack+0x8e/0xe0 mm/page_owner.c:100
- init_page_owner+0x3e/0x790 mm/page_owner.c:118
- invoke_init_callbacks mm/page_ext.c:148 [inline]
- page_ext_init+0x731/0x790 mm/page_ext.c:497
- mm_core_init+0x5b/0x70 mm/mm_init.c:2783
+LeoLiuoc (4):
+  ACPI: APEI: Move apei_hest_parse() to apei.h
+  ACPI: APEI: Add new hest_parse_pcie_aer()
+  PCI: Add AER bits #defines for PCIe to PCI/PCI-X Bridge
+  PCI: ACPI: Add new pci_acpi_program_hest_aer_params()
 
-Memory state around the buggy address:
- ffff8880358f0300: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff8880358f0380: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->ffff8880358f0400: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                           ^
- ffff8880358f0480: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff8880358f0500: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
+ drivers/acpi/apei/hest.c      | 54 ++++++++++++++++++++-
+ drivers/pci/pci-acpi.c        | 88 +++++++++++++++++++++++++++++++++++
+ drivers/pci/pci.h             |  6 +++
+ drivers/pci/probe.c           |  1 +
+ include/acpi/apei.h           | 13 ++++++
+ include/uapi/linux/pci_regs.h |  3 ++
+ 6 files changed, 163 insertions(+), 2 deletions(-)
 
+--=20
+2.34.1
 
-Tested on:
-
-commit:         22ea6944 software node: Avoid use-after-free access in..
-git tree:       https://bitbucket.org/andy-shev/linux.git test-swnode
-console output: https://syzkaller.appspot.com/x/log.txt?x=1276f404580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f2054704dd53fb80
-dashboard link: https://syzkaller.appspot.com/bug?extid=2ff22910687ee0dfd48e
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-
-Note: no patches were applied.
 
