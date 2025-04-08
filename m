@@ -1,68 +1,68 @@
-Return-Path: <linux-acpi+bounces-12838-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12839-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD0A8A7F80D
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 10:38:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2D0A7F81C
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 10:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0065818885B1
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 08:37:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC0203B5564
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 08:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508302627EA;
-	Tue,  8 Apr 2025 08:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A012E263C7F;
+	Tue,  8 Apr 2025 08:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yp4ZVFaS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oKNVUcvX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D49320B7EF;
-	Tue,  8 Apr 2025 08:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AED263C66;
+	Tue,  8 Apr 2025 08:39:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744101447; cv=none; b=UbMDXEBc8X0JLNkCQf/RqtkB6/3c6TbUe5oJW/mYGxepkDfRBdf4JVAXWD7tjc6JN0/0VLWISjN2NJ+7Meltz9SMmNqCPEMuH+btfkmoFR8wW17DnpvO/8Tgjux6j6juo//+3z2hDQWBVGnaXTs66qiJduKZUunaYsUBtzUJhbk=
+	t=1744101599; cv=none; b=W5Sy3uaz0tez8n4RTglQr04Cypcax0aHtsR4/ohxrqTtKYy0A8r2Mb90THMMtg+U+nzL88VCG6jxNqoRCK42oygba+OjDoCCsphQ/RysC8TUPcPJGPpEgO2Ce+VMhS4SyhnraWH9oHPArBVtNNGYD8Vkyn0rKwG3RpsINpBo2uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744101447; c=relaxed/simple;
-	bh=SvXSy4Bwc8FNM6LghY0/XjdUPptV5lIp/P0jRiL6ISQ=;
+	s=arc-20240116; t=1744101599; c=relaxed/simple;
+	bh=0aRhZnIGzwaXLS5Ml3ai/p3rxeIHVt4WKLAD37dt1/M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UKMsTCGD+6X+PizKMr5Y2vBrzyrJJZfTaDvNiI7p195AKefeRlO83cW611sXvt6WO1Sv8gSXCT3D9I/UalDZki4Shjt/IKr5/mGU+v6q6pvKpknvNNMMMOae2X7SFsO4mJrzD8BSNa9Q46JTxwmMLSHEk++wjTbF0aMIgPBKIag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yp4ZVFaS; arc=none smtp.client-ip=198.175.65.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=K/Oj6nUbUgK3tHeq71OyN1aa4eGz0t3103bZSPl2HpuTLaCXce2l1mJBkUJhGbavo/2eRTGw9t64Jo6YQvLbm5tli2VPEi3xkmBaJKo4Wp7gwQkyC4sT8857aHPedwAHsg4i6EO5WPezC5PIug2/aEI6SLsyxvZ/p9WC8c8PnLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oKNVUcvX; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744101446; x=1775637446;
+  t=1744101598; x=1775637598;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=SvXSy4Bwc8FNM6LghY0/XjdUPptV5lIp/P0jRiL6ISQ=;
-  b=Yp4ZVFaSQpqGEYLu8ekNDOaaYlTNkOUuohFUTNz4WNThBtGYMcJNzLDG
-   z0pCHK/o+7DF24wbNb3q0g71QPrkKIhybJ6ZSRWnbpg5OlTmnf4O+f4Gn
-   1dtn8j2HtXO/BFj1uRp9ovKFLsH5f9fqx2zSBvBVYWnceEId/km4Ehk0u
-   d2VrptegYZSNj4mBiQGsSx9t5cOSOIMYin0VxF5oEY40D1y8p4OVaLI8O
-   cTIpmDrMRuy+dYVboG6Ijgo+glsHxHAHJSHhin59rtE2jXkdS6ftbIfw3
-   Gocb120mGJGSyVj8TlpyD3cp1OJ8q4tGsUmexIXQI65eMVTT7KLtScnyL
-   Q==;
-X-CSE-ConnectionGUID: gvtAdtUSTJymApEX919Tug==
-X-CSE-MsgGUID: pqcemKqCRvmcZ353Ayq4Wg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="67994266"
+  bh=0aRhZnIGzwaXLS5Ml3ai/p3rxeIHVt4WKLAD37dt1/M=;
+  b=oKNVUcvXmxBvaWRNS+0GfNRA4SnQ6ZMGBBciPyDwcULZ0BMEsx+l3TLQ
+   93MP6gDMMwmiZ+GgonQOSmPuIS2AvblGPRwH4Ic+30yNzPv+cxbxa4MtO
+   4XLVxzhrciNSggqsac1S8b8qnX8rXKkEgFjeWbV0rZyPOTxQ4+7JtvzIP
+   lL82gU3jwLbHkXLaHYcsB99eDXPuUSAMHkXoNpX72Fs731jmUQeEpUe+g
+   phkY9PzV7ljrl9Mme593HOSe4yMgCPQEXZ6aN/YZYmOW8UveNacahCdR3
+   6CKbIqIqOe5rYdsa2vMvEBKfRHMccJ8XgsbwNdNQ4bLMW1RHJhtqaHCq7
+   w==;
+X-CSE-ConnectionGUID: 6naiTEcGQ7aWWttRkuZ9Hw==
+X-CSE-MsgGUID: Hg0kFTDSToe7QUCUF3g41A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="56500840"
 X-IronPort-AV: E=Sophos;i="6.15,197,1739865600"; 
-   d="scan'208";a="67994266"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 01:37:25 -0700
-X-CSE-ConnectionGUID: jpTNmXQaT9+L7DNYwIqmJw==
-X-CSE-MsgGUID: ikIri5WYRNCpI9WfHswheQ==
+   d="scan'208";a="56500840"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 01:39:57 -0700
+X-CSE-ConnectionGUID: hY8JypWbQSu6ixE23mTUeQ==
+X-CSE-MsgGUID: Oj3xl1cETFy6kBPtrhVMyg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,197,1739865600"; 
-   d="scan'208";a="128533582"
+   d="scan'208";a="165430564"
 Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 01:37:21 -0700
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 01:39:54 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1u24SN-0000000ALAx-1TUY;
-	Tue, 08 Apr 2025 11:37:19 +0300
-Date: Tue, 8 Apr 2025 11:37:19 +0300
+	id 1u24Uo-0000000ALDC-35pE;
+	Tue, 08 Apr 2025 11:39:50 +0300
+Date: Tue, 8 Apr 2025 11:39:50 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Sean Anderson <sean.anderson@linux.dev>
 Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
@@ -74,11 +74,11 @@ Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Daniel Scally <djrscally@gmail.com>, linux-kernel@vger.kernel.org,
 	Danilo Krummrich <dakr@kernel.org>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 1/2] device property: Add optional nargs_prop for
- get_reference_args
-Message-ID: <Z_TgP0epJ3cJzlUt@smile.fi.intel.com>
+Subject: Re: [PATCH 2/2] device property: Add
+ fwnode_property_get_reference_optional_args
+Message-ID: <Z_Tg1v0rlrnjs0mt@smile.fi.intel.com>
 References: <20250407223714.2287202-1-sean.anderson@linux.dev>
- <20250407223714.2287202-2-sean.anderson@linux.dev>
+ <20250407223714.2287202-3-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -87,74 +87,70 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250407223714.2287202-2-sean.anderson@linux.dev>
+In-Reply-To: <20250407223714.2287202-3-sean.anderson@linux.dev>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Apr 07, 2025 at 06:37:13PM -0400, Sean Anderson wrote:
-> get_reference_args does not permit falling back to nargs when nargs_prop
-> is missing. This makes it difficult to support older devicetrees where
-> nargs_prop may not be present. Add support for this by converting nargs
-> to a signed value. Where before nargs was ignored if nargs_prop was
-> passed, now nargs is only ignored if it is strictly negative. When it is
-> positive, nargs represents the fallback cells to use if nargs_prop is
-> absent.
-
-And what is the case to support old DTs on most likely outdated hardware?
+On Mon, Apr 07, 2025 at 06:37:14PM -0400, Sean Anderson wrote:
+> Add a fwnode variant of of_parse_phandle_with_optional_args to allow
+> nargs_prop to be absent from the referenced node. This improves
+> compatibility for references where the devicetree might not always have
+> nargs_prop.
 
 ...
 
->  	ret = fwnode_call_int_op(fwnode, get_reference_args, prop, nargs_prop,
-> -				 nargs, index, args);
-> +				 nargs_prop ? -1 : nargs, index, args);
+> +/**
+> + * fwnode_property_get_reference_optional_args() - Find a reference with optional arguments
+> + * @fwnode:	Firmware node where to look for the reference
+> + * @prop:	The name of the property
+> + * @nargs_prop:	The name of the property telling the number of
 
->  	return fwnode_call_int_op(fwnode->secondary, get_reference_args, prop, nargs_prop,
-> -				  nargs, index, args);
-> +				  nargs_prop ? -1 : nargs, index, args);
+Use space instead of TAB as it's already too long to make it aligned with the
+rest.
 
-I don't understand why it's needed here. The nargs_prop is passed to the callee.
+> + *		arguments in the referred node.
+> + * @index:	Index of the reference, from zero onwards.
+> + * @args:	Result structure with reference and integer arguments.
+> + *		May be NULL.
+> + *
+> + * Obtain a reference based on a named property in an fwnode, with
+> + * integer arguments. If @nargs_prop is absent from the referenced node, then
+> + * number of arguments is be assumed to be 0.
+> + *
+> + * The caller is responsible for calling fwnode_handle_put() on the returned
+> + * @args->fwnode pointer.
+> + *
+> + * Return: %0 on success
+> + *	    %-ENOENT when the index is out of bounds, the index has an empty
+> + *		     reference or the property was not found
+> + *	    %-EINVAL on parse error
+> + */
+> +int fwnode_property_get_reference_optional_args(const struct fwnode_handle *fwnode,
+> +						const char *prop,
+> +						const char *nargs_prop,
+> +						unsigned int index,
+> +						struct fwnode_reference_args *args)
+> +{
+> +	int ret;
 
-...
+> +	if (IS_ERR_OR_NULL(fwnode))
+> +		return -ENOENT;
 
-> -				 unsigned int nargs, unsigned int index,
-> +				 int nargs, unsigned int index,
+This is incorrect most likely, see below.
 
-As per above.
-
-...
-
->  		error = property_entry_read_int_array(ref->node->properties,
->  						      nargs_prop, sizeof(u32),
->  						      &nargs_prop_val, 1);
-> -		if (error)
-
+> +	ret = fwnode_call_int_op(fwnode, get_reference_args, prop, nargs_prop,
+> +				 0, index, args);
+> +	if (ret == 0)
+> +		return ret;
 > +
+> +	if (IS_ERR_OR_NULL(fwnode->secondary))
+> +		return ret;
 
-Stray blank line.
+Here no such error code shadowing, and TBH I do not like the shadowing without
+real need.
 
-> +		if (error == -EINVAL) {
-
-Why do we need an explicit error code check? This is fragile. Just check the
-parameter before calling the above.
-
-> +			if (nargs < 0)
-> +				return error;
-> +		} else if (error) {
->  			return error;
-> -
-> -		nargs = nargs_prop_val;
-> +		} else {
-> +			nargs = nargs_prop_val;
-> +		}
-
-...
-
->  of_fwnode_get_reference_args(const struct fwnode_handle *fwnode,
->  			     const char *prop, const char *nargs_prop,
-> -			     unsigned int nargs, unsigned int index,
-> +			     int nargs, unsigned int index,
->  			     struct fwnode_reference_args *args)
-
-Same comments as per above.
+> +	return fwnode_call_int_op(fwnode->secondary, get_reference_args, prop, nargs_prop,
+> +				  0, index, args);
+> +}
 
 -- 
 With Best Regards,
