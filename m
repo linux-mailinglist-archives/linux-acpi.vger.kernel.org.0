@@ -1,115 +1,117 @@
-Return-Path: <linux-acpi+bounces-12845-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12846-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C654FA7FBD5
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 12:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F8AFA80052
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 13:30:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 789F13B1593
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 10:21:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42FDB3BD438
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 11:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735E1266F00;
-	Tue,  8 Apr 2025 10:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D908D267F65;
+	Tue,  8 Apr 2025 11:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GI0V/SKA"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="fYoTSXA2"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from pv50p00im-ztbu10011701.me.com (pv50p00im-ztbu10011701.me.com [17.58.6.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04C126A0AF;
-	Tue,  8 Apr 2025 10:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7521D2192F2
+	for <linux-acpi@vger.kernel.org>; Tue,  8 Apr 2025 11:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744107440; cv=none; b=fjJGibVG0B9vFwR8IUwPtuZ36I5x7dLh9HfTE07zYujXJjKVtDiYldI6rs9cjd8YokfNz/m7f/OeWLlxrQQSQALWEUj4uKyEebd21Jv3NXmoVPsLZ+2XImRVKzazF0UHf2r7XmEqotKtOi8kxW7D/ab0dntCq6tZHQbCUEsIVt8=
+	t=1744111397; cv=none; b=hUBoVyHWjqlFWjuiHEt3t1FUUz6HB4O1tlU/fla9MVcYvwMlRHcuvX7AW+Kmy9aBlGg85ZuOI2GWXkCqw0J7Xori4AO3JCUJ4qz/BrZXBaymjdZTTa8nixCkq9vCJUWIxeT3KhFkZtNWIn5IdAjBZW0J+5IcK+TVVd4AB405vgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744107440; c=relaxed/simple;
-	bh=UBGYZav1sanbx9q68R4VI0oFmTxYxEmCfw0AJTso0aI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ozLab6txOyokJNHPQo1GHENgGNoFcAdM+KmqoFOIgxraXhpsCBwBTeP0bVNYiEzVmNFFWpA7SGP3f2nJh4bS/+TtpMXyCRr3Thz0M4fdQqsguKxkGlnSQVOZnVM2yuhWHBWVx4TGZsvdfanj6fmDCiZAYaE4VDojrAsRG8UaZeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GI0V/SKA; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 56B6F441FE;
-	Tue,  8 Apr 2025 10:17:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1744107434;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7EJi+ZuhZowHiCbZufnU+eePBnn+fZT6fo+kvEqiL/s=;
-	b=GI0V/SKAsO35ZWDwGAfhEesNMakWysFGWJ4QTbZxAqAJJ0b1kNMghx58bk8Gl0z+1VY1wU
-	kJfKX7aMWiGs51h+rkpopeRcFN+hTylkpy0WOSbm9Z+BSpwSi6Tne1W1Ev/otmPSiOzr2a
-	QrO7UMWkNGTMxUGh0LHFoO/+n5n3CWQjxZqGV7wJ+IMldDefYyDPetl7dvz9yDj2e9Vomp
-	OT9diWAl2mg2dnFtADrgHVXNhxzQKk/YVtGCMZVztHstkQpk7WUrDunFsaBhnalLVvQ095
-	V/6g8QLaq+MmjdstxHuqSQmuW3X1dC6u0u112TYwnZy6qLgowk5oLq65LcVDQw==
-Date: Tue, 8 Apr 2025 12:17:08 +0200
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
- Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
- Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Saravana
- Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Mark
- Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, Geert
- Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
- devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 02/16] driver core: Rename get_dev_from_fwnode() wrapper
- to get_device_from_fwnode()
-Message-ID: <20250408121708.6b436b2c@booty>
-In-Reply-To: <20250407145546.270683-3-herve.codina@bootlin.com>
-References: <20250407145546.270683-1-herve.codina@bootlin.com>
-	<20250407145546.270683-3-herve.codina@bootlin.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1744111397; c=relaxed/simple;
+	bh=ozIZ9X6cm1p2EJP1ur2x2xqVdPIqBJdiXWENd7PDQ60=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aN0RKf89kM8t5ethzqVcreeMXYHNBP2qeXuCCz4JUg3PTKDTIqiTCa82U8XwUCLYSCJvLlgwycR3YmfMiesJw3Mk/DUQ0iPHeYJXdDMqYFVBtXh9iahAGC05atgoL2StF17JjPCpvauyLlgylhgBCsmmYIo8ui3CeT/lYc+TgNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=fYoTSXA2; arc=none smtp.client-ip=17.58.6.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; bh=qLC+AjXbCpLuLsLmei8R38sdvc8cBnY6Kum200DDnZE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
+	b=fYoTSXA2wiARvZWYposFpz3cLPyY6NJ2v2RTcpTdhrj+ntYB4NwVTIl6hP9hHe3P5
+	 41Out3djOsANwmR3iY2KMk+Ha0TSWUyjJnEJqBMOZPHYRmiN5j9ONyLY1sXMmFX5Z7
+	 jmYi9jTc3+C9SSjYv4DnuikltwmnMeqj30qgoRWRV0g6fxwDwKPU4zzzQ2+9bnZi+K
+	 KENTQtJAnCJjU/KiZBwGuvupPbdIOZkwGS/q5kp/n4wOap4pIEjr9DVOP4kZSkUCmT
+	 900uWfSqE9NslpaWU+gbGkPznZcNYXsYyyM5Ss6X6+7d89KKtOGKuLdtimimSgfLph
+	 k6xxns0fgWryQ==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-ztbu10011701.me.com (Postfix) with ESMTPSA id 964AA740328;
+	Tue,  8 Apr 2025 11:23:10 +0000 (UTC)
+Message-ID: <43e66024-6d51-44ce-b466-56c06b29c66a@icloud.com>
+Date: Tue, 8 Apr 2025 19:23:06 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] device property: Add a note to the fwnode.h
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Zijun Hu <quic_zijuhu@quicinc.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+References: <20250408095229.1298005-1-andriy.shevchenko@linux.intel.com>
+Content-Language: en-US
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <20250408095229.1298005-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtddvkedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptdeljeejuddvudetffdtudelfedugfduledtueffuedufefgudegkeegtdeihedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvpdhhvghlohepsghoohhthidpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegtddprhgtphhtthhopehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhop
- ehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomh
-X-GND-Sasl: luca.ceresoli@bootlin.com
+X-Proofpoint-ORIG-GUID: v7hq0q6rugjvqhheSEamUejNlt-XNCVk
+X-Proofpoint-GUID: v7hq0q6rugjvqhheSEamUejNlt-XNCVk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-08_04,2025-04-08_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ suspectscore=0 mlxscore=0 adultscore=0 clxscore=1015 phishscore=0
+ malwarescore=0 bulkscore=0 mlxlogscore=999 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2503100000 definitions=main-2504080081
 
-On Mon,  7 Apr 2025 16:55:31 +0200
-Herve Codina <herve.codina@bootlin.com> wrote:
-
-> get_dev_from_fwnode() calls get_device() and so it acquires a reference
-> on the device returned.
+On 2025/4/8 17:48, Andy Shevchenko wrote:
+> Add a note to the fwnode.h that the header should not be used
+> directly in the leaf drivers, they all should use the higher
+> level APIs and the respective headers.
 > 
-> In order to be more obvious that this wrapper is a get_device() variant,
-> rename it to get_device_from_fwnode().
+> The purpose of this note is to give guidance to driver writers
+> to avoid repeating a common mistake.
 > 
-> Suggested-by: Mark Brown <broonie@kernel.org>
-> Link: https://lore.kernel.org/lkml/CAGETcx97QjnjVR8Z5g0ndLHpK96hLd4aYSV=iEkKPNbNOccYmA@mail.gmail.com/
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+> 
+> v3: reworded the note, added problem statement into commit message (Rafael)
+> v2: added "...into the driver" piece at the end to remove ambiguity
+> 
+>  include/linux/fwnode.h | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+> index 87b183595ba1..900ecd8f45a1 100644
+> --- a/include/linux/fwnode.h
+> +++ b/include/linux/fwnode.h
+> @@ -2,6 +2,11 @@
+>  /*
+>   * fwnode.h - Firmware device node object handle type definition.
+>   *
+> + * This header file provides low-level data types and definitions for firmware
+> + * and device property providers. The respective API header files supplied by
+> + * them should contain all of the requisite data types and definitions for end
+> + * users, so including it directly should not be necessary.
+> + *
+>   * Copyright (C) 2015, Intel Corporation
+>   * Author: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>   */
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-
--- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Reviewed-by: Zijun Hu <quic_zijuhu@quicinc.com>
 
