@@ -1,176 +1,111 @@
-Return-Path: <linux-acpi+bounces-12871-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12873-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8BBA816B5
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 22:18:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D42BEA8171F
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 22:48:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE4C33A9068
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 20:17:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACD7F1B81912
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 20:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1949523CF06;
-	Tue,  8 Apr 2025 20:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244D8214813;
+	Tue,  8 Apr 2025 20:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YlfM2fvu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZeerjqIt"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0952223BD1C;
-	Tue,  8 Apr 2025 20:17:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED9813CFB6;
+	Tue,  8 Apr 2025 20:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744143475; cv=none; b=adVYNUdt2W9TX0MyDjnIlzeBG1Cr/QFHv5AcSqpSbBs8P/Y4ERJYHj/WqM+sS3g/WeyCItnr6jo6WncdJSol10CAOvygprd/D4o91IfFTBHV2dtEw/xQgphudGd7FhT9gZzZr6gZgEEYx5rGh4t/unk0MPSx9kLQT0uUgIRUr9o=
+	t=1744145316; cv=none; b=g7kAJ1tejJPCqS+FYi8zqL7y7uNScAErAwpLVI+GzrhYFSGxwwAeyc1NnQwByqe/XJyVSjGpZ+JWGEQcnwYrQLJnnCYvPH5qizvfwzIV9CzYx06YSAbCuKM5uqss34xBQ7vCrve2hs6AZ4DdwiPXaAKLx5NjxchZOG37HCXKe4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744143475; c=relaxed/simple;
-	bh=9BSURTJTL5vHw9MARDkfjxj9YIxcLyPeg4j4vTJ+Yg0=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=KlspKkxPatvExXyImhJOYX2cN5UKsIhVu0hUF9HkhHChjM7ffJVNtkzFXu8PuqkThViWK8WFaEQ0BzF4G+ySdSALZsP6VnY1FfpVjAzGtshq/gtZUy4BqlyYE4uVIeba6JdP7nM5RmROtG9xM8wUPDt8ElUsG5Cewk5ON22WuI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YlfM2fvu; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744143473; x=1775679473;
-  h=date:from:to:cc:subject:message-id;
-  bh=9BSURTJTL5vHw9MARDkfjxj9YIxcLyPeg4j4vTJ+Yg0=;
-  b=YlfM2fvu8dG2tSW8Tmu1/k5wy6nTJ7fxqyLPjBANOPGNaQ0jny2YKS+3
-   CkGL6Ydhn+8wAWsdSH5rQNyhAKhlTUWkrHnUqPPlHvs70pFhbMqEm9w9I
-   0Yw1daqqvyxqhF31TL2bfcW8fjZi6sxdF/ULxpB5frY41p0UT0jG8sIbX
-   IAkmnytjth41f8o6PRHSAKAfB2EVi27ooir4mFgqvl+TvBUqYyeQSCpQe
-   HnX6wTrmhFJqDRHjODURXSI62fssQpj5JQ5nr2LrB9esz5dJp0q0SH/id
-   B/zMLr7rjO9gRnJp1kt56RX3iENawjVF8RbetP241Lj0HA+0kZSbLzFYL
-   w==;
-X-CSE-ConnectionGUID: vvxtmemAT3ez/RymBT3cCw==
-X-CSE-MsgGUID: vXFcMJBkSMa6u8WOXqEESA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="45608983"
-X-IronPort-AV: E=Sophos;i="6.15,199,1739865600"; 
-   d="scan'208";a="45608983"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 13:17:52 -0700
-X-CSE-ConnectionGUID: TkIzHV7OTMSpr9k5Edr7ww==
-X-CSE-MsgGUID: wyOGx6C/QqGKDl0RHd5Tbw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,199,1739865600"; 
-   d="scan'208";a="133091172"
-Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 08 Apr 2025 13:17:51 -0700
-Received: from kbuild by b207828170a5 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1u2FOG-0007xB-2g;
-	Tue, 08 Apr 2025 20:17:48 +0000
-Date: Wed, 09 Apr 2025 04:17:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:fixes] BUILD SUCCESS
- 262ac0ba6f90cf95b55670798b0469acda6354bf
-Message-ID: <202504090422.6nNYwphN-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1744145316; c=relaxed/simple;
+	bh=zAvEvlzAln/TlRU8vv7yAddue9mFYC9Fd0ZT0VyLmDw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=NluX8LK9UEglRpGeuncMoY8AeHvx20BOtnhNRshUc1h4lNHGPKGuPaIZTAI9HNd1Rd851gCnZhSEa8ucxxDkt3PO/QnGSGjjQT1SzlN/h2oAgbh+3dqk9uvgAuQlR8jMi+OJD7wXuhiK8vU4oBEZyZ0plx1uba74olE1CznwHTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZeerjqIt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5477FC4CEE5;
+	Tue,  8 Apr 2025 20:48:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744145314;
+	bh=zAvEvlzAln/TlRU8vv7yAddue9mFYC9Fd0ZT0VyLmDw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=ZeerjqItVG+XzKiXVjEV3+a9A4z9SmvYa36d/vvVodFOpQeet67+HnRiQEfYnfPZt
+	 AkNrjZQ2aIUus8osASPhych7Wtiw8F/AU2b4iJAjpnvS1omNVRfeXmiLqkawtGU5Ef
+	 0DiLd882sIJ9NUcV+WJ/ePfxZHnogkjG37UvTWwUwwp14xOJk5pEzyt5+p/K5Byz0i
+	 DFAQmTEwcB/wq02v+YZskwvvvy+Q9MP+PpIb4y/8mbrQbuoIQxI+F8Pzs5hlvBGBxt
+	 T8YHVBHPXWk2iL0XhvXPTfkFhVBtpNQszU4nV6EBD65QuFuYQn3zBJChJoYCBgxczr
+	 qowTh2+/K4GGQ==
+Date: Tue, 8 Apr 2025 15:48:32 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Anshuman Gupta <anshuman.gupta@intel.com>,
+	intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, lenb@kernel.org, bhelgaas@google.com,
+	ilpo.jarvinen@linux.intel.com, lucas.demarchi@intel.com,
+	rodrigo.vivi@intel.com, badal.nilawar@intel.com,
+	varun.gupta@intel.com, ville.syrjala@linux.intel.com,
+	uma.shankar@intel.com
+Subject: Re: [PATCH 02/12] PCI/ACPI: Add PERST# Assertion Delay _DSM method
+Message-ID: <20250408204832.GA64565@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0hQjtTCu1wXgKvBWBBegbj-VD+Z0yBspt1uFes8Xun7Cw@mail.gmail.com>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git fixes
-branch HEAD: 262ac0ba6f90cf95b55670798b0469acda6354bf  Merge branch 'acpi-tables' into fixes
+On Wed, Apr 02, 2025 at 09:36:01PM +0200, Rafael J. Wysocki wrote:
+> On Wed, Apr 2, 2025 at 8:48 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
 
-elapsed time: 1485m
+> > I don't *expect* rev 5 to be different.  But as a user of it, why
+> > would I change working, tested code that is not broken?
+> >
+> > The PCI DPC function 0xc is an example where rev 5 (per ECN) and rev 6
+> > (per r3.3) are not compatible.
+> >
+> > If the OS implemented rev 5, then learns via function 0 that function
+> > 0xc is also supported at rev 6, and starts using the same OS code with
+> > rev 6, the OS is broken.
+> 
+> Yes, in this case the backward compatibility language in the _DSM
+> definition is obviously not followed.
 
-configs tested: 82
-configs skipped: 1
+Rev 5 in the ECN isn't compatible with rev 6 in the PCI FW r3.3 spec,
+so it doesn't follow the ACPI compatibility requirement.  And this is
+documented in PCI FW, which says "Fn 0xC was added with rev 5 (see ECN
+for rev 5 details); here is how rev 6 works."
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+An OS implemented to the ECN doesn't know that rev 6 is different from
+rev 5; it assumes they're the same because ACPI says we can assume
+that, and PCI FW r3.3 even says the OS should use the same rev for all
+functions.  If OS adds support for rev 6 of a some other function, it
+is supposed to use rev 6 of Fn 0xC, which doesn't work as the OS
+expects.
 
-tested configs:
-alpha                            allyesconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-14.2.0
-arc                              allyesconfig    gcc-14.2.0
-arc                   randconfig-001-20250408    gcc-14.2.0
-arc                   randconfig-002-20250408    gcc-14.2.0
-arm                   randconfig-001-20250408    clang-21
-arm                   randconfig-002-20250408    gcc-10.5.0
-arm                   randconfig-003-20250408    clang-17
-arm                   randconfig-004-20250408    gcc-6.5.0
-arm64                 randconfig-001-20250408    clang-21
-arm64                 randconfig-002-20250408    gcc-9.5.0
-arm64                 randconfig-003-20250408    gcc-9.5.0
-arm64                 randconfig-004-20250408    clang-20
-csky                  randconfig-001-20250408    gcc-14.2.0
-csky                  randconfig-002-20250408    gcc-9.3.0
-hexagon                          allmodconfig    clang-17
-hexagon                          allyesconfig    clang-21
-hexagon               randconfig-001-20250408    clang-21
-hexagon               randconfig-002-20250408    clang-21
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250408    clang-20
-i386        buildonly-randconfig-002-20250408    clang-20
-i386        buildonly-randconfig-003-20250408    gcc-12
-i386        buildonly-randconfig-004-20250408    gcc-12
-i386        buildonly-randconfig-005-20250408    gcc-12
-i386        buildonly-randconfig-006-20250408    gcc-12
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    gcc-14.2.0
-loongarch             randconfig-001-20250408    gcc-14.2.0
-loongarch             randconfig-002-20250408    gcc-13.3.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-microblaze                       allmodconfig    gcc-14.2.0
-microblaze                       allyesconfig    gcc-14.2.0
-nios2                 randconfig-001-20250408    gcc-13.3.0
-nios2                 randconfig-002-20250408    gcc-7.5.0
-openrisc                          allnoconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                randconfig-001-20250408    gcc-6.5.0
-parisc                randconfig-002-20250408    gcc-8.5.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc               randconfig-001-20250408    gcc-5.5.0
-powerpc               randconfig-002-20250408    gcc-9.3.0
-powerpc               randconfig-003-20250408    gcc-5.5.0
-powerpc64             randconfig-001-20250408    clang-21
-powerpc64             randconfig-002-20250408    gcc-5.5.0
-powerpc64             randconfig-003-20250408    gcc-7.5.0
-riscv                             allnoconfig    gcc-14.2.0
-riscv                 randconfig-001-20250408    gcc-9.3.0
-riscv                 randconfig-002-20250408    clang-21
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-15
-s390                             allyesconfig    gcc-14.2.0
-s390                  randconfig-001-20250408    gcc-8.5.0
-s390                  randconfig-002-20250408    clang-15
-sh                               allmodconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                    randconfig-001-20250408    gcc-13.3.0
-sh                    randconfig-002-20250408    gcc-13.3.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                 randconfig-001-20250408    gcc-10.3.0
-sparc                 randconfig-002-20250408    gcc-6.5.0
-sparc64               randconfig-001-20250408    gcc-6.5.0
-sparc64               randconfig-002-20250408    gcc-14.2.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    gcc-12
-um                    randconfig-001-20250408    clang-21
-um                    randconfig-002-20250408    gcc-12
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250408    clang-20
-x86_64      buildonly-randconfig-002-20250408    clang-20
-x86_64      buildonly-randconfig-003-20250408    clang-20
-x86_64      buildonly-randconfig-004-20250408    gcc-12
-x86_64      buildonly-randconfig-005-20250408    clang-20
-x86_64      buildonly-randconfig-006-20250408    clang-20
-x86_64                              defconfig    gcc-11
-xtensa                randconfig-001-20250408    gcc-6.5.0
-xtensa                randconfig-002-20250408    gcc-6.5.0
+I guess one could argue that "OS didn't add rev 6 support for anything
+until PCI FW r3.3 added a function at rev 6, r3.3 did mention the
+difference between Fn 0xC rev 5 and 6, and OS should have looked at
+all the already-implemented unrelated functions for possible changes
+between rev 5 and rev 6."
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I think that causes unnecessary changes in unrelated code.  The OS can
+avoid the problem by *always* using Fn 0xC rev 5, regardless of what
+rev it uses for other functions.
+
+Of course, the OS can include support for multiple revs, e.g., it
+could add support for Fn 0xC rev 6 and use that when available.  And
+it could retain support for Fn 0xC rev 5 and use that if rev 6 isn't
+available.
+
+Bjorn
 
