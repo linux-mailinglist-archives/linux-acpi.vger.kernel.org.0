@@ -1,117 +1,143 @@
-Return-Path: <linux-acpi+bounces-12846-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12847-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8AFA80052
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 13:30:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B7D0A80AF4
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 15:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42FDB3BD438
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 11:23:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E6718C2B7D
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 13:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D908D267F65;
-	Tue,  8 Apr 2025 11:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E5026AA8F;
+	Tue,  8 Apr 2025 12:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="fYoTSXA2"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="nf4kYgYR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from pv50p00im-ztbu10011701.me.com (pv50p00im-ztbu10011701.me.com [17.58.6.53])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7521D2192F2
-	for <linux-acpi@vger.kernel.org>; Tue,  8 Apr 2025 11:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6449D26AA85;
+	Tue,  8 Apr 2025 12:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744111397; cv=none; b=hUBoVyHWjqlFWjuiHEt3t1FUUz6HB4O1tlU/fla9MVcYvwMlRHcuvX7AW+Kmy9aBlGg85ZuOI2GWXkCqw0J7Xori4AO3JCUJ4qz/BrZXBaymjdZTTa8nixCkq9vCJUWIxeT3KhFkZtNWIn5IdAjBZW0J+5IcK+TVVd4AB405vgc=
+	t=1744116715; cv=none; b=U+Hv9NzGmNziwrLFQhmGQPSHrBKF7xf61wa0gXeNLirOhYM5zEhqWzMtshu4fSD7m+Vez9JTwlqCWZ21VQs1LdZxY4kEQDHIpZEbU4cXgjozzVbE2MnEnqHsq2SadUwlUDUyuQKrHDav+hdSg6pkq+te2wwPaozIwkUMsReNYb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744111397; c=relaxed/simple;
-	bh=ozIZ9X6cm1p2EJP1ur2x2xqVdPIqBJdiXWENd7PDQ60=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aN0RKf89kM8t5ethzqVcreeMXYHNBP2qeXuCCz4JUg3PTKDTIqiTCa82U8XwUCLYSCJvLlgwycR3YmfMiesJw3Mk/DUQ0iPHeYJXdDMqYFVBtXh9iahAGC05atgoL2StF17JjPCpvauyLlgylhgBCsmmYIo8ui3CeT/lYc+TgNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=fYoTSXA2; arc=none smtp.client-ip=17.58.6.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; bh=qLC+AjXbCpLuLsLmei8R38sdvc8cBnY6Kum200DDnZE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
-	b=fYoTSXA2wiARvZWYposFpz3cLPyY6NJ2v2RTcpTdhrj+ntYB4NwVTIl6hP9hHe3P5
-	 41Out3djOsANwmR3iY2KMk+Ha0TSWUyjJnEJqBMOZPHYRmiN5j9ONyLY1sXMmFX5Z7
-	 jmYi9jTc3+C9SSjYv4DnuikltwmnMeqj30qgoRWRV0g6fxwDwKPU4zzzQ2+9bnZi+K
-	 KENTQtJAnCJjU/KiZBwGuvupPbdIOZkwGS/q5kp/n4wOap4pIEjr9DVOP4kZSkUCmT
-	 900uWfSqE9NslpaWU+gbGkPznZcNYXsYyyM5Ss6X6+7d89KKtOGKuLdtimimSgfLph
-	 k6xxns0fgWryQ==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-ztbu10011701.me.com (Postfix) with ESMTPSA id 964AA740328;
-	Tue,  8 Apr 2025 11:23:10 +0000 (UTC)
-Message-ID: <43e66024-6d51-44ce-b466-56c06b29c66a@icloud.com>
-Date: Tue, 8 Apr 2025 19:23:06 +0800
+	s=arc-20240116; t=1744116715; c=relaxed/simple;
+	bh=7lm2K430Lexgx1320bQ639uUSZH0FepdkHfEwGSiCh8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I08ujOr+JN4CCC86iykZFS2LXKNCOxmsK1QQFGkmI5DdWj/SqKD9ScFfeBFQLHRJ4oVsy/wVR5t+Kv4h9/ZHU/aE3czdf9XkG/f8kO+g2IupeBKiaFsQm19Sugz2GnnVBhSE5WEZf6uUfdFY9QZFDmi3SzHAMahvXCW+2oopYiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=nf4kYgYR; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6DBCA43210;
+	Tue,  8 Apr 2025 12:51:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1744116704;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UOhMDuFqtRk7BH6T/PmLdxDa9c5hJPubu57xqa7O+Ro=;
+	b=nf4kYgYRWY4bZyISBsuoJ7DSaNAl7+wuSlkQE1iZDaE5xSpRmvhSWjeY7hJmDti38AuTzm
+	AUnD9vw+BQFSq+MrJEm+87J0zwgLW7Fivj/7S9JjOMEeNTD/TxY2sdf4fW1daGQpoyn3WX
+	D/oqMLYo4M5wfxErSiXaBLtG11yE3YIwhsc2oNFI3mpmM6Z10Q35Nl9yDnxMYq9cEnH0RL
+	iA3yzrX9pfWy0AsorLfINMFg4DofnttwbhAIIQsE6PYgDhrNddQPNrLnYtqBYGFBE3Wegg
+	cCT109goYuFvc37Qr0/1D3+27OR+dn+OuoFrn6y0iOz5YvjQrEOG5c5HC4ZtUQ==
+Date: Tue, 8 Apr 2025 14:51:39 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
+ Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
+ Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Saravana
+ Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Mark
+ Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Daniel Scally
+ <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 06/16] PCI: of: Set fwnode.dev of newly created PCI
+ device nodes
+Message-ID: <20250408145139.293c79a2@bootlin.com>
+In-Reply-To: <Z_PvhVkdhubA9jAe@smile.fi.intel.com>
+References: <20250407145546.270683-1-herve.codina@bootlin.com>
+	<20250407145546.270683-7-herve.codina@bootlin.com>
+	<Z_PvhVkdhubA9jAe@smile.fi.intel.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/1] device property: Add a note to the fwnode.h
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Zijun Hu <quic_zijuhu@quicinc.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-References: <20250408095229.1298005-1-andriy.shevchenko@linux.intel.com>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <20250408095229.1298005-1-andriy.shevchenko@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: v7hq0q6rugjvqhheSEamUejNlt-XNCVk
-X-Proofpoint-GUID: v7hq0q6rugjvqhheSEamUejNlt-XNCVk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-08_04,2025-04-08_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- suspectscore=0 mlxscore=0 adultscore=0 clxscore=1015 phishscore=0
- malwarescore=0 bulkscore=0 mlxlogscore=999 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.22.0-2503100000 definitions=main-2504080081
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdefudefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveeiffefgeeitdelleeigefhjeelueeuveekveetgeffheeltdekgeduiefggfdvnecukfhppedvrgdtudemvgdtrgemvdegieemjeejledtmedviegtgeemvgdvvdemiedtfegumeehkegrnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmedvgeeimeejjeeltdemvdeitgegmegvvddvmeeitdefugemheekrgdphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegtddprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhop
+ egurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhm
+X-GND-Sasl: herve.codina@bootlin.com
 
-On 2025/4/8 17:48, Andy Shevchenko wrote:
-> Add a note to the fwnode.h that the header should not be used
-> directly in the leaf drivers, they all should use the higher
-> level APIs and the respective headers.
-> 
-> The purpose of this note is to give guidance to driver writers
-> to avoid repeating a common mistake.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
-> 
-> v3: reworded the note, added problem statement into commit message (Rafael)
-> v2: added "...into the driver" piece at the end to remove ambiguity
-> 
->  include/linux/fwnode.h | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-> index 87b183595ba1..900ecd8f45a1 100644
-> --- a/include/linux/fwnode.h
-> +++ b/include/linux/fwnode.h
-> @@ -2,6 +2,11 @@
->  /*
->   * fwnode.h - Firmware device node object handle type definition.
->   *
-> + * This header file provides low-level data types and definitions for firmware
-> + * and device property providers. The respective API header files supplied by
-> + * them should contain all of the requisite data types and definitions for end
-> + * users, so including it directly should not be necessary.
-> + *
->   * Copyright (C) 2015, Intel Corporation
->   * Author: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->   */
+Hi Andy,
 
-Reviewed-by: Zijun Hu <quic_zijuhu@quicinc.com>
+On Mon, 7 Apr 2025 18:30:13 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+
+> On Mon, Apr 07, 2025 at 04:55:35PM +0200, Herve Codina wrote:
+> > Device-tree node can be created when CONFIG_PCI_DYNAMIC_OF_NODES. Those
+> > node are created and filled based on PCI core information but the
+> > fwnode.dev field is not set.
+> > 
+> > When later an overlay is applied, this consuses fw_devlink. Indeed,
+> > without any device attached to the node, fw_devlink considers that this
+> > node will never become a device. When this node is pointed as a
+> > supplier, devlink looks at its ancestors in order to find a node with a
+> > device that could be used as the supplier.
+> > 
+> > In the PCI use case, this leads to links that wrongly use the PCI root
+> > bridge device as the supplier instead of the expected PCI device.
+> > 
+> > Setting fwnode.dev to the dev of the PCI device allows devlink to use
+> > this device as a supplier and so, correct links are created.  
+> 
+> ...
+> 
+> > +	/*
+> > +	 * Set the fwnode.dev in order to have fw_devlink creating links
+> > +	 * pointing to this PCI device instead of walking up to the PCI host
+> > +	 * bridge.
+> > +	 */
+> > +	np->fwnode.dev = &pdev->dev;  
+> 
+> This is too invasive. I suppose here should be a helper for this kind of
+> operation. If not, create one.
+> 
+> 	fw_devlink_set_device(...);
+> 
+> 
+> or alike.
+
+Yes, I will add
+  void fw_devlink_set_device(struct fwnode_handle *fwnode, struct device *dev);
+
+Also, I will probably add a new patch in this series in order to use
+the new fw_devlink_set_device() when relevant in the already existing code.
+
+Best regards,
+Hervé
 
