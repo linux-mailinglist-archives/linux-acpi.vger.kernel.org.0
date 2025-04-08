@@ -1,88 +1,142 @@
-Return-Path: <linux-acpi+bounces-12850-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12851-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD84CA80BA2
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 15:18:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F1E3A80C01
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 15:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9F5B1BC06D8
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 13:12:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C40C95033DF
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 13:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120038634C;
-	Tue,  8 Apr 2025 13:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84F117B402;
+	Tue,  8 Apr 2025 13:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNjFiC5X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bx/u3rSO"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50D680C02;
-	Tue,  8 Apr 2025 13:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF93017A312;
+	Tue,  8 Apr 2025 13:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744117255; cv=none; b=sULw1RZlC0dKKjE2BWyanvMuy5q5qKoeAtGJs1WrJO+cbHy4uC6AKH9WvPWqzw/PmnQ6O2GuwL1IryQgAvWlZdPQ/vAH5CG6pPUvxvr4Q3E1SooY+LfzGouDQ4M8PJO2pyhQRabaPh7pauWT+KdpZ7qlOdxFnYUIfpQH7B78WHo=
+	t=1744117323; cv=none; b=RTpA3P72iol453tJuwPWNyAIJOcrblwj+/EBO5wU8KSSKdDi7vAbNzaZzHbjvrgSrUGSCpvlkg8dtVOD9F5d4OlC27ha4GQtTMUP4KS0/aKEQ95dhe3RQyhp9JXTxi+6SB2TRzdRDlI27DZQW/PRr+nKFDZe+HqXfzQIf+khGyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744117255; c=relaxed/simple;
-	bh=Aknki6s1igQM/Eo/fOwSNCs6u83k6YRBUPCvCg2YfMQ=;
+	s=arc-20240116; t=1744117323; c=relaxed/simple;
+	bh=8GaiwcHWfRvoK90OTJYH2v6UniBDmHmB840KjBxhX9I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ScYfCzxktCH9cX9dnmdl8LNT4V8c9kc2rc94YotL21Vf3NezDwcE3fKnCKYu87JjNSXK1kXac/eaNknqMOYnXcnzCB+YWu/Ui8cYBOBFyky5Dmx9zi+i34xh2ZXJxWPFnQafrIk4TFTeukY7kDdIaWfagi6eTYa/3dU7bBUfGEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNjFiC5X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DE1C4CEE5;
-	Tue,  8 Apr 2025 13:00:54 +0000 (UTC)
+	 To:Cc:Content-Type; b=glWZxdj++zsHb7cjvLaoOju3sfFx/ZsDYGaCaOijhXpcewxToN9GwfTtMbTfYLzAMbTgb2UtAB4BpYzg21dIyaSD7Mhwj1Vr84LYFmoLFL3n/wr/CeccTI4imujwCG9D2bA7fNZLEm2ZBfoCJEbK4LZM4nSf1BhHgYLiJeR92fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bx/u3rSO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A95C4CEE5;
+	Tue,  8 Apr 2025 13:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744117254;
-	bh=Aknki6s1igQM/Eo/fOwSNCs6u83k6YRBUPCvCg2YfMQ=;
+	s=k20201202; t=1744117323;
+	bh=8GaiwcHWfRvoK90OTJYH2v6UniBDmHmB840KjBxhX9I=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=PNjFiC5XlfUBaGxhyYMMrFC3DJ2Sfx7Jn1eXcErlTN0IvIfaAzoo9Ez41UVBVGBiC
-	 UoC8Ih7R9g+OuEqg5+55bSLpP9nOPVDYdNyzshqek7hT43LgSw3EZpUL6EkFODC+/j
-	 lvdZK60feF1j9rLctZo0KM1bi52voMWvaRkUaUjTNuexD1ZaCy8YYPMZzxQ3tLmN0z
-	 ToGh0uDsK3AQRnfd/RzKqG7KZnIqO8ycYJ5yDEkCx+g32MUBjrFd7chUm9HwnK5pbF
-	 5JtcZkxyE885FiGCKRyjIcvZ8prSyU2mRsgL+qzspQMOG1wUXO5TC9D8k69bAzZGdC
-	 5FeBgauaWj4Bw==
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ac73723b2d5so1145691466b.3;
-        Tue, 08 Apr 2025 06:00:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUxEsiwWZcqr/+Cvu7kJMJxTY3EVcM8BzybW/F5f7079FcbdaYBdOgJtHstDn0Py5tFWw2zdrD6rvqNuQ==@vger.kernel.org, AJvYcCWbeoEYmaNdokHiTYBkYeuhI5/sajQJuo+w367RCbu/cfXwvjiMGlEIYkUzytn873RRom5OkdkPYGO0@vger.kernel.org, AJvYcCXhPDtr8SHA6rgKUpsVWNjapH2uz53rMprO+F2U1kR2y9BGhORob6Pooo7Bu4FhNN5PWyhNchW0R+3OFFhg@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnER5m/RIrZTaATu3Nw+uyBs/1hLFKxUAgW/vrg0HRJTWBwq3u
-	/paHPKcA6C7OzohM0y4/WWgKCdvFofr65EDpwBfWbpZOpRvGrv5qVxqTg1oysqH2jvb+S3XK9do
-	+Xuov04iawn2M/9rhUnk89Z4sFA==
-X-Google-Smtp-Source: AGHT+IEIFbZ/VySFNhPS9VbSSf72FCcLurPLqXyg7psGtmDjYbg+I6LwO1ocXD7pga0Z9QTXsdpGpDneAuLkUMDfe/I=
-X-Received: by 2002:a17:907:969f:b0:ac7:c5bb:3b21 with SMTP id
- a640c23a62f3a-ac7e71b1f33mr1206431966b.13.1744117252440; Tue, 08 Apr 2025
- 06:00:52 -0700 (PDT)
+	b=Bx/u3rSOYgMC7jIRf7LSFxGKUAE49p5zlPuOAGFbp6ba/lgcNkjmUfK+dNiDlZiCA
+	 N6gpP7SyrT/+mGmXKbmseT05/H9DB4N5ZkjNBWR4m5mXbrJVUqvGw68IyeswxfbFid
+	 mjzHPiydS/R95kzWi+Agq2Wnft8UvxJjXPjJl1zT6qublMQ+uHN+dK5vBEnNnJiRv3
+	 fenZLDwbSIN5ae9T7sGBH0aiFAukS00fmNQx8TTEDJyJbHTpVv5l62DoiZC5NnjoWO
+	 oLZxCdLlf67Dqc2zY5n5Qzs2YSYFmqeCGxiIKeY1UWewFy5Ok28pLOI5ERzE8ZLM01
+	 1CNlXj/8qPujA==
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-2c1caacc1f7so3315708fac.3;
+        Tue, 08 Apr 2025 06:02:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVS/4CHxkxXWcBxSQ1mtvMIW0UQL1TpUaHiweHCiATePCdcAi2HtnfJMegFK43/9E74tQE1uUkDEoo6@vger.kernel.org, AJvYcCXQxQEpsHUfwKYwWXaNv22H5yu8cvp43/6qn7ilrP+AGCNWVqorvCgkOpBR7dlGq/PHsCdVnlnmqSoB@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3DmHMZILGzS2R8lv/a2cqYygExmgGAF32xROI7f9rvtnijPWE
+	75ll67kIR1ZnX00sJVXHw86j8Bd2p0zuv/qS8hTKoBEXnA51zp5+bSQmP7NmoMMNa8DIu10vvp6
+	0IOaDzgiOmmmBcIXIwLCIba7mY0s=
+X-Google-Smtp-Source: AGHT+IFjkp5ajfGr7EdSG92rcHQnSQqd9flrT9xcE+UImXVlpGkb6J2F1cd6PRh1PbU8p/vO/e6sJj2DBsJQNGW87m4=
+X-Received: by 2002:a05:6870:b520:b0:2c2:3da4:6389 with SMTP id
+ 586e51a60fabf-2cc9e659fb9mr9436751fac.23.1744117322463; Tue, 08 Apr 2025
+ 06:02:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250407223714.2287202-1-sean.anderson@linux.dev> <20250407223714.2287202-3-sean.anderson@linux.dev>
-In-Reply-To: <20250407223714.2287202-3-sean.anderson@linux.dev>
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 8 Apr 2025 08:00:41 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLQvyBvOXJJhRcnVAVx81MUf9YwtyZ5VC-whwY=uoeDXw@mail.gmail.com>
-X-Gm-Features: ATxdqUH9SYHqPHdjPN-N3uuh5HF5pHyCtZZKigzGpkEh3qURSGekLdlIrc9NheI
-Message-ID: <CAL_JsqLQvyBvOXJJhRcnVAVx81MUf9YwtyZ5VC-whwY=uoeDXw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] device property: Add fwnode_property_get_reference_optional_args
-To: Sean Anderson <sean.anderson@linux.dev>
-Cc: Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Len Brown <lenb@kernel.org>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, linux-acpi@vger.kernel.org
+References: <20250401153225.96379-4-anshuman.gupta@intel.com>
+ <20250401201349.GA1676401@bhelgaas> <CAJZ5v0irNFX6dFrStinNXamrhP143=yjjfx4iK0pY+-dTEkviw@mail.gmail.com>
+ <CY5PR11MB6211021207DE5ECAA43BF26595AE2@CY5PR11MB6211.namprd11.prod.outlook.com>
+ <CAJZ5v0inCpM2UhzZ_pD52S0Hf8aaEMa40CyE-dwzVmO1n3PMwA@mail.gmail.com>
+ <MN0PR11MB6207F55ABAA2187609BB872695AE2@MN0PR11MB6207.namprd11.prod.outlook.com>
+ <CAJZ5v0gKBYa_N-dA1JwF0yVbc6XSmQEy1LpVytDM7uc9kbZ8fA@mail.gmail.com> <CY5PR11MB621174B9AF1B5C6EA4FE27F095A92@CY5PR11MB6211.namprd11.prod.outlook.com>
+In-Reply-To: <CY5PR11MB621174B9AF1B5C6EA4FE27F095A92@CY5PR11MB6211.namprd11.prod.outlook.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 8 Apr 2025 15:01:51 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hp-bYn8JFiBnTgrSdJWHm1jgCjcvbVZkzeOaySjvAQQg@mail.gmail.com>
+X-Gm-Features: ATxdqUHqV0sOwFWqSUOVlfsgC6-e9g7HrCV9B3ZHAiWPRSwaiLow0_l4zBDiy30
+Message-ID: <CAJZ5v0hp-bYn8JFiBnTgrSdJWHm1jgCjcvbVZkzeOaySjvAQQg@mail.gmail.com>
+Subject: Re: [PATCH 03/12] PCI/ACPI: Add aux power grant notifier
+To: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>, 
+	"intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>, 
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "lenb@kernel.org" <lenb@kernel.org>, 
+	"bhelgaas@google.com" <bhelgaas@google.com>, 
+	"ilpo.jarvinen@linux.intel.com" <ilpo.jarvinen@linux.intel.com>, 
+	"De Marchi, Lucas" <lucas.demarchi@intel.com>, "Vivi, Rodrigo" <rodrigo.vivi@intel.com>, 
+	"Nilawar, Badal" <badal.nilawar@intel.com>, "Gupta, Varun" <varun.gupta@intel.com>, 
+	"ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>, "Shankar, Uma" <uma.shankar@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 7, 2025 at 5:37=E2=80=AFPM Sean Anderson <sean.anderson@linux.d=
-ev> wrote:
+On Fri, Apr 4, 2025 at 2:53=E2=80=AFPM Gupta, Anshuman <anshuman.gupta@inte=
+l.com> wrote:
 >
-> Add a fwnode variant of of_parse_phandle_with_optional_args to allow
-> nargs_prop to be absent from the referenced node. This improves
-> compatibility for references where the devicetree might not always have
-> nargs_prop.
+> /snip
+> > > >
+> > > > Exactly like I said: If you only allow one driver to use the _DSM t=
+o
+> > > > request the Aux power from a given Root Port, it will have all of
+> > > > the information and does not need to be notified about any changes.
+> > > > Since no one else is allowed to use this interface for that Root
+> > > > Port, no one else will need a notifier either.  For this to work,
+> > > > you need some mechanism allowing drivers to claim the interface so
+> > > > no one else can use it (on a per Root Port basis) which is currentl=
+y missing
+> > AFAICS.
+> > >
+> > > IMHO such kind of mechanism will require to add Root Port specific
+> > > data structure to claim the interface. But real problem is the criter=
+ia  to claim
+> > the interface.
+> > > Is first PCIe Non-Bridge Endpoint Function 0 driver can be criteria
+> > > to claim the Interface. Or first come and first serve approach ?
+> >
+> > IMV, the first PCIe Non-Bridge Endpoint Function 0 driver approach woul=
+d be
+> > sort of fragile and cumbersome to enforce.
+> >
+> > First come, first serve is much simpler and should be sufficient for no=
+w AFAICS.
+>
+> We are enabling VRSR only for default vga boot device.
+> As it needed only GPU driving the display for better user experience.
+> Can we use same logic vga_default_device() to claim the interface under r=
+oot port.
+> That will simplify the criteria to claim the interface.
 
-Can't we just make fwnode_property_get_reference_args() handle this
-case? Or why is it not just a 1 line wrapper function?
+Basically, you need to prevent somebody else from running
+DSM_PCI_D3COLD_AUX_POWER_LIMIT concurrently for the given Root Port
+and store the information that it has been run already.
+
+Personally, I'd add aux_power_limit to struct acpi_device_power and
+I'd use a static mutex in pci_acpi_request_d3cold_aux_power() along
+the lines of:
+
+1. Acquire the mutex.
+2. If power.aux_power_limit is set for the ACPI companion of pci_dev,
+release the mutex and bail out.
+3. Evaluate DSM_PCI_D3COLD_AUX_POWER_LIMIT and if it fails, release
+the mutex and bail out.
+4. Set power.aux_power_limit for the ACPI companion of pci_dev to the
+requested value.
+5. Release the mutex.
+
+Of course, this would only allow it to be set once per kernel boot, so
+in order to handle hibernation properly, the same Aux power limit
+would need to be requested again automatically on Root Port restore.
 
