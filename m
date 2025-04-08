@@ -1,104 +1,164 @@
-Return-Path: <linux-acpi+bounces-12837-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12838-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612C8A7F7ED
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 10:33:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD0A8A7F80D
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 10:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53F181899569
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 08:32:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0065818885B1
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 08:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938E12185B8;
-	Tue,  8 Apr 2025 08:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508302627EA;
+	Tue,  8 Apr 2025 08:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=diogo.ivo@siemens.com header.b="eZjKIkFt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yp4ZVFaS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mta-64-227.siemens.flowmailer.net (mta-64-227.siemens.flowmailer.net [185.136.64.227])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5B0156CA
-	for <linux-acpi@vger.kernel.org>; Tue,  8 Apr 2025 08:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D49320B7EF;
+	Tue,  8 Apr 2025 08:37:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744101110; cv=none; b=Q8mHFjfIer86eBahCiaOWsgh2w2HOqnYf4Y3NgNWs9YmZ9lWK3g3l5N7Z/1xPgNmk11uGiFftWIQPsJFXZZok/F/Lnkii3MBhjLE/+JTj+48j38Ww+exFau9vo5Z+772wCCjgT835gyOyArLkUDgn1kRXUXqGIBcR3TgXkdpHms=
+	t=1744101447; cv=none; b=UbMDXEBc8X0JLNkCQf/RqtkB6/3c6TbUe5oJW/mYGxepkDfRBdf4JVAXWD7tjc6JN0/0VLWISjN2NJ+7Meltz9SMmNqCPEMuH+btfkmoFR8wW17DnpvO/8Tgjux6j6juo//+3z2hDQWBVGnaXTs66qiJduKZUunaYsUBtzUJhbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744101110; c=relaxed/simple;
-	bh=Hq7OJ3RwBznOdA733fpGmrFHhd5qVLu5ZN47Y78qB7M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WAn6iiI+9GkI5/kP+6y20XgongvMOoM9R1PNFBhJ3eNT5L9Ud93jxzt02T4x/Sop+hmQ9ktU/uI1peG2CaOzqiUm1TlZZHblM7hAN7N6PXGW3zOolADAaSEYWJP48/HTVIYxIzGpNDiG1dkhUzOvLOje03mIpCb76PUBLZXskfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=diogo.ivo@siemens.com header.b=eZjKIkFt; arc=none smtp.client-ip=185.136.64.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-64-227.siemens.flowmailer.net with ESMTPSA id 2025040808314078657e0c94498ab2db
-        for <linux-acpi@vger.kernel.org>;
-        Tue, 08 Apr 2025 10:31:41 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
- d=siemens.com; i=diogo.ivo@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=aWpO5qb18Mjrv4G9P3h8hBHuno7AfWs3U1lfu4A/j7o=;
- b=eZjKIkFtN42XbkSvuCCCHrc8/AuX8zzbomK2+pWvDT74ckB2Itv7Sn8gjVqGwQSZhbCYI6
- ZikeGt/ZJ+S7gUzYpf44yas18L+bqVb3Ed2Ahjlygsr9Grp/u+XofI+H2B5AZvmm+TpRi70V
- MxHtCEmat8Ktqvr/nZGy3mHS8hv+YwuNXkIF1HwXTXMPUxQz8nAleqDheqLaG9c+VzsB85uS
- QSiv4sNrrZt2nBw0vPXxHJ82gkoSX2KOWiggdiDvlSZkMDlcZomoxIpAmdjZQWnMXS7cR7lI
- WAHgIoe5iAZlwZSK7/2rwPDpnHbG22tT1Tr8PfOjCNONZmUZu77c82JQ==;
-Message-ID: <daeedd95-1d4a-4d17-baa1-9c1580095de9@siemens.com>
-Date: Tue, 8 Apr 2025 09:31:37 +0100
+	s=arc-20240116; t=1744101447; c=relaxed/simple;
+	bh=SvXSy4Bwc8FNM6LghY0/XjdUPptV5lIp/P0jRiL6ISQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UKMsTCGD+6X+PizKMr5Y2vBrzyrJJZfTaDvNiI7p195AKefeRlO83cW611sXvt6WO1Sv8gSXCT3D9I/UalDZki4Shjt/IKr5/mGU+v6q6pvKpknvNNMMMOae2X7SFsO4mJrzD8BSNa9Q46JTxwmMLSHEk++wjTbF0aMIgPBKIag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yp4ZVFaS; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744101446; x=1775637446;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SvXSy4Bwc8FNM6LghY0/XjdUPptV5lIp/P0jRiL6ISQ=;
+  b=Yp4ZVFaSQpqGEYLu8ekNDOaaYlTNkOUuohFUTNz4WNThBtGYMcJNzLDG
+   z0pCHK/o+7DF24wbNb3q0g71QPrkKIhybJ6ZSRWnbpg5OlTmnf4O+f4Gn
+   1dtn8j2HtXO/BFj1uRp9ovKFLsH5f9fqx2zSBvBVYWnceEId/km4Ehk0u
+   d2VrptegYZSNj4mBiQGsSx9t5cOSOIMYin0VxF5oEY40D1y8p4OVaLI8O
+   cTIpmDrMRuy+dYVboG6Ijgo+glsHxHAHJSHhin59rtE2jXkdS6ftbIfw3
+   Gocb120mGJGSyVj8TlpyD3cp1OJ8q4tGsUmexIXQI65eMVTT7KLtScnyL
+   Q==;
+X-CSE-ConnectionGUID: gvtAdtUSTJymApEX919Tug==
+X-CSE-MsgGUID: pqcemKqCRvmcZ353Ayq4Wg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="67994266"
+X-IronPort-AV: E=Sophos;i="6.15,197,1739865600"; 
+   d="scan'208";a="67994266"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 01:37:25 -0700
+X-CSE-ConnectionGUID: jpTNmXQaT9+L7DNYwIqmJw==
+X-CSE-MsgGUID: ikIri5WYRNCpI9WfHswheQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,197,1739865600"; 
+   d="scan'208";a="128533582"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 01:37:21 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1u24SN-0000000ALAx-1TUY;
+	Tue, 08 Apr 2025 11:37:19 +0300
+Date: Tue, 8 Apr 2025 11:37:19 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+	devicetree@vger.kernel.org,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>, linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 1/2] device property: Add optional nargs_prop for
+ get_reference_args
+Message-ID: <Z_TgP0epJ3cJzlUt@smile.fi.intel.com>
+References: <20250407223714.2287202-1-sean.anderson@linux.dev>
+ <20250407223714.2287202-2-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 1/2] watchdog: Add driver for Intel OC WDT
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>
-Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-watchdog@vger.kernel.org, jan.kiszka@siemens.com,
- benedikt.niedermayr@siemens.com
-References: <20250317-ivo-intel_oc_wdt-v3-0-32c396f4eefd@siemens.com>
- <20250317-ivo-intel_oc_wdt-v3-1-32c396f4eefd@siemens.com>
-Content-Language: en-US
-From: Diogo Ivo <diogo.ivo@siemens.com>
-In-Reply-To: <20250317-ivo-intel_oc_wdt-v3-1-32c396f4eefd@siemens.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-1328357:519-21489:flowmailer
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250407223714.2287202-2-sean.anderson@linux.dev>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hello,
+On Mon, Apr 07, 2025 at 06:37:13PM -0400, Sean Anderson wrote:
+> get_reference_args does not permit falling back to nargs when nargs_prop
+> is missing. This makes it difficult to support older devicetrees where
+> nargs_prop may not be present. Add support for this by converting nargs
+> to a signed value. Where before nargs was ignored if nargs_prop was
+> passed, now nargs is only ignored if it is strictly negative. When it is
+> positive, nargs represents the fallback cells to use if nargs_prop is
+> absent.
 
-On 3/17/25 10:55 AM, Diogo Ivo wrote:
-> Add a driver for the Intel Over-Clocking Watchdog found in Intel
-> Platform Controller (PCH) chipsets. This watchdog is controlled
-> via a simple single-register interface and would otherwise be
-> standard except for the presence of a LOCK bit that can only be
-> set once per power cycle, needing extra handling around it.
-> 
-> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-> Signed-off-by: Diogo Ivo <diogo.ivo@siemens.com>
-> ---
-> v2->v3:
->   - Collect R-b from Guenter
-> 
-> v1->v2:
->   - Split v1 into two patches, adding the ACPI IDs in a separate patch
->   - Initialize hearbeat module parameter to zero
->   - Clarify wording around lock handling
->   - Properly print resource with %pR when failing to obtain it
->   - Enable compile testing and add dependency on HAS_IOPORT
->   - Drop unneeded ACPI_PTR() and MODULE_ALIAS()
-> ---
-> ---
->   drivers/watchdog/Kconfig        |  11 ++
->   drivers/watchdog/Makefile       |   1 +
->   drivers/watchdog/intel_oc_wdt.c | 233 ++++++++++++++++++++++++++++++++++++++++
->   3 files changed, 245 insertions(+)
-> 
+And what is the case to support old DTs on most likely outdated hardware?
 
-Gentle ping on this patch.
+...
 
-Best regards,
-Diogo
+>  	ret = fwnode_call_int_op(fwnode, get_reference_args, prop, nargs_prop,
+> -				 nargs, index, args);
+> +				 nargs_prop ? -1 : nargs, index, args);
+
+>  	return fwnode_call_int_op(fwnode->secondary, get_reference_args, prop, nargs_prop,
+> -				  nargs, index, args);
+> +				  nargs_prop ? -1 : nargs, index, args);
+
+I don't understand why it's needed here. The nargs_prop is passed to the callee.
+
+...
+
+> -				 unsigned int nargs, unsigned int index,
+> +				 int nargs, unsigned int index,
+
+As per above.
+
+...
+
+>  		error = property_entry_read_int_array(ref->node->properties,
+>  						      nargs_prop, sizeof(u32),
+>  						      &nargs_prop_val, 1);
+> -		if (error)
+
+> +
+
+Stray blank line.
+
+> +		if (error == -EINVAL) {
+
+Why do we need an explicit error code check? This is fragile. Just check the
+parameter before calling the above.
+
+> +			if (nargs < 0)
+> +				return error;
+> +		} else if (error) {
+>  			return error;
+> -
+> -		nargs = nargs_prop_val;
+> +		} else {
+> +			nargs = nargs_prop_val;
+> +		}
+
+...
+
+>  of_fwnode_get_reference_args(const struct fwnode_handle *fwnode,
+>  			     const char *prop, const char *nargs_prop,
+> -			     unsigned int nargs, unsigned int index,
+> +			     int nargs, unsigned int index,
+>  			     struct fwnode_reference_args *args)
+
+Same comments as per above.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
