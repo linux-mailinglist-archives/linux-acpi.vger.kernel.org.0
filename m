@@ -1,98 +1,171 @@
-Return-Path: <linux-acpi+bounces-12835-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12836-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33310A7F2B6
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 04:34:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A79A7F5A5
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 09:08:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 118671896B8B
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 02:34:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9614A3B8D8E
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 07:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD3EF1D47C7;
-	Tue,  8 Apr 2025 02:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB6125FA3A;
+	Tue,  8 Apr 2025 07:06:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tuNiBJYi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B2A1A5BBB;
-	Tue,  8 Apr 2025 02:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E19635979;
+	Tue,  8 Apr 2025 07:06:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744079678; cv=none; b=Ybf/pGqXo7NEEvaa2vLVjX14WaOMEwglqomIbWnTMgJRxfGzzHDie5pwSlVvHvu/CPbOxPHYq+C5rJb7v6dMGyDdo0CYUCtZGC5fcLINgw0CRN35pyrstloTGJj6C2nhdo0Avyik1pcHbXZ5cx5WYkxouiiwZr9RIPe2cWPfWnY=
+	t=1744096007; cv=none; b=I9LyKDYL10YTW235M8J+efPOXq7SYNbHcLGvEVBIwQrYqST+I4QqwoNVCPHVD++m0BiDQVj96ygy4r8GQb1Ymam3FzQVvwiP9c7sA8J/XajVjIku0XmMotmFAz1S+CWd4CWHhiPw3JnZpON8r+dGEzrcMwZjiVwTWqWS43tzlAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744079678; c=relaxed/simple;
-	bh=f743pXy24fP4ZQGtc5Gp/38982Ecmd2qj65y1f/2EG0=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=nBRpg2VgtBvdNVTSVOoWo7CZf7Lo+7llUmVsn6MTVsUgJqhouHU6Lp9C9XZ/4VjjcQ9SRLoFutyMNDC4a+e3SdlapotKFzJOYxo7MNEMmHdJJFK7u0hiwx94zermAOnjhYY6XXUCUKBWtXzgGnxJ20ap5doOXz9taDlMzeAAi5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4ZWqr46dS8ztRtx;
-	Tue,  8 Apr 2025 10:33:08 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id EDC361401E9;
-	Tue,  8 Apr 2025 10:34:32 +0800 (CST)
-Received: from [10.174.178.247] (10.174.178.247) by
- dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 8 Apr 2025 10:34:31 +0800
-Subject: Re: [RESEND PATCH v18 0/2] ACPI: APEI: handle synchronous errors in
- task work
-To: Shuai Xue <xueshuai@linux.alibaba.com>, <catalin.marinas@arm.com>,
-	<sudeep.holla@arm.com>, <lpieralisi@kernel.org>,
-	<linux-acpi@vger.kernel.org>, <yazen.ghannam@amd.com>,
-	<mark.rutland@arm.com>, <mingo@redhat.com>, <robin.murphy@arm.com>,
-	<Jonathan.Cameron@Huawei.com>, <bp@alien8.de>, <rafael@kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <wangkefeng.wang@huawei.com>,
-	<tanxiaofei@huawei.com>, <mawupeng1@huawei.com>, <tony.luck@intel.com>,
-	<linmiaohe@huawei.com>, <naoya.horiguchi@nec.com>, <james.morse@arm.com>,
-	<tongtiangen@huawei.com>, <gregkh@linuxfoundation.org>, <will@kernel.org>,
-	<jarkko@kernel.org>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<akpm@linux-foundation.org>, <linux-edac@vger.kernel.org>, <x86@kernel.org>,
-	<justin.he@arm.com>, <ardb@kernel.org>, <ying.huang@linux.alibaba.com>,
-	<ashish.kalra@amd.com>, <baolin.wang@linux.alibaba.com>,
-	<tglx@linutronix.de>, <dave.hansen@linux.intel.com>, <lenb@kernel.org>,
-	<hpa@zytor.com>, <robert.moore@intel.com>, <lvying6@huawei.com>,
-	<xiexiuqi@huawei.com>, <zhuo.song@linux.alibaba.com>
-References: <20250404112050.42040-1-xueshuai@linux.alibaba.com>
-From: Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <38b80839-cd47-cbf6-cd79-44e967ad8cb3@huawei.com>
-Date: Tue, 8 Apr 2025 10:34:15 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+	s=arc-20240116; t=1744096007; c=relaxed/simple;
+	bh=b4/HM8+SciHG286LvQnLgT/d3PAh2mnGk8+5TyFZWoU=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U6wSqExhdJ2bVMT5SKOA3VbjgrtgNI56C7SgkG5bcKB3OuLmIr0NVk4s1YJhOdVxXohZl33DBuwFlAL00LXN9CFhUQQPSux341Bjr1OMzvuOoT9XmyNuCU99lAhD/hEcXTkFMD2LJ332b5PIFCPndwNCh0nVjbDSl2A/keO0UmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tuNiBJYi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4448C4CEE5;
+	Tue,  8 Apr 2025 07:06:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744096007;
+	bh=b4/HM8+SciHG286LvQnLgT/d3PAh2mnGk8+5TyFZWoU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tuNiBJYibWOt5+vSOcQ+JRLaGgZWDkwaR5g7lNtcFTYc0eXDRKe6tq4CFJoPxKpIt
+	 5zBNMaoK7dfKeOvGjJHcZC3SgfNhwMciKiHLr3Xj3tBZTIQAQriWeFzCef/7bg1+dE
+	 hyqgZvsEdCEEUnc8kb8ixxAmY0ceVaTbQ/FV/etjY5hzXxF4tmwW+1dePcWZiVahGl
+	 0JA6jU7oJiTCnEF5XrUfeiimXLagzfg43mKERJZSQ+zqZhgvK4Qk5R1p1r9X+bNtjt
+	 Kk9dCK73/RxRciBC9MdW/1HCWKw9hR/5lrex479hCJcM2sa/cq97vi7qhYhnbL+BmN
+	 nEcjjtUmDVjOg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1u232h-003JRY-F2;
+	Tue, 08 Apr 2025 08:06:43 +0100
+Date: Tue, 08 Apr 2025 08:06:42 +0100
+Message-ID: <86semjku7x.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Roman Kisel <romank@linux.microsoft.com>
+Cc: arnd@arndb.de,
+	bhelgaas@google.com,
+	bp@alien8.de,
+	catalin.marinas@arm.com,
+	conor+dt@kernel.org,
+	dan.carpenter@linaro.org,
+	dave.hansen@linux.intel.com,
+	decui@microsoft.com,
+	haiyangz@microsoft.com,
+	hpa@zytor.com,
+	joey.gouly@arm.com,
+	krzk+dt@kernel.org,
+	kw@linux.com,
+	kys@microsoft.com,
+	lenb@kernel.org,
+	lpieralisi@kernel.org,
+	manivannan.sadhasivam@linaro.org,
+	mark.rutland@arm.com,
+	mingo@redhat.com,
+	oliver.upton@linux.dev,
+	rafael@kernel.org,
+	robh@kernel.org,
+	rafael.j.wysocki@intel.com,
+	ssengar@linux.microsoft.com,
+	sudeep.holla@arm.com,
+	suzuki.poulose@arm.com,
+	tglx@linutronix.de,
+	wei.liu@kernel.org,
+	will@kernel.org,
+	yuzenghui@huawei.com,
+	devicetree@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-acpi@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	x86@kernel.org,
+	apais@microsoft.com,
+	benhill@microsoft.com,
+	bperkins@microsoft.com,
+	sunilmut@microsoft.com
+Subject: Re: [PATCH hyperv-next v7 01/11] arm64: kvm, smccc: Introduce and use API for getting hypervisor UUID
+In-Reply-To: <20250407201336.66913-2-romank@linux.microsoft.com>
+References: <20250407201336.66913-1-romank@linux.microsoft.com>
+	<20250407201336.66913-2-romank@linux.microsoft.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <20250404112050.42040-1-xueshuai@linux.alibaba.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: romank@linux.microsoft.com, arnd@arndb.de, bhelgaas@google.com, bp@alien8.de, catalin.marinas@arm.com, conor+dt@kernel.org, dan.carpenter@linaro.org, dave.hansen@linux.intel.com, decui@microsoft.com, haiyangz@microsoft.com, hpa@zytor.com, joey.gouly@arm.com, krzk+dt@kernel.org, kw@linux.com, kys@microsoft.com, lenb@kernel.org, lpieralisi@kernel.org, manivannan.sadhasivam@linaro.org, mark.rutland@arm.com, mingo@redhat.com, oliver.upton@linux.dev, rafael@kernel.org, robh@kernel.org, rafael.j.wysocki@intel.com, ssengar@linux.microsoft.com, sudeep.holla@arm.com, suzuki.poulose@arm.com, tglx@linutronix.de, wei.liu@kernel.org, will@kernel.org, yuzenghui@huawei.com, devicetree@vger.kernel.org, kvmarm@lists.linux.dev, linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, x86@kernel.org, apais@microsoft.com, benhill@microsoft.com, bperkins@microsoft
+ .com, sunilmut@microsoft.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hi Shuai Xue,
-
-On 2025/4/4 19:20, Shuai Xue wrote:
->>From Catalin:
+On Mon, 07 Apr 2025 21:13:26 +0100,
+Roman Kisel <romank@linux.microsoft.com> wrote:
 > 
->> James Morse is listed as reviewer of the ACPI APEI code but he's busy
->> with resctrl/MPAM.
+> The KVM/arm64 uses SMCCC to detect hypervisor presence. That code is
+> private, and it follows the SMCCC specification. Other existing and
+> emerging hypervisor guest implementations can and should use that
+> standard approach as well.
 > 
-> These two patches have undergone 18 iterations of review and have received
-> 11 'Reviewed-by' tags in total, but they have not yet been merged into the
-> mainline. I am requesting further review and ack from the arm64
-> ACPI maintainers: Lorenzo, Sudeep, and Hanjun. Thank you for your attention
-> and assistance.
+> Factor out a common infrastructure that the guests can use, update KVM
+> to employ the new API. The central notion of the SMCCC method is the
+> UUID of the hypervisor, and the new API follows that.
+> 
+> No functional changes. Validated with a KVM/arm64 guest.
+> 
+> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
+> ---
+>  arch/arm64/kvm/hypercalls.c        | 10 +++--
+>  drivers/firmware/smccc/kvm_guest.c | 10 +----
+>  drivers/firmware/smccc/smccc.c     | 17 ++++++++
+>  include/linux/arm-smccc.h          | 64 ++++++++++++++++++++++++++++--
+>  4 files changed, 85 insertions(+), 16 deletions(-)
+>
 
-I will take a detail review this week.
+[...]
 
-Thanks
-Hanjun
+> diff --git a/include/linux/arm-smccc.h b/include/linux/arm-smccc.h
+> index 67f6fdf2e7cd..4bb38f0e3fe2 100644
+> --- a/include/linux/arm-smccc.h
+> +++ b/include/linux/arm-smccc.h
+> @@ -7,6 +7,11 @@
+>  
+>  #include <linux/args.h>
+>  #include <linux/init.h>
+> +
+> +#ifndef __ASSEMBLER__
+> +#include <linux/uuid.h>
+> +#endif
+
+That's a pretty unusual guard in arm64 land. Looking at the current
+state of the kernel:
+
+$ git grep -w __ASSEMBLER__ arch/arm64/ | wc -l
+2
+$ git grep -w __ASSEMBLY__ arch/arm64/ | wc -l
+122
+
+I'd suggest the later rather than the former.
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
