@@ -1,116 +1,97 @@
-Return-Path: <linux-acpi+bounces-12898-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12899-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD11EA82560
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 14:54:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6EAA82649
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 15:29:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96F1C7B3FE2
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 12:53:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20D8E8C2664
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 13:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D8F2620CD;
-	Wed,  9 Apr 2025 12:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59ED6263C88;
+	Wed,  9 Apr 2025 13:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lyEH997M"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="esxzOJm5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551B126157E;
-	Wed,  9 Apr 2025 12:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6045325DD13;
+	Wed,  9 Apr 2025 13:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744203269; cv=none; b=YfQzCgfR7iDQaE7I0qcXs0O1zX8rR/vOxq3BQfkDl91d50H7yZqpD5g76t69fG1XkUPZqjeXpozemBS3/fsXwD4JAygpooiIKnVtf6vc49odqSPWZmzZKOMJ5tCauknpjTAh172FD7FYxUA4oaHbIzwyv0jWj5HDOp5MrbThtVU=
+	t=1744205389; cv=none; b=Oy7uPIz/6lwSDxQill/REXMIkX8bitklMmIAQKgsiI0/Bq2qpYJ7L7vcTgtps1PgVUQjluBHwSUARyyZOc/SBTrUKjhZSD9iYKBXk31b080XyCkOHWqeiYWy7wQ/EAYPNsgQ2peeYhEEP2AvVPazByYueOyLuJ2y6GrBVo0oN0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744203269; c=relaxed/simple;
-	bh=5cjw3hniuS5c3kOgjuPKIqsfz6OH0LbiKTbZY3HNO0Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SljSS6DnuTcNTNMV+aALUts3f2Er/jWvb3SvX+9urUslyFnTBwBiRQA9HJc5sM6Zfc08l9JHrZ3n/pwJ5QgzV7d48yV5P71UhvDW1PpyCs6w/td19BQlJpLUsNBtnxJgKAVPj/CqQ05ZFm1qzLltnZN98TaEpg+Gt4m9RzpLKbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lyEH997M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02B7C4CEEC;
-	Wed,  9 Apr 2025 12:54:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744203268;
-	bh=5cjw3hniuS5c3kOgjuPKIqsfz6OH0LbiKTbZY3HNO0Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lyEH997MDF/YGs2ecKpNMIJsYSl91ea8N6V9wcZTLxRIZFukKbGKbHs0uZ+WOSogx
-	 AHQa7KRuR7fZgwGGUWjrjLhZYBpIFl8zY+ARByPxvnk9aow0yZykZ5MKic6vlv4nXN
-	 RtCObxO4P2ohETRUm9ov3VLel70p7G8BfnD9pHHA7ZMrc0nFpVb8vAaEOV1wJBg8UP
-	 zwYj2OdRsUwvSdQ0cI7OwF95gZT1Wfkjh3EpOKeD65mNk2kZXq9+FCLEMFeS8N0MNO
-	 dx8lMkwSb4z8bskzphfMistkgRbxwfXArc8dHOvkPn8WboXAiHNPZJhfu9W4iRrtMB
-	 p6QwhwNNJXsPA==
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-60288fd4169so3402310eaf.3;
-        Wed, 09 Apr 2025 05:54:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUwQBpVg3oPtS4m0vnX5biOr72BixlKPnpfvpMpRO4Jvocplox2wdr+KvYk7UphQpD9/j7U9iNBrvqjjAol@vger.kernel.org, AJvYcCWevv/QoFDK0xjK6TVGSSH3QtvsKd9BypPCo2PwtXZbdNcimHzauPeaJfqXK06z30qDvAFp9Buoz52p@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCtedBG35jzOwJX6a+x/GNXoENAEQHPFGqJwfBrkkmVam6eIH3
-	VlIYmXC7EqQkI7wICYSwKy4kmGYhJy8tsAFHuAxRlWwmYkjVlK4wZ6ApNI1/5vYRuIkuU8CjX2B
-	ZXbKOaIHdin+Qi0OEwjw9cXmGJxg=
-X-Google-Smtp-Source: AGHT+IFVhR+NI8Q625FD1y6jfu8AWqdmxMqx5ND6/p58CuOaU4O4cuOfkDi0Tts9pcEs8NAdJFX45dy//gA9DXkrUxM=
-X-Received: by 2002:a05:6871:aa03:b0:2b3:55b3:e38 with SMTP id
- 586e51a60fabf-2d08de0f73bmr1518549fac.21.1744203268071; Wed, 09 Apr 2025
- 05:54:28 -0700 (PDT)
+	s=arc-20240116; t=1744205389; c=relaxed/simple;
+	bh=7hk/iOjkyz02HGui3e7azlVSIa1Sa2ofqEyKDdJ5iJg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hipnHjtKKx+uzbbaJJ0p1GYDyrQhJ7K3jx8VN/FsO7w5WjKLoKx7slxfJvAKq33ZEeaSb/1bdoaJP9PvZm1Yc++w/ZXp5aizitAP7yQIMc8bb4gh05hI8k31TarZBZobHMlCFTfEnH4UjNlnHJO1QHyyBI9x9c3fgd11P7KUg+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=esxzOJm5; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744205387; x=1775741387;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7hk/iOjkyz02HGui3e7azlVSIa1Sa2ofqEyKDdJ5iJg=;
+  b=esxzOJm51YP2O0Rja5tV9oPp20LivPSpCqrU5+A7Ap5mj10xNvt3jF0x
+   ZgHwI0BWrQ9dL58m0Lo1/IE3HKbMkhnCTahxSh6Xp/Dyam/wZVMDy/9Jm
+   bwks91qhIJYptJP8IX0vu9VAVl023tF54OclWTuDdwxpEGStDcgtyMYe6
+   /RLPjaGEcVuRG2+dB7IrLETxnb4UoTRg+nJzoYIUFws6IeiJ3Cm4bLlMO
+   d+ql/BLk7jTsZ6ZlrBC4sTquv6J2pKPGfIvTZDsoouhOXKpwKMQJi2CpN
+   nzm7cFDjy6H14Hfc1zZjg3j0cRcSwuoNDq30THkiOCmbRyoADGDQx1US1
+   w==;
+X-CSE-ConnectionGUID: vmKGT4axQVa5HF3/6cjcZg==
+X-CSE-MsgGUID: iq4RAG6JSHmlQrgeZbMjCg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="48384170"
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
+   d="scan'208";a="48384170"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 06:29:46 -0700
+X-CSE-ConnectionGUID: TH4YnD0lTLyUQr+qky6OAA==
+X-CSE-MsgGUID: l7+IB56iSJq74LUGUK+hVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
+   d="scan'208";a="128564680"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa006.jf.intel.com with ESMTP; 09 Apr 2025 06:29:44 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 64EE2541; Wed, 09 Apr 2025 16:29:43 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Mika Westerberg <westeri@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: [PATCH v1 0/2] gpiolib: acpi: Fix missing info filling
+Date: Wed,  9 Apr 2025 16:27:52 +0300
+Message-ID: <20250409132942.2550719-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250328143040.9348-1-ggherdovich@suse.cz> <20250328143040.9348-2-ggherdovich@suse.cz>
- <b29519a2da5b85f484b0f402062df2b58ec38afe.camel@intel.com>
-In-Reply-To: <b29519a2da5b85f484b0f402062df2b58ec38afe.camel@intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 9 Apr 2025 14:54:15 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iwzoqg939Kx2pwRbKo3CS--tU=+w+1cpHL35gd=3-yTQ@mail.gmail.com>
-X-Gm-Features: ATxdqUG3ZYhJlSIdVt73T05FStiWHfkpSBrgWK4bhFvJZAI83WDC-7ULwh4-Pn8
-Message-ID: <CAJZ5v0iwzoqg939Kx2pwRbKo3CS--tU=+w+1cpHL35gd=3-yTQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ACPI: processor: idle: Remove obsolete comment
-To: "Zhang, Rui" <rui.zhang@intel.com>, "ggherdovich@suse.cz" <ggherdovich@suse.cz>
-Cc: "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, "lenb@kernel.org" <lenb@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 9, 2025 at 2:54=E2=80=AFAM Zhang, Rui <rui.zhang@intel.com> wro=
-te:
->
-> On Fri, 2025-03-28 at 15:30 +0100, Giovanni Gherdovich wrote:
-> > Since commit 496121c02127e9c460b436244c38260b044cc45a ("ACPI:
-> > processor:
-> > idle: Allow probing on platforms with one ACPI C-state"), the comment
-> > doesn't reflect the code anymore; remove it.
-> >
-> > Signed-off-by: Giovanni Gherdovich <ggherdovich@suse.cz>
->
-> This is a standalone cleanup, and further cleanups are posted in a
-> separate patch set on top of this one, so
->
-> Acked-by: Zhang Rui <rui.zhang@intel.com>
+Kees reported that code, while being refactored, missed the point of
+filling the info structure which supplies GPIO flags to the upper layer.
+Indeed, without that part the GPIO expander get no IRQ on Intel Edison,
+for example. Fix this in this series.
 
-Applied as 6.16 material, thanks!
+Andy Shevchenko (2):
+  gpiolib: acpi: Use temporary variable for struct acpi_gpio_info
+  gpiolib: acpi: Make sure we fill struct acpi_gpio_info
 
-> > ---
-> >  drivers/acpi/processor_idle.c | 4 ----
-> >  1 file changed, 4 deletions(-)
-> >
-> > diff --git a/drivers/acpi/processor_idle.c
-> > b/drivers/acpi/processor_idle.c
-> > index b181f7fc2090..2a076c7a825a 100644
-> > --- a/drivers/acpi/processor_idle.c
-> > +++ b/drivers/acpi/processor_idle.c
-> > @@ -482,10 +482,6 @@ static int acpi_processor_get_cstate_info(struct
-> > acpi_processor *pr)
-> >
-> >       pr->power.count =3D acpi_processor_power_verify(pr);
-> >
-> > -     /*
-> > -      * if one state of type C2 or C3 is available, mark this
-> > -      * CPU as being "idle manageable"
-> > -      */
-> >       for (i =3D 1; i < ACPI_PROCESSOR_MAX_POWER; i++) {
-> >               if (pr->power.states[i].valid) {
-> >                       pr->power.count =3D i;
->
+ drivers/gpio/gpiolib-acpi.c | 36 ++++++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
+
+-- 
+2.47.2
+
 
