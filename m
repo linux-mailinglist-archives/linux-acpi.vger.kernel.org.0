@@ -1,209 +1,164 @@
-Return-Path: <linux-acpi+bounces-12920-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12921-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A598FA82C68
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 18:32:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8602A82D50
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 19:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F18B188154F
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 16:28:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AD84464B17
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 17:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26318267B1B;
-	Wed,  9 Apr 2025 16:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10086270EDD;
+	Wed,  9 Apr 2025 17:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bwQMiAA2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ovq1dc1I"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38DB1BF33F;
-	Wed,  9 Apr 2025 16:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F1D270EBF;
+	Wed,  9 Apr 2025 17:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744216122; cv=none; b=Vk+xeHfeXfK52PzoWTAZDqjPRygO8TIIYfINL80bUlcq39M3VItYXC1VijxXZGkj8J/sN26RuYekwKvw/X+8zWWh9vTApcKxYMgWX1t+I/6va1sQfss2Vv3iarTqKoywtODO4B1NPVIkTJSUUZWsDOB7x5clfyEU3h3UdpV77S0=
+	t=1744218619; cv=none; b=HJJ+h2rKd5/WspYj+6/WfpyJz2T4D7jOS7b9Q8hA5q1LII4xF8bEqmjctmNSLPqLH+BvgZleUCgdqCz4N/5TSKdhu8HlwyY4SLFhbqOPJ/euQmHgGLIXgZVvPKifuZLEZH+E/NvKk2Z+SnIT3XoeAbwv2fGmqzXxtnPozdKvYUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744216122; c=relaxed/simple;
-	bh=VK4BjMnzoTWDQZXyaQBP4pf+O4CP85YbyKM0qMOet9A=;
+	s=arc-20240116; t=1744218619; c=relaxed/simple;
+	bh=cAQwVlXf7+CjPLnuPwVGgRDY9ncDHb1puhcdzHnY0jY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fUzbEn5+kzl/aqp9agwZkOfbgouUFArCDoDWL5P2ffZy8RJRgL8Ft2NKq0wKhuNv/nPLxzreE6SRb2CI06jIkk23StK6LtzLTzyVV7+FrCs70x3dxOmApnfDpa2OgbhC5Qm52MV0XtFAZ6+LEYOOnvoc0or2W4sZbMhh+cziBTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bwQMiAA2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97D7C4CEE9;
-	Wed,  9 Apr 2025 16:28:41 +0000 (UTC)
+	 To:Cc:Content-Type; b=jOQbuN0gkJhbivQHZW1/LG1eXQM/KVJyF62lP0gwtR5cYqPMadotQd58/uwSbDXWzj+tyfxly7JyDSG3l+pa+jcc4Jrin0QiIkb1zJUbMXD7fLrOFHFQAKdFP9Boytu0BLXy9olh1gLq70Rbs+H5Jfo1yHwRxXtY/0KQq38YtJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ovq1dc1I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C601C4AF0B;
+	Wed,  9 Apr 2025 17:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744216121;
-	bh=VK4BjMnzoTWDQZXyaQBP4pf+O4CP85YbyKM0qMOet9A=;
+	s=k20201202; t=1744218618;
+	bh=cAQwVlXf7+CjPLnuPwVGgRDY9ncDHb1puhcdzHnY0jY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bwQMiAA2kwT/8O/TGBDOpJE9ks5B85AB+KjePfyWtGTJqroSZqM7jS8XLdecU7TJi
-	 abrA7wtOm8Mu3fsQyHj5Cq5Nd0CHWAzaWYyG0u+0j4cBOx3Lb0/YGYU1mfVmHgXtc8
-	 oMU9QoKVNoCruYRYXmvXXULgzJrvM4NxEWpF5pdcIWj4zl3Va0IddwTfiPs9mJiwz/
-	 hmHG2ZC4s5BXVXZlXNNxNZa4BKGhhcSBAwDt6KQioUiO9aBQSxnGw1LCURAyrJR2ed
-	 hBtsffhU0yFSiTIvAr4Wd4N5nCWllHyXafof8hfaT1JXTsAFJHzk2X3puskJ1jYAjc
-	 ltTa7U7qrX8TQ==
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-2c769da02b0so4317473fac.3;
-        Wed, 09 Apr 2025 09:28:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUmfhYJwsKV4fV6bxvqQOxxTIpIvzCEI6XESEK6Ci/GWDZWKkRxRxBf6i8HAwhnfody7Js0uxg8i4R+@vger.kernel.org, AJvYcCWzZKeVPvBDFhsr0hhZq6t8u2GJLpbOcLlvASSe32OBnSZJgVZkOqsT+6lS3oPEW/vRnThk4JcVUqEi@vger.kernel.org
-X-Gm-Message-State: AOJu0YwiJoqTjTQzulu4S1YkXNCxfsWOcVN/PKUJAVMefanDmIGBdKn3
-	OIxv/Yy9CPMi24YkOg9nWwCHbG2cRCzj+lJfRtm/t2WPgyZ86toAGvjCzbrELg/dB5ARKQmmTgu
-	sc5yKLiup6br53wr7yOy8dM0Z8Rs=
-X-Google-Smtp-Source: AGHT+IHeaXl+LbmiH+Auy3YuTYnvLhsRISpmq7QcIzP22EM4jX+UyYCq2tTBqwUXp67EYHS49SXSttIS6ps3Cz4Hqx0=
-X-Received: by 2002:a05:6871:d201:b0:2c1:5fe3:22eb with SMTP id
- 586e51a60fabf-2d08dd799eamr2149857fac.15.1744216121025; Wed, 09 Apr 2025
- 09:28:41 -0700 (PDT)
+	b=Ovq1dc1IXAl5wnc9ryHVYFDKGcsVmLts9fdhHxRd6Ws8T5QKCvKmR7LKHn5l+zlbu
+	 x4Arzznvq6P+X5kbPB2XgQQwiQnmInizm6I4RF9aLofbJ8AvKSoOHxAJxZet9U3zH/
+	 d3rUtnBvtvX87CFu9D31IQd4NUkTEPgs5/XivyzKTtfxpeEP7DW92lD18Dk0voOsen
+	 2VQdXPuQWZhUJpSp2xilMss32k6mfkVcFTNj5zg0dBylCElIpBN3wz+74cDt3E35Sm
+	 gaf/vF5ywRmKIodBboG2VjREIsD5FNI6dccSzg5xmmDB51XgrxLU/9JPjjRV6Yt3O7
+	 AnEketpdYnnmg==
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-2c7f876b321so2190276fac.1;
+        Wed, 09 Apr 2025 10:10:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUvXz0SyhbDjXjwyYRKFVZM1Auun3RgQEgzFxGr/+aexioRPf+QiGLieC31lmBqT0b9iqbun+wWpQgHGFR1@vger.kernel.org, AJvYcCXTkEDr6DizXVuRfl4CM19Xgkz8kWlKpYaGJBmCyMg+qRtcDiaNbDjjyVtMCDjmIV4Da8RRZEYQlJw=@vger.kernel.org, AJvYcCXkx/RvTiFUIQeiNtoX1gGFMs3Kp1tpxe3ZPUuG7XoZ9PH9jGRFRwpRmn0v54eKBTnj6gOR15fPOCgb@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmYVsxio7HxGkjkGiQLvCkDy0S/uKocDU+A+BTJ89EmpffWM4h
+	ymdOf8vf5EVr6og5af/cDlHuHtP6RG5ZOYYiD+fx0w2Y7V5fHEfTlheNQTEmjxd6gW9Sadqxqca
+	ZEvQpnOWs9ULlf4i7EHyuv3ms1uY=
+X-Google-Smtp-Source: AGHT+IE1HcaprfbES+AEj26IYVhioa7kyOAsoqMrfIDfQQwSe2RuMsl/a8oiE9RCn4sEC+kDDYA6hgAtGjfVmjvNbho=
+X-Received: by 2002:a05:6870:ab0d:b0:2c2:2f08:5e5b with SMTP id
+ 586e51a60fabf-2d0917bb20cmr1802929fac.13.1744218617585; Wed, 09 Apr 2025
+ 10:10:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAJZ5v0hK9m6-F5V+VWqsVPfr+WGLruHkP7ZvQsmwp21W9PHs_A@mail.gmail.com>
- <20250409144715.GA281314@bhelgaas>
-In-Reply-To: <20250409144715.GA281314@bhelgaas>
+References: <20250409065703.1461867-1-zhenglifeng1@huawei.com> <20250409065703.1461867-3-zhenglifeng1@huawei.com>
+In-Reply-To: <20250409065703.1461867-3-zhenglifeng1@huawei.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 9 Apr 2025 18:28:28 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gsZrzX=uJ-WMZ9UW+arvavrsUBuEEs4rF3=QYW92KFtw@mail.gmail.com>
-X-Gm-Features: ATxdqUHVHv7xHVqKQfQ-yvwZE_QM2hC7G6Idy3lTD7qDYeGVuw6DvnhSO1hzmTc
-Message-ID: <CAJZ5v0gsZrzX=uJ-WMZ9UW+arvavrsUBuEEs4rF3=QYW92KFtw@mail.gmail.com>
-Subject: Re: [PATCH 02/12] PCI/ACPI: Add PERST# Assertion Delay _DSM method
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Anshuman Gupta <anshuman.gupta@intel.com>, 
-	intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org, 
-	linux-pci@vger.kernel.org, lenb@kernel.org, bhelgaas@google.com, 
-	ilpo.jarvinen@linux.intel.com, lucas.demarchi@intel.com, 
-	rodrigo.vivi@intel.com, badal.nilawar@intel.com, varun.gupta@intel.com, 
-	ville.syrjala@linux.intel.com, uma.shankar@intel.com
+Date: Wed, 9 Apr 2025 19:10:06 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0is5YXxqHDAC4Ki44U9mwDH3KvW0=JmFYS-25QwKYDR1A@mail.gmail.com>
+X-Gm-Features: ATxdqUEZY7ZSPbkwrXMr4u7_twpdladBp3zkPIRv7P3Mi7CxPU_yAnM6-yPmvM4
+Message-ID: <CAJZ5v0is5YXxqHDAC4Ki44U9mwDH3KvW0=JmFYS-25QwKYDR1A@mail.gmail.com>
+Subject: Re: [PATCH v6 2/8] ACPI: CPPC: Optimize cppc_get_perf()
+To: Lifeng Zheng <zhenglifeng1@huawei.com>
+Cc: rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com, 
+	viresh.kumar@linaro.org, mario.limonciello@amd.com, gautham.shenoy@amd.com, 
+	ray.huang@amd.com, perry.yuan@amd.com, pierre.gondois@arm.com, 
+	acpica-devel@lists.linux.dev, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, linuxarm@huawei.com, 
+	jonathan.cameron@huawei.com, zhanjie9@hisilicon.com, lihuisong@huawei.com, 
+	cenxinghai@h-partners.com, hepeng68@huawei.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 9, 2025 at 4:47=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org> w=
-rote:
+On Wed, Apr 9, 2025 at 8:57=E2=80=AFAM Lifeng Zheng <zhenglifeng1@huawei.co=
+m> wrote:
 >
-> On Wed, Apr 09, 2025 at 02:30:31PM +0200, Rafael J. Wysocki wrote:
-> > On Tue, Apr 8, 2025 at 10:48=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.o=
-rg> wrote:
-> > > On Wed, Apr 02, 2025 at 09:36:01PM +0200, Rafael J. Wysocki wrote:
-> > > > On Wed, Apr 2, 2025 at 8:48=E2=80=AFPM Bjorn Helgaas <helgaas@kerne=
-l.org> wrote:
-> > >
-> > > > > I don't *expect* rev 5 to be different.  But as a user of it,
-> > > > > why would I change working, tested code that is not broken?
-> > > > >
-> > > > > The PCI DPC function 0xc is an example where rev 5 (per ECN)
-> > > > > and rev 6 (per r3.3) are not compatible.
-> > > > >
-> > > > > If the OS implemented rev 5, then learns via function 0 that
-> > > > > function 0xc is also supported at rev 6, and starts using the
-> > > > > same OS code with rev 6, the OS is broken.
-> > > >
-> > > > Yes, in this case the backward compatibility language in the
-> > > > _DSM definition is obviously not followed.
-> > >
-> > > Rev 5 in the ECN isn't compatible with rev 6 in the PCI FW r3.3
-> > > spec, so it doesn't follow the ACPI compatibility requirement.
-> > > And this is documented in PCI FW, which says "Fn 0xC was added
-> > > with rev 5 (see ECN for rev 5 details); here is how rev 6 works."
-> > >
-> > > An OS implemented to the ECN doesn't know that rev 6 is different
-> > > from rev 5; it assumes they're the same because ACPI says we can
-> > > assume that, and PCI FW r3.3 even says the OS should use the same
-> > > rev for all functions.
-> >
-> > OK (and this is important because PCI FW r3.3 is the spec defining
-> > the interface)
-> >
-> > > If OS adds support for rev 6 of a some other function, it is
-> > > supposed to use rev 6 of Fn 0xC, which doesn't work as the OS
-> > > expects.
-> >
-> > IMV with respect to _DSM, the spec that has defined the interface
-> > (PCI FW r3.3) takes precedence over the ACPI spec regardless of what
-> > the latter is saying.  In this case ACPI provides a framework the
-> > interface can be based on, but the actual interface is not defined
-> > by it.
-> >
-> > Also, I think that the OS should use rev 6 if it is supported by the
-> > firmware (for all functions) and it should literally follow the
-> > definition of rev 6.
+> Optimize cppc_get_perf() with three changes:
 >
-> I think you interpret rev 6 as a global revision of the platform,
-> i.e., the platform supports rev 6 for every function it implements in
-> this UUID (which is clearly the intent of the ACPI ASL example).
-
-Yes, I do.
-
-> I suggest that it would be better to interpret the revision
-> individually for each function because it removes the backwards
-> compatibility assumption and reduces the testing burden.
+> 1. Change the error kind to "no such device" when pcc_ss_id < 0, as other
+> register value getting functions.
 >
-> Most functions would be specified and implemented with rev 0, and
-> would never have a rev 1.  There would only be a rev 1 of a function
-> if we made a non backwards compatible change to it.
+> 2. Add a check to verify if the register is supported to be read before
+> using it. The logic is:
 >
-> Any other functions would be untouched, and they would still only
-> support rev 0, not rev 1.
-
-I think that it would just be confusing because both the OS and the
-firmware would now have to remember which function is defined at which
-revision.
-
-Also the industry practice in this respect has been different so far, AFAIC=
-S.
-
-And PCI FW r3.3 wants the OS to use the same rev for all functions
-which doesn't leave too much room for interpretation.
-
-> > > I guess one could argue that "OS didn't add rev 6 support for
-> > > anything until PCI FW r3.3 added a function at rev 6, r3.3 did
-> > > mention the difference between Fn 0xC rev 5 and 6, and OS should
-> > > have looked at all the already-implemented unrelated functions for
-> > > possible changes between rev 5 and rev 6."
-> >
-> > Yes, it should.
+> (1) If the register is of the integer type, check whether the register is
+> optional and its value is 0. If yes, the register is not supported.
 >
-> I don't think it's reasonable to require the person adding support for
-> Fn 0xE rev 6 (TLP Processing Hints) to go back and add Fn 0xC rev 6
-> (Downstream Port Containment) at the same time.
-
-Well, if you know that the function is supposed to work the same in
-the new rev, it only is a matter of changing the rev passed to
-acpi_evaluate_dsm*().
-
-> Assuming that "rev X works the same as rev X-1 and therefore rev X
-> doesn't need to be tested" seems unwise to me.
-
-So say you've only changed the rev passed to acpi_evaluate_dsm*() as
-per the above.  The only reason why it may not work is when there is a
-bug in the firmware.
-
-Now, suppose that you don't change anything and stick to rev X-1, but
-there is a new version of the firmware that contains a bug in the
-given _DSM implementation.  Same thing.
-
-I get the "only the tested code is trustable" argument, but its
-applicability here is naturally limited.
-
-> But even if we normally rely on that assumption, in this case Fn 0xC rev =
-5 and rev 6
-> are different, so we'd be adding new code that would require testing
-> on every platform that supports rev 6 of any function.
-
-Unfortunately, as far as OS-firmware interfaces are concerned, you
-need to trust the other end to do the right thing because you cannot
-test all of the possible combinations.
-
-> > What if the functions on the firmware side depend on each other
-> > interfally and the firmware gets confused if revisions are mixed up
-> > on the OS side?
+> (2) If the register is of other types, a null one is not supported.
 >
-> In such a case, the backwards compatibility assumption doesn't apply
-> to those functions, so the spec would have to document multiple
-> revisions of them, and IMO that's the natural place to document
-> a requirement to use the same revision for the set.
+> 3. Return the result of cpc_read() instead of 0.
+>
+> Reviewed-by: Pierre Gondois <pierre.gondois@arm.com>
+> Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+> ---
+>  drivers/acpi/cppc_acpi.c | 21 ++++++++++++++-------
+>  1 file changed, 14 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 39f019e265da..2f789d3b3cad 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -1201,20 +1201,29 @@ static int cppc_get_perf(int cpunum, enum cppc_re=
+gs reg_idx, u64 *perf)
+>
+>         reg =3D &cpc_desc->cpc_regs[reg_idx];
+>
+> +       if (reg->type =3D=3D ACPI_TYPE_INTEGER ?
+> +           (IS_OPTIONAL_CPC_REG(reg_idx) && !reg->cpc_entry.int_value) :
+> +           IS_NULL_REG(&reg->cpc_entry.reg)) {
 
-I'm not talking about the definition of the interface, but about
-dependencies at the implementation level.
+Please avoid using the ternary operator in any new kernel code.
 
-Given the PCI FW r3.3 provisions, firmware may assume that the OS will
-use the same rev for all functions and it may depend on that.
+Why not write it this way
+
+if ((reg->type =3D=3D ACPI_TYPE_INTEGER && IS_OPTIONAL_CPC_REG(reg_idx)
+    && !reg->cpc_entry.int_value) || (reg->type !=3D ACPI_TYPE_INTEGER &&
+    IS_NULL_REG(&reg->cpc_entry.reg)) {
+
+> +               pr_debug("CPC register is not supported\n");
+> +               return -EOPNOTSUPP;
+> +       }
+> +
+>         if (CPC_IN_PCC(reg)) {
+>                 int pcc_ss_id =3D per_cpu(cpu_pcc_subspace_idx, cpunum);
+>                 struct cppc_pcc_data *pcc_ss_data =3D NULL;
+> -               int ret =3D 0;
+> +               int ret;
+>
+> -               if (pcc_ss_id < 0)
+> -                       return -EIO;
+> +               if (pcc_ss_id < 0) {
+> +                       pr_debug("Invalid pcc_ss_id\n");
+> +                       return -ENODEV;
+> +               }
+>
+>                 pcc_ss_data =3D pcc_data[pcc_ss_id];
+>
+>                 down_write(&pcc_ss_data->pcc_lock);
+>
+>                 if (send_pcc_cmd(pcc_ss_id, CMD_READ) >=3D 0)
+> -                       cpc_read(cpunum, reg, perf);
+> +                       ret =3D cpc_read(cpunum, reg, perf);
+>                 else
+>                         ret =3D -EIO;
+>
+> @@ -1223,9 +1232,7 @@ static int cppc_get_perf(int cpunum, enum cppc_regs=
+ reg_idx, u64 *perf)
+>                 return ret;
+>         }
+>
+> -       cpc_read(cpunum, reg, perf);
+> -
+> -       return 0;
+> +       return cpc_read(cpunum, reg, perf);
+>  }
+>
+>  /**
+> --
 
