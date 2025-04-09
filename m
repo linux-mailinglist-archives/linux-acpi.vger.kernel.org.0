@@ -1,82 +1,58 @@
-Return-Path: <linux-acpi+bounces-12913-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12914-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CCEAA828CB
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 16:54:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 805E4A828D1
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 16:54:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F7F8172F16
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 14:49:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF1DB189E1CD
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 14:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3296265CD3;
-	Wed,  9 Apr 2025 14:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C06267B92;
+	Wed,  9 Apr 2025 14:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fMxoCxvR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IYg0UsXf"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329361E489;
-	Wed,  9 Apr 2025 14:46:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6FF267B89;
+	Wed,  9 Apr 2025 14:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744210010; cv=none; b=k2iLwhxmkUc6uaJ+7JVDbHi27YNjrF0/BSWDsOJk7A9eT3Twjq4qZCOdlovHN2dbnarkszUgl2a/p1rGmrkDqdTr/ISegLtvdimC9DqTMFhyIwUo0htIRVv7KbEZ55PA3IFsnBv/gsCRFiXncAkRVWDNtCKpvKxgpoDeOmTo9VU=
+	t=1744210037; cv=none; b=ps/2y5kqSa37yls+JXUNa5JKrpOP5Y0aJGxVZipwh0S+mB3YuLV7UZal/mhbrSQIRXRUkytapEowYktRWFGtyLuNsI+yAMOOVbpgNMWb6ZdeXraR9UnJAz7j+zpQ7p+cmq+2RRbtZrlzvG5f7gNF0XtilEL5CTgftZPe9arClTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744210010; c=relaxed/simple;
-	bh=hZ5i2Uwnm/s61cw4a8JHV9Vst+P0EI/n8809SKyHvqs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ShHFOlxLUIZFRVzml3oGQD59vg2ka7rJMx/tWdQYnOc5XMKIEFmDE25EkKfoDtF5XYudalpPDz9qzg0tdnUea5T8b9U44QFIeg3QWbfg/IFnBjFrmGkb52HpvuUhRb67lX+hXP77wJIWk1j1rd3zJ6V5tAsZYpmSRplQK9rw5wQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fMxoCxvR; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744210009; x=1775746009;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=hZ5i2Uwnm/s61cw4a8JHV9Vst+P0EI/n8809SKyHvqs=;
-  b=fMxoCxvR1gEB044Ewf19wfqO6ejQOj0MU5mBY5BeNu0o0aqt7Mt25zX6
-   edNUXQXZzTm337HlmVVy8y62v6Rc+dUvEC1aTQtGCGko+KIeNHwvPkT6L
-   s+yHi4OcT8yA9E1Ex3bb+MecPgBxO/tVSJ72DoCo/50rk4YUSXi4DbOK0
-   R6Rep0SdNAVos+z4WLM5IzfCUsbzPc2ORD1lfjNGPjn/u5/JKv9EVUvUC
-   esz6r8QeomFB7lS9v+w60Iu0XbRbWdGRmKKxtfFVEhh7jmXi5voqFUesp
-   aZlp/g40rX6c0DcqPhrOTH5xLNEkoRcyPxPkEoqYCfsjgKCtKcvs8zSub
-   w==;
-X-CSE-ConnectionGUID: FtI4+OVuQmSZAWtNGIMYXQ==
-X-CSE-MsgGUID: WRTAoLJpRECL9aXZy9lJtg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="45576936"
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
-   d="scan'208";a="45576936"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 07:46:49 -0700
-X-CSE-ConnectionGUID: j0xrEPWdSxulCWrX/Mtl7A==
-X-CSE-MsgGUID: siqXL73TQEuTKFLU8sieJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
-   d="scan'208";a="133596999"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 07:46:46 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1u2WhO-0000000AlaQ-3RUf;
-	Wed, 09 Apr 2025 17:46:42 +0300
-Date: Wed, 9 Apr 2025 17:46:42 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+	s=arc-20240116; t=1744210037; c=relaxed/simple;
+	bh=C8Vj+cO2+6SCJKLP04VbSM0u2J9a1Ayonscv94QCWhU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=NV/FmUwp4kJgBCjIognum0qIwV5wkxCqPWjCRO9EB+ruadoBsxnnv+YubqNUsTfHuxmgIS/Mgxo32Pz6aU61n/AWucWII4sLqzPcdbhIk2rr4tyH3c2NrDrrrlzO7I8kRlKtYRWqYTqAUdZLYzFCW6hqePPxz6VDX55X63/YskQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IYg0UsXf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6670C4CEE2;
+	Wed,  9 Apr 2025 14:47:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744210036;
+	bh=C8Vj+cO2+6SCJKLP04VbSM0u2J9a1Ayonscv94QCWhU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=IYg0UsXfpomGXW7EWyYjtv4CXs1wws+z2a1+/4K9Uac3rYofw0SCsSi1Okve9XXrX
+	 yhdtsIsi73PpZAxHVr2GviCk78PKWRnbG9qUXarWoBi40ZyKvm7/k48G5RZgE26nx5
+	 acbFa8n9y0PUdxc8eBntozb/qnJiTWCGxJT25pe3mo5GhrSsf8MIvd+imh2+o2hATH
+	 skW0ryDNo6bqT+1zRW3igbjXmazKyc6gpj9q/ekA2XbGut1VG2Jt2rzu6z+CMdr2GO
+	 MEQZk7xQnvt+kQ2oJ2P4Wvy5RW/dcB88scjuxAMmVsG6Y/BuOH0LHz7rUIbGcRonmI
+	 EBJk1wLetsjYg==
+Date: Wed, 9 Apr 2025 09:47:15 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Len Brown <lenb@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH v1 1/1] device property: Add a note to the fwnode.h
-Message-ID: <Z_aIUokzC0eD-Uw-@smile.fi.intel.com>
-References: <20250331163227.280501-1-andriy.shevchenko@linux.intel.com>
- <CAJZ5v0ib46bqNkJ9em9GKbUhJpCOjDqgLOyDQmqO1n8LMWJpyQ@mail.gmail.com>
+Cc: Anshuman Gupta <anshuman.gupta@intel.com>,
+	intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, lenb@kernel.org, bhelgaas@google.com,
+	ilpo.jarvinen@linux.intel.com, lucas.demarchi@intel.com,
+	rodrigo.vivi@intel.com, badal.nilawar@intel.com,
+	varun.gupta@intel.com, ville.syrjala@linux.intel.com,
+	uma.shankar@intel.com
+Subject: Re: [PATCH 02/12] PCI/ACPI: Add PERST# Assertion Delay _DSM method
+Message-ID: <20250409144715.GA281314@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -86,27 +62,94 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0ib46bqNkJ9em9GKbUhJpCOjDqgLOyDQmqO1n8LMWJpyQ@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <CAJZ5v0hK9m6-F5V+VWqsVPfr+WGLruHkP7ZvQsmwp21W9PHs_A@mail.gmail.com>
 
-On Wed, Apr 09, 2025 at 04:19:03PM +0200, Rafael J. Wysocki wrote:
-> On Mon, Mar 31, 2025 at 6:32 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
+On Wed, Apr 09, 2025 at 02:30:31PM +0200, Rafael J. Wysocki wrote:
+> On Tue, Apr 8, 2025 at 10:48 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > On Wed, Apr 02, 2025 at 09:36:01PM +0200, Rafael J. Wysocki wrote:
+> > > On Wed, Apr 2, 2025 at 8:48 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
 > >
-> > Add a note to the fwnode.h that the header should not be used
-> > directly in the leaf drivers, they all should use the higher
-> > level APIs and the respective headers.
+> > > > I don't *expect* rev 5 to be different.  But as a user of it,
+> > > > why would I change working, tested code that is not broken?
+> > > >
+> > > > The PCI DPC function 0xc is an example where rev 5 (per ECN)
+> > > > and rev 6 (per r3.3) are not compatible.
+> > > >
+> > > > If the OS implemented rev 5, then learns via function 0 that
+> > > > function 0xc is also supported at rev 6, and starts using the
+> > > > same OS code with rev 6, the OS is broken.
+> > >
+> > > Yes, in this case the backward compatibility language in the
+> > > _DSM definition is obviously not followed.
 > >
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Rev 5 in the ECN isn't compatible with rev 6 in the PCI FW r3.3
+> > spec, so it doesn't follow the ACPI compatibility requirement.
+> > And this is documented in PCI FW, which says "Fn 0xC was added
+> > with rev 5 (see ECN for rev 5 details); here is how rev 6 works."
+> >
+> > An OS implemented to the ECN doesn't know that rev 6 is different
+> > from rev 5; it assumes they're the same because ACPI says we can
+> > assume that, and PCI FW r3.3 even says the OS should use the same
+> > rev for all functions.
 > 
-> Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> OK (and this is important because PCI FW r3.3 is the spec defining
+> the interface)
+> 
+> > If OS adds support for rev 6 of a some other function, it is
+> > supposed to use rev 6 of Fn 0xC, which doesn't work as the OS
+> > expects.
+> 
+> IMV with respect to _DSM, the spec that has defined the interface
+> (PCI FW r3.3) takes precedence over the ACPI spec regardless of what
+> the latter is saying.  In this case ACPI provides a framework the
+> interface can be based on, but the actual interface is not defined
+> by it.
+> 
+> Also, I think that the OS should use rev 6 if it is supported by the
+> firmware (for all functions) and it should literally follow the
+> definition of rev 6.
 
-Thank you, but you already commented on this and proposed the better wording
-which is in v2. So, what should I do now?
+I think you interpret rev 6 as a global revision of the platform,
+i.e., the platform supports rev 6 for every function it implements in
+this UUID (which is clearly the intent of the ACPI ASL example).
 
--- 
-With Best Regards,
-Andy Shevchenko
+I suggest that it would be better to interpret the revision
+individually for each function because it removes the backwards
+compatibility assumption and reduces the testing burden.
 
+Most functions would be specified and implemented with rev 0, and
+would never have a rev 1.  There would only be a rev 1 of a function
+if we made a non backwards compatible change to it.
 
+Any other functions would be untouched, and they would still only
+support rev 0, not rev 1.
+
+> > I guess one could argue that "OS didn't add rev 6 support for
+> > anything until PCI FW r3.3 added a function at rev 6, r3.3 did
+> > mention the difference between Fn 0xC rev 5 and 6, and OS should
+> > have looked at all the already-implemented unrelated functions for
+> > possible changes between rev 5 and rev 6."
+> 
+> Yes, it should.
+
+I don't think it's reasonable to require the person adding support for
+Fn 0xE rev 6 (TLP Processing Hints) to go back and add Fn 0xC rev 6
+(Downstream Port Containment) at the same time.
+
+Assuming that "rev X works the same as rev X-1 and therefore rev X
+doesn't need to be tested" seems unwise to me.  But even if we
+normally rely on that assumption, in this case Fn 0xC rev 5 and rev 6
+are different, so we'd be adding new code that would require testing
+on every platform that supports rev 6 of any function.
+
+> What if the functions on the firmware side depend on each other
+> interfally and the firmware gets confused if revisions are mixed up
+> on the OS side?
+
+In such a case, the backwards compatibility assumption doesn't apply
+to those functions, so the spec would have to document multiple
+revisions of them, and IMO that's the natural place to document
+a requirement to use the same revision for the set.
+
+Bjorn
 
