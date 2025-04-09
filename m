@@ -1,66 +1,66 @@
-Return-Path: <linux-acpi+bounces-12925-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12926-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39224A82F91
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 20:56:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A4D8A82FDA
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 21:00:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAD758A273E
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 18:53:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2509C1B611E3
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 19:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283AF278178;
-	Wed,  9 Apr 2025 18:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C20278169;
+	Wed,  9 Apr 2025 18:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gnN3R2ux"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ND3ojiG4"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2049.outbound.protection.outlook.com [40.107.92.49])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2077.outbound.protection.outlook.com [40.107.93.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300C415624B;
-	Wed,  9 Apr 2025 18:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A62B278160;
+	Wed,  9 Apr 2025 18:59:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.77
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744224815; cv=fail; b=eWbtEl5GLnkmi6KnWI4hZ6bdHmla+YQZf5XgiFRLZGFPkxObnx48INx854RgDV0w8/cPRy/6CgervRMWoT1jwRBOB5cjbnGp3aQDIg4r/Xg6kVnBnOn5+tOGZdBmf3zx252B/GrKGkBu8LlURlNEKEsRmiUoXJNd6zNcr7mgbLA=
+	t=1744225172; cv=fail; b=VKJKA7gZpha21n4u5FHW0u6uvqD9sLck8oYUeiIZrljFO3lBRVryVZMeRpQqQyTw4lUPm1LuEbIphLh4VCcDrgCaBl0wceErP80YsvDr3vnKWFBciA2GPLoN8UwEMdBTB9bWK5LPVQUGHteXieo5tR97kFWumGCM1zduCrKuHZQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744224815; c=relaxed/simple;
-	bh=yV6yLS8nv4E82rhFjHjBp7rb3J/Ddni8ErFOBO8McnY=;
+	s=arc-20240116; t=1744225172; c=relaxed/simple;
+	bh=lFd2rDz9dTGmp7qGExmubpfBc54PWXW24EbYrXra1Is=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=cWH10Sk8km5LaPwSHDCjBDYEoKcTMjE6VSpdvyoQt3yBT088AvuKWnmbXmEOekpRRxu5L3sf5Cz7jrb8VR0hGds29ifq3J0/NBrtUTwH95ZvQqcwQSVVuNo+Acrz3ZUBzlFaysGTvdP+0l+hz0sHLhe1r9tfjM+dqOZiL2UG7cg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gnN3R2ux; arc=fail smtp.client-ip=40.107.92.49
+	 Content-Type:MIME-Version; b=MbQgOeyDfpsVcYiFMFlAPNucwmrmmDaaVUWKbckK9cY0XPOpkamH50108X5oxz8Pj2gbGiT0q0bd64nRAXT6euy1DRYEwSV/q/Lo2ld4K00HAPdZ/M1fRsBhYGp+2UGBUR5RJzjNnBwPPWrODB7wAp+3Y2b0Zobf6SaKAuq2KAo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ND3ojiG4; arc=fail smtp.client-ip=40.107.93.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B7Uyq83OkNY/RBwtIdvirdWXemUFVzN0nIHQWZ1q3DOy5GvS4zIshmnCk5bBBq7H8rJLgNA0372YaEwR/5CaeCq4lxi3SvgeOhDRFiTFpA8L4IenRnamxXsol6inafxeDdv7nw2o+xQ+fJEE1BnfUB2NsI72bw2y3PVCBq8JONj2mi8zneyThcgYikNKLoig2l0NsgttWqk1pJR8M4QGAX3E3dBX6uYpKJo05X6fVX/c7N1VqPbdlSSMX+WXtMTE3aNEc4+GYEsP8irOp+FazfE8vj8/KORuZgPPVxwPNZ4ZLXqTYm18wEf+y1qxEQ4BToEmPG22NsQiwMHZz9J/CQ==
+ b=gRppQZ96/FaPbdifNq95DXNtJ1m7trB8p3c8+R2PRqfRFyVifGrWUGJVqUC09mYQBMxaisdLr+2tV67b2joYp7wKCRcKNjD4pfOCL4qLGK6HTvgkUimS+IXuDGrgBOImz22e9/oTBrNCi9OX0VakpDPbiWxmP7+EHjCYVaLzhkmB3Pc3Th9CalP44cZwdugzbq8E7y6jTBGmitIthFgq7pDssnNuS5UzVtpO6CiCVETkIykwXDiXjQzZJC8HUQ3SlakJOFDKpHQAahaM81wC0lXnnqdGjY4ZX5f3A4FmJZTCW7Layqg+tAVlNPaMqx56paPcItSUzIktA9LKEtQ7tg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Owhs+ScX/5yEGVBI6IEWuWt0ftxcuDYqa3S7MFVfQ5M=;
- b=Or8O5oUlauq4vyZDujt4Wh5cXwGydANE2NmnyvRRks9NwzJZx58Ml5Nh9wiMFkiZ9o/5BjovkvQisucN0tc579kI+2eecIIfYWthQJj1RGlgR2ZuImedfhZWGTAKufIr0HCJkTfBlqvXWEFMBlmAQLsdPjLJgc4MPEEcL6I+l7Go//i9jH/V3ids5RLttH+PfoQyxSz+qS0GdJxtujqPaPztD/tIu9kASOT06Ty3GKguFgdnSyoTO6Q9eLlseoJOhJV7u71U+fcgd05JzGdtmbjjgQfiAurvHPgL7WpRMIf6EuaNHKt8mhOk0CPO957uOARt+kVqzT3LDkut02BGgA==
+ bh=XVerIAozjBOwfVwKpeL/tnskRJV35QL75GFQ4/kiG2A=;
+ b=qVMIfEr0uAkypsz7E39Nn/KoOV43sfyVp1ih29xeyC/Ttzm5BoF5vj8w1HYgf2ilkPVtOkVHZOd15TUYdQpQAmiF7zVEQ/f8B/4rn0dUkEyeYobS93TB7XWRZNaGT4sOIwp/sQZcXQrNS/T2UtGwe2PQADNMlamXdFJG70cAMyS0nlrQl4rfBUcEe/bfu//+rwcBj9vGJLaTW3r1EKZN4nIyyMuBw8UU2/GbEbvitQwQqYj4UuIZbne3e8zm39c70/lUkg2YO2nQUQjyasKSWP1ea6cBCCxZQTxckFgDOXbWHsAsosk2x1vC3ejelsGeDAwQ/F+0fMiqkeBkZyXt/g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Owhs+ScX/5yEGVBI6IEWuWt0ftxcuDYqa3S7MFVfQ5M=;
- b=gnN3R2uxW1HCyehG9pMfuVvJOm5AgG1V/flgdJs/EnS4yCJga0G1w+Wq8kcb0B5lP5erwIZZMNF4NfHbi92rqO5MgZ5Q0ffb+JdJIzygyo57wBFiE82ztNI1pgcmiVf7Yqdg3NRoMC/2qqizH7fFOk0OvjTgZ0EQWwaVEwEAhwM=
+ bh=XVerIAozjBOwfVwKpeL/tnskRJV35QL75GFQ4/kiG2A=;
+ b=ND3ojiG40BeIXTE3WcEL84KAwuD6drcbrDyk7V+LOF6tjJl9xkHhcLdvr/oJo1cmhruuGSctVYHGKxGWGNjTUxjVKfKAoX6V9uGMcf/PxKEwbSwia2+ge/Yux1wQXhdKADGI41wMR3uT/aDtQumYPuWQC5aOyY10HngVZbWaBKQ=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by CH1PPF0B4A257F6.namprd12.prod.outlook.com (2603:10b6:61f:fc00::605) with
+ by PH7PR12MB6693.namprd12.prod.outlook.com (2603:10b6:510:1b0::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.35; Wed, 9 Apr
- 2025 18:53:30 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.31; Wed, 9 Apr
+ 2025 18:59:26 +0000
 Received: from MN0PR12MB6101.namprd12.prod.outlook.com
  ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
  ([fe80::37ee:a763:6d04:81ca%4]) with mapi id 15.20.8606.033; Wed, 9 Apr 2025
- 18:53:29 +0000
-Message-ID: <7a3bda35-05a0-49ad-b014-1834a176a906@amd.com>
-Date: Wed, 9 Apr 2025 13:53:25 -0500
+ 18:59:26 +0000
+Message-ID: <e5dc4906-2b28-4adc-8e8e-ddd5d7cc985c@amd.com>
+Date: Wed, 9 Apr 2025 13:59:23 -0500
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/8] ACPI: CPPC: Add IS_OPTIONAL_CPC_REG macro to judge
- if a cpc_reg is optional
+Subject: Re: [PATCH v6 8/8] ACPI: CPPC: Add three functions related to
+ autonomous selection
 To: Lifeng Zheng <zhenglifeng1@huawei.com>, rafael@kernel.org,
  lenb@kernel.org, robert.moore@intel.com, viresh.kumar@linaro.org,
  gautham.shenoy@amd.com, ray.huang@amd.com, perry.yuan@amd.com,
@@ -70,14 +70,14 @@ Cc: acpica-devel@lists.linux.dev, linux-acpi@vger.kernel.org,
  jonathan.cameron@huawei.com, zhanjie9@hisilicon.com, lihuisong@huawei.com,
  cenxinghai@h-partners.com, hepeng68@huawei.com
 References: <20250409065703.1461867-1-zhenglifeng1@huawei.com>
- <20250409065703.1461867-2-zhenglifeng1@huawei.com>
+ <20250409065703.1461867-9-zhenglifeng1@huawei.com>
 Content-Language: en-US
 From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <20250409065703.1461867-2-zhenglifeng1@huawei.com>
+In-Reply-To: <20250409065703.1461867-9-zhenglifeng1@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR03CA0009.namprd03.prod.outlook.com
- (2603:10b6:806:20::14) To MN0PR12MB6101.namprd12.prod.outlook.com
+X-ClientProxiedBy: SN7PR04CA0104.namprd04.prod.outlook.com
+ (2603:10b6:806:122::19) To MN0PR12MB6101.namprd12.prod.outlook.com
  (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -86,134 +86,266 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|CH1PPF0B4A257F6:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2e1f86d7-228b-43dd-f55d-08dd7797d147
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|PH7PR12MB6693:EE_
+X-MS-Office365-Filtering-Correlation-Id: d86bcae4-a5dd-4444-d811-08dd7798a62f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NG9admIxVzlKcWVQem5Ic05oVGprRzZ5cXk4OXM1RzBCbk1NWi9FSDRBb3ZZ?=
- =?utf-8?B?NmsydlUyY0FBaWN5SkVlVUZtdDExVHdwaHpuNzNWQ3JHL2VDWkVvSnpReWx5?=
- =?utf-8?B?WU40dWZZMlFMZS9UUXQ2Snk5dkpROGZhMitvQkdHd2ZRNU5ISHBpK1dTSFFW?=
- =?utf-8?B?dGlzV3V6dG9BR1lCeUlDSE5waDdFMDBNc01mL2t4RHplU0cvVHcwWUVMc1BN?=
- =?utf-8?B?MkFDVDltcTBwZkR3eEVNWnloUS9VdVA0N292dGpYSm1NMW1RWWxOVGlodUdv?=
- =?utf-8?B?ZDhJK3BsTGJrZDBnZWFBTHI1c2trYUthMXZTZlZIWWNTd3NnN2hOZ00yRWxU?=
- =?utf-8?B?YnVVR3htM1VkK1ZEM2FQSnFxaFZGT25UQWtIQTQyVjgybUZENDlaOW81d0o1?=
- =?utf-8?B?QkdMVElqS0JLWFNYdXhIQVJybHk1cy81WEVEQzFzVEpiczkvdU9zczhsQity?=
- =?utf-8?B?Qk1FQzQ2ZFRYZkJ2azJqQm0yUE9JRXhrODV4NFNEQjZXcHJPZElCOCt4MHMw?=
- =?utf-8?B?dkF0eGtESEJYMG05eVhCTUVzaDZDUUdlY2NRVXMyOVQ2UGdnOS9FY2RXclZG?=
- =?utf-8?B?eWJGR0g3M3A2THZ4OVR1cDMzRHFkbUhHY2hPY1RWUUtLajloclBLQjRHa1ZF?=
- =?utf-8?B?VGpmUCtIa0g4MEFHVUIzY0FXakh2ZU9JR3cxMURReENZRUtMTmpNY1p0R0Ft?=
- =?utf-8?B?a21sUWptcjllUG9WN3d5aW4zYmpHRTM1YnR3UW1jUjFIQlV2eTMxN1daWW5D?=
- =?utf-8?B?TWVJUjVWWVRQZDZpZjUvWWxmSWJJSC9FZGpEakI5Q1RaOEY4NFZ5ak1JaTVv?=
- =?utf-8?B?eVlMcnBGTTJidXc2R05tTWFJU05Rd053UnY1UGVSL2JleWxyR2JwckZrUVp2?=
- =?utf-8?B?T3VjNzB2bnNjWUJLeTFGZFM4Y2xtb21GcEc5QmxMU2ozanN2SVpOY2YrVTg1?=
- =?utf-8?B?N0JnVDdjaG9pNTlOMHk1K01RZlZKdmxjajRSUEh6T0w3M3RObTAvMDZ4RHA4?=
- =?utf-8?B?NjZnMEc2YlRLQWxHbGJBU0dadW9VQ05TUDZlcFN2cnRQNmVKSk5HQlVrNUdM?=
- =?utf-8?B?OTZNU0VoNWFRYkEzLzBlS2tzQ3R1eHVhSW50V2gwS05LVG52Z3JzYkRyMFpx?=
- =?utf-8?B?UGtOcUd0Uis4MHFWNlBEay9XdmRoV2pvWGxESFBwQXhGR2ozckJrVytaY0Zp?=
- =?utf-8?B?UU9kSnZ3OXVnWnlYdXROcnhqTmU4VWR1UElMUTgwb1VTTWt0K3BxeFZ5NzNa?=
- =?utf-8?B?cGtmVWE2RjhaVVl1WW5vNlhGb1dSQTB6dUV5VFlGbzJ5WHltczVoRFlNd2FE?=
- =?utf-8?B?aTdRSGE4VkNmYTBCS0dKVno3ZUVoT05SbnJGRjgxWUkrQ2ZjMURhWGxOYVB0?=
- =?utf-8?B?eFVTeElNazJtRGlSV2czcFBsUHdCMkhkOHM0ekJqT0hJL1FPVFZiMW1sU3VP?=
- =?utf-8?B?OVVkZks2TDBSR0czQWE5S08xR00wUWdiNG5FMXBjNHlzRkFBcU5vZWVvRkRV?=
- =?utf-8?B?Z3lrT0QrNk4zbmsraWx6NGk3VnFPdUtTaUFrbFhiNy9RcXZmZDRrV2dPRElx?=
- =?utf-8?B?RlhwbklvVHRoeis5TU5KOXo2OU9aS3RENjhOUU10V1kxQkVUQklUTTJxcDZY?=
- =?utf-8?B?VjhBMCtvQm13ZHorMGlxUi80RTFEL2RrQjlHMndYZkN6MVZLZHdOaUp0U01v?=
- =?utf-8?B?T2h6clFrS0RIMjkvTnNKd2hocStZVm5taDRXK0FlaFNheERQU1dDWVprMEhy?=
- =?utf-8?B?T3NiNmR6UzZuQ0lFbjExZUJkZS8wazhZTmFJdUNqRmV3Yy9mU2g2R2plUDJM?=
- =?utf-8?B?ZTAzeUVtQnYyOHh2NHpKSmMvNllKd2o2dnY5RjJVUUdPa0RncHFlOUFHRkQz?=
- =?utf-8?Q?YHfEVfBhyesrG?=
+	=?utf-8?B?emNpRmIva0VaOEtPWEZ0MHNRbkdDY3R4aXVkTW0xN0dyNGFVOE5vK25BVDBU?=
+ =?utf-8?B?SGZzbmYzTFlkaFdiL2RCR2NDQU5aQlB0RzdlQUxWeEw1RjhjSGpXbWgzWFJG?=
+ =?utf-8?B?NFVEcmRPTjdzdXZGcmhGYisvZDBZWEV1Zjhnd0U4N1duQ1JvM0JGRjVWMXRH?=
+ =?utf-8?B?dGlMNEFCeFdyN3plb2EyYXhSMDJNenJsSjViRm53dzBzZlkzMFhRb3FGZEtl?=
+ =?utf-8?B?dTFMZnpCdVVEZVNhbzRyajE0dGQrU3g5L1hyb3NFNHJoNHdIdktBbis5bUZL?=
+ =?utf-8?B?cEQrNUE4LzhvejVTd1h3dG5WMFMzNFRTRmtVVnFCTWcwMW5lRXdGa0wvamxu?=
+ =?utf-8?B?bUx0ekxYOTBGMlhwaFNCWWFpcE5VZXo0SFd2STBIM2hLQjRpS2xFM2tLWEF1?=
+ =?utf-8?B?T2VUbFdBNHBMYmRPT29yLy91bW5Cdzk0dVhqd3pnZUx4dE5vbHV0R0RCTHVu?=
+ =?utf-8?B?RnFySnZ5dzMyaUZWQWlBRXA1b1B5b29waFpiZ1YyVlN4TEROdGNtQStoQVRP?=
+ =?utf-8?B?VVNvV2xpUWQwVEpLWkZ2TmVhLzlYZlBwaTFPOE9abmoyTHZPSHZQekFnMUo4?=
+ =?utf-8?B?bFZkTE9FWWV6bFFzMDZ4T1ZOQjYxSVVaS0llTlZjcE5UaDVCcmdoc2hXeVpH?=
+ =?utf-8?B?RFZxZC85TGtuWTU0TUtpSGZxTVNpa1NZNHZuQnVSSGdEUXA5Q09GNkhsdFVa?=
+ =?utf-8?B?RzRSUm5iUDZ3cnplR1dvdW5BVDQ1b0NsTXFQS0ZFYkYzSlh0a2FZZnhhaTBB?=
+ =?utf-8?B?N2VPbFNGRUwyeFhYSFN2Z3BLUU1PV3F4U0oxUFRxalI1OFJycGsrWUx0ZTB0?=
+ =?utf-8?B?M0srY0RzcGNVVDN1VFU0UHpxWnExQlZoWm12ZVlnbkpLYkFnc0VrVHV1L0NJ?=
+ =?utf-8?B?dXVtSnZaVFQ5QjJMNDU4T21qdkhIVVVEbTRRbGFPaGtFaTR6WjVHSERxOHZE?=
+ =?utf-8?B?M0tpcnNZUVhBa08xa1FseW9HVkl1dlI3Ty8wbnR4M0Y5VHRoR0NSMk13Q1lY?=
+ =?utf-8?B?a2NQaXV1eWhKMU5kMHkxcDBDcWY4bWIxTEJWelcwY1hrNmxQK09BNGlTVzN6?=
+ =?utf-8?B?a2t1Uzc3T2Q4d1NmMmIyc21LczRDS2lVRk05dGx6OU4zcDZCRnRvMElQZGlS?=
+ =?utf-8?B?NWk1ZDNXbmhiSS9xak5uK2E0TFB0Y0ZVd0FPc1JNK29DN0tkSEpleUd5Mmdn?=
+ =?utf-8?B?YVh4dndHajhveDY3aUFLZ1ZUN09nWWdtMitJWEN5KzJoTVRoZGkzM25xamhJ?=
+ =?utf-8?B?RnUrbUxKWjFlZ055ZFFhQjBtdnMrSFlJTVFobDhGNlFPSjRJSFpjdEROQ2V4?=
+ =?utf-8?B?R2grWHE4QmY0VXRNMjlFZGNieWt6b0JMVm9tRzFpMTNaTG1XUmdlYlB2OC9q?=
+ =?utf-8?B?dWdpWjViMW01TXJyTEV4c1Y2ZTlRR3FHazhUV1VQd2szV3Z4cmhNTkw5VmRH?=
+ =?utf-8?B?OXZpbjFFTGdNTFBSWjdmTkxMM0o2Vm05WTJnaEhpcWVkdXJZTGxBRkJzcTVR?=
+ =?utf-8?B?eGlrVWFUb0VmemdQOVJmRFdFRUhaUzJab2xrNmIvYzdNWWE4Yjh5ZDJMbmEr?=
+ =?utf-8?B?MGxnM0dHaG9XSmFWZDBOM3FqWmZWa3pTRm9WWEw5MGg0T09PUE9vZ2pPWW4r?=
+ =?utf-8?B?V09aZ2Q5WTBTNVVkT3JncGxVRkZMKzZ6Q0drZm90YUJveElkWDZ4UTBSUmFK?=
+ =?utf-8?B?N3k2Yi8wUUg4RkZpaVVneTJRY3ZMeXZTTkhBVHRucHVRTkhmUkhkVjRFTHkx?=
+ =?utf-8?B?RXRKcVN5b2hoNDcwUDhhVVJvbUdyV1VVMy84c3FPblFRMSt2WmJINHB4NHVK?=
+ =?utf-8?B?RFNUeUZiU3NJc0JMTzdvempLTFV5NjlBWXY3MlFld3lQb2p3WklmWkpFVytW?=
+ =?utf-8?Q?tI3ebSOXEwG8E?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bWlVaDRtUk9YQjFkYlRaOExJeGQzaG11ckd2cXhPdDd5UlRLWno4VGJ2aFpj?=
- =?utf-8?B?MVFCNVBtQ3AzSVVXcUlTcTZscmpEQzdyMkFZU0p0Y1c4NG5Vc2FpeithazUv?=
- =?utf-8?B?MHpUZk9Zbng2ZnI3Z014ZnRVVllRK1VGcmlyaHBVZFhDYWRFK3kwcHovbXov?=
- =?utf-8?B?UHgvNVpIbnBYVVVoeDNoN2lCZlpGWEdJZ0Y1T0xtSDBCSERLcDQ0cFNDSGNI?=
- =?utf-8?B?RGIweWlDL2wvYnhSaTZtMUhPQTRiT2swOGZNL2FjVXljM2QvVnNHcndkbzZP?=
- =?utf-8?B?M09FM2w4Zk1INUQ4Y2wrY1I2TWdiaUM5bWtNVTBLaTBJQ2NBVStPczZ3Z2NT?=
- =?utf-8?B?cG9TRmNBVEd6UjNTVi9aY3d4Y3NwQ2QveHkyZVRyUlduRFJWWHZWbkFxMDI1?=
- =?utf-8?B?Z01hRiswTDMzOHhFL2hyVHNLbWM5cncrbGNrcHF3bEdBUzRMbk9RUmZJWHFM?=
- =?utf-8?B?ZkRnNmRKazNaYzE4U2V5MGgzajY3czFEM0I4WTFHbHcxRURKellyTnhvSXlZ?=
- =?utf-8?B?NjJoalluL2lnd0sySVFmVlVrOGY1VjRJNmJoR1gvcEx4YXJ3bmwwYy9DTzh1?=
- =?utf-8?B?bXdQNGhuVVlYVUk2TlhWWWtZdkU4aFFuRXJYNlM1VFFhZ3V4Rng0TTFIaENP?=
- =?utf-8?B?cW1GWlVObUYwL1hISGMrZXhYUk5JZlQwT0N1MnJvYU9ocFBoUjNwMytIWHlY?=
- =?utf-8?B?Y1VUVERtZDFUVlBqeFUzZVh4bzJPbnFPc1dpQUlPWm5oU3BOMm0wTVdETzl1?=
- =?utf-8?B?NW81SklORC9VTkRxZFhEQ3E4RnlCdXR0dXZCa3p1azN3dk5QbjVocEw0bFFV?=
- =?utf-8?B?RFpsS0t3M3dTV0dDQ3FXQW1EZnNQa0lHSWVRbmE4L3V0dzV3M0pyZzdGdWRO?=
- =?utf-8?B?MzQxVWh6NlRTVUFUYW5YYmN5VFB6Sk5uWjJQaldiMFZoZFVoOSs0WWFqaGQ5?=
- =?utf-8?B?OFBXMWVzU3NNU3Y1bjZEQ1dKcHBtNnhTWHlSOWozRzFSTS9KKzZLTGxrVHJM?=
- =?utf-8?B?K2c1eVo0TWR1bUZuVnk5UW8yT0ZDOHJ5TnQzaGJoYjd3c2c5emVQRmVtZklV?=
- =?utf-8?B?aG14NWJTODlWcEZFeVBScnJKSGpJaWxWZmtyMDQxUzBzWGc3cW54QlBEWlBV?=
- =?utf-8?B?TEVCSVRLd3IySHpyM01MNXg3SFpGbHRhVWVFenhyV21xWTFXMDBiZGhrS1Y5?=
- =?utf-8?B?VWpnUmxoVy9EYU5CWFpCRk13bFQ4USs5WkE2azJEQUFURjBxRTYvREdVdmcr?=
- =?utf-8?B?Q2xVMzlvbmRhc0UyZ3JHOW82UTBnbGRlN3FHUHhoMVhIVzBBb0t3QTJpYnJv?=
- =?utf-8?B?ZmwrWHBRMWRiVWRjRzUxVXUrZUJlZFBBUlJsZFVhUDRvQVBNQzd5MVJ1UFdI?=
- =?utf-8?B?SmM2TVEveEdPdDFNTkwwN2NFV1NUdXZ4bE96bGtvQUFnbkJnTm9vRFVxVjhp?=
- =?utf-8?B?Y1RCL1kyc1ZFa0pySDc4N0xuT0J4K3djQ1VqNHloYUozdFZ1WW9DdnJxeWw5?=
- =?utf-8?B?bGtVY1g2d1FMTm44SmJZNmx2MzlFandvUGlFbnVjbnI5ZmJoV0pjMkNBZnJu?=
- =?utf-8?B?eTJsR0ptZ3kxQVBlNS9LaldMSlBJd1pURUtkRkk5anZyOGhWdTNDVUplUlFN?=
- =?utf-8?B?cGpVQTVUZXpQaUZFN3dzV1o1OU1hN0NYZytDMHFyRW5qeEtoQ1hwVnBuVlN3?=
- =?utf-8?B?K3Z4RXZQQUxqVW4rdUR6em5OZkZiN0FNNnNTYXJsOFBWQzJSajY4Tm1hcnM1?=
- =?utf-8?B?UjZ4d01md2ROZGgvejRmbGNEOS9mMEJiOXpHc0gxbk1UbFJzL0MvRGpqUlJi?=
- =?utf-8?B?UFdrNGJUR01DYUgwS0JtTURDbjR5MCtYZTJWQTRvdDNlK0tVRFhzaFJLOTI1?=
- =?utf-8?B?SUdYcmJsNkY4cGhpalZKSTNEZnpzckVGQTByYy9mMnpBWFZNTDZMbWFVT2o1?=
- =?utf-8?B?bmhGWnFtTi9NMlpybC8wMUFPS0RSeHVVSzVUd2pQaGRldHI5MVNkaDc1L0Fr?=
- =?utf-8?B?RWlOMkxaWElnbmZ3OWtXL0tOK0ZWbmltc1FmOVpUekxNNVJON1IvM0NOY3lu?=
- =?utf-8?B?SWliNllQUzAzN2VWWkYrc0ROK2J4QnRCVlliL3E1T0pwR1BiRzNpS1Nod0g2?=
- =?utf-8?Q?srud+WleHvAD3nazwVo0Y0TII?=
+	=?utf-8?B?SVQ5TlhVekFKTnBla3VxOG56Vm94OWxDUWpBWE5NTFlPUUxrSmZzcVNuaHcy?=
+ =?utf-8?B?dTlqREU4a0RKam41UzdJajFGSlFGQlpXMmZqWWZVTlhLSUlqSVJPTEtvQlpR?=
+ =?utf-8?B?UkxHTGlkUFNQYmZRL0syVG5vZTIvd1NiL1VzcVlxQmpqamYrUklmazJWdlV2?=
+ =?utf-8?B?Rm01SDVmRXFCQ2N5d3FJUlVYWVVmYVZybmhQRFl2Qkl6TFJVM1kxZ3VUZVlw?=
+ =?utf-8?B?ZlBMY05ub3M4TmRmdHI1bldZOURSRXpKSGVVSXBIWEdiOC9JTU45KzlOdWsx?=
+ =?utf-8?B?QVN2aEQ0bTRkMHVhTDBPVUxaL0krRkpzWmhsNXpDcUs4UXBUWmNucHlRZDR0?=
+ =?utf-8?B?VDNUdkZHd3AyMFVQSEFCWUVEVTNidmVUUzB3VlR1ZWxRekhsRFE0ckhiZEM1?=
+ =?utf-8?B?NHJ2eEV0RHQvOUQyT2J0NVVCZXVtSWx6MkJ6TjZBV2FlS2t0NnBOL0d1dXl6?=
+ =?utf-8?B?N3d2dmdFVnMySlJNQjMrcFRqekJ3VEVleDZ3NXhvN1h3dCtWSDZNb3hZNjN6?=
+ =?utf-8?B?Vk51aEQ0cUc1dzBmb0tkVVFYYkl4Qnd2Q0grS011V2l1OGxMcHEwNWZydnB1?=
+ =?utf-8?B?cm9YenpUTDBaNm1kRmNBTXFHeXBpQnhlWW96cWpvQ0ZuOUx6N2RmbE1ua1Ey?=
+ =?utf-8?B?bEg4TExwUEk4YWh2elNKVVpYeFVnRDltWm1jUm9JYk9XYzU4Q0gybXZ0NlNR?=
+ =?utf-8?B?SFdDSGpvb3FIb2NXVno4WEV1Sk14T24vbUFOOWlBMUhyOHBGSnoxcjJPek96?=
+ =?utf-8?B?UEczRWtKMDl6ODByMEM2T1oyTnRlWExmSkRhVi9ZVlVidWg4Um9KUkI5cHFF?=
+ =?utf-8?B?YjlLalE5a2UvQzlWbHA5UVU1QVZXV2M1U050RUxNMXF0Nk90eWZIQ2FQVS9W?=
+ =?utf-8?B?eDczZFdCZ2lrWi9kVDc3SnNacWRBUW9nVStIZyswcHUwVVZleUcrVWl3SnlP?=
+ =?utf-8?B?eFVvaWN5U1hrRXJCRzNmQk4vQWM0Ry9VR0YrWXlGWXlTNnlud1dXY3AwT1pM?=
+ =?utf-8?B?ZFZtSGYvYjdyODN0WWg5Ylc1eFVxbW51cDFWRmJjMUVPTjhQYkpISzVLZ2hH?=
+ =?utf-8?B?OG0xbHYwOGlDejVLd2UrTGpoMU45RFhRbGlyV1MvY2pQY3lSdGtub0VoOEQv?=
+ =?utf-8?B?OTBMKytUSUg0YlRYUTJjSXpxcWUyNUE0QTk5azVaU1pMaldYcFB1UkpkSktF?=
+ =?utf-8?B?dDdYNTRLaHVkMzYxeW5MdHNHcFVYaEk3TDkySjh6YWNCbkVJeFRnaldkVzVH?=
+ =?utf-8?B?SHpJZzQvV3QxMFZaTThiRjZMeGE5KzU0aEhJRURxTkEzeGowOXRNd3BFS1F4?=
+ =?utf-8?B?V040WE9HUEJjRDZPN1UyeTY2citGZ2kwUlBNdVhCeWpSVFV6ZkdYSVBoZnZx?=
+ =?utf-8?B?b3ZOaUtVQS96MDRCQ3U2ZE5pNmdsRTNmUjBtbDNFRll5OExFS2orL3RoQ3V6?=
+ =?utf-8?B?R3NpREhpc2puaCtzWjNucndWUkpsSW1QQXRicUsyK2lOKy8wSTcwUWRLSnkw?=
+ =?utf-8?B?M2JuUXJxaEU4MGRRcjNYYjNJbFBuMFdFbzFCbm5NQjd1WWhyYXdVSXh6bjBT?=
+ =?utf-8?B?UkJFcWd3WGEwTFU4V3IyOVMyQkZXeDRmRlo3SDF5UlVnODRibkpkOStoUzgy?=
+ =?utf-8?B?elZoNHJaTkJlMVg3VXRLbFA3ZGNZeHFYd21sdHdvYkI1OTVKcmRPWVlEL3hi?=
+ =?utf-8?B?R2wvbU9jSzVoLzY1TGd5Z2dLMENDVnJpSXFrcjRvYlZ2andDV0QwRXlBVk5q?=
+ =?utf-8?B?N0lmODZIelJWckpGM0tzbG1vZzNSUmhhTzg5Qk05RUY4dXE0LzJXK3YwMlB3?=
+ =?utf-8?B?OTlhdXl3STBnYnFYWXhjbDkrYS9hMFZhd3hrTyt2ZFkyeXdENjZuZUZRYWtK?=
+ =?utf-8?B?Z05vNmEzNGlFcGRzbDdoUUdTdWY0amtyWlZtQi8vRFBRRXl5ZFErMjRDSDJB?=
+ =?utf-8?B?U2JyQnNCL2g2bkFMelBEc3JoNmFvdmh1dXNreWppdnYxbG92cTc4QWFZVFJR?=
+ =?utf-8?B?czJtQ2lETHZWcGZ4dmFZWEl0Yk9NYTFRUHJRa043WTN4ZlBEeS9lanVRaUFW?=
+ =?utf-8?B?bkh3bHhzNDVTOEl1blVMbVFkT1o4S3pmRjhqK0lnZ09HdHBRTzhYYXl2N2RQ?=
+ =?utf-8?Q?CyuGe4FzP6SkLp8iUZ4G7g+Q7?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e1f86d7-228b-43dd-f55d-08dd7797d147
+X-MS-Exchange-CrossTenant-Network-Message-Id: d86bcae4-a5dd-4444-d811-08dd7798a62f
 X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2025 18:53:29.3718
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2025 18:59:26.5306
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cVmD+ho7BduSRHtvsd8lBimpfgcWGGzNJNXMZSwgNoLAJJ7X8dLSe13BFd4Yqx92YTjJewbo/vdbb2FpZnaKnw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF0B4A257F6
+X-MS-Exchange-CrossTenant-UserPrincipalName: khDFKl6h6H0TzT82/P1B3pCNlR1e4p5pgK5d05yUfVgHywclO09a7+qs6om6hShJjrfKVNeGBhQnCQ6Bk6r7hQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6693
 
-On 4/9/2025 1:56 AM, Lifeng Zheng wrote:
-> In ACPI 6.5, s8.4.6.1 _CPC (Continuous Performance Control), whether each
-> of the per-cpu cpc_regs[] is mendatory or optional is defined. Since the
-mandatory
-> CPC_SUPPORTED() check is only for optional cpc field, another macro to
-> check if the field is optional is needed.
+On 4/9/2025 1:57 AM, Lifeng Zheng wrote:
+> cppc_set_epp - write energy performance preference register value, based on
+> ACPI 6.5, s8.4.6.1.7
+> 
+> cppc_get_auto_act_window - read autonomous activity window register value,
+> based on ACPI 6.5, s8.4.6.1.6
+> 
+> cppc_set_auto_act_window - write autonomous activity window register value,
+> based on ACPI 6.5, s8.4.6.1.6
 > 
 > Reviewed-by: Pierre Gondois <pierre.gondois@arm.com>
 > Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
 > ---
->   drivers/acpi/cppc_acpi.c | 14 ++++++++++++++
->   1 file changed, 14 insertions(+)
+>   drivers/acpi/cppc_acpi.c | 80 ++++++++++++++++++++++++++++++++++++++++
+>   include/acpi/cppc_acpi.h | 24 ++++++++++++
+>   2 files changed, 104 insertions(+)
 > 
 > diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index f193e713825a..39f019e265da 100644
+> index ef2394c074e3..3d5eace44af5 100644
 > --- a/drivers/acpi/cppc_acpi.c
 > +++ b/drivers/acpi/cppc_acpi.c
-> @@ -129,6 +129,20 @@ static DEFINE_PER_CPU(struct cpc_desc *, cpc_desc_ptr);
->   #define CPC_SUPPORTED(cpc) ((cpc)->type == ACPI_TYPE_INTEGER ?		\
->   				!!(cpc)->cpc_entry.int_value :		\
->   				!IS_NULL_REG(&(cpc)->cpc_entry.reg))
-> +
-> +/*
-> + * Each bit indicates the optionality of the register in per-cpu
-> + * cpc_regs[] with the corresponding index. 0 means mandatory and 1
-> + * means optional.
+> @@ -1608,6 +1608,86 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
+>   }
+>   EXPORT_SYMBOL_GPL(cppc_set_epp_perf);
+>   
+> +/**
+> + * cppc_set_epp() - Write the EPP register.
+> + * @cpu: CPU on which to write register.
+> + * @epp_val: Value to write to the EPP register.
 > + */
-> +#define REG_OPTIONAL (0x1FC7D0)
+> +int cppc_set_epp(int cpu, u64 epp_val)
+
+Any reason this is a u64 argument when the biggest value you can support 
+is 0xFF?  Presumably you could drop the the bounds check below if you 
+limited the variable size.
+
+> +{
+> +	if (epp_val > CPPC_ENERGY_PERF_MAX)
+> +		return -EINVAL;
 > +
-> +/*
-> + * Use the index of the register in per-cpu cpc_regs[] to check if
-> + * it's an optional one.
+> +	return cppc_set_reg_val(cpu, ENERGY_PERF, epp_val);
+> +}
+> +EXPORT_SYMBOL_GPL(cppc_set_epp);
+> +
+> +/**
+> + * cppc_get_auto_act_window() - Read autonomous activity window register.
+> + * @cpu: CPU from which to read register.
+> + * @auto_act_window: Return address.
+> + *
+> + * According to ACPI 6.5, s8.4.6.1.6, the value read from the autonomous
+> + * activity window register consists of two parts: a 7 bits value indicate
+> + * significand and a 3 bits value indicate exponent.
 > + */
-> +#define IS_OPTIONAL_CPC_REG(reg_idx) (REG_OPTIONAL & (1U << (reg_idx)))
+> +int cppc_get_auto_act_window(int cpu, u64 *auto_act_window)
+> +{
+> +	unsigned int exp;
+> +	u64 val, sig;
+> +	int ret;
 > +
->   /*
->    * Arbitrary Retries in case the remote processor is slow to respond
->    * to PCC commands. Keeping it high enough to cover emulators where
+> +	ret = cppc_get_reg_val(cpu, AUTO_ACT_WINDOW, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	sig = val & CPPC_AUTO_ACT_WINDOW_MAX_SIG;
+> +	exp = (val >> CPPC_AUTO_ACT_WINDOW_SIG_BIT_SIZE) & CPPC_AUTO_ACT_WINDOW_MAX_EXP;
+> +	*auto_act_window = sig * int_pow(10, exp);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(cppc_get_auto_act_window);
+
+Since this is exported code, do you perhaps want a check that 
+auto_act_window is not NULL to avoid a possible accidental NULL pointer 
+dereference?
+
+> +
+> +/**
+> + * cppc_set_auto_act_window() - Write autonomous activity window register.
+> + * @cpu: CPU on which to write register.
+> + * @auto_act_window: usec value to write to the autonomous activity window register.
+> + *
+> + * According to ACPI 6.5, s8.4.6.1.6, the value to write to the autonomous
+> + * activity window register consists of two parts: a 7 bits value indicate
+> + * significand and a 3 bits value indicate exponent.
+> + */
+> +int cppc_set_auto_act_window(int cpu, u64 auto_act_window)
+> +{
+> +	/* The max value to stroe is 1270000000 */
+
+store
+
+> +	u64 max_val = CPPC_AUTO_ACT_WINDOW_MAX_SIG * int_pow(10, CPPC_AUTO_ACT_WINDOW_MAX_EXP);
+> +	int exp = 0;
+> +	u64 val;
+> +
+> +	if (auto_act_window > max_val)
+> +		return -EINVAL;
+> +
+> +	/*
+> +	 * The max significand is 127, when auto_act_window is larger than
+> +	 * 129, discard the precision of the last digit and increase the
+> +	 * exponent by 1.
+> +	 */
+> +	while (auto_act_window > CPPC_AUTO_ACT_WINDOW_SIG_CARRY_THRESH) {
+> +		auto_act_window /= 10;
+> +		exp += 1;
+> +	}
+> +
+> +	/* For 128 and 129, cut it to 127. */
+> +	if (auto_act_window > CPPC_AUTO_ACT_WINDOW_MAX_SIG)
+> +		auto_act_window = CPPC_AUTO_ACT_WINDOW_MAX_SIG;
+> +
+> +	val = (exp << CPPC_AUTO_ACT_WINDOW_SIG_BIT_SIZE) + auto_act_window;
+> +
+> +	return cppc_set_reg_val(cpu, AUTO_ACT_WINDOW, val);
+> +}
+> +EXPORT_SYMBOL_GPL(cppc_set_auto_act_window);
+> +
+>   /**
+>    * cppc_get_auto_sel() - Read autonomous selection register.
+>    * @cpu: CPU from which to read register.
+> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+> index 31767c65be20..325e9543e08f 100644
+> --- a/include/acpi/cppc_acpi.h
+> +++ b/include/acpi/cppc_acpi.h
+> @@ -32,6 +32,15 @@
+>   #define	CMD_READ 0
+>   #define	CMD_WRITE 1
+>   
+> +#define CPPC_AUTO_ACT_WINDOW_SIG_BIT_SIZE	(7)
+> +#define CPPC_AUTO_ACT_WINDOW_EXP_BIT_SIZE	(3)
+> +#define CPPC_AUTO_ACT_WINDOW_MAX_SIG	((1 << CPPC_AUTO_ACT_WINDOW_SIG_BIT_SIZE) - 1)
+> +#define CPPC_AUTO_ACT_WINDOW_MAX_EXP	((1 << CPPC_AUTO_ACT_WINDOW_EXP_BIT_SIZE) - 1)
+> +/* CPPC_AUTO_ACT_WINDOW_MAX_SIG is 127, so 128 and 129 will decay to 127 when writing */
+> +#define CPPC_AUTO_ACT_WINDOW_SIG_CARRY_THRESH 129
+> +
+> +#define CPPC_ENERGY_PERF_MAX	(0xFF)
+> +
+>   /* Each register has the folowing format. */
+>   struct cpc_reg {
+>   	u8 descriptor;
+> @@ -159,6 +168,9 @@ extern int cpc_read_ffh(int cpunum, struct cpc_reg *reg, u64 *val);
+>   extern int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val);
+>   extern int cppc_get_epp_perf(int cpunum, u64 *epp_perf);
+>   extern int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable);
+> +extern int cppc_set_epp(int cpu, u64 epp_val);
+> +extern int cppc_get_auto_act_window(int cpu, u64 *auto_act_window);
+> +extern int cppc_set_auto_act_window(int cpu, u64 auto_act_window);
+>   extern int cppc_get_auto_sel(int cpu, bool *enable);
+>   extern int cppc_set_auto_sel(int cpu, bool enable);
+>   extern int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf);
+> @@ -229,6 +241,18 @@ static inline int cppc_get_epp_perf(int cpunum, u64 *epp_perf)
+>   {
+>   	return -EOPNOTSUPP;
+>   }
+> +static inline int cppc_set_epp(int cpu, u64 epp_val)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +static inline int cppc_get_auto_act_window(int cpu, u64 *auto_act_window)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +static inline int cppc_set_auto_act_window(int cpu, u64 auto_act_window)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+>   static inline int cppc_get_auto_sel(int cpu, bool *enable)
+>   {
+>   	return -EOPNOTSUPP;
 
 
