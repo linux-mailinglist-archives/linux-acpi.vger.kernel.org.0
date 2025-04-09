@@ -1,78 +1,94 @@
-Return-Path: <linux-acpi+bounces-12915-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12916-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A67AA8292E
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 17:02:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFADDA82A42
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 17:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6C751BC286F
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 14:56:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FEC59C0A90
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 15:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D457226770E;
-	Wed,  9 Apr 2025 14:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE20926FA5E;
+	Wed,  9 Apr 2025 15:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pe5gwDei"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="EDb9t9ug"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3BA2676F7;
-	Wed,  9 Apr 2025 14:50:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C0526F475;
+	Wed,  9 Apr 2025 15:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744210207; cv=none; b=dTSRgX5xxZq4bPTE2+oy1cAheEg1eft11K1eIxNTDxS0LhXoS0Az6syIlP/m8aJBUxKKhotckcCxJZT8dFJUBlamrf1e5JOm6BRMJCOFZJH2/kVN6GOGgQDwx8aDXTgmN/j+p4OXs+P3drg11rKwII9fdml/MYbk40MXKu+SMOE=
+	t=1744211053; cv=none; b=G7pqSl4qf0ktcTp7bQenkhWXwL8Azk583hpf51iIHuD+jFCUVhLRHSLNxf6rufYB5wxsV8dXRHT1Pp10QkQnWNL7svucaO4ryzvcc5bQezSkXlYJMOiq7DVxdgTVNdPELQO0t0/iypSJEiEa9orNZgPjwhqhjjNCczUh/Z7Jjh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744210207; c=relaxed/simple;
-	bh=Cz0c1otcz5ivBtfWQnjKI3YpuR7rHan3cgUck1PboH8=;
+	s=arc-20240116; t=1744211053; c=relaxed/simple;
+	bh=VPw47VFikKf8fTolInwOS7M/6m1lsw75MF8AshQmubI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hKbBX8MF3/3cibKEKa9MS+cq1H9ZOokyQfMZFt1v66UxurmpTai89APC3f1KD8q9eLTTrIk5QXY32LltHKPMXhg05ZLrjQQMS/lFGE3OUlGIVOjhC/u7O33IzWtqYOi2ovrmjYY8lU6UmO1sgwjmGPHfB2H3XUhJdA8XK2ZbYMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pe5gwDei; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744210206; x=1775746206;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Cz0c1otcz5ivBtfWQnjKI3YpuR7rHan3cgUck1PboH8=;
-  b=Pe5gwDei7ZA7gyHQWC/5b/+9mN2uiYETf0wYdqFgC9EKG2ffdZ6gV9HE
-   N0WxgNxJvHOOOV3GNOtHJBCjFqxN2HbyUd7zX8yfEDJ9YsShhlEsBfb66
-   RPoKXutepKErQuIz5Rl2dSDCbpq7CpX0rJhqiOrse5JGAsUwM/A54SVNC
-   ZIsA5jJTRTuY9I1YwjLCDNt1BUI6mMryESVZfvV0YHQ2SCx3DF1ozNUZR
-   Gyn5bXRXHMgyv7hje+qtR8163T9vbSAY1+rXUouu/9DLT646BDMi5sVRS
-   4iWJq0rxvV2r86RQozNUUx/ZjVnF2Z1NxhTXfmWN4rX6ZAHV7YK5oUUyE
-   Q==;
-X-CSE-ConnectionGUID: /8YIi+OxS7mTgTrY9/lRDQ==
-X-CSE-MsgGUID: WlGOY/HYRqmPsfH/h3yrdQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="45814560"
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
-   d="scan'208";a="45814560"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 07:50:04 -0700
-X-CSE-ConnectionGUID: UOpZGCB0RiO368SS3Fd8vQ==
-X-CSE-MsgGUID: N3FzkT0/R0OymyamC9Mkiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
-   d="scan'208";a="129442429"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 07:50:02 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1u2Wka-0000000AldU-15on;
-	Wed, 09 Apr 2025 17:50:00 +0300
-Date: Wed, 9 Apr 2025 17:50:00 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Mika Westerberg <westeri@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v1 0/2] gpiolib: acpi: Fix missing info filling
-Message-ID: <Z_aJGKjVfKtc18Zk@smile.fi.intel.com>
-References: <20250409132942.2550719-1-andriy.shevchenko@linux.intel.com>
- <20250409134443.GT3152277@black.fi.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=DLAi5NvwImkGZFwf1+UFOfdzlvndREMJQeshi7Oe0FgtxlzmidXjT3edRI8cIq5+589lHFoUHxvQ4WtiBbindclhD4s5V0oP8wtQ3tdrT6450utLsfsXqmxz5+MSIkGIcyLuw5zxXwOXgwm3R7yibFrZ53JrWvyDEQdACB0jCXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=EDb9t9ug; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Lhtq1pefqTUVYOAkJzIOHqWiVsfsbUWsRek0JSSJoaM=; b=EDb9t9ug3VAuhsP2v5wV6dRtb9
+	iS7Wnq8zgIJ18meTszE5HNwkmgb/DJWG2rzHMpIlo2YO2DjOhaxa1Afh/x+VSB6uO5Dtr7QEl5l6y
+	CTgeIulElJ7lZgvn0u/oTdY7ogOeKQ9FUbXWyrwgM8EocLlJ/LQT6+wOPKMDD0UK5Eds=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1u2Wxt-008Ymd-Uk; Wed, 09 Apr 2025 17:03:45 +0200
+Date: Wed, 9 Apr 2025 17:03:45 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Herve Codina <herve.codina@bootlin.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH 15/16] misc: lan966x_pci: Add dtso nodes in order to
+ support SFPs
+Message-ID: <c6257afe-36bb-46d8-8c22-da3b85028105@lunn.ch>
+References: <20250407145546.270683-1-herve.codina@bootlin.com>
+ <20250407145546.270683-16-herve.codina@bootlin.com>
+ <19f1a382-1b6b-42bd-a548-a1a5644c9a1b@lunn.ch>
+ <20250408162603.02d6c3a1@bootlin.com>
+ <D91CSNC07NYM.3KC467K0OZ4GG@bootlin.com>
+ <c14dd5c6-2dae-4398-89a9-342e7a25bb30@lunn.ch>
+ <D91XV1I4CY37.20T12FMZ5QLQ5@bootlin.com>
+ <b1b33000-4c10-43cd-bcf4-d24fc73902b1@lunn.ch>
+ <20250409161444.6158d388@windsurf>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -81,29 +97,31 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250409134443.GT3152277@black.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20250409161444.6158d388@windsurf>
 
-On Wed, Apr 09, 2025 at 04:44:43PM +0300, Mika Westerberg wrote:
-> On Wed, Apr 09, 2025 at 04:27:52PM +0300, Andy Shevchenko wrote:
-> > Kees reported that code, while being refactored, missed the point of
-> > filling the info structure which supplies GPIO flags to the upper layer.
-> > Indeed, without that part the GPIO expander get no IRQ on Intel Edison,
-> > for example. Fix this in this series.
-> > 
-> > Andy Shevchenko (2):
-> >   gpiolib: acpi: Use temporary variable for struct acpi_gpio_info
-> >   gpiolib: acpi: Make sure we fill struct acpi_gpio_info
+On Wed, Apr 09, 2025 at 04:14:44PM +0200, Thomas Petazzoni wrote:
+> On Wed, 9 Apr 2025 16:04:51 +0200
+> Andrew Lunn <andrew@lunn.ch> wrote:
 > 
-> Both,
+> > And you need some way to map the PCI ID to the correct .dtso file.
+> > Maybe that is just a lookup table in the driver, or maybe you can pack
+> > the .dtso file into a kernel module with the correct
+> > MODULE_DEVICE_TABLE(pci, ...) so that PCI probing pulls in the
+> > specific driver module with the .dtso, which via dependencies pulls in
+> > the core driver which can actually make use of the .dtso?
 > 
-> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Well, check the already upstream driver:
+> 
+>   https://elixir.bootlin.com/linux/v6.13.7/source/drivers/misc/lan966x_pci.c
+> 
+> It indeed binds on the PCI ID, and the driver bundles the .dtbo.
 
-Pushed to my review and testing queue, thanks!
+So it only supports a single .dtbo. In its current form it does not
+scale to multiple .dtso files for multiple different boards built
+around the PCIe chip.
 
--- 
-With Best Regards,
-Andy Shevchenko
+At the moment, that is not really an issue, but when the second board
+comes along, some refactoring will be needed.
 
-
+      Andrew
 
