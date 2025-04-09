@@ -1,164 +1,125 @@
-Return-Path: <linux-acpi+bounces-12921-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12922-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8602A82D50
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 19:10:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C421A82E4D
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 20:15:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AD84464B17
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 17:10:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D17EE1B80EEA
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 18:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10086270EDD;
-	Wed,  9 Apr 2025 17:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A7EC277037;
+	Wed,  9 Apr 2025 18:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ovq1dc1I"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xqjx5XGv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F1D270EBF;
-	Wed,  9 Apr 2025 17:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168E1277020;
+	Wed,  9 Apr 2025 18:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744218619; cv=none; b=HJJ+h2rKd5/WspYj+6/WfpyJz2T4D7jOS7b9Q8hA5q1LII4xF8bEqmjctmNSLPqLH+BvgZleUCgdqCz4N/5TSKdhu8HlwyY4SLFhbqOPJ/euQmHgGLIXgZVvPKifuZLEZH+E/NvKk2Z+SnIT3XoeAbwv2fGmqzXxtnPozdKvYUQ=
+	t=1744222238; cv=none; b=Gnz4o+QucwjYqlkvSPuSUDC+DWYV4kTh6a5LCxlAHsQh0ldkoOaT6UJ4blf1nJpL3nOgc6EaakXhE0ZxdjRDTFgcsx17bF4n6wnTxdadVJtXkNev8kRKe9ON72gzufLdJufAO4tGz7+E1jH4vVa2oyplTQrZujfayJDk+jdrSKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744218619; c=relaxed/simple;
-	bh=cAQwVlXf7+CjPLnuPwVGgRDY9ncDHb1puhcdzHnY0jY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jOQbuN0gkJhbivQHZW1/LG1eXQM/KVJyF62lP0gwtR5cYqPMadotQd58/uwSbDXWzj+tyfxly7JyDSG3l+pa+jcc4Jrin0QiIkb1zJUbMXD7fLrOFHFQAKdFP9Boytu0BLXy9olh1gLq70Rbs+H5Jfo1yHwRxXtY/0KQq38YtJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ovq1dc1I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C601C4AF0B;
-	Wed,  9 Apr 2025 17:10:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744218618;
-	bh=cAQwVlXf7+CjPLnuPwVGgRDY9ncDHb1puhcdzHnY0jY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Ovq1dc1IXAl5wnc9ryHVYFDKGcsVmLts9fdhHxRd6Ws8T5QKCvKmR7LKHn5l+zlbu
-	 x4Arzznvq6P+X5kbPB2XgQQwiQnmInizm6I4RF9aLofbJ8AvKSoOHxAJxZet9U3zH/
-	 d3rUtnBvtvX87CFu9D31IQd4NUkTEPgs5/XivyzKTtfxpeEP7DW92lD18Dk0voOsen
-	 2VQdXPuQWZhUJpSp2xilMss32k6mfkVcFTNj5zg0dBylCElIpBN3wz+74cDt3E35Sm
-	 gaf/vF5ywRmKIodBboG2VjREIsD5FNI6dccSzg5xmmDB51XgrxLU/9JPjjRV6Yt3O7
-	 AnEketpdYnnmg==
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-2c7f876b321so2190276fac.1;
-        Wed, 09 Apr 2025 10:10:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUvXz0SyhbDjXjwyYRKFVZM1Auun3RgQEgzFxGr/+aexioRPf+QiGLieC31lmBqT0b9iqbun+wWpQgHGFR1@vger.kernel.org, AJvYcCXTkEDr6DizXVuRfl4CM19Xgkz8kWlKpYaGJBmCyMg+qRtcDiaNbDjjyVtMCDjmIV4Da8RRZEYQlJw=@vger.kernel.org, AJvYcCXkx/RvTiFUIQeiNtoX1gGFMs3Kp1tpxe3ZPUuG7XoZ9PH9jGRFRwpRmn0v54eKBTnj6gOR15fPOCgb@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmYVsxio7HxGkjkGiQLvCkDy0S/uKocDU+A+BTJ89EmpffWM4h
-	ymdOf8vf5EVr6og5af/cDlHuHtP6RG5ZOYYiD+fx0w2Y7V5fHEfTlheNQTEmjxd6gW9Sadqxqca
-	ZEvQpnOWs9ULlf4i7EHyuv3ms1uY=
-X-Google-Smtp-Source: AGHT+IE1HcaprfbES+AEj26IYVhioa7kyOAsoqMrfIDfQQwSe2RuMsl/a8oiE9RCn4sEC+kDDYA6hgAtGjfVmjvNbho=
-X-Received: by 2002:a05:6870:ab0d:b0:2c2:2f08:5e5b with SMTP id
- 586e51a60fabf-2d0917bb20cmr1802929fac.13.1744218617585; Wed, 09 Apr 2025
- 10:10:17 -0700 (PDT)
+	s=arc-20240116; t=1744222238; c=relaxed/simple;
+	bh=DK5ctdqUuWwG61zHU/doen2mUmd04GA6ljylHuv86v0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=mv/lQKtcjhmwy+Q8HpzMxdyQFsaHPA9EQlUeJPA3cKwLE037d1kONY/jcvxTtgzlULhoFVOt9Fj4iwVKtp3lwwra613JZw1MnukhkioV7GEsjcCKti4Ecokl4/jnLtsTVfbhqHywLjvjUPhc/q/YWVkY2aQuibbRDuH6KASUi2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xqjx5XGv; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744222235; x=1775758235;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=DK5ctdqUuWwG61zHU/doen2mUmd04GA6ljylHuv86v0=;
+  b=Xqjx5XGvHgAjQVyxNVrzg0GtH8sLk8Jecm7+dtIORSG0vZYtPuH+l8Z2
+   M7i6nnptDpCJOb4WS8f0Kk5KCIOIfdjtVREs7KXyNQ5Qw/9eQo8lkyAae
+   ZoTvO7bDkUyr2/j1pfirc7dALPVRjsJ/p1GXTbIRNs6RnXxtJFfxcO5Mt
+   2dLbIcR8RwO2+/EF9+Xn6Xvq/5HUHxzPacHI64C/frSJRPzMtgMMJxFXQ
+   JIEeiOPcG0/ZQUeK5JuX3BSdttNGXFLiulB6qDaSwgCITyMFSAi0ZaRvt
+   w/+6UEGvuEUTUBW5bu5Per2/mpr6DzjgLXqEJe5LELE/c3TlSHvTE7RGE
+   A==;
+X-CSE-ConnectionGUID: lVWEruxXQMC90bl8MVStAQ==
+X-CSE-MsgGUID: 3mAgYaK2R0euBAjTk1KYUQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="44855882"
+X-IronPort-AV: E=Sophos;i="6.15,201,1739865600"; 
+   d="scan'208";a="44855882"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 11:10:34 -0700
+X-CSE-ConnectionGUID: hSrBF16MR/ipFHagVQZGPQ==
+X-CSE-MsgGUID: jKVap1QuRPu80Vth7TEg4g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,201,1739865600"; 
+   d="scan'208";a="151839648"
+Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 09 Apr 2025 11:10:32 -0700
+Received: from kbuild by b207828170a5 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u2Zsb-0009B9-36;
+	Wed, 09 Apr 2025 18:10:29 +0000
+Date: Thu, 10 Apr 2025 02:10:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-acpi@vger.kernel.org, devel@acpica.org,
+	linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: [rafael-pm:bleeding-edge 39/52]
+ drivers/acpi/apei/einj-core.c:877:43: error: expected identifier
+Message-ID: <202504100128.AjbVDQgK-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250409065703.1461867-1-zhenglifeng1@huawei.com> <20250409065703.1461867-3-zhenglifeng1@huawei.com>
-In-Reply-To: <20250409065703.1461867-3-zhenglifeng1@huawei.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 9 Apr 2025 19:10:06 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0is5YXxqHDAC4Ki44U9mwDH3KvW0=JmFYS-25QwKYDR1A@mail.gmail.com>
-X-Gm-Features: ATxdqUEZY7ZSPbkwrXMr4u7_twpdladBp3zkPIRv7P3Mi7CxPU_yAnM6-yPmvM4
-Message-ID: <CAJZ5v0is5YXxqHDAC4Ki44U9mwDH3KvW0=JmFYS-25QwKYDR1A@mail.gmail.com>
-Subject: Re: [PATCH v6 2/8] ACPI: CPPC: Optimize cppc_get_perf()
-To: Lifeng Zheng <zhenglifeng1@huawei.com>
-Cc: rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com, 
-	viresh.kumar@linaro.org, mario.limonciello@amd.com, gautham.shenoy@amd.com, 
-	ray.huang@amd.com, perry.yuan@amd.com, pierre.gondois@arm.com, 
-	acpica-devel@lists.linux.dev, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, linuxarm@huawei.com, 
-	jonathan.cameron@huawei.com, zhanjie9@hisilicon.com, lihuisong@huawei.com, 
-	cenxinghai@h-partners.com, hepeng68@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Wed, Apr 9, 2025 at 8:57=E2=80=AFAM Lifeng Zheng <zhenglifeng1@huawei.co=
-m> wrote:
->
-> Optimize cppc_get_perf() with three changes:
->
-> 1. Change the error kind to "no such device" when pcc_ss_id < 0, as other
-> register value getting functions.
->
-> 2. Add a check to verify if the register is supported to be read before
-> using it. The logic is:
->
-> (1) If the register is of the integer type, check whether the register is
-> optional and its value is 0. If yes, the register is not supported.
->
-> (2) If the register is of other types, a null one is not supported.
->
-> 3. Return the result of cpc_read() instead of 0.
->
-> Reviewed-by: Pierre Gondois <pierre.gondois@arm.com>
-> Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-> ---
->  drivers/acpi/cppc_acpi.c | 21 ++++++++++++++-------
->  1 file changed, 14 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index 39f019e265da..2f789d3b3cad 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -1201,20 +1201,29 @@ static int cppc_get_perf(int cpunum, enum cppc_re=
-gs reg_idx, u64 *perf)
->
->         reg =3D &cpc_desc->cpc_regs[reg_idx];
->
-> +       if (reg->type =3D=3D ACPI_TYPE_INTEGER ?
-> +           (IS_OPTIONAL_CPC_REG(reg_idx) && !reg->cpc_entry.int_value) :
-> +           IS_NULL_REG(&reg->cpc_entry.reg)) {
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   089d4e79e2c932faef79e0061cb874000f755009
+commit: 4ec052af63c58a62a896508cc5f8a0a2f516a590 [39/52] ACPI: APEI: EINJ: Transition to the faux device interface
+config: x86_64-buildonly-randconfig-001-20250409 (https://download.01.org/0day-ci/archive/20250410/202504100128.AjbVDQgK-lkp@intel.com/config)
+compiler: clang version 20.1.2 (https://github.com/llvm/llvm-project 58df0ef89dd64126512e4ee27b4ac3fd8ddf6247)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250410/202504100128.AjbVDQgK-lkp@intel.com/reproduce)
 
-Please avoid using the ternary operator in any new kernel code.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202504100128.AjbVDQgK-lkp@intel.com/
 
-Why not write it this way
+All errors (new ones prefixed by >>):
 
-if ((reg->type =3D=3D ACPI_TYPE_INTEGER && IS_OPTIONAL_CPC_REG(reg_idx)
-    && !reg->cpc_entry.int_value) || (reg->type !=3D ACPI_TYPE_INTEGER &&
-    IS_NULL_REG(&reg->cpc_entry.reg)) {
+>> drivers/acpi/apei/einj-core.c:877:43: error: expected identifier
+     877 | module_faux_driver(acpi_einj, einj_probe, __exit_p(einj_remove), true);
+         |                                           ^
+   include/linux/init.h:397:21: note: expanded from macro '__exit_p'
+     397 | #define __exit_p(x) NULL
+         |                     ^
+   include/linux/stddef.h:8:14: note: expanded from macro 'NULL'
+       8 | #define NULL ((void *)0)
+         |              ^
+>> drivers/acpi/apei/einj-core.c:877:1: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
+     877 | module_faux_driver(acpi_einj, einj_probe, __exit_p(einj_remove), true);
+         | ^
+         | int
+>> drivers/acpi/apei/einj-core.c:877:19: error: a function declaration without a prototype is deprecated in all versions of C [-Werror,-Wstrict-prototypes]
+     877 | module_faux_driver(acpi_einj, einj_probe, __exit_p(einj_remove), true);
+         |                   ^                                                  
+         |                                                                      void
+   3 errors generated.
 
-> +               pr_debug("CPC register is not supported\n");
-> +               return -EOPNOTSUPP;
-> +       }
-> +
->         if (CPC_IN_PCC(reg)) {
->                 int pcc_ss_id =3D per_cpu(cpu_pcc_subspace_idx, cpunum);
->                 struct cppc_pcc_data *pcc_ss_data =3D NULL;
-> -               int ret =3D 0;
-> +               int ret;
->
-> -               if (pcc_ss_id < 0)
-> -                       return -EIO;
-> +               if (pcc_ss_id < 0) {
-> +                       pr_debug("Invalid pcc_ss_id\n");
-> +                       return -ENODEV;
-> +               }
->
->                 pcc_ss_data =3D pcc_data[pcc_ss_id];
->
->                 down_write(&pcc_ss_data->pcc_lock);
->
->                 if (send_pcc_cmd(pcc_ss_id, CMD_READ) >=3D 0)
-> -                       cpc_read(cpunum, reg, perf);
-> +                       ret =3D cpc_read(cpunum, reg, perf);
->                 else
->                         ret =3D -EIO;
->
-> @@ -1223,9 +1232,7 @@ static int cppc_get_perf(int cpunum, enum cppc_regs=
- reg_idx, u64 *perf)
->                 return ret;
->         }
->
-> -       cpc_read(cpunum, reg, perf);
-> -
-> -       return 0;
-> +       return cpc_read(cpunum, reg, perf);
->  }
->
->  /**
-> --
+
+vim +877 drivers/acpi/apei/einj-core.c
+
+   876	
+ > 877	module_faux_driver(acpi_einj, einj_probe, __exit_p(einj_remove), true);
+   878	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
