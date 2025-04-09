@@ -1,240 +1,246 @@
-Return-Path: <linux-acpi+bounces-12911-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12912-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9085A82798
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 16:20:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC758A82892
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 16:48:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1772B7B3C4C
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 14:19:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22A631898256
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 14:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9857265626;
-	Wed,  9 Apr 2025 14:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11CA266B51;
+	Wed,  9 Apr 2025 14:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A6b+5FET"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fPUluxbA"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0B82561CE;
-	Wed,  9 Apr 2025 14:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A96F26658F
+	for <linux-acpi@vger.kernel.org>; Wed,  9 Apr 2025 14:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744208408; cv=none; b=HrS37vNeCabEs08KivMzJIH92z9aqduEHYEKyrWGl+AzRhKKtynxR3WP62mZmfiPatx5iN//nI/88DBjP0QXAVYjTAGXUNyrv2MwSGA3dKwtYhfGA1Ql0lz41LO2oyPFW1zQ1R0yp4JN2IyYtaXrxb5q8HJ6259ilO27uUMmL+E=
+	t=1744209778; cv=none; b=PC/hGyyoS9qCOGferBWyc44+XcbAvF1VdoIb4BVdNFhvEfR6uz/f3TnbrdqeQDmZXvbGPwWuNm/8LCUYvoc+rleARBbKZnJ+GaJfUgL4x0OI9DgAFz3/m5KTil6TR5ZnKxoG6ZtWkRuTtaZmzmH5LD6FiZuZHwcpFjGvGX1Ys80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744208408; c=relaxed/simple;
-	bh=BG/OzJES1M7Q6UgqXIWZo0kbqsw0xFTv9avIXvDfKl8=;
+	s=arc-20240116; t=1744209778; c=relaxed/simple;
+	bh=pzRBztJBd06fHjANAQkNRtWglTI2SgxNmiAYHYcYALU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bF/9gaBXjh0KIPuqz1O92g9VO3SxtoIthdiGNLiDbdTw7t1NUufoNVAwm/yTIqOGFYEuZW3rwBuf8xoTlIcipVvugIqNeiTz4jUZoCdyF7rg+xRjzKS137YJlpwsfw/jr3WNPUm7XQL+bFgeFjzv/NXo1L+2CelDIcUQo9hdwDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A6b+5FET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EF9C4CEE7;
-	Wed,  9 Apr 2025 14:20:08 +0000 (UTC)
+	 To:Cc:Content-Type; b=c58bnLGwZdCmgiZAQ5NWdtlTyHq5UfIEzaSUoVJYqQ2xyBjbq+PBrO0amj9hsdxwMjahiYuVObhk2Erwy+BOP6zybBgNpUqGO3Q1MxPDCv1cV3e34JvBuhihPvre9psu3oTHquWhfL9+aJIcmfOQYjGrcsZG3neXfL0s0cBU2Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fPUluxbA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C85C4CEE3
+	for <linux-acpi@vger.kernel.org>; Wed,  9 Apr 2025 14:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744208408;
-	bh=BG/OzJES1M7Q6UgqXIWZo0kbqsw0xFTv9avIXvDfKl8=;
+	s=k20201202; t=1744209778;
+	bh=pzRBztJBd06fHjANAQkNRtWglTI2SgxNmiAYHYcYALU=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=A6b+5FET2spOgRa2vacU9wjGBMCpfe11c1PD8P8XThPDX4dJUL2NG8ORLineivW1s
-	 E8KhoXiacRx2toMKAt13wzybtd94ack8IqWGGzxRaQqJa1RuDhflgvhEutEiyNBjVj
-	 YdGcrOD8CnUmFEjd2y6kr0JHq530JlofuMx3whHajwo3jL2HyBERFMjS2NFd6nUW5b
-	 qBPe7eu0YmBc27zezOWBF2Svwvz60gJC98D1f3uc2diOLLxFGfZWWWguFa/VK0ctRL
-	 DPbnQ+u8bKlEZ537fh9ztwNMEISzOxiRJpCrO+a1i+vxe9N0Zy1AxSVXCUNAcHT512
-	 8/KZy+OrNJ7jA==
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ac3fcf5ab0dso1181464666b.3;
-        Wed, 09 Apr 2025 07:20:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUSA+4BzIVsPgMWTmcoFq53J3ct23AcrcS5EXjxqCsOmqgPSn8Ipg7RrxTsRa2C9kPL6oLzY1flJozu@vger.kernel.org, AJvYcCV6ckfNUMr02JdM9vyEw3GzBCg6HJcwL9zXAEBvSSEwjYjZZqypF/Fkd/gYAhyEcN6br55IQyC7F/pT@vger.kernel.org, AJvYcCWV54g71DbphUGQOc6GOIgXOJ9mDxnEPIXmN/SV3FrukbtF0BRQsTGvGOS66CGzH+O3ZRA8CEuzWgETSvz2@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8hFmxfqRKDjnERpibyLcW7BEnDMgxJKxl/+AIhmKFkfoLRI3u
-	XZxmffTgzwrERHPgYfqNrTw5LmyqgQ9Ag1GQF5ix2dQ80H2gwb8U+A7nXKgQEwGYD7bK2JfhVSD
-	q6isKuFTVHxVxoLunWP8crCn5PBQ=
-X-Google-Smtp-Source: AGHT+IFnF6UDYloYX0LOUBH6jYkuCNYIOTsP2lHmKeGs/z9SZN3K4qP8DEu2FfQoknF3uccBjAD217TToS6ep+829MQ=
-X-Received: by 2002:a17:907:971a:b0:ac4:3cd:2cb2 with SMTP id
- a640c23a62f3a-aca9b607dcemr354551866b.1.1744208406974; Wed, 09 Apr 2025
- 07:20:06 -0700 (PDT)
+	b=fPUluxbAzql2a/FU+T+RO658TRg/PT5QSnPDSQ3T9mv7V8g9Mu+JkXdgcrA6ktcRX
+	 uUrylR2xP0W9TvGFntTBYjJKen2woiErG3Vtc5ALHEfQh1PP7hgS0E/LOZ4cCX4ayx
+	 dibZPFIiQ8bA0z6w/Vxbej4IqsDqKEzvI2VeDEiekaw+wOVNXa2iXSpznGLcZmiuqV
+	 HVFfqcxdaAODt0W25AmN56q55Zzrf8cxU7Dmr+hopoUgqwI+w7egpcq4GaBqqI6cYb
+	 ac+z8BrTV+CWoGV2VsBg2M1XcB0TtD6d2AJZrdqbMV8jiO4/d/KTawTQWHOyASQAEZ
+	 r8r5cC9FUxs/w==
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-2c873231e7bso3878422fac.3
+        for <linux-acpi@vger.kernel.org>; Wed, 09 Apr 2025 07:42:58 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxSzmCQNqu8tQNjIq5g8A0UbmPDssRpyMMwA32TgNVIZtUyICzw
+	2F7kH+rYnhZ5PYo6yR7ph/0Bnr2bg7DfBQntAVrYay3bdMltY7JyuS/HocHKSkSUjyfrmZVTe1E
+	Qdjao3gURoeX51KnmOcpMtleNm/w=
+X-Google-Smtp-Source: AGHT+IHGW76vQdqen4RJLnZXCkdlxWVNR5yHOuuuCofaaZzB1aYu9yCtgrLqkvN8JHUy9O5cbXI0OqLR+jPAH0nNcWA=
+X-Received: by 2002:a05:6870:164c:b0:2c2:b18c:9be9 with SMTP id
+ 586e51a60fabf-2d091718fdfmr1510922fac.3.1744209777637; Wed, 09 Apr 2025
+ 07:42:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250409070250.3225839-1-wangyuquan1236@phytium.com.cn>
-In-Reply-To: <20250409070250.3225839-1-wangyuquan1236@phytium.com.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 9 Apr 2025 22:20:03 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H59A797mfwxjEe8SO0JioxkF3H0Rr0E_TK1qn0PHdRMXA@mail.gmail.com>
-X-Gm-Features: ATxdqUHdB7qVVvs9U6XaymRSOHZ0sp8fImlHDnojMC_VV6MWDytUBwxnn0hxTYI
-Message-ID: <CAAhV-H59A797mfwxjEe8SO0JioxkF3H0Rr0E_TK1qn0PHdRMXA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] LoongArch: Introduce the numa_memblks conversion
-To: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-Cc: kernel@xen0n.name, jiaxun.yang@flygoat.com, rppt@kernel.org, 
-	akpm@linux-foundation.org, david@redhat.com, Jonathan.Cameron@huawei.com, 
-	dave.hansen@linux.intel.com, dan.j.williams@intel.com, 
-	alison.schofield@intel.com, chenbaozi@phytium.com.cn, 
-	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org
+References: <20250409084738.3657079-1-sakari.ailus@linux.intel.com>
+In-Reply-To: <20250409084738.3657079-1-sakari.ailus@linux.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 9 Apr 2025 16:42:46 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jxtqFWfKeASkNUJTCMHX=HYPyQQszaGYA7qQ4WGiAUTA@mail.gmail.com>
+X-Gm-Features: ATxdqUEfPdWX4go2CtYlxAhvDRHY5y40S_YSRuKUz4w6qBSrKzffnTw5R61ytwM
+Message-ID: <CAJZ5v0jxtqFWfKeASkNUJTCMHX=HYPyQQszaGYA7qQ4WGiAUTA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] Documentation: ACPI: Use all-string data node references
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>, 
+	andriy.shevchenko@linux.intel.com, "Rafael J. Wysocki" <rafael@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi, Yuquan,
-
-On Wed, Apr 9, 2025 at 3:03=E2=80=AFPM Yuquan Wang
-<wangyuquan1236@phytium.com.cn> wrote:
+On Wed, Apr 9, 2025 at 10:47=E2=80=AFAM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
 >
-> "mm: introduce numa_memblks"(87482708210f) has moved numa_memblks
-> from x86 to the generic code, but loongarch was left out of this
-> conversion.
+> Document that references to data nodes shall use string-only references
+> instead of a device reference and a succession of the first package
+> entries of hierarchical data node references.
 >
-> This patch introduces the generic numa_memblks.
-Thank you for your patch, but it cause many errors:
-loongarch64-linux-ld: mm/numa_memblks.o: in function
-`memory_add_physaddr_to_nid':
-numa_memblks.c:(.text+0x60): multiple definition of
-`memory_add_physaddr_to_nid';
-arch/loongarch/mm/init.o:init.c:(.text+0x0): first defined here
-loongarch64-linux-ld: mm/numa_memblks.o: in function `numa_set_distance':
-numa_memblks.c:(.init.text+0x248): multiple definition of
-`numa_set_distance';
-arch/loongarch/kernel/acpi.o:acpi.c:(.init.text+0x534): first defined
-here
-loongarch64-linux-ld: mm/numa_memblks.o: in function `.LANCHOR2':
-numa_memblks.c:(.init.data+0x0): multiple definition of
-`numa_nodes_parsed';
-arch/loongarch/kernel/numa.o:numa.c:(.init.data+0x0): first defined
-here
-make[2]: *** [scripts/Makefile.vmlinux_o:72=EF=BC=9Avmlinux.o] =E9=94=99=E8=
-=AF=AF 1
-make[1]: *** [/home/chenhuacai/linux-official.git/Makefile:1223=EF=BC=9Avml=
-inux_o] =E9=94=99=E8=AF=AF 2
-make: *** [Makefile:248=EF=BC=9A__sub-make] =E9=94=99=C3=A8=C2=AF=C2=AF 2
-  INSTALL /home/chenhuacai/dest/lib/modules/6.15.0-rc1+/vdso/vdso.so
-
-It cannot be fixed easily, but I will try my best to do that based on
-your patch.
-
-Huacai
-
->
-> Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+> Fixes: 9880702d123f ("ACPI: property: Support using strings in reference =
+properties")
+> Cc: stable@vger.kernel.org # for 6.8 and later
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 > ---
+>  .../acpi/dsd/data-node-references.rst         | 26 +++++++++----------
+>  .../firmware-guide/acpi/dsd/graph.rst         | 11 +++-----
+>  .../firmware-guide/acpi/dsd/leds.rst          |  7 +----
+>  3 files changed, 17 insertions(+), 27 deletions(-)
 >
-> Background
-> ----------
-> I am managed to land the patch[1] "mm: numa_memblks: introduce numa_add_r=
-eserved_memblk"
-> but kernel test CI noticed build errors[2] from loongarch64-linux-gcc.
+> diff --git a/Documentation/firmware-guide/acpi/dsd/data-node-references.r=
+st b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+> index 8d8b53e96bcf..8d91fab37d89 100644
+> --- a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+> +++ b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+> @@ -12,11 +12,14 @@ ACPI in general allows referring to device objects in=
+ the tree only.
+>  Hierarchical data extension nodes may not be referred to directly, hence=
+ this
+>  document defines a scheme to implement such references.
 >
-> Link:
-> [1]: https://lore.kernel.org/all/20250409040121.3212489-1-wangyuquan1236@=
-phytium.com.cn/
-> [2]: https://lore.kernel.org/all/202503282026.QNaOAK79-lkp@intel.com/
+> -A reference consist of the device object name followed by one or more
+> -hierarchical data extension [dsd-guide] keys. Specifically, the hierarch=
+ical
+> -data extension node which is referred to by the key shall lie directly u=
+nder
+> -the parent object i.e. either the device object or another hierarchical =
+data
+> -extension node.
+> +A reference to a _DSD hierarchical data node consist of the device objec=
+t
+> +reference followed by a dot (".") and the data node object name as a str=
+ing. Do
+> +not use non-string references as this will result in a copy of the hiera=
+rchical
+> +data node itself, not a reference!
+> +
+> +The hierarchical data extension node which is referred to shall have a
+> +followable path of hierarchical data node reference under a device it re=
+sides
+> +[dsd-guide].
+
+I've edited the above so it is a bit easier to follow and applied the
+patch for 6.16.
+
+>  The keys in the hierarchical data nodes shall consist of the name of the=
+ node,
+>  "@" character and the number of the node in hexadecimal notation (withou=
+t pre-
+> @@ -33,11 +36,9 @@ extension key.
+>  Example
+>  =3D=3D=3D=3D=3D=3D=3D
 >
->  arch/loongarch/Kconfig            |  1 +
->  arch/loongarch/include/asm/numa.h | 14 ----------
->  arch/loongarch/kernel/numa.c      | 43 +------------------------------
->  3 files changed, 2 insertions(+), 56 deletions(-)
+> -In the ASL snippet below, the "reference" _DSD property contains a
+> -device object reference to DEV0 and under that device object, a
+> -hierarchical data extension key "node@1" referring to the NOD1 object
+> -and lastly, a hierarchical data extension key "anothernode" referring to
+> -the ANOD object which is also the final target node of the reference.
+> +In the ASL snippet below, the "reference" _DSD property contains a strin=
+g
+> +reference to a hierarchical data extension node ANOD under DEV0 under th=
+e parent
+> +of DEV1 device object. ANOD is also the final target node of the referen=
+ce.
+>  ::
 >
-> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-> index 067c0b994648..5906ccd06705 100644
-> --- a/arch/loongarch/Kconfig
-> +++ b/arch/loongarch/Kconfig
-> @@ -186,6 +186,7 @@ config LOONGARCH
->         select MODULES_USE_ELF_RELA if MODULES
->         select NEED_PER_CPU_EMBED_FIRST_CHUNK
->         select NEED_PER_CPU_PAGE_FIRST_CHUNK
-> +       select NUMA_MEMBLKS
->         select OF
->         select OF_EARLY_FLATTREE
->         select PCI
-> diff --git a/arch/loongarch/include/asm/numa.h b/arch/loongarch/include/a=
-sm/numa.h
-> index b5f9de9f102e..bbf9f70bd25f 100644
-> --- a/arch/loongarch/include/asm/numa.h
-> +++ b/arch/loongarch/include/asm/numa.h
-> @@ -22,20 +22,6 @@ extern int numa_off;
->  extern s16 __cpuid_to_node[CONFIG_NR_CPUS];
->  extern nodemask_t numa_nodes_parsed __initdata;
+>         Device (DEV0)
+> @@ -76,10 +77,7 @@ the ANOD object which is also the final target node of=
+ the reference.
+>             Name (_DSD, Package () {
+>                 ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+>                 Package () {
+> -                   Package () {
+> -                       "reference", Package () {
+> -                           ^DEV0, "node@1", "anothernode"
+> -                       }
+> +                   Package () { "reference", "^DEV0.ANOD" }
+>                     },
+>                 }
+>             })
+> diff --git a/Documentation/firmware-guide/acpi/dsd/graph.rst b/Documentat=
+ion/firmware-guide/acpi/dsd/graph.rst
+> index b9dbfc73ed25..d6ae5ffa748c 100644
+> --- a/Documentation/firmware-guide/acpi/dsd/graph.rst
+> +++ b/Documentation/firmware-guide/acpi/dsd/graph.rst
+> @@ -66,12 +66,9 @@ of that port shall be zero. Similarly, if a port may o=
+nly have a single
+>  endpoint, the number of that endpoint shall be zero.
 >
-> -struct numa_memblk {
-> -       u64                     start;
-> -       u64                     end;
-> -       int                     nid;
-> -};
-> -
-> -#define NR_NODE_MEMBLKS                (MAX_NUMNODES*2)
-> -struct numa_meminfo {
-> -       int                     nr_blks;
-> -       struct numa_memblk      blk[NR_NODE_MEMBLKS];
-> -};
-> -
-> -extern int __init numa_add_memblk(int nodeid, u64 start, u64 end);
-> -
->  extern void __init early_numa_add_cpu(int cpuid, s16 node);
->  extern void numa_add_cpu(unsigned int cpu);
->  extern void numa_remove_cpu(unsigned int cpu);
-> diff --git a/arch/loongarch/kernel/numa.c b/arch/loongarch/kernel/numa.c
-> index 30a72fd528c0..0ed384635566 100644
-> --- a/arch/loongarch/kernel/numa.c
-> +++ b/arch/loongarch/kernel/numa.c
-> @@ -18,6 +18,7 @@
->  #include <linux/efi.h>
->  #include <linux/irq.h>
->  #include <linux/pci.h>
-> +#include <linux/numa_memblks.h>
->  #include <asm/bootinfo.h>
->  #include <asm/loongson.h>
->  #include <asm/numa.h>
-> @@ -145,48 +146,6 @@ void numa_remove_cpu(unsigned int cpu)
->         cpumask_clear_cpu(cpu, &cpus_on_node[nid]);
->  }
+>  The endpoint reference uses property extension with "remote-endpoint" pr=
+operty
+> -name followed by a reference in the same package. Such references consis=
+t of
+> -the remote device reference, the first package entry of the port data ex=
+tension
+> -reference under the device and finally the first package entry of the en=
+dpoint
+> -data extension reference under the port. Individual references thus appe=
+ar as::
+> +name followed by a string reference in the same package. [data-node-ref]=
+::
 >
-> -static int __init numa_add_memblk_to(int nid, u64 start, u64 end,
-> -                                    struct numa_meminfo *mi)
-> -{
-> -       /* ignore zero length blks */
-> -       if (start =3D=3D end)
-> -               return 0;
+> -    Package() { device, "port@X", "endpoint@Y" }
+> +    "device.datanode"
+>
+>  In the above example, "X" is the number of the port and "Y" is the numbe=
+r of
+>  the endpoint.
+> @@ -109,7 +106,7 @@ A simple example of this is show below::
+>                 ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+>                 Package () {
+>                     Package () { "reg", 0 },
+> -                   Package () { "remote-endpoint", Package() { \_SB.PCI0=
+.ISP, "port@4", "endpoint@0" } },
+> +                   Package () { "remote-endpoint", "\\_SB.PCI0.ISP.EP40"=
+ },
+>                 }
+>             })
+>         }
+> @@ -141,7 +138,7 @@ A simple example of this is show below::
+>                 ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+>                 Package () {
+>                     Package () { "reg", 0 },
+> -                   Package () { "remote-endpoint", Package () { \_SB.PCI=
+0.I2C2.CAM0, "port@0", "endpoint@0" } },
+> +                   Package () { "remote-endpoint", "\\_SB.PCI0.I2C2.CAM0=
+.EP00" },
+>                 }
+>             })
+>         }
+> diff --git a/Documentation/firmware-guide/acpi/dsd/leds.rst b/Documentati=
+on/firmware-guide/acpi/dsd/leds.rst
+> index 93db592c93c7..a97cd07d49be 100644
+> --- a/Documentation/firmware-guide/acpi/dsd/leds.rst
+> +++ b/Documentation/firmware-guide/acpi/dsd/leds.rst
+> @@ -15,11 +15,6 @@ Referring to LEDs in Device tree is documented in [vid=
+eo-interfaces], in
+>  "flash-leds" property documentation. In short, LEDs are directly referre=
+d to by
+>  using phandles.
+>
+> -While Device tree allows referring to any node in the tree [devicetree],=
+ in
+> -ACPI references are limited to device nodes only [acpi]. For this reason=
+ using
+> -the same mechanism on ACPI is not possible. A mechanism to refer to non-=
+device
+> -ACPI nodes is documented in [data-node-ref].
 > -
-> -       /* whine about and ignore invalid blks */
-> -       if (start > end || nid < 0 || nid >=3D MAX_NUMNODES) {
-> -               pr_warn("NUMA: Warning: invalid memblk node %d [mem %#010=
-Lx-%#010Lx]\n",
-> -                          nid, start, end - 1);
-> -               return 0;
-> -       }
-> -
-> -       if (mi->nr_blks >=3D NR_NODE_MEMBLKS) {
-> -               pr_err("NUMA: too many memblk ranges\n");
-> -               return -EINVAL;
-> -       }
-> -
-> -       mi->blk[mi->nr_blks].start =3D PFN_ALIGN(start);
-> -       mi->blk[mi->nr_blks].end =3D PFN_ALIGN(end - PAGE_SIZE + 1);
-> -       mi->blk[mi->nr_blks].nid =3D nid;
-> -       mi->nr_blks++;
-> -       return 0;
-> -}
-> -
-> -/**
-> - * numa_add_memblk - Add one numa_memblk to numa_meminfo
-> - * @nid: NUMA node ID of the new memblk
-> - * @start: Start address of the new memblk
-> - * @end: End address of the new memblk
-> - *
-> - * Add a new memblk to the default numa_meminfo.
-> - *
-> - * RETURNS:
-> - * 0 on success, -errno on failure.
-> - */
-> -int __init numa_add_memblk(int nid, u64 start, u64 end)
-> -{
-> -       return numa_add_memblk_to(nid, start, end, &numa_meminfo);
-> -}
-> -
->  static void __init node_mem_init(unsigned int node)
->  {
->         unsigned long start_pfn, end_pfn;
+>  ACPI allows (as does DT) using integer arguments after the reference. A
+>  combination of the LED driver device reference and an integer argument,
+>  referring to the "reg" property of the relevant LED, is used to identify
+> @@ -74,7 +69,7 @@ omitted. ::
+>                         Package () {
+>                                 Package () {
+>                                         "flash-leds",
+> -                                       Package () { ^LED, "led@0", ^LED,=
+ "led@1" },
+> +                                       Package () { "^LED.LED0", "^LED.L=
+ED1" },
+>                                 }
+>                         }
+>                 })
 > --
-> 2.34.1
->
+> 2.39.5
 >
 
