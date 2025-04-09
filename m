@@ -1,152 +1,214 @@
-Return-Path: <linux-acpi+bounces-12893-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12894-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2020A81FB5
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 10:27:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DADFA8207D
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 10:48:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 199D9882CB9
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 08:27:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2219D3AAF71
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 08:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB0925C6E6;
-	Wed,  9 Apr 2025 08:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E22A253F01;
+	Wed,  9 Apr 2025 08:47:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nllHcR2y"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA30B3D76;
-	Wed,  9 Apr 2025 08:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CC12528FC
+	for <linux-acpi@vger.kernel.org>; Wed,  9 Apr 2025 08:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744187248; cv=none; b=hg6t3ZfpKcS9jdPwH624ixTK94kz205k3uNeXlAMfIENVG+qHohtJ1MJZeuw9GP1NOTEIxBDQsk4wK7ffPCgb+kVRhKoegU/ZQ8CdNNSyyYAkFXuGfqL7xfvioSyjOHObNplfjV/NYCZP/GioOmIE6H5usGkvTC5LqrFNzAdWxE=
+	t=1744188475; cv=none; b=Njp7Kz1GZbdt26N2j5VQTahe8z6W1jyogYcfTUN0YsnsFVRG9ajOWxrJKbfuN5cUVJS7k3SldkAR2mFinvLjuDvxPV1SX/X5nefA6Oq9JpJUeC4jv+lCzfj4gP3gg2KtIyJ/4+eXhB207JRIo4ESwuNYhkGZ8dlcFxjedK8PNLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744187248; c=relaxed/simple;
-	bh=wEowYpxBCkDlmNfLtfV7R7h7B7J60vMLNj1+hOWh9KI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N6j+I58/FSqDeHvILMLE1Ar5uzTXomkePntUcfJAQARRSjnDGI4qDlH9ZtJFtxh9WfhYTxwMdrwA0nFwdyxwqtAGB1pAEHWhr317NRdIJ9R5tOvPIuWqEIBb96i69k5IVN0VG/5C7KuF0+ApgLrlx2vYNOxQZzb6cxmPKANKm3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-52413efd0d3so2815586e0c.2;
-        Wed, 09 Apr 2025 01:27:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744187245; x=1744792045;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GV/VIz9Dal9GidNfi3rZQigxcHcKa0Red1OY/otJy2Q=;
-        b=L3uFeBOxi/5xqwWopNdmj1OJ1ddmPKvJGo1jAZ2eKIMPHY7Lo2wI9YSWzSqbKQ1CfI
-         uejMT0w2+rrlnVZTkOq1TgeWl/4U68oXkIAMnV+E2qPoU+Nu7fGTlFPoY7j0dJWk1wn2
-         r/5/nkYPOVDy4JO0spsl6XuUOGRgN08GLnMUv3A0mc9fo3fkMABpy2iri/AbQ6fWyGOa
-         Kk7uC+8wgN1/jfi4bwoCIkx9SfKENxfpJq+KSjtejS/4Ee5NiTGTlUeAy31hTobGLuIp
-         IP5vE/6992JWRjdAOC5lLnmM0V5howOjw1A0xSGTsgJxYKBPHLDQHtHnWISZ82hCkKgC
-         1Kjg==
-X-Forwarded-Encrypted: i=1; AJvYcCUSy8cuXAa7zMSJdUkBj6M3f2wYEI8U97cguX4tpZ2v5sm8RbT+ICiptVp0QBLHCwxFd7cLemecfhBY5g==@vger.kernel.org, AJvYcCV5adHYsPQRYSXOKPGGXYpd32R8tIEhRbrIcXUAD0j7h6dNcnyHs3hYBJLsQy1/T/fzGn+8k2tRSvr6@vger.kernel.org, AJvYcCW+KQRIPxKlLv3Li+L6Dj/4GhS1gb2KFyzmO6g1VJi53nvvEC5oPh9UwkoYZ06r6ND+QUdbQbHdUkxD@vger.kernel.org, AJvYcCWOWzWpx/FRGT1b7yi4kVp/w00x6Y0j35I2GUmNQZfWzTCAsKurqTNVmbzdet0bBj7UR2pFeXluTY+lrPL1@vger.kernel.org, AJvYcCXXXjXLu1FIwF5TxFG+Hit9KvrM44gLWml1JSOVIUnQqekVdljecJGp4xbiJMh0XUqo9pKc/RHVPcKz@vger.kernel.org, AJvYcCXreR/KjnL3ySd7ycsz87Hu6e90Q1CEci6aGKH0EYDRjCe3xBoOnXuX/1/8c5TYeBy9tgKuuq1u+GO0@vger.kernel.org, AJvYcCXz2Mi7cwAlsviSJ15Qvzhsusy0zQWtLYqDehOCFBqPZbaO+B75ayE1MjkyRbqOwxJmnTBS6GwMqFKg@vger.kernel.org
-X-Gm-Message-State: AOJu0YyljY27lcdpJ7/+JeRVkSVYJSBbE1U44uqzKni/JW/XdCZ0TfyY
-	c1H+klqZ4fefuRUtXNRLgaorGuhd3/J+TkozNmaeION1jlOXumtvgXkKSB8z0TM=
-X-Gm-Gg: ASbGncvRhgg1+y4hGXRwWgCTaWVthYLws4ls2mTT1CjPsuDTarVGbTAVzRoGVMEMCWn
-	s+GbHpDujH4BbqbmUo6zKaKYBUr4S9tqNvRy/ER2vGIpynNXVuc/f3CE65ir4x49z+YY6CiL9aX
-	VOBcgJjuedFbmWwOIUA5csf46EJLocsBHxa+2FUWP5NZtNGy7ZQmfdlWTEx3dEQhJDLZYaBi/H9
-	PTa1EZhxHuQKrduieJ+SeppkUFFvmebGqs0cCm9h14yJaN3wy53V8TVLnAnrgwj8/aSq/53GWVt
-	hks3TIETyh1edGYhUadYaGFLWi6RLY4+Mc41ylQRaqsU27sg8rTZ5szWy5bWtcblnvh7VYKOStC
-	4lwY=
-X-Google-Smtp-Source: AGHT+IFcVZXyiP8/B1rVIrSkcRv8mQj8RHwtry4BOiWLiJp1mSvg6aS1Oeor/8p0rEeWJI315N9y+Q==
-X-Received: by 2002:a05:6102:5249:b0:4c4:dead:2f36 with SMTP id ada2fe7eead31-4c9c641cf68mr808049137.0.1744187245562;
-        Wed, 09 Apr 2025 01:27:25 -0700 (PDT)
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com. [209.85.222.52])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4c9c9738360sm99445137.2.2025.04.09.01.27.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Apr 2025 01:27:21 -0700 (PDT)
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-86b9d9b02cbso2741933241.1;
-        Wed, 09 Apr 2025 01:27:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUUqv5G+L8AuIm7B3hOp02/d1qa1unsVZT6svjMg13B/yK4F1EfugF10fP8hBsVsdlmspfchuWPygDIag==@vger.kernel.org, AJvYcCViGBnC27dEbVyuW61xF97FOBtX171KKU4AEceRg4GBDf+CmNn9YI+BxkOv9T30my19gfgA+PQSNV+G@vger.kernel.org, AJvYcCVnEW+0p5VXhDbUAjsLdE3WsclbLuXwn1I+Z7Fh3GIUmWr57+n3PaQbkNhOzy+1ZavuwdGeaXk82pjo@vger.kernel.org, AJvYcCWO2WPL14v4JQVubQtnk4dHVPZEbpmFu9I83V+SYyyjbl6vRqiDb2e2dRYAzrL2Z5AOUXGf/N6iqUTb@vger.kernel.org, AJvYcCWeM9tppTjo5uzswjIdYbk2Yd9+JjPxy+yNmJ+7ETyiekCeL7jLGq0y4yjNx5TrVckdmJHfA6excUqx@vger.kernel.org, AJvYcCWphhYNjzQqje5ZC4+S0JIjpzmLw+TUaDkzI9UnZEiBq3M8OSjZWO1foDgeaGowMBTMxPKoBHDstmPogaO8@vger.kernel.org, AJvYcCXbT/zobJgoXRTY/J7KJrhrsqyzIr1kHXOQ09hnosRQkyXnP8EIsIiM1+j2xHBqNsACoBDZzG8wd5S1@vger.kernel.org
-X-Received: by 2002:a05:6102:801b:b0:4bb:e8c5:b149 with SMTP id
- ada2fe7eead31-4c9c6a728e2mr725401137.7.1744187236860; Wed, 09 Apr 2025
- 01:27:16 -0700 (PDT)
+	s=arc-20240116; t=1744188475; c=relaxed/simple;
+	bh=UD9Mocissa4fokiQzuQ/tlOvVyhhG/hBqSqiFoJFB+s=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Zo1BIoDT3gxzt16eqRWh2mI42x53bRD2jJ8lE0rDw0pVxcIVGRnIAsY6HEUsFmsLZo5ZiRNMeWq/HAhs3prDps4t/2xAlF0EurPCj/A5J3QtdOJOLFdqiQf0bDYlIzl14Vw6QvK5Tcoz7v7lYn59OnX9h4vZGx1VNlPXPBHLqzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nllHcR2y; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744188474; x=1775724474;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=UD9Mocissa4fokiQzuQ/tlOvVyhhG/hBqSqiFoJFB+s=;
+  b=nllHcR2yIOyeBuOe2u/FreeNp/kwXPDkHD8Q1/vr4/m7ym0Xfk9ZFB9O
+   eBML+XMBKl+IcQKP1YJaVDSCAhzxK9U9yKdtRKtxAdTvJImuhCbtcjVtw
+   JSYMrOLMHPQDFuq+WuFkLyYkZPczN0pZSFt1taul9owuYNkLq1MVhyFE8
+   gmp0f6YaZg7v4vNS0qHgMStYoh/mTKsfLdaoXFxpkrlfRJaCNDAV7mu3u
+   TEPJHsyKIZirQTz48n4AJJGO7DWYrmkLxsDb3VvbVGMzHBJR2nvyLCZhM
+   qgLVVZ6EwLFA8yBBSZVtSZW0wtURNyE3qKXbdlM/G43KVqDNVD77h8rwo
+   w==;
+X-CSE-ConnectionGUID: r1adSvXgQCSkX7krRnId0A==
+X-CSE-MsgGUID: b6yZNgF/S/Opv28zzcM7GA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="57022892"
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
+   d="scan'208";a="57022892"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 01:47:53 -0700
+X-CSE-ConnectionGUID: SCAUA//IQseSMTq2JZxCOA==
+X-CSE-MsgGUID: L45bQcjBSLCLJv7rB/STGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
+   d="scan'208";a="128260047"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 01:47:51 -0700
+Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 54F0211FB1F;
+	Wed,  9 Apr 2025 11:47:48 +0300 (EEST)
+Received: from sailus by punajuuri.localdomain with local (Exim 4.96)
+	(envelope-from <sakari.ailus@linux.intel.com>)
+	id 1u2R64-00FLNL-0q;
+	Wed, 09 Apr 2025 11:47:48 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: linux-acpi@vger.kernel.org
+Cc: Len Brown <lenb@kernel.org>,
+	andriy.shevchenko@linux.intel.com,
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Subject: [PATCH 1/1] Documentation: ACPI: Use all-string data node references
+Date: Wed,  9 Apr 2025 11:47:38 +0300
+Message-Id: <20250409084738.3657079-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250407145546.270683-1-herve.codina@bootlin.com>
- <20250407145546.270683-16-herve.codina@bootlin.com> <19f1a382-1b6b-42bd-a548-a1a5644c9a1b@lunn.ch>
- <20250408162603.02d6c3a1@bootlin.com> <D91CSNC07NYM.3KC467K0OZ4GG@bootlin.com>
- <c14dd5c6-2dae-4398-89a9-342e7a25bb30@lunn.ch> <D91XV1I4CY37.20T12FMZ5QLQ5@bootlin.com>
-In-Reply-To: <D91XV1I4CY37.20T12FMZ5QLQ5@bootlin.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 9 Apr 2025 10:27:05 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVtrmh207usW45c0v5EmxgM+JgfQ=m55tXXNT0m4o5aGg@mail.gmail.com>
-X-Gm-Features: ATxdqUFWOu-H2GpmZpjc1_rOXM2aP80PMBbJa2DlVS33R9lalUc2jSOHZ1dg-j8
-Message-ID: <CAMuHMdVtrmh207usW45c0v5EmxgM+JgfQ=m55tXXNT0m4o5aGg@mail.gmail.com>
-Subject: Re: [PATCH 15/16] misc: lan966x_pci: Add dtso nodes in order to
- support SFPs
-To: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Herve Codina <herve.codina@bootlin.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
-	Derek Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Wed, 9 Apr 2025 at 09:44, Thomas Petazzoni
-<thomas.petazzoni@bootlin.com> wrote:
-> On Tue Apr 8, 2025 at 5:38 PM CEST, Andrew Lunn wrote:
-> > "HW blocks inside an SoC." That would be the SoC .dtsi file. Anything
-> > outside of the SoC is in the .dts file. OEM vendors take the SoC,
-> > build a board around it, and name there .dts file after the board,
-> > describing how the board components are connected to the SoC.
-> >
-> > So..
-> >
-> > So by PCI endpoint, you mean the PCIe chip? So it sounds like there
-> > should be a .dtsi file describing the chip.
-> >
-> > Everything outside of the chip, like the SFP cages, are up to the
-> > vendor building the board. I would say that should be described in a
-> > .dtso file, which describes how the board components are connected to
-> > the PCIe chip? And that .dtso file should be named after the board,
-> > since there are going to many of them, from different OEM vendors.
->
-> Indeed, that makes sense. So if I get correctly your suggestion,
-> instead of having a .dtso that describes everything, it should be
-> split between:
->
->  - A .dtsi that describes what's inside the LAN996x when used in PCI
->    endpoint mode
->
->  - A .dtso that includes the above .dtsi, and that describes what on
->    the PCI board around the LAN966x.
->
-> Correct?
+Document that references to data nodes shall use string-only references
+instead of a device reference and a succession of the first package
+entries of hierarchical data node references.
 
-Sounds good to me!
+Fixes: 9880702d123f ("ACPI: property: Support using strings in reference properties")
+Cc: stable@vger.kernel.org # for 6.8 and later
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+---
+ .../acpi/dsd/data-node-references.rst         | 26 +++++++++----------
+ .../firmware-guide/acpi/dsd/graph.rst         | 11 +++-----
+ .../firmware-guide/acpi/dsd/leds.rst          |  7 +----
+ 3 files changed, 17 insertions(+), 27 deletions(-)
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+index 8d8b53e96bcf..8d91fab37d89 100644
+--- a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
++++ b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+@@ -12,11 +12,14 @@ ACPI in general allows referring to device objects in the tree only.
+ Hierarchical data extension nodes may not be referred to directly, hence this
+ document defines a scheme to implement such references.
+ 
+-A reference consist of the device object name followed by one or more
+-hierarchical data extension [dsd-guide] keys. Specifically, the hierarchical
+-data extension node which is referred to by the key shall lie directly under
+-the parent object i.e. either the device object or another hierarchical data
+-extension node.
++A reference to a _DSD hierarchical data node consist of the device object
++reference followed by a dot (".") and the data node object name as a string. Do
++not use non-string references as this will result in a copy of the hierarchical
++data node itself, not a reference!
++
++The hierarchical data extension node which is referred to shall have a
++followable path of hierarchical data node reference under a device it resides
++[dsd-guide].
+ 
+ The keys in the hierarchical data nodes shall consist of the name of the node,
+ "@" character and the number of the node in hexadecimal notation (without pre-
+@@ -33,11 +36,9 @@ extension key.
+ Example
+ =======
+ 
+-In the ASL snippet below, the "reference" _DSD property contains a
+-device object reference to DEV0 and under that device object, a
+-hierarchical data extension key "node@1" referring to the NOD1 object
+-and lastly, a hierarchical data extension key "anothernode" referring to
+-the ANOD object which is also the final target node of the reference.
++In the ASL snippet below, the "reference" _DSD property contains a string
++reference to a hierarchical data extension node ANOD under DEV0 under the parent
++of DEV1 device object. ANOD is also the final target node of the reference.
+ ::
+ 
+ 	Device (DEV0)
+@@ -76,10 +77,7 @@ the ANOD object which is also the final target node of the reference.
+ 	    Name (_DSD, Package () {
+ 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+ 		Package () {
+-		    Package () {
+-			"reference", Package () {
+-			    ^DEV0, "node@1", "anothernode"
+-			}
++		    Package () { "reference", "^DEV0.ANOD" }
+ 		    },
+ 		}
+ 	    })
+diff --git a/Documentation/firmware-guide/acpi/dsd/graph.rst b/Documentation/firmware-guide/acpi/dsd/graph.rst
+index b9dbfc73ed25..d6ae5ffa748c 100644
+--- a/Documentation/firmware-guide/acpi/dsd/graph.rst
++++ b/Documentation/firmware-guide/acpi/dsd/graph.rst
+@@ -66,12 +66,9 @@ of that port shall be zero. Similarly, if a port may only have a single
+ endpoint, the number of that endpoint shall be zero.
+ 
+ The endpoint reference uses property extension with "remote-endpoint" property
+-name followed by a reference in the same package. Such references consist of
+-the remote device reference, the first package entry of the port data extension
+-reference under the device and finally the first package entry of the endpoint
+-data extension reference under the port. Individual references thus appear as::
++name followed by a string reference in the same package. [data-node-ref]::
+ 
+-    Package() { device, "port@X", "endpoint@Y" }
++    "device.datanode"
+ 
+ In the above example, "X" is the number of the port and "Y" is the number of
+ the endpoint.
+@@ -109,7 +106,7 @@ A simple example of this is show below::
+ 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+ 		Package () {
+ 		    Package () { "reg", 0 },
+-		    Package () { "remote-endpoint", Package() { \_SB.PCI0.ISP, "port@4", "endpoint@0" } },
++		    Package () { "remote-endpoint", "\\_SB.PCI0.ISP.EP40" },
+ 		}
+ 	    })
+ 	}
+@@ -141,7 +138,7 @@ A simple example of this is show below::
+ 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+ 		Package () {
+ 		    Package () { "reg", 0 },
+-		    Package () { "remote-endpoint", Package () { \_SB.PCI0.I2C2.CAM0, "port@0", "endpoint@0" } },
++		    Package () { "remote-endpoint", "\\_SB.PCI0.I2C2.CAM0.EP00" },
+ 		}
+ 	    })
+ 	}
+diff --git a/Documentation/firmware-guide/acpi/dsd/leds.rst b/Documentation/firmware-guide/acpi/dsd/leds.rst
+index 93db592c93c7..a97cd07d49be 100644
+--- a/Documentation/firmware-guide/acpi/dsd/leds.rst
++++ b/Documentation/firmware-guide/acpi/dsd/leds.rst
+@@ -15,11 +15,6 @@ Referring to LEDs in Device tree is documented in [video-interfaces], in
+ "flash-leds" property documentation. In short, LEDs are directly referred to by
+ using phandles.
+ 
+-While Device tree allows referring to any node in the tree [devicetree], in
+-ACPI references are limited to device nodes only [acpi]. For this reason using
+-the same mechanism on ACPI is not possible. A mechanism to refer to non-device
+-ACPI nodes is documented in [data-node-ref].
+-
+ ACPI allows (as does DT) using integer arguments after the reference. A
+ combination of the LED driver device reference and an integer argument,
+ referring to the "reg" property of the relevant LED, is used to identify
+@@ -74,7 +69,7 @@ omitted. ::
+ 			Package () {
+ 				Package () {
+ 					"flash-leds",
+-					Package () { ^LED, "led@0", ^LED, "led@1" },
++					Package () { "^LED.LED0", "^LED.LED1" },
+ 				}
+ 			}
+ 		})
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.39.5
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 
