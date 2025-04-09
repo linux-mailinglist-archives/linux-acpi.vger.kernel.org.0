@@ -1,249 +1,139 @@
-Return-Path: <linux-acpi+bounces-12906-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12907-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE37A8272E
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 16:07:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E399DA82761
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 16:14:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25A4E3A8CA3
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 14:07:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85AB03AD921
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 14:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F206726560D;
-	Wed,  9 Apr 2025 14:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFF425F796;
+	Wed,  9 Apr 2025 14:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OWx4g3ME"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IV/c4HiR"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDBB264A76
-	for <linux-acpi@vger.kernel.org>; Wed,  9 Apr 2025 14:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DCB729A0;
+	Wed,  9 Apr 2025 14:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744207641; cv=none; b=Y+z00xFgP+x2f0gFlCGjgQeSDx+EJlEiEvilUIIcPx4WZXsGfWK1MXhDacTULeJwinLuJjUJVduqWuPikk6o1z5c07BrKUb+2UQHwWKiX7K1lRSwauBuiiyghYnkiMfQoMu5+ONZW+bfzhgQ1f7fDf6ifPuH5exxi5RaccF9fl8=
+	t=1744207970; cv=none; b=pCoZbsDpPwJLj/GmwwSJS1Mcz0K0Wde8W6zSQg13QKL5A+Vth5J8BpLvs1b0NsktM9Yd0eSKAP4GR15u64rx7KiU5h8r6vAVxPvWlZ2NAF2tSBydtPzVhqxiUnX7QAqnIW39CH604R/auu6KLzvlj4fw49vyElACKzGeX4Z0JEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744207641; c=relaxed/simple;
-	bh=Ylnyd4UKcWGGSded241Wo5qaAuR45DuBA/5qomazLSo=;
+	s=arc-20240116; t=1744207970; c=relaxed/simple;
+	bh=Vw/9BbWr42/S2TmbmC0tAGAkxyiMzz+D7XbIESFVGBo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nIb30hgs0LMX5cH+snzbAvKZjoi1jWD6nELknPoNOptZD8VwFLPd3pOF58rTokaNoTmU1ePbUS/UFQlE/DiFTdMz5SnPe1XGpOTYxOPuKAHzIWGSzJv1kdIRnCRvYSQRgzB6piPA1uMMMTTMOXFNPAvW6gNamPcV5ra6lCAag/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OWx4g3ME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513B9C4CEE2
-	for <linux-acpi@vger.kernel.org>; Wed,  9 Apr 2025 14:07:21 +0000 (UTC)
+	 To:Cc:Content-Type; b=tXn4HZ/fud3I84Bk66GXWjh+ebF8UfbmZvVRKouDj8rEXm9DFmg5N4Ax7wkqt0pjQILwz5FSfU2zYfeUgRfz7/DlVM2ajE6ASEtbfGx5T4299tOFybZ06vML3KzhN/R18judw0o07XwW6qDoj+gAbP84T9sBo5khHS70BGnD1v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IV/c4HiR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD98C4CEE8;
+	Wed,  9 Apr 2025 14:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744207641;
-	bh=Ylnyd4UKcWGGSded241Wo5qaAuR45DuBA/5qomazLSo=;
+	s=k20201202; t=1744207969;
+	bh=Vw/9BbWr42/S2TmbmC0tAGAkxyiMzz+D7XbIESFVGBo=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=OWx4g3MEBkwCkQjGlpvkF3HUVx6Z1sIHzOdLdX10adWkx+g0B6zdZlx33cp3dxgwP
-	 /gjfg0BX6L+BiiCb5hw19JCGLSUXr96uGX5UlZXYb4YKkF3dsYtHMpQktcdA+rLOEM
-	 91PasKejLoLhEoVNXq2ugGu9iXygWKuZPGYAgTdyPDeMT6zGct+npfxGXo7D+y1X9A
-	 ZDgi3JoHRbPr27LecvzzQZBaaIG1zTxutKOUp696+915hs+/OotKJuYTRvhi//RPei
-	 BJ0b4JQBcbCnNEO2L8rApRUWxUlbAZean6PcZddfF2ZfyexbLLucKuRluzITXC6SI6
-	 azYBmUJp6IoTw==
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-2c12b7af278so548924fac.0
-        for <linux-acpi@vger.kernel.org>; Wed, 09 Apr 2025 07:07:21 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXAku9Hz1VVN69tB0+V0r7DsKMZS91KtWR5TzNAxdMGbGat1AjcKUvNJEot44bS2KqupMzZCzwMH60p@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzfeud8qO5Wlh7Bxh4Et1OSovTF5K2fFiYb0CR5dPImR5pUxS2z
-	a/h9TKIf1RuITUaX+lK8xHRoTJSL/rSYY9XTFUAAvSU/VgLfZUhnsaBPxQWWUxeHTLuwmgA+nvp
-	hV7kwi9jSWnRHGYoVCEQgNwfhTh8=
-X-Google-Smtp-Source: AGHT+IGC/A7sU/5qPA97lgZb2/LjsIdD+DX7DdMmLvr2fSxt/ypxFH1MadKCySziCcmUvWO1zSybBgjLcqyol+Y35h0=
-X-Received: by 2002:a05:6870:7e8c:b0:2b8:5d9e:d0d9 with SMTP id
- 586e51a60fabf-2d0648c58dbmr3672518fac.4.1744207640586; Wed, 09 Apr 2025
- 07:07:20 -0700 (PDT)
+	b=IV/c4HiRJ1k4xHbzWqZebkS9cmZrW2MxrIfo8hk4SRuOZ9OmYXKFumnZ/6bXf/NP8
+	 zZpq2D5hvU4Fqw2zDQI0ZMMgUaogUdCJM25sCz8I3xLkO/QucaL+hbuRMAV7JK2r3e
+	 1Bu+xdI7qOqIwM182WRgwb0CFEaJR5l55cDXUseoX3AMueFSYueaPLaLYr1NxA/jVz
+	 E1BsE9ZVmHzzzdSxD5QAbea53PWbHiW9nokMyh0A5A/YXTFHbDIyKS/+nXVibjewhE
+	 xh46uaYeSai9iL/PnDY/EOFC6cpFME14udNWDODGVc1Q7w2JcnQDSmGx7LAqjs3lFU
+	 IiUPRoo/xAc5Q==
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-2c818343646so4022740fac.3;
+        Wed, 09 Apr 2025 07:12:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUJMF2EgxNyB5xvDLyIwF/7/I8Ml0tvZrz0SU/vsAbfOZwguvs0u7314L+9My948X9DBd4ED0bRCVAv@vger.kernel.org, AJvYcCWW0DMPLDh/kbcSnZJR//Gitw/ymytvszYPd3bcZGXXNBGw0pWSAtEUqrZALJBlYxTZw3sE1WBqIhSyag==@vger.kernel.org, AJvYcCX1VbqQ1T/31jyaRnv1gYgUHHOI6GTsuUWnZAMfVYOt5KjaOlz90sa4yTytrRXQObkqsI3cYKgUfF4CFDCI@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGkNaR23hNpqbuU92OFnm6rIKNcL2INri1ZcsCFH0UKETlJEHO
+	zUaykS1VSHsj3TWfWkedNHD5a1shOd024IP33N6FF5v5DwOeuejez+ouX7QITERVyVIUHtW29gf
+	5poZCIWmLbN5oaRRfedu8ZIVhugA=
+X-Google-Smtp-Source: AGHT+IEfbq1b6uZ6OUCvuexDfaJqZBDkEEa57XBGYlotEXlempsdj2+s4v7wD/x2wV4frJrZKXhB+Es/LZ+fKQADQ4Y=
+X-Received: by 2002:a05:6871:a112:b0:29d:c709:a76c with SMTP id
+ 586e51a60fabf-2d08dccf9e9mr1872958fac.4.1744207968972; Wed, 09 Apr 2025
+ 07:12:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <Z_Qd0x6bLSQjJ7Rw@smile.fi.intel.com> <CAJZ5v0j2Y3vPZhUGJmcWzn6esg9zv5an0KPEN4QfQuyGrd5=YQ@mail.gmail.com>
- <Z_Qeot7pps5Q4vx7@smile.fi.intel.com> <LV8PR11MB86980990221C597E01BAEB7980B52@LV8PR11MB8698.namprd11.prod.outlook.com>
- <LV8PR11MB8698978FFF89ACBEF253667680B52@LV8PR11MB8698.namprd11.prod.outlook.com>
- <Z_ZY_UA7ypFzpT0t@smile.fi.intel.com> <Z_Z9mnDbypQ0KLF8@smile.fi.intel.com>
-In-Reply-To: <Z_Z9mnDbypQ0KLF8@smile.fi.intel.com>
+References: <20250407183656.1503446-1-superm1@kernel.org>
+In-Reply-To: <20250407183656.1503446-1-superm1@kernel.org>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 9 Apr 2025 16:07:09 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jWu4rEjO1bYzaTkF3Edcmnyi+3yEz9WNYzb8+3J74hEw@mail.gmail.com>
-X-Gm-Features: ATxdqUERXfaraGx-9xin0b4-ewvt4t5EgbfCJmIz4mI_sEqHao4GnjegsWdn20Q
-Message-ID: <CAJZ5v0jWu4rEjO1bYzaTkF3Edcmnyi+3yEz9WNYzb8+3J74hEw@mail.gmail.com>
-Subject: Re: ACPICA compilation error on x86_64_defconfig (W=1 build)
-To: "Shevchenko, Andriy" <andriy.shevchenko@intel.com>
-Cc: "Dumbre, Saket" <saket.dumbre@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	"Moore, Robert" <robert.moore@intel.com>, "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
-	"acpica-devel@lists.linux.dev" <acpica-devel@lists.linux.dev>
+Date: Wed, 9 Apr 2025 16:12:37 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0g0w58KDpAJZq1RkM=hDg5W3QcoDPJsCfT3kEKntJ1d0A@mail.gmail.com>
+X-Gm-Features: ATxdqUFO6iRoisnzTjoDivu2_kLVOfSVcGADUXAQj7WpXtpnpd_FrOi6U7v-kFg
+Message-ID: <CAJZ5v0g0w58KDpAJZq1RkM=hDg5W3QcoDPJsCfT3kEKntJ1d0A@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] ACPI: Add missing prototype for non
+ CONFIG_SUSPEND/CONFIG_X86 case
+To: Mario Limonciello <superm1@kernel.org>
+Cc: "Rafael J . Wysocki" <rjw@rjwysocki.net>, Linus Walleij <linus.walleij@linaro.org>, 
+	"open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	linux-acpi@vger.kernel.org, Basavaraj Natikar <Basavaraj.Natikar@amd.com>, 
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, 
+	kernel test robot <lkp@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 9, 2025 at 4:01=E2=80=AFPM Shevchenko, Andriy
-<andriy.shevchenko@intel.com> wrote:
+On Mon, Apr 7, 2025 at 9:02=E2=80=AFPM Mario Limonciello <superm1@kernel.or=
+g> wrote:
 >
-> Note, I have posted two much better solutions in that bug report thread.
-
-Which bug report thread do you mean?
-
-> Please, choose one and fix, it prevents kernel from building...
-
-With Clang-19 and 'make W=3D1' that is.
-
-> On Wed, Apr 09, 2025 at 02:24:45PM +0300, Shevchenko, Andriy wrote:
-> > GCC should ignore all clang specific pragmas as far as I know.
-> >
-> > But this seems to me the not the best solution either. What code needs =
-is to
-> > have some refactoring to make sure the variable is used or not defined =
-and used
-> > at all. Unfortunately, I am not familiar with ACPICA to propose anythin=
-g right
-> > now, though.
-> >
-> > On Tue, Apr 08, 2025 at 09:34:36PM +0300, Dumbre, Saket wrote:
-> > > I am not sure about the Linux environment specifics like Andy describ=
-ed in the
-> > > previous conversation, but if GCC or some other compiler throws an er=
-ror in the
-> > > code with #pragma for clang, then may I suggest using this instead:
-> > >
-> > > #pragma clang diagnostic push
-> > > #if defined(__clang__) && __clang__ >=3D n (replace n with the least =
-version
-> > > number which introduces this new warning type)
-> > > #pragma clang diagnostic ignored "-Wunused-but-set-variable"
-> > > #endif
-> > > u32 num_carats;
-> > > #pragma clang diagnostic pop
-> > >
-> > > =E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=
-=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=
-=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=
-=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=
-=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=
-=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=
-=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=
-=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=
-=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=
-=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81
-> > > From: Dumbre, Saket <saket.dumbre@intel.com>
-> > > Sent: Tuesday, April 8, 2025 11:11 AM
-> > > To: Shevchenko, Andriy <andriy.shevchenko@intel.com>; Rafael J. Wysoc=
-ki
-> > > <rafael@kernel.org>
-> > > Cc: Moore, Robert <robert.moore@intel.com>; Wysocki, Rafael J
-> > > <rafael.j.wysocki@intel.com>; linux-acpi@vger.kernel.org
-> > > <linux-acpi@vger.kernel.org>; acpica-devel@lists.linux.dev
-> > > <acpica-devel@lists.linux.dev>
-> > > Subject: Re: ACPICA compilation error on x86_64_defconfig (W=3D1 buil=
-d)
-> > >
-> > > Hi Andy and Rafael,
-> > >
-> > > This issue is a duplication of an Apple ecosystem-based (ARM + M-seri=
-es micro
-> > > architecture) ACPICA GitHub Issue, which I was waiting on a response =
-from the
-> > > contributor/submitter to move ahead to resolve it:
-> > > https://github.com/acpica/acpica/issues/973
-> > >
-> > > I don't see a platform specific file for Clang/LLVM in ACPICA (only f=
-or GCC and
-> > > MSVC), so I think the worst-case untidy solution would be to locally =
-patch this
-> > > warning-turned-error by suppressing this warning type if the compiler=
- is Clang/
-> > > LLVM.
-> > >
-> > > It would look somewhat better to move that line all the way down afte=
-r all the
-> > > other definitions/declarations just before any execution line and wra=
-p it with
-> > > a #pragma something along the lines:
-> > >
-> > > #pragma clang diagnostic push
-> > > #pragma clang diagnostic ignored "-Wunused-but-set-variable"
-> > > u32 num_carats;
-> > > #pragma clang diagnostic pop
-> > >
-> > > I am just not sure if this is the only place in the ACPICA code that =
-generates
-> > > this warning type and depending on the answer, this fix could be impl=
-emented at
-> > > a wider/global scale, but please give this hacky fix a try and let me=
- know if
-> > > it resolves that. Thanks a lot!
-> > >
-> > >
-> > > Kind regards,
-> > >
-> > > Saket Dumbre
-> > >
-> > >
-> > > =E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=
-=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=
-=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=
-=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=
-=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=
-=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=
-=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=
-=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=
-=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=
-=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81
-> > > From: Shevchenko, Andriy
-> > > Sent: Monday, April 7, 2025 11:51 AM
-> > > To: Rafael J. Wysocki
-> > > Cc: Dumbre, Saket; Moore, Robert; Wysocki, Rafael J;
-> > > linux-acpi@vger.kernel.org; acpica-devel@lists.linux.dev
-> > > Subject: Re: ACPICA compilation error on x86_64_defconfig (W=3D1 buil=
-d)
-> > >
-> > > On Mon, Apr 07, 2025 at 08:49:41PM +0200, Rafael J. Wysocki wrote:
-> > > > On Mon, Apr 7, 2025 at 8:47=E2=80=AFPM Andy Shevchenko
-> > > > <andriy.shevchenko@intel.com> wrote:
-> > > > >
-> > > > > v6.15-rc1 (but seems older should also be problematic) fails to c=
-ompile by
-> > > > > Clang 19 with `make W=3D1`.
-> > > > >
-> > > > >   CC      drivers/acpi/acpica/nsaccess.o
-> > > > >   drivers/acpi/acpica/nsaccess.c:295:6: error: variable 'num_cara=
-ts' set
-> > > but not used [-Werror,-Wunused-but-set-variable]
-> > > > >     295 |         u32 num_carats;
-> > > > >         |             ^
-> > > > >   1 error generated.
-> > > > >
-> > > > > I looked briefly in the code and I have no idea how to fix this, =
-as
-> > > probably
-> > > > > __maybe_unused not an option for ACPICA. Hence this report.
-> > > > >
-> > > > > Note, the in-tree defconfig is in use:
-> > > > >
-> > > > >         git checkout v6.15-rc1
-> > > > >         make x86_64_defconfig
-> > >
-> > > > >         make W=3D1
-> > >
-> > > Since it's a clang, this should have also something like LLVM=3D1.
-> > >
-> > > > > should trigger it.
-> > >
-> > > --
-> > > With Best Regards,
-> > > Andy Shevchenko
-> > >
-> > >
-> >
-> > --
-> > With Best Regards,
-> > Andy Shevchenko
-> >
-> >
+> From: Mario Limonciello <mario.limonciello@amd.com>
 >
+> acpi_register_lps0_dev() and acpi_unregister_lps0_dev() may be used
+> in drivers that don't require CONFIG_SUSPEND or compile on !X86.
+>
+> Add prototypes for those cases.
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202502191627.fRgoBwcZ-lkp@i=
+ntel.com/
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v3:
+>  * Add struct acpi_s2idle_dev_ops outside defines too
+> ---
+>  include/linux/acpi.h | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 3f2e93ed97301..fc372bbaa5476 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -1125,13 +1125,13 @@ void acpi_os_set_prepare_extended_sleep(int (*fun=
+c)(u8 sleep_state,
+>
+>  acpi_status acpi_os_prepare_extended_sleep(u8 sleep_state,
+>                                            u32 val_a, u32 val_b);
+> -#if defined(CONFIG_SUSPEND) && defined(CONFIG_X86)
+>  struct acpi_s2idle_dev_ops {
+>         struct list_head list_node;
+>         void (*prepare)(void);
+>         void (*check)(void);
+>         void (*restore)(void);
+>  };
+> +#if defined(CONFIG_SUSPEND) && defined(CONFIG_X86)
+>  int acpi_register_lps0_dev(struct acpi_s2idle_dev_ops *arg);
+>  void acpi_unregister_lps0_dev(struct acpi_s2idle_dev_ops *arg);
+>  int acpi_get_lps0_constraint(struct acpi_device *adev);
+> @@ -1140,6 +1140,13 @@ static inline int acpi_get_lps0_constraint(struct =
+device *dev)
+>  {
+>         return ACPI_STATE_UNKNOWN;
+>  }
+> +static inline int acpi_register_lps0_dev(struct acpi_s2idle_dev_ops *arg=
+)
+> +{
+> +       return -ENODEV;
+> +}
+> +static inline void acpi_unregister_lps0_dev(struct acpi_s2idle_dev_ops *=
+arg)
+> +{
+> +}
+>  #endif /* CONFIG_SUSPEND && CONFIG_X86 */
+>  void arch_reserve_mem_area(acpi_physical_address addr, size_t size);
+>  #else
 > --
-> With Best Regards,
-> Andy Shevchenko
->
->
->
+
+Applied along with the [2/2] as 6.16 material, thanks!
 
