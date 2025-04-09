@@ -1,154 +1,184 @@
-Return-Path: <linux-acpi+bounces-12928-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12929-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA95A83097
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 21:34:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B54A83282
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 22:40:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 736733BEB91
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 19:34:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E79C01B63E81
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 20:40:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8491F2BAB;
-	Wed,  9 Apr 2025 19:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4ED233718;
+	Wed,  9 Apr 2025 20:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a+S20Ogz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nen5rwmR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D9E143748;
-	Wed,  9 Apr 2025 19:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336C121A44D;
+	Wed,  9 Apr 2025 20:37:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744227265; cv=none; b=VAQlniUQ4EDCDTsRYHEWKzMGmxECLd2VeBKsA+jv41RZ3byLiIFL4d9iLSD3+r/QY/DIJpEg2XU33El+tOvwlBofBVRzJMhFh07K9zbygKCqKZS/8kOPGG08ur2rmAImvnpwWghv+LnlFo+Cs0Zuc8uaCnTHaD2npxfhOd5CK4s=
+	t=1744231079; cv=none; b=newB6XfVldrUlc+ZLF9nx5z6tCECx66/Ft4TpO3rH1tlMv3SGmHVVb4VqJdJNM8ppinWnrS0T49B//y8r7zDzF7NU6wMjZ5TH3JO2goUz3tsaZHQQDyIE/YBaCqpaUoLgKkggIWJLAOQHJwLmuXsOHBJ/PHaDzUUk4M+OUdk+B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744227265; c=relaxed/simple;
-	bh=2vOJoxdNP20mQK3UiS0RfjI+E8Wm/mByxTHPEUjCAOs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tz/GyG1b9QyvCZFWO4H+HME+epkiTI8qvogCfrBa0pm+Z7LfwXiSum9Lp27/3Dse9FSc7+l+B165HxBf/16Yof5sACyj9vIQsQRUCCJ9tPHdtmYCc9HEaB3HguwoUTVmL4SQzb84ymp75RFe94Se/1gfAvHClY2gVuF115MhHQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a+S20Ogz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D694C4CEE9;
-	Wed,  9 Apr 2025 19:34:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744227265;
-	bh=2vOJoxdNP20mQK3UiS0RfjI+E8Wm/mByxTHPEUjCAOs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=a+S20Ogz2aBgFaushLkB5eVBNyZIgUSX4KMnHqk+g7Ec4GeJWIdSdhuNiorMwTW49
-	 FQ+wxLaq7NOAe8qKD+sV4ApTiICjCssaVX33XA8+XmqoOGTBVMwqEXhJyybgtn3FbM
-	 YcGmv9OJmrp0B0gg2m/dehIMUYpIsDxfTrLupo7nslm9fIqMMQyopuzGR1OoiHz6eP
-	 QfIwE2UPlJZRqhfjsp8PwfXgZX6P5aXfuZfJ6SOoN5j9rRrLtu2V25gC0vTJKhSpUU
-	 xpSXYBDkAfYFOhpd4ujWxHaj23lCHcsTEenxg5j53OpDM+EtdhDAvZfwRhW7aW7tNh
-	 EXec9K/yJr+fw==
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2a01bcd0143so9188072fac.2;
-        Wed, 09 Apr 2025 12:34:24 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVmxCe4h6zLy0HgwNOCN8+H/DkB1HA+wnw1hpHhUv70gOW8onD3MsVHPgA2UzptKBFJOHQbwKgvPRoR@vger.kernel.org, AJvYcCXQ5dWGsj+UztbxBmkVvPDrLkqrVCR/9gaF16VvEaakX+RDm55usDUfaklIWd5Prq2WwL5j0Zv1OSE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0LiT3y3BtuGWTjPTtabEE9Ma3wVHPvKRrXYI7zLwZzEFl7Qnu
-	pIQynp+p2N5hr6H0J+9SmkXJBExmvwCgw4jEkqx/3c1KtTK/0vH87gfmpoYRrnX/rwjRemAr9yH
-	rciknaA4RUetJZhBj6KoDMsOOa5c=
-X-Google-Smtp-Source: AGHT+IF1EOTSsHu6PwO7CQca/F8ZGj5qwdWoncQouS6lp4WoUO8bFBjNu283luRGQSJDHNAzpoZaPGEr9HneQ1apEeM=
-X-Received: by 2002:a05:6871:e418:b0:2c2:260:d77b with SMTP id
- 586e51a60fabf-2d08dcdf089mr2503514fac.5.1744227264335; Wed, 09 Apr 2025
- 12:34:24 -0700 (PDT)
+	s=arc-20240116; t=1744231079; c=relaxed/simple;
+	bh=CAXSpAZiU5+MxLAENDKgnjCho9fYHTnR7g++cHgS9+8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=dUAmNPlofSQpQxRqaPztfQs3OQdsJ+yaAEhKQhnzvRSjz58gXeZeCQJBuE3LKRao3hEjWkHRDQuD0J/7D9tzHBbcsZmya4/CAd/Rr6XHcdJ+gnV0hQowDRph1NOcsPVGT5Q960QCHbeNEvaWjwwKLSFurD9bRfGOIoEwNIarQqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nen5rwmR; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744231076; x=1775767076;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=CAXSpAZiU5+MxLAENDKgnjCho9fYHTnR7g++cHgS9+8=;
+  b=Nen5rwmRJtbq+0g20VUUia7XoQ2CquEKHqF4Y1FJyFxna8I9+LWB+m45
+   nZ9oD2e0/CdqhXTB3vcEuJVOPf7zumEOY0QKwh641U9mM/YdXDQtHR7hJ
+   yB/EiNyxSqLt4hL6mOsD4L87r1B2osqX7QVQgPdTbOQHVeXPDn5FAExmQ
+   bUicv2Lzom35d1QcXRDMttu8kJGKaTvUYDFCIkPxuPkNfXf0lNwESAfs7
+   hlVuDmbhkoRTkChuvBaG9Px948RbtSdHPhP3txSGzwO6s6IiDl+IEyho1
+   HkZJasNlDsWkDWOSDZAtR1oL8sLNFXuGyM0hDeCwKFNDD89AvI0KSoEwt
+   A==;
+X-CSE-ConnectionGUID: kZ6bm1opT1uFaGs1pZPBoQ==
+X-CSE-MsgGUID: J95eXg7oRByKh/2sQc/cYw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="45440845"
+X-IronPort-AV: E=Sophos;i="6.15,201,1739865600"; 
+   d="scan'208";a="45440845"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 13:37:53 -0700
+X-CSE-ConnectionGUID: fFAD0BZaRO2bCpUgFFRSjQ==
+X-CSE-MsgGUID: tiNd9zcCTiO9agSiYdASag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,201,1739865600"; 
+   d="scan'208";a="132829360"
+Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 09 Apr 2025 13:37:51 -0700
+Received: from kbuild by b207828170a5 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u2cBB-0009I7-0X;
+	Wed, 09 Apr 2025 20:37:49 +0000
+Date: Thu, 10 Apr 2025 04:36:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-acpi@vger.kernel.org, devel@acpica.org,
+	linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: [rafael-pm:bleeding-edge 46/52]
+ drivers/pinctrl/pinctrl-amd.c:1213:26: error: use of undeclared identifier
+ 'pinctrl_amd_s2idle_dev_ops'
+Message-ID: <202504100420.88UPkUTU-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <202504100128.AjbVDQgK-lkp@intel.com> <20250409-wine-swift-of-tempest-eae2cb@sudeepholla>
-In-Reply-To: <20250409-wine-swift-of-tempest-eae2cb@sudeepholla>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 9 Apr 2025 21:34:13 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iaxP9wz14WSi4saEJTiQau5vDBxWi0t_e5UzGrJAHe_g@mail.gmail.com>
-X-Gm-Features: ATxdqUFGJglX_EWRCO_-dcl4UqyApcv4Gv2qoxdxwy54YWSlW7CBu3F3gBCHGzI
-Message-ID: <CAJZ5v0iaxP9wz14WSi4saEJTiQau5vDBxWi0t_e5UzGrJAHe_g@mail.gmail.com>
-Subject: Re: [rafael-pm:bleeding-edge 39/52] drivers/acpi/apei/einj-core.c:877:43:
- error: expected identifier
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: kernel test robot <lkp@intel.com>, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, 
-	linux-acpi@vger.kernel.org, devel@acpica.org, linux-pm@vger.kernel.org, 
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Wed, Apr 9, 2025 at 9:25=E2=80=AFPM Sudeep Holla <sudeep.holla@arm.com> =
-wrote:
->
-> On Thu, Apr 10, 2025 at 02:10:04AM +0800, kernel test robot wrote:
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm=
-.git bleeding-edge
-> > head:   089d4e79e2c932faef79e0061cb874000f755009
-> > commit: 4ec052af63c58a62a896508cc5f8a0a2f516a590 [39/52] ACPI: APEI: EI=
-NJ: Transition to the faux device interface
-> > config: x86_64-buildonly-randconfig-001-20250409 (https://download.01.o=
-rg/0day-ci/archive/20250410/202504100128.AjbVDQgK-lkp@intel.com/config)
-> > compiler: clang version 20.1.2 (https://github.com/llvm/llvm-project 58=
-df0ef89dd64126512e4ee27b4ac3fd8ddf6247)
-> > reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/arc=
-hive/20250410/202504100128.AjbVDQgK-lkp@intel.com/reproduce)
-> >
-> > If you fix the issue in a separate patch/commit (i.e. not just a new ve=
-rsion of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202504100128.AjbVDQgK-l=
-kp@intel.com/
-> >
-> > All errors (new ones prefixed by >>):
-> >
-> > >> drivers/acpi/apei/einj-core.c:877:43: error: expected identifier
-> >      877 | module_faux_driver(acpi_einj, einj_probe, __exit_p(einj_remo=
-ve), true);
-> >          |                                           ^
-> >    include/linux/init.h:397:21: note: expanded from macro '__exit_p'
-> >      397 | #define __exit_p(x) NULL
-> >          |                     ^
-> >    include/linux/stddef.h:8:14: note: expanded from macro 'NULL'
-> >        8 | #define NULL ((void *)0)
-> >          |              ^
-> > >> drivers/acpi/apei/einj-core.c:877:1: error: type specifier missing, =
-defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplici=
-t-int]
-> >      877 | module_faux_driver(acpi_einj, einj_probe, __exit_p(einj_remo=
-ve), true);
-> >          | ^
-> >          | int
-> > >> drivers/acpi/apei/einj-core.c:877:19: error: a function declaration =
-without a prototype is deprecated in all versions of C [-Werror,-Wstrict-pr=
-ototypes]
-> >      877 | module_faux_driver(acpi_einj, einj_probe, __exit_p(einj_remo=
-ve), true);
-> >          |                   ^
-> >          |                                                             =
-         void
-> >    3 errors generated.
-> >
-> >
-> > vim +877 drivers/acpi/apei/einj-core.c
-> >
-> >    876
-> >  > 877        module_faux_driver(acpi_einj, einj_probe, __exit_p(einj_r=
-emove), true);
-> >    878
-> >
->
-> The macro module_faux_driver() was not merged as most of the users I
-> posted in v2 of the series depend on modprobe and modalias and that
-> doesn't work with faux devices.
->
-> If this ACPI APEI EINJ also needs that support we can't use faux device.
-> But I think this doesn't have modalias, so v1 of this change[1] which
-> doesn't  introduce/use the macro module_faux_driver() can be used instead=
-.
->
-> Sorry for the noise with v2.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   089d4e79e2c932faef79e0061cb874000f755009
+commit: 179db1909c5c4b5300cce626507b0f843f7d2cc2 [46/52] pinctrl: amd: Add an LPS0 check() callback
+config: x86_64-buildonly-randconfig-001-20250409 (https://download.01.org/0day-ci/archive/20250410/202504100420.88UPkUTU-lkp@intel.com/config)
+compiler: clang version 20.1.2 (https://github.com/llvm/llvm-project 58df0ef89dd64126512e4ee27b4ac3fd8ddf6247)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250410/202504100420.88UPkUTU-lkp@intel.com/reproduce)
 
-No worries.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202504100420.88UPkUTU-lkp@intel.com/
 
-I've picked up the v1 instead, let's see how it goes.
+All errors (new ones prefixed by >>):
 
-> [1] https://lore.kernel.org/all/20250317-plat2faux_dev-v1-8-5fe67c085ad5@=
-arm.com/
+>> drivers/pinctrl/pinctrl-amd.c:1213:26: error: use of undeclared identifier 'pinctrl_amd_s2idle_dev_ops'
+    1213 |         acpi_register_lps0_dev(&pinctrl_amd_s2idle_dev_ops);
+         |                                 ^
+   drivers/pinctrl/pinctrl-amd.c:1234:28: error: use of undeclared identifier 'pinctrl_amd_s2idle_dev_ops'
+    1234 |         acpi_unregister_lps0_dev(&pinctrl_amd_s2idle_dev_ops);
+         |                                   ^
+   2 errors generated.
+
+
+vim +/pinctrl_amd_s2idle_dev_ops +1213 drivers/pinctrl/pinctrl-amd.c
+
+  1153	
+  1154		gpio_dev->pdev = pdev;
+  1155		gpio_dev->gc.get_direction	= amd_gpio_get_direction;
+  1156		gpio_dev->gc.direction_input	= amd_gpio_direction_input;
+  1157		gpio_dev->gc.direction_output	= amd_gpio_direction_output;
+  1158		gpio_dev->gc.get			= amd_gpio_get_value;
+  1159		gpio_dev->gc.set			= amd_gpio_set_value;
+  1160		gpio_dev->gc.set_config		= amd_gpio_set_config;
+  1161		gpio_dev->gc.dbg_show		= amd_gpio_dbg_show;
+  1162	
+  1163		gpio_dev->gc.base		= -1;
+  1164		gpio_dev->gc.label			= pdev->name;
+  1165		gpio_dev->gc.owner			= THIS_MODULE;
+  1166		gpio_dev->gc.parent			= &pdev->dev;
+  1167		gpio_dev->gc.ngpio			= resource_size(res) / 4;
+  1168	
+  1169		gpio_dev->hwbank_num = gpio_dev->gc.ngpio / 64;
+  1170		gpio_dev->groups = kerncz_groups;
+  1171		gpio_dev->ngroups = ARRAY_SIZE(kerncz_groups);
+  1172	
+  1173		amd_pinctrl_desc.name = dev_name(&pdev->dev);
+  1174		amd_get_iomux_res(gpio_dev);
+  1175		gpio_dev->pctrl = devm_pinctrl_register(&pdev->dev, &amd_pinctrl_desc,
+  1176							gpio_dev);
+  1177		if (IS_ERR(gpio_dev->pctrl)) {
+  1178			dev_err(&pdev->dev, "Couldn't register pinctrl driver\n");
+  1179			return PTR_ERR(gpio_dev->pctrl);
+  1180		}
+  1181	
+  1182		/* Disable and mask interrupts */
+  1183		amd_gpio_irq_init(gpio_dev);
+  1184	
+  1185		girq = &gpio_dev->gc.irq;
+  1186		gpio_irq_chip_set_chip(girq, &amd_gpio_irqchip);
+  1187		/* This will let us handle the parent IRQ in the driver */
+  1188		girq->parent_handler = NULL;
+  1189		girq->num_parents = 0;
+  1190		girq->parents = NULL;
+  1191		girq->default_type = IRQ_TYPE_NONE;
+  1192		girq->handler = handle_simple_irq;
+  1193	
+  1194		ret = gpiochip_add_data(&gpio_dev->gc, gpio_dev);
+  1195		if (ret)
+  1196			return ret;
+  1197	
+  1198		ret = gpiochip_add_pin_range(&gpio_dev->gc, dev_name(&pdev->dev),
+  1199					0, 0, gpio_dev->gc.ngpio);
+  1200		if (ret) {
+  1201			dev_err(&pdev->dev, "Failed to add pin range\n");
+  1202			goto out2;
+  1203		}
+  1204	
+  1205		ret = devm_request_irq(&pdev->dev, gpio_dev->irq, amd_gpio_irq_handler,
+  1206				       IRQF_SHARED | IRQF_COND_ONESHOT, KBUILD_MODNAME, gpio_dev);
+  1207		if (ret)
+  1208			goto out2;
+  1209	
+  1210		platform_set_drvdata(pdev, gpio_dev);
+  1211		acpi_register_wakeup_handler(gpio_dev->irq, amd_gpio_check_wake, gpio_dev);
+  1212	#ifdef CONFIG_ACPI
+> 1213		acpi_register_lps0_dev(&pinctrl_amd_s2idle_dev_ops);
+  1214	#endif
+  1215	
+  1216		dev_dbg(&pdev->dev, "amd gpio driver loaded\n");
+  1217		return ret;
+  1218	
+  1219	out2:
+  1220		gpiochip_remove(&gpio_dev->gc);
+  1221	
+  1222		return ret;
+  1223	}
+  1224	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
