@@ -1,197 +1,109 @@
-Return-Path: <linux-acpi+bounces-12890-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12891-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EABDAA81DD4
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 09:04:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA875A81E53
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 09:31:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 425597B1D71
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 07:02:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F21A57B40F8
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 07:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C3C22B5A8;
-	Wed,  9 Apr 2025 07:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B3421D00D;
+	Wed,  9 Apr 2025 07:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nTR7db3e"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6F1189B84;
-	Wed,  9 Apr 2025 07:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.164.118
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEEA5125B9;
+	Wed,  9 Apr 2025 07:31:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744182204; cv=none; b=utZVM3BZQSs8NSxMyIzV77FaJt3ku1Yr92LYqix4rkQ8Rv9MVW5uSiQjednfYVtqxmoJVTJIX/R4BbWKq9rWNVpEaQtrGa9fisBjcm334KljoUiZlT0E55AIYuom245UyHo5T8aQBGTznSgISulm86Vahq57UuqtlYZs7J9L0nI=
+	t=1744183878; cv=none; b=Wnh7HLnngLSHxmBWfvlFvbh7AnnLzPDFNm4IgpWE+S0Wb2r4Po6fRqMRPDSbRFDtARMic7+Si5QAgaU2uwrYzxpd0m5EU68F6rt8mvoEW9reUaML39kYpFKTRIe0zDsdKn8Mj37DNfp5RdxISjtOI6qPfLdro7KEAIstwA00lIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744182204; c=relaxed/simple;
-	bh=q39kQhDN49GLm/lEOP32rR1ke0TxfqFy3ziGaeITL1I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TnPl1bjuoG1WizjEpEkr0Mz41O97PBgG27gUwkOlKDIu4/T4XhdoFIbaqfYkA7hToOLPO9Czm2JW6TMOieht/6oGazFACt+LKLmSoQberLZQo4KnC6uI33S/SZNgvW+5TOHnVPlGIw/JMPKHmtXc12548CZ8fCPv+ZLEObGMaC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn; spf=pass smtp.mailfrom=phytium.com.cn; arc=none smtp.client-ip=162.243.164.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytium.com.cn
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
-	by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwBnR7yyG_Zn9W65Ew--.14899S2;
-	Wed, 09 Apr 2025 15:03:14 +0800 (CST)
-Received: from phytium.com.cn (unknown [123.150.8.50])
-	by mail (Coremail) with SMTP id AQAAfwBnaoasG_ZnhURkAA--.7272S3;
-	Wed, 09 Apr 2025 15:03:09 +0800 (CST)
-From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-To: chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	jiaxun.yang@flygoat.com,
-	rppt@kernel.org,
-	akpm@linux-foundation.org,
-	david@redhat.com,
-	Jonathan.Cameron@huawei.com,
-	dave.hansen@linux.intel.com,
-	dan.j.williams@intel.com,
-	alison.schofield@intel.com
-Cc: chenbaozi@phytium.com.cn,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Yuquan Wang <wangyuquan1236@phytium.com.cn>
-Subject: [PATCH 1/1] LoongArch: Introduce the numa_memblks conversion
-Date: Wed,  9 Apr 2025 15:02:50 +0800
-Message-Id: <20250409070250.3225839-1-wangyuquan1236@phytium.com.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1744183878; c=relaxed/simple;
+	bh=XJ4yiMlPFZ0E5bm/nEKVZBLSD9bRDLtD5zJNPS/i5kM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E4oskdEfWpI9KGoDs/pSidZfWvkTHR9Bv53COrKHfpp9vCTjlmBpc/aWn1up6fFrjkw81n4bus+WHPIGB1BCXNaS2wOcXpgynTFM0cQzu6i/6TG7QLawBGzgW6M8FME0MYjCL0juIvQ6yV/N3nH+SYBTa91G3WggjWYUK01BrvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nTR7db3e; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744183877; x=1775719877;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XJ4yiMlPFZ0E5bm/nEKVZBLSD9bRDLtD5zJNPS/i5kM=;
+  b=nTR7db3etmAMslOlNgHA+ou+qyuSbjqY3YsmYlVLxjVUkn1F/FNpvwlv
+   ugeQBA8KHaSTOiT1TdZ61w+cPqglyDLfS0aGCImbCOPFOKpn3KxNGYkYN
+   hSe6DKoawBFqDFTWqb6wpsaXNCim9tPbUkdeLgjhzSbaFxh8BST5JmgDl
+   MMeDUYOviwD5MbYRuNEAddLvDoFMwCQ7fvokqbMPa08HPDB59jmg5om4o
+   jHlEIOecS5+OlrAhNoc+9Q6nXD9KVKk6SzCxvKv3ZE9HNSYjovYksTOKF
+   TSc50zy9WKcwBH7AJurijOEj3ehcrReP6QotA4AkfuQ3gTg7RqP/v87Fw
+   g==;
+X-CSE-ConnectionGUID: xGhPT4WpR8K7cwKlTybv9w==
+X-CSE-MsgGUID: P5lfAww8QfKZlLguzgwnVQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="33249071"
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
+   d="scan'208";a="33249071"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 00:31:16 -0700
+X-CSE-ConnectionGUID: axqmlmtWSTiV2ZNdem3GEg==
+X-CSE-MsgGUID: SdZDg75jT7WkFzie1NHoSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
+   d="scan'208";a="133219310"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 00:31:14 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1u2Ptv-0000000AeSi-2NP8;
+	Wed, 09 Apr 2025 10:31:11 +0300
+Date: Wed, 9 Apr 2025 10:31:11 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Kees Bakker <kees@ijzerbout.nl>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mika Westerberg <westeri@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v2 6/6] gpiolib: acpi: Deduplicate some code in
+ __acpi_find_gpio()
+Message-ID: <Z_YiP91I9ojNnOi4@smile.fi.intel.com>
+References: <20250403160034.2680485-1-andriy.shevchenko@linux.intel.com>
+ <20250403160034.2680485-7-andriy.shevchenko@linux.intel.com>
+ <9715c8dd-38df-48fd-a9d1-7a78163dc989@ijzerbout.nl>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAfwBnaoasG_ZnhURkAA--.7272S3
-X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQAPAWf1gRgDIgADsm
-Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=wangyuquan
-	1236@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoWxXFWxtrW7Gr45Ar4UJrW5ZFb_yoWrGF4rpF
-	ZxCrs3Xr48Wr18Ja40kry29w15Kwn7KanxXa47GFyfZF12vryDZr40grn2vFyUt3y8ur40
-	9rn5C3WavF4rJ3JanT9S1TB71UUUUj7qnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
-	UUUUU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9715c8dd-38df-48fd-a9d1-7a78163dc989@ijzerbout.nl>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-"mm: introduce numa_memblks"(87482708210f) has moved numa_memblks
-from x86 to the generic code, but loongarch was left out of this
-conversion.
+On Tue, Apr 08, 2025 at 10:09:25PM +0200, Kees Bakker wrote:
+> Op 03-04-2025 om 17:59 schreef Andy Shevchenko:
 
-This patch introduces the generic numa_memblks.
+...
 
-Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
----
+> Please, check the changes in this function again.
+> `__acpi_find_gpio` doesn't fill `info` anymore. The callers of this function
+> will continue with
+> an uninitialized struct.
 
-Background
-----------
-I am managed to land the patch[1] "mm: numa_memblks: introduce numa_add_reserved_memblk"
-but kernel test CI noticed build errors[2] from loongarch64-linux-gcc.
+My gosh, you are so right! Now I'm puzzled of what I was tested...
+Nevertheless, I will fix this ASAP today, test (and double test to
+be sure it works), and push it.
 
-Link:
-[1]: https://lore.kernel.org/all/20250409040121.3212489-1-wangyuquan1236@phytium.com.cn/
-[2]: https://lore.kernel.org/all/202503282026.QNaOAK79-lkp@intel.com/
-
- arch/loongarch/Kconfig            |  1 +
- arch/loongarch/include/asm/numa.h | 14 ----------
- arch/loongarch/kernel/numa.c      | 43 +------------------------------
- 3 files changed, 2 insertions(+), 56 deletions(-)
-
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index 067c0b994648..5906ccd06705 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -186,6 +186,7 @@ config LOONGARCH
- 	select MODULES_USE_ELF_RELA if MODULES
- 	select NEED_PER_CPU_EMBED_FIRST_CHUNK
- 	select NEED_PER_CPU_PAGE_FIRST_CHUNK
-+	select NUMA_MEMBLKS
- 	select OF
- 	select OF_EARLY_FLATTREE
- 	select PCI
-diff --git a/arch/loongarch/include/asm/numa.h b/arch/loongarch/include/asm/numa.h
-index b5f9de9f102e..bbf9f70bd25f 100644
---- a/arch/loongarch/include/asm/numa.h
-+++ b/arch/loongarch/include/asm/numa.h
-@@ -22,20 +22,6 @@ extern int numa_off;
- extern s16 __cpuid_to_node[CONFIG_NR_CPUS];
- extern nodemask_t numa_nodes_parsed __initdata;
- 
--struct numa_memblk {
--	u64			start;
--	u64			end;
--	int			nid;
--};
--
--#define NR_NODE_MEMBLKS		(MAX_NUMNODES*2)
--struct numa_meminfo {
--	int			nr_blks;
--	struct numa_memblk	blk[NR_NODE_MEMBLKS];
--};
--
--extern int __init numa_add_memblk(int nodeid, u64 start, u64 end);
--
- extern void __init early_numa_add_cpu(int cpuid, s16 node);
- extern void numa_add_cpu(unsigned int cpu);
- extern void numa_remove_cpu(unsigned int cpu);
-diff --git a/arch/loongarch/kernel/numa.c b/arch/loongarch/kernel/numa.c
-index 30a72fd528c0..0ed384635566 100644
---- a/arch/loongarch/kernel/numa.c
-+++ b/arch/loongarch/kernel/numa.c
-@@ -18,6 +18,7 @@
- #include <linux/efi.h>
- #include <linux/irq.h>
- #include <linux/pci.h>
-+#include <linux/numa_memblks.h>
- #include <asm/bootinfo.h>
- #include <asm/loongson.h>
- #include <asm/numa.h>
-@@ -145,48 +146,6 @@ void numa_remove_cpu(unsigned int cpu)
- 	cpumask_clear_cpu(cpu, &cpus_on_node[nid]);
- }
- 
--static int __init numa_add_memblk_to(int nid, u64 start, u64 end,
--				     struct numa_meminfo *mi)
--{
--	/* ignore zero length blks */
--	if (start == end)
--		return 0;
--
--	/* whine about and ignore invalid blks */
--	if (start > end || nid < 0 || nid >= MAX_NUMNODES) {
--		pr_warn("NUMA: Warning: invalid memblk node %d [mem %#010Lx-%#010Lx]\n",
--			   nid, start, end - 1);
--		return 0;
--	}
--
--	if (mi->nr_blks >= NR_NODE_MEMBLKS) {
--		pr_err("NUMA: too many memblk ranges\n");
--		return -EINVAL;
--	}
--
--	mi->blk[mi->nr_blks].start = PFN_ALIGN(start);
--	mi->blk[mi->nr_blks].end = PFN_ALIGN(end - PAGE_SIZE + 1);
--	mi->blk[mi->nr_blks].nid = nid;
--	mi->nr_blks++;
--	return 0;
--}
--
--/**
-- * numa_add_memblk - Add one numa_memblk to numa_meminfo
-- * @nid: NUMA node ID of the new memblk
-- * @start: Start address of the new memblk
-- * @end: End address of the new memblk
-- *
-- * Add a new memblk to the default numa_meminfo.
-- *
-- * RETURNS:
-- * 0 on success, -errno on failure.
-- */
--int __init numa_add_memblk(int nid, u64 start, u64 end)
--{
--	return numa_add_memblk_to(nid, start, end, &numa_meminfo);
--}
--
- static void __init node_mem_init(unsigned int node)
- {
- 	unsigned long start_pfn, end_pfn;
 -- 
-2.34.1
+With Best Regards,
+Andy Shevchenko
+
 
 
