@@ -1,125 +1,175 @@
-Return-Path: <linux-acpi+bounces-12922-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12923-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C421A82E4D
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 20:15:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBB0A82E5C
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 20:17:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D17EE1B80EEA
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 18:14:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BABB33BD88D
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 18:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A7EC277037;
-	Wed,  9 Apr 2025 18:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CDB27702C;
+	Wed,  9 Apr 2025 18:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xqjx5XGv"
+	dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b="lkFwlPix"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168E1277020;
-	Wed,  9 Apr 2025 18:10:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+Received: from bout3.ijzerbout.nl (bout3.ijzerbout.nl [136.144.140.114])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA9D26B2CA;
+	Wed,  9 Apr 2025 18:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.144.140.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744222238; cv=none; b=Gnz4o+QucwjYqlkvSPuSUDC+DWYV4kTh6a5LCxlAHsQh0ldkoOaT6UJ4blf1nJpL3nOgc6EaakXhE0ZxdjRDTFgcsx17bF4n6wnTxdadVJtXkNev8kRKe9ON72gzufLdJufAO4tGz7+E1jH4vVa2oyplTQrZujfayJDk+jdrSKo=
+	t=1744222628; cv=none; b=nCed6JYjdCJ5GbQupAMk2K+Ej/s45FOp+znvg9B4vNTc9URCdTAazdlRFm2fcQc00w24xdQw17pVFhKdBOYenU13hkxvvop4q4X83K3YJmnVXCVZOTPATjD6+TqYRQ4LzkJ6gXgJu3EE4jtRvP8hBTgXyj9NofYCC8h4g/1DccE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744222238; c=relaxed/simple;
-	bh=DK5ctdqUuWwG61zHU/doen2mUmd04GA6ljylHuv86v0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=mv/lQKtcjhmwy+Q8HpzMxdyQFsaHPA9EQlUeJPA3cKwLE037d1kONY/jcvxTtgzlULhoFVOt9Fj4iwVKtp3lwwra613JZw1MnukhkioV7GEsjcCKti4Ecokl4/jnLtsTVfbhqHywLjvjUPhc/q/YWVkY2aQuibbRDuH6KASUi2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xqjx5XGv; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744222235; x=1775758235;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=DK5ctdqUuWwG61zHU/doen2mUmd04GA6ljylHuv86v0=;
-  b=Xqjx5XGvHgAjQVyxNVrzg0GtH8sLk8Jecm7+dtIORSG0vZYtPuH+l8Z2
-   M7i6nnptDpCJOb4WS8f0Kk5KCIOIfdjtVREs7KXyNQ5Qw/9eQo8lkyAae
-   ZoTvO7bDkUyr2/j1pfirc7dALPVRjsJ/p1GXTbIRNs6RnXxtJFfxcO5Mt
-   2dLbIcR8RwO2+/EF9+Xn6Xvq/5HUHxzPacHI64C/frSJRPzMtgMMJxFXQ
-   JIEeiOPcG0/ZQUeK5JuX3BSdttNGXFLiulB6qDaSwgCITyMFSAi0ZaRvt
-   w/+6UEGvuEUTUBW5bu5Per2/mpr6DzjgLXqEJe5LELE/c3TlSHvTE7RGE
-   A==;
-X-CSE-ConnectionGUID: lVWEruxXQMC90bl8MVStAQ==
-X-CSE-MsgGUID: 3mAgYaK2R0euBAjTk1KYUQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="44855882"
-X-IronPort-AV: E=Sophos;i="6.15,201,1739865600"; 
-   d="scan'208";a="44855882"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 11:10:34 -0700
-X-CSE-ConnectionGUID: hSrBF16MR/ipFHagVQZGPQ==
-X-CSE-MsgGUID: jKVap1QuRPu80Vth7TEg4g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,201,1739865600"; 
-   d="scan'208";a="151839648"
-Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 09 Apr 2025 11:10:32 -0700
-Received: from kbuild by b207828170a5 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1u2Zsb-0009B9-36;
-	Wed, 09 Apr 2025 18:10:29 +0000
-Date: Thu, 10 Apr 2025 02:10:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-acpi@vger.kernel.org, devel@acpica.org,
-	linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: [rafael-pm:bleeding-edge 39/52]
- drivers/acpi/apei/einj-core.c:877:43: error: expected identifier
-Message-ID: <202504100128.AjbVDQgK-lkp@intel.com>
+	s=arc-20240116; t=1744222628; c=relaxed/simple;
+	bh=RlQyrCucUebSpzBZ0SiXZwAu7QBoTEAbCFjb1KaLXKU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XF6JrSoCC2J+mk3QT2FUd29m8/6tzWWx/41++2bBxQ10X1SAL9tWixHSOf5bgdg3hChC/SdFSgOXd+JKHTl3axdKFGh68JAqG5CJA5VZ7BquI7HgkdUdxuDwS19NxgtcCY8tlNLcwr+AjU1XBHiEk6RKnbMnI5oednVRC2NiGaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl; spf=pass smtp.mailfrom=ijzerbout.nl; dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b=lkFwlPix; arc=none smtp.client-ip=136.144.140.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ijzerbout.nl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ijzerbout.nl; s=key;
+	t=1744222622; bh=RlQyrCucUebSpzBZ0SiXZwAu7QBoTEAbCFjb1KaLXKU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lkFwlPix333fAQ7xTLz9dmSmDPQqK5qY1WHjYQmn7uGLvUuV4nJh3iYr1q43ZjRRs
+	 BEnwFI7cHQoaYbgX8raJxBXg8dZ28RD7y/TpcfJ7zLrQ4oS7gg4BuoUSgmUuzOMn2p
+	 1fNZU87zaUJ7URve6IpkT+YPPPTc1jOvvAy5kT1qSxRZdmik/8U2SHP9cDpIt9GAI9
+	 zWzM1WAtzC5PqHLv/WOcUnxblS9G+GJILdirwMnPuyiGKFer1aiBQnkCl7YhpmR1Kl
+	 4RVcCRF0wkzvalxUrF1WTUDVFwijp0my0B4P+HD4PAuw3VYXr8Qp9KzoAOe0QmTNFQ
+	 MhknwFMzR8yB4vjenz82eVqYuRPwUSL4gmXMHG8AqDtfW0o72a4nKFOKO5dFK65xk/
+	 GKsGKs9PAntWU87uFj7EHPLODgyhz5Sw5f5OeE8OAk0Zgf043ef/OdeReXesFRLUu/
+	 PAaaPl6PTfUeFU/+1+FjWvEdWMNvaI7g54KpAQu+rgWhQXICFJIKNzu25tbnVr0c/e
+	 XRsc3IW14INY6ox524Qj7N2geiw5OL6vgCrp8LfX7qpa9vqhcAyQL+OuzHiPMTDWge
+	 XT0yOV0I0eVnRpdC1VyhxKoVofjZTMrul7F+KV7jLH4Edj7krVCaNUQITEDNQVew43
+	 2V/5WVGcb+HQWy7WzHg/68L0=
+Received: from [IPV6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a] (racer.ijzerbout.nl [IPv6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a])
+	by bout3.ijzerbout.nl (Postfix) with ESMTPSA id E038116358B;
+	Wed,  9 Apr 2025 20:17:01 +0200 (CEST)
+Message-ID: <98ded07e-33e4-417c-8146-fbf2783a7464@ijzerbout.nl>
+Date: Wed, 9 Apr 2025 20:16:59 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/2] gpiolib: acpi: Make sure we fill struct
+ acpi_gpio_info
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Mika Westerberg <westeri@kernel.org>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>
+References: <20250409132942.2550719-1-andriy.shevchenko@linux.intel.com>
+ <20250409132942.2550719-3-andriy.shevchenko@linux.intel.com>
+Content-Language: en-US
+From: Kees Bakker <kees@ijzerbout.nl>
+In-Reply-To: <20250409132942.2550719-3-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-head:   089d4e79e2c932faef79e0061cb874000f755009
-commit: 4ec052af63c58a62a896508cc5f8a0a2f516a590 [39/52] ACPI: APEI: EINJ: Transition to the faux device interface
-config: x86_64-buildonly-randconfig-001-20250409 (https://download.01.org/0day-ci/archive/20250410/202504100128.AjbVDQgK-lkp@intel.com/config)
-compiler: clang version 20.1.2 (https://github.com/llvm/llvm-project 58df0ef89dd64126512e4ee27b4ac3fd8ddf6247)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250410/202504100128.AjbVDQgK-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202504100128.AjbVDQgK-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/acpi/apei/einj-core.c:877:43: error: expected identifier
-     877 | module_faux_driver(acpi_einj, einj_probe, __exit_p(einj_remove), true);
-         |                                           ^
-   include/linux/init.h:397:21: note: expanded from macro '__exit_p'
-     397 | #define __exit_p(x) NULL
-         |                     ^
-   include/linux/stddef.h:8:14: note: expanded from macro 'NULL'
-       8 | #define NULL ((void *)0)
-         |              ^
->> drivers/acpi/apei/einj-core.c:877:1: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
-     877 | module_faux_driver(acpi_einj, einj_probe, __exit_p(einj_remove), true);
-         | ^
-         | int
->> drivers/acpi/apei/einj-core.c:877:19: error: a function declaration without a prototype is deprecated in all versions of C [-Werror,-Wstrict-prototypes]
-     877 | module_faux_driver(acpi_einj, einj_probe, __exit_p(einj_remove), true);
-         |                   ^                                                  
-         |                                                                      void
-   3 errors generated.
-
-
-vim +877 drivers/acpi/apei/einj-core.c
-
-   876	
- > 877	module_faux_driver(acpi_einj, einj_probe, __exit_p(einj_remove), true);
-   878	
-
+Op 09-04-2025 om 15:27 schreef Andy Shevchenko:
+> The previous refactoring missed the filling of the struct acpi_gpio_info
+> and that's how the lot of the code got eliminated. Restore those pieces
+> by passing the pointer all down in the call stack.
+>
+> With this, the code grows by ~6%, but in conjunction with the previous
+> refactoring it still gives -387 bytes
+>
+> add/remove: 2/0 grow/shrink: 5/1 up/down: 852/-35 (817)
+> Function                                     old     new   delta
+> acpi_dev_gpio_irq_wake_get_by                129     695    +566
+> acpi_find_gpio                               216     354    +138
+> acpi_find_gpio.__UNIQUE_ID_ddebug504           -      56     +56
+> acpi_dev_gpio_irq_wake_get_by.__UNIQUE_ID_ddebug506       -      56     +56
+> acpi_populate_gpio_lookup                    536     548     +12
+> acpi_gpio_property_lookup                    414     426     +12
+> acpi_get_gpiod_by_index                      307     319     +12
+> __acpi_find_gpio                             638     603     -35
+> Total: Before=14154, After=14971, chg +5.77%
+>
+> As a positive side effect, it improves memory footprint for
+> struct acpi_gpio_lookup. `pahole` difference before and after:
+>
+> -       /* size: 64, cachelines: 1, members: 4 */
+> -       /* member types with holes: 1, total: 1 */
+>
+> +       /* size: 32, cachelines: 1, members: 4 */
+>
+> Reported-by: Kees Bakker <kees@ijzerbout.nl>
+> Closes: https://lore.kernel.org/r/9715c8dd-38df-48fd-a9d1-7a78163dc989@ijzerbout.nl
+> Fixes: 8b4f52ef7a41 ("gpiolib: acpi: Deduplicate some code in __acpi_find_gpio()")
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>   drivers/gpio/gpiolib-acpi.c | 11 ++++++-----
+>   1 file changed, 6 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+> index 5b6344f0d065..2ac9c7b31908 100644
+> --- a/drivers/gpio/gpiolib-acpi.c
+> +++ b/drivers/gpio/gpiolib-acpi.c
+> @@ -742,8 +742,8 @@ static int acpi_gpio_update_gpiod_lookup_flags(unsigned long *lookupflags,
+>   }
+>   
+>   struct acpi_gpio_lookup {
+> -	struct acpi_gpio_info info;
+>   	struct acpi_gpio_params params;
+> +	struct acpi_gpio_info *info;
+>   	struct gpio_desc *desc;
+>   	int n;
+>   };
+> @@ -752,7 +752,7 @@ static int acpi_populate_gpio_lookup(struct acpi_resource *ares, void *data)
+>   {
+>   	struct acpi_gpio_lookup *lookup = data;
+>   	struct acpi_gpio_params *params = &lookup->params;
+> -	struct acpi_gpio_info *info = &lookup->info;
+> +	struct acpi_gpio_info *info = lookup->info;
+>   
+>   	if (ares->type != ACPI_RESOURCE_TYPE_GPIO)
+>   		return 1;
+> @@ -806,7 +806,7 @@ static int acpi_populate_gpio_lookup(struct acpi_resource *ares, void *data)
+>   
+>   static int acpi_gpio_resource_lookup(struct acpi_gpio_lookup *lookup)
+>   {
+> -	struct acpi_gpio_info *info = &lookup->info;
+> +	struct acpi_gpio_info *info = lookup->info;
+>   	struct acpi_device *adev = info->adev;
+>   	struct list_head res_list;
+>   	int ret;
+> @@ -832,7 +832,7 @@ static int acpi_gpio_property_lookup(struct fwnode_handle *fwnode, const char *p
+>   {
+>   	struct fwnode_reference_args args;
+>   	struct acpi_gpio_params *params = &lookup->params;
+> -	struct acpi_gpio_info *info = &lookup->info;
+> +	struct acpi_gpio_info *info = lookup->info;
+>   	unsigned int index = params->crs_entry_index;
+>   	unsigned int quirks = 0;
+>   	int ret;
+> @@ -893,8 +893,8 @@ static int acpi_gpio_property_lookup(struct fwnode_handle *fwnode, const char *p
+>   static int acpi_get_gpiod_by_index(struct acpi_device *adev, const char *propname,
+>   				   struct acpi_gpio_lookup *lookup)
+>   {
+> -	struct acpi_gpio_info *info = &lookup->info;
+>   	struct acpi_gpio_params *params = &lookup->params;
+> +	struct acpi_gpio_info *info = lookup->info;
+>   	int ret;
+>   
+>   	if (propname) {
+> @@ -975,6 +975,7 @@ __acpi_find_gpio(struct fwnode_handle *fwnode, const char *con_id, unsigned int
+>   
+>   	memset(&lookup, 0, sizeof(lookup));
+>   	lookup.params.crs_entry_index = idx;
+> +	lookup.info = info;
+>   
+>   	/* Try first from _DSD */
+>   	for_each_gpio_property_name(propname, con_id) {
+Can you check and confirm that at least info.gpioint is filled in (or 
+initialized)?
+The callers of `__acpi_find_gpio` pass in an uninitialized `struct 
+acpi_gpio_info`
+and after the call they read `info.gpioint`.
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Kees
 
