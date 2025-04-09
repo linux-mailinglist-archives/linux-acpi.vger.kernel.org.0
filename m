@@ -1,111 +1,92 @@
-Return-Path: <linux-acpi+bounces-12873-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12874-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D42BEA8171F
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 22:48:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC69A81A1A
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 02:50:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACD7F1B81912
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Apr 2025 20:48:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB90A426B01
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Apr 2025 00:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244D8214813;
-	Tue,  8 Apr 2025 20:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4454E3E47B;
+	Wed,  9 Apr 2025 00:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZeerjqIt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hVyxs2pY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED9813CFB6;
-	Tue,  8 Apr 2025 20:48:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790F3DDBC;
+	Wed,  9 Apr 2025 00:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744145316; cv=none; b=g7kAJ1tejJPCqS+FYi8zqL7y7uNScAErAwpLVI+GzrhYFSGxwwAeyc1NnQwByqe/XJyVSjGpZ+JWGEQcnwYrQLJnnCYvPH5qizvfwzIV9CzYx06YSAbCuKM5uqss34xBQ7vCrve2hs6AZ4DdwiPXaAKLx5NjxchZOG37HCXKe4s=
+	t=1744159831; cv=none; b=IpDV23vsF6yX18fqZ/g6Sgg6BIaVOY9/Nq93iiQko1IM+lGzR4nh9WVDS+TH4XY60JBxYKbUqB5UxX/ZA8cCQE7lgb75lkJ3uZamXLg0FloHmisZsbNhrovgo6A767AUgf9SKCl1gH62MJmCth8c3hm9y4FZ6jD0jQjVq3CL0O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744145316; c=relaxed/simple;
-	bh=zAvEvlzAln/TlRU8vv7yAddue9mFYC9Fd0ZT0VyLmDw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=NluX8LK9UEglRpGeuncMoY8AeHvx20BOtnhNRshUc1h4lNHGPKGuPaIZTAI9HNd1Rd851gCnZhSEa8ucxxDkt3PO/QnGSGjjQT1SzlN/h2oAgbh+3dqk9uvgAuQlR8jMi+OJD7wXuhiK8vU4oBEZyZ0plx1uba74olE1CznwHTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZeerjqIt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5477FC4CEE5;
-	Tue,  8 Apr 2025 20:48:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744145314;
-	bh=zAvEvlzAln/TlRU8vv7yAddue9mFYC9Fd0ZT0VyLmDw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=ZeerjqItVG+XzKiXVjEV3+a9A4z9SmvYa36d/vvVodFOpQeet67+HnRiQEfYnfPZt
-	 AkNrjZQ2aIUus8osASPhych7Wtiw8F/AU2b4iJAjpnvS1omNVRfeXmiLqkawtGU5Ef
-	 0DiLd882sIJ9NUcV+WJ/ePfxZHnogkjG37UvTWwUwwp14xOJk5pEzyt5+p/K5Byz0i
-	 DFAQmTEwcB/wq02v+YZskwvvvy+Q9MP+PpIb4y/8mbrQbuoIQxI+F8Pzs5hlvBGBxt
-	 T8YHVBHPXWk2iL0XhvXPTfkFhVBtpNQszU4nV6EBD65QuFuYQn3zBJChJoYCBgxczr
-	 qowTh2+/K4GGQ==
-Date: Tue, 8 Apr 2025 15:48:32 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Anshuman Gupta <anshuman.gupta@intel.com>,
-	intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, lenb@kernel.org, bhelgaas@google.com,
-	ilpo.jarvinen@linux.intel.com, lucas.demarchi@intel.com,
-	rodrigo.vivi@intel.com, badal.nilawar@intel.com,
-	varun.gupta@intel.com, ville.syrjala@linux.intel.com,
-	uma.shankar@intel.com
-Subject: Re: [PATCH 02/12] PCI/ACPI: Add PERST# Assertion Delay _DSM method
-Message-ID: <20250408204832.GA64565@bhelgaas>
+	s=arc-20240116; t=1744159831; c=relaxed/simple;
+	bh=ruMRzzQx4ZHRl3cKWLayka5Crex7091j+PQVr8L6/mo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ph3l92/+a2InL5dwt0X/WmF5HL00msPzoJbG4QMmBihZAX9zg3gC5qV+zqPywRX8csSBtMg1wOH0ZZTfEW1Wz28m2qzjOR3sNF+hB1tSU3iTM39srtwFr80KlwEqmwupr78ampD/07AHxLaKyTvmDoa9CJG9/aJd19Td7bHyMeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hVyxs2pY; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744159830; x=1775695830;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ruMRzzQx4ZHRl3cKWLayka5Crex7091j+PQVr8L6/mo=;
+  b=hVyxs2pYAd88qvIteFw4C8YhuMHeOodfeUMh+S1oc6LsTDGiTR6dCrwp
+   nuhnKZ1N7L/nFn90YTHBEX5jGLfyDlzrFE24srz3Ns5N59iuKlTD65EAt
+   Vl+IrZtd6Dt5sksEVwU/CB+j2jRVfvUP1XE5piEeZFjIK873s6zA69pAT
+   Tgtz1coc+oFX7hsMux4QgSeEDW7kEL+SZe3jdWzva6adpv64TvN0y7GYp
+   ZZLpzB0XsmbJVHgdz2JWGRQENO/JW7K+XhsovdhYF5wA/ZgVdTe1BM/BN
+   6ZyTnbuU2KJ9t9zjPrT+VgPPOCJMXOUrJqFvVx5ZiGTpD/dufitMMc9ne
+   A==;
+X-CSE-ConnectionGUID: Cq1yNE5kSnStOA5lIW8ZZQ==
+X-CSE-MsgGUID: eckLarkCSLOwJJ2Av/xW/A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="68095406"
+X-IronPort-AV: E=Sophos;i="6.15,199,1739865600"; 
+   d="scan'208";a="68095406"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 17:50:29 -0700
+X-CSE-ConnectionGUID: kVCcFimBQLivvzR6CT7ekQ==
+X-CSE-MsgGUID: wfI7iQgWR46Q7Puo1AljXA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,199,1739865600"; 
+   d="scan'208";a="151611724"
+Received: from rzhang1-mobl7.sh.intel.com ([10.238.6.124])
+  by fmviesa002.fm.intel.com with ESMTP; 08 Apr 2025 17:50:27 -0700
+From: Zhang Rui <rui.zhang@intel.com>
+To: rafael.j.wysocki@intel.com
+Cc: ggherdovich@suse.cz,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH 0/2] ACPI: processor: idle: acpi_processor_get_cstate_info() cleanup
+Date: Wed,  9 Apr 2025 08:50:24 +0800
+Message-ID: <20250409005026.1932637-1-rui.zhang@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0hQjtTCu1wXgKvBWBBegbj-VD+Z0yBspt1uFes8Xun7Cw@mail.gmail.com>
 
-On Wed, Apr 02, 2025 at 09:36:01PM +0200, Rafael J. Wysocki wrote:
-> On Wed, Apr 2, 2025 at 8:48 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+This patch series does further cleanups for
+acpi_processor_get_cstate_info() on top of
+https://lore.kernel.org/all/20250328143040.9348-2-ggherdovich@suse.cz/
 
-> > I don't *expect* rev 5 to be different.  But as a user of it, why
-> > would I change working, tested code that is not broken?
-> >
-> > The PCI DPC function 0xc is an example where rev 5 (per ECN) and rev 6
-> > (per r3.3) are not compatible.
-> >
-> > If the OS implemented rev 5, then learns via function 0 that function
-> > 0xc is also supported at rev 6, and starts using the same OS code with
-> > rev 6, the OS is broken.
-> 
-> Yes, in this case the backward compatibility language in the _DSM
-> definition is obviously not followed.
+thanks,
+rui
 
-Rev 5 in the ECN isn't compatible with rev 6 in the PCI FW r3.3 spec,
-so it doesn't follow the ACPI compatibility requirement.  And this is
-documented in PCI FW, which says "Fn 0xC was added with rev 5 (see ECN
-for rev 5 details); here is how rev 6 works."
+----------------------------------------------------------------
+Zhang Rui (2):
+      ACPI: processor: idle: Set pr->flags.power unconditionally
+      ACPI: processor: idle: Remove redundant pr->power.count assignment
 
-An OS implemented to the ECN doesn't know that rev 6 is different from
-rev 5; it assumes they're the same because ACPI says we can assume
-that, and PCI FW r3.3 even says the OS should use the same rev for all
-functions.  If OS adds support for rev 6 of a some other function, it
-is supposed to use rev 6 of Fn 0xC, which doesn't work as the OS
-expects.
-
-I guess one could argue that "OS didn't add rev 6 support for anything
-until PCI FW r3.3 added a function at rev 6, r3.3 did mention the
-difference between Fn 0xC rev 5 and 6, and OS should have looked at
-all the already-implemented unrelated functions for possible changes
-between rev 5 and rev 6."
-
-I think that causes unnecessary changes in unrelated code.  The OS can
-avoid the problem by *always* using Fn 0xC rev 5, regardless of what
-rev it uses for other functions.
-
-Of course, the OS can include support for multiple revs, e.g., it
-could add support for Fn 0xC rev 6 and use that when available.  And
-it could retain support for Fn 0xC rev 5 and use that if rev 6 isn't
-available.
-
-Bjorn
+ drivers/acpi/processor_idle.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
