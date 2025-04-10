@@ -1,62 +1,65 @@
-Return-Path: <linux-acpi+bounces-12949-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12951-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EC3A84A7E
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Apr 2025 18:55:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3259A84A82
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Apr 2025 18:55:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC4359A1D93
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Apr 2025 16:55:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F65D1B63553
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Apr 2025 16:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C136E1EEA56;
-	Thu, 10 Apr 2025 16:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450F21EFFAD;
+	Thu, 10 Apr 2025 16:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="AiHIN+8C"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="jo/uUxGl"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1951EFFAD;
-	Thu, 10 Apr 2025 16:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554B81EF377;
+	Thu, 10 Apr 2025 16:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744304111; cv=none; b=TbqN4H6Ck9j4pHgmFW6LnBdpz+hLlrr3/40y2sKjUrc5pVRcmG6F/C54hCac+nQ53znZKjIRIP75ocoxPKZbbBBCA3bjjfzU2KtnVxUuePeFLvdVc7X6JxZqx2BYAEJkmMaRBuY0cBQFth0Yge/te3Zuv3gyQGnhr3kY5ktaahE=
+	t=1744304123; cv=none; b=EQlvxF6sPn/Mly2yu+sR7oggX+SytFtNHIzJY0EyfwMgL9gwWRjAQspMmi4cBtVuxbIXJmspgBHeEpF/LcpU0ubv0doGYmTIhb1hmaYcuYKYEz8JCaN3F/vGomI6XMWF5DSBtVrq2UztiAHk9/zpFbu1NBL8WbLuUpD2JYBEuhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744304111; c=relaxed/simple;
-	bh=jr7IvKeCXX2HCm0pjy23wiCb6QGdEzIViDoHGwXVNK0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rciKmi1YMt82Lc2RHcVr5EUt0A3h4iMA1SMnh8FhQg35y+Se4CPsiOh5xFhgJT9JlU+d0JxfjVy6KhvCssBOsGpINikhPj15qUhCcVwgv7qP/Gpi9u0PESMD74kKzVEFWaKXwEaSZtv5Ofr3krDXSVUHDdrdVFBR9RoDd5z4ZvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=AiHIN+8C; arc=none smtp.client-ip=212.227.17.20
+	s=arc-20240116; t=1744304123; c=relaxed/simple;
+	bh=xsU3OjZ5S/Y7/wwCLNnCVbvl34RZpnj9Lr4K4nYehI4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=L9O8LV8bDC1MiwCNOj+9FSxLxhfjhd/T4Hq4jtAfuoKoaaTz9x8ieWZrE0TJxsD5oPeqHPrY6O2QmvFYL0fhzEN0e0NaGknJo1zPMID77XAz0xkiXDCn+ILgh/23nolC2M2WVuFsf/B1gIb6v+IGosedgwRrm4lduwiWEVBEEIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=jo/uUxGl; arc=none smtp.client-ip=212.227.17.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1744304107; x=1744908907; i=w_armin@gmx.de;
-	bh=E5IEqst5QifiNmEPxnMLO7fV0b71J9ICRr3urOpzNUY=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
-	 MIME-Version:Content-Transfer-Encoding:cc:
+	s=s31663417; t=1744304110; x=1744908910; i=w_armin@gmx.de;
+	bh=hFtvrUbB7pUzP2DPjOAYhU87qTsmV6Q5Nu3Zk4jonQc=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=AiHIN+8CQEK7bQK7ReJH5JbtEtg6EpdT8CUFJWJj5uoMKerF84zKa32AtDRyKIr+
-	 7aUwYpXPDG6VLIvVduAfy9onzWouD1aWhksyYLtD3R0s3uWL7mraWCshOcSBc8rrE
-	 Y8zIEikYP1Koq5FIVkCZOkpYlvGLYNWEuX8BIAO45HBVSB6QHMfqZMIMSXCGJs3TL
-	 KhuDCGchG+CZf3xzW/Jv1bVqkmN2QwQTLevqzDDFImVlKODti0QBolZvAbAU8EUdp
-	 SKYFz5IW0QzdZrzeYmUsMEiTjw2D+vKblkVEI+7jDDpvGc91nGDZXH4WLRq6T/q/v
-	 cGYFXFbbIvfQAE6qlw==
+	b=jo/uUxGlFrH6G4BIhJPRtuiuL3JV1j9zOamsD3J0bXcBSATS59OHLY7W3/lQJDp1
+	 2+WXHMXkOTAPGeYIkSUSUQ+Sk2GejTAOb8+FMMUyOlHBlaorKdX7B6kMQ7era8vpv
+	 Vp1oHKPhojhIC8vS9BNruE5iAw4tVgD1VmLGoeSKsDcI6REqmWzW+iGxWsYxcXuOV
+	 Ws7FvOnoDv+cXSPCVi05Ks8zOdeENuRegl7QN/w3CvZcl58cPY5hLlb8hhhAejjFx
+	 QGjeFgJ3cZA8cdp5tL+oUtJVU93fV4qSFnbYILjUbTdwQdQwY+HJHD4cOGdKQFGdJ
+	 8cRj0kw5i90EMZL1kw==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from mx-amd-b650.fritz.box ([87.177.78.219]) by mail.gmx.net
- (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1Mnpnm-1tHzVI396w-00p9CE; Thu, 10 Apr 2025 18:55:06 +0200
+ (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1N4hvb-1t19RK2pwV-013x46; Thu, 10 Apr 2025 18:55:09 +0200
 From: Armin Wolf <W_Armin@gmx.de>
 To: rafael@kernel.org,
 	rui.zhang@intel.com
 Cc: lenb@kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/3] ACPI: thermal: Properly support the _SCP control method
-Date: Thu, 10 Apr 2025 18:54:53 +0200
-Message-Id: <20250410165456.4173-1-W_Armin@gmx.de>
+Subject: [PATCH 1/3] ACPI: OSI: Stop advertising support for "3.0 _SCP Extensions"
+Date: Thu, 10 Apr 2025 18:54:54 +0200
+Message-Id: <20250410165456.4173-2-W_Armin@gmx.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250410165456.4173-1-W_Armin@gmx.de>
+References: <20250410165456.4173-1-W_Armin@gmx.de>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -64,98 +67,85 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:QYLUBy5UNdTZv8Wdch5JKS3IJaGVumN3Dp24EqAlX9ai1MZySeu
- fLVO5rPpJ1gDvBwcTRrwC42Vt6GUeaA7qW4giynp1hLNQdO1vjh0ZAaxuBXBnK/4L6nC3ka
- BvCXsfsU3Lolc8nlyQqIvdZsShsz3g4ObkSG+6rmLeXr1p4gp2sR+ON6xCR2zDELYZByfou
- KcEVmanj0sLdzj3Kaqahg==
+X-Provags-ID: V03:K1:8k0heseikQh0Zxv21NBAEGdk08f15zhx32AsD6gXflp23Bg5i7K
+ 1ndoLgvNy1+0idv5ezRRhY6oZnhT6P/eP0SaO/3iIE97QWV11U4q1oxb7eo1MdcRyTvZwLb
+ XZwGjrkDf3h/5y1VhbQxUZ8Gu43f/lap6wngailr84Tmkeo+zd5P39JN/VbDEhCn8+o07Kg
+ xVUy024PNwzCFGvThGHEQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:SoTVxWYJg2s=;dy+1h/FxkSP6TYvl7SyDb5dXVGG
- MNQT6KXh402e9pF5UDQrlQHMkjpVSRxtBh7QgxIX7sYKX2tSmzyPxYo07rh+/L13rVwjN2aXj
- Nlyq6417U7uz3C4YvTRSv/ZIAkwOYE6LlYd6ZNq75IwRyY264DAF1nkeTWU0pojJ1Gg7Tmo6C
- RIMZqnh0QeUNuXAAy5vvfCbDQjuaqPCdLGM0hzUX3Lftr0HI4bYbEcMn+ySyYVxHiX5l4liRG
- 9uAvJ6GpA/iVaxI5EKuQJwkfMGfMUG5XgTKemzY0UwsLtIbR4OzuS00k+fR3/7j3wTzWDlbb+
- 9lAQjs3dpuDE6F0QHfi6bbBgF+YM7rNmSjXs/JzUQzb3aNbxiLM8BbdyRmXqXZJEFfqPcG4dg
- 8RjHqiwIlV9isCoGJQ/UGjN0DyRzRJ0gO6jvUat8EMAXrDVqUbrJgMBLgOlXh6B69h4ckWzJU
- asHabi1aB9JXxtLHNqYEwKPz/gyBPYX0hwktE/o9VM9w3NpP+DeW9gzcnHeXO2r/a+jHPhe+3
- o2V/x/VxtK/F1DDYn3XNH4W+spVzyUokZOy/oE1m57nR80ZL5HMXH8JEyyqfG1+yAWhPKrO/o
- 2TcU83IYexU25yhZ/YpZlyFftXEKTrah6FKaY00CfX7j9iiNjlLO/5yVBq2CCAwqF6NJkbQzc
- G8BttOtK8kQmgy5LjzECopMjOejjWzjNmiHrjrZrN6kUtxYuAIpf5+F4wFT/uEH6ALEJu2rWe
- vxtcSaYG0qtqbcuHvjsBtdEfLwuVV1f985uoVx0dfIzoDpSd1S4Klz8c0E7GRx1XJxnXfPpue
- nRrOzfniQAdGVNZkkpjfhu0BHVClLkJrsnJe8N5nz/+vD1lFlK2A3t+77lJo3doAwl4psTXqd
- k4Saol5bEthmu7f1VXWQaBqCiWE6rnf6vrRZ2VpuaFH+Koa9Pk4PhaOljJtnJbMDbJf58Dbe5
- aWkJ82M3uZhRzjXjANi5Ww46Uv7H9F7Kl3WiV6A0IvjZW9neIM/oHqBbRxHwnK62lSJBznhmm
- WOyj0vfM6yx/htNTpp51ypnuq8VRVOl1sejpygtQ3U8DhxtkCaxh319GIN46xqCruPBwy27QH
- ddVGuUpON1kP6qm1F0w2b/cfHA1luG6bxu5kgjah/XxsbxMIHcdlipmNezOozSphSb1Hv/XsY
- suKw5ii5N8nt6EcFxbg17XuGouPc/3GyNnHZaBSVXN3AxOs3vzFwZXZEzfT+vtOl0cjJi+g3d
- u7rS6M32Yp/kJ/wa8q/PHjbvCWLH7C6kmfgxXAAxbaEM1+zA6UBhYHsrejMIky6jQgufVCUaT
- RkuUc+JrRC9suV+Mjt6IeZoTA6j3WbxKcIW2ZDcfhNfr0I4LJaRcnOvGqBzsoVs1EAV75oNBQ
- FOULXqkwC/yQEEfn7JQKuLNe9o/nL9gBHhESCe1ram0V5WKOULcT9DHRhkEGdMS0WA18ENTli
- QvlgkImYdl5PQApm3sahDhcejdjDI1SvRCt0GseD7OPviXXH2xzj0EeDUcqayx915gXjbh8rG
- qIjfHNPR4q4woTd9RfKB6jOKCCC2nVsjOLgVDEKnOYiZp/MOIl9YfuoP8l4uEx84Lrq5ekngi
- y5nfzAD3Y1AcSyhHlq1r64Bn5GheqU5mXTHKT89V3YPQeauaY49doYuqhnbSYv2NR1vNYmgzo
- +VDiDhH05LR1zggtvp9PhHfKqQYw09q6zjqDXYzUjXtaCFNx0S451zCohCyhujPByUZPyX+0F
- sc4bciH/nGVwwAQlGe487bsx8EQZp61w+pnEDtw+bPehAXtJQGzvm2JwT92mcSMUG1eVRP4g5
- DwBuL3aQFzDC17hrz6nSaZRvqz8kfuawgOvgxkuCVqKEwvMa1TtiWAdjP5fEsCj9eWN++EytG
- ZhxgHMXtwB+BvtEdtpmczVDBqcvsOcEiLQ9g/cA4ybKxO+uF6EFq/3D20ux2rsjWd6HK59Mij
- n2yUU4XGyvLCGYllcWj5iKQ9UKPkN+Udlm7/QI6NsM66+LSW27Af8KxxX9biAwFp7Z+LKg9Of
- pyX/p5rIIrZpbNgJabDu4uMs0260nccSBVHgtuZzPbeXiAukL1MJOfQX3B58S2Mhi5udAiZ+v
- s9/t68e0s86usbgnPXMCwP5gd7mb1l4ZMojGt6FQ0Wq2qggRSEYv8gyV0eNz519LPqRC5LrJO
- 1MJbeipCWV4r5DcN7awj9emvVzVyx95xN+85mtf8DgAx4BMl7/wr5EQvUFmttncm8BLL0Bjk4
- wS1ftOKZpSIUnlCwmb9jCFb5tbG+m09TZRaSSoycMxbUT4z5EQR4FrUsNFW3RKQBc5uJS2HJX
- cFFIzjdAt+e7Yl4BHnqtV46gVPZwbMwIQ0N40mpn+H8T72dgK6nwLPuzTcJv6lOnpIVAmW+47
- 0OmE6cx9OozG9Q+RYtfC+yN3zJd5f66lGSy3UbXBh1A3lIHILp/YW72IOoytRjCtnDS1a+e21
- iPAL5FbVAyHad8S3L7MhPfkvoKxGZTjPwfhm+r640Mi4gUf+vS2fhTWwKpKzga8x5uvkDL/XS
- SEwBLR/WZ3MV78Vj49g8Mx8x15pijDY/kcGEhtlHqn02b1XviWWozMxeoE8nSVX5UdsAtGPAf
- CZ9sosQyeWrTdsxi7ggLi2fD8vO9SqRNTwDtb0VN3xpMqOXXwpBnCX7bLcQNXZhiKWdLNM/gg
- eZDFn0k9sswcmXZD24Rk0Gu274J+hd3XwNHBqoY5wW+7uRSIH07ZSi0eGPYidqPRYqO7mCklx
- rHpoFl78My12D9zVn+ItJEP3ZrchWMfWP+Pl6TIn47EbHYtbTKQPigZCY9TCDgmZthLca8yoK
- ojqzCQImKzm9chsH4LicmRczxwj4jqIS2CviDYSq7wavYJoIIzRGmwTMFuXmWOBH2u2BlR1HW
- 6qYgbif4GU7mdxio2WM/bp+zY4JVG15BXIXiakGgbMiS83l21Jc2s2qt1Njvz5YJB1uYpItQI
- OF6N+vvAbXYHfyEe7PHcVL96I1V/KVQH8lb2KPFjLwaIlI9JlA+41bUyGj1axDKPNLv5aJ+Ny
- gulLjNrJJq9k/Dnje0drB4=
+UI-OutboundReport: notjunk:1;M01:P0:XIEXK2VH3Fw=;scxhgpL/5qPD+YtQji78+2D83H4
+ eWYCr7EBRyH9ZOmWlaRzyhsz6V4fulrC/vTG4q72arKoxvYZ5lCCAghuLWRENsm/5+2+hJ7gn
+ hSVVD2L6eEU38PFHh9ofB3/4D2p4snOcZKpjNdkDKgjjy6p6Ap6QRmMZddcBKgaPpQbGWe5ux
+ CWo8tSqfh6NeIj4mvMXKUd8SeMkiDIisWNC7iDtsabe9wG0L6u7QDxn2DWRCZJ/FnAx4oJEk+
+ +YodtyL4HuIYPIVOcMO3McGAvg4ZJHoMnByNvx9O+QqW/w/bJW+dIcvfPEXJg6tn355oJZfAY
+ RT6+PPjZppX0OLxcCgdNz7DJwP7ENpI3/EZDbmRb8iQ0VZI0qPY85UCX8z8k9iVCcVHLrTzC2
+ 0979xmkbdCLqKoEvdQJrEz39JZfEoxXxjQezadP9DmESmwhI05w5UjCAwRgshtbg/uU+z5H8x
+ jwRFgBpd/dFutbGhDuQNNzsfFCdL7e2bQ0zZJPn2aUR50MPYF8WI4RXKxIisZzCdoEgUjTAhw
+ hjiEFJrQA6DE721mzX0niveyWIAiBYmu9D+YKigIUnA7JnmYRth8gUWws5SA8Ch8V90r6cYiL
+ n7nXcpVtcpQVAZyQ3GR4biH0Zlb/TP0qNPgCMKs+2QwkBK6/AyTPhZHnBdVOZM4ftCU29Wrqe
+ vhUzTjs4m6CCKBawX+mifmd+Xwm+nHzpr4kr9dkhLQ1HaLMp0FaLOzW8FK3PEl+eP65B3oQBP
+ BhzoPSpetL8KwN3nqSqkiQsZL1BFS3I2YAujZ3lCrWTXCkJMorSNQXy6OTeB7IiGPN6vmlIMc
+ 9m8+x6ujCPJjpnHX/MrWzl/+rUftndJ094Q4iI6I1dLtpi+UwInheYNn9j5T+lB65oUKpBFGo
+ 3aq/ZL6LEHlqgVPBOeWTjnDZlN09GX9rS4EdBLW6XVLdXGk09rM1wP5Ax8kh6P3eFDdTJ/e9W
+ j9Zr/bHvUs3WJ6E/VLXJDRBeQA/t4xTFJAcdxDqwVtifm7SFQplycAh3+nVaEU8JbI6vFZdoQ
+ 2s0JKnW9zc5s0pLKdcOHxC0E0N7nIrCCAjpQyt91LFKAxNcVP16eUcBUUFmPhETZ9IXnXWCZe
+ QH1b0DoPPN6XxeXXu28Tmesf7wGl4GBX5/uejp7tqOSbe8i6j/2GBMV+QGkJsFDNqDpT9CTPj
+ 0S6wRDY5u4xfB1kTYinHs+c/DUuOGUvcpxzyzeij3Gn/W2DlRqcdxp859ShlHMzwocX2Dp521
+ wQcocHZbBhCKqtPsDwm1BB3ylPddz3OcIFuL4yorOqZgrJNi61yHYgDx2BhtYT0GNSL0PZfYs
+ L/I9SNOX7WJGvvmTDL9Lvbt5KGh3zuKXpPNtdR9jslC6TaZfUZraI7A4JRqXGrLbaDsydmw5J
+ oehmbV2vnVx0pn4U/2RIZu/PEXEQZH9JAccSTXFsWUZdXKp2wT1Dwqz0wNP5KwpqrACkhrHuy
+ n0oh2ywKoBqqKMdupvuekWck4+KZRuJdVpvaMmN4+qcX2+vEK+ecbSXfFzic+logK50oucON2
+ Zy08fCnR7BHyocn0c179unCqK3ZY+5hPA5PIFi7hIijavDe8FvEMkRZ4YZD3y4pRf1pTIiwum
+ fGMQBypzLmUUd16LVBvLwN7M6a4tVLyXr/MBlJnrwZcwER1Tj7tV6wXQ+qu1iY2FADjNhJJX1
+ p7WTCO9aPfE6Fk8GNEinq0IyrTmyqX7VIgdRXo2bO3Vb89toAUU9Q6X15kzFcquwgXKn7TKzT
+ oINbJ5XUV7aowC1tqt6HWKMA1WtG1V4MHYUTOb4od9CGJ5c47CcSTyW/D8B45CVxnuVGSMF8/
+ k0NEAGi1HNWMdzXWVwlv9am8+6iht099FzRLIN2R+ZzLA38RUfc3c1WbijkiDGXjfSCOJHVYu
+ LNpIVgJFeiFC62ybPEPHk9MI5U017ZKb4FkERL7TvBoNdw6GR7hTec6BU+91iEdMH3KRU5wpD
+ /qp09/D/SFlqfXDQ6VxDyg5xfkpcPWJtDJIn6dPJpeXN0tAd+EZuNqMBpwJBqFmg4GdYwZG4f
+ 2UrbFM6JbD79bW2Lhzn6gy6DFbVvWXeq+kU1aNIAjWqfqeKncRicHazkptKjN8Bt0xsF52+LH
+ 0um1tPCeVnFJcBb0rk27endWwYJHBDSODmb034BGtbXa/uqLPZXUbBRFO9jFhhW6msoktKP5k
+ UAKnJtenPfHbYn7iHPTOvRZwsUKI/eNPCoTXEq6cQSjUCS+K1tZ98eU+KKRFqI4/BNy+j9yNz
+ Dww6//20FIqrnVOCuxX040Flq2rtF8Fxnb76wWnD6rAbLz98DBcISAomRxgWbEJqxMKXnokRh
+ 8EtXVcS2GxmAC0aX6Q2xDLOQuHbmMdVI/NWcB1KkbZrrbk649h+YBZkbhaz11jqORcQoNyhSY
+ 3/d1mMiM34Tk+AuQa/J+cqpC/hO19XixclqcF9B52Tpxlw0AL2hPhObrG7gi5HZW+oshsOYWm
+ n+9xqVF0dR/GHcnqXStnEwfulZKWaMpYafDbrf1QU8t5N81Kmbp20YjOvim7kMDA/Jx3gshBK
+ GuEtg274jmCI9m+Rdu22TRSCg1jzDE2MIqVppPx+Z52GSqzGROzZVLsDu56gplEkI8rUtUstL
+ NJPmyU0UOXT+gnoIyDEKYV1lt7JfSrB/Cjnd+d0V6bjko07u4FxODHF0GQBx5vctzppmDkwi8
+ mTcANWCvK7xKTBGYWUpP4P+xHfce0AjPT3kiC4PbUcBJJ4uuIcpjOxu8dLsR/8HiSf0du7Dle
+ 6VNvhqqGxcGM1bOPK1WUwKPqG7rpSYWiodzKtb3o3jbU1ZUXuKwVmUmOmfwAzq+CXM0a56dfG
+ 66Z9UanmL5izKI0bwYX0gIiw2POHqJiGypp1gFCUfd3S0Ifs374cTl82H8WPg5rjjUjFKpQvp
+ p4C1ibDpL0aVkjJh6GKSUrsziIKNlfjuUiT4dHSjDDMeJsTCNHdruVq9swkX03TCxdzmdtskg
+ GANlHYxw95QB7f29spBzMuNAOy6gcrU9Vtj7u1dkApArYhMIViatQHRbsJpl8yJe4TZUqpXWt
+ 2KWsTSj0ZwMNt8cECEkTT8GlN7ibRKWQKMjM/3FB6kpTJHvVCkRUwmYb9r/zM1DoA==
 
-The ACPI specification defines an interface for the operating system
-to change the preferred cooling mode of a given ACPI thermal zone.
-This interface takes the form of a special ACPI control method called
-_SCP (see section 11.4.13 for details) and is already supported by the
-ACPI thermal driver.
+As specified in section 5.7.2 of the ACPI specification the feature
+group string "3.0 _SCP Extensions" implies that the operating system
+evaluates the _SCP control method with additional parameters.
 
-However this support as many issues:
+However the ACPI thermal driver evaluates the _SCP control method
+without those additional parameters, conflicting with the above
+feature group string advertised to the firmware thru _OSI.
 
- - the kernel advertises support for the "3.0 _SCP Extensions" yet the
-   ACPI thermal driver does not support those extensions. This may
-   confuse the ACPI firmware.
+Stop advertising support for this feature string to avoid confusing
+the ACPI firmware.
 
- - the execution of the _SCP control method happens after the driver
-   retrieved the trip point values. This conflicts with the ACPI
-   specification:
+Fixes: e5f660ebef68 ("ACPI / osi: Collect _OSI handling into one single fi=
+le")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+=2D--
+ drivers/acpi/osi.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-	"OSPM will automatically evaluate _ACx and _PSV objects after
-	 executing _SCP."
-
- - the cooling mode is hardcoded to active cooling and cannot be
-   changed by the user.
-
-Those issues are fixed in this patch series. In the end the user
-will be able to tell the ACPI firmware wether he prefers active or
-passive cooling. This setting will also be interesting for
-applications like TLP (https://linrunner.de/tlp/index.html).
-
-The whole series was tested on various devices supporting the _SCP
-control method and on a device without the _SCP control method and
-appears to work flawlessly.
-
-Armin Wolf (3):
-  ACPI: OSI: Stop advertising support for "3.0 _SCP Extensions"
-  ACPI: thermal: Execute _SCP before reading trip points
-  ACPI: thermal: Allow userspace applications to change the cooling mode
-
- .../ABI/testing/sysfs-driver-thermal          |  14 ++
- MAINTAINERS                                   |   1 +
- drivers/acpi/osi.c                            |   1 -
- drivers/acpi/thermal.c                        | 129 ++++++++++++++++--
- 4 files changed, 133 insertions(+), 12 deletions(-)
- create mode 100644 Documentation/ABI/testing/sysfs-driver-thermal
+diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
+index df9328c850bd..f2c943b934be 100644
+=2D-- a/drivers/acpi/osi.c
++++ b/drivers/acpi/osi.c
+@@ -42,7 +42,6 @@ static struct acpi_osi_entry
+ osi_setup_entries[OSI_STRING_ENTRIES_MAX] __initdata =3D {
+ 	{"Module Device", true},
+ 	{"Processor Device", true},
+-	{"3.0 _SCP Extensions", true},
+ 	{"Processor Aggregator Device", true},
+ };
 
 =2D-
 2.39.5
