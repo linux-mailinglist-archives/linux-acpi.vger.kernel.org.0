@@ -1,95 +1,131 @@
-Return-Path: <linux-acpi+bounces-12953-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12954-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675BBA84C3B
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Apr 2025 20:41:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87327A84E2C
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Apr 2025 22:28:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C91B4C502F
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Apr 2025 18:41:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96D601B873F1
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Apr 2025 20:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5A028EA4C;
-	Thu, 10 Apr 2025 18:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0952828EA7F;
+	Thu, 10 Apr 2025 20:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jVNjAUHB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fgw23-7.mail.saunalahti.fi (fgw23-7.mail.saunalahti.fi [62.142.5.84])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DB428D85B
-	for <linux-acpi@vger.kernel.org>; Thu, 10 Apr 2025 18:41:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAC41FA262;
+	Thu, 10 Apr 2025 20:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744310485; cv=none; b=fDFQwFHK9ChayK6DfrB8xHXWQxqbDjajK1h/NfSyOHYcBRWMqWQS/qMieVVCDcqFHg+tXOvtWhPI9FoRwRgXImeQiyRi8gjDcZHATWNqdGM5G46BbJNv6wHDFe8mmNO1cIsUljRRtcuvUoySNqGlqzojTnE11TupkLlzJMTB4KU=
+	t=1744316929; cv=none; b=Rc94UM9Cz4i0NETarwiY+Ih1Bd4j1YKuhBr1DF8b20IL9fmcT1JusN2tdaM1vEMEQuFwrhFF1Qd47ceiNBrep5OguVUvJEy8YtGQQv8MDFEfsiqCc0SWI2Ht9Ic3+ZU6f0+yhfy6kv+rjCPPGtbxHjWDWkSe+Dh/Dqma1KB/pY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744310485; c=relaxed/simple;
-	bh=T7UZl6Ece7qOgFFy7gpGnG7R1j1U94b4sSnKn8z7krw=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lk3gzJc1LRhjFXIK/GOR3de4X6Y9HMmurbPtuPW322xvssf12tz9I39/NlhNEoEzX+eNgyyKALRQqIhvT4IVJPRJqflQtY5+ug7m5AupQh6u0qb0SU6HwhicBTebvRB6q1UDOkCP5GinHDyWsN2pROrwNZ0ems60XnGawzm8LO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-26-232.elisa-laajakaista.fi [88.113.26.232])
-	by fgw21.mail.saunalahti.fi (Halon) with ESMTP
-	id 6184be0b-163b-11f0-963b-005056bdd08f;
-	Thu, 10 Apr 2025 21:41:14 +0300 (EEST)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 10 Apr 2025 21:41:14 +0300
-To: Kees Bakker <kees@ijzerbout.nl>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Mika Westerberg <westeri@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v1 2/2] gpiolib: acpi: Make sure we fill struct
- acpi_gpio_info
-Message-ID: <Z_gQyg_JXTBRjisf@surfacebook.localdomain>
-References: <20250409132942.2550719-1-andriy.shevchenko@linux.intel.com>
- <20250409132942.2550719-3-andriy.shevchenko@linux.intel.com>
- <98ded07e-33e4-417c-8146-fbf2783a7464@ijzerbout.nl>
+	s=arc-20240116; t=1744316929; c=relaxed/simple;
+	bh=MdZll6tFozWJMjFFh16yPz8vmYh5QIgv5cptZKSEuGo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IeUGVClSKhVB4VCrSq1y6rtig5vln3SaPbhgC/0iIDC0G8jGUW5TiTx29weuN07s4XuG1ItabVJraZToeQedBmvqMcqIvOHBH2YB/6+Pv0lflJO2HFxZukBLgb5EIEx7q9jxOIIg1sHDb5AhLKyRN2Ev/ndD+muG1dMnKmvYEQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jVNjAUHB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755B2C4CEDD;
+	Thu, 10 Apr 2025 20:28:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744316929;
+	bh=MdZll6tFozWJMjFFh16yPz8vmYh5QIgv5cptZKSEuGo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jVNjAUHBG7rogXBbeg5XTNMikVNJBGcxBIfQKG1wRINM7vXr8s+1opdkF+3CuOgvO
+	 1uzymBEoSZyvy1eUAwFhOLRa4bcmSI0XJVNn1g69yDZMK5zlNOoLQ0XapJaGdHUg4J
+	 EzjJ4C/f4rllBsZ9T1gyCsJabApm5T+J48bEPUQaxs4po4IC2KAwA5PEntiTvKLVpD
+	 O1K9UPWPs5C7buZ0TNULPtRNqfc3otFfr8qJbjGInnLMaNspv6FlrlgxRmn5xLd1wR
+	 7jC9H1dwYlWkue1HarQpTKHPU3sTEqR3sEW0bXgQjrenZY/QznaG3nLF2vUjG9cmXc
+	 8R0oZzhdNEdzA==
+Message-ID: <f509da3d-71de-4b90-b13b-ef0584bf05b8@kernel.org>
+Date: Thu, 10 Apr 2025 15:28:47 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <98ded07e-33e4-417c-8146-fbf2783a7464@ijzerbout.nl>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] pinctrl: amd: Fix use of undeclared identifier
+ 'pinctrl_amd_s2idle_dev_ops'
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ "open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>, linux-acpi@vger.kernel.org,
+ Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ kernel test robot <lkp@intel.com>
+References: <20250409213521.2218692-1-superm1@kernel.org>
+ <CAJZ5v0h9v+OmqzRDuBAXBHY1oWq3BizP9FxyzdqkmJ353KjO1w@mail.gmail.com>
+Content-Language: en-US
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <CAJZ5v0h9v+OmqzRDuBAXBHY1oWq3BizP9FxyzdqkmJ353KjO1w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Wed, Apr 09, 2025 at 08:16:59PM +0200, Kees Bakker kirjoitti:
-> Op 09-04-2025 om 15:27 schreef Andy Shevchenko:
+On 4/10/2025 7:50 AM, Rafael J. Wysocki wrote:
+> On Wed, Apr 9, 2025 at 11:35 PM Mario Limonciello <superm1@kernel.org> wrote:
+>>
+>> From: Mario Limonciello <mario.limonciello@amd.com>
+>>
+>> `pinctrl_amd_s2idle_dev_ops` is hidden under both `CONFIG_ACPI` and
+>> `CONFIG_PM_SLEEP` so the functions that use it need the same scope.
+> 
+> Shouldn't this be CONFIG_SUSPEND given what's going on in acpi.h?
 
-...
+Really - I think we probably should change all of pinctrl-amd.c to use 
+CONFIG_SUSPEND.
 
-> Can you check and confirm that at least info.gpioint is filled in (or
-> initialized)?
+> 
+> Also, there is one more report regarding pinctrl_dev being unused:
+> 
+> https://lore.kernel.org/linux-acpi/202504101106.hPCEcoHr-lkp@intel.com/T/#u
+> 
+> Any chance to address all of this in one patch?
 
-Yes, I can confirm this. And that's how I have tested it, on Intel
-Edison/Arduino the first GPIO expander (PCAL9555, serviced by
-drivers/gpio/gpio-pca953x.c) is able to deliver an interrupt to the SoC.
+Sure; I'll spin again and get something out to cover both cases soon.
 
-Before this series that doesn't show up, now it works as expected.
-
-> The callers of `__acpi_find_gpio` pass in an uninitialized `struct
-> acpi_gpio_info`
-
-True.
-
-> and after the call they read `info.gpioint`.
-
-...when GPIO descriptor is valid.
-
-...
-
-Yes, I agree that NULLifying info maybe good to have, but I don't see currently
-if we have bugs with it. Can you be more specific in case you have observed
-anything wrong?
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+> 
+>> Adjust checks to look for both.
+>>
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Closes: https://lore.kernel.org/oe-kbuild-all/202504100420.88UPkUTU-lkp@intel.com/
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>> ---
+>>   drivers/pinctrl/pinctrl-amd.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
+>> index b6fafed79b289..472a5aed4cd05 100644
+>> --- a/drivers/pinctrl/pinctrl-amd.c
+>> +++ b/drivers/pinctrl/pinctrl-amd.c
+>> @@ -1209,7 +1209,7 @@ static int amd_gpio_probe(struct platform_device *pdev)
+>>
+>>          platform_set_drvdata(pdev, gpio_dev);
+>>          acpi_register_wakeup_handler(gpio_dev->irq, amd_gpio_check_wake, gpio_dev);
+>> -#ifdef CONFIG_ACPI
+>> +#if defined(CONFIG_ACPI) && defined(CONFIG_PM_SLEEP)
+>>          acpi_register_lps0_dev(&pinctrl_amd_s2idle_dev_ops);
+>>   #endif
+>>
+>> @@ -1230,7 +1230,7 @@ static void amd_gpio_remove(struct platform_device *pdev)
+>>
+>>          gpiochip_remove(&gpio_dev->gc);
+>>          acpi_unregister_wakeup_handler(amd_gpio_check_wake, gpio_dev);
+>> -#ifdef CONFIG_ACPI
+>> +#if defined(CONFIG_ACPI) && defined(CONFIG_PM_SLEEP)
+>>          acpi_unregister_lps0_dev(&pinctrl_amd_s2idle_dev_ops);
+>>   #endif
+>>   }
+>> --
+>> 2.43.0
+>>
+>>
 
 
