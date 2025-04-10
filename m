@@ -1,60 +1,61 @@
-Return-Path: <linux-acpi+bounces-12956-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12957-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96C80A84FAC
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Apr 2025 00:32:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22986A84FAE
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Apr 2025 00:32:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A0C519E3C09
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Apr 2025 22:32:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32F2519E3C3D
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Apr 2025 22:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B832B1DED40;
-	Thu, 10 Apr 2025 22:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9738F20E03C;
+	Thu, 10 Apr 2025 22:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SxxQArfP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nfH0WyLW"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E922F2905;
-	Thu, 10 Apr 2025 22:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE381E1041;
+	Thu, 10 Apr 2025 22:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744324338; cv=none; b=JxddEGsucg3+O8NxT7dWOLNOkhWR1AYkF63MA6TKKEhedgZhF8zadOlnL+3srSu3MbzQAIa/e/7+9yfJ3fASb17GAnvK8sIOT4vAbQ0lbNI6mzRjsUyjHOv7Xt7wJjFPvBpMagSxVOE3GJcAeK/59Kuue+3alQjEZP4Ddvy0enA=
+	t=1744324340; cv=none; b=GdUA4MaFAW22bSwNA9hcha+x9vqVs8664qEr1b4dPIeP2BIrdgC/5v4/MYrUcNZWEi9qxUHCZ/8njmVZup524W7og4FkFW37jVGnfmsQsXbPS8p6cyV09rkzHz3EBgWAZt1NQYIf+elih/v4Hjdwe/cLvpObGbpXtl7Za9v16Pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744324338; c=relaxed/simple;
-	bh=/MNEJun8mN9wBvPTrRr3BCmyxv8MkoWawmsQxDaLYPA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DA1XIa9jE0mCZLXTrR+Whf1hxAIl4T3+dvaZqJTtDkWlj1wf3D5QDrV+3hCinVyAEc4Jtiivbf28dm8++RWCkzHxlwkvQdEqFfcl3fDCMjk5J/pMms1P900Au8HhHiI7VP3UbXVa+Aa7/77Sa05jCQsG0O2cj3lmZnd7puN58A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SxxQArfP; arc=none smtp.client-ip=198.175.65.13
+	s=arc-20240116; t=1744324340; c=relaxed/simple;
+	bh=je4PX87/pOXLlsfa4Mz89lMVrtgvdaQj3AqWmieL8Qo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o7/LPhGCjDZk4j8UmtENd6Rgo/Xak9oDwj+dzAT5Ft8ny/AVNKB5nARcNOeRiWBhOYB7ZWvAbrRfaW8xSd/oWgzfc/52HXRUdvcA64X6a3o6WzywdOUfUL/QZnFnPLljFb2SM0yvnUT2NWO+vwRlOhZUlnfMpMdnFKZfkiW0Zys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nfH0WyLW; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744324337; x=1775860337;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=/MNEJun8mN9wBvPTrRr3BCmyxv8MkoWawmsQxDaLYPA=;
-  b=SxxQArfP5D6e6Row1WD5F5MU9mdWPfgwdVStbqLNFQ0b95OVrp8AgHQ2
-   BMsHZ99sd4w9swH76TFw6KruSIu5aKWwbjgbmn9kX2AASd5rdl1P8hFC5
-   noYU2D8h0XUQPu4hZxhb7LrmAX1DYDK1k1wl2PguRoC4Ma4nVaU3WQPaP
-   UyQvAQkInc00nAPmmCtgYFjfM3ojrryQDZmw+S3MVT11Lz6MRqqnTFSl5
-   9LzyTCHWufObeX+LcxzFcFE7I1B20ZMABR06SpStKNI+EIJ2F6dhgfAVd
-   0+iRZhYVpxUaxpmO43dDnlSrjM+ACYzYBgSIbSuytJRD5SyMvuABPBc51
+  t=1744324339; x=1775860339;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=je4PX87/pOXLlsfa4Mz89lMVrtgvdaQj3AqWmieL8Qo=;
+  b=nfH0WyLWAeUi+eXX8J5LefWKf3UiraMv5Vq7lWmVdzoyf4Xgl8Xzc5yx
+   PtvWV6rhMown1c72Y47b1N+dZN5jdDKma3DVnK4PJ/1uPFQWnxkAg4inf
+   WcMTH28KqoPRK0mYftSt4uXHEXKxF9xURGhbZWmmFOkr6VSZ14SlpbL2K
+   fsaFE+iYt6ocymlSUVgOuvaaV5DI4vDxylJ5vOIMpq6K8gR/57g3RWwqM
+   7sMvFX24evcY6DM2bSt5vsLoEWD3wR2Me3SKoMpdg0TJ2kryxOYAYRklj
+   9pax9rQtOKZM4+Hp760hG5J+vgsnaEHTxHgvtJPHH5ES0r7ulkcCeuu07
    g==;
-X-CSE-ConnectionGUID: c5ScI66wQSSZzByl7GOS1Q==
-X-CSE-MsgGUID: mfKcJfd2SCuzwYCnq1K1Yg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="56845627"
+X-CSE-ConnectionGUID: ewVe5Ey/TTCPdQ6HQ8fOdA==
+X-CSE-MsgGUID: EbCyHarRQEaNoYkzpR1uJg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="56845629"
 X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; 
-   d="scan'208";a="56845627"
+   d="scan'208";a="56845629"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 15:32:16 -0700
-X-CSE-ConnectionGUID: o17e926cTeOszgHlX7/BoQ==
-X-CSE-MsgGUID: GZAl8x3dTOO6BKHhQTjrtQ==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 15:32:17 -0700
+X-CSE-ConnectionGUID: pQkjhSwaR1akJ5NHG91UNg==
+X-CSE-MsgGUID: JIu3knYsRFSfi/ixon2BAw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; 
-   d="scan'208";a="128988745"
+   d="scan'208";a="128988749"
 Received: from agluck-desk3.sc.intel.com ([172.25.222.70])
   by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 15:32:16 -0700
 From: Tony Luck <tony.luck@intel.com>
@@ -65,10 +66,12 @@ Cc: lenb@kernel.org,
 	linux-kernel@vger.kernel.org,
 	patches@lists.linux.dev,
 	Tony Luck <tony.luck@intel.com>
-Subject: [PATCH v3 0/4] Add interfaces for ACPI MRRM table
-Date: Thu, 10 Apr 2025 15:32:03 -0700
-Message-ID: <20250410223207.257722-1-tony.luck@intel.com>
+Subject: [PATCH v3 1/4] ACPICA: Define MRRM ACPI table
+Date: Thu, 10 Apr 2025 15:32:04 -0700
+Message-ID: <20250410223207.257722-2-tony.luck@intel.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250410223207.257722-1-tony.luck@intel.com>
+References: <20250410223207.257722-1-tony.luck@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -77,68 +80,94 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Memory used to be homogeneous. Then NUMA came along. Later different
-types of memory (persistent memory, on-package high bandwidth memory,
-CXL attached memory).
+Patch for reference, this has already been applied to
+https://github.com/acpica/acpica and will in due course make its way
+into Linux when the next ACPICA release is ported over.
 
-Each type of memory has its own performance characteristics, and users
-will need to monitor and control access by type.
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+---
+ include/acpi/actbl1.h |  7 +++++++
+ include/acpi/actbl2.h | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+)
 
-The MRRM solution is to tag physical address ranges with "region IDs"
-so that platform firmware[1] can indicate the type of memory for each
-range (with separate tags available for local vs. remote access to
-each range). Note that these ranges can include addresses reserved
-for future hotplugged memory.
-
-The region IDs will be used to provide separate event counts for each
-region for "perf" and for the "resctrl" file system to monitor and
-control memory bandwidth in each region.
-
-Users will need to know the address range(s) that are part of each
-region. This patch series adds
-	/sys/firmware/acpi/memory_ranges/rangeX
-directories to provide user space accessible enumeration.
-
--Tony
-
-[1] MRRM definition allow for future expansion for the OS to assign
-these region IDs.
-
-Changes since version 2 here:
-https://lore.kernel.org/all/20250227224828.306537-1-tony.luck@intel.com/
-
-1) Changes in patch 1 are now in the R2025_04_04 release of the ACPICA
-project (plus PR #1015 to fix a naming issue for "acpisrc" conversion
-to Linux format).
-
-2) Split the /sys/firmware part into its own patch. Linux resctrl only
-needs the enumeration of the number of supported regions.
-
-3) Added a "node" file to each of the rangeX directories to report
-which NUMA node the range belongs to.
-
-4) Dropped the debug-only last patch in the series as I now have
-other methods to test this code.
-
-Tony Luck (4):
-  ACPICA: Define MRRM ACPI table
-  ACPI/MRRM: Minimal parse of ACPI MRRM table
-  ACPI/MRRM: Add /sys files to describe memory ranges
-  ACPI: Add documentation for exposing MRRM data
-
- include/linux/acpi.h                          |   6 +
- include/acpi/actbl1.h                         |   7 +
- include/acpi/actbl2.h                         |  42 ++++
- drivers/acpi/acpi_mrrm.c                      | 185 ++++++++++++++++++
- Documentation/ABI/testing/sysfs-firmware-acpi |  21 ++
- arch/x86/Kconfig                              |   1 +
- drivers/acpi/Kconfig                          |   3 +
- drivers/acpi/Makefile                         |   1 +
- 8 files changed, 266 insertions(+)
- create mode 100644 drivers/acpi/acpi_mrrm.c
-
-
-base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+index 387fc821703a..4cb36392e9e9 100644
+--- a/include/acpi/actbl1.h
++++ b/include/acpi/actbl1.h
+@@ -110,6 +110,13 @@ struct acpi_whea_header {
+ 	u64 mask;		/* Bitmask required for this register instruction */
+ };
+ 
++/* Larger subtable header (when Length can exceed 255) */
++
++struct acpi_subtbl_hdr_16 {
++	u16 type;
++	u16 length;
++};
++
+ /* https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/acpitabl/ns-acpitabl-aspt_table */
+ #define ASPT_REVISION_ID 0x01
+ struct acpi_table_aspt {
+diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+index 2e917a8f8bca..e7423db6e24b 100644
+--- a/include/acpi/actbl2.h
++++ b/include/acpi/actbl2.h
+@@ -37,6 +37,7 @@
+ #define ACPI_SIG_MCHI           "MCHI"	/* Management Controller Host Interface table */
+ #define ACPI_SIG_MPAM           "MPAM"	/* Memory System Resource Partitioning and Monitoring Table */
+ #define ACPI_SIG_MPST           "MPST"	/* Memory Power State Table */
++#define ACPI_SIG_MRRM           "MRRM"      /* Memory Range and Region Mapping table */
+ #define ACPI_SIG_MSDM           "MSDM"	/* Microsoft Data Management Table */
+ #define ACPI_SIG_NFIT           "NFIT"	/* NVDIMM Firmware Interface Table */
+ #define ACPI_SIG_NHLT           "NHLT"	/* Non HD Audio Link Table */
+@@ -1736,6 +1737,47 @@ struct acpi_msct_proximity {
+ 	u64 memory_capacity;	/* In bytes */
+ };
+ 
++/*******************************************************************************
++ *
++ * MRRM - Memory Range and Region Mapping (MRRM) table
++ * Conforms to "Intel Resource Director Technology Architecture Specification"
++ * Version 1.1, January 2025
++ *
++ ******************************************************************************/
++
++struct acpi_table_mrrm {
++	struct acpi_table_header header;	/* Common ACPI table header */
++	u8 max_mem_region;			/* Max Memory Regions supported */
++	u8 flags;				/* Region assignment type */
++	u8 reserved[26];
++	u8 memory_range_entry[];
++};
++
++/* Flags */
++#define ACPI_MRRM_FLAGS_REGION_ASSIGNMENT_OS (1<<0)
++
++/*******************************************************************************
++	*
++	* Memory Range entry - Memory Range entry in MRRM table
++	*
++	******************************************************************************/
++
++struct acpi_mrrm_mem_range_entry {
++	struct acpi_subtbl_hdr_16 header;
++	u32 reserved0;		/* Reserved */
++	u64 addr_base;		/* Base addr of the mem range */
++	u64 addr_len;		/* Length of the mem range */
++	u16 region_id_flags;	/* Valid local or remote Region-ID */
++	u8 local_region_id;	/* Platform-assigned static local Region-ID */
++	u8 remote_region_id;	/* Platform-assigned static remote Region-ID */
++	u32 reserved1;		/* Reserved */
++	/* Region-ID Programming Registers[] */
++};
++
++/* Values for region_id_flags above */
++#define ACPI_MRRM_VALID_REGION_ID_FLAGS_LOCAL   (1<<0)
++#define ACPI_MRRM_VALID_REGION_ID_FLAGS_REMOTE  (1<<1)
++
+ /*******************************************************************************
+  *
+  * MSDM - Microsoft Data Management table
 -- 
 2.48.1
 
