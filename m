@@ -1,133 +1,100 @@
-Return-Path: <linux-acpi+bounces-12943-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12944-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD1BA843B7
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Apr 2025 14:53:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA56A84455
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Apr 2025 15:14:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64BBA8C787E
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Apr 2025 12:50:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DDB57A91E4
+	for <lists+linux-acpi@lfdr.de>; Thu, 10 Apr 2025 13:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1B82853EC;
-	Thu, 10 Apr 2025 12:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750202836A5;
+	Thu, 10 Apr 2025 13:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j0DUz9FT"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="dgtkAHbX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pv50p00im-ztdg10021201.me.com (pv50p00im-ztdg10021201.me.com [17.58.6.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D44328153D;
-	Thu, 10 Apr 2025 12:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1911372
+	for <linux-acpi@vger.kernel.org>; Thu, 10 Apr 2025 13:12:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744289430; cv=none; b=tnHeemmji0chetH9/v4LxE6C9rWiMbKjUZ6+78I5N/k7ckEL0bUJoZ5oZ3IF4NtgaMwkM+3boVISsXH6kz4v8iUk+ytcJstodwwlMjXOxp9qvKgOGpyFC9mkh9RTWY8gPq/PJFuig/mePzCR5cvz7xmSImMCcKy0VYKQ7Jcn3mM=
+	t=1744290761; cv=none; b=hwDM22ZQF0QuVsNhsuhFkG+rz6xmchn+Lgc0SXlCDS2XlotbQ7VUdYn3Noyq+TKHOQilSt+2JemZJvTydHMAPU9nLUuIg+a/c9fmXT+jDacm/jFR4i+TLZIli0bbRAcmAEDHDXpxGro5kbGbl+SK1s2CZBUj8Ff6Gp6/3ubddac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744289430; c=relaxed/simple;
-	bh=uJzUxpoNSO6SWcqYR35HQPnvYoeY0LWgy7coqirlstg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PYSKKAqKbNYSOwi8BKV1ukFdpYuY0ch86EqukkUeOItan5oQRlSDOxCgdXWn4GlaCzeBtC6WCD1JQ3iyP8BYoAHADgahUeBbtFCwtiQ/eau8bs5qKM0hjFVmA+Nx7cqUJpGXOvzxKKXDAVzezabxUQ+vqaDc6PNCXQWQl2mmaQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j0DUz9FT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE541C4CEDD;
-	Thu, 10 Apr 2025 12:50:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744289429;
-	bh=uJzUxpoNSO6SWcqYR35HQPnvYoeY0LWgy7coqirlstg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=j0DUz9FTKNj2gjUqBFMmONzn95DngrwIB+bJg525Q/17vIK3mOWA46ScRy438ZmX+
-	 xmHWouAO96GFdSeSLWpdN+w4YMT6EfoDpRPMt7rGvYKvBOkKC3PTmsSDFhIzYvTFIT
-	 qTum3w9VG/1AuGPWjz8yU8JPm5u1rZUXtmvieNOP2l9UJY8RXoum59FZTRQ3Ic3wNk
-	 6Mli8bCrI+Q0QlPbR6Wxe6hvVDRSDpj/zZap+FF1WaaDbFAj4Z27us71C+f5utpP8A
-	 kzY18RmT1SBAyRxpyoeqOTEcaGysjJHPccDrNc7N4DWdAQAP78E9LzpDkGLDTBWoy1
-	 ohIQ31V11tsuQ==
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-2c873231e7bso426073fac.3;
-        Thu, 10 Apr 2025 05:50:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV1g2IjV+3AzaGC275j1FC0cAuopYQQIr/YIWmKwGczmRxmCdVqMERMpvAQCccvbnRl60+FNKgiRKfqU9Tq@vger.kernel.org, AJvYcCVDKYz9FrM50lUOp1DXXBkvPy3jIM9ptmiQJaQariBz6PYnaMypSGNRn36zlIUXBp8uehAlj2l+kfvJGg==@vger.kernel.org, AJvYcCWpcnP9co+phdQ09hr3denHA6cd4ULoU7W+kpOWy22eDVtWpQV2/jfZGdxB3ZoTd/KpwqiO0q7FE0en@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMUZDyXYvE97zuoNdPhf7HIaaZ6sJdJKjFY00bDKA6M0/xsdST
-	AagLw2cekF92uDHYFTNkGY1y2FcQfn3fjiaSdnHMB99yPIp7Twu8nvnMDJenfYkzD9j7Fz3GF2m
-	Wh6XeQI9wCbjoQLA/vGUEeM0jtx4=
-X-Google-Smtp-Source: AGHT+IHFzwPrEmySuJaupjRzR4Wv7Ke41Xi8JgorWkvFGR+1FexOkaeXGD1OVzHfGT9xJtKTy8iP8aJb0FxwdY6g3WM=
-X-Received: by 2002:a05:6871:2011:b0:29e:1325:760a with SMTP id
- 586e51a60fabf-2d0b35731e4mr1319762fac.8.1744289429041; Thu, 10 Apr 2025
- 05:50:29 -0700 (PDT)
+	s=arc-20240116; t=1744290761; c=relaxed/simple;
+	bh=NA5G4ydnWAWqc3QEFJTbXFnSVWsn4IihhOrceoILLlU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qHhP5yWMdxgbahatbH8dMoOg0hMQStdjkJn5LPwfaN5Bkle958LgfMTIR+k7/BKfS2QmiY5R3D1jk2PwVDHIR9ND8W1GlhxS4FazDgxRh2UmtNlmREKWoEStmiuePqxJ+qYSyoQaRlQiVrsZwtirgcCIvXKBkbHPUBa3508/uN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=dgtkAHbX; arc=none smtp.client-ip=17.58.6.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; bh=3GZWjv30uaC5+ExIu1t4hgMEc2szLbjnqqNMWecvZMc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:x-icloud-hme;
+	b=dgtkAHbXO3Pa+1iOIronGEAlLQHGl+Fjtn4erHlmF70h8xiNA3Tin6jVxydqeKldo
+	 hMNQOjt0qjj4oYHC26N40yXbQLdoyZfjR4REHWxXpFCn2Lej4li9kX0hlrdjPPvYLC
+	 OqWdfZJcPC5kT8qeQsusmFy3noxhvXJ9owZoJlmoX0t+63A4vGi1MUGHcg4wPfsV4m
+	 uPmy8xhkzh/jzfk5Im05F0ifaP+shHmOmq2kWXLSTd5F8raF9oZN2EDv14aDyQcXd8
+	 yXKMCRSLX0oRykcPEy4+62aJ/HJMDR998ruKKn/35WTeXB0eg2CytMFbnq7a3S6RcU
+	 WgWKDsoJ0WkoQ==
+Received: from pv50p00im-ztdg10021201.me.com (pv50p00im-ztdg10021201.me.com [17.58.6.45])
+	by pv50p00im-ztdg10021201.me.com (Postfix) with ESMTPS id 78BF531189D0;
+	Thu, 10 Apr 2025 13:12:36 +0000 (UTC)
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-ztdg10021201.me.com (Postfix) with ESMTPSA id 019CE31188DA;
+	Thu, 10 Apr 2025 13:12:32 +0000 (UTC)
+From: Zijun Hu <zijun_hu@icloud.com>
+Subject: [PATCH 0/2] software node: bug fixes
+Date: Thu, 10 Apr 2025 21:12:10 +0800
+Message-Id: <20250410-fix_swnode-v1-0-081c95cf7cf9@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250409213521.2218692-1-superm1@kernel.org>
-In-Reply-To: <20250409213521.2218692-1-superm1@kernel.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 10 Apr 2025 14:50:17 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0h9v+OmqzRDuBAXBHY1oWq3BizP9FxyzdqkmJ353KjO1w@mail.gmail.com>
-X-Gm-Features: ATxdqUHP9ee7eBOj6IHh8hkBv0pJjYFDy8ridrhNBZLbpKo84c9kY5vKmXoj2m0
-Message-ID: <CAJZ5v0h9v+OmqzRDuBAXBHY1oWq3BizP9FxyzdqkmJ353KjO1w@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: amd: Fix use of undeclared identifier 'pinctrl_amd_s2idle_dev_ops'
-To: Mario Limonciello <superm1@kernel.org>
-Cc: "Rafael J . Wysocki" <rjw@rjwysocki.net>, Linus Walleij <linus.walleij@linaro.org>, 
-	"open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	linux-acpi@vger.kernel.org, Basavaraj Natikar <Basavaraj.Natikar@amd.com>, 
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, 
-	kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKrD92cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDE0MD3bTMivji8rz8lFRdE0sLs7Q0wyRjU2MTJaCGgqJUoCzYsOjY2lo
+ ALEV0flwAAAA=
+X-Change-ID: 20250410-fix_swnode-4986ff1b3534
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Daniel Scally <djrscally@gmail.com>, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+Cc: Zijun Hu <zijun_hu@icloud.com>, linux-acpi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
+X-Mailer: b4 0.14.2
+X-Proofpoint-ORIG-GUID: Uwh1wSVS1TFfNgXuATiLwO0rAJhu-Xpd
+X-Proofpoint-GUID: Uwh1wSVS1TFfNgXuATiLwO0rAJhu-Xpd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-10_03,2025-04-08_04,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=719
+ bulkscore=0 clxscore=1015 spamscore=0 mlxscore=0 suspectscore=0
+ malwarescore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2504100095
+X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
 
-On Wed, Apr 9, 2025 at 11:35=E2=80=AFPM Mario Limonciello <superm1@kernel.o=
-rg> wrote:
->
-> From: Mario Limonciello <mario.limonciello@amd.com>
->
-> `pinctrl_amd_s2idle_dev_ops` is hidden under both `CONFIG_ACPI` and
-> `CONFIG_PM_SLEEP` so the functions that use it need the same scope.
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+---
+Zijun Hu (2):
+      software node: Add comment for the first ERR_CAST() in fwnode_create_software_node()
+      software node: Correct a OOB check in software_node_get_reference_args()
 
-Shouldn't this be CONFIG_SUSPEND given what's going on in acpi.h?
+ drivers/base/swnode.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+---
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+change-id: 20250410-fix_swnode-4986ff1b3534
 
-Also, there is one more report regarding pinctrl_dev being unused:
+Best regards,
+-- 
+Zijun Hu <quic_zijuhu@quicinc.com>
 
-https://lore.kernel.org/linux-acpi/202504101106.hPCEcoHr-lkp@intel.com/T/#u
-
-Any chance to address all of this in one patch?
-
-> Adjust checks to look for both.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202504100420.88UPkUTU-lkp@i=
-ntel.com/
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/pinctrl/pinctrl-amd.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.=
-c
-> index b6fafed79b289..472a5aed4cd05 100644
-> --- a/drivers/pinctrl/pinctrl-amd.c
-> +++ b/drivers/pinctrl/pinctrl-amd.c
-> @@ -1209,7 +1209,7 @@ static int amd_gpio_probe(struct platform_device *p=
-dev)
->
->         platform_set_drvdata(pdev, gpio_dev);
->         acpi_register_wakeup_handler(gpio_dev->irq, amd_gpio_check_wake, =
-gpio_dev);
-> -#ifdef CONFIG_ACPI
-> +#if defined(CONFIG_ACPI) && defined(CONFIG_PM_SLEEP)
->         acpi_register_lps0_dev(&pinctrl_amd_s2idle_dev_ops);
->  #endif
->
-> @@ -1230,7 +1230,7 @@ static void amd_gpio_remove(struct platform_device =
-*pdev)
->
->         gpiochip_remove(&gpio_dev->gc);
->         acpi_unregister_wakeup_handler(amd_gpio_check_wake, gpio_dev);
-> -#ifdef CONFIG_ACPI
-> +#if defined(CONFIG_ACPI) && defined(CONFIG_PM_SLEEP)
->         acpi_unregister_lps0_dev(&pinctrl_amd_s2idle_dev_ops);
->  #endif
->  }
-> --
-> 2.43.0
->
->
 
