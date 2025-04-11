@@ -1,105 +1,180 @@
-Return-Path: <linux-acpi+bounces-12963-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12964-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52700A8520D
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Apr 2025 05:33:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA0DAA8560C
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Apr 2025 10:02:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 663201B67EE4
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Apr 2025 03:33:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78EC61BA21EA
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Apr 2025 08:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D261DFDA1;
-	Fri, 11 Apr 2025 03:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7EB2900B8;
+	Fri, 11 Apr 2025 08:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="R+1KZ6Mz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XDCsGvAQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472BB28F1;
-	Fri, 11 Apr 2025 03:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6C728F952;
+	Fri, 11 Apr 2025 08:02:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744342381; cv=none; b=Y4EAMn9MAN77wZE4a6W+XZEEfILCt/Aa9cw5dJlMxBHOUIs8HIDdV1PaAijw2/hT3jWrcxn39IroLPRW08ioUvM+5GzBxooLr0W1EaC/uvX6SNA96kdiQbsHluJq2HqbUVuVHcrzfTgliCS6RCpsO3jxaQ/2v3uCdScbaWjT/Sg=
+	t=1744358533; cv=none; b=qCc+3ml0updI1fav7wm1x04isYyPnfK5lLsli9PBA2ui4DUq0Pyfw/D+G/m1mAAHnxNw66MsqNaka0qtRIJqFAHCSuNOZS17fSHISe4EPAg49QUbE2LWj0jVBpfIAtSIGHUFGqL7aXg/of4TFyikG9mHnMi8Cw0G9rNkIQKC28U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744342381; c=relaxed/simple;
-	bh=Y3RcddSGjWAAwq2TDLG7Co+ofKt9Ax8koqEjhnrjHEw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cONsK2GgL2vfDBlHnDaYnCCBImc4iPlt5AaFkOmuv31zMEODb613zHf6dPydiZ1X0GORE96ysun4NFQ5vLlTcBUeUEJH5B7JWkC0CT0FpCLHvDZBb6rLQELZYyW96ZB4VOQ5g8paPy8NCb1sSXzsq/26qKGYbGJGvqoDt3Fce4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=R+1KZ6Mz; arc=none smtp.client-ip=115.124.30.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1744342369; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=6qUyEujLX22GdEnd5CUDnJ4Pz1LPAiyWrj7/y+BbMoE=;
-	b=R+1KZ6Mztf5GATFYUNuqTwJuIpDgwzOWWpbYrrQLH1+7OPiUPuGMVPRoUGUkD79R718Cdbl1LSw6FMXDHlgFvbVM3RlAeZgTLRgxX3jv8rRAvBtE2RBSehuuJfTA2coq8GlgcGVk9Ur980bmaEqk0gFKD8NNoUJfUKPP73j4FUg=
-Received: from 30.246.160.68(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WWRkGtA_1744342365 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 11 Apr 2025 11:32:47 +0800
-Message-ID: <18875bd7-bf01-4ba8-b38a-4c0767e3130e@linux.alibaba.com>
-Date: Fri, 11 Apr 2025 11:32:45 +0800
+	s=arc-20240116; t=1744358533; c=relaxed/simple;
+	bh=VPv4id2m4TY8Fmb1lSfEPtllue99RBkAXzud15Ip3W0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iZSKCrcGBvxUzk2KHRjlo4RdShymcSC6V7+Mk6DSzeQJQOzMJKd32zlN9edYV/hPnZh3CLRRaMwtyz2tEVJ1c91dwLy0172Zja/TTi10Kw0RLkajvZb6NML/QUg86i5iakkvwPvea8A6e2Tnn4Q5fbDQo4phmAPQxVftxPtBNRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XDCsGvAQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A32CC4CEE7;
+	Fri, 11 Apr 2025 08:02:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744358533;
+	bh=VPv4id2m4TY8Fmb1lSfEPtllue99RBkAXzud15Ip3W0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XDCsGvAQ8EQmSpGiAiVKosUQ9uBt3exxAWyP481bbStxDVQwS4eJ79B8S4NGkCmCT
+	 nJ5CsOaHvC/o1FzuDVp1mcnO9Sh9tR70w7Zh6DI9flpFudcf2lWZ6QQNTJQbYhf0Pa
+	 FF30ur8SeO40b8O7f+YboIUQ1J1JKUgjcj5vLaUMbfS+HjTXgAN1vxefw1PBlltTvU
+	 /FpU8Ohu4m7d5U1Llu9alh0gIOjzReL/k1v01DtP5+IhDrT8dYnPWdSNoBAsGJEZoH
+	 PrjkEkNXQin43eFG5My76D+QovQly6n/PzrK0bFhYhnzhKvEcCtcRIXEa0yylqi+mH
+	 i+8MUxrk0BvyQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1u39L6-000000004FW-2zsh;
+	Fri, 11 Apr 2025 10:02:16 +0200
+Date: Fri, 11 Apr 2025 10:02:16 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Russell King <linux@armlinux.org.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Stuart Yoder <stuyoder@gmail.com>,
+	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	Charan Teja Kalla <quic_charante@quicinc.com>
+Subject: Re: [PATCH v2 4/4] iommu: Get DT/ACPI parsing into the proper probe
+ path
+Message-ID: <Z_jMiC1uj_MJpKVj@hovoldconsulting.com>
+References: <cover.1740753261.git.robin.murphy@arm.com>
+ <e3b191e6fd6ca9a1e84c5e5e40044faf97abb874.1740753261.git.robin.murphy@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 10/11] arm64: idle: export arch_cpu_idle()
-To: Ankur Arora <ankur.a.arora@oracle.com>, linux-pm@vger.kernel.org,
- kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc: catalin.marinas@arm.com, will@kernel.org, x86@kernel.org,
- pbonzini@redhat.com, vkuznets@redhat.com, rafael@kernel.org,
- daniel.lezcano@linaro.org, peterz@infradead.org, arnd@arndb.de,
- lenb@kernel.org, mark.rutland@arm.com, harisokn@amazon.com,
- mtosatti@redhat.com, sudeep.holla@arm.com, cl@gentwo.org, maz@kernel.org,
- misono.tomohiro@fujitsu.com, maobibo@loongson.cn, zhenglifeng1@huawei.com,
- joao.m.martins@oracle.com, boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
-References: <20250218213337.377987-1-ankur.a.arora@oracle.com>
- <20250218213337.377987-11-ankur.a.arora@oracle.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20250218213337.377987-11-ankur.a.arora@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e3b191e6fd6ca9a1e84c5e5e40044faf97abb874.1740753261.git.robin.murphy@arm.com>
 
+Hi Robin,
 
+On Fri, Feb 28, 2025 at 03:46:33PM +0000, Robin Murphy wrote:
+> In hindsight, there were some crucial subtleties overlooked when moving
+> {of,acpi}_dma_configure() to driver probe time to allow waiting for
+> IOMMU drivers with -EPROBE_DEFER, and these have become an
+> ever-increasing source of problems. The IOMMU API has some fundamental
+> assumptions that iommu_probe_device() is called for every device added
+> to the system, in the order in which they are added. Calling it in a
+> random order or not at all dependent on driver binding leads to
+> malformed groups, a potential lack of isolation for devices with no
+> driver, and all manner of unexpected concurrency and race conditions.
+> We've attempted to mitigate the latter with point-fix bodges like
+> iommu_probe_device_lock, but it's a losing battle and the time has come
+> to bite the bullet and address the true source of the problem instead.
 
-在 2025/2/19 05:33, Ankur Arora 写道:
-> Needed for cpuidle-haltpoll.
-> 
-> Acked-by: Will Deacon <will@kernel.org>
-> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
-> ---
->   arch/arm64/kernel/idle.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/arm64/kernel/idle.c b/arch/arm64/kernel/idle.c
-> index 05cfb347ec26..b85ba0df9b02 100644
-> --- a/arch/arm64/kernel/idle.c
-> +++ b/arch/arm64/kernel/idle.c
-> @@ -43,3 +43,4 @@ void __cpuidle arch_cpu_idle(void)
->   	 */
->   	cpu_do_idle();
+> @@ -426,6 +438,12 @@ static int iommu_init_device(struct device *dev)
+>  		ret = -ENODEV;
+>  		goto err_free;
+>  	}
+> +	/*
+> +	 * And if we do now see any replay calls, they would indicate someone
+> +	 * misusing the dma_configure path outside bus code.
+> +	 */
+> +	if (dev->driver)
+> +		dev_WARN(dev, "late IOMMU probe at driver bind, something fishy here!\n");
+>  
+>  	if (!try_module_get(ops->owner)) {
+>  		ret = -EINVAL;
+> diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
+> index e10a68b5ffde..6b989a62def2 100644
+> --- a/drivers/iommu/of_iommu.c
+> +++ b/drivers/iommu/of_iommu.c
+> @@ -155,7 +155,12 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
+>  		dev_iommu_free(dev);
+>  	mutex_unlock(&iommu_probe_device_lock);
+>  
+> -	if (!err && dev->bus)
+> +	/*
+> +	 * If we're not on the iommu_probe_device() path (as indicated by the
+> +	 * initial dev->iommu) then try to simulate it. This should no longer
+> +	 * happen unless of_dma_configure() is being misused outside bus code.
+> +	 */
 
-Hi, Ankur,
+This assumption does not hold as there is nothing preventing iommu
+driver probe from racing with a client driver probe.
 
-With haltpoll_driver registered, arch_cpu_idle() on x86 can select
-mwait_idle() in idle threads.
+> +	if (!err && dev->bus && !dev_iommu_present)
+>  		err = iommu_probe_device(dev);
+>  
+>  	if (err && err != -EPROBE_DEFER)
 
-It use MONITOR sets up an effective address range that is monitored
-for write-to-memory activities; MWAIT places the processor in
-an optimized state (this may vary between different implementations)
-until a write to the monitored address range occurs.
+I hit the (now moved) dev_WARN() on the ThinkPad T14s where the GPU SMMU
+is probed late due to a clock dependency and can end up probing in
+parallel with the GPU driver.
 
-Should arch_cpu_idle() on arm64 also use the LDXR/WFE
-to avoid wakeup IPI like x86 monitor/mwait?
+[    3.805282] arm-smmu 3da0000.iommu: probing hardware configuration...
+[    3.806007] arm-smmu 3da0000.iommu: SMMUv2 with:
+[    3.806843] arm-smmu 3da0000.iommu:  stage 1 translation
+[    3.807562] arm-smmu 3da0000.iommu:  coherent table walk
+[    3.808253] arm-smmu 3da0000.iommu:  stream matching with 24 register groups
+[    3.808957] arm-smmu 3da0000.iommu:  22 context banks (0 stage-2 only)
+[    3.809651] arm-smmu 3da0000.iommu:  Supported page sizes: 0x61311000
+[    3.810339] arm-smmu 3da0000.iommu:  Stage-1: 48-bit VA -> 40-bit IPA
+[    3.811130] arm-smmu 3da0000.iommu:  preserved 0 boot mappings
 
-Thanks.
-Shuai
+[    3.829042] platform 3d6a000.gmu: Adding to iommu group 8
 
+[    3.992050] ------------[ cut here ]------------
+[    3.993045] adreno 3d00000.gpu: late IOMMU probe at driver bind, something fishy here!
+[    3.994058] WARNING: CPU: 9 PID: 343 at drivers/iommu/iommu.c:579 __iommu_probe_device+0x2b0/0x4ac
 
+[    4.003272] CPU: 9 UID: 0 PID: 343 Comm: kworker/u50:2 Not tainted 6.15.0-rc1 #109 PREEMPT 
+[    4.003276] Hardware name: LENOVO 21N2ZC5PUS/21N2ZC5PUS, BIOS N42ET83W (2.13 ) 10/04/2024
+
+[    4.025943] Call trace:
+[    4.025945]  __iommu_probe_device+0x2b0/0x4ac (P)
+[    4.030453]  iommu_probe_device+0x38/0x7c
+[    4.030455]  of_iommu_configure+0x188/0x26c
+[    4.030457]  of_dma_configure_id+0xcc/0x300
+[    4.030460]  platform_dma_configure+0x74/0xac
+[    4.030462]  really_probe+0x74/0x38c
+[    4.030464]  __driver_probe_device+0x7c/0x160
+[    4.030465]  driver_probe_device+0x40/0x110
+[    4.030467]  __device_attach_driver+0xbc/0x158
+[    4.030468]  bus_for_each_drv+0x84/0xe0
+[    4.030470]  __device_attach+0xa8/0x1d4
+[    4.030472]  device_initial_probe+0x14/0x20
+[    4.030473]  bus_probe_device+0xb0/0xb4
+[    4.030476]  deferred_probe_work_func+0xa0/0xf4
+
+[    4.030501] ---[ end trace 0000000000000000 ]---
+[    4.031269] adreno 3d00000.gpu: Adding to iommu group 9
+
+Johan
 
