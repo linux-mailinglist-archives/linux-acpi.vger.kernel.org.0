@@ -1,118 +1,103 @@
-Return-Path: <linux-acpi+bounces-12979-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12980-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42C8DA8609B
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Apr 2025 16:30:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27747A86151
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Apr 2025 17:09:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95A1B1B81499
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Apr 2025 14:30:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95A177BA657
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Apr 2025 15:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E361F4CAF;
-	Fri, 11 Apr 2025 14:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkccE8nC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429CF20AF6D;
+	Fri, 11 Apr 2025 15:07:51 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6901F417A;
-	Fri, 11 Apr 2025 14:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B196E1FBEA6;
+	Fri, 11 Apr 2025 15:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744381811; cv=none; b=Y4vOCFSuTb+MU6VSgrDZXzlyT/6Mf+Lec8AC1olhpb76I3t9msFJ2dHt0HWHU59R2G2VJnQPi5F27l2icIPKXpaq6WPcitUy/b2cTasVRwQzobssH9848EbEj6BimyyGdt4DWofXz2aNEP8M1fku8PKKbY+EsLADjPer84xAncI=
+	t=1744384071; cv=none; b=Ur0q4FkdXBGDC4+q+S6zpYFeAXZm7vG0wmieon1xvwzD7kAmcb0bjohhBdDIBmpa+SdkBDHC+3lzDdzdyIJzNIQ8YAfkTEPTjjWvVIpCA/e5Y+L0yNae+I4Qrgm/aYjDrQlWHyR2COtXqOZeBsZcDFFaXDn+Y+6r+eJIbnrxgVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744381811; c=relaxed/simple;
-	bh=aKErMgxVbs+xUrWl8vNAgJtDuFNx5da5an6Q5t47O+A=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=eeFVcbLycFk9LpafYh3ipczQbMxrTZcVEFQtwbwastVDUNC0Mi/m78M9wpdBr+xUbfikBXaaSChcoY1xLhOcLqyDp/4vu7dYnw/c0ub9uZJVXrOTGkix9HyewmqGIES0GQhr6PRdE+Lm37uwGTF0pMnGqNQgCsmTpOUzjwucsk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkccE8nC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF01C4CEE7;
-	Fri, 11 Apr 2025 14:30:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744381810;
-	bh=aKErMgxVbs+xUrWl8vNAgJtDuFNx5da5an6Q5t47O+A=;
-	h=From:Date:Subject:To:Cc:From;
-	b=SkccE8nCAgIjIQ1vYKumzUm1/ywjp1658zPJqMD07gn55b2wogMIeLlqeXWtUBEUW
-	 kWW2pR+teLTvPH6k6c/ykxmCfHam83NX5FoWv//APw7fFpsY9GocZtklAVYNqF2ZJi
-	 yjc6CWWZ86XEmEiJW4Nz5VCT0PN58JDa9pjHzaMx90eY5gFT+mt3ZaX4t+tL1JGjXq
-	 fQnd4eZokiQdNvjm5RSmpNk/8K230RZkEYTtqcRKVsMIu/5W5hOroEi4np5yANtz+2
-	 l2IeD+u+kF0YttGqY2Snx3alNcVvryCSoDrGhw9ig/qoL5WoSr7lboV4ds/qsrBY7z
-	 x/CogI6gmojuA==
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-2d0920c6f96so1182540fac.1;
-        Fri, 11 Apr 2025 07:30:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV2NpUuHsKkcIZKtrf0jGB9ko5QmOGgwcVUZM5ge8MtzRX+9KSzI4nEDFSbb151hthoSevMIwO7x3NKdSw=@vger.kernel.org, AJvYcCVfS7wasbJP87aaacIbaXauislgG6/ztHYDcIfOowy5e3zlm//c/7lksP/28ZjiGwrKzqx4cffF8pQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywg9wmXwUCZ6LkNDc+nyfnix1IJ4JeOobCWGzGhI5ngf95VOJIG
-	8HaHuLavyLl5uAa53vXhIiTse89QdPwFQwynqMJuXcJxFc6T8YM4GDc+y3Shhc+2uL5gvGQ0Pq2
-	MBOoscOaHiAVXqcC8i7OdS7XsKbU=
-X-Google-Smtp-Source: AGHT+IEKLQVgQGIDC6CoyMs0cDrFKXnGh6FRKItdtN8Q1MNXaMGq1BH3zAGp41hrmMb9/IXA52hdZFtn1qFuE9tMVsk=
-X-Received: by 2002:a05:6870:6f14:b0:2cf:bc73:7bb2 with SMTP id
- 586e51a60fabf-2d0d5cf3960mr1730677fac.14.1744381809589; Fri, 11 Apr 2025
- 07:30:09 -0700 (PDT)
+	s=arc-20240116; t=1744384071; c=relaxed/simple;
+	bh=ilVcP95pO6GOl3XMTqH0fCiyL4mHYa7YuNVeE44k9Xc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X7mh/hiIdM22XcmS9w4s60VdKNgxUnlLn2v9DNxCINIQpHE+jJzYVJSRLUY947M5W1zu9H4Yjh41gYeFgZPPZp1vufAxPe1PyE5g0PQew8cgUdiEuBrH9l6y+6zLDvfW6k5jFMkVLVBluzSU9H2Nn6lA1SFVa/Iwm7gi3fNPe+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 748B71007;
+	Fri, 11 Apr 2025 08:07:48 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 27F053F59E;
+	Fri, 11 Apr 2025 08:07:47 -0700 (PDT)
+Date: Fri, 11 Apr 2025 16:07:44 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Huisong Li <lihuisong@huawei.com>,
+	Adam Young <admiyo@os.amperecomputing.com>,
+	Robbie King <robbiek@xsightlabs.com>,
+	Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH v3 11/13] hwmon: (xgene-hwmon) Simplify PCC shared memory
+ region handling
+Message-ID: <20250411-able-rattlesnake-of-calibration-fcdcd8@sudeepholla>
+References: <20250313-pcc_fixes_updates-v3-0-019a4aa74d0f@arm.com>
+ <20250313-pcc_fixes_updates-v3-11-019a4aa74d0f@arm.com>
+ <0be30d7d-f091-4497-bb72-fdcad276285e@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 11 Apr 2025 16:29:58 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iEn-Lyic6zxDehxF1HHfNfg11_S7COMsHnZeQ+TzZAsA@mail.gmail.com>
-X-Gm-Features: ATxdqUE4Uv7yWFaD_KWqchTFzOWSZpHH0_Dmpi-EtzCnNuJ0_TkNVLmU64PwDcg
-Message-ID: <CAJZ5v0iEn-Lyic6zxDehxF1HHfNfg11_S7COMsHnZeQ+TzZAsA@mail.gmail.com>
-Subject: [GIT PULL] ACPI fixes for v6.15-rc2
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0be30d7d-f091-4497-bb72-fdcad276285e@roeck-us.net>
 
-Hi Linus,
+On Fri, Apr 11, 2025 at 07:15:22AM -0700, Guenter Roeck wrote:
+> On Thu, Mar 13, 2025 at 03:28:57PM +0000, Sudeep Holla wrote:
+> > The PCC driver now handles mapping and unmapping of shared memory
+> > areas as part of pcc_mbox_{request,free}_channel(). Without these before,
+> > this xgene hwmon driver did handling of those mappings like several
+> > other PCC mailbox client drivers.
+> > 
+> > There were redundant operations, leading to unnecessary code. Maintaining
+> > the consistency across these driver was harder due to scattered handling
+> > of shmem.
+> > 
+> > Just use the mapped shmem and remove all redundant operations from this
+> > driver.
+> > 
+> > Cc: Jean Delvare <jdelvare@suse.com>
+> > Cc: Guenter Roeck <linux@roeck-us.net>
+> > Cc: linux-hwmon@vger.kernel.org
+> > Acked-by: Guenter Roeck <linux@roeck-us.net>
+> > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> 
+> Not that it matters, but I keep wondering: Why don't people use auxiliary
+> devices for situations like this, and keep the subsystem code where it
+> belongs ?
+> 
 
-Please pull from the tag
+Good question. I haven't used auxiliary devices but did looks at it recently
+when I stumbled across some x86 telemetry code just last week. I need to go
+and understand it better to see how it can be used here as I don't have much
+understanding ATM other than its uses in GPU and Audio subsystems.
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.15-rc2
+> I am not requesting that you do it, I just wonder why the mechanism isn't
+> used. I would have thought that it would be perfect for situations like
+> this, so I guess I must be missing something, and I'd like to understand
+> what that something is.
+> 
 
-with top-most commit dcc4aca53338d09f7b3272e00aab4a1ff8c69067
+Not sure, just that no one spent time think about it and see what is missing
+if any and make it work.
 
- Merge branches 'acpi-ec' and 'acpi-button'
-
-on top of commit 0af2f6be1b4281385b618cb86ad946eded089ac8
-
- Linux 6.15-rc1
-
-to receive ACPI fixes for 6.15-rc2.
-
-These fix a recent regression in the ACPI button driver, add quirks
-related to EC wakeups from suspend-to-idle and fix coding mistakes
-related to the usage of sizeof() in the PPTT parser code:
-
- - Add suspend-to-idle EC wakeup quirks for Lenovo Go S (Mario
-   Limonciello).
-
- - Prevent ACPI button from sending spurions KEY_POWER events to user
-   space in some cases after a recent update (Mario Limonciello).
-
- - Compute the size of a structure instead of the size of a pointer
-   in two places in the PPTT parser code (Jean-Marc Eurin).
-
-Thanks!
-
-
----------------
-
-Jean-Marc Eurin (1):
-      ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls
-
-Mario Limonciello (2):
-      ACPI: button: Only send `KEY_POWER` for `ACPI_BUTTON_NOTIFY_STATUS`
-      ACPI: EC: Set ec_no_wakeup for Lenovo Go S
-
----------------
-
- drivers/acpi/button.c |  2 +-
- drivers/acpi/ec.c     | 28 ++++++++++++++++++++++++++++
- drivers/acpi/pptt.c   |  4 ++--
- 3 files changed, 31 insertions(+), 3 deletions(-)
+-- 
+Regards,
+Sudeep
 
