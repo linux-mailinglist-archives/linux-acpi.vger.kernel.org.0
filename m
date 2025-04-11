@@ -1,352 +1,159 @@
-Return-Path: <linux-acpi+bounces-12965-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12966-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB825A8579F
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Apr 2025 11:13:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A70BFA8581A
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Apr 2025 11:39:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 059608A4E06
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Apr 2025 09:12:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0DF64C577B
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Apr 2025 09:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CED293B70;
-	Fri, 11 Apr 2025 09:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="TfX6J4Yt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419CC2980DB;
+	Fri, 11 Apr 2025 09:39:03 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513C215D5B6;
-	Fri, 11 Apr 2025 09:12:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517D527CCE2;
+	Fri, 11 Apr 2025 09:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744362743; cv=none; b=pmpREuW58uWfY90YP8bPcJT+u9ss9Q4zUgd6QQY4+xu+G4I2NthPeq8+wGtiJ0mpioguc/EmUIO8/bSmEPhHCb+8AQijCnLuBbe7q9XyQIfVu0uFkEZAweI7QOgg1sZw1b34WCTfbvLu4IXFLqFtYnM/VoB50d0xj8zXn1aRGWs=
+	t=1744364343; cv=none; b=przcJF856bPBkMMtNgF5NT8qxHItxc5wdT1zpdyZvV7WyVWoIwQBSfDT7jDOU3rLNsKKM79BXi5xII4kLIzRYGB/jR1KRukCWt4YRzEIvAfoKsbtbwk8l0AXUp5K/Q3NPKonE4qjuzHwdC5IVTmV6IMuA+S7tby3biHG3jPuIRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744362743; c=relaxed/simple;
-	bh=ijQzHD783gx5Qn/PbUArlv7WqVz5UysHgIFXr3fldy0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GjioXw3l9w2WICcS5V4CVbiC5ixer8SoRncnmlKrARFyHBF06IGWUBnoO2fFNnb6ZCcX1eh5mZP+IZFa0SynJv26nYIDp0LFwXOTo3ZkMJeSE5jwlUxJB7NPKX9gKyVLMWcHTnzHOpbgaEIdQYP08lUjVgHzHyJJfOdC9fLOBZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=TfX6J4Yt; arc=none smtp.client-ip=115.124.30.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1744362729; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=d2J8IBrpzQGta8ozASuOvWnbiBBSg/I7DPEmi9U9vjI=;
-	b=TfX6J4YtIEIttwm3y/hFD06yikiKOqRkjA2cSSP38CeEsdnw3YCTAzhFkQSSQYg/4IgoZEwgeZPYYjMCYL8bRWBR3+rby84SlLM2osT26NmXblDfGw1cQuEQDdtDzOlPYygfWtxui7KR3bFe1gBv+3RSDYqJFSnve4R1CsuJ1D8=
-Received: from MacBook-Pro.local(mailfrom:huweiwen@linux.alibaba.com fp:SMTPD_---0WWTH1Un_1744362727 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 11 Apr 2025 17:12:09 +0800
-Date: Fri, 11 Apr 2025 17:12:07 +0800
-From: Weiwen Hu <huweiwen@linux.alibaba.com>
-To: Bjorn Helgaas <helgaas@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH] ACPI/PCI: deduplicate concurrent eject notify
-Message-ID: <Z_i3-z4dODvYjaPN@MacBook-Pro.local>
-References: <20250224070036.65573-1-huweiwen@linux.alibaba.com>
- <20250228171601.GA23123@bhelgaas>
+	s=arc-20240116; t=1744364343; c=relaxed/simple;
+	bh=z8vEyhp711TPv6W84yL+raenau/FThiyDh2bHjU0MbQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JVwfVkvl/uOx9gkeJ/Le2yPS4JWuxzORGvdcdhS956EfvYrhj5Wg7kDJ4/k3TLMK9FlJwA0x1HdeJkmixquv+lz3OaP9lSmAeKP+oxMvcQmKUrF5F2vL7CTqiq8qdcgsFS1aiWnyOBwk1L2uRLNVTUI5L8fgD3glpbS0Lr2sDGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4ZYs8p2DHPz27hSv;
+	Fri, 11 Apr 2025 17:39:38 +0800 (CST)
+Received: from kwepemh100008.china.huawei.com (unknown [7.202.181.93])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6F12B1A016C;
+	Fri, 11 Apr 2025 17:38:57 +0800 (CST)
+Received: from localhost.huawei.com (10.50.165.33) by
+ kwepemh100008.china.huawei.com (7.202.181.93) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 11 Apr 2025 17:38:56 +0800
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
+To: <rafael@kernel.org>, <lenb@kernel.org>, <robert.moore@intel.com>,
+	<viresh.kumar@linaro.org>, <mario.limonciello@amd.com>,
+	<gautham.shenoy@amd.com>, <ray.huang@amd.com>, <perry.yuan@amd.com>,
+	<pierre.gondois@arm.com>, <sumitg@nvidia.com>
+CC: <acpica-devel@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
+	<zhanjie9@hisilicon.com>, <lihuisong@huawei.com>,
+	<cenxinghai@h-partners.com>, <zhenglifeng1@huawei.com>, <hepeng68@huawei.com>
+Subject: [PATCH v7 0/8] Add functions for getting and setting registers related to autonomous selection in cppc_acpi
+Date: Fri, 11 Apr 2025 17:38:47 +0800
+Message-ID: <20250411093855.982491-1-zhenglifeng1@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250228171601.GA23123@bhelgaas>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemh100008.china.huawei.com (7.202.181.93)
 
-Hi Rafael, what's your opinion on this race condition in ACPI hotplug?
+The patch series is organized in two parts:
 
-On Fri, Feb 28, 2025 at 11:16:01AM -0600, Bjorn Helgaas wrote:
-> On Mon, Feb 24, 2025 at 03:00:34PM +0800, Weiwen Hu wrote:
-> > Ignore the eject notification when the previous ejection is still in
-> > progress to prevent multiple _EJ0 invocations when the ejection completes.
-> > 
-> > The first _EJ0 informs the platform to actually eject the device and frees
-> > the slot for other devices. So the subsequent _EJ0 may accidentally eject
-> > the new device that is just plugged into this slot. We need to avoid this.
-> > 
-> > For each acpi_device, this patch introduces a new field `ejecting`, which
-> > is set before enqueuing the `kacpi_hotplug_wq` and reset before invoking
-> > _EJ0.  Every notifications we received before invoking _EJ0 is targeted to
-> > the old device. This ensures we don't miss any notifications for newly
-> > plugged device.  And a new flag `should_dedup_eject` allows each driver to
-> > implement this feature gradually. A driver should set this flag on
-> > initialization if it will reset `ejecting`.
-> 
-> Which drivers do you have in mind when you say "each driver can
-> implement this feature gradually"?  You set should_dedup_eject in
-> acpiphp, so I guess you mean other ACPI hotplug drivers?  I see
-> acpi_hotplug_context mentioned in libata-acpi.c, surface3-wmi.c; maybe
-> those are the only other current ones?
+ - patch 1-6 refactor out the general CPPC register get and set functions
+   in cppc_acpi.c
 
-Yes, I mean other ACPI hotplug drivers. I've searched for acpi_evaluate_ej0(),
-because `ejecting` should be reset just before this. I got dock.c and scan.c.
-All of them are called from acpi_device_hotplug(). So may be I can change all
-of them at once.  Should we also consider out-of-tree drivers?
+ - patches 7-8 add functions for getting and setting values of auto_sel,
+   energy_perf and auto_act_window in cppc_acpi.c
 
-As for surface3-wmi.c, its s3_wmi_hp_notify function seems only probing lid
-state, and does not support hot unplug actually.
+Changelog:
 
-But ata_acpi_detach_device() seems not calling acpi_evaluate_ej0(), From
-f730ae183863 ("libata: remove functions now handed by ACPI dock driver"), It
-seems that ata relies on dock to call ej0 for it.
+v7:
 
-> > This fix is not perfect. If we receive an eject notification just after
-> > resetting `ejecting` but before _EJ0, we will still invoke _EJ0 twice.
-> > However this seems to be the best solution available, and it strictly
-> > improves the current situation.
-> > 
-> > Another potential fix is to add an `ejected` flag to each device and not
-> > invoke _EJ0 for already ejected devices. However, this approach risks
-> > losing synchronization with the platform if something else goes wrong,
-> > potentially preventing the device from being ejected permanently.  And we
-> > need to check with bus driver to make sure the device is really ejected
-> > successfully. But this check is still racy. So we cannot ensure no extra
-> > _EJ0 invocations either.
-> 
-> I see the problem.  Thanks for the detailed explanation and details
-> about reproducing it and the trace.
-> 
-> I'm not sure whether the platform should reissue the Bus Check
-> notification based on the fact that the OS hasn't invoked _EJ0 in some
-> arbitrary time.  That seems a little bit presumptuous because, for
-> example, the platform can't know how long it will take to write out
-> the dirty page cache.  The racyness of the workaround seems
-> troublesome to me.
-> 
-> But this is all really an ACPI issue, not a PCI issue, so I'd like to
-> defer to the ACPI experts here.
-> 
-> > Signed-off-by: Weiwen Hu <huweiwen@linux.alibaba.com>
-> > ---
-> >  drivers/acpi/osl.c                 |  6 ++++++
-> >  drivers/pci/hotplug/acpiphp_glue.c | 15 +++++++++++----
-> >  include/acpi/acpi_bus.h            |  4 +++-
-> >  3 files changed, 20 insertions(+), 5 deletions(-)
-> > 
-> > We observed that umount can take extremely long time if there is a lot of
-> > dirty page cache.  umount will take the s_umount semaphore, which will
-> > block the ejecting process:
-> > 
-> > 	__schedule+0x1e0/0x630
-> > 	? kernfs_put.part.0+0xd4/0x1a0
-> > 	schedule+0x46/0xb0
-> > 	rwsem_down_read_slowpath+0x16b/0x490
-> > 	__get_super.part.0+0xc1/0xe0
-> > 	fsync_bdev+0x11/0x60
-> > 	invalidate_partition+0x5c/0xa0
-> > 	del_gendisk+0x103/0x2e0
-> > 	virtblk_remove+0x27/0xa0
-> > 	virtio_dev_remove+0x36/0x90
-> > 	__device_release_driver+0x172/0x260
-> > 	device_release_driver+0x24/0x30
-> > 	bus_remove_device+0xf6/0x170
-> > 	device_del+0x19b/0x450
-> > 	device_unregister+0x16/0x60
-> > 	unregister_virtio_device+0x11/0x20
-> > 	virtio_pci_remove+0x31/0x60
-> > 	pci_device_remove+0x38/0xa0
-> > 	__device_release_driver+0x172/0x260
-> > 	device_release_driver+0x24/0x30
-> > 	pci_stop_bus_device+0x6c/0x90
-> > 	pci_stop_and_remove_bus_device+0xe/0x20
-> > 	disable_slot+0x49/0x90
-> > 	acpiphp_disable_and_eject_slot+0x15/0x90
-> > 
-> > While OS is not invoking _EJ0 timely, the user (or hypervisor) may retry by
-> > issuing another notification, which will be queued in kacpi_hotplug_wq.
-> > After the umount is finally done, the _EJ0 will be invoked.  Then, if there
-> > are devices pending attach, the hypervisor may choose to attach it
-> > immediately to the same slot.  The new device can be ejected by the queued
-> > ejecting process unintentionally.
-> > 
-> > On Alibaba Cloud, we re-issue the notification around every 10s if the OS
-> > does not respond.  (BTW, do you think platform is allowed to re-issue
-> > the notification on timeout?)
-> > We can easily reproduce this issue on Alibaba Cloud ECS:
-> > 
-> > 	WRITE_SIZE=2300M  # tune this value so that the umount takes 20s
-> > 	# replace these disk serial numbers
-> > 	DISK_DETACH=bp142xxxxxxxxxxxxxxx  # pre-formatted
-> > 	DISK_ATTACH=bp109xxxxxxxxxxxxxxx  # any
-> > 	# start from these two disks detached
-> > 
-> > 	INSTANCE_ID=$(curl -sS http://100.100.100.200/latest/meta-data/instance-id)
-> > 	echo "instance id: $INSTANCE_ID"
-> > 	DISK_PATH=/dev/disk/by-id/nvme-Alibaba_Cloud_Elastic_Block_Storage_
-> > 
-> > 	echo "attaching disk d-$DISK_DETACH"
-> > 	aliyun ecs AttachDisk --DiskId "d-$DISK_DETACH" --InstanceId "$INSTANCE_ID"
-> > 
-> > 	sleep 2
-> > 	mkdir -p /mnt/slow
-> > 	mount "$DISK_PATH$DISK_DETACH" /mnt/slow
-> > 	echo "mounted d-$DISK_DETACH to /mnt/slow"
-> > 
-> > 	rm -f /mnt/slow/zero
-> > 	echo "populating dirty cache"
-> > 	head -c $WRITE_SIZE /dev/zero > /mnt/slow/zero;
-> > 
-> > 	echo umounting
-> > 	(
-> > 		umount /mnt/slow
-> > 		echo umounted
-> > 	)&
-> > 
-> > 	sleep 2
-> > 	echo "detaching disk d-$DISK_DETACH"
-> > 	aliyun ecs DetachDisk --DiskId "d-$DISK_DETACH" --InstanceId "$INSTANCE_ID"
-> > 
-> > 	sleep 10
-> > 	echo "attaching disk d-$DISK_ATTACH"
-> > 	aliyun ecs AttachDisk --DiskId "d-$DISK_ATTACH" --InstanceId "$INSTANCE_ID"
-> > 
-> > 	sleep 7
-> > 	wait
-> > 	for _ in {1..10}; do
-> > 		sleep 1
-> > 		if [ -e "$DISK_PATH$DISK_ATTACH" ]; then
-> > 			echo "disk d-$DISK_ATTACH attached, issue not reproduced"
-> > 			exit 0
-> > 		fi
-> > 		echo "disk d-$DISK_ATTACH not found yet"
-> > 	done
-> > 
-> > 	echo "issue reproduced"
-> > 	exit 1
-> > 
-> > And here is the trace we got from `perf trace` while running the above script on an unpatched kernel:
-> > 
-> > 	[starting detach]
-> > 	 48202.244 kworker/0:0-ev/5 probe:acpi_ev_queue_notify_request(__probe_ip: -1452149680, notify_value: 3)
-> > 	 48202.314 kworker/0:0-ev/5 probe:acpi_hotplug_schedule(__probe_ip: -1452297040, src: 3)
-> > 	 48203.690 kworker/u8:0-e/1946 probe:acpi_device_hotplug(__probe_ip: -1452251424, src: 3)
-> > 	[blocked, retrying detach]
-> > 	 58023.813 kworker/0:0-ev/5 probe:acpi_ev_queue_notify_request(__probe_ip: -1452149680, notify_value: 3)
-> > 	 58023.881 kworker/0:0-ev/5 probe:acpi_hotplug_schedule(__probe_ip: -1452297040, src: 3)
-> > 	[detach done]
-> > 	 62834.048 kworker/u8:0-e/1946 probe:acpi_evaluate_ej0(__probe_ip: -1452291632)
-> > 	[another device attaching]
-> > 	 62954.686 kworker/0:0-ev/5 probe:acpi_ev_queue_notify_request(__probe_ip: -1452149680, notify_value: 1)
-> > 	 62954.828 kworker/0:0-ev/5 probe:acpi_hotplug_schedule(__probe_ip: -1452297040, src: 1)
-> > 	 63042.506 kworker/u8:0-e/1946 probe:acpi_device_hotplug(__probe_ip: -1452251424, src: 3)
-> > 	[the new device is ejected unintentionally]
-> > 	 63042.520 kworker/u8:0-e/1946 probe:acpi_evaluate_ej0(__probe_ip: -1452291632)
-> > 	[the actual attach task, scanned the bus but got nothing]
-> > 	 63266.555 kworker/u8:0-e/1946 probe:acpi_device_hotplug(__probe_ip: -1452251424, src: 1)
-> > 
-> > With this patch, the acpi_hotplug_schedule at 58023.881 will be skipped to
-> > suppress the acpi_evaluate_ej0 at 63042.520.
-> > 
-> > diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-> > index 5ff343096ece..f041c4db10f7 100644
-> > --- a/drivers/acpi/osl.c
-> > +++ b/drivers/acpi/osl.c
-> > @@ -1193,6 +1193,12 @@ acpi_status acpi_hotplug_schedule(struct acpi_device *adev, u32 src)
-> >  {
-> >  	struct acpi_hp_work *hpw;
-> >  
-> > +	if (src == ACPI_NOTIFY_EJECT_REQUEST && adev->flags.should_dedup_eject
-> > +			&& atomic_xchg(&adev->hp->ejecting, 1)) {
-> > +		put_device(&adev->dev);
-> > +		return AE_OK;
-> > +	}
-> > +
-> >  	acpi_handle_debug(adev->handle,
-> >  			  "Scheduling hotplug event %u for deferred handling\n",
-> >  			   src);
-> > diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-> > index 5b1f271c6034..3c50f2af1584 100644
-> > --- a/drivers/pci/hotplug/acpiphp_glue.c
-> > +++ b/drivers/pci/hotplug/acpiphp_glue.c
-> > @@ -68,6 +68,7 @@ static struct acpiphp_context *acpiphp_init_context(struct acpi_device *adev)
-> >  	context->hp.notify = acpiphp_hotplug_notify;
-> >  	context->hp.fixup = acpiphp_post_dock_fixup;
-> >  	acpi_set_hp_context(adev, &context->hp);
-> > +	adev->flags.should_dedup_eject = true;
-> >  	return context;
-> >  }
-> >  
-> > @@ -778,7 +779,8 @@ void acpiphp_check_host_bridge(struct acpi_device *adev)
-> >  	}
-> >  }
-> >  
-> > -static int acpiphp_disable_and_eject_slot(struct acpiphp_slot *slot);
-> > +static int
-> > +acpiphp_disable_and_eject_slot(struct acpi_hotplug_context *hp, struct acpiphp_slot *slot);
-> >  
-> >  static void hotplug_event(u32 type, struct acpiphp_context *context)
-> >  {
-> > @@ -825,7 +827,7 @@ static void hotplug_event(u32 type, struct acpiphp_context *context)
-> >  	case ACPI_NOTIFY_EJECT_REQUEST:
-> >  		/* request device eject */
-> >  		acpi_handle_debug(handle, "Eject request in %s()\n", __func__);
-> > -		acpiphp_disable_and_eject_slot(slot);
-> > +		acpiphp_disable_and_eject_slot(&context->hp, slot);
-> >  		break;
-> >  	}
-> >  
-> > @@ -999,9 +1001,11 @@ int acpiphp_enable_slot(struct acpiphp_slot *slot)
-> >  
-> >  /**
-> >   * acpiphp_disable_and_eject_slot - power off and eject slot
-> > + * @hp: the context that received eject notification, can be NULL
-> >   * @slot: ACPI PHP slot
-> >   */
-> > -static int acpiphp_disable_and_eject_slot(struct acpiphp_slot *slot)
-> > +static int
-> > +acpiphp_disable_and_eject_slot(struct acpi_hotplug_context *hp, struct acpiphp_slot *slot)
-> >  {
-> >  	struct acpiphp_func *func;
-> >  
-> > @@ -1011,6 +1015,9 @@ static int acpiphp_disable_and_eject_slot(struct acpiphp_slot *slot)
-> >  	/* unconfigure all functions */
-> >  	disable_slot(slot);
-> >  
-> > +	if (hp)
-> > +		atomic_set(&hp->ejecting, 0);
-> > +
-> >  	list_for_each_entry(func, &slot->funcs, sibling)
-> >  		if (func->flags & FUNC_HAS_EJ0) {
-> >  			acpi_handle handle = func_to_handle(func);
-> > @@ -1034,7 +1041,7 @@ int acpiphp_disable_slot(struct acpiphp_slot *slot)
-> >  	 */
-> >  	acpi_scan_lock_acquire();
-> >  	pci_lock_rescan_remove();
-> > -	ret = acpiphp_disable_and_eject_slot(slot);
-> > +	ret = acpiphp_disable_and_eject_slot(NULL, slot);
-> >  	pci_unlock_rescan_remove();
-> >  	acpi_scan_lock_release();
-> >  	return ret;
-> > diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> > index aad1a95e6863..870c1ffe47c9 100644
-> > --- a/include/acpi/acpi_bus.h
-> > +++ b/include/acpi/acpi_bus.h
-> > @@ -151,6 +151,7 @@ typedef void (*acpi_hp_fixup) (struct acpi_device *);
-> >  
-> >  struct acpi_hotplug_context {
-> >  	struct acpi_device *self;
-> > +	atomic_t ejecting;
-> >  	acpi_hp_notify notify;
-> >  	acpi_hp_uevent uevent;
-> >  	acpi_hp_fixup fixup;
-> > @@ -215,7 +216,8 @@ struct acpi_device_flags {
-> >  	u32 cca_seen:1;
-> >  	u32 enumeration_by_parent:1;
-> >  	u32 honor_deps:1;
-> > -	u32 reserved:18;
-> > +	u32 should_dedup_eject:1;
-> > +	u32 reserved:17;
-> >  };
-> >  
-> >  /* File System */
-> > -- 
-> > 2.48.1
-> > 
+ - Fix some typos
+ - Add check of null pointer in cppc_get_reg_val(),
+   cppc_get_auto_act_window() and cppc_get_auto_sel()
+ - Replace ternary operator with logical expression in cppc_get_reg_val()
+
+v6:
+
+ - Remove the last patch, will resent it in the future after reaching an
+   agreement with Sumit
+ - split patch 3 into 2 smaller patches
+ - Remove the printing of reg_idx in cppc_get_reg_val() and
+   cppc_set_reg_val()
+ - Change the logic for determing whether a register is supported in
+   cppc_get_reg_val() and cppc_set_reg_val()
+
+v5:
+
+ - add more explanation to the commit logs and comments
+ - change REG_OPTIONAL from bin to hex
+ - split patch 2 into 3 smaller patches
+ - remove CPPC_REG_VAL_READ() and CPPC_REG_VAL_WRITE() macros
+ - move the modification part in patch 5 into a separate patch
+ - rename the sysfs file from "energy_perf" to
+   energy_performance_preference_val
+
+v4:
+
+ - add REG_OPTIONAL and IS_OPTIONAL_CPC_REG to judge if a cpc register is
+   an optional one
+ - check whether the register is optional before CPC_SUPPORTED check in
+   cppc_get_reg_val() and cppc_set_reg_val()
+ - check the register's type in cppc_set_reg_val()
+ - add macros to generally implement registers getting and setting
+   functions
+ - move some logic codes from cppc_cpufreq.c to cppc_acpi.c
+ - replace cppc_get_auto_sel_caps() by cppc_get_auto_sel()
+
+v3:
+
+ - change cppc_get_reg() and cppc_set_reg() name to cppc_get_reg_val() and
+   cppc_set_reg_val()
+ - extract cppc_get_reg_val_in_pcc() and cppc_set_reg_val_in_pcc()
+ - return the result of cpc_read() in cppc_get_reg_val()
+ - add pr_debug() in cppc_get_reg_val_in_pcc() when pcc_ss_id < 0
+ - rename 'cpunum' to 'cpu' in cppc_get_reg_val()
+ - move some macros from drivers/cpufreq/cppc_cpufreq.c to
+   include/acpi/cppc_acpi.h with a CPPC_XXX prefix
+
+v2:
+
+ - fix some incorrect placeholder
+ - change kstrtoul to kstrtobool in store_auto_select
+
+---
+Discussions of previous versions:
+v1: https://lore.kernel.org/all/20241114084816.1128647-1-zhenglifeng1@huawei.com/
+v2: https://lore.kernel.org/all/20241122062051.3658577-1-zhenglifeng1@huawei.com/
+v3: https://lore.kernel.org/all/20241216091603.1247644-1-zhenglifeng1@huawei.com/
+v4: https://lore.kernel.org/all/20250113122104.3870673-1-zhenglifeng1@huawei.com/
+v5: https://lore.kernel.org/all/20250206131428.3261578-1-zhenglifeng1@huawei.com/
+v6: https://lore.kernel.org/all/20250409065703.1461867-1-zhenglifeng1@huawei.com/
+
+Lifeng Zheng (8):
+  ACPI: CPPC: Add IS_OPTIONAL_CPC_REG macro to judge if a cpc_reg is
+    optional
+  ACPI: CPPC: Optimize cppc_get_perf()
+  ACPI: CPPC: Rename cppc_get_perf() to cppc_get_reg_val()
+  ACPI: CPPC: Extract cppc_get_reg_val_in_pcc()
+  ACPI: CPPC: Add cppc_set_reg_val()
+  ACPI: CPPC: Refactor register value get and set ABIs
+  ACPI: CPPC: Modify cppc_get_auto_sel_caps() to cppc_get_auto_sel()
+  ACPI: CPPC: Add three functions related to autonomous selection
+
+ drivers/acpi/cppc_acpi.c     | 313 +++++++++++++++++++++--------------
+ drivers/cpufreq/amd-pstate.c |   3 +-
+ include/acpi/cppc_acpi.h     |  30 +++-
+ 3 files changed, 219 insertions(+), 127 deletions(-)
+
+-- 
+2.33.0
+
 
