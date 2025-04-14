@@ -1,124 +1,122 @@
-Return-Path: <linux-acpi+bounces-12996-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-12997-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2593A8781E
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 08:47:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2217A87870
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 09:09:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD5F13A735E
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 06:47:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FF5718923DE
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 07:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E1A1AC891;
-	Mon, 14 Apr 2025 06:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UqNq0tQ7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF751B0434;
+	Mon, 14 Apr 2025 07:09:01 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1C04C74;
-	Mon, 14 Apr 2025 06:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8361ACEAF;
+	Mon, 14 Apr 2025 07:08:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744613273; cv=none; b=qiLfID4Uje5bv+0Xrk0EGPuwTF3+TQUlVqhs+hZicr3mR6bsTnjBP7YBPG6exbWC6O08iyG0TDHwZzb0P8Ppj+OOW5v0P4OwFNGBO5M0gWK63xHpmzENsSe0VLsdjvAYDPMS0zfHM7FKOR6gy5hR2mvt+HbGgvXmYytA4Qdf7Ko=
+	t=1744614541; cv=none; b=pWY2mf8/L2mOlL8lGOZhrD5pDmmHBVjdfcswdyZGi1AEQ1U1a5zBW1F+zMyPn+RXpItQHYhqugpsJx5IUa7zO5LTAUoALRYY7Hs/rqGAFukrjpDxPO8zrpTRzIW9pmYSgtTErFl02iYPyLZHrq9WuoAvALLkgNH+B9cNVHTDtRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744613273; c=relaxed/simple;
-	bh=NnvFhqzJp+sQfGYnEmXYlEqZg74684Lg4+6wpOpPkYU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h7V+ioY3iPqbRl75OD1Itxt2869EZ8mf8lDWWVPonMvCYh7lqeehhLs/pA9fl7Ch3boiH2AJWW5HNaiElwcWMus9Aq/lYr0nWE5hth7oF16B7N9C3ISqOku3J/5v4T6nAKtJWDrUt8r3S6+FWb57mFmIcuCSGDmMWPSWKvkiCF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UqNq0tQ7; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744613272; x=1776149272;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NnvFhqzJp+sQfGYnEmXYlEqZg74684Lg4+6wpOpPkYU=;
-  b=UqNq0tQ7eUTubYRMBHMkqYB93mJ+VX4u7AZwrf63NF51rDWZA69/dkiv
-   Xh8BglPQp7HfFqy9LFkroGEZxaR9gTyXcZ5kIiGQkwr3pchvNOw6NHIGV
-   MZsphRq9FCFJLy7O1D5rmEGIH775yk1ulVrre1p91k4tGGJuGwSWfjEOk
-   2mOfb9920tLctR96HhgMtMyOR13/xFFTl9xxy1Pa19RDj+sB5wE4EMsWZ
-   oOzUBu4hRdMK98EHx0YApR+2QcWGdcX57X5eqpIxTMgO1jLO5pD4RGeRo
-   JtE63cJ1rLo9oO/bSlSY3iuVHBgAFhBcT1ElvdS06zQ3FPuX5nAFhAS8M
-   A==;
-X-CSE-ConnectionGUID: nyWqEV8jRfSFIH1XP5T7yA==
-X-CSE-MsgGUID: JRb8TcGoRyCW6EooR9p7sQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="46232217"
-X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
-   d="scan'208";a="46232217"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2025 23:47:51 -0700
-X-CSE-ConnectionGUID: crWPcHSdT2KU4PmWj4rqAQ==
-X-CSE-MsgGUID: 5l5K5hKjTPmdNeVpbS6qvQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
-   d="scan'208";a="134702329"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2025 23:47:49 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1u4Dbd-0000000C9fc-1CAO;
-	Mon, 14 Apr 2025 09:47:45 +0300
-Date: Mon, 14 Apr 2025 09:47:44 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] property: Use tidy for_each_named_* macros
-Message-ID: <Z_yvkKTgI4XSlGya@smile.fi.intel.com>
-References: <Z_ew4DN0z71nCX3C@mva-rohm>
- <Z_yvNl23GcEpOkK1@smile.fi.intel.com>
+	s=arc-20240116; t=1744614541; c=relaxed/simple;
+	bh=bAQMdnKenSyxzJV0sedkupt48oA6gVJVUPppVV+uz4M=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GtEUQuNpuchq1OXrbjbk+2/fR6DwV1FY43WuRYem9H8PgaSEZPdsQkmoCyn3InlnPVMxFEdUtxmGLCvQLdVfDwiWItu1zFWAtH0oPZ2jA9YpsrxddnPLtX08p8Vdt94Yg/sZ/asSb1nBskbzwRglSVgstzFHxLQylnQtDxjVvKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53E5R3K4025348;
+	Mon, 14 Apr 2025 07:08:41 GMT
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45yf58hp0p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 14 Apr 2025 07:08:40 +0000 (GMT)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Mon, 14 Apr 2025 00:08:39 -0700
+Received: from pek-lpd-ccm6.wrs.com (147.11.136.210) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Mon, 14 Apr 2025 00:08:35 -0700
+From: Lizhi Xu <lizhi.xu@windriver.com>
+To: <andriy.shevchenko@linux.intel.com>
+CC: <dakr@kernel.org>, <djrscally@gmail.com>, <dvyukov@google.com>,
+        <gregkh@linuxfoundation.org>, <heikki.krogerus@linux.intel.com>,
+        <jgg@nvidia.com>, <kevin.tian@intel.com>, <linux-acpi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <lizhi.xu@windriver.com>,
+        <nicolinc@nvidia.com>, <rafael@kernel.org>,
+        <sakari.ailus@linux.intel.com>,
+        <syzbot+2ff22910687ee0dfd48e@syzkaller.appspotmail.com>,
+        <syzkaller-bugs@googlegroups.com>, <yi.l.liu@intel.com>
+Subject: Re: [PATCH] software node: Prevent link creation failure from causing kobj reference count imbalance
+Date: Mon, 14 Apr 2025 15:08:34 +0800
+Message-ID: <20250414070834.1224154-1-lizhi.xu@windriver.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <Z_ypLhYQwGf41hVK@smile.fi.intel.com>
+References: <Z_ypLhYQwGf41hVK@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z_yvNl23GcEpOkK1@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=UPPdHDfy c=1 sm=1 tr=0 ts=67fcb478 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=edf1wS77AAAA:8 a=hSkVLCK3AAAA:8 a=co-kc5KNQRhJfrCQoXsA:9 a=D0TqAXdIGyEA:10
+ a=xa8LZTUigIcA:10 a=DcSpbTIhAlouE1Uv7lRv:22 a=cQPPKAXgyycSBL8etih5:22
+X-Proofpoint-GUID: DNUT0E3mijy0uFmoGDGlcL6iD6Co6v7W
+X-Proofpoint-ORIG-GUID: DNUT0E3mijy0uFmoGDGlcL6iD6Co6v7W
+X-Sensitive_Customer_Information: Yes
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-14_01,2025-04-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=345 spamscore=0
+ priorityscore=1501 impostorscore=0 suspectscore=0 mlxscore=0 bulkscore=0
+ lowpriorityscore=0 malwarescore=0 adultscore=0 clxscore=1011 phishscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.21.0-2502280000
+ definitions=main-2504140050
 
-On Mon, Apr 14, 2025 at 09:46:14AM +0300, Andy Shevchenko wrote:
-> On Thu, Apr 10, 2025 at 02:52:00PM +0300, Matti Vaittinen wrote:
-> > Implementing if-conditions inside for_each_x() macros requires some
-> > thinking to avoid side effects in the calling code. Resulting code
-> > may look somewhat awkward, and there are couple of different ways it is
-> > usually done.
-> > 
-> > Standardizing this to one way can help making it more obvious for a code
-> > reader and writer. The newly added for_each_if() is a way to achieve this.
-> > 
-> > Use for_each_if() to make these macros look like many others which
-> > should in the long run help reading the code.
+On Mon, 14 Apr 2025 09:20:30 +0300, Andy Shevchenko wrote:
+> On Fri, Apr 11, 2025 at 08:42:02AM +0800, Lizhi Xu wrote:
+> > syzbot reported a uaf in software_node_notify_remove. [1]
+> >
+> > When any of the two sysfs_create_link() in software_node_notify() fails,
+> > the swnode->kobj reference count will not increase normally, which will
+> > cause swnode to be released incorrectly due to the imbalance of kobj reference
+> > count when executing software_node_notify_remove().
+> >
+> > Increase the reference count of kobj before creating the link to avoid uaf.
+> >
+> > [1]
 > 
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Thanks for cleaning these up!
+> Please, reduce this to ~5-7 lines only. This is how Submitting Patches document
+> recommends to put backtraces in the commit messages:
+> https://www.kernel.org/doc/html/latest/process/submitting-patches.html#backtraces-in-commit-messages
+Ok, I will reduce the calltrace, and send V2 patch.
 > 
-> > ---
-> > The patch was crafted against the IIO/testing branch, and it depends on
-> > the 76125d7801e5 ("property: Add functions to iterate named child").
-> > Hence I'd suggest taking this via IIO tree (if this gets accepted).
+> > Fixes: 9eb59204d519 ("iommufd/selftest: Add set_dev_pasid in mock iommu")
+> > Reported-by: syzbot+2ff22910687ee0dfd48e@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=2ff22910687ee0dfd48e
 > 
-> I'm not sure why. The for_each_if() is part of v6.15-rc1.
+> > Tested-by: syzbot+2ff22910687ee0dfd48e@syzkaller.appspotmail.com
+> 
+> Where is the positive result of it? I can't find the respective log.
+> To me this one
+> https://syzkaller.appspot.com/x/report.txt?x=158af070580000
+> doesn't sound as a useful report as I don't know if this patch fixes one
+> regression and introduced another.
+You can see: https://syzkaller.appspot.com/x/log.txt?x=118af07058000
+For tasks related to the reproducing program, there are only FAULT_INJECTION
+related problems in the log, no other problems, and the log record duration
+exceeds 240 seconds, and no uaf occurs, which is enough to prove that the
+problem has been fixed.
 
-Ah, I see, you are trying to fix newly introduced stuff? I would rather suggest
-to make this straightforward against the current upstream and ask Jonathan to
-rebase the testing to fold the fixes into a new APIs.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+BR,
+Lizhi
 
