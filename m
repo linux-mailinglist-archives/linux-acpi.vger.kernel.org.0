@@ -1,46 +1,40 @@
-Return-Path: <linux-acpi+bounces-13029-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13030-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119B7A8871F
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 17:28:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F85DA8876A
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 17:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FD3E586E05
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 15:04:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BD4C7A2836
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 15:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF37274FCC;
-	Mon, 14 Apr 2025 15:02:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="qWPsN03x"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0F12749F0;
+	Mon, 14 Apr 2025 15:38:18 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B1025229A;
-	Mon, 14 Apr 2025 15:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8CE252297;
+	Mon, 14 Apr 2025 15:38:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744642957; cv=none; b=MpUp1kHCwBU+jW/OowX7q1MNLdmT5fAEUnIn8dPGmLoGOv+cz56ubb3qZrv6y++HP6jMkOVThx3cqJ2Vt9KGYb/j9rHum2qnlSChWnwK+liA0VnmEy3N5pCgssh4rqSrkk/XwjyYTHRzoKcdZSFdOchjpnuppYfwr4x1qg4M+BA=
+	t=1744645098; cv=none; b=me1pDa8eMGB/aHGkh+d9qiSJGZiOfHRDvTe0BNwQU4OpIva5fWFrgBGxNGb4kEOMFaeQKn9ySrwGIVbkuvS7rNJv/3FTFHH/tFLcIrKu4JIz0fo5DyADtDDIJOvh6xkR3ISWTmR6wHNBj64Z8jT9ntQUVfCAwYW9jF/wh66t04Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744642957; c=relaxed/simple;
-	bh=29LBL8Eiyg9CDsCmAAfUL9mYEIwFGfoqYzoIU8iyiQY=;
+	s=arc-20240116; t=1744645098; c=relaxed/simple;
+	bh=0aZVGbEl/02D251casMOEEUyC3c3T0vU3dfpYMvmlIM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AraeoyfV7P58C11VuC5gcFxohfX4O3aSz0j2zrKaxsPxznwgve1WvNCHsZAOubm89JKK2oE/t5q73SdaIZ3D2HUrwRge8vPSoO2t6mpFnE3iF9U6/fbcHi5ZCURtMfshG6ZD9sCDzyR318gr7xn4ODb8Oy778hy9fjvHjNDJeCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=qWPsN03x; arc=none smtp.client-ip=115.124.30.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1744642944; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=XP1wiJKn79M25SDS7QDbse457FmVwidLJBCVM8ARXV4=;
-	b=qWPsN03xz9+pTwownWuaBgpyTH0pHxo1wiofftgmL4NUgVGKBx1rkK6Oc1UfaanaiLvQB5xPRY8PV3a9AquDZJ1I+R2PS3DQbJkxxcCjWz+N+mxOmRxoUl/shW77PYKWLyXuBt+ZRJvi9SGe0HcE0BRz4lOCI87ZOp2NORAKphE=
-Received: from 30.246.161.79(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WWsd0xB_1744642940 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 14 Apr 2025 23:02:22 +0800
-Message-ID: <709ee8d2-8969-424c-b32b-101c6a8220fb@linux.alibaba.com>
-Date: Mon, 14 Apr 2025 23:02:19 +0800
+	 In-Reply-To:Content-Type; b=hk7og3gmia3zpUU6uYpm5h5z0xBajBxjbEi6dLCNxkBLTDQk+l3AJ0+gPPXDbtm2bafy/kq9xBujVdhMaAshMGBQ6Abnrupk0gIS2tyRUIGBxA2HQONLujDoWY+nWV3yMeVmb96mfdpiBo5v42fh9sZDd3tK/YmbwrEF9oZbzN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 137701007;
+	Mon, 14 Apr 2025 08:38:13 -0700 (PDT)
+Received: from [192.168.1.102] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EE7993F66E;
+	Mon, 14 Apr 2025 08:38:10 -0700 (PDT)
+Message-ID: <50a06ba8-0a99-40d2-8601-778ebf451f6a@arm.com>
+Date: Mon, 14 Apr 2025 16:37:59 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -48,97 +42,148 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH v18 1/2] ACPI: APEI: send SIGBUS to current task if
- synchronous memory error not recovered
-To: Hanjun Guo <guohanjun@huawei.com>, catalin.marinas@arm.com,
- sudeep.holla@arm.com, lpieralisi@kernel.org, linux-acpi@vger.kernel.org,
- yazen.ghannam@amd.com, mark.rutland@arm.com, mingo@redhat.com,
- robin.murphy@arm.com, Jonathan.Cameron@Huawei.com, bp@alien8.de,
- rafael@kernel.org, linux-arm-kernel@lists.infradead.org,
- wangkefeng.wang@huawei.com, tanxiaofei@huawei.com, mawupeng1@huawei.com,
- tony.luck@intel.com, linmiaohe@huawei.com, naoya.horiguchi@nec.com,
- james.morse@arm.com, tongtiangen@huawei.com, gregkh@linuxfoundation.org,
- will@kernel.org, jarkko@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- akpm@linux-foundation.org, linux-edac@vger.kernel.org, x86@kernel.org,
- justin.he@arm.com, ardb@kernel.org, ying.huang@linux.alibaba.com,
- ashish.kalra@amd.com, baolin.wang@linux.alibaba.com, tglx@linutronix.de,
- dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
- robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
- zhuo.song@linux.alibaba.com
-References: <20250404112050.42040-1-xueshuai@linux.alibaba.com>
- <20250404112050.42040-2-xueshuai@linux.alibaba.com>
- <0c0bc332-0323-4e43-a96b-dd5f5957ecc9@huawei.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <0c0bc332-0323-4e43-a96b-dd5f5957ecc9@huawei.com>
+Subject: Re: [PATCH v2 4/4] iommu: Get DT/ACPI parsing into the proper probe
+ path
+To: Johan Hovold <johan@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Stuart Yoder <stuyoder@gmail.com>,
+ Laurentiu Tudor <laurentiu.tudor@nxp.com>, Nipun Gupta
+ <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux.dev, devicetree@vger.kernel.org,
+ linux-pci@vger.kernel.org, Charan Teja Kalla <quic_charante@quicinc.com>
+References: <cover.1740753261.git.robin.murphy@arm.com>
+ <e3b191e6fd6ca9a1e84c5e5e40044faf97abb874.1740753261.git.robin.murphy@arm.com>
+ <Z_jMiC1uj_MJpKVj@hovoldconsulting.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <Z_jMiC1uj_MJpKVj@hovoldconsulting.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-
-
-在 2025/4/14 22:37, Hanjun Guo 写道:
-> On 2025/4/4 19:20, Shuai Xue wrote:
->> Synchronous error was detected as a result of user-space process accessing
->> a 2-bit uncorrected error. The CPU will take a synchronous error exception
->> such as Synchronous External Abort (SEA) on Arm64. The kernel will queue a
->> memory_failure() work which poisons the related page, unmaps the page, and
->> then sends a SIGBUS to the process, so that a system wide panic can be
->> avoided.
->>
->> However, no memory_failure() work will be queued when abnormal synchronous
->> errors occur. These errors can include situations such as invalid PA,
->> unexpected severity, no memory failure config support, invalid GUID
->> section, etc. In such case, the user-space process will trigger SEA again.
->> This loop can potentially exceed the platform firmware threshold or even
->> trigger a kernel hard lockup, leading to a system reboot.
->>
->> Fix it by performing a force kill if no memory_failure() work is queued
->> for synchronous errors.
->>
->> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
->> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
->> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
->> Reviewed-by: Jane Chu <jane.chu@oracle.com>
->> ---
->>   drivers/acpi/apei/ghes.c | 11 +++++++++++
->>   1 file changed, 11 insertions(+)
->>
->> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->> index b72772494655..50e4d924aa8b 100644
->> --- a/drivers/acpi/apei/ghes.c
->> +++ b/drivers/acpi/apei/ghes.c
->> @@ -799,6 +799,17 @@ static bool ghes_do_proc(struct ghes *ghes,
->>           }
->>       }
->> +    /*
->> +     * If no memory failure work is queued for abnormal synchronous
->> +     * errors, do a force kill.
->> +     */
->> +    if (sync && !queued) {
->> +        dev_err(ghes->dev,
->> +            HW_ERR GHES_PFX "%s:%d: synchronous unrecoverable error (SIGBUS)\n",
->> +            current->comm, task_pid_nr(current));
->> +        force_sig(SIGBUS);
->> +    }
+On 2025-04-11 9:02 am, Johan Hovold wrote:
+> Hi Robin,
 > 
-> I think it's reasonable to send a force kill to the task when the
-> synchronous memory error is not recovered.
+> On Fri, Feb 28, 2025 at 03:46:33PM +0000, Robin Murphy wrote:
+>> In hindsight, there were some crucial subtleties overlooked when moving
+>> {of,acpi}_dma_configure() to driver probe time to allow waiting for
+>> IOMMU drivers with -EPROBE_DEFER, and these have become an
+>> ever-increasing source of problems. The IOMMU API has some fundamental
+>> assumptions that iommu_probe_device() is called for every device added
+>> to the system, in the order in which they are added. Calling it in a
+>> random order or not at all dependent on driver binding leads to
+>> malformed groups, a potential lack of isolation for devices with no
+>> driver, and all manner of unexpected concurrency and race conditions.
+>> We've attempted to mitigate the latter with point-fix bodges like
+>> iommu_probe_device_lock, but it's a losing battle and the time has come
+>> to bite the bullet and address the true source of the problem instead.
 > 
-> But I hope this code will not trigger some legacy firmware issues,
-> let's be careful for this, so can we just introduce arch specific
-> callbacks for this?
-
-Sorry, can you give more details? I am not sure I got your point.
-
-For x86, Tony confirmed that ghes will not dispatch x86 synchronous errors
-(a.k.a machine check exception), in previous vesion.
-Sync is only used in arm64 platform, see is_hest_sync_notify().
-
+>> @@ -426,6 +438,12 @@ static int iommu_init_device(struct device *dev)
+>>   		ret = -ENODEV;
+>>   		goto err_free;
+>>   	}
+>> +	/*
+>> +	 * And if we do now see any replay calls, they would indicate someone
+>> +	 * misusing the dma_configure path outside bus code.
+>> +	 */
+>> +	if (dev->driver)
+>> +		dev_WARN(dev, "late IOMMU probe at driver bind, something fishy here!\n");
+>>   
+>>   	if (!try_module_get(ops->owner)) {
+>>   		ret = -EINVAL;
+>> diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
+>> index e10a68b5ffde..6b989a62def2 100644
+>> --- a/drivers/iommu/of_iommu.c
+>> +++ b/drivers/iommu/of_iommu.c
+>> @@ -155,7 +155,12 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
+>>   		dev_iommu_free(dev);
+>>   	mutex_unlock(&iommu_probe_device_lock);
+>>   
+>> -	if (!err && dev->bus)
+>> +	/*
+>> +	 * If we're not on the iommu_probe_device() path (as indicated by the
+>> +	 * initial dev->iommu) then try to simulate it. This should no longer
+>> +	 * happen unless of_dma_configure() is being misused outside bus code.
+>> +	 */
 > 
-> Thanks
-> Hanjun
+> This assumption does not hold as there is nothing preventing iommu
+> driver probe from racing with a client driver probe.
 
-Thanks.
-Shuai
+Not sure I follow - *this* assumption is that if we arrived here with 
+dev->iommu already allocated then __iommu_probe_device() is already in 
+progress for this device, either in the current callchain or on another 
+thread, and so we can (and should) skip calling into it again. There's 
+no ambiguity about that.
+
+>> +	if (!err && dev->bus && !dev_iommu_present)
+>>   		err = iommu_probe_device(dev);
+>>   
+>>   	if (err && err != -EPROBE_DEFER)
+> 
+> I hit the (now moved) dev_WARN() on the ThinkPad T14s where the GPU SMMU
+> is probed late due to a clock dependency and can end up probing in
+> parallel with the GPU driver.
+
+And what *should* happen is that the GPU driver probe waits for the 
+IOMMU driver probe to finish. Do you have fw_devlink enabled?
+
+> [    3.805282] arm-smmu 3da0000.iommu: probing hardware configuration...
+> [    3.806007] arm-smmu 3da0000.iommu: SMMUv2 with:
+> [    3.806843] arm-smmu 3da0000.iommu:  stage 1 translation
+> [    3.807562] arm-smmu 3da0000.iommu:  coherent table walk
+> [    3.808253] arm-smmu 3da0000.iommu:  stream matching with 24 register groups
+> [    3.808957] arm-smmu 3da0000.iommu:  22 context banks (0 stage-2 only)
+> [    3.809651] arm-smmu 3da0000.iommu:  Supported page sizes: 0x61311000
+> [    3.810339] arm-smmu 3da0000.iommu:  Stage-1: 48-bit VA -> 40-bit IPA
+> [    3.811130] arm-smmu 3da0000.iommu:  preserved 0 boot mappings
+> 
+> [    3.829042] platform 3d6a000.gmu: Adding to iommu group 8
+> 
+> [    3.992050] ------------[ cut here ]------------
+> [    3.993045] adreno 3d00000.gpu: late IOMMU probe at driver bind, something fishy here!
+> [    3.994058] WARNING: CPU: 9 PID: 343 at drivers/iommu/iommu.c:579 __iommu_probe_device+0x2b0/0x4ac
+> 
+> [    4.003272] CPU: 9 UID: 0 PID: 343 Comm: kworker/u50:2 Not tainted 6.15.0-rc1 #109 PREEMPT
+> [    4.003276] Hardware name: LENOVO 21N2ZC5PUS/21N2ZC5PUS, BIOS N42ET83W (2.13 ) 10/04/2024
+> 
+> [    4.025943] Call trace:
+> [    4.025945]  __iommu_probe_device+0x2b0/0x4ac (P)
+> [    4.030453]  iommu_probe_device+0x38/0x7c
+> [    4.030455]  of_iommu_configure+0x188/0x26c
+> [    4.030457]  of_dma_configure_id+0xcc/0x300
+> [    4.030460]  platform_dma_configure+0x74/0xac
+> [    4.030462]  really_probe+0x74/0x38c
+
+Indeed this is exactly what is *not* supposed to be happening - does 
+this patch help at all?
+
+https://lore.kernel.org/linux-iommu/09d901ad11b3a410fbb6e27f7d04ad4609c3fe4a.1741706365.git.robin.murphy@arm.com/
+
+If not then I guess I do need to do something to explicitly distinguish 
+the "iommu_device_register() is still running" state after all...
+
+Thanks,
+Robin.
+
+> [    4.030464]  __driver_probe_device+0x7c/0x160
+> [    4.030465]  driver_probe_device+0x40/0x110
+> [    4.030467]  __device_attach_driver+0xbc/0x158
+> [    4.030468]  bus_for_each_drv+0x84/0xe0
+> [    4.030470]  __device_attach+0xa8/0x1d4
+> [    4.030472]  device_initial_probe+0x14/0x20
+> [    4.030473]  bus_probe_device+0xb0/0xb4
+> [    4.030476]  deferred_probe_work_func+0xa0/0xf4
+> 
+> [    4.030501] ---[ end trace 0000000000000000 ]---
+> [    4.031269] adreno 3d00000.gpu: Adding to iommu group 9
+> 
+> Johan
+
 
