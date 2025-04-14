@@ -1,82 +1,83 @@
-Return-Path: <linux-acpi+bounces-13005-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13006-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52CBA879CB
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 10:08:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EA25A87AA0
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 10:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CCAE3B03DD
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 08:08:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A085A188BBEE
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 08:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703F3259CBD;
-	Mon, 14 Apr 2025 08:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E9725A2B5;
+	Mon, 14 Apr 2025 08:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BP9bhlj0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PDzng+DP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE831A83E8;
-	Mon, 14 Apr 2025 08:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E95E2580CD;
+	Mon, 14 Apr 2025 08:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744618112; cv=none; b=I+Q3lBpkvbxqLkC2YBpTFAmjv1UjwfCvznTulERpV9fDv1/rK+g4/6RvdyTG/KmA+s0W7aDHWNKtJmZxLrZMvPa0cz9qFDmR1AM4nGidJlNALeg0pLl/RMpeLsL6GIsEENPhDIKIU/QEI1qvJH9P9iHAGQMNYLobryUc6eCGZvA=
+	t=1744620129; cv=none; b=Cf39YcwmHMXXNDaKNoDTgTx7DmhIqhvYLI/iewfmMdVSb7PQRPsES9DHhgEv1SpAPXnK+NzuAwQGzWX+5NnNUIOdDWCcueSVsSm/5FQGd6qAserwaL8wN1xRo6TLVgvU6lVbPeswXbuPKsRRy9pJ6DVsTGNGJlX7We6rNEKN+t0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744618112; c=relaxed/simple;
-	bh=V0f4/PL/gQn+uD5jBY8BYhb0Ecl81rZSW7t2zre7NoU=;
+	s=arc-20240116; t=1744620129; c=relaxed/simple;
+	bh=yVNb+XBjRxkJl6C+3T6/4cDm3RQwDEa5c+x2ZOfmFvY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fcM7CA8Sh9Ie8fXKUYcop9zRs0t2XV4nkAE4bEdH4ZPdesAFR54lDV1R9l0FpUc4es+I1oAM7GCt+gOmjO3j1L1e814DPDDP1XP51AbV/p5HKz+eHB8rgKelQg7hifxNcA+uzQcQ4JTRkNcuRNUZFhliJqBPRHdGFvldkkDFG0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BP9bhlj0; arc=none smtp.client-ip=192.198.163.11
+	 Content-Type:Content-Disposition:In-Reply-To; b=oDSpWapemFaKsRqTBdsynfz06bUrR+NPYm9iBXXw/xcq5MHGJm7qoKjsH6K4MyAZ+ZIh2b/6C3HbaWs8OEhcu7AQDHlPByNWmn+JVYd+nWw6Hd5vujrXinhQFITxz9S8N7jMnKTTAmtM2/rLJKtRY7x8SMOqgJUgz7Ql78+XrHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PDzng+DP; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744618111; x=1776154111;
+  t=1744620127; x=1776156127;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=V0f4/PL/gQn+uD5jBY8BYhb0Ecl81rZSW7t2zre7NoU=;
-  b=BP9bhlj0UqELDspBK37we8jmkQLcTS5d831Is6B6hsp8E4eJVTyr7F0W
-   GEhWD08cAB/+jEkAl4IVOiEfHE2yaF49Qvj4EMli5SQPTaFwxmHTa30uk
-   nPB0qxZNf7agkPEAV5mVT0NDZduNPH0zLZ2+GNoHsubZ2WkXwaMuAiSW2
-   q9FKL8qqdzdBOOsPtJrUNzM9T7W4lb8PaOTeJ95EPLjy3wbObAI2zTm8Z
-   /SUR0auQ6InM1j2rCKp+wI/Eqya1akEZH/4Wop493eR1jRCX7IU5fMULF
-   t0NmTUWi38cYjw77eEvh5Ox8wlMLPhews8Lumj+AFcTzeuArK7Syg5M3a
+  bh=yVNb+XBjRxkJl6C+3T6/4cDm3RQwDEa5c+x2ZOfmFvY=;
+  b=PDzng+DPTlsduggwX1VSiZIvlkzQDM6K0UBVa26CG51d+JTD0Ag0gE4m
+   f8tT5OFtbTxKTR/KjTzoHsTG5sKr1OV/sFoA2Aho9P1kJzgOaVpcgRoSX
+   OATevANKhtRP0fuhXSWWjTJ1/Lr4hLysjwGomZQ+U3es7QrH7KNGeMGTO
+   Czr66LLzrOySo1lpskNFFRQ4kZtaKqhe+RpVT3TU+eNlAmB7pOWpGhMwe
+   vJAIZ4VASyJynXQpoeCX5kRPVFzh7efCbogy82DmwDK8laexxZsZEctkO
+   ud5cLoPkLERTh9M0/+ULAheYYl3Xngz33Xpxx+08aedXo3hVyNrhwDp14
    A==;
-X-CSE-ConnectionGUID: 06wRxlpFQHqoSMsHTg9lBg==
-X-CSE-MsgGUID: CCCNiHpDTPqrAIlfu/xV3g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="56735515"
+X-CSE-ConnectionGUID: D3VLAu+JSrCPkDiagyUvCQ==
+X-CSE-MsgGUID: 5JoXE9SlT9yYWud7W2UwKg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="49884403"
 X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
-   d="scan'208";a="56735515"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 01:08:30 -0700
-X-CSE-ConnectionGUID: kiVG0bCgQGOAhCa+zr5/5g==
-X-CSE-MsgGUID: V5TaUfkHQQacnCNnFGBmNA==
+   d="scan'208";a="49884403"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 01:42:05 -0700
+X-CSE-ConnectionGUID: U0QE6RrMRcK0cUNW5zk7Yg==
+X-CSE-MsgGUID: yXF6xqkxROG2ms0PPeFaTg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
-   d="scan'208";a="134721295"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 01:08:27 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1u4Erg-0000000CAli-2CIm;
-	Mon, 14 Apr 2025 11:08:24 +0300
-Date: Mon, 14 Apr 2025 11:08:24 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
-Subject: Re: [PATCH 2/2] software node: Correct a OOB check in
- software_node_get_reference_args()
-Message-ID: <Z_zCeHu9MKgLG0jN@smile.fi.intel.com>
-References: <20250410-fix_swnode-v1-0-081c95cf7cf9@quicinc.com>
- <20250410-fix_swnode-v1-2-081c95cf7cf9@quicinc.com>
+   d="scan'208";a="130084836"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 01:42:01 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 5BB5911F871;
+	Mon, 14 Apr 2025 11:41:58 +0300 (EEST)
+Date: Mon, 14 Apr 2025 08:41:58 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Lizhi Xu <lizhi.xu@windriver.com>
+Cc: andriy.shevchenko@linux.intel.com, dakr@kernel.org, djrscally@gmail.com,
+	dvyukov@google.com, gregkh@linuxfoundation.org,
+	heikki.krogerus@linux.intel.com, jgg@nvidia.com,
+	kevin.tian@intel.com, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, nicolinc@nvidia.com,
+	rafael@kernel.org,
+	syzbot+2ff22910687ee0dfd48e@syzkaller.appspotmail.com,
+	syzkaller-bugs@googlegroups.com, yi.l.liu@intel.com
+Subject: Re: [PATCH V2] software node: Prevent link creation failure from
+ causing kobj reference count imbalance
+Message-ID: <Z_zKVtxJbOYcys-J@kekkonen.localdomain>
+References: <Z_ypLhYQwGf41hVK@smile.fi.intel.com>
+ <20250414071123.1228331-1-lizhi.xu@windriver.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -85,22 +86,64 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250410-fix_swnode-v1-2-081c95cf7cf9@quicinc.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20250414071123.1228331-1-lizhi.xu@windriver.com>
 
-On Thu, Apr 10, 2025 at 09:12:12PM +0800, Zijun Hu wrote:
-> From: Zijun Hu <quic_zijuhu@quicinc.com>
+On Mon, Apr 14, 2025 at 03:11:23PM +0800, Lizhi Xu wrote:
+> syzbot reported a uaf in software_node_notify_remove. [1]
 > 
-> software_node_get_reference_args() wants to get @index-th element, so
-> the property value requires at least '(index + 1) * sizeof(*ref)' bytes.
+> When any of the two sysfs_create_link() in software_node_notify() fails,
+> the swnode->kobj reference count will not increase normally, which will
+> cause swnode to be released incorrectly due to the imbalance of kobj reference
+> count when executing software_node_notify_remove().
 > 
-> Correct the check to avoid OOB access.
+> Increase the reference count of kobj before creating the link to avoid uaf.
+> 
+> [1]
+> BUG: KASAN: slab-use-after-free in software_node_notify_remove+0x1bc/0x1c0 drivers/base/swnode.c:1108
+> Read of size 1 at addr ffff888033c08908 by task syz-executor105/5844
+> Freed by task 5844:
+>  software_node_notify_remove+0x159/0x1c0 drivers/base/swnode.c:1106
+>  device_platform_notify_remove drivers/base/core.c:2387 [inline]
+> 
+> Fixes: 9eb59204d519 ("iommufd/selftest: Add set_dev_pasid in mock iommu")
+> Reported-by: syzbot+2ff22910687ee0dfd48e@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=2ff22910687ee0dfd48e
+> Tested-by: syzbot+2ff22910687ee0dfd48e@syzkaller.appspotmail.com
+> Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
 
-Any real traceback?
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+
+> ---
+> V1 -> V2: reduce calltrace
+> 
+>  drivers/base/swnode.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+> index b1726a3515f6..5c78fa6ae772 100644
+> --- a/drivers/base/swnode.c
+> +++ b/drivers/base/swnode.c
+> @@ -1080,6 +1080,7 @@ void software_node_notify(struct device *dev)
+>  	if (!swnode)
+>  		return;
+>  
+> +	kobject_get(&swnode->kobj);
+>  	ret = sysfs_create_link(&dev->kobj, &swnode->kobj, "software_node");
+>  	if (ret)
+>  		return;
+> @@ -1089,8 +1090,6 @@ void software_node_notify(struct device *dev)
+>  		sysfs_remove_link(&dev->kobj, "software_node");
+>  		return;
+>  	}
+> -
+> -	kobject_get(&swnode->kobj);
+>  }
+>  
+>  void software_node_notify_remove(struct device *dev)
+> -- 
+> 2.43.0
+> 
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Sakari Ailus
 
