@@ -1,141 +1,136 @@
-Return-Path: <linux-acpi+bounces-13024-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13025-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0AB1A8861F
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 17:00:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA438A885C3
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 16:52:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ACD856282D
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 14:41:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 371A2163DD5
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 14:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8764927FD46;
-	Mon, 14 Apr 2025 14:25:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b5xnaIoI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9522A27586E;
+	Mon, 14 Apr 2025 14:37:29 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEC727F759;
-	Mon, 14 Apr 2025 14:25:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7AC2DFA4D;
+	Mon, 14 Apr 2025 14:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744640729; cv=none; b=odm31Z+gLPN0NmovErYrCfmJlnP2CCymMbzTRcgP9dhWzp6JFrH0EbDoWLNQvRkPlkx9+twiB4axOpJ84f/iLg+p2J/Jx9Yg46aulcI8kS6wmlgIklAc9R/1hXdSV+dW9FYcvl/161NYxyewcLE4+pkNjSO0KwDIEPOQixrKBOk=
+	t=1744641449; cv=none; b=Zmqdz+MtSvFJlrV5BGBF6vs0B2rLPe+3wS86euBiX5pM2GUJsAKnUDMUJrO4MH5RsMSRhQwFFodvhwJ59wmgO5w0ed9YWYUsCbcnpwVNSDJ/0vFDZn95HVH/EZEXkv53VtF+4ohQlRj3z9emeZbLh9TQNBB/NKE1IQOZF/oaQmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744640729; c=relaxed/simple;
-	bh=yg6EWMxUISCyYSYPYDJV3F2CpXW7on+QB5igo/9U3WM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dQlc8LZQjc7j9GrDU3yMQ7zcOPlQa3e96bK/uvenpiDDsuxHYwxbiLVYma8LPcsAFJWEWHDikkLjsMwW1I1qEinc8F7hcDouksd3ACqL5OqG9kYrMjbzp/4QFIrIYVg+M0hjt08KYUHhObXZareS+Focs7kddOb0zdxGprMTkWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b5xnaIoI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7006C4CEE9;
-	Mon, 14 Apr 2025 14:25:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744640728;
-	bh=yg6EWMxUISCyYSYPYDJV3F2CpXW7on+QB5igo/9U3WM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=b5xnaIoIi/nu5s7HP6IU9n3N9sIZC6rCnMlcUAUDLYrdTKJFF+k0jOSMdO+MVL4r4
-	 Xg90kiLPLvJVsrCi3tqZ5tv4uJVVW9VOh7OV45dvPJRy8lvRizgyjLZeM0KHNAbNQU
-	 vumektwdm3FBJglsE+0AT8f55TuPusym+ubQFinR0xVW96zcCQ0Vxr/f6ngUztO+Y/
-	 2VCmMDYNNXYeyLqkVd+94p1vxAp8dPd0FQtPTgcDlOWX9NiL7C51F978BDKn8e9GGI
-	 akLwF0Vq1YigNjzIzImElNNl9BW5SX/jvDucuVsNKMTVvd3gulrwnDQZZBfaSli+vJ
-	 7p5/8j6qt/bsA==
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-60288fd4169so1875672eaf.3;
-        Mon, 14 Apr 2025 07:25:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUXCrC3jlN+G8ynRLpVkUkkyMetdXWGPgGXc+cJUPZ6iec7fD4AzLCpdMd/7ysN+T9GNfoXFpqJuCkGcQ4U@vger.kernel.org, AJvYcCXdqEGtzoY1XT+ooHlX/owRYS6fxuGi2bbfD0V/WocVUZOBLtzX7wkXtSb54xxjcTUyGdVQRupGqo4N@vger.kernel.org
-X-Gm-Message-State: AOJu0YyumCAmP/L+o1pnFZlhb167mTGzgdDVviBS9u4ndQErVKGH3Nuv
-	vzRpri0NsUWeJSYrs9yEaK3dCtp+RBZB979pBahZhjpkG1qsZVSaObhFZ5m2j0jE0i+5c5ITZuT
-	bT031EGAobM/XhHFOK3TVQD41mQE=
-X-Google-Smtp-Source: AGHT+IGpQ8Gu6BowkMYFfcY+1nthKg0wd1cz3rjIdC8dPfkokVglpT5SfkZnRdy5kH2Kp1RRisWLKcbiXxBnKB2lNME=
-X-Received: by 2002:a05:6871:6216:b0:2c1:6bbc:70f4 with SMTP id
- 586e51a60fabf-2d0d5f74b56mr7444602fac.38.1744640728206; Mon, 14 Apr 2025
- 07:25:28 -0700 (PDT)
+	s=arc-20240116; t=1744641449; c=relaxed/simple;
+	bh=/RyjC2iNOfnZm2jgaWulSid9/ozmjHgS3tJdqrDAXDw=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=JdVGoCMGczJwP5iUM+cIgTJGZvv3SbhHNUlVSpz4gK89fbwdIhm6VMkjntLjC+pF9xq87EmqVo/DM8pDraBGYtTRt2kVdT/RiK0ksMTgi5BjKgzfW8ADCO7gMS1807xmxHZ9B7NQ8cTq2s/fkeDuLkiPcTRWaKj5ixL+vgNFfCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4ZbqY14QMGzHrDV;
+	Mon, 14 Apr 2025 22:33:57 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 53FEC1401F4;
+	Mon, 14 Apr 2025 22:37:23 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 14 Apr 2025 22:37:21 +0800
+Subject: Re: [RESEND PATCH v18 1/2] ACPI: APEI: send SIGBUS to current task if
+ synchronous memory error not recovered
+To: Shuai Xue <xueshuai@linux.alibaba.com>, <catalin.marinas@arm.com>,
+	<sudeep.holla@arm.com>, <lpieralisi@kernel.org>,
+	<linux-acpi@vger.kernel.org>, <yazen.ghannam@amd.com>,
+	<mark.rutland@arm.com>, <mingo@redhat.com>, <robin.murphy@arm.com>,
+	<Jonathan.Cameron@Huawei.com>, <bp@alien8.de>, <rafael@kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <wangkefeng.wang@huawei.com>,
+	<tanxiaofei@huawei.com>, <mawupeng1@huawei.com>, <tony.luck@intel.com>,
+	<linmiaohe@huawei.com>, <naoya.horiguchi@nec.com>, <james.morse@arm.com>,
+	<tongtiangen@huawei.com>, <gregkh@linuxfoundation.org>, <will@kernel.org>,
+	<jarkko@kernel.org>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<akpm@linux-foundation.org>, <linux-edac@vger.kernel.org>, <x86@kernel.org>,
+	<justin.he@arm.com>, <ardb@kernel.org>, <ying.huang@linux.alibaba.com>,
+	<ashish.kalra@amd.com>, <baolin.wang@linux.alibaba.com>,
+	<tglx@linutronix.de>, <dave.hansen@linux.intel.com>, <lenb@kernel.org>,
+	<hpa@zytor.com>, <robert.moore@intel.com>, <lvying6@huawei.com>,
+	<xiexiuqi@huawei.com>, <zhuo.song@linux.alibaba.com>
+References: <20250404112050.42040-1-xueshuai@linux.alibaba.com>
+ <20250404112050.42040-2-xueshuai@linux.alibaba.com>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <0c0bc332-0323-4e43-a96b-dd5f5957ecc9@huawei.com>
+Date: Mon, 14 Apr 2025 22:37:21 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250414073517.57745-1-kevinpaul468@gmail.com>
-In-Reply-To: <20250414073517.57745-1-kevinpaul468@gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 14 Apr 2025 16:25:11 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gTXstnnFWi87ihxLx7u1HcNaKeUdBpE+2HyJ+40wLCbQ@mail.gmail.com>
-X-Gm-Features: ATxdqUHoCYUB-YbsecjuItR83jefDARX0oJSWSXyKosTFhnQ3zOAQZ8DOaF_SUQ
-Message-ID: <CAJZ5v0gTXstnnFWi87ihxLx7u1HcNaKeUdBpE+2HyJ+40wLCbQ@mail.gmail.com>
-Subject: Re: [PATCH] acpica: Removing deprecated strncpy()
-To: Kevin Paul Reddy Janagari <kevinpaul468@gmail.com>
-Cc: robert.moore@intel.com, rafael.j.wysocki@intel.com, lenb@kernel.org, 
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250404112050.42040-2-xueshuai@linux.alibaba.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-On Mon, Apr 14, 2025 at 9:35=E2=80=AFAM Kevin Paul Reddy Janagari
-<kevinpaul468@gmail.com> wrote:
->
-> This patch suggests the replacement of strncpy with strscpy
-> as per Documentation/process/deprecated.
-> The strncpy() fails to guarantee NULL termination,
-> The function adds zero pads which isn't really convenient for short strin=
-gs
-> as it may cause performance issues.
->
-> strscpy() is a preferred replacement because
-> it overcomes the limitations of strncpy mentioned above.
->
-> Compile Tested
-
-ACPICA material is primarily handled by the upstream ACPICA project on
-GitHub, so  ACPICA changes should first be submitted to upstream ACPICA as
-indicated on this list for many times, see for instance:
-
-https://lore.kernel.org/linux-acpi/CAJZ5v0gUDxrAn4W+Rf3ifjrg8Z9ZzTTOZjPFSSN=
-5488mPqzXeA@mail.gmail.com/
-
-> Signed-off-by: Kevin Paul Reddy Janagari <kevinpaul468@gmail.com>
+On 2025/4/4 19:20, Shuai Xue wrote:
+> Synchronous error was detected as a result of user-space process accessing
+> a 2-bit uncorrected error. The CPU will take a synchronous error exception
+> such as Synchronous External Abort (SEA) on Arm64. The kernel will queue a
+> memory_failure() work which poisons the related page, unmaps the page, and
+> then sends a SIGBUS to the process, so that a system wide panic can be
+> avoided.
+> 
+> However, no memory_failure() work will be queued when abnormal synchronous
+> errors occur. These errors can include situations such as invalid PA,
+> unexpected severity, no memory failure config support, invalid GUID
+> section, etc. In such case, the user-space process will trigger SEA again.
+> This loop can potentially exceed the platform firmware threshold or even
+> trigger a kernel hard lockup, leading to a system reboot.
+> 
+> Fix it by performing a force kill if no memory_failure() work is queued
+> for synchronous errors.
+> 
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+> Reviewed-by: Jane Chu <jane.chu@oracle.com>
 > ---
->  drivers/acpi/acpica/exconvrt.c | 2 +-
->  drivers/acpi/acpica/tbfind.c   | 4 ++--
->  2 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/acpi/acpica/exconvrt.c b/drivers/acpi/acpica/exconvr=
-t.c
-> index bb1be42daee1..648e68a31e1f 100644
-> --- a/drivers/acpi/acpica/exconvrt.c
-> +++ b/drivers/acpi/acpica/exconvrt.c
-> @@ -226,7 +226,7 @@ acpi_ex_convert_to_buffer(union acpi_operand_object *=
-obj_desc,
->                 /* Copy the string to the buffer */
->
->                 new_buf =3D return_desc->buffer.pointer;
-> -               strncpy((char *)new_buf, (char *)obj_desc->string.pointer=
-,
-> +               strscpy((char *)new_buf, (char *)obj_desc->string.pointer=
-,
->                         obj_desc->string.length);
->                 break;
->
-> diff --git a/drivers/acpi/acpica/tbfind.c b/drivers/acpi/acpica/tbfind.c
-> index 1c1b2e284bd9..5536d1755188 100644
-> --- a/drivers/acpi/acpica/tbfind.c
-> +++ b/drivers/acpi/acpica/tbfind.c
-> @@ -57,8 +57,8 @@ acpi_tb_find_table(char *signature,
->
->         memset(&header, 0, sizeof(struct acpi_table_header));
->         ACPI_COPY_NAMESEG(header.signature, signature);
-> -       strncpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
-> -       strncpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE_ID_SIZE=
-);
-> +       strscpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
-> +       strscpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE_ID_SIZE=
-);
->
->         /* Search for the table */
->
-> --
-> 2.39.5
->
->
+>   drivers/acpi/apei/ghes.c | 11 +++++++++++
+>   1 file changed, 11 insertions(+)
+> 
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index b72772494655..50e4d924aa8b 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -799,6 +799,17 @@ static bool ghes_do_proc(struct ghes *ghes,
+>   		}
+>   	}
+>   
+> +	/*
+> +	 * If no memory failure work is queued for abnormal synchronous
+> +	 * errors, do a force kill.
+> +	 */
+> +	if (sync && !queued) {
+> +		dev_err(ghes->dev,
+> +			HW_ERR GHES_PFX "%s:%d: synchronous unrecoverable error (SIGBUS)\n",
+> +			current->comm, task_pid_nr(current));
+> +		force_sig(SIGBUS);
+> +	}
+
+I think it's reasonable to send a force kill to the task when the
+synchronous memory error is not recovered.
+
+But I hope this code will not trigger some legacy firmware issues,
+let's be careful for this, so can we just introduce arch specific
+callbacks for this?
+
+Thanks
+Hanjun
 
