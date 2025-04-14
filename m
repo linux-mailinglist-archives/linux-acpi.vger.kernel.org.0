@@ -1,189 +1,233 @@
-Return-Path: <linux-acpi+bounces-13030-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13031-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F85DA8876A
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 17:38:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D7FA8885B
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 18:17:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BD4C7A2836
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 15:37:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCB09162DF5
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Apr 2025 16:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0F12749F0;
-	Mon, 14 Apr 2025 15:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C6B27FD46;
+	Mon, 14 Apr 2025 16:17:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nemufrau"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8CE252297;
-	Mon, 14 Apr 2025 15:38:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B78E274679;
+	Mon, 14 Apr 2025 16:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744645098; cv=none; b=me1pDa8eMGB/aHGkh+d9qiSJGZiOfHRDvTe0BNwQU4OpIva5fWFrgBGxNGb4kEOMFaeQKn9ySrwGIVbkuvS7rNJv/3FTFHH/tFLcIrKu4JIz0fo5DyADtDDIJOvh6xkR3ISWTmR6wHNBj64Z8jT9ntQUVfCAwYW9jF/wh66t04Q=
+	t=1744647425; cv=none; b=KZCxVFfJA43XRrMAkzj0GTrYK9+TgRSlUGjCRI3MWdnRDc76Uuif9PcJZpwU7jnBzb778y2QDGropEaiktdJ7OUYH0c+tKZTfKEzkTdJOumkRkDEccr/ryzHCzXv30eUTw7bNpFusfI4fyfx3JUOBEssyEc0fhpVuRSteSOtAPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744645098; c=relaxed/simple;
-	bh=0aZVGbEl/02D251casMOEEUyC3c3T0vU3dfpYMvmlIM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hk7og3gmia3zpUU6uYpm5h5z0xBajBxjbEi6dLCNxkBLTDQk+l3AJ0+gPPXDbtm2bafy/kq9xBujVdhMaAshMGBQ6Abnrupk0gIS2tyRUIGBxA2HQONLujDoWY+nWV3yMeVmb96mfdpiBo5v42fh9sZDd3tK/YmbwrEF9oZbzN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 137701007;
-	Mon, 14 Apr 2025 08:38:13 -0700 (PDT)
-Received: from [192.168.1.102] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EE7993F66E;
-	Mon, 14 Apr 2025 08:38:10 -0700 (PDT)
-Message-ID: <50a06ba8-0a99-40d2-8601-778ebf451f6a@arm.com>
-Date: Mon, 14 Apr 2025 16:37:59 +0100
+	s=arc-20240116; t=1744647425; c=relaxed/simple;
+	bh=5mIrpgYYyOWnWfHA4froNo0fLcAsTlaVkF6dDIafk/0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Czn+q6SIVTwHaVfFXyNh2kvbLWm+JpdGAhcRumx8zy13rI62mQz8u/u506albY0uVWXBqaIqKBqSEvLpfyOByWGQD8NOseyGbtkIdeFVlU+bTt0ZKb3xU+SzxVzDcLkrlkoy9gWvvk+1zr3nBDV6QM9ESSqsbt/Q2R1n946Zouw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nemufrau; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43d0c18e84eso23102495e9.3;
+        Mon, 14 Apr 2025 09:17:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744647422; x=1745252222; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JkjFVNMudnik//LPfbYGJBFZCdlS+2tZiHLOdVcdf7c=;
+        b=nemufrauGiZlhIh0s8c40fltRNQCIgSGtB7WVuDhbKRiVntPMKwdBuD3bdn7boVQSO
+         3QZ6Cj5q51CylfIEXC1xW/6fo3foPWOdM3F0RHGmfFNoJJxHXvL+Pv6JsHc6gnULEQAj
+         IXN8bRTn3WOHEdtjZKIUgeZ/rj66fYohQpvJf5C9IS39/9aAeQ07fPYEfp41T5yhdZ8U
+         1JjhDRJNJsEhX1Y86a85plg50c457l9IVvl5iW1KChmwy4HfboSAoMF0XyjMVVrn2bYE
+         x6MzczY8miNODyrujZLisx33V42eblb19dm+mt2Bna/JSkTFgsSqL2HkuIknZPPkBu7A
+         e0Hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744647422; x=1745252222;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JkjFVNMudnik//LPfbYGJBFZCdlS+2tZiHLOdVcdf7c=;
+        b=lPYJlIdsPFwPZ2sZBkLyiwsoXvvTt/9JTFoFaEC3Yi6750SPUOi6tcVa49VwsnZkO5
+         07Gv4rc4C6DzELgljHxg3mM44225XAvIi3NIIrhjlm/TSH7YqLIjbWaxGTH6rqeJ0f7v
+         R99zIdjMpTh7/wV07al0Wlt4ywIBwKmUnxSGKlP7PtO4bY1XWzGq77qLbo4IoQy1T0fe
+         kxnXwul3WqxFbd5kmGzZcYbgSt7lUU2i5h8RAQOsDKryMbCefi8v5TXveC4Xb3mvTee/
+         dr4O6Jih1s/hZ8orLE3Yqvve/jr0ra2RGoPJpMmMswH9JKchAa0DA3vaocRd0SvJNn4K
+         kKYg==
+X-Forwarded-Encrypted: i=1; AJvYcCVnnoIptiIG3zeQ6iVJ4/5TiDNycvrA4cRZvGR7quyCPMejxD+IOVKz89pS1KHUBSMjoAN5VJ5czPEK@vger.kernel.org, AJvYcCW6DgQrnJDcr79kviBZmLTHhusyjvK2IpPuVKbz61Fbdnlpp07KBki24oxPgO3zN4vpRqtbruw91qy+YF2i@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCU2KLPlYxoYisWw4MajCsfpen73rUf0H3xtG+KzU9KjsVOlYT
+	zv41LwDsgNi9VP+hOTGnuIvX0OLByRgJ7IOhI2bpYrqYQj8IvU4L
+X-Gm-Gg: ASbGncvkJBmzjPWjSicFl5rycgdZ97xehKbdxMvSBapFd4thD5X83CmWi98pa2cRohn
+	4WiSDfQ5FRlc4hDQhoMSFna0aTDORuKavSSYaDVa5J9/qZ/VMoRF+9cT2czuUO9RXmxAlibGEKY
+	Z9mfBe84uarUaRFxsNBQPJUmqOuHtqK9EzaYiAKgq0EdyNz/mCBBsjrVbbvCPKmFw3jmeCqTDmt
+	J3X359vT62+cYrI3fJrJJek4XRh0Nq7xb9eJflYIHDWc02xkxNiAU1qPUNjk/4MGQN3zmpQXL/t
+	2Pm/YVvctl8g6ED73chyJ4YQlSCKGO3y4NcG009HnGrYWUo=
+X-Google-Smtp-Source: AGHT+IHPIbTS1R/1F7V1Djo8inVDRUiqSFcAusGYcbzQSAXcB8tgjd3bWvhTCAjZTBdrpgu/BpVLDg==
+X-Received: by 2002:a05:600c:3b15:b0:43d:300f:fa3d with SMTP id 5b1f17b1804b1-43f3a9266e0mr91073805e9.5.1744647421175;
+        Mon, 14 Apr 2025 09:17:01 -0700 (PDT)
+Received: from noctura.suse.cz ([103.210.134.105])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-43f206264a1sm186983455e9.9.2025.04.14.09.16.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Apr 2025 09:17:00 -0700 (PDT)
+From: Brahmajit Das <brahmajit.xyz@gmail.com>
+X-Google-Original-From: Brahmajit Das <listout@listout.xyz>
+To: 
+Cc: Robert Moore <robert.moore@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/1] ACPI: Fix building with GCC 15
+Date: Mon, 14 Apr 2025 21:46:42 +0530
+Message-ID: <20250414161644.30400-1-listout@listout.xyz>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] iommu: Get DT/ACPI parsing into the proper probe
- path
-To: Johan Hovold <johan@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Russell King <linux@armlinux.org.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>, Stuart Yoder <stuyoder@gmail.com>,
- Laurentiu Tudor <laurentiu.tudor@nxp.com>, Nipun Gupta
- <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
- Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux.dev, devicetree@vger.kernel.org,
- linux-pci@vger.kernel.org, Charan Teja Kalla <quic_charante@quicinc.com>
-References: <cover.1740753261.git.robin.murphy@arm.com>
- <e3b191e6fd6ca9a1e84c5e5e40044faf97abb874.1740753261.git.robin.murphy@arm.com>
- <Z_jMiC1uj_MJpKVj@hovoldconsulting.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <Z_jMiC1uj_MJpKVj@hovoldconsulting.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 2025-04-11 9:02 am, Johan Hovold wrote:
-> Hi Robin,
-> 
-> On Fri, Feb 28, 2025 at 03:46:33PM +0000, Robin Murphy wrote:
->> In hindsight, there were some crucial subtleties overlooked when moving
->> {of,acpi}_dma_configure() to driver probe time to allow waiting for
->> IOMMU drivers with -EPROBE_DEFER, and these have become an
->> ever-increasing source of problems. The IOMMU API has some fundamental
->> assumptions that iommu_probe_device() is called for every device added
->> to the system, in the order in which they are added. Calling it in a
->> random order or not at all dependent on driver binding leads to
->> malformed groups, a potential lack of isolation for devices with no
->> driver, and all manner of unexpected concurrency and race conditions.
->> We've attempted to mitigate the latter with point-fix bodges like
->> iommu_probe_device_lock, but it's a losing battle and the time has come
->> to bite the bullet and address the true source of the problem instead.
-> 
->> @@ -426,6 +438,12 @@ static int iommu_init_device(struct device *dev)
->>   		ret = -ENODEV;
->>   		goto err_free;
->>   	}
->> +	/*
->> +	 * And if we do now see any replay calls, they would indicate someone
->> +	 * misusing the dma_configure path outside bus code.
->> +	 */
->> +	if (dev->driver)
->> +		dev_WARN(dev, "late IOMMU probe at driver bind, something fishy here!\n");
->>   
->>   	if (!try_module_get(ops->owner)) {
->>   		ret = -EINVAL;
->> diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
->> index e10a68b5ffde..6b989a62def2 100644
->> --- a/drivers/iommu/of_iommu.c
->> +++ b/drivers/iommu/of_iommu.c
->> @@ -155,7 +155,12 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
->>   		dev_iommu_free(dev);
->>   	mutex_unlock(&iommu_probe_device_lock);
->>   
->> -	if (!err && dev->bus)
->> +	/*
->> +	 * If we're not on the iommu_probe_device() path (as indicated by the
->> +	 * initial dev->iommu) then try to simulate it. This should no longer
->> +	 * happen unless of_dma_configure() is being misused outside bus code.
->> +	 */
-> 
-> This assumption does not hold as there is nothing preventing iommu
-> driver probe from racing with a client driver probe.
+Since the Linux kernel initializes many non-C-string char arrays with
+literals. While it would be possible to convert initializers from:
+   { "BOOP", ... }
+to something like:
+   { { 'B', 'O', 'O', 'P' }, ... }
+that is annoying.
+Making -Wunterminated-string-initialization stay silent about char
+arrays marked with nonstring would be much better.
 
-Not sure I follow - *this* assumption is that if we arrived here with 
-dev->iommu already allocated then __iommu_probe_device() is already in 
-progress for this device, either in the current callchain or on another 
-thread, and so we can (and should) skip calling into it again. There's 
-no ambiguity about that.
+Without the __attribute__((nonstring)) we would get the following build
+error:
 
->> +	if (!err && dev->bus && !dev_iommu_present)
->>   		err = iommu_probe_device(dev);
->>   
->>   	if (err && err != -EPROBE_DEFER)
-> 
-> I hit the (now moved) dev_WARN() on the ThinkPad T14s where the GPU SMMU
-> is probed late due to a clock dependency and can end up probing in
-> parallel with the GPU driver.
+...
+drivers/acpi/acpica/acpredef.h:903:11: error: initializer-string for array of ‘char’ truncates NUL terminator but destination lacks ‘nonstring’ attribute (5 chars into 4 available) [-Werror=unterminated-string-initialization]
+  903 |         {{"_S3D", METHOD_0ARGS,
+      |           ^~~~~~
+drivers/acpi/acpica/acpredef.h:906:11: error: initializer-string for array of ‘char’ truncates NUL terminator but destination lacks ‘nonstring’ attribute (5 chars into 4 available) [-Werror=unterminated-string-initialization]
+  906 |         {{"_S4D", METHOD_0ARGS,
+      |           ^~~~~~
 
-And what *should* happen is that the GPU driver probe waits for the 
-IOMMU driver probe to finish. Do you have fw_devlink enabled?
+and,
 
-> [    3.805282] arm-smmu 3da0000.iommu: probing hardware configuration...
-> [    3.806007] arm-smmu 3da0000.iommu: SMMUv2 with:
-> [    3.806843] arm-smmu 3da0000.iommu:  stage 1 translation
-> [    3.807562] arm-smmu 3da0000.iommu:  coherent table walk
-> [    3.808253] arm-smmu 3da0000.iommu:  stream matching with 24 register groups
-> [    3.808957] arm-smmu 3da0000.iommu:  22 context banks (0 stage-2 only)
-> [    3.809651] arm-smmu 3da0000.iommu:  Supported page sizes: 0x61311000
-> [    3.810339] arm-smmu 3da0000.iommu:  Stage-1: 48-bit VA -> 40-bit IPA
-> [    3.811130] arm-smmu 3da0000.iommu:  preserved 0 boot mappings
-> 
-> [    3.829042] platform 3d6a000.gmu: Adding to iommu group 8
-> 
-> [    3.992050] ------------[ cut here ]------------
-> [    3.993045] adreno 3d00000.gpu: late IOMMU probe at driver bind, something fishy here!
-> [    3.994058] WARNING: CPU: 9 PID: 343 at drivers/iommu/iommu.c:579 __iommu_probe_device+0x2b0/0x4ac
-> 
-> [    4.003272] CPU: 9 UID: 0 PID: 343 Comm: kworker/u50:2 Not tainted 6.15.0-rc1 #109 PREEMPT
-> [    4.003276] Hardware name: LENOVO 21N2ZC5PUS/21N2ZC5PUS, BIOS N42ET83W (2.13 ) 10/04/2024
-> 
-> [    4.025943] Call trace:
-> [    4.025945]  __iommu_probe_device+0x2b0/0x4ac (P)
-> [    4.030453]  iommu_probe_device+0x38/0x7c
-> [    4.030455]  of_iommu_configure+0x188/0x26c
-> [    4.030457]  of_dma_configure_id+0xcc/0x300
-> [    4.030460]  platform_dma_configure+0x74/0xac
-> [    4.030462]  really_probe+0x74/0x38c
+...
+drivers/acpi/acpica/nsrepair2.c:115:10: error: initializer-string for array of ‘char’ truncates NUL terminator but destination lacks ‘nonstring’ attribute (5 chars into 4 available) [-Werror=unterminated-string-initialization]
+  115 |         {"_ALR", acpi_ns_repair_ALR},
+      |          ^~~~~~
+drivers/acpi/acpica/nsrepair2.c:116:10: error: initializer-string for array of ‘char’ truncates NUL terminator but destination lacks ‘nonstring’ attribute (5 chars into 4 available) [-Werror=unterminated-string-initialization]
+  116 |         {"_CID", acpi_ns_repair_CID},
+...
 
-Indeed this is exactly what is *not* supposed to be happening - does 
-this patch help at all?
+Upstream GCC has added this commit
+622968990beee7499e951590258363545b4a3b57[0][1] which silences warning
+about truncating NUL char when initializing nonstring arrays.
 
-https://lore.kernel.org/linux-iommu/09d901ad11b3a410fbb6e27f7d04ad4609c3fe4a.1741706365.git.robin.murphy@arm.com/
+[0]: https://gcc.gnu.org/cgit/gcc/commit/?id=622968990beee7499e951590258363545b4a3b57
+[1]: https://gcc.gnu.org/cgit/gcc/commit/?id=afb46540d3921e96c4cd7ba8fa2c8b0901759455
 
-If not then I guess I do need to do something to explicitly distinguish 
-the "iommu_device_register() is still running" state after all...
+Thanks to Jakub Jelinek <jakub@gcc.gnu.org> for the gcc patch.
 
-Thanks,
-Robin.
+Signed-off-by: Brahmajit Das <listout@listout.xyz>
+---
+ drivers/acpi/acpica/aclocal.h   |  4 ++--
+ drivers/acpi/acpica/nsrepair2.c |  2 +-
+ drivers/acpi/tables.c           | 28 +++++++++++++++-------------
+ include/acpi/actbl.h            |  3 ++-
+ 4 files changed, 20 insertions(+), 17 deletions(-)
 
-> [    4.030464]  __driver_probe_device+0x7c/0x160
-> [    4.030465]  driver_probe_device+0x40/0x110
-> [    4.030467]  __device_attach_driver+0xbc/0x158
-> [    4.030468]  bus_for_each_drv+0x84/0xe0
-> [    4.030470]  __device_attach+0xa8/0x1d4
-> [    4.030472]  device_initial_probe+0x14/0x20
-> [    4.030473]  bus_probe_device+0xb0/0xb4
-> [    4.030476]  deferred_probe_work_func+0xa0/0xf4
-> 
-> [    4.030501] ---[ end trace 0000000000000000 ]---
-> [    4.031269] adreno 3d00000.gpu: Adding to iommu group 9
-> 
-> Johan
+diff --git a/drivers/acpi/acpica/aclocal.h b/drivers/acpi/acpica/aclocal.h
+index 6f4fe47c955b..d2cda1b35e59 100644
+--- a/drivers/acpi/acpica/aclocal.h
++++ b/drivers/acpi/acpica/aclocal.h
+@@ -293,7 +293,7 @@ acpi_status (*acpi_internal_method) (struct acpi_walk_state * walk_state);
+  * expected_return_btypes - Allowed type(s) for the return value
+  */
+ struct acpi_name_info {
+-	char name[ACPI_NAMESEG_SIZE];
++	char name[ACPI_NAMESEG_SIZE] __attribute__((nonstring));
+ 	u16 argument_list;
+ 	u8 expected_btypes;
+ };
+@@ -370,7 +370,7 @@ typedef acpi_status (*acpi_object_converter) (struct acpi_namespace_node *
+ 					      converted_object);
+ 
+ struct acpi_simple_repair_info {
+-	char name[ACPI_NAMESEG_SIZE];
++	char name[ACPI_NAMESEG_SIZE] __attribute__((nonstring));
+ 	u32 unexpected_btypes;
+ 	u32 package_index;
+ 	acpi_object_converter object_converter;
+diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepair2.c
+index 1bb7b71f07f1..a28b1fa2b1ea 100644
+--- a/drivers/acpi/acpica/nsrepair2.c
++++ b/drivers/acpi/acpica/nsrepair2.c
+@@ -25,7 +25,7 @@ acpi_status (*acpi_repair_function) (struct acpi_evaluate_info * info,
+ 				     return_object_ptr);
+ 
+ typedef struct acpi_repair_info {
+-	char name[ACPI_NAMESEG_SIZE];
++	char name[ACPI_NAMESEG_SIZE] __attribute__((nonstring));
+ 	acpi_repair_function repair_function;
+ 
+ } acpi_repair_info;
+diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+index 2295abbecd14..27104cbb48b5 100644
+--- a/drivers/acpi/tables.c
++++ b/drivers/acpi/tables.c
+@@ -396,19 +396,21 @@ static u8 __init acpi_table_checksum(u8 *buffer, u32 length)
+ }
+ 
+ /* All but ACPI_SIG_RSDP and ACPI_SIG_FACS: */
+-static const char table_sigs[][ACPI_NAMESEG_SIZE] __initconst = {
+-	ACPI_SIG_BERT, ACPI_SIG_BGRT, ACPI_SIG_CPEP, ACPI_SIG_ECDT,
+-	ACPI_SIG_EINJ, ACPI_SIG_ERST, ACPI_SIG_HEST, ACPI_SIG_MADT,
+-	ACPI_SIG_MSCT, ACPI_SIG_SBST, ACPI_SIG_SLIT, ACPI_SIG_SRAT,
+-	ACPI_SIG_ASF,  ACPI_SIG_BOOT, ACPI_SIG_DBGP, ACPI_SIG_DMAR,
+-	ACPI_SIG_HPET, ACPI_SIG_IBFT, ACPI_SIG_IVRS, ACPI_SIG_MCFG,
+-	ACPI_SIG_MCHI, ACPI_SIG_SLIC, ACPI_SIG_SPCR, ACPI_SIG_SPMI,
+-	ACPI_SIG_TCPA, ACPI_SIG_UEFI, ACPI_SIG_WAET, ACPI_SIG_WDAT,
+-	ACPI_SIG_WDDT, ACPI_SIG_WDRT, ACPI_SIG_DSDT, ACPI_SIG_FADT,
+-	ACPI_SIG_PSDT, ACPI_SIG_RSDT, ACPI_SIG_XSDT, ACPI_SIG_SSDT,
+-	ACPI_SIG_IORT, ACPI_SIG_NFIT, ACPI_SIG_HMAT, ACPI_SIG_PPTT,
+-	ACPI_SIG_NHLT, ACPI_SIG_AEST, ACPI_SIG_CEDT, ACPI_SIG_AGDI,
+-	ACPI_SIG_NBFT };
++static const char table_sigs[][ACPI_NAMESEG_SIZE] __initconst
++	__attribute__((nonstring)) = {
++		ACPI_SIG_BERT, ACPI_SIG_BGRT, ACPI_SIG_CPEP, ACPI_SIG_ECDT,
++		ACPI_SIG_EINJ, ACPI_SIG_ERST, ACPI_SIG_HEST, ACPI_SIG_MADT,
++		ACPI_SIG_MSCT, ACPI_SIG_SBST, ACPI_SIG_SLIT, ACPI_SIG_SRAT,
++		ACPI_SIG_ASF,  ACPI_SIG_BOOT, ACPI_SIG_DBGP, ACPI_SIG_DMAR,
++		ACPI_SIG_HPET, ACPI_SIG_IBFT, ACPI_SIG_IVRS, ACPI_SIG_MCFG,
++		ACPI_SIG_MCHI, ACPI_SIG_SLIC, ACPI_SIG_SPCR, ACPI_SIG_SPMI,
++		ACPI_SIG_TCPA, ACPI_SIG_UEFI, ACPI_SIG_WAET, ACPI_SIG_WDAT,
++		ACPI_SIG_WDDT, ACPI_SIG_WDRT, ACPI_SIG_DSDT, ACPI_SIG_FADT,
++		ACPI_SIG_PSDT, ACPI_SIG_RSDT, ACPI_SIG_XSDT, ACPI_SIG_SSDT,
++		ACPI_SIG_IORT, ACPI_SIG_NFIT, ACPI_SIG_HMAT, ACPI_SIG_PPTT,
++		ACPI_SIG_NHLT, ACPI_SIG_AEST, ACPI_SIG_CEDT, ACPI_SIG_AGDI,
++		ACPI_SIG_NBFT
++	};
+ 
+ #define ACPI_HEADER_SIZE sizeof(struct acpi_table_header)
+ 
+diff --git a/include/acpi/actbl.h b/include/acpi/actbl.h
+index 451f6276da49..88ba1b978053 100644
+--- a/include/acpi/actbl.h
++++ b/include/acpi/actbl.h
+@@ -66,7 +66,8 @@
+  ******************************************************************************/
+ 
+ struct acpi_table_header {
+-	char signature[ACPI_NAMESEG_SIZE];	/* ASCII table signature */
++	char signature[ACPI_NAMESEG_SIZE]
++		__attribute__((nonstring)); /* ASCII table signature */
+ 	u32 length;		/* Length of table in bytes, including this header */
+ 	u8 revision;		/* ACPI Specification minor version number */
+ 	u8 checksum;		/* To make sum of entire table == 0 */
+-- 
+2.49.0
 
 
