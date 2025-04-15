@@ -1,112 +1,124 @@
-Return-Path: <linux-acpi+bounces-13052-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13053-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D5EAA89F9E
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Apr 2025 15:37:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5828A89FBA
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Apr 2025 15:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F1FF4424E5
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Apr 2025 13:37:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C76F7161498
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Apr 2025 13:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3369D1509A0;
-	Tue, 15 Apr 2025 13:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7280E153BE8;
+	Tue, 15 Apr 2025 13:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jZ3MAWVy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vO5HfdoF"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051DB76025;
-	Tue, 15 Apr 2025 13:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3F0A932;
+	Tue, 15 Apr 2025 13:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744724251; cv=none; b=fj5RElY4jyypvOjOTzQBwRcod+6tGmPb7lHg6qO/MDjynhan+raSP+7XgMkq7TL/QbLvdeHckX+vKi71kkSPGsnWWVN8fG+gzaYkdAtlWOpJXEeGkO9ykPuKGgopxZRporoOMgm+eejvRgybxLTiodKsqUeT10p9Gug1YYUPhIQ=
+	t=1744724436; cv=none; b=lPgfJgGMPPFFWh3H0a6zPe2KPYuFEhwHXNItUWy4EtczSGz7S9L/lZeO+ryPpJxqZZrf0LsUf+9P1rw3w1yNSvx2+z9UwNK3bMI3qhfQ3osJuOLlBBwxL7UL1xwLq44pHRs+URY+txNCpsproCaziVxmmJW3qrONCxd6+P2hHR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744724251; c=relaxed/simple;
-	bh=d65VUzC+gp0Nh/nz0QJI3UYVT/j3ah8Q+Pab3E0+gx8=;
+	s=arc-20240116; t=1744724436; c=relaxed/simple;
+	bh=jBqHI+bna5jQDbCCCGpudQ1H27YZoGINgslqFhNnZlo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WvverYo9vAKlLZYHJ5b/F5vQJJDxtjDkg2x/dqNcS3rmaMvzM+Uh8NYyheymyOnQF8CQDTCpcbGHJyLUht79L0hXRPg9njy+EX+bmqLHfVSbvcL4HeA9WtXZM9Y9Vfa7UwU57+fK+3sQqXK41+8LqfQ/a3dIv1IRV6yMUof+PrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jZ3MAWVy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF72C4CEED;
-	Tue, 15 Apr 2025 13:37:30 +0000 (UTC)
+	 To:Cc:Content-Type; b=Bqc2opdpxjJURjLw5t8UDjEZ2KLwoGVUzA46f3EzcgaQWXe2Fr7s+/qEkmY8KSWvlP72Dl4DuJg4PUStAKa3rTbdka3OwzPUTfsO+HbYx9f2LUl0u/jMlfdn4u8xCpUzzq0JQHG2rYNxZ3NUDP013WrvS36CVxtfG4mbM56C3n8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vO5HfdoF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B965FC4CEEB;
+	Tue, 15 Apr 2025 13:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744724250;
-	bh=d65VUzC+gp0Nh/nz0QJI3UYVT/j3ah8Q+Pab3E0+gx8=;
+	s=k20201202; t=1744724435;
+	bh=jBqHI+bna5jQDbCCCGpudQ1H27YZoGINgslqFhNnZlo=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=jZ3MAWVy4NxoEgJ5I6vU9WoYaGTrL+teTgbhpWy3uJjS+/dfLfHyq9DP1VML3KCjs
-	 T0unwOlVE5P8fnTPiWxuDwHueSThfr8ZdgxSce6O42dlQBGyddQnbfdPAKpG/9YjOb
-	 N9RlVZNSqCKMWbxAUd/xLBbVMR8dlBEWUv7vX0b7Kfb32znr8dl9H0wLYW4WKxtRDt
-	 5jtcH+9le5Cib7lVZtFo932Im7uj3PIubvMIXrMnuviCMDr1/UwCW4CiZxbjNy+NOW
-	 j2Y8L4iWEzwX5K/ijWf8K3KZZWnW9FA5N8pOxkbvirGJNSKL8lyL73rqXcrFubzPpN
-	 t83W3B83lbQ7g==
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-72bbd3a3928so3126313a34.2;
-        Tue, 15 Apr 2025 06:37:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUMb8Bt8nEDAJ+CfD6PaivysoCm+zlc0480njCb0ZXP1vBEHmDnIAHDJkBSPEz6Gg/VD0iGWpK86M8jhTcz@vger.kernel.org, AJvYcCVV4d9TyEUQ4xqeMN5UNSLVf/zcQjMMuN/hpJ+ajYQlGwPJg96ACRxg1yTZ/w5wQ0yxBNg8muSfyiB7lQ==@vger.kernel.org, AJvYcCXvrvWWbX+DFCaem2TGycCQiSQiJjzPjuCp00nC+gQ9pfVhMASmlZQe5GOKsCp0agyHzl/vgqiwwfpP@vger.kernel.org
-X-Gm-Message-State: AOJu0YyW8INOw/QHEqft4soyKMVTOiLqJJl77oprZx4ciBvAV/PK2ugS
-	BDnR4G7fz6V0NLMWNXaEEedeczt2hxssGFkJSZdzRn5mIjFNsDz3ceehvX0UNhupwsBAx8+vmxy
-	j+F0JB1aJ+In5eHcyAbdiF+LKOqo=
-X-Google-Smtp-Source: AGHT+IE11JHCuqB8/U/WeGs4WYMQP6FxuDrC1VzqUKMC/KmA1BTT2oGZxuLY2SD5Zv5UI0sP7/8+OclGGWeWdB/IuNU=
-X-Received: by 2002:a05:6830:6408:b0:72a:f44b:13ed with SMTP id
- 46e09a7af769-72e862dedd1mr10259803a34.2.1744724249784; Tue, 15 Apr 2025
- 06:37:29 -0700 (PDT)
+	b=vO5HfdoFyVpnYPMsIgsHFfMzsesYc66RFEfI74GKHYEDVmmf2GhthxIXMJqNl5KgG
+	 20p5Msq9OZy37i6FyhiXM1vwT3prp1pZV0n4DVWZhG0QlN3UGM2QUqDQPLIw0dWqf1
+	 lmgcD6+3QeaQrk/g15zLMM2oXr8vVq4nXlJq7RYSCcO7HG91nG+x35qOUuXiQgJcmS
+	 BnpEdBdAM8fLBR4mgiiSnBXuOZuBRnXbg8JxGy9x+JiJUMls9FtIR+HQ0jG3WZOjFo
+	 wGc21uUrhcaLFj9MaT6d28bMPGewTgqDdxPR58WCGZYe8I0+5joRdltGf5tsOKyJUe
+	 tMcm7g0OjrW2w==
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-2cc36b39545so2476445fac.1;
+        Tue, 15 Apr 2025 06:40:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW7DsTU1yNWmnGJrRDX/ZJXwhd/QFyD9N6y6C9mNGCYE0GeqDniqnobXQ/D6Dll/Zw3G4Q6ljTc8SMh@vger.kernel.org, AJvYcCWgHUz1ehyHpGpj3BzU7gGjh87M55oCCCfCQVz2xJGivCgHOtnkG7NxLgFddQpFxlONkxHoVQdG2vxXhg9l@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzy90w/rr88+teWV77k8GOjN0I9MgLWqrKyB1NhC2GnkCX35ZH7
+	6JbY1Qn/YB+unoATaba04ZLmX8F1NSbfBqg7/UvNIgqF4QOChXb+pg2V0qLRPusWbK2UPWIosul
+	uaOWCCVhkzVY0q1o7+h6bLDrzLlY=
+X-Google-Smtp-Source: AGHT+IGwQp4RCMoX/Ex/ugsZa+U7tcs33lsbbzGLmJ5tPP6AO+j4BvcSzanRIN9GeWvMuXjFLWqHZk0by6Kp8bHgemI=
+X-Received: by 2002:a05:6871:3a0b:b0:29d:c6dd:cc6c with SMTP id
+ 586e51a60fabf-2d1c19ed86emr2258149fac.15.1744724375190; Tue, 15 Apr 2025
+ 06:39:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250414203551.779320-1-superm1@kernel.org> <CACRpkdaHru55wo5MdVsRKRbfPS9Hv3vGxgXNi8eXGvAOQzyDww@mail.gmail.com>
-In-Reply-To: <CACRpkdaHru55wo5MdVsRKRbfPS9Hv3vGxgXNi8eXGvAOQzyDww@mail.gmail.com>
+References: <20250411194820.3976363-1-chenyuan0y@gmail.com>
+In-Reply-To: <20250411194820.3976363-1-chenyuan0y@gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 15 Apr 2025 15:37:18 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0h_Qc2xukPMmwHr-E1HvMwSoLT4TM96aV0e9QKfeRSGGQ@mail.gmail.com>
-X-Gm-Features: ATxdqUFHl1qbyTf4tzc_yiGREMeHFSI_-MloFKLcN4qBhZNpu4QBPLLAtFtlKEw
-Message-ID: <CAJZ5v0h_Qc2xukPMmwHr-E1HvMwSoLT4TM96aV0e9QKfeRSGGQ@mail.gmail.com>
-Subject: Re: [PATCH v2] pinctrl: amd: Fix use of undeclared identifier 'pinctrl_amd_s2idle_dev_ops'
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Mario Limonciello <superm1@kernel.org>, "Rafael J . Wysocki" <rjw@rjwysocki.net>, 
-	"open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	linux-acpi@vger.kernel.org, Basavaraj Natikar <Basavaraj.Natikar@amd.com>, 
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, 
-	kernel test robot <lkp@intel.com>
+Date: Tue, 15 Apr 2025 15:39:24 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hBfq7rQvNFJevqD3s_cASFT2eBqC0zoDWBT1gAsfqkCg@mail.gmail.com>
+X-Gm-Features: ATxdqUF0vK61_k5nZKOzVGybvEUCCpILP5u-HvmCN60N7zBpXWocDNmZ_JTao1g
+Message-ID: <CAJZ5v0hBfq7rQvNFJevqD3s_cASFT2eBqC0zoDWBT1gAsfqkCg@mail.gmail.com>
+Subject: Re: [PATCH] x86/acpi: fix potential NULL deref in acpi_wakeup_cpu()
+To: Chenyuan Yang <chenyuan0y@gmail.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: lenb@kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, bhe@redhat.com, 
+	kai.huang@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 15, 2025 at 3:34=E2=80=AFPM Linus Walleij <linus.walleij@linaro=
-.org> wrote:
+On Fri, Apr 11, 2025 at 9:48=E2=80=AFPM Chenyuan Yang <chenyuan0y@gmail.com=
+> wrote:
 >
-> On Mon, Apr 14, 2025 at 10:35=E2=80=AFPM Mario Limonciello <superm1@kerne=
-l.org> wrote:
+> The result of memremap() may be NULL on failure, leading to a NULL
+> dereference. Add explicit checks after memremap() call: if the
+> MADT mailbox fails to map, return immediately.
 >
-> > From: Mario Limonciello <mario.limonciello@amd.com>
-> >
-> > `pinctrl_amd_s2idle_dev_ops` is hidden under both `CONFIG_ACPI` and
-> > `CONFIG_PM_SLEEP` so the functions that use it need the same scope.
-> >
-> > Adjust checks to look for both, and while updating make it CONFIG_SUSPE=
-ND
-> > instead as that's what the acpi header uses.
-> >
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202504100420.88UPkUTU-lkp=
-@intel.com/
-> > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > ---
-> > v2:
-> >  Use CONFIG_SUSPEND instead of CONFIG_PM_SLEEP
+> This is similar to the commit 966d47e1f27c
+> ("efi: fix potential NULL deref in efi_mem_reserve_persistent").
 >
-> This seems to be based on the previous fixes merged by Rafael?
+> This is found by our static analysis tool KNighter.
 >
-> Do I need to rebase on -rc2 or something to merge this patch?
->
-> Or can Rafael queue this too?
+> Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+> Fixes: 2b5e22afae07 ("x86/acpi: Extract ACPI MADT wakeup code into a sepa=
+rate file")
 
-I can.
+Well, it's good to add the author of the commit you're trying to fix
+to the CC list.
 
-> In that case:
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Kirill, what do you think about this?
 
-Thanks!
+> ---
+>  arch/x86/kernel/acpi/madt_wakeup.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/ma=
+dt_wakeup.c
+> index f36f28405dcc..b386ec4b87c2 100644
+> --- a/arch/x86/kernel/acpi/madt_wakeup.c
+> +++ b/arch/x86/kernel/acpi/madt_wakeup.c
+> @@ -143,6 +143,10 @@ static int acpi_wakeup_cpu(u32 apicid, unsigned long=
+ start_ip)
+>                 acpi_mp_wake_mailbox =3D memremap(acpi_mp_wake_mailbox_pa=
+ddr,
+>                                                 sizeof(*acpi_mp_wake_mail=
+box),
+>                                                 MEMREMAP_WB);
+> +               if (!acpi_mp_wake_mailbox) {
+> +                       pr_err("Failed to remap MADT mailbox\n");
+> +                       return -ENOMEM;
+> +               }
+>         }
+>
+>         /*
+> --
+> 2.34.1
+>
 
