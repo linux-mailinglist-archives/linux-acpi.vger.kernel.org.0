@@ -1,169 +1,200 @@
-Return-Path: <linux-acpi+bounces-13055-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13070-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCBFA8A269
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Apr 2025 17:09:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 708BCA8AF48
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Apr 2025 06:46:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92C113BB0A4
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Apr 2025 15:08:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C097E19008DD
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Apr 2025 04:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF441E1E1C;
-	Tue, 15 Apr 2025 15:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8728722F169;
+	Wed, 16 Apr 2025 04:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DRrGEh6D"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="derFt/dU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86ACA199FA4;
-	Tue, 15 Apr 2025 15:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCB822A4EA;
+	Wed, 16 Apr 2025 04:44:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744729736; cv=none; b=ZCOUQrb+wL8YivW4y26Eb2IFz/J21txmmAqcGXkptfTrujwtQJI1GtMLRItTSne7n1yF2j3bIzcJbPB+MJqE8CcrQhRyOcL2JNsIvKtaVCrIhF2LProKXYd2x0L9KEnA0pubeTQEKApW969aLNGauRTgTg236bjb+cqoMUa1MXg=
+	t=1744778655; cv=none; b=KXsy6qnNzGChyG61B7Fg6bIVxo538NmRgLYEDD0bubu7QtdaHupc6bPHR5tTxsnbq21JG87Zze2yPxZjUyRDGA4DE+lcotlah27S2MfTOJzfrmEkMGeh288SafO9921LUAP3KGy8eQ5w6syaKQu93kqMlyJOBGJJTaWgvJzqQAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744729736; c=relaxed/simple;
-	bh=iOCFGQAT84b68xAt3pMOFOVCOmjgcX1L+OzWMeDgY+4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P65x3XRp9JSQ/PQkfE7IQ59tY7YsZPsvyzhctSLete+kWi4a6skS+qNQ96Tu2IEgEe5z60x60s8dAZC8okjyIZ1Hz2NbGlJ//oEV8F+uHF2ecURsioJVny2YcSkmd5+W9HgP9M2pGtctfPaRv4XyS2pP0LK0oHBJ+sMROyP8edg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DRrGEh6D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0849BC4CEEB;
-	Tue, 15 Apr 2025 15:08:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744729736;
-	bh=iOCFGQAT84b68xAt3pMOFOVCOmjgcX1L+OzWMeDgY+4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DRrGEh6Dx4EKmnikulVWAAbjfm1F0kKtYZQ8q3BEwTpCDZA0B9+QzGhuCuBKrLymY
-	 HV/yOnn7C8aTzJXBXnUmq4iyL34gnw2vr2UacavgID0On6wW26QnN/9ByvcBn57ZSx
-	 QnN4owL31dMbGuRaEr6/1i403ibnllJv3xrmPCbvjfyvZDI/bqizPnEgFo+mPzwFKR
-	 yYedYK9YV9W+FdohnLbAlY5xySk9MVdddKDk/2RAQp4uMF/Tb9wTwG64yZi3phdI1g
-	 JA4V8NNuptOnMFG74HHX/Vi4QD6pEr86q0WMz/EgK09XUoUnOMLZ8KN8iWSMugGijC
-	 jwOTQfgTv9e/g==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1u4hu9-000000007Q0-1YOd;
-	Tue, 15 Apr 2025 17:08:53 +0200
-Date: Tue, 15 Apr 2025 17:08:53 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Stuart Yoder <stuyoder@gmail.com>,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	Charan Teja Kalla <quic_charante@quicinc.com>
-Subject: Re: [PATCH v2 4/4] iommu: Get DT/ACPI parsing into the proper probe
- path
-Message-ID: <Z_52heGno2Y5M6uF@hovoldconsulting.com>
-References: <cover.1740753261.git.robin.murphy@arm.com>
- <e3b191e6fd6ca9a1e84c5e5e40044faf97abb874.1740753261.git.robin.murphy@arm.com>
- <Z_jMiC1uj_MJpKVj@hovoldconsulting.com>
- <50a06ba8-0a99-40d2-8601-778ebf451f6a@arm.com>
+	s=arc-20240116; t=1744778655; c=relaxed/simple;
+	bh=7OMa1baa95w14FLXVxd8Qm+zlozmDsemKBECoEGZKlo=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=HqcpYsu2MMZ4nckFJjrYJbHHYpHqp/Ea/1Lp3bDXANBbGHLsZFAr9ymFnDy5aEudG6BLc5UFKnww3tFl2NSoQvI7VokoxFotZzzmqvIxEgZaD5oF5IsOdHmXVCnwkb2DL4/EYjc62ZWAX0SDh1fKL7gUT/X3u9FcfKrI/EjwIsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=derFt/dU; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744778650; x=1776314650;
+  h=date:from:to:cc:subject:message-id;
+  bh=7OMa1baa95w14FLXVxd8Qm+zlozmDsemKBECoEGZKlo=;
+  b=derFt/dUXtlmpjhLC91bfXHKplnBbo2QYyYsqGBdOKtfgj1Xkie9EJNf
+   GFxLPHpzNhL1BzecWRwVpA613twCZlC7TFT50QL9aBTS17AU8/3fdaOMa
+   CLezvsdEVxSEdyyMk3SfFGD99h6GaM+gGSuCojjN+lofvulxK2Ty99+VG
+   PZyaOuUL1z/b4V7C+7buhyn8PpAV0mB2+oA6RM7xkV/uZ8EXZloDm53Kp
+   2NgmE77dVigYM+EUJ6vSx57EA/XVnRYq5Es19G1M8yn/XIav76BvcEQW4
+   8ZRlV6FwhXU0dwsvebfyzlbYc75kPiH7oWqQScIOv7fcBtzCfQCfDtAg5
+   A==;
+X-CSE-ConnectionGUID: VGvZ7pZ9Sam7tVkpwpRQzA==
+X-CSE-MsgGUID: yv/ZjWwuR3aFdkRHb+pImA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="46025594"
+X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; 
+   d="scan'208";a="46025594"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2025 21:44:08 -0700
+X-CSE-ConnectionGUID: fuBL46IuSRm/KMi4Z3bxOw==
+X-CSE-MsgGUID: BH0322w4QJa16peXwqt4KQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; 
+   d="scan'208";a="135313501"
+Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 15 Apr 2025 21:44:07 -0700
+Received: from kbuild by b207828170a5 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u4jGG-000Gjl-0I;
+	Tue, 15 Apr 2025 16:35:48 +0000
+Date: Wed, 16 Apr 2025 00:35:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ c9f9e03bd4c223b4f00a1adaa6b01db65b61c6e1
+Message-ID: <202504160029.k2m4ZqRb-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <50a06ba8-0a99-40d2-8601-778ebf451f6a@arm.com>
 
-On Mon, Apr 14, 2025 at 04:37:59PM +0100, Robin Murphy wrote:
-> On 2025-04-11 9:02 am, Johan Hovold wrote:
-> > On Fri, Feb 28, 2025 at 03:46:33PM +0000, Robin Murphy wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: c9f9e03bd4c223b4f00a1adaa6b01db65b61c6e1  Merge branch 'linux-next' into bleeding-edge
 
-> >> @@ -155,7 +155,12 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
-> >>   		dev_iommu_free(dev);
-> >>   	mutex_unlock(&iommu_probe_device_lock);
-> >>   
-> >> -	if (!err && dev->bus)
-> >> +	/*
-> >> +	 * If we're not on the iommu_probe_device() path (as indicated by the
-> >> +	 * initial dev->iommu) then try to simulate it. This should no longer
-> >> +	 * happen unless of_dma_configure() is being misused outside bus code.
-> >> +	 */
-> > 
-> > This assumption does not hold as there is nothing preventing iommu
-> > driver probe from racing with a client driver probe.
-> 
-> Not sure I follow - *this* assumption is that if we arrived here with 
-> dev->iommu already allocated then __iommu_probe_device() is already in 
-> progress for this device, either in the current callchain or on another 
-> thread, and so we can (and should) skip calling into it again. There's 
-> no ambiguity about that.
+elapsed time: 1449m
 
-I was referring to the this "should no longer happen unless
-of_dma_configure() is being misused outside bus code" claim, which
-appears to be false given the splat below.
+configs tested: 106
+configs skipped: 1
 
-> >> +	if (!err && dev->bus && !dev_iommu_present)
-> >>   		err = iommu_probe_device(dev);
-> >>   
-> >>   	if (err && err != -EPROBE_DEFER)
-> > 
-> > I hit the (now moved) dev_WARN() on the ThinkPad T14s where the GPU SMMU
-> > is probed late due to a clock dependency and can end up probing in
-> > parallel with the GPU driver.
-> 
-> And what *should* happen is that the GPU driver probe waits for the 
-> IOMMU driver probe to finish. Do you have fw_devlink enabled?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Yes, but you shouldn't rely on devlinks for correctness.
+tested configs:
+alpha                            allyesconfig    gcc-14.2.0
+arc                              allmodconfig    gcc-14.2.0
+arc                              allyesconfig    gcc-14.2.0
+arc                   randconfig-001-20250415    gcc-14.2.0
+arc                   randconfig-002-20250415    gcc-14.2.0
+arc                        vdk_hs38_defconfig    gcc-14.2.0
+arm                              allmodconfig    gcc-14.2.0
+arm                              allyesconfig    gcc-14.2.0
+arm                   randconfig-001-20250415    clang-21
+arm                   randconfig-002-20250415    clang-21
+arm                   randconfig-003-20250415    gcc-10.5.0
+arm                   randconfig-004-20250415    gcc-6.5.0
+arm64                            allmodconfig    clang-19
+arm64                 randconfig-001-20250415    clang-16
+arm64                 randconfig-002-20250415    gcc-7.5.0
+arm64                 randconfig-003-20250415    gcc-9.5.0
+arm64                 randconfig-004-20250415    gcc-9.5.0
+csky                  randconfig-001-20250415    gcc-13.3.0
+csky                  randconfig-002-20250415    gcc-14.2.0
+hexagon                          allmodconfig    clang-17
+hexagon                          allyesconfig    clang-21
+hexagon               randconfig-001-20250415    clang-20
+hexagon               randconfig-002-20250415    clang-21
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250415    clang-20
+i386        buildonly-randconfig-002-20250415    clang-20
+i386        buildonly-randconfig-003-20250415    clang-20
+i386        buildonly-randconfig-004-20250415    clang-20
+i386        buildonly-randconfig-005-20250415    gcc-12
+i386        buildonly-randconfig-006-20250415    gcc-12
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch             randconfig-001-20250415    gcc-14.2.0
+loongarch             randconfig-002-20250415    gcc-14.2.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+m68k                       m5275evb_defconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+mips                           ip30_defconfig    gcc-14.2.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20250415    gcc-13.3.0
+nios2                 randconfig-002-20250415    gcc-7.5.0
+openrisc                          allnoconfig    gcc-14.2.0
+openrisc                         allyesconfig    gcc-14.2.0
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    gcc-14.2.0
+parisc                           allyesconfig    gcc-14.2.0
+parisc                randconfig-001-20250415    gcc-12.4.0
+parisc                randconfig-002-20250415    gcc-10.5.0
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc                          allyesconfig    clang-21
+powerpc               mpc834x_itxgp_defconfig    clang-21
+powerpc                  mpc885_ads_defconfig    clang-21
+powerpc               randconfig-001-20250415    gcc-5.5.0
+powerpc               randconfig-002-20250415    clang-17
+powerpc               randconfig-003-20250415    gcc-7.5.0
+powerpc                     redwood_defconfig    clang-21
+powerpc                  storcenter_defconfig    gcc-14.2.0
+powerpc64             randconfig-001-20250415    gcc-7.5.0
+powerpc64             randconfig-002-20250415    clang-17
+powerpc64             randconfig-003-20250415    gcc-10.5.0
+riscv                            allmodconfig    clang-21
+riscv                             allnoconfig    gcc-14.2.0
+riscv                            allyesconfig    clang-16
+riscv                 randconfig-001-20250415    gcc-14.2.0
+riscv                 randconfig-002-20250415    gcc-9.3.0
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-14.2.0
+s390                  randconfig-001-20250415    clang-21
+s390                  randconfig-002-20250415    gcc-7.5.0
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                    randconfig-001-20250415    gcc-11.5.0
+sh                    randconfig-002-20250415    gcc-9.3.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20250415    gcc-6.5.0
+sparc                 randconfig-002-20250415    gcc-12.4.0
+sparc64               randconfig-001-20250415    gcc-14.2.0
+sparc64               randconfig-002-20250415    gcc-12.4.0
+um                               alldefconfig    clang-21
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-21
+um                               allyesconfig    gcc-12
+um                    randconfig-001-20250415    clang-21
+um                    randconfig-002-20250415    clang-21
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250415    clang-20
+x86_64      buildonly-randconfig-002-20250415    gcc-11
+x86_64      buildonly-randconfig-003-20250415    gcc-12
+x86_64      buildonly-randconfig-004-20250415    clang-20
+x86_64      buildonly-randconfig-005-20250415    clang-20
+x86_64      buildonly-randconfig-006-20250415    gcc-12
+x86_64                              defconfig    gcc-11
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20250415    gcc-6.5.0
+xtensa                randconfig-002-20250415    gcc-10.5.0
 
-That said it does seem like something is not working as you think it is
-here, and indeed the iommu supplier link is not created until SMMUv2
-probe_device() (see arm_smmu_probe_device()).
-
-So client devices can start to be probed (bus dma_configure() is called)
-before their iommu is ready also with devlinks enabled (and I do see
-this happen on every boot).
-
-> > [    3.805282] arm-smmu 3da0000.iommu: probing hardware configuration...
-
-> > [    3.829042] platform 3d6a000.gmu: Adding to iommu group 8
-> > 
-> > [    3.992050] ------------[ cut here ]------------
-> > [    3.993045] adreno 3d00000.gpu: late IOMMU probe at driver bind, something fishy here!
-> > [    3.994058] WARNING: CPU: 9 PID: 343 at drivers/iommu/iommu.c:579 __iommu_probe_device+0x2b0/0x4ac
-> > 
-> > [    4.003272] CPU: 9 UID: 0 PID: 343 Comm: kworker/u50:2 Not tainted 6.15.0-rc1 #109 PREEMPT
-> > [    4.003276] Hardware name: LENOVO 21N2ZC5PUS/21N2ZC5PUS, BIOS N42ET83W (2.13 ) 10/04/2024
-> > 
-> > [    4.025943] Call trace:
-> > [    4.025945]  __iommu_probe_device+0x2b0/0x4ac (P)
-> > [    4.030453]  iommu_probe_device+0x38/0x7c
-> > [    4.030455]  of_iommu_configure+0x188/0x26c
-> > [    4.030457]  of_dma_configure_id+0xcc/0x300
-> > [    4.030460]  platform_dma_configure+0x74/0xac
-> > [    4.030462]  really_probe+0x74/0x38c
-> 
-> Indeed this is exactly what is *not* supposed to be happening - does 
-> this patch help at all?
-> 
-> https://lore.kernel.org/linux-iommu/09d901ad11b3a410fbb6e27f7d04ad4609c3fe4a.1741706365.git.robin.murphy@arm.com/
-
-I've only seen that splat once so far so I don't have a reliable
-reproducer.
-
-But AFAICS that patch won't help help here where we appear to have iommu
-probe racing with bus dma_configure() called from really_probe() for the
-client device.
-
-Johan
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
