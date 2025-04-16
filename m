@@ -1,93 +1,81 @@
-Return-Path: <linux-acpi+bounces-13075-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13076-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF69A8B50B
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Apr 2025 11:18:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5896A8B681
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Apr 2025 12:13:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F96F3BE7BC
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Apr 2025 09:18:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E845F17A9C4
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Apr 2025 10:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1AD234987;
-	Wed, 16 Apr 2025 09:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBA5236435;
+	Wed, 16 Apr 2025 10:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="nunaxTzV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Iz4uZJwT"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25145230BE8;
-	Wed, 16 Apr 2025 09:18:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8AC1990A7;
+	Wed, 16 Apr 2025 10:13:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744795109; cv=none; b=FGyWE2WJc/AjkDu8jKpCK/jhV7+lLRLVML17OrRpkH3trJPMcvoUuFb17CIKexjh+OeA5kIb4hl0dLKuzW7WXqdlIgxo6V+MuId36qIijl40vzmdpDLVBo4jp8ppZ32FbghYqAxvX14lt2xtESYTiWitaDszNLlgaGzfPcjlylE=
+	t=1744798414; cv=none; b=LQSJjrhAKFzNGV/kjhB5/UqHHFhIYBMv8k7uexcGh2nxxsyia7keOYSLLmcpHgTy4LuJ5deYNQOVI69LMZXu6oo7lG6mKdAIwB3wS1TApmFY94u5PRWx0EjzdTGM4q1uqtxXhKZFfEP0ofFNtCEkjoHFysfKDaJQBqHCf/HzBBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744795109; c=relaxed/simple;
-	bh=XVpXGxl2fXHpOXZZcDAodwwPWK0sRmyWRilpTGEVAiU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ntif+5K2pwRnckRMmyHroh5bSjjv/Ye9SNotoa4zsuuHt5H84f91p60rX1WXMJaZqPncZayOG1+AKxOrclE1c4T/8evZHhdVkLMfS3oyZD5Q1SKFqitgT0+2qamn/ecDr37R0zAYiZo2yPgRdlRs9U788ZSjc+v9TM1fYaBVkgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=nunaxTzV; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6D0D61FCF1;
-	Wed, 16 Apr 2025 09:18:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1744795104;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dllKgwcLha1xL/vp7a/BLD+IvTjOmLEdGFp4zUwZcgg=;
-	b=nunaxTzVBV3n6npKioC4tkVt5qyJ/0ovo+X8BcdX9YasgCi5MZmYPXEYmZQLlVcbXUapoU
-	/YW+9QKRf1K7y+ySRHWe80jMUkTndaRM8MOjvKCQyRoTQwPNs9rC5OBGm8mx+ZxtuFTS0M
-	Mh+JZq330W/CcxlMqhLY9sUb27AkokWn+pB6L4aFnGPvahVNli93kPUcEwJ9DtSixG4nMG
-	P1sEhO6BOAsiptpbuVq7KGWaNNBphmoJglgknx9T1i6XMbdUohCbAbO6ZiHQumVwZs6Zly
-	BGVahasiNILSThVKRNFpHbojxJF6fnoFTX/w8G6I6tYPNy9h7p/XJv+V6hbqyA==
-Date: Wed, 16 Apr 2025 11:18:19 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Andrew Lunn
- <andrew@lunn.ch>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
- Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
- Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Saravana
- Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Mark
- Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, Geert
- Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
- devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH 15/16] misc: lan966x_pci: Add dtso nodes in order to
- support SFPs
-Message-ID: <20250416111819.4fd7b364@bootlin.com>
-In-Reply-To: <20250410084809.1829dc65@windsurf>
-References: <20250407145546.270683-1-herve.codina@bootlin.com>
-	<20250407145546.270683-16-herve.codina@bootlin.com>
-	<19f1a382-1b6b-42bd-a548-a1a5644c9a1b@lunn.ch>
-	<20250408162603.02d6c3a1@bootlin.com>
-	<D91CSNC07NYM.3KC467K0OZ4GG@bootlin.com>
-	<c14dd5c6-2dae-4398-89a9-342e7a25bb30@lunn.ch>
-	<D91XV1I4CY37.20T12FMZ5QLQ5@bootlin.com>
-	<b1b33000-4c10-43cd-bcf4-d24fc73902b1@lunn.ch>
-	<20250409161444.6158d388@windsurf>
-	<c6257afe-36bb-46d8-8c22-da3b85028105@lunn.ch>
-	<20250410084809.1829dc65@windsurf>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1744798414; c=relaxed/simple;
+	bh=NOZosTZQNRLfIhdUigV6Uc2Ja/KVt8RifNjrdBYp0Dw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=P6zyE9N3D0UY67HHb8nxiNeSz6qvxYhbM2UkDnA6Iyj36DHMshxbRdQG+DLPS1vYz4Ylznrkppt1iBunTCJqg3s8YGTYyB8P4gETqlUW/zt+e6S8Y/SC2QDu8ThsdjCbvJraaJGt7fbswiiChPRdOq61mKWrr/wjzb8/7d//wu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Iz4uZJwT; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744798412; x=1776334412;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=NOZosTZQNRLfIhdUigV6Uc2Ja/KVt8RifNjrdBYp0Dw=;
+  b=Iz4uZJwT64DX21QIDWDLlxig8359YpJFKKYcAy30gaFevTx6sHQgQ8Tb
+   MH9qxgPMEgwoI81vgSKPvNMEXMmd5P6dwsKHRlIjg2k3bhOBB3DskCsWx
+   O9fVy/3I1/vfa0CBQkt5NeoE0Ek3a+S9JribWrBlfXNKVpwrhjd+90B7G
+   zb8e3dPAYzAckhIEOJ/yFIOWvsL0lsKdR9VsWUNd6DlsU5whprRUk0GwJ
+   WwSimSKG+WJqD7VVb4Xi3gP+lU1W9jBGnCW3OmbLzYKphgzKlSsrmt2dz
+   ObzU0WuLNDJBedQhVXLQna5MVckhkfitn+pO7BcvINZnWL/58Bj6lR7dP
+   Q==;
+X-CSE-ConnectionGUID: 8RPiZPHORwK3uKtGYjynpw==
+X-CSE-MsgGUID: k0QBDLP4QCWavfAyTEf3Lw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="46464674"
+X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; 
+   d="scan'208";a="46464674"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 03:13:32 -0700
+X-CSE-ConnectionGUID: wAylRwIKRnCNdOef4Kfm8A==
+X-CSE-MsgGUID: ZjVBxL4nTLKEX8hWQrFHfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; 
+   d="scan'208";a="135586616"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.243])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 03:13:27 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 1/1] x86: Use resource_set_{range,size}() helpers
+Date: Wed, 16 Apr 2025 13:13:18 +0300
+Message-Id: <20250416101318.7313-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -96,45 +84,138 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvdehleelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveeiffefgeeitdelleeigefhjeelueeuveekveetgeffheeltdekgeduiefggfdvnecukfhppedvrgdtudemvgdtrgemvdegieemjeejledtmedviegtgeemvgdvvdemiedtfegumeehkegrnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmedvgeeimeejjeeltdemvdeitgegmegvvddvmeeitdefugemheekrgdphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeeguddprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlhesk
- hgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvg
-X-GND-Sasl: herve.codina@bootlin.com
 
-Hi Thomas, Andrew,
+Convert open coded resource size calculations to use
+resource_set_{range,size}() helpers.
 
-On Thu, 10 Apr 2025 08:48:09 +0200
-Thomas Petazzoni <thomas.petazzoni@bootlin.com> wrote:
+While at it, use SZ_* for size parameter which makes the intent of code
+more obvious.
 
-> On Wed, 9 Apr 2025 17:03:45 +0200
-> Andrew Lunn <andrew@lunn.ch> wrote:
-> 
-> > So it only supports a single .dtbo. In its current form it does not
-> > scale to multiple .dtso files for multiple different boards built
-> > around the PCIe chip.
-> > 
-> > At the moment, that is not really an issue, but when the second board
-> > comes along, some refactoring will be needed.  
-> 
-> Indeed, but that's really an implementation detail. It doesn't change
-> anything to the overall approach. The only thing that would have to
-> change is how the driver gets the .dtbo. We could bundle several .dtbos
-> in the driver, we could fall back to request_firmware(), etc.
-> 
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+---
+ arch/x86/kernel/acpi/boot.c    | 4 ++--
+ arch/x86/kernel/amd_nb.c       | 3 +--
+ arch/x86/kernel/apic/apic.c    | 3 +--
+ arch/x86/kernel/apic/io_apic.c | 3 +--
+ arch/x86/kernel/probe_roms.c   | 3 +--
+ arch/x86/pci/fixup.c           | 4 ++--
+ arch/x86/pci/intel_mid_pci.c   | 2 +-
+ 7 files changed, 9 insertions(+), 13 deletions(-)
 
-Not sure we need to split right now the existing dtso file nor rename it
-even if it is updated in the series.
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index dae6a73be40e..4490cbc01030 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -21,6 +21,7 @@
+ #include <linux/pci.h>
+ #include <linux/efi-bgrt.h>
+ #include <linux/serial_core.h>
++#include <linux/sizes.h>
+ #include <linux/pgtable.h>
+ 
+ #include <asm/e820/api.h>
+@@ -940,8 +941,7 @@ static int __init acpi_parse_hpet(struct acpi_table_header *table)
+ 	snprintf((char *)hpet_res->name, HPET_RESOURCE_NAME_SIZE, "HPET %u",
+ 		 hpet_tbl->sequence);
+ 
+-	hpet_res->start = hpet_address;
+-	hpet_res->end = hpet_address + (1 * 1024) - 1;
++	resource_set_range(hpet_res, hpet_address, SZ_1K);
+ 
+ 	return 0;
+ }
+diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
+index 6d12a9b69432..cba336dcb40d 100644
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -164,8 +164,7 @@ struct resource *amd_get_mmconfig_range(struct resource *res)
+ 			 FAM10H_MMIO_CONF_BUSRANGE_MASK;
+ 
+ 	res->flags = IORESOURCE_MEM;
+-	res->start = base;
+-	res->end = base + (1ULL<<(segn_busn_bits + 20)) - 1;
++	resource_set_range(res, base, 1ULL << (segn_busn_bits + 20));
+ 	return res;
+ }
+ 
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index 62584a347931..efd3304ecbb3 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -2640,8 +2640,7 @@ static int __init lapic_insert_resource(void)
+ 		return -1;
+ 
+ 	/* Put local APIC into the resource map. */
+-	lapic_resource.start = apic_mmio_base;
+-	lapic_resource.end = lapic_resource.start + PAGE_SIZE - 1;
++	resource_set_range(&lapic_resource, apic_mmio_base, PAGE_SIZE);
+ 	insert_resource(&iomem_resource, &lapic_resource);
+ 
+ 	return 0;
+diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
+index eebc360ed1bb..3069885d6421 100644
+--- a/arch/x86/kernel/apic/io_apic.c
++++ b/arch/x86/kernel/apic/io_apic.c
+@@ -2571,8 +2571,7 @@ void __init io_apic_init_mappings(void)
+ 				__fix_to_virt(idx) + (ioapic_phys & ~PAGE_MASK), ioapic_phys);
+ 		idx++;
+ 
+-		ioapic_res->start = ioapic_phys;
+-		ioapic_res->end = ioapic_phys + IO_APIC_SLOT_SIZE - 1;
++		resource_set_range(ioapic_res, ioapic_phys, IO_APIC_SLOT_SIZE);
+ 		ioapic_res++;
+ 	}
+ }
+diff --git a/arch/x86/kernel/probe_roms.c b/arch/x86/kernel/probe_roms.c
+index cc2c34ba7228..44da85e50c44 100644
+--- a/arch/x86/kernel/probe_roms.c
++++ b/arch/x86/kernel/probe_roms.c
+@@ -260,8 +260,7 @@ void __init probe_roms(void)
+ 		if (!length || start + length > upper || !romchecksum(rom, length))
+ 			continue;
+ 
+-		adapter_rom_resources[i].start = start;
+-		adapter_rom_resources[i].end = start + length - 1;
++		resource_set_range(&adapter_rom_resources[i], start, length);
+ 		request_resource(&iomem_resource, &adapter_rom_resources[i]);
+ 
+ 		start = adapter_rom_resources[i++].end & ~2047UL;
+diff --git a/arch/x86/pci/fixup.c b/arch/x86/pci/fixup.c
+index efefeb82ab61..94e98e3bf041 100644
+--- a/arch/x86/pci/fixup.c
++++ b/arch/x86/pci/fixup.c
+@@ -7,6 +7,7 @@
+ #include <linux/delay.h>
+ #include <linux/dmi.h>
+ #include <linux/pci.h>
++#include <linux/sizes.h>
+ #include <linux/suspend.h>
+ #include <linux/vgaarb.h>
+ #include <asm/amd_node.h>
+@@ -347,8 +348,7 @@ static void pci_fixup_video(struct pci_dev *pdev)
+ 			if (res->parent)
+ 				release_resource(res);
+ 
+-			res->start = 0xC0000;
+-			res->end = res->start + 0x20000 - 1;
++			resource_set_range(res, 0xC0000, SZ_128K);
+ 			res->flags = IORESOURCE_MEM | IORESOURCE_ROM_SHADOW |
+ 				     IORESOURCE_PCI_FIXED;
+ 			dev_info(&pdev->dev, "Video device with shadowed ROM at %pR\n",
+diff --git a/arch/x86/pci/intel_mid_pci.c b/arch/x86/pci/intel_mid_pci.c
+index b433b1753016..5e047e802d5d 100644
+--- a/arch/x86/pci/intel_mid_pci.c
++++ b/arch/x86/pci/intel_mid_pci.c
+@@ -399,7 +399,7 @@ static void pci_fixed_bar_fixup(struct pci_dev *dev)
+ 
+ 	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+ 		pci_read_config_dword(dev, offset + 8 + (i * 4), &size);
+-		dev->resource[i].end = dev->resource[i].start + size - 1;
++		resource_set_size(&dev->resource[i], size);
+ 		dev->resource[i].flags |= IORESOURCE_PCI_FIXED;
+ 	}
+ }
+-- 
+2.39.5
 
-This could be done later when an other user of the LAN996x PCI chip is
-there.
-
-Doing something right now will probably need other modification when this
-potential other user comes in. Indeed, depending on specificities of this
-future user, what is done now could not match the need of this future user.
-
-Any opinion?
-
-Best regards,
-Hervé
 
