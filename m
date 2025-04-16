@@ -1,113 +1,137 @@
-Return-Path: <linux-acpi+bounces-13073-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13074-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853F9A8B0B3
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Apr 2025 08:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A1FAA8B214
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Apr 2025 09:27:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4893B5A11E7
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Apr 2025 06:44:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5000A3AE48D
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Apr 2025 07:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D4822D4E0;
-	Wed, 16 Apr 2025 06:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC12022CBE6;
+	Wed, 16 Apr 2025 07:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i43feLzF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b4UYwmfX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798C422FAC3;
-	Wed, 16 Apr 2025 06:41:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E25822C322;
+	Wed, 16 Apr 2025 07:26:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744785719; cv=none; b=EuHXuOwcJmRFV0MQwXkKRjLmr+kbVj28CYsFENW9xflonqLczFC04o2CIcLfTtZzTCG/aBBMBPPFkY85vZKFa1uwixm6w4EBsQzh0lSoKXH5MSOf74jG2x3RFg4NTUG5n+ST3+wg/OOk56/EC03L+ZfoZ9vvOwGblIUsmUNRpFs=
+	t=1744788420; cv=none; b=KVFhwZuvliTbyH22VRSpI3a5frUqrs5V6iIj5HmggBD5Fr+iOwWKF7RIclE2HnVr4GKrTNw9oGdcC8koI4R6nXQuiJBiWdbbkA4DHPfrCIvQFNmH5PueW1rb1Z/xBI8wAAJsbl1sZpksH/nPjTO0HgD50O8jpQw+Yz2huC3V2oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744785719; c=relaxed/simple;
-	bh=AeRn7fulkB1n4W59L2MZEekvvgPH6zRJiKzKmIqW6aw=;
+	s=arc-20240116; t=1744788420; c=relaxed/simple;
+	bh=WHqiBZi04W6j6zlbSJBrICb04K/vv9APlXrF5vaOqVw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XWmFCOQ2xocPqvW0D67L/W2DfU1rdfq8yQj+Qn+NtzV5meYMy/ECxbDVLCL1JBeMCUYFDu1viiwrTSIVnwgD+Cb+Y77/u7MLWui8Pl3tFVa1bw9FE5MGQ9eO9NvWN6PuWMHW7ZB1VrzOgvP9v1IDfkdWbe7/sxlzQpcWka0N4P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i43feLzF; arc=none smtp.client-ip=198.175.65.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=SRMdrH7NlBSAtXm0ZWQp+trGDOZBn44/td8hOVervOMIM1jCx2TxNzNGnD57eJGNpspRNEi1S4wqbAoSzZyPtVQqx5Kj4UiqEgvu+AdAxQm7ct08cIVdBuLiGk0Cc3nOfLEhWuW4ugMt67QTc0tkqq1V5gqsmDW2mjA6RU++vsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b4UYwmfX; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744785717; x=1776321717;
+  t=1744788419; x=1776324419;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=AeRn7fulkB1n4W59L2MZEekvvgPH6zRJiKzKmIqW6aw=;
-  b=i43feLzFrzNVTW7HzRcWcCLwZTSirESmYfvi5RF8MsU3yMxKiypWmCjo
-   jBqr7YXEqUTJ4wJuTXVXfIwD3A6aMtoSVNRnfpNcxZQ7P4R0IBAPQwKGh
-   9sIl72dsaoQyme9r6tlgb2uk+rJc46pZIORu26U0JJHnTueDP5UXB983r
-   pNkROESlDSlPJqvKcRYbNvL2qtGXOKJmZcAHh2sGWdIhsaWI/enrl+HvD
-   qNjMbJZaWUlOr+cbXVBgz3hqud5kkyzkQPx9fcnDsxM/Xf+9Ib50KCZY6
-   GSmgkZky5q4Xa8nyIHnk2t/iU0MnVMziXhTsPWSRtGHJPOnQPvfiyQuWq
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=WHqiBZi04W6j6zlbSJBrICb04K/vv9APlXrF5vaOqVw=;
+  b=b4UYwmfXVBJ5B2Xsn9U9U+BUBmfNVswDzOe0MUJrTZeRgYAkIw42G7fy
+   s6MJIDoSMQhtNEbjRSPzxUrvQweuCy5djD2w3L2X79SHu93FsdTPyzApi
+   HLOv9nNmMpekUVuax5S7BYEot5j1raBnPpns5tK0AlAVLWsWjvKS95axV
+   sv4BCRjEZ9DhffGSpVLBpDUjDKj2OMcPETwNp3LhFdM/NLDzWUSQTTJDx
+   QHEc8ksYmGh9VbGqz10IZK1ZvKoRwFG7om9qF7PDszSVsPP78Lev5K8c4
+   VqffDVHd6aImnKZ/zFcxA38Ljt9Uq+ayh9Z2e8lclS9DT/vWNW4IQI16q
    w==;
-X-CSE-ConnectionGUID: R8/3wUfRTdWSRrxufGfmgA==
-X-CSE-MsgGUID: Plx0TIWzR/SAgT0EJPD2AQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="46207923"
+X-CSE-ConnectionGUID: EBwfnQH6QPCEZ4yhykBp2Q==
+X-CSE-MsgGUID: n8jR3PrMSFWuu5gGjm660Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="57711289"
 X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; 
-   d="scan'208";a="46207923"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2025 23:41:56 -0700
-X-CSE-ConnectionGUID: Tt4BfcoNTQmyzsjcWD/akw==
-X-CSE-MsgGUID: oaqcrxsxRXGfJoFx3e1ATw==
+   d="scan'208";a="57711289"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 00:26:58 -0700
+X-CSE-ConnectionGUID: gCYpnm+lR3e/2ZdvcyvmUQ==
+X-CSE-MsgGUID: cMticInwS/qUFu/+xiHg+Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; 
-   d="scan'208";a="131262498"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2025 23:41:55 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1u4wT1-0000000Clfh-27jh;
-	Wed, 16 Apr 2025 09:41:51 +0300
-Date: Wed, 16 Apr 2025 09:41:51 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] property: Use tidy for_each_named_* macros
-Message-ID: <Z_9RL4knM4vXrOff@smile.fi.intel.com>
-References: <Z_ew4DN0z71nCX3C@mva-rohm>
- <Z_yvNl23GcEpOkK1@smile.fi.intel.com>
- <Z_yvkKTgI4XSlGya@smile.fi.intel.com>
- <20250414201450.43fb8d9c@jic23-huawei>
- <0d470203-fe9c-4bc0-b487-6d638c006232@gmail.com>
+   d="scan'208";a="130325329"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa010.jf.intel.com with ESMTP; 16 Apr 2025 00:26:55 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 6C79BF4; Wed, 16 Apr 2025 10:26:53 +0300 (EEST)
+Date: Wed, 16 Apr 2025 10:26:53 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Chenyuan Yang <chenyuan0y@gmail.com>, lenb@kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
+	x86@kernel.org, hpa@zytor.com, bhe@redhat.com, kai.huang@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] x86/acpi: fix potential NULL deref in acpi_wakeup_cpu()
+Message-ID: <yie5ice3gl47ayfbty2oxppu6sp76ho6k5qt4g7jqy3qw5rrx6@s4cc4kyp3dun>
+References: <20250411194820.3976363-1-chenyuan0y@gmail.com>
+ <CAJZ5v0hBfq7rQvNFJevqD3s_cASFT2eBqC0zoDWBT1gAsfqkCg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <0d470203-fe9c-4bc0-b487-6d638c006232@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0hBfq7rQvNFJevqD3s_cASFT2eBqC0zoDWBT1gAsfqkCg@mail.gmail.com>
 
-On Wed, Apr 16, 2025 at 08:55:13AM +0300, Matti Vaittinen wrote:
-> On 14/04/2025 22:14, Jonathan Cameron wrote:
-
-...
-
-> > Definitely not going to take anything
-> > through IIO that hasn't been on the iio list btw.
+On Tue, Apr 15, 2025 at 03:39:24PM +0200, Rafael J. Wysocki wrote:
+> On Fri, Apr 11, 2025 at 9:48 PM Chenyuan Yang <chenyuan0y@gmail.com> wrote:
+> >
+> > The result of memremap() may be NULL on failure, leading to a NULL
+> > dereference. Add explicit checks after memremap() call: if the
+> > MADT mailbox fails to map, return immediately.
+> >
+> > This is similar to the commit 966d47e1f27c
+> > ("efi: fix potential NULL deref in efi_mem_reserve_persistent").
+> >
+> > This is found by our static analysis tool KNighter.
+> >
+> > Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+> > Fixes: 2b5e22afae07 ("x86/acpi: Extract ACPI MADT wakeup code into a separate file")
 > 
-> Ah. Thanks for pointing this out Jonathan! I just used the get_maintainer.pl
-> - and added You. I definitely should have added the IIO-list!
+> Well, it's good to add the author of the commit you're trying to fix
+> to the CC list.
+> 
+> Kirill, what do you think about this?
 
-Also a side note, the Subject should start with "device property: ...".
+Looks reasonable to me.
+
+We fail to remap a single page. It is likely to be fatally broken system
+if we get there. But okay, let's handle it.
+
+Maybe use pr_err_once(). No need to spam an error for every CPU.
+
+> > ---
+> >  arch/x86/kernel/acpi/madt_wakeup.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> >
+> > diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
+> > index f36f28405dcc..b386ec4b87c2 100644
+> > --- a/arch/x86/kernel/acpi/madt_wakeup.c
+> > +++ b/arch/x86/kernel/acpi/madt_wakeup.c
+> > @@ -143,6 +143,10 @@ static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
+> >                 acpi_mp_wake_mailbox = memremap(acpi_mp_wake_mailbox_paddr,
+> >                                                 sizeof(*acpi_mp_wake_mailbox),
+> >                                                 MEMREMAP_WB);
+> > +               if (!acpi_mp_wake_mailbox) {
+> > +                       pr_err("Failed to remap MADT mailbox\n");
+> > +                       return -ENOMEM;
+> > +               }
+> >         }
+> >
+> >         /*
+> > --
+> > 2.34.1
+> >
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
