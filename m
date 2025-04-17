@@ -1,208 +1,124 @@
-Return-Path: <linux-acpi+bounces-13090-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13091-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D5AA91B88
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Apr 2025 14:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7151A91CB4
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Apr 2025 14:46:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E4448A0453
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Apr 2025 12:04:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CCCF5A6E68
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Apr 2025 12:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DE423F40C;
-	Thu, 17 Apr 2025 12:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D874817C91;
+	Thu, 17 Apr 2025 12:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmgY/nN4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNyvyPs2"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA068197A8A;
-	Thu, 17 Apr 2025 12:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31496136
+	for <linux-acpi@vger.kernel.org>; Thu, 17 Apr 2025 12:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744891416; cv=none; b=lcKVhyzcmDtJzgWlGb6WwsPcs7HbaZn+eYTa/uR5wH/QVhKM3h1FNkxoz3DsAL0huUleJtMOsym4tlGxQj0M2VR8ZD22bwxYnR8XnlaP09tDTHphrYCKeOZvbk429LJGiliAbuWMbKAJ15sCUbrOUUk94nWNHAuB+7/Gh6Xi1Fg=
+	t=1744893972; cv=none; b=QG+VU+zyTnReOJ5P3Yk8bocSErRgx5YEOSyFgb6m6LrGH7ATESwKdUBpDoOTtfKPkg97ZBGa7nALi1eBKJr5BgIxJXd08fVnc4/qh+bvVHcrhYZDHfM90QVD6NnHq6aTKn+qinuOmZKGIsVmd63FfMUx9CMg/OPfnYJpIwow8ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744891416; c=relaxed/simple;
-	bh=cOq9eqXqmc1PFM9I6HGHBJRy8g60NzwMTQLnPS9m5Bo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TNhsF1Gd2Gbl5ejbXZH88aWOt9IguzQF4bBFAahovmII4NdIuB0Qni5PH4C9+FD2cDPoA6xlvm/IKawpwa44pKufccG8X2wY1QvxsMOeG89082e1p/O1xyKPO2xJzUO/dSfvc6wi4E8TZbJCbCLw0vLz1KCXu2Ut5blWJDu0mbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmgY/nN4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D20EC4CEE4;
-	Thu, 17 Apr 2025 12:03:35 +0000 (UTC)
+	s=arc-20240116; t=1744893972; c=relaxed/simple;
+	bh=Le3o8h76TopJzHZ3p1doaO0fg6aSHQQ6FjKbkYvbQHY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=okERL1B9T793m0zeVp3e1IDk6pZYks0b7MUhXpVhJbmYncB2IvPh7fac8hlr5/26rHHlaVXqw8gkOdr0gauX8LKaFTU5bmYztWDvO8tQzT9wZxA3zs/vCCm0e5e5J4ItPp4D1zbREA0lZi4Xjgaz/rG6WwF8Qku/wlx7y/bQyqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNyvyPs2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46085C4CEED
+	for <linux-acpi@vger.kernel.org>; Thu, 17 Apr 2025 12:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744891416;
-	bh=cOq9eqXqmc1PFM9I6HGHBJRy8g60NzwMTQLnPS9m5Bo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NmgY/nN41M5FegtwQoDDPcMLHwKngGckjBzerQQFGLUQg+Vtm3xY2O0e6lCScwxlq
-	 npFctPm0QdZdKGSuyNQY4slHlW5qjNwUK2fY0WZztG/IGRssnbMoXCPKKm7+R3V49+
-	 YMnaKGrvFxnu1nns8NWEaLEggeYeJI1htIDTBJXvqJvVlHBhjJxyoZndAgsEE+aRF4
-	 QFNFQwn+Z7ebV+s1uuMGEkn7ZcM/qa6Ku2iFiRbiLaBioyVI3DemQYwARZTWxLpFSd
-	 iD16q3iZ9zw479PrJxrBflxL/XC5fMB2xXN42EQbVi9RkuBAY4pxO7iyTFk+8OI6zE
-	 rYGqrwB+Gmu+g==
-Message-ID: <90fcc29b-be8e-44b3-b6bb-a1ef06096520@kernel.org>
-Date: Thu, 17 Apr 2025 07:03:34 -0500
+	s=k20201202; t=1744893972;
+	bh=Le3o8h76TopJzHZ3p1doaO0fg6aSHQQ6FjKbkYvbQHY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=lNyvyPs24mQQ38XPYbk9RWcGlTSmgJHqRdyLzPkkBZUnLSMqa6wzf+82QSJuZpyvf
+	 Su8aQdv81pah9S5ca7E9Kuoaes8TrQX+bJyB+YZQ7EGVuW/1VRQb5cKNwHRikAe6fe
+	 Hs0qcK7bjCmmoo1pJDyIKcBhtfvzf8KwhNl3OqJ59URw2qwOBfLIiy7VHEMBd0+aYR
+	 gBjlaa0noLianNEwQxUpCQlPpavrovSP7DOYl6WFRRCvLDpf3HQQl/ubi7CoE+89UG
+	 Y8T6y7qd2k2Dqo0KcIEtBb1ypnOx/K6Dx1DMSAFMv2Uw8E7e0I9LPK+B3mF5zBgR/L
+	 TvUDYPwqj1ylg==
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-603ff8e90acso115024eaf.1
+        for <linux-acpi@vger.kernel.org>; Thu, 17 Apr 2025 05:46:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVPpLV5fDPGMc+XJK5VUdC1xkY+br4Z16w8MuPsZF8im9GXCPwHuiluxPEz4y4RrdPL7+9d2HBV48z2@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCUiCogqaxd3ZCf44hKaUbHhbb3ux6EXd+APG1kNMx/utYAEje
+	XkbMUmczcuPHKJaK2rJyqlV2I9J2HCDYZq+Zc8oGO8ho56RIN8X8Lu0/f+1Qutnxo8FjglpPypc
+	R6M6MQi8tYnplAtQvGprIXOPkvzs=
+X-Google-Smtp-Source: AGHT+IFdS13ZGpOtexUSBcPHWiN/JkX6CLmcGAIcWvcuVVznX5LugC0/adc2dFYSL9SK8+Upe+2w0mT6mfAg3bJzc7A=
+X-Received: by 2002:a05:6870:ce06:b0:2c1:b58c:bef with SMTP id
+ 586e51a60fabf-2d4d2d63f9bmr3371765fac.38.1744893971603; Thu, 17 Apr 2025
+ 05:46:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20250417031040.514460-1-superm1@kernel.org> <CAJZ5v0iQMOY1NhpE9Hy0jD6iKQeFbdxB4ZWj5KZcsbApwZ_RhQ@mail.gmail.com>
+ <90fcc29b-be8e-44b3-b6bb-a1ef06096520@kernel.org>
+In-Reply-To: <90fcc29b-be8e-44b3-b6bb-a1ef06096520@kernel.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 17 Apr 2025 14:46:00 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jRLRdcvTGELZswnNuQKQx_RuKvDAL776Qv49bP7vxKrQ@mail.gmail.com>
+X-Gm-Features: ATxdqUFBpAF8Lo8GIlHM8-j6C8U-U8HxiH8-MDKt_crGUCghAedKI0W0wkULfL4
+Message-ID: <CAJZ5v0jRLRdcvTGELZswnNuQKQx_RuKvDAL776Qv49bP7vxKrQ@mail.gmail.com>
 Subject: Re: [PATCH v2] ACPICA: Add support for printing AML arguments when
  trace point enabled
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: mario.limonciello@amd.com, robert.moore@intel.com,
- rafael.j.wysocki@intel.com, linux-acpi@vger.kernel.org,
- acpica-devel@lists.linux.dev
-References: <20250417031040.514460-1-superm1@kernel.org>
- <CAJZ5v0iQMOY1NhpE9Hy0jD6iKQeFbdxB4ZWj5KZcsbApwZ_RhQ@mail.gmail.com>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <CAJZ5v0iQMOY1NhpE9Hy0jD6iKQeFbdxB4ZWj5KZcsbApwZ_RhQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To: Mario Limonciello <superm1@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, mario.limonciello@amd.com, robert.moore@intel.com, 
+	rafael.j.wysocki@intel.com, linux-acpi@vger.kernel.org, 
+	acpica-devel@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Apr 17, 2025 at 2:03=E2=80=AFPM Mario Limonciello <superm1@kernel.o=
+rg> wrote:
+>
+>
+>
+> On 4/17/25 06:19, Rafael J. Wysocki wrote:
+> > On Thu, Apr 17, 2025 at 5:10=E2=80=AFAM Mario Limonciello <superm1@kern=
+el.org> wrote:
+> >>
+> >> From: Mario Limonciello <mario.limonciello@amd.com>
+> >>
+> >> When debug level is set to `ACPI_LV_TRACE_POINT` method start and
+> >> exit are emitted into the debug logs. This can be useful to understand
+> >> call paths, however none of the arguments for the method calls are
+> >> populated even when turning up other debug levels.
+> >>
+> >> This can be useful for BIOSes that contain debug strings to see those
+> >> strings. When `ACPI_LV_TRACE_POINT` is set also output all of the argu=
+ments
+> >> for a given method call.
+> >>
+> >> This enables this type of debugging:
+> >>
+> >> ```
+> >> extrace-0138 ex_trace_point        : Method Begin [0x0000000096b240c4:=
+\M460] execution.
+> >> extrace-0173 ex_trace_args         :  "  POST CODE: %X  ACPI TIMER: %X=
+  TIME: %d.%d ms\n", b0003f53, 1a26a8b2, 0, 15e, 0, 0
+> >> extrace-0138 ex_trace_point        : Method End [0x0000000096b240c4:\M=
+460] execution.
+> >> ```
+> >>
+> >> Link: https://github.com/acpica/acpica/commit/08219d91b5678ae2fae6e4f2=
+08df790a4e108c1c
+> >
+> > The link doesn't work.
+>
+> Are you sure?
+>
+> I just tried again and it worked for me.
 
+Yeah, it works now, I had to sign in to github.
 
-On 4/17/25 06:19, Rafael J. Wysocki wrote:
-> On Thu, Apr 17, 2025 at 5:10 AM Mario Limonciello <superm1@kernel.org> wrote:
->>
->> From: Mario Limonciello <mario.limonciello@amd.com>
->>
->> When debug level is set to `ACPI_LV_TRACE_POINT` method start and
->> exit are emitted into the debug logs. This can be useful to understand
->> call paths, however none of the arguments for the method calls are
->> populated even when turning up other debug levels.
->>
->> This can be useful for BIOSes that contain debug strings to see those
->> strings. When `ACPI_LV_TRACE_POINT` is set also output all of the arguments
->> for a given method call.
->>
->> This enables this type of debugging:
->>
->> ```
->> extrace-0138 ex_trace_point        : Method Begin [0x0000000096b240c4:\M460] execution.
->> extrace-0173 ex_trace_args         :  "  POST CODE: %X  ACPI TIMER: %X  TIME: %d.%d ms\n", b0003f53, 1a26a8b2, 0, 15e, 0, 0
->> extrace-0138 ex_trace_point        : Method End [0x0000000096b240c4:\M460] execution.
->> ```
->>
->> Link: https://github.com/acpica/acpica/commit/08219d91b5678ae2fae6e4f208df790a4e108c1c
-> 
-> The link doesn't work.
+But it is a link to a commit and I need a link to a PR.  I think it's this =
+one:
 
-Are you sure?
-
-I just tried again and it worked for me.
-
-> 
->> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->> ---
->> This is a backport from upstream ACPICA.  I'm not sure if there is a script
->> that converts code style, so I just manually adjusted to kernel code style.
->> It is really useful for me for debugging; so I would ideally like to see it
->> go for 6.16 if possible.
->>
->> v2:
->>   * handle non-CONFIG_ACPI_DEBUG W=1 build
->> ---
->>   drivers/acpi/acpica/acinterp.h |  3 ++
->>   drivers/acpi/acpica/dsmthdat.c |  1 +
->>   drivers/acpi/acpica/extrace.c  | 51 ++++++++++++++++++++++++++++++++++
->>   3 files changed, 55 insertions(+)
->>
->> diff --git a/drivers/acpi/acpica/acinterp.h b/drivers/acpi/acpica/acinterp.h
->> index 955114c926bd0..d02779ee92103 100644
->> --- a/drivers/acpi/acpica/acinterp.h
->> +++ b/drivers/acpi/acpica/acinterp.h
->> @@ -120,6 +120,9 @@ void
->>   acpi_ex_trace_point(acpi_trace_event_type type,
->>                      u8 begin, u8 *aml, char *pathname);
->>
->> +void
->> +acpi_ex_trace_args(union acpi_operand_object **params, u32 count);
->> +
->>   /*
->>    * exfield - ACPI AML (p-code) execution - field manipulation
->>    */
->> diff --git a/drivers/acpi/acpica/dsmthdat.c b/drivers/acpi/acpica/dsmthdat.c
->> index eca50517ad824..5393de4dbc4ca 100644
->> --- a/drivers/acpi/acpica/dsmthdat.c
->> +++ b/drivers/acpi/acpica/dsmthdat.c
->> @@ -188,6 +188,7 @@ acpi_ds_method_data_init_args(union acpi_operand_object **params,
->>
->>                  index++;
->>          }
->> +       acpi_ex_trace_args(params, index);
->>
->>          ACPI_DEBUG_PRINT((ACPI_DB_EXEC, "%u args passed to method\n", index));
->>          return_ACPI_STATUS(AE_OK);
->> diff --git a/drivers/acpi/acpica/extrace.c b/drivers/acpi/acpica/extrace.c
->> index b5e4bb4ae3ce6..e4721504c390d 100644
->> --- a/drivers/acpi/acpica/extrace.c
->> +++ b/drivers/acpi/acpica/extrace.c
->> @@ -147,6 +147,57 @@ acpi_ex_trace_point(acpi_trace_event_type type,
->>          }
->>   }
->>
->> +/*******************************************************************************
->> + *
->> + * FUNCTION:    acpi_ex_trace_args
->> + *
->> + * PARAMETERS:  params            - AML method arguments
->> + *              count             - numer of method arguments
->> + *
->> + * RETURN:      None
->> + *
->> + * DESCRIPTION: Trace any arguments
->> + *
->> + ******************************************************************************/
->> +
->> +void
->> +acpi_ex_trace_args(union acpi_operand_object **params, u32 count)
->> +{
->> +       u32 i;
->> +
->> +       ACPI_FUNCTION_NAME(ex_trace_args);
->> +
->> +       for (i = 0; i < count; i++) {
->> +               union acpi_operand_object *obj_desc = params[i];
->> +
->> +               if (!i) {
->> +                       ACPI_DEBUG_PRINT((ACPI_DB_TRACE_POINT, " "));
->> +               }
->> +
->> +               switch (obj_desc->common.type) {
->> +               case ACPI_TYPE_INTEGER:
->> +                       ACPI_DEBUG_PRINT_RAW((ACPI_DB_TRACE_POINT, "%llx", obj_desc->integer.value));
->> +                       break;
->> +               case ACPI_TYPE_STRING:
->> +                       if (!obj_desc->string.length) {
->> +                               ACPI_DEBUG_PRINT_RAW((ACPI_DB_TRACE_POINT, "NULL"));
->> +                               continue;
->> +                       }
->> +                       if (ACPI_IS_DEBUG_ENABLED(ACPI_LV_TRACE_POINT, _COMPONENT))
->> +                               acpi_ut_print_string(obj_desc->string.pointer, ACPI_UINT8_MAX);
->> +                       break;
->> +               default:
->> +                       ACPI_DEBUG_PRINT_RAW((ACPI_DB_TRACE_POINT, "Unknown"));
->> +                       break;
->> +               }
->> +               if (i+1 == count) {
->> +                       ACPI_DEBUG_PRINT_RAW((ACPI_DB_TRACE_POINT, "\n"));
->> +               } else {
->> +                       ACPI_DEBUG_PRINT_RAW((ACPI_DB_TRACE_POINT, ", "));
->> +               }
->> +       }
->> +}
->> +
->>   /*******************************************************************************
->>    *
->>    * FUNCTION:    acpi_ex_start_trace_method
->> --
->> 2.43.0
->>
->>
-
+https://github.com/acpica/acpica/pull/1012
 
