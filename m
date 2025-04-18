@@ -1,148 +1,182 @@
-Return-Path: <linux-acpi+bounces-13114-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13115-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E00A93966
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Apr 2025 17:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A04DBA93B41
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Apr 2025 18:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C99DA4A0103
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Apr 2025 15:16:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B62B1461343
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Apr 2025 16:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEEC20A5CB;
-	Fri, 18 Apr 2025 15:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55866213E97;
+	Fri, 18 Apr 2025 16:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ODOQuVDN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UBOXX46r"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3D513A265;
-	Fri, 18 Apr 2025 15:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1BE2CCC0;
+	Fri, 18 Apr 2025 16:49:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744989341; cv=none; b=PVnSeuS5HWFTmG2PoWwtjzQfpX2MTsc0amtuwk/+qXpORrnbzFJ6zKEwFDmnLg348d9dGkH41NJnCIZnYA+DAsz2iWZ6Zh/4F8q+hApiLxZ+QRAnPUgf3ZNfmbl+kgoW6ij3iqZulrlz1pOHpM5ItuCJW1nrd9F+RreSyMHqAZw=
+	t=1744994993; cv=none; b=u6+yavhJNiKV0nFo3uK8OLCix7c9dwityi37+57t01X6kSpxgDWgiD0r3d/xWZ7dj850SEcYic0UucFiGKCzfvBp22O41KCKg/FG9sOe3bzEwCNC9ggMtoIYOQa/jfoH6tu/QJ/UBN1CdfYOPkI7wjqOpeyX0k+HD2JauOBzKmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744989341; c=relaxed/simple;
-	bh=zDBDOU+6Hp5zW2pHFlOudW97qd8nblMkmeHFllhXDYM=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=mjnXPtywl6Cgy2u9Jiwl6k3VZ8cwu/M3v6XZ76LFVRQJigAC1dmpVZH489SYSy+cpY/+MhvK3Y2R6vgBjJERcHdSJ36+RG0o9e5tWHrhmiyZtzlVSP235Zly1elWnoHdEVjkZc7o6Cc/LZjnWlN8vsmuMiYc4x9wtWdmmJ8FWfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ODOQuVDN; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1744994993; c=relaxed/simple;
+	bh=FnN/iTbHvUnR4i7t8MuoF+yhBm71k9OCNEaLyoiHsGc=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=EZziassExzXom/eX/4SLQcDPIccfL3Fp9ly25PPYZaotmMyO6gIX6E7w7DQoWP6YLkQ7q/F/KwhOW/fqScpnttu7ogHo4BAtD1Dcw+peYJmcdjlWR8BoleqqXspVvwZNsdCOiiw5ulf+XUZFIycx2dJEYafB5vdW5v3TOSDJCcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UBOXX46r; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744989339; x=1776525339;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=zDBDOU+6Hp5zW2pHFlOudW97qd8nblMkmeHFllhXDYM=;
-  b=ODOQuVDNKgOKtwMTVlxMZ6Vlmpr82P8E//VdzUxzxUgHrQMrjhg8rqzd
-   Lc9pYKxociUc1hldnbgRkKjNF9rLIb5BxGTVS6sfwbnc8OUTYTij+WW4I
-   1zjBMUrtCnE0U2u2/2NTSB3VD+udPizONl/02HS4uPuoF6Rzdut2f2hq+
-   nwAFiYfttwXqRjcePrQ9UlIVXA23CJSISMYq+Eto30j/VA3Z7ngWYUrdL
-   +khi4NryFpQ3PRUYZ0MfMrEKxBPs47rYHfzEpUVUcTZHEYAzhSjCmhAX3
-   mLaUTvGmSNmtZZi7taSnxMoRcAum5U+TX7ea/iqXbsSnR/XBwYjtxZpb6
+  t=1744994992; x=1776530992;
+  h=date:from:to:cc:subject:message-id;
+  bh=FnN/iTbHvUnR4i7t8MuoF+yhBm71k9OCNEaLyoiHsGc=;
+  b=UBOXX46rJ0HXiENRUMC1+fbfdHjv/4F95sWYtyc9Wg76MlbdeAq5ppqv
+   NwwRjEWwfRtZ264SsciZQMQIFCF6/jxGDob2exnxvgw4affxT5yPSNzWR
+   0sSdq4ls7+jjAoj6COOVomGjvSrIL7Po29Wo9ZVm3bgq3QrNvGHCN7mBr
+   RbetogwBKmzfXMmb8BB+amhR1F60At0DKdRpPPXDm7cYEz4AkOAWuy0/I
+   t7IUoGLPXzOc393ByXZSVP3PztkjV7LWKGtxfkZb9LLO2o6qNCxXbXWZx
+   m7RKpGv0ikHRxhT2MYoAtEjCQ2UX3OsEkybilrszoJXiU2d4TUKul+qOi
    Q==;
-X-CSE-ConnectionGUID: caY/D+cjTzugtlGLLirw8Q==
-X-CSE-MsgGUID: K5gj2cd6R46kxoW2TLvETg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11407"; a="45849851"
+X-CSE-ConnectionGUID: D3Vq3qtERYSjw/6TVDD+7g==
+X-CSE-MsgGUID: 7xpcXAI7QIGwzPINH2gQXQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11407"; a="50455660"
 X-IronPort-AV: E=Sophos;i="6.15,222,1739865600"; 
-   d="scan'208";a="45849851"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2025 08:15:38 -0700
-X-CSE-ConnectionGUID: Akw1pynlSEGh2bUJxdPI7w==
-X-CSE-MsgGUID: XVVgHKXYQIqD2uzf7hj6yg==
+   d="scan'208";a="50455660"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2025 09:49:51 -0700
+X-CSE-ConnectionGUID: cNnSyXrkS9GNyTN4vFdtbQ==
+X-CSE-MsgGUID: 0hHfpKZyTGSHSsPlD0A7Rg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,222,1739865600"; 
-   d="scan'208";a="135990325"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.4])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2025 08:15:34 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Fri, 18 Apr 2025 18:15:30 +0300 (EEST)
-To: Ingo Molnar <mingo@kernel.org>
-cc: Andy Shevchenko <andy@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-    Len Brown <lenb@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-    Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-    Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-    "H. Peter Anvin" <hpa@zytor.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-    linux-acpi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-    linux-pci@vger.kernel.org
-Subject: Re: [PATCH 1/1] x86: Use resource_set_{range,size}() helpers
-In-Reply-To: <aAIB7Om9n_tXDnvk@gmail.com>
-Message-ID: <db829a60-c524-73bc-e7c3-fed60e980d99@linux.intel.com>
-References: <20250416101318.7313-1-ilpo.jarvinen@linux.intel.com> <Z_-E3W8i4EfxdBh3@smile.fi.intel.com> <a046f6bb-0b6e-a431-eaa5-ecd279459f86@linux.intel.com> <aAIB7Om9n_tXDnvk@gmail.com>
+   d="scan'208";a="130894861"
+Received: from lkp-server01.sh.intel.com (HELO 61e10e65ea0f) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 18 Apr 2025 09:49:49 -0700
+Received: from kbuild by 61e10e65ea0f with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u5ouR-00035B-0I;
+	Fri, 18 Apr 2025 16:49:47 +0000
+Date: Sat, 19 Apr 2025 00:49:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 2552b687f27ff857ddf0fbb8f44255908e7f85b9
+Message-ID: <202504190007.wGInGYng-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-1296546784-1744988942=:948"
-Content-ID: <fe026d98-6232-bcd6-efa3-99ed79a78586@linux.intel.com>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 2552b687f27ff857ddf0fbb8f44255908e7f85b9  Merge branch 'pm-sleep-testing' into bleeding-edge
 
---8323328-1296546784-1744988942=:948
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <40bafa21-795a-e848-290b-cf4269f62d67@linux.intel.com>
+elapsed time: 1454m
 
-On Fri, 18 Apr 2025, Ingo Molnar wrote:
+configs tested: 88
+configs skipped: 1
 
->=20
-> * Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com> wrote:
->=20
-> > On Wed, 16 Apr 2025, Andy Shevchenko wrote:
-> >=20
-> > > On Wed, Apr 16, 2025 at 01:13:18PM +0300, Ilpo J=E4rvinen wrote:
-> > > > Convert open coded resource size calculations to use
-> > > > resource_set_{range,size}() helpers.
-> > > >=20
-> > > > While at it, use SZ_* for size parameter which makes the intent of =
-code
-> > > > more obvious.
-> > >=20
-> > > ...
-> > >=20
-> > > > +=09resource_set_range(res, base, 1ULL << (segn_busn_bits + 20));
-> > >=20
-> > > Then probably
-> > >=20
-> > > =09resource_set_range(res, base, BIT_ULL(segn_busn_bits) * SZ_1M);
-> > >=20
-> > > to follow the same "While at it"?
-> >=20
-> > I'll change that now since you brought it up. It did cross my mind to=
-=20
-> > convert that to * SZ_1M but it seemed to go farther than I wanted with =
-a=20
-> > simple conversion patch.
-> >=20
-> > I've never liked the abuse of BIT*() for size related shifts though,=20
-> > I recall I saw somewhere a helper that was better named for size=20
-> > related operations but I just cannot recall its name and seem to not=20
-> > find that anymore :-(. But until I come across it once again, I guess=
-=20
-> > I'll have to settle to BIT*().
->=20
-> BITS_TO_LONGS()?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Hi Ingo,
+tested configs:
+alpha                            allyesconfig    gcc-14.2.0
+arc                              allmodconfig    gcc-14.2.0
+arc                              allyesconfig    gcc-14.2.0
+arc                   randconfig-001-20250418    gcc-14.2.0
+arc                   randconfig-002-20250418    gcc-12.4.0
+arm                   randconfig-001-20250418    gcc-8.5.0
+arm                   randconfig-002-20250418    gcc-7.5.0
+arm                   randconfig-003-20250418    gcc-8.5.0
+arm                   randconfig-004-20250418    clang-21
+arm64                 randconfig-001-20250418    clang-21
+arm64                 randconfig-002-20250418    clang-21
+arm64                 randconfig-003-20250418    clang-21
+arm64                 randconfig-004-20250418    gcc-6.5.0
+csky                  randconfig-001-20250418    gcc-14.2.0
+csky                  randconfig-002-20250418    gcc-10.5.0
+hexagon                          allmodconfig    clang-17
+hexagon                          allyesconfig    clang-21
+hexagon               randconfig-001-20250418    clang-21
+hexagon               randconfig-002-20250418    clang-21
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250418    clang-20
+i386        buildonly-randconfig-002-20250418    gcc-12
+i386        buildonly-randconfig-003-20250418    clang-20
+i386        buildonly-randconfig-004-20250418    gcc-12
+i386        buildonly-randconfig-005-20250418    gcc-11
+i386        buildonly-randconfig-006-20250418    clang-20
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch             randconfig-001-20250418    gcc-14.2.0
+loongarch             randconfig-002-20250418    gcc-12.4.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20250418    gcc-10.5.0
+nios2                 randconfig-002-20250418    gcc-14.2.0
+openrisc                          allnoconfig    gcc-14.2.0
+parisc                            allnoconfig    gcc-14.2.0
+parisc                randconfig-001-20250418    gcc-11.5.0
+parisc                randconfig-002-20250418    gcc-13.3.0
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc               randconfig-001-20250418    gcc-8.5.0
+powerpc               randconfig-002-20250418    gcc-6.5.0
+powerpc               randconfig-003-20250418    clang-21
+powerpc64             randconfig-001-20250418    clang-21
+powerpc64             randconfig-002-20250418    clang-21
+powerpc64             randconfig-003-20250418    clang-17
+riscv                             allnoconfig    gcc-14.2.0
+riscv                 randconfig-001-20250418    clang-21
+riscv                 randconfig-002-20250418    clang-21
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-14.2.0
+s390                  randconfig-001-20250418    gcc-7.5.0
+s390                  randconfig-002-20250418    gcc-6.5.0
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                    randconfig-001-20250418    gcc-12.4.0
+sh                    randconfig-002-20250418    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20250418    gcc-10.3.0
+sparc                 randconfig-002-20250418    gcc-7.5.0
+sparc64               randconfig-001-20250418    gcc-9.3.0
+sparc64               randconfig-002-20250418    gcc-11.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-21
+um                               allyesconfig    gcc-12
+um                    randconfig-001-20250418    clang-21
+um                    randconfig-002-20250418    clang-21
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250418    clang-20
+x86_64      buildonly-randconfig-002-20250418    clang-20
+x86_64      buildonly-randconfig-003-20250418    clang-20
+x86_64      buildonly-randconfig-004-20250418    clang-20
+x86_64      buildonly-randconfig-005-20250418    clang-20
+x86_64      buildonly-randconfig-006-20250418    gcc-12
+x86_64                              defconfig    gcc-11
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20250418    gcc-7.5.0
+xtensa                randconfig-002-20250418    gcc-14.2.0
 
-I'm not entiry sure if you're referring to my BIT*() matching unrelated
-macros such as BITS_TO_LONGS() (I only meant BIT() and BIT_ULL() which I=20
-thought was clear from the context), or that BITS_TO_LONGS() would be the=
-=20
-solution what I'm looking for.
-
-In case you meant the latter, BITS_TO_LONGS() is not what I'm after.=20
-BIT(n) sets nth bit and what I'm looking for is converting n to power of=20
-two size. Obviously, both are mathematically doing 2^n (or 1 << n) but=20
-they feel conceptually very different things.
-
---=20
- i.
---8323328-1296546784-1744988942=:948--
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
