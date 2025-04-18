@@ -1,108 +1,157 @@
-Return-Path: <linux-acpi+bounces-13109-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13110-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40866A93395
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Apr 2025 09:40:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61913A933B1
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Apr 2025 09:48:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 633164664E7
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Apr 2025 07:40:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4EE33AFE06
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Apr 2025 07:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECDC224EA87;
-	Fri, 18 Apr 2025 07:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uy26hlvH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6805269AED;
+	Fri, 18 Apr 2025 07:48:09 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFE524EA8F;
-	Fri, 18 Apr 2025 07:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B6A19D898;
+	Fri, 18 Apr 2025 07:48:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744962033; cv=none; b=WrOWbeP3HCaPk19fwulGxynlDNXyhqXatapi+gLPwAKKO9mR4VkVQvvkGN/mS9lXG8HC1n6gzdiVgPTtMDPEoTJ/Ztee2cQLvNqvnuwarwLgGAyr0T7Pg22k7o1GO9XvhGZuW95T04dMCxOfR0FN/LkXXXxW4bnHjfvJBdZ5pH4=
+	t=1744962489; cv=none; b=MCw2KyvYi38xfS8gy98uk/LyoN4MhWcC7+yH2QwzWlek0EoQd/fgG4OA07cdpWi7++6vClW1MDDO3ZA5Tp6tRxAY/WU0tro8D3KGaiVTBgghUt7DIsaGqwJeULLbov6lpIHaJgfqqcisgJe02ral9/qrHkOJdLCOq7lv7rWsuBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744962033; c=relaxed/simple;
-	bh=HTu5azwnJcNp5fW88jU95M322z25Yas8NYb0ahvHXmA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DOLPyo4GVAi8xl0YRcNX9OqAZV01D9/0WFAFcmWldHAAwGynERWIx819oTK7W7RmaK0/YA3BMrc2U7ld/JWr5/eWpZL3cWmeOtrHj4aZxRHxdoHqSxBVY/YlTD8YCii5VpeAUdkJv4q1PPuUtNzCFq5lepvQhQDpoWl3Yuhscqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uy26hlvH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1658C4CEE2;
-	Fri, 18 Apr 2025 07:40:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744962033;
-	bh=HTu5azwnJcNp5fW88jU95M322z25Yas8NYb0ahvHXmA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uy26hlvHBK0d37FkJ++86AA+UhbvcEqgsDPhvOdXjPOeDGDLGxStqoJSlwmWDgiCh
-	 sAxA8OTaNZtSLY3TL2QNcd2iZlQRrJle6oNC9Zf5lnhh9b6/3iTxGp6oGpduPiF9GD
-	 ymFBYm8vbFrrKs5puTia+Pupxmp06KCUsJbSM6zkIiprqyDUObeJn/eNT+/X25hi3A
-	 xg/UvBpvPLZfTxbhZoGbqgu/a49CMKE5ZhRXIsYHLbxklhd+x8UIKa/qonuAwP/Ava
-	 ndKDAjt1DtNWvBczeXZVfdZB5bneo18d9yw/tJUnvfOHWwv1v6XlNbMYmqPb6ShfwG
-	 6M37zL1Q9XGow==
-Date: Fri, 18 Apr 2025 09:40:28 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Andy Shevchenko <andy@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
-	LKML <linux-kernel@vger.kernel.org>, linux-pci@vger.kernel.org
-Subject: Re: [PATCH 1/1] x86: Use resource_set_{range,size}() helpers
-Message-ID: <aAIB7Om9n_tXDnvk@gmail.com>
-References: <20250416101318.7313-1-ilpo.jarvinen@linux.intel.com>
- <Z_-E3W8i4EfxdBh3@smile.fi.intel.com>
- <a046f6bb-0b6e-a431-eaa5-ecd279459f86@linux.intel.com>
+	s=arc-20240116; t=1744962489; c=relaxed/simple;
+	bh=7D01KTsaBaAzHl+6tugyPk21Tdkm0UkrepK1ah5zag0=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=B3Y4C+J2sdeaiJTfVMDvYnwvmL8vDinBuOj7CAEv0qCwoEJUKNXnS7ZR7UWbKEWhKRRcuW2eKLelGwXmE0sWnrVQ5sdZyUjSF2N+dOmRg1C54p/I5wQs0pWuSqQE3nyF4JNp8xb9nn6uKLTxsal3+gqPpP9mGPER1Eh+L1V+ZsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Zf6Lc4S9yz2TS3t;
+	Fri, 18 Apr 2025 15:47:52 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id A0D301400D4;
+	Fri, 18 Apr 2025 15:48:02 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 18 Apr 2025 15:48:01 +0800
+Subject: Re: [RESEND PATCH v18 1/2] ACPI: APEI: send SIGBUS to current task if
+ synchronous memory error not recovered
+To: Shuai Xue <xueshuai@linux.alibaba.com>, <catalin.marinas@arm.com>,
+	<sudeep.holla@arm.com>, <lpieralisi@kernel.org>,
+	<linux-acpi@vger.kernel.org>, <yazen.ghannam@amd.com>,
+	<mark.rutland@arm.com>, <mingo@redhat.com>, <robin.murphy@arm.com>,
+	<Jonathan.Cameron@Huawei.com>, <bp@alien8.de>, <rafael@kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <wangkefeng.wang@huawei.com>,
+	<tanxiaofei@huawei.com>, <mawupeng1@huawei.com>, <tony.luck@intel.com>,
+	<linmiaohe@huawei.com>, <naoya.horiguchi@nec.com>, <james.morse@arm.com>,
+	<tongtiangen@huawei.com>, <gregkh@linuxfoundation.org>, <will@kernel.org>,
+	<jarkko@kernel.org>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<akpm@linux-foundation.org>, <linux-edac@vger.kernel.org>, <x86@kernel.org>,
+	<justin.he@arm.com>, <ardb@kernel.org>, <ying.huang@linux.alibaba.com>,
+	<ashish.kalra@amd.com>, <baolin.wang@linux.alibaba.com>,
+	<tglx@linutronix.de>, <dave.hansen@linux.intel.com>, <lenb@kernel.org>,
+	<hpa@zytor.com>, <robert.moore@intel.com>, <lvying6@huawei.com>,
+	<xiexiuqi@huawei.com>, <zhuo.song@linux.alibaba.com>
+References: <20250404112050.42040-1-xueshuai@linux.alibaba.com>
+ <20250404112050.42040-2-xueshuai@linux.alibaba.com>
+ <0c0bc332-0323-4e43-a96b-dd5f5957ecc9@huawei.com>
+ <709ee8d2-8969-424c-b32b-101c6a8220fb@linux.alibaba.com>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <353809e7-5373-0d54-6ddb-767bc5af9e5f@huawei.com>
+Date: Fri, 18 Apr 2025 15:48:00 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+In-Reply-To: <709ee8d2-8969-424c-b32b-101c6a8220fb@linux.alibaba.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a046f6bb-0b6e-a431-eaa5-ecd279459f86@linux.intel.com>
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-
-* Ilpo J�rvinen <ilpo.jarvinen@linux.intel.com> wrote:
-
-> On Wed, 16 Apr 2025, Andy Shevchenko wrote:
+On 2025/4/14 23:02, Shuai Xue wrote:
 > 
-> > On Wed, Apr 16, 2025 at 01:13:18PM +0300, Ilpo J�rvinen wrote:
-> > > Convert open coded resource size calculations to use
-> > > resource_set_{range,size}() helpers.
-> > > 
-> > > While at it, use SZ_* for size parameter which makes the intent of code
-> > > more obvious.
-> > 
-> > ...
-> > 
-> > > +	resource_set_range(res, base, 1ULL << (segn_busn_bits + 20));
-> > 
-> > Then probably
-> > 
-> > 	resource_set_range(res, base, BIT_ULL(segn_busn_bits) * SZ_1M);
-> > 
-> > to follow the same "While at it"?
 > 
-> I'll change that now since you brought it up. It did cross my mind to 
-> convert that to * SZ_1M but it seemed to go farther than I wanted with a 
-> simple conversion patch.
+> 在 2025/4/14 22:37, Hanjun Guo 写道:
+>> On 2025/4/4 19:20, Shuai Xue wrote:
+>>> Synchronous error was detected as a result of user-space process 
+>>> accessing
+>>> a 2-bit uncorrected error. The CPU will take a synchronous error 
+>>> exception
+>>> such as Synchronous External Abort (SEA) on Arm64. The kernel will 
+>>> queue a
+>>> memory_failure() work which poisons the related page, unmaps the 
+>>> page, and
+>>> then sends a SIGBUS to the process, so that a system wide panic can be
+>>> avoided.
+>>>
+>>> However, no memory_failure() work will be queued when abnormal 
+>>> synchronous
+>>> errors occur. These errors can include situations such as invalid PA,
+>>> unexpected severity, no memory failure config support, invalid GUID
+>>> section, etc. In such case, the user-space process will trigger SEA 
+>>> again.
+>>> This loop can potentially exceed the platform firmware threshold or even
+>>> trigger a kernel hard lockup, leading to a system reboot.
+>>>
+>>> Fix it by performing a force kill if no memory_failure() work is queued
+>>> for synchronous errors.
+>>>
+>>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>>> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+>>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>> Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+>>> Reviewed-by: Jane Chu <jane.chu@oracle.com>
+>>> ---
+>>>   drivers/acpi/apei/ghes.c | 11 +++++++++++
+>>>   1 file changed, 11 insertions(+)
+>>>
+>>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+>>> index b72772494655..50e4d924aa8b 100644
+>>> --- a/drivers/acpi/apei/ghes.c
+>>> +++ b/drivers/acpi/apei/ghes.c
+>>> @@ -799,6 +799,17 @@ static bool ghes_do_proc(struct ghes *ghes,
+>>>           }
+>>>       }
+>>> +    /*
+>>> +     * If no memory failure work is queued for abnormal synchronous
+>>> +     * errors, do a force kill.
+>>> +     */
+>>> +    if (sync && !queued) {
+>>> +        dev_err(ghes->dev,
+>>> +            HW_ERR GHES_PFX "%s:%d: synchronous unrecoverable error 
+>>> (SIGBUS)\n",
+>>> +            current->comm, task_pid_nr(current));
+>>> +        force_sig(SIGBUS);
+>>> +    }
+>>
+>> I think it's reasonable to send a force kill to the task when the
+>> synchronous memory error is not recovered.
+>>
+>> But I hope this code will not trigger some legacy firmware issues,
+>> let's be careful for this, so can we just introduce arch specific
+>> callbacks for this?
 > 
-> I've never liked the abuse of BIT*() for size related shifts though, 
-> I recall I saw somewhere a helper that was better named for size 
-> related operations but I just cannot recall its name and seem to not 
-> find that anymore :-(. But until I come across it once again, I guess 
-> I'll have to settle to BIT*().
+> Sorry, can you give more details? I am not sure I got your point.
+> 
+> For x86, Tony confirmed that ghes will not dispatch x86 synchronous errors
+> (a.k.a machine check exception), in previous vesion.
+> Sync is only used in arm64 platform, see is_hest_sync_notify().
 
-BITS_TO_LONGS()?
+Sorry for the late reply, from the code I can see that x86 will reuse
+ghes_do_proc(), if Tony confirmed that x86 is OK, it's OK to me as well.
 
-Thanks,
-
-	Ingo
+Thanks
+Hanjun
 
