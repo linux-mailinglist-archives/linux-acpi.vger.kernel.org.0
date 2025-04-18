@@ -1,194 +1,175 @@
-Return-Path: <linux-acpi+bounces-13112-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13113-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F7F2A9372D
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Apr 2025 14:35:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C45A9379F
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Apr 2025 15:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A58ED462724
-	for <lists+linux-acpi@lfdr.de>; Fri, 18 Apr 2025 12:35:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 193A7173953
+	for <lists+linux-acpi@lfdr.de>; Fri, 18 Apr 2025 13:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DE2274FF6;
-	Fri, 18 Apr 2025 12:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B0D27604B;
+	Fri, 18 Apr 2025 13:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="H34aLp19"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="B5t3bSZd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A8D212D8A;
-	Fri, 18 Apr 2025 12:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACBD276030;
+	Fri, 18 Apr 2025 13:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744979720; cv=none; b=Qdl8ILjuO+IOv4CdBS5WQsCOBVny6Z3Jskdt2wOzeCzTWtBeryOECLzAUdMa+zshnm0rdyn03ewb23fGbrYErbo/bzxYB5yAr5mpsGw0S5FAg1B3JHE00lHQ8z9qO5A59E87ACy8qNgRpnxte4WwTZrtUrZIYnOLjUUZuBEMwB0=
+	t=1744981851; cv=none; b=b6Uv1GSP5MmUDWjJhhRzKtZWnZs0cAIqKUbMQ170dp9+NXV2WUGKxCw8sY8Bg+CYqFoXN9Jqux2DGFeTaiXyKb3oeU7grdhTu41RDVtpuBBFG1hrJshpeVUzY3cSyzdHT+n/YgVh6DwPGiTDqJk8SdglB3+vzXEVGA4epwpRyjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744979720; c=relaxed/simple;
-	bh=6CrdNbp/demKpRChXxKiOZWkDp7cZPXxIcoSLVsut78=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rNTfhH2F4W8xrCtYLHZX+eqTYfzh4jSba8VGpduVdcNTJjZfJMZxF9ryJynS636zav1oIlMQzTFbXhqIMD3FQF+KKbwQNvEOJe9zGoyYigfdmx58SlACjdr88mjUwuLNw1iOduHl2VMcNYCPuMq342pFku/37eay3wKQF6XqcuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=H34aLp19; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1744979708; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ET48gmghr/S6KXKpbHbaUOhbwdjcr6/9oYUul7jTD2Y=;
-	b=H34aLp19BoMIW+cp1y5Vo/s4xNLEoZxunukpcExeRIkfjHKzh/kLNOlYCj8KhL3aNaUa2qMPY1V09ht/Dvqw4uZRgIT1ucubKsUsENxHS1GQlzmEUWzi63bFnlsA9l7tUuWBYY5eXO/4EKXqHuDz6x0Sp/5zmQlREyMjTRphEWg=
-Received: from 30.246.162.65(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WXJZ5.I_1744979704 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 18 Apr 2025 20:35:06 +0800
-Message-ID: <653abdd4-46d2-4956-b49c-8f9c309af34d@linux.alibaba.com>
-Date: Fri, 18 Apr 2025 20:35:03 +0800
+	s=arc-20240116; t=1744981851; c=relaxed/simple;
+	bh=JTTWxqBrwEtLKx6O5TyIr4GBL3p0TLD2eTF5sLveJGw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FdsiXrtRyUQQPSzyFJiq1Rm21XbGyvv+XZNmnmEqNZ78MXXgaiAeALVT5I7uvwvCeADM7RxGBHM4pYegPoJpckOJGZSgyGuFVtlFa6ToInxBQnaYMYma440KbkuPfCgUYeTyDdSDsrWDeiFgiv0XffaKymPz6JquPlrViAMiox0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=B5t3bSZd; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8AC884333F;
+	Fri, 18 Apr 2025 13:10:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1744981840;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=flWAz2w14wq7W+OFxNQQycVZnw0/ZbM/Zjd3vHnpprk=;
+	b=B5t3bSZdX2Pd3XrVzuwEHF2KinZWkp5ZqrcvrtLQLoDFV4L/lSO9PtQI1lRmvm9jWuqbwg
+	r6TLbHTP1PwPFSC+jXorCpZF3Ey3loGgGda6H2O4yjQzjdJrNVWOlk0bwSHzI5JplKUDsg
+	GwOCyZfyyLFd7K4ig98jOczKvpBZcOjJaQ2wZMWuqYq9TlMMEaK7yr5oHZsdAh1j+ED3Ew
+	NEJeHaRcd/8pveKH3k29fv3niVN9Fm86fCMZFHKVFMT+lcZCWAZhrU+JCRI+QBtNICDKDo
+	CDMMC5zWgNSQx0LxfBAU5w44jp7ZAJvMkRZOCEU1GAW4B7VvnDvY4s/SH1hhUQ==
+Date: Fri, 18 Apr 2025 15:10:36 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
+ Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
+ Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Saravana
+ Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Mark
+ Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Daniel Scally
+ <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 11/16] of: property: Allow fw_devlink device-tree
+ support for x86
+Message-ID: <20250418151036.719f982b@bootlin.com>
+In-Reply-To: <Z_U0DkSemHK0lrJW@smile.fi.intel.com>
+References: <20250407145546.270683-1-herve.codina@bootlin.com>
+	<20250407145546.270683-12-herve.codina@bootlin.com>
+	<Z_Pw_MoPpVNwiEhc@smile.fi.intel.com>
+	<20250408154925.5653d506@bootlin.com>
+	<Z_U0DkSemHK0lrJW@smile.fi.intel.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH v18 1/2] ACPI: APEI: send SIGBUS to current task if
- synchronous memory error not recovered
-To: Hanjun Guo <guohanjun@huawei.com>, "Luck, Tony" <tony.luck@intel.com>,
- rafael@kernel.org, Catalin Marinas <catalin.marinas@arm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- akpm@linux-foundation.org, linux-edac@vger.kernel.org, x86@kernel.org,
- justin.he@arm.com, ardb@kernel.org, ying.huang@linux.alibaba.com,
- ashish.kalra@amd.com, baolin.wang@linux.alibaba.com, tglx@linutronix.de,
- dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
- robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
- zhuo.song@linux.alibaba.com, Hanjun Guo <guohanjun@huawei.com>,
- catalin.marinas@arm.com, sudeep.holla@arm.com, lpieralisi@kernel.org,
- linux-acpi@vger.kernel.org, yazen.ghannam@amd.com, mark.rutland@arm.com,
- mingo@redhat.com, robin.murphy@arm.com, Jonathan.Cameron@Huawei.com,
- bp@alien8.de, rafael@kernel.org, linux-arm-kernel@lists.infradead.org,
- wangkefeng.wang@huawei.com, tanxiaofei@huawei.com, mawupeng1@huawei.com,
- tony.luck@intel.com, linmiaohe@huawei.com, naoya.horiguchi@nec.com,
- james.morse@arm.com, tongtiangen@huawei.com, gregkh@linuxfoundation.org,
- will@kernel.org, jarkko@kernel.org
-References: <20250404112050.42040-1-xueshuai@linux.alibaba.com>
- <20250404112050.42040-2-xueshuai@linux.alibaba.com>
- <0c0bc332-0323-4e43-a96b-dd5f5957ecc9@huawei.com>
- <709ee8d2-8969-424c-b32b-101c6a8220fb@linux.alibaba.com>
- <353809e7-5373-0d54-6ddb-767bc5af9e5f@huawei.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <353809e7-5373-0d54-6ddb-767bc5af9e5f@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvfedvvdefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepffekjeehffeihfefueehveegvdeiieeludekhffhjeeuffdvudevgeevtdeiueefnecuffhomhgrihhnpegrnhgrnhguthgvtghhrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegtddprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhto
+ hepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhm
+X-GND-Sasl: herve.codina@bootlin.com
 
+Hi Andy,
 
+On Tue, 8 Apr 2025 17:34:54 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-在 2025/4/18 15:48, Hanjun Guo 写道:
-> On 2025/4/14 23:02, Shuai Xue wrote:
->>
->>
->> 在 2025/4/14 22:37, Hanjun Guo 写道:
->>> On 2025/4/4 19:20, Shuai Xue wrote:
->>>> Synchronous error was detected as a result of user-space process accessing
->>>> a 2-bit uncorrected error. The CPU will take a synchronous error exception
->>>> such as Synchronous External Abort (SEA) on Arm64. The kernel will queue a
->>>> memory_failure() work which poisons the related page, unmaps the page, and
->>>> then sends a SIGBUS to the process, so that a system wide panic can be
->>>> avoided.
->>>>
->>>> However, no memory_failure() work will be queued when abnormal synchronous
->>>> errors occur. These errors can include situations such as invalid PA,
->>>> unexpected severity, no memory failure config support, invalid GUID
->>>> section, etc. In such case, the user-space process will trigger SEA again.
->>>> This loop can potentially exceed the platform firmware threshold or even
->>>> trigger a kernel hard lockup, leading to a system reboot.
->>>>
->>>> Fix it by performing a force kill if no memory_failure() work is queued
->>>> for synchronous errors.
->>>>
->>>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
->>>> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
->>>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>>> Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
->>>> Reviewed-by: Jane Chu <jane.chu@oracle.com>
->>>> ---
->>>>   drivers/acpi/apei/ghes.c | 11 +++++++++++
->>>>   1 file changed, 11 insertions(+)
->>>>
->>>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->>>> index b72772494655..50e4d924aa8b 100644
->>>> --- a/drivers/acpi/apei/ghes.c
->>>> +++ b/drivers/acpi/apei/ghes.c
->>>> @@ -799,6 +799,17 @@ static bool ghes_do_proc(struct ghes *ghes,
->>>>           }
->>>>       }
->>>> +    /*
->>>> +     * If no memory failure work is queued for abnormal synchronous
->>>> +     * errors, do a force kill.
->>>> +     */
->>>> +    if (sync && !queued) {
->>>> +        dev_err(ghes->dev,
->>>> +            HW_ERR GHES_PFX "%s:%d: synchronous unrecoverable error (SIGBUS)\n",
->>>> +            current->comm, task_pid_nr(current));
->>>> +        force_sig(SIGBUS);
->>>> +    }
->>>
->>> I think it's reasonable to send a force kill to the task when the
->>> synchronous memory error is not recovered.
->>>
->>> But I hope this code will not trigger some legacy firmware issues,
->>> let's be careful for this, so can we just introduce arch specific
->>> callbacks for this?
->>
->> Sorry, can you give more details? I am not sure I got your point.
->>
->> For x86, Tony confirmed that ghes will not dispatch x86 synchronous errors
->> (a.k.a machine check exception), in previous vesion.
->> Sync is only used in arm64 platform, see is_hest_sync_notify().
+> On Tue, Apr 08, 2025 at 03:49:25PM +0200, Herve Codina wrote:
+> > On Mon, 7 Apr 2025 18:36:28 +0300
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:  
+> > > On Mon, Apr 07, 2025 at 04:55:40PM +0200, Herve Codina wrote:  
 > 
-> Sorry for the late reply, from the code I can see that x86 will reuse
-> ghes_do_proc(), if Tony confirmed that x86 is OK, it's OK to me as well.
-
-Hi, Hanjun,
-
-Glad to hear that.
-
-I copy and paste in the original disscusion with @Tony from mailist.[1]
-
-> On x86 the "action required" cases are signaled by a synchronous machine check
-> that is delivered before the instruction that is attempting to consume the uncorrected
-> data retires. I.e., it is guaranteed that the uncorrected error has not been propagated
-> because it is not visible in any architectural state.
-
-> APEI signaled errors don't fall into that category on x86 ... the uncorrected data
-> could have been consumed and propagated long before the signaling used for
-> APEI can alert the OS.
-
-I also add comments in the code.
-
-/*
-  * A platform may describe one error source for the handling of synchronous
-  * errors (e.g. MCE or SEA), or for handling asynchronous errors (e.g. SCI
-  * or External Interrupt). On x86, the HEST notifications are always
-  * asynchronous, so only SEA on ARM is delivered as a synchronous
-  * notification.
-  */
-static inline bool is_hest_sync_notify(struct ghes *ghes)
-{
-	u8 notify_type = ghes->generic->notify.type;
-
-	return notify_type == ACPI_HEST_NOTIFY_SEA;
-}
-
-
-If you are happy with code, please explictly give me your reviewed-by tags :)
-
-
+> ...
 > 
-> Thanks
-> Hanjun
+> > > This is incorrect, they never had ACPI to begin with. Also there is third
+> > > platform that are using DT on x86 core — SpreadTrum based phones.  
+> > 
+> > I will rework the commit log to avoid 'mixing ACPI and device-tree'
+> > 
+> > For "SpreadTrum based phones", do you have an idea about the Kconfig symbol
+> > I could use to filter our this x86 systems?  
+> 
+> Hmm... good question. I don't think it was anything. The Airmont core just
+> works and doesn't require anything special to be set. And platform is x86 with
+> the devices that are established on ARM, so nothing special in device tree
+> either, I suppose. Basically any x86 platform with OF should be excluded,
+> rather think of what should be included. But I see that as opposite
+> requirements to the same function. I have no idea how to solve this. Perhaps
+> find that SpreadTrum Intel Atom-based device? Would be really hard, I believe.
+> Especially if we want to install a custom kernel there...
+> 
+> > Anything I find upstream related to SpreadTrum seems base on ARM cpus.
+> > I probably miss something.  
+> 
+> There were two SoCs that were Intel Atom based [1]. And some patches [2] to x86
+> DT code were made to support those cases.
+> 
+> > > And not sure about AMD stuff (Geode?).  
+> > 
+> > Same here, if some AMD devices need to be filtered out, is there a specific
+> > Kconfig symbol I can use ?  
+> 
+> This is question to AMD people. I have no clue.
+> 
+> [1]: https://www.anandtech.com/show/11196/mwc-2017-spreadtrum-launches-8core-intel-airmontbased-soc-with-cat-7-lte-for-smartphones
+> 
+> [2]: 4e07db9c8db8 ("x86/devicetree: Use CPU description from Device Tree")
+> and co. `git log --no-merges 4e07db9c8db8 -- arch/x86/kernel/devicetree.c
+> 
 
-Thanks.
+I have tried to find a solution for this topic.
 
-Best Regards,
-Shuai
+Indeed, this patch enables fw_devlink based on device-tree on all x86
+platform except OLPC and CE4100.
 
-[1] https://lore.kernel.org/lkml/CAJZ5v0hdgxsDiXqOmeqBQoZUQJ1RssM=3jpYpWt3qzy0n2eyaA@mail.gmail.com/t/#u
+You have mentioned some other x86 based system that could have issues with
+fw_devlink and it seems to be hard to have a complete list of systems for
+which we should not enable fw_devlink (potential issues and so regression
+against current kernel behavior).
 
+As you also proposed, we can thing on the opposite direction and enable
+fw_devlink on x86 systems that need it.
+
+We need it because we need the device-tree description over PCI device feature
+(CONFIG_PCI_DYNAMIC_OF_NODES) on x86 in order to support the LAN966x use case.
+
+What do you think about the following condition?
+
+	if (IS_ENABLED(CONFIG_X86) && !IS_ENABLED(CONFIG_PCI_DYNAMIC_OF_NODES))
+ 		return 0; /* Not enabled */
+
+CONFIG_PCI_DYNAMIC_OF_NODES has already to set explicitly by the user.
+
+
+Do you think it makes sense and could be a good alternative instead of
+filtering out a list of x86 systems ?
+
+Best regards,
+Hervé
 
