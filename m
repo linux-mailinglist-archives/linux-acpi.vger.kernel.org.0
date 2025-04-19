@@ -1,125 +1,200 @@
-Return-Path: <linux-acpi+bounces-13123-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13124-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CC38A94407
-	for <lists+linux-acpi@lfdr.de>; Sat, 19 Apr 2025 16:57:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B590CA9442F
+	for <lists+linux-acpi@lfdr.de>; Sat, 19 Apr 2025 17:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6631A1680AD
-	for <lists+linux-acpi@lfdr.de>; Sat, 19 Apr 2025 14:57:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B26BA7AAC41
+	for <lists+linux-acpi@lfdr.de>; Sat, 19 Apr 2025 15:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E0E1C8609;
-	Sat, 19 Apr 2025 14:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B5B1D54E9;
+	Sat, 19 Apr 2025 15:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SYHDdB78"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kqy9yxI0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86196B644;
-	Sat, 19 Apr 2025 14:57:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCB72D613;
+	Sat, 19 Apr 2025 15:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745074630; cv=none; b=kBfC03WE+TOMYYHe3xUHveNTY+C85lZHKJ2gcW+0ppHpLLpjgJe5zfCkbGKL/wxLTPFzJUj9HOc6pNbQcQ8cmsmpXte7WzP/2hzzCInP/PZHb6rAIyXsI0yGPS0s9pQCcd4bb4s7XpBgucWp/9q90UZn15Djie3TAfjowVGe5a0=
+	t=1745076646; cv=none; b=WZMdtSjrXxXjbG9omWsJNp5GH8guhQDe0Pl3oLmFnTmzdcNlLagtKsbPSAHsSFOMsRhKbYSCTDCjst3KHujoXGj7uydlVaNqR5kwyjKUwf1tv+DJ1Gw6WcMNdENlHK8ZplugqQMBC5RDOJ726toijEb8shHN/y6IXGitu/KEzFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745074630; c=relaxed/simple;
-	bh=EfW8iyCiQTttenkzgxw9qmd4szYCqkNpB+Jv3fRbpSw=;
+	s=arc-20240116; t=1745076646; c=relaxed/simple;
+	bh=EJY6VnbO/oorT+t/r51LBHIJCvd7pfE+OXcRXcdWp/Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QBvoqx3oAYL6x1bSoDCALBBxLAORXin7vpm0C0ya58KZB0qYKTYqke5b00ac5hxXDwcCT89Cj32MnMC+c62pepuE0rH0t7sJ9ijJSCfj4rPkmYpA2FCaRi15kXEySzhwuhePpEo5K+/Pe/wGOUudwh/jbXFcHw3sQmM9EOw/DEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SYHDdB78; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F98C4CEE9;
-	Sat, 19 Apr 2025 14:57:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745074629;
-	bh=EfW8iyCiQTttenkzgxw9qmd4szYCqkNpB+Jv3fRbpSw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SYHDdB78nWNz3I/InPQwlyxSrRf687bqduX/zMtUVJ56tp3mmCYqQcJV+p8Dfv5Z3
-	 J9MQD6bXfWVqowuc6UO7zDaZxIySxKDVoVplPVWdPDRJ1VLdHaxGUQYvimNMpTe7O+
-	 FpsHoKAiritrGbSB+92fwhEq6ftvDMCBe3mlmXpq2Y+NrwUVYXheJw4l0+E9Lplgf5
-	 KtlZmHa5JPsdKodoP4dSZerIHBuF8q2JoSqWNmoQFN+K63ID0ZJUsoc0CLXe2HFPHO
-	 XAdw4eg0VT8cYa7rmF+qRACeWg+vrPq5/DYFwgwx65WT7pW8bWlkVBqtg+9eG5OJtm
-	 3d8W39//GoH9w==
-Date: Sat, 19 Apr 2025 16:57:05 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Andy Shevchenko <andy@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=ti17lqHbCON2jdLEZmzsy2kys466Bas8u5XvAfHoiBAlqukOGGy9Z8KTyaRseiSaL4WwKXbS06GNfNFV+NcEaUhk3r3TnsFJBOrO49tzDv9WJcykqKJZTq488p3U8dgZBmIX4YK8zoY4l+uuM3u29XvQaa1vaX1sHiCTtnRljuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kqy9yxI0; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745076645; x=1776612645;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=EJY6VnbO/oorT+t/r51LBHIJCvd7pfE+OXcRXcdWp/Y=;
+  b=kqy9yxI0ZfoOWs1glYcuiUfAd8IeLhIOjzDKlyVWWtXmPI8Z9C3j6jdY
+   xg8nQpw9MkLbdPvL8dbzKq056ND84nxA0H+5Qujl7xO/ooR7uS2K/OOds
+   xAl+EoI3kw/L4UDV6+XO/MuBhtCt9LcHiEcCONqz+TvmGRdhQYERB0RHg
+   M/V4SXIwfEoEHO4b5XXwlXMh8dS4RWo6KnvzNsRFPiB2mIY3wGRL4f0VB
+   xW/6CqPb+7xI7w6rSL8+LulS6lJ4oL0UqgRQRwtzfgvZKF+8945e8fvif
+   qumRL0jDAoG5D4fndeSpAOK3l/R9fwoLOz1iZID/agGds9sJy/s0ohkO4
+   A==;
+X-CSE-ConnectionGUID: OO56U8EaR3y71mlFyqiocg==
+X-CSE-MsgGUID: 2P+9OFUcSfyqAHX5Eluckg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11408"; a="46806652"
+X-IronPort-AV: E=Sophos;i="6.15,224,1739865600"; 
+   d="scan'208";a="46806652"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2025 08:30:44 -0700
+X-CSE-ConnectionGUID: CuoieLxUT1K3ksC/Kut48Q==
+X-CSE-MsgGUID: ZSJTu6nsQF+IEiTNRnHGnA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,224,1739865600"; 
+   d="scan'208";a="154517506"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Apr 2025 08:30:35 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1u6A9I-0000000DqsB-0AwJ;
+	Sat, 19 Apr 2025 18:30:32 +0300
+Date: Sat, 19 Apr 2025 18:30:31 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
-	LKML <linux-kernel@vger.kernel.org>, linux-pci@vger.kernel.org
-Subject: Re: [PATCH 1/1] x86: Use resource_set_{range,size}() helpers
-Message-ID: <aAO5weh0nks6nqBq@gmail.com>
-References: <20250416101318.7313-1-ilpo.jarvinen@linux.intel.com>
- <Z_-E3W8i4EfxdBh3@smile.fi.intel.com>
- <a046f6bb-0b6e-a431-eaa5-ecd279459f86@linux.intel.com>
- <aAIB7Om9n_tXDnvk@gmail.com>
- <db829a60-c524-73bc-e7c3-fed60e980d99@linux.intel.com>
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 11/16] of: property: Allow fw_devlink device-tree support
+ for x86
+Message-ID: <aAPBl7qdbUizMQko@smile.fi.intel.com>
+References: <20250407145546.270683-1-herve.codina@bootlin.com>
+ <20250407145546.270683-12-herve.codina@bootlin.com>
+ <Z_Pw_MoPpVNwiEhc@smile.fi.intel.com>
+ <20250408154925.5653d506@bootlin.com>
+ <Z_U0DkSemHK0lrJW@smile.fi.intel.com>
+ <20250418151036.719f982b@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <db829a60-c524-73bc-e7c3-fed60e980d99@linux.intel.com>
+In-Reply-To: <20250418151036.719f982b@bootlin.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
+On Fri, Apr 18, 2025 at 03:10:36PM +0200, Herve Codina wrote:
+> On Tue, 8 Apr 2025 17:34:54 +0300
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> > On Tue, Apr 08, 2025 at 03:49:25PM +0200, Herve Codina wrote:
+> > > On Mon, 7 Apr 2025 18:36:28 +0300
+> > > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:  
+> > > > On Mon, Apr 07, 2025 at 04:55:40PM +0200, Herve Codina wrote:  
 
-* Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> wrote:
+...
 
-> On Fri, 18 Apr 2025, Ingo Molnar wrote:
-> 
-> > 
-> > * Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> wrote:
-> > 
-> > > On Wed, 16 Apr 2025, Andy Shevchenko wrote:
+> > > > This is incorrect, they never had ACPI to begin with. Also there is third
+> > > > platform that are using DT on x86 core â€” SpreadTrum based phones.  
 > > > 
-> > > > On Wed, Apr 16, 2025 at 01:13:18PM +0300, Ilpo Järvinen wrote:
-> > > > > Convert open coded resource size calculations to use
-> > > > > resource_set_{range,size}() helpers.
-> > > > > 
-> > > > > While at it, use SZ_* for size parameter which makes the intent of code
-> > > > > more obvious.
-> > > > 
-> > > > ...
-> > > > 
-> > > > > +	resource_set_range(res, base, 1ULL << (segn_busn_bits + 20));
-> > > > 
-> > > > Then probably
-> > > > 
-> > > > 	resource_set_range(res, base, BIT_ULL(segn_busn_bits) * SZ_1M);
-> > > > 
-> > > > to follow the same "While at it"?
+> > > I will rework the commit log to avoid 'mixing ACPI and device-tree'
 > > > 
-> > > I'll change that now since you brought it up. It did cross my mind to 
-> > > convert that to * SZ_1M but it seemed to go farther than I wanted with a 
-> > > simple conversion patch.
-> > > 
-> > > I've never liked the abuse of BIT*() for size related shifts though, 
-> > > I recall I saw somewhere a helper that was better named for size 
-> > > related operations but I just cannot recall its name and seem to not 
-> > > find that anymore :-(. But until I come across it once again, I guess 
-> > > I'll have to settle to BIT*().
+> > > For "SpreadTrum based phones", do you have an idea about the Kconfig symbol
+> > > I could use to filter our this x86 systems?  
 > > 
-> > BITS_TO_LONGS()?
+> > Hmm... good question. I don't think it was anything. The Airmont core just
+> > works and doesn't require anything special to be set. And platform is x86 with
+> > the devices that are established on ARM, so nothing special in device tree
+> > either, I suppose. Basically any x86 platform with OF should be excluded,
+> > rather think of what should be included. But I see that as opposite
+> > requirements to the same function. I have no idea how to solve this. Perhaps
+> > find that SpreadTrum Intel Atom-based device? Would be really hard, I believe.
+> > Especially if we want to install a custom kernel there...
+> > 
+> > > Anything I find upstream related to SpreadTrum seems base on ARM cpus.
+> > > I probably miss something.  
+> > 
+> > There were two SoCs that were Intel Atom based [1]. And some patches [2] to x86
+> > DT code were made to support those cases.
+> > 
+> > > > And not sure about AMD stuff (Geode?).  
+> > > 
+> > > Same here, if some AMD devices need to be filtered out, is there a specific
+> > > Kconfig symbol I can use ?  
+> > 
+> > This is question to AMD people. I have no clue.
+> > 
+> > [1]: https://www.anandtech.com/show/11196/mwc-2017-spreadtrum-launches-8core-intel-airmontbased-soc-with-cat-7-lte-for-smartphones
+> > 
+> > [2]: 4e07db9c8db8 ("x86/devicetree: Use CPU description from Device Tree")
+> > and co. `git log --no-merges 4e07db9c8db8 -- arch/x86/kernel/devicetree.c
 > 
-> Hi Ingo,
+> I have tried to find a solution for this topic.
 > 
-> I'm not entiry sure if you're referring to my BIT*() matching unrelated
-> macros such as BITS_TO_LONGS() (I only meant BIT() and BIT_ULL() which I 
-> thought was clear from the context), or that BITS_TO_LONGS() would be the 
-> solution what I'm looking for.
+> Indeed, this patch enables fw_devlink based on device-tree on all x86
+> platform except OLPC and CE4100.
+> 
+> You have mentioned some other x86 based system that could have issues with
+> fw_devlink and it seems to be hard to have a complete list of systems for
+> which we should not enable fw_devlink (potential issues and so regression
+> against current kernel behavior).
+> 
+> As you also proposed, we can thing on the opposite direction and enable
+> fw_devlink on x86 systems that need it.
+> 
+> We need it because we need the device-tree description over PCI device feature
+> (CONFIG_PCI_DYNAMIC_OF_NODES) on x86 in order to support the LAN966x use case.
+> 
+> What do you think about the following condition?
+> 
+> 	if (IS_ENABLED(CONFIG_X86) && !IS_ENABLED(CONFIG_PCI_DYNAMIC_OF_NODES))
+>  		return 0; /* Not enabled */
+> 
+> CONFIG_PCI_DYNAMIC_OF_NODES has already to set explicitly by the user.
+> 
+> Do you think it makes sense and could be a good alternative instead of
+> filtering out a list of x86 systems ?
 
-Indeed, I misremembered BITS_TO_LONGS() - now that I looked up its 
-definition it's definitely not what you wanted... :)
+At least this won't break old platforms that won't set that configuration
+option. Ideally, of course, it would be nice to have some kind of detection
+at run-time...
 
-Thanks,
+-- 
+With Best Regards,
+Andy Shevchenko
 
-	Ingo
+
 
