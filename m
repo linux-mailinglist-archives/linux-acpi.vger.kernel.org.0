@@ -1,122 +1,122 @@
-Return-Path: <linux-acpi+bounces-13133-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13134-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A955BA954ED
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Apr 2025 18:50:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0FCEA95674
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Apr 2025 21:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94DF418843C3
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Apr 2025 16:50:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7EFB1895EF7
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Apr 2025 19:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827841E0DCB;
-	Mon, 21 Apr 2025 16:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7B11E9B32;
+	Mon, 21 Apr 2025 19:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CnMonYfl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D6wGfLMY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5047213D53B
-	for <linux-acpi@vger.kernel.org>; Mon, 21 Apr 2025 16:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE7813CF9C;
+	Mon, 21 Apr 2025 19:05:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745254225; cv=none; b=SSuTqZWY+u/6DnvDGjaMj/Co4Y1gGP0B2V0j2iZtyUUmf3CPo25inqCTN8vPdeaiPEK742oK2jB5CZ7Yrcjp5dYyfTdEPgMoz/d1GI+TTGVInuJMbgX37PBKdBKivwhlR99YffrpTknA2BxyKa396r0NrTrsMbD5IwzhqCY7eYI=
+	t=1745262314; cv=none; b=FF4u1Ybozj082i1oEDtQ8JEIDL7ArzHPTfy3iBEkhSvKsnXqgVUjblBQ62TaRSVIGcd7DlZFV+juNxFI36IpAM7hqBM2wIz9HKGcqwwDVwXMdriBW4aXV9k0z9gEDrkW8CczyAbQF1g5jTQYXtffEO5sYUHdWV+5C7LR/g+ogfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745254225; c=relaxed/simple;
-	bh=75jmGP9bVo8fjvixWVxCAKwFwqHftpu3jiKMLJI5AIA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=adW5ub9Cg0OE1dS9V4fw3wqdcmC8yL2rbHGm1uyqxfthn1ZUDnxWrGWlAi+TzrYKX8nk7JAMQYCJNPOfhFgD3wu5Xa9HPYcUuWMV1/n8cPXuTEr7SYh+QGxowisQUFEZu4sMsRYI3SMYiwNcFZsu8ZhERPFYUYa3FsbF3Gk/zrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CnMonYfl; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ac2902f7c2aso641272266b.1
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Apr 2025 09:50:21 -0700 (PDT)
+	s=arc-20240116; t=1745262314; c=relaxed/simple;
+	bh=cEhy27CeZeK5QaxV6IxlodG4p2ysqvsgc8gma+Bn4Y0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Mmu2K4qz0vS51hzTIvWzhpNZw4F8fCU3pPaUf+wVTQGdfbOMUDPMJ1vvaQJ1QO2UJYQ8SyeY0Hs53Cl4dCBCM60vaVoyfaiCyf3mJ7CIgnNPoXW0SNlw3Yu2b7cwLt/sERUdCRxhNjeF2s4sABQ9CesSmIzDO4vHilXUPE8Mvns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D6wGfLMY; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-af28bc68846so3723862a12.1;
+        Mon, 21 Apr 2025 12:05:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1745254220; x=1745859020; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AjR2RVxOW6ZgZFj+OsQW+gCNX95bGPWFoitBsuyvSlg=;
-        b=CnMonYflQnOvPvlIBHfb6wub3w0Ou6/QwcKZkxzvEmLP6m8tsYkMziuQjKcE12cGJR
-         bDGhZlKFDeiGoQPkJWNC1eW5v3J+Jr5MogW5a0k64q1qfa083WNXa0mTzgP3QmNWAnh7
-         824A+4DI+u+Ft8LKq0Xo3upiVEI7rZdFVYdAI=
+        d=gmail.com; s=20230601; t=1745262312; x=1745867112; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=egqOJo53kX1P4lbE+VhU9h/iDcziStXYm40YlBK6LPA=;
+        b=D6wGfLMY2j7j3lvE/ANA0B47633rwUZWOq9lEEUBQvxsHdQ9R9W9TpSTBgvZeMv3S0
+         qedxL31BNZE0UPQBkH1wLIDSM2NHdr0Wd7lexFRNvCM/8a8e3wSmLLUkY6pnwxVWScbT
+         zCbtIaI69/L6O9YzjMBHGzhZCl2rMivVKeUerRmtSEUsBO7YzJiaxOQi6q3i2nKMAvhK
+         WrGnWiIDvUAnmYC5GuoRB3TNhw8BxsBXsRYsUfmKZSQZ4/knlGKYcJwS5VWQMArnpQ9t
+         gA+T1NU8mb+1U7wEokpI8WhzED2g73zAiSdcbixeS6AZ+LWn8OlRgR7rIPFlMA+9cfs0
+         BJGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745254220; x=1745859020;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1745262312; x=1745867112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=AjR2RVxOW6ZgZFj+OsQW+gCNX95bGPWFoitBsuyvSlg=;
-        b=Qe2WI7v91f0UoIS4p7rAA5IgrECKyOm4yXwEOwzo2SsC0UGP9cjjycVKHCnhZExoMm
-         NV6reibCZdl/eMNuVWFlIuFqOiDuBYyjiGm/1EHmoV+dYOY2qKYSNaxM5r4Fwpmw1E7J
-         HLZaj5iNcvRoD+uo+vyBpmOXqlAIY5V3d6N63RClJcX7gJvjEZoFHn8gUZQDaCFsZF/4
-         N0/YiwsLTJvXST+ck+JoCbp0SZR2exmA1w19klcN2SwOeDoWxKnObZKyOPeldDEdOa8Q
-         bjtxXg/gaeX2pr0sBM0PcFZ15uaa0pOLqjGVKx71qm9J2SGulPMylE6x24MQsUn3nTi1
-         GoIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXadaEMZXv9xXUef5HVzxZidCLpZytmgPRgyxP4lw68HsWuoD24AL86uRIBVgqyceYRrWOGaMkqlx9l@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIgEURmVwcQ0GS7o24cl7DwMwlv1wULmrW300fXSZVAHk6lQ9g
-	gv2vbJ0HOQ/CJo53+A1UAYa8/8ath9pwnytVWs/dPizk5zdIn131jlgB2whol/dG99q2XyIUmAm
-	YUxA=
-X-Gm-Gg: ASbGncuKzKgtld72swli/rlZKfL8gWXtzHODX0ghCsngXQBjtecyxqpbVbMb2ZU4awI
-	c/wvhDl3BC6GNu40fix6aAftREhcIjs0tWa3GWnIALILMEgTy91p0I5hkI5QgcMJZThNsNkHYjn
-	m2LqbZJbThwXcjnUMENYIVqsWVGcO6bAFht6CL9JKAOd5nPgAKfyNECRIHEnrr+CS9/dLHo+M0O
-	MnKRYBoerC36J4tQOVYH02ilqsgdNhzYSo2Xyb/flOY2AEvXjDVqobbj/iTrb92t7YK+RZ5rK8J
-	NeT5V4Y3zyewXzL9Wu8AWDPoJXS8mSucp6DUWftsq3qANGaDcG1IGi7iAFL7hJ0VZxAG6mfEoUx
-	q2frQ1oR3PUIlBiI=
-X-Google-Smtp-Source: AGHT+IEMHrclfYOwwb6bV4msxQK0aLDtTxC+gZHeCwa13YRhwjetsGmUAmLAdDF2C3XkXKTKgjW9MA==
-X-Received: by 2002:a17:907:3d88:b0:ac3:3cff:268 with SMTP id a640c23a62f3a-acb74ba6265mr1094147766b.30.1745254220306;
-        Mon, 21 Apr 2025 09:50:20 -0700 (PDT)
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com. [209.85.208.47])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6ec42af6sm527613666b.43.2025.04.21.09.50.19
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Apr 2025 09:50:19 -0700 (PDT)
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5e5c7d6b96fso6944691a12.3
-        for <linux-acpi@vger.kernel.org>; Mon, 21 Apr 2025 09:50:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVYuWaU/EadfCxRYB+L3UyybTyPWkmZ1yLEIv9Aap2bMo+Q6AvI3CCLVJkd9rIvBprgG4jNs//T1/aD@vger.kernel.org
-X-Received: by 2002:a17:907:9488:b0:ac2:baab:681c with SMTP id
- a640c23a62f3a-acb74b7faedmr1249730566b.28.1745254219430; Mon, 21 Apr 2025
- 09:50:19 -0700 (PDT)
+        bh=egqOJo53kX1P4lbE+VhU9h/iDcziStXYm40YlBK6LPA=;
+        b=WXbkqV0HS5kI112vNqwngyPS6FK+FkdWZ9GsiFMfX/TY5lutgGYJR67MV61a6VRBph
+         1iPpQafLK2LYvtY3um2ptfig1aiKP61hpSDbuqTI9U9lI4twyqtkG1tiimqZzml6YjXl
+         7x35VWRXY4su/6f1DIasIqxV7Aic06j4Van4uWIsarqbV/hgaEeI3U8+/foRCYCstU1B
+         vWjXs37r/eZmbF+AGF5yOJYRHu+HV0PKzH6DRc+sAVpNNRozAKsdB+dCuKtaYaCbBvo3
+         GNmUlzlOD6uIKIThs4+s1hjC3vxi+Q+NUu1UMVqfL6dxOPJcurh84WZdqgoTOQn20WOf
+         Xkhw==
+X-Forwarded-Encrypted: i=1; AJvYcCU2p09z+NSVwxsxoDG+4cSK2RQlcWBxWavG6WQ53q/w1KKoS4OEnLIwUPKd/T+6/H7CuR92+WBHcdqZ+3UF@vger.kernel.org, AJvYcCXGIdaAIrBzB7dXf+xYYZC//6mkEX8bAPEWbwPvyX4eZpXzMuV22mCcxvJmRUJ2FbSO3bUIxxTK23DJ@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjAUNxUok3fsekB50pD6pA2Y8d5VB3dqdmDkr29zZ41FTDCcIz
+	U0Q0/7qwnlJvjc1oe12ZA6D9/LVvPv5UtA7ZPK3h4rwrGJFv9crvBTMpYQSA/RI=
+X-Gm-Gg: ASbGncsPPbUJIDK5N60ic9o5LnJWn1F5orqMEHTpvvFOtpOHEd/MBK38d4DH1b87fwM
+	f9TDc/xj+GGXUqG3/MNvcPWcNFZv6wmdJvJaTJIBorA4vtv0+wmfnfcy/3X9f372bCWR/CUyXRp
+	lqdpFsaLbejDEL5+ToNLDcoxrCL9N30KvvXrfLbqfaB9HAo7xlmm/6NcJWsGPKrN02CvyZG7Yle
+	1H/QObpVG8wmvrUrM6f/nnc6o7kA31jPW9bLSIhjjP7jysbQKcrGtdkGqlP/Ih9NYdg3/YaQluv
+	R0ZmBWOIo5CPLFHc7Cezw1vtKvfK0hqyKRjGpU7niW/UK+5ZMU499iHzAA==
+X-Google-Smtp-Source: AGHT+IG+/gqtX0vOJFK0tshavpdIR3JZHVPcmtJiP25Ax4HJgjZf025N9Kpiub2relValP+7nHvjzw==
+X-Received: by 2002:a17:90b:1c0a:b0:2f2:a664:df1a with SMTP id 98e67ed59e1d1-3087bb39638mr19952075a91.2.1745262312528;
+        Mon, 21 Apr 2025 12:05:12 -0700 (PDT)
+Received: from acer-Nitro-ANV15-41.. ([61.83.230.5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3087df05153sm7017526a91.11.2025.04.21.12.05.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Apr 2025 12:05:12 -0700 (PDT)
+From: "shaikh.kamal" <shaikhkamal2012@gmail.com>
+To: rafael@kernel.org
+Cc: "shaikh.kamal" <shaikhkamal2012@gmail.com>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPI: tables: Remove incorrect __nonstring attribute from table_sigs
+Date: Tue, 22 Apr 2025 00:34:43 +0530
+Message-ID: <20250421190444.163923-1-shaikhkamal2012@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4f941c51-784a-4f10-8df5-6bd103d1d80e@roeck-us.net>
- <202504201840.3C1F04B09@keescook> <CAHk-=whryuuKnd_5w6169EjfRr_f+t5BRmKt+qfjALFzfKQNvQ@mail.gmail.com>
- <202504210909.D4EAB689@keescook>
-In-Reply-To: <202504210909.D4EAB689@keescook>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 21 Apr 2025 09:50:03 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whjZ-id_1m7cgp4aC+N6yZj3s5Jy=mf2oiEADJ3Tp8sxw@mail.gmail.com>
-X-Gm-Features: ATxdqUE3yRy15GcXJDAlg5Pr-Yx6SJeDj43KQDBRp_RmQ2nTvhE5ZYLb4m2ELZQ
-Message-ID: <CAHk-=whjZ-id_1m7cgp4aC+N6yZj3s5Jy=mf2oiEADJ3Tp8sxw@mail.gmail.com>
-Subject: Re: [PATCH] gcc-15: acpi: sprinkle random '__nonstring' crumbles around
-To: Kees Cook <kees@kernel.org>
-Cc: Guenter Roeck <linux@roeck-us.net>, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 21 Apr 2025 at 09:39, Kees Cook <kees@kernel.org> wrote:
->
-> Yes, I understand that, but you didn't coordinate with anyone.
+The table_sigs array is declared as a 2D char array with a fixed size
+(ACPI_NAMESEG_SIZE, which is 4). The use of the __nonstring attribute
+here is unnecessary and triggers a compiler warning:
 
-I upgraded my machine overnight and released rc3 on Sunday.
+  warning: ‘nonstring’ attribute ignored on objects of type ‘const char[][4]’
 
-And honestly, at that point I did not *CARE* about coordinating. I had
-expected things to work, since I knew people had been working on it,
-and since F42 had already been released.
+Since GCC ignores this attribute on such declarations, and it causes
+a build failure due to -Werror, remove __nonstring to fix the issue.
 
-The fact that you then complain about a "unreleased compiler version"
-is ludicrous.
+Signed-off-by: shaikh.kamal <shaikhkamal2012@gmail.com>
+---
+ drivers/acpi/tables.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-If you had fixes for it, and they hadn't made it to me, that is 100% on *you*.
+diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+index b5205d464a8a..2295abbecd14 100644
+--- a/drivers/acpi/tables.c
++++ b/drivers/acpi/tables.c
+@@ -396,7 +396,7 @@ static u8 __init acpi_table_checksum(u8 *buffer, u32 length)
+ }
+ 
+ /* All but ACPI_SIG_RSDP and ACPI_SIG_FACS: */
+-static const char table_sigs[][ACPI_NAMESEG_SIZE] __initconst __nonstring = {
++static const char table_sigs[][ACPI_NAMESEG_SIZE] __initconst = {
+ 	ACPI_SIG_BERT, ACPI_SIG_BGRT, ACPI_SIG_CPEP, ACPI_SIG_ECDT,
+ 	ACPI_SIG_EINJ, ACPI_SIG_ERST, ACPI_SIG_HEST, ACPI_SIG_MADT,
+ 	ACPI_SIG_MSCT, ACPI_SIG_SBST, ACPI_SIG_SLIT, ACPI_SIG_SRAT,
+-- 
+2.43.0
 
-My problem was that my kernel didn't build, and that is what I needed
-to fix. It was way too late to worry about "coordinating" things at
-that point.
-
-               Linus
 
