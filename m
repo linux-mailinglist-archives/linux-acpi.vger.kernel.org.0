@@ -1,152 +1,171 @@
-Return-Path: <linux-acpi+bounces-13193-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13194-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA781A97615
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 21:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE04AA979C8
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 23:55:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1DD03B8EDF
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 19:51:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8E0F3A555A
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 21:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E52E298CC9;
-	Tue, 22 Apr 2025 19:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7092749C8;
+	Tue, 22 Apr 2025 21:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sEsuM4T/"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mNtzwtl4"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF252980D5
-	for <linux-acpi@vger.kernel.org>; Tue, 22 Apr 2025 19:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608381F7910
+	for <linux-acpi@vger.kernel.org>; Tue, 22 Apr 2025 21:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745351486; cv=none; b=EGt2PYQni3RTgI07r2NHpZUqiwxR22YLXSdqgqrWKlmaxXHyMKV9ip6D1Mm1wpyqRIfPFkgSsgbq/kkLo35aTcSBT0O5Vv3EBRZa1ewPQdJRQUx1phqL7cNEgsagl4bfEAMm/eVYXL1wyYmTEfK9WYyue/oDPuit/kJrNGdYYlQ=
+	t=1745358935; cv=none; b=UfTj3uiDTb4q26k6VJ6EBAhMxv+tP+F3Xauw5hbJKthLmf42tmOnPdD/VloYFuWAwaDM3MnDb6HgsDz0DkvudBDnfYNMgfd4j00TMVK98D58IgNCf1cfkWI1/bFlUmQxgweCl2RzF5RJ6viSDxnYRLMB+UKqldx2axUcCe1YGE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745351486; c=relaxed/simple;
-	bh=G+t2v6BhLb+5vWztzdpssgwdNSlTOk90KThSVmnEfpo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OUXCGqlBgfIzx8K98WmK+fCELJ2uaCI8fA5ul8xJr96Gnnoqr4O751dzyD/uHtUDbjMsxdf4/uYL9uyMGesVqkVl+dmW7dvhgHz5yUXbE2D+Bg4fxwHax6uEHZhqAkodLCZVRqyy81MN+7LJxy9xJrccPRC1fruXwmwwVKwYfXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sEsuM4T/; arc=none smtp.client-ip=209.85.215.202
+	s=arc-20240116; t=1745358935; c=relaxed/simple;
+	bh=IBg6T/8bdZueoIIYbP2yfI78xemmRKXPfW+X6Epwyb0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WzCTyKjETKwsXwSxFH9W9kSs7Vy3xQ7998FmPB6aoXhc528U1eLFDVd99Yvq8hL+yKB4Pe5A1ropDK/5k67FMzcYmBczOYo7gFqAkFW7d20fWKAfmFCzPByqeBmgAdmGM7RI8jx7rJZHRfZFUnCuJh9RbDxGIXCeYRflQuya87E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mNtzwtl4; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-af5310c1ac1so3178623a12.2
-        for <linux-acpi@vger.kernel.org>; Tue, 22 Apr 2025 12:51:23 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2260c91576aso49807955ad.3
+        for <linux-acpi@vger.kernel.org>; Tue, 22 Apr 2025 14:55:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745351483; x=1745956283; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mH6UGx1+cJUt0+vdtDYj5GNgwh2+pJEonMo7kApLLOI=;
-        b=sEsuM4T/6AiEfbcv6LEBX9nIBDT+43JI3MKdo3iKnkO2YqI70DcND2IDwLROe9Q4D5
-         GArSdE4crjfrbQKmyHy1Els5AUgocKZZBhQ4ePOShvuMia5QfeqWQImCd0ooUy3J7eaq
-         uQ6iKaiB9W6Oab+GGxn3MZLM2zo9IQaI7BW1VoDi98zqEoGP3JMAMBj5PRaUmpBLWtRo
-         mjh4DGwfQSGSsttkwj1ptnNcpnPTSEHYTK8QeWv5i016xI7jxtl9m17cB/A22/f5mrtk
-         Q0lgI2Pwnlfgiq4aj2EbhSZVbFNZn+LTprUdDBVTDrYPrI9CfkqS4laNY2dRY2mAg8i+
-         vevA==
+        d=google.com; s=20230601; t=1745358934; x=1745963734; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6asYMkdcVOCJg0CB/GTsjjXoi08Jnm+cXJbFRuu7HS8=;
+        b=mNtzwtl4JAHZuhoc2HzSch8z8+L0KSMRub2FADRi2yRKAXF5gqNmxiX/ASd3KPKCD0
+         dR35IalbwZ10/julJmkFHlwAQKQ7tgg6RX/DO+Gx/4eKhM6JAy4inXLZoj8uROrL4aor
+         +wPI+5xwsS7hzMmsz8OBtqDOfxx0U8r89/zHLM/8fFDgpPCxQsL5zg69c+iV9wv3kS9R
+         ENMqGwSN1FQFBW43oo63lGcQw4WI+zW1TLJYAiCMCUYEk2GBqpaq94KY0vU9IxUM2MAa
+         K0dWQ2IRNpeGZR4bCzbnS/Jnl3axCQmYsS2NOSx9hbxQntCnLAT35OLwdhJLswFRaKsi
+         g1dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745351483; x=1745956283;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mH6UGx1+cJUt0+vdtDYj5GNgwh2+pJEonMo7kApLLOI=;
-        b=bmRpWsaQlkg+1+95EX7X/gnij5X29aMeCmX6QPxMLyysTlFt5E9erjtxdwVLXKM/ke
-         meQxULQ6DNtV53G4ykxKOtoP1syyXtAVPtslH8Gy8+SsZU39SXF0QDaE/xs/FUSg6CYN
-         a3786RUcPU0eER6xXPejBxT+lCkhemHQtPpm4G2yjW6QLYudUz1qiYJZJUoFDHgJ/KuD
-         gqGvB54/vpmpdkVr+qkRKxcPvKysN7A/HGD6sY3swwj9VcayKF41MYX3zUBCJ3mVof89
-         68c3NP5m9+cqO2CWEdlbh3WC9o603rv0uqWs6InpwA+3X3RZRAOJtg0Y7jd/UcQRkvUF
-         KJkA==
-X-Forwarded-Encrypted: i=1; AJvYcCVVC+oRFoToy54pQ6o5DBANyxOKSxNmVtjBAON4JsJ8R5fXu8vpwJLNUjC/4YMkwvPAgZajN4qbDgR1@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+sfai0pEHuaP5KRaGXKMOIbwN176BgA6tqpcNhdAfNQzpyUG9
-	8HzDH6oQBGxyi/n2/rhZuKv6VSBTYULLoxLo5kGr9wqeJDuOYz6oEotk1owO3m6b9Ck+HuFj/sX
-	7bQ==
-X-Google-Smtp-Source: AGHT+IGkV0RcloCvNwgssDSlkXsqRo5n8/rzSZ0U6QUVt02K3Nbge8IReH8D+uHUWVsCRD28uFY//07FCPo=
-X-Received: from pjbsr7.prod.google.com ([2002:a17:90b:4e87:b0:301:2679:9d9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b90:b0:2ee:bc7b:9237
- with SMTP id 98e67ed59e1d1-3087bb9ede2mr21004314a91.27.1745351482796; Tue, 22
- Apr 2025 12:51:22 -0700 (PDT)
-Date: Tue, 22 Apr 2025 12:51:21 -0700
-In-Reply-To: <aAfxuby_0eZZTrj-@gmail.com>
+        d=1e100.net; s=20230601; t=1745358934; x=1745963734;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6asYMkdcVOCJg0CB/GTsjjXoi08Jnm+cXJbFRuu7HS8=;
+        b=uomQbqEJnSNcMH+tanAI/rVFKL2mQHZEAHVyAWkZvZAvh165dAZY7oXdQqxwTR3Bpw
+         df6088urdhARH4Jc8FNTYTTa8OSDpmpIvfXejYusoSJmbIoPik0Mftz8+Eh16XdOfscA
+         xyt7x8CpvvNC65hGsEU4mdbIZD+1onBTKUprHz6z9me59OLAybf2p4thiriMrpIzd1le
+         vd3KEWtrFZRm+k8FmHH1LrnukG4SHClYs2VtgJmLCb3yNR2AiOwCyeagG+E5tFr92UJI
+         Uv1GOjR8ig66WlU0YB1Y1S67koAnYj9WIrF96MYbZu+ECnXJ35zpvSHPTcpMfbrf8GDi
+         XIuw==
+X-Forwarded-Encrypted: i=1; AJvYcCXlckRWfKuqukpnfFl3+6RxDslTYwJNGhIt8dXIk4CSTK/vLPx2hI7iASfcsOi/VdBuo1p1OwJth84E@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXNFKSS+Okayj0/cnpYuxjTV2nl90ppdvzA2RRAPE+QYA77tsP
+	Y5bf9cK/l1xxgGAqxGKNRKqtyGmhzByHhn/J7/YjfaEscVgrUpOsR5opZRfs+A==
+X-Gm-Gg: ASbGnct9TjPY+mhdsTx0GFxR1yF3LO7xxiwIAGiiKFZZo/JEQ+82MmH7ypogzBf7PTm
+	+/+3KUg39tvpDDQq28nMi4BO9i/bmNJQApzG1EmRqNnN+FnCY34g7HFwPdYD0slR1S1h/sZ29GI
+	XiTCL4S0ypzvhN9AA2X+FBw9fP0UrYXiXEzQzabU/tXhlCJy8RmEPmcfwVerma9yV5PxqB12Dc9
+	U+tfrWvnjlwxSPIkZ7jydrzKv3ynX8zylHCiiWWUVjL237OH9vE4v1RsN5asdywyHYAUIlzrH8Z
+	G+UuZCQEXJGzqX/yza48sRdJrXEReGwqpmnq23LZlJlxDpySv8w3Gn9i6dpi76PYyct6V37S6du
+	9uq00fA==
+X-Google-Smtp-Source: AGHT+IGj1WS3gCYuWNM31cHMqZpSCdXyw2eIzHGcK/aumOJ6NuA9dKBVMTjVtVR1uQU6qgyTGOQ+uQ==
+X-Received: by 2002:a17:902:ce82:b0:216:53fa:634f with SMTP id d9443c01a7336-22c536303e4mr222403105ad.48.1745358933312;
+        Tue, 22 Apr 2025 14:55:33 -0700 (PDT)
+Received: from google.com (7.104.168.34.bc.googleusercontent.com. [34.168.104.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50bf3eb1sm90943865ad.82.2025.04.22.14.55.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Apr 2025 14:55:32 -0700 (PDT)
+Date: Tue, 22 Apr 2025 14:55:28 -0700
+From: William McVicker <willmcvicker@google.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Russell King <linux@armlinux.org.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Stuart Yoder <stuyoder@gmail.com>,
+	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	Charan Teja Kalla <quic_charante@quicinc.com>
+Subject: Re: [PATCH v2 4/4] iommu: Get DT/ACPI parsing into the proper probe
+ path
+Message-ID: <aAgQUMbsf0ADRRNc@google.com>
+References: <cover.1740753261.git.robin.murphy@arm.com>
+ <e3b191e6fd6ca9a1e84c5e5e40044faf97abb874.1740753261.git.robin.murphy@arm.com>
+ <aAa2Zx86yUfayPSG@google.com>
+ <20250422190036.GA1213339@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250422082216.1954310-1-xin@zytor.com> <aAevpauKYWwObsB7@google.com>
- <cb4e24a0-fdb7-46d2-9b0e-200f5e3e4c96@zytor.com> <DS7PR11MB6077B4D80EB7020C4D3FCD52FCBB2@DS7PR11MB6077.namprd11.prod.outlook.com>
- <aAfxuby_0eZZTrj-@gmail.com>
-Message-ID: <aAfzOWnYzcPjZDEI@google.com>
-Subject: Re: [RFC PATCH v2 00/34] MSR refactor with new MSR instructions support
-From: Sean Christopherson <seanjc@google.com>
-To: Ingo Molnar <mingo@kernel.org>
-Cc: Tony Luck <tony.luck@intel.com>, Xin Li <xin@zytor.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, 
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>, 
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>, 
-	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, 
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>, 
-	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
-	"linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>, 
-	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"hpa@zytor.com" <hpa@zytor.com>, "acme@kernel.org" <acme@kernel.org>, "jgross@suse.com" <jgross@suse.com>, 
-	"andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>, "peterz@infradead.org" <peterz@infradead.org>, 
-	"namhyung@kernel.org" <namhyung@kernel.org>, "mark.rutland@arm.com" <mark.rutland@arm.com>, 
-	"alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>, "jolsa@kernel.org" <jolsa@kernel.org>, 
-	"irogers@google.com" <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	"kan.liang@linux.intel.com" <kan.liang@linux.intel.com>, "wei.liu@kernel.org" <wei.liu@kernel.org>, 
-	"ajay.kaher@broadcom.com" <ajay.kaher@broadcom.com>, 
-	"bcm-kernel-feedback-list@broadcom.com" <bcm-kernel-feedback-list@broadcom.com>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
-	"luto@kernel.org" <luto@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
-	"kys@microsoft.com" <kys@microsoft.com>, "haiyangz@microsoft.com" <haiyangz@microsoft.com>, 
-	Dexuan Cui <decui@microsoft.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250422190036.GA1213339@ziepe.ca>
 
-On Tue, Apr 22, 2025, Ingo Molnar wrote:
-> 
-> * Luck, Tony <tony.luck@intel.com> wrote:
-> 
-> > > >> base-commit: f30a0c0d2b08b355c01392538de8fc872387cb2b
-> > > >
-> > > > This commit doesn't exist in Linus' tree or the tip tree, and the series doesn't
-> > > > apply cleanly on any of the "obvious" choices.  Reviewing a 34 patches series
-> > > > without being able to apply it is a wee bit difficult...
-> > > >
-> > >
-> > > $ git show f30a0c0d2b08b355c01392538de8fc872387cb2b
-> > > commit f30a0c0d2b08b355c01392538de8fc872387cb2b
-> > > Merge: 49b517e68cf7 e396dd85172c
-> > > Author: Ingo Molnar <mingo@kernel.org>
-> > > Date:   Tue Apr 22 08:37:32 2025 +0200
-> > >
-> > >      Merge branch into tip/master: 'x86/sev'
-> > >
-> > >       # New commits in x86/sev:
-> > >          e396dd85172c ("x86/sev: Register tpm-svsm platform device")
-> > >          93b7c6b3ce91 ("tpm: Add SNP SVSM vTPM driver")
-> > >          b2849b072366 ("svsm: Add header with SVSM_VTPM_CMD helpers")
-> > >          770de678bc28 ("x86/sev: Add SVSM vTPM probe/send_command
-> > > functions")
-> > >
-> > >      Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> > >
-> > >
-> > > You probably need to git pull from the tip tree :-)
-> > 
-> > If possible, you should avoid basing a series on tip/master as it 
-> > gets recreated frequently by merging all the topic branches. The SHA1 
-> > is here today, gone tomorrow.
-> 
-> Correct, although for x86 patch submissions via email it's not wrong: 
-> what applies today will likely apply tomorrow as well, regardless of 
-> the SHA1 change. :-)
+Hi Jason,
 
-Yeah, but as Tony pointed out, when using base commit that may be ephemeral, then
-the cover letter needs to call out the tree+branch.  This series applies on the
-current tip/master, but there was nothing to clue me into that fact.
+On 04/22/2025, Jason Gunthorpe wrote:
+> On Mon, Apr 21, 2025 at 02:19:35PM -0700, William McVicker wrote:
+> > diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+> > index 1813cfd0c4bd..6d124447545c 100644
+> > --- a/drivers/base/platform.c
+> > +++ b/drivers/base/platform.c
+> > @@ -1440,8 +1440,8 @@ static void platform_shutdown(struct device *_dev)
+> >  
+> >  static int platform_dma_configure(struct device *dev)
+> >  {
+> > -       struct platform_driver *drv = to_platform_driver(dev->driver);
+> >         struct fwnode_handle *fwnode = dev_fwnode(dev);
+> > +       struct platform_driver *drv;
+> >         enum dev_dma_attr attr;
+> >         int ret = 0;
+> >  
+> > @@ -1451,8 +1451,12 @@ static int platform_dma_configure(struct device *dev)
+> >                 attr = acpi_get_dma_attr(to_acpi_device_node(fwnode));
+> >                 ret = acpi_dma_configure(dev, attr);
+> >         }
+> > -       /* @drv may not be valid when we're called from the IOMMU layer */
+> > -       if (ret || !dev->driver || drv->driver_managed_dma)
+> > +       /* @dev->driver may not be valid when we're called from the IOMMU layer */
+> > +       if (ret || !dev->driver)
+> > +               return ret;
+> > +
+> > +       drv = to_platform_driver(dev->driver);
+> > +       if (drv->driver_managed_dma)
+> >                 return ret;
+> >  
+> >         ret = iommu_device_use_default_domain(dev);
+> 
+> The diagnosis looks right to me, but pedantically I think it should
+> have a READ_ONCE():
+> 
+> struct driver *drv = READ_ONCE(dev->driver);
+> 
+> And then never touch dev->driver again in the function.
+> 
+> Send a proper patch?
+> 
+> Jason
+
+Thanks for the response! Yes, that would work as well. I'll send a v2 revision
+once I get it tested.
+
+On this note, I was looking through `of_dma_configure_id()` and am also
+wondering if we may hit other race conditions if the device is still being
+probed and the dma properties (like the coherent dma mask) haven't been fully
+populated? Just checking if the driver is bound, doesn't seem like enough to
+start configuring the DMA when async probing can happen.
+
+Thanks,
+Will
 
