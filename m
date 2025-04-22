@@ -1,113 +1,178 @@
-Return-Path: <linux-acpi+bounces-13182-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13183-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B50A96802
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 13:43:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 496A2A96859
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 14:00:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 411611642E3
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 11:43:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B05977A25E9
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 11:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B341E3774;
-	Tue, 22 Apr 2025 11:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FD127C841;
+	Tue, 22 Apr 2025 12:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QIwB5WIV"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="FCtdW4K7";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mWK2dk0L"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13D8F50F;
-	Tue, 22 Apr 2025 11:43:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B59277819;
+	Tue, 22 Apr 2025 12:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745322220; cv=none; b=EE5JgWdnFkma8n26fqFiYOpp6Enskr1QWuUBU9s1Fu20QVU2e1Pk8N2qlk3v8FFyhOCU1lxnLihz+9iWMe1a0mTHL50AUrSiqTrgxfPZMehSX8AUuJgjztLpaewAO/kLVP8FZCqaM481ytvQ6uoYG1EwWM5Or95+HsdLWFkqUxU=
+	t=1745323238; cv=none; b=J66aHpPUFHi3PdCHTkvRu4qvPH/GUAm6/t0ZFxGGKkyNSNvyYSf0kaLLA3dWa2QwnnBdAliMjhzsemgJljcRWpRVtv2FJkBJfuSI3+mmoEYZeJq7TUeSYUNgybE3SGctqn5FF5Nd+AzD+CnAIEaRd//GbcC51SZWxtXOATSZWWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745322220; c=relaxed/simple;
-	bh=VOqgcuQXGdi3HGEckWBW0T3NXXHO43h2bQde17C8TQQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RC7glCA954Bac9SLVDYKvep0kUHR82EtVKTN06YI3BO0GAN+20duajmItU5A5TpHPx5aKvPN/E8rTLE1whPEhdDv5pcRY68uIHudDREzoUcIepdu8rnLV3XThIARxU0KZ4+KU6Du0cpwUbbj1PKcbpU0HZ66tRBtrO4y2mXX6tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QIwB5WIV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670DBC4CEEF;
-	Tue, 22 Apr 2025 11:43:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745322219;
-	bh=VOqgcuQXGdi3HGEckWBW0T3NXXHO43h2bQde17C8TQQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QIwB5WIVBHiAVyBY7oG2BnXK7Yy81JtRgE/8tw0AoKP399pDa5JTzt/wHYJCaEMIW
-	 azGjeIs+QL+Z8QoaXYvBvp2b+UmNgeaXfR2xn8/Uy04XgCPeDQooPsh2g/Wiwi+TXc
-	 qYg4WUa2MyxBbd+So8xO5NcDnQjBN4+FpM2xfo31ID5qKdiJeh8Bru9y0ogI45+0el
-	 dojh2bzct7iUAfXTe7LVaesIpbEwKrb/OzJ7U8Qfrbp2c1w9cUV6sHd0DFk9RJpxfz
-	 ht00n46ttF6piQ3GozCe+kF9pED8ymRNOuZi5piteE96bbejI4bVLNbYrYs5LiBWa+
-	 QQXPmw79pIUSQ==
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7302a769534so1046800a34.1;
-        Tue, 22 Apr 2025 04:43:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWY/ceg+NiGd0c0xZxudXqY+tQVe4pGY3qyR7A6s4oeaA++1K0auAQ1N1CmHAr4CahyAoFf/Ah/kgVB@vger.kernel.org, AJvYcCXmf8DnNn+qbIQ7HO3nAoFTXSE8hNhukoKJz3ykyedoOkuOFR2qLBNjwkxhfq00m7cVtInvY5hHxjGN@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxjWiSw8GEIqzrDjKTcT1hTbDJmQ+3Z8sA2xWFbjaFtpmh2Xu/
-	n7OYAhqWzjQxrog3ZFjJYqrcAmsC9utlm+YvQxL2O1Y5AJKjKFJimDdeTiFMt05wRUBkyuCzU8+
-	90jjGN18v2I7PE8wI3yj4I0jlPJc=
-X-Google-Smtp-Source: AGHT+IFCxk8nVdfS637xkBJJXCBIB9GPonJFZH1TT3dr+j/gRAiqO7Guj+AeZwZk+zQH76AnqjiSFLnp1DRzHmJWUvg=
-X-Received: by 2002:a05:6870:a54f:b0:2d5:b7b7:2d6e with SMTP id
- 586e51a60fabf-2d5b7b7597bmr2501433fac.38.1745322218747; Tue, 22 Apr 2025
- 04:43:38 -0700 (PDT)
+	s=arc-20240116; t=1745323238; c=relaxed/simple;
+	bh=PE32aOICxpf9Il971tWVYUOauqB5/VNm8nNUXdWIFZU=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=bX6IB1r32ke51NUX5qyW0628CAdH6F+Z9i9Opw8eaQ9793xFlAp/keRrTvm1YmmZTIN1YDkrsLAJjs2Lh8sBIQ4vgeczMmjt0e+iF+728enAuHNnoUO/a8sXa6aZ4dMxcLuDi0/peGsXuEAefDDrC6L9P6U10ndQBcfUHIk7Zxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=FCtdW4K7; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mWK2dk0L; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id CD0161140251;
+	Tue, 22 Apr 2025 08:00:34 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-05.internal (MEProxy); Tue, 22 Apr 2025 08:00:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1745323234;
+	 x=1745409634; bh=8nthwYMKR4aOFINu9xZgH8QRFGdfF9jUoUvoZlCSYU4=; b=
+	FCtdW4K7I5zRyUQp1mclIzfaXPPDcsgT0G2XsPEkSGSS8BJ40XFJNF2l/bzcVak8
+	PJLftEKTePKlehKHr+AnSvI7TJIxO7SmiCXgJsU8scKoUhwtBOBCWVCKyZ2jO5Dl
+	rBxjlwr3fQORHFVrP9KtM8XvSwYXecX888kwoZr3ZjMZWPbq5U+GcaDO9fA15UkU
+	mmCcRxJwJkrWzHG54q5ElF+wJVS2G3JqYc3Jw0U2WG7ocF+5lNFPTeG9rvmuWCsi
+	njglbjyrOiOLj2cIiTM3373DP7mgJGa16rLBBiZx6hT1WzvvUHLFcDBFtrF6P71X
+	yXIm2hKpVmQmddjLM2RTVA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1745323234; x=
+	1745409634; bh=8nthwYMKR4aOFINu9xZgH8QRFGdfF9jUoUvoZlCSYU4=; b=m
+	WK2dk0L1aVa94+bunBhLx17FVJznnvK/AdKm8nEPfZUUS7IgF0ziI7PzIWNBofEQ
+	8CZP7gBY7bFYlNyj5QRhlUrNMvKSkF1nUwZOM7WaUPvrmIdCKqTGDpIZ9FJRrMrs
+	rY0dJK3JYP7Dr0c16X1Bp+SqDKHx6gHlSLl7FwmrAry9AEdQl7UZOnjQKjYZj+B6
+	vvrboj+7geoKTlI3tPb17BOxBo5pSKE6uOpB5ryVL8Hvhcip4IQ4CnrOLRyuJokn
+	nRUzuu1LC2c51effPU6RF18xX6fkizjG8VKovi8vuJXpvIaMldvoBAgALUzx2XUW
+	Fu8/l8WsLkMTIO1/RIRvQ==
+X-ME-Sender: <xms:4IQHaIwwAg2ARtGf3jGlqMBsIagJvBoGj0v_BftaGeTLZUA9fgBI2A>
+    <xme:4IQHaMSPkvJvmtb0CK21vKbtTwBPmE5CK5CbIBK6vPn0gPn4v1aYB4jF5XJoOGGAX
+    T6MbIL_0gzIP5Ud60k>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeefieejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertder
+    tdejnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
+    gsrdguvgeqnecuggftrfgrthhtvghrnhepvdfhvdekueduveffffetgfdvveefvdelhedv
+    vdegjedvfeehtdeggeevheefleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
+    gedtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopeguvghrvghkrdhkihgvrhhnrg
+    hnsegrmhgurdgtohhmpdhrtghpthhtohepughrrghgrghnrdgtvhgvthhitgesrghmugdr
+    tghomhdprhgtphhtthhopehpvggurgesrgigvghnthhirgdrshgvpdhrtghpthhtohepmh
+    htuhhrqhhuvghtthgvsegsrgihlhhisghrvgdrtghomhdprhgtphhtthhopehhvghrvhgv
+    rdgtohguihhnrgessghoohhtlhhinhdrtghomhdprhgtphhtthhopehluhgtrgdrtggvrh
+    gvshholhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepthhhohhmrghsrdhpvght
+    rgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepghgvvghrthdorhgvnh
+    gvshgrshesghhlihguvghrrdgsvgdprhgtphhtthhopegujhhrshgtrghllhihsehgmhgr
+    ihhlrdgtohhm
+X-ME-Proxy: <xmx:4IQHaKWmoW2di_TlBk_3LC0bIqSqcvphy6ets2e-rndyOqir4PbyCA>
+    <xmx:4IQHaGiei-Ql0GRpXERiVlv65LxFK-7j6r-KkvhG1fj3vn-8NEFwVQ>
+    <xmx:4IQHaKCm5zPJpibs-8kVLkqGWNg8UD2hn4Z8TqFJIGHP--QssqYrRg>
+    <xmx:4IQHaHJOvBUka2beZuMcFi1smo_KB-gJx9FuTpNKCqV5ylIZza69NQ>
+    <xmx:4oQHaJYK6LHO-f8uu6Lf4HNT_VDikvi48Yp8jo6RBxgTdQ2SDj7VOZ4o>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id D0CBA2220073; Tue, 22 Apr 2025 08:00:32 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <62de9027-e4cd-4192-90e8-64f4c4a8fe4b@gmail.com> <aAc26NTVcXy1BCxU@wunner.de>
-In-Reply-To: <aAc26NTVcXy1BCxU@wunner.de>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 22 Apr 2025 13:43:23 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iWTd_ndpAr=q8QJC2MWSheq0UXVR6a1oyGSH063yzpFw@mail.gmail.com>
-X-Gm-Features: ATxdqUHGwVu31OeFpdX-0QtgAs8fGoucoiud8bDZzbH4-6ZOyqeHzXALINqRgu4
-Message-ID: <CAJZ5v0iWTd_ndpAr=q8QJC2MWSheq0UXVR6a1oyGSH063yzpFw@mail.gmail.com>
-Subject: Re: Potential issue with pci_prepare_to_sleep if there's no platform
- support for D3cold transition
-To: Lukas Wunner <lukas@wunner.de>, Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-ThreadId: T51aa6c607dc631ce
+Date: Tue, 22 Apr 2025 14:00:12 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Herve Codina" <herve.codina@bootlin.com>,
+ "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Shawn Guo" <shawnguo@kernel.org>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+ "Fabio Estevam" <festevam@gmail.com>,
+ "Michael Turquette" <mturquette@baylibre.com>,
+ "Stephen Boyd" <sboyd@kernel.org>, "Andi Shyti" <andi.shyti@kernel.org>,
+ "Wolfram Sang" <wsa+renesas@sang-engineering.com>,
+ "Peter Rosin" <peda@axentia.se>,
+ "derek.kiernan@amd.com" <derek.kiernan@amd.com>,
+ "dragan.cvetic@amd.com" <dragan.cvetic@amd.com>,
+ "Rob Herring" <robh@kernel.org>,
+ "Saravana Kannan" <saravanak@google.com>,
+ "Bjorn Helgaas" <bhelgaas@google.com>, "Mark Brown" <broonie@kernel.org>,
+ "Len Brown" <lenb@kernel.org>, "Daniel Scally" <djrscally@gmail.com>,
+ "Heikki Krogerus" <heikki.krogerus@linux.intel.com>,
+ "Sakari Ailus" <sakari.ailus@linux.intel.com>,
+ "Wolfram Sang" <wsa@kernel.org>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+ linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org,
+ "Allan Nielsen" <allan.nielsen@microchip.com>,
+ "Horatiu Vultur" <horatiu.vultur@microchip.com>,
+ "Steen Hegelund" <steen.hegelund@microchip.com>,
+ "Luca Ceresoli" <luca.ceresoli@bootlin.com>,
+ "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
+Message-Id: <68b23799-29c2-4309-b55a-87d83dc6fbe9@app.fastmail.com>
+In-Reply-To: <20250408154925.5653d506@bootlin.com>
+References: <20250407145546.270683-1-herve.codina@bootlin.com>
+ <20250407145546.270683-12-herve.codina@bootlin.com>
+ <Z_Pw_MoPpVNwiEhc@smile.fi.intel.com> <20250408154925.5653d506@bootlin.com>
+Subject: Re: [PATCH 11/16] of: property: Allow fw_devlink device-tree support for x86
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 22, 2025 at 8:28=E2=80=AFAM Lukas Wunner <lukas@wunner.de> wrot=
-e:
+On Tue, Apr 8, 2025, at 15:49, Herve Codina wrote:
+> On Mon, 7 Apr 2025 18:36:28 +0300
+>> On Mon, Apr 07, 2025 at 04:55:40PM +0200, Herve Codina wrote:
+>>=20
+>> This is incorrect, they never had ACPI to begin with. Also there is t=
+hird
+>> platform that are using DT on x86 core =E2=80=94 SpreadTrum based pho=
+nes.
 >
-> [cc +=3D Rafael, linux-acpi]
+> I will rework the commit log to avoid 'mixing ACPI and device-tree'
 >
-> On Mon, Apr 21, 2025 at 10:05:59PM +0200, Heiner Kallweit wrote:
-> > If there's no platform support for transition to D3cold, then
-> > pci_set_power_state(dev, D3cold) still returns 0, even though
-> > power state is transitioned to D3hot only. We called
-> > pci_enable_wake(dev, D3cold, wakeup) before, therefore PME for
-> > D3hot may not be enabled. Is this a bug?
+> For "SpreadTrum based phones", do you have an idea about the Kconfig s=
+ymbol
+> I could use to filter our this x86 systems?
+>
+> Anything I find upstream related to SpreadTrum seems base on ARM cpus.
+> I probably miss something.
 
-On platforms using ACPI, no it isn't.
+This is the Intel SOFIA platform with chips from both Spreadtrum (now
+Unisoc) and Rockchips, using a port of the arch/arm/ code DT on x86,
+about 10 years ago.
 
-Internally, pci_enable_wake() evaluates _DSW and it doesn't
-distinguish between D3hot and D3cold as per the spec.
+That code was never upstreamed, and is long abandoned by everyone.
 
-> > Background:
-> > In __pci_set_power_state we have the following:
-> >
-> > error =3D pci_set_low_power_state(dev, PCI_D3hot, locked);
-> > if (pci_platform_power_transition(dev, PCI_D3cold))
-> >       return error;
-> >
-> > The acpi_pci_set_power_state() stub returns -ENODEV.
-> > Therefore, if error=3D0,  __pci_set_power_state() will
-> > return 0 if pci_platform_power_transition() fails.
+>> And not sure about AMD stuff (Geode?).
 >
-> pci_prepare_to_sleep() calls pci_target_state() right at the top.
->
-> If wakeup is supported and enabled, pci_target_state() is supposed
-> to find the deepest power state supporting wakeup.  If D3cold doesn't
-> support wakeup, D3hot or a shallower state is returned.
->
-> Hence I don't quite understand how the scenario you're describing
-> could occur in practice.  Are you seeing actual issues and have tracked
-> them down to incorrect handling in pci_prepare_to_sleep()?
+> Same here, if some AMD devices need to be filtered out, is there a spe=
+cific
+> Kconfig symbol I can use ?
+
+The only one I can think of is CONFIG_OLPC, the XO-1 was a Geode LX,
+while XO-1.5 used a VIA C7, both with actual open firmware (not just
+fdt).
+
+       Arnd
 
