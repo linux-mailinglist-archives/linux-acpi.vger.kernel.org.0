@@ -1,178 +1,104 @@
-Return-Path: <linux-acpi+bounces-13183-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13184-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 496A2A96859
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 14:00:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1851EA96FE2
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 17:07:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B05977A25E9
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 11:59:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29A993B087D
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 15:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FD127C841;
-	Tue, 22 Apr 2025 12:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFFC828F939;
+	Tue, 22 Apr 2025 15:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="FCtdW4K7";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mWK2dk0L"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I6IV+lrb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B59277819;
-	Tue, 22 Apr 2025 12:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E2028F930
+	for <linux-acpi@vger.kernel.org>; Tue, 22 Apr 2025 15:03:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745323238; cv=none; b=J66aHpPUFHi3PdCHTkvRu4qvPH/GUAm6/t0ZFxGGKkyNSNvyYSf0kaLLA3dWa2QwnnBdAliMjhzsemgJljcRWpRVtv2FJkBJfuSI3+mmoEYZeJq7TUeSYUNgybE3SGctqn5FF5Nd+AzD+CnAIEaRd//GbcC51SZWxtXOATSZWWA=
+	t=1745334185; cv=none; b=swGsIFZW80RGzgVfTlPizxw39Ud8Y/3YvLgZpgEbkPAQY7gmfKgxgHz1Un/44WHJ8veHYHOZRt+Fw8XyGnHDNggEdAHkF7pX9MLrak0V8AufFwy6hmbxIKjc/oB1kCbJpG3/9bqvJi4MUI7vgdG3NYeAvTEFbBgBMgv0/Vr/MFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745323238; c=relaxed/simple;
-	bh=PE32aOICxpf9Il971tWVYUOauqB5/VNm8nNUXdWIFZU=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=bX6IB1r32ke51NUX5qyW0628CAdH6F+Z9i9Opw8eaQ9793xFlAp/keRrTvm1YmmZTIN1YDkrsLAJjs2Lh8sBIQ4vgeczMmjt0e+iF+728enAuHNnoUO/a8sXa6aZ4dMxcLuDi0/peGsXuEAefDDrC6L9P6U10ndQBcfUHIk7Zxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=FCtdW4K7; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mWK2dk0L; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id CD0161140251;
-	Tue, 22 Apr 2025 08:00:34 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-05.internal (MEProxy); Tue, 22 Apr 2025 08:00:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1745323234;
-	 x=1745409634; bh=8nthwYMKR4aOFINu9xZgH8QRFGdfF9jUoUvoZlCSYU4=; b=
-	FCtdW4K7I5zRyUQp1mclIzfaXPPDcsgT0G2XsPEkSGSS8BJ40XFJNF2l/bzcVak8
-	PJLftEKTePKlehKHr+AnSvI7TJIxO7SmiCXgJsU8scKoUhwtBOBCWVCKyZ2jO5Dl
-	rBxjlwr3fQORHFVrP9KtM8XvSwYXecX888kwoZr3ZjMZWPbq5U+GcaDO9fA15UkU
-	mmCcRxJwJkrWzHG54q5ElF+wJVS2G3JqYc3Jw0U2WG7ocF+5lNFPTeG9rvmuWCsi
-	njglbjyrOiOLj2cIiTM3373DP7mgJGa16rLBBiZx6hT1WzvvUHLFcDBFtrF6P71X
-	yXIm2hKpVmQmddjLM2RTVA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1745323234; x=
-	1745409634; bh=8nthwYMKR4aOFINu9xZgH8QRFGdfF9jUoUvoZlCSYU4=; b=m
-	WK2dk0L1aVa94+bunBhLx17FVJznnvK/AdKm8nEPfZUUS7IgF0ziI7PzIWNBofEQ
-	8CZP7gBY7bFYlNyj5QRhlUrNMvKSkF1nUwZOM7WaUPvrmIdCKqTGDpIZ9FJRrMrs
-	rY0dJK3JYP7Dr0c16X1Bp+SqDKHx6gHlSLl7FwmrAry9AEdQl7UZOnjQKjYZj+B6
-	vvrboj+7geoKTlI3tPb17BOxBo5pSKE6uOpB5ryVL8Hvhcip4IQ4CnrOLRyuJokn
-	nRUzuu1LC2c51effPU6RF18xX6fkizjG8VKovi8vuJXpvIaMldvoBAgALUzx2XUW
-	Fu8/l8WsLkMTIO1/RIRvQ==
-X-ME-Sender: <xms:4IQHaIwwAg2ARtGf3jGlqMBsIagJvBoGj0v_BftaGeTLZUA9fgBI2A>
-    <xme:4IQHaMSPkvJvmtb0CK21vKbtTwBPmE5CK5CbIBK6vPn0gPn4v1aYB4jF5XJoOGGAX
-    T6MbIL_0gzIP5Ud60k>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeefieejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertder
-    tdejnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
-    gsrdguvgeqnecuggftrfgrthhtvghrnhepvdfhvdekueduveffffetgfdvveefvdelhedv
-    vdegjedvfeehtdeggeevheefleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
-    gedtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopeguvghrvghkrdhkihgvrhhnrg
-    hnsegrmhgurdgtohhmpdhrtghpthhtohepughrrghgrghnrdgtvhgvthhitgesrghmugdr
-    tghomhdprhgtphhtthhopehpvggurgesrgigvghnthhirgdrshgvpdhrtghpthhtohepmh
-    htuhhrqhhuvghtthgvsegsrgihlhhisghrvgdrtghomhdprhgtphhtthhopehhvghrvhgv
-    rdgtohguihhnrgessghoohhtlhhinhdrtghomhdprhgtphhtthhopehluhgtrgdrtggvrh
-    gvshholhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepthhhohhmrghsrdhpvght
-    rgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepghgvvghrthdorhgvnh
-    gvshgrshesghhlihguvghrrdgsvgdprhgtphhtthhopegujhhrshgtrghllhihsehgmhgr
-    ihhlrdgtohhm
-X-ME-Proxy: <xmx:4IQHaKWmoW2di_TlBk_3LC0bIqSqcvphy6ets2e-rndyOqir4PbyCA>
-    <xmx:4IQHaGiei-Ql0GRpXERiVlv65LxFK-7j6r-KkvhG1fj3vn-8NEFwVQ>
-    <xmx:4IQHaKCm5zPJpibs-8kVLkqGWNg8UD2hn4Z8TqFJIGHP--QssqYrRg>
-    <xmx:4IQHaHJOvBUka2beZuMcFi1smo_KB-gJx9FuTpNKCqV5ylIZza69NQ>
-    <xmx:4oQHaJYK6LHO-f8uu6Lf4HNT_VDikvi48Yp8jo6RBxgTdQ2SDj7VOZ4o>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id D0CBA2220073; Tue, 22 Apr 2025 08:00:32 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1745334185; c=relaxed/simple;
+	bh=a9oHiuIRd+Lat23wgyOLQVKu0davNOYNyV1lqgu94Hc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=aPqEeTV4eLCudbxLMvU8No/l9810Z+FXTF9QYvvfHuyA7KEoOXi9wcBGzzmzR71S/1ncBcxe9A3hq1cNrFvCF631wvRaCYxVBLSDOO7lqpvAkn8PxRnt2ucoioaiN5IWsXxcjLSqSH8aiG3wwM/yjE2imnJvaDPHz4bYf460UoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I6IV+lrb; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-308677f7d8cso4887714a91.1
+        for <linux-acpi@vger.kernel.org>; Tue, 22 Apr 2025 08:03:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745334183; x=1745938983; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZR743ev6ExzRYE8cINx+AM9cywgAmFfoIc+SqezuNJU=;
+        b=I6IV+lrbYv0t+bvIaiG0TbVyWJT40Lj0vRqcLzc3/x+0dcZml1AnFM8HQY5Ii0wkCK
+         EFI9GLLncA7Nf81PeY4qYgGpbEdk6GQtvjHUrP43uS7sYSItfs/Hp/W+equBtADhN9iR
+         H8kGG/d5XAZylKSAL++q+ioYsECrBM0IYZU7VUdqcrJGhPa3joqiDrIgBusCnfsOOjmZ
+         /a1Dr6t8bvSNSFRCHQvERf4r1hilrZRf/fX4p3Lkj5VzPiie0d1c69yQE2wP4ATTE3E/
+         J6p2quspRGpvtugOYU1sLARWmrmhAeltWiFl33W2BwncgY4q3qCNTdFwpdJXyCO/Kkkj
+         To3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745334183; x=1745938983;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZR743ev6ExzRYE8cINx+AM9cywgAmFfoIc+SqezuNJU=;
+        b=E3Ypha65fDQ+8R2Zw8JLSkCFoo970n+p8QddoxFQd5eJgYRGyIin9mOFSmMsOB/RBG
+         wPmDGS3c3Qd31YAiLjOYEvlk+J93HQ5THFKAC1Jl387RLs95C26KcD7km0kDu4pHMFZK
+         LOsxBU/AyzP72tWQrkHzsq2MAC3Hcm9grCbW1VciLfNxi0DMTum73ASBY/O5eocy+i//
+         CgJ/LR8vBKMbXKSsi63+t7xVC7TCNa27qa0UlgoILYM05SsFKN9WfHTDEES3YeSbdsSe
+         LLlh/afg85jkxZEyks79ijSY9wt3/rcSxEN8LpMhxZKc37sIDNMSmW+QeCn7YKMPorNv
+         DuvA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3r+Mz+ubLEJMira7SUmh/5j3uLMOT48W6HCMPr3zf+0XHUGDg/D1PUdti4RcIGN5FdX+Y4kvcWcE3@vger.kernel.org
+X-Gm-Message-State: AOJu0YzA73vIRnVYgfSCDLkRNAMyJRb1OSSNzfASklSaPpFzIwJHclV4
+	rAOlm8WJH54w4vqnQzjPC2qmK49VfcNtn6tuO4lMT+1daQI5uOv162c7cmYE5XjD2+0XhtJXcgs
+	RnQ==
+X-Google-Smtp-Source: AGHT+IEIapJZJRM9UWSGs3HX5eEFDXXhucM1QTXJfnPOK/9YTrDfsNmQubNfg9xjcSY4LHTjaYmG0pXn5/g=
+X-Received: from pjbsn11.prod.google.com ([2002:a17:90b:2e8b:b0:308:861f:fddb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3a0c:b0:2ef:31a9:95c6
+ with SMTP id 98e67ed59e1d1-3087bb56439mr25794718a91.14.1745334182926; Tue, 22
+ Apr 2025 08:03:02 -0700 (PDT)
+Date: Tue, 22 Apr 2025 08:03:01 -0700
+In-Reply-To: <20250422082216.1954310-1-xin@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-ThreadId: T51aa6c607dc631ce
-Date: Tue, 22 Apr 2025 14:00:12 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Herve Codina" <herve.codina@bootlin.com>,
- "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- "Danilo Krummrich" <dakr@kernel.org>, "Shawn Guo" <shawnguo@kernel.org>,
- "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Fabio Estevam" <festevam@gmail.com>,
- "Michael Turquette" <mturquette@baylibre.com>,
- "Stephen Boyd" <sboyd@kernel.org>, "Andi Shyti" <andi.shyti@kernel.org>,
- "Wolfram Sang" <wsa+renesas@sang-engineering.com>,
- "Peter Rosin" <peda@axentia.se>,
- "derek.kiernan@amd.com" <derek.kiernan@amd.com>,
- "dragan.cvetic@amd.com" <dragan.cvetic@amd.com>,
- "Rob Herring" <robh@kernel.org>,
- "Saravana Kannan" <saravanak@google.com>,
- "Bjorn Helgaas" <bhelgaas@google.com>, "Mark Brown" <broonie@kernel.org>,
- "Len Brown" <lenb@kernel.org>, "Daniel Scally" <djrscally@gmail.com>,
- "Heikki Krogerus" <heikki.krogerus@linux.intel.com>,
- "Sakari Ailus" <sakari.ailus@linux.intel.com>,
- "Wolfram Sang" <wsa@kernel.org>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
- linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-acpi@vger.kernel.org,
- "Allan Nielsen" <allan.nielsen@microchip.com>,
- "Horatiu Vultur" <horatiu.vultur@microchip.com>,
- "Steen Hegelund" <steen.hegelund@microchip.com>,
- "Luca Ceresoli" <luca.ceresoli@bootlin.com>,
- "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
-Message-Id: <68b23799-29c2-4309-b55a-87d83dc6fbe9@app.fastmail.com>
-In-Reply-To: <20250408154925.5653d506@bootlin.com>
-References: <20250407145546.270683-1-herve.codina@bootlin.com>
- <20250407145546.270683-12-herve.codina@bootlin.com>
- <Z_Pw_MoPpVNwiEhc@smile.fi.intel.com> <20250408154925.5653d506@bootlin.com>
-Subject: Re: [PATCH 11/16] of: property: Allow fw_devlink device-tree support for x86
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20250422082216.1954310-1-xin@zytor.com>
+Message-ID: <aAevpauKYWwObsB7@google.com>
+Subject: Re: [RFC PATCH v2 00/34] MSR refactor with new MSR instructions support
+From: Sean Christopherson <seanjc@google.com>
+To: "Xin Li (Intel)" <xin@zytor.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	virtualization@lists.linux.dev, linux-pm@vger.kernel.org, 
+	linux-edac@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, acme@kernel.org, 
+	jgross@suse.com, andrew.cooper3@citrix.com, peterz@infradead.org, 
+	namhyung@kernel.org, mark.rutland@arm.com, alexander.shishkin@linux.intel.com, 
+	jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com, 
+	kan.liang@linux.intel.com, wei.liu@kernel.org, ajay.kaher@broadcom.com, 
+	bcm-kernel-feedback-list@broadcom.com, tony.luck@intel.com, 
+	pbonzini@redhat.com, vkuznets@redhat.com, luto@kernel.org, 
+	boris.ostrovsky@oracle.com, kys@microsoft.com, haiyangz@microsoft.com, 
+	decui@microsoft.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Apr 8, 2025, at 15:49, Herve Codina wrote:
-> On Mon, 7 Apr 2025 18:36:28 +0300
->> On Mon, Apr 07, 2025 at 04:55:40PM +0200, Herve Codina wrote:
->>=20
->> This is incorrect, they never had ACPI to begin with. Also there is t=
-hird
->> platform that are using DT on x86 core =E2=80=94 SpreadTrum based pho=
-nes.
->
-> I will rework the commit log to avoid 'mixing ACPI and device-tree'
->
-> For "SpreadTrum based phones", do you have an idea about the Kconfig s=
-ymbol
-> I could use to filter our this x86 systems?
->
-> Anything I find upstream related to SpreadTrum seems base on ARM cpus.
-> I probably miss something.
+On Tue, Apr 22, 2025, Xin Li (Intel) wrote:
+> base-commit: f30a0c0d2b08b355c01392538de8fc872387cb2b
 
-This is the Intel SOFIA platform with chips from both Spreadtrum (now
-Unisoc) and Rockchips, using a port of the arch/arm/ code DT on x86,
-about 10 years ago.
-
-That code was never upstreamed, and is long abandoned by everyone.
-
->> And not sure about AMD stuff (Geode?).
->
-> Same here, if some AMD devices need to be filtered out, is there a spe=
-cific
-> Kconfig symbol I can use ?
-
-The only one I can think of is CONFIG_OLPC, the XO-1 was a Geode LX,
-while XO-1.5 used a VIA C7, both with actual open firmware (not just
-fdt).
-
-       Arnd
+This commit doesn't exist in Linus' tree or the tip tree, and the series doesn't
+apply cleanly on any of the "obvious" choices.  Reviewing a 34 patches series
+without being able to apply it is a wee bit difficult...
 
