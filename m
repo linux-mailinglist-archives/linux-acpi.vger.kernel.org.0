@@ -1,106 +1,176 @@
-Return-Path: <linux-acpi+bounces-13175-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13176-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74003A963D2
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 11:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03DBBA963DE
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 11:16:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7E923AC2C8
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 09:12:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D556A3B0B19
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Apr 2025 09:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F482512CD;
-	Tue, 22 Apr 2025 09:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1793323F40C;
+	Tue, 22 Apr 2025 09:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="ZPeuqs2Q"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E45D238C2F;
-	Tue, 22 Apr 2025 09:11:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C23B1EFFBF;
+	Tue, 22 Apr 2025 09:13:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745313070; cv=none; b=NB/4e70bWlCOcvCf5wou8Ec5B9fEHx6h/Cc7NYdVyEhS9XweqZaUgE4gtfbGDSn8dCswrfYSXC7QJ8OJH9coJvnjJYwNTgVBA5mmXIWp0IMp7pEQEGcnvIoQ8zM3lIJsv+jFPKArQlo+2vB2xQ6hCOCrZqyOUEi3gIqDMQX1XS0=
+	t=1745313237; cv=none; b=sJGXbxdeKArJJgrV/yT88cXl9SmZRQ3mwOgdXiCRYgSRa0Uh5uWA4kwIaQDP6e05tIoIRdkE3VjdXkBdf2rU2u89uW4a1MSVouBk2QegyRPXZpriAQ46PZHbzTyYf6VEcCfQwM+wEzfqszGWsYplsA7umwHTRd6QvFHJzfl2AHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745313070; c=relaxed/simple;
-	bh=f9deQhR1Q1RCnOm2h2vN8BQsniXjGP3x0y8ywwgWRtk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dJAhQii1YMkz6PPVHpSGduZMXz5Tknvh/sxsypIlOZMKpObQegvCWswo4fSQ4IdeSFLu+nBpUehTJrfjlcut9ZIhzu5/gpIEOET2rq7MvG38qXG1JM0cWkFGapvlowDMStfgqY6JkjkA50m0Bgt6opnTdTkIgPTJivO8CCQIUrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: b5c0a77c1f5911f0a216b1d71e6e1362-20250422
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:045f0ceb-7dcd-4879-9c5a-e6eb51568785,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:20
-X-CID-META: VersionHash:6493067,CLOUDID:494d66d8953aae14750653e069c5005b,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:5,IP:nil,URL
-	:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SP
-	R:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: b5c0a77c1f5911f0a216b1d71e6e1362-20250422
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1169028749; Tue, 22 Apr 2025 17:11:01 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id D5C54E000F3B;
-	Tue, 22 Apr 2025 17:11:00 +0800 (CST)
-X-ns-mid: postfix-68075D24-730977898
-Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 5BE65E000F3A;
-	Tue, 22 Apr 2025 17:11:00 +0800 (CST)
-From: zhangzihuan <zhangzihuan@kylinos.cn>
-To: rafael@kernel.org,
-	lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zhangzihuan <zhangzihuan@kylinos.cn>
-Subject: [PATCH v1] ACPI: battery: Reduce unnecessary calls to acpi_battery_update()
-Date: Tue, 22 Apr 2025 17:10:56 +0800
-Message-Id: <20250422091056.972734-1-zhangzihuan@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1745313237; c=relaxed/simple;
+	bh=8t87NXRHmH+x11mIfycM4fyvuVR/eKMQUHrwiHhPu78=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZqRSsyIK2jm7yc24LVHKX8b7QMSP93cmnmSZmjGw0Jb2uyi9tIhq3VynnSgryOhP6EpNYEBScfisyxM1Hn+/7VIrIYk0R/mlV4Hr9QAGzKFxAnIurqXH1nBb3yK+TopRfuhdN9KnD7dx4xjKPg7HpLVEfaE2Fhaf3mQXjxcSQqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=ZPeuqs2Q; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [192.168.7.202] ([71.202.166.45])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53M9Clo71988629
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 22 Apr 2025 02:12:47 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53M9Clo71988629
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025042001; t=1745313171;
+	bh=5MyMi1dWDpqM4+680ZRWUMemTrM7gOfrACTzG+hcvhU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZPeuqs2QxCZr+2CQbzBLOCpW3Aawds6/1cwg0KOGkN4s7Xzb3PZq6E2KiAUhdSklS
+	 6bmAZ9hG+CfiogKMARVhoVzL3oriBG5dyHPHGBto0/mSKUTbfZ4aFLYUysVlh6JFC/
+	 ZfI2lvkhOZHiUCZh+IkdkYywF31eKyF7de+lHzDs4b9fjhHs57HIRf++LaLMNtLPKY
+	 QczCdjB0+4sEGoXJlmUjHhZjwRqeUafNM/3rfcGnb2CJu8EO98o0Ia9j/fEpQcfhQG
+	 lCV0OoOhQjfirIbZQCPq86OrgvY0dVY0/wQxoL36KQ5giQ3vDEnESbBhySaQesbEM7
+	 0Bz5uP6uYbAzw==
+Message-ID: <a482b4df-f662-4d5d-8100-ade07afcdc24@zytor.com>
+Date: Tue, 22 Apr 2025 02:12:46 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 06/34] x86/msr: Use the alternatives mechanism to
+ read PMC
+To: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        virtualization@lists.linux.dev, linux-pm@vger.kernel.org,
+        linux-edac@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        acme@kernel.org, andrew.cooper3@citrix.com, peterz@infradead.org,
+        namhyung@kernel.org, mark.rutland@arm.com,
+        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+        irogers@google.com, adrian.hunter@intel.com, kan.liang@linux.intel.com,
+        wei.liu@kernel.org, ajay.kaher@broadcom.com,
+        bcm-kernel-feedback-list@broadcom.com, tony.luck@intel.com,
+        pbonzini@redhat.com, vkuznets@redhat.com, seanjc@google.com,
+        luto@kernel.org, boris.ostrovsky@oracle.com, kys@microsoft.com,
+        haiyangz@microsoft.com, decui@microsoft.com
+References: <20250422082216.1954310-1-xin@zytor.com>
+ <20250422082216.1954310-7-xin@zytor.com>
+ <fbb509e8-0bd6-480f-be32-fd0895255a21@suse.com>
+Content-Language: en-US
+From: Xin Li <xin@zytor.com>
+Autocrypt: addr=xin@zytor.com; keydata=
+ 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
+ l75w1xInsg==
+In-Reply-To: <fbb509e8-0bd6-480f-be32-fd0895255a21@suse.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-When entering the acpi_mattery_notify function, no matter what the event
-is, acpi_mattery_update will definitely be called.
-Use the acpi_listen command to listen, sometimes the log looks like this:
+On 4/22/2025 1:38 AM, Jürgen Groß wrote:
+> On 22.04.25 10:21, Xin Li (Intel) wrote:
+>> To eliminate the indirect call overhead introduced by the pv_ops API,
+>> use the alternatives mechanism to read PMC:
+> 
+> Which indirect call overhead? The indirect call is patched via the
+> alternative mechanism to a direct one.
+> 
 
-battery xxx:00 00000081 00000001
-battery xxx:00 00000000 00000001
-battery xxx:00 00000080 00000001
+See below.
 
-Firmware manufacturers will customize some events like 0x0, so
-non-matching events will be ignored.
-Signed-off-by: zhangzihuan <zhangzihuan@kylinos.cn>
----
- drivers/acpi/battery.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 6760330a8af5..9446c57b77e7 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -1083,7 +1083,8 @@ static void acpi_battery_notify(acpi_handle handle,=
- u32 event, void *data)
- 		msleep(battery_notification_delay_ms);
- 	if (event =3D=3D ACPI_BATTERY_NOTIFY_INFO)
- 		acpi_battery_refresh(battery);
--	acpi_battery_update(battery, false);
-+	if (event =3D=3D ACPI_BATTERY_NOTIFY_STATUS)
-+		acpi_battery_update(battery, false);
- 	acpi_bus_generate_netlink_event(device->pnp.device_class,
- 					dev_name(&device->dev), event,
- 					acpi_battery_present(battery));
---=20
-2.25.1
+>>
+>>      1) When built with !CONFIG_XEN_PV, X86_FEATURE_XENPV becomes a
+>>         disabled feature, preventing the Xen PMC read code from being
+>>         built and ensuring the native code is executed unconditionally.
+> 
+> Without CONFIG_XEN_PV CONFIG_PARAVIRT_XXL is not selected, resulting in
+> native code anyway.
 
+Yes, this is kept in this patch, but in a little different way.
+
+> 
+>>
+>>      2) When built with CONFIG_XEN_PV:
+>>
+>>         2.1) If not running on the Xen hypervisor (!X86_FEATURE_XENPV),
+>>              the kernel runtime binary is patched to unconditionally
+>>              jump to the native PMC read code.
+>>
+>>         2.2) If running on the Xen hypervisor (X86_FEATURE_XENPV), the
+>>              kernel runtime binary is patched to unconditionally jump
+>>              to the Xen PMC read code.
+>>
+>> Consequently, remove the pv_ops PMC read API.
+> 
+> I don't see the value of this patch.
+> 
+> It adds more #ifdef and code lines without any real gain.
+> 
+> In case the x86 maintainers think it is still worth it, I won't object.
+
+I think we want to totally bypass pv_ops in the case 2.1).
+
+Do you mean the indirect call is patched to call native code *directly*
+for 2.1?  I don't know it, can you please elaborate?
+
+AFAIK, Xen PV has been the sole user of pv_ops for nearly 20 years. This
+raises significant doubts about whether pv_ops provides Linux with the
+value of being a well-abstracted "CPU" or "Platform".  And the x86
+maintainers have said that it's a maintenance nightmare.
+
+Thanks!
+     Xin
 
