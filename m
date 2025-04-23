@@ -1,156 +1,163 @@
-Return-Path: <linux-acpi+bounces-13223-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13224-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54F3A997B1
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 20:18:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44AAAA99920
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 22:04:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 138364A2C97
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 18:18:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E0C9461278
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 20:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC7228D82D;
-	Wed, 23 Apr 2025 18:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A880269806;
+	Wed, 23 Apr 2025 20:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="mw0BLyt3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QFIS7+7v"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087C528C5DC
-	for <linux-acpi@vger.kernel.org>; Wed, 23 Apr 2025 18:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0725139566;
+	Wed, 23 Apr 2025 20:04:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745432297; cv=none; b=TEczF8fTeGMmpFUTMZJ4VBi1SYlfL3wtqH8yNgooOtKqPd5AEumPmcQSwKyrjzfteNRfbqI6lpHlPuzn4Bn39Z51j40Nh90/mx8gKupVj9RWYRY+bFpaPv9qcVToGAWDyeXwE6/YOaWWGSafMKCP7A2W5IK1kFu24N+oS2r0m6s=
+	t=1745438659; cv=none; b=DSisdWlDxxWBUFN7qFbqgb+V34RMPG9yV2drxZ2a7/9J2xHvZBnj6gCqOS+/hWlxViA4rmj4Po4+NpFn9idGbC16iYsK+anZ0sgQSB9Gg0OrD9e6Vpbxvu8D6tb3ec83oymxwuqXX81E0mUtJZJIWoUpjAfLteFI0WqyGNwlQ1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745432297; c=relaxed/simple;
-	bh=4Lb81w2s/iHKlg0tr1kLg33vsHa3w3DDNgPzLbNjD+k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c5d2p+exW3L5CHKU7NqZIK0n8KSfSDSDvrydTf/T2jV4Vb7P6VZwHK9c4rXyEXKKTR0BCQGlDKCJrxXkgCMVrF4IPjCSMOjTPi90formZdGQY5WpV8v6/9eOv/l7BX9OalJhevgxBJeY3uhTUqcRqCbS4xpm2OAmgxtJ6THR8tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=mw0BLyt3; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6e8fce04655so1656256d6.3
-        for <linux-acpi@vger.kernel.org>; Wed, 23 Apr 2025 11:18:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1745432295; x=1746037095; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=S2K4Lg9UXWodayqGkEaP9bm9sDSNteHJq58dHhFg6dY=;
-        b=mw0BLyt31cJrngz/aBlEqUNCOkBB1gSFAicpqFxsnuU55usihLqj9CppOCLuDQTA44
-         QGx2p6pdozkZhZRlIGlFVwDs2dtgpe6fKnSF94krJoWMELaEUPODqoGDeQkQzFCw7fMV
-         18e8lwSuBtKVpxOxM6QBw77NM9mD/y5Y2FmSeg4RArtyuojpdQcARSL6ApYsWQ+PskiA
-         VYLc9AXF9mmC8s11Eb3OYyph7ohBk6xnHFnCP4/3jXhK/bh74E+StCO4Lj+LW7u56WRs
-         9XeG6U9hTlaw3CySXpgHG9sCEMP7zHmh4QNZbhH5sLPkW3k0S9B3Insiwp1+IWlISncI
-         SbKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745432295; x=1746037095;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S2K4Lg9UXWodayqGkEaP9bm9sDSNteHJq58dHhFg6dY=;
-        b=n8iAVLhi1TULn7jjhqqGZbkIW11YVZh6cPti01kf2nmUpflH3UtTpm+IjIh3QFF4bk
-         Fa5adE1tv3dHxzqgrtFeUfX2iXp+GIFqDcIl+3dwAs/UThvusQuCVF1UyyHqdzUtlDNq
-         OLyxJlBaOqcM44Lw8Cr+XdEGu9hkYyOUw1nCBcnJ/k/lhSwjLa4wjc36gyRbdXgNGwZ2
-         sE4/MGKP2NonU1rxosx5DI9sPKbGSKQi5kBitKCxd8bLILdgZb75bi3PjMAPTXKB8kZy
-         hbtE6AYeKoeksgcITdg7jJACoMwdCb4f3bFvfs0N0Aiq9VU77uwVaQKi3m17tVdQU9nS
-         eM0w==
-X-Forwarded-Encrypted: i=1; AJvYcCVA1fKejKpkMlRzPubXkiA5gtr6tj3+oEIJIeaDuQELFvUrOC6njMgZ8Y94a+1nHtuE/nyn5SsWHOoz@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYdFKygdMiBuANCYuTTSp8IshGxWtXrDIA2gBABcvcabLxKJaM
-	xzAG5StnbjX/TzPx83cCgxZY2LOCBux1TIC4RLY1b3npaL621elWFTlWFYhAdVI=
-X-Gm-Gg: ASbGncsoKrbm/9Sxk9cImKC2pkgq70QWkzRtFRdcS7B8mHObUUD/3Imty1M72fHl0CA
-	79/9PHicYa6z92RAlIXidX1DndqS0Xvr3ziSXSHCOW1hxlIdn6EqwDfiZb77DZ163GqFDBVt5KD
-	GzBwaiZ41lBsAjIh1F7YyV0OBFNHYjneGmJePLHNHOEFtYZWiL2eNhOzgfXjOGts6llMbD6vy07
-	XVj10+hB8AuBUK5N0TyHJQTetxr6TTpoO+cQeBjCRHs6FKwURU+rQt0tB2zWCy9vkGc5zWDmyGi
-	kmTMSO0CxCX/KcuD71eWqSYEFNa6Z1oxJUp3B100d8Rx07n5ILe2z2/J8XoGkQJXYspXsS4A0rk
-	yuEs7Ob94krjxFcKN0dQ=
-X-Google-Smtp-Source: AGHT+IG4/MsY26Rj4xYm6pWmvlAPuVFdcPLdJFOh3iEBlJVLpm+B1c5dpvU4P4SztDpvWCyGwRESRw==
-X-Received: by 2002:a05:6214:21c4:b0:6e6:5f28:9874 with SMTP id 6a1803df08f44-6f4bed4600emr4321856d6.2.1745432294768;
-        Wed, 23 Apr 2025 11:18:14 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-167-219-86.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.219.86])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2af1433sm73395536d6.19.2025.04.23.11.18.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 11:18:14 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1u7efl-00000007M0V-3VVh;
-	Wed, 23 Apr 2025 15:18:13 -0300
-Date: Wed, 23 Apr 2025 15:18:13 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: William McVicker <willmcvicker@google.com>
-Cc: Robin Murphy <robin.murphy@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Stuart Yoder <stuyoder@gmail.com>,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	Charan Teja Kalla <quic_charante@quicinc.com>
-Subject: Re: [PATCH v2 4/4] iommu: Get DT/ACPI parsing into the proper probe
- path
-Message-ID: <20250423181813.GU1213339@ziepe.ca>
-References: <cover.1740753261.git.robin.murphy@arm.com>
- <e3b191e6fd6ca9a1e84c5e5e40044faf97abb874.1740753261.git.robin.murphy@arm.com>
- <aAa2Zx86yUfayPSG@google.com>
- <20250422190036.GA1213339@ziepe.ca>
- <aAgQUMbsf0ADRRNc@google.com>
- <20250422234153.GD1213339@ziepe.ca>
- <aAkj5P1I-e9lylIU@google.com>
+	s=arc-20240116; t=1745438659; c=relaxed/simple;
+	bh=cxaMvVcBVtdfwqKCy8tAu7BZLGaLreXc/92Wi3OWRRU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nxHnCUTUM1EW+c7kWVJVI9DNub4Kj/nTDijtgWCYd7/VG9ZXmsVdONpRs0FESO+iSPLe9d6HRHbDBZAhlPW/1gQLTf2i57Ru4XB0wM7XeLiY/Bk3zT2ro683SDAf+0JFEG7gH9TFdTFs4zvuZSfcv20Z6EFbMI8bKhtWtfozGdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QFIS7+7v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4C0C4CEEC;
+	Wed, 23 Apr 2025 20:04:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745438658;
+	bh=cxaMvVcBVtdfwqKCy8tAu7BZLGaLreXc/92Wi3OWRRU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=QFIS7+7vOH3mbByJthVS5BZpFzinoka2fvXZ7pReRxqDjEFvnruht/1pgcQtrj4NL
+	 wUAC4kiXVPAwiDSuhxUjFsBKFGPa3YDb2cJ8AFSGYdb2POvVcY6rslkUSYzGJhIIfb
+	 /SzT8Ga4winbAy6Q+XRK0yRw1iK1f3OXcVCyygrZ9KJB/KTEM2OeGpr4nTA8fDNxJr
+	 k3S8r7ELcpWP9HUuXetm/XFS0U9cyr9UQ+8Fd2d9bpCOrla/lGqviFe6gIcXXfVSOe
+	 OeSqw94ylOqgR0YIsH6LjAer6E0kBh3ZE+W80E2Un8uRxgwxohSl6loATz43ojoXPl
+	 GO3rFI+HCnxjQ==
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-2c2504fa876so46830fac.0;
+        Wed, 23 Apr 2025 13:04:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUsIGG2Y58HojE90CfQlOvghnSIjN+J/gb4iS41obdqa6bbuwRdajY2vzoKxImPVmfLL0r98JJ5knpfL1kA16Yz@vger.kernel.org, AJvYcCWvWC6rQc6LmZrdfA+DbSVrME0XVmLvttKmCqQL4EKaZNPuxeycI6sMm8+NUv3G+x6t0haiM0E1RI1y@vger.kernel.org, AJvYcCXDrfSLZQyhwGO+Sp7N/G6746uOKtwXpUNEq+nfZqkV2E54QUhoFZrp+OKGKN0aJooLhevo7gdWgyccAscn@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmnyV2YCGxWeh/wni2Pbw/lJC8hDjGBCFwgre13w8P6naVnmRM
+	X2sLHiXbYse+aZK0WTO/sfZsD65CkW0wwAf9C33n2q14CIE4AOYo9HdknMPhvDpf3c90qSRTata
+	NIXi5j7kn2UctVR734Al7wV1MGTk=
+X-Google-Smtp-Source: AGHT+IGNdK95WXoJNH2YFoPShvcuAWCN+P/w+m/y1K2Oby12AFZZkHdCKndMaq8lzZJIhc5cb8euX9kuVjrYL073DuA=
+X-Received: by 2002:a05:6870:9127:b0:2d8:957a:5176 with SMTP id
+ 586e51a60fabf-2d96e19b0camr50460fac.5.1745438657751; Wed, 23 Apr 2025
+ 13:04:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aAkj5P1I-e9lylIU@google.com>
+References: <20250415232028.work.843-kees@kernel.org>
+In-Reply-To: <20250415232028.work.843-kees@kernel.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 23 Apr 2025 22:04:06 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0j9xA0rj3QFD6jv+vabRtgFqa2nza_RFjq=c5=ds9yCNg@mail.gmail.com>
+X-Gm-Features: ATxdqUHRYTqya0acLc4Hb2cQFkwS76MbdgHgn_ewJ3DBhKc43JCe7GYCZZj2Vbg
+Message-ID: <CAJZ5v0j9xA0rj3QFD6jv+vabRtgFqa2nza_RFjq=c5=ds9yCNg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: tables: Add __nonstring annotations for
+ unterminated strings
+To: Kees Cook <kees@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, linux-acpi@vger.kernel.org, 
+	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 23, 2025 at 10:31:16AM -0700, William McVicker wrote:
-> On 04/22/2025, Jason Gunthorpe wrote:
-> > On Tue, Apr 22, 2025 at 02:55:28PM -0700, William McVicker wrote:
-> > 
-> > > On this note, I was looking through `of_dma_configure_id()` and am also
-> > > wondering if we may hit other race conditions if the device is still being
-> > > probed and the dma properties (like the coherent dma mask) haven't been fully
-> > > populated? Just checking if the driver is bound, doesn't seem like enough to
-> > > start configuring the DMA when async probing can happen.
-> > 
-> > I think the reasoning at work here is that the plugin path for a
-> > struct device should synchronously setup the iommu.
-> > 
-> > There is enough locking there that the iommu code won't allow the
-> > device plugin to continue until the iommu is fully setup under the
-> > global lock.
-> > 
-> > The trick of using dev->driver is only a way to tell if this function
-> > is being called from the driver plugin path just before starting the
-> > driver, or from the iommu code just before configuring the iommu.
-> > 
-> > Given that explanation can you see issues with of_dma_configure_id() ?
-> > 
-> > Jason
-> 
-> I think the only concern is when a driver calls dma_set_mask_and_coherent() in
-> it's probe function. If we can handle that case in an asynchrounous manner,
-> then I think we are good.
+On Wed, Apr 16, 2025 at 1:20=E2=80=AFAM Kees Cook <kees@kernel.org> wrote:
+>
+> When a character array without a terminating NUL character has a static
+> initializer, GCC 15's -Wunterminated-string-initialization will only
+> warn if the array lacks the "nonstring" attribute[1]. Mark the 4-byte
+> ACPI identifier arrays with __nonstring (and the new __nonstring_array)
+> to correctly identify the char arrays as "not C strings" and thereby
+> eliminate the many warnings like this:
+>
+> In file included from include/acpi/actbl.h:371,
+>                  from include/acpi/acpi.h:26,
+>                  from include/linux/acpi.h:26,
+>                  from drivers/acpi/tables.c:19:
+> include/acpi/actbl1.h:30:33: warning: initializer-string for array of 'ch=
+ar' truncates NUL terminator but destination lacks 'nonstring' attribute (5=
+ chars into 4 available) [-Wunterminated-string-initialization]
+>    30 | #define ACPI_SIG_BERT           "BERT"  /* Boot Error Record Tabl=
+e */
+>       |                                 ^~~~~~
+> drivers/acpi/tables.c:400:9: note: in expansion of macro 'ACPI_SIG_BERT'
+>   400 |         ACPI_SIG_BERT, ACPI_SIG_BGRT, ACPI_SIG_CPEP, ACPI_SIG_ECD=
+T,
+>       |         ^~~~~~~~~~~~~
+>
+> Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D117178 [1]
+> Signed-off-by: Kees Cook <kees@kernel.org>
+> ---
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: Robert Moore <robert.moore@intel.com>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: acpica-devel@lists.linux.dev
+> ---
+>  drivers/acpi/tables.c | 2 +-
+>  include/acpi/actbl.h  | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+> index 2295abbecd14..0a9ade7117bd 100644
+> --- a/drivers/acpi/tables.c
+> +++ b/drivers/acpi/tables.c
+> @@ -396,7 +396,7 @@ static u8 __init acpi_table_checksum(u8 *buffer, u32 =
+length)
+>  }
+>
+>  /* All but ACPI_SIG_RSDP and ACPI_SIG_FACS: */
+> -static const char table_sigs[][ACPI_NAMESEG_SIZE] __initconst =3D {
+> +static const char table_sigs[][ACPI_NAMESEG_SIZE] __nonstring_array __in=
+itconst =3D {
+>         ACPI_SIG_BERT, ACPI_SIG_BGRT, ACPI_SIG_CPEP, ACPI_SIG_ECDT,
+>         ACPI_SIG_EINJ, ACPI_SIG_ERST, ACPI_SIG_HEST, ACPI_SIG_MADT,
+>         ACPI_SIG_MSCT, ACPI_SIG_SBST, ACPI_SIG_SLIT, ACPI_SIG_SRAT,
+> diff --git a/include/acpi/actbl.h b/include/acpi/actbl.h
+> index 451f6276da49..2fc89704be17 100644
+> --- a/include/acpi/actbl.h
+> +++ b/include/acpi/actbl.h
+> @@ -66,7 +66,7 @@
+>   ***********************************************************************=
+*******/
+>
+>  struct acpi_table_header {
+> -       char signature[ACPI_NAMESEG_SIZE];      /* ASCII table signature =
+*/
+> +       char signature[ACPI_NAMESEG_SIZE] __nonstring;  /* ASCII table si=
+gnature */
+>         u32 length;             /* Length of table in bytes, including th=
+is header */
+>         u8 revision;            /* ACPI Specification minor version numbe=
+r */
+>         u8 checksum;            /* To make sum of entire table =3D=3D 0 *=
+/
+> --
 
-You should never get to a driver probe function while iommu setup is
-still concurrently running. That would be a major bug and break alot
-of stuff.
+Applied as 6.16 material.
 
-Jason
+I've rebased it on top of
+
+https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
+it/?id=3D9d7a0577c9db35c4cc52db90bc415ea248446472
+
+so basically the hunk in actbl.h is gone.  Please see
+
+https://web.git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/com=
+mit/?h=3Dbleeding-edge&id=3D18eb45b67544b995a8a6f48a72b816fd75776f52
+
+Thanks!
 
