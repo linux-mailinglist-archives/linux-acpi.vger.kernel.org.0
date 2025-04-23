@@ -1,149 +1,116 @@
-Return-Path: <linux-acpi+bounces-13203-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13204-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AECFCA98647
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 11:46:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9294A98B54
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 15:37:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E06881719EB
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 09:46:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6123E17DEC1
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 13:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A30A24467E;
-	Wed, 23 Apr 2025 09:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F8D1A3169;
+	Wed, 23 Apr 2025 13:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lZybQc4i"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nT0JZxbk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6E44A07;
-	Wed, 23 Apr 2025 09:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18F11A08A4
+	for <linux-acpi@vger.kernel.org>; Wed, 23 Apr 2025 13:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745401544; cv=none; b=YKnFFu5uVTP/4NRRHjJcIUklvgTadXOKg/aXb0gkWQnm5ZVn14AZZpBsLvXsKF02kCmTGWvvjHglbucP5onWO7iC7TjA/uLLGirrwTj8Z90a36hcrz/Kej2bAiw2E1q3LgcklTTGpwy2MxHs9UFUZyIrDeRzPLATVRxh6nat/oM=
+	t=1745415435; cv=none; b=RCF0qbckb3tCpgQ6/GjxcurZF2YUBQsuEm2WDwsa58iLBiP39AvHg/4gN/M8KfVe1aV1ndhqqk6G/V+uFsVCQcyCai/AvTC9O5NpZpUsIEpX1nuc5kbsL1l91dOuaOb29xJmLx1EwTPZX33lx8Oi1yy/4KIAfokHoUpGWREkhs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745401544; c=relaxed/simple;
-	bh=pOMZ6beydJOtBsh8FcwPVCQJjavX5ZDmbl+rpOmjuZc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OBWii2nuAi5xXTRuSAYQKFGnXBFJmkxtlo+QLJ1SqJg86zUYUUWNa+4y8djWp6379OOYbcTptmUUsmz1O2vV752Q0vK003nerBDFAQ6rWUPQurB2uFuP7m6ynvzlOYbWYH2vMtboO5RiFndWuIDbhPLU5FCqVG7XIsjKN77U2C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lZybQc4i; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-73712952e1cso6055731b3a.1;
-        Wed, 23 Apr 2025 02:45:42 -0700 (PDT)
+	s=arc-20240116; t=1745415435; c=relaxed/simple;
+	bh=dXr0vdvJSE4CQmBa2fTuILJV/L6G5HpSxSHQ49PKVqY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=PXpLq4EDHWqhEvcevBKFVRuTvClHoAcav68EWGHLWbcMb4f0t/qc6qXBl748FD4Lhuu08ZyHwmNPengRBJQPyq9I6yMjSOnZxl5JOBSZI7SHCRszKVIwY/ofAfLphETfZgxcg2FwdxkAzSESYE+KZhQjCOaKQJeauy4cwALIIcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nT0JZxbk; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-30828f9af10so13580987a91.3
+        for <linux-acpi@vger.kernel.org>; Wed, 23 Apr 2025 06:37:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745401542; x=1746006342; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0qHr2D1fgR89Z1Y/9FM5Jnum6ts7ImU2zNv46BN7lDc=;
-        b=lZybQc4igcJyyP+XN6HvHOTAGXsokl0PFpDvM66oqierXqoI7tPnZ04bg5zg/SmOEM
-         5cu1NYwhEKUutSUPpurdsPx2ekQjYI0ibWUuTr0FxjCFYnf439Gf49jZJgNR7pMWfsYi
-         ZFtcV+InMPRUPD3a+a6fe6ytJDC8LsaSnct8qjNEfId2G18Sm5oO3ENMz8U4jPHrVE0l
-         JteijC2D+60uFBxZnlXkoD/ujimmLawPD2cqCRfdoMd8unE2nu014S+OinluPL+CaqH7
-         C2CmwUVnEvE16hu0OL8aCakcJ1WtdKUGUJh8/ZMMVnmlBGTrvPz1s+lV5mOkldrZqBeB
-         r+rw==
+        d=google.com; s=20230601; t=1745415433; x=1746020233; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QTV99TNe8c9V+BGz9HYw0E5RTZLdGwFx/9m2XgmuzHE=;
+        b=nT0JZxbkLOWuAaq4nDpqtJy0UU3fVSwyW/pnNNBGYtoYR/+veEUbsw1SW7uJkXUY9+
+         O8RFZ5mI3iZ/bhFeyS6mpQMMAXezkdZIzt5lXK/oKDFsuDimPPcn2I6rOaU8XnWilwy4
+         Qflh7jQ/97QLXGCjRrnvUz0MJpppmkyoylDcvcx1GHi73/C77pzsSBWavAJzDCuOl8Vu
+         Bx69HB/Nd+cusCL5TPzdZ2tLrS0aQKRNqjrAQAhL7fNktV8FmsgyGiJ37d7CE0puVmjy
+         sSKyhx/48E0CSccNslHjG8NDhKl65lvTaigTuvvrWJaiU24iVs3SZBs7noSsvJEIf+mE
+         70Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745401542; x=1746006342;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0qHr2D1fgR89Z1Y/9FM5Jnum6ts7ImU2zNv46BN7lDc=;
-        b=q/gMjQSDChrRbqWoZ4FoEZQ42l+tRTpSCwTJ7cLE4l5VcInm8jUmfOh4PJys34wx+V
-         pTzamJ5ddbWGlI7IZGYRnEMwQl3U5dWxIoyWjbrDeH+LKFhxlh7NixaphLway29jHqgh
-         iHq6Xb8I+96B7MvGjL12G/epgScon1K5S1Z/moHmiNQMijdh7WJtg122D30bV9ncEeBi
-         6K/UGMYJQjD5IjsUi7ufPM0YJ+1n9CTwR9VRJOeG6FFyk18fuVgiejr1l9J7bvxzZn9Q
-         T8ucx3s876lw7EXda2EmUB3JPaeoPSNoxP3s0/F59/iJLVxJ7NvubvOkyhoK3cHQtOCQ
-         X0rg==
-X-Forwarded-Encrypted: i=1; AJvYcCUOaaCWMZwoUhJUM7XetCK+J/ocIgAZLzqhDQmTW/OBCeunRRITH0nKfAHTPdic/UH25I4ffjqMmBuZ@vger.kernel.org, AJvYcCUPeYIWFzp9kIQ6BVu8gtuNt8wPlWlxI7V9vUvf/IjBwkgv11ZQvQAfp4dEylPfbgCYQScOhW0grSjZ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyD+mCJaRx9M3no2/Fr1sukxccSpkfmJ1leAH45WLZKdpeTiLwe
-	vjfuhXB43MU5ZsrA0GPPk+6LrUwD4FyN1aZ16sWxsFZ+IpmgX6KQOzUM2eeVV01CLSeXBJAU+1W
-	2e8fsGeoqJacloowbQ70YGiuh33pOWGiq
-X-Gm-Gg: ASbGnctm7iJn32jvtNKzc8lTCC+OH3aJH2uVadE47vkv/6ognfcgh7s+UkDv79g0RqD
-	LPp3MU4+c1WLkSE5kcICu6tDGJ2IzQ4Mw4/6QvSlf+E20Xxi0Rs1GgMke7fggJQdkLVNIi/2L8n
-	z5wnrmTU+MPsqK/LTcd84Z+Luy+kkbxEs9
-X-Google-Smtp-Source: AGHT+IFpfmY1Az5GXq1xf6oxbNqEpWliYJhKg90q4Ws7KHV0dFSu7BVMP151kVxmfYZjNsMAQMH3W+cgaA7o2qQxImk=
-X-Received: by 2002:a17:90b:524c:b0:2ff:796b:4d05 with SMTP id
- 98e67ed59e1d1-3087bb53f37mr29395661a91.11.1745401541655; Wed, 23 Apr 2025
- 02:45:41 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745415433; x=1746020233;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QTV99TNe8c9V+BGz9HYw0E5RTZLdGwFx/9m2XgmuzHE=;
+        b=HxPpSLI1TbpqSbsVY3eH/9EiYif1UZ1sXLn8iXfHtzjK5+j6kbqA4WdUQ1Ut61zxwX
+         Wk5HYThklq0FpdOx9BgGjsewqdX5XLZQJy506u0Jw8IkElxUsVWhWQTZVXevp5ZiQoQ7
+         fREDsvQa633y+k1iHtQUvCcsnSSYWNzRqsDyqgftM7xC3Q3T1OcyQh3tEwdtfH67RHNO
+         A91a/jUfxmT0oiZwgeGF29Qm9W6e6TwZoJjCY4OBJKIwxeXgtiZTNGQMGX3J+LZgBiBW
+         3FZW99osP7OK/K3oGFWeMVNuue9lgcB7iVMDQ08jUlqYD5grB531cSp6sxyV2DpeWvad
+         cqpg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0y5JBYsJ9uEU7hmpvg2qU6fvhrk3C64j5GOWPD8gVt6CsSa4RI75WVJW09cuuUO8Uxnqb6PWCM7bq@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGG/F1qQYvmDkko1+hlVkyfp9teYR3E1Elc++X24sU/OcCviFz
+	Bq1lw2D55nrLS72xGKthVcOeFj9frQX15E1tIhtdTXxVROMdBZ6ZPof78VU92a4vSv3eorXgi0m
+	25g==
+X-Google-Smtp-Source: AGHT+IEWS42km52dkYFlmcKZWmN1wttg5SPG3JN+o4kIB9LzXEDLrbHh1gdrPp7a64YZSw75FwPTF5N3xvo=
+X-Received: from pjur12.prod.google.com ([2002:a17:90a:d40c:b0:308:867e:1ced])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2650:b0:2ee:9b2c:3253
+ with SMTP id 98e67ed59e1d1-3087bbc9333mr25668631a91.30.1745415432973; Wed, 23
+ Apr 2025 06:37:12 -0700 (PDT)
+Date: Wed, 23 Apr 2025 06:37:11 -0700
+In-Reply-To: <7527f09c-7163-4276-b9a4-edac6c8217ae@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <62de9027-e4cd-4192-90e8-64f4c4a8fe4b@gmail.com>
- <aAc26NTVcXy1BCxU@wunner.de> <CAJZ5v0iWTd_ndpAr=q8QJC2MWSheq0UXVR6a1oyGSH063yzpFw@mail.gmail.com>
- <CAFSsGVudMV+=0M7m_LC0xuJF=spTwk-691_W=wmnuuNFxCK1AA@mail.gmail.com>
-In-Reply-To: <CAFSsGVudMV+=0M7m_LC0xuJF=spTwk-691_W=wmnuuNFxCK1AA@mail.gmail.com>
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Date: Wed, 23 Apr 2025 11:45:30 +0200
-X-Gm-Features: ATxdqUFAoSELAmZhVTsUGnbgnaB12e5dtTo4kznxUVQsy0T62EMAeQdT1wsiAZ8
-Message-ID: <CAFSsGVs2zGL9Ov6ixDE6doSCr6oQ=hWpg-N=3bJUMSgRQSSh+A@mail.gmail.com>
-Subject: Re: Potential issue with pci_prepare_to_sleep if there's no platform
- support for D3cold transition
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20250422082216.1954310-1-xin@zytor.com> <20250422082216.1954310-11-xin@zytor.com>
+ <aAexLqjhKncFyw2V@google.com> <7527f09c-7163-4276-b9a4-edac6c8217ae@zytor.com>
+Message-ID: <aAjtBxzvRgNt4Uzr@google.com>
+Subject: Re: [RFC PATCH v2 10/34] x86/msr: Convert __rdmsr() uses to
+ native_rdmsrq() uses
+From: Sean Christopherson <seanjc@google.com>
+To: Xin Li <xin@zytor.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	virtualization@lists.linux.dev, linux-pm@vger.kernel.org, 
+	linux-edac@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, acme@kernel.org, 
+	jgross@suse.com, andrew.cooper3@citrix.com, peterz@infradead.org, 
+	namhyung@kernel.org, mark.rutland@arm.com, alexander.shishkin@linux.intel.com, 
+	jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com, 
+	kan.liang@linux.intel.com, wei.liu@kernel.org, ajay.kaher@broadcom.com, 
+	bcm-kernel-feedback-list@broadcom.com, tony.luck@intel.com, 
+	pbonzini@redhat.com, vkuznets@redhat.com, luto@kernel.org, 
+	boris.ostrovsky@oracle.com, kys@microsoft.com, haiyangz@microsoft.com, 
+	decui@microsoft.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Apr 23, 2025 at 11:32=E2=80=AFAM Heiner Kallweit <hkallweit1@gmail.=
-com> wrote:
->
-> On Tue, Apr 22, 2025 at 1:43=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.=
-org> wrote:
-> >
-> > On Tue, Apr 22, 2025 at 8:28=E2=80=AFAM Lukas Wunner <lukas@wunner.de> =
-wrote:
-> > >
-> > > [cc +=3D Rafael, linux-acpi]
-> > >
-> > > On Mon, Apr 21, 2025 at 10:05:59PM +0200, Heiner Kallweit wrote:
-> > > > If there's no platform support for transition to D3cold, then
-> > > > pci_set_power_state(dev, D3cold) still returns 0, even though
-> > > > power state is transitioned to D3hot only. We called
-> > > > pci_enable_wake(dev, D3cold, wakeup) before, therefore PME for
-> > > > D3hot may not be enabled. Is this a bug?
-> >
-> > On platforms using ACPI, no it isn't.
-> >
-> > Internally, pci_enable_wake() evaluates _DSW and it doesn't
-> > distinguish between D3hot and D3cold as per the spec.
-> >
-> > > > Background:
-> > > > In __pci_set_power_state we have the following:
-> > > >
-> > > > error =3D pci_set_low_power_state(dev, PCI_D3hot, locked);
-> > > > if (pci_platform_power_transition(dev, PCI_D3cold))
-> > > >       return error;
-> > > >
-> > > > The acpi_pci_set_power_state() stub returns -ENODEV.
-> > > > Therefore, if error=3D0,  __pci_set_power_state() will
-> > > > return 0 if pci_platform_power_transition() fails.
-> > >
-> > > pci_prepare_to_sleep() calls pci_target_state() right at the top.
-> > >
-> > > If wakeup is supported and enabled, pci_target_state() is supposed
-> > > to find the deepest power state supporting wakeup.  If D3cold doesn't
-> > > support wakeup, D3hot or a shallower state is returned.
-> > >
-> > > Hence I don't quite understand how the scenario you're describing
-> > > could occur in practice.  Are you seeing actual issues and have track=
-ed
-> > > them down to incorrect handling in pci_prepare_to_sleep()?
->
-> On non-ACPI systems pci_target_state() just looks at the device
-> capabilities. The described scenario can happen if device supports
-> wake from D3cold, but platform has no means to switch a device to
-> D3cold. I'm thinking of e.g. RTL8125 on ARM. Typically I don't expect
-> an issue because boot-up default on these devices is to have PME wake
-> from all states enabled. So it's more of a theoretical exercise at the
-> moment.
+On Wed, Apr 23, 2025, Xin Li wrote:
+> On 4/22/2025 8:09 AM, Sean Christopherson wrote:
+> > I strongly prefer that we find a way to not require such verbose APIs, especially
+> > if KVM ends up using native variants throughout.  Xen PV is supposed to be the
+> > odd one out, yet native code is what suffers.  Blech.
+> 
+> Will try to figure out how to name the APIs.
+> 
+> One reason I chose verbose names is that short names are in use and
+> renaming needs to touch a lot of files (and not fun at all).
 
-I just see that pci_target_state() won't return D3cold for non-ACPI systems=
-.
-Therefore sorry for the noise.
+Yeah, I've looked at modifying rdmsrl() to "return" a value more than once, and
+ran away screaming every time.
+
+But since you're already doing a pile of renames, IMO this is the perfect time to
+do an aggressive cleanup.
 
