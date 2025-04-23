@@ -1,65 +1,65 @@
-Return-Path: <linux-acpi+bounces-13211-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13212-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DCBCA98FA9
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 17:12:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28FE9A994D1
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 18:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B66797AFEF6
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 15:11:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2971D9A36B6
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 16:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FEF28EA43;
-	Wed, 23 Apr 2025 15:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2064028D846;
+	Wed, 23 Apr 2025 15:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dWipDlHi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ln3aThXU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD2A2820AF;
-	Wed, 23 Apr 2025 15:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BC228935F;
+	Wed, 23 Apr 2025 15:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420824; cv=none; b=cBgWr7ulf76TeOUnFfZ9DunNP5Z5DU8z/wXHRIO6foKO/uCgZk0PFwiSxNzr4bCxb0cLMtHw+y0v2cTZYsYqMyZnfBfgt5ZwUAW+J1Ev/1f69+Mu0XMBjgUrZq/sVcjZMBHWQ2+QFI8JxNxvYy2rXmCBJBLpX2Fc0X8J2/EfLKA=
+	t=1745423513; cv=none; b=t8w325yyMTEnD/xoWJh1K3//LaXHIa61/KH3afok9Me/nq8Z8fPe2GIxuXW/KwQZW2gbnzN0CHV29UTQ5LIjkdd7bKvzCUL6EnQbpafZFrEoGPRKuftmVt8ruQvsVN4TWaz8m0bEizhQqjhRFl64YSG+QiIUiKWQZH//LwbEByM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420824; c=relaxed/simple;
-	bh=1IBSmbrEamwkd/uYLGHmz0tlnktc/QQDObId3PwCnwo=;
+	s=arc-20240116; t=1745423513; c=relaxed/simple;
+	bh=+Vs1gbKb9PXsqFgKfHEk/GoqZdyjHR87hYimAakyT2k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lv8CB16f4dYO/nPDmxBDh1IZIUacGBsq9to5u7AiH4wI2HW2p4JKAHtnZfx8gBsO584XeL+qfUmhZ3i/O5hb+7F299yuyOYkdSpkkNCiCIAZp6WXTLioKiE/6GjKiPL6w7+4D4hCOKcSUubHvoGjMc/td8TIt9JIrj+FYIyxWi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dWipDlHi; arc=none smtp.client-ip=198.175.65.18
+	 In-Reply-To:Content-Type; b=D9twN7O9l4OoTXz6MqBUl2GB9aixuGufJRvWsPRnH8D97P+FePCA9UcMgzUWLOYuIIOhTMLrV7DgglOIq9CEN7+2VFcBrsbEoSzQgLttFNtDDm0W+uykcFyeoaBAFGEkA4yOsW5xLGxHzxFLNyVMTBM82XUSH+O+TqWAAJq504s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ln3aThXU; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745420823; x=1776956823;
+  t=1745423512; x=1776959512;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=1IBSmbrEamwkd/uYLGHmz0tlnktc/QQDObId3PwCnwo=;
-  b=dWipDlHic63JJPApLQ405dC1dDjv5d+2IXyuN6RSkg7nGdDpk4ZMzKR/
-   Zdp+tsg/cQw3ZRx+HYet8QcdTrBEU9hmwrKQIPsrqq8K+x9KQICrA8s28
-   lWOHPfuHpPNR7QkOWd/EMgNqGxuvO4+uOoyHhd7AHDc555d9KgsGGau+w
-   B1MS6FoOwyqdW2Jl2ff63nHSdBBwAJezuVYNzjHg/mCuIgf8ZrJuaIWa8
-   ixiiQjX4ItAnR1ALPMbAaHAS0vu40Hl+GOy20sG1w0pwrOkliSwxAnqqC
-   yU9Qs6IOBA4dEWExxsbPeuiNxYOMeYtHFuvH0fbmLqQv8CnEVjjrKot12
-   Q==;
-X-CSE-ConnectionGUID: o4lj1H3WR76hO8eYRqHwDA==
-X-CSE-MsgGUID: nbHfQE3HSKembeNU+nYUEw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="47147855"
+  bh=+Vs1gbKb9PXsqFgKfHEk/GoqZdyjHR87hYimAakyT2k=;
+  b=Ln3aThXUPv7efrE2YTUUlJAOtT2zmPULSRzcGdvuMd1pEJtOUyAhmm8h
+   SYS3Zj7ndGfwrHjLaLiYLVWZxkVmhYPkT0KIirxmdsu9mRbz0oXEFaE9B
+   RJwy6WNYkyrVuuLlOolkrkk16N1gzNbtx68Hg8+BtjwxIPRmXjZ5OGF27
+   IH86XY81j550MqB28YqOyRK72M9VIPKHblx0+ndx+2nCNvP3OMm6K+TNd
+   mm+qL/642Xi9pImzxTpScNBoxmw9fURVSr4XarGV29eIBmNpnLLdNPyZB
+   0H0MizFmP5Ak2GAXNdKfmReGQfHKLOFWBaOcNaH94Itg9chQStEmAb5KN
+   w==;
+X-CSE-ConnectionGUID: VkEhFynnTOKGh+IkCC1lcg==
+X-CSE-MsgGUID: 6rSuu8R7TRWNyEfCLIwmBQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="47207974"
 X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="47147855"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 08:07:02 -0700
-X-CSE-ConnectionGUID: iDsVbrwbSiG0hLFroBu7Nw==
-X-CSE-MsgGUID: 1WJHMlZ7QNWJ5G37ZY206Q==
+   d="scan'208";a="47207974"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 08:51:49 -0700
+X-CSE-ConnectionGUID: Ex8PVZ5NQH2Gb0DRTatbBA==
+X-CSE-MsgGUID: ItnS2ooiSY2V5FCleHnyyg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="132256914"
+   d="scan'208";a="137140944"
 Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.124.221.81]) ([10.124.221.81])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 08:06:59 -0700
-Message-ID: <6211378e-955b-47f4-8688-ec93728f0087@intel.com>
-Date: Wed, 23 Apr 2025 08:06:58 -0700
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 08:51:47 -0700
+Message-ID: <2932db03-164a-447e-92cf-1ef6c35c15a4@intel.com>
+Date: Wed, 23 Apr 2025 08:51:45 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,15 +67,16 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 03/34] x86/msr: Rename rdpmcl() to rdpmcq()
-To: Sean Christopherson <seanjc@google.com>, "Xin Li (Intel)" <xin@zytor.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
- virtualization@lists.linux.dev, linux-pm@vger.kernel.org,
- linux-edac@vger.kernel.org, xen-devel@lists.xenproject.org,
- linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
- netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+Subject: Re: [RFC PATCH v2 08/34] x86/msr: Convert a native_wrmsr() use to
+ native_wrmsrq()
+To: "Xin Li (Intel)" <xin@zytor.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+ linux-pm@vger.kernel.org, linux-edac@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, netdev@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
  dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, acme@kernel.org,
  jgross@suse.com, andrew.cooper3@citrix.com, peterz@infradead.org,
  namhyung@kernel.org, mark.rutland@arm.com,
@@ -83,10 +84,10 @@ Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
  adrian.hunter@intel.com, kan.liang@linux.intel.com, wei.liu@kernel.org,
  ajay.kaher@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
  tony.luck@intel.com, pbonzini@redhat.com, vkuznets@redhat.com,
- luto@kernel.org, boris.ostrovsky@oracle.com, kys@microsoft.com,
- haiyangz@microsoft.com, decui@microsoft.com
+ seanjc@google.com, luto@kernel.org, boris.ostrovsky@oracle.com,
+ kys@microsoft.com, haiyangz@microsoft.com, decui@microsoft.com
 References: <20250422082216.1954310-1-xin@zytor.com>
- <20250422082216.1954310-4-xin@zytor.com> <aAj5F9IZXG7MB0ai@google.com>
+ <20250422082216.1954310-9-xin@zytor.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -132,14 +133,26 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <aAj5F9IZXG7MB0ai@google.com>
+In-Reply-To: <20250422082216.1954310-9-xin@zytor.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/23/25 07:28, Sean Christopherson wrote:
-> Now that rdpmc() is gone, i.e. rdpmcl/rdpmcq() is the only helper, why not simply
-> rename rdpmcl() => rdpmc()?  I see no point in adding a 'q' qualifier; it doesn't
-> disambiguate anything and IMO is pure noise.
+On 4/22/25 01:21, Xin Li (Intel) wrote:
+>  static __always_inline void sev_es_wr_ghcb_msr(u64 val)
+>  {
+> -	u32 low, high;
+> -
+> -	low  = (u32)(val);
+> -	high = (u32)(val >> 32);
+> -
+> -	native_wrmsr(MSR_AMD64_SEV_ES_GHCB, low, high);
+> +	native_wrmsrq(MSR_AMD64_SEV_ES_GHCB, val);
+>  }
 
-That makes total sense to me.
+A note on ordering: Had this been a native_wrmsr()=>__wrmsr()
+conversion, it could be sucked into the tree easily before the big
+__wrmsr()=>native_wrmsrq() conversion.
+
+Yeah, you'd have to base the big rename on top of this. But with a
+series this big, I'd prioritize whatever gets it trimmed down.
 
