@@ -1,189 +1,140 @@
-Return-Path: <linux-acpi+bounces-13201-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13202-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24EB5A9856E
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 11:28:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B65C3A98593
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 11:32:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8DD43AB991
-	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 09:28:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEE2D1B63609
+	for <lists+linux-acpi@lfdr.de>; Wed, 23 Apr 2025 09:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50D922F747;
-	Wed, 23 Apr 2025 09:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89871F5433;
+	Wed, 23 Apr 2025 09:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="UmIumy9c"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YVne6kNu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD392701B5;
-	Wed, 23 Apr 2025 09:28:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D3D2701DF;
+	Wed, 23 Apr 2025 09:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745400528; cv=none; b=pORcwe7OPLEKwzN0vQimRV/3TAax5zfJC+ISP2m6LhbiW35rlaQ3PRBFlUX9wU5IHR5p9khUKWjyj7tgZh9Bp7i0FmGiwsteZJ77R08U6PQfzEQH9qw0oK43e079VSfUmBi2ZuzEZxGLXUm6FPVdHxMjQxEmOeuXi1G8AdQvjD0=
+	t=1745400743; cv=none; b=DFFdGYkDTPQFN1cq5wiLK9A64J5H0zRuObA043vYUOEF6QJAIUl+GTz9lB0B3My/5KzctWHwDm+L+j7UmN28nCZFJgMJm0SmVf78cJ7iBZF/eF7WRQ6gZogTyaRN+nQ8Wl45BGFI7SUvMhwIh7SjYYtl40PXAxj/PQt1U1ixv7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745400528; c=relaxed/simple;
-	bh=+EYVuYrtu0aOqe3lbGO7b9PG5zqWh+Kau/58q5Ikx7w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SiqJAvCjPomS4sFbbZsaZrXnie+44uUS1W9DkZ8drnHCb3FDPGo7J+hd443HMoXUHPKJVrkH/DAxRQyf0/Ke/WIbRIXKIeUS4clA6JXMrzUTfs8mYfzqNsZ2UOFpaf1SSkbhgYBvGDiYKtX0vb5GkPpFu52sFWHbRS4a4fPxQvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=UmIumy9c; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [192.168.7.202] ([71.202.166.45])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53N9RlMD3219913
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Wed, 23 Apr 2025 02:27:48 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53N9RlMD3219913
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1745400470;
-	bh=ljTCYrwFB4jWmVUKcnZoEtS1ENJ4as2xI12Y2XbkMGU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UmIumy9ccUWtp5ZpbFY6Ho9GgYRlVSRySL3D0+L6jUnzCuWo+VAXnfIYm+WcNWHcr
-	 3vdBJ+wwDthlqUfiIoaN3DvHPiYn4gb/+Mbw6citZ1Nn3xuBxFNqKSFdRNvSlmfDHg
-	 sgDUE/YJgzJJyaLCEhkxOt4S6E7bN3HrTuYY85xE4DOyVvo6Ap2JfPnfbPyl+GWU88
-	 BCLMSAjhGktSUoCdwdyy/ZS83Z3KwNGZuWXVpY05BNcjcn6RiyoIM0nH70HIaJUZTW
-	 sxPrQvxiLK2+ljs3l/mZq4cz6GbUS+eJfVvDu2BEsKu2EVOjGnH6pzErQiG0qnjLGr
-	 yA9/DCpyDaO8g==
-Message-ID: <7527f09c-7163-4276-b9a4-edac6c8217ae@zytor.com>
-Date: Wed, 23 Apr 2025 02:27:46 -0700
+	s=arc-20240116; t=1745400743; c=relaxed/simple;
+	bh=aYLu6xNAjH0O0LUykFOSGkDTTVlyAPDb1573K5hiCZY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JrimyuVloz5DMpTsH6qjD9+GqoAHWDFoN63ApiUmZMbSW9rL6uQcQq1q2spvJa5lFS28cWivHIxybF0vVrSGmnnzOi0oaLv9SQsXK2RD7lzPmN/tlvYmIhVQhco0z9SNHABRDlDXDxAYK08L9Tm7QYvLLjdez7wxdaE+n8oGTMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YVne6kNu; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-af5139ad9a2so3931717a12.1;
+        Wed, 23 Apr 2025 02:32:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745400740; x=1746005540; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CpvYx4I4dXv7Dap9phUEXTzOU2IX4DONLJbyNUltq+w=;
+        b=YVne6kNu50BaxhbBRx02NPmDTe8uQC6NG9yMpEjS0pQqkt4XGJfKa04krPWI3PwLKJ
+         GDOT+ii76zB+PxgsM9w/2XdgTeM0RbuqUobSJUgfLBChpnMqzdz/EOC6NYsYHZDGCdwb
+         3vB8D1TtwbpLdCcWmlMq2dKfAvxl+R3qcpb8lAbUUDT7G9rLnLqNxckPIejzSjNddDTN
+         DBA8ZUGSETJsB//tCteLsNSia3fWuSnfe/U1UIpfMmnE68j4ac2iZ3o9zYCknoldVGwK
+         UwIsfjUiayiC5AvW0O+bhHnCJI1SsrDBBFkFwMXbV8cill8zZb1wOPTVcxgctaD4/L5V
+         LMLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745400740; x=1746005540;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CpvYx4I4dXv7Dap9phUEXTzOU2IX4DONLJbyNUltq+w=;
+        b=NRFmRRCsAbFU8vzlDShIijtC8ifQtpqqMEgS6oEJJlBIIZ4yX8qrqQ1IGReTlhkksV
+         lHMpCplUFbnR5rrFzHtXD3amIpoy6Cygjvk3U1MI+M6FkkG0DchCAKMxMjWjVIoXyHMi
+         hS6o+oBNdAW8yFXEfYuueNYJgooA8Vcw/I51DkvJ2kZAHQCa+JBFi/MuonbCO/z8rLU/
+         qT3aw45Q0ZM2ljpLdnt2mUdsyMNO04oM/9HTeuVCwb9RoH0enjxuHCFSvu3kKChvL4OG
+         /54rfPZbxLUbGFY5Jhim/lTxO3oy3X/Cc86pv7OAzPiucbhbl2m4Zdms7jvVVs7OM9lm
+         p6YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUR//TeRDAi0VzaXl57dmx3cY8W/x2wY4YX9lDloDhIyx4pvgLbb3R/r++1pQgNe1qxXRiG8deT4NP+@vger.kernel.org, AJvYcCVphZrIVW9EnMVdtugWIKfeLELAP3lhaN8bVD+yHhfwiZz2PaV+cpFYwjGjar0/VIqv3FJbJyFma4sY@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlDgOqRM+YQp2jzIl1VLkrsFSC3DfZjoHYL51YqZoJqVdQrGJU
+	SY2D9BkquCUsTIlgsIXluS12MeZK82ucHLhb91yLL4LJSM/hWuvkxR1/pHRVfdzmuckNAf0G/sV
+	7v9toiY80Ln5AY+JG9TbAHRjHUbA=
+X-Gm-Gg: ASbGncsTUVHuQbRUtXyW9+XP/fWb9EPi0I11uPZT0gJB8KZR1EN/Fzt+LQne+2qchBM
+	JcrkkpL1sNm1r/+Kz0YqpuEJ1o9WIfGHTyFFB/GU6QFQ0Ndv//To9cYJkhdwSUe5IOSCmy5/iWN
+	9oaAk6i00wNMpdad3CwmZV8A==
+X-Google-Smtp-Source: AGHT+IGE8sObaNyKSiPkO/qpSiUeuKAoTJJOunfvuIWb7LoyW0/brJrvAJTkDYKHXnj40W7gIv+eM7F0rIEcowv9baM=
+X-Received: by 2002:a17:90b:274a:b0:2ee:b875:6d30 with SMTP id
+ 98e67ed59e1d1-3087bb525cemr28936199a91.9.1745400740319; Wed, 23 Apr 2025
+ 02:32:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 10/34] x86/msr: Convert __rdmsr() uses to
- native_rdmsrq() uses
-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        virtualization@lists.linux.dev, linux-pm@vger.kernel.org,
-        linux-edac@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, jgross@suse.com, andrew.cooper3@citrix.com,
-        peterz@infradead.org, namhyung@kernel.org, mark.rutland@arm.com,
-        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-        irogers@google.com, adrian.hunter@intel.com, kan.liang@linux.intel.com,
-        wei.liu@kernel.org, ajay.kaher@broadcom.com,
-        bcm-kernel-feedback-list@broadcom.com, tony.luck@intel.com,
-        pbonzini@redhat.com, vkuznets@redhat.com, luto@kernel.org,
-        boris.ostrovsky@oracle.com, kys@microsoft.com, haiyangz@microsoft.com,
-        decui@microsoft.com
-References: <20250422082216.1954310-1-xin@zytor.com>
- <20250422082216.1954310-11-xin@zytor.com> <aAexLqjhKncFyw2V@google.com>
-Content-Language: en-US
-From: Xin Li <xin@zytor.com>
-Autocrypt: addr=xin@zytor.com; keydata=
- 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
- l75w1xInsg==
-In-Reply-To: <aAexLqjhKncFyw2V@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <62de9027-e4cd-4192-90e8-64f4c4a8fe4b@gmail.com>
+ <aAc26NTVcXy1BCxU@wunner.de> <CAJZ5v0iWTd_ndpAr=q8QJC2MWSheq0UXVR6a1oyGSH063yzpFw@mail.gmail.com>
+In-Reply-To: <CAJZ5v0iWTd_ndpAr=q8QJC2MWSheq0UXVR6a1oyGSH063yzpFw@mail.gmail.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Date: Wed, 23 Apr 2025 11:32:08 +0200
+X-Gm-Features: ATxdqUHnoN02QKdGtRupZAwXQafde4nJbce3gtu3QSEXhRoH_QXALjZij0_4wQ4
+Message-ID: <CAFSsGVudMV+=0M7m_LC0xuJF=spTwk-691_W=wmnuuNFxCK1AA@mail.gmail.com>
+Subject: Re: Potential issue with pci_prepare_to_sleep if there's no platform
+ support for D3cold transition
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>, 
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 4/22/2025 8:09 AM, Sean Christopherson wrote:
-> On Tue, Apr 22, 2025, Xin Li (Intel) wrote:
->> __rdmsr() is the lowest level primitive MSR read API, and its direct
->> use is NOT preferred.
-> 
-> Doesn't mean it's wrong.
+On Tue, Apr 22, 2025 at 1:43=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
+g> wrote:
+>
+> On Tue, Apr 22, 2025 at 8:28=E2=80=AFAM Lukas Wunner <lukas@wunner.de> wr=
+ote:
+> >
+> > [cc +=3D Rafael, linux-acpi]
+> >
+> > On Mon, Apr 21, 2025 at 10:05:59PM +0200, Heiner Kallweit wrote:
+> > > If there's no platform support for transition to D3cold, then
+> > > pci_set_power_state(dev, D3cold) still returns 0, even though
+> > > power state is transitioned to D3hot only. We called
+> > > pci_enable_wake(dev, D3cold, wakeup) before, therefore PME for
+> > > D3hot may not be enabled. Is this a bug?
+>
+> On platforms using ACPI, no it isn't.
+>
+> Internally, pci_enable_wake() evaluates _DSW and it doesn't
+> distinguish between D3hot and D3cold as per the spec.
+>
+> > > Background:
+> > > In __pci_set_power_state we have the following:
+> > >
+> > > error =3D pci_set_low_power_state(dev, PCI_D3hot, locked);
+> > > if (pci_platform_power_transition(dev, PCI_D3cold))
+> > >       return error;
+> > >
+> > > The acpi_pci_set_power_state() stub returns -ENODEV.
+> > > Therefore, if error=3D0,  __pci_set_power_state() will
+> > > return 0 if pci_platform_power_transition() fails.
+> >
+> > pci_prepare_to_sleep() calls pci_target_state() right at the top.
+> >
+> > If wakeup is supported and enabled, pci_target_state() is supposed
+> > to find the deepest power state supporting wakeup.  If D3cold doesn't
+> > support wakeup, D3hot or a shallower state is returned.
+> >
+> > Hence I don't quite understand how the scenario you're describing
+> > could occur in practice.  Are you seeing actual issues and have tracked
+> > them down to incorrect handling in pci_prepare_to_sleep()?
 
-I wouldn't go so far as to claim that it's wrong :-)
-
->> Use its wrapper function native_rdmsrq() instead.
-
-The current code exhibits a somewhat haphazard use of MSR APIs, so I
-wanted to clarify which API to employ in specific situations with
-verbose function naming.
-
-Here is an example that Boris had to fix the use of MSR APIs:
-
-https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=f980f9c31a923e9040dee0bc679a5f5b09e61f40
-
-> 
-> ...
-> 
->> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
->> index 1547bfacd40f..e73c1d5ba6c4 100644
->> --- a/arch/x86/kvm/vmx/vmx.c
->> +++ b/arch/x86/kvm/vmx/vmx.c
->> @@ -380,7 +380,7 @@ static __always_inline void vmx_disable_fb_clear(struct vcpu_vmx *vmx)
->>   	if (!vmx->disable_fb_clear)
->>   		return;
->>   
->> -	msr = __rdmsr(MSR_IA32_MCU_OPT_CTRL);
->> +	msr = native_rdmsrq(MSR_IA32_MCU_OPT_CTRL);
->>   	msr |= FB_CLEAR_DIS;
->>   	native_wrmsrq(MSR_IA32_MCU_OPT_CTRL, msr);
->>   	/* Cache the MSR value to avoid reading it later */
->> @@ -7307,7 +7307,7 @@ void noinstr vmx_spec_ctrl_restore_host(struct vcpu_vmx *vmx,
->>   		return;
->>   
->>   	if (flags & VMX_RUN_SAVE_SPEC_CTRL)
->> -		vmx->spec_ctrl = __rdmsr(MSR_IA32_SPEC_CTRL);
->> +		vmx->spec_ctrl = native_rdmsrq(MSR_IA32_SPEC_CTRL);
-> 
-> And what guarantees that native_rdmsrq() won't have tracing?  Ugh, a later patch
-> renames native_rdmsrq() => native_rdmsrq_no_trace().
-> 
-> I really don't like this.  It makes simple and obvious code:
-> 
-> 	vmx->spec_ctrl = __rdmsr(MSR_IA32_SPEC_CTRL);
-> 
-> so much harder to read:
-> 
-> 	vmx->spec_ctrl = native_rdmsrq_no_trace(MSR_IA32_SPEC_CTRL);
-> 
-> and does so in a way that is difficult to review, e.g. I have to peek ahead to
-> understand that this is even ok.
-> 
-> I strongly prefer that we find a way to not require such verbose APIs, especially
-> if KVM ends up using native variants throughout.  Xen PV is supposed to be the
-> odd one out, yet native code is what suffers.  Blech.
-
-Will try to figure out how to name the APIs.
-
-One reason I chose verbose names is that short names are in use and
-renaming needs to touch a lot of files (and not fun at all).
-
-Thanks!
-     Xin
-
+On non-ACPI systems pci_target_state() just looks at the device
+capabilities. The described scenario can happen if device supports
+wake from D3cold, but platform has no means to switch a device to
+D3cold. I'm thinking of e.g. RTL8125 on ARM. Typically I don't expect
+an issue because boot-up default on these devices is to have PME wake
+from all states enabled. So it's more of a theoretical exercise at the
+moment.
 
