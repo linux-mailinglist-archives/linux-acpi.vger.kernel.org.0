@@ -1,144 +1,116 @@
-Return-Path: <linux-acpi+bounces-13242-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13243-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74106A9B8BE
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Apr 2025 22:04:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CEBAA9B8C3
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Apr 2025 22:07:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CB741B6865B
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Apr 2025 20:04:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5681446846A
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Apr 2025 20:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376081F1927;
-	Thu, 24 Apr 2025 20:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418ED1F3FC2;
+	Thu, 24 Apr 2025 20:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YxmiO6ps"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H0qocti7"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122071891AA
-	for <linux-acpi@vger.kernel.org>; Thu, 24 Apr 2025 20:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CD71F1506;
+	Thu, 24 Apr 2025 20:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745525050; cv=none; b=d0F7SgG4itRdC6vheJMPNEiUAwOZfrhgPgXG1hR2F1teYvpJBIwjmUNawhnM8o+FjqY4paKlXKMzBTlHxbu7/zwkeejMrqLz1C///+lqQ4Hb4AbeHdG36BmvRjKErPURplr6Rk6Ju23NpMe8EDmZVcvTQWO7OY45hXRwY/wkOuk=
+	t=1745525249; cv=none; b=mGssooqlfDDseOP68uTaQsHiPTowKOs69aKEMT6Te8FYY+YO/+FgqP5vB8YKzX8yBKREXyHiIuwCdAsHDXkTZZEHXPf3o8iz/CEI55VxOQEiK4Vx/5xGuYSDMlUPLUYY6YCmTkPXmxe2LL4JQD0eadLZ8RMvzejSG9HCQIg1fw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745525050; c=relaxed/simple;
-	bh=KkxKNu+7sYjEvW2eUqgTl7hxYpjjmGiMFnVC7NvxbIw=;
+	s=arc-20240116; t=1745525249; c=relaxed/simple;
+	bh=BPlGUdAvgy5fBp3EvTahCBC87J07KFgQ28UtMg7GY4Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oqaKUqAs0qWCRNeF7lto1B4Qaz1l3OUN/MGdap4TRIRzH1vokZjvjiSAjlGBAjVynT3WcGAtz/5PcH2aE1frSOO4KEhCJ8UoJzmdppb2oRIBxSwU9vs0qI4YsJ9HhkQEDVXyjthHMjTgrFNbLhx+oOzXyxSrj36kuSGRrN5oFBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YxmiO6ps; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A274C4CEED
-	for <linux-acpi@vger.kernel.org>; Thu, 24 Apr 2025 20:04:09 +0000 (UTC)
+	 To:Cc:Content-Type; b=IYXMP+8HGGBuz83npg13zZ7G4/+mnoTBYrDUEOGMDL7YNgdBrryDyz/9BvwcAIMDiTkd4DDLGnrXFa41ARX0H+JG9e63rHRtZEcdoYQ7pjR88A+CaNMrYzALFUQphWMEVq8UrrY2FvEQcWYhgl+hIbZ8NtmjRVORNOIE6zMa4CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H0qocti7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47AFC4CEEE;
+	Thu, 24 Apr 2025 20:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745525049;
-	bh=KkxKNu+7sYjEvW2eUqgTl7hxYpjjmGiMFnVC7NvxbIw=;
+	s=k20201202; t=1745525248;
+	bh=BPlGUdAvgy5fBp3EvTahCBC87J07KFgQ28UtMg7GY4Q=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=YxmiO6psIt+uOX1V/ERh5+bjozKvEbTD/LDAmY5USFU1AJ/IsWw6qnmmfaC2vQ9hV
-	 GVUDA9wpgc0zKVz9vNy1Mv1srEBq3iVT/+UDmsbsv33uLqchzFidrwsJ8BEkxhLnw1
-	 qAYTF9/SYa01xEf1ZQEBS4EhH1kScjwfQR6XqNVM4J6xVGoLkiv1ONuFQ7noOwf0Ih
-	 Rjt4yOWhr8elcFTzLD5q59i621nja/vmWsSoY9LX74rwLGBH4EVaPW+ctkPWdwWFJf
-	 9YPyyY0ubihfmiUERVQdATAdFMUIFN3fP8/L+n8u1Vu9lJvQR5w7t72VtOTPpr5X/Q
-	 iP2bgJdjdQMgg==
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-2d0920ce388so727316fac.0
-        for <linux-acpi@vger.kernel.org>; Thu, 24 Apr 2025 13:04:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVxQfChbsQUGlLhe3+I9bcqfFGoVCHlhIU+7FYfvFZT7QRBKxviglauGZEjM97y/VtUXgvKifsO11mX@vger.kernel.org
-X-Gm-Message-State: AOJu0YyS2pSx+GvKQEC5tnzL0Yz/zV7+9fBXKHFF7jOamDnmny6YUZRf
-	fG4zhuVlVtL/3YRnMuViU/SOp/662xUP41THVAiJ0hS8G58f4t9ORNV6Ped6HY93lyLa96Roy0G
-	SYA+8UL7nAaHEuvvzOmNi0ELsEcU=
-X-Google-Smtp-Source: AGHT+IGA3cFIyxUaOUIh8097AbbxY4ZEq161C8YsJAHuQN2iFbHrk133ky3OUDGk7/YzotAcJDSuNHiqKO6HfRyDn0g=
-X-Received: by 2002:a05:6870:9121:b0:2d4:d07c:7cc5 with SMTP id
- 586e51a60fabf-2d96e29c4bemr2058793fac.12.1745525048837; Thu, 24 Apr 2025
- 13:04:08 -0700 (PDT)
+	b=H0qocti7sESBvC3NbB3e+klkIbndIr+8q6xfCBqtqFXRJRAjL7RcnCBG+taYxUzMx
+	 oNwZoBwNN3qVDhPofh78J2m2w1/Gotw/OsxBVTSUNE1she0FbMPtXPCF6JL2KVn5gI
+	 AGm6JAbVsPKpP9TVmc+KA8uDCh9DS8NDePsQVfkwgqZIJi9OPYzIC9kl/EFapYkDXp
+	 oCyjaYMySZjI3s/1OCplnJZszZcMwhy7Y2/M2ROSzQRZdBoMU/Y5yAScpFls3k0Qtk
+	 YGUfnQ6DAzTcyKJT0IuNecVhOl76bOesntsmzYO66u+nMJe3ghwwtRuH9617pm4LiH
+	 wAkLU3OgAJ09A==
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-2d4f832069cso631999fac.0;
+        Thu, 24 Apr 2025 13:07:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVkmQcC/Chnuc8Kk6P1BN+ls7F+B5wVG/GYug+wlifUYPUtGrXEhGP/WlvYzymvJbr6gQxK7sCmGUc5@vger.kernel.org, AJvYcCX4mtaIpjaj3Dp87lRvr6tm9bVyaYP+SFT7mpRnb/coAfcij6uWUyKh6UxPbNkB278K/b4HU1jtnSrbp+9k@vger.kernel.org, AJvYcCXjqEumN9lzFOD0LsVmfsWyZm7pTHQtsHeIQgz/hWSteIbDhX9gghcvL6afZJDBtAYV9XDY7p//spewig==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOAqhQyVjiWqv+2aA4pdkqXTFOytLtgHIHvEpgOcK+tK/ecEVD
+	eWpGwOXfbrpTJd+L2CQkM6Hwl8PTCxGpraucOE7o1xTuTD0BIkm45xNE9eBd2rFH0QBKfuOcbJ3
+	RRIoYm0CXFiSNFzg8KReo6B1Z20E=
+X-Google-Smtp-Source: AGHT+IHMFH/3VMozmSuKcnowp+L6a8+y0WbFfnuXRwz4lHBlZiYm4u90Z/rVueWp58hplBY85ZfYJ4k9+ZHu/7CSjq4=
+X-Received: by 2002:a05:6870:e99a:b0:2d4:d9d6:c8cf with SMTP id
+ 586e51a60fabf-2d99415a073mr815306fac.5.1745525248167; Thu, 24 Apr 2025
+ 13:07:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250417031040.514460-1-superm1@kernel.org> <CAJZ5v0iQMOY1NhpE9Hy0jD6iKQeFbdxB4ZWj5KZcsbApwZ_RhQ@mail.gmail.com>
- <90fcc29b-be8e-44b3-b6bb-a1ef06096520@kernel.org> <CAJZ5v0jRLRdcvTGELZswnNuQKQx_RuKvDAL776Qv49bP7vxKrQ@mail.gmail.com>
- <d00430dd-000f-4805-ab5d-d04affffa833@kernel.org> <CAJZ5v0iod_R7gSt8ppEtrkP59w6trRjpg=ZGc1hZr+sFuYELVg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0iod_R7gSt8ppEtrkP59w6trRjpg=ZGc1hZr+sFuYELVg@mail.gmail.com>
+References: <20250414203551.779320-1-superm1@kernel.org> <CACRpkdaHru55wo5MdVsRKRbfPS9Hv3vGxgXNi8eXGvAOQzyDww@mail.gmail.com>
+ <CAJZ5v0h_Qc2xukPMmwHr-E1HvMwSoLT4TM96aV0e9QKfeRSGGQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0h_Qc2xukPMmwHr-E1HvMwSoLT4TM96aV0e9QKfeRSGGQ@mail.gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 24 Apr 2025 22:03:57 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gCVFNLOHSpiF_6SrNAdu-6S0HHnpp6+TeqW9qN70Afrw@mail.gmail.com>
-X-Gm-Features: ATxdqUH_i0I8SJTmXO1agHsNuOXHT0dOVi9K9KQN6X0Es40QkVFwO7T6c5WimFQ
-Message-ID: <CAJZ5v0gCVFNLOHSpiF_6SrNAdu-6S0HHnpp6+TeqW9qN70Afrw@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPICA: Add support for printing AML arguments when
- trace point enabled
+Date: Thu, 24 Apr 2025 22:07:16 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iGsjCtbbXm8XaHw8qRe_4KJ2TNO1pDGhmL-aYB4r1Xqg@mail.gmail.com>
+X-Gm-Features: ATxdqUEMlCRABQ_ekM-JpQbzSWUWfAd4aod57r5gz-oZxKr8LeISYBOouRgjTM4
+Message-ID: <CAJZ5v0iGsjCtbbXm8XaHw8qRe_4KJ2TNO1pDGhmL-aYB4r1Xqg@mail.gmail.com>
+Subject: Re: [PATCH v2] pinctrl: amd: Fix use of undeclared identifier 'pinctrl_amd_s2idle_dev_ops'
 To: Mario Limonciello <superm1@kernel.org>
-Cc: mario.limonciello@amd.com, robert.moore@intel.com, 
-	rafael.j.wysocki@intel.com, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev
+Cc: Linus Walleij <linus.walleij@linaro.org>, "Rafael J . Wysocki" <rjw@rjwysocki.net>, 
+	"open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	linux-acpi@vger.kernel.org, Basavaraj Natikar <Basavaraj.Natikar@amd.com>, 
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, 
+	kernel test robot <lkp@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 17, 2025 at 3:51=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
+On Tue, Apr 15, 2025 at 3:37=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
 g> wrote:
 >
-> On Thu, Apr 17, 2025 at 2:59=E2=80=AFPM Mario Limonciello <superm1@kernel=
-.org> wrote:
+> On Tue, Apr 15, 2025 at 3:34=E2=80=AFPM Linus Walleij <linus.walleij@lina=
+ro.org> wrote:
 > >
-> > On 4/17/2025 7:46 AM, Rafael J. Wysocki wrote:
-> > > On Thu, Apr 17, 2025 at 2:03=E2=80=AFPM Mario Limonciello <superm1@ke=
-rnel.org> wrote:
-> > >>
-> > >>
-> > >>
-> > >> On 4/17/25 06:19, Rafael J. Wysocki wrote:
-> > >>> On Thu, Apr 17, 2025 at 5:10=E2=80=AFAM Mario Limonciello <superm1@=
-kernel.org> wrote:
-> > >>>>
-> > >>>> From: Mario Limonciello <mario.limonciello@amd.com>
-> > >>>>
-> > >>>> When debug level is set to `ACPI_LV_TRACE_POINT` method start and
-> > >>>> exit are emitted into the debug logs. This can be useful to unders=
-tand
-> > >>>> call paths, however none of the arguments for the method calls are
-> > >>>> populated even when turning up other debug levels.
-> > >>>>
-> > >>>> This can be useful for BIOSes that contain debug strings to see th=
-ose
-> > >>>> strings. When `ACPI_LV_TRACE_POINT` is set also output all of the =
-arguments
-> > >>>> for a given method call.
-> > >>>>
-> > >>>> This enables this type of debugging:
-> > >>>>
-> > >>>> ```
-> > >>>> extrace-0138 ex_trace_point        : Method Begin [0x0000000096b24=
-0c4:\M460] execution.
-> > >>>> extrace-0173 ex_trace_args         :  "  POST CODE: %X  ACPI TIMER=
-: %X  TIME: %d.%d ms\n", b0003f53, 1a26a8b2, 0, 15e, 0, 0
-> > >>>> extrace-0138 ex_trace_point        : Method End [0x0000000096b240c=
-4:\M460] execution.
-> > >>>> ```
-> > >>>>
-> > >>>> Link: https://github.com/acpica/acpica/commit/08219d91b5678ae2fae6=
-e4f208df790a4e108c1c
-> > >>>
-> > >>> The link doesn't work.
-> > >>
-> > >> Are you sure?
-> > >>
-> > >> I just tried again and it worked for me.
-> > >
-> > > Yeah, it works now, I had to sign in to github.
-> > >
-> > > But it is a link to a commit and I need a link to a PR.  I think it's=
- this one:
-> > >
-> > > https://github.com/acpica/acpica/pull/1012
+> > On Mon, Apr 14, 2025 at 10:35=E2=80=AFPM Mario Limonciello <superm1@ker=
+nel.org> wrote:
 > >
-> > Yes that's the right PR that led to the commit.  Can you swap it out?
+> > > From: Mario Limonciello <mario.limonciello@amd.com>
+> > >
+> > > `pinctrl_amd_s2idle_dev_ops` is hidden under both `CONFIG_ACPI` and
+> > > `CONFIG_PM_SLEEP` so the functions that use it need the same scope.
+> > >
+> > > Adjust checks to look for both, and while updating make it CONFIG_SUS=
+PEND
+> > > instead as that's what the acpi header uses.
+> > >
+> > > Reported-by: kernel test robot <lkp@intel.com>
+> > > Closes: https://lore.kernel.org/oe-kbuild-all/202504100420.88UPkUTU-l=
+kp@intel.com/
+> > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> > > ---
+> > > v2:
+> > >  Use CONFIG_SUSPEND instead of CONFIG_PM_SLEEP
+> >
+> > This seems to be based on the previous fixes merged by Rafael?
+> >
+> > Do I need to rebase on -rc2 or something to merge this patch?
+> >
+> > Or can Rafael queue this too?
 >
-> Yes, I can.
+> I can.
 >
-> > Or would you like me to resubmit with it adjusted?
->
-> No need.
+> > In that case:
+> > Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
 Applied as 6.16 material, thanks!
 
