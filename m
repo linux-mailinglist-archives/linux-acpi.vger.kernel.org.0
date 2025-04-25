@@ -1,59 +1,61 @@
-Return-Path: <linux-acpi+bounces-13284-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13286-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E196FA9D1AE
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 21:35:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E03A9D1B1
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 21:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D5294E4257
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 19:35:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2F883BAB60
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 19:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466D9221DA3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9807C221F09;
 	Fri, 25 Apr 2025 19:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="kGYlpr4o"
+	dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="KlZDEm/Y"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6210E21CC4B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69A521E0A8;
 	Fri, 25 Apr 2025 19:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745609665; cv=none; b=hIssARVMahAC8Md9CvuTAnOS6RbLta0RteU4e5EQoDNHfbZSbnHV/SWDXFVn4b7j91xe9gQsNV/D9Y0KaSuNW2KvylVKsfPsSqCLpgqDy8I2l9mvMGKjPPCrB0Kprog3hvyz4uR0Fl7wOp+fvS6CTIaTBOGcTgwwpxZYj0/JsvY=
+	t=1745609665; cv=none; b=rKbc50s5K5+hOycFgI1UiMoEBefA49AbcJPTDhH8zlluq2RlyWgUUtDqviUwoQ96NQYy3xequzdEwftqRHZdesI+nkUN8VDHVy76lIPrLI3T7Dbwtl9Tx8SnRu1LyNHLLvkJRzoBEIkhRf7XKLH2hBNhdV96i4JiqUMTZAfJGIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1745609665; c=relaxed/simple;
-	bh=D42QO1gk2SkTnno/j5B058OApOyGNgwSqdsvv9VF+0g=;
+	bh=0MI0aBmXATawN3V0PUL/WS1ALDsJbUtNJjz41S1xg0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kVBH/UDAPEnQ6kx1x+TwLCdNXsgY+SYorDGYWMLM8Mg01uNme5cv+iu1F2pMUQbM3y4P6wk026j7+9kz1tnNWHXoKjikGzXbq9WqytCoQ/8c2MCQU6aUg0WbeVwFPgYhx5sd3UjUqT7d7s/wbRyVngR6RV6USwdOTe+f3yln7B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=kGYlpr4o; arc=none smtp.client-ip=79.96.170.134
+	 MIME-Version:Content-Type; b=b7NGOGNiHrg6Sr4NKP+CXMlCprCPkBmt4DJyy6LbIBaRhk29h8pPuyD1yLCcr1HgjN/UDlx2TeopCdbPosPNHn+1lyZ4yGGdqhtLCrnbTYgrfKSWdwh3pXjlME5b79zmreNtHKRnfbSmA+MURlCbGGpCyZIbC1EHetrSmud6wCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=KlZDEm/Y; arc=none smtp.client-ip=79.96.170.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
 Received: from kreacher.localnet (unknown [217.114.34.19])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id B8F966645E9;
-	Fri, 25 Apr 2025 21:34:15 +0200 (CEST)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id CA4836644DF;
+	Fri, 25 Apr 2025 21:34:14 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
-	s=dkim; t=1745609656;
-	bh=D42QO1gk2SkTnno/j5B058OApOyGNgwSqdsvv9VF+0g=;
+	s=dkim; t=1745609655;
+	bh=0MI0aBmXATawN3V0PUL/WS1ALDsJbUtNJjz41S1xg0U=;
 	h=From:Subject:Date;
-	b=kGYlpr4oouhxeVkWQc6/cfLdzls1wS+Auu5DLf+kOLftyXTUItgd18OYJbUbzByWD
-	 XNT2YQW/2c/CWCOVTo6bb7uUCgMbd+ow7B+1DNiSnuOwoHJlfIZ6NwzH/eKlTgoODO
-	 lE+vOxPMG0iBPB6RBEjDDurkNNgD5eB5yMO294kO/kmeVQn4lU0aWdYkgzjfdFLRI9
-	 mPmqhqbF84XqtDBXcQBeq5JppiNFFV6KsOcljrKkFkyl6ZfnsXqMZ9xa9vA7/HGCLs
-	 d6ZI53edBpQIq5h4obqUI3zugnQoDjR55HNi2xDhpHR5BixC2FtSbPdEb9HSpcyt59
-	 eEL76jf/XVFSQ==
+	b=KlZDEm/Yf4nJBS0tj28RYxlfsutp5v1Ifsbz5Pm1HkHZX1iYTVA/VHA54HKnHE82q
+	 WmUJu+3yDBDAvg5L0AAXm3Z3qsWytSCkMmCSDve4xyUErBByyku5LvrWetHCZb77CF
+	 L8VHR8RbPfR3KOELrdjrvhMYBO+8QAT2vmZBY6LchUGE8DCHo8Qcjsxm2hn1g7v8S3
+	 3857eJyApqByqCt0ybylFj5U7P7CVIiMDtCVmVMHwn7tpr99AH6Rwv0KcAaLyO7g5c
+	 GBAcE4cXgqyjYS0JS7jSlQVKykpL+sn2/DfLOsfgUnwMjcoBSATYyKPwpmw1ovp9Um
+	 YiTbl6Te1CeGQ==
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, Bob Moore <robert.moore@intel.com>,
  Saket Dumbre <saket.dumbre@intel.com>
-Subject: [PATCH v1 13/19] ACPICA: Apply ACPI_NONSTRING
-Date: Fri, 25 Apr 2025 21:28:34 +0200
-Message-ID: <2039736.usQuhbGJ8B@rjwysocki.net>
+Subject:
+ [PATCH v1 14/19] ACPICA: actbl2.h: ACPI 6.5: RAS2: Rename structure and field
+ names of the RAS2 table
+Date: Fri, 25 Apr 2025 21:29:12 +0200
+Message-ID: <1942053.CQOukoFCf9@rjwysocki.net>
 In-Reply-To: <12671029.O9o76ZdvQC@rjwysocki.net>
 References: <12671029.O9o76ZdvQC@rjwysocki.net>
 Precedence: bulk
@@ -67,75 +69,78 @@ Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 217.114.34.19
 X-CLIENT-HOSTNAME: 217.114.34.19
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvheefudelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepledtieekkeekveeikeetgffgteeuteefjeevjeegudelvdduheeiuedvieehieevnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkphepvddujedruddugedrfeegrdduleenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpedvudejrdduudegrdefgedrudelpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpehrjhifsehrjhifhihsohgtkhhirdhnvghtpdhnsggprhgtphhtthhopeegpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosggvrhhtrdhmohhorhgvsehinhhtvghlrdgtohhmpdhrtghpthhtohepshgrkhgvthdrughumhgsrhgvsehinhhtvghlrdgtohhm
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvheefudekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepledtieekkeekveeikeetgffgteeuteefjeevjeegudelvdduheeiuedvieehieevnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkphepvddujedruddugedrfeegrdduleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudejrdduudegrdefgedrudelpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpehrjhifsehrjhifhihsohgtkhhirdhnvghtpdhnsggprhgtphhtthhopeegpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosggvrhhtrdhmohhorhgvsehinhhtvghlrdgtohhmpdhrtghpthhtohepshgrkhgvthdrughumhgsrhgvsehinhhtvghlrdgtohhm
 X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
 
-From: Kees Cook <kees@kernel.org>
+From: Shiju Jose <shiju.jose@huawei.com>
 
-ACPICA commit ed68cb8e082e3bfbba02814af4fd5a61247f491b
+ACPICA commit 2c8a38f747de9d977491a494faf0dfaf799b777b
 
-Add ACPI_NONSTRING annotations for places found that are using char
-arrays without a terminating NUL character. These were found during
-Linux kernel builds and after looking for instances of arrays of size
-ACPI_NAMESEG_SIZE.
+Rename the structure and field names of the RAS2 table to shorten them and
+avoid long lines in the ACPI RAS2 drivers.
 
-Link: https://github.com/acpica/acpica/commit/ed68cb8e
-Signed-off-by: Kees Cook <kees@kernel.org>
+ 1. struct acpi_ras2_shared_memory to struct acpi_ras2_shmem
+
+ 2. In struct acpi_ras2_shared_memory: fields,
+    - set_capabilities[16] to set_caps[16]
+    - num_parameter_blocks to num_param_blks
+    - set_capabilities_status to set_caps_status
+
+ 3. struct acpi_ras2_patrol_scrub_parameter to
+    struct acpi_ras2_patrol_scrub_param
+
+ 4. In struct acpi_ras2_patrol_scrub_parameter: fields,
+    - patrol_scrub_command to command
+    - requested_address_range to req_addr_range
+    - actual_address_range to actl_addr_range
+
+Link: https://github.com/acpica/acpica/commit/2c8a38f7
+Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/acpica/aclocal.h   | 4 ++--
- drivers/acpi/acpica/nsnames.c   | 2 +-
- drivers/acpi/acpica/nsrepair2.c | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ include/acpi/actbl2.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/acpi/acpica/aclocal.h b/drivers/acpi/acpica/aclocal.h
-index 6481c48c22bb..b40e9a520618 100644
---- a/drivers/acpi/acpica/aclocal.h
-+++ b/drivers/acpi/acpica/aclocal.h
-@@ -293,7 +293,7 @@ acpi_status (*acpi_internal_method) (struct acpi_walk_state * walk_state);
-  * expected_return_btypes - Allowed type(s) for the return value
-  */
- struct acpi_name_info {
--	char name[ACPI_NAMESEG_SIZE] __nonstring;
-+	char name[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;
- 	u16 argument_list;
- 	u8 expected_btypes;
+diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+index ccbf543bceeb..3c2c0730165d 100644
+--- a/include/acpi/actbl2.h
++++ b/include/acpi/actbl2.h
+@@ -3035,15 +3035,15 @@ struct acpi_ras2_pcc_desc {
+ 
+ /* RAS2 Platform Communication Channel Shared Memory Region */
+ 
+-struct acpi_ras2_shared_memory {
++struct acpi_ras2_shmem {
+ 	u32 signature;
+ 	u16 command;
+ 	u16 status;
+ 	u16 version;
+ 	u8 features[16];
+-	u8 set_capabilities[16];
+-	u16 num_parameter_blocks;
+-	u32 set_capabilities_status;
++	u8 set_caps[16];
++	u16 num_param_blks;
++	u32 set_caps_status;
  };
-@@ -370,7 +370,7 @@ typedef acpi_status (*acpi_object_converter) (struct acpi_namespace_node *
- 					      converted_object);
  
- struct acpi_simple_repair_info {
--	char name[ACPI_NAMESEG_SIZE] __nonstring;
-+	char name[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;
- 	u32 unexpected_btypes;
- 	u32 package_index;
- 	acpi_object_converter object_converter;
-diff --git a/drivers/acpi/acpica/nsnames.c b/drivers/acpi/acpica/nsnames.c
-index d91153f65700..22aeeeb56cff 100644
---- a/drivers/acpi/acpica/nsnames.c
-+++ b/drivers/acpi/acpica/nsnames.c
-@@ -194,7 +194,7 @@ acpi_ns_build_normalized_path(struct acpi_namespace_node *node,
- 			      char *full_path, u32 path_size, u8 no_trailing)
- {
- 	u32 length = 0, i;
--	char name[ACPI_NAMESEG_SIZE];
-+	char name[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;
- 	u8 do_no_trailing;
- 	char c, *left, *right;
- 	struct acpi_namespace_node *next_node;
-diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepair2.c
-index 330b5e4711da..0075fc80d498 100644
---- a/drivers/acpi/acpica/nsrepair2.c
-+++ b/drivers/acpi/acpica/nsrepair2.c
-@@ -25,7 +25,7 @@ acpi_status (*acpi_repair_function) (struct acpi_evaluate_info * info,
- 				     return_object_ptr);
+ /* RAS2 Parameter Block Structure for PATROL_SCRUB */
+@@ -3056,11 +3056,11 @@ struct acpi_ras2_parameter_block {
  
- typedef struct acpi_repair_info {
--	char name[ACPI_NAMESEG_SIZE] __nonstring;
-+	char name[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;
- 	acpi_repair_function repair_function;
+ /* RAS2 Parameter Block Structure for PATROL_SCRUB */
  
- } acpi_repair_info;
+-struct acpi_ras2_patrol_scrub_parameter {
++struct acpi_ras2_patrol_scrub_param {
+ 	struct acpi_ras2_parameter_block header;
+-	u16 patrol_scrub_command;
+-	u64 requested_address_range[2];
+-	u64 actual_address_range[2];
++	u16 command;
++	u64 req_addr_range[2];
++	u64 actl_addr_range[2];
+ 	u32 flags;
+ 	u32 scrub_params_out;
+ 	u32 scrub_params_in;
 -- 
 2.43.0
 
