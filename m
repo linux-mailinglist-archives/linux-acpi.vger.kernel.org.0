@@ -1,60 +1,59 @@
-Return-Path: <linux-acpi+bounces-13292-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13291-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3503AA9D1BF
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 21:36:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A2BA9D1BC
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 21:36:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D0751BC1616
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 19:36:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D0687B2D11
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 19:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C44225390;
-	Fri, 25 Apr 2025 19:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE2722489F;
+	Fri, 25 Apr 2025 19:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="QdRYVSCj"
+	dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="hX9deHI/"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A8C22258B;
-	Fri, 25 Apr 2025 19:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E2B221DB5;
+	Fri, 25 Apr 2025 19:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745609668; cv=none; b=lOTTsnd8Nawk1UT49B91+2tW+2fWWuB+BVxD8KJZo3NUH4hfNRDFH6JrPm+S1mxkfMVgykpJiiv39XK1oXt/hbyc+Y06g3OD7xM1bqd5QUUEcEiT22OXWnoDl5f5J0zf1eY/l/gOra+E1VyjMeT6LyzK5NUcOjI7ogqcRvBt6bQ=
+	t=1745609667; cv=none; b=tGEnwDrEJ2U4vshSY5Ip33O8K2uslbuHL4rXqspA0Gv3THy8uO4PnQpu7aE9kPy/LyCbsoGi7zIKAt64NAM+n7I9ogn4h6zhqAJnmI7McEJSxn+auVM1rh/o6PX3XfCRP7xJCHXqyYTZLKecjQUhbKD2+MZr+ZpMLkkyvX0TtUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745609668; c=relaxed/simple;
-	bh=sEWkmldI0bniPYlwO1Sq9VF2lFwbfP8QFMiXtpfDN/w=;
+	s=arc-20240116; t=1745609667; c=relaxed/simple;
+	bh=7jHb9f/VvfCt34IqH1owTNNrRCZ0eHag6Zrrj1QngmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G14xVbl7poIT6QLqEWFeevhxYc8JUFYCiy5gtiSZRK3g5DmF9sRGGjKEXedv3dLov5RmB8K8BUEok1S8GcRvnl2U8jC/jaPTUZZBImuG1Rg7oX+ILouRkEixvcPYCYYY5CywGSv+XoqyYiPfleK+Iwpt/4nWNfOZHETEnaHQ7iE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=QdRYVSCj; arc=none smtp.client-ip=79.96.170.134
+	 MIME-Version:Content-Type; b=A9g4M/NNfedJjWvjIMSdWtEth0qEwaSof72VEY6f28HId5ciR62XC51+VtXBRyrcYytEQvxTk1gkGh+q3XaZUz0yJJC+TP/woFW62RfPf9o7IyIPLYMgWClf1/HPDqMjKgWw9dVC2ziFP8O0hyxuCJpddVR88HXxn8Oxp6YVC3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=hX9deHI/; arc=none smtp.client-ip=79.96.170.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
 Received: from kreacher.localnet (unknown [217.114.34.19])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 9ADAA6632EA;
-	Fri, 25 Apr 2025 21:34:22 +0200 (CEST)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id AEBC2664A91;
+	Fri, 25 Apr 2025 21:34:21 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
-	s=dkim; t=1745609663;
-	bh=sEWkmldI0bniPYlwO1Sq9VF2lFwbfP8QFMiXtpfDN/w=;
+	s=dkim; t=1745609662;
+	bh=7jHb9f/VvfCt34IqH1owTNNrRCZ0eHag6Zrrj1QngmY=;
 	h=From:Subject:Date;
-	b=QdRYVSCjhZ01wBzEhQFqfz7QpphJA8FMOpGxavE9wPlGGIr+MAuI4xHW74XFTparH
-	 FmqN1mBJSo6aJGQKa2GVvbew6Ca5ek8mSINs2hBGZzrDXgrXc4xgVdpMxWF11yxjkI
-	 tHkNX8I1jVWucxEgf4VY8nolF+62XhVibb6h1JqeEFKrS6V+H+CPYss0UPsaThUz+r
-	 g2Juc9ZcHaGZIWtJN3TYLQhqnoT84juvonwN+RnIyO4a9m+NDz1qJybuDjcGjfISai
-	 tqF2Gcf468DJjv9nPYbJ9jl0ZzymzaIIqQK2Zn5qTAzr1TPkBmnlFaMTT5Sd2B7nw9
-	 OYb9Cf82MVl8A==
+	b=hX9deHI/rIe3LL075In7O9eUTMcZFSfCG+gnMZi+u15cpl4j1XsEaKrYd4wuSPYkE
+	 /NeSVbAmy8AKDnMpRoNXF6yXZhB5wmlrNO792eLmJV3kSGQwe+fS1RJwoftULHsR/d
+	 ZVllhGHN5HcYJjBXIZ7mxUDEVtREIR5M2us6rJQrm5pTmElzxhKlkxZSOJi3C8xnSk
+	 Nm2y+PseCz89qYv7MWgYoXmCRsIxcog7I0yUYqs3StKyfBvvteBRmuU9PKZnA8qkGZ
+	 XoD7AURUJ8IjaDAmtnB0mrjldHwwy8MeRcBpvEKpGKLOYHmG57HUT7bGfS66dkFcGA
+	 y4W4dKDVX20wA==
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, Bob Moore <robert.moore@intel.com>,
  Saket Dumbre <saket.dumbre@intel.com>
-Subject:
- [PATCH v1 06/19] ACPICA: actbl2.h: MRRM: Add typedef and other  definitions
-Date: Fri, 25 Apr 2025 21:24:02 +0200
-Message-ID: <3372188.44csPzL39Z@rjwysocki.net>
+Subject: [PATCH v1 07/19] ACPICA: actbl2: Add definitions for RIMT
+Date: Fri, 25 Apr 2025 21:24:41 +0200
+Message-ID: <10665648.nUPlyArG6x@rjwysocki.net>
 In-Reply-To: <12671029.O9o76ZdvQC@rjwysocki.net>
 References: <12671029.O9o76ZdvQC@rjwysocki.net>
 Precedence: bulk
@@ -68,84 +67,127 @@ Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 217.114.34.19
 X-CLIENT-HOSTNAME: 217.114.34.19
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvheefudelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnheptefhgffgueeileffleffieeuvefgtdetheeiheelveehtdfhveeggedtkeelgeehnecuffhomhgrihhnpehinhhtvghlrdgtohhmpdhgihhthhhusgdrtghomhenucfkphepvddujedruddugedrfeegrdduleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudejrdduudegrdefgedrudelpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpehrjhifsehrjhifhihsohgtkhhirdhnvghtpdhnsggprhgtphhtthhopeegpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosggvrhhtrdhmohhorhgvsehinhhtvghlrdgtohhmpdhrtghpthhtohepshgrkhgvthdrughumhgsrhgvsehinhhtvghlrdgtohh
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvheefudelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepledtieekkeekveeikeetgffgteeuteefjeevjeegudelvdduheeiuedvieehieevnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkphepvddujedruddugedrfeegrdduleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudejrdduudegrdefgedrudelpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpehrjhifsehrjhifhihsohgtkhhirdhnvghtpdhnsggprhgtphhtthhopeegpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosggvrhhtrdhmohhorhgvsehinhhtvghlrdgtohhmpdhrtghpthhtohepshgrkhgvthdrughumhgsrhgvsehinhhtvghlrdgtohhm
 X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
 
-From: Tony Luck <tony.luck@intel.com>
+From: Sunil V L <sunilvl@ventanamicro.com>
 
-ACPICA commit 04fd53b2647b9f6f98cfca551383689cb3b59362
+ACPICA commit 73c32bc89cad64ab19c1231a202361e917e6823c
 
-The MRRM table describes association between physical address ranges
-and "region numbers".
+RISC-V IO Mapping Table (RIMT) is a new static table defined for RISC-V
+to communicate IOMMU information to the OS. The specification for RIMT
+is available at [1]. Add structure definitions for RIMT.
 
-Structure defined in the Intel Resource Director Technology (RDT)
-Architecture specification downloadable from www.intel.com/sdm
+[1] - https://github.com/riscv-non-isa/riscv-acpi-rimt
 
-Link: https://github.com/acpica/acpica/commit/04fd53b2
-Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://github.com/acpica/acpica/commit/73c32bc8
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- include/acpi/actbl2.h | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ include/acpi/actbl2.h | 83 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
 
 diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-index a3008bae6f48..4fd5e8b2e199 100644
+index 4fd5e8b2e199..0ae9d9915d58 100644
 --- a/include/acpi/actbl2.h
 +++ b/include/acpi/actbl2.h
-@@ -37,6 +37,7 @@
- #define ACPI_SIG_MCHI           "MCHI"	/* Management Controller Host Interface table */
- #define ACPI_SIG_MPAM           "MPAM"	/* Memory System Resource Partitioning and Monitoring Table */
- #define ACPI_SIG_MPST           "MPST"	/* Memory Power State Table */
-+#define ACPI_SIG_MRRM           "MRRM"	/* Memory Range and Region Mapping table */
- #define ACPI_SIG_MSDM           "MSDM"	/* Microsoft Data Management Table */
- #define ACPI_SIG_NFIT           "NFIT"	/* NVDIMM Firmware Interface Table */
- #define ACPI_SIG_NHLT           "NHLT"	/* Non HD Audio Link Table */
-@@ -1736,6 +1737,45 @@ struct acpi_msct_proximity {
- 	u64 memory_capacity;	/* In bytes */
+@@ -51,6 +51,7 @@
+ #define ACPI_SIG_RAS2           "RAS2"	/* RAS2 Feature table */
+ #define ACPI_SIG_RGRT           "RGRT"	/* Regulatory Graphics Resource Table */
+ #define ACPI_SIG_RHCT           "RHCT"	/* RISC-V Hart Capabilities Table */
++#define ACPI_SIG_RIMT           "RIMT"	/* RISC-V IO Mapping Table */
+ #define ACPI_SIG_SBST           "SBST"	/* Smart Battery Specification Table */
+ #define ACPI_SIG_SDEI           "SDEI"	/* Software Delegated Exception Interface Table */
+ #define ACPI_SIG_SDEV           "SDEV"	/* Secure Devices table */
+@@ -3042,6 +3043,88 @@ struct acpi_rhct_hart_info {
+ 	u32 uid;		/* ACPI processor UID */
  };
  
 +/*******************************************************************************
 + *
-+ * MRRM - Memory Range and Region Mapping (MRRM) table
++ * RIMT - RISC-V IO Remapping Table
++ *
++ * https://github.com/riscv-non-isa/riscv-acpi-rimt
 + *
 + ******************************************************************************/
 +
-+struct acpi_table_mrrm {
++struct acpi_table_rimt {
 +	struct acpi_table_header header;	/* Common ACPI table header */
-+	u8 max_mem_region;	/* Max Memory Regions supported */
-+	u8 flags;		/* Region assignment type */
-+	u8 reserved[26];
-+	u8 memory_range_entry[];
++	u32 num_nodes;		/* Number of RIMT Nodes */
++	u32 node_offset;	/* Offset to RIMT Node Array */
++	u32 reserved;
 +};
 +
-+/* Flags */
-+#define ACPI_MRRM_FLAGS_REGION_ASSIGNMENT_OS    (1<<0)
-+
-+/*******************************************************************************
-+ *
-+ * Memory Range entry - Memory Range entry in MRRM table
-+ *
-+ ******************************************************************************/
-+
-+struct acpi_table_mrrm_mem_range_entry {
-+	ACPI_SUBTABLE_HEADER_16 header;
-+	u32 reserved0;		/* Reserved */
-+	u64 addr_base;		/* Base addr of the mem range */
-+	u64 addr_len;		/* Length of the mem range */
-+	u16 region_id_flags;	/* Valid local or remote Region-ID */
-+	u8 local_region_id;	/* Platform-assigned static local Region-ID */
-+	u8 remote_region_id;	/* Platform-assigned static remote Region-ID */
-+	u32 reserved1;		/* Reserved */
-+	/* Region-ID Programming Registers[] */
++struct acpi_rimt_node {
++	u8 type;
++	u8 revision;
++	u16 length;
++	u16 reserved;
++	u16 id;
++	char node_data[];
 +};
 +
-+/* Values for region_id_flags above */
-+#define ACPI_MRRM_VALID_REGION_ID_FLAGS_LOCAL   (1<<0)
-+#define ACPI_MRRM_VALID_REGION_ID_FLAGS_REMOTE  (1<<1)
++enum acpi_rimt_node_type {
++	ACPI_RIMT_NODE_TYPE_IOMMU = 0x0,
++	ACPI_RIMT_NODE_TYPE_PCIE_ROOT_COMPLEX = 0x1,
++	ACPI_RIMT_NODE_TYPE_PLAT_DEVICE = 0x2,
++};
++
++struct acpi_rimt_iommu {
++	u8 hardware_id[8];	/* Hardware ID */
++	u64 base_address;	/* Base Address */
++	u32 flags;		/* Flags */
++	u32 proximity_domain;	/* Proximity Domain */
++	u16 pcie_segment_number;	/* PCIe Segment number */
++	u16 pcie_bdf;		/* PCIe B/D/F */
++	u16 num_interrupt_wires;	/* Number of interrupt wires */
++	u16 interrupt_wire_offset;	/* Interrupt wire array offset */
++	u64 interrupt_wire[];	/* Interrupt wire array */
++};
++
++/* IOMMU Node Flags */
++#define ACPI_RIMT_IOMMU_FLAGS_PCIE      (1)
++#define ACPI_RIMT_IOMMU_FLAGS_PXM_VALID (1 << 1)
++
++/* Interrupt Wire Structure */
++struct acpi_rimt_iommu_wire_gsi {
++	u32 irq_num;		/* Interrupt Number */
++	u32 flags;		/* Flags */
++};
++
++/* Interrupt Wire Flags */
++#define ACPI_RIMT_GSI_LEVEL_TRIGGERRED  (1)
++#define ACPI_RIMT_GSI_ACTIVE_HIGH       (1 << 1)
++
++struct acpi_rimt_id_mapping {
++	u32 source_id_base;	/* Source ID Base */
++	u32 num_ids;		/* Number of IDs */
++	u32 dest_id_base;	/* Destination Device ID Base */
++	u32 dest_offset;	/* Destination IOMMU Offset */
++	u32 flags;		/* Flags */
++};
++
++struct acpi_rimt_pcie_rc {
++	u32 flags;		/* Flags */
++	u16 reserved;		/* Reserved */
++	u16 pcie_segment_number;	/* PCIe Segment number */
++	u16 id_mapping_offset;	/* ID mapping array offset */
++	u16 num_id_mappings;	/* Number of ID mappings */
++};
++
++/* PCIe Root Complex Node Flags */
++#define ACPI_RIMT_PCIE_ATS_SUPPORTED   (1)
++#define ACPI_RIMT_PCIE_PRI_SUPPORTED   (1 << 1)
++
++struct acpi_rimt_platform_device {
++	u16 id_mapping_offset;	/* ID Mapping array offset */
++	u16 num_id_mappings;	/* Number of ID mappings */
++	char device_name[];	/* Device Object Name */
++};
 +
  /*******************************************************************************
   *
-  * MSDM - Microsoft Data Management table
+  * SBST - Smart Battery Specification Table
 -- 
 2.43.0
 
