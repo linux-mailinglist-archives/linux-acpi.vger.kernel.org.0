@@ -1,59 +1,61 @@
-Return-Path: <linux-acpi+bounces-13294-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13293-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B024EA9D1C5
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 21:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59308A9D1C4
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 21:36:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 045FA1B8498D
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 19:37:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 647211B81CC5
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 19:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1B6227E8B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FF221E0A2;
 	Fri, 25 Apr 2025 19:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="a4zqpdYP"
+	dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="Qsa/V48j"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 751A5224895;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4995422424F;
 	Fri, 25 Apr 2025 19:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745609669; cv=none; b=LgiT5saH5VJrZyatMeXeVFq7wt8rTDowZMb0M+T5ZuqjQQ203tiHDZJgqnJLKZOCCKHUXysEXcKfDkwQ+zJmG6eG2WgiKzo39MaLF9jvKLwYoBP4sodMgmuaGp/HPeglqUPNa1a7zxO3LoUS46t+dGgyrT/FrN56rxy6apuxJ+A=
+	t=1745609669; cv=none; b=HlYzQf6yVJ/sHuOpQiwbPg/bTJ8LAMAB6usf2UJ0ORRx+JsG/tsPpsMvkJvvyF4IjfVpHDPomGHtOK5ccPIGy4DVz6Cmb9KYOj0hocttgt4ClmK5KB3r6N3TLb77/llVdyXjzbEip3wBHMk3tiiN4di1DyyJb8XkWP4yWMGn+lE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1745609669; c=relaxed/simple;
-	bh=jyYyqlBOdqzfAZqZWN3kugHVmB5zIKTbSCk+YAcB/r4=;
+	bh=OyFn51IdBevH5sjLGd5N+sOiVTaOZxPw/FiBI2Mw79k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kKKZ5FovJCQGEY8ToFIiXNEa+4JVAlreSM4783t8UnT+WLIPKjW/e+1GSPfwzBvkaYM+M+sC2UL6MXTsBETjt5FBFQczB6Df1zdCTo6u7qU3ieRwUkJHQSMkmfhXpldaKmcIj8Z7pWfYovFudoUxwSYBOPKlW+6z88WDzwUMnn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=a4zqpdYP; arc=none smtp.client-ip=79.96.170.134
+	 MIME-Version:Content-Type; b=MIrEpoH6UITfCGYLpl6efucCwI5xiIFWicEgoApD1IZIv9/VAp/hjpZE3B7bXQm7ZcX5LHiU5v/mlfCt/De8ZN2812gaJq0myWdkuGVpl+ZW3BtcNkAI+8tR0EtQkQw3/Eex9O717fEcP34pIA9FLq1v0DvvbyLrvvMvKwNjZ4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=Qsa/V48j; arc=none smtp.client-ip=79.96.170.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
 Received: from kreacher.localnet (unknown [217.114.34.19])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 561E8663631;
-	Fri, 25 Apr 2025 21:34:24 +0200 (CEST)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 8A0DE663C4C;
+	Fri, 25 Apr 2025 21:34:23 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
 	s=dkim; t=1745609664;
-	bh=jyYyqlBOdqzfAZqZWN3kugHVmB5zIKTbSCk+YAcB/r4=;
+	bh=OyFn51IdBevH5sjLGd5N+sOiVTaOZxPw/FiBI2Mw79k=;
 	h=From:Subject:Date;
-	b=a4zqpdYP0CaWK+eFMUGcdF+L76xkrbgVuwzet5VSeP+/WrHum8a+e7DVVxJkHACD5
-	 fSS3OGoTe4Ovik3vSGTWmkDYBnx3CAoTpxUNzkdkIITbYe+iYGicTKYTnT/o/IKKJZ
-	 cqSLVWIS8kragxJbHv5aiULjTGl/cbVB//nJ1I1LhsSDwpoFD7MSJvR4wT007X491b
-	 I+6atwsRvABi7MlYSau0C/nhXJgqHHAyIiJ1/wldmKjW011fZmUJSUTnEa/yZutYP4
-	 delLHOSdRD/cPhp/9kB5j41f3e6f8k/tBPIsqSLzebz0X1x5yjHWf8/2jf7pl2aKE0
-	 eKYP6lcAnfVew==
+	b=Qsa/V48jMeMDRi8O4aR1kOmbkq8cO96HivJoDmKl4D9SFEz+dxYlkSknpEC9lCEqq
+	 Qb6U3gXH9N24gHk8MRLRq+CLC7SyXlP5TZ61Dx2S+/m8k5FGL6Yy9dsAiNR8MKI1Yp
+	 gzQD/jGLYZcbvgJ+DKqHGA5xR37nYvRt2Qrqp6syMv+0vnUrcoDofssAENbX7DNTe4
+	 kwEG16C2bhle1uBSs3oKYw3E8F5KUiF/tT+PDRk8V1/cwz05z51fMcZkXSOR1dhzC1
+	 pUQwwK3mj+ZVdCdlrjKMmxd+CiC2TcLz/ZBqAeGPKgFMATQ/DId18Lbup9GWV0ngzO
+	 M8Txd8LCOJqpg==
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, Bob Moore <robert.moore@intel.com>,
  Saket Dumbre <saket.dumbre@intel.com>
-Subject: [PATCH v1 04/19] ACPICA: Interpret SIDP structures in DMAR
-Date: Fri, 25 Apr 2025 21:22:35 +0200
-Message-ID: <2239745.irdbgypaU6@rjwysocki.net>
+Subject:
+ [PATCH v1 05/19] ACPICA: infrastructure: Add new header and  ACPI_DMT_BUF26
+ types
+Date: Fri, 25 Apr 2025 21:23:17 +0200
+Message-ID: <3005638.e9J7NaK4W3@rjwysocki.net>
 In-Reply-To: <12671029.O9o76ZdvQC@rjwysocki.net>
 References: <12671029.O9o76ZdvQC@rjwysocki.net>
 Precedence: bulk
@@ -70,61 +72,45 @@ X-VADE-SPAMSTATE: clean
 X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvheefudelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepledtieekkeekveeikeetgffgteeuteefjeevjeegudelvdduheeiuedvieehieevnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkphepvddujedruddugedrfeegrdduleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvudejrdduudegrdefgedrudelpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpehrjhifsehrjhifhihsohgtkhhirdhnvghtpdhnsggprhgtphhtthhopeegpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosggvrhhtrdhmohhorhgvsehinhhtvghlrdgtohhmpdhrtghpthhtohepshgrkhgvthdrughumhgsrhgvsehinhhtvghlrdgtohhm
 X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
 
-From: Alexey Neyman <aneyman@google.com>
+From: Tony Luck <tony.luck@intel.com>
 
-ACPICA commit af51f730e0bccf789686cea68e116d5f0b27aacb
+ACPICA commit 52840d3826bd7e183fcb555e044e190aea0b5021
 
-Added in revision 3.4 of the VT-d spec. To support SIDP, part of the
-previously reserved field in the device scope structure was used to
-create a 1-byte "Flags" field.
+New MRRM tables can have subtables that are larger than 255 bytes.
 
-Link: https://github.com/acpica/acpica/commit/af51f730
-Signed-off-by: Alexey Neyman <aneyman@google.com>
+Add a new header typedef that uses u16 for Length. Could be
+backported to acpi_aspt_header, struct acpi_dmar_header, struct acpi_nfit_header,
+struct acpi_prmt_module_header, struct acpi_prmt_module_info. Will be used for
+upcoming ERDT table.
+
+MRRM table has a 26-byte reserved section in header. Add ACPI_DMT_BUF26
+to describe this in struct acpi_dmtable_info.
+
+Link: https://github.com/acpica/acpica/commit/52840d38
+Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- include/acpi/actbl1.h | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ include/acpi/actbl1.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-index 329454c303b9..e0cbda95fec8 100644
+index e0cbda95fec8..b403b0b60bf6 100644
 --- a/include/acpi/actbl1.h
 +++ b/include/acpi/actbl1.h
-@@ -819,7 +819,8 @@ enum acpi_dmar_type {
- 	ACPI_DMAR_TYPE_HARDWARE_AFFINITY = 3,
- 	ACPI_DMAR_TYPE_NAMESPACE = 4,
- 	ACPI_DMAR_TYPE_SATC = 5,
--	ACPI_DMAR_TYPE_RESERVED = 6	/* 6 and greater are reserved */
-+	ACPI_DMAR_TYPE_SIDP = 6,
-+	ACPI_DMAR_TYPE_RESERVED = 7	/* 7 and greater are reserved */
+@@ -155,6 +155,13 @@ struct acpi_aspt_acpi_mbox_regs {
+ 	u64 reserved2[2];
  };
  
- /* DMAR Device Scope structure */
-@@ -827,7 +828,8 @@ enum acpi_dmar_type {
- struct acpi_dmar_device_scope {
- 	u8 entry_type;
- 	u8 length;
--	u16 reserved;
-+	u8 flags;
-+	u8 reserved;
- 	u8 enumeration_id;
- 	u8 bus;
- };
-@@ -923,6 +925,15 @@ struct acpi_dmar_satc {
- 	u8 reserved;
- 	u16 segment;
- };
++/* Larger subtable header (when Length can exceed 255) */
 +
-+/* 6: so_c Integrated Device Property Reporting Structure */
-+
-+struct acpi_dmar_sidp {
-+	struct acpi_dmar_header header;
-+	u16 reserved;
-+	u16 segment;
++struct acpi_subtable_header_16 {
++	u16 type;
++	u16 length;
 +};
 +
  /*******************************************************************************
   *
-  * DRTM - Dynamic Root of Trust for Measurement table
+  * ASF - Alert Standard Format table (Signature "ASF!")
 -- 
 2.43.0
 
