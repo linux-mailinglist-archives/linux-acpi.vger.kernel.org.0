@@ -1,151 +1,137 @@
-Return-Path: <linux-acpi+bounces-13276-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13277-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C95A9CD73
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 17:46:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D109A9CDE2
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 18:17:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95C401BC62E5
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 15:46:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA6133BE38C
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 16:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5AAE28CF61;
-	Fri, 25 Apr 2025 15:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D086D18FC92;
+	Fri, 25 Apr 2025 16:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dRNB0hzB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iUzN27iE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2CE13633F;
-	Fri, 25 Apr 2025 15:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C9046447;
+	Fri, 25 Apr 2025 16:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745595937; cv=none; b=G7x8Ax74kaDgySNTz5Jlsoih9DAeesVDV66WKndj0XUSO+RllSNntMUVYDSLa5i68Tbb4T8uuyDJoHabqy8efQq5m4AeMzLe+mc3Dl+hLeb15HsD4Um3tI0O5/FlygD8jPpITqN8RsR+EUCtw3dVl0Oh16WLh9W21VH+Elda+Eg=
+	t=1745597815; cv=none; b=UHTqTWF4iumwVhjz/+HPOUF9OVb7Fp4DS0MEyz9YKpV6PEvalapukNChoixZrF2QNiKjzunS5aeOyQQf6zIM/wmoKtBPAeoD1f6lgTJeszB/Qae+Q9N8fpjEXnaS2Sjm9OTjQU0IvVTzC8WMI1CncSbC1fJsb2Yj2OHgRuz30eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745595937; c=relaxed/simple;
-	bh=NDEMzXyKMQaX/1P4v8LWPCUwLdyUYFm0Z5j9i1NuUNc=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=oURIrzB+ARE3FVQLxz8dnOYU14uCYJjSvVX3nqn4tRxl4sqIg0d9GcdrQHWP+8ijFC1LA/zQonMzi39gEDovU/vlRJprrAMSpCqMIjZbdqwKMDMh4/q7CcalYhhgFQ/04fC+JnOFHmm7ZJ6T/QR933JkOJ7LdY0XGkJrf978+fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dRNB0hzB; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745595936; x=1777131936;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=NDEMzXyKMQaX/1P4v8LWPCUwLdyUYFm0Z5j9i1NuUNc=;
-  b=dRNB0hzB9VSEVZTN6uSQdKcHqikDg35+hrmD9RswM0sJg7VLq7vXflvN
-   L1reVIaspl2ar5jsCDPfpN7akAbFhLGghWw+pCn19pxVTEbDg12AsoN6N
-   O6iyX/zUQKQvZtktFX2jk7eJYafaN86bT+ROFbbafcHQha1t0OhXLKs5p
-   W4k/Hcovc41OunM9OT7Hr9Q1XDHwhBS6NIRM9c6ZZzzY4mdcLEvIudGeo
-   UYRwmAL+8O3spijxoiIPhcZNqx2AO5dl0pJegz89Q+YcbAn4diomQZ1Jc
-   hAlzIA8q1wKOcSE2RV7O6gnp0NSBmt5HQG7wN/HZr61mIeUmmbAlXpmwn
-   w==;
-X-CSE-ConnectionGUID: 7bCgJpPqRiefXyfn2jXtMQ==
-X-CSE-MsgGUID: bMKMOgZ8RAGO3vxuOpGwsQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11414"; a="50928849"
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="50928849"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 08:45:35 -0700
-X-CSE-ConnectionGUID: zVyTiGS+Tp27oRIuRu3o/Q==
-X-CSE-MsgGUID: FTR+bshYRAKz5gvHmp9NIg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="133870388"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.154])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 08:45:22 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Fri, 25 Apr 2025 18:45:18 +0300 (EEST)
-To: "Xin Li (Intel)" <xin@zytor.com>
-cc: LKML <linux-kernel@vger.kernel.org>, kvm@vger.kernel.org, 
-    linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-    virtualization@lists.linux.dev, linux-pm@vger.kernel.org, 
-    linux-edac@vger.kernel.org, xen-devel@lists.xenproject.org, 
-    linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-    Netdev <netdev@vger.kernel.org>, platform-driver-x86@vger.kernel.org, 
-    tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-    dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-    acme@kernel.org, jgross@suse.com, andrew.cooper3@citrix.com, 
-    peterz@infradead.org, namhyung@kernel.org, mark.rutland@arm.com, 
-    alexander.shishkin@linux.intel.com, jolsa@kernel.org, irogers@google.com, 
-    adrian.hunter@intel.com, kan.liang@linux.intel.com, wei.liu@kernel.org, 
-    ajay.kaher@broadcom.com, bcm-kernel-feedback-list@broadcom.com, 
-    tony.luck@intel.com, pbonzini@redhat.com, vkuznets@redhat.com, 
-    seanjc@google.com, luto@kernel.org, boris.ostrovsky@oracle.com, 
-    kys@microsoft.com, haiyangz@microsoft.com, decui@microsoft.com, 
-    dapeng1.mi@linux.intel.com
-Subject: Re: [PATCH v3 01/14] x86/msr: Move rdtsc{,_ordered}() to
- <asm/tsc.h>
-In-Reply-To: <20250425083442.2390017-2-xin@zytor.com>
-Message-ID: <42dc90e1-df2a-2324-d28c-d75fb525e4a2@linux.intel.com>
-References: <20250425083442.2390017-1-xin@zytor.com> <20250425083442.2390017-2-xin@zytor.com>
+	s=arc-20240116; t=1745597815; c=relaxed/simple;
+	bh=8JW2vZqTEBXcaeQjmDTLoCd9QWwIOsH1ErInhCxEcUA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=kOuNfv9BG20RBpIrg8DYZuoQSqYgjYg6baiuX4wD8UjbFD2uWBX8CGRC3GZh/b3ApUNv5S/BbQNG5AX7CaQHpYqPwvsbJDKisoUU0jNHlCVOM86hqEYrkfyzoYGvk8EhvbELmw9N8JVrJa9Gy33yOsCPv+Xf10tHMYASaYCqD0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iUzN27iE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F8FC4CEE8;
+	Fri, 25 Apr 2025 16:16:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745597815;
+	bh=8JW2vZqTEBXcaeQjmDTLoCd9QWwIOsH1ErInhCxEcUA=;
+	h=From:Date:Subject:To:Cc:From;
+	b=iUzN27iEOLxf1h2S7k9dlxUS5jEzFerSbgJRM8GTBOVJqIk982S7a7Siw+4AYW7Qe
+	 LpNC3VpjXPqFL5Nz0dUnZ26dvMPSJbXnZB3UqSbv7ysXSAVDd+wOKR5d9SSj9IvymE
+	 FpMe3wWIdMdb1jSljtcGNwiVwArqC/NrJwTHi9vhwWufxUGsgOShVlGFZ6PPeuAwQO
+	 NzT8yWDEQuNVZOE60ByRGqVrhJCjNYBVTzc81XdBLmyHuhdRRr260HKVp/2OimE22A
+	 rHfI0Vw2KxBka/iWHwzLSb6/ZLZx3kNnJ5ofVBUafa+1+7yJiCa2xPSr+TAwis/F5g
+	 kLnF4ttwWErRQ==
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-72c47631b4cso1556707a34.1;
+        Fri, 25 Apr 2025 09:16:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUifHwTYh7BM69UOctX1z/Ardbig1ECfTVsZPhCzD3U0VimRGtnmigR1SHJYzFUXDZ6pAYjs4uYWF5LIMPo@vger.kernel.org, AJvYcCXBtOvCLllT3NuGmM/HIrMAw+tbZnFSYng923QtKIjy+Tf/vVWUmbGdjgHFSbolMU/XtJsm6h6mfOQQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWMacX6N/7fUhKmTSkLgqAayTETedJQUn1gyaeKbEmzvDIVECJ
+	GKM5hnYouLE65q2NzFpKBo3dQky/Pz377foneIajBikxTebVaUtmUkJOoLVTqxB/CicnHdpKVj7
+	OjfmI7Y1tga7efRC4MwjNLU6ffjQ=
+X-Google-Smtp-Source: AGHT+IEBTIyD7hhcKfoRUs9/MQH7opvPv05v33Y84BtrwnX+9H+cIU3lhNAPJSRsmKXrT6aeBC4jDmq+aAkw085da2w=
+X-Received: by 2002:a05:6870:a7a5:b0:2bc:7d6f:fa86 with SMTP id
+ 586e51a60fabf-2d99de7e336mr1850172fac.35.1745597814257; Fri, 25 Apr 2025
+ 09:16:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 25 Apr 2025 18:16:43 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0i3STvUcv15K4RhpNa9t7hZQ8nJGFfFD77WU-3-4X0zog@mail.gmail.com>
+X-Gm-Features: ATxdqUG7WiELpCNi397MpmWhtNNmYphz9oOLJTgR9dpSMMaRmT2a3pq0xF4xajY
+Message-ID: <CAJZ5v0i3STvUcv15K4RhpNa9t7hZQ8nJGFfFD77WU-3-4X0zog@mail.gmail.com>
+Subject: [GIT PULL] Power management fixes for v6.15-rc4
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Linux PM <linux-pm@vger.kernel.org>, 
+	ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 25 Apr 2025, Xin Li (Intel) wrote:
+Hi Linus,
 
-> For some reason, there are some TSC-related functions in the MSR
-> header even though there is a tsc.h header.
-> 
-> Relocate rdtsc{,_ordered}() from <asm/msr.h> to <asm/tsc.h>, and
-> subsequently remove the inclusion of <asm/msr.h> in <asm/tsc.h>.
-> Consequently, <asm/msr.h> must be included in several source files
-> that previously did not require it.
->
-> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-> ---
-> 
-> Change in v3:
-> * Add a problem statement to the changelog (Dave Hansen).
-> ---
+Please pull from the tag
 
->  drivers/platform/x86/intel/pmc/cnp.c          |  1 +
->  .../intel/speed_select_if/isst_if_common.c    |  1 +
->  drivers/platform/x86/intel/turbo_max_3.c      |  1 +
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ pm-6.15-rc4
 
-Hi,
+with top-most commit 5786ef8ad8d4222fdc2e7cf65337880695cef60e
 
-To me this looks really a random set of source files, maybe it helped some 
-build success but it's hard for me to review this because there are still 
-cases that depend on indirect include chains.
+ Merge tag 'cpufreq-arm-fixes-6.15-rc' of
+git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm
 
-Could you just look into solving all missing msr.h includes instead 
-as clearly some are still missing after 3 pre-existing ones and you adding 
-it into 3 files:
+on top of commit 9d7a0577c9db35c4cc52db90bc415ea248446472
 
-$ git grep -e rdmsr -e wrmsr -l drivers/platform/x86/
-drivers/platform/x86/intel/ifs/core.c
-drivers/platform/x86/intel/ifs/load.c
-drivers/platform/x86/intel/ifs/runtest.c
-drivers/platform/x86/intel/pmc/cnp.c
-drivers/platform/x86/intel/pmc/core.c
-drivers/platform/x86/intel/speed_select_if/isst_if_common.c
-drivers/platform/x86/intel/speed_select_if/isst_if_mbox_msr.c
-drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-drivers/platform/x86/intel/tpmi_power_domains.c
-drivers/platform/x86/intel/turbo_max_3.c
-drivers/platform/x86/intel/uncore-frequency/uncore-frequency.c
-drivers/platform/x86/intel_ips.c
+ gcc-15: disable '-Wunterminated-string-initialization' entirely for now
 
-$ git grep -e 'msr.h' -l drivers/platform/x86/
-drivers/platform/x86/intel/pmc/core.c
-drivers/platform/x86/intel/tpmi_power_domains.c
-drivers/platform/x86/intel_ips.c
+to receive power management fixes for 6.15-rc4.
 
-I'd also prefer the patch(es) adding missing includes be in a different 
-patch.
+These are cpufreq driver fixes addressing multiple assorted issues:
 
--- 
- i.
+ - Fix possible out-of-bound / NULL-ptr-deref in cpufreq drivers (Henry
+   Martin, Andre Przywara).
 
+ - Fix Kconfig issues with compile-test in cpufreq drivers (Krzysztof
+   Kozlowski, Johan Hovold).
+
+ - Fix invalid return value in .get() in the CPPC cpufreq driver (Marc
+   Zyngier).
+
+ - Add SM8650 to cpufreq-dt-platdev blocklist (Pengyu Luo).
+
+Thanks!
+
+
+---------------
+
+Andre Przywara (1):
+      cpufreq: sun50i: prevent out-of-bounds access
+
+Henry Martin (3):
+      cpufreq: apple-soc: Fix null-ptr-deref in apple_soc_cpufreq_get_rate()
+      cpufreq: scmi: Fix null-ptr-deref in scmi_cpufreq_get_rate()
+      cpufreq: scpi: Fix null-ptr-deref in scpi_cpufreq_get_rate()
+
+Johan Hovold (1):
+      cpufreq: fix compile-test defaults
+
+Krzysztof Kozlowski (1):
+      cpufreq: Do not enable by default during compile testing
+
+Marc Zyngier (1):
+      cpufreq: cppc: Fix invalid return value in .get() callback
+
+Pengyu Luo (1):
+      cpufreq: Add SM8650 to cpufreq-dt-platdev blocklist
+
+---------------
+
+ drivers/cpufreq/Kconfig.arm            | 20 ++++++++++----------
+ drivers/cpufreq/apple-soc-cpufreq.c    | 10 ++++++++--
+ drivers/cpufreq/cppc_cpufreq.c         |  2 +-
+ drivers/cpufreq/cpufreq-dt-platdev.c   |  1 +
+ drivers/cpufreq/scmi-cpufreq.c         | 10 ++++++++--
+ drivers/cpufreq/scpi-cpufreq.c         | 13 ++++++++++---
+ drivers/cpufreq/sun50i-cpufreq-nvmem.c | 18 ++++++++++++------
+ 7 files changed, 50 insertions(+), 24 deletions(-)
 
