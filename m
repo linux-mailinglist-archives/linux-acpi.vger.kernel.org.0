@@ -1,143 +1,104 @@
-Return-Path: <linux-acpi+bounces-13249-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13250-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B743A9BD4B
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 05:45:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC5DA9BD57
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 05:48:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E716E4A4C70
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 03:45:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91B6B4A5463
+	for <lists+linux-acpi@lfdr.de>; Fri, 25 Apr 2025 03:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B741AF0A4;
-	Fri, 25 Apr 2025 03:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="h6tkGPZf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E871ADC97;
+	Fri, 25 Apr 2025 03:48:32 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36E5144304;
-	Fri, 25 Apr 2025 03:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E2817597;
+	Fri, 25 Apr 2025 03:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745552725; cv=none; b=cC+8pVzYVlqcpY/3qUgJucQPZlyZQGBRyQP059KQx2ToW79uqM8dlWCWn1PDeawgna+jUbhmvOhG/got1PnG2JZQK1dEt8ZzLkLF5VikoEkeACmGxR2S/X83XPq5ObOcxvex7/nyIqf7CX4HCWuziebQOFZUfqWzrM8+CstF+0s=
+	t=1745552912; cv=none; b=pYBOz/8pnSEemE61FObhjL2yV+hLO6DVGZE+xm6HSB0s5kbHqbcNMv/jCDlEWSSd8Hq/O92oEVn1CF1cCj3vcdAS/q+fuIrYDqS8iAZ5/htR+8maqHUmBuUUT7eAZL4FNh4wxLxHys7tVcyxUoHDQ/Y1u8LYbuViGR1qkbbZkIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745552725; c=relaxed/simple;
-	bh=GCsuJBHrLb8OOsw0Nrc363phMun5O+wCt6+3FMpkJQo=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=lJx8m28YeK2c0ANh1LGU6keZyNdiIQ+pOZdvLVRgMX9wMY5xmv0GocMlPNBml9t8GJbqQA9jwODQ1eFx91Db5Vko+RlZUjqVjZZEy2k0vmErs0NlQ6jmSAF0dkHuQyB75fc5hOotHivgORAcw3HUGtShWvxyeJyhv50CnaPDW2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=h6tkGPZf; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [IPV6:2601:646:8081:1f93:ace:6989:11eb:d5d3] ([IPv6:2601:646:8081:1f93:ace:6989:11eb:d5d3])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53P3iRFQ2047105
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 24 Apr 2025 20:44:27 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53P3iRFQ2047105
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1745552672;
-	bh=b2EU0c9r4+7Z91N6+uKj1oR80E0vF0IHEbyiUhJnLQA=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=h6tkGPZf95yQ3bAcYVi/++g5apF9dA+xDaGqiCLYRc9VcHVlrJdGQsg4l29MEZ7CJ
-	 aLVdgM7ERZdGZm+YeYHxkaRoWYmC139k7kZqYZoAzT/znx6Kx6O2GtZpDA/JUfvlJ1
-	 CcsBsfRHddjbpCzdM4zIuzpA7epwqsOqTiZB4ua/CkyilKNABnOQlavSOZxha0+wfj
-	 cX6ckW2WvvNyLFS1B2A5lWVYkYGzgGJhfmVN53iSVa6vyOu/NY5xsXrNsSQKXTH85b
-	 +dwG+fJzWTGalgBqhI1nG1clXUnlMv9jRJvaiZN9wKeE5vSAPLzqIsZZs/a531ezoe
-	 HihwH9Nv3ITtg==
-Message-ID: <72516271-5b28-434a-838b-d8532e1b4fc1@zytor.com>
-Date: Thu, 24 Apr 2025 20:44:19 -0700
+	s=arc-20240116; t=1745552912; c=relaxed/simple;
+	bh=Z0dMxFVexGbQ2wF6mhtuCcGEoCqG3J60URgpBHBQSvE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Mx+2ZJtnYjyYjDtxnGk48JtS3qdbz7pLGwiRk7diG6kqETIRJm8KuWhAeB+Rm9NseuVez4QzNcJzuqHyXsnAAeJG1pQVhhZdxJlj2r6SHEpWWANBQpQDYCNoXJgSR5VFNPSVn8aWNiPteygbqF9Ki+E2OnEhMobVW3ot3jJJdY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 1dceb0f4218811f0a216b1d71e6e1362-20250425
+X-CTIC-Tags:
+	HR_CC_AS_FROM, HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_DIGIT_LEN
+	HR_FROM_NAME, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_BAD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
+	GTI_C_BU, AMN_T1, AMN_GOOD, AMN_C_TI, AMN_C_BU
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:f1b78c75-04d9-4f04-9152-1f5f29580cbb,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:25
+X-CID-INFO: VERSION:1.1.45,REQID:f1b78c75-04d9-4f04-9152-1f5f29580cbb,IP:0,URL
+	:0,TC:0,Content:-5,EDM:25,RT:0,SF:5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:25
+X-CID-META: VersionHash:6493067,CLOUDID:4c8db667924b65262568c25bcabdc8ce,BulkI
+	D:25042511481553MNVM22,BulkQuantity:0,Recheck:0,SF:19|38|66|72|78|102,TC:n
+	il,Content:0|50,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil
+	,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FSD
+X-UUID: 1dceb0f4218811f0a216b1d71e6e1362-20250425
+X-User: xiaopei01@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <xiaopei01@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1810698183; Fri, 25 Apr 2025 11:48:14 +0800
+From: Pei Xiao <xiaopei01@kylinos.cn>
+To: bhelgaas@google.com,
+	rafael@kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Pei Xiao <xiaopei01@kylinos.cn>
+Subject: [PATCH] ACPI: pci_root: Constify fwnode_handle in acpi_pci_root_remap_iospace
+Date: Fri, 25 Apr 2025 11:48:08 +0800
+Message-Id: <7ae7866ab8b897253703ecee44c688b6832d49a3.1745552799.git.xiaopei01@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 21/34] x86/msr: Utilize the alternatives mechanism
- to write MSR
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>,
-        Xin Li
- <xin@zytor.com>, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-        linux-pm@vger.kernel.org, linux-edac@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, netdev@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, acme@kernel.org,
-        andrew.cooper3@citrix.com, peterz@infradead.org, namhyung@kernel.org,
-        mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
-        jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com,
-        kan.liang@linux.intel.com, wei.liu@kernel.org, ajay.kaher@broadcom.com,
-        bcm-kernel-feedback-list@broadcom.com, tony.luck@intel.com,
-        pbonzini@redhat.com, vkuznets@redhat.com, seanjc@google.com,
-        luto@kernel.org, boris.ostrovsky@oracle.com, kys@microsoft.com,
-        haiyangz@microsoft.com, decui@microsoft.com
-References: <20250422082216.1954310-1-xin@zytor.com>
- <20250422082216.1954310-22-xin@zytor.com>
- <b2624e84-6fab-44a3-affc-ce0847cd3da4@suse.com>
- <f7198308-e8f8-4cc5-b884-24bc5f408a2a@zytor.com>
- <37c88ea3-dd24-4607-9ee1-0f19025aaef3@suse.com>
- <bb8f6b85-4e7d-440a-a8c3-0e0da45864b8@zytor.com>
- <0cdc6e9d-88eb-4ead-8d55-985474257d53@suse.com>
- <483eb20c-7302-4733-a15f-21d140396919@zytor.com>
-Content-Language: en-US
-In-Reply-To: <483eb20c-7302-4733-a15f-21d140396919@zytor.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 4/24/25 18:15, H. Peter Anvin wrote:
-> On 4/24/25 01:14, Jürgen Groß wrote:
->>>
->>> Actually, that is how we get this patch with the existing alternatives
->>> infrastructure.  And we took a step further to also remove the pv_ops
->>> MSR APIs...
->>
->> And this is what I'm questioning. IMHO this approach is adding more
->> code by removing the pv_ops MSR_APIs just because "pv_ops is bad". And
->> I believe most refusal of pv_ops is based on no longer valid reasoning.
->>
-> 
-> pvops are a headache because it is effectively a secondary alternatives 
-> infrastructure that is incompatible with the alternatives one...
-> 
->>> It looks to me that you want to add a new facility to the alternatives
->>> infrastructure first?
->>
->> Why would we need a new facility in the alternatives infrastructure?
-> 
-> I'm not sure what Xin means with "facility", but a key motivation for 
-> this is to:
-> 
-> a. Avoid using the pvops for MSRs when on the only remaining user 
-> thereof (Xen) is only using it for a very small subset of MSRs and for 
-> the rest it is just overhead, even for Xen;
-> 
-> b. Being able to do wrmsrns immediate/wrmsrns/wrmsr and rdmsr immediate/ 
-> rdmsr alternatives.
-> 
-> Of these, (b) is by far the biggest motivation. The architectural 
-> direction for supervisor states is to avoid ad hoc and XSAVES ISA and 
-> instead use MSRs. The immediate forms are expected to be significantly 
-> faster, because they make the MSR index available at the very beginning 
-> of the pipeline instead of at a relatively late stage.
-> 
+The fwnode_handle passed into pci_register_io_range is not modified,
+so make it const.
 
-Note that to support the immediate forms, we *must* do these inline, or 
-the const-ness of the MSR index -- which applies to by far the vast 
-majority of MSR references -- gets lost. pvops does exactly that.
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+---
+ drivers/acpi/pci_root.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Furthermore, the MSR immediate instructions take a 64-bit number in a 
-single register; as these instructions are by necessity relatively long, 
-it makes sense for the alternative sequence to accept a 64-bit input 
-register and do the %eax/%edx shuffle in the legacy fallback code... we 
-did a bunch of experiments to see what made most sense.
-
-	-hpa
+diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+index d0b6a024daae..74ade4160314 100644
+--- a/drivers/acpi/pci_root.c
++++ b/drivers/acpi/pci_root.c
+@@ -858,7 +858,7 @@ static void acpi_pci_root_validate_resources(struct device *dev,
+ 	}
+ }
+ 
+-static void acpi_pci_root_remap_iospace(struct fwnode_handle *fwnode,
++static void acpi_pci_root_remap_iospace(const struct fwnode_handle *fwnode,
+ 			struct resource_entry *entry)
+ {
+ #ifdef PCI_IOBASE
+-- 
+2.25.1
 
 
