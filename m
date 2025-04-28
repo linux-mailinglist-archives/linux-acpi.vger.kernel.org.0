@@ -1,214 +1,225 @@
-Return-Path: <linux-acpi+bounces-13332-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13333-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3931BA9ED97
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Apr 2025 12:08:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 538D0A9F0C8
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Apr 2025 14:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ADFC17B92E
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Apr 2025 10:08:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76F6D1890053
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Apr 2025 12:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039B226157A;
-	Mon, 28 Apr 2025 10:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E002690F9;
+	Mon, 28 Apr 2025 12:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="M7nrpeQe"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="VAa0YTtr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E92B261398;
-	Mon, 28 Apr 2025 10:07:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B57D26980C;
+	Mon, 28 Apr 2025 12:31:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745834855; cv=none; b=o1/dyIRrr5WlbukyRV2ASIXuyQiCmWQxzFPu7lB59RVJNrZJLtlgCkr1RJr17XlWn19QTaKt/0LH0x9l3/MkNJkAJnAKJb3waqYbKyYCqfLqFn5nGIPdbaUdcCyfurLEAsMc/byGCzSLq8yJseqoezbDWUpAzMLjBpvKxkX1DIg=
+	t=1745843504; cv=none; b=Ko7U0h1a32aToDBhNyti7ynT7sxcZYwazPwzd0TOMwEHo3Jrkn8Pr6LBZzMJwtglDvlmzbNdj+Liof1qRQP+c4e5UIQrhuYymjCW8vF8JYNCIYNCNz7kRTjCkRfoXa7TvwI1sCWroTgaRuGkxRGn8Kk6E6s3vbiRyvinlXf4jbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745834855; c=relaxed/simple;
-	bh=jXwUVvExxc5z7Z8jSiT7683GcJvsn0SjsTrr/ZaHQ7c=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GLXnwSgCyuF/75M8rxOOlBWvyyzzDxXXG+mr1Whjg3eB8VR5qZHU5n0JbNcsCj0ClqCRIS46WIae69HkSKHZLLv6JcatlXe4qJe1sGbirdeNeiXcsGLssOtK2cPYNkfepMpkE+TBakBqkzkD/2e8xlPSQCYe9TqH6CeUWoTRd2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=M7nrpeQe; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53S8fBf7010204;
-	Mon, 28 Apr 2025 10:07:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=eWaIen6eo2SXPif9Yt6V2b
-	lg9we19vELALYOzhSIwtc=; b=M7nrpeQeE08a79PiuiT/onuZBlKondtEc4KlAX
-	y2XiCzDCeYv3VtRL+e6xNaRWjsAcI69yogdvdVJ0CpBGJfZ8hbBBQcXU0ciLrltW
-	mU18z/0hRRQh3q7u5pn8zNrkv3ufYPQiQdd6A37BKc1W7ccascZ13kiTqAFLSaT6
-	lXQZVK22qhR5wVWrTKPfgRZrKMJ+P++4/Zux26LOhoa/aRAjOiJH3LOvV0ChE0uU
-	meZFgXnQpfewT7fByQq8wiL9KXOXCFqSmkvKW/WlwKm5yAzWUXqPm3HzOt3R49F+
-	j75blA1+uIEVLhr7AMc6zLH2siVQIY0He0fUi8ZwxeQdKEDA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 468pevfu88-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Apr 2025 10:07:06 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53SA755w003634
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Apr 2025 10:07:05 GMT
-Received: from hyiwei-gv.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 28 Apr 2025 03:06:59 -0700
-From: Huang Yiwei <quic_hyiwei@quicinc.com>
-To: <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
-        <tony.luck@intel.com>, <bp@alien8.de>
-CC: Huang Yiwei <quic_hyiwei@quicinc.com>, <xueshuai@linux.alibaba.com>,
-        <quic_aiquny@quicinc.com>, <quic_satyap@quicinc.com>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <kernel@quicinc.com>,
-        <kernel@oss.qualcomm.com>
-Subject: [PATCH] firmware: SDEI: Allow sdei initialization without ACPI_APEI_GHES
-Date: Mon, 28 Apr 2025 17:56:23 +0800
-Message-ID: <20250428095623.3220369-1-quic_hyiwei@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1745843504; c=relaxed/simple;
+	bh=+MFy1w5ko1BnlhgwQggqrGmfo2TiEUrkCf7tpV8VbU8=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=dHbQ87kSB2R5CRiqHkkaXjeIqcL3WA+p2I70H+0FvCFMg8MpfAflNBhKOEEha6vIiawuSYqmmTbUdxgf5fNObASlXR8qk7skse6i+q6NMUChyo9+VKj5pk5ufF/DFVZhYCliSTAc+gJigGYPSRDt2yYzOjMc2X6nfVM0H62tsng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=VAa0YTtr; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1745843491; x=1746448291; i=w_armin@gmx.de;
+	bh=4qp5WmomQxHRqjEXNzrGLpgiq2kVcm0cPmMJBTxzq8g=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:From:To:
+	 Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=VAa0YTtrLqDIncil+E5RO7AeOspXxgPUTrbgSf+pfhai0zBHVd5DBuLzfJS+JNN9
+	 NpHoH/9jG7WPBhMDbX7R6yWk0+ydbG1LVRy5DnWe5VGfsAwpBUmjpXeWzj3US7fpW
+	 9EdqoQ3DMWe0/ZJSpCHS+FvecRrO+x+4prJiVUzLGgbIvoq7ZGggfsCou+ukCijff
+	 Mk5dgoRSlBr6u0ej/5z2hv45/kTAGG9aKIgMTN3WzeLJA+mx9WSNzABnJ82cl/Bxz
+	 vvzS+rhe6zfX0FoGqqKKJD4gBkRd5VkahacRjdZ0ZUOVACIMoNM0oWJ5u/lXFZMad
+	 Novdha7hgcMz4+weTA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [172.16.16.87] ([141.76.8.183]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M9FnZ-1uBpp742Xn-007oiQ; Mon, 28
+ Apr 2025 14:31:31 +0200
+Message-ID: <c8127d88-194a-4a23-b22e-040e2c6b3e9b@gmx.de>
+Date: Mon, 28 Apr 2025 14:31:28 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: J4vdveoOh9iAt7PvfjFwRV7BSYaA87bJ
-X-Authority-Analysis: v=2.4 cv=aeBhnQot c=1 sm=1 tr=0 ts=680f534a cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=SRrdq9N9AAAA:8 a=COk6AnOGAAAA:8
- a=ODOW-txAOSA8bPpV2xoA:9 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: J4vdveoOh9iAt7PvfjFwRV7BSYaA87bJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI4MDA4MyBTYWx0ZWRfX1WcCnLhv2G4G qk+Is7tNLX0h15/gqmvE97xI7941ISJfzPn9Y0giX7IRIHDRlhz8M2f2A7myxmdd0ZnEUYpjEEn iDcOMigECOaf2pKNQsWPgM75w5bgACdFm0Gny75mpgvvmcZft2lVas5HOnmfkpbbytDObirsLeE
- iZ55j8U3aMpRIUjcKM8DbBr8WOoVH8D3hz+GieLZErHRfztbRhRo7sciCX46KHtPOhJgzeFkkaP 0K8D1YFWv03WUP7A/yH2HTDvLBjeBH3X5OOxgxCzRhGsWT6C2/RuG8pjSmKdDj2aIqxiUjv2qST WdAXeX/HIFchjGd3xuCJsb6FdcaKzpkZ/y8Q2TZIpLIZXpNifstrivr3NZiO8VSdYwJ+leC0/+f
- 5xfjQUNaKB3QS0KtYR03DiqK6BR/9QiTh+/mrPjdOhInnI/00NpAk+byp4LqjKhPijoLA3s9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-28_03,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1011
- impostorscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 spamscore=0
- mlxlogscore=537 phishscore=0 suspectscore=0 lowpriorityscore=0 mlxscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504280083
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] ACPI: thermal: Properly support the _SCP control
+ method
+From: Armin Wolf <W_Armin@gmx.de>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: rui.zhang@intel.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250410165456.4173-1-W_Armin@gmx.de>
+ <91ea8aed-5f98-4e4e-b3ee-fdc86d54f787@gmx.de>
+ <CAJZ5v0jOR9=jA=8XASBpxJyXaB4TvXmxcZQWq1qUgq1J4h_tEg@mail.gmail.com>
+ <90cba8fa-e6a9-4dab-a4ea-fa96d570a870@gmx.de>
+Content-Language: en-US
+In-Reply-To: <90cba8fa-e6a9-4dab-a4ea-fa96d570a870@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:4uu09lOy+qLQjskvy0zMYaFJeYOLBuEBAIpdoNpk2y4MuOvlrEj
+ bwBYB6xX7Qmy8DrT/hqeB0HR7iHhBcp2UG4JxYa2sEwtxHoyikTE9J49ibBpLUmUw3cTnVB
+ Y+Gjgt2OjmfqiIStDI0xMu3sxCiLvITUIPmOEdZyODBWqcak2mmXpG+Q0UF1znQRYObA5lx
+ znga07yZeM7u21U9rVd0g==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:KhOOFIHrYP8=;Nma9kIm5rvY52i899ChaWACDRKq
+ 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
 
-SDEI usually initialize with the ACPI table, but on platforms where
-ACPI is not used, the SDEI feature can still be used to handle
-specific firmware calls or other customized purposes. Therefore, it
-is not necessary for ARM_SDE_INTERFACE to depend on ACPI_APEI_GHES.
+Am 27.04.25 um 00:52 schrieb Armin Wolf:
 
-In commit dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES
-in acpi_init()"), to make APEI ready earlier, sdei_init was moved
-into acpi_ghes_init instead of being a standalone initcall, adding
-ACPI_APEI_GHES dependency to ARM_SDE_INTERFACE. This restricts the
-flexibility and usability of SDEI.
+> Am 26.04.25 um 15:12 schrieb Rafael J. Wysocki:
+>
+>> On Sat, Apr 26, 2025 at 1:20=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wro=
+te:
+>>> Am 10.04.25 um 18:54 schrieb Armin Wolf:
+>>>
+>>>> The ACPI specification defines an interface for the operating system
+>>>> to change the preferred cooling mode of a given ACPI thermal zone.
+>>>> This interface takes the form of a special ACPI control method called
+>>>> _SCP (see section 11.4.13 for details) and is already supported by th=
+e
+>>>> ACPI thermal driver.
+>>>>
+>>>> However this support as many issues:
+>>>>
+>>>> =C2=A0=C2=A0 - the kernel advertises support for the "3.0 _SCP Extens=
+ions"=20
+>>>> yet the
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0 ACPI thermal driver does not support those e=
+xtensions. This may
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0 confuse the ACPI firmware.
+>>>>
+>>>> =C2=A0=C2=A0 - the execution of the _SCP control method happens after=
+ the driver
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0 retrieved the trip point values. This confli=
+cts with the ACPI
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0 specification:
+>>>>
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "OSPM will automatically evaluat=
+e _ACx and _PSV objects after
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 executing _SCP."
+>>>>
+>>>> =C2=A0=C2=A0 - the cooling mode is hardcoded to active cooling and ca=
+nnot be
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0 changed by the user.
+>>>>
+>>>> Those issues are fixed in this patch series. In the end the user
+>>>> will be able to tell the ACPI firmware wether he prefers active or
+>>>> passive cooling. This setting will also be interesting for
+>>>> applications like TLP (https://linrunner.de/tlp/index.html).
+>>>>
+>>>> The whole series was tested on various devices supporting the _SCP
+>>>> control method and on a device without the _SCP control method and
+>>>> appears to work flawlessly.
+>>> Any updates on this? I can proof that the new interface for setting=20
+>>> the cooling mode
+>>> works. Additionally the first two patches fix two issues inside the=20
+>>> underlying code
+>>> itself, so having them inside the mainline tree would be beneficial=20
+>>> to users.
+>> Sure.
+>>
+>> I'm going to get to them next week, probably on Monday.
+>
+> Ok, thanks.
+>
+> Armin Wolf
+>
+I am a bit ashamed of myself but i think we need to put this patch series =
+on hold after all :(.
 
-This patch corrects the dependency in Kconfig and allows the
-initialization of SDEI without ACPI_APEI_GHES enabled.
+The reason of this is that i am confused by the ACPI specification regardi=
+ng _SCP:
 
-Fixes: dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES in apci_init()")
-Cc: Shuai Xue <xueshuai@linux.alibaba.com>
-Signed-off-by: Huang Yiwei <quic_hyiwei@quicinc.com>
----
-Link: https://lore.kernel.org/all/20230906130900.12218-1-schspa@gmail.com/
+	11.1.2.1. OSPM Change of Cooling Policy
 
-Current patch has been verified in the following scenarios:
-  - ACPI_APEI_GHES enabled and ARM_SDE_INTERFACE enabled
-  - ACPI_APEI_GHES disabled and ARM_SDE_INTERFACE enabled
-  - ACPI_APEI_GHES disabled and ARM_SDE_INTERFACE disabled
-  - SDEI works well with DT node and compatiable firmware when
-    ACPI_APEI_GHES disabled
+	When OSPM changes the platform=E2=80=99s cooling policy from one cooling =
+mode to the other, the following occurs:
 
-The scenario where CONFIG_ACPI enabled but not used has not been
-considered in this patch due to the absence of such platform.
+     	1. OSPM notifies the platform of the new cooling mode by running the=
+ Set Cooling Policy (_SCP) control method in all thermal zones and invokin=
+g the OS-specific Set Cooling Policy interface to all participating device=
+s in each thermal zone.
 
- drivers/acpi/apei/Kconfig   | 1 +
- drivers/firmware/Kconfig    | 1 -
- drivers/firmware/arm_sdei.c | 9 +++++++--
- include/linux/arm_sdei.h    | 4 ++--
- 4 files changed, 10 insertions(+), 5 deletions(-)
+     	2. Thresholds are updated in the hardware and OSPM is notified of th=
+e change.
 
-diff --git a/drivers/acpi/apei/Kconfig b/drivers/acpi/apei/Kconfig
-index 3cfe7e7475f2..070c07d68dfb 100644
---- a/drivers/acpi/apei/Kconfig
-+++ b/drivers/acpi/apei/Kconfig
-@@ -23,6 +23,7 @@ config ACPI_APEI_GHES
- 	select ACPI_HED
- 	select IRQ_WORK
- 	select GENERIC_ALLOCATOR
-+	select ARM_SDE_INTERFACE if ARM64
- 	help
- 	  Generic Hardware Error Source provides a way to report
- 	  platform hardware errors (such as that from chipset). It
-diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-index aadc395ee168..7df19d82aa68 100644
---- a/drivers/firmware/Kconfig
-+++ b/drivers/firmware/Kconfig
-@@ -31,7 +31,6 @@ config ARM_SCPI_PROTOCOL
- config ARM_SDE_INTERFACE
- 	bool "ARM Software Delegated Exception Interface (SDEI)"
- 	depends on ARM64
--	depends on ACPI_APEI_GHES
- 	help
- 	  The Software Delegated Exception Interface (SDEI) is an ARM
- 	  standard for registering callbacks from the platform firmware
-diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
-index 3e8051fe8296..ddb10389b340 100644
---- a/drivers/firmware/arm_sdei.c
-+++ b/drivers/firmware/arm_sdei.c
-@@ -1062,14 +1062,14 @@ static bool __init sdei_present_acpi(void)
- 	return true;
- }
- 
--void __init sdei_init(void)
-+int __init sdei_init(void)
- {
- 	struct platform_device *pdev;
- 	int ret;
- 
- 	ret = platform_driver_register(&sdei_driver);
- 	if (ret || !sdei_present_acpi())
--		return;
-+		return ret;
- 
- 	pdev = platform_device_register_simple(sdei_driver.driver.name,
- 					       0, NULL, 0);
-@@ -1079,7 +1079,12 @@ void __init sdei_init(void)
- 		pr_info("Failed to register ACPI:SDEI platform device %d\n",
- 			ret);
- 	}
-+
-+	return ret;
- }
-+#ifndef CONFIG_ACPI_APEI_GHES
-+subsys_initcall_sync(sdei_init);
-+#endif
- 
- int sdei_event_handler(struct pt_regs *regs,
- 		       struct sdei_registered_event *arg)
-diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
-index 255701e1251b..1a54f0eebb0d 100644
---- a/include/linux/arm_sdei.h
-+++ b/include/linux/arm_sdei.h
-@@ -46,12 +46,12 @@ int sdei_unregister_ghes(struct ghes *ghes);
- /* For use by arch code when CPU hotplug notifiers are not appropriate. */
- int sdei_mask_local_cpu(void);
- int sdei_unmask_local_cpu(void);
--void __init sdei_init(void);
-+int __init sdei_init(void);
- void sdei_handler_abort(void);
- #else
- static inline int sdei_mask_local_cpu(void) { return 0; }
- static inline int sdei_unmask_local_cpu(void) { return 0; }
--static inline void sdei_init(void) { }
-+static inline int sdei_init(void) { return 0; }
- static inline void sdei_handler_abort(void) { }
- #endif /* CONFIG_ARM_SDE_INTERFACE */
- 
--- 
-2.25.1
+     	3. OSPM re-evaluates the active and passive cooling temperature trip=
+ points for the zone and all devices in the zone to obtain the new tempera=
+ture thresholds.
+
+This section of the ACPI specification tells me that we need to evaluate t=
+he _SCP control method of all ACPI thermal zones
+at the same time, yet section 11.4.13. tells me that each _SCP control met=
+hods belongs to the individual thermal zone.
+
+The reason why i am concerned by this is because Windows adheres to sectio=
+n 11.1.2.1. and only exposes this setting
+as a global tunable. This might cause device manufacturers to depend on th=
+is behavior and lead to strange things
+should two thermal zones have different _SCP settings.
+
+I will ask the UEFI mailing list which behavior is expected by the ACPI sp=
+ecification. Until then i suggest that
+we put this patch series on hold.
+
+Thanks,
+Armin Wolf
 
 
