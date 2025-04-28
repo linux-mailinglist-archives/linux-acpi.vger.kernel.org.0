@@ -1,232 +1,342 @@
-Return-Path: <linux-acpi+bounces-13343-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13345-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2396A9FB9A
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Apr 2025 23:07:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81443A9FBA3
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Apr 2025 23:08:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F3597AEF68
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Apr 2025 21:06:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9AF97AFD64
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Apr 2025 21:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D6E91FFC48;
-	Mon, 28 Apr 2025 21:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0250B20CCFA;
+	Mon, 28 Apr 2025 21:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="REbItNOZ"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="M3xCB6nI"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2068.outbound.protection.outlook.com [40.107.92.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5631FDA8C;
-	Mon, 28 Apr 2025 21:06:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745874372; cv=fail; b=rswU/jakRb5osK00r1I05ULAUFirWcX/5OAvKle+72w53v6Dsz0nAvO1Fbhha9N/q33v1heUOd4CUMymHaZbXZsjYqjIG7Mg+bhGUpzg+6bvtcNNV+c8/TW0GZaSdfXJWRldvvamhUMuFPDVNK2S0APM+I52SC3ud/nh0oJUo18=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745874372; c=relaxed/simple;
-	bh=ym7R7iys/e4QOpcwKq13ISfm8leY356z5Rb9ZBv4lXY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=i0i+xBuTyGVcgkdk444siOXeU5MSTIzss2zY72bYoi3OCb2PPcqIGHSbqxmhCaeGNUW7nxtTc5I40CP0kL6qIO+5b4oTgpl5iXuSfZDzF8UPO3WrJBFFpoCIC6DAXE04Vv8apJr2VooQKwTGM/WiWGJyv7PQf7DeLV6dgiccnlQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=REbItNOZ; arc=fail smtp.client-ip=40.107.92.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DvfdtUoYzfxWfyFnv0KqF5iR+BTEu3sDLDGs+DD/AvfXPa9X6rmuqwx1QunJ1jpkultUKgsNXvw5lML9s3pwWC+wRhjt7IpkMlkf29YF+/qH63h7d3m+MMBTUq9oKR+A3ky3VYS8Q3cdgoQfino2ik7Xz7ZvmxvLghPl6jdXJMxrjUkJV3bUGpARtd269uH+NVfpWY0Ge5SWzuBaDG+jo+PqmnbXnkPiEiAjZ8peAnaco24zdGEBZadIjfsP1xkRwoHySR+GzCByw2KyWil68qEis1keLRhErarxG23OnUtRj/LBFc2cYgLZvJfS/e36KEus976m8QYmt1WjkJxcQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZCT6wcI/4OkpqEV2jBBpQj0ISV3voe0SRLQfgwhR5Zc=;
- b=sD7csfK1Vybnjxmosj+JPbqBlK7B5hcQ4OqtSDKmJ5Oxzp1WdqowsWmJrfEdGkQaZFAyipwIPq/y0c67jTnLwS62Ojo9C6G5w3W3gYZaboTyLFs8Rmypx8MQ+bh43XfGNFbmHTlGTVIAWpG/1gfaF1HWsdM/eF1BUguFz3Y162ovu/Pp9/htzEmh4N83zOyJkyTszvJ2c0rlaf7uV8ZCLfx1bSq0Hiq/lRoc1bDviL+MjEigRdLWNQ+RrUYkV0g5evtUtILQTjAzXJa/d79lCOYz6KExnmrSBzP2hB5J6v0vH4Dx3OKyLwCeF/OFpmMWM343yN1HukCzdjX9mIUJ/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZCT6wcI/4OkpqEV2jBBpQj0ISV3voe0SRLQfgwhR5Zc=;
- b=REbItNOZXu91GqMd+2siVJPUaMmYODUfiPmovdJW2fM3y9qX/YD3rhZqYL5aHSpB8ZqgK8HoSM1SlspU7wc3YzT/S3GbkoFVGZB+/fNR9U/KA2xAwxTAV/zNWst3pmZWd3CkT90PZQuydgGyv/M6B3vr20hxZsb6GRYdfywheCY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by CYYPR12MB8731.namprd12.prod.outlook.com (2603:10b6:930:ba::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.34; Mon, 28 Apr
- 2025 21:06:08 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca%6]) with mapi id 15.20.8678.028; Mon, 28 Apr 2025
- 21:06:08 +0000
-Message-ID: <75faab0b-4514-4678-ba27-af658f6d3485@amd.com>
-Date: Mon, 28 Apr 2025 16:06:06 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: EC: Fix CPU frequency limitation on AMD platforms
- after suspend/resume
-To: Marcus Bergo <marcusbergo@gmail.com>
-Cc: mark.pearson@lenovo.com, linux-acpi@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, lenb@kernel.org,
- LKML <linux-kernel@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>
-References: <f5dd019ad4506.2100bf0f83374@gmail.com>
- <445f6320-698f-4d29-8556-665366668e4d@gmail.com>
- <b6fc4e66-b35a-41ce-a633-db3d660b88a2@amd.com>
- <106bd256-2c08-463f-8498-b68f2d5ccaca@amd.com>
- <9de18953-3f6d-447a-8274-c953bae64039@gmail.com>
- <a2747306-447c-432a-a926-e9d0473d9a0e@amd.com>
- <CAJOrcgV-5tr66YbDd_mCL00YHg7nPVdJUon9Az7pZQXpNtwUoA@mail.gmail.com>
- <e8129e3c-aba9-427e-ad63-bc1ea1bdf0f5@amd.com>
- <CAJZ5v0jS+gdHqW3pB1awZ7LHHWsFBQMp86tNwPMVBzOfot-sZw@mail.gmail.com>
- <369d0a74-4d5d-40e9-aa87-86c7563cf019@amd.com>
- <CAJZ5v0i9ZKgybAarKD0DDH1q6k1LKse+kX=Op94zGO+PjyMvGw@mail.gmail.com>
-Content-Language: en-US
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <CAJZ5v0i9ZKgybAarKD0DDH1q6k1LKse+kX=Op94zGO+PjyMvGw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA1P222CA0124.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c5::12) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCEC41EE7BE;
+	Mon, 28 Apr 2025 21:07:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745874466; cv=none; b=dJhf1s8vp318S037a/jxgpdWmy0CXiDTXVAIYshRi16VFvbrNNF6gxkq+z2ztE4b7je83jRB3dowewaUwI9RwR6JgL0ymCwNgGkk0a16ks1KafUS2RrZavjU/XBx+4adLGkESc3N6uEKblJBoSeFi+UZCucDzmDQbAieiAm/Z4Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745874466; c=relaxed/simple;
+	bh=mAuZnXpIZXza2yqaFmmckcE6EI9/mgIYuU1UPpg+56Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UXmYSsyjpZg3ruJVawPnndopQ/Ouncja+9N+T1leK5iwrGdzAGpS7OTaVTQBywe25wY3DUmFplTnGYBjyQCZy0cjQN54PCm4LNuWLWgiC/CXhkU/T8Hq90ISB7LofJgtnJr8YvO66tH6H7VuhnMNGV2j9GQkMu0nCBYZmE4O8Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=M3xCB6nI; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from romank-3650.corp.microsoft.com (unknown [131.107.1.188])
+	by linux.microsoft.com (Postfix) with ESMTPSA id DB61E20BCAD1;
+	Mon, 28 Apr 2025 14:07:43 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DB61E20BCAD1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1745874464;
+	bh=QSRzi2tZPIvIrsfPgn9XnDgdRLZDtKC6Y9CQpDRifwU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=M3xCB6nI4T4edZdfuN4uLmiKdfs9Tkgkm2Xw1x/aOJOEqATA7M2R5w4ioXAc27Mjp
+	 lnQgmvPptLQOrU9ARFnraU78ZUBqWG4x0EhOdU96Gwac5vlCWPPK7igMKoyKXZCqUy
+	 80ZydzlLKDrOVkva2nuq25JUhTimm6FNSgxcOKns=
+From: Roman Kisel <romank@linux.microsoft.com>
+To: arnd@arndb.de,
+	bhelgaas@google.com,
+	bp@alien8.de,
+	catalin.marinas@arm.com,
+	conor+dt@kernel.org,
+	dave.hansen@linux.intel.com,
+	decui@microsoft.com,
+	haiyangz@microsoft.com,
+	hpa@zytor.com,
+	joey.gouly@arm.com,
+	krzk+dt@kernel.org,
+	kw@linux.com,
+	kys@microsoft.com,
+	lenb@kernel.org,
+	lpieralisi@kernel.org,
+	manivannan.sadhasivam@linaro.org,
+	mark.rutland@arm.com,
+	maz@kernel.org,
+	mingo@redhat.com,
+	oliver.upton@linux.dev,
+	rafael@kernel.org,
+	robh@kernel.org,
+	ssengar@linux.microsoft.com,
+	sudeep.holla@arm.com,
+	suzuki.poulose@arm.com,
+	tglx@linutronix.de,
+	wei.liu@kernel.org,
+	will@kernel.org,
+	yuzenghui@huawei.com,
+	linux-hyperv@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	x86@kernel.org
+Cc: apais@microsoft.com,
+	benhill@microsoft.com,
+	bperkins@microsoft.com,
+	sunilmut@microsoft.com
+Subject: [PATCH hyperv-next v9 00/11] arm64: hyperv: Support Virtual Trust Level Boot
+Date: Mon, 28 Apr 2025 14:07:31 -0700
+Message-ID: <20250428210742.435282-1-romank@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|CYYPR12MB8731:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4c3bb97a-d038-462b-0610-08dd86987f64
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?anQ2cGN3YkJxYlRwV3dhbVFtRG9UTnJDZVc4Tyt6NG04bVRyTmt0VXA5Q2lR?=
- =?utf-8?B?SEIrL0s0d1VNa1FHZGJxaWZqZjJXWXkvRllOeUlrTDBxaXV1MGFxLzZ5U0J4?=
- =?utf-8?B?aHluR0kySWwyRkhxa3dnTzl5ZThkSlREMTdBZ1pPY1BsT1I3ckFKc0pWK3B5?=
- =?utf-8?B?NGxUOXZzeXlrR3d0RHBsR1o0ZW1LU0FlL2tZUUdnR2s4QTIzazZBYWpuVlZv?=
- =?utf-8?B?eXVObkNhT2NhWXdJMmRhdy8ySTlQTUhiajNqbnVuczkxeEVqczNWUlFYMEhy?=
- =?utf-8?B?bVdOcUIrQnphdmdtZWE1Y21mQitYTlg4Zi8xVml1ZXF3a3ozMzMwM2kwVGRu?=
- =?utf-8?B?QURUdGhqNlVLVUIxU1grZU1iUXJrWWEvcXJjTzlvZ0c4OHV2a3k2S1Z4SnBB?=
- =?utf-8?B?a1pDclVVUzRBN0JGM01UNlNraTF0SisxVG85OGpPa2E1R2xJWHIxNmxNM0Qv?=
- =?utf-8?B?SUhyNkN6ZXZZOWtLd3ArWnFaYmdTQVFLVG1DangranlrTnJMWW5jZEJnc2l2?=
- =?utf-8?B?WFFLNVhjekhqMGUxV3RpNmhSdnpicVkvMSszR0hWVUwvT1dicXRUeXQxVkxv?=
- =?utf-8?B?MUdCR2NDL3IyWlozc1NoTnBlUmNzcUJUTmtlKys3UisyTFNvYllTQWY3bHlp?=
- =?utf-8?B?Q2NMTy9nUWRyQjBGaWRyNGJBbDFtQzBKRDlxbFY1eDFkb0JPY05qNUN2c2pZ?=
- =?utf-8?B?MTdxaERJYVZUcDEwb0hpMVl4MThRdXVQWkQ5R0FsT0puWWVwbmVFR2JRejk5?=
- =?utf-8?B?Mk4wNU45M2ZDejF6czViaTZzbkU2T01UMGR4bkJTanc0N0d5cnV5aU1IUDg5?=
- =?utf-8?B?TkcrSjcyamhyK2xUd3VlZzBGU2hTM1RmZzF6RktEeDJwL1daOVhCRWpZd3ZJ?=
- =?utf-8?B?YkJsQkJOTVVib01LUGZpOTMwdFlWU0ZVcjdrQlB1bkVtRi9pczJqdGMxSm5X?=
- =?utf-8?B?N0F5Tlh3V01Zamw4K3VHU0M0bm1VYU9YTGFHdFJuZis5UHBTTHN4dGJVRGU2?=
- =?utf-8?B?aTNETzg5clc1a045alV3WVkxWStBcGN4NWt5bHhBL2xOTkZRd0prOGVYQ0dN?=
- =?utf-8?B?Sm1zUlF6YTk0VFUrUTBsdkROMlJrUDU5OWhhWUdvcG03NVB4SVp6WmhrZHRO?=
- =?utf-8?B?eklJRWxwcjErNHpUcFovYzZ3ZjV4YkJiYkZPOFpLaHZOZzlSRmhMU0RiR1U0?=
- =?utf-8?B?L2EyYnFBbjBpYnpSQnRsMWZuSXN5aEhhWWFCMzVtNGFtZFg3ekNNUFl5N0Nv?=
- =?utf-8?B?S2RJU0g5Z1VoYnlsb2dKM0VVM1dkVFBPNlNQbzM0Uzdvdkl0U1pkN2V6dXdo?=
- =?utf-8?B?YUhuMS9KV2w0YUdWSjErWG9wNnFWYVpRK1N3Tm90WlluUGNoWmFkRTA1NDlZ?=
- =?utf-8?B?ci9tOEhWbms3c1lXNWozUCs2bHlrMVZQU2UwRHBUejl6Z1pzNVlmNlFtZkRV?=
- =?utf-8?B?RVptWCtFVFg2bDdwUzFxZDlOS09tbXNva2JORXVxejhFeG5SRHRqZis3Vm5L?=
- =?utf-8?B?MG44QXhUWUVOSHZGNUp5cjI1VWtoeERqS20ydThabjMzUGxmNVRnL1JIMzZ6?=
- =?utf-8?B?Z3o2L0dnTWlUSjU5QXp2dGliUWVLSVhRUytTVWQ4SzRIeTNmQVcxbW1nK01K?=
- =?utf-8?B?dnBuenBSVjc1SjhtUzZndzgraTREYWpsMmMrQ251dWE3Y1BFOTBiQkFxV0t6?=
- =?utf-8?B?dFdqODZ5YTZzWElMOXlQcm5wbGtJeXJOZXpKTnRmbks5bEFlUHdiRUlRNVVv?=
- =?utf-8?B?aDdKYTEvbk02SEc0aWJLZzBpVWZxckM2YXgzYThXc0RqdHAxRmR0VjZ4RGVz?=
- =?utf-8?B?SHltS0wwMUZWaWl6ZjBsb0lvOHZ1SHcwU1lLak9NQnJVN01JaTEwQnRTNUhx?=
- =?utf-8?B?cFppU1FWcHV0NG4rY0VORk5jU1g0YzM5U0pzZ3QyZmxuZWdtRHplUGFZb0Ru?=
- =?utf-8?Q?QkcBT0/YJCI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WFJraTJGMVlHdERxWVdGWiswRlI4TU1GVTlQQktoYmJxS1hwTjFsemZpcVRR?=
- =?utf-8?B?K3F6VjFpdjc2eHh0enlyZi9sMmw0UDIzdVZzeDFieGdsWSt4eVl5UGxNWDdO?=
- =?utf-8?B?SlZaSTRCekdnazJYQVA3SWRxREI1N3NHbm10Z2NKdFRoem9aNGhobHNvS1Ns?=
- =?utf-8?B?bmR5czZHZzNnS29PQ0hxdTBIZ0ZBai9BWDNJdHdmSFBTcWgyODRqY3NDazhK?=
- =?utf-8?B?SWcrRllqZ21hVGdkTVRrWFliQkIyWW1ZV0U1WS9BVm1rdm4rT1NzRksvbGZh?=
- =?utf-8?B?SGJxMXFKdFhnaGdoSnN2cUk5WE5idHhMTTUyaG45NGN3ajE3bVNlUXpxUktL?=
- =?utf-8?B?Wml5MUd4Q0FZYW9mMG1JeDVPbk5QM0dCTzNSa0RNMmdzclRRWnZCOWJaL3Nv?=
- =?utf-8?B?RmFRU043bU13Ymw2MktzMzlNbTZUNmNwZThtZEkxckdjcTFsWnpnLzJmWU54?=
- =?utf-8?B?eHBySGlHTm9EWUNEbHVDcnJRZUNPeTF2VmRieFlVOE5xUmJiU2JQNHFGUnN5?=
- =?utf-8?B?d2pXcmFPeWRoY3VJdWlDbzBscW9CL1IxNGUyL0RtT2crek9SQndTTURFRFRj?=
- =?utf-8?B?WTdDN1QrckR6ZHV5RE5wRFJ6Nm9hYjRaUGVqNk9SUm5pUjErODJsbGhZcktP?=
- =?utf-8?B?cUJ3N2JWSzZHTWVoRVhGNHN0Z1ZpS3hDMEZVRlZMTU40eHNWWmh4cjhPZTFN?=
- =?utf-8?B?M1p3M0lrVUVSTlRybjFnQWgvT1EzdHIzTlloT0dwU29uYlBDZndOUE1oSmpE?=
- =?utf-8?B?S29JeVZJWW5qaVpnUFdwZzUwczVDY2VKMEdtaWhqNjY1RTBsNFptK1lnNGgy?=
- =?utf-8?B?ZFVZcm5vQzN2RlNZS0F1am5ROCtsaUFCdVg0YWNXNGdNVG5wd2trTVg1SEFJ?=
- =?utf-8?B?WVlzT0o5aXZwRjVHYnV3QnRyeTIxaENYSEgwS3drVjlMaGE3cy9pTFRLc2gz?=
- =?utf-8?B?ODh3SStjVXVEOXZTQXI0alpvRDhxZjg1U2pQTlN5akxLSGlvbGVKblp2ejla?=
- =?utf-8?B?eDcybEdEUXdIbUloM0NQT1luY3VnYUEyZXZCTnlhN2xlYi91Mjk0d2RDckdE?=
- =?utf-8?B?WXVKNzJUQktaUHI4N2F2bTVZRE1vV0F5SjU2NFBTaHJzVXdmOGg5M2tjS05P?=
- =?utf-8?B?SjVmYS9vcUE0blp1UVBQeW9nYWZDaXgyRjMrN3UybTY1MitObDdYUWRPUTcy?=
- =?utf-8?B?TjhrTkNFVnRwWS9KVTA2TC9wTVA1WFAyOXNkSnlUaklsN2NPTG9xcG1yYlZa?=
- =?utf-8?B?NHpxVVJFNGVsbmVZSzVMUnRPRnU2aEFMVVhtYmhTb3ZKdENZaXRlZFllUVFI?=
- =?utf-8?B?RTlVK1FHbnBkdjhzSjBWSjh5TXRjbW1iRkd4cHYvWExGcU16TENkYXJNM0dt?=
- =?utf-8?B?QitFRjFSVWVuUWwzaHVMRUdRTEZpc1hzSXVhenA0d2hTVDdubDZYRHk0SWZv?=
- =?utf-8?B?Q1c3c0NmY2NScElsK29mUEQ2SWNGZ1c5QTlhczY1TlJJVU1idVI1cjJHb2xp?=
- =?utf-8?B?TkVzamxQWDVMMEpJby9xWE5JQXdZc1dDTTJEVXh2ckN2NU54a1YzOW1MVnBt?=
- =?utf-8?B?WGsraTlQdmkwbDl0TlZ6L0pqdjFQOHdLWlFYYzRJeDkwaFMwQmRKWVMrTGVw?=
- =?utf-8?B?ZzFlNkNWU2Q4d202WnhUb0N4MW1xTzJjUmpVOWt2NEYybWdvRkpKRjJQOXRO?=
- =?utf-8?B?aUNRZTliVk1Vck1ORUxsUU4rWlIrMDFsdGhDRU80MVhFUTVlVHptb0RzWGYy?=
- =?utf-8?B?WkpldVoxc1NWZitHR1QvMnYwVzlZL0oyYWo1N2lkdVNLWnBlQjBrSm5keVc0?=
- =?utf-8?B?ZElhcDlpNzhUc1dqZ2xxeEt3UDhraU5mQ2NYV3V1UGsrSVE2dzFTMlQ4b251?=
- =?utf-8?B?dUZxL1hZbFQreWc3eVcyVm9PMk5jeDczRzVXb3BMQ1JqemZvSGlZbmVUY2Q2?=
- =?utf-8?B?dEYyQ0VTbEJYYlJIaXFtdW5NTjVyK0pDZzBXeWhjNllXRExVQktKZHU1SFY1?=
- =?utf-8?B?R1BoU2tsdS9YWE1WZ04wc3oxajJ6clZpR0NsRzllRCsrL2dDWm9hajdLcFI4?=
- =?utf-8?B?TnFMSmVNVENweGo5RzdWTlpscFZ3ckVTSW44RDNDa0FzN0NyamtZbTE4VjlK?=
- =?utf-8?Q?kuIy3Ese+pjkAvKQMGnas9F8s?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c3bb97a-d038-462b-0610-08dd86987f64
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2025 21:06:08.8464
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wX9m+CjkEcICQzwcjqlNRurWCOuT1JazXqdVTLdEJ0zzZv3oSTHANIPLsVKGiMp3LhHhvSW9a3qa9BHkiV/6cQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8731
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 4/28/2025 2:45 PM, Rafael J. Wysocki wrote:
-> On Mon, Apr 28, 2025 at 9:11 PM Mario Limonciello
-> <mario.limonciello@amd.com> wrote:
->>
->> On 4/28/2025 2:02 PM, Rafael J. Wysocki wrote:
->>> On Mon, Apr 28, 2025 at 8:23 PM Mario Limonciello
->>> <mario.limonciello@amd.com> wrote:
->>>>
->>>> On 4/28/2025 4:51 AM, Marcus Bergo wrote:
->>>>> Yes, it does.
->>>>>
->>>>
->>>> OK thanks for confirming.  Considering your finding with this patch
->>>> you've shared and knowing there is a timing dependency that delaying the
->>>> next s2idle cycle helps I do wonder if we should keep exploring.
->>>>
->>>> Rafael, do you have thoughts here?  Specifically do you think it's worth
->>>> revisiting if b5539eb5ee70 was the correct move.
->>>
->>> Well, it was done for a reason that is explained in its changelog.  I
->>> think that the problem addressed by it is genuine, isn't it?
->>>
->> I mean yes - of course.  My inquiry was whether this should be the
->> default behavior or if it should have been a quirked behavior.
-> 
-> I believe that it should be the default behavior because the EC GPE
-> needs to be cleared after handling an EC event which effectively is
-> what the suspend-to-idle code does.
-> 
->> I don't have a good sense for the rest of the ecosystem what the impacts
->> would really be at flipping it.  Would it be worth adding a module
->> parameter debug knob and survey what happens on a wide variety of machines?
-> 
-> Maybe, if you suspect that this might be a widespread issue.
+This patch set allows the Hyper-V code to boot on ARM64 inside a Virtual Trust
+Level. These levels are a part of the Virtual Secure Mode documented in the
+Top-Level Functional Specification available at
+https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/tlfs/vsm.
 
-Marcus,
+The OpenHCL paravisor https://github.com/microsoft/openvmm/tree/main/openhcl
+can serve as a practical application of these patches on ARM64.
 
-Before going down this path I have an important confirmation I need from 
-you.
+For validation, I built kernels for the {x86_64, ARM64} x {VTL0, VTL2} set with
+a small initrd embedded into the kernel and booted VMs managed by Hyper-V and
+OpenVMM off of that.
 
-With just /your/ patch in place did you see a message like this in your 
-kernel log?
+Starting from V5, the patch series includes a non-functional change to KVM on
+arm64 which I tested as well.
 
-amd_pmc AMDI000A:00: Last suspend didn't reach deepest state
+I've kept the Acked-by tags given by Arnd and Bjorn. These patches (1 and 11)
+have changed very slightly since then (V5 and V6), no functional changes:
+in patch 1, removed macro's in favour of functions as Marc suggested to get rid
+of "sparse" warnings, and in patch 11, fixed building as a module. Please let me
+know if I should have not kept the tags.
 
-If so; your patch just papered over the real issue and blocked the 
-system from getting into a deep state.
+[V9]
+    - Fix building the pci-hyperv driver as a module.
+      ** Thank you, Micheal! **
+  
+    - Removed an overzealous check for the ACPI IRQ model on arm64 running with
+      Hyper-V -- only GIC is supported. That check belongs to the lower layer
+      code, and I took it from the ACPI driver while open-coding getting the
+      parent IRQ domain.
+
+[V8]
+    https://lore.kernel.org/linux-hyperv/20250414224713.1866095-1-romank@linux.microsoft.com/
+    - Use the Linux derfined macro __ASSEMBLY__ instead of the gcc's pre-defined
+      macro __ASSEMBLER__ to follow the kernel coding style.
+      ** Thank you, Marc! **
+
+[V7]
+    https://lore.kernel.org/linux-hyperv/20250407201336.66913-1-romank@linux.microsoft.com/
+    - Used another approach not to increase the number of warnings produced when
+      building with CHECK_ENDIAN.
+      ** Thank you, Arnd! **
+
+     - Adjusted the function parameter formatting to match the rest of the code.
+      ** Thank you, Bjorn! **
+
+    - Removed the now unused local variable.
+      ** Thank you, kernel robot! **
+
+    - Fixed the description in the VMBus DT binding patch.
+      ** Thank you, Krzysztof! **
+
+    - Adjusted the function names and comments to better reflect what they do,
+      used the suggested approach to handling UUIDs to make code more readable
+      and maintainable on big-endian.
+    - Replaced ifdeffery with a stub function to make the code more readable.
+      ** Thank you, Mark! **
+
+    - Fixed the Kconfig not to build the VTL mode code on 32-bit kernels.
+      ** Thank you, Michael! **
+
+    - Fixed the indentation and the comment style.
+      ** Thank you, Rafael! **
+
+[V6]
+    https://lore.kernel.org/linux-hyperv/20250315001931.631210-1-romank@linux.microsoft.com/
+    - Use more intuitive Kconfig update.
+    - Remove ifdef for getting IRQ number
+    ** Thank you, Arnd! **
+
+    - Simplify code for finding the parent IRQ domain.
+    ** Thank you, Bjorn! **
+
+    - Remove a superfluous check.
+    ** Thank you, Dan! **
+
+    - Make the commit title and descrtiption legible.
+    - Don't set additionalProperties to true.
+    ** Thank you, Krzysztof! **
+
+    - Fix spelling in the commit title and description.
+    - Trade-offs for options in Kconfig.
+    - Export the new symbol as hyperv-pci can be built as a module.
+    ** Thank you, Michael! **
+
+    - Simplify code for getting IRQ number.
+    ** Thank you, Rob! **
+
+    - Add comment to clarify when running in VTL mode is reported.
+    ** Thank you, Wei! **
+
+[V5]
+  https://lore.kernel.org/linux-hyperv/20250307220304.247725-1-romank@linux.microsoft.com/
+    - Provide and use a common SMCCC-based infra for the arm64 hypervisor guests
+      to detect hypervisor presence.
+    ** Thank you, Arnd! **
+
+    - Fix line wraps to follow the rest of the code.
+    - Open-code getting IRQ domain parent in the ACPI case to make the code
+      better.
+    ** Thank you, Bjorn! **
+
+    - Test the binding with the latest dtschema.
+    - Clean up the commit title and description.
+    - Use proper defines for known constants.
+    ** Thank you, Krzysztof! **
+
+    - Extend comment on why ACPI v6 is checked for.
+    - Reorder patches to make sure that even with partial series application
+      the compilation succeeds.
+    - Report VTL the kernel runs in.
+    - Use "X86_64" in Kconfig rather than "X86".
+    - Extract a non-functional change for hv_get_vmbus_root_device() into
+      a separate patch.
+    ** Thank you, Michael! **
+
+[V4]
+    https://lore.kernel.org/linux-hyperv/20250212014321.1108840-1-romank@linux.microsoft.com/
+    - Fixed wording to match acronyms defined in the "Terms and Abbreviations"
+      section of the SMCCC specification throughout the patch series.
+      **Thank you, Michael!**
+
+    - Replaced the hypervisor ID containing ASCII with an UUID as
+      required by the specification.
+      **Thank you, Michael!**
+
+    - Added an explicit check for `SMCCC_RET_NOT_SUPPORTED` when discovering the
+      hypervisor presence to make the backward compatibility obvious.
+      **Thank you, Saurabh!**
+
+    - Split the fix for `get_vtl(void)` out to make it easier to backport.
+    - Refactored the configuration options as requested to eliminate the risk
+      of building non-functional kernels with randomly selected options.
+      **Thank you, Michael!**
+
+    - Refactored the changes not to introduce an additional file with
+      a one-line function.
+      **Thank you, Wei!**
+
+    - Fixed change description for the VMBus DeviceTree changes, used
+      `scripts/get_maintainers.pl` on the latest kernel to get the up-to-date list
+      of maintainers as requested.
+      **Thank you, Krzysztof!**
+
+    - Removed the added (paranoidal+superfluous) checks for DMA coherence in the
+      VMBus driver and instead relied on the DMA and the OF subsystem code.
+      **Thank you, Arnd, Krzysztof, Michael!**
+
+    - Used another set of APIs for discovering the hardware interrupt number
+      in the VMBus driver to be able to build the driver as a module.
+      **Thank you, Michael, Saurabh!**
+
+    - Renamed the newly introduced `get_vmbus_root_device(void)` function to
+      `hv_get_vmbus_root_device(void)` as requested.
+      **Thank you, Wei!**
+
+    - Applied the suggested small-scale refactoring to simplify changes to the Hyper-V
+      PCI driver. Taking the offered liberty of doing the large scale refactoring
+      in another patch series.
+      **Thank you, Michael!**
+
+    - Added a fix for the issue discovered internally where the CPU would not
+      get the interrupt from a PCI device attached to VTL2 as the shared peripheral
+      interrupt number (SPI) was not offset by 32 (the first valid SPI number).
+      **Thank you, Brian!**
+
+[V3]
+    https://lore.kernel.org/lkml/20240726225910.1912537-1-romank@linux.microsoft.com/
+    - Employed the SMCCC function recently implemented in the Microsoft Hyper-V
+      hypervisor to detect running on Hyper-V/arm64. No dependence on ACPI/DT is
+      needed anymore although the source code still falls back to ACPI as the new
+      hypervisor might be available only in the Windows Insiders channel just
+      yet.
+    - As a part of the above, refactored detecting the hypervisor via ACPI FADT.
+    - There was a suggestion to explore whether it is feasible or not to express
+      that ACPI must be absent for the VTL mode and present for the regular guests
+      in the Hyper-V Kconfig file.
+      My current conclusion is that this will require refactoring in many places.
+      That becomes especially convoluted on x86_64 due to the MSI and APIC
+      dependencies. I'd ask to let us tackle that in another patch series (or chalk
+      up to nice-have's rather than fires to put out) to separate concerns and
+      decrease chances of breakage.
+    - While refactoring `get_vtl(void)` and the related code, fixed the hypercall
+      output address not to overlap with the input as the Hyper-V TLFS mandates:
+      "The input and output parameter lists cannot overlap or cross page boundaries."
+      See https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/tlfs/hypercall-interface
+      for more.
+      Some might argue that should've been a topic for a separate patch series;
+      I'd counter that the change is well-contained (one line), has no dependencies,
+      and makes the code legal.
+    - Made the VTL boot code (c)leaner as was suggested.
+    - Set DMA cache coherency for the VMBus.
+    - Updated DT bindings in the VMBus documentation (separated out into a new patch).
+    - Fixed `vmbus_set_irq` to use the API that works both for the ACPI and OF.
+    - Reworked setting up the vPCI MSI IRQ domain in the non-ACPI case. The logic
+      looks a bit fiddly/ad-hoc as I couldn't find the API that would fit the bill.
+      Added comments to explain myself.
+
+[V2]
+    https://lore.kernel.org/all/20240514224508.212318-1-romank@linux.microsoft.com/
+    - Decreased number of #ifdef's
+    - Updated the wording in the commit messages to adhere to the guidlines
+    - Sending to the correct set of maintainers and mail lists
+
+[V1]
+    https://lore.kernel.org/all/20240510160602.1311352-1-romank@linux.microsoft.com/
+
+Roman Kisel (11):
+  arm64: kvm, smccc: Introduce and use API for getting hypervisor UUID
+  arm64: hyperv: Use SMCCC to detect hypervisor presence
+  Drivers: hv: Enable VTL mode for arm64
+  Drivers: hv: Provide arch-neutral implementation of get_vtl()
+  arm64: hyperv: Initialize the Virtual Trust Level field
+  arm64, x86: hyperv: Report the VTL the system boots in
+  dt-bindings: microsoft,vmbus: Add interrupt and DMA coherence
+    properties
+  Drivers: hv: vmbus: Get the IRQ number from DeviceTree
+  Drivers: hv: vmbus: Introduce hv_get_vmbus_root_device()
+  ACPI: irq: Introduce acpi_get_gsi_dispatcher()
+  PCI: hv: Get vPCI MSI IRQ domain from DeviceTree
+
+ .../bindings/bus/microsoft,vmbus.yaml         | 16 ++++-
+ arch/arm64/hyperv/mshyperv.c                  | 53 ++++++++++++--
+ arch/arm64/kvm/hypercalls.c                   | 10 +--
+ arch/x86/hyperv/hv_init.c                     | 34 ---------
+ arch/x86/hyperv/hv_vtl.c                      |  7 +-
+ drivers/acpi/irq.c                            | 16 ++++-
+ drivers/firmware/smccc/kvm_guest.c            | 10 +--
+ drivers/firmware/smccc/smccc.c                | 17 +++++
+ drivers/hv/Kconfig                            |  6 +-
+ drivers/hv/hv_common.c                        | 31 ++++++++
+ drivers/hv/vmbus_drv.c                        | 53 +++++++++++---
+ drivers/pci/controller/pci-hyperv.c           | 70 +++++++++++++++++--
+ include/asm-generic/mshyperv.h                |  6 ++
+ include/hyperv/hvgdk_mini.h                   |  2 +-
+ include/linux/acpi.h                          |  5 +-
+ include/linux/arm-smccc.h                     | 64 +++++++++++++++--
+ include/linux/hyperv.h                        |  2 +
+ 17 files changed, 323 insertions(+), 79 deletions(-)
+
+
+base-commit: 628cc040b3a2980df6032766e8ef0688e981ab95
+-- 
+2.43.0
+
 
