@@ -1,135 +1,227 @@
-Return-Path: <linux-acpi+bounces-13357-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13358-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC12AA06AC
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Apr 2025 11:11:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B1F8AA07A0
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Apr 2025 11:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCF481A82955
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Apr 2025 09:11:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F347484582
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Apr 2025 09:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3810429DB79;
-	Tue, 29 Apr 2025 09:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF712BE113;
+	Tue, 29 Apr 2025 09:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KhEkgs3Z"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDA5EEAA;
-	Tue, 29 Apr 2025 09:11:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78132750ED;
+	Tue, 29 Apr 2025 09:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745917870; cv=none; b=p/9dLTV1iXeHhWfHSFJvL6rPO4f+ZtZm2wVakT/iSmxyA+ODz8sLKpKGD8BMXCRe42XhDnnFnR6jNr5WiGdPBPB8xNc7ueriykwZ4AzxRUTM2OMvU/DSJPOKULfYR6a7m3USQ7hb2MIxva4sfyVW1CbfhcxioXKPapr5girjiZ8=
+	t=1745919968; cv=none; b=a1/Y7er53mi0bVLoxAyX8YQdD9DnKoavjyp8hUvCSVVMkG8mUUuugUszd6HZQF/bfJLqeMl7eThf7FVkL9cc29fImiSyJVZsWZ5hfIv2umcrepRnROHJJ1J/ZbKsLd+ioxUd48QAViGSs4x5ZQ8oFcVnhA4kuAC2D3JFevcodM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745917870; c=relaxed/simple;
-	bh=r4peHXIo6sy7zN1e3ALPfyjtV364TvEDwLkMOGZlq4M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TNnDdSbMerbKbGTIErknYElMHoXmsc1qwnLYSXhWehTeK83anOE2Cxgn4LqjUoDVH1WbE0kwKJFgkqEaVqRYqVYFh/GRUhc4+OWY9d4uz8I8TXPdAlFdEGjI7BesNXz8LUl+X/Et7b1pSaXnpLl/r5lP/BYgLDPdG8JBFyHX/0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from qiao.. (unknown [210.73.43.1])
-	by APP-05 (Coremail) with SMTP id zQCowACn4wudlxBobHGZDQ--.10875S2;
-	Tue, 29 Apr 2025 17:10:54 +0800 (CST)
-From: Zhe Qiao <qiaozhe@iscas.ac.cn>
-To: rafael@kernel.org,
-	lenb@kernel.org,
-	bhelgaas@google.com,
-	will@kernel.org,
-	sunilvl@ventanamicro.com,
-	qiaozhe@iscas.ac.cn
-Cc: linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] ACPI: PCI: Release excess memory usage.
-Date: Tue, 29 Apr 2025 17:10:51 +0800
-Message-ID: <20250429091051.249911-1-qiaozhe@iscas.ac.cn>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1745919968; c=relaxed/simple;
+	bh=OEmsROS2dzbLzqVvteqA+LjMNAwHbDGb3LITSHjMruA=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=Emgtv/gMe8St7UkcENtZv3YP4C3bsW6bZP0FKsGeS9U1BnqUjnJNZbnZpBbPYaqf5kryfkN+/tEaJYtwi4K+j+U/qRm+KlwPYB0QDqUiQEgBYfYiwi91+Wkmi/tUOtgTIFRj6nyQpWbf5tTKZhqvDps63zrbTXyaR88wDjjZJ/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KhEkgs3Z; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745919967; x=1777455967;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=OEmsROS2dzbLzqVvteqA+LjMNAwHbDGb3LITSHjMruA=;
+  b=KhEkgs3ZllIg5zGgsQX8fqOMXknpgK69caY27Orl6Lxtw7NSWSLkG1w4
+   g2DW8+YFG9+XROlrqXraqLm0YeKWEEPWfiozJNYG7NTjY9Ybfsx3fLYkC
+   y8vtWOJIfBcuRSbazfZUYhXJKkjZZzmLz+muojM6CKnLobXStCbTRw9bt
+   bVEcs9nbLpqe00aqkAN6nG2rckC7k2KlnNzn8lwvKgBJHm7fasoExIpQ2
+   Jpakh/f/zv4EkmnPEU3vWprM8wNHG6yIZRy3Hb/xzhlHzWUISTWFmsr4c
+   /lOfdyDSIpXKM0elxe1+HRCwKDWNyXDlQ7xWGHaMQuoIH+jRXpCTKCWob
+   Q==;
+X-CSE-ConnectionGUID: Z6lDBEttR7i/lsUKBkcN2Q==
+X-CSE-MsgGUID: JtsTc6SLS9m+bLDZyPwX+A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="35143891"
+X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; 
+   d="scan'208";a="35143891"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2025 02:46:06 -0700
+X-CSE-ConnectionGUID: chXqGONbRG+KNhUajc2ULw==
+X-CSE-MsgGUID: 8lVzqi8rRgSKGWTaNKThpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; 
+   d="scan'208";a="133495412"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.205])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2025 02:45:52 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 29 Apr 2025 12:45:49 +0300 (EEST)
+To: "Xin Li (Intel)" <xin@zytor.com>
+cc: LKML <linux-kernel@vger.kernel.org>, kvm@vger.kernel.org, 
+    linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+    virtualization@lists.linux.dev, linux-pm@vger.kernel.org, 
+    linux-edac@vger.kernel.org, xen-devel@lists.xenproject.org, 
+    linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+    Netdev <netdev@vger.kernel.org>, platform-driver-x86@vger.kernel.org, 
+    tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+    dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+    acme@kernel.org, jgross@suse.com, andrew.cooper3@citrix.com, 
+    peterz@infradead.org, namhyung@kernel.org, mark.rutland@arm.com, 
+    alexander.shishkin@linux.intel.com, jolsa@kernel.org, irogers@google.com, 
+    adrian.hunter@intel.com, kan.liang@linux.intel.com, wei.liu@kernel.org, 
+    ajay.kaher@broadcom.com, bcm-kernel-feedback-list@broadcom.com, 
+    tony.luck@intel.com, pbonzini@redhat.com, vkuznets@redhat.com, 
+    seanjc@google.com, luto@kernel.org, boris.ostrovsky@oracle.com, 
+    kys@microsoft.com, haiyangz@microsoft.com, decui@microsoft.com, 
+    dapeng1.mi@linux.intel.com
+Subject: Re: [PATCH v4 01/15] x86/msr: Add missing includes of <asm/msr.h>
+In-Reply-To: <20250427092027.1598740-2-xin@zytor.com>
+Message-ID: <a1917b37-e41e-d303-749b-4007cda01605@linux.intel.com>
+References: <20250427092027.1598740-1-xin@zytor.com> <20250427092027.1598740-2-xin@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACn4wudlxBobHGZDQ--.10875S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJr15KryxWry8Aw1DAF1xAFb_yoW8Ar15pF
-	4a9r1UCr4kJr1UXFs5X3Z5ZF13Wan7KFWjkrWxAws3ZFsI9r4UtFZIyF1F9ryfZrs3Aa13
-	ZF4qyFyUCF1qyaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxV
-	W0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
-	7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7
-	v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS
-	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
-	ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUoX
-	o2UUUUU
-X-CM-SenderInfo: ptld061kh6x2xfdvhtffof0/
+Content-Type: multipart/mixed; BOUNDARY="8323328-666243473-1745919726=:938"
+Content-ID: <1b5519eb-241d-dec5-af5a-fc9378cf96ec@linux.intel.com>
 
-In the pci_acpi_scan_root() function, if the PCI bus creation failed,
-the allocated memory should be released to avoid memory occupation.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Fixes: 789befdfa389 ("arm64: PCI: Migrate ACPI related functions to pci-acpi.c")
-Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
+--8323328-666243473-1745919726=:938
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-ID: <6ad7f337-7709-3cca-3ccd-80f11d3e8d38@linux.intel.com>
 
----
-V1 -> V2:
-Modified labels for better readability.
+On Sun, 27 Apr 2025, Xin Li (Intel) wrote:
 
----
- drivers/pci/pci-acpi.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+> For some reason, there are some TSC-related functions in the MSR
+> header even though there is a tsc.h header.
+>=20
+> To facilitate the relocation of rdtsc{,_ordered}() from <asm/msr.h>
+> to <asm/tsc.h> and to eventually eliminate the inclusion of
+> <asm/msr.h> in <asm/tsc.h>, add <asm/msr.h> to the source files that
+> reference definitions from <asm/msr.h>.
+>=20
+> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> ---
+>=20
+> Change in v4:
+> *) Add missing includes in a different patch (Ilpo J=E4rvinen).
+> *) Add all necessary direct inclusions for msr.h (Ilpo J=E4rvinen).
+>=20
+> Change in v3:
+> * Add a problem statement to the changelog (Dave Hansen).
+> ---
+>  arch/x86/events/msr.c                                         | 3 +++
+>  arch/x86/events/perf_event.h                                  | 1 +
+>  arch/x86/events/probe.c                                       | 2 ++
 
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index af370628e583..bde104ecac80 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -1677,15 +1677,12 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 
- 	root_ops = kzalloc(sizeof(*root_ops), GFP_KERNEL);
- 	if (!root_ops) {
--		kfree(ri);
--		return NULL;
-+		goto free_ri;
- 	}
- 
- 	ri->cfg = pci_acpi_setup_ecam_mapping(root);
- 	if (!ri->cfg) {
--		kfree(ri);
--		kfree(root_ops);
--		return NULL;
-+		goto free_root_ops;
- 	}
- 
- 	root_ops->release_info = pci_acpi_generic_release_info;
-@@ -1693,7 +1690,7 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
- 	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
- 	if (!bus)
--		return NULL;
-+		goto free_root_ops;
- 
- 	/* If we must preserve the resource configuration, claim now */
- 	host = pci_find_host_bridge(bus);
-@@ -1710,6 +1707,12 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 		pcie_bus_configure_settings(child);
- 
- 	return bus;
-+
-+free_root_ops:
-+	kfree(root_ops);
-+free_ri:
-+	kfree(ri);
-+	return NULL;
- }
- 
- void pcibios_add_bus(struct pci_bus *bus)
--- 
-2.43.0
+Under arch/x86/events/ a few files seem to be missing the include?
 
+>  arch/x86/hyperv/ivm.c                                         | 1 +
+
+Also under hyperv/ not all files are covered but I'm a bit hesitant to=20
+suggest a change there since I'm not sure if they (hypervisors) do=20
+something special w.r.t. msr.
+
+>  arch/x86/include/asm/fred.h                                   | 1 +
+>  arch/x86/include/asm/microcode.h                              | 2 ++
+>  arch/x86/include/asm/mshyperv.h                               | 1 +
+>  arch/x86/include/asm/msr.h                                    | 1 +
+>  arch/x86/include/asm/suspend_32.h                             | 1 +
+>  arch/x86/include/asm/suspend_64.h                             | 1 +
+>  arch/x86/include/asm/switch_to.h                              | 2 ++
+
+arch/x86/kernel/acpi/ ?
+acrh/x86/kernel/cet.c ?
+=2E..
+
+There seem to be quite many under arch/x86/ that still don't have it, I=20
+didn't list them all as there were so many after this point.
+
+But that's up to x86 maintainers how throughout they want you to be.
+
+This command may be helpful to exclude the files which already have the=20
+include so you can focus on the ones that may still be missing it:
+
+git grep -l -e rdmsr -e wrmsr | grep -v -f <(git grep -l -e 'asm/msr\.h')
+
+>  arch/x86/kernel/cpu/resctrl/pseudo_lock.c                     | 1 +
+>  arch/x86/kernel/fpu/xstate.h                                  | 1 +
+>  arch/x86/kernel/hpet.c                                        | 1 +
+>  arch/x86/kernel/process_64.c                                  | 1 +
+>  arch/x86/kernel/trace_clock.c                                 | 2 +-
+>  arch/x86/kernel/tsc_sync.c                                    | 1 +
+>  arch/x86/lib/kaslr.c                                          | 2 +-
+>  arch/x86/mm/mem_encrypt_identity.c                            | 1 +
+>  arch/x86/realmode/init.c                                      | 1 +
+>  drivers/acpi/acpi_extlog.c                                    | 1 +
+>  drivers/acpi/processor_perflib.c                              | 1 +
+>  drivers/acpi/processor_throttling.c                           | 3 ++-
+>  drivers/char/agp/nvidia-agp.c                                 | 1 +
+>  drivers/cpufreq/amd-pstate-ut.c                               | 2 ++
+>  drivers/crypto/ccp/sev-dev.c                                  | 1 +
+>  drivers/edac/amd64_edac.c                                     | 1 +
+>  drivers/edac/ie31200_edac.c                                   | 1 +
+>  drivers/edac/mce_amd.c                                        | 1 +
+>  drivers/hwmon/hwmon-vid.c                                     | 4 ++++
+>  drivers/idle/intel_idle.c                                     | 1 +
+>  drivers/misc/cs5535-mfgpt.c                                   | 1 +
+>  drivers/net/vmxnet3/vmxnet3_drv.c                             | 4 ++++
+>  drivers/platform/x86/intel/ifs/core.c                         | 1 +
+>  drivers/platform/x86/intel/ifs/load.c                         | 1 +
+>  drivers/platform/x86/intel/ifs/runtest.c                      | 1 +
+>  drivers/platform/x86/intel/pmc/cnp.c                          | 1 +
+>  drivers/platform/x86/intel/speed_select_if/isst_if_common.c   | 1 +
+>  drivers/platform/x86/intel/speed_select_if/isst_if_mbox_msr.c | 1 +
+>  drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c   | 1 +
+>  drivers/platform/x86/intel/turbo_max_3.c                      | 1 +
+>  .../platform/x86/intel/uncore-frequency/uncore-frequency.c    | 1 +
+>  drivers/powercap/intel_rapl_common.c                          | 1 +
+>  drivers/powercap/intel_rapl_msr.c                             | 1 +
+>  .../thermal/intel/int340x_thermal/processor_thermal_device.c  | 1 +
+>  drivers/thermal/intel/intel_tcc_cooling.c                     | 1 +
+>  drivers/thermal/intel/x86_pkg_temp_thermal.c                  | 1 +
+>  drivers/video/fbdev/geode/display_gx.c                        | 1 +
+>  drivers/video/fbdev/geode/gxfb_core.c                         | 1 +
+>  drivers/video/fbdev/geode/lxfb_ops.c                          | 1 +
+
+Under drivers/ this looked pretty complete. Nice work.
+
+Acked-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com> # for pdx86
+
+I also noticed these files might not need to include msr.h:
+
+drivers/cpufreq/elanfreq.c
+drivers/cpufreq/sc520_freq.c
+drivers/accel/habanalabs/common/habanalabs_ioctl.c
+
+=2E..so if you want, you may consider optionally adding a cleanup patch to=
+=20
+remove the include from them.
+
+> --- a/drivers/video/fbdev/geode/gxfb_core.c
+> +++ b/drivers/video/fbdev/geode/gxfb_core.c
+> @@ -30,6 +30,7 @@
+>  #include <linux/cs5535.h>
+> =20
+>  #include <asm/olpc.h>
+> +#include <asm/msr.h>
+
+In wrong order.
+> =20
+>  #include "gxfb.h"
+
+--
+ i.
+--8323328-666243473-1745919726=:938--
 
