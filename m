@@ -1,275 +1,153 @@
-Return-Path: <linux-acpi+bounces-13369-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13370-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85279AA1A7F
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Apr 2025 20:23:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97EC9AA1B55
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Apr 2025 21:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 240CB188A6D5
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Apr 2025 18:22:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E854B4C84DC
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Apr 2025 19:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B4F213E67;
-	Tue, 29 Apr 2025 18:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9707A25F78C;
+	Tue, 29 Apr 2025 19:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4UFjTb2q"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="o3eFeqyZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2070.outbound.protection.outlook.com [40.107.220.70])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D14215F7C;
-	Tue, 29 Apr 2025 18:21:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950868; cv=fail; b=GThdlGiKruIrokTcjlG2thHXqLEXKHi8F9ZP132QazehtULQyhJSVW32XtI3pbAZAKdO/knH+JY/eKM9f1VylUpR9sjvVWzGyr+hwvf7GO1yZos7pwBPWpwdKUL4AT4kJSAbS8VJ2PWiLGsJh/SMpdS2mRCMLSvDBjhYMIY/ysI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950868; c=relaxed/simple;
-	bh=2v1sVJviT7edIUayrpZlB4AQTyZRVm9Ptn3CJ2OV8G8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=dEOkgOh6qKqRH05P4ANNKQSd870LDCtq51LUTWSyFWAgSmJIsos6SOxJ8vzpGsDV87fWzgL5NzVtN6LMQZFY/eA2KfK3JH65I6GQXwLVdXstdMd5MZQkVzLWBDGbE2ijH+AwHR+K1l9stGgGUvzkCeGaLUpvaVcQU4qIvgyNkyA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4UFjTb2q; arc=fail smtp.client-ip=40.107.220.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ejcd/9F23dPVwCayaWWhV14k9/ub6nDTqNPZ/ZqRoTZ36FJI7nNCjE6/WkA+X2y1AUrapzO25yBD3IBKAFEM7VWUrz1BcXYDE21v4cD51oz+DiGm8n+mmUCxPNGARc3apUXE32po0r51EGCe6rRbBnUzkeHanN8vkoX8IFrKgdwWvQa9xf01Vcg/ke97quC7FOJtGyrGrDaWBURDlJzBqoUMzSg38/nBXsA4jlxt05GWzTVVpR/TsJOAXMx/gNiQMUqkqMA6VAkxTxIioqVZ3o4mfqY4lUe6eztqmU+jkjlh3f3tcpxySu/r1M5YQnUbDgTyHgkfmlwUTUanMvv7oA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ek6W4PErRfhVGTa/r7p36hxCDJV5whLv8VxpM2zV3eQ=;
- b=cNJSOYZMqyr7yzLYFwSMeOYf2Wa4ZvJG6yXjqF9YVzwapWB0jeJ5SxoKgoIpK65A1UlGLXoarKdOl+l9sugWh9Yfl1KBrW/6/vKMIbC/Hj8w79sq2NTVPpfXaM/MzxHN6z7iGyZ410e2mNZYfWqqnz2LNuEQ1Lkcb4bsAnMM3r8Q2CW5wMQwvTe5g8xJhlB5ExVTm+YYMLZ+C7WNeyglkti+9kGQwNAX9HE3Z3cQEC3wy1mMWaodzZ4+w3F8j4ZmbjNTaJAW5Va8InGFdME1yVpxNBiB8iBTgqmKHxl/6a1OzkrApgsj3fZ74UEwwA8hvmH88ad/j4uNX47v/+GKTA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ek6W4PErRfhVGTa/r7p36hxCDJV5whLv8VxpM2zV3eQ=;
- b=4UFjTb2qh5hhfZQEf3YndtQ5rDYlfHqL8Xn9WQx0wWuxdAZVA+q1CfHHixRObxz+vYKMV/bmW9aAoip2Lq4BkatBhVCS6jChc3fyksUonR3mpLExUMOo0090AzftUeoCaVsY8HJvTY1ThpZJ2to1p58jQEdv5l7+nNvHQ1OAfe4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB6373.namprd12.prod.outlook.com (2603:10b6:8:a4::7) by
- SA1PR12MB6972.namprd12.prod.outlook.com (2603:10b6:806:24f::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.33; Tue, 29 Apr
- 2025 18:21:04 +0000
-Received: from DM4PR12MB6373.namprd12.prod.outlook.com
- ([fe80::12f7:eff:380b:589f]) by DM4PR12MB6373.namprd12.prod.outlook.com
- ([fe80::12f7:eff:380b:589f%7]) with mapi id 15.20.8678.028; Tue, 29 Apr 2025
- 18:21:04 +0000
-Date: Tue, 29 Apr 2025 14:20:55 -0400
-From: Yazen Ghannam <yazen.ghannam@amd.com>
-To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org, linux-edac@vger.kernel.org
-Subject: Re: [PATCH 4/4 v2] ACPI: extlog: Trace CPER CXL Protocol Errors
-Message-ID: <20250429182055.GB76257@yaz-khff2.amd.com>
-References: <20250429172109.3199192-1-fabio.m.de.francesco@linux.intel.com>
- <20250429172109.3199192-5-fabio.m.de.francesco@linux.intel.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250429172109.3199192-5-fabio.m.de.francesco@linux.intel.com>
-X-ClientProxiedBy: BN9P221CA0010.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:408:10a::13) To DM4PR12MB6373.namprd12.prod.outlook.com
- (2603:10b6:8:a4::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD99422A7ED
+	for <linux-acpi@vger.kernel.org>; Tue, 29 Apr 2025 19:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745954762; cv=none; b=T7ZzSmrd7Y84uVy4imkOQO2COGPhSGFsuPs7sEDumb/T/ADRjLE7rBZOaPcyMninFkCNXnXJwkbai7NOunpefnLRqMM3ggmqCBG+5UC/nswOmgFZlSN/AHnFkJOoRa7BfAEiKYTtxaHv2MUeDgKjREUgHMv4FSXxLJRYljdPprE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745954762; c=relaxed/simple;
+	bh=nOsG60cjnryw1HpcpeTERdYcwGbMkzNgzgyEU01q3us=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iCAk/c/fJP4we2Dtp4Rg+yR+TOxpmFDzcoHZnKxBxy1ASTKzumErg25irGOTwxDFCvd4u0rl2ercXV7NfkzLgHNfKZ4JueFD7jLArdGZ33CAuVODhrUoJEax9MCfs1L0BQemiFnxEOZINhEJhIUYdZqkVoMvEv1QWvcr4t84E9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=o3eFeqyZ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53TAJNKk006055
+	for <linux-acpi@vger.kernel.org>; Tue, 29 Apr 2025 19:25:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	SZDZI43E332yNRCJFIwANBWoXEasKU0d/26e/2xQtgs=; b=o3eFeqyZdPLFuCuH
+	mP7nN9MEbhQ+Mt8pmNMbSPMTt1IvhBiQzblyX1+x3ULG0XB1A+lB/aoNc3Ht4Pgq
+	DlJ4M/1r2Ctd0FG1W82odOgUwCgjimm92UfF6YNB/KiCTuFj95eCRUFib32hij9U
+	ycI7pnmb5QjnW/ZqIkqWaYYpcI0sVq2Bb5O3JPKiBy3x93oPJjd2pKylQcIpjlbp
+	tgvWeTUtS5hx81RgYui13cn413QQPZ6mrXy45V6FLtvuwArdNbifm/fjn71LrwAL
+	nIQ6OeFIlrqhpko4UqwJ7U2DeZ8UY8TDP5sWorLJIkLQ+SD/UBfQXa/nNCDYDiXI
+	p+9Ugg==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 468ptmnpkx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-acpi@vger.kernel.org>; Tue, 29 Apr 2025 19:25:59 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-47983a580dbso13497541cf.3
+        for <linux-acpi@vger.kernel.org>; Tue, 29 Apr 2025 12:25:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745954758; x=1746559558;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SZDZI43E332yNRCJFIwANBWoXEasKU0d/26e/2xQtgs=;
+        b=UIyWUG+m4LEkD1q4e4rjW3P3OrEIM43ajeTI1hg6WOCYtN7NYHo88GHxI9sPP69S5Z
+         4MUllYkG8QIvoRcfi6jc9DNN/Sv+IcHz45rX4glfTo/A32OUQH4DUjjUHnIXlFANiZLF
+         1+vOMpFNugggW89DvGG72NcbP0ZKNFKbHm4+OoTk4Uw86cax6f4M1l5WIbajvevuuNlA
+         s16THJge3Vdm0QfEH2cA3glI6tGBl7a9sYQb0Rk3Q6Y/ZYj8apMRkUElpEyZ9kz4w/eH
+         ETdejMRQTL6tplqxnBUb4sLBz0Jlq3tJ1B2LFMT9YR2pS3CovhHtl9xOAVLXSmIB8S0n
+         3kYA==
+X-Forwarded-Encrypted: i=1; AJvYcCV1obJ2RFraMstzv+XYu25Xyruxuym5blbnUbWD/XhWv7Qh4Xa3JIRWoPTSsX1Ior9TGR3Scn8BxXEp@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLSZgGA3WXfeqnPX57FfSmV/n2e0eISb4dXvqklHWUYHp3M7K/
+	+7T5CRuiDVU49uDRKzFBZoXuSZxU+5eId/FWVTdehPZumQ7ws42BkDRJSYqtpUk1oWDJ62Lo+jT
+	d/v+dpnEh6Lr7lBGr2oVfszynPeUKzzHyIiHRBPhqiHDU1lWf190VqXJLXpGV
+X-Gm-Gg: ASbGncue6sV9GjyyeyBiyiNHA5pMDKyOhDdjemC5n7MFSEg3vYeTKowpHNKnHvLIn1r
+	lYBvSOoCxL/sM6eKqlxhpdVqPVS2su+/YrFcbSYJV/tFpXkfCE9DItyC0cOiyBWCJxZGqA8FgDa
+	4UPDyiwL97K+zlIw4kbuA7il1ODjpkmYLMZR+1sGlcPdGEoe1XbtwQBz+A3S+A6WZb0n2Fly4np
+	YgqitvOmfznUiItxMeRzFD0pTpr0c/1W0VyivCy8HBHZwZvILUIbo7hFXOlqo2k0ugWbdUgrJgc
+	9RTkDWtcUORKGMPH0Q2EbnT5AAqMrk3/8CNK2s74uOkq4jNPp0J9LG6P8QjLybP5Dw==
+X-Received: by 2002:a05:622a:1490:b0:472:1d00:1fc3 with SMTP id d75a77b69052e-489c445ca44mr1384791cf.8.1745954758659;
+        Tue, 29 Apr 2025 12:25:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHeCpvJWeqZH0ttcvHHJ9VqFEgyci4j9m5BtdmVr/zQ3sRean1THCu8ARbeAV6i3mZ/LHvo8g==
+X-Received: by 2002:a05:622a:1490:b0:472:1d00:1fc3 with SMTP id d75a77b69052e-489c445ca44mr1384561cf.8.1745954758152;
+        Tue, 29 Apr 2025 12:25:58 -0700 (PDT)
+Received: from [192.168.65.43] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acec0530c37sm225421966b.136.2025.04.29.12.25.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Apr 2025 12:25:57 -0700 (PDT)
+Message-ID: <da8f8506-edbe-4a4a-bef9-29126d3e5c04@oss.qualcomm.com>
+Date: Tue, 29 Apr 2025 21:25:55 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6373:EE_|SA1PR12MB6972:EE_
-X-MS-Office365-Filtering-Correlation-Id: f3d9f047-d61d-4999-6250-08dd874a9a2d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?wue69Ng4sHVypIHb6V63ms8JQNDUKcG39w5qehmULk7UPFgjC7cD4DPaFdCj?=
- =?us-ascii?Q?FbNR22bGLA2967iVghU53y2p+Esk+dNpxUbA5Cfi2iY1rM1lCJJd2sGKXo1i?=
- =?us-ascii?Q?gDfjloAnixVHtvKsH2yvqKCCkm/44nHkvuphCR8IcLyxs/PVnFLeYcfM0mr/?=
- =?us-ascii?Q?hqJB98mPTtrS9vdh2EYTw8jCvqedfBfLX19eUM/4Z461TS628HCM+3kWIWCn?=
- =?us-ascii?Q?gps1fQXZmP2YEu4FJhhzz6Cd3ovirIX05/7n/Qszrwg+CYzzadDw5q+PJFvm?=
- =?us-ascii?Q?BfwuEUBYHuTWqssC97X5secLiijHqyEWp+tY2vtb7uJOGPMA6gDCvaLI9JvQ?=
- =?us-ascii?Q?y4o1sT/a0yFBtl0qsuXqZwMF4U05G5i8N99DejO8TLc2I7P6z+fcCQ/186U9?=
- =?us-ascii?Q?q6Pxq9CyBhI9sgJYhj2TVoghrNEQxlAxRz5xjshvVaQ+aYLZw9XllgOPxIEg?=
- =?us-ascii?Q?Zp1YWINgOu2b+lM9y5lX/AHu2q4zvk+HhFOzzcc0fh2OjyFSADdKD3MFTXj4?=
- =?us-ascii?Q?30VwPhEmKgy7cDnspVisDN5R3ie8vRak5ex9Jx04DAqFg2eRWbDHG8B0J3zs?=
- =?us-ascii?Q?aTGe48s+eL+ggseMoInqWbLpClxQV9WFINeDQ+vA8EMT1nypMzgiSIy5uMMe?=
- =?us-ascii?Q?gispA+sJ/Uk9mWOalLgNYAAhrvdaA4ZTUScw5hmttYmWjdWuGEkA7v+j2OYn?=
- =?us-ascii?Q?M6jRq4YVfZ1UOOZjT+uBvAB4MNTIPA89M2HIzyuA85E6ZSduZfNC9gTtCej8?=
- =?us-ascii?Q?baG+XQoWFgw1yAv3u7RPx5ank/iMz+3Gy8YpJ4NPZRtfnqTVxQBwioN98pBw?=
- =?us-ascii?Q?4GFFli1Rz5wbTgO3Qgl3FWyKbg85PXkmmFnsG/ITwxl0RwVF3gPON0WCCzod?=
- =?us-ascii?Q?4qW4AThlTn/ddvmU7UnjeqZ/5vEOtOKP9Cm4SWp97off7x/kuGv6JsdHqKyj?=
- =?us-ascii?Q?FTuqQvYnmt5Eg86Zakc2Jhe6YALhmLSXtW8ga027fqhVDV3bJmXu4DCY+DIS?=
- =?us-ascii?Q?UWPenNiBmn87+nyUkjo8XgeObwfoH/i35QfC9HkZftIVtpZCx2dUev39BwhZ?=
- =?us-ascii?Q?T0VQNw7PE5i4xSqdqe8miqipiNmA/mMR8FfTQlwhVPnPo4+6igFstDecTRcu?=
- =?us-ascii?Q?B47jdlrEYIh7B+rKLwPGGSsyX1yGqwOUKKujk2KxWdO2UcEuUyVh2e1j0/4b?=
- =?us-ascii?Q?OeSJTkRzDoGlnvrkmUFSd2PA1fs9bmyGF6j6/3K9VblJ28F6Ry63oa6X0ayG?=
- =?us-ascii?Q?0qNxj7W05wg5DI9LGFIAfNG0/eI6cnZ7Q4wCfL6ocvNRcXCpsRN34UDVxqYM?=
- =?us-ascii?Q?gmMlvgWZvc1s6fvAKU5+ZNxciXrfwypmXi4c+4HjXazvh7KzvsJ/7kkzd/SM?=
- =?us-ascii?Q?pBk4w8ojiyBJteM6hLLs6vHQGOpw5uyOVLmwnKcWwk2HWYrqSF+Bqilmxdsn?=
- =?us-ascii?Q?Se4Fwhn2vxM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6373.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GkfKwJHu6ha0zJlZFgSlx3vEFhaI7bG/nJRDNnL7aS5usDWxR7YJaWV5ZDi3?=
- =?us-ascii?Q?GWICRwTxwZddBTzTSiu83ktNSisOUlRaZPHadwzmGNHdJn3TA+jWwHRHHaRc?=
- =?us-ascii?Q?LIVseRYjogb98gAkVqIypZ1debsPJUMIa+6qPi44mpKhECi62Ii85OPVy0Mf?=
- =?us-ascii?Q?CJHvpDwB93dOKNc0CtYGLO0SMOX2jJ17frxK5D5OoWOVs79D/HXIZNfaozJw?=
- =?us-ascii?Q?VQCZN9el22EkT8PaKvJhS8bzQDvFbfODuzk0QMfzjvoK+WbjkmijGtTF8+Pb?=
- =?us-ascii?Q?kLT99BNIZUY0Vf0MoIdKyUec9A7+8iv8JD8XYE14z5x5O10jOW6lwkCs8Y1B?=
- =?us-ascii?Q?m4SP5RFcR4JFvTyids8t09h+VcVrskuHJHPk4LhRSvhwhn4HVm4GwxrtLDcr?=
- =?us-ascii?Q?wnGFkThYN4MOadSY4ASjqhxarP/p92Ex0OqtUq2TL2QSiuRl9nC43cTiMPip?=
- =?us-ascii?Q?/2JW0H7FgstWSAPK0uVgxYsNpjqidbCRaEoZAPY6YtElsEYxi+g4ZeBIMv8y?=
- =?us-ascii?Q?fsuFTHGntWJyIkmtUZFAaMLwPD2Jwvm9cqrPgIR08dsskLVAQJBecQk2/ZKG?=
- =?us-ascii?Q?3x3RI26F3stgjkL3gDofGyqRKYDTrazrJHUZtgiafpCC+oDZm6iGjQiA/+51?=
- =?us-ascii?Q?GlJXczmmSjykWWDrCmKI5ODeGxFke2wkEBC41netsU8r1d9gmEV2QBGGThyj?=
- =?us-ascii?Q?jUXWdPBPIpCK0XeB+R903/L8N8cvn06BX6+xbDUU+nq+KxFaf5Qgy5iGZNpy?=
- =?us-ascii?Q?03PoqGoHav923bqCKL9iW/cXLXAaqYDkhLk88+I0FboUVJgnDj9utjuVSgyt?=
- =?us-ascii?Q?8tAar10bM3j5nSW7aF9lChxZyirpIbYyD/IwP78K2xz0xasTg8G2AfimeVmy?=
- =?us-ascii?Q?zRaz8+ow5Fi2qevLxsL2cHsy1pDd68EjwdcK6PqbMphZI28Gq0WcNnTmotI3?=
- =?us-ascii?Q?bCRr7tYC8DXq4jxTYXJ8I2q+Li4Q7v7Yf3mUCmmEFlIVtlFUQPDCYjJEN/Mq?=
- =?us-ascii?Q?i/FuFLANlpsAFgn3yxuHot26E8K7rmu4fMYq5F7ixChjhCCSWFf8tFi5pg8o?=
- =?us-ascii?Q?EXhPzv1D8r0GqIR6/+9vkVgHv3OE5CVl3dgUYajsFy0hI1Q5VWDzmG6rItUi?=
- =?us-ascii?Q?uQ802K+QAFQ3AkA/UfqcALu5d6tKv+ZHZrvH+Hu9JGhvCiTTOxshSDqMYI1E?=
- =?us-ascii?Q?rpPOTqPc3uxW9tcxHg2O9HoI48DEp4rKl3yhux12f+glo7x8rDvtP2AtGzsM?=
- =?us-ascii?Q?0IbuGmnhyQ4Lr5FRwIIZmznvC7Wceeb1QK1bxumI00kWqSiOh5YHDQG3MaDk?=
- =?us-ascii?Q?xO+lr7DSCCx698JOIH1CYBaZXafawG8B5RjYh4DlLlcsQWqqFZSMzV7Z3kSy?=
- =?us-ascii?Q?6oFjdn1u6ANVFHJF6lMpia+J2mi3qLI/ftQ8fnQIckR4Tu2lMg1jtCTaUG7S?=
- =?us-ascii?Q?Xacdaho9FnDxTVNOXg1PvEclFC2reCaEb8kWw8Y6WYl8F0BTTajY2u9+/VU+?=
- =?us-ascii?Q?EoLRZXskicULVv093fjGre9y64/H6+WBFuFowvk6pKtXyLLMyh/BioNjqpjG?=
- =?us-ascii?Q?lssZEmSgbsPOuN8Tt4ybPZePo9WKhe4AU7Q5/uOZ?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3d9f047-d61d-4999-6250-08dd874a9a2d
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6373.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2025 18:21:04.2429
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: laaN3aYzvucdoM38teJrU3r3XVnjiqYTca95P9QHhKXue4oL8to20oCw5KyJPpo85gyrSA1C1oG9z3Dqq5hx0A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6972
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] firmware: SDEI: Allow sdei initialization without
+ ACPI_APEI_GHES
+To: Huang Yiwei <quic_hyiwei@quicinc.com>, rafael@kernel.org, lenb@kernel.org,
+        james.morse@arm.com, tony.luck@intel.com, bp@alien8.de
+Cc: xueshuai@linux.alibaba.com, quic_aiquny@quicinc.com,
+        quic_satyap@quicinc.com, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        kernel@quicinc.com, kernel@oss.qualcomm.com
+References: <20250428095623.3220369-1-quic_hyiwei@quicinc.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250428095623.3220369-1-quic_hyiwei@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: OOJY8ufc_GFKfVxMpVFpr94rn3PopXuu
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI5MDE0MyBTYWx0ZWRfX3riRIvrjQSqd szI1klmZMVxP3uknw6NIkaelmcnKw+/JXpDyqLKfB6xTmKCeDvEEBWctnokL3/OoHKjEIGDIZSh ny5Hx0Ki8ad4kxR1nVv2yCGA0KBMQfMMPZBPS1Yo822rXfFKC7fXLRo3aiqkoww9lU8qfX5G81m
+ Y5uZW7/m4i9lXLdY8dpBSZ+yD0zxiiC4jldOiwq3cjtKHKJ1gC5H8dBqy771hvDp5/vRSAH77dT bAbw2oUEUZYoCUqf5mcMpUmIGs836sXMF1QFos7q135/O6JohK1wCnre6PmdzfPq7RcqgWiVgId d4BCQdgEBM4xzN6DYUGIU7iUil2D7QEGwl5mU4UZ5HcolCoAISHawksLMfvpwHDPHI8Gokk6Bds
+ 30DshbBfwXuVoyxOl01Ys3+2fj4q+bRgisX/rrEk5Xsp8DZ2s6FmIfx/HxYVJp++2ROI/+P2
+X-Proofpoint-GUID: OOJY8ufc_GFKfVxMpVFpr94rn3PopXuu
+X-Authority-Analysis: v=2.4 cv=DKWP4zNb c=1 sm=1 tr=0 ts=681127c7 cx=c_pps a=WeENfcodrlLV9YRTxbY/uA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=SRrdq9N9AAAA:8 a=COk6AnOGAAAA:8 a=uYIpP0hKP73jGhetqrMA:9 a=QEXdDO2ut3YA:10
+ a=kacYvNCVWA4VmyqE58fU:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-04-29_07,2025-04-24_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=848 clxscore=1011
+ priorityscore=1501 impostorscore=0 mlxscore=0 bulkscore=0 malwarescore=0
+ phishscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 adultscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504290143
 
-On Tue, Apr 29, 2025 at 07:21:09PM +0200, Fabio M. De Francesco wrote:
-> When Firmware First is enabled, BIOS handles errors first and then it
-> makes them available to the kernel via the Common Platform Error Record
-> (CPER) sections (UEFI 2.10 Appendix N). Linux parses the CPER sections
-> via one of two similar paths, either ELOG or GHES.
+On 4/28/25 11:56 AM, Huang Yiwei wrote:
+> SDEI usually initialize with the ACPI table, but on platforms where
+> ACPI is not used, the SDEI feature can still be used to handle
+> specific firmware calls or other customized purposes. Therefore, it
+> is not necessary for ARM_SDE_INTERFACE to depend on ACPI_APEI_GHES.
 > 
-> Currently, ELOG and GHES show some inconsistencies in how they report to
-> userspace via trace events.
+> In commit dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES
+> in acpi_init()"), to make APEI ready earlier, sdei_init was moved
+> into acpi_ghes_init instead of being a standalone initcall, adding
+> ACPI_APEI_GHES dependency to ARM_SDE_INTERFACE. This restricts the
+> flexibility and usability of SDEI.
 > 
-> Therfore make the two mentioned paths act similarly by tracing the CPER
-> CXL Protocol Error Section (UEFI v2.10, Appendix N.2.13) signaled by the
-> I/O Machine Check Architecture and reported by BIOS in FW-First.
+> This patch corrects the dependency in Kconfig and allows the
+> initialization of SDEI without ACPI_APEI_GHES enabled.
 > 
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
+> Fixes: dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES in apci_init()")
+> Cc: Shuai Xue <xueshuai@linux.alibaba.com>
+> Signed-off-by: Huang Yiwei <quic_hyiwei@quicinc.com>
 > ---
->  drivers/acpi/acpi_extlog.c | 60 ++++++++++++++++++++++++++++++++++++++
->  drivers/cxl/core/ras.c     |  6 ++++
->  include/cxl/event.h        |  2 ++
->  3 files changed, 68 insertions(+)
-> 
-> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-> index 7d7a813169f1..8f2ff3505d47 100644
-> --- a/drivers/acpi/acpi_extlog.c
-> +++ b/drivers/acpi/acpi_extlog.c
-> @@ -12,6 +12,7 @@
->  #include <linux/ratelimit.h>
->  #include <linux/edac.h>
->  #include <linux/ras.h>
-> +#include <cxl/event.h>
->  #include <acpi/ghes.h>
->  #include <asm/cpu.h>
->  #include <asm/mce.h>
-> @@ -157,6 +158,60 @@ static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
->  	}
->  }
->  
-> +static void
-> +extlog_cxl_cper_handle_prot_err(struct cxl_cper_sec_prot_err *prot_err,
-> +				int severity)
-> +{
-> +#ifdef CONFIG_ACPI_APEI_PCIEAER
 
-Why not apply this check on the function prototype?
+[...]
 
-Reference: Documentation/process/coding-style.rst
-	   Section 21) Conditional Compilation
+> +#ifndef CONFIG_ACPI_APEI_GHES
+> +subsys_initcall_sync(sdei_init);
 
-> +	struct cxl_cper_prot_err_work_data wd;
-> +	u8 *dvsec_start, *cap_start;
-> +
-> +	if (!(prot_err->valid_bits & PROT_ERR_VALID_AGENT_ADDRESS)) {
-> +		pr_err_ratelimited("CXL CPER invalid agent type\n");
-> +		return;
-> +	}
-> +
-> +	if (!(prot_err->valid_bits & PROT_ERR_VALID_ERROR_LOG)) {
-> +		pr_err_ratelimited("CXL CPER invalid protocol error log\n");
-> +		return;
-> +	}
-> +
-> +	if (prot_err->err_len != sizeof(struct cxl_ras_capability_regs)) {
-> +		pr_err_ratelimited("CXL CPER invalid RAS Cap size (%u)\n",
-> +				   prot_err->err_len);
-> +		return;
-> +	}
-> +
-> +	if (!(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
-> +		pr_warn(FW_WARN "CXL CPER no device serial number\n");
+I think it'd be good to leave a comment such as:
 
-Is this a requirement (in the spec) that we should warn users about?
+/* Initialized by acpi_ghes_init() when ACPI is present */
 
-The UEFI spec says that serial number is only used if "CXL agent" is a
-"CXL device".
-
-"CXL ports" won't have serial numbers. So this will be a false warning
-for port errors.
-
-> +
-> +	switch (prot_err->agent_type) {
-> +	case RCD:
-> +	case DEVICE:
-> +	case LD:
-> +	case FMLD:
-> +	case RP:
-> +	case DSP:
-> +	case USP:
-> +		memcpy(&wd.prot_err, prot_err, sizeof(wd.prot_err));
-> +
-> +		dvsec_start = (u8 *)(prot_err + 1);
-> +		cap_start = dvsec_start + prot_err->dvsec_len;
-> +
-> +		memcpy(&wd.ras_cap, cap_start, sizeof(wd.ras_cap));
-> +		wd.severity = cper_severity_to_aer(severity);
-> +		break;
-> +	default:
-> +		pr_err_ratelimited("CXL CPER invalid agent type: %d\n",
-
-"invalid" is too harsh given that the specs may be updated. Maybe say
-"reserved" or "unknown" or "unrecognized" instead.
-
-Hopefully things will settle down to where a user will be able to have a
-system with newer CXL "agents" without *requiring* a kernel update. :)
-
-Thanks,
-Yazen
+Konrad
 
