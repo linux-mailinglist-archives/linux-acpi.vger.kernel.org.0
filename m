@@ -1,55 +1,55 @@
-Return-Path: <linux-acpi+bounces-13360-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13361-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16DEFAA10F5
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Apr 2025 17:52:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA09FAA110C
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Apr 2025 17:56:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0170F18924BA
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Apr 2025 15:52:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEBFF3B6EA1
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Apr 2025 15:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3275E23ED5E;
-	Tue, 29 Apr 2025 15:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0956022157B;
+	Tue, 29 Apr 2025 15:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="HCmfRlt4"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="mkSdYvRc"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+Received: from mout.web.de (mout.web.de [212.227.15.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED2E23E32B;
-	Tue, 29 Apr 2025 15:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863602192FE;
+	Tue, 29 Apr 2025 15:56:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745941909; cv=none; b=YvTSYmrFSDaxR7KzAsEa1x70deum98EcBNPgkkBpw3aL621ULpgFfRukJSfysX3iO+JajBEXjNgetP7k7KG2An/RDodA8OYFJ2WjIl3jrdJS1MqMoormcnS9PtYRF4U8SLdoe/QF6wSCJJNg5dQQyXa5Ykl7UcMIJYx5W67E9WY=
+	t=1745942195; cv=none; b=Jb1bwN6pveqNZ7oOalDsd8I8JYChrV+jtL138vrubNhrbLMG8N49hBq1pp/sPJMW55YBam0IFvxjG4S9Xam3mia/gFF4oDgAe7vZxVXugjt85BOMqXQE9N6YwsdQIWVBbLX59i45QY/CrWFhmCMvsXpMdyX2x64CrRuZeUfQmRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745941909; c=relaxed/simple;
-	bh=DnTNSFiQMa982txtTGvepKRlDKUMmvvPua/94CABBlI=;
+	s=arc-20240116; t=1745942195; c=relaxed/simple;
+	bh=8nlWf1HiNlIJd2ze8hcxNAQkxKpTVs533PFedLOHUI8=;
 	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=PqdoTR4h/TDKZ0vBO+67ynqB8Pb5ruBoieeZIh1vnyanhTzKaycPrb+DBu8redAS5ouqH8nGJ/+ZZSiH6YMaKwMx+QHTc/z/BKjmUF0a+0Ch2oY1u8JNtCcAGAxrF5DzejTe8FMfh5w2+M0+4XcsLLj3LcdmnEArcO55bISytk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=HCmfRlt4; arc=none smtp.client-ip=212.227.15.14
+	 In-Reply-To:Content-Type; b=f1NMtuITuLQj92zUXlnFvRUkSvF0X8W757bndhzuKfZY4kS37RhQ6eBVELBAKVkM4VRqJK48XNkgqCW2PFBbd/g7Dph/2s30BHPb7OkxLkpguLat50SyY9q76NvHVuTgdytCLHWbUyL7+1gLYnBjzAIg5LQ2w1Ikewfj6KBrNdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=mkSdYvRc; arc=none smtp.client-ip=212.227.15.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1745941586; x=1746546386; i=markus.elfring@web.de;
-	bh=DnTNSFiQMa982txtTGvepKRlDKUMmvvPua/94CABBlI=;
+	s=s29768273; t=1745942185; x=1746546985; i=markus.elfring@web.de;
+	bh=oXEa4kcM/OxrUbCCm71kggBOZqNhYe6zTRrmMA6LR9c=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
 	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
 	 cc:content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=HCmfRlt4okoAETCbUqxka3c2+UkhgqQ0TwiXQG5oN1EQcsBBNgpRJ1LWVnBJFYYZ
-	 TmAV9LiflNKPn/z7h+vOFHM6Bmsgi6wXSf/mppmlKG9Hl1HMD5oSUiE8gKq9YB4uk
-	 sbptxTnbsxW3WnV1HyV7v/iVeO0kdxyqlveGK1kpU46l3YNCZfh8NkTvawfX3lJdr
-	 2MJ3x0ri81pyVjKu/xCDiARUeYsVjNV3OWIacmglqBUebfvcwRBK0zrbXxoEwn/9J
-	 LjbV7dFfp93HkBUiG3IV1Z9ZRQqpHPdIP3Frm6jY0izFl4BBcB55blKbUphRw/E5N
-	 h+Wmgo07v7TyXaY6nA==
+	b=mkSdYvRc5q8XQPy2rglf6mE7+fF8RpPs3fKhs7Mxdm8e14BeyCeJN9J6cg04e76H
+	 bDxgjy6hcuuP8mXM4sF2SWYnmrLT5zxawOkACUUmxQxjllFnZ2peUFfxaFlw4rmg/
+	 tMjLFfoLzBOU/6d8Nb/z/IclyaAc9SotU1ztFp4p8jvJyWPANiu/iZNQ6nonEgt69
+	 dpx7ZrIBtKp5vus1lEviQSJ1NkTdtGozTimcspknbKwsaENVQShIOs1XOpL/jp1sj
+	 ZiYwOMjJ2AdcNixnhVkEZY/fO1Cw2EWVj/A9Mwk9GwOwSox7M+s4RYpz162zuzjBI
+	 HASXQK69oWjuwkooOw==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
 Received: from [192.168.178.29] ([94.31.70.57]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MXoca-1uYySc3Ccm-00PDIc; Tue, 29
- Apr 2025 17:46:26 +0200
-Message-ID: <b3876ccc-8446-433a-a2e9-caf6faaf1995@web.de>
-Date: Tue, 29 Apr 2025 17:46:23 +0200
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1N8n46-1v6NNn03Wg-00vXHR; Tue, 29
+ Apr 2025 17:56:25 +0200
+Message-ID: <538f8456-1b28-4e7b-83ae-71b4c4ebcf8b@web.de>
+Date: Tue, 29 Apr 2025 17:56:21 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -64,77 +64,78 @@ Cc: LKML <linux-kernel@vger.kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
  "Rafael J. Wysocki" <rafael@kernel.org>, Sunil V L
  <sunilvl@ventanamicro.com>, Will Deacon <will@kernel.org>
 References: <20250429091051.249911-1-qiaozhe@iscas.ac.cn>
-Subject: Re: [PATCH v2] ACPI: PCI: Release excess memory usage.
+Subject: Re: [PATCH v2] ACPI: PCI: Release excess memory usage
 Content-Language: en-GB, de-DE
 From: Markus Elfring <Markus.Elfring@web.de>
 In-Reply-To: <20250429091051.249911-1-qiaozhe@iscas.ac.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:KzKXQKM8YUun6Mb1+1KnJXUqQVWv4oVsPPY372eaUISzFJlypNh
- fjpIGoUMkmhn6rWA7lKakYsGsV+f/e3tGzLKqBLnVs+HlXVjb8lAHygimUtjqAj01I5o/Ny
- ufv+0iT8F//QfQ0oafQmZpS6lmmM+INXc0Bgpevf4aRYtStShelBrGyI+mp60FLrAm7uea5
- rZFSTqQYmOhqc22HJfljA==
+X-Provags-ID: V03:K1:o/qCyeBpAqJ/Qi5y6kGMZKGPYMvfM09TnPWAo9TxJd+Ot0t1n4W
+ WrURYnKeCJm7MXAbeuwWhYVaAH19k3UabKbiQWoWJnpHQD12t1B4s8C1ftJ1Gwf6R+/fVfs
+ +CPMXFSVfpfi4mUCHCDZbh0gxK9BrRzkb2NLzX0Es80mRK6KRhN2DEnSvwPspj4HWPSkY5J
+ WoF1odvkkiO+RFpvPTh4A==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Y3c6w/2B9OY=;RMe9UwOCM+FSFzFIluYM7Rg0hhx
- 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
- g==
+UI-OutboundReport: notjunk:1;M01:P0:pqb6i9LD+xE=;sHj5mo69ZGJrWrfDJ2ElWp9mhkZ
+ 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
+ wEv61jEU9eTz0=
 
 =E2=80=A6
-> the allocated memory should be released to avoid memory occupation.
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -1677,15 +1677,12 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_p=
+ci_root *root)
+> =20
+>  	root_ops =3D kzalloc(sizeof(*root_ops), GFP_KERNEL);
+>  	if (!root_ops) {
+> -		kfree(ri);
+> -		return NULL;
+> +		goto free_ri;
+>  	}
 
-Will an imperative wording be more desirable for an improved change descri=
-ption?
+Would you like to omit curly brackets around a single statement?
 https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.15-rc4#n94
-
-Do you propose to complete the exception handling?
-
-
-How will development interests grow for the application of the attribute =
-=E2=80=9C__free=E2=80=9D?
-https://elixir.bootlin.com/linux/v6.15-rc4/source/include/linux/slab.h#L47=
-6
+cumentation/process/coding-style.rst?h=3Dv6.15-rc4#n197
 
 Regards,
 Markus
