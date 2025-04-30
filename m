@@ -1,90 +1,136 @@
-Return-Path: <linux-acpi+bounces-13393-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13394-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD2CAA5439
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 20:53:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F104AA54B4
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 21:33:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BB96987BE3
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 18:53:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F02BD9E5528
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 19:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0867125A32F;
-	Wed, 30 Apr 2025 18:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E601E570B;
+	Wed, 30 Apr 2025 19:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EEMz18tJ"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nmrpDyUH";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HutCrlPC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5652A1DFDA5;
-	Wed, 30 Apr 2025 18:53:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9951B87E8;
+	Wed, 30 Apr 2025 19:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746039198; cv=none; b=SjGe1dwWL10Za1+tD6/YPrlTKKB0D0FSmS68+QTtrXCjRZWdQg52byk/v9vNBpFVGTdm6/T94IDgbXrCm5ZX2Y6AwrcF4o0STKyUqU2yBc8OONk2hJzRN1gGk57/oB8s6YPuyCNPo0MwC7FISyhY82FKvtlQhKZU95hhQb/1P/s=
+	t=1746041588; cv=none; b=BnDujpeDKleFs5NkLYuXa7o0E70A8lrcifBwSMGTqqGxu+WAVSCMP07KkRgEiTuhXatEVA5xAhy6/O08UBVevn8ARRQlQ0jalhQur3b2AVIMnkiR7OXMY8qKQf4V+Hd6W3e9mJmgAHeEfcMVNf5tEc7L99oU8h1v3B9bZGIrLHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746039198; c=relaxed/simple;
-	bh=rYjStq2mtn5geEz3C/+mX0Z0g312KHiTyEJTwFxB9gU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BK8Nye5ydusD/uIEv199jAJFGcG/kBeSC6UZ469QZlLV+AcsUNc94K2/TvGJRv7BS2zPO/oqnVRI7yRaJ2rM+gSdjeGF2HSZf8LhP8DblMtXzSbbfAO3v669HdvH3WgNdgfZSmu3ZJw1g087LWOjx4EqrD94ZHwYaK34BTY6RHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EEMz18tJ; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-30db2c2c609so1253931fa.3;
-        Wed, 30 Apr 2025 11:53:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746039192; x=1746643992; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=rYjStq2mtn5geEz3C/+mX0Z0g312KHiTyEJTwFxB9gU=;
-        b=EEMz18tJeDY1n9ZG1jieT+6X7LSVZGq3zE2U4mxVBBjXdWdo1kCkxDni9LH7oPcPDG
-         eWOOBjsjTdZcH+NoEowCAVEu4Lba82eRMOqQEhfStQcfw72K4p7gsHc/9EEueCKc6tWZ
-         bGJFGFT3EFTUqHFF89fuiVScnjd7s/jJMRdaMECMwQaJ7lXRKogso81/TY5j4LuhiBdg
-         SOeZ6WO2T90KNLt5Gd8E4rDCG9b45OmGWF+Y++qjiD6/NvTbUYFMzgnFWwsF5DazjCZL
-         GaKBq3fO3bayw+wcxUVVd17dqiIEF0hX+x4ev4gzg1PGvcm//9+1SMffF6MT5A9K2Onz
-         7WCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746039192; x=1746643992;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rYjStq2mtn5geEz3C/+mX0Z0g312KHiTyEJTwFxB9gU=;
-        b=dJiaGxqlZYwSbBo2aOXo3DYZTxddrMiX+1ryyEyp6J5hbVFHecxx0Mx7bZxm2CtFuV
-         /suB17G6gnT5X9yjZ5JpxJb5b8VlZ5/1woOIA/1WBFh6H9nXDGJdbL1gY2Xag3708xNg
-         9evRqDHwzKlYVFyMLFp3hFFTMrcPr4eUZ223Qe/BwvOVI1Zk9juGEq8uBMGm1VC9/MC8
-         SiYzVSEVDO4zbp+AnOajRr3Uo05oAYXUEQvcs5VcQdtv89nBtplnk5Wy0VjlED1fdTde
-         qfjk/Kx8OE1kAk8l2CNuB8Rjq7vFP0hqI2xxgP3kLEjnHtrqYSkoRtD7cvuqLXiP8irz
-         yKhg==
-X-Forwarded-Encrypted: i=1; AJvYcCUfNdSS1ElDXose9IySt3eVPM4Isj6/q+eqEixupR0pVYW8qe7xzJRJxIHGlDgoxTSWOg5idEnBGAmjSMI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywbsggp7pCq4sMm46t3pZWEEjUI1Mc4qbcnLicc/U43qKlqlwEB
-	3St2Ya5qT7ZQ2SVlbAUhleKWPZBH31l3KyTp8tEMtT8aRgaFy67y+8CHPtw69aDhTzFFxspnzoS
-	Yt5T+29zLLXXM1xAPrp9duGzaUt4=
-X-Gm-Gg: ASbGnctKVpVxGrOz5AzisvB0snA2lBlNzsaVciJuzLPY6QZ2QPrWeh0yFZcPE0iowlX
-	7R7G+kOEytXYFqQlBllIASLW3BGms/KSUmlSd9zeLQFmzKpzbT9pZRE8VKsrYqD7L6ppt26XxXa
-	iwLYPeeg/Nlvvgygl5L+pOStW9NIJ/VC8pbZtOKQ==
-X-Google-Smtp-Source: AGHT+IE1uQ++FjCkKhQJZ7cMIVgQBJMGgIRP1tpha+mSsq2Dm0WDNf0Bkn1ExNY4pud7CTYClvJ4erGm5XjS95+y6qQ=
-X-Received: by 2002:a2e:ad13:0:b0:30b:c8b1:dd95 with SMTP id
- 38308e7fff4ca-31e6a7f48d1mr18143581fa.22.1746039192182; Wed, 30 Apr 2025
- 11:53:12 -0700 (PDT)
+	s=arc-20240116; t=1746041588; c=relaxed/simple;
+	bh=NgCpYyhisR+eT14JahIMfINyl+OmdqYb/Aau9YB7T6c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=APKKksCnk6Z1HRMCGeGi2TiIJEvwXZ7sCD6HKzfrWZ4ADTh85PaE08IgfyX14cM1e7Kk1pWI9HxdUWAMFp/gBYcCsUoUZso6icUsrDkiNeH3pVAaq0mDRpm5QcoiGjm65jZwJzISI6LDxhfHC1gCOEO60XZNjKwBaTbviC+7RtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nmrpDyUH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HutCrlPC; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1746041584;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/YyscSAqwZBgtqXLx1SsF2waKn2TwCC0qIe2pJzuSGk=;
+	b=nmrpDyUH7fggWHS/REurepWbQ/wOb99mLz8imaLQvfUrUHHzVw7Innd1Y+sWzkpr61UDDF
+	/DwYtzY9Q5Gdubyebu9/W3OaffBmNhjFcPX1vNC+tC7HWeR9CKPAzbmXPDGkbbE6zRkKxP
+	IsYwpuDYEgQ1tVrvOvNO/PCuDvnpKaiFh4wNuCX9tNiC50ixwHHBNPr4v4TzsY8RdZipxq
+	Tvm9ootQvEXE/G3985aKmxdAWpLN+GsjAZA3MZvFreMOVFQpHuDnN1FLBxRW5X5ksmRf0d
+	jGvl8jvnQ3uXWksTTnIAs00duU6TozHVBVKjpyw589ZsrPC7My7KJIfyPt2tMg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1746041584;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/YyscSAqwZBgtqXLx1SsF2waKn2TwCC0qIe2pJzuSGk=;
+	b=HutCrlPCqLxZRtWb2P+1P1aZ2O+umglvdkq8Xl/a7pJgk4Gkq+H+K8t6X0yDSmcKf1EW/r
+	eoBRAUWv11/cWADA==
+To: Roman Kisel <romank@linux.microsoft.com>, ardb@kernel.org, bp@alien8.de,
+ dave.hansen@linux.intel.com, decui@microsoft.com,
+ dimitri.sivanich@hpe.com, haiyangz@microsoft.com, hpa@zytor.com,
+ imran.f.khan@oracle.com, jacob.jun.pan@linux.intel.com, jgross@suse.com,
+ justin.ernst@hpe.com, kprateek.nayak@amd.com, kyle.meyer@hpe.com,
+ kys@microsoft.com, lenb@kernel.org, mingo@redhat.com, nikunj@amd.com,
+ papaluri@amd.com, perry.yuan@amd.com, peterz@infradead.org,
+ rafael@kernel.org, romank@linux.microsoft.com, russ.anderson@hpe.com,
+ steve.wahl@hpe.com, thomas.lendacky@amd.com, tim.c.chen@linux.intel.com,
+ tony.luck@intel.com, wei.liu@kernel.org, xin@zytor.com,
+ yuehaibing@huawei.com, linux-acpi@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org
+Cc: apais@microsoft.com, benhill@microsoft.com, bperkins@microsoft.com,
+ sunilmut@microsoft.com
+Subject: Re: [PATCH hyperv-next v2] arch/x86: Provide the CPU number in the
+ wakeup AP callback
+In-Reply-To: <20250430161413.276759-1-romank@linux.microsoft.com>
+References: <20250430161413.276759-1-romank@linux.microsoft.com>
+Date: Wed, 30 Apr 2025 21:33:03 +0200
+Message-ID: <87cyctphqo.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4664267.LvFx2qVVIh@rjwysocki.net> <20250430185019.19528-3-tamird@gmail.com>
-In-Reply-To: <20250430185019.19528-3-tamird@gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 30 Apr 2025 11:52:35 -0700
-X-Gm-Features: ATxdqUFjAf8Msr1Cb51650ntnGmG2m9PfkVIDrtXiA26TOGYQ-ZYk_TJzVAhDNk
-Message-ID: <CAJ-ks9kmwpf85tW_R30WmzU=fjB5p6+2vjZvzojsLuu3gFzv8w@mail.gmail.com>
-Subject: Re: [PATCH 0/0] Cover letter only
-To: rjw@rjwysocki.net
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	robert.moore@intel.com, saket.dumbre@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-Oops, apologies. Manually replying to an email I wasn't included on
-proved tricky.
+On Wed, Apr 30 2025 at 09:14, Roman Kisel wrote:
+> -static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
+> +static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip, int cpu)
+
+unsigned int cpu please. There are no negative CPU numbers yet :)
+
+>  {
+>  	struct sev_es_save_area *cur_vmsa, *vmsa;
+>  	struct ghcb_state state;
+> @@ -1187,7 +1187,7 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
+>  	unsigned long flags;
+>  	struct ghcb *ghcb;
+>  	u8 sipi_vector;
+> -	int cpu, ret;
+> +	int ret;
+>  	u64 cr4;
+>  
+>  	/*
+> @@ -1208,15 +1208,6 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
+>  
+>  	/* Override start_ip with known protected guest start IP */
+>  	start_ip = real_mode_header->sev_es_trampoline_start;
+> -
+> -	/* Find the logical CPU for the APIC ID */
+> -	for_each_present_cpu(cpu) {
+> -		if (arch_match_cpu_phys_id(cpu, apic_id))
+> -			break;
+> -	}
+> -	if (cpu >= nr_cpu_ids)
+> -		return -EINVAL;
+> -
+
+I just looked what arch_match_cpu_phys_id() actually does and I couldn't
+help myself to get a fit of laughter. x86 uses the weak default function
+in drivers/of/cpu.c:
+
+bool __weak arch_match_cpu_phys_id(int cpu, u64 phys_id)
+{
+	return (u32)phys_id == cpu;
+}
+
+So this loop is the most convoluted way to write:
+
+       cpu = apic_id;
+
+which is valid because the to be started CPU must be present, no?
+
+I'm not opposed against the CPU number argument per se, but the
+justification for it is dubious at best.
+
+Thanks,
+
+        tglx
 
