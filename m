@@ -1,143 +1,156 @@
-Return-Path: <linux-acpi+bounces-13378-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13379-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3936FAA42D4
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 08:06:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D4D5AA45B3
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 10:42:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E5FA9A5389
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 06:06:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD18C4E3C21
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 08:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC0E1E570B;
-	Wed, 30 Apr 2025 06:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4EB21421A;
+	Wed, 30 Apr 2025 08:42:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="RJT6OmDA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE561DE2A7;
-	Wed, 30 Apr 2025 06:06:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56719213E85;
+	Wed, 30 Apr 2025 08:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745993187; cv=none; b=AKShaDfWlYKok1LzjAb/+xcFbToaep0oA5pkRyYBDS9RIXvOw2dy7VU1m8LVFld9iSDhl8Mg49uxaeB53psJKLlbM4phec9kLnyn6BG3UY1wrgvfrlDDYNY/M5AAiHr2Xbhb/saGTV3h41GZUP/QSnj9wR3lH30AM7+eppjT2Jg=
+	t=1746002530; cv=none; b=inDGjJeOW0iuFqDkoRJjAtUPOzMU4XjN0bT44DEkvw+nM48O6s/LuZXFIdwXTvK6Mi49J8K7xr17CHD82cyzjIZIbBJRDI2eWql6X2cOmRTZkQ+o1ZxLEbfMjGsZxSpsrboE9BlqsekuBeZAe1CUFbLVOeQdpcaAGkJEbN2f6IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745993187; c=relaxed/simple;
-	bh=/9EuBGhLDAqDWQh+uj7p2pD/pn0f2ryUU4Pg0EoxAeo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n6UvdZlkUkJW/Dnx02ycc/B+wcGu3gmvXX7wZ2HGlCSLPj4ovrVqUnocIxrIy9z/y4gjLe3/enMRwCETMeUjfMNWd4toDTuLntwG7mWVC9spKrfB3ga0UZ/qA806v+7spZHt6OVjzbI/pvd8Ol0w+dNXH4UyZ3QtdrS73C1ioJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from qiao.. (unknown [210.73.43.1])
-	by APP-01 (Coremail) with SMTP id qwCowACnTP3YvRFoamrYDQ--.4752S2;
-	Wed, 30 Apr 2025 14:06:16 +0800 (CST)
-From: Zhe Qiao <qiaozhe@iscas.ac.cn>
-To: rafael@kernel.org,
-	lenb@kernel.org,
-	bhelgaas@google.com,
-	will@kernel.org,
-	sunilvl@ventanamicro.com,
-	Markus.Elfring@web.de,
-	qiaozhe@iscas.ac.cn
-Cc: linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] ACPI: PCI: Release excess memory usage.
-Date: Wed, 30 Apr 2025 14:06:03 +0800
-Message-ID: <20250430060603.381504-1-qiaozhe@iscas.ac.cn>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1746002530; c=relaxed/simple;
+	bh=opIdtlH9FxubqDCmTmFXZCwSpsZlw8Xv63oX88tUBpI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aryEQfYEQh31biNJ/NJEkuP44U6yyLLWcgphbERSlc4KDGZH7p2mSAoXaZzfNqV0K235mgtkO54Jh7vD4k+yzmtvyrEtiTdhmC5h6Tr5Mnbcdj1eYwNsAxek4qzNtnYdWKTxTEpSuaQzneMNLaiPnEm6he8b7wo1zHcwEumMFo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=RJT6OmDA; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [192.168.7.202] ([71.202.166.45])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 53U8f73s812541
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Wed, 30 Apr 2025 01:41:07 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 53U8f73s812541
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025042001; t=1746002472;
+	bh=2/QHRN+D8/djEoWuIZIlllhMwAZHSg2wUWQdlu6s4Ik=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RJT6OmDAoNn/cc5MacwB1vC5wQ1M64qGWRanjOVN66rVpkGlXaLeGE7PE7eD7mISD
+	 /dIdmza3K+wfDZyQexgmDwpxPQNN4+/Fbw41fhxlT3K0uT/PJjyGzdwaAn+yyr9k0A
+	 CWJPVsS03uahIX8JX2uLwg3Z3hye2BZ7LId8jWJUQAdh/it1N65JzEiy3LsHYL9aJT
+	 C68Y5ccPbfaA9gH+J9F27HnzlVWkht45bvdBotMjohzZpoa3XaE99KXAA3Fc4+U100
+	 OtHQ9EQb/i6ZeoBsZ7v43PfIbFra7Pd1cFeKQ0RpDx0DYLCFE4fbEUVwSoFN8jeJCO
+	 fS0vj6MT1+Cdw==
+Message-ID: <c16677bd-ee63-4032-8825-7d2789dd7555@zytor.com>
+Date: Wed, 30 Apr 2025 01:41:06 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/15] x86/msr: Add missing includes of <asm/msr.h>
+To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, kvm@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
+        virtualization@lists.linux.dev, linux-pm@vger.kernel.org,
+        linux-edac@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        Netdev <netdev@vger.kernel.org>, platform-driver-x86@vger.kernel.org,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        acme@kernel.org, jgross@suse.com, andrew.cooper3@citrix.com,
+        peterz@infradead.org, namhyung@kernel.org, mark.rutland@arm.com,
+        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+        irogers@google.com, adrian.hunter@intel.com, kan.liang@linux.intel.com,
+        wei.liu@kernel.org, ajay.kaher@broadcom.com,
+        bcm-kernel-feedback-list@broadcom.com, tony.luck@intel.com,
+        pbonzini@redhat.com, vkuznets@redhat.com, seanjc@google.com,
+        luto@kernel.org, boris.ostrovsky@oracle.com, kys@microsoft.com,
+        haiyangz@microsoft.com, decui@microsoft.com,
+        dapeng1.mi@linux.intel.com
+References: <20250427092027.1598740-1-xin@zytor.com>
+ <20250427092027.1598740-2-xin@zytor.com>
+ <a1917b37-e41e-d303-749b-4007cda01605@linux.intel.com>
+Content-Language: en-US
+From: Xin Li <xin@zytor.com>
+Autocrypt: addr=xin@zytor.com; keydata=
+ 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
+ l75w1xInsg==
+In-Reply-To: <a1917b37-e41e-d303-749b-4007cda01605@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowACnTP3YvRFoamrYDQ--.4752S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7CF15Gr1UWFWxAFWUZr4fZrb_yoW8CrW7pF
-	4SvrW5Jr48Xr1UXFs5X3WkX3WfWa97KFWjk3yxZws3ZFsI9r40yFZIyFyF9343Ars3Aa1a
-	vF4qyFyUCF1qyaUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBF14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxV
-	WxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
-	Yx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26F4UJVW0owAm72CE4IkC6x0Yz7
-	v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF
-	7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8AwCF04k20xvY0x
-	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
-	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcV
-	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
-	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7
-	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUK9aPUUUUU=
-X-CM-SenderInfo: ptld061kh6x2xfdvhtffof0/
 
-In the pci_acpi_scan_root() function, when creating a PCI bus fails, 
-we need to free up the previously allocated memory, which can avoid
-invalid memory usage and save resources.
+On 4/29/2025 2:45 AM, Ilpo Järvinen wrote:
+>>   arch/x86/events/msr.c                                         | 3 +++
+>>   arch/x86/events/perf_event.h                                  | 1 +
+>>   arch/x86/events/probe.c                                       | 2 ++
+> Under arch/x86/events/ a few files seem to be missing the include?
 
-Fixes: 789befdfa389 ("arm64: PCI: Migrate ACPI related functions to pci-acpi.c")
-Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
 
----
-V2 -> V3
-    1. Modify commit description.
-    2. Add release operation for ecam mapping resources.
----
+Most C files in arch/x86/events/ include arch/x86/events/perf_event.h,
+thus they don't need to include <asm/msr.h> directly once
+arch/x86/events/perf_event.h includes <asm/msr.h>, and this patch does
+that.
 
- drivers/pci/pci-acpi.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index af370628e583..e00790ecdc0f 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -1676,24 +1676,19 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 		return NULL;
- 
- 	root_ops = kzalloc(sizeof(*root_ops), GFP_KERNEL);
--	if (!root_ops) {
--		kfree(ri);
--		return NULL;
--	}
-+	if (!root_ops)
-+		goto free_ri;
- 
- 	ri->cfg = pci_acpi_setup_ecam_mapping(root);
--	if (!ri->cfg) {
--		kfree(ri);
--		kfree(root_ops);
--		return NULL;
--	}
-+	if (!ri->cfg)
-+		goto free_root_ops;
- 
- 	root_ops->release_info = pci_acpi_generic_release_info;
- 	root_ops->prepare_resources = pci_acpi_root_prepare_resources;
- 	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
- 	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
- 	if (!bus)
--		return NULL;
-+		goto free_cfg;
- 
- 	/* If we must preserve the resource configuration, claim now */
- 	host = pci_find_host_bridge(bus);
-@@ -1710,6 +1705,14 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 		pcie_bus_configure_settings(child);
- 
- 	return bus;
-+
-+free_cfg:
-+	pci_ecam_free(ri->cfg);
-+free_root_ops:
-+	kfree(root_ops);
-+free_ri:
-+	kfree(ri);
-+	return NULL;
- }
- 
- void pcibios_add_bus(struct pci_bus *bus)
--- 
-2.43.0
+The following files include arch/x86/events/intel/uncore.h which 
+includes arch/x86/events/perf_event.h, thus no change needed:
+     arch/x86/events/intel/uncore.c
+     arch/x86/events/intel/uncore_discovery.c
+     arch/x86/events/intel/uncore_nhmex.c
+     arch/x86/events/intel/uncore_snb.c
+     arch/x86/events/intel/uncore_snbep.c
+
+The following 2 files don't include arch/x86/events/perf_event.h so they
+include <asm/msr.h> directly with this patch:
+     arch/x86/events/msr.c
+     arch/x86/events/probe.c
+
+arch/x86/events/amd/uncore.c doesn't include
+arch/x86/events/perf_event.h but includes <asm/msr.h> already.
+
+
+So we are good in this directory, but it should be a separate patch with
+the above explanation then.
+
 
 
