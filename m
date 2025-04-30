@@ -1,166 +1,167 @@
-Return-Path: <linux-acpi+bounces-13381-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13382-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BBAAA46BD
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 11:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AEEDAA4838
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 12:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 408AC4E29CC
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 09:17:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F13454C6AD0
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 10:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B780B21C19D;
-	Wed, 30 Apr 2025 09:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6B924679E;
+	Wed, 30 Apr 2025 10:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FmVVrpX3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ChGWKdLZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D4C288CC;
-	Wed, 30 Apr 2025 09:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911A7246798;
+	Wed, 30 Apr 2025 10:24:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746004645; cv=none; b=DkdgxIT3hRuVFklGnFICk2a2Jo94nVjDSgVCUULIyQEmnnXKJNVz8RK8o81TxJycx28ebfrMOFwZDK92wgYS+fyikj24hdBDH+WUl77gGWtiIBXngvndHyqRdmJBq3m+jpqyc6OH58vug2afb82AcEZsZAXR7jRldduHob+q98k=
+	t=1746008687; cv=none; b=Z1HUCJ02CXhcDxHzJsyMeYb0HHNZZkR1nnacXz9vFck2Pz6VGO+MkPBp7SXl3TVMPVvUrm3Q0gXxdRIk5Znr7R5WwSzVMZgRHrmMy2i8CRbt+MJ/8jrymLNFWYSYu90r2EPtI8oVFxGHxFs9vHLxJsXwLTV/1oNumAZnl4cOnwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746004645; c=relaxed/simple;
-	bh=0MRDc7XkKAhdLo9NoWiZ7a37tKdrUj31jPMIXHPElEQ=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=RRBgKXohTast61fKl91rf3h/rwcItulzGAOl+ke5XhQwtP25bSfVXUz87MaiXjeom57bwORqkQlTji+OM/ywpXf8NxybgKyN73F8GhzrAjA5rD5xwNd/4BaGrjR/vQRTnuPUs2Quz1qniNn+W65J5pQbPlqUFBGrjCtDvTQK2kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FmVVrpX3; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746004644; x=1777540644;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=0MRDc7XkKAhdLo9NoWiZ7a37tKdrUj31jPMIXHPElEQ=;
-  b=FmVVrpX31idIr+m1wN1XNNIjWkNf4aLWdVD/AxCrITc/5edUx6E0zNP8
-   aDIYb8DZbnlk1HuNqZvJVBIEUfB1iNau/84wrUaIOFqxfwY4MhRnCC+Yg
-   0XgjPd3e8V9CMTZhrBbmPEij4eQYVnsQqhqa0KqZpC2KV/BuPRZPpkid2
-   NufZNOoersoL9rdQEkBBwE1TJlC/0oEv7X2bfxTgiMJNaAZ9qJFaBOITF
-   h2mZSuqvzT40KyLxAyAi4yj7Hz7mw3Bl2tr4C2uuHKvPE1XznOTY3NuZk
-   U360C4u8lFW8pGfAIjedX0IdhMo1gfqVtQpjfwbtb27FVl5h8M9IQsstS
-   A==;
-X-CSE-ConnectionGUID: 6FmHRodMRnS6OZ1GM+ACqg==
-X-CSE-MsgGUID: Y20vUwSeT2+ehYln9NDrSA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="73044385"
-X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; 
-   d="scan'208";a="73044385"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 02:17:22 -0700
-X-CSE-ConnectionGUID: /a7mAvi6S1y/UJBA/L4NuA==
-X-CSE-MsgGUID: NSdWhcCYRFm9Gy2+IE0YuA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,251,1739865600"; 
-   d="scan'208";a="139249217"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.97])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2025 02:17:10 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 30 Apr 2025 12:17:06 +0300 (EEST)
-To: Xin Li <xin@zytor.com>
-cc: LKML <linux-kernel@vger.kernel.org>, kvm@vger.kernel.org, 
-    linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-    virtualization@lists.linux.dev, linux-pm@vger.kernel.org, 
-    linux-edac@vger.kernel.org, xen-devel@lists.xenproject.org, 
-    linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-    Netdev <netdev@vger.kernel.org>, platform-driver-x86@vger.kernel.org, 
-    tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-    dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-    acme@kernel.org, jgross@suse.com, andrew.cooper3@citrix.com, 
-    peterz@infradead.org, namhyung@kernel.org, mark.rutland@arm.com, 
-    alexander.shishkin@linux.intel.com, jolsa@kernel.org, irogers@google.com, 
-    adrian.hunter@intel.com, kan.liang@linux.intel.com, wei.liu@kernel.org, 
-    ajay.kaher@broadcom.com, bcm-kernel-feedback-list@broadcom.com, 
-    tony.luck@intel.com, pbonzini@redhat.com, vkuznets@redhat.com, 
-    seanjc@google.com, luto@kernel.org, boris.ostrovsky@oracle.com, 
-    kys@microsoft.com, haiyangz@microsoft.com, decui@microsoft.com, 
-    dapeng1.mi@linux.intel.com
-Subject: Re: [PATCH v4 01/15] x86/msr: Add missing includes of <asm/msr.h>
-In-Reply-To: <c16677bd-ee63-4032-8825-7d2789dd7555@zytor.com>
-Message-ID: <d1bf0657-1cc5-b6ec-5601-f31efefacd9a@linux.intel.com>
-References: <20250427092027.1598740-1-xin@zytor.com> <20250427092027.1598740-2-xin@zytor.com> <a1917b37-e41e-d303-749b-4007cda01605@linux.intel.com> <c16677bd-ee63-4032-8825-7d2789dd7555@zytor.com>
+	s=arc-20240116; t=1746008687; c=relaxed/simple;
+	bh=eKfkflY+nlOOGx+pGhNBk8yKSaGeuwtY9rXz667lGQM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I3MmKTxq2rKZ8HMZfw4IWrzxFss8ZfVrUOYiszyzVB+FSUUpJiydF/DkxjBSY3To9dnzD883SvUrfofidE0VWRyIg2w88ourqVU5akAsBzo2hKVFF2lr5d1mk26QwL82iaLByaX6xJevM314ygeoe3ypfwFzw4N6DBShSgoWOa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ChGWKdLZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E059C4CEE9;
+	Wed, 30 Apr 2025 10:24:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746008687;
+	bh=eKfkflY+nlOOGx+pGhNBk8yKSaGeuwtY9rXz667lGQM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ChGWKdLZiwptIeQqo75HXMnKHrLSjUzG8gnKD0Z/AGwMy78QJLAlaCyl9xEsZdB7S
+	 Quk0LZWc38anQYBG5auFKXvoBAPGFb65qK6f5yYvCERVi6lYKf3ptVMPtdaI0vhhQ7
+	 AOnE6dSuvFUCw3Cr5rZtZ8e6tEvW/fCvruKRhaMedCAF28eyMxuwXRIiB+1eK25ywI
+	 NoIwiXsPpBUS23NoX7WUqzJpkAVPzO0+tKg4DLlTV64eLbMPW3Af/xWutS+xyX0vmI
+	 d6jlH6WTV04jIcMyMVmpfsiC2BzNOu0ymCgcccM2z7ooC06RdUIiXzy7tUCF7fu2ea
+	 3i6hLKToK/3Ug==
+Date: Wed, 30 Apr 2025 11:24:41 +0100
+From: Will Deacon <will@kernel.org>
+To: Huang Yiwei <quic_hyiwei@quicinc.com>
+Cc: rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
+	tony.luck@intel.com, bp@alien8.de, xueshuai@linux.alibaba.com,
+	quic_aiquny@quicinc.com, quic_satyap@quicinc.com,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kernel@quicinc.com,
+	kernel@oss.qualcomm.com
+Subject: Re: [PATCH] firmware: SDEI: Allow sdei initialization without
+ ACPI_APEI_GHES
+Message-ID: <20250430102440.GA27570@willie-the-truck>
+References: <20250428095623.3220369-1-quic_hyiwei@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-830254077-1746003796=:7433"
-Content-ID: <b1309532-f075-10c2-3416-1951dccf3d32@linux.intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250428095623.3220369-1-quic_hyiwei@quicinc.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Mon, Apr 28, 2025 at 05:56:23PM +0800, Huang Yiwei wrote:
+> SDEI usually initialize with the ACPI table, but on platforms where
+> ACPI is not used, the SDEI feature can still be used to handle
+> specific firmware calls or other customized purposes. Therefore, it
+> is not necessary for ARM_SDE_INTERFACE to depend on ACPI_APEI_GHES.
+> 
+> In commit dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES
+> in acpi_init()"), to make APEI ready earlier, sdei_init was moved
+> into acpi_ghes_init instead of being a standalone initcall, adding
+> ACPI_APEI_GHES dependency to ARM_SDE_INTERFACE. This restricts the
+> flexibility and usability of SDEI.
+> 
+> This patch corrects the dependency in Kconfig and allows the
+> initialization of SDEI without ACPI_APEI_GHES enabled.
+> 
+> Fixes: dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES in apci_init()")
+> Cc: Shuai Xue <xueshuai@linux.alibaba.com>
+> Signed-off-by: Huang Yiwei <quic_hyiwei@quicinc.com>
+> ---
+> Link: https://lore.kernel.org/all/20230906130900.12218-1-schspa@gmail.com/
+> 
+> Current patch has been verified in the following scenarios:
+>   - ACPI_APEI_GHES enabled and ARM_SDE_INTERFACE enabled
+>   - ACPI_APEI_GHES disabled and ARM_SDE_INTERFACE enabled
+>   - ACPI_APEI_GHES disabled and ARM_SDE_INTERFACE disabled
+>   - SDEI works well with DT node and compatiable firmware when
+>     ACPI_APEI_GHES disabled
+> 
+> The scenario where CONFIG_ACPI enabled but not used has not been
+> considered in this patch due to the absence of such platform.
+> 
+>  drivers/acpi/apei/Kconfig   | 1 +
+>  drivers/firmware/Kconfig    | 1 -
+>  drivers/firmware/arm_sdei.c | 9 +++++++--
+>  include/linux/arm_sdei.h    | 4 ++--
+>  4 files changed, 10 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/acpi/apei/Kconfig b/drivers/acpi/apei/Kconfig
+> index 3cfe7e7475f2..070c07d68dfb 100644
+> --- a/drivers/acpi/apei/Kconfig
+> +++ b/drivers/acpi/apei/Kconfig
+> @@ -23,6 +23,7 @@ config ACPI_APEI_GHES
+>  	select ACPI_HED
+>  	select IRQ_WORK
+>  	select GENERIC_ALLOCATOR
+> +	select ARM_SDE_INTERFACE if ARM64
+>  	help
+>  	  Generic Hardware Error Source provides a way to report
+>  	  platform hardware errors (such as that from chipset). It
+> diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+> index aadc395ee168..7df19d82aa68 100644
+> --- a/drivers/firmware/Kconfig
+> +++ b/drivers/firmware/Kconfig
+> @@ -31,7 +31,6 @@ config ARM_SCPI_PROTOCOL
+>  config ARM_SDE_INTERFACE
+>  	bool "ARM Software Delegated Exception Interface (SDEI)"
+>  	depends on ARM64
+> -	depends on ACPI_APEI_GHES
+>  	help
+>  	  The Software Delegated Exception Interface (SDEI) is an ARM
+>  	  standard for registering callbacks from the platform firmware
+> diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+> index 3e8051fe8296..ddb10389b340 100644
+> --- a/drivers/firmware/arm_sdei.c
+> +++ b/drivers/firmware/arm_sdei.c
+> @@ -1062,14 +1062,14 @@ static bool __init sdei_present_acpi(void)
+>  	return true;
+>  }
+>  
+> -void __init sdei_init(void)
+> +int __init sdei_init(void)
+>  {
+>  	struct platform_device *pdev;
+>  	int ret;
+>  
+>  	ret = platform_driver_register(&sdei_driver);
+>  	if (ret || !sdei_present_acpi())
+> -		return;
+> +		return ret;
+>  
+>  	pdev = platform_device_register_simple(sdei_driver.driver.name,
+>  					       0, NULL, 0);
+> @@ -1079,7 +1079,12 @@ void __init sdei_init(void)
+>  		pr_info("Failed to register ACPI:SDEI platform device %d\n",
+>  			ret);
+>  	}
+> +
+> +	return ret;
+>  }
+> +#ifndef CONFIG_ACPI_APEI_GHES
+> +subsys_initcall_sync(sdei_init);
+> +#endif
 
---8323328-830254077-1746003796=:7433
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <d13050cf-2b1d-6913-5e66-9452e1353593@linux.intel.com>
+Using an initcall purely for the non-ACPI case feels like a hack to me.
+Could we instead just call sdei_init() from the arch code (and remove
+the call from acpi_ghes_init()) so that the platform device is
+registered at the same time, regardless of the firmware?
 
-On Wed, 30 Apr 2025, Xin Li wrote:
-
-> On 4/29/2025 2:45 AM, Ilpo J=E4rvinen wrote:
-> > >   arch/x86/events/msr.c                                         | 3 +=
-++
-> > >   arch/x86/events/perf_event.h                                  | 1 +
-> > >   arch/x86/events/probe.c                                       | 2 +=
-+
-> > Under arch/x86/events/ a few files seem to be missing the include?
->=20
->=20
-> Most C files in arch/x86/events/ include arch/x86/events/perf_event.h,
-> thus they don't need to include <asm/msr.h> directly once
-> arch/x86/events/perf_event.h includes <asm/msr.h>, and this patch does
-> that.
->=20
->=20
-> The following files include arch/x86/events/intel/uncore.h which includes
-> arch/x86/events/perf_event.h, thus no change needed:
->     arch/x86/events/intel/uncore.c
->     arch/x86/events/intel/uncore_discovery.c
->     arch/x86/events/intel/uncore_nhmex.c
->     arch/x86/events/intel/uncore_snb.c
->     arch/x86/events/intel/uncore_snbep.c
->=20
-> The following 2 files don't include arch/x86/events/perf_event.h so they
-> include <asm/msr.h> directly with this patch:
->     arch/x86/events/msr.c
->     arch/x86/events/probe.c
->=20
-> arch/x86/events/amd/uncore.c doesn't include
-> arch/x86/events/perf_event.h but includes <asm/msr.h> already.
->=20
->=20
-> So we are good in this directory, but it should be a separate patch with
-> the above explanation then.
-
-Hi,
-
-While this is not my subsystem so don't have the final say here, you had=20
-to explain quite much to prove that (and reviewer would have to go through=
-=20
-the same places to check). Wouldn't it be much simpler for all if all=20
-those .c files would just include <asm/msr.h> directly? No need to explain=
-=20
-anything then.
-
-Also, similar to what you're doing for some tsc related things in this=20
-series, somebody could in the future decide that hey, these static inline=
-=20
-functions (that use .*msr.*) belong to some other file, allowing msr.h to=
-=20
-be removed from arch/x86/events/perf_event.h. Again, we'd need to add=20
-asm/msr.h into more .c files. This is the problem with relying on indirect=
-=20
-includes, they create hard to track dependencies for #includes done in .h=
-=20
-files. If we actively encourage to depend on indirect #include=20
-dependencies like that, it makes it very hard to  _remove_ any #include=20
-from a header file (as you have yourself discovered).
-
---=20
- i.
---8323328-830254077-1746003796=:7433--
+Will
 
