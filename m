@@ -1,136 +1,203 @@
-Return-Path: <linux-acpi+bounces-13394-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13395-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F104AA54B4
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 21:33:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4DA9AA54D5
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 21:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F02BD9E5528
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 19:32:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BB539A3C9E
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Apr 2025 19:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E601E570B;
-	Wed, 30 Apr 2025 19:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7D61EB5FC;
+	Wed, 30 Apr 2025 19:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nmrpDyUH";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HutCrlPC"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="Mj/tOxD9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9951B87E8;
-	Wed, 30 Apr 2025 19:33:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835531EE01A
+	for <linux-acpi@vger.kernel.org>; Wed, 30 Apr 2025 19:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746041588; cv=none; b=BnDujpeDKleFs5NkLYuXa7o0E70A8lrcifBwSMGTqqGxu+WAVSCMP07KkRgEiTuhXatEVA5xAhy6/O08UBVevn8ARRQlQ0jalhQur3b2AVIMnkiR7OXMY8qKQf4V+Hd6W3e9mJmgAHeEfcMVNf5tEc7L99oU8h1v3B9bZGIrLHU=
+	t=1746042122; cv=none; b=NhLJBC7lE15mBSzgAksHP99U6G3VKYRg5U+kxyhe0zK3aPEH3c2FhseghgkUQi8r3XBGtegAWmXBBIF8uZ8THJfhlLKoYw7BAPsKHbFc0gfY6nrAhqYamt46FpaiguqNStCszR9v20/0L12/KxEUaE43Dk4xnRZQcerTDyUcjvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746041588; c=relaxed/simple;
-	bh=NgCpYyhisR+eT14JahIMfINyl+OmdqYb/Aau9YB7T6c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=APKKksCnk6Z1HRMCGeGi2TiIJEvwXZ7sCD6HKzfrWZ4ADTh85PaE08IgfyX14cM1e7Kk1pWI9HxdUWAMFp/gBYcCsUoUZso6icUsrDkiNeH3pVAaq0mDRpm5QcoiGjm65jZwJzISI6LDxhfHC1gCOEO60XZNjKwBaTbviC+7RtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nmrpDyUH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HutCrlPC; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746041584;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/YyscSAqwZBgtqXLx1SsF2waKn2TwCC0qIe2pJzuSGk=;
-	b=nmrpDyUH7fggWHS/REurepWbQ/wOb99mLz8imaLQvfUrUHHzVw7Innd1Y+sWzkpr61UDDF
-	/DwYtzY9Q5Gdubyebu9/W3OaffBmNhjFcPX1vNC+tC7HWeR9CKPAzbmXPDGkbbE6zRkKxP
-	IsYwpuDYEgQ1tVrvOvNO/PCuDvnpKaiFh4wNuCX9tNiC50ixwHHBNPr4v4TzsY8RdZipxq
-	Tvm9ootQvEXE/G3985aKmxdAWpLN+GsjAZA3MZvFreMOVFQpHuDnN1FLBxRW5X5ksmRf0d
-	jGvl8jvnQ3uXWksTTnIAs00duU6TozHVBVKjpyw589ZsrPC7My7KJIfyPt2tMg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746041584;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/YyscSAqwZBgtqXLx1SsF2waKn2TwCC0qIe2pJzuSGk=;
-	b=HutCrlPCqLxZRtWb2P+1P1aZ2O+umglvdkq8Xl/a7pJgk4Gkq+H+K8t6X0yDSmcKf1EW/r
-	eoBRAUWv11/cWADA==
-To: Roman Kisel <romank@linux.microsoft.com>, ardb@kernel.org, bp@alien8.de,
- dave.hansen@linux.intel.com, decui@microsoft.com,
- dimitri.sivanich@hpe.com, haiyangz@microsoft.com, hpa@zytor.com,
- imran.f.khan@oracle.com, jacob.jun.pan@linux.intel.com, jgross@suse.com,
- justin.ernst@hpe.com, kprateek.nayak@amd.com, kyle.meyer@hpe.com,
- kys@microsoft.com, lenb@kernel.org, mingo@redhat.com, nikunj@amd.com,
- papaluri@amd.com, perry.yuan@amd.com, peterz@infradead.org,
- rafael@kernel.org, romank@linux.microsoft.com, russ.anderson@hpe.com,
- steve.wahl@hpe.com, thomas.lendacky@amd.com, tim.c.chen@linux.intel.com,
- tony.luck@intel.com, wei.liu@kernel.org, xin@zytor.com,
- yuehaibing@huawei.com, linux-acpi@vger.kernel.org,
- linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org
-Cc: apais@microsoft.com, benhill@microsoft.com, bperkins@microsoft.com,
- sunilmut@microsoft.com
-Subject: Re: [PATCH hyperv-next v2] arch/x86: Provide the CPU number in the
- wakeup AP callback
-In-Reply-To: <20250430161413.276759-1-romank@linux.microsoft.com>
-References: <20250430161413.276759-1-romank@linux.microsoft.com>
-Date: Wed, 30 Apr 2025 21:33:03 +0200
-Message-ID: <87cyctphqo.ffs@tglx>
+	s=arc-20240116; t=1746042122; c=relaxed/simple;
+	bh=aNlI5doREuFnpNBygwYJ3vVeRE4exj3jm3zEaNbahzw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fMYTKyPtSjpXXOywMvOVdnQ2L+Lv27qZHEZBE2swkB3suo3BaLxD1y93BnJ4J3hN4/3Rv6vwlMYgNmA9XmfnJ025PcjXINaN0kGBb+HgtKyS86pRl7np48x0VWPo0RFdYeZjicCfpmSw/UcCOrnbwmR0wBUl6qYGOFw1GcpmIQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=Mj/tOxD9; arc=none smtp.client-ip=35.89.44.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+Received: from eig-obgw-5010a.ext.cloudfilter.net ([10.0.29.199])
+	by cmsmtp with ESMTPS
+	id A3r1u79RUf1UXADJauqNEV; Wed, 30 Apr 2025 19:41:54 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id ADJZu0Jt0p1aBADJZuQpXU; Wed, 30 Apr 2025 19:41:53 +0000
+X-Authority-Analysis: v=2.4 cv=Y7T+sAeN c=1 sm=1 tr=0 ts=68127d01
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=efVMuJ2jJG67FGuSm7J3ww==:17
+ a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=7T7KSl7uo7wA:10 a=VwQbUJbxAAAA:8
+ a=pWlpG66K428ilhL_DWUA:9 a=QEXdDO2ut3YA:10 a=Xt_RvD8W3m28Mn_h3AK8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=bjBrQjQU2afaw/LgDKWhKIXfjuWHuTWx5Msxh3WnN5Y=; b=Mj/tOxD9PutqF7L7pmpkZUOujQ
+	zUq/sOjq3INBElVfO+dyqRIfdtf2RIGY61ahoAUVv8w1oNhos33PUewqsonq7E0ZPAGBqwKXYn2us
+	0IOsf9uqAhD2HT1cySyw7qUzw8qgvMAhB942pmYdS0qvXG8utkUxxS3zgFttrThCStSu+eRBGgMrx
+	ZYosA+tTCQYsfjprs7rs8CqstKr581CVKlzgp6XDUq16w7IRZSL81ezZ0U4TIYLR5efgCBLKNnLFR
+	EgcsyglBIC7px8NLYB4Mn8z9wID9TL6B0Osuyg/8Rxo3LaWLiz5+/j64OagP8OYi+udUQZXNNvW3J
+	dJLLsdoA==;
+Received: from [177.238.17.151] (port=23848 helo=[192.168.0.101])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.1)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1uADJY-00000002pqq-0b9b;
+	Wed, 30 Apr 2025 14:41:52 -0500
+Message-ID: <df338a70-fdfc-427e-9915-8b9e50de93ad@embeddedor.com>
+Date: Wed, 30 Apr 2025 13:41:39 -0600
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2][next] acpi: nfit: intel: Avoid multiple
+ -Wflex-array-member-not-at-end warnings
+To: Dan Williams <dan.j.williams@intel.com>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Ira Weiny <ira.weiny@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>
+Cc: nvdimm@lists.linux.dev, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+References: <Z-QpUcxFCRByYcTA@kspp>
+ <67e55ac4dfa2e_13cb29410@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <67e55ac4dfa2e_13cb29410@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 177.238.17.151
+X-Source-L: No
+X-Exim-ID: 1uADJY-00000002pqq-0b9b
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.0.101]) [177.238.17.151]:23848
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 3
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfEOTPjZvvpn5KNfhmO08bOQ5NneJd6cbEyNTie3c3oNwXhYwdinpfI2yZVEqHTA7fdXUI20q23FGquajSc3UiDOfXT+P4UiaAwRK5t1SBI5ThtL5MotN
+ tvJ+w/xU64pezY/3c5MW55ApAlc8Lr+tOoitfSJjQ2q/9xmsOSCk+3bTugTAiM2SDq/UbGYdspFb44QU+kdz+vO4dEk3/P0HkTijsjR77chrGn+0zbrsvaxy
 
-On Wed, Apr 30 2025 at 09:14, Roman Kisel wrote:
-> -static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
-> +static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip, int cpu)
 
-unsigned int cpu please. There are no negative CPU numbers yet :)
 
->  {
->  	struct sev_es_save_area *cur_vmsa, *vmsa;
->  	struct ghcb_state state;
-> @@ -1187,7 +1187,7 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
->  	unsigned long flags;
->  	struct ghcb *ghcb;
->  	u8 sipi_vector;
-> -	int cpu, ret;
-> +	int ret;
->  	u64 cr4;
->  
->  	/*
-> @@ -1208,15 +1208,6 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
->  
->  	/* Override start_ip with known protected guest start IP */
->  	start_ip = real_mode_header->sev_es_trampoline_start;
-> -
-> -	/* Find the logical CPU for the APIC ID */
-> -	for_each_present_cpu(cpu) {
-> -		if (arch_match_cpu_phys_id(cpu, apic_id))
-> -			break;
-> -	}
-> -	if (cpu >= nr_cpu_ids)
-> -		return -EINVAL;
-> -
+On 27/03/25 08:03, Dan Williams wrote:
+> Gustavo A. R. Silva wrote:
+>> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+>> getting ready to enable it, globally.
+>>
+>> Use the `DEFINE_RAW_FLEX()` helper for on-stack definitions of
+>> a flexible structure where the size of the flexible-array member
+>> is known at compile-time, and refactor the rest of the code,
+>> accordingly.
+>>
+>> So, with these changes, fix a dozen of the following warnings:
+>>
+>> drivers/acpi/nfit/intel.c:692:35: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+>>
+>> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+>> ---
+>> Changes in v2:
+>>   - Use DEFINE_RAW_FLEX() instead of __struct_group().
+>>
+>> v1:
+>>   - Link: https://lore.kernel.org/linux-hardening/Z618ILbAR8YAvTkd@kspp/
+>>
+>>   drivers/acpi/nfit/intel.c | 388 ++++++++++++++++++--------------------
+>>   1 file changed, 179 insertions(+), 209 deletions(-)
+>>
+>> diff --git a/drivers/acpi/nfit/intel.c b/drivers/acpi/nfit/intel.c
+>> index 3902759abcba..114d5b3bb39b 100644
+>> --- a/drivers/acpi/nfit/intel.c
+>> +++ b/drivers/acpi/nfit/intel.c
+>> @@ -55,21 +55,17 @@ static unsigned long intel_security_flags(struct nvdimm *nvdimm,
+>>   {
+>>   	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+>>   	unsigned long security_flags = 0;
+>> -	struct {
+>> -		struct nd_cmd_pkg pkg;
+>> -		struct nd_intel_get_security_state cmd;
+>> -	} nd_cmd = {
+>> -		.pkg = {
+>> -			.nd_command = NVDIMM_INTEL_GET_SECURITY_STATE,
+>> -			.nd_family = NVDIMM_FAMILY_INTEL,
+>> -			.nd_size_out =
+>> -				sizeof(struct nd_intel_get_security_state),
+>> -			.nd_fw_size =
+>> -				sizeof(struct nd_intel_get_security_state),
+>> -		},
+>> -	};
+>> +	DEFINE_RAW_FLEX(struct nd_cmd_pkg, nd_cmd, nd_payload,
+>> +			sizeof(struct nd_intel_get_security_state));
+>> +	struct nd_intel_get_security_state *cmd =
+>> +			(struct nd_intel_get_security_state *)nd_cmd->nd_payload;
+>>   	int rc;
+>>   
+>> +	nd_cmd->nd_command = NVDIMM_INTEL_GET_SECURITY_STATE;
+>> +	nd_cmd->nd_family = NVDIMM_FAMILY_INTEL;
+>> +	nd_cmd->nd_size_out = sizeof(struct nd_intel_get_security_state);
+>> +	nd_cmd->nd_fw_size = sizeof(struct nd_intel_get_security_state);
+> 
+> Can this keep the C99 init-style with something like (untested):
+> 
+> _DEFINE_FLEX(struct nd_cmd_pkg, nd_cmd, nd_payload,
+>               sizeof(struct nd_intel_get_security_state), {
+> 		.pkg = {
+> 		        .nd_command = NVDIMM_INTEL_GET_SECURITY_STATE,
+> 		        .nd_family = NVDIMM_FAMILY_INTEL,
+> 		        .nd_size_out =
+> 		                sizeof(struct nd_intel_get_security_state),
+> 		        .nd_fw_size =
+> 		                sizeof(struct nd_intel_get_security_state),
+> 		},
+> 	});
+> 	
+> 
+> ?
 
-I just looked what arch_match_cpu_phys_id() actually does and I couldn't
-help myself to get a fit of laughter. x86 uses the weak default function
-in drivers/of/cpu.c:
+The code below works - however, notice that in this case we should
+go through 'obj', which is an object defined in _DEFINE_FLEX().
 
-bool __weak arch_match_cpu_phys_id(int cpu, u64 phys_id)
-{
-	return (u32)phys_id == cpu;
-}
+         _DEFINE_FLEX(struct nd_cmd_pkg, nd_cmd, nd_payload,
+                         sizeof(struct nd_intel_get_security_state), = {
+                 .obj = {
+                         .nd_command = NVDIMM_INTEL_GET_SECURITY_STATE,
+                         .nd_family = NVDIMM_FAMILY_INTEL,
+                         .nd_size_out =
+                                 sizeof(struct nd_intel_get_security_state),
+                         .nd_fw_size =
+                                 sizeof(struct nd_intel_get_security_state),
+                 },
+         });
 
-So this loop is the most convoluted way to write:
+Thanks
+-Gustavo
 
-       cpu = apic_id;
-
-which is valid because the to be started CPU must be present, no?
-
-I'm not opposed against the CPU number argument per se, but the
-justification for it is dubious at best.
-
-Thanks,
-
-        tglx
 
