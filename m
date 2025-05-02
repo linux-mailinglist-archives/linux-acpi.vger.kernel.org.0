@@ -1,54 +1,56 @@
-Return-Path: <linux-acpi+bounces-13424-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13425-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014BCAA7923
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 May 2025 20:10:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3CCAA7C2B
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 May 2025 00:30:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F59D3AB7AC
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 May 2025 18:10:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8EE53AC2A2
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 May 2025 22:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB11A2676E9;
-	Fri,  2 May 2025 18:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58450219EA5;
+	Fri,  2 May 2025 22:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="Ik1PM2pU"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="cjD5Za7V"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A04342A87;
-	Fri,  2 May 2025 18:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69CD1E32D5;
+	Fri,  2 May 2025 22:29:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746209422; cv=none; b=dZVLpDk76MBLh0Y9538xO/s7EchN8drZWbme7de1lrtIOwoFostyl5TNUAU5HB9r72hGQs8CYT/LgkXxHlgcMGBlo+Q6b0CWY/3I6hEmwhOsCYNAENukaYkkMTOql43BCAOWEKzYZAV10BK1+mdwY2n6NjJuFN/9+zJEW2ZwJ7k=
+	t=1746224997; cv=none; b=pXRE4cO6hQ4mWIlwbdgaJnhZv3vjL2GbqeBkzzDnSocklJpHSi3Nvvgtfy+zt/H520sKhgpKiuVdtktWm8U34HjbQTaIz8c8K8lgIhvyh+SMoSn4pMFvb26iZuzDMitQ5ZY/ZSwpGWwg+BYrKb6cw+zZLzY6918lozjStZwVFtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746209422; c=relaxed/simple;
-	bh=1wXTTHb5bXBrdK2EgccYQYFHa4IE2A2pICCNASrvymc=;
+	s=arc-20240116; t=1746224997; c=relaxed/simple;
+	bh=12slEHSSydirYvv1zO5VNqnzmBNqIh+tj6oaFB5Imfs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=euZt8aldPEb5N55H7c294NmxxViMoxWJ6UOWTkaftKyTYLaHxL31j7yWohnBw8U9U4ZvtZuoDwY+aOsxa9uSLCRgqaIuJZr2RF/DcwSsWTsnmx5NjXR5+si++hnEEsgxm7Af6169i78ef80yDXFiNG6IGa80VgeW3TGbouIfNKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=Ik1PM2pU; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [192.168.7.202] ([71.202.166.45])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 542I9URm2109765
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Fri, 2 May 2025 11:09:30 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 542I9URm2109765
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1746209374;
-	bh=vq/A29GwC24q+yBRNQofOThRodhc2pHOhalxWP8yF44=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ik1PM2pUOLDwsjM0pqh49zNwLFsJWsVvCOj193iIxEYzWbmWmPkLOpNjbPdzrjX3v
-	 011IuXpNubhbptoPBokYY/dElyxPQHBCRBjU3Lulkb2yxO4epZ6XSk5+/VuLkmyTKm
-	 0Ud2Zan/4XorBw9nLxr1az3pZ8UdL1JipoDA4C6q89BQQ1lor7RIvGuJ3g6OnfiFiz
-	 CnEXvlTclGzLsYNkl8D2WwBsbJipZUTOsHbneDfOJuaejckEKDSBWeybOIBPjijOO0
-	 KGDNLUtdX+eqbIB7ygYhUbhkhUiAb06+5ytRj+5jyUF4CBn/8fUyg6Mi66qsYtwZ4H
-	 VoszEMjA20uGw==
-Message-ID: <2cbb468c-188e-4e6b-9b17-b60a66208c7a@zytor.com>
-Date: Fri, 2 May 2025 11:09:29 -0700
+	 In-Reply-To:Content-Type; b=ap7DOYC2hciTacqywOcUD/kCkV2f6owUOGqua1mY8PlQnmXYadVWqbXmS9zzZz6ADUCPjUuP05egKBxmydr4tS5jXQ230tPi6RwU7HrlzUE5nm6VZcxyW9L+SAonotcE8rnoBIOlwUWVqtaFjbuIvqLejULQFQPUVceSuOs7LeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=cjD5Za7V; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1746224984; x=1746829784; i=w_armin@gmx.de;
+	bh=XOY5mknf5eww30NwncIbeluV8XJxpGodV7W3OS8gW6o=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=cjD5Za7V8M+lejD0s3VxYEQhHItuFx1snseRX4JLJoxRwOV4XUtQ8qBYVuvIx0PP
+	 bOsO+dSkPbn2qTcxQh384NkKUMT1of1MljUr5W02LIqZPbUNGH2rE28yjKI5QMDn9
+	 9PpXFR5x9xu7d3QWUCDD4a3TDJBOQyw7Fti9vPkmIGJEcSbjAz05W4Ugzvz5PiE8F
+	 2NDB0Qiy3Lfb/25Vqp86pexBKgFu3WbeApPN+KJgIzCm6e6e5NjSf/VZi67nznt3f
+	 lvLqphBJXL2ESYY2ra5k2wGTmhRrhdkp+wPbAEkedsglQWZGkBj/v+85exoN/j+F+
+	 3pEAwOU/glrhN6z5zQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.24] ([87.177.78.219]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Md6Mj-1ukaYV0qqR-00bfTI; Sat, 03
+ May 2025 00:29:44 +0200
+Message-ID: <5cec046e-c495-4517-82c8-83ae3cdb63a1@gmx.de>
+Date: Sat, 3 May 2025 00:29:42 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -56,118 +58,192 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/15] x86/msr: Move rdtsc{,_ordered}() to <asm/tsc.h>
-To: Ingo Molnar <mingo@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        virtualization@lists.linux.dev, linux-pm@vger.kernel.org,
-        linux-edac@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
-        netdev@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        acme@kernel.org, jgross@suse.com, andrew.cooper3@citrix.com,
-        peterz@infradead.org, namhyung@kernel.org, mark.rutland@arm.com,
-        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-        irogers@google.com, adrian.hunter@intel.com, kan.liang@linux.intel.com,
-        wei.liu@kernel.org, ajay.kaher@broadcom.com,
-        bcm-kernel-feedback-list@broadcom.com, tony.luck@intel.com,
-        pbonzini@redhat.com, vkuznets@redhat.com, seanjc@google.com,
-        luto@kernel.org, boris.ostrovsky@oracle.com, kys@microsoft.com,
-        haiyangz@microsoft.com, decui@microsoft.com,
-        dapeng1.mi@linux.intel.com, ilpo.jarvinen@linux.intel.com
-References: <20250427092027.1598740-1-xin@zytor.com>
- <20250427092027.1598740-3-xin@zytor.com> <aBR8EoYkxaFHwZN2@gmail.com>
+Subject: Re: [PATCH 0/3] ACPI: thermal: Properly support the _SCP control
+ method
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: rui.zhang@intel.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250410165456.4173-1-W_Armin@gmx.de>
+ <91ea8aed-5f98-4e4e-b3ee-fdc86d54f787@gmx.de>
+ <CAJZ5v0jOR9=jA=8XASBpxJyXaB4TvXmxcZQWq1qUgq1J4h_tEg@mail.gmail.com>
+ <90cba8fa-e6a9-4dab-a4ea-fa96d570a870@gmx.de>
+ <c8127d88-194a-4a23-b22e-040e2c6b3e9b@gmx.de>
+ <CAJZ5v0icUnepOwb87k44nAt1ZwfHp_BqSBzS-TrQWJ_4E3Ls=g@mail.gmail.com>
 Content-Language: en-US
-From: Xin Li <xin@zytor.com>
-Autocrypt: addr=xin@zytor.com; keydata=
- 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
- l75w1xInsg==
-In-Reply-To: <aBR8EoYkxaFHwZN2@gmail.com>
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <CAJZ5v0icUnepOwb87k44nAt1ZwfHp_BqSBzS-TrQWJ_4E3Ls=g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:S0g7n5IwUOhVBiDy+0LwI6pj2YBzt7DthiJi91tpzvSwhAzyRlG
+ Qz+jHjyTWythb57tH2PqCVwToFGsMLDmRdBFs5z9qbVLFbSjtSMPwFiaOXjfr1xRAkR2VZj
+ ZV3GkSvhAcvp/UjqN/4svAq9QB2Aiu3+Y8SfNO/AcsrOZ/Xh9P9yLEH8QAvmHXY7hiu+Ef6
+ 07fxnOkQk4c6YiJeGwUiQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:NP8dYZINHec=;UQEVBJICDfb59P6qPzwxSFDOPtf
+ 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
 
-On 5/2/2025 1:02 AM, Ingo Molnar wrote:
-> 
-> * Xin Li (Intel) <xin@zytor.com> wrote:
-> 
->> index 94408a784c8e..13335a130edf 100644
->> --- a/arch/x86/include/asm/tsc.h
->> +++ b/arch/x86/include/asm/tsc.h
->> @@ -7,7 +7,81 @@
->>   
->>   #include <asm/cpufeature.h>
->>   #include <asm/processor.h>
->> -#include <asm/msr.h>
->> +
->> +/*
->> + * both i386 and x86_64 returns 64-bit value in edx:eax, but gcc's "A"
->> + * constraint has different meanings. For i386, "A" means exactly
->> + * edx:eax, while for x86_64 it doesn't mean rdx:rax or edx:eax. Instead,
->> + * it means rax *or* rdx.
->> + */
->> +#ifdef CONFIG_X86_64
->> +/* Using 64-bit values saves one instruction clearing the high half of low */
->> +#define DECLARE_ARGS(val, low, high)	unsigned long low, high
->> +#define EAX_EDX_VAL(val, low, high)	((low) | (high) << 32)
->> +#define EAX_EDX_RET(val, low, high)	"=a" (low), "=d" (high)
->> +#else
->> +#define DECLARE_ARGS(val, low, high)	u64 val
->> +#define EAX_EDX_VAL(val, low, high)	(val)
->> +#define EAX_EDX_RET(val, low, high)	"=A" (val)
->> +#endif
-> 
-> Meh, this patch creates a duplicate copy of DECLARE_ARGS() et al in
-> <asm/tsc.h> now:
-> 
->   arch/x86/include/asm/msr.h:#define DECLARE_ARGS(val, low, high) unsigned long low, high
->   arch/x86/include/asm/msr.h:#define DECLARE_ARGS(val, low, high) u64 val
->   arch/x86/include/asm/msr.h:     DECLARE_ARGS(val, low, high);
->   arch/x86/include/asm/msr.h:     DECLARE_ARGS(val, low, high);
->   arch/x86/include/asm/msr.h:     DECLARE_ARGS(val, low, high);
->   arch/x86/include/asm/tsc.h:#define DECLARE_ARGS(val, low, high) unsigned long low, high
->   arch/x86/include/asm/tsc.h:#define DECLARE_ARGS(val, low, high) u64 val
->   arch/x86/include/asm/tsc.h:     DECLARE_ARGS(val, low, high);
->   arch/x86/include/asm/tsc.h:     DECLARE_ARGS(val, low, high);
->   arch/x86/include/asm/tsc.h:#undef DECLARE_ARGS
-> 
-> Which was both an undeclared change, bloats the code, causes various
-> problems, and is totally unnecessary to boot.
-> 
-> Please don't do that ...
+Am 28.04.25 um 14:34 schrieb Rafael J. Wysocki:
 
-Learned!
+> On Mon, Apr 28, 2025 at 2:31=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrot=
+e:
+>> Am 27.04.25 um 00:52 schrieb Armin Wolf:
+>>
+>>> Am 26.04.25 um 15:12 schrieb Rafael J. Wysocki:
+>>>
+>>>> On Sat, Apr 26, 2025 at 1:20=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> w=
+rote:
+>>>>> Am 10.04.25 um 18:54 schrieb Armin Wolf:
+>>>>>
+>>>>>> The ACPI specification defines an interface for the operating syste=
+m
+>>>>>> to change the preferred cooling mode of a given ACPI thermal zone.
+>>>>>> This interface takes the form of a special ACPI control method call=
+ed
+>>>>>> _SCP (see section 11.4.13 for details) and is already supported by =
+the
+>>>>>> ACPI thermal driver.
+>>>>>>
+>>>>>> However this support as many issues:
+>>>>>>
+>>>>>>     - the kernel advertises support for the "3.0 _SCP Extensions"
+>>>>>> yet the
+>>>>>>       ACPI thermal driver does not support those extensions. This m=
+ay
+>>>>>>       confuse the ACPI firmware.
+>>>>>>
+>>>>>>     - the execution of the _SCP control method happens after the dr=
+iver
+>>>>>>       retrieved the trip point values. This conflicts with the ACPI
+>>>>>>       specification:
+>>>>>>
+>>>>>>         "OSPM will automatically evaluate _ACx and _PSV objects aft=
+er
+>>>>>>          executing _SCP."
+>>>>>>
+>>>>>>     - the cooling mode is hardcoded to active cooling and cannot be
+>>>>>>       changed by the user.
+>>>>>>
+>>>>>> Those issues are fixed in this patch series. In the end the user
+>>>>>> will be able to tell the ACPI firmware wether he prefers active or
+>>>>>> passive cooling. This setting will also be interesting for
+>>>>>> applications like TLP (https://linrunner.de/tlp/index.html).
+>>>>>>
+>>>>>> The whole series was tested on various devices supporting the _SCP
+>>>>>> control method and on a device without the _SCP control method and
+>>>>>> appears to work flawlessly.
+>>>>> Any updates on this? I can proof that the new interface for setting
+>>>>> the cooling mode
+>>>>> works. Additionally the first two patches fix two issues inside the
+>>>>> underlying code
+>>>>> itself, so having them inside the mainline tree would be beneficial
+>>>>> to users.
+>>>> Sure.
+>>>>
+>>>> I'm going to get to them next week, probably on Monday.
+>>> Ok, thanks.
+>>>
+>>> Armin Wolf
+>>>
+>> I am a bit ashamed of myself but i think we need to put this patch seri=
+es on hold after all :(.
+>>
+>> The reason of this is that i am confused by the ACPI specification rega=
+rding _SCP:
+>>
+>>          11.1.2.1. OSPM Change of Cooling Policy
+>>
+>>          When OSPM changes the platform=E2=80=99s cooling policy from o=
+ne cooling mode to the other, the following occurs:
+>>
+>>          1. OSPM notifies the platform of the new cooling mode by runni=
+ng the Set Cooling Policy (_SCP) control method in all thermal zones and i=
+nvoking the OS-specific Set Cooling Policy interface to all participating =
+devices in each thermal zone.
+>>
+>>          2. Thresholds are updated in the hardware and OSPM is notified=
+ of the change.
+>>
+>>          3. OSPM re-evaluates the active and passive cooling temperatur=
+e trip points for the zone and all devices in the zone to obtain the new t=
+emperature thresholds.
+>>
+>> This section of the ACPI specification tells me that we need to evaluat=
+e the _SCP control method of all ACPI thermal zones
+>> at the same time, yet section 11.4.13. tells me that each _SCP control =
+methods belongs to the individual thermal zone.
+>>
+>> The reason why i am concerned by this is because Windows adheres to sec=
+tion 11.1.2.1. and only exposes this setting
+>> as a global tunable. This might cause device manufacturers to depend on=
+ this behavior and lead to strange things
+>> should two thermal zones have different _SCP settings.
+>>
+>> I will ask the UEFI mailing list which behavior is expected by the ACPI=
+ specification. Until then i suggest that
+>> we put this patch series on hold.
+> Sure, no problem.
+>
+> Please resend it when you think it is good to go.
+>
+> Thanks!
 
-Especially that every change needs to explicitly called out.
+Alright, the UEFI mailing list gave no response, so i am kind of stuck.
+
+It seems that many firmware implementation only have a single cooling poli=
+cy register which is set by all _SCP control methods inside the whole syst=
+em.
+The reason for this seems to be that Windows threats this setting as globa=
+l, but the ACPI specification seemingly does not directly mandate this.
+
+Do you thing we should take the risk and allow users to control each _SCP =
+instance manually?
+
+Apart from that the first two patches should be safe, so you can still pic=
+k them. Only the last patch needs some more work.
+
+Thanks,
+Armin Wolf
+
 
