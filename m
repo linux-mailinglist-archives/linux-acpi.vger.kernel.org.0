@@ -1,249 +1,217 @@
-Return-Path: <linux-acpi+bounces-13425-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13426-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E3CCAA7C2B
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 May 2025 00:30:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5CCCAA8217
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 May 2025 21:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8EE53AC2A2
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 May 2025 22:29:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB7037ACAE7
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 May 2025 19:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58450219EA5;
-	Fri,  2 May 2025 22:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0106D27E7E6;
+	Sat,  3 May 2025 19:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="cjD5Za7V"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J6hsKgKD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69CD1E32D5;
-	Fri,  2 May 2025 22:29:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF342DC789;
+	Sat,  3 May 2025 19:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746224997; cv=none; b=pXRE4cO6hQ4mWIlwbdgaJnhZv3vjL2GbqeBkzzDnSocklJpHSi3Nvvgtfy+zt/H520sKhgpKiuVdtktWm8U34HjbQTaIz8c8K8lgIhvyh+SMoSn4pMFvb26iZuzDMitQ5ZY/ZSwpGWwg+BYrKb6cw+zZLzY6918lozjStZwVFtE=
+	t=1746299413; cv=none; b=dGpKZOyYTEZ6LWQD7btMOxG8VjBbY5VMYAjF91bb+EfDeUv0CH9P1b8GPzrQNlerW/71b3H9HaWRA/JIKEdhxa8rCfvH/XUcrlsbcCzoMQVJaVKww+7TiJkj/GEh5PLdIr7l5usUldOY+aEBpMLHDA/oqgL+uyFr4rptvbrYeN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746224997; c=relaxed/simple;
-	bh=12slEHSSydirYvv1zO5VNqnzmBNqIh+tj6oaFB5Imfs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ap7DOYC2hciTacqywOcUD/kCkV2f6owUOGqua1mY8PlQnmXYadVWqbXmS9zzZz6ADUCPjUuP05egKBxmydr4tS5jXQ230tPi6RwU7HrlzUE5nm6VZcxyW9L+SAonotcE8rnoBIOlwUWVqtaFjbuIvqLejULQFQPUVceSuOs7LeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=cjD5Za7V; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1746224984; x=1746829784; i=w_armin@gmx.de;
-	bh=XOY5mknf5eww30NwncIbeluV8XJxpGodV7W3OS8gW6o=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=cjD5Za7V8M+lejD0s3VxYEQhHItuFx1snseRX4JLJoxRwOV4XUtQ8qBYVuvIx0PP
-	 bOsO+dSkPbn2qTcxQh384NkKUMT1of1MljUr5W02LIqZPbUNGH2rE28yjKI5QMDn9
-	 9PpXFR5x9xu7d3QWUCDD4a3TDJBOQyw7Fti9vPkmIGJEcSbjAz05W4Ugzvz5PiE8F
-	 2NDB0Qiy3Lfb/25Vqp86pexBKgFu3WbeApPN+KJgIzCm6e6e5NjSf/VZi67nznt3f
-	 lvLqphBJXL2ESYY2ra5k2wGTmhRrhdkp+wPbAEkedsglQWZGkBj/v+85exoN/j+F+
-	 3pEAwOU/glrhN6z5zQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.0.24] ([87.177.78.219]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Md6Mj-1ukaYV0qqR-00bfTI; Sat, 03
- May 2025 00:29:44 +0200
-Message-ID: <5cec046e-c495-4517-82c8-83ae3cdb63a1@gmx.de>
-Date: Sat, 3 May 2025 00:29:42 +0200
+	s=arc-20240116; t=1746299413; c=relaxed/simple;
+	bh=FbP3ivNjme43qE4kLCKkGteBw1VX+DS/lTWMuvg+vog=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=DFS9YvRe48KEFtQTbc3SaFPh/3Q6kpjGBV9ctywW2etp+dFSfE6LRc19vr9S7x8Td8ZO2fRfEo3nOf1IfTI8WTLYWntUhDyR59WpiD1xMqOMnsRkeDWFazwg03z4xrP4uCjQgEA7fNGw10IqvQkEpsDBWli1c+F3vsJdtyOW13c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J6hsKgKD; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746299412; x=1777835412;
+  h=from:to:cc:subject:date:message-id;
+  bh=FbP3ivNjme43qE4kLCKkGteBw1VX+DS/lTWMuvg+vog=;
+  b=J6hsKgKDJzO5bYOo1ukQbJgvrgi7mDOGhhcBwyj5EYyO0KsBcb0b9O2B
+   7gUWjZTzghlQnlmGJ1g7w06DG+UQcADYmNk1MTSrBMnY6WXC2u70FpCoz
+   0WoC8s5CG1xbxW730Bd9XQ5x55p/kpvokfrVTMS31PT5YvOj1pnteskBI
+   iue7Ivskd+273miTOoXAwqGfU0RyhirCJZbNUP3CXqaipAS1CaDOrQqlh
+   sFrhupY/u4b6pO/jC/lIwz6pqN5tH0pyeUCyLB1orjM+nI1QnN/6nfv6X
+   kCA7bEgLlzMVrTiwVcb7qVuYdVNVcU8cvFB0JarkNv8zOLoQ4+fgtS3ed
+   Q==;
+X-CSE-ConnectionGUID: Oks2LhVoR8u4nUp7xmjRlA==
+X-CSE-MsgGUID: HMdXZ6QXTWySLvr86yRzPA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11422"; a="48095599"
+X-IronPort-AV: E=Sophos;i="6.15,258,1739865600"; 
+   d="scan'208";a="48095599"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 May 2025 12:10:10 -0700
+X-CSE-ConnectionGUID: Vu9k5b06Txmdk4CFuY7dAw==
+X-CSE-MsgGUID: HUuAKM5ASi2XChz3I0h8UQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,258,1739865600"; 
+   d="scan'208";a="140046078"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+  by fmviesa004.fm.intel.com with ESMTP; 03 May 2025 12:10:09 -0700
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: x86@kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>
+Cc: devicetree@vger.kernel.org,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Chris Oo <cho@microsoft.com>,
+	linux-hyperv@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	linux-acpi@vger.kernel.org ,
+	linux-kernel@vger.kernel.org,
+	"Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+	Ricardo Neri <ricardo.neri@intel.com>
+Subject: [PATCH v3 00/13] x86/hyperv/hv_vtl: Use a wakeup mailbox to boot secondary CPUs
+Date: Sat,  3 May 2025 12:15:02 -0700
+Message-Id: <20250503191515.24041-1-ricardo.neri-calderon@linux.intel.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] ACPI: thermal: Properly support the _SCP control
- method
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: rui.zhang@intel.com, lenb@kernel.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250410165456.4173-1-W_Armin@gmx.de>
- <91ea8aed-5f98-4e4e-b3ee-fdc86d54f787@gmx.de>
- <CAJZ5v0jOR9=jA=8XASBpxJyXaB4TvXmxcZQWq1qUgq1J4h_tEg@mail.gmail.com>
- <90cba8fa-e6a9-4dab-a4ea-fa96d570a870@gmx.de>
- <c8127d88-194a-4a23-b22e-040e2c6b3e9b@gmx.de>
- <CAJZ5v0icUnepOwb87k44nAt1ZwfHp_BqSBzS-TrQWJ_4E3Ls=g@mail.gmail.com>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <CAJZ5v0icUnepOwb87k44nAt1ZwfHp_BqSBzS-TrQWJ_4E3Ls=g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:S0g7n5IwUOhVBiDy+0LwI6pj2YBzt7DthiJi91tpzvSwhAzyRlG
- Qz+jHjyTWythb57tH2PqCVwToFGsMLDmRdBFs5z9qbVLFbSjtSMPwFiaOXjfr1xRAkR2VZj
- ZV3GkSvhAcvp/UjqN/4svAq9QB2Aiu3+Y8SfNO/AcsrOZ/Xh9P9yLEH8QAvmHXY7hiu+Ef6
- 07fxnOkQk4c6YiJeGwUiQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:NP8dYZINHec=;UQEVBJICDfb59P6qPzwxSFDOPtf
- v9iA8GS2iUfsookNJ8JuK3TDLJ/JKT6ytn8SjJsl57S+eBhQFV+And/au6ChQImplWBqGBE/0
- XyH3p2vtqdju64woM4etZLJtGT+3IBT1zeSuoKId3Ds3sIUzHLMViH+829n4UKVM3zsFVUSEJ
- HZct18qRyHVRYEFriTUjEONuSkr9Zq7DfBmq3RfEMgJIg/Pvwuegb5ZRxU4qJdUVSOsAOKZGA
- 0bIDErz26Z2df31be1nNxvLC4gxVXM1VHea+a32qHLPSsE66bBpe5AF6lXVYu6IOxvIFPBOPP
- chjQWpmZSqGbafCkDs4m6Ny1kuEiR0frxgi1MGKNOnqNeTi8VKidoBiPspTorzisrpj0w1kgV
- 4Ds+DnyaTyCrK6gbFLrs83eWQ46rIxL/4xOwSsaEvE2SEET+deftZ0b9WncfbUZKGvJ/tp8XB
- P575jWJVNV44ExAYGt2xwouorBAJCXXvtak6yvpwdqpU8nLXgsVPL1Skf/HnCvFzmGcFasCjr
- 6fGWp76lExjriOpocw95XgkDq8h/sDWzSlePCi0kXoPBtPssTTzt36Q2dlUHhdXwn3uYztQxH
- +hE4MPryH0EyDn8WBhoAQA0I+tLwNpyiBMi2JqUpPmk/q77/gxBUTwYPfHYbkLEOJZ7fAbl29
- hN5heoCdSoKAW5SatMr9EVQPVAzUdmbLAAhW8ogdzv1bx45iG57/vhCZIPC6d57HNtMcgRbC7
- yQYNMBwpWzROLHysFCyJz8LIiXRgP6iV+lL5jMuOM5BVc3tDCXRm1vRwA3zgCBwRvg13zS4Fm
- DcpoKIZ5/SM+45xkbPS9nBOiweKZT6NZV5Cfnoub9I8iHblQSQ5ypwPutw12I8pyCqfAj3v3m
- 37/s9+vgYsPStQIiM9/59kyNSfuPep746ebA9RjnBkYkpzJJPZbQNHrIpSciESriUS9sI+G7b
- ShUFhvMh7gWD3K7sG9tDV8DmKgUC+G5Zruo5u54CUSAeVxJTm/dkcwo7ucgc7AcSs5JsS5lnq
- 9zE6hlgBP9jL46/Jl49KDJrEDEBhqeVLZ3XcC7V7c8wYPySZ5IqZhmPD4ng4k82y0MhibDqg1
- SGM5TztFHcWj7fDhBCq8GP8AES9ExVyJKv3auzIrpI8dHRkew9gIVofoYi3bMlax5rFoaEmnv
- zu3eMvYjQWp9peTvEm5+OLxQJnu3qpog79bAuA0zUROrKmxJ+PRbpr7sX196zETO0xwuGTBBe
- 7NKeS44V9Be31Do6gY6UuKn/xgmy3Rzwz0R1MiJu5JeEwlcVmH2fI4S2cbg+4xJbj+lcSFYxV
- w1qve0ng7Z7S3y3r5UeaLnfNzNldGHR7TYux4cTrpRB38mwQR7eYGNadX9wRQKiVWF32X7a3L
- d0jiGRD+aI8VHTm9tAvHdPxAIXkyteY9OgWWsUnatelPoYbsxDmsRZpU+cjTE2fbZWfQMU6z7
- CbNJLHquZZgIWqWf+bH8UkztsdpPdW8AHYyKOnO76I9YrcSaZAf5K8Vx6sgJv2IRE7D/IfnPg
- LhqLCkwDcLbGxBuPg1QHwFYZT+2XDaHawQJEC2QFknm1a7yQ7iwlV08aoNSZ/g7n6mdxtMl1W
- SbkhiW3q90DGxLPwoj5eVTfsKQRkzst2VOU4LGmMuBKNOCLL/kjaBwS6Zt2dmN26qO410nuXf
- b+pn8qrJDpwxUnHL1HtNJz4L4WEQ17PanZpVstYahrcD/8QxjyRGhcsA+g8V/5bvo7f6hZIGz
- PmGCxwedEVnhK9WbZQ6l4obGovvC40lR4BbOiST1MuSKFjggeLV2cehNU/z6Z5aQlf+mdc6r5
- u0d0A8LFGCxWNjW+ks3hnic27lzM9bGDymfvYns66BavOqQYSaygK2lp2mYdQqtH6W2SU1RMC
- XbUwOQv8/WevGDUcjt9K9qIqTvFEsocGNEZthm26WNmnZGA0paYDQ7LX2GI/rcGKJQumgD4Ys
- DaJRh0zDJBCbpp2aFEnRK9f8s2rioPd1LWV0lSGve4/ICG+yvWoy5ZRCEN2JzIJ5m+7kUaVmw
- i4MfcPejCLf+gHW7uivACiICb7tV9vlrSvUSOMOvqGBFQfrL51L+pVzj1WkU0tSYJlcCVQwb1
- Smn61BsHyZTrd2sXOS1R7Qn1192F5E7DAXG14Kbf4ST5TIVjGpdRSzUKwaZlvJhtu7X8H7J0j
- 6Qx+rmLj1LoIUkfKyy2E+vXcWyQ9yD/T10LQRjULtglTX7rhNyqABFwxznFDAfSvuaZCzkOR1
- +AT4YWmm+d6ruEosLImUXkcah3vQoI77DSr6GqBLyGWlHQ623vXDBz1iKWcwjaK4QV+Gg3RWB
- QyvYEBDHS10HPVYQRGOeczNqUfmxeIPz2CsAyv+6CJNErGrVN3gfpV8pPzXTf4blK2My3Q/pj
- ja3jS+vzCJ1AP3JHucopTKFf792udjDcfQ/EXFtcDFqFyfUy6eI8ndlXZWJcuNTaSHp6Rf5q0
- s3xNo2uYJAhMUClKW7MV9w8QgAGzYhU85Q0/fubkN2krO213TYlKB/irlzyzIK+pzoXckYktC
- 8jRr/La2kud9lT6dFh9kX0qeptiIkC/qfy5PLDXMod8rpqq9po3q/EVb5NkYTrPxHgxXPtLKt
- Enz+AYCLGMjOZoFIujw4ZFn4ak0r4dlZxyL8iZW/sdA7doyxdS1UQnswktPMd2bd+mUFj+fqo
- SOwrUL2+butU5UHqXS10mcMKhkhT1IowRvoUXJN65Mn5DqDLkYXKlzxlAqewYR19C7gTo7S3s
- HWTGMsTJu0MYBnjho99A+/9hpUN8UQrl2brsLSiJmdeHyaMKRF7s17S6WwMl4FpYxyJib2Bwp
- CPGuSoP/PR/WHQ6IBJYsgT/EzGFzJd/YOgIK9kclKOHnymn/Rq/myuYLWqAUGZiB7WEaKIY24
- jHU13gStCcXEnxaM3X4tHNB/p8cSwrnO+przusWxBiIIFFeuWM6ckDFSbi3c85OA4seREJfe2
- fDHcYovKPok6gZHhAuqAFxvux++lehiLn8fNOTcRa1zi7ntkhUfkT8Llufx9cihF5o1qnptSt
- jsWcG9Cn/WEs0zzA9UYg/++zKUoawJrOV1w+fzA/35M
 
-Am 28.04.25 um 14:34 schrieb Rafael J. Wysocki:
+Hi,
 
-> On Mon, Apr 28, 2025 at 2:31=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrot=
-e:
->> Am 27.04.25 um 00:52 schrieb Armin Wolf:
->>
->>> Am 26.04.25 um 15:12 schrieb Rafael J. Wysocki:
->>>
->>>> On Sat, Apr 26, 2025 at 1:20=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> w=
-rote:
->>>>> Am 10.04.25 um 18:54 schrieb Armin Wolf:
->>>>>
->>>>>> The ACPI specification defines an interface for the operating syste=
-m
->>>>>> to change the preferred cooling mode of a given ACPI thermal zone.
->>>>>> This interface takes the form of a special ACPI control method call=
-ed
->>>>>> _SCP (see section 11.4.13 for details) and is already supported by =
-the
->>>>>> ACPI thermal driver.
->>>>>>
->>>>>> However this support as many issues:
->>>>>>
->>>>>>     - the kernel advertises support for the "3.0 _SCP Extensions"
->>>>>> yet the
->>>>>>       ACPI thermal driver does not support those extensions. This m=
-ay
->>>>>>       confuse the ACPI firmware.
->>>>>>
->>>>>>     - the execution of the _SCP control method happens after the dr=
-iver
->>>>>>       retrieved the trip point values. This conflicts with the ACPI
->>>>>>       specification:
->>>>>>
->>>>>>         "OSPM will automatically evaluate _ACx and _PSV objects aft=
-er
->>>>>>          executing _SCP."
->>>>>>
->>>>>>     - the cooling mode is hardcoded to active cooling and cannot be
->>>>>>       changed by the user.
->>>>>>
->>>>>> Those issues are fixed in this patch series. In the end the user
->>>>>> will be able to tell the ACPI firmware wether he prefers active or
->>>>>> passive cooling. This setting will also be interesting for
->>>>>> applications like TLP (https://linrunner.de/tlp/index.html).
->>>>>>
->>>>>> The whole series was tested on various devices supporting the _SCP
->>>>>> control method and on a device without the _SCP control method and
->>>>>> appears to work flawlessly.
->>>>> Any updates on this? I can proof that the new interface for setting
->>>>> the cooling mode
->>>>> works. Additionally the first two patches fix two issues inside the
->>>>> underlying code
->>>>> itself, so having them inside the mainline tree would be beneficial
->>>>> to users.
->>>> Sure.
->>>>
->>>> I'm going to get to them next week, probably on Monday.
->>> Ok, thanks.
->>>
->>> Armin Wolf
->>>
->> I am a bit ashamed of myself but i think we need to put this patch seri=
-es on hold after all :(.
->>
->> The reason of this is that i am confused by the ACPI specification rega=
-rding _SCP:
->>
->>          11.1.2.1. OSPM Change of Cooling Policy
->>
->>          When OSPM changes the platform=E2=80=99s cooling policy from o=
-ne cooling mode to the other, the following occurs:
->>
->>          1. OSPM notifies the platform of the new cooling mode by runni=
-ng the Set Cooling Policy (_SCP) control method in all thermal zones and i=
-nvoking the OS-specific Set Cooling Policy interface to all participating =
-devices in each thermal zone.
->>
->>          2. Thresholds are updated in the hardware and OSPM is notified=
- of the change.
->>
->>          3. OSPM re-evaluates the active and passive cooling temperatur=
-e trip points for the zone and all devices in the zone to obtain the new t=
-emperature thresholds.
->>
->> This section of the ACPI specification tells me that we need to evaluat=
-e the _SCP control method of all ACPI thermal zones
->> at the same time, yet section 11.4.13. tells me that each _SCP control =
-methods belongs to the individual thermal zone.
->>
->> The reason why i am concerned by this is because Windows adheres to sec=
-tion 11.1.2.1. and only exposes this setting
->> as a global tunable. This might cause device manufacturers to depend on=
- this behavior and lead to strange things
->> should two thermal zones have different _SCP settings.
->>
->> I will ask the UEFI mailing list which behavior is expected by the ACPI=
- specification. Until then i suggest that
->> we put this patch series on hold.
-> Sure, no problem.
->
-> Please resend it when you think it is good to go.
->
-> Thanks!
+I have taken over this work from Yunhong Jiang [1]. I have implemented all
+the feedback received in his last submission. I think that the acpi,
+smpboot, and hyperv portions are in good shape and ready for review by the
+x86 maintainers. I did major rework on the DeviceTree bindings and in my
+opinion are also ready for review by the maintainer too.
 
-Alright, the UEFI mailing list gave no response, so i am kind of stuck.
+Thanks in advance for your feedback!
 
-It seems that many firmware implementation only have a single cooling poli=
-cy register which is set by all _SCP control methods inside the whole syst=
-em.
-The reason for this seems to be that Windows threats this setting as globa=
-l, but the ACPI specification seemingly does not directly mandate this.
+---
 
-Do you thing we should take the risk and allow users to control each _SCP =
-instance manually?
+This patchset adds functionality to use a wakeup mailbox to boot secondary
+CPUs in Hyper-V VTL level 2 TDX guests with virtual firmware that describes
+hardware using a DeviceTree graph. Although this is the target use case,
+the use of the mailbox depends solely on it being enumerated in the
+DeviceTree.
 
-Apart from that the first two patches should be safe, so you can still pic=
-k them. Only the last patch needs some more work.
+On x86 platforms, secondary CPUs are typically booted using INIT assert,
+de-assert followed by Start-Up IPI messages. Virtual machines can also make
+hypercalls to bring up secondary CPUs to a desired execution state. These
+two mechanisms require support from the hypervisor. Confidential computing
+VMs in a TDX environment cannot use this mechanism because the hypervisor
+is considered an untrusted entity.
 
-Thanks,
-Armin Wolf
+Linux already supports the ACPI Multiprocessor Wakeup Structure in which
+the guest platform firmware boots the secondary CPUs and transfers control
+to the kernel using a mailbox. This mechanism does not need involvement
+of the VMM. It can be used in a Hyper-V VTL level 2 TDX guest.
+
+Currently, this mechanism can only be used on x86 platforms with firmware
+that supports ACPI. There are platforms that use DeviceTree (e.g., OpenHCL
+[2]) instead of ACPI to describe the hardware.
+
+Provided that a Wakeup Mailbox defined in the DeviceTree is compatible in
+structure and operation with the ACPI Multiprocessor Wakeup Structure, the
+kernel can use common code for both.
+
+This patcheset is structured as follows:
+
+   * Relocate portions of the ACPI Multiprocessor Wakeup Structure code to
+     to a common location. (patches 1-3)
+   * Add DeviceTree schema and bindings to define a Wakeup Mailbox for
+     Intel processors that is compatible with the ACPI Multiprocessor
+     Wakeup Structure as well as a new enable-method property for cpu@N
+     nodes (patches 4, 6).
+   * Add support to parse the enable-method property in the cpu@N nodes of
+     DeviceTree graphs for x86 and enable the Wakeup Mailbox if available.
+     (patches 5, 7)
+   * Prepare Hyper-V VTL2 TDX guests to use the Wakeup Mailbox to boot
+     secondary CPUs when available. (patches 8-13)
+
+I have tested this patchset on a Hyper-V host with VTL2 OpenHCL, QEMU, and
+physical hardware.
+
+Thanks and BR,
+Ricardo
+
+Changes since v2:
+  - Only move out of the acpi directory acpi_wakeup_cpu() and its
+    accessory variables. Use helper functions to access the mailbox as
+    needed. This also fixed the warnings about unused code with CONFIG_
+    ACPI=n that Michael reported.
+  - Major rework of the DeviceTree bindings and schema. Now there is a
+    reserved-memory binding for the mailbox as well as a new x86 CPU
+    bindings. Both have `compatible` properties.
+  - Rework of the code parsing the DeviceTree bindings for the mailbox.
+    Now configuring the mailbox depends solely on its enumeration in the
+    DeviceTree and not on Hyper-V VTL2 TDX guest.
+  - Do not make reserving the first 1MB of memory optional. It is not
+    needed and may introduce bugs.
+  - Prepare Hyper-V VTL2 guests to unconditionally use the mailbox in TDX
+    environments. If the mailbox is not available, booting secondary CPUs
+    will fail gracefully.
+
+Changes since v1:
+  - Fix the cover letter's summary phrase.
+  - Fix the DT binding document to pass validation.
+  - Change the DT binding document to be ACPI independent.
+  - Move ACPI-only functions into the #ifdef CONFIG_ACPI.
+  - Change dtb_parse_mp_wake() to return mailbox physical address.
+  - Rework the hv_is_private_mmio_tdx().
+  - Remove unrelated real mode change from the patch that marks mailbox
+    page private.
+  - Check hv_isolation_type_tdx() instead of wakeup_mailbox_addr in
+    hv_vtl_init_platform() because wakeup_mailbox_addr is not parsed yet.
+  - Add memory range support to reserve_real_mode.
+  - Remove realmode_reserve callback and use the memory range.
+  - Move setting the real_mode_header to hv_vtl_init_platform.
+  - Update comments and commit messages.
+  - Minor style changes.
+
+[1]. https://lore.kernel.org/lkml/20240823232327.2408869-7-yunhong.jiang@linux.intel.com/T/#ma1f56fc7eee585b777829fa7e8bd39cd3e780fe0
+[2]. https://openvmm.dev/guide/user_guide/openhcl.html
+
+Ricardo Neri (9):
+  x86/acpi: Add a helper function to setup the wakeup mailbox
+  x86/acpi: Add a helper function to get a pointer to the wakeup mailbox
+  x86/acpi: Move acpi_wakeup_cpu() and helpers to smpboot.c
+  dt-bindings: x86: Add CPU bindings for x86
+  x86/dt: Parse the `enable-method` property of CPU nodes
+  dt-bindings: reserved-memory: Wakeup Mailbox for Intel processors
+  x86/dt: Parse the Wakeup Mailbox for Intel processors
+  x86/smpboot: Add a helper get the address of the wakeup mailbox
+  x86/hyperv/vtl: Use the wakeup mailbox to boot secondary CPUs
+
+Yunhong Jiang (4):
+  x86/hyperv/vtl: Set real_mode_header in hv_vtl_init_platform()
+  x86/realmode: Make the location of the trampoline configurable
+  x86/hyperv/vtl: Setup the 64-bit trampoline for TDX guests
+  x86/hyperv/vtl: Mark the wakeup mailbox page as private
+
+ .../reserved-memory/intel,wakeup-mailbox.yaml |  87 +++++++++++
+ .../devicetree/bindings/x86/cpus.yaml         |  80 ++++++++++
+ arch/x86/hyperv/hv_vtl.c                      |  35 ++++-
+ arch/x86/include/asm/smp.h                    |   6 +
+ arch/x86/include/asm/x86_init.h               |   3 +
+ arch/x86/kernel/acpi/madt_wakeup.c            |  75 +---------
+ arch/x86/kernel/devicetree.c                  | 141 +++++++++++++++++-
+ arch/x86/kernel/smpboot.c                     |  83 +++++++++++
+ arch/x86/kernel/x86_init.c                    |   3 +
+ arch/x86/realmode/init.c                      |   7 +-
+ 10 files changed, 440 insertions(+), 80 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/reserved-memory/intel,wakeup-mailbox.yaml
+ create mode 100644 Documentation/devicetree/bindings/x86/cpus.yaml
+
+-- 
+2.43.0
 
 
