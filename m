@@ -1,59 +1,60 @@
-Return-Path: <linux-acpi+bounces-13477-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13480-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F741AAAE04
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 04:48:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A21AAB00D
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 05:30:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6B5C5A1451
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 02:43:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95D40188C0CC
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 03:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0195A2D1646;
-	Mon,  5 May 2025 22:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D1F28DF49;
+	Mon,  5 May 2025 23:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UozyPwGI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lliWnBaL"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A034629A3F3;
-	Mon,  5 May 2025 22:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC233397A52;
+	Mon,  5 May 2025 23:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485039; cv=none; b=uUmyf7uOQGXxG0b4p9kw/Lm4P+smFTpf6Hu9iSTC10pEqB2egIdF0fk2Olbw1AOxkvW8V4Glumz+vg8TE2hf5e+PLtYao5DRHQeykzV6r1EfzMKlEpJ2vMWPg6r0wpKiDgj/PEVtVbsRRCZdUTcg5GRmzpBNObhJU9ISSp6N9rk=
+	t=1746487254; cv=none; b=tL2Uvhb/i8+n+Xs31nz87KJ5FWyB8w5NAGBV8PNfsew4XQ8zzNk0Fq2OCQToYQ/iO4+4tO0Ch6J1GacNDjZCf/jIA64GpHS7NSTV+0s1jEl2zBb5iwQ6zrzqJDRzmab456qI1kNV56xVrdS/PIIn+BuI6QxmQvycnoq10ew0DNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485039; c=relaxed/simple;
-	bh=1VbaWWLdA5HmNjEIviEi/XhdFnVk+gwnKiAHhTR9D7s=;
+	s=arc-20240116; t=1746487254; c=relaxed/simple;
+	bh=NxJNsoAxLeDBk9yF6lFLn9BWm/zUoZR/evMbI6ZeLjc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LGnFS1dl1WAP50x6Bzj1ZO2t4vbm8Y5lpc3hooJIFxAUrdPP5lquF9r7+PyR/GMLtl/5v4zS4u6ByUufM9HyPQMab4/V0hhkK1rzyHdC1de1/eSefwdodv+E+X9BMR8eaY7DujSH4Suoy0px+T6A7BOPccq/FNg4D2XUoMeDTdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UozyPwGI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46F5C4CEEE;
-	Mon,  5 May 2025 22:43:58 +0000 (UTC)
+	 MIME-Version; b=Hn9NxU8u+TWK5AXslocx4yf7z3Wb2s9tm5DFnzJJLS3Z1rdx7jvNvuLvXjcM4gojs105TRJYbT2cOvt5sxWTf3umafQJD8fRHVwIBaIEs/geO3OaHw27NAttX+v1VWj5dADIj1xLVr7yQW8gaXaXaM5n6ndPHdhpVNI6ja7h/2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lliWnBaL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD31C4CEED;
+	Mon,  5 May 2025 23:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485039;
-	bh=1VbaWWLdA5HmNjEIviEi/XhdFnVk+gwnKiAHhTR9D7s=;
+	s=k20201202; t=1746487252;
+	bh=NxJNsoAxLeDBk9yF6lFLn9BWm/zUoZR/evMbI6ZeLjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UozyPwGIEmCU1YE6S85lnKz4gD6hn2IlqIV+/eZ5BtGiJMi1b9JIgWLz9eKyGYszp
-	 GGpFkJkxQtoWJytrH4rDobXTBFSAeFI5pdu4RhscuryeE3La05RwgHLLS7ggKRVcU+
-	 bcyCQ18PI5hyx/rhSTy4/Ryqg7UloIxR4a3mACbeDZT4zmQihqzr4Y0O0yH70FggLq
-	 eD2RHPa1l/sVb4le2+jHLvuXClpZXIhPnl16nn6dFjcddB+tOP6Rp2VtqeHdjJQ5Uz
-	 UPYuLq6y8mKuDNAwdrV2XlRLh6LCoamSzjRjS61yyU7jYJAVifA4RSZjts4dpuo30T
-	 laQrlcVTd0vFQ==
+	b=lliWnBaLUyVIFkO10sniy1mblN2uMJwrEN8x5Av5+3vH2HhnPyOpW2XQBlDRHfS1q
+	 A5qoo6XWHjZ+vjDGOWU4EkTq/BBICpFKSTUSArZZ+Ay+ZhmDX0Ol6loSkrSJBugRCW
+	 zujSQQx/IhEi2FVjdV1PRDaqv0pyNptmSJ0JzwHUde+1VjQUQKvD5xIBMd9nasYAZ9
+	 OAZkUx63HfltpeZMNLf7pYKunXss6Ouo//a1/mzjT0b2oAVbfzxU32i8/psd5qSvCN
+	 kM1Lu472brmeaozCVfJ9GBictJmWApwWCcj88ivy3/vDD7y6e08oAzewfv7XB9h7ky
+	 brVrkqfbuoQ+Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kees Cook <kees@kernel.org>,
+Cc: Xiaofei Tan <tanxiaofei@huawei.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 136/486] PNP: Expand length of fixup id string
-Date: Mon,  5 May 2025 18:33:32 -0400
-Message-Id: <20250505223922.2682012-136-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 081/114] ACPI: HED: Always initialize before evged
+Date: Mon,  5 May 2025 19:17:44 -0400
+Message-Id: <20250505231817.2697367-81-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
-References: <20250505223922.2682012-1-sashal@kernel.org>
+In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
+References: <20250505231817.2697367-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -62,40 +63,68 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.26
+X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Kees Cook <kees@kernel.org>
+From: Xiaofei Tan <tanxiaofei@huawei.com>
 
-[ Upstream commit 425b1c97b07f2290700f708edabef32861e2b2db ]
+[ Upstream commit cccf6ee090c8c133072d5d5b52ae25f3bc907a16 ]
 
-GCC 15's -Wunterminated-string-initialization saw that "id" was not
-including the required trailing NUL character. Instead of marking "id"
-with __nonstring[1], expand the length of the string as it is used in
-(debugging) format strings that expect a properly formed C string.
+When the HED driver is built-in, it initializes after evged because they
+both are at the same initcall level, so the initialization ordering
+depends on the Makefile order.  However, this prevents RAS records
+coming in between the evged driver initialization and the HED driver
+initialization from being handled.
 
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178 [1]
-Signed-off-by: Kees Cook <kees@kernel.org>
-Link: https://patch.msgid.link/20250310222432.work.826-kees@kernel.org
+If the number of such RAS records is above the APEI HEST error source
+number, the HEST resources may be exhausted, and that may affect
+subsequent RAS error reporting.
+
+To fix this issue, change the initcall level of HED to subsys_initcall
+and prevent the driver from being built as a module by changing ACPI_HED
+in Kconfig from "tristate" to "bool".
+
+Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+Link: https://patch.msgid.link/20250212063408.927666-1-tanxiaofei@huawei.com
+[ rjw: Changelog edits ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pnp.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/Kconfig | 2 +-
+ drivers/acpi/hed.c   | 7 ++++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/pnp.h b/include/linux/pnp.h
-index b7a7158aaf65e..23fe3eaf242d6 100644
---- a/include/linux/pnp.h
-+++ b/include/linux/pnp.h
-@@ -290,7 +290,7 @@ static inline void pnp_set_drvdata(struct pnp_dev *pdev, void *data)
- }
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index b5ea34c340ccc..3ef66a39111c0 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -432,7 +432,7 @@ config ACPI_SBS
+ 	  the modules will be called sbs and sbshc.
  
- struct pnp_fixup {
--	char id[7];
-+	char id[8];
- 	void (*quirk_function) (struct pnp_dev *dev);	/* fixup function */
+ config ACPI_HED
+-	tristate "Hardware Error Device"
++	bool "Hardware Error Device"
+ 	help
+ 	  This driver supports the Hardware Error Device (PNP0C33),
+ 	  which is used to report some hardware errors notified via
+diff --git a/drivers/acpi/hed.c b/drivers/acpi/hed.c
+index cf148287e2baf..75166839c99e0 100644
+--- a/drivers/acpi/hed.c
++++ b/drivers/acpi/hed.c
+@@ -72,7 +72,12 @@ static struct acpi_driver acpi_hed_driver = {
+ 		.notify = acpi_hed_notify,
+ 	},
  };
+-module_acpi_driver(acpi_hed_driver);
++
++static int __init acpi_hed_driver_init(void)
++{
++	return acpi_bus_register_driver(&acpi_hed_driver);
++}
++subsys_initcall(acpi_hed_driver_init);
  
+ ACPI_MODULE_NAME("hed");
+ MODULE_AUTHOR("Huang Ying");
 -- 
 2.39.5
 
