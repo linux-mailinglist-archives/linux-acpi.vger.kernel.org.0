@@ -1,251 +1,193 @@
-Return-Path: <linux-acpi+bounces-13449-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13450-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18C3CAA9405
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 15:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2B9AA9413
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 15:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1524C1899EE9
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 13:08:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45C86188D073
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 13:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7F5256C68;
-	Mon,  5 May 2025 13:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62937255E44;
+	Mon,  5 May 2025 13:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ja9Hcmsy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l16GkV3L"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195B21F417E;
-	Mon,  5 May 2025 13:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AB041C63;
+	Mon,  5 May 2025 13:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746450477; cv=none; b=QEGrGushqoTP+E64r7ZYb+IozyjtDB/m+/L7blcPGNaK/4UDbFCllgC+hVVCxEQBMPIraUJz1P4g7AZKbLOINADwOP76YMiU41H8Bb72sQagmSLMkhgp7IpksX8KFKuB3V7sJD8bKo91yEE9sv2zf6NFOwAlVjgq70es0WieF/Y=
+	t=1746450689; cv=none; b=WruEC0HlPCx/Yt/vnpFtDtSkOOntGegrCEJWiUJJRHa1838GqRIggxtkIr05qNK0lCA6++YbdxNMLrS4yPWIZ0SqrAD3wZCSBRoM47XIwyOhiJjm0Ahnesdyp4467O2bQ1JkDQDgulsIeXk/LXxLKiJJfoiC6k4vk5WnbIuryzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746450477; c=relaxed/simple;
-	bh=Ja6gaduoMfpLfx53EIkIq4u5tNzA++ROap/e8Y99wWw=;
+	s=arc-20240116; t=1746450689; c=relaxed/simple;
+	bh=AiE4ZD17aPOaZAPivHMdsvTvdLsANzKVsMl0h1CzKxE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BwcMJjHLmUhdv4EulSzr/OsOBOdfqq+MY5/1YlKuGeotN5vTArSE8n5pf0nETOnxSuOaErjJ7YFC91BZWGBpMHBxzIJvNdeSTGXLHovb+GH4/6AjBNJphfE6fJgmRY0EzldXc/cKOTV2POMOkSyZq/B0CCje7k38X8io+n1p6Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ja9Hcmsy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7897DC4CEE4;
-	Mon,  5 May 2025 13:07:55 +0000 (UTC)
+	 To:Cc:Content-Type; b=WQt4KSYXMjcTdUa8lUl6XvI8qXqywLGFcKu6g24caJqYzd+xOPIv6h9q2xhGxBb7654/zAWxEWXW6c6GdmY/DJYcIx/MsA+W6hkpw//J+p1nrgEoA9zK17HdHBMdFfMuyfx6LjMQ1iQaedDk+gT1UotF12y047tkG93rpa7ww8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l16GkV3L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5058C4CEF0;
+	Mon,  5 May 2025 13:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746450475;
-	bh=Ja6gaduoMfpLfx53EIkIq4u5tNzA++ROap/e8Y99wWw=;
+	s=k20201202; t=1746450688;
+	bh=AiE4ZD17aPOaZAPivHMdsvTvdLsANzKVsMl0h1CzKxE=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ja9HcmsyLfZ19y+WL2iW3vsZK1VE3PJIrJdBemBPgFEftVVt6nxhrg8Q4vTdXfxEZ
-	 7A8iHImTQOsw2JOOZFN2si8oi9WK9ESrdzCTcfDFwa4EO9ZfwvVyISQucBknjXsInM
-	 DLD0ao10+HgE1g3WY0bTr4pbFeCW2eBTsf071MO0+vH9BFyGPVSyDXTaKIKaHEKv7g
-	 7XP4UdfhigzwjfV4+0wrULXeXD9sURFqfajnFS9kh8NlixABzgcegBIciibD4RQc7G
-	 d7U0pnUvIIWEn27/HruVLiS9NUJTquctsBNPtbyW4XzGM+/mRqKZlsC4oEfc5if7/C
-	 bqxMp086S26Vg==
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3f8ae3ed8adso3168136b6e.3;
-        Mon, 05 May 2025 06:07:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUjBKcz39w/9S83wsG4U9Ta2D1GzGkkgxo/gbOhrkwFxbfAWBkYXWvu3cF0Y/ad93N1mrzkD1hrdP8ZPQ==@vger.kernel.org, AJvYcCUntqnj1wsBuZlR0fM8lQEkEvVJRZKhhgBqQ48eINCDef8aKxu6pbBWzMMHUyr1Llw0FlWih9uiGL9t@vger.kernel.org, AJvYcCUq+r5dI1hrW9ujOvzIVX7RqP9wbWGTz2aswSzX9vvlX6HnRgo8GFp9kIfPHQ18b0eOYrYrJUKp6mwMGbxn@vger.kernel.org, AJvYcCVrFO65ewQ9TnBBOI4YH0DqzttmpavraN0Xbdx8b+EkIsVsCZI2YFJMybv71GzQVw8j8GNIcxBltGYxwl/T@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPiZtm1yA+89iUMXL9fc5gq3A7Pn4Fly6fOzuPD6CcofADQ5gL
-	UI4W8vHgmQJUQ3Dg9OVmPNpHzTlnCviCtt4uRCxfLPk0RFcJAtzPrJ2Su70z6HVzHphbAsWcej3
-	KI0jf2Zy8iyygectD1cY06rDwg0M=
-X-Google-Smtp-Source: AGHT+IHafvTUmLP+318TJZovnwvkV7NxuJchj37bOS0+RlXAjCLDey4g2q/qRn3CyHFWlAdadNbnH6Ys4hKJ+xORPyo=
-X-Received: by 2002:a05:6871:6a6:b0:2cc:3586:294f with SMTP id
- 586e51a60fabf-2dab2fe1391mr7120194fac.9.1746450474755; Mon, 05 May 2025
- 06:07:54 -0700 (PDT)
+	b=l16GkV3Ld2+BattRDIXJbk3w/r9clpWMvG402x5q7RD8nn7x0kXSZPgyprKVxrpN4
+	 +7P7dAWCd9ART3bSmImZk6wpBngHX7qic+ioV4bm3XqnKgzh1pbJMuMUDA1DVRXvZm
+	 WZxuhZCFt3+cpYv2p8ZxtWHUZ5ozU2WunK/plugnlKyRctp9dMOANTkfdy3/cP9b7e
+	 VEUmW9fJxyOkOebv4J6I0tkm5B+qT8rxI77R9862v/OodWbx0qB2gVKNSM7D/MpOcS
+	 vHqFNb7YTkWIWmIevDspXquSQBEeKhu5RIKzR3sr/w6pgC7dImq9/Kzh/30q8b0bhP
+	 QSeHnIHN5+bYw==
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-2d060c62b61so3798079fac.0;
+        Mon, 05 May 2025 06:11:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUDjOMJ1UcRyT5pFhQ2pOdGLZE8UWrxqIwr3qEXgBu/jkWmDvqttfjofMIxyHCZWF4lqU8IwKpcfIPL1oL5@vger.kernel.org, AJvYcCWr/8Kh8vG4s4MftKAPJ5LvI1VWeAYHA6DgSgMfojsh3tbqx3hC9gRnVt5BFyDqgDPB244MJCwrBpyA@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzn4DA+e3T3TQzK13F70qwk55iytkJbF0M92PVFDdnp9MeAAFxC
+	zNFkj++XQhdtMWz9rXjwFM2wD5CMW5D9uiwa3yYaG1FEh/DfLTpFG+dxMwcWJetG/ZD4BQ42YOE
+	lKEPc/DoQZ7UaTwSCK4nyhqhDn4o=
+X-Google-Smtp-Source: AGHT+IEtiEpKVa7HVZWvCw/510Dj6uB2h0Kb40e+MiUAYElqu3q1Q8n0n/uqo9E+TBcQ1QRXY5z5k4nxmZ0sPnnYg1Q=
+X-Received: by 2002:a05:6870:30b:b0:2d4:e29d:529a with SMTP id
+ 586e51a60fabf-2dae82e08b1mr4199691fac.5.1746450688029; Mon, 05 May 2025
+ 06:11:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250503191515.24041-1-ricardo.neri-calderon@linux.intel.com> <20250503191515.24041-7-ricardo.neri-calderon@linux.intel.com>
-In-Reply-To: <20250503191515.24041-7-ricardo.neri-calderon@linux.intel.com>
+References: <20250429202412.380637-1-tony.luck@intel.com> <20250429202412.380637-2-tony.luck@intel.com>
+In-Reply-To: <20250429202412.380637-2-tony.luck@intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 5 May 2025 15:07:43 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0j262Jorbb5--WY6KedR7CWvdTTYP10ZRZTqXhTNJ1GiA@mail.gmail.com>
-X-Gm-Features: ATxdqUHOe_bTrNgfNcYSdbpuewLh6hfF5OjL2949NofDe1GEt1BvWztbAYVUpwQ
-Message-ID: <CAJZ5v0j262Jorbb5--WY6KedR7CWvdTTYP10ZRZTqXhTNJ1GiA@mail.gmail.com>
-Subject: Re: [PATCH v3 06/13] dt-bindings: reserved-memory: Wakeup Mailbox for
- Intel processors
-To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Rob Herring <robh@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Michael Kelley <mhklinux@outlook.com>, devicetree@vger.kernel.org, 
-	Saurabh Sengar <ssengar@linux.microsoft.com>, Chris Oo <cho@microsoft.com>, 
-	linux-hyperv@vger.kernel.org, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, "Ravi V. Shankar" <ravi.v.shankar@intel.com>, 
-	Ricardo Neri <ricardo.neri@intel.com>
+Date: Mon, 5 May 2025 15:11:15 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0ju_Xirnft+5C=-GtG3hmT9xGjVqNFPRugXR7o1RzfHrg@mail.gmail.com>
+X-Gm-Features: ATxdqUFw2uXAVVggnwPyHmHSrJuw6ui02s3ht9p5pPI5ZvNwsrVhW-wXCwzpT0U
+Message-ID: <CAJZ5v0ju_Xirnft+5C=-GtG3hmT9xGjVqNFPRugXR7o1RzfHrg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] ACPICA: Define MRRM ACPI table
+To: Tony Luck <tony.luck@intel.com>
+Cc: rafael@kernel.org, lenb@kernel.org, 
+	Anil Keshavamurthy <anil.s.keshavamurthy@intel.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 3, 2025 at 9:10=E2=80=AFPM Ricardo Neri
-<ricardo.neri-calderon@linux.intel.com> wrote:
+On Tue, Apr 29, 2025 at 10:24=E2=80=AFPM Tony Luck <tony.luck@intel.com> wr=
+ote:
 >
-> Add DeviceTree bindings for the wakeup mailbox used on Intel processors.
+> Patch for reference, this has already been applied to
+> https://github.com/acpica/acpica and will in due course make its way
+> into Linux when the next ACPICA release is ported over.
 >
-> x86 platforms commonly boot secondary CPUs using an INIT assert, de-asser=
-t
-> followed by Start-Up IPI messages. The wakeup mailbox can be used when th=
-is
-> mechanism unavailable.
->
-> The wakeup mailbox offers more control to the operating system to boot
-> secondary CPUs than a spin-table. It allows the reuse of same wakeup vect=
-or
-> for all CPUs while maintaining control over which CPUs to boot and when.
-> While it is possible to achieve the same level of control using a spin-
-> table, it would require to specify a separate cpu-release-addr for each
-> secondary CPU.
->
-> Originally-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+> Signed-off-by: Tony Luck <tony.luck@intel.com>
 > ---
-> Changes since v2:
->  - Implemented the mailbox as a reserved-memory node. Add to it a
->    `compatible` property. (Krzysztof)
->  - Explained the relationship between the mailbox and the `enable-mehod`
->    property of the CPU nodes.
->  - Expanded the documentation of the binding.
+>  include/acpi/actbl1.h |  7 +++++++
+>  include/acpi/actbl2.h | 42 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 49 insertions(+)
 >
-> Changes since v1:
->  - Added more details to the description of the binding.
->  - Added requirement a new requirement for cpu@N nodes to add an
->    `enable-method`.
-> ---
->  .../reserved-memory/intel,wakeup-mailbox.yaml | 87 +++++++++++++++++++
->  1 file changed, 87 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/reserved-memory/int=
-el,wakeup-mailbox.yaml
+> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+> index 387fc821703a..4cb36392e9e9 100644
+> --- a/include/acpi/actbl1.h
+> +++ b/include/acpi/actbl1.h
+> @@ -110,6 +110,13 @@ struct acpi_whea_header {
+>         u64 mask;               /* Bitmask required for this register ins=
+truction */
+>  };
 >
-> diff --git a/Documentation/devicetree/bindings/reserved-memory/intel,wake=
-up-mailbox.yaml b/Documentation/devicetree/bindings/reserved-memory/intel,w=
-akeup-mailbox.yaml
-> new file mode 100644
-> index 000000000000..d97755b4673d
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/reserved-memory/intel,wakeup-mail=
-box.yaml
-> @@ -0,0 +1,87 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/reserved-memory/intel,wakeup-mailbox.=
-yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +/* Larger subtable header (when Length can exceed 255) */
 > +
-> +title: Wakeup Mailbox for Intel processors
+> +struct acpi_subtbl_hdr_16 {
+> +       u16 type;
+> +       u16 length;
+> +};
 > +
-> +description: |
-> +  The Wakeup Mailbox provides a mechanism for the operating system to wa=
-ke up
-> +  secondary CPUs on Intel processors. It is an alternative to the INIT-!=
-INIT-
-> +  SIPI sequence used on most x86 systems.
+>  /* https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/acpitab=
+l/ns-acpitabl-aspt_table */
+>  #define ASPT_REVISION_ID 0x01
+>  struct acpi_table_aspt {
+> diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+> index 2e917a8f8bca..e7423db6e24b 100644
+> --- a/include/acpi/actbl2.h
+> +++ b/include/acpi/actbl2.h
+> @@ -37,6 +37,7 @@
+>  #define ACPI_SIG_MCHI           "MCHI" /* Management Controller Host Int=
+erface table */
+>  #define ACPI_SIG_MPAM           "MPAM" /* Memory System Resource Partiti=
+oning and Monitoring Table */
+>  #define ACPI_SIG_MPST           "MPST" /* Memory Power State Table */
+> +#define ACPI_SIG_MRRM           "MRRM"      /* Memory Range and Region M=
+apping table */
+>  #define ACPI_SIG_MSDM           "MSDM" /* Microsoft Data Management Tabl=
+e */
+>  #define ACPI_SIG_NFIT           "NFIT" /* NVDIMM Firmware Interface Tabl=
+e */
+>  #define ACPI_SIG_NHLT           "NHLT" /* Non HD Audio Link Table */
+> @@ -1736,6 +1737,47 @@ struct acpi_msct_proximity {
+>         u64 memory_capacity;    /* In bytes */
+>  };
+>
+> +/***********************************************************************=
+********
+> + *
+> + * MRRM - Memory Range and Region Mapping (MRRM) table
+> + * Conforms to "Intel Resource Director Technology Architecture Specific=
+ation"
+> + * Version 1.1, January 2025
+> + *
+> + ***********************************************************************=
+*******/
 > +
-> +  Firmware must define the enable-method property in the CPU nodes as
-> +  "intel,wakeup-mailbox" to use the mailbox.
+> +struct acpi_table_mrrm {
+> +       struct acpi_table_header header;        /* Common ACPI table head=
+er */
+> +       u8 max_mem_region;                      /* Max Memory Regions sup=
+ported */
+> +       u8 flags;                               /* Region assignment type=
+ */
+> +       u8 reserved[26];
+> +       u8 memory_range_entry[];
+> +};
 > +
-> +  Firmware implements the wakeup mailbox as a 4KB-aligned memory region =
-of size
-> +  of 4KB. It is memory that the firmware reserves so that each secondary=
- CPU can
-> +  have the operating system send a single message to them. The firmware =
-is
-> +  responsible for putting the secondary CPUs in a state to check the mai=
-lbox.
+> +/* Flags */
+> +#define ACPI_MRRM_FLAGS_REGION_ASSIGNMENT_OS (1<<0)
 > +
-> +  The structure of the mailbox is as follows:
+> +/***********************************************************************=
+********
+> +       *
+> +       * Memory Range entry - Memory Range entry in MRRM table
+> +       *
+> +       *****************************************************************=
+*************/
 > +
-> +  Field           Byte   Byte  Description
-> +                 Length Offset
-> +  ----------------------------------------------------------------------=
---------
-> +  Command          2      0    Command to wake up the secondary CPU:
-> +                                        0: Noop
-> +                                        1: Wakeup: Jump to the wakeup_ve=
-ctor
-> +                                        2-0xFFFF: Reserved:
-> +  Reserved         2      2    Must be 0.
-> +  APIC_ID          4      4    APIC ID of the secondary CPU to wake up.
-> +  Wakeup_Vector    8      8    The wakeup address for the secondary CPU.
-> +  ReservedForOs 2032     16    Reserved for OS use.
-> +  ReservedForFW 2048   2048    Reserved for firmware use.
-> +  ----------------------------------------------------------------------=
---------
+> +struct acpi_mrrm_mem_range_entry {
+> +       struct acpi_subtbl_hdr_16 header;
+> +       u32 reserved0;          /* Reserved */
+> +       u64 addr_base;          /* Base addr of the mem range */
+> +       u64 addr_len;           /* Length of the mem range */
+> +       u16 region_id_flags;    /* Valid local or remote Region-ID */
+> +       u8 local_region_id;     /* Platform-assigned static local Region-=
+ID */
+> +       u8 remote_region_id;    /* Platform-assigned static remote Region=
+-ID */
+> +       u32 reserved1;          /* Reserved */
+> +       /* Region-ID Programming Registers[] */
+> +};
 > +
-> +  To wake up a secondary CPU, the operating system 1) prepares the wakeu=
-p
-> +  routine; 2) populates the address of the wakeup routine address into t=
-he
-> +  Wakeup_Vector field; 3) populates the APIC_ID field with the APIC ID o=
-f the
-> +  secondary CPU; 4) writes Wakeup in the Command field. Upon receiving t=
-he
-> +  Wakeup command, the secondary CPU acknowledges the command by writing =
-Noop in
-> +  the Command field and jumps to the Wakeup_Vector. The operating system=
- can
-> +  send the next command only after the Command field is changed to Noop.
+> +/* Values for region_id_flags above */
+> +#define ACPI_MRRM_VALID_REGION_ID_FLAGS_LOCAL   (1<<0)
+> +#define ACPI_MRRM_VALID_REGION_ID_FLAGS_REMOTE  (1<<1)
 > +
-> +  The secondary CPU will no longer check the mailbox after waking up. Th=
-e
-> +  secondary CPU must ignore the command if its APIC_ID written in the ma=
-ilbox
-> +  does not match its own.
-> +
-> +  When entering the Wakeup_Vector, interrupts must be disabled and 64-bi=
-t
-> +  addressing mode must be enabled. Paging mode must be enabled. The virt=
-ual
-> +  address of the Wakeup_Vector page must be equal to its physical addres=
-s.
-> +  Segment selectors are not used.
-
-This interface is defined in the ACPI specification and all of the
-above information is present there.
-
-Why are you copying it without acknowledging the source of it instead
-of just saying where this interface is defined and pointing to its
-definition?
-
-> +
-> +maintainers:
-> +  - Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-> +
-> +allOf:
-> +  - $ref: reserved-memory.yaml
-> +
-> +properties:
-> +  compatible:
-> +    const: intel,wakeup-mailbox
-> +
-> +  alignment:
-> +    description: The mailbox must be 4KB-aligned.
-> +    const: 0x1000
-> +
-> +required:
-> +  - compatible
-> +  - alignment
-
-Why do you need the "alignment" property if the alignment is always the sam=
-e?
-
-> +  - reg
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    reserved-memory {
-> +        #address-cells =3D <2>;
-> +        #size-cells =3D <1>;
-> +
-> +        wakeup-mailbox@12340000 {
-> +            compatible =3D "intel,wakeup-mailbox";
-> +            alignment =3D <0x1000>;
-> +            reg =3D <0x0 0x12340000 0x1000>;
-> +        };
-> +    };
+>  /***********************************************************************=
+********
+>   *
+>   * MSDM - Microsoft Data Management table
 > --
+
+All of the above definitions should be there in linux-next now.
+
+Can you please check if they are there and they are correct?
+Alternatively, please check
+
+https://web.git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/log=
+/?h=3Dtesting
 
