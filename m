@@ -1,114 +1,116 @@
-Return-Path: <linux-acpi+bounces-13462-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13463-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D92AA9A3E
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 19:17:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29851AA9A5D
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 19:22:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59F15189C64A
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 17:17:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64F373A6E6A
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 17:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858A926B2A3;
-	Mon,  5 May 2025 17:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17E026989A;
+	Mon,  5 May 2025 17:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PpyqFqm0"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="o3Xvpqkr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B88C26B090;
-	Mon,  5 May 2025 17:17:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D5320E6;
+	Mon,  5 May 2025 17:22:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746465433; cv=none; b=jU5JGZ5L7LAS7m2W/qluN9rTdO/AS7rKds8JthltXyegNR2Ma6xJdPj/JzlQRXextPylUXMI2dVmAr9LgMHSfWHc5sWJGMGOzPi0rBvREVqd/Tpa4H/Fke16pS79jtvb6p6me3BYoepCKPfZMAwVLeyjZKKXPs+4YPye5G4zKGc=
+	t=1746465769; cv=none; b=Da44xmx1EGkcpPIfSzfS2oIJb7/JRzFfRa8Nn3pdpHsmbG2H2AOvIqKtiVwlB49eL7T0GJByVNgFSfFP006xC/4bf3huo7F9Y6ay1X8wXUCYHDNxcj6A5PBq5WG86VvtvdAWn6xEWO2z40pWra8YBr60ZTOpUp/n74fvKaY3fXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746465433; c=relaxed/simple;
-	bh=XwhrX5688XfHG0muf4l+yvgcLX5Pt+ya7oVl24w7wsA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KNwOjeHYaYtwIUYzsNjuF6WZLOrkoH20C5/dqkgo87gnATkNpxfVpmD7uGUcLej8DuklpqMY3a2HyloA2nSnznkjWNPBl86ALRsGymAcpaGdBVfMXl7PLdqw+ous2sjQ6hqGJEig/t4xRWel4j7t4xMIRVx6k57RNPxpCNZLXb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PpyqFqm0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8B6C4CEE4;
-	Mon,  5 May 2025 17:17:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746465432;
-	bh=XwhrX5688XfHG0muf4l+yvgcLX5Pt+ya7oVl24w7wsA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=PpyqFqm0Kq+6GO0UyFOmcYlso29dLcLhwa9vGeVLSTNf6YPsdnoJGwozYB/FDD4jr
-	 6+ufva/uUuirffr8BTZze+YTTRefqS+16//hJunoWE2t2LMmqN6PddEd91YWulWyvv
-	 GtLD0oVEkqUJBcSe2VFlnkDQMtDPRFHwckbHsbmo/VtBVYeFVK5VMdyz7Wda+e+c9N
-	 2NmSxr4GzoMr2rYI54zUsptLvcE2Cra/Jq/M0MDawyqL4cAYkgbGpDmrCvT6l1Mibg
-	 RC4UOyTS3H6OdokxtNeJUrwW3NP+O55obgRIbwUDmulmZUL5UzUkJwxFyqCTUIqfEd
-	 uDydqgVYJOjgA==
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3f9832f798aso3390120b6e.2;
-        Mon, 05 May 2025 10:17:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV74BHzwv04pBSqdUlTjykW/6O8Xbg+d4z33OfErI5WD7pAJgCynsefi/OdxscLUINm+vu2xlbwNBqO@vger.kernel.org, AJvYcCXzv5fI86I3zg0VjP6t2X3oHHAkbug8f/v96tC0mtSZYBZWUlGg8ZnsyshzGqam5bVha+JO+0vQwCp9tMi4@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUOq7oA99XM4YQv3w6+Cws0Ln5GxIgooC5BTWTcFCb2ZNzy24J
-	LuXFZ1TyL95ueUB9Mffi74OonYAHmfMGixT+e+txWdVFjj0e9LwByM9OK9mtK1np6oQ0xmgejaT
-	28Jg7EjzifWHPIxps9Q1ll8FCIzs=
-X-Google-Smtp-Source: AGHT+IG26hieWdXffhDj4dGbE8M0F2bOh1fmNZd9NNoGu7oIJPkd8RdYORqFuleYnObxvkfUU+ir8/ZXZ36gkFCOMCo=
-X-Received: by 2002:a05:6870:a1a7:b0:2b7:d3d2:ba53 with SMTP id
- 586e51a60fabf-2dab2fe1dfamr7344930fac.12.1746465432182; Mon, 05 May 2025
- 10:17:12 -0700 (PDT)
+	s=arc-20240116; t=1746465769; c=relaxed/simple;
+	bh=/6hVLI8+DjKNaFwujUdJzocF4Keqd/XofxvlfwZ7GqI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r2CKGSZFJaZd9Es9HPa5agiWrIJGUHVI3lyOHhxcLYDTeJN/G9ee58IVA1TI8DkBD8hhIUhuKkC9fBZC1Rvya/MwEokeXj6d1zkjaY5eSB4OH7ysz979NzeMr4odotKGbGxl0zWqqaDZt6CBY4Xt66gEUzT5UOGRlQYmKjBXsz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=o3Xvpqkr; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.137.184.60] (unknown [131.107.1.188])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 90CBF2115DB9;
+	Mon,  5 May 2025 10:22:47 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 90CBF2115DB9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1746465767;
+	bh=8wbZLCwRqjanmT3onroeSyZn4dg6J4CGYyBd5+Co/M0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=o3XvpqkrhbAZmS9cmuI/bvnLDWHF69TtYCYYPAcla5AYtVVQvW87J+tYnvSnY/dru
+	 9Ea4ys3iToWPHzYtbCrhtVh6syxBmC5MAtb0z/2586tl+1auNZoJFPUwtoCj8Os2J2
+	 OK/C/oBjRn4vkzAALtMFMd5WbE7KtUDGvIIy7T+s=
+Message-ID: <41778d44-19dc-4212-a981-d5a82eaf9577@linux.microsoft.com>
+Date: Mon, 5 May 2025 10:22:47 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250429202412.380637-1-tony.luck@intel.com> <20250429202412.380637-2-tony.luck@intel.com>
- <CAJZ5v0ju_Xirnft+5C=-GtG3hmT9xGjVqNFPRugXR7o1RzfHrg@mail.gmail.com> <SJ1PR11MB60833EFB63D1356DF14336F7FC8E2@SJ1PR11MB6083.namprd11.prod.outlook.com>
-In-Reply-To: <SJ1PR11MB60833EFB63D1356DF14336F7FC8E2@SJ1PR11MB6083.namprd11.prod.outlook.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 5 May 2025 19:17:01 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hU4drHhqWcj0Q_U_P7bkjDs-jUMN-KCSQNW9Avkqk=ig@mail.gmail.com>
-X-Gm-Features: ATxdqUGskPJuK-G9lNlMrid3uP4z4sDmx663ya8BRYM30u6OaROhtVDw5gFZdHI
-Message-ID: <CAJZ5v0hU4drHhqWcj0Q_U_P7bkjDs-jUMN-KCSQNW9Avkqk=ig@mail.gmail.com>
-Subject: Re: [PATCH v4 1/4] ACPICA: Define MRRM ACPI table
-To: "Luck, Tony" <tony.luck@intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>, 
-	"Keshavamurthy, Anil S" <anil.s.keshavamurthy@intel.com>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"patches@lists.linux.dev" <patches@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH hyperv-next v3] arch/x86: Provide the CPU number in the
+ wakeup AP callback
+To: Wei Liu <wei.liu@kernel.org>
+Cc: ardb@kernel.org, bp@alien8.de, dave.hansen@linux.intel.com,
+ decui@microsoft.com, dimitri.sivanich@hpe.com, haiyangz@microsoft.com,
+ hpa@zytor.com, imran.f.khan@oracle.com, jacob.jun.pan@linux.intel.com,
+ jgross@suse.com, justin.ernst@hpe.com, kprateek.nayak@amd.com,
+ kyle.meyer@hpe.com, kys@microsoft.com, lenb@kernel.org, mingo@redhat.com,
+ nikunj@amd.com, papaluri@amd.com, perry.yuan@amd.com, peterz@infradead.org,
+ rafael@kernel.org, russ.anderson@hpe.com, steve.wahl@hpe.com,
+ tglx@linutronix.de, thomas.lendacky@amd.com, tim.c.chen@linux.intel.com,
+ tony.luck@intel.com, xin@zytor.com, yuehaibing@huawei.com,
+ linux-acpi@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org, apais@microsoft.com,
+ benhill@microsoft.com, bperkins@microsoft.com, sunilmut@microsoft.com
+References: <20250430204720.108962-1-romank@linux.microsoft.com>
+ <aBUByjvfjLsPU_5f@liuwe-devbox-ubuntu-v2.tail21d00.ts.net>
+Content-Language: en-US
+From: Roman Kisel <romank@linux.microsoft.com>
+In-Reply-To: <aBUByjvfjLsPU_5f@liuwe-devbox-ubuntu-v2.tail21d00.ts.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, May 5, 2025 at 7:12=E2=80=AFPM Luck, Tony <tony.luck@intel.com> wro=
-te:
->
-> > > +/* Values for region_id_flags above */
-> > > +#define ACPI_MRRM_VALID_REGION_ID_FLAGS_LOCAL   (1<<0)
-> > > +#define ACPI_MRRM_VALID_REGION_ID_FLAGS_REMOTE  (1<<1)
-> > > +
-> > >  /*******************************************************************=
-************
-> > >   *
-> > >   * MSDM - Microsoft Data Management table
-> > > --
-> >
-> > All of the above definitions should be there in linux-next now.
-> >
-> > Can you please check if they are there and they are correct?
-> > Alternatively, please check
-> >
-> > https://web.git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git=
-/log/?h=3Dtesting
->
-> Rafael,
->
-> I checked the "testing" branch. The MRRM bits there look good.
->
-> Do you want me to post a V5 of this series that drops patch1?
->
-> Fenghua had some comments ... the one about a spurious blank
-> line in mrrm_init() is real. I'm less sure about documenting the
-> meaning of "X" in the ABI documentation patch.
 
-If you want to update any of the 3 last patches, please send an
-update.  Otherwise, let me know and I can pick them up from the
-current series.
 
-Thanks!
+On 5/2/2025 10:32 AM, Wei Liu wrote:
+> On Wed, Apr 30, 2025 at 01:47:20PM -0700, Roman Kisel wrote:
+
+[...]
+
+>>   arch/x86/coco/sev/core.c           | 13 ++-----------
+>>   arch/x86/hyperv/hv_vtl.c           | 12 ++----------
+>>   arch/x86/hyperv/ivm.c              |  2 +-
+>>   arch/x86/include/asm/apic.h        |  8 ++++----
+>>   arch/x86/include/asm/mshyperv.h    |  5 +++--
+>>   arch/x86/kernel/acpi/madt_wakeup.c |  2 +-
+>>   arch/x86/kernel/apic/apic_noop.c   |  8 +++++++-
+>>   arch/x86/kernel/apic/x2apic_uv_x.c |  2 +-
+>>   arch/x86/kernel/smpboot.c          | 10 +++++-----
+> 
+> Since this is tagged as a hyperv-next patch, I'm happy to pick this up.
+> 
+
+Thank you very much, Wei!
+
+> Some changes should be acked by x86 maintainers.
+
+Tom and Thomas reviewed the patch, and the `scripts/get_maintainer.pl`
+prints them as x86 maintainers. If I understand correctly what you're
+saying, someone who sends patches from the x86 tree to Linus should add
+Acked-by to the patch. Likely I should just wait until such person gets
+to this patch.
+
+If I'm misunderstanding, I'd appreciate a quick note to help me navigate
+this :)
+
+> 
+> Thanks,
+> Wei.
+> 
+-- 
+Thank you,
+Roman
+
 
