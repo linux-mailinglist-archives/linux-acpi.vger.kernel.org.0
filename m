@@ -1,153 +1,159 @@
-Return-Path: <linux-acpi+bounces-13458-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13459-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53AD1AA9828
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 18:00:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 514E6AA98EB
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 18:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA363167F3B
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 16:00:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E12817D2E3
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 16:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B51266EF0;
-	Mon,  5 May 2025 15:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3078B267B87;
+	Mon,  5 May 2025 16:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CggIkxAy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FTMZtu9W"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C253F266594
-	for <linux-acpi@vger.kernel.org>; Mon,  5 May 2025 15:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7777525D213;
+	Mon,  5 May 2025 16:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746460776; cv=none; b=BZ9SeDP8Zsu2GGELy/n9Qj+B8civhYYXoEY2xITzcjnOvPLRTS2gNsgZ0Y45216CJgnfSNBLnwNixWZWghNVKVNSA/S32EbxKL7cakFGAM3w8FVQclabVBNEZ2obdeWpwzE51n7ia4OR/t0xbAolEJy3TgjQLzIyquIkRlxPEBo=
+	t=1746462540; cv=none; b=QRPvpWsEzoosTUvJgr9CKZ8mTahjwl6eyCKG6mmQVmK5uSUKXJgzAVgm8PLFD24UJTWM7ioqk3CiJRgbnrIau2q48SxrX9FpcmOht+PBFtSNySqTRah8V5A0RYopt2rINkVAKNLGNoBdd2FjcFnhY0dIsrSCoIFfFlctbFlEADs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746460776; c=relaxed/simple;
-	bh=D+SEWPPKnbfXnYnSrStrOJ3HaN5rsdTg7mS/BE3YNCk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DwqWDDvlJh08ELPsYTsaffiBoW2drKARK6m8hWDjg6cTdC1gd2GnZO9kI3QMvfd8i3in1xpgAmMzmtuqPnd9vlB95TnOpmihAgvXh7rQlRGJfvK12yhr1QBjazUK8UHVavf/YJJKGDshXyVYECGTGb2JoC9JukFpjsWb9cXQikM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CggIkxAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE18C4CEEE;
-	Mon,  5 May 2025 15:59:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746460776;
-	bh=D+SEWPPKnbfXnYnSrStrOJ3HaN5rsdTg7mS/BE3YNCk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CggIkxAyVgyGn1YLRND+EZ/n5z9aC6SkrKNLQ7rSkts9cRnRlQcOelyfQ6PCf9ya8
-	 Ugep8H/8DZkQMQ8Dulj8uojDI2sNebascG81YTJxsSUqdE7Q5s2MT8gOenUpgKmR8J
-	 GBGjWTBxIZQsaCxMNpEHVdXF6DHaurysqXU7VX+EqbcujqQAl2os9pFUp67QaUnCVm
-	 x06xlyt5DqONUGYqoYphs81v9gZutZf8bM3mD+olrGTM/O/fa/tFXFObpR3dfuUP1c
-	 Eq88nM4xPvDYY8Mq/ELYCYtKNlAmSj7DSxJ/yJbBRFrlcXr5pdQR+F+Tnw8BFTbS7R
-	 ORsLsi9MnaQ1Q==
-Message-ID: <ee7b40ab-3949-426a-bbcf-e6038208e1ff@kernel.org>
-Date: Mon, 5 May 2025 10:59:34 -0500
+	s=arc-20240116; t=1746462540; c=relaxed/simple;
+	bh=RAdRNqPXKqyJwulTZBW+PrhpwJw3N8ivnpxB+phgTKs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bm3Ne5AGWORxGfy4/RKS+Er661ZgfC5YcyKLC1Z/PGtVjoRbJYVYe0fyCljKp32Gk+ek05oGw6oc+BGmnMEdCykAJixqSnvSFTpocayOFB+rCMeej1gLyFbaKsDD7bai0Uy5wqorqQhsF58u763I6fCGGW9DJM35a8lZj49O4wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FTMZtu9W; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746462538; x=1777998538;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=RAdRNqPXKqyJwulTZBW+PrhpwJw3N8ivnpxB+phgTKs=;
+  b=FTMZtu9WFdE6iAUMfB8Tzu7QOnGYkT9UioCABLGYlvcWhDObW1swA6/C
+   QzR/voX5F4qOATXUjUH157df2tdHJ+ru3nHrUmKLxUyPazpWJfnjm/Jqg
+   hr+sEdT3rJblfWRxMM8ETK517eMI1FSewATlLFHJ9AYNiFOqtZVKYFDCg
+   kTpwVLqc6l6nkpeoEZIRBBfhT1qSWjqFRbkIGZm1urA2s8iFeQ5vqMSn6
+   j5W6ryP091lwO75igXTL/CwTTdSHKTTrvCRr7blciCTQNtNwLk0//me7B
+   NSVW1U/FMmS0f76FgygbVk1SxEbHYWbXtdB3CxO9r1b7utJ9Po6u5uzT4
+   g==;
+X-CSE-ConnectionGUID: vldBAIDlQZyArtMZKczy3g==
+X-CSE-MsgGUID: ky/KHv5UQueukkubLEkAIw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="59431627"
+X-IronPort-AV: E=Sophos;i="6.15,264,1739865600"; 
+   d="scan'208";a="59431627"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 09:28:57 -0700
+X-CSE-ConnectionGUID: JEdfwkK8Qpy+fJQPK92ziQ==
+X-CSE-MsgGUID: omA/bASURruuYcYsShQZgw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,264,1739865600"; 
+   d="scan'208";a="158514813"
+Received: from agluck-desk3.sc.intel.com (HELO agluck-desk3) ([172.25.222.70])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 09:28:58 -0700
+Date: Mon, 5 May 2025 09:28:40 -0700
+From: "Luck, Tony" <tony.luck@intel.com>
+To: Fenghua Yu <fenghuay@nvidia.com>
+Cc: rafael@kernel.org, lenb@kernel.org,
+	Anil Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: Re: [PATCH v4 3/4] ACPI/MRRM: Add /sys files to describe memory
+ ranges
+Message-ID: <aBjnOJpDgq2XlWqj@agluck-desk3>
+References: <20250429202412.380637-1-tony.luck@intel.com>
+ <20250429202412.380637-4-tony.luck@intel.com>
+ <466e9d9a-d0f0-443b-93d5-58d0ba968480@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: Enable CONFIG_ACPI_DEBUG by default
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Ingo Molnar <mingo@kernel.org>, linux-acpi@vger.kernel.org
-References: <20250415212740.2371758-1-superm1@kernel.org>
- <54cbc6d5-1102-45f4-8b71-97bccd717416@kernel.org>
- <CAJZ5v0jdR1agmiFaPyGjrSoozCBot4tW8MV_diPDfXrOURvPww@mail.gmail.com>
- <db06f729-50dc-48b3-a001-70f4a2b54963@kernel.org>
- <CAJZ5v0iK8Q=Qak-RU3n3RCOWC-=2jiZXh_-EkMH1PdEQ_E+2iA@mail.gmail.com>
- <d93c8d7a-5f79-4dca-b14b-cf637b3b0779@kernel.org>
- <CAJZ5v0iXK+Tqu0wyRU5fkHe5JpAqM5L30dDyr+J6d348tPo1Mw@mail.gmail.com>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <CAJZ5v0iXK+Tqu0wyRU5fkHe5JpAqM5L30dDyr+J6d348tPo1Mw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <466e9d9a-d0f0-443b-93d5-58d0ba968480@nvidia.com>
 
-On 5/5/2025 10:55 AM, Rafael J. Wysocki wrote:
-> On Mon, May 5, 2025 at 5:32 PM Mario Limonciello <superm1@kernel.org> wrote:
->>
->> On 5/5/2025 10:27 AM, Rafael J. Wysocki wrote:
->>> On Mon, May 5, 2025 at 5:15 PM Mario Limonciello <superm1@kernel.org> wrote:
->>>>
->>>> On 5/5/2025 10:03 AM, Rafael J. Wysocki wrote:
->>>>> On Mon, May 5, 2025 at 4:58 PM Mario Limonciello <superm1@kernel.org> wrote:
->>>>>>
->>>>>> On 4/15/2025 4:27 PM, Mario Limonciello wrote:
->>>>>>> From: Mario Limonciello <mario.limonciello@amd.com>
->>>>>>>
->>>>>>> CONFIG_ACPI_DEBUG can be helpful for getting debug messages on OEM
->>>>>>> systems to identify a BIOS bug.  It's a relatively small size increase
->>>>>>> to turn it on by default (50kb) and that saves asking people to enable
->>>>>>> it when an issue comes up because it wasn't in defconfig.
->>>>>>>
->>>>>>> Enable it by default.
->>>>>>>
->>>>>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->>>>>>
->>>>>> Rafael,
->>>>>>
->>>>>> Any thoughts on this?  Especially in seeing Ingo trying to modernize
->>>>>> more of the defconfig [1]?
->>>>>>
->>>>>> [1]
->>>>>> https://lore.kernel.org/lkml/20250505110946.1095363-1-mingo@kernel.org/#t
->>>>>
->>>>> I'm not sure if this is a good idea TBH.
->>>>>
->>>>> The risk is that people will start reporting issues that have been
->>>>> there already, but now they become visible due to enabling ACPI_DEBUG
->>>>> by default.
->>>>
->>>> As several distros already enable it by default I would have expected
->>>> some "noise" like this to have settled down.
->>>>
->>>> Do you have specific messages in mind you think could be turning noisy
->>>> from the extra debug statements?
->>>
->>> Nothing in particular, mostly messages coming from ACPICA, like the
->>> ones complaining about missing objects that have always been missing
->>> and the firmware is now too old for anyone to really care.
->>>
->>> Those messages are only really useful when there is someone willing to
->>> fix the issues that trigger them.  Otherwise, they are just noise.
->>
->> Ah I see.  I suppose we could always have this on by default and if it
->> becomes untenable from reports flip it back to off.
+On Sun, May 04, 2025 at 11:23:50PM -0700, Fenghua Yu wrote:
+> Hi, Tony,
+> > +#define RANGE_ATTR(name, fmt)						\
+> > +static ssize_t name##_show(struct kobject *kobj,			\
 > 
-> The problem is that we'd only see the impact after the distros picked
-> up the new default config, which would take some time and then it
-> might not be practical to disable it again.
+> "name" is used as a macro parameter. But "name" is also used as a variable
+> mre->name in the macro. checkpatch complains this kind of usage.
 
-Good point.
+The checkpatch complaint is that is is used twice. Once as "mre->name"
+(as you noted), but also as "__ATTR_RO(name)" two lines after.
 
+Checkpatch is worried that the macor might be invoked with an argument
+that has side effects ("foo++", or return from function call "baz()")
+which would result in the side-effects happening twice.
+
+It's a false positive in this case because:
+
+1) This macro is only used with a simple argument (and can only ever be
+used in that way.
+2) It's used for a static initialization of compile time, so a 2nd
+reason why side-effects from an argment are not possible.
+
+> Maybe change the parameter "name" as something like "range_name" to avoid
+> the potential confusion?
 > 
-> I guess enabling it by default could be combined with changing
-> ACPI_DEBUG_DEFAULT to ACPI_LV_REPAIR, say, but then you'd probably
-> still need to ask people to make it more verbose to see the
-> interesting messages.
+> > +			  struct kobj_attribute *attr, char *buf)	\
+> > +{									\
+> > +	struct mrrm_mem_range_entry *mre;				\
+> > +	const char *kname = kobject_name(kobj);				\
+> > +	int n, ret;							\
+> > +									\
+> > +	ret = kstrtoint(kname + 5, 10, &n);				\
+> > +	if (ret)							\
+> > +		return ret;						\
+> > +									\
+> > +	mre = mrrm_mem_range_entry + n;					\
+> > +									\
+> > +	return sysfs_emit(buf, fmt, mre->name);				\
+> > +}									\
+> > +static struct kobj_attribute name##_attr = __ATTR_RO(name)
+> > +
+> > +RANGE_ATTR(base, "0x%llx\n");
+> > +RANGE_ATTR(length, "0x%llx\n");
+> > +RANGE_ATTR(node, "%d\n");
+> > +RANGE_ATTR(local_region_id, "%d\n");
+> > +RANGE_ATTR(remote_region_id, "%d\n");
 
-To me having ACPI_DEBUG enabled and ACPI_DEBUG_DEFAULT turned down is 
-totally fine.  I find that the trace_* parameters are totally fine for 
-what I've used it for so far.  IE set appropriate trace values, load 
-your module and report results.
-Or set trace values on the kernel command line and report results for 
-boot issues.
+...
 
+> > +
+> >   static __init int mrrm_init(void)
+> >   {
+> >   	int ret;
+> >   	ret = acpi_table_parse(ACPI_SIG_MRRM, acpi_parse_mrrm);
+> This blank line seems redundant. Maybe remove it so that the "if (ret < 0)"
+> sentence follows the "ret = ...." sentence immediately?
+
+Agreed. I will delete in next version.
+
+> > -	return ret;
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	return add_boot_memory_ranges();
+> >   }
+> >   device_initcall(mrrm_init);
 > 
->>>
->>> Though if it is enabled by default by distros used by the vast
->>> majority of people, it could be enabled by default in the mainline
->>> too.
->>>
->>> Do you know which distros enable it by default?
->>
->> I know Ubuntu and CachyOS both do today.  Fedora did it in some of their
->> kernels and they're pushing a change to enable it in more of them right now.
+> Thanks.
 > 
-> So why don't we let them do it and then decide?
+> -Fenghua
 
-Sure, we can revisit next cycle.
+Thanks for the review.
+
+-Tony
+> 
 
