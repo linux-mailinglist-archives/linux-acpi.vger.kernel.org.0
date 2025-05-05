@@ -1,57 +1,58 @@
-Return-Path: <linux-acpi+bounces-13482-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13483-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F32AAB67D
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 07:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C0EAAB6B2
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 07:55:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 378397A9E60
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 05:49:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EBB77BABEE
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 05:49:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B726C2D86A3;
-	Tue,  6 May 2025 00:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B41237A27D;
+	Tue,  6 May 2025 00:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nn2oTv8Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q3kmmcqC"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D09836BA5B;
-	Mon,  5 May 2025 22:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F4936BA55;
+	Mon,  5 May 2025 22:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485819; cv=none; b=GYHig7J+/9eQOupQem6vPdV2eX5ymvMYdk2R0YNuf/oeEtYAvKo1H5DkpWkqRKNvVsosB9WkOyM90dVdauRTsnLAeOsd2l00aqlxr0ijLJIUuT7ZYoary5g14yLogkDRWiXtFmvdhakh939iY6jQGeGslwvC4quGl9vEq4Wjwxg=
+	t=1746485819; cv=none; b=GqqsZc+rSYaMvuMDE/gzoxW8O2IQwzqzRPu2+4MuPfrTmRyvVauK1MvISz2Zb9UdpUrZGxStIORVIFgCiM9yD05sHE31/uKp4ZyVJXIvNEY9sD7HRUQ6fB8VpqSRBzUPZ940I7NMe/FS7K+XQEPxrTRI2+zk7SGW8ROqwMBYyeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746485819; c=relaxed/simple;
-	bh=3NjjJic+KfXlHN5dzLwkv6OiL634PsPW6GB6dHVFi/Y=;
+	bh=eEUI680ypmPuZ5QWILhPpSBV4+NzpYcdAqCvbVpWpUg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mw1I/rbwihIV6I2Tr89PcAST4WmHPs0lXyZWPgGOt5n2jkMGP6aU9VDpVh9CxEeSGRa7CqMyUuDLd3kHrwWDdehnxH+CTtgTd3bh+tTEwrBP911Sv/CRbII8UQ110Si3srDbZlSQo60j5oQMT3rJWAdIVFqKB2pG0FQ227UbCRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nn2oTv8Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3049DC4CEEF;
-	Mon,  5 May 2025 22:56:57 +0000 (UTC)
+	 MIME-Version; b=UCOb+DO77KP3PmV7jPli1WoN5QV2KKEFKQcJtTvmAqa8fEdk6pk2Jxm1Gz76WOVmDfSxitlI7pXwipRuTkpicwHyDY1OUue1EO583IklZukgndHZW6m3S3KwUx2qDd31RatJEhbVFZ+Ap9jRkXJvlYRjwZOp4doyNHY3EG9VX/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q3kmmcqC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619FFC4CEE4;
+	Mon,  5 May 2025 22:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485818;
-	bh=3NjjJic+KfXlHN5dzLwkv6OiL634PsPW6GB6dHVFi/Y=;
+	s=k20201202; t=1746485819;
+	bh=eEUI680ypmPuZ5QWILhPpSBV4+NzpYcdAqCvbVpWpUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nn2oTv8ZN4fIfIyDACs+GCGThQctxrp6DNQqF6AZSbZSrxgEXUtGrFdO9DZSHjbcz
-	 gsPFfjcc6K2bWicZ8NAHOBiae113Cnwbc0fAz8aExsnJ//9dPVSFjrSS4RPW2fLNKo
-	 eRwKM8IkWkryMG8jrlR0pTXxRqW8urUEPSb6/yEYNf3QX+1ZgOWgkgV7liGfNsrydV
-	 HFxk77hkfzzU6/rwoA1KBJo62hd0sXOkEfmKMgNmrUbr1rPd3/DIOcmb4exSEH7F05
-	 rvhMU3IcEXhN7ieMaLFMJ5GU7KMb1ie2iw/IV646yLMbSsvAj4v+CI9Ff4zmn6PkE5
-	 2BEyfg+yWoN7Q==
+	b=q3kmmcqCk51X5eX2IWgn/GU44EXHnUOJSPWg2heZTdNkQt+JQ4+Wdce3LFh74Ymis
+	 tNsBtTiSd+VTspyOaauJAo7MjLVowrudfO3YqJlv9Oy88JZUIN0JLIFOhBK5VnV0sP
+	 ExYcARBybYHGg+wHDZHrYIGTfIO/GmII3GSXidt8NiTiqpRPlYII0VbkNW2u7e6+lQ
+	 S2ISLEnCok/ZU1pa90cA5XiaS5K91QA9YhrCYCDcQdsV2ZcEjdjkHbgJCWvQclHXop
+	 5A9zPaDXXTD8DUuuy+MMyktY8lh+JNFrWnVJAAB+5QzqLPKvYZlzXKGMwiUh0gwYt4
+	 O+nIKGsz5E36g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Diogo Ivo <diogo.ivo@siemens.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	Huisong Li <lihuisong@huawei.com>,
+	Adam Young <admiyo@os.amperecomputing.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 013/294] ACPI: PNP: Add Intel OC Watchdog IDs to non-PNP device list
-Date: Mon,  5 May 2025 18:51:53 -0400
-Message-Id: <20250505225634.2688578-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 014/294] mailbox: pcc: Use acpi_os_ioremap() instead of ioremap()
+Date: Mon,  5 May 2025 18:51:54 -0400
+Message-Id: <20250505225634.2688578-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -66,44 +67,47 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Diogo Ivo <diogo.ivo@siemens.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit f06777cf2bbc21dd8c71d6e3906934e56b4e18e4 ]
+[ Upstream commit d181acea5b864e91f38f5771b8961215ce5017ae ]
 
-Intel Over-Clocking Watchdogs are described in ACPI tables by both the
-generic PNP0C02 _CID and their ACPI _HID. The presence of the _CID then
-causes the PNP scan handler to attach to the watchdog, preventing the
-actual watchdog driver from binding. Address this by adding the ACPI
-_HIDs to the list of non-PNP devices, so that the PNP scan handler is
-bypassed.
+The Platform Communication Channel (PCC) mailbox driver currently uses
+ioremap() to map channel shared memory regions. However it is preferred
+to use acpi_os_ioremap(), which is mapping function specific to EFI/ACPI
+defined memory regions. It ensures that the correct memory attributes
+are applied when mapping ACPI-provided regions.
 
-Note that these watchdogs can be described by multiple _HIDs for what
-seems to be identical hardware. This commit is not a complete list of
-all the possible watchdog ACPI _HIDs.
+While at it, also add checks for handling any errors with the mapping.
 
-Signed-off-by: Diogo Ivo <diogo.ivo@siemens.com>
-Link: https://patch.msgid.link/20250317-ivo-intel_oc_wdt-v3-2-32c396f4eefd@siemens.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Huisong Li <lihuisong@huawei.com>
+Tested-by: Huisong Li <lihuisong@huawei.com>
+Tested-by: Adam Young <admiyo@os.amperecomputing.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_pnp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mailbox/pcc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/acpi_pnp.c b/drivers/acpi/acpi_pnp.c
-index 01abf26764b00..3f5a1840f5733 100644
---- a/drivers/acpi/acpi_pnp.c
-+++ b/drivers/acpi/acpi_pnp.c
-@@ -355,8 +355,10 @@ static bool acpi_pnp_match(const char *idstr, const struct acpi_device_id **matc
-  * device represented by it.
-  */
- static const struct acpi_device_id acpi_nonpnp_device_ids[] = {
-+	{"INT3F0D"},
- 	{"INTC1080"},
- 	{"INTC1081"},
-+	{"INTC1099"},
- 	{""},
- };
- 
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index f8215a8f656a4..49254d99a8ad6 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -419,8 +419,12 @@ int pcc_mbox_ioremap(struct mbox_chan *chan)
+ 		return -1;
+ 	pchan_info = chan->con_priv;
+ 	pcc_mbox_chan = &pchan_info->chan;
+-	pcc_mbox_chan->shmem = ioremap(pcc_mbox_chan->shmem_base_addr,
+-				       pcc_mbox_chan->shmem_size);
++
++	pcc_mbox_chan->shmem = acpi_os_ioremap(pcc_mbox_chan->shmem_base_addr,
++					       pcc_mbox_chan->shmem_size);
++	if (!pcc_mbox_chan->shmem)
++		return -ENXIO;
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(pcc_mbox_ioremap);
 -- 
 2.39.5
 
