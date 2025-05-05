@@ -1,193 +1,178 @@
-Return-Path: <linux-acpi+bounces-13450-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13451-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2B9AA9413
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 15:11:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABA79AA94CF
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 15:49:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45C86188D073
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 13:11:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84E301899FF0
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 May 2025 13:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62937255E44;
-	Mon,  5 May 2025 13:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A27A191F8C;
+	Mon,  5 May 2025 13:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l16GkV3L"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EE5nxS+Q"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AB041C63;
-	Mon,  5 May 2025 13:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC022C859
+	for <linux-acpi@vger.kernel.org>; Mon,  5 May 2025 13:49:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746450689; cv=none; b=WruEC0HlPCx/Yt/vnpFtDtSkOOntGegrCEJWiUJJRHa1838GqRIggxtkIr05qNK0lCA6++YbdxNMLrS4yPWIZ0SqrAD3wZCSBRoM47XIwyOhiJjm0Ahnesdyp4467O2bQ1JkDQDgulsIeXk/LXxLKiJJfoiC6k4vk5WnbIuryzw=
+	t=1746452957; cv=none; b=mfcOr2TQlCQS1D/IZ393SK/sLzc+CawMgBYbcg/3zkZdOHYAlLC00MGljyszzPn/mdouLxZE+dq/few1RdMMieZj0qEOi+vnCDmD4IVoEM+fpSY3ktqJt7FQ4MDM08fGCCpz2HRuj8evTMvNM0NlTx6wL35NWGwBXoh4ufArPpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746450689; c=relaxed/simple;
-	bh=AiE4ZD17aPOaZAPivHMdsvTvdLsANzKVsMl0h1CzKxE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WQt4KSYXMjcTdUa8lUl6XvI8qXqywLGFcKu6g24caJqYzd+xOPIv6h9q2xhGxBb7654/zAWxEWXW6c6GdmY/DJYcIx/MsA+W6hkpw//J+p1nrgEoA9zK17HdHBMdFfMuyfx6LjMQ1iQaedDk+gT1UotF12y047tkG93rpa7ww8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l16GkV3L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5058C4CEF0;
-	Mon,  5 May 2025 13:11:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746450688;
-	bh=AiE4ZD17aPOaZAPivHMdsvTvdLsANzKVsMl0h1CzKxE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=l16GkV3Ld2+BattRDIXJbk3w/r9clpWMvG402x5q7RD8nn7x0kXSZPgyprKVxrpN4
-	 +7P7dAWCd9ART3bSmImZk6wpBngHX7qic+ioV4bm3XqnKgzh1pbJMuMUDA1DVRXvZm
-	 WZxuhZCFt3+cpYv2p8ZxtWHUZ5ozU2WunK/plugnlKyRctp9dMOANTkfdy3/cP9b7e
-	 VEUmW9fJxyOkOebv4J6I0tkm5B+qT8rxI77R9862v/OodWbx0qB2gVKNSM7D/MpOcS
-	 vHqFNb7YTkWIWmIevDspXquSQBEeKhu5RIKzR3sr/w6pgC7dImq9/Kzh/30q8b0bhP
-	 QSeHnIHN5+bYw==
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-2d060c62b61so3798079fac.0;
-        Mon, 05 May 2025 06:11:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUDjOMJ1UcRyT5pFhQ2pOdGLZE8UWrxqIwr3qEXgBu/jkWmDvqttfjofMIxyHCZWF4lqU8IwKpcfIPL1oL5@vger.kernel.org, AJvYcCWr/8Kh8vG4s4MftKAPJ5LvI1VWeAYHA6DgSgMfojsh3tbqx3hC9gRnVt5BFyDqgDPB244MJCwrBpyA@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzn4DA+e3T3TQzK13F70qwk55iytkJbF0M92PVFDdnp9MeAAFxC
-	zNFkj++XQhdtMWz9rXjwFM2wD5CMW5D9uiwa3yYaG1FEh/DfLTpFG+dxMwcWJetG/ZD4BQ42YOE
-	lKEPc/DoQZ7UaTwSCK4nyhqhDn4o=
-X-Google-Smtp-Source: AGHT+IEtiEpKVa7HVZWvCw/510Dj6uB2h0Kb40e+MiUAYElqu3q1Q8n0n/uqo9E+TBcQ1QRXY5z5k4nxmZ0sPnnYg1Q=
-X-Received: by 2002:a05:6870:30b:b0:2d4:e29d:529a with SMTP id
- 586e51a60fabf-2dae82e08b1mr4199691fac.5.1746450688029; Mon, 05 May 2025
- 06:11:28 -0700 (PDT)
+	s=arc-20240116; t=1746452957; c=relaxed/simple;
+	bh=PDdS5fAJqi8PcejufO5Pd6xIuj0adNqB54QOk5mfbR8=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=INTeLK8Exd4ypwcC1SPwIGo8hw43zW72LlAw+Z4s9l1ldCcHLsKxdx77oKm0nZMPkumfzNIDkWdm8d98+HHZwrXgv4S+It22996fZq1gaAdp6Oqc8MMUxMfr1iRDoJvFJ0c2BmKfwnbUlYXPFSsb7ISdqZ483K5EyrHYTRpGw8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EE5nxS+Q; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746452954;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Ob+qs8HMqf9ejJq0jFehTAErEqZGMs/1HrQN+kJELKo=;
+	b=EE5nxS+Q21+KaE7jIEO484kbSaSZQWx2pDORjd4cDjhMPhpBlmHdVWAzmDbiSITifHsh9V
+	QrlesvL7A6/+n+3cHcHQgV0T/DU5EJUTz1hGBVlt/ZVnnvszqvt9/ueoPpxD82h9rHeMdh
+	kYW+OMTWs9zDplxFHxBjMX+Kx0cyhcw=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-641-k58JYQyMOh-NWzKf7dAbbQ-1; Mon, 05 May 2025 09:49:13 -0400
+X-MC-Unique: k58JYQyMOh-NWzKf7dAbbQ-1
+X-Mimecast-MFC-AGG-ID: k58JYQyMOh-NWzKf7dAbbQ_1746452952
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-ac28a2c7c48so404422266b.3
+        for <linux-acpi@vger.kernel.org>; Mon, 05 May 2025 06:49:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746452951; x=1747057751;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Ob+qs8HMqf9ejJq0jFehTAErEqZGMs/1HrQN+kJELKo=;
+        b=tV78kcBxPOH8D/xe/EcaFYaXihC7XmHiPgBIiYiax4cC3t1ITX8EBwQy6HnaKrIEaF
+         aseyHBajOLdpgW29IXXOSoiGBunWNFVwcg/xStlUPiBwiX46k42sPxc0YR22HgkGP4Ck
+         2YurDvTOO0AEBhbmKiJr8y9IY8z+NAG701brzlhgNBH1Cf48DXI4BTnqUugXfjBUIDAA
+         d3MC9DhHERJvQa98K3jbDP7fsUz8ZRV/A46Yz2VooQu+Xw6qAmAGxYIVin37xF8ifm5o
+         NLabXqIDcEqJSZ/J6ebJo0A/p3lSbMguoRSGpDMb83TXLGf9VlX9Nu/HVQdXZAZFV5ef
+         azqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWVHuRbQGnkAOTwTqAXHiUkP64PIC+hGOJmpOzxjCFvvfGVibvEpOKZF3nK3IbJVwplyhLPoUEtA+Qi@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzz7hf1osQK5kPO81w4xVEE9RPOR3AVZa8h4z05a/Ibkcqh9iOp
+	nL3RjHOqWnNh+gnT6gzSmftnVqn0u3XzvEMxsI9hK6FAbVsbYIo29LD0tRJfawX4X6V7eQUHb3m
+	1ix3nsMCGDMxekrcecryPleWW8DXAs4r0W1z/QJ1wu/WF6qW0ScIe7/mcPvXZi8eTnAmovQ==
+X-Gm-Gg: ASbGncvYncX46rmXRT/Wq+jzzde4mP+vzgpJywfKrtUV5POFDb7qHEATB0dj2B+P8br
+	SAHVICxOptL0Ba2kHiPQciF3f5mRVHCtL0/VI+kccSfGB4VGwbwXMgR9vc9AV5V5dzybxnf4Y8w
+	TfSHXvQ0Ih8vshY4bHXt371GD+z71W33aNPUWQuVe+dww/cjD/aHkZTGF97wHOsjBohn5qFT//g
+	SXU/njjwHfP89e/dhQpipy5UiWktPOQTZi0NtN5oUpK7FrRJwzybQcoma7ZrLLDbWty35cDiyYi
+	8htyZExbFyOAeVQ026qib1xgCFmsdTsyo9motv0JBlVK+6NCKSI2Gs8STJMydQhXrZYo8NVTPRE
+	37qEEaIZC/VWPgbZzTesJ1LP6m377MO5vq3Z9wL3qU+oPWQkOXl1K2yDfm7xZgA==
+X-Received: by 2002:a17:907:3e05:b0:acb:33c6:5c71 with SMTP id a640c23a62f3a-ad1a49c3349mr739054266b.29.1746452951417;
+        Mon, 05 May 2025 06:49:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2/er0nnS3bq3BAhH6tbXajalx7PNeaNBxCuzeBHhpUE2GZNvpXKoknjUzLYfsJFUuOfn4Qw==
+X-Received: by 2002:a17:907:3e05:b0:acb:33c6:5c71 with SMTP id a640c23a62f3a-ad1a49c3349mr739051666b.29.1746452951002;
+        Mon, 05 May 2025 06:49:11 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad1894bf973sm500251166b.99.2025.05.05.06.49.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 May 2025 06:49:10 -0700 (PDT)
+Message-ID: <8d52bffe-9d16-481e-a997-837988f2ebe5@redhat.com>
+Date: Mon, 5 May 2025 15:49:09 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250429202412.380637-1-tony.luck@intel.com> <20250429202412.380637-2-tony.luck@intel.com>
-In-Reply-To: <20250429202412.380637-2-tony.luck@intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 5 May 2025 15:11:15 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0ju_Xirnft+5C=-GtG3hmT9xGjVqNFPRugXR7o1RzfHrg@mail.gmail.com>
-X-Gm-Features: ATxdqUFw2uXAVVggnwPyHmHSrJuw6ui02s3ht9p5pPI5ZvNwsrVhW-wXCwzpT0U
-Message-ID: <CAJZ5v0ju_Xirnft+5C=-GtG3hmT9xGjVqNFPRugXR7o1RzfHrg@mail.gmail.com>
-Subject: Re: [PATCH v4 1/4] ACPICA: Define MRRM ACPI table
-To: Tony Luck <tony.luck@intel.com>
-Cc: rafael@kernel.org, lenb@kernel.org, 
-	Anil Keshavamurthy <anil.s.keshavamurthy@intel.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US, nl
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+ linux-acpi <linux-acpi@vger.kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
+Subject: ACPI power-resources not turned off after failure of device-driver's
+ runtime resume function?
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 29, 2025 at 10:24=E2=80=AFPM Tony Luck <tony.luck@intel.com> wr=
-ote:
->
-> Patch for reference, this has already been applied to
-> https://github.com/acpica/acpica and will in due course make its way
-> into Linux when the next ACPICA release is ported over.
->
-> Signed-off-by: Tony Luck <tony.luck@intel.com>
-> ---
->  include/acpi/actbl1.h |  7 +++++++
->  include/acpi/actbl2.h | 42 ++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 49 insertions(+)
->
-> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-> index 387fc821703a..4cb36392e9e9 100644
-> --- a/include/acpi/actbl1.h
-> +++ b/include/acpi/actbl1.h
-> @@ -110,6 +110,13 @@ struct acpi_whea_header {
->         u64 mask;               /* Bitmask required for this register ins=
-truction */
->  };
->
-> +/* Larger subtable header (when Length can exceed 255) */
-> +
-> +struct acpi_subtbl_hdr_16 {
-> +       u16 type;
-> +       u16 length;
-> +};
-> +
->  /* https://docs.microsoft.com/en-us/windows-hardware/drivers/ddi/acpitab=
-l/ns-acpitabl-aspt_table */
->  #define ASPT_REVISION_ID 0x01
->  struct acpi_table_aspt {
-> diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-> index 2e917a8f8bca..e7423db6e24b 100644
-> --- a/include/acpi/actbl2.h
-> +++ b/include/acpi/actbl2.h
-> @@ -37,6 +37,7 @@
->  #define ACPI_SIG_MCHI           "MCHI" /* Management Controller Host Int=
-erface table */
->  #define ACPI_SIG_MPAM           "MPAM" /* Memory System Resource Partiti=
-oning and Monitoring Table */
->  #define ACPI_SIG_MPST           "MPST" /* Memory Power State Table */
-> +#define ACPI_SIG_MRRM           "MRRM"      /* Memory Range and Region M=
-apping table */
->  #define ACPI_SIG_MSDM           "MSDM" /* Microsoft Data Management Tabl=
-e */
->  #define ACPI_SIG_NFIT           "NFIT" /* NVDIMM Firmware Interface Tabl=
-e */
->  #define ACPI_SIG_NHLT           "NHLT" /* Non HD Audio Link Table */
-> @@ -1736,6 +1737,47 @@ struct acpi_msct_proximity {
->         u64 memory_capacity;    /* In bytes */
->  };
->
-> +/***********************************************************************=
-********
-> + *
-> + * MRRM - Memory Range and Region Mapping (MRRM) table
-> + * Conforms to "Intel Resource Director Technology Architecture Specific=
-ation"
-> + * Version 1.1, January 2025
-> + *
-> + ***********************************************************************=
-*******/
-> +
-> +struct acpi_table_mrrm {
-> +       struct acpi_table_header header;        /* Common ACPI table head=
-er */
-> +       u8 max_mem_region;                      /* Max Memory Regions sup=
-ported */
-> +       u8 flags;                               /* Region assignment type=
- */
-> +       u8 reserved[26];
-> +       u8 memory_range_entry[];
-> +};
-> +
-> +/* Flags */
-> +#define ACPI_MRRM_FLAGS_REGION_ASSIGNMENT_OS (1<<0)
-> +
-> +/***********************************************************************=
-********
-> +       *
-> +       * Memory Range entry - Memory Range entry in MRRM table
-> +       *
-> +       *****************************************************************=
-*************/
-> +
-> +struct acpi_mrrm_mem_range_entry {
-> +       struct acpi_subtbl_hdr_16 header;
-> +       u32 reserved0;          /* Reserved */
-> +       u64 addr_base;          /* Base addr of the mem range */
-> +       u64 addr_len;           /* Length of the mem range */
-> +       u16 region_id_flags;    /* Valid local or remote Region-ID */
-> +       u8 local_region_id;     /* Platform-assigned static local Region-=
-ID */
-> +       u8 remote_region_id;    /* Platform-assigned static remote Region=
--ID */
-> +       u32 reserved1;          /* Reserved */
-> +       /* Region-ID Programming Registers[] */
-> +};
-> +
-> +/* Values for region_id_flags above */
-> +#define ACPI_MRRM_VALID_REGION_ID_FLAGS_LOCAL   (1<<0)
-> +#define ACPI_MRRM_VALID_REGION_ID_FLAGS_REMOTE  (1<<1)
-> +
->  /***********************************************************************=
-********
->   *
->   * MSDM - Microsoft Data Management table
-> --
+Hi Rafael,
 
-All of the above definitions should be there in linux-next now.
+While testing error handling in the atomisp driver, deliberately
+making a camera-sensor driver not work by using gpioset to disable
+a regulator, I noticed the following:
 
-Can you please check if they are there and they are correct?
-Alternatively, please check
+The ACPI device pm_domain runtime_resume function looks like this:
 
-https://web.git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/log=
-/?h=3Dtesting
+int acpi_subsys_runtime_resume(struct device *dev)
+{
+        int ret = acpi_dev_resume(dev);
+
+        return ret ? ret : pm_generic_runtime_resume(dev);
+}
+
+Combined with the runtime_error flag blocking any futher
+runtime-pm get() / put() calls (making them fail with -EINVAL)
+this means that if the device's driver runtime resume
+function called by pm_generic_runtime_resume() fails,
+nothing will undo the acpi_dev_resume() leaving e.g.
+ACPI power-resouces associated with dev in the on state.
+
+I guess a possible fix would be to change
+acpi_subsys_runtime_resume() to e.g.:
+
+int acpi_subsys_runtime_resume(struct device *dev)
+{
+        int ret;
+
+	ret = acpi_dev_resume(dev);
+	if (ret)
+		return ret;
+		
+	ret = pm_generic_runtime_resume(dev);
+	if (ret)
+		acpi_dev_suspend(dev);
+
+        return ret;
+}
+
+but I'm not sure if this is the correct fix ?
+
+Or is the assumption simply that if things go wrong it
+is best to just leave everything as it us to avoid making
+things worse? Similar to how this will result in the
+runtime_error flag getting set disallowing further
+runtime-pm get()/put() calls ?
+
+###
+
+About the runtime_error flag I also noticed that if I enable
+the deliberately disabled regulator after first testing
+the error handling then subsequent attempts to stream from
+the sensor will fail because pm_runtime_get_sync() fails
+with -EINVAL due to the runtime_error flag. I guess this is
+deliberate and drivers can then e.g. queue a workqueue item
+to do a full reset and then clear the runtime_error after that?
+
+And it seems that the runtime-error also needs to be cleared
+followed by a successful pm-runtime get() + put() pair 
+to release the ACPI power-resources.
+
+So I guess that drivers where errors may be intermittent and
+the runtime-resume should be retried the next time, something
+like this should be used: ? 
+
+        ret = pm_runtime_resume_and_get(&sensor->client->dev);
+        if (ret) {
+                /* clear runtime error to retry resume the next time */
+                pm_runtime_set_suspended(&sensor->client->dev);
+                return ret;
+        }
+
+Regards,
+
+Hans
+
+
+
 
