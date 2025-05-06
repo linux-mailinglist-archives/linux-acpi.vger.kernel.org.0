@@ -1,132 +1,161 @@
-Return-Path: <linux-acpi+bounces-13495-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13496-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE878AABB76
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 09:41:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26757AABB02
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 09:32:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 918E45021D4
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 07:38:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D43FC7AA4A3
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 07:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3EB23372C;
-	Tue,  6 May 2025 06:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZIRkTWuY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15091AAA1C;
+	Tue,  6 May 2025 06:23:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E161F6FC5;
-	Tue,  6 May 2025 06:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC99119342F;
+	Tue,  6 May 2025 06:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.150.39.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746512400; cv=none; b=U8qldhBDD/x4a3GxK+Mm2nNIV+VyqG3tif8llBz8Cop5vPY/m/LyUR79vRgwe9Bp2QOcEexNWyNshCX7K8X9BIBzAkZAfayKRGSjKXapMgK4AffoiXQBkpAbJrW57GAHjE4/N2bP174DFWDkwn5YsP8m1Ppj39af0UwBbaw9V3o=
+	t=1746512608; cv=none; b=XPay8iXQLKVTIgLKtwsGz5+Z21XFXefv4HDtr9TgOI7H3RtX9St1oVPtLPvawuudMLeW6A4dhwL+RPxZHADb4r8NubxCiazRcse/m7C7hLCmxX72V43wBxVgncAllwiJz6FKZcspENEG8C5TZ/XruWaaEq47y5SpM8zIkaQojac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746512400; c=relaxed/simple;
-	bh=IaknPFqcP0N7YD+hkdGoIITlQSTa3FqWiaGwJ4M7xOc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q62u78yke+Jb7HoPIJT9y/SetEu0tjcjfqjhgFstE6Ie3LoxSRytYFTSGdjA+2dSqhyOFdI2kpPhKflb+AfyTl2J03ucem5EtMEfoYIe1kvP1ZKLStyycn/lSUS10JeQQaWH8n1iNxNggotXV511797AFYw+KHO4DOC3f75XzHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZIRkTWuY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE70C4CEEB;
-	Tue,  6 May 2025 06:19:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746512399;
-	bh=IaknPFqcP0N7YD+hkdGoIITlQSTa3FqWiaGwJ4M7xOc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZIRkTWuYiswfaOZhaA9mMbfIsTR/ZTklZu2Oe44c9xSTzghAJERx/3W0TESSm787U
-	 CLR3YOKZjtiYprxUIhVt6kY7tF0oYRoYxYxEpdimHmXA+u4dadKipt6WARl1mkRAU9
-	 DYMKW2mOUDdVzhaqf4Wxjsbw0BSWwQ66y/4ruC2EQ9FcSOQ6GdVOrAsYjqHoIEiGnQ
-	 rtslXz2wkE5IQdgaxJYYNss6cFHmKoW2P6+1getUhQIgG1bZT6T7bDzYUHGdGuJQJW
-	 R2M8i144n5z2YDH+umSx8sNUXhYwLbUKuUn2WZam2i7g8mOIGx5KAiU/OrXh/rGPk4
-	 3T3KMLHJBsjfQ==
-Date: Tue, 6 May 2025 06:19:57 +0000
-From: Wei Liu <wei.liu@kernel.org>
-To: Roman Kisel <romank@linux.microsoft.com>
-Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de,
-	catalin.marinas@arm.com, conor+dt@kernel.org,
-	dave.hansen@linux.intel.com, decui@microsoft.com,
-	haiyangz@microsoft.com, hpa@zytor.com, joey.gouly@arm.com,
-	krzk+dt@kernel.org, kw@linux.com, kys@microsoft.com,
-	lenb@kernel.org, lpieralisi@kernel.org,
-	manivannan.sadhasivam@linaro.org, mark.rutland@arm.com,
-	maz@kernel.org, mingo@redhat.com, oliver.upton@linux.dev,
-	rafael@kernel.org, robh@kernel.org, ssengar@linux.microsoft.com,
-	sudeep.holla@arm.com, suzuki.poulose@arm.com, tglx@linutronix.de,
-	wei.liu@kernel.org, will@kernel.org, yuzenghui@huawei.com,
-	linux-hyperv@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arch@vger.kernel.org,
-	x86@kernel.org, apais@microsoft.com, benhill@microsoft.com,
-	bperkins@microsoft.com, sunilmut@microsoft.com
-Subject: Re: [PATCH hyperv-next v9 00/11] arm64: hyperv: Support Virtual
- Trust Level Boot
-Message-ID: <aBmqDU_UjxIAx2lP@liuwe-devbox-ubuntu-v2.tail21d00.ts.net>
-References: <20250428210742.435282-1-romank@linux.microsoft.com>
+	s=arc-20240116; t=1746512608; c=relaxed/simple;
+	bh=RIkJJP+RXcI6vPURQiIkAusnMMfRzBhxynerb81vkFY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gh2jdc+R0ZLTYVaUXEqrxWWjXc8eJRV1kHnmc4Qw626lGV4EA9ISNZlmABi+egs3bXNe8X/uCW3lZN2NWCxHT13vbatrTqjcg9vYrFjDoF/jxh0CgixXzgxkLB1SB13Qm0kaEfUdM+XX5g8rnhjvZTNgNslNNItfh5w9NQbSG2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn; spf=pass smtp.mailfrom=phytium.com.cn; arc=none smtp.client-ip=129.150.39.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytium.com.cn
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+	by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwBXXmrVqhlonb+oAg--.27522S2;
+	Tue, 06 May 2025 14:23:17 +0800 (CST)
+Received: from phytium.com.cn (unknown [123.150.8.50])
+	by mail (Coremail) with SMTP id AQAAfwA3yyTJqhloDVAUAA--.24S3;
+	Tue, 06 May 2025 14:23:06 +0800 (CST)
+From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+To: Jonathan.Cameron@huawei.com,
+	dan.j.williams@intel.com,
+	rppt@kernel.org,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	akpm@linux-foundation.org,
+	alison.schofield@intel.com,
+	rrichter@amd.com,
+	bfaccini@nvidia.com,
+	haibo1.xu@intel.com,
+	david@redhat.com,
+	chenhuacai@kernel.org
+Cc: linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	chenbaozi@phytium.com.cn,
+	loongarch@lists.linux.dev,
+	Yuquan Wang <wangyuquan1236@phytium.com.cn>
+Subject: [PATCH v2] mm: numa_memblks: introduce numa_add_reserved_memblk
+Date: Tue,  6 May 2025 14:22:45 +0800
+Message-Id: <20250506062245.3816791-1-wangyuquan1236@phytium.com.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250428210742.435282-1-romank@linux.microsoft.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:AQAAfwA3yyTJqhloDVAUAA--.24S3
+X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQAQAWgRLLwIYwBJsb
+Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=wangyuquan
+	1236@phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjvJXoWxXFW7Ar4xuF4DCry5trWrKrg_yoW5uFyrpa
+	yUG3Z8XF4xGw1xGw1xuryj9w1S93WrKr1DJFZrGr43ZF4rWry2vr4UtFsxZF1DtrW7Zr1r
+	Wr4vyw15uw1rAF7anT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
+	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
+	UUUUU
 
-On Mon, Apr 28, 2025 at 02:07:31PM -0700, Roman Kisel wrote:
-> This patch set allows the Hyper-V code to boot on ARM64 inside a Virtual Trust
-> Level. These levels are a part of the Virtual Secure Mode documented in the
-> Top-Level Functional Specification available at
-> https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/tlfs/vsm.
-> 
-> The OpenHCL paravisor https://github.com/microsoft/openvmm/tree/main/openhcl
-> can serve as a practical application of these patches on ARM64.
-> 
-> For validation, I built kernels for the {x86_64, ARM64} x {VTL0, VTL2} set with
-> a small initrd embedded into the kernel and booted VMs managed by Hyper-V and
-> OpenVMM off of that.
-> 
-> Starting from V5, the patch series includes a non-functional change to KVM on
-> arm64 which I tested as well.
-> 
-> I've kept the Acked-by tags given by Arnd and Bjorn. These patches (1 and 11)
-> have changed very slightly since then (V5 and V6), no functional changes:
-> in patch 1, removed macro's in favour of functions as Marc suggested to get rid
-> of "sparse" warnings, and in patch 11, fixed building as a module. Please let me
-> know if I should have not kept the tags.
-> 
-[...]
-> Roman Kisel (11):
->   arm64: kvm, smccc: Introduce and use API for getting hypervisor UUID
+acpi_parse_cfmws() currently adds empty CFMWS ranges to numa_meminfo
+with the expectation that numa_cleanup_meminfo moves them to
+numa_reserved_meminfo. There is no need for that indirection when it is
+known in advance that these unpopulated ranges are meant for
+numa_reserved_meminfo in support of future hotplug / CXL provisioning.
 
-I notice there were review comments from multiple people on this patch.
-To the best of my knowledge, those comments have been addressed in this
-version, but I only had a cursory look and am by no means an expert on
-ARM64.
+Introduce and use numa_add_reserved_memblk() to add the empty CFMWS
+ranges directly.
 
-My assumption is Arnd's review is good enough for this patch to get
-merged.
+Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+---
 
-With that assumption, I have applied this whole series to hyperv-next.
+Changes in v2 (Thanks to Dan & Alison):
+- Use numa_add_reserved_memblk() to replace numa_add_memblk() in acpi_parse_cfmws()
+- Add comments to describe the usage of numa_add_reserved_memblk()
+- Updating the commit message to clarify the purpose of the patch
 
-ARM64 maintainers, please let me know if you have an objection -- I can
-drop the series and let Roman address further comments.
+By the way, "LoongArch: Introduce the numa_memblks conversion" is in linux-next.
 
-Thanks,
-Wei.
+ drivers/acpi/numa/srat.c     |  2 +-
+ include/linux/numa_memblks.h |  1 +
+ mm/numa_memblks.c            | 22 ++++++++++++++++++++++
+ 3 files changed, 24 insertions(+), 1 deletion(-)
 
->   arm64: hyperv: Use SMCCC to detect hypervisor presence
->   Drivers: hv: Enable VTL mode for arm64
->   Drivers: hv: Provide arch-neutral implementation of get_vtl()
->   arm64: hyperv: Initialize the Virtual Trust Level field
->   arm64, x86: hyperv: Report the VTL the system boots in
->   dt-bindings: microsoft,vmbus: Add interrupt and DMA coherence
->     properties
->   Drivers: hv: vmbus: Get the IRQ number from DeviceTree
->   Drivers: hv: vmbus: Introduce hv_get_vmbus_root_device()
->   ACPI: irq: Introduce acpi_get_gsi_dispatcher()
->   PCI: hv: Get vPCI MSI IRQ domain from DeviceTree
+diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+index 0a725e46d017..751774f0b4e5 100644
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -453,7 +453,7 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
+ 		return -EINVAL;
+ 	}
+ 
+-	if (numa_add_memblk(node, start, end) < 0) {
++	if (numa_add_reserved_memblk(node, start, end) < 0) {
+ 		/* CXL driver must handle the NUMA_NO_NODE case */
+ 		pr_warn("ACPI NUMA: Failed to add memblk for CFMWS node %d [mem %#llx-%#llx]\n",
+ 			node, start, end);
+diff --git a/include/linux/numa_memblks.h b/include/linux/numa_memblks.h
+index dd85613cdd86..991076cba7c5 100644
+--- a/include/linux/numa_memblks.h
++++ b/include/linux/numa_memblks.h
+@@ -22,6 +22,7 @@ struct numa_meminfo {
+ };
+ 
+ int __init numa_add_memblk(int nodeid, u64 start, u64 end);
++int __init numa_add_reserved_memblk(int nid, u64 start, u64 end);
+ void __init numa_remove_memblk_from(int idx, struct numa_meminfo *mi);
+ 
+ int __init numa_cleanup_meminfo(struct numa_meminfo *mi);
+diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+index ff4054f4334d..541a99c4071a 100644
+--- a/mm/numa_memblks.c
++++ b/mm/numa_memblks.c
+@@ -200,6 +200,28 @@ int __init numa_add_memblk(int nid, u64 start, u64 end)
+ 	return numa_add_memblk_to(nid, start, end, &numa_meminfo);
+ }
+ 
++/**
++ * numa_add_reserved_memblk - Add one numa_memblk to numa_reserved_meminfo
++ * @nid: NUMA node ID of the new memblk
++ * @start: Start address of the new memblk
++ * @end: End address of the new memblk
++ *
++ * Add a new memblk to the numa_reserved_meminfo.
++ *
++ * Usage Case: numa_cleanup_meminfo() reconciles all numa_memblk instances
++ * against memblock_type information and moves any that intersect reserved
++ * ranges to numa_reserved_meminfo. However, when that information is known
++ * ahead of time, we use numa_add_reserved_memblk() to add the numa_memblk
++ * to numa_reserved_meminfo directly.
++ *
++ * RETURNS:
++ * 0 on success, -errno on failure.
++ */
++int __init numa_add_reserved_memblk(int nid, u64 start, u64 end)
++{
++	return numa_add_memblk_to(nid, start, end, &numa_reserved_meminfo);
++}
++
+ /**
+  * numa_cleanup_meminfo - Cleanup a numa_meminfo
+  * @mi: numa_meminfo to clean up
+-- 
+2.34.1
 
 
