@@ -1,161 +1,276 @@
-Return-Path: <linux-acpi+bounces-13496-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13498-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26757AABB02
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 09:32:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB17AABB61
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 09:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D43FC7AA4A3
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 07:31:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A4A71C43C0E
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 07:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15091AAA1C;
-	Tue,  6 May 2025 06:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610E94B1E73;
+	Tue,  6 May 2025 07:26:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/AxhGZr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC99119342F;
-	Tue,  6 May 2025 06:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.150.39.64
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE134B1E51;
+	Tue,  6 May 2025 07:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746512608; cv=none; b=XPay8iXQLKVTIgLKtwsGz5+Z21XFXefv4HDtr9TgOI7H3RtX9St1oVPtLPvawuudMLeW6A4dhwL+RPxZHADb4r8NubxCiazRcse/m7C7hLCmxX72V43wBxVgncAllwiJz6FKZcspENEG8C5TZ/XruWaaEq47y5SpM8zIkaQojac=
+	t=1746516362; cv=none; b=rJaIwi2K/k+LIPd7BzlUJ0I0alrDFPnctWaGGUUVTSzQu/tRMo/GI+tn0mS6aanKbUsyvRaED/9hZA3vYkzT1jhPGJs9xucxDZqkOcdXGV9wQg1AoRzDA4ZhMK1gH0zjvx/FeJ8vSS6N8oqjG2CcY+bsq0VddSCMoZKdk67+F1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746512608; c=relaxed/simple;
-	bh=RIkJJP+RXcI6vPURQiIkAusnMMfRzBhxynerb81vkFY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gh2jdc+R0ZLTYVaUXEqrxWWjXc8eJRV1kHnmc4Qw626lGV4EA9ISNZlmABi+egs3bXNe8X/uCW3lZN2NWCxHT13vbatrTqjcg9vYrFjDoF/jxh0CgixXzgxkLB1SB13Qm0kaEfUdM+XX5g8rnhjvZTNgNslNNItfh5w9NQbSG2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn; spf=pass smtp.mailfrom=phytium.com.cn; arc=none smtp.client-ip=129.150.39.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phytium.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytium.com.cn
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
-	by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwBXXmrVqhlonb+oAg--.27522S2;
-	Tue, 06 May 2025 14:23:17 +0800 (CST)
-Received: from phytium.com.cn (unknown [123.150.8.50])
-	by mail (Coremail) with SMTP id AQAAfwA3yyTJqhloDVAUAA--.24S3;
-	Tue, 06 May 2025 14:23:06 +0800 (CST)
-From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-To: Jonathan.Cameron@huawei.com,
-	dan.j.williams@intel.com,
-	rppt@kernel.org,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	akpm@linux-foundation.org,
-	alison.schofield@intel.com,
-	rrichter@amd.com,
-	bfaccini@nvidia.com,
-	haibo1.xu@intel.com,
-	david@redhat.com,
-	chenhuacai@kernel.org
-Cc: linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	chenbaozi@phytium.com.cn,
-	loongarch@lists.linux.dev,
-	Yuquan Wang <wangyuquan1236@phytium.com.cn>
-Subject: [PATCH v2] mm: numa_memblks: introduce numa_add_reserved_memblk
-Date: Tue,  6 May 2025 14:22:45 +0800
-Message-Id: <20250506062245.3816791-1-wangyuquan1236@phytium.com.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1746516362; c=relaxed/simple;
+	bh=8Oc0xkyq6v9wmSnKpRvRRCYkyApCq0GyR4eU9o97d10=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g8j2Hue3fKcehvohxZm/GWykTDm2Xa79GsRMPtpIRtgh4Cgj6AgasnMKSe+5O2tgWjJsJ42I/a2UbytH4u8t4c0IpaHYrf3t/s+EhdsCtqIC2O1hf27LVFX3z9dIe9J1yOA+AwenQYTmkLf76TlLwoxYS45ShHvdEIH682an1O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/AxhGZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D75C4CEE4;
+	Tue,  6 May 2025 07:26:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746516361;
+	bh=8Oc0xkyq6v9wmSnKpRvRRCYkyApCq0GyR4eU9o97d10=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n/AxhGZrOHtwo6+F1w7BzO0PPWzgrskAu4Ole1I7TUFlEmjQhooCVGCw5v5XWU4EH
+	 NLxsf0XTfRLPP09itezWit/lyooHaeTgYUosKH+jRwjNW2FkvH8Y18UDp54u3g9Daa
+	 8KebqO6mBuIJjOY04DFXzVCSYhurYkadfxe/f3eh+Rpx0FQiHEuAbHEIceYguo7Le3
+	 Un2reHfZNb1xSXzYgA3/DXnIBYNUyt0H40xjT/vvQMt9qX2icNmQLkb37VJbzKq38l
+	 YKSQzRFyB6fBDKgM6Cp/HM3UFf28alfBpk+m92URSacW14zjFeqza4RRXgwX56mJLv
+	 7JsHQFDlzsi/w==
+Date: Tue, 6 May 2025 09:25:59 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
+	Michael Kelley <mhklinux@outlook.com>, devicetree@vger.kernel.org, 
+	Saurabh Sengar <ssengar@linux.microsoft.com>, Chris Oo <cho@microsoft.com>, linux-hyperv@vger.kernel.org, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"Ravi V. Shankar" <ravi.v.shankar@intel.com>, Ricardo Neri <ricardo.neri@intel.com>
+Subject: Re: [PATCH v3 04/13] dt-bindings: x86: Add CPU bindings for x86
+Message-ID: <20250506-alluring-beaver-of-modernism-65ff8a@kuoka>
+References: <20250503191515.24041-1-ricardo.neri-calderon@linux.intel.com>
+ <20250503191515.24041-5-ricardo.neri-calderon@linux.intel.com>
+ <20250504-happy-spoonbill-of-radiance-3b9fec@kuoka>
+ <20250506045235.GB25533@ranerica-svr.sc.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAfwA3yyTJqhloDVAUAA--.24S3
-X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQAQAWgRLLwIYwBJsb
-Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=wangyuquan
-	1236@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoWxXFW7Ar4xuF4DCry5trWrKrg_yoW5uFyrpa
-	yUG3Z8XF4xGw1xGw1xuryj9w1S93WrKr1DJFZrGr43ZF4rWry2vr4UtFsxZF1DtrW7Zr1r
-	Wr4vyw15uw1rAF7anT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-	DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
-	UUUUU
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250506045235.GB25533@ranerica-svr.sc.intel.com>
 
-acpi_parse_cfmws() currently adds empty CFMWS ranges to numa_meminfo
-with the expectation that numa_cleanup_meminfo moves them to
-numa_reserved_meminfo. There is no need for that indirection when it is
-known in advance that these unpopulated ranges are meant for
-numa_reserved_meminfo in support of future hotplug / CXL provisioning.
+On Mon, May 05, 2025 at 09:52:35PM GMT, Ricardo Neri wrote:
+> On Sun, May 04, 2025 at 06:45:59PM +0200, Krzysztof Kozlowski wrote:
+> > On Sat, May 03, 2025 at 12:15:06PM GMT, Ricardo Neri wrote:
+> > > Add bindings for CPUs in x86 architecture. Start by defining the `reg` and
+> > 
+> > What for?
+> 
+> Thank you for your quick feedback, Krzysztof!
+> 
+> Do you mean for what reason I want to start bindings for x86 CPUs? Or only
 
-Introduce and use numa_add_reserved_memblk() to add the empty CFMWS
-ranges directly.
+Yes. For which devices, what purpose.
 
-Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
----
+> the `reg` property? If the former, it is to add an enable-method property to
+> x86 CPUs. If the latter, is to show the relationship between APIC and `reg`.
+> 
+> > 
+> > > `enable-method` properties and their relationship to x86 APIC ID and the
+> > > available mechanisms to boot secondary CPUs.
+> > > 
+> > > Start defining bindings for Intel processors. Bindings for other vendors
+> > > can be added later as needed.
+> > > 
+> > > Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+> > > ---
+> > 
+> > Not really tested so only limited review follows.
+> 
+> Sorry, I ran make dt_binding_check but only on this schema. I missed the
+> reported error.
+> 
+> > 
+> > >  .../devicetree/bindings/x86/cpus.yaml         | 80 +++++++++++++++++++
+> > >  1 file changed, 80 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/x86/cpus.yaml
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/x86/cpus.yaml b/Documentation/devicetree/bindings/x86/cpus.yaml
+> > > new file mode 100644
+> > > index 000000000000..108b3ad64aea
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/x86/cpus.yaml
+> > > @@ -0,0 +1,80 @@
+> > > +# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/x86/cpus.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: x86 CPUs
+> > > +
+> > > +maintainers:
+> > > +  - Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+> > > +
+> > > +description: |
+> > > +  Description of x86 CPUs in a system through the "cpus" node.
+> > > +
+> > > +  Detailed information about the CPU architecture can be found in the Intel
+> > > +  Software Developer's Manual:
+> > > +    https://intel.com/sdm
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    enum:
+> > > +      - intel,x86
+> > 
+> > That's architecture, not a CPU. CPUs are like 80286, 80386, so that's
+> > not even specific instruction set. I don't get what you need it for.
+> 
+> Am I to understand the the `compatible` property is not needed if the
+> bindings apply to any x86 CPU?
 
-Changes in v2 (Thanks to Dan & Alison):
-- Use numa_add_reserved_memblk() to replace numa_add_memblk() in acpi_parse_cfmws()
-- Add comments to describe the usage of numa_add_reserved_memblk()
-- Updating the commit message to clarify the purpose of the patch
+Every device needs compatible. Its meaning is explained:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#compatible
 
-By the way, "LoongArch: Introduce the numa_memblks conversion" is in linux-next.
+If you add here a device representing CPU, then look at existing
+bindings for CPUs how they do it.
 
- drivers/acpi/numa/srat.c     |  2 +-
- include/linux/numa_memblks.h |  1 +
- mm/numa_memblks.c            | 22 ++++++++++++++++++++++
- 3 files changed, 24 insertions(+), 1 deletion(-)
+It again feels like you add DT for platform which is not a real thing.
+If you use DT, you do not get different rules, therefore read all
+standard guides and tutorials (there were many, quite comprehensive).
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 0a725e46d017..751774f0b4e5 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -453,7 +453,7 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
- 		return -EINVAL;
- 	}
- 
--	if (numa_add_memblk(node, start, end) < 0) {
-+	if (numa_add_reserved_memblk(node, start, end) < 0) {
- 		/* CXL driver must handle the NUMA_NO_NODE case */
- 		pr_warn("ACPI NUMA: Failed to add memblk for CFMWS node %d [mem %#llx-%#llx]\n",
- 			node, start, end);
-diff --git a/include/linux/numa_memblks.h b/include/linux/numa_memblks.h
-index dd85613cdd86..991076cba7c5 100644
---- a/include/linux/numa_memblks.h
-+++ b/include/linux/numa_memblks.h
-@@ -22,6 +22,7 @@ struct numa_meminfo {
- };
- 
- int __init numa_add_memblk(int nodeid, u64 start, u64 end);
-+int __init numa_add_reserved_memblk(int nid, u64 start, u64 end);
- void __init numa_remove_memblk_from(int idx, struct numa_meminfo *mi);
- 
- int __init numa_cleanup_meminfo(struct numa_meminfo *mi);
-diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-index ff4054f4334d..541a99c4071a 100644
---- a/mm/numa_memblks.c
-+++ b/mm/numa_memblks.c
-@@ -200,6 +200,28 @@ int __init numa_add_memblk(int nid, u64 start, u64 end)
- 	return numa_add_memblk_to(nid, start, end, &numa_meminfo);
- }
- 
-+/**
-+ * numa_add_reserved_memblk - Add one numa_memblk to numa_reserved_meminfo
-+ * @nid: NUMA node ID of the new memblk
-+ * @start: Start address of the new memblk
-+ * @end: End address of the new memblk
-+ *
-+ * Add a new memblk to the numa_reserved_meminfo.
-+ *
-+ * Usage Case: numa_cleanup_meminfo() reconciles all numa_memblk instances
-+ * against memblock_type information and moves any that intersect reserved
-+ * ranges to numa_reserved_meminfo. However, when that information is known
-+ * ahead of time, we use numa_add_reserved_memblk() to add the numa_memblk
-+ * to numa_reserved_meminfo directly.
-+ *
-+ * RETURNS:
-+ * 0 on success, -errno on failure.
-+ */
-+int __init numa_add_reserved_memblk(int nid, u64 start, u64 end)
-+{
-+	return numa_add_memblk_to(nid, start, end, &numa_reserved_meminfo);
-+}
-+
- /**
-  * numa_cleanup_meminfo - Cleanup a numa_meminfo
-  * @mi: numa_meminfo to clean up
--- 
-2.34.1
+
+> 
+> > 
+> > > +
+> > > +  reg:
+> > 
+> > Missing constraints.
+> 
+> I could add minItems. For maxItems, there is no limit to the number of
+> threads.
+
+I am pretty sure that any given CPU, e.g. 80486 has a fixed number of
+threads...
+
+> 
+> > 
+> > > +    description: |
+> > 
+> > Do not need '|' unless you need to preserve formatting.
+> 
+> OK.
+> 
+> > 
+> > > +      Local APIC ID of the CPU. If the CPU has more than one execution thread,
+> > > +      then the property is an array with one element per thread.
+> > > +
+> > > +  enable-method:
+> > > +    $ref: /schemas/types.yaml#/definitions/string
+> > > +    description: |
+> > > +      The method used to wake up secondary CPUs. This property is not needed if
+> > > +      the secondary processors are booted using INIT assert, de-assert followed
+> > > +      by Start-Up IPI messages as described in the Volume 3, Section 11.4 of
+> > > +      Intel Software Developer's Manual.
+> > > +
+> > > +      It is also optional for the bootstrap CPU.
+> > > +
+> > > +    oneOf:
+> > 
+> > I see only one entry, so didn't you want an enum?
+> 
+> Indeed, enum would be more appropriate.
+> 
+> > 
+> > > +      - items:
+> > 
+> > Not a list
+> > 
+> > > +          - const: intel,wakeup-mailbox
+> > 
+> > So every vendor is supposed to come with different name for the same
+> > feature? Or is wakeup-mailnox really intel specific, but then specific
+> > to which processors?
+> 
+> It would not be necessary for every vendor to provide a different name for
+> the same feature. I saw, however that the Devicetree specification requires
+> a [vendor],[method] stringlist.
+
+Indeed, it's fine then.
+
+> 
+> Also, platform firmware for any processor could implement the wakeup
+> mailbox.
+> 
+> > 
+> > 
+> > > +            description: |
+> > > +              CPUs are woken up using the mailbox mechanism. The platform
+> > > +              firmware boots the secondary CPUs and puts them in a state
+> > > +              to check the mailbox for a wakeup command from the operating
+> > > +              system.
+> > > +
+> > > +required:
+> > > +  - reg
+> > > +  - compatible
+> > > +
+> > > +unevaluatedProperties: false
+> > 
+> > Missing ref in top-level or this is supposed to be additionalProps. See
+> > example-schema.
+> 
+> I will check.
+> 
+> > 
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    /*
+> > > +     * A system with two CPUs. cpu@0 is the bootstrap CPU and its status is
+> > > +     * "okay". It does not have the enable-method property. cpu@1 is a
+> > > +     * secondary CPU. Its status is "disabled" and defines the enable-method
+> > > +     * property.
+> > > +     */
+> > > +
+> > > +    cpus {
+> > > +      #address-cells = <1>;
+> > > +      #size-cells = <0>;
+> > > +
+> > > +      cpu@0 {
+> > > +        reg = <0x0 0x1>;
+> > > +        compatible = "intel,x86";
+> > > +        status = "okay";
+> > 
+> > Drop
+> 
+> I will drop status = "okay"
+> 
+> > 
+> > > +      };
+> > > +
+> > > +      cpu@1 {
+> > > +        reg = <0x0 0x1>;
+> > > +        compatible = "intel,x86";
+> > > +        status = "disabled";
+> > 
+> > Why?
+> 
+> Because this is a secondary CPU that the operating system will enable using
+> the method specified in the `enable-method` property.
+
+OK, so this was intentional to express it is in quiescent state.
+
+Best regards,
+Krzysztof
 
 
