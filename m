@@ -1,157 +1,150 @@
-Return-Path: <linux-acpi+bounces-13500-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13501-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC77AABD49
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 10:32:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E5DAAC589
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 15:16:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A30BA7B1205
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 08:31:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B83A91BA0EA4
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 13:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968E519F115;
-	Tue,  6 May 2025 08:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29E221B9DE;
+	Tue,  6 May 2025 13:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TcLQQRe0"
+	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="bob6YepX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE52221289;
-	Tue,  6 May 2025 08:31:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B3C21773D;
+	Tue,  6 May 2025 13:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746520306; cv=none; b=QurPVvy04UZ+d/zq9TyZOb6AbwWIZsbSj0c9m8UaxGu7xaGUzLpOzHGNUwbL+1IFS2BM5TGPmH6N5+cnO9rLq5AVc+mWG9BEv6V8dvt85N0DBE+5Cq8yshb05AkK6TaFYTJ1lzm27d7sDTaf/64BrVT1IUrxYgsCK1CMrJ5AVqk=
+	t=1746537190; cv=none; b=U51dffdaLG5gL95KSftsBB41RDZdUaRxmOQaLRrp++j7daB6ufGCOCHoRQgfI0BIUqDA0xip3brgTwoXkm5Hh3OWCU9uvWVE21PCYJgcBfOJn5vCF1X+M/82yWM9HMFaICLXk5uro/SJFCaPJFZfRIkY0EixjT/RhzHaA59+7ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746520306; c=relaxed/simple;
-	bh=w77jzrrlgkBCO3XFMYGrCyAkdws+QJdfrjJ5d2ZqSdI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=iVt8eTHUr2p867QB2MaAnqrMQKfcdCH/VTsS87G/9DkMY2YHI3Elaih1JpIDMNPseUZHfp7jlrgq47jh33bTdhEoVT71QeLOzVk6dh8s1BCz8oJKVOscV+CqWnjuBLErztwOoyPLdpZxA3bUNxQtvRl3oXqVAixSlHSkd4W2a1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TcLQQRe0; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54619Bqa006484;
-	Tue, 6 May 2025 08:31:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	zveFIEvzzEGg+UEVOqZmxBcPnjh2BP/NBRPkwAviQfU=; b=TcLQQRe0sGPf3ahQ
-	N0uFSurxpChu88u9axyzPyFNDUnzar4tM2fmzcTpflBS+7Bem/bN0PGZXZX/nl+D
-	i7JrzgIb3/2fCRYk/7hbaDMWLFWjY+2i8YTDTrQwE8yNBLxgX1cgmD+A3nkDAgpH
-	Prc/D1ECaMqEqmlbEIkh1GZmOzsLfQe1kbVwXJNuD7Qw9Ax8A7imK5JavskrZNrC
-	Fion55lB6bkOZAM1gjiDzxDfOnX0u9MLbOqGfTfek7b2SCpAcx7jzRVoIa4sBvqg
-	/x/4FE2dgXPvtv8eOBB9HsmW2NurpUMbQgEmQgF35nxMAEA/PYhjGdjSVakwUYY3
-	BJGSzA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46f8gw14wg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 May 2025 08:31:17 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5468VGsw021494
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 6 May 2025 08:31:16 GMT
-Received: from [10.239.132.50] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 6 May 2025
- 01:31:09 -0700
-Message-ID: <b5c04110-c899-4aec-85bf-9978d80bf4ac@quicinc.com>
-Date: Tue, 6 May 2025 16:30:51 +0800
+	s=arc-20240116; t=1746537190; c=relaxed/simple;
+	bh=YMI0vj0OrGpE/eP6t8dJ6R2e/dntMlSP+AkMjMPh4h4=;
+	h=From:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=NgJjdsxdJHiTWiqfBXQhi+WrO4GKjfs5snC0g+E4LgzcC/LRinDOx+EfW1cpH9tRufZSa6gNYbt1E/LOVIWmmM1m603y5woZBJK6wKpeEKPfJ8qG3D4HozuNcx2hkz7EOwLRYjEmKeDk7CGKxARHQMC+XDrx6LWil67xYCSErWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=bob6YepX; arc=none smtp.client-ip=72.21.196.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1746537189; x=1778073189;
+  h=from:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eroNId8QJzKeQKmRo8q0ozQ4Sy0oITvhszR0rqprBLQ=;
+  b=bob6YepXO5zQMZ9M8G1aoivh0yzGLDI841vQ0llDoypVSIq+M7HYhIES
+   87+uJeb9puJlZ35mw84aIJ9DgWHgLJjZuSilZlDfC2M8O1FREwp4i3anU
+   +k04HtjrXClbsuzfSXReRpEYAee7GZaNjdoOCF7vCNitHPcQL8wzwn9Dj
+   Y=;
+X-IronPort-AV: E=Sophos;i="6.15,266,1739836800"; 
+   d="scan'208";a="489596055"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 13:13:05 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [10.0.17.79:30777]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.36.85:2525] with esmtp (Farcaster)
+ id 11723db5-b7e5-4450-80c2-cb2f93ea780e; Tue, 6 May 2025 13:13:02 +0000 (UTC)
+X-Farcaster-Flow-ID: 11723db5-b7e5-4450-80c2-cb2f93ea780e
+Received: from EX19D008EUC003.ant.amazon.com (10.252.51.205) by
+ EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 6 May 2025 13:13:02 +0000
+Received: from EX19D008EUC001.ant.amazon.com (10.252.51.165) by
+ EX19D008EUC003.ant.amazon.com (10.252.51.205) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 6 May 2025 13:13:02 +0000
+Received: from EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1]) by
+ EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1%3]) with mapi id
+ 15.02.1544.014; Tue, 6 May 2025 13:13:02 +0000
+From: "Heyne, Maximilian" <mheyne@amazon.de>
+CC: "Heyne, Maximilian" <mheyne@amazon.de>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
+	<lenb@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, Ard Biesheuvel
+	<ardb@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH] ACPI/PPTT: fix off-by-one error
+Thread-Topic: [PATCH] ACPI/PPTT: fix off-by-one error
+Thread-Index: AQHbvoiY1LpDnn/Xs0e1Rmh//GxC4g==
+Date: Tue, 6 May 2025 13:13:02 +0000
+Message-ID: <20250506-draco-taped-15f475cd@mheyne-amazon>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] firmware: SDEI: Allow sdei initialization without
- ACPI_APEI_GHES
-To: Will Deacon <will@kernel.org>
-CC: <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
-        <tony.luck@intel.com>, <bp@alien8.de>, <xueshuai@linux.alibaba.com>,
-        <quic_aiquny@quicinc.com>, <quic_satyap@quicinc.com>,
-        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <kernel@quicinc.com>,
-        <kernel@oss.qualcomm.com>
-References: <20250428095623.3220369-1-quic_hyiwei@quicinc.com>
- <20250430102440.GA27570@willie-the-truck>
-Content-Language: en-US
-From: Huang Yiwei <quic_hyiwei@quicinc.com>
-In-Reply-To: <20250430102440.GA27570@willie-the-truck>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: yLN99YlpcPugfz7KBctlzqUlkGUI_Uw4
-X-Authority-Analysis: v=2.4 cv=fdSty1QF c=1 sm=1 tr=0 ts=6819c8d5 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10
- a=BcfgLWrW9SB--Ltqr6oA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: yLN99YlpcPugfz7KBctlzqUlkGUI_Uw4
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA2MDA4MCBTYWx0ZWRfXzz4kvG7TadUO
- 8Pm3cmBF0uj9qvFT1ILJoCLh4AUj4YqjKjjX9/xEqpTLcn6o3N1xq67NU782QGt9AQ1Beuj17Xe
- zcAxMIU/k4Kaz+kxP+DNjo7UU4GdgkleuNPtvRd2onx3hnW6xu9zW4d2LPNFfA59PCn4QZXPvEj
- JfnDL4FBZ26DEiHataljfErO4ALUZm9kgiaBLNypcL1fSW909cscP9sKYOv/ookwV1IHobmL3S2
- paAqTp1IJTX+91Bun4hYzZkKPEFBh2fjS+YCVZAXv4/UQ/3jp3HrxqyJUTfQsUJUqYJbp54JNqn
- GOXXV2KnuSp+6VZchcEHsqZFWQp8mtQwySSqwSZ/kC6EVzXsxWBqXAaVrz0KA1HGHtzD2Ubv0bz
- n6btC37jWJ8wubpFU5SkPgtCq8WtwXI2pP0CJ4tOMNbhXhVKefwStlNFLinGl/kWLs7A8PCk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-06_04,2025-05-05_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0 malwarescore=0 clxscore=1011 bulkscore=0
- lowpriorityscore=0 priorityscore=1501 mlxlogscore=740 impostorscore=0
- spamscore=0 mlxscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2504070000 definitions=main-2505060080
+Content-Transfer-Encoding: quoted-printable
 
-> On Mon, Apr 28, 2025 at 05:56:23PM +0800, Huang Yiwei wrote:
->> SDEI usually initialize with the ACPI table, but on platforms where
->> ACPI is not used, the SDEI feature can still be used to handle
->> specific firmware calls or other customized purposes. Therefore, it
->> ......
->>   	}
->> +
->> +	return ret;
->>   }
->> +#ifndef CONFIG_ACPI_APEI_GHES
->> +subsys_initcall_sync(sdei_init);
->> +#endif
-> 
-> Using an initcall purely for the non-ACPI case feels like a hack to me.
+Commit 7ab4f0e37a0f ("ACPI PPTT: Fix coding mistakes in a couple of
+sizeof() calls") corrects the processer entry size but unmasked a longer
+standing bug where the last entry in the structure can get skipped due
+to an off-by-one mistake if the last entry ends exactly at the end of
+the ACPI subtable.
 
-Yeah, I agree with you actually, but to address the dependency chain 
-issue highlighted in commit dc4e8c07e9e2 ("ACPI: APEI: explicit init of 
-HEST and GHES in acpi_init()"), where the following relationships need 
-to be maintained:
+The error manifests for instance on EC2 Graviton Metal instances with
 
-     ghes_init() => acpi_hest_init() => acpi_bus_init() => acpi_init()
-     ghes_init() => sdei_init()
+  ACPI PPTT: PPTT table found, but unable to locate core 63 (63)
+  [...]
+  ACPI: SPE must be homogeneous
 
-> Could we instead just call sdei_init() from the arch code (and remove
-> the call from acpi_ghes_init()) so that the platform device is
-> registered at the same time, regardless of the firmware?
-> 
-> Will
+Fixes: 2bd00bcd73e5 ("ACPI/PPTT: Add Processor Properties Topology Table pa=
+rsing")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+---
+ drivers/acpi/pptt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I propose splitting sdei_init() into two separate functions: sdei_init() 
-and acpi_sdei_init(). This way, sdei_init() will be called by 
-arch_initcall and will only initialize the platform driver, while 
-acpi_sdei_init() will initialize the device from acpi_ghes_init() when 
-ACPI is ready. This approach should help maintain the dependency chain 
-without causing any breaks.
+diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+index f73ce6e13065d..4364da90902e5 100644
+--- a/drivers/acpi/pptt.c
++++ b/drivers/acpi/pptt.c
+@@ -231,7 +231,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_header=
+ *table_hdr,
+ 			     sizeof(struct acpi_table_pptt));
+ 	proc_sz =3D sizeof(struct acpi_pptt_processor);
+ =
 
-     sdei_init --> platform_driver_register
-     arch_initcall(sdei_init)
+-	while ((unsigned long)entry + proc_sz < table_end) {
++	while ((unsigned long)entry + proc_sz <=3D table_end) {
+ 		cpu_node =3D (struct acpi_pptt_processor *)entry;
+ 		if (entry->type =3D=3D ACPI_PPTT_TYPE_PROCESSOR &&
+ 		    cpu_node->parent =3D=3D node_entry)
+@@ -273,7 +273,7 @@ static struct acpi_pptt_processor *acpi_find_processor_=
+node(struct acpi_table_he
+ 	proc_sz =3D sizeof(struct acpi_pptt_processor);
+ =
 
-     acpi_init
-         acpi_bus_init();
-         acpi_hest_init();
-         acpi_ghes_init();
-             acpi_sdei_init(); --> platform_device_register_simple
-     subsys_initcall(acpi_init);
+ 	/* find the processor structure associated with this cpuid */
+-	while ((unsigned long)entry + proc_sz < table_end) {
++	while ((unsigned long)entry + proc_sz <=3D table_end) {
+ 		cpu_node =3D (struct acpi_pptt_processor *)entry;
+ =
+
+ 		if (entry->length =3D=3D 0) {
+-- =
+
+2.47.1
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
 
 
