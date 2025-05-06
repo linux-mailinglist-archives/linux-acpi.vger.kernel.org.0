@@ -1,43 +1,43 @@
-Return-Path: <linux-acpi+bounces-13510-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13511-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0681FAAD049
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 23:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 579AFAAD04C
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 23:53:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C96B9A0E2A
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 21:49:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1259D3BC6EC
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 May 2025 21:49:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CBDF23D29F;
-	Tue,  6 May 2025 21:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897F823E33D;
+	Tue,  6 May 2025 21:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="S3Ge2vOr"
+	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="bBbtNLQ8"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2109.outbound.protection.outlook.com [40.107.100.109])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A3F23BD1F;
-	Tue,  6 May 2025 21:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F511221730;
+	Tue,  6 May 2025 21:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.109
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746567515; cv=fail; b=oS6mOyb14YfFDgM8wXIhgy6kwohoo796uC6KOBS3sZhg962ec+/cLeZxNMuoyn26CXJD1uQ/nvBBQHKl27bRdKwsBTuGzqZTw8t8qdX5gldmZ7luQy7vPa99X+tI2TJGDJ9Wwow9sjpRQLJNDVF97rVZckJdAad3mPDlo6fRVes=
+	t=1746567517; cv=fail; b=k5e0/DhTW/U7GToqCik29F+G2KybvImSMNB2ijGBse+b4W2yIHSbtpChlY6ZUJwkRLAwDLBRh/VOjSr9bmXNBpBZh5Ie9iw5KpdzVfEO4A6ecZ1lh9TT5eSgfBS7MFrPcuiq5ddJ72icu7kZ2IgPoyEy2K682wWqIAW1vhuv5kw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746567515; c=relaxed/simple;
-	bh=rLfjSCtgS+mI8IedzfcZcYNnB1saXqE72EPcM1SNaEI=;
+	s=arc-20240116; t=1746567517; c=relaxed/simple;
+	bh=qbj2ic9DFcR95UlSmV/SlbkwSozq4Aypl7Hj29ek1xs=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=l8lBrt9wYz6w9nHc9xXyk1o4He8tFCI2G3M6CgtydTGQhB6wzchGjUuzzDWbdMXxiI2gb3+RTD7kctcEb2k6kxRBRyFQtCD2aV/1L1ILepkCz64cQCHNsTl9Lh0yvkpQ6R/U3JZRACjCF5B+CgTncyTNBwnInHypT7jKTDm5Ka4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=S3Ge2vOr; arc=fail smtp.client-ip=40.107.100.109
+	 Content-Type:MIME-Version; b=Xd02PG3OcZTTkdwYqSWtxAixBVIhngxeQwwNpi4+C9wglQLP3DArf7AuD6pC/rczN/Ir48X+QFNPHs43PKRS7y7HgeIcZPICZIP086UGCW+R85H0YFnea3PIzLUmA8cCHpkklbuvy+F2jgXdl0KKibUVWqzTXCr9ytSaQKzDv10=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=bBbtNLQ8; arc=fail smtp.client-ip=40.107.100.109
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qrFazEjwpw7EVTcOjpveQjyGsXLdKh3MVdE+g0FQssvxFbteb/Qxa5/e0x8Ypy/hgdRhNInXltXy3Bv7bioXgx9WaV1UkBs9YKpoolRv0x7sPIfmtRRkncsiFz5ntzGWJJ8bvG0DetnQP6BXV4NJhbFysum80NjfnQ+nGQHqZJgjXK+w7TCceA5aaru6xs+X11nl1mQxoHStpmOaJ1r27DTN5KMSgsP8TSWWZw6XPpCO3O4HbLmHUEt4bxAatbJSBOSEWA3D1+XY0elyXwzFEwSUyp+/MDXkV3HLCp8NwuWV+HQUi/eV+6jU6eX6DsyM4q+E4gVRJvZz2U/pjEiQ5w==
+ b=FLiYlyt+7wfwtoxJ8W464yWDHUCzkXpW7UXDJ0otEmDZFw7uaQuRT+HhkO6uaIdh46z3RwtLHXOM1qLS2jzgzL+tqUkTQsa+w+RniwpJ0sAXknjF9EoyJ2U5Gdu3TH8qZdnxxlMIaySJV83PFygkc0vyOPytR5lpFtVlFNhUW6zQX3iirUSxeDPgkLUEXeaEShDP5k2d9kNHNX9cChgmzlIcbREkrfWm/NvAeigAnUPzwUht87InkNaEhul4HMwKCd/9UzYk+AuOX6lXRTMHVKVZvWwj++W2jPsOsf/69WiGJa6hx7fTDLaYUO4u4DAT7EBXT/b1OBEqsMO/HfTY2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pVYmWsKR+bi8SXlglxzrFGZ0xl76OQEVKxg9417i0RU=;
- b=J2y/bDGxhQnykEW7zYU+G0N3DoXbXAuMNL0cdIqKBHDyrtBGidv8ZIDb+HrfhpVRVButUj7AyDPYnxGlw4ePQjXCgYBBN/CUzk5saUVaeykGjOTTK3kdHZTUwHGAicaVbleojAWt3EFxHcuAxzmriUSQHPX1WKbhhW9fctErqbnwh19RNTQj2W4PdDrmIvslkwFdmAq4DW3tllyFoPeKMz/Fd6UYah6MFVOvVLCsZQIHDblVkFXtlCh6g798emXLFI9K46AZAwHQhE02kSB0SNqV5MLD/dOZWCqmjmjPtRQHQUoINrSm3Esb5jzFgrXTlkqIzsLTfUfXs5QpgMSG+g==
+ bh=aIAXxYe2m9bayZnYl/SBExfOG0ZvM3VquWhAHr7BmGI=;
+ b=vCvpln1Em9ae/5VS5e3FVZs+wAFSAxvkNyPuxikFXoot5+yvYNrju9wFsdCC+tMDWwD7Lss4x/UeGGPyfJFWcciRrhA003vCXne1DQgq+PKLWIoK+0WEGzyPC9WgsnTGe5pTxiax1Aa55iK/Bfed+EXvZoHlHByph0z9Vk15dW5IVqRZDgbTQXPjNLEBsk80PHwkFqFeOMTyoIOkJRRBxhOC6H+ZDwGCz4oWOKy1ivOHwpT5YPowXMCJstUfxll5hU5QXPXwpQIWEdH2W4Pk/NpJqC6iZIF2mRUwPIaeKYW9c5AkFlx7ErU0geIeFXuvLMYJMC9LFpj4Pl+cY7af/g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
  header.from=os.amperecomputing.com; dkim=pass
@@ -45,18 +45,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=os.amperecomputing.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pVYmWsKR+bi8SXlglxzrFGZ0xl76OQEVKxg9417i0RU=;
- b=S3Ge2vOrAY1yJNTQBes/ZAonSIvxFkpEjs3i+VBf6/O4puTBBCUfzwtKWX+0HXviWC3H/DW5NeRJ7fEHjS2LMMmhutI5567nVjznkaPrKeaWMOQCbDeOoapEFWZfGQ4JBnxEss7CDlKsdFdmHC38IKt5a+r9RvHXCnA7vkKxsbw=
+ bh=aIAXxYe2m9bayZnYl/SBExfOG0ZvM3VquWhAHr7BmGI=;
+ b=bBbtNLQ81veNwMZAhdvxBglRRz25LRtEE1hm4oAbMAos8eXbX2ykl2yjdP4X8T/8p2w9/M9lwo0o/n9wMuHTAknSiV8sxWs7GkcibFnChx066a7wZSFurk3WJ7/7ifuGDlUZaMUKDBtmmDdbUAjVMZHBA7Qgt1xnz0h+z3saTzQ=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
 Received: from SN7PR01MB7903.prod.exchangelabs.com (2603:10b6:806:34f::17) by
  DS1PR01MB8717.prod.exchangelabs.com (2603:10b6:8:214::12) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8699.26; Tue, 6 May 2025 21:38:29 +0000
+ 15.20.8699.26; Tue, 6 May 2025 21:38:31 +0000
 Received: from SN7PR01MB7903.prod.exchangelabs.com
  ([fe80::cf45:9855:a64e:382f]) by SN7PR01MB7903.prod.exchangelabs.com
  ([fe80::cf45:9855:a64e:382f%6]) with mapi id 15.20.8699.022; Tue, 6 May 2025
- 21:38:29 +0000
+ 21:38:31 +0000
 From: Zaid Alali <zaidal@os.amperecomputing.com>
 To: rafael@kernel.org,
 	lenb@kernel.org,
@@ -75,9 +75,9 @@ To: rafael@kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	acpica-devel@lists.linux.dev
-Subject: [PATCH v7 2/9] ACPICA: Add EINJv2 get error type action
-Date: Tue,  6 May 2025 14:38:06 -0700
-Message-ID: <20250506213814.2365788-3-zaidal@os.amperecomputing.com>
+Subject: [PATCH v7 3/9] ACPI: APEI: EINJ: Fix kernel test sparse warnings
+Date: Tue,  6 May 2025 14:38:07 -0700
+Message-ID: <20250506213814.2365788-4-zaidal@os.amperecomputing.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250506213814.2365788-1-zaidal@os.amperecomputing.com>
 References: <20250506213814.2365788-1-zaidal@os.amperecomputing.com>
@@ -94,113 +94,326 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SN7PR01MB7903:EE_|DS1PR01MB8717:EE_
-X-MS-Office365-Filtering-Correlation-Id: b0fb71e6-6ef1-453e-5bdf-08dd8ce65783
+X-MS-Office365-Filtering-Correlation-Id: 4095904e-4846-42e1-d599-08dd8ce6587a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|366016|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BqrKmS/zK9D1Nktn5P1mT+99J22S4Ftii4psZGoo6RUj27bJpNSW1u83D7Cz?=
- =?us-ascii?Q?shMMxK9BT0xsb/NDYn30Qy+OWouarOpDK1gwt/8bhEgNoDY+TxP0G4B9UVuM?=
- =?us-ascii?Q?BsXTsNNWS+2JGeKTvKzFPgcmwya2FrVaC4q8Yl9Js3wsEgP1nbf1KEm3b5rY?=
- =?us-ascii?Q?rw16LEdQoWbZtr9S/jEZaZvuAYe0877LN3env3eMgHy3xRdLHMowGwPc/1e7?=
- =?us-ascii?Q?G41JS51lDLaMKeShpnrEw2RDrJqvfVpqWMJU5MdEng4rZO47tzl1uXWrUHe1?=
- =?us-ascii?Q?GgR/BymJuBhFqJKkn1Xrp+1IDo2Y01qha4ttSrmQdN3w5RBMNtlKKGJwN3sj?=
- =?us-ascii?Q?nZDD/0DxiLMxSNRGx5dmZLv+fbYGEpNytQrqMo9GG1hc9wMThECg257WM20h?=
- =?us-ascii?Q?HTp3h0UcFzOaWSCLsnzbuZVQe7/EOzzP6gcpN1GrgBBUTXydEPomINzEefrR?=
- =?us-ascii?Q?1+iz7mBGVap8lq7i3drt8gWrTlPlDr7+l2NbfKALNI3Cd7/0fDTvzYQDMe+y?=
- =?us-ascii?Q?JV+VLZTVl9YJ6N2DHqLBvyCAB+Gk724UJ28qw8vnF8ngmSGEjIgowAuW/Otw?=
- =?us-ascii?Q?UFUnrk1RmO5uBJc7U4v1dmcXi4isYKaZS/nXeCSxRK4wF+lbIy1tXMoJd6DT?=
- =?us-ascii?Q?trZaGV5OgAaQVsEWlBtERcQ4xIKKgQjejlvL1gcoyJrATDLtD8p0PNu3QJNx?=
- =?us-ascii?Q?+6oGwrJ6kIcVU40Dp2D/waLEmnGgkKiibUlUNU5fhx2MneQBqMfJUPD0WR7L?=
- =?us-ascii?Q?UTDPwCx7XSWO5wHlNpVyFki2ahlqtb7mYQbzAbjuSX2lboisRJajApjHBxo0?=
- =?us-ascii?Q?nKOewL8yMhHr10y0drtgSjm6YrbkHVvNVwK5ml/KM+8tHTMDPxdi9OYKl2E6?=
- =?us-ascii?Q?NykvT+2UsZ/MdBIqEUXIvK2qUdNB/A56zJdzSDJRmurtYcMvyZrZ9/s+TH/1?=
- =?us-ascii?Q?5nETw1BKc2nWCI8CP3GRn0ZKXLpJJuypGanvc1UWVRyR42QRcqkT04JqX9dQ?=
- =?us-ascii?Q?DZXcmO+Eb8Xlj0Qpyg6eJNGXEXLczU0ZA08x8r54JExDY28ARjOfjNflobVI?=
- =?us-ascii?Q?j/AOOXHuIppMI+M0WaqLmTqwsWGYgDNwAZOYa0aHBj0mod0WhjlT1fX9qETs?=
- =?us-ascii?Q?mgoCj2FujNRTgWCXjTmBJgJtw5NGhOga/+9KFL59lOgDt12QJrKxpfNzk7i+?=
- =?us-ascii?Q?JofVs/oahzBS07OeHBVKv1e9+TkzCQj16rdTob0boGAKyilAtEUpeU0m43sS?=
- =?us-ascii?Q?Be0xu7h8g74yO/7G+em5QocQKMIItLY3+8qrvEbtZ8nDjSzsoDHyXepBDJiB?=
- =?us-ascii?Q?T+opZ2sshedTvQxanvHRCBSQsfrZq7pG/Dzq0midA/aBwN5PwlimyiahfU0+?=
- =?us-ascii?Q?/qyIYAQJWPl5mQfJqp+Rx7erkWxqbWfZTMd6WDe0LQdBhMJKtRV0yb8TkJjJ?=
- =?us-ascii?Q?uAKHg/35Hck0pJ1DrNhHqDE1ccDJ7tUTIhbzn0kroeiGcplXZ0VEKvAlpETe?=
- =?us-ascii?Q?9FjyF0eZEP7LLs0=3D?=
+	=?us-ascii?Q?ZDPQjAwPzpVYGMu5f6sYveQLDEmeUHlVFc5KWB4Ifto9cX7P0zp39GgEMQum?=
+ =?us-ascii?Q?h9nT0k3U12edATD+XGkD1IS3nThTYh8lETEujBQH1Z/S9xk/xWq8VgltQcy5?=
+ =?us-ascii?Q?dhUFf8xV5a/VJyxkWdBgk3P2RbcENI+GNvg0rIpbwykEpulfIBTaA204tVZu?=
+ =?us-ascii?Q?tBYVcUwUKXsPsRk7LyCCMrMQXvjH01ASdfYwdR13gOk1BmyePQJFxnaSAI+J?=
+ =?us-ascii?Q?D045TyP/I8TiBGN1wlo/2qCrt0IyoYCWVig+fCN9Jt43gA1HSR/4FXimdY7s?=
+ =?us-ascii?Q?frMziAum+l56xBohmU945C9IDo7hVH+JDfUFzGjzYyKCC2dfCAbbWKG6q+IK?=
+ =?us-ascii?Q?0HllSDjgWCaYHprtj5bgTAso4Jl75yUP97FNgDhISmwlcBm+0KtOBjGD0pPS?=
+ =?us-ascii?Q?6EewNigJOwGjVitqkfh8RLvg8xhXovZNJ9x9V/Q+ahcUi8qX4tEbHh1i0+1O?=
+ =?us-ascii?Q?uOg47feJQlG/lrOgXkW9cnMHSmwTwDveV6Nan7Bi7fJEQQSm1mvo07G0GJk2?=
+ =?us-ascii?Q?gmZM8dfAfdORMYi73WYEf7hZyXfPeTcCx58NzQFbrhih5SOPtk254/bmg8RZ?=
+ =?us-ascii?Q?NRuyeMEmqT+HrmtG85/UH4+oV2YKmBkJYxtAAzN3TgZVm87tGafsdZ18o7Dd?=
+ =?us-ascii?Q?/PFmLtrCC/qNJ1tCzkLzr8YExj+KqcrVhIn3cI+VZHv2d+9p3PmR77byK2ql?=
+ =?us-ascii?Q?tqu7SdP5aRWBL6AGG6+7gsAgO3q9oK7CQZorZZd9TublNXul9d/D8Y1LWzBo?=
+ =?us-ascii?Q?TzgRdKUfYdvG1cewTJlbHmDdaJnkA2DSPFnhDoxlR7CWXn0cDtzDHAVC892s?=
+ =?us-ascii?Q?OMSOLbZfkzMaOAAi1oJmlTgQnexf/91Z1GGpveihD1jTQ07R3tYhII2zdeER?=
+ =?us-ascii?Q?sHMYUIUqQHJloa+GqkdMvKhP7gmCr5IBohJKnAUvi1QNoaSoQ1XE94FsDDQB?=
+ =?us-ascii?Q?rLv0jCmnLKfbBpbserINhKTM/G593ELbz2wVfZCSoltRtGOAzdaZZVlXNVQw?=
+ =?us-ascii?Q?EzIM4HTSMYipUMN3zYw4w60iVfIkHtdFAlURD9DV9pzSYei96s7r+lh2+XoF?=
+ =?us-ascii?Q?xDhfaxhWTFb6qV+aZU3DaYrcBkK03G52vEimEkSMLoMaJQFj9m0AvDIE7mWx?=
+ =?us-ascii?Q?XUn6EjUZ7xJOK8S/6ZCoIMyBm9JO9Bcl62svCdiHEFJ69Me2jdzP0TW3/eFq?=
+ =?us-ascii?Q?igW3J+oXMhlKar5+aM3RKlU/OWNRcbJhye8eFKZ3ndnsrAQHpdPWLejqUlKT?=
+ =?us-ascii?Q?PrpBiOXgCi5QxpB9LXtxV5Zwj04dzFpqE459rsnazsQUAJygLPWSw7eJnSI1?=
+ =?us-ascii?Q?CcS4W+fOkAhGrBM5kWCL78EfM3TNlo5VbpljL8CG4NPsU+MKSovY2k3AE/KD?=
+ =?us-ascii?Q?/ZxdqyE+PV34CrIKJ6m5DJtZmCSNEj3H1t+NPwoaDULnIb0ICPw8EoVWdGHJ?=
+ =?us-ascii?Q?JIRpxoB1+yj/Wx2go8LN12um9x7qpOHElRE+xCon/HbFcruUMmYoZPkLLezU?=
+ =?us-ascii?Q?P1XA90FbdNDs2P4=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR01MB7903.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(366016)(38350700014)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GeDv5r9yxxXcZCyVEINdcR7XsucvHXIvUGi8d4pFV6DvCoLvYdxKHf+rO2L5?=
- =?us-ascii?Q?b/iUBRxIBfL4ye3Op2qDPY6+ODF/6byikp3wBvz2t/q6wXBvweIy0NsCSO3/?=
- =?us-ascii?Q?5R50n3Tof9kPab6LxWcECcgEl0EguDG4m93M6GBWN+AiCfSbLhjQH6z1u9SV?=
- =?us-ascii?Q?f0/fYAc0P2iqGwpKRhYsVF+z2IdcITi4GLhMycJv8bN1+J96WqiN6fM+F2xb?=
- =?us-ascii?Q?y5eN/foar0DTQoKXECVHx7tmgF+LToQWm8bjxqrPTnVnfz80KGR5z8AeIBq5?=
- =?us-ascii?Q?gNRwC0NrW/b/ZinauKVi+bukKFAZgHwZV075gB9aZVTXJ3x816pj1WEFHvij?=
- =?us-ascii?Q?cWOiBmqL/1RfW12oO8JTv8CY5/2wJh9W8DM3grmBhPMPlhzej4udDWQN9dQB?=
- =?us-ascii?Q?ghOtGsh9cSteZewOq57U7F/legH2R9BTkBg9eX5vITYeHoVupXOixQ1qnEpa?=
- =?us-ascii?Q?tGiO87RQ9DMkLn+4cOqzv7oSFOtRLuSU2TyF45/ngrWvSXWSheZVxIEjvj29?=
- =?us-ascii?Q?5fXFnwji/Can9nIW4n78f7F4kIojWEUujA3smqGrJq0i4DXyO3TxWNPHlSfK?=
- =?us-ascii?Q?H7dZwFC0mIQCT4nyJe9TwLzSd4m0F2TD07sdUDqDoW/rbDQKwwwb9Xd06wpA?=
- =?us-ascii?Q?eGhAjExlzADLiANZyAZeSJ0SKRrNdFryI3UGzf/B5HaJyAhybhPe2UnDSyf5?=
- =?us-ascii?Q?9NhZ+Evfa/x7yIjEJnk7swkct0wtN7AGfn2ifrvYqW3aa3CCLeD4hKTDNZH1?=
- =?us-ascii?Q?k5ZjHCEIvJ5TaFK4D2/1VKGIXVPbiiQ8ooecIm/ZlSdFrRSNkHh/ZhukGETL?=
- =?us-ascii?Q?hoKfoKYVtN7NVHdP6lySOYEs0eVl5UOxFNQ0XeKBAM2ayRyoRGi4kFRuUQdk?=
- =?us-ascii?Q?MCr8duYQupOkwsOFcrGs1gLuHJ4Znz5wjWeC0rK4FcUck1uGkMrDDet4IJfI?=
- =?us-ascii?Q?r0+AWDbZJjKn70GgBXvSCbGNvfZsLLbmuCHhvkFF8Z8u/1/zMIaXQuUb1RFn?=
- =?us-ascii?Q?JQNuKdwu4Z5fFwwLL3O7dSTvj1YhPMZy41+1AaAyHB6Yxvu3ilWtkaF+cbXI?=
- =?us-ascii?Q?djk4V5Hys3ao8aXfwijtLU4Zkhi8EUvOMAirWFLNi0bd6oCujD777uJ7r9CI?=
- =?us-ascii?Q?30cxnDu6P/L0atR45NEyllAzib1N+GxPjQagVrDKi4QDUoZalw2JQTdjb6fV?=
- =?us-ascii?Q?A+giscdO0K1SfpUHjNWKR9biysiPRR8Z8HubfkC+qIAdvgQ6kHpsy9AZbopS?=
- =?us-ascii?Q?6ibRFoQAPmMf/6OzoUVXfUWGcC79EaasuhYku+5Eh3dqMapset/qXnU62Kkj?=
- =?us-ascii?Q?mXMxwMxRNWiE3JwgZ0zU/JX3iUxEmtUTdW5D3kc6GiQNkejwbhXHFM4MFNHs?=
- =?us-ascii?Q?QEVTx81E7CU1i0tUPcWddqNsVW0F8jHzPoSpLqlt5dUdRw4ATx6emhetWv5R?=
- =?us-ascii?Q?mp1xphiXQt0CjOnshN+YUWV6Lj1oNQTgArrI+Ne/V9lRH7uKypf23NJXGwFc?=
- =?us-ascii?Q?k8Qtyui2FLq92iAS56YkSyaBlG+qjATD+Sf7NqupAMLa9lVJi8fpL/wtDZOG?=
- =?us-ascii?Q?jWenm0ExZelger8iDJBQBZmWlJg/1mN+F6InAX+2VirBN5Lzf5ip1KL1Q5Uf?=
- =?us-ascii?Q?bBQgspCZ6oEyldLXX8Ud1zk=3D?=
+	=?us-ascii?Q?1reUOTvVNfUMLXnZY+ypNNE7i5CQ/tKpB186ecXR2X84JdNcciPB+go/tYSs?=
+ =?us-ascii?Q?+1uGH1WMhcMQanUsNz4osmNIPGzKN/jC9ONDe3nGezviCAnwQ+YfFJKi5xYA?=
+ =?us-ascii?Q?WXYkQDlsInvJfwNkSGDmQAsCOxoUlP1QVgUMn/8VnNSmMIult1++oOknRGST?=
+ =?us-ascii?Q?bnHeo4+sPNm3eu7CYb0PFuYsxBCL3xNKORlnwITx24y2K/tOi3S8ztWyLQkG?=
+ =?us-ascii?Q?g09zfFQpzjnTSzdBtpLw0hkYaT8HOgIzv2p3EpTQHxxp+5JVv68m8NjRnYsQ?=
+ =?us-ascii?Q?U7JQtw2UwfVnz4d4F92DLB8WyT/qjwtnlOYn8di4jt5t7FtG1wb9qvkAwXvc?=
+ =?us-ascii?Q?v8rStoutHn3/6VkcDNIZNtlfAv0IrYfA7DD/H58dc6I1FTX4fFOOMLfBfQeU?=
+ =?us-ascii?Q?hI/nvMPsF5rYvfAizF22qO4OtVk9PeTHQ6T7ATo1VhnWeV1SnFl8uq4xtp2Y?=
+ =?us-ascii?Q?Ual/KRdVyIRBCjwNS9npgIXixlerDkDaBl/zWhETXko/J6DHLaSgr+jQJVDC?=
+ =?us-ascii?Q?creGUqcSpI5OeKDRzn0QLUDxQSYGqhhAU6P09AFAodwY9GEBQ+6prYoMFiYS?=
+ =?us-ascii?Q?tgjD0WKqup5L+lYokULKLOKutwySai9TuOrXjdU86C9zyTa7LEPcIpQgTAPm?=
+ =?us-ascii?Q?0rsQmBLXBkxipqBytoBpbHYgF+rghR2iSM2A5gm45EyJZyEF/94YImUWI04Z?=
+ =?us-ascii?Q?/cFRJGXR7JpKDLpySJEbrB6w3Mr3me9lemajninaRHuuN+s/s4nHQjsZGjPp?=
+ =?us-ascii?Q?bCgSB2d9ZF1xUwmeoK8JR2UUyXhc8yTQAGGphiPPZsiIQl1nzT17UIbnqAdY?=
+ =?us-ascii?Q?KL0YpDE+hcQWVKRQS/rWn5mDLw9W80JTp8HyqySfFwd1wUyDJNG0qRv9xFHo?=
+ =?us-ascii?Q?xF8z2zArDs4clawopVL+zy6eRpkhBmYbLzTXiJC+PzIxBjEDe7LGe12JmpdD?=
+ =?us-ascii?Q?Flo+kMBGk53sWApb2JcdnS8JAdGpg2+YrOTu09lMBVh+XS8u7MZ5oKieEWj5?=
+ =?us-ascii?Q?kHLC6TiAHTiF4mg+iu+NeZoaeSDgPLmgD1Q8gPXtpbWBRoS5OA925BfWaUCO?=
+ =?us-ascii?Q?rGnoqL4tU1YIIKZclEF716lUReO3jRDl4V5IXEHK/HqrhGh1F4FtiRDs/fYY?=
+ =?us-ascii?Q?3gr2IO2RZow67IBr8NK3Ggs++x4zpAFoQ3BYBrk0TQp2jKDSNu87fzhFOet3?=
+ =?us-ascii?Q?n0QsRGLpJuHk/FswVVz1/GKrlXi5My7VwG3nJZa5JWWYCqIUIPcbn6AZAX+7?=
+ =?us-ascii?Q?thgv+zAtG/zHeDgaU2MYWkpFrwIZYj/c5wL1gUOY7qZKEepWRGsP2wjMYHOx?=
+ =?us-ascii?Q?IKuCjxeRmlKWy3YjsWDaC66HbHwSOcwGNT8eG8jqjkQjVcbFaKl5QweRdbYa?=
+ =?us-ascii?Q?/UBCmOtacwC8O5mHtbPVLGSNLzRRHd0/0q6d6r8rlujEz2TZqeyPdzijNEoi?=
+ =?us-ascii?Q?siHzxuCeQZomSEMBNzUJGhWlGVW+kPmZQzMguiTK9cX1kJzhnRWhDxXFCS/o?=
+ =?us-ascii?Q?oZnjVCvlx7By/OXD520zWJwXJ4q5QWIedXmpDI8LUGjcnTvrqnKA3zGPMdYj?=
+ =?us-ascii?Q?snOQAzxmTyc5fsc5sey286WD1NPbTg/K6+PX/0wnUeR001eDq7g84fZuQ1ZT?=
+ =?us-ascii?Q?PDH0QLX8wNWLI/5/GFuiAJg=3D?=
 X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b0fb71e6-6ef1-453e-5bdf-08dd8ce65783
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4095904e-4846-42e1-d599-08dd8ce6587a
 X-MS-Exchange-CrossTenant-AuthSource: SN7PR01MB7903.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 21:38:29.7139
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 21:38:31.5267
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xAy1z2T3/qHkVE8Vo1jog/36Mn5aD+W5cjB55C1yy4mMjsqZFm+ivTh/OJ9XztqFoxC9z88Mi0gGYk6KzzcoVrdoTdqjsbIn+Xvj7g1qqqYmoL3nq6QvWLm9Ytt5PNc6
+X-MS-Exchange-CrossTenant-UserPrincipalName: FLrV/O3kWCUciPjeDeMRK4ftD+cj9GUgmImVf2WRlqxbX7NjNQDocRRXd+b2dpkV52kIecCMgrLfS5ZGx/3oX/gG0GsGy6woUbbgpFni7g2dBOznbW/cP20gdICZV+94
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS1PR01MB8717
 
-Add EINJV2_GET_ERROR_TYPE as defined in the approved new ACPI
-specs[1][2].
+This patch fixes the kernel test robot warning reported here:
+Link: https://lore.kernel.org/all/202410241620.oApALow5-lkp@intel.com/
 
-Proposed ACPI spces for EINJv2:
-Link: https://github.com/tianocore/edk2/issues/9449 [1]
-Link: https://github.com/tianocore/edk2/issues/9017 [2]
-
-This commit is not a direct merge, it will come from ACPICA
-project, see pull request[3].
-
-Link: https://github.com/acpica/acpica/pull/977 [3]
-
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Zaid Alali <zaidal@os.amperecomputing.com>
 ---
- include/acpi/actbl1.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/acpi/apei/einj-core.c | 106 +++++++++++++++++++---------------
+ 1 file changed, 60 insertions(+), 46 deletions(-)
 
-diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-index c701c434976c..f52d5cafaf76 100644
---- a/include/acpi/actbl1.h
-+++ b/include/acpi/actbl1.h
-@@ -1034,7 +1034,8 @@ enum acpi_einj_actions {
- 	ACPI_EINJ_GET_COMMAND_STATUS =		0x7,
- 	ACPI_EINJ_SET_ERROR_TYPE_WITH_ADDRESS =	0x8,
- 	ACPI_EINJ_GET_EXECUTE_TIMINGS =		0x9,
--	ACPI_EINJ_ACTION_RESERVED =		0xA,	/* 0xA and greater are reserved */
-+	ACPI_EINJV2_GET_ERROR_TYPE =		0x11,
-+	ACPI_EINJ_ACTION_RESERVED =		0x12,	/* 0x12 and greater are reserved */
- 	ACPI_EINJ_TRIGGER_ERROR =		0xFF	/* Except for this value */
- };
+diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
+index 04731a5b01fa..47abd9317fef 100644
+--- a/drivers/acpi/apei/einj-core.c
++++ b/drivers/acpi/apei/einj-core.c
+@@ -149,7 +149,7 @@ static DEFINE_MUTEX(einj_mutex);
+  */
+ bool einj_initialized __ro_after_init;
  
+-static void *einj_param;
++static void __iomem *einj_param;
+ 
+ static void einj_exec_ctx_init(struct apei_exec_context *ctx)
+ {
+@@ -214,24 +214,26 @@ static void check_vendor_extension(u64 paddr,
+ 				   struct set_error_type_with_address *v5param)
+ {
+ 	int	offset = v5param->vendor_extension;
+-	struct	vendor_error_type_extension *v;
++	struct	vendor_error_type_extension v;
++	struct vendor_error_type_extension __iomem *p;
+ 	u32	sbdf;
+ 
+ 	if (!offset)
+ 		return;
+-	v = acpi_os_map_iomem(paddr + offset, sizeof(*v));
+-	if (!v)
++	p = acpi_os_map_iomem(paddr + offset, sizeof(*p));
++	if (!p)
+ 		return;
+-	get_oem_vendor_struct(paddr, offset, v);
+-	sbdf = v->pcie_sbdf;
++	memcpy_fromio(&v, p, sizeof(v));
++	get_oem_vendor_struct(paddr, offset, &v);
++	sbdf = v.pcie_sbdf;
+ 	sprintf(vendor_dev, "%x:%x:%x.%x vendor_id=%x device_id=%x rev_id=%x\n",
+ 		sbdf >> 24, (sbdf >> 16) & 0xff,
+ 		(sbdf >> 11) & 0x1f, (sbdf >> 8) & 0x7,
+-		 v->vendor_id, v->device_id, v->rev_id);
+-	acpi_os_unmap_iomem(v, sizeof(*v));
++		 v.vendor_id, v.device_id, v.rev_id);
++	acpi_os_unmap_iomem(p, sizeof(v));
+ }
+ 
+-static void *einj_get_parameter_address(void)
++static void __iomem *einj_get_parameter_address(void)
+ {
+ 	int i;
+ 	u64 pa_v4 = 0, pa_v5 = 0;
+@@ -252,26 +254,30 @@ static void *einj_get_parameter_address(void)
+ 		entry++;
+ 	}
+ 	if (pa_v5) {
+-		struct set_error_type_with_address *v5param;
++		struct set_error_type_with_address v5param;
++		struct set_error_type_with_address __iomem *p;
+ 
+-		v5param = acpi_os_map_iomem(pa_v5, sizeof(*v5param));
+-		if (v5param) {
++		p = acpi_os_map_iomem(pa_v5, sizeof(*p));
++		if (p) {
++			memcpy_fromio(&v5param, p, sizeof(v5param));
+ 			acpi5 = 1;
+-			check_vendor_extension(pa_v5, v5param);
+-			return v5param;
++			check_vendor_extension(pa_v5, &v5param);
++			return p;
+ 		}
+ 	}
+ 	if (param_extension && pa_v4) {
+-		struct einj_parameter *v4param;
++		struct einj_parameter v4param;
++		struct einj_parameter __iomem *p;
+ 
+-		v4param = acpi_os_map_iomem(pa_v4, sizeof(*v4param));
+-		if (!v4param)
++		p = acpi_os_map_iomem(pa_v4, sizeof(*p));
++		if (!p)
+ 			return NULL;
+-		if (v4param->reserved1 || v4param->reserved2) {
+-			acpi_os_unmap_iomem(v4param, sizeof(*v4param));
++		memcpy_fromio(&v4param, p, sizeof(v4param));
++		if (v4param.reserved1 || v4param.reserved2) {
++			acpi_os_unmap_iomem(p, sizeof(v4param));
+ 			return NULL;
+ 		}
+-		return v4param;
++		return p;
+ 	}
+ 
+ 	return NULL;
+@@ -317,7 +323,7 @@ static struct acpi_generic_address *einj_get_trigger_parameter_region(
+ static int __einj_error_trigger(u64 trigger_paddr, u32 type,
+ 				u64 param1, u64 param2)
+ {
+-	struct acpi_einj_trigger *trigger_tab = NULL;
++	struct acpi_einj_trigger trigger_tab;
+ 	struct apei_exec_context trigger_ctx;
+ 	struct apei_resources trigger_resources;
+ 	struct acpi_whea_header *trigger_entry;
+@@ -325,54 +331,57 @@ static int __einj_error_trigger(u64 trigger_paddr, u32 type,
+ 	u32 table_size;
+ 	int rc = -EIO;
+ 	struct acpi_generic_address *trigger_param_region = NULL;
++	struct acpi_einj_trigger __iomem *p;
+ 
+-	r = request_mem_region(trigger_paddr, sizeof(*trigger_tab),
++	r = request_mem_region(trigger_paddr, sizeof(trigger_tab),
+ 			       "APEI EINJ Trigger Table");
+ 	if (!r) {
+ 		pr_err("Can not request [mem %#010llx-%#010llx] for Trigger table\n",
+ 		       (unsigned long long)trigger_paddr,
+ 		       (unsigned long long)trigger_paddr +
+-			    sizeof(*trigger_tab) - 1);
++			    sizeof(trigger_tab) - 1);
+ 		goto out;
+ 	}
+-	trigger_tab = ioremap_cache(trigger_paddr, sizeof(*trigger_tab));
+-	if (!trigger_tab) {
++	p = ioremap_cache(trigger_paddr, sizeof(*p));
++	if (!p) {
+ 		pr_err("Failed to map trigger table!\n");
+ 		goto out_rel_header;
+ 	}
+-	rc = einj_check_trigger_header(trigger_tab);
++	memcpy_fromio(&trigger_tab, p, sizeof(trigger_tab));
++	rc = einj_check_trigger_header(&trigger_tab);
+ 	if (rc) {
+ 		pr_warn(FW_BUG "Invalid trigger error action table.\n");
+ 		goto out_rel_header;
+ 	}
+ 
+ 	/* No action structures in the TRIGGER_ERROR table, nothing to do */
+-	if (!trigger_tab->entry_count)
++	if (!trigger_tab.entry_count)
+ 		goto out_rel_header;
+ 
+ 	rc = -EIO;
+-	table_size = trigger_tab->table_size;
+-	r = request_mem_region(trigger_paddr + sizeof(*trigger_tab),
+-			       table_size - sizeof(*trigger_tab),
++	table_size = trigger_tab.table_size;
++	r = request_mem_region(trigger_paddr + sizeof(trigger_tab),
++			       table_size - sizeof(trigger_tab),
+ 			       "APEI EINJ Trigger Table");
+ 	if (!r) {
+ 		pr_err("Can not request [mem %#010llx-%#010llx] for Trigger Table Entry\n",
+-		       (unsigned long long)trigger_paddr + sizeof(*trigger_tab),
++		       (unsigned long long)trigger_paddr + sizeof(trigger_tab),
+ 		       (unsigned long long)trigger_paddr + table_size - 1);
+ 		goto out_rel_header;
+ 	}
+-	iounmap(trigger_tab);
+-	trigger_tab = ioremap_cache(trigger_paddr, table_size);
+-	if (!trigger_tab) {
++	iounmap(p);
++	p = ioremap_cache(trigger_paddr, table_size);
++	if (!p) {
+ 		pr_err("Failed to map trigger table!\n");
+ 		goto out_rel_entry;
+ 	}
++	memcpy_fromio(&trigger_tab, p, sizeof(trigger_tab));
+ 	trigger_entry = (struct acpi_whea_header *)
+-		((char *)trigger_tab + sizeof(struct acpi_einj_trigger));
++		((char *)&trigger_tab + sizeof(struct acpi_einj_trigger));
+ 	apei_resources_init(&trigger_resources);
+ 	apei_exec_ctx_init(&trigger_ctx, einj_ins_type,
+ 			   ARRAY_SIZE(einj_ins_type),
+-			   trigger_entry, trigger_tab->entry_count);
++			   trigger_entry, trigger_tab.entry_count);
+ 	rc = apei_exec_collect_resources(&trigger_ctx, &trigger_resources);
+ 	if (rc)
+ 		goto out_fini;
+@@ -390,7 +399,7 @@ static int __einj_error_trigger(u64 trigger_paddr, u32 type,
+ 
+ 		apei_resources_init(&addr_resources);
+ 		trigger_param_region = einj_get_trigger_parameter_region(
+-			trigger_tab, param1, param2);
++			&trigger_tab, param1, param2);
+ 		if (trigger_param_region) {
+ 			rc = apei_resources_add(&addr_resources,
+ 				trigger_param_region->address,
+@@ -419,13 +428,13 @@ static int __einj_error_trigger(u64 trigger_paddr, u32 type,
+ out_fini:
+ 	apei_resources_fini(&trigger_resources);
+ out_rel_entry:
+-	release_mem_region(trigger_paddr + sizeof(*trigger_tab),
+-			   table_size - sizeof(*trigger_tab));
++	release_mem_region(trigger_paddr + sizeof(trigger_tab),
++			   table_size - sizeof(trigger_tab));
+ out_rel_header:
+-	release_mem_region(trigger_paddr, sizeof(*trigger_tab));
++	release_mem_region(trigger_paddr, sizeof(trigger_tab));
+ out:
+-	if (trigger_tab)
+-		iounmap(trigger_tab);
++	if (p)
++		iounmap(p);
+ 
+ 	return rc;
+ }
+@@ -444,8 +453,10 @@ static int __einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
+ 		return rc;
+ 	apei_exec_ctx_set_input(&ctx, type);
+ 	if (acpi5) {
+-		struct set_error_type_with_address *v5param = einj_param;
++		struct set_error_type_with_address *v5param, v5_struct;
+ 
++		v5param = &v5_struct;
++		memcpy_fromio(v5param, einj_param, sizeof(*v5param));
+ 		v5param->type = type;
+ 		if (type & ACPI5_VENDOR_BIT) {
+ 			switch (vendor_flags) {
+@@ -490,15 +501,18 @@ static int __einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
+ 				break;
+ 			}
+ 		}
++		memcpy_toio(einj_param, v5param, sizeof(*v5param));
+ 	} else {
+ 		rc = apei_exec_run(&ctx, ACPI_EINJ_SET_ERROR_TYPE);
+ 		if (rc)
+ 			return rc;
+ 		if (einj_param) {
+-			struct einj_parameter *v4param = einj_param;
++			struct einj_parameter v4param;
+ 
+-			v4param->param1 = param1;
+-			v4param->param2 = param2;
++			memcpy_fromio(&v4param, einj_param, sizeof(v4param));
++			v4param.param1 = param1;
++			v4param.param2 = param2;
++			memcpy_toio(einj_param, &v4param, sizeof(v4param));
+ 		}
+ 	}
+ 	rc = apei_exec_run(&ctx, ACPI_EINJ_EXECUTE_OPERATION);
 -- 
 2.43.0
 
