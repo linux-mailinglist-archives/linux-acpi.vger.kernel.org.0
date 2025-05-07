@@ -1,99 +1,119 @@
-Return-Path: <linux-acpi+bounces-13591-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13592-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7343AAE475
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 17:22:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA39AAE4A0
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 17:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A32F9A7264
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 15:21:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1249352343D
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 15:25:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733CC28A40A;
-	Wed,  7 May 2025 15:21:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jzuj0wmz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1156F28AB0B;
+	Wed,  7 May 2025 15:25:32 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405672135C9;
-	Wed,  7 May 2025 15:21:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FFB28AB03;
+	Wed,  7 May 2025 15:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746631312; cv=none; b=NCpKhGBoC4xLZbcfiiFPdb2fDO0Ov/H62XCrtqNYuJma1KglQGiDWhU7YC8Zb7WH2N/6dRTegT7vJgRG4XpQYI7pERN5eQpZyfkrLs/HDsK2y45QtMOAfFqbxYHP7IKITSe7wznHNPq4W0I5ao614FAL0fR4eKoEoy2azejwfqE=
+	t=1746631531; cv=none; b=Mv0t4nMnbHCdFkpqi8Cvexme+gVxcDAeRNMmdTMn0Cf5V3mGvzMkSwzgNs4O8QWV33S9w9L3vmGXwOeMKK0yqrXO9gZpJyl9jkvV9mJvDiV+TMfvkKlMRZiTos+uf9/urBxOgd1pDL4hf4eRunlGob3rMpWYnsxYHiExGvkm6I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746631312; c=relaxed/simple;
-	bh=+Pl1wgxLDGfI331J470iytuKu5DjqgecfozUU3odKcU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZNH547oF9eIjWwNA2/VgMAUK0tbnmGgf5cCGUDMl8CqqJmZwQctPDUjS0FuA2gyqm9TrY60elRsoGC9j75fs7JYYm9C+xtNH75gy8FJ/CV5krIVcXV0YYk2hxn+oE6TD58yNs7+MEqfL/QCFaHC6qeFOVe70aDcWQVlMTtNOEhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jzuj0wmz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07578C4AF0D;
-	Wed,  7 May 2025 15:21:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746631311;
-	bh=+Pl1wgxLDGfI331J470iytuKu5DjqgecfozUU3odKcU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jzuj0wmzcA99+V/TrfvfgKAhHT8WTkJj6fPsC2ZXFpyAyZmjb/KtCfHa7xCh0fe+h
-	 SzVSO83oLHaJrdQOtVl3g5Tbo3Dq+rHCzZetZLsp/ew6LfqhgVpvN/QwE1n+s2wMc+
-	 AXCBa8DjRfRF5U+GB7JygCElsE0RH2FplypRvVNt5c7ixsHhJH8PQi/YT5ArJH8LOj
-	 M7OizJ4M4TJ7sXHo6hhGALe7rw6fSoGH94UzlqtAyVJitbrXrU7i+N5igXDywOmaJ4
-	 Vl/pA4n4BnNpFIVFGSXn5XgHFyMifq1smbpdx1edsLxTRuOBhsGUd+hV65rz+0BV9n
-	 TmI5yMtxM+mjw==
-Date: Wed, 7 May 2025 18:21:42 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Yuquan Wang <wangyuquan1236@phytium.com.cn>,
-	Jonathan.Cameron@huawei.com, dan.j.williams@intel.com,
-	rafael@kernel.org, lenb@kernel.org, alison.schofield@intel.com,
-	rrichter@amd.com, bfaccini@nvidia.com, haibo1.xu@intel.com,
-	david@redhat.com, chenhuacai@kernel.org, linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, chenbaozi@phytium.com.cn,
-	loongarch@lists.linux.dev
-Subject: Re: [PATCH v2] mm: numa_memblks: introduce numa_add_reserved_memblk
-Message-ID: <aBt6hihp4m3fbd02@kernel.org>
-References: <20250506062245.3816791-1-wangyuquan1236@phytium.com.cn>
- <20250506185544.474d025e43ebadadaedb982a@linux-foundation.org>
+	s=arc-20240116; t=1746631531; c=relaxed/simple;
+	bh=CLGuly61z6pxnXMpY7OtXp7nCpQcfXJ9VrfOuwL8JdM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HSyTl1pNq2xKXjgj0fDW3vqNS5BfYQFGEhwyFMO6SaYBmfyB128Ul/gGdiICeK1I3IKGSIN1xPS3/3zxM3IT27LBznFbI3jZ6BizqH2zR5XEslAjLo8qMf7/UpWTqHQNMuLAyXCUib7saeLDsnj74z8xrYAOX10p9gHdWtxEgkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8166D339;
+	Wed,  7 May 2025 08:25:19 -0700 (PDT)
+Received: from [192.168.20.57] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3AA5D3F58B;
+	Wed,  7 May 2025 08:25:27 -0700 (PDT)
+Message-ID: <214c2a2d-e0ea-4ec6-9925-05e39319e813@arm.com>
+Date: Wed, 7 May 2025 10:25:25 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250506185544.474d025e43ebadadaedb982a@linux-foundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI/PPTT: fix off-by-one error
+To: "Heyne, Maximilian" <mheyne@amazon.de>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20250506-draco-taped-15f475cd@mheyne-amazon>
+Content-Language: en-US
+From: Jeremy Linton <jeremy.linton@arm.com>
+In-Reply-To: <20250506-draco-taped-15f475cd@mheyne-amazon>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, May 06, 2025 at 06:55:44PM -0700, Andrew Morton wrote:
-> On Tue,  6 May 2025 14:22:45 +0800 Yuquan Wang <wangyuquan1236@phytium.com.cn> wrote:
+Hi,
+
+On 5/6/25 8:13 AM, Heyne, Maximilian wrote:
+> Commit 7ab4f0e37a0f ("ACPI PPTT: Fix coding mistakes in a couple of
+> sizeof() calls") corrects the processer entry size but unmasked a longer
+> standing bug where the last entry in the structure can get skipped due
+> to an off-by-one mistake if the last entry ends exactly at the end of
+> the ACPI subtable.
 > 
-> > acpi_parse_cfmws() currently adds empty CFMWS ranges to numa_meminfo
-> > with the expectation that numa_cleanup_meminfo moves them to
-> > numa_reserved_meminfo. There is no need for that indirection when it is
-> > known in advance that these unpopulated ranges are meant for
-> > numa_reserved_meminfo in support of future hotplug / CXL provisioning.
-> > 
-> > Introduce and use numa_add_reserved_memblk() to add the empty CFMWS
-> > ranges directly.
-> > 
-> > Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-> > ---
-> > 
-> > Changes in v2 (Thanks to Dan & Alison):
-> > - Use numa_add_reserved_memblk() to replace numa_add_memblk() in acpi_parse_cfmws()
-> > - Add comments to describe the usage of numa_add_reserved_memblk()
-> > - Updating the commit message to clarify the purpose of the patch
-> > 
-> > By the way, "LoongArch: Introduce the numa_memblks conversion" is in linux-next.
+> The error manifests for instance on EC2 Graviton Metal instances with
 > 
-> So is this patch dependent upon "LoongArch: Introduce the numa_memblks
-> conversion"?
+>    ACPI PPTT: PPTT table found, but unable to locate core 63 (63)
+>    [...]
+>    ACPI: SPE must be homogeneous
+> 
+> Fixes: 2bd00bcd73e5 ("ACPI/PPTT: Add Processor Properties Topology Table parsing")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+> ---
+>   drivers/acpi/pptt.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> index f73ce6e13065d..4364da90902e5 100644
+> --- a/drivers/acpi/pptt.c
+> +++ b/drivers/acpi/pptt.c
+> @@ -231,7 +231,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_header *table_hdr,
+>   			     sizeof(struct acpi_table_pptt));
+>   	proc_sz = sizeof(struct acpi_pptt_processor);
 
-Yes, the previous version of this patch failed to build on loongarch.
+This isn't really right, it should be struct acpi_subtable_header, then 
+once the header is safe, pull the length from it.
 
--- 
-Sincerely yours,
-Mike.
+But then, really if we are trying to fix the original bug that the table 
+could be shorter than the data in it suggests, the struct 
+acpi_pptt_processor length plus its resources needs to be checked once 
+the subtype is known to be a processor node.
+
+Otherwise the original sizeof * change isn't really fixing anything.
+
+
+
+
+>   
+> -	while ((unsigned long)entry + proc_sz < table_end) {
+> +	while ((unsigned long)entry + proc_sz <= table_end) {
+>   		cpu_node = (struct acpi_pptt_processor *)entry;
+>   		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
+>   		    cpu_node->parent == node_entry)
+> @@ -273,7 +273,7 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
+>   	proc_sz = sizeof(struct acpi_pptt_processor);
+>   
+>   	/* find the processor structure associated with this cpuid */
+> -	while ((unsigned long)entry + proc_sz < table_end) {
+> +	while ((unsigned long)entry + proc_sz <= table_end) {
+>   		cpu_node = (struct acpi_pptt_processor *)entry;
+>   
+>   		if (entry->length == 0) {
+
 
