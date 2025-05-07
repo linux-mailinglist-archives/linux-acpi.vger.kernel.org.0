@@ -1,124 +1,132 @@
-Return-Path: <linux-acpi+bounces-13579-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13580-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A595AADFFA
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 15:01:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B4FAAE081
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 15:19:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E18C04A32D6
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 13:01:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F23B57B1D6A
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 13:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FEE578F2B;
-	Wed,  7 May 2025 13:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5157B25D91E;
+	Wed,  7 May 2025 13:18:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I6TMtmkJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22EEA2F44;
-	Wed,  7 May 2025 13:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A0120C00D;
+	Wed,  7 May 2025 13:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746622902; cv=none; b=uSAnZDQ2pQA28d2kNsI6Akn8wLgGX+iQSRRBXasCbNjnfas/c6pcwtqVTJMS2kFh/IXU1OLOZ0HBBmb7yMRtTsleykXMk8+5Tnl9ZD8QfTkXW3nm3CWQ8lcX2k4DNp8Heh1wcXvqeOyGFjuDs1JZhVv+sMYjRpyzrLSkrdx8N4w=
+	t=1746623887; cv=none; b=cOWBAAzpsPV7jRrot/3lONajqz8w1r06mBthd8FBaizfZgqRk+aT7vNNdjg+fYyUBvCFWMmFXpwVtRo4jLIuqbiBvo1NMalOh942eYekDRNdT/b+lmYos63Knw1gHs73h4mju09btMJGY3KHJYS+vlSaF1BoC/i8ovaaVRD/8XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746622902; c=relaxed/simple;
-	bh=UhHxnwaQ7h0U4CBwveQvFF89cjUlLozsSXZdvrGgtXI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TVPjkXontUon852D4Yh1l+cdP1+pmE5qCmGXG3VNednr6jPBz4mKEYyD6DOyWliQoEUrUabrA9/buAAw0s+8lbE3uuxmW/86pv25BqlS/+CMcq/SErkZZmd3tpb+vo0j4Nw3rdbxyiq7/oTAagl8VklR/QKtR4IOzgyjINiPy4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 50FE0339;
-	Wed,  7 May 2025 06:01:29 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B7D833F58B;
-	Wed,  7 May 2025 06:01:37 -0700 (PDT)
-Date: Wed, 7 May 2025 14:01:34 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: "Heyne, Maximilian" <mheyne@amazon.de>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ACPI/PPTT: fix off-by-one error
-Message-ID: <20250507-sly-skilled-muskox-80b9a4@sudeepholla>
-References: <20250506-draco-taped-15f475cd@mheyne-amazon>
- <20250506-shapeless-merciful-inchworm-7bfdb4@sudeepholla>
- <20250506-dialog-57th-c4e70064@mheyne-amazon>
- <20250507-mysterious-emu-of-fertility-951c69@sudeepholla>
- <20250507-blend-revel-3d94099b@mheyne-amazon>
- <20250507-quantum-solid-ibex-218f1b@sudeepholla>
- <20250507-autumn-phrase-4a1eddef@mheyne-amazon>
- <CAJZ5v0jawX-4QaZG56DK6Urxrh1DMEGi7jKhm=pE1YAwUXBUqg@mail.gmail.com>
+	s=arc-20240116; t=1746623887; c=relaxed/simple;
+	bh=/4l54gB51JEiLKfzvbIFcqCBo1N+fvqPwDNQAGVYOdg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d9CunA+P9Bq5xKG6zRrPG8jK5ggLHA2q0AnhNlW8r2s4XE/0RwR5qh7TofWlxX+RTqcns0AnhF1OJ05f+Cxs9GDWhSDUsMFcsMExmhHkEmZvs6GQV/jBb2YYFQDzGjXvov/RaSxKTKomeKMsfaCa/JNhE/dg/vxxizOj5WACRr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I6TMtmkJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91A9C4CEF0;
+	Wed,  7 May 2025 13:18:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746623886;
+	bh=/4l54gB51JEiLKfzvbIFcqCBo1N+fvqPwDNQAGVYOdg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=I6TMtmkJ9wONHD2Ptd5Lq1z0HFKIn+wm3W5+OhhKao+mTow1VHAKAe99bVuhBg40P
+	 d9cEg3XWUxrzS8msuGZO/ILnlRm4vycdlNQSuNlBzRMKXtC2SurQODlSEZNKUI8f1a
+	 DPfvxcJ3v/1veZYEFgxSELMS2UNNvQz9bunNqpAy3Ge/gx2LrkrqapPb1mOJbEJ/OW
+	 bIPL4JR1JNog7t4jlbjtBNWyO2VjEaeCpb+qZjJrvad9b7n+FmWgXotnqKqJ7l5vfP
+	 xxETuj5muBcSV5jTGv1vBhP5g/9QkRrVD/K3fhlikwQCHPpz5FaMx1PVZ9Aapp+ya/
+	 rdR3sgNsfxd8g==
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-2d522f699bcso3341113fac.2;
+        Wed, 07 May 2025 06:18:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWF1InDHZd6Py+n8aCJ6VSA/Tqi5RI/7sJDDzTWGTGCqiqe6ANKISOtIetqDYp/qdqqVYUAbjRb392e@vger.kernel.org, AJvYcCXWNyUibxBjgTyE2eQ05IhfyIcPKz02jZPQRBBmmxnUjMcHilF+wId0VGQKcG3ywe4cvJYEFrGw1lwcoY4h@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3O+bew86MoAub2V6T1co2P5D7qOai2aay23zJGYtoatAZVNR8
+	I3WoKIz94v8TucfdXeZZV9LR6YEwj3WeS1NLU6Jk5rQ5rsVBjH2E+BYmLDZYTa3GJh567+2q6dm
+	Mvs0mOa43P++Ztbp7iWFn5guoHYI=
+X-Google-Smtp-Source: AGHT+IGPxxvCaybWIAoO2Nga9MEP69VTlaFKPWEWg85ZVQgC8uwxe7rwkJLQ8fk0/O4Gc2ddjZITaMLhIJ6aGrZKMyE=
+X-Received: by 2002:a05:6871:2b19:b0:2d4:ea06:b11 with SMTP id
+ 586e51a60fabf-2db5bd765abmr1754110fac.7.1746623885951; Wed, 07 May 2025
+ 06:18:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0jawX-4QaZG56DK6Urxrh1DMEGi7jKhm=pE1YAwUXBUqg@mail.gmail.com>
+References: <20250505173819.419271-1-tony.luck@intel.com>
+In-Reply-To: <20250505173819.419271-1-tony.luck@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 7 May 2025 15:17:54 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0j5RsZ-QcX1HsVifxKuKXxqF50nrqSf38i=qyBZQSM2fQ@mail.gmail.com>
+X-Gm-Features: ATxdqUH0Kcfwa4e0V3gYVu1BrqxvO8sWNsBYoTMaJIfVI97f5zHx1NUUoeMLKA4
+Message-ID: <CAJZ5v0j5RsZ-QcX1HsVifxKuKXxqF50nrqSf38i=qyBZQSM2fQ@mail.gmail.com>
+Subject: Re: [PATCH v5 0/3] Add interfaces for ACPI MRRM table
+To: Tony Luck <tony.luck@intel.com>
+Cc: rafael@kernel.org, lenb@kernel.org, 
+	Anil Keshavamurthy <anil.s.keshavamurthy@intel.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 07, 2025 at 02:50:41PM +0200, Rafael J. Wysocki wrote:
-> On Wed, May 7, 2025 at 2:42 PM Heyne, Maximilian <mheyne@amazon.de> wrote:
-> >
-> > On Wed, May 07, 2025 at 01:30:53PM +0100, Sudeep Holla wrote:
-> > > On Wed, May 07, 2025 at 11:56:48AM +0000, Heyne, Maximilian wrote:
-> > > > On Wed, May 07, 2025 at 12:52:18PM +0100, Sudeep Holla wrote:
-> > > > >
-> > > > > Just to understand, this node is absolutely processor node with no
-> > > > > private resources ? I find it hard to trust this as most of the CPUs
-> > > > > do have L1 I&D caches. If they were present the table can't abruptly end
-> > > > > like this.
-> > > >
-> > > > Yes looks like it. In our case the ACPI subtable has length 0x14 which is
-> > > > exactly sizeof(acpi_pptt_processor).
-> > > >
-> > >
-> > > OK, this seem like it is emulated platform with no private resources as
-> > > it is specified in the other similar patch clearly(QEMU/VM). So this
-> > > doesn't match real platforms. Your PPTT is wrong if it is real hardware
-> > > platform as you must have private resources.
-> > >
-> > > Anyways if we allow emulation to present CPUs without private resources
-> > > we may have to consider allowing this as the computed pointer will match
-> > > the table end.
-> >
-> > Is there a need by the ACPI specification that the Cache information
-> > must come after the processor information? Because on our platform there
-> > is Cache and it's described but at a different location seemingly. It
-> > looks like caches are described first and then the CPUs.
-> >
-> > I can try to drill even deeper here if you insist. As said I'm no
-> > subject matter expert here. But is there something obviously wrong with
-> > my patch or would it be ok to just take it?
-> 
-> The code changes are fine, but the changelog is somewhat misleading.
-> 
+On Mon, May 5, 2025 at 7:38=E2=80=AFPM Tony Luck <tony.luck@intel.com> wrot=
+e:
+>
+> This series based on:
+>         https://web.git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-=
+pm.git/log/?h=3Dtesting
+>
+> Memory used to be homogeneous. Then NUMA came along. Later different
+> types of memory (persistent memory, on-package high bandwidth memory,
+> CXL attached memory).
+>
+> Each type of memory has its own performance characteristics, and users
+> will need to monitor and control access by type.
+>
+> The MRRM solution is to tag physical address ranges with "region IDs"
+> so that platform firmware[1] can indicate the type of memory for each
+> range (with separate tags available for local vs. remote access to
+> each range). Note that these ranges can include addresses reserved
+> for future hotplugged memory.
+>
+> The region IDs will be used to provide separate event counts for each
+> region for "perf" and for the "resctrl" file system to monitor and
+> control memory bandwidth in each region.
+>
+> Users will need to know the address range(s) that are part of each
+> region. This patch series adds
+>         /sys/firmware/acpi/memory_ranges/rangeX
+> directories to provide user space accessible enumeration.
+>
+> -Tony
+>
+> [1] MRRM definition allow for future expansion for the OS to assign
+> these region IDs.
+>
+> Changes since version 4 here:
+> https://lore.kernel.org/all/20250429202412.380637-1-tony.luck@intel.com/
+>
+> *) Dropped patch 1. ACPICA changes have been merged into the linux-pm
+>    tree.
+> *) Removed spurious blank file from mrrm_init() (Thanks, Fenghua).
+>
+> Tony Luck (3):
+>   ACPI/MRRM: Minimal parse of ACPI MRRM table
+>   ACPI/MRRM: Add /sys files to describe memory ranges
+>   ACPI: Add documentation for exposing MRRM data
+>
+>  include/linux/acpi.h                          |   9 +
+>  drivers/acpi/acpi_mrrm.c                      | 182 ++++++++++++++++++
+>  Documentation/ABI/testing/sysfs-firmware-acpi |  21 ++
+>  arch/x86/Kconfig                              |   1 +
+>  drivers/acpi/Kconfig                          |   3 +
+>  drivers/acpi/Makefile                         |   1 +
+>  6 files changed, 217 insertions(+)
+>  create mode 100644 drivers/acpi/acpi_mrrm.c
+>
 
-+1, may be look at the thread here[1], it make it clear that it is in
-QEMU which I missed clearly for a while. You need to emphasize the fact
-that this would happen only when the processor nodes are at the end
-of the PPTT and they have no private resources(which is generally the
-case in emulation as Rafaek explains below.
-
-> The problem is that the original code assumed the presence of private
-> resources at the end of every CPU entry, but in practice (due to
-> emulation or otherwise) there are entries without them and if such an
-> entry is located at the end of the table, it will not pass the sanity
-> check after commit 2bd00bcd73e5.  This issue was not evident
-> previously because the code didn't work as designed.
-
-I completely agree.
-
--- 
-Regards,
-Sudeep
-
-[1] https://lore.kernel.org/all/20250507035124.28071-1-yangyicong@huawei.com/
+All patches applied as 6.16 material, thanks!
 
