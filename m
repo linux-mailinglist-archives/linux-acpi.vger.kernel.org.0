@@ -1,156 +1,126 @@
-Return-Path: <linux-acpi+bounces-13576-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13577-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23F3AADF6E
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 14:42:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55296AADFC7
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 14:51:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2135F17BACC
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 12:42:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5111D7B4178
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 12:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8C9280010;
-	Wed,  7 May 2025 12:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112A52820A4;
+	Wed,  7 May 2025 12:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g4TXk1uG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gU49hi2j"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7732020AF9C
-	for <linux-acpi@vger.kernel.org>; Wed,  7 May 2025 12:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B41281371;
+	Wed,  7 May 2025 12:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746621760; cv=none; b=CcoigOY21rmLL7tFc7e2fpCMhCFGM5ZMfJBVdppLNq1+JAznPRMaIk1aHywAJ9UqYQkK/JVYRcQ/y5lsQbmrMNGZ1Gke70MA+g4CcBJ0XodtIFGnz9nZYz6iXt10+Bzg/xDZiJ5X+0ozLEj9y7SUaC8Kd4XvEL8ujCWC41pgJTA=
+	t=1746622255; cv=none; b=VOsqd5qzKIs7ymHqbKi//lHQ1eSzdVrLNVRs6ny0WdSySR6xnphN1WNRDnS+TE4AZlDvutLOa2seGwHtkscCGDzhGr9wx0Srn0/oK1ZCDJRwETGRl3aj7398LAnEzMb3KFMyxsjcw7s2XBMcrb7LBpFNC5QZhTHjOIVVY5+nBKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746621760; c=relaxed/simple;
-	bh=Dq0SzA9lVU302a/wXCJ7k99/aLFlI+7RvRMxRXZrwGw=;
+	s=arc-20240116; t=1746622255; c=relaxed/simple;
+	bh=b1G2u+a+inYCaY+eHIEk0cQL6kHNdGLIvEIfV2JMKi4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CcS9B7cEKEvvEgaeRCYQs15lkrv5buv6IpkadYD4PpJfAId8FCeyfA0TLBLRVwTJ2ccL2VTXFrKO+614pRWYwbAFxB2OxNZRiTYx+VDn+6va81hXKINIV9wUYsrmlrANiyAiVNTAbP6aLrWhVvTE6mmkY5hdvJCzl/zM2U4aQTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g4TXk1uG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BDAC4CEEB
-	for <linux-acpi@vger.kernel.org>; Wed,  7 May 2025 12:42:39 +0000 (UTC)
+	 To:Cc:Content-Type; b=e/WGwfxcOK72daXAcT6AaUX5hMU3Rsihfa34BX0wYe4yYjnTLpknSDlJYSERVMBvF+xwF8IEUXduGgMtG3eejr3UT28GXokWApyEEJwmQ3ynX4KZWmBqPQO19wFFR3hLEQD2dLLcyVmfUmpsW+0gKrOwyTJTWFauMijqvWm39dQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gU49hi2j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57263C4CEEE;
+	Wed,  7 May 2025 12:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746621760;
-	bh=Dq0SzA9lVU302a/wXCJ7k99/aLFlI+7RvRMxRXZrwGw=;
+	s=k20201202; t=1746622254;
+	bh=b1G2u+a+inYCaY+eHIEk0cQL6kHNdGLIvEIfV2JMKi4=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=g4TXk1uGv+wj9Ytbayfu3YUWegHPILOthOv32vYHyXUkRAuAYmJhr2dt5pQmHafkh
-	 8cRz0hxgMqtMAs665VMaWMFcjzI/CHxgH8Mhznc6qVIEEV+P7IDGb8tcFCTkM5e6XV
-	 yRvuHshHFxixXLgxFDNy6wGQxSoM0xQT2lHWDXWXY92eQPtlrm3mtmbsSOgcOvw4gW
-	 evw+ZQDgDRMTKkgT7k0GOKxV6UGJuVa73WXdSArzxfjtHaikL+kUbzQUwcAl5K/j5Q
-	 cyikreWViE7SALqdH/xSK9sIVL9YT+rWJSze6eFOaHmpB6V8Vz4tVcWc2Rl+jXBwHA
-	 4JCxR56V6BLeQ==
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-604f0d27c24so2882285eaf.2
-        for <linux-acpi@vger.kernel.org>; Wed, 07 May 2025 05:42:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVvmcsOmmMcGW8zrVrz8m1V9hPNXagu6D+Nw07AQPXXDEFsmtbvhYH6fvxYKH1bp7ARoCILQoNSLiGN@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUHFDwvqVO9ksQWwaiOmNOjAr0fHD6xhcyxrOWb/mzmJ74nem7
-	L67y0K4NhXISlPKhKOw1yWnA13RikHn6ObdWtvnL2eyf9/dgDn4kqSt8Axo/SWX8jL7mnUh0xdG
-	NZoQ8YPMr3Ba05RN00dyda6T+DVw=
-X-Google-Smtp-Source: AGHT+IGy63QDn+eQmHJOvBSQpUUBb7ee84bCuWCHljk8pakt05nNlKsN9QYADn2Klk1m05trCakHhOhOa4VRpECGUuc=
-X-Received: by 2002:a05:6871:340e:b0:2d4:e29d:529a with SMTP id
- 586e51a60fabf-2db5bd7668fmr1987497fac.5.1746621759239; Wed, 07 May 2025
- 05:42:39 -0700 (PDT)
+	b=gU49hi2jL5p4VXYz4uWi5uGl3jq+N5T3C5ISRKEEY/UU4NGS/PXYTYCZYvKkiV5bG
+	 RiKbv2TiuTaiQAD+/Y7ChIgroVQH3QmnTnzzCgMp/a+3Jxtby8rIQ1icbU6D+vygUB
+	 ZynI2yuBEylNfiy+zE6NxquApun1RIaumWdyjG1uAM84mcoU3DCB3qwQFD1dZUujPp
+	 KIKkU1dTiiZDcYSGSbhutARpAk7XN0obIJuU/S+jIrot1C0pdKGrGjgYvY7i2ZB1CM
+	 X6py7sVMymHy/BQgzCESb5ql4CNOEkgaXc3y7V75zbkfuxBdcwENi02xcVeZOK20f1
+	 YPHj9swTDxMmg==
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-2db78ef7f69so65797fac.1;
+        Wed, 07 May 2025 05:50:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU67oQHdpLSBzzVsqL8HFXDkRqtucdbyjCZdJBm36TSnF6s2a7db2DCo+hUYNFBNODv8zStamRX4HGa@vger.kernel.org, AJvYcCWGmJHwDJqZ327kcevtkE4iU2DE6UMhFSFoPLMwxd/LuGiYBb3Do8N4ayRs99UPjtnzDSOPp0eVQTaG0Spw@vger.kernel.org, AJvYcCX0OHHTak00el1T+9FM0H0nvAZNQvYzmKdBIc18RtVgc6/7ssnq9ZKXeFSRiYgfYPl6maD0bO9A@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFcYvkw+kb7CX79oTqfTUSuuIRSec9af6o1w59r4u8TxOgkWNO
+	nOxf/4fIm3HqcKg9xhe22Dmiri64VoAO6WbyQfOgnXWXAb7Mt+Zs0KwkjTF6GA1oKT0wdqQh7St
+	/xtVZGeqLx4omDz2Iq/kwUllvNRM=
+X-Google-Smtp-Source: AGHT+IH7rwQNr5/aN9Cx6BnHDCYku8kKjDXsfS4VXQ0UX97SKFw4eRqCEFsP/fUl0OWL3tX9yRsRyYJE+8H8yLNAbbM=
+X-Received: by 2002:a05:6870:9624:b0:29e:2594:81e with SMTP id
+ 586e51a60fabf-2db5be28df8mr1564064fac.13.1746622253594; Wed, 07 May 2025
+ 05:50:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250507042954.43674-1-pmarheine@chromium.org>
-In-Reply-To: <20250507042954.43674-1-pmarheine@chromium.org>
+References: <20250506-draco-taped-15f475cd@mheyne-amazon> <20250506-shapeless-merciful-inchworm-7bfdb4@sudeepholla>
+ <20250506-dialog-57th-c4e70064@mheyne-amazon> <20250507-mysterious-emu-of-fertility-951c69@sudeepholla>
+ <20250507-blend-revel-3d94099b@mheyne-amazon> <20250507-quantum-solid-ibex-218f1b@sudeepholla>
+ <20250507-autumn-phrase-4a1eddef@mheyne-amazon>
+In-Reply-To: <20250507-autumn-phrase-4a1eddef@mheyne-amazon>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 7 May 2025 14:42:28 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0i0y0+a5O5skm79AONjkCi9zgD7yewHAs-WrCXT=Z8vCg@mail.gmail.com>
-X-Gm-Features: ATxdqUEIO1z94DY3RenFthCwp6fIBAp5cEVxn6iS_lLwV1yiTLrWdKYlmdTMJ94
-Message-ID: <CAJZ5v0i0y0+a5O5skm79AONjkCi9zgD7yewHAs-WrCXT=Z8vCg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: battery: negate current when discharging
-To: Peter Marheine <pmarheine@chromium.org>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org
+Date: Wed, 7 May 2025 14:50:41 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jawX-4QaZG56DK6Urxrh1DMEGi7jKhm=pE1YAwUXBUqg@mail.gmail.com>
+X-Gm-Features: ATxdqUEAUAgtd-clsENEBuwV8eDUunmOwf33dlqZ1M-gzGb-mBl9ODBC3X-5bL4
+Message-ID: <CAJZ5v0jawX-4QaZG56DK6Urxrh1DMEGi7jKhm=pE1YAwUXBUqg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI/PPTT: fix off-by-one error
+To: "Heyne, Maximilian" <mheyne@amazon.de>
+Cc: Sudeep Holla <sudeep.holla@arm.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	Jeremy Linton <jeremy.linton@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 7, 2025 at 6:32=E2=80=AFAM Peter Marheine <pmarheine@chromium.o=
-rg> wrote:
+On Wed, May 7, 2025 at 2:42=E2=80=AFPM Heyne, Maximilian <mheyne@amazon.de>=
+ wrote:
 >
-> The ACPI specification requires that battery rate is always positive,
-> but the kernel ABI for POWER_SUPPLY_PROP_CURRENT_NOW
-> (Documentation/ABI/testing/sysfs-class-power) specifies that it should
-> be negative when a battery is discharging. When reporting CURRENT_NOW,
-> massage the value to match the documented ABI.
+> On Wed, May 07, 2025 at 01:30:53PM +0100, Sudeep Holla wrote:
+> > On Wed, May 07, 2025 at 11:56:48AM +0000, Heyne, Maximilian wrote:
+> > > On Wed, May 07, 2025 at 12:52:18PM +0100, Sudeep Holla wrote:
+> > > >
+> > > > Just to understand, this node is absolutely processor node with no
+> > > > private resources ? I find it hard to trust this as most of the CPU=
+s
+> > > > do have L1 I&D caches. If they were present the table can't abruptl=
+y end
+> > > > like this.
+> > >
+> > > Yes looks like it. In our case the ACPI subtable has length 0x14 whic=
+h is
+> > > exactly sizeof(acpi_pptt_processor).
+> > >
+> >
+> > OK, this seem like it is emulated platform with no private resources as
+> > it is specified in the other similar patch clearly(QEMU/VM). So this
+> > doesn't match real platforms. Your PPTT is wrong if it is real hardware
+> > platform as you must have private resources.
+> >
+> > Anyways if we allow emulation to present CPUs without private resources
+> > we may have to consider allowing this as the computed pointer will matc=
+h
+> > the table end.
 >
-> This only changes the sign of `current_now` and not `power_now` because
-> documentation doesn't describe any particular meaning for `power_now` so
-> leaving `power_now` unchanged is less likely to confuse userspace
-> unnecessarily, whereas becoming consistent with the documented ABI is
-> worth potentially confusing clients that read `current_now`.
+> Is there a need by the ACPI specification that the Cache information
+> must come after the processor information? Because on our platform there
+> is Cache and it's described but at a different location seemingly. It
+> looks like caches are described first and then the CPUs.
 >
-> Signed-off-by: Peter Marheine <pmarheine@chromium.org>
-> ---
->  drivers/acpi/battery.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->
-> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-> index 6760330a8a..0ef03142fd 100644
-> --- a/drivers/acpi/battery.c
-> +++ b/drivers/acpi/battery.c
-> @@ -242,6 +242,18 @@ static int acpi_battery_get_property(struct power_su=
-pply *psy,
->                         val->intval =3D battery->voltage_now * 1000;
->                 break;
->         case POWER_SUPPLY_PROP_CURRENT_NOW:
-> +               if (battery->rate_now =3D=3D ACPI_BATTERY_VALUE_UNKNOWN)
-> +                       ret =3D -ENODEV;
-> +               else if ((battery->state & ACPI_BATTERY_STATE_DISCHARGING=
-) &&
-> +                        acpi_battery_handle_discharging(battery)
-> +                               =3D=3D POWER_SUPPLY_STATUS_DISCHARGING)
-> +                       /* ACPI specifies battery rate should always be
-> +                        * positive, but this prop is negative when disch=
-arging.
-> +                        */
-> +                       val->intval =3D battery->rate_now * -1000;
-> +               else
-> +                       val->intval =3D battery->rate_now * 1000;
-> +               break;
->         case POWER_SUPPLY_PROP_POWER_NOW:
->                 if (battery->rate_now =3D=3D ACPI_BATTERY_VALUE_UNKNOWN)
->                         ret =3D -ENODEV;
-> --
+> I can try to drill even deeper here if you insist. As said I'm no
+> subject matter expert here. But is there something obviously wrong with
+> my patch or would it be ok to just take it?
 
-What about this instead (modulo GMail-induced whitespace breakage):
+The code changes are fine, but the changelog is somewhat misleading.
 
----
- drivers/acpi/battery.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
-
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -243,10 +243,22 @@
-         break;
-     case POWER_SUPPLY_PROP_CURRENT_NOW:
-     case POWER_SUPPLY_PROP_POWER_NOW:
--        if (battery->rate_now =3D=3D ACPI_BATTERY_VALUE_UNKNOWN)
-+        if (battery->rate_now =3D=3D ACPI_BATTERY_VALUE_UNKNOWN) {
-             ret =3D -ENODEV;
--        else
--            val->intval =3D battery->rate_now * 1000;
-+            break;
-+        }
-+
-+        val->intval =3D battery->rate_now * 1000;
-+        /*
-+         * When discharging, the current should be reported as a
-+         * negative number as per the power supply class interface
-+         * definition.
-+         */
-+        if (psp =3D=3D POWER_SUPPLY_PROP_CURRENT_NOW &&
-+            (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
-+            acpi_battery_handle_discharging(battery) =3D=3D
-POWER_SUPPLY_STATUS_DISCHARGING)
-+            val->intval =3D -val->intval;
-+
-         break;
-     case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
-     case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
+The problem is that the original code assumed the presence of private
+resources at the end of every CPU entry, but in practice (due to
+emulation or otherwise) there are entries without them and if such an
+entry is located at the end of the table, it will not pass the sanity
+check after commit 2bd00bcd73e5.  This issue was not evident
+previously because the code didn't work as designed.
 
