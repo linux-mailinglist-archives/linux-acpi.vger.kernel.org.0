@@ -1,106 +1,60 @@
-Return-Path: <linux-acpi+bounces-13586-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13587-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91EB3AAE3FE
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 17:11:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 947FBAAE405
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 17:13:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A3E19A72CE
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 15:10:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42C13987675
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 15:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED23C28A405;
-	Wed,  7 May 2025 15:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cX6+TqKU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F1C289E3E;
+	Wed,  7 May 2025 15:12:29 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEF4289E3E;
-	Wed,  7 May 2025 15:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B86280325;
+	Wed,  7 May 2025 15:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746630655; cv=none; b=b5sHBYrSxO32AoeYh9PBZ4PoF92/1mB1bhENIrS7IAcVmot5Biuat5eDKrRHdN1c+uoEU+1u5YARpyjYyBmhnC1Jg1fcW0X2jxu7IiXIJMNVSewuYi+UXlZ+UQllz/sN87aLqRk6MEv+Rp48haSNLEE0zxfsvX411ConWDXeySE=
+	t=1746630749; cv=none; b=UdJRiShh+521Gr3KssbTeGUk5BbSTrGXuXmE3sWKI1ahI3Q6gQQQqksqbV7KhVFXE0aeozDKDjR3wfDXrIM0IJiyvfNmxWxMYDXMFZgqZfW6FmGWy1xQ3Hfspv4dIsxrL8I7cBfZeXftDELLGejz51eBQhyO/VdM9YkRrUovsTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746630655; c=relaxed/simple;
-	bh=1xPQQ8cgSsnUdxWhhTMgGFgv6gyyo/ahFyXwkkVFqhg=;
+	s=arc-20240116; t=1746630749; c=relaxed/simple;
+	bh=AO4d0aQ0NxeQWXjmRYoCiD1HqBivQ1em8dNKjTse1U0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cTOWnRi2vlIerXGFn93OkExT2r/jn1/H9clUhOA5AP6ISrRJZnPfZC7CfF/xzjIIZVA86I3dHjmzXx31a3J7feWgAwlPjRZRZue7ltB5mm0Zlhv7Pj7CJ3ak1UKEZ2vyvFcezgcf2pWNpWOwrLxl5Hure8kHWx0cPIxk6RJbp5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cX6+TqKU; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746630654; x=1778166654;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1xPQQ8cgSsnUdxWhhTMgGFgv6gyyo/ahFyXwkkVFqhg=;
-  b=cX6+TqKU7RQGNVxclZExECRgjj1qxucMa//puAi3K+1dxZEau90FSejs
-   U57OnZLDO2OvxfzSxUvWRrxSGJ3JIQavgEwmdgt/TigGDJsymOLddWSLz
-   PXdgUsx0/DllTzuSzy6lx2mfyHxyBmK1EInwqy08Ydhv747DEKTqd8fhL
-   elC0tr4tr+uS2aE4n7ZNaWkFdVcyrTFZzTaBeoU7/9EryXiEAMSiz249J
-   0inEZuKxRktoF7/9LDgfgPm14VSpZ+Ny2wPgmMCy+/1PsFJV6cLPXcN8Y
-   Ulh7XL5lV5YAdOwXThhzzNAALpEZZgiP90EIMlfda3+5dLmgNZKiIDlXl
-   Q==;
-X-CSE-ConnectionGUID: WiifXXYMTwy5uqo8RFAFAA==
-X-CSE-MsgGUID: j+4C9r5XTs2XnDDYJQpvXg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="48385043"
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
-   d="scan'208";a="48385043"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 08:10:53 -0700
-X-CSE-ConnectionGUID: 8ZDu9uRDQC+SvUB3OKws0Q==
-X-CSE-MsgGUID: PnZJEGOxR4WhtEqGsijYkg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
-   d="scan'208";a="141107107"
-Received: from smile.fi.intel.com ([10.237.72.55])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 08:10:44 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uCgPw-00000003lUL-1quq;
-	Wed, 07 May 2025 18:10:40 +0300
-Date: Wed, 7 May 2025 18:10:40 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=QjzfH1/uXQuYhvr2meOriYbBUKY+LofZwrcB9uqRscaQx8VGRmxq66dQM9AJH+z3AvWdoaYARE5ZBLa8vgBmSGcA0Bzol2bKaha5I2KTRvZypxVEXtR4L1WIw1AAJ1pvLjcC6Nlfs3A+cykW7mrgr8BZ6tf4R85baMusS7ziRlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C12CF339;
+	Wed,  7 May 2025 08:12:16 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 17CB93F58B;
+	Wed,  7 May 2025 08:12:24 -0700 (PDT)
+Date: Wed, 7 May 2025 16:12:22 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: "Heyne, Maximilian" <mheyne@amazon.de>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 09/26] cxl/test: Use device_set_node()
-Message-ID: <aBt38JR-YGD5nnC4@smile.fi.intel.com>
-References: <20250507071315.394857-1-herve.codina@bootlin.com>
- <20250507071315.394857-10-herve.codina@bootlin.com>
+	Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ACPI/PPTT: fix off-by-one error
+Message-ID: <20250507-singing-shrewd-stallion-ee2481@sudeepholla>
+References: <20250506-draco-taped-15f475cd@mheyne-amazon>
+ <20250506-shapeless-merciful-inchworm-7bfdb4@sudeepholla>
+ <20250506-dialog-57th-c4e70064@mheyne-amazon>
+ <20250507-mysterious-emu-of-fertility-951c69@sudeepholla>
+ <20250507-blend-revel-3d94099b@mheyne-amazon>
+ <20250507-quantum-solid-ibex-218f1b@sudeepholla>
+ <20250507-autumn-phrase-4a1eddef@mheyne-amazon>
+ <20250507-divergent-lori-from-pluto-71daee@sudeepholla>
+ <20250507-petit-capri-debaa30d@mheyne-amazon>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -109,32 +63,68 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250507071315.394857-10-herve.codina@bootlin.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20250507-petit-capri-debaa30d@mheyne-amazon>
 
-On Wed, May 07, 2025 at 09:12:51AM +0200, Herve Codina wrote:
-> The code set directly dev->fwnode.
+On Wed, May 07, 2025 at 02:29:17PM +0000, Heyne, Maximilian wrote:
+> On Wed, May 07, 2025 at 01:56:53PM +0100, Sudeep Holla wrote:
+> > 
+> > That is fine but you must have reference to those caches in the processor
+> > node and the length of the node won't be 0x14 in that case and you shouldn't
+> > hit this issue. So if this is real platform, then yes I am must say you
+> > PPTT is wrong especially if there are caches in the table as you say just
+> > that processor nodes are not pointing to them correctly then ?
 > 
-> Use the dedicated helper to perform this operation.
+> The ACPI tables in our case describe a core first which references the
+> cache as private resource and then a thread whose parent is the core but
+> this doesn't have a private resource. This is how it looks like:
+> 
 
-...
+Ah, right I clearly missed considering multithreaded systems in my mind.
+I think SMTs processor nodes might have no private resource which I didn't
+consider before. However, your example made me open the spec and read about
+SMT and PPTT. There are couple of things I still don't follow below.
 
-> @@ -1046,7 +1046,7 @@ static void mock_companion(struct acpi_device *adev, struct device *dev)
->  {
->  	device_initialize(&adev->dev);
->  	fwnode_init(&adev->fwnode, NULL);
-> -	dev->fwnode = &adev->fwnode;
-> +	device_set_node(dev, &adev->fwnode);
->  	adev->fwnode.dev = dev;
->  }
+> [C8Eh 3214   1]                Subtable Type : 00 [Processor Hierarchy Node]
+> [C8Fh 3215   1]                       Length : 1C
+> [C90h 3216   2]                     Reserved : 0000
+> [C92h 3218   4]        Flags (decoded below) : 00000002
+>                             Physical package : 0
+>                      ACPI Processor ID valid : 1
+>                        Processor is a thread : 0
+>                               Node is a leaf : 0
+>                     Identical Implementation : 0
+> [C96h 3222   4]                       Parent : 000000A2
+> [C9Ah 3226   4]            ACPI Processor ID : 0000003F
+> [C9Eh 3230   4]      Private Resource Number : 00000002
+> [CA2h 3234   4]             Private Resource : 00000072
+> [CA6h 3238   4]             Private Resource : 0000008A
+>
 
-This code is questionable to begin with. Can the original author explain what
-is the motivation behind this as the only callers of fwnode_init() are deep
-core pieces _and_ this only module. Why?!
+Does the above node represent the container node for the threads within
+the core ? I assumes so.
+
+> [CAAh 3242   1]                Subtable Type : 00 [Processor Hierarchy Node]
+> [CABh 3243   1]                       Length : 14
+> [CACh 3244   2]                     Reserved : 0000
+> [CAEh 3246   4]        Flags (decoded below) : 0000000E
+>                             Physical package : 0
+>                      ACPI Processor ID valid : 1
+>                        Processor is a thread : 1
+>                               Node is a leaf : 1
+>                     Identical Implementation : 0
+> [CB2h 3250   4]                       Parent : 00000C8E
+> [CB6h 3254   4]            ACPI Processor ID : 0000003F
+> [CBAh 3258   4]      Private Resource Number : 00000000
+> 
+
+Is this the only thread as you mentioned the table ends here ? So it
+is single threaded core ? Just working what is the point in representing
+it in this way ? Also the ACPI Processor ID is unique, so I hope you have
+same number of container nodes as the threads. IOW, they ACPI Processor ID
+for the thread and the container node match only because it is single
+threaded core.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Regards,
+Sudeep
 
