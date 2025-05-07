@@ -1,94 +1,156 @@
-Return-Path: <linux-acpi+bounces-13594-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13595-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 306BEAAE4E9
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 17:35:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B37BAAE51F
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 17:43:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 355B13AE327
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 15:35:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F26564A8653
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 15:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7053A1F2C3B;
-	Wed,  7 May 2025 15:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7FE28B4E9;
+	Wed,  7 May 2025 15:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RbYyiEs7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B356748D
-	for <linux-acpi@vger.kernel.org>; Wed,  7 May 2025 15:35:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B3728B4E2;
+	Wed,  7 May 2025 15:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746632122; cv=none; b=i6ZSwTIQiytJ3O9lVZv2hhk1/UrkRl2ukWjHMnlTv4UZINX4JlSKCxhkeA7njs6OfHvPDZcUdNS0SWocJ2ddWsHBdN+lolLmrUu7lCj74y4dNNzhgSUqPTC2zenuC2ZxaZYLt98b7leUYfdesz2xbmUWyG2BYRc4FuBWOv5gccE=
+	t=1746632544; cv=none; b=bYDGwhLkl/LPJ42edBT4lpb4RrrlxLzf0/IwmZ+HJ/aJo9VEXdArSkTcvzDVGpRVrQGtITjlEoynVJSfENVuTdOm/G+09bEc46owEsRbXj0L/lKNuuKfT7bv0VlhbqhZzVEFfkG6sXO+Sm0EOLfRIZfp7jQub3r0ZbJyyfy8hgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746632122; c=relaxed/simple;
-	bh=ySxCuKnG+VU7PXW4i5MC3ZwUovzp1SBfv4mpjbzgKCQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lTt92yz7+cwPObqm7PjUJms/R68Lm90Uzt5wUxqU5DUY8OCzai7T4HYHzNkFYbAgdSnUK1YDGU/OQAlZdPFSLGu+7A+gNKlCdTcEGYAXcyVNVPCmz+A7Pza1Tj2l2Jxk/bP+g1D9HtK08KVabx3lEtVK8Z4ISVISk/MV1Iw4S2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6FCA7339;
-	Wed,  7 May 2025 08:35:07 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 63F333F58B;
-	Wed,  7 May 2025 08:35:15 -0700 (PDT)
-Date: Wed, 7 May 2025 16:35:12 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Yicong Yang <yangyicong@huawei.com>, <lenb@kernel.org>,
-	<linux-acpi@vger.kernel.org>, <jmeurin@google.com>,
-	<jeremy.linton@arm.com>, <zhanjie9@hisilicon.com>,
-	<prime.zeng@hisilicon.com>, <yangyicong@hisilicon.com>,
-	<linuxarm@huawei.com>, <alireza.sanaee@huawei.com>
-Subject: Re: [PATCH] ACPI: PPTT: Fix table length check when parsing
- processor nodes
-Message-ID: <20250507-melodic-helpful-pudu-7ad0f2@sudeepholla>
-References: <20250507035124.28071-1-yangyicong@huawei.com>
- <20250507-devout-mysterious-jackal-e50e00@sudeepholla>
- <CAJZ5v0iWJQnwamT0mP=A_wtAbRkguhxcvbMnm+b2chAET7=sGA@mail.gmail.com>
- <20250507-venomous-feathered-skink-77ea16@sudeepholla>
- <CAJZ5v0hyxCE3NWcCgKkut2_pJGO-Pyt27GdhMK0ZUZ-MJ6dudQ@mail.gmail.com>
- <20250507-obedient-knowing-galago-245e7c@sudeepholla>
- <20250507153550.0000340f@huawei.com>
+	s=arc-20240116; t=1746632544; c=relaxed/simple;
+	bh=X6a4mVmc9Gg+626jkP+iQ/neOLmh8i1nYRqm1zgMs0I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZF5Gn7qHDBK7brLV+FGM/iUxDIuS2ivd8pC/1MYeAI8TEdpQL67rcOjQ6JpkGsYfBUXjyRus8tx0MrJulC5SzsLdOwmEHWIAo8AJd4aNM+o3mfCAshmj1I3jKbZJXlZ93p30JIjbJz6lgXu/iDXHybARrbCwLtb0GYLG6kRkJmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RbYyiEs7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C510C4CEE9;
+	Wed,  7 May 2025 15:42:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746632544;
+	bh=X6a4mVmc9Gg+626jkP+iQ/neOLmh8i1nYRqm1zgMs0I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=RbYyiEs7wpnnw8imM6jb3u7SFlt3Hqn5B0wGfNcOEWLQnobDGeH8bQBUkTqXHu93l
+	 AObLrQsBXwxcdg5/QsC8PWLbYslJENDskuMWVnZQAGaSNJpJBp7iSUACe70E08JCiC
+	 kRSUmMhHeLS91T7IPrFEjbnChP+hNcblovKjh06VwoizzOxDCJzj0iqhxqovg5aRe+
+	 ipT51pZVW9zcC3KReij0nOPiUd4JJYuQu3tj+lNxeZpjZvDd5KlaQs4D8W/q/e0LhD
+	 KFt33SqPxIQ9Dx9+Na0rOPfv3nk7NS10V1kVfpMnvu5kbwrq7gdcFHImvOAzn3ha14
+	 RW89QAqBGgOGw==
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-2da3b3bb560so32216fac.3;
+        Wed, 07 May 2025 08:42:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVQg/JpnEJPymoV0DDbcrFTdF0hT7OnYILpNMDt0rAZzgSzwnawev/Cp8/7EzcCHH7q53oon5b5jlx2@vger.kernel.org, AJvYcCVfB2Q5KoBVo/C68O4nNRkc1jFGo6iSY8SKo+LH0YHbD4ohWIW5ZDyAhKTl84qCUeGTo7CkH/E4@vger.kernel.org, AJvYcCVyg+QR2VFNDgAcm5nsxRZKXlGWcX3D9kI387YjenUGdJfzyqEDhLY6Z3YoHe657bsLfBWYcVIosx04Hsvc@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzv+0jYsv46X6J5ViQQ9M+zFSB9Obb20DFbmsor4PnLHMsiq1Lp
+	Sv2qHZQwUmZstoiYmhH97ncq8fs4NsXg2W0jly9KOGFGUXgYCohMzSr6xMSA2Zcu/O6LN0GRNYo
+	50Q5wXBhP4ZwV1ZaA7KlIdmmbrLk=
+X-Google-Smtp-Source: AGHT+IF9g0bYO+YbMTdPoNSKVhb7oxdZ2SOFycPAHV8kmay8GgVyfTxxkuMDCK4QI6tlWeIbB4BlcK0/VaSa95NIsNo=
+X-Received: by 2002:a05:6870:6109:b0:2c1:461f:309a with SMTP id
+ 586e51a60fabf-2db5bda3d4amr2310275fac.8.1746632543645; Wed, 07 May 2025
+ 08:42:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250507153550.0000340f@huawei.com>
+References: <20250506-draco-taped-15f475cd@mheyne-amazon> <214c2a2d-e0ea-4ec6-9925-05e39319e813@arm.com>
+In-Reply-To: <214c2a2d-e0ea-4ec6-9925-05e39319e813@arm.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 7 May 2025 17:42:12 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jvWXDQQ++4wmWJ+i=jds+MZ68bRB9+26WM4tAPHFxALw@mail.gmail.com>
+X-Gm-Features: ATxdqUFhaifr6kFHTAZ2IQkc_RdcvjRSQqknxvPrr1gBeUalvCjgLodiDGXZ-24
+Message-ID: <CAJZ5v0jvWXDQQ++4wmWJ+i=jds+MZ68bRB9+26WM4tAPHFxALw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI/PPTT: fix off-by-one error
+To: Jeremy Linton <jeremy.linton@arm.com>
+Cc: "Heyne, Maximilian" <mheyne@amazon.de>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 07, 2025 at 03:35:50PM +0100, Jonathan Cameron wrote:
-> On Wed, 7 May 2025 12:55:00 +0100
-> Sudeep Holla <sudeep.holla@arm.com> wrote:
-> 
+On Wed, May 7, 2025 at 5:25=E2=80=AFPM Jeremy Linton <jeremy.linton@arm.com=
+> wrote:
+>
+> Hi,
+>
+> On 5/6/25 8:13 AM, Heyne, Maximilian wrote:
+> > Commit 7ab4f0e37a0f ("ACPI PPTT: Fix coding mistakes in a couple of
+> > sizeof() calls") corrects the processer entry size but unmasked a longe=
+r
+> > standing bug where the last entry in the structure can get skipped due
+> > to an off-by-one mistake if the last entry ends exactly at the end of
+> > the ACPI subtable.
+> >
+> > The error manifests for instance on EC2 Graviton Metal instances with
+> >
+> >    ACPI PPTT: PPTT table found, but unable to locate core 63 (63)
+> >    [...]
+> >    ACPI: SPE must be homogeneous
+> >
+> > Fixes: 2bd00bcd73e5 ("ACPI/PPTT: Add Processor Properties Topology Tabl=
+e parsing")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+> > ---
+> >   drivers/acpi/pptt.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> > index f73ce6e13065d..4364da90902e5 100644
+> > --- a/drivers/acpi/pptt.c
+> > +++ b/drivers/acpi/pptt.c
+> > @@ -231,7 +231,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_he=
+ader *table_hdr,
+> >                            sizeof(struct acpi_table_pptt));
+> >       proc_sz =3D sizeof(struct acpi_pptt_processor);
+>
+> This isn't really right, it should be struct acpi_subtable_header, then
+> once the header is safe, pull the length from it.
+>
+> But then, really if we are trying to fix the original bug that the table
+> could be shorter than the data in it suggests, the struct
+> acpi_pptt_processor length plus its resources needs to be checked once
+> the subtype is known to be a processor node.
+>
+> Otherwise the original sizeof * change isn't really fixing anything.
 
-[...]
+Sorry, what sense did it make to do
 
-> > 
-> > Indeed and also we should have private resources like L1 cache described
-> > after the initial 20 bytes of the node. So I am bit worried if this will
-> > just hide other problems while it may solve this problem by looks of it.
-> > This example doesn't look like a proper PPTT matching real systems.
-> > 
-> 
-> Assuming I'm understanding the bug correctly...
-> 
-> SMT systems will hit this. There will typically be no private resources
-> for a thread as the L1I/D shared by multiple threads (which are processor
-> nodes IIRC).  Note we are trying to improve the cache description in QEMU
-> at the moment as it would definitely be better to present caches in PPTT,
-> but that isn't the main issue here.
-> 
+proc_sz =3D sizeof(struct acpi_pptt_processor *);
 
-Indeed, I just replied in the other thread that I clearly missed SMT.
+here?  As much as proc_sz =3D 0 I suppose?
 
--- 
-Regards,
-Sudeep
+> >
+> > -     while ((unsigned long)entry + proc_sz < table_end) {
+> > +     while ((unsigned long)entry + proc_sz <=3D table_end) {
+> >               cpu_node =3D (struct acpi_pptt_processor *)entry;
+> >               if (entry->type =3D=3D ACPI_PPTT_TYPE_PROCESSOR &&
+
+And this checks if the current entry is a CPU one and goes to the next
+one otherwise, so it clearly looks for a CPU entry.
+
+So the size check is logically correct now: It checks if there's
+enough space in the table to hold a CPU entry that's being looked for.
+The only problem with it is the assumption that the size of a CPU
+entry must be greater than sizeof(struct acpi_pptt_processor).
+
+Previously, it didn't make sense at all.
+
+> >                   cpu_node->parent =3D=3D node_entry)
+> > @@ -273,7 +273,7 @@ static struct acpi_pptt_processor *acpi_find_proces=
+sor_node(struct acpi_table_he
+> >       proc_sz =3D sizeof(struct acpi_pptt_processor);
+> >
+> >       /* find the processor structure associated with this cpuid */
+> > -     while ((unsigned long)entry + proc_sz < table_end) {
+> > +     while ((unsigned long)entry + proc_sz <=3D table_end) {
+> >               cpu_node =3D (struct acpi_pptt_processor *)entry;
+> >
+> >               if (entry->length =3D=3D 0) {
 
