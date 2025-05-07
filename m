@@ -1,60 +1,107 @@
-Return-Path: <linux-acpi+bounces-13587-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13588-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 947FBAAE405
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 17:13:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F6BBAAE44F
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 17:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42C13987675
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 15:12:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E3A71C08ED9
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 15:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F1C289E3E;
-	Wed,  7 May 2025 15:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733EC28A409;
+	Wed,  7 May 2025 15:15:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yy44zIO9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B86280325;
-	Wed,  7 May 2025 15:12:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8361FDA61;
+	Wed,  7 May 2025 15:15:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746630749; cv=none; b=UdJRiShh+521Gr3KssbTeGUk5BbSTrGXuXmE3sWKI1ahI3Q6gQQQqksqbV7KhVFXE0aeozDKDjR3wfDXrIM0IJiyvfNmxWxMYDXMFZgqZfW6FmGWy1xQ3Hfspv4dIsxrL8I7cBfZeXftDELLGejz51eBQhyO/VdM9YkRrUovsTc=
+	t=1746630950; cv=none; b=Tz2+7UTDWpPkfMG/2V42hWhkwjPExzU2316FSbP1/hZeJu0a5NWUuli9zgetclUP4tTUAnWhD8PzYwzmvSroNUm6JDXvjbkcBS/aHoqfl4MrPN7pAMn0PsseLqWm/yeKrgv1Qa9KkBIAeGt6abzRaf52wwiGCXY6ruwbeTnLfmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746630749; c=relaxed/simple;
-	bh=AO4d0aQ0NxeQWXjmRYoCiD1HqBivQ1em8dNKjTse1U0=;
+	s=arc-20240116; t=1746630950; c=relaxed/simple;
+	bh=yO+CLLJleqQCOJ1P7Cw9+o2RW0jsGz/mD7j9rcWCyFk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QjzfH1/uXQuYhvr2meOriYbBUKY+LofZwrcB9uqRscaQx8VGRmxq66dQM9AJH+z3AvWdoaYARE5ZBLa8vgBmSGcA0Bzol2bKaha5I2KTRvZypxVEXtR4L1WIw1AAJ1pvLjcC6Nlfs3A+cykW7mrgr8BZ6tf4R85baMusS7ziRlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C12CF339;
-	Wed,  7 May 2025 08:12:16 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 17CB93F58B;
-	Wed,  7 May 2025 08:12:24 -0700 (PDT)
-Date: Wed, 7 May 2025 16:12:22 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: "Heyne, Maximilian" <mheyne@amazon.de>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=erYOFfOwJLpeg7FTnqWPECC9AJwDqdCRYOmCCW7hBeCQxQH8J+edYGm2+NQPo8qkSQBFIZEXWaB2B6+qJWhwnDwRM41NTmoB2y3gypKkPf0hXtsJ9YTO+5q/eNWS9TMjGEQkvv1Lo5lQ7SRI2Nbg2/v7NtUT8Mg5gWeKcdBu+ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yy44zIO9; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746630949; x=1778166949;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yO+CLLJleqQCOJ1P7Cw9+o2RW0jsGz/mD7j9rcWCyFk=;
+  b=Yy44zIO9S8es7yCDyOqM/+Bmx2BiBh12nDbqIb322z+UvoZMnQk0Ifcx
+   LH/HvLGt8VzdfLnnCoqPIb3+qRlGR0FM3nw/Ski5f7aXWLR7OhMmpZa28
+   FqtKkwOckmSWKXK+tO/+j5tHoA32iSJuVO43Q67UhSVLNCunj4ZS31U8A
+   c8GsWCWUCceNjYyguH+Fi+GsdG54u3Ls3RF4Lj2H2n+ldMArYk8u/wKxk
+   +DRph4ibvsJy5fKTa/1PjtwJGr8TI14eoS/cEuiZe5t8xc1wVyQh006VO
+   e0EUQEhy7Qb1TUs4bTWTotfZ4jVoCr8I7bEzGQV+mdrs9kZM4G+a1YW43
+   Q==;
+X-CSE-ConnectionGUID: mG/VuD5BThS7DPpV4/tNQw==
+X-CSE-MsgGUID: tUMIjCwfSaqpZZ5qtc3QoQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="48480563"
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
+   d="scan'208";a="48480563"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 08:15:47 -0700
+X-CSE-ConnectionGUID: OcLle1K7QPmnpTiiYJJHXQ==
+X-CSE-MsgGUID: jQAKSpd0R9iEv0m2vr7j7w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
+   d="scan'208";a="135906012"
+Received: from smile.fi.intel.com ([10.237.72.55])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 08:15:38 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1uCgUg-00000003lXp-2GW9;
+	Wed, 07 May 2025 18:15:34 +0300
+Date: Wed, 7 May 2025 18:15:34 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ACPI/PPTT: fix off-by-one error
-Message-ID: <20250507-singing-shrewd-stallion-ee2481@sudeepholla>
-References: <20250506-draco-taped-15f475cd@mheyne-amazon>
- <20250506-shapeless-merciful-inchworm-7bfdb4@sudeepholla>
- <20250506-dialog-57th-c4e70064@mheyne-amazon>
- <20250507-mysterious-emu-of-fertility-951c69@sudeepholla>
- <20250507-blend-revel-3d94099b@mheyne-amazon>
- <20250507-quantum-solid-ibex-218f1b@sudeepholla>
- <20250507-autumn-phrase-4a1eddef@mheyne-amazon>
- <20250507-divergent-lori-from-pluto-71daee@sudeepholla>
- <20250507-petit-capri-debaa30d@mheyne-amazon>
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 04/26] driver core: Avoid warning when removing a
+ device while its supplier is unbinding
+Message-ID: <aBt5FvZ95S1Y_Mba@smile.fi.intel.com>
+References: <20250507071315.394857-1-herve.codina@bootlin.com>
+ <20250507071315.394857-5-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -63,68 +110,105 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250507-petit-capri-debaa30d@mheyne-amazon>
+In-Reply-To: <20250507071315.394857-5-herve.codina@bootlin.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, May 07, 2025 at 02:29:17PM +0000, Heyne, Maximilian wrote:
-> On Wed, May 07, 2025 at 01:56:53PM +0100, Sudeep Holla wrote:
-> > 
-> > That is fine but you must have reference to those caches in the processor
-> > node and the length of the node won't be 0x14 in that case and you shouldn't
-> > hit this issue. So if this is real platform, then yes I am must say you
-> > PPTT is wrong especially if there are caches in the table as you say just
-> > that processor nodes are not pointing to them correctly then ?
+On Wed, May 07, 2025 at 09:12:46AM +0200, Herve Codina wrote:
+> During driver removal, the following warning can appear:
+>    WARNING: CPU: 1 PID: 139 at drivers/base/core.c:1497 __device_links_no_driver+0xcc/0xfc
+>    ...
+>    Call trace:
+>      __device_links_no_driver+0xcc/0xfc (P)
+>      device_links_driver_cleanup+0xa8/0xf0
+>      device_release_driver_internal+0x208/0x23c
+>      device_links_unbind_consumers+0xe0/0x108
+>      device_release_driver_internal+0xec/0x23c
+>      device_links_unbind_consumers+0xe0/0x108
+>      device_release_driver_internal+0xec/0x23c
+>      device_links_unbind_consumers+0xe0/0x108
+>      device_release_driver_internal+0xec/0x23c
+>      driver_detach+0xa0/0x12c
+>      bus_remove_driver+0x6c/0xbc
+>      driver_unregister+0x30/0x60
+>      pci_unregister_driver+0x20/0x9c
+>      lan966x_pci_driver_exit+0x18/0xa90 [lan966x_pci]
 > 
-> The ACPI tables in our case describe a core first which references the
-> cache as private resource and then a thread whose parent is the core but
-> this doesn't have a private resource. This is how it looks like:
+> This warning is triggered when a consumer is removed because the links
+> status of its supplier is not DL_DEV_DRIVER_BOUND and the link flag
+> DL_FLAG_SYNC_STATE_ONLY is not set.
 > 
-
-Ah, right I clearly missed considering multithreaded systems in my mind.
-I think SMTs processor nodes might have no private resource which I didn't
-consider before. However, your example made me open the spec and read about
-SMT and PPTT. There are couple of things I still don't follow below.
-
-> [C8Eh 3214   1]                Subtable Type : 00 [Processor Hierarchy Node]
-> [C8Fh 3215   1]                       Length : 1C
-> [C90h 3216   2]                     Reserved : 0000
-> [C92h 3218   4]        Flags (decoded below) : 00000002
->                             Physical package : 0
->                      ACPI Processor ID valid : 1
->                        Processor is a thread : 0
->                               Node is a leaf : 0
->                     Identical Implementation : 0
-> [C96h 3222   4]                       Parent : 000000A2
-> [C9Ah 3226   4]            ACPI Processor ID : 0000003F
-> [C9Eh 3230   4]      Private Resource Number : 00000002
-> [CA2h 3234   4]             Private Resource : 00000072
-> [CA6h 3238   4]             Private Resource : 0000008A
->
-
-Does the above node represent the container node for the threads within
-the core ? I assumes so.
-
-> [CAAh 3242   1]                Subtable Type : 00 [Processor Hierarchy Node]
-> [CABh 3243   1]                       Length : 14
-> [CACh 3244   2]                     Reserved : 0000
-> [CAEh 3246   4]        Flags (decoded below) : 0000000E
->                             Physical package : 0
->                      ACPI Processor ID valid : 1
->                        Processor is a thread : 1
->                               Node is a leaf : 1
->                     Identical Implementation : 0
-> [CB2h 3250   4]                       Parent : 00000C8E
-> [CB6h 3254   4]            ACPI Processor ID : 0000003F
-> [CBAh 3258   4]      Private Resource Number : 00000000
+> The topology in terms of consumers/suppliers used was the following
+> (consumer ---> supplier):
 > 
+>       i2c -----------> OIC ----> PCI device
+>        |                ^
+>        |                |
+>        +---> pinctrl ---+
+> 
+> When the PCI device is removed, the OIC (interrupt controller) has to be
+> removed. In order to remove the OIC, pinctrl and i2c need to be removed
+> and to remove pinctrl, i2c need to be removed. The removal order is:
+>   1) i2c
+>   2) pinctrl
+>   3) OIC
+>   4) PCI device
+> 
+> In details, the removal sequence is the following (with 0000:01:00.0 the
+> PCI device):
+>   driver_detach: call device_release_driver_internal(0000:01:00.0)...
+>     device_links_busy(0000:01:00.0):
+>       links->status = DL_DEV_UNBINDING
+>     device_links_unbind_consumers(0000:01:00.0):
+>       0000:01:00.0--oic link->status = DL_STATE_SUPPLIER_UNBIND
+>       call device_release_driver_internal(oic)...
+>         device_links_busy(oic):
+>           links->status = DL_DEV_UNBINDING
+>         device_links_unbind_consumers(oic):
+>           oic--pinctrl link->status = DL_STATE_SUPPLIER_UNBIND
+>           call device_release_driver_internal(pinctrl)...
+>             device_links_busy(pinctrl):
+>               links->status = DL_DEV_UNBINDING
+>             device_links_unbind_consumers(pinctrl):
+>               pinctrl--i2c link->status = DL_STATE_SUPPLIER_UNBIND
+>               call device_release_driver_internal(i2c)...
+>                 device_links_busy(i2c): links->status = DL_DEV_UNBINDING
+>                 __device_links_no_driver(i2c)...
+>                   pinctrl--i2c link->status is DL_STATE_SUPPLIER_UNBIND
+>                   oic--i2c link->status is DL_STATE_ACTIVE
+>                   oic--i2c link->supplier->links.status is DL_DEV_UNBINDING
+> 
+> The warning is triggered by the i2c removal because the OIC (supplier)
+> links status is not DL_DEV_DRIVER_BOUND. Its links status is indeed set
+> to DL_DEV_UNBINDING.
+> 
+> It is perfectly legit to have the links status set to DL_DEV_UNBINDING
+> in that case. Indeed we had started to unbind the OIC which triggered
+> the consumer unbinding and didn't finish yet when the i2c is unbound.
+> 
+> Avoid the warning when the supplier links status is set to
+> DL_DEV_UNBINDING and thus support this removal sequence without any
+> warnings.
 
-Is this the only thread as you mentioned the table ends here ? So it
-is single threaded core ? Just working what is the point in representing
-it in this way ? Also the ACPI Processor ID is unique, so I hope you have
-same number of container nodes as the threads. IOW, they ACPI Processor ID
-for the thread and the container node match only because it is single
-threaded core.
+...
+
+>  		if (link->supplier->links.status == DL_DEV_DRIVER_BOUND) {
+>  			WRITE_ONCE(link->status, DL_STATE_AVAILABLE);
+>  		} else {
+> -			WARN_ON(!(link->flags & DL_FLAG_SYNC_STATE_ONLY));
+> +			if (link->supplier->links.status != DL_DEV_UNBINDING)
+> +				WARN_ON(!(link->flags & DL_FLAG_SYNC_STATE_ONLY));
+
+Why not
+
+			WARN_ON(link->supplier->links.status != DL_DEV_UNBINDING &&
+			        !(link->flags & DL_FLAG_SYNC_STATE_ONLY));
+
+>  			WRITE_ONCE(link->status, DL_STATE_DORMANT);
+>  		}
 
 -- 
-Regards,
-Sudeep
+With Best Regards,
+Andy Shevchenko
+
+
 
