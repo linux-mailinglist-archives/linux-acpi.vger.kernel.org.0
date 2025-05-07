@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-13603-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13604-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A460CAAE6DB
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 18:38:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E69AAE6FD
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 18:42:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C0E63B3B20
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 16:38:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99E261C22E7B
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 16:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CB128AB07;
-	Wed,  7 May 2025 16:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C4628BABF;
+	Wed,  7 May 2025 16:41:56 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB6F1917FB;
-	Wed,  7 May 2025 16:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643C928B7EC;
+	Wed,  7 May 2025 16:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746635914; cv=none; b=jFykYXXNoxHB7bN8U2sNqV+xM0ZgyleMlf71ul891B3MwyVemWC216s2N1AkS68qonWQk4/CCerqU7OwE6msrOsJRLwXBVJj2cW43+s5QjxG+iKUqvy6uXWQOAY6qv/SygjFa1oqmp1GKRlcx8bu+IqaFaj7O1EDGpqh816iU1Y=
+	t=1746636116; cv=none; b=FyjxLvsrUZ0PGf9PdoQ0MXfM6xpuNgTbxJg33WMbQVAa5UTiuI2FSiQvbQ2HxgAnArPy0uWtNQHb/bgIwDtVbcjrBDHQYURDrxpX5yzWBM7xuZbn30EaB1MFk/vDbsb80Q187qCbxpj5+vLTPKga2Yhc0lPCuczUQ3wlZtBFjBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746635914; c=relaxed/simple;
-	bh=pPRh0xmgP+OZka+vsxhg1EUacKsXWMQf1hLtzjiubm0=;
+	s=arc-20240116; t=1746636116; c=relaxed/simple;
+	bh=Ogw0DFLSrTYjT3Ruuf+27tuiTdHS43qmK0Cb8CUCaZg=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=fmw8tzE1NFxx8YwxWoTmvkc/Eg/lDt4EYhoFwXvkoO4/tDh/frCfLtkB5udtnPGaoQNt5IbEXdxyY0T3v+hw+ofoZ1eVJfmjFS3795J9dE2lcxVn22y2OFT5ZVSVoCr3H8H74bEdJUWZrWfxouYEN7jDjzNi5lwT2uaaQndS+KU=
+	 In-Reply-To:Content-Type; b=Lcf6/lpVYQC8QBhpWvEIUbUIdVWa512vXKqnDlA2iFnyWHX1KD7ZSkAmKON3E1Ussjn0YoADu+E7wZ7mn2dUN/raionBU2diIfZsu/LMC+9F6/NU8C3WApye0K8dLjFaA8FqcZfAtm97L7hZKAAwjcAOm9j4WUw9k0GVt6nAP04=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 055B216F2;
-	Wed,  7 May 2025 09:38:22 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9DFDC16F2;
+	Wed,  7 May 2025 09:41:43 -0700 (PDT)
 Received: from [192.168.20.57] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D0D163F58B;
-	Wed,  7 May 2025 09:38:29 -0700 (PDT)
-Message-ID: <fb2e3c60-1171-4f5c-852d-a5bfdc4f9c2a@arm.com>
-Date: Wed, 7 May 2025 11:38:27 -0500
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F30CE3F58B;
+	Wed,  7 May 2025 09:41:51 -0700 (PDT)
+Message-ID: <25aa77b9-0077-4021-b55c-e94327b7847b@arm.com>
+Date: Wed, 7 May 2025 11:41:47 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -57,140 +57,153 @@ References: <20250506-draco-taped-15f475cd@mheyne-amazon>
  <1911d3b6-f328-40a6-aa03-cde3d79554de@arm.com>
  <CAJZ5v0ii9HLfqfgcp=1qRRX6M1yThf7ZPNkSLVc5GGFhv=N-Lg@mail.gmail.com>
  <ad04d07b-d610-4355-bd47-1d2fb49711f3@arm.com>
+ <fb2e3c60-1171-4f5c-852d-a5bfdc4f9c2a@arm.com>
 Content-Language: en-US
-In-Reply-To: <ad04d07b-d610-4355-bd47-1d2fb49711f3@arm.com>
+In-Reply-To: <fb2e3c60-1171-4f5c-852d-a5bfdc4f9c2a@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 5/7/25 11:31 AM, Jeremy Linton wrote:
-> On 5/7/25 11:12 AM, Rafael J. Wysocki wrote:
->> On Wed, May 7, 2025 at 5:51 PM Jeremy Linton <jeremy.linton@arm.com> 
->> wrote:
->>>
->>> On 5/7/25 10:42 AM, Rafael J. Wysocki wrote:
->>>> On Wed, May 7, 2025 at 5:25 PM Jeremy Linton <jeremy.linton@arm.com> 
->>>> wrote:
->>>>>
->>>>> Hi,
->>>>>
->>>>> On 5/6/25 8:13 AM, Heyne, Maximilian wrote:
->>>>>> Commit 7ab4f0e37a0f ("ACPI PPTT: Fix coding mistakes in a couple of
->>>>>> sizeof() calls") corrects the processer entry size but unmasked a 
->>>>>> longer
->>>>>> standing bug where the last entry in the structure can get skipped 
->>>>>> due
->>>>>> to an off-by-one mistake if the last entry ends exactly at the end of
->>>>>> the ACPI subtable.
->>>>>>
->>>>>> The error manifests for instance on EC2 Graviton Metal instances with
->>>>>>
->>>>>>      ACPI PPTT: PPTT table found, but unable to locate core 63 (63)
->>>>>>      [...]
->>>>>>      ACPI: SPE must be homogeneous
->>>>>>
->>>>>> Fixes: 2bd00bcd73e5 ("ACPI/PPTT: Add Processor Properties Topology 
->>>>>> Table parsing")
->>>>>> Cc: stable@vger.kernel.org
->>>>>> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
->>>>>> ---
->>>>>>     drivers/acpi/pptt.c | 4 ++--
->>>>>>     1 file changed, 2 insertions(+), 2 deletions(-)
->>>>>>
->>>>>> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
->>>>>> index f73ce6e13065d..4364da90902e5 100644
->>>>>> --- a/drivers/acpi/pptt.c
->>>>>> +++ b/drivers/acpi/pptt.c
->>>>>> @@ -231,7 +231,7 @@ static int acpi_pptt_leaf_node(struct 
->>>>>> acpi_table_header *table_hdr,
->>>>>>                              sizeof(struct acpi_table_pptt));
->>>>>>         proc_sz = sizeof(struct acpi_pptt_processor);
->>>>>
->>>>> This isn't really right, it should be struct acpi_subtable_header, 
->>>>> then
->>>>> once the header is safe, pull the length from it.
->>>>>
->>>>> But then, really if we are trying to fix the original bug that the 
->>>>> table
->>>>> could be shorter than the data in it suggests, the struct
->>>>> acpi_pptt_processor length plus its resources needs to be checked once
->>>>> the subtype is known to be a processor node.
->>>>>
->>>>> Otherwise the original sizeof * change isn't really fixing anything.
+On 5/7/25 11:38 AM, Jeremy Linton wrote:
+> On 5/7/25 11:31 AM, Jeremy Linton wrote:
+>> On 5/7/25 11:12 AM, Rafael J. Wysocki wrote:
+>>> On Wed, May 7, 2025 at 5:51 PM Jeremy Linton <jeremy.linton@arm.com> 
+>>> wrote:
 >>>>
->>>> Sorry, what sense did it make to do
+>>>> On 5/7/25 10:42 AM, Rafael J. Wysocki wrote:
+>>>>> On Wed, May 7, 2025 at 5:25 PM Jeremy Linton 
+>>>>> <jeremy.linton@arm.com> wrote:
+>>>>>>
+>>>>>> Hi,
+>>>>>>
+>>>>>> On 5/6/25 8:13 AM, Heyne, Maximilian wrote:
+>>>>>>> Commit 7ab4f0e37a0f ("ACPI PPTT: Fix coding mistakes in a couple of
+>>>>>>> sizeof() calls") corrects the processer entry size but unmasked a 
+>>>>>>> longer
+>>>>>>> standing bug where the last entry in the structure can get 
+>>>>>>> skipped due
+>>>>>>> to an off-by-one mistake if the last entry ends exactly at the 
+>>>>>>> end of
+>>>>>>> the ACPI subtable.
+>>>>>>>
+>>>>>>> The error manifests for instance on EC2 Graviton Metal instances 
+>>>>>>> with
+>>>>>>>
+>>>>>>>      ACPI PPTT: PPTT table found, but unable to locate core 63 (63)
+>>>>>>>      [...]
+>>>>>>>      ACPI: SPE must be homogeneous
+>>>>>>>
+>>>>>>> Fixes: 2bd00bcd73e5 ("ACPI/PPTT: Add Processor Properties 
+>>>>>>> Topology Table parsing")
+>>>>>>> Cc: stable@vger.kernel.org
+>>>>>>> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+>>>>>>> ---
+>>>>>>>     drivers/acpi/pptt.c | 4 ++--
+>>>>>>>     1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+>>>>>>> index f73ce6e13065d..4364da90902e5 100644
+>>>>>>> --- a/drivers/acpi/pptt.c
+>>>>>>> +++ b/drivers/acpi/pptt.c
+>>>>>>> @@ -231,7 +231,7 @@ static int acpi_pptt_leaf_node(struct 
+>>>>>>> acpi_table_header *table_hdr,
+>>>>>>>                              sizeof(struct acpi_table_pptt));
+>>>>>>>         proc_sz = sizeof(struct acpi_pptt_processor);
+>>>>>>
+>>>>>> This isn't really right, it should be struct acpi_subtable_header, 
+>>>>>> then
+>>>>>> once the header is safe, pull the length from it.
+>>>>>>
+>>>>>> But then, really if we are trying to fix the original bug that the 
+>>>>>> table
+>>>>>> could be shorter than the data in it suggests, the struct
+>>>>>> acpi_pptt_processor length plus its resources needs to be checked 
+>>>>>> once
+>>>>>> the subtype is known to be a processor node.
+>>>>>>
+>>>>>> Otherwise the original sizeof * change isn't really fixing anything.
+>>>>>
+>>>>> Sorry, what sense did it make to do
+>>>>>
+>>>>> proc_sz = sizeof(struct acpi_pptt_processor *);
+>>>>>
+>>>>> here?  As much as proc_sz = 0 I suppose?
 >>>>
->>>> proc_sz = sizeof(struct acpi_pptt_processor *);
+>>>> No, I agree, I think the original checks were simplified along the way
+>>>> to that. It wasn't 'right' either.
 >>>>
->>>> here?  As much as proc_sz = 0 I suppose?
+>>>> The problem is that there are three subtypes of which processor is only
+>>>> one, and that struct acpi_pptt_processor doesn't necessarily reflect 
+>>>> the
+>>>> actual size of the processor structure in the table because it has
+>>>> optional private resources tagged onto the end.
 >>>
->>> No, I agree, I think the original checks were simplified along the way
->>> to that. It wasn't 'right' either.
+>>> Right.
 >>>
->>> The problem is that there are three subtypes of which processor is only
->>> one, and that struct acpi_pptt_processor doesn't necessarily reflect the
->>> actual size of the processor structure in the table because it has
->>> optional private resources tagged onto the end.
+>>>> So if the bug being fixed is that the length check is validating that
+>>>> the table length is less than the data in the table, that's still a
+>>>> problem because its only validating the processor node without 
+>>>> resources.
+>>>
+>>> Admittedly, it is not my code, but I understand this check as a
+>>> termination condition for the loop: If there's not enough space in the
+>>> table to hold a thing that I'm looking for, I may as well bail out.
+>>>
+>>>> AKA the return is still potentially returning a pointer to a structure
+>>>> which may not be entirely contained in the table.
+>>>
+>>> Right, but this check should be made anyway before comparing
+>>> cpu_node->parent to node_entry, when it is known to be a CPU entry
+>>> because otherwise why bother.
 >>
->> Right.
+>> Right, but then there is a clarity because really its walking the 
+>> table+subtypes looking for the cpu node. Exiting early because its not 
+>> big enough for a cpu node makes sense but you still need the cpu node 
+>> check to avoid a variation on the original bug.
 >>
->>> So if the bug being fixed is that the length check is validating that
->>> the table length is less than the data in the table, that's still a
->>> problem because its only validating the processor node without 
->>> resources.
 >>
->> Admittedly, it is not my code, but I understand this check as a
->> termination condition for the loop: If there's not enough space in the
->> table to hold a thing that I'm looking for, I may as well bail out.
 >>
->>> AKA the return is still potentially returning a pointer to a structure
->>> which may not be entirely contained in the table.
+>>>
+>>> Roughly something like this:
+>>>
+>>> proc_sz = sizeof(struct acpi_pptt_processor);
+>>>
+>>> while ((unsigned long)entry + entry->length <= table_end) {
 >>
->> Right, but this check should be made anyway before comparing
->> cpu_node->parent to node_entry, when it is known to be a CPU entry
->> because otherwise why bother.
+>> Here your reading the entry, without knowing its long enough. For the 
+>> leaf check just using struct acpi_pptt_processor is fine, but for the 
+>> acpi_find_processor_node():
+>>
+>> proc_sz = sizeof(struct acpi_subtable_type);
 > 
-> Right, but then there is a clarity because really its walking the 
-> table+subtypes looking for the cpu node. Exiting early because its not 
-> big enough for a cpu node makes sense but you still need the cpu node 
-> check to avoid a variation on the original bug.
-> 
-> 
-> 
->>
->> Roughly something like this:
->>
->> proc_sz = sizeof(struct acpi_pptt_processor);
->>
->> while ((unsigned long)entry + entry->length <= table_end) {
-> 
-> Here your reading the entry, without knowing its long enough. For the 
-> leaf check just using struct acpi_pptt_processor is fine, but for the 
-> acpi_find_processor_node():
-> 
-> proc_sz = sizeof(struct acpi_subtable_type);
+> Although, maybe I just wrote code that justifies using 
+> acpi_pptt_processor here because the entry->num_of_priv_resources length 
+> check isn't being made without it. So ok, use proc_sz = sizeof(struct 
+> acpi_subtable_type) and assume that we don't care if the subtable type 
+> is less than proc_sz.
 
-Although, maybe I just wrote code that justifies using 
-acpi_pptt_processor here because the entry->num_of_priv_resources length 
-check isn't being made without it. So ok, use proc_sz = sizeof(struct 
-acpi_subtable_type) and assume that we don't care if the subtable type 
-is less than proc_sz.
+Sorry for the noise, scratch that, a better solution is just to swap the 
+length checking in the 'if' statement. Then its clear its iterating 
+subtable types not processor nodes.
 
 
 > 
-> while ((unsigned long)entry + proc_sz <= table_end) {
->   if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
->   entry->length == sizeof(struct acpi_pptt_processor) +
->      entry->number_of_priv_resources * sizeof(u32) &&
->   entry + entry->length <= table_end &&
->   acpi_pptt_leaf_node(...))
->      return (...)entry;
 > 
-> 
-> Although at this point the while loops entry + proc_sz could just be < 
-> table_end under the assumption that entry->length will be > 0 but 
-> whichever makes more sense.
-> 
-> 
+>>
+>> while ((unsigned long)entry + proc_sz <= table_end) {
+>>   if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
+>>   entry->length == sizeof(struct acpi_pptt_processor) +
+>>      entry->number_of_priv_resources * sizeof(u32) &&
+>>   entry + entry->length <= table_end &&
+>>   acpi_pptt_leaf_node(...))
+>>      return (...)entry;
+>>
+>>
+>> Although at this point the while loops entry + proc_sz could just be < 
+>> table_end under the assumption that entry->length will be > 0 but 
+>> whichever makes more sense.
+>>
+>>
+>>
 > 
 
 
