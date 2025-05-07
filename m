@@ -1,140 +1,131 @@
-Return-Path: <linux-acpi+bounces-13583-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13584-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09426AAE34D
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 16:42:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A524AAE3C0
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 17:03:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04D94501D47
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 14:37:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6429D1C014F1
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 15:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123BE288CA6;
-	Wed,  7 May 2025 14:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938D328A1EE;
+	Wed,  7 May 2025 15:02:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pt0ektGr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93180289344
-	for <linux-acpi@vger.kernel.org>; Wed,  7 May 2025 14:36:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C185F186E2E;
+	Wed,  7 May 2025 15:02:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746628571; cv=none; b=fcJiVCvDdSG8w/Sd+IUBocBUuvaZ35WRUi+9psHT5Qdpy1g0ns5GnzZppqE68T9bTTlgS/F1uKfkAKf6NKqV4og2+NWpnf4RIg5mMUothVzjP4EPpHTQOOfOqQ0suFiKV98VgaBxqRvcO3jvkalFAoVMlSLXjzkCWUVtDI4NajI=
+	t=1746630176; cv=none; b=hDj2AqwRhNlv6D3eBCp/NmxThWN4GK1L3hFB+gSTOw3IvxqWy85HJRQfIUkC1ncsyZ5B23jCmjZJXEKoLEEpXk/n9Xrx+lML67D611mmV6UcjfCMresgS79omm1HT/hVFAZcNZAOysr+8L/hZYVxEUjVLaAqdIBY4RozpcjdYYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746628571; c=relaxed/simple;
-	bh=YjLfkRQOYTscTiKcHzV/iuInQdOTC8JDYKd6TCzPrzU=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ab94QOUWDuMSIKdGYLnB9BMA5valHKf4bZ3fRO39PZ491UfToR7WBHczPoI0cjXCdtOwg3aFWpaCJGWgnRrK6E0tozs6jgg/+TPGT/w5jEwMNkTNWbz6xdW2MhdpqQL91TrF9/63b5kJZmdfcNYAkOUDjPjNFkoJpSD4m+sAvMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZsyS16t7Xz6L5ZD;
-	Wed,  7 May 2025 22:33:37 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 456571402F7;
-	Wed,  7 May 2025 22:36:05 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 7 May
- 2025 16:35:52 +0200
-Date: Wed, 7 May 2025 15:35:50 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Sudeep Holla <sudeep.holla@arm.com>
-CC: "Rafael J. Wysocki" <rafael@kernel.org>, Yicong Yang
-	<yangyicong@huawei.com>, <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<jmeurin@google.com>, <jeremy.linton@arm.com>, <zhanjie9@hisilicon.com>,
-	<prime.zeng@hisilicon.com>, <yangyicong@hisilicon.com>,
-	<linuxarm@huawei.com>, <alireza.sanaee@huawei.com>
-Subject: Re: [PATCH] ACPI: PPTT: Fix table length check when parsing
- processor nodes
-Message-ID: <20250507153550.0000340f@huawei.com>
-In-Reply-To: <20250507-obedient-knowing-galago-245e7c@sudeepholla>
-References: <20250507035124.28071-1-yangyicong@huawei.com>
-	<20250507-devout-mysterious-jackal-e50e00@sudeepholla>
-	<CAJZ5v0iWJQnwamT0mP=A_wtAbRkguhxcvbMnm+b2chAET7=sGA@mail.gmail.com>
-	<20250507-venomous-feathered-skink-77ea16@sudeepholla>
-	<CAJZ5v0hyxCE3NWcCgKkut2_pJGO-Pyt27GdhMK0ZUZ-MJ6dudQ@mail.gmail.com>
-	<20250507-obedient-knowing-galago-245e7c@sudeepholla>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1746630176; c=relaxed/simple;
+	bh=vtUHYngmcvy8/hID4LtvlRBZCfZROB/R+TjQOTME2Bg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vkg3oZlzc1nezsRxZTGcClrBE9qPCB+zFe3mELv1G0dMfbFV1sZO55ekzRCa/If34VtYuj2Omu8S9Fr+q4QdQky4uUOYdyWWPuaTh4GxnuO26Onzs5K1IVC1h5poo3A8RTvvINlK/e3SulWpBdl309ee50zyanlr2+0/lh1MiV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pt0ektGr; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746630176; x=1778166176;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=vtUHYngmcvy8/hID4LtvlRBZCfZROB/R+TjQOTME2Bg=;
+  b=Pt0ektGrfPj6ZfwLbEZkwSR/s3GRM+E05yt7VclqGI18VRg6tsvzO8c7
+   DdbazJHoeY1zLPqpHNlsJT3ate2YSd5/HHODVk5L003Wa6oJk0Ue+wWob
+   b5iSfhc/Lmlmuve3LTUcmKghoup+V0Cy+iVfUz/b4MpsqdmJih60TSLCF
+   3dzHwWtS5ewueyu49T/yvW6/OveOCpB42Ig4oJnnD6AnQrHy+KsaXLd7o
+   0N3AbXBMbf8CG/T7K6EkqtqyTS6TXg8JO2QFVenrZ+dZV3TQ7dMRl/bbR
+   kul+zrpeqU+xr57MEeYxB3h32EgTnf+dujhUztCqpds8zBvkGU6V42se/
+   A==;
+X-CSE-ConnectionGUID: zqveaGftRW+KRVdI0y87Ow==
+X-CSE-MsgGUID: xTD69FyQSu6g7chF6SkdnQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="52020383"
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
+   d="scan'208";a="52020383"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 08:02:54 -0700
+X-CSE-ConnectionGUID: lRvf7inWQZi1tpGGkpwiJA==
+X-CSE-MsgGUID: n7eeEJ6hSiWvPOaKwLixag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
+   d="scan'208";a="166908528"
+Received: from smile.fi.intel.com ([10.237.72.55])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 08:02:45 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1uCgID-00000003lNr-0NGr;
+	Wed, 07 May 2025 18:02:41 +0300
+Date: Wed, 7 May 2025 18:02:40 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 06/26] driver core: fw_devlink: Introduce
+ fw_devlink_set_device()
+Message-ID: <aBt2EHYf6j6Ulthb@smile.fi.intel.com>
+References: <20250507071315.394857-1-herve.codina@bootlin.com>
+ <20250507071315.394857-7-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250507071315.394857-7-herve.codina@bootlin.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, 7 May 2025 12:55:00 +0100
-Sudeep Holla <sudeep.holla@arm.com> wrote:
+On Wed, May 07, 2025 at 09:12:48AM +0200, Herve Codina wrote:
+> Setting fwnode->dev is specific to fw_devlink.
+> 
+> In order to avoid having a direct 'fwnode->dev = dev;' in several
+> place in the kernel, introduce fw_devlink_set_device() helper to perform
+> this operation.
 
-> On Wed, May 07, 2025 at 01:51:58PM +0200, Rafael J. Wysocki wrote:
-> > On Wed, May 7, 2025 at 1:47=E2=80=AFPM Sudeep Holla <sudeep.holla@arm.c=
-om> wrote: =20
-> > >
-> > > On Wed, May 07, 2025 at 01:44:26PM +0200, Rafael J. Wysocki wrote: =20
-> > > > On Wed, May 7, 2025 at 1:40=E2=80=AFPM Sudeep Holla <sudeep.holla@a=
-rm.com> wrote: =20
-> > > > >
-> > > > > On Wed, May 07, 2025 at 11:51:24AM +0800, Yicong Yang wrote: =20
-> > > > > > From: Yicong Yang <yangyicong@hisilicon.com>
-> > > > > >
-> > > > > > Below error is met on my board and QEMU VM on SMT or non-SMT ma=
-chine:
-> > > > > >   ACPI PPTT: PPTT table found, but unable to locate core 31 (31)
-> > > > > >
-> > > > > > This is because the processor node is found by iterating the PP=
-TT
-> > > > > > table under condition (for both acpi_find_processor_node() and
-> > > > > > acpi_pptt_leaf_node()):
-> > > > > >   while (entry + proc_sz < table_end)
-> > > > > >     [parse the processor node]
-> > > > > >
-> > > > > > If the last processor node is happened to be the last node in t=
-he
-> > > > > > PPTT table, above condition will always be false since
-> > > > > > entry + proc_sz =3D=3D table_end. Thus the last CPU is not pars=
-ed.
-> > > > > > Fix the loop condition to resolve the issue.
-> > > > > >
-> > > > > > This issue is exposed by [1] but the root cause is explained ab=
-ove.
-> > > > > > Before [1] entry + proc_sz is always smaller than table_end.
-> > > > > > =20
-> > > > >
-> > > > > Another thread [1]  with similar patch. =20
-> > > >
-> > > > OK, so is this a correct fix? =20
-> > >
-> > > While it may fix the issue on the surface, I just want to be sure the=
-re
-> > > are no other issues with the PPTT table presented from the firmware.
-> > > I will asked some questions on that thread before I can agree on the =
-solution. =20
-> >=20
-> > Yeah, it looks like table_end points to the last byte of the table
-> > instead of pointing to the first byte after the end of the table. =20
->=20
-> Indeed and also we should have private resources like L1 cache described
-> after the initial 20 bytes of the node. So I am bit worried if this will
-> just hide other problems while it may solve this problem by looks of it.
-> This example doesn't look like a proper PPTT matching real systems.
->=20
+Makes sense, can you also mark that field as __private? So sparse can catch
+the abusers up.
 
-Assuming I'm understanding the bug correctly...
-
-SMT systems will hit this. There will typically be no private resources
-for a thread as the L1I/D shared by multiple threads (which are processor
-nodes IIRC).  Note we are trying to improve the cache description in QEMU
-at the moment as it would definitely be better to present caches in PPTT,
-but that isn't the main issue here.
-
-Jonathan
-
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
 
