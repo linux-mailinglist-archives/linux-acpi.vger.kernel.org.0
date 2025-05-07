@@ -1,419 +1,156 @@
-Return-Path: <linux-acpi+bounces-13613-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13614-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E33AAECAF
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 22:10:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A3FAAEDFD
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 23:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AD399C5E7F
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 20:09:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7337F164E71
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 21:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C5B7207A22;
-	Wed,  7 May 2025 20:09:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OOjhVBkM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A9422F74D;
+	Wed,  7 May 2025 21:44:06 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB8A1F9A89;
-	Wed,  7 May 2025 20:09:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FF31C84CD;
+	Wed,  7 May 2025 21:44:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746648599; cv=none; b=aQ/3De7MPdUY+OIJA+DmGNNsxYc7a7pGX5SMFDAmMLr8uw2CLGO7Fuj6Xiks8iujWoQ+3Xsgw/f6hDlnloC1DgzlrKtxmmmlK08rKW2eOY24pZ06+YIKiuibT7mGeEfYSBAjTBli0RjRMdOjfoddGAo4+kd+w/qVDaZccNmwDqI=
+	t=1746654246; cv=none; b=ZqmO/X/7PtS1HKtXtNETrdnjtnWdyoV6CyyNTr3ybGi5m/ygil2mGZWQj/2q6FaSaejp7sxG3REvBsd3MYQOsk1XMkyxzzdPi0G45eaza3cdb6LQBXfqnoz+HCQ4EEZaTNmUS3wmW5mabolGFDreOXv9XbNBAmt5mUyXjfTBwII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746648599; c=relaxed/simple;
-	bh=atHxCy8Py55JYindKN9/Qjx98L55hRysBAeMnjUssrg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bs8Xq9qd3onE9dAyCM5Xxyip/a1uSBbqAD/ct6TMiJ83tGBVeyiJo7e3OvhyQs+Nu4ELGEa66QsBXONiLYi3oJTr1xE09UWVUYSbDsa5GKJ+kT+70/rZMWRiWEjnWfJ1ZH6FNxdCEf50OKOFt0p1r7Y7QyOIqS6O069m8rPMso0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OOjhVBkM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA44C4CEF9;
-	Wed,  7 May 2025 20:09:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746648599;
-	bh=atHxCy8Py55JYindKN9/Qjx98L55hRysBAeMnjUssrg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=OOjhVBkMvJ3f8wFjHTROonpE3dCngMo4oRd5kNd+aRD0u9x2WqBCD6LAiLf46l7go
-	 qa5xZXQkkY0Bff0NIqrt6b91rl+TdF84O8UOoJd4DhcNpBAMzYwf3n00OtJcn46crq
-	 HU5zLXM9uKtIYIialOH7Cle1qgYFw4Ilo2ZwYbSKmGXHj1Q7Am0kO8JCWcXd6YyE3E
-	 joO9HsEzGZUDyUTdRk7MgkAAXnXeAS061DIm3cxLSE0YjYm/qmpBUcCOCwp1T/Be2t
-	 M7CoBwfxuwB75xGaD3KI3mjG3irCy13FYV+YEUWRVCYj6pmLcNYsC3BH3uT+mQB19/
-	 93K3zUZyS/o/w==
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-605f7d3216bso108883eaf.1;
-        Wed, 07 May 2025 13:09:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV2pZUfLZm+zVJVBal8P4dkbXi83LDiFH4wlbSq9/xTJDrX+FKdqJXBBFa+emDapE5FV/LEFY1uFQAHoeUr@vger.kernel.org, AJvYcCVaHa1Xb703pT034M7vDrsLpI6wK/6VOlsDGdn877IcUnY3Ha8Mt3tOCY5kKUX6nxdNQeg/sqfHqnRo@vger.kernel.org, AJvYcCXCgDn47WnviZeoBq/mbYb7Xv5G39w6Cau81I0azqezPsvtx5v6fmgoC8X7xpkXwCTcUoiOgWHejUK1BbSr@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpCRgHh1PPVVgnAyJsziR2+jbTqKFhpeDf2iAlMJJOup4lKFUA
-	lDMQfmUjoG87FJUBjeNz8pgkj+390RTseu7OYUww8CPq7SEMiARqH9Dl0NTd6RbhPuRsnSPTBmK
-	4X7IYhSNM4hZg9yB4q3jEU4KW0eY=
-X-Google-Smtp-Source: AGHT+IH14wetZ3g0a8hDzjHUUplkprwYJnUrRmH+dON27nja/4sR7NNCWxTdoR/JdykIwxDFaBnn04WRAPPf+fmHKfI=
-X-Received: by 2002:a05:6870:7191:b0:2d5:1894:8c29 with SMTP id
- 586e51a60fabf-2db5bec1f69mr2635432fac.23.1746648598111; Wed, 07 May 2025
- 13:09:58 -0700 (PDT)
+	s=arc-20240116; t=1746654246; c=relaxed/simple;
+	bh=HB64N7tbguqQ8EKDpmjwX/FJbgKt02pVEL/A3ACSTw0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EyaW4VYFqhLTnybvtdsqyvDwN17gg0RpK7h17pb4Uh5jm0m5zkmYk0hT2n1ILCoGQb1lkPiGR4QyZ27ptIPW9w9vuJOa+pqP1id9SV2Ac+jiOkhjRy+iWi04tnYvkKvmal20VtmcxectZcoP3zaVpEZeM7SdWHl9BlN6DC1czGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Zt7xl217dz6L5Th;
+	Thu,  8 May 2025 05:41:31 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8A22B1402F1;
+	Thu,  8 May 2025 05:43:59 +0800 (CST)
+Received: from P_UKIT01-A7bmah.china.huawei.com (10.48.148.233) by
+ frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 7 May 2025 23:43:58 +0200
+From: <shiju.jose@huawei.com>
+To: <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>
+CC: <bp@alien8.de>, <rafael@kernel.org>, <tony.luck@intel.com>,
+	<lenb@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
+	<mchehab@kernel.org>, <jonathan.cameron@huawei.com>, <linux-mm@kvack.org>,
+	<linuxarm@huawei.com>, <rientjes@google.com>, <jiaqiyan@google.com>,
+	<Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
+	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
+	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<dferguson@amperecomputing.com>, <wbs@os.amperecomputing.com>,
+	<nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
+	<roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
+	<wanghuiqiang@huawei.com>, <shiju.jose@huawei.com>
+Subject: [PATCH v5 0/2] ACPI: Add support for ACPI RAS2 feature table
+Date: Wed, 7 May 2025 22:43:41 +0100
+Message-ID: <20250507214344.709-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.43.0.windows.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250507182227.7421-1-romank@linux.microsoft.com> <20250507182227.7421-3-romank@linux.microsoft.com>
-In-Reply-To: <20250507182227.7421-3-romank@linux.microsoft.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 7 May 2025 22:09:46 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jXJtVgEPg7+3-YRkntLzk0kVPkXxKkL_kQpDU_RSsZtg@mail.gmail.com>
-X-Gm-Features: ATxdqUEKejmIetuD7KJo-zoIqSWjU6TYZY0ArL1AtLkg4qAmEtwl0FTPT26WiNk
-Message-ID: <CAJZ5v0jXJtVgEPg7+3-YRkntLzk0kVPkXxKkL_kQpDU_RSsZtg@mail.gmail.com>
-Subject: Re: [PATCH hyperv-next 2/2] arch/x86: Provide the CPU number in the
- wakeup AP callback
-To: Roman Kisel <romank@linux.microsoft.com>
-Cc: ardb@kernel.org, bp@alien8.de, brgerst@gmail.com, 
-	dave.hansen@linux.intel.com, decui@microsoft.com, dimitri.sivanich@hpe.com, 
-	gautham.shenoy@amd.com, haiyangz@microsoft.com, hpa@zytor.com, 
-	imran.f.khan@oracle.com, jacob.jun.pan@linux.intel.com, jpoimboe@kernel.org, 
-	justin.ernst@hpe.com, kprateek.nayak@amd.com, kyle.meyer@hpe.com, 
-	kys@microsoft.com, lenb@kernel.org, mhklinux@outlook.com, mingo@redhat.com, 
-	nikunj@amd.com, papaluri@amd.com, patryk.wlazlyn@linux.intel.com, 
-	peterz@infradead.org, rafael@kernel.org, russ.anderson@hpe.com, 
-	sohil.mehta@intel.com, steve.wahl@hpe.com, tglx@linutronix.de, 
-	thomas.lendacky@amd.com, tiala@microsoft.com, wei.liu@kernel.org, 
-	yuehaibing@huawei.com, linux-acpi@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	apais@microsoft.com, benhill@microsoft.com, bperkins@microsoft.com, 
-	sunilmut@microsoft.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ frapeml500007.china.huawei.com (7.182.85.172)
 
-On Wed, May 7, 2025 at 8:22=E2=80=AFPM Roman Kisel <romank@linux.microsoft.=
-com> wrote:
->
-> When starting APs, confidential guests and paravisor guests
-> need to know the CPU number, and the pattern of using the linear
-> search has emerged in several places. With N processors that leads
-> to the O(N^2) time complexity.
->
-> Provide the CPU number in the AP wake up callback so that one can
-> get the CPU number in constant time.
->
-> Suggested-by: Michael Kelley <mhklinux@outlook.com>
-> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+From: Shiju Jose <shiju.jose@huawei.com>
 
-For the ACPI bits
+Add support for ACPI RAS2 feature table (RAS2) defined in the
+ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
+scrubbing feature.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+ACPI RAS2 patches were part of the EDAC series [1].
 
-and I'm assuming that the x86 folks will take care of this.
+The code is based on ras.git: edac-for-next branch [2]
+merged with linux-pm.git [3] : linux-next branch.
 
-Thanks!
+1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
+2. https://web.git.kernel.org/pub/scm/linux/kernel/git/ras/ras.git/log/?h=edac-for-next
+3. https://web.git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/
 
-> ---
->  arch/x86/coco/sev/core.c             | 13 ++-----------
->  arch/x86/hyperv/hv_vtl.c             | 12 ++----------
->  arch/x86/hyperv/ivm.c                | 15 ++-------------
->  arch/x86/include/asm/apic.h          |  8 ++++----
->  arch/x86/include/asm/mshyperv.h      |  5 +++--
->  arch/x86/kernel/acpi/madt_wakeup.c   |  2 +-
->  arch/x86/kernel/apic/apic_noop.c     |  8 +++++++-
->  arch/x86/kernel/apic/apic_numachip.c |  2 +-
->  arch/x86/kernel/apic/x2apic_uv_x.c   |  2 +-
->  arch/x86/kernel/smpboot.c            | 10 +++++-----
->  10 files changed, 28 insertions(+), 49 deletions(-)
->
-> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-> index b0c1a7a57497..7780d55d1833 100644
-> --- a/arch/x86/coco/sev/core.c
-> +++ b/arch/x86/coco/sev/core.c
-> @@ -1177,7 +1177,7 @@ static void snp_cleanup_vmsa(struct sev_es_save_are=
-a *vmsa, int apic_id)
->                 free_page((unsigned long)vmsa);
->  }
->
-> -static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
-> +static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip, u=
-nsigned int cpu)
->  {
->         struct sev_es_save_area *cur_vmsa, *vmsa;
->         struct ghcb_state state;
-> @@ -1185,7 +1185,7 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsi=
-gned long start_ip)
->         unsigned long flags;
->         struct ghcb *ghcb;
->         u8 sipi_vector;
-> -       int cpu, ret;
-> +       int ret;
->         u64 cr4;
->
->         /*
-> @@ -1206,15 +1206,6 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, uns=
-igned long start_ip)
->
->         /* Override start_ip with known protected guest start IP */
->         start_ip =3D real_mode_header->sev_es_trampoline_start;
-> -
-> -       /* Find the logical CPU for the APIC ID */
-> -       for_each_present_cpu(cpu) {
-> -               if (arch_match_cpu_phys_id(cpu, apic_id))
-> -                       break;
-> -       }
-> -       if (cpu >=3D nr_cpu_ids)
-> -               return -EINVAL;
-> -
->         cur_vmsa =3D per_cpu(sev_vmsa, cpu);
->
->         /*
-> diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
-> index 2f32ac1ae40e..3d149a2ca4c8 100644
-> --- a/arch/x86/hyperv/hv_vtl.c
-> +++ b/arch/x86/hyperv/hv_vtl.c
-> @@ -211,17 +211,9 @@ static int hv_vtl_bringup_vcpu(u32 target_vp_index, =
-int cpu, u64 eip_ignored)
->         return ret;
->  }
->
-> -static int hv_vtl_wakeup_secondary_cpu(u32 apicid, unsigned long start_e=
-ip)
-> +static int hv_vtl_wakeup_secondary_cpu(u32 apicid, unsigned long start_e=
-ip, unsigned int cpu)
->  {
-> -       int vp_index, cpu;
-> -
-> -       /* Find the logical CPU for the APIC ID */
-> -       for_each_present_cpu(cpu) {
-> -               if (arch_match_cpu_phys_id(cpu, apicid))
-> -                       break;
-> -       }
-> -       if (cpu >=3D nr_cpu_ids)
-> -               return -EINVAL;
-> +       int vp_index;
->
->         pr_debug("Bringing up CPU with APIC ID %d in VTL2...\n", apicid);
->         vp_index =3D hv_apicid_to_vp_index(apicid);
-> diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-> index 0cc239cdb4da..e21557b24d19 100644
-> --- a/arch/x86/hyperv/ivm.c
-> +++ b/arch/x86/hyperv/ivm.c
-> @@ -289,7 +289,7 @@ static void snp_cleanup_vmsa(struct sev_es_save_area =
-*vmsa)
->                 free_page((unsigned long)vmsa);
->  }
->
-> -int hv_snp_boot_ap(u32 apic_id, unsigned long start_ip)
-> +int hv_snp_boot_ap(u32 apic_id, unsigned long start_ip, unsigned int cpu=
-)
->  {
->         struct sev_es_save_area *vmsa =3D (struct sev_es_save_area *)
->                 __get_free_page(GFP_KERNEL | __GFP_ZERO);
-> @@ -298,7 +298,7 @@ int hv_snp_boot_ap(u32 apic_id, unsigned long start_i=
-p)
->         u64 ret, retry =3D 5;
->         struct hv_enable_vp_vtl *start_vp_input;
->         unsigned long flags;
-> -       int cpu, vp_index;
-> +       int vp_index;
->
->         if (!vmsa)
->                 return -ENOMEM;
-> @@ -308,17 +308,6 @@ int hv_snp_boot_ap(u32 apic_id, unsigned long start_=
-ip)
->         if (vp_index < 0 || vp_index > ms_hyperv.max_vp_index)
->                 return -EINVAL;
->
-> -       /*
-> -        * Find the Linux CPU number for addressing the per-CPU data, and=
- it
-> -        * might not be the same as APIC ID.
-> -        */
-> -       for_each_present_cpu(cpu) {
-> -               if (arch_match_cpu_phys_id(cpu, apic_id))
-> -                       break;
-> -       }
-> -       if (cpu >=3D nr_cpu_ids)
-> -               return -EINVAL;
-> -
->         native_store_gdt(&gdtr);
->
->         vmsa->gdtr.base =3D gdtr.address;
-> diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-> index c903d358405d..eaf43d446203 100644
-> --- a/arch/x86/include/asm/apic.h
-> +++ b/arch/x86/include/asm/apic.h
-> @@ -313,9 +313,9 @@ struct apic {
->         u32     (*get_apic_id)(u32 id);
->
->         /* wakeup_secondary_cpu */
-> -       int     (*wakeup_secondary_cpu)(u32 apicid, unsigned long start_e=
-ip);
-> +       int     (*wakeup_secondary_cpu)(u32 apicid, unsigned long start_e=
-ip, unsigned int cpu);
->         /* wakeup secondary CPU using 64-bit wakeup point */
-> -       int     (*wakeup_secondary_cpu_64)(u32 apicid, unsigned long star=
-t_eip);
-> +       int     (*wakeup_secondary_cpu_64)(u32 apicid, unsigned long star=
-t_eip, unsigned int cpu);
->
->         char    *name;
->  };
-> @@ -333,8 +333,8 @@ struct apic_override {
->         void    (*send_IPI_self)(int vector);
->         u64     (*icr_read)(void);
->         void    (*icr_write)(u32 low, u32 high);
-> -       int     (*wakeup_secondary_cpu)(u32 apicid, unsigned long start_e=
-ip);
-> -       int     (*wakeup_secondary_cpu_64)(u32 apicid, unsigned long star=
-t_eip);
-> +       int     (*wakeup_secondary_cpu)(u32 apicid, unsigned long start_e=
-ip, unsigned int cpu);
-> +       int     (*wakeup_secondary_cpu_64)(u32 apicid, unsigned long star=
-t_eip, unsigned int cpu);
->  };
->
->  /*
-> diff --git a/arch/x86/include/asm/mshyperv.h b/arch/x86/include/asm/mshyp=
-erv.h
-> index 0b9a3a307d06..5ec92e3e2e37 100644
-> --- a/arch/x86/include/asm/mshyperv.h
-> +++ b/arch/x86/include/asm/mshyperv.h
-> @@ -268,11 +268,12 @@ int hv_unmap_ioapic_interrupt(int ioapic_id, struct=
- hv_interrupt_entry *entry);
->  #ifdef CONFIG_AMD_MEM_ENCRYPT
->  bool hv_ghcb_negotiate_protocol(void);
->  void __noreturn hv_ghcb_terminate(unsigned int set, unsigned int reason)=
-;
-> -int hv_snp_boot_ap(u32 apic_id, unsigned long start_ip);
-> +int hv_snp_boot_ap(u32 apic_id, unsigned long start_ip, unsigned int cpu=
-);
->  #else
->  static inline bool hv_ghcb_negotiate_protocol(void) { return false; }
->  static inline void hv_ghcb_terminate(unsigned int set, unsigned int reas=
-on) {}
-> -static inline int hv_snp_boot_ap(u32 apic_id, unsigned long start_ip) { =
-return 0; }
-> +static inline int hv_snp_boot_ap(u32 apic_id, unsigned long start_ip,
-> +               unsigned int cpu) { return 0; }
->  #endif
->
->  #if defined(CONFIG_AMD_MEM_ENCRYPT) || defined(CONFIG_INTEL_TDX_GUEST)
-> diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/ma=
-dt_wakeup.c
-> index f36f28405dcc..6d7603511f52 100644
-> --- a/arch/x86/kernel/acpi/madt_wakeup.c
-> +++ b/arch/x86/kernel/acpi/madt_wakeup.c
-> @@ -126,7 +126,7 @@ static int __init acpi_mp_setup_reset(u64 reset_vecto=
-r)
->         return 0;
->  }
->
-> -static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
-> +static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip, unsigned =
-int cpu)
->  {
->         if (!acpi_mp_wake_mailbox_paddr) {
->                 pr_warn_once("No MADT mailbox: cannot bringup secondary C=
-PUs. Booting with kexec?\n");
-> diff --git a/arch/x86/kernel/apic/apic_noop.c b/arch/x86/kernel/apic/apic=
-_noop.c
-> index b5bb7a2e8340..58abb941c45b 100644
-> --- a/arch/x86/kernel/apic/apic_noop.c
-> +++ b/arch/x86/kernel/apic/apic_noop.c
-> @@ -27,7 +27,13 @@ static void noop_send_IPI_allbutself(int vector) { }
->  static void noop_send_IPI_all(int vector) { }
->  static void noop_send_IPI_self(int vector) { }
->  static void noop_apic_icr_write(u32 low, u32 id) { }
-> -static int noop_wakeup_secondary_cpu(u32 apicid, unsigned long start_eip=
-) { return -1; }
-> +
-> +static int noop_wakeup_secondary_cpu(u32 apicid, unsigned long start_eip=
-,
-> +       unsigned int cpu)
-> +{
-> +       return -1;
-> +}
-> +
->  static u64 noop_apic_icr_read(void) { return 0; }
->  static u32 noop_get_apic_id(u32 apicid) { return 0; }
->  static void noop_apic_eoi(void) { }
-> diff --git a/arch/x86/kernel/apic/apic_numachip.c b/arch/x86/kernel/apic/=
-apic_numachip.c
-> index 16410f087b7a..333536b89bde 100644
-> --- a/arch/x86/kernel/apic/apic_numachip.c
-> +++ b/arch/x86/kernel/apic/apic_numachip.c
-> @@ -56,7 +56,7 @@ static void numachip2_apic_icr_write(int apicid, unsign=
-ed int val)
->         numachip2_write32_lcsr(NUMACHIP2_APIC_ICR, (apicid << 12) | val);
->  }
->
-> -static int numachip_wakeup_secondary(u32 phys_apicid, unsigned long star=
-t_rip)
-> +static int numachip_wakeup_secondary(u32 phys_apicid, unsigned long star=
-t_rip, unsigned int cpu)
->  {
->         numachip_apic_icr_write(phys_apicid, APIC_DM_INIT);
->         numachip_apic_icr_write(phys_apicid, APIC_DM_STARTUP |
-> diff --git a/arch/x86/kernel/apic/x2apic_uv_x.c b/arch/x86/kernel/apic/x2=
-apic_uv_x.c
-> index 7fef504ca508..15209f220e1f 100644
-> --- a/arch/x86/kernel/apic/x2apic_uv_x.c
-> +++ b/arch/x86/kernel/apic/x2apic_uv_x.c
-> @@ -667,7 +667,7 @@ static __init void build_uv_gr_table(void)
->         }
->  }
->
-> -static int uv_wakeup_secondary(u32 phys_apicid, unsigned long start_rip)
-> +static int uv_wakeup_secondary(u32 phys_apicid, unsigned long start_rip,=
- unsigned int cpu)
->  {
->         unsigned long val;
->         int pnode;
-> diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-> index d6cf1e23c2a3..d52e9238e9fd 100644
-> --- a/arch/x86/kernel/smpboot.c
-> +++ b/arch/x86/kernel/smpboot.c
-> @@ -695,7 +695,7 @@ static void send_init_sequence(u32 phys_apicid)
->  /*
->   * Wake up AP by INIT, INIT, STARTUP sequence.
->   */
-> -static int wakeup_secondary_cpu_via_init(u32 phys_apicid, unsigned long =
-start_eip)
-> +static int wakeup_secondary_cpu_via_init(u32 phys_apicid, unsigned long =
-start_eip, unsigned int cpu)
->  {
->         unsigned long send_status =3D 0, accept_status =3D 0;
->         int num_starts, j, maxlvt;
-> @@ -842,7 +842,7 @@ int common_cpu_up(unsigned int cpu, struct task_struc=
-t *idle)
->   * Returns zero if startup was successfully sent, else error code from
->   * ->wakeup_secondary_cpu.
->   */
-> -static int do_boot_cpu(u32 apicid, int cpu, struct task_struct *idle)
-> +static int do_boot_cpu(u32 apicid, unsigned int cpu, struct task_struct =
-*idle)
->  {
->         unsigned long start_ip =3D real_mode_header->trampoline_start;
->         int ret;
-> @@ -896,11 +896,11 @@ static int do_boot_cpu(u32 apicid, int cpu, struct =
-task_struct *idle)
->          * - Use an INIT boot APIC message
->          */
->         if (apic->wakeup_secondary_cpu_64)
-> -               ret =3D apic->wakeup_secondary_cpu_64(apicid, start_ip);
-> +               ret =3D apic->wakeup_secondary_cpu_64(apicid, start_ip, c=
-pu);
->         else if (apic->wakeup_secondary_cpu)
-> -               ret =3D apic->wakeup_secondary_cpu(apicid, start_ip);
-> +               ret =3D apic->wakeup_secondary_cpu(apicid, start_ip, cpu)=
-;
->         else
-> -               ret =3D wakeup_secondary_cpu_via_init(apicid, start_ip);
-> +               ret =3D wakeup_secondary_cpu_via_init(apicid, start_ip, c=
-pu);
->
->         /* If the wakeup mechanism failed, cleanup the warm reset vector =
-*/
->         if (ret)
-> --
-> 2.43.0
->
+Changes
+=======
+v4 -> v5:
+1. Fix for the build warnings reported by kernel test robot.
+   https://patchwork.kernel.org/project/linux-edac/patch/20250423163511.1412-3-shiju.jose@huawei.com/
+2. Removed patch "ACPI: ACPI 6.5: RAS2: Rename RAS2 table structure and field names"
+   from the series as the ACPICA patch was merged to linux-pm.git : branch linux-next
+3. Rebased to ras.git: edac-for-next branch merged with linux-pm.git : linux-next branch.
+      
+v3 -> v4:
+1.  Changes for feedbacks from Yazen on v3.
+    https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
+
+v2 -> v3:
+1. Rename RAS2 table structure and field names in 
+   include/acpi/actbl2.h limited to only necessary
+   for RAS2 scrub feature. Not for merging.
+   Corresponding changes are merged in the acpica:
+   https://github.com/acpica/acpica/commit/2c8a38f747de9d977491a494faf0dfaf799b777b
+2. Changes for feedbacks from Jonathan on v2.
+3. Daniel reported a known behaviour: when readback 'size' attribute after
+   setting in, returns 0 before starting scrubbing via 'addr' attribute.
+   Changes added to fix this.
+4. Daniel reported that firmware cannot update status of demand scrubbing
+   via the 'Actual Address Range (OUTPUT)', thus add workaround in the
+   kernel to update sysfs 'addr' attribute with the status of demand
+   scrubbing.
+5. Optimized logic in ras2_check_pcc_chan() function
+   (patch - ACPI:RAS2: Add ACPI RAS2 driver).
+6. Add PCC channel lock to struct ras2_pcc_subspace and change
+   lock in ras2_mem_ctx as a pointer to pcc channel lock to make sure
+   writing to PCC subspace shared memory is protected from race conditions.
+   
+v1 -> v2:
+1.  Changes for feedbacks from Borislav.
+    - Shorten ACPI RAS2 structures and variables names.
+    - Shorten some of the other variables in the RAS2 drivers.
+    - Fixed few CamelCases.
+
+2.  Changes for feedbacks from Yazen.
+    - Added newline after number of '}' and return statements.
+    - Changed return type for "ras2_add_aux_device() to 'int'.
+    - Deleted a duplication of acpi_get_table("RAS2",...) in the ras2_acpi_parse_table().
+    - Add "FW_WARN" to few error logs in the ras2_acpi_parse_table().
+    - Rename ras2_acpi_init() to acpi_ras2_init() and modified to call acpi_ras2_init()
+      function from the acpi_init().
+    - Moved scrub related variables from the struct ras2_mem_ctx from  patch
+      "ACPI:RAS2: Add ACPI RAS2 driver" to "ras: mem: Add memory ACPI RAS2 driver".  
+
+Shiju Jose (2):
+  ACPI:RAS2: Add ACPI RAS2 driver
+  ras: mem: Add memory ACPI RAS2 driver
+
+ Documentation/edac/scrub.rst |  76 ++++++
+ drivers/acpi/Kconfig         |  11 +
+ drivers/acpi/Makefile        |   1 +
+ drivers/acpi/bus.c           |   3 +
+ drivers/acpi/ras2.c          | 451 +++++++++++++++++++++++++++++++++++
+ drivers/ras/Kconfig          |  11 +
+ drivers/ras/Makefile         |   1 +
+ drivers/ras/acpi_ras2.c      | 406 +++++++++++++++++++++++++++++++
+ include/acpi/ras2.h          |  70 ++++++
+ 9 files changed, 1030 insertions(+)
+ create mode 100644 drivers/acpi/ras2.c
+ create mode 100644 drivers/ras/acpi_ras2.c
+ create mode 100644 include/acpi/ras2.h
+
+-- 
+2.43.0
+
 
