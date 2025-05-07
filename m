@@ -1,230 +1,117 @@
-Return-Path: <linux-acpi+bounces-13563-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13566-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7103CAADD9C
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 13:44:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3903AADDC2
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 13:52:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D1FC1C07391
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 11:44:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD96B1887290
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 11:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A7724166A;
-	Wed,  7 May 2025 11:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E87233145;
+	Wed,  7 May 2025 11:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VFgsvQb8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uAF7Hdro"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E63A214A82;
-	Wed,  7 May 2025 11:43:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6199E21882F
+	for <linux-acpi@vger.kernel.org>; Wed,  7 May 2025 11:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746618235; cv=none; b=PPV1fP9U5OUQmt4zQZ4443y2iLzymfdglC5wVxgIgXaReDWA7lLNtEX7u5ZaafpPi15zQW34ZDft6/d6fLrkUNG6mrft0zmR8nkNxpktubJ37kGEirzKg5gEv4SPnHkEmfLflJTrbA71YrYL/ZA/L7gVKa56lFauVyDy1Sd039w=
+	t=1746618730; cv=none; b=XjCjm64HlohRRmSgqmijKigeRe9+W35pj5XcFHrFz9I8gZ2O1+i/Ej+AU8AD/e9jsDNgizKhIqZbSr2DQZxnJH6nl/M8h/V1sS4ZNcDZ0c0TqrlGDHUpl+uL21lokMtqT/v/UFobrFvAs8mfCjU0caeBYkbPcNdSjURviQBZa5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746618235; c=relaxed/simple;
-	bh=YGUKIY6MsniKGGoVznlGheoqVG6lXYDoidfAZzwwlgY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XdNMx7Lg8N0OrfW+s54eI3orNBTdUR7qjLLwCfOPrBWxwp/td8mAxHKuaW3wIqeH0OByF4f7fMuiUPmt1NeTN6KfUFRmlcGPvwen/u9Wa/UlIUdeUN+Tysz2pNS1XSBdtvHO6zsLjD1QBk+qkW72QkOdAaBerp5ePtOdcIiZmd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VFgsvQb8; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746618233; x=1778154233;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=YGUKIY6MsniKGGoVznlGheoqVG6lXYDoidfAZzwwlgY=;
-  b=VFgsvQb8QVl94CYkk5VEn8cifHSpaUVH6tunzHEOO3Pv3kmPJlKBrsL/
-   6Qy+3bj9xbT9GDENTpGsJe2DkgdSWjJC96mtzMGwDoUj/7pUyW+OGcHRb
-   iKx3mkyEXQWeEtSDj1EjGUSmR9EnXJ4XpRVsw1qR7eHQk28woHmTSr+pc
-   c0KKggPS6CKOQE3G9dBCH0RtVsZIwP+2Djq9NZjYwqVR6Qd/W6LcB7tsF
-   7ldUnPfq77A2gumvrmpkXyk8wA5kKVsPbYnl3QpbEFs+GNygbhXnhtNk4
-   VAJ3UkQ5lGuwfyV45uajrbsD0nDgSlcC4UDfcEXcECSnt6bgP3Jho4Lff
-   g==;
-X-CSE-ConnectionGUID: JaqzB9JBRN+fBQki3EGYSg==
-X-CSE-MsgGUID: XOqrkm62Q82LXNQ9p8CRcA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="47442143"
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
-   d="scan'208";a="47442143"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 04:43:52 -0700
-X-CSE-ConnectionGUID: oPY4ZS6MTq6rF9bnZTWGCw==
-X-CSE-MsgGUID: Oo1duMMwShKiM1ihegtnEA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
-   d="scan'208";a="136945496"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 04:43:51 -0700
-Date: Wed, 7 May 2025 04:48:57 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>, devicetree@vger.kernel.org,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Chris Oo <cho@microsoft.com>, linux-hyperv@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Ravi V. Shankar" <ravi.v.shankar@intel.com>,
-	Ricardo Neri <ricardo.neri@intel.com>
-Subject: Re: [PATCH v3 06/13] dt-bindings: reserved-memory: Wakeup Mailbox
- for Intel processors
-Message-ID: <20250507114857.GB27839@ranerica-svr.sc.intel.com>
-References: <20250503191515.24041-1-ricardo.neri-calderon@linux.intel.com>
- <20250503191515.24041-7-ricardo.neri-calderon@linux.intel.com>
- <CAJZ5v0j262Jorbb5--WY6KedR7CWvdTTYP10ZRZTqXhTNJ1GiA@mail.gmail.com>
- <20250506055054.GG25533@ranerica-svr.sc.intel.com>
- <CAJZ5v0gC8p1kwVpd8vZkWKoyVaT7Udzj0X5ux03TdJ3=2b8gyg@mail.gmail.com>
+	s=arc-20240116; t=1746618730; c=relaxed/simple;
+	bh=p+oo/AJVG4gIS3t7a732o2X2ARn1jLjwvm2N9+AV4tA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cwTjeJcvE4AFtrKTkf1OZLvBbWD5L9w2rZ1dsq2dSw/q4B22RPie5xy0XHoU9wJEG9nGkNay2xrJRtSFTFEloJw5u5jgDkOofgObQd2eb15hNtHT/MiWKiycIVHk+4LaZ2AnBfusZ/PHk4y/qLkHZJQIy1IYjw8icK4OMgcveIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uAF7Hdro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A76C4CEF1
+	for <linux-acpi@vger.kernel.org>; Wed,  7 May 2025 11:52:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746618730;
+	bh=p+oo/AJVG4gIS3t7a732o2X2ARn1jLjwvm2N9+AV4tA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=uAF7Hdro+saK+SPaTo6sNzImR6rrEdfYd60xyLrAP9n7qOVuqrxoJRFPY1TkxoouL
+	 ZsNiRsqi3zXA1qORNcxXgS1Y8XpZOUOcX3n4UPTM4dcfOEvE6dgzpAXFbBKkhI5ugm
+	 96yVUPIsRRetJADR2AFWH0r/vlvDjDzLMwIQV/t4dsAMgnJ0T4oeH3DfAoqDRosBAu
+	 hKCtIADXab3H2VrIJMsr+/vFXM4UQSTGu7z2hn5Jg0OPMpsPl53ngK9kVPkW96/SV8
+	 90qEiKCEEeU+wNDGQayRXzpS67EtsBbssudHpxChP76oX6pBTL47BcrnCazWVllClS
+	 EEeP1C90/1pAg==
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3feaedb531dso1530998b6e.3
+        for <linux-acpi@vger.kernel.org>; Wed, 07 May 2025 04:52:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVmd2Vu3WWD+PItYif0ouHeBdNRNJQ0vwLBW/tMZp1R2p2h+2VEx7WLRf2Lprq8lj08ZJRK3QeKDbGd@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxze9Rtd2Qood7aZCenq/Nlb+gVEUjSlPzCECASXr8Vc3Oka600
+	zgE2DOuf1iEXuPZZeQhLA0iKK6+iyMiUR25ND+GR5OX2MB5QSv3BjBUwHhO1lRkStzlrLkQswHL
+	DY2OaTe46jiYKeorNpPhyT/lwIXM=
+X-Google-Smtp-Source: AGHT+IHw9lK7RRagqP4+1xWvZdMePWmiWjPbvdrn8nWisL7Yfpa0RJcJwZNyCzYVRRyxqL2/h7qNQvvm6fB3vDDKpj8=
+X-Received: by 2002:a05:6808:1804:b0:403:3e86:ab4c with SMTP id
+ 5614622812f47-4036f0d561fmr1740762b6e.39.1746618729579; Wed, 07 May 2025
+ 04:52:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0gC8p1kwVpd8vZkWKoyVaT7Udzj0X5ux03TdJ3=2b8gyg@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20250507035124.28071-1-yangyicong@huawei.com> <20250507-devout-mysterious-jackal-e50e00@sudeepholla>
+ <CAJZ5v0iWJQnwamT0mP=A_wtAbRkguhxcvbMnm+b2chAET7=sGA@mail.gmail.com> <20250507-venomous-feathered-skink-77ea16@sudeepholla>
+In-Reply-To: <20250507-venomous-feathered-skink-77ea16@sudeepholla>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 7 May 2025 13:51:58 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hyxCE3NWcCgKkut2_pJGO-Pyt27GdhMK0ZUZ-MJ6dudQ@mail.gmail.com>
+X-Gm-Features: ATxdqUHNOgmyNM_cmsmfCSLlNBg5ZgOKY6SUjSykcrunRRbY8DERRO8V35VZhf4
+Message-ID: <CAJZ5v0hyxCE3NWcCgKkut2_pJGO-Pyt27GdhMK0ZUZ-MJ6dudQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PPTT: Fix table length check when parsing processor nodes
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Yicong Yang <yangyicong@huawei.com>, lenb@kernel.org, 
+	linux-acpi@vger.kernel.org, jmeurin@google.com, jeremy.linton@arm.com, 
+	jonathan.cameron@huawei.com, zhanjie9@hisilicon.com, prime.zeng@hisilicon.com, 
+	yangyicong@hisilicon.com, linuxarm@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 06, 2025 at 04:00:56PM +0200, Rafael J. Wysocki wrote:
-> On Tue, May 6, 2025 at 7:46 AM Ricardo Neri
-> <ricardo.neri-calderon@linux.intel.com> wrote:
-> >
-> > On Mon, May 05, 2025 at 03:07:43PM +0200, Rafael J. Wysocki wrote:
-> > > On Sat, May 3, 2025 at 9:10 PM Ricardo Neri
-> > > <ricardo.neri-calderon@linux.intel.com> wrote:
-> > > >
-> > > > Add DeviceTree bindings for the wakeup mailbox used on Intel processors.
-> > > >
-> > > > x86 platforms commonly boot secondary CPUs using an INIT assert, de-assert
-> > > > followed by Start-Up IPI messages. The wakeup mailbox can be used when this
-> > > > mechanism unavailable.
-> > > >
-> > > > The wakeup mailbox offers more control to the operating system to boot
-> > > > secondary CPUs than a spin-table. It allows the reuse of same wakeup vector
-> > > > for all CPUs while maintaining control over which CPUs to boot and when.
-> > > > While it is possible to achieve the same level of control using a spin-
-> > > > table, it would require to specify a separate cpu-release-addr for each
-> > > > secondary CPU.
-> > > >
-> > > > Originally-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> > > > Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-> > > > ---
-> > > > Changes since v2:
-> > > >  - Implemented the mailbox as a reserved-memory node. Add to it a
-> > > >    `compatible` property. (Krzysztof)
-> > > >  - Explained the relationship between the mailbox and the `enable-mehod`
-> > > >    property of the CPU nodes.
-> > > >  - Expanded the documentation of the binding.
-> > > >
-> > > > Changes since v1:
-> > > >  - Added more details to the description of the binding.
-> > > >  - Added requirement a new requirement for cpu@N nodes to add an
-> > > >    `enable-method`.
-> > > > ---
-> > > >  .../reserved-memory/intel,wakeup-mailbox.yaml | 87 +++++++++++++++++++
-> > > >  1 file changed, 87 insertions(+)
-> > > >  create mode 100644 Documentation/devicetree/bindings/reserved-memory/intel,wakeup-mailbox.yaml
-> > > >
-> > > > diff --git a/Documentation/devicetree/bindings/reserved-memory/intel,wakeup-mailbox.yaml b/Documentation/devicetree/bindings/reserved-memory/intel,wakeup-mailbox.yaml
-> > > > new file mode 100644
-> > > > index 000000000000..d97755b4673d
-> > > > --- /dev/null
-> > > > +++ b/Documentation/devicetree/bindings/reserved-memory/intel,wakeup-mailbox.yaml
-> > > > @@ -0,0 +1,87 @@
-> > > > +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> > > > +%YAML 1.2
-> > > > +---
-> > > > +$id: http://devicetree.org/schemas/reserved-memory/intel,wakeup-mailbox.yaml#
-> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > +
-> > > > +title: Wakeup Mailbox for Intel processors
-> > > > +
-> > > > +description: |
-> > > > +  The Wakeup Mailbox provides a mechanism for the operating system to wake up
-> > > > +  secondary CPUs on Intel processors. It is an alternative to the INIT-!INIT-
-> > > > +  SIPI sequence used on most x86 systems.
-> > > > +
-> > > > +  Firmware must define the enable-method property in the CPU nodes as
-> > > > +  "intel,wakeup-mailbox" to use the mailbox.
-> > > > +
-> > > > +  Firmware implements the wakeup mailbox as a 4KB-aligned memory region of size
-> > > > +  of 4KB. It is memory that the firmware reserves so that each secondary CPU can
-> > > > +  have the operating system send a single message to them. The firmware is
-> > > > +  responsible for putting the secondary CPUs in a state to check the mailbox.
-> > > > +
-> > > > +  The structure of the mailbox is as follows:
-> > > > +
-> > > > +  Field           Byte   Byte  Description
-> > > > +                 Length Offset
-> > > > +  ------------------------------------------------------------------------------
-> > > > +  Command          2      0    Command to wake up the secondary CPU:
-> > > > +                                        0: Noop
-> > > > +                                        1: Wakeup: Jump to the wakeup_vector
-> > > > +                                        2-0xFFFF: Reserved:
-> > > > +  Reserved         2      2    Must be 0.
-> > > > +  APIC_ID          4      4    APIC ID of the secondary CPU to wake up.
-> > > > +  Wakeup_Vector    8      8    The wakeup address for the secondary CPU.
-> > > > +  ReservedForOs 2032     16    Reserved for OS use.
-> > > > +  ReservedForFW 2048   2048    Reserved for firmware use.
-> > > > +  ------------------------------------------------------------------------------
-> > > > +
-> > > > +  To wake up a secondary CPU, the operating system 1) prepares the wakeup
-> > > > +  routine; 2) populates the address of the wakeup routine address into the
-> > > > +  Wakeup_Vector field; 3) populates the APIC_ID field with the APIC ID of the
-> > > > +  secondary CPU; 4) writes Wakeup in the Command field. Upon receiving the
-> > > > +  Wakeup command, the secondary CPU acknowledges the command by writing Noop in
-> > > > +  the Command field and jumps to the Wakeup_Vector. The operating system can
-> > > > +  send the next command only after the Command field is changed to Noop.
-> > > > +
-> > > > +  The secondary CPU will no longer check the mailbox after waking up. The
-> > > > +  secondary CPU must ignore the command if its APIC_ID written in the mailbox
-> > > > +  does not match its own.
-> > > > +
-> > > > +  When entering the Wakeup_Vector, interrupts must be disabled and 64-bit
-> > > > +  addressing mode must be enabled. Paging mode must be enabled. The virtual
-> > > > +  address of the Wakeup_Vector page must be equal to its physical address.
-> > > > +  Segment selectors are not used.
+On Wed, May 7, 2025 at 1:47=E2=80=AFPM Sudeep Holla <sudeep.holla@arm.com> =
+wrote:
+>
+> On Wed, May 07, 2025 at 01:44:26PM +0200, Rafael J. Wysocki wrote:
+> > On Wed, May 7, 2025 at 1:40=E2=80=AFPM Sudeep Holla <sudeep.holla@arm.c=
+om> wrote:
 > > >
-> > > This interface is defined in the ACPI specification and all of the
-> > > above information is present there.
+> > > On Wed, May 07, 2025 at 11:51:24AM +0800, Yicong Yang wrote:
+> > > > From: Yicong Yang <yangyicong@hisilicon.com>
+> > > >
+> > > > Below error is met on my board and QEMU VM on SMT or non-SMT machin=
+e:
+> > > >   ACPI PPTT: PPTT table found, but unable to locate core 31 (31)
+> > > >
+> > > > This is because the processor node is found by iterating the PPTT
+> > > > table under condition (for both acpi_find_processor_node() and
+> > > > acpi_pptt_leaf_node()):
+> > > >   while (entry + proc_sz < table_end)
+> > > >     [parse the processor node]
+> > > >
+> > > > If the last processor node is happened to be the last node in the
+> > > > PPTT table, above condition will always be false since
+> > > > entry + proc_sz =3D=3D table_end. Thus the last CPU is not parsed.
+> > > > Fix the loop condition to resolve the issue.
+> > > >
+> > > > This issue is exposed by [1] but the root cause is explained above.
+> > > > Before [1] entry + proc_sz is always smaller than table_end.
+> > > >
 > > >
-> > > Why are you copying it without acknowledging the source of it instead
-> > > of just saying where this interface is defined and pointing to its
-> > > definition?
+> > > Another thread [1]  with similar patch.
 > >
-> > There was a discussion in the past about preferring a full description of
-> > the mailbox instead of references to ACPI [1]. I am happy to acknowledge
-> > the source in the changeset description. I explicitly acknowledge the ACPI
-> > specification in the cover letter.
-> >
-> > [1]. https://lore.kernel.org/all/20240809232928.GB25056@yjiang5-mobl.amr.corp.intel.com/
-> 
-> In which I clearly was not involved.
-> 
-> Acknowledgement in the cover letter is fine, but insufficient.
+> > OK, so is this a correct fix?
+>
+> While it may fix the issue on the surface, I just want to be sure there
+> are no other issues with the PPTT table presented from the firmware.
+> I will asked some questions on that thread before I can agree on the solu=
+tion.
 
-I see.
-
-> 
-> Also, there is the question regarding what happens when the ASWG
-> decides to update this part of the ACPI specification.  Is the DT
-> binding going to be updated too?
-
-That was my plan. The ACPI Multiprocessor Wakeup Structure has a version
-field that I could have used.
-
-But, it looks like these bindings will not be needed after all.
-
-I will drop this patch.
-
-Thanks and BR,
-Ricardo
+Yeah, it looks like table_end points to the last byte of the table
+instead of pointing to the first byte after the end of the table.
 
