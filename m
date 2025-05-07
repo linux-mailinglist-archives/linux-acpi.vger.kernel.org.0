@@ -1,81 +1,71 @@
-Return-Path: <linux-acpi+bounces-13521-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13522-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A618AAD47A
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 06:32:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0E9AAD4B7
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 06:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E76DD4E76F4
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 04:32:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 689661C069D5
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 04:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AFB1D5146;
-	Wed,  7 May 2025 04:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FE01DD0D4;
+	Wed,  7 May 2025 04:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HukbXTdL"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kvO7oVJ3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553383596F
-	for <linux-acpi@vger.kernel.org>; Wed,  7 May 2025 04:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC57D19F120;
+	Wed,  7 May 2025 04:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746592370; cv=none; b=aokxpiaORZGCWIbh4qdrQ/Aoj/U0fvE95u0a8G5eD62RVafEbzf1tqH3CaqqsQuVico+9soTjORVCrN7CAtkK5+nI/9bLxo1Uu92StOTBPIIX9gnI2EegYgC5O/pjAVQNP3m0avhLsB5vAg1pzBr6xMF85J/4Y9vrWrpM+6HQCY=
+	t=1746593948; cv=none; b=B0E8nTc+Hphb9aSeCgcGDcR/SCYSA7yem0cSs+hwrlb1CnSTfgy7bfN2HwoSBVAdEZTFWz42Zw2mAIZqnyGLBUwWyP+PAm1bPbSNw7zuw3lPsYYbss1dEF0aB9Gbve8hVNGee1jIHGYwKh8IXdXoTzzNhoDYB/JohqlIdBTvYZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746592370; c=relaxed/simple;
-	bh=niuKy9gk4dkCS6rlhCHtu+URATrBywypRfYoWQZ9nt0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QwsaDp1wLCXgPxfRCdmHDsP0tdBLjJ0yDpjeM7QYD/e8nKef7UIIFSpFh5VgwJJE75ryUrRw7x4SykkuUVxleuDVG/X6hsrpXtBqEiWKZ97DbRjQhRi2IiMQsOGYByai7ix36X1YzBSo6k/W5nAJosMd8nASG0A/e5ucr+WNYyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=HukbXTdL; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-22c336fcdaaso80906905ad.3
-        for <linux-acpi@vger.kernel.org>; Tue, 06 May 2025 21:32:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1746592368; x=1747197168; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=y7qKabiFtKwBUMZkvyHIungLeY3bn69kzVyg50ugsVA=;
-        b=HukbXTdLEvehiR2iTkJcraQqlCiyMwWrtrrDQj7s+S72vXBXNARF9OH961MO/IFecn
-         Tsr/D0xuE7xQJyAWWVuJZT17+3uJE6uCsn8Lu1CcXDrdh/iOhPWXVs3KkR0k62aV/op9
-         d5XCCl4zCYcU3KB5At/KQEv+YXBmIycpXTyBI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746592368; x=1747197168;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=y7qKabiFtKwBUMZkvyHIungLeY3bn69kzVyg50ugsVA=;
-        b=hAcv7v/1Z19xQHKaCQlFwkLD5qUzIQbujVbHSOXa2EyBObQ3D2SnZKV5m8bejitvDP
-         pEkj6cAubeil8ydryo3Ug/PdSZHH8u0Xr7oMEDtgdMiknxK01nmKn+xRel81DejAzrN+
-         aZhpSBQOsAP+6oPcluVs6Im+aDXNxk/7QzAHZCJGih/gi02IcGfPBfgGSo2JbWB9Aovj
-         ys16UDCsPjX/UG7HfPQvSyjS3UxVZI/KKUE0FJPkBcs82S8i4Eo5kqF9JX3zxiU4q2eb
-         nz3Jkm4gnbP5GzNUW+QdAZ5TOgJcPzHDS7VwxFqHlhDIqLGv9r6mJsytVba4/hCnEYA9
-         8+Dg==
-X-Forwarded-Encrypted: i=1; AJvYcCVzk4mVdZOSScj8EfXMU7JC5PKU2m7qgPMVBpGnzVDkWFwzgWomCj1AMhexGoxMpImBmNytBYc2/zsd@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNB16LIc/z96MbnnbooOG8XHDiQHxRrxiL++IwgLSIuyOyia57
-	GGEqRoGYtK82VLMayfnd7i1MMM7po+fIs0NKPgxqv18c8fPQLE5BI0uLBIS6KQ==
-X-Gm-Gg: ASbGncu25vxHvIkVKH3a6/xOHnfJx6CqaQJoEAahaicjD3HZ6Bzlt6kYhAd7LXtZQFu
-	TeCgt571edw0WDV0h8NI6xvyiKVjSbFeUKLbuQ9g0EhbtY6PWRMrc4QNRLulBHgwouhldbN5zql
-	zMXyhlQzYcx7dZRmxRug3hSQT5tsegQdWBm/CeRjxpjGLdzRu7iWVBy9Gqy+MJEiCA9VUsa4OiH
-	0UL/wUFkk76rxS/47a2t+yKAwEAp1QgQp7T7wibwpErOyWXDxlPlxQWy8FgchbQVDiiUU6HxeRx
-	Pz105Fhsg7u4hceULJPvEFa2GHAUeDW+afkffqA=
-X-Google-Smtp-Source: AGHT+IGIkODBbXRNjMj4QG+fj5A2bZSDzZK4M2PphSMZPfCaOncGd4wT+3d90LYXEUxDmSPl/uFFgA==
-X-Received: by 2002:a17:902:d509:b0:215:b9a6:5cb9 with SMTP id d9443c01a7336-22e5ea2e057mr32529895ad.5.1746592368455;
-        Tue, 06 May 2025 21:32:48 -0700 (PDT)
-Received: from localhost ([2401:fa00:9:14:dc6d:cdc2:d5e4:9262])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22e151e97eesm83937725ad.71.2025.05.06.21.32.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 May 2025 21:32:48 -0700 (PDT)
-From: Peter Marheine <pmarheine@chromium.org>
-To: rafael@kernel.org
-Cc: lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	Peter Marheine <pmarheine@chromium.org>
-Subject: [PATCH] ACPI: battery: negate current when discharging
-Date: Wed,  7 May 2025 14:29:54 +1000
-Message-ID: <20250507042954.43674-1-pmarheine@chromium.org>
-X-Mailer: git-send-email 2.49.0.1015.ga840276032-goog
+	s=arc-20240116; t=1746593948; c=relaxed/simple;
+	bh=bJOPeGGSh2Hw2WYlIOpZFbgaiLdVuE2W8tajBVDaQy0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZHOLwXZKElwxC7wMx39vTRF9JRMDPkZkMjojqmLSIXwvgaBpXqwOa4e+OWLaTJyeM+Pxl7FiFOBwP/FNLaD4Ri/4Cu0YIQGkyjp9+a6T/2FIqYsEn8kByxBql/lA0dj7dmNi7cwkYbO2vFQSBO8aYQp3smmYg+SkPYd6TQmfnKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kvO7oVJ3; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5471H92D018448;
+	Wed, 7 May 2025 04:58:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=2Om2K7NlYvLRzOhsIO8jYO
+	3DWzMyXxpUINZ4XmAMLyc=; b=kvO7oVJ3njDlZ1TxIs0M2Z5Wyxou6ZXBhhpzgo
+	U/7aUVWZrjx51MP+f95H6ZrFOkfJQ2aZonLfFnfwfDBHVkAdF0XeIS04h3u1f0qx
+	FG/daGRFFGUVr1uldnoclsOzRv7z9nD4wcY7rXn4wl1oEUcZQBo96bXCsOfZOV0P
+	U18v2EYnWvClmDLNF3e3pOTcPb2+sQLMc7MUv+mkDOPhT6a9pqwQikJ0dRDoe3QM
+	aQDZ/ADfCwWxWbYIflzedDNANh89j8gOFUpYfs4tgalXnJQdW/lPUrYAwxu2ySmg
+	t71uKEJNgKtOicEmnQtuRp/60Ha0rO3IeO2nGYHIjn0fvIxQ==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46f5tbcem0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 May 2025 04:58:27 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5474wQcL024060
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 7 May 2025 04:58:26 GMT
+Received: from hyiwei-gv.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 6 May 2025 21:58:18 -0700
+From: Huang Yiwei <quic_hyiwei@quicinc.com>
+To: <will@kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
+        <james.morse@arm.com>, <tony.luck@intel.com>, <bp@alien8.de>
+CC: Huang Yiwei <quic_hyiwei@quicinc.com>, <xueshuai@linux.alibaba.com>,
+        <quic_aiquny@quicinc.com>, <quic_satyap@quicinc.com>,
+        <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <kernel@quicinc.com>,
+        <kernel@oss.qualcomm.com>
+Subject: [PATCH v2] firmware: SDEI: Allow sdei initialization without ACPI_APEI_GHES
+Date: Wed, 7 May 2025 12:57:57 +0800
+Message-ID: <20250507045757.2658795-1-quic_hyiwei@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -83,48 +73,153 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: GLsHI0RIUWKu5gdmYMBz8SANGRwsj428
+X-Proofpoint-GUID: GLsHI0RIUWKu5gdmYMBz8SANGRwsj428
+X-Authority-Analysis: v=2.4 cv=doXbC0g4 c=1 sm=1 tr=0 ts=681ae873 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=dt9VzEwgFbYA:10 a=SRrdq9N9AAAA:8 a=COk6AnOGAAAA:8
+ a=fApEDmPMNfUvMO555Z0A:9 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA3MDA0NCBTYWx0ZWRfX6Rn8YeXmmXlh
+ 8GpKTqm0o0g3oJnIqsBw6tDxkPEc5S/AhFbfATzlTfFODfY9J+SOQsbHwKp2wcPhVwM1Ef/76mw
+ sJ3IWTHtCxzADK8ZOvz3XOpZQc64M4AAkEmSvcSf3DR0rCIA4pwAP9A5A7un16hIiKhqSrCK7zN
+ vJ+sk43RiOfAfB6MzfMNYBy+IC5fGgfqzky50CUkkzQ5YBRkGyF+tZUrerFnAKYgEyBROwYefmM
+ EzzWBwmEEvhdKKsi/igvIw7suB+WNh0Hops4sbqEBLKvnD/Dp4cTF6Pk/2VEWgaQfcpGwvuiGWx
+ fbCKcXAFgH+82iA/xnLqa8xa+Skr87yIAReETKbeJRN4xoR88ctHp/yLEa8XG9MvlqEp4dJMjzB
+ WyrihCYGNNEL8MdyZ+JYsEvU89n0HJADbBH1Yk9JREVL2h1CpnASDc6qGBHvweO9W+PPn+pD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-07_01,2025-05-06_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 adultscore=0 malwarescore=0 phishscore=0
+ mlxlogscore=540 impostorscore=0 clxscore=1015 mlxscore=0 priorityscore=1501
+ spamscore=0 lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505070044
 
-The ACPI specification requires that battery rate is always positive,
-but the kernel ABI for POWER_SUPPLY_PROP_CURRENT_NOW
-(Documentation/ABI/testing/sysfs-class-power) specifies that it should
-be negative when a battery is discharging. When reporting CURRENT_NOW,
-massage the value to match the documented ABI.
+SDEI usually initialize with the ACPI table, but on platforms where
+ACPI is not used, the SDEI feature can still be used to handle
+specific firmware calls or other customized purposes. Therefore, it
+is not necessary for ARM_SDE_INTERFACE to depend on ACPI_APEI_GHES.
 
-This only changes the sign of `current_now` and not `power_now` because
-documentation doesn't describe any particular meaning for `power_now` so
-leaving `power_now` unchanged is less likely to confuse userspace
-unnecessarily, whereas becoming consistent with the documented ABI is
-worth potentially confusing clients that read `current_now`.
+In commit dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES
+in acpi_init()"), to make APEI ready earlier, sdei_init was moved
+into acpi_ghes_init instead of being a standalone initcall, adding
+ACPI_APEI_GHES dependency to ARM_SDE_INTERFACE. This restricts the
+flexibility and usability of SDEI.
 
-Signed-off-by: Peter Marheine <pmarheine@chromium.org>
+This patch corrects the dependency in Kconfig and splits sdei_init()
+into two separate functions: sdei_init() and acpi_sdei_init().
+sdei_init() will be called by arch_initcall and will only initialize
+the platform driver, while acpi_sdei_init() will initialize the
+device from acpi_ghes_init() when ACPI is ready. This allows the
+initialization of SDEI without ACPI_APEI_GHES enabled.
+
+Fixes: dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES in apci_init()")
+Cc: Shuai Xue <xueshuai@linux.alibaba.com>
+Signed-off-by: Huang Yiwei <quic_hyiwei@quicinc.com>
 ---
- drivers/acpi/battery.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/acpi/apei/Kconfig   |  1 +
+ drivers/acpi/apei/ghes.c    |  2 +-
+ drivers/firmware/Kconfig    |  1 -
+ drivers/firmware/arm_sdei.c | 11 ++++++++---
+ include/linux/arm_sdei.h    |  4 ++--
+ 5 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 6760330a8a..0ef03142fd 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -242,6 +242,18 @@ static int acpi_battery_get_property(struct power_supply *psy,
- 			val->intval = battery->voltage_now * 1000;
- 		break;
- 	case POWER_SUPPLY_PROP_CURRENT_NOW:
-+		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
-+			ret = -ENODEV;
-+		else if ((battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
-+			 acpi_battery_handle_discharging(battery)
-+				== POWER_SUPPLY_STATUS_DISCHARGING)
-+			/* ACPI specifies battery rate should always be
-+			 * positive, but this prop is negative when discharging.
-+			 */
-+			val->intval = battery->rate_now * -1000;
-+		else
-+			val->intval = battery->rate_now * 1000;
-+		break;
- 	case POWER_SUPPLY_PROP_POWER_NOW:
- 		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
- 			ret = -ENODEV;
+diff --git a/drivers/acpi/apei/Kconfig b/drivers/acpi/apei/Kconfig
+index 3cfe7e7475f2..070c07d68dfb 100644
+--- a/drivers/acpi/apei/Kconfig
++++ b/drivers/acpi/apei/Kconfig
+@@ -23,6 +23,7 @@ config ACPI_APEI_GHES
+ 	select ACPI_HED
+ 	select IRQ_WORK
+ 	select GENERIC_ALLOCATOR
++	select ARM_SDE_INTERFACE if ARM64
+ 	help
+ 	  Generic Hardware Error Source provides a way to report
+ 	  platform hardware errors (such as that from chipset). It
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 289e365f84b2..0f3c663c1b0a 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -1715,7 +1715,7 @@ void __init acpi_ghes_init(void)
+ {
+ 	int rc;
+ 
+-	sdei_init();
++	acpi_sdei_init();
+ 
+ 	if (acpi_disabled)
+ 		return;
+diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+index aadc395ee168..7df19d82aa68 100644
+--- a/drivers/firmware/Kconfig
++++ b/drivers/firmware/Kconfig
+@@ -31,7 +31,6 @@ config ARM_SCPI_PROTOCOL
+ config ARM_SDE_INTERFACE
+ 	bool "ARM Software Delegated Exception Interface (SDEI)"
+ 	depends on ARM64
+-	depends on ACPI_APEI_GHES
+ 	help
+ 	  The Software Delegated Exception Interface (SDEI) is an ARM
+ 	  standard for registering callbacks from the platform firmware
+diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+index 3e8051fe8296..71e2a9a89f6a 100644
+--- a/drivers/firmware/arm_sdei.c
++++ b/drivers/firmware/arm_sdei.c
+@@ -1062,13 +1062,12 @@ static bool __init sdei_present_acpi(void)
+ 	return true;
+ }
+ 
+-void __init sdei_init(void)
++void __init acpi_sdei_init(void)
+ {
+ 	struct platform_device *pdev;
+ 	int ret;
+ 
+-	ret = platform_driver_register(&sdei_driver);
+-	if (ret || !sdei_present_acpi())
++	if (!sdei_present_acpi())
+ 		return;
+ 
+ 	pdev = platform_device_register_simple(sdei_driver.driver.name,
+@@ -1081,6 +1080,12 @@ void __init sdei_init(void)
+ 	}
+ }
+ 
++static int __init sdei_init(void)
++{
++	return platform_driver_register(&sdei_driver);
++}
++arch_initcall(sdei_init);
++
+ int sdei_event_handler(struct pt_regs *regs,
+ 		       struct sdei_registered_event *arg)
+ {
+diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
+index 255701e1251b..f652a5028b59 100644
+--- a/include/linux/arm_sdei.h
++++ b/include/linux/arm_sdei.h
+@@ -46,12 +46,12 @@ int sdei_unregister_ghes(struct ghes *ghes);
+ /* For use by arch code when CPU hotplug notifiers are not appropriate. */
+ int sdei_mask_local_cpu(void);
+ int sdei_unmask_local_cpu(void);
+-void __init sdei_init(void);
++void __init acpi_sdei_init(void);
+ void sdei_handler_abort(void);
+ #else
+ static inline int sdei_mask_local_cpu(void) { return 0; }
+ static inline int sdei_unmask_local_cpu(void) { return 0; }
+-static inline void sdei_init(void) { }
++static inline void acpi_sdei_init(void) { }
+ static inline void sdei_handler_abort(void) { }
+ #endif /* CONFIG_ARM_SDE_INTERFACE */
+ 
 -- 
-2.49.0.987.g0cc8ee98dc-goog
+2.25.1
 
 
