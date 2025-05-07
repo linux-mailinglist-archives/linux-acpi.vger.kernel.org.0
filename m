@@ -1,86 +1,85 @@
-Return-Path: <linux-acpi+bounces-13619-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13620-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0079EAAEEB2
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 00:24:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A82EFAAEF12
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 01:11:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0056985A4D
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 22:24:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DB1F4E4507
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 23:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4F729114A;
-	Wed,  7 May 2025 22:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873D229114E;
+	Wed,  7 May 2025 23:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="H3AhQNzf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lr6U282C"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF07290DA4;
-	Wed,  7 May 2025 22:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC871ACEC8;
+	Wed,  7 May 2025 23:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746656661; cv=none; b=il771HPd3xstg3MlZHOVB9S0LnGntdpA8zhYLpWdjcOduQLDSUi66Ii7/vrJiL2T0sJX9v5YF8vEw/qJredljO0qsWoYwrwRM5mGqEhKHCgVGGe8a1n1kl+6gBU+8G0X/n9f5ryO2641dB+HJYmzudxv6zElzebMT+PS/GC8AIM=
+	t=1746659502; cv=none; b=ZxpOYfRKouaSOFcFrN/lo0XCbdmDi3QASX8QumjjDVDWWhMxYVaJt5n5EkMvM3TpHP/25ecpnY8IRtS0V3+JwEfs6Y+VSdYrkCK2GR2s7NP5g3eYAW/CuP3yUZ28fmrnMrSlrd69bXPkYQukjQQV2UpfWN14kaVo7811vr8LyTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746656661; c=relaxed/simple;
-	bh=AzuzgfE6GFKxTRRxcmQmVIVwtjphxNohFQ1mkjj32Gs=;
+	s=arc-20240116; t=1746659502; c=relaxed/simple;
+	bh=RGS6xqwf+eAFdkFQCJRyKL1JWrMRM7+MAR2zJd5Lnyw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gS/FwG0VxdZkL1MG94ysJ+xODHnHe7ETZCYV8mD7/ytD2yF7snK/4AuJ0K4bMhHR7etar/4UOYwo/mJq0QpGzdsoIbGMOMRaONp306SJJBMgzj3XrqPgpWOrHFPYCLLPCIrHLwPPDvqxzeFMbs/qI/KZAdOM//SYh4JEQeJwCEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=H3AhQNzf; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=PzMdG6ucufIYiDDg070rOIAisSRRkIriDyNiBBXVH3U=; b=H3AhQNzfKur7H3echOL82K5wSj
-	UWauEM7K0xtUngTkTiumFckVqkxTSQmxx04ybKUuXMGDwQxdg9v4LTVktEbeK1wYbAEG7wA2phbCJ
-	WOEUl0ZmHpOetacgwgUET9KPOR85GwrqWO+zoimHuICTlzt/azYqhg8fHIiVUKBeUXS8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uCnBL-00BwDo-6P; Thu, 08 May 2025 00:24:03 +0200
-Date: Thu, 8 May 2025 00:24:03 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 23/26] misc: lan966x_pci: Introduce board specific data
-Message-ID: <8b97e095-dbed-438c-9c6d-d3c2c5929fc0@lunn.ch>
-References: <20250507071315.394857-1-herve.codina@bootlin.com>
- <20250507071315.394857-24-herve.codina@bootlin.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=nuyjMIMXHIUZysZ0Qxym8/omqBmgiNLX4qXUvv6z8ey0zF7hU3QS1f4D6ZaaN+EEHa+CsF6NkpASes7cOF6B/l90orNgYtXvwwscZCvzR+CGvtYALSNbMQwYEaKbl2s/L9ZvRC4c1FqSO7wzeviQcRlhUgI8CHvaKYV38pMBj5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lr6U282C; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746659502; x=1778195502;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=RGS6xqwf+eAFdkFQCJRyKL1JWrMRM7+MAR2zJd5Lnyw=;
+  b=Lr6U282Cl5q18ymFBHgPqR/bb2ExnxDV+pjgkWlMyhJ+ESQ49vzmfTAo
+   ApXLQ9H1OXu5qbWaRA5kWOKzsjfWNtyCvInSWonCdBhHzCkjFConu/SVk
+   BSJqa32Pwmsf0AjI2hoA0WqX3a3smOeCsBqd8SMPLhe5IEXZAXEZsuXKv
+   z1cCNDc47OXvlUJq1+1Xn2dgAK8Jt6C+BccHHwNL6ohye+C1QyRs/qhWE
+   9mFsHQAU/JQ7rcANSf+9vrSLlUc5hQVyNWjsY/tD35oTfdgZ3pIP1Q4CV
+   Syg36cG5hMXe8mPIClsoax4IzqSNiIE+79NctEcd5H3o/1oDxSp7NMea+
+   A==;
+X-CSE-ConnectionGUID: 9cGpP0jrS+KNldGkpP5KhQ==
+X-CSE-MsgGUID: 2IoEb77HRE6Ryy6YmEVCsA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="52073731"
+X-IronPort-AV: E=Sophos;i="6.15,270,1739865600"; 
+   d="scan'208";a="52073731"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 16:11:40 -0700
+X-CSE-ConnectionGUID: n53kvqjfRue9GsXfCUf8fg==
+X-CSE-MsgGUID: A89NqrmXRgahO1BXhRqWfw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,270,1739865600"; 
+   d="scan'208";a="136042291"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 16:11:38 -0700
+Date: Wed, 7 May 2025 16:16:45 -0700
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>, devicetree@vger.kernel.org,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Chris Oo <cho@microsoft.com>, linux-hyperv@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+	Ricardo Neri <ricardo.neri@intel.com>
+Subject: Re: [PATCH v3 04/13] dt-bindings: x86: Add CPU bindings for x86
+Message-ID: <20250507231644.GB28763@ranerica-svr.sc.intel.com>
+References: <20250503191515.24041-1-ricardo.neri-calderon@linux.intel.com>
+ <20250503191515.24041-5-ricardo.neri-calderon@linux.intel.com>
+ <20250504-happy-spoonbill-of-radiance-3b9fec@kuoka>
+ <20250506045235.GB25533@ranerica-svr.sc.intel.com>
+ <20250506-alluring-beaver-of-modernism-65ff8a@kuoka>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -89,33 +88,108 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250507071315.394857-24-herve.codina@bootlin.com>
+In-Reply-To: <20250506-alluring-beaver-of-modernism-65ff8a@kuoka>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
-On Wed, May 07, 2025 at 09:13:05AM +0200, Herve Codina wrote:
-> Only one device-tree overlay (lan966x_evb_lan9662_nic.dtbo) is handled
-> and this overlay is directly referenced in lan966x_pci_load_overlay().
+On Tue, May 06, 2025 at 09:25:59AM +0200, Krzysztof Kozlowski wrote:
+> On Mon, May 05, 2025 at 09:52:35PM GMT, Ricardo Neri wrote:
+> > On Sun, May 04, 2025 at 06:45:59PM +0200, Krzysztof Kozlowski wrote:
+> > > On Sat, May 03, 2025 at 12:15:06PM GMT, Ricardo Neri wrote:
+> > > > Add bindings for CPUs in x86 architecture. Start by defining the `reg` and
+> > > 
+> > > What for?
+> > 
+> > Thank you for your quick feedback, Krzysztof!
+> > 
+> > Do you mean for what reason I want to start bindings for x86 CPUs? Or only
 > 
-> This avoid to use the code for an other board.
+> Yes. For which devices, what purpose.
+
+Sure, I could expand on this.
+
 > 
-> In order to be more generic and to allow support for other boards (PCI
-> Vendor/Device IDs), introduce the lan966x_pci_info structure and attach
-> it to PCI Vendor/Device IDs handled by the driver.
+> > the `reg` property? If the former, it is to add an enable-method property to
+> > x86 CPUs. If the latter, is to show the relationship between APIC and `reg`.
+> > 
+> > > 
+> > > > `enable-method` properties and their relationship to x86 APIC ID and the
+> > > > available mechanisms to boot secondary CPUs.
+> > > > 
+> > > > Start defining bindings for Intel processors. Bindings for other vendors
+> > > > can be added later as needed.
+> > > > 
+> > > > Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+> > > > ---
+> > > 
+> > > Not really tested so only limited review follows.
+> > 
+> > Sorry, I ran make dt_binding_check but only on this schema. I missed the
+> > reported error.
+> > 
+> > > 
+> > > >  .../devicetree/bindings/x86/cpus.yaml         | 80 +++++++++++++++++++
+> > > >  1 file changed, 80 insertions(+)
+> > > >  create mode 100644 Documentation/devicetree/bindings/x86/cpus.yaml
+> > > > 
+> > > > diff --git a/Documentation/devicetree/bindings/x86/cpus.yaml b/Documentation/devicetree/bindings/x86/cpus.yaml
+> > > > new file mode 100644
+> > > > index 000000000000..108b3ad64aea
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/x86/cpus.yaml
+> > > > @@ -0,0 +1,80 @@
+> > > > +# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/x86/cpus.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > +
+> > > > +title: x86 CPUs
+> > > > +
+> > > > +maintainers:
+> > > > +  - Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+> > > > +
+> > > > +description: |
+> > > > +  Description of x86 CPUs in a system through the "cpus" node.
+> > > > +
+> > > > +  Detailed information about the CPU architecture can be found in the Intel
+> > > > +  Software Developer's Manual:
+> > > > +    https://intel.com/sdm
+> > > > +
+> > > > +properties:
+> > > > +  compatible:
+> > > > +    enum:
+> > > > +      - intel,x86
+> > > 
+> > > That's architecture, not a CPU. CPUs are like 80286, 80386, so that's
+> > > not even specific instruction set. I don't get what you need it for.
+> > 
+> > Am I to understand the the `compatible` property is not needed if the
+> > bindings apply to any x86 CPU?
 > 
-> This structure contains information related to the PCI board such as
-> information related to the dtbo describing the board we have to load.
+> Every device needs compatible. Its meaning is explained:
+> https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#compatible
 > 
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> If you add here a device representing CPU, then look at existing
+> bindings for CPUs how they do it.
+> 
+> It again feels like you add DT for platform which is not a real thing.
 
-How big is the dtbo ?
+That is correct. I struggle to enumerate specific CPUs because the `intel,
+wakeup-mailbox` enable method is implemented in the platform firmware and
+is not tied to a given processor model as required by the rules of the
+`compatible` property.
 
-This is going in the right direction. I'm just wondering if each dtbo
-should be wrapped in its own very slim PCI driver, which simply
-registers its lan966x_pci_info structure to a core driver. Only the
-needed dtbo will then be loaded into memory as a module, not them all.
+> If you use DT, you do not get different rules, therefore read all
+> standard guides and tutorials (there were many, quite comprehensive).
 
-Pretty much all the pieces are here, so it can be done later.
+I went through various materials. Perhaps I needed to understand the rules
+better.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+I realize now the DeviceTree is about describing hardware not firmware and
+DT bindings are a suitable vehicle for this.
 
-    Andrew
+Thanks for the time you spent reviewing this patchset!
+
+BR,
+Ricardo
 
