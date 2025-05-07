@@ -1,174 +1,164 @@
-Return-Path: <linux-acpi+bounces-13599-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13600-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C6E4AAE62D
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 18:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F77EAAE691
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 18:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4A5A171A25
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 16:12:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE0B2170207
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 16:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A1E28B7EF;
-	Wed,  7 May 2025 16:12:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lOmvey8V"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF22128B7FD;
+	Wed,  7 May 2025 16:24:46 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F9E215197;
-	Wed,  7 May 2025 16:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B9B28980B;
+	Wed,  7 May 2025 16:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746634372; cv=none; b=TwdTe6YzX4L+IW0vLQqUPkjd4IH3964bRMxKqQOdRB7vyCIFi3vZg3aU0GQxQy/RzFhkGEqOpLr2D79+AGKcvQolo3BR2mOTFo3fs9AUOn0NFi+PSuFokF9CJtNTri2/wbqEwCDh+d5EQMl/HIB1oBeTuUwqX3i9FV4akpJHXnA=
+	t=1746635086; cv=none; b=reJqCCsE6Q9DidFv3i59Ms/1j8EC3zuWpKxvvD64etc5fBppFFri7DX1FLrTL4y4InEUdMGDR72lnl45WMgxZJoC9w/zcHEZlEAuOD5ySZvu32xh4u81g+F4MK80lqf71X5NPrzb/zLu26bc7RIX5NgWbI+0FZT6K6wCNIiGxB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746634372; c=relaxed/simple;
-	bh=NgV9gb3MNcWqBiGv30nVf8yM/e0HQuZamzPRZKopGGI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pqlcRTCbZdZJWo7xReDSpnIxsCmJwEUGn4lJjepBW33bcWw+j8UQgV+l8tdTr+gE5WNnrMqneshSbjstIfiCnpdUTGfL5MEF5w6Z6M9r6c8wmP6YszP8Y8dPeY80jA7CDtbSPuDN2ji02U8TJSh9OSOR4GRkznv5JTcRyKhSCGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lOmvey8V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C214BC4CEE9;
-	Wed,  7 May 2025 16:12:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746634371;
-	bh=NgV9gb3MNcWqBiGv30nVf8yM/e0HQuZamzPRZKopGGI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lOmvey8VjmjQoujhNZkrb14agia0kvhIP9ruSrUvMM5ASWt/Zn8KlrQAwtOqHjeal
-	 quV7IRSqlaV9dyn+bCcDYjbGxE9yscC2A/PlQC0QiwEuEHF2rX1h2v6PTw4chrjhfq
-	 fECSiGDc7hmDbjrrCfsnaps0CtXVxViZKKQs6BsyD8+pMRcAZ1oKA89QHWw2QK/PVq
-	 tIe/H1YnEcVAtuIksL9m8xYvXzTN/IqGKbkK9sDXt9eDgu7370Z0DPpKoVUVcRVHoi
-	 4/S6fXP5P2PkDBYehvT8qsSwLERwBYybVcl1sFWd7mG6D3BuwEYA9WPPYjZsTigxTP
-	 HOU0Vl5JDpf+A==
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-601a8b6c133so608898eaf.1;
-        Wed, 07 May 2025 09:12:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVTgU2Y1iahtQF7JkvNVNBYBKhBX6kLYKZ5/YaRIuDyJPHodLUod1QXo2K00gRH/IF1HogkJ8FNjrN2@vger.kernel.org, AJvYcCVVQMSWlUJz01Jc7GjYjtx1MwntFp4Tx39iTADb5+R+H1Vx3lhVEqUc6+P2boM8fY7NrEm32weHmt2c8uJx@vger.kernel.org, AJvYcCVxtJOdoYYVUEtuAyeugql8NGGa/6ZVo95Pt3cUJej5w7FcJzV8N6Jyi++oT6Zm5341Zi/Szj14@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLg2+cLXbjsOBkF6Qkgp2JIEbhd7P0dXr30gOGM8xnyErIJmjk
-	fMHaMIcrJR3b5BUNrN5QbJnM0fyr6D4jFZU6OZs1XrAJV6KRP8sxPNQsm/0cdjNzXAVEmv15yun
-	kPDJl/s8ykPaHD+NLoO4C847s2SU=
-X-Google-Smtp-Source: AGHT+IFm2G7vMhkwbbCVl7L4A5NTpNVPjzGsw1lgYvvaLpUxiMXb372fR+bbyzJEB78MqSgLhSYc5SbazdWLqRY5pyY=
-X-Received: by 2002:a4a:d18e:0:b0:604:ac85:abe2 with SMTP id
- 006d021491bc7-6083346b675mr58870eaf.3.1746634371080; Wed, 07 May 2025
- 09:12:51 -0700 (PDT)
+	s=arc-20240116; t=1746635086; c=relaxed/simple;
+	bh=oBYNTIRvr0qn3RLc15igFSD5nLZ7U8eh2ms4fvyrDJQ=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UksrhAmFr8/NbIWlf52VZX1lKiHfD3suEOACc6ZZNhSyJcnigRhfqlqukEEIr96pFplDd97KAug1c7fpfrF3fg6ND8VEYPAAu7wDC9i1qgxO49LCTgHoJvDv3k/a3TBTQOMSYAa0xZX0qnmL0QBPNdHTmGi7YsBKZe8PU+ujwAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Zt0pv0HkCz6M4d4;
+	Thu,  8 May 2025 00:20:07 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 50B6C140518;
+	Thu,  8 May 2025 00:24:38 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 7 May
+ 2025 18:24:37 +0200
+Date: Wed, 7 May 2025 17:24:36 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+CC: <dan.j.williams@intel.com>, <rppt@kernel.org>, <rafael@kernel.org>,
+	<lenb@kernel.org>, <akpm@linux-foundation.org>, <alison.schofield@intel.com>,
+	<rrichter@amd.com>, <bfaccini@nvidia.com>, <haibo1.xu@intel.com>,
+	<david@redhat.com>, <chenhuacai@kernel.org>, <linux-cxl@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <chenbaozi@phytium.com.cn>, <loongarch@lists.linux.dev>
+Subject: Re: [PATCH v2] mm: numa_memblks: introduce numa_add_reserved_memblk
+Message-ID: <20250507172436.00003888@huawei.com>
+In-Reply-To: <20250506062245.3816791-1-wangyuquan1236@phytium.com.cn>
+References: <20250506062245.3816791-1-wangyuquan1236@phytium.com.cn>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250506-draco-taped-15f475cd@mheyne-amazon> <214c2a2d-e0ea-4ec6-9925-05e39319e813@arm.com>
- <CAJZ5v0jvWXDQQ++4wmWJ+i=jds+MZ68bRB9+26WM4tAPHFxALw@mail.gmail.com> <1911d3b6-f328-40a6-aa03-cde3d79554de@arm.com>
-In-Reply-To: <1911d3b6-f328-40a6-aa03-cde3d79554de@arm.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 7 May 2025 18:12:40 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0ii9HLfqfgcp=1qRRX6M1yThf7ZPNkSLVc5GGFhv=N-Lg@mail.gmail.com>
-X-Gm-Features: ATxdqUFz_G-xumrMaH9DthfVtj9CaPWWuEm7JWekOadO-oye5lvECoLE0lOwrj0
-Message-ID: <CAJZ5v0ii9HLfqfgcp=1qRRX6M1yThf7ZPNkSLVc5GGFhv=N-Lg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI/PPTT: fix off-by-one error
-To: Jeremy Linton <jeremy.linton@arm.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Heyne, Maximilian" <mheyne@amazon.de>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, Len Brown <lenb@kernel.org>, 
-	Sudeep Holla <sudeep.holla@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Wed, May 7, 2025 at 5:51=E2=80=AFPM Jeremy Linton <jeremy.linton@arm.com=
-> wrote:
->
-> On 5/7/25 10:42 AM, Rafael J. Wysocki wrote:
-> > On Wed, May 7, 2025 at 5:25=E2=80=AFPM Jeremy Linton <jeremy.linton@arm=
-.com> wrote:
-> >>
-> >> Hi,
-> >>
-> >> On 5/6/25 8:13 AM, Heyne, Maximilian wrote:
-> >>> Commit 7ab4f0e37a0f ("ACPI PPTT: Fix coding mistakes in a couple of
-> >>> sizeof() calls") corrects the processer entry size but unmasked a lon=
-ger
-> >>> standing bug where the last entry in the structure can get skipped du=
-e
-> >>> to an off-by-one mistake if the last entry ends exactly at the end of
-> >>> the ACPI subtable.
-> >>>
-> >>> The error manifests for instance on EC2 Graviton Metal instances with
-> >>>
-> >>>     ACPI PPTT: PPTT table found, but unable to locate core 63 (63)
-> >>>     [...]
-> >>>     ACPI: SPE must be homogeneous
-> >>>
-> >>> Fixes: 2bd00bcd73e5 ("ACPI/PPTT: Add Processor Properties Topology Ta=
-ble parsing")
-> >>> Cc: stable@vger.kernel.org
-> >>> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
-> >>> ---
-> >>>    drivers/acpi/pptt.c | 4 ++--
-> >>>    1 file changed, 2 insertions(+), 2 deletions(-)
-> >>>
-> >>> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> >>> index f73ce6e13065d..4364da90902e5 100644
-> >>> --- a/drivers/acpi/pptt.c
-> >>> +++ b/drivers/acpi/pptt.c
-> >>> @@ -231,7 +231,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_=
-header *table_hdr,
-> >>>                             sizeof(struct acpi_table_pptt));
-> >>>        proc_sz =3D sizeof(struct acpi_pptt_processor);
-> >>
-> >> This isn't really right, it should be struct acpi_subtable_header, the=
-n
-> >> once the header is safe, pull the length from it.
-> >>
-> >> But then, really if we are trying to fix the original bug that the tab=
-le
-> >> could be shorter than the data in it suggests, the struct
-> >> acpi_pptt_processor length plus its resources needs to be checked once
-> >> the subtype is known to be a processor node.
-> >>
-> >> Otherwise the original sizeof * change isn't really fixing anything.
-> >
-> > Sorry, what sense did it make to do
-> >
-> > proc_sz =3D sizeof(struct acpi_pptt_processor *);
-> >
-> > here?  As much as proc_sz =3D 0 I suppose?
->
-> No, I agree, I think the original checks were simplified along the way
-> to that. It wasn't 'right' either.
->
-> The problem is that there are three subtypes of which processor is only
-> one, and that struct acpi_pptt_processor doesn't necessarily reflect the
-> actual size of the processor structure in the table because it has
-> optional private resources tagged onto the end.
+On Tue, 6 May 2025 14:22:45 +0800
+Yuquan Wang <wangyuquan1236@phytium.com.cn> wrote:
 
-Right.
+> acpi_parse_cfmws() currently adds empty CFMWS ranges to numa_meminfo
+> with the expectation that numa_cleanup_meminfo moves them to
+> numa_reserved_meminfo. There is no need for that indirection when it is
+> known in advance that these unpopulated ranges are meant for
+> numa_reserved_meminfo in support of future hotplug / CXL provisioning.
+> 
+> Introduce and use numa_add_reserved_memblk() to add the empty CFMWS
+> ranges directly.
+> 
+> Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+This is v2 take 2.  There were tags on the previous version (pre longarch
+change).
 
-> So if the bug being fixed is that the length check is validating that
-> the table length is less than the data in the table, that's still a
-> problem because its only validating the processor node without resources.
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Admittedly, it is not my code, but I understand this check as a
-termination condition for the loop: If there's not enough space in the
-table to hold a thing that I'm looking for, I may as well bail out.
+(Also Dan Williams).
 
-> AKA the return is still potentially returning a pointer to a structure
-> which may not be entirely contained in the table.
+Easiest option when this happens is spin a v3 with a change log to
+say the loongarch issue is resolved and you picked up tags.
 
-Right, but this check should be made anyway before comparing
-cpu_node->parent to node_entry, when it is known to be a CPU entry
-because otherwise why bother.
 
-Roughly something like this:
+> ---
+> 
+> Changes in v2 (Thanks to Dan & Alison):
+> - Use numa_add_reserved_memblk() to replace numa_add_memblk() in acpi_parse_cfmws()
+> - Add comments to describe the usage of numa_add_reserved_memblk()
+> - Updating the commit message to clarify the purpose of the patch
+> 
+> By the way, "LoongArch: Introduce the numa_memblks conversion" is in linux-next.
+> 
+>  drivers/acpi/numa/srat.c     |  2 +-
+>  include/linux/numa_memblks.h |  1 +
+>  mm/numa_memblks.c            | 22 ++++++++++++++++++++++
+>  3 files changed, 24 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+> index 0a725e46d017..751774f0b4e5 100644
+> --- a/drivers/acpi/numa/srat.c
+> +++ b/drivers/acpi/numa/srat.c
+> @@ -453,7 +453,7 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
+>  		return -EINVAL;
+>  	}
+>  
+> -	if (numa_add_memblk(node, start, end) < 0) {
+> +	if (numa_add_reserved_memblk(node, start, end) < 0) {
+>  		/* CXL driver must handle the NUMA_NO_NODE case */
+>  		pr_warn("ACPI NUMA: Failed to add memblk for CFMWS node %d [mem %#llx-%#llx]\n",
+>  			node, start, end);
+> diff --git a/include/linux/numa_memblks.h b/include/linux/numa_memblks.h
+> index dd85613cdd86..991076cba7c5 100644
+> --- a/include/linux/numa_memblks.h
+> +++ b/include/linux/numa_memblks.h
+> @@ -22,6 +22,7 @@ struct numa_meminfo {
+>  };
+>  
+>  int __init numa_add_memblk(int nodeid, u64 start, u64 end);
+> +int __init numa_add_reserved_memblk(int nid, u64 start, u64 end);
+>  void __init numa_remove_memblk_from(int idx, struct numa_meminfo *mi);
+>  
+>  int __init numa_cleanup_meminfo(struct numa_meminfo *mi);
+> diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+> index ff4054f4334d..541a99c4071a 100644
+> --- a/mm/numa_memblks.c
+> +++ b/mm/numa_memblks.c
+> @@ -200,6 +200,28 @@ int __init numa_add_memblk(int nid, u64 start, u64 end)
+>  	return numa_add_memblk_to(nid, start, end, &numa_meminfo);
+>  }
+>  
+> +/**
+> + * numa_add_reserved_memblk - Add one numa_memblk to numa_reserved_meminfo
+> + * @nid: NUMA node ID of the new memblk
+> + * @start: Start address of the new memblk
+> + * @end: End address of the new memblk
+> + *
+> + * Add a new memblk to the numa_reserved_meminfo.
+> + *
+> + * Usage Case: numa_cleanup_meminfo() reconciles all numa_memblk instances
+> + * against memblock_type information and moves any that intersect reserved
+> + * ranges to numa_reserved_meminfo. However, when that information is known
+> + * ahead of time, we use numa_add_reserved_memblk() to add the numa_memblk
+> + * to numa_reserved_meminfo directly.
+> + *
+> + * RETURNS:
+> + * 0 on success, -errno on failure.
+> + */
+> +int __init numa_add_reserved_memblk(int nid, u64 start, u64 end)
+> +{
+> +	return numa_add_memblk_to(nid, start, end, &numa_reserved_meminfo);
+> +}
+> +
+>  /**
+>   * numa_cleanup_meminfo - Cleanup a numa_meminfo
+>   * @mi: numa_meminfo to clean up
 
-proc_sz =3D sizeof(struct acpi_pptt_processor);
-
-while ((unsigned long)entry + entry->length <=3D table_end) {
-        if (entry->type =3D=3D ACPI_PPTT_TYPE_PROCESSOR &&
-            entry->length >=3D proc_sz &&
-            cpu_node->parent =3D=3D node_entry)
-                return 0;
-...
-}
 
