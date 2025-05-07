@@ -1,112 +1,94 @@
-Return-Path: <linux-acpi+bounces-13593-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13594-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82C22AAE4C8
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 17:29:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 306BEAAE4E9
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 17:35:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 977CF1C42C44
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 15:28:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 355B13AE327
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 15:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD72528BAAC;
-	Wed,  7 May 2025 15:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gFeVQA/Z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7053A1F2C3B;
+	Wed,  7 May 2025 15:35:22 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F1828BAA6
-	for <linux-acpi@vger.kernel.org>; Wed,  7 May 2025 15:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B356748D
+	for <linux-acpi@vger.kernel.org>; Wed,  7 May 2025 15:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746631568; cv=none; b=K8DNfOi6IZBWTz83vnSl3YFnwDIE22cv9eHjs09q7a5XnsJ0lWOpzuiy0ErLxFs2AppO7Ixl7RlHaj2J8HyLDQTX7mvLJXgmb3bwiJACXMimxXE5pD27M1rX2iYqNX1C6ROmSRS6cOPsygQMxBqF/ZU3VSCtCIoriUCfRw1eDv4=
+	t=1746632122; cv=none; b=i6ZSwTIQiytJ3O9lVZv2hhk1/UrkRl2ukWjHMnlTv4UZINX4JlSKCxhkeA7njs6OfHvPDZcUdNS0SWocJ2ddWsHBdN+lolLmrUu7lCj74y4dNNzhgSUqPTC2zenuC2ZxaZYLt98b7leUYfdesz2xbmUWyG2BYRc4FuBWOv5gccE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746631568; c=relaxed/simple;
-	bh=vRyKhU47b8HpR6WFd47LLGp3vmxif8gR0qLWyi7s+gg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e1i9M67QXDhMm4lXLytmT0TMahAaNa8/K+/XPHE8SKzwHbnnv5ajP+yowqcpNhLPvU0eAY+ZPhmfGCncL4F1fU/WCijNdV1NhxxCgHJjsXhCHHuhR+yE0SYtt6JQ/LH76QjFLW9UcYZ8EIf7QnM35RV/wEWyUf+Bp0IVOaVTuwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gFeVQA/Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A810C4CEE2
-	for <linux-acpi@vger.kernel.org>; Wed,  7 May 2025 15:26:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746631568;
-	bh=vRyKhU47b8HpR6WFd47LLGp3vmxif8gR0qLWyi7s+gg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=gFeVQA/Ztxbk7b4KnED8SmQY1p+gRttRva812COjsGNzDEPWWtj72PdfJw/RvQQoW
-	 idcy1z6PwrqNl7OBDgbGg3+0162rSUA6JP/uUtD4hDAvtJMW/Vl4qcpnaCsXO9hjAp
-	 o2vBuBtbW2thX/qmJGRplXOlOLJy65WEjGPnpy7oI2LlR/zoULYnRlYEiyysbOqSJp
-	 +k2AwwtQjYHsp9m+E3D8jsuTjrPXJ8I4J2q/bY5uQrnyJW0e+OPgcuv1S3gxqccs7V
-	 FNrQg0qfcOhDM95/LvTC/zvz5YAhK2ilWC8ZgK2BKW/lQOJg7CnOWnHYj5P9fmrvtL
-	 kWErnPb4y0ySg==
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-2d060c62b61so65376fac.0
-        for <linux-acpi@vger.kernel.org>; Wed, 07 May 2025 08:26:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXlkWjmOnjSdNhHRaE2v6dmuHN4yAfErmlZswuFsL5GNLNVRYJJ9a7wdewogXAhp/ly/KgIPVrzNR4W@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyo1c8ZRQ7d/dOcUdgFPcTl4C4Q+g+dUw6iAJxYE8DzHFd61mvX
-	3Izl6hfow7rG6C4OT6BhWv/iIx3u5KLwUUZxXAH0DSCbRXqGFf5h3Rkn0E6CGg7L4Zchdz3QByM
-	atJ0Xg9raxhhF1tLd6hGW3Rumuhw=
-X-Google-Smtp-Source: AGHT+IEcgoxgjHJX1Wb+IhDm2x3k+dD1aIlf95MRUUDyAb0rSSkxXzv0na/rJhZcOkd1Q0uKowcALjj3jfE9sqPkdrI=
-X-Received: by 2002:a05:6870:e993:b0:2c1:c821:c836 with SMTP id
- 586e51a60fabf-2db5bec5cf4mr1995261fac.22.1746631567621; Wed, 07 May 2025
- 08:26:07 -0700 (PDT)
+	s=arc-20240116; t=1746632122; c=relaxed/simple;
+	bh=ySxCuKnG+VU7PXW4i5MC3ZwUovzp1SBfv4mpjbzgKCQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lTt92yz7+cwPObqm7PjUJms/R68Lm90Uzt5wUxqU5DUY8OCzai7T4HYHzNkFYbAgdSnUK1YDGU/OQAlZdPFSLGu+7A+gNKlCdTcEGYAXcyVNVPCmz+A7Pza1Tj2l2Jxk/bP+g1D9HtK08KVabx3lEtVK8Z4ISVISk/MV1Iw4S2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6FCA7339;
+	Wed,  7 May 2025 08:35:07 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 63F333F58B;
+	Wed,  7 May 2025 08:35:15 -0700 (PDT)
+Date: Wed, 7 May 2025 16:35:12 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Yicong Yang <yangyicong@huawei.com>, <lenb@kernel.org>,
+	<linux-acpi@vger.kernel.org>, <jmeurin@google.com>,
+	<jeremy.linton@arm.com>, <zhanjie9@hisilicon.com>,
+	<prime.zeng@hisilicon.com>, <yangyicong@hisilicon.com>,
+	<linuxarm@huawei.com>, <alireza.sanaee@huawei.com>
+Subject: Re: [PATCH] ACPI: PPTT: Fix table length check when parsing
+ processor nodes
+Message-ID: <20250507-melodic-helpful-pudu-7ad0f2@sudeepholla>
+References: <20250507035124.28071-1-yangyicong@huawei.com>
+ <20250507-devout-mysterious-jackal-e50e00@sudeepholla>
+ <CAJZ5v0iWJQnwamT0mP=A_wtAbRkguhxcvbMnm+b2chAET7=sGA@mail.gmail.com>
+ <20250507-venomous-feathered-skink-77ea16@sudeepholla>
+ <CAJZ5v0hyxCE3NWcCgKkut2_pJGO-Pyt27GdhMK0ZUZ-MJ6dudQ@mail.gmail.com>
+ <20250507-obedient-knowing-galago-245e7c@sudeepholla>
+ <20250507153550.0000340f@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250507152045.12266-1-goralbaris@gmail.com>
-In-Reply-To: <20250507152045.12266-1-goralbaris@gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 7 May 2025 17:25:55 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0g3M3-xHU+Re-YjJvusA5-gdpmmt7MY9-u8Hr9YEGJRQw@mail.gmail.com>
-X-Gm-Features: ATxdqUHImFlKAbVKzufj1nmpa1z_fmCg4IJMDNql2B50aexy0n_tlu6jFNXrYrc
-Message-ID: <CAJZ5v0g3M3-xHU+Re-YjJvusA5-gdpmmt7MY9-u8Hr9YEGJRQw@mail.gmail.com>
-Subject: Re: [PATCH] acpi: convert strncpy into strscpy
-To: goralbaris <goralbaris@gmail.com>
-Cc: robert.moore@intel.com, rafael.j.wysocki@intel.com, lenb@kernel.org, 
-	acpica-devel@lists.linux.dev, linux-acpi@vger.kernel.org, 
-	skhan@linuxfoundation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250507153550.0000340f@huawei.com>
 
-On Wed, May 7, 2025 at 5:20=E2=80=AFPM goralbaris <goralbaris@gmail.com> wr=
-ote:
->
-> The strncpy() function is actively dangerous to use since it may not
-> NULL-terminate the destination string, resulting in potential memory.
+On Wed, May 07, 2025 at 03:35:50PM +0100, Jonathan Cameron wrote:
+> On Wed, 7 May 2025 12:55:00 +0100
+> Sudeep Holla <sudeep.holla@arm.com> wrote:
+> 
 
-Does it do that in the code modified by this patch?
+[...]
 
-This is ACPICA code anyway, so changes to it need to be submitted to
-the upstream ACPICA project on GitHub.  Only when merged into that
-code base, can they be forward-ported to Linux.
+> > 
+> > Indeed and also we should have private resources like L1 cache described
+> > after the initial 20 bytes of the node. So I am bit worried if this will
+> > just hide other problems while it may solve this problem by looks of it.
+> > This example doesn't look like a proper PPTT matching real systems.
+> > 
+> 
+> Assuming I'm understanding the bug correctly...
+> 
+> SMT systems will hit this. There will typically be no private resources
+> for a thread as the L1I/D shared by multiple threads (which are processor
+> nodes IIRC).  Note we are trying to improve the cache description in QEMU
+> at the moment as it would definitely be better to present caches in PPTT,
+> but that isn't the main issue here.
+> 
 
-> Link: https://github.com/KSPP/linux/issues/90
->
-> Signed-off-by: goralbaris <goralbaris@gmail.com>
-> ---
->  drivers/acpi/acpica/tbfind.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/acpica/tbfind.c b/drivers/acpi/acpica/tbfind.c
-> index 1c1b2e284bd9..5536d1755188 100644
-> --- a/drivers/acpi/acpica/tbfind.c
-> +++ b/drivers/acpi/acpica/tbfind.c
-> @@ -57,8 +57,8 @@ acpi_tb_find_table(char *signature,
->
->         memset(&header, 0, sizeof(struct acpi_table_header));
->         ACPI_COPY_NAMESEG(header.signature, signature);
-> -       strncpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
-> -       strncpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE_ID_SIZE=
-);
-> +       strscpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
-> +       strscpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE_ID_SIZE=
-);
->
->         /* Search for the table */
->
-> --
+Indeed, I just replied in the other thread that I clearly missed SMT.
+
+-- 
+Regards,
+Sudeep
 
