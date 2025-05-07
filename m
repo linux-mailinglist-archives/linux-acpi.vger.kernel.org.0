@@ -1,143 +1,136 @@
-Return-Path: <linux-acpi+bounces-13557-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13556-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A752AADD52
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 13:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EF2AADD4D
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 13:28:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F6251BA3956
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 11:28:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC7461BA0F40
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 May 2025 11:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F2621B9F1;
-	Wed,  7 May 2025 11:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F8021A445;
+	Wed,  7 May 2025 11:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G60fTpwd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H9g7Uo3K"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD6B189B8C;
-	Wed,  7 May 2025 11:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E52189B8C;
+	Wed,  7 May 2025 11:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746617294; cv=none; b=kJxwSEt/H7/ktK4hAyXawFVQBhAQh6tP3XaIf5Wr6Cwc+zjkZjANT+gmOLmyGEqBcAJj/t7oIwoZtOuPPGwCR6u8rIjcLXHZK66Bx0+tZKtzpGjQ7HuLy1pr+bTUoQozcl8AOgQZjrdPyNFfniQEWxFeUKttIut0wYoQXw1CNHI=
+	t=1746617287; cv=none; b=Kj7a+OQe8IHutWnqTN6NnxZxU37YhrmfKUNy4LB5qpBiCyyOvhbBYnZ43pIiZ0rbrNuv12J/7KYNubqGXSCeMQjzA761LfZ6DSyzbWiKbI6XMQIbDhbGFRRWsNFIw5i6NLrC7Muzxi5Yj4bovBxlE8umz1FplcZgg0xXHEbCGYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746617294; c=relaxed/simple;
-	bh=HfmCdpR1jMcJa0xZiMMQoKjNNijBKB7LRDECNdKSMM8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Mkx+sWj6klLVeUqQM7vRvkot/Q9c3QUzAb5WQTT7vBTx82fuoU1mhcFiTWIyezyChcQN29ur5/5K9be84eddLvnDqs34pQHxA2K3DDng14O+MzuxNzHEfTqaocARG6lO4HtJESBOD20qtz4Avxil4DNsoIUqu8hZ/J+nOTRvPX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G60fTpwd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE7F8C4AF09;
-	Wed,  7 May 2025 11:28:13 +0000 (UTC)
+	s=arc-20240116; t=1746617287; c=relaxed/simple;
+	bh=+myiwgE5IaBaXJzmpEL8CqSZA8uzkotePvS5m/azOWI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AehfhQnq9nCydWCalbTeJqsmBRIe3XsRafo2MwCcUdLo+tvQLWt8rmgVIAhPhBE9EV+DrHYownjKwZ1how4HI21ytunbqZLfzilC4AI0Eo8VNcX8GKWGzjmn4kVJNibjvfRMcsw/dCoJliPK2ViAaW8+f3C5XjFKJpEnT8oqLjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H9g7Uo3K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16050C4CEE7;
+	Wed,  7 May 2025 11:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746617294;
-	bh=HfmCdpR1jMcJa0xZiMMQoKjNNijBKB7LRDECNdKSMM8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=G60fTpwdxB4DrhwDlC6pQ9C6vyxxy0bnAjd38vIdvqFmDsGLYvBvOrCFN7tJ/h5IV
-	 n1w4T3la8UoZ1LHDU/Ve311EBPcLa5ZswcMyQeMzuul8l9zp/chfMwt9Ckmv0Ry5aL
-	 Ah5mOj51/xyLWcsTlAlKO8hj4mG3KguTBrpI5A546P+2uxFaj3XrcPsQHB7T1f3fcH
-	 X2t8yJB+jwq8qVXA1n5VqysqIWuhVTJ5SG15ASMSNVH6ZiyRdCsGfwKKVsHbOEKzpi
-	 39tdrqwikq0wmA8ZVLhPdnlwZNP0Oef9JS+wOv5NUoKzZqulc5YEwl6ZhPigdhqIrk
-	 qAj8ZVW64WvvA==
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-60638c07cabso3569017eaf.3;
-        Wed, 07 May 2025 04:28:13 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVkwm5mxVRl/JiRxo0YxprlygsP57TLXSIr7V+aixVhXww2T41456Oym61S3u10bG1Tzm1xU/60NorP@vger.kernel.org, AJvYcCXWxhCu/c9hnI0O5uCUhnuSS7hEsMpvfgpoA+Cr4nn5d9XstaFTK582Jc489F1bB1NE9ebCuCUDfHCEdHni@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8loKMNBwUu5vcBApUySiEXIu9t1gSe1T5d57MHbT+ZowS43/g
-	K6mMi9YHUko02tO4iT33PuTK1fZK0UKNf+0sN2+G/j/0CYFIz4CHpfoiXx0xh6Ng0KCYCkIyL97
-	Dx1B88ulOKdQ9GU+APEUfnDmZf14=
-X-Google-Smtp-Source: AGHT+IH9dpOt8ykPZ4X61hGqLtB1axa+IgEZY/VpS1VjPcux8be01WF+JBufbkOlC0/Df9wd+bywXb7umglUaO6pi+Y=
-X-Received: by 2002:a05:6870:e981:b0:2bc:6675:2043 with SMTP id
- 586e51a60fabf-2db5be3c562mr1660253fac.14.1746617293252; Wed, 07 May 2025
- 04:28:13 -0700 (PDT)
+	s=k20201202; t=1746617286;
+	bh=+myiwgE5IaBaXJzmpEL8CqSZA8uzkotePvS5m/azOWI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=H9g7Uo3KF3gdhcH2ZEMV9V3wNqXA8tWVr4h+XSChpAk8ADpc3AiALZ4luZs+qiP11
+	 Z/MMgQA+W8firplqY6wsfvaRlyKDnu2GwFBPbbSs260wPnfiIZNYS/X+7RgVASh77m
+	 RpC/hLSnA/nsP75LVgIyB2iQqMj3uUQrguNMZM870ct6AHpi0KrvjkwwfISkMW7V3a
+	 YOPAoo049AzlkO+K5zbADyxXnj6XpUO50IDuoOngkJTqfSy9VuxxdFuvsHaky5egwP
+	 KzvfbiAMDQAUjIzdffkOIksa2UyWdR9eJyQ0Y56Uy3z2fvqMFG3OeJNxR8UwUZLFBh
+	 Co6k62Ve2SILg==
+Date: Wed, 7 May 2025 20:28:03 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 01/26] Revert "treewide: Fix probing of devices in DT
+ overlays"
+Message-ID: <aBtDw-qXUCH9U-7l@finisterre.sirena.org.uk>
+References: <20250507071315.394857-1-herve.codina@bootlin.com>
+ <20250507071315.394857-2-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250506213814.2365788-1-zaidal@os.amperecomputing.com> <20250506213814.2365788-2-zaidal@os.amperecomputing.com>
-In-Reply-To: <20250506213814.2365788-2-zaidal@os.amperecomputing.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 7 May 2025 13:28:01 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gjbhyN4Nw-pFG6jYzZhbTaxi7JEB5KsowQus-2OoxsRQ@mail.gmail.com>
-X-Gm-Features: ATxdqUHI_n3dC0DHMjHUzLZN9seLPsHoJsaWrZRzQbGEaqPxpgqx3p4ZcR_5dgM
-Message-ID: <CAJZ5v0gjbhyN4Nw-pFG6jYzZhbTaxi7JEB5KsowQus-2OoxsRQ@mail.gmail.com>
-Subject: Re: [PATCH v7 1/9] ACPICA: Update values to hex to follow ACPI specs
-To: Zaid Alali <zaidal@os.amperecomputing.com>
-Cc: rafael@kernel.org, lenb@kernel.org, james.morse@arm.com, 
-	tony.luck@intel.com, bp@alien8.de, robert.moore@intel.com, 
-	Jonathan.Cameron@huawei.com, ira.weiny@intel.com, Benjamin.Cheatham@amd.com, 
-	dan.j.williams@intel.com, arnd@arndb.de, Avadhut.Naik@amd.com, 
-	u.kleine-koenig@pengutronix.de, john.allen@amd.com, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	acpica-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="oe+RepqPNVL4+bmX"
+Content-Disposition: inline
+In-Reply-To: <20250507071315.394857-2-herve.codina@bootlin.com>
+X-Cookie: Well begun is half done.
+
+
+--oe+RepqPNVL4+bmX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 6, 2025 at 11:38=E2=80=AFPM Zaid Alali
-<zaidal@os.amperecomputing.com> wrote:
->
-> ACPI specs[1] define Error Injection Actions in hex values.
-> This commit intends to update values from decimal to hex to be
-> consistent with ACPI specs. This commit and the following one are
-> not to be merged and will come form ACPICA project see pull request[2].
->
-> Link: https://uefi.org/specs/ACPI/6.5/18_Platform_Error_Interfaces.html [=
-1]
-> Link: https://github.com/acpica/acpica/pull/977 [2]
->
-> Signed-off-by: Zaid Alali <zaidal@os.amperecomputing.com>
+On Wed, May 07, 2025 at 09:12:43AM +0200, Herve Codina wrote:
+> From: Saravana Kannan <saravanak@google.com>
+>=20
+> This reverts commit 1a50d9403fb90cbe4dea0ec9fd0351d2ecbd8924.
 
-An equivalent patch is already there in linux-next:
+> While the commit fixed fw_devlink overlay handling for one case, it
+> broke it for another case. So revert it and redo the fix in a separate
+> patch.
 
-https://web.git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/com=
-mit/?h=3Dlinux-next&id=3D5d2f7e76b70121fe06fd12315a6ea439e3bf0414
+Acked-by: Mark Brown <broonie@kernel.org>
 
-> ---
->  include/acpi/actbl1.h | 24 ++++++++++++------------
->  1 file changed, 12 insertions(+), 12 deletions(-)
->
-> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-> index 387fc821703a..c701c434976c 100644
-> --- a/include/acpi/actbl1.h
-> +++ b/include/acpi/actbl1.h
-> @@ -1024,18 +1024,18 @@ struct acpi_einj_entry {
->  /* Values for Action field above */
->
->  enum acpi_einj_actions {
-> -       ACPI_EINJ_BEGIN_OPERATION =3D 0,
-> -       ACPI_EINJ_GET_TRIGGER_TABLE =3D 1,
-> -       ACPI_EINJ_SET_ERROR_TYPE =3D 2,
-> -       ACPI_EINJ_GET_ERROR_TYPE =3D 3,
-> -       ACPI_EINJ_END_OPERATION =3D 4,
-> -       ACPI_EINJ_EXECUTE_OPERATION =3D 5,
-> -       ACPI_EINJ_CHECK_BUSY_STATUS =3D 6,
-> -       ACPI_EINJ_GET_COMMAND_STATUS =3D 7,
-> -       ACPI_EINJ_SET_ERROR_TYPE_WITH_ADDRESS =3D 8,
-> -       ACPI_EINJ_GET_EXECUTE_TIMINGS =3D 9,
-> -       ACPI_EINJ_ACTION_RESERVED =3D 10, /* 10 and greater are reserved =
-*/
-> -       ACPI_EINJ_TRIGGER_ERROR =3D 0xFF  /* Except for this value */
-> +       ACPI_EINJ_BEGIN_OPERATION =3D             0x0,
-> +       ACPI_EINJ_GET_TRIGGER_TABLE =3D           0x1,
-> +       ACPI_EINJ_SET_ERROR_TYPE =3D              0x2,
-> +       ACPI_EINJ_GET_ERROR_TYPE =3D              0x3,
-> +       ACPI_EINJ_END_OPERATION =3D               0x4,
-> +       ACPI_EINJ_EXECUTE_OPERATION =3D           0x5,
-> +       ACPI_EINJ_CHECK_BUSY_STATUS =3D           0x6,
-> +       ACPI_EINJ_GET_COMMAND_STATUS =3D          0x7,
-> +       ACPI_EINJ_SET_ERROR_TYPE_WITH_ADDRESS =3D 0x8,
-> +       ACPI_EINJ_GET_EXECUTE_TIMINGS =3D         0x9,
-> +       ACPI_EINJ_ACTION_RESERVED =3D             0xA,    /* 0xA and grea=
-ter are reserved */
-> +       ACPI_EINJ_TRIGGER_ERROR =3D               0xFF    /* Except for t=
-his value */
->  };
->
->  /* Values for Instruction field above */
-> --
-> 2.43.0
->
+Please include human readable descriptions of things like commits and
+issues being discussed in e-mail in your mails, this makes them much
+easier for humans to read especially when they have no internet access.
+I do frequently catch up on my mail on flights or while otherwise
+travelling so this is even more pressing for me than just being about
+making things a bit easier to read.
+
+--oe+RepqPNVL4+bmX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmgbQ8MACgkQJNaLcl1U
+h9A3/wf8D6c+36MLT2mhvh2zxesAYWfdL1e5vpcKQk0H/bkk+8KQLEBRl9w9syn2
+MFtk87xXOIdfli0pvEnP2cUrCHKDrD2ehLcNFcur8Vq6IOjjX2Gs3Iboe5CfqnoS
+tPRSxFS31DY3g7DhUGmQ7fUUlPYGwpYIK1QgXrfiR+uhEbooIq6yN1/hcKL2rFS4
+Y21v0te/hUxHTpeTMlcOkXqqu/1UExRszOly4m0YB9mZoswASG024vcrx4paZFjF
+sJ6hXYEyI/PDpMSVthVLe0jK7jyBsiVGSSVDRcimNQj6nAokmye1VeKejWhV3Flv
+7epg7YG5YuZjEXoQ3CaQaDdESm7PnA==
+=5SSZ
+-----END PGP SIGNATURE-----
+
+--oe+RepqPNVL4+bmX--
 
