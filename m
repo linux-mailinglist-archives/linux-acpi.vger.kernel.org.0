@@ -1,116 +1,103 @@
-Return-Path: <linux-acpi+bounces-13639-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13640-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35914AAF8FD
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 13:47:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E13AAFACA
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 15:02:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABE0816FAD1
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 11:47:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13E9E1B61C41
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 13:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C0A222595;
-	Thu,  8 May 2025 11:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50887221D90;
+	Thu,  8 May 2025 13:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fM5RJCob"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6099F35957;
-	Thu,  8 May 2025 11:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2620A17BA5;
+	Thu,  8 May 2025 13:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746704868; cv=none; b=fDvpRdrvyn0V/u8bgEtB7cUOzzhMSbFdL4N/vdAPBL9s93j/jCTZ+lg7TWXxDm9y7BPSWOuagrFjA5uUHixKbJ9EwY7JHyCCNqQ7uGDOaMgzo73TItM/LciFd/EJGVC0+a648PoTxeRm/A5Rn5KIejqilra9E86CXGXSMwF3cqs=
+	t=1746709365; cv=none; b=XnBWVFpnSEt+8Ii5rxriGwNui9CuyLGDIkVLBBQNTfOWbqmhDuIL2bSPaAHdmYAW3LJJFUmLkvgA7j9m5T2CPBATkUOxrWhnfHyIVpEFs+tNUDBGSXGqwJbDz9t+TXev6IkfKp/Vys2Z6x9nHtFdlq1XCrANo6OnP3zfXrTKLoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746704868; c=relaxed/simple;
-	bh=wY2rXlF9lNnn5R10zAhDvzddR0b8o48odmpoov1tV7A=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CBQRkGaEdl95YU9iIk04EqWnFgIgugW+DfHo4KQaZ3bo2/xSOsV6r2ryyrndRymbT2wCsHcakMz2DeG8AMwjZdZKrj4G744GFc4MvuNSKxGA+aXAGKKiDZfwHmad0vggMDNDYkQ4w7a8t1b57w7L+CbwV+ob/dvYaQycWKH2zbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZtVg63KzCz6L5VR;
-	Thu,  8 May 2025 19:45:06 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 95D9C140121;
-	Thu,  8 May 2025 19:47:36 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 8 May
- 2025 13:47:34 +0200
-Date: Thu, 8 May 2025 12:47:33 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC: Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
-	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
-	<wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, "Derek
- Kiernan" <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>, Arnd
- Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, "Saravana Kannan"
-	<saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, "Mark Brown"
-	<broonie@kernel.org>, Len Brown <lenb@kernel.org>, Daniel Scally
-	<djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>, <linux-kernel@vger.kernel.org>,
-	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-clk@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-	<linux-spi@vger.kernel.org>, <linux-acpi@vger.kernel.org>, Allan Nielsen
-	<allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli
-	<luca.ceresoli@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	<linux-cxl@vger.kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang
-	<dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, Vishal
- Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan
- Williams <dan.j.williams@intel.com>, <linux-cxl@vger.kernel.org>
-Subject: Re: [PATCH v2 09/26] cxl/test: Use device_set_node()
-Message-ID: <20250508124733.00001208@huawei.com>
-In-Reply-To: <aBt38JR-YGD5nnC4@smile.fi.intel.com>
-References: <20250507071315.394857-1-herve.codina@bootlin.com>
-	<20250507071315.394857-10-herve.codina@bootlin.com>
-	<aBt38JR-YGD5nnC4@smile.fi.intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1746709365; c=relaxed/simple;
+	bh=3jYIMlTRS21sFwI2KZR6aQTeSVvwhaMYQmdsc+lOmvg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BlWt4YHFMVzs0qIDCMLRtlvfRjZ9y8s+tq6bzNpmvpFJ7kZrfzma6r0GbFWcy+5RrYQHokTDl+mvjIwcJCiKHCjR8qs4nbA4OKColadBIQOCX6wseUHOni64SsSCUZHvEe2SBvWameOp5Va9YuL2E7Mm59X4cbZ0H1DlTIU0org=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fM5RJCob; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62ACC4CEE7;
+	Thu,  8 May 2025 13:02:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746709363;
+	bh=3jYIMlTRS21sFwI2KZR6aQTeSVvwhaMYQmdsc+lOmvg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fM5RJCob3QZpPVDNWRh3u4IuG2knKHM3A8fO8bPRFDTlh3az/dDQD2aI3vOGaUdia
+	 Ip+iLBgIGRCjelyn8/K26PX0UM3lj/iFzroldvYZZMWion6/MXLbGloz7jHruC55an
+	 sQTU+U370CFcNKlFw9oKn1w8LnjFUcy2ooZdS7ZLz4sBVVwYE0hHswe6GFPc80Ho4m
+	 p5+VxmvnWWkARwOd4HlLNC1Ry9mw/fWtAnzfEblnttFWkrEmTnGeRZaXApCmwVsb39
+	 W9MNxPwNkA0PYdPpeBPMuhuMvrrQaCb27z5KYsqdmMNG0ILcXgr4BX9LxGipv6HzTa
+	 nf+nIlTNomZTg==
+From: Will Deacon <will@kernel.org>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	james.morse@arm.com,
+	tony.luck@intel.com,
+	bp@alien8.de,
+	Huang Yiwei <quic_hyiwei@quicinc.com>
+Cc: catalin.marinas@arm.com,
+	kernel-team@android.com,
+	Will Deacon <will@kernel.org>,
+	xueshuai@linux.alibaba.com,
+	quic_aiquny@quicinc.com,
+	quic_satyap@quicinc.com,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kernel@quicinc.com,
+	kernel@oss.qualcomm.com
+Subject: Re: [PATCH v2] firmware: SDEI: Allow sdei initialization without ACPI_APEI_GHES
+Date: Thu,  8 May 2025 14:02:35 +0100
+Message-Id: <174670772284.646111.7927928404698891686.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20250507045757.2658795-1-quic_hyiwei@quicinc.com>
+References: <20250507045757.2658795-1-quic_hyiwei@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Wed, 7 May 2025 18:10:40 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Wed, 07 May 2025 12:57:57 +0800, Huang Yiwei wrote:
+> SDEI usually initialize with the ACPI table, but on platforms where
+> ACPI is not used, the SDEI feature can still be used to handle
+> specific firmware calls or other customized purposes. Therefore, it
+> is not necessary for ARM_SDE_INTERFACE to depend on ACPI_APEI_GHES.
+> 
+> In commit dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES
+> in acpi_init()"), to make APEI ready earlier, sdei_init was moved
+> into acpi_ghes_init instead of being a standalone initcall, adding
+> ACPI_APEI_GHES dependency to ARM_SDE_INTERFACE. This restricts the
+> flexibility and usability of SDEI.
+> 
+> [...]
 
-> On Wed, May 07, 2025 at 09:12:51AM +0200, Herve Codina wrote:
-> > The code set directly dev->fwnode.
-> > 
-> > Use the dedicated helper to perform this operation.  
-> 
-> ...
-> 
-> > @@ -1046,7 +1046,7 @@ static void mock_companion(struct acpi_device *adev, struct device *dev)
-> >  {
-> >  	device_initialize(&adev->dev);
-> >  	fwnode_init(&adev->fwnode, NULL);
-> > -	dev->fwnode = &adev->fwnode;
-> > +	device_set_node(dev, &adev->fwnode);
-> >  	adev->fwnode.dev = dev;
-> >  }  
-> 
-> This code is questionable to begin with. Can the original author explain what
-> is the motivation behind this as the only callers of fwnode_init() are deep
-> core pieces _and_ this only module. Why?!
-> 
+Applied to arm64 (for-next/acpi), thanks!
 
-More likely to happen if CXL folk are +CC.  Added.
+[1/1] firmware: SDEI: Allow sdei initialization without ACPI_APEI_GHES
+      https://git.kernel.org/arm64/c/59529bbe642d
 
-Dan, maybe one for you?
+Cheers,
+-- 
+Will
+
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
 
