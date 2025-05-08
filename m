@@ -1,175 +1,171 @@
-Return-Path: <linux-acpi+bounces-13641-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13642-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC30AAFCF0
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 16:28:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F18AAFD88
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 16:44:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96A234C04CD
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 14:28:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFA257BEB96
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 14:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247B226E172;
-	Thu,  8 May 2025 14:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA91275116;
+	Thu,  8 May 2025 14:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i70ls6+T"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BBlbgbQr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9CC253953;
-	Thu,  8 May 2025 14:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4B626FA52;
+	Thu,  8 May 2025 14:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746714490; cv=none; b=XzAyN+Cr4eCGHttWhGKaBvp+ClNxaA1D8G6E2Uqx/ST8h06peb9fSpyPJigjIzBKIgrcgnJIpGSnym3eJTHlbO2fTssG2ty7FZxUxqNQmeUR+kR6eKrUpm9ZATHLYpQoO+Zj19+F5ePT7YraAtXX+W6o6ZBSCu9lPFQe+iKs9vE=
+	t=1746715333; cv=none; b=YsoLJih8m1QHzGwwQmO+4eR4qRRLQCn/fUU1EdAWMTaCDAWvRly0/+bs62hkV92y6nf8vBKpf41ktHsa1fUVQzmfBR6gkUxGVOkVQyJKuXNs8HcdjCs2/2imNA4AqW94EW+waMUrT9JZ9G5XEIj1blb9hPL5VI+0x6Pvad78cU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746714490; c=relaxed/simple;
-	bh=IY3VG/gRbQesJTL7PGEn0YX+FszGyoQR0i1Wr/j85Qc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hwqlBeWKvtu87mLhnI6qwi0k12d3D7XZGjy58n28yZF/IJTpHYKRe31oX+QtbNgWJNBuxE36EPJp86ZNm+0QghNW1SvPYVFUtrl4RfyCMyqKuquL3LpsFWYGD74NsAIu5bohO2BBCnAArjL9Kr0AJU+7HyXIalbWHqc6X7vxtsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i70ls6+T; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1746715333; c=relaxed/simple;
+	bh=8zV6u8tx07CqcHqmDmKrAtlHNIv/lQZc4E1pyw9imxY=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=Mg7iaQwZI2UZGKAFuJyZeOnXy8woPn2p9xnFPFQRI9MZ/64dpPjY+osVyTqQmnl4tvv0jsYGz9IftRMb3EjoVKrCSJza5hya7Y3eOCMctIwIfh/erMYuqZZhbEatJxls/T/Z1EU2P0DUaOkwin6c+C4qMtKntIwilh+4x1Ug0BI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BBlbgbQr; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746714489; x=1778250489;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IY3VG/gRbQesJTL7PGEn0YX+FszGyoQR0i1Wr/j85Qc=;
-  b=i70ls6+Tn7yvDvq2T3McTEscfVbJMnfaB0RWlVbqds+7kBwifScUPzHz
-   UAQtVCuavO6xzdDes4AEpRlvn9eXTZJt4VVUBPxgfyWvsn5oC0s5tZ/7W
-   w0uczTSgfd5FcWFu3c4izJK2klBiMBqSRDhUUoxGkTl2Jh43hvQ9Up97Y
-   Zza0OiYKtFubTEOSENoJAbJ6VpXhEmrRchZ881cz/9UtVEMmL+sSypkeH
-   zm/ud7v+ltHWoAqmxZMNLEOG+6OV80mHfq5ojciPQ0x+WI7Cfe8IGmW61
-   U/xWJQsbx+MZ7AjGgvfAi4nV/rb4z8iNRNmzsalwb1h7iGhjUACSIstAK
+  t=1746715331; x=1778251331;
+  h=date:from:to:cc:subject:message-id;
+  bh=8zV6u8tx07CqcHqmDmKrAtlHNIv/lQZc4E1pyw9imxY=;
+  b=BBlbgbQryvxCPXW+MPv6ffE3PfNzQ4682y+gjz4fES6KdSGygWJiR2zb
+   lRvBeCvhoYBHvwFG2wK/9ivhQYSHqV4Oa/LtOny8Ur1g9LcmPp1OChewk
+   8pBNz2wnmGyiED8lGa0rOpci8/5NYQD0A5lh6eRFGzqJaCZSkW7b0ULWT
+   jP66Av/Zjc/+4LrvfwadmbU8GGsXXCld2NJtRulQslv1pJyRI/7LTMB0Y
+   t89TmTqSdMb6Yo8b1EJamhjFKcB3traZwDeJDrgp8xgHCz9gaQgjkChEJ
+   NRbMtGVr8/dl4EfQ+G4n2YDIzVPIx8MHPL5/NxTLvlg5ltlRz1rUgSCTK
    w==;
-X-CSE-ConnectionGUID: /Xgp2YLlSfehnor8qcdWNA==
-X-CSE-MsgGUID: 6ySq++zpS1C467VllERKlA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="59496600"
+X-CSE-ConnectionGUID: Bhl6ZFLUQDi2YJ+fFKKObQ==
+X-CSE-MsgGUID: flcnDz45Qeesv9XdGcC9zw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="48370731"
 X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
-   d="scan'208";a="59496600"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 07:28:06 -0700
-X-CSE-ConnectionGUID: rdEp9pKSQSOxGK7lJDtSyw==
-X-CSE-MsgGUID: uy6WKA9hT6e5NY9UIu6Ijw==
+   d="scan'208";a="48370731"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 07:42:09 -0700
+X-CSE-ConnectionGUID: E8dgZIx7RF+dVU8qnKh9OQ==
+X-CSE-MsgGUID: OH363qekQ0q+NR4M979XPQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
-   d="scan'208";a="136320287"
-Received: from smile.fi.intel.com ([10.237.72.55])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 07:27:56 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uD2E4-000000048Ph-1tm1;
-	Thu, 08 May 2025 17:27:52 +0300
-Date: Thu, 8 May 2025 17:27:52 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 05/26] bus: simple-pm-bus: Populate child nodes at
- probe
-Message-ID: <aBy_aBkC7NpicXho@smile.fi.intel.com>
-References: <20250507071315.394857-1-herve.codina@bootlin.com>
- <20250507071315.394857-6-herve.codina@bootlin.com>
+   d="scan'208";a="167260732"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 08 May 2025 07:42:08 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uD2Rp-000B44-2b;
+	Thu, 08 May 2025 14:42:05 +0000
+Date: Thu, 08 May 2025 22:41:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 60952b6fc7ad90c84cc9b02f0ffa67c39ea5250b
+Message-ID: <202505082214.c1qS551x-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250507071315.394857-6-herve.codina@bootlin.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, May 07, 2025 at 09:12:47AM +0200, Herve Codina wrote:
-> The simple-pm-bus drivers handles several simple bus. When it is used
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 60952b6fc7ad90c84cc9b02f0ffa67c39ea5250b  Merge branch 'acpi-tables' into bleeding-edge
 
-bus --> busses ?
+elapsed time: 1072m
 
-> with busses other than a compatible "simple-pm-bus", it don't populate
-> its child devices during its probe.
-> 
-> This confuses fw_devlink and results in wrong or missing devlinks.
-> 
-> Once a driver is bound to a device and the probe() has been called,
-> device_links_driver_bound() is called.
-> 
-> This function performs operation based on the following assumption:
->     If a child firmware node of the bound device is not added as a
->     device, it will never be added.
-> 
-> Among operations done on fw_devlinks of those "never be added" devices,
-> device_links_driver_bound() changes their supplier.
-> 
-> With devices attached to a simple-bus compatible device, this change
-> leads to wrong devlinks where supplier of devices points to the device
-> parent (i.e. simple-bus compatible device) instead of the device itself
-> (i.e. simple-bus child).
-> 
-> When the device attached to the simple-bus is removed, because devlinks
-> are not correct, its consumers are not removed first.
-> 
-> In order to have correct devlinks created, make the simple-pm-bus driver
-> compliant with the devlink assumption and create its child devices
-> during its probe.
+configs tested: 77
+configs skipped: 2
 
-...
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->  	if (match && match->data) {
->  		if (of_property_match_string(np, "compatible", match->compatible) == 0)
+tested configs:
+alpha          allnoconfig    gcc-14.2.0
+alpha         allyesconfig    clang-19
+alpha            defconfig    gcc-14.2.0
+arc           allmodconfig    clang-19
+arc            allnoconfig    gcc-14.2.0
+arc           allyesconfig    clang-19
+arc              defconfig    gcc-14.2.0
+arm           allmodconfig    clang-19
+arm            allnoconfig    clang-21
+arm            allnoconfig    gcc-14.2.0
+arm           allyesconfig    clang-19
+arm              defconfig    gcc-14.2.0
+arm64         allmodconfig    clang-19
+arm64          allnoconfig    gcc-14.2.0
+arm64            defconfig    gcc-14.2.0
+csky           allnoconfig    gcc-14.2.0
+csky             defconfig    gcc-14.2.0
+hexagon       allmodconfig    clang-19
+hexagon        allnoconfig    clang-21
+hexagon        allnoconfig    gcc-14.2.0
+hexagon       allyesconfig    clang-19
+hexagon          defconfig    gcc-14.2.0
+i386          allmodconfig    clang-20
+i386           allnoconfig    clang-20
+i386          allyesconfig    clang-20
+i386             defconfig    clang-20
+loongarch     allmodconfig    gcc-14.2.0
+loongarch      allnoconfig    gcc-14.2.0
+loongarch        defconfig    gcc-14.2.0
+m68k          allmodconfig    gcc-14.2.0
+m68k           allnoconfig    gcc-14.2.0
+m68k          allyesconfig    gcc-14.2.0
+m68k             defconfig    gcc-14.2.0
+microblaze    allmodconfig    gcc-14.2.0
+microblaze     allnoconfig    gcc-14.2.0
+microblaze    allyesconfig    gcc-14.2.0
+microblaze       defconfig    gcc-14.2.0
+mips           allnoconfig    gcc-14.2.0
+nios2          allnoconfig    gcc-14.2.0
+nios2            defconfig    gcc-14.2.0
+openrisc       allnoconfig    clang-21
+openrisc       allnoconfig    gcc-14.2.0
+openrisc      allyesconfig    gcc-14.2.0
+parisc        allmodconfig    gcc-14.2.0
+parisc         allnoconfig    clang-21
+parisc         allnoconfig    gcc-14.2.0
+parisc        allyesconfig    gcc-14.2.0
+parisc64         defconfig    gcc-14.2.0
+powerpc       allmodconfig    gcc-14.2.0
+powerpc        allnoconfig    clang-21
+powerpc        allnoconfig    gcc-14.2.0
+powerpc       allyesconfig    gcc-14.2.0
+riscv         allmodconfig    gcc-14.2.0
+riscv          allnoconfig    clang-21
+riscv          allnoconfig    gcc-14.2.0
+riscv         allyesconfig    gcc-14.2.0
+s390          allmodconfig    gcc-14.2.0
+s390           allnoconfig    clang-21
+s390          allyesconfig    gcc-14.2.0
+sh            allmodconfig    gcc-14.2.0
+sh             allnoconfig    gcc-14.2.0
+sh            allyesconfig    gcc-14.2.0
+sparc         allmodconfig    gcc-14.2.0
+sparc          allnoconfig    gcc-14.2.0
+um            allmodconfig    clang-19
+um             allnoconfig    clang-21
+um            allyesconfig    clang-19
+x86_64         allnoconfig    clang-20
+x86_64        allyesconfig    clang-20
+x86_64           defconfig    clang-20
+x86_64               kexec    clang-20
+x86_64            rhel-9.4    clang-20
+x86_64        rhel-9.4-bpf    gcc-12
+x86_64      rhel-9.4-kunit    gcc-12
+x86_64        rhel-9.4-ltp    gcc-12
+x86_64       rhel-9.4-rust    clang-20
+xtensa         allnoconfig    gcc-14.2.0
 
-Side note, there is an fwnode_is_device_compatible() API for such cases. And IIRC
-there is also OF variant of it.
-
-> -			return 0;
-> +			goto populate;
->  		else
->  			return -ENODEV;
->  	}
-
-...
-
-> +	if (pdev->dev.of_node)
-
-Why do you need this check? AFAICS it dups the one the call has already in it.
-
-> +		of_platform_depopulate(&pdev->dev);
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
