@@ -1,161 +1,143 @@
-Return-Path: <linux-acpi+bounces-13643-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13644-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8096FAAFDC0
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 16:50:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 980E9AAFEDB
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 17:17:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61FFD1BA7C91
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 14:50:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51A599C4CA2
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 15:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23ABA278167;
-	Thu,  8 May 2025 14:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF61279902;
+	Thu,  8 May 2025 15:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="jzZKrupp"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="jHYTkIPB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB12279337;
-	Thu,  8 May 2025 14:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.204
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFF427934D;
+	Thu,  8 May 2025 15:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746715821; cv=none; b=eJlUK2X+41ZBV9iWTuSWxpuCwUOVLoqIW2qEcOsKUGxCGp0fCIhqAskWyhqxATqAejUzxDlhtUnuMEz2HjDJMDpFEWhCjZzz29GShLxAJQG1qQ1H8XynT3+gsJ+9Fi642JS+a4+7kM6VizR27scUGjC166YQsThCILFoXru3jBk=
+	t=1746716971; cv=none; b=SZ+cdpjyPMqSugSqRSzpTtFO9TacM0jmucjGQlyRLhjuMqNpnTEF84w6MwUmg2UDpwQ0XcNAQ073k6a48lRuIuoG9fMKKx4Uwc6d0cfdWjMZp8f1IMjR9GN3qwuppqCda0QNSWI20lPGHkinxuyXdZgfP+uIJV12pVpzvX3FfXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746715821; c=relaxed/simple;
-	bh=kSyOd/YqwB4I7SCdXQSrZ2DZeX6cJamcOQno4YyOQA0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=K4zFU3WkZfm9r7VmRPcdhC1xjE7t+PU59hsu4DJWAVb05x9OQYmP9CljHAmdwu0O8DE8/x5Y7Xxp7DuucKTMQr4IJ/Ptp5rLTC/rKavamnVKC2LK/aYE13FxtC0Qu2hQvFvBokXQAjO+1U0oil99WHlq9x0TDBPuO9zYx1q2SlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=jzZKrupp; arc=none smtp.client-ip=207.171.188.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1746715817; x=1778251817;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:mime-version:
-   content-transfer-encoding;
-  bh=BHpCAxEHtnyUYUm3CkHmDoIQw35lsCllGPJ1yOn0X/M=;
-  b=jzZKruppJ9XiyNyM96RJUYQFfvubslfmg+agRJsgcLNXMKxkK/zosHov
-   n6Snk9KmcFARQ2exLyMne70+TpgsZO2Ob167yLUVO+ukCB48fCuDaFNSR
-   oSMT91gh4OJO9HtvjJrJK/bif7jz5Hai25M6W1KUdZvD/cgKSF1FQxFjv
-   y3SfkM8AKcu+RpM4eihDPh/9ZRbo050sUqBGiFzrDl7tdm4IVgyPNwps8
-   E/e77Hi+qgL/QAjyT4ARkttDzaBOOIWV+66ZGjFhP7cS7uJCP89AoILqV
-   jUs7SZT1s0bOd812QhmNg87t8X9whKd+Le7svKDuImOE+uGmG8hTWJpeu
-   w==;
-X-IronPort-AV: E=Sophos;i="6.15,272,1739836800"; 
-   d="scan'208";a="17815690"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 14:50:09 +0000
-Received: from EX19MTAEUB001.ant.amazon.com [10.0.17.79:2671]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.32.128:2525] with esmtp (Farcaster)
- id 44994329-5418-4e57-adac-c37e048f9fa5; Thu, 8 May 2025 14:50:06 +0000 (UTC)
-X-Farcaster-Flow-ID: 44994329-5418-4e57-adac-c37e048f9fa5
-Received: from EX19D008EUC002.ant.amazon.com (10.252.51.146) by
- EX19MTAEUB001.ant.amazon.com (10.252.51.26) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 8 May 2025 14:50:06 +0000
-Received: from EX19D008EUC001.ant.amazon.com (10.252.51.165) by
- EX19D008EUC002.ant.amazon.com (10.252.51.146) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 8 May 2025 14:50:06 +0000
-Received: from EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1]) by
- EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1%3]) with mapi id
- 15.02.1544.014; Thu, 8 May 2025 14:50:06 +0000
-From: "Heyne, Maximilian" <mheyne@amazon.de>
-To: Jeremy Linton <jeremy.linton@arm.com>
-CC: "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org"
-	<lenb@kernel.org>, "jmeurin@google.com" <jmeurin@google.com>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"sudeep.holla@arm.com" <sudeep.holla@arm.com>, Yicong Yang
-	<yangyicong@hisilicon.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] ACPI: PPTT: Fix processor subtable walk
-Thread-Topic: [PATCH] ACPI: PPTT: Fix processor subtable walk
-Thread-Index: AQHbwCh8rUbZYEeM7U2CpGyi5RqI0g==
-Date: Thu, 8 May 2025 14:50:06 +0000
-Message-ID: <20250508-laugh-stud-e5037c82@mheyne-amazon>
-References: <20250508023025.1301030-1-jeremy.linton@arm.com>
-In-Reply-To: <20250508023025.1301030-1-jeremy.linton@arm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2D3D35BEE9554B4D99A6B058091F6CEE@amazon.com>
+	s=arc-20240116; t=1746716971; c=relaxed/simple;
+	bh=dIUxDRQQ9VfT08/FY9cCuIoFDGDlW7Ej4+wOflv8zag=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GrgsOi+S1S7LE24WwoOKdmqNK7yPPnp/QiKenSi/gPFwGnuK2UNvyfOFTOAbzIR/PG1reWLaspZ+vpbaq0fOciQJM+uLjlfS59NnbaP6mKcHtkfg9M03LqlSC4PSw5W6A21fgihA0Nq/SrLwiJZOtA1zQhv+0mw2OLMuEFsQe2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=jHYTkIPB; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.137.184.60] (unknown [131.107.1.188])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 18C5A21199E9;
+	Thu,  8 May 2025 08:09:23 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 18C5A21199E9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1746716963;
+	bh=HGRfFjvHvYenmbQuhVeAhm/NMBt8Vf8l9aGiCRvcDyk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jHYTkIPBCaYL0LF6HoXl5B1lqwE5C+JvjTrmzsy9SlZ5u2+BCJN27u6IsTD7kSKdk
+	 pzYrv/jq5Wnv5HVfgcRG7tCANUs1mu2IlODINDrllqGz8NLqIUwGiiQwi/ewB9lYjF
+	 hkW/R6irTp43W+4HZPvPGScqt5BqsFHCzUkn/Qew=
+Message-ID: <4273451f-5edb-4d39-86b9-022456bba950@linux.microsoft.com>
+Date: Thu, 8 May 2025 08:09:22 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, May 07, 2025 at 09:30:25PM -0500, Jeremy Linton wrote:
-> The original PPTT code had a bug where the processor subtable length
-> was not correctly validated when encountering a truncated
-> acpi_pptt_processor node.
-> =
-
-> Commit 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of
-> sizeof() calls") attempted to fix this by validating the size is as
-> large as the acpi_pptt_processor node structure. This introduced a
-> regression where the last processor node in the PPTT table is ignored
-> if it doesn't contain any private resources. That results errors like:
-> =
-
->   ACPI PPTT: PPTT table found, but unable to locate core XX (XX)
->   ACPI: SPE must be homogeneous
-> =
-
-> Furthermore, it fail in a common case where the node length isn't
-> equal to the acpi_pptt_processor structure size, leaving the original
-> bug in a modified form.
-> =
-
-> Correct the regression by adjusting the loop termination conditions as
-> suggested by the bug reporters. An additional check performed after
-> the subtable node type is detected, validates the acpi_pptt_processor
-> node is fully contained in the PPTT table. Repeating the check in
-> acpi_pptt_leaf_node() is largely redundant as the node is already
-> known to be fully contained in the table.
-> =
-
-> The case where a final truncated node's parent property is accepted,
-> but the node itself is rejected should not be considered a bug.
-> =
-
-> Fixes: 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of size=
-of() calls")
-> Reported-by: Maximilian Heyne <mheyne@amazon.de>
-> Closes: https://lore.kernel.org/linux-acpi/20250506-draco-taped-15f475cd@=
-mheyne-amazon/
-> Reported-by: Yicong Yang <yangyicong@hisilicon.com>
-> Closes: https://lore.kernel.org/linux-acpi/20250507035124.28071-1-yangyic=
-ong@huawei.com/
-> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-> Cc: Jean-Marc Eurin <jmeurin@google.com>
-> Cc: <stable@vger.kernel.org>
-
-Thank you so much for providing this proper fix and also thanks for the
-great discussions. This allowed my to learn new things. Much
-appreciated.
-
-I confirm the fix works for me. Therefore,
-
-Tested-by: Maximilian Heyne <mheyne@amazon.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH hyperv-next 0/2] arch/x86, x86/hyperv: Few fixes for the
+ AP startup
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: "apais@microsoft.com" <apais@microsoft.com>,
+ "benhill@microsoft.com" <benhill@microsoft.com>,
+ "bperkins@microsoft.com" <bperkins@microsoft.com>,
+ "sunilmut@microsoft.com" <sunilmut@microsoft.com>,
+ "ardb@kernel.org" <ardb@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+ "brgerst@gmail.com" <brgerst@gmail.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "decui@microsoft.com" <decui@microsoft.com>,
+ "dimitri.sivanich@hpe.com" <dimitri.sivanich@hpe.com>,
+ "gautham.shenoy@amd.com" <gautham.shenoy@amd.com>,
+ "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+ "hpa@zytor.com" <hpa@zytor.com>,
+ "imran.f.khan@oracle.com" <imran.f.khan@oracle.com>,
+ "jacob.jun.pan@linux.intel.com" <jacob.jun.pan@linux.intel.com>,
+ "jpoimboe@kernel.org" <jpoimboe@kernel.org>,
+ "justin.ernst@hpe.com" <justin.ernst@hpe.com>,
+ "kprateek.nayak@amd.com" <kprateek.nayak@amd.com>,
+ "kyle.meyer@hpe.com" <kyle.meyer@hpe.com>,
+ "kys@microsoft.com" <kys@microsoft.com>, "lenb@kernel.org"
+ <lenb@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
+ "nikunj@amd.com" <nikunj@amd.com>, "papaluri@amd.com" <papaluri@amd.com>,
+ "patryk.wlazlyn@linux.intel.com" <patryk.wlazlyn@linux.intel.com>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "rafael@kernel.org" <rafael@kernel.org>,
+ "russ.anderson@hpe.com" <russ.anderson@hpe.com>,
+ "sohil.mehta@intel.com" <sohil.mehta@intel.com>,
+ "steve.wahl@hpe.com" <steve.wahl@hpe.com>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+ "tiala@microsoft.com" <tiala@microsoft.com>,
+ "wei.liu@kernel.org" <wei.liu@kernel.org>,
+ "yuehaibing@huawei.com" <yuehaibing@huawei.com>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>
+References: <20250507182227.7421-1-romank@linux.microsoft.com>
+ <SN6PR02MB415715B9BE06E5B505F6DBB4D48BA@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Language: en-US
+From: Roman Kisel <romank@linux.microsoft.com>
+In-Reply-To: <SN6PR02MB415715B9BE06E5B505F6DBB4D48BA@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
 
+On 5/7/2025 9:22 PM, Michael Kelley wrote:
+> From: Roman Kisel <romank@linux.microsoft.com> Sent: Wednesday, May 7, 2025 11:22 AM
+[...]>
+> I think this works. It's unfortunate that Patch 1 adds 11 lines of code/comments that
+> Patch 2 then deletes, which seems like undesirable churn. I was expecting adding the
+> "cpu" parameter to come first, which then makes fixing the hv_snp_boot_ap() problem
+> more straightforward. But looking more closely, hv_snp_boot_ap() already has a
+> parameter erroneously named "cpu", so adding the correct "cpu" parameter isn't
+> transparent. Hence the order you've chosen is probably the best resolution for a
+> messy situation. :-)
 
-Amazon Web Services Development Center Germany GmbH
-Tamara-Danz-Str. 13
-10243 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-Sitz: Berlin
-Ust-ID: DE 365 538 597
+Thanks, Michael :) Looked as a good trade-off, went ahead with it. Will
+be happy to address any concerns of that folks might have!
+
+> 
+> Michael
+> 
+>>
+>>   arch/x86/coco/sev/core.c             | 13 ++-----
+>>   arch/x86/hyperv/hv_init.c            | 33 +++++++++++++++++
+>>   arch/x86/hyperv/hv_vtl.c             | 54 ++++------------------------
+>>   arch/x86/hyperv/ivm.c                | 11 ++++--
+>>   arch/x86/include/asm/apic.h          |  8 ++---
+>>   arch/x86/include/asm/mshyperv.h      |  7 ++--
+>>   arch/x86/kernel/acpi/madt_wakeup.c   |  2 +-
+>>   arch/x86/kernel/apic/apic_noop.c     |  8 ++++-
+>>   arch/x86/kernel/apic/apic_numachip.c |  2 +-
+>>   arch/x86/kernel/apic/x2apic_uv_x.c   |  2 +-
+>>   arch/x86/kernel/smpboot.c            | 10 +++---
+>>   include/hyperv/hvgdk_mini.h          |  2 +-
+>>   12 files changed, 76 insertions(+), 76 deletions(-)
+>>
+>>
+>> base-commit: 9b0844d87b1407681b78130429f798beb366f43f
+>> --
+>> 2.43.0
+> 
+
+-- 
+Thank you,
+Roman
 
 
