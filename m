@@ -1,117 +1,141 @@
-Return-Path: <linux-acpi+bounces-13647-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13648-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F45AB02AC
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 20:27:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2B7FAB02D9
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 20:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33A087B2488
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 18:25:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5CF61C059BF
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 18:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A6A28314E;
-	Thu,  8 May 2025 18:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963732882A8;
+	Thu,  8 May 2025 18:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W0vX34Bv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kbVWD+89"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6353281363;
-	Thu,  8 May 2025 18:26:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6495286895;
+	Thu,  8 May 2025 18:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746728797; cv=none; b=bM0Ju1DoRnZzGaLbwXQMoDJyoxZQPJe5BSIa4qig8YhnGtPAknmIlcEN5HZ0KuexUupYszCf+OPxwsGqbu+M5AoGanaa4T0ov0/nRB2nGtQr8qdQmSBJdVwwuDbUXu/H1ygeXAIU6rTIEKznSvU4o/cHJpqyjDhNE+fO9bO4ktw=
+	t=1746729107; cv=none; b=TnPYu+YOcxo06yT/IAFtC9EXZq6evey0QyHG6ZqyzgOHUizT/fSMpFgtwR2fWvNedyFiHlld8gvwrFL307VuQrxsaC+Sb07BM52IbXl0xZ0gSRyu0aSTISxzKk1zXr3bY6LhuC/aXG8za3D07lKDuOaKPBv0et9cZgPApIzkKcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746728797; c=relaxed/simple;
-	bh=TV/DfA1+9HMKHUzT+UR/gakV4+uuJ2aHJxXt+sNWNpo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WC6gCe1+xZPm4I3Y0pZWF7dbzlmTJVJgSa35ec6gS3dGb4Sj8IHLGU/d9Wjz+y1szCG0FY9pfvAx8XozEo2IFayZsyWlZx/piAZeqhV1OR5sI1t2+YQzc1Lfo1yaDE5DdXlOPCs/HJRAtAPs6VpudKXQPvPNbpjYWDonhLPTdJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W0vX34Bv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53773C4AF09;
-	Thu,  8 May 2025 18:26:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746728796;
-	bh=TV/DfA1+9HMKHUzT+UR/gakV4+uuJ2aHJxXt+sNWNpo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=W0vX34BvhqERisc9pPDTrtpEzxpqUU7+fjntYQSiYl1vgqIrS7y455J4HVkP4tMiE
-	 9S5EC67d43f8FD2n3FGNXqXBY33xhNi6k5PiFNkIZ3S7GYaaOiwB88EmBPJYoSuo4p
-	 45+EwZUJPIyNEQBK2ZJwt6c/dPEW23FK1TWscFMq62I4dR5kl8r+pts0mDEUDiM9nR
-	 Aitf1znG+IiXkMTe6jqPCcMgPfxU3Nf0EfsdT5hMCNnpEQmloLPMm889X9nCgsz4pu
-	 99SJP0j5KjxL1DmNxwrJT8AJTAPYx8rAyriWW1hx5JXsMaywvQ9eDal1G8dUvBP0yL
-	 Iw3l+zBJiDN4A==
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-72c7336ed99so400502a34.0;
-        Thu, 08 May 2025 11:26:36 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUhho5o1o7dDGGNx+FdfpQ9tS3eFhzM1HGKfxSzIK+mEVFF+2gIIFnoI5hqjb2uEJfKylbtXhEiI2GFtA7X@vger.kernel.org, AJvYcCV2TFowXXW77kIyynry+sreFJMZcQrK/8Ls7TIBchJlmRgR9eAtaCL8Clk2rS3SW307lNu+hLc9Y+My@vger.kernel.org, AJvYcCWbTKAnTxVFUpEF2InJu5OicVhb0oK1TFN1m0VPmxvSMhJFb5lzo7TopzcHqE6agymM1NzIRG8G@vger.kernel.org
-X-Gm-Message-State: AOJu0YwT9B4j6vvYmjL5KTi3e5FV+kMpQAdfUnA8n+30T3zz6ToOjL0y
-	/fGnBFXLksRt0SdNvunZ6CyoY5lb2mx82cpn1rysJfLIXH706L6CCr/KnhPCYjH1+LZ3HWm9oXR
-	xnN0tjUYa9qcPxgbo66MbUIAo7v0=
-X-Google-Smtp-Source: AGHT+IF2Nf5Fasy7Qu/XU0O/UO9AwN3maQCBaHAFkTPwDHkgmNIXFD8BqrcDfV+OFXwTKgnDslsqpJLbbTA5+Cs/0HQ=
-X-Received: by 2002:a05:6830:6611:b0:730:da:1165 with SMTP id
- 46e09a7af769-73226ae9d31mr741954a34.21.1746728795645; Thu, 08 May 2025
- 11:26:35 -0700 (PDT)
+	s=arc-20240116; t=1746729107; c=relaxed/simple;
+	bh=lmW0Dg0L5hEpYSQrGyyAU2RGWEg1vYLosLy8p05Df9E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Myb0yBbGBrUJy8k5vDNVBHFqWgtqn5UWrIU/q/MZMXs7o4jzTIXtNQEDjx++fLEBG2NjylVxHo5pcDvnHtd2bMfXzrsG1ot5+uwyP/D1RLYx7I0H6h8NJ89+6qUTayzMo+tFwPV1ZXiur5D4UI7qb0NVwQ2uVJ7b0QJkiPdPvNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kbVWD+89; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746729106; x=1778265106;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lmW0Dg0L5hEpYSQrGyyAU2RGWEg1vYLosLy8p05Df9E=;
+  b=kbVWD+89TsaU5YN6EeJnLmwbUupdjkow/0bxOu/0lZXHnNbx6RQsEAMP
+   PcB1Zk0B1fIc/OI47O5I+ZtgGe1dyM0dEDCU7FGYnjuKtU7oA9vylHufi
+   JMBOd3EUX3y4iUck3Zf8aQsb/OG9QKrX9ZhC6KvWq++apEz9Jwd4KhI77
+   6bK12Q/shFFXesKqSqD6xhnzmIWe0RdQ3Q89vomA1Ep0uVEUqL7BHcxrO
+   ebXWClVt9Xa/z/hYRYwIjX5wHoWZWufgBwzMiniBk7g0Egm+rl9k2tjkj
+   qyEZoZJq9V7VxQ+r4uCDtl87wvsl5sGRQYQnWIsaq4MAOASvSbIiSHf31
+   g==;
+X-CSE-ConnectionGUID: GRsompNIStSFtz5SCJkYfA==
+X-CSE-MsgGUID: igImZrYDQXyD8wHkfRtOIw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="52185445"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
+   d="scan'208";a="52185445"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 11:31:45 -0700
+X-CSE-ConnectionGUID: XR1rcrq6RLiCNe1U0w4udg==
+X-CSE-MsgGUID: lI5CdtKsTd+NqPODxBCj3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
+   d="scan'208";a="136774458"
+Received: from smile.fi.intel.com ([10.237.72.55])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 11:31:35 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1uD61r-00000004C9z-45LZ;
+	Thu, 08 May 2025 21:31:31 +0300
+Date: Thu, 8 May 2025 21:31:31 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 12/26] PCI: of: Set fwnode device of newly created PCI
+ device nodes
+Message-ID: <aBz4gxUlnSgEtHn8@smile.fi.intel.com>
+References: <20250507071315.394857-1-herve.codina@bootlin.com>
+ <20250507071315.394857-13-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250508023025.1301030-1-jeremy.linton@arm.com> <20250508-abiding-enigmatic-mustang-ab3bd2@sudeepholla>
-In-Reply-To: <20250508-abiding-enigmatic-mustang-ab3bd2@sudeepholla>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 8 May 2025 20:26:23 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jOmeKy84N0My7o+PvAybjdaxv9ZS8HT=X0momY7rzTuQ@mail.gmail.com>
-X-Gm-Features: ATxdqUH9Pj_neQFHcxXdnSIxaBpGj_wzwhGGHZ5DpVN043u7sQCsmcbIF9wohLs
-Message-ID: <CAJZ5v0jOmeKy84N0My7o+PvAybjdaxv9ZS8HT=X0momY7rzTuQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PPTT: Fix processor subtable walk
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Jeremy Linton <jeremy.linton@arm.com>, rafael@kernel.org, lenb@kernel.org, 
-	jmeurin@google.com, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Maximilian Heyne <mheyne@amazon.de>, Yicong Yang <yangyicong@hisilicon.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250507071315.394857-13-herve.codina@bootlin.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, May 8, 2025 at 11:13=E2=80=AFAM Sudeep Holla <sudeep.holla@arm.com>=
- wrote:
->
-> On Wed, May 07, 2025 at 09:30:25PM -0500, Jeremy Linton wrote:
-> > The original PPTT code had a bug where the processor subtable length
-> > was not correctly validated when encountering a truncated
-> > acpi_pptt_processor node.
-> >
-> > Commit 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of
-> > sizeof() calls") attempted to fix this by validating the size is as
-> > large as the acpi_pptt_processor node structure. This introduced a
-> > regression where the last processor node in the PPTT table is ignored
-> > if it doesn't contain any private resources. That results errors like:
-> >
-> >   ACPI PPTT: PPTT table found, but unable to locate core XX (XX)
-> >   ACPI: SPE must be homogeneous
-> >
-> > Furthermore, it fail in a common case where the node length isn't
-> > equal to the acpi_pptt_processor structure size, leaving the original
-> > bug in a modified form.
-> >
-> > Correct the regression by adjusting the loop termination conditions as
-> > suggested by the bug reporters. An additional check performed after
-> > the subtable node type is detected, validates the acpi_pptt_processor
-> > node is fully contained in the PPTT table. Repeating the check in
-> > acpi_pptt_leaf_node() is largely redundant as the node is already
-> > known to be fully contained in the table.
-> >
-> > The case where a final truncated node's parent property is accepted,
-> > but the node itself is rejected should not be considered a bug.
-> >
->
-> Thanks for picking this up and describing the issue properly in the commi=
-t
-> message.
->
-> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+On Wed, May 07, 2025 at 09:12:54AM +0200, Herve Codina wrote:
+> Device-tree node can be created when CONFIG_PCI_DYNAMIC_OF_NODES. Those
+> node are created and filled based on PCI core information but the
+> fwnode device field is not set.
+> 
+> When later an overlay is applied, this consuses fw_devlink. Indeed,
 
-Applied, but it is a bit too late to push it for -rc6, so I'll queue
-it up for -rc7.
+consuses?
 
-Thanks!
+> without any device attached to the node, fw_devlink considers that this
+> node will never become a device. When this node is pointed as a
+> supplier, devlink looks at its ancestors in order to find a node with a
+> device that could be used as the supplier.
+> 
+> In the PCI use case, this leads to links that wrongly use the PCI root
+> bridge device as the supplier instead of the expected PCI device.
+> 
+> Setting the fwnode device to the device of the PCI device allows devlink
+> to use this device as a supplier and so, correct links are created.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
