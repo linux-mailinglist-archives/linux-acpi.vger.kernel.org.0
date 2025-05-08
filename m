@@ -1,94 +1,96 @@
-Return-Path: <linux-acpi+bounces-13636-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13637-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9618AAF674
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 11:13:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F57AAF709
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 11:46:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6620E464E7E
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 09:13:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 372A81727B6
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 09:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE44263F4E;
-	Thu,  8 May 2025 09:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC041D86DC;
+	Thu,  8 May 2025 09:45:49 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BB72263C69;
-	Thu,  8 May 2025 09:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363611BEF7D;
+	Thu,  8 May 2025 09:45:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746695586; cv=none; b=dX7x30+iei9c+X3ei3n+exybHKHSUCbdfXgzjOrid/48zLwz75W2NyAcJ5oehRwqSR41Ilqlgcwct0gc35e7MCLuCKHh08n2+3SuWjstuzcnaYqrU0q+Q/yBdl5XdiJbE3L6yfGP5yGqH88GZgy5XoPuJoGdRXO0h/YqsaxkGzM=
+	t=1746697549; cv=none; b=lsffi9pYNpatzA6xCQ8sbGubbLSh8PbyVXqbEPm/FkEw9CkfU6lQKoiSoZrRW58diaB8e3hA5Oorphgl2AxtPFRSyqA90LeyxaP1Cj6Lnwp/FXDQVNjamDJ+IXDmx4rNueqf22WC8wOolQ+FDzxt9JPSrzgTjikcEv125+PPEK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746695586; c=relaxed/simple;
-	bh=gh435jeZEeyBXMCwUX0HuByLGXx9vywK+mE1D7NoKDk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EShvgbqawNfDDbwvlaDhLK5ZOdspUhq2xFKNewKbr6ExriNXuJ7FuWUN0HUENPju29OsZ85KW33arR8MX9urOqmhlqli08tSpdBxholusDTndDuz+Zh+QOTnFEe2UPuQ+ZclfWNKq5t5AIBg/4kOOJePXUB1kVSyN63dl5FMwkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E1FF9106F;
-	Thu,  8 May 2025 02:12:52 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D2BF3F673;
-	Thu,  8 May 2025 02:13:01 -0700 (PDT)
-Date: Thu, 8 May 2025 10:12:58 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Jeremy Linton <jeremy.linton@arm.com>
-Cc: <rafael@kernel.org>, <lenb@kernel.org>, <jmeurin@google.com>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	Maximilian Heyne <mheyne@amazon.de>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Yicong Yang <yangyicong@hisilicon.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] ACPI: PPTT: Fix processor subtable walk
-Message-ID: <20250508-abiding-enigmatic-mustang-ab3bd2@sudeepholla>
-References: <20250508023025.1301030-1-jeremy.linton@arm.com>
+	s=arc-20240116; t=1746697549; c=relaxed/simple;
+	bh=7mgsxlwXgZTpgICxXGcZhTz23FBiew9Od/LMjNg6saI=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RNMuiUn0LnVN1dA6J0OtGwXrwaGtkn7iQ04E6ZhyhjGqog5sQdZXfxmjzuX1J5V+iObfWGFQmCpzQYfiaCWi4MOITmydgEeEcyL7H7x+OUiR38QmMr+asXA4mLYlCQR1qkBBebhMGs0w6WEy7glv5Lr9vZn6gCpQIAlE1wFxucE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZtS136R71z6K9Xl;
+	Thu,  8 May 2025 17:45:27 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id E8ECC140121;
+	Thu,  8 May 2025 17:45:43 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 8 May
+ 2025 11:45:43 +0200
+Date: Thu, 8 May 2025 10:45:41 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Alison Schofield <alison.schofield@intel.com>
+CC: Yuquan Wang <wangyuquan1236@phytium.com.cn>, <dan.j.williams@intel.com>,
+	<rppt@kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<akpm@linux-foundation.org>, <rrichter@amd.com>, <bfaccini@nvidia.com>,
+	<haibo1.xu@intel.com>, <david@redhat.com>, <chenhuacai@kernel.org>,
+	<linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<chenbaozi@phytium.com.cn>, <loongarch@lists.linux.dev>
+Subject: Re: [PATCH v3 1/1] mm: numa_memblks: introduce
+ numa_add_reserved_memblk
+Message-ID: <20250508104541.00007c4f@huawei.com>
+In-Reply-To: <aBwuY7Rj3mpr5Pm4@aschofie-mobl2.lan>
+References: <20250508022719.3941335-1-wangyuquan1236@phytium.com.cn>
+	<aBwuY7Rj3mpr5Pm4@aschofie-mobl2.lan>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250508023025.1301030-1-jeremy.linton@arm.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Wed, May 07, 2025 at 09:30:25PM -0500, Jeremy Linton wrote:
-> The original PPTT code had a bug where the processor subtable length
-> was not correctly validated when encountering a truncated
-> acpi_pptt_processor node.
+On Wed, 7 May 2025 21:09:07 -0700
+Alison Schofield <alison.schofield@intel.com> wrote:
+
+> On Thu, May 08, 2025 at 10:27:19AM +0800, Yuquan Wang wrote:
+> > acpi_parse_cfmws() currently adds empty CFMWS ranges to numa_meminfo
+> > with the expectation that numa_cleanup_meminfo moves them to
+> > numa_reserved_meminfo. There is no need for that indirection when it is
+> > known in advance that these unpopulated ranges are meant for
+> > numa_reserved_meminfo in support of future hotplug / CXL provisioning.
+> > 
+> > Introduce and use numa_add_reserved_memblk() to add the empty CFMWS
+> > ranges directly.
+> > 
+> > Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>  
 > 
-> Commit 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of
-> sizeof() calls") attempted to fix this by validating the size is as
-> large as the acpi_pptt_processor node structure. This introduced a
-> regression where the last processor node in the PPTT table is ignored
-> if it doesn't contain any private resources. That results errors like:
+> Reviewed-by: Alison Schofield <alison.schofield@intel.com>
 > 
->   ACPI PPTT: PPTT table found, but unable to locate core XX (XX)
->   ACPI: SPE must be homogeneous
 > 
-> Furthermore, it fail in a common case where the node length isn't
-> equal to the acpi_pptt_processor structure size, leaving the original
-> bug in a modified form.
-> 
-> Correct the regression by adjusting the loop termination conditions as
-> suggested by the bug reporters. An additional check performed after
-> the subtable node type is detected, validates the acpi_pptt_processor
-> node is fully contained in the PPTT table. Repeating the check in
-> acpi_pptt_leaf_node() is largely redundant as the node is already
-> known to be fully contained in the table.
-> 
-> The case where a final truncated node's parent property is accepted,
-> but the node itself is rejected should not be considered a bug.
 > 
 
-Thanks for picking this up and describing the issue properly in the commit
-message.
+Yuquan - I'm guessing this is a misunderstanding of process.
+The patch submitter should pick up tags on previous versions.
+If any are not picked up in the tag block there should be a clear
+explanation of why!
 
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-
--- 
-Regards,
-Sudeep
+Jonathan
 
