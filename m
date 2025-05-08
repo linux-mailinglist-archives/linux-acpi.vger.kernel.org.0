@@ -1,171 +1,161 @@
-Return-Path: <linux-acpi+bounces-13642-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13643-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F18AAFD88
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 16:44:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8096FAAFDC0
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 16:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFA257BEB96
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 14:41:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61FFD1BA7C91
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 14:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA91275116;
-	Thu,  8 May 2025 14:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23ABA278167;
+	Thu,  8 May 2025 14:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BBlbgbQr"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="jzZKrupp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4B626FA52;
-	Thu,  8 May 2025 14:42:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB12279337;
+	Thu,  8 May 2025 14:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746715333; cv=none; b=YsoLJih8m1QHzGwwQmO+4eR4qRRLQCn/fUU1EdAWMTaCDAWvRly0/+bs62hkV92y6nf8vBKpf41ktHsa1fUVQzmfBR6gkUxGVOkVQyJKuXNs8HcdjCs2/2imNA4AqW94EW+waMUrT9JZ9G5XEIj1blb9hPL5VI+0x6Pvad78cU4=
+	t=1746715821; cv=none; b=eJlUK2X+41ZBV9iWTuSWxpuCwUOVLoqIW2qEcOsKUGxCGp0fCIhqAskWyhqxATqAejUzxDlhtUnuMEz2HjDJMDpFEWhCjZzz29GShLxAJQG1qQ1H8XynT3+gsJ+9Fi642JS+a4+7kM6VizR27scUGjC166YQsThCILFoXru3jBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746715333; c=relaxed/simple;
-	bh=8zV6u8tx07CqcHqmDmKrAtlHNIv/lQZc4E1pyw9imxY=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=Mg7iaQwZI2UZGKAFuJyZeOnXy8woPn2p9xnFPFQRI9MZ/64dpPjY+osVyTqQmnl4tvv0jsYGz9IftRMb3EjoVKrCSJza5hya7Y3eOCMctIwIfh/erMYuqZZhbEatJxls/T/Z1EU2P0DUaOkwin6c+C4qMtKntIwilh+4x1Ug0BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BBlbgbQr; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746715331; x=1778251331;
-  h=date:from:to:cc:subject:message-id;
-  bh=8zV6u8tx07CqcHqmDmKrAtlHNIv/lQZc4E1pyw9imxY=;
-  b=BBlbgbQryvxCPXW+MPv6ffE3PfNzQ4682y+gjz4fES6KdSGygWJiR2zb
-   lRvBeCvhoYBHvwFG2wK/9ivhQYSHqV4Oa/LtOny8Ur1g9LcmPp1OChewk
-   8pBNz2wnmGyiED8lGa0rOpci8/5NYQD0A5lh6eRFGzqJaCZSkW7b0ULWT
-   jP66Av/Zjc/+4LrvfwadmbU8GGsXXCld2NJtRulQslv1pJyRI/7LTMB0Y
-   t89TmTqSdMb6Yo8b1EJamhjFKcB3traZwDeJDrgp8xgHCz9gaQgjkChEJ
-   NRbMtGVr8/dl4EfQ+G4n2YDIzVPIx8MHPL5/NxTLvlg5ltlRz1rUgSCTK
+	s=arc-20240116; t=1746715821; c=relaxed/simple;
+	bh=kSyOd/YqwB4I7SCdXQSrZ2DZeX6cJamcOQno4YyOQA0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=K4zFU3WkZfm9r7VmRPcdhC1xjE7t+PU59hsu4DJWAVb05x9OQYmP9CljHAmdwu0O8DE8/x5Y7Xxp7DuucKTMQr4IJ/Ptp5rLTC/rKavamnVKC2LK/aYE13FxtC0Qu2hQvFvBokXQAjO+1U0oil99WHlq9x0TDBPuO9zYx1q2SlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=jzZKrupp; arc=none smtp.client-ip=207.171.188.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1746715817; x=1778251817;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:mime-version:
+   content-transfer-encoding;
+  bh=BHpCAxEHtnyUYUm3CkHmDoIQw35lsCllGPJ1yOn0X/M=;
+  b=jzZKruppJ9XiyNyM96RJUYQFfvubslfmg+agRJsgcLNXMKxkK/zosHov
+   n6Snk9KmcFARQ2exLyMne70+TpgsZO2Ob167yLUVO+ukCB48fCuDaFNSR
+   oSMT91gh4OJO9HtvjJrJK/bif7jz5Hai25M6W1KUdZvD/cgKSF1FQxFjv
+   y3SfkM8AKcu+RpM4eihDPh/9ZRbo050sUqBGiFzrDl7tdm4IVgyPNwps8
+   E/e77Hi+qgL/QAjyT4ARkttDzaBOOIWV+66ZGjFhP7cS7uJCP89AoILqV
+   jUs7SZT1s0bOd812QhmNg87t8X9whKd+Le7svKDuImOE+uGmG8hTWJpeu
    w==;
-X-CSE-ConnectionGUID: Bhl6ZFLUQDi2YJ+fFKKObQ==
-X-CSE-MsgGUID: flcnDz45Qeesv9XdGcC9zw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="48370731"
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
-   d="scan'208";a="48370731"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 07:42:09 -0700
-X-CSE-ConnectionGUID: E8dgZIx7RF+dVU8qnKh9OQ==
-X-CSE-MsgGUID: OH363qekQ0q+NR4M979XPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
-   d="scan'208";a="167260732"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 08 May 2025 07:42:08 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uD2Rp-000B44-2b;
-	Thu, 08 May 2025 14:42:05 +0000
-Date: Thu, 08 May 2025 22:41:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 60952b6fc7ad90c84cc9b02f0ffa67c39ea5250b
-Message-ID: <202505082214.c1qS551x-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+X-IronPort-AV: E=Sophos;i="6.15,272,1739836800"; 
+   d="scan'208";a="17815690"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 14:50:09 +0000
+Received: from EX19MTAEUB001.ant.amazon.com [10.0.17.79:2671]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.32.128:2525] with esmtp (Farcaster)
+ id 44994329-5418-4e57-adac-c37e048f9fa5; Thu, 8 May 2025 14:50:06 +0000 (UTC)
+X-Farcaster-Flow-ID: 44994329-5418-4e57-adac-c37e048f9fa5
+Received: from EX19D008EUC002.ant.amazon.com (10.252.51.146) by
+ EX19MTAEUB001.ant.amazon.com (10.252.51.26) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Thu, 8 May 2025 14:50:06 +0000
+Received: from EX19D008EUC001.ant.amazon.com (10.252.51.165) by
+ EX19D008EUC002.ant.amazon.com (10.252.51.146) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Thu, 8 May 2025 14:50:06 +0000
+Received: from EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1]) by
+ EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1%3]) with mapi id
+ 15.02.1544.014; Thu, 8 May 2025 14:50:06 +0000
+From: "Heyne, Maximilian" <mheyne@amazon.de>
+To: Jeremy Linton <jeremy.linton@arm.com>
+CC: "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org"
+	<lenb@kernel.org>, "jmeurin@google.com" <jmeurin@google.com>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"sudeep.holla@arm.com" <sudeep.holla@arm.com>, Yicong Yang
+	<yangyicong@hisilicon.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] ACPI: PPTT: Fix processor subtable walk
+Thread-Topic: [PATCH] ACPI: PPTT: Fix processor subtable walk
+Thread-Index: AQHbwCh8rUbZYEeM7U2CpGyi5RqI0g==
+Date: Thu, 8 May 2025 14:50:06 +0000
+Message-ID: <20250508-laugh-stud-e5037c82@mheyne-amazon>
+References: <20250508023025.1301030-1-jeremy.linton@arm.com>
+In-Reply-To: <20250508023025.1301030-1-jeremy.linton@arm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2D3D35BEE9554B4D99A6B058091F6CEE@amazon.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 60952b6fc7ad90c84cc9b02f0ffa67c39ea5250b  Merge branch 'acpi-tables' into bleeding-edge
+On Wed, May 07, 2025 at 09:30:25PM -0500, Jeremy Linton wrote:
+> The original PPTT code had a bug where the processor subtable length
+> was not correctly validated when encountering a truncated
+> acpi_pptt_processor node.
+> =
 
-elapsed time: 1072m
+> Commit 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of
+> sizeof() calls") attempted to fix this by validating the size is as
+> large as the acpi_pptt_processor node structure. This introduced a
+> regression where the last processor node in the PPTT table is ignored
+> if it doesn't contain any private resources. That results errors like:
+> =
 
-configs tested: 77
-configs skipped: 2
+>   ACPI PPTT: PPTT table found, but unable to locate core XX (XX)
+>   ACPI: SPE must be homogeneous
+> =
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> Furthermore, it fail in a common case where the node length isn't
+> equal to the acpi_pptt_processor structure size, leaving the original
+> bug in a modified form.
+> =
 
-tested configs:
-alpha          allnoconfig    gcc-14.2.0
-alpha         allyesconfig    clang-19
-alpha            defconfig    gcc-14.2.0
-arc           allmodconfig    clang-19
-arc            allnoconfig    gcc-14.2.0
-arc           allyesconfig    clang-19
-arc              defconfig    gcc-14.2.0
-arm           allmodconfig    clang-19
-arm            allnoconfig    clang-21
-arm            allnoconfig    gcc-14.2.0
-arm           allyesconfig    clang-19
-arm              defconfig    gcc-14.2.0
-arm64         allmodconfig    clang-19
-arm64          allnoconfig    gcc-14.2.0
-arm64            defconfig    gcc-14.2.0
-csky           allnoconfig    gcc-14.2.0
-csky             defconfig    gcc-14.2.0
-hexagon       allmodconfig    clang-19
-hexagon        allnoconfig    clang-21
-hexagon        allnoconfig    gcc-14.2.0
-hexagon       allyesconfig    clang-19
-hexagon          defconfig    gcc-14.2.0
-i386          allmodconfig    clang-20
-i386           allnoconfig    clang-20
-i386          allyesconfig    clang-20
-i386             defconfig    clang-20
-loongarch     allmodconfig    gcc-14.2.0
-loongarch      allnoconfig    gcc-14.2.0
-loongarch        defconfig    gcc-14.2.0
-m68k          allmodconfig    gcc-14.2.0
-m68k           allnoconfig    gcc-14.2.0
-m68k          allyesconfig    gcc-14.2.0
-m68k             defconfig    gcc-14.2.0
-microblaze    allmodconfig    gcc-14.2.0
-microblaze     allnoconfig    gcc-14.2.0
-microblaze    allyesconfig    gcc-14.2.0
-microblaze       defconfig    gcc-14.2.0
-mips           allnoconfig    gcc-14.2.0
-nios2          allnoconfig    gcc-14.2.0
-nios2            defconfig    gcc-14.2.0
-openrisc       allnoconfig    clang-21
-openrisc       allnoconfig    gcc-14.2.0
-openrisc      allyesconfig    gcc-14.2.0
-parisc        allmodconfig    gcc-14.2.0
-parisc         allnoconfig    clang-21
-parisc         allnoconfig    gcc-14.2.0
-parisc        allyesconfig    gcc-14.2.0
-parisc64         defconfig    gcc-14.2.0
-powerpc       allmodconfig    gcc-14.2.0
-powerpc        allnoconfig    clang-21
-powerpc        allnoconfig    gcc-14.2.0
-powerpc       allyesconfig    gcc-14.2.0
-riscv         allmodconfig    gcc-14.2.0
-riscv          allnoconfig    clang-21
-riscv          allnoconfig    gcc-14.2.0
-riscv         allyesconfig    gcc-14.2.0
-s390          allmodconfig    gcc-14.2.0
-s390           allnoconfig    clang-21
-s390          allyesconfig    gcc-14.2.0
-sh            allmodconfig    gcc-14.2.0
-sh             allnoconfig    gcc-14.2.0
-sh            allyesconfig    gcc-14.2.0
-sparc         allmodconfig    gcc-14.2.0
-sparc          allnoconfig    gcc-14.2.0
-um            allmodconfig    clang-19
-um             allnoconfig    clang-21
-um            allyesconfig    clang-19
-x86_64         allnoconfig    clang-20
-x86_64        allyesconfig    clang-20
-x86_64           defconfig    clang-20
-x86_64               kexec    clang-20
-x86_64            rhel-9.4    clang-20
-x86_64        rhel-9.4-bpf    gcc-12
-x86_64      rhel-9.4-kunit    gcc-12
-x86_64        rhel-9.4-ltp    gcc-12
-x86_64       rhel-9.4-rust    clang-20
-xtensa         allnoconfig    gcc-14.2.0
+> Correct the regression by adjusting the loop termination conditions as
+> suggested by the bug reporters. An additional check performed after
+> the subtable node type is detected, validates the acpi_pptt_processor
+> node is fully contained in the PPTT table. Repeating the check in
+> acpi_pptt_leaf_node() is largely redundant as the node is already
+> known to be fully contained in the table.
+> =
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> The case where a final truncated node's parent property is accepted,
+> but the node itself is rejected should not be considered a bug.
+> =
+
+> Fixes: 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of size=
+of() calls")
+> Reported-by: Maximilian Heyne <mheyne@amazon.de>
+> Closes: https://lore.kernel.org/linux-acpi/20250506-draco-taped-15f475cd@=
+mheyne-amazon/
+> Reported-by: Yicong Yang <yangyicong@hisilicon.com>
+> Closes: https://lore.kernel.org/linux-acpi/20250507035124.28071-1-yangyic=
+ong@huawei.com/
+> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+> Cc: Jean-Marc Eurin <jmeurin@google.com>
+> Cc: <stable@vger.kernel.org>
+
+Thank you so much for providing this proper fix and also thanks for the
+great discussions. This allowed my to learn new things. Much
+appreciated.
+
+I confirm the fix works for me. Therefore,
+
+Tested-by: Maximilian Heyne <mheyne@amazon.de>
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
