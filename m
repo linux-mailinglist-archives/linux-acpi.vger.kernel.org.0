@@ -1,94 +1,116 @@
-Return-Path: <linux-acpi+bounces-13638-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13639-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A236AAF896
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 13:16:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35914AAF8FD
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 13:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9A1E7B1E25
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 11:15:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABE0816FAD1
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 11:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B4D215175;
-	Thu,  8 May 2025 11:16:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b="eY7LW48K"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C0A222595;
+	Thu,  8 May 2025 11:47:48 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.tuxedocomputers.com (mail.tuxedocomputers.com [157.90.84.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BCE1AC44D;
-	Thu,  8 May 2025 11:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.90.84.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6099F35957;
+	Thu,  8 May 2025 11:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746703003; cv=none; b=DFCypDNhWp+W8EAJ4KwxK/hRW4q0LhOiHZ6t5tXcEEBerja/AgKeO5By910ty5A7+6NxnoFJHwmN2w5AB/bVIj6ioHeseVoDeNaPs/8c9bTl+hTii7phIBupIARAusJaCYNlTQblIaHSFcdgwD8CbN8Jfe3skVWL2JwSQAY/efs=
+	t=1746704868; cv=none; b=fDvpRdrvyn0V/u8bgEtB7cUOzzhMSbFdL4N/vdAPBL9s93j/jCTZ+lg7TWXxDm9y7BPSWOuagrFjA5uUHixKbJ9EwY7JHyCCNqQ7uGDOaMgzo73TItM/LciFd/EJGVC0+a648PoTxeRm/A5Rn5KIejqilra9E86CXGXSMwF3cqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746703003; c=relaxed/simple;
-	bh=ESCyKV2QNz5lB1rwZTodXqc2WbpVOmaYDfFLI4kr5oU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fqpZwo9ySmKuaAKOBQp0QxWVbyeK9sCkFuzrHIfjZcc3KW7f/Q0BsXsuNvvZedkGCNEf6/bipuJ84cU+S1sbkrDp6fis8f/dw5x7Pcpyvy4LGnCxDXC3dSlIN/KO2AFygx1wqw2+DSj2m7iBmPOXQB1Ct9938QgARaT5k0UM37g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com; spf=pass smtp.mailfrom=tuxedocomputers.com; dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b=eY7LW48K; arc=none smtp.client-ip=157.90.84.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxedocomputers.com
-Received: from wse-pc.fritz.box (host-88-217-226-44.customer.m-online.net [88.217.226.44])
-	(Authenticated sender: wse@tuxedocomputers.com)
-	by mail.tuxedocomputers.com (Postfix) with ESMTPA id 82C3A2FC0048;
-	Thu,  8 May 2025 13:16:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
-	s=default; t=1746702991;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=0M1MfNww3KFRpX88ZLbLr5/0L/vSuNj89put1lMZ9+E=;
-	b=eY7LW48KpUrtMk3lz6/LbiJIRdwjj9vPT/YVPU9TXd/rCqgcWLLfVQiUln9Wp2Nkqn1/DH
-	geh+vXzuj2lqlree8YWHXkyTcaw3mg0smcAtee36jSaqGL7j9fUTqHSyO1xvznoMDNO1M8
-	FfCegbsyV4lqwulPE4qoWjS2XOMrfh4=
-Authentication-Results: mail.tuxedocomputers.com;
-	auth=pass smtp.auth=wse@tuxedocomputers.com smtp.mailfrom=wse@tuxedocomputers.com
-From: Werner Sembach <wse@tuxedocomputers.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>
-Cc: Werner Sembach <wse@tuxedocomputers.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] acpi/ec: Add device to acpi_ec_no_wakeup qurik
-Date: Thu,  8 May 2025 13:16:18 +0200
-Message-ID: <20250508111625.12149-1-wse@tuxedocomputers.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1746704868; c=relaxed/simple;
+	bh=wY2rXlF9lNnn5R10zAhDvzddR0b8o48odmpoov1tV7A=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CBQRkGaEdl95YU9iIk04EqWnFgIgugW+DfHo4KQaZ3bo2/xSOsV6r2ryyrndRymbT2wCsHcakMz2DeG8AMwjZdZKrj4G744GFc4MvuNSKxGA+aXAGKKiDZfwHmad0vggMDNDYkQ4w7a8t1b57w7L+CbwV+ob/dvYaQycWKH2zbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZtVg63KzCz6L5VR;
+	Thu,  8 May 2025 19:45:06 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 95D9C140121;
+	Thu,  8 May 2025 19:47:36 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 8 May
+ 2025 13:47:34 +0200
+Date: Thu, 8 May 2025 12:47:33 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC: Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+	<rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
+	<wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, "Derek
+ Kiernan" <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>, Arnd
+ Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, "Saravana Kannan"
+	<saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, "Mark Brown"
+	<broonie@kernel.org>, Len Brown <lenb@kernel.org>, Daniel Scally
+	<djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>, <linux-kernel@vger.kernel.org>,
+	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-clk@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-spi@vger.kernel.org>, <linux-acpi@vger.kernel.org>, Allan Nielsen
+	<allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli
+	<luca.ceresoli@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	<linux-cxl@vger.kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang
+	<dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, Vishal
+ Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan
+ Williams <dan.j.williams@intel.com>, <linux-cxl@vger.kernel.org>
+Subject: Re: [PATCH v2 09/26] cxl/test: Use device_set_node()
+Message-ID: <20250508124733.00001208@huawei.com>
+In-Reply-To: <aBt38JR-YGD5nnC4@smile.fi.intel.com>
+References: <20250507071315.394857-1-herve.codina@bootlin.com>
+	<20250507071315.394857-10-herve.codina@bootlin.com>
+	<aBt38JR-YGD5nnC4@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Add the TUXEDO InfinityBook Pro AMD Gen9 to the acpi_ec_no_wakeup quirk
-list to prevent spurious wakeups.
+On Wed, 7 May 2025 18:10:40 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
----
- drivers/acpi/ec.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+> On Wed, May 07, 2025 at 09:12:51AM +0200, Herve Codina wrote:
+> > The code set directly dev->fwnode.
+> > 
+> > Use the dedicated helper to perform this operation.  
+> 
+> ...
+> 
+> > @@ -1046,7 +1046,7 @@ static void mock_companion(struct acpi_device *adev, struct device *dev)
+> >  {
+> >  	device_initialize(&adev->dev);
+> >  	fwnode_init(&adev->fwnode, NULL);
+> > -	dev->fwnode = &adev->fwnode;
+> > +	device_set_node(dev, &adev->fwnode);
+> >  	adev->fwnode.dev = dev;
+> >  }  
+> 
+> This code is questionable to begin with. Can the original author explain what
+> is the motivation behind this as the only callers of fwnode_init() are deep
+> core pieces _and_ this only module. Why?!
+> 
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 8db09d81918fb..de45a5b59effd 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -2301,6 +2301,12 @@ static const struct dmi_system_id acpi_ec_no_wakeup[] = {
- 			DMI_MATCH(DMI_PRODUCT_FAMILY, "103C_5336AN HP ZHAN 66 Pro"),
- 		},
- 	},
-+	{
-+		// TUXEDO InfinityBook Pro AMD Gen9
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GXxHRXx"),
-+		},
-+	},
- 	{ },
- };
- 
--- 
-2.43.0
+More likely to happen if CXL folk are +CC.  Added.
 
+Dan, maybe one for you?
 
