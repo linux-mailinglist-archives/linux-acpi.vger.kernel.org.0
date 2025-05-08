@@ -1,144 +1,133 @@
-Return-Path: <linux-acpi+bounces-13653-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13654-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC67AB038A
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 21:22:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED80AB03ED
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 21:47:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E13C01BA6A0B
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 19:22:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C4F71C4212B
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 19:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E231C28A1CB;
-	Thu,  8 May 2025 19:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A4128B511;
+	Thu,  8 May 2025 19:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IelAtWoL"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="NT8Qtevk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1C61F582E;
-	Thu,  8 May 2025 19:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C3B289823;
+	Thu,  8 May 2025 19:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746732117; cv=none; b=puQ+tmHc2ubhVq/j2XzQ4GlwahKleRuuNn5YztjCD1soH+TtnoFTdOJ+t47lTFzdyvu6IWJSuB4PRzHmyhxAAH2Rjg8r1WgoMQD6UGZ3TRnkEZYriBr8hkA39qcI3BLnaJHzFW+n/BanM2bHdi+tRbggYIhTJTAaaYIJ6Tov/cg=
+	t=1746733382; cv=none; b=ASBDsLjWKNSKjrSg5SEM5fuS0GGGwSOwUBCUPuWTtTO1PNvNSJAJtyPoyduU8U0v1QCt6UnVokQqjMfMamIMFxATsd64H+JsxVIoehD47cMhTGDdlWWvOqMr5RCyTxmw7l+yUeGynlAz7ec5WrqL87r/7vlrNDsTXV+YIt0eIUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746732117; c=relaxed/simple;
-	bh=gNfji5PFl+h0m2cHgjtJ540HGm+2fhAcZWawBcQGVj4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g6cTRq6JKSuNWGqNCtGgKlTcODkuCBTpqxZvSmzQcsg8XM0HFomTmbae1BP4NbVHN2HQ3cVQeSqJM5CO0EgWLerlBRZUMFfQ7SPO4UZBkKz127YUtP/+7Ybhp7q+ZCOasgFQuKilSCjROMwNQe1hcSPPAttGSNC7nH0y30Gx5/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IelAtWoL; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746732116; x=1778268116;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gNfji5PFl+h0m2cHgjtJ540HGm+2fhAcZWawBcQGVj4=;
-  b=IelAtWoL6LJf6z/v3ljvGoWhgDVKaxmP7G+cQCkX4OYhkZBsdCsNLQ9g
-   9hPVmUUIIDr8f1uCKQxH6GEZwiTozp3Qh+t70srzgwm2snUkHmly7ywNJ
-   oIzV/xN2I1AxZ5FDcY4SJg90T8NHxp/wBDCqssAQjV/AZUBPjp8KGEKov
-   q2aASaC+WmdocQXCb3tm/yJfGcW9RyHO1rmATj0Fgv339mY/sFZew5gYZ
-   i+ZtOxUi9YIT0zkw9uCEKZ91XjbBgQA+z/y2X0EfI3L8fcDdy64/EZ7Wt
-   aTJGZMhjxfe+knXD3i9aAi/nXZgwYAY6RaStgQclJKFL4QDgpOGFQsgWR
-   Q==;
-X-CSE-ConnectionGUID: 6gi/fR5cTA2CPctUzYAj/A==
-X-CSE-MsgGUID: iraohavkSZKJPNDZ5/zqRQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="73916375"
-X-IronPort-AV: E=Sophos;i="6.15,273,1739865600"; 
-   d="scan'208";a="73916375"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 12:21:54 -0700
-X-CSE-ConnectionGUID: 6K8qyxJ8Sp2SFtC4BMHSMA==
-X-CSE-MsgGUID: LP/93AoySMKUKm+Bf0N0HA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,273,1739865600"; 
-   d="scan'208";a="141348693"
-Received: from smile.fi.intel.com ([10.237.72.55])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 12:21:46 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uD6oP-00000004D8c-2ujt;
-	Thu, 08 May 2025 22:21:41 +0300
-Date: Thu, 8 May 2025 22:21:41 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 23/26] misc: lan966x_pci: Introduce board specific data
-Message-ID: <aB0ERYKdRreDe7Wt@smile.fi.intel.com>
-References: <20250507071315.394857-1-herve.codina@bootlin.com>
- <20250507071315.394857-24-herve.codina@bootlin.com>
+	s=arc-20240116; t=1746733382; c=relaxed/simple;
+	bh=wQh7YJYaTQeuZiEbkG14qwz3hRC1WEAPqpNkDOCHEws=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YHWFZbZDVaXWp0FnIVR4tDk1PN1NA0bG/xe3vdpzNkNjyZm8uiRTJ0dMXf6rY2ic+XRJluOuTLYS0W1FfZC7Ld6sWT8IRDmq0pbpt4fPPFh4fyLhK7wYW1874MV8ZD3Nb3aoi5/JN8MsuiQnCOn0ZT2uGusd8+8nH2OyxkkLdF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=NT8Qtevk; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.137.184.60] (unknown [131.107.1.188])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 7B9152109CD4;
+	Thu,  8 May 2025 12:43:00 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7B9152109CD4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1746733380;
+	bh=/bkDXJzs7WfC41R7agsNEU8kGRw1YLDtQ55PG1+pZh8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NT8QtevkSHegbtHOvVef+m1tHO3tvfr1yDq/O9C32S/g6sEcockztN2lkMVKi/xwB
+	 Y4VA/oWH+PVSktj3r7U/s6EHZ89VUcA6Yu9awSDHWhy5jn3waHENw3+mpQVm9xj0fR
+	 316wPqaq43rIt5NzJBQnGIyvR/OwZuUAiCw0ON/E=
+Message-ID: <7e9dc568-c685-4530-b2b8-669a58adc3fc@linux.microsoft.com>
+Date: Thu, 8 May 2025 12:43:00 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250507071315.394857-24-herve.codina@bootlin.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH hyperv-next 0/2] arch/x86, x86/hyperv: Few fixes for the
+ AP startup
+To: Wei Liu <wei.liu@kernel.org>
+Cc: ardb@kernel.org, bp@alien8.de, brgerst@gmail.com,
+ dave.hansen@linux.intel.com, decui@microsoft.com, dimitri.sivanich@hpe.com,
+ gautham.shenoy@amd.com, haiyangz@microsoft.com, hpa@zytor.com,
+ imran.f.khan@oracle.com, jacob.jun.pan@linux.intel.com, jpoimboe@kernel.org,
+ justin.ernst@hpe.com, kprateek.nayak@amd.com, kyle.meyer@hpe.com,
+ kys@microsoft.com, lenb@kernel.org, mhklinux@outlook.com, mingo@redhat.com,
+ nikunj@amd.com, papaluri@amd.com, patryk.wlazlyn@linux.intel.com,
+ peterz@infradead.org, rafael@kernel.org, russ.anderson@hpe.com,
+ sohil.mehta@intel.com, steve.wahl@hpe.com, tglx@linutronix.de,
+ thomas.lendacky@amd.com, tiala@microsoft.com, yuehaibing@huawei.com,
+ linux-acpi@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org, apais@microsoft.com,
+ benhill@microsoft.com, bperkins@microsoft.com, sunilmut@microsoft.com
+References: <20250507182227.7421-1-romank@linux.microsoft.com>
+ <aBz6Vuv9w4uRjaG_@liuwe-devbox-ubuntu-v2.tail21d00.ts.net>
+Content-Language: en-US
+From: Roman Kisel <romank@linux.microsoft.com>
+In-Reply-To: <aBz6Vuv9w4uRjaG_@liuwe-devbox-ubuntu-v2.tail21d00.ts.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 07, 2025 at 09:13:05AM +0200, Herve Codina wrote:
-> Only one device-tree overlay (lan966x_evb_lan9662_nic.dtbo) is handled
-> and this overlay is directly referenced in lan966x_pci_load_overlay().
+
+
+On 5/8/2025 11:39 AM, Wei Liu wrote:
+> On Wed, May 07, 2025 at 11:22:24AM -0700, Roman Kisel wrote:
+>> This patchset combines two patches that depend on each other and were not applying
+>> cleanly:
+>>    1. Fix APIC ID and VP index confusion in hv_snp_boot_ap():
+>>      https://lore.kernel.org/linux-hyperv/20250430204720.108962-1-romank@linux.microsoft.com/
+>>    2. Provide the CPU number in the wakeup AP callback:
+>>      https://lore.kernel.org/linux-hyperv/20250430204720.108962-1-romank@linux.microsoft.com/
+>>
+>> I rebased the patches on top of the latest hyperv-next tree and updated the second patch
+>> that broke the linux-next build. That fix that, I made one non-functional change:
+>> updated the signature of numachip_wakeup_secondary() to match the parameter list of
+>> wakeup_secondary_cpu().
+>>
+>> Roman Kisel (2):
+>>    x86/hyperv: Fix APIC ID and VP index confusion in hv_snp_boot_ap()
+>>    arch/x86: Provide the CPU number in the wakeup AP callback
 > 
-> This avoid to use the code for an other board.
+> I queue these up.
 > 
-> In order to be more generic and to allow support for other boards (PCI
-> Vendor/Device IDs), introduce the lan966x_pci_info structure and attach
-> it to PCI Vendor/Device IDs handled by the driver.
+> Just so you know I'm experimenting a new setup. These have been applied
+> to hyperv-next-staging. It will take some time for them to propagate to
+> hyperv-next.
+
+Thank you very much! That's exciting news about the new staging setup!!
+
 > 
-> This structure contains information related to the PCI board such as
-> information related to the dtbo describing the board we have to load.
-
-...
-
->  static struct pci_device_id lan966x_pci_ids[] = {
-> -	{ PCI_DEVICE(PCI_VENDOR_ID_EFAR, 0x9660) },
-> +	{ PCI_VDEVICE(EFAR, 0x9660), (kernel_ulong_t)&evb_lan9662_nic_info },
-
-PCI_DEVICE_DATA() ?
-
->  	{ }
->  };
+> Thanks,
+> Wei.
+> 
+>>
+>>   arch/x86/coco/sev/core.c             | 13 ++-----
+>>   arch/x86/hyperv/hv_init.c            | 33 +++++++++++++++++
+>>   arch/x86/hyperv/hv_vtl.c             | 54 ++++------------------------
+>>   arch/x86/hyperv/ivm.c                | 11 ++++--
+>>   arch/x86/include/asm/apic.h          |  8 ++---
+>>   arch/x86/include/asm/mshyperv.h      |  7 ++--
+>>   arch/x86/kernel/acpi/madt_wakeup.c   |  2 +-
+>>   arch/x86/kernel/apic/apic_noop.c     |  8 ++++-
+>>   arch/x86/kernel/apic/apic_numachip.c |  2 +-
+>>   arch/x86/kernel/apic/x2apic_uv_x.c   |  2 +-
+>>   arch/x86/kernel/smpboot.c            | 10 +++---
+>>   include/hyperv/hvgdk_mini.h          |  2 +-
+>>   12 files changed, 76 insertions(+), 76 deletions(-)
+>>
+>>
+>> base-commit: 9b0844d87b1407681b78130429f798beb366f43f
+>> -- 
+>> 2.43.0
+>>
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+Thank you,
+Roman
 
 
