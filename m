@@ -1,154 +1,131 @@
-Return-Path: <linux-acpi+bounces-13661-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13662-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F33AB1CAE
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 May 2025 20:51:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E834AB1D34
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 May 2025 21:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E1CC1C468AE
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 May 2025 18:51:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEBD61C412CA
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 May 2025 19:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7CA23C8DB;
-	Fri,  9 May 2025 18:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2AF25B1EB;
+	Fri,  9 May 2025 19:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7l1iPae"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LpOoRgXR"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE29212B28;
-	Fri,  9 May 2025 18:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92D325B1F0
+	for <linux-acpi@vger.kernel.org>; Fri,  9 May 2025 19:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746816664; cv=none; b=MCO2hnYQy00V3VeoqnUXJLsqC4CxNBeTWJQSduclUZxmLrRBV7csqEHFELYcjm0mF5SJAF95TipJqTBieRCdvZj5EL/cTjWNr2PK8uCq4aIXZlf1fFL7g8NnvYYLweVfSZGeUKqdGNlvfyhbp6RAtUfY2lfMCJghG/qZ0aIZR8o=
+	t=1746818172; cv=none; b=oo0SS9FpDKDVaMpbnYkdulEbq7wdZSZreqOzC6V5yZlaIDaj8iiXoSHo7i9m9CuPKWPsHx7a3shUziG5IjPjofRw0vOGbcgi1vRPqe5Fngo4kFzS4YKGChsP2J7zHs1n+h9+sMfjxTACmxTWAm1OiplAwdvjNvZlD1/EGqhaLn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746816664; c=relaxed/simple;
-	bh=t3m6be5GBZKdrb2ZBxNNUDmrq2ECraazOtASPCG9dFc=;
+	s=arc-20240116; t=1746818172; c=relaxed/simple;
+	bh=jqEA/h3DHx/Bp+SpKiKe2ChVUhS4J6c83G+PK49NbRA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UfqRuI7/OmOOTVOpXVQW50onpigDiPKmAZMMxMhkkyCSNaNEAdolTqQnikVNAbyKncHPgjX3g4inXpHSCP2hir3UIB66r2ud59kzGA/a7Lsi/ujOJiW4HE27hih/FysB0XuCQjCuRN+lbr7SiXMPqBgQSvhHg8AXFLpSEu/Z+MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7l1iPae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA4EC4CEF2;
-	Fri,  9 May 2025 18:51:03 +0000 (UTC)
+	 To:Cc:Content-Type; b=BW9QF5nnEyjw5ZWRnyWrpf5r7g7Uno/sBOEvB0WqvWD3vGwu3PzukUYWLDzB7P6YFSwpXcN6DAWRY+gxsatHZg3nAN3DJV9Qpe5Y55C6+0LdRm7yrVx4jOmOjD98W4dRTSjuBQ+EdWDnIO/0/3fa1U9glI78sPqEc+kSJZP8Tlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LpOoRgXR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274B6C4CEEE
+	for <linux-acpi@vger.kernel.org>; Fri,  9 May 2025 19:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746816663;
-	bh=t3m6be5GBZKdrb2ZBxNNUDmrq2ECraazOtASPCG9dFc=;
+	s=k20201202; t=1746818172;
+	bh=jqEA/h3DHx/Bp+SpKiKe2ChVUhS4J6c83G+PK49NbRA=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=m7l1iPaebPB8QpdtDxlJvrG3KsATtIsUwTvEgjfVgiFb3gblXrLyISJH+qQrrNgCP
-	 0uZ4ljcnpDAZvwGeYNKKXp9bru/8418ffz4WgAmkJilx+cf8Ygm4bWpkNkQzp5iTRj
-	 TBTlPEwu0QxAd8epq3hJfqEYiecfrnsTeh5QCYMYWPprnnkNfrBQ2vkOQB7ljcwmzH
-	 EdVlXisW9LiDKm8wRBD05zF3BcCONSQLvz+c3CSCssjXY8PGgPS9g8fe2mioZW9Uhz
-	 KIh9VwNou+LnlevjzAvNBOF4nBx/WJXsXnGd3B5R6RE+In1bkLGwYOaCRFE74pVzhj
-	 sHz/6CEN1NYbw==
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-2cc36b39545so1175315fac.1;
-        Fri, 09 May 2025 11:51:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCULMq8Nc0Xp824uWoX+mXQmcAfIaTalLcTbon/yajrRztBOxPpKWEpLF7xK0HXp3eRTcH0jzfNtU19x@vger.kernel.org, AJvYcCUV1yMDGW81Q4RPiDjrTbU0BwE7jNXavXRJjP1mMFkcsPitFqBzICk8grfnE/pY7+ryQLbBO+qxoKkWVQLW@vger.kernel.org, AJvYcCXy/9BEnWqp3a59Gw2tRp6QfPEroJyI4rpTAEO342QPk29eVIV4SzSaxWr6iNUg5yzuLAApC1Ck8sfg@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUv3oLffckSbd5E4jicWKHqb+GYG5afqjfbTuQYs1zHIf3irUl
-	oT/geaJ6kHQ3rfAMgRVDYuhve7iP1ERY+VlhxoS//5qsQdGbZla9GsqF3V1zxRTcg3KfpYrwVag
-	jlUi5gHIz9vlQmdY73nxAk7ahxbo=
-X-Google-Smtp-Source: AGHT+IF4m7l+X6tZAgUz1gBcgt1P07SQ28/qgwEd1nl2wrew0Ro2n7fDj43fzLHAM5GtUHYRT57r+FiLxNVkwVGsavc=
-X-Received: by 2002:a05:6870:718b:b0:2d5:307f:cc5f with SMTP id
- 586e51a60fabf-2dba588d3acmr2708220fac.12.1746816662921; Fri, 09 May 2025
- 11:51:02 -0700 (PDT)
+	b=LpOoRgXR3H9gQEws20U2SsiB+owzU+tLPb40lSZq2Re2AoGkGqgES+dRXQOYWg0qj
+	 v06PQDoUWaSf7b/IM3SL5vb035SbAL2g2UXBaP1z6PoQE1e9B/KQ0BHm7spslJiikm
+	 35hn+w1+q8GCKfYpLs4z7JjcnUgwVBeKrZok4hTKSL5DINKbF5qByUBgAOZhDQiVIK
+	 QpQtNRdLWDaBaeeN66Jz/A63X9D1HohIZBfphqwdM63RoKlrUz3ocSRfJntdEfRGlk
+	 wfcRhUbM7zVwmS1Z1298o2wLa5Ild5x2NDUEmbaqwGoDM9Iqo2ustHqye9//dSleoa
+	 vlE+w4X7YYDGw==
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-6064207317eso1422982eaf.1
+        for <linux-acpi@vger.kernel.org>; Fri, 09 May 2025 12:16:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVuP7m5Vc10AjqNnuC6v++9UJcIEJ/8HLIN9VKAQhqHFLKsY7HNwWfYgVZkVCOZJBxnn7hGgc6hwLaR@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxe+NXdYdVo+X3aqt/Y+Jc3TZQTJ8tssbe6o6OvqLC1PyOQIFnt
+	mQ7vaJa9L2DXoRTT5APcPNXtgg7Fud8+ArL/nEHg4YcaXqaM/f53pt46HE/X6f9KRxI4VB+spvE
+	Llr1f+mAolss8f48okIf/n+1qDQ8=
+X-Google-Smtp-Source: AGHT+IFAwOWNJExACv2OLMcCnd/mdJQJMTs+kodHDAOHrL/aW/VVNlehBI6mIVQAsm7xmn3bZXYN2T7ybhrQI8Fv4qY=
+X-Received: by 2002:a05:6820:983:b0:606:894b:fd23 with SMTP id
+ 006d021491bc7-6084b651b84mr2852696eaf.4.1746818171377; Fri, 09 May 2025
+ 12:16:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250430060603.381504-1-qiaozhe@iscas.ac.cn>
-In-Reply-To: <20250430060603.381504-1-qiaozhe@iscas.ac.cn>
+References: <CAG_X_pA0vW6ZWcT2K5R4DnOmz3R-Kz4vpiSC9oyAwKrATXMkZA@mail.gmail.com>
+ <20250508024146.1436129-1-pmarheine@chromium.org>
+In-Reply-To: <20250508024146.1436129-1-pmarheine@chromium.org>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 9 May 2025 20:50:52 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iUG01cMG7hqgAh21qobtC_RJEkppbD0fLPZRYCpe=Caw@mail.gmail.com>
-X-Gm-Features: ATxdqUH5P_ScXYpyMAS_V-YgW3i9d9OJ83MtS_D1QA7lk97Ld8GMllF6pNGkutw
-Message-ID: <CAJZ5v0iUG01cMG7hqgAh21qobtC_RJEkppbD0fLPZRYCpe=Caw@mail.gmail.com>
-Subject: Re: [PATCH v3] ACPI: PCI: Release excess memory usage.
-To: Zhe Qiao <qiaozhe@iscas.ac.cn>
-Cc: rafael@kernel.org, lenb@kernel.org, bhelgaas@google.com, will@kernel.org, 
-	sunilvl@ventanamicro.com, Markus.Elfring@web.de, linux-acpi@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Fri, 9 May 2025 21:16:00 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gf6+uena7_AJyT-p77Lu2vd6Ns2RyG-3Syg=papYp3hg@mail.gmail.com>
+X-Gm-Features: ATxdqUH5lvg0h8FKbE4CbpCB7xJ1yX5QJbz8c-3Lg6NfPqpAonxt-yVxyEL02vM
+Message-ID: <CAJZ5v0gf6+uena7_AJyT-p77Lu2vd6Ns2RyG-3Syg=papYp3hg@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: battery: negate current when discharging
+To: Peter Marheine <pmarheine@chromium.org>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 30, 2025 at 8:06=E2=80=AFAM Zhe Qiao <qiaozhe@iscas.ac.cn> wrot=
-e:
+On Thu, May 8, 2025 at 4:42=E2=80=AFAM Peter Marheine <pmarheine@chromium.o=
+rg> wrote:
 >
-> In the pci_acpi_scan_root() function, when creating a PCI bus fails,
-> we need to free up the previously allocated memory, which can avoid
-> invalid memory usage and save resources.
+> The ACPI specification requires that battery rate is always positive,
+> but the kernel ABI for POWER_SUPPLY_PROP_CURRENT_NOW
+> (Documentation/ABI/testing/sysfs-class-power) specifies that it should
+> be negative when a battery is discharging. When reporting CURRENT_NOW,
+> massage the value to match the documented ABI.
 >
-> Fixes: 789befdfa389 ("arm64: PCI: Migrate ACPI related functions to pci-a=
-cpi.c")
-> Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
-
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
-and I'm expecting this to go in via PCI.
-
+> This only changes the sign of `current_now` and not `power_now` because
+> documentation doesn't describe any particular meaning for `power_now` so
+> leaving `power_now` unchanged is less likely to confuse userspace
+> unnecessarily, whereas becoming consistent with the documented ABI is
+> worth potentially confusing clients that read `current_now`.
+>
+> Signed-off-by: Peter Marheine <pmarheine@chromium.org>
 > ---
-> V2 -> V3
->     1. Modify commit description.
->     2. Add release operation for ecam mapping resources.
-> ---
+>  drivers/acpi/battery.c | 19 ++++++++++++++++---
+>  1 file changed, 16 insertions(+), 3 deletions(-)
 >
->  drivers/pci/pci-acpi.c | 23 +++++++++++++----------
->  1 file changed, 13 insertions(+), 10 deletions(-)
->
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index af370628e583..e00790ecdc0f 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -1676,24 +1676,19 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pc=
-i_root *root)
->                 return NULL;
->
->         root_ops =3D kzalloc(sizeof(*root_ops), GFP_KERNEL);
-> -       if (!root_ops) {
-> -               kfree(ri);
-> -               return NULL;
-> -       }
-> +       if (!root_ops)
-> +               goto free_ri;
->
->         ri->cfg =3D pci_acpi_setup_ecam_mapping(root);
-> -       if (!ri->cfg) {
-> -               kfree(ri);
-> -               kfree(root_ops);
-> -               return NULL;
-> -       }
-> +       if (!ri->cfg)
-> +               goto free_root_ops;
->
->         root_ops->release_info =3D pci_acpi_generic_release_info;
->         root_ops->prepare_resources =3D pci_acpi_root_prepare_resources;
->         root_ops->pci_ops =3D (struct pci_ops *)&ri->cfg->ops->pci_ops;
->         bus =3D acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg=
-);
->         if (!bus)
-> -               return NULL;
-> +               goto free_cfg;
->
->         /* If we must preserve the resource configuration, claim now */
->         host =3D pci_find_host_bridge(bus);
-> @@ -1710,6 +1705,14 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci=
-_root *root)
->                 pcie_bus_configure_settings(child);
->
->         return bus;
+> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+> index 6760330a8a..93bb1f7d90 100644
+> --- a/drivers/acpi/battery.c
+> +++ b/drivers/acpi/battery.c
+> @@ -243,10 +243,23 @@ static int acpi_battery_get_property(struct power_s=
+upply *psy,
+>                 break;
+>         case POWER_SUPPLY_PROP_CURRENT_NOW:
+>         case POWER_SUPPLY_PROP_POWER_NOW:
+> -               if (battery->rate_now =3D=3D ACPI_BATTERY_VALUE_UNKNOWN)
+> +               if (battery->rate_now =3D=3D ACPI_BATTERY_VALUE_UNKNOWN) =
+{
+>                         ret =3D -ENODEV;
+> -               else
+> -                       val->intval =3D battery->rate_now * 1000;
+> +                       break;
+> +               }
 > +
-> +free_cfg:
-> +       pci_ecam_free(ri->cfg);
-> +free_root_ops:
-> +       kfree(root_ops);
-> +free_ri:
-> +       kfree(ri);
-> +       return NULL;
->  }
->
->  void pcibios_add_bus(struct pci_bus *bus)
+> +               val->intval =3D battery->rate_now * 1000;
+> +               /*
+> +                * When discharging, the current should be reported as a
+> +                * negative number as per the power supply class interfac=
+e
+> +                * definition.
+> +                */
+> +               if (psp =3D=3D POWER_SUPPLY_PROP_CURRENT_NOW &&
+> +                   (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
+> +                   acpi_battery_handle_discharging(battery)
+> +                               =3D=3D POWER_SUPPLY_STATUS_DISCHARGING)
+> +                       val->intval =3D -val->intval;
+> +
+>                 break;
+>         case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+>         case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
 > --
-> 2.43.0
->
+
+Applied as 6.16 material, thanks!
 
