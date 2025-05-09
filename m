@@ -1,130 +1,106 @@
-Return-Path: <linux-acpi+bounces-13662-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13663-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E834AB1D34
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 May 2025 21:16:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB66AB1D3A
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 May 2025 21:21:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEBD61C412CA
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 May 2025 19:16:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA63B50634C
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 May 2025 19:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2AF25B1EB;
-	Fri,  9 May 2025 19:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F89525CC5A;
+	Fri,  9 May 2025 19:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LpOoRgXR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ucxRDLJQ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92D325B1F0
-	for <linux-acpi@vger.kernel.org>; Fri,  9 May 2025 19:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1566D25C82E;
+	Fri,  9 May 2025 19:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746818172; cv=none; b=oo0SS9FpDKDVaMpbnYkdulEbq7wdZSZreqOzC6V5yZlaIDaj8iiXoSHo7i9m9CuPKWPsHx7a3shUziG5IjPjofRw0vOGbcgi1vRPqe5Fngo4kFzS4YKGChsP2J7zHs1n+h9+sMfjxTACmxTWAm1OiplAwdvjNvZlD1/EGqhaLn0=
+	t=1746818492; cv=none; b=a7SS3lAQRZbNUGoLBEXaKcdjkquDm0jYwm6iXvWfwFL2SPsuiZoGbTVVoEvi79w2rdEG5s44je1ducb/vBMcSnt0dy1GGCxbi86ND0vsA62ORKvNj69ZdzFbya/QEYYKgciB12mu2xKXyMI/Ku9Rf4f/+/n+EgVCJPf0R1W4KLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746818172; c=relaxed/simple;
-	bh=jqEA/h3DHx/Bp+SpKiKe2ChVUhS4J6c83G+PK49NbRA=;
+	s=arc-20240116; t=1746818492; c=relaxed/simple;
+	bh=78mBXi9qO6qcRLA4DTbvOKgTYqTpkwc+nO2qiF16nuY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BW9QF5nnEyjw5ZWRnyWrpf5r7g7Uno/sBOEvB0WqvWD3vGwu3PzukUYWLDzB7P6YFSwpXcN6DAWRY+gxsatHZg3nAN3DJV9Qpe5Y55C6+0LdRm7yrVx4jOmOjD98W4dRTSjuBQ+EdWDnIO/0/3fa1U9glI78sPqEc+kSJZP8Tlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LpOoRgXR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274B6C4CEEE
-	for <linux-acpi@vger.kernel.org>; Fri,  9 May 2025 19:16:12 +0000 (UTC)
+	 To:Cc:Content-Type; b=sUXDCGhcxR1Ka813ZsLvHsCs4K7Shq/OSQgpvr93CrAo99K4YTYRneWHz4MzE97vlBhIRzI9P2kkmTfaIzaNFR0gF9tPFLHEuFpL1Udc5yyGPyAAnLJI2ezOuiM25S3p6DcROfWvVx4hOxFt+PxFGJzGszRrf53AuMkzXXoe5Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ucxRDLJQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66092C4CEE4;
+	Fri,  9 May 2025 19:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746818172;
-	bh=jqEA/h3DHx/Bp+SpKiKe2ChVUhS4J6c83G+PK49NbRA=;
+	s=k20201202; t=1746818490;
+	bh=78mBXi9qO6qcRLA4DTbvOKgTYqTpkwc+nO2qiF16nuY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=LpOoRgXR3H9gQEws20U2SsiB+owzU+tLPb40lSZq2Re2AoGkGqgES+dRXQOYWg0qj
-	 v06PQDoUWaSf7b/IM3SL5vb035SbAL2g2UXBaP1z6PoQE1e9B/KQ0BHm7spslJiikm
-	 35hn+w1+q8GCKfYpLs4z7JjcnUgwVBeKrZok4hTKSL5DINKbF5qByUBgAOZhDQiVIK
-	 QpQtNRdLWDaBaeeN66Jz/A63X9D1HohIZBfphqwdM63RoKlrUz3ocSRfJntdEfRGlk
-	 wfcRhUbM7zVwmS1Z1298o2wLa5Ild5x2NDUEmbaqwGoDM9Iqo2ustHqye9//dSleoa
-	 vlE+w4X7YYDGw==
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-6064207317eso1422982eaf.1
-        for <linux-acpi@vger.kernel.org>; Fri, 09 May 2025 12:16:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVuP7m5Vc10AjqNnuC6v++9UJcIEJ/8HLIN9VKAQhqHFLKsY7HNwWfYgVZkVCOZJBxnn7hGgc6hwLaR@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxe+NXdYdVo+X3aqt/Y+Jc3TZQTJ8tssbe6o6OvqLC1PyOQIFnt
-	mQ7vaJa9L2DXoRTT5APcPNXtgg7Fud8+ArL/nEHg4YcaXqaM/f53pt46HE/X6f9KRxI4VB+spvE
-	Llr1f+mAolss8f48okIf/n+1qDQ8=
-X-Google-Smtp-Source: AGHT+IFAwOWNJExACv2OLMcCnd/mdJQJMTs+kodHDAOHrL/aW/VVNlehBI6mIVQAsm7xmn3bZXYN2T7ybhrQI8Fv4qY=
-X-Received: by 2002:a05:6820:983:b0:606:894b:fd23 with SMTP id
- 006d021491bc7-6084b651b84mr2852696eaf.4.1746818171377; Fri, 09 May 2025
- 12:16:11 -0700 (PDT)
+	b=ucxRDLJQVF1vTWWDpK0jp0GsHkw4jWOdt7TstoDmotZh/t/rV6tbRAkn5Mb8FboKQ
+	 3Iwnv5XGn1nIO9LkYVnn0W3qJykvXQK2zk3VIrSmDHzjSWcJXcl30EPg7OKG+xdlfr
+	 8YPqIF3C+9/bCi+f8ON2OU835vORi1G8obEMjbvn1iouL3EG/vqkN/YPDslxyk6L1G
+	 pStUVL3Kbpv8ugV6iq0VukxGgWrmbGBI4CiIOMtdrdzVPKQ3088lNd0EqV8qU3KzAV
+	 E6IDocSIsuVpuxia+QiYcuBcFo70KiSfZrTuBVVvB41+EC+/Pxl9D2WCGc0el32P5s
+	 2wGbq7PdRJa8w==
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-2d54b936ad9so1127027fac.1;
+        Fri, 09 May 2025 12:21:30 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX2Dl7NTOo8NTI9Y4JkoceznRsAId2AIHxmUBc++x5UFJA1CO1G83NrQUXWHG8uKNyGLMXzmYgwhvYcyjzG@vger.kernel.org, AJvYcCXHfDgkb/YwzhOCINs9VJJiRrdZgmbp773ZPDJg/IqB7WwUpV07BzF2Wbd/6psZE9dlgSTd3Jup/pfE@vger.kernel.org
+X-Gm-Message-State: AOJu0YxllCdCtFhgQlPHTMCUu4gWBNXf4sK/E+KZlFbeH0ux1VdiTngD
+	tOpgkAqvqRhGm40pfq/i+PRpdhX+KlJQ7QrMksnXZICorBLXOIoSCWFjTeHSFYUWuP+pmGGNyZP
+	m1KZ32+tasryRlJDSOkLtnl7EBQU=
+X-Google-Smtp-Source: AGHT+IE06Zct7yQAKfnLNm6gN+Mv2ys68hsbRR1uSoRCw37UOZC5An9uVI/MDRoE8ibL0g5hrkR/qXZ4EQJHYQrpv0Y=
+X-Received: by 2002:a05:6871:80d:b0:2d5:b7b7:2d6e with SMTP id
+ 586e51a60fabf-2dba45e8ce5mr2714795fac.38.1746818489728; Fri, 09 May 2025
+ 12:21:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAG_X_pA0vW6ZWcT2K5R4DnOmz3R-Kz4vpiSC9oyAwKrATXMkZA@mail.gmail.com>
- <20250508024146.1436129-1-pmarheine@chromium.org>
-In-Reply-To: <20250508024146.1436129-1-pmarheine@chromium.org>
+References: <20250508111625.12149-1-wse@tuxedocomputers.com>
+In-Reply-To: <20250508111625.12149-1-wse@tuxedocomputers.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 9 May 2025 21:16:00 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gf6+uena7_AJyT-p77Lu2vd6Ns2RyG-3Syg=papYp3hg@mail.gmail.com>
-X-Gm-Features: ATxdqUH5lvg0h8FKbE4CbpCB7xJ1yX5QJbz8c-3Lg6NfPqpAonxt-yVxyEL02vM
-Message-ID: <CAJZ5v0gf6+uena7_AJyT-p77Lu2vd6Ns2RyG-3Syg=papYp3hg@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: battery: negate current when discharging
-To: Peter Marheine <pmarheine@chromium.org>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org
+Date: Fri, 9 May 2025 21:21:18 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0g+_8LT6YKSuOXHtxE-HLCZ2hxKuT2514HgQ45xyWy76A@mail.gmail.com>
+X-Gm-Features: ATxdqUE0GH5Baf3x4WtsMwgeJqGixifeCFcTJu45KyqyICB0g6atnB_TAXRroN0
+Message-ID: <CAJZ5v0g+_8LT6YKSuOXHtxE-HLCZ2hxKuT2514HgQ45xyWy76A@mail.gmail.com>
+Subject: Re: [PATCH] acpi/ec: Add device to acpi_ec_no_wakeup qurik
+To: Werner Sembach <wse@tuxedocomputers.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 8, 2025 at 4:42=E2=80=AFAM Peter Marheine <pmarheine@chromium.o=
-rg> wrote:
+On Thu, May 8, 2025 at 1:16=E2=80=AFPM Werner Sembach <wse@tuxedocomputers.=
+com> wrote:
 >
-> The ACPI specification requires that battery rate is always positive,
-> but the kernel ABI for POWER_SUPPLY_PROP_CURRENT_NOW
-> (Documentation/ABI/testing/sysfs-class-power) specifies that it should
-> be negative when a battery is discharging. When reporting CURRENT_NOW,
-> massage the value to match the documented ABI.
+> Add the TUXEDO InfinityBook Pro AMD Gen9 to the acpi_ec_no_wakeup quirk
+> list to prevent spurious wakeups.
 >
-> This only changes the sign of `current_now` and not `power_now` because
-> documentation doesn't describe any particular meaning for `power_now` so
-> leaving `power_now` unchanged is less likely to confuse userspace
-> unnecessarily, whereas becoming consistent with the documented ABI is
-> worth potentially confusing clients that read `current_now`.
->
-> Signed-off-by: Peter Marheine <pmarheine@chromium.org>
+> Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
 > ---
->  drivers/acpi/battery.c | 19 ++++++++++++++++---
->  1 file changed, 16 insertions(+), 3 deletions(-)
+>  drivers/acpi/ec.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >
-> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-> index 6760330a8a..93bb1f7d90 100644
-> --- a/drivers/acpi/battery.c
-> +++ b/drivers/acpi/battery.c
-> @@ -243,10 +243,23 @@ static int acpi_battery_get_property(struct power_s=
-upply *psy,
->                 break;
->         case POWER_SUPPLY_PROP_CURRENT_NOW:
->         case POWER_SUPPLY_PROP_POWER_NOW:
-> -               if (battery->rate_now =3D=3D ACPI_BATTERY_VALUE_UNKNOWN)
-> +               if (battery->rate_now =3D=3D ACPI_BATTERY_VALUE_UNKNOWN) =
-{
->                         ret =3D -ENODEV;
-> -               else
-> -                       val->intval =3D battery->rate_now * 1000;
-> +                       break;
-> +               }
-> +
-> +               val->intval =3D battery->rate_now * 1000;
-> +               /*
-> +                * When discharging, the current should be reported as a
-> +                * negative number as per the power supply class interfac=
-e
-> +                * definition.
-> +                */
-> +               if (psp =3D=3D POWER_SUPPLY_PROP_CURRENT_NOW &&
-> +                   (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
-> +                   acpi_battery_handle_discharging(battery)
-> +                               =3D=3D POWER_SUPPLY_STATUS_DISCHARGING)
-> +                       val->intval =3D -val->intval;
-> +
->                 break;
->         case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
->         case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
+> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+> index 8db09d81918fb..de45a5b59effd 100644
+> --- a/drivers/acpi/ec.c
+> +++ b/drivers/acpi/ec.c
+> @@ -2301,6 +2301,12 @@ static const struct dmi_system_id acpi_ec_no_wakeu=
+p[] =3D {
+>                         DMI_MATCH(DMI_PRODUCT_FAMILY, "103C_5336AN HP ZHA=
+N 66 Pro"),
+>                 },
+>         },
+> +       {
+> +               // TUXEDO InfinityBook Pro AMD Gen9
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_BOARD_NAME, "GXxHRXx"),
+> +               },
+> +       },
+>         { },
+>  };
+>
 > --
 
 Applied as 6.16 material, thanks!
