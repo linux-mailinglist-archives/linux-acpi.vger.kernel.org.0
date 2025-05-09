@@ -1,180 +1,103 @@
-Return-Path: <linux-acpi+bounces-13659-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13660-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFCDAB1C91
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 May 2025 20:44:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 144B4AB1C9C
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 May 2025 20:48:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AE9017C22F
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 May 2025 18:44:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A58E1C45D96
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 May 2025 18:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641F923F403;
-	Fri,  9 May 2025 18:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE8B23ED5E;
+	Fri,  9 May 2025 18:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PamPCRVn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uWlpSlQD"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A5923C8A4;
-	Fri,  9 May 2025 18:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2181222CBF6;
+	Fri,  9 May 2025 18:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746816277; cv=none; b=MsS8i3hIx5mZFRVYtNr/suPSP3skk8g9QWwss09KiXzfpx7Zu0x0VewNDk8YMBg30uCiGuClkYZdJa54C8L8gmiOS/WTCHQ8/E7bK5EVoPhAeg0XBO/uTkMIInkcZtWTbMqufwmF8tuzkfeC1xBopKJlLhwrdzq2D27kWQbjqJo=
+	t=1746816521; cv=none; b=RtGFKEoJnd2xR5WWnvmmsOX9PTY6wWmUcOYv+k6d/d2dksQ79vTnZJ4ra4zsk8MmJJHSM1HJutWU/8mq8hEukXHcuD0E9EYSLUfEGQ508znwfcWzFxA3729YIAjUEVQiYrL2RPZeZgdg2Kw9Rh2uasd/UNEI3632m94jX4jbivQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746816277; c=relaxed/simple;
-	bh=yHaPm4qYpYakP99c9fr3sBVTMug1rAOAFQ48UO7BKr4=;
+	s=arc-20240116; t=1746816521; c=relaxed/simple;
+	bh=My1+3MQih7+ZGs+koEY7B2zh1yjPSCZ9rBsJe5PRIIQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LTfxGRvsEBNduUAyTFzAKdLUscRueS85+VXSnbngmAvanEq3dE87m0PEPzVLGCuca2W3ALp3tX5m7vSvLC/zS3mjM4kSpLgxkc6JrIQb7sh1LZFBkK+pNTDv2yimO+rccKI3dq7oC9OIt70TR/urgolJhrNFkqLn70zscKtGJTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PamPCRVn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 900A4C4CEE4;
-	Fri,  9 May 2025 18:44:36 +0000 (UTC)
+	 To:Cc:Content-Type; b=HMdKhu6gzfJZ/Bh8OGWYBJXamQBQRkRFlyK35IeeEcBKYowFWAedAKl1fEo7O4nvYSv9iHd6YIpUw1TMs7ZI5cG5tqDrKXMKUsywo/bRL4XyrHqg2gmMD1aTDwrbNyJ5YfkybNrZIpb7f1PqcADKZ/4iqfDYo8XQjBvVbjyx86Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uWlpSlQD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D950C4CEE4;
+	Fri,  9 May 2025 18:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746816276;
-	bh=yHaPm4qYpYakP99c9fr3sBVTMug1rAOAFQ48UO7BKr4=;
+	s=k20201202; t=1746816520;
+	bh=My1+3MQih7+ZGs+koEY7B2zh1yjPSCZ9rBsJe5PRIIQ=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=PamPCRVn20oP1A683QShRBN1sJIHXwDVyJlOkoJGr8ldx8kH3HZNpVu3aKGbM+cnq
-	 6pL7qxO/I45i/lX+K+5ty5D3z5+Tgh2p/HSamyiMaVadtoWq+uBfYN6Kh8V8U8eGv7
-	 4lxozxOWL32j7l1SejHmhwKGKiqo9ibSq8wo8/YuBkDPSGY8WK1wHAu3OiZ6rXTu/k
-	 SpEN+aE33YX4q0WyDIYdaFqeOE1/L/Zwc9h2UZUU7GhH7ZN95Oj7qbn6bng6uCH41R
-	 kkT1QT1ihQNPgGKlvkNYKeevqmvYLhjB0Qhj1UKamLEz5BI1g+pZbbqabo9Z0hdTrr
-	 MuFoN1sTrKf+A==
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-72c40235c34so757078a34.3;
-        Fri, 09 May 2025 11:44:36 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVT5LPGCwnQpF8DfR06jdE5wfxva7auN7pGTDuIbGLNik7vq83jBTeR2oLPeegtS4BiySFnbeJoDD6I@vger.kernel.org, AJvYcCXaPTc6jnje+FQchhk32J0VY7l1XjkoHJvPrce2tl/ClMSZd3KQckBCWWWibrNXsHROxOWNDJ7til29tlXu@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDhRxjRC8f6GjrhKpiNFLWHr5w8zWzxHuCYEvwCzJ+ti8Omk0c
-	4k6oJ6w9UmkBJ/nxAtWFvIvvcnYmjVHQ0WY+U0bTgq0BslYqn2avxyPQHpgiFcBcALp8Lnr8Ij4
-	RDP+z0yMvzCgdTaeRAuKSxfnAMzw=
-X-Google-Smtp-Source: AGHT+IGnIB3dxnKCZBESbcMEIkuIMPo40sj9h4o5CkdBSYiYRMpjeIlwywlrdNyE8gw5xWZypzdlCcQknuVOm4tdM0Y=
-X-Received: by 2002:a05:6870:5251:b0:29e:766d:e969 with SMTP id
- 586e51a60fabf-2dba42a441emr2752948fac.10.1746816275865; Fri, 09 May 2025
- 11:44:35 -0700 (PDT)
+	b=uWlpSlQDvXdtvrGbuhSNYL7jBwpKW334EuH5bySmAq8bVBJTxhwubEU1o0Ys3zqOf
+	 by2synHLNe8b8FO6fOf2oA6VKjpQwBqp43e3SEhUTKZAmkHdDbHU+7GGvpbebdrqeO
+	 UUG1eTolTMUAtDcK1+WouZrzyh7hb9tngvqPKCoCeodWMKU6Yk46a1AX3Uh9T5IftT
+	 vsqcxD3iBNVSJUoXw2V9Xz3Cfik8cKU/ufRrWABA6SPpa7Wf23vs5xQY8YgAqxJ3Gv
+	 EhbFuYFX2Vy0cmfJyenylwmT81Mk4+7tBgZ18CxHeW7t6iwCP7nrchgXXtc5BvFBnQ
+	 ZucIbswQorUDQ==
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-604ad0347f5so617445eaf.2;
+        Fri, 09 May 2025 11:48:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV4Hpgt8LNx9xs1+hTlgfUdH/w04ahJ+i+wlI0RIR+6bnqMkVcUlxLxMmA13tuhLBQPF9Aew6iFmBSo@vger.kernel.org, AJvYcCWnLuneq8nx/ql1MNA3lgRpjTHL7A+gGht2AZs9doTR4XGzEgVW8ahORzKvr+ctfAKRLhMiLnv/ZgFg@vger.kernel.org, AJvYcCXmKo5eSQEICMZ2YCL5u4M77e4wHSYpt7HXN0hDTCRhbVMufYpQQay9/269Xx+bS2/vQoT23egVoNHvtbpF@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDiIJ+JnbFVi/xPWXpLzYPAurTJFiQRp/nwcqmfE5NSSy2FZQ4
+	2sWiSXb0+OfI3SCQO1oU3Qq0PUJMnn6mza72EiOPAVeqqCM/T8TOagGEu+qCw/n257jZcCBkpER
+	zFozeHd2ot0yd8VxLH4O2O37GkaE=
+X-Google-Smtp-Source: AGHT+IEFE8/BnJZlxUAgWsL1amhNwc7r5riPys75kcshhW3sZ05Bo9lzZ6yPYfueEH7ZKd0hIVMQrBznvLXd2XsSH8c=
+X-Received: by 2002:a05:6870:a48b:b0:2d5:230f:b34d with SMTP id
+ 586e51a60fabf-2dba41fe6e7mr2783019fac.1.1746816519829; Fri, 09 May 2025
+ 11:48:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250427075317.42687-1-qiyuzhu2@amd.com>
-In-Reply-To: <20250427075317.42687-1-qiyuzhu2@amd.com>
+References: <7ae7866ab8b897253703ecee44c688b6832d49a3.1745552799.git.xiaopei01@kylinos.cn>
+In-Reply-To: <7ae7866ab8b897253703ecee44c688b6832d49a3.1745552799.git.xiaopei01@kylinos.cn>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 9 May 2025 20:44:25 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hv0WKd-SXFhUgYs-Zpc+-PsSNOBu0r7L5TzJWgddtsKA@mail.gmail.com>
-X-Gm-Features: ATxdqUEW9I43TrLpU3xnfxiYegRlBKgljA4GdvREP4sjHZ8NC3qwUzxdCbsX5ps
-Message-ID: <CAJZ5v0hv0WKd-SXFhUgYs-Zpc+-PsSNOBu0r7L5TzJWgddtsKA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI:PRM: Reduce unnecessary printing to avoid the
- worries of regular users
-To: Zhu Qiyu <qiyuzhu2@amd.com>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Fri, 9 May 2025 20:48:29 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iqu82HP4bd0Ne2AkjSt6_EDa43Qt5jAWhAGHcdq5ePUw@mail.gmail.com>
+X-Gm-Features: ATxdqUFbxBo0M0IYDtlWkZecAYcoPXiPlDtjaPpY-AvEt_JIptg9XIk2TngiCbY
+Message-ID: <CAJZ5v0iqu82HP4bd0Ne2AkjSt6_EDa43Qt5jAWhAGHcdq5ePUw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: pci_root: Constify fwnode_handle in acpi_pci_root_remap_iospace
+To: Pei Xiao <xiaopei01@kylinos.cn>
+Cc: bhelgaas@google.com, rafael@kernel.org, linux-pci@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Apr 27, 2025 at 9:54=E2=80=AFAM Zhu Qiyu <qiyuzhu2@amd.com> wrote:
+On Fri, Apr 25, 2025 at 5:48=E2=80=AFAM Pei Xiao <xiaopei01@kylinos.cn> wro=
+te:
 >
-> Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
-> handler and context") introduces non-essential printing "Failed
-> to find VA for GUID: 7626C6AE-F973-429C-A91C-107D7BE298B0, PA: 0x0"
-> which causes unnecessary worry for regular users.
+> The fwnode_handle passed into pci_register_io_range is not modified,
+> so make it const.
 >
-> Refer to PRM Spec Section 4.1.2[1], both static data buffer address
-> and ACPI parameter buffer address may be NULL if they are not needed.
-> So there is no need to print out "Failed to find VA ... " to intimidate
-> regular users.
->
-> Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%2=
-0Mechanism%20-%20with%20legal%20notice.pdf # [1]
->
-> Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
+> Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 > ---
->  drivers/acpi/prmt.c | 31 ++++++++++++++++++++++++++-----
->  1 file changed, 26 insertions(+), 5 deletions(-)
+>  drivers/acpi/pci_root.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-> index e549914a636c..fcd721559eb5 100644
-> --- a/drivers/acpi/prmt.c
-> +++ b/drivers/acpi/prmt.c
-> @@ -72,7 +72,20 @@ struct prm_module_info {
->         struct prm_handler_info handlers[] __counted_by(handler_count);
->  };
->
-> -static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
-> +enum prm_addr_type {
-> +       PRM_HANDLER_ADDR,
-> +       PRM_STATIC_DATA_BUFFER_ADDR,
-> +       PRM_ACPI_PARAM_BUFFER_ADDR,
-> +       PRM_ADD_TYPE_MAX,
-> +};
-> +
-> +static char *prm_addr_type_name[PRM_ADD_TYPE_MAX] =3D {
-> +       "handler",
-> +       "static data buffer",
-> +       "acpi param buffer",
-> +};
-> +
-> +static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa, enum prm_addr_type=
- type)
->  {
->         efi_memory_desc_t *md;
->         u64 pa_offset =3D pa & ~PAGE_MASK;
-> @@ -85,7 +98,12 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
->                 }
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index d0b6a024daae..74ade4160314 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -858,7 +858,7 @@ static void acpi_pci_root_validate_resources(struct d=
+evice *dev,
 >         }
->
-> -       pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa)=
-;
-
-Well, maybe just change the line above to something like:
-
-  pr_info("VA for GUID: %pUL, PA: 0x%llx not found\n", guid, pa);
-
-which should look less intimidating?
-
-> +       if (type =3D=3D PRM_HANDLER_ADDR)
-> +               pr_warn("Failed to find %s VA for GUID: %pUL, PA: 0x%llx"=
-,
-> +                       prm_addr_type_name[type], guid, pa);
-> +       else
-> +               pr_debug("Failed to find %s VA for GUID: %pUL, PA: 0x%llx=
-",
-> +                       prm_addr_type_name[type], guid, pa);
->
->         return 0;
 >  }
-> @@ -153,13 +171,16 @@ acpi_parse_prmt(union acpi_subtable_headers *header=
-, const unsigned long end)
 >
->                 guid_copy(&th->guid, (guid_t *)handler_info->handler_guid=
-);
->                 th->handler_addr =3D
-> -                       (void *)efi_pa_va_lookup(&th->guid, handler_info-=
->handler_address);
-> +                       (void *)efi_pa_va_lookup(&th->guid, handler_info-=
->handler_address,
-> +                                       PRM_HANDLER_ADDR);
->
->                 th->static_data_buffer_addr =3D
-> -                       efi_pa_va_lookup(&th->guid, handler_info->static_=
-data_buffer_address);
-> +                       efi_pa_va_lookup(&th->guid, handler_info->static_=
-data_buffer_address,
-> +                                       PRM_STATIC_DATA_BUFFER_ADDR);
->
->                 th->acpi_param_buffer_addr =3D
-> -                       efi_pa_va_lookup(&th->guid, handler_info->acpi_pa=
-ram_buffer_address);
-> +                       efi_pa_va_lookup(&th->guid, handler_info->acpi_pa=
-ram_buffer_address,
-> +                                       PRM_ACPI_PARAM_BUFFER_ADDR);
->
->         } while (++cur_handler < tm->handler_count && (handler_info =3D g=
-et_next_handler(handler_info)));
->
->
-> base-commit: 9d7a0577c9db35c4cc52db90bc415ea248446472
+> -static void acpi_pci_root_remap_iospace(struct fwnode_handle *fwnode,
+> +static void acpi_pci_root_remap_iospace(const struct fwnode_handle *fwno=
+de,
+>                         struct resource_entry *entry)
+>  {
+>  #ifdef PCI_IOBASE
 > --
-> 2.34.1
->
+
+Applied as 6.16 material, thanks!
 
