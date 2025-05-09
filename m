@@ -1,133 +1,84 @@
-Return-Path: <linux-acpi+bounces-13654-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13655-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED80AB03ED
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 21:47:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33FCFAB0726
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 May 2025 02:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C4F71C4212B
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 May 2025 19:47:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42E9B7BB951
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 May 2025 00:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A4128B511;
-	Thu,  8 May 2025 19:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957671B7F4;
+	Fri,  9 May 2025 00:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="NT8Qtevk"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GeHURCqy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C3B289823;
-	Thu,  8 May 2025 19:43:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB4E1802B;
+	Fri,  9 May 2025 00:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746733382; cv=none; b=ASBDsLjWKNSKjrSg5SEM5fuS0GGGwSOwUBCUPuWTtTO1PNvNSJAJtyPoyduU8U0v1QCt6UnVokQqjMfMamIMFxATsd64H+JsxVIoehD47cMhTGDdlWWvOqMr5RCyTxmw7l+yUeGynlAz7ec5WrqL87r/7vlrNDsTXV+YIt0eIUI=
+	t=1746751351; cv=none; b=p+l9MzZySmWH6Vun/nkR6H2sB32CE2b1tBB3hEXSkjCVmJpAX9LQb1PunSGXXlCg9ZvFsuaFccKwboe1rUULfWFFfw/UEmz5isnUPf/3Pf46ywOukBZ0mID2JAVrp5LNFQiuRSm8IbENF6L09K/dVpuPWqdyEosmZqI8kQH19F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746733382; c=relaxed/simple;
-	bh=wQh7YJYaTQeuZiEbkG14qwz3hRC1WEAPqpNkDOCHEws=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YHWFZbZDVaXWp0FnIVR4tDk1PN1NA0bG/xe3vdpzNkNjyZm8uiRTJ0dMXf6rY2ic+XRJluOuTLYS0W1FfZC7Ld6sWT8IRDmq0pbpt4fPPFh4fyLhK7wYW1874MV8ZD3Nb3aoi5/JN8MsuiQnCOn0ZT2uGusd8+8nH2OyxkkLdF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=NT8Qtevk; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.137.184.60] (unknown [131.107.1.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 7B9152109CD4;
-	Thu,  8 May 2025 12:43:00 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7B9152109CD4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1746733380;
-	bh=/bkDXJzs7WfC41R7agsNEU8kGRw1YLDtQ55PG1+pZh8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NT8QtevkSHegbtHOvVef+m1tHO3tvfr1yDq/O9C32S/g6sEcockztN2lkMVKi/xwB
-	 Y4VA/oWH+PVSktj3r7U/s6EHZ89VUcA6Yu9awSDHWhy5jn3waHENw3+mpQVm9xj0fR
-	 316wPqaq43rIt5NzJBQnGIyvR/OwZuUAiCw0ON/E=
-Message-ID: <7e9dc568-c685-4530-b2b8-669a58adc3fc@linux.microsoft.com>
-Date: Thu, 8 May 2025 12:43:00 -0700
+	s=arc-20240116; t=1746751351; c=relaxed/simple;
+	bh=PRRpLihiyKbV/Sfm7nAyauKWja5MC4KYGOEp5dMFOPU=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=BGx/fRVMknVc7i2WIPZzMK7XjWm20VwL9k38SSbDi14qIOXHbohDJIVHXRO5raiK0PRUj+n2P/BNMM8Y2mlxiHsb/w3e0UQ22gOqeNLMLfWGHfqHI+NY7a1+d3/HmkUCGmyradMCF1gAlfNsNIMEPqwYZMkoCLQEsEVd6UVC8CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GeHURCqy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715CEC4CEED;
+	Fri,  9 May 2025 00:42:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1746751351;
+	bh=PRRpLihiyKbV/Sfm7nAyauKWja5MC4KYGOEp5dMFOPU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=GeHURCqy78rgaPH336N7O9DR2zC7Dw3upYbA5PXTkE3c9yrNHxYhi+rlndDY1nj01
+	 Cs/isfb6y6BJask44SKtR4DoFzv1HGXitOByXCwXPBESsszgnZ2pSxTUoqw5WdJIJx
+	 yDmSt6Fy7MdG77SX11Re/PiIMGvbjh/GlTUS2YtY=
+Date: Thu, 8 May 2025 17:42:29 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+Cc: Jonathan.Cameron@huawei.com, dan.j.williams@intel.com, rppt@kernel.org,
+ rafael@kernel.org, lenb@kernel.org, alison.schofield@intel.com,
+ rrichter@amd.com, bfaccini@nvidia.com, haibo1.xu@intel.com,
+ david@redhat.com, chenhuacai@kernel.org, linux-cxl@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, chenbaozi@phytium.com.cn, loongarch@lists.linux.dev
+Subject: Re: [PATCH v3 1/1] mm: numa_memblks: introduce
+ numa_add_reserved_memblk
+Message-Id: <20250508174229.c310803222405c1b7d60e104@linux-foundation.org>
+In-Reply-To: <20250508022719.3941335-1-wangyuquan1236@phytium.com.cn>
+References: <20250508022719.3941335-1-wangyuquan1236@phytium.com.cn>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH hyperv-next 0/2] arch/x86, x86/hyperv: Few fixes for the
- AP startup
-To: Wei Liu <wei.liu@kernel.org>
-Cc: ardb@kernel.org, bp@alien8.de, brgerst@gmail.com,
- dave.hansen@linux.intel.com, decui@microsoft.com, dimitri.sivanich@hpe.com,
- gautham.shenoy@amd.com, haiyangz@microsoft.com, hpa@zytor.com,
- imran.f.khan@oracle.com, jacob.jun.pan@linux.intel.com, jpoimboe@kernel.org,
- justin.ernst@hpe.com, kprateek.nayak@amd.com, kyle.meyer@hpe.com,
- kys@microsoft.com, lenb@kernel.org, mhklinux@outlook.com, mingo@redhat.com,
- nikunj@amd.com, papaluri@amd.com, patryk.wlazlyn@linux.intel.com,
- peterz@infradead.org, rafael@kernel.org, russ.anderson@hpe.com,
- sohil.mehta@intel.com, steve.wahl@hpe.com, tglx@linutronix.de,
- thomas.lendacky@amd.com, tiala@microsoft.com, yuehaibing@huawei.com,
- linux-acpi@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, x86@kernel.org, apais@microsoft.com,
- benhill@microsoft.com, bperkins@microsoft.com, sunilmut@microsoft.com
-References: <20250507182227.7421-1-romank@linux.microsoft.com>
- <aBz6Vuv9w4uRjaG_@liuwe-devbox-ubuntu-v2.tail21d00.ts.net>
-Content-Language: en-US
-From: Roman Kisel <romank@linux.microsoft.com>
-In-Reply-To: <aBz6Vuv9w4uRjaG_@liuwe-devbox-ubuntu-v2.tail21d00.ts.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Thu,  8 May 2025 10:27:19 +0800 Yuquan Wang <wangyuquan1236@phytium.com.cn> wrote:
 
-
-On 5/8/2025 11:39 AM, Wei Liu wrote:
-> On Wed, May 07, 2025 at 11:22:24AM -0700, Roman Kisel wrote:
->> This patchset combines two patches that depend on each other and were not applying
->> cleanly:
->>    1. Fix APIC ID and VP index confusion in hv_snp_boot_ap():
->>      https://lore.kernel.org/linux-hyperv/20250430204720.108962-1-romank@linux.microsoft.com/
->>    2. Provide the CPU number in the wakeup AP callback:
->>      https://lore.kernel.org/linux-hyperv/20250430204720.108962-1-romank@linux.microsoft.com/
->>
->> I rebased the patches on top of the latest hyperv-next tree and updated the second patch
->> that broke the linux-next build. That fix that, I made one non-functional change:
->> updated the signature of numachip_wakeup_secondary() to match the parameter list of
->> wakeup_secondary_cpu().
->>
->> Roman Kisel (2):
->>    x86/hyperv: Fix APIC ID and VP index confusion in hv_snp_boot_ap()
->>    arch/x86: Provide the CPU number in the wakeup AP callback
+> acpi_parse_cfmws() currently adds empty CFMWS ranges to numa_meminfo
+> with the expectation that numa_cleanup_meminfo moves them to
+> numa_reserved_meminfo. There is no need for that indirection when it is
+> known in advance that these unpopulated ranges are meant for
+> numa_reserved_meminfo in support of future hotplug / CXL provisioning.
 > 
-> I queue these up.
+> Introduce and use numa_add_reserved_memblk() to add the empty CFMWS
+> ranges directly.
 > 
-> Just so you know I'm experimenting a new setup. These have been applied
-> to hyperv-next-staging. It will take some time for them to propagate to
-> hyperv-next.
+> ...
+>
+>  drivers/acpi/numa/srat.c     |  2 +-
+>  include/linux/numa_memblks.h |  1 +
+>  mm/numa_memblks.c            | 22 ++++++++++++++++++++++
 
-Thank you very much! That's exciting news about the new staging setup!!
-
-> 
-> Thanks,
-> Wei.
-> 
->>
->>   arch/x86/coco/sev/core.c             | 13 ++-----
->>   arch/x86/hyperv/hv_init.c            | 33 +++++++++++++++++
->>   arch/x86/hyperv/hv_vtl.c             | 54 ++++------------------------
->>   arch/x86/hyperv/ivm.c                | 11 ++++--
->>   arch/x86/include/asm/apic.h          |  8 ++---
->>   arch/x86/include/asm/mshyperv.h      |  7 ++--
->>   arch/x86/kernel/acpi/madt_wakeup.c   |  2 +-
->>   arch/x86/kernel/apic/apic_noop.c     |  8 ++++-
->>   arch/x86/kernel/apic/apic_numachip.c |  2 +-
->>   arch/x86/kernel/apic/x2apic_uv_x.c   |  2 +-
->>   arch/x86/kernel/smpboot.c            | 10 +++---
->>   include/hyperv/hvgdk_mini.h          |  2 +-
->>   12 files changed, 76 insertions(+), 76 deletions(-)
->>
->>
->> base-commit: 9b0844d87b1407681b78130429f798beb366f43f
->> -- 
->> 2.43.0
->>
-
--- 
-Thank you,
-Roman
-
+I'm not sure which tree this best belongs to so I'll add it to mm-git. 
+If it later pops up in another tree, I'll drop it again.
 
