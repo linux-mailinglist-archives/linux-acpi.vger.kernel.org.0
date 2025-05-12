@@ -1,105 +1,98 @@
-Return-Path: <linux-acpi+bounces-13680-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13683-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51562AB31D9
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 May 2025 10:39:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AAFEAB320E
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 May 2025 10:46:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0E7C18980E6
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 May 2025 08:39:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAAFB7A9BB0
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 May 2025 08:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CBB258CD5;
-	Mon, 12 May 2025 08:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DBCC25A325;
+	Mon, 12 May 2025 08:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="jkfD8kI9"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="g9yE1SUI"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8A4D528;
-	Mon, 12 May 2025 08:39:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FE325A2C5;
+	Mon, 12 May 2025 08:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747039153; cv=none; b=JhFd34a04iji401WwLWhiO3ki2nilLm4l9iz59nRjdxDoEd40L2YuIWTl36zl45D0Lkyq872Jqo6NWEIHl1jFd3N9maHc6cSw5XiTnJmiPu9f5SMn/BJcKyr4w81P3Jlga5s7tP5LEZf8iSDrohH3qp02kK/hHvdgDdU5FUVf1Q=
+	t=1747039595; cv=none; b=rOukwpcWe7Iycd87KirRUqOJoOzKVcBY8dgk2wMhl7Y9uDsolorqIYD2BB4D9u1wA9/24RrwlfSO0KqsBk6IyDJj6ELO8C1qajnexOiAE1ZvcA9rk9j81gS0GmHAp6KnOCQcb/yRzGF4Rmqa4VOK4bOUFIzW/ahgO2gHDPHEY6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747039153; c=relaxed/simple;
-	bh=v7Q321BVuunXSgyj7aSO4QoqmSPSdep7tFWOWDiZU+A=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=jdF9zYXOyKx0n/+vNugp/CeBhHg9cAqeowy/BKzAwaA/oOv5xovr3psdY6SzL6iJASvZd3K4IxhjLoyc93/wDf5YqpZm323EH1/BmNfHKjgySC5LT5IjwdicNHQ76dBM9BQD/X1AiPK2oPweV2LdO5KY82ER2U6+ogM4iZMjaM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=jkfD8kI9; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0304840E01ED;
-	Mon, 12 May 2025 08:39:08 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 2n3dMIktGZCl; Mon, 12 May 2025 08:39:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1747039141; bh=KB4Is1RNA340QS9c49/4swl8GNEr6mQ3bP8uGT6F+kA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=jkfD8kI9m7w/EL5BJE8jNCY6yLd40dk3ED7YccKH3Y+cM+awVeLZgBSNcTZiwb2Hs
-	 ojhWgZaaHh0CqcJ6X4SQvPZG23k1o/XfeHRVFByAHAL2yraMOewMqhW85BshtzOdAd
-	 tNghZNy4Cz5gH4aTE726SN4k0OaXBpBwNoJTLh/5A1RQwMGRR42QnHrbpdbxPd++2J
-	 79v/w1xseqCjsoLvhnxlqd2s/2mZlC75PyDkkySfjRjt8TBgKldIFkD+bEudxVhhWA
-	 QICW6TB3q8pqwgLfNXprip8t1nmASQOpY4wqNw3BVNgNycK5Yfdt+zBoDYHbNs+fbf
-	 H8+I5qb42JHodExDXa63OExDLwby6JUp1eQmYKMmkREwHHmNL4ovQA2CbEOe7zsdb2
-	 izJNBL6IbDUpMdniZkq8g3Mm92GlDYJwWDOhuDakx6bIfazKYCJaycmQjZkMw6ef9h
-	 0Vyjtbm4+i6Qu8sGNf1ffcvdaxE6mSNK6gG3q+5ZUvj6oj2LLnWtl0Qa+MwaLk1tHf
-	 eodGn+JEyiEcsb99P7ABXIXFuGgFkBxA3vb2DwyDVLjS/ZCV+MVna/TfniMfvBO4eR
-	 v/j/dUDdatqtvArGB4wtp556TC5QGZUD0l7gUq6xnbWtSsDGKL2xKzRx7OLIzAmvv9
-	 AbZozIBFiN9Fby/J9iehu9/k=
-Received: from [IPv6:::1] (unknown [IPv6:2a02:3038:204:a05a:7dcf:8efb:5016:7f05])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 221DE40E023B;
-	Mon, 12 May 2025 08:38:27 +0000 (UTC)
-Date: Mon, 12 May 2025 10:38:21 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, shiju.jose@huawei.com
-CC: linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-doc@vger.kernel.org, rafael@kernel.org, tony.luck@intel.com,
- lenb@kernel.org, leo.duran@amd.com, Yazen.Ghannam@amd.com,
- mchehab@kernel.org, linux-mm@kvack.org, linuxarm@huawei.com,
- rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
- dave.hansen@linux.intel.com, naoya.horiguchi@nec.com, james.morse@arm.com,
- jthoughton@google.com, somasundaram.a@hpe.com, erdemaktas@google.com,
- pgonda@google.com, duenwen@google.com, gthelen@google.com,
- wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
- wbs@os.amperecomputing.com, nifan.cxl@gmail.com, tanxiaofei@huawei.com,
- prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
- kangkang.shen@futurewei.com, wanghuiqiang@huawei.com
-Subject: Re: [PATCH v5 0/2] ACPI: Add support for ACPI RAS2 feature table
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20250512091644.00001598@huawei.com>
-References: <20250507214344.709-1-shiju.jose@huawei.com> <20250512091644.00001598@huawei.com>
-Message-ID: <3A6C3FC9-B347-4FA9-BA88-3DAF423853C5@alien8.de>
+	s=arc-20240116; t=1747039595; c=relaxed/simple;
+	bh=Z2VWxu2V7moZYDd06BiypMThnTUdVOI8o7oiaxVEHIY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Su6OKdyBxkfiJVS0Tu1Hzw7en9JCcXveakcUYwj+7M+aZHiNV6oT1hK1oh0v+PVOTMUMDijIeJyoSuEz1LOwvAO5+c8cC6PR1d+cLCrcbhjpTZ5UADjQ4v34fvem2KafCR/1J+hNOG/tM12jWGzVWBmNvKDmKaqUKLuRmdK7tOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=g9yE1SUI; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54C8jqc41586901
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Mon, 12 May 2025 01:45:59 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54C8jqc41586901
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025042001; t=1747039560;
+	bh=7a7DioSZkOkbzgFBLNF+1MMN8PbvCPClN1vs7CkMDT4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=g9yE1SUIh+a4/A07fhKWcikSvZS/B1o32tMs/ljMYpKNDM5Mzs8/5CLXUUzW+O2d9
+	 anFCSIGiPm6lXib7pAMPfKu9y7K6kCM65jPzDHqpFTNgaiVUrnm8LLASk4DkkPleFV
+	 KXWcQs4YY0htPPFfCvcSwzJaxgP0bip3uPvcLW58ILxilulgaXhzoJ3fH7rYGNjr2W
+	 Jti+nP3nWugH5PAeH7DXNtt/R17RvC/pPhDLA2a7XbxaimpeGRXO4LZHZhIhz24/d8
+	 76LsC0rfGbo5S8nmx6unBRR1HHW9iyGvQiDbgcMLTqL2t+jkloEdlVTsyQg+vtg+z7
+	 TwX8Nrssqf2bQ==
+From: "Xin Li (Intel)" <xin@zytor.com>
+To: linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@kernel.org, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        peterz@infradead.org, jgross@suse.com, boris.ostrovsky@oracle.com,
+        rafael@kernel.org, lenb@kernel.org
+Subject: [PATCH v1 0/3] MSR fixes and cleanups after last round of MSR cleanups
+Date: Mon, 12 May 2025 01:45:49 -0700
+Message-ID: <20250512084552.1586883-1-xin@zytor.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On May 12, 2025 10:16:44 AM GMT+02:00, Jonathan Cameron <Jonathan=2ECameron=
-@huawei=2Ecom> wrote:
->What path do we expect this little series to take forwards?
->
->I'm kind of assuming through ACPI given the acpica dependency,=20
+These patches:
 
-Yeah, probably better thru the ACPI tree=2E=2E=2E
+1) remove a superfluous inclusion of <asm/asm.h> accidently added to
+   drivers/acpi/processor_throttling.c in commit:
 
-Thx=2E
+     efef7f184f2e ("x86/msr: Add explicit includes of <asm/msr.h>").
 
---=20
-Sent from a small device: formatting sucks and brevity is inevitable=2E 
+2) Fix uninitialized symbol 'err' introduced by:
+
+     d815da84fdd0 ("x86/msr: Change the function type of native_read_msr_safe()").
+
+3) Convert a native_wrmsr() use to native_wrmsrq() in
+   arch/x86/coco/sev/core.c.
+
+
+Xin Li (Intel) (3):
+  x86/msr: Remove a superfluous inclusion of <asm/asm.h>
+  x86/xen/msr: Fix uninitialized symbol 'err'
+  x86/msr: Convert a native_wrmsr() use to native_wrmsrq()
+
+ arch/x86/coco/sev/core.c            | 7 +------
+ arch/x86/xen/enlighten_pv.c         | 5 ++++-
+ drivers/acpi/processor_throttling.c | 1 -
+ 3 files changed, 5 insertions(+), 8 deletions(-)
+
+
+base-commit: 9cf78722003178b09c409df9aafe9d79e5b9a74e
+-- 
+2.49.0
+
 
