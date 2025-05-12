@@ -1,74 +1,95 @@
-Return-Path: <linux-acpi+bounces-13690-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13691-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10766AB4745
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 May 2025 00:30:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBECDAB474A
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 May 2025 00:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1609866633
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 May 2025 22:29:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30CF9174577
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 May 2025 22:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5BA29A306;
-	Mon, 12 May 2025 22:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE3725C802;
+	Mon, 12 May 2025 22:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Kh2sX2TV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MLZ1KgzQ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C41929712E;
-	Mon, 12 May 2025 22:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BCC186A;
+	Mon, 12 May 2025 22:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747088985; cv=none; b=gincuhZA+oMLbymeAg9yDN6+BTqp9Bw0bg7PqPsvEGAjt15NXUD4zZqWHxCl8NHH4qXcI3Ywhs6aLa5MxodL2iWBtNw8tPJNjY7huKqxsmubgdbS03SieAeWCuYe2R9/MjD62aFr3UPEpFNh1AUzBpXiKUgzsy/J4Ds8gk8QERU=
+	t=1747089184; cv=none; b=d34MhThXQ05YY705fntZxXUM3/aCWfpZvf71ovMtIUT/9XQMYCCMTxt65+QwibZRXXzXNnktwmKm/vkgm5/ElRK7gpTa0OJ8yEO6sf1YH147obE5sXLIBi1WC/A5wxFbr09btVSae1tJoXVDRhTzJXfSJvBz7TdKGY/6x1EY0ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747088985; c=relaxed/simple;
-	bh=5CqDU14g/oFS1Y8GRNwcNL1FWflWWtY4uExr2eEpAmQ=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=A/14vv6yspmTtwuLxza4Nf44PNBKV9EaqGxQeA1iYn7MyRQFcYYg57mN+jnzhGSOcdE7EiKny2Aav9hzyj9QTwHV+GFnVc11MlNqPZaPdNX3EL/eYCzD1GWin0XFoXKzjl/FOFjN0SvtRyGKaD8SKxZAIhqmahd/DzlTXyV+cbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Kh2sX2TV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 792F6C4CEE7;
-	Mon, 12 May 2025 22:29:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1747088985;
-	bh=5CqDU14g/oFS1Y8GRNwcNL1FWflWWtY4uExr2eEpAmQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Kh2sX2TVWN315jHAHFHy9vXhsd+xoCU41dGNMCjEMg1Omz0IBS/J+3lNXTsv9QClO
-	 QOted5NLME6FqAh7U3+w88vsjeRVX8PKecV4YB5ZUo41a4v5SLnU4RRL8Zt6pu2oFN
-	 7nVwJ46k5TcD8/WizQ4edEBs7Uqta1NiBt5icBSk=
-Date: Mon, 12 May 2025 15:29:44 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>, gourry@gourry.net,
- honggyu.kim@sk.com, yunjeong.mun@sk.com, gregkh@linuxfoundation.org,
- rafael@kernel.org, lenb@kernel.org, dan.j.williams@intel.com,
- Jonathan.Cameron@huawei.com, dave.jiang@intel.com, horen.chuang@linux.dev,
- hannes@cmpxchg.org, osalvador@suse.de, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com
-Subject: Re: [PATCH v8] mm/mempolicy: Weighted Interleave Auto-tuning
-Message-Id: <20250512152944.eab80697d7404a803f9f65e6@linux-foundation.org>
-In-Reply-To: <20250512142511.3959833-1-joshua.hahnjy@gmail.com>
-References: <87zffizk4r.fsf@DESKTOP-5N7EMDA>
-	<20250512142511.3959833-1-joshua.hahnjy@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1747089184; c=relaxed/simple;
+	bh=7uaPkVruATXm9Huody3+3MZx6tE8WbKbRuYqnjKm0pI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M6L0Oa6RfpotKk2a/7URWTjFPE9sJ1IwANHcOSJEsblALhs/aIc4qp1KM7ysixxaCTXjuVkzX/JmWZL9tg3Zduv2i4GXqBEvnXXxGr9tqqrZNat/78ocipwnnX8CphjQruPjpg6fs6mTIEcjAbvkk5i+ILw1PuSGde2mfDOhB54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MLZ1KgzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D80E1C4CEE7;
+	Mon, 12 May 2025 22:33:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747089183;
+	bh=7uaPkVruATXm9Huody3+3MZx6tE8WbKbRuYqnjKm0pI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MLZ1KgzQOJhVUAg9HL/gG+/R//L7FAoO/kB/yvK5yZYA02+YkydJW15gu7HC4e1/l
+	 TwDqKmCGX8QJ1BMBsPkhEMfaHO0CeBjM16ODGskLNGUuuwssFGg9Zg2pN2cZMZhkxz
+	 yZftrJotY5E5fl3AFwbv/ZA0XqmSjhZUZ3j4L05gEo4q0Gd71DcA7BPV0j+n88AqC/
+	 /lXlbS0VrgwPwF4yyi7g4nUmRvIHmlMf4NUEQUPT6Bwunk1fLQ09V4q/NQG5V8APL6
+	 zyyz1I7mHgeS9gkiYzuw+Zlc0XZcHmMtcT8e3ZxeSTWAKYT4a64llabhgqhbPyg1lX
+	 Ent9sEQe4ZTww==
+Date: Tue, 13 May 2025 00:32:59 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	Peter Rosin <peda@axentia.se>, Derek Kiernan <derek.kiernan@amd.com>, 
+	Dragan Cvetic <dragan.cvetic@amd.com>, Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Wolfram Sang <wsa@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 19/26] i2c: busses: at91: Add MCHP_LAN966X_PCI
+ dependency
+Message-ID: <t362y4tvg3y2q5yop3vnqme3qi6wxxehpbyzbx6qp7zbrihqkr@5bvsxvd2ti7i>
+References: <20250507071315.394857-1-herve.codina@bootlin.com>
+ <20250507071315.394857-20-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250507071315.394857-20-herve.codina@bootlin.com>
 
-On Mon, 12 May 2025 07:25:10 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+Hi Herve,
 
-> Andrew, I'm very sorry -- do you think you can fold this fixlet in as well?
+On Wed, May 07, 2025 at 09:13:01AM +0200, Herve Codina wrote:
+> The AT91 I2C driver depends on ARCH_AT91.
+> 
+> This I2C controller can be used by the LAN966x PCI device and so
+> it needs to be available when the LAN966x PCI device is enabled.
+> 
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 
-No probs.
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
 
-In future, something a little more formal would be preferred, so I
-don't have to write your changelog and forge your Signed-off-by:!
-
+Thanks,
+Andi
 
