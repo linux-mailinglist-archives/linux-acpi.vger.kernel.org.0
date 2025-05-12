@@ -1,370 +1,180 @@
-Return-Path: <linux-acpi+bounces-13674-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13675-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A0ABAB2845
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 May 2025 14:56:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA01AB2CB3
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 May 2025 03:07:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05B4C7A84D3
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 May 2025 12:55:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9EAC7A68F6
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 May 2025 01:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42333256C8A;
-	Sun, 11 May 2025 12:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F75E199223;
+	Mon, 12 May 2025 01:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="L4G/wSdy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0A7256C62;
-	Sun, 11 May 2025 12:56:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746968196; cv=none; b=Lu2YdI5pOHC8/km6kZkoDva4APhUHIY81/Fq4iBnBm7BzwxTF7Rtn3uxHUj+nyl4dBusYw+KQ0YrVGm3q9oHeVbjkVufJDfLpyFkKjdhcPtlY0wtC9A3E88W5iGkijGInU9vv81UH1rSiS+syKA+OueXEuChWCsZI8stxNc+Tkg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746968196; c=relaxed/simple;
-	bh=pwclJDUdZjI4+oI7YGLUqYQepdttd+QNHLwsyoQ/uNg=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=IhnMqQhG0qnceVBwdG4gtsiuMkNmuYzQESTjlmiD3VdhxLHREBpDh2mGdLgCXXlSnhvqgFG6oxmxncjroCn/ydLw6RY/lvqUiTiW50ue4o3md7r7DgFUL1+YsxY2J39W6puXz2wNmuuhKn/YrFnNTkwWdTZ/a7ux8t7XKLeto/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-669ff7000002311f-f7-68209e753430
-Message-ID: <2e030edd-b3e4-4b79-9e1d-1be0c6b0d0b5@sk.com>
-Date: Sun, 11 May 2025 21:56:20 +0900
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2081.outbound.protection.outlook.com [40.107.92.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E69650276;
+	Mon, 12 May 2025 01:07:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.81
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747012022; cv=fail; b=RckMLMhccQog5R4Y/DCkZ4INHjDKQZsMi2v7+BjoRDAYsh7HiLHQihEwINXXfq0MPVv0QdIzSyg91ZZDo/GkxcqdI0684JZWFjfuwVjfH0h0HgQBImhfB6O1ZeeQQOO0Z2UexW4JVlbq3wIgxsAmSXw2wZ4hCXFb3OKJmpqZYcw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747012022; c=relaxed/simple;
+	bh=zyDBC+37KcRuZMlv9drJKNKEG7K6G1PAoIG0OJEsbpY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pbsnRNQitWWXkRbGpPEb7ROAEsrOLVBEfBdNej4c8e+j1cfuKsRPuyoc2fH6DMDKVEyYdq7fGhkLIhpOaDR1ANgB96wkMkbrliZk83lbd2LuhAf0Ovr9EhwjPfuB3uRxlkcAUfgzoAHw25wHsZssMpGqEsuFaezUV/5zR3Jv0cw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=L4G/wSdy; arc=fail smtp.client-ip=40.107.92.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=elxpPbMIDlAddwNBMwrKEcifwnZWll6jfs64GEJKn6bO3E3oPCDpp1tfZrKn6CbWYoXzPQfdk8gb0jj0N2uHENbnCaH1FERF1KW0rh8UFCeFqXntC7ktPKPdLUjOfJwmeL1/tbDRy29dXcZ9usU5uZEvVNlcJLCv5KhMHy9I5NvJnyT8Dc8tCE/Jawck+c7sYEFzOq8YbkZP5ItC4mXkkU0HiSfrburO5YZOzT/EjSIHkwdhWCr4mXUrwJREiNUw5CyweflriSnESgP4cQjAobf7OmijPVw0SYtz/n9IEBFPJjDLs656aSSQJAPn84SSxCVW4uQYwQ+psxS4yiBn4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=r628/BtLY81eWfOhPuc76Iq/POqsBSr5WhbFKccarOQ=;
+ b=p9SN88afiCsVy6z+CmZ/9cW3obwwUe3cwk/PYckf0uZBqLbEeRjWghMyQyHQkaDiMMj5xEbRIBEesVUZv4EMBV18j+K0fVUzpFbHmE72iUhMy0NvgxIDoAZ/4cyAtmwTXXKkmeSix/kqctLeJWnkmmY0kskOt62P/oW3DpW2e7IstzyXjjh+djlwJTzj827UUnshYGxLsNaBO3bDqTUforK39ONjWWgEXyc7F737vZ7G9FLS173wNa5uLI4srbXSWSJx+KZFH7TDw3Zc8xgah0Q4yMX7A7qrZoUQOw7SHhbTBZKUCkvV2jEA5Z6iNTiaDYg01EgL6zYwZ6+1OQ8d5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=r628/BtLY81eWfOhPuc76Iq/POqsBSr5WhbFKccarOQ=;
+ b=L4G/wSdygl6ND+SsuFrK4O+UUv6bVa1/iFf2cZH+yrdYm2TmRCuu4cD7Un3shgX5KQ9r/0Sa2JsBa61VvFsPC3akKW1A4VMVi5qoviLRlXswIfQuFYoXpiAkIsVvrobFigEErXB4/P9w5Lxnq6dJDdoHSYdIyQRYxiM2JeTy9aI=
+Received: from MW4PR03CA0125.namprd03.prod.outlook.com (2603:10b6:303:8c::10)
+ by IA1PR12MB8467.namprd12.prod.outlook.com (2603:10b6:208:448::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.28; Mon, 12 May
+ 2025 01:06:55 +0000
+Received: from CO1PEPF000075EF.namprd03.prod.outlook.com
+ (2603:10b6:303:8c:cafe::94) by MW4PR03CA0125.outlook.office365.com
+ (2603:10b6:303:8c::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.26 via Frontend Transport; Mon,
+ 12 May 2025 01:06:55 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000075EF.mail.protection.outlook.com (10.167.249.38) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8722.18 via Frontend Transport; Mon, 12 May 2025 01:06:55 +0000
+Received: from qyzhu-os-debug.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 11 May
+ 2025 20:06:52 -0500
+From: Zhu Qiyu <qiyuzhu2@amd.com>
+To: <rafael@kernel.org>
+CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <qiyuzhu2@amd.com>
+Subject: [PATCH v2] ACPI:PRM: Reduce unnecessary printing to avoid the
+Date: Mon, 12 May 2025 01:06:20 +0000
+Message-ID: <20250512010620.142155-1-qiyuzhu2@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: kernel_team@skhynix.com, "Huang, Ying" <ying.huang@linux.alibaba.com>,
- gourry@gourry.net, yunjeong.mun@sk.com, gregkh@linuxfoundation.org,
- rafael@kernel.org, lenb@kernel.org, dan.j.williams@intel.com,
- Jonathan.Cameron@huawei.com, dave.jiang@intel.com, horen.chuang@linux.dev,
- hannes@cmpxchg.org, osalvador@suse.de, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-mm@kvack.org, kernel-team@meta.com
-Subject: Re: [PATCH v8] mm/mempolicy: Weighted Interleave Auto-tuning
-To: Joshua Hahn <joshua.hahnjy@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <20250511025840.2410154-1-joshua.hahnjy@gmail.com>
-Content-Language: ko
-From: Honggyu Kim <honggyu.kim@sk.com>
-In-Reply-To: <20250511025840.2410154-1-joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrFIsWRmVeSWpSXmKPExsXC9ZZnkW7pPIUMg5nnZSzmrF/DZjF96gVG
-	ixM3G9ksft49zm7RvHg9m8XqTb4Wt/vPsVqsWniNzeL41nnsFvsuAtXufPiWzWL5vn5Gi8u7
-	5rBZ3Fvzn9XizLQii7lfpjJbrF6T4SDocfjNe2aPnbPusnt0t11m92g58pbVY/Gel0wem1Z1
-	snls+jSJ3ePEjN8sHjsfWnosbJjK7LF/7hp2j3MXKzw2n672+LxJLoAvissmJTUnsyy1SN8u
-	gStj5aQu5oKJfhWdj2YyNTD+tOti5OSQEDCRmLZwGTOMfWf7QjYQm1fAUmLdvK1gcRYBVYmW
-	a89YIeKCEidnPmEBsUUF5CXu35rB3sXIxcEssJpZYtmZDYwgCWEBV4nb646B2SICYRJ3dk0C
-	axYSsJNY9+cT2FBmARGJ2Z1tYDabgJrElZeTmEBsTgF7iRf/+lkgaswkurZ2MULY8hLb385h
-	BlkmIXCKXWL17CdMEFdLShxccYNlAqPgLCQHzkKyYxaSWbOQzFrAyLKKUSgzryw3MTPHRC+j
-	Mi+zQi85P3cTIzCGl9X+id7B+OlC8CFGAQ5GJR7eB9HyGUKsiWXFlbmHGCU4mJVEeKcyAIV4
-	UxIrq1KL8uOLSnNSiw8xSnOwKInzGn0rTxESSE8sSc1OTS1ILYLJMnFwSjUwMq5JXv/A658Y
-	z8fl9kdELTWrDxXa31loZDw5+A6bYKbQtoA2hXoZma2cKtavP2xP1p+5+uc33mMb5JdE31ly
-	+eSWuXvvLimsO5QkxzzJdK6N1cfMicopLD+vvqhvit5R+b5mrnlwaqUZh9CnD4qvrGW/TDz5
-	SDVrU5WD3Y7FjFtzX1ZE9XzbpMRSnJFoqMVcVJwIAEYcTdbdAgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrFIsWRmVeSWpSXmKPExsXCNUNLT7d0nkKGwc6jPBZz1q9hs5g+9QKj
-	xYmbjWwWP+8eZ7doXryezWL1Jl+L2/3nWC1WLbzGZnF86zx2i30XgWoPzz3JarHz4Vs2i+X7
-	+hktLu+aw2Zxb81/Vosz04os5n6Zymyxek2Gxe9tK9gchD0Ov3nP7LFz1l12j+62y+weLUfe
-	snos3vOSyWPTqk42j02fJrF7nJjxm8Vj50NLj4UNU5k99s9dw+5x7mKFx7fbHh6LX3xg8th8
-	utrj8ya5AIEoLpuU1JzMstQifbsEroyVk7qYCyb6VXQ+msnUwPjTrouRk0NCwETizvaFbCA2
-	r4ClxLp5W5lBbBYBVYmWa89YIeKCEidnPmEBsUUF5CXu35rB3sXIxcEssJpZYtmZDYwgCWEB
-	V4nb646B2SICYRJ3dk0CaxYSsJNY9+cT2FBmARGJ2Z1tYDabgJrElZeTmEBsTgF7iRf/+lkg
-	aswkurZ2MULY8hLb385hnsDINwvJHbOQjJqFpGUWkpYFjCyrGEUy88pyEzNzTPWKszMq8zIr
-	9JLzczcxAmN0We2fiTsYv1x2P8QowMGoxMP7Ikk+Q4g1say4MvcQowQHs5II71QGoBBvSmJl
-	VWpRfnxRaU5q8SFGaQ4WJXFer/DUBCGB9MSS1OzU1ILUIpgsEwenVANj6ZmrPJ+Emi4c2Cli
-	vvXY1996Iac8w5odp59OcH6S92eT+99infgo5c17ciq5lWseJs/Y1C3XqLt12TsToboJe499
-	lSy4a3KwsFTJIrit66rfHiE2j3av0k7mhyZ10sEr7k7m2eAzp7c7MF/a6m34uWsTTvTLHLrz
-	gr+vzWJBjTW3s4buYRclluKMREMt5qLiRAD+Pq3PzQIAAA==
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000075EF:EE_|IA1PR12MB8467:EE_
+X-MS-Office365-Filtering-Correlation-Id: f9abe12f-d1dc-426e-10cf-08dd90f1498e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|36860700013|1800799024|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Imh8GtMppT2nWQLXBElMSRX61MDPXWhYTw/rNX1vLpxGCYj87VJ2lgqXXkam?=
+ =?us-ascii?Q?m0xQw2tIluvlByYsmfd0v6QGMHdyow5jiGP/N71X1jWPJhtWT8ZfUj24Kl4A?=
+ =?us-ascii?Q?7NNXHh5AT5A6NnII7lthVx3NkQTQ0pxKxlc3fSfme4IGysFmtfHq2VVHnjiy?=
+ =?us-ascii?Q?utdjbF4V9Qmx3C64nvan79SCkVrnZMUR8Qt+8EzhgMWN57zeICfkjY0VYHr7?=
+ =?us-ascii?Q?PvQNySr2z3MRl9im7Sy2ob/KwbSHwIYCsa1tNwwigKI4AE6tUyiODb3bSIRs?=
+ =?us-ascii?Q?Sk67a22dTvCc2UnPOL5FM1nPtWTJDypXdV7X6tqVfBDOSUk/U4RbnX7csBfH?=
+ =?us-ascii?Q?cjfD9ZN2K/TCjoAPZtctw+tLm0o3O2PiwBhPq+cHHJel2PIopdoHhWkn/nX8?=
+ =?us-ascii?Q?pz95HWP4rPKWHMmwCSfbY6vY2Cwtop5hyPVJXkoY38jy2Ae2F3YIsGnKiVKc?=
+ =?us-ascii?Q?IgVpH8B0Xm57ZuzwMDrtxotqQkq2ys4sDgRVmHiz/fSss3omfNl/4uKYv7+o?=
+ =?us-ascii?Q?3R+Mj0kc7MU+CEhlYGjKATVqaBAf6ws+rUIKrK/bGELgSLAK2JAooJfxOSrc?=
+ =?us-ascii?Q?zG+TWw+mm4unhdMB8mcs0V7lFoNkoyYNXmAD2FlEnWEXyC9imaB5tUBCMU6X?=
+ =?us-ascii?Q?S7zM8/s9p6Pk+xMJygqZzTHluXoYPLHwsFpbidwTeNFp81b/9d30An35KFtv?=
+ =?us-ascii?Q?Z8droIibC3SisY76SjO9RqAD2RzKnGbTwoAnrwFoLtmnl4a3UUcSlOE5u8oR?=
+ =?us-ascii?Q?jfLksNG0A5SUZKCBGvR3KkaXbivFofoPKpAYhtEoMzOTtS41kCXhW+zYzm6d?=
+ =?us-ascii?Q?FVfWSQgaT4lk9d+2sdexpcUEVVcK9x3lZxo3YtaWtPpWfFAXwPQg2OTMBRv5?=
+ =?us-ascii?Q?db6TFVf48gNp8dB7cWLWGSmFKYWPYuY8O4RqljK1s4MIwuVdEyBImtxywyBp?=
+ =?us-ascii?Q?BT8p3h38QMlENiVbJOgI8QkystoMfQvVVOEkZjHFF4JbKxr0Z0yK23lwNh9N?=
+ =?us-ascii?Q?jh3f+v9yRCgCMWnp6j859l3GmzTpHzFge3rKraFK0bIUt1bQVQLkrYESIhM/?=
+ =?us-ascii?Q?JY+zifzTp4H8gFuSDcsK2Ljnn/1a6Ic5llugaJMU05ku2LmNPZovBjm5/71m?=
+ =?us-ascii?Q?WKt5N1CAlwRARyOJ/Fz8D1ZElyGY7jdO3OHIRG31v9Vd8eKLn2uuv+OTWI4p?=
+ =?us-ascii?Q?Tt9LVTfN3UQZaKjrt7WnRI2M1KYYbz2xYf+3px/sTqNLaKWLnuBAapraG8Tr?=
+ =?us-ascii?Q?WakPnK6xXZj1fiojAX69VlQaPWgMAqfV5acvmYu7p89SySc8pJBTdlV/t+83?=
+ =?us-ascii?Q?nJD3uxx6UluFiw1cbRU+nhPoOsDjnTEwpOjKaiyKEkEem888HUkH8+5zcv9t?=
+ =?us-ascii?Q?w1URj1zfprgdZUQIde0zEn5vrtDYp4Z3rr0P2vVp/0wp+/fXm8IC7NpvxiQY?=
+ =?us-ascii?Q?hCujU/CWwXyhoHfhTKIILFBCONHwfwtsVpCllEaaScM6rylnZL16AQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2025 01:06:55.0664
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f9abe12f-d1dc-426e-10cf-08dd90f1498e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000075EF.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8467
 
-Hi Joshua,
+Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
+handler and context") introduces non-essential printing "Failed
+to find VA for GUID: 7626C6AE-F973-429C-A91C-107D7BE298B0, PA: 0x0"
+which causes unnecessary worry for regular users.
 
-Thanks for the update this patch and it looks good to me.
+Refer to PRM Spec Section 4.1.2[1], both static data buffer address
+and ACPI parameter buffer address may be NULL if they are not needed.
+So there is no need to print out "Failed to find VA ... " to intimidate
+regular users.
 
-I've applied your v8 patch with your fixup here together, then tested it in my
-server, which has 8ch of DRAM with 4ch of CXL memory in each socket.
+Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
 
-I can confirm that it shows decent ratio with this auto weight configuration as
-follows.
+Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
+---
 
-   $ ls /sys/kernel/mm/mempolicy/weighted_interleave/
-   auto  node0  node1  node2  node3
+Previous versions can be found at:
+v1: https://lore.kernel.org/linux-acpi/CAJZ5v0hv0WKd-SXFhUgYs-Zpc+-PsSNOBu0r7L5TzJWgddtsKA@mail.gmail.com/t/#u
 
-   $ cat /sys/kernel/mm/mempolicy/weighted_interleave/*
-   true
-   3
-   3
-   2
-   2
+Changes in v2:
+ - Reduce the code changes.
 
-Hi Andrew,
+ drivers/acpi/prmt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I'm not sure if Joshua is better to post v9, but if you want to fold and update,
-then could you please add my tags as follows when you fold this change?
+diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+index e549914a636c..28a9930267a3 100644
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -85,7 +85,7 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
+ 		}
+ 	}
+ 
+-	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
++	pr_info("VA for GUID: %pUL, PA: 0x%llx not found\n", guid, pa);
+ 
+ 	return 0;
+ }
 
-   Reviewed-by: Honggyu Kim <honggyu.kim@sk.com>
-   Tested-by: Honggyu Kim <honggyu.kim@sk.com>
-
-I added the same tags in v7 but not included in v8 somehow.
-https://lore.kernel.org/linux-mm/5fdd7db9-96fb-49ea-9803-977158cb0132@sk.com
-
-Thanks,
-Honggyu
-
-On 5/11/2025 11:58 AM, Joshua Hahn wrote:
-> Hello Andrew,
-> 
-> I was hoping to fold this fixlet in with the patch this belongs to. It includes
-> some wordsmithing changes, some code simplification/cleanups, and makes sure
-> that the code behavior matches that of the ABI I described. I've kept the
-> original message below as well, where Ying suggested the changes present in
-> this fixlet.
-> 
-> Please let me know if this fixlet is too big, and you would rather prefer a
-> new version instead. Thank you as always for your patience and support!
-> Joshua
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave b/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
-> index ec13382c606f..649c0e9b895c 100644
-> --- a/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
-> +++ b/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
-> @@ -24,7 +24,7 @@ Description:	Weight configuration interface for nodeN
->   		empty string, ...) will return -EINVAL.
-> 
->   		Changing the weight to a valid value will automatically
-> -		update the system to manual mode as well.
-> +		switch the system to manual mode as well.
-> 
->   What:		/sys/kernel/mm/mempolicy/weighted_interleave/auto
->   Date:		May 2025
-> diff --git a/include/linux/mempolicy.h b/include/linux/mempolicy.h
-> index 3e8da8ba1146..0fe96f3ab3ef 100644
-> --- a/include/linux/mempolicy.h
-> +++ b/include/linux/mempolicy.h
-> @@ -57,15 +57,6 @@ struct mempolicy {
->   	} w;
->   };
-> 
-> -/*
-> - * A null weighted_interleave_state is interpted as having .mode = "auto",
-> - * and .iw_table is interpreted as an array of 1s with length nr_node_ids.
-> - */
-> -struct weighted_interleave_state {
-> -	bool mode_auto;
-> -	u8 iw_table[];
-> -};
-> -
->   /*
->    * Support for managing mempolicy data objects (clone, copy, destroy)
->    * The default fast path of a NULL MPOL_DEFAULT policy is always inlined.
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index f542691b7123..0624d735a2e7 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -148,6 +148,14 @@ static struct mempolicy preferred_node_policy[MAX_NUMNODES];
->    */
->   static const int weightiness = 32;
-> 
-> +/*
-> + * A null weighted_interleave_state is interpreted as having .mode="auto",
-> + * and .iw_table is interpreted as an array of 1s with length nr_node_ids.
-> + */
-> +struct weighted_interleave_state {
-> +	bool mode_auto;
-> +	u8 iw_table[];
-> +};
->   static struct weighted_interleave_state __rcu *wi_state;
->   static unsigned int *node_bw_table;
-> 
-> @@ -3561,9 +3569,8 @@ static ssize_t node_store(struct kobject *kobj, struct kobj_attribute *attr,
->   	int i;
-> 
->   	node_attr = container_of(attr, struct iw_node_attr, kobj_attr);
-> -	if (count == 0 || sysfs_streq(buf, ""))
-> -		weight = 0;
-> -	else if (kstrtou8(buf, 0, &weight) || weight == 0)
-> +	if (count == 0 || sysfs_streq(buf, "") ||
-> +	    kstrtou8(buf, 0, &weight) || weight == 0)
->   		return -EINVAL;
-> 
->   	new_wi_state = kzalloc(struct_size(new_wi_state, iw_table, nr_node_ids),
-> @@ -3630,9 +3637,15 @@ static ssize_t weighted_interleave_auto_store(struct kobject *kobj,
->   	if (!input) {
->   		old_wi_state = rcu_dereference_protected(wi_state,
->   					lockdep_is_held(&wi_state_lock));
-> -		if (old_wi_state)
-> -			memcpy(new_wi_state->iw_table, old_wi_state->iw_table,
-> -					nr_node_ids * sizeof(u8));
-> +		if (!old_wi_state)
-> +			goto update_wi_state;
-> +		if (input == old_wi_state->mode_auto) {
-> +			mutex_unlock(&wi_state_lock);
-> +			return count;
-> +		}
-> +
-> +		memcpy(new_wi_state->iw_table, old_wi_state->iw_table,
-> +					       nr_node_ids * sizeof(u8));
->   		goto update_wi_state;
->   	}
-> 
-> @@ -3707,8 +3720,12 @@ static void wi_state_free(void)
->   	kfree(&wi_group->wi_kobj);
->   }
-> 
-> +static struct kobj_attribute wi_auto_attr =
-> +	__ATTR(auto, 0664, weighted_interleave_auto_show,
-> +			   weighted_interleave_auto_store);
-> +
->   static void wi_cleanup(void) {
-> -	sysfs_remove_file(&wi_group->wi_kobj, &wi_group->auto_kobj_attr.attr);
-> +	sysfs_remove_file(&wi_group->wi_kobj, &wi_auto_attr.attr);
->   	sysfs_wi_node_delete_all();
->   	wi_state_free();
->   }
-> @@ -3798,10 +3815,6 @@ static int wi_node_notifier(struct notifier_block *nb,
->   	return NOTIFY_OK;
->   }
-> 
-> -static struct kobj_attribute wi_auto_attr =
-> -	__ATTR(auto, 0664, weighted_interleave_auto_show,
-> -			   weighted_interleave_auto_store);
-> -
->   static int __init add_weighted_interleave_group(struct kobject *mempolicy_kobj)
->   {
->   	int nid, err;
-> 
-> 
-> On Sat, 10 May 2025 11:51:50 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> 
->> On Sat, 10 May 2025 13:25:32 +0800 "Huang, Ying" <ying.huang@linux.alibaba.com> wrote:
->>
->> Hi Ying,
->> Thank you for reviewing my patch, as always!
->>
->>> Hi, Joshua,
->>>
->>> Thank you for updated version!  And sorry for late reply.
->>>
->>> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
->>
->> [...snip...]
->>
->>>> diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave b/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
->>>> index 0b7972de04e9..ec13382c606f 100644
->>>> --- a/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
->>>> +++ b/Documentation/ABI/testing/sysfs-kernel-mm-mempolicy-weighted-interleave
->>>> @@ -20,6 +20,35 @@ Description:	Weight configuration interface for nodeN
->>>>   		Minimum weight: 1
->>>>   		Maximum weight: 255
->>>>   
->>>> -		Writing an empty string or `0` will reset the weight to the
->>>> -		system default. The system default may be set by the kernel
->>>> -		or drivers at boot or during hotplug events.
->>>> +		Writing invalid values (i.e. any values not in [1,255],
->>>> +		empty string, ...) will return -EINVAL.
->>>> +
->>>> +		Changing the weight to a valid value will automatically
->>>> +		update the system to manual mode as well.
->>>
->>> s/update/switch/ ?
->>>
->>> But my English is poor, please keep your version if you think that it's
->>> better.
->>
->> I have no particular preference here, whatever will make it easiest for the
->> users to understand what is happening. I'll take your suggestion!
->>
->> [...snip...]
->>
->>>> +/*
->>>> + * A null weighted_interleave_state is interpted as having .mode = "auto",
->>>> + * and .iw_table is interpreted as an array of 1s with length nr_node_ids.
->>>> + */
->>>
->>> Better to move the comments to above "wi_state" definition?
->>>
->>>> +struct weighted_interleave_state {
->>>> +	bool mode_auto;
->>>> +	u8 iw_table[];
->>>> +};
->>>> +
->>>
->>> Why do you put the type definition in mempolicy.h instead of
->>> mempolicy.c?  I don't find other users except mempolicy.c.
->>
->> Good point, I'll move the definition to mempolicy.c and move the comment
->> to the wi_state definition as well.
->>
->> [...snip...]
->>
->>>> @@ -3450,31 +3555,104 @@ static ssize_t node_show(struct kobject *kobj, struct kobj_attribute *attr,
->>>>   static ssize_t node_store(struct kobject *kobj, struct kobj_attribute *attr,
->>>>   			  const char *buf, size_t count)
->>>>   {
->>>> +	struct weighted_interleave_state *new_wi_state, *old_wi_state = NULL;
->>>>   	struct iw_node_attr *node_attr;
->>>> -	u8 *new;
->>>> -	u8 *old;
->>>>   	u8 weight = 0;
->>>> +	int i;
->>>>   
->>>>   	node_attr = container_of(attr, struct iw_node_attr, kobj_attr);
->>>>   	if (count == 0 || sysfs_streq(buf, ""))
->>>>   		weight = 0;
->>>
->>> According to revised ABI, we should return -EINVAL here?
->>
->> Great catch, I completely ignored the ABI description that I wrote...
->> I'll go ahead and just return -EINVAL here!
->>
->> [...snip...]
->>
->>>> +static ssize_t weighted_interleave_auto_store(struct kobject *kobj,
->>>> +		struct kobj_attribute *attr, const char *buf, size_t count)
->>>> +{
->>>> +	struct weighted_interleave_state *new_wi_state, *old_wi_state = NULL;
->>>> +	unsigned int *bw;
->>>> +	bool input;
->>>> +	int i;
->>>> +
->>>> +	if (kstrtobool(buf, &input))
->>>> +		return -EINVAL;
->>>> +
->>>> +	new_wi_state = kzalloc(struct_size(new_wi_state, iw_table, nr_node_ids),
->>>> +			       GFP_KERNEL);
->>>> +	if (!new_wi_state)
->>>> +		return -ENOMEM;
->>>> +	for (i = 0; i < nr_node_ids; i++)
->>>> +		new_wi_state->iw_table[i] = 1;
->>>> +
->>>> +	mutex_lock(&wi_state_lock);
->>>> +	if (!input) {
->>>
->>> If input == old_wi_state->mode_auto, we can return directly?
->>
->> Yes, that makes sense to me.
->>
->>>>   static void wi_cleanup(void) {
->>>> +	sysfs_remove_file(&wi_group->wi_kobj, &wi_group->auto_kobj_attr.attr);
->>>
->>> Why not just
->>>
->>> 	sysfs_remove_file(&wi_group->wi_kobj, &wi_auto_attr.attr);
->>>
->>> ?
->>
->> Also makes sense!!
->>
->>> ---
->>> Best Regards,
->>> Huang, Ying
->>
->> Thank you for your great feedback Ying, I'll make changes based on
->> your suggestions and shortly send up a v9. I hope you have a great day!
->> Joshua
->>
+base-commit: 92a09c47464d040866cf2b4cd052bc60555185fb
+-- 
+2.43.0
 
 
