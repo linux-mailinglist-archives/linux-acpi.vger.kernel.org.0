@@ -1,76 +1,89 @@
-Return-Path: <linux-acpi+bounces-13705-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13706-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E9BAB5A9F
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 May 2025 18:59:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E77AB5F0B
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 May 2025 00:09:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3989189C40F
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 May 2025 17:00:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DF9F19E0998
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 May 2025 22:10:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3082BE7D6;
-	Tue, 13 May 2025 16:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA1A0202961;
+	Tue, 13 May 2025 22:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FQyyt+Q8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YlpvT5Ib"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7D32BF3C0;
-	Tue, 13 May 2025 16:59:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E726B672;
+	Tue, 13 May 2025 22:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747155584; cv=none; b=nG1qdykiC+Js+wiBB7fHFUX3GLkAP1qAmjvWOYm+k0Tv3L7HIAyLL4o9Nc5UDSnVwpNkxwSxRd9QB7E/Y4O1Nu8jJMQmssqDJf2L9/WECP9p9QqoG3e1t7pUJszCdsVOjTtSep4tFhBqrMspTKVJcQG+nceNNVB1szE28fc/ESo=
+	t=1747174190; cv=none; b=tDh3cZoHN1EqugUTcwL83nNj+uAl9jXq0fyJt6y/3LJp+vrKTqANdIMEyv/gJbbaZ6dHvQBG/NSyoiZWOqjbE4Pnm/q9BlHja8mlr4XKQtWYgGc2oUSDMivGTctA9N/kf13LKRa/wrCPGHC4BXuEg1Lu2zE9iACDZgpiVbF8szI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747155584; c=relaxed/simple;
-	bh=MSCkUA6vnRhy8Sae4hmW1h3EhXHjttD7BUxZq5ZLzwg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=iqVArB9G3vtb+N5+lG5yndtRdomig2evTt2MlqP+IkoSNxK2/YYpa+KIsdkKGK0uVctnKiySZbzDJH6YsNml90zNakbXahInO8dbUwJLFNnz03J/HqM7OgR9DDKNEqLo/S7lTobsQU2YhM8jb5Erx6gWxrdEwboAmgPrZnPx1mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FQyyt+Q8; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1747174190; c=relaxed/simple;
+	bh=KkbSGaaqp8jSgFqgu1SEOqd6OF0O+xElkdV+bbcIil4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t20eg0s+2oIJNDjGRCNjhfQPsu7s7LKASg3UhHV7B1i8Y24LLqPpjqoxTCq9yRMq2eksCIZhZC8USRFbQxRYuo6soJXsEQnopntPfBfFt7sqZn069Y4eSZZsNGcKfoc2Ub7yLhFajMMPNiDjU//JyBjtcMprKEijUT4XcdIQdFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YlpvT5Ib; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747155581; x=1778691581;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=MSCkUA6vnRhy8Sae4hmW1h3EhXHjttD7BUxZq5ZLzwg=;
-  b=FQyyt+Q82cpICJOBtdnGsasFVnYAqSFUeS/T0pkWjhkbYDWv3h2BKIS+
-   RgCNnNOUBmpKqwVNfpgkvCtldX5ALfVbJCVWBdyYPenqeYGcRaeq0uNeg
-   ohmsIIYJCc1aSlVzOf53Gb6RSy40D9KbIBhTK0mIav+D3QeANyRhVpaKL
-   pNBVQZ9C6P2P5+WlzxtBA/Dx7RbVad3zsAPRgSfqUidlJ3d+STGubUDBq
-   iCr/c/rgGxfzZngortCRW1yoNNvrxbQn66OwZPySfGq+Y0jmH3xkyX2Ol
-   /ZLlTBFgnmPxoqxpyBNf9o7fnpqfzsXcYm1zZrQDNJ+GSivbRg+ct/1eL
+  t=1747174189; x=1778710189;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KkbSGaaqp8jSgFqgu1SEOqd6OF0O+xElkdV+bbcIil4=;
+  b=YlpvT5Ib8ZuMsXdQZClTNVGqTlTH9lk2DgwUYMBluedRKXEry52WJC8c
+   5V1LW9oZCTMIt0wdjuFTJmiwEoybhoxsCBnWUY9qGk8xkBrESS366X3bA
+   N6IItr85ozZMt/kXVtww3aSNZvvvlncaQZe3gO2UffK0/Nlf0g3A2RYhM
+   cJD8eRxYPQ8r8igV9X0Bb4wlw8QNi2FTICyj5K5bnXnkwCXe1Q3HO43OF
+   m/ur7517+dpm07zCPkhH0TMG8j24EKs5w2CXsoUZbCS/KYSxHaoUgs9Av
+   NTJ+LesO8mFAnO8+ciB8/fAi3930PV7XuSLKdVEsEXJathC2SimZY65J4
    w==;
-X-CSE-ConnectionGUID: mWxDKVJ4RTWaAogr6WNNbA==
-X-CSE-MsgGUID: GTSzL83ITKiPDvv9pgK7TA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="49091037"
-X-IronPort-AV: E=Sophos;i="6.15,285,1739865600"; 
-   d="scan'208";a="49091037"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 09:59:41 -0700
-X-CSE-ConnectionGUID: 3WlXync2Q/ylJUyQ6nxDPg==
-X-CSE-MsgGUID: DgTx8mmYQsWAmyAgE7R6ZQ==
+X-CSE-ConnectionGUID: e9TcuRIgTImwaW8ETroW5g==
+X-CSE-MsgGUID: o1dZKRdZRrq3z+QO3a201w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="71548759"
+X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; 
+   d="scan'208";a="71548759"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 15:09:48 -0700
+X-CSE-ConnectionGUID: An0NDBrZQse9QVSSeLPPdQ==
+X-CSE-MsgGUID: 5j1rMCa/RKOIqlFg7QemzQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,285,1739865600"; 
-   d="scan'208";a="138690659"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 13 May 2025 09:59:39 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uEsye-000GFV-2g;
-	Tue, 13 May 2025 16:59:36 +0000
-Date: Wed, 14 May 2025 00:59:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	devel@acpica.org, linux-pm@vger.kernel.org,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [rafael-pm:bleeding-edge 131/143]
- drivers/base/power/wakeup.c:376:undefined reference to
- `pm_sleep_transition_in_progress'
-Message-ID: <202505140033.hlHonEIr-lkp@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,286,1739865600"; 
+   d="scan'208";a="142947639"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 15:09:48 -0700
+Date: Tue, 13 May 2025 15:14:56 -0700
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, x86@kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>, devicetree@vger.kernel.org,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Chris Oo <cho@microsoft.com>, linux-hyperv@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+	Ricardo Neri <ricardo.neri@intel.com>
+Subject: Re: [PATCH v3 06/13] dt-bindings: reserved-memory: Wakeup Mailbox
+ for Intel processors
+Message-ID: <20250513221456.GA2794@ranerica-svr.sc.intel.com>
+References: <20250503191515.24041-1-ricardo.neri-calderon@linux.intel.com>
+ <20250503191515.24041-7-ricardo.neri-calderon@linux.intel.com>
+ <20250504-original-leopard-of-vigor-5702ef@kuoka>
+ <20250506051610.GC25533@ranerica-svr.sc.intel.com>
+ <20250506-pompous-meaty-crane-97efce@kuoka>
+ <20250507032339.GA27243@ranerica-svr.sc.intel.com>
+ <20250512153224.GA3377771-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -79,62 +92,53 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20250512153224.GA3377771-robh@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-head:   e6b70b05628d6ec7335b0fcfe50e60e273fba2d2
-commit: d1b37a4c5081dbad554b8e792b7a7937b635db58 [131/143] PM: sleep: Introduce pm_sleep_transition_in_progress()
-config: riscv-randconfig-002-20250513 (https://download.01.org/0day-ci/archive/20250514/202505140033.hlHonEIr-lkp@intel.com/config)
-compiler: riscv64-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250514/202505140033.hlHonEIr-lkp@intel.com/reproduce)
+On Mon, May 12, 2025 at 10:32:24AM -0500, Rob Herring wrote:
+> On Tue, May 06, 2025 at 08:23:39PM -0700, Ricardo Neri wrote:
+> > On Tue, May 06, 2025 at 09:10:22AM +0200, Krzysztof Kozlowski wrote:
+> > > On Mon, May 05, 2025 at 10:16:10PM GMT, Ricardo Neri wrote:
+> > > > > If this is a device, then compatibles specific to devices. You do not
+> > > > > get different rules than all other bindings... or this does not have to
+> > > > > be binding at all. Why standard reserved-memory does not work for here?
+> > > > > 
+> > > > > Why do you need compatible in the first place?
+> > > > 
+> > > > Are you suggesting something like this?
+> > > > 
+> > > > reserved-memory {
+> > > > 	# address-cells = <2>;
+> > > > 	# size-cells = <1>;
+> > > > 
+> > > > 	wakeup_mailbox: wakeupmb@fff000 {
+> > > > 		reg = < 0x0 0xfff000 0x1000>
+> > > > 	}
+> > > > 
+> > > > and then reference to the reserved memory using the wakeup_mailbox
+> > > > phandle?
+> > > 
+> > > Yes just like every other, typical reserved memory block.
+> > 
+> > Thanks! I will take this approach and drop this patch.
+> 
+> If there is nothing else to this other than the reserved region, then 
+> don't do this. Keep it like you had. There's no need for 2 nodes.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505140033.hlHonEIr-lkp@intel.com/
+Thank you for your feedback!
 
-All errors (new ones prefixed by >>):
+I was planning to use one reserved-memory node and inside of it a child
+node to with a `reg` property to specify the location and size of the
+mailbox. I would reference to that subnode from the kernel code.
 
-   riscv64-linux-ld: drivers/base/power/wakeup.o: in function `device_wakeup_attach_irq':
->> drivers/base/power/wakeup.c:376:(.text+0x15c6): undefined reference to `pm_sleep_transition_in_progress'
+IIUC, the reserved-memory node is only the container and the actual memory
+regions are expressed as child nodes.
 
+I had it like that before, but with a `compatible` property that I did not
+need.
 
-vim +376 drivers/base/power/wakeup.c
+Am I missing anything?
 
-074037ec79bea7 Rafael J. Wysocki 2010-09-22  354  
-4990d4fe327b9d Tony Lindgren     2015-05-18  355  /**
-4990d4fe327b9d Tony Lindgren     2015-05-18  356   * device_wakeup_attach_irq - Attach a wakeirq to a wakeup source
-4990d4fe327b9d Tony Lindgren     2015-05-18  357   * @dev: Device to handle
-4990d4fe327b9d Tony Lindgren     2015-05-18  358   * @wakeirq: Device specific wakeirq entry
-4990d4fe327b9d Tony Lindgren     2015-05-18  359   *
-4990d4fe327b9d Tony Lindgren     2015-05-18  360   * Attach a device wakeirq to the wakeup source so the device
-4990d4fe327b9d Tony Lindgren     2015-05-18  361   * wake IRQ can be configured automatically for suspend and
-4990d4fe327b9d Tony Lindgren     2015-05-18  362   * resume.
-6d3dab7d84177f Rafael J. Wysocki 2015-07-07  363   *
-6d3dab7d84177f Rafael J. Wysocki 2015-07-07  364   * Call under the device's power.lock lock.
-4990d4fe327b9d Tony Lindgren     2015-05-18  365   */
-7bf4e594c28afc Rafael J. Wysocki 2018-01-05  366  void device_wakeup_attach_irq(struct device *dev,
-4990d4fe327b9d Tony Lindgren     2015-05-18  367  			     struct wake_irq *wakeirq)
-4990d4fe327b9d Tony Lindgren     2015-05-18  368  {
-4990d4fe327b9d Tony Lindgren     2015-05-18  369  	struct wakeup_source *ws;
-4990d4fe327b9d Tony Lindgren     2015-05-18  370  
-4990d4fe327b9d Tony Lindgren     2015-05-18  371  	ws = dev->power.wakeup;
-7bf4e594c28afc Rafael J. Wysocki 2018-01-05  372  	if (!ws)
-7bf4e594c28afc Rafael J. Wysocki 2018-01-05  373  		return;
-4990d4fe327b9d Tony Lindgren     2015-05-18  374  
-6d3dab7d84177f Rafael J. Wysocki 2015-07-07  375  	if (ws->wakeirq)
-7bf4e594c28afc Rafael J. Wysocki 2018-01-05 @376  		dev_err(dev, "Leftover wakeup IRQ found, overriding\n");
-4990d4fe327b9d Tony Lindgren     2015-05-18  377  
-4990d4fe327b9d Tony Lindgren     2015-05-18  378  	ws->wakeirq = wakeirq;
-4990d4fe327b9d Tony Lindgren     2015-05-18  379  }
-4990d4fe327b9d Tony Lindgren     2015-05-18  380  
-
-:::::: The code at line 376 was first introduced by commit
-:::::: 7bf4e594c28afc67bc120a380ca774e43ca496d8 PM / wakeup: Do not fail dev_pm_attach_wake_irq() unnecessarily
-
-:::::: TO: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-:::::: CC: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks and BR,
+Ricardo
 
