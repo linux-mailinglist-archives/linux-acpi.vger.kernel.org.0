@@ -1,65 +1,65 @@
-Return-Path: <linux-acpi+bounces-13699-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13701-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72116AB50FC
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 May 2025 12:07:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D53BAB5103
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 May 2025 12:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC0901894C75
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 May 2025 10:07:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 262EC1B40FA8
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 May 2025 10:08:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE09246788;
-	Tue, 13 May 2025 10:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC716248176;
+	Tue, 13 May 2025 10:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UpqwBDHz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IxGuKzQJ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DFD2459EA;
-	Tue, 13 May 2025 10:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FED246790;
+	Tue, 13 May 2025 10:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747130724; cv=none; b=tvqMo2X5eLlm0Xor79Tx7YqsYd+1KOvd5ynfii+bjXEy7Hjz3hc+eHTJ12AeYDX1C78C+9/2U+1g3VCH8X0Tb7zR1YW2jxVkUpZ44ZMqPmU6u5FtXXtjY1LLcfHLRcjd6EzACDIYavpz9N7G8ENZynwTRjF00gQnh9hfT1o8Ip0=
+	t=1747130726; cv=none; b=feG/uR8IpkHl03KP64A7VvMQai6x9f8wvpvVvgX62bP1kFfKHHTYBpSkjM2IovRkgvQ/usvdNwsHWhu0/I/ZvkUSe2x90ESOqc3yQQzZ0cCLoxhZpSSEmg0i9jsHahoJtrX4BbY3CI2QfCxHY9lGob31op53ANo32x025U32tMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747130724; c=relaxed/simple;
-	bh=iTca+j4Ek6Iyl7/PVriO9+MvieJVUXzt2WyyEQegAUY=;
+	s=arc-20240116; t=1747130726; c=relaxed/simple;
+	bh=k3sBtIg7zEeCCjsbwF0ZsE+hEb+ZwoygUKqjTjLBe6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TpdSYr7PVAh0N9HPubxO/BeFmh1vQixPm2TKtoJfBv73Q17QPBWozVOcY1FSRODU0HsU/ps+vl8dFBx2EijkzmnGxm5B8qzxdyPs/a9nGSqdIhJc8VnCp1NbwGKM7Ai47Sb97LhO3euueaDnZq/cuDdaPvWFk87yz+t7WfDdnms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UpqwBDHz; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=G/dKr9MlhB6d58QJU4nj2i7CQ6zcBJSThQBNPsBi0Bosw0edz4EA1ZOOL9x7RGErwLv1TdKCu3QM2uhHPIqnhe6GWG2JwNA0CjPFRA4FNB82rUMdv8yzy2S/tIK02NowxBWPB5Pa0U81192fk0nxpWAW9XSJpfcyW2t+h+fpqm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IxGuKzQJ; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747130722; x=1778666722;
+  t=1747130724; x=1778666724;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=iTca+j4Ek6Iyl7/PVriO9+MvieJVUXzt2WyyEQegAUY=;
-  b=UpqwBDHzVlKjJZCodKFu3JGw8AVjekvStKnzLu/rl8jml755N7nytWih
-   Ux5lrjt/eoMhX0GyQX6Ttolr6Y02J8excoCWBM0QuQhAORZpgDX6SEJXi
-   Ohkj1p0PQOooEztI7iTOxIvf7m2fTgKmNKdWuJ1aNMw6rVLy5xX4RLqFn
-   ooFs53QAUELvBPxuCWWckDylyQTRkZS9qyz80uOzmoz6EcAJaV9tg+I/b
-   49j8jp3jHvE5NYJYqxj9q4gFCAG7fjwvhFjTrsKPCi1fUqq5YChOUlq8v
-   OxQ06FGXoatgKeUbfHnWk0EvdhcWt1LUHAZT5LP4dOohxPXbeqSwYn68j
-   A==;
-X-CSE-ConnectionGUID: ZWuQNZE7Q9CVBsfWrZgf0w==
-X-CSE-MsgGUID: NNSa02zDSN+NzMALkK3f6w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="59639136"
+  bh=k3sBtIg7zEeCCjsbwF0ZsE+hEb+ZwoygUKqjTjLBe6o=;
+  b=IxGuKzQJJxdWFUY5xmy34V5d0oOcTDZovylma8muAgMIqMrlY7JNT7UP
+   P9OExPslrzyqzWEsQMsbbJzm8kwuaP2UzP9i4BcNVR0eUD6JjRQilSBbi
+   BZhoiJMEjS5TuFwGcsD1UaAdi7Wzie8dMn2o3f/CfJQtRf4hyvtlPiAnc
+   LsRnaD8l3rI6KeHnRg7s5ffPEw/F8WImom5ImYfPI3iLgtQP9sM5fw9JZ
+   MblNAjSZKTt8OUCgEWSaYPpPOsVszjAx/v2km/JJkUyh769gcluXiP01Q
+   NP83Wcny/E7O53LufQIKMSxWSG4Xak8sBgld/VkkC4QmJ3QT0jHJQbm7Q
+   w==;
+X-CSE-ConnectionGUID: ls6OqkJ7QDqImhzqIYUkIw==
+X-CSE-MsgGUID: yGqMFCKtSOClWssRRRWgBA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="59639145"
 X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; 
-   d="scan'208";a="59639136"
+   d="scan'208";a="59639145"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
   by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 03:05:20 -0700
-X-CSE-ConnectionGUID: DJyUL+ozSpuWuzSHmniqqQ==
-X-CSE-MsgGUID: /5vEov6jSIisYlkDunIwvg==
+X-CSE-ConnectionGUID: OP/Jm/IpT3yrfombR86D3Q==
+X-CSE-MsgGUID: kgoCmwCnS6KS6DAwSwvSew==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; 
-   d="scan'208";a="137521339"
+   d="scan'208";a="137521338"
 Received: from black.fi.intel.com ([10.237.72.28])
   by orviesa010.jf.intel.com with ESMTP; 13 May 2025 03:05:17 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id F1D473F4; Tue, 13 May 2025 13:05:15 +0300 (EEST)
+	id 0E1F847A; Tue, 13 May 2025 13:05:16 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Linus Walleij <linus.walleij@linaro.org>,
@@ -70,9 +70,9 @@ To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
 	Mika Westerberg <westeri@kernel.org>,
 	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH v1 3/4] gpiolib: acpi: Add acpi_gpio_need_run_edge_events_on_boot() getter
-Date: Tue, 13 May 2025 13:00:33 +0300
-Message-ID: <20250513100514.2492545-4-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 4/4] gpiolib: acpi: Move quirks to a separate file
+Date: Tue, 13 May 2025 13:00:34 +0300
+Message-ID: <20250513100514.2492545-5-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250513100514.2492545-1-andriy.shevchenko@linux.intel.com>
 References: <20250513100514.2492545-1-andriy.shevchenko@linux.intel.com>
@@ -84,56 +84,779 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add acpi_gpio_need_run_edge_events_on_boot() getter which moves
-towards isolating the GPIO ACPI and quirk APIs. It will helps
-splitting them completely in the next changes.
+The gpiolib-acpi.c is huge enough even without DMI quirks.
+Move them to a separate file for a better maintenance.
 
-No functional changes.
+No functional change intended.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/gpio/gpiolib-acpi.c | 7 ++++++-
- drivers/gpio/gpiolib-acpi.h | 2 ++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpio/Makefile                         |   1 +
+ .../{gpiolib-acpi.c => gpiolib-acpi-core.c}   | 346 -----------------
+ drivers/gpio/gpiolib-acpi-quirks.c            | 363 ++++++++++++++++++
+ 3 files changed, 364 insertions(+), 346 deletions(-)
+ rename drivers/gpio/{gpiolib-acpi.c => gpiolib-acpi-core.c} (79%)
+ create mode 100644 drivers/gpio/gpiolib-acpi-quirks.c
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index ac5f8ec6e72b..609e3a7f9636 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -268,7 +268,7 @@ static void acpi_gpiochip_request_irq(struct acpi_gpio_chip *acpi_gpio,
- 	event->irq_requested = true;
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index 9aabbb9cb4c6..7b4ba3475f0b 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -10,6 +10,7 @@ obj-$(CONFIG_OF_GPIO)		+= gpiolib-of.o
+ obj-$(CONFIG_GPIO_CDEV)		+= gpiolib-cdev.o
+ obj-$(CONFIG_GPIO_SYSFS)	+= gpiolib-sysfs.o
+ obj-$(CONFIG_GPIO_ACPI)		+= gpiolib-acpi.o
++gpiolib-acpi-y			:= gpiolib-acpi-core.o gpiolib-acpi-quirks.o
+ obj-$(CONFIG_GPIOLIB)		+= gpiolib-swnode.o
  
- 	/* Make sure we trigger the initial state of edge-triggered IRQs */
--	if (run_edge_events_on_boot &&
-+	if (acpi_gpio_need_run_edge_events_on_boot() &&
- 	    (event->irqflags & (IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING))) {
- 		value = gpiod_get_raw_value_cansleep(event->desc);
- 		if (((event->irqflags & IRQF_TRIGGER_RISING) && value == 1) ||
-@@ -371,6 +371,11 @@ void acpi_gpio_remove_from_deferred_list(struct list_head *list)
- 	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
+ # Device drivers. Generally keep list sorted alphabetically
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi-core.c
+similarity index 79%
+rename from drivers/gpio/gpiolib-acpi.c
+rename to drivers/gpio/gpiolib-acpi-core.c
+index 609e3a7f9636..12b24a717e43 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi-core.c
+@@ -23,29 +23,6 @@
+ #include "gpiolib.h"
+ #include "gpiolib-acpi.h"
+ 
+-static int run_edge_events_on_boot = -1;
+-module_param(run_edge_events_on_boot, int, 0444);
+-MODULE_PARM_DESC(run_edge_events_on_boot,
+-		 "Run edge _AEI event-handlers at boot: 0=no, 1=yes, -1=auto");
+-
+-static char *ignore_wake;
+-module_param(ignore_wake, charp, 0444);
+-MODULE_PARM_DESC(ignore_wake,
+-		 "controller@pin combos on which to ignore the ACPI wake flag "
+-		 "ignore_wake=controller@pin[,controller@pin[,...]]");
+-
+-static char *ignore_interrupt;
+-module_param(ignore_interrupt, charp, 0444);
+-MODULE_PARM_DESC(ignore_interrupt,
+-		 "controller@pin combos on which to ignore interrupt "
+-		 "ignore_interrupt=controller@pin[,controller@pin[,...]]");
+-
+-struct acpi_gpiolib_dmi_quirk {
+-	bool no_edge_events_on_boot;
+-	char *ignore_wake;
+-	char *ignore_interrupt;
+-};
+-
+ /**
+  * struct acpi_gpio_event - ACPI GPIO event handler data
+  *
+@@ -115,17 +92,6 @@ struct acpi_gpio_info {
+ 	unsigned int quirks;
+ };
+ 
+-/*
+- * For GPIO chips which call acpi_gpiochip_request_interrupts() before late_init
+- * (so builtin drivers) we register the ACPI GpioInt IRQ handlers from a
+- * late_initcall_sync() handler, so that other builtin drivers can register their
+- * OpRegions before the event handlers can run. This list contains GPIO chips
+- * for which the acpi_gpiochip_request_irqs() call has been deferred.
+- */
+-static DEFINE_MUTEX(acpi_gpio_deferred_req_irqs_lock);
+-static LIST_HEAD(acpi_gpio_deferred_req_irqs_list);
+-static bool acpi_gpio_deferred_req_irqs_done;
+-
+ static int acpi_gpiochip_find(struct gpio_chip *gc, const void *data)
+ {
+ 	/* First check the actual GPIO device */
+@@ -350,79 +316,6 @@ static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
+ 	return desc;
  }
  
+-bool acpi_gpio_add_to_deferred_list(struct list_head *list)
+-{
+-	bool defer;
+-
+-	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
+-	defer = !acpi_gpio_deferred_req_irqs_done;
+-	if (defer)
+-		list_add(list, &acpi_gpio_deferred_req_irqs_list);
+-	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
+-
+-	return defer;
+-}
+-
+-void acpi_gpio_remove_from_deferred_list(struct list_head *list)
+-{
+-	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
+-	if (!list_empty(list))
+-		list_del_init(list);
+-	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
+-}
+-
+-int acpi_gpio_need_run_edge_events_on_boot(void)
+-{
+-	return run_edge_events_on_boot;
+-}
+-
+-bool acpi_gpio_in_ignore_list(enum acpi_gpio_ignore_list list, const char *controller_in,
+-			      unsigned int pin_in)
+-{
+-	const char *ignore_list, *controller, *pin_str;
+-	unsigned int pin;
+-	char *endp;
+-	int len;
+-
+-	switch (list) {
+-	case ACPI_GPIO_IGNORE_WAKE:
+-		ignore_list = ignore_wake;
+-		break;
+-	case ACPI_GPIO_IGNORE_INTERRUPT:
+-		ignore_list = ignore_interrupt;
+-		break;
+-	default:
+-		return false;
+-	}
+-
+-	controller = ignore_list;
+-	while (controller) {
+-		pin_str = strchr(controller, '@');
+-		if (!pin_str)
+-			goto err;
+-
+-		len = pin_str - controller;
+-		if (len == strlen(controller_in) &&
+-		    strncmp(controller, controller_in, len) == 0) {
+-			pin = simple_strtoul(pin_str + 1, &endp, 10);
+-			if (*endp != 0 && *endp != ',')
+-				goto err;
+-
+-			if (pin == pin_in)
+-				return true;
+-		}
+-
+-		controller = strchr(controller, ',');
+-		if (controller)
+-			controller++;
+-	}
+-
+-	return false;
+-err:
+-	pr_err_once("Error: Invalid value for gpiolib_acpi.ignore_...: %s\n", ignore_list);
+-	return false;
+-}
+-
+ static bool acpi_gpio_irq_is_wake(struct device *parent,
+ 				  const struct acpi_resource_gpio *agpio)
+ {
+@@ -1522,242 +1415,3 @@ int acpi_gpio_count(const struct fwnode_handle *fwnode, const char *con_id)
+ 	}
+ 	return count ? count : -ENOENT;
+ }
+-
+-/* Run deferred acpi_gpiochip_request_irqs() */
+-static int __init acpi_gpio_handle_deferred_request_irqs(void)
+-{
+-	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
+-	acpi_gpio_process_deferred_list(&acpi_gpio_deferred_req_irqs_list);
+-	acpi_gpio_deferred_req_irqs_done = true;
+-	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
+-
+-	return 0;
+-}
+-/* We must use _sync so that this runs after the first deferred_probe run */
+-late_initcall_sync(acpi_gpio_handle_deferred_request_irqs);
+-
+-static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
+-	{
+-		/*
+-		 * The Minix Neo Z83-4 has a micro-USB-B id-pin handler for
+-		 * a non existing micro-USB-B connector which puts the HDMI
+-		 * DDC pins in GPIO mode, breaking HDMI support.
+-		 */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "MINIX"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Z83-4"),
+-		},
+-		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+-			.no_edge_events_on_boot = true,
+-		},
+-	},
+-	{
+-		/*
+-		 * The Terra Pad 1061 has a micro-USB-B id-pin handler, which
+-		 * instead of controlling the actual micro-USB-B turns the 5V
+-		 * boost for its USB-A connector off. The actual micro-USB-B
+-		 * connector is wired for charging only.
+-		 */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Wortmann_AG"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "TERRA_PAD_1061"),
+-		},
+-		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+-			.no_edge_events_on_boot = true,
+-		},
+-	},
+-	{
+-		/*
+-		 * The Dell Venue 10 Pro 5055, with Bay Trail SoC + TI PMIC uses an
+-		 * external embedded-controller connected via I2C + an ACPI GPIO
+-		 * event handler on INT33FFC:02 pin 12, causing spurious wakeups.
+-		 */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "Venue 10 Pro 5055"),
+-		},
+-		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+-			.ignore_wake = "INT33FC:02@12",
+-		},
+-	},
+-	{
+-		/*
+-		 * HP X2 10 models with Cherry Trail SoC + TI PMIC use an
+-		 * external embedded-controller connected via I2C + an ACPI GPIO
+-		 * event handler on INT33FF:01 pin 0, causing spurious wakeups.
+-		 * When suspending by closing the LID, the power to the USB
+-		 * keyboard is turned off, causing INT0002 ACPI events to
+-		 * trigger once the XHCI controller notices the keyboard is
+-		 * gone. So INT0002 events cause spurious wakeups too. Ignoring
+-		 * EC wakes breaks wakeup when opening the lid, the user needs
+-		 * to press the power-button to wakeup the system. The
+-		 * alternative is suspend simply not working, which is worse.
+-		 */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "HP x2 Detachable 10-p0XX"),
+-		},
+-		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+-			.ignore_wake = "INT33FF:01@0,INT0002:00@2",
+-		},
+-	},
+-	{
+-		/*
+-		 * HP X2 10 models with Bay Trail SoC + AXP288 PMIC use an
+-		 * external embedded-controller connected via I2C + an ACPI GPIO
+-		 * event handler on INT33FC:02 pin 28, causing spurious wakeups.
+-		 */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Hewlett-Packard"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "HP Pavilion x2 Detachable"),
+-			DMI_MATCH(DMI_BOARD_NAME, "815D"),
+-		},
+-		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+-			.ignore_wake = "INT33FC:02@28",
+-		},
+-	},
+-	{
+-		/*
+-		 * HP X2 10 models with Cherry Trail SoC + AXP288 PMIC use an
+-		 * external embedded-controller connected via I2C + an ACPI GPIO
+-		 * event handler on INT33FF:01 pin 0, causing spurious wakeups.
+-		 */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "HP Pavilion x2 Detachable"),
+-			DMI_MATCH(DMI_BOARD_NAME, "813E"),
+-		},
+-		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+-			.ignore_wake = "INT33FF:01@0",
+-		},
+-	},
+-	{
+-		/*
+-		 * Interrupt storm caused from edge triggered floating pin
+-		 * Found in BIOS UX325UAZ.300
+-		 * https://bugzilla.kernel.org/show_bug.cgi?id=216208
+-		 */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "ZenBook UX325UAZ_UM325UAZ"),
+-		},
+-		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+-			.ignore_interrupt = "AMDI0030:00@18",
+-		},
+-	},
+-	{
+-		/*
+-		 * Spurious wakeups from TP_ATTN# pin
+-		 * Found in BIOS 1.7.8
+-		 * https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
+-		 */
+-		.matches = {
+-			DMI_MATCH(DMI_BOARD_NAME, "NL5xNU"),
+-		},
+-		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+-			.ignore_wake = "ELAN0415:00@9",
+-		},
+-	},
+-	{
+-		/*
+-		 * Spurious wakeups from TP_ATTN# pin
+-		 * Found in BIOS 1.7.8
+-		 * https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
+-		 */
+-		.matches = {
+-			DMI_MATCH(DMI_BOARD_NAME, "NL5xRU"),
+-		},
+-		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+-			.ignore_wake = "ELAN0415:00@9",
+-		},
+-	},
+-	{
+-		/*
+-		 * Spurious wakeups from TP_ATTN# pin
+-		 * Found in BIOS 1.7.7
+-		 */
+-		.matches = {
+-			DMI_MATCH(DMI_BOARD_NAME, "NH5xAx"),
+-		},
+-		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+-			.ignore_wake = "SYNA1202:00@16",
+-		},
+-	},
+-	{
+-		/*
+-		 * On the Peaq C1010 2-in-1 INT33FC:00 pin 3 is connected to
+-		 * a "dolby" button. At the ACPI level an _AEI event-handler
+-		 * is connected which sets an ACPI variable to 1 on both
+-		 * edges. This variable can be polled + cleared to 0 using
+-		 * WMI. But since the variable is set on both edges the WMI
+-		 * interface is pretty useless even when polling.
+-		 * So instead the x86-android-tablets code instantiates
+-		 * a gpio-keys platform device for it.
+-		 * Ignore the _AEI handler for the pin, so that it is not busy.
+-		 */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "PEAQ"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "PEAQ PMM C1010 MD99187"),
+-		},
+-		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+-			.ignore_interrupt = "INT33FC:00@3",
+-		},
+-	},
+-	{
+-		/*
+-		 * Spurious wakeups from TP_ATTN# pin
+-		 * Found in BIOS 0.35
+-		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3073
+-		 */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "GPD"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "G1619-04"),
+-		},
+-		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+-			.ignore_wake = "PNP0C50:00@8",
+-		},
+-	},
+-	{
+-		/*
+-		 * Spurious wakeups from GPIO 11
+-		 * Found in BIOS 1.04
+-		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3954
+-		 */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+-			DMI_MATCH(DMI_PRODUCT_FAMILY, "Acer Nitro V 14"),
+-		},
+-		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+-			.ignore_interrupt = "AMDI0030:00@11",
+-		},
+-	},
+-	{} /* Terminating entry */
+-};
+-
+-static int __init acpi_gpio_setup_params(void)
+-{
+-	const struct acpi_gpiolib_dmi_quirk *quirk = NULL;
+-	const struct dmi_system_id *id;
+-
+-	id = dmi_first_match(gpiolib_acpi_quirks);
+-	if (id)
+-		quirk = id->driver_data;
+-
+-	if (run_edge_events_on_boot < 0) {
+-		if (quirk && quirk->no_edge_events_on_boot)
+-			run_edge_events_on_boot = 0;
+-		else
+-			run_edge_events_on_boot = 1;
+-	}
+-
+-	if (ignore_wake == NULL && quirk && quirk->ignore_wake)
+-		ignore_wake = quirk->ignore_wake;
+-
+-	if (ignore_interrupt == NULL && quirk && quirk->ignore_interrupt)
+-		ignore_interrupt = quirk->ignore_interrupt;
+-
+-	return 0;
+-}
+-
+-/* Directly after dmi_setup() which runs as core_initcall() */
+-postcore_initcall(acpi_gpio_setup_params);
+diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi-quirks.c
+new file mode 100644
+index 000000000000..219667315b2c
+--- /dev/null
++++ b/drivers/gpio/gpiolib-acpi-quirks.c
+@@ -0,0 +1,363 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * ACPI quirks for GPIO ACPI helpers
++ *
++ * Author: Hans de Goede <hdegoede@redhat.com>
++ */
++
++#include <linux/dmi.h>
++#include <linux/kstrtox.h>
++#include <linux/list.h>
++#include <linux/module.h>
++#include <linux/mutex.h>
++#include <linux/printk.h>
++#include <linux/string.h>
++#include <linux/types.h>
++
++#include "gpiolib-acpi.h"
++
++static int run_edge_events_on_boot = -1;
++module_param(run_edge_events_on_boot, int, 0444);
++MODULE_PARM_DESC(run_edge_events_on_boot,
++		 "Run edge _AEI event-handlers at boot: 0=no, 1=yes, -1=auto");
++
++static char *ignore_wake;
++module_param(ignore_wake, charp, 0444);
++MODULE_PARM_DESC(ignore_wake,
++		 "controller@pin combos on which to ignore the ACPI wake flag "
++		 "ignore_wake=controller@pin[,controller@pin[,...]]");
++
++static char *ignore_interrupt;
++module_param(ignore_interrupt, charp, 0444);
++MODULE_PARM_DESC(ignore_interrupt,
++		 "controller@pin combos on which to ignore interrupt "
++		 "ignore_interrupt=controller@pin[,controller@pin[,...]]");
++
++/*
++ * For GPIO chips which call acpi_gpiochip_request_interrupts() before late_init
++ * (so builtin drivers) we register the ACPI GpioInt IRQ handlers from a
++ * late_initcall_sync() handler, so that other builtin drivers can register their
++ * OpRegions before the event handlers can run. This list contains GPIO chips
++ * for which the acpi_gpiochip_request_irqs() call has been deferred.
++ */
++static DEFINE_MUTEX(acpi_gpio_deferred_req_irqs_lock);
++static LIST_HEAD(acpi_gpio_deferred_req_irqs_list);
++static bool acpi_gpio_deferred_req_irqs_done;
++
++bool acpi_gpio_add_to_deferred_list(struct list_head *list)
++{
++	bool defer;
++
++	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
++	defer = !acpi_gpio_deferred_req_irqs_done;
++	if (defer)
++		list_add(list, &acpi_gpio_deferred_req_irqs_list);
++	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
++
++	return defer;
++}
++
++void acpi_gpio_remove_from_deferred_list(struct list_head *list)
++{
++	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
++	if (!list_empty(list))
++		list_del_init(list);
++	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
++}
++
 +int acpi_gpio_need_run_edge_events_on_boot(void)
 +{
 +	return run_edge_events_on_boot;
 +}
 +
- bool acpi_gpio_in_ignore_list(enum acpi_gpio_ignore_list list, const char *controller_in,
- 			      unsigned int pin_in)
- {
-diff --git a/drivers/gpio/gpiolib-acpi.h b/drivers/gpio/gpiolib-acpi.h
-index 8249977e6140..a90267470a4e 100644
---- a/drivers/gpio/gpiolib-acpi.h
-+++ b/drivers/gpio/gpiolib-acpi.h
-@@ -63,6 +63,8 @@ void acpi_gpio_process_deferred_list(struct list_head *list);
- bool acpi_gpio_add_to_deferred_list(struct list_head *list);
- void acpi_gpio_remove_from_deferred_list(struct list_head *list);
- 
-+int acpi_gpio_need_run_edge_events_on_boot(void);
++bool acpi_gpio_in_ignore_list(enum acpi_gpio_ignore_list list,
++			      const char *controller_in, unsigned int pin_in)
++{
++	const char *ignore_list, *controller, *pin_str;
++	unsigned int pin;
++	char *endp;
++	int len;
 +
- enum acpi_gpio_ignore_list {
- 	ACPI_GPIO_IGNORE_WAKE,
- 	ACPI_GPIO_IGNORE_INTERRUPT,
++	switch (list) {
++	case ACPI_GPIO_IGNORE_WAKE:
++		ignore_list = ignore_wake;
++		break;
++	case ACPI_GPIO_IGNORE_INTERRUPT:
++		ignore_list = ignore_interrupt;
++		break;
++	default:
++		return false;
++	}
++
++	controller = ignore_list;
++	while (controller) {
++		pin_str = strchr(controller, '@');
++		if (!pin_str)
++			goto err;
++
++		len = pin_str - controller;
++		if (len == strlen(controller_in) &&
++		    strncmp(controller, controller_in, len) == 0) {
++			pin = simple_strtoul(pin_str + 1, &endp, 10);
++			if (*endp != 0 && *endp != ',')
++				goto err;
++
++			if (pin == pin_in)
++				return true;
++		}
++
++		controller = strchr(controller, ',');
++		if (controller)
++			controller++;
++	}
++
++	return false;
++err:
++	pr_err_once("Error: Invalid value for gpiolib_acpi.ignore_...: %s\n", ignore_list);
++	return false;
++}
++
++/* Run deferred acpi_gpiochip_request_irqs() */
++static int __init acpi_gpio_handle_deferred_request_irqs(void)
++{
++	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
++	acpi_gpio_process_deferred_list(&acpi_gpio_deferred_req_irqs_list);
++	acpi_gpio_deferred_req_irqs_done = true;
++	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
++
++	return 0;
++}
++/* We must use _sync so that this runs after the first deferred_probe run */
++late_initcall_sync(acpi_gpio_handle_deferred_request_irqs);
++
++struct acpi_gpiolib_dmi_quirk {
++	bool no_edge_events_on_boot;
++	char *ignore_wake;
++	char *ignore_interrupt;
++};
++
++static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
++	{
++		/*
++		 * The Minix Neo Z83-4 has a micro-USB-B id-pin handler for
++		 * a non existing micro-USB-B connector which puts the HDMI
++		 * DDC pins in GPIO mode, breaking HDMI support.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "MINIX"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Z83-4"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.no_edge_events_on_boot = true,
++		},
++	},
++	{
++		/*
++		 * The Terra Pad 1061 has a micro-USB-B id-pin handler, which
++		 * instead of controlling the actual micro-USB-B turns the 5V
++		 * boost for its USB-A connector off. The actual micro-USB-B
++		 * connector is wired for charging only.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Wortmann_AG"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "TERRA_PAD_1061"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.no_edge_events_on_boot = true,
++		},
++	},
++	{
++		/*
++		 * The Dell Venue 10 Pro 5055, with Bay Trail SoC + TI PMIC uses an
++		 * external embedded-controller connected via I2C + an ACPI GPIO
++		 * event handler on INT33FFC:02 pin 12, causing spurious wakeups.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Venue 10 Pro 5055"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "INT33FC:02@12",
++		},
++	},
++	{
++		/*
++		 * HP X2 10 models with Cherry Trail SoC + TI PMIC use an
++		 * external embedded-controller connected via I2C + an ACPI GPIO
++		 * event handler on INT33FF:01 pin 0, causing spurious wakeups.
++		 * When suspending by closing the LID, the power to the USB
++		 * keyboard is turned off, causing INT0002 ACPI events to
++		 * trigger once the XHCI controller notices the keyboard is
++		 * gone. So INT0002 events cause spurious wakeups too. Ignoring
++		 * EC wakes breaks wakeup when opening the lid, the user needs
++		 * to press the power-button to wakeup the system. The
++		 * alternative is suspend simply not working, which is worse.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HP x2 Detachable 10-p0XX"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "INT33FF:01@0,INT0002:00@2",
++		},
++	},
++	{
++		/*
++		 * HP X2 10 models with Bay Trail SoC + AXP288 PMIC use an
++		 * external embedded-controller connected via I2C + an ACPI GPIO
++		 * event handler on INT33FC:02 pin 28, causing spurious wakeups.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Hewlett-Packard"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HP Pavilion x2 Detachable"),
++			DMI_MATCH(DMI_BOARD_NAME, "815D"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "INT33FC:02@28",
++		},
++	},
++	{
++		/*
++		 * HP X2 10 models with Cherry Trail SoC + AXP288 PMIC use an
++		 * external embedded-controller connected via I2C + an ACPI GPIO
++		 * event handler on INT33FF:01 pin 0, causing spurious wakeups.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HP Pavilion x2 Detachable"),
++			DMI_MATCH(DMI_BOARD_NAME, "813E"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "INT33FF:01@0",
++		},
++	},
++	{
++		/*
++		 * Interrupt storm caused from edge triggered floating pin
++		 * Found in BIOS UX325UAZ.300
++		 * https://bugzilla.kernel.org/show_bug.cgi?id=216208
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "ZenBook UX325UAZ_UM325UAZ"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_interrupt = "AMDI0030:00@18",
++		},
++	},
++	{
++		/*
++		 * Spurious wakeups from TP_ATTN# pin
++		 * Found in BIOS 1.7.8
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
++		 */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "NL5xNU"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "ELAN0415:00@9",
++		},
++	},
++	{
++		/*
++		 * Spurious wakeups from TP_ATTN# pin
++		 * Found in BIOS 1.7.8
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/1722#note_1720627
++		 */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "NL5xRU"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "ELAN0415:00@9",
++		},
++	},
++	{
++		/*
++		 * Spurious wakeups from TP_ATTN# pin
++		 * Found in BIOS 1.7.7
++		 */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "NH5xAx"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "SYNA1202:00@16",
++		},
++	},
++	{
++		/*
++		 * On the Peaq C1010 2-in-1 INT33FC:00 pin 3 is connected to
++		 * a "dolby" button. At the ACPI level an _AEI event-handler
++		 * is connected which sets an ACPI variable to 1 on both
++		 * edges. This variable can be polled + cleared to 0 using
++		 * WMI. But since the variable is set on both edges the WMI
++		 * interface is pretty useless even when polling.
++		 * So instead the x86-android-tablets code instantiates
++		 * a gpio-keys platform device for it.
++		 * Ignore the _AEI handler for the pin, so that it is not busy.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "PEAQ"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "PEAQ PMM C1010 MD99187"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_interrupt = "INT33FC:00@3",
++		},
++	},
++	{
++		/*
++		 * Spurious wakeups from TP_ATTN# pin
++		 * Found in BIOS 0.35
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3073
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "GPD"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "G1619-04"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "PNP0C50:00@8",
++		},
++	},
++	{
++		/*
++		 * Spurious wakeups from GPIO 11
++		 * Found in BIOS 1.04
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3954
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++			DMI_MATCH(DMI_PRODUCT_FAMILY, "Acer Nitro V 14"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_interrupt = "AMDI0030:00@11",
++		},
++	},
++	{} /* Terminating entry */
++};
++
++static int __init acpi_gpio_setup_params(void)
++{
++	const struct acpi_gpiolib_dmi_quirk *quirk = NULL;
++	const struct dmi_system_id *id;
++
++	id = dmi_first_match(gpiolib_acpi_quirks);
++	if (id)
++		quirk = id->driver_data;
++
++	if (run_edge_events_on_boot < 0) {
++		if (quirk && quirk->no_edge_events_on_boot)
++			run_edge_events_on_boot = 0;
++		else
++			run_edge_events_on_boot = 1;
++	}
++
++	if (ignore_wake == NULL && quirk && quirk->ignore_wake)
++		ignore_wake = quirk->ignore_wake;
++
++	if (ignore_interrupt == NULL && quirk && quirk->ignore_interrupt)
++		ignore_interrupt = quirk->ignore_interrupt;
++
++	return 0;
++}
++
++/* Directly after dmi_setup() which runs as core_initcall() */
++postcore_initcall(acpi_gpio_setup_params);
 -- 
 2.47.2
 
