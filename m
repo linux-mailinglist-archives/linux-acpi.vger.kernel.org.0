@@ -1,193 +1,270 @@
-Return-Path: <linux-acpi+bounces-13757-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13758-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019D0ABA177
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 May 2025 19:02:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A642FABA361
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 May 2025 21:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAF61A03B5F
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 May 2025 16:58:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2FAA7AF9E8
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 May 2025 19:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC0D24E4C7;
-	Fri, 16 May 2025 16:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A89327FB24;
+	Fri, 16 May 2025 19:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="My6CHPVv"
+	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="vQDlKxeM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11021130.outbound.protection.outlook.com [52.101.57.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256CE24E4C1;
-	Fri, 16 May 2025 16:57:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747414627; cv=none; b=C8Rp9K/d4abK7YsucJF+VRlBRjFfQBTyOY3wkkDUEKrVH2DsGZ2gb8NxGj/WLpXGFkdGN+GWf6pvemwtIy42sDmfokfNu54BSlnPWpzfNwNaB0No6afbQlwBAhe1GtbeKOdAi+XU9o6fqjEXtxqv6yEyrSqSzmO3Jj6eVdR3ltM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747414627; c=relaxed/simple;
-	bh=3OaLhhbnyaFRUsMl6Jn49C7vgfWOS9Skc2umIuHl5kM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MtXNg84k4D5bey6ZioyJqeVABsLA2w3fGQRLtyfsqg0f0PsVKKZb9q6fwXZVDNhBeEP6l6BFneOhx7nGb6oJRYA4yguzaCbp+89zpY+t6zEU0biNk456N6DiIZB62gzTALZgF/9W8kUjb61SxsBaT6VFl/V/rTbNu4oBP0gSBJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=My6CHPVv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A09FDC4CEE4;
-	Fri, 16 May 2025 16:57:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747414626;
-	bh=3OaLhhbnyaFRUsMl6Jn49C7vgfWOS9Skc2umIuHl5kM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=My6CHPVvF21PFuSvisGrbzzRAZMex9cLcoEVbn3FfDU3JKfZBAeBcwW3CXw/y4mgO
-	 C0UCscLFmYgFksVXrWZFw8PkJC2BcfKDex72q/m3VIOiSOcg7Po7JW0RnfMfYt6BfM
-	 ojY5p9djPQDrZOrvKJiGO9yo80H0B7Wc8kUnsNwGFuwXVEtQ4YXcns3Zgs2zVSMhCD
-	 BTBbsFmQB3LO6gYzY/NAmM56Lw/Tx/WYTsVaXLtC8zWoYmOIxg2fzr0qn/Ga7TuI3h
-	 d0a9oB/dmvYjIP39pXqvnrPdx+VJ99g5IK17dGMmOKnIEcA/d2xjHu/s7NIrLMsFMr
-	 5FJ1dkj4dmqEw==
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3fe83c8cbdbso1132522b6e.3;
-        Fri, 16 May 2025 09:57:06 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVgVyIEa+dK0QSmO+Is50o5kWmu3MZ3CabTsR7+HAgBMDEmbnIxLs7Nb7ab3pf7to9MHFL8G0lY5AXu@vger.kernel.org, AJvYcCX62DFcNAPQd0rBi/oVw6PNQz9M+lX0eJpMlY/RayqcqzZGFpESZ019WSn8qadp4hE5kOGwYeh8jHPwSDyY@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmADdwJSI/bgWi46mADwGeA7pLSv6SO50llzXc8aUtob8ptFPH
-	SKqdE0k1Va8MMgrRJdNOBijrx3PCclvjKOnDRNVAdc0gvA+Z0sMT2FWItg1QnVW1JA1gC3Ay23/
-	yIio1U1GQszTx+fh9MpMKGuWeVjKsubs=
-X-Google-Smtp-Source: AGHT+IF9rWHdjVzlKTbyipJxoGTP8OW1Szm3iv18BWWmjdNbX3F6izSpbQWRnYfinB9TUP4TEKvsLet0zFSjqEcQ8i0=
-X-Received: by 2002:a05:6808:399a:b0:404:766:3129 with SMTP id
- 5614622812f47-404da70a555mr2201120b6e.1.1747414625999; Fri, 16 May 2025
- 09:57:05 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1506427A106;
+	Fri, 16 May 2025 19:05:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.130
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747422306; cv=fail; b=o/YlOKS/65yctMCa7trNwfsn1D2UEqgW+cM8rrNXgy92NANZCMMIqpjuhepPvPuzuRlMQRLN5sW57t/IZIy/S7WMa4t2QWUCDf0QiJkSfHYXJ1LyhqBP+YxO0o9q6Zap86KPiVh9/tyZZmWEZU1zJlfB0BJxL3k3WNTSlsnBVpg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747422306; c=relaxed/simple;
+	bh=XlRdfTD14o1gI7a4BZW1u/w1rn3GYbP4DuqIb5Vz5w4=;
+	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=gV3QF1dnlwj1sgBCSJxeWboccB3i238epCFhsiyzrnXoI2ONIyRWkgW+HiNY2C39lB/sKAQG/9NBJqzdM/Sz/1met+BxHGHurqhttodzQdFaD9K912kEpmzZ9Yjccqv5Ba5ZDwpmoMIafsJCS5M1+si24TtbSx25fBOQt1R8sLM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=vQDlKxeM; arc=fail smtp.client-ip=52.101.57.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=x7KmfWHrpUvBda8DKM/3D00Nu0fVJoSUoERDeRPfbWOP9XOXmpDdEVacCBipQu3zGwoNX+ciLUMoXaOWmeKmcMkfyhAxIS3IoHWHRzABZD7uGbzalykENEvMO1ZSHDeDuDws5aON+FpTaUVbUqLhEQon3xOeLsKQNt8FSOOKdgQ8IMNF6f8U1+h7WTxLmGg4izxWSnzRBmbkF2HXi6e6sLQTrG2uKk9xXa74bXzEPY8Vi06GNB519g7rg1icUXbhUEm68lT3eqmHgmrWhCNbn0JNmQCq2+9RqO9bWn36rEHdDcXQDuM5aIV10qY4kX1FOwXaTX+k9TCCYuMgukkCkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WqXOhxDUNIPsXuuDtL8UaMKtnNst7PktPYrR6qx25Xo=;
+ b=NTOPvKXO5b5uFEvGOz0oqLPSjZCcpowEBVChI4g4H5Z059FtbRBSKAnclYGH0fvWc6kss9LaV7bJuVXYeNSu3RsfOzD6HV+UqUT1zf9ch4E2cPgiZSZlWEIPwlnNOdsdfPCwpZr9QxS//RyJniHWhENmz4jWQn0bM9bg1JucZP9yr1W6PDO+bXphoWr9ng+VHghpZFXTVNOHHvacdHK43anCQa9BgaLACGKCFTW1mKi/EevPVPOVQ0cmuPdEfscNLZ/KKo6Dd12XIPKNcL3zEXSXxQGmmpYudS/8sGn0Itv+xAQ14HQaCFKa4T3f2g6r4toDoFZSJlyYzY3dAduJMg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WqXOhxDUNIPsXuuDtL8UaMKtnNst7PktPYrR6qx25Xo=;
+ b=vQDlKxeMMfcePXPr4oQLKe4CxHr7NLEwuCh08qPdsaEUYxivVmMzB70/DftvriPMFCdI1ub8SNcKs/YaKk9FpxpIz+Xd5VhB2OpruSsGP+Sbi6Oz4U4ZLw3AoKYElSRki5qemVaIXqNyH+gne8EmnWeXQP8cPQJQ2OMS4y1u86s=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
+Received: from SA3PR01MB8473.prod.exchangelabs.com (2603:10b6:806:397::12) by
+ SJ2PR01MB8619.prod.exchangelabs.com (2603:10b6:a03:53e::14) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8722.30; Fri, 16 May 2025 19:05:00 +0000
+Received: from SA3PR01MB8473.prod.exchangelabs.com
+ ([fe80::46d7:1d3a:dc9c:69c3]) by SA3PR01MB8473.prod.exchangelabs.com
+ ([fe80::46d7:1d3a:dc9c:69c3%6]) with mapi id 15.20.8722.027; Fri, 16 May 2025
+ 19:05:00 +0000
+Message-ID: <51bcb52c-4132-4daf-8903-29b121c485a1@os.amperecomputing.com>
+Date: Fri, 16 May 2025 12:04:55 -0700
+User-Agent: Mozilla Thunderbird
+From: Daniel Ferguson <danielf@os.amperecomputing.com>
+Subject: Re: [PATCH v6 1/2] ACPI:RAS2: Add ACPI RAS2 driver
+To: shiju.jose@huawei.com, linux-edac@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org
+Cc: bp@alien8.de, rafael@kernel.org, tony.luck@intel.com, lenb@kernel.org,
+ leo.duran@amd.com, Yazen.Ghannam@amd.com, mchehab@kernel.org,
+ jonathan.cameron@huawei.com, linux-mm@kvack.org, linuxarm@huawei.com,
+ rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
+ dave.hansen@linux.intel.com, naoya.horiguchi@nec.com, james.morse@arm.com,
+ jthoughton@google.com, somasundaram.a@hpe.com, erdemaktas@google.com,
+ pgonda@google.com, duenwen@google.com, gthelen@google.com,
+ wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
+ wbs@os.amperecomputing.com, nifan.cxl@gmail.com, tanxiaofei@huawei.com,
+ prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
+ kangkang.shen@futurewei.com, wanghuiqiang@huawei.com
+References: <20250516132205.789-1-shiju.jose@huawei.com>
+ <20250516132205.789-2-shiju.jose@huawei.com>
+Content-Language: en-US
+In-Reply-To: <20250516132205.789-2-shiju.jose@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW3PR06CA0001.namprd06.prod.outlook.com
+ (2603:10b6:303:2a::6) To SA3PR01MB8473.prod.exchangelabs.com
+ (2603:10b6:806:397::12)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250410165456.4173-1-W_Armin@gmx.de> <91ea8aed-5f98-4e4e-b3ee-fdc86d54f787@gmx.de>
- <CAJZ5v0jOR9=jA=8XASBpxJyXaB4TvXmxcZQWq1qUgq1J4h_tEg@mail.gmail.com>
- <90cba8fa-e6a9-4dab-a4ea-fa96d570a870@gmx.de> <c8127d88-194a-4a23-b22e-040e2c6b3e9b@gmx.de>
- <CAJZ5v0icUnepOwb87k44nAt1ZwfHp_BqSBzS-TrQWJ_4E3Ls=g@mail.gmail.com>
- <5cec046e-c495-4517-82c8-83ae3cdb63a1@gmx.de> <CAJZ5v0iEni2ie-6sCiZBfwugZ--NmJQX6=2EYKXnHwRCfpqUzQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0iEni2ie-6sCiZBfwugZ--NmJQX6=2EYKXnHwRCfpqUzQ@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 16 May 2025 18:56:53 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0grVpm8MUGYRRhC6VTRRQxvCEmzRJm27F83vJ4a-Wwjhg@mail.gmail.com>
-X-Gm-Features: AX0GCFuz5tlxTSYTkGoJf924BrOs0gzXQsdXvj2unTi0EKN6a7i14_orfifvrS4
-Message-ID: <CAJZ5v0grVpm8MUGYRRhC6VTRRQxvCEmzRJm27F83vJ4a-Wwjhg@mail.gmail.com>
-Subject: Re: [PATCH 0/3] ACPI: thermal: Properly support the _SCP control method
-To: Armin Wolf <w_armin@gmx.de>
-Cc: rui.zhang@intel.com, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR01MB8473:EE_|SJ2PR01MB8619:EE_
+X-MS-Office365-Filtering-Correlation-Id: b6059e28-3a20-47ad-716d-08dd94ac8e48
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WkJqcTMzbFBPaDQ5bE1JWGpvV2lxQkxTeGJFNlNPUHJkb0V4S2dNWWkvcHY2?=
+ =?utf-8?B?clZ3MWtSeXpyeWRUS0pBSWJjZjlBQ2QrV0s5UDZDNHJpZ1FacUM4TklEQWhn?=
+ =?utf-8?B?OVdTTytIRlMxQ0phTGtQL1dZTXFMa1BCR0RUVFRnek9vZk11ZTNQZ3NwMGRT?=
+ =?utf-8?B?QXlJWC9DcERxbkMxQzNXczFOWEtVQTRsYmJGWVlFZ25nNkRSTmNGaWsvdEV2?=
+ =?utf-8?B?VUEvQU0rcExyVWp4a0JCMXg2RVMvVlVyWnZ3VWZKU2hMQVlmQi9NNlFwM0NU?=
+ =?utf-8?B?OTZaYXg4bDlQY0hiOEluOExsbDJJU21UUGNMSG1XTU1obVZMWkJWclp4YXE3?=
+ =?utf-8?B?azBRUjhrY2diT21TQXZ3Mmxhek9abnc3VTB0TmQxQ1BwY2F5Vm4way9aNmF2?=
+ =?utf-8?B?bkQ1NkhyQzBqR0ZhSzlTSjZEMzljR0FlN0h3N21tM1htVlEyb0VaNmpGOHBL?=
+ =?utf-8?B?c3B1ckNaWG9TLzIxZnd4ZVNCaFBGZ1M4MjZvVlNONmNKc3RHUUFKVWh1N0tI?=
+ =?utf-8?B?OVk1eVpiUE1ydG9oODRSN0tXeVRYMkNHQ2NDUDRrN2VWSUFMcWlUSXh5dHk3?=
+ =?utf-8?B?dHA0dDNqSXdTSGxLMjVXaUE2SGFIKzIrTFFPcXBDTmM2NWxyeXI4QThoUkta?=
+ =?utf-8?B?QzFuWEt1dmNVTkhpRzJBRk4rZFFoTjYzY29mMGpMODhXTnFOUVNORzNiZHF6?=
+ =?utf-8?B?TC9pT2dERHNYQlNlSDA1VE9KMHJTMzN0aUgxOFE5L2tOUW1obk1WVGVkL2V0?=
+ =?utf-8?B?Nm0wSTZKSnJVZ25KSXZFUU11SmorZjdub3BiZUxPTXovSmFlbGRsd3Q5UHNi?=
+ =?utf-8?B?d3RoM2JyUUJoaU1pcS85Sm5IOGoyNTdBRXp3elBZSkIvTlhHdmJGUk9qaFhx?=
+ =?utf-8?B?VE9aREtwd1FSZmJxSWs3KzZ6UG5HZmd3aEdBUzZTZ1lYVnQ2THRnbThEMWVj?=
+ =?utf-8?B?d2JCSUFJQ1lsaUxqT0FsNTF0QnBlNnRoTEFWU3M5WU1SVUF1SXgvM0RLWk1P?=
+ =?utf-8?B?NTJ0V1NMSE5tNFZGK0dQS0gwOFBVVEpOYTRWTlAwZ0VmclpsdFp0THJNR0Ey?=
+ =?utf-8?B?Q3JDNUJ0RGlWWWMzMWVnUGg1ZW1MVnVyOWEyV1JCT01ET1BwbzN5cGxlaFV5?=
+ =?utf-8?B?NHVCUExNZUJuaTR6NHVRUDB6NXc3VVJnNWdlb0NBMWdWWEtxUHREZHRpY2RO?=
+ =?utf-8?B?aFZjbFkrL0V1ckZha1MvYkR2R0pLZWprY3dReDJ4cjF3aVo1Wk93ZmFTcVhH?=
+ =?utf-8?B?bzJpcVJ6SEplT1NlaFFqdVVKYm1VaEl1R0RzQ09HTXVxb2t4NkYvL3ZteWVJ?=
+ =?utf-8?B?Z0JuUCs0Q3RwMUNJN3BXWElSeWtmN2lOU2RLUzVkSlVwMjZMaUJmNW1zSTVq?=
+ =?utf-8?B?aHZQME1tTzFoMERiY1pLT1pYcU1GMU9TKzNwVE81bnRKcXRERHh5V1dMclNv?=
+ =?utf-8?B?MEw2ckE2SkFSNUJUcHZURXI5L1pYV1NuQkNuWXpzYlg1S3FCbmRaMjNwZDdG?=
+ =?utf-8?B?cUNoeWJjUk5SMTlXN0N1NHBqV2UvaHUwdHVTdEdtcGY5TXdzY1ROUHlreHcr?=
+ =?utf-8?B?WHBiVS9oVzc3emRUUEIwcHRBQ25MK01OekErZlRuR1dpWkp4TmpXN3hTRXVp?=
+ =?utf-8?B?UU5ialdyVS8rVjZPUzJoSXhrTEhQYVhMUU9mRnBaWUpiNmV1T1F0OGYvbE1W?=
+ =?utf-8?B?NzBYNmVaVXhMQnB5WitVU08zU01tb2VUU285cFF4RzJPLzVlckZGdW91QkRK?=
+ =?utf-8?B?RHh0dGtMN3VsZHpqMDVVbHJvTk5LWkYxZkJwZlRvMGh2b1FhY2V1QkNtNm1J?=
+ =?utf-8?B?Z2loMUZ0T253cFNCWFBWSkNhT25LVkpRbFNLUUQ4eXNpSGN2VjE0bzFZWkxO?=
+ =?utf-8?B?Vk5Ic21vTWxzd1NMRko3VUVUbHJDN01iVVArcmozSXRGNEMvYUdITG9JVkxw?=
+ =?utf-8?B?dEpOaW9vRWszY2NGcVVjSktWcFh1QTBERWF1dzVFSzVUOXJ6UFhXU0lqMllt?=
+ =?utf-8?B?elVvUlBRMWJRPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR01MB8473.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(366016)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?czQwN3pjQnB1TUNOanZOTEhLd2FCY25LZDAwMzR0VUM1MDNSckFBTWZwRThL?=
+ =?utf-8?B?ZmRpbmRYY214UTZWUTQ3Z0JqS0JnZXhqTkhzWEhPcmc4d3RQT3g3bmdtbW4r?=
+ =?utf-8?B?YXU3d1k2alVIUTZQZHRaeUpYWUJhNFBhRit0WlhRWHpqTGthZlorVCtseGd6?=
+ =?utf-8?B?YjJlN3NzZU1uVUMyc3VGQVFzci9sM2JtaGE4OXZWaTF0Ry80b01NalFsNlE2?=
+ =?utf-8?B?VlNFRUwwQ2JMb3RwMkJmV0I0NitMQWV4VjJpYWxXYkdJUmpFaGpHUTNtM3pa?=
+ =?utf-8?B?MXVxZXRVOFFnT3BTYTJ2TXNaWFNoVk1nN25Lc1JQcC9HOVhKU21KWGlzNUY4?=
+ =?utf-8?B?R2UzWGJRSUpzSVJjMHJybTd0M2JSK1NNZEY5YW4rNzVDNWlNV1BaTy9pZUpK?=
+ =?utf-8?B?ZGRDdDB1UGt5QWdqU2FVTndhQlRkQVZjcTNUNm5ZZGlrYlpCQXcvdFU5aUV4?=
+ =?utf-8?B?WHBzL3J6aEpCWGJTWXdwdERKUDRTaklWeEc5YktOQ2V5eUQ0UnFJcWtNOVdp?=
+ =?utf-8?B?b1FXL1Q0RjhIVXFwTVBIdmpibldXYnhKbEFWUi82d0pudlU2UWp4M3RmNkNa?=
+ =?utf-8?B?bzR0K3FQcWpKN3RNVkdUc1dsZWY1VVhNb0ozem14RlhNaE1QdEJsWURJa29C?=
+ =?utf-8?B?ZWxjYmtQU3VYWWxpUGhjb1dJQ0dPSlpvZkUvTkVnSWZRenZHbUkyd21DSTZa?=
+ =?utf-8?B?T2J3Yzd3YWYrSlBqdWVzVEgvS3dYV21RaWVvRFRvNzRzVGl1NWNTcGlOSHdp?=
+ =?utf-8?B?aFNqbzV3ZkE5UXFFbVU1bDB4dUJnK3ZWYTFqQUZPY3BTaVdXL0Z2d2lkVjBr?=
+ =?utf-8?B?dzk3c0xWOXd2WFdzTHhpdkVMVmVENUxQWFc1akVZVTJqNXdmcGxQRkJTY0NB?=
+ =?utf-8?B?dE56citSam5UbDRHNVZmTnd4QW9jbHZHaUVGVnAzVWlmUFg0NEU1YWV5WFNw?=
+ =?utf-8?B?aUFuMjQ3dTRXMEZaRC8wY0hxQzAvK1BZcENlZlgxVzk5ajNqMUZ0QTNCZmFr?=
+ =?utf-8?B?bW5ic0pxenJabmxEUTZPT1JrbWNRT0RvYXVIcjM1enl6aHV1aGFjcUpqM2lX?=
+ =?utf-8?B?WE9xbDlGWWRnR3JQWlB0K2pXYXpzRjAybENJS2hjWmFlampWZmVucDExOVdX?=
+ =?utf-8?B?YlQ5YVJJV0ZRTVNET3VBamFLSEZVZWMzTXZQc2FxZUZEaFQxaDk4U0l4SWVp?=
+ =?utf-8?B?UmRENGxxRmk4QlJWMXcxZnpmelpqN0Vta3JuaUdrUWRBakRjVHdyWTVHNUk0?=
+ =?utf-8?B?SDRpbnF4K1F2WE9vTkIzU3doRTJtWDJsTG5PUzdjM0dNcytIZGloZTF3NnhT?=
+ =?utf-8?B?WDE1eWlwdEs1OTVibG0zUXBrSnhkN2tLL0lQTndGYWE3VEVwOXV1dWFJOE9P?=
+ =?utf-8?B?UG1NVEJyNFc5YXRZa3NVeHNQdWJZV2NJRW0yMHZDWmZnOEFzdkpyWVBQT09F?=
+ =?utf-8?B?QVFYcHVjWVc0SzZPMm0rVDZyUGh0VjVIY3F3aXowOUp1RTBTMVlGL2RqeVpE?=
+ =?utf-8?B?WWQreVBDMlRKUlBmT0M4OTlVencxNS9WdGxiTDJmaVRQb1IvdjdjRWMvRmUx?=
+ =?utf-8?B?NWUyM1FXVTVUb203MHZUN1dVbXJvS1IzdFZnY1ptM1VRYXAybjA1Rkt5aTlo?=
+ =?utf-8?B?Y0hSSVFvcFJVVjlwQ2xhTVRQb3ZubkQwd0RpWGpuSDVmUStQRE0vdEZsZ3pi?=
+ =?utf-8?B?V1F6eUpZbDNJQzhHaWpidHRPQ2IvZ0R6aFBwdFVXd3lIelNWT0I3b2lwTXVP?=
+ =?utf-8?B?TmxpcWQ3RjlJS2tSN3VVZ0lGSzhNZFMrSzJwZnNqYnVaSGh5Wnhib2R5cDJy?=
+ =?utf-8?B?aUVjbW5RR3REc2JJY0M2YVIrTHg5NVYyV3hJbTAyT1VZVDJzeFlpT3VEY3JQ?=
+ =?utf-8?B?eFlZKzVXeUxxbFMxSEJ2MC9teDdyOFdobjcrL0tDVkQzMDhMdEpCVkxaUjF3?=
+ =?utf-8?B?Uno4c2UwVXU1aURHYmRabTlQZkVVeVM1a2NUU1YzTDdvUmI1aEc3UlZiVHU0?=
+ =?utf-8?B?M2d4OGc3WWRrcm9PZTJrQmxQQ2NmMEFKbG9yRzRiNWc2OHZJSEJ5Q3l4WDNH?=
+ =?utf-8?B?NHJCN0l3VDNkOFFHYjYySzF4aUpvenJDcXN0b25hb001MExvYWJRWkg0RUJG?=
+ =?utf-8?B?Z1A3Ti8vOEFFWWwzUXJMem1QdXlhenp0MGFkZFhWRFNZVDRVZHJFamJYcEFy?=
+ =?utf-8?Q?WB7VfMK1JG2iiasBzhVc1lg=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6059e28-3a20-47ad-716d-08dd94ac8e48
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR01MB8473.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2025 19:05:00.1883
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ff18I6i26xGtQxCoV81blGTl6UyekgnbYkcfKn2E8xGS69d5pZvaMfw5h2KfsWh8eoJDb/VJzDZhPZyRwLjgRkpjEpPNijggg2UdB649/PZyz2p5I4bhL9Yn+OnYakW7
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR01MB8619
 
-On Fri, May 16, 2025 at 3:59=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
->
-> On Sat, May 3, 2025 at 12:29=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote=
-:
-> >
-> > Am 28.04.25 um 14:34 schrieb Rafael J. Wysocki:
-> >
-> > > On Mon, Apr 28, 2025 at 2:31=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> w=
-rote:
-> > >> Am 27.04.25 um 00:52 schrieb Armin Wolf:
-> > >>
-> > >>> Am 26.04.25 um 15:12 schrieb Rafael J. Wysocki:
-> > >>>
-> > >>>> On Sat, Apr 26, 2025 at 1:20=E2=80=AFAM Armin Wolf <W_Armin@gmx.de=
-> wrote:
-> > >>>>> Am 10.04.25 um 18:54 schrieb Armin Wolf:
-> > >>>>>
-> > >>>>>> The ACPI specification defines an interface for the operating sy=
-stem
-> > >>>>>> to change the preferred cooling mode of a given ACPI thermal zon=
-e.
-> > >>>>>> This interface takes the form of a special ACPI control method c=
-alled
-> > >>>>>> _SCP (see section 11.4.13 for details) and is already supported =
-by the
-> > >>>>>> ACPI thermal driver.
-> > >>>>>>
-> > >>>>>> However this support as many issues:
-> > >>>>>>
-> > >>>>>>     - the kernel advertises support for the "3.0 _SCP Extensions=
-"
-> > >>>>>> yet the
-> > >>>>>>       ACPI thermal driver does not support those extensions. Thi=
-s may
-> > >>>>>>       confuse the ACPI firmware.
-> > >>>>>>
-> > >>>>>>     - the execution of the _SCP control method happens after the=
- driver
-> > >>>>>>       retrieved the trip point values. This conflicts with the A=
-CPI
-> > >>>>>>       specification:
-> > >>>>>>
-> > >>>>>>         "OSPM will automatically evaluate _ACx and _PSV objects =
-after
-> > >>>>>>          executing _SCP."
-> > >>>>>>
-> > >>>>>>     - the cooling mode is hardcoded to active cooling and cannot=
- be
-> > >>>>>>       changed by the user.
-> > >>>>>>
-> > >>>>>> Those issues are fixed in this patch series. In the end the user
-> > >>>>>> will be able to tell the ACPI firmware wether he prefers active =
-or
-> > >>>>>> passive cooling. This setting will also be interesting for
-> > >>>>>> applications like TLP (https://linrunner.de/tlp/index.html).
-> > >>>>>>
-> > >>>>>> The whole series was tested on various devices supporting the _S=
-CP
-> > >>>>>> control method and on a device without the _SCP control method a=
-nd
-> > >>>>>> appears to work flawlessly.
-> > >>>>> Any updates on this? I can proof that the new interface for setti=
-ng
-> > >>>>> the cooling mode
-> > >>>>> works. Additionally the first two patches fix two issues inside t=
-he
-> > >>>>> underlying code
-> > >>>>> itself, so having them inside the mainline tree would be benefici=
-al
-> > >>>>> to users.
-> > >>>> Sure.
-> > >>>>
-> > >>>> I'm going to get to them next week, probably on Monday.
-> > >>> Ok, thanks.
-> > >>>
-> > >>> Armin Wolf
-> > >>>
-> > >> I am a bit ashamed of myself but i think we need to put this patch s=
-eries on hold after all :(.
-> > >>
-> > >> The reason of this is that i am confused by the ACPI specification r=
-egarding _SCP:
-> > >>
-> > >>          11.1.2.1. OSPM Change of Cooling Policy
-> > >>
-> > >>          When OSPM changes the platform=E2=80=99s cooling policy fro=
-m one cooling mode to the other, the following occurs:
-> > >>
-> > >>          1. OSPM notifies the platform of the new cooling mode by ru=
-nning the Set Cooling Policy (_SCP) control method in all thermal zones and=
- invoking the OS-specific Set Cooling Policy interface to all participating=
- devices in each thermal zone.
-> > >>
-> > >>          2. Thresholds are updated in the hardware and OSPM is notif=
-ied of the change.
-> > >>
-> > >>          3. OSPM re-evaluates the active and passive cooling tempera=
-ture trip points for the zone and all devices in the zone to obtain the new=
- temperature thresholds.
-> > >>
-> > >> This section of the ACPI specification tells me that we need to eval=
-uate the _SCP control method of all ACPI thermal zones
-> > >> at the same time, yet section 11.4.13. tells me that each _SCP contr=
-ol methods belongs to the individual thermal zone.
+> +static int ras2_check_pcc_chan(struct ras2_pcc_subspace *pcc_subspace)
+> +{
+> +	struct acpi_ras2_shmem __iomem *gen_comm_base = pcc_subspace->comm_addr;
+> +	u32 cap_status;
+> +	u16 status;
+> +	u32 rc;
+> +
+> +	/*
+> +	 * As per ACPI spec, the PCC space will be initialized by
+> +	 * platform and should have set the command completion bit when
+> +	 * PCC can be used by OSPM.
+> +	 *
+> +	 * Poll PCC status register every 3us(delay_us) for maximum of
+> +	 * deadline_us(timeout_us) until PCC command complete bit is set(cond).
+> +	 */
+> +	rc = readw_relaxed_poll_timeout(&gen_comm_base->status, status,
+> +					status & PCC_STATUS_CMD_COMPLETE, 3,
+> +					pcc_subspace->deadline_us);
+> +	if (rc) {
+> +		pr_warn("PCC check channel failed for : %d rc=%d\n",
+> +			pcc_subspace->pcc_id, rc);
+> +		return rc;
+> +	}
+> +
+> +	if (status & PCC_STATUS_ERROR) {
+> +		cap_status = readw_relaxed(&gen_comm_base->set_caps_status);
+> +		rc = ras2_report_cap_error(cap_status);
+> +
+> +		status &= ~PCC_STATUS_ERROR;
+> +		writew_relaxed(status, &gen_comm_base->status);
+> +		return rc;
+> +	}
+> +
+> +	if (status & PCC_STATUS_CMD_COMPLETE)
+> +		return 0;
+> +
+> +	return -EIO;
+> +}
 
-It just says "This object may exist under a thermal zone or a device"
-so I don't see any contradiction.  Section 11.4.13 says where it is
-located and Section 11.1.2.1 says when to evaluate it.
+Hi, I'm terribly sorry for the late churn
 
-However, Section 11.4.13 also says "OSPM will automatically evaluate
-_ACx and _PSV objects after executing _SCP" which is not arranged for
-in your patch [3/3] IIUC.
+It is our current belief that checking the set_caps_status is not dependent on
+if the PCC_STATUS_ERROR bit is set. It seems to us, that the PCC_STATUS_ERROR
+bit should only be set if there is a problem with the PCC protocol. We've
+interpreted the set_caps_status as a capability specific error reporting
+mechanism. We have tested the following amendment to this flow, and urge you to
+consider this change, or a functionally equivalent one:
 
-Thanks!
+diff --git a/drivers/acpi/ras2.c b/drivers/acpi/ras2.c
+index 6bbb0091b4b3..3f73c9ff33a3 100644
+--- a/drivers/acpi/ras2.c
++++ b/drivers/acpi/ras2.c
+@@ -116,18 +116,20 @@ static int ras2_check_pcc_chan(struct ras2_pcc_subspace
+*pcc_subspace)
+        }
+
+        if (status & PCC_STATUS_ERROR) {
+-               cap_status = readw_relaxed(&gen_comm_base->set_caps_status);
+-               rc = ras2_report_cap_error(cap_status);
+-
+                status &= ~PCC_STATUS_ERROR;
+                writew_relaxed(status, &gen_comm_base->status);
+-               return rc;
++               return -EIO;
+        }
+
+-       if (status & PCC_STATUS_CMD_COMPLETE)
+-               return 0;
+
+-       return -EIO;
++       if (!(status & PCC_STATUS_CMD_COMPLETE))
++               return -EIO;
++
++       // Cache, Clear, and Report feature specific status
++       cap_status = readw_relaxed(&gen_comm_base->set_caps_status);
++       writew_relaxed(0x0, &gen_comm_base->set_caps_status);
++       rc = ras2_report_cap_error(cap_status);
++       return rc;
+ }
+
+Thanks again,
+~Daniel
 
