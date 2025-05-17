@@ -1,107 +1,113 @@
-Return-Path: <linux-acpi+bounces-13766-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13767-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 499BAABA8DC
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 May 2025 10:26:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D51ABAA52
+	for <lists+linux-acpi@lfdr.de>; Sat, 17 May 2025 15:21:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A3C41BA272C
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 May 2025 08:26:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F8FD9E5C01
+	for <lists+linux-acpi@lfdr.de>; Sat, 17 May 2025 13:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B25B1C84A1;
-	Sat, 17 May 2025 08:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D530515E5BB;
+	Sat, 17 May 2025 13:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="hm1Zle8y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m3kX9IFD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382DB4B1E5E;
-	Sat, 17 May 2025 08:26:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC40517BA6;
+	Sat, 17 May 2025 13:21:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747470391; cv=none; b=LOGf5uapQlrHnhtz0kzNHfbGsCcgfHlvfVuepudxCmDPD/7wt4ColH/AQe51eUu/vdNdY2no9aJxA4o7gvDP2Jxijr++KaNfp7hENwDS3Wt5nmhZDIxCmj4yHQVCaCllUg94yvhPdKNpwod/Oa7xX/Ujn1mSB7/yBAoAbsn3AkI=
+	t=1747488067; cv=none; b=JUR5sPVK7+jwzv4CblQY7jnA7/WqoMzeWMxpRSHT7dlooysyZ3zTeUaWCz82b1T3lG7Gzjl/KGcYS5hU/pntI+kDFGY4JziDjjW7ABDCCo0DnHhdtamijJzlnz+ggvZFZhJPxnWZ3kdK+6obuPB1QfTbnjPPazeM5N74cBd5L+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747470391; c=relaxed/simple;
-	bh=PQOLWqrKSyrqpWmnE9BonZOml3AtvPoByeRJERePNws=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jhvNywdBzh2qnK5AQG24Q9myztzRZe5AEX7Vyo4NOnFi9uYuUUgcy121bGQduJIbWdQ6LIgx+bvhPyQLO1/3Wm4v7X5othsaYhjmjOtAFQ5YRWeT9U3vGeCH+X0Br/QMe0O8HkhfwZclezRytoi6dTOWH5Z9MQDXSZVnP5kT/N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=hm1Zle8y; arc=none smtp.client-ip=115.124.30.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1747470383; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=l+Er2Ula6bNRtJ61wL0riauQQAVXrck13+EaUfPTQ1I=;
-	b=hm1Zle8yyUEULoniyEkVsWT9wIEjXtRJnmjqqt5z0Qk1K4eyNLT8AgNo+N+OiHWz7aSm2RMuoEdMr68Qr4uwPiVly3sXERS0SOS8Nly1rQMwAOL++6wBtR2U7qtknPP+VJGXtgMnsaCtMgGmqxPjoBKml2cWgsd6B9qs6T8oWNg=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WazQ0TG_1747470380 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sat, 17 May 2025 16:26:21 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Honggyu Kim <honggyu.kim@sk.com>,  kernel_team@skhynix.com,  Andrew
- Morton <akpm@linux-foundation.org>,  gourry@gourry.net,
-  yunjeong.mun@sk.com,  gregkh@linuxfoundation.org,  rafael@kernel.org,
-  lenb@kernel.org,  dan.j.williams@intel.com,  Jonathan.Cameron@huawei.com,
-  dave.jiang@intel.com,  horen.chuang@linux.dev,  hannes@cmpxchg.org,
-  osalvador@suse.de,  linux-kernel@vger.kernel.org,
-  linux-acpi@vger.kernel.org,  linux-mm@kvack.org,  kernel-team@meta.com
-Subject: Re: [PATCH v8] mm/mempolicy: Weighted Interleave Auto-tuning
-In-Reply-To: <20250516144346.8545-1-joshua.hahnjy@gmail.com> (Joshua Hahn's
-	message of "Fri, 16 May 2025 07:43:45 -0700")
-References: <20250516144346.8545-1-joshua.hahnjy@gmail.com>
-Date: Sat, 17 May 2025 16:26:09 +0800
-Message-ID: <874ixjod7i.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1747488067; c=relaxed/simple;
+	bh=sPP8XL7tHXh/bsZIzimqagY+xJVixQzy2ZkOpaT6d08=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TgZz0c35HH6uGo1OmLpIj7mFuqx0iLl5aNsXPwgKIJywoMR5uLaj0KjIGk+OaJjImqjsUQM+rkIjQ3EM1PHg5bFaY/1hbCAI0x7dDaDkWO8FDoZiObSGXfuEL0oGw1oxB1/FxUjtJ2RfokMyiuCrVzubqoWk6aASU/qnDOZdks4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m3kX9IFD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8448AC4CEE3;
+	Sat, 17 May 2025 13:21:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747488067;
+	bh=sPP8XL7tHXh/bsZIzimqagY+xJVixQzy2ZkOpaT6d08=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m3kX9IFD3icXogFTLh29FQJgZReIlia2+XrTPBHaiHQWcNHeoYu+rzqDCHPZT5Kx9
+	 JuDKi0OdRi9fPMVlRnibMl25ZT+ATpWI2LPAbIxiWdcfH1G1mtOaunDWfbb4Dqxh4F
+	 W+nDEAwbfsXvdhray4cosHnqyHWgB8+7DetXkWALXdG8YkSdBLJzqCzB7yHbe8yphw
+	 MURfgfhqLyuUW8kpTqgrz4wXYQBSGXe2+pkdnXaeT5auhc6If7QqKCAI5wT9Rh+hPy
+	 w+kiiyQmIBlFr93WiLuS4Skd0EK09JEqYRUuaUjkSJFw9ygNhgoEbMk4KSizz4ilyo
+	 GmmpO83wkiwgQ==
+Date: Sat, 17 May 2025 15:21:02 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Xin Li <xin@zytor.com>
+Cc: linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
+	linux-acpi@vger.kernel.org, tglx@linutronix.de, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	peterz@infradead.org, jgross@suse.com, boris.ostrovsky@oracle.com,
+	rafael@kernel.org, lenb@kernel.org
+Subject: Re: [PATCH v1 3/3] x86/msr: Convert a native_wrmsr() use to
+ native_wrmsrq()
+Message-ID: <aCiNPuwTtrepFc3x@gmail.com>
+References: <aCg27zLhBM5d0dAI@gmail.com>
+ <EAEB5A61-F19B-481C-B6F0-49B3D509B70A@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <EAEB5A61-F19B-481C-B6F0-49B3D509B70A@zytor.com>
 
-Joshua Hahn <joshua.hahnjy@gmail.com> writes:
 
-> On Fri, 16 May 2025 13:37:39 +0900 Honggyu Kim <honggyu.kim@sk.com> wrote:
->
-> Hi Andrew,
->
-> Would it be too late at this point to add Honggyu's Reviewed-by and
-> Tested-by tags? He has helped test and review this series from the start,
-> but I must have missed adding his tags after rebasing from v7.
->
-> Sorry again for the noise, and thank you for your understanding! I'm not
-> sure what the procedure looks like for commit messages... but here is
-> a fixlet if that makes sense with you:
->
->  Suggested-by: Yunjeong Mun <yunjeong.mun@sk.com>
->  Suggested-by: Oscar Salvador <osalvador@suse.de>
->  Suggested-by: Ying Huang <ying.huang@linux.alibaba.com>
->  Suggested-by: Harry Yoo <harry.yoo@oracle.com>
-> +Tested-by: Honggyu Kim <honggyu.kim@sk.com>
-> +Reviewed-by: Honggyu Kim <honggyu.kim@sk.com>
->  Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
->  Co-developed-by: Gregory Price <gourry@gourry.net>
->  Signed-off-by: Gregory Price <gourry@gourry.net>
->  Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
->
-> And I will sign this off so that you do not have to forge my signature : -)
-> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
->
-> Thank you again for your help, I hope you have a great day!
+* Xin Li <xin@zytor.com> wrote:
 
-Feel free to add my
+> 
+> >>> On 5/15/2025 10:54 AM, Xin Li wrote:
+> >>> On 5/15/2025 8:27 AM, Ingo Molnar wrote:
+> >>>> 
+> >>>> * Xin Li (Intel) <xin@zytor.com> wrote:
+> >>>> 
+> >>>>> Convert a native_wrmsr() use to native_wrmsrq() to zap meaningless type
+> >>>>> conversions when a u64 MSR value is splitted into two u32.
+> >>>>> 
+> >>>> 
+> >>>> BTW., at this point we should probably just replace
+> >>>> sev_es_wr_ghcb_msr() calls with direct calls to:
+> >>>> 
+> >>>>     native_wrmsrq(MSR_AMD64_SEV_ES_GHCB, ...);
+> >>>> 
+> >>>> as sev_es_wr_ghcb_msr() is now basically an open-coded native_wrmsrq().
+> >>>> 
+> >>> 
+> >>> I thought about it, however it looks to me that current code prefers not
+> >>> to spread MSR_AMD64_SEV_ES_GHCB in 17 callsites.  And anyway it's a
+> >>> __always_inline function.
+> >>> 
+> >>> But as you have asked, I will make the change unless someone objects.
+> >> 
+> >> Hi Ingo,
+> >> 
+> >> I took a further look and found that we can't simply replace
+> >> sev_es_wr_ghcb_msr() with native_wrmsrq(MSR_AMD64_SEV_ES_GHCB, ...).
+> >> 
+> >> There are two sev_es_wr_ghcb_msr() definitions.  One is defined in
+> >> arch/x86/boot/compressed/sev.h and it references boot_wrmsr() defined in
+> >> arch/x86/boot/msr.h to do MSR write.
+> > 
+> > Ah, indeed, it's also a startup code wrapper, which wrmsrq() doesn't
+> > have at the moment. Fair enough.
+> 
+> So you want me to drop this patch then?
 
-Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
+No, patch #3 is fine as-is in its -v1 form, I was wrong.
 
-too :-)
+Thanks,
 
-[snip]
-
----
-Best Regards,
-Huang, Ying
+	Ingo
 
