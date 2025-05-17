@@ -1,54 +1,54 @@
-Return-Path: <linux-acpi+bounces-13769-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13770-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B396DABAB09
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 May 2025 18:23:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 863E4ABAB0D
+	for <lists+linux-acpi@lfdr.de>; Sat, 17 May 2025 18:26:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46D6417AE4F
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 May 2025 16:23:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ADD817B856
+	for <lists+linux-acpi@lfdr.de>; Sat, 17 May 2025 16:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBA0202996;
-	Sat, 17 May 2025 16:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585DA206F27;
+	Sat, 17 May 2025 16:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="JmhzoS6E"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="FJUtD0Ls"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C36B1E32A2;
-	Sat, 17 May 2025 16:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526B31862;
+	Sat, 17 May 2025 16:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747499033; cv=none; b=lkVHWfumh7mTVSx5SxF/8HJrQKdLUbCW41VJg9krFEuOB/1MSPxcEhS8PMKUuz48q/p1iCHqoQIizRQk7CjU9UJAU1RcCyIe6X21vghArE7hIcOaVCxt3BeYoVr/km37c4LtDvODs2q2/dxZ8Q8GYVe8CcdyxtTJE5K/lcWrgFo=
+	t=1747499170; cv=none; b=nrxrBHb4F2sAhODDDnVCRjWTK9JQA1btzMJHq2VvIaZ7Pq1ZXP2PAKBdxIo06AUTCkK1QMLWx+2DQhMgSq65ViRudu0hv1gR7miXevxhHPqm6g17sxH/5HVXCGj6qDqL/kBV0WlilAxqcmc6zeNsWVCTeBEbHv5ylEdI+MyA8D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747499033; c=relaxed/simple;
-	bh=dFJq4kUm7TH/aBJGwo73VgmFp66is2/v8fVdrWm5kTI=;
+	s=arc-20240116; t=1747499170; c=relaxed/simple;
+	bh=WfA0a5WSa3tgavc/hdUSsD/1n0VyEUHmfJ3dzZxnvq4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jD1BY7wRGdbkfh2rfKqCh7y+J2bk68wiR0P0uzq9v5JYm/9WYXtMptZXu3YMQYA6BeVMGSTiRAc7uVG6Vmnt0ojtrLqPMXTBQ2wJW0NeaDCfgB2wMOgJGex0eesldVohCdH+a5U6Qw7F/bjGKR2i3cru0yGdM3v8mDkSbuBqUDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=JmhzoS6E; arc=none smtp.client-ip=198.137.202.136
+	 In-Reply-To:Content-Type; b=Snr7lLS8nyb9QXIOg7nboKScPQdjGsEuu8E6iAKKNOx+AmHtdV2yYJ0soP8GpY/fsACSCoQ1jhlUwUEWW/mdXVigzZb+XMOOOqZFZ6LFtjvfHjgawOBRqIKgWPygjfEf4DACIja05WWzfvnnzsJBXC98w1NH4iwcm8Z2Gr1/2bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=FJUtD0Ls; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Received: from [192.168.7.202] ([71.202.166.45])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54HGNEBu917019
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54HGPZUT919995
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Sat, 17 May 2025 09:23:15 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54HGNEBu917019
+	Sat, 17 May 2025 09:25:35 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54HGPZUT919995
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1747498996;
-	bh=maOuVxjg5o1o3ZGZ5VTl3WY0MMdEeWcAek4IAaxp2Tc=;
+	s=2025042001; t=1747499136;
+	bh=KTZCp14x76qGytemiSFztrFrvUMZ1IcfhMjR0iRXjV8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JmhzoS6ELcdbp9uSIzDOg8w2fMwp3grFVOk6J/F1MTs2tTo6AeD6I2ci7Vqb9Cw+r
-	 RWtA5sW9Xgj8fDLRFSVyqE3FQb4gIV6e6j21PeHZfx/Z2nIkmN8vSMOxKamYKxtpFg
-	 DgDJbWqT3tLRjHUQTNQkGKZhcujD2j0GB2RKF18ft9cKxg2Ov9d1tg7AI5T8NGz1mM
-	 HHbQtySfIgbPkFiqWkflCI50y0dtLptX75e77lME9Z3+Xw9Hot6hMqF2DXtJ/LN9ML
-	 1TKFVv3+JrNZLKx+1inrWt6BMWMlOwox35mY5mXit+uKZozEG9hxAG7dYb9KLpBCNh
-	 Ptgae8SZzlnYQ==
-Message-ID: <57f29caa-c952-4ea5-9e63-d19696512235@zytor.com>
-Date: Sat, 17 May 2025 09:23:14 -0700
+	b=FJUtD0Ls+vvCc2jgfB0jHxL64yjLhHC4F9dNTGHOBfk/fKgFT+i/VXv9q2ok6I/Og
+	 PY+TKlBtRXzigEDX/Xd4OexBlXuyej/WbCmIms8OXtkbW9moKtXSCjOj+kadwNzhzD
+	 ITMSiRbDEgYyDu5BbIy0Zn0UAiUqTIZB+CAZPt5CZ+zVUJ0ICnh0pyBXVZfwc1aEAN
+	 1kgaNDyKNpRUq+N2bc+Wb6C779YZhlYgantTBaAEJFPwVJuwxiuS/PR3uLiBCO5guI
+	 mrNDtdcB8XOjowc2ZbtgFEwZ23rmLzFg/ncmcHjlZqLFHnD2kMTanw7pHFzpzad5YE
+	 0AkM8qA+XXRNg==
+Message-ID: <b6b7940d-a2e7-4308-b8cc-29e7cb6fe0e8@zytor.com>
+Date: Sat, 17 May 2025 09:25:34 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -56,18 +56,16 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/3] x86/xen/msr: Fix uninitialized symbol 'err'
-To: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>,
-        Ingo Molnar <mingo@kernel.org>
+Subject: Re: [PATCH v1 3/3] x86/msr: Convert a native_wrmsr() use to
+ native_wrmsrq()
+To: Ingo Molnar <mingo@kernel.org>
 Cc: linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
         linux-acpi@vger.kernel.org, tglx@linutronix.de, bp@alien8.de,
         dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        peterz@infradead.org, boris.ostrovsky@oracle.com, rafael@kernel.org,
-        lenb@kernel.org
-References: <20250512084552.1586883-1-xin@zytor.com>
- <20250512084552.1586883-3-xin@zytor.com> <aCYIblffvBGUuxWf@gmail.com>
- <30affad5-4f26-4e22-9d64-b8ece1199773@zytor.com>
- <ae1d05f6-cd65-4ca4-87c5-af0ae34e21ce@suse.com>
+        peterz@infradead.org, jgross@suse.com, boris.ostrovsky@oracle.com,
+        rafael@kernel.org, lenb@kernel.org
+References: <aCg27zLhBM5d0dAI@gmail.com>
+ <EAEB5A61-F19B-481C-B6F0-49B3D509B70A@zytor.com> <aCiNPuwTtrepFc3x@gmail.com>
 Content-Language: en-US
 From: Xin Li <xin@zytor.com>
 Autocrypt: addr=xin@zytor.com; keydata=
@@ -104,81 +102,19 @@ Autocrypt: addr=xin@zytor.com; keydata=
  PYbAkjBbm+tuJ/Sm+5Yp5T/BnKz21FoCS8uvTiziHj2H7Cuekn6F8EYhegONm+RVg3vikOpn
  gao85i4HwQTK9/D1wgJIQkdwWXVMZ6q/OALaBp82vQ2U9sjTyFXgDjglgh00VRAHP7u1Rcu4
  l75w1xInsg==
-In-Reply-To: <ae1d05f6-cd65-4ca4-87c5-af0ae34e21ce@suse.com>
+In-Reply-To: <aCiNPuwTtrepFc3x@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 5/16/2025 6:42 AM, Jürgen Groß wrote:
-> On 15.05.25 20:11, Xin Li wrote:
->> On 5/15/2025 8:29 AM, Ingo Molnar wrote:
->>>
->>> * Xin Li (Intel) <xin@zytor.com> wrote:
->>>
->>>> xen_read_msr_safe() currently passes an uninitialized argument err to
->>>> xen_do_read_msr().  But as xen_do_read_msr() may not set the argument,
->>>> xen_read_msr_safe() could return err with an unpredictable value.
->>>>
->>>> To ensure correctness, initialize err to 0 (representing success)
->>>> in xen_read_msr_safe().
->>>>
->>>> Because xen_read_msr_safe() is essentially a wrapper of 
->>>> xen_do_read_msr(),
->>>> the latter should be responsible for initializing the value of *err 
->>>> to 0.
->>>> Thus initialize *err to 0 in xen_do_read_msr().
->>>>
->>>> Fixes: 502ad6e5a619 ("x86/msr: Change the function type of 
->>>> native_read_msr_safe()")
->>>> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
->>>> Closes: https://lore.kernel.org/xen-devel/aBxNI_Q0- 
->>>> MhtBSZG@stanley.mountain/
->>>> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
->>>> ---
->>>>   arch/x86/xen/enlighten_pv.c | 5 ++++-
->>>>   1 file changed, 4 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
->>>> index 3be38350f044..01f1d441347e 100644
->>>> --- a/arch/x86/xen/enlighten_pv.c
->>>> +++ b/arch/x86/xen/enlighten_pv.c
->>>> @@ -1091,6 +1091,9 @@ static u64 xen_do_read_msr(u32 msr, int *err)
->>>>   {
->>>>       u64 val = 0;    /* Avoid uninitialized value for safe variant. */
->>>> +    if (err)
->>>> +        *err = 0;
->>>> +
->>>>       if (pmu_msr_chk_emulated(msr, &val, true))
->>>>           return val;
->>>> @@ -1162,7 +1165,7 @@ static void xen_do_write_msr(u32 msr, u64 val, 
->>>> int *err)
->>>>   static int xen_read_msr_safe(u32 msr, u64 *val)
->>>>   {
->>>> -    int err;
->>>> +    int err = 0;
->>>>       *val = xen_do_read_msr(msr, &err);
->>>>       return err;
->>>
->>> So why not initialize 'err' with 0 in both callers, xen_read_msr_safe()
->>> and xen_read_msr(), and avoid all the initialization trouble in
->>> xen_do_read_msr()?
->>
->> Yeah, I should make the change in xen_read_msr() too.
->>
->> However xen_do_read_msr() should be implemented in a defensive way to
->> set *err properly as it's part of its return value.  Actually it was so,
->> but one of my previous cleanup patch removed it because err is no longer
->> passed to pmu_msr_chk_emulated().
-> 
-> xen_do_read_msr() is usable only in enlighten_pv.c as it is static.
-> 
-> So I'd prefer to drop setting err to 0 in xen_do_read_msr() initially
-> and to set err to 0 in all callers.
+On 5/17/2025 6:21 AM, Ingo Molnar wrote:
+>>> Ah, indeed, it's also a startup code wrapper, which wrmsrq() doesn't
+>>> have at the moment. Fair enough.
+>> So you want me to drop this patch then?
+> No, patch #3 is fine as-is in its -v1 form
 
-Okay, I will send v1A to address this comment then.
+Thanks for confirming.
 
-Thanks!
+I'll just update patch #2 as version v1A then.
+
      Xin
-
-> Juergen
-
 
