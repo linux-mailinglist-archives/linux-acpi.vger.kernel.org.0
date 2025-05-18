@@ -1,185 +1,203 @@
-Return-Path: <linux-acpi+bounces-13774-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13775-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 950D5ABAD9B
-	for <lists+linux-acpi@lfdr.de>; Sun, 18 May 2025 05:33:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC486ABAE27
+	for <lists+linux-acpi@lfdr.de>; Sun, 18 May 2025 08:25:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 246EF163500
-	for <lists+linux-acpi@lfdr.de>; Sun, 18 May 2025 03:33:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB4B07AB49B
+	for <lists+linux-acpi@lfdr.de>; Sun, 18 May 2025 06:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3230B12B17C;
-	Sun, 18 May 2025 03:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255A61DE2D7;
+	Sun, 18 May 2025 06:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b="2s3Sn/F8"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="o91B8Yor"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2044.outbound.protection.outlook.com [40.107.92.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F9A78F4E
-	for <linux-acpi@vger.kernel.org>; Sun, 18 May 2025 03:33:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747539213; cv=none; b=R0BZUr5+Bt8D2xskMlSjSJ7GqN1IDumICMGUglzbYQ7MsosNYV9msvURPH/pblkywa4CkvUVAabzXzOWGJzwaSnJ1Yjsn59RYGwIb3RfNtiyVWMOM8FYmN7cGiJCIkkqHxKOCh3hzkC6M0SQ8+RnF9jrhPIedyVYQ5aiaK/+Wjw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747539213; c=relaxed/simple;
-	bh=Qcok2HA9vTfwFdHCTVEK07ccJdSZwKZ7gEg3B1mT0SE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=XaYItEjFPbIP2f38u0jkhDycDfECKSBEcDmmJzskfEv1BRrjIv4DdDhnosQC7uetT8p0ixUug4QWKpWv+wzfVfN54SH2pc5CTTt1y3KDr3XB2jvmvLbD2guniVV5Khshu+TS80xdl2+koLP4jflbha5qb/0sEEplN3BJGMCSc3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org; spf=pass smtp.mailfrom=kfocus.org; dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b=2s3Sn/F8; arc=none smtp.client-ip=209.85.166.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kfocus.org
-Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-3da73e9cf17so29771155ab.2
-        for <linux-acpi@vger.kernel.org>; Sat, 17 May 2025 20:33:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kfocus-org.20230601.gappssmtp.com; s=20230601; t=1747539210; x=1748144010; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:organization:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q66axFNwX/OOJa3rSvoRH2bP/IkJhfyrHcNnQZV7mqs=;
-        b=2s3Sn/F8NxYcq93vfit1NVJAowEuUlTj4z3gGciiHb0ud/sOWFHJBDa4DudupVhC9f
-         A/p0Uh+F9Gw3vurB8d/OrA5P3HTJWmKQIhA+AaAlQzjJpe04DpoupxJ+WfSbYkxPadI5
-         RbM3175mlHzQHtQWHOkQ00Y+wtWLhAddgYW/XqXU2+rjysGNR/VYiwiKhQZ7AGikoqCf
-         lSF5n9tp4KlTpAWa7DdGg07kbIsNdnBCx8QkkPtDKy0QTjnQCoIL7S/HY1aAJ9BNtTIC
-         btuAR74UdwChGQp0RQz7NTVPAgyODYMIWeuenM9ZxIZU4Xa19BApH0sOgilHyrZQh4vL
-         Wj8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747539210; x=1748144010;
-        h=content-transfer-encoding:mime-version:organization:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q66axFNwX/OOJa3rSvoRH2bP/IkJhfyrHcNnQZV7mqs=;
-        b=aow3/mfxeU0UdGveRS67JoHDaKigGAe4azc5J2hixhPeg/2U+XwNvXxAiTnXXLef0T
-         HgkP2CjUH3YgQ71ZqBK4l4mCov6MsqoMlhvXRjK6GJUI+0/Y0kIux4tt+Rk/5Y/ThOmR
-         /zCWU/RY68YC0aVM6zkut1eGu4xLCsG4V7Ai4naRAr9gTJeWGWOLveBveoiwVoVt7Am6
-         7llEKFBgYTf0HRBNmYlFiVjWihRG2QSAqrnhlvf3AoA2lnkuxPqof99cfb8cxDVZREEX
-         RIVvYXDU+xQW2N2mHyOfAZKNk8x+Mlk2nTE5EN0fb/ktoRuBgz2F31ESLfM7zqtFn1X3
-         Isew==
-X-Forwarded-Encrypted: i=1; AJvYcCXu7WvOu/l5mq02BknGoDlDuwofjQwrsqOdZzD12cDAkWYsaY5qf2KDJsxGRxgVF9e4UkfvvKqNdKqh@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjwMuJqccZkSBprEI4g6+LI5NKkuSzFaxytstUcByThrrfLrgF
-	0huuKvCKDrbc/LHiI0cIIbXQFJ2aILhf/KoQ+Ryu6pr6+fvbwwDkZUDmRKSysFWbwHGeevAZZ+9
-	sY4ds
-X-Gm-Gg: ASbGnct2mZT+PrBHFdetjDKYhHQgEVUXcbQrX4df04YV1QH3dU/CN8uWTS7gw8wt/XZ
-	mXro6S9PXRQ0CeeKIWl+hUUyzgcgl4iXfFT6t5Sl5HMkd+XL6sP18YBJsBxnLf6gTRe7rzvjPKl
-	1XE5e5u0s9ycFk7pbeuRpaKtqdaC9lzjMV78VKo4fhfMTrcZIHSB0gwqKOh6duIOOV5O2EHUrEy
-	GyCk7K7Er2ewuD+KgCyzzLjEkLU6YkKQyqO/d6apYieaUHtfiVFhJxl6M+lVcU/dDBOmM+sqUW/
-	+It1HqE2svAtzsn8bFDxaxe//36zh1R4uXS/l8RJgg0KeRwj6A==
-X-Google-Smtp-Source: AGHT+IGuZEkCOiHSAV46kJ8+5tKLpqMP5vNUcLX7dfiS8jc7cyBPiTeK+LOScScxytNuyNOhII3pQg==
-X-Received: by 2002:a05:6e02:1745:b0:3db:7b4c:309b with SMTP id e9e14a558f8ab-3db8429768amr109263565ab.2.1747539210347;
-        Sat, 17 May 2025 20:33:30 -0700 (PDT)
-Received: from kf-m2g5 ([2607:fb90:bfd8:c847:9e04:66f4:d76b:5edd])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3db8443a3b8sm13071295ab.48.2025.05.17.20.33.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 May 2025 20:33:29 -0700 (PDT)
-Date: Sat, 17 May 2025 22:33:23 -0500
-From: Aaron Rainbolt <arainbolt@kfocus.org>
-To: srinivas.pandruvada@linux.intel.com, lenb@kernel.org, rjw@rjwysocki.net
-Cc: linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
- kernel-team@lists.ubuntu.com
-Subject: [BUG] intel_pstate: CPU frequencies miscalculated/incorrectly
- detected on Arrow Lake hardware
-Message-ID: <20250517223323.6e13bf58@kf-m2g5>
-Organization: Kubuntu Focus
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DCF469D;
+	Sun, 18 May 2025 06:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747549539; cv=fail; b=LA6wKO4Bhi6/J401YaVRhNwKFOW28fJ2JBlcf02TQ70uEsiCScZ9ehufS7PyNv61XxiW9yjpcvrHNPyyFHZlb14aIzUcoSV4oIXW6ZxUmRZuvcTxPFfLktIpcnZcGsS7TJ6XfphKjq7F+2uz05E9vIbQ7e2rKoxfLjT1U0ufNMc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747549539; c=relaxed/simple;
+	bh=D5Ovb6dscI3nIXHu0FjQSPdLe7ypkR3uKa6msR5q86g=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uoXezPeI7QlsqRBhoJkBCWNo96Z5pI38NUv32a30jiliEjLWs3nGSHS4M4teurvAcgMIV4aa4vDp1sXa5AU2ZOFC8y2mguRiyj+GDYJW+qQxLGMba82MtTKr1foltrjPj/2y18fY2SKGGz9D+nPmcCQrFKmxox1VjrxmCPp++8I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=o91B8Yor; arc=fail smtp.client-ip=40.107.92.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VML7uMjnaQxPuzRPJnd2yBtvfG2Nva0hk3x4k+CyD7lKnHqZBRtdzi1K3DPmoX0t+QTEiqvxepdQQuZeCaj9c5j8qzNnHIEN7SFFw5uwCbh9S7vh9MpmsW/9BslYi9VUO1yOgPVl1ztfCg9tctyw6oGrbERMgwtq1u7ll5/sA2jJw4IEBsQsYvEJkzSXp3H6EI+5h+UzPGLoUffFW87+GZefW7zdVqeFqRhtUAY03ttaX30IoLS9UmIs7hfXO4HU+iBK7BO1h+4a/6qCJAHkQDV6qMoc4vVIpis2KqxkwibY7DujgS27OYMV060VNtXlH2aZsZK9GVcBsMq/k/NARw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4tzfQYK8s9v/FPxIeV3BA+JRuj4olHtzhrN63AveWLg=;
+ b=kAKiT8r08liGuAwMoOzZzH17mBH5IuAC6gIKzsWUX96Z3uRSWs5qI13eTZ5GGXxvU7aa7A0jDE9pq5wcxbbfzNEQ/O3RzruomquSMq5f8Abvn6OeauXMaGkyyNOzQshcqPp2D1DtuDdtxfgKC46h7jPjcCsCdD5tryvoibGGaEVwzTf2XGSZI17XUVVVGxsH1/SlZkZxhu5mGJdTRZgebVc21rxin1ChzRcG8RtQ1Kdv3HNZjLE5GogVt8cPBkDOk35BEcKfKlsT/qnMFxRzbWZI3k7I9Sc4buY10LqqN3qFoHRuVbQouPbOllRS3WaEk3xJ8n7mlkgk7x0rt6t+8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4tzfQYK8s9v/FPxIeV3BA+JRuj4olHtzhrN63AveWLg=;
+ b=o91B8YorsGYIQ9YibTZQ3/8d4E6HVYBUweOS2RW50ciZLCSBhDuW/wnxDrgq0SU+B3feA/2jwz0wJI+5Vh236nSsaf7pcAKh1diTYDq0CL/vshEudPCK1g/y/gGiY8HY24TnBKUIXxFRXtpsf7H6U3EeN2eGj7mDg9eOgAhIVPA=
+Received: from MW4PR04CA0325.namprd04.prod.outlook.com (2603:10b6:303:82::30)
+ by SN7PR12MB7449.namprd12.prod.outlook.com (2603:10b6:806:299::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.33; Sun, 18 May
+ 2025 06:25:30 +0000
+Received: from MWH0EPF000A6733.namprd04.prod.outlook.com
+ (2603:10b6:303:82:cafe::5a) by MW4PR04CA0325.outlook.office365.com
+ (2603:10b6:303:82::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8746.25 via Frontend Transport; Sun,
+ 18 May 2025 06:25:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ MWH0EPF000A6733.mail.protection.outlook.com (10.167.249.25) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8746.27 via Frontend Transport; Sun, 18 May 2025 06:25:29 +0000
+Received: from qyzhu-os-debug.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 18 May
+ 2025 01:25:26 -0500
+From: Zhu Qiyu <qiyuzhu2@amd.com>
+To: <rafael@kernel.org>
+CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <qiyuzhu2@amd.com>
+Subject: [PATCH v4] ACPI:PRM: Reduce unnecessary printing to avoid the worries of regular users
+Date: Sun, 18 May 2025 06:25:07 +0000
+Message-ID: <20250518062507.218855-1-qiyuzhu2@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000A6733:EE_|SN7PR12MB7449:EE_
+X-MS-Office365-Filtering-Correlation-Id: efb76478-b745-40b4-309a-08dd95d4c8f1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700013|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?vZs53nO14XuBui3v6tUktczofHSjyrVwT3yRIUDgV4+g9NSyQ0as8sm4WHxs?=
+ =?us-ascii?Q?mTt7LZgIMNUGHYMI9MDFQFhP0LvWFBybFcCmMmCfumHbyxQ3E7+I3sar2BJ7?=
+ =?us-ascii?Q?riLGACcvQOm04HraEyToEW4E8Y2bphD6X+IdsYDLtTTOIdeZHiwIfl3oF+Wy?=
+ =?us-ascii?Q?jVqrjC3n7CpiBQafQhGdMiBqZxWOebElUXjQpUSkO51WOsw6IdIXMmzNnzQU?=
+ =?us-ascii?Q?68pGUbfvgpm4Odq/4Shn7CIDVDXd7cEsGxoeghUnZDqJ+8ErQXJWcxQK9uyE?=
+ =?us-ascii?Q?g0mMB3bI0SrzK2+jY1/B88wqjK5SCB99qVDDtxjAMz9SLaIxeqSvBxatS3l2?=
+ =?us-ascii?Q?/xCz1TAhWKdgSrB4VtyoAwHFrR4jV6V86AozgVCcy2mV3efmrCueWGHwNMyJ?=
+ =?us-ascii?Q?lw5odHazrXrQTpEYthszydL/3/XVugOkn4dnJ7V8tutoVaQFDbQvVLiYN9vd?=
+ =?us-ascii?Q?+AlWmET8qNo0op/5PpRcGb70w2Rr7d9H665s6fRkfqJvwGigeLUO45kRXVfw?=
+ =?us-ascii?Q?KNcURButccosqjmITIgnWiWvxPwy5k20141ePjM3Xb/DLJG16GaJ5fEoFnuv?=
+ =?us-ascii?Q?Go2H3dyBZbkUyMA+iYnpNR4TrMP9K+/D46CipP+gUsI5dRjPwVG8unJNJiGw?=
+ =?us-ascii?Q?33FJYPhR9ylTWNZVA2PFnkya/EiPP47/HFTRxIb5tzqwoTsBpl07HIgmN0F4?=
+ =?us-ascii?Q?vAZ9lTi2JzBeJhxGqmKxnCr0KGu11KbJMAodx+FU4en0+n7wVCT0KRoDrXMl?=
+ =?us-ascii?Q?d44uFEPAnSs7yTCUAWj8xzAnRlNSAowx4pJUTqP3M+3wpAuelFBNuJjSIGlw?=
+ =?us-ascii?Q?q3GhrIXVHyBT5sGK3fEUYqY98rvbUiHqCvmssCadcnIjUqakk+Xvb2kHXP0a?=
+ =?us-ascii?Q?nZHJl9DiYsM+hI/uWOk9TGkxGcLTAbPDaGA9D/F3nQnQj8/dKW1Wg0WQGMhH?=
+ =?us-ascii?Q?vEw4nP+WlQEk8efAawP6O67QouUPZSRNZxvTs735qQl3jCx20zFaGAaB8IRM?=
+ =?us-ascii?Q?EqSi/e/LbJhZTRj4nWcx3MlGDYr7OP1oZeWsVAHGsNaemMIsLmjHG75Jsceu?=
+ =?us-ascii?Q?yib2IpIS1DdZyjEkUlNqu7TV9+kOwFF1QfJLxTzaVwTEzndeHPoAhVS3yD9A?=
+ =?us-ascii?Q?rVI0Q0R7kvIWdBsTVbXMHvVI21Cu3HqKEc58r/QflTwtAIbVsCfs3Urmas9L?=
+ =?us-ascii?Q?nUKFIfl5Un4VFOS4gMU6CPpcvXLRGGym6sh+mc++X70xMbVFWCMDUpHW54Zu?=
+ =?us-ascii?Q?8wmZLNEQeecDjVUbwhGTpAOnhtznUE03zxEx/emXswB2L6s7zHLoDQab3t7R?=
+ =?us-ascii?Q?zRzhFE8iX9CiGuL6EvGMajGs2YhxlAspNyYR1ePLGiMPcdDGD4UoZLloRmul?=
+ =?us-ascii?Q?Qf5bz87uyRRC9k7DpPf4IJnk1aPEI/XQYCwPpclSPrkUEHY0Jb0WQuL0VOws?=
+ =?us-ascii?Q?iw2zr8fs5POxQVymlnWc9/I6eAN7b8IqE3a+bCn5MlCNCA5srj6LqDwjl44F?=
+ =?us-ascii?Q?+5oOPeRV1WszYcY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700013)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2025 06:25:29.1911
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: efb76478-b745-40b4-309a-08dd95d4c8f1
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000A6733.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7449
 
-We have tested three systems with Arrow Lake CPUs, and all of them
-report incorrect max and base frequencies. Two systems have Ultra 9 275
-HX CPUs, and one has an Ultra 5 225 H. The problem occurs with both the
-Ubuntu 6.11 kernel and the 6.14.6 mainline kernel.
+Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
+handler and context") introduces non-essential printing "Failed to find
+VA for GUID: xxxx, PA: 0x0" which causes unnecessary worry for regular
+users.
 
-How these values are misreported appears to depend on the CPU. On the
-Ultra 9 275HX systems when running Ubuntu=E2=80=99s 6.11.0-1015-oem kernel,=
- the
-max reported frequency on a golden core is 5000000; however, the CPU
-spec says it should be 5400000. In contrast, on an Ultra 5 225H system,
-the max reported frequency on a golden core is 6200000;  however, the
-spec says it should be 4900000.=20
+Refer to PRM Spec Section 4.1.2[1], both static data buffer address
+and ACPI parameter buffer address may be NULL if they are not needed.
+So there is no need to print out "Failed to find VA ... " to intimidate
+regular users.
 
-This bug is troublesome to end users because many CPU monitoring apps
-will report the CPU is running quite a bit slower or faster than the
-spec. Tools such as cpupower-gui, cpufreq-info, and cpufreq-set all
-show incorrect values because they read cpuinfo_max_freq and
-base_frequency, and write scaling_max_freq values in
-/sys/devices/system/cpu/cpufreq/policy* directories.=20
+Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
 
-The following bash script shows the incorrect values read from the
-cpuinfo_max_freq and base_frequency files. It also shows how the actual
-max frequencies attained are as expected. The example values shown come
-from an Ultra 9 275 HX CPU.
+Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
+---
 
-    echo; echo '=3D=3D BEGIN =3D=3D';
-    echo 'Ensure turbo is on';
-    cd /sys/devices/system/cpu;
-    echo '0' |sudo tee intel_pstate/no_turbo > /dev/null;
-    if grep -q '0' intel_pstate/no_turbo; then echo 'Turbo is on'; fi
+Previous versions can be found at:
+v1: https://lore.kernel.org/linux-acpi/CAJZ5v0hv0WKd-SXFhUgYs-Zpc+-PsSNOBu0r7L5TzJWgddtsKA@mail.gmail.com/t/#u
+v2: https://lore.kernel.org/linux-acpi/20250512010620.142155-1-qiyuzhu2@amd.com/#r
+v3: https://lore.kernel.org/linux-acpi/20250512011833.142204-1-qiyuzhu2@amd.com/t/#u
 
-    echo; echo 'Find top 2 golden cores';
-    cd /sys/devices/system/cpu/cpufreq/;
-    grep . policy*/cpuinfo_max_freq \
-      | awk -F: '{print $2" "$1}' |sort -rn | head -n2;
-    #> 5000000 policy2/cpuinfo_max_freq
-    #> 5000000 policy3/cpuinfo_max_freq
+Changes in v2:
+ - Reduce the code changes.
+Changes in v3:
+ - Fixed title letters not showing.
+Changes in v4:
+ - Only print the necessary warnings.
 
-    echo; echo 'Confirm misreporting: per spec, this should be 5400000!';
-    grep . policy2/cpuinfo_max_freq; # 500000
+ drivers/acpi/prmt.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-    echo; echo 'Confirm misreporting: per spec, this should be 2700000!'
-    grep . policy2/base_frequency; # 2500000
+diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+index e549914a636c..bee450869cce 100644
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -85,8 +85,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
+ 		}
+ 	}
+ 
+-	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
+-
+ 	return 0;
+ }
+ 
+@@ -154,6 +152,15 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
+ 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
+ 		th->handler_addr =
+ 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
++		/*
++		 * Refer to PRM Spec, both static data buffer address and
++		 * ACPI parameter buffer address may be NULL if they are not
++		 * needed. So there only print out warning if handler address
++		 * is zero.
++		 */
++		if (!th->handler_addr)
++			pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->handler_address);
+ 
+ 		th->static_data_buffer_addr =
+ 			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
 
-    echo; echo '# Run a CPU benchmark now, then press [ Enter ] to see top =
-3 freqs.';
-    echo 'This will take 6 seconds to complete.';
-    read -r -p '# You should see that the freqs match the CPU specs. ';\=20
-    for i in {0..5}; do
-      grep . policy*/scaling_cur_freq | awk -F: '{print $2" "$1}';
-      sleep 1;
-    done |sort -rn |head -n3=20
-    #> 5400000 policy2/scaling_cur_freq
-    #> 5320159 policy2/scaling_cur_freq
-    #> 5241886 policy3/scaling_cur_freq
+base-commit: 82f2b0b97b36ee3fcddf0f0780a9a0825d52fec3
+-- 
+2.43.0
 
-    echo; echo '=3D=3D END   =3D=3D'; echo;
-
-The actual results, when running the above script, shows the
-cpuinfo_max_freq and base_frequencies values do not match those
-specified by Intel. With the 6.11.0-1021-oem Ubuntu Kernel, we see the
-following:
-
-| Turbo? | Core | Freq (spec) | Freq (report) | Freq (actual) |
-| Yes    | P    | 5.4 GHz     | 5.0 GHz       | 5.4 GHz       |
-| No     | P    | 2.7 GHz     | 2.5 GHz       | 2.7 GHz       |
-| Yes    | E    | 4.6 GHz     | 4.6 GHz       | 4.6 GHz       |
-| No     | E    | 2.1 GHz     | 2.1 GHz       | 2.1 GHz       |
-
-We have verified the cores are operating at their specified frequencies
-by running a demanding CPU benchmark while graphing frequencies with
-KDE System Monitor, on all 3 systems. This tool appeared to graph
-scaling_cur_freq values. Notice E-cores appear to be correctly
-reported. Also, all systems misinterpret values written to
-scaling_max_req with the apparent same error deltas: on the Ultra 9 275
-HX, setting this value to 5000000 results in actual max frequencies of
-5400000. Setting it to 2500000 results in max 2700000. Setting it to
-1650000 results in max 2100000.
-
-The behavior with the 6.14.6 kernel is worse than with 6.11, with all
-values under-reported. Actual frequencies were not tested on 6.14.6:
-
-| Turbo? | Core | Freq (spec) | Freq (report) |
-| Yes    | P    | 5.4 GHz     | 3.9 GHz       |
-| No     | P    | 2.7 GHz     | 2.0 GHz       |
-| Yes    | E    | 4.6 GHz     | 3.3 GHz       |
-| No     | E    | 2.1 GHz     | 1.5 GHz       |
-
-Is it possible the math currently used for calculating CPU frequencies
-is no longer correct for Arrow Lake CPUs? This seems similar to the
-issue that was fixed by commit f5c8cf2 (cpufreq: intel_pstate: hybrid:
-Use known scaling factor for P-cores).
 
