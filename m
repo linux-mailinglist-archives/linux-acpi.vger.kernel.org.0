@@ -1,115 +1,128 @@
-Return-Path: <linux-acpi+bounces-13779-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13781-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB67ABAF43
-	for <lists+linux-acpi@lfdr.de>; Sun, 18 May 2025 12:18:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6775CABAF53
+	for <lists+linux-acpi@lfdr.de>; Sun, 18 May 2025 12:37:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 591E218994A9
-	for <lists+linux-acpi@lfdr.de>; Sun, 18 May 2025 10:19:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 215A03BC98D
+	for <lists+linux-acpi@lfdr.de>; Sun, 18 May 2025 10:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110C72135B8;
-	Sun, 18 May 2025 10:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09416214212;
+	Sun, 18 May 2025 10:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oC7lH3X8"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="OPgAgb5Q";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="vD47HsKk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D30212B1E;
-	Sun, 18 May 2025 10:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6C11DF973;
+	Sun, 18 May 2025 10:37:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747563521; cv=none; b=bq6nzyNMI/YZslzvPeXeeYDW/jNx8KaNJrNrYDPTZTK6U/ecOJwdFtBcQBYDR9DDtTpn2lKT/Vdd4FzCekbliwRd9xsvmRLZfVMWhyXVcf+0veknGHLpS1DcUdsvg9tgSXAOq2IGIQRetcaDou4b4tV3BMxZmVsVhacdXspQHyU=
+	t=1747564630; cv=none; b=NCCN1bN4uN5Hgs+5oo70DrA2aUULMV8oMse6onXLJNGN+3a4M+ccFqLg/QH7UWl2CT8SicFSvr5EevTYhBGxH6Xoj3hiqNfrXqYOrbEPcw0+AyGnAc6atTeWQPHOLo001Q5W7mFIr79ftDg7PXfE8rACVyXMvWf1wC7RVWzq6fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747563521; c=relaxed/simple;
-	bh=3bpWePsE3/8Eyz1vaUmT1v61DH/LDZGGR7WSY5sci1M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=npu5q2pZh6SGPkIzPwVDHxSLWzFcwuM/K0OlsUKyugq4O+oDYktuOLYzZ/F9T9GXgPa+XY0+8cYHp8o+RpkMjP4XIvisgedpc0VgZJSWP+QMQtzqIF1LYDqcfXACaxRuDFHvZotu12wePSdh9ee9t3ZmBSWGBNir80Uv7aEeNmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oC7lH3X8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 640A6C4CEE9;
-	Sun, 18 May 2025 10:18:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747563521;
-	bh=3bpWePsE3/8Eyz1vaUmT1v61DH/LDZGGR7WSY5sci1M=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=oC7lH3X8rVJseb0ZvcrL2bK9WvUfQslKri0aARhMV+5VoSRHEY2gaPBHKWGgcUPBb
-	 C3ubdSplrdPEo1qRndvoToJlp2I5UhPu/tpU3wuvyt7M31z/e/CaE2cUOhP53nWe6k
-	 2G69Md1nJWxICfPuMbEwrgF0gi+tWYK/OcmSq6hCM8t5sGbRxUAnx87OaKvlx9utAB
-	 yiktpWW4lo+oF7OxGwrVNWsViH4m9Iit0cjg15u0Tuig40tqsuG4uyot40fzgz3NV9
-	 vJbhN2PcyFC9HPfKGtSriHyvbSYPnMEgFSuJPhpsU1nzcfXkrO+DQoWvO2VMLDI4sx
-	 pWIeHi4N+nS5Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54BB5C3ABC9;
-	Sun, 18 May 2025 10:18:41 +0000 (UTC)
-From: Janne Grunau via B4 Relay <devnull+j.jannau.net@kernel.org>
-Date: Sun, 18 May 2025 12:18:38 +0200
-Subject: [PATCH 2/2] HID: lenovo: Remove CONFIG_ACPI dependency
+	s=arc-20240116; t=1747564630; c=relaxed/simple;
+	bh=Rdr4/LLt19WMj0Jnc4oDWc8eUb/VMHycvcZIIqxGGFE=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=YA3tuiLRQ3Rr1q0b6ZrBlhuKlVUS5YsdcXeN21nVvqwbkIUbcNCgk2TUh71MEnDCRky+wyT2o+yJZQTCgb2OqERV3tp+9+5FGIH+0z0F65/YhdrivL//Tm/hKbGIC/EVXaaThJ6GVrbdwBD9UgXa4ANmC5Rw+iwg2PlwB1IyLB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=OPgAgb5Q; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=vD47HsKk; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 274CE1380156;
+	Sun, 18 May 2025 06:37:06 -0400 (EDT)
+Received: from phl-imap-12 ([10.202.2.86])
+  by phl-compute-05.internal (MEProxy); Sun, 18 May 2025 06:37:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1747564626;
+	 x=1747651026; bh=asZJIugkMSLeXuWUY+4CGpyc9cFNSY12yXMfKnbFWeA=; b=
+	OPgAgb5QcmR8rj7MfCQ3Ct4CjhXcxRpp73Ac3j9Ly8G0frtLC0kuoSoVSg4yuvSN
+	JdigRxPyxQyCqUAuMVTgrgyhZmk8tZiijeszrq72VSWHW95BrE2tK7g/WyGX/Syc
+	0TYJBqpr/JZITbplPNagiVnOAR5amJxlhfZHeDSyotpBTWjyLVEQktwiEtIIqgS7
+	xWH8/s4BeNcy4fZb4iqqBdOV+FkJX9zK8ezks6LJL3+0Pe44fdFNkKamJuUJskGj
+	Zn2FRM/vTKMiSTqccnD7M5XqY6wqAFZjmLmFgUNVh4EEYu6h11TfKfIB+UAWM850
+	tqhdvA8uhU56x27HRNXQKg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1747564626; x=
+	1747651026; bh=asZJIugkMSLeXuWUY+4CGpyc9cFNSY12yXMfKnbFWeA=; b=v
+	D47HsKktiwjoaLyXIWlBhNNSCTAlJRGOhk4P1/RxKnb/JdbA0wytfUtw7QsUdPHI
+	R+IFwNMtNWZJ5Bs5vY4nNsCpBGMtQL+4ckqk1mDn3gsbFMDdOPjInlysEH5Oemc7
+	LvN6MLkIYq5Kld79CQY7yoSHAQpP3aTr8kOJzqI6gMJhtujzt1aryuqJ6jR2dW0n
+	C4CdVhgg67GQpbluslqUvOEGN3LO+az6hLiAAEAoscBefNzHxRdpSa04q2X5eBiI
+	DqaKmYSTY3ULDdmGKOCnee3DaQIG13VtU0mRfiqiwnkcomTAd1zA0rdfrhOWtvev
+	G4GxNnu9r/VM8ybJ75w4A==
+X-ME-Sender: <xms:UbgpaOsv9KCNjTo-a-j4Ffguj_IR7RwnvluaHCQD_NB2pAd5qlGVUg>
+    <xme:UbgpaDelnykCGylM2Y6p_bu2rVKqJh1kX9J5xsrBvtb8bunJsBPUunBTeErAuNyNh
+    QGYmVqVwzNhu9GpMnE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefudekvdelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
+    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
+    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
+    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
+    kedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepjhesjhgrnhhnrghurdhnvghtpd
+    hrtghpthhtohepsggvnhhtihhssheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhi
+    khhosheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhgvnhgssehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    lhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplh
+    hinhhugidqihhnphhuthesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
+    ihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:UbgpaJwafR8SXzG5BIm5oIK3X2vPh7jMrAqpbO7b9Tfw44KGtRgRFQ>
+    <xmx:UbgpaJPo3-LqdRbJxJ2x6lfjiNdISu8ssEwVgFUyE-6KOFa8keRrWA>
+    <xmx:UbgpaO_cEeJBbR8U1b9AvA5iMN80gs9soxYZCkkxH17SOpx6RrOl9A>
+    <xmx:UbgpaBVoVL1J5pCi7wSOOml6YcfLRD0ZYwicLvGBZVyI0cz9b4laow>
+    <xmx:UrgpaJr9X-wZb8lP8TUVcnniqLjSnGiOKH9LCG4niWoym3_WS590I0jI>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id AA6001060060; Sun, 18 May 2025 06:37:05 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+X-ThreadId: T5605245bb69d7150
+Date: Sun, 18 May 2025 12:36:44 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Janne Grunau" <j@jannau.net>, "Jiri Kosina" <jikos@kernel.org>,
+ "Benjamin Tissoires" <bentiss@kernel.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-acpi@vger.kernel.org
+Message-Id: <d57ff24a-bf6f-454d-9b00-8abf8071658e@app.fastmail.com>
+In-Reply-To: 
+ <20250518-hid_lenovo_acpi_dependency-v1-2-afdb93b5d1a6@jannau.net>
+References: 
+ <20250518-hid_lenovo_acpi_dependency-v1-0-afdb93b5d1a6@jannau.net>
+ <20250518-hid_lenovo_acpi_dependency-v1-2-afdb93b5d1a6@jannau.net>
+Subject: Re: [PATCH 2/2] HID: lenovo: Remove CONFIG_ACPI dependency
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250518-hid_lenovo_acpi_dependency-v1-2-afdb93b5d1a6@jannau.net>
-References: <20250518-hid_lenovo_acpi_dependency-v1-0-afdb93b5d1a6@jannau.net>
-In-Reply-To: <20250518-hid_lenovo_acpi_dependency-v1-0-afdb93b5d1a6@jannau.net>
-To: Arnd Bergmann <arnd@arndb.de>, Jiri Kosina <jikos@kernel.org>, 
- Benjamin Tissoires <bentiss@kernel.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-input@vger.kernel.org, 
- linux-acpi@vger.kernel.org, Janne Grunau <j@jannau.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1053; i=j@jannau.net;
- s=yk2024; h=from:subject:message-id;
- bh=bo27DdOTnOoQpDLRJMS1oIMxCFrEhqBgkKEdS+8giu4=;
- b=owGbwMvMwCW2UNrmdq9+ahrjabUkhgzNLQyts6/cn2c7q3CmUPq6uJoXXNkbxIX3eQSc0Z9eN
- e985vrCjlIWBjEuBlkxRZYk7ZcdDKtrFGNqH4TBzGFlAhnCwMUpABOpbGT4H3TL9sD882cqd2nN
- mev9+03S9PYF317PPXVpabnF16OpE00Y/kpvWfjl6syyfxtOnGldsen6306L6Q+tnC88/H2nw+9
- +6XxuAA==
-X-Developer-Key: i=j@jannau.net; a=openpgp;
- fpr=8B336A6BE4E5695E89B8532B81E806F586338419
-X-Endpoint-Received: by B4 Relay for j@jannau.net/yk2024 with auth_id=264
-X-Original-From: Janne Grunau <j@jannau.net>
-Reply-To: j@jannau.net
 
-From: Janne Grunau <j@jannau.net>
+On Sun, May 18, 2025, at 12:18, Janne Grunau via B4 Relay wrote:
+> 
+>  config HID_LENOVO
+>  	tristate "Lenovo / Thinkpad devices"
+> -	depends on ACPI
+> -	select ACPI_PLATFORM_PROFILE
+> +	depends on ACPI || !ACPI
 
-With platform_profile_cycle() stubbed the dependency on CONFIG_ACPI can
-be relaxed to `ACPI || !ACPI` and CONFIG_ACPI_PLATFORM_PROFILE is only
-selected if ACPI is enabled.
-Cycling through platform profiles is only functional with ACPI but that
-should not be an issue as it only used on a detachable keyboard of a x86
-tablet with a special connector.
+Since ACPI is a 'bool' symbol, the 'ACPI || !ACPI' dependency
+has no actual effect. I don't see any way that ACPI will ever
+become a loadable module.
 
-Fixes: 52572cde8b4a4 ("HID: lenovo: select CONFIG_ACPI_PLATFORM_PROFILE")
-Signed-off-by: Janne Grunau <j@jannau.net>
----
- drivers/hid/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
-index a503252702b7b43c332a12b14bc8b23b83e9f028..984f7bd235141f21e018b51f97546ec9d00324e8 100644
---- a/drivers/hid/Kconfig
-+++ b/drivers/hid/Kconfig
-@@ -595,8 +595,8 @@ config HID_LED
- 
- config HID_LENOVO
- 	tristate "Lenovo / Thinkpad devices"
--	depends on ACPI
--	select ACPI_PLATFORM_PROFILE
-+	depends on ACPI || !ACPI
-+	select ACPI_PLATFORM_PROFILE if ACPI
- 	select NEW_LEDS
- 	select LEDS_CLASS
- 	help
-
--- 
-2.49.0
-
-
+      Arnd
 
