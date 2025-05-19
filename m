@@ -1,142 +1,194 @@
-Return-Path: <linux-acpi+bounces-13811-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13812-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AECDABC532
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 19:06:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96418ABC5E9
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 19:51:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D1791B62926
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 17:06:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B1947A9D8A
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 17:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FDB288521;
-	Mon, 19 May 2025 17:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA3C2853FF;
+	Mon, 19 May 2025 17:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="TDYGuEm2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c2vW3R9q"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420ED278E42;
-	Mon, 19 May 2025 17:06:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C56189F3B;
+	Mon, 19 May 2025 17:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747674367; cv=none; b=eJOZtoT/XQFc91d6IebhlrA5UqJRlXJuvo2w2FnSm5NkMNpoHMptxFtztO5KXE9Su4CPYyeI91fvT5QswdAdQHaIBvUBK5+gtIPB/BbLyVygmbrwlOEXJMq+71hKFj10AdpdJy1l4E+5xC/7SLH0BzGbgY4PDNk5GBzS+g6Dl30=
+	t=1747677066; cv=none; b=o/h6M5nnZsC/WD9pALvm4wWWrr4JOhTbqSRnL+/iOTJ5rUi+c8QUE/BT3Ckj9fl0h6naXqXEJtxxOp6XC0pv0inRjT//2TbUiVr7IFo6sOq7eWeL3Xc5S13gJJKWUz27Qlhp8vHuXhn0/pQV6za5dZOLjcB8fK4tZpQJgIOEkfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747674367; c=relaxed/simple;
-	bh=MZFRrNTk6ViWc/ChOfN0rfaLCkD0DjAwZcW6S1HSzPs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=mU/qA+yP7sPlWd+pu7GGLlnst4sIMfu9YyLvRdyNcqkissRpzguLbG7TY1hRt4ddMuFbE/oaEnMR9KSn/m0YMlIxPC9A8poK1rID+reArrJh6p5Zxq4f6Xpui/aoXirqlfO5V76cRqXqnkAjtExuhxibxtGJxsqwEbLLeiZ4MC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=TDYGuEm2; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [192.168.7.202] ([71.202.166.45])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54JH51I01806864
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Mon, 19 May 2025 10:05:02 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54JH51I01806864
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1747674303;
-	bh=ts02ww6rWZGYsDbofaKTTtQ1Jg1+MlPMrtXd6RLkuKk=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=TDYGuEm2xJdqKpSk9HUb6mLJjH8QfE3z/oRA2V/xIDKmePX33e93goxahOmGQ2I3j
-	 tYmxL9ORcxAW+J0TECixYkLKG+VvUkIVrFR7yvt59YT3tr5smdcmQgUS0uVOC96Mkn
-	 sSYguCgZWvX68kWJfDpbLo49PiSKPGTK5KTXUuFPqjsw2DvpSrIN0U0mJhhDP8pDR3
-	 tivIbhQZNZ0T9EUyoseNddg/rbQq/eIVkdiejdUHd5BnnDJ3tTJPUqPT6EH/5Qi9t1
-	 GvaCx74S+pp94gbDUxJgdUmfAktr9DJqlgg4T78CgXwPWy65LB1zIctvM/IzjBuafK
-	 1u5AG60T+DDfw==
-Message-ID: <3486006e-f1ad-4ed2-bdb5-5d39c04c2691@zytor.com>
-Date: Mon, 19 May 2025 10:05:01 -0700
+	s=arc-20240116; t=1747677066; c=relaxed/simple;
+	bh=nKa4bHZyPQdUF/i6uNjxZLF1LDuKJHocPAQdDgqVICc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RZNSgLhrsXEVntGTzEGeWtI1+olX9L2WR1vhG6SFRfxii6y3yAPjSTMkaiWrD406YPQwBgK0fe2KixXuMMxNsPqjJMX6tiomxgFTlmgHM68ixmMttp3ld179bmxg9tulbrse8ZWiF39VAhil0MKiRDyb1+GBHrTjJromPjxEgkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c2vW3R9q; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747677064; x=1779213064;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=nKa4bHZyPQdUF/i6uNjxZLF1LDuKJHocPAQdDgqVICc=;
+  b=c2vW3R9q3OVSmv9NpuNm7etcX9c5Qg/YrfWQqdZcJVT5TT3QN3I2wiFZ
+   9NCD9ZqauKYP654TNDkPCAMI6OApe0WPAVf5z3uceDEBOZRmU5LmmYEkb
+   Tr3XGvV6Qp9qRoSmMvK+1VbmbAesLs3csPHwpQ98kakBSMAdk3oaKSOmW
+   I62/Q9QI94F1SUAtMGnVTycAIooq5jhKKnjxgnNxlrNcHFqYs9XiDCQVt
+   sx+vR1j6fBQ798y8H8nUVpJaN5Haj6RoFCnVTy8+eSdGsjfcj7uV/8p+3
+   9+i32vT8iGDJAG/eDyIDQ4TJJzwvF/T0OynYtSgu/bHX4i7g32F0aC2hY
+   Q==;
+X-CSE-ConnectionGUID: RBbbY0eRRQyuyz7V38bRiQ==
+X-CSE-MsgGUID: uetXqAtRTkay86FK0Q0I8A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49493458"
+X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; 
+   d="scan'208";a="49493458"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 10:51:03 -0700
+X-CSE-ConnectionGUID: glWSRu+/T1+fFYiMbL4DLA==
+X-CSE-MsgGUID: FwYFkZhNQ1+Ss/Cy0nueLw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; 
+   d="scan'208";a="170471752"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 10:51:03 -0700
+Date: Mon, 19 May 2025 10:56:06 -0700
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, x86@kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>, devicetree@vger.kernel.org,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Chris Oo <cho@microsoft.com>, linux-hyperv@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+	Ricardo Neri <ricardo.neri@intel.com>
+Subject: Re: [PATCH v3 06/13] dt-bindings: reserved-memory: Wakeup Mailbox
+ for Intel processors
+Message-ID: <20250519175606.GA9693@ranerica-svr.sc.intel.com>
+References: <20250503191515.24041-7-ricardo.neri-calderon@linux.intel.com>
+ <20250504-original-leopard-of-vigor-5702ef@kuoka>
+ <20250506051610.GC25533@ranerica-svr.sc.intel.com>
+ <20250506-pompous-meaty-crane-97efce@kuoka>
+ <20250507032339.GA27243@ranerica-svr.sc.intel.com>
+ <20250512153224.GA3377771-robh@kernel.org>
+ <20250513221456.GA2794@ranerica-svr.sc.intel.com>
+ <20250514154248.GA2375202-robh@kernel.org>
+ <20250515035338.GA4955@ranerica-svr.sc.intel.com>
+ <20250519152937.GA2227051-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/3] x86/msr: Convert a native_wrmsr() use to
- native_wrmsrq()
-From: Xin Li <xin@zytor.com>
-To: linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-acpi@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@kernel.org, bp@alien8.de,
-        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-        peterz@infradead.org, jgross@suse.com, boris.ostrovsky@oracle.com,
-        rafael@kernel.org, lenb@kernel.org
-References: <20250512084552.1586883-1-xin@zytor.com>
- <20250512084552.1586883-4-xin@zytor.com>
-Content-Language: en-US
-Autocrypt: addr=xin@zytor.com; keydata=
- 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
- l75w1xInsg==
-In-Reply-To: <20250512084552.1586883-4-xin@zytor.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250519152937.GA2227051-robh@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
-On 5/12/2025 1:45 AM, Xin Li (Intel) wrote:
-> Convert a native_wrmsr() use to native_wrmsrq() to zap meaningless type
-> conversions when a u64 MSR value is splitted into two u32.
+On Mon, May 19, 2025 at 10:29:37AM -0500, Rob Herring wrote:
+> On Wed, May 14, 2025 at 08:53:38PM -0700, Ricardo Neri wrote:
+> > On Wed, May 14, 2025 at 10:42:48AM -0500, Rob Herring wrote:
+> > > On Tue, May 13, 2025 at 03:14:56PM -0700, Ricardo Neri wrote:
+> > > > On Mon, May 12, 2025 at 10:32:24AM -0500, Rob Herring wrote:
+> > > > > On Tue, May 06, 2025 at 08:23:39PM -0700, Ricardo Neri wrote:
+> > > > > > On Tue, May 06, 2025 at 09:10:22AM +0200, Krzysztof Kozlowski wrote:
+> > > > > > > On Mon, May 05, 2025 at 10:16:10PM GMT, Ricardo Neri wrote:
+> > > > > > > > > If this is a device, then compatibles specific to devices. You do not
+> > > > > > > > > get different rules than all other bindings... or this does not have to
+> > > > > > > > > be binding at all. Why standard reserved-memory does not work for here?
+> > > > > > > > > 
+> > > > > > > > > Why do you need compatible in the first place?
+> > > > > > > > 
+> > > > > > > > Are you suggesting something like this?
+> > > > > > > > 
+> > > > > > > > reserved-memory {
+> > > > > > > > 	# address-cells = <2>;
+> > > > > > > > 	# size-cells = <1>;
+> > > > > > > > 
+> > > > > > > > 	wakeup_mailbox: wakeupmb@fff000 {
+> > > > > > > > 		reg = < 0x0 0xfff000 0x1000>
+> > > > > > > > 	}
+> > > > > > > > 
+> > > > > > > > and then reference to the reserved memory using the wakeup_mailbox
+> > > > > > > > phandle?
+> > > > > > > 
+> > > > > > > Yes just like every other, typical reserved memory block.
+> > > > > > 
+> > > > > > Thanks! I will take this approach and drop this patch.
+> > > > > 
+> > > > > If there is nothing else to this other than the reserved region, then 
+> > > > > don't do this. Keep it like you had. There's no need for 2 nodes.
+> > > > 
+> > > > Thank you for your feedback!
+> > > > 
+> > > > I was planning to use one reserved-memory node and inside of it a child
+> > > > node to with a `reg` property to specify the location and size of the
+> > > > mailbox. I would reference to that subnode from the kernel code.
+> > > > 
+> > > > IIUC, the reserved-memory node is only the container and the actual memory
+> > > > regions are expressed as child nodes.
+> > > > 
+> > > > I had it like that before, but with a `compatible` property that I did not
+> > > > need.
+> > > > 
+> > > > Am I missing anything?
+> > > 
+> > > Without a compatible, how do you identify which reserved region is the 
+> > > wakeup mailbox?
+> > 
+> > I thought using a phandle to the wakeup_mailbox. Then I realized that the
+> > device nodes using the mailbox would be CPUs. They would need a `memory-
+> > region` property. This does not look right to me.
 > 
-> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-> ---
->   arch/x86/coco/sev/core.c | 7 +------
->   1 file changed, 1 insertion(+), 6 deletions(-)
+> That doesn't really make sense unless it's a memory region per CPU.
+
+Agreed.
+
 > 
-> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-> index ff82151f7718..b3ce6fc8b62d 100644
-> --- a/arch/x86/coco/sev/core.c
-> +++ b/arch/x86/coco/sev/core.c
-> @@ -282,12 +282,7 @@ static inline u64 sev_es_rd_ghcb_msr(void)
->   
->   static __always_inline void sev_es_wr_ghcb_msr(u64 val)
->   {
-> -	u32 low, high;
-> -
-> -	low  = (u32)(val);
-> -	high = (u32)(val >> 32);
-> -
-> -	native_wrmsr(MSR_AMD64_SEV_ES_GHCB, low, high);
-> +	native_wrmsrq(MSR_AMD64_SEV_ES_GHCB, val);
->   }
->   
->   static int vc_fetch_insn_kernel(struct es_em_ctxt *ctxt,
+> 
+> > > Before you say node name, those are supposed to be 
+> > > generic though we failed to enforce anything for /reserved-memory child 
+> > > nodes.
+> > 
+> > I see. Thanks for preventing me from doing this.
+> > 
+> > Then the `compatible` property seems the way to go after all.
+> > 
+> > This what motivated this patch in the first place. On further analysis,
+> > IIUC, defining bindings and schema is not needed, IMO, since the mailbox
+> > is already defined in the ACPI spec. No need to redefine.
+> 
+> You lost me...
+> 
+> You don't need to redefine the layout of the memory region as that's 
+> defined already somewhere,
 
-Just noticed that this patch doesn't apply to tip/x86/core, I will send
-it as a separate one.
+Great!
 
-Thanks!
-     Xin
+> but you do need to define where it is for DT. 
+> And for that, you need a compatible. Do you know where it is in this 
+> case?
+
+The compatible is not defined anywhere yet. Is a DT schema needed to
+document it? If yes, I am usure what to put in the description. We tried
+to not redefine the mailbox and refer to the ACPI spec. That was a NAK
+from Krzysztof [1].
+
+Thanks and BR,
+Ricardo
+
+[1]. https://lore.kernel.org/r/624e1985-7dd2-4abe-a918-78cb43556967@kernel.org
 
