@@ -1,137 +1,165 @@
-Return-Path: <linux-acpi+bounces-13804-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13805-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D93C3ABC185
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 17:00:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16152ABC1D0
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 17:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4F707ACCC0
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 14:59:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B915169344
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 15:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AA2283FEE;
-	Mon, 19 May 2025 15:00:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BlrcDWKI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865B82857CC;
+	Mon, 19 May 2025 15:12:16 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138F7284B32;
-	Mon, 19 May 2025 15:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583642853EF;
+	Mon, 19 May 2025 15:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747666814; cv=none; b=I+ihBr0uHcT3wObm5UT+sGipTtveKereSJRxmwj8gK1FxMhvp9ZSjFRTH71T1+F4vhx+O4Cuzslhya01s+dHaudMSDROiNNufm/yxW3525DX1SzE+s8ph2DvIVQ4CB4djapfIduYm9ApC0RNlDI4ynfWurkdrzgGM7MST1z7b7M=
+	t=1747667536; cv=none; b=A0SBVzWOp9JgmGQYK94uBMPsPqGRlNp/i/NLUmzZynbjriIuSFjc455nxgg3hHD7ef8hmDFza7qeLDdPAWDc2AhGuAwC3espdrWRRTgJIAwyhLCSMx4FqM9duluXeK+IbkJwgkgSH4H+2wnu0b2u/aRilJO9pmoTZo57+7zS+/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747666814; c=relaxed/simple;
-	bh=U4GPv/OEwuURUdMov/CmVGo+Cn6wNOn2vY+JOwulIyI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZwnmCq0KhbJhDkjnd9n8NwLFWzrrqfbUxwfom+DQ0Col0AhEwqd/PNpppcOs2AJWuAb9UmXpwdQSc/nj5R+J5jZ88YV7ggmyeQLWhZiNlYHFHe/0NpB+S3xJ3eKXq9UXvsGZAIll8JHd3Cs6zbTEGED4cdj6UHjsOXtfY8cu1tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BlrcDWKI; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6FD121FD58;
-	Mon, 19 May 2025 15:00:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1747666809;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zAnJxDH2cQNUkyYzrOZMk+S9iW0aoM/UKY9IFB7P0gI=;
-	b=BlrcDWKIV79p/Nbt0Xh+Zt/BftW3xjkeQJTQnChTfqsL/QJSllXnuNw6dAQUnOnmIUsRtm
-	KSNcU3JqRelJteSXDXFkffd3WHWzlVOhZebpJMqBX3zVQDqvkebzIkM+upiOgh49FvE7t8
-	XBpxGAxmbnLdgWUgXnlma9exg5WYXSMsnf+jKTZ1F5/zhFy6y5dgvRYfJQVuWDx9wO6Gth
-	tFGi86S0BghEV3YKxfBpeBYqhhr3qjsNyzgFA5296OaRyjXg7WbW5YlC2/BblNOfQwHvzL
-	LioPfHZLzqGusr+Qoi/ERBvUNbMAmyY7IGYaK1hnyOFQABEn/j2LT4L3TxWUwA==
-Date: Mon, 19 May 2025 17:00:04 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
- Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
- Shyti <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
- Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
- Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Saravana
- Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Mark
- Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Daniel Scally
- <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
- devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 23/26] misc: lan966x_pci: Introduce board specific
- data
-Message-ID: <20250519170004.631d99af@bootlin.com>
-In-Reply-To: <aB0ERYKdRreDe7Wt@smile.fi.intel.com>
-References: <20250507071315.394857-1-herve.codina@bootlin.com>
-	<20250507071315.394857-24-herve.codina@bootlin.com>
-	<aB0ERYKdRreDe7Wt@smile.fi.intel.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1747667536; c=relaxed/simple;
+	bh=4yDTTgeK3NB53OcYwuVVMvoPuDfwm79+z+SSPTGZzh4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a8W9oO2KJpp55GpMlV9IJbWgAH72MbyzXLRKAV63Ih6XhWGtzoygqZlOZeryleI4jFcb0CpauH9WH/6UjoWk7yVqkEb4KaHPPYq05cc3cEEZo/Bxa95QRFGU9ApYaVN6cBWUagqisrSpH59IJBq7yjlFNIXmWnpyNr4yYuH95No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b1LjV1JM3z6K9ql;
+	Mon, 19 May 2025 23:10:54 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
+	by mail.maildlp.com (Postfix) with ESMTPS id C04721400E3;
+	Mon, 19 May 2025 23:11:41 +0800 (CST)
+Received: from P_UKIT01-A7bmah.china.huawei.com (10.48.148.165) by
+ frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 19 May 2025 17:11:40 +0200
+From: <shiju.jose@huawei.com>
+To: <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>
+CC: <bp@alien8.de>, <rafael@kernel.org>, <tony.luck@intel.com>,
+	<lenb@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
+	<mchehab@kernel.org>, <jonathan.cameron@huawei.com>, <linux-mm@kvack.org>,
+	<linuxarm@huawei.com>, <rientjes@google.com>, <jiaqiyan@google.com>,
+	<Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
+	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
+	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<dferguson@amperecomputing.com>, <wbs@os.amperecomputing.com>,
+	<nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
+	<roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
+	<wanghuiqiang@huawei.com>, <shiju.jose@huawei.com>
+Subject: [PATCH v7 0/2] ACPI: Add support for ACPI RAS2 feature table
+Date: Mon, 19 May 2025 16:11:13 +0100
+Message-ID: <20250519151116.803-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.43.0.windows.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefvdduieekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveeiffefgeeitdelleeigefhjeelueeuveekveetgeffheeltdekgeduiefggfdvnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeeguddprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhto
- hepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggv
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Type: text/plain
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ frapeml500007.china.huawei.com (7.182.85.172)
 
-Hi Andy,
+From: Shiju Jose <shiju.jose@huawei.com>
 
-On Thu, 8 May 2025 22:21:41 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+Add support for ACPI RAS2 feature table (RAS2) defined in the
+ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
+scrubbing feature.
 
-> On Wed, May 07, 2025 at 09:13:05AM +0200, Herve Codina wrote:
-> > Only one device-tree overlay (lan966x_evb_lan9662_nic.dtbo) is handled
-> > and this overlay is directly referenced in lan966x_pci_load_overlay().
-> > 
-> > This avoid to use the code for an other board.
-> > 
-> > In order to be more generic and to allow support for other boards (PCI
-> > Vendor/Device IDs), introduce the lan966x_pci_info structure and attach
-> > it to PCI Vendor/Device IDs handled by the driver.
-> > 
-> > This structure contains information related to the PCI board such as
-> > information related to the dtbo describing the board we have to load.  
-> 
-> ...
-> 
-> >  static struct pci_device_id lan966x_pci_ids[] = {
-> > -	{ PCI_DEVICE(PCI_VENDOR_ID_EFAR, 0x9660) },
-> > +	{ PCI_VDEVICE(EFAR, 0x9660), (kernel_ulong_t)&evb_lan9662_nic_info },  
-> 
-> PCI_DEVICE_DATA() ?
+ACPI RAS2 patches were part of the EDAC series [1].
 
-PCI_DEVICE_DATA() need the device ID defined using a #define in the form
-PCI_DEVICE_ID_##vend##_##dev
+The code is based on ras.git: edac-for-next branch [2]
+merged with linux-pm.git [3] : linux-next branch.
 
-PCI_VDEVICE() allows the device ID value passed as an integer in the same
-way as for PCI_DEVICE().
+1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
+2. https://web.git.kernel.org/pub/scm/linux/kernel/git/ras/ras.git/log/?h=edac-for-next
+3. https://web.git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/
 
-Also, according to its kdoc, it allows the next field to follow as the
-device private data.
+Changes
+=======
+v6 -> v7:
+1. Fix for the issue reported by Daniel,
+   In ras2_check_pcc_chan(), add read, clear and check RAS2 set_cap_status outside
+   if (status & PCC_STATUS_ERROR) check. 
+   https://lore.kernel.org/all/51bcb52c-4132-4daf-8903-29b121c485a1@os.amperecomputing.com/
 
-IMHO, I think PCI_VDEVICE() use is correct here and I will keep it.
+v5 -> v6:
+1. Fix for the issue reported by Daniel, in start scrubbing with correct addr and size
+   after firmware return INVALID DATA error for scrub request with invalid addr or size.
+   https://lore.kernel.org/all/8cdf7885-31b3-4308-8a7c-f4e427486429@os.amperecomputing.com/
+   
+v4 -> v5:
+1. Fix for the build warnings reported by kernel test robot.
+   https://patchwork.kernel.org/project/linux-edac/patch/20250423163511.1412-3-shiju.jose@huawei.com/
+2. Removed patch "ACPI: ACPI 6.5: RAS2: Rename RAS2 table structure and field names"
+   from the series as the patch was merged to linux-pm.git : branch linux-next
+3. Rebased to ras.git: edac-for-next branch merged with linux-pm.git : linux-next branch.
+      
+v3 -> v4:
+1.  Changes for feedbacks from Yazen on v3.
+    https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
 
-Best regards,
-Hervé
+v2 -> v3:
+1. Rename RAS2 table structure and field names in 
+   include/acpi/actbl2.h limited to only necessary
+   for RAS2 scrub feature.
+2. Changes for feedbacks from Jonathan on v2.
+3. Daniel reported a known behaviour: when readback 'size' attribute after
+   setting in, returns 0 before starting scrubbing via 'addr' attribute.
+   Changes added to fix this.
+4. Daniel reported that firmware cannot update status of demand scrubbing
+   via the 'Actual Address Range (OUTPUT)', thus add workaround in the
+   kernel to update sysfs 'addr' attribute with the status of demand
+   scrubbing.
+5. Optimized logic in ras2_check_pcc_chan() function
+   (patch - ACPI:RAS2: Add ACPI RAS2 driver).
+6. Add PCC channel lock to struct ras2_pcc_subspace and change
+   lock in ras2_mem_ctx as a pointer to pcc channel lock to make sure
+   writing to PCC subspace shared memory is protected from race conditions.
+   
+v1 -> v2:
+1.  Changes for feedbacks from Borislav.
+    - Shorten ACPI RAS2 structures and variables names.
+    - Shorten some of the other variables in the RAS2 drivers.
+    - Fixed few CamelCases.
+
+2.  Changes for feedbacks from Yazen.
+    - Added newline after number of '}' and return statements.
+    - Changed return type for "ras2_add_aux_device() to 'int'.
+    - Deleted a duplication of acpi_get_table("RAS2",...) in the ras2_acpi_parse_table().
+    - Add "FW_WARN" to few error logs in the ras2_acpi_parse_table().
+    - Rename ras2_acpi_init() to acpi_ras2_init() and modified to call acpi_ras2_init()
+      function from the acpi_init().
+    - Moved scrub related variables from the struct ras2_mem_ctx from  patch
+      "ACPI:RAS2: Add ACPI RAS2 driver" to "ras: mem: Add memory ACPI RAS2 driver".
+
+Shiju Jose (2):
+  ACPI:RAS2: Add ACPI RAS2 driver
+  ras: mem: Add memory ACPI RAS2 driver
+
+ Documentation/edac/scrub.rst |  78 ++++++
+ drivers/acpi/Kconfig         |  11 +
+ drivers/acpi/Makefile        |   1 +
+ drivers/acpi/bus.c           |   3 +
+ drivers/acpi/ras2.c          | 450 +++++++++++++++++++++++++++++++++++
+ drivers/ras/Kconfig          |  11 +
+ drivers/ras/Makefile         |   1 +
+ drivers/ras/acpi_ras2.c      | 424 +++++++++++++++++++++++++++++++++
+ include/acpi/ras2.h          |  70 ++++++
+ 9 files changed, 1049 insertions(+)
+ create mode 100644 drivers/acpi/ras2.c
+ create mode 100644 drivers/ras/acpi_ras2.c
+ create mode 100644 include/acpi/ras2.h
+
+-- 
+2.43.0
 
 
