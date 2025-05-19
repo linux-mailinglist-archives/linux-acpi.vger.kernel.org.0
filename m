@@ -1,38 +1,54 @@
-Return-Path: <linux-acpi+bounces-13810-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13811-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED28EABC4A3
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 18:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AECDABC532
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 19:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7754189F8D8
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 16:35:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D1791B62926
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 17:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159EE28368E;
-	Mon, 19 May 2025 16:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FDB288521;
+	Mon, 19 May 2025 17:06:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="TDYGuEm2"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D89199931;
-	Mon, 19 May 2025 16:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420ED278E42;
+	Mon, 19 May 2025 17:06:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747672530; cv=none; b=uXUkZYZTnJfvk9gLO6jkU2sjzGjvtDOjnoGjHx5wXRXGD60CE0maFSPoaIYrPxWJ1cvPdqc2CHp70o2b/NvJg4sW9mYXkxOZJPch18c59DyKFMx03zRqryPL1OedQloJkkSyPzSwIt96/fsYmyKhjYMd7aHtvXQ7ZsNPue/a0vk=
+	t=1747674367; cv=none; b=eJOZtoT/XQFc91d6IebhlrA5UqJRlXJuvo2w2FnSm5NkMNpoHMptxFtztO5KXE9Su4CPYyeI91fvT5QswdAdQHaIBvUBK5+gtIPB/BbLyVygmbrwlOEXJMq+71hKFj10AdpdJy1l4E+5xC/7SLH0BzGbgY4PDNk5GBzS+g6Dl30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747672530; c=relaxed/simple;
-	bh=9eriE1PkVOELR+xjnTYu3UMZywdiBv6Uqwk/7wWDUgY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=i1140EZXdn7x6C1dC3/pzdn8R6uuoZpdz0sg3Srj2UW59lGPrroKs/Qs4ANq8MZ58LDu+y9G2BjH5OdE1oC+dwDvXtuXPcrpA5vYuKyapmAcdU3B9xb/K2mtrAcrquSlB2LTMlra8CCFBde0HaLomUuQorZufX5Z6gQybTiYNko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6F63A439B0;
-	Mon, 19 May 2025 16:35:15 +0000 (UTC)
-Message-ID: <8368aa6d-e5a9-4136-8eb6-c059bc888979@ghiti.fr>
-Date: Mon, 19 May 2025 18:35:15 +0200
+	s=arc-20240116; t=1747674367; c=relaxed/simple;
+	bh=MZFRrNTk6ViWc/ChOfN0rfaLCkD0DjAwZcW6S1HSzPs=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=mU/qA+yP7sPlWd+pu7GGLlnst4sIMfu9YyLvRdyNcqkissRpzguLbG7TY1hRt4ddMuFbE/oaEnMR9KSn/m0YMlIxPC9A8poK1rID+reArrJh6p5Zxq4f6Xpui/aoXirqlfO5V76cRqXqnkAjtExuhxibxtGJxsqwEbLLeiZ4MC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=TDYGuEm2; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [192.168.7.202] ([71.202.166.45])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54JH51I01806864
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Mon, 19 May 2025 10:05:02 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54JH51I01806864
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025042001; t=1747674303;
+	bh=ts02ww6rWZGYsDbofaKTTtQ1Jg1+MlPMrtXd6RLkuKk=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=TDYGuEm2xJdqKpSk9HUb6mLJjH8QfE3z/oRA2V/xIDKmePX33e93goxahOmGQ2I3j
+	 tYmxL9ORcxAW+J0TECixYkLKG+VvUkIVrFR7yvt59YT3tr5smdcmQgUS0uVOC96Mkn
+	 sSYguCgZWvX68kWJfDpbLo49PiSKPGTK5KTXUuFPqjsw2DvpSrIN0U0mJhhDP8pDR3
+	 tivIbhQZNZ0T9EUyoseNddg/rbQq/eIVkdiejdUHd5BnnDJ3tTJPUqPT6EH/5Qi9t1
+	 GvaCx74S+pp94gbDUxJgdUmfAktr9DJqlgg4T78CgXwPWy65LB1zIctvM/IzjBuafK
+	 1u5AG60T+DDfw==
+Message-ID: <3486006e-f1ad-4ed2-bdb5-5d39c04c2691@zytor.com>
+Date: Mon, 19 May 2025 10:05:01 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -40,151 +56,87 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot] riscv/fixes test error: can't ssh into the instance (2)
-To: syzbot <syzbot+2cae92ded758083f5bde@syzkaller.appspotmail.com>,
- aou@eecs.berkeley.edu, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, palmer@dabbelt.com,
- paul.walmsley@sifive.com, syzkaller-bugs@googlegroups.com,
- Mark Pearson <mpearson-lenovo@squebb.ca>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- linux-acpi@vger.kernel.org
-References: <682b0412.a70a0220.3849cf.00b1.GAE@google.com>
+Subject: Re: [PATCH v1 3/3] x86/msr: Convert a native_wrmsr() use to
+ native_wrmsrq()
+From: Xin Li <xin@zytor.com>
+To: linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-acpi@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@kernel.org, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        peterz@infradead.org, jgross@suse.com, boris.ostrovsky@oracle.com,
+        rafael@kernel.org, lenb@kernel.org
+References: <20250512084552.1586883-1-xin@zytor.com>
+ <20250512084552.1586883-4-xin@zytor.com>
 Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <682b0412.a70a0220.3849cf.00b1.GAE@google.com>
+Autocrypt: addr=xin@zytor.com; keydata=
+ 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
+ l75w1xInsg==
+In-Reply-To: <20250512084552.1586883-4-xin@zytor.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -51
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefvddukeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenogfuuhhsphgvtghtffhomhgrihhnucdlgeelmdenucfjughrpefkffggfgfuvfhfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeetlhgvgigrnhgurhgvucfihhhithhiuceorghlvgigsehghhhithhirdhfrheqnecuggftrfgrthhtvghrnhepuefhffegtddujedvveejkeffhfetueehkefhleduvdelleeffeejgfffleeikeetnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpshihiihkrghllhgvrhdrrghpphhsphhothdrtghomhdpghhoohhglhgvrghpihhsrdgtohhmpdhgohhordhglhdpihhnfhhrrgguvggrugdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvddttddumeekiedumeeffeekvdemvghfledtmeejjeeiudemiegsgeeimegrsgguugemfhgvtgefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddttddumeekiedumeeffeekvdemvghfledtmeejjeeiudemiegsgeeimegrsgguugemfhgvtgefpdhhvghloheplgfkrfggieemvddttddumeekiedumeeffeekvdemvghfledtmeejjeeiudemiegsgeeimegrsgguugemfhgvtgefngdpmhgrihhlfhhrohhmpegrlhgvg
- iesghhhihhtihdrfhhrpdhnsggprhgtphhtthhopedutddprhgtphhtthhopehshiiisghothdovdgtrggvledvuggvugejheektdekfehfhegsuggvsehshiiikhgrlhhlvghrrdgrphhpshhpohhtmhgrihhlrdgtohhmpdhrtghpthhtoheprghouhesvggvtghsrdgsvghrkhgvlhgvhidrvgguuhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhrihhstghvsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepphgrlhhmvghrsegurggssggvlhhtrdgtohhmpdhrtghpthhtohepphgruhhlrdifrghlmhhslhgvhiesshhifhhivhgvrdgtohhmpdhrtghpthhtohepshihiihkrghllhgvrhdqsghughhssehgohhoghhlvghgrhhouhhpshdrtghomhdprhgtphhtthhopehmphgvrghrshhonhdqlhgvnhhovhhosehsqhhuvggssgdrtggr
-X-GND-Sasl: alex@ghiti.fr
+Content-Transfer-Encoding: 7bit
 
-On 5/19/25 12:12, syzbot wrote:
-> Hello,
->
-> syzbot found the following issue on:
->
-> HEAD commit:    01534f3e0dd7 Merge tag 'riscv-fixes-6.15-rc6' of ssh://git..
-> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux.git fixes
-> console output: https://syzkaller.appspot.com/x/log.txt?x=158796f4580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=2c32351e59d854b7
-> dashboard link: https://syzkaller.appspot.com/bug?extid=2cae92ded758083f5bde
-> compiler:       riscv64-linux-gnu-gcc (Debian 12.2.0-13) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-> userspace arch: riscv64
->
-> Downloadable assets:
-> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/a741b348759c/non_bootable_disk-01534f3e.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/4ca1cbb891a9/vmlinux-01534f3e.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/5fb1db315d47/Image-01534f3e.xz
->
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+2cae92ded758083f5bde@syzkaller.appspotmail.com
->
->
->
+On 5/12/2025 1:45 AM, Xin Li (Intel) wrote:
+> Convert a native_wrmsr() use to native_wrmsrq() to zap meaningless type
+> conversions when a u64 MSR value is splitted into two u32.
+> 
+> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 > ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
->
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
->
-> If the report is already addressed, let syzbot know by replying with:
-> #syz fix: exact-commit-title
->
-> If you want to overwrite report's subsystems, reply with:
-> #syz set subsystems: new-subsystem
-> (See the list of subsystem names on the web dashboard)
->
-> If the report is a duplicate of another one, reply with:
-> #syz dup: exact-subject-of-another-report
->
-> If you want to undo deduplication, reply with:
-> #syz undup
->
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+>   arch/x86/coco/sev/core.c | 7 +------
+>   1 file changed, 1 insertion(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+> index ff82151f7718..b3ce6fc8b62d 100644
+> --- a/arch/x86/coco/sev/core.c
+> +++ b/arch/x86/coco/sev/core.c
+> @@ -282,12 +282,7 @@ static inline u64 sev_es_rd_ghcb_msr(void)
+>   
+>   static __always_inline void sev_es_wr_ghcb_msr(u64 val)
+>   {
+> -	u32 low, high;
+> -
+> -	low  = (u32)(val);
+> -	high = (u32)(val >> 32);
+> -
+> -	native_wrmsr(MSR_AMD64_SEV_ES_GHCB, low, high);
+> +	native_wrmsrq(MSR_AMD64_SEV_ES_GHCB, val);
+>   }
+>   
+>   static int vc_fetch_insn_kernel(struct es_em_ctxt *ctxt,
 
+Just noticed that this patch doesn't apply to tip/x86/core, I will send
+it as a separate one.
 
-So we hit the following warning:
-
-[   33.466472][    C6] WARNING: CPU: 6 PID: 1 at fs/sysfs/group.c:131 
-internal_create_group+0xa22/0xdd8
-[   33.471115][    C6] Modules linked in:
-[   33.475123][    C6] CPU: 6 UID: 0 PID: 1 Comm: swapper/0 Not tainted 
-6.15.0-rc6-dirty #3 PREEMPT
-[   33.476075][    C6] Hardware name: riscv-virtio,qemu (DT)
-[   33.476615][    C6] epc : internal_create_group+0xa22/0xdd8
-[   33.477194][    C6]  ra : internal_create_group+0xa22/0xdd8
-[   33.477696][    C6] epc : ffffffff80dd956c ra : ffffffff80dd956c sp : 
-ffffffc600087b50
-[   33.478048][    C6]  gp : ffffffff89a659e0 tp : ffffffd681688000 t0 : 
-ffffffc600087a80
-[   33.478377][    C6]  t1 : 1ffffff8c0010f78 t2 : ffffffff89b70a80 s0 : 
-ffffffc600087cc0
-[   33.478690][    C6]  s1 : ffffffc600087c40 a0 : 0000000000000000 a1 : 
-0000000000000000
-[   33.478990][    C6]  a2 : 0000000000000002 a3 : ffffffff80dd956c a4 : 
-0000000000000000
-[   33.479291][    C6]  a5 : ffffffd681689000 a6 : fffffffff1f1f1f1 a7 : 
-ffffffff80dd8b4a
-[   33.479602][    C6]  s2 : dfffffff00000000 s3 : ffffffff86a381a0 s4 : 
-ffffffc600087dc0
-[   33.479967][    C6]  s5 : 0000000000000002 s6 : 0000000000000000 s7 : 
-0000000000000000
-[   33.480327][    C6]  s8 : 1ffffffff136df40 s9 : ffffffff89b6fa00 s10: 
-1ffffff8c0010fa4
-[   33.480673][    C6]  s11: ffffffff87bece20 t3 : 0000000000000000 t4 : 
-fffffffef10e33b2
-[   33.481019][    C6]  t5 : fffffffef10e33b3 t6 : ffffffd68aabf2f8
-[   33.481326][    C6] status: 0000000200000120 badaddr: 
-ffffffff80dd956c cause: 0000000000000003
-[   33.481962][    C6] [<ffffffff80dd956c>] 
-internal_create_group+0xa22/0xdd8
-[   33.482681][    C6] [<ffffffff80dd9944>] sysfs_create_group+0x22/0x2e
-[   33.483136][    C6] [<ffffffff86289d82>] platform_profile_init+0x74/0xb2
-[   33.483555][    C6] [<ffffffff80061860>] do_one_initcall+0x198/0xa9e
-[   33.484158][    C6] [<ffffffff8620293e>] kernel_init_freeable+0x6d8/0x780
-[   33.484689][    C6] [<ffffffff8609fe54>] kernel_init+0x28/0x24c
-[   33.485208][    C6] [<ffffffff860c2542>] ret_from_fork+0xe/0x18
-[   33.485885][    C6] irq event stamp: 950699
-[   33.486072][    C6] hardirqs last  enabled at (950699): 
-[<ffffffff80a6182c>] kasan_quarantine_put+0x1a8/0x208
-[   33.486710][    C6] hardirqs last disabled at (950698): 
-[<ffffffff80a61726>] kasan_quarantine_put+0xa2/0x208
-[   33.487398][    C6] softirqs last  enabled at (950420): 
-[<ffffffff801533a6>] handle_softirqs+0x98e/0x119c
-[   33.487930][    C6] softirqs last disabled at (950413): 
-[<ffffffff80153fd6>] __irq_exit_rcu+0x2e8/0x53c
-
-Because we don't have acpi enabled and then acpi_kobj is null 
-(https://elixir.bootlin.com/linux/v6.15-rc6/source/fs/sysfs/group.c#L131).
-
-The following patch fixes it, but not sure this is the right way, let me 
-know if I should send it, it would be nice to have it in 6.15:
-
-diff --git a/drivers/acpi/platform_profile.c 
-b/drivers/acpi/platform_profile.c
-index ffbfd32f4cf1b..afbe4705d3e7a 100644
---- a/drivers/acpi/platform_profile.c
-+++ b/drivers/acpi/platform_profile.c
-@@ -688,6 +688,9 @@ static int __init platform_profile_init(void)
-  {
-         int err;
-
-+       if (acpi_disabled)
-+               return -ENOTSUPP;
-+
-         err = class_register(&platform_profile_class);
-         if (err)
-                 return err;
-
-Thanks,
-
-Alex
-
+Thanks!
+     Xin
 
