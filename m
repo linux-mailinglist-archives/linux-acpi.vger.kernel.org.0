@@ -1,132 +1,98 @@
-Return-Path: <linux-acpi+bounces-13791-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13792-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F6BFABB564
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 08:56:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5E2ABBC03
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 13:09:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8C06175086
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 06:56:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4F8C189C27F
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 11:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6F42580EC;
-	Mon, 19 May 2025 06:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99600274657;
+	Mon, 19 May 2025 11:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XUGKM+Gh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CFNHHAqj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14CE199939
-	for <linux-acpi@vger.kernel.org>; Mon, 19 May 2025 06:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B381DE4FB;
+	Mon, 19 May 2025 11:09:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747637767; cv=none; b=CDSWizIN7BKMDsXGOtSGM/mUYOKDkE6fAixZ7haseTWHuV+y4ikMj8TJsKQLyXTaeYXgPFTfBz15xtgIw5n/pzaOS8ZA6w2hOqPJOOhplw6y7kQwM+s67aEqoUWO/ZPSvyb6p7hpBAURvejOkr2p6wxJHhwIrC0w6UjLXHo0CNw=
+	t=1747652985; cv=none; b=SlKaR5f2pcA3HetOvwix4d+cfdo0pCqRfQZ/MZDa6hBFz9yb15lQ9X8PrrbrJcjC2DnUOnkldv1Gl1ii0FtJrCKHJNSBTwbFkeCK095UYOK3H6FLcUvYzfmqv6rJOASZXGbsBPub7b+PPiScACamK4N1PGg8EM4BZIb8JZ3q+38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747637767; c=relaxed/simple;
-	bh=8NDJ9XwjY+Hw9ef5xraaEJ2PXeEup+WOftekfr63tZE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E6SqLbSOkeDbHcN4mW3moSL8leTCUDeZ2dRvXvehyDoANvLnChEjqC7djr4Ex3Y3SUOzpNiwBAxbfdYXBGfiM2TzEjDFDwfsR2lKzNhyI08IeAUjv/m4j1+q+CeQv5mKSEjt45CPZGeNUg9PpKKhttP+adJ9LMHa20Xn9QS23pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XUGKM+Gh; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747637764;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=uoYFGf22vXFHYoBtKGUddYJzSMczRem5Rut6KCdwPLw=;
-	b=XUGKM+GhAtkVQ7Ql5mwGIuUHpQSMJSfrdCOGt2b2/XIWv0kQm5eWzu0p4LPWlIyYANNVSK
-	f6fEpFqlup23f14azLeESHUZMfiNUFQ5HH6oE5AA6pImd0LzBW3YYARYW15pZJtptxA6S4
-	jaRWQs8713h7qsZcFxvsNOuG2BF8+ek=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-349-8p6SDhxqNb23kDMygscaJQ-1; Mon, 19 May 2025 02:56:02 -0400
-X-MC-Unique: 8p6SDhxqNb23kDMygscaJQ-1
-X-Mimecast-MFC-AGG-ID: 8p6SDhxqNb23kDMygscaJQ_1747637762
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-ad55aac4ec6so121897666b.1
-        for <linux-acpi@vger.kernel.org>; Sun, 18 May 2025 23:56:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747637761; x=1748242561;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uoYFGf22vXFHYoBtKGUddYJzSMczRem5Rut6KCdwPLw=;
-        b=czDiU/Q9s6s2A1eglkJ6Qkdlx7PJqfzQFXRQRXzOyHzx8gFof4m2WF5mbKg92skDHW
-         BPUYkDANRCvAApimnCQu3kHM39lRO1qZP8dHa3PMcFNhypjScDrlamoaJ180vy0eSTvC
-         IaLf+oIT2akC0AR48uWuuJ64E6Nx+FhgLgPvPnS39J0SnQbWqDPMn2mDvI+3sVTgXpcV
-         LCNzTjptzekQiW+ZMTOJB6g3nTgIXFKXgxfiRPuHTeDZb11YIjGbUqUps2uoPAAM+khO
-         hnT7QNF7xM4jwKKtkZ8yYzsT1yBsxtLKeuY3jLIR+UrrMwGmpkiwQHvV085nLM4B+j34
-         RUmg==
-X-Forwarded-Encrypted: i=1; AJvYcCVBhrDAQiFmMhNBGK0T5cvjDf4Z5CSCkaTfVK5RF7dHjVtCjZlZE3SgAamoSkCfg+Jvq6k+Wtg9m5TS@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxm6WnvZESucLB7Bpm0PoS6PjllQkzwmYm1ioHL/VFDMbaqSo8g
-	BM9XOoOmggci87Gve0SpBp5ttlXCsIPcY5QOHxAX3CYiTgOGS49y0a/pmNXCiUJ/H37oyziTUib
-	4fS67FdFPxTUEIF8pHIZY0Tlo4Yk9C1STlQCz2GU5foWenYHRgWWB7V2ERpqbmAw=
-X-Gm-Gg: ASbGncvRIhaAa/g4iFz847mvDxI80lHJTf9cYhTtnR0zWQCqwQaTrmgWqNh6nDDfoVY
-	AdDr65FOOO7eqecmS7nPNGyfbD85G8IWbMsLdLrS3pq94VbZLM45pdmqCt7Z9F4uYtxH/DpnAPG
-	EsgxAy1HVnj2kgZfq61MZRhdAD/yZbtMZqgKJnQrD88yux5amToteIX7Ck5p/31Vn3rk7zCGK5s
-	+tN7+ZLwaynrSwTACEi5d+C1MKXg0Wj/QECSvAhtKkaTkBZdN8nl9BaFn2wxGHi2dT3KxnLMd8P
-	kHs5CNzCLe6kzo8c601mEtyjoIRZFWbi+NvOQ0JwjPXovRDPlNWljGfhzGo=
-X-Received: by 2002:a17:907:c21:b0:ad5:1b14:15f4 with SMTP id a640c23a62f3a-ad52fbfa34fmr875342266b.25.1747637761581;
-        Sun, 18 May 2025 23:56:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG6XDR4x7P+w+zNIdbiwaUD7ggLJDGBPXBLLoGw0L3zesxGdykirkJT0v+7+kEm5cfIYzsfNQ==
-X-Received: by 2002:a17:907:c21:b0:ad5:1b14:15f4 with SMTP id a640c23a62f3a-ad52fbfa34fmr875341366b.25.1747637761232;
-        Sun, 18 May 2025 23:56:01 -0700 (PDT)
-Received: from lbulwahn-thinkpadx1carbongen9.rmtde.csb ([2a02:810d:7e01:ef00:bf5b:f273:a506:f71f])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d441fb5sm549446566b.108.2025.05.18.23.56.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 May 2025 23:56:00 -0700 (PDT)
-From: Lukas Bulwahn <lbulwahn@redhat.com>
-X-Google-Original-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	s=arc-20240116; t=1747652985; c=relaxed/simple;
+	bh=y4ntHkQCP4Q2hIijIfddgLtb16Yzrq9xJ/8RIcvyu/I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y5IJrmJvka3GOPH+kQXgIXXNxzAS0dQO6rcfdZavTrOzDxeN9VSQHbbaN068rlw1u2XbXiFduhkY+oxrZW4px8C9A0K9rP5eEuX2VtVIUL9hRWOBeXikg05LsCvDwzVAHfPBCeh2tXmEM1pPVDe0eWXW0LC3yf1xi2hKb574+b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CFNHHAqj; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747652984; x=1779188984;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=y4ntHkQCP4Q2hIijIfddgLtb16Yzrq9xJ/8RIcvyu/I=;
+  b=CFNHHAqjdwTz4/ic0jprqMrCq+C6n/b4z7y83VX+XH5s35zNxtwXI/Te
+   BJ47J3L19w38ToG8mVfaQ/9jBr6Hzoe3eglmEC8e61PAZ01IojN61Sw88
+   ChCNLLTkZbqp/CPy4u4lbEbidPs0FCr8Y579b/QWCZAvD6g+rVKtSdbnz
+   IutLdARJwHP7dVIukTKtsGPiXnaeb7JOg2OThNrw7JduH+tkWGllgSm7y
+   UNRfBqtyFu13Onw8rneJTZqQYppxxC2bggK9N3iB+GAPErSdiLQjHd7uu
+   H0KRnZkqMjAwb5ltJsMDs5rzywfp1HUYhKxzzIkrEuHGsopqEvGJTESXZ
+   A==;
+X-CSE-ConnectionGUID: jKm9f5loQJ+w1xAcJv/Cng==
+X-CSE-MsgGUID: fz7ihnU/QGG5CsPrcSwR2A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11437"; a="66961319"
+X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; 
+   d="scan'208";a="66961319"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 04:09:43 -0700
+X-CSE-ConnectionGUID: GMjboc34Tzu4yAH3PHop9Q==
+X-CSE-MsgGUID: DOlxpAMTTZ+wQyelNCEa6g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; 
+   d="scan'208";a="144590228"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa004.fm.intel.com with ESMTP; 19 May 2025 04:09:41 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id 1DCDA26F; Mon, 19 May 2025 14:09:40 +0300 (EEST)
+Date: Mon, 19 May 2025 14:09:40 +0300
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Lukas Bulwahn <lbulwahn@redhat.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Mika Westerberg <westeri@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org,
+	Hans de Goede <hdegoede@redhat.com>, linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org, kernel-janitors@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Subject: [PATCH] MAINTAINERS: adjust file entry in GPIO ACPI SUPPORT
-Date: Mon, 19 May 2025 08:55:57 +0200
-Message-ID: <20250519065557.659674-1-lukas.bulwahn@redhat.com>
-X-Mailer: git-send-email 2.49.0
+Subject: Re: [PATCH] MAINTAINERS: adjust file entry in GPIO ACPI SUPPORT
+Message-ID: <20250519110940.GW88033@black.fi.intel.com>
+References: <20250519065557.659674-1-lukas.bulwahn@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250519065557.659674-1-lukas.bulwahn@redhat.com>
 
-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+On Mon, May 19, 2025 at 08:55:57AM +0200, Lukas Bulwahn wrote:
+> From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+> 
+> Commit babb541af627 ("gpiolib: acpi: Move quirks to a separate file")
+> splits drivers/gpio/gpiolib-acpi.c into two files, gpiolib-acpi-core.c and
+> gpiolib-acpi-quirks.c, but misses to adjust the file entry in GPIO ACPI
+> SUPPORT.
+> 
+> Adjust the file entry after this splitting into the two files.
+> 
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-Commit babb541af627 ("gpiolib: acpi: Move quirks to a separate file")
-splits drivers/gpio/gpiolib-acpi.c into two files, gpiolib-acpi-core.c and
-gpiolib-acpi-quirks.c, but misses to adjust the file entry in GPIO ACPI
-SUPPORT.
-
-Adjust the file entry after this splitting into the two files.
-
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 20e07e61a148..c816f8e0572e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10273,7 +10273,7 @@ L:	linux-acpi@vger.kernel.org
- S:	Supported
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/andy/linux-gpio-intel.git
- F:	Documentation/firmware-guide/acpi/gpio-properties.rst
--F:	drivers/gpio/gpiolib-acpi.c
-+F:	drivers/gpio/gpiolib-acpi-*.c
- F:	drivers/gpio/gpiolib-acpi.h
- 
- GPIO AGGREGATOR
--- 
-2.49.0
-
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 
