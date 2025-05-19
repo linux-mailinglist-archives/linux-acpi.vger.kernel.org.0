@@ -1,227 +1,157 @@
-Return-Path: <linux-acpi+bounces-13799-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13800-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF6BABBE41
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 14:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23DDFABC08C
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 16:24:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F39518912F0
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 12:48:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BD791B605D6
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 14:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D9C275877;
-	Mon, 19 May 2025 12:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2BE27A903;
+	Mon, 19 May 2025 14:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CDhe0Tti"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cX20EnD8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CEB1E1A3B;
-	Mon, 19 May 2025 12:48:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9794B283C8D;
+	Mon, 19 May 2025 14:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747658906; cv=none; b=tmku2Birvf+ooBwqdHN5zUvFm0XPzBGwOxPr/ZAvkpmhpRAYqwWS4ifjmZ1sjEYNNmcEkyKBWUR2rLiPq2acWxsdqYkxnUV5DJqzffXSnqBar8SzvGRYFl0r578sw4jNmtCiCHRVWRhOksHe0Ma99ycn5YSg8hxxxHEVWXnm3Ws=
+	t=1747664691; cv=none; b=eiTBs+Jyqsw9PFBNBx138In1hiinzJnxaUmruSGfS+i3ARqKC145n8HJmNAAcn1L0jlks8wR0pCfxkuX8C3v5WhLoAsrwDbPdYrutDV/mjcO2L8l2WhKyhyAd1sr+0mkzrEVMc3jtczjo/fMTQ5KZpHwASeN6VJbQXkWDraGcIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747658906; c=relaxed/simple;
-	bh=PxWZ4QhyrKgsbEoFl1OvatHk5GZQi4G9/S059phuHsA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Fysn9ANChgAscGHab5UetBMnfiqz9pTFhNl5qLN5ceNMCeJvboo9bYesbLtnuz1cnub1KVRakz27qW0vD1ktFrymcrWYtXnFwZ6LfGSS83Z7zf2Q/RHQtHX/mYTy1+0qf8oDS0HMrTcMIx2Tf41+r4bL9la+FVkAFBKtagRC27s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CDhe0Tti; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747658905; x=1779194905;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=PxWZ4QhyrKgsbEoFl1OvatHk5GZQi4G9/S059phuHsA=;
-  b=CDhe0TtimELFX5YlocXsiWx5ZLHjNSMkL0+YtiP8kcXcEeQFd9LNRsLq
-   m0+j9Q6OHFJOB53IMeLn41XeWE0JwNU74Q8TTNRS8+TcyS7I5y06Bpjy6
-   3m3IeIHX1RbvaT1Ddw+pXeLDiobUx68QVHxiEKlzBDtTW6sjLh6lcs/Tx
-   tIcdPQIrM0V9nOeTzkbhIMOFGS3hDCYAEOrq/V+zfKgXzUSP0FT9WbKFu
-   VFFD0f3z5YBn3X9pX0Fk6emu+juCN9DvzpAot03HN2+dg/xhzkJxNqCEi
-   KTGbTSaCuXS3RbujwywvBHhavfEquNHhIfGVrNqCL9Lb/iSoG74/BNkfw
-   g==;
-X-CSE-ConnectionGUID: 61MSSVM3Sx+hw3Pfw7QmgQ==
-X-CSE-MsgGUID: QaJDti0XRsy5sKChgyxc/Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49459056"
-X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; 
-   d="scan'208";a="49459056"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 05:48:24 -0700
-X-CSE-ConnectionGUID: g4RwBotARTqTTe9bxR7gWg==
-X-CSE-MsgGUID: pO+I31GrQc+wiRo+lK7uRQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; 
-   d="scan'208";a="170392245"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.16])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 05:48:24 -0700
-Message-ID: <3761c1edef2c431a65f5fba2c5c64a2a882060cb.camel@linux.intel.com>
-Subject: Re: [BUG] intel_pstate: CPU frequencies miscalculated/incorrectly
- detected on Arrow Lake hardware
-From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To: Aaron Rainbolt <arainbolt@kfocus.org>, lenb@kernel.org, rjw@rjwysocki.net
-Cc: linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	kernel-team@lists.ubuntu.com
-Date: Mon, 19 May 2025 05:48:12 -0700
-In-Reply-To: <20250517223323.6e13bf58@kf-m2g5>
-References: <20250517223323.6e13bf58@kf-m2g5>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1747664691; c=relaxed/simple;
+	bh=Xd3DUrIy4HPVtiF856Q+hjCloV/skh/Ob8QVcFySX/0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jXzVR3tPwsdER/Fiil2BZ5gtOB46P9vPDI5dKQaX2Mdu8NBYBkwsm3FVgRoXts3o+ylqAAsUJDA/CATBOyHw9Lr8IOC+B0GzeRGBpy/K46Va1qtGNUyjr02zmyCfQp1vE2s/vs1Pbx+ai0CYUMv5Nc3yQEUNd0Cpi/tJZX4qMJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cX20EnD8; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5BAC243B1E;
+	Mon, 19 May 2025 14:24:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1747664686;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=E8zgaF3nulMiQiwbL4R1lWJxh4xru2nZDCsB/h+5Z9k=;
+	b=cX20EnD8RXp6UsCYebQkq4d6GN5gAVUPkROwO2M9xsaoIFMPiZrGzjcMGG4YTOF5ZypiKz
+	bNzqWh8AkHA8XYDSAQ+3a+nDeOH7p34OQpSx1w2sckJXKNw/MmTrQnlFjpeTjxePK9qOXy
+	LjGKyGaLiyvKnZmv5MeTXtWmMiRy+lpWT8GlGUW5eFPT4GQzv1CZE80uaoTmYNYgbWWWvF
+	GyDT7nN62WBBIL5eZamr3cahrUEnZkbj6zWX2gjxxdVdaohcrdr/MlAe+6v8/5f5ZN2U7b
+	/n9OKyZSluLwCkHI5eDaTgSmsroyx0m1a0ohba3j+bpVa5SO8dvefi5a7LthKA==
+Date: Mon, 19 May 2025 16:24:43 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
+ Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
+ Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
+ Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Saravana
+ Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Mark
+ Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Daniel Scally
+ <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 05/26] bus: simple-pm-bus: Populate child nodes at
+ probe
+Message-ID: <20250519162443.20396e73@bootlin.com>
+In-Reply-To: <aCseyW1iZgZNZNqd@smile.fi.intel.com>
+References: <20250507071315.394857-1-herve.codina@bootlin.com>
+	<20250507071315.394857-6-herve.codina@bootlin.com>
+	<aBy_aBkC7NpicXho@smile.fi.intel.com>
+	<20250519135818.01db3341@bootlin.com>
+	<aCseyW1iZgZNZNqd@smile.fi.intel.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefvdduiedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveeiffefgeeitdelleeigefhjeelueeuveekveetgeffheeltdekgeduiefggfdvnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeeguddprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhto
+ hepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggv
+X-GND-Sasl: herve.codina@bootlin.com
 
+Hi Andy,
 
-On Sat, 2025-05-17 at 22:33 -0500, Aaron Rainbolt wrote:
-> We have tested three systems with Arrow Lake CPUs, and all of them
-> report incorrect max and base frequencies. Two systems have Ultra 9
-> 275
-> HX CPUs, and one has an Ultra 5 225 H. The problem occurs with both
-> the
-> Ubuntu 6.11 kernel and the 6.14.6 mainline kernel.
->=20
-> How these values are misreported appears to depend on the CPU. On the
-> Ultra 9 275HX systems when running Ubuntu=E2=80=99s 6.11.0-1015-oem kerne=
-l,
-> the
-> max reported frequency on a golden core is 5000000; however, the CPU
-> spec says it should be 5400000. In contrast, on an Ultra 5 225H
-> system,
-> the max reported frequency on a golden core is 6200000;=C2=A0 however, th=
-e
-> spec says it should be 4900000.=20
->=20
+On Mon, 19 May 2025 15:06:33 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-I think this is similar to
-https://lkml.indiana.edu/2504.3/04971.html
+> On Mon, May 19, 2025 at 01:58:18PM +0200, Herve Codina wrote:
+> > On Thu, 8 May 2025 17:27:52 +0300
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:  
+> > > On Wed, May 07, 2025 at 09:12:47AM +0200, Herve Codina wrote:  
+> 
+> ...
+> 
+> > > >  		if (of_property_match_string(np, "compatible", match->compatible) == 0)    
+> > > 
+> > > Side note, there is an fwnode_is_device_compatible() API for such cases. And IIRC
+> > > there is also OF variant of it.  
+> > 
+> > fwnode_device_is_compatible() checked for all compatible string. I mean, if
+> > we have compatible = "foo,custom-bus", "simple-bus";
+> > fwnode_device_is_compatible() checking against "simple-bus" returns true.
+> > 
+> > Here, we want "simple-bus" as the first position in the compatible string.
+> > In other word, we want to match the more specific compatible string as
+> > mentioned in the comment.  
+> 
+> I admit I'm not an expert in DT, but why is the compatibility position
+> dependent?
+> 
+> ...
+> 
+> > > > +	if (pdev->dev.of_node)    
+> > > 
+> > > Why do you need this check? AFAICS it dups the one the call has already in it.  
+> > 
+> > of_platform_populate() was called only if an OF node is present.
+> > I want to call of_platform_depopulate() on removal also only if an OF node
+> > is present.
+> > 
+> > I don't see the other call that duplicated this check.
+> > 
+> > Can you clarify?  
+> 
+> The of_...() is already NULL-aware (AFAICS), why do you need the duplicated
+> check?
 
-The issue is the BIOS didn't program frequencies correctly in ACPI
-CPPC. So frequency limits will be wrong.
+Oh, I see. I was focused on previous of_device_get_match_data() call.
+My bad.
 
-You can dump the following values and also the details about the system
-under test (OEM, model etc).
+Indeed, you're right, I can call directly of_platform_depopulate() without
+checking pdev->dev.of_node before the call. The check is already present
+in of_platform_depopulate() itself.
 
-grep -r . /sys/devices/system/cpu/cpu*/acpi_cppc/*
+I will do that in the next iteration.
 
+Thanks for pointing out.
 
-Thanks,
-Srinivas
-
-> This bug is troublesome to end users because many CPU monitoring apps
-> will report the CPU is running quite a bit slower or faster than the
-> spec. Tools such as cpupower-gui, cpufreq-info, and cpufreq-set all
-> show incorrect values because they read cpuinfo_max_freq and
-> base_frequency, and write scaling_max_freq values in
-> /sys/devices/system/cpu/cpufreq/policy* directories.=20
->=20
-> The following bash script shows the incorrect values read from the
-> cpuinfo_max_freq and base_frequency files. It also shows how the
-> actual
-> max frequencies attained are as expected. The example values shown
-> come
-> from an Ultra 9 275 HX CPU.
->=20
-> =C2=A0=C2=A0=C2=A0 echo; echo '=3D=3D BEGIN =3D=3D';
-> =C2=A0=C2=A0=C2=A0 echo 'Ensure turbo is on';
-> =C2=A0=C2=A0=C2=A0 cd /sys/devices/system/cpu;
-> =C2=A0=C2=A0=C2=A0 echo '0' |sudo tee intel_pstate/no_turbo > /dev/null;
-> =C2=A0=C2=A0=C2=A0 if grep -q '0' intel_pstate/no_turbo; then echo 'Turbo=
- is on'; fi
->=20
-> =C2=A0=C2=A0=C2=A0 echo; echo 'Find top 2 golden cores';
-> =C2=A0=C2=A0=C2=A0 cd /sys/devices/system/cpu/cpufreq/;
-> =C2=A0=C2=A0=C2=A0 grep . policy*/cpuinfo_max_freq \
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | awk -F: '{print $2" "$1}' |sort -rn | he=
-ad -n2;
-> =C2=A0=C2=A0=C2=A0 #> 5000000 policy2/cpuinfo_max_freq
-> =C2=A0=C2=A0=C2=A0 #> 5000000 policy3/cpuinfo_max_freq
->=20
-> =C2=A0=C2=A0=C2=A0 echo; echo 'Confirm misreporting: per spec, this shoul=
-d be
-> 5400000!';
-> =C2=A0=C2=A0=C2=A0 grep . policy2/cpuinfo_max_freq; # 500000
->=20
-> =C2=A0=C2=A0=C2=A0 echo; echo 'Confirm misreporting: per spec, this shoul=
-d be
-> 2700000!'
-> =C2=A0=C2=A0=C2=A0 grep . policy2/base_frequency; # 2500000
->=20
-> =C2=A0=C2=A0=C2=A0 echo; echo '# Run a CPU benchmark now, then press [ En=
-ter ] to
-> see top 3 freqs.';
-> =C2=A0=C2=A0=C2=A0 echo 'This will take 6 seconds to complete.';
-> =C2=A0=C2=A0=C2=A0 read -r -p '# You should see that the freqs match the =
-CPU specs.
-> ';\=20
-> =C2=A0=C2=A0=C2=A0 for i in {0..5}; do
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 grep . policy*/scaling_cur_freq | awk -F: =
-'{print $2" "$1}';
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sleep 1;
-> =C2=A0=C2=A0=C2=A0 done |sort -rn |head -n3=20
-> =C2=A0=C2=A0=C2=A0 #> 5400000 policy2/scaling_cur_freq
-> =C2=A0=C2=A0=C2=A0 #> 5320159 policy2/scaling_cur_freq
-> =C2=A0=C2=A0=C2=A0 #> 5241886 policy3/scaling_cur_freq
->=20
-> =C2=A0=C2=A0=C2=A0 echo; echo '=3D=3D END=C2=A0=C2=A0 =3D=3D'; echo;
->=20
-> The actual results, when running the above script, shows the
-> cpuinfo_max_freq and base_frequencies values do not match those
-> specified by Intel. With the 6.11.0-1021-oem Ubuntu Kernel, we see
-> the
-> following:
->=20
-> > Turbo? | Core | Freq (spec) | Freq (report) | Freq (actual) |
-> > Yes=C2=A0=C2=A0=C2=A0 | P=C2=A0=C2=A0=C2=A0 | 5.4 GHz=C2=A0=C2=A0=C2=A0=
-=C2=A0 | 5.0 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 5.4 GHz=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |
-> > No=C2=A0=C2=A0=C2=A0=C2=A0 | P=C2=A0=C2=A0=C2=A0 | 2.7 GHz=C2=A0=C2=A0=
-=C2=A0=C2=A0 | 2.5 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2.7 GHz=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
-> > Yes=C2=A0=C2=A0=C2=A0 | E=C2=A0=C2=A0=C2=A0 | 4.6 GHz=C2=A0=C2=A0=C2=A0=
-=C2=A0 | 4.6 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 4.6 GHz=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |
-> > No=C2=A0=C2=A0=C2=A0=C2=A0 | E=C2=A0=C2=A0=C2=A0 | 2.1 GHz=C2=A0=C2=A0=
-=C2=A0=C2=A0 | 2.1 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2.1 GHz=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
->=20
-> We have verified the cores are operating at their specified
-> frequencies
-> by running a demanding CPU benchmark while graphing frequencies with
-> KDE System Monitor, on all 3 systems. This tool appeared to graph
-> scaling_cur_freq values. Notice E-cores appear to be correctly
-> reported. Also, all systems misinterpret values written to
-> scaling_max_req with the apparent same error deltas: on the Ultra 9
-> 275
-> HX, setting this value to 5000000 results in actual max frequencies
-> of
-> 5400000. Setting it to 2500000 results in max 2700000. Setting it to
-> 1650000 results in max 2100000.
->=20
-> The behavior with the 6.14.6 kernel is worse than with 6.11, with all
-> values under-reported. Actual frequencies were not tested on 6.14.6:
->=20
-> > Turbo? | Core | Freq (spec) | Freq (report) |
-> > Yes=C2=A0=C2=A0=C2=A0 | P=C2=A0=C2=A0=C2=A0 | 5.4 GHz=C2=A0=C2=A0=C2=A0=
-=C2=A0 | 3.9 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
-> > No=C2=A0=C2=A0=C2=A0=C2=A0 | P=C2=A0=C2=A0=C2=A0 | 2.7 GHz=C2=A0=C2=A0=
-=C2=A0=C2=A0 | 2.0 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
-> > Yes=C2=A0=C2=A0=C2=A0 | E=C2=A0=C2=A0=C2=A0 | 4.6 GHz=C2=A0=C2=A0=C2=A0=
-=C2=A0 | 3.3 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
-> > No=C2=A0=C2=A0=C2=A0=C2=A0 | E=C2=A0=C2=A0=C2=A0 | 2.1 GHz=C2=A0=C2=A0=
-=C2=A0=C2=A0 | 1.5 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
->=20
-> Is it possible the math currently used for calculating CPU
-> frequencies
-> is no longer correct for Arrow Lake CPUs? This seems similar to the
-> issue that was fixed by commit f5c8cf2 (cpufreq: intel_pstate:
-> hybrid:
-> Use known scaling factor for P-cores).
-
+Best regards,
+Hervé
 
