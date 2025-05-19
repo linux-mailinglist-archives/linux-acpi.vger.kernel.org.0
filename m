@@ -1,194 +1,167 @@
-Return-Path: <linux-acpi+bounces-13812-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13813-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96418ABC5E9
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 19:51:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25B0ABC89D
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 22:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B1947A9D8A
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 17:49:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5B801B65072
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 May 2025 20:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA3C2853FF;
-	Mon, 19 May 2025 17:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10C4219313;
+	Mon, 19 May 2025 20:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c2vW3R9q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UGqUbUTE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C56189F3B;
-	Mon, 19 May 2025 17:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA3B217705;
+	Mon, 19 May 2025 20:49:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747677066; cv=none; b=o/h6M5nnZsC/WD9pALvm4wWWrr4JOhTbqSRnL+/iOTJ5rUi+c8QUE/BT3Ckj9fl0h6naXqXEJtxxOp6XC0pv0inRjT//2TbUiVr7IFo6sOq7eWeL3Xc5S13gJJKWUz27Qlhp8vHuXhn0/pQV6za5dZOLjcB8fK4tZpQJgIOEkfc=
+	t=1747687764; cv=none; b=Tt7DQVyG1Qj8KhAWy+2TCqV1fIFMM1KktIDCggp8nh1oixbwE6g9sMUZ/lpSJAv/+Ku8P1zUZEQ51zlkfjZWZqmp9UQxL9qDViEMTnDDkZw1HOST0r450dQZJrbPQh7iLmvXPyESFaQT+s1l4jTxZSgMk3fKac7rA5z3QJ53Xeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747677066; c=relaxed/simple;
-	bh=nKa4bHZyPQdUF/i6uNjxZLF1LDuKJHocPAQdDgqVICc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RZNSgLhrsXEVntGTzEGeWtI1+olX9L2WR1vhG6SFRfxii6y3yAPjSTMkaiWrD406YPQwBgK0fe2KixXuMMxNsPqjJMX6tiomxgFTlmgHM68ixmMttp3ld179bmxg9tulbrse8ZWiF39VAhil0MKiRDyb1+GBHrTjJromPjxEgkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c2vW3R9q; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747677064; x=1779213064;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nKa4bHZyPQdUF/i6uNjxZLF1LDuKJHocPAQdDgqVICc=;
-  b=c2vW3R9q3OVSmv9NpuNm7etcX9c5Qg/YrfWQqdZcJVT5TT3QN3I2wiFZ
-   9NCD9ZqauKYP654TNDkPCAMI6OApe0WPAVf5z3uceDEBOZRmU5LmmYEkb
-   Tr3XGvV6Qp9qRoSmMvK+1VbmbAesLs3csPHwpQ98kakBSMAdk3oaKSOmW
-   I62/Q9QI94F1SUAtMGnVTycAIooq5jhKKnjxgnNxlrNcHFqYs9XiDCQVt
-   sx+vR1j6fBQ798y8H8nUVpJaN5Haj6RoFCnVTy8+eSdGsjfcj7uV/8p+3
-   9+i32vT8iGDJAG/eDyIDQ4TJJzwvF/T0OynYtSgu/bHX4i7g32F0aC2hY
-   Q==;
-X-CSE-ConnectionGUID: RBbbY0eRRQyuyz7V38bRiQ==
-X-CSE-MsgGUID: uetXqAtRTkay86FK0Q0I8A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49493458"
-X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; 
-   d="scan'208";a="49493458"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 10:51:03 -0700
-X-CSE-ConnectionGUID: glWSRu+/T1+fFYiMbL4DLA==
-X-CSE-MsgGUID: FwYFkZhNQ1+Ss/Cy0nueLw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; 
-   d="scan'208";a="170471752"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 10:51:03 -0700
-Date: Mon, 19 May 2025 10:56:06 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, x86@kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>, devicetree@vger.kernel.org,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Chris Oo <cho@microsoft.com>, linux-hyperv@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Ravi V. Shankar" <ravi.v.shankar@intel.com>,
-	Ricardo Neri <ricardo.neri@intel.com>
-Subject: Re: [PATCH v3 06/13] dt-bindings: reserved-memory: Wakeup Mailbox
- for Intel processors
-Message-ID: <20250519175606.GA9693@ranerica-svr.sc.intel.com>
-References: <20250503191515.24041-7-ricardo.neri-calderon@linux.intel.com>
- <20250504-original-leopard-of-vigor-5702ef@kuoka>
- <20250506051610.GC25533@ranerica-svr.sc.intel.com>
- <20250506-pompous-meaty-crane-97efce@kuoka>
- <20250507032339.GA27243@ranerica-svr.sc.intel.com>
- <20250512153224.GA3377771-robh@kernel.org>
- <20250513221456.GA2794@ranerica-svr.sc.intel.com>
- <20250514154248.GA2375202-robh@kernel.org>
- <20250515035338.GA4955@ranerica-svr.sc.intel.com>
- <20250519152937.GA2227051-robh@kernel.org>
+	s=arc-20240116; t=1747687764; c=relaxed/simple;
+	bh=d21QzBGxlqzPe54ryu3bKLL6cd4E+LxiktzQR+uBz+I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=uG9Bf88Eczy+Fb3NK0vqyvlGAN8AXVc5d5iB+8LYxgrzWW2xbBpolhglOWEZ32xhuZ4f3tY47LJJ4kxNxJfSw5gaBnTtzqJ4X2fK9Y6zjZ1iBBpYtaBmrDGTMCHLzwIs3C+iLaHrpKYda3SLWVNWjHluhBTCT9ntKRB0cXi+R4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UGqUbUTE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C0300C4CEE4;
+	Mon, 19 May 2025 20:49:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747687763;
+	bh=d21QzBGxlqzPe54ryu3bKLL6cd4E+LxiktzQR+uBz+I=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=UGqUbUTEhn5JUTT3Jledo344426qln9TJftK4zexmqnKobkpyGzqJNlguwP1nljiV
+	 TT09oerJ7TBK7z+Q+rqE/HsrXIQCPX+t4gtzG1FKOX8Iq5CiDDIdaSFKMM0Ci4csyj
+	 oHnSUKwEHE/8n5xO/nyl54+oF3SjONSyXD6/jdGDhMXSlWsM2w/gjEcLJwGf/X7VA3
+	 /Q0HRIYlcMpEimhAzdaAHP8yDpD3JmhJ2AVViZU93C3ptlbumaUBG4I+/Zu75WJEWb
+	 6BYkWDK6SL9DFa8l4yBl8A4Jhi2oNOFftYbwLh81GHXiz4npSVB58W5/KXH2Djwh+6
+	 T9r7/YtkyhTYg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC0D2C3ABDD;
+	Mon, 19 May 2025 20:49:23 +0000 (UTC)
+From: Janne Grunau via B4 Relay <devnull+j.jannau.net@kernel.org>
+Date: Mon, 19 May 2025 22:49:20 +0200
+Subject: [PATCH v2] HID: lenovo: Remove CONFIG_ACPI dependency
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250519152937.GA2227051-robh@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250519-hid_lenovo_acpi_dependency-v2-1-124760ddd6f7@jannau.net>
+X-B4-Tracking: v=1; b=H4sIAE+ZK2gC/43NTQ6CMBCG4auQWVvTovzoynsYQgY6yBgzJS02E
+ sLdrZzA5fMt3m+FQJ4pwDVbwVPkwE4S8kMG/YjyIMU2GXKdF7owtRrZti8SF12L/cStpYnEkvS
+ L0oRVjWVnq7OGFJg8DfzZ4/cmeeQwO7/sX9H81r+y0SitcLDd5dQV1mB5e6IIvo9CMzTbtn0Be
+ /HAJ8UAAAA=
+X-Change-ID: 20250518-hid_lenovo_acpi_dependency-0ea78a6bd740
+To: Arnd Bergmann <arnd@arndb.de>, Jiri Kosina <jikos@kernel.org>, 
+ Benjamin Tissoires <bentiss@kernel.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+ Armin Wolf <W_Armin@gmx.de>
+Cc: linux-kernel@vger.kernel.org, linux-input@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, Janne Grunau <j@jannau.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3410; i=j@jannau.net;
+ s=yk2024; h=from:subject:message-id;
+ bh=Bitucw1yaCIqyRa0nTR6FoFtUSPlCwvKN7PBGDQsgTI=;
+ b=owGbwMvMwCW2UNrmdq9+ahrjabUkhgztmUExzVNNrU5d+bm3lbGH47zQsumf/q/xWLvAVuj7v
+ O/RDNryHaUsDGJcDLJiiixJ2i87GFbXKMbUPgiDmcPKBDKEgYtTACbSWMTwz2zLpDfhYuc+nd8z
+ 8ey8xtLHm34VlUcLuHLIe/iJJPx0i2Nk+LihpPzlXO/eZ41OytO+76pWv3ki6GuymkXI1KNPTl9
+ dyAYA
+X-Developer-Key: i=j@jannau.net; a=openpgp;
+ fpr=8B336A6BE4E5695E89B8532B81E806F586338419
+X-Endpoint-Received: by B4 Relay for j@jannau.net/yk2024 with auth_id=264
+X-Original-From: Janne Grunau <j@jannau.net>
+Reply-To: j@jannau.net
 
-On Mon, May 19, 2025 at 10:29:37AM -0500, Rob Herring wrote:
-> On Wed, May 14, 2025 at 08:53:38PM -0700, Ricardo Neri wrote:
-> > On Wed, May 14, 2025 at 10:42:48AM -0500, Rob Herring wrote:
-> > > On Tue, May 13, 2025 at 03:14:56PM -0700, Ricardo Neri wrote:
-> > > > On Mon, May 12, 2025 at 10:32:24AM -0500, Rob Herring wrote:
-> > > > > On Tue, May 06, 2025 at 08:23:39PM -0700, Ricardo Neri wrote:
-> > > > > > On Tue, May 06, 2025 at 09:10:22AM +0200, Krzysztof Kozlowski wrote:
-> > > > > > > On Mon, May 05, 2025 at 10:16:10PM GMT, Ricardo Neri wrote:
-> > > > > > > > > If this is a device, then compatibles specific to devices. You do not
-> > > > > > > > > get different rules than all other bindings... or this does not have to
-> > > > > > > > > be binding at all. Why standard reserved-memory does not work for here?
-> > > > > > > > > 
-> > > > > > > > > Why do you need compatible in the first place?
-> > > > > > > > 
-> > > > > > > > Are you suggesting something like this?
-> > > > > > > > 
-> > > > > > > > reserved-memory {
-> > > > > > > > 	# address-cells = <2>;
-> > > > > > > > 	# size-cells = <1>;
-> > > > > > > > 
-> > > > > > > > 	wakeup_mailbox: wakeupmb@fff000 {
-> > > > > > > > 		reg = < 0x0 0xfff000 0x1000>
-> > > > > > > > 	}
-> > > > > > > > 
-> > > > > > > > and then reference to the reserved memory using the wakeup_mailbox
-> > > > > > > > phandle?
-> > > > > > > 
-> > > > > > > Yes just like every other, typical reserved memory block.
-> > > > > > 
-> > > > > > Thanks! I will take this approach and drop this patch.
-> > > > > 
-> > > > > If there is nothing else to this other than the reserved region, then 
-> > > > > don't do this. Keep it like you had. There's no need for 2 nodes.
-> > > > 
-> > > > Thank you for your feedback!
-> > > > 
-> > > > I was planning to use one reserved-memory node and inside of it a child
-> > > > node to with a `reg` property to specify the location and size of the
-> > > > mailbox. I would reference to that subnode from the kernel code.
-> > > > 
-> > > > IIUC, the reserved-memory node is only the container and the actual memory
-> > > > regions are expressed as child nodes.
-> > > > 
-> > > > I had it like that before, but with a `compatible` property that I did not
-> > > > need.
-> > > > 
-> > > > Am I missing anything?
-> > > 
-> > > Without a compatible, how do you identify which reserved region is the 
-> > > wakeup mailbox?
-> > 
-> > I thought using a phandle to the wakeup_mailbox. Then I realized that the
-> > device nodes using the mailbox would be CPUs. They would need a `memory-
-> > region` property. This does not look right to me.
-> 
-> That doesn't really make sense unless it's a memory region per CPU.
+From: Janne Grunau <j@jannau.net>
 
-Agreed.
+The hid-lenovo driver supports external Bluetooth and USB devices which
+can be used with non-ACPI systems/kernels. Call platform_profile_cycle()
+only if CONFIG_ACPI_PLATFORM_PROFILE is enabled and select
+CONFIG_ACPI_PLATFORM_PROFILE only if ACPI is enabled.
+This should not affect functionality since only the detachable keyboard
+of a x86 tablet with a custom connector has an hotkey for cycling
+through power profiles.
 
-> 
-> 
-> > > Before you say node name, those are supposed to be 
-> > > generic though we failed to enforce anything for /reserved-memory child 
-> > > nodes.
-> > 
-> > I see. Thanks for preventing me from doing this.
-> > 
-> > Then the `compatible` property seems the way to go after all.
-> > 
-> > This what motivated this patch in the first place. On further analysis,
-> > IIUC, defining bindings and schema is not needed, IMO, since the mailbox
-> > is already defined in the ACPI spec. No need to redefine.
-> 
-> You lost me...
-> 
-> You don't need to redefine the layout of the memory region as that's 
-> defined already somewhere,
+Fixes: 52572cde8b4a4 ("HID: lenovo: select CONFIG_ACPI_PLATFORM_PROFILE")
+Signed-off-by: Janne Grunau <j@jannau.net>
+---
+hid-lenovo supports external generic USB and Bluetooth devices and
+should be buildable and usable on non-ACPI kernels and systems. Commit
+84c9d2a968c82 ("HID: lenovo: Support for ThinkPad-X12-TAB-1/2 Kbd Fn
+keys") added a hot key to cycle through power profiles using ACPI's
+platform_profile. This resulted in adding a dependency on ACPI and
+selecting CONFIG_ACPI_PLATFORM_PROFILE to fix build an link errors in
+commit 52572cde8b4a ("HID: lenovo: select
+CONFIG_ACPI_PLATFORM_PROFILE"). This is undesirable for HID drivers
+supporting generic USB and Bluetooth devices. So instead call
+platform_profile_cycle() only CONFIG_ACPI_PLATFORM_PROFILE is enabled
+and select the latter only if ACPI is enabled.
 
-Great!
+Supercedes with Armin Wolf's "ACPI: platform_profile: Add support for
+non-ACPI platforms" [1] the earlier removel in "HID: lenovo: Unbreak
+USB/BT keyboards on non-ACPI platforms" [2].
 
-> but you do need to define where it is for DT. 
-> And for that, you need a compatible. Do you know where it is in this 
-> case?
+[1]: https://lore.kernel.org/linux-acpi/20250518185111.3560-1-W_Armin@gmx.de/
+[2]: https://lore.kernel.org/linux-input/20250512-hid_lenovo_unbreak_non_acpi-v1-1-e9e37ecbfbfe@jannau.net/
+---
+Changes in v2:
+- drop stub platform_profile_cycle()
+- call platform_profile_cycle() conditioanlly
+- drop 'depends on ACPI || !ACPI'
+- Link to v1: https://lore.kernel.org/r/20250518-hid_lenovo_acpi_dependency-v1-0-afdb93b5d1a6@jannau.net
+---
+ drivers/hid/Kconfig      | 3 +--
+ drivers/hid/hid-lenovo.c | 6 ++++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-The compatible is not defined anywhere yet. Is a DT schema needed to
-document it? If yes, I am usure what to put in the description. We tried
-to not redefine the mailbox and refer to the ACPI spec. That was a NAK
-from Krzysztof [1].
+diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
+index a503252702b7b43c332a12b14bc8b23b83e9f028..1656bb1504f750d73011d3f008e27b4436a58678 100644
+--- a/drivers/hid/Kconfig
++++ b/drivers/hid/Kconfig
+@@ -595,8 +595,7 @@ config HID_LED
+ 
+ config HID_LENOVO
+ 	tristate "Lenovo / Thinkpad devices"
+-	depends on ACPI
+-	select ACPI_PLATFORM_PROFILE
++	select ACPI_PLATFORM_PROFILE if ACPI
+ 	select NEW_LEDS
+ 	select LEDS_CLASS
+ 	help
+diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
+index af29ba840522f99bc2f426d4753f70d442cef3af..73c6a26638a22ad1c8368112e8ab185232a9df12 100644
+--- a/drivers/hid/hid-lenovo.c
++++ b/drivers/hid/hid-lenovo.c
+@@ -728,9 +728,11 @@ static int lenovo_raw_event_TP_X12_tab(struct hid_device *hdev, u32 raw_data)
+ 			if (hdev->product == USB_DEVICE_ID_LENOVO_X12_TAB) {
+ 				report_key_event(input, KEY_RFKILL);
+ 				return 1;
++			} else if (IS_ENABLED(CONFIG_ACPI_PLATFORM_PROFILE)) {
++				platform_profile_cycle();
++				return 1;
+ 			}
+-			platform_profile_cycle();
+-			return 1;
++			return 0;
+ 		case TP_X12_RAW_HOTKEY_FN_F10:
+ 			/* TAB1 has PICKUP Phone and TAB2 use Snipping tool*/
+ 			(hdev->product == USB_DEVICE_ID_LENOVO_X12_TAB) ?
 
-Thanks and BR,
-Ricardo
+---
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+change-id: 20250518-hid_lenovo_acpi_dependency-0ea78a6bd740
 
-[1]. https://lore.kernel.org/r/624e1985-7dd2-4abe-a918-78cb43556967@kernel.org
+Best regards,
+-- 
+Janne Grunau <j@jannau.net>
+
+
 
