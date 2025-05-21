@@ -1,151 +1,141 @@
-Return-Path: <linux-acpi+bounces-13835-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13836-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4285ABE34F
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 May 2025 21:01:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 328E3ABED3C
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 May 2025 09:43:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA36E7B0294
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 May 2025 18:59:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AD7A7A502E
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 May 2025 07:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AACA92820B9;
-	Tue, 20 May 2025 19:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD40623535B;
+	Wed, 21 May 2025 07:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hzJ7L1ia"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AXNewIAk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D272925745F;
-	Tue, 20 May 2025 19:00:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E0D23099F
+	for <linux-acpi@vger.kernel.org>; Wed, 21 May 2025 07:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747767609; cv=none; b=Ap3eSr+TMz4IYEbnB0Oq7Qs6xiANSZ06DOejMESccNqBL/f6pd6yjLzWXJKpMhKcZlthBD6Pqb467gJcDXF5XvretIf1tN5B1bn1YC0vJW2GqTm7DEVf3TesLNbv/t8gzo/FKOJeUAVT29d0DDuUqwhETGrpHOvza4qYffTGTXc=
+	t=1747813396; cv=none; b=RN6e1ttdNLU7RDVRsPn3lpAHxu7mXOlHZdZmEXvTgUh7RnLL3lTi857kIoLmQYYGTNEcBt44seYGEndakeJj851c7l6OnOVdq4ZEw2dExy1sZzJYGtqXtVIspF4haW0Sqsm3Noo+QxJNrW1+4oqTqsHBJ5f5ImSo2wKQyJUhKm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747767609; c=relaxed/simple;
-	bh=HZcbWAnDrzpvnH9G0Q9jaOv82qQp+Qmcrd0rTVFy8i4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YS6ZxpCXWUhzwdX6DZDD3w+yzhR0CI+1eRO0e0j0S5uyQj3juiPj93o+DeQDncuD1fifTmANAdwb/bis4SdFHlud5ZcrGYnZ9dHOuFLAj6JesgtLlRCErc9k7MMWC+9zjsUWEl1b/7jkKrjQGkgx12jlXcwDv4cuh5OpBVgy0lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hzJ7L1ia; arc=none smtp.client-ip=209.85.128.171
+	s=arc-20240116; t=1747813396; c=relaxed/simple;
+	bh=w1Dg5RsBUc18F5v8ye2RlpbIpog0I4kAhq9mtswyzPc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WXfGDsNKXl9emcYvMHRhwbHfOWKEqdDrZ6meGaf4ctRhUZIGOlza6xsv4By+FHasmB9/a4ImFN7wQYSygE660Ccw0g5ntE+F4Hqsform2X2pQ9XhFb3yk854rkFuku/8pwBDVwWpehzUIOMY3hEzGa58o3Pi+T+RkqucizaV/Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AXNewIAk; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-7086dcab64bso56051857b3.1;
-        Tue, 20 May 2025 12:00:07 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ad5a11c2942so185355666b.3
+        for <linux-acpi@vger.kernel.org>; Wed, 21 May 2025 00:43:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747767607; x=1748372407; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nir6kkeRUNYnE5nlG8GRhALN4HusH3tor7I7uLCCtVE=;
-        b=hzJ7L1iaY41hO+AdkpY1P5TkExG55ZofZhNMAdHxOzI6ATNwkd1ijJH+7K5HukilFm
-         30A8lPyYRDRsslqIVrLnvJAPLPZ4pIC9gLm2f0Jc3VBbnK6IsIVdAGSpmuI0BKiLu5UF
-         QjJu2EMqRryFVkTGN+0T67nV96slxUYiGKWZgOcBhSQgUP07O950hmFOiHI1lhfgYm3l
-         wC2CZSH1c+kHMWCwk+eFahdcRYDwvKDAWsvSGMar4ZZMN061PYF8AaaZrRwY271e8w+o
-         N/qzd9K+TNfrZLdW1DfZCpcFhaOVWEVzEQe+WADbkxxE1iKk55X3MfQ7k+BFK7cD4Uq5
-         AW/w==
+        d=gmail.com; s=20230601; t=1747813393; x=1748418193; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=J84xNzRgQa8mrQOkYbumbzzgj0ybXamBQeiJjclSyrA=;
+        b=AXNewIAki3GoyYklTfjm8D/PVtqhlaeqDgmpiJIKCLTzDpNFzIf7fICuXGlzyY65wY
+         G5zd0AhbrUnAJjZKVji6pUUExd5IB91sbqQYi63tCgvKPmVRBdNChJZFlu+IckBsfbcz
+         05h5qBC2KkPP2BbDNEx4JYf8D4kJj8QCuNQ/b60NofU/qN4Rl3JTu0xnUto4f+JKPj96
+         zeJd5X3qKU+N9t3X94adKzBNj2VT5VEaUNKtK94DNaiOUJf9YboTpypMKIeQ0qODcMcq
+         nLziaqwz09RGW3gOSWmkLsULUxPGBofEK7suyuuW+ZVs+4H6juOWxx8wOXt9duR/Gs7y
+         q7xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747767607; x=1748372407;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nir6kkeRUNYnE5nlG8GRhALN4HusH3tor7I7uLCCtVE=;
-        b=LUsp7vHnTcsO2b76v+jEkJGdiXObLH/+bEHmj4XQ3G9UA4cS355tLNWVqv5M5+Dl1d
-         sinPmIpo9WsWb4J5PxflJFd9X3P65rRME0ev/jM29HqZRVLxsiwQs7g/85bp4BHvdfne
-         EbH3iK/5TUj4zVF3o1WIqQTmgjSfidd2srVBMelh25KLYIosmqBS+ariin/68EJjF3Wd
-         jgDS1PwntklFFssl+puKoiqNbJL24f13Nx/J1HlkOQuLc83RUEMh+kS3+2M2Rzwz9/iP
-         GjRKng3tLYRUIepLcOQuT1qEJs5J8a49ZpiCs+iVVnWWs+p+MTbvs8U/g67SJLNVyzzw
-         babg==
-X-Forwarded-Encrypted: i=1; AJvYcCVNTVAam2cdMisaN0E+Gb5sexOl/Ela8eRAj+xqRL++Su1B9chvGEkKAEWTW134QMLbAsuRCeFQ7O6D@vger.kernel.org, AJvYcCVTthWLecnc5kuAkMtbIXTw+yzFDTefWG8jvpJyR6g1OQWvEHm6Ftvqmho+Gjh3ysPfSpLF3shB9vRlXee6@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVCHC9/LuJpjYzUlsRkQebeFzgQJ4IgXadY9AUrP2gDO+wqtgk
-	5sWcGyneWoWDZ3xYtJ/2S/gsiVAAzUQolJ6w/YYfVfBnlWaJQqv3nbyY
-X-Gm-Gg: ASbGnctUMz2moJ0XBqw+tyZxCHW8oonjN8SC9qYG+Kfz5q2SnrcFb55G+YFxiLyUIez
-	JFs0yGCkReNm/ZiimypDC1hy/Ab4WkzftO9pEH/+n7QT8ZxNde9Us9fmJZAmRsgadhHjC6qV0qY
-	vqXMC6m4KigLkzzrIfK3oituS0a/BUXt1vh4xHHns6bXpvGgHriQ8GAya3lJD/G9tPO8NZY0tsb
-	oAOOhPdxrbxHUij15zvTQb8e/4e0THzQlU1ubEw4a6JCa1k4I8qzC9Kv2WhFjfqyn/Nu9sl0eG5
-	3OYveruGKJizbXBx+EYpFUxWkLtZKVkxCGove788pSNroR5ccJ8=
-X-Google-Smtp-Source: AGHT+IHxf+Oh/vGp6cBjqEcIC0Qws0kB/8+qRetQYgkKEknE0CQAtz1R6fSe3QJttyS8pBn/KKYwBg==
-X-Received: by 2002:a05:690c:9a0a:b0:70d:ecdd:9bd3 with SMTP id 00721157ae682-70decdda059mr27302927b3.27.1747767606598;
-        Tue, 20 May 2025 12:00:06 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:70::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-70ca852db7esm23412547b3.101.2025.05.20.12.00.05
+        d=1e100.net; s=20230601; t=1747813393; x=1748418193;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J84xNzRgQa8mrQOkYbumbzzgj0ybXamBQeiJjclSyrA=;
+        b=fzfi/nHiHjrSDauho94W9gZV61eJAsxVxrL+fgIMmclh+Yy5l6vuGgZV+qbVt+reCb
+         EU9DEJAMVWVTPMcQPXMJskSIQoad5tebDQXpwBz69CJQ7amKQw3wMqDN9FeC1mVApMBf
+         R7NHZ46cTe4APFCQ4wxQ5CCK2Hegi/8c57eEXdZaeNEODD5LfIFVnvuzAvRoXaCOhrq3
+         4wCFLgtUfTtZlTKKGVU81cJsHWcmksu9tXV9NMX0hSI3qKnlqXZElIP72kQrJQ8z8Ip+
+         F4A7Mk6UfQKu++BYSFKYt27vBkEQWlQKvzbw8LiqGftaLkf6SIkr2UbcNK2LlsOqXLSO
+         AYPw==
+X-Forwarded-Encrypted: i=1; AJvYcCUOSlWC+u82l/D8+QBpaQGFch5Jc6iPM7tFzYsx4GLpcV9kW6NIJvo0NeRWNFM5k3MK9Hwiu5nusQFr@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywu0M7g+NjWWYyZSaNjJIrqWEhE4KNiQ+yum8C2r9QxpGQAJK/Q
+	kPl9av0yxy9NP2aGGjzSsXYYwZ14j940mQTsvk+8TsRnPoCdYn3RhUVe
+X-Gm-Gg: ASbGncu2LgKnfaururD1cqPYPUiUgPtHpHWAAWVesMf3CVp3Pq+9i1TIGqoFEIe1quR
+	1/6f7pED74M7pz8QXug58egBjI9f9dWhZGrngzXObv/jUwO8V8Ous/w8V6wOaELZetUkoeyw6cV
+	Cu0rv8T5tDJzf+Wr8mT2xvR9WcmONxRhGNnVvrgFreawee8cmG0Zk+VIh2f8DoWHt3hSpifgYsu
+	9AuWkLHi32vSKltvOvf32rwQ7a31f1YceFH7kdObejqRNRT3IU3omJNbIveOSTwSDiGzkXHPD77
+	10MIHTk7U9/H4rRASjJaQ4ASDSwu8xKXuXXTQcQln2NX9CgP/v7QiH3lvGmFsPpa
+X-Google-Smtp-Source: AGHT+IH5tn7Yh9xi/YcQ/171T3oryvhz9qm9/H/Z6ntY23ewvFkuclGodMzYYPJIYuU9jlPXxMJw+A==
+X-Received: by 2002:a17:907:3d4e:b0:ad5:e0f:7850 with SMTP id a640c23a62f3a-ad536bde688mr1648749566b.23.1747813392931;
+        Wed, 21 May 2025 00:43:12 -0700 (PDT)
+Received: from f (cst-prg-94-60.cust.vodafone.cz. [46.135.94.60])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d06dc6csm868357266b.53.2025.05.21.00.43.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 May 2025 12:00:06 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: gourry@gourry.net,
-	harry.yoo@oracle.com,
-	ying.huang@linux.alibaba.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com,
-	gregkh@linuxfoundation.org,
-	rakie.kim@sk.com,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	dan.j.williams@intel.com,
-	Jonathan.Cameron@huawei.com,
-	dave.jiang@intel.com,
-	horen.chuang@linux.dev,
-	hannes@cmpxchg.org,
-	osalvador@suse.de,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v9] mm/mempolicy: Weighted Interleave Auto-tuning
-Date: Tue, 20 May 2025 12:00:03 -0700
-Message-ID: <20250520190004.274765-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250520113713.9b28c705b421c8bd3a51ac45@linux-foundation.org>
-References: 
+        Wed, 21 May 2025 00:43:11 -0700 (PDT)
+Date: Wed, 21 May 2025 09:43:01 +0200
+From: Mateusz Guzik <mjguzik@gmail.com>
+To: Baris Can Goral <goralbaris@gmail.com>
+Cc: oliver.sang@intel.com, acpica-devel@lists.linux.dev, lenb@kernel.org, 
+	linux-acpi@vger.kernel.org, lkp@intel.com, oe-lkp@lists.linux.dev, 
+	rafael.j.wysocki@intel.com, robert.moore@intel.com, skhan@linuxfoundation.org, 
+	kees@kernel.org
+Subject: Re: [PATCH acpi] Replace strncpy with strscpy
+Message-ID: <rkc452hxtxcaym55croa5uvtjjsulbl25bhdk2mw2ce5fwqx4p@guhdxk6eogqj>
+References: <202505191014.718ca1d6-lkp@intel.com>
+ <20250520163540.6893-1-goralbaris@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250520163540.6893-1-goralbaris@gmail.com>
 
-On Tue, 20 May 2025 11:37:13 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Tue, May 20, 2025 at 07:35:40PM +0300, Baris Can Goral wrote:
+> Hi,
+> Rafael I dont understand your question. This patch replaces
+> strncpy which is vulnerable with strscpy. As it stated in Link I shared.
 
-> On Tue, 20 May 2025 11:11:24 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> 
-> > > Honggyu's Reviewed-by is the only change I'm seeing between v8 and v9,
-> > > which is unexpected?
-> > > 
-> > 
-> > Hello Andrew,
-> > 
-> > The code cleanups & wordsmithing were part of the fixlets that I submitted,
-> > so if you are diffing against the version of v8 with the fixlets already in,
-> > all you should see as diffs are Honggyu's review and test tag, as well as
-> > Ying's review tag.
-> > 
-> > I was not very familiar with the fixlet process, so I imagined that I needed
-> > so submit a new fixlet to add the 3 tags. If that is not the case (and you
-> > can just change the tags without adding a new fixlet) perhaps we can keep
-> > v8, just with the additional tags so we can keep the patch in the unstable
-> > branch?
-> 
-> Yes, while the patch is in mm-unstable I frequently update changelogs as
-> acks come in, as people provide testing results etc etc.
+Uses of strncpy are not inherently buggy, rather there is a corner case
+where the string might happen to end up not terminated.
 
-Ah I see, sorry for the confusion in that case. Then I think all that should
-change is to add Honggyu's review / tested-by tags to the changelog:
+Rafael asked if that's what is being patched here.
 
- Co-developed-by: Gregory Price <gourry@gourry.net>
- Signed-off-by: Gregory Price <gourry@gourry.net>
- Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
- Suggested-by: Yunjeong Mun <yunjeong.mun@sk.com>
- Suggested-by: Oscar Salvador <osalvador@suse.de>
- Suggested-by: Ying Huang <ying.huang@linux.alibaba.com>
- Suggested-by: Harry Yoo <harry.yoo@oracle.com>
- Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
- Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-+Reviewed-by: Honggyu Kim <honggyu.kim@sk.com>
-+Tested-by: Honggyu Kim <honggyu.kim@sk.com>
+> It seems it works to fix somethings.
 
-Thank you for your help as always, have a great day!
-Joshua
+If anything it seems to /break/ something.
+
+In all reported cases the idle time went down significantly, which I
+looks like an unexpected outcome.
+
+So interestingly (to my reading anyway) this particular consumer
+explicitly wants the target string to NOT be nul terminated.
+
+The copied to struct is:
+
+struct acpi_table_header {
+[snip]
+        char oem_id[ACPI_OEM_ID_SIZE];  /* ASCII OEM identification */
+        char oem_table_id[ACPI_OEM_TABLE_ID_SIZE];      /* ASCII OEM table identification */
+[/snip]
+};
+
+Later the thing is NOT treated as a string, instead it is handled with
+memcmp:
+ !memcmp(acpi_gbl_root_table_list.tables[i].pointer->
+		oem_table_id, header.oem_table_id,
+		ACPI_OEM_TABLE_ID_SIZE))) {
+
+So, for "table ids" which occupy the entirety of ACPI_OEM_TABLE_ID_SIZE
+(and which end up not null terminated), your patch changes the behavior
+as they end up suddenly truncated by 1 to nul terminate, which then
+makes them fail memcmp.
+
+So the patch is not a nop and it breaks stuff afaics.
+
+I thing the real bug here is that strscpy does anything of the sort.
+Instead it should fail *and* be annotated with __must_check or whatever
+the name it has on Linux so that consumers don't unknowingly introduce
+truncated strings..
 
