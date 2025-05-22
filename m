@@ -1,176 +1,184 @@
-Return-Path: <linux-acpi+bounces-13851-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13852-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5F6AC0DED
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 May 2025 16:20:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCEBCAC0F2A
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 May 2025 16:59:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 986733BFF0C
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 May 2025 14:20:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21D08A41264
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 May 2025 14:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B03128BA84;
-	Thu, 22 May 2025 14:20:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="egyaIK78";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Zd8XoNmY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6400C28DEEA;
+	Thu, 22 May 2025 14:58:12 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3436F1EA84;
-	Thu, 22 May 2025 14:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EEE28C5CA;
+	Thu, 22 May 2025 14:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747923635; cv=none; b=B2IZcGFfiCVbxaK1sfzHqrQHFJt74bHgJ9fSbuxsOvOX8vFKR6CY3Jwxt3x+k7mBIyO8aJhTM2Dqt+nTUMy5lSDlr/Supvb+Nb0M+BdgCClFzvWuWmwY4UH1oOJxDHTXu+bkJNeYx2spYz3WxxZBjbQYk5J93gsaPR+xYD/ke0Y=
+	t=1747925892; cv=none; b=LzI2s8Ri2oLC9XqpqlbolY7BnraWHZkIpZ3BN6Lw09z4XLjpIJe2o2gAQoWFeTk275ZQqbcSsYdPXB3xBwqcnkudRP9Sylpaksvn1UN86AOJNO8k2BMnIY3z2YTk++Tw1+eDQ8G7MqrVGK99WsSRkh4EmhaHRUOGIyhCr7I8vqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747923635; c=relaxed/simple;
-	bh=tckNKMKh4YInDWoa9+SwINj6KGVI4lSPKQzfRJ1nPQc=;
-	h=MIME-Version:Date:From:To:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=j/ipXKpXfVfjxSogLQb+9kiyb036HJ5nG9tx6f4M3+CdGtbW0OkxIERzViLU2N+2RnhlpIeG4rwE+U5mzNyl0Mi1eSryRmBKcb+mYuoeE45piqVTgNfDd9tJLBteIzQR5R3U1Sje9OHy/UpLuoB1+h/WBlXfjeLaMaU3gOvlbHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=egyaIK78; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Zd8XoNmY; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id F40041140191;
-	Thu, 22 May 2025 10:20:30 -0400 (EDT)
-Received: from phl-imap-08 ([10.202.2.84])
-  by phl-compute-12.internal (MEProxy); Thu, 22 May 2025 10:20:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1747923630;
-	 x=1748010030; bh=6SzZjdG+sF7GjKUZx/yFtARR+eKZB/Yfx9kGEaaXnEo=; b=
-	egyaIK78kY8i5gA29bk8ECXgVxvt0Ai621vlSvncFJS6Ae3SqPtsGeCEw8NRfWov
-	M+Um8GmHSHyBfFFLi/ZiauYubwK+s8Hv78tT0QWJtmatEHDKnVCr5Ast30R7UIG9
-	8rosAoWXETSV3YN2mtuB1mm+WQqRT+QHDS+4IDriS72+zqGIPjirIvePkobSS1Gi
-	38qoXBCZ3Emp2N2fZEyZ9RfZ5zJdrvZx/UOxAlighz6DIByzrpqdKf1nqTBU4lr4
-	uqv8JuWOMgasvaR3SwGVVGuj0iRoooMyaGqKvb55LjoJ/KrfN66IXobkHRpOLxOR
-	OmAUJA/5WTtb7kxclPccyw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:content-transfer-encoding:content-type
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1747923630; x=1748010030; bh=6
-	SzZjdG+sF7GjKUZx/yFtARR+eKZB/Yfx9kGEaaXnEo=; b=Zd8XoNmYGq+p/5wqq
-	osELy9IZIfUWCl+pufqzM1aVNZiwRvv1Tyaho+QcLOyd7oNO6TbtDUNn0bMYCf2B
-	rouMvdhnJAgm+Z47x2k+8noLTmpv3tm5/p2n3IsIs8Xk52qaCewIWUOCkGlNV2tW
-	2EbsZPe+staj9BUA27k8RxE++kVG6+iBEaQAAccPrjen6Q4zDvgTWsUA2WqgJcrb
-	2UCi3z90SgGCiexbwpsSq+L/+ah1UoR2VHQW+BonIdQzL13RBZG9H6RskI1lSZRS
-	ff7IiPx3//NOcm1ZPOtnI6uneqnjEWTmsEZaRVwcEJazYdgOrnkC3Rf60q7uIWsK
-	L9geg==
-X-ME-Sender: <xms:rjIvaBDBGWTSgXGDozXVenZ3c5RyETSn3CwGwUG46T3IvUAhXNhZPA>
-    <xme:rjIvaPivIeWzRT1kRjuPPruciSXUci082-ni2TmwZR4Gat9EXAQmuin1wu_zen5Q1
-    GCjE69t2X0AKI3yYn8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgdeiudelucdltddurdegfedvrddttd
-    dmucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgf
-    nhhsuhgsshgtrhhisggvpdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttd
-    enucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepofggfffhvffkjghf
-    ufgtgfesthejredtredttdenucfhrhhomhepfdforghrkhcurfgvrghrshhonhdfuceomh
-    hpvggrrhhsohhnqdhlvghnohhvohesshhquhgvsggsrdgtrgeqnecuggftrfgrthhtvghr
-    nhepkeffuedtveekjeeukefgleejgeetleduueetudefudehfefhheefleehheffffekne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhhpvggr
-    rhhsohhnqdhlvghnohhvohesshhquhgvsggsrdgtrgdpnhgspghrtghpthhtohepuddtpd
-    hmohguvgepshhmthhpohhuthdprhgtphhtthhopehmrghrihhordhlihhmohhntghivghl
-    lhhosegrmhgurdgtohhmpdhrtghpthhtoheprghrnhgusegrrhhnuggsrdguvgdprhgtph
-    htthhopeifpggrrhhmihhnsehgmhigrdguvgdprhgtphhtthhopehlvghnsgeskhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehilhhpohdrjhgrrhhvihhnvghnsehlihhnuhigrdhinhhtvghlrdgtohhmpdhr
-    tghpthhtoheplhhinhhugidqrhhishgtvheslhhishhtshdrihhnfhhrrgguvggrugdroh
-    hrghdprhgtphhtthhopegrlhgvgihghhhithhisehrihhvohhsihhntgdrtghomhdprhgt
-    phhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:rjIvaMkUcRNNIXPA26nbK9gDsRTYhOCo0PXAQKIR1zzw9xpUIai9jw>
-    <xmx:rjIvaLzbAZwvQsclg4XYwfA7A9UVO-cuGDBCBnLZt-mI5pgagntpZA>
-    <xmx:rjIvaGQ7ye2q6i0g7dxPwI7Q10y0C8sTyjrsUy_mqvBA4_nv6awCCg>
-    <xmx:rjIvaOa9IANsRWgLmGgYWbWQpQzvD2vTs1M6sBCw-B5h3O9HLjTIcA>
-    <xmx:rjIvaNRD4BJ0IM-AtoxPHvife5VJC8uQPaGjM7cHfmib7AsLHqOg4fTo>
-Feedback-ID: ibe194615:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 689DD2CE005D; Thu, 22 May 2025 10:20:30 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1747925892; c=relaxed/simple;
+	bh=PfdEY65M9VrYioKAUqOOBm85qrHkaxYR5yp4YhmUp5I=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NPBRo7+kwKZ7aubfEb3AsIL4aFBjOpvz/6BVh/2KD8VwwglMlIhZmHWjgRCwsQnr1/aRddhvrh2vfbINLauHC3aVK9IChr+5l7MjtorwA/ozKJ7rEpT++kHlT7+GOYC96iJqvCaq0eTkRW8xp0PAcrh8Zx2TeomZoZ1gNBCdjho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b3BCZ4Lk5z6L5Bh;
+	Thu, 22 May 2025 22:54:50 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 70E2D140390;
+	Thu, 22 May 2025 22:58:05 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 22 May
+ 2025 16:58:04 +0200
+Date: Thu, 22 May 2025 15:58:02 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: <shiju.jose@huawei.com>
+CC: <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <bp@alien8.de>, <rafael@kernel.org>,
+	<tony.luck@intel.com>, <lenb@kernel.org>, <leo.duran@amd.com>,
+	<Yazen.Ghannam@amd.com>, <mchehab@kernel.org>, <linux-mm@kvack.org>,
+	<linuxarm@huawei.com>, <rientjes@google.com>, <jiaqiyan@google.com>,
+	<Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
+	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
+	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<dferguson@amperecomputing.com>, <wbs@os.amperecomputing.com>,
+	<nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
+	<roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
+	<wanghuiqiang@huawei.com>
+Subject: Re: [PATCH v7 0/2] ACPI: Add support for ACPI RAS2 feature table
+Message-ID: <20250522155802.0000648b@huawei.com>
+In-Reply-To: <20250519151116.803-1-shiju.jose@huawei.com>
+References: <20250519151116.803-1-shiju.jose@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: T1cac82e440972a10
-Date: Thu, 22 May 2025 10:20:10 -0400
-From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
-To: "Alexandre Ghiti" <alexghiti@rivosinc.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- "Limonciello, Mario" <mario.limonciello@amd.com>,
- "Armin Wolf" <W_Armin@gmx.de>, "Arnd Bergmann" <arnd@arndb.de>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
-Message-Id: <83d4fd6f-805f-4b96-b772-70aa55c8c1f9@app.fastmail.com>
-In-Reply-To: <20250522141410.31315-1-alexghiti@rivosinc.com>
-References: <20250522141410.31315-1-alexghiti@rivosinc.com>
-Subject: Re: [PATCH] drivers: acpi: Fix platform profile driver on !acpi platforms
-Content-Type: text/plain
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Thu, May 22, 2025, at 10:13 AM, Alexandre Ghiti wrote:
-> The platform profile driver is loaded even on platforms that do not have
-> acpi enabled. The initialization of the sysfs entries was recently moved
-> from platform_profile_register() to the module init call, and those
-> entries need acpi_kobj to be initialized which is not the case when acpi
-> is disabled.
->
-> This results in the following warning:
->
->  WARNING: CPU: 5 PID: 1 at fs/sysfs/group.c:131 
-> internal_create_group+0xa22/0xdd8
->  Modules linked in:
->  CPU: 5 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W           
-> 6.15.0-rc7-dirty #6 PREEMPT
->  Tainted: [W]=WARN
->  Hardware name: riscv-virtio,qemu (DT)
->  epc : internal_create_group+0xa22/0xdd8
->   ra : internal_create_group+0xa22/0xdd8
->
->  Call Trace:
->
->  internal_create_group+0xa22/0xdd8
->  sysfs_create_group+0x22/0x2e
->  platform_profile_init+0x74/0xb2
->  do_one_initcall+0x198/0xa9e
->  kernel_init_freeable+0x6d8/0x780
->  kernel_init+0x28/0x24c
->  ret_from_fork+0xe/0x18
->
-> Fix this by checking if acpi is enabled before trying to create sysfs
-> entries.
->
-> Fixes: 77be5cacb2c2 ("ACPI: platform_profile: Create class for ACPI 
-> platform profile")
-> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-> ---
->  drivers/acpi/platform_profile.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-> index ffbfd32f4cf1..b43f4459a4f6 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -688,6 +688,9 @@ static int __init platform_profile_init(void)
->  {
->  	int err;
+On Mon, 19 May 2025 16:11:13 +0100
+<shiju.jose@huawei.com> wrote:
+
+> From: Shiju Jose <shiju.jose@huawei.com>
 > 
-> +	if (acpi_disabled)
-> +		return -EOPNOTSUPP;
-> +
->  	err = class_register(&platform_profile_class);
->  	if (err)
->  		return err;
-> -- 
-> 2.43.0
+Hi Rafael,
 
-Looks good to me.
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Are you looking for anything else for this series?
+(reviews from others etc?)
 
-Mark
+The core EDAC support when upstream last cycle (this was
+in that series as well so is kind of version 27). I believe
+the expectation is this will go through your tree.
+
+Tweaks have been pretty minor for last few versions.
+
+Thanks,
+
+Jonathan
+
+> Add support for ACPI RAS2 feature table (RAS2) defined in the
+> ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
+> scrubbing feature.
+> 
+> ACPI RAS2 patches were part of the EDAC series [1].
+> 
+> The code is based on ras.git: edac-for-next branch [2]
+> merged with linux-pm.git [3] : linux-next branch.
+> 
+> 1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
+> 2. https://web.git.kernel.org/pub/scm/linux/kernel/git/ras/ras.git/log/?h=edac-for-next
+> 3. https://web.git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/
+> 
+> Changes
+> =======
+> v6 -> v7:
+> 1. Fix for the issue reported by Daniel,
+>    In ras2_check_pcc_chan(), add read, clear and check RAS2 set_cap_status outside
+>    if (status & PCC_STATUS_ERROR) check. 
+>    https://lore.kernel.org/all/51bcb52c-4132-4daf-8903-29b121c485a1@os.amperecomputing.com/
+> 
+> v5 -> v6:
+> 1. Fix for the issue reported by Daniel, in start scrubbing with correct addr and size
+>    after firmware return INVALID DATA error for scrub request with invalid addr or size.
+>    https://lore.kernel.org/all/8cdf7885-31b3-4308-8a7c-f4e427486429@os.amperecomputing.com/
+>    
+> v4 -> v5:
+> 1. Fix for the build warnings reported by kernel test robot.
+>    https://patchwork.kernel.org/project/linux-edac/patch/20250423163511.1412-3-shiju.jose@huawei.com/
+> 2. Removed patch "ACPI: ACPI 6.5: RAS2: Rename RAS2 table structure and field names"
+>    from the series as the patch was merged to linux-pm.git : branch linux-next
+> 3. Rebased to ras.git: edac-for-next branch merged with linux-pm.git : linux-next branch.
+>       
+> v3 -> v4:
+> 1.  Changes for feedbacks from Yazen on v3.
+>     https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
+> 
+> v2 -> v3:
+> 1. Rename RAS2 table structure and field names in 
+>    include/acpi/actbl2.h limited to only necessary
+>    for RAS2 scrub feature.
+> 2. Changes for feedbacks from Jonathan on v2.
+> 3. Daniel reported a known behaviour: when readback 'size' attribute after
+>    setting in, returns 0 before starting scrubbing via 'addr' attribute.
+>    Changes added to fix this.
+> 4. Daniel reported that firmware cannot update status of demand scrubbing
+>    via the 'Actual Address Range (OUTPUT)', thus add workaround in the
+>    kernel to update sysfs 'addr' attribute with the status of demand
+>    scrubbing.
+> 5. Optimized logic in ras2_check_pcc_chan() function
+>    (patch - ACPI:RAS2: Add ACPI RAS2 driver).
+> 6. Add PCC channel lock to struct ras2_pcc_subspace and change
+>    lock in ras2_mem_ctx as a pointer to pcc channel lock to make sure
+>    writing to PCC subspace shared memory is protected from race conditions.
+>    
+> v1 -> v2:
+> 1.  Changes for feedbacks from Borislav.
+>     - Shorten ACPI RAS2 structures and variables names.
+>     - Shorten some of the other variables in the RAS2 drivers.
+>     - Fixed few CamelCases.
+> 
+> 2.  Changes for feedbacks from Yazen.
+>     - Added newline after number of '}' and return statements.
+>     - Changed return type for "ras2_add_aux_device() to 'int'.
+>     - Deleted a duplication of acpi_get_table("RAS2",...) in the ras2_acpi_parse_table().
+>     - Add "FW_WARN" to few error logs in the ras2_acpi_parse_table().
+>     - Rename ras2_acpi_init() to acpi_ras2_init() and modified to call acpi_ras2_init()
+>       function from the acpi_init().
+>     - Moved scrub related variables from the struct ras2_mem_ctx from  patch
+>       "ACPI:RAS2: Add ACPI RAS2 driver" to "ras: mem: Add memory ACPI RAS2 driver".
+> 
+> Shiju Jose (2):
+>   ACPI:RAS2: Add ACPI RAS2 driver
+>   ras: mem: Add memory ACPI RAS2 driver
+> 
+>  Documentation/edac/scrub.rst |  78 ++++++
+>  drivers/acpi/Kconfig         |  11 +
+>  drivers/acpi/Makefile        |   1 +
+>  drivers/acpi/bus.c           |   3 +
+>  drivers/acpi/ras2.c          | 450 +++++++++++++++++++++++++++++++++++
+>  drivers/ras/Kconfig          |  11 +
+>  drivers/ras/Makefile         |   1 +
+>  drivers/ras/acpi_ras2.c      | 424 +++++++++++++++++++++++++++++++++
+>  include/acpi/ras2.h          |  70 ++++++
+>  9 files changed, 1049 insertions(+)
+>  create mode 100644 drivers/acpi/ras2.c
+>  create mode 100644 drivers/ras/acpi_ras2.c
+>  create mode 100644 include/acpi/ras2.h
+> 
+
 
