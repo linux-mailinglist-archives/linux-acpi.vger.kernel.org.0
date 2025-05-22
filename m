@@ -1,184 +1,191 @@
-Return-Path: <linux-acpi+bounces-13852-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13853-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCEBCAC0F2A
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 May 2025 16:59:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D932AC153C
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 May 2025 22:04:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21D08A41264
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 May 2025 14:58:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E8081BC556D
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 May 2025 20:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6400C28DEEA;
-	Thu, 22 May 2025 14:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4702BF3E9;
+	Thu, 22 May 2025 20:04:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="BgNGH79U"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EEE28C5CA;
-	Thu, 22 May 2025 14:58:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A642BF3D3;
+	Thu, 22 May 2025 20:04:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747925892; cv=none; b=LzI2s8Ri2oLC9XqpqlbolY7BnraWHZkIpZ3BN6Lw09z4XLjpIJe2o2gAQoWFeTk275ZQqbcSsYdPXB3xBwqcnkudRP9Sylpaksvn1UN86AOJNO8k2BMnIY3z2YTk++Tw1+eDQ8G7MqrVGK99WsSRkh4EmhaHRUOGIyhCr7I8vqU=
+	t=1747944274; cv=none; b=AW0USGhUUE71IIIiE5fMOL7QA/omDdiPZY04IQPusWZ2bHG0cMf6csCBMnYy3akSm9q7B65tlO/AEeM75i8Z7X917SAwDE00ke21sZDWCRxCK6jbZV0KRtgUZo/6V6/Tmm1I7K1vHQbXyIouIKzInZY30zWuQ1E40O/WEhwQTlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747925892; c=relaxed/simple;
-	bh=PfdEY65M9VrYioKAUqOOBm85qrHkaxYR5yp4YhmUp5I=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NPBRo7+kwKZ7aubfEb3AsIL4aFBjOpvz/6BVh/2KD8VwwglMlIhZmHWjgRCwsQnr1/aRddhvrh2vfbINLauHC3aVK9IChr+5l7MjtorwA/ozKJ7rEpT++kHlT7+GOYC96iJqvCaq0eTkRW8xp0PAcrh8Zx2TeomZoZ1gNBCdjho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b3BCZ4Lk5z6L5Bh;
-	Thu, 22 May 2025 22:54:50 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 70E2D140390;
-	Thu, 22 May 2025 22:58:05 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 22 May
- 2025 16:58:04 +0200
-Date: Thu, 22 May 2025 15:58:02 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: <shiju.jose@huawei.com>
-CC: <linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <bp@alien8.de>, <rafael@kernel.org>,
-	<tony.luck@intel.com>, <lenb@kernel.org>, <leo.duran@amd.com>,
-	<Yazen.Ghannam@amd.com>, <mchehab@kernel.org>, <linux-mm@kvack.org>,
-	<linuxarm@huawei.com>, <rientjes@google.com>, <jiaqiyan@google.com>,
-	<Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
-	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
-	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
-	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
-	<dferguson@amperecomputing.com>, <wbs@os.amperecomputing.com>,
-	<nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
-	<roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
-	<wanghuiqiang@huawei.com>
-Subject: Re: [PATCH v7 0/2] ACPI: Add support for ACPI RAS2 feature table
-Message-ID: <20250522155802.0000648b@huawei.com>
-In-Reply-To: <20250519151116.803-1-shiju.jose@huawei.com>
-References: <20250519151116.803-1-shiju.jose@huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1747944274; c=relaxed/simple;
+	bh=m/0j/7QIFLkrNbr6N8aGMwm8ESVLo60Xq7cdaPD0R5Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=SMnGBFl5ySCY1TdcuAHUCCXoPW2f2gL+qHr75WwbdP7kzKL26u3JijngO6nQWeZtveQ7ncUJv3X4Woy2VIpHPDODbjZ75keD5TWKpPDYizsr9Qo641ej2guTzrxXjOwuae/CYJ4Y5q1n89SCR0tdidtAjPHneKGUoIFUBgAT5iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=BgNGH79U; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1747944264; x=1748549064; i=w_armin@gmx.de;
+	bh=BfB9dL1BZc9EG3FvzEB/uXREN3ou+pmHQVviuUcsm4U=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=BgNGH79U55nM8zUb/q8drRAtlHqA3Lpf77U3IhV/F7VJAAEBZWDcHXccFMJgig/4
+	 dS+JFg8hcRCK/j24RCNP3UqoasBYhwIcLTREaawCxxcy/oJodZJ2ME+e6Q+naDgif
+	 26AUEY4IeJgHnXdxLH1BoYlnphFAYlmKq0M3aFH8DnsEtYpc1bWo8VQCrz8YX+G/J
+	 YnWehMlb2YRMfhxZJOa4qtbUoWq0WpXy3NAarnAaxM1a4UQ44QMsWeMEVvTw/m4VE
+	 RcoMqt4TfegbUI+uMs1xfd2k2EfvaRo6MLh28iLp/+WvxBmaTsAlPurLN4cOiq4ae
+	 P4OIzMaYTGGR7NjkGA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.69] ([87.177.78.219]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N63Vi-1v2NrU2dQW-014x44; Thu, 22
+ May 2025 22:04:24 +0200
+Message-ID: <91458376-dfc7-46fc-8523-aa176907d703@gmx.de>
+Date: Thu, 22 May 2025 22:04:22 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
- frapeml500008.china.huawei.com (7.182.85.71)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drivers: acpi: Fix platform profile driver on !acpi
+ platforms
+To: Alexandre Ghiti <alexghiti@rivosinc.com>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>, Arnd Bergmann <arnd@arndb.de>,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org
+References: <20250522141410.31315-1-alexghiti@rivosinc.com>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <20250522141410.31315-1-alexghiti@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:NTRHH5PMFLIutW5BfrfopU/f8rUa+sK5VihkqKAXFj9HjA48cg+
+ wanM72DxYHMj+d1u7zgv4yQjFNFa0RkzGLJ106jEt9z7gnHIwb8qKvn5pCemK+yrFZQpGBB
+ m0jpN0pLCFlPKvNcygasmRbju2aU6ak//8ePDjggBaP7prMssLuSNIWfxh/0ZPqWyk8wo6H
+ I7jHEHpYqFwOUy8J5D+yA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:dKmvU3GXqqo=;z6HbBYWva0ByrtseS5PN6+K67Nw
+ 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
 
-On Mon, 19 May 2025 16:11:13 +0100
-<shiju.jose@huawei.com> wrote:
+Am 22.05.25 um 16:13 schrieb Alexandre Ghiti:
 
-> From: Shiju Jose <shiju.jose@huawei.com>
-> 
-Hi Rafael,
+> The platform profile driver is loaded even on platforms that do not have
+> acpi enabled. The initialization of the sysfs entries was recently moved
+> from platform_profile_register() to the module init call, and those
+> entries need acpi_kobj to be initialized which is not the case when acpi
+> is disabled.
+>
+> This results in the following warning:
+>
+>   WARNING: CPU: 5 PID: 1 at fs/sysfs/group.c:131 internal_create_group+0=
+xa22/0xdd8
+>   Modules linked in:
+>   CPU: 5 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W           6.1=
+5.0-rc7-dirty #6 PREEMPT
+>   Tainted: [W]=3DWARN
+>   Hardware name: riscv-virtio,qemu (DT)
+>   epc : internal_create_group+0xa22/0xdd8
+>    ra : internal_create_group+0xa22/0xdd8
+>
+>   Call Trace:
+>
+>   internal_create_group+0xa22/0xdd8
+>   sysfs_create_group+0x22/0x2e
+>   platform_profile_init+0x74/0xb2
+>   do_one_initcall+0x198/0xa9e
+>   kernel_init_freeable+0x6d8/0x780
+>   kernel_init+0x28/0x24c
+>   ret_from_fork+0xe/0x18
+>
+> Fix this by checking if acpi is enabled before trying to create sysfs
+> entries.
 
-Are you looking for anything else for this series?
-(reviews from others etc?)
+I already submitted a patch for this problem (see https://lore.kernel.org/=
+linux-acpi/a6d92cdd-4dc3-4080-9ed9-5b1f02f247e0@gmx.de/T/)
+that only disables the legacy sysfs interface while keeping the class-base=
+d interface functional
+as it does not depend on ACPI at all.
 
-The core EDAC support when upstream last cycle (this was
-in that series as well so is kind of version 27). I believe
-the expectation is this will go through your tree.
+Thank,
+Armin Wolf
 
-Tweaks have been pretty minor for last few versions.
-
-Thanks,
-
-Jonathan
-
-> Add support for ACPI RAS2 feature table (RAS2) defined in the
-> ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
-> scrubbing feature.
-> 
-> ACPI RAS2 patches were part of the EDAC series [1].
-> 
-> The code is based on ras.git: edac-for-next branch [2]
-> merged with linux-pm.git [3] : linux-next branch.
-> 
-> 1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
-> 2. https://web.git.kernel.org/pub/scm/linux/kernel/git/ras/ras.git/log/?h=edac-for-next
-> 3. https://web.git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/
-> 
-> Changes
-> =======
-> v6 -> v7:
-> 1. Fix for the issue reported by Daniel,
->    In ras2_check_pcc_chan(), add read, clear and check RAS2 set_cap_status outside
->    if (status & PCC_STATUS_ERROR) check. 
->    https://lore.kernel.org/all/51bcb52c-4132-4daf-8903-29b121c485a1@os.amperecomputing.com/
-> 
-> v5 -> v6:
-> 1. Fix for the issue reported by Daniel, in start scrubbing with correct addr and size
->    after firmware return INVALID DATA error for scrub request with invalid addr or size.
->    https://lore.kernel.org/all/8cdf7885-31b3-4308-8a7c-f4e427486429@os.amperecomputing.com/
->    
-> v4 -> v5:
-> 1. Fix for the build warnings reported by kernel test robot.
->    https://patchwork.kernel.org/project/linux-edac/patch/20250423163511.1412-3-shiju.jose@huawei.com/
-> 2. Removed patch "ACPI: ACPI 6.5: RAS2: Rename RAS2 table structure and field names"
->    from the series as the patch was merged to linux-pm.git : branch linux-next
-> 3. Rebased to ras.git: edac-for-next branch merged with linux-pm.git : linux-next branch.
->       
-> v3 -> v4:
-> 1.  Changes for feedbacks from Yazen on v3.
->     https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
-> 
-> v2 -> v3:
-> 1. Rename RAS2 table structure and field names in 
->    include/acpi/actbl2.h limited to only necessary
->    for RAS2 scrub feature.
-> 2. Changes for feedbacks from Jonathan on v2.
-> 3. Daniel reported a known behaviour: when readback 'size' attribute after
->    setting in, returns 0 before starting scrubbing via 'addr' attribute.
->    Changes added to fix this.
-> 4. Daniel reported that firmware cannot update status of demand scrubbing
->    via the 'Actual Address Range (OUTPUT)', thus add workaround in the
->    kernel to update sysfs 'addr' attribute with the status of demand
->    scrubbing.
-> 5. Optimized logic in ras2_check_pcc_chan() function
->    (patch - ACPI:RAS2: Add ACPI RAS2 driver).
-> 6. Add PCC channel lock to struct ras2_pcc_subspace and change
->    lock in ras2_mem_ctx as a pointer to pcc channel lock to make sure
->    writing to PCC subspace shared memory is protected from race conditions.
->    
-> v1 -> v2:
-> 1.  Changes for feedbacks from Borislav.
->     - Shorten ACPI RAS2 structures and variables names.
->     - Shorten some of the other variables in the RAS2 drivers.
->     - Fixed few CamelCases.
-> 
-> 2.  Changes for feedbacks from Yazen.
->     - Added newline after number of '}' and return statements.
->     - Changed return type for "ras2_add_aux_device() to 'int'.
->     - Deleted a duplication of acpi_get_table("RAS2",...) in the ras2_acpi_parse_table().
->     - Add "FW_WARN" to few error logs in the ras2_acpi_parse_table().
->     - Rename ras2_acpi_init() to acpi_ras2_init() and modified to call acpi_ras2_init()
->       function from the acpi_init().
->     - Moved scrub related variables from the struct ras2_mem_ctx from  patch
->       "ACPI:RAS2: Add ACPI RAS2 driver" to "ras: mem: Add memory ACPI RAS2 driver".
-> 
-> Shiju Jose (2):
->   ACPI:RAS2: Add ACPI RAS2 driver
->   ras: mem: Add memory ACPI RAS2 driver
-> 
->  Documentation/edac/scrub.rst |  78 ++++++
->  drivers/acpi/Kconfig         |  11 +
->  drivers/acpi/Makefile        |   1 +
->  drivers/acpi/bus.c           |   3 +
->  drivers/acpi/ras2.c          | 450 +++++++++++++++++++++++++++++++++++
->  drivers/ras/Kconfig          |  11 +
->  drivers/ras/Makefile         |   1 +
->  drivers/ras/acpi_ras2.c      | 424 +++++++++++++++++++++++++++++++++
->  include/acpi/ras2.h          |  70 ++++++
->  9 files changed, 1049 insertions(+)
->  create mode 100644 drivers/acpi/ras2.c
->  create mode 100644 drivers/ras/acpi_ras2.c
->  create mode 100644 include/acpi/ras2.h
-> 
-
+> Fixes: 77be5cacb2c2 ("ACPI: platform_profile: Create class for ACPI plat=
+form profile")
+> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> ---
+>   drivers/acpi/platform_profile.c | 3 +++
+>   1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_pro=
+file.c
+> index ffbfd32f4cf1..b43f4459a4f6 100644
+> --- a/drivers/acpi/platform_profile.c
+> +++ b/drivers/acpi/platform_profile.c
+> @@ -688,6 +688,9 @@ static int __init platform_profile_init(void)
+>   {
+>   	int err;
+>  =20
+> +	if (acpi_disabled)
+> +		return -EOPNOTSUPP;
+> +
+>   	err =3D class_register(&platform_profile_class);
+>   	if (err)
+>   		return err;
 
