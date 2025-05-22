@@ -1,249 +1,118 @@
-Return-Path: <linux-acpi+bounces-13845-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13846-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206B0ABFDBB
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 May 2025 22:17:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F82DAC02B7
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 May 2025 05:12:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61CB19E514A
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 May 2025 20:17:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B52553B0393
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 May 2025 03:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF42E28A1C5;
-	Wed, 21 May 2025 20:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f0FpCaxK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E409C1442F4;
+	Thu, 22 May 2025 03:12:00 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961F6221713;
-	Wed, 21 May 2025 20:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9BD13957E
+	for <linux-acpi@vger.kernel.org>; Thu, 22 May 2025 03:11:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747858664; cv=none; b=L2lfRqHNo6Xj7WHWx1eMN0xf81Q84io8QYkq3OFyh+T4w17n0SUJ18mx84Xda6CO6HOi7sIRgZRskAPIgh9mOzjT7Z+qPKcyqIWNuJNWEouAlmd3rT4MofRd80HAKy3+QTiE4EjZ98NtMzFFUqVPv8xS62M7dPnMfy/ioRPdygE=
+	t=1747883520; cv=none; b=hes0D0uGe4cJbrfZsniJL29r+0lePy2oog5sVcP1kkDJ5EkejNS31uVEHz6XaKsFPaE97YMJO/5mJy0y3A4zduvYbRA/IDKQO11/yUpWd6w3dENEkns/kwDRufaq3ZIzSgUymMa20V9YRXHIZIy0UH+fBLF1qzi4QPQHYokVuD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747858664; c=relaxed/simple;
-	bh=OcRrlj7xdaiC5clW99dAz86chXxQeFIdlShKpSfDJoU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Zn4hTwbE9PBmDh0FomrTMlf/JRyfShlBXdp5QFdcgylc9RMUYcpAZ56ikL4u+Se+FlkuZOAX8BqzoG0oSwsLS6urV8/2IUR5z5g82GnxfdtX5JFrqaElew14sIdTZEn69BeeeLpJ/TOYMw9N3WyzkUSeWd8mn3E/0Nz+H7Csq+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f0FpCaxK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02EC5C4CEE4;
-	Wed, 21 May 2025 20:17:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747858664;
-	bh=OcRrlj7xdaiC5clW99dAz86chXxQeFIdlShKpSfDJoU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=f0FpCaxKfQZTRgXEWzIjCh/Ijb82lawhRKMczr3wkR93kyW8tin1ESpQ0nJ02jt0x
-	 QWk6172yvTZ8Po57OBUMT2rIP8UXcnu0gEqmHvNa3Kz6OAHTNuDnZ/syNqAkFScNO4
-	 noNWwUxLV0QoPXGBw2pRn42jcXI6reaOpG71me74DU0OpSVJerKLg9Ci/xYCLO0RoG
-	 Ied4jf5r6LA+MjS4N9sL73zkboJjKf85ptFl/mPMlJV9OKXMFq+eUmF/+2Yq+0/PQ3
-	 aGkn2CejABhgm0U0eXukwr9afPI37+bMGQtbIv4uYxqb27l3oTpm2WaSvKDYxD526F
-	 i0I/DrztrXaHQ==
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3fbaa18b810so2352900b6e.2;
-        Wed, 21 May 2025 13:17:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU1ZG5W9MhV6jo9CXDOwfrtnBnnyze8mpSSbN5Uj+3aSyUf0EoyqFARey313KXohcK8c2ne4Xz7SSfcriL+@vger.kernel.org, AJvYcCX/QjUj6Q6SaEGZPLLgdR6m4ut+TxkALvg5yMQ4MoY0wGinkvsMMAD3fDE0quJTDy136vUVUDL9q1Jc@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRR45YEnXQSGU9RGDXkQTvZ4ob89WAD7h3ziWR+Y3OMe5imOn1
-	8IfrBFKn+gcMYoL/0BLWmYkAWlk+IUoUJjlXbfiLHPW+m7zLmQNCIZFb+cWl45Qj6Lgnz/JkdSN
-	2KbKxwVuCz7socXa18MwyrS/l4YTOctE=
-X-Google-Smtp-Source: AGHT+IEla/7OsBunWSBkZYFCsgl0DpTjBkEnFqnChnn85Xl5ZHXukeaimdJeqpTZUi6sozTY3Kg0ceoNvlrRQueeryk=
-X-Received: by 2002:a05:6808:4447:b0:3f8:93c5:6d85 with SMTP id
- 5614622812f47-404da760a09mr11955098b6e.16.1747858663283; Wed, 21 May 2025
- 13:17:43 -0700 (PDT)
+	s=arc-20240116; t=1747883520; c=relaxed/simple;
+	bh=YjK8kWVGAgGowNxbiKTxcOwn+2kgmVCAfQAJTInuKCQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=o8GEkg38DKYhnvBcczQ7zZGONz09JQZHk3syJ0JGU3HNZUd7WiN65JLq3IVTcEhfahrqRLW9r51TIMRkVLcdbQeIoKmIs5Ma1bOILOssvAoayoeajSVxTmmwb+iPqVb6sjEeE7Voth85o/SbUwpq19p0oeTFBAt1fH+s/rF6Q54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 81786f0436ba11f0b29709d653e92f7d-20250522
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED, SN_EXISTED
+	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:39c60749-e755-4f83-8be9-c447bdce87d9,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:25
+X-CID-INFO: VERSION:1.1.45,REQID:39c60749-e755-4f83-8be9-c447bdce87d9,IP:0,URL
+	:0,TC:0,Content:-5,EDM:25,RT:0,SF:5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:25
+X-CID-META: VersionHash:6493067,CLOUDID:0b49b18b702cf05e5b86cceeb25ddd41,BulkI
+	D:250522111152B63CIZ9H,BulkQuantity:0,Recheck:0,SF:19|66|72|78|81|82|102,T
+	C:nil,Content:0|50,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:
+	nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FSD
+X-UUID: 81786f0436ba11f0b29709d653e92f7d-20250522
+X-User: shitao@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <shitao@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1747760062; Thu, 22 May 2025 11:11:51 +0800
+From: shitao <shitao@kylinos.cn>
+To: rafael@kernel.org
+Cc: lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	shitao@kylinos.cn
+Subject: [PATCH v3] ACPI / battery: Use rounding to optimize the power calculation
+Date: Thu, 22 May 2025 11:10:56 +0800
+Message-Id: <20250522031056.2401832-1-shitao@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <CAJZ5v0hVQTq8f0bgeSa4+qYWosBHXADXLXviMxNnpafAV0NCmw@mail.gmail.com>
+References: <CAJZ5v0hVQTq8f0bgeSa4+qYWosBHXADXLXviMxNnpafAV0NCmw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250518185111.3560-1-W_Armin@gmx.de>
-In-Reply-To: <20250518185111.3560-1-W_Armin@gmx.de>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 21 May 2025 22:17:30 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hNmMtR4V0tYqD1dV2BqAKJ2sCOyBadkVtG3sS3V90uvw@mail.gmail.com>
-X-Gm-Features: AX0GCFsebpZ_dmCbnnO_Avxc4XYzYmOYwknKN0mNIyDBQyWOD5ECcbZax0_zh3U
-Message-ID: <CAJZ5v0hNmMtR4V0tYqD1dV2BqAKJ2sCOyBadkVtG3sS3V90uvw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ACPI: platform_profile: Add support for non-ACPI platforms
-To: Armin Wolf <W_Armin@gmx.de>
-Cc: rafael@kernel.org, lenb@kernel.org, j@jannau.net, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, May 18, 2025 at 8:51=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote:
->
-> Currently the platform profile subsystem assumes that all supported
-> (i.e. ACPI-capable) platforms always run with ACPI being enabled.
-> However some ARM64 notebooks do not support ACPI and are instead
-> using devicetree for booting.
->
-> Do not register the legacy sysfs interface on such devices as it
-> depends on the acpi_kobj (/sys/firmware/acpi/) being present. Users
-> are encouraged to use the new platform-profile class interface
-> instead.
+If the difference between capacity_now and full_capacity is
+within 0.5%, 100% is arguably a better number to expose than
+99% and exposing the latter may confuse the user to think that
+there's something wrong with the battery.
 
-So how does it work in this case?
+Use rounding to optimize the power calculation.
 
-> Reviewed-by: Janne Grunau <j@jannau.net>
-> Tested-by: Janne Grunau <j@jannau.net>
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-> ---
->  drivers/acpi/platform_profile.c | 68 ++++++++++++++++++++++++++-------
->  1 file changed, 55 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_prof=
-ile.c
-> index ffbfd32f4cf1..c5a5da7d03f1 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -190,6 +190,20 @@ static ssize_t profile_show(struct device *dev,
->         return sysfs_emit(buf, "%s\n", profile_names[profile]);
->  }
->
-> +/**
-> + * profile_notify_legacy - Notify the legacy sysfs interface
-> + *
-> + * This wrapper takes care of only notifying the legacy sysfs interface
-> + * if it was registered during module initialization.
-> + */
-> +static void profile_notify_legacy(void)
-> +{
-> +       if (!acpi_kobj)
-> +               return;
-> +
-> +       sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> +}
-> +
->  /**
->   * profile_store - Set the profile for a class device
->   * @dev: The device
-> @@ -215,7 +229,7 @@ static ssize_t profile_store(struct device *dev,
->                         return ret;
->         }
->
-> -       sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> +       profile_notify_legacy();
->
->         return count;
->  }
-> @@ -435,7 +449,7 @@ static ssize_t platform_profile_store(struct kobject =
-*kobj,
->                         return ret;
->         }
->
-> -       sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> +       profile_notify_legacy();
->
->         return count;
->  }
-> @@ -472,6 +486,22 @@ static const struct attribute_group platform_profile=
-_group =3D {
->         .is_visible =3D profile_class_is_visible,
->  };
->
-> +/**
-> + * profile_update_legacy - Update the legacy sysfs interface
-> + *
-> + * This wrapper takes care of only updating the legacy sysfs interface
-> + * if it was registered during module initialization.
-> + *
-> + * Return: 0 on success or error code on failure.
-> + */
-> +static int profile_update_legacy(void)
-> +{
-> +       if (!acpi_kobj)
-> +               return 0;
-> +
-> +       return sysfs_update_group(acpi_kobj, &platform_profile_group);
-> +}
-> +
->  /**
->   * platform_profile_notify - Notify class device and legacy sysfs interf=
-ace
->   * @dev: The class device
-> @@ -481,7 +511,7 @@ void platform_profile_notify(struct device *dev)
->         scoped_cond_guard(mutex_intr, return, &profile_lock) {
->                 _notify_class_profile(dev, NULL);
->         }
-> -       sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> +       profile_notify_legacy();
->  }
->  EXPORT_SYMBOL_GPL(platform_profile_notify);
->
-> @@ -529,7 +559,7 @@ int platform_profile_cycle(void)
->                         return err;
->         }
->
-> -       sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> +       profile_notify_legacy();
->
->         return 0;
->  }
-> @@ -603,9 +633,9 @@ struct device *platform_profile_register(struct devic=
-e *dev, const char *name,
->                 goto cleanup_ida;
->         }
->
-> -       sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> +       profile_notify_legacy();
->
-> -       err =3D sysfs_update_group(acpi_kobj, &platform_profile_group);
-> +       err =3D profile_update_legacy();
->         if (err)
->                 goto cleanup_cur;
->
-> @@ -639,8 +669,8 @@ void platform_profile_remove(struct device *dev)
->         ida_free(&platform_profile_ida, pprof->minor);
->         device_unregister(&pprof->dev);
->
-> -       sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> -       sysfs_update_group(acpi_kobj, &platform_profile_group);
-> +       profile_notify_legacy();
-> +       profile_update_legacy();
->  }
->  EXPORT_SYMBOL_GPL(platform_profile_remove);
->
-> @@ -692,16 +722,28 @@ static int __init platform_profile_init(void)
->         if (err)
->                 return err;
->
-> -       err =3D sysfs_create_group(acpi_kobj, &platform_profile_group);
-> -       if (err)
-> -               class_unregister(&platform_profile_class);
-> +       /*
-> +        * The ACPI kobject can be missing if ACPI was disabled during bo=
-oting.
-> +        * We thus skip the initialization of the legacy sysfs interface =
-in such
-> +        * cases to allow the platform profile class to work on ARM64 not=
-ebooks
-> +        * without ACPI support.
-> +        */
-> +       if (acpi_kobj) {
-> +               err =3D sysfs_create_group(acpi_kobj, &platform_profile_g=
-roup);
-> +               if (err < 0) {
-> +                       class_unregister(&platform_profile_class);
-> +                       return err;
-> +               }
-> +       }
->
-> -       return err;
-> +       return 0;
->  }
->
->  static void __exit platform_profile_exit(void)
->  {
-> -       sysfs_remove_group(acpi_kobj, &platform_profile_group);
-> +       if (acpi_kobj)
-> +               sysfs_remove_group(acpi_kobj, &platform_profile_group);
-> +
->         class_unregister(&platform_profile_class);
->  }
->  module_init(platform_profile_init);
-> --
-> 2.39.5
->
->
+Signed-off-by: shitao  <shitao@kylinos.cn>
+
+---
+change for v3
+-Optimization problem description.
+-Use 100ULL.
+
+change for v2
+-battery->full_charge_capacity is changed to full_capacity.
+Thanks!
+---
+ drivers/acpi/battery.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 6760330a8af5..6905b56bf3e4 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -279,8 +279,8 @@ static int acpi_battery_get_property(struct power_supply *psy,
+ 		    full_capacity == ACPI_BATTERY_VALUE_UNKNOWN)
+ 			ret = -ENODEV;
+ 		else
+-			val->intval = battery->capacity_now * 100/
+-					full_capacity;
++			val->intval = DIV_ROUND_CLOSEST_ULL(battery->capacity_now * 100ULL,
++					full_capacity);
+ 		break;
+ 	case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
+ 		if (battery->state & ACPI_BATTERY_STATE_CRITICAL)
+-- 
+2.25.1
+
 
