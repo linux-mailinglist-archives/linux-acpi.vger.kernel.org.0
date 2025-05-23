@@ -1,157 +1,126 @@
-Return-Path: <linux-acpi+bounces-13883-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13884-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468A6AC2AAD
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 May 2025 22:01:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24870AC2AD6
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 May 2025 22:28:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 591F73A01CC
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 May 2025 20:01:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3607AA437B2
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 May 2025 20:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0096C1993B9;
-	Fri, 23 May 2025 20:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97851F4C83;
+	Fri, 23 May 2025 20:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cKCTWrMO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849F53AC1C;
-	Fri, 23 May 2025 20:01:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A863322338;
+	Fri, 23 May 2025 20:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748030484; cv=none; b=HUf6C2bCMnddNcOM5b/08kYWfsG6sKfwTGkjh8yZzbwItmCPmx2WDP4bC++A51n2x2TDWiJuycHtAUZBzlVdM7cIpGPX32pTAjWw1KOiwakELqVUuLjJsgbTIk4XcYiM1qCik//VM0uKTHiqkSxlpDbpF0FKz9DBvWmFj3tXshc=
+	t=1748032111; cv=none; b=AOiBAxjD9S25c3buvtfvmu7V1LGvFlRAM3AvKQxinzzaghJT+7HC94QlZ/XRaHQ7duJkvf5AEi3vr8LxIKCFkys8eCoJoPehRJk3pLmo19icXYX2awjXDgfM+KOaYNHmsBsOjuZY+XXI9dnoV0mWZ2l/YSsQXTbpMyTakjvruBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748030484; c=relaxed/simple;
-	bh=34dqfWtBp6Yko0qKlSwbOVTBh+Tukl6NJLu9DPOn/CI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QMcdAhPKU2vSDz+9dSIkQlR03AW6FP2Y4ONGVfJc41ytRIdCFGX4pwO8vy5pkcKykIBRNiVzPpWmPyd7osaObX9IX28SaH/ABPys53UWj/hS46czagNnp7FGQoaGctEecVxuvCP7UJ/QN1S2PexW0XUCkNRRYGf4Ioh6fhCHKYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A969C43987;
-	Fri, 23 May 2025 20:01:17 +0000 (UTC)
-Message-ID: <f12632df-927e-4bdd-930e-5724e142af77@ghiti.fr>
-Date: Fri, 23 May 2025 22:01:16 +0200
+	s=arc-20240116; t=1748032111; c=relaxed/simple;
+	bh=mCqS/Kijb63hfjRogkIoo1V9a7plAKd5pBatsPb3zS4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=An9HTiL0bNA4gZqLd+hPMKDmuQkClv/6HoDX/TW6yoIu93r7VBSmHU8JWSzodBS3PE3gKUEpwXL0PmalcCLkilnaB96565HqOj5NsdzJz7GaH6cgg3kOFJTcT4JN0kzMwubt81K3UrULP76ecMvLg3zrKuUeQk2ZPGYU/yzXA34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cKCTWrMO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E60C4CEEF;
+	Fri, 23 May 2025 20:28:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748032111;
+	bh=mCqS/Kijb63hfjRogkIoo1V9a7plAKd5pBatsPb3zS4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cKCTWrMOz8QGFkwtap37uEMcxPQVostPEoFPh+liJpGoIZm7yUbph01VSxYIZ9Mnu
+	 Xp2SFx8fCFcAMCn/ELInspiWG36xJF3J7d0jPlVxo6aeh9oNz5+dzf8Kq3g/Xe/so1
+	 mYCrUnXAuBAVZPsZr7ruImlYVc+gipnIRXGuB54FA2ds4IMAQQ3eh1QLM/4b0qJj2M
+	 gTr/IjcVsa0wubmGcNRixgHZajZrPNsHowCdWXY/LC03W+Pu6hAChB6eWCEPXnK99u
+	 2vaA5rFoq3M2ELAJVxf64ufJ8UJLD7jY5t0UU+6I6+n7SgWhzCzujvRIpD5lc47LG4
+	 +IQz87qYLaslQ==
+Date: Fri, 23 May 2025 13:28:28 -0700
+From: Kees Cook <kees@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	Michal Wilczynski <michal.wilczynski@intel.com>,
+	Juergen Gross <jgross@suse.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Roger Pau Monne <roger.pau@citrix.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Usama Arif <usama.arif@bytedance.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Thomas Huth <thuth@redhat.com>, Brian Gerst <brgerst@gmail.com>,
+	kvm@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
+	platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+	linux-mm@kvack.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Christoph Hellwig <hch@lst.de>, Marco Elver <elver@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v2 04/14] x86: Handle KCOV __init vs inline mismatches
+Message-ID: <202505231327.3FA45E4B@keescook>
+References: <20250523043251.it.550-kees@kernel.org>
+ <20250523043935.2009972-4-kees@kernel.org>
+ <aDCHl0RBMgNzGu6j@google.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drivers: acpi: Fix platform profile driver on !acpi
- platforms
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Armin Wolf <W_Armin@gmx.de>, Alexandre Ghiti <alexghiti@rivosinc.com>,
- Len Brown <lenb@kernel.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
- <ilpo.jarvinen@linux.intel.com>,
- Mario Limonciello <mario.limonciello@amd.com>,
- Mark Pearson <mpearson-lenovo@squebb.ca>, Arnd Bergmann <arnd@arndb.de>,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org
-References: <20250522141410.31315-1-alexghiti@rivosinc.com>
- <91458376-dfc7-46fc-8523-aa176907d703@gmx.de>
- <83e02a52-86ad-45e5-ba87-6c17dc6f59b5@ghiti.fr>
- <CAJZ5v0iPVx0KXB5qQ46iQ7CKG6KJC1CnXogQ=e8or24vZuytrw@mail.gmail.com>
- <CAJZ5v0iwH3p_A=f0g7+EsPbP7KBJS_LbT9+_gXNLBbXqW8vMFg@mail.gmail.com>
-Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <CAJZ5v0iwH3p_A=f0g7+EsPbP7KBJS_LbT9+_gXNLBbXqW8vMFg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgdeljeeiucdltddurdegfedvrddttddmucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomheptehlvgigrghnughrvgcuifhhihhtihcuoegrlhgvgiesghhhihhtihdrfhhrqeenucggtffrrghtthgvrhhnpeduffeugedvtdegleeuhfeuteetueegfeefkefhheffvdduhfegvdehuddukeffgeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhinhhfrhgruggvrggurdhorhhgnecukfhppedvtddtudemkeeiudemfeefkedvmegvfheltdemvgeljedvmegutgdumeejvdduugemiedtsgdtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddttddumeekiedumeeffeekvdemvghfledtmegvleejvdemuggtudemjedvudgumeeitdgstddphhgvlhhopeglkffrggeimedvtddtudemkeeiudemfeefkedvmegvfheltdemvgeljedvmegutgdumeejvdduugemiedtsgdtngdpmhgrihhlfhhrohhmpegrlhgvgiesghhhihhtihdrfhhrpdhnsggprhgtphhtthhopeduuddprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephggptehrmhhinhesghhmgidru
- ggvpdhrtghpthhtoheprghlvgigghhhihhtihesrhhivhhoshhinhgtrdgtohhmpdhrtghpthhtoheplhgvnhgssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehilhhpohdrjhgrrhhvihhnvghnsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdprhgtphhtthhopehmphgvrghrshhonhdqlhgvnhhovhhosehsqhhuvggssgdrtggrpdhrtghpthhtoheprghrnhgusegrrhhnuggsrdguvg
-X-GND-Sasl: alex@ghiti.fr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aDCHl0RBMgNzGu6j@google.com>
 
-Hi Rafael,
+On Fri, May 23, 2025 at 07:35:03AM -0700, Sean Christopherson wrote:
+> On Thu, May 22, 2025, Kees Cook wrote:
+> > diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+> > index 921c1c783bc1..72f13d643fca 100644
+> > --- a/arch/x86/kernel/kvm.c
+> > +++ b/arch/x86/kernel/kvm.c
+> > @@ -420,7 +420,7 @@ static u64 kvm_steal_clock(int cpu)
+> >  	return steal;
+> >  }
+> >  
+> > -static inline void __set_percpu_decrypted(void *ptr, unsigned long size)
+> > +static __always_inline void __set_percpu_decrypted(void *ptr, unsigned long size)
+> 
+> I'd rather drop the "inline" and explicitly mark this "__init".  There's value
+> in documenting and enforcing that memory is marked decrypted/shared only during
+> boot.
 
-On 5/23/25 16:46, Rafael J. Wysocki wrote:
-> On Fri, May 23, 2025 at 12:50 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
->> On Fri, May 23, 2025 at 12:11 PM Alexandre Ghiti <alex@ghiti.fr> wrote:
->>> On 5/22/25 22:04, Armin Wolf wrote:
->>>> Am 22.05.25 um 16:13 schrieb Alexandre Ghiti:
->>>>
->>>>> The platform profile driver is loaded even on platforms that do not have
->>>>> acpi enabled. The initialization of the sysfs entries was recently moved
->>>>> from platform_profile_register() to the module init call, and those
->>>>> entries need acpi_kobj to be initialized which is not the case when acpi
->>>>> is disabled.
->>>>>
->>>>> This results in the following warning:
->>>>>
->>>>>    WARNING: CPU: 5 PID: 1 at fs/sysfs/group.c:131
->>>>> internal_create_group+0xa22/0xdd8
->>>>>    Modules linked in:
->>>>>    CPU: 5 UID: 0 PID: 1 Comm: swapper/0 Tainted: G W
->>>>> 6.15.0-rc7-dirty #6 PREEMPT
->>>>>    Tainted: [W]=WARN
->>>>>    Hardware name: riscv-virtio,qemu (DT)
->>>>>    epc : internal_create_group+0xa22/0xdd8
->>>>>     ra : internal_create_group+0xa22/0xdd8
->>>>>
->>>>>    Call Trace:
->>>>>
->>>>>    internal_create_group+0xa22/0xdd8
->>>>>    sysfs_create_group+0x22/0x2e
->>>>>    platform_profile_init+0x74/0xb2
->>>>>    do_one_initcall+0x198/0xa9e
->>>>>    kernel_init_freeable+0x6d8/0x780
->>>>>    kernel_init+0x28/0x24c
->>>>>    ret_from_fork+0xe/0x18
->>>>>
->>>>> Fix this by checking if acpi is enabled before trying to create sysfs
->>>>> entries.
->>>> I already submitted a patch for this problem (see
->>>> https://lore.kernel.org/linux-acpi/a6d92cdd-4dc3-4080-9ed9-5b1f02f247e0@gmx.de/T/)
->>>> that only disables the legacy sysfs interface while keeping the
->>>> class-based interface functional
->>>> as it does not depend on ACPI at all.
->>>
->>> Great, I understand if your patchset is not merged for rc1 but it would
->>> be nice to have it merged in 6.16 though to fix riscv syzkaller
->>> instance. Perhaps you could add the Fixes tag that Arnd mentioned too?
->> I actually prefer your patch to the Armin's one because there are
->> questions regarding the latter (see the most recent message from Arnd
->> in this thread).
-> And so it has been applied as 6.16 material now, thanks!
+Sure! I will swap this around. Thanks!
 
+-Kees
 
-Thank you very much!
-
-Alex
-
-
->
->>>>> Fixes: 77be5cacb2c2 ("ACPI: platform_profile: Create class for ACPI
->>>>> platform profile")
->>>>> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
->>>>> ---
->>>>>    drivers/acpi/platform_profile.c | 3 +++
->>>>>    1 file changed, 3 insertions(+)
->>>>>
->>>>> diff --git a/drivers/acpi/platform_profile.c
->>>>> b/drivers/acpi/platform_profile.c
->>>>> index ffbfd32f4cf1..b43f4459a4f6 100644
->>>>> --- a/drivers/acpi/platform_profile.c
->>>>> +++ b/drivers/acpi/platform_profile.c
->>>>> @@ -688,6 +688,9 @@ static int __init platform_profile_init(void)
->>>>>    {
->>>>>        int err;
->>>>>    +    if (acpi_disabled)
->>>>> +        return -EOPNOTSUPP;
->>>>> +
->>>>>        err = class_register(&platform_profile_class);
->>>>>        if (err)
->>>>>            return err;
->>>> _______________________________________________
->>>> linux-riscv mailing list
->>>> linux-riscv@lists.infradead.org
->>>> http://lists.infradead.org/mailman/listinfo/linux-riscv
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+-- 
+Kees Cook
 
