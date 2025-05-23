@@ -1,168 +1,157 @@
-Return-Path: <linux-acpi+bounces-13861-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13862-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EAF1AC2555
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 May 2025 16:47:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45EDAAC257E
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 May 2025 16:54:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8FB41896D0F
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 May 2025 14:47:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 066761C06D2D
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 May 2025 14:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86635295DAE;
-	Fri, 23 May 2025 14:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9979297A46;
+	Fri, 23 May 2025 14:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p5+oYAi9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s8mi6Fyo"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF112957B2;
-	Fri, 23 May 2025 14:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF28A202F9A;
+	Fri, 23 May 2025 14:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748011630; cv=none; b=hVpbst6oJk/r8w3BszO9NIJBtbxEXdMRzu8WPU2aXQrqgMMP7+osALsKk1+raTYUB9BcUqqMSSyzsE5yIknRFiDVVqlsS7QUtS7rHqMixS2CcPBRmdyexxuTZdyzGoujumTX0vXNIcomQB+tE/XR8ds1BDYqut4Vjezuw4ZTJb8=
+	t=1748011936; cv=none; b=ukjpxhk0NxFBdoPq1cDi+ParUA7vux0yDqKBmPlR+F8+mSu2+Vl2ZUKqQNw+kP0BNxV/BsEBCCFzF0gJLOY+Lipi0LPzMrPz6zJvhKImZz1zUdMDmx3yieyvVOc3MPPmurKglcj+coHHPdXc7JoJxELVX12ine0ZjDACs42FTD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748011630; c=relaxed/simple;
-	bh=Ocz5J1wgv3YESCv8WYdkxEBqXdkzz0W+TH/W1ADUndA=;
+	s=arc-20240116; t=1748011936; c=relaxed/simple;
+	bh=UTAR2iy/uxOeSJh9VEWXa5QU73DR1njr4ZjUY2GTTDo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h7J3IxDSB6XByQyewsfVLbPSQRzRRlVxyaqYsBNAUmenaEz7VDA/30cbl31XnoJWqTXxvhU9HXJeU+A4aWkCdTB7JP/KkEGe7AiIKpjpEoliJET8VLoUqmg0ftQriEYyN25EXl+zNaey5WEveXTXrNcaiNvSWrYwxPeGi584We4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p5+oYAi9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE438C4CEED;
-	Fri, 23 May 2025 14:47:09 +0000 (UTC)
+	 To:Cc:Content-Type; b=FWOM7KYdT1svdVWjx0/HJRLPlv8SHEOsxeEjIApjOrD5X6pLqvtUWLHCT9hVeqoKUCqoRM9pm5MHUi53qiBhNk0lbsK3lSW/J1xvgCkYn5ARynL0mVLtmoa/BnonIONr1z2FissjM3vw1ZtOO9hEG4fFl1r0o+kn6P6LLg3lmmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s8mi6Fyo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC7AC4CEED;
+	Fri, 23 May 2025 14:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748011629;
-	bh=Ocz5J1wgv3YESCv8WYdkxEBqXdkzz0W+TH/W1ADUndA=;
+	s=k20201202; t=1748011936;
+	bh=UTAR2iy/uxOeSJh9VEWXa5QU73DR1njr4ZjUY2GTTDo=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=p5+oYAi9e/oWGhHk+fosP6dsXBN2Bqqz/RtfmYCGLGUyU6KkEte5RTr21U6RQmAAH
-	 rGrA87GT9vlTZTPh+HPWUKWp0DCIFkf5yOVFRxc8YoQB3U1KGLLJC3vIhl9txl4pPU
-	 q14+b9aNWIit7WlXdbXywjdEKGmdHLvbBcKiT1VpP8Irr5BoQluteaHzZD/8G4JWF3
-	 E9cF6wXsWA8si/H2j2wYjn1noxpSN5m7VW9cVDrmtXTs6nmnghvFkdUjEClE1jFJyh
-	 m1S9Vk72/mZ+8mGxJlkFpibWlfIdVMRZA7pKiFLqHUxeEldmLlQc7t4r1xxcZ/nTsl
-	 9kWzNVH1CibJw==
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3feaedb4085so35131b6e.0;
-        Fri, 23 May 2025 07:47:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW99yl1tr2Qwsafj9mmZsiKNMGZ72dUXnv422nJidn7zTmo391JbNT7rjDxwvfeJaa3GqvC6BiiuASG2BKb@vger.kernel.org, AJvYcCXxOFjWPMZzZq+WE6h8Ydk2lnoVMurUJ7DR2WGTb2euZQArXbPlhADplSomC5izVvjJsjPEOg+Ibs/R@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2AuwJsO6jIihYcdx02hFTyCmAnIrQA/mq9mHO/N4xgdLNo9hp
-	jJog59pBejgc6zVItYSaRERCpOYp96NDDA10Seh7mdPA1w7BMXrF6OfK1H1HIesSi+1ac5oal0e
-	mZZD9YyX/0xOatQqEcbFms9yjbw6jbBc=
-X-Google-Smtp-Source: AGHT+IGXxPZzBQ0rd2WqVkE2kMetZWcN0Srwq81135CC4scj5mkn+qPK+TyalxnWlDXRxW6GT+U59ljzQHKP8FVgAfY=
-X-Received: by 2002:a05:6808:149:b0:401:e67c:b3be with SMTP id
- 5614622812f47-404d865e18emr16061098b6e.4.1748011629042; Fri, 23 May 2025
- 07:47:09 -0700 (PDT)
+	b=s8mi6FyortUYGt0IIRnZsD9veN9LrHvjRTHHqreVHHzOGIg9AalHJfv/Y98LDPCpo
+	 qdqsyMVJNZglcmKej1gMDHxgktpuKJJ8asQlFY93hbyY0QlJsoDhQ+3omy3cKjjLIe
+	 pYrls4Amuf8miGy6Q/H4sA5+WUOxQOi/j9X1NjUolEVlDPmPzQpjQ9fNoO1VRu5kK0
+	 1S3YKA86yiuYDdUfjpO2fxQAqMUQ1whTBgih79bl7EQ3cYJnR7yEr07CMvHYripsfA
+	 LuFbYDExh70JI/2xvBQiRFQkwgdg3j1xTVQqdIM8bZm6St+W2gR4FTZ6N3hmgHcjCM
+	 XtlhxfpxgGlpQ==
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-60638c07cabso5044313eaf.3;
+        Fri, 23 May 2025 07:52:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXhk/vxnQT/6aj48WmlluXeUlyTa4yBMMQqVBk0k+L2luADVf5onStBAo84GEn/Hp1P7VkUM6Pl1NfRMHfZ@vger.kernel.org, AJvYcCXvK0mOsd76Xaw+pwJtoaiRyfBzzAl9NXPn5TO0xpnBYwAtLP+u/YYGnURF2cPFjOfKDJ57GlaWxdnH@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywtp0gv1OMdw71IGR3V8cgJqvM6s6pYAk9ypdck6Zbl1NEUJkhi
+	rBb2PUloQJ1ox+hlv8gZqquQtapShSHsLWAKj4RzbJ9gYT/LrQRFewrTL/fwVy9JmyeJ9JUTv6f
+	wuQ0OqH22wVmVQ/5UkPJ41W6klWh0c0c=
+X-Google-Smtp-Source: AGHT+IEjIt9zuW1SYHAzDYXZZ2aidbpwLVD1ppi88XkXtZ3szJvG/WZsF4tlPCqUd+BP3rE3sA+BkHwkQWxfvq6xm0w=
+X-Received: by 2002:a05:6820:1807:b0:608:34d1:db96 with SMTP id
+ 006d021491bc7-609f3731c81mr18219981eaf.4.1748011935630; Fri, 23 May 2025
+ 07:52:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250522141410.31315-1-alexghiti@rivosinc.com>
- <91458376-dfc7-46fc-8523-aa176907d703@gmx.de> <83e02a52-86ad-45e5-ba87-6c17dc6f59b5@ghiti.fr>
- <CAJZ5v0iPVx0KXB5qQ46iQ7CKG6KJC1CnXogQ=e8or24vZuytrw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0iPVx0KXB5qQ46iQ7CKG6KJC1CnXogQ=e8or24vZuytrw@mail.gmail.com>
+References: <20250518062507.218855-1-qiyuzhu2@amd.com>
+In-Reply-To: <20250518062507.218855-1-qiyuzhu2@amd.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 23 May 2025 16:46:58 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iwH3p_A=f0g7+EsPbP7KBJS_LbT9+_gXNLBbXqW8vMFg@mail.gmail.com>
-X-Gm-Features: AX0GCFu5YgI8J1uqi55rgc7H6g3G0QyH8pHo4Ylik2ehjhEW7e8_ODhJw6NXFgk
-Message-ID: <CAJZ5v0iwH3p_A=f0g7+EsPbP7KBJS_LbT9+_gXNLBbXqW8vMFg@mail.gmail.com>
-Subject: Re: [PATCH] drivers: acpi: Fix platform profile driver on !acpi platforms
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Armin Wolf <W_Armin@gmx.de>, Alexandre Ghiti <alexghiti@rivosinc.com>, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Mario Limonciello <mario.limonciello@amd.com>, Mark Pearson <mpearson-lenovo@squebb.ca>, 
-	Arnd Bergmann <arnd@arndb.de>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-riscv@lists.infradead.org
+Date: Fri, 23 May 2025 16:52:04 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0h+CSu80-ZBbU-_RpHbdG8As4rrsKbXLM4RqY12JtV-Cg@mail.gmail.com>
+X-Gm-Features: AX0GCFuHUx7XTCRRPtV2RuD93zdMXdHrSYDsHVxTcBkuvqL81CkEn1AhkkAKjOo
+Message-ID: <CAJZ5v0h+CSu80-ZBbU-_RpHbdG8As4rrsKbXLM4RqY12JtV-Cg@mail.gmail.com>
+Subject: Re: [PATCH v4] ACPI:PRM: Reduce unnecessary printing to avoid the
+ worries of regular users
+To: Zhu Qiyu <qiyuzhu2@amd.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 23, 2025 at 12:50=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.o=
-rg> wrote:
+On Sun, May 18, 2025 at 8:25=E2=80=AFAM Zhu Qiyu <qiyuzhu2@amd.com> wrote:
 >
-> On Fri, May 23, 2025 at 12:11=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr> =
-wrote:
-> >
-> > On 5/22/25 22:04, Armin Wolf wrote:
-> > > Am 22.05.25 um 16:13 schrieb Alexandre Ghiti:
-> > >
-> > >> The platform profile driver is loaded even on platforms that do not =
-have
-> > >> acpi enabled. The initialization of the sysfs entries was recently m=
-oved
-> > >> from platform_profile_register() to the module init call, and those
-> > >> entries need acpi_kobj to be initialized which is not the case when =
-acpi
-> > >> is disabled.
-> > >>
-> > >> This results in the following warning:
-> > >>
-> > >>   WARNING: CPU: 5 PID: 1 at fs/sysfs/group.c:131
-> > >> internal_create_group+0xa22/0xdd8
-> > >>   Modules linked in:
-> > >>   CPU: 5 UID: 0 PID: 1 Comm: swapper/0 Tainted: G W
-> > >> 6.15.0-rc7-dirty #6 PREEMPT
-> > >>   Tainted: [W]=3DWARN
-> > >>   Hardware name: riscv-virtio,qemu (DT)
-> > >>   epc : internal_create_group+0xa22/0xdd8
-> > >>    ra : internal_create_group+0xa22/0xdd8
-> > >>
-> > >>   Call Trace:
-> > >>
-> > >>   internal_create_group+0xa22/0xdd8
-> > >>   sysfs_create_group+0x22/0x2e
-> > >>   platform_profile_init+0x74/0xb2
-> > >>   do_one_initcall+0x198/0xa9e
-> > >>   kernel_init_freeable+0x6d8/0x780
-> > >>   kernel_init+0x28/0x24c
-> > >>   ret_from_fork+0xe/0x18
-> > >>
-> > >> Fix this by checking if acpi is enabled before trying to create sysf=
-s
-> > >> entries.
-> > >
-> > > I already submitted a patch for this problem (see
-> > > https://lore.kernel.org/linux-acpi/a6d92cdd-4dc3-4080-9ed9-5b1f02f247=
-e0@gmx.de/T/)
-> > > that only disables the legacy sysfs interface while keeping the
-> > > class-based interface functional
-> > > as it does not depend on ACPI at all.
-> >
-> >
-> > Great, I understand if your patchset is not merged for rc1 but it would
-> > be nice to have it merged in 6.16 though to fix riscv syzkaller
-> > instance. Perhaps you could add the Fixes tag that Arnd mentioned too?
+> Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
+> handler and context") introduces non-essential printing "Failed to find
+> VA for GUID: xxxx, PA: 0x0" which causes unnecessary worry for regular
+> users.
 >
-> I actually prefer your patch to the Armin's one because there are
-> questions regarding the latter (see the most recent message from Arnd
-> in this thread).
+> Refer to PRM Spec Section 4.1.2[1], both static data buffer address
+> and ACPI parameter buffer address may be NULL if they are not needed.
+> So there is no need to print out "Failed to find VA ... " to intimidate
+> regular users.
+>
+> Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%2=
+0Mechanism%20-%20with%20legal%20notice.pdf # [1]
+>
+> Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
+> ---
+>
+> Previous versions can be found at:
+> v1: https://lore.kernel.org/linux-acpi/CAJZ5v0hv0WKd-SXFhUgYs-Zpc+-PsSNOB=
+u0r7L5TzJWgddtsKA@mail.gmail.com/t/#u
+> v2: https://lore.kernel.org/linux-acpi/20250512010620.142155-1-qiyuzhu2@a=
+md.com/#r
+> v3: https://lore.kernel.org/linux-acpi/20250512011833.142204-1-qiyuzhu2@a=
+md.com/t/#u
+>
+> Changes in v2:
+>  - Reduce the code changes.
+> Changes in v3:
+>  - Fixed title letters not showing.
+> Changes in v4:
+>  - Only print the necessary warnings.
+>
+>  drivers/acpi/prmt.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+> index e549914a636c..bee450869cce 100644
+> --- a/drivers/acpi/prmt.c
+> +++ b/drivers/acpi/prmt.c
+> @@ -85,8 +85,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
+>                 }
+>         }
+>
+> -       pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa)=
+;
+> -
+>         return 0;
+>  }
+>
+> @@ -154,6 +152,15 @@ acpi_parse_prmt(union acpi_subtable_headers *header,=
+ const unsigned long end)
+>                 guid_copy(&th->guid, (guid_t *)handler_info->handler_guid=
+);
+>                 th->handler_addr =3D
+>                         (void *)efi_pa_va_lookup(&th->guid, handler_info-=
+>handler_address);
+> +               /*
+> +                * Refer to PRM Spec, both static data buffer address and
+> +                * ACPI parameter buffer address may be NULL if they are =
+not
+> +                * needed. So there only print out warning if handler add=
+ress
+> +                * is zero.
+> +                */
+> +               if (!th->handler_addr)
+> +                       pr_warn("Failed to find VA for GUID: %pUL, PA: 0x=
+%llx",
+> +                               &th->guid, handler_info->handler_address)=
+;
 
-And so it has been applied as 6.16 material now, thanks!
+I think that the message should still be printed in the other cases if
+the physical address passed to efi_pa_va_lookup() is nonzero and the
+lookup fails.
 
-> > >> Fixes: 77be5cacb2c2 ("ACPI: platform_profile: Create class for ACPI
-> > >> platform profile")
-> > >> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-> > >> ---
-> > >>   drivers/acpi/platform_profile.c | 3 +++
-> > >>   1 file changed, 3 insertions(+)
-> > >>
-> > >> diff --git a/drivers/acpi/platform_profile.c
-> > >> b/drivers/acpi/platform_profile.c
-> > >> index ffbfd32f4cf1..b43f4459a4f6 100644
-> > >> --- a/drivers/acpi/platform_profile.c
-> > >> +++ b/drivers/acpi/platform_profile.c
-> > >> @@ -688,6 +688,9 @@ static int __init platform_profile_init(void)
-> > >>   {
-> > >>       int err;
-> > >>   +    if (acpi_disabled)
-> > >> +        return -EOPNOTSUPP;
-> > >> +
-> > >>       err =3D class_register(&platform_profile_class);
-> > >>       if (err)
-> > >>           return err;
-> > >
-> > > _______________________________________________
-> > > linux-riscv mailing list
-> > > linux-riscv@lists.infradead.org
-> > > http://lists.infradead.org/mailman/listinfo/linux-riscv
+>
+>                 th->static_data_buffer_addr =3D
+>                         efi_pa_va_lookup(&th->guid, handler_info->static_=
+data_buffer_address);
+>
+> base-commit: 82f2b0b97b36ee3fcddf0f0780a9a0825d52fec3
+> --
 
