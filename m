@@ -1,75 +1,75 @@
-Return-Path: <linux-acpi+bounces-13891-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13892-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC15AC3626
-	for <lists+linux-acpi@lfdr.de>; Sun, 25 May 2025 20:05:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19326AC362B
+	for <lists+linux-acpi@lfdr.de>; Sun, 25 May 2025 20:11:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A55718934C3
-	for <lists+linux-acpi@lfdr.de>; Sun, 25 May 2025 18:05:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8633E189402B
+	for <lists+linux-acpi@lfdr.de>; Sun, 25 May 2025 18:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0DCF1F4C83;
-	Sun, 25 May 2025 18:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B0D1F5852;
+	Sun, 25 May 2025 18:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L6ys5cxh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NSpxIH/w"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00F41F2C44;
-	Sun, 25 May 2025 18:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2201DFF0;
+	Sun, 25 May 2025 18:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748196305; cv=none; b=OYkGc/qesfNI6jOXQstKAl2sh7tefj9LfAjcLCvlbUWLyFuQGrl/js1OoJSeUZvQfZLpRAQC73DwkOlrKUNTC4DRe2XTPzBi0PFr2ARxsY1phF7bNI3HD2Dg8flEKeqoUS8sIC5qFxtdAfJhPpHnPQehVy3/pOmhLL4fDPrfVCk=
+	t=1748196659; cv=none; b=Y3MaCJCyGIIq2GSdcjSNN2MYHB0M+acxOL68GKkpZ9b8pNU2RGYEm5m0US3xgb+u51XFeJ+0fiuKfMxrITzyp1w3B3n5aSJhF1kRO8gdGnJluOSR/d+giwBIpk37tV7s64r73Jz9t18vgCzbnccCNzqjxzaQAz0STX+xIw3y584=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748196305; c=relaxed/simple;
-	bh=UEyT1pHakFVzPNhDsCguw3RO5aCfnyuTBkTCbqhcDig=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NuCJnXah4dhz/c//6kaDHyYiDj//yQ81ULT9196PP+Y+Z256q7zz+HkFjVriD8Oznrq7KM54fn4VnnRS1nM66U/7VjpzPfrAXDEn5ny1HOZYD0lE26xaV8yEjAgXYJ3ksFyFxl1awile+qwpm5Wj/qF8dzYR5JIiwUqRb8ai47Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L6ys5cxh; arc=none smtp.client-ip=209.85.128.41
+	s=arc-20240116; t=1748196659; c=relaxed/simple;
+	bh=stVEtjIHd3wZqymECvx7ImDWL3r+ODxWwlTBtG7lOmU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UJoikeftOLG+EjVB3ExJ4AIbFvujAitYyWx03dtsaed0f0GKT+15AFzj+0DWVBDW5+LsOA4qYXIlhZuhZO9EGNKSeH4ZhpqtL86B+BGG2yy9D7QHta6hXAM1dd5YYGcVq6uE42lggdazK19p2ux3JosudEgioeDs+OV0S1YDDRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NSpxIH/w; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43cfdc2c8c9so9431745e9.2;
-        Sun, 25 May 2025 11:05:03 -0700 (PDT)
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-44a57d08bbfso11712415e9.2;
+        Sun, 25 May 2025 11:10:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748196302; x=1748801102; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1748196656; x=1748801456; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WVKFYyD1oSY4+ApZBLJcuBPiQP9r3k9ZVrPBJZKw9wU=;
-        b=L6ys5cxhhpHmBVW+QtiEcqzHZaVrbLml1RCLKBfOPzRkeQvFROjxumSADpb5KtGayw
-         +GnR4QK4G5H8OPzxVWgJjMCZ2u4+cJAbfqvODk4VrsypgGBH7QKAtLaAKY/PtQB6l7Ov
-         u1TzZRFxWcOjVk8xc4XRl2kyrqkdF7Ez3dCDKqNvblxlgt8VOgVpcoeSuoQ0iEkk6dHi
-         m+20WkuERMFiEDJ+HRQmle+wiTjwnPI53KyczNPM7tylGqi9mDJEbimAJ8SRXxZ9z8u3
-         wLvMTEBl0aEkYWtQW7IJ347evYRfNqFRzKUDVfaY8ANUIxipqgLcnBUJWskAv8WZNObS
-         gKkQ==
+        bh=/9pzAUSWKDrDz9iRzV9VSUrybeThukixXcP4OIiKgOQ=;
+        b=NSpxIH/w1sj75hn1HVrIKYQlyg7U/9sIIKIlHS5bZTe/i5hcwcvgN3yPevQpT8HEZY
+         cR1kbRhrPOWJuw7wTHOKUJR6YkzePGI9cn5OCDYTVo2S4y24Muv18kOScmw7G0gRjHbv
+         Z5G5JE1/xrkdgGIBpfz9tPYiZL8qpDt/wBcw8peyOAWUjfIVYRdUtgJkNC15kuZG8efx
+         WNcH50Ab4R3+GLtTC9VaGbLH9So6jqZqMiA5lYsJtH8CXZ7tYFiumdaorDe9Dt9g2GDp
+         U09vKzcXmoEtwYSrq2+h3JlH6FcOUxnIK/U1HSRg7/F74ZlJAnZG5bx1cOqXMmppYt6S
+         qAgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748196302; x=1748801102;
+        d=1e100.net; s=20230601; t=1748196656; x=1748801456;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=WVKFYyD1oSY4+ApZBLJcuBPiQP9r3k9ZVrPBJZKw9wU=;
-        b=uUeKZcYmpdFuK7X6pE8ZB3Y6ZG/jw8yqBAZl1Wj4v5FBiuawSreFYLLKcgrmNz2uhg
-         DoqglRdpbiA94QffucIbhXygW38tO6mZHDNIePw7oKXhSuI0HPEHjUezqk1bSrjAW3+V
-         yMZOye6PPtcyb4GJXJGc0ZxwLnvVsMZL9ujk9xCYpexcZjVY2yHHqhmXIn5GRMoRtLWz
-         Rl/DXvU1XBz9f1yY/bGouOEoogY8G7ynQ0/hGQ9Zt1Kj6kNR0NZkOPOyWAFZePIuzFml
-         Eb/AjNzCwQPU19xFR+NvwwTPGBRQGd/2VpWy2MOyC/q1BtMq1mN4yJaeG1y3OklkQOur
-         pqeg==
-X-Forwarded-Encrypted: i=1; AJvYcCU90RdlFsz2c6np78MmQ6uWtEh02NVAl11tq2KhFII3Rmwf79jhiELL7wyW4IHpWsdR6hl+bi83GNCu@vger.kernel.org, AJvYcCUdLuqAdfkuYbZZZd7dKdxEz5XA8ObMHK1tDaTQZbafCPLcreDVZEHCUUU7Tvyhs0cmw4D1cfc4svJohnZg@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/bAUH0XrYXu7+gIRHG6UDX1r/ibW6ZaBcFRuRKYFywNDXbtWS
-	PkQtseiA6Jg8W6Crab3/1uJcfmhh122UA7VbLJf8L5BLArXmQmGHoSam
-X-Gm-Gg: ASbGncuxdwvSwJkhTfHWCQAl+G90RrwOIVlTrKWERHxNFiJd+DTnEO/ef8PpdCZr7bn
-	lrGrx2Dru0RFjcVqlIPb53VD9KhHYAEPTagWRN8UwVP14M5O53q1gwK2Mru3NqgStGY6SDZcJO5
-	g8ddIn9OgF4ocNNlyBdo5atLcU4Kh3U9qAk76Xrr82bg3jdajKtaIHQ5ttDsN58UHhmp6VwHZfJ
-	1OYb2ty86/xab94uJqSOwvOWBEvYIrMbYlrWsIJc7TLJXdFh7f9g1C2zoa5suZ4RWu31OtUPDgN
-	DHF3fjGRee1g8mXgkRsMU9fUUTlIQm6/OkUsOPJ9jGZZ1GeGqbqLReJFrFoGqNawyA==
-X-Google-Smtp-Source: AGHT+IEHfg1uAoXP3YxY9kopRipOcC4EFMsn7CMAfN1zBrNw85aiCAUIDgW2f/sDcr3P3NHJYzai8g==
-X-Received: by 2002:a05:600c:3f08:b0:43d:fa58:700e with SMTP id 5b1f17b1804b1-44c930191bcmr55647345e9.33.1748196302044;
-        Sun, 25 May 2025 11:05:02 -0700 (PDT)
+        bh=/9pzAUSWKDrDz9iRzV9VSUrybeThukixXcP4OIiKgOQ=;
+        b=C5yMv6J1wv4+dEu6S2TW8sz1Wq4VnMZnZLDghCYBVmkFVR7YjZ63/NCVeib5A/Hfdy
+         Gv6On1ltQbmORNE3EMp80AtZ58lwk02R0wqxab2ocHqHn6neGic62ZkTVqQ0MnT8tokL
+         A5fJNv/aLbQ1zItldYerBa1+5ni8FMQm0geoSjFPQsMEjdMbS9cxU2lOvE47gcjm9It5
+         gPwtZLyfFJmbjZ46NVY69t+ZeHRyIprEbGnhIDqRrtc+geKeYk/GGhBvtv4c9Z7F4fxB
+         e9WZSkR0pU0UKuLNBDvP4UZ3rGamTec0pQyIb1T+SJfgZkqjVoZBcZuANfDMB2l1pGZB
+         Rssw==
+X-Forwarded-Encrypted: i=1; AJvYcCVj6QcHDeVTyeA+JIskzMSFrlvSJlcxLXzS7m6vV8+RLYX8CzbVrE0auZq5YLU+XetmXih/O8sdpLbJfSIG@vger.kernel.org, AJvYcCXY0jlNF29hf0Al26s/goyZnRjS3NYri3DT19ia/N5RgJZG7c6sImJl0PkfpCXXMJf/1KtwR3cqWve7@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7TqOI54mQ01DUUFXfjoZ4DAAeK4ZEYPJxrrgCNg7inX6jb3lb
+	TyEvnF9hrLI76qWoRlQG1sVt8ovlBBzLFY13oBUuBCPXDVWuLcOn1FeH
+X-Gm-Gg: ASbGncviFa2met6dUE5AOjJJGHd5jequxPPqw0jzRG4IBeMh85Lpe80keADgGWFkPd6
+	04cAumqaCXZlWiT0jqCNpJ6X0W1bGiBYXSGeAG6FNchfRVsC2JrMb7GxFHDanzH6/yC20EYqbdA
+	88zGWmf+iyUZql1Gy6XovERQcpqpslbA8jptRnG8fCusYaGzI0eQyXJKWSs4LBK7kOh97ZJG5/r
+	5a4KvUfiVbhHuWeeZoiBWWqY/3oDFmLfmp7zp0kKaAW0dJ4SPENxpoG9PsiXdiDC6+WkHlSFZgL
+	U7XKtdkCaWnjeKLXHuLuybD8VmEdWWvMO1txsQBEP/MBgHYo1mHsehJStLDn0RSMwg==
+X-Google-Smtp-Source: AGHT+IH+W5mD6xAgBUrmXlhQi1R/98f8p2RRH4QAQeaz6RvafIKTPcisjNcCk2vn/ekNxBtYOFf8Ag==
+X-Received: by 2002:a05:600c:3b8a:b0:442:f485:6fa4 with SMTP id 5b1f17b1804b1-44c95aad94fmr58261175e9.31.1748196655896;
+        Sun, 25 May 2025 11:10:55 -0700 (PDT)
 Received: from localhost.localdomain ([41.79.198.22])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4cb450867sm5876612f8f.57.2025.05.25.11.05.00
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f78b2f19sm208658265e9.32.2025.05.25.11.10.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 May 2025 11:05:01 -0700 (PDT)
+        Sun, 25 May 2025 11:10:55 -0700 (PDT)
 From: Khalid Ali <khaliidcaliy@gmail.com>
 X-Google-Original-From: Khalid Ali <khaliidcaliy@gmail.com
 To: rafael@kernel.org,
@@ -83,9 +83,9 @@ Cc: lenb@kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Khalid Ali <khaliidcaliy@gmail.com>
-Subject: [PATCH] x86/ACPI: invalidate all cache lines on ACPI C-state transitions
-Date: Sun, 25 May 2025 18:00:42 +0000
-Message-ID: <20250525180052.1004-1-khaliidcaliy@gmail.com>
+Subject: [RESEND PATCH] x86/ACPI: invalidate all cache lines on ACPI C-state transitions
+Date: Sun, 25 May 2025 18:10:24 +0000
+Message-ID: <20250525181025.1071-1-khaliidcaliy@gmail.com>
 X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -97,7 +97,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Khalid Ali <khaliidcaliy@gmail.com>
 
-According to ACPI spec 2.4 and 2.5, upon C-state
+According to ACPI spec 6.4 and 6.5, upon C-state
 transitions(specifically C2 and C3) it is required and explicitly
 mentioned to invalidate and writeback all modified cache line using
 WBINVD.
