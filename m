@@ -1,60 +1,61 @@
-Return-Path: <linux-acpi+bounces-13906-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13907-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 357B8AC4686
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 May 2025 04:43:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88770AC469D
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 May 2025 04:51:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 569FB1883C3B
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 May 2025 02:43:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18F86189489E
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 May 2025 02:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB6C1917F4;
-	Tue, 27 May 2025 02:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C1319AD48;
+	Tue, 27 May 2025 02:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="I5uvh+/O"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1vqm6Ces"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2063.outbound.protection.outlook.com [40.107.92.63])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2069.outbound.protection.outlook.com [40.107.92.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33951863E;
-	Tue, 27 May 2025 02:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8757680034;
+	Tue, 27 May 2025 02:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.69
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748313814; cv=fail; b=oHTwOT3+33DX5ZTvN1Pjl7jFmjZP+A9X6qHOsPo6grLowq34GLp3jkhInd1Bw8WdbXRyl/Z8vMcwDQck7wwe6Rt1su8g0RvWygX8GKjnYu/HlHTDkqLbBnXqvvGV8cpld+i+6IXnIrsl2CeHzFEZvE8omXetkd5saW93Keu1hXA=
+	t=1748314298; cv=fail; b=g+e3Q3A0oVhEr0EBMVxzxQtyH/o/jRCPZzwyrNQewV4mAUyTQz7ALi4yD7k5ImYywF9eMlcMCLkum8HP0Mqh5DSveEWo40hI9iMITSigM7oQTfowzDDeKx+/JMwg0+9NTQl6Po0/WuTU1KYfemHwLWA28kVeaprlExvGhXO/SJg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748313814; c=relaxed/simple;
-	bh=IkOrj510YFWRDNSm44ivGUKJnKE50wms1mxHclGNhFY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=brJFeiXVI4y8mk3chRzKgpDVJzThmY7elXFSPlFQXi4GxnW23fjOhO1gRdtxs6ceq+S4pP3vqM/h3VkzSqWx9gpL/XG3MQA4ZLXKbVKCqxkFKdXYCU+LlpVvRz6n7IpE4tPy51NybB+kKctN3B4gy0N7m20FAGa1mleO7qGrUbs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=I5uvh+/O; arc=fail smtp.client-ip=40.107.92.63
+	s=arc-20240116; t=1748314298; c=relaxed/simple;
+	bh=2eNu7ByAmQ8AxSvMKkIT7iFJmvmIxJVJINprX+UjGMg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mcmZlGbeWtDF3NLWpoeRTNc2w51t6q9w703XcPayXgoRotsv0J9zdjbUON61BdyKknwBdtu5+LlwZ4RkCiUgif92MeEuGXcqbDtfk6BN1XJqIcqMKlza0y8eXcZILufr1lI1IJpaAwLMaXMK8G4UvT+q22xdBNINw/SvER4vtY0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=1vqm6Ces; arc=fail smtp.client-ip=40.107.92.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OJqwGbYpgBtlwb1I0Y2pQSYfaDFpUx7+okpOK2nxUBoylWfFp6KQkajHwBNxfmKsLFd35tyQfNvANAW99hrAph1XxNm4Spq9iqzIVRIrr5isSBkghbNoUf3U5OxFvwzEPy/7sUJNqNH/ig4yeSZppzwnmbSBjiA1ZpnycHXwWWVbskhbdutfiYU9mKPMkp2UftifpnvRegM5J7NWIKfCou4eqi3/lGkTNGZjZLFcgCsO8nHxpdqdZeGSaXEilzTwP+u2ZzAMA3oHLECT0T/PYc82e0mdoNv66pZDWWl4CB2Oe0dzNjBC3fz/kwv3GaQN7ASnRybwxe2K915hVmK7gQ==
+ b=KzX/7OhYZpHw0HFk68E8WaY0pOuivs1Dzvy0hEO3STb843C0KgtU+a5gfHD3MlDyf07ODtOzg+YFC8i/2bB1week46TooDzLPeRT7zmZ5/pN2pagomeIV9DCogFYIImY78+hmDqEoTWaOsN2QlRGNaEw/UBN2PuEckNDsOOApMnsisHR0SLoQ+k+bYNVlmKVg0TMCGVGOPin+eUdjz6G5rwWg2Pym+VlmBzVVd8yJeEVl4St35B+RE0vhLmLovZ8hCQqq5S9Wn25ErnevGGh2n8nYYAbiv6R1BbRkhXdZ9Py+g4g/IOfpvKyLYNwGqShB8vJbUlwHH6PfBA78tqJxA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Cu+icsXbXuRczsQPhjPvdsEHYLFVuhFEYGdotm5OVvY=;
- b=N61VWpxa/NNkJVvyAcf95FhYWEifgdvY+or/iG9bhfmZeNt+FZK3nWnfrGrsnLuVyVO5N3yWyxVJSfUUIXsmeTHna4hf20JvDz4I/i8+FjfmDP1mrrAMJbyQT26D3wtzW2L6Cx2VsKwhFpXYSmNtoGwQiLBTLuaIZKrTk9qKSXoPu+Fl0h6OUFaqGwhU3AtYGIs/v/tAHNAJrYyjXM1t2S2tHscaIaQBJcgrTBGND75nK/gv/oGd3JjW/XLlzP/2T9LFzvjVUttoJFaYveCtXqo3yoWDYJ3bCFGybJ2DWtJB4ekiACZC32i7yd3du48c8k1eVXD4qPy6efxohxhrzA==
+ bh=4pW2l12BSzlXKe6Q4n+wdyegqXZLmeZjyudZAmJ52c0=;
+ b=e5xaKuSYuKl/mWL8L30aMC/cMeQ4eFsLTxboGogWrD/Ow/H/fd6wd3lC9v2v9fVLvfjUM2u5I9/2eiq+Z36k6PoyrULFGQ6dn6qEW445s1kaIXaFrkaTe0zqtHmlqshXXXAXyCLPL1ug1IpJf2WahEzVvZQhVt/RGFxA5OIO6RmR5N8LRHOnNeTVaXdEZFjz7Mm8gYWoDqbT1cXTBIZdJji0hlaPTFomb1zuBPPfdv+4nEVdSjcIBA/yMhCnPDyxrC9sJu3YkSmgdWYsFWq0p/ugubMKzJyO8wGF4gGzvVqhsk5Jx47AQQaiO8TUFczKpRqT1KLgujNxaCUR6PUdlw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Cu+icsXbXuRczsQPhjPvdsEHYLFVuhFEYGdotm5OVvY=;
- b=I5uvh+/Oh9gLSWfr4WHV4rm7IUWrLsSnRp+PzlrzthdKzO95ViHeBRcRsE0sqkd00wI2qFwX7dRPB9AoW0kmyBoGVaI4sdtUBKzwMCWMMAS3WW8d0wXU/2S0b4LhfnBNR8SVi1f7uCcc7Obeyw0Ytvp30NPqJE2TFi50KfwmFwU=
-Received: from SA9PR13CA0084.namprd13.prod.outlook.com (2603:10b6:806:23::29)
- by IA1PR12MB9062.namprd12.prod.outlook.com (2603:10b6:208:3aa::14) with
+ bh=4pW2l12BSzlXKe6Q4n+wdyegqXZLmeZjyudZAmJ52c0=;
+ b=1vqm6CesQhCI5uh8NyiAKsJ/6x0Iu3zqgPn2PBF+NQnao3BWCkT9kQ29tn3mnFQ97KoVo9f04xIsnQINd1eAnfKjeL82RB64N1C67luFG13eSVLWsY10SXYRzur6MK/tTQ0YZVpG/o/8+llOv/b/1Rf1UB0oLAYaA0MZY3xUcxY=
+Received: from BYAPR02CA0009.namprd02.prod.outlook.com (2603:10b6:a02:ee::22)
+ by SN7PR12MB8603.namprd12.prod.outlook.com (2603:10b6:806:260::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.26; Tue, 27 May
- 2025 02:43:28 +0000
-Received: from SN1PEPF00036F41.namprd05.prod.outlook.com
- (2603:10b6:806:23:cafe::a2) by SA9PR13CA0084.outlook.office365.com
- (2603:10b6:806:23::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.19 via Frontend Transport; Tue,
- 27 May 2025 02:43:28 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.25; Tue, 27 May
+ 2025 02:51:31 +0000
+Received: from SJ1PEPF00002313.namprd03.prod.outlook.com
+ (2603:10b6:a02:ee:cafe::3f) by BYAPR02CA0009.outlook.office365.com
+ (2603:10b6:a02:ee::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8769.18 via Frontend Transport; Tue,
+ 27 May 2025 02:51:31 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -62,21 +63,23 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF00036F41.mail.protection.outlook.com (10.167.248.25) with Microsoft
+ SJ1PEPF00002313.mail.protection.outlook.com (10.167.242.167) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8769.18 via Frontend Transport; Tue, 27 May 2025 02:43:28 +0000
+ 15.20.8769.18 via Frontend Transport; Tue, 27 May 2025 02:51:30 +0000
 Received: from qyzhu-os-debug.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 26 May
- 2025 21:43:26 -0500
+ 2025 21:51:27 -0500
 From: Zhu Qiyu <qiyuzhu2@amd.com>
 To: <rafael@kernel.org>
 CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <qiyuzhu2@amd.com>
-Subject: [PATCH v5] ACPI:PRM: Reduce unnecessary printing to avoid the worries of regular users
-Date: Tue, 27 May 2025 02:42:59 +0000
-Message-ID: <20250527024259.56996-1-qiyuzhu2@amd.com>
+Subject: Re:Re: [PATCH v4] ACPI:PRM: Reduce unnecessary printing to avoid the worries of regular users
+Date: Tue, 27 May 2025 02:51:04 +0000
+Message-ID: <20250527025104.57038-1-qiyuzhu2@amd.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAJZ5v0h+CSu80-ZBbU-_RpHbdG8As4rrsKbXLM4RqY12JtV-Cg@mail.gmail.com>
+References: <CAJZ5v0h+CSu80-ZBbU-_RpHbdG8As4rrsKbXLM4RqY12JtV-Cg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -89,135 +92,58 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00036F41:EE_|IA1PR12MB9062:EE_
-X-MS-Office365-Filtering-Correlation-Id: 45429438-552f-440d-4d96-08dd9cc842a4
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002313:EE_|SN7PR12MB8603:EE_
+X-MS-Office365-Filtering-Correlation-Id: 32cb84ab-388d-47bb-1415-08dd9cc96289
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|36860700013|82310400026|13003099007;
+	BCL:0;ARA:13230040|82310400026|376014|36860700013|1800799024|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pohf4oFFwEmMYXgnQoU/ewv7y7ERrVjy5iWYMXNa+Y28C5Pbo82kF1xo2mch?=
- =?us-ascii?Q?oybDjYU+YJ1sPaQcMwnenca6Omf88Pd7dD73yfJQC9b1dEUCXdRilNTfPXJB?=
- =?us-ascii?Q?2F+hkpEt1KKdF7pJU7QPRNJXYEcP3I6sI5sPbNU+YDkLCawG7Eukhdp8VKEh?=
- =?us-ascii?Q?TDLAeKE9sCpNLNqNSVwdKAaHc4GJj5muHNNerrzlyUAUgR1Y95kJyzjlLGG4?=
- =?us-ascii?Q?BlIWFmKHxbmxpYZ4ymY1oZwGEkQDhC59ppxoP8ZxuS8SRtM5cVZYulEw4MI4?=
- =?us-ascii?Q?wOJqx21H8Loa1o6qre6yQa7TzsNY3ttLYy6XPqocHefXKDhVf9UCqqnzZAP6?=
- =?us-ascii?Q?19XM8bUlPKCz5ce/Yw84fLd5Gig+YKJAY0sG8LpqaKskfmml20lf0iWSTorD?=
- =?us-ascii?Q?hKoJEJ5AWThiX95iftSmXH/bXUVjLq+OVe67ZtaDvDoolPK6Xdv1eG7MwjDg?=
- =?us-ascii?Q?YNiYSCVHFyTWRSuhR6doPnJ/35ZS93Dp7CP7PYoU3vQBdOC9vzEWvAjKHT+L?=
- =?us-ascii?Q?glM0FO53vrrJLXcmm+7RPYVc8Q7AU67KmLhdZbyO3o2YfEgDqY6e+e+CqJDq?=
- =?us-ascii?Q?CfHddHdezBLvuzQR8k+eHw4f1wPWjGQODJxyazwFf3Yu45Cd+q1d1/1xDrY1?=
- =?us-ascii?Q?jE172V2BH3LAG/UMmlQzwZGVLOPh7kXujlMYNb6CW01/YNpNCazUIHPQkEtd?=
- =?us-ascii?Q?V21epwhO7I2+PP+V+u6TQq7Y4eaqdckybm0LQG5+PocRWMNK4aoL30PzKO+f?=
- =?us-ascii?Q?z/Rr0Pkz94ETuY1f4NLXiaUIiBp3UVslBFoDQ9L7SJ096ObNjYZ89xbs19s/?=
- =?us-ascii?Q?FyZ1A4dnrgtcg9CM9svhefPjYsDxeJf9KbAtv8b2KAPVaW2toQRrYHG03jUj?=
- =?us-ascii?Q?J/duBRAJrkQYL1G4KKMIJYuO5VxfeJTMnbFsXOfW9wz+jveZsNbIjp0hzcAM?=
- =?us-ascii?Q?fUvcVaG12bzTMKLcjrGJsN0dHVlD0NyyELOJCAmN6L2poM+oSSR2r86jwmAe?=
- =?us-ascii?Q?bA07d+Nb+WuhgzFuUQtL5GjxYKaMrmATVkoTqf4ouPA1Ecd4WTkY0tN8o5nh?=
- =?us-ascii?Q?sXiWFesFc4QQ/Kr/gDV/DNx9l7Rg5ObZDCBrBc2NT1UDMUiryt/PnO/GYX70?=
- =?us-ascii?Q?ZmEdYC1GduDGKoB3fvbVNYSQCCjvTjXMOyDn/iLmZMh/LPHXm+Tsa34NIZrm?=
- =?us-ascii?Q?RFyyFNaBPClrryWiGh/6RRwYRF1zKDpuzHL8LYk3VHxFIdcNOBYr/925MJ+5?=
- =?us-ascii?Q?xdHdWsENqXUJqNTXQnJBw9jaV5hLROFhLwnKOSRtSLgcXx9GEaPDrw7ljVDH?=
- =?us-ascii?Q?7GdTDf3RSChin9xGG75CaLvDHEC9EbVB59e35vp011tPZKvTfnMM5WqoytBW?=
- =?us-ascii?Q?O+6QA1eVi2ZRfsL12cVly09wesUrduceCozDWzS5FNyuow1qIv2ZWonEFGWF?=
- =?us-ascii?Q?5oROJ1Ux0sDW3yLPmy/ZpCIz7BxWj2Z/lcEtIghr6oQMXDUB65LBowSTqo5H?=
- =?us-ascii?Q?JfPO5ftq/v+yeD8=3D?=
+	=?us-ascii?Q?fsnFu1ftrgrdqlvfxPrj/1DuZl1b1xaHtIjX7yP5buUUrTrBALR8Ti9B78Sz?=
+ =?us-ascii?Q?mm9+urbSY288E3T06wmrNk3AFuS4Z+dDPUbM6oZqM0yZz4aBNHlFVWO16Egh?=
+ =?us-ascii?Q?etEkM9DQ7vxkyfPWetF9Efi5lDgk4jwrCW2V6rbDmLynG1AZ6sJ99wRnvSPV?=
+ =?us-ascii?Q?0ga4QPJGcMwqLZVXACnPrCnBda0BjCKSZHDquQxs1rxFH/RMPBjj8PY0l0BY?=
+ =?us-ascii?Q?lxd4LjrXaNVS/BmdB1M3FVWZNDc8QWSLSXF8eviEjJdghFHFyONWiTGUnpj9?=
+ =?us-ascii?Q?10VU8YnXIX5AM3j3BWm+43l7NU43MAi52pWHnuav2W/EQcFAQyb4qIoDckaH?=
+ =?us-ascii?Q?fLXGPDIBKEy9qWDh1ZyqfGtl3WCywPwWswpF8CQbKf3563SXJrPJKqn+7TWv?=
+ =?us-ascii?Q?8tJu9GPP6LFAyWo083r9xRW00/LYk/kfVovlomeK8aL7xIyqQJLpakWrOWp4?=
+ =?us-ascii?Q?LUJAitHFn2+7dOBtHAxC+F3d6hS2J43KmvpEZznoz7qxsYAjoduzvgZ4A2d+?=
+ =?us-ascii?Q?47M/UYFzfRu8cJXL+eEXY9wLuVp7/aEzpX9OhR9hi9cAC7ewx9OtlZ00Kd+1?=
+ =?us-ascii?Q?9nDhvuzKQJYbIyEYL4BKg77NDjLOD28tq+7GYL1javHGV3DQP6Fo8/2XX8YO?=
+ =?us-ascii?Q?BoiR6OauH6qW/WVjriZHsB223EHFQfRtTYK84xEA2aYkPlqHI4WZMSOA7259?=
+ =?us-ascii?Q?wU+8YYeqHCM6cWkCCdORs4GAre57bp+PnTonwvKFP2GHgkeQwwbY515x89DW?=
+ =?us-ascii?Q?6ITiMbXLamJjrsVgZqbqgV8GL8Um08Kw4oR5ZTI4s3jGuphxAoqEdxA63xfc?=
+ =?us-ascii?Q?3WMsfDD0P0/AqWTXV/sg2MKFWMlaumTdvuYELkDYgE411S9C96ZW7uQ41ZeR?=
+ =?us-ascii?Q?CvH6AN88EtvcIqbbgAdjcjW/0uNcA7n+mDmnlK9e9Ib9QfdjRDdJMRyVrtz9?=
+ =?us-ascii?Q?g4T0AHbgmAfYx7F94DDUOGzTSz6aWNhxt9L0NDxyixmOfMr4BoRKSx/Z11p1?=
+ =?us-ascii?Q?Yxzy31U3FYGMecYuuZojPip6P5P6Dy2MGGKXu+gxbrZK5DMPR/QrkFcXfA/1?=
+ =?us-ascii?Q?mCPOk1ll4CJ9JlifdPqsOA4qIVW9YMvex4QBBRYhvdyknIw4TtfzMKscHxWw?=
+ =?us-ascii?Q?0zXKTMfoAKzBae6biugkELZz2pk62NMuynaLRJvSaKaMxr82PtHNVe4gSZyC?=
+ =?us-ascii?Q?m2i8+QjxHhkSlFnr26rEAkQK6afHBve6wWUOVx8Qr3wIZKwGRc9dgDZyMSPs?=
+ =?us-ascii?Q?H6XK3AVyqIUYXPC/cLWeIrk5XDIhGmGG9eIrNvH1nxt9rdnzpcMccREFR1Es?=
+ =?us-ascii?Q?0LnmzheGVaE5gnAlpeImmwL0ISA0wXw6DX0wk/XZq1N01sE+Im540LyVAC07?=
+ =?us-ascii?Q?Kh1HjXIMlGH9Kx8TqnXwDxC5EcKDT4MuE5TMU13kfsRCmEfMvigt2KTAVRlD?=
+ =?us-ascii?Q?ifamBCDbA/5j78vGNXGTGrf5OmZkmfh0JI6/SGC+CK9lEM/8uWNNtNv3ayvA?=
+ =?us-ascii?Q?GrUdZL3R8nFpN88=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026)(13003099007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024)(13003099007);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2025 02:43:28.1195
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2025 02:51:30.9694
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 45429438-552f-440d-4d96-08dd9cc842a4
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32cb84ab-388d-47bb-1415-08dd9cc96289
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF00036F41.namprd05.prod.outlook.com
+	SJ1PEPF00002313.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9062
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8603
 
-Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
-handler and context") introduces non-essential printing "Failed to find
-VA for GUID: xxxx, PA: 0x0" which causes unnecessary worry for regular
-users.
+Hi,Rafael
 
-Refer to PRM Spec Section 4.1.2[1], both static data buffer address
-and ACPI parameter buffer address may be NULL if they are not needed.
-So there is no need to print out "Failed to find VA ... " to intimidate
-regular users.
+  Thanks for the review, and your consideration is correct.
+  Patch v5 has been sent, please review, thanks!
+  https://lore.kernel.org/linux-acpi/20250527024259.56996-1-qiyuzhu2@amd.com/T/#u
 
-Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
-
-Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
----
-Previous versions can be found at:
-v1: https://lore.kernel.org/linux-acpi/20250427075317.42687-1-qiyuzhu2@amd.com/ 
-v2: https://lore.kernel.org/linux-acpi/20250512010620.142155-1-qiyuzhu2@amd.com/#r
-v3: https://lore.kernel.org/linux-acpi/20250512011833.142204-1-qiyuzhu2@amd.com/t/#u
-v4: https://lore.kernel.org/linux-acpi/20250518062507.218855-1-qiyuzhu2@amd.com/
-
-Changes in v2:
- - Reduce the code changes.
-Changes in v3:
- - Fixed title letters not showing.
-Changes in v4:
- - Only print the necessary warnings.
-Changes in v5:
- - Add more cases of print warnings.
-
- drivers/acpi/prmt.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-index e549914a636c..ed39502ed86f 100644
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -85,8 +85,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
- 		}
- 	}
- 
--	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
--
- 	return 0;
- }
- 
-@@ -154,13 +152,33 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
- 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
- 		th->handler_addr =
- 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
-+		/*
-+		 * Refer to PRM Spec, both static data buffer address and
-+		 * ACPI parameter buffer address may be NULL if they are not
-+		 * needed, so there print out warning if handler_addr is zero.
-+		 */
-+		if (unlikely(!th->handler_addr))
-+			pr_warn("Failed to find VA of handler for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->handler_address);
- 
- 		th->static_data_buffer_addr =
- 			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
-+		/*
-+		 * As for the static_data_buffer_addr/acpi_param_buffer_addr,
-+		 * if the physical address passed to efi_pa_va_lookup() is nonzero
-+		 * and the return value is zero, there should print out the warnings.
-+		 */
-+		if (unlikely(!th->static_data_buffer_addr && handler_info->static_data_buffer_address))
-+			pr_warn("Failed to find VA of static data buffer for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->static_data_buffer_address);
- 
- 		th->acpi_param_buffer_addr =
- 			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
- 
-+		if (unlikely(!th->acpi_param_buffer_addr && handler_info->acpi_param_buffer_address))
-+			pr_warn("Failed to find VA of acpi param buffer for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->acpi_param_buffer_address);
-+
- 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
- 
- 	return 0;
-
-base-commit: a5806cd506af5a7c19bcd596e4708b5c464bfd21
--- 
-2.43.0
-
+Qiyu
 
