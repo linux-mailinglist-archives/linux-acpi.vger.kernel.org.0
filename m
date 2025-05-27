@@ -1,109 +1,111 @@
-Return-Path: <linux-acpi+bounces-13911-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13912-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC3DAC4F91
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 May 2025 15:21:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16AF4AC4FA5
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 May 2025 15:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C27003A8A78
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 May 2025 13:21:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB12216F82F
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 May 2025 13:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD224271443;
-	Tue, 27 May 2025 13:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166BF2698A2;
+	Tue, 27 May 2025 13:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SvSYCtDq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fqtRhEH/"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8036C139E;
-	Tue, 27 May 2025 13:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D916B271453;
+	Tue, 27 May 2025 13:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748352079; cv=none; b=uSIGwVjgLhWjmsYhZn0CcvQx3y8lRTLGyMj7GVTEP2LzZ/tlzgnror8KrQT2DOS0T7GSCuKIVdVXKeu4HrX1INwjRc0V9rSSYDRUqP2RI/U5dk/leRt91XZBGrr9a0b2tV+1UFPczOChmnbuIlA6GNzzrLKEJBFWvpbvUooIofE=
+	t=1748352253; cv=none; b=oBTCZTeInC5pNeCKXZ/+tEooDPM99r45x1taHPrzsBqEMHHmL2zJpWYfvKo/Hp60jL4XE5guhxWazFEjWtdt5tNd0N9usDx4yO7GXTsRJdskl32hWEFdZeAZSDknRPDPy141Em0fIUu/evo7G6y0+7eCo4yZjN7spsAHCPhasRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748352079; c=relaxed/simple;
-	bh=fp9luBBetLAP0B/DgHuAdGyoO1Vry5JUr7H5DC4G4HI=;
+	s=arc-20240116; t=1748352253; c=relaxed/simple;
+	bh=XsBlf7WXvfFgBBQgPmdHNCENHxGOBUYgPaG33bCFV2I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iETVDwob/C286q9t3JpbjL7WMUKP/qdzhsUTnMIFwXMmySWJ9dORveMaTkYOkuxsWteh0Bgyp1y1huuJrBddmNsnG58ox1DQ6up+RO5w9LE4uPr9vA28uDwltV0eFgHIY0Snylj44W4k6jEJbubrvT70BwmwkCMVnylj/rSjQHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SvSYCtDq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFCEC4CEEB;
-	Tue, 27 May 2025 13:21:19 +0000 (UTC)
+	 To:Cc:Content-Type; b=Pff1wgtCeZ9hw5GvnVP6IhMMHiyr1qCRyaFEPktvGFFE4DB3Q4l6SczUVHO/5oMiINVusOmpSmR+ruTBmUQTEJpmRr2vPaAeJleupMCYWwz8Na/1ntv4E8cUOQP0m4CfvVPCkEgNbn189zBHG0ieJ9wMFh4r+1acVDjVTorVXCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fqtRhEH/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475BCC4CEEB;
+	Tue, 27 May 2025 13:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748352079;
-	bh=fp9luBBetLAP0B/DgHuAdGyoO1Vry5JUr7H5DC4G4HI=;
+	s=k20201202; t=1748352252;
+	bh=XsBlf7WXvfFgBBQgPmdHNCENHxGOBUYgPaG33bCFV2I=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SvSYCtDqgahkC+5NUsg3f9lwPIdRRKsBkCr3P1gUQUXmFcwUjDnv5FY6Uvm+RT+U0
-	 6eoYz1korr1a+9BwDMEdgCl3M2Du0/gMjzQIb/3NYwDVbsr5sz0OU/Fi5CWuLGwIKn
-	 tgtwE/oNTr85+y9RNhZeN6tfHCxGLRmfy1C45rFWj9BZ758wCuUe8u8vNmNLi90a56
-	 sBWJN1RuNFN1RoWn6DABasgaMqD092fY7BGgluR4sEGyQXuVG00u11dzRQ7fqF+WPB
-	 O70jGDftMLfGXFZ12OrFFEcvcHn0Yv1bBN4D5x41T81f/tYf64rof0/tpoG9xwnmkJ
-	 dCr+hSusFc3FQ==
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-401be80368fso398453b6e.1;
-        Tue, 27 May 2025 06:21:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU5IJjAQ752QasvZw13Su0JfPl4ukOrNohlwYgXmUAIpbyVeZsO6dLm2JE99Hc0JyHQBgRjbOVACEJSWIlt@vger.kernel.org, AJvYcCUB2ipMIIHfctMD3epx4VNAhQ5Izi8vSvPOWSsKJoNCIHfEa6GeSgL3eOv2EA9Z4KeynbN1p7kVMVJXCg==@vger.kernel.org, AJvYcCVKoCkdb0KbYsLLrDkGh5zbFAdOCE/k9NZNQWoe16wjknvdVUFlYgacfRUPYuAig1ukSfF+vO4o8yIyIEsYPpM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0SOUrjGU+SYEeZ9LkbxrJZGZAKkR54+HpyfcZXkYcGVrkUG8g
-	vOTkp/R2EO0wRSJ/givmwTvou0MCWRdNVg1Q330JQyKXtmMHnYZRZQvKT4NvgWR86ci2RET4jf4
-	CDACkTBldoSjkYdsOECFr3IKrcbnPyUQ=
-X-Google-Smtp-Source: AGHT+IGh97Bf/315jIDDLCVQau8WC5fWsBAGJ/xi73UpowPj2sPBAO+dga4Q2MnB2Vokwwb9oIyCR4/b7oelhXZX1dI=
-X-Received: by 2002:a05:6808:7006:b0:3fa:daa:dd8e with SMTP id
- 5614622812f47-4064686c16bmr7438233b6e.35.1748352078738; Tue, 27 May 2025
- 06:21:18 -0700 (PDT)
+	b=fqtRhEH/KwDS7n/mqOOQVqEBY6MGx98uyAF8s7ki4VK5k0fuKT2DOPEh1Tq2NAKQ3
+	 gutNaa5VbFvu2bh/IeRbhcRlXUPgHmlmMKNF/iaRsgTsl+ah6EX2RpKiuRo7h/Vi+W
+	 159+0fblOSlCsaS/EBjVvQG0naZVAc0KQw8UHYT6gWI1kLC1sSS/xzGQ/6oyAybWyn
+	 eUCg+JZCzwODXqMVVoDzPN2PM8CEDYX8wh2DIEBLpM0pYep/i+zs2nCgdLCN9hu51+
+	 UnOYRyI3FWEtsAML1RJWQazkA7XGmZhQ8Bnr71LQyVEs4CP/v9MbTsm+kBJC4Ln5dZ
+	 evnWMvWd8K03w==
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-60634f82d1aso609116eaf.3;
+        Tue, 27 May 2025 06:24:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUGvOdQ72h6wEnZuux33cqKDHK/MmX7rBM6VBNMAgvjwytY830sKb38vhM/3hKaQ1HikI/LPvj1RZ7WMvf6go8=@vger.kernel.org, AJvYcCW/k7/LUlue9V9MJ7jXeWqg8ZbumbGGe37HbNxJmcd5WmZJtNAhBjDUAZ77F9aoM7w6LnRx9PM4fov2ew==@vger.kernel.org, AJvYcCX0TacuVU8nMUpRlO7cUUOH1SSX6pkIZxIK42mtyrsr4Be+iyGaforcGHt7YbgWb5wWu2FmxJip1wPHhMVq@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSAra744b2eyH1PdTe8LpzDI2WnF5OsMLH9frNcj0WlM3UKJ40
+	0bJgLIGqHULs6aT0hmTGG4pDXso+1KZUNuAhAmSf3L/IcmGMQs1VNMmRREEJTlbTCMQXZUAtEji
+	yIiydhXqbLekbAc4bEg6i5BDWEVdwGJg=
+X-Google-Smtp-Source: AGHT+IELYeDaU2ll10Eg0xztB9NjW3N3H4cq+fFMup4Th1x9ZCLSD/Z6plyAOjeWBCbgiRXcA6Zzs0BAVs44XuW3ulE=
+X-Received: by 2002:a05:6808:3388:b0:404:dd07:9703 with SMTP id
+ 5614622812f47-40646845720mr7583667b6e.26.1748352251633; Tue, 27 May 2025
+ 06:24:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aDVRBok33LZhXcId@stanley.mountain>
-In-Reply-To: <aDVRBok33LZhXcId@stanley.mountain>
+References: <aDVTfEm-Jch7FuHG@stanley.mountain>
+In-Reply-To: <aDVTfEm-Jch7FuHG@stanley.mountain>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 27 May 2025 15:21:07 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0im_642kBUqryy=70-+JikM+dhg=w=Shc3Df4HKPhDCsA@mail.gmail.com>
-X-Gm-Features: AX0GCFtQtSn0J7mIK2LqJJVYnxD13WNcOWk7YSKyky1S9-K_McoA751MogP26pY
-Message-ID: <CAJZ5v0im_642kBUqryy=70-+JikM+dhg=w=Shc3Df4HKPhDCsA@mail.gmail.com>
-Subject: Re: [PATCH next] ACPI: APEI: EINJ: Clean up on error in einj_probe()
+Date: Tue, 27 May 2025 15:24:00 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hWKbC2eEe-ce55PN0k4bYnPJ3D+AdPgxJNAcr8Q6rkGQ@mail.gmail.com>
+X-Gm-Features: AX0GCFujLpZi6ezYoap5dx0_78ckA3aKaC73qWQ4kqyXsu9mPW5BJV8is4VBcpA
+Message-ID: <CAJZ5v0hWKbC2eEe-ce55PN0k4bYnPJ3D+AdPgxJNAcr8Q6rkGQ@mail.gmail.com>
+Subject: Re: [PATCH next] ACPI: MRRM: Silence error code static checker warning
 To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Zaid Alali <zaidal@os.amperecomputing.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, 
-	Borislav Petkov <bp@alien8.de>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
-	Jon Hunter <jonathanh@nvidia.com>, Ira Weiny <ira.weiny@intel.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Cc: Tony Luck <tony.luck@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel-janitors@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 27, 2025 at 7:43=E2=80=AFAM Dan Carpenter <dan.carpenter@linaro=
+On Tue, May 27, 2025 at 7:54=E2=80=AFAM Dan Carpenter <dan.carpenter@linaro=
 .org> wrote:
 >
-> Call acpi_put_table() before returning the error code.
+> The error code is not set correctly on if kasprintf() fails.  On the
+> first iteration it would return -EINVAL and subsequent iterations
+> would return success.  Set it to -ENOMEM.
 >
-> Fixes: e54b1dc1c4f0 ("ACPI: APEI: EINJ: Remove redundant calls to einj_ge=
-t_available_error_type()")
+> In real life, this allocation will not fail and if it did the system
+> will not boot so this change is mostly to silence static checker warnings
+> more than anything else.
+>
+> Fixes: 04f53540f791 ("ACPI: MRRM: Add /sys files to describe memory range=
+s")
 > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 > ---
->  drivers/acpi/apei/einj-core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/acpi/acpi_mrrm.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.=
-c
-> index ca3484dac5c4..fea11a35eea3 100644
-> --- a/drivers/acpi/apei/einj-core.c
-> +++ b/drivers/acpi/apei/einj-core.c
-> @@ -766,7 +766,7 @@ static int __init einj_probe(struct faux_device *fdev=
-)
+> diff --git a/drivers/acpi/acpi_mrrm.c b/drivers/acpi/acpi_mrrm.c
+> index 2f22f013959a..70088cdfde13 100644
+> --- a/drivers/acpi/acpi_mrrm.c
+> +++ b/drivers/acpi/acpi_mrrm.c
+> @@ -156,8 +156,10 @@ static __init int add_boot_memory_ranges(void)
 >
->         rc =3D einj_get_available_error_type(&available_error_type);
->         if (rc)
-> -               return rc;
-> +               goto err_put_table;
+>         for (int i =3D 0; i < mrrm_mem_entry_num; i++) {
+>                 name =3D kasprintf(GFP_KERNEL, "range%d", i);
+> -               if (!name)
+> +               if (!name) {
+> +                       ret =3D -ENOMEM;
+>                         break;
+> +               }
 >
->         rc =3D -ENOMEM;
->         einj_debug_dir =3D debugfs_create_dir("einj", apei_get_debugfs_di=
-r());
+>                 kobj =3D kobject_create_and_add(name, pkobj);
+>
 > --
 
 Applied, thanks!
