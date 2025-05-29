@@ -1,75 +1,88 @@
-Return-Path: <linux-acpi+bounces-13936-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13937-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB5FAC7E7F
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 May 2025 15:16:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA8AAC7E92
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 May 2025 15:19:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C1313A6C66
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 May 2025 13:16:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 277611657FF
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 May 2025 13:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658882248A1;
-	Thu, 29 May 2025 13:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41756225A36;
+	Thu, 29 May 2025 13:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VCNZ1FAy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bGpNNkhu"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32CC9647;
-	Thu, 29 May 2025 13:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCFA225404;
+	Thu, 29 May 2025 13:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748524597; cv=none; b=hpu+7/UmjPV4YoHuHpSPV0Q4pscXmpS/+XGmelQnuNWoF9kz2bzI6uLP1uaU16VVrXZoe4D5So6rEHXiu9XbXwTd8tv/LeM75lj5/3pgyGLDnxJtl8WF4jXkrPMq+kiNp9Z87Bfuzx4Y5XGbHClG+Acnd0p1J/DYYz/H/tsYQ8c=
+	t=1748524755; cv=none; b=QbITcokUhcS+NStmNadzgiYktK1KCTqsq6mdm2BtGOhHwDu+ghDldwmll7UaY/EUOvXiVimhsAfnx7k0DGO0s1/O1rMsfsV2DJ7oYVLHprXQaX51fW7ZP1kevFSgNfd8lA6fgrGNrsxTnx+S4Z2WXBOpvGlGk1Cwqm1LxXm1iUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748524597; c=relaxed/simple;
-	bh=xkKd2cHk1cf4Qy841VN5k/WKdVh7gnj+gaE9jytpkNk=;
+	s=arc-20240116; t=1748524755; c=relaxed/simple;
+	bh=0FPlq097Hcbp5iDFnnpPEASquDvr0YwVHBR1ZnHEybM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ayS6K1xhX/Zv8pBTXg5vSRGLv5suUO9c2eZ86fSM0TuNM7Q7Wq0czmzIyhA4ro+5my1AqbAEsNZq29ZJB4LWquAWz3w0Smmt5NteS752VHBg+bnidxUg2Rav3PWyQl9PdIPCenIHGoOfRaacJj+hQsLpyzF9vzf5NUxxqw4k5hE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VCNZ1FAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6D1C4CEE7;
-	Thu, 29 May 2025 13:16:36 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=E4g2iG+mYGYySi+Vc4ndUJ+AIwFkgGas8acigmEncOq3Qp1P1MPOc216D6axVSIzKawZZn0oeZhCGGBGHYagQx5j4iRDr64wCCE/wkEEqcLCPGSfOwDTWl9otIkBXcmaPmUhVUGN2aUdzLAh6Ykq9ijsUjJo+YfWOKzeNHbRRMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bGpNNkhu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23FFAC4CEE7;
+	Thu, 29 May 2025 13:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748524596;
-	bh=xkKd2cHk1cf4Qy841VN5k/WKdVh7gnj+gaE9jytpkNk=;
+	s=k20201202; t=1748524754;
+	bh=0FPlq097Hcbp5iDFnnpPEASquDvr0YwVHBR1ZnHEybM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VCNZ1FAy8MUohtLLaV44gqwnrFik752j5osN5fjTHMGtT9qHFSEAi83KPe3RpUshN
-	 nqfFRZzwJz1Je65+SS6T6hflk5GngvPcSWDOhxQaUjM6LvaezVxef8FWH6Bd8slDoL
-	 0nuvceJWfXPXcLKfQj98TB0Bp+LdpO2mNpQjzHh/bRHTXrvX8DV10atLopNj3EJGvd
-	 /+7pJSL9tKH2tzRk8AzeP7jTNKjJvCUBPUygGPZK4HCjZwxi8C9OjXZSNMoQjnnv1w
-	 YoYvENXwjznj2VL1hs2ktvaCX1adX1VPwZPokaDZz8pKQNMEgizqTsuDtjeIaj4JiE
-	 ol3UYYZDaangQ==
-Date: Thu, 29 May 2025 08:16:34 -0500
+	b=bGpNNkhuC+2wzq01z4Hg6fg9gFT4OCGfEH33UX/SRQFSxkuIstRSlH8RLLfCGnjJP
+	 uLFY9f0FoIssiPqFtK9kkSboA5flQ+CQUdZkyEvUwI67Iiz3100skqqJj3zl5NaBIC
+	 Vp4raynx46b7liwMGM5/alirwYlvjt0bi622Gh8UzySB9RP2UZTKFwyuOOACBZsj5A
+	 pSpwn6kw8oVm/aNX63avKm3Mz/WoaVdPCbAW/fWLnWIr9O0l/EKUmgRgHLwFGzWJCx
+	 /PUGfC1aBQdwZF90uxJqFFjJOuTfvP2Yg5RcNQ/yU4N0Y5PYuqmpr1pgm64RrXUaE4
+	 IXj77ReiEv96Q==
+Date: Thu, 29 May 2025 08:19:12 -0500
 From: Rob Herring <robh@kernel.org>
-To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, x86@kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>, devicetree@vger.kernel.org,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Chris Oo <cho@microsoft.com>, linux-hyperv@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Ravi V. Shankar" <ravi.v.shankar@intel.com>,
-	Ricardo Neri <ricardo.neri@intel.com>
-Subject: Re: [PATCH v3 06/13] dt-bindings: reserved-memory: Wakeup Mailbox
- for Intel processors
-Message-ID: <20250529131634.GA2784667-robh@kernel.org>
-References: <20250506051610.GC25533@ranerica-svr.sc.intel.com>
- <20250506-pompous-meaty-crane-97efce@kuoka>
- <20250507032339.GA27243@ranerica-svr.sc.intel.com>
- <20250512153224.GA3377771-robh@kernel.org>
- <20250513221456.GA2794@ranerica-svr.sc.intel.com>
- <20250514154248.GA2375202-robh@kernel.org>
- <20250515035338.GA4955@ranerica-svr.sc.intel.com>
- <20250519152937.GA2227051-robh@kernel.org>
- <20250519175606.GA9693@ranerica-svr.sc.intel.com>
- <20250524155650.GA16942@ranerica-svr.sc.intel.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Herve Codina <herve.codina@bootlin.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 23/26] misc: lan966x_pci: Introduce board specific data
+Message-ID: <20250529131912.GA2798026-robh@kernel.org>
+References: <20250507071315.394857-1-herve.codina@bootlin.com>
+ <20250507071315.394857-24-herve.codina@bootlin.com>
+ <8b97e095-dbed-438c-9c6d-d3c2c5929fc0@lunn.ch>
+ <CAMuHMdUVvOMavxSAKaSMOwj_zXR=5h8KrrqNg4RS2Yaw3WXpKg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -78,121 +91,37 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250524155650.GA16942@ranerica-svr.sc.intel.com>
+In-Reply-To: <CAMuHMdUVvOMavxSAKaSMOwj_zXR=5h8KrrqNg4RS2Yaw3WXpKg@mail.gmail.com>
 
-On Sat, May 24, 2025 at 08:56:50AM -0700, Ricardo Neri wrote:
-> On Mon, May 19, 2025 at 10:56:06AM -0700, Ricardo Neri wrote:
-> > On Mon, May 19, 2025 at 10:29:37AM -0500, Rob Herring wrote:
-> > > On Wed, May 14, 2025 at 08:53:38PM -0700, Ricardo Neri wrote:
-> > > > On Wed, May 14, 2025 at 10:42:48AM -0500, Rob Herring wrote:
-> > > > > On Tue, May 13, 2025 at 03:14:56PM -0700, Ricardo Neri wrote:
-> > > > > > On Mon, May 12, 2025 at 10:32:24AM -0500, Rob Herring wrote:
-> > > > > > > On Tue, May 06, 2025 at 08:23:39PM -0700, Ricardo Neri wrote:
-> > > > > > > > On Tue, May 06, 2025 at 09:10:22AM +0200, Krzysztof Kozlowski wrote:
-> > > > > > > > > On Mon, May 05, 2025 at 10:16:10PM GMT, Ricardo Neri wrote:
-> > > > > > > > > > > If this is a device, then compatibles specific to devices. You do not
-> > > > > > > > > > > get different rules than all other bindings... or this does not have to
-> > > > > > > > > > > be binding at all. Why standard reserved-memory does not work for here?
-> > > > > > > > > > > 
-> > > > > > > > > > > Why do you need compatible in the first place?
-> > > > > > > > > > 
-> > > > > > > > > > Are you suggesting something like this?
-> > > > > > > > > > 
-> > > > > > > > > > reserved-memory {
-> > > > > > > > > > 	# address-cells = <2>;
-> > > > > > > > > > 	# size-cells = <1>;
-> > > > > > > > > > 
-> > > > > > > > > > 	wakeup_mailbox: wakeupmb@fff000 {
-> > > > > > > > > > 		reg = < 0x0 0xfff000 0x1000>
-> > > > > > > > > > 	}
-> > > > > > > > > > 
-> > > > > > > > > > and then reference to the reserved memory using the wakeup_mailbox
-> > > > > > > > > > phandle?
-> > > > > > > > > 
-> > > > > > > > > Yes just like every other, typical reserved memory block.
-> > > > > > > > 
-> > > > > > > > Thanks! I will take this approach and drop this patch.
-> > > > > > > 
-> > > > > > > If there is nothing else to this other than the reserved region, then 
-> > > > > > > don't do this. Keep it like you had. There's no need for 2 nodes.
-> > > > > > 
-> > > > > > Thank you for your feedback!
-> > > > > > 
-> > > > > > I was planning to use one reserved-memory node and inside of it a child
-> > > > > > node to with a `reg` property to specify the location and size of the
-> > > > > > mailbox. I would reference to that subnode from the kernel code.
-> > > > > > 
-> > > > > > IIUC, the reserved-memory node is only the container and the actual memory
-> > > > > > regions are expressed as child nodes.
-> > > > > > 
-> > > > > > I had it like that before, but with a `compatible` property that I did not
-> > > > > > need.
-> > > > > > 
-> > > > > > Am I missing anything?
-> > > > > 
-> > > > > Without a compatible, how do you identify which reserved region is the 
-> > > > > wakeup mailbox?
-> > > > 
-> > > > I thought using a phandle to the wakeup_mailbox. Then I realized that the
-> > > > device nodes using the mailbox would be CPUs. They would need a `memory-
-> > > > region` property. This does not look right to me.
-> > > 
-> > > That doesn't really make sense unless it's a memory region per CPU.
-> > 
-> > Agreed.
-> > 
-> > > 
-> > > 
-> > > > > Before you say node name, those are supposed to be 
-> > > > > generic though we failed to enforce anything for /reserved-memory child 
-> > > > > nodes.
-> > > > 
-> > > > I see. Thanks for preventing me from doing this.
-> > > > 
-> > > > Then the `compatible` property seems the way to go after all.
-> > > > 
-> > > > This what motivated this patch in the first place. On further analysis,
-> > > > IIUC, defining bindings and schema is not needed, IMO, since the mailbox
-> > > > is already defined in the ACPI spec. No need to redefine.
-> > > 
-> > > You lost me...
-> > > 
-> > > You don't need to redefine the layout of the memory region as that's 
-> > > defined already somewhere,
-> > 
-> > Great!
-> > 
-> > > but you do need to define where it is for DT. 
-> > > And for that, you need a compatible. Do you know where it is in this 
-> > > case?
-> > 
-> > The compatible is not defined anywhere yet. Is a DT schema needed to
-> > document it? If yes, I am usure what to put in the description. We tried
-> > to not redefine the mailbox and refer to the ACPI spec. That was a NAK
-> > from Krzysztof [1].
-> > 
-> > [1]. https://lore.kernel.org/r/624e1985-7dd2-4abe-a918-78cb43556967@kernel.org
+On Thu, May 08, 2025 at 09:13:33AM +0200, Geert Uytterhoeven wrote:
+> On Thu, 8 May 2025 at 00:24, Andrew Lunn <andrew@lunn.ch> wrote:
+> > On Wed, May 07, 2025 at 09:13:05AM +0200, Herve Codina wrote:
+> > > Only one device-tree overlay (lan966x_evb_lan9662_nic.dtbo) is handled
+> > > and this overlay is directly referenced in lan966x_pci_load_overlay().
+> > >
+> > > This avoid to use the code for an other board.
+> > >
+> > > In order to be more generic and to allow support for other boards (PCI
+> > > Vendor/Device IDs), introduce the lan966x_pci_info structure and attach
+> > > it to PCI Vendor/Device IDs handled by the driver.
+> > >
+> > > This structure contains information related to the PCI board such as
+> > > information related to the dtbo describing the board we have to load.
+> > >
+> > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> >
+> > How big is the dtbo ?
+> >
+> > This is going in the right direction. I'm just wondering if each dtbo
+> > should be wrapped in its own very slim PCI driver, which simply
+> > registers its lan966x_pci_info structure to a core driver. Only the
+> > needed dtbo will then be loaded into memory as a module, not them all.
 > 
-> In summary, documenting the `compatible` property for the mailbox is
-> necessary. There is no need to redefine the malbox on a schema but
-> referring to the ACPI spec is not acceptable.
+> Alternatively, the dtbo could be loaded through request_firmware().
+> That could lead to a generic support option in the PCI core, which would
+> fallback to loading pci-<vid>-<pid>.dtbo when no driver is available.
 
-There's the whole "DT bindings in ACPI systems" where ACPI tables 
-contain compatibles and DT properties which I think is what 
-Krzysztof was objecting to (and I do too). But this is a DT based system 
-that implements a mailbox region defined in an ACPI spec. That is 
-perfectly fine to refer to.
-
-> 
-> What about referring in the schema to the Intel TDX Virtual Firmware Design
-> Guide[2]? It describes how firmware should implement the mailbox the section
-> 4.3.5.
-> 
-> A mailbox with compatible = "intel,wakeup-mailbox" is implemented after the
-> guide that Intel published.
-
-Use whatever you think best describes the programming model of the 
-region.
+Yes!
 
 Rob
 
