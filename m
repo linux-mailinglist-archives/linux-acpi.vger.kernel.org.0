@@ -1,414 +1,215 @@
-Return-Path: <linux-acpi+bounces-13922-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13923-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2DFFAC7972
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 May 2025 09:11:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A3DAC79D2
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 May 2025 09:31:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E94FE3AD434
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 May 2025 07:11:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D89643A6DA2
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 May 2025 07:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5407256C81;
-	Thu, 29 May 2025 07:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93BD1386DA;
+	Thu, 29 May 2025 07:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fBR/qrYC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W6yoa/w1"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575CEC8EB;
-	Thu, 29 May 2025 07:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748502709; cv=fail; b=SWE9EloGI9cS9BiGSL+kQNzg3np7LR8Sdyny3zzcTPPC3n30cdRHHuwF3+KuU+3f7jHeV2TJ+Cbh/7BrJwjdPxXcVmrfsYfzQLdCHoeirb5r5tPLScqtBym/nRxVjGSoXgOutKR+kwVEYmtzZ93KXQoXp0xUl6NHyn2dw3hqYCc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748502709; c=relaxed/simple;
-	bh=VfpvQ6emcpDO7ILl18A/qmzbfs6+f39GyaSh1UqTE+M=;
-	h=Message-ID:Date:Subject:From:To:CC:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=dKuLNTZx7mrdpYtbMhrAyxkEsXw+bHG4tURc1raosuH90u37AbB2YfmX7JXkr6otLWnNG2men5D0yA6BEFY1G1Ys/sDXg4kKuBtxMiDMRcr1klVhtW1Iur28mX/9KssJubApph3iHsSCLT2qP9p5tg/i9sl/NXk1Nc32af/nBTg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fBR/qrYC; arc=fail smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1342A2DCBE6;
+	Thu, 29 May 2025 07:31:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748503906; cv=none; b=t7IP8/eac4OMU210t9r9n7B8Mm1zdZiVmtvYtrXdfemNydGjNavBM1RUAMFwOLKvrUq4km8Hw57ds8OkbGqc7jx1C0fgv5uQw9RxhaFQH8TJZ+6AdM8GQs0CK4/qp3KS9fjjgcKHr/CCQWYZ96yNnVfSVuF3BNamsS9CzssiqCE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748503906; c=relaxed/simple;
+	bh=BmpTxAwkPDoypxd4eN/wqZL67FUYMr2NQp11HiGVh2E=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=gupZR2YcNX7WTuAcX762590R7mdZFdCm3bpWJ/Wlq7If7e6XLHp4ek/KWL68XA5YaWzVV/V4yvo45kv5b6vwAxXx7C0P9Kr8Th2jMnEs8+ep63ar1uHGzK0jLtc7lFAOhWZUfCuLICp6sNgD7qfcA2VqFjhtgBRZDI/EGYUGJKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W6yoa/w1; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748502707; x=1780038707;
-  h=message-id:date:subject:from:to:cc:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=VfpvQ6emcpDO7ILl18A/qmzbfs6+f39GyaSh1UqTE+M=;
-  b=fBR/qrYCbAicJr2YfMH0mCf7C7lBwo6l9AuU0ugRDE4HFrrJ8iNVJZFb
-   3re/KEzLW1pya+A2f9kabiyu6jEvpdTxny8eLmG1sHV89fL59M6KdLRrh
-   sX8pdhMpFFG8cgO+2iw4f4Wd3hgLv85A23ZtgHfUj4ayOsp0RvLeFcOSc
-   rlUbe/JgPzd32iQwfHLxYgr1pKzxU4hsxw4RLPfzuAJQpeQBZUi5zlqYz
-   g3KgenUvyQcvnNZgnqMj/QleF7deo22TAiaQnIBU0/HGTgJ8nH9CPI8it
-   O0aZBdBAkP+ctqC3TeH75i2KSUV9iMX2HId8rcM2DL1jkY6d5U//JHKxx
+  t=1748503905; x=1780039905;
+  h=date:from:to:cc:subject:message-id;
+  bh=BmpTxAwkPDoypxd4eN/wqZL67FUYMr2NQp11HiGVh2E=;
+  b=W6yoa/w1o9RVQCF6DnNl34R7E+K+f7vIl0qZepY3zpe4Gk/K6uOAI1WF
+   L2FODhqqxpFX5JfXEiCOMG5uqleNhs8CETqn2VBEYwsHB/8MNX2c5XY9Q
+   0teMklhAHHIRvJqNTMrdXa/ZPfM+ZSAj83bpef/tsHixwHj8ZFABdCYai
+   PM6skHYq/0RQNdO+i8vuESkkfM3UF1yaCA2Z1vTOOIdbMOjOnVzvobDGG
+   SfLx7Yh8lZsljVA9j2Yh9BuhDMgglXeqkchmRhi8Z8MwaiKJ0AyZcWuT3
+   mroT1neyrtSOtN0hFqXCRAFE4HfjQtDmdhRHqvvi/megvOHg1jx95iXjq
    Q==;
-X-CSE-ConnectionGUID: q1td3EAtRjKE1FswnyKUEw==
-X-CSE-MsgGUID: B/iE7Um7Qs238LFuM3Pcmg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="50476644"
+X-CSE-ConnectionGUID: qRLJV2sfR6Cl1VmgW48lmw==
+X-CSE-MsgGUID: w137TlxjSPatAGzk+jbquQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="50478677"
 X-IronPort-AV: E=Sophos;i="6.15,323,1739865600"; 
-   d="scan'208";a="50476644"
+   d="scan'208";a="50478677"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2025 00:11:20 -0700
-X-CSE-ConnectionGUID: wrPkyp2wTge6R3IphScr9w==
-X-CSE-MsgGUID: BmwXDZjrTM6QlugztMWipA==
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2025 00:31:44 -0700
+X-CSE-ConnectionGUID: OCzeX7KXTx+vXzjGvLLxZg==
+X-CSE-MsgGUID: VsE4SDp7TtSLsIWFt/MgNQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,323,1739865600"; 
-   d="scan'208";a="180676539"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2025 00:11:21 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 29 May 2025 00:11:19 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Thu, 29 May 2025 00:11:19 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (40.107.93.50) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.55; Thu, 29 May 2025 00:11:19 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mGdupfpn9LnDNmwt2o/cxMCnGrBTTpxdxj7cliTLq3hkrZ1r5dvIuqjcbcXKxbrUWhSRZ6plJMs/QkkUxWjJuC0dzhGK4TzIqnHfe/WpPjAU9oXc+3Pd8ZYk3jw4xitqJ7kACLsRIuiMLe7kGzj9/WEE/WGSYfPEuo8FTlPdEkwEk3bk6wMpkwnKscclqvjWEaVa/Vba+/4hTjaLq3Mpxj85OVh3H2Jw29Id24aksfQW5yp6eG8kiU3nnl13+w7VNlJ5yjVQJF6g0NNNtCtNagPoayt8CFlxLsu1nrsSABcTmSc0PukrXJ/sTPtw80gd5QA4zuwiaHCQLo8AmJAAhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kM11LU6AmK23ZixCXOIYb/Nfn30nvRAZoVUpUcZ1df8=;
- b=tTvKAkaMSX9Fm9nN7D5MK3SmCyfl/glaJL4chP5L/xuJ/O1a25Xh4i01CHUFgY6clepZZnbkGpEHKVb/EzIBOQBpDV6w2BHh676GJ9mbZaGXTymRaG0Knd6MeY7res+g/T7FcaSwRsb1gLKY8b78WLy/e34dn5Ui1OtVZGUf7uNgWBTdfZ8izLPcTDpwE4WnZ20NGh8SteDQQwB4rMDuZncG8yV/DuDF9dJ9Bwy6/XfFQEw3bDq21C1Rp1rxoBS7/LaiVgXPlgGoZZtf32FG7UXGN/A5vfOdWsLuMzkCgKJw4FasjAIEGSPHRXFe5d+VggM3HOxk0KYBt8eXVN2Q0A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BN9PR11MB5530.namprd11.prod.outlook.com (2603:10b6:408:103::8)
- by SJ2PR11MB7574.namprd11.prod.outlook.com (2603:10b6:a03:4ca::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.24; Thu, 29 May
- 2025 07:11:17 +0000
-Received: from BN9PR11MB5530.namprd11.prod.outlook.com
- ([fe80::13bd:eb49:2046:32a9]) by BN9PR11MB5530.namprd11.prod.outlook.com
- ([fe80::13bd:eb49:2046:32a9%5]) with mapi id 15.20.8769.025; Thu, 29 May 2025
- 07:11:17 +0000
-Message-ID: <d73fdbbf-699d-48cf-948f-f8cf678ce165@intel.com>
-Date: Thu, 29 May 2025 12:41:07 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/11] PCI/ACPI: Add D3cold Aux Power Limit_DSM method
-From: "Nilawar, Badal" <badal.nilawar@intel.com>
-To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	<intel-xe@lists.freedesktop.org>, <linux-acpi@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>
-CC: <anshuman.gupta@intel.com>, <rafael@kernel.org>, <lenb@kernel.org>,
-	<bhelgaas@google.com>, <ilpo.jarvinen@linux.intel.com>,
-	<lucas.demarchi@intel.com>, <rodrigo.vivi@intel.com>,
-	<varun.gupta@intel.com>, <ville.syrjala@linux.intel.com>,
-	<uma.shankar@intel.com>
-References: <20250523190155.2623462-1-badal.nilawar@intel.com>
- <20250523190155.2623462-2-badal.nilawar@intel.com>
- <e9b74268-7b5b-432f-9a4b-9566b0a62ca0@linux.intel.com>
- <b5a54c14-a6b2-4a91-9618-c03cc4e775ed@intel.com>
-Content-Language: en-US
-In-Reply-To: <b5a54c14-a6b2-4a91-9618-c03cc4e775ed@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0014.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:80::21) To BN9PR11MB5530.namprd11.prod.outlook.com
- (2603:10b6:408:103::8)
+   d="scan'208";a="180681149"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 29 May 2025 00:31:42 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uKXjo-000WRA-1z;
+	Thu, 29 May 2025 07:31:40 +0000
+Date: Thu, 29 May 2025 15:31:26 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 1d91abb8433c448e8e493c4e175968c1e6585934
+Message-ID: <202505291516.fNFeSlMT-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR11MB5530:EE_|SJ2PR11MB7574:EE_
-X-MS-Office365-Filtering-Correlation-Id: 14e47083-d8a8-4fa1-52de-08dd9e800112
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?OHBDbjY0cE9SbmtVNWdLdkNtYk5FcEJtV25NV1Vsazh1QmxwSDl4NGJMRnpM?=
- =?utf-8?B?RTM5WGg4enNFQ1FvZ1pmRlY2bWFwNFhkRzFSeStBUE5FYzZmVndreFdQcmVh?=
- =?utf-8?B?bVArZWJWSTZPVURJcGozeVBab3dSL2JTZjhKeGFxdzVtMmVYZllsUy9wdEtS?=
- =?utf-8?B?TVNkVGJyQ0padzFrbVBTYWl6bkliWFNYRUg3TUpZSE1hVXg0Z1NQTmxja0ZG?=
- =?utf-8?B?Q2xqNXY4b3h3MHFHVGJqK2hyZUhDbEJITWJmK1Q1Y1BtNWgwdURGaU44OHJ6?=
- =?utf-8?B?N04xcVVkSzlYRGM5bnhLUTVUZnVyWlIrWlNQOW5WK1k2TXhOQURYUTVOU2JM?=
- =?utf-8?B?eVdWSjRKcXl5bFZoR3hZUFUzaXpmREZxb3gzWDJqdDZFQ0hiQmpnSnQ0Y1Rw?=
- =?utf-8?B?M2g1N0VxcXpOanNtSS9rU0NzOG4xaFU2L20yY0xEbGZFTEt5OEd1N0lmUW8x?=
- =?utf-8?B?VFdGSElUenRSSnk5SHhHT2J3VzlxVGJYMzE4RCt0Vlc3TGZyYXRBUTBvTTlE?=
- =?utf-8?B?YVE4eDJReWNXRUhQb3poL3ZTVUR0K1BvRTNuTUZPc0RrU1VEZ2dBYlVaVm5w?=
- =?utf-8?B?OEhySmFYcHd2d0NIQklmS3RRSFYvOWdzSUtEVlBlc1ZIZmNDVVozcElMR1k5?=
- =?utf-8?B?VDRCK2RBNGgzSnpBNU9UdHdYS1lhNS9WMUoxZHFiZndEaEowU3BZQ3c2YU16?=
- =?utf-8?B?MFpJUWl0OXd3bVRTekh5VEl4b3R6R203NmxyR1VWaFFkb2o5YzVaT0lYZm83?=
- =?utf-8?B?K2o2S3ZPWUNTdHQ5YWgvSmsvZW5nZ0lKU3YxcndEUG91ZE5MWll1T2MzOEV3?=
- =?utf-8?B?OUVac1hsVGZHRWgxMmpmbmo0c2NFMC9RdDhOVE1Mc2ljTTZNcldUc2xUUDlG?=
- =?utf-8?B?emIyekQ3RHU1RjUyQThzV3UrdCt1UlpJNG9Iamp4elFzRG5Fam1XbmdBUFNX?=
- =?utf-8?B?QnVqQ2RPY2tkVm5kWk92YnZkN2QzQUxJTFRkbG5MTkJHVVZjOXJINFlGMlB2?=
- =?utf-8?B?VFpsdzZURWc1NHB5ZG5SZEwwRmlOcXNPSExsek5FZ3dZWmhHZWdaWG9tdm41?=
- =?utf-8?B?QmhuWk1GKy9iY0YwRTJoMGU1OG03WlA0djBzZS9ycjRESUI5azFXc1BOZEFS?=
- =?utf-8?B?RUdZaW1uR0FVQ3BmTXRXd2pTR0JLdmlHQmNJNm5PZkNGNHNyMi9XVkMyUFow?=
- =?utf-8?B?ZjFiVDBabm41b1JtMGZVYS81ZXhWMzhjTFByVHZML1VTbzhGNVducFk4bFlH?=
- =?utf-8?B?QU9GVzNQNDZqYkhGSW51OU5YZ1p6VXhVeGpZZmpSdEd6VUdpYkVxekE5V3l3?=
- =?utf-8?B?USttdnFYWlRWNG1ndURibTZjbEpOUWdra1hyTmFDcDRBRkYxWW5FNEhJN2tv?=
- =?utf-8?B?U2I3ZFdmUm83VUNoSktucWQ1WnVLWWJ6RWlnODVlWWdyai9zMzVsbWVubzVS?=
- =?utf-8?B?TkhOaXh1QnJYVlh1eWhsdkN4bVA3VkM2SE51MXE1NVdlYjlFOWcyZGJnK2J3?=
- =?utf-8?B?YzJIUnByNXlpa1ZsNEFTUWx0SWVhYTlpamphRldXZ1NDWnI5cS9kQm5ZbXRB?=
- =?utf-8?B?S1NKVnMydWlvb05lQmxwWEc0V2llY1NOVzJ5OXZ2MmhiUlA3V2tUQUxIYmNh?=
- =?utf-8?B?YWs1ODBXeWlqbDBranFkeFYvYWVnbXFUZGVMSUdzVXkvaytXRGlqUnBETXFE?=
- =?utf-8?B?Z1JMbjdhUzFZOEc1cjhadWlYUVpXbGoyd2IyY1VwTVFkVlFDeTViQWo2Z1c2?=
- =?utf-8?B?V2VZNkpHeFdvd1dmUSt1SmFobjlKM3U0Sk9KYlNVMEYwMEh1U1V3c3BmRDBQ?=
- =?utf-8?B?M25ZNjdNZlV3dWVkdkFSOEtrSEtuYnZJTGdtVXZyc254NHBncTgvbjlyS29I?=
- =?utf-8?B?QnFRZTF5ZlFyeW40OERDaVNyTDhtL2NFMkovRkVPV0dYcUpXeGltdmNrSnNZ?=
- =?utf-8?Q?eX3y894XvwY=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5530.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q0RVa2JTSkpPQzZWOU1wUC9VWVdqYk00TFpOS2pmMllSMU9SbFBDeWFTdjVq?=
- =?utf-8?B?Vi82UE5uV2ZDVG44Y0t5VWVIZHl3dkplNnZpVE1TdUUvNEpVdmlUUXhmQ1Zt?=
- =?utf-8?B?QWtoV1V1MHQvNzUzNTVac3NHRnZrS0dnK0tUQy9BSDA4WlhZclpDbThMSFF5?=
- =?utf-8?B?RHZHei9Kak9aNlFiWDFhUmdCT0JyV29UV2xqSFo4dE9HMG52blFNZHR4L0kw?=
- =?utf-8?B?R25pNmUxSnFKYS8wNFV2R2kvUm1EcURySHdJMWxhVmIvNzhNL0FPTzN5alVY?=
- =?utf-8?B?SFNTUnlNZmU0Y3MrSHVFczBWdEpRa1pvQVIzbXhObUJDaGtVNlQ1ZzFOYy9h?=
- =?utf-8?B?aisxY2JaYmZlcHQrelJFSWt3SkxJRFZpemZBODkzVTJ6OC9lYjRzTGd3Qkor?=
- =?utf-8?B?Qk1CRTJHVEdKTERiRmNpd1NRVWlMdW1oc2ZiaEl5bGxlVWdhWllrRUh1MDF1?=
- =?utf-8?B?bjNTQzZTbms5L2syVW9Iei9OdytoZ3pPRHFEUXFyZjNOditEbmlNNU94V0sw?=
- =?utf-8?B?MU1EaHpXSFl2S3BuTVp0d2hWUWdOdkxsR2Y4ZnRlNitiNUVNclYrTThKMmlh?=
- =?utf-8?B?emxFOWFtZ3pWendhcUhNNFN6U2hhM3UrSmxBaTA2QUk5dGFicGhRdWQrK0dV?=
- =?utf-8?B?TWNibHJOWXVLUVptQkJyZ2RyVmtZS0FvWis0bHE2SnorY0hBdERiSFlZek12?=
- =?utf-8?B?Z1NvNVI3NnBPU2owS2FEbVdjMHFHdEVSU1d0cTRmeW90aG1iMUY0UU50bENE?=
- =?utf-8?B?Yk8xbE9yU0UxblR1Y09WWENZemNGT0VKUUh1OGhyY2lHMzR6V3pRTEhLZVBl?=
- =?utf-8?B?dlo4R1FWTW8zQ1kxQlNGaWdYemU0N0pWYnRlZmU0UTZOcXpWeFdxU29YYmVo?=
- =?utf-8?B?dXFiK1MxakxIV25LcGlxcFFBOGZ1K0hRSDloR2NQT21BQ1JZcWdsYjFpVWgy?=
- =?utf-8?B?ZzJPQS9UNW5CNXZRSWMxWWZHRTBPSHRURnZJWkZWUWl6bk91aHQ1OGhtUyts?=
- =?utf-8?B?ei9IQXNNaU5CTWhJMlUxL0tUSjA3TXBzQXdZUnBZT3lpUURlS3Z3RWVER0N1?=
- =?utf-8?B?N2NkRFFVbmxCR0crOWMrdEY4Q254eGpaTjFrdlUyVFRNenpxaDc4SUQ5RXVH?=
- =?utf-8?B?ek4xdWZtSk9xbzRYQ3k0UE9OVGN5SVVrUWV4WXZqeGc1M0lNOW1vK29BSFdx?=
- =?utf-8?B?bVEzU3dlOUFyYndHZVJTU1lZWWhEcUp1a0xZbE9ZTndYYlRyZC9YMmxINVRm?=
- =?utf-8?B?ZEdLL204OXAvNXJhRCtDZXpnanBRSGdHMzlPZ1NCS1JROEkwUzJscU4rTUx0?=
- =?utf-8?B?Zm52eUJqeEl3NnREajN1ZlZManhsLy8vTEhnUHVtQTM3czJncVJZeUN0akNW?=
- =?utf-8?B?NWN3UEJSWXF3bVhTb2tyUDNRL21QUG04ek9DVUQyMlhLeUo0b1oxRWNHNWRP?=
- =?utf-8?B?cmZjd1dCT1BxK3kwTFZvUUt4N3pEQkNZTWNuTlIwYmtvc2MxUVVyVHpKYk5n?=
- =?utf-8?B?Ty9zNzJtakkwM1ZPdGFGKzdYOGQydU4wdzlFamdsRVNheXlYUC9yNUlKbjRC?=
- =?utf-8?B?YnFlTFNIdFdqNW1EeHdYVGNHaWMwbmhWQVBkck50ZitMaVhERjFRMEE1b1Iw?=
- =?utf-8?B?bjJ6VXJQU1VOeVR4d2ZwN2ZVMW1yNnRqejg5aXY4TGcyc09lTUtpUjNHNS9n?=
- =?utf-8?B?bEtIZ0EyNFFiN1ZtWmxGUmJRYUFmZ3ZmNHNNelFranliTG8xSGpnRDRNZ2Vj?=
- =?utf-8?B?QkxyM1gzcEQwZGZ4L3Z4MFNQbUt2Z0VkRXRVOWRPcWYydkFLeFI1UW4yTWhM?=
- =?utf-8?B?SWpIWWdEM1VyUngrSDZNMmdRQ3FpR0N2ZU5Nd0RVeXc2YlpwcHFLZDJ6c2ox?=
- =?utf-8?B?NFlzY1hmZzJKVDR1bGhIOFBoOER5REdlbmlPam1LSlJwRE9uMWJReFpHelRQ?=
- =?utf-8?B?VmJnZHBRck9Jd2hHM0s5QzNQUjBJSU9HTEpQVkdpNnl4L21NbzdxN1c1WS9k?=
- =?utf-8?B?VjhYU1FiVXVsVkdEL1BJT2hIWUczdUF4R2d6OTJObm5iS0dyTkxwdmlDb2F1?=
- =?utf-8?B?TEl3SlBkN2U0WGY3VG1WTGRrR28wQjBrdnVTa2xESW82L2xGeTVXVVF0MU02?=
- =?utf-8?Q?EKhf3tgDiuqtqx9/Va195bKSv?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14e47083-d8a8-4fa1-52de-08dd9e800112
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5530.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2025 07:11:17.0897
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D/3NIHorqg7vKDfQdBuGsnS4ZwLGeWM9nzv0jCJCEckL6/2ltEqZd5PTiXHZSJ8NOMHVERwsR0w1eywosrgo1Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7574
-X-OriginatorOrg: intel.com
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 1d91abb8433c448e8e493c4e175968c1e6585934  Merge branch 'pm-sleep-testing' into bleeding-edge
 
-On 29-05-2025 11:48, Nilawar, Badal wrote:
->
-> On 24-05-2025 11:30, Sathyanarayanan Kuppuswamy wrote:
->>
->> On 5/23/25 12:01 PM, Badal Nilawar wrote:
->>> From: Anshuman Gupta<anshuman.gupta@intel.com>
->>>
->>> Implement _DSM method 0Ah according to PCI firmware specifications,
->>> section 4.6.10 Rev 3.3., to request auxilary power needed for the
->>> device when in D3Cold.
->>>
->>> Note that this implementation assumes only a single device below the
->>> Downstream Port will request for Aux Power Limit under a given
->>> Root Port because it does not track and aggregate requests
->>> from all child devices below the Downstream Port as required
->>> by Section 4.6.10 Rev 3.3.
->>
->> Add some info about why you are not adding this support?
-> Scope is limited to enable the use case of VRAM-SR on BMG GPU. I will 
-> mention this in cover letter.
->>
->>> One possible mitigation would be only allowing only first PCIe
->>> Non-Bridge Endpoint Function 0 driver to call_DSM method 0Ah.
->>>
->>> V2(Bjorn/Rafael):
->>>    - Call acpi_dsm_check() to find method 0Ah supported
->>>    - Return retry interval to caller
->>>
->>> Signed-off-by: Varun Gupta<varun.gupta@intel.com>
->>> Signed-off-by: Badal Nilawar<badal.nilawar@intel.com>
->>> Signed-off-by: Anshuman Gupta<anshuman.gupta@intel.com>
->>> ---
->>>   drivers/pci/pci-acpi.c   | 87 
->>> ++++++++++++++++++++++++++++++++++++++++
->>>   include/linux/pci-acpi.h |  8 ++++
->>>   2 files changed, 95 insertions(+)
->>>
->>> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
->>> index af370628e583..76b19525535f 100644
->>> --- a/drivers/pci/pci-acpi.c
->>> +++ b/drivers/pci/pci-acpi.c
->>> @@ -1421,6 +1421,93 @@ static void pci_acpi_optimize_delay(struct 
->>> pci_dev *pdev,
->>>       ACPI_FREE(obj);
->>>   }
->>>   +/**
->>> + * pci_acpi_request_d3cold_aux_power - Request aux power while 
->>> device is in D3Cold
->>> + * @dev: PCI device instance
->>> + * @requested_power: Requested auxiliary power in milliwatts
->>> + * @retry_interval: Retry interval returned by platform to retry 
->>> auxiliary
->>> + *                  power request
->>> + *
->>> + * This function sends a request to the host BIOS via root port 
->>> ACPI _DSM Function 0Ah
->>> + * for the auxiliary power needed by the PCI device when it is in 
->>> D3Cold.
->>> + * It checks and evaluates the _DSM (Device Specific Method) to 
->>> request the auxiliary
->>> + * power and handles the response accordingly.
->>> + *
->>> + * This function shall be only called by 1st non-bridge Endpoint 
->>> driver
->>> + * on Function 0. For a Multi-Function Device, the driver for 
->>> Function 0 is
->>> + * required to report an aggregate power requirement covering all
->>> + * functions contained within the device.
->>> + *
->>> + * Return: Returns 0 on success and errno on failure.
->>> + */
->>> +int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 
->>> requested_power,
->>> +                      u32 *retry_interval)
->>> +{
->>> +    union acpi_object in_obj = {
->>> +        .integer.type = ACPI_TYPE_INTEGER,
->>> +        .integer.value = requested_power,
->>> +    };
->>> +
->>> +    union acpi_object *out_obj;
->>> +    acpi_handle handle;
->>> +    int result, ret = -EINVAL;
->>> +
->>> +    if (!dev)
->>> +        return -EINVAL;
->>
->> Is retry_interval param optional? If not may be a check here for non 
->> NULL condition is needed.
-> Yes its optional, its up to caller weather to retry or not.
+elapsed time: 1116m
 
-I will make this param mandatory and add NULL check here. Then its up to 
-caller to decide whether to retry.
+configs tested: 121
+configs skipped: 5
 
-Thanks,
-Badal
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->>
->>> +
->>> +    handle = ACPI_HANDLE(&dev->dev);
->>> +    if (!handle)
->>> +        return -EINVAL;
->>> +
->>> +    if (!acpi_check_dsm(handle, &pci_acpi_dsm_guid, 4, 1 << 
->>> DSM_PCI_D3COLD_AUX_POWER_LIMIT)) {
->>> +        pci_dbg(dev, "ACPI _DSM 0%Xh not supported\n", 
->>> DSM_PCI_D3COLD_AUX_POWER_LIMIT);
->>> +        return -ENODEV;
->>> +    }
->>> +
->>> +    out_obj = acpi_evaluate_dsm_typed(handle, &pci_acpi_dsm_guid, 4,
->>> +                      DSM_PCI_D3COLD_AUX_POWER_LIMIT,
->>> +                      &in_obj, ACPI_TYPE_INTEGER);
->>> +    if (!out_obj)
->>> +        return -EINVAL;
->>> +
->>> +    result = out_obj->integer.value;
->>> +    if (retry_interval)
->>> +        *retry_interval = 0;
->>> +
->>> +    switch (result) {
->>> +    case 0x0:
->>> +        pci_dbg(dev, "D3cold Aux Power %u mW request denied\n",
->>> +            requested_power);
->>
->> is this not a error?
->
-> No its not error. BIOS Firmware can deny the aux power request.
->
-> Regards,
-> Badal
->
->>
->>> +        break;
->>> +    case 0x1:
->>> +        pci_info(dev, "D3cold Aux Power request granted: %u mW\n",
->>> +             requested_power);
->>> +        ret = 0;
->>> +        break;
->>> +    case 0x2:
->>> +        pci_info(dev, "D3cold Aux Power: Main power won't be 
->>> removed\n");
->>> +        ret = -EBUSY;
->>> +        break;
->>> +    default:
->>> +        if (result >= 0x11 && result <= 0x1F) {
->>> +            if (retry_interval) {
->>> +                *retry_interval = result & 0xF;
->>> +                pci_warn(dev, "D3cold Aux Power request needs retry 
->>> interval: %u seconds\n",
->>> +                     *retry_interval);
->>> +                ret = -EAGAIN;
->>> +            }
->>> +        } else {
->>> +            pci_err(dev, "D3cold Aux Power: Reserved or unsupported 
->>> response: 0x%x\n",
->>> +                result);
->>> +        }
->>> +        break;
->>> +    }
->>> +
->>> +    ACPI_FREE(out_obj);
->>> +    return ret;
->>> +}
->>> +EXPORT_SYMBOL_GPL(pci_acpi_request_d3cold_aux_power);
->>> +
->>>   static void pci_acpi_set_external_facing(struct pci_dev *dev)
->>>   {
->>>       u8 val;
->>> diff --git a/include/linux/pci-acpi.h b/include/linux/pci-acpi.h
->>> index 078225b514d4..1705d03bfe26 100644
->>> --- a/include/linux/pci-acpi.h
->>> +++ b/include/linux/pci-acpi.h
->>> @@ -121,6 +121,7 @@ extern const guid_t pci_acpi_dsm_guid;
->>>   #define DSM_PCI_DEVICE_NAME            0x07
->>>   #define DSM_PCI_POWER_ON_RESET_DELAY        0x08
->>>   #define DSM_PCI_DEVICE_READINESS_DURATIONS    0x09
->>> +#define DSM_PCI_D3COLD_AUX_POWER_LIMIT        0x0A
->>>     #ifdef CONFIG_PCIE_EDR
->>>   void pci_acpi_add_edr_notifier(struct pci_dev *pdev);
->>> @@ -132,10 +133,17 @@ static inline void 
->>> pci_acpi_remove_edr_notifier(struct pci_dev *pdev) { }
->>>     int pci_acpi_set_companion_lookup_hook(struct acpi_device 
->>> *(*func)(struct pci_dev *));
->>>   void pci_acpi_clear_companion_lookup_hook(void);
->>> +int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 
->>> requested_power,
->>> +                      u32 *retry_interval);
->>>     #else    /* CONFIG_ACPI */
->>>   static inline void acpi_pci_add_bus(struct pci_bus *bus) { }
->>>   static inline void acpi_pci_remove_bus(struct pci_bus *bus) { }
->>> +static int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, 
->>> u32 requested_power,
->>> +                         u32 *retry_interval)
->>> +{
->>> +    return -EOPNOTSUPP;
->>> +}
->>>   #endif    /* CONFIG_ACPI */
->>>     #endif    /* _PCI_ACPI_H_ */
->>
+tested configs:
+alpha                             allnoconfig    gcc-14.3.0
+alpha                            allyesconfig    gcc-14.3.0
+arc                              allmodconfig    gcc-14.3.0
+arc                               allnoconfig    gcc-14.3.0
+arc                              allyesconfig    gcc-14.3.0
+arc                 nsimosci_hs_smp_defconfig    gcc-14.3.0
+arc                   randconfig-001-20250528    gcc-15.1.0
+arc                   randconfig-002-20250528    gcc-13.3.0
+arm                              allmodconfig    gcc-15.1.0
+arm                               allnoconfig    clang-21
+arm                              allyesconfig    gcc-14.3.0
+arm                            dove_defconfig    gcc-14.3.0
+arm                             pxa_defconfig    gcc-14.3.0
+arm                   randconfig-001-20250528    clang-21
+arm                   randconfig-002-20250528    clang-17
+arm                   randconfig-003-20250528    clang-19
+arm                   randconfig-004-20250528    clang-21
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-14.3.0
+arm64                 randconfig-001-20250528    gcc-9.5.0
+arm64                 randconfig-002-20250528    gcc-7.5.0
+arm64                 randconfig-003-20250528    gcc-7.5.0
+arm64                 randconfig-004-20250528    gcc-9.5.0
+csky                              allnoconfig    gcc-14.3.0
+csky                                defconfig    gcc-14.3.0
+csky                  randconfig-001-20250528    gcc-15.1.0
+csky                  randconfig-002-20250528    gcc-11.5.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-21
+hexagon                          allyesconfig    clang-21
+hexagon               randconfig-001-20250528    clang-21
+hexagon               randconfig-002-20250528    clang-21
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250528    gcc-12
+i386        buildonly-randconfig-002-20250528    clang-20
+i386        buildonly-randconfig-003-20250528    clang-20
+i386        buildonly-randconfig-004-20250528    clang-20
+i386        buildonly-randconfig-005-20250528    gcc-12
+i386        buildonly-randconfig-006-20250528    gcc-12
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    gcc-14.3.0
+loongarch                         allnoconfig    gcc-14.3.0
+loongarch             randconfig-001-20250528    gcc-15.1.0
+loongarch             randconfig-002-20250528    gcc-13.3.0
+m68k                             allmodconfig    gcc-14.3.0
+m68k                              allnoconfig    gcc-14.3.0
+m68k                             allyesconfig    gcc-14.3.0
+microblaze                       allmodconfig    gcc-14.3.0
+microblaze                        allnoconfig    gcc-14.3.0
+microblaze                       allyesconfig    gcc-14.3.0
+mips                              allnoconfig    gcc-14.3.0
+mips                          eyeq6_defconfig    clang-21
+mips                   sb1250_swarm_defconfig    gcc-14.3.0
+nios2                         10m50_defconfig    gcc-14.2.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20250528    gcc-13.3.0
+nios2                 randconfig-002-20250528    gcc-9.3.0
+openrisc                          allnoconfig    gcc-14.3.0
+openrisc                         allyesconfig    gcc-14.3.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-14.3.0
+parisc                            allnoconfig    gcc-14.3.0
+parisc                           allyesconfig    gcc-14.3.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20250528    gcc-6.5.0
+parisc                randconfig-002-20250528    gcc-14.3.0
+powerpc                          allmodconfig    gcc-14.3.0
+powerpc                           allnoconfig    gcc-14.3.0
+powerpc                          allyesconfig    clang-21
+powerpc               randconfig-001-20250528    clang-21
+powerpc               randconfig-002-20250528    gcc-7.5.0
+powerpc               randconfig-003-20250528    gcc-7.5.0
+powerpc                     tqm8555_defconfig    gcc-14.3.0
+powerpc64             randconfig-001-20250528    gcc-7.5.0
+powerpc64             randconfig-002-20250528    clang-21
+powerpc64             randconfig-003-20250528    clang-21
+riscv                            allmodconfig    clang-21
+riscv                             allnoconfig    gcc-14.3.0
+riscv                            allyesconfig    clang-16
+riscv                 randconfig-001-20250528    gcc-9.3.0
+riscv                 randconfig-002-20250528    clang-18
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-14.3.0
+s390                  randconfig-001-20250528    clang-21
+s390                  randconfig-002-20250528    clang-21
+sh                               allmodconfig    gcc-14.3.0
+sh                                allnoconfig    gcc-14.3.0
+sh                               allyesconfig    gcc-14.3.0
+sh                        apsh4ad0a_defconfig    gcc-14.3.0
+sh                    randconfig-001-20250528    gcc-9.3.0
+sh                    randconfig-002-20250528    gcc-5.5.0
+sh                        sh7785lcr_defconfig    gcc-14.3.0
+sh                          urquell_defconfig    gcc-14.3.0
+sparc                            allmodconfig    gcc-14.3.0
+sparc                             allnoconfig    gcc-14.3.0
+sparc                 randconfig-001-20250528    gcc-14.3.0
+sparc                 randconfig-002-20250528    gcc-14.3.0
+sparc64               randconfig-001-20250528    gcc-8.5.0
+sparc64               randconfig-002-20250528    gcc-14.3.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-21
+um                               allyesconfig    gcc-12
+um                    randconfig-001-20250528    clang-21
+um                    randconfig-002-20250528    gcc-11
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250528    clang-20
+x86_64      buildonly-randconfig-002-20250528    clang-20
+x86_64      buildonly-randconfig-003-20250528    gcc-12
+x86_64      buildonly-randconfig-004-20250528    gcc-12
+x86_64      buildonly-randconfig-005-20250528    gcc-12
+x86_64      buildonly-randconfig-006-20250528    gcc-12
+x86_64                              defconfig    gcc-11
+x86_64                          rhel-9.4-rust    clang-18
+xtensa                            allnoconfig    gcc-14.3.0
+xtensa                generic_kc705_defconfig    gcc-14.3.0
+xtensa                randconfig-001-20250528    gcc-14.3.0
+xtensa                randconfig-002-20250528    gcc-8.5.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
