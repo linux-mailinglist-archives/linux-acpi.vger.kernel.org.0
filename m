@@ -1,45 +1,48 @@
-Return-Path: <linux-acpi+bounces-14019-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14020-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D9DAC9078
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 15:44:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1374FAC91BF
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 16:43:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4A299E0618
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 13:43:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C72EC4A0122
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 14:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33E0220F4E;
-	Fri, 30 May 2025 13:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343DC23373D;
+	Fri, 30 May 2025 14:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DC2EdB1v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q2tGI9pC"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5869F21517C;
-	Fri, 30 May 2025 13:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A6D22F16E;
+	Fri, 30 May 2025 14:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748612652; cv=none; b=C4m6akU5D8BWvuKVmPDogssJTIRwO7iUOd1JFmrIMwGj+J4EIw99GPf8x9YtqQIvfbv1B2UTzAffDs9MLXeM/suYcf9JL3Vn1K95XY1BYfs7jgvLsuR1aOLGQtkVShafmLtYgy+kVMReV8xJTPXnBF9an2l3xfZOUHrxvPy+3yA=
+	t=1748616195; cv=none; b=YxTVYZFCIUVXNfTz+/GQqxJIbzx3ujwo0e0Mkqew3+mVbQRDTy0G4PQJyBbYUbL4vsjxtSh4PvYYaS+oyFC86vRduuvAWZiYby1lfphDzCfSBMDvP30L720t0UCZjVHvDCwVdKsZgjU3xcLER+ObketRrG0upVHr1yg1a4OlS9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748612652; c=relaxed/simple;
-	bh=GzYoAIWTFmgIn+wCMJ71Bjo9eHEgpY3fZvvllpFtNlI=;
+	s=arc-20240116; t=1748616195; c=relaxed/simple;
+	bh=mY/b1aYZ4zd+kOTmSV/9uLnE2/GpBj9H7mUyqgsW6Bg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CAHl+xILOwRqc3UN22IWD8dSBLKTWrP7ixAHwPCE6FlYmosu0GK6OfYlwh4SPKA4M2clfsq18KwaJWzKpZYjesQrOomwkuDMnG9yl13P+pwm07btJxKWQSEleCEdZUiZ/UfheXnOkP5Jv0jk7HqGdIfC1DSh6gOPQDsuqo4+oWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DC2EdB1v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060D3C4CEE9;
-	Fri, 30 May 2025 13:44:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748612649;
-	bh=GzYoAIWTFmgIn+wCMJ71Bjo9eHEgpY3fZvvllpFtNlI=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=kMyLxOWXdWFQUFo/rMtdQaePRBtI2tTDoT5aEA7xxiT9VvjSGxRiaXfPlBn1nasBXA/8gDygXYmAu3i8rVxM6q2nAuLKDZ9m5pFYesTpWSO3S+gYyymFq2GklAAgIoIkFcupZxQcr8glbeBMoAg7xt19Chpsc5l8ZPVyEX8Bpvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q2tGI9pC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5390FC4CEE9;
+	Fri, 30 May 2025 14:43:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748616194;
+	bh=mY/b1aYZ4zd+kOTmSV/9uLnE2/GpBj9H7mUyqgsW6Bg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DC2EdB1vtdkpGOZMMsKx/kpyFYb4kswSJcd1XqeGzxXAnTuPdQIBXtcYPlbZvRqlu
-	 pMa0CK8OlPD5oI5U2s/euD+DSR5ZH5OS6hF1KDGAQyQLRfMjoL9SDvfkaeWH3LWEq2
-	 4qkjbHgtim+qvaXkM5RnpzMS/0FoAbQSt/od8YZM=
-Date: Fri, 30 May 2025 15:44:06 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
+	b=Q2tGI9pCPo8JExw4qGa00gTsqQs4sZa4Zx3V77oGvTMzuJ5B9MkkW+8XR3Wr0XrE0
+	 Alm0r/RK4uIZguw/DyZP2VC59npUKO8qhOfMntAV7ZqROxgY8liBvnfVLXLdDcVCZs
+	 sbP6ZFXGI8szVTZA2KOQqvzRfJ7JJqBudpelzGpz9iNVDWB4C23iUGkMkZqM3YIbRj
+	 UkgiDZdO5ugRT5kMWiPiD0y/CExK2Apb6zlVZ4o461WaqpWyYa7k+oPpv5wF/5JT8/
+	 Wf0+O3jOgCKW55pfpLHi1r3+9dZLXHgNwpFD153bsbfO2XONDvRneDwZwFLIjYVqGk
+	 NjQhB7ZFH24wA==
+Date: Fri, 30 May 2025 16:43:08 +0200
+From: Danilo Krummrich <dakr@kernel.org>
 To: Igor Korotin <igor.korotin.linux@gmail.com>
 Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
@@ -49,10 +52,10 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-acpi@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	linux-acpi@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] rust: acpi: add `acpi::DeviceId` abstraction
-Message-ID: <2025053001-navigate-worry-c75b@gregkh>
+Message-ID: <aDnD_Bb3l6GiI_8K@cassiopeiae>
 References: <20250530123815.1766726-1-igor.korotin.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -71,21 +74,21 @@ On Fri, May 30, 2025 at 01:38:06PM +0100, Igor Korotin wrote:
 > abstractions, to create ACPI device ID tables.
 > 
 > Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
+
+As Greg mentioned it would be nice to see the subsequent patches.
+
+Also, for this to be useful you need to implement the generic glue code in
+rust/kernel/driver.rs in the generic Adapter trait.
+
+You also may want to connect it to the platform bus abstraction, just like the
+OF bindings are, since I assume that's the bus you care about?
+
 > ---
 >  MAINTAINERS         |  1 +
 >  rust/kernel/acpi.rs | 63 +++++++++++++++++++++++++++++++++++++++++++++
 >  rust/kernel/lib.rs  |  1 +
 >  3 files changed, 65 insertions(+)
 >  create mode 100644 rust/kernel/acpi.rs
-
-I'm not seeing any "subsequent patches" here.  Is this part of a patch
-series that didn't all get sent out properly?
-
-thanks,
-
-greg k-h
-
-
 > 
 > diff --git a/MAINTAINERS b/MAINTAINERS
 > index b659fb27ab63..5f8dfae08454 100644
@@ -143,10 +146,23 @@ greg k-h
 > +        // Replace with `bindings::acpi_device_id::default()` once stabilized for `const`.
 > +        // SAFETY: FFI type is valid to be zero-initialized.
 > +        let mut acpi: bindings::acpi_device_id = unsafe { core::mem::zeroed() };
+
+The patch did not land yet, but for this there's the following improvement
+upcoming:
+
+https://lore.kernel.org/rust-for-linux/20250523145125.523275-13-lossin@kernel.org/
+
 > +        // TODO: Use `clone_from_slice` once the corresponding types do match.
+
+clone_from_slice() can't be used from const context, this comment is wrong in
+of.rs (where you probably copied it from).
+
 > +        let mut i = 0;
 > +        while i < src.len() {
 > +            acpi.id[i] = src[i] as _;
+
+You can drop this cast, it shouldn't be needed anymore.
+
 > +            i += 1;
 > +        }
 > +
@@ -178,9 +194,5 @@ greg k-h
 >  pub mod of;
 > +pub mod acpi;
 
-Aren't these supposed to be sorted?
-
-thanks,
-
-greg k-h
+As mentioned by Greg, please keep this ordered.
 
