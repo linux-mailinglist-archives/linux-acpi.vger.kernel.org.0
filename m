@@ -1,114 +1,112 @@
-Return-Path: <linux-acpi+bounces-13964-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13965-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D5AAC8B6A
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 11:48:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6750FAC8C18
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 12:27:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E0E31BA1CDE
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 09:48:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3115116DB99
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 10:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0A0220F4B;
-	Fri, 30 May 2025 09:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089A02222C0;
+	Fri, 30 May 2025 10:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="BYmI2JEx"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="JOE1VagW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720692192EC
-	for <linux-acpi@vger.kernel.org>; Fri, 30 May 2025 09:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB14C1DA5F;
+	Fri, 30 May 2025 10:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748598513; cv=none; b=IUKtDcIfK2sfGm2A39xsfQUZfKC2a7ii2RyQvYwXXyneyOG9I0M+uOyJAJ3tL/LQ9GWQA0xGMlrxuAcOg7UhCi7Mr362z7zWxuALO8fFnYIFPJJ05sfm0DIze1dOruRir3lA0TfH5S/CrdtbZQFBMeagpfy+7pfehTlU+5M7o40=
+	t=1748600867; cv=none; b=ScoZeQ5UF+nT9mAmBROpF6drPPWXCPJYCK5s/rVaMtPPk/MyA8dRQTYyP1Her8I2P5H46+64DaLnpYOLERm0lc2ZqpLN/76q7vyOJe1X3DFN4bhKsY2du1cwDqgRicLUq8b7MdfzJKfboiXi/7x3Ua5//1Ij3ulCkugGm59nLtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748598513; c=relaxed/simple;
-	bh=7f6mAQcF5PHVp5UXsxfyp8gyKgBiiyml5t+WUzoXmBI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X9BipKd6i5/qcSdtWBB5iPoL3IJiFM/ZgSDLD6jc5W7v8yOP0DEh/gv7F6eYeCufhmYZAigUiveR0FDR8YyORDFUWENLQzyP74ZzZs23cTXYEG6p9ByJujqx9IIEz3Sh336Jt+OX2PwoUfLMMRXp3qb9udUzry7/kKvUeBm8AGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=BYmI2JEx; arc=none smtp.client-ip=178.154.239.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net [IPv6:2a02:6b8:c37:8f27:0:640:e8c0:0])
-	by forward102b.mail.yandex.net (Yandex) with ESMTPS id EA2AF60D7E;
-	Fri, 30 May 2025 12:48:21 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id KmTv6meLdGk0-Z4GG1Io6;
-	Fri, 30 May 2025 12:48:21 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1748598501; bh=0FHP8kmV67CuuMxQRuqAcgMUA7ovCAbmaqmbD6Nl184=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=BYmI2JExRJTdoo89XTPFuNgLOWv9gVY5EJKWfs3Qa3tJacdjDt/g/5/y9hKBWGTj5
-	 0Z9EoL329kbqWNEjaeD+wudwmUIyS/KBZyy3YyD6apNqzy9p7J66c+RdrdJmcJgtNU
-	 /oem4kGlpKKWrg42JwQoVdipQhz3Xn+PT4Ex6gkU=
-Authentication-Results: mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Ahmed Salem <x0rw3ll@gmail.com>
-Cc: linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] ACPICA: avoid out-of-bounds read in acpi_ut_safe_strncpy()
-Date: Fri, 30 May 2025 12:47:37 +0300
-Message-ID: <20250530094737.127830-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1748600867; c=relaxed/simple;
+	bh=yimb/h/oIv9nrFU36k+skWXKj5ccHe01EMDttikc/sI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NhmRshq2Jipx3iFUE7BKXnAQlpGnYVT4uim8iXJ81cyCM6+0H/zyslFNL1NnL+fHI4XQl7/CKSjqdOnZ8qKAXRkwcs2DbqK6JYnyGdQSGO5eqgZqJPh/tKbUWd70dNycVse5e4nIUJQs5PQy2ZAbKPoiVoVq4iulawdmpbsRD9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=JOE1VagW; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D951140E01A3;
+	Fri, 30 May 2025 10:27:40 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id P9lM-Eo2BI2t; Fri, 30 May 2025 10:27:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1748600856; bh=blS/JssQQ0agsCa6iwZIdjI/QV/iJgq7L8Ra63G35JA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JOE1VagW3LYq3qu19XX/Arlt27IOQZt4+zPdZpViVzMy6uWRVk/mkXSNTXzPr38xn
+	 D/b7Z6745UcKg3okH4WGahMbGP3+iNOG9Zb8Ocmq3U74uV9bOJwdIX7oWX44dCQkQP
+	 u54doDUI/UV45/wP7sFLZX2Fm/wTlcL4ViWNmT8PuylToQrstROVIiuYpaIbWFksYQ
+	 WJ3vhjMZX7ELJ0SzQI2EW9MeZtuZleMry3k1Qlx3kB0EKDmpl+PvEUe9FysqMVOWqU
+	 H7FwKfyrJxQl9HxIgiHB+3aZ3UVoe/v75/3n7ZEJyAMF0CJ+BoIvyqBJuOu2qgQoW9
+	 31aqPfQ/9l61h+oYXz3wgVNUVlXwx0REwbhlLlSZE2EucBbrENuNX4gdRx5g0of8vP
+	 pO/OVN0jCutGg56HJVf3dd0hFNQ8ds/AYpdrVTQe46XUiryBQEPWfsuPflXOsqVD46
+	 1S9AORwC8RP0TBzzGrWu6+nVQ6RGbYwaMKAWbR0UuFEhEMf6LGlvIUvHhDFf/H47Si
+	 upGfGM5fsHupxhda7XSxT11MLb5MnOgteJFK5AuuTI1soRoL0qL++hETl1ZMwk7UGu
+	 FHFr0o/klRY4IWEVWnuiVHaqAy3lgKTE+3sH0C9hrJe1s3hT+oaEnBKN6I+M2Fwppy
+	 rRS45TdAQBSTODtdNbAILmSc=
+Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3B32D40E015E;
+	Fri, 30 May 2025 10:27:19 +0000 (UTC)
+Date: Fri, 30 May 2025 12:27:11 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Zaid Alali <zaidal@os.amperecomputing.com>
+Cc: rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
+	tony.luck@intel.com, robert.moore@intel.com,
+	Jonathan.Cameron@huawei.com, ira.weiny@intel.com,
+	Benjamin.Cheatham@amd.com, dan.j.williams@intel.com, arnd@arndb.de,
+	Avadhut.Naik@amd.com, u.kleine-koenig@pengutronix.de,
+	john.allen@amd.com, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev
+Subject: Re: [PATCH v7 9/9] ACPI: APEI: EINJ: Update the documentation for
+ EINJv2 support
+Message-ID: <20250530102711.GAaDmH_1O7lc6kuveY@fat_crate.local>
+References: <20250506213814.2365788-1-zaidal@os.amperecomputing.com>
+ <20250506213814.2365788-10-zaidal@os.amperecomputing.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250506213814.2365788-10-zaidal@os.amperecomputing.com>
 
-Running KASAN-enabled kernel with ACPI_DEBUG_OUTPUT, I've noticed
-the following:
+On Tue, May 06, 2025 at 02:38:13PM -0700, Zaid Alali wrote:
+> +- einjv2_component_array
+> +
+> +  The contents of this file are used to set the "Component Array" field
+> +  of the EINJv2 Extension Structure. The expected format is hex values
+> +  for component id and syndrome separated by space, and multiple
+> +  components are separated by new line.
 
-BUG: KASAN: global-out-of-bounds in acpi_ut_safe_strncpy+0x25/0x70
-Read of size 16 at addr ffffffff8bf2bee0 by task swapper/0/1
-CPU: 2 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.15.0-08486-gf66bc387efbe #17 PREEMPT(full)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.fc42 04/01/2014
+How is this a good design?
 
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250
- ...
- kasan_check_range+0x2b0/0x2c0
- __asan_memcpy+0x29/0x70
- acpi_ut_safe_strncpy+0x25/0x70
- acpi_ps_alloc_op+0x201/0x3a0
- ...
+Do you guys not see that the other injection files are one value per file?
 
-The buggy address belongs to the variable:
- .str.8+0x0/0x20
+> +  # comp_arr="0x1 0x2				# Fill in the component array
+> +    >0x1 0x4
+> +    >0x2 0x4"
+> +  # echo "$comp_arr" > einjv2_component_array
 
-This happens when 'acpi_ut_safe_strncpy()' makes an attempt to copy to
-the destination which is larger than source, and may be fixed by using
-'strscpy()' (which also guarantees NUL termination for a destination).
+Oh boy. Srsly?!
 
-Fixes: ebf27765421c ("ACPICA: Replace strncpy() with memcpy()")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/acpi/acpica/utnonansi.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/drivers/acpi/acpica/utnonansi.c b/drivers/acpi/acpica/utnonansi.c
-index 803e3e893825..1447d8689209 100644
---- a/drivers/acpi/acpica/utnonansi.c
-+++ b/drivers/acpi/acpica/utnonansi.c
-@@ -166,10 +166,7 @@ acpi_ut_safe_strncat(char *dest,
- 
- void acpi_ut_safe_strncpy(char *dest, char *source, acpi_size dest_size)
- {
--	/* Always terminate destination string */
--
--	memcpy(dest, source, dest_size);
--	dest[dest_size - 1] = 0;
-+	strscpy(dest, source, dest_size);
- }
- 
- #endif
 -- 
-2.49.0
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
