@@ -1,96 +1,135 @@
-Return-Path: <linux-acpi+bounces-14026-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14027-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA8FAC9528
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 19:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A027AAC954F
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 19:55:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84A09A80324
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 17:49:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D10393AC7BF
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 17:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4A62750F3;
-	Fri, 30 May 2025 17:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA5D25DD12;
+	Fri, 30 May 2025 17:54:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aSWR9CKy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481D62367CB;
-	Fri, 30 May 2025 17:49:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE9F22DFA3;
+	Fri, 30 May 2025 17:54:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748627366; cv=none; b=bYGUQYzI9gjOFv7Ix3Qz4A43h78Gvgpa4LwlPtP1cVrQPxYNHJc+1T0Nyb6gam7IgKwADAt76Vxbr5VnKVrANkN9ATM5KpfHfMGagUSUGpD7r9EiS/hNjBoKk05tsm9RuoPi7ZzIqThRVDcZeeBSmMaT6PEi0OvFxAppFX6EePo=
+	t=1748627696; cv=none; b=BsbHZjcrieO9JPKyqx2Dyy1qbIJh3WEWxDs/Tnpa+t90jUat38zfKRrhhQZltlhuY3m0vb6k6z5Ftis/4kxNtg9bYW/mH7iBZTfscsOgeNleFoKcJrskZoFFXWmUQpK4k3Ca2t4YgngAK5WBLpQ1I8UNmBXw9nD+AJYbOEW2UUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748627366; c=relaxed/simple;
-	bh=hxRWWOaBYp6tiVYo7uluS1eq98GxxBbeDU9cg7wTn6c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I6lVE98Mmn/f82GF+p8HEK2JFm81Gj/f9SFHrVVsIfKkqdnkbZUD1JTPlbVkmA+ZeFjiCkO36PYvkYNyfUOHpnk2p5UTyL/JxYn2bYypNG8L4ErFn7kb4dWiFRNJ1s6FytJEYgyDB3ZVE4bUkgqoA+iAiD20253k3e8r7WkU3VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: x4XEobw2RTmePI/Hq56d6Q==
-X-CSE-MsgGUID: C06xsM31Ta+d8MeuKRJtKw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11449"; a="49848350"
-X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; 
-   d="scan'208";a="49848350"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2025 10:49:25 -0700
-X-CSE-ConnectionGUID: 2zB/LkoLQsegjlKjPUVX4Q==
-X-CSE-MsgGUID: LX32MatAQjq41TRkJBXwZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; 
-   d="scan'208";a="144917079"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2025 10:49:20 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andy@kernel.org>)
-	id 1uL3r2-000000024ZU-3t10;
-	Fri, 30 May 2025 20:49:16 +0300
-Date: Fri, 30 May 2025 20:49:16 +0300
-From: Andy Shevchenko <andy@kernel.org>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org, nuno.sa@analog.com,
-	Michael.Hennerich@analog.com, marcelo.schmitt@analog.com,
-	jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
-	linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
-	broonie@kernel.org, jonath4nns@gmail.com, dlechner@baylibre.com,
-	rafael@kernel.org, djrscally@gmail.com
-Subject: Re: [PATCH v9 00/12] iio: adc: ad7768-1: Add features, improvements,
- and fixes
-Message-ID: <aDnvnMqPd-Ahu5o6@smile.fi.intel.com>
-References: <cover.1748447035.git.Jonathan.Santos@analog.com>
+	s=arc-20240116; t=1748627696; c=relaxed/simple;
+	bh=afJSsEoeyNncZPJRpEWWyUsv9XUzBnoSUUqjD9g2U5k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cxm6HDJvmmmiFZAt1PPD7gHdJK+xX+HSZUy2A2FFUpFHiB2vbAsoUOqP9Z44e6JtIPPTDoMeWQkXGuoFpN/9cxhOCmNHHKquf9ASwsLM9xK5kuFlu5KS7okxob4nyCgkvId5yOUiS9Vtt9B2Kf7CyXvRmNqb9ad+aXwHyN2UYoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aSWR9CKy; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-442f5b3c710so19114055e9.1;
+        Fri, 30 May 2025 10:54:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748627693; x=1749232493; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kjxoToXJDlv+POyGIuKi3i3ilCXa6eLtO0vMoZzC63E=;
+        b=aSWR9CKymxQcwHwCGqXPCSDi2o3bdDb37jdiRNI/NP/Da+JHoHEBUmF8tBpsuLx4AK
+         tUCAP7xwXO88ox3tIvJ0AxMttfYWpBYMZmONI88LN8OQg1DJcvsU+L3nmUJHqytsjzDl
+         UcXQjj9s6ED32olzRnunF5mNrScHSNUGzJT7vuoj4WGGq+ThpIAkMHa24aopkmuCoZo/
+         Sx7JREeM+n6xqM2wY2dd9L8X2lhySNaXug5yc3ggLIUcGUPg1nrr+FqiOIlxhEqlUw83
+         YgKFjlgoj3i5KHfyXW544NX2wHZl7ovksEnn5wypJCCQ9nnX7zvTSlth6GvKwwPWgkVZ
+         09TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748627693; x=1749232493;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kjxoToXJDlv+POyGIuKi3i3ilCXa6eLtO0vMoZzC63E=;
+        b=TjMA+W8OJCAzo0mBYiHCWwE9WgJLIL1pdp7wCVO2HySMRVfQ+t56OJ+8XOAJb9kHoP
+         RxH7pKOHcaheXfaGPtQINhmiY7IHtsMa507whH7pqf8aEpQFR16KigzzxUoOajQSbixl
+         hWkfNtNy8pcV9uzaqrZSlKlQvFyP+CCzYx9s/ElSxThEM7LnAZ5yjnIot8IRDL9kBWQQ
+         gr3vph94otMfoDKGQp2TJ1COO0+scO64YKDfExu4qyO3l1BLAOfauPeBeLcey++b0loR
+         aO8SDfJIyjlvYNmHG/773C11UPFAHy0l0NET11OFacmPDTSrzpziovo7jY80IB97NMee
+         RMvw==
+X-Forwarded-Encrypted: i=1; AJvYcCX3bagt4FdlN9bnqTnPHY87HJb7OAXAEUtm+JbdQZ6PmiduSDT7fGzZVx0DnfsT7R8F6eHnMzziZCRh@vger.kernel.org, AJvYcCXcbGvBqV5Q1pe2N59weXvYUxFffAEHfe7c6mDw1cX/cLJbgbABr7Y13plXuD9QR23vqm21ErxlCHTGyU5v@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxIBgNoYkG/wQfS23Y4cXWoMyDN7XeySRKuWKyv31glJupD2Xc
+	V8Af1tMmzLhNgKE/FzEGkjgmbPaBU+Y2FAj8gJBHop17gp1A1MPjVyWT
+X-Gm-Gg: ASbGnctTpH/bWlB2Ffcdb7hiTmQVd57xepHY4aYR0sV1c/rPDqzg+Qp1mEqDZ/5AmNi
+	lVNF4hc3Grhg0toGyP3f0E8Uv2U9v0Yx77fMpYIlekNOKhC/AYblGtQ+n1eAIYVLW1+D7hvsr++
+	dmh1Oe/54djVSSXcQPN1c6KMPGrhNdCNuBCrLosjbTz6yFMYbon5Wdnek9SPmazJ4ZH7Bj+v9Gx
+	CIGhE0AnA3cnGYbxgRlJQ6lX+tGVhr84uh5l4XHAHhVkD9qMZv/ECg161IGPgNKW0Mgtxnnb1nb
+	PbSilHzHBdJGxd+7tTkS/68n7dePdYVAgh14gaxcM5UFmli7ICaPljWBoECoor51dA==
+X-Google-Smtp-Source: AGHT+IEhr2N3LMQLfOqjfiyCqjiseC8V2a5mOVzLYV2OcizhkIMwXqUo0/ClUu8jbLkLM6aFx7i4Hw==
+X-Received: by 2002:a05:600c:1e1b:b0:441:b19c:96fe with SMTP id 5b1f17b1804b1-450d6537a6cmr46734105e9.10.1748627693013;
+        Fri, 30 May 2025 10:54:53 -0700 (PDT)
+Received: from localhost.localdomain ([41.79.198.22])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d7f8f1adsm24506375e9.7.2025.05.30.10.54.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 May 2025 10:54:52 -0700 (PDT)
+From: Khalid Ali <khaliidcaliy@gmail.com>
+X-Google-Original-From: Khalid Ali <khaliidcaliy@gmail.com
+To: rafael@kernel.org,
+	enb@kernel.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com
+Cc: x86@kernel.org,
+	hpa@zytor.com,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Khalid Ali <khaliidcaliy@gmail.com>
+Subject: [RESEND PATCH] x86/ACPI: invalidate all cache lines on ACPI C-state transitions
+Date: Fri, 30 May 2025 17:54:19 +0000
+Message-ID: <20250530175420.1277-1-khaliidcaliy@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1748447035.git.Jonathan.Santos@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 29, 2025 at 07:47:57PM -0300, Jonathan Santos wrote:
-> This patch series introduces some new features, improvements,
-> and fixes for the AD7768-1 ADC driver. 
-> 
-> The goal is to support all key functionalities listed in the device
-> datasheet, including filter mode selection, common mode voltage output
-> configuration and GPIO support. Additionally, this includes fixes 
-> for SPI communication and for IIO interface, and also code improvements
-> to enhance maintainability and readability.
+From: Khalid Ali <khaliidcaliy@gmail.com>
 
-If you haven't run `make W=1 ...` build against this driver, do it with
-GCC and clang and fix all respective compilation warnings / errors,
-if any.
+According to ACPI spec 6.4 and 6.5, upon C-state
+transitions (specifically C2 and C3) it is required and explicitly
+mentioned to invalidate and writeback all modified cache line using
+WBINVD.
 
+However the current ACPI C-state entry using monitor/mwait instructions
+it have been used CLFLUSH by flushing the cache line associated by
+monitored address. That what all about this patch addresses,
+invalidating all cache lines instead of single cache line.
+
+Let me know if there any reason and decisions behind the current
+implementation.
+
+Signed-off-by: Khalid Ali <khaliidcaliy@gmail.com>
+---
+ arch/x86/kernel/acpi/cstate.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
+index d5ac34186555..eb3d435e08ad 100644
+--- a/arch/x86/kernel/acpi/cstate.c
++++ b/arch/x86/kernel/acpi/cstate.c
+@@ -222,6 +222,9 @@ void __cpuidle acpi_processor_ffh_cstate_enter(struct acpi_processor_cx *cx)
+ 	struct cstate_entry *percpu_entry;
+ 
+ 	percpu_entry = per_cpu_ptr(cpu_cstate_entry, cpu);
++	/* flush and invalidate all modified cache line on C3 and C2 state entry*/
++	if (cx->type == ACPI_STATE_C3 || cx->type == ACPI_STATE_C2)
++		wbinvd();
+ 	mwait_idle_with_hints(percpu_entry->states[cx->index].eax,
+ 	                      percpu_entry->states[cx->index].ecx);
+ }
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.49.0
 
 
