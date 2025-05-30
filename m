@@ -1,61 +1,59 @@
-Return-Path: <linux-acpi+bounces-13996-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13997-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C6C6AC8F33
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 15:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D23CAC8F30
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 15:07:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F28B1C07C49
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 13:00:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 306711C207EA
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 13:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61965267B9B;
-	Fri, 30 May 2025 12:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6487326988E;
+	Fri, 30 May 2025 12:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AVVb8kA1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t7JY/+YY"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361CE267B95;
-	Fri, 30 May 2025 12:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3926E269838;
+	Fri, 30 May 2025 12:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748608867; cv=none; b=mDmG8DezCO/9TfxpfHWLhLJdcpJ44/sNh/yUxQXKXmCzeico/VCxZp3UwQ/t/svqxsyPh7EeFlZy99KrqdiHDJM3e4eKt0msWxRA+CuRmtS5D0Kp0/5UfiDB+8Bex+W/ktwkydrLsAva69ToCvpq6vlCaBBuDQmZohhDvYgNeMA=
+	t=1748608872; cv=none; b=iEkfLFvnYAtw8eJSiHju30E6ttBm1INcDqd3IcnfqANZIeBg5mPl6JSlCjmazcZltoRKHCOQ2gTbYSi+UaiCskBNFgMExxAd4PcfyzPSCzg1qvReIPhnG2Qs/vvnz9fjA0JYjcd75kIBEEFPyU5tJninjmSUUB+c8cFlxsSpSx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748608867; c=relaxed/simple;
-	bh=q5vhZ3MQJsGeREbDb07a9V/FHpDJK7FnIBQ15vSsRNY=;
+	s=arc-20240116; t=1748608872; c=relaxed/simple;
+	bh=SwlFveLDpHfMOcb16hR/v4BPqi3k6fZ2lJEO4DyEhmc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ca54dGU7ums3B6Omhd/KQmT7ys16zEMJYVb5ZMHVCelay+d7XUr96VShTAgtOuIjNtkNw/DpsC3CY7GPDjCJlhv1bNL27UdTKL8Pk7P0a3ftPPflGAzw9siNTbCHye/243Qg1SgPCKWdXtkDAPDU51k2ckOq5NLvoU9GBTnkgA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AVVb8kA1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95113C4CEE9;
-	Fri, 30 May 2025 12:41:05 +0000 (UTC)
+	 MIME-Version; b=hte5X3aHNaMXoBSM4AZ987m0F8HDvH3KrjV8d6YT/7u8n1uqI7bIOOIgxKYqTxknMrjtnzVndUuMNjSw8/FluEwU/rcvLSsTDE/mBM51YcLavElVgfdUDMUPtKySG6KQKpa7qBRZCGovWnVujRoqr1b1iWoZAxgl52K+WE7cDL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t7JY/+YY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9EEC4CEEB;
+	Fri, 30 May 2025 12:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748608866;
-	bh=q5vhZ3MQJsGeREbDb07a9V/FHpDJK7FnIBQ15vSsRNY=;
+	s=k20201202; t=1748608872;
+	bh=SwlFveLDpHfMOcb16hR/v4BPqi3k6fZ2lJEO4DyEhmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AVVb8kA1K2680lqom4mHPNQRVGNAw1KNISeWPWEmyH5SvFT3xH27NWnaOP5V2aryt
-	 Gimjgc//Huo2RwSGShobP7qRi25DzDtVFIYUXqof2FiR1/yo3HylJsrz1QAgVAC9BJ
-	 mVbL8FdF1BEMvo/3gCX4kbBzxk6QwS7J5+GhqLAgR4VVqdDv+kixAF1EEW7VBwHJxy
-	 yAXhJzHaR6awwAv5Em5ozM+sSi4V4MyBBzVhbxCvdcY0kCo+O/DCjYus11yKoTVLQV
-	 imA4SOwzcvazqjwl2KdnPKE6R4Y2J8tGlDzU/oNKo50JxLFaSYKhHgz10u8lCjj5wL
-	 jrCSfyIhFItbQ==
+	b=t7JY/+YYQFEl0u6LaQkGsAFw8hXs4OrdyoSdL/JqULrxevpk9o6knIGQw/uwaL/3I
+	 MlKudlumiYj3/Y53nyR2Oy/OFuSn2wrEnUrVYDYzT9zTB9ezNzLF9giJhcZWQp+IdG
+	 XZqLrq8lZUsqKMZM0Aom+4PQ/Ea35FRaTzx/wpIkAQ4OfdJ5i2vtn0mmSkTMBqPz1X
+	 0SpdBLyy58PktK2sVakQsx941MxqjWOXTcdFmOYgIlg+N/Y5GZc78SmAogrzMnAzNF
+	 ipj5VGz3KZilG4QwqmY/5eKom3goc3JL3XktnoZfL2lbgag4V9wuzOSfPOuy//QENK
+	 tqOZK8JNYIf/A==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: gldrk <me@rarity.fan>,
+Cc: Peter Marheine <pmarheine@chromium.org>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	robert.moore@intel.com,
-	erik.schmauss@intel.com,
+	rjw@rjwysocki.net,
 	lenb@kernel.org,
 	linux-acpi@vger.kernel.org,
-	devel@acpica.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 14/18] ACPICA: utilities: Fix overflow check in vsnprintf()
-Date: Fri, 30 May 2025 08:40:43 -0400
-Message-Id: <20250530124047.2575954-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 18/18] ACPI: battery: negate current when discharging
+Date: Fri, 30 May 2025 08:40:47 -0400
+Message-Id: <20250530124047.2575954-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530124047.2575954-1-sashal@kernel.org>
 References: <20250530124047.2575954-1-sashal@kernel.org>
@@ -68,96 +66,99 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.92
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: gldrk <me@rarity.fan>
+From: Peter Marheine <pmarheine@chromium.org>
 
-[ Upstream commit 12b660251007e00a3e4d47ec62dbe3a7ace7023e ]
+[ Upstream commit 234f71555019d308c6bc6f98c78c5551cb8cd56a ]
 
-ACPICA commit d9d59b7918514ae55063b93f3ec041b1a569bf49
+The ACPI specification requires that battery rate is always positive,
+but the kernel ABI for POWER_SUPPLY_PROP_CURRENT_NOW
+(Documentation/ABI/testing/sysfs-class-power) specifies that it should
+be negative when a battery is discharging. When reporting CURRENT_NOW,
+massage the value to match the documented ABI.
 
-The old version breaks sprintf on 64-bit systems for buffers
-outside [0..UINT32_MAX].
+This only changes the sign of `current_now` and not `power_now` because
+documentation doesn't describe any particular meaning for `power_now` so
+leaving `power_now` unchanged is less likely to confuse userspace
+unnecessarily, whereas becoming consistent with the documented ABI is
+worth potentially confusing clients that read `current_now`.
 
-Link: https://github.com/acpica/acpica/commit/d9d59b79
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/4994935.GXAFRqVoOG@rjwysocki.net
-Signed-off-by: gldrk <me@rarity.fan>
-[ rjw: Added the tag from gldrk ]
+Signed-off-by: Peter Marheine <pmarheine@chromium.org>
+Link: https://patch.msgid.link/20250508024146.1436129-1-pmarheine@chromium.org
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-**YES** This commit should be backported to stable kernel trees. Here's
-my extensive analysis: ## Analysis of the Security Issue This commit
-fixes a **critical buffer overflow vulnerability** in the ACPICA
-`vsnprintf()` implementation that affects 64-bit systems. The
-vulnerability exists in `/drivers/acpi/acpica/utprint.c:336-340`. ###
-The Vulnerability **Original vulnerable code:** ```c if (size !=
-ACPI_UINT32_MAX) { end = string + size; } else { end =
-ACPI_CAST_PTR(char, ACPI_UINT32_MAX); } ``` **The Problem:** On 64-bit
-systems, `acpi_size` is a 64-bit value (`typedef u64 acpi_size`), but
-the code only checks against `ACPI_UINT32_MAX` (0xFFFFFFFF). When a
-buffer size larger than 4GB is passed: 1. `size` can be any 64-bit
-value, e.g., 0x100000000 (4GB + 1) 2. The condition `size !=
-ACPI_UINT32_MAX` is TRUE (since 0x100000000 ≠ 0xFFFFFFFF) 3. `end =
-string + size` performs pointer arithmetic with the full 64-bit size 4.
-If `string` is near the end of address space, `string + size` **wraps
-around** due to integer overflow 5. This makes `end < string`, breaking
-all boundary checks in `acpi_ut_bound_string_output()` ### The Fix
-**Fixed code:** ```c size = ACPI_MIN(size, ACPI_PTR_DIFF(ACPI_MAX_PTR,
-string)); end = string + size; ``` This fix: 1. **Prevents pointer
-arithmetic overflow** by limiting `size` to the maximum safe value 2.
-`ACPI_PTR_DIFF(ACPI_MAX_PTR, string)` calculates the maximum bytes
-available from `string` to the end of address space 3. `ACPI_MIN()`
-ensures `size` never exceeds this safe boundary 4. Eliminates the
-special case handling that was broken for 64-bit systems ### Impact
-Assessment **Severity: HIGH** - **Buffer Overflow:** Can cause memory
-corruption beyond allocated buffers - **64-bit Systems Affected:** All
-64-bit Linux kernels using ACPICA are vulnerable - **Attack Vector:**
-Malicious ACPI tables or kernel code passing large buffer sizes -
-**Consequence:** Potential code execution, system crashes, or memory
-corruption ### Backport Criteria Analysis ✅ **Fixes important bug
-affecting users:** Yes - buffer overflow affecting all 64-bit systems ✅
-**Small and contained fix:** Yes - only 3 lines changed, simple logic
-fix ✅ **No architectural changes:** Yes - maintains same function
-interface and behavior ✅ **Minimal regression risk:** Yes - fix is
-mathematically sound and defensive ✅ **Critical subsystem:** Yes - ACPI
-affects hardware management and system stability ✅ **Security
-implications:** Yes - prevents memory corruption vulnerabilities ###
-Comparison with Similar Commits All provided similar commits were marked
-"NO" for backporting because they were: - Code style improvements
-(`ACPI_FALLTHROUGH`, `ACPI_PRINTF_LIKE`) - Non-critical utility function
-enhancements - Format string fixes without security impact This commit
-is fundamentally different - it's a **security fix** for a real
-vulnerability. ### Conclusion This commit fixes a genuine buffer
-overflow vulnerability that can affect system stability and security on
-64-bit platforms. The fix is minimal, well-contained, and addresses a
-real bug rather than being a cleanup or enhancement. It clearly meets
-all stable tree criteria for backporting.
+Based on my analysis of the commit and examination of the kernel
+codebase, I can now provide my assessment: **YES** This commit should be
+backported to stable kernel trees because: 1. **Fixes a real user-facing
+bug**: The commit addresses an ABI inconsistency where ACPI battery
+drivers were reporting current_now with the wrong sign. According to the
+kernel's power supply ABI documentation
+(Documentation/ABI/testing/sysfs-class-power), `current_now` should be
+negative when discharging and positive when charging, but ACPI battery
+drivers were reporting positive values always. 2. **Small and contained
+fix**: The change is minimal and well-contained. It only affects the
+`POWER_SUPPLY_PROP_CURRENT_NOW` case in `acpi_battery_get_property()`
+function in `drivers/acpi/battery.c`. The code adds a simple check to
+negate the current value only when: - Property requested is
+`POWER_SUPPLY_PROP_CURRENT_NOW` (not power_now) - Battery is in
+discharging state - The `acpi_battery_handle_discharging()` function
+confirms it's actually discharging 3. **Follows stable rules**: This is
+an important bugfix that corrects userspace-visible behavior to match
+documented ABI. Applications and battery monitoring tools rely on the
+documented behavior that negative current indicates discharging. 4.
+**Minimal regression risk**: The change is very conservative: - Only
+affects `current_now`, not `power_now` (as noted in commit message) -
+Uses existing `acpi_battery_handle_discharging()` logic to double-check
+the discharging state - Leaves all other battery properties unchanged 5.
+**Similar pattern in similar drivers**: From the historical examples
+provided, commits like "power: supply: bq27xxx: fix polarity of
+current_now" and "power: supply: axp20x_battery: properly report current
+when discharging" were backported with YES status for exactly the same
+type of issue - fixing current sign during discharge. 6. **Affects
+critical subsystem**: Battery reporting is crucial for power management,
+and incorrect current direction can confuse userspace tools and
+potentially impact power management decisions. The commit carefully
+addresses the ABI compliance issue while minimizing risk by only
+changing the sign for `current_now` during confirmed discharging states,
+making it an ideal candidate for stable backporting.
 
- drivers/acpi/acpica/utprint.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/acpi/battery.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/acpica/utprint.c b/drivers/acpi/acpica/utprint.c
-index 42b30b9f93128..7fad03c5252c3 100644
---- a/drivers/acpi/acpica/utprint.c
-+++ b/drivers/acpi/acpica/utprint.c
-@@ -333,11 +333,8 @@ int vsnprintf(char *string, acpi_size size, const char *format, va_list args)
- 
- 	pos = string;
- 
--	if (size != ACPI_UINT32_MAX) {
--		end = string + size;
--	} else {
--		end = ACPI_CAST_PTR(char, ACPI_UINT32_MAX);
--	}
-+	size = ACPI_MIN(size, ACPI_PTR_DIFF(ACPI_MAX_PTR, string));
-+	end = string + size;
- 
- 	for (; *format; ++format) {
- 		if (*format != '%') {
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index e3cbaf3c3bbc1..cd3cbb7a36f85 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -243,10 +243,23 @@ static int acpi_battery_get_property(struct power_supply *psy,
+ 		break;
+ 	case POWER_SUPPLY_PROP_CURRENT_NOW:
+ 	case POWER_SUPPLY_PROP_POWER_NOW:
+-		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
++		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
+ 			ret = -ENODEV;
+-		else
+-			val->intval = battery->rate_now * 1000;
++			break;
++		}
++
++		val->intval = battery->rate_now * 1000;
++		/*
++		 * When discharging, the current should be reported as a
++		 * negative number as per the power supply class interface
++		 * definition.
++		 */
++		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
++		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
++		    acpi_battery_handle_discharging(battery)
++				== POWER_SUPPLY_STATUS_DISCHARGING)
++			val->intval = -val->intval;
++
+ 		break;
+ 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+ 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
 -- 
 2.39.5
 
