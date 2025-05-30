@@ -1,62 +1,61 @@
-Return-Path: <linux-acpi+bounces-14011-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14012-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729DBAC8F6D
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 15:13:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EDA3AC8F8B
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 15:15:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0FACA619EB
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 13:07:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F6B91C209EB
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 13:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A7727A134;
-	Fri, 30 May 2025 12:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFEC27AC59;
+	Fri, 30 May 2025 12:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+tOleCv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ONjdqpMk"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E4D2797A3;
-	Fri, 30 May 2025 12:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C0D271452;
+	Fri, 30 May 2025 12:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748608914; cv=none; b=gr9pAJjge2k2VjApn8386lZngZAYxJIpVAPVUgmtVJDRCcb+8ZYpz+yhjalQ+bK99/8vEgvcQQOZpwk26cEOjtye6AFBrsfCrtqVv2QZ2Nc0ja4OxhAB7xmvxse+HeLLjY+049kfBsiGSnpeqPUhlVhD3rvwic+YROdCxs2XuMs=
+	t=1748608915; cv=none; b=eMpv9RqLedOfLdXoTlERtm5DhP3fsd64XnEJAXWvDUOlD394nFX488BLVaKSCbkrqw5wvfZHqflCLpofglOXRmVHbvur06hrHZRCgsaqZTi4ImApmhLC0LvDC/Fx+M1tSbAyikmNN1DUep4/MWEah6zmytVkDDnd3pott+oIrwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748608914; c=relaxed/simple;
-	bh=XLmOqm8dCUHz5RtYb91vhlNLfnFfc9kZIesq6gPMU9k=;
+	s=arc-20240116; t=1748608915; c=relaxed/simple;
+	bh=app3iSGCOwILWfxcCXItTXXqsdYp60vHF3vCfDCiwgo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sTXeZOf6tsuTpmmPpPEOaqDmXvC2mPYST1MewJkxgn9Jdxyy6013VaJyMhRgX8QLYEZSERZdKdKlHanL1uJN0+M/b6cKZ+RbMgzK0QJnRE6mkALxmpDwb764v3JX+MbWWawmcTfOt0ujKN92pTjpIbZ1sIUNlIsYJ6nDGFPdxng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+tOleCv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FD1C4CEEA;
-	Fri, 30 May 2025 12:41:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UDbA42BpEPQHTMxrLNfjuVbZ2aIJW6Vbk1fFVDPlBwDCp5b8PXSspjVdzuNLanfiBXbQr3HqVZYXUmCTD3DgoFo8kssnoe62G01A6qrLCBm3JwBluyEY0Ex7EG8VxhrljzSqotfebZtDwsAIo5MnJmUzy8xlDfo0cne+xbqhSGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ONjdqpMk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3E5C4CEE9;
+	Fri, 30 May 2025 12:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748608912;
-	bh=XLmOqm8dCUHz5RtYb91vhlNLfnFfc9kZIesq6gPMU9k=;
+	s=k20201202; t=1748608915;
+	bh=app3iSGCOwILWfxcCXItTXXqsdYp60vHF3vCfDCiwgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S+tOleCvgByN+/CiJ5sEeJI2qqpZpW0o7/uFQspmGabFHJX8yOTL/KOt6Clli2Q0+
-	 yiEsdLNjNTXWbij6nQlte6Xw7AVvrarklQcvpF+9akSwchsxPxjc/rJGELWWsjhYMp
-	 qdbmb7QFdIJaqOjf6Ps11NTZ96NkZabAJmIpEQ3xFIJIsJXdChPRiE8isjBCpqX/c0
-	 92VehN1Q+GpunnGztnhsCo26JU+5NllZ4ESuazVkhfQmTs68tM7p4GSBMB4kZDIU8N
-	 Ld7pSZSOHlPmJveAYxh7cOJrsF8Cw8w498FpCzvFazTirMG+gJGkS+RkTQzry3miZi
-	 FAenwOZ7kkZJA==
+	b=ONjdqpMk/hiecIaakAlmf1G8XFrzpWZyVVXNV0vfHdlnmIPmzHtpDg6ZnjVK60Sfc
+	 sFuq21L/Kr8CTRN0meTFCaES2Gre4J71bpcalOAcVkzvmZjr+0lJZK/I7qUOQF8Ksx
+	 /RreDM7trrhFCzTkbZaDnQ3BaWBSiGYEvprXMN/dai3ksLUj68M5OrNhUYevO91UhU
+	 GI5d207iOOh9Wf1Wwr6J77ffMbeZdY/gwVtZo1dFOloU+ST4A/z3TAAhgGthbK1UAP
+	 G5ICUP5uW1rBN+syAdH5eU5xXWoxniPB5o+HDKjOFcbO01M9VUbx6hE/IDZ+fRCx5/
+	 JrEaNEES1m1cA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Ahmed Salem <x0rw3ll@gmail.com>,
+Cc: Seunghun Han <kkamagui@gmail.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rjw@rjwysocki.net,
-	lenb@kernel.org,
 	robert.moore@intel.com,
 	erik.schmauss@intel.com,
+	lenb@kernel.org,
 	linux-acpi@vger.kernel.org,
 	devel@acpica.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 03/10] ACPICA: Avoid sequence overread in call to strncmp()
-Date: Fri, 30 May 2025 08:41:41 -0400
-Message-Id: <20250530124148.2576913-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 05/10] ACPICA: fix acpi parse and parseext cache leaks
+Date: Fri, 30 May 2025 08:41:43 -0400
+Message-Id: <20250530124148.2576913-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530124148.2576913-1-sashal@kernel.org>
 References: <20250530124148.2576913-1-sashal@kernel.org>
@@ -66,102 +65,287 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Ahmed Salem <x0rw3ll@gmail.com>
+From: Seunghun Han <kkamagui@gmail.com>
 
-[ Upstream commit 64b9dfd0776e9c38d733094859a09f13282ce6f8 ]
+[ Upstream commit bed18f0bdcd6737a938264a59d67923688696fc4 ]
 
-ACPICA commit 8b83a8d88dfec59ea147fad35fc6deea8859c58c
+ACPICA commit 8829e70e1360c81e7a5a901b5d4f48330e021ea5
 
-ap_get_table_length() checks if tables are valid by
-calling ap_is_valid_header(). The latter then calls
-ACPI_VALIDATE_RSDP_SIG(Table->Signature).
+I'm Seunghun Han, and I work for National Security Research Institute of
+South Korea.
 
-ap_is_valid_header() accepts struct acpi_table_header as an argument, so
-the signature size is always fixed to 4 bytes.
+I have been doing a research on ACPI and found an ACPI cache leak in ACPI
+early abort cases.
 
-The problem is when the string comparison is between ACPI-defined table
-signature and ACPI_SIG_RSDP. Common ACPI table header specifies the
-Signature field to be 4 bytes long[1], with the exception of the RSDP
-structure whose signature is 8 bytes long "RSD PTR " (including the
-trailing blank character)[2]. Calling strncmp(sig, rsdp_sig, 8) would
-then result in a sequence overread[3] as sig would be smaller (4 bytes)
-than the specified bound (8 bytes).
+Boot log of ACPI cache leak is as follows:
+[    0.352414] ACPI: Added _OSI(Module Device)
+[    0.353182] ACPI: Added _OSI(Processor Device)
+[    0.353182] ACPI: Added _OSI(3.0 _SCP Extensions)
+[    0.353182] ACPI: Added _OSI(Processor Aggregator Device)
+[    0.356028] ACPI: Unable to start the ACPI Interpreter
+[    0.356799] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
+[    0.360215] kmem_cache_destroy Acpi-State: Slab cache still has objects
+[    0.360648] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W
+4.12.0-rc4-next-20170608+ #10
+[    0.361273] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
+virtual_box 12/01/2006
+[    0.361873] Call Trace:
+[    0.362243]  ? dump_stack+0x5c/0x81
+[    0.362591]  ? kmem_cache_destroy+0x1aa/0x1c0
+[    0.362944]  ? acpi_sleep_proc_init+0x27/0x27
+[    0.363296]  ? acpi_os_delete_cache+0xa/0x10
+[    0.363646]  ? acpi_ut_delete_caches+0x6d/0x7b
+[    0.364000]  ? acpi_terminate+0xa/0x14
+[    0.364000]  ? acpi_init+0x2af/0x34f
+[    0.364000]  ? __class_create+0x4c/0x80
+[    0.364000]  ? video_setup+0x7f/0x7f
+[    0.364000]  ? acpi_sleep_proc_init+0x27/0x27
+[    0.364000]  ? do_one_initcall+0x4e/0x1a0
+[    0.364000]  ? kernel_init_freeable+0x189/0x20a
+[    0.364000]  ? rest_init+0xc0/0xc0
+[    0.364000]  ? kernel_init+0xa/0x100
+[    0.364000]  ? ret_from_fork+0x25/0x30
 
-As a workaround, pass the bound conditionally based on the size of the
-signature being passed.
+I analyzed this memory leak in detail. I found that “Acpi-State” cache and
+“Acpi-Parse” cache were merged because the size of cache objects was same
+slab cache size.
 
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#system-description-table-header [1]
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#root-system-description-pointer-rsdp-structure [2]
-Link: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wstringop-overread [3]
-Link: https://github.com/acpica/acpica/commit/8b83a8d8
-Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
+I finally found “Acpi-Parse” cache and “Acpi-parse_ext” cache were leaked
+using SLAB_NEVER_MERGE flag in kmem_cache_create() function.
+
+Real ACPI cache leak point is as follows:
+[    0.360101] ACPI: Added _OSI(Module Device)
+[    0.360101] ACPI: Added _OSI(Processor Device)
+[    0.360101] ACPI: Added _OSI(3.0 _SCP Extensions)
+[    0.361043] ACPI: Added _OSI(Processor Aggregator Device)
+[    0.364016] ACPI: Unable to start the ACPI Interpreter
+[    0.365061] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
+[    0.368174] kmem_cache_destroy Acpi-Parse: Slab cache still has objects
+[    0.369332] CPU: 1 PID: 1 Comm: swapper/0 Tainted: G        W
+4.12.0-rc4-next-20170608+ #8
+[    0.371256] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
+virtual_box 12/01/2006
+[    0.372000] Call Trace:
+[    0.372000]  ? dump_stack+0x5c/0x81
+[    0.372000]  ? kmem_cache_destroy+0x1aa/0x1c0
+[    0.372000]  ? acpi_sleep_proc_init+0x27/0x27
+[    0.372000]  ? acpi_os_delete_cache+0xa/0x10
+[    0.372000]  ? acpi_ut_delete_caches+0x56/0x7b
+[    0.372000]  ? acpi_terminate+0xa/0x14
+[    0.372000]  ? acpi_init+0x2af/0x34f
+[    0.372000]  ? __class_create+0x4c/0x80
+[    0.372000]  ? video_setup+0x7f/0x7f
+[    0.372000]  ? acpi_sleep_proc_init+0x27/0x27
+[    0.372000]  ? do_one_initcall+0x4e/0x1a0
+[    0.372000]  ? kernel_init_freeable+0x189/0x20a
+[    0.372000]  ? rest_init+0xc0/0xc0
+[    0.372000]  ? kernel_init+0xa/0x100
+[    0.372000]  ? ret_from_fork+0x25/0x30
+[    0.388039] kmem_cache_destroy Acpi-parse_ext: Slab cache still has objects
+[    0.389063] CPU: 1 PID: 1 Comm: swapper/0 Tainted: G        W
+4.12.0-rc4-next-20170608+ #8
+[    0.390557] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
+virtual_box 12/01/2006
+[    0.392000] Call Trace:
+[    0.392000]  ? dump_stack+0x5c/0x81
+[    0.392000]  ? kmem_cache_destroy+0x1aa/0x1c0
+[    0.392000]  ? acpi_sleep_proc_init+0x27/0x27
+[    0.392000]  ? acpi_os_delete_cache+0xa/0x10
+[    0.392000]  ? acpi_ut_delete_caches+0x6d/0x7b
+[    0.392000]  ? acpi_terminate+0xa/0x14
+[    0.392000]  ? acpi_init+0x2af/0x34f
+[    0.392000]  ? __class_create+0x4c/0x80
+[    0.392000]  ? video_setup+0x7f/0x7f
+[    0.392000]  ? acpi_sleep_proc_init+0x27/0x27
+[    0.392000]  ? do_one_initcall+0x4e/0x1a0
+[    0.392000]  ? kernel_init_freeable+0x189/0x20a
+[    0.392000]  ? rest_init+0xc0/0xc0
+[    0.392000]  ? kernel_init+0xa/0x100
+[    0.392000]  ? ret_from_fork+0x25/0x30
+
+When early abort is occurred due to invalid ACPI information, Linux kernel
+terminates ACPI by calling acpi_terminate() function. The function calls
+acpi_ut_delete_caches() function to delete local caches (acpi_gbl_namespace_
+cache, state_cache, operand_cache, ps_node_cache, ps_node_ext_cache).
+
+But the deletion codes in acpi_ut_delete_caches() function only delete
+slab caches using kmem_cache_destroy() function, therefore the cache
+objects should be flushed before acpi_ut_delete_caches() function.
+
+"Acpi-Parse" cache and "Acpi-ParseExt" cache are used in an AML parse
+function, acpi_ps_parse_loop(). The function should complete all ops
+using acpi_ps_complete_final_op() when an error occurs due to invalid
+AML codes.
+However, the current implementation of acpi_ps_complete_final_op() does not
+complete all ops when it meets some errors and this cause cache leak.
+
+This cache leak has a security threat because an old kernel (<= 4.9) shows
+memory locations of kernel functions in stack dump. Some malicious users
+could use this information to neutralize kernel ASLR.
+
+To fix ACPI cache leak for enhancing security, I made a patch to complete all
+ops unconditionally for acpi_ps_complete_final_op() function.
+
+I hope that this patch improves the security of Linux kernel.
+
+Thank you.
+
+Link: https://github.com/acpica/acpica/commit/8829e70e
+Signed-off-by: Seunghun Han <kkamagui@gmail.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2248233.Mh6RI2rZIc@rjwysocki.net
+Link: https://patch.msgid.link/2363774.ElGaqSPkdT@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-**YES** This commit should be backported to stable kernel trees. ##
-Detailed Analysis: ### The Problem The commit fixes a **buffer overread
-vulnerability** in the `ACPI_VALIDATE_RSDP_SIG` macro. The issue occurs
-when: 1. **Context**: The macro `ACPI_VALIDATE_RSDP_SIG(a)` calls
-`strncmp(ACPI_CAST_PTR(char, (a)), ACPI_SIG_RSDP, 8)` 2. **Problem**:
-When `a` points to a standard ACPI table header (4 bytes signature), but
-the comparison tries to read 8 bytes for RSDP validation ("RSD PTR "),
-it reads 4 bytes beyond the allocated signature field 3. **Impact**:
-This causes a sequence overread that can be detected by tools like GCC's
-`-Wstringop-overread` and security-focused architectures like
-CHERI/Morello ### The Fix The fix changes line 530 in
-`include/acpi/actypes.h`: ```c // Before: #define
-ACPI_VALIDATE_RSDP_SIG(a) (!strncmp (ACPI_CAST_PTR (char, (a)),
-ACPI_SIG_RSDP, 8)) // After: #define ACPI_VALIDATE_RSDP_SIG(a) (!strncmp
-(ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, (sizeof(a) < 8) ?
-ACPI_NAMESEG_SIZE : 8)) ``` This conditionally limits the comparison to
-`ACPI_NAMESEG_SIZE` (4 bytes) when the source is smaller than 8 bytes,
-preventing the overread. ### Why This Should Be Backported: 1.
-**Security Fix**: This addresses a buffer overread that could be
-exploited or cause crashes on security-hardened systems 2. **Small &
-Contained**: The fix is a single line change to a macro definition with
-minimal risk 3. **Widespread Usage**: The macro is used in multiple
-critical ACPI code paths: - `drivers/acpi/acpica/tbprint.c` (kernel ACPI
-table printing) - `tools/power/acpi/tools/acpidump/apdump.c` (ACPI
-debugging tools) - Various other ACPI validation functions 4. **No
-Architectural Changes**: This doesn't change functionality, just
-prevents unsafe memory access 5. **Compiler Warning Fix**: Resolves
-build warnings with newer GCC versions using `-Wstringop-overread` ###
-Comparison with Historical Commits: - **Similar to Commit #3 (YES)**:
-Like the "disable -Wstringop-truncation" commit, this fixes compiler
-warnings related to string operations, but this one actually fixes the
-underlying safety issue rather than just suppressing warnings - **Unlike
-Commits #1,#2,#4,#5 (NO)**: Those were either pure code cleanup,
-debugging improvements, or infrastructure changes without security
-implications ### Risk Assessment: - **Minimal Risk**: The fix only
-affects boundary condition handling in string comparison - **No
-Functional Impact**: Normal RSDP validation still works correctly for
-valid 8-byte signatures - **Improves Safety**: Prevents potential memory
-safety violations on hardened systems This is exactly the type of small,
-safe, security-focused bugfix that stable trees are designed for.
+**YES** This commit should be backported to stable kernel trees based on
+comprehensive analysis of both the commit message and code changes: ##
+Security Impact Analysis The commit fixes a critical **memory cache leak
+that poses a security threat**: - The leak exposes kernel function
+memory locations in stack dumps on older kernels (≤ 4.9) - This
+information can be exploited to neutralize **kernel ASLR** (Address
+Space Layout Randomization) - The researcher specifically mentions this
+creates a security vulnerability that malicious users could exploit ##
+Bug Analysis The commit addresses **"Acpi-Parse" and "Acpi-ParseExt"
+cache leaks** that occur during ACPI early abort scenarios: 1. **Root
+Cause**: In `acpi_ps_complete_final_op()`, when errors occur during AML
+parsing, the function would exit early without properly cleaning up all
+parse operations 2. **Leak Mechanism**: The original code had multiple
+early return paths that bypassed the cleanup loop, leaving parse cache
+objects unfreed 3. **Trigger Conditions**: Invalid/malicious ACPI tables
+causing parse errors ## Code Changes Analysis The fix in
+`drivers/acpi/acpica/psobject.c` is **well-contained and minimal**:
+**Key changes:** 1. **Eliminates early returns**: Replaces immediate
+`return_ACPI_STATUS()` calls with flag setting (`ascending = FALSE`) 2.
+**Ensures complete cleanup**: All ops are now processed through
+`acpi_ps_complete_this_op()` unconditionally 3. **Preserves error
+reporting**: Uses `return_status` to track the first/most important
+error while continuing cleanup 4. **Maintains logic flow**: The cleanup
+loop now always runs to completion, preventing cache leaks **Specific
+improvements:** - Lines 674-701: Instead of immediate return on
+`AE_CTRL_TERMINATE`, sets `ascending = FALSE` and continues - Lines
+704-712: On parse failures, sets `ascending = FALSE` and continues
+instead of returning early - Lines 715-719: Always calls
+`acpi_ps_complete_this_op()` and tracks errors without early exit ##
+Backport Suitability Assessment **✅ Meets stable tree criteria:** 1.
+**Important bug fix**: Fixes memory leaks with security implications 2.
+**Minimal risk**: Changes are confined to error handling paths in ACPI
+parser 3. **Small and contained**: Only 50 lines changed in a single
+function 4. **No architectural changes**: Preserves existing API and
+behavior 5. **Clear regression prevention**: Ensures proper resource
+cleanup in error cases **✅ Historical precedent**: The kernel tree shows
+**multiple similar ACPI cache leak fixes by the same security
+researcher** (Seunghun Han) that were backported: - `3b2d69114fef` -
+"ACPICA: Namespace: fix operand cache leak" - `97f3c0a4b057` - "ACPICA:
+acpi: acpica: fix acpi operand cache leak in nseval.c" **✅ Risk
+assessment:** - **Low regression risk**: Only affects error paths during
+ACPI parse failures - **No functional changes**: Normal ACPI parsing
+behavior unchanged - **Defensive programming**: Makes cleanup more
+robust without changing success paths The commit represents a textbook
+example of a stable-tree appropriate fix: it addresses an important
+security-related memory leak with minimal, well-contained changes that
+improve robustness without introducing new functionality or
+architectural modifications.
 
- include/acpi/actypes.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/psobject.c | 52 ++++++++++------------------------
+ 1 file changed, 15 insertions(+), 37 deletions(-)
 
-diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
-index 7334037624c5c..a2bf54fb946a0 100644
---- a/include/acpi/actypes.h
-+++ b/include/acpi/actypes.h
-@@ -524,7 +524,7 @@ typedef u64 acpi_integer;
+diff --git a/drivers/acpi/acpica/psobject.c b/drivers/acpi/acpica/psobject.c
+index 2480c26c51710..bf708126a7523 100644
+--- a/drivers/acpi/acpica/psobject.c
++++ b/drivers/acpi/acpica/psobject.c
+@@ -636,7 +636,8 @@ acpi_status
+ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
+ 			  union acpi_parse_object *op, acpi_status status)
+ {
+-	acpi_status status2;
++	acpi_status return_status = status;
++	u8 ascending = TRUE;
  
- /* Support for the special RSDP signature (8 characters) */
+ 	ACPI_FUNCTION_TRACE_PTR(ps_complete_final_op, walk_state);
  
--#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, 8))
-+#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8))
- #define ACPI_MAKE_RSDP_SIG(dest)        (memcpy (ACPI_CAST_PTR (char, (dest)), ACPI_SIG_RSDP, 8))
+@@ -650,7 +651,7 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
+ 			  op));
+ 	do {
+ 		if (op) {
+-			if (walk_state->ascending_callback != NULL) {
++			if (ascending && walk_state->ascending_callback != NULL) {
+ 				walk_state->op = op;
+ 				walk_state->op_info =
+ 				    acpi_ps_get_opcode_info(op->common.
+@@ -672,49 +673,26 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
+ 				}
  
- /* Support for OEMx signature (x can be any character) */
+ 				if (status == AE_CTRL_TERMINATE) {
+-					status = AE_OK;
+-
+-					/* Clean up */
+-					do {
+-						if (op) {
+-							status2 =
+-							    acpi_ps_complete_this_op
+-							    (walk_state, op);
+-							if (ACPI_FAILURE
+-							    (status2)) {
+-								return_ACPI_STATUS
+-								    (status2);
+-							}
+-						}
+-
+-						acpi_ps_pop_scope(&
+-								  (walk_state->
+-								   parser_state),
+-								  &op,
+-								  &walk_state->
+-								  arg_types,
+-								  &walk_state->
+-								  arg_count);
+-
+-					} while (op);
+-
+-					return_ACPI_STATUS(status);
++					ascending = FALSE;
++					return_status = AE_CTRL_TERMINATE;
+ 				}
+ 
+ 				else if (ACPI_FAILURE(status)) {
+ 
+ 					/* First error is most important */
+ 
+-					(void)
+-					    acpi_ps_complete_this_op(walk_state,
+-								     op);
+-					return_ACPI_STATUS(status);
++					ascending = FALSE;
++					return_status = status;
+ 				}
+ 			}
+ 
+-			status2 = acpi_ps_complete_this_op(walk_state, op);
+-			if (ACPI_FAILURE(status2)) {
+-				return_ACPI_STATUS(status2);
++			status = acpi_ps_complete_this_op(walk_state, op);
++			if (ACPI_FAILURE(status)) {
++				ascending = FALSE;
++				if (ACPI_SUCCESS(return_status) ||
++				    return_status == AE_CTRL_TERMINATE) {
++					return_status = status;
++				}
+ 			}
+ 		}
+ 
+@@ -724,5 +702,5 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
+ 
+ 	} while (op);
+ 
+-	return_ACPI_STATUS(status);
++	return_ACPI_STATUS(return_status);
+ }
 -- 
 2.39.5
 
