@@ -1,62 +1,61 @@
-Return-Path: <linux-acpi+bounces-14009-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14010-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE0BAC8F2D
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 15:07:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8789AAC8F7E
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 15:14:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 304897B74D2
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 13:05:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D097E1890118
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 13:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CF7277032;
-	Fri, 30 May 2025 12:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03017278E42;
+	Fri, 30 May 2025 12:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ePuxjCTG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XGRfzyZw"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5171277026;
-	Fri, 30 May 2025 12:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA93277818;
+	Fri, 30 May 2025 12:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748608907; cv=none; b=FBS1/Ex4Hz2EUJptknqbYftIuDTo0DiqEKY2i91eYPhYIgDwc+dsXvuF344yJj2nKW3t3g++YZ2Om92++1YDA3+uT2VyPp1nuDZmNhzo71NoOmwnHnzUEBAbErx4Xk1IIQn9GLcqR5Zmen1BQWNPyZdbqysLb7muM+FbGQKBBeA=
+	t=1748608910; cv=none; b=EV99LqgCGnNWISTukQ756T7Rs7RezFEmJKBO75z+8Kver2kKF0Eu8cxXeHud/MF8Pbth4Elz5tgi/jn8ONAc9PZ/c82E4qsw1yqJvv/W9uNDxnxyZirsOXQrNTL22W5/6614anZmahAWuxacDTeL6D/q8x3H5uXwH5FOrwhwMxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748608907; c=relaxed/simple;
-	bh=wCKT2ANgON7RqHSfdHdof0iuxGEAx0kSohWDgb0dM1c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QL1PJAGoSBfu9YhRAtKw40ykWVWZldJR5kLDrKIUPmvB51TLpDKmJepzDYWitMEKOziaglq4yN+oX5yfdXmgGJJ9ofMLcrd6IR07N0Tu1Ba2EKQabVc43yAmU3PytEssG7PY4TO67B3JgbjdihfeVbwN7Cwu0dwBf3/LufAxTAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ePuxjCTG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B62C4CEEB;
-	Fri, 30 May 2025 12:41:46 +0000 (UTC)
+	s=arc-20240116; t=1748608910; c=relaxed/simple;
+	bh=16wZIjI3rM+SR9jJf6FfDXb7wOEnVPcIjK1MwsxP91c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=fmBjItDxxw9KiTi9EvrAW4zeIxav3Pz4d7yYG5R/1yQtI3xHyGLtEWy6Hjuy8xKG+8h6b3zEVQRJ8KRpVzzpHnuwqLVcgD6zdvmls4xt2yrE3ZOWfDTAnjcGYWbu7vWKVhTzpJ4QAa80n6AGb9sCjGqOZCd3HM6woxpTCufc9W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XGRfzyZw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3BFC4CEEA;
+	Fri, 30 May 2025 12:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748608907;
-	bh=wCKT2ANgON7RqHSfdHdof0iuxGEAx0kSohWDgb0dM1c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ePuxjCTG+1RmWi5N1rq4Fe1W/+J/XMO6fwmLXRfLrIce40UZbdF1Vk1CSkHdX8kuu
-	 Z4h3kDBe2AWD7dc5j+eyWkgd0h/8nTu0VoKvgwBYPcH+66sBt4iQp1faSHrbdKaEaG
-	 cl+X1N1Nu9D2ANwn01JwhLZQG8yJYpJjreJAX/t7ianIeP4R+SLpCgJddhtgaHGQE0
-	 c26IGClboY2nTk8jeAKVI1Td3AiYXBK/FMHohkWMZFfAQPwOeyK6Imq9SN9bwei5CZ
-	 c0zUM8qAHqYybB7/R2+tqHmykwB6i6ycX5P24oqU8S38yTWAEHElkttnRMOJ7LtRGi
-	 NqnXfg61J4CfA==
+	s=k20201202; t=1748608910;
+	bh=16wZIjI3rM+SR9jJf6FfDXb7wOEnVPcIjK1MwsxP91c=;
+	h=From:To:Cc:Subject:Date:From;
+	b=XGRfzyZwQtgRGGbSOcJp9g2KLz8h4iBXxyTh5tlAvAE/rA1+MXB07sKM16Ve1Y5+S
+	 rQRI7oItf3IiHC1KLlwFowoH8gfWzL5tdBs0txhMVZqaI8WqcKaKCBIy0/u1TQ5saU
+	 Syf3o/mdJnEG0CCVXKKq8Q5cwjZaO86JiZLro+Ic8a1K/tvON2gcgBm4RsQZKtrbow
+	 82hGea4DHYVMzZzJEpCOJOwD/QSInyckZqo1yzZ9ECxpwncVe0+qsWeMYdQF7lld/8
+	 iUww1Ukb/FLx7wrxjtCbTn88wIY2FABqcFs7RpeAOvmiTwpQNPoIdau8KfYT2XQ34r
+	 m0bcMqlbfxQrw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Peter Marheine <pmarheine@chromium.org>,
+Cc: Seunghun Han <kkamagui@gmail.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rjw@rjwysocki.net,
+	robert.moore@intel.com,
+	erik.schmauss@intel.com,
 	lenb@kernel.org,
 	linux-acpi@vger.kernel.org,
+	devel@acpica.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 11/11] ACPI: battery: negate current when discharging
-Date: Fri, 30 May 2025 08:41:31 -0400
-Message-Id: <20250530124131.2576650-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 01/10] ACPICA: fix acpi operand cache leak in dswstate.c
+Date: Fri, 30 May 2025 08:41:39 -0400
+Message-Id: <20250530124148.2576913-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250530124131.2576650-1-sashal@kernel.org>
-References: <20250530124131.2576650-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -65,100 +64,152 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.184
+X-stable-base: Linux 5.10.237
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Peter Marheine <pmarheine@chromium.org>
+From: Seunghun Han <kkamagui@gmail.com>
 
-[ Upstream commit 234f71555019d308c6bc6f98c78c5551cb8cd56a ]
+[ Upstream commit 156fd20a41e776bbf334bd5e45c4f78dfc90ce1c ]
 
-The ACPI specification requires that battery rate is always positive,
-but the kernel ABI for POWER_SUPPLY_PROP_CURRENT_NOW
-(Documentation/ABI/testing/sysfs-class-power) specifies that it should
-be negative when a battery is discharging. When reporting CURRENT_NOW,
-massage the value to match the documented ABI.
+ACPICA commit 987a3b5cf7175916e2a4b6ea5b8e70f830dfe732
 
-This only changes the sign of `current_now` and not `power_now` because
-documentation doesn't describe any particular meaning for `power_now` so
-leaving `power_now` unchanged is less likely to confuse userspace
-unnecessarily, whereas becoming consistent with the documented ABI is
-worth potentially confusing clients that read `current_now`.
+I found an ACPI cache leak in ACPI early termination and boot continuing case.
 
-Signed-off-by: Peter Marheine <pmarheine@chromium.org>
-Link: https://patch.msgid.link/20250508024146.1436129-1-pmarheine@chromium.org
+When early termination occurs due to malicious ACPI table, Linux kernel
+terminates ACPI function and continues to boot process. While kernel terminates
+ACPI function, kmem_cache_destroy() reports Acpi-Operand cache leak.
+
+Boot log of ACPI operand cache leak is as follows:
+>[    0.585957] ACPI: Added _OSI(Module Device)
+>[    0.587218] ACPI: Added _OSI(Processor Device)
+>[    0.588530] ACPI: Added _OSI(3.0 _SCP Extensions)
+>[    0.589790] ACPI: Added _OSI(Processor Aggregator Device)
+>[    0.591534] ACPI Error: Illegal I/O port address/length above 64K: C806E00000004002/0x2 (20170303/hwvalid-155)
+>[    0.594351] ACPI Exception: AE_LIMIT, Unable to initialize fixed events (20170303/evevent-88)
+>[    0.597858] ACPI: Unable to start the ACPI Interpreter
+>[    0.599162] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
+>[    0.601836] kmem_cache_destroy Acpi-Operand: Slab cache still has objects
+>[    0.603556] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.12.0-rc5 #26
+>[    0.605159] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS virtual_box 12/01/2006
+>[    0.609177] Call Trace:
+>[    0.610063]  ? dump_stack+0x5c/0x81
+>[    0.611118]  ? kmem_cache_destroy+0x1aa/0x1c0
+>[    0.612632]  ? acpi_sleep_proc_init+0x27/0x27
+>[    0.613906]  ? acpi_os_delete_cache+0xa/0x10
+>[    0.617986]  ? acpi_ut_delete_caches+0x3f/0x7b
+>[    0.619293]  ? acpi_terminate+0xa/0x14
+>[    0.620394]  ? acpi_init+0x2af/0x34f
+>[    0.621616]  ? __class_create+0x4c/0x80
+>[    0.623412]  ? video_setup+0x7f/0x7f
+>[    0.624585]  ? acpi_sleep_proc_init+0x27/0x27
+>[    0.625861]  ? do_one_initcall+0x4e/0x1a0
+>[    0.627513]  ? kernel_init_freeable+0x19e/0x21f
+>[    0.628972]  ? rest_init+0x80/0x80
+>[    0.630043]  ? kernel_init+0xa/0x100
+>[    0.631084]  ? ret_from_fork+0x25/0x30
+>[    0.633343] vgaarb: loaded
+>[    0.635036] EDAC MC: Ver: 3.0.0
+>[    0.638601] PCI: Probing PCI hardware
+>[    0.639833] PCI host bridge to bus 0000:00
+>[    0.641031] pci_bus 0000:00: root bus resource [io  0x0000-0xffff]
+> ... Continue to boot and log is omitted ...
+
+I analyzed this memory leak in detail and found acpi_ds_obj_stack_pop_and_
+delete() function miscalculated the top of the stack. acpi_ds_obj_stack_push()
+function uses walk_state->operand_index for start position of the top, but
+acpi_ds_obj_stack_pop_and_delete() function considers index 0 for it.
+Therefore, this causes acpi operand memory leak.
+
+This cache leak causes a security threat because an old kernel (<= 4.9) shows
+memory locations of kernel functions in stack dump. Some malicious users
+could use this information to neutralize kernel ASLR.
+
+I made a patch to fix ACPI operand cache leak.
+
+Link: https://github.com/acpica/acpica/commit/987a3b5c
+Signed-off-by: Seunghun Han <kkamagui@gmail.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/4999480.31r3eYUQgx@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-Based on my analysis of the commit and examination of the kernel
-codebase, I can now provide my assessment: **YES** This commit should be
-backported to stable kernel trees because: 1. **Fixes a real user-facing
-bug**: The commit addresses an ABI inconsistency where ACPI battery
-drivers were reporting current_now with the wrong sign. According to the
-kernel's power supply ABI documentation
-(Documentation/ABI/testing/sysfs-class-power), `current_now` should be
-negative when discharging and positive when charging, but ACPI battery
-drivers were reporting positive values always. 2. **Small and contained
-fix**: The change is minimal and well-contained. It only affects the
-`POWER_SUPPLY_PROP_CURRENT_NOW` case in `acpi_battery_get_property()`
-function in `drivers/acpi/battery.c`. The code adds a simple check to
-negate the current value only when: - Property requested is
-`POWER_SUPPLY_PROP_CURRENT_NOW` (not power_now) - Battery is in
-discharging state - The `acpi_battery_handle_discharging()` function
-confirms it's actually discharging 3. **Follows stable rules**: This is
-an important bugfix that corrects userspace-visible behavior to match
-documented ABI. Applications and battery monitoring tools rely on the
-documented behavior that negative current indicates discharging. 4.
-**Minimal regression risk**: The change is very conservative: - Only
-affects `current_now`, not `power_now` (as noted in commit message) -
-Uses existing `acpi_battery_handle_discharging()` logic to double-check
-the discharging state - Leaves all other battery properties unchanged 5.
-**Similar pattern in similar drivers**: From the historical examples
-provided, commits like "power: supply: bq27xxx: fix polarity of
-current_now" and "power: supply: axp20x_battery: properly report current
-when discharging" were backported with YES status for exactly the same
-type of issue - fixing current sign during discharge. 6. **Affects
-critical subsystem**: Battery reporting is crucial for power management,
-and incorrect current direction can confuse userspace tools and
-potentially impact power management decisions. The commit carefully
-addresses the ABI compliance issue while minimizing risk by only
-changing the sign for `current_now` during confirmed discharging states,
-making it an ideal candidate for stable backporting.
+**YES** This commit should be backported to stable kernel trees based on
+the following analysis: ## Analysis of the Commit **1. Bug Fix Nature**:
+This commit fixes a clear memory leak bug in the ACPICA subsystem. The
+issue occurs when `acpi_ds_create_operands()` encounters an error during
+operand creation and needs to clean up allocated operands. **2. Root
+Cause**: The core issue is a mismatch between how operands are pushed
+and popped from the stack: - `acpi_ds_obj_stack_push()` uses
+`walk_state->operand_index` to track the current position -
+`acpi_ds_obj_stack_pop_and_delete()` incorrectly assumes operands start
+at index 0 - This causes incomplete cleanup when errors occur, leading
+to memory leaks **3. Code Analysis**: The fix correctly addresses the
+issue by: - Tracking the original operand count (`prev_num_operands`) -
+Calculating the correct number of operands to clean up
+(`new_num_operands`) - Setting `walk_state->num_operands = i` before
+cleanup to ensure proper indexing - Restoring the original operand count
+after cleanup **4. Security Implications**: The commit message
+explicitly mentions this is a security issue - the memory leak can
+expose kernel function addresses in older kernels (≤4.9), potentially
+defeating ASLR. This elevates the importance beyond a simple memory
+leak. **5. Pattern Consistency**: This follows the exact same pattern as
+other ACPICA operand cache leak fixes that were successfully backported
+(commits `97f3c0a4b057`, `2915f16bdce2`, etc.), all authored by the same
+developer addressing similar issues. **6. Stability Characteristics**: -
+**Small and contained**: Only 8 lines of actual logic changes - **Clear
+error path**: Only affects cleanup during error conditions - **No
+behavioral changes**: No impact on normal operation - **Low regression
+risk**: Only modifies error handling paths **7. Backport Suitability
+Criteria**: - ✅ Fixes important bug affecting users (memory leak) - ✅
+Small, contained fix with minimal risk - ✅ No architectural changes - ✅
+Addresses security concern (ASLR bypass potential) - ✅ Follows
+established patterns for ACPICA fixes - ✅ Critical kernel subsystem
+(ACPI) **8. Historical Precedent**: The similar commits in the reference
+examples (Similar Commits #1, #2, #3) all have "Backport Status: YES"
+and address nearly identical ACPICA operand cache leak issues with
+similar fixes and commit message patterns. This commit meets all
+criteria for stable tree backporting: it's an important bugfix, has
+minimal regression risk, affects a critical subsystem, and follows
+established patterns for similar fixes that were previously backported.
 
- drivers/acpi/battery.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/acpi/acpica/dsutils.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 8bb0f4d06adc0..b0a5d077db905 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -250,10 +250,23 @@ static int acpi_battery_get_property(struct power_supply *psy,
- 		break;
- 	case POWER_SUPPLY_PROP_CURRENT_NOW:
- 	case POWER_SUPPLY_PROP_POWER_NOW:
--		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
-+		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
- 			ret = -ENODEV;
--		else
--			val->intval = battery->rate_now * 1000;
-+			break;
-+		}
+diff --git a/drivers/acpi/acpica/dsutils.c b/drivers/acpi/acpica/dsutils.c
+index fb9ed5e1da89d..2bdae8a25e084 100644
+--- a/drivers/acpi/acpica/dsutils.c
++++ b/drivers/acpi/acpica/dsutils.c
+@@ -668,6 +668,8 @@ acpi_ds_create_operands(struct acpi_walk_state *walk_state,
+ 	union acpi_parse_object *arguments[ACPI_OBJ_NUM_OPERANDS];
+ 	u32 arg_count = 0;
+ 	u32 index = walk_state->num_operands;
++	u32 prev_num_operands = walk_state->num_operands;
++	u32 new_num_operands;
+ 	u32 i;
+ 
+ 	ACPI_FUNCTION_TRACE_PTR(ds_create_operands, first_arg);
+@@ -696,6 +698,7 @@ acpi_ds_create_operands(struct acpi_walk_state *walk_state,
+ 
+ 	/* Create the interpreter arguments, in reverse order */
+ 
++	new_num_operands = index;
+ 	index--;
+ 	for (i = 0; i < arg_count; i++) {
+ 		arg = arguments[index];
+@@ -720,7 +723,11 @@ acpi_ds_create_operands(struct acpi_walk_state *walk_state,
+ 	 * pop everything off of the operand stack and delete those
+ 	 * objects
+ 	 */
+-	acpi_ds_obj_stack_pop_and_delete(arg_count, walk_state);
++	walk_state->num_operands = i;
++	acpi_ds_obj_stack_pop_and_delete(new_num_operands, walk_state);
 +
-+		val->intval = battery->rate_now * 1000;
-+		/*
-+		 * When discharging, the current should be reported as a
-+		 * negative number as per the power supply class interface
-+		 * definition.
-+		 */
-+		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
-+		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
-+		    acpi_battery_handle_discharging(battery)
-+				== POWER_SUPPLY_STATUS_DISCHARGING)
-+			val->intval = -val->intval;
-+
- 		break;
- 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
- 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
++	/* Restore operand count */
++	walk_state->num_operands = prev_num_operands;
+ 
+ 	ACPI_EXCEPTION((AE_INFO, status, "While creating Arg %u", index));
+ 	return_ACPI_STATUS(status);
 -- 
 2.39.5
 
