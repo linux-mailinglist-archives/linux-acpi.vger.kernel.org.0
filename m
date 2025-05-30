@@ -1,61 +1,59 @@
-Return-Path: <linux-acpi+bounces-14017-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14018-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB246AC8F47
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 15:10:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F20D8AC8FA5
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 15:17:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 248177A70DE
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 13:08:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 474E11C2227A
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 13:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4B7280035;
-	Fri, 30 May 2025 12:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E556B281359;
+	Fri, 30 May 2025 12:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BhrWe8+l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o5JHbjfg"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5845B28000C;
-	Fri, 30 May 2025 12:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FDE28134F;
+	Fri, 30 May 2025 12:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748608928; cv=none; b=Fidwo0+eXObwAzSdDC6tlazd/X0rIx7z94lH0zGJPejkJHe+Z4yrz8/ZNV7FYjlYA4r2qNDwD15tLem2qNtfuDjSOmGVhUcIitlH4LpLnzrlE9krSDYgDk6BZppXTx37Coqg9dQxE7fq46/a3v68AxBsS8pVGEaPeWUyewZWHEM=
+	t=1748608932; cv=none; b=kJ2taB/2b3JzmfohkgIn0jpw1T9E5btuzIvuuwUp0l0I+V1Aq4u6C8XvsRt06E6qa/h+i1iru8zXLZ2gWhPtKKumDpyJeQpQfD2ktjzptSxGqWjyzbAAYBd80Qy7D8KrX+/+s/i7pVhDQr6vjnXiO9Ca01fIvwgRxo+CUK++Jxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748608928; c=relaxed/simple;
-	bh=Sacp20oqiruqxAKqXWlLaFrBKm4ITOuxqfEzh9cqjqs=;
+	s=arc-20240116; t=1748608932; c=relaxed/simple;
+	bh=hTf/rpsil0On+S8eoIYtmeLVf6IxhISsYEzbyEC7MNg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eCX2f/yEYh7ZP8XmcPHs71hygl7R5BbQKRne09NiFzF56V9VmMqsMUsNwpP2tRZujaSljPC6xAuRPCDdY5CTLjmJHyTUcJAZl5RSATTXOjLNJYJHn3T/YNibfktvIpf9ZvSMSyEjgX2748vUoKxYQit/HfouKAh0Ns4/X1oMuT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BhrWe8+l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C02C4CEEA;
-	Fri, 30 May 2025 12:42:07 +0000 (UTC)
+	 MIME-Version; b=FSeRMu2S0zDLptbjjq1FS5DB/AeRwUWdXlNSNRN/5P5b5f29N4z+dYN9tMOwzwaRE5SuKJGkdJqeV/a3g2oQ1R74TdXWAynWuremMTMBoi5FYkqH/jjUzGpwn/iCIuU9BV7xa9hIj3Eo+PLqbIgjfQOab8mPKFOFeH/OwBRGYn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o5JHbjfg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F81C4CEF0;
+	Fri, 30 May 2025 12:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748608928;
-	bh=Sacp20oqiruqxAKqXWlLaFrBKm4ITOuxqfEzh9cqjqs=;
+	s=k20201202; t=1748608932;
+	bh=hTf/rpsil0On+S8eoIYtmeLVf6IxhISsYEzbyEC7MNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BhrWe8+lzSP2ncP65c0jUgabOen+cCdWSCX7OpLt8TZgOsUYVX3s+Y1JpY95I68SE
-	 tuamPHqDEl8PVjsQgiAoZtQ6Zd8gJGmsZeEvaJQ//LZR2vzuzfgn8xoRJ9L931odC0
-	 0m88IFCBOnJI55tCcyS8ly/NHHdOex6PWw2+LiVhZ92yKQxEeU9YGg7BBh3kuIqyrf
-	 Qf/wypcLk0IgPsrKSDPxmmZhVsFVaHo4hk7FcycdUNA96kdEPeNiknc1+psTFctldo
-	 jNjCyDvHiM6G1YtgtA/ytdT5Z8/h1z+LFrnYVvBRZiYoTnwVby7GXx/FS/Xl1AAnHE
-	 OeRUwkSff7jBA==
+	b=o5JHbjfgsvnKLx0c0pDsH3Qr3E7pg/imW4wjp38+I6iHRazIRsAHgTOmz1gk9mFYR
+	 SZPgBbSNlzyBEB4A8OmmKQDEe5CbWlR5w+ERNC/UBnta8Yeil3g6iet/McIsnjbsps
+	 6TOIIXUGqNif38rf4DvcS0ZIri89XeuB97/sDkbLjwJarvlErchtGUObDqsI74R9v4
+	 Ei59LXbkWapWP9qAJN4sqWleZaKkWj3oR0U+HGBW0ZcnzcPQJbKZl0M8g5hpPxEoDF
+	 /jy04ck9PZvHLfE2Yw67Tgt+9O1VmdDYHM3zqO7Yny+PGXko/lYZGesggfpFSIjE75
+	 tHQLThOsVXErw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Seunghun Han <kkamagui@gmail.com>,
+Cc: Peter Marheine <pmarheine@chromium.org>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	robert.moore@intel.com,
-	erik.schmauss@intel.com,
+	rjw@rjwysocki.net,
 	lenb@kernel.org,
 	linux-acpi@vger.kernel.org,
-	devel@acpica.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 3/6] ACPICA: fix acpi parse and parseext cache leaks
-Date: Fri, 30 May 2025 08:42:00 -0400
-Message-Id: <20250530124203.2577122-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 6/6] ACPI: battery: negate current when discharging
+Date: Fri, 30 May 2025 08:42:03 -0400
+Message-Id: <20250530124203.2577122-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530124203.2577122-1-sashal@kernel.org>
 References: <20250530124203.2577122-1-sashal@kernel.org>
@@ -65,287 +63,102 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Seunghun Han <kkamagui@gmail.com>
+From: Peter Marheine <pmarheine@chromium.org>
 
-[ Upstream commit bed18f0bdcd6737a938264a59d67923688696fc4 ]
+[ Upstream commit 234f71555019d308c6bc6f98c78c5551cb8cd56a ]
 
-ACPICA commit 8829e70e1360c81e7a5a901b5d4f48330e021ea5
+The ACPI specification requires that battery rate is always positive,
+but the kernel ABI for POWER_SUPPLY_PROP_CURRENT_NOW
+(Documentation/ABI/testing/sysfs-class-power) specifies that it should
+be negative when a battery is discharging. When reporting CURRENT_NOW,
+massage the value to match the documented ABI.
 
-I'm Seunghun Han, and I work for National Security Research Institute of
-South Korea.
+This only changes the sign of `current_now` and not `power_now` because
+documentation doesn't describe any particular meaning for `power_now` so
+leaving `power_now` unchanged is less likely to confuse userspace
+unnecessarily, whereas becoming consistent with the documented ABI is
+worth potentially confusing clients that read `current_now`.
 
-I have been doing a research on ACPI and found an ACPI cache leak in ACPI
-early abort cases.
-
-Boot log of ACPI cache leak is as follows:
-[    0.352414] ACPI: Added _OSI(Module Device)
-[    0.353182] ACPI: Added _OSI(Processor Device)
-[    0.353182] ACPI: Added _OSI(3.0 _SCP Extensions)
-[    0.353182] ACPI: Added _OSI(Processor Aggregator Device)
-[    0.356028] ACPI: Unable to start the ACPI Interpreter
-[    0.356799] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
-[    0.360215] kmem_cache_destroy Acpi-State: Slab cache still has objects
-[    0.360648] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W
-4.12.0-rc4-next-20170608+ #10
-[    0.361273] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
-virtual_box 12/01/2006
-[    0.361873] Call Trace:
-[    0.362243]  ? dump_stack+0x5c/0x81
-[    0.362591]  ? kmem_cache_destroy+0x1aa/0x1c0
-[    0.362944]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.363296]  ? acpi_os_delete_cache+0xa/0x10
-[    0.363646]  ? acpi_ut_delete_caches+0x6d/0x7b
-[    0.364000]  ? acpi_terminate+0xa/0x14
-[    0.364000]  ? acpi_init+0x2af/0x34f
-[    0.364000]  ? __class_create+0x4c/0x80
-[    0.364000]  ? video_setup+0x7f/0x7f
-[    0.364000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.364000]  ? do_one_initcall+0x4e/0x1a0
-[    0.364000]  ? kernel_init_freeable+0x189/0x20a
-[    0.364000]  ? rest_init+0xc0/0xc0
-[    0.364000]  ? kernel_init+0xa/0x100
-[    0.364000]  ? ret_from_fork+0x25/0x30
-
-I analyzed this memory leak in detail. I found that “Acpi-State” cache and
-“Acpi-Parse” cache were merged because the size of cache objects was same
-slab cache size.
-
-I finally found “Acpi-Parse” cache and “Acpi-parse_ext” cache were leaked
-using SLAB_NEVER_MERGE flag in kmem_cache_create() function.
-
-Real ACPI cache leak point is as follows:
-[    0.360101] ACPI: Added _OSI(Module Device)
-[    0.360101] ACPI: Added _OSI(Processor Device)
-[    0.360101] ACPI: Added _OSI(3.0 _SCP Extensions)
-[    0.361043] ACPI: Added _OSI(Processor Aggregator Device)
-[    0.364016] ACPI: Unable to start the ACPI Interpreter
-[    0.365061] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
-[    0.368174] kmem_cache_destroy Acpi-Parse: Slab cache still has objects
-[    0.369332] CPU: 1 PID: 1 Comm: swapper/0 Tainted: G        W
-4.12.0-rc4-next-20170608+ #8
-[    0.371256] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
-virtual_box 12/01/2006
-[    0.372000] Call Trace:
-[    0.372000]  ? dump_stack+0x5c/0x81
-[    0.372000]  ? kmem_cache_destroy+0x1aa/0x1c0
-[    0.372000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.372000]  ? acpi_os_delete_cache+0xa/0x10
-[    0.372000]  ? acpi_ut_delete_caches+0x56/0x7b
-[    0.372000]  ? acpi_terminate+0xa/0x14
-[    0.372000]  ? acpi_init+0x2af/0x34f
-[    0.372000]  ? __class_create+0x4c/0x80
-[    0.372000]  ? video_setup+0x7f/0x7f
-[    0.372000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.372000]  ? do_one_initcall+0x4e/0x1a0
-[    0.372000]  ? kernel_init_freeable+0x189/0x20a
-[    0.372000]  ? rest_init+0xc0/0xc0
-[    0.372000]  ? kernel_init+0xa/0x100
-[    0.372000]  ? ret_from_fork+0x25/0x30
-[    0.388039] kmem_cache_destroy Acpi-parse_ext: Slab cache still has objects
-[    0.389063] CPU: 1 PID: 1 Comm: swapper/0 Tainted: G        W
-4.12.0-rc4-next-20170608+ #8
-[    0.390557] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
-virtual_box 12/01/2006
-[    0.392000] Call Trace:
-[    0.392000]  ? dump_stack+0x5c/0x81
-[    0.392000]  ? kmem_cache_destroy+0x1aa/0x1c0
-[    0.392000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.392000]  ? acpi_os_delete_cache+0xa/0x10
-[    0.392000]  ? acpi_ut_delete_caches+0x6d/0x7b
-[    0.392000]  ? acpi_terminate+0xa/0x14
-[    0.392000]  ? acpi_init+0x2af/0x34f
-[    0.392000]  ? __class_create+0x4c/0x80
-[    0.392000]  ? video_setup+0x7f/0x7f
-[    0.392000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.392000]  ? do_one_initcall+0x4e/0x1a0
-[    0.392000]  ? kernel_init_freeable+0x189/0x20a
-[    0.392000]  ? rest_init+0xc0/0xc0
-[    0.392000]  ? kernel_init+0xa/0x100
-[    0.392000]  ? ret_from_fork+0x25/0x30
-
-When early abort is occurred due to invalid ACPI information, Linux kernel
-terminates ACPI by calling acpi_terminate() function. The function calls
-acpi_ut_delete_caches() function to delete local caches (acpi_gbl_namespace_
-cache, state_cache, operand_cache, ps_node_cache, ps_node_ext_cache).
-
-But the deletion codes in acpi_ut_delete_caches() function only delete
-slab caches using kmem_cache_destroy() function, therefore the cache
-objects should be flushed before acpi_ut_delete_caches() function.
-
-"Acpi-Parse" cache and "Acpi-ParseExt" cache are used in an AML parse
-function, acpi_ps_parse_loop(). The function should complete all ops
-using acpi_ps_complete_final_op() when an error occurs due to invalid
-AML codes.
-However, the current implementation of acpi_ps_complete_final_op() does not
-complete all ops when it meets some errors and this cause cache leak.
-
-This cache leak has a security threat because an old kernel (<= 4.9) shows
-memory locations of kernel functions in stack dump. Some malicious users
-could use this information to neutralize kernel ASLR.
-
-To fix ACPI cache leak for enhancing security, I made a patch to complete all
-ops unconditionally for acpi_ps_complete_final_op() function.
-
-I hope that this patch improves the security of Linux kernel.
-
-Thank you.
-
-Link: https://github.com/acpica/acpica/commit/8829e70e
-Signed-off-by: Seunghun Han <kkamagui@gmail.com>
+Signed-off-by: Peter Marheine <pmarheine@chromium.org>
+Link: https://patch.msgid.link/20250508024146.1436129-1-pmarheine@chromium.org
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2363774.ElGaqSPkdT@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-**YES** This commit should be backported to stable kernel trees based on
-comprehensive analysis of both the commit message and code changes: ##
-Security Impact Analysis The commit fixes a critical **memory cache leak
-that poses a security threat**: - The leak exposes kernel function
-memory locations in stack dumps on older kernels (≤ 4.9) - This
-information can be exploited to neutralize **kernel ASLR** (Address
-Space Layout Randomization) - The researcher specifically mentions this
-creates a security vulnerability that malicious users could exploit ##
-Bug Analysis The commit addresses **"Acpi-Parse" and "Acpi-ParseExt"
-cache leaks** that occur during ACPI early abort scenarios: 1. **Root
-Cause**: In `acpi_ps_complete_final_op()`, when errors occur during AML
-parsing, the function would exit early without properly cleaning up all
-parse operations 2. **Leak Mechanism**: The original code had multiple
-early return paths that bypassed the cleanup loop, leaving parse cache
-objects unfreed 3. **Trigger Conditions**: Invalid/malicious ACPI tables
-causing parse errors ## Code Changes Analysis The fix in
-`drivers/acpi/acpica/psobject.c` is **well-contained and minimal**:
-**Key changes:** 1. **Eliminates early returns**: Replaces immediate
-`return_ACPI_STATUS()` calls with flag setting (`ascending = FALSE`) 2.
-**Ensures complete cleanup**: All ops are now processed through
-`acpi_ps_complete_this_op()` unconditionally 3. **Preserves error
-reporting**: Uses `return_status` to track the first/most important
-error while continuing cleanup 4. **Maintains logic flow**: The cleanup
-loop now always runs to completion, preventing cache leaks **Specific
-improvements:** - Lines 674-701: Instead of immediate return on
-`AE_CTRL_TERMINATE`, sets `ascending = FALSE` and continues - Lines
-704-712: On parse failures, sets `ascending = FALSE` and continues
-instead of returning early - Lines 715-719: Always calls
-`acpi_ps_complete_this_op()` and tracks errors without early exit ##
-Backport Suitability Assessment **✅ Meets stable tree criteria:** 1.
-**Important bug fix**: Fixes memory leaks with security implications 2.
-**Minimal risk**: Changes are confined to error handling paths in ACPI
-parser 3. **Small and contained**: Only 50 lines changed in a single
-function 4. **No architectural changes**: Preserves existing API and
-behavior 5. **Clear regression prevention**: Ensures proper resource
-cleanup in error cases **✅ Historical precedent**: The kernel tree shows
-**multiple similar ACPI cache leak fixes by the same security
-researcher** (Seunghun Han) that were backported: - `3b2d69114fef` -
-"ACPICA: Namespace: fix operand cache leak" - `97f3c0a4b057` - "ACPICA:
-acpi: acpica: fix acpi operand cache leak in nseval.c" **✅ Risk
-assessment:** - **Low regression risk**: Only affects error paths during
-ACPI parse failures - **No functional changes**: Normal ACPI parsing
-behavior unchanged - **Defensive programming**: Makes cleanup more
-robust without changing success paths The commit represents a textbook
-example of a stable-tree appropriate fix: it addresses an important
-security-related memory leak with minimal, well-contained changes that
-improve robustness without introducing new functionality or
-architectural modifications.
+Based on my analysis of the commit and examination of the kernel
+codebase, I can now provide my assessment: **YES** This commit should be
+backported to stable kernel trees because: 1. **Fixes a real user-facing
+bug**: The commit addresses an ABI inconsistency where ACPI battery
+drivers were reporting current_now with the wrong sign. According to the
+kernel's power supply ABI documentation
+(Documentation/ABI/testing/sysfs-class-power), `current_now` should be
+negative when discharging and positive when charging, but ACPI battery
+drivers were reporting positive values always. 2. **Small and contained
+fix**: The change is minimal and well-contained. It only affects the
+`POWER_SUPPLY_PROP_CURRENT_NOW` case in `acpi_battery_get_property()`
+function in `drivers/acpi/battery.c`. The code adds a simple check to
+negate the current value only when: - Property requested is
+`POWER_SUPPLY_PROP_CURRENT_NOW` (not power_now) - Battery is in
+discharging state - The `acpi_battery_handle_discharging()` function
+confirms it's actually discharging 3. **Follows stable rules**: This is
+an important bugfix that corrects userspace-visible behavior to match
+documented ABI. Applications and battery monitoring tools rely on the
+documented behavior that negative current indicates discharging. 4.
+**Minimal regression risk**: The change is very conservative: - Only
+affects `current_now`, not `power_now` (as noted in commit message) -
+Uses existing `acpi_battery_handle_discharging()` logic to double-check
+the discharging state - Leaves all other battery properties unchanged 5.
+**Similar pattern in similar drivers**: From the historical examples
+provided, commits like "power: supply: bq27xxx: fix polarity of
+current_now" and "power: supply: axp20x_battery: properly report current
+when discharging" were backported with YES status for exactly the same
+type of issue - fixing current sign during discharge. 6. **Affects
+critical subsystem**: Battery reporting is crucial for power management,
+and incorrect current direction can confuse userspace tools and
+potentially impact power management decisions. The commit carefully
+addresses the ABI compliance issue while minimizing risk by only
+changing the sign for `current_now` during confirmed discharging states,
+making it an ideal candidate for stable backporting.
 
- drivers/acpi/acpica/psobject.c | 52 ++++++++++------------------------
- 1 file changed, 15 insertions(+), 37 deletions(-)
+ drivers/acpi/battery.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/acpica/psobject.c b/drivers/acpi/acpica/psobject.c
-index 98e5c7400e547..3ea26bbd534df 100644
---- a/drivers/acpi/acpica/psobject.c
-+++ b/drivers/acpi/acpica/psobject.c
-@@ -639,7 +639,8 @@ acpi_status
- acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 			  union acpi_parse_object *op, acpi_status status)
- {
--	acpi_status status2;
-+	acpi_status return_status = status;
-+	u8 ascending = TRUE;
- 
- 	ACPI_FUNCTION_TRACE_PTR(ps_complete_final_op, walk_state);
- 
-@@ -653,7 +654,7 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 			  op));
- 	do {
- 		if (op) {
--			if (walk_state->ascending_callback != NULL) {
-+			if (ascending && walk_state->ascending_callback != NULL) {
- 				walk_state->op = op;
- 				walk_state->op_info =
- 				    acpi_ps_get_opcode_info(op->common.
-@@ -675,49 +676,26 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 				}
- 
- 				if (status == AE_CTRL_TERMINATE) {
--					status = AE_OK;
--
--					/* Clean up */
--					do {
--						if (op) {
--							status2 =
--							    acpi_ps_complete_this_op
--							    (walk_state, op);
--							if (ACPI_FAILURE
--							    (status2)) {
--								return_ACPI_STATUS
--								    (status2);
--							}
--						}
--
--						acpi_ps_pop_scope(&
--								  (walk_state->
--								   parser_state),
--								  &op,
--								  &walk_state->
--								  arg_types,
--								  &walk_state->
--								  arg_count);
--
--					} while (op);
--
--					return_ACPI_STATUS(status);
-+					ascending = FALSE;
-+					return_status = AE_CTRL_TERMINATE;
- 				}
- 
- 				else if (ACPI_FAILURE(status)) {
- 
- 					/* First error is most important */
- 
--					(void)
--					    acpi_ps_complete_this_op(walk_state,
--								     op);
--					return_ACPI_STATUS(status);
-+					ascending = FALSE;
-+					return_status = status;
- 				}
- 			}
- 
--			status2 = acpi_ps_complete_this_op(walk_state, op);
--			if (ACPI_FAILURE(status2)) {
--				return_ACPI_STATUS(status2);
-+			status = acpi_ps_complete_this_op(walk_state, op);
-+			if (ACPI_FAILURE(status)) {
-+				ascending = FALSE;
-+				if (ACPI_SUCCESS(return_status) ||
-+				    return_status == AE_CTRL_TERMINATE) {
-+					return_status = status;
-+				}
- 			}
- 		}
- 
-@@ -727,5 +705,5 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 
- 	} while (op);
- 
--	return_ACPI_STATUS(status);
-+	return_ACPI_STATUS(return_status);
- }
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index cf853e985d6d9..a5e120eca7f33 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -266,10 +266,23 @@ static int acpi_battery_get_property(struct power_supply *psy,
+ 		break;
+ 	case POWER_SUPPLY_PROP_CURRENT_NOW:
+ 	case POWER_SUPPLY_PROP_POWER_NOW:
+-		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
++		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
+ 			ret = -ENODEV;
+-		else
+-			val->intval = battery->rate_now * 1000;
++			break;
++		}
++
++		val->intval = battery->rate_now * 1000;
++		/*
++		 * When discharging, the current should be reported as a
++		 * negative number as per the power supply class interface
++		 * definition.
++		 */
++		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
++		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
++		    acpi_battery_handle_discharging(battery)
++				== POWER_SUPPLY_STATUS_DISCHARGING)
++			val->intval = -val->intval;
++
+ 		break;
+ 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+ 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
 -- 
 2.39.5
 
