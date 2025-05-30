@@ -1,59 +1,60 @@
-Return-Path: <linux-acpi+bounces-13993-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13994-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18C64AC8EDD
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 14:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6297AC8EE0
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 14:59:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 784C67A4611
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 12:57:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C1E57A7EE7
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 12:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073A5266F1E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FB62673BC;
 	Fri, 30 May 2025 12:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tTLHDhjQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OJQ0Rq2s"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB256266F0D;
-	Fri, 30 May 2025 12:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA92F2673B0;
+	Fri, 30 May 2025 12:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748608861; cv=none; b=taSJenrc2ULyexTcU2VBMAXElyjq3E4dmImudT9tnYQqguJzyq0AnTN31ZT8WXvCTrMVNzojJvpLGkXeQkB19pJPaDPJKjgdVAUngbF/vJWoIv3qKL+nermG8bScpn68+SLQiMdx5DoB8dpDS8DZzlORcTTJd5N3trQLfiQ7bOE=
+	t=1748608862; cv=none; b=uwtqGjr35IWCEjYPYTVZrrCNcoWweNh1EQCzwx48OcO2Qs7j5xCMMYNI5pnctsX12Z1ij4X8D1zdCTRLZqe45juwEaPFiifhCIhdBMUipfx45hYQEyl45WiAj8AXEVzgJ3nhAbgW8UTHhNSUkot8fAU8aE0IuhwVw3XF+c+QVqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748608861; c=relaxed/simple;
-	bh=hmWFCRTnmI9+sqngAp403FtuSrQ/QuIKwuybvV2ts6M=;
+	s=arc-20240116; t=1748608862; c=relaxed/simple;
+	bh=VWuhidkeOaPUDcpTA+k0hNhbXViKVeX3wH7MsyxRsak=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cfJd/pUmT5/emLQwcSwyo6xo1a++IxZK+ei2RJlP5UUNDXipnSnMHuErkevLjonjI5dSbb3T0vtuSOwrjqk4nImxg75VwDxTZBpoHJjIBlsT7kC19mMsaYeIvxHW/2QN+QSx2gbBpV/+44OtBooX6G1xwydk5HSqQcBxLO/dTRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tTLHDhjQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E07C4CEEB;
-	Fri, 30 May 2025 12:41:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EEE1rbS5IemJy6oFBwWNHpcibI5Hwd6ebAXBE1zYtQe1BvCWjE0hpcbgk88UTtStyv1J4Q8gi8wrrN+0cA0grmqrbNVQbaIbu7p1+cn3kmvMlfdOTDpyt5hqEnSIxjmlR4k1ITRqtr6e0KlEu2Rd/ITJNHMnGHYkaRY6JyJo/Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OJQ0Rq2s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9132C4CEE9;
+	Fri, 30 May 2025 12:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748608861;
-	bh=hmWFCRTnmI9+sqngAp403FtuSrQ/QuIKwuybvV2ts6M=;
+	s=k20201202; t=1748608862;
+	bh=VWuhidkeOaPUDcpTA+k0hNhbXViKVeX3wH7MsyxRsak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tTLHDhjQEzEtfHzGToR6FFmzov8RPqXxz1oU0SPdns7vYtVPfvVmrZZUhL+F4WmdV
-	 5EkpA0E1rM7MQuvbkUE6Ahw84EelhfuO824L40U4U1YbcSoPhEkVG0Kxyfd+vFBwBr
-	 S3sMVH6pnEKVnIaDHotg0/pAiXFMUzj59q8RgA0DJM2q0L1MYG9EDHTO73fJ51aqxX
-	 P653A2wqAU94KVsilRi3A0F6sqaOAFq6DrsNdQ4kW8clBeffNGrxsqBfgK5qckF0O9
-	 DLRzC7Ab3awVVjqHyYJGkRE8aCd5w0IBkAKrd7iolqB0n7l+72O4jXYD8j/dNetmJs
-	 0nlDntRSVzw8Q==
+	b=OJQ0Rq2sK90VX/mJqK4fJ8Gb+7kIBNuMDQLYec8yrriHu0ultGvaXTp/jhcKToiN5
+	 50Tk9nFQqPIPeXAtUtkGiZ5/W6jqts5ZHFPgfMl/yiEYMGl+W2dQHz0gmU17g0fM2V
+	 0m5VhJssIrB1L8EOgXtYdAH11vFsG8mVGfvlg9zI+12XujcUtixAnIPsf+gJjGWdhH
+	 qG/9wq9muw1l6l4VjDLA1DGsSP3YXc9nBEJZcxcjkXttJDL9ArveZn+qe5D44jgxuN
+	 NjoS5N30LrZRrTnuk8zMv5aUgJU8mRskLmASXq/yK6ScpBiaC0ysuRsIWPqwYKXpqf
+	 CVOjbEx8uMxXA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Armin Wolf <W_Armin@gmx.de>,
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+	kernel test robot <lkp@intel.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rjw@rjwysocki.net,
 	lenb@kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 10/18] ACPI: bus: Bail out if acpi_kobj registration fails
-Date: Fri, 30 May 2025 08:40:39 -0400
-Message-Id: <20250530124047.2575954-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 11/18] ACPI: Add missing prototype for non CONFIG_SUSPEND/CONFIG_X86 case
+Date: Fri, 30 May 2025 08:40:40 -0400
+Message-Id: <20250530124047.2575954-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250530124047.2575954-1-sashal@kernel.org>
 References: <20250530124047.2575954-1-sashal@kernel.org>
@@ -69,86 +70,103 @@ X-stable-base: Linux 6.6.92
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 94a370fc8def6038dbc02199db9584b0b3690f1a ]
+[ Upstream commit e1bdbbc98279164d910d2de82a745f090a8b249f ]
 
-The ACPI sysfs code will fail to initialize if acpi_kobj is NULL,
-together with some ACPI drivers.
+acpi_register_lps0_dev() and acpi_unregister_lps0_dev() may be used
+in drivers that don't require CONFIG_SUSPEND or compile on !X86.
 
-Follow the other firmware subsystems and bail out if the kobject
-cannot be registered.
+Add prototypes for those cases.
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20250518185111.3560-2-W_Armin@gmx.de
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502191627.fRgoBwcZ-lkp@intel.com/
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20250407183656.1503446-1-superm1@kernel.org
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-**YES** This commit should be backported to stable kernel trees. Here's
-my extensive analysis: ## Code Change Analysis The commit changes the
-behavior in `acpi_init()` when `kobject_create_and_add("acpi",
-firmware_kobj)` fails: **Before:** - If `acpi_kobj` creation fails, only
-prints a debug message and continues execution - The function proceeds
-to initialize ACPI subsystems with a NULL `acpi_kobj` - This leads to
-potential crashes/failures in other ACPI components **After:** - If
-`acpi_kobj` creation fails, prints an error message and returns
-`-ENOMEM` - Prevents initialization of ACPI subsystems with a NULL
-`acpi_kobj` - Follows proper error handling patterns ## Evidence from
-Kernel Code Investigation From examining the kernel repository, I found
-multiple critical usages of `acpi_kobj` that would fail catastrophically
-if it's NULL: 1. **drivers/acpi/sysfs.c:514**:
-`kobject_create_and_add("tables", acpi_kobj)` - NULL parent causes
-undefined behavior 2. **drivers/acpi/sysfs.c:924**:
-`sysfs_create_group(acpi_kobj, &interrupt_stats_attr_group)` - NULL
-kobject crashes 3. **drivers/acpi/platform_profile.c**: Multiple
-`sysfs_notify(acpi_kobj, ...)` calls that would crash with NULL 4.
-**drivers/acpi/platform_profile.c**: `sysfs_create_group(acpi_kobj,
-&platform_profile_group)` would fail ## Backport Criteria Assessment ✅
-**Fixes a real bug**: Yes - prevents crashes when kobject creation fails
-✅ **Small and contained**: Yes - only 4 lines changed in one function ✅
-**Clear side effects**: Yes - prevents ACPI initialization on memory
-allocation failure ✅ **No architectural changes**: Yes - just proper
-error handling ✅ **Critical subsystem**: Yes - ACPI is core kernel
-infrastructure ✅ **Minimal regression risk**: Yes - only affects rare
-failure path ✅ **Follows stable rules**: Yes - important bugfix with
-minimal risk ## Comparison with Historical Examples This commit closely
-matches **Similar Commit #1** (Status: YES) which also: - Fixed error
-handling in ACPI initialization code - Added proper cleanup/error
-handling when kobject operations fail - Was considered suitable for
-backporting The commit differs significantly from the "NO" examples
-which were: - Code cleanup/style changes (Similar Commits #2, #3, #4) -
-Refactoring without fixing actual bugs (Similar Commit #4) ## Risk
-Assessment **Low Risk**: The change only affects the extremely rare case
-where `kobject_create_and_add()` fails due to memory allocation failure.
-In such cases: - **Current behavior**: System continues with broken
-ACPI, leading to crashes - **New behavior**: ACPI initialization fails
-cleanly, system may still boot without ACPI ## Conclusion This is a
-critical bug fix that prevents crashes in ACPI subsystems when memory
-allocation fails during boot. It transforms undefined behavior/crashes
-into clean failure handling, making it an ideal candidate for stable
-backporting.
+**YES** This commit should be backported to stable kernel trees.
+**Analysis:** This commit fixes a clear build error that affects users
+in specific, but valid, kernel configurations. Here's the detailed
+analysis: **1. Clear Bug Fix:** The commit addresses missing function
+prototypes for `acpi_register_lps0_dev()` and
+`acpi_unregister_lps0_dev()` when `CONFIG_SUSPEND` or `CONFIG_X86` are
+not enabled. This causes compilation failures when drivers that use
+these functions are built without these config options. **2. Code
+Changes Analysis:** - **File Modified:** `include/linux/acpi.h` at lines
+1108-1162 - **Before:** The `struct acpi_s2idle_dev_ops` was only
+defined within the `#if defined(CONFIG_SUSPEND) && defined(CONFIG_X86)`
+block, and the stub functions for `acpi_register_lps0_dev()` and
+`acpi_unregister_lps0_dev()` were missing from the `#else` clause. -
+**After:** The struct definition is moved outside the conditional block,
+and stub functions are added in the `#else` clause that return `-ENODEV`
+for registration and do nothing for unregistration. **3. Real-world
+Impact:** From examining the kernel tree, several drivers use these
+functions: - `/home/sasha/linux/drivers/platform/x86/amd/pmc/pmc.c` -
+AMD PMC driver calls `acpi_register_lps0_dev()` and
+`acpi_unregister_lps0_dev()` -
+`/home/sasha/linux/arch/x86/platform/atom/punit_atom_debug.c` - Intel
+Atom debug driver - `/home/sasha/linux/drivers/platform/x86/pmc_atom.c`
+- Intel PMC Atom driver These drivers can be enabled on platforms or
+configurations where `CONFIG_SUSPEND` or `CONFIG_X86` might not be set,
+causing build failures. **4. Minimal Risk:** - **Size:** Very small
+change - only adds stub function prototypes - **Scope:** Limited to
+header file, no runtime behavior changes for existing working
+configurations - **Side Effects:** None - the stubs return appropriate
+error codes and maintain API compatibility **5. Comparison with Similar
+Commits:** Looking at the provided similar commits, this follows the
+same pattern as commits #2, #3, and #4 (all marked as NO), which were
+prototype/warning fixes. However, this commit differs crucially because:
+- It fixes actual **build failures** (not just warnings) - The kernel
+test robot specifically reported compilation errors - It affects **real
+drivers** that are in use **6. Stable Tree Criteria Compliance:** - ✅
+Fixes important bugs (build failures) - ✅ Doesn't introduce new features
+- ✅ Doesn't make architectural changes - ✅ Has minimal risk of
+regression - ✅ Is confined to a specific subsystem (ACPI headers) The
+commit message explicitly mentions "kernel test robot" reporting build
+failures, indicating this is a real issue affecting automated testing
+and potentially user builds. The fix is exactly what's needed for proper
+API completeness - providing stub implementations when the real
+functionality isn't available.
 
- drivers/acpi/bus.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/linux/acpi.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index a4aa53b7e2bb3..645464f02363f 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -1396,8 +1396,10 @@ static int __init acpi_init(void)
- 	}
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 1b76d2f83eac6..7c6f4006389da 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -1098,13 +1098,13 @@ void acpi_os_set_prepare_extended_sleep(int (*func)(u8 sleep_state,
  
- 	acpi_kobj = kobject_create_and_add("acpi", firmware_kobj);
--	if (!acpi_kobj)
--		pr_debug("%s: kset create error\n", __func__);
-+	if (!acpi_kobj) {
-+		pr_err("Failed to register kobject\n");
-+		return -ENOMEM;
-+	}
- 
- 	init_prmt();
- 	acpi_init_pcc();
+ acpi_status acpi_os_prepare_extended_sleep(u8 sleep_state,
+ 					   u32 val_a, u32 val_b);
+-#if defined(CONFIG_SUSPEND) && defined(CONFIG_X86)
+ struct acpi_s2idle_dev_ops {
+ 	struct list_head list_node;
+ 	void (*prepare)(void);
+ 	void (*check)(void);
+ 	void (*restore)(void);
+ };
++#if defined(CONFIG_SUSPEND) && defined(CONFIG_X86)
+ int acpi_register_lps0_dev(struct acpi_s2idle_dev_ops *arg);
+ void acpi_unregister_lps0_dev(struct acpi_s2idle_dev_ops *arg);
+ int acpi_get_lps0_constraint(struct acpi_device *adev);
+@@ -1113,6 +1113,13 @@ static inline int acpi_get_lps0_constraint(struct device *dev)
+ {
+ 	return ACPI_STATE_UNKNOWN;
+ }
++static inline int acpi_register_lps0_dev(struct acpi_s2idle_dev_ops *arg)
++{
++	return -ENODEV;
++}
++static inline void acpi_unregister_lps0_dev(struct acpi_s2idle_dev_ops *arg)
++{
++}
+ #endif /* CONFIG_SUSPEND && CONFIG_X86 */
+ #ifndef CONFIG_IA64
+ void arch_reserve_mem_area(acpi_physical_address addr, size_t size);
 -- 
 2.39.5
 
