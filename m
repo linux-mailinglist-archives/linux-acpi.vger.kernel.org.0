@@ -1,218 +1,114 @@
-Return-Path: <linux-acpi+bounces-13963-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-13964-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E02BAC8976
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 09:53:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D5AAC8B6A
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 11:48:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3D3D4A6558
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 07:53:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E0E31BA1CDE
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 09:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F09213245;
-	Fri, 30 May 2025 07:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0A0220F4B;
+	Fri, 30 May 2025 09:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XIuED9oH"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="BYmI2JEx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56419211460;
-	Fri, 30 May 2025 07:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720692192EC
+	for <linux-acpi@vger.kernel.org>; Fri, 30 May 2025 09:48:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748591574; cv=none; b=i0KrwDeFQ3DEpBQRwbGdKfIcTgqAjkuqAcPk5iMMq7FyL3sVBSRxTcDFoCuAmoCrD2OqbzQka0lOTxRuhmtAXOKfZbxNB9JQkg9JPPfe/9OxrsJuurKlo4OB8oweozZhfUc/dLrbGUvFiHl4ots/iApG4Pqpj/LFibjJseXAh24=
+	t=1748598513; cv=none; b=IUKtDcIfK2sfGm2A39xsfQUZfKC2a7ii2RyQvYwXXyneyOG9I0M+uOyJAJ3tL/LQ9GWQA0xGMlrxuAcOg7UhCi7Mr362z7zWxuALO8fFnYIFPJJ05sfm0DIze1dOruRir3lA0TfH5S/CrdtbZQFBMeagpfy+7pfehTlU+5M7o40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748591574; c=relaxed/simple;
-	bh=K5dSVwIVW/FBL+ZH0NxZ2BqtndkMuVUmpC8GJC88b1c=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=p+ftJpnaeTp9jaGPGcJ8dFrQFpXlGzhFbIW0pPuditkM+4RXmgHQMMpL0mNiWnb2+grYI6GepG2j0Oz2k8ilPf76jI4jjZF2rra/HtTcKbEYyx+6mw4gvTGLDchVo2ZIYUiH4zhyGfOhVwkKhwEjU4uweipdJkmDL8GHla40L90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XIuED9oH; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748591572; x=1780127572;
-  h=date:from:to:cc:subject:message-id;
-  bh=K5dSVwIVW/FBL+ZH0NxZ2BqtndkMuVUmpC8GJC88b1c=;
-  b=XIuED9oHQJ9tocN8B3FZzDrM+YqQuVp4g5lIU/P5Ut47iBxYNXJdlC8o
-   MQfU+E9mRJLS1x057Qi/6wgcGpqffvprSsmDQtmV20nrbqtL/uV4YBLA/
-   4oYajEb1JVXD4iS/OXeP5fTZ+MA5lJZgpO7/HNNbz85w1Kz0V9GxxD6C3
-   PzganjTa5JSJlBfnBETXmABtgyrkHB1dDiCiVPNoosDmXxAlflyt0iZLf
-   4aNPoiuG5rvAkLa4diFty7mQqPv6PUdKs461WObihELw4dmTgBAh1Zicu
-   IU57GDIixmlYypjW+MKS1/v0nEw3lhKAbz8ckem5cQpi/3vvHQoUYEJ+g
-   A==;
-X-CSE-ConnectionGUID: 4xBfgVUPQfGWK83ZIzNnnQ==
-X-CSE-MsgGUID: wDOzUOiIR8azhodLKD0q+w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11448"; a="50373897"
-X-IronPort-AV: E=Sophos;i="6.16,195,1744095600"; 
-   d="scan'208";a="50373897"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2025 00:52:51 -0700
-X-CSE-ConnectionGUID: ficwK+TLSJ6BriSeWu2HzA==
-X-CSE-MsgGUID: +T/Phlu0T2K/qIclkw2cEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,195,1744095600"; 
-   d="scan'208";a="148951324"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 30 May 2025 00:52:50 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uKuXo-000XRc-1g;
-	Fri, 30 May 2025 07:52:48 +0000
-Date: Fri, 30 May 2025 15:51:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 5cce23844086fca1de955e8626d3f55af2c7588a
-Message-ID: <202505301545.EKoYjkh8-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1748598513; c=relaxed/simple;
+	bh=7f6mAQcF5PHVp5UXsxfyp8gyKgBiiyml5t+WUzoXmBI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X9BipKd6i5/qcSdtWBB5iPoL3IJiFM/ZgSDLD6jc5W7v8yOP0DEh/gv7F6eYeCufhmYZAigUiveR0FDR8YyORDFUWENLQzyP74ZzZs23cTXYEG6p9ByJujqx9IIEz3Sh336Jt+OX2PwoUfLMMRXp3qb9udUzry7/kKvUeBm8AGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=BYmI2JEx; arc=none smtp.client-ip=178.154.239.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net [IPv6:2a02:6b8:c37:8f27:0:640:e8c0:0])
+	by forward102b.mail.yandex.net (Yandex) with ESMTPS id EA2AF60D7E;
+	Fri, 30 May 2025 12:48:21 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id KmTv6meLdGk0-Z4GG1Io6;
+	Fri, 30 May 2025 12:48:21 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1748598501; bh=0FHP8kmV67CuuMxQRuqAcgMUA7ovCAbmaqmbD6Nl184=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=BYmI2JExRJTdoo89XTPFuNgLOWv9gVY5EJKWfs3Qa3tJacdjDt/g/5/y9hKBWGTj5
+	 0Z9EoL329kbqWNEjaeD+wudwmUIyS/KBZyy3YyD6apNqzy9p7J66c+RdrdJmcJgtNU
+	 /oem4kGlpKKWrg42JwQoVdipQhz3Xn+PT4Ex6gkU=
+Authentication-Results: mail-nwsmtp-smtp-production-main-74.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Ahmed Salem <x0rw3ll@gmail.com>
+Cc: linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] ACPICA: avoid out-of-bounds read in acpi_ut_safe_strncpy()
+Date: Fri, 30 May 2025 12:47:37 +0300
+Message-ID: <20250530094737.127830-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 5cce23844086fca1de955e8626d3f55af2c7588a  Merge branch 'pm-sleep-testing' into bleeding-edge
+Running KASAN-enabled kernel with ACPI_DEBUG_OUTPUT, I've noticed
+the following:
 
-elapsed time: 731m
+BUG: KASAN: global-out-of-bounds in acpi_ut_safe_strncpy+0x25/0x70
+Read of size 16 at addr ffffffff8bf2bee0 by task swapper/0/1
+CPU: 2 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.15.0-08486-gf66bc387efbe #17 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.fc42 04/01/2014
 
-configs tested: 124
-configs skipped: 2
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250
+ ...
+ kasan_check_range+0x2b0/0x2c0
+ __asan_memcpy+0x29/0x70
+ acpi_ut_safe_strncpy+0x25/0x70
+ acpi_ps_alloc_op+0x201/0x3a0
+ ...
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The buggy address belongs to the variable:
+ .str.8+0x0/0x20
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                   randconfig-001-20250530    gcc-15.1.0
-arc                   randconfig-002-20250530    gcc-10.5.0
-arm                              allmodconfig    gcc-15.1.0
-arm                               allnoconfig    clang-21
-arm                              allyesconfig    gcc-15.1.0
-arm                       imx_v6_v7_defconfig    clang-16
-arm                         mv78xx0_defconfig    clang-19
-arm                   randconfig-001-20250530    gcc-15.1.0
-arm                   randconfig-002-20250530    gcc-14.3.0
-arm                   randconfig-003-20250530    clang-21
-arm                   randconfig-004-20250530    clang-21
-arm                           sama5_defconfig    gcc-15.1.0
-arm                           sunxi_defconfig    gcc-15.1.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.1.0
-arm64                 randconfig-001-20250530    gcc-12.3.0
-arm64                 randconfig-002-20250530    gcc-5.5.0
-arm64                 randconfig-003-20250530    gcc-7.5.0
-arm64                 randconfig-004-20250530    clang-21
-csky                              allnoconfig    gcc-15.1.0
-csky                  randconfig-001-20250530    gcc-15.1.0
-csky                  randconfig-002-20250530    gcc-9.3.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-21
-hexagon                          allyesconfig    clang-21
-hexagon               randconfig-001-20250530    clang-21
-hexagon               randconfig-002-20250530    clang-21
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250530    clang-20
-i386        buildonly-randconfig-002-20250530    clang-20
-i386        buildonly-randconfig-003-20250530    clang-20
-i386        buildonly-randconfig-004-20250530    clang-20
-i386        buildonly-randconfig-005-20250530    clang-20
-i386        buildonly-randconfig-006-20250530    clang-20
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    gcc-15.1.0
-loongarch                         allnoconfig    gcc-15.1.0
-loongarch             randconfig-001-20250530    gcc-15.1.0
-loongarch             randconfig-002-20250530    gcc-15.1.0
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-mips                          ath79_defconfig    gcc-15.1.0
-mips                  cavium_octeon_defconfig    gcc-15.1.0
-mips                        qi_lb60_defconfig    clang-21
-nios2                             allnoconfig    gcc-14.2.0
-nios2                 randconfig-001-20250530    gcc-5.5.0
-nios2                 randconfig-002-20250530    gcc-10.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                randconfig-001-20250530    gcc-12.4.0
-parisc                randconfig-002-20250530    gcc-8.5.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    clang-21
-powerpc                   bluestone_defconfig    clang-21
-powerpc                  iss476-smp_defconfig    gcc-15.1.0
-powerpc               randconfig-001-20250530    gcc-14.3.0
-powerpc               randconfig-002-20250530    clang-21
-powerpc               randconfig-003-20250530    gcc-8.5.0
-powerpc                    sam440ep_defconfig    gcc-15.1.0
-powerpc64             randconfig-001-20250530    gcc-14.3.0
-powerpc64             randconfig-002-20250530    clang-21
-powerpc64             randconfig-003-20250530    gcc-15.1.0
-riscv                            allmodconfig    clang-21
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                 randconfig-001-20250530    gcc-15.1.0
-riscv                 randconfig-002-20250530    gcc-10.5.0
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-15.1.0
-s390                  randconfig-001-20250530    clang-20
-s390                  randconfig-002-20250530    clang-21
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                          polaris_defconfig    gcc-15.1.0
-sh                    randconfig-001-20250530    gcc-14.3.0
-sh                    randconfig-002-20250530    gcc-15.1.0
-sh                           se7206_defconfig    gcc-15.1.0
-sh                           se7343_defconfig    gcc-15.1.0
-sh                  sh7785lcr_32bit_defconfig    gcc-15.1.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                 randconfig-001-20250530    gcc-8.5.0
-sparc                 randconfig-002-20250530    gcc-10.3.0
-sparc64               randconfig-001-20250530    gcc-8.5.0
-sparc64               randconfig-002-20250530    gcc-15.1.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    gcc-12
-um                    randconfig-001-20250530    gcc-11
-um                    randconfig-002-20250530    clang-21
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250530    clang-20
-x86_64      buildonly-randconfig-002-20250530    clang-20
-x86_64      buildonly-randconfig-003-20250530    gcc-12
-x86_64      buildonly-randconfig-004-20250530    gcc-11
-x86_64      buildonly-randconfig-005-20250530    clang-20
-x86_64      buildonly-randconfig-006-20250530    gcc-12
-x86_64                              defconfig    gcc-11
-x86_64                          rhel-9.4-rust    clang-18
-xtensa                           alldefconfig    gcc-15.1.0
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                          iss_defconfig    gcc-15.1.0
-xtensa                randconfig-001-20250530    gcc-15.1.0
-xtensa                randconfig-002-20250530    gcc-14.3.0
+This happens when 'acpi_ut_safe_strncpy()' makes an attempt to copy to
+the destination which is larger than source, and may be fixed by using
+'strscpy()' (which also guarantees NUL termination for a destination).
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Fixes: ebf27765421c ("ACPICA: Replace strncpy() with memcpy()")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/acpi/acpica/utnonansi.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/drivers/acpi/acpica/utnonansi.c b/drivers/acpi/acpica/utnonansi.c
+index 803e3e893825..1447d8689209 100644
+--- a/drivers/acpi/acpica/utnonansi.c
++++ b/drivers/acpi/acpica/utnonansi.c
+@@ -166,10 +166,7 @@ acpi_ut_safe_strncat(char *dest,
+ 
+ void acpi_ut_safe_strncpy(char *dest, char *source, acpi_size dest_size)
+ {
+-	/* Always terminate destination string */
+-
+-	memcpy(dest, source, dest_size);
+-	dest[dest_size - 1] = 0;
++	strscpy(dest, source, dest_size);
+ }
+ 
+ #endif
+-- 
+2.49.0
+
 
