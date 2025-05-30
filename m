@@ -1,165 +1,186 @@
-Return-Path: <linux-acpi+bounces-14018-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14019-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F20D8AC8FA5
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 15:17:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76D9DAC9078
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 15:44:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 474E11C2227A
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 13:11:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4A299E0618
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 May 2025 13:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E556B281359;
-	Fri, 30 May 2025 12:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33E0220F4E;
+	Fri, 30 May 2025 13:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o5JHbjfg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DC2EdB1v"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FDE28134F;
-	Fri, 30 May 2025 12:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5869F21517C;
+	Fri, 30 May 2025 13:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748608932; cv=none; b=kJ2taB/2b3JzmfohkgIn0jpw1T9E5btuzIvuuwUp0l0I+V1Aq4u6C8XvsRt06E6qa/h+i1iru8zXLZ2gWhPtKKumDpyJeQpQfD2ktjzptSxGqWjyzbAAYBd80Qy7D8KrX+/+s/i7pVhDQr6vjnXiO9Ca01fIvwgRxo+CUK++Jxk=
+	t=1748612652; cv=none; b=C4m6akU5D8BWvuKVmPDogssJTIRwO7iUOd1JFmrIMwGj+J4EIw99GPf8x9YtqQIvfbv1B2UTzAffDs9MLXeM/suYcf9JL3Vn1K95XY1BYfs7jgvLsuR1aOLGQtkVShafmLtYgy+kVMReV8xJTPXnBF9an2l3xfZOUHrxvPy+3yA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748608932; c=relaxed/simple;
-	bh=hTf/rpsil0On+S8eoIYtmeLVf6IxhISsYEzbyEC7MNg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FSeRMu2S0zDLptbjjq1FS5DB/AeRwUWdXlNSNRN/5P5b5f29N4z+dYN9tMOwzwaRE5SuKJGkdJqeV/a3g2oQ1R74TdXWAynWuremMTMBoi5FYkqH/jjUzGpwn/iCIuU9BV7xa9hIj3Eo+PLqbIgjfQOab8mPKFOFeH/OwBRGYn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o5JHbjfg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F81C4CEF0;
-	Fri, 30 May 2025 12:42:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748608932;
-	bh=hTf/rpsil0On+S8eoIYtmeLVf6IxhISsYEzbyEC7MNg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o5JHbjfgsvnKLx0c0pDsH3Qr3E7pg/imW4wjp38+I6iHRazIRsAHgTOmz1gk9mFYR
-	 SZPgBbSNlzyBEB4A8OmmKQDEe5CbWlR5w+ERNC/UBnta8Yeil3g6iet/McIsnjbsps
-	 6TOIIXUGqNif38rf4DvcS0ZIri89XeuB97/sDkbLjwJarvlErchtGUObDqsI74R9v4
-	 Ei59LXbkWapWP9qAJN4sqWleZaKkWj3oR0U+HGBW0ZcnzcPQJbKZl0M8g5hpPxEoDF
-	 /jy04ck9PZvHLfE2Yw67Tgt+9O1VmdDYHM3zqO7Yny+PGXko/lYZGesggfpFSIjE75
-	 tHQLThOsVXErw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Peter Marheine <pmarheine@chromium.org>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	rjw@rjwysocki.net,
-	lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 6/6] ACPI: battery: negate current when discharging
-Date: Fri, 30 May 2025 08:42:03 -0400
-Message-Id: <20250530124203.2577122-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250530124203.2577122-1-sashal@kernel.org>
-References: <20250530124203.2577122-1-sashal@kernel.org>
+	s=arc-20240116; t=1748612652; c=relaxed/simple;
+	bh=GzYoAIWTFmgIn+wCMJ71Bjo9eHEgpY3fZvvllpFtNlI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CAHl+xILOwRqc3UN22IWD8dSBLKTWrP7ixAHwPCE6FlYmosu0GK6OfYlwh4SPKA4M2clfsq18KwaJWzKpZYjesQrOomwkuDMnG9yl13P+pwm07btJxKWQSEleCEdZUiZ/UfheXnOkP5Jv0jk7HqGdIfC1DSh6gOPQDsuqo4+oWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DC2EdB1v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060D3C4CEE9;
+	Fri, 30 May 2025 13:44:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1748612649;
+	bh=GzYoAIWTFmgIn+wCMJ71Bjo9eHEgpY3fZvvllpFtNlI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DC2EdB1vtdkpGOZMMsKx/kpyFYb4kswSJcd1XqeGzxXAnTuPdQIBXtcYPlbZvRqlu
+	 pMa0CK8OlPD5oI5U2s/euD+DSR5ZH5OS6hF1KDGAQyQLRfMjoL9SDvfkaeWH3LWEq2
+	 4qkjbHgtim+qvaXkM5RnpzMS/0FoAbQSt/od8YZM=
+Date: Fri, 30 May 2025 15:44:06 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Igor Korotin <igor.korotin.linux@gmail.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-acpi@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: acpi: add `acpi::DeviceId` abstraction
+Message-ID: <2025053001-navigate-worry-c75b@gregkh>
+References: <20250530123815.1766726-1-igor.korotin.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.293
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250530123815.1766726-1-igor.korotin.linux@gmail.com>
 
-From: Peter Marheine <pmarheine@chromium.org>
+On Fri, May 30, 2025 at 01:38:06PM +0100, Igor Korotin wrote:
+> `acpi::DeviceId` is an abstraction around `struct acpi_device_id`.
+> 
+> This is used by subsequent patches, in particular the i2c driver
+> abstractions, to create ACPI device ID tables.
+> 
+> Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
+> ---
+>  MAINTAINERS         |  1 +
+>  rust/kernel/acpi.rs | 63 +++++++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs  |  1 +
+>  3 files changed, 65 insertions(+)
+>  create mode 100644 rust/kernel/acpi.rs
 
-[ Upstream commit 234f71555019d308c6bc6f98c78c5551cb8cd56a ]
+I'm not seeing any "subsequent patches" here.  Is this part of a patch
+series that didn't all get sent out properly?
 
-The ACPI specification requires that battery rate is always positive,
-but the kernel ABI for POWER_SUPPLY_PROP_CURRENT_NOW
-(Documentation/ABI/testing/sysfs-class-power) specifies that it should
-be negative when a battery is discharging. When reporting CURRENT_NOW,
-massage the value to match the documented ABI.
+thanks,
 
-This only changes the sign of `current_now` and not `power_now` because
-documentation doesn't describe any particular meaning for `power_now` so
-leaving `power_now` unchanged is less likely to confuse userspace
-unnecessarily, whereas becoming consistent with the documented ABI is
-worth potentially confusing clients that read `current_now`.
+greg k-h
 
-Signed-off-by: Peter Marheine <pmarheine@chromium.org>
-Link: https://patch.msgid.link/20250508024146.1436129-1-pmarheine@chromium.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
 
-Based on my analysis of the commit and examination of the kernel
-codebase, I can now provide my assessment: **YES** This commit should be
-backported to stable kernel trees because: 1. **Fixes a real user-facing
-bug**: The commit addresses an ABI inconsistency where ACPI battery
-drivers were reporting current_now with the wrong sign. According to the
-kernel's power supply ABI documentation
-(Documentation/ABI/testing/sysfs-class-power), `current_now` should be
-negative when discharging and positive when charging, but ACPI battery
-drivers were reporting positive values always. 2. **Small and contained
-fix**: The change is minimal and well-contained. It only affects the
-`POWER_SUPPLY_PROP_CURRENT_NOW` case in `acpi_battery_get_property()`
-function in `drivers/acpi/battery.c`. The code adds a simple check to
-negate the current value only when: - Property requested is
-`POWER_SUPPLY_PROP_CURRENT_NOW` (not power_now) - Battery is in
-discharging state - The `acpi_battery_handle_discharging()` function
-confirms it's actually discharging 3. **Follows stable rules**: This is
-an important bugfix that corrects userspace-visible behavior to match
-documented ABI. Applications and battery monitoring tools rely on the
-documented behavior that negative current indicates discharging. 4.
-**Minimal regression risk**: The change is very conservative: - Only
-affects `current_now`, not `power_now` (as noted in commit message) -
-Uses existing `acpi_battery_handle_discharging()` logic to double-check
-the discharging state - Leaves all other battery properties unchanged 5.
-**Similar pattern in similar drivers**: From the historical examples
-provided, commits like "power: supply: bq27xxx: fix polarity of
-current_now" and "power: supply: axp20x_battery: properly report current
-when discharging" were backported with YES status for exactly the same
-type of issue - fixing current sign during discharge. 6. **Affects
-critical subsystem**: Battery reporting is crucial for power management,
-and incorrect current direction can confuse userspace tools and
-potentially impact power management decisions. The commit carefully
-addresses the ABI compliance issue while minimizing risk by only
-changing the sign for `current_now` during confirmed discharging states,
-making it an ideal candidate for stable backporting.
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b659fb27ab63..5f8dfae08454 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -302,6 +302,7 @@ F:	include/linux/acpi.h
+>  F:	include/linux/fwnode.h
+>  F:	include/linux/fw_table.h
+>  F:	lib/fw_table.c
+> +F:	rust/kernel/acpi.rs
+>  F:	tools/power/acpi/
+>  
+>  ACPI APEI
+> diff --git a/rust/kernel/acpi.rs b/rust/kernel/acpi.rs
+> new file mode 100644
+> index 000000000000..bbd38910736c
+> --- /dev/null
+> +++ b/rust/kernel/acpi.rs
+> @@ -0,0 +1,63 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Advanced Configuration and Power Interface abstractions.
+> +
+> +use crate::{bindings, device_id::RawDeviceId, prelude::*};
+> +
+> +/// IdTable type for ACPI drivers.
+> +pub type IdTable<T> = &'static dyn kernel::device_id::IdTable<DeviceId, T>;
+> +
+> +/// An ACPI device id.
+> +#[repr(transparent)]
+> +#[derive(Clone, Copy)]
+> +pub struct DeviceId(bindings::acpi_device_id);
+> +
+> +// SAFETY:
+> +// * `DeviceId` is a `#[repr(transparent)` wrapper of `struct acpi_device_id` and does not add
+> +//   additional invariants, so it's safe to transmute to `RawType`.
+> +// * `DRIVER_DATA_OFFSET` is the offset to the `data` field.
+> +unsafe impl RawDeviceId for DeviceId {
+> +    type RawType = bindings::acpi_device_id;
+> +
+> +    const DRIVER_DATA_OFFSET: usize = core::mem::offset_of!(bindings::acpi_device_id, driver_data);
+> +
+> +    fn index(&self) -> usize {
+> +        self.0.driver_data as _
+> +    }
+> +}
+> +
+> +impl DeviceId {
+> +    const ACPI_ID_LEN: usize = 16;
+> +
+> +    /// Create a new device id from an ACPI 'id' string.
+> +    pub const fn new(id: &'static CStr) -> Self {
+> +        assert!(id.len() <= Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
+> +        let src = id.as_bytes_with_nul();
+> +        // Replace with `bindings::acpi_device_id::default()` once stabilized for `const`.
+> +        // SAFETY: FFI type is valid to be zero-initialized.
+> +        let mut acpi: bindings::acpi_device_id = unsafe { core::mem::zeroed() };
+> +        // TODO: Use `clone_from_slice` once the corresponding types do match.
+> +        let mut i = 0;
+> +        while i < src.len() {
+> +            acpi.id[i] = src[i] as _;
+> +            i += 1;
+> +        }
+> +
+> +        Self(acpi)
+> +    }
+> +}
+> +
+> +/// Create an ACPI `IdTable` with an "alias" for modpost.
+> +#[macro_export]
+> +macro_rules! acpi_device_table {
+> +    ($table_name:ident, $module_table_name:ident, $id_info_type: ty, $table_data: expr) => {
+> +        const $table_name: $crate::device_id::IdArray<
+> +            $crate::acpi::DeviceId,
+> +            $id_info_type,
+> +            { $table_data.len() },
+> +        > = $crate::device_id::IdArray::new($table_data);
+> +
+> +        $crate::module_device_table!("acpi", $module_table_name, $table_name);
+> +    };
+> +}
+> +
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 15c5f72976cd..05f1d3870bf7 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -78,6 +78,7 @@
+>  #[cfg(CONFIG_NET)]
+>  pub mod net;
+>  pub mod of;
+> +pub mod acpi;
 
- drivers/acpi/battery.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+Aren't these supposed to be sorted?
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index cf853e985d6d9..a5e120eca7f33 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -266,10 +266,23 @@ static int acpi_battery_get_property(struct power_supply *psy,
- 		break;
- 	case POWER_SUPPLY_PROP_CURRENT_NOW:
- 	case POWER_SUPPLY_PROP_POWER_NOW:
--		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
-+		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
- 			ret = -ENODEV;
--		else
--			val->intval = battery->rate_now * 1000;
-+			break;
-+		}
-+
-+		val->intval = battery->rate_now * 1000;
-+		/*
-+		 * When discharging, the current should be reported as a
-+		 * negative number as per the power supply class interface
-+		 * definition.
-+		 */
-+		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
-+		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
-+		    acpi_battery_handle_discharging(battery)
-+				== POWER_SUPPLY_STATUS_DISCHARGING)
-+			val->intval = -val->intval;
-+
- 		break;
- 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
- 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
--- 
-2.39.5
+thanks,
 
+greg k-h
 
