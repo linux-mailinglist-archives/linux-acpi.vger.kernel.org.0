@@ -1,116 +1,133 @@
-Return-Path: <linux-acpi+bounces-14036-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14037-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE77AC9A6B
-	for <lists+linux-acpi@lfdr.de>; Sat, 31 May 2025 12:12:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A98AC9C12
+	for <lists+linux-acpi@lfdr.de>; Sat, 31 May 2025 19:43:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A81E4A292A
-	for <lists+linux-acpi@lfdr.de>; Sat, 31 May 2025 10:12:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA7B63BE1B6
+	for <lists+linux-acpi@lfdr.de>; Sat, 31 May 2025 17:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871662376F7;
-	Sat, 31 May 2025 10:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C0E1993BD;
+	Sat, 31 May 2025 17:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rt4BfImM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iCAuOuZc"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5924320A5E5;
-	Sat, 31 May 2025 10:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080E23B19A;
+	Sat, 31 May 2025 17:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748686351; cv=none; b=sUTVfOzYSYe8KcFeS9kurZ5SiXov3XR6HaW57BjnxccrKHTCHqOODGjmS3Wrhazsdd/ic72aQcPWNk+OKGGLpzgIXPSoi35wdZY4gytu74NbfRat7/EBohsewnrh9s080DnC3TbVs9P7XH1/xKHkFMl/ImeonpFBCNQ1HtkUZGc=
+	t=1748713375; cv=none; b=jfpDbMCW7Y8mDKY0Y2wXkwMHdtkye/MyPYATqt4RKDcZFReT3idZ/fw5LV7NR4Hbk3L+bqqe/O4i8bFhVUVVIPf21FO6qi87z1AHHcPI85WHmq+X9SlR/ljYKRVTRxEv1bJFKxrY26WfbmyZdZT/KxmzknQ1LH/YIlfgZS4tZpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748686351; c=relaxed/simple;
-	bh=mJ5Rl0qcXcb/5doOfmKI8NZWnM2jDWsTV88Tpvy+T6s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DhaPc27K/6T1dsgbbtHcfF4/SWE3OKx3/yrm/RHY3Ll30FvDJRuLaHBz9Y2tuWO92u4gaqCwjGYOSjQ/0Zmo6a+nluGw2/jldNdx4KWM5YIHvMrcuvq6wvjU48N7U/mgvF/mrZpdzpuhfAKLJQ97wxmZKmkPChMJgCirhGhNX5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rt4BfImM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A432FC4CEE3;
-	Sat, 31 May 2025 10:12:27 +0000 (UTC)
+	s=arc-20240116; t=1748713375; c=relaxed/simple;
+	bh=Iva5rHF/MAVSoSgGRlbmsQ1Mf85wBltXL8rYWFF5QzY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HRtav2EBVDZ67L6xSj+wDNEFEwg68DgwpAOdam6F7+CUCqk9UymARGkII1h1xVDJr/aINkbvLrH0SkXVj1t4OS3fRoWqM8+Xd65PLNUkDVsjn42qmAafsY6Hk2sXETMITqGjqIRohDbN/fkLQsZYO1KYA0Osikhw0H8o2OjkdQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iCAuOuZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2912C4CEE3;
+	Sat, 31 May 2025 17:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748686350;
-	bh=mJ5Rl0qcXcb/5doOfmKI8NZWnM2jDWsTV88Tpvy+T6s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Rt4BfImM1YnVSBaYAS8IPRSbIwVj91TOQs/cl8Z1bnYBr/N6Fv7DHQ0QXrIju/zH2
-	 3KIR7O72VXDYNvAiGdgSk6uFDG0eDFqvc+71AGa9oNbt3zCDnn9yLmKFl6zr/3mwcT
-	 +L4JlOPWEI+RnNOrxiAabvouK7Fqy8ILsp/WDxJgbd9MFkVaeHyjMxPde71iBI6bSi
-	 Ra3H/Yct21uXvydBCuMsp+CSs0BrPmIY1Q3fiQta4UY3qoTec85Ehmo6hZEwGet1Gv
-	 V9Y8M93PnQtD7LG60jPc73TJyN1W0YcJncvHea25CsX/TA9WtsUGbw5ViKac/sJSAy
-	 tCt1TzdGST2aQ==
-Date: Sat, 31 May 2025 12:12:24 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-acpi@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: acpi: add `acpi::DeviceId` abstraction
-Message-ID: <aDrWCBAxPnu7VY0P@pollux>
-References: <20250530123815.1766726-1-igor.korotin.linux@gmail.com>
- <aDnD_Bb3l6GiI_8K@cassiopeiae>
- <CAG7QV92rtk7NUKzUoApkopv1LF2WVjqyNA9hPt=yCuEvdJjoCA@mail.gmail.com>
- <2025053111-anteater-balsamic-8d01@gregkh>
+	s=k20201202; t=1748713374;
+	bh=Iva5rHF/MAVSoSgGRlbmsQ1Mf85wBltXL8rYWFF5QzY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=iCAuOuZccwSniju3wtQ1/YL9YqNaTH2yu61vHn1g4dZ2nHLwe1LAVeZKm7qn/33bB
+	 2FIjNOOeg7q3Gb7WbN716cp6sauzZuYJ2ONRo4I7w99uo23Zr3Yt/6uCiUOdsCeMn3
+	 GMeSg3thU3fDis892ECaOvSnIdl6Ra4PLAhR6d3WGsfereNBb/ZUoaKUgeA6KITfMC
+	 X/JgXBzlvlPpWe+3c+WNYwVTJzVJ67LZD/mDeFh+zYXpPNHgHRWJKoSAdV4q9XAgJ3
+	 /3kgbEAR806TcWJAi0htKC4lOkpxExlcvKxPmK3w+/7aGiFJ50REvqBxblZRYJjqMe
+	 KgFerdgsoTsGQ==
+Date: Sat, 31 May 2025 18:42:42 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andy@kernel.org>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, nuno.sa@analog.com,
+ Michael.Hennerich@analog.com, marcelo.schmitt@analog.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
+ linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
+ broonie@kernel.org, jonath4nns@gmail.com, dlechner@baylibre.com,
+ rafael@kernel.org, djrscally@gmail.com
+Subject: Re: [PATCH v9 09/12] iio: adc: ad7768-1: add support for
+ Synchronization over SPI
+Message-ID: <20250531184242.468e9e27@jic23-huawei>
+In-Reply-To: <aDnuvAdkcTAP2tMt@smile.fi.intel.com>
+References: <cover.1748447035.git.Jonathan.Santos@analog.com>
+	<27cccb51cc56f1bb57cb06d279854a503d779e25.1748447035.git.Jonathan.Santos@analog.com>
+	<aDnuvAdkcTAP2tMt@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2025053111-anteater-balsamic-8d01@gregkh>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, May 31, 2025 at 07:49:46AM +0200, Greg KH wrote:
-> On Fri, May 30, 2025 at 05:11:29PM +0100, Igor Korotin wrote:
-> > On Fri, May 30, 2025 at 3:43 PM Danilo Krummrich <dakr@kernel.org> wrote:
-> > >
-> > > On Fri, May 30, 2025 at 01:38:06PM +0100, Igor Korotin wrote:
-> > > > `acpi::DeviceId` is an abstraction around `struct acpi_device_id`.
-> > > >
-> > > > This is used by subsequent patches, in particular the i2c driver
-> > > > abstractions, to create ACPI device ID tables.
-> > > >
-> > > > Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
-> > >
-> > > As Greg mentioned it would be nice to see the subsequent patches.
+On Fri, 30 May 2025 20:45:32 +0300
+Andy Shevchenko <andy@kernel.org> wrote:
+
+> On Thu, May 29, 2025 at 07:50:29PM -0300, Jonathan Santos wrote:
+> > The synchronization method using GPIO requires the generated pulse to be
+> > truly synchronous with the base MCLK signal. When it is not possible to
+> > do that in hardware, the datasheet recommends using synchronization over
+> > SPI, where the generated pulse is already synchronous with MCLK. This
+> > requires the SYNC_OUT pin to be connected to the SYNC_IN pin.
 > > 
-> > Ok. There's a little misunderstanding from my side. I'm in the
-> > progress of implementation
-> > of I2C driver abstractions. I2C drivers can use either "of" or "acpi".
-> > The idea was to push this
-> > change first, because:
-> >  - It's quite standalone one.
-> >  - I'm not sure how much time it will take me to finalize I2C drivers
-> > abstractions.
+> > Use trigger-sources property to enable device synchronization over SPI
+> > and multi-device synchronization while replacing sync-in-gpios property.  
 > 
-> If you don't need it now, then there's no rush to get it merged now :)
+> ...
 > 
-> > If it is not appropriate way of commits, I'll then keep it until all is done.
+> > struct ad7768_state {  
 > 
-> We would like to see it be used first, to ensure that the code is
-> actually correct.
+> >  	struct iio_trigger *trig;
+> >  	struct gpio_desc *gpio_sync_in;
+> >  	struct gpio_desc *gpio_reset;  
+> 
+> > +	bool en_spi_sync;  
+> 
+> I'm wondering if moving this...
+> 
+> >  	const char *labels[ARRAY_SIZE(ad7768_channels)];
+> >  	struct gpio_chip gpiochip;  
+> 
+> ...to here saves a few bytes in accordance to `pahole`.
+> 
+> >  };  
+> 
+> ...
+> 
+> > +static int ad7768_trigger_sources_sync_setup(struct device *dev,
+> > +					     struct fwnode_handle *dev_fwnode,
+> > +					     struct ad7768_state *st)
+> > +{
+> > +	struct fwnode_reference_args args;
+> > +
+> > +	struct fwnode_handle *fwnode __free(fwnode_handle) =
+> > +		fwnode_find_reference_args(dev_fwnode, "trigger-sources",
+> > +					   "#trigger-source-cells", 0,
+> > +					   AD7768_TRIGGER_SOURCE_SYNC_IDX, &args);  
+> 
+> I don't see how args are being used. This puts in doubt the need of the first
+> patch.
 
-Alternatively, if you want to upstream this dependency already you can send the
-following patches:
+That did get discussed (more context needed in the commit message for patch 1).
+I wasn't happy with ignoring #trigger-source-cells which is required in the
+binding but here is known to be 0.
 
-  - this acpi::DeviceId abstraction
-  - the glue code for the generic adapter trait in rust/kernel/driver.rs
-  - use this glue code in the platform abstraction
-  - add acpi support to the platform sample driver
+If it was larger than 0 but we didn't care about the arguments I believe
+we'd still need to use this call to take the right stride through the
+data array that this is coming from.
+Ultimately I think that is this bit of code establishing the end of the phandle.
+https://elixir.bootlin.com/linux/v6.15/source/drivers/of/base.c#L1300
 
-This way we can already validate that the code works correctly. All this is
-required anyways if the I2C device you write a driver for is on the platform
-bus.
+I might have gotten it wrong how this all works though!
+
+J
 
