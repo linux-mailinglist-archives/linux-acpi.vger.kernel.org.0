@@ -1,61 +1,61 @@
-Return-Path: <linux-acpi+bounces-14052-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14053-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C19ACA493
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 02:12:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB8BACA55F
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 02:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EB501884910
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 00:09:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 529443AC3B8
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 00:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FBDD299951;
-	Sun,  1 Jun 2025 23:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A113024E0;
+	Sun,  1 Jun 2025 23:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ry8j/e1b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HQeSfDqc"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58AA299950;
-	Sun,  1 Jun 2025 23:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACE23024DB;
+	Sun,  1 Jun 2025 23:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748820823; cv=none; b=HH21nPZSxu19kYYKaSNJXPTCvZYE64fmgjTSuArWMrNq6tqAmQYLdikwuRJR8PYY8DXl9WqsK4Kqunf/D52EzxuNdU+ntrkFLHBHa//3v6B7/lGH3NzcxalditVQGClt2DeHI5Wcln0aUiqEjWHc3Hnvr4QRSNMk7qBNLXWzPgc=
+	t=1748821014; cv=none; b=SI7QSfG1R46Kr9ZPwgdycLzk8Fkkd8eFypNhDD9vZJqFzTduPE/5JTVFtuMA5qOV1f0j85fnuiyRQCHFyk+CcGM5pzbLx3sk4wqabU9X6P3brwDqAHzSVwRk8he774Zq3qGiueH4v1k6+aVC7AaqJ6UvV0mP8iogF/Xgkqr4WAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748820823; c=relaxed/simple;
-	bh=oMK/FszmytbQW76F8NDQuGeWt7/Tzt8bKVFy+DSymnY=;
+	s=arc-20240116; t=1748821014; c=relaxed/simple;
+	bh=AAU/w4oB2Z9+sgiB6UX7vJSlwSYN97HaT92vPOY33JA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WDIg5mG0llYsMu1aiGqPejm2EJf0Vec/P118L7HwbSQLzxL1PnrP4G59+ALWYxAMrBib4qsR9JCB83DVql9wxD00hnfukeOCtnF08SrmSeMmw2GiFC/HomvpALTo03wfEvx8PJcOlvorJ29A+zqktXAcA+PbpfNhKoU94fT8n8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ry8j/e1b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9FFC4CEE7;
-	Sun,  1 Jun 2025 23:33:41 +0000 (UTC)
+	 MIME-Version; b=h8lY4I4R7M5tmAwH9LlBqkX3JmSf9dlJ474xpFszoTATxktCCITs85d2CyBIVBI/2jAsmgTHI76dDPGRTgF5L8tjPLiXp2Ke7CKhWxMo1UbUnLVHVcZW2RDnWPv+umCEuTxdE5Jdz8yKZ5Xcz0zTdF/amSDDV6HvsY+638QeRh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HQeSfDqc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72981C4CEE7;
+	Sun,  1 Jun 2025 23:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748820822;
-	bh=oMK/FszmytbQW76F8NDQuGeWt7/Tzt8bKVFy+DSymnY=;
+	s=k20201202; t=1748821014;
+	bh=AAU/w4oB2Z9+sgiB6UX7vJSlwSYN97HaT92vPOY33JA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ry8j/e1bK2HF6RW7+HQpOYv47ujMXVZXR71EFBsiuJirNP0Nn78jPa8OdMoF9fKC8
-	 htQ5Z+EdsNcb0/mZnz6nSSb0Je+8hGPdDgZtDHPoIfcSVJ/MUH8EfQWoY7+QpxQ97Z
-	 TGM5zx5BLDQU1WRMm+E0zJsvCOghLyin2yLlrtgOW0HXCgMnCC71v1wS9elP7twW01
-	 82CIEtH/odXnzHVovxXiEomOCQubbYid5hHCAY2V5+JY2AQsLtUcAPzoRup96fguk2
-	 ePzpHgMMQpv+7uO20Bf8q9bcokqMo2wlYl5GZ7BsLUhhBRU/IHjzOa6mwUm/9bus4J
-	 lZX+jVk2PSOdw==
+	b=HQeSfDqc5S1VFebVIvE2dO/W6JXS5yNv0lOTP45Z1JPxh1QZm+USioRLwDCGL/BDB
+	 +LjQUmVzYYsxul/3bUhHi2Fv1HrGnS8apvvYpV2DqVioLziluj8nYgadq5pAXBAT0t
+	 pxP0VB23Vre1ahxFEo2xAjGjch+39+WJI2b43kXuptXmuYk8gTWSnLvSScNJclOHAH
+	 56gICYmufv1cci9YdyII2Ps9QHGNLzy+1KvKCFOwZ8AGUCNYkLPzlGMC3feHLJ3BGP
+	 a6ZTgIYb/rOV+i9XytRC+PCPR6QthUtY51wCPcRa9YlP5SjrH2LEP/AML/3ii1Dy4S
+	 ZtvuhxxIFFzxw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Werner Sembach <wse@tuxedocomputers.com>,
+Cc: Armin Wolf <W_Armin@gmx.de>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 093/102] ACPI: EC: Add device to acpi_ec_no_wakeup[] qurik list
-Date: Sun,  1 Jun 2025 19:29:25 -0400
-Message-Id: <20250601232937.3510379-93-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 68/93] ACPI: bus: Bail out if acpi_kobj registration fails
+Date: Sun,  1 Jun 2025 19:33:35 -0400
+Message-Id: <20250601233402.3512823-68-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250601232937.3510379-1-sashal@kernel.org>
-References: <20250601232937.3510379-1-sashal@kernel.org>
+In-Reply-To: <20250601233402.3512823-1-sashal@kernel.org>
+References: <20250601233402.3512823-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -64,89 +64,72 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14.9
-Content-Type: text/plain; charset=UTF-8
+X-stable-base: Linux 6.12.31
 Content-Transfer-Encoding: 8bit
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 9cd51eefae3c871440b93c03716c5398f41bdf78 ]
+[ Upstream commit 94a370fc8def6038dbc02199db9584b0b3690f1a ]
 
-Add the TUXEDO InfinityBook Pro AMD Gen9 to the acpi_ec_no_wakeup[]
-quirk list to prevent spurious wakeups.
+The ACPI sysfs code will fail to initialize if acpi_kobj is NULL,
+together with some ACPI drivers.
 
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20250508111625.12149-1-wse@tuxedocomputers.com
+Follow the other firmware subsystems and bail out if the kobject
+cannot be registered.
+
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20250518185111.3560-2-W_Armin@gmx.de
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-The search failed because this is the current version in the kernel
-tree, but the commit we're analyzing hasn't been applied yet. Let me
-analyze this commit based on the information provided. ## Analysis
-**YES** This commit should be backported to stable kernel trees. ###
-Detailed Analysis: **1. Nature of the Fix:** The commit adds the "TUXEDO
-InfinityBook Pro AMD Gen9" laptop to the `acpi_ec_no_wakeup[]` DMI quirk
-list. This is a targeted fix for spurious wakeups from suspend-to-idle
-(s2idle) caused by EC (Embedded Controller) interrupts on a specific
-laptop model. **2. Code Changes:** The change is minimal and surgical: -
-Adds a single new DMI entry to an existing quirk table - Uses
-`DMI_MATCH(DMI_BOARD_NAME, "GXxHRXx")` to identify the specific device -
-Includes a comment identifying the device clearly - No functional code
-logic changes - only data structure modification **3. Comparison with
-Historical Similar Commits:** Looking at the historical commits
-provided: - **Similar Commit #1 (NO):** Added HP ZHAN 66 Pro - marked as
-NO for backporting - **Similar Commit #2 (YES):** Fixed ThinkPad X1
-Carbon 6th DMI matching - marked as YES - **Similar Commit #3 (NO):**
-Added ThinkPad X1 Yoga 3rd - marked as NO - **Similar Commit #4 (YES):**
-GPIO quirk for GPD G1619-04 with `Cc: stable@vger.kernel.org` - marked
-as YES - **Similar Commit #5 (YES):** Removed duplicate entry - marked
-as YES **4. Stable Tree Criteria Assessment:** ✅ **Fixes important user-
-visible bug:** Spurious wakeups significantly impact user experience and
-battery life ✅ **Small and contained change:** Only adds one DMI table
-entry, no logic changes ✅ **Low risk of regression:** DMI quirks are
-device-specific and don't affect other systems ✅ **Well-tested
-pattern:** The `acpi_ec_no_wakeup` mechanism is well-established and
-widely used ✅ **Critical subsystem appropriately handled:** ACPI EC is
-critical but this change is isolated to one device **5. Risk
-Assessment:** - **Risk to target device:** Minimal - disables EC wakeup
-which is the intended behavior to fix spurious wakeups - **Risk to other
-devices:** None - DMI matching is device-specific - **Risk of
-regression:** Very low - follows established pattern used by many other
-laptop models **6. Precedent Analysis:** The pattern shows that while
-some individual device additions were marked as NO (commits #1 and #3),
-those that include proper documentation, clear problem statements, or
-fix significant user issues tend to be marked YES (commits #2, #4, #5).
-This commit includes a clear problem statement ("prevent spurious
-wakeups") and follows the exact same pattern as successful backports.
-**7. User Impact:** Spurious wakeups during suspend-to-idle directly
-impact: - Battery life (system doesn't stay in low-power state) - User
-experience (unexpected wake-ups) - Power management effectiveness This
-is exactly the type of user-facing power management issue that stable
-trees aim to address. The commit is an ideal candidate for backporting:
-it's a small, safe, device-specific fix for a real user problem that
-follows well-established patterns with minimal risk.
+**YES** This commit should be backported to stable kernel trees. Here's
+the detailed analysis: **Bug Fix Nature**: The commit fixes a real bug
+where ACPI initialization continues silently even when `acpi_kobj`
+registration fails. This creates an inconsistent system state where ACPI
+sysfs functionality and some drivers that depend on `acpi_kobj` will
+fail later without clear indication of the root cause. **Code Change
+Analysis**: - Changes `pr_debug()` to `pr_err()` for better visibility
+of the failure - Returns `-ENOMEM` immediately when
+`kobject_create_and_add()` fails instead of continuing - The existing
+`kobject_put(acpi_kobj)` cleanup in the error path after
+`acpi_bus_init()` is already present **Comparison with Similar
+Commits**: This follows the exact pattern of Similar Commit #1 (Status:
+YES) which added `kobject_put()` cleanup. Both commits address resource
+management issues in the same function (`acpi_init`) and represent
+important bugfixes with minimal risk. **Risk Assessment**: - Very low
+risk - only affects the error path when kobject creation fails - Early
+failure is better than silent failure leading to confusing symptoms
+later - Change is contained to a single function with clear error
+handling - Consistent with how other firmware subsystems handle kobject
+registration failures **Stable Tree Criteria Met**: - Fixes important
+bug affecting system reliability - Minimal and contained change - No
+architectural modifications - Clear improvement in error handling and
+debugging The commit addresses a legitimate reliability issue where ACPI
+would continue initialization with a NULL `acpi_kobj`, leading to
+failures in dependent subsystems that would be harder to diagnose than
+an early, clear failure.
 
- drivers/acpi/ec.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/acpi/bus.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 3c5f34892734e..6f4203716b53f 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -2329,6 +2329,12 @@ static const struct dmi_system_id acpi_ec_no_wakeup[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
- 		}
- 	},
-+	{
-+		// TUXEDO InfinityBook Pro AMD Gen9
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GXxHRXx"),
-+		},
-+	},
- 	{ },
- };
+diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+index 16917dc3ad604..6234055d25984 100644
+--- a/drivers/acpi/bus.c
++++ b/drivers/acpi/bus.c
+@@ -1444,8 +1444,10 @@ static int __init acpi_init(void)
+ 	}
  
+ 	acpi_kobj = kobject_create_and_add("acpi", firmware_kobj);
+-	if (!acpi_kobj)
+-		pr_debug("%s: kset create error\n", __func__);
++	if (!acpi_kobj) {
++		pr_err("Failed to register kobject\n");
++		return -ENOMEM;
++	}
+ 
+ 	init_prmt();
+ 	acpi_init_pcc();
 -- 
 2.39.5
 
