@@ -1,59 +1,59 @@
-Return-Path: <linux-acpi+bounces-14058-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14059-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDBAACA625
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 02:45:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 972F0ACA64A
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 02:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 382BB3A9154
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 00:44:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67F5F188A540
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 00:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B643631442E;
-	Sun,  1 Jun 2025 23:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C088B31444E;
+	Sun,  1 Jun 2025 23:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JpR1pPM5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DiZ8dQMD"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83962314423;
-	Sun,  1 Jun 2025 23:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88ACA314442;
+	Sun,  1 Jun 2025 23:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748821196; cv=none; b=dkXmQawoTvs3q6egSHTREwcEChxa4VaqkEgav8yTF2sBna4T7Hhwo7NJkbELt1+bvIcvysR2xtpRipBwv6Kp861JY50mQdgwaRvWSww286Hs5S4H0ki1DGp+HGmCZyN1yi513N1a9HqAetZ4Qobm/Di25+i0LN1kyas/bLu2/cc=
+	t=1748821197; cv=none; b=slHfMaevr1hUpcgw4bGbTvQ8uYuGYnn2j6XBH3CW2ZPSLNhGDPVNWHoEiQnHA9ka2WC4R35S4VbTycmYmz5/yz1eqgVysSI1jqtZ2GUQpRAMF7lO5eBuw4BhuJP2Weiuz9qSscph2rCxY5Y0Aqi/LSGvbKJZ/7daF86hqcg+KPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748821196; c=relaxed/simple;
-	bh=lEtwH+Sph3raiyFxewFIvypPLL7dlJG/OcYSChNR++w=;
+	s=arc-20240116; t=1748821197; c=relaxed/simple;
+	bh=wp/Ie4gCYpVkVdYHMkiWZOquB9vU2Le6O1WmW1eUOH4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CQktmf5L9flR28OitfInqQzP1bkDINIy5ScTbpDNPnD+o/r8v1oT0mni8i7A3l+Wlu7H4i5VX+joDupbWhXR+DKbel0Q27o+/fqiGhsKXI0IaNbu+L01GiFE9etoivRRYzxUcdhCHTcJFOxC8ccdEEAFquZjibZedT4C+09FSjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JpR1pPM5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3721C4CEF3;
-	Sun,  1 Jun 2025 23:39:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tR82GyImR3hZg3RbA4NA6ZtvMwnMhIWJO6/YWZOjeTOz72ltIAk5Gn1r9BYfM8/iEQWJg0lecLvkZXVnmRYU1UflV5gCZ6FIYU7Cn7SQyF9M5h2RDvhzBZoxCDWyqzAHxFHdwF05jj//SUgUbVrwF/9cee1/TLmc8fK3PShtjTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DiZ8dQMD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C8CC4CEEE;
+	Sun,  1 Jun 2025 23:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748821196;
-	bh=lEtwH+Sph3raiyFxewFIvypPLL7dlJG/OcYSChNR++w=;
+	s=k20201202; t=1748821197;
+	bh=wp/Ie4gCYpVkVdYHMkiWZOquB9vU2Le6O1WmW1eUOH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JpR1pPM5c1daZWonAMM2xxihSTQ1nsRyY+bfyoJEY6Rt7uhO6wlxoH1ca+OPSm0hF
-	 htkdD1lR6R6LPdElvM2csyjZ76ew/0Ai5m14iXCRx+tmk8dtNeq4dnb81h0k7D/jv0
-	 JZfHrLe5WxiD6V0zXjCO4c2FtoZDCjp+xBVE9VaOMr3OBYBn0xenQUQJ6AWMVaHkoU
-	 ZQmyNwBvdLWwE1g2Ujq0Nip3MeK/DNd8LjvjHykSIWBUFU97z2UKoN5BOwcNAD+IUg
-	 L1ZdivtFSu99SA/DAlw32Yat+nMtlSswY67F2gqnuWo3yB/d4FSbg9GfxpBk3V5FMG
-	 milJ58cq4G8Fw==
+	b=DiZ8dQMDq0sx1ehV0sL5/f5SYOcVx/WF4t1QPdWDrjDTPJyZSus0yb0JwIOuZemLn
+	 M9PV7+dQF5SqHDgsVQ8s/KuVRCy8TVUrXTgmHr0PcTF+ZueCTCKqtegBnZ+e+bNsP+
+	 LPip+JT7Qo2KwugRnKa9iLhJU2+G/EydCWTTsxWSyrjRFVFyqAwaJ7mQuBoypZsq7T
+	 /c+Op0/+7KCGc32Mtwuv6wo5w9hLd4jQZOZJruOeB8wfRQaA60ai2kQTGPa26oeb4S
+	 NDEtylBcg4iIMLyiIvqNs4wfJx0imaWX3wtGVGAHZz3B01cMioW8VELDNgOqQ3Mk/x
+	 CZBEVxnviKL4A==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Ahmed Salem <x0rw3ll@gmail.com>,
+Cc: gldrk <me@rarity.fan>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	robert.moore@intel.com,
 	linux-acpi@vger.kernel.org,
 	acpica-devel@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 58/66] ACPICA: Avoid sequence overread in call to strncmp()
-Date: Sun,  1 Jun 2025 19:37:35 -0400
-Message-Id: <20250601233744.3514795-58-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 59/66] ACPICA: utilities: Fix overflow check in vsnprintf()
+Date: Sun,  1 Jun 2025 19:37:36 -0400
+Message-Id: <20250601233744.3514795-59-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250601233744.3514795-1-sashal@kernel.org>
 References: <20250601233744.3514795-1-sashal@kernel.org>
@@ -66,93 +66,80 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.92
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Ahmed Salem <x0rw3ll@gmail.com>
+From: gldrk <me@rarity.fan>
 
-[ Upstream commit 64b9dfd0776e9c38d733094859a09f13282ce6f8 ]
+[ Upstream commit 12b660251007e00a3e4d47ec62dbe3a7ace7023e ]
 
-ACPICA commit 8b83a8d88dfec59ea147fad35fc6deea8859c58c
+ACPICA commit d9d59b7918514ae55063b93f3ec041b1a569bf49
 
-ap_get_table_length() checks if tables are valid by
-calling ap_is_valid_header(). The latter then calls
-ACPI_VALIDATE_RSDP_SIG(Table->Signature).
+The old version breaks sprintf on 64-bit systems for buffers
+outside [0..UINT32_MAX].
 
-ap_is_valid_header() accepts struct acpi_table_header as an argument, so
-the signature size is always fixed to 4 bytes.
-
-The problem is when the string comparison is between ACPI-defined table
-signature and ACPI_SIG_RSDP. Common ACPI table header specifies the
-Signature field to be 4 bytes long[1], with the exception of the RSDP
-structure whose signature is 8 bytes long "RSD PTR " (including the
-trailing blank character)[2]. Calling strncmp(sig, rsdp_sig, 8) would
-then result in a sequence overread[3] as sig would be smaller (4 bytes)
-than the specified bound (8 bytes).
-
-As a workaround, pass the bound conditionally based on the size of the
-signature being passed.
-
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#system-description-table-header [1]
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#root-system-description-pointer-rsdp-structure [2]
-Link: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wstringop-overread [3]
-Link: https://github.com/acpica/acpica/commit/8b83a8d8
-Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
+Link: https://github.com/acpica/acpica/commit/d9d59b79
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2248233.Mh6RI2rZIc@rjwysocki.net
+Link: https://patch.msgid.link/4994935.GXAFRqVoOG@rjwysocki.net
+Signed-off-by: gldrk <me@rarity.fan>
+[ rjw: Added the tag from gldrk ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-Now I understand the issue! Let me analyze the problem: **Analysis:**
-**YES** - This commit should be backported to stable kernel trees. ##
-Detailed Analysis: ### The Problem: The commit fixes a **buffer overread
-vulnerability** in the `ACPI_VALIDATE_RSDP_SIG` macro. The issue occurs
-when: 1. `ap_is_valid_header()` accepts a `struct acpi_table_header
-*table` parameter 2. `struct acpi_table_header` has a `signature` field
-that is only **4 bytes** (`char signature[ACPI_NAMESEG_SIZE]` where
-`ACPI_NAMESEG_SIZE = 4`) 3. The original `ACPI_VALIDATE_RSDP_SIG(a)`
-macro calls `strncmp(a, ACPI_SIG_RSDP, 8)` - comparing **8 bytes** 4.
-When `table->signature` (4 bytes) is passed to this macro, `strncmp`
-reads **beyond the bounds** of the signature field, causing a buffer
-overread ### The Fix: The new macro implementation: ```c #define
-ACPI_VALIDATE_RSDP_SIG(a) (!strncmp (ACPI_CAST_PTR (char, (a)),
-ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8)) ``` This
-intelligently chooses the comparison length: - If `sizeof(a) < 8`, it
-uses `ACPI_NAMESEG_SIZE` (4 bytes) - Otherwise, it uses the full 8 bytes
-for legitimate RSDP signatures ### Why This Should Be Backported: 1.
-**Security Issue**: This is a buffer overread that could potentially
-lead to information disclosure or memory corruption 2. **Minimal Risk**:
-The change is a small, surgical fix to a macro with clear logic 3.
-**Wide Impact**: The macro is used in multiple places including: -
-Kernel ACPI subsystem (`drivers/acpi/acpica/tbprint.c`, `tbxfroot.c`) -
-Boot code (`arch/x86/boot/compressed/acpi.c`) - ACPI tools (userspace
-tools) 4. **Compiler Warnings**: This likely fixes `-Wstringop-overread`
-compiler warnings, improving code quality 5. **No Functional Change**:
-The fix maintains the same intended behavior while preventing the
-overread 6. **Follows Stable Rules**: This is exactly the type of
-important bugfix that stable trees are meant to include ### Similar
-Commit Precedent: Similar commit #3 (Status: YES) shows that ACPI
-compilation warning fixes have been backported before, and this is a
-more serious issue (actual buffer overread vs. just truncation
-warnings). The fix addresses a real memory safety issue in a fundamental
-ACPI macro used throughout the kernel, making it an excellent candidate
-for stable backporting.
+**YES** This commit should definitely be backported to stable kernel
+trees. Here's my detailed analysis: ## Critical Bug Analysis This commit
+fixes a serious overflow vulnerability in the ACPICA vsnprintf()
+function that affects 64-bit systems. The commit message explicitly
+states "The old version breaks sprintf on 64-bit systems for buffers
+outside [0..UINT32_MAX]", indicating this is a critical functionality
+bug. ## Code Change Analysis The fix replaces problematic boundary
+checking logic: **Old problematic code:** ```c if (size !=
+ACPI_UINT32_MAX) { end = string + size; } else { end =
+ACPI_CAST_PTR(char, ACPI_UINT32_MAX); } ``` **New safe code:** ```c size
+= ACPI_MIN(size, ACPI_PTR_DIFF(ACPI_MAX_PTR, string)); end = string +
+size; ``` ## Why This Needs Backporting 1. **Security Issue**: The old
+code could cause buffer overflows when `string + size` exceeds the
+maximum pointer value on 64-bit systems, potentially leading to memory
+corruption. 2. **Functional Breakage**: As stated in the commit message,
+sprintf() functionality is completely broken for large buffers on 64-bit
+systems, which could cause system crashes or boot failures. 3. **Low
+Risk Fix**: The change is minimal and well-contained, using proper
+ACPICA macros (`ACPI_MIN`, `ACPI_PTR_DIFF`, `ACPI_MAX_PTR`) that are
+designed for safe pointer arithmetic. 4. **Core Utility Function**: This
+affects `vsnprintf()`, a fundamental string formatting function used
+throughout ACPICA, meaning the impact could be widespread. ## Comparison
+to Similar Commits Unlike the previous ACPICA commits shown (which were
+mostly code style changes, fallthrough annotations, or parameter
+additions), this commit fixes an actual functional bug that breaks core
+functionality on 64-bit systems. ## Stable Tree Criteria Met - ✅ Fixes
+important bug affecting users - ✅ Small, contained change - ✅ Minimal
+regression risk - ✅ Affects critical subsystem (ACPICA string handling)
+- ✅ Clear technical necessity (prevents crashes/corruption) This is
+exactly the type of critical bugfix that stable trees are designed to
+carry.
 
- include/acpi/actypes.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/utprint.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
-index 85c2dcf2b7048..0a24200852415 100644
---- a/include/acpi/actypes.h
-+++ b/include/acpi/actypes.h
-@@ -527,7 +527,7 @@ typedef u64 acpi_integer;
+diff --git a/drivers/acpi/acpica/utprint.c b/drivers/acpi/acpica/utprint.c
+index 42b30b9f93128..7fad03c5252c3 100644
+--- a/drivers/acpi/acpica/utprint.c
++++ b/drivers/acpi/acpica/utprint.c
+@@ -333,11 +333,8 @@ int vsnprintf(char *string, acpi_size size, const char *format, va_list args)
  
- /* Support for the special RSDP signature (8 characters) */
+ 	pos = string;
  
--#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, 8))
-+#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8))
- #define ACPI_MAKE_RSDP_SIG(dest)        (memcpy (ACPI_CAST_PTR (char, (dest)), ACPI_SIG_RSDP, 8))
+-	if (size != ACPI_UINT32_MAX) {
+-		end = string + size;
+-	} else {
+-		end = ACPI_CAST_PTR(char, ACPI_UINT32_MAX);
+-	}
++	size = ACPI_MIN(size, ACPI_PTR_DIFF(ACPI_MAX_PTR, string));
++	end = string + size;
  
- /* Support for OEMx signature (x can be any character) */
+ 	for (; *format; ++format) {
+ 		if (*format != '%') {
 -- 
 2.39.5
 
