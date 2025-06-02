@@ -1,225 +1,144 @@
-Return-Path: <linux-acpi+bounces-14071-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14072-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE30ACA80F
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 03:28:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADADDACB32B
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 16:39:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E5AB3A7B29
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 01:26:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 633DB4A0F8B
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 14:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA30184E;
-	Mon,  2 Jun 2025 01:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EAFA221FBB;
+	Mon,  2 Jun 2025 14:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l6GCEhyQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tKtXe9h1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363BB4C7C;
-	Mon,  2 Jun 2025 01:26:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B9421885A
+	for <linux-acpi@vger.kernel.org>; Mon,  2 Jun 2025 14:23:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748827602; cv=none; b=HO6mKGd6DK+jsPyGw+aQzVRfs9tz3ztxpzo/N2PlG0iYZLtYI4tUWJOO3qCWL0YbUHzTK48QfwP2z+oWJn+ktNGGj+QQQ0N1WJWmjVBzaedmuest8EL57RYMrG81PWd0Q+y4qqf9dAFVCS9UoJ6hTbmc6zQfQNJtto4bFa0JRfw=
+	t=1748874238; cv=none; b=TJGlcrS/LXTyZoKyY61PuOmvRv08x6kU1RIBILih5BOW4KfQBgbrxaMvKV9UWxAKDkQvvyGQpG4tLXTuyLXxTNnfCyGGHMI5h1Rf1I1yYl9cvvtUGk6aff8cyED3P6FY5t7RlWMOqzoQegqYm3rPWMVAnaE/5DDwu4oLfer7/qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748827602; c=relaxed/simple;
-	bh=KHOrI/tcUQxQ/4g8TO2DNZqo8MwNVeHh8Rb/WFAhsMY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fNFU8ystIFRD6+Nmfie8uOSa+2lJtAwv1S8KRQAI2cJDJqZ+2c4huWxuWUO1s9BveCh61ULY5nUs7pwZA9whfH842aNCXkwCQs0ndenPUI0BgHwT59lBI0IwPBRi74ltUpiczg/KDU7Rknpsv4G/i/akDRW363+ANMbdhtmsVpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l6GCEhyQ; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748827600; x=1780363600;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KHOrI/tcUQxQ/4g8TO2DNZqo8MwNVeHh8Rb/WFAhsMY=;
-  b=l6GCEhyQV7xOonqcrkFtLccw6t+nmJEkLcyCEbbEXuLqkqUpMYXOnpiU
-   GPhp6A6+4PnD/kA9GhxfGJ+DmDrqDPwzV+6OycEjJXPodNAEj9Kdo7HFu
-   mTkLqqyP79MzXNOj00es52cCD1zJ/YSNYzhCko836ohjW9XF23T73ldGC
-   gHw2R/qO0fxiRO4LNbGyoNRtK9yFetQdWwj7ai4l8HKyvS01A1uwNPV5a
-   wPPB79hh/Jq9L/7WhgMVTpRM0m7bEIi8l/X5xC9WdUELpEMIAMa9AyZ5Z
-   slxmmYFzbIVVSVEBZ4kf7Ditd0OiI/HGNTWUeTeluOOwv0nH6om9dx4do
-   g==;
-X-CSE-ConnectionGUID: cYNFZuT/SkKCJBbMrq6fZQ==
-X-CSE-MsgGUID: ViAWmTSkR8+rp49WzVuFXg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11450"; a="50936428"
-X-IronPort-AV: E=Sophos;i="6.16,202,1744095600"; 
-   d="scan'208";a="50936428"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2025 18:26:39 -0700
-X-CSE-ConnectionGUID: dHD8CikpSNaf/8GLC5VgOg==
-X-CSE-MsgGUID: q7DJSSPfTvanbnzLXeEggg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,202,1744095600"; 
-   d="scan'208";a="149695206"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2025 18:26:39 -0700
-Date: Sun, 1 Jun 2025 18:31:44 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, x86@kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>, devicetree@vger.kernel.org,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Chris Oo <cho@microsoft.com>, linux-hyperv@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Ravi V. Shankar" <ravi.v.shankar@intel.com>,
-	Ricardo Neri <ricardo.neri@intel.com>
-Subject: Re: [PATCH v3 06/13] dt-bindings: reserved-memory: Wakeup Mailbox
- for Intel processors
-Message-ID: <20250602013144.GA27991@ranerica-svr.sc.intel.com>
-References: <20250506-pompous-meaty-crane-97efce@kuoka>
- <20250507032339.GA27243@ranerica-svr.sc.intel.com>
- <20250512153224.GA3377771-robh@kernel.org>
- <20250513221456.GA2794@ranerica-svr.sc.intel.com>
- <20250514154248.GA2375202-robh@kernel.org>
- <20250515035338.GA4955@ranerica-svr.sc.intel.com>
- <20250519152937.GA2227051-robh@kernel.org>
- <20250519175606.GA9693@ranerica-svr.sc.intel.com>
- <20250524155650.GA16942@ranerica-svr.sc.intel.com>
- <20250529131634.GA2784667-robh@kernel.org>
+	s=arc-20240116; t=1748874238; c=relaxed/simple;
+	bh=3g/I1bMDU17s2kE/FBY+ngUOOi1IOTbqjD3tyCKlzXc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fvmQ6p7EkCEyAKS8ZccSs2I9qahVQLvKXoiIk6bd9pXe8xephLBqNrXRG/tfNuv+WDzCrx4OzS5OF1n3ypL34R95i18Il1IttESitFfR9EJA8IxFyHuGuitscgTyKY+/Cr1zuBe7YQjO0HrmRH3SGH69TX8hjJRpNkkwsEZICy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tKtXe9h1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D9EC4CEEB
+	for <linux-acpi@vger.kernel.org>; Mon,  2 Jun 2025 14:23:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748874238;
+	bh=3g/I1bMDU17s2kE/FBY+ngUOOi1IOTbqjD3tyCKlzXc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=tKtXe9h1As1jVKOhKB55WqtnegUw5FRdPdIK3VJE11fpFuAsQtUoBduEKARfKScGI
+	 L855GrIQJItlS3dxWT4atqLREp97RSka9O+dp6a1ZigaQFQo272ZKvsYitdlSbFrEv
+	 304JT8GW4c77ClnPKYGsTse8sgxivpYB5Lt+i4otYAppGvkU/ZmJInNr8YMsb1ndsa
+	 RxvAQgqHbF4zIc2G8wL/bVhNvx0dYvDuwZUDH6D9K3S71SHS+P0WxB3wm4vEisaEot
+	 w4G4u37r6+gXdTcOBQbho6TpFKzojDAZFuVNwd/1LecOtsshIdtEXoZ463zaYj7DDu
+	 YTnuOTVs4x7fg==
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-736f9e352cbso1085862a34.2
+        for <linux-acpi@vger.kernel.org>; Mon, 02 Jun 2025 07:23:57 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwJutjyiATpOyLAptY6zvD+zrdvQaTmZGxnk5CbSGcaoBBMwTs4
+	0iq/ryAJvkTjd7+V9dwwHANPnMnvArUA8In2Qps0tj/3dTBKWm11SniGkPJfh71FsE9holml2XQ
+	y56dCN7MkvFYVuzrOon+edv5TaKzweKo=
+X-Google-Smtp-Source: AGHT+IGZ3nIDNi9g7H3//zwO1VO+Q7rAWOIgsZFtGi4JYfroHCVQh0VF7Ex/fZwhktwOk3gIhkfQ6X3/nn7Vvub8LUA=
+X-Received: by 2002:a05:6808:7004:b0:401:e8b5:4e4a with SMTP id
+ 5614622812f47-4067e5418acmr6798346b6e.1.1748874237311; Mon, 02 Jun 2025
+ 07:23:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250529131634.GA2784667-robh@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <aCWbk4z50QYym9gV@merlins.org>
+In-Reply-To: <aCWbk4z50QYym9gV@merlins.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 2 Jun 2025 16:23:42 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0j0NK29+D=RjsLgmAmh7_bujA5xXoLpo--FC2Gd98RMig@mail.gmail.com>
+X-Gm-Features: AX0GCFvZ9BzkvaUR2HI8y9iOAIzAv56Ga005bQ6hwuzzr4AKlIEfMiTYgVvczSk
+Message-ID: <CAJZ5v0j0NK29+D=RjsLgmAmh7_bujA5xXoLpo--FC2Gd98RMig@mail.gmail.com>
+Subject: Re: s2idle on kdell xps 9730 does go to sleep but laptop is warm
+To: Marc MERLIN <marc@merlins.org>
+Cc: linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 29, 2025 at 08:16:34AM -0500, Rob Herring wrote:
-> On Sat, May 24, 2025 at 08:56:50AM -0700, Ricardo Neri wrote:
-> > On Mon, May 19, 2025 at 10:56:06AM -0700, Ricardo Neri wrote:
-> > > On Mon, May 19, 2025 at 10:29:37AM -0500, Rob Herring wrote:
-> > > > On Wed, May 14, 2025 at 08:53:38PM -0700, Ricardo Neri wrote:
-> > > > > On Wed, May 14, 2025 at 10:42:48AM -0500, Rob Herring wrote:
-> > > > > > On Tue, May 13, 2025 at 03:14:56PM -0700, Ricardo Neri wrote:
-> > > > > > > On Mon, May 12, 2025 at 10:32:24AM -0500, Rob Herring wrote:
-> > > > > > > > On Tue, May 06, 2025 at 08:23:39PM -0700, Ricardo Neri wrote:
-> > > > > > > > > On Tue, May 06, 2025 at 09:10:22AM +0200, Krzysztof Kozlowski wrote:
-> > > > > > > > > > On Mon, May 05, 2025 at 10:16:10PM GMT, Ricardo Neri wrote:
-> > > > > > > > > > > > If this is a device, then compatibles specific to devices. You do not
-> > > > > > > > > > > > get different rules than all other bindings... or this does not have to
-> > > > > > > > > > > > be binding at all. Why standard reserved-memory does not work for here?
-> > > > > > > > > > > > 
-> > > > > > > > > > > > Why do you need compatible in the first place?
-> > > > > > > > > > > 
-> > > > > > > > > > > Are you suggesting something like this?
-> > > > > > > > > > > 
-> > > > > > > > > > > reserved-memory {
-> > > > > > > > > > > 	# address-cells = <2>;
-> > > > > > > > > > > 	# size-cells = <1>;
-> > > > > > > > > > > 
-> > > > > > > > > > > 	wakeup_mailbox: wakeupmb@fff000 {
-> > > > > > > > > > > 		reg = < 0x0 0xfff000 0x1000>
-> > > > > > > > > > > 	}
-> > > > > > > > > > > 
-> > > > > > > > > > > and then reference to the reserved memory using the wakeup_mailbox
-> > > > > > > > > > > phandle?
-> > > > > > > > > > 
-> > > > > > > > > > Yes just like every other, typical reserved memory block.
-> > > > > > > > > 
-> > > > > > > > > Thanks! I will take this approach and drop this patch.
-> > > > > > > > 
-> > > > > > > > If there is nothing else to this other than the reserved region, then 
-> > > > > > > > don't do this. Keep it like you had. There's no need for 2 nodes.
-> > > > > > > 
-> > > > > > > Thank you for your feedback!
-> > > > > > > 
-> > > > > > > I was planning to use one reserved-memory node and inside of it a child
-> > > > > > > node to with a `reg` property to specify the location and size of the
-> > > > > > > mailbox. I would reference to that subnode from the kernel code.
-> > > > > > > 
-> > > > > > > IIUC, the reserved-memory node is only the container and the actual memory
-> > > > > > > regions are expressed as child nodes.
-> > > > > > > 
-> > > > > > > I had it like that before, but with a `compatible` property that I did not
-> > > > > > > need.
-> > > > > > > 
-> > > > > > > Am I missing anything?
-> > > > > > 
-> > > > > > Without a compatible, how do you identify which reserved region is the 
-> > > > > > wakeup mailbox?
-> > > > > 
-> > > > > I thought using a phandle to the wakeup_mailbox. Then I realized that the
-> > > > > device nodes using the mailbox would be CPUs. They would need a `memory-
-> > > > > region` property. This does not look right to me.
-> > > > 
-> > > > That doesn't really make sense unless it's a memory region per CPU.
-> > > 
-> > > Agreed.
-> > > 
-> > > > 
-> > > > 
-> > > > > > Before you say node name, those are supposed to be 
-> > > > > > generic though we failed to enforce anything for /reserved-memory child 
-> > > > > > nodes.
-> > > > > 
-> > > > > I see. Thanks for preventing me from doing this.
-> > > > > 
-> > > > > Then the `compatible` property seems the way to go after all.
-> > > > > 
-> > > > > This what motivated this patch in the first place. On further analysis,
-> > > > > IIUC, defining bindings and schema is not needed, IMO, since the mailbox
-> > > > > is already defined in the ACPI spec. No need to redefine.
-> > > > 
-> > > > You lost me...
-> > > > 
-> > > > You don't need to redefine the layout of the memory region as that's 
-> > > > defined already somewhere,
-> > > 
-> > > Great!
-> > > 
-> > > > but you do need to define where it is for DT. 
-> > > > And for that, you need a compatible. Do you know where it is in this 
-> > > > case?
-> > > 
-> > > The compatible is not defined anywhere yet. Is a DT schema needed to
-> > > document it? If yes, I am usure what to put in the description. We tried
-> > > to not redefine the mailbox and refer to the ACPI spec. That was a NAK
-> > > from Krzysztof [1].
-> > > 
-> > > [1]. https://lore.kernel.org/r/624e1985-7dd2-4abe-a918-78cb43556967@kernel.org
-> > 
-> > In summary, documenting the `compatible` property for the mailbox is
-> > necessary. There is no need to redefine the malbox on a schema but
-> > referring to the ACPI spec is not acceptable.
-> 
-> There's the whole "DT bindings in ACPI systems" where ACPI tables 
-> contain compatibles and DT properties which I think is what 
-> Krzysztof was objecting to (and I do too). But this is a DT based system 
-> that implements a mailbox region defined in an ACPI spec. That is 
-> perfectly fine to refer to.
+On Thu, May 15, 2025 at 9:45=E2=80=AFAM Marc MERLIN <marc@merlins.org> wrot=
+e:
+>
+> and burn a lot of battery during full kernel sleep
+> Reply-To:
+> X-Sysadmin: BOFH
+> X-URL: http://marc.merlins.org/
+>
+>  With kernel 6.6.9 when I put the laptop to sleep, syslog shows that the
+>  laptop was sleeping for 9h, fans were stopped, but when I gabbed my
+>  laptop it was warm and burned 80% of the battery overnight.
 
-That is correct. It is a DT-based system.
+First off, I'd try a newer kernel.  Say 6.15.0 (unless you boot with
+"nosmt" in the kernel command line).
 
-Great! I will refer to the ACPI spec in my schema in my next version.
+> And yet, linux was not running, my logs show the kernel went into ACPI
+> sleep and back out
 
-> 
-> > 
-> > What about referring in the schema to the Intel TDX Virtual Firmware Design
-> > Guide[2]? It describes how firmware should implement the mailbox the section
-> > 4.3.5.
-> > 
-> > A mailbox with compatible = "intel,wakeup-mailbox" is implemented after the
-> > guide that Intel published.
-> 
-> Use whatever you think best describes the programming model of the 
-> region.
+It wouldn't be "ACPI sleep" if it was suspend-to-idle.
 
-Understood.
+> Logs show the system slept for 9h and went to sleep with s2idle.
+>
+> Is it the wrong sleep outside of suspend to disk and full shutdown?
 
-Thanks and BR,
-Ricardo
+No, it shouldn't be.
+
+> Are there devices that should have been powered off but didn't
+> (evidently yes since battery loss was 80% and laptop was warm)
+
+There seems to be driver support missing for some devices.
+
+> logs below
+>
+> 2025-05-14T00:01:20 merlin root: >>>>>>>>>> suspend  #1 1747206080
+>
+> 2025-05-14T00:01:21 merlin dbus-daemon[2846]: [system] Activating via sys=
+temd: service name=3D'org.wicd.daemon' unit=3D'dbus-org.wicd.daemon.service=
+' requested by ':1.1130' (uid=3D0 pid=3D3357435 comm=3D"/usr/bin/python3 /u=
+sr/share/wicd/daemon/suspend.py")
+> 2025-05-14T00:01:21 merlin dbus-daemon[2846]: [system] Activation via sys=
+temd failed for unit 'dbus-org.wicd.daemon.service': Unit dbus-org.wicd.dae=
+mon.service not found.
+> 2025-05-14T00:01:21 merlin kernel: [1388664.621668] PM: suspend entry (s2=
+idle)
+> 2025-05-14T00:01:21 merlin kernel: [1388664.625122] Filesystems sync: 0.0=
+03 seconds
+> 2025-05-14T09:20:43 merlin kernel: [1388664.635518] Freezing user space p=
+rocesses
+> 2025-05-14T09:20:43 merlin kernel: [1388664.638313] Freezing user space p=
+rocesses completed (elapsed 0.002 seconds)
+> 2025-05-14T09:20:43 merlin kernel: [1388664.638320] OOM killer disabled.
+> 2025-05-14T09:20:43 merlin kernel: [1388664.638322] Freezing remaining fr=
+eezable tasks
+> 2025-05-14T09:20:43 merlin kernel: [1388664.640285] Freezing remaining fr=
+eezable tasks completed (elapsed 0.001 seconds)
+> 2025-05-14T09:20:43 merlin kernel: [1388664.640290] printk: Suspending co=
+nsole(s) (use no_console_suspend to debug)
+> (...)
+> 2025-05-14T09:20:43 merlin kernel: [1422225.195325] OOM killer enabled.
+> 2025-05-14T09:20:43 merlin kernel: [1422225.195328] Restarting tasks ... =
+done.
+> 2025-05-14T09:20:43 merlin kernel: [1422225.204356] vgaarb: client 0x0000=
+0000f7b9cd5c called 'target'
+> 2025-05-14T09:20:43 merlin kernel: [1422225.204376] vgaarb: PCI:0000:00:0=
+2.0 =3D=3D> 0000:00:02.0 pdev 00000000dec5b5e7
+> 2025-05-14T09:20:43 merlin kernel: [1422225.204383] vgaarb: vgadev 000000=
+00dca48b8a
+> 2025-05-14T09:20:43 merlin kernel: [1422225.321870] PM: suspend exit
+
+Well, it obviously is not a complete log.
+
+What processor is there in your system?
 
