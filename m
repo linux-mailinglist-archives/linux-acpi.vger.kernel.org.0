@@ -1,83 +1,97 @@
-Return-Path: <linux-acpi+bounces-14073-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14074-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CB2DACB9F2
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 19:02:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11CF0ACBA16
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 19:15:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CED7A402B7F
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 17:02:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6AEF165C2E
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 17:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BDE13B293;
-	Mon,  2 Jun 2025 17:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91952253F3;
+	Mon,  2 Jun 2025 17:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VYFZTPPh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zt17EzvH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB64EAF9;
-	Mon,  2 Jun 2025 17:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CADD1FDD;
+	Mon,  2 Jun 2025 17:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748883739; cv=none; b=YloYAcMDnHRAazjl1DbX9bzrSOkUNq7/XuaIfv4G4JzaKsIwxQbBNrEB/gExvCMkrWdTUlgoJ/jRrWdxHGqPvAIwnQkVbpBtLqFO35d3YPAxxEaRRr/CpVBLMrTRC7lYnH4PrGSYwvvb6gxKvp9Lmip/KrXroQ74rmoN38NiFJY=
+	t=1748884532; cv=none; b=jsPHi7mnSS/lExzEWOdQhP+FiWDpJrgZD+KFmzzSrGSf8i9rbcW+O3AlYe0ffUNbfEK//Oj6PPQKLJ9vRjBqemMYzXENvkNOk4jbMY2dig0fvFDuBs6XGU5U6ORhW8/89JptokrSlcoC8AMYQPlpjoxROw47N3ZfhzWca1udNu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748883739; c=relaxed/simple;
-	bh=PAm0qcVMccKzdp3fnXKmqZ+vGp/mrw6+rOYNaWYB160=;
+	s=arc-20240116; t=1748884532; c=relaxed/simple;
+	bh=BSPZ+8k3j7hRfUMuTmnUvpVGMIHP+qqGksybdohOw0U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FZymTehWtHv8AYXurRPDH+XpHB5BokG+12ZusqnWmQ8zwjqGgVCvzzs6jiGA2wTTEPNLXIp7HViq4Su2+EmejT2Kpgm0uSURwDscN9fsM+/CS8XRS6DW0mj1/aRkjs7mjGCV+y9Xt1ns3Dwn+AJ/Rk9pt1oeVWIxUOYzqD3XQEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VYFZTPPh; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748883738; x=1780419738;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PAm0qcVMccKzdp3fnXKmqZ+vGp/mrw6+rOYNaWYB160=;
-  b=VYFZTPPhKiBC/Sb/trqgppHvCfCTCvHE0aM6AE5jhRhwGTG9hloTN2UC
-   5Q8Pqbcfz6ldGmodh71fJB9piXu/4oIsrO/tx2bAuw2jMfMNW8xoFWT45
-   y8hytDNy8kwxAg4M+UPLG2E5253MPCWfghjQxPMtzSFS0wFQmLy1PGWSK
-   Tn9geGBehI7yk/dt5j/7TUYRlEeLkjPwhNRtXae7pBQ5Kll4q/GuwtjnG
-   me/PLHb7cKEJwYtnWhxKvPIG8zV5csT8n/trrqsmEBspXWNqJvEEkkelu
-   7g8YTDWr2zoMcJ3sd7UGRzS9OwJfkLHD/K/zuMRZjjgwjGNasobFr4hY2
-   g==;
-X-CSE-ConnectionGUID: FVMqi/LnTAWDDBGtGiNEYA==
-X-CSE-MsgGUID: O4AEIlrfRqSBJXxBFiIyZA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="51045532"
-X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; 
-   d="scan'208";a="51045532"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 10:02:17 -0700
-X-CSE-ConnectionGUID: z/pjBT1NRjuZhrsoXUAvOw==
-X-CSE-MsgGUID: z/gChtcpR1WIx6vBj/unYw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; 
-   d="scan'208";a="148451524"
-Received: from agluck-desk3.sc.intel.com (HELO agluck-desk3) ([172.25.103.51])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 10:02:16 -0700
-Date: Mon, 2 Jun 2025 10:02:15 -0700
-From: "Luck, Tony" <tony.luck@intel.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Zaid Alali <zaidal@os.amperecomputing.com>, rafael@kernel.org,
-	lenb@kernel.org, james.morse@arm.com, robert.moore@intel.com,
-	Jonathan.Cameron@huawei.com, ira.weiny@intel.com,
-	Benjamin.Cheatham@amd.com, dan.j.williams@intel.com, arnd@arndb.de,
-	Avadhut.Naik@amd.com, john.allen@amd.com,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: Re: [PATCH v7 9/9] ACPI: APEI: EINJ: Update the documentation for
- EINJv2 support
-Message-ID: <aD3ZFyBW4SCyaGI9@agluck-desk3>
-References: <20250506213814.2365788-1-zaidal@os.amperecomputing.com>
- <20250506213814.2365788-10-zaidal@os.amperecomputing.com>
- <20250530102711.GAaDmH_1O7lc6kuveY@fat_crate.local>
- <aDoal24J-BMTIBCq@agluck-desk3>
- <20250531092050.GBaDrJ8iw7cNcpOKeA@fat_crate.local>
- <aDuBjopy_nE9A-ph@agluck-desk3>
- <20250601102554.GAaDwqsgCODzEne7Ow@fat_crate.local>
+	 Content-Type:Content-Disposition:In-Reply-To; b=toO1FqEKvm2FnnLepxqw1xuSYsSVCDwOqmxhNZeojBXB5cY25mDxQBxI0KrHNMRr8D4tN2P9RNQxJ/jmT/0CpsHcZY7sg+yETZh+LyUVCO0UqTfrbj5IboETnapqexGMZdSeMdCQBhnO6OIidBFxbdZSef4/yF3MlNYjTaP5iHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zt17EzvH; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6fad77c3ce1so1178506d6.2;
+        Mon, 02 Jun 2025 10:15:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748884530; x=1749489330; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cPqj+hlUb15Vo0gwcmnc7OruGv7UIdZSe73EVhzlEf4=;
+        b=Zt17EzvHDopbB1vda7uvsy6AXNlsY0zQ0k854GltCZyM/RsYeCGXWNowKFTSMFtg/w
+         3Wy6TAe0dIElTio4stpy8Yw+1ECmRGrGQxxOsDE19AxJ2YAWt6RlEFsg8uaEylUHKX+Q
+         eFANk0NMewVcm3O4SdpaIFIrXeWCE8vAgJ+IoZMZcWoHK2oakRBiX30LdCj7ucWM37Bj
+         szOOS7WyiiMYM9rkhmvXv4m1Dsp0yONxbphUyCNi3cOfVvWfQ/+GAdpngZE6Mj97SO2p
+         wOhclhyWvS4G1XcBdx/VCFufCSuLcymMhgbdkm4bmoYkT14YVYRaZ5+IShItFF4mFos6
+         6z1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748884530; x=1749489330;
+        h=in-reply-to:content-disposition:mime-version:references:reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cPqj+hlUb15Vo0gwcmnc7OruGv7UIdZSe73EVhzlEf4=;
+        b=UaAqD+ZLdgXE4lkI8OMnTaphasTZdi/Q7XV3aChKiUiXJducH7lme/K35190731xhe
+         /4NYZ/OAG+iqQSGBDyu1dAUztWJEIMxaQYz8v2N1wN2XcdTIjV56EPoP9KQ2u32jtBZm
+         gdzcHHMlkJuJs00Q65oZCjtoXwGBqJAxmTIQOXqbC1uMJIwm7kIDDGHCZKtOo9WMZact
+         pRI+H9T86s92GZoPadENuXYwIotmioa4ckjME783xOALmQGPFCN4thJ3av2qxqwcZ/9U
+         cHsdcOWyoXsHnw2zb7f5pmueSZIEA+7pEHGoH78ESK8WmpaJJHGU399V/PAJoFYnrsqW
+         hRBg==
+X-Forwarded-Encrypted: i=1; AJvYcCUO3YsEHvDU+5HduRSUeZ2ZlpMIC0aI+FV2OTvfANhlFtFqdJ23d18EdUTkJyVwbPc8ATaLS/MowM7Lvg==@vger.kernel.org, AJvYcCUiJXaj92fMYOtuhfNeq4hb/5AFO0H609YN2vgW5rV/0FAzNqq2weZeIPP4rJgkTincu8YlkEyW81pygcNE@vger.kernel.org, AJvYcCWUXw6B8zglvBTKrY87GMv0xD8thR3YC5ZZWBXM5mZ5SE2eiGEpkWGl1KvzGE/mFiUeLdZTcsWTBLxn@vger.kernel.org, AJvYcCWX23JNV6FnKWTff33cXxA4Sqy5XnlT5s4vj9KDfY/T5L78r+Kfpy15CyDyUWPi+oNf4AiXv/Zxg5T+fw==@vger.kernel.org, AJvYcCXfkFM5Abyc+7/paVpLJs0i08c8n+UoAM9uhvsFeYndcQEUbdvLNuh51pYx5FqvDhFbdYEgROM5uBen@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJ8nVbx3W1Ye7iMH19Arw//n1c6BC5TqJctZ0MMCpOlNYM7niu
+	5RL1lu9KTiYhXBAEA2KQpxRcdDMd3IeHJCsWCyRSUcUP0DvQU1DAG1QF
+X-Gm-Gg: ASbGncvMVvNtNV5TSBMV+Pc0RnqGLmUa450B9WHTLdq8RfYR9U/KaCI4rphJPW+Nv81
+	vrkq5zJE0F9FOI8Bh8dH9svoX0TvQccfsuYmv8Lbu30bj5z6JGIU2RqE3tfP7dtFRGJnPoNGlzw
+	UgagZyMG8/VDadhMxj5h19fmswty3XkdJ+yF64IltZFv4TRhNOWaEgkTNx7JYx89PQ2Uw6IWztP
+	v1+ZKXM/8wcyFjbMpKNbzIJl1U/+jUO+xfa7oL7ym8hMFsAlu40wFkEW9XiKPDi9IiqxKOZdyGg
+	CfIYargcNxeqkionnEk/fc/E2RK0+9JUmm0cUQS2ZlHe6N5sSJxmGwoWMVuVfil8jgvHCD9xnYB
+	GVMky+hU=
+X-Google-Smtp-Source: AGHT+IEXoxkzXT24Ug4BWtO98apWkgU/PzoKpBIv7F4ljkTOJkULgLYOyNFTPtMiFl4pDML3ami7BQ==
+X-Received: by 2002:ad4:5ca5:0:b0:6fa:be81:e18f with SMTP id 6a1803df08f44-6fad059a7f8mr86733506d6.0.1748884529431;
+        Mon, 02 Jun 2025 10:15:29 -0700 (PDT)
+Received: from JSANTO12-L01.ad.analog.com ([189.121.203.94])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fac6e1c800sm63659146d6.102.2025.06.02.10.15.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Jun 2025 10:15:28 -0700 (PDT)
+Date: Mon, 2 Jun 2025 14:15:23 -0300
+From: Jonathan Santos <jonath4nns@gmail.com>
+To: Andy Shevchenko <andy@kernel.org>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+	nuno.sa@analog.com, Michael.Hennerich@analog.com,
+	marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
+	linus.walleij@linaro.org, brgl@bgdev.pl, lgirdwood@gmail.com,
+	broonie@kernel.org, dlechner@baylibre.com, rafael@kernel.org,
+	djrscally@gmail.com
+Subject: Re: [PATCH v9 09/12] iio: adc: ad7768-1: add support for
+ Synchronization over SPI
+Message-ID: <aD3cK5PioN7Rw3pP@JSANTO12-L01.ad.analog.com>
+Reply-To: aDnuvAdkcTAP2tMt@smile.fi.intel.com
+References: <cover.1748447035.git.Jonathan.Santos@analog.com>
+ <27cccb51cc56f1bb57cb06d279854a503d779e25.1748447035.git.Jonathan.Santos@analog.com>
+ <aDnuvAdkcTAP2tMt@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -86,77 +100,65 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250601102554.GAaDwqsgCODzEne7Ow@fat_crate.local>
+In-Reply-To: <aDnuvAdkcTAP2tMt@smile.fi.intel.com>
 
-On Sun, Jun 01, 2025 at 12:25:54PM +0200, Borislav Petkov wrote:
-> Some questions inline...
+On 05/30, Andy Shevchenko wrote:
+> On Thu, May 29, 2025 at 07:50:29PM -0300, Jonathan Santos wrote:
+ 
+> > +static int ad7768_trigger_sources_sync_setup(struct device *dev,
+> > +					     struct fwnode_handle *dev_fwnode,
+> > +					     struct ad7768_state *st)
+> > +{
+> > +	struct fwnode_reference_args args;
+> > +
+> > +	struct fwnode_handle *fwnode __free(fwnode_handle) =
+> > +		fwnode_find_reference_args(dev_fwnode, "trigger-sources",
+> > +					   "#trigger-source-cells", 0,
+> > +					   AD7768_TRIGGER_SOURCE_SYNC_IDX, &args);
 > 
-> On Sat, May 31, 2025 at 03:24:14PM -0700, Luck, Tony wrote:
-> > EINJ V2 allows the user to perform multiple injections together.
-> > 
-> > The component_idN/component_syndromeN pairs of files direct the
-> > "where" and the "what" of each injection.
-> > 
-> > But the kernel needs to know how many of these pairs to use
-> > for an injection (to fill in a field in the structure passed
-> > to the BIOS).
+> I don't see how args are being used. This puts in doubt the need of the first
+> patch.
 > 
-> The kernel could realloc on each write. Or we could allocate the struct to max
-> elems and trim it before passing it down to BIOS.
 
-The actual structure passed to BIOS is the same each time. Just the
-set_error_type_with_address::einjv2_struct::component_arr_count
-changed to indicate how many errors to inject.  In theory the
-driver could allocate and copy a correctly sized structure, but
-Zaid's code here is simpler, an this is hardly a critical path.
+If the wrapper is the issue, maybe it is better doing this instead?
 
-> > User interface options:
-> > 
-> > 1) User can zero out the component_idN/component_syndromeN pairs
-> > that they don't need and have the kernel count how many injections
-> > are requested by looping to find the zero terminator.
-> > 
-> > 2) Kernel could zero all pairs after an injection to make the user
-> > explicitly set the list of targets each time.
-> > 
-> > 3) User provides the count vis the nr_components file (perhaps
-> > needs a better name?)
-> 
-> Yap, agree that the name is not optimal.
+static int ad7768_trigger_sources_sync_setup(struct device *dev,
+					     struct fwnode_handle *dev_fwnode,
+					     struct ad7768_state *st)
+{
+	struct fwnode_reference_args args;
+	struct fwnode_handle *fwnode __free(fwnode_handle) = NULL;
+	int ret;
 
-It can be dropped if we make the user zap previously supplied
-component_idN/component_syndromeN pairs that are no longer
-wanted.
-> 
-> User can inject into each component pairs file and the kernel can put that in
-> the tracking struct. So you have:
-> 
-> # echo 4 > component_id0
-> # echo A5A5A5A5 > component_syndrome0
-> ... set other files and finish with usual
-> # echo 1 > error_inject
-> 
-> <--- here, it goes through each component pair and builds the structure to
-> pass down the BIOS.
-> 
-> And you track valid component pairs by setting the IDs to -1 or something else
-> invalid.
+	ret = fwnode_property_get_reference_args(dev_fwnode, "trigger-sources",
+						 "#trigger-source-cells", 0,
+						 AD7768_TRIGGER_SOURCE_SYNC_IDX, &args);
+	if (ret)
+		return ret;
 
-This is just an improvement on my "option 1" (improved because all-ones
-for the component ID is going to be invalid for sure, while all zeroes
-could be a valid component).
-> 
-> All those component IDs which have remained invalid after the error_inject
-> write happens, get ignored - you gather only those which are valid and inject.
+	fwnode = args.fwnode;
+> > +	/* First, try getting the GPIO trigger source */
+> > +	if (fwnode_device_is_compatible(fwnode, "gpio-trigger")) {
+> > +		st->gpio_sync_in = devm_fwnode_gpiod_get_index(dev, fwnode,
+> > +							       NULL,
+> > +							       0,
+> > +							       GPIOD_OUT_LOW,
+> > +							       "sync-in");
+> > +		return PTR_ERR_OR_ZERO(st->gpio_sync_in);
+> > +	}
+> > +
+> > +	/*
+> > +	 * TODO: Support the other cases when we have a trigger subsystem
+> > +	 * to reliably handle other types of devices as trigger sources.
+> > +	 *
+> > +	 * For now, return an error message. For self triggering, omit the
+> > +	 * trigger-sources property.
+> > +	 */
+> > +	return dev_err_probe(dev, -EOPNOTSUPP, "Invalid synchronization trigger source\n");
+> > +}
 
-Or just stop collecting on the first invalid one.
+Then we can get rid of the first patch.
 
-> And this way you can keep the old values too and gather them again and inject
-> again, over and over again.
-> 
-> Right?
-
-Yup.
-
--Tony
+Regards,
+Jonathan S.
 
