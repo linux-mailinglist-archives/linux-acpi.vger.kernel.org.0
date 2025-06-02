@@ -1,160 +1,225 @@
-Return-Path: <linux-acpi+bounces-14070-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14071-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38A4BACA7E6
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 03:22:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE30ACA80F
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 03:28:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4239188741E
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 01:22:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E5AB3A7B29
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Jun 2025 01:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4EB233E431;
-	Sun,  1 Jun 2025 23:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA30184E;
+	Mon,  2 Jun 2025 01:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MhHEbQ6m"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l6GCEhyQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671CA33E429;
-	Sun,  1 Jun 2025 23:46:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363BB4C7C;
+	Mon,  2 Jun 2025 01:26:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748821563; cv=none; b=ZpPTtqSvbpIvZQKe+XsqZ0Dxm6ofap+RJOYB6WL5VqtAUAZ4jBf7lPANFAKy1FEvgKI7UK32H7pb0OJb+OCkRMos0kHazDgcm86T/91HXdWAEe7Iv0sHvtdbuZIvBSoBCYgLmqgWwfpuwJZlarObINblp+Sb8NNDUKwbvJmj49Y=
+	t=1748827602; cv=none; b=HO6mKGd6DK+jsPyGw+aQzVRfs9tz3ztxpzo/N2PlG0iYZLtYI4tUWJOO3qCWL0YbUHzTK48QfwP2z+oWJn+ktNGGj+QQQ0N1WJWmjVBzaedmuest8EL57RYMrG81PWd0Q+y4qqf9dAFVCS9UoJ6hTbmc6zQfQNJtto4bFa0JRfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748821563; c=relaxed/simple;
-	bh=0SoWlbox1O5Ztxhv2TBlipSHvtog3stqQrMWmt265T8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MFiYfYUp+KN0VND3Z5GBy1hL64/mmC3K/IzA2uM+Dz5KG15vSGmYqxP4O31W/DbiRfBEZ3gRiqOUhVO2nSve7bhTbfSaemXkNaIc7NPk92rvn3fZ06pnc8oYVa1TodrW3oSqLSVT2exy3VpdvEaZ+h88KfWyCwP8pG/H5ELlmJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MhHEbQ6m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322C3C4CEEE;
-	Sun,  1 Jun 2025 23:46:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748821563;
-	bh=0SoWlbox1O5Ztxhv2TBlipSHvtog3stqQrMWmt265T8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MhHEbQ6m+xXqkasjP3Vnums1EcWglOYOgF9fcRLxofEwrqunKKD7MV+zY55ay1UnC
-	 FWhNzARQyRmDkPXUiC2F6gkRubLRZJ6rebW43GLNNEFW3WivGbdatb3tTJgScTBC+f
-	 8FWQqlPYRsu387WsKddQO7ywKdL65wztn6zxzYMSQjb1vYY7/x0A6khrkjBK4GsHPO
-	 t/GMg8W8tnfV59czxQc7Na3Pa7nBGOG40Kdsj/kl0g728xRYkShVHmx6OFESWQ5EYM
-	 c+ulm/gwhH7dYtvGJVWnk8JsLYzTCb468Oun6lEm+pRKAmOpYSAIigRp8eTP4Kf9/m
-	 ndVPYha2izbGg==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Ahmed Salem <x0rw3ll@gmail.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	robert.moore@intel.com,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 20/22] ACPICA: Avoid sequence overread in call to strncmp()
-Date: Sun,  1 Jun 2025 19:45:11 -0400
-Message-Id: <20250601234515.3519309-20-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250601234515.3519309-1-sashal@kernel.org>
-References: <20250601234515.3519309-1-sashal@kernel.org>
+	s=arc-20240116; t=1748827602; c=relaxed/simple;
+	bh=KHOrI/tcUQxQ/4g8TO2DNZqo8MwNVeHh8Rb/WFAhsMY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fNFU8ystIFRD6+Nmfie8uOSa+2lJtAwv1S8KRQAI2cJDJqZ+2c4huWxuWUO1s9BveCh61ULY5nUs7pwZA9whfH842aNCXkwCQs0ndenPUI0BgHwT59lBI0IwPBRi74ltUpiczg/KDU7Rknpsv4G/i/akDRW363+ANMbdhtmsVpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l6GCEhyQ; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748827600; x=1780363600;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KHOrI/tcUQxQ/4g8TO2DNZqo8MwNVeHh8Rb/WFAhsMY=;
+  b=l6GCEhyQV7xOonqcrkFtLccw6t+nmJEkLcyCEbbEXuLqkqUpMYXOnpiU
+   GPhp6A6+4PnD/kA9GhxfGJ+DmDrqDPwzV+6OycEjJXPodNAEj9Kdo7HFu
+   mTkLqqyP79MzXNOj00es52cCD1zJ/YSNYzhCko836ohjW9XF23T73ldGC
+   gHw2R/qO0fxiRO4LNbGyoNRtK9yFetQdWwj7ai4l8HKyvS01A1uwNPV5a
+   wPPB79hh/Jq9L/7WhgMVTpRM0m7bEIi8l/X5xC9WdUELpEMIAMa9AyZ5Z
+   slxmmYFzbIVVSVEBZ4kf7Ditd0OiI/HGNTWUeTeluOOwv0nH6om9dx4do
+   g==;
+X-CSE-ConnectionGUID: cYNFZuT/SkKCJBbMrq6fZQ==
+X-CSE-MsgGUID: ViAWmTSkR8+rp49WzVuFXg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11450"; a="50936428"
+X-IronPort-AV: E=Sophos;i="6.16,202,1744095600"; 
+   d="scan'208";a="50936428"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2025 18:26:39 -0700
+X-CSE-ConnectionGUID: dHD8CikpSNaf/8GLC5VgOg==
+X-CSE-MsgGUID: q7DJSSPfTvanbnzLXeEggg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,202,1744095600"; 
+   d="scan'208";a="149695206"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2025 18:26:39 -0700
+Date: Sun, 1 Jun 2025 18:31:44 -0700
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, x86@kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>, devicetree@vger.kernel.org,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Chris Oo <cho@microsoft.com>, linux-hyperv@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+	Ricardo Neri <ricardo.neri@intel.com>
+Subject: Re: [PATCH v3 06/13] dt-bindings: reserved-memory: Wakeup Mailbox
+ for Intel processors
+Message-ID: <20250602013144.GA27991@ranerica-svr.sc.intel.com>
+References: <20250506-pompous-meaty-crane-97efce@kuoka>
+ <20250507032339.GA27243@ranerica-svr.sc.intel.com>
+ <20250512153224.GA3377771-robh@kernel.org>
+ <20250513221456.GA2794@ranerica-svr.sc.intel.com>
+ <20250514154248.GA2375202-robh@kernel.org>
+ <20250515035338.GA4955@ranerica-svr.sc.intel.com>
+ <20250519152937.GA2227051-robh@kernel.org>
+ <20250519175606.GA9693@ranerica-svr.sc.intel.com>
+ <20250524155650.GA16942@ranerica-svr.sc.intel.com>
+ <20250529131634.GA2784667-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.293
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250529131634.GA2784667-robh@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
-From: Ahmed Salem <x0rw3ll@gmail.com>
+On Thu, May 29, 2025 at 08:16:34AM -0500, Rob Herring wrote:
+> On Sat, May 24, 2025 at 08:56:50AM -0700, Ricardo Neri wrote:
+> > On Mon, May 19, 2025 at 10:56:06AM -0700, Ricardo Neri wrote:
+> > > On Mon, May 19, 2025 at 10:29:37AM -0500, Rob Herring wrote:
+> > > > On Wed, May 14, 2025 at 08:53:38PM -0700, Ricardo Neri wrote:
+> > > > > On Wed, May 14, 2025 at 10:42:48AM -0500, Rob Herring wrote:
+> > > > > > On Tue, May 13, 2025 at 03:14:56PM -0700, Ricardo Neri wrote:
+> > > > > > > On Mon, May 12, 2025 at 10:32:24AM -0500, Rob Herring wrote:
+> > > > > > > > On Tue, May 06, 2025 at 08:23:39PM -0700, Ricardo Neri wrote:
+> > > > > > > > > On Tue, May 06, 2025 at 09:10:22AM +0200, Krzysztof Kozlowski wrote:
+> > > > > > > > > > On Mon, May 05, 2025 at 10:16:10PM GMT, Ricardo Neri wrote:
+> > > > > > > > > > > > If this is a device, then compatibles specific to devices. You do not
+> > > > > > > > > > > > get different rules than all other bindings... or this does not have to
+> > > > > > > > > > > > be binding at all. Why standard reserved-memory does not work for here?
+> > > > > > > > > > > > 
+> > > > > > > > > > > > Why do you need compatible in the first place?
+> > > > > > > > > > > 
+> > > > > > > > > > > Are you suggesting something like this?
+> > > > > > > > > > > 
+> > > > > > > > > > > reserved-memory {
+> > > > > > > > > > > 	# address-cells = <2>;
+> > > > > > > > > > > 	# size-cells = <1>;
+> > > > > > > > > > > 
+> > > > > > > > > > > 	wakeup_mailbox: wakeupmb@fff000 {
+> > > > > > > > > > > 		reg = < 0x0 0xfff000 0x1000>
+> > > > > > > > > > > 	}
+> > > > > > > > > > > 
+> > > > > > > > > > > and then reference to the reserved memory using the wakeup_mailbox
+> > > > > > > > > > > phandle?
+> > > > > > > > > > 
+> > > > > > > > > > Yes just like every other, typical reserved memory block.
+> > > > > > > > > 
+> > > > > > > > > Thanks! I will take this approach and drop this patch.
+> > > > > > > > 
+> > > > > > > > If there is nothing else to this other than the reserved region, then 
+> > > > > > > > don't do this. Keep it like you had. There's no need for 2 nodes.
+> > > > > > > 
+> > > > > > > Thank you for your feedback!
+> > > > > > > 
+> > > > > > > I was planning to use one reserved-memory node and inside of it a child
+> > > > > > > node to with a `reg` property to specify the location and size of the
+> > > > > > > mailbox. I would reference to that subnode from the kernel code.
+> > > > > > > 
+> > > > > > > IIUC, the reserved-memory node is only the container and the actual memory
+> > > > > > > regions are expressed as child nodes.
+> > > > > > > 
+> > > > > > > I had it like that before, but with a `compatible` property that I did not
+> > > > > > > need.
+> > > > > > > 
+> > > > > > > Am I missing anything?
+> > > > > > 
+> > > > > > Without a compatible, how do you identify which reserved region is the 
+> > > > > > wakeup mailbox?
+> > > > > 
+> > > > > I thought using a phandle to the wakeup_mailbox. Then I realized that the
+> > > > > device nodes using the mailbox would be CPUs. They would need a `memory-
+> > > > > region` property. This does not look right to me.
+> > > > 
+> > > > That doesn't really make sense unless it's a memory region per CPU.
+> > > 
+> > > Agreed.
+> > > 
+> > > > 
+> > > > 
+> > > > > > Before you say node name, those are supposed to be 
+> > > > > > generic though we failed to enforce anything for /reserved-memory child 
+> > > > > > nodes.
+> > > > > 
+> > > > > I see. Thanks for preventing me from doing this.
+> > > > > 
+> > > > > Then the `compatible` property seems the way to go after all.
+> > > > > 
+> > > > > This what motivated this patch in the first place. On further analysis,
+> > > > > IIUC, defining bindings and schema is not needed, IMO, since the mailbox
+> > > > > is already defined in the ACPI spec. No need to redefine.
+> > > > 
+> > > > You lost me...
+> > > > 
+> > > > You don't need to redefine the layout of the memory region as that's 
+> > > > defined already somewhere,
+> > > 
+> > > Great!
+> > > 
+> > > > but you do need to define where it is for DT. 
+> > > > And for that, you need a compatible. Do you know where it is in this 
+> > > > case?
+> > > 
+> > > The compatible is not defined anywhere yet. Is a DT schema needed to
+> > > document it? If yes, I am usure what to put in the description. We tried
+> > > to not redefine the mailbox and refer to the ACPI spec. That was a NAK
+> > > from Krzysztof [1].
+> > > 
+> > > [1]. https://lore.kernel.org/r/624e1985-7dd2-4abe-a918-78cb43556967@kernel.org
+> > 
+> > In summary, documenting the `compatible` property for the mailbox is
+> > necessary. There is no need to redefine the malbox on a schema but
+> > referring to the ACPI spec is not acceptable.
+> 
+> There's the whole "DT bindings in ACPI systems" where ACPI tables 
+> contain compatibles and DT properties which I think is what 
+> Krzysztof was objecting to (and I do too). But this is a DT based system 
+> that implements a mailbox region defined in an ACPI spec. That is 
+> perfectly fine to refer to.
 
-[ Upstream commit 64b9dfd0776e9c38d733094859a09f13282ce6f8 ]
+That is correct. It is a DT-based system.
 
-ACPICA commit 8b83a8d88dfec59ea147fad35fc6deea8859c58c
+Great! I will refer to the ACPI spec in my schema in my next version.
 
-ap_get_table_length() checks if tables are valid by
-calling ap_is_valid_header(). The latter then calls
-ACPI_VALIDATE_RSDP_SIG(Table->Signature).
+> 
+> > 
+> > What about referring in the schema to the Intel TDX Virtual Firmware Design
+> > Guide[2]? It describes how firmware should implement the mailbox the section
+> > 4.3.5.
+> > 
+> > A mailbox with compatible = "intel,wakeup-mailbox" is implemented after the
+> > guide that Intel published.
+> 
+> Use whatever you think best describes the programming model of the 
+> region.
 
-ap_is_valid_header() accepts struct acpi_table_header as an argument, so
-the signature size is always fixed to 4 bytes.
+Understood.
 
-The problem is when the string comparison is between ACPI-defined table
-signature and ACPI_SIG_RSDP. Common ACPI table header specifies the
-Signature field to be 4 bytes long[1], with the exception of the RSDP
-structure whose signature is 8 bytes long "RSD PTR " (including the
-trailing blank character)[2]. Calling strncmp(sig, rsdp_sig, 8) would
-then result in a sequence overread[3] as sig would be smaller (4 bytes)
-than the specified bound (8 bytes).
-
-As a workaround, pass the bound conditionally based on the size of the
-signature being passed.
-
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#system-description-table-header [1]
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#root-system-description-pointer-rsdp-structure [2]
-Link: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wstringop-overread [3]
-Link: https://github.com/acpica/acpica/commit/8b83a8d8
-Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2248233.Mh6RI2rZIc@rjwysocki.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-Now I understand the issue! Let me analyze the problem: **Analysis:**
-**YES** - This commit should be backported to stable kernel trees. ##
-Detailed Analysis: ### The Problem: The commit fixes a **buffer overread
-vulnerability** in the `ACPI_VALIDATE_RSDP_SIG` macro. The issue occurs
-when: 1. `ap_is_valid_header()` accepts a `struct acpi_table_header
-*table` parameter 2. `struct acpi_table_header` has a `signature` field
-that is only **4 bytes** (`char signature[ACPI_NAMESEG_SIZE]` where
-`ACPI_NAMESEG_SIZE = 4`) 3. The original `ACPI_VALIDATE_RSDP_SIG(a)`
-macro calls `strncmp(a, ACPI_SIG_RSDP, 8)` - comparing **8 bytes** 4.
-When `table->signature` (4 bytes) is passed to this macro, `strncmp`
-reads **beyond the bounds** of the signature field, causing a buffer
-overread ### The Fix: The new macro implementation: ```c #define
-ACPI_VALIDATE_RSDP_SIG(a) (!strncmp (ACPI_CAST_PTR (char, (a)),
-ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8)) ``` This
-intelligently chooses the comparison length: - If `sizeof(a) < 8`, it
-uses `ACPI_NAMESEG_SIZE` (4 bytes) - Otherwise, it uses the full 8 bytes
-for legitimate RSDP signatures ### Why This Should Be Backported: 1.
-**Security Issue**: This is a buffer overread that could potentially
-lead to information disclosure or memory corruption 2. **Minimal Risk**:
-The change is a small, surgical fix to a macro with clear logic 3.
-**Wide Impact**: The macro is used in multiple places including: -
-Kernel ACPI subsystem (`drivers/acpi/acpica/tbprint.c`, `tbxfroot.c`) -
-Boot code (`arch/x86/boot/compressed/acpi.c`) - ACPI tools (userspace
-tools) 4. **Compiler Warnings**: This likely fixes `-Wstringop-overread`
-compiler warnings, improving code quality 5. **No Functional Change**:
-The fix maintains the same intended behavior while preventing the
-overread 6. **Follows Stable Rules**: This is exactly the type of
-important bugfix that stable trees are meant to include ### Similar
-Commit Precedent: Similar commit #3 (Status: YES) shows that ACPI
-compilation warning fixes have been backported before, and this is a
-more serious issue (actual buffer overread vs. just truncation
-warnings). The fix addresses a real memory safety issue in a fundamental
-ACPI macro used throughout the kernel, making it an excellent candidate
-for stable backporting.
-
- include/acpi/actypes.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
-index ff5fecff51167..f931312cf51a1 100644
---- a/include/acpi/actypes.h
-+++ b/include/acpi/actypes.h
-@@ -524,7 +524,7 @@ typedef u64 acpi_integer;
- 
- /* Support for the special RSDP signature (8 characters) */
- 
--#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, 8))
-+#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8))
- #define ACPI_MAKE_RSDP_SIG(dest)        (memcpy (ACPI_CAST_PTR (char, (dest)), ACPI_SIG_RSDP, 8))
- 
- /* Support for OEMx signature (x can be any character) */
--- 
-2.39.5
-
+Thanks and BR,
+Ricardo
 
