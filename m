@@ -1,111 +1,109 @@
-Return-Path: <linux-acpi+bounces-14085-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14086-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 934FDACC7AD
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Jun 2025 15:23:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E6A7ACC7D5
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Jun 2025 15:30:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD67D1886EFA
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Jun 2025 13:24:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF3A8188E403
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Jun 2025 13:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB62C230BF8;
-	Tue,  3 Jun 2025 13:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C912040B6;
+	Tue,  3 Jun 2025 13:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mBhZ0Siv"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="fQMpuw6X"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from xry111.site (xry111.site [89.208.246.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D17522F754;
-	Tue,  3 Jun 2025 13:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DAD22DFE8;
+	Tue,  3 Jun 2025 13:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748957025; cv=none; b=kIU9JfchYEp7/zmv8A9QR7OxfnV44Txiz528JIUGIMd/A+M1MIC8dJQaDRTc4KckXhkIKZUkUuw8CXcQ+Xub8F8lbibc600lPs0qhQzbkMcdI1375uM0iN32tpYW8uNhBQTmyBi9pL4d27Ff1KhgNlKf+UBnGJ5KekF/z6AVvc0=
+	t=1748957437; cv=none; b=SCdxn3P1x9waWZTr0hHn3XrsS/e7S+taUChQ6d+geCqoEOEJmw4b16xVgLd52VSgzrrSROZFrdhNu03n+lRz6uV1LJ36kala6x1pavvdczr+xfJLbWW7Ys27NFtGZiY6OQWt+4g0fYLG/xGFTxdgTkYkZ+Tq3iiliRvTAfjxhto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748957025; c=relaxed/simple;
-	bh=HGwYyw4Mesm+h+CsA+i4y5waGWiE+tpQES3zA7dABzE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EAEtCMmdRX5eMOSggVUdq4dpc2ebhRdXW7Lfny5SojoFbUBDwMrdAfRSrT2lnLg/m069lBsjKuhRVSM9o05FH2Zr0EXuc8IjL7OlxVQnEW8DfnWqZ9PhESjVgKYuQi7ecBCv6eA6LCkP0i3DU3aYYkiekAejpiow/JbRWh4LrDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mBhZ0Siv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03A6C4CEED;
-	Tue,  3 Jun 2025 13:23:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748957024;
-	bh=HGwYyw4Mesm+h+CsA+i4y5waGWiE+tpQES3zA7dABzE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mBhZ0SivRzLRx0FhwwRERCHY+BJgxei4rW8cYIMx60QxPxl7jfCv9LGvUfEi+cMwG
-	 GmAhD62LXJvgYmPTzkUoRfmX4pUkTqwAtmL39e1bP0GFgn87Vmu7Oe0OfCX8TD2gSi
-	 BrCnGMs/ReCuUb7n/BCc1pV1srk3Msu2VpsZs9JmelknTCKr1zd/J2lU23PmrmPvDa
-	 r+MBT32WfZyVuQFP5e5+lsW5jvd+huiDmbffwFQ2dUKKxpz4ZBO5gDFyjK42V1Tvgb
-	 OHCfr+08WMPqb1/tSFG9qNpDvyvb9BFVQ+FlyDmRs9wD+xOlgPmTU1YPg8J6mw6x8l
-	 8NR//4MX1JXJw==
-Date: Tue, 3 Jun 2025 15:23:38 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-acpi@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: acpi: add `acpi::DeviceId` abstraction
-Message-ID: <aD73Won8t4jlYYs_@cassiopeiae>
-References: <20250530123815.1766726-1-igor.korotin.linux@gmail.com>
- <aDnD_Bb3l6GiI_8K@cassiopeiae>
- <CAG7QV92rtk7NUKzUoApkopv1LF2WVjqyNA9hPt=yCuEvdJjoCA@mail.gmail.com>
- <2025053111-anteater-balsamic-8d01@gregkh>
- <aDrWCBAxPnu7VY0P@pollux>
- <CAG7QV936MPp7RLH_D6+K8mRcgPdpNsGFWF_D10b1C8op7YRtqA@mail.gmail.com>
+	s=arc-20240116; t=1748957437; c=relaxed/simple;
+	bh=zaTj2WCKus6LN9iIeEFHBmFy6LVdhen7pT5KRKRjqMs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ngBh738oTV3zVyHltRG6FiFnMG25fOd1nfRUowWPSH/8bAn8yfIiz7wYy29Zm//e28YKmeGA4ID2rhMuA+a2BsW9iSVB4w+ckepLRMnW2x5yEi9lSLDVbbRhRYePlwXjkDv7Cf44dxmJ2Z3JEfTPuUq/LIOIYgD+3BM7l/PAGt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=fQMpuw6X; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1748957431;
+	bh=zaTj2WCKus6LN9iIeEFHBmFy6LVdhen7pT5KRKRjqMs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=fQMpuw6XNphUS70DvQkaqmrG+GE+TdjaV6FYMJeMCefz1fCXagpoYJgH1kOTUcqap
+	 TlNACzQbyxEu6oQ0yDzPx8gZhwuehoWVmH9j77SjQtfKEJiS9qmB+jodS0BzoehEBE
+	 HvU812nautR//a/zDERv25AoQhwqrK42f0c8V2Sg=
+Received: from [127.0.0.1] (unknown [IPv6:2001:470:683e::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id 0280265F62;
+	Tue,  3 Jun 2025 09:30:27 -0400 (EDT)
+Message-ID: <4c2f44c4115eae6b68846da1ec85c5f47ea66122.camel@xry111.site>
+Subject: Re: [PATCH v3 1/1] mm: numa_memblks: introduce
+ numa_add_reserved_memblk
+From: Xi Ruoyao <xry111@xry111.site>
+To: Guenter Roeck <linux@roeck-us.net>, Yuquan Wang
+	 <wangyuquan1236@phytium.com.cn>
+Cc: Jonathan.Cameron@huawei.com, dan.j.williams@intel.com, rppt@kernel.org, 
+	rafael@kernel.org, lenb@kernel.org, akpm@linux-foundation.org, 
+	alison.schofield@intel.com, rrichter@amd.com, bfaccini@nvidia.com, 
+	haibo1.xu@intel.com, david@redhat.com, chenhuacai@kernel.org, 
+	linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, chenbaozi@phytium.com.cn,
+ 	loongarch@lists.linux.dev
+Date: Tue, 03 Jun 2025 21:30:25 +0800
+In-Reply-To: <06a0abfd-5508-4fb5-8a96-a13cf3d8aca7@roeck-us.net>
+References: <20250508022719.3941335-1-wangyuquan1236@phytium.com.cn>
+	 <06a0abfd-5508-4fb5-8a96-a13cf3d8aca7@roeck-us.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAG7QV936MPp7RLH_D6+K8mRcgPdpNsGFWF_D10b1C8op7YRtqA@mail.gmail.com>
 
-On Tue, Jun 03, 2025 at 01:55:47PM +0100, Igor Korotin wrote:
-> > Alternatively, if you want to upstream this dependency already you can send the
-> > following patches:
-> >
-> >   - this acpi::DeviceId abstraction
-> >   - the glue code for the generic adapter trait in rust/kernel/driver.rs
-> >   - use this glue code in the platform abstraction
-> >   - add acpi support to the platform sample driver
-> >
-> > This way we can already validate that the code works correctly. All this is
-> > required anyways if the I2C device you write a driver for is on the platform
-> > bus.
-> 
-> A few questions if I may:
-> 1. I committed to 4 different files: `acpi.rs`, `driver.rs`,
-> `platform.rs`, platform rust sample driver.
-> Should I commit all of this as one commit or split each part to a
-> separate commit and send it as a patch sequence?
+On Tue, 2025-06-03 at 06:06 -0700, Guenter Roeck wrote:
+> Hi,
+>=20
+> On Thu, May 08, 2025 at 10:27:19AM +0800, Yuquan Wang wrote:
+> > acpi_parse_cfmws() currently adds empty CFMWS ranges to numa_meminfo
+> > with the expectation that numa_cleanup_meminfo moves them to
+> > numa_reserved_meminfo. There is no need for that indirection when it
+> > is
+> > known in advance that these unpopulated ranges are meant for
+> > numa_reserved_meminfo in support of future hotplug / CXL
+> > provisioning.
+> >=20
+> > Introduce and use numa_add_reserved_memblk() to add the empty CFMWS
+> > ranges directly.
+> >=20
+> > Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+>=20
+> Just on case this has not been reported yet:
+>=20
+> Building loongarch:defconfig ... failed
+> --------------
+> Error log:
+> drivers/acpi/numa/srat.c: In function 'acpi_parse_cfmws':
+> drivers/acpi/numa/srat.c:467:13: error: implicit declaration of
+> function 'numa_add_reserved_memblk'=20
 
-Every entry of my list above should be a separate commit. It might happen that
-writing the glue code for the generic adapter trait in rust/kernel/driver.rs
-breaks the build in the platform abstraction, then you have to fix it up in the
-same commit, i.e. we never break the build. Please also see [1].
+The fix is queued at
+https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.g=
+it/commit/?h=3Dloongarch-next&id=3Da24f2fb70cb62180486ad4d74f809ff35ddd1cf9
 
-> 2. From author's point of view, as Danilo noticed, `acpi table`
-> abstraction code is in general just copy-paste from `of table`
-> abstraction code. How should I explicitly mark that fact?
 
-You don't need to do anything specific here. You authored the commit, even
-though it's based on existing code.
-
-If you want you can add a note in the commit message that your case is based on
-the OF table abstraction. But AFAIC, you don't have to.
-
-[1] https://docs.kernel.org/process/submitting-patches.html#separate-your-changes
+--=20
+Xi Ruoyao <xry111@xry111.site>
+School of Aerospace Science and Technology, Xidian University
 
