@@ -1,123 +1,118 @@
-Return-Path: <linux-acpi+bounces-14082-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14083-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9781ACC664
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Jun 2025 14:23:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A215ACC713
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Jun 2025 14:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28F05188AC8F
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Jun 2025 12:23:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDACD1732BE
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Jun 2025 12:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F4A15573F;
-	Tue,  3 Jun 2025 12:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F42E22B8AA;
+	Tue,  3 Jun 2025 12:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="K/xGcdWJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jLuJJq01"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E791E86E;
-	Tue,  3 Jun 2025 12:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173491E519;
+	Tue,  3 Jun 2025 12:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748953414; cv=none; b=STG9Vx113itm2e5Lx/1vbbjrnG0i8Y24SUzCWWjRgYkR4vwUhYF3fcuCpK44/WyKJ14hsPdG7GPNsgNbiXSXdEcVpKL4Lizm6M1aMiegLijAtJpvB7nTr4tb33r3nGL1QFZUG9G0aG9ELhSkdK8Bme3+tIREnuH3NYcf4BfiR6M=
+	t=1748955373; cv=none; b=TR5TdymszmRAbW+Wq+g7gjbqRAWQLfvIouSQG6DZE46wu7SMAiIgJZsqJUbmrtRF7DodzHeNjvcge2cniOcc0DfvN+dcN1M9HsXWR04lFwQbbcGtJEDCXTx9Ao5aoMehhh64YI7LVjJlrBkNEFK7jvkBqhRWuyXaIVUuiYqwjIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748953414; c=relaxed/simple;
-	bh=OEK/f5CaiNyz/xBuv7aXXmmL7lR6fhPK/6FW1pebLD0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oRbniHx/tBmgf+0ZaHxWVdNYV/zDdBM/+ATGTJLNINkQNejC65Z1qmfri0AKSkjRxSBYAsUzHX6lrneVtfQPSa44KC/ggNNKoB9tGlt4ShFKBUOoTxNoPnYXWB7GdKeIpVaK/WsbM7UWRRU9XNkqLp2ymrYcW3W4zkZEHOJknuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=K/xGcdWJ; arc=none smtp.client-ip=18.169.211.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1748953391;
-	bh=TsmZxwNJubi/l+jWw99A1gx9yAKtIS3NFyNUO+RUoRY=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=K/xGcdWJDTz7iLo++wJ5XLW0SlsezN723IiILkBxO8/AX0OzuiW97FQso1zkjZKQs
-	 9I1lxuvDMDK03ouMlYeBpCfaowwtUOQFDFOIA1yh+JUGFHwT3jOIhpuOqmFppUy0RS
-	 73Prqna51spqey+KTJr0r4Fa4POkGheVT0tyXdY8=
-X-QQ-mid: esmtpgz16t1748953352td528b7f0
-X-QQ-Originating-IP: zpN3+3M470aN4tNXJoS4ynIC7LHmh4K27nTY8IT6MbY=
-Received: from localhost.localdomain ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 03 Jun 2025 20:22:30 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 16096456668742914142
-EX-QQ-RecipientCnt: 7
-From: Wentao Guan <guanwentao@uniontech.com>
-To: rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	wangyuli@uniontech.com,
-	zhanjun@uniontech.com,
-	niecheng1@uniontech.com,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: [PATCH] ACPI: resource: Use IRQ override on MACHENIKE 16P
-Date: Tue,  3 Jun 2025 20:20:59 +0800
-Message-Id: <20250603122059.1072790-1-guanwentao@uniontech.com>
-X-Mailer: git-send-email 2.20.1
+	s=arc-20240116; t=1748955373; c=relaxed/simple;
+	bh=tnDWURJxBu29MAhAQ5kBlMknFDohQuT7/EPE7rM3kz0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T6uldmVdBZT1t3KULlxin3blqqkTE07fUmbX5rJ6v2CQDepJvaBfLvxOier93VkHI+HQWhj6Y8G54ngK+oDaH6o4cM2e+dM4ISq+cWkET535XJr+Tf4nDgC8Y/dmaIdDMv0ZKngOq9WkONcs9Jv1q+u+PI1WM3Rc6mVPDNT2Od8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jLuJJq01; arc=none smtp.client-ip=209.85.222.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-87df8fa1c6aso2986439241.0;
+        Tue, 03 Jun 2025 05:56:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748955369; x=1749560169; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=WqCgqkVkHr1OUaJdWiHVR1CiDNceuGwFWHZhOjkI94s=;
+        b=jLuJJq01tCnbXvPzNdTtchnf/yUnWTvMElLKJ7QwHUWNeTywJGSUQXitj00tpRuvAW
+         /T2/a6NPrnu98d0kYWuqFUzy5IJFOFrx5MTsrL26slhFaMvX8KwBsQv+MU/o7V21qvHF
+         6dhg7OykhqotmFjWv+R0HelzGAnxYJ8ezLkB/ZyDhydaRhLnk8Xf6mXK/6qAiScAJIR5
+         iHXq/8UQmsnu4z+BSQm502laQOXAzeS9x6JpPy42becZO2WXR/IpxZ5LqbjGnXGgFU3E
+         yF0VGE88H7U+BykGnAb6FjHr0gkicYUkjP4mQGlhcIbUmUaimIm7Lm3gwWEXZp1H40up
+         kvtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748955369; x=1749560169;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WqCgqkVkHr1OUaJdWiHVR1CiDNceuGwFWHZhOjkI94s=;
+        b=YJlrtSTgXfJY9pZd3AD2FU/edRu+MYyHB2hp7N9EmNUf6GU+ee0Mb9NvpNNHsWm2bW
+         Mm5mfeOCrfZZqtdXIaij4P7H4R/QV97/4IyMyzX8W7BE2PQ+TvN+kRNHHrtrJQEuO178
+         RmG/M7NDjcTNpfJ++9abLvcBYIULSK/J0DJOVfcmb9TeICAkTN2hoCS4YfNFPC5YpJXB
+         vSwUVCfm+xnQJsACYN9SmA+54pZerk/W0jIu5CZoVzsebOkDK1FrskF1/Rxkk5j2l8of
+         +5DkW6VWntRtZiJniQjJ3LwzCj3YFjYzvC3763VawgXTjrFcIDdepLt8ruO9ZNPryo0N
+         Hvlw==
+X-Forwarded-Encrypted: i=1; AJvYcCULN78s8J5ircFOrvYwc+/iAO2toRTuRI3yLBMQFgbrvPObT3RBbsoAN0dbR4NBP25DXLvcGI0V0hfg@vger.kernel.org, AJvYcCWO72MYBG4ST+et2VfK6hpzDRN+qhS2iyRCL7YwfK/E5FFip96kSEy5bwyLyrw/yvX0ClWRpkQS0t2rMOU4l5g=@vger.kernel.org, AJvYcCWt278FSDHUpM/IJkknSqdJkvMZ0o/tM1Nc+bYy6Rg3QhuP927dF2vCuSIfLhR8AsGgfm+L7LsfoI5cLnSI@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNaAxKmJ2719cx5NiZK//iC9ed1yWDlzJA8QCJiuqBPAq28+CP
+	DFTINJCufKo+Bwxvzr6iNn13fCpSf4zAuVhKZ1OANuXzJFCD1CA8W7gPZBAaZNId/1V3fZIiQfP
+	/4PvlgDccIL4nkqX/HLVPhR3Lb4OquQPjDFVg
+X-Gm-Gg: ASbGnctkHO8fih+EkAdPrAqIKSucFm19MHLbmdSYyarGtf0tVrmqMgUuyB+qE7Qzplb
+	fOExo/1NX6oWtS8co9TjNGbwaAawg9Z1Z3EK+p7qArc3SsvfE1hOkTN1rp4lLd7ujjwZSVkCEUC
+	i+AC4nPKDKRwIPJUuHohMXEbYX+sJE3w==
+X-Google-Smtp-Source: AGHT+IGkCU9q/jGCgYkKnk5w4ox9fP/ZSVFfzHsSXPjA58eEG+hcpGo7g7McYHy9QFNonYwedeyh/W20kx3txlIrvG8=
+X-Received: by 2002:a05:6122:1d11:b0:529:1a6a:cc2f with SMTP id
+ 71dfb90a1353d-530810d7929mr15272934e0c.7.1748955358373; Tue, 03 Jun 2025
+ 05:55:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5a-0
-X-QQ-XMAILINFO: NOIkHYnr7Vzd+aCjip4r30sFNVwkqJJHJg4RriXDVhdHi7wVBPTvT2dH
-	2e0Lj7SvPr812hK2E0v0PL5xqabDRO5IYLIJBnkXkPhxk/sWCSHnV5P82QBI/DSFFZGFWru
-	YJgMj/vk42hsdBqhxDtd/PuaZZb3DooAl5GWbAvG1FJSw4XpACe+dRgSAJ8HOgZKEwZqvqK
-	wEwEhr0pn1EX4PxmmNd85e1qOiUaP+/X+RCorG+lub8O888uIg2KIhdEnqzSG+zxKD0xLEA
-	Ae/SVLkFFGaNXzQYhYNGrR5a6oUEqz8EdAjjbhuuXObyl1edOEvkSvsWV6X/CfQZbZyDOi5
-	2AB3f8RQUF3upeqWzwAj3/4azdAsuKa1tzCMXLdbdaCry6zyrYiohyr1bibSZOt7IFRqtRI
-	3xUEFaaJRVmWY3RGQYdA1JSapgCV0vo+RbIzO8xlm0t0wwjcpKQaO1+qFEgG5NFxufXOQgh
-	gEUfN2Ogm9i9910YZ9n8FVGIKS795LKmk25cJrVkgEV38BvLjkz7u4cNKgc0zu666R5OKp/
-	iLtRPhAOll0GuP7FO1r0kzcOVYytfqkt4khFAQBX5z2BK9aXdp6Lp1qsa2S5bNCu0xeBF/n
-	LoS3mC577GKT3wVeq4eOIMP00rIHSCPRPlSbjh+rwnGzmZ4wribx81p3rGb2cPgNszrot9N
-	BgZAaxCkXqSZeWK7KfC6HNd+apulAL8sSLkGRajDsWKS5XQ+1g/09gTlMviENbqU6cssJq0
-	pxE0z31756JsFI3jhpa47FHVr7ZoVIGccNwvak+uM+6QSFYvQ9KGNwYlJ61OV0uSBw0g4QR
-	UOJ0Va8ih7jOCc2bBC24KWqYoozJfX76At0thHXVpC08Ms+tFUSxzeDZW02niG3S+34v+8G
-	mGh9RGTIKRgZ24+XjGe3Gq1qzH/yv9O5zZMx5VQQ932DoQwHt7Dh3jZmEbwMxe0uYg9tB8T
-	dBODgunVhQwo9HLr8hjfUN+Zxi2JQIhC6whrC3BfJgsNheGBOvXHhIRRHeP9uEQl9e6yX+T
-	+d4QeQb5AybKTZ48yTYc7d4TLzZlYUFXm6ZNJAyHPO09geVassbqe1ff32xcsI8f+LoEU+t
-	w==
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
-X-QQ-RECHKSPAM: 0
+References: <20250530123815.1766726-1-igor.korotin.linux@gmail.com>
+ <aDnD_Bb3l6GiI_8K@cassiopeiae> <CAG7QV92rtk7NUKzUoApkopv1LF2WVjqyNA9hPt=yCuEvdJjoCA@mail.gmail.com>
+ <2025053111-anteater-balsamic-8d01@gregkh> <aDrWCBAxPnu7VY0P@pollux>
+In-Reply-To: <aDrWCBAxPnu7VY0P@pollux>
+From: Igor Korotin <igor.korotin.linux@gmail.com>
+Date: Tue, 3 Jun 2025 13:55:47 +0100
+X-Gm-Features: AX0GCFvn3f5JBPkgAzmRxRxHC9D0futeilp6i6Q-qO5HuZk4eVci7qT64RWQ48s
+Message-ID: <CAG7QV936MPp7RLH_D6+K8mRcgPdpNsGFWF_D10b1C8op7YRtqA@mail.gmail.com>
+Subject: Re: [PATCH] rust: acpi: add `acpi::DeviceId` abstraction
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-acpi@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Use ACPI IRQ override on MACHENIKE laptop to make the internal
-keyboard work.
+> Alternatively, if you want to upstream this dependency already you can send the
+> following patches:
+>
+>   - this acpi::DeviceId abstraction
+>   - the glue code for the generic adapter trait in rust/kernel/driver.rs
+>   - use this glue code in the platform abstraction
+>   - add acpi support to the platform sample driver
+>
+> This way we can already validate that the code works correctly. All this is
+> required anyways if the I2C device you write a driver for is on the platform
+> bus.
 
-Add a new entry to the irq1_edge_low_force_override structure, similar
-to the existing ones.
+A few questions if I may:
+1. I committed to 4 different files: `acpi.rs`, `driver.rs`,
+`platform.rs`, platform rust sample driver.
+Should I commit all of this as one commit or split each part to a
+separate commit and send it as a patch sequence?
+2. From author's point of view, as Danilo noticed, `acpi table`
+abstraction code is in general just copy-paste from `of table`
+abstraction code. How should I explicitly mark that fact?
 
-Link: https://bbs.deepin.org.cn/zh/post/287628
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
----
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 531684a69c645..e12a318b38bec 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -653,6 +653,13 @@ static const struct dmi_system_id lg_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
- 		},
- 	},
-+	{
-+		/* MACHENIKE L16P/L16P */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "MACHENIKE"),
-+			DMI_MATCH(DMI_BOARD_NAME, "L16P"),
-+		},
-+	},
- 	{
- 		/*
- 		 * TongFang GM5HG0A in case of the SKIKK Vanaheim relabel the
--- 
-2.20.1
-
+Thanks
+Igor
 
