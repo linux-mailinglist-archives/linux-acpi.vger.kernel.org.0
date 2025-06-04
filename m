@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-14115-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14116-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98FC4ACD426
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 03:25:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4E9EACD427
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 03:26:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2A18189A1EE
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 01:21:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A2EF3A2B61
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 01:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC28F267B88;
-	Wed,  4 Jun 2025 01:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7702D26F454;
+	Wed,  4 Jun 2025 01:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z45I4HdU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hVBDrgSF"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A024270813;
-	Wed,  4 Jun 2025 01:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C04C221FBC;
+	Wed,  4 Jun 2025 01:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748999017; cv=none; b=D65cAz990g8ClIXCNsy0AC8QyAospOJzuJiVd1Ljv2i07vMYzScGoYa4Ac6M6qtzRCyFy71+HFSeDWhHpiilrTFzLu8BeJqu+a2z4QhzB3jPhOgSRE1/yYK675N9xVEfv1rgjMsZYxZ2DOSi3gHwVJnlYQ0HvoQIT2C/371LTvw=
+	t=1748999111; cv=none; b=ZvPy021/oSU7vsfBjdHh5yhpKqnLa+r3EZf9RH+RsvOwqVujYL3LKg32+/cu/4j55vgjwXy7JFJ5LuC7EPyZq+/lXTSw6lCWWZ3Prd437wVWV7nwqVnPOuAk5TiSjQM4ryjuf+uRHJ3KOpAP+gJoHjcM/4QRsi0JtCvWTM+tW7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748999017; c=relaxed/simple;
-	bh=LDT2ap7RSurgVrHEEJwLMCcs2D8+xofr/fjADmGHaJY=;
+	s=arc-20240116; t=1748999111; c=relaxed/simple;
+	bh=eg/zLg7Fd6NeLLjbs+dsRloN4kgqdjGrUDwG/onLsZM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ckR62hSlSkxZz1AiwmKhLnhe0p1snFVKSOG81is2uNSvR7E2GQ6JVrNkVsdJCx8n/2Sy4vWpjinrYW2NxK3yDVr/Rtnxta4JcsvX9s1RtUMw5Oba0Cpdo4bNUAgLI7nHbq+BmLalMNpbgUMO0ARJHmOiDRX0ivCMBmBHW9agbMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z45I4HdU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74112C4CEED;
-	Wed,  4 Jun 2025 01:03:36 +0000 (UTC)
+	 MIME-Version; b=ZsKNYQpIMp7Gzm2cGkMJIb40RO4MBrPRtTnz8PrclfUoegu3Vb3wX/iGPcx9bQvr/neltaUlCO87fPhNQfwjNa5YH4z6acdIJKUy0U6ZWGJ2+M4P1i+Ha1fAErMi67DIKYWgy4+9PDNNYryAMEmtmJidVX1DWtEmN2lV3DRKvCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hVBDrgSF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 239C2C4CEF3;
+	Wed,  4 Jun 2025 01:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748999017;
-	bh=LDT2ap7RSurgVrHEEJwLMCcs2D8+xofr/fjADmGHaJY=;
+	s=k20201202; t=1748999111;
+	bh=eg/zLg7Fd6NeLLjbs+dsRloN4kgqdjGrUDwG/onLsZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z45I4HdUYVP6Vs6MBBBECF7ugLHyFud8JCDP9m5CHpoBF7WOguFtdOVCw6fEkuWCV
-	 yvCVpHQ4x+abZXSR1RJl/1vhLxZ7OsZXIBDlvewrXwRAwqXdbj0Y8jp+2WRiKlL3Pn
-	 vdxgsHgMQccth+zZs5XTfEArDnVL3GqR1OQJST1BVqOFGgqZ8/wEYpPI4coYAVrepa
-	 ei753dKYmASCxbEObuKPlq3F53S9tFRVj/d05utKFuzNIleqqLs/W8kbOAgArQuKTc
-	 sDst3ViuP2eSjWDKDV8UWczG5FSYcVVqr8A3Nod5Y7dpadMkEaXqrlncrrXXs7UyAK
-	 Xs4oLVXKhas5g==
+	b=hVBDrgSFxiXNVV/gz1ojGUwRZ/Jt5CyyvrIIeIWBXLRvkZXyAcFUl9ASmYtpVyaNZ
+	 6d16kMqUNBkAjumSWdwJo0WqOY+KT1wtjJXQWFjMWdZsyYNoRQUhFyomBez7C1gem0
+	 u75rwxnJgqzrMCPulysZb87JeHckMihY+Dswp861Zxa5RnK4AMv2t/m9OuMyiN/5yI
+	 nwt8ScI/dM37lgoz6ce4gt9vE80Kr0RpDlCEKkgCzKVhfcD81RKo2x0WPE2I/pRsLE
+	 BrJHnKCWKW9h1qiD6P5vaPA0bRSygpU6qLG3bNycu26YcMok1tWapZRzwfum92DwRw
+	 /nRn8N4BLzfYA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -51,12 +51,12 @@ Cc: Zijun Hu <quic_zijuhu@quicinc.com>,
 	rafael@kernel.org,
 	dakr@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 47/62] software node: Correct a OOB check in software_node_get_reference_args()
-Date: Tue,  3 Jun 2025 21:01:58 -0400
-Message-Id: <20250604010213.3462-47-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 38/46] software node: Correct a OOB check in software_node_get_reference_args()
+Date: Tue,  3 Jun 2025 21:03:56 -0400
+Message-Id: <20250604010404.5109-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250604010213.3462-1-sashal@kernel.org>
-References: <20250604010213.3462-1-sashal@kernel.org>
+In-Reply-To: <20250604010404.5109-1-sashal@kernel.org>
+References: <20250604010404.5109-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.92
+X-stable-base: Linux 6.1.140
 Content-Transfer-Encoding: 8bit
 
 From: Zijun Hu <quic_zijuhu@quicinc.com>
@@ -165,7 +165,7 @@ prevents potential exploitation without introducing new risks.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index 079bd14bdedc7..a7a3e3b66bb5e 100644
+index 44153caa893ad..fdea6b93eb30e 100644
 --- a/drivers/base/swnode.c
 +++ b/drivers/base/swnode.c
 @@ -518,7 +518,7 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
