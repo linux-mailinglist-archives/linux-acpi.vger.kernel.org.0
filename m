@@ -1,127 +1,153 @@
-Return-Path: <linux-acpi+bounces-14126-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14127-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6645FACDAEC
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 11:23:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF3BCACDCCC
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 13:40:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C425316AE89
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 09:23:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADDB07A58EF
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 11:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0279228C849;
-	Wed,  4 Jun 2025 09:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BED28ECCA;
+	Wed,  4 Jun 2025 11:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HxA/Gsue"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Qa7IBXXJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70F428B7ED;
-	Wed,  4 Jun 2025 09:23:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB20E28D8ED;
+	Wed,  4 Jun 2025 11:39:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749029015; cv=none; b=eZkD+SMnR75Tp4tWMNkLDYcjejSDprkxK+wxBAYyFpivy0MSECrRWV6oTBzwDNioN7mPKkAyKhDI0QYR8qV2X1hjxitggOU3W0Sul5eSjKSlwzZn+3fTKsZU74Mx1nw+gm0OcbZPRBaWJ3GwNk2N7UpNGN3tEmw6FPx5M4HX/X0=
+	t=1749037194; cv=none; b=hTx+vHI0vPhE27r8U9n8BR3HYjy8HydhKk4RkSy0M6/677matXiZtMQNQItxfRMTmAngmSrbfXulshvGZ9rzG80fMor6HNI7oKYiup4k0Rfg9l6eyr2WP3FddamFf5JNgTAytQ3krEZFc+w/Os+Rzl+MgcYvWS4VKgPy+Vd+/CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749029015; c=relaxed/simple;
-	bh=4XsM1mwEJuog2VF4KvPV9bu4b1v/w/WR88Lnj3fYsiU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZS/31ZXZre6YxxlhFGHURIBu5Wb9VDkP6dLQxOIIBYOy4dVPXc8o7lgwkmsqYKr7qwd/IDfeHofHJ4WClLWJ2nmnxkSzdrpFUxAn2yurzpFA2sU8lEu9HnfC43O2Si+i4ZxqHXAh0btYVE4+M5RjQxMIFJMl4IJMQrWUPX1q1FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HxA/Gsue; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F2EFC4AF0B;
-	Wed,  4 Jun 2025 09:23:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749029014;
-	bh=4XsM1mwEJuog2VF4KvPV9bu4b1v/w/WR88Lnj3fYsiU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=HxA/Gsuemf2DcY8BMao+TEFANZzj9kC4BFUIUBnZvpvBowABTB6Y9Imy4w648NOiX
-	 XuUYVwSHC2OV6N1jG1bQO5olYOEB/Yxba5F5FlKiN67oMBBmQORLCwWSKkOLssd7vl
-	 Gnuxgmcdl65KLhmLEvgEdXlKjojxy+Bv7vCbyniFc/uSEH+D2Z2WI1jOJq2tPU8eAH
-	 7kAc/4zkqPtWHcVWYFHhhrYVEPJTOBNQwj/jEsY76/Zc2Og4P+g2N36varhaxI6NtC
-	 Vqvp1gWUqKi6qWKNnekwgQbrEowFm51TsnzHbeV72QK8/7O0ZpHYza/I/fPXw5LMX5
-	 Sorgx8gNDcH5w==
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-408d7e2ad03so1944230b6e.1;
-        Wed, 04 Jun 2025 02:23:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVC7D0HHhYpgbStfA8L/AsbBnOAx7KcICmFoUseVtzWtMC51xI80cdOoWpZQI/758H8GCHHFiOg8NkEoZWY@vger.kernel.org, AJvYcCXIwHgdvIzNqfBpF3+uK80zqnGhvnxERTzuQaug1LGygtNVOYEPzVyDTqMF7a6UGANKIKQUVgfdW4ZO@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiMyg3WQM3ROIrYQA5ihv7zVDJaKKYKKCA5+kQScX94ilWgwWk
-	J5yD77PDfL+NLyiDrFSdF8R1czaFXGgihZZasVyTzotmobM5fAIKzHPJu7DYdNe0nlUrLO9V977
-	wXckbvvN4DmvXiJUf7yHaoltiff5u/sw=
-X-Google-Smtp-Source: AGHT+IGeAE3e+SRqBmPSi7SR3JkCnSTrhPk6TQUJbkYXOJBaJph89XQsZ/9euL5rpS9aR/+RIGtXcIQJms68QE8EtpE=
-X-Received: by 2002:a05:6808:2f19:b0:3f8:1df6:40f with SMTP id
- 5614622812f47-408f0efeca9mr1826673b6e.15.1749029013555; Wed, 04 Jun 2025
- 02:23:33 -0700 (PDT)
+	s=arc-20240116; t=1749037194; c=relaxed/simple;
+	bh=ufZGYSMjuWeE0gmaN3weztdJUrBUeABeoB5cfpDXF9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YbElBr7Bg4gFZL6O2i0OMyFqbxZg6pC90oCCXBttOmMmPbTxqLjj2UPhdAtBYunUqWjPkOZYPRXRGkBcl8/+ylmiQusOGtPZBwyY3RjUHIzhST7QiZGjXiaGQQoD2Q3Bcsk1oiyyvirpU9Kt9PqWoEp1ZT7lXBjMhSrrczGmXJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Qa7IBXXJ; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749037192; x=1780573192;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=ufZGYSMjuWeE0gmaN3weztdJUrBUeABeoB5cfpDXF9c=;
+  b=Qa7IBXXJ1MzG4ZhQY2/jh9zRWDTnD/QSKCwuYzGs2wg0D0+RqksM+zjy
+   3RXMhEarpMTAs2n/qe6RHuUpragMW0DRW7cDyksQKaYcqCdYI4d+sbLFz
+   PsA/HI76RnhvuwZ8456LdNEavQNvJMmS6PkkGNXkMXOD6zewhmvSxbCIu
+   a2BD7XL3ujEy69atTcDaAtxuDn+6JMDv0fKQhly1J8ktfZ9x3egcGQ7vO
+   8UNINKoZLrwVozt3jkMrF9gSWigNtmoYe7NS8ag9qVRZziQRWgo1s2J8E
+   +Rbj+t7+kqQTTkFXtZZQg6JQlMehiKRB3H0HMvQxFesRvcI3EDl2phqKG
+   w==;
+X-CSE-ConnectionGUID: ZvTCTuzCTMOniRW/Xc8S1g==
+X-CSE-MsgGUID: 7zyYtGSXT1qgggdyvJo0DA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="54776197"
+X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; 
+   d="scan'208";a="54776197"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2025 04:39:52 -0700
+X-CSE-ConnectionGUID: 4gH2R/qmRh+J8XxmpdEsLA==
+X-CSE-MsgGUID: f0YM29GmS/uxrFTQImlS1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; 
+   d="scan'208";a="149950623"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2025 04:39:52 -0700
+Date: Wed, 4 Jun 2025 04:44:59 -0700
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Chris Oo <cho@microsoft.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	linux-hyperv@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+	Ricardo Neri <ricardo.neri@intel.com>,
+	Yunhong Jiang <yunhong.jiang@linux.intel.com>
+Subject: Re: [PATCH v4 02/10] x86/acpi: Move acpi_wakeup_cpu() and helpers to
+ smpwakeup.c
+Message-ID: <20250604114459.GA29325@ranerica-svr.sc.intel.com>
+References: <20250603-rneri-wakeup-mailbox-v4-0-d533272b7232@linux.intel.com>
+ <20250603-rneri-wakeup-mailbox-v4-2-d533272b7232@linux.intel.com>
+ <CAJZ5v0geZAnLRkeunW06JKE1gyDcd15EGzqJ_A-cZHO_koJVAw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250530175420.1277-1-khaliidcaliy@gmail.com>
-In-Reply-To: <20250530175420.1277-1-khaliidcaliy@gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 4 Jun 2025 11:23:21 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0j9A4XC15mDLcZyop2TOOV=KTKNDZsqnUbza0NqH6f9sQ@mail.gmail.com>
-X-Gm-Features: AX0GCFtryV6M2hjXcKMBFG1uUYrgw5uAzHIOlWehu-0nziEWbn8Y6MGpxkoEw1s
-Message-ID: <CAJZ5v0j9A4XC15mDLcZyop2TOOV=KTKNDZsqnUbza0NqH6f9sQ@mail.gmail.com>
-Subject: Re: [RESEND PATCH] x86/ACPI: invalidate all cache lines on ACPI
- C-state transitions
-To: Khalid Ali <khaliidcaliy@gmail.com>
-Cc: rafael@kernel.org, enb@kernel.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Peter Zijlstra <peterz@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0geZAnLRkeunW06JKE1gyDcd15EGzqJ_A-cZHO_koJVAw@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
-On Fri, May 30, 2025 at 7:54=E2=80=AFPM Khalid Ali <khaliidcaliy@gmail.com>=
- wrote:
->
-> From: Khalid Ali <khaliidcaliy@gmail.com>
->
-> According to ACPI spec 6.4 and 6.5, upon C-state
+On Wed, Jun 04, 2025 at 11:12:53AM +0200, Rafael J. Wysocki wrote:
+> On Wed, Jun 4, 2025 at 2:18 AM Ricardo Neri
+> <ricardo.neri-calderon@linux.intel.com> wrote:
+> >
+> > The bootstrap processor uses acpi_wakeup_cpu() to indicate to firmware that
+> > it wants to boot a secondary CPU using a mailbox as described in the
+> > Multiprocessor Wakeup Structure of the ACPI specification.
+> >
+> > The platform firmware may implement the mailbox as described in the ACPI
+> > specification but enumerate it using a DeviceTree graph. An example of
+> > this is OpenHCL paravisor.
+> >
+> > Move the code used to setup and use the mailbox for CPU wakeup out of the
+> > ACPI directory into a new smpwakeup.c file that both ACPI and DeviceTree
+> > can use.
+> >
+> > No functional changes are intended.
+> >
+> > Co-developed-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
+> > Signed-off-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
+> > Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+> > ---
+> > Changes since v3:
+> >  - Create a new file smpwakeup.c instead of relocating it to smpboot.c.
+> >    (Rafael)
+> >
+> > Changes since v2:
+> >  - Only move to smpboot.c the portions of the code that configure and
+> >    use the mailbox. This also resolved the compile warnings about unused
+> >    functions that Michael Kelley reported.
+> >  - Edited the commit message for clarity.
+> >
+> > Changes since v1:
+> >  - None.
+> > ---
+> >  arch/x86/Kconfig                   |  7 ++++
+> >  arch/x86/kernel/Makefile           |  1 +
+> >  arch/x86/kernel/acpi/madt_wakeup.c | 76 ----------------------------------
+> >  arch/x86/kernel/smpwakeup.c        | 83 ++++++++++++++++++++++++++++++++++++++
+> >  4 files changed, 91 insertions(+), 76 deletions(-)
+> >
+> > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> > index cb0f4af31789..82147edb355a 100644
+> > --- a/arch/x86/Kconfig
+> > +++ b/arch/x86/Kconfig
+> > @@ -1113,6 +1113,13 @@ config X86_LOCAL_APIC
+> >         depends on X86_64 || SMP || X86_UP_APIC || PCI_MSI
+> >         select IRQ_DOMAIN_HIERARCHY
+> >
+> > +config X86_MAILBOX_WAKEUP
+> > +       def_bool y
+> > +       depends on OF || ACPI_MADT_WAKEUP
+> 
+> At this point the dependency on OF is premature.  IMV it should be
+> added in a later patch.
 
-Which section?
-
-> transitions (specifically C2 and C3) it is required and explicitly
-> mentioned to invalidate and writeback all modified cache line using
-> WBINVD.
->
-> However the current ACPI C-state entry using monitor/mwait instructions
-> it have been used CLFLUSH by flushing the cache line associated by
-> monitored address. That what all about this patch addresses,
-> invalidating all cache lines instead of single cache line.
->
-> Let me know if there any reason and decisions behind the current
-> implementation.
-
-I think that Peter has answered this already.
-
-Anyway: Is there any practical reason to make this change?  For
-instance, any system that doesn't work before it and works after it?
-
-> Signed-off-by: Khalid Ali <khaliidcaliy@gmail.com>
-> ---
->  arch/x86/kernel/acpi/cstate.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.=
-c
-> index d5ac34186555..eb3d435e08ad 100644
-> --- a/arch/x86/kernel/acpi/cstate.c
-> +++ b/arch/x86/kernel/acpi/cstate.c
-> @@ -222,6 +222,9 @@ void __cpuidle acpi_processor_ffh_cstate_enter(struct=
- acpi_processor_cx *cx)
->         struct cstate_entry *percpu_entry;
->
->         percpu_entry =3D per_cpu_ptr(cpu_cstate_entry, cpu);
-> +       /* flush and invalidate all modified cache line on C3 and C2 stat=
-e entry*/
-> +       if (cx->type =3D=3D ACPI_STATE_C3 || cx->type =3D=3D ACPI_STATE_C=
-2)
-> +               wbinvd();
->         mwait_idle_with_hints(percpu_entry->states[cx->index].eax,
->                               percpu_entry->states[cx->index].ecx);
->  }
-> --
+I see your point. Sure, I will the dependency in a later patch.
 
