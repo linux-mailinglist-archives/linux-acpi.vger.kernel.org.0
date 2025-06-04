@@ -1,128 +1,109 @@
-Return-Path: <linux-acpi+bounces-14136-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14137-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 544AAACE5D9
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 22:46:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F072BACE62E
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 23:34:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16643178ABA
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 20:46:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFF0E17877F
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 21:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D231F2BAD;
-	Wed,  4 Jun 2025 20:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EECDA202997;
+	Wed,  4 Jun 2025 21:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ccTg2o9o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZI+eMDP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F80472636;
-	Wed,  4 Jun 2025 20:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB88CB660;
+	Wed,  4 Jun 2025 21:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749069996; cv=none; b=hDIQH3UzlP2B1pW8sh9RSUd1hahkeozGEErstKHuXwMH0aKFYgqSaHXKtQeHwrMSai9Q4g/qVq+OMu76IYjWCB2nQRJkVUee8j51e3qL5qF5y+1oGbfVaTSQYAxTtgZ3z9xJWqE2YvNS5Q22ITvim4wxH6itgcwbHlk0vF32fTg=
+	t=1749072868; cv=none; b=lxRgSrS7jZ5hLtaqBiMUkFCRyZnrsvIudwarAB/WDdbpnJl94zAMUMi/xqwhPCRmQ2aiYJb+G5f+jFaNKGuMAKBIkCKid1eNRef60liB/TdyN4vBbgAsCCDoiBrMfevPDMHouzkXvuC89TTD7xvARFMQLKya21MJdErJjrStnC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749069996; c=relaxed/simple;
-	bh=OVnzDCVSO9DItB2ytURbUms5BJsi53j7l4uIMYDoTK4=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=CAj5r7OVkMV15826Zp7ENonQXjuiHe1ZDqQB1R7uHVBVNfbXX9vILJMmFVpNyu9G0JiYP2I5Mjxr+QZNVwNye750q/iOj1XP8jOuRQoHxJc5jKe1dPHiKDFxTj1kBcRASYRdy8VolTcUKedC3Titbc88uo5QTU0rFD57XLs/UbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ccTg2o9o; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749069995; x=1780605995;
-  h=date:from:to:cc:subject:message-id;
-  bh=OVnzDCVSO9DItB2ytURbUms5BJsi53j7l4uIMYDoTK4=;
-  b=ccTg2o9ocRip1WpFhxuDJCrO3VXsfdli5raPX+pj/HO7H/c9Nrf6zdKC
-   cZXuIf8UuYTfYcPQDiPA4GnHrz3asuCFqN/Uni8oVf+y6/rbjPXMDt7hz
-   iF7joaEZjC2mDmwUXL1Ti2S4PxSkFPgF+MSzT2ibKIRQFk5v060a7awC3
-   AkwsNn3sUX6/6O35Uo8UWaXuDhqkOsjJ8pwPQGSNNFcZ/5AKsOY+AMIqP
-   IYOkWqv/U6HoB2wL1XzRFP7yE/15vOnYvrvmdjNnA75mzx8p7N1RBt7qJ
-   PIZ5zN0XOX2JMvEtI7FeHHl0BiJj2QRkSsrS/JOUaztwLQ6Ltd1AbZpos
-   w==;
-X-CSE-ConnectionGUID: FUj/N6swSjq7RqTFJF1wLw==
-X-CSE-MsgGUID: gLAdgfz+QNeKz7ZV8NGOxA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="61789427"
-X-IronPort-AV: E=Sophos;i="6.16,210,1744095600"; 
-   d="scan'208";a="61789427"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2025 13:46:34 -0700
-X-CSE-ConnectionGUID: 88YSN4CXTEWlJgCHLvrlDQ==
-X-CSE-MsgGUID: 99mSaQsOT1C/PKd3qmjGtg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,210,1744095600"; 
-   d="scan'208";a="176175877"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 04 Jun 2025 13:46:32 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uMv0I-0003Sn-2G;
-	Wed, 04 Jun 2025 20:46:30 +0000
-Date: Thu, 05 Jun 2025 04:46:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- fcb316420b91986403917f1a336f8af0f5e4cfe1
-Message-ID: <202506050411.4VH1U6Kz-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1749072868; c=relaxed/simple;
+	bh=J1MC5P61dAPFObZN1QHadd/eBuhCxQ28FFl+J7Yc4w4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q8A76PN8n3cPvhq2r+hqNH4cE7Ia/d7pyXXGGbTA7Io/umuO2iwjgcoyDM6B6HgZK/jTigbTsEfCxwsP9SW1ZGzxRahaCu58tK3yCV20CvQAfbTo0HtRZ6XSv0lsFet3SoWddZYgkvAJTF1ru9dYjQrvlDrvBC2zoQwkt502dR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZI+eMDP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C107C4CEE4;
+	Wed,  4 Jun 2025 21:34:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749072868;
+	bh=J1MC5P61dAPFObZN1QHadd/eBuhCxQ28FFl+J7Yc4w4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iZI+eMDPedko2rTVnosHnEK0ubYPnXqX5hAD5gZyzzN+rKSDS//uPPs9Z6bmPHGmW
+	 KwnDBCJHG7X3jee19SUJShs3kxZYRo/MmdHzgorsS7sF34yaDE159uZ+j9zNjb+2cy
+	 GbGMfTJRKV9ejP9xc0JLWVVKp4Q61FIwmZi6kRjwbKIgIL3fan9d7gRILxkT3FQnkX
+	 ZCIJ4cjd9OukFp+54KV6Q/b4O1hsPPygMcN+mnu8FeT73EwtfMS2wOjThLL61eMJwy
+	 5fUgcviQNlu+ZszTI4IckrfpwzPa8zBjm3V9YynzyYQ/LCRTFlekG0FuQN51+VVj9d
+	 yRpQmqAFKcsPA==
+Date: Wed, 4 Jun 2025 23:34:20 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Igor Korotin <igor.korotin.linux@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Len Brown <lenb@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Hung <alex.hung@amd.com>, Tamir Duberstein <tamird@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Xiangfei Ding <dingxiangfei2009@gmail.com>
+Subject: Re: [PATCH v1 0/5] rust: Add ACPI match table support for Rust
+ drivers
+Message-ID: <aEC73CHD0fvByrJs@cassiopeiae>
+References: <20250604122945.3445776-1-igor.korotin.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250604122945.3445776-1-igor.korotin.linux@gmail.com>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: fcb316420b91986403917f1a336f8af0f5e4cfe1  Merge branch 'pm-sleep-testing' into bleeding-edge
+On Wed, Jun 04, 2025 at 01:29:39PM +0100, Igor Korotin wrote:
+> This patch series introduces support for ACPI match tables in Rust 
+> drivers.
+> 
+> Currently, Rust abstractions support only Open Firmware (OF) device 
+> matching. This series extends the driver model to support ACPI-based 
+> matching, enabling Rust drivers to bind to ACPI-described devices.
+> 
+> Changes include:
+>   - A new `acpi::DeviceId` abstraction for working with 
+>    `struct acpi_device_id`.
+>   - A helper function `is_of_node()` for determining fwnode types.
+>   - Updates to the core `Adapter` trait and `platform::Driver` to support
+>     optional ACPI ID tables.
+>   - A sample implementation in the Rust platform driver, demonstrating 
+>     multi-bus matching.
+> 
+> This is especially useful for writing drivers that work across platforms 
+> using both OF and ACPI.
+> 
+> Tested using QEMU with a custom SSDT that creates an ACPI device matching
+> the sample Rust platform driver.
 
-elapsed time: 1448m
+Thanks this is great!
 
-configs tested: 34
-configs skipped: 1
+Unfortunately, it seems that something went wrong sending this patch series.
+Patches 3 and 5 are missing on my end (and on the corresponding lists as well).
+Can you please resend?
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha        allyesconfig    gcc-15.1.0
-arc          allmodconfig    gcc-15.1.0
-arc          allyesconfig    gcc-15.1.0
-arm          allmodconfig    gcc-15.1.0
-arm          allyesconfig    gcc-15.1.0
-arm64        allmodconfig    clang-19
-hexagon      allmodconfig    clang-17
-hexagon      allyesconfig    clang-21
-i386          allnoconfig    gcc-12
-i386         allyesconfig    gcc-12
-i386            defconfig    clang-20
-loongarch    allmodconfig    gcc-15.1.0
-m68k         allmodconfig    gcc-15.1.0
-m68k         allyesconfig    gcc-15.1.0
-microblaze   allmodconfig    gcc-15.1.0
-microblaze   allyesconfig    gcc-15.1.0
-openrisc     allyesconfig    gcc-15.1.0
-parisc       allmodconfig    gcc-15.1.0
-parisc       allyesconfig    gcc-15.1.0
-powerpc      allmodconfig    gcc-15.1.0
-powerpc      allyesconfig    clang-21
-riscv        allmodconfig    clang-21
-riscv        allyesconfig    clang-16
-s390         allmodconfig    clang-18
-s390         allyesconfig    gcc-15.1.0
-sh           allmodconfig    gcc-15.1.0
-sh           allyesconfig    gcc-15.1.0
-sparc        allmodconfig    gcc-15.1.0
-um           allmodconfig    clang-19
-um           allyesconfig    gcc-12
-x86_64        allnoconfig    clang-20
-x86_64       allyesconfig    clang-20
-x86_64          defconfig    gcc-11
-x86_64      rhel-9.4-rust    clang-18
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Also, technically this series is a v2; patch 1 differs from the one you sent
+originally -- please include a changelog.
 
