@@ -1,226 +1,254 @@
-Return-Path: <linux-acpi+bounces-14100-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14101-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0956ACCFB0
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 00:18:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67BAAACD082
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 02:18:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64EE9174661
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Jun 2025 22:18:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29E70176398
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 00:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13EF02253F2;
-	Tue,  3 Jun 2025 22:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2F64C6D;
+	Wed,  4 Jun 2025 00:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kn92s+5n"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="beBKg9uf"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E8B38DD1;
-	Tue,  3 Jun 2025 22:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7A5A29;
+	Wed,  4 Jun 2025 00:18:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748989130; cv=none; b=q/4RZYS4AnY9p3dPxyzdn6v/Z8AC103KEoQSGm7JEVKTdXhV/qUdKL4q+Ih4ozOBRc+nfoi2yaxMd+LvrIxTeM6Zv+AOOoBZVrdYmwiDqWvJBbrDCdlKbxvpMTG5DLNc910QtH6sGs88jozX5TTA5PZACTuzCYg3+NCjbwhBPt4=
+	t=1748996283; cv=none; b=HVTnxI25xiiaQ7Ge4LBrvly05lgfp/00us7m2UnEUsTemd03JVl0kE6qZwwVpE2IzxEz7W9q9JBhfEUEPv5A893OWJSblZKxVssz7EyT8usIE/KqXMimAncPveBvtrjFt7/pF63afIakBAx+rMVsLPAks1CyXwEpRitLAmOPkb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748989130; c=relaxed/simple;
-	bh=K+F/YtNdZO6JxPVsJPOUW+izB++yyaaoWNSWuIwcQIU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NfEmIxUjp6CLa+28Jbw46LRISUDbszHh4BCno82V/cumOCyNMCEnLXZ9r7kyLQQV/FaBIz/enrIEUffDgywIb86XQGJrz/qCOPYeBY2NoEnhP/YzuSGmD6543VU34T+AkmaKfQpO+x17q8zGkOzyD1dPzA27jznrlvmxh/THDvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kn92s+5n; arc=none smtp.client-ip=192.198.163.13
+	s=arc-20240116; t=1748996283; c=relaxed/simple;
+	bh=O/vMOZcR0tnjdbpegifYRfMSh/No4AOBo99GZLFpxQ4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CHgGNMdXITx9yqPU/c7RbM1PjJGAyPAFmtoqIAj2DNZtCTbbQmvkHuTPYOQe0JKoSoxujPEaLqG6u9kqM9/yn5zmdvuXncYK5sYFNP/9e2po49I8bR0uEAJuZID4B5WEE4x3p4Ux7ieANcQVts5K4E7LFkAF4P3DJj5KoX0i62A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=beBKg9uf; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748989128; x=1780525128;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=K+F/YtNdZO6JxPVsJPOUW+izB++yyaaoWNSWuIwcQIU=;
-  b=kn92s+5nOtRyuDdar+9YB9ctZYaYventc0eSNeabQVGSLXRPPadwG3a7
-   cw0+Gw4YxBYnyrDb/gDBVX77TalMng62PRy6CXldDA0D9gFn9OTPBZDn8
-   PAW4KfD08YJ5qL3nQRCeGX184N50Wics11spOHpqLoEMKSRppXt5p/ab3
-   9QMsAJ35v3yE1G7bRUdMB/1JP4QTXpY0h7WuKTbbSfOmdLMoh903kUX1N
-   yIAH8EPNDmVP8GOVU8UYrBq5N7HiNWl0d8IzXwzfPZ7IRK7vcxDxQ0a5c
-   S7KoLRs23p3KdqyHLxwnViJfNN0Urs7+hjgWSZqW2e1wnVVlvOLty7bC5
-   w==;
-X-CSE-ConnectionGUID: ZIGG0yXERp6qFs3wTwE54A==
-X-CSE-MsgGUID: EDwut+tKTaOkVU9BReQtow==
-X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="53677527"
+  t=1748996282; x=1780532282;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=O/vMOZcR0tnjdbpegifYRfMSh/No4AOBo99GZLFpxQ4=;
+  b=beBKg9ufC0XM2dV+vmwJ14HtDn8HHCX/0uNPy1o1//Akb5G0sLuitBWk
+   tW27YHyNbkJb6EOabUYCxff20jXhfvAL7GGs50xpA5cSnLfss+xZ5kAYd
+   MAJnR27OIBrHhB1wLM/8e7pnPTLFjeWt889sRyMiVPZi0cXAzxLoztiLi
+   7wzbOPQw0E2Bi/AfujgUFMKKMGxDBkPtowDjyawExC8BvkiQNm2bhacqk
+   qNeDWq1QOrYU+Nv3LbMlynjkDiqcaCAK3URCzgxgcxQw520miw7KQPiCv
+   usVnCwoimfpswPrQKaRsP7a5K8xQAo5im+R8JNDutxLhVVhYjYb41ayxi
+   A==;
+X-CSE-ConnectionGUID: U6kAn5TgQi2LFrBHlTXMGg==
+X-CSE-MsgGUID: jAZqJag5SIm1FanNR1MZnw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="62112922"
 X-IronPort-AV: E=Sophos;i="6.16,207,1744095600"; 
-   d="scan'208";a="53677527"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 15:18:47 -0700
-X-CSE-ConnectionGUID: vDKE25ChRcipbzHXBQUJOw==
-X-CSE-MsgGUID: PQehbhp5RjqoV3hwbE53Zw==
+   d="scan'208";a="62112922"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 17:18:01 -0700
+X-CSE-ConnectionGUID: F4vC8Mt9RwemLFuTACOjlg==
+X-CSE-MsgGUID: eTLiMzQuQrmNlI6iFmOaaQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,207,1744095600"; 
-   d="scan'208";a="148829830"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 15:18:46 -0700
-Received: from [10.124.221.22] (unknown [10.124.221.22])
-	by linux.intel.com (Postfix) with ESMTP id A14C120B5736;
-	Tue,  3 Jun 2025 15:18:43 -0700 (PDT)
-Message-ID: <b5c6a148-801e-46d5-bc8a-a550006dbd52@linux.intel.com>
-Date: Tue, 3 Jun 2025 15:18:42 -0700
+   d="scan'208";a="149904448"
+Received: from unknown (HELO [172.25.112.21]) ([172.25.112.21])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 17:18:00 -0700
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Subject: [PATCH v4 00/10] x86/hyperv/hv_vtl: Use a wakeup mailbox to boot
+ secondary CPUs
+Date: Tue, 03 Jun 2025 17:15:12 -0700
+Message-Id: <20250603-rneri-wakeup-mailbox-v4-0-d533272b7232@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4 v3] ACPI: extlog: Trace CPER PCI Express Error Section
-To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Dave Jiang <dave.jiang@intel.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-cxl@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-pci@vger.kernel.org, linux-edac@vger.kernel.org
-Cc: Yazen Ghannam <yazen.ghannam@amd.com>
-References: <20250603155536.577493-1-fabio.m.de.francesco@linux.intel.com>
- <20250603155536.577493-4-fabio.m.de.francesco@linux.intel.com>
-Content-Language: en-US
-From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20250603155536.577493-4-fabio.m.de.francesco@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABCQP2gC/0WNQQ6CMBAAv2J6dpu2UEVP/sN4qGUrG0tLFlASw
+ t9tuHicw8ysYkQmHMX1sArGD42UU4H6eBC+c+mFQG1hYZSx6qQMcCoCfN0b5wF6R/GZF6hMgwH
+ PplFVEEUdGAMte/b+KBw49zB1jO4fs6rSF221laZWtQYNTN5xm+V+8C62yDndIqV5kZQmjNLnX
+ mzbD4kFpvm1AAAA
+To: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>, 
+ "K. Y. Srinivasan" <kys@microsoft.com>, 
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+ Dexuan Cui <decui@microsoft.com>, Michael Kelley <mhklinux@outlook.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Saurabh Sengar <ssengar@linux.microsoft.com>, 
+ Chris Oo <cho@microsoft.com>, 
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
+ linux-hyperv@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ "Ravi V. Shankar" <ravi.v.shankar@intel.com>, 
+ Ricardo Neri <ricardo.neri@intel.com>, 
+ Ricardo Neri <ricardo.neri-calderon@linux.intel.com>, 
+ Yunhong Jiang <yunhong.jiang@linux.intel.com>, 
+ Thomas Gleixner <tglx@linutronix.de>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1748996287; l=7354;
+ i=ricardo.neri-calderon@linux.intel.com; s=20250602;
+ h=from:subject:message-id; bh=O/vMOZcR0tnjdbpegifYRfMSh/No4AOBo99GZLFpxQ4=;
+ b=cgf2plzV0fTbI3sE/dwoXYTSe1WIua7IB3h8DUqe9VajVhFJSMslh2ljplfAmY5HjC5sJSRuA
+ LLFlPnwWGXMAKWZygNGqoYAK8t/pnsuSBDYlK64QalKdYBsmMyVThqQ
+X-Developer-Key: i=ricardo.neri-calderon@linux.intel.com; a=ed25519;
+ pk=NfZw5SyQ2lxVfmNMaMR6KUj3+0OhcwDPyRzFDH9gY2w=
 
+Hi,
 
-On 6/3/25 8:54 AM, Fabio M. De Francesco wrote:
-> I/O Machine Check Architecture events may signal failing PCIe components
-> or links. The AER event contains details on what was happening on the wire
-> when the error was signaled.
->
-> Trace the CPER PCIe Error section (UEFI v2.10, Appendix N.2.7) reported
-> by the I/O MCA.
->
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
-> ---
->   drivers/acpi/Kconfig       |  1 +
->   drivers/acpi/acpi_extlog.c | 32 ++++++++++++++++++++++++++++++++
->   drivers/pci/pcie/aer.c     |  2 +-
->   include/linux/aer.h        |  8 ++++++--
->   4 files changed, 40 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index 7bc40c2735ac0..2bbd9e4868ad7 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -493,6 +493,7 @@ config ACPI_EXTLOG
->   	tristate "Extended Error Log support"
->   	depends on X86_MCE && X86_LOCAL_APIC && EDAC
->   	select UEFI_CPER
-> +	select ACPI_APEI_PCIEAER
->   	help
->   	  Certain usages such as Predictive Failure Analysis (PFA) require
->   	  more information about the error than what can be described in
-> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-> index 47d11cb5c9120..b2928ff297eda 100644
-> --- a/drivers/acpi/acpi_extlog.c
-> +++ b/drivers/acpi/acpi_extlog.c
-> @@ -132,6 +132,34 @@ static int print_extlog_rcd(const char *pfx,
->   	return 1;
->   }
->   
-> +static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
-> +			      int severity)
-> +{
-> +	struct aer_capability_regs *aer;
-> +	struct pci_dev *pdev;
-> +	unsigned int devfn;
-> +	unsigned int bus;
-> +	int aer_severity;
-> +	int domain;
-> +
-> +	if (!(pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID ||
-> +	      pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO))
-> +		return;
-> +
-> +	aer_severity = cper_severity_to_aer(severity);
-> +	aer = (struct aer_capability_regs *)pcie_err->aer_info;
-> +	domain = pcie_err->device_id.segment;
-> +	bus = pcie_err->device_id.bus;
-> +	devfn = PCI_DEVFN(pcie_err->device_id.device,
-> +			  pcie_err->device_id.function);
-> +	pdev = pci_get_domain_bus_and_slot(domain, bus, devfn);
-> +	if (!pdev)
-> +		return;
-> +
-> +	pci_print_aer(KERN_DEBUG, pdev, aer_severity, aer);
-> +	pci_dev_put(pdev);
-> +}
-> +
->   static int extlog_print(struct notifier_block *nb, unsigned long val,
->   			void *data)
->   {
-> @@ -183,6 +211,10 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
->   			if (gdata->error_data_length >= sizeof(*mem))
->   				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
->   						       (u8)gdata->error_severity);
-> +		} else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
-> +			struct cper_sec_pcie *pcie_err = acpi_hest_get_payload(gdata);
-> +
-> +			extlog_print_pcie(pcie_err, gdata->error_severity);
->   		} else {
->   			void *err = acpi_hest_get_payload(gdata);
->   
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index d0ebf7c15afa9..627fcf4346983 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -801,7 +801,7 @@ void pci_print_aer(char *level, struct pci_dev *dev, int aer_severity,
->   	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
->   			aer_severity, tlp_header_valid, &aer->header_log);
->   }
-> -EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
-> +EXPORT_SYMBOL_GPL(pci_print_aer);
->   
->   /**
->    * add_error_device - list device to be handled
-> diff --git a/include/linux/aer.h b/include/linux/aer.h
-> index 45d0fb2e2e759..6ce433cee4625 100644
-> --- a/include/linux/aer.h
-> +++ b/include/linux/aer.h
-> @@ -56,16 +56,20 @@ struct aer_capability_regs {
->   #if defined(CONFIG_PCIEAER)
->   int pci_aer_clear_nonfatal_status(struct pci_dev *dev);
->   int pcie_aer_is_native(struct pci_dev *dev);
-> +void pci_print_aer(char *level, struct pci_dev *dev, int aer_severity,
-> +		   struct aer_capability_regs *aer);
->   #else
->   static inline int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
->   {
->   	return -EINVAL;
->   }
->   static inline int pcie_aer_is_native(struct pci_dev *dev) { return 0; }
-> +static inline void pci_print_aer(char *level, struct pci_dev *dev,
-> +				 int aer_severity,
-> +				 struct aer_capability_regs *aer)
-> +{ }
+Here is a new version of this series. Many thanks to Rob, Rafael,
+Krzysztof, and Michael for your feedback. Previous versions can be found in
+1], [2], and [3].
 
-This also needs rebase. With the patches queued for v6.16, you may not
-need to pass level any more.
+The biggest changes in this version are in the DeviceTree bindings and
+their relationship with ACPI as well as relocating the ACPI wakeup code to
+a new common file that both DeviceTree- and ACPI-based system can use. See
+the changelog for details.
 
->   #endif
->   
-> -void pci_print_aer(char *level, struct pci_dev *dev, int aer_severity,
-> -		   struct aer_capability_regs *aer);
->   int cper_severity_to_aer(int cper_severity);
->   void aer_recover_queue(int domain, unsigned int bus, unsigned int devfn,
->   		       int severity, struct aer_capability_regs *aer_regs);
+If the DeviceTree bindings look good, then the patches should be ready for
+review by the x86, ACPI, and Hyper-V maintainers.
 
+Thanks in advance for your feedback!
+
+...
+
+This patchset adds functionality to use a wakeup mailbox to boot secondary
+CPUs in Hyper-V VTL level 2 TDX guests with virtual firmware that describes
+hardware using a DeviceTree graph. Although this is the target use case,
+the use of the mailbox depends solely on it being enumerated in the
+DeviceTree.
+
+On x86 platforms, secondary CPUs are typically booted using INIT assert,
+de-assert followed by Start-Up IPI messages. Virtual machines can also make
+hypercalls to bring up secondary CPUs to a desired execution state. These
+two mechanisms require support from the hypervisor. Confidential computing
+VMs in a TDX environment cannot use this mechanism because the hypervisor
+is considered an untrusted entity.
+
+Linux already supports the ACPI Multiprocessor Wakeup Structure in which
+the guest platform firmware boots the secondary CPUs and transfers control
+to the kernel using a mailbox. This mechanism does not need involvement
+of the VMM. It can be used in a Hyper-V VTL level 2 TDX guest.
+
+Currently, this mechanism can only be used on x86 platforms with firmware
+that supports ACPI. There are platforms that use DeviceTree (e.g., OpenHCL
+[4]) instead of ACPI to describe the hardware.
+
+Provided that the wakeup mailbox enumerated in a DeviceTree-based platform
+firmware is implemented as described in the ACPI specification, the kernel
+can used common code for both DeviceTree and ACPI systems. The DeviceTree
+firmware does not need to use any ACPI table to publish the mailbox.
+
+This patcheset is structured as follows:
+
+   * Relocate portions of the code handling the ACPI Multiprocessor Wakeup
+     Structure code to a common location. (patches 1, 2)
+   * Define DeviceTree bindings to enumerate a mailbox as described in
+     the ACPI specification. (patch 3)
+   * Find and setup the wakeup mailbox if found in the DeviceTree graph.
+     (patch 4)
+   * Prepare Hyper-V VTL2 TDX guests to use the Wakeup Mailbox to boot
+     secondary CPUs when available. (patches 5-10)
+
+I have tested this patchset on a Hyper-V host with VTL2 OpenHCL, QEMU, and
+physical hardware.
+
+Thanks and BR,
+Ricardo
+
+Changes since v3:
+  - Added Reviewed-by: tags from Michael Kelley. Thanks!
+  - Relocated the common wakeup code from acpi/madt_wakeup.c to a new
+    smpwakeup.c to be used in DeviceTree- and ACPI-based systems.
+  - Dropped the x86 CPU bindings as they are not a good fit to document
+    firmware features.
+  - Dropped the code that parsed and validated of the `enable-method`
+    property for cpu@N nodes in x86. Instead, unconditionally parse and use
+    the wakeup mailbox when found.
+  - Updated the wakeup mailbox schema to avoid redefing the structure and
+    operation of the mailbox. Instead, refer to the ACPI specification.
+    Also clarified that the enumeration of the mailbox is done separately.
+  - Prefixed helper functions of wakeup code with acpi_.
+
+Changes since v2:
+  - Only move out of the acpi directory acpi_wakeup_cpu() and its
+    accessory variables. Use helper functions to access the mailbox as
+    needed. This also fixed the warnings about unused code with CONFIG_
+    ACPI=n that Michael reported.
+  - Major rework of the DeviceTree bindings and schema. Now there is a
+    reserved-memory binding for the mailbox as well as a new x86 CPU
+    bindings. Both have `compatible` properties.
+  - Rework of the code parsing the DeviceTree bindings for the mailbox.
+    Now configuring the mailbox depends solely on its enumeration in the
+    DeviceTree and not on Hyper-V VTL2 TDX guest.
+  - Do not make reserving the first 1MB of memory optional. It is not
+    needed and may introduce bugs.
+  - Prepare Hyper-V VTL2 guests to unconditionally use the mailbox in TDX
+    environments. If the mailbox is not available, booting secondary CPUs
+    will fail gracefully.
+
+Changes since v1:
+  - Fix the cover letter's summary phrase.
+  - Fix the DT binding document to pass validation.
+  - Change the DT binding document to be ACPI independent.
+  - Move ACPI-only functions into the #ifdef CONFIG_ACPI.
+  - Change dtb_parse_mp_wake() to return mailbox physical address.
+  - Rework the hv_is_private_mmio_tdx().
+  - Remove unrelated real mode change from the patch that marks mailbox
+    page private.
+  - Check hv_isolation_type_tdx() instead of wakeup_mailbox_addr in
+    hv_vtl_init_platform() because wakeup_mailbox_addr is not parsed yet.
+  - Add memory range support to reserve_real_mode.
+  - Remove realmode_reserve callback and use the memory range.
+  - Move setting the real_mode_header to hv_vtl_init_platform.
+  - Update comments and commit messages.
+  - Minor style changes.
+
+[1]. https://lore.kernel.org/r/20240806221237.1634126-1-yunhong.jiang@linux.intel.com
+[2]. https://lore.kernel.org/r/20240823232327.2408869-1-yunhong.jiang@linux.intel.com
+[3]. https://lore.kernel.org/r/20250503191515.24041-1-ricardo.neri-calderon@linux.intel.com
+[4]. https://openvmm.dev/guide/user_guide/openhcl.html
+--
+2.43.0
+
+---
+Ricardo Neri (6):
+      x86/acpi: Add a helper functions to setup and access the wakeup mailbox
+      x86/acpi: Move acpi_wakeup_cpu() and helpers to smpwakeup.c
+      dt-bindings: reserved-memory: Wakeup Mailbox for Intel processors
+      x86/dt: Parse the Wakeup Mailbox for Intel processors
+      x86/smpwakeup: Add a helper get the address of the wakeup mailbox
+      x86/hyperv/vtl: Use the wakeup mailbox to boot secondary CPUs
+
+Yunhong Jiang (4):
+      x86/hyperv/vtl: Set real_mode_header in hv_vtl_init_platform()
+      x86/realmode: Make the location of the trampoline configurable
+      x86/hyperv/vtl: Setup the 64-bit trampoline for TDX guests
+      x86/hyperv/vtl: Mark the wakeup mailbox page as private
+
+ .../reserved-memory/intel,wakeup-mailbox.yaml      | 48 ++++++++++++
+ arch/x86/Kconfig                                   |  7 ++
+ arch/x86/hyperv/hv_vtl.c                           | 35 ++++++++-
+ arch/x86/include/asm/smp.h                         |  4 +
+ arch/x86/include/asm/x86_init.h                    |  3 +
+ arch/x86/kernel/Makefile                           |  1 +
+ arch/x86/kernel/acpi/madt_wakeup.c                 | 76 ++-----------------
+ arch/x86/kernel/devicetree.c                       | 47 ++++++++++++
+ arch/x86/kernel/smpwakeup.c                        | 88 ++++++++++++++++++++++
+ arch/x86/kernel/x86_init.c                         |  3 +
+ arch/x86/realmode/init.c                           |  7 +-
+ 11 files changed, 240 insertions(+), 79 deletions(-)
+---
+base-commit: 8858e8099446963ee6a0fb9f00f361dda52f04d5
+change-id: 20250602-rneri-wakeup-mailbox-328efe72803f
+
+Best regards,
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 
 
