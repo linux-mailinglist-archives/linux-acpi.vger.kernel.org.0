@@ -1,219 +1,260 @@
-Return-Path: <linux-acpi+bounces-14132-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14133-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AED1ACDE06
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 14:33:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CD50ACE03F
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 16:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD0257A86AD
-	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 12:31:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1362C7AA52E
+	for <lists+linux-acpi@lfdr.de>; Wed,  4 Jun 2025 14:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5624628FA9F;
-	Wed,  4 Jun 2025 12:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48F72900B7;
+	Wed,  4 Jun 2025 14:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QKacmE3f"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jpwBbNM8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8163628FA9A;
-	Wed,  4 Jun 2025 12:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.67
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749040346; cv=none; b=RORpP8aWzPJL0JDr3/y2swEla0C8NOQEuCJhMsV6xirBbTMpjmfczQTVzH08TZ6BzU+ASL/vKs7stZnJSjfD1a6o3fM8vOjJ5AgusE9ze2zRYdWwyW+h5pagnk3Uv9JSEzeW0ffc5LgXbsyEYmuP7jc3ifSHTGFd9vGtV5kfffc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749040346; c=relaxed/simple;
-	bh=EKuEJj1hiN5FAUPJllRUOb+XzT5dqu2BT3noUkRJ9Rw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RTSrMKbbFDb+l2lv+5UbO5jL0xdf1fgsTlj0vtST8U3qGftEoTcyRgSGz8Kvh0VwEuabtsxBGSJ5dUCKBDbVnyXQYE4wBtJGkd5FE0WXZJ8sm+iFk9iNzXLs9tsNp7d9socNjVNtiHT7q7cRgLnO55OhKVCaJoF6xGXrR0qFH1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QKacmE3f; arc=none smtp.client-ip=209.85.128.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-450caff6336so42011355e9.3;
-        Wed, 04 Jun 2025 05:32:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749040342; x=1749645142; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Zb6n4xN+CaXNZLNAdkRh4qtNOwrRTbDiXvfunUMx5/8=;
-        b=QKacmE3fBKmoq77l2hVR+i2gvGWOO5Hqq8jpQ/sc8zOZ5xsaDwBhZaz0lhGxS95TSO
-         VrICSgyQOLiWvN7Sw9OHOG6pMOkAAJv0AZEv0G1oVJgx5jfKvk0Mxa4sxo7dRe9yUfmT
-         tjRnqlk0bCWzU5UTxHLxZBWJ7Zv1sRuhyI17upTiVuvfpMVPlemy8PBW5SDwyXvVWP7B
-         8pfMJAPNyz9CPN4jGCBaGpimw6cyowGN9SU+ywXXWCZTdzOvA3SyNF8RzCH8MBdw7EWz
-         jOQ7aXsFbIjBfDomhNc9r4hppHqAx444VQIAWiM7bDdNtimHGwKtMDTaraiU40VmJqk5
-         0qzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749040343; x=1749645143;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Zb6n4xN+CaXNZLNAdkRh4qtNOwrRTbDiXvfunUMx5/8=;
-        b=ksElP5p2Pb0PQFkVyeDaIWaXiF1O1lYYwcGKdbcclvcHb8zVdIdWyloPffj4lO6/BY
-         dG17q8cFnc+LXs/ge4BRxF5DkKURENppwiZ5IrfXtt50n/96EpuN3CbmMF2Ov4eMyj3y
-         gLtuaLuKME7qF82ovoaC+XkUiMpyFGV55gKFQgkq3jMgsScOed6a5N4lCNGBmWn05knP
-         ezpjeEy8By/tPtNnx2HFQXD4IKDRGazoKlHaIXVILDKjrkhpDaiuAP4fJVYbI5TFmdPw
-         gALvu7+2bzAAfa15Jx0GaAiBPXNBIANq0C0aIwmuiL0zcHEcWqF/pSJGt69yO8wM3yhu
-         RYRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUAWdgzvA14/xwV+zUXdP0j8Pvd4gthI5nQPNwlXMiMiNERoev8X6RLSEhvpUfDjfueZXZVkORozhVVb79T@vger.kernel.org, AJvYcCULXgIlbgxxlV6rCb4nQehUSYVIY7NECsRrze6vgXPFuxW8UMickqf7v9wf0zG0bUCMQZaezCeg7J5w/XFJUSo=@vger.kernel.org, AJvYcCVg+KOJ2lqEaN6q8S7FjcmjNH7Z1mzI/Ue/r6jU2k2ALVjM4N8KKmKEO66eFb2nA4FUKRfNGG7VBtT6Kg==@vger.kernel.org, AJvYcCWRWpzjH55Y47ixlK5U/ncVR2uOjoy09eK1SItuJxe9jN76JFBkzVbKetM5eGdZil4jfRwahpMfPqDl@vger.kernel.org
-X-Gm-Message-State: AOJu0YwixhAFX+s1mMAPRizzJEtox/EbxIPnJl5Gx1TkLs+WpR4Itlbn
-	bMnIKNIwKgg+0y+WMAjpCwqyAFL9zaqJaoGStEL8SRmY8lsORJGqKVXj8by9PFWC
-X-Gm-Gg: ASbGncuZHUkf6MbKWyU4Vt380mRvwudnFxQ2c3AiiJhvm8UvxON8pNb3qfuuDSftzZh
-	qNiQZssF6aScWradmO1PrtcSaDlSa5TVc4o5cd6fMFtV/0saUiEIOSlnREd1K8toNbo5xMCis+K
-	pL+Op3SPY58BiUiLjIrVlTdHmTUfRUpDS1k3XXyv5VOuxD4mIpXoRCa/mjgMLiEVx2JynUIOnyu
-	WSXfC+YYzFd5NVwTCSQAWsQfBN8qg50pOxS///13CxEMIde6yFNohxY/3CKq0b4kd0Y2k6G1qsr
-	af2o4mm4U+Cwe3GT+xkp+7rc5XSxORHDa00/BgGtFt0tDzvj7LazkUT+u02zqwh+1NP837Rntb6
-	LPJYYrleRqb9p08LaLlQFZK5W+HGhuRDuPeZOy5c=
-X-Google-Smtp-Source: AGHT+IFhjQKYa6TmqFc5RdnTJpBhC99HefNd12BPqVLoU7t0wxGN1xn/KoXcIxM1eKnDWp8Oj5kJJA==
-X-Received: by 2002:a05:600c:4686:b0:43b:ce36:7574 with SMTP id 5b1f17b1804b1-451f0a8a2b9mr21941225e9.11.1749040342334;
-        Wed, 04 Jun 2025 05:32:22 -0700 (PDT)
-Received: from igor-korotin-Precision-Tower-3620.airspan.com ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d8006c21sm194467085e9.33.2025.06.04.05.32.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Jun 2025 05:32:20 -0700 (PDT)
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Tamir Duberstein <tamird@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Xiangfei Ding <dingxiangfei2009@gmail.com>,
-	Igor Korotin <igor.korotin.linux@gmail.com>
-Subject: [PATCH v1 4/5] rust: platform: Add ACPI match table support to `Driver` trait
-Date: Wed,  4 Jun 2025 13:29:43 +0100
-Message-ID: <20250604122945.3445776-5-igor.korotin.linux@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250604122945.3445776-1-igor.korotin.linux@gmail.com>
-References: <20250604122945.3445776-1-igor.korotin.linux@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED5528F935;
+	Wed,  4 Jun 2025 14:25:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749047163; cv=fail; b=TD/JsURSrm/wHtGcTu5WrpqIFG5We20zky6iiXYJi2acZCUjAIm2Ale162RgetSEkCepoW2ytInrD//i81jfRDmOBOwI4LdwGz4tSYpNKxjkw1sxLWQkdJyjlCRrwjSEHHuCf+FKNcMX33ClLSneHdaq7oA5bIkvwIGAUU5YONQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749047163; c=relaxed/simple;
+	bh=CMdACvG14OV6mcJPjJQhnozDlfdk/thvlJavRPEDgCs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=RgXOPkUJed+vJKjHptq9GRONCL1EEMoBvl0kZ8w1JrDv/7jmjCHx3YNqm+Jovo94fZpMLOMHwlWmYwC3UOuJudD9Uz1G1Uj02I5voxeR9auvRphvOAnFUNpQXn4fFG5Mpeh3NXPD7LVWKhcHnOGpRTPD4rFxcDOPNc2ZTMCJs1I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jpwBbNM8; arc=fail smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749047162; x=1780583162;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=CMdACvG14OV6mcJPjJQhnozDlfdk/thvlJavRPEDgCs=;
+  b=jpwBbNM8WjHROoETXWgpcFi8Qp0wCFM0OBYv2zfqSqAwYpWAZDpTde7A
+   VHFb6CUuNlrQflUqPSdhqY0zgfIZzSXo7fqGwbbnNcPG5K5Mw6rznwJzy
+   +/gmgS241lgZd76Tp/U6ySzkOmG5TBQrdLru/GBw2SDgO012T+NFtEBmh
+   5Acn6cZ+MCSDBJK2q0HejUOcoKqTZUlFHxsaZ+dvjxIRlZgrORoNTHjzI
+   UMP65brhT++Ci5W75ToaQkbqJOqzrZmqTwRpv+h5VoXyQSqN5nocfMkQI
+   jVKQ8fs0a675Q+douQvkmNfXmoUfypzqCgSP2QBVBzLgADQrzcK726Due
+   Q==;
+X-CSE-ConnectionGUID: fUxxKkBWQg2rtQS/ZJ8gjQ==
+X-CSE-MsgGUID: z2Cq2upIQeeAKhvsNo4BZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="50373316"
+X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; 
+   d="scan'208";a="50373316"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2025 07:25:57 -0700
+X-CSE-ConnectionGUID: PJVRKgL5R46JJSnWhLBJ2g==
+X-CSE-MsgGUID: 6d+5LLYCRqmxytflJ0isGQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; 
+   d="scan'208";a="176168244"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2025 07:25:54 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 4 Jun 2025 07:25:53 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Wed, 4 Jun 2025 07:25:53 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.77)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 4 Jun 2025 07:25:53 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YKWBIdCczEM74vLO7Vwao2qC0ETiY5AfGfQV6oFtM6KcseAX+5sQli+xBHdATs0hNogOIrNKBXb2WuOHn0C1dAIZOslt82cO3J6iImegp7xt9/8P6uZDOchxjuURI2Wg+GmHSNZRgEaOLmk6Ua0YLabNdON1jup7USPmlAUfMCNtfkie1+QvU2l4s/FvrKuHE3lbBZUuO4gjnMr0qFQf8hjTodg7PZdCST00KFGIBo3/CIqgZNJIvDG0qqsdz0Mi5zbOUCxShxvPxDdaVcVl+52m92Hr/LzHROFtse/7MRDpHh5PBXe7VdvsXSi7uJwYvdKe/tn0r3dfiiOK5BLuxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZbDm3LdtVZ7EFAQhYZmIdDn+nok4DMn7Qkv0Q7y5ukc=;
+ b=VkZJGVNLob3W2GCIU0wgTkeXIwsHI2oVfVu1zZi/Nxr8j9aU5vnHATzDLTrPEyrReN966vGYKkk/MvF4wPPj4VxzpXYuAOYmnGntlYIFvxE9riI4S1uEBfA9bzh/u8l7iw3bi5fLaoU5jr4qKqh2w1JBkq/GOxU8cvAUxc4Z3EwBu5X7HbYxR1L4S8FBniFI2KY52uylzqaJx+hVcGmcbjiNLvN0luso/60thA5clh1oCwMxIIUYR9EBAgBQpFVxPfXQrFLib4eU28FPP23M433OUmPumqSj6X9B/s0OkrKhYGJM7g6O5/J9m8AFlJLU/zXQVyKIfyy7N9zUKkF+Qw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CY8PR11MB7134.namprd11.prod.outlook.com (2603:10b6:930:62::17)
+ by LV8PR11MB8607.namprd11.prod.outlook.com (2603:10b6:408:1ec::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.31; Wed, 4 Jun
+ 2025 14:25:50 +0000
+Received: from CY8PR11MB7134.namprd11.prod.outlook.com
+ ([fe80::cd87:9086:122c:be3d]) by CY8PR11MB7134.namprd11.prod.outlook.com
+ ([fe80::cd87:9086:122c:be3d%5]) with mapi id 15.20.8769.025; Wed, 4 Jun 2025
+ 14:25:50 +0000
+From: "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>
+To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>, "Rafael J
+ . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Davidlohr Bueso
+	<dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, "Jiang,
+ Dave" <dave.jiang@intel.com>, "Schofield, Alison"
+	<alison.schofield@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"Weiny, Ira" <ira.weiny@intel.com>, "Williams, Dan J"
+	<dan.j.williams@intel.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+	"Luck, Tony" <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>
+CC: Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: RE: [PATCH 3/4 v3] ACPI: extlog: Trace CPER PCI Express Error Section
+Thread-Topic: [PATCH 3/4 v3] ACPI: extlog: Trace CPER PCI Express Error
+ Section
+Thread-Index: AQHb1KAatJFCpAJRJUKKaiGMRfbdfrPzC7VA
+Date: Wed, 4 Jun 2025 14:25:50 +0000
+Message-ID: <CY8PR11MB7134BFAE1A4E54EE0C539CCA896CA@CY8PR11MB7134.namprd11.prod.outlook.com>
+References: <20250603155536.577493-1-fabio.m.de.francesco@linux.intel.com>
+ <20250603155536.577493-4-fabio.m.de.francesco@linux.intel.com>
+In-Reply-To: <20250603155536.577493-4-fabio.m.de.francesco@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY8PR11MB7134:EE_|LV8PR11MB8607:EE_
+x-ms-office365-filtering-correlation-id: e7fc1c6e-d7d1-46f8-cddc-08dda373b4b5
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018|921020;
+x-microsoft-antispam-message-info: =?us-ascii?Q?B/FOpAYLHPDHXhbIAHoA8XtFgHPvFttRl+K8La/tHc19MybpoyybbXSoUXiU?=
+ =?us-ascii?Q?Zrg0emXqqIYUsdxzUfvE1rZ+p6q4Adi8tQxG2zxfs4CLmjdtEg5jnm5nLT7r?=
+ =?us-ascii?Q?k+wGDeYhpmauWdUq543T4wfTuQITKSO7AtJxs8IG4nqCsa0JleXhFbytTr8a?=
+ =?us-ascii?Q?jwegybLu5zgGplE5te/St4xaMY8y1iGP1IGnMao+XCbw9JSQE7y5HETYB12Z?=
+ =?us-ascii?Q?XZZdvHTd3dKJiG/Z6VvW1x/EI3jbclodZENbun4qmwVgTa0DkBO6WNe3XumB?=
+ =?us-ascii?Q?CEcic4Lh008MEP1J/mDdCawwA1UVHNgeUnHcKLz59UGuhtYr53VyvGlWDQCl?=
+ =?us-ascii?Q?zdX383UYXTeggkFbZXnPgPH7UlnW2hd5NbQpogo1+rR81igEPrfEBF2ykL4l?=
+ =?us-ascii?Q?KPbnIBqzN3zsLMKAyFGdtCBoZ1HzFc0vrExSS+OeNGVDK8jgJno82TJ9bZHM?=
+ =?us-ascii?Q?W1sAIk/ZnZcByGXXD1zPZJmWu2mdOFdb+2iNyDAQUbfXhI1rx+gzwUZ3wqWR?=
+ =?us-ascii?Q?TDgEgVLlRWWxdKS3R/glCy4upMhS/jHIDNhoSNWBZZwmlnJRuroko0XN5SaA?=
+ =?us-ascii?Q?wxUBZPU5alX5K3QsCyHLhYA09QTADXUl0o+eIjEe6mJYDMbJj9o80GXf8MrP?=
+ =?us-ascii?Q?opb+ixaJTE/q7w3Z5NV39Vzw6BaaFeeuUuGKAxWq78toDXTHx10BfaWPBd3f?=
+ =?us-ascii?Q?821KHZHu86mH1JGtEAnvo9hZoyO4tOTyd0ceKo/ZzHQwuuUtenOBtLhR+eAr?=
+ =?us-ascii?Q?QqAmIi47wrIA4WLsOxBEhXtSl2UfHC7TARaH9xx/xcs7bHGUPHgrgc/8ISWu?=
+ =?us-ascii?Q?iVvnOTzfkz4etYYNqc4eIkY731Kz0Nz7gwqylGO8hjNx9Qa3bPZUXHxPA+yg?=
+ =?us-ascii?Q?KfPfRCsEDsA1ULmuXBKuXdqfUiA9l7VikEogmUQFEzzdIc6EOcjm44tOJNu9?=
+ =?us-ascii?Q?DBjA2E/uNsX21XiSAqsNTjHB3n4dLP0eSbIGPMHOZeBoc3uNVIgJbxm4N4Nm?=
+ =?us-ascii?Q?2O2hC1eElDSgHcggDmqxrmGYjSSdqagR0TmgQlW4F5iQJknJiGzna/nP6GAQ?=
+ =?us-ascii?Q?ys3tTfY9ieE8EGI1l7CrMzFjwsiLaMs5ggvUuF1+Ae7IZtDTVa66IeIqVFgg?=
+ =?us-ascii?Q?gxV6NFvdwP8O7vGBKYy7CW2WVtdrHGxyTmVnvaM62n/NMMlzBgwrg1XUwP5d?=
+ =?us-ascii?Q?VMUTlLvJdVetuRU+StKMpgGLjdWBICWQWEKnaihIOXs4Tj+XQoaVUHzj+Cac?=
+ =?us-ascii?Q?F2m92LXHUZT6KD7wTcGS3/vwBb5KQRvLex1S4L4/AHPQPCuKXYQB0/ktDviJ?=
+ =?us-ascii?Q?JuhHq5F7mxsOrLx2snVD0H41+LC48Lv5+pegEimlY3RV1wvzSB+0t+y4t1fd?=
+ =?us-ascii?Q?VYeRB5WJgrmjZb7Tr3DkPiHeV3Um+wPJhigpgpxzqy+6MOhFb3zcQQrVZ7y0?=
+ =?us-ascii?Q?/3KKGUxG7dr4JEpO2ly3Ho+NRq7pq+JYnqaA7eAS2hiULXVtdrPamOef1D7H?=
+ =?us-ascii?Q?5jn9JJBV6EFTIek=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR11MB7134.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018)(921020);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?81UKyJNVJpAH7aFVyERzUjEQh2/N+lZGi2yDhgtKPtqwIHrrGwSnfPFRRg8X?=
+ =?us-ascii?Q?9yV9VLE7j8UpVKNLThLogddj9mhQjB+bFHtkGTJJz/WBfnx/X4W2pmqPXyPO?=
+ =?us-ascii?Q?cqArxH0hHSUbft8nRM/veadslNKpJMBk2zWMJPqn57T8W7A9CPOY9r6k+SLP?=
+ =?us-ascii?Q?R11mLZ6sdlWt7iOKBV2jLoJdPXK1Sjhcvaj4me+JaaG7LXgnhBWh21ikEisJ?=
+ =?us-ascii?Q?jojBgIpAq+AZR1SEEcCEyzKPMgNzyXNIwQJWYd35Q8GhNotI2XZQtxrt4Zol?=
+ =?us-ascii?Q?UGYEs3LoMisQZu/RhVsaaB9lwPwyQGIVyVJDzmABWOvyunsttYFBnO9D8HXZ?=
+ =?us-ascii?Q?3svpeVqSAI/Xs3PDYnUejZHz7k+O2RShiStr6YZyNvg3jM+mYNOvYB+aDSWi?=
+ =?us-ascii?Q?2hFFWjNjRkmnfTn7tKyvB5KOeB1+lBguyBvYUO7wla4FOnjwCysbO6hQy7y2?=
+ =?us-ascii?Q?iALNxTh9fL8E3SkhS1C09rA5hB/Mx8g+Aep2olpYtzT/A+qUv6NS8f/cEzdi?=
+ =?us-ascii?Q?OodsLfikXe/c8AXZXPqtO/5wxDzRhO/yUfQeHIVYgwDOAHHFbC7es3gbDtCA?=
+ =?us-ascii?Q?YVx9WnFXKvCvN8hWo+4wMBWdh6euWcKXp8ZEE9EjmC/xVoLWHs4rLDPenC/k?=
+ =?us-ascii?Q?472qEFnRPHZ70ZQrC1yzQpWD591bLty6WYgmm++r++M6qg/iUsOtrUJfjxdV?=
+ =?us-ascii?Q?zs+cYa2/877/mty9qK9jW24kSMP2Obh++6Fkf8FVwJ6a0s6z6Kf5J4eid0xn?=
+ =?us-ascii?Q?Ca+3/mNTVyA6cyFK8URrh5OJAN770rUJbDZYAyK8vCnsje47d6ZRlDJuYEK8?=
+ =?us-ascii?Q?tpaV49VrailYeQv8gOc2ERU8vzbbVN/iwmkL8FZunui/2XSd+dORcho2kXb6?=
+ =?us-ascii?Q?LJSF9jfojOr8XiuLxAJ+kuD+PYHUOd0ObO4r3aeN+tCHwoWR6CNE2kpxP4pY?=
+ =?us-ascii?Q?d/xpoQ6Vd91y3jMnfezDBaBlBRE/IEYEOSV86U6uHZXSv9q7r+vJ7OS8Yoc4?=
+ =?us-ascii?Q?ZpOpsR+bHVpeK4g1jylMO7f3esYMFY21NJjw7EZ/Cik1UFQPsOcBAhCR6K3x?=
+ =?us-ascii?Q?cc0qACwYsQgXHM7InAr6suEORWjbmIgvURDJIpC6MZRdn8ZQxhTDHnatyDz5?=
+ =?us-ascii?Q?6GFnQCqY2ITrtdiFGMQ2syXUx0mIeEZFAckWKkleQ8U5FXskssi5zStOjsZU?=
+ =?us-ascii?Q?qxrFUddAjI4nd76oiVqnGb7ZZeZYYcVXqOWi0Btkd5OoUhgshhjr94Hcx+Kt?=
+ =?us-ascii?Q?u3td//NSqiJsIhYEMsj61ghl19irwMeAgoN/c7K9fOlv0m59c2EqPaz/l26v?=
+ =?us-ascii?Q?Uamy8gclGlhwq8HR5JAT5htTP6HnmVP0oXlUAhnxIaRubfqnnAb83z8k0fgA?=
+ =?us-ascii?Q?ouvb2NCcQXxkrwpdx0F05TuPESLaXHoCe4MXHkUM5MAFaxYroTap1Swsj2il?=
+ =?us-ascii?Q?k3FQziPmYYFcQ/fA67szPz9mU72BjuNPH8BeR8j6iK0BGZpV4OTFRecFU1lz?=
+ =?us-ascii?Q?zI48PelZPHw3gIfdWIN5VqaGd5qKtzUrELr2VRGzsn4WEL5KP7BiqdFKzaNb?=
+ =?us-ascii?Q?t+7y9/P+Q8uFzJAlzsYsQh0r3TT+kTThfTamJYCw?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7134.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7fc1c6e-d7d1-46f8-cddc-08dda373b4b5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jun 2025 14:25:50.4831
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 6DhFLHu8TQKS2tEKy8UKwF3YmNnlaIgCwnBSrdcElwQPEqkQHobu1CEoXCH/v65ezTkD7MNjI2XANaTdbJGq4g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR11MB8607
+X-OriginatorOrg: intel.com
 
-Extend the `platform::Driver` trait to support ACPI device matching by
-adding the `ACPI_ID_TABLE` constant.
+> From: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
+> [...]
+> Subject: [PATCH 3/4 v3] ACPI: extlog: Trace CPER PCI Express Error Sectio=
+n
+>=20
+> I/O Machine Check Architecture events may signal failing PCIe components =
+or
+> links. The AER event contains details on what was happening on the wire
+> when the error was signaled.
+>=20
+> Trace the CPER PCIe Error section (UEFI v2.10, Appendix N.2.7) reported b=
+y
+> the I/O MCA.
+>=20
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Fabio M. De Francesco
+> <fabio.m.de.francesco@linux.intel.com>
+> [...]
+> --- a/drivers/acpi/acpi_extlog.c
+> +++ b/drivers/acpi/acpi_extlog.c
+> @@ -132,6 +132,34 @@ static int print_extlog_rcd(const char *pfx,
+>  	return 1;
+>  }
+>=20
+> +static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
+> +			      int severity)
+> +{
+> +	struct aer_capability_regs *aer;
+> +	struct pci_dev *pdev;
+> +	unsigned int devfn;
+> +	unsigned int bus;
+> +	int aer_severity;
+> +	int domain;
+> +
+> +	if (!(pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID ||
+> +	      pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO))
+> +		return;
+> +
+> +	aer_severity =3D cper_severity_to_aer(severity);
+> +	aer =3D (struct aer_capability_regs *)pcie_err->aer_info;
+> +	domain =3D pcie_err->device_id.segment;
+> +	bus =3D pcie_err->device_id.bus;
+> +	devfn =3D PCI_DEVFN(pcie_err->device_id.device,
+> +			  pcie_err->device_id.function);
+> +	pdev =3D pci_get_domain_bus_and_slot(domain, bus, devfn);
+> +	if (!pdev)
+> +		return;
+> +
+> +	pci_print_aer(KERN_DEBUG, pdev, aer_severity, aer);
 
-This allows Rust platform drivers to define ACPI match tables alongside
-their existing OF match tables.
+Is there any reason not to use "KERN_ERR" log level?
 
-These changes mirror the existing OF support and allow Rust platform
-drivers to match devices based on ACPI identifiers.
-
-To avoid breaking compilation, a stub ACPI match table definition is
-added to the Rust sample platform driver. Functional support for ACPI
-matching in the sample driver will be provided in a follow-up patch.
-
-Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
----
- rust/kernel/platform.rs              | 14 ++++++++++++--
- samples/rust/rust_driver_platform.rs |  3 ++-
- 2 files changed, 14 insertions(+), 3 deletions(-)
-
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index 3cc9fe6ccfcf..e6cc878a5a37 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -39,12 +39,18 @@ unsafe fn register(
-             None => core::ptr::null(),
-         };
- 
-+        let acpi_table = match T::ACPI_ID_TABLE {
-+            Some(table) => table.as_ptr(),
-+            None => core::ptr::null(),
-+        };
-+
-         // SAFETY: It's safe to set the fields of `struct platform_driver` on initialization.
-         unsafe {
-             (*pdrv.get()).driver.name = name.as_char_ptr();
-             (*pdrv.get()).probe = Some(Self::probe_callback);
-             (*pdrv.get()).remove = Some(Self::remove_callback);
-             (*pdrv.get()).driver.of_match_table = of_table;
-+            (*pdrv.get()).driver.acpi_match_table = acpi_table;
-         }
- 
-         // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
-@@ -98,7 +104,7 @@ fn of_id_table() -> Option<of::IdTable<Self::IdInfo>> {
-     }
- 
-     fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>> {
--        None
-+        T::ACPI_ID_TABLE
-     }
- }
- 
-@@ -129,7 +135,7 @@ macro_rules! module_platform_driver {
- /// # Example
- ///
- ///```
--/// # use kernel::{bindings, c_str, device::Core, of, platform};
-+/// # use kernel::{acpi, bindings, c_str, device::Core, of, platform};
- ///
- /// struct MyDriver;
- ///
-@@ -145,6 +151,7 @@ macro_rules! module_platform_driver {
- /// impl platform::Driver for MyDriver {
- ///     type IdInfo = ();
- ///     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+///     const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
- ///
- ///     fn probe(
- ///         _pdev: &platform::Device<Core>,
-@@ -165,6 +172,9 @@ pub trait Driver: Send {
-     /// The table of OF device ids supported by the driver.
-     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>>;
- 
-+    /// The table of ACPI device ids supported by the driver.
-+    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>>;
-+
-     /// Platform driver probe.
-     ///
-     /// Called when a new platform device is added or discovered.
-diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-index 8b42b3cfb363..e3992e7a71e9 100644
---- a/samples/rust/rust_driver_platform.rs
-+++ b/samples/rust/rust_driver_platform.rs
-@@ -2,7 +2,7 @@
- 
- //! Rust Platform driver sample.
- 
--use kernel::{c_str, device::Core, of, platform, prelude::*, types::ARef};
-+use kernel::{acpi, c_str, device::Core, of, platform, prelude::*, types::ARef};
- 
- struct SampleDriver {
-     pdev: ARef<platform::Device>,
-@@ -20,6 +20,7 @@ struct SampleDriver {
- impl platform::Driver for SampleDriver {
-     type IdInfo = Info;
-     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
- 
-     fn probe(
-         pdev: &platform::Device<Core>,
--- 
-2.43.0
-
+> +	pci_dev_put(pdev);
+> +}
+> +=20
 
