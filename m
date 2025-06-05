@@ -1,52 +1,52 @@
-Return-Path: <linux-acpi+bounces-14155-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14154-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21173ACF2AE
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jun 2025 17:13:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FC90ACF29D
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jun 2025 17:11:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BB787AC8F7
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jun 2025 15:10:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94E08189A8D2
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jun 2025 15:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F389826156A;
-	Thu,  5 Jun 2025 15:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A8A23E33A;
+	Thu,  5 Jun 2025 15:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="dGTjAS2Y"
+	dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="eGVLB0tJ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CC1213236;
-	Thu,  5 Jun 2025 15:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D6E21B91D;
+	Thu,  5 Jun 2025 15:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749136200; cv=none; b=n+CXeaxquDyHACNSSlrklGP0b1KcbY9NF6/5eUTdyCZBlhH7c+pdh83Vo8tKMbUyoG0ZLaF2U+NSqUiTCQwah7fzU/ufJ7uEbJx2XDhbLudvWg7qUHgCpE14Lghi+Crs0KEa+Lek82lQfJgHAKAW3xrpaMj6esTC5C++MT/VWyM=
+	t=1749136199; cv=none; b=Mlk0bdumg/Icf7GbuL+0DrskVR0L1D40G9PSnNGvjKvX5BSUKsxQ2J+6M3vXxOchGlHHiNHeRB661FPHgxThQxbgkPUu3FcSnIP6XvUVmykawnR7dhGFj6h1pfOthgXRBS2D/Y+ZKIwKLrJyljootNl66RLw+KvDsCQMAeCyZ18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749136200; c=relaxed/simple;
-	bh=zn5CSctDyQsT/L2Pm39ZZn7bjDup1bfb5cvHM/imHRE=;
+	s=arc-20240116; t=1749136199; c=relaxed/simple;
+	bh=iSSuAuBGh82thOhg4pzQZ11bbFxV97kMb3qIoyS8P0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ffdbByc0sWGpp5Q58iJKargjog/crjVuDkpOmep0Wh5FOp74fNz4F8g1x8VCXszc15dU2JeuAwWKVrCj+va9a+Fv2OFPgT9OkeXqaMS+DjkxMelCZFu0GEvXFHVOEReWhS9S8sYy341+R2TGISdr8thgfWFN1ScOnvmnoCfxis0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=dGTjAS2Y; arc=none smtp.client-ip=79.96.170.134
+	 MIME-Version:Content-Type; b=WozjLk/mj3aPPHOT2+TatNBkU8Et7aotNMcM+btQzh82i2vvO5Q8MrSRvVLU04iRMsmiTgLp9a4RR14ooYdDZUgLDJFmW1ZVaQAWRWxX6Hmb80xAgc/GzXoe7I+XKiuaBFUzivVvmmoth9qkKB60B7mnvwyZiZH/PCXWM8c29T8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=eGVLB0tJ; arc=none smtp.client-ip=79.96.170.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
 Received: from kreacher.localnet (unknown [5.63.189.50])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 2D30D66C03E;
-	Thu,  5 Jun 2025 17:09:47 +0200 (CEST)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 3E5E966C03D;
+	Thu,  5 Jun 2025 17:09:46 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
-	s=dkim; t=1749136187;
-	bh=zn5CSctDyQsT/L2Pm39ZZn7bjDup1bfb5cvHM/imHRE=;
+	s=dkim; t=1749136186;
+	bh=iSSuAuBGh82thOhg4pzQZ11bbFxV97kMb3qIoyS8P0A=;
 	h=From:Subject:Date;
-	b=dGTjAS2YScgoZkHJ+Oo4cWLkjAnDp9CEQxScjDah+ZFMDIOkRkmnhiqXTozBL66Ex
-	 +7Fe3jyfjEUV7pwOaR/TPXoIzCrkLYZJ7NetGsF9hTHeURnaL/CZMGtEOJp5zm+CNp
-	 gRi0kBLh0cQ2QCPlU+YGgUxADLzYyycXwliDfb09rIb7AaMxXKikrhp44waH5fa8PF
-	 pjdGwxuVHP1Ih9OBmlSOy3tHPpmDVG4083bueSU/P4ORIZYcBN3VIUx25dQ9ZnrBJr
-	 J0Zd2mB80d4neEVUMx9oLQ4G9CDmMxmM2JTWmZRroPOgBjfx/TgDwnOMev9XqDJloO
-	 B3biorch762ew==
+	b=eGVLB0tJyqmAsG4tVFxtuopKXVIuPNrSe3u4A4CrBtDgouZ8oDpN97yapfFCoAG/s
+	 abN28SaxfFKu18VA64HAvBVh7Fqif+CWyDoydXRwj/TcaVYf88qHcs01jkeY8E+ltt
+	 PQjCBO7WVQnAE5s5uvL93y2upH3SOPLPO0JXCRwN6iJquZ/IMXFCLpjeowByWTDETc
+	 dM3JdoGqz6GLVCSIDy1HBLgBg+XOGbnX5XPRaMTVogPDNEamOg3w+TdkHGwhH3F2YK
+	 TvlI1bEmiscCg/m2Oz1BcU/EQko7a1S3Nl8Nl5Xgpow+gTB69KuiDNLmu/WZf/yJOr
+	 Sn62fY5rvICEQ==
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: x86 Maintainers <x86@kernel.org>, Linux PM <linux-pm@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, Len Brown <lenb@kernel.org>,
@@ -55,9 +55,10 @@ Cc: LKML <linux-kernel@vger.kernel.org>, Len Brown <lenb@kernel.org>,
  Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
  "Gautham R. Shenoy" <gautham.shenoy@amd.com>, Ingo Molnar <mingo@redhat.com>,
  Borislav Petkov <bp@alien8.de>, Linux ACPI <linux-acpi@vger.kernel.org>
-Subject: [PATCH v1 2/5] x86/smp: PM/hibernate: Split arch_resume_nosmt()
-Date: Thu, 05 Jun 2025 17:05:24 +0200
-Message-ID: <3361688.44csPzL39Z@rjwysocki.net>
+Subject:
+ [PATCH v1 3/5] intel_idle: Rescan "dead" SMT siblings during initialization
+Date: Thu, 05 Jun 2025 17:06:08 +0200
+Message-ID: <10669885.nUPlyArG6x@rjwysocki.net>
 In-Reply-To: <2226957.irdbgypaU6@rjwysocki.net>
 References: <2226957.irdbgypaU6@rjwysocki.net>
 Precedence: bulk
@@ -71,98 +72,35 @@ Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 5.63.189.50
 X-CLIENT-HOSTNAME: 5.63.189.50
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: dmFkZTEzSEGzZ/ONVrWENr6vcXfS3S2jicISDIUk4t6WJg+Zjj/tMsiKrH6p/W9hVn65rDd2JKDd5uTYEHknKQT2r7pOoqF3rdVD5yhK7Rprhh7g9Zvcj23lpp2rY7UCLtUpLjrE40L5kP2ENOt7F7JFMQrsU0BxCSyD9ImwCg/5uHKqloLfTfX1B6buKhq24d5iBCDj1fuCRg5EDPCCcGoXCAG/xJ8DxnVxdLMqNeA6Murrcf5yV2bVSf0qD3cTb1ZGJEaagT8ZwEZw1hwmHq4GBUTZA/geTkMBRKK8IMyXCx4LjU27eYT2E9Bi7kPkpz1heTPAWpmaTKgTxzYdBmQllqRTTwMDfwG+Sgkl3X2bgxU9r4IS3Tl9pii23Hp2cX6urAKdnsGV9LGP7DU5W5jGFf6HL4d3qV/8+OUbV1vnRD1WTrNI/1taJTojkpvyIpTpGJr598cIfei46Yt7yXKH2jjvfwH2y+Vohnf+1tlwl8d4Z4jJHSwRKG/s2ZQ9tMVn65xIpQxXNqH70uNEPRDk+20vjoDMEX5rziCkuFqLWebbD9rpWMO58weWz/+XTOFEOuznvL8JE2KcGt8cpeqezge5Dnm7dGW4FUedskzCerp3+RxGsvY8c1UM7c1+p1++SGe5LJmpVlfifu+8OgJC3OJBqayA6D2IIkYdKO2HRzQ3VA
+X-VADE-SPAMCAUSE: dmFkZTEzSEGzZ/ONVrWENr6vcXfS3S2jicISDIUk4t6WJg+Zjj/tMsiKrH6p/W9hVn65rDd2JKDd5uTYEHknKQT2r7pOoqF3rdVD5yhK7Rprhh7g9Zvcj23lpp2rY7UCLtUpLjrE40L5kP2ENOt7F7JFMQrsU0BxCSyD9ImwCg/5uHKqloLfTfX1B6buKhq24d5iBCDj1fuCRg5EDPCCcGoXCAG/xJ8DxnVxdLMqNeA6Murrcf5yV2bVSf0qD3cTb1ZGJEaagT8ZwEZw1hwmHq4GBUTZA/geTkMBRKK8IMyXCx4LjU27eYT2E9Bi7kPkpz1heTPAWpmaTKgTxzYdBmQllqRTLWBelNPAhRVW4VwQLSx0e6PMhuUU5ambMzS8U+bwJv9/Cb+JdSWHenLDzZ5gIBEnagm6yX139s9sck0qGDMIC2y1VfZSq1I0HlNlzbDM9g+JEbxfAfNyfBUr1/iA4QPyC6xAxjLkgosUTidY1ZtgzdnnMqoSNyG1skerF62mk9N9bf0ZQL9SMZyX0pxlH5hCx1RhBz8fW0EtTwi1ytUVZmZzDcpv+j4s00gw5p2NEYVEEfbt+M/N+0uFCEdabEfzDPDSpo+BbtQQbTL7hidWb4l5Atz8WQc2QWNBHPyWMFhP7ehnyK7g2OAEFTH78IqVqkrHFk5a60Goa9VBB6cTlw
 X-DCC--Metrics: v370.home.net.pl 1024; Body=12 Fuz1=12 Fuz2=12
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Move the inner part of the arch_resume_nosmt() code into a separate
-function called arch_cpu_rescan_dead_smt_siblings(), so it can be
-used in other places where "dead" SMT siblings may need to be taken
-online and offline again in order to get into deep idle states.
+Make intel_idle_init() call arch_cpu_rescan_dead_smt_siblings() after
+successfully registering intel_idle as the cpuidle driver so as to
+allow the "dead" SMT siblings (if any) to go into deep idle states.
 
-No intentional functional impact.
+This is necessary for the processor to be able to reach deep package
+C-states (like PC10) going forward which is requisite for reducing
+power sufficiently in suspend-to-idle, among other things.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- arch/x86/kernel/smp.c      |   23 +++++++++++++++++++++++
- arch/x86/power/hibernate.c |   17 +++++------------
- include/linux/cpu.h        |    1 +
- 3 files changed, 29 insertions(+), 12 deletions(-)
+ drivers/idle/intel_idle.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kernel/smp.c
-+++ b/arch/x86/kernel/smp.c
-@@ -299,3 +299,26 @@
- 	.send_call_func_single_ipi = native_send_call_func_single_ipi,
- };
- EXPORT_SYMBOL_GPL(smp_ops);
-+
-+int arch_cpu_rescan_dead_smt_siblings(void)
-+{
-+	enum cpuhp_smt_control old = cpu_smt_control;
-+	int ret;
-+
-+	/*
-+	 * If SMT has been disabled and SMT siblings are in HLT, bring them back
-+	 * online and offline them again so that they end up in MWAIT proper.
-+	 *
-+	 * Called with hotplug enabled.
-+	 */
-+	if (old != CPU_SMT_DISABLED && old != CPU_SMT_FORCE_DISABLED)
-+		return 0;
-+
-+	ret = cpuhp_smt_enable();
-+	if (ret)
-+		return ret;
-+
-+	ret = cpuhp_smt_disable(old);
-+
-+	return ret;
-+}
---- a/arch/x86/power/hibernate.c
-+++ b/arch/x86/power/hibernate.c
-@@ -188,7 +188,8 @@
+--- a/drivers/idle/intel_idle.c
++++ b/drivers/idle/intel_idle.c
+@@ -2506,6 +2506,8 @@
+ 	pr_debug("Local APIC timer is reliable in %s\n",
+ 		 boot_cpu_has(X86_FEATURE_ARAT) ? "all C-states" : "C1");
  
- int arch_resume_nosmt(void)
- {
--	int ret = 0;
-+	int ret;
++	arch_cpu_rescan_dead_smt_siblings();
 +
- 	/*
- 	 * We reached this while coming out of hibernation. This means
- 	 * that SMT siblings are sleeping in hlt, as mwait is not safe
-@@ -202,18 +203,10 @@
- 	 * Called with hotplug disabled.
- 	 */
- 	cpu_hotplug_enable();
--	if (cpu_smt_control == CPU_SMT_DISABLED ||
--			cpu_smt_control == CPU_SMT_FORCE_DISABLED) {
--		enum cpuhp_smt_control old = cpu_smt_control;
+ 	return 0;
  
--		ret = cpuhp_smt_enable();
--		if (ret)
--			goto out;
--		ret = cpuhp_smt_disable(old);
--		if (ret)
--			goto out;
--	}
--out:
-+	ret = arch_cpu_rescan_dead_smt_siblings();
-+
- 	cpu_hotplug_disable();
-+
- 	return ret;
- }
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -172,6 +172,7 @@
- void arch_tick_broadcast_enter(void);
- void arch_tick_broadcast_exit(void);
- void __noreturn arch_cpu_idle_dead(void);
-+int arch_cpu_rescan_dead_smt_siblings(void);
- 
- #ifdef CONFIG_ARCH_HAS_CPU_FINALIZE_INIT
- void arch_cpu_finalize_init(void);
+ hp_setup_fail:
 
 
 
