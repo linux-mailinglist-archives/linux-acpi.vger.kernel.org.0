@@ -1,183 +1,163 @@
-Return-Path: <linux-acpi+bounces-14166-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14168-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627EEACF4C9
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jun 2025 18:52:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE16ACF5BF
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jun 2025 19:53:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 023C77AB8BF
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jun 2025 16:51:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDA00189ABCE
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jun 2025 17:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D414275864;
-	Thu,  5 Jun 2025 16:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A63327AC34;
+	Thu,  5 Jun 2025 17:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S9dkOuxw"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="N3kPXvIw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFEE274FF5;
-	Thu,  5 Jun 2025 16:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3168B2750F0
+	for <linux-acpi@vger.kernel.org>; Thu,  5 Jun 2025 17:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749142357; cv=none; b=YDk9vSClL+bWP825VFEIfKv0RO/8EGV6tMqzW/NgDzMPT0NcarnzQFVg6VXnU+8MzNWEylPX0XS9WzRYYAJCNyueYYQF61UqUV2qKe8KNQoBalSjMrCnICVutAHL1MvXMkrvE/LiQSKQO7sQgU1sZZHrpr/KkNYDb+dQTqRaZQk=
+	t=1749145988; cv=none; b=XRJij+RVVq+/t59/JcXDahPe8fPfp4tYmNZ522byTYinmjSOsYSQbzCRny8HlVhm2UF5WvB/GhPW9DK0LU8oEAgQ5giYlDt2N2VxqL8HvYmVeyoPaIwXZM5bCYiGTT266cF+GNU3W73GpPV4zN4mm0+MVEHSAv4Ahu0A7HzU+MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749142357; c=relaxed/simple;
-	bh=eX5FQHelIYrl38B1a0jr4ldOd7+nuInFcQIy7hA5GlU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QsN99hg2PSLkohWMQ3KewkTkZ5fRIdthcLdBlEfYbOjLHL5F8JJ2q9dn5/AHWSTqp8dZJyUFwzzH/ZsBUIL2S3957r97R+vgUdAwrLlog4GV1+RKass5ZQ9zF+DSpMkuvRZNXsGWPC+GM08O4TlMSMKDv5w42mvlXa0rlKOPRFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S9dkOuxw; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-451d54214adso10653295e9.3;
-        Thu, 05 Jun 2025 09:52:35 -0700 (PDT)
+	s=arc-20240116; t=1749145988; c=relaxed/simple;
+	bh=9bzS54upE3rRAonWBAvA9rFLasmw9Br1LIIjE4DGYuQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Nlh8IzCkXsZhzUiX8aTdgznYVJQzjrY7KUIUHWSV4cvJyLlOsa9K7qpdGGEZwujNje7iR25LCtELI6lCxei3S/kzHP4cH0oc93wiOJCnUpZnkC66FnucyTRCNxFARUTZqB0fN058WM9Ew1PG46yI8msEeNFc2LhxE5qjIF/r93U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=N3kPXvIw; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-54e7967cf67so1434558e87.0
+        for <linux-acpi@vger.kernel.org>; Thu, 05 Jun 2025 10:53:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749142354; x=1749747154; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IYiYcUa0Zpd9O4aRs/ez0DwzmhVXN2VCaXs0fidvEQc=;
-        b=S9dkOuxw9mBB+OGU0v9Knwtg8W9X6lcu1Lgs0B9rd25bCxCdWSBdsz+9naimxUZpNT
-         zXKoXlZORkpr3S0TjV3pG1ycyRK2d84m5/ovPo/trWkmDA2J/QzkD9klymZJ0fNC5zt3
-         txZk0zNZOuXHCGi/477nCC9mDBT+IzRts9URxqsmsmKI5DgLMFJWDsyFA+0V9qH4OvLE
-         jKZ6igxDjf/gXatGGgZZBdv9EUgeSnlSmsArsPSgPp/MaGcTJ7lYrrU1m/Bsu8xDKj9X
-         8H99VUR9E3Qd1ahRztb2naz/GrBhTH0/tD5vtceHwFxfWdEmZEogXPKZpYxpRg0HjdXw
-         F3OA==
+        d=chromium.org; s=google; t=1749145982; x=1749750782; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qg8B5BhnvwwywdhBinf22u9UEobn5/4x1o1lWUndYM0=;
+        b=N3kPXvIwmX+CDcGbVtvQyBHqnAw4wRwfWsKoRmpClmjchCcMtJsDTnkxxp8Bq86x4m
+         4k5IFnZBE+AX4YgIUEa3F3+/bbOlXV7uVaGZ4T5P5bP6HUcTr6GlUgciNTod9rnBMhyp
+         cCcAARQwisqCyj+yGzLEcOVsrZECC8+UPVg2g=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749142354; x=1749747154;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IYiYcUa0Zpd9O4aRs/ez0DwzmhVXN2VCaXs0fidvEQc=;
-        b=iE+wUVVBPYFMJ4d8rA0YCVa5ZczN4zSedoHPIqJwQX3kbMfQlBQLtgDB4v8RV5lM3O
-         hrrubXlCHkFKd8s4tcM2Q7QERTZPr28RFeR+FRBpBOlXHqX3wd63nvaAtoRrIT8gXF+r
-         PaKAhQ+XP2hJIRPkTdyvB5SCGEV6tMbpX6c+DqIzkxqv5hqlgAqEcT8fbdJ0jVgT/ewG
-         fUT00TVJcWOQu8nqTI1pUllv9lUlzYSIIJ38ObIV0//Yu6VCuwAsYba2rVn3ypcstwK0
-         N7LmZ0hsg8XgBDqsFQrnL3gcahW+6lknMJ566zKVO9NylP6hNIpljpPpvFs9sVh7D7DL
-         r37A==
-X-Forwarded-Encrypted: i=1; AJvYcCUEjqxbczcnG1vvPTrAMHfbnYi0XBft5eYRAFeA2kAsw+Q5fa3weCrQ1VwoChNUxsQgqO8ZwzzQLAoaYnKp@vger.kernel.org, AJvYcCUv6O7DI5a9Fgz7s2uG+9qRvgI5eAYXo+IYnryfAcxhY3sZp4XtGgJZY8HxUtBUU/y2PVplR4MTRkWK@vger.kernel.org, AJvYcCXTg9F+iHMYPjCZUmP/H29DbBK3Ge9erMo+OP91X2FOVId4vGzBqpmNr8wSRMKJ9eZutqbG8KLRIvGLETK2Gi0=@vger.kernel.org, AJvYcCXlphbJHqCqNBdA0Yfr18H4lNlq0ZSL3ZfB7xILrpVoN6aiC0/h5C1lRlSp5m1FNEb744qsAZmxG+HoqA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWcJlsf23o45L3vqZp2nQ8TyoP8HTLcSyT5p3TjlrT6Cft67q9
-	uRh8S8+tQFiqG8Aaa676BnLujep/bNr/Bve7ZpOl6wAH/P4UxlSKOZBG
-X-Gm-Gg: ASbGncvibyhaH127r5EwQL/SHVvdFuACb0tIG2dlS/sr2/J4/sM1sCmpvg6qyYIFAVu
-	FBqZlQ0bNzaJfE7lhkAisP4qLL1JNuPHqwe2ANVl4AAL8jM2JBDhcJkgEipVXUI+7ZXgE8FKtvC
-	Da+kgyKZA+nQS8HBPkVoZ5BHEmQLn57QNaF4I/Vcy8VWP9f4JLHp19j8nLBzFawwBLbAx1OwxJv
-	EbAFEUQdNjWH85weUq2R0seP3K+FzIInhKEBqCBVa2lItmFqbjPQPdmKl++fL2ElRwgiPfLp++w
-	dzu2hYL2Nv2nHaAqjrs0FVh4cPxwX6aGzSia7vlLhRt71VvkTYreLoDMtmSN9AW/ooWzOFG2k45
-	aYx2mi8A/mG+q
-X-Google-Smtp-Source: AGHT+IHeFI6tIeh1xtFilZ//Dhpls7kj68vpPnNlI9lKURjevXM8botgo7CebM3JFPfxAU3VtdR5kQ==
-X-Received: by 2002:a05:600c:870b:b0:43d:42b:e186 with SMTP id 5b1f17b1804b1-45201350c40mr291925e9.8.1749142353614;
-        Thu, 05 Jun 2025 09:52:33 -0700 (PDT)
-Received: from igor-korotin-Precision-Tower-3620.. ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a52a1993ebsm2184495f8f.93.2025.06.05.09.52.32
+        d=1e100.net; s=20230601; t=1749145982; x=1749750782;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qg8B5BhnvwwywdhBinf22u9UEobn5/4x1o1lWUndYM0=;
+        b=EVW4fNMYMZIx3WgiFMguLhSDz+Vxsq096hYSdC20CQBipSg7yJajoCsf/zznQRsyBu
+         EQUcUlUHWudfX0auwiLvQYmnd49tPr94or2snreztCu/vIavne8hP3e8MXWrcm8Do36K
+         X74ftKMoSuOe6DjoVjvnLhsAr3EnIzU/ETL7NkswLKwCwUe74VOoCqp0s0gSFZCu6T9+
+         eeWonlgldfzdn+iwFkOJLcuL2EbveDihDTJqsWLpfkIbfQVU/PwWVyuigeRCKF7u8hG2
+         wIgGSzaTR8bQ5R+X9+no+jzYNPdodFZEB9VQkfrWV+Mf4nT5y1x/KX3Wc2E3nQHxczsE
+         WOEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUf+WLkUZqinT6qxLWhZzqz6ZiZOoBWaDXxXFT+6vWT5FEPq8XjPc/sC/kXBS3tzOXBAg/K91tq2HO3@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3/Djz6BPn+cwkDj39YMaV4vJwZJCpW33I0UNMDXJBoEkBGt56
+	F+mi4tfoOL0KzDcu9Hk55l0+eY5udPF2703DqoaZBAi6hhk8GOYOxwz6ge/jZ0B0Yg==
+X-Gm-Gg: ASbGncvgF3d1zgreSrTvzsnsfT8KYR/E4LTT50IX3Fs8bwgUmQzS5R1/2DzsWRFnPNV
+	3KMGehNGNFZXMlC6MVzdqnsbkHTCoN6J8w9NUEJz2qd+P0Dv86wp5swqHxKE9J3ce8DQUac7tV+
+	vvdmScO8GtU59HL5ksD+SR7MXS98NbwzcX3M/Fk9VpnUFLBLTqVxUAk1MA3wG0juhMt0jLBIycW
+	q6vq2/Pxifil8VPuY1PTJwGF8alFK/FN4EDEgXFaQLmsCcqSiJKEZJoDNYSDaymC0dvla5HR5Hf
+	VMtb8yKIDhAcN/5dnkj4gxAq1odW4l5g657c95IXfTcqo01T2+3GTddbETXIAN6JPTnLH9buwJY
+	puwesGvEpA0S+z2XrL2XRPvx5hw==
+X-Google-Smtp-Source: AGHT+IGFGY6JTGI6n0VkqKupH8+3OyGz0rwOerV6A58fRuz/+CnpGIvq6+ZmFKqYacJXbJhZzyj18Q==
+X-Received: by 2002:a05:6512:3b89:b0:553:3892:5ead with SMTP id 2adb3069b0e04-55366bd23bbmr23901e87.2.1749145982087;
+        Thu, 05 Jun 2025 10:53:02 -0700 (PDT)
+Received: from ribalda.c.googlers.com (90.52.88.34.bc.googleusercontent.com. [34.88.52.90])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-553379379c2sm2641210e87.251.2025.06.05.10.53.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Jun 2025 09:52:33 -0700 (PDT)
-Sender: Igor Korotin <igorkor.3vium@gmail.com>
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Tamir Duberstein <tamird@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Xiangfei Ding <dingxiangfei2009@gmail.com>,
-	Igor Korotin <igor.korotin.linux@gmail.com>
-Subject: [PATCH v2 5/5] samples: rust: add ACPI match table example to platform driver
-Date: Thu,  5 Jun 2025 17:52:31 +0100
-Message-ID: <20250605165231.3663810-1-igor.korotin.linux@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250605161956.3658374-1-igor.korotin.linux@gmail.com>
-References: <20250605161956.3658374-1-igor.korotin.linux@gmail.com>
+        Thu, 05 Jun 2025 10:53:01 -0700 (PDT)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH v2 00/12] media: uvcvideo: Add support for orientation and
+ rotation.
+Date: Thu, 05 Jun 2025 17:52:53 +0000
+Message-Id: <20250605-uvc-orientation-v2-0-5710f9d030aa@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHXZQWgC/3WNyw7CIBREf6W5azGAoqkr/8N0gTzKXRTMhRJNw
+ 7+L3bs8kzkzG2RH6DLchg3IVcyYYgd5GMAEHWfH0HYGyaXiZ35iazUsdSUWXXqXKX/1YrRaafu
+ Ebr3IeXzvi4+pc8BcEn32gyp+6f+tKhhnQnNj1Kj0Rdq7CZQWXJdjohmm1toXP2vZL7EAAAA=
+X-Change-ID: 20250403-uvc-orientation-5f7f19da5adb
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Hans de Goede <hdegoede@redhat.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Hans Verkuil <hverkuil@xs4all.nl>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-usb@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
+ Ricardo Ribalda <ribalda@chromium.org>
+X-Mailer: b4 0.14.2
 
-Extend the Rust sample platform driver to probe using device/driver name
-matching, OF ID table matching, or ACPI ID table matching.
+The ACPI has ways to annotate the location of a USB device. Wire that
+annotation to a v4l2 control.
 
-Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
+To support all possible devices, add a way to annotate USB devices on DT
+as well. The original binding discussion happened here:
+https://lore.kernel.org/linux-devicetree/20241212-usb-orientation-v1-1-0b69adf05f37@chromium.org/
+
+The following patches are needed regardless if we finally add support
+for orientation and rotation or not:
+- media: uvcvideo: Always set default_value
+- media: uvcvideo: Do not create MC entities for virtual entities
+
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- samples/rust/rust_driver_platform.rs | 40 +++++++++++++++++++++++++++-
- 1 file changed, 39 insertions(+), 1 deletion(-)
+Changes in v2:
+- Add support for rotation
+- Rename fwnode to swentity
+- Remove the patch to move the gpio file
+- Remove patches already in media-committers
+- Change priority of data origins
+- Patch mipi-disco
+- Link to v1: https://lore.kernel.org/r/20250403-uvc-orientation-v1-0-1a0cc595a62d@chromium.org
 
-diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-index e3992e7a71e9..ee0780c1d6ae 100644
---- a/samples/rust/rust_driver_platform.rs
-+++ b/samples/rust/rust_driver_platform.rs
-@@ -17,10 +17,48 @@ struct SampleDriver {
-     [(of::DeviceId::new(c_str!("test,rust-device")), Info(42))]
- );
- 
-+kernel::acpi_device_table!(
-+    ACPI_TABLE,
-+    MODULE_ACPI_TABLE,
-+    <SampleDriver as platform::Driver>::IdInfo,
-+    [(acpi::DeviceId::new(c_str!("TEST4321")), Info(0))]
-+);
-+
-+/// OF/ACPI match tables for Platform Driver implementation
-+///
-+/// The platform::Driver requires declaration of both OF_ID_TABLE and
-+/// ACPI_ID_TABLE, but if driver is not going to use either of them
-+/// it can implement one of them or both as None.
-+///
-+/// # Example:
-+///
-+///```
-+/// impl platform::Driver for SampleDriver {
-+///     type IdInfo = Info;
-+///     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
-+///     const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
-+///
-+///     fn probe(
-+///         pdev: &platform::Device<Core>,
-+///         info: Option<&Self::IdInfo>,
-+///     ) -> Result<Pin<KBox<Self>>> {
-+///         dev_dbg!(pdev.as_ref(), "Probe Rust Platform driver sample.\n");
-+///
-+///         if let Some(info) = info {
-+///             dev_info!(pdev.as_ref(), "Probed with info: '{}'.\n", info.0);
-+///         }
-+///
-+///         let drvdata = KBox::new(Self { pdev: pdev.into() }, GFP_KERNEL)?;
-+///
-+///         Ok(drvdata.into())
-+///     }
-+/// }
-+///```
-+
- impl platform::Driver for SampleDriver {
-     type IdInfo = Info;
-     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
--    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
-+    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
- 
-     fn probe(
-         pdev: &platform::Device<Core>,
+---
+Ricardo Ribalda (12):
+      media: uvcvideo: Always set default_value
+      media: v4l: fwnode: Support ACPI's _PLD for v4l2_fwnode_device_parse
+      ACPI: mipi-disco-img: Do not duplicate rotation info into swnodes
+      media: ipu-bridge: Use v4l2_fwnode_device_parse helper
+      media: ipu-bridge: Use v4l2_fwnode for unknown rotations
+      dt-bindings: usb: usb-device: Add orientation and rotation
+      media: uvcvideo: Make uvc_alloc_entity non static
+      media: uvcvideo: Add support for V4L2_CID_CAMERA_ORIENTATION
+      media: uvcvideo: Add uvc_ctrl_query_entity helper
+      media: uvcvideo: Add get_* functions to uvc_entity
+      media: uvcvideo: Add support for V4L2_CID_CAMERA_ROTATION
+      media: uvcvideo: Do not create MC entities for virtual entities
+
+ .../devicetree/bindings/usb/usb-device.yaml        |  10 ++
+ drivers/acpi/mipi-disco-img.c                      |  15 ---
+ drivers/media/pci/intel/ipu-bridge.c               |  52 ++++----
+ drivers/media/usb/uvc/Makefile                     |   3 +-
+ drivers/media/usb/uvc/uvc_ctrl.c                   | 132 ++++++++++++++-------
+ drivers/media/usb/uvc/uvc_driver.c                 |  18 ++-
+ drivers/media/usb/uvc/uvc_entity.c                 |  11 ++
+ drivers/media/usb/uvc/uvc_swentity.c               | 118 ++++++++++++++++++
+ drivers/media/usb/uvc/uvcvideo.h                   |  29 +++++
+ drivers/media/v4l2-core/v4l2-fwnode.c              |  85 ++++++++++++-
+ include/linux/usb/uvc.h                            |   3 +
+ 11 files changed, 377 insertions(+), 99 deletions(-)
+---
+base-commit: 5e1ff2314797bf53636468a97719a8222deca9ae
+change-id: 20250403-uvc-orientation-5f7f19da5adb
+
+Best regards,
 -- 
-2.43.0
+Ricardo Ribalda <ribalda@chromium.org>
 
 
