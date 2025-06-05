@@ -1,182 +1,104 @@
-Return-Path: <linux-acpi+bounces-14152-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14158-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D4BACF29A
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jun 2025 17:11:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CDBACF322
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jun 2025 17:35:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6B54174A31
-	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jun 2025 15:11:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A03E47A1298
+	for <lists+linux-acpi@lfdr.de>; Thu,  5 Jun 2025 15:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD1C1CAA82;
-	Thu,  5 Jun 2025 15:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EBFD84E1C;
+	Thu,  5 Jun 2025 15:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="qSH1k1Bt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="buPR9/2u"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83EA1CCB40;
-	Thu,  5 Jun 2025 15:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE158D2FB
+	for <linux-acpi@vger.kernel.org>; Thu,  5 Jun 2025 15:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749136195; cv=none; b=iCZvl0SHR6HGVnK7Cqw1MrH3egO1WVEXwjwtmogLc3Nz600uGlgUcSUelGgY895aE5kOQD9+fA2ev/PVVZRownEmdBPyEvfm1VfcsPQJQ74JXFoOg19LiZJz5xpCRKwZ6GIgwMzmJXUAz5jrUoxh3iRfqk/VSv5r5Ab7ClFKq/4=
+	t=1749137722; cv=none; b=ncQrYIkVk4cfP215Lirwyt3h0Sq/qa6X54+ggSgfdlhowo8smZH+ar8cy4xLZ1/2MyGTAFmwHUicp5bz1uzUZi66e7mmSF+2jXRnutrZDSqpnAn0Qqfp70to6rhQ4j6KYvFX4Qsv/uvp/kbXxgWWNfL7OnjzJnAtqrkwt4unjIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749136195; c=relaxed/simple;
-	bh=5w6Yv93zAQ3ErcgdTrPiDO9Q9Wfrs45HpAf7J5N0gZQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s9jeeM+0BV2LpBdI7T3+50OT127mbC+6zze6e641ohyQt09xgP6c53FaJS2llUWgClBgl0v274quT9LjIX9npW0GkNlFkjhueF+FoMF9Rgb0lR6EoemuY22m4J4THyO3lEbEe+ezLHFGHmH69yERNna937QXdX9GEZ4Yfi/jBG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=qSH1k1Bt; arc=none smtp.client-ip=79.96.170.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
-Received: from kreacher.localnet (unknown [5.63.189.50])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 29D2566C036;
-	Thu,  5 Jun 2025 17:09:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
-	s=dkim; t=1749136184;
-	bh=5w6Yv93zAQ3ErcgdTrPiDO9Q9Wfrs45HpAf7J5N0gZQ=;
-	h=From:Subject:Date;
-	b=qSH1k1BtkumQjRlAiVzukEKaymWbwSyIEpgjTJCKwbbWza9OEwLmY60+XkKsJH/yi
-	 0eChstEywNEVUS5+ZcCor3NJkdVZxYWwedkT4EnfaDFc9WwPayV/zO1qhCbaU4CW9Z
-	 2YwyJRFpzW+v0vHX7daAFV0kVPMH4kBfPzRB833qY3U20izZP7DPnF7v8+qZHyk3rC
-	 FM6RwjMcgrStNBR79iBAOTFmLToLPd/QbiXb5UqpH25bF3N86pgbMd4am7m35Uir/s
-	 Gl47N9xeatvxdHmtOYVRp3BrMGzadQyqAWCr8aKT0HqTChfLq4NQRz5mVL2JV8vv95
-	 UnQEwyMZnDjKg==
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To: x86 Maintainers <x86@kernel.org>, Linux PM <linux-pm@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Len Brown <lenb@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
- "Gautham R. Shenoy" <gautham.shenoy@amd.com>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Linux ACPI <linux-acpi@vger.kernel.org>
-Subject:
- [PATCH v1 5/5] Reapply "x86/smp: Eliminate mwait_play_dead_cpuid_hint()"
-Date: Thu, 05 Jun 2025 17:09:35 +0200
-Message-ID: <7813065.EvYhyI6sBW@rjwysocki.net>
-In-Reply-To: <2226957.irdbgypaU6@rjwysocki.net>
-References: <2226957.irdbgypaU6@rjwysocki.net>
+	s=arc-20240116; t=1749137722; c=relaxed/simple;
+	bh=PabdidyP4NaRipTa2zwLZ60C9FmAviV1zEm0duJFP1Y=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=aNdXRGB6+qVfscZqN4rBUWlNxzRisd+0o7RUAnsiWLDKXI4EQ8WRqyWFCJMk+/pC7ZgjDwP0d954dZtnaNrVBFzSvVtn1wv/f0+brLdSOqnOFVdjL0tF7FxVSTcdVF9BnrVfbumhOGwyywpCKHrGdL/vHKq4ALFmtrQ16Pla4Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=buPR9/2u; arc=none smtp.client-ip=209.85.160.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-2da3c572a0bso691105fac.3
+        for <linux-acpi@vger.kernel.org>; Thu, 05 Jun 2025 08:35:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749137720; x=1749742520; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=PabdidyP4NaRipTa2zwLZ60C9FmAviV1zEm0duJFP1Y=;
+        b=buPR9/2ubNMv71NEjChGATe91bkB4iD+bGM93FIcgwXUOF3sPg3oWE9ryeQHkIdlx4
+         vXUpWpIRM3tvSbUF4GInED4TjZqEXiezc7QylNONmduKmRZlH2ukaTVmWCD5F5DrHjiU
+         Jxyb9TkQdyTIZLyLqZVAvQPnf8QfyLaF0jON5J4OOLxdrhqoiB2Hg+skVmYmIxsZzXl2
+         rE2yniwjxbz1opgnjOrqXSf/Oq+njN5Up74ptZ38+BdkoQjRCp8BrEk4uv2u35TNUxxa
+         bG2q+4/z0PJWvh5mBNeTJE5Uds6LpWb2gW1PP4uUo6QzheoBWp7hCARKuslysqUhxI/F
+         d7WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749137720; x=1749742520;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PabdidyP4NaRipTa2zwLZ60C9FmAviV1zEm0duJFP1Y=;
+        b=E07gOnaeBT+xiFlY5HKLJlWhmxMtxZvh1KXOODmgWqvCUZtE3nrExSwA9fXihLYY9p
+         qFl7I8aEUaB/a1pGgMUqU6zdGxG64/M73rJ45D1/BDKoR0OzicUrvkwoJyTRmrgjKxPZ
+         4Nb5x+C+uVOcCbyoLyYoOHvWeIK3GMeKmMLZKipi3hYVPD6cu6wwKUijHPYuOx7Tol6V
+         oOC4W8GdyYGM7u9oi7IeRojTqUl7aN9PRdkEH19oXKUd61VHpRnDaa2TqvEfdcTby9Lk
+         cyU774yyGJQQ48ZcHcdR5ZUk2JPJn5mQpeK25+k8AaRHEdNq8j95ZG/Bn0rswBI86bCQ
+         GhZQ==
+X-Gm-Message-State: AOJu0Yzo9Mw58epsyJtWUGTOkAaEgd6tw3VPHq7JuZ00ytjqtvVJTJt/
+	vBFfbL1Ib86A5PQlkg2pXODfj6RmGiGotKr24hI4BMwpEiNpfrfMTMpLSUMwQuc03UYaJn802Ze
+	4A0cY7m3jlCWJ6z+YeH2u3kcvPHD+RQ/4Ig5i
+X-Gm-Gg: ASbGncsYmBNHcYmzAAmoS0Nlfs24ccdy9rLhGhHf7Ykn2BzbG6n5wUwRvg4q9f7I9k8
+	37pkFjJVNnkaI33WTnBeO0QvQog/CIYZYRlfeGOQH62PnFGXTtjJG8o0zomkJ5B0zXmljm+fSDV
+	7Tck3WaW5D0jBswtpMhWQjoKh3Aw187bOzR9kGc/7FbuIlGlMNnn+y3dwlNmG6OiiGIg==
+X-Google-Smtp-Source: AGHT+IGEcMxj+LTFkexOsxfBQWrqJwZ6qx30H/hcJh7qg7Na8J3AW6zEDO9h+rYpY6cyoEmLzdygVVi50jLQ5EmL71Q=
+X-Received: by 2002:a05:6870:ac25:b0:29e:3921:b1ea with SMTP id
+ 586e51a60fabf-2e9bf538bb7mr5028409fac.30.1749137714833; Thu, 05 Jun 2025
+ 08:35:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+From: zepta <z3ptaa@gmail.com>
+Date: Thu, 5 Jun 2025 17:35:04 +0200
+X-Gm-Features: AX0GCFv-tBJYCJ57PVVEk1Gj_iimZFZ_kgw0_MBmdJ1CpQYsm9ermDD4fvj2Z3g
+Message-ID: <CAPBS6KpGThpPpzLfJDJxQc_Njv+yEY2z7XFo6zX5EFKG8O-1Tg@mail.gmail.com>
+Subject: Stack overflow uefi get variable
+To: linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 5.63.189.50
-X-CLIENT-HOSTNAME: 5.63.189.50
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: dmFkZTEzSEGzZ/ONVrWENr6vcXfS3S2jicISDIUk4t6WJg+Zjj/tMsiKrH6p/W9hVn65rDd2JKDd5uTYEHknKQT2r7pOoqF3rdVD5yhK7Rprhh7g9Zvcj23lpp2rY7UCLtUpLjrE40L5kP2ENOt7F7JFMQrsU0BxCSyD9ImwCg/5uHKqloLfTfX1B6buKhq24d5iBCDj1fuCRg5EDPCCcGoXCAG/xJ8DxnVxdLMqNeA6Murrcf5yV2bVSf0qD3cTb1ZGJEaagT8ZwEZw1hwmHq4GBUTZA/geTkMBRKK8IMyXCx4LjU27eYT2E9Bi7kPkpz1heTPAWpmaTKgTxzYdBmQllqRTl/Yl2mbTQxvwrPd3I7zV7RAKW8lL8zC1Qqzv74Nqlxzwid9Qnd2k+6vzP8M8lTjbI3EUY48Qn0InRxGMdT0mI6F/wpdr91v91Wod4Xt1EmxclbwDJX2Is1vMQRh2U2mZLIDQN0M9sNrj+X3o5zkShMz+j9Z0XGTwte4UyGTpMainqH1zLPnxQEI/Cs8t6faBMja0m/aGPSYG7PZDZ0JZ8/fORk3jqIccuBkwbYmzOXwKB1kP9qI0b1DCJzVBeBsHtWzitHFlQ9cMDPKTooa6zSw9QtOGbQS78UXLSL9r4vruh1z2hDnMKDwCCPHN4KlkDj1wHu+122qK3UBoDbQH+w
-X-DCC--Metrics: v370.home.net.pl 1024; Body=12 Fuz1=12 Fuz2=12
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Hi!
 
-Revert commit 70523f335734 ("Revert "x86/smp: Eliminate
-mwait_play_dead_cpuid_hint()"") to reapply the changes from commit
-96040f7273e2 ("x86/smp: Eliminate mwait_play_dead_cpuid_hint()")
-reverted by it.
+I recently discovered a stack overflow in a Bluetooth driver. Here is
+the commit https://github.com/torvalds/linux/commit/3aa1dc3c9060e335e82e9c182bf3d1db29220b1b
+fixing the issue.
 
-Previously, these changes caused idle power to rise on systems booting
-with "nosmt" in the kernel command line because they effectively caused
-"dead" SMT siblings to remain in idle state C1 after executing the HLT
-instruction, which prevented the processor from reaching package idle
-states deeper than PC2 going forward.
+You could exploit this vulnerability:
+With physical access, one could modify the nvram values to exploit the
+stack overflow.
 
-Now, the "dead" SMT siblings are rescanned after initializing a proper
-cpuidle driver for the processor (either intel_idle or ACPI idle), at
-which point they are able to enter a sufficiently deep idle state
-in native_play_dead() via cpuidle, so the code changes in question can
-be reapplied.
+I also found in an email thread that says the OEM does not need to
+create this uefi
+variable(https://patches.linaro.org/project/linux-bluetooth/patch/20240626092801.2343844-1-kiran.k@intel.com/).
+This bypasses any runtime variable lock that the firmware might have.
+Then user can set/create the variable from the OS and overflow the
+stack in the kernel.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- arch/x86/kernel/smpboot.c |   54 +++++-----------------------------------------
- 1 file changed, 7 insertions(+), 47 deletions(-)
+I was told that this might be outside the Linux threat model because
+the general consensus is that we trust the data coming from the
+firmware. In this case, we can set the variable from both outside
+and inside. Is this a security issue on Linux end?
 
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -1238,6 +1238,10 @@
- 	local_irq_disable();
- }
- 
-+/*
-+ * We need to flush the caches before going to sleep, lest we have
-+ * dirty data in our caches when we come back up.
-+ */
- void __noreturn mwait_play_dead(unsigned int eax_hint)
- {
- 	struct mwait_cpu_dead *md = this_cpu_ptr(&mwait_cpu_dead);
-@@ -1284,50 +1288,6 @@
- }
- 
- /*
-- * We need to flush the caches before going to sleep, lest we have
-- * dirty data in our caches when we come back up.
-- */
--static inline void mwait_play_dead_cpuid_hint(void)
--{
--	unsigned int eax, ebx, ecx, edx;
--	unsigned int highest_cstate = 0;
--	unsigned int highest_subcstate = 0;
--	int i;
--
--	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
--	    boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
--		return;
--	if (!this_cpu_has(X86_FEATURE_MWAIT))
--		return;
--	if (!this_cpu_has(X86_FEATURE_CLFLUSH))
--		return;
--
--	eax = CPUID_LEAF_MWAIT;
--	ecx = 0;
--	native_cpuid(&eax, &ebx, &ecx, &edx);
--
--	/*
--	 * eax will be 0 if EDX enumeration is not valid.
--	 * Initialized below to cstate, sub_cstate value when EDX is valid.
--	 */
--	if (!(ecx & CPUID5_ECX_EXTENSIONS_SUPPORTED)) {
--		eax = 0;
--	} else {
--		edx >>= MWAIT_SUBSTATE_SIZE;
--		for (i = 0; i < 7 && edx; i++, edx >>= MWAIT_SUBSTATE_SIZE) {
--			if (edx & MWAIT_SUBSTATE_MASK) {
--				highest_cstate = i;
--				highest_subcstate = edx & MWAIT_SUBSTATE_MASK;
--			}
--		}
--		eax = (highest_cstate << MWAIT_SUBSTATE_SIZE) |
--			(highest_subcstate - 1);
--	}
--
--	mwait_play_dead(eax);
--}
--
--/*
-  * Kick all "offline" CPUs out of mwait on kexec(). See comment in
-  * mwait_play_dead().
-  */
-@@ -1377,9 +1337,9 @@
- 	play_dead_common();
- 	tboot_shutdown(TB_SHUTDOWN_WFS);
- 
--	mwait_play_dead_cpuid_hint();
--	if (cpuidle_play_dead())
--		hlt_play_dead();
-+	/* Below returns only on error. */
-+	cpuidle_play_dead();
-+	hlt_play_dead();
- }
- 
- #else /* ... !CONFIG_HOTPLUG_CPU */
-
-
-
+/ Oliver
 
