@@ -1,49 +1,49 @@
-Return-Path: <linux-acpi+bounces-14193-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14194-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79E09AD037B
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Jun 2025 15:50:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9A6AD03AE
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Jun 2025 15:59:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CFE0173A81
-	for <lists+linux-acpi@lfdr.de>; Fri,  6 Jun 2025 13:50:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26EE63A7B07
+	for <lists+linux-acpi@lfdr.de>; Fri,  6 Jun 2025 13:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109F7289353;
-	Fri,  6 Jun 2025 13:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1224A28936C;
+	Fri,  6 Jun 2025 13:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qg8qAs4c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="boD0tZeV"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30B627F164;
-	Fri,  6 Jun 2025 13:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D104D1A274;
+	Fri,  6 Jun 2025 13:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749217820; cv=none; b=QQtzjQ8zXGNP9LGap2aNjKe7WLq9p2N153WgdVVoxtZFpihUJaEfTJzc795XSFbZW+oV8qTuRgcrM96G9I0pE/W9jsGF6AUKDJ44PR1Q2aSSnhFL8LyvU73ymoWIRm2NwZ8HIVXUV85+2Q09uH61ZDZPIMINdn1UcsNeEGPTuWU=
+	t=1749218313; cv=none; b=Mhj4gms/BeC6LHl7OSWoP3J+zrkhA4mcz38q/b3Uz2lPrYz7wee/rnjv3CfID2IVuz+PcK//OQ27aJYtyONlpztbGFLLxMjRx8sVLyjPKR59wSswL8PaPsdnQaUrzIHsnUAgxuhOxdLg69+qD9KWrLhiI41J7lWSE5Sr4Lv/qSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749217820; c=relaxed/simple;
-	bh=RvvYVQ5MhdaaL45STXuT2LS673L9xdDS8erLOZOlJak=;
+	s=arc-20240116; t=1749218313; c=relaxed/simple;
+	bh=QyO94pd4hlnn9BKqJzgyhfcD8waNKskd+/HKP0CvpQg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OCQCAuzT3Gzhh43JJVGzAN+rXozCalfzCQ8TLf2gvkvQzVpoTTE987GpiRNywEHw9q9+2kktNB/5iW1k0J1xvRN7UWAjLHFawcpjmoQaGdupErKln6ossuQ7mDfS2VAGU14IqrMle3r/3OX2YgIV18PAl/F6ksTuh3aH0FIz8+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qg8qAs4c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891BFC4CEEB;
-	Fri,  6 Jun 2025 13:50:13 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ww8mU6cV9K1o3AopT1xdtfxLqa/LzXlCfSYy6+BROokUDewQrjyEJcHpFTcxlXJsnUhwD6WcbSfnuh/AdO6NbImBS3VxLTYSeKTLJhZwzB0FFfbtPldyGNh8w5OEENiYXdTR65j4zGXchPV/oMdGRdrPFiE1LdRKMykwBDjaiTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=boD0tZeV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC28FC4CEEB;
+	Fri,  6 Jun 2025 13:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749217818;
-	bh=RvvYVQ5MhdaaL45STXuT2LS673L9xdDS8erLOZOlJak=;
+	s=k20201202; t=1749218311;
+	bh=QyO94pd4hlnn9BKqJzgyhfcD8waNKskd+/HKP0CvpQg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qg8qAs4cFm3Hc2vDwqoJE/iVCWx/sXCbl6qW/Ct7ghYNgpZ+MCRqm7TO/ZaR9xiy6
-	 sdLmDjzNsE/SV1LfHEnyInyp+BGWeGCm1A5A5rilHuw2vPIOjMNWjxqEopWfkjeTg2
-	 cZJBhBaeKxrKtzu083NGdQJqRMpT9AqqHxGjwYbk/I3hEUabFF38ULa7gzFdznxGZZ
-	 DXXaFjgX8PONtmKWkDiqk6PLNQ8b+PaMmTychwDD6QifSfZd7RHSeJVjy7FvUXJrAa
-	 aarsCmfZ0TItTxMnUrszsIOgBudVQlkv2P5GTlGYCCW7aI8L097iYunDDZ0HNDJCK8
-	 0JyjtPnfKX6mQ==
-Date: Fri, 6 Jun 2025 15:50:10 +0200
+	b=boD0tZeVz5UtG9+im6UihIJ+Z3HQVXLzuovQCa76Atf/9RHJd0Xy0unwT4wwKsQ+U
+	 IazlNovBJ4GSG7qM8+lXg86bB8VuD/12OnlxwVm1uCwbqBrW8OttMdBn3MyTyCX/+F
+	 KsHnXp2ftgx8rT65KtGmXpExDfPqjsWx6xc3RgjumuBb/LaoUAk/zru1lJg7Qa6BH+
+	 haVxJHJCz808MLSPhmGUjOeyNUDeirD4ekFhd9PA8NGB7Q8ySMFMP0l+yE63y4hZ92
+	 tw7ECnLbyvsMHl7sAIwFFTQzZXWhDhNbR+/zRiPCYRTyi9x6oOfMNjL1liJCxEvdGs
+	 fkfa4ID5MlTLA==
+Date: Fri, 6 Jun 2025 15:58:24 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: Igor Korotin <igor.korotin@yahoo.com>
+To: Igor Korotin <igor.korotin.linux@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Rob Herring <robh@kernel.org>,
 	Saravana Kannan <saravanak@google.com>,
@@ -60,13 +60,12 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
 	Alex Hung <alex.hung@amd.com>, Tamir Duberstein <tamird@gmail.com>,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Xiangfei Ding <dingxiangfei2009@gmail.com>,
-	Igor Korotin <igor.korotin.linux@gmail.com>
-Subject: Re: [PATCH v2 3/5] rust: driver: Add ACPI id table support to
- Adapter trait
-Message-ID: <aELyEqg0GrkC8oZY@pollux>
+	Xiangfei Ding <dingxiangfei2009@gmail.com>
+Subject: Re: [PATCH v2 5/5] samples: rust: add ACPI match table example to
+ platform driver
+Message-ID: <aEL0AGBZqDp1lMFe@pollux>
 References: <20250605161956.3658374-1-igor.korotin.linux@gmail.com>
- <20250605162726.3659792-1-igor.korotin@yahoo.com>
+ <20250605165231.3663810-1-igor.korotin.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -75,166 +74,86 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250605162726.3659792-1-igor.korotin@yahoo.com>
+In-Reply-To: <20250605165231.3663810-1-igor.korotin.linux@gmail.com>
 
-On Thu, Jun 05, 2025 at 05:27:26PM +0100, Igor Korotin wrote:
-> From: Igor Korotin <igor.korotin.linux@gmail.com>
+On Thu, Jun 05, 2025 at 05:52:31PM +0100, Igor Korotin wrote:
+> Extend the Rust sample platform driver to probe using device/driver name
+> matching, OF ID table matching, or ACPI ID table matching.
 > 
-> Extend the `Adapter` trait to support ACPI device identification.
-> 
-> This mirrors the existing Open Firmware (OF) support (`of_id_table`) and
-> enables Rust drivers to match and retrieve ACPI-specific device data
-> when `CONFIG_ACPI` is enabled.
-> 
-> To avoid breaking compilation, a stub implementation of `acpi_id_table()`
-> is added to the Platform adapter; the full implementation will be provided
-> in a subsequent patch.
+> Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
 > ---
->  rust/bindings/bindings_helper.h |  1 +
->  rust/kernel/driver.rs           | 58 ++++++++++++++++++++++++++++++---
->  rust/kernel/platform.rs         |  5 +++
->  3 files changed, 60 insertions(+), 4 deletions(-)
+>  samples/rust/rust_driver_platform.rs | 40 +++++++++++++++++++++++++++-
+>  1 file changed, 39 insertions(+), 1 deletion(-)
 > 
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index e0bcd130b494..d974fc6c141f 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -6,6 +6,7 @@
->   * Sorted alphabetically.
->   */
+> diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
+> index e3992e7a71e9..ee0780c1d6ae 100644
+> --- a/samples/rust/rust_driver_platform.rs
+> +++ b/samples/rust/rust_driver_platform.rs
+> @@ -17,10 +17,48 @@ struct SampleDriver {
+>      [(of::DeviceId::new(c_str!("test,rust-device")), Info(42))]
+>  );
 >  
-> +#include <linux/acpi.h>
->  #include <kunit/test.h>
->  #include <linux/blk-mq.h>
->  #include <linux/blk_types.h>
-> diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-> index ec9166cedfa7..d4098596188a 100644
-> --- a/rust/kernel/driver.rs
-> +++ b/rust/kernel/driver.rs
-> @@ -6,7 +6,7 @@
->  //! register using the [`Registration`] class.
+> +kernel::acpi_device_table!(
+> +    ACPI_TABLE,
+> +    MODULE_ACPI_TABLE,
+> +    <SampleDriver as platform::Driver>::IdInfo,
+> +    [(acpi::DeviceId::new(c_str!("TEST4321")), Info(0))]
+
+Can you please explain add a comment explaining how to make this probe? In the
+cover letter you mention:
+
+"Tested using QEMU with a custom SSDT that creates an ACPI device matching the
+sample Rust platform driver."
+
+> +);
+> +
+> +/// OF/ACPI match tables for Platform Driver implementation
+> +///
+> +/// The platform::Driver requires declaration of both OF_ID_TABLE and
+> +/// ACPI_ID_TABLE, but if driver is not going to use either of them
+> +/// it can implement one of them or both as None.
+> +///
+> +/// # Example:
+> +///
+> +///```
+> +/// impl platform::Driver for SampleDriver {
+> +///     type IdInfo = Info;
+> +///     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
+> +///     const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
+> +///
+> +///     fn probe(
+> +///         pdev: &platform::Device<Core>,
+> +///         info: Option<&Self::IdInfo>,
+> +///     ) -> Result<Pin<KBox<Self>>> {
+> +///         dev_dbg!(pdev.as_ref(), "Probe Rust Platform driver sample.\n");
+> +///
+> +///         if let Some(info) = info {
+> +///             dev_info!(pdev.as_ref(), "Probed with info: '{}'.\n", info.0);
+> +///         }
+> +///
+> +///         let drvdata = KBox::new(Self { pdev: pdev.into() }, GFP_KERNEL)?;
+> +///
+> +///         Ok(drvdata.into())
+> +///     }
+> +/// }
+> +///```
+
+I assume you want to make clear that both the ACPI and OF table are optional;
+not sure of that's required given their type is Option<...>. But I'm fine having
+this additional comment and example.
+
+Please make sure that it compiles though and remove everything unnecessary from
+probe() please.
+
+> +
+>  impl platform::Driver for SampleDriver {
+>      type IdInfo = Info;
+>      const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
+> -    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
+> +    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
 >  
->  use crate::error::{Error, Result};
-> -use crate::{device, of, str::CStr, try_pin_init, types::Opaque, ThisModule};
-> +use crate::{device, of, acpi, str::CStr, try_pin_init, types::Opaque, ThisModule};
->  use core::pin::Pin;
->  use pin_init::{pin_data, pinned_drop, PinInit};
->  
-> @@ -141,6 +141,38 @@ pub trait Adapter {
->      /// The type holding driver private data about each device id supported by the driver.
->      type IdInfo: 'static;
->  
-> +    /// The [`acpi::IdTable`] of the corresponding driver
-> +    fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>>;
-> +
-> +    /// Returns the driver's private data from the matching entry in the [`acpi::IdTable`], if any.
-> +    ///
-> +    /// If this returns `None`, it means there is no match with an entry in the [`acpi::IdTable`].
-> +    #[cfg(CONFIG_ACPI)]
-> +    fn acpi_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-> +        let table = Self::acpi_id_table()?;
-> +
-> +        // SAFETY:
-> +        // - `table` has static lifetime, hence it's valid for read,
-> +        // - `dev` is guaranteed to be valid while it's alive, and so is `pdev.as_ref().as_raw()`.
-> +        let raw_id = unsafe { bindings::acpi_match_device(table.as_ptr(), dev.as_raw()) };
-> +
-> +        if raw_id.is_null() {
-> +            None
-> +        } else {
-> +            // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct of_device_id` and
-> +            // does not add additional invariants, so it's safe to transmute.
-> +            let id = unsafe { &*raw_id.cast::<acpi::DeviceId>() };
-> +
-> +            Some(table.info(<acpi::DeviceId as crate::device_id::RawDeviceId>::index(id)))
-> +        }
-> +    }
-> +
-> +    #[cfg(not(CONFIG_ACPI))]
-> +    #[allow(missing_docs)]
-> +    fn acpi_id_info(_dev: &device::Device) -> Option<&'static Self::IdInfo> {
-> +        None
-> +    }
-> +
->      /// The [`of::IdTable`] of the corresponding driver.
->      fn of_id_table() -> Option<of::IdTable<Self::IdInfo>>;
->  
-> @@ -178,9 +210,27 @@ fn of_id_info(_dev: &device::Device) -> Option<&'static Self::IdInfo> {
->      /// If this returns `None`, it means that there is no match in any of the ID tables directly
->      /// associated with a [`device::Device`].
->      fn id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-> -        let id = Self::of_id_info(dev);
-> -        if id.is_some() {
-> -            return id;
-> +        // SAFETY: `id_info` is called from `Adapter::probe_callback` with a valid `dev` argument.
-> +        let fwnode = unsafe{ (*dev.as_raw()).fwnode};
-
-There is an abstraction for FwNode on the list [1] that I plan to merge soon.
-Generally, it would make sense to build on top of that.
-
-However, I don't understand why we need this and the subsequent
-is_acpi_device_node() and is_of_node() checks.
-
-Instead, I think we can keep the existing code and just add the following.
-
-	let id = Self::acpi_id_info(dev);
-	if id.is_some() {
-	   return id;
-	}
-
-[1] https://lore.kernel.org/lkml/20250530192856.1177011-1-remo@buenzli.dev/
-
-> +
-> +        // SAFETY: `bindings::is_acpi_device_node` checks `fwnode` before accessing `fwnode->ops`,
-> +        // and only compares it with the address of `acpi_device_fwnode_ops`.
-> +        if unsafe { bindings::is_acpi_device_node(fwnode) } {
-
-As mentioned above, I think we don't need this check.
-
-> +            let id = Self::acpi_id_info(dev);
-> +
-> +            if id.is_some() {
-> +                return id;
-> +            }
-> +        }
-> +
-> +        // SAFETY: `bindings::is_of_node` checks `fwnode` before accessing `fwnode->ops`,
-> +        // and only compares it with the address of `of_fwnode_ops`.
-> +        if unsafe { bindings::is_of_node(fwnode) } {
-
-Same here.
-
-> +            let id = Self::of_id_info(dev);
-> +
-> +            if id.is_some() {
-> +                return id;
-> +            }
->          }
->  
->          None
-> diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-> index fd4a494f30e8..3cc9fe6ccfcf 100644
-> --- a/rust/kernel/platform.rs
-> +++ b/rust/kernel/platform.rs
-> @@ -5,6 +5,7 @@
->  //! C header: [`include/linux/platform_device.h`](srctree/include/linux/platform_device.h)
->  
->  use crate::{
-> +    acpi,
->      bindings, device, driver,
->      error::{to_result, Result},
->      of,
-> @@ -95,6 +96,10 @@ impl<T: Driver + 'static> driver::Adapter for Adapter<T> {
->      fn of_id_table() -> Option<of::IdTable<Self::IdInfo>> {
->          T::OF_ID_TABLE
->      }
-> +
-> +    fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>> {
-> +        None
-> +    }
->  }
->  
->  /// Declares a kernel module that exposes a single platform driver.
+>      fn probe(
+>          pdev: &platform::Device<Core>,
 > -- 
 > 2.43.0
 > 
