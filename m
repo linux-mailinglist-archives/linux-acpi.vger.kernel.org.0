@@ -1,104 +1,91 @@
-Return-Path: <linux-acpi+bounces-14219-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14220-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26F8AD1183
-	for <lists+linux-acpi@lfdr.de>; Sun,  8 Jun 2025 09:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2142AD11D1
+	for <lists+linux-acpi@lfdr.de>; Sun,  8 Jun 2025 12:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 744EC16B0C5
-	for <lists+linux-acpi@lfdr.de>; Sun,  8 Jun 2025 07:58:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 885CE168E01
+	for <lists+linux-acpi@lfdr.de>; Sun,  8 Jun 2025 10:43:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01FEF1FBE8B;
-	Sun,  8 Jun 2025 07:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D7520E6F7;
+	Sun,  8 Jun 2025 10:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d11+CsZg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cURS+zMN"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A5A1AC88B;
-	Sun,  8 Jun 2025 07:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D88213AA2F;
+	Sun,  8 Jun 2025 10:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749369532; cv=none; b=jcZDY5wdShO4z1YyUoTpHAgAm7DS9HPg/3yWdgsC2y4B6+kgobZV0PQpPPCclN9pE6pFFL2wIpvSW4/nNQUdZ9GvuKkg/xi2xWhlH4G67Z+2SHtkhQeCgaba1JskEd4UjYzA65vyfs73SZ6U12LlojXIM24Jpx2u4NQlpOr/ijo=
+	t=1749379383; cv=none; b=B1iHIx3xKwQrdA9BM66x7V5UVp6/6U1aNUIcJIYF9hDKVw4Y/0y5lVFyJJMl5rMAkJzGt/yCwNUOT83oQvuigfqJYSLO2e70UzZph+/cOPHoWDe2tvAG6tHp4xVcdXkW+1XeqpJV7b1O/8eRgsYNPrwNyRUWlv2/qeVT8HQhuzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749369532; c=relaxed/simple;
-	bh=VBjtYErWs6de/6b5SNrswQN/MIEXGEMgrz94Dvuld84=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=jpkmfPkIDaiEwgAMQxLYwNMVvZxwDAUAnyr/zHoHOmA22qviV6N4kkYGAJGQufyTsE8/UHc/v5H1EGujkURXkpTePUfr0z0ZIziV7QA0mClMuZ0msbq/L4HhhKNBFjNrLy+q+UfcjSCFtp9ShOo2CiiRtp3qKsuDCC0tsjsuLC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d11+CsZg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461A1C4CEEE;
-	Sun,  8 Jun 2025 07:58:48 +0000 (UTC)
+	s=arc-20240116; t=1749379383; c=relaxed/simple;
+	bh=IZis6emlWrEmjsjf57puJXxO84axvdnHEGFmX6HRIy4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VaP0X5eE2x++AFd/Bry6B1zYJtec/8JKdYeXCebcisa/92MkoMF011clMolGHrYNdVY6e3NI/ScVBtaHTq0z3aZJUhKlJHti5SgXoaNc41R4eCZdfxMyNDxwpaQ5uyJ+zuGsafECoyhJ+rgEouRqe9BSsBTziZAdmKlx0lEAKM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cURS+zMN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5928FC4CEEE;
+	Sun,  8 Jun 2025 10:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749369532;
-	bh=VBjtYErWs6de/6b5SNrswQN/MIEXGEMgrz94Dvuld84=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=d11+CsZgVeuLPpcUL3AIJ1gt4iirZ0e80qqHwHn/n/n0ai1ZGGhxwA8wek1xnPKHl
-	 xZc0lFpaVOXjHClfO6SEio/Rh3+KMlSAHyfrcbM2Wbq3Y5n01UTnKYIAe/HgYbYtX/
-	 W47IIU+9W1c2PF9uHKpfkhvqBbnDoShSZHlSJxeR/NePOkziGrM0RayC+uwPEG5bC5
-	 O99rgD+dDu/i5dRsII0CVJs+A8pFUJqcLRC9QHQC+3HH5aahFwlK0LHdW7uzFK4BDN
-	 tqLMOaLVYOOOelMgSNOvFFJ5gxhGcRLSx9HgcpAHhRDNySDXFA8tfCmldvTd7CSGEp
-	 5UAThdKyXD5qQ==
+	s=k20201202; t=1749379382;
+	bh=IZis6emlWrEmjsjf57puJXxO84axvdnHEGFmX6HRIy4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cURS+zMNjLbct3bzWrK4N2GY+KlYJXKu70Z6+PI8xwq05QpGS12Br/cmg4qcdi6m7
+	 CISBBLfHo2T/Gy44OjZpALLQ1T5AZUjxUcH14w+BIfhl4mUkFy6dAuBy8i8LQR1vHF
+	 SqqSpNXdn7Nd7MEXA0O0GFZSIJLd6v/Df3R18IMZXKCJZGdExg+VEaBuRo4U0ADVLQ
+	 /kb6tgtS6FvRNFfqrLto5TEvLqe9mihF5Hi+dI4XdbuHYfHtPG1lg55RrIGWnqH8/f
+	 XDbKZsxFAiLpV1Jq2NTDNrA7Vo03e/NCWsBvck8t9lpy//LGays3hYaDdRs8nFTtp4
+	 FQxhNZrJs7E9g==
+Date: Sun, 8 Jun 2025 12:42:55 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Igor Korotin <igor.korotin.linux@gmail.com>, ojeda@kernel.org,
+	alex.gaynor@gmail.com, rafael@kernel.org,
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, lenb@kernel.org, wedsonaf@gmail.com,
+	viresh.kumar@linaro.org, alex.hung@amd.com,
+	dingxiangfei2009@gmail.com
+Subject: Re: [PATCH v3 1/4] rust: acpi: add `acpi::DeviceId` abstraction
+Message-ID: <aEVpL8wIfGDZRyUN@pollux>
+References: <20250606170341.3880941-1-igor.korotin.linux@gmail.com>
+ <20250606170641.3881401-1-igor.korotin.linux@gmail.com>
+ <DAGZIHBVBI6Z.32401TQB5MNTL@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 08 Jun 2025 09:58:46 +0200
-Message-Id: <DAGZQQ0GQGI7.3QYQ39S6RPC2Z@kernel.org>
-Cc: <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <benno.lossin@proton.me>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <dakr@kernel.org>, <lenb@kernel.org>,
- <wedsonaf@gmail.com>, <viresh.kumar@linaro.org>, <alex.hung@amd.com>,
- <dingxiangfei2009@gmail.com>, "Igor Korotin" <igorkor.3vium@gmail.com>
-Subject: Re: [PATCH v3 4/4] samples: rust: add ACPI match table example to
- platform driver
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Igor Korotin" <igor.korotin.linux@gmail.com>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <rafael@kernel.org>, <gregkh@linuxfoundation.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-acpi@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250606170341.3880941-1-igor.korotin.linux@gmail.com>
- <20250606171033.3882079-1-igor.korotin.linux@gmail.com>
-In-Reply-To: <20250606171033.3882079-1-igor.korotin.linux@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DAGZIHBVBI6Z.32401TQB5MNTL@kernel.org>
 
-On Fri Jun 6, 2025 at 7:10 PM CEST, Igor Korotin wrote:
-> Extend the Rust sample platform driver to probe using device/driver name
-> matching, OF ID table matching, or ACPI ID table matching.
->
-> Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
-> ---
->  samples/rust/rust_driver_platform.rs | 96 +++++++++++++++++++++++++++-
->  1 file changed, 95 insertions(+), 1 deletion(-)
->
-> diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_dri=
-ver_platform.rs
-> index e3992e7a71e9..be7c311dca07 100644
-> --- a/samples/rust/rust_driver_platform.rs
-> +++ b/samples/rust/rust_driver_platform.rs
-> @@ -17,10 +17,104 @@ struct SampleDriver {
->      [(of::DeviceId::new(c_str!("test,rust-device")), Info(42))]
->  );
-> =20
-> +// ACPI match table test
+On Sun, Jun 08, 2025 at 09:48:00AM +0200, Benno Lossin wrote:
+> On Fri Jun 6, 2025 at 7:06 PM CEST, Igor Korotin wrote:
+> > +impl DeviceId {
+> > +    const ACPI_ID_LEN: usize = 16;
+> > +
+> > +    /// Create a new device id from an ACPI 'id' string.
+> > +    pub const fn new(id: &'static CStr) -> Self {
+> > +        assert!(id.len() <= Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
+> > +        let src = id.as_bytes_with_nul();
+> > +        // Replace with `bindings::acpi_device_id::default()` once stabilized for `const`.
+> > +        // SAFETY: FFI type is valid to be zero-initialized.
+> > +        let mut acpi: bindings::acpi_device_id = unsafe { core::mem::zeroed() };
+> 
+> This can be made safe using this series:
+> 
+>     https://lore.kernel.org/all/20250523145125.523275-1-lossin@kernel.org
 
-This looks great, let's move it to the crate-level documentation. That
-way it gets rendered :)
-
----
-Cheers,
-Benno
-
-> +//
-> +// This demonstrates how to test an ACPI-based Rust platform driver usin=
-g QEMU
-> +// with a custom SSDT.
-> +//
-> +// Steps:
+Indeed, I did not mention this though since I think this series should not
+depend on the one above. They'll land through different trees and the
+improvement can still be made later on.
 
