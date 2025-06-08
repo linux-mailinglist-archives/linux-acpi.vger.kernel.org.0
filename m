@@ -1,47 +1,47 @@
-Return-Path: <linux-acpi+bounces-14220-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14221-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2142AD11D1
-	for <lists+linux-acpi@lfdr.de>; Sun,  8 Jun 2025 12:43:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F285CAD11D5
+	for <lists+linux-acpi@lfdr.de>; Sun,  8 Jun 2025 12:48:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 885CE168E01
-	for <lists+linux-acpi@lfdr.de>; Sun,  8 Jun 2025 10:43:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB81B168FED
+	for <lists+linux-acpi@lfdr.de>; Sun,  8 Jun 2025 10:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D7520E6F7;
-	Sun,  8 Jun 2025 10:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D5A1F09A7;
+	Sun,  8 Jun 2025 10:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cURS+zMN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c+FzWM05"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D88213AA2F;
-	Sun,  8 Jun 2025 10:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BB12F3E;
+	Sun,  8 Jun 2025 10:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749379383; cv=none; b=B1iHIx3xKwQrdA9BM66x7V5UVp6/6U1aNUIcJIYF9hDKVw4Y/0y5lVFyJJMl5rMAkJzGt/yCwNUOT83oQvuigfqJYSLO2e70UzZph+/cOPHoWDe2tvAG6tHp4xVcdXkW+1XeqpJV7b1O/8eRgsYNPrwNyRUWlv2/qeVT8HQhuzs=
+	t=1749379721; cv=none; b=sAciZloOT/8JQAPsgWTSPFeOwb0zKbxRyr2RFu2ifYjWAEPw6lpA5gWBS1uxpIZZUGmEqjtSj/vsRfk/JezFmHVfn9dBs8+OM+DBJEZU2IKfV5JtFJh/ifKeaOYJ6zwkUyT/SSnAOFZ1fi/s83WUtNujPSjRIo9fExim6+Zv1ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749379383; c=relaxed/simple;
-	bh=IZis6emlWrEmjsjf57puJXxO84axvdnHEGFmX6HRIy4=;
+	s=arc-20240116; t=1749379721; c=relaxed/simple;
+	bh=AnI/cidWMnRFA5NIz5etjUog1SNqGjwokm1tz/aotaQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VaP0X5eE2x++AFd/Bry6B1zYJtec/8JKdYeXCebcisa/92MkoMF011clMolGHrYNdVY6e3NI/ScVBtaHTq0z3aZJUhKlJHti5SgXoaNc41R4eCZdfxMyNDxwpaQ5uyJ+zuGsafECoyhJ+rgEouRqe9BSsBTziZAdmKlx0lEAKM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cURS+zMN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5928FC4CEEE;
-	Sun,  8 Jun 2025 10:42:58 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=X1X+G4bYNZllayjs8USFIi07YBoQlPF8QX1omYHP7xNK8psDjIgKKnDmCXN6NSDkA+GIN2mU0cKLpWAP9nvv9SqKHmzG0g1tcSYy2rlwHpFgtZDyjgEi3ZHiA87WdfUTw3alY5c+/odiLnRL+fCQUs6CrbAtWvV/+OSFgK//Vzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c+FzWM05; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708B4C4CEEE;
+	Sun,  8 Jun 2025 10:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749379382;
-	bh=IZis6emlWrEmjsjf57puJXxO84axvdnHEGFmX6HRIy4=;
+	s=k20201202; t=1749379720;
+	bh=AnI/cidWMnRFA5NIz5etjUog1SNqGjwokm1tz/aotaQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cURS+zMNjLbct3bzWrK4N2GY+KlYJXKu70Z6+PI8xwq05QpGS12Br/cmg4qcdi6m7
-	 CISBBLfHo2T/Gy44OjZpALLQ1T5AZUjxUcH14w+BIfhl4mUkFy6dAuBy8i8LQR1vHF
-	 SqqSpNXdn7Nd7MEXA0O0GFZSIJLd6v/Df3R18IMZXKCJZGdExg+VEaBuRo4U0ADVLQ
-	 /kb6tgtS6FvRNFfqrLto5TEvLqe9mihF5Hi+dI4XdbuHYfHtPG1lg55RrIGWnqH8/f
-	 XDbKZsxFAiLpV1Jq2NTDNrA7Vo03e/NCWsBvck8t9lpy//LGays3hYaDdRs8nFTtp4
-	 FQxhNZrJs7E9g==
-Date: Sun, 8 Jun 2025 12:42:55 +0200
+	b=c+FzWM05XYK4BIU51gGGGgEJAWMslEGiEpppSHl69eCMoo0WO2Zr1Rw+nMb88GQyY
+	 bag2Cx7wtbzfNraPq9K4PF4C7x4L4Rr0nS/BgJhRzPizjdEx5RxT5OVeLXPEiU6uk3
+	 TmVNVVDVOVHVsaIDmR2BCiPvO1fjdsW1BOK2SCqAmg6JUwKqWrG36SUk+dumsG5NZh
+	 ExLjsrUGpNxdjb9+CYx8Pt/9DKGG0fRn3R843CV0B1ZNpF2UzkF7/yWtsjq6diPw6y
+	 olNrkOjfYCue1r/p5gq7vxrJkHpOohpnsRPtaFiQpe8KGPUjwLPsoeKG4HcQ4oeOU0
+	 uA/JY0ol5VMZg==
+Date: Sun, 8 Jun 2025 12:48:33 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Benno Lossin <lossin@kernel.org>
 Cc: Igor Korotin <igor.korotin.linux@gmail.com>, ojeda@kernel.org,
@@ -52,12 +52,13 @@ Cc: Igor Korotin <igor.korotin.linux@gmail.com>, ojeda@kernel.org,
 	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
 	tmgross@umich.edu, lenb@kernel.org, wedsonaf@gmail.com,
 	viresh.kumar@linaro.org, alex.hung@amd.com,
-	dingxiangfei2009@gmail.com
-Subject: Re: [PATCH v3 1/4] rust: acpi: add `acpi::DeviceId` abstraction
-Message-ID: <aEVpL8wIfGDZRyUN@pollux>
+	dingxiangfei2009@gmail.com, Igor Korotin <igorkor.3vium@gmail.com>
+Subject: Re: [PATCH v3 2/4] rust: driver: Add ACPI id table support to
+ Adapter trait
+Message-ID: <aEVqgUtflBCzZi1X@pollux>
 References: <20250606170341.3880941-1-igor.korotin.linux@gmail.com>
- <20250606170641.3881401-1-igor.korotin.linux@gmail.com>
- <DAGZIHBVBI6Z.32401TQB5MNTL@kernel.org>
+ <20250606170817.3881748-1-igor.korotin.linux@gmail.com>
+ <DAGZNG518T0C.1PXOK55IXHZOF@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -66,26 +67,74 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DAGZIHBVBI6Z.32401TQB5MNTL@kernel.org>
+In-Reply-To: <DAGZNG518T0C.1PXOK55IXHZOF@kernel.org>
 
-On Sun, Jun 08, 2025 at 09:48:00AM +0200, Benno Lossin wrote:
-> On Fri Jun 6, 2025 at 7:06 PM CEST, Igor Korotin wrote:
-> > +impl DeviceId {
-> > +    const ACPI_ID_LEN: usize = 16;
+On Sun, Jun 08, 2025 at 09:54:30AM +0200, Benno Lossin wrote:
+> On Fri Jun 6, 2025 at 7:08 PM CEST, Igor Korotin wrote:
+> > @@ -141,6 +141,38 @@ pub trait Adapter {
+> >      /// The type holding driver private data about each device id supported by the driver.
+> >      type IdInfo: 'static;
+> >  
+> > +    /// The [`acpi::IdTable`] of the corresponding driver
+> > +    fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>>;
 > > +
-> > +    /// Create a new device id from an ACPI 'id' string.
-> > +    pub const fn new(id: &'static CStr) -> Self {
-> > +        assert!(id.len() <= Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
-> > +        let src = id.as_bytes_with_nul();
-> > +        // Replace with `bindings::acpi_device_id::default()` once stabilized for `const`.
-> > +        // SAFETY: FFI type is valid to be zero-initialized.
-> > +        let mut acpi: bindings::acpi_device_id = unsafe { core::mem::zeroed() };
+> > +    /// Returns the driver's private data from the matching entry in the [`acpi::IdTable`], if any.
+> > +    ///
+> > +    /// If this returns `None`, it means there is no match with an entry in the [`acpi::IdTable`].
+> > +    #[cfg(CONFIG_ACPI)]
+> > +    fn acpi_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
+> > +        let table = Self::acpi_id_table()?;
+> > +
+> > +        // SAFETY:
+> > +        // - `table` has static lifetime, hence it's valid for read,
+> > +        // - `dev` is guaranteed to be valid while it's alive, and so is `pdev.as_ref().as_raw()`.
+> > +        let raw_id = unsafe { bindings::acpi_match_device(table.as_ptr(), dev.as_raw()) };
+> > +
+> > +        if raw_id.is_null() {
+> > +            None
+> > +        } else {
+> > +            // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct of_device_id` and
+> > +            // does not add additional invariants, so it's safe to transmute.
+> > +            let id = unsafe { &*raw_id.cast::<acpi::DeviceId>() };
+> > +
+> > +            Some(table.info(<acpi::DeviceId as crate::device_id::RawDeviceId>::index(id)))
+> > +        }
+> > +    }
+> > +
+> > +    #[cfg(not(CONFIG_ACPI))]
+> > +    #[allow(missing_docs)]
 > 
-> This can be made safe using this series:
+> I think we should change this to one single definition and do
 > 
->     https://lore.kernel.org/all/20250523145125.523275-1-lossin@kernel.org
+>     if cfg!(not(CONFIG_ACPI)) {
+>         return None;
+>     }
+>     /* body from above */
+> 
+> In a single function instead.
 
-Indeed, I did not mention this though since I think this series should not
-depend on the one above. They'll land through different trees and the
-improvement can still be made later on.
+Generally, that's fine, but in this case I'd rather keep it as it is for
+consistency with the rest of the file.
+
+> > +    fn acpi_id_info(_dev: &device::Device) -> Option<&'static Self::IdInfo> {
+> > +        None
+> > +    }
+> > +
+> >      /// The [`of::IdTable`] of the corresponding driver.
+> >      fn of_id_table() -> Option<of::IdTable<Self::IdInfo>>;
+> >  
+> > @@ -178,6 +210,11 @@ fn of_id_info(_dev: &device::Device) -> Option<&'static Self::IdInfo> {
+> >      /// If this returns `None`, it means that there is no match in any of the ID tables directly
+> >      /// associated with a [`device::Device`].
+> >      fn id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
+> > +        let id = Self::acpi_id_info(dev);
+> > +        if id.is_some() {
+> > +            return id;
+> > +        }
+> 
+> Is a driver only going to have one id_info? Or is there some kind of
+> precedence?
+
+A driver potentially has lots of them, but the device is only matching a single
+entry in one of the driver's ID tables and hence a single ID info.
 
