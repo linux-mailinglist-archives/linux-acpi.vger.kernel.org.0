@@ -1,156 +1,147 @@
-Return-Path: <linux-acpi+bounces-14226-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14227-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF0BAD11F5
-	for <lists+linux-acpi@lfdr.de>; Sun,  8 Jun 2025 13:50:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4068FAD168D
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jun 2025 03:49:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8011889676
-	for <lists+linux-acpi@lfdr.de>; Sun,  8 Jun 2025 11:50:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC2D5167431
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jun 2025 01:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADC3202F8F;
-	Sun,  8 Jun 2025 11:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8794154764;
+	Mon,  9 Jun 2025 01:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DsUeEJpp"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="QiabjPro"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2083.outbound.protection.outlook.com [40.107.223.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBD5635;
-	Sun,  8 Jun 2025 11:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749383398; cv=none; b=slyiielvLoO259mkxhE/PFwcWjIsEiFGoMZQc+oT1KrDiXQ9WveB518DbhtR70nMVLUzV/U9qYgN5TPWZiVK367fl58Sks4Vsfb/H9XmXUeffn94Rx2rusSMPOUFvxFBq7NEQaeqf0n4lg+rAluHh4Fy/LOn2jx5J1glMw0DW9c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749383398; c=relaxed/simple;
-	bh=k6pMNcwV0zxTMuLsmCGwWquM4fEvZLtbEk4eKhiRONQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GFqRsJkxGCHmQdKu5YQIWfKCuHd3lnHutIOX3SifyEzaB8sq/1fbNAlN1AeS3yR6j5jFLumpFOEZwC5imWT0FQOTjSRGiol7S1akZVh+Y8vx7Qnqg2sLYYxFreKy998rIdabMzewS0zYwwmTorn23GMYy4QNbmkYYX2ElpEwcXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DsUeEJpp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EE6C4CEEF;
-	Sun,  8 Jun 2025 11:49:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749383398;
-	bh=k6pMNcwV0zxTMuLsmCGwWquM4fEvZLtbEk4eKhiRONQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DsUeEJpporxG7D8uvJL18YxmvfWj5oqQQvnKklpFH9LArRfX3mFn9LiDoER1CM07+
-	 zspwxAPN4jXk1ksVZxU2aRxpMw6aNOgZFMkedArITPji7C3rWSOKHKqSFzkp2pKi/a
-	 JtKfaSqdLFBslT/dhFAWGSgvcdIbsvyBLHssE1Kc3gvUTKVtz/7+1i0rhcllCZp/4s
-	 4WWMeziGPgtP4ZnD1ePOhMEi9G2Li2yX3drm72nYqxC0R3NAyPlVDeZAJDkbep7shP
-	 Lds+5op+ZqjojKQA0BTErTvWzlOkFG3t0kVaE2FG7wVJX2B4HMnbik/TLFxNTfae+/
-	 vfVXbjF8sR4gg==
-Date: Sun, 8 Jun 2025 13:49:51 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Igor Korotin <igor.korotin.linux@gmail.com>, ojeda@kernel.org,
-	alex.gaynor@gmail.com, rafael@kernel.org,
-	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, lenb@kernel.org, wedsonaf@gmail.com,
-	viresh.kumar@linaro.org, alex.hung@amd.com,
-	dingxiangfei2009@gmail.com, Igor Korotin <igorkor.3vium@gmail.com>
-Subject: Re: [PATCH v3 2/4] rust: driver: Add ACPI id table support to
- Adapter trait
-Message-ID: <aEV43zxZmWvDgKES@pollux>
-References: <20250606170341.3880941-1-igor.korotin.linux@gmail.com>
- <20250606170817.3881748-1-igor.korotin.linux@gmail.com>
- <DAGZNG518T0C.1PXOK55IXHZOF@kernel.org>
- <aEVqgUtflBCzZi1X@pollux>
- <DAH4KX3Y3M3P.3B82LSVWU172Q@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC693A1DB;
+	Mon,  9 Jun 2025 01:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.83
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749433753; cv=fail; b=p9E1RuPtBGcQKYpZoZMxLz7elOUN5D/FBkCYh/dkANVkig8jGMmNvjZQvnit8RKhzipkKfvGFS0fEymuV4EWvbLloaDctxFa0Vsciul2xMHz+0aHd4V6ywwAdtx/Gx5NwowdxycMKoS5vi3VKnUMTx118p2+vThwNffr3qSO3Fw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749433753; c=relaxed/simple;
+	bh=6LO65NWkr9CsqGE/nu46lmM9ixy7mUfgPUhN4hcBQ3k=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sPchVZ2ZAczE0gnlYDip9S1q+dEOUZJ/GqqdTCJJre3JFACxxzjyAPpQJFXkJQuGAveDjZX+hZ52INDEHs5mYhIeX3druZVFy2cVc8qTWfvfhaP1vYRZMrHRp7xIj7weDaFvq9gJyIoDBkuAtoAyWo9cbdlAsDEXZFfs1n08L50=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QiabjPro; arc=fail smtp.client-ip=40.107.223.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=H9Re0yExPS45dXWNJ6eEJeU9VYRAjoS1uPSJXGRMGIU4N81GXTYhvbPNJSynb+OhoU14JkV4KZEqtKDWb/ISQ7as8XAFH3xm4zYfU49R+aQAiVsipanJizcAf8nOi46mfg7UUf/dJxoh0d8sjtMWzWAkaVgYkVp1Mft6WTKxG5HRMNomnT+/btCLMU2qekjegnNvoGxZ6oUa791CAXE7GW34svUoXyRoMVRxx2JFz2fYeZv7vPYOadCOlgVxy76H8e3nHR9snLMjRTcmx44i4CWExA1Ja2TeoP8ncTZxZhl/cET+tMO8nKfmjeLceoeo0A5I6HylGOM0gnfyURkwbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Uomt2b+025hqGpFqyoM1L5bRVFDAJs1sKlEqo3dD3pw=;
+ b=CPwWRMgbyeK4FDFz8i35DYoTdUybSFB+bb8x/Ug3XbuL2Ih1FXR3izgA+v3gbQfRG34QHxNfY9vNpAin3KsuNp3yv7PsBQsvgjBlHLpFsDA05O5LRqYKoyC741hzmAUXltivEmziFxWzBWKEnTm8R5ax8V6pDUK7a026nz4RKJInURndWfrCQNJRGB6/mla0O9w+tzAPZ7q+33gAoe8070W46r4u79URJENGOBBYDlcSnEq2GLMyiPI1ZcCSLyV5Oge6Wn+/KkxkOh9IKfUGUfrmLBzVoYZFuBUp5ydqY3cN/V/iKgbRP9FO8QeAS/Q+7RcGzfKeHwmjENY6cpGQlw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Uomt2b+025hqGpFqyoM1L5bRVFDAJs1sKlEqo3dD3pw=;
+ b=QiabjProU9gQsVxwNvQXlSbP+WQJwp3AgVcQcqgEiXZbe2JPoGB0x9oEFvotjBPrj5Z/fCyhoiURMPw9HhNhohHoBO0NPWOEqATQrHw4z0LDog6za/fEWWqxn0tfsvujqcUIRsRMcBHFS8CSe5/nM4CbWWQlAqfyjp8WoWUz8tY=
+Received: from BY3PR05CA0055.namprd05.prod.outlook.com (2603:10b6:a03:39b::30)
+ by CY1PR12MB9651.namprd12.prod.outlook.com (2603:10b6:930:104::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.40; Mon, 9 Jun
+ 2025 01:49:08 +0000
+Received: from SJ1PEPF000023DA.namprd21.prod.outlook.com
+ (2603:10b6:a03:39b:cafe::97) by BY3PR05CA0055.outlook.office365.com
+ (2603:10b6:a03:39b::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.16 via Frontend Transport; Mon,
+ 9 Jun 2025 01:49:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF000023DA.mail.protection.outlook.com (10.167.244.75) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8835.2 via Frontend Transport; Mon, 9 Jun 2025 01:49:08 +0000
+Received: from qyzhu-os-debug.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 8 Jun
+ 2025 20:49:05 -0500
+From: Zhu Qiyu <qiyuzhu2@amd.com>
+To: <qiyuzhu2@amd.com>
+CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <rafael@kernel.org>
+Subject: Query:[PATCH v5] ACPI:PRM: Reduce unnecessary printing to avoid the worries of regular users
+Date: Mon, 9 Jun 2025 01:48:46 +0000
+Message-ID: <20250609014846.313417-1-qiyuzhu2@amd.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250527024259.56996-1-qiyuzhu2@amd.com>
+References: <20250527024259.56996-1-qiyuzhu2@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DAH4KX3Y3M3P.3B82LSVWU172Q@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023DA:EE_|CY1PR12MB9651:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3b1dd48d-5fad-4557-be34-08dda6f7d2f0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|376014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?UJa+PyLb+JUdJxkOer4O2ZqjR3zKBWe08pF+R/A3EjvxGJS6CjDHNC8if3Ss?=
+ =?us-ascii?Q?CWL1vqokuS2afCnZFCrXTOQ/OrIJomDgtaQXhh/Z3cRFGDP/JJd+B/HZ+dLc?=
+ =?us-ascii?Q?ZIE20ZOQiHrmdTSkNZKCuOT8oiNsF5C/X4CjQ9ProQmuGentXi3zaA8SwGUi?=
+ =?us-ascii?Q?MAa14JHXvJ/iBdkMsPDsizEKqoyZSwVGZrr2iFlk518U/guc70JYiZ3vNnVm?=
+ =?us-ascii?Q?HzXjfUqUNk1bdf/f9L8aL2C6ucOGVzwlQZvGoxGHyc+XhH3O/6CYxakEI/fP?=
+ =?us-ascii?Q?TZsDfD9djkBQS7VhSUFyXAyrCgErLzreQHvq4M7MlGKkKTijZNYpE+sLOrBc?=
+ =?us-ascii?Q?+ZqKU7ceaeuy/VQslSQlHOiaUS+gOAbNeAScIK7zTPQ4ySpPAe13Su4yepvz?=
+ =?us-ascii?Q?dYthgi8XkF4hHtQU1mNOzx+r4WYKBpIf8rWMPP1ST5gihk23yiFjq3Xym0GT?=
+ =?us-ascii?Q?pvefUZJ9KNupjWkyJUGQ020jQbmq8DQzC8/UREoXet+V8thDeSiqqkueKsGd?=
+ =?us-ascii?Q?NjqTh4fnw7SzwctcF1+BnqdEEXTD8Zo6ifDcz880zyYTBiF8Mb2l/AGHsJcB?=
+ =?us-ascii?Q?DPNcc4d/HESx93H0vTJqeV7pYfzTr74eqHtvSn/CUlelzO/HgcHd+auUkCaN?=
+ =?us-ascii?Q?c2MVovAwTU3LvMX3C/bHLKI+i8hFIGfCd4BRkTxWLomdiraYRetqsBUonW9R?=
+ =?us-ascii?Q?Eqln7MipJmZhL7YGx2TgbbQRca8Hyqmp2xy3D3AOfVP2eTdN/rKGKnlK0BhI?=
+ =?us-ascii?Q?aVJWGMXw+jUVIC/AagNd6BGWKapMVV5MwXL0cKzygh+UL0f9McNRsK+WMoq8?=
+ =?us-ascii?Q?0vAKGeF7tHLmqq5inVLSCxx21nImhKZIopIVqekpT/L9MBaXbb+QCTzo2PaC?=
+ =?us-ascii?Q?CKYjEDPaAwfVsfONsIoh/IyG6M45bt+hEORNjAmzPOoEcKxSjpkbcMyXpkEh?=
+ =?us-ascii?Q?OZ+kAqBujUspbHFoI0u9swhKv0D2PZt58fMOc7PN4VdG0obqznMtZJy2hip4?=
+ =?us-ascii?Q?Nw3PmYbjmhwP+WU5IOg1UQmmkEf4eYbLMMKnbOs13jAVkBvYQCBKmJP03QeD?=
+ =?us-ascii?Q?PFyBZVxwZirvPGZwmoO4qqrkE/jFGB7290PIkJx1E1riOHXNjULXheBAuI/g?=
+ =?us-ascii?Q?tPRzxNEWwtz7l2i/UHdbqYcYPck8U9Q1lMYNrrtmBe0DVd7U0YwdfJQ5tfVU?=
+ =?us-ascii?Q?sh/FYC2ocQ0oLnTQe4nKrn+9b7/9tN8yClf2ix9TSeK8sUHra73gpEMcptaW?=
+ =?us-ascii?Q?ew63PYSOo6K5wNhHgCaiFyCwTm8CIR8YOTm/66vhXJD6pdtBFLEGGl20bh1y?=
+ =?us-ascii?Q?aR+hdgI4Ru9KHO/E3aNzllDUAAu0BAbgUU+cGVuczCqAaZHYm+YQ2vIbSibB?=
+ =?us-ascii?Q?6M/+4Zy+Zd53jtnuQrtcibY6AhW9SmdERNXE6n3OWimzIj2LUJ5V0w+MEZ9L?=
+ =?us-ascii?Q?G0JKvbQ36hwpHdG3r8B36xKsF9zul+glJ8kz3wk8qxiZkoyq3WNXX1LYKgEf?=
+ =?us-ascii?Q?H1tfptc1x7wwrHrqiEaINYhoF6otfi/iVf1G?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2025 01:49:08.0312
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3b1dd48d-5fad-4557-be34-08dda6f7d2f0
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000023DA.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR12MB9651
 
-On Sun, Jun 08, 2025 at 01:46:17PM +0200, Benno Lossin wrote:
-> On Sun Jun 8, 2025 at 12:48 PM CEST, Danilo Krummrich wrote:
-> > On Sun, Jun 08, 2025 at 09:54:30AM +0200, Benno Lossin wrote:
-> >> On Fri Jun 6, 2025 at 7:08 PM CEST, Igor Korotin wrote:
-> >> > @@ -141,6 +141,38 @@ pub trait Adapter {
-> >> >      /// The type holding driver private data about each device id supported by the driver.
-> >> >      type IdInfo: 'static;
-> >> >  
-> >> > +    /// The [`acpi::IdTable`] of the corresponding driver
-> >> > +    fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>>;
-> >> > +
-> >> > +    /// Returns the driver's private data from the matching entry in the [`acpi::IdTable`], if any.
-> >> > +    ///
-> >> > +    /// If this returns `None`, it means there is no match with an entry in the [`acpi::IdTable`].
-> >> > +    #[cfg(CONFIG_ACPI)]
-> >> > +    fn acpi_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-> >> > +        let table = Self::acpi_id_table()?;
-> >> > +
-> >> > +        // SAFETY:
-> >> > +        // - `table` has static lifetime, hence it's valid for read,
-> >> > +        // - `dev` is guaranteed to be valid while it's alive, and so is `pdev.as_ref().as_raw()`.
-> >> > +        let raw_id = unsafe { bindings::acpi_match_device(table.as_ptr(), dev.as_raw()) };
-> >> > +
-> >> > +        if raw_id.is_null() {
-> >> > +            None
-> >> > +        } else {
-> >> > +            // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct of_device_id` and
-> >> > +            // does not add additional invariants, so it's safe to transmute.
-> >> > +            let id = unsafe { &*raw_id.cast::<acpi::DeviceId>() };
-> >> > +
-> >> > +            Some(table.info(<acpi::DeviceId as crate::device_id::RawDeviceId>::index(id)))
-> >> > +        }
-> >> > +    }
-> >> > +
-> >> > +    #[cfg(not(CONFIG_ACPI))]
-> >> > +    #[allow(missing_docs)]
-> >> 
-> >> I think we should change this to one single definition and do
-> >> 
-> >>     if cfg!(not(CONFIG_ACPI)) {
-> >>         return None;
-> >>     }
-> >>     /* body from above */
-> >> 
-> >> In a single function instead.
-> >
-> > Generally, that's fine, but in this case I'd rather keep it as it is for
-> > consistency with the rest of the file.
-> 
-> Then let's also change the OF bindings in this file to that style :)
+Hi,Rafael
 
-Fine for me.
+    May I konw the process of this patch, thanks!
 
-@Igor: If you do so, please do it in a seaparate patch.
-
-> >> > +    fn acpi_id_info(_dev: &device::Device) -> Option<&'static Self::IdInfo> {
-> >> > +        None
-> >> > +    }
-> >> > +
-> >> >      /// The [`of::IdTable`] of the corresponding driver.
-> >> >      fn of_id_table() -> Option<of::IdTable<Self::IdInfo>>;
-> >> >  
-> >> > @@ -178,6 +210,11 @@ fn of_id_info(_dev: &device::Device) -> Option<&'static Self::IdInfo> {
-> >> >      /// If this returns `None`, it means that there is no match in any of the ID tables directly
-> >> >      /// associated with a [`device::Device`].
-> >> >      fn id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-> >> > +        let id = Self::acpi_id_info(dev);
-> >> > +        if id.is_some() {
-> >> > +            return id;
-> >> > +        }
-> >> 
-> >> Is a driver only going to have one id_info? Or is there some kind of
-> >> precedence?
-> >
-> > A driver potentially has lots of them, but the device is only matching a single
-> > entry in one of the driver's ID tables and hence a single ID info.
-> 
-> Ah so if `of_id_info` and `acpi_id_info` return `Some(_)`, then both
-> values are the same?
-
-No, if one of them returns Some(_), the other one will always return None. Or
-phrased differently, the first match will always be the only match.
+Qiyu
 
