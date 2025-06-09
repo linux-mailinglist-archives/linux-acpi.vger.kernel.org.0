@@ -1,131 +1,142 @@
-Return-Path: <linux-acpi+bounces-14234-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14235-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C9EAD1A9D
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jun 2025 11:31:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95EC9AD1B62
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jun 2025 12:19:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C38747A34D4
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jun 2025 09:30:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05F9416C1BA
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jun 2025 10:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF181A5BAF;
-	Mon,  9 Jun 2025 09:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pKSWh2qG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353912528EF;
+	Mon,  9 Jun 2025 10:18:07 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6782F165F1A
-	for <linux-acpi@vger.kernel.org>; Mon,  9 Jun 2025 09:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23CB2522A2;
+	Mon,  9 Jun 2025 10:18:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749461503; cv=none; b=nDS3Sx/Z285MboGIgnbG3+wGHkmSddPSwdssDbs+2reCnzdwHCnF5aLIgEdmnQm86xPvPPoXjLy6iEE4iQ+Fe3XL1aUooxJiArf+b58W45gAXKLZ0p0TchFvoEmPV82me+lOfuunyDxu3hTiBfcQmvUWdizNN9R7GDAA/61F/lw=
+	t=1749464287; cv=none; b=J7vSih2pMJO2XEG6gHeBa3Nm3C/QAF+SvCdfqzpWme5SXR7BT6Rtk9q5DfZ1Z4e0QgS3OnIq1f5R3pmwhJaS4ax976WLbCSPieT3k9LtUJRhxAkt6IN3JmRfCNCvYAUWfAUvKFeLrhU0QgyGrU6UuvG3Kk051ErdnoANWni1spM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749461503; c=relaxed/simple;
-	bh=zNtDPa5n/PwAJ80qPuI7OgznWoPABWfiRViVY8gCA2A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I4Qa/al+jflsDL4P7hE8+mSc2p2peROj4RpDLObDHdoCt33NIherJeCeUKjS0hoYLSKbhLz9Txjp6en5mzv6z4YmeGK+K5prtDka8Mcs/7NSvD4fC4y9W8f6iPYXb3kdQ/T2CiLLuohVNvyDFRGrfm3vChVfq1H4ky9thhKKVXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pKSWh2qG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4E7C4CEF3
-	for <linux-acpi@vger.kernel.org>; Mon,  9 Jun 2025 09:31:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749461503;
-	bh=zNtDPa5n/PwAJ80qPuI7OgznWoPABWfiRViVY8gCA2A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=pKSWh2qGfwVn+IK3t+CJQ2GsWOBOqvWhAdQk15BpeMy40zlijvYtKMgRUgJx6CkH4
-	 j2Kru+F4i/1qnVWxVkUBU4kLDvIdqO97F3PdT1axjt39es+zIZt7A9W/8jCzPP8FE2
-	 JQ+xuxGTfS/J7IIKm9QGPxYjjP8dzljao4V1UBkJNIwU6PfxRjrdfQF+eZBd5N42VM
-	 qMEQMPhAfnRvzdK/3GjH6HHOrUGteikO4gl/PPld72nT3VKNXxhHEhNAbcsJz7fGYC
-	 rCUp/v2Oi7D8JuwOTeXkmhTKAqlvc1Lsu0ItLMZSq3e5FJtTWUbPGRC88C8E+ZA95l
-	 ONK+fHWvZ4xEw==
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-60ef6bf2336so3139518eaf.0
-        for <linux-acpi@vger.kernel.org>; Mon, 09 Jun 2025 02:31:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXNDzQnl7TrDHkpbf+FNzZ4J/2ZFACM4YG6pWit+/+u1zA5NocZBQsj2owWxYBhRm1ZMiEhUMRM0hM8@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnEjta8X5IB/n+kupkUHpzaTx9N7n7jX1NJDVbP0xcfBWsmYR9
-	okGrnRKHP8OzGl3xm/OSZ45tX8aqe6qWjD8naCTqN8TCApuC93uhDm4WlqmSfGXJU2Opyi/Lj+L
-	7tP5T9MoR7UvteJlJvEgrleA7subelek=
-X-Google-Smtp-Source: AGHT+IFYuDhhac9sF/tr7yvmttGCvHxnpq9sJAWKSYAgPWS7lSyASuhm3jm70idMIqYDbMZrow/nJqZpm9CdGlVVTMw=
-X-Received: by 2002:a05:6820:1897:b0:610:d415:46bc with SMTP id
- 006d021491bc7-610d4154a57mr1601813eaf.7.1749461502397; Mon, 09 Jun 2025
- 02:31:42 -0700 (PDT)
+	s=arc-20240116; t=1749464287; c=relaxed/simple;
+	bh=f+5PnMziq+6s9kssIcPM7wytiBpCtOd4FLLaGGt+BEw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KnmutVKWJkAmEGEz2o1jKPXJlPtoBtfevqLoFYZNRs+cdhL1dRtyGeO1RfociRlgoRTCzFTniICGaMdh/+x3VLBPIqvRTDd2hoikfdTWQ3tCr+zqvA9DBj0n+ehBCP/R6cRPtVB2zYbYGAHDD1BLh7u9Jbl3l3esnfE3JIrWC/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bG79p2Jp4z6L4sF;
+	Mon,  9 Jun 2025 18:16:14 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id E613A1404C5;
+	Mon,  9 Jun 2025 18:18:00 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 9 Jun
+ 2025 12:18:00 +0200
+Date: Mon, 9 Jun 2025 11:17:58 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: <gregkh@linuxfoundation.org>, <rafael.j.wysocki@intel.com>,
+	<linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>, Ben Cheatham <Benjamin.Cheatham@amd.com>
+Subject: Re: [PATCH 3/3] ACPI: APEI: EINJ: Do not fail einj_init() on
+ faux_device_create() failure
+Message-ID: <20250609111758.0000258d@huawei.com>
+In-Reply-To: <20250607033228.1475625-4-dan.j.williams@intel.com>
+References: <20250607033228.1475625-1-dan.j.williams@intel.com>
+	<20250607033228.1475625-4-dan.j.williams@intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250609032839.525087-1-superm1@kernel.org>
-In-Reply-To: <20250609032839.525087-1-superm1@kernel.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 9 Jun 2025 11:31:27 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iNoT79e9RRraifMY84oR8QAcSeYwk+=vaRSuB9mGmtAA@mail.gmail.com>
-X-Gm-Features: AX0GCFsbyF9TF4nfYaLxr0fDuQLJ6TbH04x0LuYGlMzf0gVsYgB1yvXx2Mjd0ZY
-Message-ID: <CAJZ5v0iNoT79e9RRraifMY84oR8QAcSeYwk+=vaRSuB9mGmtAA@mail.gmail.com>
-Subject: Re: [PATCH] Decrease `AcpiExTracePoint` verbosity
-To: Mario Limonciello <superm1@kernel.org>
-Cc: mario.limonciello@amd.com, robert.moore@intel.com, 
-	rafael.j.wysocki@intel.com, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Mon, Jun 9, 2025 at 5:29=E2=80=AFAM Mario Limonciello <superm1@kernel.or=
-g> wrote:
->
-> From: Mario Limonciello <mario.limonciello@amd.com>
->
-> Early in kernel boot pointers can't be used and so %p shows up
-> incorrectly:
->
-> ```
-> extrace-0138 ex_trace_point        : Method Begin [0x(____ptrval____):\M4=
-60] execution.
-> ```
->
-> Later in the boot %p works, but it's not really actually useful when
-> the pathname can resolve properly. Adjust the debug print so that if
-> the Pathname resolves that the pointer isn't also printed:
->
-> ```
-> extrace-0138 ex_trace_point        : Method Begin [\M460] execution.
-> ```
->
-> Link: https://github.com/acpica/acpica/pull/1013
-> Link: https://github.com/acpica/acpica/commit/bdc2a4e646f097b693aa60f1f2c=
-4228d1e31b0d1
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+On Fri, 6 Jun 2025 20:32:28 -0700
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-This is an ACPICA change, so it should be made upstream first unless
-there is a good enough reason to make it directly in Linux.  In which
-case that reason should be mentioned in the changelog.
-
+> CXL has a symbol dependency on einj_core.ko, so if einj_init() fails then
+> cxl_core.ko fails to load. Prior to the faux_device_create() conversion,
+> einj_probe() failures were tracked by the einj_initialized flag without
+> failing einj_init().
+> 
+> Revert to that behavior and always succeed einj_init() given there is no
+> way, and no pressing need, to discern faux device-create vs device-probe
+> failures.
+> 
+> This situation arose because CXL knows proper kernel named objects to
+> trigger errors against, but acpi-einj knows how to perform the error
+> injection. The injection mechanism is shared with non-CXL use cases. The
+> result is CXL now has a module dependency on einj-core.ko, and init/probe
+> failures are handled at runtime.
+> 
+> Fixes: 6cb9441bfe8d ("ACPI: APEI: EINJ: Transition to the faux device interface")
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> Cc: Ben Cheatham <Benjamin.Cheatham@amd.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > ---
->  drivers/acpi/acpica/extrace.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/acpica/extrace.c b/drivers/acpi/acpica/extrace.=
-c
-> index d34497f3576a4..36934d4f26fb4 100644
-> --- a/drivers/acpi/acpica/extrace.c
-> +++ b/drivers/acpi/acpica/extrace.c
-> @@ -136,9 +136,9 @@ acpi_ex_trace_point(acpi_trace_event_type type,
->
->         if (pathname) {
->                 ACPI_DEBUG_PRINT((ACPI_DB_TRACE_POINT,
-> -                                 "%s %s [0x%p:%s] execution.\n",
-> +                                 "%s %s [%s] execution.\n",
->                                   acpi_ex_get_trace_event_name(type),
-> -                                 begin ? "Begin" : "End", aml, pathname)=
-);
-> +                                 begin ? "Begin" : "End", pathname));
->         } else {
->                 ACPI_DEBUG_PRINT((ACPI_DB_TRACE_POINT,
->                                   "%s %s [0x%p] execution.\n",
-> --
-> 2.43.0
->
->
+>  drivers/acpi/apei/einj-core.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
+> index fea11a35eea3..9b041415a9d0 100644
+> --- a/drivers/acpi/apei/einj-core.c
+> +++ b/drivers/acpi/apei/einj-core.c
+> @@ -883,19 +883,16 @@ static int __init einj_init(void)
+>  	}
+>  
+>  	einj_dev = faux_device_create("acpi-einj", NULL, &einj_device_ops);
+> -	if (!einj_dev)
+> -		return -ENODEV;
+>  
+> -	einj_initialized = true;
+> +	if (einj_dev)
+> +		einj_initialized = true;
+>  
+>  	return 0;
+>  }
+>  
+>  static void __exit einj_exit(void)
+>  {
+> -	if (einj_initialized)
+> -		faux_device_destroy(einj_dev);
+> -
+> +	faux_device_destroy(einj_dev);
+
+Hi Dan,
+
+Thi bit is sort of fine though not really related, because
+faux_device_destroy() checks
+
+void faux_device_destroy(struct faux_device *faux_dev)
+{
+	struct device *dev = &faux_dev->dev;
+
+	if (!faux_dev)
+		return;
+
+Though that check is after a dereference of faux_dev
+which doesn't look right to me.  Might be fine because
+of how the kernel is built (I can't remember where we ended
+up on topic of compilers making undefined behavior based
+optimizations).  Still not that nice from a logical point of view!
+
+>  }
+>  
+>  module_init(einj_init);
+
 
