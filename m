@@ -1,73 +1,72 @@
-Return-Path: <linux-acpi+bounces-14244-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14245-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E5C9AD1F24
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jun 2025 15:43:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D61B6AD208C
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jun 2025 16:07:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 634ED16C683
-	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jun 2025 13:43:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EDB61887789
+	for <lists+linux-acpi@lfdr.de>; Mon,  9 Jun 2025 14:07:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E333D259CB0;
-	Mon,  9 Jun 2025 13:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B293825B1CE;
+	Mon,  9 Jun 2025 14:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G3aseK6D"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ib7JYYMP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BC2320B;
-	Mon,  9 Jun 2025 13:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285011547D2;
+	Mon,  9 Jun 2025 14:07:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749476538; cv=none; b=QzTiIKH/x0cQF1TGoFMwZRWAEAAd/gc2SlT1Esrw71wzi81S/Ax2ntptamLTs8fh5ZVyM355wX6Al8Uj8y6M5izWPBNAKCQA0f4vQ9fRMhEkDdgg0TlgbZfaBVvoz8fDf62+LP3WY1LopBOB7mN2Q518GNij9q/sN53h3fuojxc=
+	t=1749478030; cv=none; b=pCsSrU1lhLlkRt0oavDDby0OJwPoAbetxlz0rDA+iYsONp2jNA8Oivbkl+n1BVIClsYUQOBsX2Mp6Aj8rlHM8nKWDpYPMyKxCZDLlE+y6flYebi6vOY8vaQdmFHDDAUBPGwPXv+1CZNPOyPLdRKDeBgmycv96uL0LPtvOwHp/Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749476538; c=relaxed/simple;
-	bh=aLHQQvcJ/CzG56n3F/pYuY+17KVjnXrEYITOojxRbmw=;
+	s=arc-20240116; t=1749478030; c=relaxed/simple;
+	bh=hKR7+ajhuSlOyH7j2iFRCSEbWtE6DkgGdy/ZRTO5PvI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m4H3MIatlGEMaL8MKEMWfD4Q2RbP0T5NsU1EiA8D+53aLAeJenPuoEvdSl3Dmp4TwkhZUzjsF9IVIzFtk/jDkctmDS8JaO02N2v70pfA7/gi3AnUOFBFnHHoE/rS2FsYdFHoEgnrTDyfDvdG6dc77cg7rMOcIvc0g0DXGbgbelM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G3aseK6D; arc=none smtp.client-ip=209.85.215.179
+	 To:Cc:Content-Type; b=EA3fsknUovE7Emt+CDkvtsVbDx3Zh3QTz7sMKVw1MyvkyY+r7n2OC4/J7P93aiyoMoTYnHKaXuelaCtloxHNBRNQX9Pjf808kNWjgfT8iJXybsKZ4MXoEUVxgc0Bux3EzUJclT5S0mDOGk4fIu8JVb+3Io0/84ohx2cyjVYxmEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ib7JYYMP; arc=none smtp.client-ip=209.85.160.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b2ef619e80eso299128a12.2;
-        Mon, 09 Jun 2025 06:42:17 -0700 (PDT)
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2e999729ccbso2861330fac.2;
+        Mon, 09 Jun 2025 07:07:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749476537; x=1750081337; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aLHQQvcJ/CzG56n3F/pYuY+17KVjnXrEYITOojxRbmw=;
-        b=G3aseK6DuXIPoQF4rJ6+cK4Ldu6BGadsay6ryDgM0dUnzCiTAslcNO+GJG0CWsEk//
-         LFDmVGWomb0DszfnVRNRdoZ2+7tZw9+Va3EydGGnJbBJR4eD34kUjD2e9dVLKZpQ2U4C
-         O2QxXeI8mfPY/4M1Q9EdaOaATP6h8h3WJ1sPAoF61WpeMl49tw+QyCXZBg4fFtWF0OpE
-         4Rmvr9yGFUW5Rs7QNsSOFoh7XZLkf29a+hAru2+hKbzoMFll3g41y1Ayc6haYTk7IEnJ
-         +NBvnOXuqZW2g05tHH2Rm+/R3YjdjstOT3Ayl066or/VAo9zqEUUI2wnBVY3FWyrlp3q
-         TVmA==
+        d=gmail.com; s=20230601; t=1749478028; x=1750082828; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=afG0/kl8HRSNgTfY07WBqZftxaFWWI+8Ts2aM7Cdogo=;
+        b=Ib7JYYMP7LP9DCiDoDAiyHBwqRieiCYVLr1IQgjGALsgiKl+nyRhGcsgT+wdaWXmJL
+         0ZkJE0nIzquL759fjy75mWHBLHByu3rQlIbMAwjJvbCSJ/s4P9y0oCoqyosLCoz3nv4g
+         e0enKEvELP7bOJTczb9g0eKlanU7c/JcvCPO0ZFT9KyfXk/FRpR2t2iSPoK1QGcox7OL
+         NqR3CCBjqEQ8ClnW4BG9F5nJtyXU1s6RFo1nhGsEFzUxh19a4Be9sGLGtbviFSPtt6Iz
+         doxQod2gtiK1YmGuOxCkXxRbm8Inll5JFkCGd7RO0lLH1Ojtu2j7WNK7P/iNiktGwlWk
+         tKOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749476537; x=1750081337;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aLHQQvcJ/CzG56n3F/pYuY+17KVjnXrEYITOojxRbmw=;
-        b=E2+vOdl++ZZW/EytuejMmrDAB/N+xGr77fAbiT3QeP8U/M8wzV15FIP7HaqCuPBrRo
-         ABbHArDsMhB3It0RriXwF/79TkGRvXzHl0Cziun/9iuxF5kAc8WYi4F+z1UyKQ0ECMQ3
-         en/6P9VadpSSlISXUA6xqD8x3pYqktNWNvclgcN+E/UqlYhwakfOl418PdK3AH8rXBew
-         yIjMjkCt/wUQf01AuqsR3ghnXAuPpqJdSLwqZpKj7DJ9K13GUdw61xh3K7nFIYxBswBu
-         2Z2mZtneGDlJ7WoGFq7AGvAbIrlZEUasQdLEQGvKHZ7LXnN/3cGwPvdKjvNu1WiPzm76
-         KKoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUfBLT096rkQxBKlUZc4NpQRq+SYmt9N67zQ2E0cdQQe/1rRL6/rt1RxAoI8DSzYyPesRXrZVuLsGRqDDss@vger.kernel.org, AJvYcCUqkLRe9Kh/DfyWOKYihM+CYZFSvOjVd36gO3gwQYA6A6GDNdFNJaFe1+Yp89xDVmnmxzowFkmhUeDMwNPNyuQ=@vger.kernel.org, AJvYcCWhtwCZgNNiut7iHDY27bQfKXAgvIcGaKcMT0GIPdBiAkT03W5mIE2u9EB9SX1CRzwO4vOT+vFi+KhA@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz13moNAQsy7iP48hDlLZDxn5JpKvvfad4ESj2i8DO5pgr3Y7z+
-	dREnHoGO77uuP5/ZgBvRr/3iYNwhwu+GA2Du0Ry0SQAVgGGDDjkWdzRFeslWAntqeKTgzP+2w6w
-	rfp3+/U97/ImFFusLsR9xm5CWzecXj7c=
-X-Gm-Gg: ASbGnctVE3TMyGUgarAlErG//P+Xs7yr+1+0ejRed2ccFE3KHMKvaB76K2/wWlJd3eJ
-	xjOLGjkD1MWFg71suGpFFFGrjRfWoqszEirwCblqnlsrl4aTIkDIgGi8i9b5GvX5ppimfEMGUrG
-	eRJaP2gMbbxqAAKNUR3V80sh3w92OFuDjC
-X-Google-Smtp-Source: AGHT+IG8g+8pCae3TmU8EdIiokIy7+Ydfo09f+/gWEH3caQEhmXTDfFAwp608YUZ1yuwI6t7yjmGrSc0B7PuU8J1A4s=
-X-Received: by 2002:a17:90b:3890:b0:2ff:7970:d2b6 with SMTP id
- 98e67ed59e1d1-3134753c519mr6906752a91.5.1749476536634; Mon, 09 Jun 2025
- 06:42:16 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1749478028; x=1750082828;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=afG0/kl8HRSNgTfY07WBqZftxaFWWI+8Ts2aM7Cdogo=;
+        b=CKNYmP0D/RuaZHeajohGofL7Uf3XRMAG4cMxfaHQvVKQNCRvfzHjz4qsE3XZaQYB6u
+         3Q/FENSrrCTex5fzDQWa/UqtQ8Bdq+0TvxPM+UWSIf715pOSXQ9wXwkSAN5WIyow7jFG
+         /GsOlqfVT1uIzX9hy1kV3DbmNVsJXoDkEGak9SfDNCEJdeP/cR73hr3i9IPo3481PtyQ
+         1OijQCyrAzkuAClSU97/7LwVfdywfq9/yR1y447ojy8Px0R1QGaElJ4QzcthgKFe5CyQ
+         K+Z5wc3NfOsgkx5yvQWgBnw62fmBlbX5VdQlPJA+emTJiZB9FXKVRC+SSNFCiirHFRRw
+         vSqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUxgjWMvqMQ07EQpHCVGDzzL/Y1Vah+wsvoBRDKKcVu7QnefXXzrKO0o/MSHFuZAWtcv9LsWU+t8rlF@vger.kernel.org, AJvYcCVggiApVkXFMp6aD7yAw7RAKNMup56MZzKLyKe7RY3/cKJiMmEPKiB9+ozabxMWDO31zWfYERRveigsUBRnHTk=@vger.kernel.org, AJvYcCWpbm7UJvaGUg1mY2gUF/XRyiLc91i07BcQSVePgA5NRWGOfbvODz8z5gsk1R9nCgn58DM3IW+0BKhxCL9m@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfmppyqqGUiYYwvwUE9U++2UR0CHbPrERa4G8eSdIIhMJ3C3pr
+	VW9tXgivoYedlm6mt6dwsY4g0DfgP+RI0QPikDNdJfX0vtPHzx/kjmhhIvArWK7Ug1vu7UHU8vW
+	qYxHIee9yF68za0ErYRiE+VoVOiBJCiQ=
+X-Gm-Gg: ASbGncumygkjABTfFgROWTy55ihO2VbxHyf44LjL1X7HkA7Zr59j0Iblc3wU0Q5h3qs
+	W5aIbYTTLH+bJ1KYghNn7qw+TKboYqIEtv8kltJduKqlDhFhrnTEvMpKw/8jcNSrQOG6/BCUuv5
+	h3nVfZZ26z1duGENupCf37CXU80NflmhTUKcpoasGF
+X-Google-Smtp-Source: AGHT+IFMIV6U/igIlpB2ppK59kvRoIdscUJqew6GIJircIlEAiWY4uTovmhUmkBLtQPxTPuE4nyg2BFG5tS4OB9pPc8=
+X-Received: by 2002:a05:6870:a7a2:b0:2e9:7e3:933f with SMTP id
+ 586e51a60fabf-2ea00684093mr7039729fac.3.1749478027948; Mon, 09 Jun 2025
+ 07:07:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -78,36 +77,59 @@ References: <20250606170341.3880941-1-igor.korotin.linux@gmail.com>
  <20250606170817.3881748-1-igor.korotin.linux@gmail.com> <DAGZNG518T0C.1PXOK55IXHZOF@kernel.org>
  <aEVqgUtflBCzZi1X@pollux> <DAH4KX3Y3M3P.3B82LSVWU172Q@kernel.org>
  <aEV43zxZmWvDgKES@pollux> <CAJxaTdNZEdK21mFPu2kTJPa7aQ+PpnkwFVdEP5MCt6w+bD0wXA@mail.gmail.com>
-In-Reply-To: <CAJxaTdNZEdK21mFPu2kTJPa7aQ+PpnkwFVdEP5MCt6w+bD0wXA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 9 Jun 2025 15:42:02 +0200
-X-Gm-Features: AX0GCFvdQ53hVVkSQ6Wno2xP-Qw2liNpZXY_h_vcL--AQe3WIQ8Lq5R3ZurK1-M
-Message-ID: <CANiq72=rerpj_Ut0x7dDb0O8dEh9SHaF1HVyyfMM83hz--QCJg@mail.gmail.com>
+ <CANiq72=rerpj_Ut0x7dDb0O8dEh9SHaF1HVyyfMM83hz--QCJg@mail.gmail.com> <CAG7QV91u4rVgAqDjKAofupASSk9q0uRKNtsrHg7Q6KExRMkFog@mail.gmail.com>
+In-Reply-To: <CAG7QV91u4rVgAqDjKAofupASSk9q0uRKNtsrHg7Q6KExRMkFog@mail.gmail.com>
+From: Igor Korotin <igor.korotin.linux@gmail.com>
+Date: Mon, 9 Jun 2025 15:06:56 +0100
+X-Gm-Features: AX0GCFvuwUvErfOYrgAzHxM0-sxRU7s6mm5moyKumxFcZp5T9Z7y7tnWeLeM7Kk
+Message-ID: <CAJxaTdMFp0WAB3BBDPUztVvTtDGUt9=KyHTDpDOgAZ4ZEk2XUw@mail.gmail.com>
 Subject: Re: [PATCH v3 2/4] rust: driver: Add ACPI id table support to Adapter trait
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, rafael@kernel.org, gregkh@linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu, lenb@kernel.org, wedsonaf@gmail.com, 
-	viresh.kumar@linaro.org, alex.hung@amd.com, dingxiangfei2009@gmail.com
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Len Brown <lenb@kernel.org>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Alex Hung <alex.hung@amd.com>, Xiang Fei Ding <dingxiangfei2009@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 9, 2025 at 3:09=E2=80=AFPM Igor Korotin
-<igor.korotin.linux@gmail.com> wrote:
+> <igor.korotin.linux@gmail.com> wrote:
+> >
+> > Let me know if this pattern is acceptable. To my opinion it is not much
+> > different from the original 2 functions conditioned by #[cfg] and
+> > requires some nasty changes.
 >
-> Let me know if this pattern is acceptable. To my opinion it is not much
-> different from the original 2 functions conditioned by #[cfg] and
-> requires some nasty changes.
+> In general, the more local a `cfg` can be made, the better, because we
+> can share more, e.g. the docs and signature.
+>
+> But maybe in this case it doesn't work -- what would be the "nasty
+> changes" required?
 
-In general, the more local a `cfg` can be made, the better, because we
-can share more, e.g. the docs and signature.
+In particular on this example:
+    fn of_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
+        #[cfg(not(CONFIG_OF))] {
+            None
+        }
 
-But maybe in this case it doesn't work -- what would be the "nasty
-changes" required?
+        #[cfg(CONFIG_OF))] {
+            // the rest of logic
+        }
+    }
 
-Cheers,
-Miguel
+The `dev` is marked as unused if `CONFIG_OF` is not set. So we have 3 options:
+1. rename it to `_dev`. This is nasty to my opinion, because it is misleading.
+2. add #[alloc(unused_variables)] on top of it. Also not good since it
+will suppress
+all other possible unused_variables as well.
+3. The third option is `let _ = dev;` in `#[cfg(not(CONFIG_OF))]`
+section. I came to
+it while I was writing this reply. This looks like the best option of
+three in my opinion.
+
+Thanks
+Igor
 
