@@ -1,105 +1,140 @@
-Return-Path: <linux-acpi+bounces-14276-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14277-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3CBAD4239
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jun 2025 20:49:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06223AD4253
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jun 2025 20:57:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 829103A4D58
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jun 2025 18:49:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEF327A3D9E
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jun 2025 18:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C9924A064;
-	Tue, 10 Jun 2025 18:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFBD256C93;
+	Tue, 10 Jun 2025 18:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BEWTAoAy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyasEQut"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F23324679E;
-	Tue, 10 Jun 2025 18:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05A1256C73;
+	Tue, 10 Jun 2025 18:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749581361; cv=none; b=Gdk77y339q+fMPYOvoxLlncAsvJ/7f3np/vZUhWO+dJgmW6TquWITT6oVo20L/uydySsICbnnsdQCb5yqJoXiLYrykz+CRTIVcyglo/rw8jQkBi2mn4W5zejPA3ERw+NjoVmWaAoquS5W0ZnvFG5bdTZ/Kb1+7R5PjeRvOFg4eA=
+	t=1749581811; cv=none; b=ZQ3UTy0PTtXl2fskSugvVkfleAsq0D1lwhUNB5xNU4QYySBINaPogsGEjAtn3USKrt/1r7ioCxq89ypT2RGpbIqFAcGhLnjaQFCJrqEVgMFfoyUy7yqn4KibUs/53Jh36RjjWcOdESPhpiQ47fVTenpAZNrF4I7qg7S2G1c2v3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749581361; c=relaxed/simple;
-	bh=qUiwFa7AM1VEN+Lw4QKBNhdckuQLX1RyTY7pmz0nqOc=;
+	s=arc-20240116; t=1749581811; c=relaxed/simple;
+	bh=pryyr1i31pIjJR6VwtjXcpq4HuW0SJmdaFXt2MAmv1c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N0NLwdYH2vquFSjtIaCm3WJYLfvfOZfguwUYAvaJhpm/5yYv4bmGdUGF+3Yx3BweQ8ynLZJH74aAq+V8pfkIWSKJsD4LO6gxalnPcjg+xX96qhGLQgFXVnbPLP+V7m0qJGgVg0Z+X6U2ACbhqrciju94dYHNF/ZsMt2lkbOo2c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BEWTAoAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 148AAC4CEF0;
-	Tue, 10 Jun 2025 18:49:21 +0000 (UTC)
+	 To:Cc:Content-Type; b=a0dXwBTTcKrEuOKXqLHcVjXAPVyLrWl4ceXQJO7tlReWZVqj62HtjrnP3QuwBmDvDT1f7EWEYc0syNs8PtqQiwujP8sFy4iY63e9zPZ3KX9YA3GCCBrvgKkigTHTXjPukAve0qPqsxOL6lFiKqoU5CMM8cVYWHKKVSumAxVbQdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyasEQut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D26BC4CEED;
+	Tue, 10 Jun 2025 18:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749581361;
-	bh=qUiwFa7AM1VEN+Lw4QKBNhdckuQLX1RyTY7pmz0nqOc=;
+	s=k20201202; t=1749581811;
+	bh=pryyr1i31pIjJR6VwtjXcpq4HuW0SJmdaFXt2MAmv1c=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BEWTAoAy+YV2uYT/tTNaF9Dcw2pbYzv29X8bxstpeCAo0K94fJcojLdoC2XTfAZ0c
-	 N+et58XoiL/fjstKAmSIGqzQ/G5fqZoqwDsuqQhkK8xcvw50/r4Jg1bPAh2sBRVXBt
-	 0aA4twRBY1TAZ0sDHv+Me0UXYQgq/Z6NxZ/blR+WlkB3wFSto3LGnc9NkClOtL8xB2
-	 I9CVVS4ijr6mL+50KtWsZTjHJVy+kfH+/2Ay8YlBWsr1QNy+71L/FKTWme1hrr5ynj
-	 3gyBmxsVXYDZz1vtZV5aFRAgfy0Abp9Cgf9HgzURQN2xQ7B1csj0MagGQMreLaK84t
-	 f0Goi8cPCBPDw==
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6fb01566184so48103006d6.1;
-        Tue, 10 Jun 2025 11:49:21 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXOvzXmPpcOvhZcobbP7xkpuR2ZJhfBgxTyRpa4SqAxqhhYMATS0a1ysOSf4HIkPs252kpJ3wWg7tLgncA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRd8zMB6M5xH/svZWJkjPnW10portgqWwsVO1mFqI7b2lbBopj
-	zhH0Ywi7MnyRolFEgOqmnE5OeTxUsc5hRRC1Fwp96iU+2zar938HHeAflbMzLcItpU7wMNqTSiY
-	Ij7ylk6cm02ViIK1hzEucHNIE0COwglQ=
-X-Google-Smtp-Source: AGHT+IFz62GAyIKh5lmKRhH1ktkgrURaG7uL9lohEJUSlctWiF+ydUnVxRNLdZeIbi0Q4+eNMbX+ILUypt+AXSNR7cE=
-X-Received: by 2002:a05:6820:3085:b0:60b:ad9e:2bbf with SMTP id
- 006d021491bc7-610ef7c5734mr163663eaf.8.1749581349162; Tue, 10 Jun 2025
- 11:49:09 -0700 (PDT)
+	b=dyasEQutnFNsEmCY6adDQlSZkSb6OjTjnTKxJ0h4MGWrtKUX6Cu8IVfWzNbW18bkC
+	 HWxNUFhf+lGTdXTLV6ptAc+2mXAPlkc/0ofhT4RDvLh+B99eTCtlZH5gxYKZtgibsa
+	 lvFJyTzRAQbXcXqWw0Udkl+8OYC9Ji/Stnm4zNi/F++VsrW+cMPB0n/bA0Pc9vyNMK
+	 F+UrX/I7tqsbINQ1J7jG4aB8PmYonengdwv1UdmfZceJLLEHlT921etli0TVFcnC88
+	 L6f0UmXhxrnzFXIZH6Y1LCMNeM0Qo5Bq5Ru7exBEkSQRQXBdxE18yUeMEfijG4WLK9
+	 LvfuIbcVw3OSg==
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-2e9071e3706so2944615fac.0;
+        Tue, 10 Jun 2025 11:56:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV/lj6IvifAXohyQfGnX43DhwSP6bkktYUICBm7UJq+YA6K4gdKE5/vNXh8A1uM3nEmVGJxp1FLpvUk@vger.kernel.org, AJvYcCXXOTDnD+xKAGGOe4dKoaGu/EWT4suGxtZleycWn9kZaQhu/vWH1nnSX35vmzz0CzYpoLyU5a2qxyln+/OF@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFA5ZffFGUWWaSGyzQ1VJPS0xAVDLgKKeAqQs7Xdt8ugnE1PwB
+	s0qtB7nMkeavfsPv8I4zApe6gpnCMPDOfrIE9Tx6/QzkR3BHcpwc6XinNbkBY7IoQsbGKHf9NCO
+	Yca3b2cXoNi+kLUJOPWPfKY2oxQzJVmA=
+X-Google-Smtp-Source: AGHT+IEiqMAs3VwBo4z5rbrJ77CuOTpPixo7IesmIBEY9g9gMK/j0uqLTF5wWCFJW4wUxt+rxTVjBwh3+CHxEGEYw8o=
+X-Received: by 2002:a05:6871:2d06:b0:2bc:7d6f:fa85 with SMTP id
+ 586e51a60fabf-2ea96cc229emr307395fac.16.1749581810329; Tue, 10 Jun 2025
+ 11:56:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250609064235.49146-1-ubizjak@gmail.com>
-In-Reply-To: <20250609064235.49146-1-ubizjak@gmail.com>
+References: <20250529235310.540530-1-W_Armin@gmx.de>
+In-Reply-To: <20250529235310.540530-1-W_Armin@gmx.de>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 10 Jun 2025 20:48:58 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jQJ3rX1Es+MTdqkD80ewufAgJ6whiWDHtCWJ0vvVBPtA@mail.gmail.com>
-X-Gm-Features: AX0GCFsY0PQv2-FgRRdDg5dFeSrLiFR_jheI-wAsxzrYmVatR1EOgYBUG_uvyns
-Message-ID: <CAJZ5v0jQJ3rX1Es+MTdqkD80ewufAgJ6whiWDHtCWJ0vvVBPtA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: acpi_pad: Update arguments of mwait_idle_with_hints()
-To: Uros Bizjak <ubizjak@gmail.com>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+Date: Tue, 10 Jun 2025 20:56:38 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iWS=tHAuauHNHb+N9_GjJTX2-RY01eAS8-sjS_2UZaoA@mail.gmail.com>
+X-Gm-Features: AX0GCFudS5db3IvFItOfoZb8IDBDd4WIt62v3pF3Er-HjcfbRdESTlpHy76SWTY
+Message-ID: <CAJZ5v0iWS=tHAuauHNHb+N9_GjJTX2-RY01eAS8-sjS_2UZaoA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: EC: Ignore ECDT tables with an invalid ID string
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: rafael@kernel.org, lenb@kernel.org, glpnk@proton.me, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 9, 2025 at 8:42=E2=80=AFAM Uros Bizjak <ubizjak@gmail.com> wrot=
-e:
+On Fri, May 30, 2025 at 1:53=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote:
 >
-> Commit a17b37a3f416 ("x86/idle: Change arguments of mwait_idle_with_hints=
-() to u32")
-> changed the type of arguments of mwait_idle_with_hints() from unsigned
-> long to u32. Change the type of variables in the call to
-> mwait_idle_with_hints() to unsigned int to follow the change.
+> On the MSI Modern 14 C5M the ECDT table contains invalid data:
 >
-> Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Len Brown <lenb@kernel.org>
+>         UID : 00000000
+>  GPE Number : 00        /* Invalid, 03 would be correct */
+>    Namepath : ""        /* Invalid, "\_SB.PCI0.SBRG.EC" would
+>                          * be correct
+>                          */
+>
+> This slows down the EC access as the wrong GPE event is used for
+> communication. Additionally the ID string is invalid.
+>
+> Ignore such faulty ECDT tables by verifying that the ID string has
+> a valid format.
+>
+> Tested-by: glpnk@proton.me
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
 > ---
->  drivers/acpi/acpi_pad.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/acpi/ec.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
 >
-> diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
-> index 6f8bbe1247a5..c9a0bcaba2e4 100644
-> --- a/drivers/acpi/acpi_pad.c
-> +++ b/drivers/acpi/acpi_pad.c
-> @@ -33,7 +33,7 @@
->  static DEFINE_MUTEX(isolated_cpus_lock);
->  static DEFINE_MUTEX(round_robin_lock);
+> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+> index 6f4203716b53..75c7db8b156a 100644
+> --- a/drivers/acpi/ec.c
+> +++ b/drivers/acpi/ec.c
+> @@ -23,8 +23,10 @@
+>  #include <linux/delay.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/list.h>
+> +#include <linux/printk.h>
+>  #include <linux/spinlock.h>
+>  #include <linux/slab.h>
+> +#include <linux/string.h>
+>  #include <linux/suspend.h>
+>  #include <linux/acpi.h>
+>  #include <linux/dmi.h>
+> @@ -2031,6 +2033,21 @@ void __init acpi_ec_ecdt_probe(void)
+>                 goto out;
+>         }
 >
-> -static unsigned long power_saving_mwait_eax;
-> +static unsigned int power_saving_mwait_eax;
->
->  static unsigned char tsc_detected_unstable;
->  static unsigned char tsc_marked_unstable;
+> +       if (!strstarts(ecdt_ptr->id, "\\")) {
+> +               /*
+> +                * The ECDT table on some MSI notebooks contains invalid =
+data, together
+> +                * with an empty ID string ("").
+> +                *
+> +                * Section 5.2.15 of the ACPI specification requires the =
+ID string to be
+> +                * a "fully qualified reference to the (...) embedded con=
+troller device",
+> +                * so this string always has to start with a backslash.
+> +                *
+> +                * By verifying this we can avoid such faulty ECDT tables=
+ in a safe way.
+> +                */
+> +               pr_err(FW_BUG "Ignoring ECDT due to invalid ID string \"%=
+s\"\n", ecdt_ptr->id);
+> +               goto out;
+> +       }
+> +
+>         ec =3D acpi_ec_alloc();
+>         if (!ec)
+>                 goto out;
 > --
 
 Applied as 6.16-rc material, thanks!
