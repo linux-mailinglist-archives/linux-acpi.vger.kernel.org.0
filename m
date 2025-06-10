@@ -1,126 +1,106 @@
-Return-Path: <linux-acpi+bounces-14275-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14276-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C36AD40BB
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jun 2025 19:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC3CBAD4239
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jun 2025 20:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2C223A869D
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jun 2025 17:28:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 829103A4D58
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jun 2025 18:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E582459C0;
-	Tue, 10 Jun 2025 17:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C9924A064;
+	Tue, 10 Jun 2025 18:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qSj0B1X1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BEWTAoAy"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D738B23D2AD;
-	Tue, 10 Jun 2025 17:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F23324679E;
+	Tue, 10 Jun 2025 18:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749576307; cv=none; b=XkAjJc0ZiF/0YS4J6HPiyALxetzo+zvpM0qDDRbQI2aWB3vz5suXlyMIeSlHNozjnKsS4OHep0JsqQsyyb9Ndm21uWzrnUJ1Oz7CrqaTS0huSvCAjP/OM6gLnF/2xzaHKCz7eEMSL+6F+3QNB1gWNY8WtsIdVlw7XKC9zzK9A9g=
+	t=1749581361; cv=none; b=Gdk77y339q+fMPYOvoxLlncAsvJ/7f3np/vZUhWO+dJgmW6TquWITT6oVo20L/uydySsICbnnsdQCb5yqJoXiLYrykz+CRTIVcyglo/rw8jQkBi2mn4W5zejPA3ERw+NjoVmWaAoquS5W0ZnvFG5bdTZ/Kb1+7R5PjeRvOFg4eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749576307; c=relaxed/simple;
-	bh=MPcuZKzljMNfFsP9ma+RyN5f+qoJiv1ddnZJsLMq3/M=;
+	s=arc-20240116; t=1749581361; c=relaxed/simple;
+	bh=qUiwFa7AM1VEN+Lw4QKBNhdckuQLX1RyTY7pmz0nqOc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z6s+IpJ3W7BtVQA0qoFSZP0cBIsm3bvWOjpd17XRkapbgZuWfUTVSj1fVv8WIDM9K9w2GtVRdtGrNjCHbdqpoLdVVEK+gixHxgC37QybWPGEqHUSM3j6ew6YxffPO4kaOpJRHPFR8SNrJS4QTkF6Pr7p5kcI3SMmp1MmpQggu0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qSj0B1X1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6166BC4CEF3;
-	Tue, 10 Jun 2025 17:25:06 +0000 (UTC)
+	 To:Cc:Content-Type; b=N0NLwdYH2vquFSjtIaCm3WJYLfvfOZfguwUYAvaJhpm/5yYv4bmGdUGF+3Yx3BweQ8ynLZJH74aAq+V8pfkIWSKJsD4LO6gxalnPcjg+xX96qhGLQgFXVnbPLP+V7m0qJGgVg0Z+X6U2ACbhqrciju94dYHNF/ZsMt2lkbOo2c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BEWTAoAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 148AAC4CEF0;
+	Tue, 10 Jun 2025 18:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749576306;
-	bh=MPcuZKzljMNfFsP9ma+RyN5f+qoJiv1ddnZJsLMq3/M=;
+	s=k20201202; t=1749581361;
+	bh=qUiwFa7AM1VEN+Lw4QKBNhdckuQLX1RyTY7pmz0nqOc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qSj0B1X18+pz0K9vxzzIMRgU/A562wSsLoipmcb8t489Z4inREJijBXI6CGiYDkim
-	 LUb6NHoGJWOQNXuopz7ZvzA/h5W8Eokfg42ZajHeTMhE7r1Dn6CbwVDMDp4FsH+0kM
-	 pkfiqUsAfZwdSvnuHEX+2IYLg1pVYoI0aiodOCEHalaI+7Pth+XLFKau2XAWfyjGs9
-	 mF0pGG4uOig0oWBIFKzZXnnlzkJcxgvnBaOLlyfG7Jl1oqK4Fy2LbEQSUeRFC758v8
-	 KJQA7eCf98x+6dQuxuBtWYHhHT0Nsz7pNg93TqNRW1s05dZg3saJTlJCbEtAxtU3e6
-	 CMpKsOdw9gOaQ==
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-2ea35edc691so882283fac.2;
-        Tue, 10 Jun 2025 10:25:06 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV4qxVqwA9IT58vMtBYPRaXSeTVNX6IP0gpxxsycoCjc0oxUKB7NRPq0M2mJPsuuFTjshdslMXjyYYf@vger.kernel.org, AJvYcCVHMM6UkSQq98IUnlEXa7mKcGeWZEmSpw5/rn4sN4DOgY6m2ofvUxvr+QlMZvbRyBxPn/G8gQDtYxPp@vger.kernel.org, AJvYcCX5mpZHWqwNOTpt6ev0uu7nLC/eYIjOgYC1NvYID0QSJdB3VqxICVxxmV0QD4OX1qWtgC4NWfz5UCXDTWzI@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpLDOwHBiQ50hVrjXG8hOAEXwqtb30sIIecg/JiRl501xjypP2
-	J+BdaV1TJ7+lXYCRdmk454WCKycMLT6H5S4EqcUxrQStc4LcCzlwJ2a2PnXYZhqqzcxbw9H2rbI
-	wvMjqRh7gDB1FdHLUmJgvuSaRLa1hon0=
-X-Google-Smtp-Source: AGHT+IHSuyQ9u9GSWvfwXykMxjQyvNW1fWmfc6i/jo8EQS81NsO/yigsct9fE6Bcuxt2/rbX1bE0dKnNyrxmUrdbGyw=
-X-Received: by 2002:a05:6870:868c:b0:2d5:2955:aa6a with SMTP id
- 586e51a60fabf-2ea96a5767amr113820fac.7.1749576305678; Tue, 10 Jun 2025
- 10:25:05 -0700 (PDT)
+	b=BEWTAoAy+YV2uYT/tTNaF9Dcw2pbYzv29X8bxstpeCAo0K94fJcojLdoC2XTfAZ0c
+	 N+et58XoiL/fjstKAmSIGqzQ/G5fqZoqwDsuqQhkK8xcvw50/r4Jg1bPAh2sBRVXBt
+	 0aA4twRBY1TAZ0sDHv+Me0UXYQgq/Z6NxZ/blR+WlkB3wFSto3LGnc9NkClOtL8xB2
+	 I9CVVS4ijr6mL+50KtWsZTjHJVy+kfH+/2Ay8YlBWsr1QNy+71L/FKTWme1hrr5ynj
+	 3gyBmxsVXYDZz1vtZV5aFRAgfy0Abp9Cgf9HgzURQN2xQ7B1csj0MagGQMreLaK84t
+	 f0Goi8cPCBPDw==
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6fb01566184so48103006d6.1;
+        Tue, 10 Jun 2025 11:49:21 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXOvzXmPpcOvhZcobbP7xkpuR2ZJhfBgxTyRpa4SqAxqhhYMATS0a1ysOSf4HIkPs252kpJ3wWg7tLgncA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRd8zMB6M5xH/svZWJkjPnW10portgqWwsVO1mFqI7b2lbBopj
+	zhH0Ywi7MnyRolFEgOqmnE5OeTxUsc5hRRC1Fwp96iU+2zar938HHeAflbMzLcItpU7wMNqTSiY
+	Ij7ylk6cm02ViIK1hzEucHNIE0COwglQ=
+X-Google-Smtp-Source: AGHT+IFz62GAyIKh5lmKRhH1ktkgrURaG7uL9lohEJUSlctWiF+ydUnVxRNLdZeIbi0Q4+eNMbX+ILUypt+AXSNR7cE=
+X-Received: by 2002:a05:6820:3085:b0:60b:ad9e:2bbf with SMTP id
+ 006d021491bc7-610ef7c5734mr163663eaf.8.1749581349162; Tue, 10 Jun 2025
+ 11:49:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250607033228.1475625-1-dan.j.williams@intel.com>
- <2af31ff8-eee0-4868-8f97-2a390910f9ed@intel.com> <CAJZ5v0j5+iB97rTqtOoFB0zpHzNOOHGOQVz51ZU--=4AcUPf-Q@mail.gmail.com>
- <2025061002-reattach-sliced-0690@gregkh>
-In-Reply-To: <2025061002-reattach-sliced-0690@gregkh>
+References: <20250609064235.49146-1-ubizjak@gmail.com>
+In-Reply-To: <20250609064235.49146-1-ubizjak@gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 10 Jun 2025 19:24:54 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0ho01XSq9vQi+rMqo41iMbKruH6nLNwxX25KeVbVU7mew@mail.gmail.com>
-X-Gm-Features: AX0GCFvvBnCVHG0ASa5OArw3N9QcTiq2HKoQdsqKdjrgJDoIPjc5ljtXQAwFAgk
-Message-ID: <CAJZ5v0ho01XSq9vQi+rMqo41iMbKruH6nLNwxX25KeVbVU7mew@mail.gmail.com>
-Subject: Re: [PATCH 0/3] CXL: ACPI: faux: Fix cxl_core.ko module load regression
-To: Greg KH <gregkh@linuxfoundation.org>, Dan Williams <dan.j.williams@intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Dave Jiang <dave.jiang@intel.com>, rafael.j.wysocki@intel.com, 
-	linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Ben Cheatham <Benjamin.Cheatham@amd.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>
+Date: Tue, 10 Jun 2025 20:48:58 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jQJ3rX1Es+MTdqkD80ewufAgJ6whiWDHtCWJ0vvVBPtA@mail.gmail.com>
+X-Gm-Features: AX0GCFsY0PQv2-FgRRdDg5dFeSrLiFR_jheI-wAsxzrYmVatR1EOgYBUG_uvyns
+Message-ID: <CAJZ5v0jQJ3rX1Es+MTdqkD80ewufAgJ6whiWDHtCWJ0vvVBPtA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: acpi_pad: Update arguments of mwait_idle_with_hints()
+To: Uros Bizjak <ubizjak@gmail.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 10, 2025 at 12:12=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
-g> wrote:
+On Mon, Jun 9, 2025 at 8:42=E2=80=AFAM Uros Bizjak <ubizjak@gmail.com> wrot=
+e:
 >
-> On Mon, Jun 09, 2025 at 08:58:26PM +0200, Rafael J. Wysocki wrote:
-> > On Mon, Jun 9, 2025 at 5:04=E2=80=AFPM Dave Jiang <dave.jiang@intel.com=
-> wrote:
-> > >
-> > >
-> > >
-> > > On 6/6/25 8:32 PM, Dan Williams wrote:
-> > > > git bisect flags:
-> > > >
-> > > > 6cb9441bfe8d ("ACPI: APEI: EINJ: Transition to the faux device inte=
-rface")
-> > > >
-> > > > ...as the reason basic CXL unit tests are failing on latest mainlin=
-e. In
-> > > > addition to the fix to einj-core.c, this also needs some updates to
-> > > > faux_device to make it behave more like platform_driver_probe(). De=
-tails
-> > > > in the individual patches.
-> > > >
-> > > > Dan Williams (3):
-> > > >   driver core: faux: Suppress bind attributes
-> > > >   driver core: faux: Quiet probe failures
-> > > >   ACPI: APEI: EINJ: Do not fail einj_init() on faux_device_create()
-> > > >     failure
-> > >
-> > > LGTM
-> > > Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-> > >
-> > > >
-> > > >  drivers/acpi/apei/einj-core.c | 9 +++------
-> > > >  drivers/base/faux.c           | 3 ++-
-> > > >  2 files changed, 5 insertions(+), 7 deletions(-)
-> >
-> > Greg, I think it's better if I route this through the ACPI tree as the
-> > issue being fixed was introduced through it.
-> >
-> > Any concerns regarding this?
+> Commit a17b37a3f416 ("x86/idle: Change arguments of mwait_idle_with_hints=
+() to u32")
+> changed the type of arguments of mwait_idle_with_hints() from unsigned
+> long to u32. Change the type of variables in the call to
+> mwait_idle_with_hints() to unsigned int to follow the change.
 >
-> None from me!
+> Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> ---
+>  drivers/acpi/acpi_pad.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
+> index 6f8bbe1247a5..c9a0bcaba2e4 100644
+> --- a/drivers/acpi/acpi_pad.c
+> +++ b/drivers/acpi/acpi_pad.c
+> @@ -33,7 +33,7 @@
+>  static DEFINE_MUTEX(isolated_cpus_lock);
+>  static DEFINE_MUTEX(round_robin_lock);
+>
+> -static unsigned long power_saving_mwait_eax;
+> +static unsigned int power_saving_mwait_eax;
+>
+>  static unsigned char tsc_detected_unstable;
+>  static unsigned char tsc_marked_unstable;
+> --
 
-So applied as 6.16-rc material.
-
-Thank you!
+Applied as 6.16-rc material, thanks!
 
