@@ -1,122 +1,105 @@
-Return-Path: <linux-acpi+bounces-14255-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14256-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B08AEAD2F29
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jun 2025 09:49:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F766AD3350
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jun 2025 12:12:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8937B7A79D4
-	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jun 2025 07:48:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC19716CC70
+	for <lists+linux-acpi@lfdr.de>; Tue, 10 Jun 2025 10:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D332797AF;
-	Tue, 10 Jun 2025 07:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B95828641D;
+	Tue, 10 Jun 2025 10:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KM1KIahb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAb5QAI7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFAC25DCEC;
-	Tue, 10 Jun 2025 07:49:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE6F25D8F5;
+	Tue, 10 Jun 2025 10:12:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749541781; cv=none; b=hlLANaPiGMLfr/uobalk+c0a83XIjiJgYTdPn99YpkCD5IY323o2KrpXBWihFEPuc1wTMPNXxLMuOCLITdSH8FsVcJCCGd6Z39pNYbI2OaQHuwbIujjC6Mek42A5Lc4qms7cuwwLceV9Y8mLCl+t59bCI5beFpP/7J8q9BQ1K20=
+	t=1749550334; cv=none; b=G1Xguc4HLIf3J9cazSmFbktuzeuHvnPBXorgS5g561nzU2Klqi2nn5hU2/JyiiygXUtoSX2CYpH9EeJOXtMSVTSpBh5Hy266wlWSCgSieWG5UHsz6r94dUFyY+n9A5fpx9o4yDdrTMAJYZMM5zB7PP+5KMHWnaXD3o3FLS4Xx2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749541781; c=relaxed/simple;
-	bh=Zf8zlM1ikY+x+Aj1YRBI4DnaZ4NqNZdfWKGRPGe8aOI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=MMkrCcqC4hz+K3zv7Q0cL/FoSmv+CGVcMcl5/veM0MDc/qe7DqnRLVH6g5k11f6XIl1SIQDxFTnASgQ02Cl4EdZe9BiS/Ujslfo5TgKkYzjLLvoMXrFB5zTyIom9CbG6Zrpmrkb5fvx68vGiwgNMawZMP0riRCXmfF2s718MjkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KM1KIahb; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749541780; x=1781077780;
-  h=from:to:cc:in-reply-to:references:subject:message-id:
-   date:mime-version:content-transfer-encoding;
-  bh=Zf8zlM1ikY+x+Aj1YRBI4DnaZ4NqNZdfWKGRPGe8aOI=;
-  b=KM1KIahbTLOwS1KuFsdOIh5CIwbw4+1A4Wxy1hkKfSCqcMXi3X0/cwLY
-   pJu1etFwgDm4UNeU9g5MsfR5cokprtHBuH2ZhkRiWn7xkyVT1DBoTbFrz
-   5aNCtfk7qxyHsaxP03+7NBxWa1JItZ7aYc8js139okkHS7XFn8G8KB9CT
-   zQiiHQMidT9hQl6j/axycXKvstp8BySjLg2g1u7CKwC7ka8CE13f/OzFg
-   VRscBTUqWWKe2llZCj2xCV6jo6md+9ril9jAyi5vCXXQjar3x3aPY9SW5
-   vorarPgO+9rT/rrplFubfJkq6EoqirSenJSkGEuvDpukBiOwE6WDIMg8I
-   w==;
-X-CSE-ConnectionGUID: AOtDDZgQRRSKne8PvFNQhQ==
-X-CSE-MsgGUID: 9FihaGAvQBiBEo97XD8fCw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="77039694"
-X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
-   d="scan'208";a="77039694"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 00:49:38 -0700
-X-CSE-ConnectionGUID: ufZhjqNVQGCbIO00v9qvhw==
-X-CSE-MsgGUID: R8sZ0L7BSHmP28FclTzhsw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
-   d="scan'208";a="146682211"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.196])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 00:49:30 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- "Rafael J . Wysocki" <rafael@kernel.org>, 
- Sebastian Reichel <sre@kernel.org>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Jiri Kosina <jikos@kernel.org>, 
- Benjamin Tissoires <bentiss@kernel.org>, 
- Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
- Andy Shevchenko <andy@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Hans Verkuil <hverkuil@xs4all.nl>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
- Hans de Goede <hansg@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
- linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-input@vger.kernel.org, 
- linux-ide@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
- linux-i2c@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-hwmon@vger.kernel.org
-In-Reply-To: <20250609143558.42941-1-hansg@kernel.org>
-References: <20250609143558.42941-1-hansg@kernel.org>
-Subject: Re: [PATCH v2 0/1] MAINTAINERS: .mailmap: Update Hans de Goede's
- email address
-Message-Id: <174954176287.5583.6841576782802896940.b4-ty@linux.intel.com>
-Date: Tue, 10 Jun 2025 10:49:22 +0300
+	s=arc-20240116; t=1749550334; c=relaxed/simple;
+	bh=jVUjjE3yMF53YSvxU2Mj1UYztPi7oHwNW3NrlZTr1gQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ic/wBZZsIOXA9ocGVIh/R9Jv3KjHZ9E1KjXiFXvOYlFzeZ74AMSE/zcYm3dW8QfPk/GlcwuWxrZ1xZZadb6W8s1pUPwq/UCExpMoSZ12Oa+unctc0vXQGBdRCtfmtLik/GJ16pBXmglzZt1ZABaDCO6zD+LkQMEBoMGOM8R/gtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAb5QAI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4226CC4CEEF;
+	Tue, 10 Jun 2025 10:12:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1749550333;
+	bh=jVUjjE3yMF53YSvxU2Mj1UYztPi7oHwNW3NrlZTr1gQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=zAb5QAI740qKd4KoRot40vHcCH2uxHDgBX5ctCniDCxFVsOOZvM72SGuoSqb1Vfxs
+	 heVv2fF/oiigy0ybX/z3ysj44I3mCFqU2nfnhhQbzXlu41HP1QWnPiwx8xZzm7R+Dw
+	 L4DKQCsUrwHAYDRXeys7fXxKu21oodilfX0zZgMw=
+Date: Tue, 10 Jun 2025 12:12:11 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Dave Jiang <dave.jiang@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>, rafael.j.wysocki@intel.com,
+	linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ben Cheatham <Benjamin.Cheatham@amd.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH 0/3] CXL: ACPI: faux: Fix cxl_core.ko module load
+ regression
+Message-ID: <2025061002-reattach-sliced-0690@gregkh>
+References: <20250607033228.1475625-1-dan.j.williams@intel.com>
+ <2af31ff8-eee0-4868-8f97-2a390910f9ed@intel.com>
+ <CAJZ5v0j5+iB97rTqtOoFB0zpHzNOOHGOQVz51ZU--=4AcUPf-Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0j5+iB97rTqtOoFB0zpHzNOOHGOQVz51ZU--=4AcUPf-Q@mail.gmail.com>
 
-On Mon, 09 Jun 2025 16:35:56 +0200, Hans de Goede wrote:
-
-> I'm moving all my kernel work over to using my kernel.org email address.
+On Mon, Jun 09, 2025 at 08:58:26PM +0200, Rafael J. Wysocki wrote:
+> On Mon, Jun 9, 2025 at 5:04 PM Dave Jiang <dave.jiang@intel.com> wrote:
+> >
+> >
+> >
+> > On 6/6/25 8:32 PM, Dan Williams wrote:
+> > > git bisect flags:
+> > >
+> > > 6cb9441bfe8d ("ACPI: APEI: EINJ: Transition to the faux device interface")
+> > >
+> > > ...as the reason basic CXL unit tests are failing on latest mainline. In
+> > > addition to the fix to einj-core.c, this also needs some updates to
+> > > faux_device to make it behave more like platform_driver_probe(). Details
+> > > in the individual patches.
+> > >
+> > > Dan Williams (3):
+> > >   driver core: faux: Suppress bind attributes
+> > >   driver core: faux: Quiet probe failures
+> > >   ACPI: APEI: EINJ: Do not fail einj_init() on faux_device_create()
+> > >     failure
+> >
+> > LGTM
+> > Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> >
+> > >
+> > >  drivers/acpi/apei/einj-core.c | 9 +++------
+> > >  drivers/base/faux.c           | 3 ++-
+> > >  2 files changed, 5 insertions(+), 7 deletions(-)
 > 
-> The single patch in this series updates .mailmap and all MAINTAINERS
-> entries still using hdegoede@redhat.com.
+> Greg, I think it's better if I route this through the ACPI tree as the
+> issue being fixed was introduced through it.
 > 
-> Since most of my work is pdx86 related I believe it would be best for Ilpo
-> to merge this through the pdx86 tree (preferable through the fixes branch).
-> 
-> [...]
+> Any concerns regarding this?
 
+None from me!
 
-Thank you for your contribution, it has been applied to my local
-review-ilpo-fixes branch. Note it will show up in the public
-platform-drivers-x86/review-ilpo-fixes branch only once I've pushed my
-local branch there, which might take a while.
-
-The list of commits applied:
-[1/1] MAINTAINERS: .mailmap: Update Hans de Goede's email address
-      commit: 3fbf25ecf8b7b524b4774b427657d30a24e696ef
-
---
- i.
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
