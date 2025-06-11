@@ -1,78 +1,78 @@
-Return-Path: <linux-acpi+bounces-14285-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14286-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93921AD5D74
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Jun 2025 19:50:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3141AD5D84
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Jun 2025 19:53:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4486F174527
-	for <lists+linux-acpi@lfdr.de>; Wed, 11 Jun 2025 17:51:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6122C7A3E0A
+	for <lists+linux-acpi@lfdr.de>; Wed, 11 Jun 2025 17:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5BE229B38;
-	Wed, 11 Jun 2025 17:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8AF223DD7;
+	Wed, 11 Jun 2025 17:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aSQGRtlV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="guHekeuo"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACEA1CF7AF;
-	Wed, 11 Jun 2025 17:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC82A20C494;
+	Wed, 11 Jun 2025 17:53:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749664255; cv=none; b=Q4tXuJOs1qzhvKKRDs0uzG+5tznrhgu0CZNGaRCukKSwpvUtFc55FB2r/fjC5456na1rAygT6OJydI/OyDRJ0edGP9MnJ9yagATsgZnuOQfBJuGRcWVnQ/gRj7qZfSMiErMAHzxkq51aCjBLfU+5jv0CXA02tGrRl6LNCLKfDaA=
+	t=1749664416; cv=none; b=KAMeuniG833RlagezOzacTf/dFeD+ORziiH1Ak6uyBVDsOiR79lPN1R3RY0O59Y0heCmDwADvJkjtJu7XPcjU90JaS2dvCCNToHe5OqGZifuD51j59SpNtTESTz69s5nP42WKhBlLC9n7Qz0vEHw7GM/SzHIeDkMKIDxxErFN58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749664255; c=relaxed/simple;
-	bh=1Hy3ujJXBqxV9lfXBO++FN2/fZmpMCZpJfkWT5aJ4iQ=;
+	s=arc-20240116; t=1749664416; c=relaxed/simple;
+	bh=Po1X9rUgU4wi71QhvqOh3Icg0CCiu+EgO5R5WUZNJdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S6ZsIuRgmdAVHbzeqJt7ZsRf1aP+v7LPMuLhHH0bAMSBng83+ZOJuduNHtxeIChBu6pbkSYSqedzgnetJ0cq+pSnqW68jQ34TWYcpMLf2w9Yaj5a/78jD6uLxhf45918RREOTKsvcVXM0QGfPEKUB+efW2ujrvzkWIChTs/HP18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aSQGRtlV; arc=none smtp.client-ip=209.85.221.46
+	 MIME-Version; b=eJ10073WIxO/nEG8Y7BWJwUOJcr1IVQlEB44tfSHi7vXIH+dHcXeXozyeyzZWpWf/i1E9gCspDG7NKa/7RvVAQEfizoa4p/5w++WhEJXtDsv2fwPx5cy0+Wz9xfIw5Gu4F8nN8MY+TnO8804/o5Rw+kP2qZ+6150MKQyLlSCtMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=guHekeuo; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a503d9ef59so130184f8f.3;
-        Wed, 11 Jun 2025 10:50:53 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3a54690d369so154826f8f.3;
+        Wed, 11 Jun 2025 10:53:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749664251; x=1750269051; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1749664413; x=1750269213; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=f7KlnwZB+CxVWmAEV673+n7G11D71TLYbf9q51R/jMw=;
-        b=aSQGRtlVp15y590zOGhLrOTa9AG1LutadaePKtdJMJ3OCCPVGhraosTXwIHpSOvKFo
-         2g/LhyLJOJ0WFW7X7h60X/0AI7g/GFry6EaVWIRwHnPmZzuxSH96GYhWU1capO+Nyn3R
-         SKtcyyaS3L4+KEsYuxyNkVoi+FXcgRDlD3YfKI3YoK1lwhHGUSyu5rvFBAz0t2ZubW7d
-         K7MfXWC+3A7wx67EIOfg44K8oWn6yPdfvckoUueAYLTk+JiLLgRaWINq6R2JWNUXLFSW
-         c1dQECkXMGL8nILQOmr4OD8HdTeDiMSO+i6L1lvw1gAtuvao4VPPJlxPwLuJ/gHhqDOy
-         2gwA==
+        bh=H6PUqmIbDWFmOXx3GycCUnmQ+C2eFlLVgcIz/6kRBRQ=;
+        b=guHekeuoJ6+Th/UpFyROjtv6gqYn1lN+S+pf2STAZhB+5bd5K8hjgBpVAwkWK+Tmy9
+         KrnNQm2dgliHARXUXN5Kclzb783Raq+vnjxCYPrNrAVmk4EsdBmOkz7kBdZDdf/lq1p6
+         J+EtsqIrOvhw/1HD7SGqfiEmvAieHJfVhuuXPRJqAEnCxNM3wqstIr64VhNK7p8NyhB6
+         QbVZhZkHGpQgc5da+SgxQJ/mVcpFMuWJaOjwKG1zsOGPye8rqdq1D2fn7nACrJGHedBZ
+         FIxoPqxDSRxkmRGDLldl/4Yb+eHSDd4xVnI/tlI9Up3sQtMITVOSnNxRhTkPdIFqE98x
+         QN7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749664252; x=1750269052;
+        d=1e100.net; s=20230601; t=1749664413; x=1750269213;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=f7KlnwZB+CxVWmAEV673+n7G11D71TLYbf9q51R/jMw=;
-        b=LvQBBw5HmLfZUXEPmZfuN40HC4T7ifneUfcJYn4+iEYOxa8fIp8gNOINXSCzSwLRh8
-         c3DBtiHxmPESGvnGcJm1kxdOfhqKbRbypFD68sYOgs+IYPqbLFStnbZA855mcQy15ngX
-         dYk4VlCT3PDyKBvDZUBmUfYL8sjTJ+UzT3hlHdVhRUVR6pIWXABKRfSE+KCV4R6cZkD7
-         pIVaXtzc2Lb3AzBpWKhNHghvcLrcrIHo6AGw6kOmmohVjP87MczV4eEf67V6DDv3tMWv
-         V6MbFnXg2hKuwGRIAEuqgInqBgs6acfmUSENbNkfCa0GxklaisjcN34oG7UPgisAOHzv
-         uiOA==
-X-Forwarded-Encrypted: i=1; AJvYcCUqw5H93k+j3WTrtkX/Pc1rg60rJ/2P0gackKOfNbOAccVZuwk9AS3AbO4PGV6fcotX66ydfBZdxT3QKycTcuQ=@vger.kernel.org, AJvYcCW9HNnAbXyywX/zBVQHHepcqlYhnkE+S+Xo5tTZxU4CBSfKeS/RPqS0JMrEuNTgXNu+g2L3a6qZ1XYj@vger.kernel.org, AJvYcCXbGgVW9l07Ps03TUicfSx99/yyu5LrsqlDRwmMZQKWA0BX2f8kOfSbdd49G4CJF1gIBldisW/hXDou8ECY@vger.kernel.org
-X-Gm-Message-State: AOJu0YypXQODh5IweWSANOeMflCwweb3jaRo7HYo0fI4uRZsmcDinTIw
-	iRDh5Pf9cU38goY8TllTpwo/vFrB+KPJ4wgBAS/5yRzIZvOHcY0WAqze
-X-Gm-Gg: ASbGncvWPNrw4zoedQO63RiQ5yWOIrNWv4yfEK4OpMtqscr+S3A5Jar2LMRYuWiZx88
-	R90FWFSPyQVBuxkTZaUUDWUVIf99/GBpoArhF+/Pu7o7Einag5rbtHR9htsJeb4xzBuJgVaqXv8
-	q1510lgSAum24NwaKMbvAEiwDdYJ85KC1BBlon1x+eOLdgmsY5sq0c4Zg48rLN1ab8JjRRpJfcf
-	iERHsUZNGLPidjgVxmY1WYCXfISuDh3OTCZthbZer6RY46zZRBsnkseUw/ItiyjT6iHpd0IQxgC
-	OMSxf1D+AvvoQ39nxO1WpoJNF/kIaCNu29JVVufrMhCzBV4uO0q6pUZy3OxA4Oc7q1IYEqwAYq5
-	+aRJCnG6aXys+OHYjShdYqrOwXElAt21KE47X
-X-Google-Smtp-Source: AGHT+IEPDg33JpYVf5j0B125l1p0dMB8jKVW3wBukaaW8ms6rL5iY2qDPIvs/t5k1jjA+Pax7owafg==
-X-Received: by 2002:a05:6000:2283:b0:3a5:2e9c:edb with SMTP id ffacd0b85a97d-3a558a1f6acmr3423559f8f.47.1749664251298;
-        Wed, 11 Jun 2025 10:50:51 -0700 (PDT)
+        bh=H6PUqmIbDWFmOXx3GycCUnmQ+C2eFlLVgcIz/6kRBRQ=;
+        b=enpNAsOHCg5ffHjAzXRJV70rbBAwHPMZa987eT2RvWWf3NrfjwDkjuPLvRo17BE+fI
+         BgK1WMj3xasyO40VWqEQCDjNRx/VI3opqn3sYpzGlyFWVIeKMoaLULRKu5Rox4sFctfz
+         1cY61dOXseVUpHvSgSDnRrztfisECDOv/prOdnRlbnR2SR1wdlA07yyGtD4a3E95MseQ
+         CEdxAz3Uxwe/w9E3G8uT3Qbl85mvDLME9UR07Bzh0SyGcmx1TVBwsn23JI0w/rkK19aC
+         7bJFHvNgwSpM81k2F223k8y30oikG76ANkQR7LLf/mBaWD6dhNa1fQ9Ddvis1cHe0FPZ
+         E/hA==
+X-Forwarded-Encrypted: i=1; AJvYcCUlN/Lz/K6Oj5DHVJ59A3UJ3qgAS5GlI/ZSfr7gj+dOhrwhUOYF40poVCJYgt/IMeCz3lhRKmu1lymBWpzfryU=@vger.kernel.org, AJvYcCW2BHqnlKojxq+23z0xnYJsxzwMOftyYOt6zA5VnLzQISyd1ZfJbqOsgwF9yCJ8222TzMCDazymz4amA8ak@vger.kernel.org, AJvYcCWwTF5mp2Db/kA/3pNLOSX+DFNV1/c0epqPHHpBf98QExvkoeNxLMgZdFl6btxv3KyUAmjvzgfjRIz1@vger.kernel.org
+X-Gm-Message-State: AOJu0YypB8rcDtrUgpWmvOAc1rPxXLgHNjPy1aXZPc9z/Hgj3mxrASEz
+	H7djSke7QX+on79IqDD635I2Kf/c+XUOqkQhHXtye4RbQEZWZvDcf+jL
+X-Gm-Gg: ASbGncsl6z2/LHPST0SI0skY6W8r6InpEKJBYZV7HAF6YNdqwQPd1WfSMEgzq9zo9nY
+	mnpoqbc4mKRQK5sCrIk2FzC5mLBBgF9vtlZfcPQpgNi67I9s9t5zcB7G1mD6hEn4vhZfjBrI8No
+	KdyTeJC77UWFXqhnhbkjbAt7mtTDMoi/P5hIr+GjSdd7mDWlnKuZY7+AVofBeSvnquAKeo1ivEW
+	xIRKgJEaJ41mKcm382hEXk3eyQzgphp72mgKu4a8M56bD8605YhFhJpkM2w7PKrZOuAFSs8I3Az
+	mK/93PDItY3Eo11hSqkV90Xqy2JL9BpkicoQ8h83s1cc4WlxtyKjVrKZiyKPIZmHNjIESGY9IuA
+	JlfYhF0anZH4NWepWm17co0N8NPREQ7n3gnDU
+X-Google-Smtp-Source: AGHT+IHHI6WBJu7sDHEdtjSpBu9n0uInWMVoRmYpWTOUeUcEnqml/Fr3nnahD1USMoDsWks5VhOaCQ==
+X-Received: by 2002:a05:6000:2512:b0:3a4:e502:81e1 with SMTP id ffacd0b85a97d-3a558a4238fmr3627250f8f.52.1749664412778;
+        Wed, 11 Jun 2025 10:53:32 -0700 (PDT)
 Received: from igor-korotin-Precision-Tower-3620.airspan.com ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a532461211sm15744491f8f.86.2025.06.11.10.50.50
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a532463905sm16203603f8f.92.2025.06.11.10.53.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 10:50:50 -0700 (PDT)
+        Wed, 11 Jun 2025 10:53:32 -0700 (PDT)
 Sender: Igor Korotin <igorkor.3vium@gmail.com>
 From: Igor Korotin <igor.korotin.linux@gmail.com>
 To: ojeda@kernel.org,
@@ -95,9 +95,9 @@ Cc: boqun.feng@gmail.com,
 	viresh.kumar@linaro.org,
 	alex.hung@amd.com,
 	dingxiangfei2009@gmail.com
-Subject: [PATCH v5 3/6] rust: driver: Add ACPI id table support to Adapter trait
-Date: Wed, 11 Jun 2025 18:48:48 +0100
-Message-ID: <20250611174848.802947-1-igor.korotin.linux@gmail.com>
+Subject: [PATCH v5 4/6] rust: platform: Add ACPI match table support to `Driver` trait
+Date: Wed, 11 Jun 2025 18:51:21 +0100
+Message-ID: <20250611175121.803370-1-igor.korotin.linux@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250611174034.801460-1-igor.korotin.linux@gmail.com>
 References: <20250611174034.801460-1-igor.korotin.linux@gmail.com>
@@ -109,125 +109,96 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Extend the `Adapter` trait to support ACPI device identification.
+Extend the `platform::Driver` trait to support ACPI device matching by
+adding the `ACPI_ID_TABLE` constant.
 
-This mirrors the existing Open Firmware (OF) support (`of_id_table`) and
-enables Rust drivers to match and retrieve ACPI-specific device data
-when `CONFIG_ACPI` is enabled.
+This allows Rust platform drivers to define ACPI match tables alongside
+their existing OF match tables. These changes mirror the existing OF
+support and allow Rust platform drivers to match devices based on ACPI
+identifiers.
 
-To avoid breaking compilation, a stub implementation of `acpi_id_table()`
-is added to the Platform adapter; the full implementation will be provided
-in a subsequent patch.
+In addition, set `OF_ID_TABLE` to `None` by default to match the behavior
+of `ACPI_ID_TABLE` and to avoid requiring drivers that do not use OF
+matching to import unnecessary dependencies or define dummy values.
 
 Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/driver.rs           | 41 ++++++++++++++++++++++++++++++++-
- rust/kernel/platform.rs         |  6 ++++-
- 3 files changed, 46 insertions(+), 2 deletions(-)
+ rust/kernel/platform.rs | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index bc494745f67b..dfb2dd500ef6 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -28,6 +28,7 @@
-  */
- #include <linux/hrtimer_types.h>
- 
-+#include <linux/acpi.h>
- #include <drm/drm_device.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_file.h>
-diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-index cb62b75a0c0e..8389c122a047 100644
---- a/rust/kernel/driver.rs
-+++ b/rust/kernel/driver.rs
-@@ -6,7 +6,7 @@
- //! register using the [`Registration`] class.
- 
- use crate::error::{Error, Result};
--use crate::{device, of, str::CStr, try_pin_init, types::Opaque, ThisModule};
-+use crate::{acpi, device, of, str::CStr, try_pin_init, types::Opaque, ThisModule};
- use core::pin::Pin;
- use pin_init::{pin_data, pinned_drop, PinInit};
- 
-@@ -141,6 +141,40 @@ pub trait Adapter {
-     /// The type holding driver private data about each device id supported by the driver.
-     type IdInfo: 'static;
- 
-+    /// The [`acpi::IdTable`] of the corresponding driver
-+    fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>>;
-+
-+    /// Returns the driver's private data from the matching entry in the [`acpi::IdTable`], if any.
-+    ///
-+    /// If this returns `None`, it means there is no match with an entry in the [`acpi::IdTable`].
-+    fn acpi_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-+        #[cfg(not(CONFIG_ACPI))]
-+        {
-+            let _ = dev;
-+            return None;
-+        }
-+
-+        #[cfg(CONFIG_ACPI)]
-+        {
-+            let table = Self::acpi_id_table()?;
-+
-+            // SAFETY:
-+            // - `table` has static lifetime, hence it's valid for read,
-+            // - `dev` is guaranteed to be valid while it's alive, and so is `pdev.as_ref().as_raw()`.
-+            let raw_id = unsafe { bindings::acpi_match_device(table.as_ptr(), dev.as_raw()) };
-+
-+            if raw_id.is_null() {
-+                None
-+            } else {
-+                // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct of_device_id` and
-+                // does not add additional invariants, so it's safe to transmute.
-+                let id = unsafe { &*raw_id.cast::<acpi::DeviceId>() };
-+
-+                Some(table.info(<acpi::DeviceId as crate::device_id::RawDeviceId>::index(id)))
-+            }
-+        }
-+    }
-+
-     /// The [`of::IdTable`] of the corresponding driver.
-     fn of_id_table() -> Option<of::IdTable<Self::IdInfo>>;
- 
-@@ -180,6 +214,11 @@ fn of_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-     /// If this returns `None`, it means that there is no match in any of the ID tables directly
-     /// associated with a [`device::Device`].
-     fn id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-+        let id = Self::acpi_id_info(dev);
-+        if id.is_some() {
-+            return id;
-+        }
-+
-         let id = Self::of_id_info(dev);
-         if id.is_some() {
-             return id;
 diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index 5b21fa517e55..5923d29a0511 100644
+index 5923d29a0511..62a9e4ec5c19 100644
 --- a/rust/kernel/platform.rs
 +++ b/rust/kernel/platform.rs
-@@ -5,7 +5,7 @@
- //! C header: [`include/linux/platform_device.h`](srctree/include/linux/platform_device.h)
+@@ -37,12 +37,18 @@ unsafe fn register(
+             None => core::ptr::null(),
+         };
  
- use crate::{
--    bindings, container_of, device, driver,
-+    acpi, bindings, container_of, device, driver,
-     error::{to_result, Result},
-     of,
-     prelude::*,
-@@ -94,6 +94,10 @@ impl<T: Driver + 'static> driver::Adapter for Adapter<T> {
-     fn of_id_table() -> Option<of::IdTable<Self::IdInfo>> {
-         T::OF_ID_TABLE
-     }
++        let acpi_table = match T::ACPI_ID_TABLE {
++            Some(table) => table.as_ptr(),
++            None => core::ptr::null(),
++        };
 +
-+    fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>> {
-+        None
-+    }
+         // SAFETY: It's safe to set the fields of `struct platform_driver` on initialization.
+         unsafe {
+             (*pdrv.get()).driver.name = name.as_char_ptr();
+             (*pdrv.get()).probe = Some(Self::probe_callback);
+             (*pdrv.get()).remove = Some(Self::remove_callback);
+             (*pdrv.get()).driver.of_match_table = of_table;
++            (*pdrv.get()).driver.acpi_match_table = acpi_table;
+         }
+ 
+         // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
+@@ -96,7 +102,7 @@ fn of_id_table() -> Option<of::IdTable<Self::IdInfo>> {
+     }
+ 
+     fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>> {
+-        None
++        T::ACPI_ID_TABLE
+     }
  }
  
- /// Declares a kernel module that exposes a single platform driver.
+@@ -127,7 +133,7 @@ macro_rules! module_platform_driver {
+ /// # Example
+ ///
+ ///```
+-/// # use kernel::{bindings, c_str, device::Core, of, platform};
++/// # use kernel::{acpi, bindings, c_str, device::Core, of, platform};
+ ///
+ /// struct MyDriver;
+ ///
+@@ -140,9 +146,19 @@ macro_rules! module_platform_driver {
+ ///     ]
+ /// );
+ ///
++/// kernel::acpi_device_table!(
++///     ACPI_TABLE,
++///     MODULE_ACPI_TABLE,
++///     <MyDriver as platform::Driver>::IdInfo,
++///     [
++///         (acpi::DeviceId::new(c_str!("TEST4321")), ())
++///     ]
++/// );
++///
+ /// impl platform::Driver for MyDriver {
+ ///     type IdInfo = ();
+ ///     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
++///     const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
+ ///
+ ///     fn probe(
+ ///         _pdev: &platform::Device<Core>,
+@@ -162,7 +178,10 @@ pub trait Driver: Send {
+     type IdInfo: 'static;
+ 
+     /// The table of OF device ids supported by the driver.
+-    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>>;
++    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
++
++    /// The table of ACPI device ids supported by the driver.
++    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
+ 
+     /// Platform driver probe.
+     ///
 -- 
 2.43.0
 
