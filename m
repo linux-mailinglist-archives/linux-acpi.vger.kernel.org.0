@@ -1,205 +1,190 @@
-Return-Path: <linux-acpi+bounces-14319-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14320-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2D0AD8BE8
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jun 2025 14:20:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1800DAD8D38
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jun 2025 15:37:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F1F87ADA9C
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jun 2025 12:19:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 130F7189F911
+	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jun 2025 13:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25AB2DA77D;
-	Fri, 13 Jun 2025 12:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D97158DD4;
+	Fri, 13 Jun 2025 13:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XUm49lnz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dvuoxziV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB65F2727E8;
-	Fri, 13 Jun 2025 12:20:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F2D15B0EF;
+	Fri, 13 Jun 2025 13:37:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749817236; cv=none; b=RUTkehNFu5h8FQ77iHzRXfHWDO8ur4VDv7J/FFeXNeHkGRTbv/+w8wemghSusV9HVNOckHn2anOvRmoL0hLpQ2J1fWLjAOrITyQ521QwKd7cX5nUy6MZLrj5UGnSjmFHs/8Zk3GikXSk5YzFAYVZ7zUMijW/y56OMNLzNGWXR3I=
+	t=1749821861; cv=none; b=DDvuHSYpEYoq9zDFHls5n3OValqXctQkCEbUFMEZakAUn/mD6TDGXTrir/2r2/kErw82I32KzoSkGS1bbTb6pFY/YXlN+2XTUYQWJRk/+VpOkQ/wbMBRqP5XjNrtO/FgRM245wCSWc2Cyey2Wj5Y+UQbKiFoQVHotm3KREVX578=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749817236; c=relaxed/simple;
-	bh=BRIxl92oAF7sibq+JaAyxZlrAwjBPP+4xTBB+Z7/e4k=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=keNVOcPHmwRfJsuA3p4r37+0ZEdzRE6u6FOTvVWvw8oG54TLXxtIyVrQc7Aag8LzbK5FYIbEVEtQXvRyRKkwiTZGIOeWdwira2Dyn7xJrJ+mOkVliiP/C75lCQ4WcDMWeYI3wvctqwDjbXKYiiepE/bGaoYPN1TBHUndQczATnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XUm49lnz; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749817235; x=1781353235;
-  h=date:from:to:cc:subject:message-id;
-  bh=BRIxl92oAF7sibq+JaAyxZlrAwjBPP+4xTBB+Z7/e4k=;
-  b=XUm49lnzHX0F5UPSjJFNsFJC6Qe9xWlkurUOKlPLG2SxFrRZ/1awOvrm
-   CA5lyQfoZ4YuMpJyo+UY5dE8Hzx2hIpoNDKufi/pclY/b85Qbk2pCC3cI
-   0E3jMhOdfp+bwM7wbTE9fy9toRxakqjZaVwa6ynImlZ0tglJOqwHy6nQj
-   unc3Bu0WaQSpcHt7kCCBwA8KXFuEME/0MSc6t/ADzB7HlO7JuhdejwcnT
-   bjuUnl0NURBStG/Mq3xdQbuWggLrde5O0PMmZTRPtP03/nOwhRVLtt6R0
-   IoWM3FcnP90y/4+kzz9PwvL+PZPmyXDaj5ebH68TmMw+N1pMypsz5nsun
-   w==;
-X-CSE-ConnectionGUID: xnlMOI63S56PaOFslWsoOA==
-X-CSE-MsgGUID: u24/beuqQWmPQs7g6i46lA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11463"; a="52014184"
-X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; 
-   d="scan'208";a="52014184"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 05:20:34 -0700
-X-CSE-ConnectionGUID: pwxjhcy1QxC8/ZVOkc8bBw==
-X-CSE-MsgGUID: pMya0N2nScaaVBdL4UZwHA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; 
-   d="scan'208";a="147665050"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 13 Jun 2025 05:20:32 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uQ3OY-000CaZ-12;
-	Fri, 13 Jun 2025 12:20:30 +0000
-Date: Fri, 13 Jun 2025 20:19:44 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:fixes] BUILD SUCCESS
- 32d6e781b103c7a0524576117fed8dc5dc88bef2
-Message-ID: <202506132034.nSSj0njm-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1749821861; c=relaxed/simple;
+	bh=1WD1jj5PlSIXON2dAf/X3+A1XrTksu+aG8VctVQYa/k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tAGzGz5OjKpHuYheb/7NeoZI7rEeIL2nfA/tv24m7QubCKobzJQrXdQy5NKpK8G4wVinK9x8PNqeFYbYzSTRV0zYosW53KuMpKUt34JsuauLVHoy9dPOQbgO7BeKVF+ja9CqYuXtqGCthtALGRiaDYg1dcgzIfgH2AKaLjVIspM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dvuoxziV; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-442f9043f56so12545035e9.0;
+        Fri, 13 Jun 2025 06:37:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749821857; x=1750426657; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=ewdpFu+JUq9oZpU5NEM0XWzWun+XanrMGmzqVHwgcFM=;
+        b=dvuoxziVlM9gBijmzxBo+aQc0OK/j34gVFAg5soluXPY0bwthzz77RKt9qCMCb0vhV
+         TBfUXPipjnLiakaTR7vZmeGXs4ihG5PJG2x/t+q/cEfzOXhmWwi/d7x7wjT9uKmkXCN/
+         zt5T+U1iV+uomHTRLH8STdWwKZEBRig+zPeX6ebf41hKtRGQ/hO3EGIYa1zqeLolktLh
+         3zpSVehnrAA9ek91fMPKVKcuF/x61JjLoWxybFVbeU+UbL3n5zAy6M89A5gJVxoADpqk
+         IfJIRcxYfErqshfuwd9skHiy7H/kQFob2VwEK/Sxxcc8B5OU+22MabJuv62SS5YjRnzw
+         0oIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749821857; x=1750426657;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ewdpFu+JUq9oZpU5NEM0XWzWun+XanrMGmzqVHwgcFM=;
+        b=l5lnVocY1/9EArObu2NJHzvrTXcQhm3Y+PZaforwe2MmykqCRoJWsFmTqnjs81v0MS
+         gCShs3u3iqNlahL3mwQIvyMfHuKVfLfCIr5TIzICsCmHey0yTcv/IOsEL2KPRcjfXEvn
+         rzLROsh6BXX4bAFdModLrLT0NJxnBnwJ37KN61n4ti2uoLsGjJsyHHGnoXW8R6TGpP1h
+         rTotAYYqRSYtKmGPEvOCMHSZQH5GCmdSBmg8mZCMgWFj+5MevaZbDk//T5K2UY4YhvIx
+         6AmMcQ/0ulHsjQi3oi40NrbQ1V09JQmIezG4/Ks0zLXnei/Xj9rLcnoM0B8d7WmtB6pu
+         p5Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCU9SjVjrKOe0gv9jJP3+ey9+zypm5GZ/AGhE7zfvG2w9+/+GcJY9HY4uHY62KgwjZ/tB8ZvPbVYkkxG8kGD@vger.kernel.org, AJvYcCVQ/F07TxRK6OzHIE/Ufsq9ZzkdJWhEpq7s5y22AGtwmWUc5LiP1h1rZeGjwJWgsowj6XCbmdrZnZSIXt/oI3k=@vger.kernel.org, AJvYcCWPkwmbe783OEJ422f0Y7FlYk/yGjyOzuRBVBIGuITncwYxifN0X+dtONBOcXdqKbbEJdQ5IDpDOIcv@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwV7SxSni1NQNR6R8Yk3mjMlnir9H552S2rFljpuQYS08SroZY
+	mgH7C0XilKEYFUIH62pu+QancROob3g+V1Xg8UEfdKJ7lrtVQYLy9VlC
+X-Gm-Gg: ASbGnct0d3GWvmLyhlVL5tbg3TpT3eFSCSoG+9B3CQy49ktTXuFDRkPEJ0nvYdU84EL
+	x1ToQPgbzFf5/2+XJnH/nQWNWjcaX+8utMB9xyNjuIL4NuK8ogs1o8LiyQq25JdkwduE6t8SiG8
+	yrIQRBCZ8J/b/zyR7PNODKeju/GxOY3EfXwqjLKOCu8mxkQ1jESsA8h+d/SW6aKOoFKqFR9p2JC
+	kMEn6gYI+CONoTcbD1MbGpKa8KVCXIkZJKIwpsPV3WpGeqwDEo7J3D3J7rP2WzN+1ThFnJX14R1
+	hhRg+pQbbokElP9Sr5pkekTARpnmaBax0XUT2VZiX38xRW0cqOV8aXSxDy1PH7Fe4OE2Xz8cykO
+	xAz08lVejGvE53zNuKpCKydxOOxhZUzBJOUqP
+X-Google-Smtp-Source: AGHT+IGVcSD1mQg3mpoyjCkfH4RAG1TUXktirt1za44bnqpVSTvX7FY8Nn1swXT0r2wVHVp5+qXzSQ==
+X-Received: by 2002:a05:600c:3d97:b0:43d:fa59:cc8f with SMTP id 5b1f17b1804b1-45334b07fe9mr31150995e9.33.1749821856990;
+        Fri, 13 Jun 2025 06:37:36 -0700 (PDT)
+Received: from igor-korotin-Precision-Tower-3620.airspan.com ([188.39.32.4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e13c19esm52865445e9.25.2025.06.13.06.37.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Jun 2025 06:37:36 -0700 (PDT)
+Sender: Igor Korotin <igorkor.3vium@gmail.com>
+From: Igor Korotin <igor.korotin.linux@gmail.com>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	rafael@kernel.org,
+	gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	lenb@kernel.org,
+	wedsonaf@gmail.com,
+	viresh.kumar@linaro.org,
+	alex.hung@amd.com,
+	dingxiangfei2009@gmail.com
+Subject: [PATCH v6 0/6] rust: Add ACPI match table support for Rust drivers
+Date: Fri, 13 Jun 2025 14:35:17 +0100
+Message-ID: <20250613133517.1229722-1-igor.korotin.linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git fixes
-branch HEAD: 32d6e781b103c7a0524576117fed8dc5dc88bef2  Merge branches 'acpi-apei', 'acpi-pad', 'acpi-cppc', 'acpi-ec' and 'acpi-resource' into fixes
+This patch series introduces support for ACPI match tables in Rust 
+drivers.
 
-elapsed time: 1456m
+Currently, Rust abstractions support only Open Firmware (OF) device 
+matching. This series extends the driver model to support ACPI-based 
+matching, enabling Rust drivers to bind to ACPI-described devices.
 
-configs tested: 111
-configs skipped: 8
+Changes include:
+  - A new `acpi::DeviceId` abstraction for working with 
+   `struct acpi_device_id`.
+  - Updates to the core `Adapter` trait and `platform::Driver` to support
+    optional ACPI ID tables.
+  - A sample implementation in the Rust platform driver, demonstrating 
+    multi-bus matching.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+This is especially useful for writing drivers that work across platforms 
+using both OF and ACPI.
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-arc                              alldefconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                   randconfig-001-20250612    gcc-8.5.0
-arc                   randconfig-002-20250612    gcc-10.5.0
-arm                               allnoconfig    clang-21
-arm                              allyesconfig    gcc-15.1.0
-arm                           h3600_defconfig    gcc-15.1.0
-arm                         orion5x_defconfig    clang-21
-arm                   randconfig-001-20250612    clang-21
-arm                   randconfig-002-20250612    clang-18
-arm                   randconfig-003-20250612    clang-21
-arm                   randconfig-004-20250612    clang-21
-arm                          sp7021_defconfig    gcc-15.1.0
-arm                    vt8500_v6_v7_defconfig    gcc-15.1.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.1.0
-arm64                 randconfig-001-20250612    clang-19
-arm64                 randconfig-002-20250612    clang-17
-arm64                 randconfig-003-20250612    clang-21
-arm64                 randconfig-004-20250612    clang-18
-csky                              allnoconfig    gcc-15.1.0
-csky                  randconfig-001-20250612    gcc-11.5.0
-csky                  randconfig-002-20250612    gcc-15.1.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-21
-hexagon                          allyesconfig    clang-21
-hexagon               randconfig-001-20250612    clang-21
-hexagon               randconfig-002-20250612    clang-21
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250612    clang-20
-i386        buildonly-randconfig-002-20250612    gcc-12
-i386        buildonly-randconfig-003-20250612    clang-20
-i386        buildonly-randconfig-004-20250612    clang-20
-i386        buildonly-randconfig-005-20250612    clang-20
-i386        buildonly-randconfig-006-20250612    clang-20
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    gcc-15.1.0
-loongarch                         allnoconfig    gcc-15.1.0
-loongarch             randconfig-001-20250612    gcc-13.3.0
-loongarch             randconfig-002-20250612    gcc-12.4.0
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                 randconfig-001-20250612    gcc-14.2.0
-nios2                 randconfig-002-20250612    gcc-8.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                       virt_defconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                randconfig-001-20250612    gcc-8.5.0
-parisc                randconfig-002-20250612    gcc-10.5.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                      bamboo_defconfig    clang-21
-powerpc                       eiger_defconfig    clang-21
-powerpc                    gamecube_defconfig    clang-21
-powerpc               randconfig-001-20250612    clang-21
-powerpc               randconfig-002-20250612    gcc-8.5.0
-powerpc               randconfig-003-20250612    clang-17
-powerpc                     skiroot_defconfig    clang-21
-powerpc64             randconfig-001-20250612    gcc-12.4.0
-powerpc64             randconfig-002-20250612    clang-21
-powerpc64             randconfig-003-20250612    clang-21
-riscv                             allnoconfig    gcc-15.1.0
-riscv                 randconfig-001-20250612    clang-21
-riscv                 randconfig-002-20250612    clang-21
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-15.1.0
-s390                  randconfig-001-20250612    clang-21
-s390                  randconfig-002-20250612    gcc-11.5.0
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                        edosk7705_defconfig    gcc-15.1.0
-sh                    randconfig-001-20250612    gcc-12.4.0
-sh                    randconfig-002-20250612    gcc-15.1.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                 randconfig-001-20250612    gcc-14.3.0
-sparc                 randconfig-002-20250612    gcc-10.3.0
-sparc64               randconfig-001-20250612    gcc-13.3.0
-sparc64               randconfig-002-20250612    gcc-8.5.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    gcc-12
-um                    randconfig-001-20250612    clang-17
-um                    randconfig-002-20250612    clang-21
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250612    gcc-12
-x86_64      buildonly-randconfig-002-20250612    clang-20
-x86_64      buildonly-randconfig-003-20250612    gcc-12
-x86_64      buildonly-randconfig-004-20250612    gcc-12
-x86_64      buildonly-randconfig-005-20250612    clang-20
-x86_64      buildonly-randconfig-006-20250612    clang-20
-x86_64                              defconfig    gcc-11
-x86_64                          rhel-9.4-rust    clang-18
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                  audio_kc705_defconfig    gcc-15.1.0
-xtensa                randconfig-001-20250612    gcc-10.5.0
-xtensa                randconfig-002-20250612    gcc-12.4.0
+Tested using QEMU with a custom SSDT that creates an ACPI device matching
+the sample Rust platform driver.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Igor Korotin (6):
+  rust: acpi: add `acpi::DeviceId` abstraction
+  rust: driver: Consolidate `Adapter::of_id_info` methods using `#[cfg]`
+  rust: driver: Add ACPI id table support to Adapter trait
+  rust: platform: Set `OF_ID_TABLE` default to `None` in `Driver` trait
+  rust: platform: Add ACPI match table support to `Driver` trait
+  samples: rust: add ACPI match table example to platform driver
+
+Changelog
+---------
+v6:
+ - Moved set `Driver::OF_ID_TABLE` default to `None` to a separate commit 
+ - Removed out of scope change related to cpufreq driver.
+ - Link to v5: https://lore.kernel.org/rust-for-linux/20250611174034.801460-1-igor.korotin.linux@gmail.com/
+v5:
+ - Got rid of unnecessary consolidation of `Adapter::acpi_id_info` methods.
+   Instead, firstly made consolidation of `Adapter::of_id_info`, then
+   `Adapter::acpi_id_info` is added using the same pattern. 
+ - Set `Adapter::OF_ID_TABLE` and `Adapter::ACPI_ID_TABLE` as None by 
+   default. 
+ - Removed `Adapter::OF_ID_TABLE`/`Adapter::ACPI_ID_TABLE` initialization
+   example due to irrelevance.
+ - Removed extra `of` dependency and `Adapter::OF_ID_TABLE` initialization 
+   in cpufreq driver.
+ - Link to v4: https://lore.kernel.org/rust-for-linux/20250610145234.235005-1-igor.korotin.linux@gmail.com/
+v4:
+ - Fixed code example for `trait Adapter` in platform.rs 
+ - Fixed driver implementation example in rust_driver_platform.rs and moved
+   it to `trait Adapter` in platform.rs per Danilo Krummrich's suggestion.
+ - Consolidated `Adapter::of_id_info` and `Adapter::acpi_id_info` methods using
+   `#[cfg]` per Benno Lossin's suggestion.
+ - Link to v3: https://lore.kernel.org/rust-for-linux/20250606170341.3880941-1-igor.korotin.linux@gmail.com/
+v3:
+ - Removed fwnode type check in `Adapter::id_info` per Greg's and Danilo's
+   comments
+ - Removed `is_of_node` rust helper, due to unnecessity. 
+ - Fixed example code in `rust_driver_platform.rs` per Danilo's comment
+ - Added an instruction of testing ACPI using QEMU with a custom SSDT
+ - Fixed minor code formatting issues.
+ - Link to v2: https://lore.kernel.org/rust-for-linux/20250605161956.3658374-1-igor.korotin.linux@gmail.com/
+v2:
+ - Removed misleading comment in `acpi::DeviceID` implementation. 
+ - Removed unnecessary casting in `acpi::DeviceID::new`.
+ - Moved `pub mod acpi` to correct alphabetical position in `rust/kernel/lib.rs`.
+ - Link to v1: https://lore.kernel.org/rust-for-linux/20250530123815.1766726-1-igor.korotin.linux@gmail.com/
+
+ MAINTAINERS                          |  1 +
+ rust/bindings/bindings_helper.h      |  1 +
+ rust/kernel/acpi.rs                  | 61 +++++++++++++++++++++
+ rust/kernel/driver.rs                | 81 +++++++++++++++++++++-------
+ rust/kernel/lib.rs                   |  1 +
+ rust/kernel/platform.rs              | 29 ++++++++--
+ samples/rust/rust_driver_platform.rs | 71 +++++++++++++++++++++++-
+ 7 files changed, 221 insertions(+), 24 deletions(-)
+ create mode 100644 rust/kernel/acpi.rs
+
+
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+-- 
+2.43.0
+
 
