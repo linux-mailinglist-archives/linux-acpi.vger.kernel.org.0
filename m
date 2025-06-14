@@ -1,90 +1,58 @@
-Return-Path: <linux-acpi+bounces-14372-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14373-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5EF7AD974F
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jun 2025 23:27:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD537AD9912
+	for <lists+linux-acpi@lfdr.de>; Sat, 14 Jun 2025 02:33:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7392F16B30E
-	for <lists+linux-acpi@lfdr.de>; Fri, 13 Jun 2025 21:27:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 156393AA53E
+	for <lists+linux-acpi@lfdr.de>; Sat, 14 Jun 2025 00:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B495B28D8C0;
-	Fri, 13 Jun 2025 21:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3662D566A;
+	Sat, 14 Jun 2025 00:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nZbpXBjn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxBxlxoE"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5A72397A4;
-	Fri, 13 Jun 2025 21:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F97BA33;
+	Sat, 14 Jun 2025 00:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749850031; cv=none; b=HQDm+WTZ0apLTCuy4mTNHR1wZbmOC1mjjVWrrtTOSGayzMNk5o/gi3ezkrwpgOxtAisdrosb/O0NHMswqSC8p8kQledHjOYllY2F5mRWoIX0oioj1zQGF8XtNmoqA8UgkdFKchP93Gumsb2WoWaDi9wUNDfUG0nFOK2UFFb+S2Y=
+	t=1749861226; cv=none; b=b47M6ETRnNDBNh6nS8VrNC3SAErAiiuSKtrlHcIpi0AF8Qy4E7du/vwxIEXaZFspVE916wADqNIYiFnRsZwgilzzmn7xC3f5QfjJ7uXJd7TWNl4CuEb/Kgf7vgUjOzqvJazpiTILX/a3oieWeHpQVLf4pOeF9HIwonaS6Td//as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749850031; c=relaxed/simple;
-	bh=uao9vXicfmNGv7hAWWVlUXBcpeUEFrEd/9ktZYSF5ig=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=dilfbHh4ddjSDIa8/lp8fKlVdZIezejxeMDxe8Tr9xUG195kgAjoDmbIO7onYUXKV+f7nRdqry/KPOASd07SvIWsLvGAqIFceaVUDDEUPBFgCERaGMOB2U9k/TmWG2ZrqzQuSMsJpMf8CyRlvx+gk43XFa50ueSKfj133mg2wNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nZbpXBjn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62DCC4CEE3;
-	Fri, 13 Jun 2025 21:27:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749850030;
-	bh=uao9vXicfmNGv7hAWWVlUXBcpeUEFrEd/9ktZYSF5ig=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=nZbpXBjnZAtM27vBM686WDSlmCevbldUDcv0haHfTvmlSbLoJxSVxv9p7sUN/igzZ
-	 DQK/ujQyUDtDXKo2+9/B+og9k8xaILfs7yj0Ci3wDQTJoB15fvuJM/ChAGShZ3sJS/
-	 bufKhI9YRG+YCjlQBcTTG/xsYrSg2fEsxsIA3vHaqMgwXY8cAwIwDfocOYkk4kfsyJ
-	 P4ztXwL4ANgDMym+oXwaG7Bg27bJtH+40UVzknDgw/qfvepHaMcja5TXadWM+ftgzY
-	 JKVnZ/05xPQ/3S7h35bYqr18+mF84NOxMFMKg9d3gusw5T0wrId6QwXlt1I1+pXePB
-	 G+ukl5JR60TBg==
-Date: Fri, 13 Jun 2025 16:27:09 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	s=arc-20240116; t=1749861226; c=relaxed/simple;
+	bh=Amvs3Luk2aA4Ri+Z+WtskuRg9fDppnYMUjoOrkGgVbQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d3snAuUbSKMS1R0AoxenyRfHo0TuwVIHiuyzhrYgTvWr7FK1SecielaSrEY+MRzlYjDBw9QuM2NlQOqbb/FHDfmiyFoXyNsA07DZr9oYP16Y747JoIxoA1EqlKr7Yl1hkw8ucmxkir6uIgbmq1IT6XBIsRtY2LpecJaVltbB4Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxBxlxoE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01892C4CEE3;
+	Sat, 14 Jun 2025 00:33:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1749861225;
+	bh=Amvs3Luk2aA4Ri+Z+WtskuRg9fDppnYMUjoOrkGgVbQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NxBxlxoElxULFRktcPXheHA+ZhwM+HzsqYZuX8z6zB4t0Qp58HcLUeFpynStULZ5g
+	 atUcGPqdRjW5wBbIB5kZzC+VenLzfG0+GpZfTg1E7SQz2YpgtagjcgPAYVb1Dc3VFd
+	 BU9RlTRfzh1DUOz+sGA0BHjgXYvgF6INszYDq6dg=
+Date: Fri, 13 Jun 2025 20:33:42 -0400
+From: Greg KH <gregkh@linuxfoundation.org>
+To: marc.herbert@linux.intel.com
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dan Williams <dan.j.williams@intel.com>, rafael.j.wysocki@intel.com,
+	linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v3 24/28] PCI: Add Microchip LAN9662 PCI Device ID
-Message-ID: <20250613212709.GA979346@bhelgaas>
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Ben Cheatham <Benjamin.Cheatham@amd.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH] driver core: faux: fix Undefined Behavior in
+ faux_device_destroy()
+Message-ID: <2025061313-theater-surrender-944c@gregkh>
+References: <20250613191556.4184103-1-marc.herbert@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -93,64 +61,91 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250613134817.681832-25-herve.codina@bootlin.com>
+In-Reply-To: <20250613191556.4184103-1-marc.herbert@linux.intel.com>
 
-On Fri, Jun 13, 2025 at 03:48:04PM +0200, Herve Codina wrote:
-> Existing code uses the 0x9660 value (LAN9662 PCI Device ID) in several
-> places.
+On Fri, Jun 13, 2025 at 07:15:56PM +0000, marc.herbert@linux.intel.com wrote:
+> From: Marc Herbert <marc.herbert@linux.intel.com>
 > 
-> Avoid this direct use of the 0x9660 value replacing it by defined PCI
-> Device ID.
+> Fixes undefined behavior that was spotted by Jonathan Cameron in
+> https://lore.kernel.org/linux-cxl/20250609170509.00003625@huawei.com/
 > 
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> The possible consequences of the undefined behavior fixed here are fairly
+> well documented across the Internet but to save research time and avoid
+> doubts, I include a very short and simple demo below. I imagine kernel
+> compilation flags and various other conditions may not make the
+> consequences as bad as this example, however those conditions could change
+> and this type of code is still Undefined Behavior no matter what.
+> One of the best articles - there are many others:
+> https://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html
+> 
+> Since commit b5ec6fd286dfa4 ("kbuild: Drop -Wdeclaration-after-statement"),
+> it's now possible to use C99 declarations; the kernel is not constrained
+> anymore to group all declarations at the top of a block like single-pass
+> compilers used to require. This allows combining declarations and
+> definitions in one place - like literally every other language and project
+> does - and trivially fix undefined behavior like this.  This also reduces
+> variable scope and avoids misuse between declaration and definition like
+> uninitialized reads or writing to the wrong variable by mistake. C99
+> declarations also allow using a lot more `const` (the default in some
+> languages) which avoids some misuse after legitimate use.
+> tl;dr: C99 declarations are not just a "codestyle" or "taste" issue;
+> they are an important (and not mandatory) feature.
+> 
+> cc --version
+>   cc (GCC) 15.1.1 20250425
+> 
+> for i in 0 1 2 g; do printf "gcc -O$i: "; gcc -O$i nullptrUB.c &&
+>    ./a.out; done
+> 
+> gcc -O0: Segmentation fault (core dumped)
+> gcc -O1: ptr is zero
+> gcc -O2: ptr is NOT zero!!!
+> gcc -O3: ptr is NOT zero!!!
+> gcc -Og: ptr is zero
+> 
+> clang --version
+>   clang version 19.1.7
+> 
+> clang -O0: Segmentation fault (core dumped)
+> clang -O1: ptr is NOT zero!!!
+> clang -O2: ptr is NOT zero!!!
+> clang -O3: ptr is NOT zero!!!
+> clang -Og: ptr is NOT zero!!!
+> 
+> int faux_device_destroy(int *ptr)
+> {
+>   int i = *ptr;  i++;
+> 
+>   // Because we dereferenced ptr, the compiler knows the pointer cannot
+>   // be null (even when it is!) and can optimize this away.
+>   if (!ptr) {
+>     printf("ptr is zero\n");
+>     return 0;
+>   }
+> 
+>   printf("ptr is NOT zero!!!\n");
+>   return 1;
+> }
+> 
+> int main()
+> {
+>   struct timespec t1, t2;
+>   clock_gettime(CLOCK_MONOTONIC, &t1);
+>   clock_gettime(CLOCK_MONOTONIC, &t2);
+> 
+>   // Use the clock to hide zero from the compiler
+>   int * zeroptr = (int *)(t2.tv_sec - t1.tv_sec);
+> 
+>   return faux_device_destroy(zeroptr);
+> }
+> 
+> Fixes: 35fa2d88ca94 ("driver core: add a faux bus for use when a simple device/bus is needed")
+> Signed-off-by: Marc Herbert <marc.herbert@linux.intel.com>
 
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Great writeup, but as Miguel says, this isn't needed at all, the kernel
+relies on the compiler to be sane :)
 
-> ---
->  drivers/misc/lan966x_pci.c | 2 +-
->  drivers/pci/quirks.c       | 2 +-
->  include/linux/pci_ids.h    | 1 +
->  3 files changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/misc/lan966x_pci.c b/drivers/misc/lan966x_pci.c
-> index b28066c96534..e60ab662b8f3 100644
-> --- a/drivers/misc/lan966x_pci.c
-> +++ b/drivers/misc/lan966x_pci.c
-> @@ -197,7 +197,7 @@ static void lan966x_pci_remove(struct pci_dev *pdev)
->  }
->  
->  static struct pci_device_id lan966x_pci_ids[] = {
-> -	{ PCI_DEVICE(PCI_VENDOR_ID_EFAR, 0x9660) },
-> +	{ PCI_DEVICE(PCI_VENDOR_ID_EFAR, PCI_DEVICE_ID_EFAR_LAN9662) },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(pci, lan966x_pci_ids);
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index d7f4ee634263..bde077ce663a 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -6302,7 +6302,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa76e, dpc_log_size);
->  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5020, of_pci_make_dev_node);
->  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5021, of_pci_make_dev_node);
->  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_REDHAT, 0x0005, of_pci_make_dev_node);
-> -DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_EFAR, 0x9660, of_pci_make_dev_node);
-> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_EFAR, PCI_DEVICE_ID_EFAR_LAN9662, of_pci_make_dev_node);
->  
->  /*
->   * Devices known to require a longer delay before first config space access
-> diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-> index e2d71b6fdd84..5d69fde7dd97 100644
-> --- a/include/linux/pci_ids.h
-> +++ b/include/linux/pci_ids.h
-> @@ -934,6 +934,7 @@
->  #define PCI_VENDOR_ID_EFAR		0x1055
->  #define PCI_DEVICE_ID_EFAR_SLC90E66_1	0x9130
->  #define PCI_DEVICE_ID_EFAR_SLC90E66_3	0x9463
-> +#define PCI_DEVICE_ID_EFAR_LAN9662	0x9660
->  
->  #define PCI_VENDOR_ID_MOTOROLA		0x1057
->  #define PCI_DEVICE_ID_MOTOROLA_MPC105	0x0001
-> -- 
-> 2.49.0
-> 
+thanks,
+
+greg k-h
 
