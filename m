@@ -1,139 +1,107 @@
-Return-Path: <linux-acpi+bounces-14380-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14381-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E01D9ADA8CF
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Jun 2025 09:04:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1117ADAB00
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Jun 2025 10:44:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E25147A592C
-	for <lists+linux-acpi@lfdr.de>; Mon, 16 Jun 2025 07:03:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5866016D8FD
+	for <lists+linux-acpi@lfdr.de>; Mon, 16 Jun 2025 08:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1F21E47B3;
-	Mon, 16 Jun 2025 07:04:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RvuZAWtw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B010626D4C1;
+	Mon, 16 Jun 2025 08:44:48 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85D142AB0;
-	Mon, 16 Jun 2025 07:04:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8217F20D4F8;
+	Mon, 16 Jun 2025 08:44:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750057463; cv=none; b=Ik1/5DxckGVQ9duKjld+PXtY3Qj+ogDJCU1F5bEl1xHFi6cy4duB/yVxp0KzJ6TPqYQ/wCTu32iV99k0WZ+OHh3vdR/Psqv6sk+ReBePKzSZ2E4tpwrRgopDgfs8wUbkichozrjSHJLA9OYNnKVUop0Mzgq/k2U2lTiObB2xBMQ=
+	t=1750063488; cv=none; b=ZFXyf6tDHGTMCRVlXJJh3wfgaYwStg43vRv6+8zTvwykzn/CbEz9RaP2nRJyiIsCJwzJoQWJNMPwLMJl26OUKHIv30A074C+Dun+4AyasAnLX1rPxRgsxkbM444ZpQVWokEUMP/lW5yWS+iuk7zHbYs92dkNc8tiC5CMTABcJTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750057463; c=relaxed/simple;
-	bh=nLhGjURpTCk0v2y/8BYqjSMh+AN7in3C1Fv8fLv+X48=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mjdmd8aUTNAGstWoNDkGNtXhqTPzbajBIH5Ew0bTryfKKT5vw0yEnC7eyopiPaIVaLTS2GWQZRV7RE9IXOU8lLmfqVCOiPvLE8urBEqhy7M1m16br5jthROYBR0sPEzBgSoTwmsoPY8fbQDtxe6Qoe9u5VGPHsILa0TONnX0PkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RvuZAWtw; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C090944358;
-	Mon, 16 Jun 2025 07:04:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1750057451;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rQpUEyE2hSL3/anSM+mUj3B/dfO987OTyH9st7Zw9rI=;
-	b=RvuZAWtwncTDYBTmDQAlBIYQ37ITn2LNv8AE9RnE6ibp9xhLMXoG/P+FYoXnQn4WXwPoAU
-	/kMIcIHg7mBPD6KS4fM4TATpCovYXdlJ/S/5tPFqDNgWBxRwyYcORmltrjG6O9PZf37lQB
-	IQmasJyHwwVGFYltHgdTmBdQFOSbPNwi/8qxzvBfE4MxT7JDW0imBcadoL9/jsDUuPzXpw
-	fBtVIp8AFo8XzSXPdRTZcI0QUmtJbiBZNxj1lORjNz3V1ub/LaYlPzQYKTAon4QLlOoMwk
-	PeM3kR9n0FPn0e2zs4hpdyyi9dxvIyrQ9p8iEFKfpxusw0Kmk7p6j5aYgBKFCQ==
-Date: Mon, 16 Jun 2025 09:04:06 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Saravana Kannan <saravanak@google.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
- Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
- Shyti <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
- Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
- Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len Brown
- <lenb@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Scally <djrscally@gmail.com>, Heikki Krogerus
- <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, Geert
- Uytterhoeven <geert+renesas@glider.be>, Davidlohr Bueso
- <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, Alison Schofield
- <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
- Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
- linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v3 06/28] driver core: fw_devlink: Introduce
- fw_devlink_set_device()
-Message-ID: <20250616090406.32f62ca4@bootlin.com>
-In-Reply-To: <CAGETcx9u-7TJ6_J5HdmDT=7A6Z08P-rUC0n+qnBoBi+ejRc2SQ@mail.gmail.com>
-References: <20250613134817.681832-1-herve.codina@bootlin.com>
-	<20250613134817.681832-7-herve.codina@bootlin.com>
-	<CAGETcx9u-7TJ6_J5HdmDT=7A6Z08P-rUC0n+qnBoBi+ejRc2SQ@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1750063488; c=relaxed/simple;
+	bh=JHFm4OQiSuNkSNbxKgW7+3HLF75dme7NUdtwX0vWLnc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cll9tmjrCKh++oziBkRSRHmwtAXci423RsNfUBjtHhj24qB5Rx3HbWxTWwMNblkmvPgUGYyCNgNNNBWdqpbBSoCSMs4+nb4rrAydPqyCr5qVUkhdvmuoe2EF3Av3D2VQ4fZkwO1Muu1CLEDs4s3+5NYvf0R3m4/D19VQThuImKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from qiao.. (unknown [210.73.43.2])
+	by APP-05 (Coremail) with SMTP id zQCowAAnsA5q2U9o_G72Bg--.56606S2;
+	Mon, 16 Jun 2025 16:44:27 +0800 (CST)
+From: Zhe Qiao <qiaozhe@iscas.ac.cn>
+To: sashal@kernel.org,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	bhelgaas@google.com,
+	kwilczynski@kernel.org,
+	qiaozhe@iscas.ac.cn
+Cc: linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH] PCI/ACPI: Fix double free bug in pci_acpi_scan_root() function
+Date: Mon, 16 Jun 2025 16:44:20 +0800
+Message-ID: <20250616084420.526381-1-qiaozhe@iscas.ac.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddvheelfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthekredtredtjeenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeviefffeegiedtleelieeghfejleeuueevkeevteegffehledtkeegudeigffgvdenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgeekpdhrtghpthhtohepshgrrhgrvhgrnhgrkhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhrgifnhhguhhosehkvghrn
- hgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggv
-X-GND-Sasl: herve.codina@bootlin.com
+X-CM-TRANSID:zQCowAAnsA5q2U9o_G72Bg--.56606S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Gw1rtw18KryDtw4ftw17GFg_yoWkKFg_CF
+	98Wr17Gr4UKr45Gw43K3yfJFWFk3Z7WFn7WFsrKa9xCa4xGr15u3Z7Jrs3Xry3Gw4qkF9x
+	Cw1DXr18Cw1IvjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbs8FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+	Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r1q
+	6r43MxkIecxEwVAFwVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
+	C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
+	wI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
+	v20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
+	jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43
+	ZEXa7VUjrgA7UUUUU==
+X-CM-SenderInfo: ptld061kh6x2xfdvhtffof0/
 
-Hi Saravana,
+Fix the double free bug introduced in the patch "PCI/ACPI: Fix
+allocated memory release on error in pci_acpi_scan_root()".
 
-On Fri, 13 Jun 2025 14:13:49 -0700
-Saravana Kannan <saravanak@google.com> wrote:
+Fixes: 631b2af2f357 ("PCI/ACPI: Fix allocated memory release on error in pci_acpi_scan_root()")
+Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
+---
+ drivers/pci/pci-acpi.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-> On Fri, Jun 13, 2025 at 6:49 AM Herve Codina <herve.codina@bootlin.com> wrote:
-> >
-> > Setting fwnode->dev is specific to fw_devlink.
-> >
-> > In order to avoid having a direct 'fwnode->dev = dev;' in several
-> > place in the kernel, introduce fw_devlink_set_device() helper to perform
-> > this operation.
-> >  
-> 
-> This should not be set anywhere outside the driver core files. I'll
-> get to reviewing the series, but until then, NACK to this.
-> 
-> Is there a specific patch that explain why we need to set this outside
-> driver core?
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index b78e0e417324..49b72596ae37 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -1653,15 +1653,7 @@ pci_acpi_setup_ecam_mapping(struct acpi_pci_root *root)
+ }
+ 
+ /* release_info: free resources allocated by init_info */
+-static void pci_acpi_generic_release_info(struct acpi_pci_root_info *ci)
+-{
+-	struct acpi_pci_generic_root_info *ri;
+-
+-	ri = container_of(ci, struct acpi_pci_generic_root_info, common);
+-	pci_ecam_free(ri->cfg);
+-	kfree(ci->ops);
+-	kfree(ri);
+-}
++static void pci_acpi_generic_release_info(struct acpi_pci_root_info *ci) {}
+ 
+ /* Interface called from ACPI code to setup PCI host controller */
+ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
+-- 
+2.43.0
 
-We need to set it in case of creating device-tree node for PCI.
-
-Usually, fwnode are created (based on DT or ACPI) and then, dev are
-created.
-
-In the PCI DT node creation case, device are already created and then, based
-on information already computed by the kernel, DT node are created.
-
-You can see that on patch 11 (dev setting was already upstream and it is
-replace by a call to the helper for PCI host bridge) and on patch 13 (PCI
-device).
-
-Other patches (8, 9 and 10) replace the existing direct setting of the dev
-member by a call to the helper.
-
-Best regards,
-Hervé
 
