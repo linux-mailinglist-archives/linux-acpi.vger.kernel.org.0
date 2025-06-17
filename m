@@ -1,143 +1,97 @@
-Return-Path: <linux-acpi+bounces-14404-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14405-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42F3ADBF3E
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 04:38:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8C2ADC1ED
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 07:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3F9B3B37D2
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 02:38:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 283273B8A2A
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 05:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035CA2185A8;
-	Tue, 17 Jun 2025 02:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2EE21B9DE;
+	Tue, 17 Jun 2025 05:56:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IpG78emY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790DD2BF014;
-	Tue, 17 Jun 2025 02:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967093C01;
+	Tue, 17 Jun 2025 05:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750127902; cv=none; b=EgtbWwNzlkNP6Ufpl/nrXMXxi14R+7WdSRk0zyyen0gOKRQnSFjvbjtPmd/5OVZZSIZ8Q3WNOnQBFG+jJz2WraMBCoIX3PXQzNlUXtmN8hvKt0ZgVqAaRt+puZpe0smPZE124Lget+MuZKCKLrOHjtCm4B+DkaHlkfQruHeeNoQ=
+	t=1750139783; cv=none; b=ZiOlHND8ws+4XUhuJg+3pqllD6IbDsCxHMA54P3eyqV7Hi8JTNCdyZ1qUfjzZRCMSZzyigXvuW6amtOJR0ap4R+zTGshN6Axt6rnZ5taYs4JKD2iBAYdpgLngOBdllA1ePO6bLGlvUI/0nkWFZoxx/a+WBVaPL715iGTqJ/R/i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750127902; c=relaxed/simple;
-	bh=r0BIgDO0Z8ZbJ8RcYgA6ji/k7/gGIKduFudNuXuBwZ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aIcnKv2k4+biTCBQhubCP2Ah1EkiVpfaD19n/XZPjn3EuNYhQ6+7u8Qt4BnPh5j8jfTo9+go4Skd9PyWzkBipulu75kwxOYpoyMzlSOLkO9pNnGW9PMyy3LvOqGVbnKHhO6qQQUp5JA+E1CAZqclAC59GlhdRRbUNhcGYigA5o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from qiao.. (unknown [210.73.43.2])
-	by APP-05 (Coremail) with SMTP id zQCowACHCgkS1VBop6IkBw--.5577S2;
-	Tue, 17 Jun 2025 10:38:11 +0800 (CST)
-From: Zhe Qiao <qiaozhe@iscas.ac.cn>
-To: rafael@kernel.org
-Cc: bhelgaas@google.com,
-	lenb@kernel.org,
-	kwilczynski@kernel.org,
-	sashal@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	qiaozhe@iscas.ac.cn
-Subject: [PATCH v2] PCI/ACPI: Fix double free bug in pci_acpi_scan_root() function
-Date: Tue, 17 Jun 2025 10:37:38 +0800
-Message-ID: <20250617023738.779081-1-qiaozhe@iscas.ac.cn>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1750139783; c=relaxed/simple;
+	bh=xewPBDnE/yjPAn+yZQtmYb2YxGdO2c/xqGHXteCy85o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dysM7PGOLwPUthcJ/1bWNLluXmlhRbJD2fupUKhLJh7F61FEMe1BeU0udwhwPk2P1k59vewLk92L0FGyeyv90IzOYFoZ3EwhgVD/5RMZ0/8WFYw1/bvsHri+jRyshspxbBI0aJLgZ63o7uylJ5qKIy+9snifECadPra2L16wUr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IpG78emY; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750139781; x=1781675781;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xewPBDnE/yjPAn+yZQtmYb2YxGdO2c/xqGHXteCy85o=;
+  b=IpG78emYiX5cAY/LGhC8/uJZkdZTYJXuXTblk5l7bg00CrwEkBmB0ZvE
+   3BEyzK/JzQUna51Q2W0y/0y5o7piGg3dtezPRPCEWDHp10Jpm8Y2rysJJ
+   aOi1yN4Uylra72z0XtsSi9K9vL+eDIVgsFq/cYqdqVmD59lbM1Pa7e9EC
+   UUMn9VBQ3L38SbQQcT+mpgsB3QltMS4qq4LiJZT8f9KaeLX5ybVblMheE
+   dLmfy8k6vxdY6InzaqiphWP4R6A+FeDIF4lIUaXAQOcmr2rW/5cc/lafr
+   ThRTILKw4iGpm79A4ErLSXpJPcPN4i1L0pRbf90cbVLKLdl0PIgFazwJz
+   Q==;
+X-CSE-ConnectionGUID: 3WWl6gsYRz6mUJ1kKe5QdA==
+X-CSE-MsgGUID: 04hDHwbwSkaBXXFLSJeRgQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="52282453"
+X-IronPort-AV: E=Sophos;i="6.16,242,1744095600"; 
+   d="scan'208";a="52282453"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2025 22:56:21 -0700
+X-CSE-ConnectionGUID: 3aNWoODoQm+WuDOajIOeAQ==
+X-CSE-MsgGUID: tUaEPf/HRoCHCkkErhZhQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,242,1744095600"; 
+   d="scan'208";a="148512056"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa006.fm.intel.com with ESMTP; 16 Jun 2025 22:56:20 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id 00FF312C; Tue, 17 Jun 2025 08:56:17 +0300 (EEST)
+Date: Tue, 17 Jun 2025 08:56:17 +0300
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Linux PM <linux-pm@vger.kernel.org>,
+	Linux ACPI <linux-acpi@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: Re: [PATCH v1] ACPI: PM: Set .detach in acpi_general_pm_domain
+ definition
+Message-ID: <20250617055617.GR2824380@black.fi.intel.com>
+References: <4665476.LvFx2qVVIh@rjwysocki.net>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACHCgkS1VBop6IkBw--.5577S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxCF4fZr13trWfAF18JrW8Zwb_yoW5Xr43pa
-	1Sqw4UAr48Jr48Wr1kA3WkZF1rZFZ0krW7KrZ7t3ySyF47ur1jvFZrAFyv9r98Zws5Ja1j
-	vF4qqFyUJF1DZa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26F
-	4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
-	7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
-	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AK
-	xVWUtVW8ZwCY02Avz4vE14v_Gr1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
-	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
-	17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
-	C0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
-	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvj
-	DU0xZFpf9x0JUC2NNUUUUU=
-X-CM-SenderInfo: ptld061kh6x2xfdvhtffof0/
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <4665476.LvFx2qVVIh@rjwysocki.net>
 
-The patch "PCI/ACPI: Fix allocated memory release on error in
-pci_acpi_scan_root()" introduces a dual release issue. When
-acpi_pci_root_creat() fails, the pci_cpi_can_root() function
-will release 'ri ->cfg' and 'root_ops' in the error handling
-path.However, acpi_pci_root_creat() will also call
-__acpi_pci_root_release_info(), which in turn will call the
-release_info hook, causing the same block of memory to be
-released again.
+On Mon, Jun 16, 2025 at 08:20:28PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> Instead of setting the .detach callback pointer for acpi_general_pm_domain
+> every time it is attached to a device, which is confusing, set it once
+> in the definition of acpi_general_pm_domain.
+> 
+> No intentional functional impact.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Fixes: 631b2af2f357 ("PCI/ACPI: Fix allocated memory release on error in pci_acpi_scan_root()")
-Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
----
-v1 -> v2:
- - Restore all changes from the first version.
- - Remove unnecessary release info hooks.
- - Add a NULL check before calling info->ops->release_info().
- - Delete the currently unused pci_api_geneic_delease_info () function.
----
- drivers/acpi/pci_root.c |  3 ++-
- drivers/pci/pci-acpi.c  | 12 ------------
- 2 files changed, 2 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-index 74ade4160314..83628adbc56b 100644
---- a/drivers/acpi/pci_root.c
-+++ b/drivers/acpi/pci_root.c
-@@ -974,7 +974,8 @@ static void __acpi_pci_root_release_info(struct acpi_pci_root_info *info)
- 		resource_list_destroy_entry(entry);
- 	}
- 
--	info->ops->release_info(info);
-+	if (info->ops && info->ops->release_info)
-+		info->ops->release_info(info);
- }
- 
- static void acpi_pci_root_release_info(struct pci_host_bridge *bridge)
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index b78e0e417324..6e85816ee1c3 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -1652,17 +1652,6 @@ pci_acpi_setup_ecam_mapping(struct acpi_pci_root *root)
- 	return cfg;
- }
- 
--/* release_info: free resources allocated by init_info */
--static void pci_acpi_generic_release_info(struct acpi_pci_root_info *ci)
--{
--	struct acpi_pci_generic_root_info *ri;
--
--	ri = container_of(ci, struct acpi_pci_generic_root_info, common);
--	pci_ecam_free(ri->cfg);
--	kfree(ci->ops);
--	kfree(ri);
--}
--
- /* Interface called from ACPI code to setup PCI host controller */
- struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- {
-@@ -1683,7 +1672,6 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 	if (!ri->cfg)
- 		goto free_root_ops;
- 
--	root_ops->release_info = pci_acpi_generic_release_info;
- 	root_ops->prepare_resources = pci_acpi_root_prepare_resources;
- 	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
- 	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
--- 
-2.43.0
-
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 
