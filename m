@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-14411-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14412-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37443ADCB43
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 14:25:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88868ADCB36
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 14:24:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B96FE3BB700
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 12:23:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD8F71889DCF
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 12:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECBC2E4243;
-	Tue, 17 Jun 2025 12:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017602E06DE;
+	Tue, 17 Jun 2025 12:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8S1hQyB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XyGF7Xk6"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757DD2DE1E0;
-	Tue, 17 Jun 2025 12:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2392DE1E1;
+	Tue, 17 Jun 2025 12:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750162997; cv=none; b=qOSyJMOAzwePhYQcrdX3kvdzxnReEi0gJAjnbGFbY6cTfkAfkVmjzyaMKUbBO3375ck9FKx3Xw/656kQ+FhlKbzUM7Dli97werHL6Xs8pj4mNUVNEPDSQZCF3x4D+tZzCxGSFf3toZhX7pDabiBZRwftIECGDqkU5iHAQjgejA4=
+	t=1750163013; cv=none; b=PbVysxLj79xlN2533DQzMULUi593rMBSWPm7i/kxekZxaTsGYo1OHBncLI9FA0ZVkTgl2lZ6fuyijTa4z+/FeFe1F7OAcjjz6m/zAO02xnQacSjYmeUhPAQnB82KHpkaDGG+jhUJrThp9zbuOhPl4/S32ALnLA1HkPNK4rI0TQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750162997; c=relaxed/simple;
-	bh=bxDLdNPClIHGJyTm/ywlQ/25uU4XVEnYLizlSdecpvI=;
+	s=arc-20240116; t=1750163013; c=relaxed/simple;
+	bh=O9+JbbKlI3fjEUjmsG6yxlim6CZofgclow1ax2USBRg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TIqFVUHsC5091XwC2Jgj1dVoAqGYCyFfLORgGwY91Bz3bxl3M0H2uo4v/DOMe0LE5fcWOZzqBah8kj98dCiZ01aevEDWhqg5TMZLneeV3dBeuDIx8ZdbdrZrUbb+VZyU+ANwOtHCWgsOARdvN56RWUEHtjoyOxWtJs5pr/7+Hfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8S1hQyB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E47C4CEF2;
-	Tue, 17 Jun 2025 12:23:16 +0000 (UTC)
+	 MIME-Version; b=Yv+/HIthOmoparG35xQRamB/nYe/OVO1Kgc71GaeTv5EKhPNACxIoquqEXeyPFOg2n89KZLz8hV4Sty5oG3SiTmHcCHEMaN6kVmlZ+rwENBl730Y6hsnSdsoPGIR8Upvy3TWmfynjttuDbMqls3J7vbsm5SrLxUgXoeEJvB3qzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XyGF7Xk6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA45DC4CEF0;
+	Tue, 17 Jun 2025 12:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750162997;
-	bh=bxDLdNPClIHGJyTm/ywlQ/25uU4XVEnYLizlSdecpvI=;
+	s=k20201202; t=1750163013;
+	bh=O9+JbbKlI3fjEUjmsG6yxlim6CZofgclow1ax2USBRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V8S1hQyBIDQ7bHDOKrEJgsQUxGsj0Kb91tSRQNDktv8/DwaQVhJL2RWQg/lld/NVG
-	 I7/lP6krD2lr3apY6czcb2Gk6UvY65ipfelawjwnmh0rnQKMGTGpUGLX1J8wTBCVmN
-	 UOSWYqGMSAA1jcYgjd5cVv+xe76k0mu7ZT7nPCwDXrHcVTlHhb2MaaxSmD1PXVdizk
-	 B3Hh86yWBHAcrS0lA4QaOgVdKHiBtioWXJVy6qSTNyc0EiauEjw00yODQbCDJi53fx
-	 3l7t8zh03eytBuZvFA5xg/GpFUMg7N1VjCN4/eLjyw8qj4HOsM0gd8PLhgJCBUbZJ9
-	 rsvWQA0uSjBxg==
+	b=XyGF7Xk6vItycttAXe4cMhrylf5HK3S3b1kvZ08uUtY7ZScBWGf6onJKFRxN3A4g6
+	 K2aCOkW2RyJLEdhU6u9MmGPQAT0aysrwu/bnstg2l4nlf6h1X3BGg4EjuzDSnx0Wna
+	 nrQBgFKgraj1NLYkO2KbD7Xwge8W7sBfWaQKEbNLO6O7GNl7u7GV23O62G3Li3tl9J
+	 EZk5HGecGPgHib5ivj3fCA0cQiJUKjZWbf5Mef0GZwVhYp65/9uC4jOILnog7eovTW
+	 ItdEg8wUfBZQ7OnOKOmntoAfLL2Xl89pmFWLro5gYnR+pG44xzpmiKv5yKVH4ixrfk
+	 vzTlg1XvU+NDA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -49,12 +49,12 @@ Cc: Wentao Guan <guanwentao@uniontech.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 6/8] ACPI: resource: Use IRQ override on MACHENIKE 16P
-Date: Tue, 17 Jun 2025 08:23:03 -0400
-Message-Id: <20250617122306.1969438-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 6/8] ACPI: resource: Use IRQ override on MACHENIKE 16P
+Date: Tue, 17 Jun 2025 08:23:19 -0400
+Message-Id: <20250617122322.1969649-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250617122306.1969438-1-sashal@kernel.org>
-References: <20250617122306.1969438-1-sashal@kernel.org>
+In-Reply-To: <20250617122322.1969649-1-sashal@kernel.org>
+References: <20250617122322.1969649-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.141
+X-stable-base: Linux 5.15.185
 Content-Transfer-Encoding: 8bit
 
 From: Wentao Guan <guanwentao@uniontech.com>
@@ -141,10 +141,10 @@ backported to stable trees.
  1 file changed, 7 insertions(+)
 
 diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index dd513335f0865..f56e2af47aac0 100644
+index 7c08cf69ca311..7e546d2b3884c 100644
 --- a/drivers/acpi/resource.c
 +++ b/drivers/acpi/resource.c
-@@ -635,6 +635,13 @@ static const struct dmi_system_id lg_laptop[] = {
+@@ -638,6 +638,13 @@ static const struct dmi_system_id lg_laptop[] = {
  			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
  		},
  	},
