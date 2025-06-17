@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-14408-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14409-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4F7ADCB01
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 14:22:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB1BADCB12
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 14:22:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93B59188DC02
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 12:22:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8366171A38
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 12:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F2B2DE1E1;
-	Tue, 17 Jun 2025 12:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9DDA2D12F6;
+	Tue, 17 Jun 2025 12:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZ9kYBrs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uhCaMlyj"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36EF2DE1E0;
-	Tue, 17 Jun 2025 12:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BF72DE1E7;
+	Tue, 17 Jun 2025 12:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750162936; cv=none; b=Gk1VG5kS0LcIhhklntw3bJCkB0WhkQRPHStnvO9x2vbwFjSftxyP8+GVdiDUOmqwVNe+bz2s2S8VtNEhqxEukFtKxgcJrmBMh5xhyuSx0Isl3lLxbAbsgb3W5SvWehaKCQ/NFoxSayFE1abCPuiRelzm2UBFybiYB512F3b9r4g=
+	t=1750162960; cv=none; b=fsl1bCLOwnYbpc4HDGCiiuSLd20C+EWMZONzdhGkyGYOuvv2UXWF9dkG0gn0ladR7599Gd02DWUH5gXGVKnLNUhOzgqpvKfuhEmyeYjeN8QJJe5kyq0QFEH6dI2Yl/3kX4V6TPOnaMLSzxnGL9BfwfgcgY4zmwqrLUl6zBFpjWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750162936; c=relaxed/simple;
+	s=arc-20240116; t=1750162960; c=relaxed/simple;
 	bh=9/iHQ3dYlLrbfQPOjcg+z2GVsbtgfzHHrq+JaTmPNUY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hQenR36XwaC0Tw8ovSiw4gpxEnDQrQ4SXLu86lLSmioDBhdKjTgubBUL5Wk+5AibKBBmF29dcQommMauc9iUWqjdgoNk9kAaQHOnDKxmNcMenCsQMZzxncBuwjb9qGQGd40I+IhVpmll7wX3BunPTO2VhwMQpDgw/vHO1d8jrU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZ9kYBrs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F55EC4CEEE;
-	Tue, 17 Jun 2025 12:22:14 +0000 (UTC)
+	 MIME-Version; b=jDgX7TBsymmoAx7TzWJlTNCgG3fduF1hkVRa8x+w+qnMLyexKVZZNDNLnZ9ffl9cNSOm3JdkreLLOCD/359c76pDTWfYtZRmPvFGAsm7msm9fJjU6y70oj+goNoTa+6rhrHekf/4txp9M0XjoXwI6IEbdGNJhopCwAosMiZ8p9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uhCaMlyj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88FEC4CEF0;
+	Tue, 17 Jun 2025 12:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750162935;
+	s=k20201202; t=1750162960;
 	bh=9/iHQ3dYlLrbfQPOjcg+z2GVsbtgfzHHrq+JaTmPNUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SZ9kYBrs2V8jfWfs1dGY8MDx3Z9Z3DOMWC0212Mzd13r0oM+qz6p13plV86CwkIbx
-	 IWe3MdATrxycmcEF/LvQVNRYUrViubylZ0NfXlupKFjYOVLvFCOXKTlQLC8NdLZH4O
-	 RYxKuCA8N75xHWf/4+uXkpKhdjCwoB8qKqBvl7Dt10pXdtbWS92WVO25UuEu/s4o1w
-	 2E8LrrFL5YLM7S1rd/EX46RCzs5f4Zf8Orv/DNFgFtsZQkM24kRbJNOwrMcvr4Aw39
-	 +A271SdvrQmd6xd9GZceKzlsZu6QioY/40RpmbZwPuYSoqmxvu7M1ftRbPhB1xY3O8
-	 LH7BSE9Wv6sWQ==
+	b=uhCaMlyj5wgG//+RnXhkxdxup8yqBBItPX+AponKeCfhE7/v+OGW5I148zJemlPbI
+	 MR0DbR3xDnMkOCJBDvyKxQTza8DZLCjQf0PghiTHE65xXC4gRUYw67R+DW/TNPHDIx
+	 flN1jxp4svjX4+hKfeq2VbnPa38HXUs7jh6BnqFB3pNlWoBVrUwX79CzJp8kBL10RI
+	 7JOF0XHAxopwycS2f4iZzO1PBzPmu6WwUmaEDsXVvuqa3uWKyQDWnSLM1BzJoKZCuq
+	 mp4QwLSsURjRdtzoOjZQvHdbm8zNKvNDNeJ/NdBRi6wFoer9yC3joZYR9qFGgASH97
+	 M/Vc/EaMaHmWA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -49,12 +49,12 @@ Cc: Wentao Guan <guanwentao@uniontech.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.15 12/15] ACPI: resource: Use IRQ override on MACHENIKE 16P
-Date: Tue, 17 Jun 2025 08:21:42 -0400
-Message-Id: <20250617122147.1968355-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 09/12] ACPI: resource: Use IRQ override on MACHENIKE 16P
+Date: Tue, 17 Jun 2025 08:22:18 -0400
+Message-Id: <20250617122222.1968832-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250617122147.1968355-1-sashal@kernel.org>
-References: <20250617122147.1968355-1-sashal@kernel.org>
+In-Reply-To: <20250617122222.1968832-1-sashal@kernel.org>
+References: <20250617122222.1968832-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.15.2
+X-stable-base: Linux 6.12.33
 Content-Transfer-Encoding: 8bit
 
 From: Wentao Guan <guanwentao@uniontech.com>
