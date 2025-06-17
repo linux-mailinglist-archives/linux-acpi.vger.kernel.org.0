@@ -1,88 +1,87 @@
-Return-Path: <linux-acpi+bounces-14427-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14428-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55111ADDC99
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 21:44:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BE9ADDCA5
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 21:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B50D194108A
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 19:44:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 392EA7AC63D
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 19:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4D72EBBA4;
-	Tue, 17 Jun 2025 19:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF552EE97C;
+	Tue, 17 Jun 2025 19:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bKG6LGoL"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R+vhJvzs"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A0A2EAB90
-	for <linux-acpi@vger.kernel.org>; Tue, 17 Jun 2025 19:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3E62ECEA1
+	for <linux-acpi@vger.kernel.org>; Tue, 17 Jun 2025 19:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750189469; cv=none; b=KjnNKQCfvTkBi7EhG6WCmYNR9UtDzk0+Vjin8f/Aj68C541O7AqyoBXbSglLFmaHQEoxBZQd8vdzqNGRMacip49yGUclYplpvdRWOj6KdVyT69uCk8Ql/dixUpQHhX16kPVHzTOyKfqpTMw1cdoxPv7sPu6amKgL9XC6QGr2nII=
+	t=1750189586; cv=none; b=QDpapw0HlsfFFu74mhRgZzqWid6nAZqLbPQ+nIVgbxpmfTFwbujxcQUPu9rrI8lTZg96qIqALKKfxRwbsDa4ey+V5ly3woLHql2A0Qb8yU3sa50SoNWvtrAVo3JmQTpn5jKxy61F9PycI3KQzgaCss/jqzSjdb1o7Ew+/85jZpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750189469; c=relaxed/simple;
-	bh=d7Qa9uTwQP9IlFVLep+Lf4kR5fWHlvWelL/qOpCe/Ok=;
+	s=arc-20240116; t=1750189586; c=relaxed/simple;
+	bh=6SdbPPe9pmSE8+0ZJM1umJlBQZ1wA58S28tOdEyrjyY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k9iDmalaWpD4wBaPXsqid/PSTqUuJsS/E1tV91bQ0uLCLVdDV1UamhDRbegR7ZiyigNHfbGWkUe88+i8v/iZT7zLwLSzsHHG6uOF2QadcXuLCS4Z4NlxZe/iTbPfdcN8acAGNNbfgpBNsnjC+q4c2qJzqMMVwn9Kodri/tkxNKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bKG6LGoL; arc=none smtp.client-ip=170.10.129.124
+	 Content-Type:Content-Disposition:In-Reply-To; b=TMPhEvFVeNVxrAdJmur0cNyJ4/k2DcHsgT8zvDcWvFtmYcKgjw4eqa1E8Q5MxzZnMu6wCH8aQSAWom+ycTRb/tibFvHs7YRIjG5YjAF5Un8JkAvOtHmDVy0m5Ryj8ikGMpeijDLyF4MV5HK4wtKhVc5Lhj/02BDwlnORlrRe5P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R+vhJvzs; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750189466;
+	s=mimecast20190719; t=1750189583;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xz8wxuAlhJWtQEwDScEI86WHmU+E7vfWayu2m96ONxo=;
-	b=bKG6LGoLNXCfL5oBx7iG+72InMHC242OBpDsXUGuZ9g+h7MeUxbV7gghfqwMrg3OtC7egU
-	sllsZWqUbxw7CzPz2gUfmUO32wwMWdnMtdhpSLN5U8nJpOPjW+OguNPPn38KaO2hXV5ENj
-	tnxzJMjqk19BfngCtJaNRuLDgVKi3y4=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=icFJhskVkKQqZu2iPajxPrgD6zNA+fOLsrBnVy7h8EQ=;
+	b=R+vhJvzsn7jePpOMaOMDbzCGPe91VkGn+iGt41nsFjlCa4gpGM7gZU0AoAfMiZgXZTHUQ6
+	FK3STCoB4mkVddeitF0ZlexT4/047UC1NGyOYtf7hxCK+N6fyt7V+7gsAXCtRqJhX+JAzR
+	cDpGuuZDosvzvRdAnVIMFXjMwZYPhQk=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-519-yd6dJWOXNw6qv_HFmrpRcg-1; Tue, 17 Jun 2025 15:44:25 -0400
-X-MC-Unique: yd6dJWOXNw6qv_HFmrpRcg-1
-X-Mimecast-MFC-AGG-ID: yd6dJWOXNw6qv_HFmrpRcg_1750189464
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a4ff581df3so5811f8f.1
-        for <linux-acpi@vger.kernel.org>; Tue, 17 Jun 2025 12:44:25 -0700 (PDT)
+ us-mta-635-dDFODEozONyQexYBCPIbMw-1; Tue, 17 Jun 2025 15:46:17 -0400
+X-MC-Unique: dDFODEozONyQexYBCPIbMw-1
+X-Mimecast-MFC-AGG-ID: dDFODEozONyQexYBCPIbMw_1750189576
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3a4f8fd1847so2217171f8f.1
+        for <linux-acpi@vger.kernel.org>; Tue, 17 Jun 2025 12:46:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750189464; x=1750794264;
+        d=1e100.net; s=20230601; t=1750189576; x=1750794376;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xz8wxuAlhJWtQEwDScEI86WHmU+E7vfWayu2m96ONxo=;
-        b=asaqvxdNV9+QshzWtBe14JfhunEOQzSrHqyiXdm5QKgT8L1tGlHXoNCyLTPLVEzYA3
-         XRVMoDdP2fXw7jLNsivMQ9uI7iEhUvUT/Af4TwJW5jN3/+6Ye3eKZjvafN87cX0TWm2N
-         jH3lYXppgr0H1om2o88iGfKmFM+J7SOLmnsolumm4FmWenosyj5mRUFAhDdI3fDeR6ku
-         MjZfBw4M1CYJzvgxwRj1+HiqhEGTtQKKD1RpXoHfCK7qz0SuXQLSuPc9aslmsLGM2zmv
-         /434rstUBKup8CfR8nOgaFz8u2SSeTl/dwfG54sjrFeLHDwiOwqWt4jmPEjkRzqUtxP1
-         5p5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUeL9KzrqOYVtzPBDuw7SfxH2gnpqIiQA2h11c9QtQ03G2ygKUTc3CZjYXVaOREdJDAko+LIMXZoonQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvUXyyqjtpI++tlcY1OU2QeIvM5yuc3mXPSxwxu1Nkjsl8sdbE
-	6Nvr82rBYZGQlc/3zg2TI1s0M1sgVvV2th6bGMoirWM+IzeaX7AYPhB9avu2O3GrUvkW4akjm48
-	tAJxjw0qxQlER1ybjFzT+dWU/hSnpTywgEz2wmPHhDU6hBdSi1zuXSVkDBVeFINA=
-X-Gm-Gg: ASbGncuiYeWrHeyF2EZAQJkjOiCvDn8UerVJnLSZ2PR4jdJKJHVzAsj7EP8sxXMwtHL
-	05qBIOkmH+VV387kn5BReuzLlJHL17RNemb5nFTlcYRL/HfbV15Jks2MTsRTxURm+qXEJ/tbhZi
-	qoBLtONbu8vS/7ErCRcmJpXaM0MS3YLjUC2tsDmYJKpBt2NwDucxCzxj4l7Dtpxndy4Z0mzp/a7
-	Bx2eHT/91KbAabOtV9UO7ppOH5KErTnHDepq8ZuYdBHf1fqTE1h1nD0gq+aWCIF2okNS4JirdSa
-	OUroXcA60lEPwYT5
-X-Received: by 2002:a05:6000:1884:b0:3a4:eb7a:2ccb with SMTP id ffacd0b85a97d-3a56d821e4dmr13616056f8f.16.1750189464062;
-        Tue, 17 Jun 2025 12:44:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHT4nXs8VZp00DXkDGFfmjcwryY7G0O/06cxd3nB1XVq44C9m+cjUSonQ6A1euh9PZFFnKMsw==
-X-Received: by 2002:a05:6000:1884:b0:3a4:eb7a:2ccb with SMTP id ffacd0b85a97d-3a56d821e4dmr13616025f8f.16.1750189463650;
-        Tue, 17 Jun 2025 12:44:23 -0700 (PDT)
+        bh=icFJhskVkKQqZu2iPajxPrgD6zNA+fOLsrBnVy7h8EQ=;
+        b=Icu9/F43PvAegY+/LCSaqsil67grmwGhO3myqjVynwROPqA0mbv0R3G0PJtMDNdYbm
+         YaRI7Qw1gr2GPJG15sSMDOlHV0wLmP3TyWLJQXjpqVtA1XwRftfYs5PAi3+F2LBQTr9N
+         g3RFSbeogihc3FWmAHdAGwyINXvIi4klPXFtH69xhHoJmgoXoFEnjfapACwrqU0RJeS5
+         olywGETyrbrTNsoSPps8LGql1oMUUIWLrWBKg4r0zicUFU6oMriVRwUsaVFPyMrGfCQO
+         IpYePHP+TSNhoBYsj7JRQIC/Jcm5x96u4dmkzeLLAkuhhRO+n50rD8kDCGwmmNS58xpU
+         Ik7A==
+X-Forwarded-Encrypted: i=1; AJvYcCW2FQfANyKLCQmYyoYjKrJ0lFYXwPgkzvVCdfs5ykHpSHc9pRHsCOBEdYGLGstLTFh/LqWONYK6iKVf@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhGukdiuUjj1QJg98BXYjc02k0Vzl2t0Vw46n8Xw6XUpexwf3V
+	PC6xME7DMWsxGOh40SDHDi8hHb6PbE7B0UIAGQHEXe25LDH1e4eWgLMcgp/wPr12RrrBxkknqV8
+	dsQCa/p2dBVOxv0v1YqkNXv+2Qwq7c20lGVGE1PaF1mRa0kVcDOa9fMs6Vs7jOzg=
+X-Gm-Gg: ASbGncsLEjpFbTHAcQd/TRtDeXoiuvcI1KaMGboUVwF6KE7Obg3waG2oN7OspqF++YE
+	ahieoXTx9qt8XCsjDTUphlRsPmmuQuaEnTj9MKSG/P7AY7CmY+aiMnTlKjGdJQhvDQnZgZRrn/N
+	VQuw3Dl8uo/JnAQFxdOOVyS1qHumD7lCNh8umSANIRkl+qPiviMtpE5HdWQ+lwNOyHu9s+rXv0Z
+	7JSDGeKaTFs+YGAMxBo9wh1JlrWQZ/h145MikGlgStcbQdJvnEm1QPzpgZlGIiYuf6E1BF2xYjn
+	JsCYIk38ySg+JhJf
+X-Received: by 2002:a05:6000:2007:b0:3a5:25e0:1851 with SMTP id ffacd0b85a97d-3a5723660b5mr12195292f8f.7.1750189576220;
+        Tue, 17 Jun 2025 12:46:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFO9JZf66g6UmsF+FsTytz4QymacwGU4iFb1DNv63Dd/5GxeH4PDvqwykdFRQ9tUf5lrXqgjg==
+X-Received: by 2002:a05:6000:2007:b0:3a5:25e0:1851 with SMTP id ffacd0b85a97d-3a5723660b5mr12195258f8f.7.1750189575837;
+        Tue, 17 Jun 2025 12:46:15 -0700 (PDT)
 Received: from redhat.com ([2a06:c701:73ea:4300:f7cc:3f8:48e8:2142])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568b09148sm15304977f8f.58.2025.06.17.12.44.21
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568a543d9sm14603319f8f.5.2025.06.17.12.46.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 12:44:23 -0700 (PDT)
-Date: Tue, 17 Jun 2025 15:44:20 -0400
+        Tue, 17 Jun 2025 12:46:15 -0700 (PDT)
+Date: Tue, 17 Jun 2025 15:46:12 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Demi Marie Obenour <demiobenour@gmail.com>,
-	Jason Wang <jasowang@redhat.com>,
+To: Demi Marie Obenour <demiobenour@gmail.com>
+Cc: Jason Wang <jasowang@redhat.com>,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
@@ -96,10 +95,9 @@ Cc: Demi Marie Obenour <demiobenour@gmail.com>,
 	iommu@lists.linux.dev, x86@kernel.org,
 	Spectrum OS Development <devel@spectrum-os.org>
 Subject: Re: Virtio-IOMMU interrupt remapping design
-Message-ID: <20250617154331-mutt-send-email-mst@kernel.org>
+Message-ID: <20250617154524-mutt-send-email-mst@kernel.org>
 References: <>
  <a65d955c-192b-4e79-ab11-8e2af78b62af@gmail.com>
- <20250616132031.GB1354058@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -108,34 +106,47 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250616132031.GB1354058@ziepe.ca>
+In-Reply-To: <a65d955c-192b-4e79-ab11-8e2af78b62af@gmail.com>
 
-On Mon, Jun 16, 2025 at 10:20:31AM -0300, Jason Gunthorpe wrote:
-> On Sun, Jun 15, 2025 at 02:47:15PM -0400, Demi Marie Obenour wrote:
+On Sun, Jun 15, 2025 at 02:47:15PM -0400, Demi Marie Obenour wrote:
+> Virtio-IOMMU interrupt remapping turned out to be much harder than I
+> realized.  The main problem is that interrupt remapping is set up
+> very early in boot.  In fact, Linux calls the interrupt remapping probe
+> function from the APIC initialization code: x86_64_probe_apic ->
+> enable_IR_x2apic -> irq_remapping_prepare().  This is almost certainly
+> much before PCI has been initialized.  Also, the order in which devices
+> will be initialized is not something Linux guarantees at all, which is a
+> problem because interrupt remapping must be initialized before drivers
+> start setting up interrupts.  Otherwise, the interrupt remapping table
+> won't include entries for already-existing interrupts, and things will
+> either break badly, not get the benefit of interrupt remapping
+> security-wise, or both.
 > 
-> > Is a paravirtualized IOMMU with interrupt remapping something that makes
-> > sense?
+> The reason I expect this doesn't cause problems for address translation
+> is that the IOMMU probably starts in bypass mode by default, meaning
+> that all DMA is permitted.  If the IOMMU is only used by VFIO or
+> IOMMUFD, it will not be needed until userspace starts up, which is after
+> the IOMMU has been initialized.  This isn't ideal, though, as it means
+> that kernel drivers operate without DMA protection.
 > 
-> IMHO linking interrupt remapping to the iommu is a poor design,
-> interrupt routing belongs in the irq subsystem, not in the iommu.
+> Is a paravirtualized IOMMU with interrupt remapping something that makes
+> sense?  Absolutely!  However, the IOMMU should be considered a platform
+> device that must be initialized very early in boot.  Using virtio-IOMMU
+> with MMIO transport as the interface might be a reasonable option, but
+> the IOMMU needs to be enumerated via ACPI, device tree, or kernel
+> command line argument.  This allows it to be brought up before anything
+> capable of DMA is initialized.
 > 
-> The fact AMD and Intel both coupled their interrupt routing to their
-> iommu hardware is just a weird design decision. ARM didn't do this,
-> for instance.
+> Is this the right path to go down?  What do others think about this?
+> -- 
+> Sincerely,
+> Demi Marie Obenour (she/her/hers)
 
 
-why does it matter in which device it resides?
-Way I see it, there is little reason to remap interrupts
-without also using an iommu, so why not a single device.
-what did I miss?
+
+The project for this discussion is also virtio-comment,
+this ML is for driver work.
 
 
-> So I would not try to do this at all, you should have a
-> para-virtualized IRQ interface, not an extension to virtio-iommu
-> adding interrupt handling. :\
-> 
-> AFAIK hyperv shows how to build something like this.
-> 
-> Jason
 
 
