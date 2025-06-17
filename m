@@ -1,125 +1,159 @@
-Return-Path: <linux-acpi+bounces-14431-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14432-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34388ADDF5B
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 01:03:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0404ADDF7B
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 01:18:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFE7B17E1C8
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 23:03:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CB587A8052
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 23:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F058C2957AD;
-	Tue, 17 Jun 2025 23:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5282295DB4;
+	Tue, 17 Jun 2025 23:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Wa0KdzYe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XlAmBFu5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4734429114A
-	for <linux-acpi@vger.kernel.org>; Tue, 17 Jun 2025 23:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281662957A7;
+	Tue, 17 Jun 2025 23:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750201419; cv=none; b=UQnDq1DqnFaM9V/4VXdET5IayWxzRTszrXMS+LGu96md4oVCTDey9M+ZTpYG+coVqIAN3obezPo2Nu/5FENgN+4pQ1G4b82MuOW/fU1GJ6wMVMLpFt1vTsiTIT24TYOjVu5cHc1On5K7lVk3jEPa6jyvT4fyd4+1cC0s3wVL/44=
+	t=1750202321; cv=none; b=jR+sxAmg+8cSEcytZ93DJOkPA8tU7er+uS5M9n+lMG5kwYR3+trGIRrZrG5msNLUbDhkWUz/IvCpDm1O34g2g3MekxsACQupe5DHQIM4RtGUyAVk5csPXJLszu9rpp5AAmUVvyGP2zRh5JLVpAe7UYhrAQFMfsWLojTeR93e4kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750201419; c=relaxed/simple;
-	bh=7yQyAg9QQkikdevayCOR4HwJNpcyiWJT9okKkefa+HI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l4JHC1b+ImMK/MoiYcp7ibhk2xxq0+GCtTskYp7GR8FWBH12tIBXNBVk88KJbtw0xwwW96/JgmprN+xjXBEtTDyP2yOvB5t6vqdcMyKDGCbyfKkRi+6BHPetp77Cf+raL5mshjFgK8PUAruq5F9MgPLAhrsgnpuBfHFHn1uCwCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Wa0KdzYe; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4a5903bceffso73831361cf.3
-        for <linux-acpi@vger.kernel.org>; Tue, 17 Jun 2025 16:03:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1750201416; x=1750806216; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qeHg/OOZNjjpk2NyiVqmd4EaAAlIU7s30yRkT324JII=;
-        b=Wa0KdzYeeAAOrbOYnin1foa9ylkbMquO1MYxtMBS2ENoxCtC3AIivyFCq4qWUEV3c7
-         QAx0TO/J/BmMewyj4tEKatX2OFMKqmR+uOBDUXNoDlzG2A2vwH5INLhDZ7hgil4Q2w0Z
-         JPTywtK/MlvSlCrGgwUZAVDgMXX8H/T1H+zFDm9FkY2hkUogXo55N5Mfv/oCRCkGqcG3
-         Bmjk3mWdJI+JT2U6uq0blT+wTrU1XWfiAs5KujFBZEtr2RwPGp3W9zkWI47NIzO0O+6G
-         O2+H/FOz+OSYzs1D5Wib7fcIf0KTRn1Fpz+LAByWy2h6nujBu/uMh6FrgPqFlNrI1TGP
-         6xdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750201416; x=1750806216;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qeHg/OOZNjjpk2NyiVqmd4EaAAlIU7s30yRkT324JII=;
-        b=K9o877YR1kG3J8suK1QmvxPwaYjL/SxI8jHcFQfWeaFGr8PJNa/IPUL1eI8pqhKSEH
-         Qq4oF0OZ3FcgLG3JVba+w9xtrkWUl/VxWdJkHzxYEtqDAX/zMa7WeB7jyBPNMy6z3kIN
-         kjwSwbNqIB076WKXdy+Y/bUzNwsZNwNEhWHqS0pwvIuhVbis/SYTyBBcEFY6KHYFpPY/
-         nNed/KRiCWmlPjiOTepESPkXRS5FrAWRJDOfOe9sqltExpylPwMz2H7cRG2nnW4bgwli
-         4wMDSK+QH9mnoy0PyH3ytb765huIYBoou3/btqUSSohqQm6vEYrgljYsdQvj9VJBAFqW
-         Ii5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXDcgjqwoXKoHE99N3gosaetfd4yGTYA+z1rln2zv/+PGJda5OGwCrrXi8gj5RMFvd7/IGQQauMVT0b@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/OXZOu5Q8r9vkCmmSeKGHDyeYUKeOx0d2ltDsmM1Lmp17eyrW
-	b3cjY7Z8JuP/3ix4M4kOPHVR0g7nYiZFnrvD808JySppP16RBS2cYBDe+oEq/JyIcjE=
-X-Gm-Gg: ASbGncs26cbW+J2HO14FR/OtpTq/juBVtZbGLPdCbEOb0v2N2JUfrAvnip3gIcOPExR
-	rPd2BKsFOJnrNK64gb50XYj253InZ3+uyWHK/Khe1lI/5WXPfftswqrOJTJP7NTu5hjQQ1B1oYp
-	U3l6mNQx0FIQ4KaiVBsFOW+kHbc3RyQQJdAM0caQmJBHM/yQYcd3JCpWcK1CsrSbb466pVEDRDh
-	iDPy+7yMlevxgu4LNqZHidDqYtR1Ik2FxqamT3EbAmffTibZFV6I46A66Xq/deMJY3CC71QbieH
-	gntkBTHniQsUlFltoENUnTFrc1BjBPRjP0lQeUWlaS8ZelxT9729Pl6mgTH2CJWAxu+5c3YW8lI
-	RcfQk2zOUMGXdyWXZQBWHeaDYxDvCvNVtb1nWug==
-X-Google-Smtp-Source: AGHT+IG5E4/SL5wvb+OTW2Z6g1HmGu8oKyQFTaoQSeLjiG0Pk8NLxhD4sGUeZI2iyMgdjVlOfelwLQ==
-X-Received: by 2002:a05:620a:404b:b0:7d0:9519:8329 with SMTP id af79cd13be357-7d3c6c09cb8mr2841621585a.8.1750201416029;
-        Tue, 17 Jun 2025 16:03:36 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-167-56-70.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.56.70])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d3b8eaca05sm705183585a.73.2025.06.17.16.03.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 16:03:34 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1uRfL4-00000006eJX-07UY;
-	Tue, 17 Jun 2025 20:03:34 -0300
-Date: Tue, 17 Jun 2025 20:03:34 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Demi Marie Obenour <demiobenour@gmail.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Alyssa Ross <hi@alyssa.is>, virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	iommu@lists.linux.dev, x86@kernel.org,
-	Spectrum OS Development <devel@spectrum-os.org>
-Subject: Re: Virtio-IOMMU interrupt remapping design
-Message-ID: <20250617230334.GJ1376515@ziepe.ca>
-References: <>
- <a65d955c-192b-4e79-ab11-8e2af78b62af@gmail.com>
- <20250616132031.GB1354058@ziepe.ca>
- <20250617154331-mutt-send-email-mst@kernel.org>
- <20250617195720.GI1376515@ziepe.ca>
- <20250617160103-mutt-send-email-mst@kernel.org>
+	s=arc-20240116; t=1750202321; c=relaxed/simple;
+	bh=/vMmGBqzE24P8FsLP9s5W+/tB04dPiPU+BJNaUonudc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XWZkOR+wSnxvNZWt+89YE0J5gV6F8MbdthMhPlckbfyBfyFzEn4MGg44stoDNp8UNG8D9qe2JoXHZhMcln7yFVjNz4FGij9wLMmWMAoNMaD0DYT9tR4p0GFSzf1Ho3rydyBNOi2eIVQ2GRGGSQnHN4ct9AMFcoFOYZGWHXEPp3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XlAmBFu5; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750202320; x=1781738320;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=/vMmGBqzE24P8FsLP9s5W+/tB04dPiPU+BJNaUonudc=;
+  b=XlAmBFu5xno0RhDR/unlkEb0BlTxY62qYFkSOk+/nozQfv8lY1v1v+ug
+   jrt4RllkzfZ/5oT7GuOtzFQiRJTWFmFmx9zH6W/MQtNveQIviU/kX0vzz
+   lUtw8cwRgLE35Ryu5Uxyq/aQJ1GHBXxk85v5XUFlq+fakCDjcaphnnUJV
+   mbHxat453uzWOQiCX0T+g+FOi7T8zhenPKbmAkSQMtAHhfjVu/If67oKU
+   LCNJT55fzxVlfr8fS+sVFeEAbx7u1rACQPWMwJQarUR8jvLID2MZWDpH2
+   spF6HkkmmWNjtZDfSJyVrKEaVgKIEaHH4Q7Jg9Kgn9PVHVzJCyqMzOKIx
+   A==;
+X-CSE-ConnectionGUID: KYuM1V5wS+OLuK5ulcOpdg==
+X-CSE-MsgGUID: BgvPeZ1rTfu1CgxDNOh3HA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="63821385"
+X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; 
+   d="scan'208";a="63821385"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 16:18:38 -0700
+X-CSE-ConnectionGUID: h3Yt53drQwKSeUK2twuIow==
+X-CSE-MsgGUID: IfZEbRw/RVyShptRRlV8KQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; 
+   d="scan'208";a="179928707"
+Received: from spandruv-desk.jf.intel.com ([10.54.75.16])
+  by orviesa002.jf.intel.com with ESMTP; 17 Jun 2025 16:18:39 -0700
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To: rafael@kernel.org,
+	rui.zhang@intel.com
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject: [PATCH] ACPI: DPTF: Support for Wildcat Lake
+Date: Tue, 17 Jun 2025 16:18:24 -0700
+Message-ID: <20250617231824.3314507-1-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250617160103-mutt-send-email-mst@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 17, 2025 at 04:01:53PM -0400, Michael S. Tsirkin wrote:
-> > On x86 you also need to use remapping to exceed the max CPU count that
-> > can be encoded in the MSI, no iommu required to need this.
-> 
-> More of an x86 quirk though, isn't it?
+Add Wildcat Lake ACPI IDs for DPTF.
 
-Yes, but so is bundling IOMMU and remapping HW together <shrug>
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+---
+ drivers/acpi/dptf/dptf_power.c                          | 2 ++
+ drivers/acpi/dptf/int340x_thermal.c                     | 7 +++++++
+ drivers/acpi/fan.h                                      | 1 +
+ drivers/thermal/intel/int340x_thermal/int3400_thermal.c | 1 +
+ drivers/thermal/intel/int340x_thermal/int3403_thermal.c | 1 +
+ 5 files changed, 12 insertions(+)
 
-GIC fully integrates it into the interrupt controller architecture.
+diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_power.c
+index e8caf4106ff9..776914f31b9e 100644
+--- a/drivers/acpi/dptf/dptf_power.c
++++ b/drivers/acpi/dptf/dptf_power.c
+@@ -238,6 +238,8 @@ static const struct acpi_device_id int3407_device_ids[] = {
+ 	{"INTC10A5", 0},
+ 	{"INTC10D8", 0},
+ 	{"INTC10D9", 0},
++	{"INTC1100", 0},
++	{"INTC1101", 0},
+ 	{"", 0},
+ };
+ MODULE_DEVICE_TABLE(acpi, int3407_device_ids);
+diff --git a/drivers/acpi/dptf/int340x_thermal.c b/drivers/acpi/dptf/int340x_thermal.c
+index aef7aca2161d..a222df059a16 100644
+--- a/drivers/acpi/dptf/int340x_thermal.c
++++ b/drivers/acpi/dptf/int340x_thermal.c
+@@ -61,6 +61,13 @@ static const struct acpi_device_id int340x_thermal_device_ids[] = {
+ 	{"INTC10D7"},
+ 	{"INTC10D8"},
+ 	{"INTC10D9"},
++	{"INTC10FC"},
++	{"INTC10FD"},
++	{"INTC10FE"},
++	{"INTC10FF"},
++	{"INTC1100"},
++	{"INTC1101"},
++	{"INTC1102"},
+ 	{""},
+ };
+ 
+diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
+index 15eba1c70e66..8a28a72a7c6a 100644
+--- a/drivers/acpi/fan.h
++++ b/drivers/acpi/fan.h
+@@ -20,6 +20,7 @@
+ 	{"INTC106A", }, /* Fan for Lunar Lake generation */ \
+ 	{"INTC10A2", }, /* Fan for Raptor Lake generation */ \
+ 	{"INTC10D6", }, /* Fan for Panther Lake generation */ \
++	{"INTC10FE", }, /* Fan for Wildcat Lake generation */ \
+ 	{"PNP0C0B", } /* Generic ACPI fan */
+ 
+ #define ACPI_FPS_NAME_LEN	20
+diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+index 0e07693ecf59..ecb4ea443b9b 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+@@ -690,6 +690,7 @@ static const struct acpi_device_id int3400_thermal_match[] = {
+ 	{"INTC1068", 0},
+ 	{"INTC10A0", 0},
+ 	{"INTC10D4", 0},
++	{"INTC10FC", 0},
+ 	{}
+ };
+ 
+diff --git a/drivers/thermal/intel/int340x_thermal/int3403_thermal.c b/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
+index 5a925a8df7b3..ba63796761eb 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
+@@ -276,6 +276,7 @@ static const struct acpi_device_id int3403_device_ids[] = {
+ 	{"INTC1069", 0},
+ 	{"INTC10A1", 0},
+ 	{"INTC10D5", 0},
++	{"INTC10FD", 0},
+ 	{"", 0},
+ };
+ MODULE_DEVICE_TABLE(acpi, int3403_device_ids);
+-- 
+2.49.0
 
-Jason
 
