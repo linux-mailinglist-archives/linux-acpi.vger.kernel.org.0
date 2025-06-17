@@ -1,158 +1,177 @@
-Return-Path: <linux-acpi+bounces-14413-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14414-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD727ADD041
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 16:44:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B93AADD6F7
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 18:39:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DB1A3BB47E
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 14:40:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69F9A19E272A
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 16:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BF52010EE;
-	Tue, 17 Jun 2025 14:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P3WgjR7f"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF462EF291;
+	Tue, 17 Jun 2025 16:14:50 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4B42EB10;
-	Tue, 17 Jun 2025 14:40:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3497F2ECEAE;
+	Tue, 17 Jun 2025 16:14:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750171240; cv=none; b=TOJk4tShuj4Llk5wdh/eM1CpihItECE7reCxiaiI4zJaEnBvOZJj3geSzE9OAJpdXfP42/v7g2zI8k3mV/1nrU2+22j7Gbchihb8e/Nb9EZ/EzYPX0JZ7SdHkYSWz/t2MpE0sYwlvttFzL4zG7/4euuSJ+saKu8Co+cpy9d7muM=
+	t=1750176890; cv=none; b=iXTTsAkYTu9p5b6e1KtYzv6m6GQuWtVodcYF8fbqKucKdm8EG74/5k4EGKoNyGw+KbpjkfEI8wXU+lV0drR8b/I/qEq7QlRHlX74/0+nQPji/y8TWe50ugukVnx723Qfu2EfxQMdChfz4sP3n2W5zpa60n+pyq1tXEO2IFOZfjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750171240; c=relaxed/simple;
-	bh=TqtzmXYPJKEqTXMU+f7uN1rUv0VpX38ROAg2dTsXMek=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=NWuZPlpW4nxmWfY/11PdnQSKHj+pTmFT+MsGwKUnCEs9y3gY10Mk0iYIXCSEDrDhh4ZI6p5yRc5Va9W8VoNLeAErkrCh3J+PEmx6lSc0tSO8B/1KxKZhePwbR2tFwhePiHFkcn6SNsz7JgVjhXmc89yX2RZDrH2Dyfsqn8naFXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P3WgjR7f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A514C4CEE3;
-	Tue, 17 Jun 2025 14:40:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750171240;
-	bh=TqtzmXYPJKEqTXMU+f7uN1rUv0VpX38ROAg2dTsXMek=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=P3WgjR7fLmn91+0xU8Hla3uG7iISQmyRbiw94Do9t79HnPRryQW91aQxjSru5nf5w
-	 uT+oQMbTF96IrfX9N7QuW42vSOjnYQ6YdIa/jqrHfzB0CwvOWnWfr+EVIbpy1hUAhi
-	 IsxLeqVzQZBVQoUkSm3Rd09GRekXl1ZBvnfS7OHuKzK0FAKqGZ2CFQtTJNC7SF/uN4
-	 R03Fe1ZKEBtoJCVwSCcPlxoJp42MgUOfFxEl2hwoeCsFJ2rw+BMj9tQi8G8uR4O8Mr
-	 BHWm+58erlcWIWl757167rxBk+/Fsfhnj6ejwq705UuMfxyq0q1T8IACscMltivasX
-	 T+MfltiURB8HA==
-Date: Tue, 17 Jun 2025 09:40:38 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Zhe Qiao <qiaozhe@iscas.ac.cn>
-Cc: rafael@kernel.org, bhelgaas@google.com, lenb@kernel.org,
-	kwilczynski@kernel.org, sashal@kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: Re: [PATCH v2] PCI/ACPI: Fix double free bug in pci_acpi_scan_root()
- function
-Message-ID: <20250617144038.GA1134072@bhelgaas>
+	s=arc-20240116; t=1750176890; c=relaxed/simple;
+	bh=47wscfejyd2QJiq8VCYisbzVnf2p/uCd0EK6St/PPgg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GfuuLgyt5GCxOGSaCAKKijHoEqPJQFypBTl/7kPDA9h9OhtGvv4uPkjOiZVANcPCEZSJwgaOFg6Slo5fsBsGcGaqXFTgK/L4zEsZn3a4IVCVSajEjEDNze4OaPs/TStb4/ZbGMkOQvl/6XaZR3qIrwNisTFe1ZfSCAa721UrTFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bMBjF4JHPz6L5Vg;
+	Wed, 18 Jun 2025 00:12:33 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (unknown [7.182.85.172])
+	by mail.maildlp.com (Postfix) with ESMTPS id 176261404C4;
+	Wed, 18 Jun 2025 00:14:44 +0800 (CST)
+Received: from P_UKIT01-A7bmah.china.huawei.com (10.48.157.40) by
+ frapeml500007.china.huawei.com (7.182.85.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 17 Jun 2025 18:14:42 +0200
+From: <shiju.jose@huawei.com>
+To: <rafael@kernel.org>, <linux-edac@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-doc@vger.kernel.org>, <bp@alien8.de>,
+	<tony.luck@intel.com>, <lenb@kernel.org>, <leo.duran@amd.com>,
+	<Yazen.Ghannam@amd.com>, <mchehab@kernel.org>
+CC: <jonathan.cameron@huawei.com>, <linux-mm@kvack.org>,
+	<linuxarm@huawei.com>, <rientjes@google.com>, <jiaqiyan@google.com>,
+	<Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
+	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
+	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<dferguson@amperecomputing.com>, <wbs@os.amperecomputing.com>,
+	<nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
+	<roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
+	<wanghuiqiang@huawei.com>, <shiju.jose@huawei.com>
+Subject: [PATCH v9 0/2] ACPI: Add support for ACPI RAS2 feature table
+Date: Tue, 17 Jun 2025 17:14:14 +0100
+Message-ID: <20250617161417.1681-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.43.0.windows.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250617023738.779081-1-qiaozhe@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
+ frapeml500007.china.huawei.com (7.182.85.172)
 
-[+cc Dan]
+From: Shiju Jose <shiju.jose@huawei.com>
 
-On Tue, Jun 17, 2025 at 10:37:38AM +0800, Zhe Qiao wrote:
-> The patch "PCI/ACPI: Fix allocated memory release on error in
-> pci_acpi_scan_root()" introduces a dual release issue. When
-> acpi_pci_root_creat() fails, the pci_cpi_can_root() function
-> will release 'ri ->cfg' and 'root_ops' in the error handling
-> path.However, acpi_pci_root_creat() will also call
-> __acpi_pci_root_release_info(), which in turn will call the
-> release_info hook, causing the same block of memory to be
-> released again.
+Add support for ACPI RAS2 feature table (RAS2) defined in the
+ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
+scrubbing feature.
 
-These are all nits, but would have to be fixed before applying:
+ACPI RAS2 patches were part of the EDAC series [1].
 
-  - 'The patch "PCI/ACPI: Fix ..."' is not the usual way to identify a
-    commit.  Use the same style as in the Fixes: tag below.
+The code is based on linux.git v6.16-rc2 [2].
 
-  - Typo in "acpi_pci_root_creat" (twice)
+1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
+2. https://github.com/torvalds/linux.git
 
-  - Typo in "pci_cpi_can_root"
+Changes
+=======
+v8 -> v9:
+1. Added following changes for feedback from Yazen.
+ 1.1 In ras2_check_pcc_chan(..) function
+    - u32 variables moved to the same line.
+    - Updated error log for readw_relaxed_poll_timeout()
+    - Added error log for if (status & PCC_STATUS_ERROR), error condition.
+    - Removed an impossible condition check.
+  1.2. Added guard for ras2_pc_list_lock in ras2_get_pcc_subspace().
+        
+2. Rebased to linux.git v6.16-rc2 [2].
 
-  - Add space after the period in "path.However, ..."
+v7 -> v8:
+1. Rebased to linux.git v6.16-rc1 [2].
 
-  - Add "Reported-by: Dan Carpenter <dan.carpenter@linaro.org>" and
-    "Closes: https://lore.kernel.org/all/aEmdnuw715btq7Q5@stanley.mountain/"
-    and cc: Dan.
+v6 -> v7:
+1. Fix for the issue reported by Daniel,
+   In ras2_check_pcc_chan(), add read, clear and check RAS2 set_cap_status outside
+   if (status & PCC_STATUS_ERROR) check. 
+   https://lore.kernel.org/all/51bcb52c-4132-4daf-8903-29b121c485a1@os.amperecomputing.com/
 
-  - 631b2af2f357 appeared in v6.16-rc1, so we should try to get the
-    fix into v6.16.  A hint after the "---" would be helpful to make
-    sure that happens.
+v5 -> v6:
+1. Fix for the issue reported by Daniel, in start scrubbing with correct addr and size
+   after firmware return INVALID DATA error for scrub request with invalid addr or size.
+   https://lore.kernel.org/all/8cdf7885-31b3-4308-8a7c-f4e427486429@os.amperecomputing.com/
+   
+v4 -> v5:
+1. Fix for the build warnings reported by kernel test robot.
+   https://patchwork.kernel.org/project/linux-edac/patch/20250423163511.1412-3-shiju.jose@huawei.com/
+2. Removed patch "ACPI: ACPI 6.5: RAS2: Rename RAS2 table structure and field names"
+   from the series as the patch was merged to linux-pm.git : branch linux-next
+3. Rebased to ras.git: edac-for-next branch merged with linux-pm.git : linux-next branch.
+      
+v3 -> v4:
+1.  Changes for feedbacks from Yazen on v3.
+    https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
 
-Wait a few days before reposting in case other folks have comments.
+v2 -> v3:
+1. Rename RAS2 table structure and field names in 
+   include/acpi/actbl2.h limited to only necessary
+   for RAS2 scrub feature.
+2. Changes for feedbacks from Jonathan on v2.
+3. Daniel reported a known behaviour: when readback 'size' attribute after
+   setting in, returns 0 before starting scrubbing via 'addr' attribute.
+   Changes added to fix this.
+4. Daniel reported that firmware cannot update status of demand scrubbing
+   via the 'Actual Address Range (OUTPUT)', thus add workaround in the
+   kernel to update sysfs 'addr' attribute with the status of demand
+   scrubbing.
+5. Optimized logic in ras2_check_pcc_chan() function
+   (patch - ACPI:RAS2: Add ACPI RAS2 driver).
+6. Add PCC channel lock to struct ras2_pcc_subspace and change
+   lock in ras2_mem_ctx as a pointer to pcc channel lock to make sure
+   writing to PCC subspace shared memory is protected from race conditions.
+   
+v1 -> v2:
+1.  Changes for feedbacks from Borislav.
+    - Shorten ACPI RAS2 structures and variables names.
+    - Shorten some of the other variables in the RAS2 drivers.
+    - Fixed few CamelCases.
 
-> Fixes: 631b2af2f357 ("PCI/ACPI: Fix allocated memory release on error in pci_acpi_scan_root()")
-> Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
-> ---
-> v1 -> v2:
->  - Restore all changes from the first version.
->  - Remove unnecessary release info hooks.
->  - Add a NULL check before calling info->ops->release_info().
->  - Delete the currently unused pci_api_geneic_delease_info () function.
-> ---
->  drivers/acpi/pci_root.c |  3 ++-
->  drivers/pci/pci-acpi.c  | 12 ------------
->  2 files changed, 2 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> index 74ade4160314..83628adbc56b 100644
-> --- a/drivers/acpi/pci_root.c
-> +++ b/drivers/acpi/pci_root.c
-> @@ -974,7 +974,8 @@ static void __acpi_pci_root_release_info(struct acpi_pci_root_info *info)
->  		resource_list_destroy_entry(entry);
->  	}
->  
-> -	info->ops->release_info(info);
-> +	if (info->ops && info->ops->release_info)
-> +		info->ops->release_info(info);
->  }
->  
->  static void acpi_pci_root_release_info(struct pci_host_bridge *bridge)
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index b78e0e417324..6e85816ee1c3 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -1652,17 +1652,6 @@ pci_acpi_setup_ecam_mapping(struct acpi_pci_root *root)
->  	return cfg;
->  }
->  
-> -/* release_info: free resources allocated by init_info */
-> -static void pci_acpi_generic_release_info(struct acpi_pci_root_info *ci)
-> -{
-> -	struct acpi_pci_generic_root_info *ri;
-> -
-> -	ri = container_of(ci, struct acpi_pci_generic_root_info, common);
-> -	pci_ecam_free(ri->cfg);
-> -	kfree(ci->ops);
-> -	kfree(ri);
-> -}
-> -
->  /* Interface called from ACPI code to setup PCI host controller */
->  struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
->  {
-> @@ -1683,7 +1672,6 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
->  	if (!ri->cfg)
->  		goto free_root_ops;
->  
-> -	root_ops->release_info = pci_acpi_generic_release_info;
->  	root_ops->prepare_resources = pci_acpi_root_prepare_resources;
->  	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
->  	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
-> -- 
-> 2.43.0
-> 
+2.  Changes for feedbacks from Yazen.
+    - Added newline after number of '}' and return statements.
+    - Changed return type for "ras2_add_aux_device() to 'int'.
+    - Deleted a duplication of acpi_get_table("RAS2",...) in the ras2_acpi_parse_table().
+    - Add "FW_WARN" to few error logs in the ras2_acpi_parse_table().
+    - Rename ras2_acpi_init() to acpi_ras2_init() and modified to call acpi_ras2_init()
+      function from the acpi_init().
+    - Moved scrub related variables from the struct ras2_mem_ctx from  patch
+      "ACPI:RAS2: Add ACPI RAS2 driver" to "ras: mem: Add memory ACPI RAS2 driver".
+
+Shiju Jose (2):
+  ACPI:RAS2: Add ACPI RAS2 driver
+  ras: mem: Add memory ACPI RAS2 driver
+
+ Documentation/edac/scrub.rst |  73 ++++++
+ drivers/acpi/Kconfig         |  11 +
+ drivers/acpi/Makefile        |   1 +
+ drivers/acpi/bus.c           |   3 +
+ drivers/acpi/ras2.c          | 450 +++++++++++++++++++++++++++++++++++
+ drivers/ras/Kconfig          |  11 +
+ drivers/ras/Makefile         |   1 +
+ drivers/ras/acpi_ras2.c      | 424 +++++++++++++++++++++++++++++++++
+ include/acpi/ras2.h          |  70 ++++++
+ 9 files changed, 1044 insertions(+)
+ create mode 100644 drivers/acpi/ras2.c
+ create mode 100644 drivers/ras/acpi_ras2.c
+ create mode 100644 include/acpi/ras2.h
+
+-- 
+2.43.0
+
 
