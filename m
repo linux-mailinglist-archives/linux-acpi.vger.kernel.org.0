@@ -1,205 +1,230 @@
-Return-Path: <linux-acpi+bounces-14406-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14407-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FDC4ADC2DF
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 09:11:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2006DADCAF0
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 14:20:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A76B5188DE41
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 07:11:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECD1D7A50B5
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 12:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25BC28C5A3;
-	Tue, 17 Jun 2025 07:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5B11DE4F3;
+	Tue, 17 Jun 2025 12:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="BrTNm6MC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="irJWvnN0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010026.outbound.protection.outlook.com [52.101.69.26])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AF62BF017;
-	Tue, 17 Jun 2025 07:11:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.26
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750144283; cv=fail; b=kh2daBKtDU04KTHWrmH0vn/GfV5Pi7XzrmSpC1jdPBDtKJ2f6nM7xo8vOD5USijttTxnucasb7jdoAltyJsuvuoXy8W5zQrLBCzlSerRUvVvsxrwY6oVWsCRzBioqLxTVJUJ22JWW7Xtq+/rIfln3raYzkv7eZOTAIQAVM/yn7I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750144283; c=relaxed/simple;
-	bh=bgHO7+MoUuQGPB9SwffZNir+EMhJxe/Wd3BLJKao3K4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=IfgCGzi941GdaaNWa6EJIdT/GERsaKOidwOkig9s9ZXj88erJ1hwoulfSu9zgMOLzFyVj6LhefHL+kgWk4Y72IX1EtYU/rUxT7YpKBz/TfEZu84EZLOv8l+6tyRgrYK76x+Whxphh9h/uBySNMglnqhGtPLGOamfuv0lucoON7g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=BrTNm6MC; arc=fail smtp.client-ip=52.101.69.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nCvWbAh1FCCkOjpRHlIIsrP6gwz/ZDnbEYv2wTBgx+ElWptUllzGNJjcn7lnJG15kWehPWfotbluM58IRKqAtcEbqjsUPzq8s/26zucmFcf/z4ZpmnxzOldt5zrhAplBXAfSTKWwKpwikA2Pmmycdz5vBXlKuubsMyJri8XOldDGUt3NRqH3fHx3KY3AE27yx0kCZIWYndO5PGZj3I0aC9AZwPkdDmmXEDAUT3i4BqLOZqWbJcR8TJ1eY9EGt+TawTkmJ1wK7mQlylPgUIw8q4iZ7DVd1XMuP+ZqipHBR0TeFMGltHKfiYReYL73wY2jbzAJxniw8+jPPv3ODvexlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BUHE7ZUqgb9wyTiXP7suOSz1xQnHPf7kR4TsQmCvW3k=;
- b=VXP6MZrTcTDJ9NsENTu/P3fCurF79A0CZIGN1AQNs5pTXcm+JY4Zb3SH3e8W2q67na7mQ7FCmxT1t3xYg/vK0Ekkm+gkKxrq3HgkH0b5wnfVOKxQdxCZeIyHt8uTjrkqo9WcVOYuEuWBPoFidz1doAI7Ep1QAlz3mKSwSHp847DoD7761cqQn9dquRPd9yVOu8Sk88gUz5r3w7d0QDKukiCwxpVVJRj5IJ5ls3NvCrVGCFjNLvwO9gzPW22wh/n6+/QwgbXMQSXrjFFYDASN6xqFIbNIZT6xqpH7KM0c3kG33hYiqMred0zIn1REbyeYhl8DBb0izond7n12N+TKPw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.206) smtp.rcpttodomain=kernel.org smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BUHE7ZUqgb9wyTiXP7suOSz1xQnHPf7kR4TsQmCvW3k=;
- b=BrTNm6MCQfZk5rsZSzAuIXx5ieSgYrs3sKSVk4kEGejDoqfpyfePoUnOLfQjKPxLHuiJ6aifr4PS0Etec0LZVHe4vYJ1Zt2e3KWZVkM74RfNuDtS7LBYHEGAWe8pnvqNPYwj2ETflWJ/4Sk2JrjPFrn138JQixwgEPz7Ap/FWTu3yBO2z/lylcoyC/Tr4OuKImspBJcejL2U+Cfh98XbIf9cKXYCGJkaFAA5u6wEKsGekgUh/mnsCNE5xLDrY50CyBTM4U9rbxiHgn+vQl0L5HdErvM4vy1GtZ7Epmvr3BiMT9yJzYkX2xGOps8dANSMA4fQ6oBglc9zpnC8vnwn9g==
-Received: from AS4P251CA0025.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:5d3::12)
- by AS4PR10MB5799.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:506::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.28; Tue, 17 Jun
- 2025 07:11:13 +0000
-Received: from AMS1EPF0000004C.eurprd04.prod.outlook.com
- (2603:10a6:20b:5d3:cafe::37) by AS4P251CA0025.outlook.office365.com
- (2603:10a6:20b:5d3::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.29 via Frontend Transport; Tue,
- 17 Jun 2025 07:11:13 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.206) by
- AMS1EPF0000004C.mail.protection.outlook.com (10.167.16.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8835.15 via Frontend Transport; Tue, 17 Jun 2025 07:11:13 +0000
-Received: from FE-EXCAS2001.de.bosch.com (10.139.217.200) by eop.bosch-org.com
- (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Tue, 17 Jun
- 2025 09:10:58 +0200
-Received: from RNGMBX3002.de.bosch.com (10.124.11.207) by
- FE-EXCAS2001.de.bosch.com (10.139.217.200) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.57; Tue, 17 Jun 2025 09:10:57 +0200
-Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
- (10.124.11.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Tue, 17 Jun
- 2025 09:10:45 +0200
-Message-ID: <d59f8392-c4ca-4f39-a57f-83c669e3efb2@de.bosch.com>
-Date: Tue, 17 Jun 2025 09:10:38 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814E92D9EF7;
+	Tue, 17 Jun 2025 12:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750162830; cv=none; b=Kpk5JauR3da4ewLS69Hx6ZIUcs64TbfAfVVM3uQZ8LbfZR3xPcGhwzhiumMHpUY/Os0G3EolIVPtuudTVDASr8UgwZ/SHR5CG2qE+se4dTCtpd5hDlpXA14Sae13H+clIQJKBLKbSCOUlcUKFwtEgh2sEQp8V4Jwl8swb8Su7pc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750162830; c=relaxed/simple;
+	bh=wtWiIp2XSEFt4Lr9zWcy+XIyllCRlcFGp9anAk7KBfY=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=NumDdlMMbdAA8jg71MkhM8n6KL8DUcM8XdWQXx/35waLVtAqwhrKXXbBp/BFiLGzmLxc7GT58gL/xjd+UBf/NtnCQRgGfDLIMrT99JlPluvSMMlKfUh+9N8YvIsW9nWmLXljlMU1cXDm/XytSkkNPXtonf903lk2eEsAXSCW+s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=irJWvnN0; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750162829; x=1781698829;
+  h=date:from:to:cc:subject:message-id;
+  bh=wtWiIp2XSEFt4Lr9zWcy+XIyllCRlcFGp9anAk7KBfY=;
+  b=irJWvnN0KgcvZEeyx7rZ4r+rj44adpBaDU7biFi6M0WpizpLbU11jdAt
+   ACti1j/eSrvWcTO1kMOINGbW7Kj08BvtOB6u8MZK22s17DUMu7tWdGGYP
+   vJrxANS7zB7BQxmJGLg9wAlhUy5pfyLhg+vqTCGTclskf12f+Qk1U3cfu
+   aV8dWHEyxfY+F8gFDxOsPl8au9HbdYh7LhJ6IiTKMXBzIEABxXvdgDWst
+   IlJgk4cVXUJWuGSh6Uiah0TgbgKkji4k6U3FmdolHsjRx46HVckOsIlWF
+   v2BRJtqcot+xv326Bog1zRTCZUGV+5PBh0Twt+dher89H0mfdQQj4+HZg
+   Q==;
+X-CSE-ConnectionGUID: vIizJRtnQFCpDjtlI15jLA==
+X-CSE-MsgGUID: RcEjOyBgQW2/N6kuciZepg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52431183"
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; 
+   d="scan'208";a="52431183"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 05:20:28 -0700
+X-CSE-ConnectionGUID: gNmvtlRYQeOSshhf1eRxrQ==
+X-CSE-MsgGUID: 96sR2obfTge6Xuie+oLklg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; 
+   d="scan'208";a="148750700"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 17 Jun 2025 05:20:26 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uRVId-000FxD-2N;
+	Tue, 17 Jun 2025 12:20:23 +0000
+Date: Tue, 17 Jun 2025 20:19:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 238bc315167568e06d1cc19ef17b9d611ba7859f
+Message-ID: <202506172025.J81Zppig-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] samples: rust: platform: don't call as_ref()
- repeatedly
-To: Danilo Krummrich <dakr@kernel.org>, <igor.korotin.linux@gmail.com>,
-	<gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
-	<alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
-	<bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
-	<a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>
-CC: <rust-for-linux@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20250613135407.1233005-1-igor.korotin.linux@gmail.com>
- <20250616194439.68775-1-dakr@kernel.org>
- <20250616194439.68775-2-dakr@kernel.org>
-Content-Language: en-GB
-From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <20250616194439.68775-2-dakr@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS1EPF0000004C:EE_|AS4PR10MB5799:EE_
-X-MS-Office365-Filtering-Correlation-Id: 05bd1d6c-5fef-42cf-6d63-08ddad6e24e3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|36860700013|82310400026|1800799024|7053199007|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SHFjVVpEdG5wZGdiem16Q1BKYVFNK0luM1NvMkphUURVektqaFc1RkVRVDdz?=
- =?utf-8?B?NHFMQmpHY1BWY0dacFBLTGVCT2R2Rm92OFhxNm9vZG1YbVNsSm0zbXp4aTVF?=
- =?utf-8?B?QmdtU2VaamhrKzdXQm1vRnpBTE5HK04zRURTLzBUaXZYN2djWHNXYjBGZkVs?=
- =?utf-8?B?c0dldXlSRTJ1N0lLaXlzeDEvZ1RzMmgxbjV5STdVSmgrSlJ3ejlOSGVGM0t1?=
- =?utf-8?B?VGJuZE1UbUFOMmU0RitPckkwa1l1RGZ6Q2dLby9oS2dmYm8xZ1ZxZFRicThu?=
- =?utf-8?B?VFl6aktubVNVSGE2U1hVNUJKeHNQakdvM3VPdWlMZGxSWnZURFNhemFacHdP?=
- =?utf-8?B?K0V4dkpHK3JKQ2MvTVh4UlZjak10V09iYnIrU0UvTXFRWUozeFhOYm9sMG8r?=
- =?utf-8?B?K1YwYzN1U3N3Vzg5NktIVGNTYnhMSmpnWk1wM2JLeTZDTk9lbzRxTm5lcXBl?=
- =?utf-8?B?aW9xL2FZVVpobG5DdzVDTEJBNTVkeUxRTDAzeFZxQTRpcGFMc1NBdmp2b0E4?=
- =?utf-8?B?SExkRGtERHYvZU9DMjJrQS9kSXJZN2dvVHQybG81amNxTUFWOTZ1ZWU2R0FN?=
- =?utf-8?B?M2tyUTJ0dDJYdWkxU2NjWm1weWJja2ViYTBaOHJqUDZPUXQ5aTUzdDhkN0JI?=
- =?utf-8?B?aGorcWVPRVkxOFNUeG9hK0V3QTZPOTV0alNKbDNad3BZcERTZDRuZ3NVNVlx?=
- =?utf-8?B?enJwNFZFak50eWgwdHV1RFNmVEtMMnhqWkR1S1ZwRDc4TXBKcU9wS0pyV2tu?=
- =?utf-8?B?VlcwWEVLeDlrT3FhLzFXZHhlbzREd2o5MVlrblZyTGpkczd5ejl0cmthbi9w?=
- =?utf-8?B?eDhkb3BFU2NtdmxtcjFkSWI1cWcwZ1BrSjlCTEtIMmhpODdqT1plMkJKaWw3?=
- =?utf-8?B?ZjFhTE1UemtDZm4rWG5FOVNzdFd1NklCWnJMWmZ1MWRKeFk5SUx3aUFHaDV6?=
- =?utf-8?B?SjhkZTdOTGJaQXhwRVhDcExMSUdEVVFLeDNjcHZhMFZaMGMyMHU4akhDUGtF?=
- =?utf-8?B?NU9iQUszM0s2L2t2WGpacFNPZzYyQUNra0t1Q2RFNzdrNmNpN1R1RmM3cmMr?=
- =?utf-8?B?VGoySDNXSG53WnlEdXRiOXU0R1VITHpwVGJHSnVDaUVQUGVBK2VMRVl6ekcz?=
- =?utf-8?B?ZGtIOU5XYkM2Nit0LzNsYWJnWm95M0Z1RlZzTnRzcVRhOEpPcnhjYVJuZ3VO?=
- =?utf-8?B?WFRieHVhUnpBWHJ2MFNyU0pzUjJFWFZNdEMxZ3lKdDVBd203NTk3SHhKSDc3?=
- =?utf-8?B?TllwT1IxeEJiRWw1dE1pNFJyU2V4bTduMWVpZGhDNUpvM2pCbDJjVU9ZUFNU?=
- =?utf-8?B?SFUvcm9jVHlsZkNreXRGY1czQjA4Ym5qYUR2YytJaVZoN2JnTUJEcTlVSi9h?=
- =?utf-8?B?WGh0NmFzc1N0ZjBZZXVOQzg4K2dQeHdaV3BMTVhvTVJVeEFoMFlpMzhuczAv?=
- =?utf-8?B?bzlXTW9ST2l5bGJMNjg5V1k0V25nNFUyMVdiWnZpdWNyM0JkbUhnT0dSRGlX?=
- =?utf-8?B?NmJuSjYxMlpBY21XVHFhSW9zUDdqeStzVTNmT3h0WWYvbWpYTVdYRDdXRHhG?=
- =?utf-8?B?WEpkdlBoY1hCL3U4eVAxRUFVZWY5cFVyTlZVeDF0OVV3T0xIT29UZ25RaFMz?=
- =?utf-8?B?UHlvOTFtcjhvYXJzR3VxWFFXQTh2bm04YXZuNWRYcm1NTXFNRnFNQXBXMEdH?=
- =?utf-8?B?ZkFTeTFLa3J5TXlPOUd0aEsydWxONXVYbHora3pnRlZJK1pKVzZiakZPVlBD?=
- =?utf-8?B?OExNbGZGM2Z3Q0NQc0UrdDNGN3NNOWNvSjNBT3ZIK0hhdWp3MmZUR2I2Y3lU?=
- =?utf-8?B?T2lBYnpDSHBXMXl5aXVoK3VYQjRDOTVnOVQvYlVNNVh4VmFhejBzNElmcTJL?=
- =?utf-8?B?Q284Z2ZtQXNoN3JkVVpvd3FCTlVPZGtPQzVIVTZCOGhqY1lwbjlsSlRjdi9I?=
- =?utf-8?B?VlUwUkpRSFEzbXVZT2VtVDhqelZGaUQ1aGdtODZURjNaT0FlUnp2U21HVW1y?=
- =?utf-8?B?QXMyV1VHWnRTdXFPdmFScDdRcmhkRVVhN2t4NUJUSU9Na1hRN2JCNWhnRlh0?=
- =?utf-8?B?Z3JLMjlTNEZMNEs4ZS9pTVhTeStTcysxQ2ZIUT09?=
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(82310400026)(1800799024)(7053199007)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2025 07:11:13.2717
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 05bd1d6c-5fef-42cf-6d63-08ddad6e24e3
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS1EPF0000004C.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR10MB5799
 
-On 16/06/2025 21:40, Danilo Krummrich wrote:
-> In SampleDriver::probe() don't call pdev.as_ref() repeatedly, instead
-> introduce a dedicated &Device.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  samples/rust/rust_driver_platform.rs | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-> index c0abf78d0683..000bb915af60 100644
-> --- a/samples/rust/rust_driver_platform.rs
-> +++ b/samples/rust/rust_driver_platform.rs
-> @@ -32,13 +32,15 @@ fn probe(
->          pdev: &platform::Device<Core>,
->          info: Option<&Self::IdInfo>,
->      ) -> Result<Pin<KBox<Self>>> {
-> -        dev_dbg!(pdev.as_ref(), "Probe Rust Platform driver sample.\n");
-> +        let dev = pdev.as_ref();
-> +
-> +        dev_dbg!(dev, "Probe Rust Platform driver sample.\n");
->  
->          if let Some(info) = info {
-> -            dev_info!(pdev.as_ref(), "Probed with info: '{}'.\n", info.0);
-> +            dev_info!(dev, "Probed with info: '{}'.\n", info.0);
->          }
->  
-> -        Self::properties_parse(pdev.as_ref())?;
-> +        Self::properties_parse(dev)?;
->  
->          let drvdata = KBox::new(Self { pdev: pdev.into() }, GFP_KERNEL)?;
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 238bc315167568e06d1cc19ef17b9d611ba7859f  Merge branch 'thermal-intel' into bleeding-edge
 
-Yes!
+elapsed time: 1379m
 
-Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
+configs tested: 136
+configs skipped: 6
 
-Thanks,
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Dirk
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+alpha                               defconfig    gcc-15.1.0
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    gcc-15.1.0
+arc                                 defconfig    gcc-15.1.0
+arc                   randconfig-001-20250616    gcc-15.1.0
+arc                   randconfig-002-20250616    gcc-15.1.0
+arm                              allmodconfig    gcc-15.1.0
+arm                               allnoconfig    clang-21
+arm                              allyesconfig    gcc-15.1.0
+arm                         at91_dt_defconfig    clang-21
+arm                                 defconfig    clang-21
+arm                          gemini_defconfig    clang-20
+arm                          ixp4xx_defconfig    gcc-15.1.0
+arm                   randconfig-001-20250616    gcc-12.4.0
+arm                   randconfig-002-20250616    gcc-15.1.0
+arm                   randconfig-003-20250616    clang-21
+arm                   randconfig-004-20250616    clang-21
+arm64                             allnoconfig    gcc-15.1.0
+arm64                               defconfig    gcc-15.1.0
+arm64                 randconfig-001-20250616    gcc-8.5.0
+arm64                 randconfig-002-20250616    gcc-15.1.0
+arm64                 randconfig-003-20250616    clang-19
+arm64                 randconfig-004-20250616    gcc-8.5.0
+csky                              allnoconfig    gcc-15.1.0
+csky                                defconfig    gcc-15.1.0
+csky                  randconfig-001-20250616    gcc-13.3.0
+csky                  randconfig-002-20250616    gcc-15.1.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-21
+hexagon                          allyesconfig    clang-21
+hexagon                             defconfig    clang-21
+hexagon               randconfig-001-20250616    clang-21
+hexagon               randconfig-002-20250616    clang-21
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250616    gcc-12
+i386        buildonly-randconfig-002-20250616    gcc-11
+i386        buildonly-randconfig-003-20250616    clang-20
+i386        buildonly-randconfig-004-20250616    gcc-12
+i386        buildonly-randconfig-005-20250616    gcc-12
+i386        buildonly-randconfig-006-20250616    clang-20
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    gcc-15.1.0
+loongarch                         allnoconfig    gcc-15.1.0
+loongarch             randconfig-001-20250616    gcc-15.1.0
+loongarch             randconfig-002-20250616    gcc-15.1.0
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    gcc-15.1.0
+m68k                                defconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+mips                          rb532_defconfig    clang-18
+nios2                             allnoconfig    gcc-14.2.0
+nios2                               defconfig    gcc-14.2.0
+nios2                 randconfig-001-20250616    gcc-8.5.0
+nios2                 randconfig-002-20250616    gcc-10.5.0
+openrisc                         alldefconfig    gcc-15.1.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20250616    gcc-8.5.0
+parisc                randconfig-002-20250616    gcc-9.3.0
+powerpc                          allmodconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                          allyesconfig    clang-21
+powerpc                        cell_defconfig    gcc-15.1.0
+powerpc                 linkstation_defconfig    clang-20
+powerpc                      mgcoge_defconfig    clang-21
+powerpc                  mpc866_ads_defconfig    clang-21
+powerpc                      pasemi_defconfig    clang-21
+powerpc               randconfig-001-20250616    clang-21
+powerpc               randconfig-002-20250616    clang-21
+powerpc               randconfig-003-20250616    clang-21
+powerpc64             randconfig-001-20250616    gcc-8.5.0
+powerpc64             randconfig-002-20250616    clang-21
+powerpc64             randconfig-003-20250616    clang-21
+riscv                            allmodconfig    clang-21
+riscv                             allnoconfig    gcc-15.1.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-21
+riscv                 randconfig-001-20250616    clang-19
+riscv                 randconfig-002-20250616    clang-21
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-15.1.0
+s390                                defconfig    clang-21
+s390                  randconfig-001-20250616    gcc-11.5.0
+s390                  randconfig-002-20250616    gcc-10.5.0
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                             espt_defconfig    gcc-15.1.0
+sh                    randconfig-001-20250616    gcc-12.4.0
+sh                    randconfig-002-20250616    gcc-12.4.0
+sh                      rts7751r2d1_defconfig    gcc-15.1.0
+sh                           se7619_defconfig    gcc-15.1.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                 randconfig-001-20250616    gcc-13.3.0
+sparc                 randconfig-002-20250616    gcc-8.5.0
+sparc64                             defconfig    gcc-15.1.0
+sparc64               randconfig-001-20250616    gcc-13.3.0
+sparc64               randconfig-002-20250616    gcc-8.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-21
+um                               allyesconfig    gcc-12
+um                                  defconfig    clang-21
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20250616    clang-20
+um                    randconfig-002-20250616    clang-21
+um                           x86_64_defconfig    clang-21
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250616    clang-20
+x86_64      buildonly-randconfig-002-20250616    clang-20
+x86_64      buildonly-randconfig-003-20250616    clang-20
+x86_64      buildonly-randconfig-004-20250616    clang-20
+x86_64      buildonly-randconfig-005-20250616    gcc-12
+x86_64      buildonly-randconfig-006-20250616    clang-20
+x86_64                              defconfig    gcc-11
+x86_64                          rhel-9.4-rust    clang-18
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20250616    gcc-13.3.0
+xtensa                randconfig-002-20250616    gcc-8.5.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
