@@ -1,88 +1,90 @@
-Return-Path: <linux-acpi+bounces-14429-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14430-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBCF2ADDCB6
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 21:57:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E59FADDCD8
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 22:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74D0D17EBE2
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 19:57:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AA251889C79
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 20:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902732EAB6F;
-	Tue, 17 Jun 2025 19:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B772EF64E;
+	Tue, 17 Jun 2025 20:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="ett0jDLE"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TLdN9mVe"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6BB2E2676
-	for <linux-acpi@vger.kernel.org>; Tue, 17 Jun 2025 19:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE80B2E54BF
+	for <linux-acpi@vger.kernel.org>; Tue, 17 Jun 2025 20:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750190244; cv=none; b=taur3QL5D3qgXdKEZrLAIse+XObdpmQPUN0hX7qfsphsA8Lr6p4OCmmHim+H4//8A7hdzgxIJiVULHncTSOoI2nHm+WYIyiQv+pRbzq2bp5QQaf/I/sXKEtDsjxsZWkCdpSUOyB5f1MsR4Tl1+2VH65bHrwTRphqbLxHCTG86L0=
+	t=1750190523; cv=none; b=NANSB/VMkz52JfTaowJej+9l7r7Adstc9fvF7wW63Gw8iobmn7hVHz99JHovJIEWeP5h5Fnt5Hk9r8s00/dDa1aMgqOY0l9F4nt90k34YiL3CAb/1IArNR2N7sR5oj0evZ8umOSdC7pZqeek5J8X14nU66WTR/Z1p2NAHm4XkLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750190244; c=relaxed/simple;
-	bh=g1hqr9LAd5tlBlXHUe2Abbj5LysvcxE3l71FgP8GPCs=;
+	s=arc-20240116; t=1750190523; c=relaxed/simple;
+	bh=XMvjS9h95kOV8JujLb2GDDrONYa4hpVobP4wUiW7o7o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IcsKYsaAUB9U1+rgJIuLARTUQWyv0FuRoYlSMDM5WBM3ex3Fak5tR8cIykft2lxjV/sO0oyjUHHZHRER1tUyGn2Mm4I4OJjjnVKCzgRVfbX1xIXGzwMdZ9qyfx8n/QA+pm6tb2zUL7o6oaO5TDtLqUzCYuW4Znmr220VdnoTg6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=ett0jDLE; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4a42cb03673so73024841cf.3
-        for <linux-acpi@vger.kernel.org>; Tue, 17 Jun 2025 12:57:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1750190242; x=1750795042; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GSljJoj4v6CeDXJDozVd8y37KP8tPNu+Cmnc8/7K2EU=;
-        b=ett0jDLEoebh+JyaQv+RJbvAuXymydoDvslAFmcZ6Z4dfurrqwxY3JeC1uQ3i1SOPt
-         ph8UXl6D771R+SfQfflI+6p3EoDL8zJq1hfV/tn/e7AD0FzGVuyWE4f72YJt+YKMDQQj
-         hsXyhtTxcd99QA2PUBp4kv+CHzGKeNhCdIHRpPqFydEQbsnW/BpP4yHrMLKTODHfGoYW
-         8+Bc+Rf4948wdV/0bi221GMSuJKpKMLGTUB4rzPeJMJaHs5aXJXBmihiPn1q9o8MeSXh
-         z21/ZZdKkfS2mpDdBS53ts3GuAn+zCodwtfNBvXnwpGeyg7BqwWckZyWeJr+H/nJreHp
-         8Orw==
+	 Content-Type:Content-Disposition:In-Reply-To; b=QNVXbHIWmiwJSZeyneb7Ohlete3LqH6JDSr2wLi6wysA8BykGwT1O+NgKMCLBEyhqhxlen/0KgSSgV427ytwL/2G6tHUTnhx2F8s//vMhf9KiM+tDy2pruL0zDmCHIdDCOOCC4TuWMzShC1n150v9Nky4O/wgQUFywPdqxEXaGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TLdN9mVe; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750190521;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O+NoG2Xo5HkG5dYXEBVx8rtfO3qQh/xgk518Z7oyOlQ=;
+	b=TLdN9mVeEAtiHVvO18UP6VGN/tmIdCsl+W9WhmHGxZJs1WIRk6yO0gGpce/VGWhCV4JHBC
+	kz/BW5C0S+fBjxvSXQso1d/rPgqzKHNGL4mkASqMp0jwfItzBGAagy3RMWeCZfvhUZx9a9
+	uFmJFttm13g24c4uxr7HltFKyX61j34=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-204-wMVJpiB5PpGOBabU4LpZsw-1; Tue, 17 Jun 2025 16:01:58 -0400
+X-MC-Unique: wMVJpiB5PpGOBabU4LpZsw-1
+X-Mimecast-MFC-AGG-ID: wMVJpiB5PpGOBabU4LpZsw_1750190518
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-451deff247cso87475e9.1
+        for <linux-acpi@vger.kernel.org>; Tue, 17 Jun 2025 13:01:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750190242; x=1750795042;
+        d=1e100.net; s=20230601; t=1750190517; x=1750795317;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GSljJoj4v6CeDXJDozVd8y37KP8tPNu+Cmnc8/7K2EU=;
-        b=F7E4us7EvWIR/brJYJrbbrS0wT1/z8XJ32LphtSjYGnkGnhC3RfJmg066cxnQjAeWU
-         LQUOaoWRd7JiMshTrvenOU43jolsdgnIKKQS+rLTYlRC775/B6DWsCqEd8dvbh4ovm6Z
-         hliAcdKG+QqYghX7v6aR2E9YmHjzq1q8ULYKMlP7GbWXrwq3t5FWQV62HXVu1hz84yga
-         JCZ+42mxWEeYO1vu/TXTum9IT/8LWJR910zuoR40Z9hOphlSUd1OKagf+rqExsMVhdtz
-         SoVGMDqW3GPzSSb+54Cg5HvNSKE1Q9hqbq5NNiFRcPPSxGWP+YJ9vkQ8JqReqxOtEFqL
-         gfLA==
-X-Forwarded-Encrypted: i=1; AJvYcCUgJac0GIDGnr3/JaZ6bPgiS5MExG0QoQgEjGndGEWoXokwJkmCa123wRW7G2YdI9iIx18uiSDInxvE@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRbt95CX5TpL+vY7ZK4Lzdo/+i/uRF8yumWn7wbqM95np0GkOS
-	mvH94Ke2Fe2CU2NlCma1YwkICnFSbzAZxgMEJlhJv45U3e5sAjLx91IAxiqvfxWuOdM=
-X-Gm-Gg: ASbGncuF4wRmP2nEYn9j47Lt6Ci60sEPgCcd56rdWbb9QRIA5tc9K62SDeXbt9qJEtQ
-	czb2du0/uK0RI6ARnC+p0gb1aTu2IsSMHUwiAw9ND0+kpCYthMSSTNCZc1qzVAcP2HsoKnnUo4z
-	MYy/3m1tkrXOCnZKhHkA8ztz8WpdaUQ5NWj8Gum2JC9KLODGOrU+oJR0dDjpz/p8Wid6ta8E/nh
-	buDl+rOtpSfOAWwTciW2fyVUl/bxZX0X8TbDr60q6Y86TTnKETPEdGXYeXPDE96dY831gGfedPC
-	Zlyfeqp3H9cQK95ZWDWBMDlER0tGNHVALx2HF1hwFNpKdrCy50vo4E5C5pBFdSUbbp6EzkTWGiL
-	/eOGELWr5zwv6Tmihkiu1I1/grGErXzgKHwRjHg==
-X-Google-Smtp-Source: AGHT+IHoE/CIYPSeBo9AkwYX6P5QyNezX929DkvT7AQbxP5vAuyPsD+eSrDU1SNqwDaclH2cAsl91Q==
-X-Received: by 2002:ac8:5746:0:b0:494:f1e7:65ef with SMTP id d75a77b69052e-4a73c627abcmr231747311cf.44.1750190241701;
-        Tue, 17 Jun 2025 12:57:21 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-167-56-70.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.56.70])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a72a4b0e93sm65849681cf.42.2025.06.17.12.57.21
+        bh=O+NoG2Xo5HkG5dYXEBVx8rtfO3qQh/xgk518Z7oyOlQ=;
+        b=aQJ3HT+CN6Hze9/74RwlG/qzkq3Yy+YUhof0ha2/UnGk5SJJKHXVyGknXnNL1Znrqk
+         gcyD29tezA2A1lUEhwQZzcJVVKZT0xpcy3tvZ4TP/dhQsco9kOxWQhc4NNdQaF52vK7o
+         +7cAi5Zg2gGtNi6BhGelEgb72h7lNKy5vyLssJSJ4MjQ4PqwjFPlUX2corgjhi1bHs+Z
+         cG5gfVQVZHt5n4CWa7eOv5rc1j8HrSW37FsgM+bTaVvICaRGnrd7qH+1g7mE+7YNZvvX
+         molnSe/y1DWwOjE7zkBQlY4o/J+S2yNRjBUc5hwmrq7X2PtL6C9PLm/scYxHLCObv4/z
+         09hA==
+X-Forwarded-Encrypted: i=1; AJvYcCUzNsLrArw3KRJCIqhpPhvH3lK0cT4RcNdpbERw2NQoZk7NcvQVH/Btt5qPongTp5MEpV+2WayUl8Jy@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHBuLMtgpVnJpAwhNE1/DV+W7tMRNQ5FV9TgoJ0THgvfk9QXRI
+	gKZw5YtQT7nkJ/i4nktQfcgwRsJ+9qtGeAFXvh7K7N/jF4kAW3xBIjEGC9bZ8LQM2GxvSDe2YKu
+	oGeCPXZdusvQQe8VkizdSBQkr5IGTO/L/b+YF40y07Hwxe8yfqLF+RSx4yL72thM=
+X-Gm-Gg: ASbGncvglU1m6Va8Ljg/VoOVib78xitSG/feEZwz97r3VhxMfqEvyfKn/TgDo8o35YM
+	SN1vnVqpk4dsNTPzKHzLmLBr2bXEddFyaghv0MPOE1l1CXN2TazLv2N3pgvKrW4yLOsricFJcrG
+	nh5/W4r3NiAtzm3/WrNKBJYO/bsNaueG6lFfLyzQM256XxxW9rEKT2jFoCA864/u15o1eh64Fyv
+	NZHpq+Y6V3khJRspnEe9u09LOFcklPdq+3gHzp4u7nvPNYlyZGdooTso1BhEutdQBWw0dbhIbh3
+	8RmzW949A1zqolU/
+X-Received: by 2002:a05:600c:574b:b0:43c:ed33:a500 with SMTP id 5b1f17b1804b1-4533b2723fbmr106294505e9.10.1750190517522;
+        Tue, 17 Jun 2025 13:01:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHNEtk99gWXSpZ+RahNNIJ+KZNHzBGaVUSD+dSFjshNFQhawiqf1xX90P7+NZhpbwqFDbMbUg==
+X-Received: by 2002:a05:600c:574b:b0:43c:ed33:a500 with SMTP id 5b1f17b1804b1-4533b2723fbmr106294125e9.10.1750190517096;
+        Tue, 17 Jun 2025 13:01:57 -0700 (PDT)
+Received: from redhat.com ([2a06:c701:73ea:4300:f7cc:3f8:48e8:2142])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568b4cc7bsm14653724f8f.86.2025.06.17.13.01.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 12:57:21 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1uRcQq-00000006ckX-2tam;
-	Tue, 17 Jun 2025 16:57:20 -0300
-Date: Tue, 17 Jun 2025 16:57:20 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Michael S. Tsirkin" <mst@redhat.com>
+        Tue, 17 Jun 2025 13:01:56 -0700 (PDT)
+Date: Tue, 17 Jun 2025 16:01:53 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
 Cc: Demi Marie Obenour <demiobenour@gmail.com>,
 	Jason Wang <jasowang@redhat.com>,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Len Brown <lenb@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
@@ -94,11 +96,12 @@ Cc: Demi Marie Obenour <demiobenour@gmail.com>,
 	iommu@lists.linux.dev, x86@kernel.org,
 	Spectrum OS Development <devel@spectrum-os.org>
 Subject: Re: Virtio-IOMMU interrupt remapping design
-Message-ID: <20250617195720.GI1376515@ziepe.ca>
+Message-ID: <20250617160103-mutt-send-email-mst@kernel.org>
 References: <>
  <a65d955c-192b-4e79-ab11-8e2af78b62af@gmail.com>
  <20250616132031.GB1354058@ziepe.ca>
  <20250617154331-mutt-send-email-mst@kernel.org>
+ <20250617195720.GI1376515@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -107,41 +110,45 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250617154331-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20250617195720.GI1376515@ziepe.ca>
 
-On Tue, Jun 17, 2025 at 03:44:20PM -0400, Michael S. Tsirkin wrote:
-> On Mon, Jun 16, 2025 at 10:20:31AM -0300, Jason Gunthorpe wrote:
-> > On Sun, Jun 15, 2025 at 02:47:15PM -0400, Demi Marie Obenour wrote:
+On Tue, Jun 17, 2025 at 04:57:20PM -0300, Jason Gunthorpe wrote:
+> On Tue, Jun 17, 2025 at 03:44:20PM -0400, Michael S. Tsirkin wrote:
+> > On Mon, Jun 16, 2025 at 10:20:31AM -0300, Jason Gunthorpe wrote:
+> > > On Sun, Jun 15, 2025 at 02:47:15PM -0400, Demi Marie Obenour wrote:
+> > > 
+> > > > Is a paravirtualized IOMMU with interrupt remapping something that makes
+> > > > sense?
+> > > 
+> > > IMHO linking interrupt remapping to the iommu is a poor design,
+> > > interrupt routing belongs in the irq subsystem, not in the iommu.
+> > > 
+> > > The fact AMD and Intel both coupled their interrupt routing to their
+> > > iommu hardware is just a weird design decision. ARM didn't do this,
+> > > for instance.
 > > 
-> > > Is a paravirtualized IOMMU with interrupt remapping something that makes
-> > > sense?
-> > 
-> > IMHO linking interrupt remapping to the iommu is a poor design,
-> > interrupt routing belongs in the irq subsystem, not in the iommu.
-> > 
-> > The fact AMD and Intel both coupled their interrupt routing to their
-> > iommu hardware is just a weird design decision. ARM didn't do this,
-> > for instance.
+> > why does it matter in which device it resides?
 > 
-> why does it matter in which device it resides?
+> It would cleanup the boot process if the IRQ components were available
+> at the same time as the IRQ drivers instead of much later when the
+> iommu gets plugged in.
+> 
+> > Way I see it, there is little reason to remap interrupts without
+> > also using an iommu, so why not a single device.  what did I miss?
+> 
+> Remapping interrupts can be understood to be virtualizing the MSI
+> addr/data pair space so that the CPU controls where the interrupt goes
+> though its internal tables not the device through the addr/data.
+> 
+> On x86 you also need to use remapping to exceed the max CPU count that
+> can be encoded in the MSI, no iommu required to need this.
 
-It would cleanup the boot process if the IRQ components were available
-at the same time as the IRQ drivers instead of much later when the
-iommu gets plugged in.
+More of an x86 quirk though, isn't it?
 
-> Way I see it, there is little reason to remap interrupts without
-> also using an iommu, so why not a single device.  what did I miss?
+> There is also some stuff related to IMS that could get improved here.
+> 
+> You don't need an iommu to enjoy those benefits.
+> 
+> Jason
 
-Remapping interrupts can be understood to be virtualizing the MSI
-addr/data pair space so that the CPU controls where the interrupt goes
-though its internal tables not the device through the addr/data.
-
-On x86 you also need to use remapping to exceed the max CPU count that
-can be encoded in the MSI, no iommu required to need this.
-
-There is also some stuff related to IMS that could get improved here.
-
-You don't need an iommu to enjoy those benefits.
-
-Jason
 
