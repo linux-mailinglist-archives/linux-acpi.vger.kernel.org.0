@@ -1,230 +1,164 @@
-Return-Path: <linux-acpi+bounces-14407-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14408-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2006DADCAF0
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 14:20:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4F7ADCB01
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 14:22:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECD1D7A50B5
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 12:19:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93B59188DC02
+	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 12:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5B11DE4F3;
-	Tue, 17 Jun 2025 12:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F2B2DE1E1;
+	Tue, 17 Jun 2025 12:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="irJWvnN0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZ9kYBrs"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814E92D9EF7;
-	Tue, 17 Jun 2025 12:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36EF2DE1E0;
+	Tue, 17 Jun 2025 12:22:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750162830; cv=none; b=Kpk5JauR3da4ewLS69Hx6ZIUcs64TbfAfVVM3uQZ8LbfZR3xPcGhwzhiumMHpUY/Os0G3EolIVPtuudTVDASr8UgwZ/SHR5CG2qE+se4dTCtpd5hDlpXA14Sae13H+clIQJKBLKbSCOUlcUKFwtEgh2sEQp8V4Jwl8swb8Su7pc=
+	t=1750162936; cv=none; b=Gk1VG5kS0LcIhhklntw3bJCkB0WhkQRPHStnvO9x2vbwFjSftxyP8+GVdiDUOmqwVNe+bz2s2S8VtNEhqxEukFtKxgcJrmBMh5xhyuSx0Isl3lLxbAbsgb3W5SvWehaKCQ/NFoxSayFE1abCPuiRelzm2UBFybiYB512F3b9r4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750162830; c=relaxed/simple;
-	bh=wtWiIp2XSEFt4Lr9zWcy+XIyllCRlcFGp9anAk7KBfY=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=NumDdlMMbdAA8jg71MkhM8n6KL8DUcM8XdWQXx/35waLVtAqwhrKXXbBp/BFiLGzmLxc7GT58gL/xjd+UBf/NtnCQRgGfDLIMrT99JlPluvSMMlKfUh+9N8YvIsW9nWmLXljlMU1cXDm/XytSkkNPXtonf903lk2eEsAXSCW+s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=irJWvnN0; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750162829; x=1781698829;
-  h=date:from:to:cc:subject:message-id;
-  bh=wtWiIp2XSEFt4Lr9zWcy+XIyllCRlcFGp9anAk7KBfY=;
-  b=irJWvnN0KgcvZEeyx7rZ4r+rj44adpBaDU7biFi6M0WpizpLbU11jdAt
-   ACti1j/eSrvWcTO1kMOINGbW7Kj08BvtOB6u8MZK22s17DUMu7tWdGGYP
-   vJrxANS7zB7BQxmJGLg9wAlhUy5pfyLhg+vqTCGTclskf12f+Qk1U3cfu
-   aV8dWHEyxfY+F8gFDxOsPl8au9HbdYh7LhJ6IiTKMXBzIEABxXvdgDWst
-   IlJgk4cVXUJWuGSh6Uiah0TgbgKkji4k6U3FmdolHsjRx46HVckOsIlWF
-   v2BRJtqcot+xv326Bog1zRTCZUGV+5PBh0Twt+dher89H0mfdQQj4+HZg
-   Q==;
-X-CSE-ConnectionGUID: vIizJRtnQFCpDjtlI15jLA==
-X-CSE-MsgGUID: RcEjOyBgQW2/N6kuciZepg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52431183"
-X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; 
-   d="scan'208";a="52431183"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 05:20:28 -0700
-X-CSE-ConnectionGUID: gNmvtlRYQeOSshhf1eRxrQ==
-X-CSE-MsgGUID: 96sR2obfTge6Xuie+oLklg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; 
-   d="scan'208";a="148750700"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 17 Jun 2025 05:20:26 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uRVId-000FxD-2N;
-	Tue, 17 Jun 2025 12:20:23 +0000
-Date: Tue, 17 Jun 2025 20:19:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 238bc315167568e06d1cc19ef17b9d611ba7859f
-Message-ID: <202506172025.J81Zppig-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1750162936; c=relaxed/simple;
+	bh=9/iHQ3dYlLrbfQPOjcg+z2GVsbtgfzHHrq+JaTmPNUY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=hQenR36XwaC0Tw8ovSiw4gpxEnDQrQ4SXLu86lLSmioDBhdKjTgubBUL5Wk+5AibKBBmF29dcQommMauc9iUWqjdgoNk9kAaQHOnDKxmNcMenCsQMZzxncBuwjb9qGQGd40I+IhVpmll7wX3BunPTO2VhwMQpDgw/vHO1d8jrU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZ9kYBrs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F55EC4CEEE;
+	Tue, 17 Jun 2025 12:22:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750162935;
+	bh=9/iHQ3dYlLrbfQPOjcg+z2GVsbtgfzHHrq+JaTmPNUY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SZ9kYBrs2V8jfWfs1dGY8MDx3Z9Z3DOMWC0212Mzd13r0oM+qz6p13plV86CwkIbx
+	 IWe3MdATrxycmcEF/LvQVNRYUrViubylZ0NfXlupKFjYOVLvFCOXKTlQLC8NdLZH4O
+	 RYxKuCA8N75xHWf/4+uXkpKhdjCwoB8qKqBvl7Dt10pXdtbWS92WVO25UuEu/s4o1w
+	 2E8LrrFL5YLM7S1rd/EX46RCzs5f4Zf8Orv/DNFgFtsZQkM24kRbJNOwrMcvr4Aw39
+	 +A271SdvrQmd6xd9GZceKzlsZu6QioY/40RpmbZwPuYSoqmxvu7M1ftRbPhB1xY3O8
+	 LH7BSE9Wv6sWQ==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Wentao Guan <guanwentao@uniontech.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.15 12/15] ACPI: resource: Use IRQ override on MACHENIKE 16P
+Date: Tue, 17 Jun 2025 08:21:42 -0400
+Message-Id: <20250617122147.1968355-12-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250617122147.1968355-1-sashal@kernel.org>
+References: <20250617122147.1968355-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.15.2
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 238bc315167568e06d1cc19ef17b9d611ba7859f  Merge branch 'thermal-intel' into bleeding-edge
+From: Wentao Guan <guanwentao@uniontech.com>
 
-elapsed time: 1379m
+[ Upstream commit c99ad987d3e9b550e9839d5df22de97d90462e5f ]
 
-configs tested: 136
-configs skipped: 6
+Use ACPI IRQ override on MACHENIKE laptop to make the internal
+keyboard work.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Add a new entry to the irq1_edge_low_force_override structure, similar
+to the existing ones.
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-alpha                               defconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                                 defconfig    gcc-15.1.0
-arc                   randconfig-001-20250616    gcc-15.1.0
-arc                   randconfig-002-20250616    gcc-15.1.0
-arm                              allmodconfig    gcc-15.1.0
-arm                               allnoconfig    clang-21
-arm                              allyesconfig    gcc-15.1.0
-arm                         at91_dt_defconfig    clang-21
-arm                                 defconfig    clang-21
-arm                          gemini_defconfig    clang-20
-arm                          ixp4xx_defconfig    gcc-15.1.0
-arm                   randconfig-001-20250616    gcc-12.4.0
-arm                   randconfig-002-20250616    gcc-15.1.0
-arm                   randconfig-003-20250616    clang-21
-arm                   randconfig-004-20250616    clang-21
-arm64                             allnoconfig    gcc-15.1.0
-arm64                               defconfig    gcc-15.1.0
-arm64                 randconfig-001-20250616    gcc-8.5.0
-arm64                 randconfig-002-20250616    gcc-15.1.0
-arm64                 randconfig-003-20250616    clang-19
-arm64                 randconfig-004-20250616    gcc-8.5.0
-csky                              allnoconfig    gcc-15.1.0
-csky                                defconfig    gcc-15.1.0
-csky                  randconfig-001-20250616    gcc-13.3.0
-csky                  randconfig-002-20250616    gcc-15.1.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-21
-hexagon                          allyesconfig    clang-21
-hexagon                             defconfig    clang-21
-hexagon               randconfig-001-20250616    clang-21
-hexagon               randconfig-002-20250616    clang-21
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250616    gcc-12
-i386        buildonly-randconfig-002-20250616    gcc-11
-i386        buildonly-randconfig-003-20250616    clang-20
-i386        buildonly-randconfig-004-20250616    gcc-12
-i386        buildonly-randconfig-005-20250616    gcc-12
-i386        buildonly-randconfig-006-20250616    clang-20
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    gcc-15.1.0
-loongarch                         allnoconfig    gcc-15.1.0
-loongarch             randconfig-001-20250616    gcc-15.1.0
-loongarch             randconfig-002-20250616    gcc-15.1.0
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-m68k                                defconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-mips                          rb532_defconfig    clang-18
-nios2                             allnoconfig    gcc-14.2.0
-nios2                               defconfig    gcc-14.2.0
-nios2                 randconfig-001-20250616    gcc-8.5.0
-nios2                 randconfig-002-20250616    gcc-10.5.0
-openrisc                         alldefconfig    gcc-15.1.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20250616    gcc-8.5.0
-parisc                randconfig-002-20250616    gcc-9.3.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    clang-21
-powerpc                        cell_defconfig    gcc-15.1.0
-powerpc                 linkstation_defconfig    clang-20
-powerpc                      mgcoge_defconfig    clang-21
-powerpc                  mpc866_ads_defconfig    clang-21
-powerpc                      pasemi_defconfig    clang-21
-powerpc               randconfig-001-20250616    clang-21
-powerpc               randconfig-002-20250616    clang-21
-powerpc               randconfig-003-20250616    clang-21
-powerpc64             randconfig-001-20250616    gcc-8.5.0
-powerpc64             randconfig-002-20250616    clang-21
-powerpc64             randconfig-003-20250616    clang-21
-riscv                            allmodconfig    clang-21
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-21
-riscv                 randconfig-001-20250616    clang-19
-riscv                 randconfig-002-20250616    clang-21
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    clang-21
-s390                  randconfig-001-20250616    gcc-11.5.0
-s390                  randconfig-002-20250616    gcc-10.5.0
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                             espt_defconfig    gcc-15.1.0
-sh                    randconfig-001-20250616    gcc-12.4.0
-sh                    randconfig-002-20250616    gcc-12.4.0
-sh                      rts7751r2d1_defconfig    gcc-15.1.0
-sh                           se7619_defconfig    gcc-15.1.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                 randconfig-001-20250616    gcc-13.3.0
-sparc                 randconfig-002-20250616    gcc-8.5.0
-sparc64                             defconfig    gcc-15.1.0
-sparc64               randconfig-001-20250616    gcc-13.3.0
-sparc64               randconfig-002-20250616    gcc-8.5.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    gcc-12
-um                                  defconfig    clang-21
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20250616    clang-20
-um                    randconfig-002-20250616    clang-21
-um                           x86_64_defconfig    clang-21
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250616    clang-20
-x86_64      buildonly-randconfig-002-20250616    clang-20
-x86_64      buildonly-randconfig-003-20250616    clang-20
-x86_64      buildonly-randconfig-004-20250616    clang-20
-x86_64      buildonly-randconfig-005-20250616    gcc-12
-x86_64      buildonly-randconfig-006-20250616    clang-20
-x86_64                              defconfig    gcc-11
-x86_64                          rhel-9.4-rust    clang-18
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20250616    gcc-13.3.0
-xtensa                randconfig-002-20250616    gcc-8.5.0
+Link: https://bbs.deepin.org.cn/zh/post/287628
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Link: https://patch.msgid.link/20250603122059.1072790-1-guanwentao@uniontech.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+**YES**
+
+This commit should be backported to stable kernel trees for the
+following reasons:
+
+1. **Bug Fix for Non-Functional Hardware**: The commit fixes a broken
+   keyboard on MACHENIKE 16P laptops. The internal keyboard does not
+   work without this IRQ override, which is a significant hardware
+   functionality issue that affects users.
+
+2. **Small and Contained Change**: The change is minimal - it only adds
+   7 lines to add a new DMI match entry to the existing
+   `irq1_edge_low_force_override` array:
+  ```c
+  +       {
+  +               /* MACHENIKE L16P/L16P */
+  +               .matches = {
+  +                       DMI_MATCH(DMI_SYS_VENDOR, "MACHENIKE"),
+  +                       DMI_MATCH(DMI_BOARD_NAME, "L16P"),
+  +               },
+  +       },
+  ```
+
+3. **Well-Established Pattern**: This follows an established pattern in
+   the kernel. The code shows this is part of a long-standing mechanism
+   for handling keyboard IRQ issues on AMD Zen platforms where "the DSDT
+   specifies the kbd IRQ as falling edge and this must be overridden to
+   rising edge, to have a working keyboard."
+
+4. **Similar Commits Were Backported**: Looking at the historical
+   commits provided:
+   - "ACPI: resource: Do IRQ override on TongFang GXxHRXx and GMxHGxx" -
+     marked with "Cc: All applicable <stable@vger.kernel.org>"
+   - "ACPI: resource: Do IRQ override on MECHREV GM7XG0M" - includes
+     both "Fixes:" tag and "Cc: All applicable <stable@vger.kernel.org>"
+   - "ACPI: resource: Do IRQ override on Lunnen Ground laptops" - marked
+     as YES for backporting
+   - "ACPI: resource: IRQ override for Eluktronics MECH-17" - marked as
+     YES for backporting
+
+5. **No Risk of Regression**: The change is isolated to MACHENIKE 16P
+   laptops only (via DMI matching), so it cannot affect other systems.
+   The DMI match ensures this override only applies to the specific
+   hardware that needs it.
+
+6. **Critical Functionality**: A non-functional keyboard is a critical
+   issue that prevents normal system usage. This is not a minor
+   inconvenience but a complete loss of primary input functionality.
+
+The only reason this commit might not have been explicitly marked for
+stable is an oversight, as virtually identical commits for other laptop
+models fixing the same keyboard IRQ issue have been consistently
+backported to stable trees.
+
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 14c7bac4100b4..9d9921f70855c 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -666,6 +666,13 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
+ 		},
+ 	},
++	{
++		/* MACHENIKE L16P/L16P */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "MACHENIKE"),
++			DMI_MATCH(DMI_BOARD_NAME, "L16P"),
++		},
++	},
+ 	{
+ 		/*
+ 		 * TongFang GM5HG0A in case of the SKIKK Vanaheim relabel the
+-- 
+2.39.5
+
 
