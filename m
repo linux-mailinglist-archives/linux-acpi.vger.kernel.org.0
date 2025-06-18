@@ -1,102 +1,114 @@
-Return-Path: <linux-acpi+bounces-14454-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14455-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59DB2ADF697
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 21:06:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60359ADF6A2
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 21:10:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8D204A1CE9
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 19:06:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE5717A19C6
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 19:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03081207E1D;
-	Wed, 18 Jun 2025 19:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61BE20C469;
+	Wed, 18 Jun 2025 19:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MYRg7pu4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MjGjfSj6"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96D33085A0;
-	Wed, 18 Jun 2025 19:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B184E20AF98
+	for <linux-acpi@vger.kernel.org>; Wed, 18 Jun 2025 19:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750273605; cv=none; b=Y40O9PRbdfhCdC81WShxxTw6Lo3Sbo1ELTmQNXDad9UkQFvcj55qzlgvu5DcnVg3pL/qfh6ehLjqBM4CHnaq/rQpDTxIMOLTo9gQzTWnXghy0pfC7tzG9nrthTO3CfuzY6vD7q6nrmEIubOHs2Y9YgKYqchBOwV527V/l8mD7fM=
+	t=1750273831; cv=none; b=ZsWOOWhAxEEtyyrdAEV9OL34tuOYK7Gm7y/OH9WGVtDNlwBpqRuOCQB52xblDi4oDMwcXLts3ibjBd7QQ52zS1ut5J13hznK1B9DnxJi5+RR8yT/qIrPNL40DlL7IHB/GRYRFu5t91LaKyteKUgvjpOM7ypo8bLQpfLh9Zm/v8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750273605; c=relaxed/simple;
-	bh=EHmiysc4K5wFAmpABIog2DSAWbEeaG2Fbtlw/lbgzZU=;
+	s=arc-20240116; t=1750273831; c=relaxed/simple;
+	bh=LNtjbqES+viExkrHH9IG6aTeSRQ5e9S7wWwi6C0gcq4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UoM1xuEYH6OtiRLUzkUw0GexjaNXRg0dYWb2iIyz6w2LsE6Qq118xMuOk2e6Ku9YK9iZ0TsiqjaN+6XRadBGFiyB9aWA61FGY9Cd/kw8PMjM3Th+PH/cuSX+T3l9sKK32trWuuWnh0dwI/VXRtCVmDlprufS7eDgSV9rSQs7/iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MYRg7pu4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456D9C4CEE7;
-	Wed, 18 Jun 2025 19:06:45 +0000 (UTC)
+	 To:Cc:Content-Type; b=WuY+3PZ2TVmWC15HOi4S7bgrI2brR1QZ4VGTGf/CtlaJl3iQRKtMPG5ryNerpOzn+yCNaWQm2o/oPLB+0bx/R5GR3bgppTMCOTWho9I8OuWoiBAAJMoA3RDJxUhHk/0axUQXIlzvQoM39jxNrd4LgT1c2o1fxIgj8rCQigWLlDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MjGjfSj6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9C0C4CEED
+	for <linux-acpi@vger.kernel.org>; Wed, 18 Jun 2025 19:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750273605;
-	bh=EHmiysc4K5wFAmpABIog2DSAWbEeaG2Fbtlw/lbgzZU=;
+	s=k20201202; t=1750273831;
+	bh=LNtjbqES+viExkrHH9IG6aTeSRQ5e9S7wWwi6C0gcq4=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=MYRg7pu4mQudGg+o8zANIqWe0R7Pm6I4h4TpH/dIyr/1nXcV9nhP3VfyyUIf7QYeE
-	 OYEURR5eikNl/sNhlmL/oEbLZyB4x0GEtwjFUXrInYlQKkqalRgXDF7rScgsuNiWUR
-	 b5Hfp1JJr2kZehk6dDnu2/zEsiXo/2iQBXh4yo8L/wQhvGSDQcoqhDSJOcURga3+bf
-	 zQ6WTsXVHPGaH2MDHDgW20iTyyHr8EEEE9IGqs0TLhA9wcsqx3Jo9v3aRPVA2+JHRB
-	 neanNkD++1zYD/8LqqekBtJ6cT/hGWTCxS87iDBksYJ5TOg7YmNuIi47sJ8vT3IZIp
-	 q3YZrcLXjmiGg==
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-6060a70ba80so441eaf.2;
-        Wed, 18 Jun 2025 12:06:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVMOS4m6apZ8acPX2DMTFS1Leuw6AbGpOK5ZJjnPK3V0Uy0u9k+JMUC1g7qqiR+enIzvfDPta700uifvOhw@vger.kernel.org, AJvYcCXppFvSjHf9sWp0es41v6b62hBv15qJPzp38sk7I4WBrl8pk8+JlEbEDNh6ykDkW0v3b5PUsv/9UdWx@vger.kernel.org, AJvYcCXpqJ8FlMnvK/VaTx//dFoFp3c89PmJOzlOR5yNQiS7e7BqDRaJ+ZYorQXL4bUBQYgNddPTGfS0wQs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqJoXg4c9K+dLcN+x4O71AA5XB5q6jWaR/CJu1U62mKXiQ55IA
-	BHds1VGDD/VlJX5DtPAWX43HlUWtLwNEXhSuEVOTWpjvHbtOzpU39Ll/uJakbzYQIaBFa0Zk2wD
-	Y0SFHsgPZcVYQYIN+zGHGJBs5I3q0hPs=
-X-Google-Smtp-Source: AGHT+IFDAhZp4oOZmcVULYoPnu3Ouw/DcQLKRdnhxYk96qIBfbDhtVKhqkWyeJRSQzQaJkZHv0Pl/v4xe0PLXQADyAU=
-X-Received: by 2002:a05:6820:823:b0:611:2c55:3a4f with SMTP id
- 006d021491bc7-6112c553b7emr5048981eaf.2.1750273604624; Wed, 18 Jun 2025
- 12:06:44 -0700 (PDT)
+	b=MjGjfSj6fxLO3bzimQu826YuhL8TBxygryOCnP+jOuDr5SoDRQ7CXoiz9JZobztDE
+	 +LHqiJC6azI3/fQ7S1Z89Ep3IhiKbzggzW6hh7cgR54tnB1tdJpjFF82wrM7n3ErWb
+	 QXWbRTSmXk5qFEYe076hsc0zMvaTEsugZ6bcggq3Ole4NCNIN3sRAbKtQMSMa5pg2q
+	 ueqSsQSkeoMClvA3fhJ5Q2s7dPi2k9AINeVcgU0nxs7uJfS127WRmjK/yezpMayZDQ
+	 qfR0dIUoJu87pMcVBRmjWclDu/xdRvKOAiye9xes3I4L4nFAWzVQn9jhImHOg/c3d6
+	 1sR3o0lRDoKDQ==
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-739dcdb012fso13522a34.2
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Jun 2025 12:10:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXOztGKJ48kMJdzZBcWPK6534jeX8EEa9OUrUQJmPfv/qmLKB9+ZVZXPY1If4y3Z2zGjkdj6KmLELQw@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0+VixJtsel8JoYoTEG74uoVNti6YFFWzZt3JHoxmcJkbQ+2WR
+	1QRZa2xTUUOfGyNXKSZzNRvom74v3uXtE2XeGiPSH0qdaHxXdHku6Dc4Bh0thahdEisFpvbG1Oi
+	IG7GgPvnvufnjntp2FJyKnouuV16dHzk=
+X-Google-Smtp-Source: AGHT+IF0QOwQ+T00QX63R9TzvT+Jx52NHSC6gUxtASuwfvCK8/jYGmmp2e8pvLDJsPrEUA62mgVt/3EU7XI6Ts4UPAk=
+X-Received: by 2002:a05:6830:3812:b0:72b:9387:84b2 with SMTP id
+ 46e09a7af769-73a363940b3mr13667932a34.27.1750273830542; Wed, 18 Jun 2025
+ 12:10:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250526113057.3086513-1-zhenglifeng1@huawei.com> <9c82abca-0772-444c-8122-59a953c83984@huawei.com>
-In-Reply-To: <9c82abca-0772-444c-8122-59a953c83984@huawei.com>
+References: <20250609030706.465202-1-superm1@kernel.org>
+In-Reply-To: <20250609030706.465202-1-superm1@kernel.org>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 18 Jun 2025 21:06:32 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hyMANsOwskEUi1c3XB+heE6z0_-Dk1nqnw-SbZ0dM3zA@mail.gmail.com>
-X-Gm-Features: AX0GCFu09GYGv3-1LtFQtFZlu_rSLSPXEyv-4bIne3RWnOaGRgRR2K9KgIagK-A
-Message-ID: <CAJZ5v0hyMANsOwskEUi1c3XB+heE6z0_-Dk1nqnw-SbZ0dM3zA@mail.gmail.com>
-Subject: Re: [PATCH 0/3] cpufreq: CPPC: Some optimizations for cppc_cpufreq.c.
-To: "zhenglifeng (A)" <zhenglifeng1@huawei.com>, viresh.kumar@linaro.org
-Cc: robert.moore@intel.com, lenb@kernel.org, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, linuxarm@huawei.com, 
-	jonathan.cameron@huawei.com, zhanjie9@hisilicon.com, lihuisong@huawei.com, 
-	yubowen8@huawei.com
+Date: Wed, 18 Jun 2025 21:10:19 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iwn9tXAB7SOSHutjEm2We8v2Dg78CR6OP8nU=v_nU6zQ@mail.gmail.com>
+X-Gm-Features: AX0GCFvVtyeONWa4O7z-3hA7kgK1rd_kxS-d1fjXovv_aKgY3S3KCif_Cy-kdS8
+Message-ID: <CAJZ5v0iwn9tXAB7SOSHutjEm2We8v2Dg78CR6OP8nU=v_nU6zQ@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: Enable CONFIG_ACPI_DEBUG by default
+To: Mario Limonciello <superm1@kernel.org>
+Cc: mario.limonciello@amd.com, rafael@kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 17, 2025 at 4:33=E2=80=AFAM zhenglifeng (A) <zhenglifeng1@huawe=
-i.com> wrote:
+On Mon, Jun 9, 2025 at 5:07=E2=80=AFAM Mario Limonciello <superm1@kernel.or=
+g> wrote:
 >
-> Gentle ping.
+> From: Mario Limonciello <mario.limonciello@amd.com>
 >
-> On 2025/5/26 19:30, Lifeng Zheng wrote:
-> > This patch series makes some minor optimizations for cppc_cpufreq.c to
-> > makes codes cleaner.
-> >
-> > Lifeng Zheng (3):
-> >   cpufreq: CPPC: Remove cpu_data_list
-> >   cpufreq: CPPC: Return void in populate_efficiency_class()
-> >   cpufreq: CPPC: Remove forward declaration of
-> >     cppc_cpufreq_register_em()
-> >
-> >  drivers/cpufreq/cppc_cpufreq.c | 59 +++++++++-------------------------
-> >  include/acpi/cppc_acpi.h       |  1 -
-> >  2 files changed, 15 insertions(+), 45 deletions(-)
+> CONFIG_ACPI_DEBUG can be helpful for getting debug messages on OEM
+> systems to identify a BIOS bug.  It's a relatively small size increase
+> to turn it on by default (50kb) and that saves asking people to enable
+> it when an issue comes up because it wasn't in defconfig.
+>
+> Enable it by default.
+>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v1: https://lore.kernel.org/linux-acpi/20250415212740.2371758-1-superm1@k=
+ernel.org/
+> v2:
+>   * rebase on 6.16-rc1
+>   * Fedora, Ubuntu, and CachyOS are all doing this in their distro kernel=
+s
+>     and haven't had any complaints about it.
+> ---
+>  drivers/acpi/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index 7bc40c2735ac0..b594780a57d71 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -394,6 +394,7 @@ config ACPI_TABLE_OVERRIDE_VIA_BUILTIN_INITRD
+>
+>  config ACPI_DEBUG
+>         bool "Debug Statements"
+> +       default y
+>         help
+>           The ACPI subsystem can produce debug output.  Saying Y enables =
+this
+>           output and increases the kernel size by around 50K.
+> --
 
-I've started to process this because it has been sent to linux-acpi
-and then I realized that Viresh should take it, but since I've applied
-it already, I may as well queue it up for 6.17.
-
-Viresh, please let me know if you have any concerns about it.
-
-Thanks!
+Applied as 6.17 material, thanks!
 
