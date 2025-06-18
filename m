@@ -1,78 +1,78 @@
-Return-Path: <linux-acpi+bounces-14436-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14437-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB9AADE83A
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 12:14:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58552ADE84E
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 12:17:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC80B164EB6
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 10:13:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C53FE3A3064
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 10:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F53283CB3;
-	Wed, 18 Jun 2025 10:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD38285C9D;
+	Wed, 18 Jun 2025 10:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h1prG0PP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RAHCGE2M"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD481E5215;
-	Wed, 18 Jun 2025 10:13:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBC71D63FC;
+	Wed, 18 Jun 2025 10:15:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750241597; cv=none; b=l58jvThrc+XjQnfUrakPEd6Mx+qQieLa4dgTQgQL/5xfdFPYlZPZ7iu/lOyBNK9uss0WFfLHbKJnCeFfz1cU1/biQNktuVgZW7k+37prGg9pjPjsyC2ZrNqd/P7KiOqylZN8QZeeX1720Xj2c/7LYQo/I3A6blymfbfCo7pWGqg=
+	t=1750241731; cv=none; b=pZzcBoh5AHFmxEIeCO/H0cO4Spo4hR/A9694iweLB4XMcXjDPeCj0OOJuR3tTnvNcnLOeR/HXJHZa2Qkb4Lp7FnK83JI7ms0yT64ZP3kr1tlBKaVtV6nLdl7XOp2cQphNKwB7TyC4vtmyAGaCudYEhYk6/RGN+Fm4t7OQBJzLbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750241597; c=relaxed/simple;
-	bh=pNNwV/XGoxOQv1CG9hWq28XZ9aN6GRVjgDsVYJmJ5t0=;
+	s=arc-20240116; t=1750241731; c=relaxed/simple;
+	bh=ltwb9DIv2KJ/ugDKG09NyjxtUjK7KgzzXwT+rpLfPek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UN5EBxFL+oF8LbsOB/TmoK8gQjh4AnVpKqQC4/4MW1siFfmwK4lld+Qyl1lOWkh5fCkgFWdQaZeEp9XQHJ59d4rz5yzoKyMzOpQuWPfhiiPxFvdR4YLpfmTmlN+G8d9l9K0wQ4D0uHrLNhDmO0AZA3J8eceFjE12OM0Pitu5T4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h1prG0PP; arc=none smtp.client-ip=209.85.128.42
+	 MIME-Version; b=WSs3k/yyTy8iL+ORyD88n+3dCIKrVbVU4posefJf9oVBa/e6yc03daJoQ9FanJ22qJkvbEV8bQh2LmIaLpv6K4Nb2w0c9nh4AwOOTN0u6amZjkhhx4KTU1IT4dlyLRzygagGicEjAUFspAcGj8ng6GRMuUXIEwt6F7/Llgdsuzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RAHCGE2M; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4531e146a24so41332835e9.0;
-        Wed, 18 Jun 2025 03:13:15 -0700 (PDT)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3a50956e5d3so5354572f8f.1;
+        Wed, 18 Jun 2025 03:15:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750241594; x=1750846394; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750241728; x=1750846528; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JcnlFSZlZ2x3eUss2ZhS1aBPVnMt3wLpmm8ROrRN7RM=;
-        b=h1prG0PPtxMCuTenFbwAPmpP8Xa9geIZMxrSa+bQje+Etbycp7wiCgBIJNZ5HIBOwi
-         TL3dT/+l0ATTLJqNRZPAC2lZz4+TmOJSg58de+wJwncXGeyBEFmGGcOqqTR2j4rDZ7Dt
-         JuboUWcLTp34kVeQ2lMsv9lt7xX8sn3zxksR35zU+TQhy+ob7F3fvVRtXJck/wBoyLZG
-         O/wC6wY5X4XmTsCr6amKUEVfn4RWMC7Ga792a009oVz2dkdquVdLDVM+yDgWBYkC1XcS
-         Kr3zT0Rz6BezFmfN4Y+XfXcwYCVHhp1oPyfgLPKqhuA5zXVIUAjktz1u2YJaFDxyxcPn
-         boow==
+        bh=jJsvhinXAz/28vXCLsDhFRnAr3ugS1hgCI0FXeRg2Pw=;
+        b=RAHCGE2MlP3J8zFKH8GZFkN5y+BVE3oCfCN8coAqpMan2fFEN9mhD7Wgoi3/zr9mEK
+         F9t2OGHvVwDx2cOLsYhNnWRkdDQb5yuNXiAiSAqnMnaikfEONlqmuhBGE1cY/unuzaxZ
+         SFXiZdT3vO9fiV3HsxsQ9N2fLMCXba8UJBdrKjDURZAEydhuNe1w3hZfZIkFNWzi8Uwe
+         195lNKxrF+8Eo6K6MgQmQibuUBoe9OaE78vnq4UmOlZ5V0xO6oDbajh3LTERNZfZ9yHI
+         hIXy7aF8I/2OAOtn2oIXSMwmqimOI1qLM/Hmx/D1N5L6eapqgzvSH+9zBxchQv5xEJi+
+         EY/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750241594; x=1750846394;
+        d=1e100.net; s=20230601; t=1750241728; x=1750846528;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=JcnlFSZlZ2x3eUss2ZhS1aBPVnMt3wLpmm8ROrRN7RM=;
-        b=NPgGuyh4ixjxf6pjdTvUmCCjo3MOt1AYaHowASPj5wA1n8cI/515INUPTnJd6iEGdA
-         H8xbRv+zR0NsOZ6d76TrMZH5NVvLsGwFuvcvNBm4M1hWblC3wFsTkS5Cqx0TnubDMMEt
-         PFyyMPhE7Ev14NxAnCfq9surK31dGgIeJgTcWxlg+42tfhlC4TcG9fPZKC/SCLPpghSu
-         L7ArdebOtjaqKNHJvTncj8crNCdprasPjPaa52yKAK8z5pnEC2D1N7gL5ld35binhxhe
-         SP9Xydjx0JGDjFgsiMNoWQirlF1pCfzYJXUzpESMgvfwmcRFf6JPoVUZlbPV1y7zXEPD
-         BHIg==
-X-Forwarded-Encrypted: i=1; AJvYcCUFTPDRH1bPPCNdzLvbXfOhMtXbes1IpuW75re8Z/jJSFAP3Xvx2bHArHxZ5hKZyKUQSSsJKYFOyBAx@vger.kernel.org, AJvYcCUHmN8JLpg0qTqY8l461XMow1weye8v6eW5+VxAdo/TCLUg+gN2g0WvXgzG/rkO4lEzhKI00+Nd0EcNclBR@vger.kernel.org, AJvYcCWswsqz64Ix6ZvGzhNMsKBK6Wl0bQ3EhBuV09VFR2BiEC9sCS53UYPu6OVIUwpyfnVj75+nMtFqN06LvZ7Ob00=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxmqj3lMJOSxL/h5tL7lpFLnE47LVo7PqlzBgOCjq1T/gg/GqW6
-	yDzeUnzgwVTn/S1hInIq2IlphOx2mxUhLjEpc9J+HejhDo5D+DnBu8wY
-X-Gm-Gg: ASbGnctiBwJnPniGsKYDVn0zGToCfs/tut96A4bDyNPPVObX9In1H3ULe/ofiRPtcYY
-	LSI50yclAtPKee/1pDdRiAjvtvSq4eCf5e5lziWlqB2Pze7aZ937ohufXust4g+N55ddeEk8ewS
-	gLGE/++i5wm7x9dRKanBpByRm74QzuMadE761gMHt1/rmRXFL+5BniMvBskWaawe2ByuIdpTWHX
-	b//mMCoj3vEaTWXSF5TGVko3gzZOfwDs+xnfx/NuoXKqfYot0iCWnj1xTNOrrxC2XJrwAAeYbv0
-	yzZncma6YFYYLmmLZ26qBjEtlQFm5nV42AVaBADEWidsif2dD0rfa6eKMTpE2yjeg2cUI1H8cAI
-	+FeFEQ25YL2Uzgdl3+2lYG1eScyearR1l/3QRLB4=
-X-Google-Smtp-Source: AGHT+IEwXfOH3FNaIAS2a78UClizMEIMKgdGdRhw9w824FJtI+ggGZqCrs6PgMh0KumZibH7adUEmg==
-X-Received: by 2002:a05:600c:3e8f:b0:442:dc75:5625 with SMTP id 5b1f17b1804b1-4533ca468e9mr157629865e9.5.1750241594282;
-        Wed, 18 Jun 2025 03:13:14 -0700 (PDT)
+        bh=jJsvhinXAz/28vXCLsDhFRnAr3ugS1hgCI0FXeRg2Pw=;
+        b=mvuUiJPFetY50g+8N5HwKGRvh7ozDXSzX/Eh/v/hcx7k6KiZIeqIY4qE/jVcXpzzpU
+         J4apFdRcQK4YmA4oqBN9bh2OsQGvSZzkQjvUN3DuBFWHhrxSlxenYZ9ybcBa0Is/ulw+
+         10i4Vd+5zX8nBsFoGjJiPZfsPCmlM3TadzT1rLgSw9nzR9h7r9mIk6P7CRSfJUJ7/K+z
+         ElJqGYl5R9GyL2Dvo7cUXKKtOKwozRpsn9qytr4KoV0so/c9Hz6omhmHvFU46jHrYJte
+         6FiEljlcK5azpLGkj3sSUwteoYQQeu7x2I0NwoWWoVzrmqVVVjly2uDKrvb11Fovbggi
+         cWdw==
+X-Forwarded-Encrypted: i=1; AJvYcCUVxXMx/UH6wMg3Vo9rBXki+Zij0naUbfjQoMx2/ET4Z721xO6yMksn3N41oFITvGCOt+VKqwD6DGSL@vger.kernel.org, AJvYcCVV/FsqoehO74Ql8q5gtKNUtCGqLEReOTl/c95bTZZLIgao8hINC5p+6RW/Np60fXj3tHhdosr2PjvJCsry@vger.kernel.org, AJvYcCWkQwYkeiyqJk0+mCBZlhZfE91Iq+XU4DoTrNWnq3khrjcIb2IH//59EWphyRC6S0cfDS+2bA8zJ3V1epd/Q1E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yziiphl/qNRgo8v/NO0bslYnkyIX0b+Z8tnRpjQAFxF9aMD4bEc
+	pDYcNNspTE/oXp6Bk/Jy2WdXCifOHa2PeF1KXL0EVtogNdZ0jQoq59XB
+X-Gm-Gg: ASbGnctw/kdwyQtRwDAig7F1+XRsRs0bhkTmeoJw5WtTFbwwZapt/9VZVYX70NnZO98
+	KmU22YjgRNk+L94wwGpKD5jjk7F9dD1zMg8LX295oBml10h07xIDP7Y4jKBSJg+iN5GlUsbAfYA
+	Q9xZfLxPLc4RS0uf5oNhHal7tOm0SBADRbWFg45or/nJYjDNNWvhng3aDHlaCKR9J3VMkBr3eer
+	MDQ8FBLrO6N6q+kuybl6RvEexPZGlfNgzc60Dbc1MIPCyWMsPX5AQbjQlT30/umxxpLLPi3ovCp
+	aHJYhzSfhtYWZp3MHZD2v6oxbNgC/TsHX4CYsSkmG31zXOAOBJWtjnVQeTEYX2h7GgCJWVmqzAb
+	djah0R5lFzUOLO3KxKCn5O8Y5TjYAlP9dgWJY
+X-Google-Smtp-Source: AGHT+IHMgSwhUqWfJPYacZImHH+hqT1pGDyJydFaYgDyOIKYQNzn0o0KZQVvbpbNHsGoX4rc88bs5Q==
+X-Received: by 2002:a05:6000:1a88:b0:3a4:eeb5:58c0 with SMTP id ffacd0b85a97d-3a5723a43b5mr15751243f8f.20.1750241728005;
+        Wed, 18 Jun 2025 03:15:28 -0700 (PDT)
 Received: from igor-korotin-Precision-Tower-3620.airspan.com ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e256b95sm207100275e9.30.2025.06.18.03.13.13
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e25e89fsm197453115e9.33.2025.06.18.03.15.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jun 2025 03:13:13 -0700 (PDT)
+        Wed, 18 Jun 2025 03:15:27 -0700 (PDT)
 Sender: Igor Korotin <igorkor.3vium@gmail.com>
 From: Igor Korotin <igor.korotin.linux@gmail.com>
 To: ojeda@kernel.org,
@@ -95,9 +95,9 @@ Cc: boqun.feng@gmail.com,
 	viresh.kumar@linaro.org,
 	alex.hung@amd.com,
 	dingxiangfei2009@gmail.com
-Subject: [PATCH v7 2/9] samples: rust: platform: don't call as_ref() repeatedly
-Date: Wed, 18 Jun 2025 11:11:11 +0100
-Message-ID: <20250618101111.3047980-1-igor.korotin.linux@gmail.com>
+Subject: [PATCH v7 3/9] samples: rust: platform: conditionally call Self::properties_parse()
+Date: Wed, 18 Jun 2025 11:13:25 +0100
+Message-ID: <20250618101325.3048187-1-igor.korotin.linux@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250618100221.3047133-1-igor.korotin.linux@gmail.com>
 References: <20250618100221.3047133-1-igor.korotin.linux@gmail.com>
@@ -111,34 +111,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Danilo Krummrich <dakr@kernel.org>
 
-In SampleDriver::probe() don't call pdev.as_ref() repeatedly, instead
-introduce a dedicated &Device.
+Only call Self::properties_parse() when the device is compatible with
+"test,rust-device".
+
+Once we add ACPI support, we don't want the ACPI device to fail probing
+in Self::properties_parse().
 
 Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 ---
- samples/rust/rust_driver_platform.rs | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ samples/rust/rust_driver_platform.rs | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-index c0abf78d0683..000bb915af60 100644
+index 000bb915af60..036dd0b899b0 100644
 --- a/samples/rust/rust_driver_platform.rs
 +++ b/samples/rust/rust_driver_platform.rs
-@@ -32,13 +32,15 @@ fn probe(
-         pdev: &platform::Device<Core>,
-         info: Option<&Self::IdInfo>,
-     ) -> Result<Pin<KBox<Self>>> {
--        dev_dbg!(pdev.as_ref(), "Probe Rust Platform driver sample.\n");
-+        let dev = pdev.as_ref();
-+
-+        dev_dbg!(dev, "Probe Rust Platform driver sample.\n");
- 
-         if let Some(info) = info {
--            dev_info!(pdev.as_ref(), "Probed with info: '{}'.\n", info.0);
-+            dev_info!(dev, "Probed with info: '{}'.\n", info.0);
+@@ -40,7 +40,12 @@ fn probe(
+             dev_info!(dev, "Probed with info: '{}'.\n", info.0);
          }
  
--        Self::properties_parse(pdev.as_ref())?;
-+        Self::properties_parse(dev)?;
+-        Self::properties_parse(dev)?;
++        if dev
++            .fwnode()
++            .is_some_and(|node| node.is_compatible(c_str!("test,rust-device")))
++        {
++            Self::properties_parse(dev)?;
++        }
  
          let drvdata = KBox::new(Self { pdev: pdev.into() }, GFP_KERNEL)?;
  
