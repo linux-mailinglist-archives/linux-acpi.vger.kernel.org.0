@@ -1,201 +1,212 @@
-Return-Path: <linux-acpi+bounces-14433-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14434-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64891ADE10E
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 04:25:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A06ADE826
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 12:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A70B2189B6DD
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 02:25:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 869ED7A5570
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 10:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB0319F11E;
-	Wed, 18 Jun 2025 02:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A7E29DB8F;
+	Wed, 18 Jun 2025 10:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YQGmoPYw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26236C2EF;
-	Wed, 18 Jun 2025 02:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F5E296153;
+	Wed, 18 Jun 2025 10:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750213499; cv=none; b=RF+WISbsrj08NxqXAKJE516gnKjCZrnbWBikEp5+ijGprCVaxUOBKLPHYX8MIrT7dNFy+Jd+Hd+y5xkJFNr5h0pd+UiANhtkBZ3mtHdu8jIdhV/w2xDtHMg89LlvMe+WMVCtO0ROlzjUDeUSe1Km74ljsdt+tfsqm4kuB3x+X4M=
+	t=1750241081; cv=none; b=TeV9Q37MivG9eJDQKhPWDZRKFDHBkO8UOGSP+OceJbQ79oqEMeRYiuvMwtbTUq9pGTHKXxo6dWfA2VJJ/WQYJB+pihZlP7nWP8BsZ7DIbbqrU3NGw4mWg5VIWgp89wAHu0B/og0vckEEGAcy9bjgeL0Okl6aaaEWxqXRG9QX1ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750213499; c=relaxed/simple;
-	bh=veGwjYAshz5wATG617MZKNzcaKLYPgMK/Du4Bkd6tkg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g8841yUItXMWxNKr7PmTkRN6rbuWO7bIOOvVcmlhQ4uO6hv+Py46KMgnDnunPZE/PXymA51wAN0RntLsWzoj2RYm/h/Lz++lqg1pziJ6ttRdIfwb5CKdSf1rzwjYADrZEWRW4I0xlZl7m04yUOyUXSFfH2fr/AgpRIlKB+TOuwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from mail-wr1-f46.google.com (unknown [209.85.221.46])
-	by APP-03 (Coremail) with SMTP id rQCowABHXFRxI1JohnlDBw--.7428S2;
-	Wed, 18 Jun 2025 10:24:50 +0800 (CST)
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a5123c1533so3619032f8f.2;
-        Tue, 17 Jun 2025 19:24:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVnetWa153F1iwRXLT/Nk+EXqCvd5g6ZFmxOvo1MkfCWD6Bs80CPcgs4h54sZzOeV4X7HXszF2hqTED@vger.kernel.org, AJvYcCWWGNPaK6nbSDLXOSYdgNn+SmJFmh2tzTXGf3oi9ewGEYckheR5+D0cg8TF05QjiHSQ8FqcC2qsxXnB@vger.kernel.org, AJvYcCXiOgVFIREQLyB7kWeFp+Df5V1xZOYwaX/Tguuf2Vx/9Cm4ue4bMwRAl06agkEwLqkXWlir06Ykuw/7v26G@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx34jyOf9jn6tGV995Pf24U1zoAlyPVnrgnjSNAjQm35qqqsJ1z
-	wePsOzLAZEjd/GcnBj8qPAKs/TkYHac4ZeKJXhPT5zC0TFLGMewaHUeMeYmv9MuDb4wvbL27hb6
-	b80JKXlHQq23hz2gSepZYT6udnG/Rhog=
-X-Google-Smtp-Source: AGHT+IFqqgCqTx3H7A2RicTOV7G+8sPyByahjukgJbjYtZInaAbuTplcRs9VJ6pS0QLur+Gg3eUy9v735bCIVegSzI4=
-X-Received: by 2002:a05:6000:2908:b0:3a3:ec58:ebf2 with SMTP id
- ffacd0b85a97d-3a572398e99mr12091890f8f.7.1750213488113; Tue, 17 Jun 2025
- 19:24:48 -0700 (PDT)
+	s=arc-20240116; t=1750241081; c=relaxed/simple;
+	bh=m6cTzl15Gzmvo4GBPCi+25M/GblYyw4j8kZYb6v7v+U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=M6CtPA9Bma2sFNQyuCKEb6FWdAcsbPxdveIWpAeS26w7VqGlU0m+P5+lACE37BZczH8R/ffbNnG+K9JSRQ5M5KNMGAA1Tc0mE4Nze3hmb07vS3EAmrWsl/+OhtTG0NZ/g4pdoqHd3kjvbRZ5gy1U6ZQOKKtJfQ7/V/cBLpE960Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YQGmoPYw; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3a531fcaa05so4131349f8f.3;
+        Wed, 18 Jun 2025 03:04:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750241077; x=1750845877; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=cTgK4oiuA8WvDKr+6YArL7F7kHsl+YqCkp5AU61fnZc=;
+        b=YQGmoPYwnwk2nBEjBSdfhKflX2syb+Z/7nlFZLTtlTv+qHBNXoc3V0jx2oVURRwP7l
+         D/uJqFdVEHMrMicZZcqXi+lkkkf18NBOqnkZ61C40nhQPkaNba7NHHQHilHx7yo529Gx
+         EYpU/I7VZS88wxAvEktnfJB0iFpfdpW1TnNmRsZbFiXxgM81XxOGJY72yhPqq/sBhpJX
+         TxKarcxgvLMvXJHXx4Icrrdv1IhCwp4envmCWet6W6rMZlr4UxMLRkFarSHY6MpmkLAq
+         bAhwjdUmO1XYpcnCyQd6V9YHDV550WhTGochTsmHYYXww+oA9IFtptpwao8CBfybzzSA
+         M/DQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750241077; x=1750845877;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cTgK4oiuA8WvDKr+6YArL7F7kHsl+YqCkp5AU61fnZc=;
+        b=nvZ/b3TEsl8QQE+bCdqNhMz+IsnEXVw+8giu54y5PQwhwrujhzBxpw6L0dCKCIoBsR
+         M7VRfLGhrIJMUEnSR6NM53vK0Iq9HrMfiXK/1LDn8CyMOwgUBK5HIPPCbU73YJofKUh+
+         ixE4zXTAuoTdp+WFNarf90s+ynLggnV/HdAANX/am7YsoPgl8dTP1uCEx4YJfe5JQUF0
+         oWj2TrE0DCZbcy6NMv0aJHvMqp2v8LeHsbXvWyt4np0OlCZPp9+oF2kk8A9anCTJmQko
+         LBKFs2vDXdaYtXTGQqFRowDrT1fcPXzE4JvRwK5vOs+88llvDhcoJZg9JM7UdWOo3uyD
+         hZ9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWGz0tkOkT3Nvb5xCK/YDgTJ4IW6TJtujCNzN9fWrmDZ6mBmboUiQTu3uNNlVU3w4QiRHaprV9dAL+7b7xO@vger.kernel.org, AJvYcCWTftJQrSfmGMesnVklBVbC5mHe7+h6lSY5WN3gJtKq/JrjLEEQBHKVgO5bZhFE2F5U+Zg+Gm1yDnKWEpfFoyg=@vger.kernel.org, AJvYcCWb6wOe2B2E7W4/AOUw9MZXwNGHc0XELrVESaREBSU+cUWFAztIflVHMtzyiBcq7HPWtfyI3i0g/A26@vger.kernel.org
+X-Gm-Message-State: AOJu0YywBFjQjZPH5RBBvSOicDNNDdzTS5bnvsJ+Ut4ZqH4sov3softQ
+	Cr4d2fMYiH483ln0GcyLlbuVX9GnAlBard3UUC7zq6TINs9U2VDNxnNK
+X-Gm-Gg: ASbGncuof52iDjsZMUSTEVdyLcyJ4FRFV+Glf8SlfffCkcrS4P6sTgNZgg5kZPxIkxr
+	Pk69kUylC6QJP8VS+CiuH4AlMFEopX/gksY1BmDquypbuI5Trij2l6y2ysxNseeezbXo+fPUbNS
+	BRNWvs9XJFEHgwLWdghYxdbP+Qvq/yNAXPrzl/QY9k4ityP+a3toWND2rd1hr8gl+u6RPdWHJDy
+	W5tckiHeu4bHip82gKRFGOluwcdjf6b0MdKZAJsRivTRlXqDjtmYeCp6HuwEvy+dXBSe5sDcpSa
+	Sz6XpBfQqUywJCHiV293FV6bHl5k3+9hV1yMghyLltz7kgngY/jQ6pC4aBOHcpS5WhnhKAc6RxI
+	SFS/BXhIznOJrHc1R9ayG0gjhZN9d5MH5YOPXaZ8=
+X-Google-Smtp-Source: AGHT+IHKE1KsApyZ3jJoPJ7YWhXAxEFJ2ntRfYhmrTl91c8B+E7DhkRUqnrlt+jet9w5FT6nRopZ4g==
+X-Received: by 2002:a05:6000:1a88:b0:3a5:2182:bce2 with SMTP id ffacd0b85a97d-3a5723a2928mr13880244f8f.17.1750241076566;
+        Wed, 18 Jun 2025 03:04:36 -0700 (PDT)
+Received: from igor-korotin-Precision-Tower-3620.airspan.com ([188.39.32.4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e25302dsm195480495e9.26.2025.06.18.03.04.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Jun 2025 03:04:35 -0700 (PDT)
+Sender: Igor Korotin <igorkor.3vium@gmail.com>
+From: Igor Korotin <igor.korotin.linux@gmail.com>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	rafael@kernel.org,
+	gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	lenb@kernel.org,
+	wedsonaf@gmail.com,
+	viresh.kumar@linaro.org,
+	alex.hung@amd.com,
+	dingxiangfei2009@gmail.com
+Subject: [PATCH v7 0/9] rust: Add ACPI match table support for Rust drivers
+Date: Wed, 18 Jun 2025 11:02:17 +0100
+Message-ID: <20250618100221.3047133-1-igor.korotin.linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250617023738.779081-1-qiaozhe@iscas.ac.cn> <20250617144038.GA1134072@bhelgaas>
-In-Reply-To: <20250617144038.GA1134072@bhelgaas>
-From: Zhe Qiao <qiaozhe@iscas.ac.cn>
-Date: Wed, 18 Jun 2025 10:24:36 +0800
-X-Gmail-Original-Message-ID: <CALhs5=1t37kXaVNiidfK16EqP-7HT_bq_s5d=JKAuBtwhONd4w@mail.gmail.com>
-X-Gm-Features: Ac12FXwoXGIkpszpHeIr8iU0A0DVQ-_8wB0lyTMDmYvmh6yGW21L2y23GrtdZ3U
-Message-ID: <CALhs5=1t37kXaVNiidfK16EqP-7HT_bq_s5d=JKAuBtwhONd4w@mail.gmail.com>
-Subject: Re: [PATCH v2] PCI/ACPI: Fix double free bug in pci_acpi_scan_root() function
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: rafael@kernel.org, bhelgaas@google.com, lenb@kernel.org, 
-	kwilczynski@kernel.org, sashal@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	Dan Carpenter <dan.carpenter@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID:rQCowABHXFRxI1JohnlDBw--.7428S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJF4xWFyfAF1kWFyrCF1rJFb_yoWrGw1Dpa
-	1Svw4UAr4ktr4kGr1kZ3WrZF1rZrs0krW7KrZ7t3yfAF4DWr12qFZFkrna9F98Zrs5Cw4I
-	vF4qvFyUGF4qyaDanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvIb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwV
-	C2z280aVCY1x0267AKxVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF
-	0cIa020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr
-	I_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxG
-	rwCY02Avz4vEIxC_Gr1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2
-	IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v2
-	6r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2
-	IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv
-	67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf
-	9x07bVQ6JUUUUU=
-X-CM-SenderInfo: ptld061kh6x2xfdvhtffof0/
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Bjorn
+This patch series introduces support for ACPI match tables in Rust 
+drivers.
 
-On Tue, Jun 17, 2025 at 10:40=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org>=
- wrote:
->
-> [+cc Dan]
->
-> On Tue, Jun 17, 2025 at 10:37:38AM +0800, Zhe Qiao wrote:
-> > The patch "PCI/ACPI: Fix allocated memory release on error in
-> > pci_acpi_scan_root()" introduces a dual release issue. When
-> > acpi_pci_root_creat() fails, the pci_cpi_can_root() function
-> > will release 'ri ->cfg' and 'root_ops' in the error handling
-> > path.However, acpi_pci_root_creat() will also call
-> > __acpi_pci_root_release_info(), which in turn will call the
-> > release_info hook, causing the same block of memory to be
-> > released again.
->
-> These are all nits, but would have to be fixed before applying:
->
->   - 'The patch "PCI/ACPI: Fix ..."' is not the usual way to identify a
->     commit.  Use the same style as in the Fixes: tag below.
->
->   - Typo in "acpi_pci_root_creat" (twice)
->
->   - Typo in "pci_cpi_can_root"
->
->   - Add space after the period in "path.However, ..."
->
->   - Add "Reported-by: Dan Carpenter <dan.carpenter@linaro.org>" and
->     "Closes: https://lore.kernel.org/all/aEmdnuw715btq7Q5@stanley.mountai=
-n/"
->     and cc: Dan.
->
->   - 631b2af2f357 appeared in v6.16-rc1, so we should try to get the
->     fix into v6.16.  A hint after the "---" would be helpful to make
->     sure that happens.
->
-> Wait a few days before reposting in case other folks have comments.
->
+Currently, Rust abstractions support only Open Firmware (OF) device 
+matching. This series extends the driver model to support ACPI-based 
+matching, enabling Rust drivers to bind to ACPI-described devices.
 
-Thank you for your detailed review and pointing out these issues.
-I will wait a few days before resending.
+Changes include:
+  - A new `acpi::DeviceId` abstraction for working with 
+   `struct acpi_device_id`.
+  - Updates to the core `Adapter` trait and `platform::Driver` to support
+    optional ACPI ID tables.
+  - A sample implementation in the Rust platform driver, demonstrating 
+    multi-bus matching.
 
-Thanks again!
+This is especially useful for writing drivers that work across platforms 
+using both OF and ACPI.
 
-> > Fixes: 631b2af2f357 ("PCI/ACPI: Fix allocated memory release on error i=
-n pci_acpi_scan_root()")
-> > Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
-> > ---
-> > v1 -> v2:
-> >  - Restore all changes from the first version.
-> >  - Remove unnecessary release info hooks.
-> >  - Add a NULL check before calling info->ops->release_info().
-> >  - Delete the currently unused pci_api_geneic_delease_info () function.
-> > ---
-> >  drivers/acpi/pci_root.c |  3 ++-
-> >  drivers/pci/pci-acpi.c  | 12 ------------
-> >  2 files changed, 2 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> > index 74ade4160314..83628adbc56b 100644
-> > --- a/drivers/acpi/pci_root.c
-> > +++ b/drivers/acpi/pci_root.c
-> > @@ -974,7 +974,8 @@ static void __acpi_pci_root_release_info(struct acp=
-i_pci_root_info *info)
-> >               resource_list_destroy_entry(entry);
-> >       }
-> >
-> > -     info->ops->release_info(info);
-> > +     if (info->ops && info->ops->release_info)
-> > +             info->ops->release_info(info);
-> >  }
-> >
-> >  static void acpi_pci_root_release_info(struct pci_host_bridge *bridge)
-> > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> > index b78e0e417324..6e85816ee1c3 100644
-> > --- a/drivers/pci/pci-acpi.c
-> > +++ b/drivers/pci/pci-acpi.c
-> > @@ -1652,17 +1652,6 @@ pci_acpi_setup_ecam_mapping(struct acpi_pci_root=
- *root)
-> >       return cfg;
-> >  }
-> >
-> > -/* release_info: free resources allocated by init_info */
-> > -static void pci_acpi_generic_release_info(struct acpi_pci_root_info *c=
-i)
-> > -{
-> > -     struct acpi_pci_generic_root_info *ri;
-> > -
-> > -     ri =3D container_of(ci, struct acpi_pci_generic_root_info, common=
-);
-> > -     pci_ecam_free(ri->cfg);
-> > -     kfree(ci->ops);
-> > -     kfree(ri);
-> > -}
-> > -
-> >  /* Interface called from ACPI code to setup PCI host controller */
-> >  struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
-> >  {
-> > @@ -1683,7 +1672,6 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pc=
-i_root *root)
-> >       if (!ri->cfg)
-> >               goto free_root_ops;
-> >
-> > -     root_ops->release_info =3D pci_acpi_generic_release_info;
-> >       root_ops->prepare_resources =3D pci_acpi_root_prepare_resources;
-> >       root_ops->pci_ops =3D (struct pci_ops *)&ri->cfg->ops->pci_ops;
-> >       bus =3D acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg=
-);
-> > --
-> > 2.43.0
-> >
+Tested using QEMU with a custom SSDT that creates an ACPI device matching
+the sample Rust platform driver.
 
-regards,
-Zhe
+This series is based on three patches by Danilo Krummrich, which 
+introduce general improvements to the Rust platform driver. These patches 
+re included unchanged at the beginning of the series for completeness, as 
+they are required for the ACPI integration.
+
+Danilo Krummrich (3):
+  rust: device: implement FwNode::is_compatible()
+  samples: rust: platform: don't call as_ref() repeatedly
+  samples: rust: platform: conditionally call Self::properties_parse()
+
+Igor Korotin (6):
+  rust: acpi: add `acpi::DeviceId` abstraction
+  rust: driver: Consolidate `Adapter::of_id_info` methods using `#[cfg]`
+  rust: driver: Add ACPI id table support to Adapter trait
+  rust: platform: Set `OF_ID_TABLE` default to `None` in `Driver` trait
+  rust: platform: Add ACPI match table support to `Driver` trait
+  samples: rust: add ACPI match table example to platform driver
+
+Changelog
+---------
+v7:
+ - Rebased onto the driver-core-next branch
+ - Incorporated three of Danilo’s upstream patches as a base
+ - Switched from `assert!` to `build_assert!` in `acpi::DeviceId::new` 
+   for compile-time checks
+ - Renamed the sample ACPI HID to `TST0001`
+ - Moved the ACPI test instructions into the module’s top-level 
+   documentation comment
+ - Link to v6: https://lore.kernel.org/rust-for-linux/20250613133517.1229722-1-igor.korotin.linux@gmail.com/
+v6:
+ - Moved set `Driver::OF_ID_TABLE` default to `None` to a separate commit 
+ - Removed out of scope change related to cpufreq driver.
+ - Link to v5: https://lore.kernel.org/rust-for-linux/20250611174034.801460-1-igor.korotin.linux@gmail.com/
+v5:
+ - Got rid of unnecessary consolidation of `Adapter::acpi_id_info` methods.
+   Instead, firstly made consolidation of `Adapter::of_id_info`, then
+   `Adapter::acpi_id_info` is added using the same pattern. 
+ - Set `Adapter::OF_ID_TABLE` and `Adapter::ACPI_ID_TABLE` as None by 
+   default. 
+ - Removed `Adapter::OF_ID_TABLE`/`Adapter::ACPI_ID_TABLE` initialization
+   example due to irrelevance.
+ - Removed extra `of` dependency and `Adapter::OF_ID_TABLE` initialization 
+   in cpufreq driver.
+ - Link to v4: https://lore.kernel.org/rust-for-linux/20250610145234.235005-1-igor.korotin.linux@gmail.com/
+v4:
+ - Fixed code example for `trait Adapter` in platform.rs 
+ - Fixed driver implementation example in rust_driver_platform.rs and moved
+   it to `trait Adapter` in platform.rs per Danilo Krummrich's suggestion.
+ - Consolidated `Adapter::of_id_info` and `Adapter::acpi_id_info` methods using
+   `#[cfg]` per Benno Lossin's suggestion.
+ - Link to v3: https://lore.kernel.org/rust-for-linux/20250606170341.3880941-1-igor.korotin.linux@gmail.com/
+v3:
+ - Removed fwnode type check in `Adapter::id_info` per Greg's and Danilo's
+   comments
+ - Removed `is_of_node` rust helper, due to unnecessity. 
+ - Fixed example code in `rust_driver_platform.rs` per Danilo's comment
+ - Added an instruction of testing ACPI using QEMU with a custom SSDT
+ - Fixed minor code formatting issues.
+ - Link to v2: https://lore.kernel.org/rust-for-linux/20250605161956.3658374-1-igor.korotin.linux@gmail.com/
+v2:
+ - Removed misleading comment in `acpi::DeviceID` implementation. 
+ - Removed unnecessary casting in `acpi::DeviceID::new`.
+ - Moved `pub mod acpi` to correct alphabetical position in `rust/kernel/lib.rs`.
+ - Link to v1: https://lore.kernel.org/rust-for-linux/20250530123815.1766726-1-igor.korotin.linux@gmail.com/
+
+ MAINTAINERS                          |  1 +
+ rust/bindings/bindings_helper.h      |  1 +
+ rust/helpers/property.c              |  6 ++
+ rust/kernel/acpi.rs                  | 60 ++++++++++++++++++++
+ rust/kernel/device/property.rs       |  9 +++
+ rust/kernel/driver.rs                | 81 ++++++++++++++++++++-------
+ rust/kernel/lib.rs                   |  1 +
+ rust/kernel/platform.rs              | 29 +++++++++-
+ samples/rust/rust_driver_platform.rs | 83 ++++++++++++++++++++++++++--
+ 9 files changed, 244 insertions(+), 27 deletions(-)
+ create mode 100644 rust/kernel/acpi.rs
+
+
+base-commit: 2a1ea59de83bf367215e2a4dd9bf8bbd061349b3
+-- 
+2.43.0
 
 
