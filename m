@@ -1,159 +1,201 @@
-Return-Path: <linux-acpi+bounces-14432-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14433-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0404ADDF7B
-	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 01:18:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64891ADE10E
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 04:25:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CB587A8052
-	for <lists+linux-acpi@lfdr.de>; Tue, 17 Jun 2025 23:17:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A70B2189B6DD
+	for <lists+linux-acpi@lfdr.de>; Wed, 18 Jun 2025 02:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5282295DB4;
-	Tue, 17 Jun 2025 23:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XlAmBFu5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB0319F11E;
+	Wed, 18 Jun 2025 02:24:59 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281662957A7;
-	Tue, 17 Jun 2025 23:18:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26236C2EF;
+	Wed, 18 Jun 2025 02:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750202321; cv=none; b=jR+sxAmg+8cSEcytZ93DJOkPA8tU7er+uS5M9n+lMG5kwYR3+trGIRrZrG5msNLUbDhkWUz/IvCpDm1O34g2g3MekxsACQupe5DHQIM4RtGUyAVk5csPXJLszu9rpp5AAmUVvyGP2zRh5JLVpAe7UYhrAQFMfsWLojTeR93e4kw=
+	t=1750213499; cv=none; b=RF+WISbsrj08NxqXAKJE516gnKjCZrnbWBikEp5+ijGprCVaxUOBKLPHYX8MIrT7dNFy+Jd+Hd+y5xkJFNr5h0pd+UiANhtkBZ3mtHdu8jIdhV/w2xDtHMg89LlvMe+WMVCtO0ROlzjUDeUSe1Km74ljsdt+tfsqm4kuB3x+X4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750202321; c=relaxed/simple;
-	bh=/vMmGBqzE24P8FsLP9s5W+/tB04dPiPU+BJNaUonudc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XWZkOR+wSnxvNZWt+89YE0J5gV6F8MbdthMhPlckbfyBfyFzEn4MGg44stoDNp8UNG8D9qe2JoXHZhMcln7yFVjNz4FGij9wLMmWMAoNMaD0DYT9tR4p0GFSzf1Ho3rydyBNOi2eIVQ2GRGGSQnHN4ct9AMFcoFOYZGWHXEPp3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XlAmBFu5; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750202320; x=1781738320;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=/vMmGBqzE24P8FsLP9s5W+/tB04dPiPU+BJNaUonudc=;
-  b=XlAmBFu5xno0RhDR/unlkEb0BlTxY62qYFkSOk+/nozQfv8lY1v1v+ug
-   jrt4RllkzfZ/5oT7GuOtzFQiRJTWFmFmx9zH6W/MQtNveQIviU/kX0vzz
-   lUtw8cwRgLE35Ryu5Uxyq/aQJ1GHBXxk85v5XUFlq+fakCDjcaphnnUJV
-   mbHxat453uzWOQiCX0T+g+FOi7T8zhenPKbmAkSQMtAHhfjVu/If67oKU
-   LCNJT55fzxVlfr8fS+sVFeEAbx7u1rACQPWMwJQarUR8jvLID2MZWDpH2
-   spF6HkkmmWNjtZDfSJyVrKEaVgKIEaHH4Q7Jg9Kgn9PVHVzJCyqMzOKIx
-   A==;
-X-CSE-ConnectionGUID: KYuM1V5wS+OLuK5ulcOpdg==
-X-CSE-MsgGUID: BgvPeZ1rTfu1CgxDNOh3HA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="63821385"
-X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; 
-   d="scan'208";a="63821385"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 16:18:38 -0700
-X-CSE-ConnectionGUID: h3Yt53drQwKSeUK2twuIow==
-X-CSE-MsgGUID: IfZEbRw/RVyShptRRlV8KQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,244,1744095600"; 
-   d="scan'208";a="179928707"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.16])
-  by orviesa002.jf.intel.com with ESMTP; 17 Jun 2025 16:18:39 -0700
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To: rafael@kernel.org,
-	rui.zhang@intel.com
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: [PATCH] ACPI: DPTF: Support for Wildcat Lake
-Date: Tue, 17 Jun 2025 16:18:24 -0700
-Message-ID: <20250617231824.3314507-1-srinivas.pandruvada@linux.intel.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1750213499; c=relaxed/simple;
+	bh=veGwjYAshz5wATG617MZKNzcaKLYPgMK/Du4Bkd6tkg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=g8841yUItXMWxNKr7PmTkRN6rbuWO7bIOOvVcmlhQ4uO6hv+Py46KMgnDnunPZE/PXymA51wAN0RntLsWzoj2RYm/h/Lz++lqg1pziJ6ttRdIfwb5CKdSf1rzwjYADrZEWRW4I0xlZl7m04yUOyUXSFfH2fr/AgpRIlKB+TOuwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from mail-wr1-f46.google.com (unknown [209.85.221.46])
+	by APP-03 (Coremail) with SMTP id rQCowABHXFRxI1JohnlDBw--.7428S2;
+	Wed, 18 Jun 2025 10:24:50 +0800 (CST)
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a5123c1533so3619032f8f.2;
+        Tue, 17 Jun 2025 19:24:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVnetWa153F1iwRXLT/Nk+EXqCvd5g6ZFmxOvo1MkfCWD6Bs80CPcgs4h54sZzOeV4X7HXszF2hqTED@vger.kernel.org, AJvYcCWWGNPaK6nbSDLXOSYdgNn+SmJFmh2tzTXGf3oi9ewGEYckheR5+D0cg8TF05QjiHSQ8FqcC2qsxXnB@vger.kernel.org, AJvYcCXiOgVFIREQLyB7kWeFp+Df5V1xZOYwaX/Tguuf2Vx/9Cm4ue4bMwRAl06agkEwLqkXWlir06Ykuw/7v26G@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx34jyOf9jn6tGV995Pf24U1zoAlyPVnrgnjSNAjQm35qqqsJ1z
+	wePsOzLAZEjd/GcnBj8qPAKs/TkYHac4ZeKJXhPT5zC0TFLGMewaHUeMeYmv9MuDb4wvbL27hb6
+	b80JKXlHQq23hz2gSepZYT6udnG/Rhog=
+X-Google-Smtp-Source: AGHT+IFqqgCqTx3H7A2RicTOV7G+8sPyByahjukgJbjYtZInaAbuTplcRs9VJ6pS0QLur+Gg3eUy9v735bCIVegSzI4=
+X-Received: by 2002:a05:6000:2908:b0:3a3:ec58:ebf2 with SMTP id
+ ffacd0b85a97d-3a572398e99mr12091890f8f.7.1750213488113; Tue, 17 Jun 2025
+ 19:24:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250617023738.779081-1-qiaozhe@iscas.ac.cn> <20250617144038.GA1134072@bhelgaas>
+In-Reply-To: <20250617144038.GA1134072@bhelgaas>
+From: Zhe Qiao <qiaozhe@iscas.ac.cn>
+Date: Wed, 18 Jun 2025 10:24:36 +0800
+X-Gmail-Original-Message-ID: <CALhs5=1t37kXaVNiidfK16EqP-7HT_bq_s5d=JKAuBtwhONd4w@mail.gmail.com>
+X-Gm-Features: Ac12FXwoXGIkpszpHeIr8iU0A0DVQ-_8wB0lyTMDmYvmh6yGW21L2y23GrtdZ3U
+Message-ID: <CALhs5=1t37kXaVNiidfK16EqP-7HT_bq_s5d=JKAuBtwhONd4w@mail.gmail.com>
+Subject: Re: [PATCH v2] PCI/ACPI: Fix double free bug in pci_acpi_scan_root() function
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: rafael@kernel.org, bhelgaas@google.com, lenb@kernel.org, 
+	kwilczynski@kernel.org, sashal@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	Dan Carpenter <dan.carpenter@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-CM-TRANSID:rQCowABHXFRxI1JohnlDBw--.7428S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJF4xWFyfAF1kWFyrCF1rJFb_yoWrGw1Dpa
+	1Svw4UAr4ktr4kGr1kZ3WrZF1rZrs0krW7KrZ7t3yfAF4DWr12qFZFkrna9F98Zrs5Cw4I
+	vF4qvFyUGF4qyaDanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvIb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwV
+	C2z280aVCY1x0267AKxVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF
+	0cIa020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr
+	I_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxG
+	rwCY02Avz4vEIxC_Gr1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2
+	IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v2
+	6r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2
+	IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv
+	67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf
+	9x07bVQ6JUUUUU=
+X-CM-SenderInfo: ptld061kh6x2xfdvhtffof0/
 
-Add Wildcat Lake ACPI IDs for DPTF.
+Hi Bjorn
 
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
----
- drivers/acpi/dptf/dptf_power.c                          | 2 ++
- drivers/acpi/dptf/int340x_thermal.c                     | 7 +++++++
- drivers/acpi/fan.h                                      | 1 +
- drivers/thermal/intel/int340x_thermal/int3400_thermal.c | 1 +
- drivers/thermal/intel/int340x_thermal/int3403_thermal.c | 1 +
- 5 files changed, 12 insertions(+)
+On Tue, Jun 17, 2025 at 10:40=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org>=
+ wrote:
+>
+> [+cc Dan]
+>
+> On Tue, Jun 17, 2025 at 10:37:38AM +0800, Zhe Qiao wrote:
+> > The patch "PCI/ACPI: Fix allocated memory release on error in
+> > pci_acpi_scan_root()" introduces a dual release issue. When
+> > acpi_pci_root_creat() fails, the pci_cpi_can_root() function
+> > will release 'ri ->cfg' and 'root_ops' in the error handling
+> > path.However, acpi_pci_root_creat() will also call
+> > __acpi_pci_root_release_info(), which in turn will call the
+> > release_info hook, causing the same block of memory to be
+> > released again.
+>
+> These are all nits, but would have to be fixed before applying:
+>
+>   - 'The patch "PCI/ACPI: Fix ..."' is not the usual way to identify a
+>     commit.  Use the same style as in the Fixes: tag below.
+>
+>   - Typo in "acpi_pci_root_creat" (twice)
+>
+>   - Typo in "pci_cpi_can_root"
+>
+>   - Add space after the period in "path.However, ..."
+>
+>   - Add "Reported-by: Dan Carpenter <dan.carpenter@linaro.org>" and
+>     "Closes: https://lore.kernel.org/all/aEmdnuw715btq7Q5@stanley.mountai=
+n/"
+>     and cc: Dan.
+>
+>   - 631b2af2f357 appeared in v6.16-rc1, so we should try to get the
+>     fix into v6.16.  A hint after the "---" would be helpful to make
+>     sure that happens.
+>
+> Wait a few days before reposting in case other folks have comments.
+>
 
-diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_power.c
-index e8caf4106ff9..776914f31b9e 100644
---- a/drivers/acpi/dptf/dptf_power.c
-+++ b/drivers/acpi/dptf/dptf_power.c
-@@ -238,6 +238,8 @@ static const struct acpi_device_id int3407_device_ids[] = {
- 	{"INTC10A5", 0},
- 	{"INTC10D8", 0},
- 	{"INTC10D9", 0},
-+	{"INTC1100", 0},
-+	{"INTC1101", 0},
- 	{"", 0},
- };
- MODULE_DEVICE_TABLE(acpi, int3407_device_ids);
-diff --git a/drivers/acpi/dptf/int340x_thermal.c b/drivers/acpi/dptf/int340x_thermal.c
-index aef7aca2161d..a222df059a16 100644
---- a/drivers/acpi/dptf/int340x_thermal.c
-+++ b/drivers/acpi/dptf/int340x_thermal.c
-@@ -61,6 +61,13 @@ static const struct acpi_device_id int340x_thermal_device_ids[] = {
- 	{"INTC10D7"},
- 	{"INTC10D8"},
- 	{"INTC10D9"},
-+	{"INTC10FC"},
-+	{"INTC10FD"},
-+	{"INTC10FE"},
-+	{"INTC10FF"},
-+	{"INTC1100"},
-+	{"INTC1101"},
-+	{"INTC1102"},
- 	{""},
- };
- 
-diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
-index 15eba1c70e66..8a28a72a7c6a 100644
---- a/drivers/acpi/fan.h
-+++ b/drivers/acpi/fan.h
-@@ -20,6 +20,7 @@
- 	{"INTC106A", }, /* Fan for Lunar Lake generation */ \
- 	{"INTC10A2", }, /* Fan for Raptor Lake generation */ \
- 	{"INTC10D6", }, /* Fan for Panther Lake generation */ \
-+	{"INTC10FE", }, /* Fan for Wildcat Lake generation */ \
- 	{"PNP0C0B", } /* Generic ACPI fan */
- 
- #define ACPI_FPS_NAME_LEN	20
-diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-index 0e07693ecf59..ecb4ea443b9b 100644
---- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-+++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-@@ -690,6 +690,7 @@ static const struct acpi_device_id int3400_thermal_match[] = {
- 	{"INTC1068", 0},
- 	{"INTC10A0", 0},
- 	{"INTC10D4", 0},
-+	{"INTC10FC", 0},
- 	{}
- };
- 
-diff --git a/drivers/thermal/intel/int340x_thermal/int3403_thermal.c b/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
-index 5a925a8df7b3..ba63796761eb 100644
---- a/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
-+++ b/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
-@@ -276,6 +276,7 @@ static const struct acpi_device_id int3403_device_ids[] = {
- 	{"INTC1069", 0},
- 	{"INTC10A1", 0},
- 	{"INTC10D5", 0},
-+	{"INTC10FD", 0},
- 	{"", 0},
- };
- MODULE_DEVICE_TABLE(acpi, int3403_device_ids);
--- 
-2.49.0
+Thank you for your detailed review and pointing out these issues.
+I will wait a few days before resending.
+
+Thanks again!
+
+> > Fixes: 631b2af2f357 ("PCI/ACPI: Fix allocated memory release on error i=
+n pci_acpi_scan_root()")
+> > Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
+> > ---
+> > v1 -> v2:
+> >  - Restore all changes from the first version.
+> >  - Remove unnecessary release info hooks.
+> >  - Add a NULL check before calling info->ops->release_info().
+> >  - Delete the currently unused pci_api_geneic_delease_info () function.
+> > ---
+> >  drivers/acpi/pci_root.c |  3 ++-
+> >  drivers/pci/pci-acpi.c  | 12 ------------
+> >  2 files changed, 2 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> > index 74ade4160314..83628adbc56b 100644
+> > --- a/drivers/acpi/pci_root.c
+> > +++ b/drivers/acpi/pci_root.c
+> > @@ -974,7 +974,8 @@ static void __acpi_pci_root_release_info(struct acp=
+i_pci_root_info *info)
+> >               resource_list_destroy_entry(entry);
+> >       }
+> >
+> > -     info->ops->release_info(info);
+> > +     if (info->ops && info->ops->release_info)
+> > +             info->ops->release_info(info);
+> >  }
+> >
+> >  static void acpi_pci_root_release_info(struct pci_host_bridge *bridge)
+> > diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> > index b78e0e417324..6e85816ee1c3 100644
+> > --- a/drivers/pci/pci-acpi.c
+> > +++ b/drivers/pci/pci-acpi.c
+> > @@ -1652,17 +1652,6 @@ pci_acpi_setup_ecam_mapping(struct acpi_pci_root=
+ *root)
+> >       return cfg;
+> >  }
+> >
+> > -/* release_info: free resources allocated by init_info */
+> > -static void pci_acpi_generic_release_info(struct acpi_pci_root_info *c=
+i)
+> > -{
+> > -     struct acpi_pci_generic_root_info *ri;
+> > -
+> > -     ri =3D container_of(ci, struct acpi_pci_generic_root_info, common=
+);
+> > -     pci_ecam_free(ri->cfg);
+> > -     kfree(ci->ops);
+> > -     kfree(ri);
+> > -}
+> > -
+> >  /* Interface called from ACPI code to setup PCI host controller */
+> >  struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
+> >  {
+> > @@ -1683,7 +1672,6 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pc=
+i_root *root)
+> >       if (!ri->cfg)
+> >               goto free_root_ops;
+> >
+> > -     root_ops->release_info =3D pci_acpi_generic_release_info;
+> >       root_ops->prepare_resources =3D pci_acpi_root_prepare_resources;
+> >       root_ops->pci_ops =3D (struct pci_ops *)&ri->cfg->ops->pci_ops;
+> >       bus =3D acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg=
+);
+> > --
+> > 2.43.0
+> >
+
+regards,
+Zhe
 
 
