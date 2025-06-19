@@ -1,99 +1,88 @@
-Return-Path: <linux-acpi+bounces-14460-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14461-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3948DADFC22
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jun 2025 06:02:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0BC3ADFD32
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jun 2025 07:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D954317C6F1
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jun 2025 04:02:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D500B3A7DFD
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jun 2025 05:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73BF9239E9B;
-	Thu, 19 Jun 2025 04:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E6724397A;
+	Thu, 19 Jun 2025 05:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RILbZXGe"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Dp3C77lr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0319220F2B
-	for <linux-acpi@vger.kernel.org>; Thu, 19 Jun 2025 04:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6AE242D69
+	for <linux-acpi@vger.kernel.org>; Thu, 19 Jun 2025 05:46:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750305751; cv=none; b=Rze63eRmVBKR2K65CMXIileQWTCIhybga6V2M1ayZtukx4mIn6tCjWLwYbXbU0Mw4O0eIh07jaI7bFKjHdaNqq2PaadQ62VNGec4BfXNf8HA03bhLhd+4T86Q1bz794somqeF/qLPLDnl7hWYGPlrjFsKvW60wSOT7BB/ZF3SKE=
+	t=1750312016; cv=none; b=cx6DUF4vpOJUYIDVXPVl9/Uayv+kpMSD5Lu4HELpmc79ugBo9QoNRxSjUPvTqjuktbKbzpfJbqWp+uG3eS0eBNsSRSZZVySjpO/oOYbEGhZcxx/uiwl2loh42mKM3/qlanmDs053TRiIYVWgag0aBK/SjlRGnYzC8cuhQjKHZFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750305751; c=relaxed/simple;
-	bh=LaJ/3fV7CFGu3CbSmkDL7tY02vgNOmg6uh+G6uKUqnI=;
+	s=arc-20240116; t=1750312016; c=relaxed/simple;
+	bh=Bn70nPJu3HUp/M+KYcLviCtpjLHOrJf1pcJLvrjQ/Es=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rqNk0jhFIRtzVIBQhZRUg5mZ849J1cbQfO7Dta72GR0KMwUW8HFiqLkJfGX17oFQ+wHm31nKFHgvU+gT5a5uajCc9LbXLJwkqal/EhFA+GbPsz0fPTWyTuuqseaXlZOQ+TovtoNnoPSMC4ZCyt1zlrpf2NknIB/+5JjE5K2NeUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RILbZXGe; arc=none smtp.client-ip=209.85.167.175
+	 Content-Type:Content-Disposition:In-Reply-To; b=khM5Cv7sZOBtgYeV6TFJgGsTr5ECCr0f8VEQYZICCe4F2XtkxlbDW/Outgy88dPbjeXAHZb3c46pxlfcwA24UU+Jr88cnXnZ9oDwzvVReoZGuQ7ymFkdG2VEIv0LRnezKhPDoieXKJt7V2epgEnA0r/COeVSJqzK1uAQ8pD/ctw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Dp3C77lr; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-40a4de175a3so236129b6e.0
-        for <linux-acpi@vger.kernel.org>; Wed, 18 Jun 2025 21:02:29 -0700 (PDT)
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7390d21bb1cso305611b3a.2
+        for <linux-acpi@vger.kernel.org>; Wed, 18 Jun 2025 22:46:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750305749; x=1750910549; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1750312013; x=1750916813; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=njiJJqXLQl7ToyJarnPfJqmhTUdls24Ce3R5x39b7qM=;
-        b=RILbZXGeMYPSY6nwvbc0SKrf/CQ38luxf2wqhJ1Crz0/I/b9qXRmjq6wILiQdIdy5p
-         OgrCrZ16aP/4vgcs8Btjbd5wADgDLExDY1ezGwZeVeDrweJ0v0FvCwwft8LFZVnqaD5r
-         xzbKnaLj4wd46+xuKME1UCJ3escSvR7Jhq7B8sG6QYbMSZZsyiZbQUQaFAw+67Nb2eJI
-         fYBtS0pKUxlp23Qro2q6sY3Eu1QxjVmf56pC9uWr0z9KI6lvYqxb+NQT88d9j270Pr0H
-         barg46KWNPpw1LeLUsOnE2humV5zfIx85oqKjMymp/NgkE7WJUm/NysIxeZotphsj2IH
-         pzww==
+        bh=L1Xvm2/dcHJBRt7NYvlZ+VTR+ErXbR50l14mI16oEhY=;
+        b=Dp3C77lrzqGDO6ludV5D8bL0F7AwlrR8crpDyn/Om1g4MUBSXb13znlJ0KhQRNxPO1
+         iHZvLYLhLoCFNdfPbHP7V913x1P470fwT5vyPQU48GeTAUoGkB+iTGucUdcJKqT5xawq
+         NW316AlnSbmqgDW763um18OX0EuUelEzae+qHfrY6RFeyfjbZkZ5BoAD4YSemNfuudb+
+         owq38O0EgaYHC1bsWj3w+hIwWAR/2vWdmg9LokuwCPgIn9X+SN1fpzBOvFdYlaT7ovIe
+         GDRYIAInDBCxR2jqbrBS84ZGk4DhPb6j81zoQFeL59YtCj135C4gO5D9UbBbpTvGdvvO
+         /hIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750305749; x=1750910549;
+        d=1e100.net; s=20230601; t=1750312013; x=1750916813;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=njiJJqXLQl7ToyJarnPfJqmhTUdls24Ce3R5x39b7qM=;
-        b=CaVKRglcsNh+vXHUlZIBPgIM8TqAnWvZDALNebLWy2n1eWhygScllWiV1H8ctCZuhv
-         +/vupcCHpRvVOlVyyuqmPftUFx7WUgUyAc43OfNRkHSUpJiwzHavXw0KU8jKj/hmo2sa
-         hnZXSNTctM327nGXf0Sqf9f++yXTTds9DQxRbt8vXVHZZsWMUfqAY9EBJaXOEQwZ5GzL
-         IDx8dnJ5oC+5DIi+sYM4vWdk+TZxLdrjL7LZ2jnfgLvR8/Kb+zwyTukxTS5Wq6JbcT+f
-         nR14xU9dsP4im9j1pPpwCHaFUYvDbAyo9Wsg1D/U0PmU3bswfscYqAbB1QuImEHL4GNC
-         wpiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWPIX62ElkComPLxOdx9eiNsVWjjYO+oM+GRlAVyq9LzkvIeY8pa8a39LYVfF3AvkdDvYNr+NqfjmgS@vger.kernel.org
-X-Gm-Message-State: AOJu0YwC9aZNgjZ6x/fydMw1eADJfaiBVwnlajRZ+FZeeO1YtgCCKZlC
-	JcANjGUlqk5yM5Ykp/GfIzTLfARzKAmV/mWVB5jlJ5ptIY+yGduv9ZXJiOI7+d/HRA4=
-X-Gm-Gg: ASbGnctNJNA6woNTec0en+zrUmOpwr6FZPFmMLsPRwpIfZ41Ol6yov97MjjbvFx23zg
-	qJ2TGpJR0YuGy/m+JOckhXBC5xDqZxmiSP6ZAkHJmaNjzkoepTBKZwwXpIOpIKqbIRp6OcHjJf2
-	4n4z07rInVkPhKyiyXf8lcycCykaf5uFGBfObU7wrg5CVPPa9yYOolvN6fcrYR0SUBh0Q6P77/h
-	FiP1Uis3YovC4HngJ25h8iaF+BbT/aQ5YvS/mYsHfi95qDdQZTYtnphtZWjjH0/XJBLrfZqCnuf
-	Rqg8AX5Pz79TtF3i137P8H4uYfZ7hHaO1eU3zZxtXXN2/pqDI9g+UuAVdJDeGrG10Ndeq0YSnDq
-	vbe0S
-X-Google-Smtp-Source: AGHT+IFrMLP1wAqb88mfVUA87rWeoXsHDnuf13mLTgj804lspyaw0rxCLmor6QPmX9UAyusbltiEtw==
-X-Received: by 2002:a05:6808:5090:b0:3fe:bc96:b82d with SMTP id 5614622812f47-40a7c1da57fmr12386485b6e.36.1750305748810;
-        Wed, 18 Jun 2025 21:02:28 -0700 (PDT)
-Received: from localhost ([2603:8080:b800:f700:f083:6e52:f970:dc01])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-40a740b281esm2631384b6e.8.2025.06.18.21.02.27
+        bh=L1Xvm2/dcHJBRt7NYvlZ+VTR+ErXbR50l14mI16oEhY=;
+        b=iunVJviBKKyr5SpREEQYuQx1Kz7RCrTd+FBLcvDAHDCnHXWFWGMiopLhNUselHlcZG
+         7iG4OpA0qgYlFZNDDuzuQdM7Q061IkXfRqBpbYQyIejE4Z1GmiclJcpR3WrHEpeINcSQ
+         JThCPbctcdntpcpDk5HMVQnkOPqwqjHpxiX+g8LKG+4uEBqhm7xUrFKxpFKwWv3Ouc/H
+         9OahMiQZFylMNafVn+N0KMX16s2srW0V+NVHaoEaq4xvtXtB9inrHVkC/7rQPNf+QD5p
+         ewu5S1mkZE1sIfdQGbvYYaBsU4VgE1kjMrUJoMQvUYGMvQekLBoWwH8Uh15iZyNtxxPb
+         sjaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUBdv6oCXUVW7vlEx2O/aX9PbZ/966PjT5DU3eyRLM2NNe8uf8SXtwd3aR1T5a6nt/oWzKqXOSNP7+d@vger.kernel.org
+X-Gm-Message-State: AOJu0YzN8HbfNqvotSBvhLctUie0J55MHvbA0hGspr81O77y2ILhzIzm
+	tQgluRZbm7s1Qzo+c1KY/z+I31INiKOVc4l6TAkA9yEqXPThD+B7BktUH9jy1grOCqA=
+X-Gm-Gg: ASbGncvzR0ri0x+/f1Z8Kw2U/MhgjfPocEwtozEsIPXjOOTtZRzOpdbRzQX1p9gq41o
+	b3NMUEnSJMJffHPHjn2xs8Q2Ndcy0rznP7QDYrLr8/5KR6w93NrkrkjBIhU1TaEU9pCfTiVgPoz
+	+f1ssCpaBzHDQRJnMEF5MHgxN8rTQQeYpgXUV9WP29/V60cNfm4tY5GGV63CiS2VDSpVL5MQZjx
+	MTDes01dfzLTZ8iN/QJwl74K9yQJOwkMyIahdAVP7+ws4L/UpZ6HCvA+Ty+Ej6lQXDtIlPC9P4x
+	DFcIOz5dsmDKEKXRGc4OfoMcy+hrzmX7Il4bAZaon52tS3Kf/2xey/ziFaspE/U=
+X-Google-Smtp-Source: AGHT+IGx25UdEAzlmqfQKTPAu3rI0FpfbMxJfPd/PkIc3VTClQaEGNZW5YGAM1Nh7zWb+auXSU7+sw==
+X-Received: by 2002:a05:6a00:10d2:b0:748:fd94:e62a with SMTP id d2e1a72fcca58-748fd94edb7mr1182029b3a.1.1750312013191;
+        Wed, 18 Jun 2025 22:46:53 -0700 (PDT)
+Received: from localhost ([122.172.81.72])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-748e86b5527sm2820713b3a.86.2025.06.18.22.46.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jun 2025 21:02:28 -0700 (PDT)
-Date: Thu, 19 Jun 2025 07:02:25 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Marc Herbert <marc.herbert@linux.intel.com>
-Cc: Dan Williams <dan.j.williams@intel.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Benjamin.Cheatham@amd.com,
-	Jonathan.Cameron@huawei.com, dakr@kernel.org,
-	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rafael.j.wysocki@intel.com,
-	rafael@kernel.org, sudeep.holla@arm.com,
-	Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH] driver core: faux: fix Undefined Behavior in
- faux_device_destroy()
-Message-ID: <d478fbca-e98d-4a16-9298-01dcaa8bb008@suswa.mountain>
-References: <2025061313-theater-surrender-944c@gregkh>
- <20250614105037.1441029-1-ojeda@kernel.org>
- <2025061446-wriggle-modulator-f7f3@gregkh>
- <a3a08e5d-bfea-4569-8d13-ed0a42d81b2a@linux.intel.com>
- <2025061546-exile-baggage-c231@gregkh>
- <bcd3848d-54dd-453e-b0b5-91cb72160645@linux.intel.com>
- <6853586e9d366_1f9e10087@dwillia2-xfh.jf.intel.com.notmuch>
- <206ebae8-4e2d-4e04-8872-fa3a56b3e398@linux.intel.com>
+        Wed, 18 Jun 2025 22:46:52 -0700 (PDT)
+Date: Thu, 19 Jun 2025 11:16:50 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Lifeng Zheng <zhenglifeng1@huawei.com>
+Cc: rafael@kernel.org, robert.moore@intel.com, lenb@kernel.org,
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
+	linuxarm@huawei.com, jonathan.cameron@huawei.com,
+	zhanjie9@hisilicon.com, lihuisong@huawei.com,
+	cenxinghai@h-partners.com, yubowen8@huawei.com
+Subject: Re: [PATCH 0/3] cpufreq: CPPC: Some optimizations for cppc_cpufreq.c.
+Message-ID: <20250619054650.pl5ase2l5juu5pm2@vireshk-i7>
+References: <20250526113057.3086513-1-zhenglifeng1@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -102,23 +91,24 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <206ebae8-4e2d-4e04-8872-fa3a56b3e398@linux.intel.com>
+In-Reply-To: <20250526113057.3086513-1-zhenglifeng1@huawei.com>
 
-On Wed, Jun 18, 2025 at 08:33:27PM -0700, Marc Herbert wrote:
-> > But, again, this is a totally different thing from what the patch does.
-> > The faux_device_destroy() code is not doing a dereference, it's doing
-> > pointer math.
+On 26-05-25, 19:30, Lifeng Zheng wrote:
+> This patch series makes some minor optimizations for cppc_cpufreq.c to
+> makes codes cleaner.
 > 
-> pointer math is what we _want_ the code to do. But if that relies on
-> some undefined behavior(s) then the bets are off again. Check
-> https://stackoverflow.com/questions/26906621/does-struct-name-null-b-cause-undefined-behaviour-in-c11
-> where offsetof() is a suggested alternative.
+> Lifeng Zheng (3):
+>   cpufreq: CPPC: Remove cpu_data_list
+>   cpufreq: CPPC: Return void in populate_efficiency_class()
+>   cpufreq: CPPC: Remove forward declaration of
+>     cppc_cpufreq_register_em()
+> 
+>  drivers/cpufreq/cppc_cpufreq.c | 59 +++++++++-------------------------
+>  include/acpi/cppc_acpi.h       |  1 -
+>  2 files changed, 15 insertions(+), 45 deletions(-)
 
-The answers talk about "But the value of a null pointer constant is not
-defined as 0." which is some trivia that had heard before.  Probably
-I heard it in the context of someone saying that we should check
-"if (p == NULL)" instead of "if (!p)"...
+Applied. Thanks.
 
-regards,
-dan carpenter
+-- 
+viresh
 
