@@ -1,148 +1,129 @@
-Return-Path: <linux-acpi+bounces-14464-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14465-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38366ADFEA5
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jun 2025 09:27:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1715AE044F
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jun 2025 13:50:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B458A3B2856
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jun 2025 07:26:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74BEB16502C
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jun 2025 11:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC572512FA;
-	Thu, 19 Jun 2025 07:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33FAF22D7A3;
+	Thu, 19 Jun 2025 11:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b="aTb7GInj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F18253B59;
-	Thu, 19 Jun 2025 07:26:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750318014; cv=none; b=MR2l4OT0vOi++a6pyKTCPkSeoUWWf3PnpcksU/JcO59NFHJ6/I0EU8Jeh3jTH8KZYsAxn+w6WPLlfOtjOOG3V9JH6qHioQBr6ufXQB+rVrMwhoTJRnH41geg3MjSOLOn5caBL5eiEjnromr5cLKZmktomNPhyCbyWhKEYanBta0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750318014; c=relaxed/simple;
-	bh=iCpk4Ta2PbMcNo7ezJMGauoRfwQ+nTHFFTqam5P1KPU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uBOm78nXrfqjmvkRy64SaPosZ085SGUbki7K6mbx/5XeE/jV/5T1cLWKoQF6TR9+Lc0OBURli6PpBahSn1fjifPuJ+8fzbUorOrpmhic4mpc0gJm9cN04fN7gWVKwKfTr/d/6P0TnSD8G1UoBQ+s3B+jaFLECspZAbdu33vuuso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from qiao.. (unknown [210.73.43.2])
-	by APP-01 (Coremail) with SMTP id qwCowAC3Kdiuu1NopOqNBw--.6183S2;
-	Thu, 19 Jun 2025 15:26:38 +0800 (CST)
-From: Zhe Qiao <qiaozhe@iscas.ac.cn>
-To: dan.carpenter@linaro.org,
-	rafael@kernel.org,
-	bhelgaas@google.com,
-	helgaas@kernel.org,
-	lenb@kernel.org,
-	kwilczynski@kernel.org,
-	sashal@kernel.org,
-	qiaozhe@iscas.ac.cn
-Cc: linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] Revert "PCI/ACPI: Fix allocated memory release on error in pci_acpi_scan_root()"
-Date: Thu, 19 Jun 2025 15:26:08 +0800
-Message-ID: <20250619072608.2075475-1-qiaozhe@iscas.ac.cn>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38F8221704;
+	Thu, 19 Jun 2025 11:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750333802; cv=pass; b=a+fPRWRV9XbwOWl9edQGYj+y0cwA5DMEqd5TsAJo/IKgY0uxMwzn+Gt9AAOQgB7jUyGBVI3Ue3L1ELtKABKbFtVQ0WZIMNbnCp9P1yY4m/uQlqVCbqoflw7AM0VJQm4Ox+SuMapx2UfPluaNkBfzXMoJoKb9tDCH+JI0FuJYoPo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750333802; c=relaxed/simple;
+	bh=x9mmf/4+sS8EjTOOF+TIHjEh6qmrc/lZ1PIXobh6WK4=;
+	h=Date:From:To:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=eJZoszy7rR6k0MZZUI9suJv1wORAdTYy9VB2mbwBBL3gu4d5EP89N5OnQAKL4geTMvuQ6VpPN5e8wjKuRJSeklN2xzBwu8IGd49DeI8Rcu2+sRbf+JAcQOtMowPIilC4eM/WQ6n4wd1OqyhTp+W/mwUv6pCc8lbBjFV2LL0lBsk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.beauty; spf=pass smtp.mailfrom=linux.beauty; dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b=aTb7GInj; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.beauty
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.beauty
+ARC-Seal: i=1; a=rsa-sha256; t=1750333773; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=k2ECfxzVPE3LQGdP+afxdo2PgIFbQNaYLKpjrIynKpY3yybZYHJLxFiB/dmI8efnc8rUsIKNoNwmqPz2EPQsVULAfgO091mxnTABvvvCrSKmqben6qk4NSJSs+sScEpScGuZ6eLpwubPC3oaOrZbonPHtnN6Jh9cEJNxrk88RxU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1750333773; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
+	bh=MFwa0VaeKDYvJD+4TaNeC8PvG0ohNrCLdil12mUnuYE=; 
+	b=iEW5xAAgezzbdxSNsZDDk3VsivFivtHmB6Po0joThn2weblF6yQzIy1L5IIU/InlzMjKoERnoZysKA3nOopWpeP9uCrELVxC2mLS9mr5QiqoSlnlQKehI25R/SUBNYmc1a5tAhM+UCR2sybwqLItzf5Qbu6stjltqs8Rfd2lbLw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=linux.beauty;
+	spf=pass  smtp.mailfrom=me@linux.beauty;
+	dmarc=pass header.from=<me@linux.beauty>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1750333773;
+	s=zmail; d=linux.beauty; i=me@linux.beauty;
+	h=Date:Date:From:From:To:To:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+	bh=MFwa0VaeKDYvJD+4TaNeC8PvG0ohNrCLdil12mUnuYE=;
+	b=aTb7GInjoKUCOXMf7yztMIKG511RPdIWJjMtGuN08TR/Y1jgM1569zm5xdN3g09d
+	zLZW5wOVfmSUv/fb9z0GjJg9C2ymeJy2HAqhBfCrCGJzn66/7wD5IyxD+rzdnMIpqTH
+	wXQjkb/XSpDfK3ExgNAft8FJbMrF8CO1G5ovTuOY=
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 1750333771123763.0534931058979; Thu, 19 Jun 2025 04:49:31 -0700 (PDT)
+Date: Thu, 19 Jun 2025 19:49:31 +0800
+From: Li Chen <me@linux.beauty>
+To: "Catalin Marinas" <catalin.marinas@arm.com>,
+	"Will Deacon" <will@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	"Len Brown" <lenb@kernel.org>, "Hanjun Guo" <guohanjun@huawei.com>,
+	"Liu Wei" <liuwei09@cestc.cn>, "Ryan Roberts" <ryan.roberts@arm.com>,
+	"Andrew Morton" <akpm@linux-foundation.org>,
+	"Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
+	"Sudeep Holla" <sudeep.holla@arm.com>,
+	"linux-arm-kernel" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel" <linux-kernel@vger.kernel.org>,
+	"linux-acpi" <linux-acpi@vger.kernel.org>
+Message-ID: <1978805cd53.d7656d5d435218.1873813773955537604@linux.beauty>
+In-Reply-To: <20250606072802.191580-1-me@linux.beauty>
+References: <20250606072802.191580-1-me@linux.beauty>
+Subject: Re: [PATCH 0/2] ACPI: Improve SPCR handling and messaging on
+ SPCR-less systems
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAC3Kdiuu1NopOqNBw--.6183S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tF4kJr1rZF4ktr4kKry8Krg_yoW8uw4rpF
-	Wa9rW5Jr4kJr18XFs5X3WkZF4rWFsIkay7KryxJws3ZF4Dur1rtFW2yr1F9FZxArs5Aan0
-	vF4qyF1UCF1qyaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9E14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6r4xMxAIw28IcxkI7VAKI4
-	8JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xv
-	wVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjx
-	v20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20E
-	Y4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267
-	AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUj_b15UUUUU==
-X-CM-SenderInfo: ptld061kh6x2xfdvhtffof0/
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
-This reverts commit 631b2af2f35737750af284be22e63da56bf20139.
+Gentle ping incase of forgotten.
 
-The reverted patch causes the 'ri->cfg' and 'root_ops' resources to be
-released multiple times.
+ ---- On Fri, 06 Jun 2025 15:27:43 +0800  Li Chen <me@linux.beauty> wrote --- 
+ > From: Li Chen <chenl311@chinatelecom.cn>
+ > 
+ > This small series improves the kernel behavior and output when the ACPI SPCR
+ > table is not present or not supported.
+ > 
+ > Currently, even on systems that completely lack an SPCR table, the kernel prints:
+ > "Use ACPI SPCR as default console: Yes"
+ > 
+ > Or if with acpi=nospcr:
+ > "Use ACPI SPCR as default console: No"
+ > 
+ > This may mislead users into thinking an SPCR table exists
+ > when in fact there is no such table at all. This series addresses this in two steps:
+ > 
+ > Patch 1 ensures that acpi_parse_spcr() returns -ENODEV if CONFIG_ACPI_SPCR_TABLE is disabled.
+ > 
+ > Patch 2 updates arm64 acpi_boot_table_init() to only print the SPCR console message
+ > if acpi_parse_spcr() succeeds.
+ > 
+ > This results in cleaner and more accurate boot logs on ARM64.
+ > 
+ > Tested on both SPCR-enabled and SPCR-less qemu-system arm64 virt platform. [1]
+ > 
+ > [1]: https://patchew.org/QEMU/20250528105404.457729-1-me@linux.beauty/
+ > 
+ > Li Chen (2):
+ >   ACPI: Return -ENODEV from acpi_parse_spcr() when SPCR support is
+ >     disabled
+ >   ACPI: Suppress misleading SPCR console message when SPCR table is
+ >     absent
+ > 
+ >  arch/arm64/kernel/acpi.c | 9 ++++++---
+ >  include/linux/acpi.h     | 2 +-
+ >  2 files changed, 7 insertions(+), 4 deletions(-)
+ > 
+ > -- 
+ > 2.49.0
+ > 
+ > 
 
-When acpi_pci_root_create() fails, these resources have already been
-released internally by the __acpi_pci_root_release_info() function.
-Releasing them again in pci_acpi_scan_root() leads to incorrect behavior
-and potential memory issues.
-
-We plan to resolve the issue using a more appropriate fix.
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/aEmdnuw715btq7Q5@stanley.mountain/
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
----
- drivers/pci/pci-acpi.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index b78e0e417324..af370628e583 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -1676,19 +1676,24 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 		return NULL;
- 
- 	root_ops = kzalloc(sizeof(*root_ops), GFP_KERNEL);
--	if (!root_ops)
--		goto free_ri;
-+	if (!root_ops) {
-+		kfree(ri);
-+		return NULL;
-+	}
- 
- 	ri->cfg = pci_acpi_setup_ecam_mapping(root);
--	if (!ri->cfg)
--		goto free_root_ops;
-+	if (!ri->cfg) {
-+		kfree(ri);
-+		kfree(root_ops);
-+		return NULL;
-+	}
- 
- 	root_ops->release_info = pci_acpi_generic_release_info;
- 	root_ops->prepare_resources = pci_acpi_root_prepare_resources;
- 	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
- 	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
- 	if (!bus)
--		goto free_cfg;
-+		return NULL;
- 
- 	/* If we must preserve the resource configuration, claim now */
- 	host = pci_find_host_bridge(bus);
-@@ -1705,14 +1710,6 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 		pcie_bus_configure_settings(child);
- 
- 	return bus;
--
--free_cfg:
--	pci_ecam_free(ri->cfg);
--free_root_ops:
--	kfree(root_ops);
--free_ri:
--	kfree(ri);
--	return NULL;
- }
- 
- void pcibios_add_bus(struct pci_bus *bus)
--- 
-2.43.0
-
+Regards,
+Li
 
