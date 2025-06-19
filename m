@@ -1,129 +1,123 @@
-Return-Path: <linux-acpi+bounces-14465-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14466-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1715AE044F
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jun 2025 13:50:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DE5EAE08C6
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jun 2025 16:30:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74BEB16502C
-	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jun 2025 11:50:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A9D03BE5A7
+	for <lists+linux-acpi@lfdr.de>; Thu, 19 Jun 2025 14:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33FAF22D7A3;
-	Thu, 19 Jun 2025 11:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D841E520B;
+	Thu, 19 Jun 2025 14:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b="aTb7GInj"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="t1YBwJqW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38F8221704;
-	Thu, 19 Jun 2025 11:49:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750333802; cv=pass; b=a+fPRWRV9XbwOWl9edQGYj+y0cwA5DMEqd5TsAJo/IKgY0uxMwzn+Gt9AAOQgB7jUyGBVI3Ue3L1ELtKABKbFtVQ0WZIMNbnCp9P1yY4m/uQlqVCbqoflw7AM0VJQm4Ox+SuMapx2UfPluaNkBfzXMoJoKb9tDCH+JI0FuJYoPo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750333802; c=relaxed/simple;
-	bh=x9mmf/4+sS8EjTOOF+TIHjEh6qmrc/lZ1PIXobh6WK4=;
-	h=Date:From:To:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=eJZoszy7rR6k0MZZUI9suJv1wORAdTYy9VB2mbwBBL3gu4d5EP89N5OnQAKL4geTMvuQ6VpPN5e8wjKuRJSeklN2xzBwu8IGd49DeI8Rcu2+sRbf+JAcQOtMowPIilC4eM/WQ6n4wd1OqyhTp+W/mwUv6pCc8lbBjFV2LL0lBsk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.beauty; spf=pass smtp.mailfrom=linux.beauty; dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b=aTb7GInj; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.beauty
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.beauty
-ARC-Seal: i=1; a=rsa-sha256; t=1750333773; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=k2ECfxzVPE3LQGdP+afxdo2PgIFbQNaYLKpjrIynKpY3yybZYHJLxFiB/dmI8efnc8rUsIKNoNwmqPz2EPQsVULAfgO091mxnTABvvvCrSKmqben6qk4NSJSs+sScEpScGuZ6eLpwubPC3oaOrZbonPHtnN6Jh9cEJNxrk88RxU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1750333773; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
-	bh=MFwa0VaeKDYvJD+4TaNeC8PvG0ohNrCLdil12mUnuYE=; 
-	b=iEW5xAAgezzbdxSNsZDDk3VsivFivtHmB6Po0joThn2weblF6yQzIy1L5IIU/InlzMjKoERnoZysKA3nOopWpeP9uCrELVxC2mLS9mr5QiqoSlnlQKehI25R/SUBNYmc1a5tAhM+UCR2sybwqLItzf5Qbu6stjltqs8Rfd2lbLw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=linux.beauty;
-	spf=pass  smtp.mailfrom=me@linux.beauty;
-	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1750333773;
-	s=zmail; d=linux.beauty; i=me@linux.beauty;
-	h=Date:Date:From:From:To:To:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=MFwa0VaeKDYvJD+4TaNeC8PvG0ohNrCLdil12mUnuYE=;
-	b=aTb7GInjoKUCOXMf7yztMIKG511RPdIWJjMtGuN08TR/Y1jgM1569zm5xdN3g09d
-	zLZW5wOVfmSUv/fb9z0GjJg9C2ymeJy2HAqhBfCrCGJzn66/7wD5IyxD+rzdnMIpqTH
-	wXQjkb/XSpDfK3ExgNAft8FJbMrF8CO1G5ovTuOY=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1750333771123763.0534931058979; Thu, 19 Jun 2025 04:49:31 -0700 (PDT)
-Date: Thu, 19 Jun 2025 19:49:31 +0800
-From: Li Chen <me@linux.beauty>
-To: "Catalin Marinas" <catalin.marinas@arm.com>,
-	"Will Deacon" <will@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	"Len Brown" <lenb@kernel.org>, "Hanjun Guo" <guohanjun@huawei.com>,
-	"Liu Wei" <liuwei09@cestc.cn>, "Ryan Roberts" <ryan.roberts@arm.com>,
-	"Andrew Morton" <akpm@linux-foundation.org>,
-	"Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
-	"Sudeep Holla" <sudeep.holla@arm.com>,
-	"linux-arm-kernel" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel" <linux-kernel@vger.kernel.org>,
-	"linux-acpi" <linux-acpi@vger.kernel.org>
-Message-ID: <1978805cd53.d7656d5d435218.1873813773955537604@linux.beauty>
-In-Reply-To: <20250606072802.191580-1-me@linux.beauty>
-References: <20250606072802.191580-1-me@linux.beauty>
-Subject: Re: [PATCH 0/2] ACPI: Improve SPCR handling and messaging on
- SPCR-less systems
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D6D18E02A
+	for <linux-acpi@vger.kernel.org>; Thu, 19 Jun 2025 14:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750343433; cv=none; b=q/Evz3ZAgtdNK0EGgqndf6DI/dGYIqqAsUPS/eGC+ABqqRduUMG2NIj7mRl+SFYlQeypujgXWr8o/4PgGxHul8qtz/xR0exqD4jmrm5JLkcQQOmND+fI18yXdUO6YFdu9CALcCc3ST2twsdQLkWbiiVg1YrZYriX+838WEKiyFs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750343433; c=relaxed/simple;
+	bh=g8haI9LrZzRAwDNpd97grl20AHL8yhseMMTWdWFnOIs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K4Z61qFVijL14oTHubzXyNCfoM7apyuU72cISrw4Wzuy6z7v0FSaul+9OVDAR791UlG6hkzHFixB+lsdQ3t5nJjAvDtMr7boHB4uQBFkCwGk26UHz3xJkkJsJFe/kurwhykDIlN/FtQX+/I8bVt8FSF9dS4zaTg09yIUYVP7EDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=t1YBwJqW; arc=none smtp.client-ip=209.85.161.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-6062e41916dso393145eaf.1
+        for <linux-acpi@vger.kernel.org>; Thu, 19 Jun 2025 07:30:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1750343431; x=1750948231; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5qy42reb/xe10l3RYfDyIyYy8nirQQxhtcbahwdHka8=;
+        b=t1YBwJqWO2fhfQFqxtYxzcysoqOIuPzwx5ukimTkmL7N9zENC7Sv1oYi7FCk7nesgi
+         gyj8aDmhIHW+6wpD0fRB8O+adtpZOPmAxij+ssjP8sMP0rQy7kZOo7+n/lTcUr/CGjR8
+         rlIk+MA6fF2PqME2E4LKZubTkTkJTKJhawtblShVescLRCL1eTw0bmb+rKvdFbrGzBfp
+         eA3kv/WSOtdffI7NbvrtrVmdCHE1vGOUuSyeBAFLJGU6s2YSFlArFqszeUH3BB7+Qr0o
+         ibfRt0nJ23Z7CnDnQ1CgRJGOciShxo/jQK2Pyr++CPY36JK5Is+KuwQXDEM637WTOEbW
+         ebQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750343431; x=1750948231;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5qy42reb/xe10l3RYfDyIyYy8nirQQxhtcbahwdHka8=;
+        b=VxDgyWNj73Ut96mEX8A3gEzhm82hHe4mKN8gDcYR8sXYx4uqwhMO91SgRkYKqkDG/6
+         MnPSbz2cZiJQwibnvkbmXCCZkzW9OFUpkUkWdEHFUznosIv/a5Z95+C/uMKeV7R5VQ2s
+         QsPE3eKfXj6V3bUBgu167pABPecYa3gkypow+hDcZmbFO9g8Mo9FAHWDiFZcOyqZZvG1
+         IByGIKRIf47pB66YHpWKD2+3hN83Woc2CMzUvt562k5sCdDjQ00g5p+IEadD0RzukvxX
+         uup4Bk4LtqjzZ+2HSY/GOn3kwWl9t/a+vGLcgYYVyeP7J0/JfGop4BvmpzzLhKuFzEaw
+         wCEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXag6yGCvirJ7xW+MyX89eZlcWshvJXt5DraludxnJ8JjxpEVYUBktNwIsZKfRQCpECpQTPncL3XeTh@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlOUNbJ1prwrVFN6iFyzYxalKLz/l5sfh3bEK/a/aeqeovtsm8
+	wx1bvsj1TI8P720MCq99c//wcIgkG3scO422mMP4RsMTaMO1se086A8NgGuFLg+jK9c=
+X-Gm-Gg: ASbGnct0d1zZ9jmUrqQAfkOrWmkn7YPgRYD2ALOMu0dj2lxdn8ASEQeqSMIhflFxDy5
+	mveLgurgmCpA7OoVaBoZIDE1759w6LeVp7qRmuwofWiYL876eTu/Iy9/0HSchL5l16UFluFMPr8
+	f0aqYwy+f+kPoeDeOYk6hQhai6xokTEVPp0BNkWYxreF5KRNF9QWBAiBXMazw0PgZOGYCaPxq7x
+	3XshrBb1NuLa2NtveFN/4++B41n6mV82R1/+QZqh+acjV6DBywf+4rHV/M2yeZItigFNlL6gOa3
+	DYzYtvsoKOslMF8Plb+T7tzGTBkwVJLS5E23YI0D/iNZB+OPJ43FtIsnJ5XfYzxWW+T85g==
+X-Google-Smtp-Source: AGHT+IG56YN7u7s5Aa17918jH2u+v02dZCDW3BGdDf6jjau6fXqkE6EwtY5ebKvrV1h8cThc6YLJAQ==
+X-Received: by 2002:a05:6820:4ded:b0:611:471b:6439 with SMTP id 006d021491bc7-611471b6a5cmr4269454eaf.3.1750343430854;
+        Thu, 19 Jun 2025 07:30:30 -0700 (PDT)
+Received: from localhost ([2603:8080:b800:f700:67e2:ece8:b2f5:738f])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-61108ebd0e5sm1684222eaf.23.2025.06.19.07.30.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Jun 2025 07:30:29 -0700 (PDT)
+Date: Thu, 19 Jun 2025 17:30:26 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Zhe Qiao <qiaozhe@iscas.ac.cn>
+Cc: rafael@kernel.org, bhelgaas@google.com, helgaas@kernel.org,
+	lenb@kernel.org, kwilczynski@kernel.org, sashal@kernel.org,
+	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Revert "PCI/ACPI: Fix allocated memory release on error
+ in pci_acpi_scan_root()"
+Message-ID: <87a513bd-096c-45ab-8f5f-a8d3d6ad6b2e@suswa.mountain>
+References: <20250619072608.2075475-1-qiaozhe@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250619072608.2075475-1-qiaozhe@iscas.ac.cn>
 
-Gentle ping incase of forgotten.
+On Thu, Jun 19, 2025 at 03:26:08PM +0800, Zhe Qiao wrote:
+> This reverts commit 631b2af2f35737750af284be22e63da56bf20139.
+> 
+> The reverted patch causes the 'ri->cfg' and 'root_ops' resources to be
+> released multiple times.
+> 
+> When acpi_pci_root_create() fails, these resources have already been
+> released internally by the __acpi_pci_root_release_info() function.
+> Releasing them again in pci_acpi_scan_root() leads to incorrect behavior
+> and potential memory issues.
+> 
+> We plan to resolve the issue using a more appropriate fix.
+> 
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/all/aEmdnuw715btq7Q5@stanley.mountain/
+> Cc: Dan Carpenter <dan.carpenter@linaro.org>
+> Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
 
- ---- On Fri, 06 Jun 2025 15:27:43 +0800  Li Chen <me@linux.beauty> wrote --- 
- > From: Li Chen <chenl311@chinatelecom.cn>
- > 
- > This small series improves the kernel behavior and output when the ACPI SPCR
- > table is not present or not supported.
- > 
- > Currently, even on systems that completely lack an SPCR table, the kernel prints:
- > "Use ACPI SPCR as default console: Yes"
- > 
- > Or if with acpi=nospcr:
- > "Use ACPI SPCR as default console: No"
- > 
- > This may mislead users into thinking an SPCR table exists
- > when in fact there is no such table at all. This series addresses this in two steps:
- > 
- > Patch 1 ensures that acpi_parse_spcr() returns -ENODEV if CONFIG_ACPI_SPCR_TABLE is disabled.
- > 
- > Patch 2 updates arm64 acpi_boot_table_init() to only print the SPCR console message
- > if acpi_parse_spcr() succeeds.
- > 
- > This results in cleaner and more accurate boot logs on ARM64.
- > 
- > Tested on both SPCR-enabled and SPCR-less qemu-system arm64 virt platform. [1]
- > 
- > [1]: https://patchew.org/QEMU/20250528105404.457729-1-me@linux.beauty/
- > 
- > Li Chen (2):
- >   ACPI: Return -ENODEV from acpi_parse_spcr() when SPCR support is
- >     disabled
- >   ACPI: Suppress misleading SPCR console message when SPCR table is
- >     absent
- > 
- >  arch/arm64/kernel/acpi.c | 9 ++++++---
- >  include/linux/acpi.h     | 2 +-
- >  2 files changed, 7 insertions(+), 4 deletions(-)
- > 
- > -- 
- > 2.49.0
- > 
- > 
+Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
 
-Regards,
-Li
+Reverting is probably the simplest option.  There is still an issue in
+the code where in acpi_pci_root_create() the goto out_release_info
+doesn't free sysdata except on the last goto.  So there is a small
+leak.  But it's probably more theoretical than real.
+
+regards,
+dan carpenter
+
 
