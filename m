@@ -1,76 +1,78 @@
-Return-Path: <linux-acpi+bounces-14478-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14479-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92612AE1E41
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jun 2025 17:13:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 477A7AE1E52
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jun 2025 17:17:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 498665A4DEB
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jun 2025 15:13:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD5E13ADC84
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jun 2025 15:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0E629C355;
-	Fri, 20 Jun 2025 15:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0836428C5BA;
+	Fri, 20 Jun 2025 15:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GYkKydPK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kF8cYHf6"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D23A2BF3D7;
-	Fri, 20 Jun 2025 15:13:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A50183A14;
+	Fri, 20 Jun 2025 15:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750432415; cv=none; b=CULMyVX1IT1tjfOiC/uG1Wku2Zet/69gtW49UhNtiKHbN4MOEvvctvg5zFJI9XvjZkJkr3xrSJe6pXlE01RY13PCSTucQxAwMchZHToRKJak7RuqoRG+RVbtVDpmy/ntBbuTlD8xiME6vGf2O0qgHU4lBEkgUwFhzRzekSU1OgY=
+	t=1750432633; cv=none; b=OMg4EHq7PPBOOIogIqJlnHKhfECLVTD8yP0IxV2oxGY+A+C2K1SjXcuMfN8zyhU1W47DxmrReQ1gmoHgPSHIqd0ipDaoEF5wkBMpxjdLo7M/C84imbLnJBcnfkNS02Ak2XNuV+o0+8JAezU05VUAcmp5+1YgHR7p4AVnTMAx+cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750432415; c=relaxed/simple;
-	bh=La6pk9H26/bpjKQuvWN5PPW4SZbFgZLl7FVv69yhG8I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=f1Rg1VFeWmqmBt0h3rRDE515QP7CC3T91bfI7m84RHCnjMNS6z8r/u5BNGN1p8XwVl8271mODAgSvddPtiDh8APRECgkUk7sZf+73frgGuF4kCoe/XjY8YQVOF29eFGR1zxP/NDRfnPI/ToPLmbMQlWafVkBhDlVPTDXn1zjRnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GYkKydPK; arc=none smtp.client-ip=209.85.221.45
+	s=arc-20240116; t=1750432633; c=relaxed/simple;
+	bh=fcDRVRsB7kTTxKbuSPIJvammikJeVCV2Sey5irOixwo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ghv0KNt7iEbRGFbyaCi+ZKSKZ+doP6YppLARMOnN2MlMqpI79cglQhItIF0wE00YpZOm4CXwj70FpJ1fAjEqH5zQJ5Bug+FlbnwqlZJSgABwrnnRtHf0T0SBkHkYaL165UGjerkkFL7Z4TwdchZ6+YJlu6jQdaxw9076MjaHlDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kF8cYHf6; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3a50fc7ac4dso1196713f8f.0;
-        Fri, 20 Jun 2025 08:13:33 -0700 (PDT)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-451dbe494d6so22613685e9.1;
+        Fri, 20 Jun 2025 08:17:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750432412; x=1751037212; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yd8rIVXOWJDKzY1bPiiA23oWqQqx2bHkD00sbIK0oyg=;
-        b=GYkKydPKtLm8gkLXjioyWtUkJK77fSy14NCwb97I3vvQWfuFUTySZUVQW5BvvTD2P/
-         At5gSIbmO+0rphBGBnXlKhzAC3dz4WqgWi+7GY06G+7bN2S2xgaz5cwksLJyMkMD+T+t
-         vxXkYnLnqg67tdk9kCkaGcfZlhhq6RS921sKLWLEj5sRr8uoiwACzJbdEtdENbQjykM+
-         pQcMpn4fBf4b+/3WcCPAIcgiBaTh9a+y6sgC/l1YiZ3HV6u94qp/NVyGXnwnok5vgMS9
-         vrJZf00J+ak5Mvfo/h/Zi7oa4oqUexzgHtPDmvVeKT0cSsVk5wAYrW90+yTRwE07tX0r
-         NQLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750432412; x=1751037212;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1750432630; x=1751037430; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Yd8rIVXOWJDKzY1bPiiA23oWqQqx2bHkD00sbIK0oyg=;
-        b=VulZ42egaF4uluxCQMifPQfBUE3QXZnmOXyiuX1XM4FHj6HKGScUg1YHH6Yg8Fbf9D
-         MIM1z2MTtQfH9brp+c7ei9i3oGRrX/wLpZk8xmQtIahn2W03OtM9tXVfReYCvCyghGxz
-         bFHDuw0PiMjBqlzIuup9mlujGx2I/ftZU7sJ0srE0BzoQI5+hVX6lhbdm190/A0N8ufv
-         q8v9B1YBWEbNGM2q0mtCQfb8vVjnEQwdTthu3wvAhszFbA06XY4zHM2I7NMudLDCHMaw
-         4XHHGrg6pDa8IFxPukOQ3YiLDxqAuVKdeSaD2KeYpP5VoqvHAsv/A2SZHEsTxRpAr7Bl
-         49CA==
-X-Forwarded-Encrypted: i=1; AJvYcCUOW+O8ngF0jvHoJ+mE6HZxKPdOBrNAI6zTfLHgV9mudfub6e2KyAh1mgB3gVtRU3agchsK+58Gqfzp3A==@vger.kernel.org, AJvYcCW+J64QNEfClNKnugtUDOnz2ONW/akieO2cg/6XM/aKoky3Udq6ewsdvS/wQ7iZyio7Y8hUrj/5aYAyXyhUXCs=@vger.kernel.org, AJvYcCWZDnJkof2aOP5CP00OYE6uXaJcH45CffDte13YOah1nxKfY0p7TPkJSsCgkXWUMho/2GhXUaPmqOqT@vger.kernel.org, AJvYcCWkEwssWY6r77OvwqThnCVgmWuzaNEkAGc+Ri/WoB67cEiSFjhl+rCj2K6u+QMZzst9pxDZjVRmKOEhc7TM@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeZuxBGLYytdK9qEzjzLvpwVh5+nEx/m8OmPBu9SAql0NhRHH1
-	pyUmQYcdl2cKtn1URzlAtyMVJkMI2rflBHhRIVupBy0luyaZUgSbM1IT
-X-Gm-Gg: ASbGncsLx4x5Sgw/lZCxY2U+ec4Ah6EYIcK789iOn+WZC8ZuyJSfPnJxx0uKiWsOOXV
-	sagLHiD/v1ga26pbHG+bFOG/+49Ng32VaQO7/81z1j9+KwQbN6ZQrHljUlrYiXZUuWUWjxI+FYI
-	W7AtS4M864FJvArXdEBcrWhCCGerzpT4ri6IHfd33vh7Pb2q+/bKhQlpE6WZkeQtw9K6BZieFeu
-	fCvL33Nqom+iRhZodugJBEIExlTGu7XE97YgVAs6Am+2+lqKMKhro9WXFTsJ4I8gOQIyOzcatsc
-	k5wi5AlguZux9fsQgEWnR3760u8lDsfuWaHiwZkXhtDzeWq8S2zD5ur58uuV4BVv2lGgP52u98x
-	voyy2X/2HavJa+STFBQ75J64rgEzFI6lc6AIi
-X-Google-Smtp-Source: AGHT+IEiQS5a6M/z7+a+7H4+mmNgx+XDfQPrstdLX634ovqwc56MLO4MSVvB9pX/lYkaCnyDyKTcVQ==
-X-Received: by 2002:a05:6000:1ac8:b0:3a4:ee40:715c with SMTP id ffacd0b85a97d-3a6d130168fmr3360160f8f.14.1750432411973;
-        Fri, 20 Jun 2025 08:13:31 -0700 (PDT)
+        bh=g9Z79uO0bQTG7SBiWvsssoDMq0Ao6no6bKJ2a4NfcKE=;
+        b=kF8cYHf62bxcZr6i97MsG7gwmNPJ9T1ne3HsWKIKm8shgtGUsy+Ist0a+2L2hDUUxm
+         O2C9JYakrgUZXYL6vvJsBaxo4n/MEjckn6YbLiwED4DIUMye2lyKhsNYvnpzKM+LwiP2
+         3L6ElgWX6Dwv6yXL3hL1d7uM06qceuufxSBiLqpYtI51zI9h7LLWiWrws61dSmPfRLIM
+         my/bX/YFWyRm6W4Sh0vrg0NrIhFvLh2mG0/5HE1IXi8VDuDx2vveG+KscbS9jJ8rwA+d
+         4iaEUw8McUpMWn+ojk3wOU+8HoN/C2b/friyxHrlaem6M/74+aV+8c1OgT+Qf1wQNYBd
+         hFDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750432630; x=1751037430;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=g9Z79uO0bQTG7SBiWvsssoDMq0Ao6no6bKJ2a4NfcKE=;
+        b=VRFQae9Mx0NpxnvXJnWZ2ePRdSBWxNnkDmk1YPJQKrYF2RoDG4/V/vF83dUC9w0+Ie
+         NHhiE38vUY4LPCiQe41A0qhh/XcjVtA+aPi4Z6PH6C5w8jhmh28Kpa33HU/lBr2dP2Ip
+         rKqU0jKJDkx3SP3iMlQpIq/p3/5XwpVCJUEhMrW2qMVsbGHivpAsyGkW5d341H6z98vn
+         IWrOoeepHdJ1muuCjVJA5mTIC3cdZtFp5YIPDhDNzxWwsn13iAVFRcLB8KSEMMbM4NQP
+         1KwTojkxfXGJjG3vcBVe7s7+vsVvGwZN/A6A8OlOiMOdFPYHtpeQHYQ69qUucbgo54SY
+         dDvg==
+X-Forwarded-Encrypted: i=1; AJvYcCWOxjW9U/+l478DEbxTCUOVYk0NsuxjTBhUdVxsjGzHIC8YNiQMw0AC/YhLzMZNS5n0j1R66mO1g7ebOg==@vger.kernel.org, AJvYcCWR+vEJ798LZkfSamDp0WeowNnqYnR57VsB6Yu7drlB4GvlqMJlFmbbE8XaxIXj0+YoQHJxVBUsttVnwWWX@vger.kernel.org, AJvYcCWyXKD/SlACaVfXXfVfWVl/XrKhOidu+jpXdnhyJEgPnwliIyRzMexzoH7RhlkjkLfS7Yi4Qu1igRrs@vger.kernel.org, AJvYcCX7iGae6ZyWM/QgmTMIVtzP7Ui3grc6sMAgtJ+Xp5rRiCV7Is0Ymj/UAzRjNic4ecdO1cS+qUFHv5R5YL3oLDE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+zRRbiqgU3vctI7koNW1LoSGU4IRHWkNrYfYiqS+K0UzU23ue
+	uDdXQS1YC5T67DxxMyXkaQlARcyJcYBfpxJIY0/Zwuttl8LOy0J/yD/Takm96G8N3TU=
+X-Gm-Gg: ASbGncs8sB7oA8xQ4cAA4xeIuT4W+kOPRI9ShUBbwJfZb+2uGEvaBiadE/X80lYOTz/
+	PKWZc/zby1GTKCeVbIM0eL7Gq8pPetoXWDtJTyMQUOVMCzDpAx8bQUIQJhQm803LQW48XB6M/e5
+	9yHVRi9Skn5XrkdAlA5QqRWEdquUvj2TLC5wPOPU3amYcfFo/KnLNZ6DhoWO9pALV73drag0KA1
+	ZOPRF4eXFyi0AUuH76J0SQ1OXzmlY5SGHRrJwZqcv7TWBOAjTwi5vfQ9JAJOiDp07T8C7JDl6p0
+	Gtt4vzMlDFUjM9DgR8yfxlvFz29gfyiwyt1VPAoQHy6zIpNj5ayTSGyHAdhc14GGNGFtQoM6EVu
+	rT67pxC/Hfn06tUapDApKWPPqUgFf6/NH4OFzFXk=
+X-Google-Smtp-Source: AGHT+IEHFgrcMTbzofDrxYhszmZSjhSU+Dr+aUv88uObflo1lT+8kHGwGwDfULZbO4ZhDjQFQW/1LA==
+X-Received: by 2002:a05:600c:3582:b0:43c:ee3f:2c3 with SMTP id 5b1f17b1804b1-45369ade30amr4425595e9.7.1750432629909;
+        Fri, 20 Jun 2025 08:17:09 -0700 (PDT)
 Received: from igor-korotin-Precision-Tower-3620.airspan.com ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453647070cesm28172575e9.33.2025.06.20.08.13.30
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d0f1d1bbsm2343322f8f.41.2025.06.20.08.17.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Jun 2025 08:13:31 -0700 (PDT)
+        Fri, 20 Jun 2025 08:17:09 -0700 (PDT)
 Sender: Igor Korotin <igorkor.3vium@gmail.com>
 From: Igor Korotin <igor.korotin.linux@gmail.com>
 To: "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -104,127 +106,91 @@ Cc: Alex Hung <alex.hung@amd.com>,
 	Gary Guo <gary@garyguo.net>,
 	Len Brown <lenb@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>
-Subject: [PATCH v8 0/9] rust: Add ACPI match table support for Rust drivers
-Date: Fri, 20 Jun 2025 16:09:13 +0100
-Message-ID: <20250620150914.276272-1-igor.korotin.linux@gmail.com>
+Subject: [PATCH v8 1/9] rust: device: implement FwNode::is_of_node()
+Date: Fri, 20 Jun 2025 16:15:04 +0100
+Message-ID: <20250620151504.278766-1-igor.korotin.linux@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250620150914.276272-1-igor.korotin.linux@gmail.com>
+References: <20250620150914.276272-1-igor.korotin.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This patch series introduces support for ACPI match tables in Rust 
-drivers.
+From: Danilo Krummrich <dakr@kernel.org>
 
-Currently, Rust abstractions support only Open Firmware (OF) device 
-matching. This series extends the driver model to support ACPI-based 
-matching, enabling Rust drivers to bind to ACPI-described devices.
+Implement FwNode::is_of_node() in order to check whether a FwNode
+instance is embedded in a struct device_node.
 
-Changes include:
-  - A new `acpi::DeviceId` abstraction for working with 
-   `struct acpi_device_id`.
-  - Updates to the core `Adapter` trait and `platform::Driver` to support
-    optional ACPI ID tables.
-  - A sample implementation in the Rust platform driver, demonstrating 
-    multi-bus matching.
-
-This is especially useful for writing drivers that work across platforms 
-using both OF and ACPI.
-
-Tested using QEMU with a custom SSDT that creates an ACPI device matching
-the sample Rust platform driver.
-
-This series is based on three patches by Danilo Krummrich, which 
-introduce general improvements to the Rust platform driver. These patches 
-re included unchanged at the beginning of the series for completeness, as 
-they are required for the ACPI integration.
-
-Danilo Krummrich (3):
-  rust: device: implement FwNode::is_of_node()
-  samples: rust: platform: don't call as_ref() repeatedly
-  samples: rust: platform: conditionally call Self::properties_parse()
-
-Igor Korotin (6):
-  rust: acpi: add `acpi::DeviceId` abstraction
-  rust: driver: Consolidate `Adapter::of_id_info` methods using `#[cfg]`
-  rust: driver: Add ACPI id table support to Adapter trait
-  rust: platform: Set `OF_ID_TABLE` default to `None` in `Driver` trait
-  rust: platform: Add ACPI match table support to `Driver` trait
-  samples: rust: add ACPI match table example to platform driver
-
-Changelog
----------
-v8: 
- - Rebased on top of the latest state of the `driver-core-next` branch.
- - Replaced `FwNode::is_compatible()` API  with `FwNode::is_of_node()` 
-   per Danilo's request. This includes initial commit and conditional call
-   in `samples: rust: platform: conditionally call Self::properties_parse()`
- - Link to v7: https://lore.kernel.org/rust-for-linux/20250618100221.3047133-1-igor.korotin.linux@gmail.com/
-v7:
- - Rebased onto the driver-core-next branch
- - Incorporated three of Danilo’s upstream patches as a base
- - Switched from `assert!` to `build_assert!` in `acpi::DeviceId::new` 
-   for compile-time checks
- - Renamed the sample ACPI HID to `TST0001`
- - Moved the ACPI test instructions into the module’s top-level 
-   documentation comment
- - Link to v6: https://lore.kernel.org/rust-for-linux/20250613133517.1229722-1-igor.korotin.linux@gmail.com/
-v6:
- - Moved set `Driver::OF_ID_TABLE` default to `None` to a separate commit 
- - Removed out of scope change related to cpufreq driver.
- - Link to v5: https://lore.kernel.org/rust-for-linux/20250611174034.801460-1-igor.korotin.linux@gmail.com/
-v5:
- - Got rid of unnecessary consolidation of `Adapter::acpi_id_info` methods.
-   Instead, firstly made consolidation of `Adapter::of_id_info`, then
-   `Adapter::acpi_id_info` is added using the same pattern. 
- - Set `Adapter::OF_ID_TABLE` and `Adapter::ACPI_ID_TABLE` as None by 
-   default. 
- - Removed `Adapter::OF_ID_TABLE`/`Adapter::ACPI_ID_TABLE` initialization
-   example due to irrelevance.
- - Removed extra `of` dependency and `Adapter::OF_ID_TABLE` initialization 
-   in cpufreq driver.
- - Link to v4: https://lore.kernel.org/rust-for-linux/20250610145234.235005-1-igor.korotin.linux@gmail.com/
-v4:
- - Fixed code example for `trait Adapter` in platform.rs 
- - Fixed driver implementation example in rust_driver_platform.rs and moved
-   it to `trait Adapter` in platform.rs per Danilo Krummrich's suggestion.
- - Consolidated `Adapter::of_id_info` and `Adapter::acpi_id_info` methods using
-   `#[cfg]` per Benno Lossin's suggestion.
- - Link to v3: https://lore.kernel.org/rust-for-linux/20250606170341.3880941-1-igor.korotin.linux@gmail.com/
-v3:
- - Removed fwnode type check in `Adapter::id_info` per Greg's and Danilo's
-   comments
- - Removed `is_of_node` rust helper, due to unnecessity. 
- - Fixed example code in `rust_driver_platform.rs` per Danilo's comment
- - Added an instruction of testing ACPI using QEMU with a custom SSDT
- - Fixed minor code formatting issues.
- - Link to v2: https://lore.kernel.org/rust-for-linux/20250605161956.3658374-1-igor.korotin.linux@gmail.com/
-v2:
- - Removed misleading comment in `acpi::DeviceID` implementation. 
- - Removed unnecessary casting in `acpi::DeviceID::new`.
- - Moved `pub mod acpi` to correct alphabetical position in `rust/kernel/lib.rs`.
- - Link to v1: https://lore.kernel.org/rust-for-linux/20250530123815.1766726-1-igor.korotin.linux@gmail.com/
-
- MAINTAINERS                          |  2 +
- rust/bindings/bindings_helper.h      |  1 +
- rust/helpers/helpers.c               |  1 +
- rust/helpers/of.c                    |  8 +++
- rust/kernel/acpi.rs                  | 60 +++++++++++++++++++++
- rust/kernel/device/property.rs       |  7 +++
- rust/kernel/driver.rs                | 81 +++++++++++++++++++++-------
- rust/kernel/lib.rs                   |  1 +
- rust/kernel/platform.rs              | 29 ++++++++--
- samples/rust/rust_driver_platform.rs | 80 +++++++++++++++++++++++++--
- 10 files changed, 243 insertions(+), 27 deletions(-)
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
+---
+ MAINTAINERS                    | 1 +
+ rust/helpers/helpers.c         | 1 +
+ rust/helpers/of.c              | 8 ++++++++
+ rust/kernel/device/property.rs | 7 +++++++
+ 4 files changed, 17 insertions(+)
  create mode 100644 rust/helpers/of.c
- create mode 100644 rust/kernel/acpi.rs
 
-
-base-commit: b29929b819f35503024c6a7e6ad442f6e36c68a0
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9f724cd556f4..1e918319cff4 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18579,6 +18579,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git
+ F:	Documentation/ABI/testing/sysfs-firmware-ofw
+ F:	drivers/of/
+ F:	include/linux/of*.h
++F:	rust/helpers/of.c
+ F:	rust/kernel/of.rs
+ F:	scripts/dtc/
+ F:	tools/testing/selftests/dt/
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index ed00695af971..041a8112eb9e 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -26,6 +26,7 @@
+ #include "kunit.c"
+ #include "mm.c"
+ #include "mutex.c"
++#include "of.c"
+ #include "page.c"
+ #include "platform.c"
+ #include "pci.c"
+diff --git a/rust/helpers/of.c b/rust/helpers/of.c
+new file mode 100644
+index 000000000000..86b51167c913
+--- /dev/null
++++ b/rust/helpers/of.c
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/of.h>
++
++bool rust_helper_is_of_node(const struct fwnode_handle *fwnode)
++{
++	return is_of_node(fwnode);
++}
+diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
+index 838509111e57..63fe4b6ee6bc 100644
+--- a/rust/kernel/device/property.rs
++++ b/rust/kernel/device/property.rs
+@@ -61,6 +61,13 @@ pub(crate) fn as_raw(&self) -> *mut bindings::fwnode_handle {
+         self.0.get()
+     }
+ 
++    /// Returns `true` if `&self` is an OF node, `false` otherwise.
++    pub fn is_of_node(&self) -> bool {
++        // SAFETY: The type invariant of `Self` guarantees that `self.as_raw() is a pointer to a
++        // valid `struct fwnode_handle`.
++        unsafe { bindings::is_of_node(self.as_raw()) }
++    }
++
+     /// Returns an object that implements [`Display`](core::fmt::Display) for
+     /// printing the name of a node.
+     ///
 -- 
 2.43.0
 
