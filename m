@@ -1,94 +1,121 @@
-Return-Path: <linux-acpi+bounces-14474-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14475-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78EAAE1A5B
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jun 2025 13:56:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C44AE1BC9
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jun 2025 15:13:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12F827ADCD9
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jun 2025 11:54:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2BF73A74EE
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jun 2025 13:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B50728A1C5;
-	Fri, 20 Jun 2025 11:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F010D289E25;
+	Fri, 20 Jun 2025 13:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CxR4oOzQ"
+	dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b="QGlDSicn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F4B223DFA;
-	Fri, 20 Jun 2025 11:56:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750420573; cv=none; b=Zhezqhdqs5Zz1SZjZ1ULOJjAUwMeVZOn/SlGOVO0mFNuFEn/y3GgDB5E+qxFBpkNKbgSL7coQ6WMkQXhH+ZtRtQ9Co00NZB+Rf8WSG80S9O8aQryZ5Znmaw6/M9l6/lcI+N3dIrYshJ6gUv3hsAeOw9DXgk8SN18lvlmnCFJVqI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750420573; c=relaxed/simple;
-	bh=EHLl4d0QD68sdXBAgG6WT7Tdgd2xo2PXKgC8Tnor7LE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OhmalXnXupIOYCQ3yUuNQgEaJXLjBDN+HnP00s2UuLrmlWKQXkfsw/It1UbDv1PSabqdoik0Nmc1AUlrG4XqymLNfBNJS6QTo+LPEu8GRCbXDxauzvXQRtY3mMQtV+w00uq7WGy9uhygPKEBKN6U7q/wqGj94l1akPW/e51Gnyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CxR4oOzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504A4C4CEE3;
-	Fri, 20 Jun 2025 11:56:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750420572;
-	bh=EHLl4d0QD68sdXBAgG6WT7Tdgd2xo2PXKgC8Tnor7LE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CxR4oOzQQJQ15Gm31XI9FCPgupg4s2bkDYqtEsv3nBEERk0tsVnK30lTg3M/XMPPM
-	 Tr2Fncj057I5/NCgSx6Y0ZVxb6p1xVf2dpfpGqe5IslVitySAyi6P9axqmc43/HyT0
-	 w2bTUrf0TPepMEXNMN2wSvC1ZtBfsjS0cWECQezWmP617KIwjRZdfbCJ2C26SH8uAc
-	 UOpMfsjEx2TfuMkGAjCEkUPTdHpNHnmyTrQAiIM2cwg+mKHWff+gOzzBFsrZt0DUwe
-	 UQ3gk8CvWzI5up08V0Rsi9zBqu5EK3uCtQ7sK9vrJ/n479TL6OdXiJYiO4Jw8b22NK
-	 zJgP1ycQXJ1iA==
-Date: Fri, 20 Jun 2025 13:56:05 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: ojeda@kernel.org, Rob Herring <robh@kernel.org>, alex.gaynor@gmail.com,
-	rafael@kernel.org, gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-acpi@vger.kernel.org, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	lenb@kernel.org, wedsonaf@gmail.com, viresh.kumar@linaro.org,
-	alex.hung@amd.com, dingxiangfei2009@gmail.com
-Subject: Re: [PATCH v7 3/9] samples: rust: platform: conditionally call
- Self::properties_parse()
-Message-ID: <aFVMVcYm0JwI5L6l@cassiopeiae>
-References: <20250618100221.3047133-1-igor.korotin.linux@gmail.com>
- <20250618101325.3048187-1-igor.korotin.linux@gmail.com>
- <20250618131958.GA1550757-robh@kernel.org>
- <aFLJJkeFfHR9GB-0@pollux>
- <aFRP-vGMoZNmQZ2E@pollux>
- <ddcdc5ac-9c6f-4aca-ad66-37e1e66ef740@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BB9258A;
+	Fri, 20 Jun 2025 13:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750425236; cv=pass; b=b/vVp2gJGS/YvHQCU0O+u/8oUeMh/hZLB/qA4RhDIje5A5xyFvTvSOaadq2B6j/mz7zEEfKZj8BBSfaMcIfywupeNwk4i8dMlpf+3S8jMayHnNfq4ohPJgPxCbRwSS0cXRBLVmqV2qTzsYVhskX/gbfz7RiiJ1wK+TIPhLIe9h0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750425236; c=relaxed/simple;
+	bh=RPGrsUiY9GGnw/6tXbjccCX3DGhS40+0nbnucG8R+Kk=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=BAifpIQ9yAVwc25zVqat278x9kxdrC8icGSmetWsSsr6AwIjjABE9YzyyLSgmNtgHZDI7p0s/YAfsJKCf/kJC1T1MsGtCGApmwVJiyJdYcazpSjvfrOKMRQUL/gK8zfMy5HSE1rdOMr6AIIrIMHJjeeqjigZjBsyGp7zLRp6uu0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.beauty; spf=pass smtp.mailfrom=linux.beauty; dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b=QGlDSicn; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.beauty
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.beauty
+ARC-Seal: i=1; a=rsa-sha256; t=1750425200; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ag6sm19tCZyRI1BO2CAVBqUY3xmXRXJa92+mdmoKr64FDpX00OTD2KOnRqm91jz7XjJ+rmjaL+312oJM0bPTvEpue8+nIPxQEMelWaVu40gxosO422ZaXGDei0X9ocNE3svu+X4vyLT0Y14mK/Bbiz/fmH44sXyP/I0EYqdp5Xs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1750425200; h=Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
+	bh=Ydvxy1sRh0XdyUY78UINI/d5MUqA5T2bAotDmBZAf6w=; 
+	b=ljK02p0OoIZuydQAGJsoVnGKSlUXXg0QKS3ddUTcdkWCokCBMfCVFlA8AmvhSxtWRpqTy5u3kUM2kdyV5j7ShRCSJqyop3xwf4xrWHRXIbzD+JHPnGpdIOwDBgw8jLAdf89++/DAnV4sAPjPSSMljYph4ZwZlDPSTaJCL2c9LfE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=linux.beauty;
+	spf=pass  smtp.mailfrom=me@linux.beauty;
+	dmarc=pass header.from=<me@linux.beauty>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1750425200;
+	s=zmail; d=linux.beauty; i=me@linux.beauty;
+	h=From:From:To:To:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+	bh=Ydvxy1sRh0XdyUY78UINI/d5MUqA5T2bAotDmBZAf6w=;
+	b=QGlDSicnOv6qys1rQpkrOFbO9r5rCtI2Rg8ZI7nc19PanS3DdqWsz8p4fZOUwbeN
+	EuQ/YhXGI5NXYINn7s+oEqtYJfFEyOcA+OCJ531usFR9aiVgMIc11iX987MPm7uWZ7d
+	FOLJ/9kSeo7gw9QX3u4nV2Qo53E9Hlje4Ll985jg=
+Received: by mx.zohomail.com with SMTPS id 175042519577329.422760089999883;
+	Fri, 20 Jun 2025 06:13:15 -0700 (PDT)
+From: Li Chen <me@linux.beauty>
+To: Hanjun Guo <guohanjun@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Liu Wei <liuwei09@cestc.cn>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH v2 0/2] ACPI: Improve SPCR handling and messaging on SPCR-less systems
+Date: Fri, 20 Jun 2025 21:13:06 +0800
+Message-ID: <20250620131309.126555-1-me@linux.beauty>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ddcdc5ac-9c6f-4aca-ad66-37e1e66ef740@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On Fri, Jun 20, 2025 at 12:30:37PM +0100, Igor Korotin wrote:
-> Just to make sure that we're on the same page, I replace this:
-> 
->     if dev.fwnode().is_some_and(|node|
-> node.is_compatible(c_str!("test,rust-device")))
-> 
-> with:
-> 
->     if dev.fwnode().is_some_and(|node| node.is_of_node())
-> 
-> And reworded the comment as follows:
-> 
->     samples: rust: platform: conditionally call Self::properties_parse()
-> 
->     Only call Self::properties_parse() when the device is OF node
-> 
->     Once we add ACPI support, we don't want the ACPI device to fail probing
->     in Self::properties_parse().
+From: Li Chen <chenl311@chinatelecom.cn>
 
-LGTM!
+From: Li Chen <chenl311@chinatelecom.cn>
+
+This small series improves the kernel behavior and output when the ACPI SPCR
+table is not present or not supported.
+
+Currently, even on systems that completely lack an SPCR table, the kernel prints:
+"Use ACPI SPCR as default console: Yes"
+
+This may mislead users into thinking an SPCR table exists
+when in fact there is no such table at all. This series addresses this in two steps:
+
+Patch 1 ensures that acpi_parse_spcr() returns -ENODEV if CONFIG_ACPI_SPCR_TABLE is disabled.
+
+Patch 2 updates arm64 acpi_boot_table_init() to only print the Yes
+if acpi_parse_spcr() succeeds.
+
+This results in cleaner and more accurate boot logs on ARM64.
+
+Tested on both SPCR-enabled and SPCR-less qemu-system arm64 virt platform. [1]
+
+Changelog:
+v2: refine the printk message logic as suggested by Hanjun Guo. [2]
+
+[1]: https://patchew.org/QEMU/20250528105404.457729-1-me@linux.beauty/
+[2]: https://www.spinics.net/lists/kernel/msg5730585.html
+
+Li Chen (2):
+  ACPI: Return -ENODEV from acpi_parse_spcr() when SPCR support is
+    disabled
+  ACPI: Suppress misleading SPCR console message when SPCR table is
+    absent
+
+ arch/arm64/kernel/acpi.c | 10 +++++++---
+ include/linux/acpi.h     |  2 +-
+ 2 files changed, 8 insertions(+), 4 deletions(-)
+
+-- 
+2.49.0
+
 
