@@ -1,53 +1,54 @@
-Return-Path: <linux-acpi+bounces-14488-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14489-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3FFFAE24D9
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Jun 2025 00:06:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C01F8AE25C5
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Jun 2025 00:40:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F0153A7FD0
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jun 2025 22:06:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60B4E1C2022C
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jun 2025 22:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747D623B63E;
-	Fri, 20 Jun 2025 22:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EA6238140;
+	Fri, 20 Jun 2025 22:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GZPhJTzG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g2HaO1Nn"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F05221DAC;
-	Fri, 20 Jun 2025 22:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F2B19E98C;
+	Fri, 20 Jun 2025 22:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750457209; cv=none; b=DVs2cN8C7ZXw+BejlPFCfFq0lgLIIaa9mp5i+3iLLdQaWf7ptWsEdctMZ6AjoZ8rEJHlFDkwiEI4/mJv51hi5DKtdHUgAcXVtFljAG0T6b513/SU0vppuEWd0TQ3qBF+OivJCObgt34XrP9T95u9mskHbuYJyGU0fO0bRBhDBc4=
+	t=1750459203; cv=none; b=IFaCWpYiej4G5R26z8LNoAQNMyDbuUHk9lAhcXikoWO6q6eyw0PtXg6zR2cD9rZlENYeldfKM695B+6eQeBwMqNncOpKoBjDOnDGhPk8iHpJ+uj8urnGngKOxgIWvr8Y206nhRc2kjozrfUXCrI/jTGbGg6xpqo6QJctca0eTxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750457209; c=relaxed/simple;
-	bh=eE3jajaJNedzuZV2q+noRIBA/GEx5wr6lDpsRW4JnuU=;
+	s=arc-20240116; t=1750459203; c=relaxed/simple;
+	bh=UJzf/Edj/55hCAfBsXh8EBKPEyt2L6fszDs5Yetv6X8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CQ4cMd/JkbVXfIYZVVk6cbvWyJ4ATPIUyzDLF7/M4H1ey+ZK4SDm9PdTqYhfYksEIoFfvq1Z7fuCVdG3l0qYFz61ZU9FHqF+fEaQ1EiF9rQQ1caOATddY4+f1LSW0HZQntlgjmcR86aRe91bW3s9igpF1l1/GPHhBxBGvQt3dEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GZPhJTzG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08439C4CEE3;
-	Fri, 20 Jun 2025 22:06:42 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=MCy3PAIs4VGLuqXjnIbZlBTOCXN2xx/7bqYCUxx5hyXN46Ed1Ti9SYgpa5t3mh3WvHSF0vEJJsbnd+rIwXROCEq0TLMQg1ob3lzYnLdd/feem5ZXpSS1JazkbttKl360U50jvdtTgTZ/XnhkMwWXoWcb6JCtU7H7thAcYN4P1PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g2HaO1Nn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D78C4CEE3;
+	Fri, 20 Jun 2025 22:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750457208;
-	bh=eE3jajaJNedzuZV2q+noRIBA/GEx5wr6lDpsRW4JnuU=;
+	s=k20201202; t=1750459202;
+	bh=UJzf/Edj/55hCAfBsXh8EBKPEyt2L6fszDs5Yetv6X8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GZPhJTzG+rjZ/ksx00F7qb+fGO7UMyEYCOBCzqeK0z8fQfLrmtNo2wQRQTF/Tzwou
-	 GpWbpmZkxxeDQyh0gxI9+t+Ng1l/er9u483F7D3NL3KoO9w5W5HNQiAdNDgDegybUt
-	 l0CY+FUjiCob7yrbWAqTJBf1mMXliS5Wx7aSVLlMy6WFytBfFmnwvajPkEVto3S9Ss
-	 4QivkrIa/HRrTudrZoGxyLQqP83dkjASNxw7zZR0YWW45N9UN/WRYQwbIOWS5OW4A/
-	 m59pq/ZmbM913crcqhVp4fydUXW4nL2Ii/9UtYVRo/Q1qH68VMK/258vu3XPHJCpBd
-	 y2l0AANJ4JSog==
-Date: Sat, 21 Jun 2025 00:06:40 +0200
+	b=g2HaO1Nn7StuX/qXCawUaxTa2ghi8SoP1/TzcWXWU50izuMWG5Q2V6EGILarefUgl
+	 ixe1R5x4Xd5yOb1ihlBwyA9qu0nfvMeshXL0eBoe9Zo+OizE13isql/kD7gQlPde79
+	 YVwiqnCjARxMWRQnrjWhXJxF3xelN9rxv/KbXB3SMSa7xAUTrqoh0oc+RVI3AHWiQ8
+	 ZrnVCVwdlOUgJjIVWIMIlD+y/9BWKzZ/gYpxftZsoGhauI7rAx4nXBGLtrVwhcBdGM
+	 zDe+b5Lqcr2Zmh/hyG/TJZ4NKMlMqHTNGV884qL0nhDs6DcESM+46XdUyLAjTQkxuw
+	 QMRl7YUAp/yYQ==
+Date: Sat, 21 Jun 2025 00:39:54 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: Igor Korotin <igor.korotin.linux@gmail.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>,
+To: Rob Herring <robh@kernel.org>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Igor Korotin <igor.korotin.linux@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Saravana Kannan <saravanak@google.com>,
 	Alex Hung <alex.hung@amd.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -68,10 +69,10 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>,
 	Benno Lossin <lossin@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>, Len Brown <lenb@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>
-Subject: Re: [PATCH v8 4/9] rust: acpi: add `acpi::DeviceId` abstraction
-Message-ID: <aFXbcDKP_jw_Sg5k@cassiopeiae>
+Subject: Re: [PATCH v8 1/9] rust: device: implement FwNode::is_of_node()
+Message-ID: <aFXjOod7TGSFB7wC@cassiopeiae>
 References: <20250620150914.276272-1-igor.korotin.linux@gmail.com>
- <20250620152425.285683-1-igor.korotin.linux@gmail.com>
+ <20250620151504.278766-1-igor.korotin.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -80,26 +81,33 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250620152425.285683-1-igor.korotin.linux@gmail.com>
+In-Reply-To: <20250620151504.278766-1-igor.korotin.linux@gmail.com>
 
-On Fri, Jun 20, 2025 at 04:24:25PM +0100, Igor Korotin wrote:
-> `acpi::DeviceId` is an abstraction around `struct acpi_device_id`.
+On Fri, Jun 20, 2025 at 04:15:04PM +0100, Igor Korotin wrote:
+> From: Danilo Krummrich <dakr@kernel.org>
 > 
-> This is used by subsequent patches, in particular the i2c driver
-> abstractions, to create ACPI device ID tables.
-
-I think this should say something like
-
-	"Enable drivers to build ACPI device ID tables, to be consumed by the
-	 corresponding bus abstractions, such as platform or I2C."
-
-instead.
-
-If we agree, I can change it when applying the patch -- no need to resend.
-
+> Implement FwNode::is_of_node() in order to check whether a FwNode
+> instance is embedded in a struct device_node.
 > 
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
+> ---
+>  MAINTAINERS                    | 1 +
+>  rust/helpers/helpers.c         | 1 +
+>  rust/helpers/of.c              | 8 ++++++++
+>  rust/kernel/device/property.rs | 7 +++++++
+>  4 files changed, 17 insertions(+)
+>  create mode 100644 rust/helpers/of.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 9f724cd556f4..1e918319cff4 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -18579,6 +18579,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git
+>  F:	Documentation/ABI/testing/sysfs-firmware-ofw
+>  F:	drivers/of/
+>  F:	include/linux/of*.h
+> +F:	rust/helpers/of.c
 
-@Rafael: Can I get an ACK for this one, such that I can take it together with
-all other patches through the driver-core tree?
+@Rob: Any concerns about adding the OF Rust helpers to the OF entry?
 
