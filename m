@@ -1,78 +1,78 @@
-Return-Path: <linux-acpi+bounces-14481-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14482-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3444DAE1E8A
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jun 2025 17:27:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35485AE1EAB
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jun 2025 17:31:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F4A43AE6CC
-	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jun 2025 15:25:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B774B170BEB
+	for <lists+linux-acpi@lfdr.de>; Fri, 20 Jun 2025 15:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AEA52E62C4;
-	Fri, 20 Jun 2025 15:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61EE2C3757;
+	Fri, 20 Jun 2025 15:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V/UMaeWA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ya3OYn/b"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434BC2C0302;
-	Fri, 20 Jun 2025 15:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C382C324B;
+	Fri, 20 Jun 2025 15:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750433019; cv=none; b=jk4gMfCztH/rqYJnXpB3WD8y/wB70jw4PeaHIQXY8/rj2BvBK4CT8M1MO+Wp5E+3uLi36zL8LmqJlaxT2cIZYbf1kLB0sNChd2Lm5nn3DrRjDuoM0I/XjR8g1R4fUb98e9rQvK7uSxguSFYuI7fOolv4CmbLAzd0j5ZBGiSFG/A=
+	t=1750433191; cv=none; b=lXVI1LrFp++xPeyxKsmgsFUNxLpRBRqFgCJqcIDDQyVbquYgNnqJOEyYjvAme0xt1cPyLsXJuvUijK15ANeV3v8N81SpIW1wzAe5CiTsfaxLvp5JGVkqEua+JMPnGp/DTZGk+huO84uecBNLheuMnd1wBm25AzDQ+D1ZIoDX2lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750433019; c=relaxed/simple;
-	bh=dvtN9eJlUFurArdkvVXhsE2a5bCUKBuAQsM5cOZ1ULE=;
+	s=arc-20240116; t=1750433191; c=relaxed/simple;
+	bh=WUB2wpa3W+3uIW4pg1fQ/88tmjy06qgVmc5O/tjNYJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U+LxttqsU3lqEH5uwZCFApT9mdqqL2VuInn0Pm2GpcdEFGvZGbbn07XD2fBoSpF5bC+jhZfWR5hSdYjlApkLs5qE3OOIahly48tV/BLw5Fv3T78J+QTcftaCvljrKUuxjLfjVJnA26W+GamSFFAj0ISvneZxrcTa99ON2PpE1JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V/UMaeWA; arc=none smtp.client-ip=209.85.128.54
+	 MIME-Version; b=h32tT5CJPGcZs2b2GTFNU10k+fJEcJ86D02t3J+Dw5FxSInlj5BSza+SdSHtjZLREToImD4bnOJAQG/dAkqlfaxyd5shHanO5O0zj6WWpkNKSskL3UO6Aa4rHHiENm3WZB3nrVDyj2f1odoxDKKdolCY19cf9FP7XEnC1Tu92Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ya3OYn/b; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-451d41e1ad1so15084895e9.1;
-        Fri, 20 Jun 2025 08:23:36 -0700 (PDT)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-450cb2ddd46so11943935e9.2;
+        Fri, 20 Jun 2025 08:26:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750433015; x=1751037815; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750433188; x=1751037988; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mNAXzfmh7HFb857b4kPNw1wjOg7WWnf6DO/mp8yJ9IU=;
-        b=V/UMaeWANHT5yNDPzRREVPfL5IUh6ez+wasTPC3nI59nux5DpL7bWCy4YZ1ONwAlfy
-         /V5izPlrx07uy7uifKdzD5MxCIPj3QTpfOMub4ZS2eUruOWYaMSh3BgERm25gsKeOX4U
-         VoXqP36MQlTIT4Q214gW+66MTC6x7AuSiwD1Gk9+ynBt/HzZhm4S86gR2WYEkQVL6l8l
-         zlNqqkEZ3/9zHTnUQHPUYxVEGACiH7Gs6cwv2jYZ6cPThXnc5ge1wCnyUEYcmOICIef/
-         ZO0AP35VjkJXarfhtBCPN42XJFMgf5VoUq/5LD8LT8zQUNFOUfpYuVSWEMLz1hjCHfgx
-         vdtQ==
+        bh=dvw6+KSPOqtrmOukGHEiEP8MZe9/XdRUXjCAQWIBviU=;
+        b=Ya3OYn/bxS5vCtVeI70dsYBs6h0TDnnczTD5q4G3GGIrzWUjdDMg5gR8fx26KU00ED
+         EBhoWcr6MDtpDkJE8PiMXI3TIggpab949ihqGzLxnYau8HWozxZInYrTScfzqeNMoNku
+         SKmwjDJNEUcxPFjCXXbeARVOQyIxmlAPYzsthNCHi+8pyfvI0VwBZHwojG17PUdyHKz4
+         Mxq9Gveqnmi+HjRFl/b6PBw/8DXi9P6ukUxPBb+3kj8exo42sS+Lw2ysUWp8kXkrD5Wj
+         /X3E6MSQWn1qPYM2Hf/bkwU7zRXbPKkRW4P9pPqQrygaAWPZF1aj+SZOdyNs3oVLZh69
+         dxmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750433015; x=1751037815;
+        d=1e100.net; s=20230601; t=1750433188; x=1751037988;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=mNAXzfmh7HFb857b4kPNw1wjOg7WWnf6DO/mp8yJ9IU=;
-        b=FIs6Xy4hQXqsjBsusWYfORbfUyK9MO/abGC17tqCJ8mHIduocARo+2e13n5QIXgRpe
-         4wNiG5Je5KEQIdcuGmD3dd60Y73wz6rhJl4XmKvyP5zs8oTfM/zRfEU5mA2R2zFsJ06/
-         x6Tm4wZLIbKWaewW+QKlfiXBxIivl+3tVZ04sx7qu7wiXQmouiOGtuXbaynalDDHqK6g
-         iwPlHXNjsEIZG8GrFmuGURx9zW1UTy6a0fde5g7oIjIWkNMu4lY+NjxRkIc5YcPByl7f
-         3LA+kd/JHvJ4v9odcY+jeGUUnjTMngjkJE89tDeWfpXovoiveZd0q11DHqecPYS4/D04
-         mStg==
-X-Forwarded-Encrypted: i=1; AJvYcCV8J6vCBX88XJiH2vSvAPCfpiRrbrG7Rqw5nRIQbNkiqvDWubWZLndkqkBhy9yP6ozZaT6lCuE1Qcf7uw==@vger.kernel.org, AJvYcCVumfv91yMUjZLK7PmF4EY2M1mppEpvWaJGj3sBXZbeETWzd+9am8+JcwsuwVOory1L+xeRlHmITLI5L5oZMpk=@vger.kernel.org, AJvYcCXkYJ6GQ0Om/1lnKfLomiKFfNPry4OxT04BG7isrHhhEnsag4SZ8caLa8C6dtAWqOterzSzT8y6aqxV@vger.kernel.org, AJvYcCXrWOmPKUdmsyfumP2f1OwPqc7jfoXlV++cVcaa9Kac209ANRdtC85vXEqVY4cvBTPAalHGwQodYKa5rUhc@vger.kernel.org
-X-Gm-Message-State: AOJu0YxccZpzymLWKkxHhfuvkRioTyhEYNdPFAmmyQzxlTfDxIMrd4jy
-	+nyS5rwkyIUpUUFDaaTkTz4VfPdtTQ15BZr0BqqRmjUaTAHb+hvoEJs52xrvjtZLWX0=
-X-Gm-Gg: ASbGncu2H8f2WeyFC5MbRJ01VyA2GvICaqDjHDzvjjXyJFVe7K3cTH1ysxlmLFCLR3h
-	EC4sHGFRvVkksoNd3xifXFVyJrAnpaQFng+uBdlC4v37YyTaq7iW/8llohmkPgU0WSv4vTCuaa3
-	MWsTgB6zXkLZ0M6bN53WXGErtErLzLsHHTybx54nI+GOMLKbVoWzFcKqDRUNxwVkqvjzP9XzcJI
-	VVMh0m/H7BjPbnDHb5bZRC8KecJ7ImPVGlo+07yMMz/AAl3HwZK5aaRgvEFZc2a6GPqs0Fh/oSL
-	X2VIcVgED5kYBTufOzUVgcj5O+ivAe4+Ct52wF2f83K7VdDmXRyO1tKnw07gh5xnWi+JMLW7hpo
-	GeqtrQuHBuatrtk2vGdos4MZ/qAK0y91v3XauEJiOI/csQ6I=
-X-Google-Smtp-Source: AGHT+IFihYFIqfttAHK5bJgnnS222iRdKvNF+qBgQzgtvlXsebluzOgG6hM64nIzrSpanqXdiR1uSg==
-X-Received: by 2002:a05:600c:46cb:b0:43c:f1b8:16ad with SMTP id 5b1f17b1804b1-4536877fc08mr16753075e9.30.1750433015111;
-        Fri, 20 Jun 2025 08:23:35 -0700 (PDT)
+        bh=dvw6+KSPOqtrmOukGHEiEP8MZe9/XdRUXjCAQWIBviU=;
+        b=oDnSjuQL66C7SxtYa220FAH8sT67LHAGglbj6HZ1ycXScibJa7jyQSEAXxXXyHcbqg
+         UfLPEpBxWsJrxWPYu7rcCrGTTYEgVnuxwIxdxhQ36/K/dktAt+nmpapgaPQ8nkxj/BHV
+         3FXv4Fg4AysE78jT/EHEi3id2zvWlQ4yLvfKAoEDkG5RKDE75Gb6V8miJugCS/KcQ/PO
+         i6KcO3ib3JarfY6IjdcsLwOzC4RCMyGuP16IxW6zinCsjl5n2jLCWuOZmVtTtKTc1C8S
+         zAGNolnUBNKdRmhoaTxTk2QDq1SIDY+nXpqXk+IurZvJBZGsYAkkdkq1jgdsk+sSNWJZ
+         sM0A==
+X-Forwarded-Encrypted: i=1; AJvYcCUhu4GxXGO72J6ULHhMT+Ws1qW8AjtbC58xhWG4wPChq5GXpPtGPYJZsSijnzf0N5NejLb+F6BrKa4Y@vger.kernel.org, AJvYcCUz0YcXz4HR4kAxbuWtSqFkw85ojXVgl2xAIlPbez2gScAxDv7fjXSKro6LunolUu1pVcviuncPaOANeAX5@vger.kernel.org, AJvYcCV5JF+rlLs30etVDCxXXAZrdZa8tkGMvQn2RUftRqTEYfnyIbZFevJJ7Lc965pncRtsIj0atiFtGFz7hwou3DU=@vger.kernel.org, AJvYcCVlOh55vSDBXSsLD6RK4id/I20JKx2eEaH8nHWJGKApk91Pl2bV1Zf1x3PIDVcWjw45Vv4LtE36O4fSMQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0kD+vGcfWZaq3Pfvb4MJvpo1X0rWKWjHNv+WaDi8OlunUuc/t
+	fIryBTwubwIIXJ3zFXED6V0LnTa4axqVgsIegfTGKeXJChdCnr4ot8Tz
+X-Gm-Gg: ASbGncvE8Ii1cr1GwJPEPJ579I1YBpyLIaG95KsMTgKqousdvOSnjOgXQkxTRX0U9OQ
+	fRGrSwoQo26HsR/8+bZBjolFUeBC8mdfvGntqDEApDltDKzSQHZEeDa4yy9F83GrU3YP+BPmTEY
+	ugnCuxJYdB7qRz9dpFgrt9lT1I51dEJZasFIJCDrXaAT6cIKNoWmytl5Z6gKJFD9NPU1R265kwB
+	bfOfLQwiomFdPhc+1eFFCETUliHOm36a0io0rlF0AleCP58X8awBAwCUv5l8CUol+J+x/WcT4Tr
+	1a1xneFYNC+XJnNhSV+Kr7+4HUPnILfsmS1Erz3BwqiY5/FqQIDWVR4GxVY6klXze/TgBi3b7+B
+	SVY/gL37cATzDsAQtOi6h5ElxFLBFzc7cQYxk
+X-Google-Smtp-Source: AGHT+IFGJ4j2oFpKlnm3TiPSB5wBBPqtGsgs71FDdaXalDsriq6wX0J9e6BEAmaAsoKXsWO/2igTtQ==
+X-Received: by 2002:a05:600c:4443:b0:43d:172:50b1 with SMTP id 5b1f17b1804b1-453659ef73fmr31399135e9.29.1750433187813;
+        Fri, 20 Jun 2025 08:26:27 -0700 (PDT)
 Received: from igor-korotin-Precision-Tower-3620.airspan.com ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453624554cfsm23696085e9.0.2025.06.20.08.23.34
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453646cb57fsm29222215e9.1.2025.06.20.08.26.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Jun 2025 08:23:34 -0700 (PDT)
+        Fri, 20 Jun 2025 08:26:27 -0700 (PDT)
 Sender: Igor Korotin <igorkor.3vium@gmail.com>
 From: Igor Korotin <igor.korotin.linux@gmail.com>
 To: "Rafael J . Wysocki" <rafael@kernel.org>,
@@ -106,9 +106,9 @@ Cc: Alex Hung <alex.hung@amd.com>,
 	Gary Guo <gary@garyguo.net>,
 	Len Brown <lenb@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>
-Subject: [PATCH v8 3/9] samples: rust: platform: conditionally call Self::properties_parse()
-Date: Fri, 20 Jun 2025 16:21:03 +0100
-Message-ID: <20250620152103.282763-1-igor.korotin.linux@gmail.com>
+Subject: [PATCH v8 4/9] rust: acpi: add `acpi::DeviceId` abstraction
+Date: Fri, 20 Jun 2025 16:24:25 +0100
+Message-ID: <20250620152425.285683-1-igor.korotin.linux@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250620150914.276272-1-igor.korotin.linux@gmail.com>
 References: <20250620150914.276272-1-igor.korotin.linux@gmail.com>
@@ -120,34 +120,109 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Danilo Krummrich <dakr@kernel.org>
+`acpi::DeviceId` is an abstraction around `struct acpi_device_id`.
 
-Only call Self::properties_parse() when the device is of node
+This is used by subsequent patches, in particular the i2c driver
+abstractions, to create ACPI device ID tables.
 
-Once we add ACPI support, we don't want the ACPI device to fail probing
-in Self::properties_parse().
-
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
 ---
- samples/rust/rust_driver_platform.rs | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ MAINTAINERS         |  1 +
+ rust/kernel/acpi.rs | 60 +++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs  |  1 +
+ 3 files changed, 62 insertions(+)
+ create mode 100644 rust/kernel/acpi.rs
 
-diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-index 000bb915af60..8579290eecb3 100644
---- a/samples/rust/rust_driver_platform.rs
-+++ b/samples/rust/rust_driver_platform.rs
-@@ -40,7 +40,9 @@ fn probe(
-             dev_info!(dev, "Probed with info: '{}'.\n", info.0);
-         }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1e918319cff4..3e59a177ac0c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -302,6 +302,7 @@ F:	include/linux/acpi.h
+ F:	include/linux/fwnode.h
+ F:	include/linux/fw_table.h
+ F:	lib/fw_table.c
++F:	rust/kernel/acpi.rs
+ F:	tools/power/acpi/
  
--        Self::properties_parse(dev)?;
-+        if dev.fwnode().is_some_and(|node| node.is_of_node()) {
-+            Self::properties_parse(dev)?;
+ ACPI APEI
+diff --git a/rust/kernel/acpi.rs b/rust/kernel/acpi.rs
+new file mode 100644
+index 000000000000..2b25dc9e07ac
+--- /dev/null
++++ b/rust/kernel/acpi.rs
+@@ -0,0 +1,60 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Advanced Configuration and Power Interface abstractions.
++
++use crate::{bindings, device_id::RawDeviceId, prelude::*};
++
++/// IdTable type for ACPI drivers.
++pub type IdTable<T> = &'static dyn kernel::device_id::IdTable<DeviceId, T>;
++
++/// An ACPI device id.
++#[repr(transparent)]
++#[derive(Clone, Copy)]
++pub struct DeviceId(bindings::acpi_device_id);
++
++// SAFETY:
++// * `DeviceId` is a `#[repr(transparent)` wrapper of `struct acpi_device_id` and does not add
++//   additional invariants, so it's safe to transmute to `RawType`.
++// * `DRIVER_DATA_OFFSET` is the offset to the `data` field.
++unsafe impl RawDeviceId for DeviceId {
++    type RawType = bindings::acpi_device_id;
++
++    const DRIVER_DATA_OFFSET: usize = core::mem::offset_of!(bindings::acpi_device_id, driver_data);
++
++    fn index(&self) -> usize {
++        self.0.driver_data as _
++    }
++}
++
++impl DeviceId {
++    const ACPI_ID_LEN: usize = 16;
++
++    /// Create a new device id from an ACPI 'id' string.
++    pub const fn new<const N: usize>(id: &[u8; N]) -> Self {
++        build_assert!(N <= Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
++        // Replace with `bindings::acpi_device_id::default()` once stabilized for `const`.
++        // SAFETY: FFI type is valid to be zero-initialized.
++        let mut acpi: bindings::acpi_device_id = unsafe { core::mem::zeroed() };
++        let mut i = 0;
++        while i < N {
++            acpi.id[i] = id[i];
++            i += 1;
 +        }
++
++        Self(acpi)
++    }
++}
++
++/// Create an ACPI `IdTable` with an "alias" for modpost.
++#[macro_export]
++macro_rules! acpi_device_table {
++    ($table_name:ident, $module_table_name:ident, $id_info_type: ty, $table_data: expr) => {
++        const $table_name: $crate::device_id::IdArray<
++            $crate::acpi::DeviceId,
++            $id_info_type,
++            { $table_data.len() },
++        > = $crate::device_id::IdArray::new($table_data);
++
++        $crate::module_device_table!("acpi", $module_table_name, $table_name);
++    };
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 6b4774b2b1c3..5bbf3627212f 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -51,6 +51,7 @@
  
-         let drvdata = KBox::new(Self { pdev: pdev.into() }, GFP_KERNEL)?;
+ pub use ffi;
  
++pub mod acpi;
+ pub mod alloc;
+ #[cfg(CONFIG_AUXILIARY_BUS)]
+ pub mod auxiliary;
 -- 
 2.43.0
 
