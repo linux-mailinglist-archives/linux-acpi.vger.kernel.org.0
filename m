@@ -1,104 +1,115 @@
-Return-Path: <linux-acpi+bounces-14494-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14495-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C059CAE28CC
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Jun 2025 13:31:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6408AAE29E2
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Jun 2025 17:36:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08A493A751A
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Jun 2025 11:31:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B83FC3B204A
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Jun 2025 15:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49C1195B1A;
-	Sat, 21 Jun 2025 11:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C1F2206BE;
+	Sat, 21 Jun 2025 15:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rWBssDVI"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CT5VV+2m"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B50EA95C;
-	Sat, 21 Jun 2025 11:31:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E912A21FF50
+	for <linux-acpi@vger.kernel.org>; Sat, 21 Jun 2025 15:35:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750505512; cv=none; b=uXATQouWrwb3igNB5kVm1xslg2g6WrKUWjkPjlM2YS3YkDHTIEBZ7eVnLQcFih1RTr9wmJtO0S75gKpUYqtT1PmRFjnKseIPWQ+AojgXMnpHmTeaR/obAMaVXmaIa4AiIif8JuQbMVs9TJicYORgLYyjBhMrWNiSM3fHf+plI48=
+	t=1750520150; cv=none; b=kHglOhuoG9zUSh+YO8+H3Sb+ipTtvzd1QNWCwdXDb2U+8sWiihwaX1jI3f1Hcz7C9u1VyzNtKFw0ddZ9eoQ+Y8HuHF3aGhZeWRKkGwJ2mm3uJatI5HEG+RZ+qiBw5Tr1WTKD7lJzwgwCDOTrIPN6qN9bL9bVA6c1C2hdkav/8Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750505512; c=relaxed/simple;
-	bh=fMeNHwlvdxhVpulaFu75Rk3QBuy7carLB9qer/sIg78=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=PtumY/BnfK57I/UWLHwhVPeTve1SGeTrcQGVjTPBwhOXwTXpuVSiKK81KaJinjeMhzu0bvV5NP1AtitvW1dEIHIQ7+RF8/N4ihdKDBRB34zi0oZvFkxvGR79FEN2jfsJmZWKKtG4CHIFRYh3orthXK16l716cTsCnzVKG7MEng8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rWBssDVI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EF6C4CEEF;
-	Sat, 21 Jun 2025 11:31:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750505512;
-	bh=fMeNHwlvdxhVpulaFu75Rk3QBuy7carLB9qer/sIg78=;
-	h=From:Date:Subject:To:Cc:From;
-	b=rWBssDVIxN+heJAm5e8YCmpldEd1eH8gFArkMiaSt8gi15lqMH9wmudwKChiKyfmt
-	 vVKjwVVOK+1URHQ5eyi0sMjZkEX4XkFJWbhi4f/8WseOyCHJDeVVnGgl88A/FA4YUd
-	 HpdUeBY1Dvu/sGIr8hJVgjQqFkGfSz5xpS4107tsXPY9yh9dvzTQ4Lce6+f9BDcBHK
-	 mxuk8s5P94Howle3SM+CF6yaaDH8mIqMjpgjWUwLx9xnQRq+WBayeIsogE+y+xRmIn
-	 I/ijXokhyBajJVjQUxXmvG77lM7RtLHVsT8biuvebI1HDwW4TVwit6DrirF2q7JtmI
-	 dqceAIMthxFSA==
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-606477d77easo1666438eaf.1;
-        Sat, 21 Jun 2025 04:31:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWTXlu6XUlWU1S5p7nhs20kdU140SRNLHOXjESwlVkEVxiO3gPVXCdWBYKNWJkr4pgEpcG44+qRSG1mFAo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcJD2ExguazNaY/phDhjUfeTzgwTM7MH5lQQz636Vz5u9v5VQ7
-	izAixG8B7jrBTDK41HMobhbHgepZZOSjXK2TM9U0n7iUzV1jaM2QRbg5r9XG/MiAuJiR5ywXAzw
-	/K2JWSFupmqlYNjoM+a975MmQ31Wq20Y=
-X-Google-Smtp-Source: AGHT+IE5n394XM+7zHcgyPrTHWVFOTviAqX3t2Z6skAUnNv3LIEPZutFXJKATyqljUcH6zXQJn4KIzwJGUFjlx85eA0=
-X-Received: by 2002:a05:6820:6ac3:b0:611:6cb6:46bf with SMTP id
- 006d021491bc7-6116cb647f2mr1044516eaf.4.1750505511421; Sat, 21 Jun 2025
- 04:31:51 -0700 (PDT)
+	s=arc-20240116; t=1750520150; c=relaxed/simple;
+	bh=Z0YvMrEXahV6Bau7dFtEzJFPdcZeXuaz5bkrjlZVLCU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lAOS8IgdEdx0210jG25DyZtZoZ8ZYwyJcSKU7nimKThPodnvaazWFsh1BZ37Ebkg0cf0DkKJvg6yk/G46JMLX9ktwg1BUGitILxvpxz0STcJ8RK0CAhfXwwqJy32MJNY4r6mJK4O21OyJ5uq+hhgtytm9DtM5j71V4WpXlAuWIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CT5VV+2m; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-60789b450ceso5362001a12.2
+        for <linux-acpi@vger.kernel.org>; Sat, 21 Jun 2025 08:35:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1750520146; x=1751124946; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=3/J+4tuN+K5ETkGh73Z2WxB3VAuuxIUgavzZX0gT9Qc=;
+        b=CT5VV+2mB0Sm9ewjUD+9HdFIjbt4t1zzciLGQS6+abKSh9CT20f7L1z09INvlrutk1
+         ZNgMCtuG5cy2j+gnYByxuBmYbqrDeVDfZTndJkYsrVRkwKoYnRwcB7Boe8Yl3xvDQehS
+         U7OyM1ZeKIOvU81UL/yQSl//y45CWy97Cmzak=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750520146; x=1751124946;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3/J+4tuN+K5ETkGh73Z2WxB3VAuuxIUgavzZX0gT9Qc=;
+        b=HRy6KdivBYZboAoEA1Yh6CvIemeMfKEVsLXxfBTCOhG3sNKyLOo7/DLNvvqvmb4PLl
+         UWcurZPe63f7wEQYWfuC1kJe8nP5iE/hzsl1WGVrHP+kvtiPoHz4JyZ4CjlZN7PSp3os
+         0ABkx6ALB01bKaL6c2uyE3924hzjMYY/ftgPy/rhqho6qfdqtZkon+S5FGW8v3G0J7Mq
+         vMA8Wt0NAx/kYYsxVFI90Ou3QIEdoKvkSDOMyxHbCXf1u7/Dd5AKIwgIoGpox6ukuO+I
+         lYOAjcMmArou7dGQg9uzdHrqqImX9so5fz0nAhiGYLNHDxHHnNjOPmCBZ9mo96f0srJo
+         fdHA==
+X-Gm-Message-State: AOJu0Yz5agBTwxKbIzzFkY65DZj1ssf2JSHXJLLhBMBfYfjHyd6Hwd5B
+	ZvQTvLqHMnKnVTpGv5ZYc1XCrCxBYg+FJWVrEwAbWJ3Wcgftuz6wkgzxDPm7kk/cr6EJXbvrrPY
+	NQi8XblQ=
+X-Gm-Gg: ASbGnctSjjHP69S6nclPc+Up9ZKe2EkoyP8PWQ/KfC2CcrJwEV+MgPwoh7xtO9Ht/cL
+	mXwuJ7qwSwCoPmf3AUCMPrCfqscdPmBA9KgBdsFGm4vsAJLLpmGyXL1cyAdB7oeDajeKe7E6/hT
+	axnyDZrpIrpes6QnoK9ycTPQNIKF/mCraRu/qyHJsyRf2/h00/KVgp0GK/ToNbHGrt+O3LpMNBq
+	doVlRF4YQnSIBnJ/VQ6GffXB04Mtn7g1zh7E11HqoQNTPJr7+jekwVzMwXZ5VLSJ9ety0t5uT+N
+	U4GUyGoDGAdaroZVkovVh+cJNcgmxCG5WiqD632VVJaDSoj2rV8KT/Lf9wkDOEh9cqS0H/l5PwA
+	d4XFW/imJS/3ghQBw23e3ahoA9YuxgUTqq0vG
+X-Google-Smtp-Source: AGHT+IEXPOmbhIP37gD7tx/rYzGRdjlgkgAMa8NyGk5RwwUDMN0tj+AZQH1WdCpH1rMqizloTOPTtg==
+X-Received: by 2002:a17:907:7214:b0:ade:7bd:e0ec with SMTP id a640c23a62f3a-ae057fa0dfemr640038366b.56.1750520146092;
+        Sat, 21 Jun 2025 08:35:46 -0700 (PDT)
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com. [209.85.218.48])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae054209a52sm391301866b.179.2025.06.21.08.35.45
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 21 Jun 2025 08:35:45 -0700 (PDT)
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ad89ee255easo520238466b.3
+        for <linux-acpi@vger.kernel.org>; Sat, 21 Jun 2025 08:35:45 -0700 (PDT)
+X-Received: by 2002:a17:906:f5a9:b0:ad8:a935:b905 with SMTP id
+ a640c23a62f3a-ae057d7a6b1mr515906766b.22.1750520144897; Sat, 21 Jun 2025
+ 08:35:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Sat, 21 Jun 2025 13:31:37 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iNVFFJVgzeMx=+UMw5MTOUgdu_WGpJxE3qjHikQ4Sp4A@mail.gmail.com>
-X-Gm-Features: AX0GCFsZ4VbA-qN3-aLKoEtFFt1821bPf6EqEI0cFHzu1w7RgboPt-kPW8xdR6I
-Message-ID: <CAJZ5v0iNVFFJVgzeMx=+UMw5MTOUgdu_WGpJxE3qjHikQ4Sp4A@mail.gmail.com>
-Subject: [GIT PULL] ACPI fix for v6.16-rc3
-To: Linus Torvalds <torvalds@linux-foundation.org>
+References: <CAJZ5v0iNVFFJVgzeMx=+UMw5MTOUgdu_WGpJxE3qjHikQ4Sp4A@mail.gmail.com>
+In-Reply-To: <CAJZ5v0iNVFFJVgzeMx=+UMw5MTOUgdu_WGpJxE3qjHikQ4Sp4A@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sat, 21 Jun 2025 08:35:28 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgPwhqr7mwmXDzYkfAcMRu3zyKRxz3hh-wfg-BQxj+UZg@mail.gmail.com>
+X-Gm-Features: AX0GCFtfvCldbS-qaKxG9GOLReH4rkHdVfY5_ZteJ4VslcEcSQtyhd00NZjb348
+Message-ID: <CAHk-=wgPwhqr7mwmXDzYkfAcMRu3zyKRxz3hh-wfg-BQxj+UZg@mail.gmail.com>
+Subject: Re: [GIT PULL] ACPI fix for v6.16-rc3
+To: "Rafael J. Wysocki" <rafael@kernel.org>
 Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
 	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Hi Linus,
+On Sat, 21 Jun 2025 at 04:31, Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> This fixes a crash in ACPICA while attempting to evaluate a control
+> method that expects more arguments than are being passed to it, which
+> was exposed by a defective firmware update from a prominent OEM on
+> multiple systems.
 
-Please pull from the tag
+Christ. Reading the ACPI issues page makes me go "D'oh".
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.16-rc3
+Does anybody know what the heck Windows does in this situation? Does
+it just happen to work because it uses random arguments and happily
+dereferences bogus things without realizing, or does it do the "zero
+out missing arguments" thing?
 
-with top-most commit 6fcab2791543924d438e7fa49276d0998b0a069f
+Because clearly that firmware bug must have passed entirely unnoticed
+by people testing that thing on Windows...
 
- ACPICA: Refuse to evaluate a method if arguments are missing
-
-on top of commit e04c78d86a9699d136910cfc0bdcf01087e3267e
-
- Linux 6.16-rc2
-
-to receive an ACPI fix for 6.16-rc3.
-
-This fixes a crash in ACPICA while attempting to evaluate a control
-method that expects more arguments than are being passed to it, which
-was exposed by a defective firmware update from a prominent OEM on
-multiple systems.
-
-Thanks!
-
-
----------------
-
-Rafael J. Wysocki (1):
-      ACPICA: Refuse to evaluate a method if arguments are missing
-
----------------
-
- drivers/acpi/acpica/dsmethod.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+              Linus
 
