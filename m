@@ -1,138 +1,129 @@
-Return-Path: <linux-acpi+bounces-14492-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14493-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE5D2AE278E
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Jun 2025 07:52:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C37AAE27EF
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Jun 2025 10:16:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6EEE4A07BE
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Jun 2025 05:52:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 069E01897E17
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Jun 2025 08:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B301C19F49E;
-	Sat, 21 Jun 2025 05:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C6D1A23B9;
+	Sat, 21 Jun 2025 08:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G38nV9c8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sYtLxsbR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F202818B47C;
-	Sat, 21 Jun 2025 05:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D645642A96;
+	Sat, 21 Jun 2025 08:16:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750485128; cv=none; b=iIxQYqGKGwqeDt9/uOloBtanaudkdE82WxxyGnKL2f+eEnkfMsDnqH1h0qLnYqp2UnkFzapjgRBJGAnxjPWWpnq0004gLR2MlSY9laNlk2GksLzErGNpLwmoyOYIMX1FyNBMiLLU/mmsarVU1YccU+CCrCSO3SVrjHV2Q+exzuI=
+	t=1750493766; cv=none; b=YBtR+korZ2EL3KIo/dKl7f8jGcR4NnjAYqG9cwYtCQiR3hcFZyd6ah2xeYiICEDUOfqek9tBhNtO4oJV+69HRgFPIKrVKPh4h4xX16M8F7G7hVOZGl6OapkzhphfIR+JGm04kc8Gbt1VAF+Ip+uOgl1JuwjHrhw46LwomUkjNK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750485128; c=relaxed/simple;
-	bh=I2qfDeaK/yT5SBxGqMaxj0vINrFUNTL30vXC81G8BN4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rtyuOtv2vrpN+Gr/GScQqFG8jwBKFMIYFjt+FDznUuZt+LkgYU+mg6o2u4m8WyqxhmqimrGhhCtwGhMPDfPYXeQzxXaO47eytF/eQ/5pNXL16F3bY++RubdTL8m7fmGamHlpT1u+2HDiaU76WRZN82CaNrPRXsVRqLrN83wA1BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G38nV9c8; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4533fbbd21bso1237325e9.2;
-        Fri, 20 Jun 2025 22:52:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750485125; x=1751089925; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WQpUEjf0YxYX6Ci4pItp/DxE3akefzENzegjXg1pXvE=;
-        b=G38nV9c8u5CkpiZyU99Zqfgb7VbRBVX4PV0Y7sZAfvozMzifxVMF2cm3p7Nw0TVc4I
-         j4COGTefAZBm/YikEtZ4gfoO1WeNFzT+m78Zyb6vuW0YHdyV24UGOairikzy/0l0n9jh
-         C2y6SWBdKyM1M+CPMeEfcrBpUqbSiUyJaaaEwfxwscWOhxqR6BE5iUAo0xFACQRWrgR4
-         FJ0DA6nQoaYO1SRfD6TGpJOya70uDrUtJnFOMlhV/PI2KzkRF5CRFPzWCK93DEDDbIIW
-         QtRSrN4FYbPGlUmfq+19pi4cYoi5u0hIhQZjjj6gbIYO5zJDalZ4DJbochBQHQOd0myu
-         V/1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750485125; x=1751089925;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WQpUEjf0YxYX6Ci4pItp/DxE3akefzENzegjXg1pXvE=;
-        b=OqlK2q8E0TbkFlNogYctHCr/B+stiIr3lqIMo04YtEY8d4897nrOD9nghVxYR/Cywd
-         sVa63qS9Zy5UY2y7QtDBFPetYFo0rQnKbyg/+4J3okbuM346so0tpLCzXnvaNWGZgUcV
-         K56w9/zPPBiz65vQvCS8JN/I7cKF17t74y6jYHzZPRTTSWRwf82Hs8nEAqwJXHHG4ynv
-         skbksaqtp5tCZYIizQq49JiqqzDtES7mwLij0fFMYiL56h3LMm9WYiob3M1CJcX8eP8h
-         cJvuC9cJEu1Swr3izrEp3DYLpK7e+hzIzYD5BNOcpaIC7wmRfSrK74DnXIv0uj9hjC5Z
-         B0fA==
-X-Forwarded-Encrypted: i=1; AJvYcCWBUtza94n1Hvp6CdCRDekSmeIeN/kzPehGzk/n63+uOvgpki1k2zxm1iyrCZL2ul6OSbaLVecYemFu@vger.kernel.org, AJvYcCWv3hfE457+LaikYWLllRXTvCTnrqx3caTWIevJuawqA8ou9XgrzuP9x+eFKF0kB0TLARGwFwvNX7jY5LYH@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQzMUm+9wLsOO6syG76UYwEuv9ogy9u6MuVEj+XnSKZeM92U8G
-	TiTjLNdBIae1rr41S4ylAXiI9eOEQZoqxfwgIZMlQODxgPVjVz5tIgU8
-X-Gm-Gg: ASbGncsWVdwnq+LkiyDIzSdLFaqd6Ua4aPUrc/yN3KnRFKq610GnRP3vysQWQUv1A2Y
-	OKEBrv5zOzamgqoQPx0RXYHXUdzZSf57CrtV2uMElAkXQLg64O3G1IKXQJyNm2F0IhYeliSRaXq
-	ynpcWiJvexFr5oKAJ3l9cdx7wU6mBtrOJixgpH+RIRX/2tc9OA2uorsD2zS+d6/FkePFIXEAWlY
-	Q5mVbBuGKFIl6kn+dzaHOeL9zs283+fUQZDRD5io0UcNxuwo0Q7p4tbvk32CANLu+RnbWIMIufD
-	pf1Q1Gu4fSRTFX9VpdijHxJVpvmC4HnORVX2Bwmv/ho4utZFCBD5Qq3zwWEp94GhkO5G0RHwBRY
-	TQKgJvmdNMf8Mt8pD/tm2c0/ny557tTJgWA==
-X-Google-Smtp-Source: AGHT+IGpx8LAUbfT+/oAv5emrbinMdbFFJI0Ah20iXYdZhFuPKxIxIt+hSS5OM2azlVyMH9Ov14N1A==
-X-Received: by 2002:a05:600c:5494:b0:453:590b:d392 with SMTP id 5b1f17b1804b1-453657bf79cmr18822625e9.2.1750485124972;
-        Fri, 20 Jun 2025 22:52:04 -0700 (PDT)
-Received: from localhost.localdomain ([102.46.244.122])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d1190d13sm3785172f8f.90.2025.06.20.22.52.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Jun 2025 22:52:04 -0700 (PDT)
-From: Abdelrahman Fekry <abdelrahmanfekry375@gmail.com>
-To: rafael@kernel.org,
-	lenb@kernel.org
-Cc: skhan@linuxfoundation.com,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev,
-	Abdelrahman Fekry <abdelrahmanfekry375@gmail.com>
-Subject: [PATCH] ACPI: fan: Replace sprintf/scnprintf with sysfs_emit in show functions
-Date: Sat, 21 Jun 2025 08:52:00 +0300
-Message-Id: <20250621055200.166361-1-abdelrahmanfekry375@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1750493766; c=relaxed/simple;
+	bh=oN1ZX1XWIvOgdq3a5xRnlSs5Yw9BiIoC3X45+HjSENk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X5lU1UWw1Eb/KqRdD+8QImnenj/tIAPqHVTCCnT8m2QOrzjFK/exGat4ryGAJQ0k9nN/pD/VpqD6qbq4Zq2X6tj3aV1GRpXFkdntoKsMGP/YAzq28LF5S2o2QTRRhM98BnYBxOyQSU4WAR0QmSA+fetaGguXARU9qNilNNZjSh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sYtLxsbR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A12C4CEE7;
+	Sat, 21 Jun 2025 08:16:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750493765;
+	bh=oN1ZX1XWIvOgdq3a5xRnlSs5Yw9BiIoC3X45+HjSENk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=sYtLxsbRQ+Pf/Q1LzoMMge3CoxJso/FSDGjW2taSSBQvxtzAwIwHfzz+9hRJNsd5c
+	 Gcz+z6X3KY9FN1CenXi6JNy8AVZp3PQv69maINV/3j2yliTuyOwIIhn7/u6VDW8JFY
+	 RO3BWFJjhp2Ea1VxgX0y4teSzd3AMrfPkq6in69tQwkjspoZpZAoguK5ZQ2KF5gi6D
+	 BEztz9Ae6TQj++HSK3P9gMbToAnu/kRB+OMLIC1nOUaWeEEP0sZidoKx16xAR1vMvf
+	 rhDCMZB3+Ij61Bd31QZIT3qD+GbwmgkNLx0kXZmQpyjS7W0t8AD5Oxfi37PqGbKutB
+	 OAwbSBu6cy+dg==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-32b3c292bb4so22584871fa.1;
+        Sat, 21 Jun 2025 01:16:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUIqToRRyEFWL7lAnN6XGMxk6uUM09CLKV9WditTYTIU5zm5MC6vcgt8ccsPTEp6vt3c/QgV07/pirBEhRO@vger.kernel.org, AJvYcCV0DRq+ZpNzH2jxXKzBmL1GmsQA/O7DhQTQQ96f2H17Us/ntO+ralJ9ah6R+BxO7i8yp3TQS/aruFjtDA==@vger.kernel.org, AJvYcCX+Doxn5m0J4utHOBWnTgeupOG4IjbFTf3sRkoeb+Qw2CrrhudkVZUAtFm9S73Md4i/gKvexR8Xx0Cj@vger.kernel.org, AJvYcCXCwfaOTmtWTocSmrRmLDMkls9T/hBZiua6t3HjXVepbtvSaln4MSFiQqwe1/+aqk+7DgcIHISWdCCD@vger.kernel.org, AJvYcCXk5v7qEKMXjTvZSwQmpafx/IwYyDclcC72uz3mb2Pxl3doULLVaOEGDt2cU39Wi37SNcYvw4jWOBNP@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTMiBqCaUaoy2EG/or+LcE+ZaJmNHvWWm5STVIGcvYkRLa5cas
+	qPbQzlvrmjyoGFtxHhVBw1Vfd3BW3g17GKYnb46lJCAY5NPwqtk2OhruZY9+Ry9QCR3nlMMxzCN
+	k+LA1R7rKzH0dUa9y6LsJEdBDLk8shMI=
+X-Google-Smtp-Source: AGHT+IG7G1p+eMBQX8l5H3KUmCP0DYsHNGAcJGRnYN1fOb7tfyfV+XhAE8P+Qi1We2rHg3wDZBrW8geftynHAWEFjgU=
+X-Received: by 2002:a05:6512:3da6:b0:553:2dce:3ab2 with SMTP id
+ 2adb3069b0e04-553e3b9910emr2075407e87.6.1750493763725; Sat, 21 Jun 2025
+ 01:16:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1725429659.git.mchehab+huawei@kernel.org>
+ <20241011115707.GCZwkSk5ybx-s9AqMM@fat_crate.local> <CAMj1kXGQSgeshrns7-EwTkG_c1dHgaxaVxO_FxWumdFx6m4vRQ@mail.gmail.com>
+ <efbc8109-1854-43b2-bff4-095ecd5970cd@os.amperecomputing.com>
+In-Reply-To: <efbc8109-1854-43b2-bff4-095ecd5970cd@os.amperecomputing.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Sat, 21 Jun 2025 10:15:52 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGSNT08QrCp1jazmi9ANpZ7RCuS4kHo9x6hwxtp6z0Nhg@mail.gmail.com>
+X-Gm-Features: AX0GCFvW2Y9Ngxmoff6t5ijZh-D91PAeNXLsY6MvtMOOptWR8A-DweeytvCeo3M
+Message-ID: <CAMj1kXGSNT08QrCp1jazmi9ANpZ7RCuS4kHo9x6hwxtp6z0Nhg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/5] Fix issues with ARM Processor CPER records
+To: Daniel Ferguson <danielf@os.amperecomputing.com>
+Cc: Borislav Petkov <bp@alien8.de>, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
+	James Morse <james.morse@arm.com>, Jonathan Corbet <corbet@lwn.net>, Tony Luck <tony.luck@intel.com>, 
+	linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-edac@vger.kernel.org, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Update two sysfs show() functions in the ACPI fan driver to use sysfs_emit()
-and sysfs_emit_at() instead of sprintf() and scnprintf().
+On Fri, 6 Jun 2025 at 20:30, Daniel Ferguson
+<danielf@os.amperecomputing.com> wrote:
+>
+>
+>
+> On 10/14/2024 3:00 AM, Ard Biesheuvel wrote:
+> > On Fri, 11 Oct 2024 at 13:57, Borislav Petkov <bp@alien8.de> wrote:
+> >>
+> >> On Wed, Sep 04, 2024 at 08:07:13AM +0200, Mauro Carvalho Chehab wrote:
+> >>> Jason Tian (1):
+> >>>   RAS: Report all ARM processor CPER information to userspace
+> >>>
+> >>> Mauro Carvalho Chehab (4):
+> >>>   efi/cper: Adjust infopfx size to accept an extra space
+> >>>   efi/cper: Add a new helper function to print bitmasks
+> >>>   efi/cper: align ARM CPER type with UEFI 2.9A/2.10 specs
+> >>>   docs: efi: add CPER functions to driver-api
+> >>>
+> >>>  .../driver-api/firmware/efi/index.rst         | 11 +++-
+> >>>  drivers/acpi/apei/ghes.c                      | 27 ++++----
+> >>>  drivers/firmware/efi/cper-arm.c               | 52 ++++++++--------
+> >>>  drivers/firmware/efi/cper.c                   | 62 ++++++++++++++++++-
+> >>>  drivers/ras/ras.c                             | 41 +++++++++++-
+> >>>  include/linux/cper.h                          | 12 ++--
+> >>>  include/linux/ras.h                           | 16 ++++-
+> >>>  include/ras/ras_event.h                       | 48 ++++++++++++--
+> >>>  8 files changed, 210 insertions(+), 59 deletions(-)
+> >>
+> >> With the issues to patch 1 fixed:
+> >>
+> >> Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+> >>
+> >> I'm presuming this'll go through Ard's tree. Alternatively, I can pick it up
+> >> too with Ard's ack.
+> >>
+> >
+> > Either works for me.
+> >
+> > Mauro: please put all maintainers on cc of the code you are touching - thanks.
+>
+> What can I do to help this patch move forward?
+> I noticed it needs to be rebased as of kernel v6.15.
+>
+> Would it be helpful if I were to rebase, add all the maintainers to the cc, and
+> resubmit ?
+>
 
-- show_fan_speed(): replaced sprintf() with sysfs_emit().
-- show_state(): replaced scnprintf() with sysfs_emit() for the first write,
-  and retained sysfs_emit_at() for incremental writes.
+Yes, please. And make sure you incorporate Boris's feedback on patch
+#1 and apply his conditional ack.
 
-This change is in accordance with Documentation/filesystems/sysfs.rst,
-which recommends using sysfs_emit/sysfs_emit_at in all sysfs show()
-callbacks for buffer safety, clarity, and consistency.
-
-Signed-off-by: Abdelrahman Fekry <abdelrahmanfekry375@gmail.com>
----
- drivers/acpi/fan_attr.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/acpi/fan_attr.c b/drivers/acpi/fan_attr.c
-index 22d29ac2447c..6a53da3d6d82 100644
---- a/drivers/acpi/fan_attr.c
-+++ b/drivers/acpi/fan_attr.c
-@@ -22,9 +22,9 @@ static ssize_t show_state(struct device *dev, struct device_attribute *attr, cha
- 	int count;
- 
- 	if (fps->control == 0xFFFFFFFF || fps->control > 100)
--		count = scnprintf(buf, PAGE_SIZE, "not-defined:");
-+		count = sysfs_emit(buf, "not-defined:");
- 	else
--		count = scnprintf(buf, PAGE_SIZE, "%lld:", fps->control);
-+		count = sysfs_emit(buf, "%lld:", fps->control);
- 
- 	if (fps->trip_point == 0xFFFFFFFF || fps->trip_point > 9)
- 		count += sysfs_emit_at(buf, count, "not-defined:");
-@@ -59,7 +59,7 @@ static ssize_t show_fan_speed(struct device *dev, struct device_attribute *attr,
- 	if (status)
- 		return status;
- 
--	return sprintf(buf, "%lld\n", fst.speed);
-+	return sysfs_emit(buf, "%lld\n", fst.speed);
- }
- 
- static ssize_t show_fine_grain_control(struct device *dev, struct device_attribute *attr, char *buf)
--- 
-2.25.1
-
+Thanks,
 
