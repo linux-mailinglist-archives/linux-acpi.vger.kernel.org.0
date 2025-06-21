@@ -1,161 +1,117 @@
-Return-Path: <linux-acpi+bounces-14490-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14491-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC3BAE273A
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Jun 2025 05:28:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF3E1AE2779
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Jun 2025 07:17:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B36F5A3D46
-	for <lists+linux-acpi@lfdr.de>; Sat, 21 Jun 2025 03:28:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 780E01BC0ECB
+	for <lists+linux-acpi@lfdr.de>; Sat, 21 Jun 2025 05:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD26D14901B;
-	Sat, 21 Jun 2025 03:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6543412CDA5;
+	Sat, 21 Jun 2025 05:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WFTG9WSj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OWP8OLt6"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14763EC2;
-	Sat, 21 Jun 2025 03:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE952AF1C;
+	Sat, 21 Jun 2025 05:17:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750476504; cv=none; b=mnx6rLbk2UGsjDW/VUt+icaOw9nLDb1sJd6rOVN99EaNz7JdeG/DZaz/ufBsy0ULhC0hZqgmWg+GL5bWVyYIvA2pRPiDjbIfsTzUunNEFfHKLqOIR+wETvRPhz8xfCMu44sOg1dtCKgUUmA1mCaAsk4AN4lStx9vY9r3GukVDQw=
+	t=1750483038; cv=none; b=klkaxUrAIc05mi+AWNYEH+SDcW7K5g9WCGwN++TXJp/hfBDltFcrfVbTQe1WA1ZrXkcaBSMa0Av0lWoZGbXuhivI/twkcAux/dG2P93E3oFWhUQ4uP338AArbkk71/pPIAhd3R0sQLEMXgjKFPgHMadbjKuBaHUx9pzSQg/rbeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750476504; c=relaxed/simple;
-	bh=XOIyHyU8R1w9H+z6+fu5PhmSwMuz8DC82MGSiGDequQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZMQ3lYVApuFsTPxOsX3A5yD5/AgFOLyJ89bkFZq3t7GC/itOIfzDtmBVSn7Osg/iz3mNWdW7XLfsPvrGQ7gZF720RKEodjo52u1BntT/t7Qiq8s4fkofPM0BGNXAU7FrEuz+48gKJv8WZj/lt35o6a7pCg4MI6WBUXNkUeyXzkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WFTG9WSj; arc=none smtp.client-ip=209.85.221.50
+	s=arc-20240116; t=1750483038; c=relaxed/simple;
+	bh=JGREnTYwd30zKWM6FI91tmbFDRIqVUVqQJZjy5Nmx08=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=czYqlhgd0GtLh3OX2dOaTKxd89vkwJLYSYMQ+jIm72Hg0TJZA9H5qByraHlTV0N1lIEB8PFRDHOFqFrNFoVMGVp+eZ37smTimbEbfQF3ab4prVhhi8TUVJq/+UKFkL0P3EJipdtIfSm8NFFn9ujMHBuGQAA8MR/GZV7jBWuLWB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OWP8OLt6; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a4fea34e07so1227016f8f.1;
-        Fri, 20 Jun 2025 20:28:22 -0700 (PDT)
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-22c33677183so23408225ad.2;
+        Fri, 20 Jun 2025 22:17:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750476501; x=1751081301; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6RYVzsvFt1KjYQ7dHOGgkQLn8r4WbWR3+fey0qRKwFE=;
-        b=WFTG9WSjfBQly/wxF3TQ5GMVCLOTrOWtTjlFeSt9nw7D1kug7bnEu9WVbCvHAtsQx6
-         8Y+j4G+wPPrNkssYbkrKgbFU0ErctjGP13SdbdZNidLA06lu2n5Vn3zO79MYRsm/lwW9
-         YRcSrwhpbpAA0qUdGS70RdBTd2UidtaaMLLw5NIvWtRhAKTa2/ey++2sGDnOUryiETBI
-         CMxH7h8Mp+eDjyl0kA3M4RcvxUmwhj9mB+d1LLWXJXUJV3UItmYkwxl2qhy1gsYzUYhZ
-         Z3jt4S9zjisCYjy55ENn62B05aFMFTcd3MqEPOdna05CL0gjODgNV/vlYz9E7m4sfRBW
-         BpDw==
+        d=gmail.com; s=20230601; t=1750483036; x=1751087836; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=H9atXAmiHbi4hBHsesyVbDQEP15xagV4i5usV6TG32g=;
+        b=OWP8OLt6gBGAVtesQvm92gLWcHeza6PYUHNSP7yP12A+ypGKTM1dHrs18cTo2jY6I3
+         3WFGBhq4KZi+5ZT5d6XBlDPcBE9YIJGvYc9trFw69Q5XnplrOeEJViEXqIF5q51A4Wu7
+         EWzMumVLqxZSOStPDdGAR0mX5LcpAawI3z1A2TyXpx2wAEvkawkuSIvaKizjpkPLd9vm
+         GYKcQvh6Fwh5yFyqV4RN6JnFlC06hu2+w/eKFahR39R6080meKGzRFlF9SmEXbIEWIN4
+         TD1ZuK7fSNu1/H03mA9kDySuQFhAnkK6U1fOYYbQDk5lJ4UtCtEeTfXynuVHKRRnmdj3
+         31ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750476501; x=1751081301;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6RYVzsvFt1KjYQ7dHOGgkQLn8r4WbWR3+fey0qRKwFE=;
-        b=QoDrFkb2nR9QxQzLEEi2ajlyAoVNz3iw4spA2JuiYObU5/v5xa+cTL+/7IEw44/xjs
-         uBkZ7THInT6bJCzdLiW1n/KLa/C4JScMlGWcIhPu4oz2KyB0Rw8pLLKWFI0vdIF7/N7U
-         8Xmo9GYkj5ghG+vl/2I/yQ+uO8UMiwFs8wGAEBGaPrM9K9DzgaPtdPD6oimJbFiEqhWT
-         kaqr5Z/SwgUFNxTOiAV8shqfH2G8L8iHmUsj7p/POpVoGuWKX9wGoI6dcxaP3E5zIkYV
-         4Zl3+Ne3YM+nQ+FNFBpAge3kh6sqELGuYM+I8x4XrxaQl2QEenRL1585bTSntzFTp8jP
-         edqw==
-X-Forwarded-Encrypted: i=1; AJvYcCUMZotVTI6MYWuO7CENQRbXCi9RKBV7cU1TKhLJI3R9W5rYe3fLm1U9BQ6wk9M+QRfJ7aG6KSsacQoeSxGMQWU=@vger.kernel.org, AJvYcCUq6TZSdC29JdKvNEflwKY+RU8BcsNQfP+OG+8IVLKnTrUzO9ml99ICgOE/OwrAEN//T+ezQJbzaJG71Q==@vger.kernel.org, AJvYcCWlI+p72VCA2pkQjwJKYkN0cIqnbTUG4nhku04svBLe9IUaZLXpC6ukDalTqZhg1lCCUhIUG+N18QIuZPhX@vger.kernel.org, AJvYcCWqzmoTfcit0IJPEYgoY8OMFDzP+kW9JaDd7bHEXC0MEU1bWO1gQ3BqXa/wJI44kEgKyfYopCXaNQ4k@vger.kernel.org
-X-Gm-Message-State: AOJu0YybOjJS8Kxkk3aNWqDreFwr12Zy23m7rdK9CKgELC9ytOOWEWcl
-	+/I3E28KUR3XfiRpzNohz7bHUrlyZrA0FRDQUUv+qHe4IDmUbD5iRhso
-X-Gm-Gg: ASbGncvCFXrDhBmQaQSd+w4nP1tqwS2TPR/sCuhhMWzs21fa2IlACRu7u002CP7IiB9
-	WnEADzW1xTVjwQ9Q5Ihd0rSe4PaGcJNm8dHhdUobgFiyIr+jYUEPyJQJudWVw7LfjKwjDfFBhbn
-	AJO8kEg1d77H0pemRNYQY3cD2EzqZ8J0qbIzu9I9R73JgYdsa1ngSMvFuYXzau/kcdFIBJNzH6t
-	fGeCCl3lpT3BSW4iZ5z9CtHGLOgyU9F1NgfYkxD3lDOb0xNI/WzpePj1Luhel51J+Z64NSWl7Fz
-	DoQJAcp/+UUE9l2WoVNDjxC9dVQE/hFUwfsglO2Qjv5013C9GL/ihoxjwjCjQoLxnTRyaxxhPbU
-	qqMkA5cogT2r57QIPIk8iIYlw4ZBRYMtHCIbw3hx64Fl/i7XQC96JM4DeFwFQqqO4CV1WakN5U0
-	kZyvGAY9I0yTUM5djyeA==
-X-Google-Smtp-Source: AGHT+IEl4sD+EqdTjk1No1Nw/dIxZYZRlU5oJbGK/RYeduxiitvzSariJLNdF8/SAulQCuHsATTNEQ==
-X-Received: by 2002:a05:6000:40cb:b0:3a5:8a68:b815 with SMTP id ffacd0b85a97d-3a6d12e68ccmr4150435f8f.46.1750476501064;
-        Fri, 20 Jun 2025 20:28:21 -0700 (PDT)
-Received: from ?IPV6:2003:df:bf0b:9b00:2ddc:8808:df65:e64d? (p200300dfbf0b9b002ddc8808df65e64d.dip0.t-ipconnect.de. [2003:df:bf0b:9b00:2ddc:8808:df65:e64d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d11909f4sm3527452f8f.88.2025.06.20.20.28.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Jun 2025 20:28:20 -0700 (PDT)
-Message-ID: <9765df90-df3a-48ed-88d8-b5de5b1d0540@gmail.com>
-Date: Sat, 21 Jun 2025 05:28:18 +0200
+        d=1e100.net; s=20230601; t=1750483036; x=1751087836;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=H9atXAmiHbi4hBHsesyVbDQEP15xagV4i5usV6TG32g=;
+        b=Of61xtfFgg92qgVN3pwtkqwWwRjACS09As9z+LaMdyDUyiffy4yp3yL127zq21/2re
+         a/p/R4+enWrWDaSmONxcV0MPRmcX209/y2qeg+Vd2CrX04/1mfboE+PDRgQKCdlMDUTy
+         rNLtDFIDmmUnkAuZ9cH5O2shQ9adky7o8D7g2lNEYBaIS1+6+iLa8UyVqs+V7BY+Tzqu
+         rjgv8+euhwXVfMVeb9aaX5ZFv5be+mB/Rmu2YCI/7tz9cTM460tcj/wMFAREXDohdL1V
+         4ol4sEpUDpNWZeBun0sRwXIQ8K1N0bIgRdNOwGQUeP0cI4zHrF8ShCczOWq7nVmHyNp6
+         45cg==
+X-Forwarded-Encrypted: i=1; AJvYcCVP099wZEglq7Xez/Mrr+0TfrGchOApleLseVr8itDKNyZdPP73TlHG4nhPiXLPwdmljApUuqDRI800@vger.kernel.org, AJvYcCWP3XpmJ1YVgNGksJAD/NCAwa1y/qxd8e2ZkVFQniIvtSvv8h2LYXz4UlxMdbZi9MrJTGdcFz5e0a0=@vger.kernel.org, AJvYcCWdfVuyJaTgzvQ8BuylrqPjaxs6qeKvRzMdEc5scrgINr6NPWKl72LlqB4z1aJIg9FB+fZ+Y+TXtnWEMMf5@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYSamqrqlQEBOaw9FLrx/fC3Ba8Z70zcejH595wQfMyJimTwX9
+	uNd4Qaa+ANFyjCjFjKU3xjAny6j0nkK8FjlXgkbfL1e9yxvWfaTlpFeA
+X-Gm-Gg: ASbGncuaD/y8vtAOZ7OuAOZior1cxIE4odPjhO0i/5bMwNWVn8KLdS8tAaJkshQ2k7q
+	x0zVekc8SbEhQbMI5/zdCblmqVkvQGOLUqvcmGEr5svThjZORMXU3u0mqKYfcTkU/nzzhcvM0Uf
+	3I6pcgh0YLBE30nkS77YYDFe8UjQv4brwtaKCP4B7e3zun8ttxynHp965WJk3SEWg8jSbIOpxxY
+	XcAsFWmFK7buvY0KhaMATWGC5ApI1pfJIRj8crTqtRWvfk4zGloptKLh6O51y5SJ0knqysZzd6H
+	3fzLtZFyaAnxwL6S+utjZK4hkeKCWHWjMv8YmkWkIKOP4dE5UZEVjp+hPHt4R8bea49yq99nDlc
+	h
+X-Google-Smtp-Source: AGHT+IFJUwDOBzPPWhUnmRwphnn19d11ykLptUH4P8ntKAO6t71fbRgUbCzJASM53zm3I6Iis7dHsg==
+X-Received: by 2002:a17:903:2345:b0:224:1eab:97b2 with SMTP id d9443c01a7336-237d9b08563mr87342105ad.53.1750483036065;
+        Fri, 20 Jun 2025 22:17:16 -0700 (PDT)
+Received: from gmail.com ([2402:e280:3e9b:22f:6693:85c6:43d0:2b6e])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d860a8a8sm31149265ad.132.2025.06.20.22.17.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Jun 2025 22:17:15 -0700 (PDT)
+From: Sumeet Pawnikar <sumeet4linux@gmail.com>
+To: rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: lenb@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	sumeet4linux@gmail.com
+Subject: [PATCH] ACPI: FAN: Update fps count debug print
+Date: Sat, 21 Jun 2025 10:47:04 +0530
+Message-ID: <20250621051704.12050-1-sumeet4linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/9] samples: rust: platform: don't call as_ref()
- repeatedly
-To: Igor Korotin <igor.korotin.linux@gmail.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>,
- Saravana Kannan <saravanak@google.com>
-Cc: Alex Hung <alex.hung@amd.com>, Andrew Morton <akpm@linux-foundation.org>,
- Jakub Kicinski <kuba@kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Remo Senekowitsch <remo@buenzli.dev>, Tamir Duberstein <tamird@gmail.com>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Xiangfei Ding <dingxiangfei2009@gmail.com>, devicetree@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Danilo Krummrich <dakr@kernel.org>,
- Gary Guo <gary@garyguo.net>, Len Brown <lenb@kernel.org>,
- Trevor Gross <tmgross@umich.edu>
-References: <20250620150914.276272-1-igor.korotin.linux@gmail.com>
- <20250620151849.281238-1-igor.korotin.linux@gmail.com>
-Content-Language: de-AT-frami
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20250620151849.281238-1-igor.korotin.linux@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 20.06.25 17:18, Igor Korotin wrote:
-> From: Danilo Krummrich <dakr@kernel.org>
-> 
-> In SampleDriver::probe() don't call pdev.as_ref() repeatedly, instead
-> introduce a dedicated &Device.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
+Update invalid value returned debug print with fps_count
+instead of control value for checking fan fps count condition.
 
+Signed-off-by: Sumeet Pawnikar <sumeet4linux@gmail.com>
+---
+ drivers/acpi/fan_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
-
-Thanks!
-
-Dirk
-
-> ---
->  samples/rust/rust_driver_platform.rs | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-> index c0abf78d0683..000bb915af60 100644
-> --- a/samples/rust/rust_driver_platform.rs
-> +++ b/samples/rust/rust_driver_platform.rs
-> @@ -32,13 +32,15 @@ fn probe(
->          pdev: &platform::Device<Core>,
->          info: Option<&Self::IdInfo>,
->      ) -> Result<Pin<KBox<Self>>> {
-> -        dev_dbg!(pdev.as_ref(), "Probe Rust Platform driver sample.\n");
-> +        let dev = pdev.as_ref();
-> +
-> +        dev_dbg!(dev, "Probe Rust Platform driver sample.\n");
->  
->          if let Some(info) = info {
-> -            dev_info!(pdev.as_ref(), "Probed with info: '{}'.\n", info.0);
-> +            dev_info!(dev, "Probed with info: '{}'.\n", info.0);
->          }
->  
-> -        Self::properties_parse(pdev.as_ref())?;
-> +        Self::properties_parse(dev)?;
->  
->          let drvdata = KBox::new(Self { pdev: pdev.into() }, GFP_KERNEL)?;
->  
+diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
+index 8ad12ad3aaaf..9f2696a1928c 100644
+--- a/drivers/acpi/fan_core.c
++++ b/drivers/acpi/fan_core.c
+@@ -102,7 +102,7 @@ static int fan_get_state_acpi4(struct acpi_device *device, unsigned long *state)
+ 			break;
+ 	}
+ 	if (i == fan->fps_count) {
+-		dev_dbg(&device->dev, "Invalid control value returned\n");
++		dev_dbg(&device->dev, "Invalid fps_count value returned\n");
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+2.43.0
 
 
