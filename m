@@ -1,72 +1,106 @@
-Return-Path: <linux-acpi+bounces-14504-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14505-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A8AAE4312
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jun 2025 15:28:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECF6AAE4548
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jun 2025 15:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A33E3189993A
-	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jun 2025 13:24:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D06F17B003
+	for <lists+linux-acpi@lfdr.de>; Mon, 23 Jun 2025 13:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D3D25229C;
-	Mon, 23 Jun 2025 13:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0D4254AF0;
+	Mon, 23 Jun 2025 13:45:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jfRqoInp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD9C253B67
-	for <linux-acpi@vger.kernel.org>; Mon, 23 Jun 2025 13:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B68A250C06;
+	Mon, 23 Jun 2025 13:45:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684985; cv=none; b=E/Hi/t6cDBZ0+t1+INoTXTSkHGbCBgiGBRNYSkZ41syyNOuXAZYVw+uYF5ATpLirfYMcvFlJWs9G5Qc1PHcO8JmmEGiRz5sDJC9NFK7UvfIfBQ2f/GRX44Tg6cCAsDz40dTLh9I4kb7i73x2qwbfZenVgjXwudZ7AoNjl8gZ7mU=
+	t=1750686331; cv=none; b=fyyndAQsJWcnoI5Tk2rEsV8fjOrbYbK2xCXm89A/s0zy0qzcoMVNSgR27Ip+kWeqKKrpdyy79oG1h8s6AsucPPXVg+iqHOZ9Jame4/vK+F353Ykpi/rEZTf+CIyvOQaT/marH6k624RXrmudpWB0nbvWtNgxQXI2Levxc7oBSIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684985; c=relaxed/simple;
-	bh=1v9xqiVxQoxrfhwSTh8Ua2g915xnaw8XgNXFfWF7RK4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b2y3yUK/iZAKoveUoZizC0g8ATrfwTWqPgf39KiZ95U8FFJeDqcvXD8sZPz7/BPjSbNwYT28pGg6lDomJQSIjDf57+9mOZJHFoz4xpWWsPH6NENti2/BnVSARCLHcawkkg45Uod8Mt8mzdrNt8aX78sv/fFNsyQh2tayI5f9TLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 989A5113E;
-	Mon, 23 Jun 2025 06:22:45 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8C6183F58B;
-	Mon, 23 Jun 2025 06:23:02 -0700 (PDT)
-Date: Mon, 23 Jun 2025 14:22:59 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: James Morse <james.morse@arm.com>
-Cc: <linux-acpi@vger.kernel.org>, Rafael Wysocki <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, <jeremy.linton@arm.com>,
-	Rohit Mathew <Rohit.Mathew@arm.com>
-Subject: Re: [PATCH 4/4] ACPI / PPTT: Add a helper to fill a cpumask from a
- cache_id
-Message-ID: <20250623-witty-exotic-poodle-3fe0cf@sudeepholla>
-References: <20250612171336.4858-1-james.morse@arm.com>
- <20250612171336.4858-5-james.morse@arm.com>
+	s=arc-20240116; t=1750686331; c=relaxed/simple;
+	bh=cRXDOmdhqPhgJle2dQbSYvXJTReLYwhaFxGY9pmm6Zk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EEv1Av2Ke3T+X3Zbm8ZHD7aMkkaLcdqV3MYAfr5CxwYIkMTmecrNlO2ZGKQmUtbq9h68hMg3fse+0wEqbunKBvvg4Di21+afqqGRS3SY9njwQwKMgkEdhL9CrCFyfA9BAVAtavGtTEbSeZRb+nKWUya0uOHLLuzOv1wf5cT66P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jfRqoInp; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750686330; x=1782222330;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=cRXDOmdhqPhgJle2dQbSYvXJTReLYwhaFxGY9pmm6Zk=;
+  b=jfRqoInpadg9yrR+OKw8fYb63zv8zTtTP+/9Vx3BVh3G0SiFcF519PzA
+   Id4dcPD4z55K+Co48ujglyqkGffay44e/nuTO63LTeIrWyQ/kikAjruwo
+   Gk378Ye1CuAf4G81PN/ai31woskbplVrMU5JaBth2fH8hBYe23ELRaiG5
+   4OaBVcjN+Cw2c25MlpI7APBsv5iHhqKYyQvv5el5gnbekvCNmxo89voCU
+   tNOr9gauyGXjSZTHVH1zbDf1xDK+eVe/S5WV3jw0iPFsZQpn9n4129eaS
+   JFw+Ds5Nm5PLIqGvQKoiQdCntz0nQ2yqWNQwTctE6cVv6FJXq2s+h+0L+
+   w==;
+X-CSE-ConnectionGUID: tfeMo5TWSjWWlD+bBwvw/w==
+X-CSE-MsgGUID: XJCIXu8AQ/Sm4pKslPL0TQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="70320908"
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="70320908"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 06:45:29 -0700
+X-CSE-ConnectionGUID: +TTq4MkgRFqkYtHF9GUaGQ==
+X-CSE-MsgGUID: /0j1rY1/Rly7nyaDIPOgbg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="182651859"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa002.jf.intel.com with ESMTP; 23 Jun 2025 06:45:27 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 9CD23108; Mon, 23 Jun 2025 16:45:25 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Randolph Ha <rha051117@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-i2c@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Mika Westerberg <westeri@kernel.org>
+Subject: [PATCH v1 1/1] i2c: acpi: Replace custom code with device_match_acpi_handle()
+Date: Mon, 23 Jun 2025 16:45:21 +0300
+Message-ID: <20250623134521.158447-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250612171336.4858-5-james.morse@arm.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 12, 2025 at 05:13:36PM +0000, James Morse wrote:
-> MPAM identifies CPUs by the cache_id in the PPTT cache structure.
-> 
-> The driver needs to know which CPUs are associated with the cache,
-> the CPUs may not all be online, so cacheinfo does not have the
-> information.
-> 
-> Add a helper to pull this information out of the PPTT.
->
+Since driver core provides a generic device_match_acpi_handle()
+we may replace the custom code with it.
 
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/i2c/i2c-core-acpi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index d2499f302b50..3445cc3b476b 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -250,7 +250,7 @@ static int i2c_acpi_get_info(struct acpi_device *adev,
+ 
+ 	if (adapter) {
+ 		/* The adapter must match the one in I2cSerialBus() connector */
+-		if (ACPI_HANDLE(&adapter->dev) != lookup.adapter_handle)
++		if (!device_match_acpi_handle(&adapter->dev, lookup.adapter_handle))
+ 			return -ENODEV;
+ 	} else {
+ 		struct acpi_device *adapter_adev;
 -- 
-Regards,
-Sudeep
+2.47.2
+
 
