@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-14511-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14512-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B80AAE5AE4
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 06:12:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2837AE5B19
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 06:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B227D446881
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 04:11:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD47B168F61
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 04:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E2422B59D;
-	Tue, 24 Jun 2025 04:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49CE023C512;
+	Tue, 24 Jun 2025 04:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iMDE6AkR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bBs8E4qv"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F84221DB9;
-	Tue, 24 Jun 2025 04:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5D523BCFF;
+	Tue, 24 Jun 2025 04:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750738305; cv=none; b=m6ZUaW9w+7oXXQJbLvnY2ajox216vB+JjpSeHY9I2LMFaxSlx9SF9OErtBRgJ3bKzKfmdLynd4nL9dXkoCYTbW3ja3TiMfPiLisoAKFW9uhNcbhwHhBbpc5saUN0pnlcOM6HBvm3L6/FDxIY06OrR/pnn4hk2Qhf8AMKmpIHXhQ=
+	t=1750738330; cv=none; b=SgnCwOhAY2P/Gfq4MHmoSaqwhV7lFRsJaBfui8Qz45m65Y2PF2sYmM0Xo0KQ2Yg5fRaKOcuSyV3l3Gp237tQrhCMpIeFWg2gU1cS/p0dWGOdHSRslrkGuLRPNEfLClD9ZZ4oq4USz1yf46g7sQ9deTP8GmZRzPa/lhzFRe5pXhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750738305; c=relaxed/simple;
+	s=arc-20240116; t=1750738330; c=relaxed/simple;
 	bh=Kf71vhcrmq8fE3Zkm3PfO/mFyGND7bBMzabvYo515e0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TBG12U7ZOmL2giYl63nrteM+d/4jT8ww8o6/O7ZqCQjXmb9c0rpdNlMOCGpsAQibE1k/zaephK3sPkqhBsHdhopVtv/8PwwSDyqHzW5elomi2e5DsxsEnu6JdLyBqN2E4Sc5Pv2Iq8xZF4R8+wEwJhl+jUOuW8s843cavw+Uu7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iMDE6AkR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51912C4CEF0;
-	Tue, 24 Jun 2025 04:11:44 +0000 (UTC)
+	 MIME-Version; b=p6Rl+29tZ7hk7wexPI75zryX/FfpuihZYr0BrIbuYmwK9JGXvfGLZyGnB73y5rTk0NvryvYfM+vVqdYcS+18ww9jd6xBe4YWiWxWB6Vjb/qE9FfbgQh174014LanclD0ixo/CK7Bi1kQfMcdB+e2DKgXJarOWuupDm4JjjMN8As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bBs8E4qv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC6DC4CEEF;
+	Tue, 24 Jun 2025 04:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750738304;
+	s=k20201202; t=1750738330;
 	bh=Kf71vhcrmq8fE3Zkm3PfO/mFyGND7bBMzabvYo515e0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iMDE6AkRSGuA89dvyUuJW9XqvHw5uXZbQ8/AObfyPE/TYltWwy7V6s7fOUrLY+fhf
-	 T9n/Dv8pgxtUWpGB5X0VbxxkTiCU+kZEhXZOEEcAou6pbAL9c8u1pmo1TextL1FHjb
-	 fz+TK6MKZ7z6JujgT5sU+WSjUH/DEbjNrhio3IRP32df8tx6hyE0hvpbu/RH0YMsRY
-	 Ilm+4jyDYgTSlyuSt93JOARP9vhTnlYiL37SEiUXR9kQuGHCJVXcqQK+A9iMPo9ASD
-	 gOwSHX90FgR5IQWxe4SEivMY7uqcjtaRTWgbTHWXXrQjLask0/T3yu4uoZeP+K1dAh
-	 Au3N6wYzuemnA==
+	b=bBs8E4qvkquNW6ptV66Cgms70xRQVH/DpB4ITGJgi/wkdmgKEXpCjMSRXQLMQD0nZ
+	 vMTP/Ymj3cFTE7M8WeXxnukLzQxxNG7OBIbteLMaseUKnzsIH0An2pUWuV6pV07yfT
+	 NDocNvyyY2JjtZeAc2QRMgcwD1IP2goR4gSwp53uY2IKmoc1S8SFMIsscP8kd8GFGg
+	 0M5f6Lnl6EWYzdxlFTLRuoymtoW0U513WEZGRgKXR2TPikmv7pA3DTxdltEErE8tZU
+	 i/V+W9xQ6YiFSFlmPfgJCA5w8gaRnpwskCQwng8ASeK1FB0Wn+yRW5ZCGfJZX+FeiL
+	 bs8ZhR22O+A+A==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -51,12 +51,12 @@ Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	robert.moore@intel.com,
 	linux-acpi@vger.kernel.org,
 	acpica-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.15 18/20] ACPICA: Refuse to evaluate a method if arguments are missing
-Date: Tue, 24 Jun 2025 00:11:17 -0400
-Message-Id: <20250624041120.83191-18-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 17/19] ACPICA: Refuse to evaluate a method if arguments are missing
+Date: Tue, 24 Jun 2025 00:11:46 -0400
+Message-Id: <20250624041149.83674-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250624041120.83191-1-sashal@kernel.org>
-References: <20250624041120.83191-1-sashal@kernel.org>
+In-Reply-To: <20250624041149.83674-1-sashal@kernel.org>
+References: <20250624041149.83674-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.15.3
+X-stable-base: Linux 6.12.34
 Content-Transfer-Encoding: 8bit
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
