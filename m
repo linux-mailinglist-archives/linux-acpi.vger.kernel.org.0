@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-14513-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14514-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D54BAE5B2A
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 06:14:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74209AE5B36
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 06:14:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 333C01BC1265
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 04:14:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81E9A447021
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 04:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8E32472AD;
-	Tue, 24 Jun 2025 04:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1FE225785;
+	Tue, 24 Jun 2025 04:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ANdUZSvL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R0NvhlI4"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583C022D78A;
-	Tue, 24 Jun 2025 04:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEA924DD11;
+	Tue, 24 Jun 2025 04:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750738354; cv=none; b=fbc+1MjqkIXQaV36OYTkTBMPQRzzUFIwWNdjmDOEKrFmEVfNp2xHD8RUwtagqSPZ4tCK+d0maxSscQV4grUm3EkYZTwgEH6zFCzE7FMkcx1DxsFfCbYa0sDIXubMUIZt2g3GrybO0FPROKCQ64mksHC2eXHYQkfPlUNymG1cUm4=
+	t=1750738375; cv=none; b=BOHrkp7Vv3xe3OCHOaZSac1EtnD/zdZb8SEv6a0kFwvxbeYyi+RhtpZGprlIVE5GVwl0Uxkj2yXv6SYcC2k5aBY6veVLUR10lteVsKuTdYM63hmsJ97G/6mAJ1vESo8Tbu2VvhvP5qh/eRSNRsJfJ3qfSKr0mTvsL6ZDZG1dw84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750738354; c=relaxed/simple;
-	bh=Kf71vhcrmq8fE3Zkm3PfO/mFyGND7bBMzabvYo515e0=;
+	s=arc-20240116; t=1750738375; c=relaxed/simple;
+	bh=jQ/68/SoDiT6z00wxoSVLzraAknv4Ri3mbnKQqPMCBA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Qx5fqMJ7/6BHFV4HJKHmMijt92jtkidnWOadj/WPW63pARaaheAFvikwUYgbrm7bJDV0QzccryqdqwLT3qk6NnsGa6fDoIQc0FI/gxENmi3nV+7cpXln8l9QL/Kbi0YN19KsH9OtfdXxUjmNpw/DDzL7MvV5eoMtZSBssNGy3FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ANdUZSvL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB76C4CEF0;
-	Tue, 24 Jun 2025 04:12:33 +0000 (UTC)
+	 MIME-Version; b=tMPkkmTHwiK2DYxr1EgD55HZVTUCbljqfvVL9zS62pWeQH/VZeF7iursJt5JJS6VcuoBcVAGp8hDtAwhFSEXf+U1CvZPZXScWIuPxyMg/0bxsu/vaZzE923wLnBSysPnc65v+bwEWWvde/5QwKZfOeUxRaVfY/lDqAl4EObyC6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R0NvhlI4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C486AC4CEEF;
+	Tue, 24 Jun 2025 04:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750738354;
-	bh=Kf71vhcrmq8fE3Zkm3PfO/mFyGND7bBMzabvYo515e0=;
+	s=k20201202; t=1750738375;
+	bh=jQ/68/SoDiT6z00wxoSVLzraAknv4Ri3mbnKQqPMCBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ANdUZSvLj3aMMR1B7vFF2UvCPtlxLQ6hEGpRzNz8z1MnfidB4J9HDCvFkwTpDSUD1
-	 /pelcpnaXWOjHmDTqYhCIt1eLYOZldTVu90YPq3B9mPBA4BfVwl22s/cMiDqSl2cji
-	 BNRMCNfsR2RhV+tNhD6ohSHjpYS5fM9Np1ww30GOocSrPooceMQsS53wRmYXRl4sCj
-	 LmKnBJ9iM62t6n5GG/PTj0QjXLhQWIwcqWyul9F1MA5kERu3Mz7AdPMHXcNDPANLkL
-	 tlGt0Msqu2ABA+NkkvFKCSPKlQ/mbXbgp3ZJv6Yrsx6FeIiV900/tUnbtgG/7sm0FQ
-	 VHk4JXQOIPMqw==
+	b=R0NvhlI4xEIqlJMmx4iHbAfTWGc6k38kD/hzk+VhYlXuUlWH7Exip8N19dJLtF5ob
+	 6Fn6/TWg4MmqrsDBvbfkNiHAfx9QPIgfixN3H8L6NJlrbd5Ar0Rep318nqDHH5xnQZ
+	 0rJBmxKuwPAAJRfbgeoGWLWVVhjBoHpyUcNKIRplH2OFMnMiXZfLoqaVkOPPjq0RvV
+	 O2WUzzzHvt9l8yiJDnr1Np26sHcnadDdrWFJ0TVN63DaoLkXPsnVFZVHY0K5KltMeW
+	 yBkd6M6DC+ApIIYVgrrJeMQq9SJ/ZwCAveghi9tHWFMoDRxCrz0ilzoshDuOa0iBzy
+	 K+Hd4beetosog==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -51,12 +51,12 @@ Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	robert.moore@intel.com,
 	linux-acpi@vger.kernel.org,
 	acpica-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 16/18] ACPICA: Refuse to evaluate a method if arguments are missing
-Date: Tue, 24 Jun 2025 00:12:12 -0400
-Message-Id: <20250624041214.84135-16-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 13/15] ACPICA: Refuse to evaluate a method if arguments are missing
+Date: Tue, 24 Jun 2025 00:12:36 -0400
+Message-Id: <20250624041238.84580-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250624041214.84135-1-sashal@kernel.org>
-References: <20250624041214.84135-1-sashal@kernel.org>
+In-Reply-To: <20250624041238.84580-1-sashal@kernel.org>
+References: <20250624041238.84580-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.94
+X-stable-base: Linux 6.1.141
 Content-Transfer-Encoding: 8bit
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
@@ -176,7 +176,7 @@ minimal risk that improve system stability and security.
  1 file changed, 7 insertions(+)
 
 diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
-index e809c2aed78ae..a232746d150a7 100644
+index 9332bc688713c..05fd1ec8de14e 100644
 --- a/drivers/acpi/acpica/dsmethod.c
 +++ b/drivers/acpi/acpica/dsmethod.c
 @@ -483,6 +483,13 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
