@@ -1,199 +1,111 @@
-Return-Path: <linux-acpi+bounces-14517-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14518-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E905BAE5B71
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 06:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D74AE5BED
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 07:45:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 271162C2A27
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 04:16:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3564A179ABA
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 05:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D3E256C9B;
-	Tue, 24 Jun 2025 04:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8795C1F4CB5;
+	Tue, 24 Jun 2025 05:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pH4iNBRF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YzkN5mJ/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77331256C8D;
-	Tue, 24 Jun 2025 04:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12D020EB;
+	Tue, 24 Jun 2025 05:45:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750738416; cv=none; b=lHM8RUZ6UlTSNvObCKZ9Aup/PJFZC+hl4ClxeFxGU4Kje7D3hihA1nDGslleLZ/e8O5/Z3YG/IxNidN5zYSBm/QFgkvmaiPDjkev5+qzSaomBLK0POqIyI5pC58j/akJ/uSgr6zMQ+j1zDv9SThy/Oa/5wdIc4R+5EWswQjr4/8=
+	t=1750743915; cv=none; b=KpnrY0oEF+Wsj66Y4vZMFu8AF8QshOqmWYG5VQVS0Hjeeue1i4yQec4+NEvGyZ/uktjaqkbEZn26ikB8btPu9cHmhTOjluYV1Ad/nbwf4lP1LgGnLfJ9Gm8PPg9phYrGo+DTpFQtex8/bVkXan76nwGuFVJXzddnPR7/L+GFqrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750738416; c=relaxed/simple;
-	bh=TwrQjdlP0OUorDN3yCXuFl/6CjqkzSp94aRpKa0YY2g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nj0zvfgeMrJteUuvVxy30jxAO6Fi0oGNH30AuzDx0nS4lU4RlLjIqwMljm1fRF85FIAnKp98xGt6lcGz0k76ZRAZ0UiUvpKJgX78et0WqpcsbSMt32vYydqx1uIM7TLiNB6qFgL1net1LLZ1Gdya57gT/IZr+AdU7mrxgUf8Bkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pH4iNBRF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9691DC4CEF2;
-	Tue, 24 Jun 2025 04:13:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750738416;
-	bh=TwrQjdlP0OUorDN3yCXuFl/6CjqkzSp94aRpKa0YY2g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pH4iNBRFs+fWbm3xG/S3BjQ8Ys7X148w5yTLFWkfcwTzcJr7KkFrO0Y/2b3Psf4sw
-	 9RFFO3jS6Rxu2r+6AwOCdp/0jBXeME+z6pefjuIg05oXRhx7XOqq0oYhRRszK1jXG2
-	 7oZeIO3HuefhLbL9UaMl8Fy/gVzNGYghJgqK+Aa2sGPO+z0XUZ8znBUqbebLObpdzZ
-	 sGQAuMTE6SCjtCB0HqYhWLGTj4Z7Qh2E6/wxQ7RfzHY15NpflqrVsvBfrGjIRsk0dc
-	 DcK4Lyee7oWixkAql7rzHOmzf/AT8m6rZ0TNodFCTWG3RQxz2rv2skqsbdfJy+6koZ
-	 txbHSovKcLHsg==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Peter Williams <peter@newton.cx>,
-	Hans de Goede <hansg@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	robert.moore@intel.com,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.4 6/7] ACPICA: Refuse to evaluate a method if arguments are missing
-Date: Tue, 24 Jun 2025 00:13:25 -0400
-Message-Id: <20250624041327.85407-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250624041327.85407-1-sashal@kernel.org>
-References: <20250624041327.85407-1-sashal@kernel.org>
+	s=arc-20240116; t=1750743915; c=relaxed/simple;
+	bh=ReIAIGIakmsYHmySBe4krsH5TJHx/5joaiJ9z2zdajo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hm3K2mKkBNzpufPs+fKdTJKbbE8k81SgRlYdKzQipCsY269H8qJkYoAeYAiIX8Dh7uSX/uax7bomOErYXb9aOhpKMBKOHgr5+bSd2fPFWxfmK8ocYoHUZk8+gBsT2hOnieyAijTmhK9eorC9RPaiQFxK+hhG/znRtrKxDlk6tKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YzkN5mJ/; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750743914; x=1782279914;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ReIAIGIakmsYHmySBe4krsH5TJHx/5joaiJ9z2zdajo=;
+  b=YzkN5mJ/mN/jqthkslSfH3qYetAD5T+cH3LyEYCb32t0NUU67zslD0Lo
+   u2XlWexYacKryYCjPHlge9/uYUUfCeZhHCo4vDk4OALRHSZSWZ2UqzFr5
+   NkPl0jvlfbDZY5IbY3OOdYh8nJJVkUObac3QCVjp11+BXQnJZpw82IhDW
+   FeQ5Ik452KRfgVBDH9tYTmvD5t0NjvEZoaglJ+kN0wcPmHeLOmjTe6YY7
+   3/TKeNy1Vzw7QTRiuJ6YahXJeT1gCbkzNMGrle8KezU7Z8ylfSqhZ4fQp
+   kNknQS436j2eF/t3nemfmNjKI+Q4R3N1Fk/dsEeT17hXNhf4HeKFij9oT
+   g==;
+X-CSE-ConnectionGUID: 4yfF+Es9RsKqulBRng0msg==
+X-CSE-MsgGUID: BsnU/F8gQIWDNdbx3FvplQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="52194552"
+X-IronPort-AV: E=Sophos;i="6.16,260,1744095600"; 
+   d="scan'208";a="52194552"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 22:45:12 -0700
+X-CSE-ConnectionGUID: CVB1lbuRQiKAayedD7CqFw==
+X-CSE-MsgGUID: XIggt/sdS9qu4atT/5+UMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,260,1744095600"; 
+   d="scan'208";a="152516971"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa010.fm.intel.com with ESMTP; 23 Jun 2025 22:45:10 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id C919A138; Tue, 24 Jun 2025 08:45:08 +0300 (EEST)
+Date: Tue, 24 Jun 2025 08:45:08 +0300
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Randolph Ha <rha051117@gmail.com>, linux-i2c@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Mika Westerberg <westeri@kernel.org>
+Subject: Re: [PATCH v1 1/1] i2c: acpi: Replace custom code with
+ device_match_acpi_handle()
+Message-ID: <20250624054508.GA2824380@black.fi.intel.com>
+References: <20250623134521.158447-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.294
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250623134521.158447-1-andriy.shevchenko@linux.intel.com>
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+On Mon, Jun 23, 2025 at 04:45:21PM +0300, Andy Shevchenko wrote:
+> Since driver core provides a generic device_match_acpi_handle()
+> we may replace the custom code with it.
 
-[ Upstream commit 6fcab2791543924d438e7fa49276d0998b0a069f ]
+Well okay but now you replace a simple comparison with a function call. I'm
+fine with the patch but I also don't think this is an improvement ;-)
 
-As reported in [1], a platform firmware update that increased the number
-of method parameters and forgot to update a least one of its callers,
-caused ACPICA to crash due to use-after-free.
-
-Since this a result of a clear AML issue that arguably cannot be fixed
-up by the interpreter (it cannot produce missing data out of thin air),
-address it by making ACPICA refuse to evaluate a method if the caller
-attempts to pass fewer arguments than expected to it.
-
-Closes: https://github.com/acpica/acpica/issues/1027 [1]
-Reported-by: Peter Williams <peter@newton.cx>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Tested-by: Hans de Goede <hansg@kernel.org> # Dell XPS 9640 with BIOS 1.12.0
-Link: https://patch.msgid.link/5909446.DvuYhMxLoT@rjwysocki.net
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-**YES**
-
-This commit should be backported to stable kernel trees. Here's my
-extensive analysis:
-
-## Key Reasons for Backporting:
-
-### 1. **Critical Security Bug - Use-After-Free**
-The commit message explicitly states this fixes a use-after-free
-vulnerability that causes ACPICA to crash. Use-after-free bugs are
-severe security issues that can lead to:
-- System crashes and denial of service
-- Potential arbitrary code execution
-- Memory corruption
-
-### 2. **Real-World Impact**
-The commit references an actual bug report with a specific
-hardware/firmware scenario:
-- Platform firmware update increased method parameters
-- Firmware forgot to update at least one caller
-- This caused a real crash on actual hardware (Dell XPS 9640 with BIOS
-  1.12.0)
-- The bug has been reported, tested, and verified by multiple people
-
-### 3. **Small, Focused Fix**
-The code change is minimal and surgical:
-```c
-+       if (this_walk_state->num_operands <
-obj_desc->method.param_count) {
-+               ACPI_ERROR((AE_INFO, "Missing argument for method
-[%4.4s]",
-+                           acpi_ut_get_node_name(method_node)));
-+
-+               return_ACPI_STATUS(AE_AML_UNINITIALIZED_ARG);
-+       }
-```
-This adds a simple bounds check before method execution, which is
-exactly the type of defensive programming that should be in stable
-kernels.
-
-### 4. **Prevents Memory Corruption**
-Looking at the surrounding code (specifically line 542 in the original):
-```c
-for (i = 0; i < obj_desc->method.param_count; i++) {
-    acpi_ut_remove_reference(this_walk_state->operands[i]);
-    this_walk_state->operands[i] = NULL;
-}
-```
-Without the check, if `num_operands < param_count`, this loop would
-access beyond the valid operands, causing use-after-free.
-
-### 5. **Clear Error Handling**
-The fix properly returns `AE_AML_UNINITIALIZED_ARG`, which is an
-existing ACPICA error code specifically designed for this scenario
-("Method tried to use an uninitialized argument"). This maintains API
-compatibility.
-
-### 6. **No Architectural Changes**
-The commit:
-- Doesn't introduce new features
-- Doesn't change existing behavior for valid code
-- Only adds validation to prevent crashes from invalid AML
-- Is confined to the ACPICA subsystem
-
-### 7. **Firmware Bug Mitigation**
-This is a defensive fix against firmware bugs, which is exactly the type
-of robustness stable kernels need. The kernel should not crash due to
-firmware mistakes.
-
-## Comparison with Similar Commits:
-
-Unlike the similar commits shown (which were mostly about improving
-error messages or cosmetic changes), this commit:
-- Fixes an actual crash/security issue
-- Has been reported and tested on real hardware
-- Prevents memory corruption
-- Is not just a theoretical improvement
-
-This aligns perfectly with stable kernel rules: important bug fixes with
-minimal risk that improve system stability and security.
-
- drivers/acpi/acpica/dsmethod.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
-index 603483f8332b0..203e9ee47fdb8 100644
---- a/drivers/acpi/acpica/dsmethod.c
-+++ b/drivers/acpi/acpica/dsmethod.c
-@@ -483,6 +483,13 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
- 		return_ACPI_STATUS(AE_NULL_OBJECT);
- 	}
- 
-+	if (this_walk_state->num_operands < obj_desc->method.param_count) {
-+		ACPI_ERROR((AE_INFO, "Missing argument for method [%4.4s]",
-+			    acpi_ut_get_node_name(method_node)));
-+
-+		return_ACPI_STATUS(AE_AML_UNINITIALIZED_ARG);
-+	}
-+
- 	/* Init for new method, possibly wait on method mutex */
- 
- 	status =
--- 
-2.39.5
-
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/i2c/i2c-core-acpi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+> index d2499f302b50..3445cc3b476b 100644
+> --- a/drivers/i2c/i2c-core-acpi.c
+> +++ b/drivers/i2c/i2c-core-acpi.c
+> @@ -250,7 +250,7 @@ static int i2c_acpi_get_info(struct acpi_device *adev,
+>  
+>  	if (adapter) {
+>  		/* The adapter must match the one in I2cSerialBus() connector */
+> -		if (ACPI_HANDLE(&adapter->dev) != lookup.adapter_handle)
+> +		if (!device_match_acpi_handle(&adapter->dev, lookup.adapter_handle))
+>  			return -ENODEV;
+>  	} else {
+>  		struct acpi_device *adapter_adev;
+> -- 
+> 2.47.2
 
