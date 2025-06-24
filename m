@@ -1,65 +1,61 @@
-Return-Path: <linux-acpi+bounces-14555-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14556-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35606AE68B9
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 16:31:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A1ABAE6BAF
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 17:49:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E75F63B90A6
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 14:25:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62D5B3B6E29
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 15:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BF62D6638;
-	Tue, 24 Jun 2025 14:21:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=listout.xyz header.i=@listout.xyz header.b="mr4EqkD0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BCDB26CE1C;
+	Tue, 24 Jun 2025 15:48:12 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A4328ECE2;
-	Tue, 24 Jun 2025 14:21:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32763074B2;
+	Tue, 24 Jun 2025 15:48:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750774911; cv=none; b=cipFIrvF0zB0/doUGFMCchrPQol50gEF3ykzBYM0Mbzehs8Cxql0ASOEyWcyrnvGzjEz4iLuTxL6q7GLrgrPlYrPEWbsRnIO3KclTl5Jjz/N4jNgry3dMTbjo1IPysNBNccb3kiKzHLQ81pJGV21pvidaYi+6AKYhZ8jhQGo0LY=
+	t=1750780092; cv=none; b=MjzdMlsjA5mp5YWNEoVDVStCDUupq2knkZCoL1h/jjvrziQNxksyAPNAYjZJMUftqg8B+krBwS4lwW+ReZRxga5Qy+qZIjPt9uaNaSq16uyDMEApXUv9rzfKqqKEvrzHo6vaiduFwK21US+vCXpQGg2IHj673uM4DrXvzSmMk00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750774911; c=relaxed/simple;
-	bh=QuhArafP5UQWTf6x0cnLMqtBpCyf3kg0+2McZ07EZlU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FrCW4W5ZMU93hAWQNz6E2ma/kOvvJdgd0znfM7aJv8ZFlb8AIGl6RM6FHYbyA1IhweCqefDXJ7SohauM7l3nGLvU79BLHSViVB5vnVPJpM9Q2TxJvMowW7REmo/grn++d93g9RheJ1UX12L9PgRSISo+eN2dV+g4p0G9eUAPxDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=listout.xyz; spf=pass smtp.mailfrom=listout.xyz; dkim=pass (2048-bit key) header.d=listout.xyz header.i=@listout.xyz header.b=mr4EqkD0; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=listout.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=listout.xyz
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4bRRw920hMz9sv3;
-	Tue, 24 Jun 2025 16:21:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=listout.xyz; s=MBO0001;
-	t=1750774905;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=MgHUoRfXCan2FR4wpwtdY4zXDm5OVuonVtEpuKSoTtU=;
-	b=mr4EqkD0koPcUd4uXOgWYfmaMR5Kncf93hieGQj2Fb32SvsVVn3ITcgZDILuMy7sX6+vEU
-	NBSOrzAAtYGqY7GfTqGKqctVPawLifvqAURidSrOdW4uwXliDwQ2r26z+pyxl4fO44dpcO
-	C0r/OaJIYhaTurwbdwlPU6NYypRYRU97sKvm5XsG9ZjIyTCLX5SQ739wtKNFEUCEl9mGdf
-	kTX8vPdZrWH0lq5f+ShcLpS92fDZVM4zs9aUbhZSkc6+8hVpA7jFEzbbYJV1veb/SO1ZZQ
-	ilKb5Cvz9YJMnGJ+odA/dFppLbLgNm05Ahg8Uv87tiAW/UXjNoMnS2cnvJxcbA==
-From: Brahmajit Das <listout@listout.xyz>
-To: linux-hardening@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: rafael@kernel.org,
-	lenb@kernel.org,
-	lv.zheng@intel.com,
-	kees@kernel.org,
-	rui.zhang@intel.com,
-	len.brown@intel.com
-Subject: [PATCH] ACPI / sysfs: Replace deprecated strcpy() with sysfs_emit
-Date: Tue, 24 Jun 2025 19:51:34 +0530
-Message-ID: <20250624142134.11317-1-listout@listout.xyz>
+	s=arc-20240116; t=1750780092; c=relaxed/simple;
+	bh=05kK80kYUTbeVO92NMHhrgl+6qOur7z+VFMEwPFCIek=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=X2rxgZYkUODbWGiq5JSnkQ4YC6ANQcZZ/9ey1bPEYVGgk8r3dNhgInGaDiPXucJNMWvxnf3jmJX74AFVW0xHyaU7MiXBH+j/JfXR0QyPcjeMU84e7m2B0UwHUDKxTaIQL4LjeClC4qU8f/wa4Q5eLLx4QSt/apRCCM7Sboa2qec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bRTpy3ByKz6GDn2;
+	Tue, 24 Jun 2025 23:47:22 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id C97041402C3;
+	Tue, 24 Jun 2025 23:48:06 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
+ frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 24 Jun 2025 17:48:05 +0200
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Catalin Marinas <catalin.marinas@arm.com>, <james.morse@arm.com>,
+	<linux-cxl@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+	<linux-mm@kvack.org>, <gregkh@linuxfoundation.org>, Will Deacon
+	<will@kernel.org>, Dan Williams <dan.j.williams@intel.com>, Davidlohr Bueso
+	<dave@stgolabs.net>
+CC: Yicong Yang <yangyicong@huawei.com>, <linuxarm@huawei.com>, Yushan Wang
+	<wangyushan12@huawei.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Mark
+ Rutland <mark.rutland@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, H Peter Anvin
+	<hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra
+	<peterz@infradead.org>
+Subject: [PATCH v2 0/8] Cache coherency management subsystem
+Date: Tue, 24 Jun 2025 16:47:56 +0100
+Message-ID: <20250624154805.66985-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,35 +63,139 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4bRRw920hMz9sv3
+Content-Type: text/plain
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-strcpy() is deprecated; use sysfs_emit() instead. No functional changes
-intended.
+Since RFC:
+https://lore.kernel.org/all/20250320174118.39173-1-Jonathan.Cameron@huawei.com/
 
-Link: https://github.com/KSPP/linux/issues/88
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
----
- drivers/acpi/sysfs.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Mostly ripping out the device class as we have no idea what a possible
+long term userspace interface element for this might look like.
+Instead just use a simple registration list and mutex. We can bring
+the class back easily when / if it is needed. (Greg)
 
-diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-index a48ebbf768f9..7ce90998ab97 100644
---- a/drivers/acpi/sysfs.c
-+++ b/drivers/acpi/sysfs.c
-@@ -181,10 +181,9 @@ static int param_set_trace_method_name(const char *val,
- 
- 	/* This is a hack.  We can't kmalloc in early boot. */
- 	if (is_abs_path)
--		strcpy(trace_method_name, val);
-+		sysfs_emit(trace_method_name, "%s", val);
- 	else {
--		trace_method_name[0] = '\\';
--		strcpy(trace_method_name+1, val);
-+		sysfs_emit(trace_method_name, "\%s", val);
- 	}
- 
- 	/* Restore the original tracer state */
+Also generalized to remove the arm64 bits in favor of generic support as
+this doesn't have anything much to do with the CPU architecture once
+an implementation isn't using a CPU instruction for this.
+
+It's about as simple as it can be now. Hence I've dropped the RFC marking
+from all by the ACPI patch which is mostly still here just to provide
+a second example.
+
+Catalin raised a good question of whether all implementations would be
+able to do the appropriate CPU Cache flushes. The Hisilicon HHA
+can as it's the coherency home agent for a portion of the host physical
+address space and so can issue the necessary cache invalidations to
+ensure there are no copies left anywhere in the system. I don't have good
+visibility of other implementations. So if you have one, please review
+whether this meets your requirements.
+
+Updated cover-letter 
+
+Note that I've only a vague idea of who will care about this
+so please do +CC others as needed. The expanded list for v2 includes
+everyone Dan +CC on as well as ARM and CXL types who might care.
+[PATCH v5] memregion: Add cpu_cache_invalidate_memregion() interface
+
+On x86 there is the much loved WBINVD instruction that causes a write back
+and invalidate of all caches in the system. It is expensive but it is
+necessary in a few corner cases. These are cases where the contents of
+Physical Memory may change without any writes from the host. Whilst there
+are a few reasons this might happen, the one I care about here is when
+we are adding or removing mappings on CXL. So typically going from
+there being actual memory at a host Physical Address to nothing there
+(reads as zero, writes dropped) or visa-versa. That involves the
+reprogramming of address decoders (HDM Decoders); in the near future
+it may also include the device offering dynamic capacity extents. The
+thing that makes it very hard to handle with CPU flushes is that the
+instructions are normally VA based and not guaranteed to reach beyond
+the Point of Coherence or similar. You might be able to (ab)use
+various flush operations intended to ensure persistence memory but
+in general they don't work either.
+
+On other architectures (such as ARM64) we have no instruction similar to
+WBINVD but we may have device interfaces in the system that provide a way
+to ensure a PA range undergoes the write back and invalidate action. This
+RFC is to find a way to support those cache maintenance device interfaces.
+The ones I know about are much more flexible than WBINVD, allowing
+invalidation of particular PA ranges, or a much richer set of flush types
+(not supported yet as not needed for upstream use cases).
+
+To illustrate how my suggested solution works, I've taken both a HiSilicon
+design (slight quirk as registers overlap with existing PMU driver)
+and more controversially a firmware interface proposal from ARM
+(wrapped up in made up ACPI) that was dropped from the released spec
+but for which the alpha spec is still available.
+
+Why drivers/cache?
+- Mainly because it exists and smells like a reasonable place.
+  As per discussion on v1, I've added myself as a maintainer to
+  assist Conor.
+
+Why not just register a singleton function pointer?
+- Systems may include multiple cache control devices, responsible
+  for different parts of the PA address range (interleaving etc make
+  this complex).  They may not all share a common hardware interface.
+
+Generalizing to more arch?
+- I've now made this generic an opt in on a per arch basis.
+
+QEMU emulation code at
+http://gitlab.com/jic23/qemu cxl-2025-03-20 
+
+Remaining opens:
+- I don't particularly like defining 'generic' infrastructure with
+  so few implementations. If anyone can point me at docs for another one
+  or two, or confirm that they think this is fine that would be great!
+- I made up the ACPI spec - it's not documented, non official and
+  honestly needs work. I would however like to get feedback on whether
+  it is something we want to try and get through the ACPI Working group
+  as a much improved code first proposal?  The potential justification
+  being to avoid the need for lots trivial drivers where maybe a bit
+  of DSDT interpreted code does the job better.
+
+Jonathan Cameron (5):
+  cache: coherency core registration and instance handling.
+  MAINTAINERS: Add Jonathan Cameron to drivers/cache
+  arm64: Select GENERIC_CPU_CACHE_INVALIDATE_MEMREGION
+  acpi: PoC of Cache control via ACPI0019 and _DSM
+  Hack: Pretend we have PSCI 1.2
+
+Yicong Yang (2):
+  memregion: Support fine grained invalidate by
+    cpu_cache_invalidate_memregion()
+  generic: Support ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+
+Yushan Wang (1):
+  cache: Support cache maintenance for HiSilicon SoC Hydra Home Agent
+
+ MAINTAINERS                        |   1 +
+ arch/arm64/Kconfig                 |   2 +
+ arch/x86/mm/pat/set_memory.c       |   2 +-
+ drivers/base/Kconfig               |   3 +
+ drivers/base/Makefile              |   1 +
+ drivers/base/cache.c               |  46 +++++++
+ drivers/cache/Kconfig              |  30 +++++
+ drivers/cache/Makefile             |   4 +
+ drivers/cache/acpi_cache_control.c | 152 ++++++++++++++++++++++++
+ drivers/cache/coherency_core.c     | 116 ++++++++++++++++++
+ drivers/cache/hisi_soc_hha.c       | 185 +++++++++++++++++++++++++++++
+ drivers/cxl/core/region.c          |   6 +-
+ drivers/firmware/psci/psci.c       |   2 +
+ drivers/nvdimm/region.c            |   3 +-
+ drivers/nvdimm/region_devs.c       |   3 +-
+ include/asm-generic/cacheflush.h   |  12 ++
+ include/linux/cache_coherency.h    |  40 +++++++
+ include/linux/memregion.h          |   8 +-
+ 18 files changed, 610 insertions(+), 6 deletions(-)
+ create mode 100644 drivers/base/cache.c
+ create mode 100644 drivers/cache/acpi_cache_control.c
+ create mode 100644 drivers/cache/coherency_core.c
+ create mode 100644 drivers/cache/hisi_soc_hha.c
+ create mode 100644 include/linux/cache_coherency.h
+
 -- 
-2.50.0
+2.48.1
 
 
