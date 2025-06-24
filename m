@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-14571-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14572-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A02D1AE708A
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 22:22:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 210D5AE708E
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 22:22:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30FB51BC4605
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 20:22:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8A9917E014
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 20:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5030A2EACE2;
-	Tue, 24 Jun 2025 20:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94EAD2EBBAE;
+	Tue, 24 Jun 2025 20:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dRLXlF+n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OYZK8vQi"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1CA2EAB69;
-	Tue, 24 Jun 2025 20:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610162EB5D6;
+	Tue, 24 Jun 2025 20:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750796537; cv=none; b=rKFpnfsLe+GZP3sGk4UKOmKu/k7lSfNIt40fr7s5C3TI5Utka/Gv+ZqPYrGKAKikZAuVeqiwkenh9hJmZM9/XoFTSWLDQbPMjTlusXA0vIwsnxR+QzzQdD3bfkGaEakkF+NT20Zww3ib4QjQzaV6O4eB2XCx++O1qhu+me8rFiI=
+	t=1750796538; cv=none; b=h7H2NDHMH3eszKBhnwQuGwpniyXOHgvPAu8ozl6Ka6QYkwB3DLvLTEhj0N70rFAXGLBkZEw9XsYwQromeQL3tB48EOAIaYEU7tSz3F1LOrG4p65SkD/lBlrTpB1kPF+aIDSDU6Ex4chVVqHjCe/KdVOCm8i34qv3uY8Uh7QBYHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750796537; c=relaxed/simple;
-	bh=HiLl58F6Gv2AQo/z0g4rJ+hxjMfSBzxFLpUEA7pHzgw=;
+	s=arc-20240116; t=1750796538; c=relaxed/simple;
+	bh=HLXNIk3gpWw9VgeSDEKEQ32I2877gEB7XVEX8am4+r8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=prvlaAqJEau4AvS38wMxIba/bILX0KhLDohu3jFXp1iEEX2djLbQZ4WUN+TIrqEYQTPR1vuMpEASOxNVd/o2jWyqtSIBL3/iSP+qVpHwBXPzrZ7YvjiP+9CbR/lv1oAy+iAuOsI3xiqgSHJkbz9AwOgHQaStzNv1F/LvOxjH8Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dRLXlF+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACC9C4CEE3;
-	Tue, 24 Jun 2025 20:22:15 +0000 (UTC)
+	 MIME-Version; b=pX3bkRyRan7sGMoHWueHSk6PEDr4Ox+NMhFVP6paG64m6+OHVa3nWhbqUxFRGOunrFlt5HoU9Wo8zEX0AJXa7a8FmIzP9MXZXsYf3lIvN63dV74Lf/RVMMHuYIuL2JSLHIDPF+PhPIPjA5IDgkCrMTBY1oge9GKY2z01dblyVMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OYZK8vQi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFE3C4CEF0;
+	Tue, 24 Jun 2025 20:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750796536;
-	bh=HiLl58F6Gv2AQo/z0g4rJ+hxjMfSBzxFLpUEA7pHzgw=;
+	s=k20201202; t=1750796537;
+	bh=HLXNIk3gpWw9VgeSDEKEQ32I2877gEB7XVEX8am4+r8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dRLXlF+nhiaHGE841A+FdiMl4r6RM1w7sZg4FsEISW/XvT9xSQergzUypFrPW6lrA
-	 MUKFeSV3Yl3gqHOmd1V27pO3CKF2Ad322yC7KPypBGjhV6USPDsVb+QJKfrOKreMz/
-	 j7IJAduibsoWEyYf8srB/oxHqwAaq5oVkCGP+iWNmyvB6FV2K1hZllZ1+91jmsGsz4
-	 y6R9R1arj3nnYlLIBaApeLrP6I+7zVRt8kUrhJGfK7shq1stOpsv6lbiNLQfnJ5dOU
-	 W3j0dn2Hekxyp20cAMaUD75mQw5b+4EX2BokP2pdFj9yEDdY1aL9JdoCZvcBwq7Czc
-	 oUnPLgLYeXTDg==
+	b=OYZK8vQiyMKWg476/O3PIE7nh0t8GIDBtr+BJalqkM7iohocAkb/DCBc4YjTrXKzZ
+	 CIhBnz/m7FvUSamvM4dX84TatEImTjOdjr1v4lWl4lnfDMeJHpDFHA8IIvwrmEWPnK
+	 dAJHOsOKms8yZYTVswEvx5PuxJP7VhqRwdcW4yy+Aw2u2UZ9q5iaflSDF2Dx1cpxj4
+	 Kx/ZdH0w9lR57R/0lChbAMtcyiIvd9LaAHVWc9ZHuXdQbsZK2OxPQpDG1KdOo3l/St
+	 XmccVxedMMoy8Q6hK9HmzQMvHRfa23orORuLOZce0LLLfzajFUL/pNvkvWJIB1AGdI
+	 FB0QhAvew2phw==
 From: Mario Limonciello <superm1@kernel.org>
 To: Hans de Goede <hansg@kernel.org>,
 	Mika Westerberg <westeri@kernel.org>,
@@ -53,9 +53,9 @@ Cc: linux-gpio@vger.kernel.org (open list:GPIO ACPI SUPPORT),
 	linux-kernel@vger.kernel.org (open list),
 	linux-input@vger.kernel.org (open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)...),
 	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 1/2] gpiolib: acpi: Program debounce when finding GPIO
-Date: Tue, 24 Jun 2025 15:22:10 -0500
-Message-ID: <20250624202211.1088738-2-superm1@kernel.org>
+Subject: [PATCH 2/2] Revert "Input: soc_button_array - debounce the buttons"
+Date: Tue, 24 Jun 2025 15:22:11 -0500
+Message-ID: <20250624202211.1088738-3-superm1@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250624202211.1088738-1-superm1@kernel.org>
 References: <20250624202211.1088738-1-superm1@kernel.org>
@@ -69,44 +69,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Mario Limonciello <mario.limonciello@amd.com>
 
-When soc-button-array looks up the GPIO to use it calls acpi_find_gpio()
-which will parse _CRS.
+commit 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
+hardcoded all soc-button-array devices to use a 50ms debounce timeout
+but this doesn't work on all hardware.  The hardware I have on hand
+actually prescribes in the ASL that the timeout should be 0:
 
-acpi_find_gpio.cold (drivers/gpio/gpiolib-acpi-core.c:953)
-gpiod_find_and_request (drivers/gpio/gpiolib.c:4598 drivers/gpio/gpiolib.c:4625)
-gpiod_get_index (drivers/gpio/gpiolib.c:4877)
+GpioInt (Edge, ActiveBoth, Exclusive, PullUp, 0x0000,
+         "\\_SB.GPIO", 0x00, ResourceConsumer, ,)
+{   // Pin list
+    0x0000
+}
 
-The GPIO is setup basically, but the debounce information is discarded.
-The platform will assert what debounce should be in _CRS, so program it
-at the time it's available.
+Let the GPIO core program the debounce instead of hardcoding it into a
+driver.
+
+This reverts commit 5c4fa2a6da7fbc76290d1cb54a7e35633517a522.
 
 Cc: Hans de Goede <hansg@kernel.org>
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- drivers/gpio/gpiolib-acpi-core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/input/misc/soc_button_array.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
-index 12b24a717e43f..475cac2d95aa1 100644
---- a/drivers/gpio/gpiolib-acpi-core.c
-+++ b/drivers/gpio/gpiolib-acpi-core.c
-@@ -944,6 +944,7 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
- 	bool can_fallback = acpi_can_fallback_to_crs(adev, con_id);
- 	struct acpi_gpio_info info;
- 	struct gpio_desc *desc;
-+	int ret;
- 
- 	desc = __acpi_find_gpio(fwnode, con_id, idx, can_fallback, &info);
- 	if (IS_ERR(desc))
-@@ -957,6 +958,9 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
- 
- 	acpi_gpio_update_gpiod_flags(dflags, &info);
- 	acpi_gpio_update_gpiod_lookup_flags(lookupflags, &info);
-+	ret = gpio_set_debounce_timeout(desc, info.debounce * 10);
-+	if (ret)
-+		return ERR_PTR(ret);
- 	return desc;
- }
+diff --git a/drivers/input/misc/soc_button_array.c b/drivers/input/misc/soc_button_array.c
+index b8cad415c62ca..99490df42b6f2 100644
+--- a/drivers/input/misc/soc_button_array.c
++++ b/drivers/input/misc/soc_button_array.c
+@@ -219,8 +219,6 @@ soc_button_device_create(struct platform_device *pdev,
+ 		gpio_keys[n_buttons].active_low = info->active_low;
+ 		gpio_keys[n_buttons].desc = info->name;
+ 		gpio_keys[n_buttons].wakeup = info->wakeup;
+-		/* These devices often use cheap buttons, use 50 ms debounce */
+-		gpio_keys[n_buttons].debounce_interval = 50;
+ 		n_buttons++;
+ 	}
  
 -- 
 2.43.0
