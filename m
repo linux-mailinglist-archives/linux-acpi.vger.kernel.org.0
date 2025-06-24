@@ -1,148 +1,116 @@
-Return-Path: <linux-acpi+bounces-14565-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14566-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB4FAE6C4C
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 18:17:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE472AE6D6F
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 19:19:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F83D17FAC6
-	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 16:16:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88F773A80EA
+	for <lists+linux-acpi@lfdr.de>; Tue, 24 Jun 2025 17:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99CD211CA9;
-	Tue, 24 Jun 2025 16:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31320296160;
+	Tue, 24 Jun 2025 17:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qW+iT8/r"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="NujHNQ2O"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A082DDC5;
-	Tue, 24 Jun 2025 16:16:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8CB1A8F60;
+	Tue, 24 Jun 2025 17:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750781813; cv=none; b=I9cb4nNUo4V497nifNhre7hXIqoO2yxrK4+uu1bwaRskNUAwdeP3cvx+dZiY37RYfsqZmt8YXKAe65ISt9L7k+0qb49OLGA24dt1lM77FcsrhYHoPUlNk2H5kthOUm9A35516FTlW+6FFe172+iOjIlgttZ+decO12ZvMH5eRyY=
+	t=1750785536; cv=none; b=BuDJZBJR7pR3NnIFRUJ8N4VOwYBVeAKSuyTQ5yKglWzrtqd+9+KSucbu+YjrZ6mR8p7Jr4WkAqF5SISBkiW4Azh6K/ZKiX8NzHvxOZdY4nSOkFq9afvkaRBLqG1uKILl2vAmC7pB7lW6jnBHTHVpbDRUGSjgDbMUgmEjVR/oKDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750781813; c=relaxed/simple;
-	bh=8gl1rLZNofAk2fof2YGBHaM5ebdXQZzyZfIQBIqfrGI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fp2bFpwBNEEfRtMPrenisBzGQ0PYB5K/63zVaBHX+5lDdGUaPyhJo2HdhEcSgdRifmaC9gsF7VKElkSK9g0UQdkf3wpkq/MhW511tkVIIvHwBKRzLXBI574t7e6yVX8a02m1IPuk83NkHU7LuFPMfDygcZ9B6oA/oJLOS9HzSkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qW+iT8/r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7092CC4CEE3;
-	Tue, 24 Jun 2025 16:16:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750781812;
-	bh=8gl1rLZNofAk2fof2YGBHaM5ebdXQZzyZfIQBIqfrGI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qW+iT8/rsJkuyydGDGHb8KNzu5Fem+I5+k86517u6RHxYUMT3QX+o7hLK8Qaf+v5P
-	 Ucpo6f9iuC5p59VlLBER+lJwCjJ+0excGOnQEkIhR4PdLsSdZSLdxvtsIR8ERIGYJk
-	 PdyGDvUBZLGO5mE2WaXTxs/YYp+Tz7zl2Mc5LjeM=
-Date: Tue, 24 Jun 2025 17:16:50 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, james.morse@arm.com,
-	linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, Will Deacon <will@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Yicong Yang <yangyicong@huawei.com>, linuxarm@huawei.com,
-	Yushan Wang <wangyushan12@huawei.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, H Peter Anvin <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2 2/8] generic: Support
- ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
-Message-ID: <2025062439-submitter-affection-324b@gregkh>
-References: <20250624154805.66985-1-Jonathan.Cameron@huawei.com>
- <20250624154805.66985-3-Jonathan.Cameron@huawei.com>
+	s=arc-20240116; t=1750785536; c=relaxed/simple;
+	bh=PnTgYeBpRSho9z0Ic1t0YlYCnaY1cMzK7pe6Kx3IIRc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=H5qLbmV879rQj1ODy642uJE1gwMFkquf1Grna2WlCCJj6t8phmrEhvGZx4wzP5Mrt6q1IAq+usktQM9SXaWnTYcJieXa5YiwjGmTo8Hn3tfuI9O1UB3fL+uk4f1DBvAnZBT4TVs0teomhxdDCHFiVYa+6cf3JyVzTAT5L2malS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=NujHNQ2O; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description;
+	bh=D9mXoB0hmEQUOqAzambBPKWUXGRpwqp2/RutLHj6JLI=; b=NujHNQ2OnYYeEaXEsUYNleH6ug
+	QTVUIU1QQHbjR71G3gbICoiPb9Rzrd/sdqHMh+NtgWgQ21eS61qVv4c5go8ZecVF3CKX9jn0ehCV0
+	erloRGflpgCwKvNcyt3igKFTr1kuFLqpdnamEasF3NPX2Mf4zGGv+XoEgL6cPWgGcJOfCWCEKQTB0
+	8LKXC8CCE5irZO72zvdt+blMrOn3JBSnSsR1ccH19LZrlbSL0R1FJC8SkUo4yO0c9gZJqBqZ6TEFv
+	QVoqrlN5W8hzRMo0/iwPyWuKQr/w6By0GQG/O4MVmGxxJyeN4Vq+bnhixFFgeokIraly5cNY/DMEr
+	s9jna1yg==;
+Received: from [50.53.25.54] (helo=[192.168.254.17])
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uU7IE-00000007CNt-32oy;
+	Tue, 24 Jun 2025 17:18:46 +0000
+Message-ID: <037f1ba1-ead1-4627-b464-39f1a8010d3f@infradead.org>
+Date: Tue, 24 Jun 2025 10:18:41 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250624154805.66985-3-Jonathan.Cameron@huawei.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/8] cache: Support cache maintenance for HiSilicon SoC
+ Hydra Home Agent
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, james.morse@arm.com,
+ linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ gregkh@linuxfoundation.org, Will Deacon <will@kernel.org>,
+ Dan Williams <dan.j.williams@intel.com>, Davidlohr Bueso <dave@stgolabs.net>
+Cc: Yicong Yang <yangyicong@huawei.com>, linuxarm@huawei.com,
+ Yushan Wang <wangyushan12@huawei.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org, H Peter Anvin
+ <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>
+References: <20250624154805.66985-1-Jonathan.Cameron@huawei.com>
+ <20250624154805.66985-7-Jonathan.Cameron@huawei.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20250624154805.66985-7-Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jun 24, 2025 at 04:47:58PM +0100, Jonathan Cameron wrote:
-> From: Yicong Yang <yangyicong@hisilicon.com>
-> 
-> ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION provides the mechanism for
-> invalidate certain memory regions in a cache-incoherent manner.
-> Currently is used by NVIDMM adn CXL memory. This is mainly done
-> by the system component and is implementation define per spec.
-> Provides a method for the platforms register their own invalidate
-> method and implement ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION.
-> 
-> Architectures can opt in for this support via
-> CONFIG_GENERIC_CPU_CACHE_INVALIDATE_MEMREGION.
-> 
-> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  drivers/base/Kconfig             |  3 +++
->  drivers/base/Makefile            |  1 +
->  drivers/base/cache.c             | 46 ++++++++++++++++++++++++++++++++
->  include/asm-generic/cacheflush.h | 12 +++++++++
->  4 files changed, 62 insertions(+)
-> 
-> diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
-> index 064eb52ff7e2..cc6df87a0a96 100644
-> --- a/drivers/base/Kconfig
-> +++ b/drivers/base/Kconfig
-> @@ -181,6 +181,9 @@ config SYS_HYPERVISOR
->  	bool
->  	default n
+Hi--
+
+On 6/24/25 8:48 AM, Jonathan Cameron wrote:
+> diff --git a/drivers/cache/Kconfig b/drivers/cache/Kconfig
+> index bedc51bea1d1..0ed87f25bd69 100644
+> --- a/drivers/cache/Kconfig
+> +++ b/drivers/cache/Kconfig
+> @@ -10,6 +10,20 @@ config CACHE_COHERENCY_SUBSYSTEM
+>  	  kernel subsystems to issue invalidations and similar coherency
+>  	  operations.
 >  
-> +config GENERIC_CPU_CACHE_INVALIDATE_MEMREGION
-> +	bool
+> +if CACHE_COHERENCY_SUBSYSTEM
 > +
->  config GENERIC_CPU_DEVICES
->  	bool
->  	default n
-> diff --git a/drivers/base/Makefile b/drivers/base/Makefile
-> index 8074a10183dc..0fbfa4300b98 100644
-> --- a/drivers/base/Makefile
-> +++ b/drivers/base/Makefile
-> @@ -26,6 +26,7 @@ obj-$(CONFIG_DEV_COREDUMP) += devcoredump.o
->  obj-$(CONFIG_GENERIC_MSI_IRQ) += platform-msi.o
->  obj-$(CONFIG_GENERIC_ARCH_TOPOLOGY) += arch_topology.o
->  obj-$(CONFIG_GENERIC_ARCH_NUMA) += arch_numa.o
-> +obj-$(CONFIG_GENERIC_CPU_CACHE_INVALIDATE_MEMREGION) += cache.o
->  obj-$(CONFIG_ACPI) += physical_location.o
->  
->  obj-y			+= test/
-> diff --git a/drivers/base/cache.c b/drivers/base/cache.c
-> new file mode 100644
-> index 000000000000..8d351657bbef
-> --- /dev/null
-> +++ b/drivers/base/cache.c
-> @@ -0,0 +1,46 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Generic support for CPU Cache Invalidate Memregion
-> + */
-> +
-> +#include <linux/spinlock.h>
-> +#include <linux/export.h>
-> +#include <asm/cacheflush.h>
-> +
-> +
-> +static const struct system_cache_flush_method *scfm_data;
-> +DEFINE_SPINLOCK(scfm_lock);
+> +config HISI_SOC_HHA
+> +	tristate "HiSilicon Hydra Home Agent (HHA) device driver"
+> +	depends on (ARM64 && ACPI) || COMPILE_TEST
+> +	help
+> +	  The Hydra Home Agent (HHA) is responsible of cache coherency
 
-Shouldn't this lock be static?  I don't see it being used outside of
-this file, and it's not exported.
+	                                            for cache coherency
 
-thanks,
+> +	  on SoC. This drivers provides cache maintenance functions of HHA.
 
-greg k-h
+	  on the SoC.
+
+> +
+> +	  This driver can be built as a module. If so, the module will be
+> +	  called hisi_soc_hha.
+> +
+> +endif
+
+-- 
+~Randy
+
 
