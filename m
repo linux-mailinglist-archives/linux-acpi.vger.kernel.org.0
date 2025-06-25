@@ -1,193 +1,129 @@
-Return-Path: <linux-acpi+bounces-14627-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14628-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8855AE8D27
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 20:57:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3963DAE8D40
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 20:58:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 792B71BC06FB
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 18:57:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6792C4A7147
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 18:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36342D8DAF;
-	Wed, 25 Jun 2025 18:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603392DCBF9;
+	Wed, 25 Jun 2025 18:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+MMU9jl"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HHHjHwSr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BE02BD01A;
-	Wed, 25 Jun 2025 18:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93587285C9E
+	for <linux-acpi@vger.kernel.org>; Wed, 25 Jun 2025 18:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750877853; cv=none; b=lH+r1V+2VXdpUDIg1tGvD3pDmrfhD7j1AvhnmBYikXlFMl1mwzrS8RwF3etxvb3ue23EpK4u6JBNtmSP5y5vQtasmBAWyLeWfU6Ls2j/pfNM8zlfN02uG+f1ooK4C/PXPD03I+M1nnj7IJV7CczKU463JIc+s+e99sXjXAEv/LY=
+	t=1750877878; cv=none; b=JMeARSF0osYC3hnl3LQqnHAlhFXyiCN6X47e6lelfHKXqUqEysU2BXyAfwhXBCOJjE6UaqeN8iJ7HiacIvNenCNMLTs5xe5k+6ke2NifPJk3wv+vDIf1a31V9rd298XcS/DHakSaCg5f8w+s+gdBQ2kf5Yk6gxuWEhnKjtqh0TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750877853; c=relaxed/simple;
-	bh=1OMir9kl3v36P5nZPYgGtcbpFcQ07CfapBjMeFWn9zE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jvA/aI8YYJcJMuce9J4SNy5lcPEhwI6GJJszhP2SH6TLCiKuyvXEOqSLZxIRd6emc5tUs3iHVv6yzxWD1Lau9qTuKAFLITbLDPCws55K9VRDeD8lgsv6Hm8r9p5zgEAQFEujCrJwMM5yhT0Yse1txiE+q3QCCzvtDx0E7v58MVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+MMU9jl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FA9C4CEEA;
-	Wed, 25 Jun 2025 18:57:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750877853;
-	bh=1OMir9kl3v36P5nZPYgGtcbpFcQ07CfapBjMeFWn9zE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R+MMU9jlztQr+lsjWDsDFmIBNWjwa+XS36BysbYzLM73aW49TsTD9NCuDgB4aSlPY
-	 7syOQ2OfYl/AiI5t8pNL5bQGkknrBrxHJyGFyeoUvW87rrYWcFHL5rui6kWPjUmzBW
-	 3UABtEN/g09tMo8mkZXJvXxnmG5OWzyRnQx/bKSYvjd4KszaOr79SyAbk4leQVaYaC
-	 1TiA+oDjF++Z1tnQz8fW3WoT/yboKdYxT/rgcoq4SgG6yO1fLCKCsTSDPSGYEkD2u/
-	 JlXBRjKS00//bjSmRhp7T3zCChBstEAgxbWU2oJajp63loxCo7qm6kUZe5k2CnKkYB
-	 2l5IU/EXZ7iaQ==
-Message-ID: <4cfb5171-fc3d-4944-bcea-7dcf8e8e069a@kernel.org>
-Date: Wed, 25 Jun 2025 20:57:29 +0200
+	s=arc-20240116; t=1750877878; c=relaxed/simple;
+	bh=H1nIbQ51LzP26r3FyzLrx1fsskjj5Fl+oqqOWgYj5qY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=HZ7D3+86nZnNPJWlzhzNcf+sB1RmN61Eveq6VgQKJjHvHuN8pctaWx6P1C+mD0nU4m3zKXMG7Kbydg31uYPUqfR4b3OIGCJPtTDQSPwR58ir5gjl1SBBHY0JcI5wnKx897Xt6f5cPupalYWWJPN4Y1kSD/6wye3O8CqflEMAGWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HHHjHwSr; arc=none smtp.client-ip=209.85.210.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-73884ccffcbso58312a34.1
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Jun 2025 11:57:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1750877874; x=1751482674; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=idFC2oFkGWkgRu1swz+9drrbnHgsETd3u3GhQHpoMnk=;
+        b=HHHjHwSrydboVMDa2KX79ePXIg1CVsDYFiCuZoLTLipxPVDK1F/H6ny62Ygv6tAFoN
+         NVndEogNM3uQeHw8P+g5t/M8X22wgaAoGEqsljiRth4kOXywyL6YBgL/27mffnC2CewE
+         aQEvQwG7gLqrvrhN2xm8BW7pnKFEZg0e7zLcSw22HGEuerzJhVuLAw6oYq9Jr+cekQBE
+         BnluKFVBqLP3P2++GgAXK/AT27XEqxkXCCiyhlzHfGvzJ8gaL2zYdmkc/7DRf4VwRKxC
+         OmeUVRek9IYbBBpefc4jO9IcHKAQinVXA5+xbE6ximX6SHpK/Y+lIZw+mBk5bIQfD0Lb
+         HkZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750877874; x=1751482674;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=idFC2oFkGWkgRu1swz+9drrbnHgsETd3u3GhQHpoMnk=;
+        b=dveOeSKYna2B20079RNxUkQ7OJQ8EZK0funWMzEyxo/d5BlttiUVDekO6wUpyX8wjz
+         NWekJRWcBNfDk/OQCWCJ63vJsgvFxG55QcIFj9Z349r68svmFNRFKIXvFCDqtk654PHX
+         pRuRtw/NOen2wFRgXpwwrofwvrGr4dG0L6pBnBF6R6VlLkBf+ZG4TESTduamJMhdXAUc
+         n29aH5Y4ACq1q1FYUzoFFnJszZa8+duq8w4g+zUgPcMD5ztMjWhr12WHVY6+P4F53gB4
+         d0i3VtYus09y8zfTuP2HKlMQlmyUiv5RGC0lMk+YyxRxfVdRnlFeOO7tVhxHKUDoJwVz
+         Wyxw==
+X-Forwarded-Encrypted: i=1; AJvYcCUhbtkarOdRgklpntgTHiIoymAMyjKh0yKLp77vOE1ibuG10tUXKVzUxxx7m+ywSUh3PmHfckWmNOcZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoNrZ96w/kYuTEsjYCoOs6U135eoUs+pgc2lK+aKfObEZnJ6r7
+	onyGRrDtaw4CQt5M9v6cr6yZR+xBEMv6bPU9NajbixKwLGQII04Qcz0OOeaUrE1+FYI=
+X-Gm-Gg: ASbGncuikzIG3TCBMgE1Wu1kuiUwnG2QHAvwyhjgFTH6PO+Rw1RPB00O0t+w9b+HZlX
+	QfqojnPgsezhfAA6V8tRwZJIKpwq9fIsoI3/PrQwqGsHKa2XhrFotce/jPOxm83KX1bvUsGGWQI
+	DlKjEjtJDk9OwXw6NUqsYHwMlizRONma1DPB+kqslFI8ny4OTdo24Mh7yYmFLnowU33j4lSq4qe
+	UFOD8ufQUBHcuqQlp+y03zjMOUG0RhB9k0mW+gX5H9EguGOZaguJOUKlfYvAbb1RlOiygmwpkFE
+	RDY8+oyMKjlMeuCyynHtC4cvKthtpn6SavkkXbjJos/ZL3/47Kcg5EAkA8mkx16sKiDZjw==
+X-Google-Smtp-Source: AGHT+IFULxSdU/YC3cPv8TMpcR9HigBXOMNkhwUT8MmP1kJ8gCSc2YxGcMd40BPtiHnFyyub103kRA==
+X-Received: by 2002:a05:6830:61c4:b0:72b:aa94:6d26 with SMTP id 46e09a7af769-73adc6fa96amr2404587a34.18.1750877874602;
+        Wed, 25 Jun 2025 11:57:54 -0700 (PDT)
+Received: from localhost ([2603:8080:b800:f700:1fca:a60b:12ab:43a3])
+        by smtp.gmail.com with UTF8SMTPSA id 46e09a7af769-73a90cc0257sm2284326a34.60.2025.06.25.11.57.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Jun 2025 11:57:54 -0700 (PDT)
+Date: Wed, 25 Jun 2025 13:57:52 -0500
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Zaid Alali <zaidal@os.amperecomputing.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>,
+	Borislav Petkov <bp@alien8.de>, Ira Weiny <ira.weiny@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Jon Hunter <jonathanh@nvidia.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH next] ACPI: APEI: EINJ: prevent memory corruption in
+ error_type_set()
+Message-ID: <ae6286cf-4d73-4b97-8c0f-0782a65b8f51@sabinyo.mountain>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] Revert "Input: soc_button_array - debounce the
- buttons"
-To: Mario Limonciello <superm1@kernel.org>,
- Mika Westerberg <westeri@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
- <brgl@bgdev.pl>, Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
- "open list:GPIO ACPI SUPPORT" <linux-acpi@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
- <linux-input@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
-References: <20250624202211.1088738-1-superm1@kernel.org>
- <20250624202211.1088738-3-superm1@kernel.org>
- <4a4d577b-a085-46e8-97b9-6df27461c870@kernel.org>
- <1f8c0262-b376-43cb-b2c5-5b60e8cbf678@kernel.org>
- <92ab85ff-6314-4db0-ae12-9803ddde5037@kernel.org>
- <625952d3-01e9-426e-9739-86fe5cdfeb35@kernel.org>
-Content-Language: en-US, nl
-From: Hans de Goede <hansg@kernel.org>
-In-Reply-To: <625952d3-01e9-426e-9739-86fe5cdfeb35@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-On 25-Jun-25 4:41 PM, Mario Limonciello wrote:
-> On 6/25/25 9:31 AM, Hans de Goede wrote:
+The "einj_buf" buffer is 32 chars.  If "count" is larger than that it
+results in memory corruption.  Cap it at 31 so that we leave the last
+character as a NUL terminator.  By the way, the highest reasonable value
+for "count" is 24.
 
-<snip>
+Fixes: 0c6176e1e186 ("ACPI: APEI: EINJ: Enable the discovery of EINJv2 capabilities")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+v3: Style improvements.  Add a comment.
+v2: I introduces a bug in v1 because I put parentheses in the wrong place.
 
->> So maybe the windows ACPI0011 driver always uses a software-
->> debounce for the buttons? Windows not debouncing the mechanical
->> switches at all seems unlikely.
->>
->> I think the best way to fix this might be to add a no-hw-debounce
->> flag to the data passed from soc_button_array.c to gpio_keys.c
->> and have gpio_keys.c not call gpiod_set_debounce()  when the
->> no-hw-debounce flag is set.
->>
->> I've checked and both on Bay Trail and Cherry Trail devices
->> where soc_button_array is used a lot hw-debouncing is already
->> unused. pinctrl-baytrail.c does not accept 50 ms as a valid
->> value and pinctrl-cherryview.c does not support hw debounce
->> at all.
-> 
-> That sounds a like a generally good direction to me.
-> 
-> I think I would still like to see the ASL values translated into the hardware even if the ASL has a "0" value.
-> So I would keep patch 1 but adjust for the warning you guys both called out.
-> 
-> As you have this hardware would you be able to work out that quirk?
+ drivers/acpi/apei/einj-core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-I think we've a bit of miscommunication going on here.
-
-My proposal is to add a "no_hw_debounce" flag to 
-struct gpio_keys_platform_data and make the soc_button_array
-driver set that regardless of which platform it is running on.
-
-And then in gpio_keys.c do something like this:
-
-diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
-index f9db86da0818..2788d1e5782c 100644
---- a/drivers/input/keyboard/gpio_keys.c
-+++ b/drivers/input/keyboard/gpio_keys.c
-@@ -552,8 +552,11 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
- 		bool active_low = gpiod_is_active_low(bdata->gpiod);
+diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
+index d6d7e36e3647..f5cfa6310f0e 100644
+--- a/drivers/acpi/apei/einj-core.c
++++ b/drivers/acpi/apei/einj-core.c
+@@ -826,6 +826,10 @@ static ssize_t error_type_set(struct file *file, const char __user *buf,
+ 	int rc;
+ 	u64 val;
  
- 		if (button->debounce_interval) {
--			error = gpiod_set_debounce(bdata->gpiod,
--					button->debounce_interval * 1000);
-+			if (ddata->pdata->no_hw_debounce)
-+				error = -EINVAL;
-+			else
-+				error = gpiod_set_debounce(bdata->gpiod,
-+						button->debounce_interval * 1000);
- 			/* use timer if gpiolib doesn't provide debounce */
- 			if (error < 0)
- 				bdata->software_debounce =
-
-So keep debouncing, which I believe will always be necessary when
-dealing with mechanical buttons, but always use software debouncing
-(which I suspect is what Windows does) to avoid issues like the issue
-you are seeing.
-
-My mention of the BYT/CHT behavior in my previous email was to point
-out that those already do use software debouncing for the 50 ms
-debounce-period. It was *not* my intention to suggest to solve this
-with platform specific quirks/behavior.
-
-<semi offtopic>
-Hmm, I did found one interesting thing looking at further DSDTs
-the Dell Venue 10 Pro 5056 DSDT actually specifies a non 0
-debounce time in the ACPI0011 device's GPIO descriptors
-it uses a value of 30 ms. This device being one of the few
-actually specifying a debounce time in the ACPI is ironic
-since it uses drivers/pinctrl/intel/pinctrl-cherryview.c
-which does not support PIN_CONFIG_INPUT_DEBOUNCE...
-</semi offtopic>
-
-Regards,
-
-Hans
-
-
-
-
-
-> 
-> Or if you want me to do it, I'll need something to go on how to how to effectively detect BYT and CYT hardware.
-> 
->>
->>> So that's where both patches in this series came from.
->>>
->>>>
->>>> drivers/input/keyboard/gpio_keys.c first will call gpiod_set_debounce()
->>>> it self with the 50 ms provided by soc_button_array and if that does
->>>> not work it will fall back to software debouncing. So I don't see how
->>>> the 50 ms debounce can cause problems, other then maybe making
->>>> really really (impossible?) fast double-clicks register as a single
->>>> click .
->>>>
->>>> These buttons (e.g. volume up/down) are almost always simply mechanical
->>>> switches and these definitely will need debouncing, the 0 value from
->>>> the DSDT is plainly just wrong. There is no such thing as a not bouncing
->>>> mechanical switch.
->>>
->>> On one of these tablets can you check the GPIO in Windows to see if it's using any debounce?
->>
->> I'm afraid I don't have Windows installed on any of these.
->>
->> But based on your testing + the DSDT specifying no debounce
->> for the GPIO I guess Windows just follows the DSDt when it
->> comes to setting up the hw debounce-settings and then uses
->> sw-debouncing on top to actually avoid very quick
->> press-release-press event cycles caused by the bouncing.
->>
-> 
-> Yeah that sounds like a plausible hypothesis.
-> 
-> 
++	/* Leave the last character for the NUL terminator */
++	if (count > sizeof(einj_buf) - 1)
++		return -EINVAL;
++
+ 	memset(einj_buf, 0, sizeof(einj_buf));
+ 	if (copy_from_user(einj_buf, buf, count))
+ 		return -EFAULT;
+-- 
+2.47.2
 
 
