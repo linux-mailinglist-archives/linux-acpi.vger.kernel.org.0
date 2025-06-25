@@ -1,132 +1,127 @@
-Return-Path: <linux-acpi+bounces-14662-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14663-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F208EAE911D
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 00:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F682AE914C
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 00:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E7C35A17ED
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 22:36:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C6B06A05EE
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 22:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FA02F94B1;
-	Wed, 25 Jun 2025 22:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F86C2F4318;
+	Wed, 25 Jun 2025 22:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dN5O3BaP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ELQJcIm3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f195.google.com (mail-yw1-f195.google.com [209.85.128.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3EF214A9B;
-	Wed, 25 Jun 2025 22:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB0A2F3C2A;
+	Wed, 25 Jun 2025 22:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750890658; cv=none; b=nbvBXbW/8Wl3icAXXgFI1QdltlshAolw4nGX+TYJCIfDmsnq2RD1A/KzExgwoJ4rb9duyZ6kQTt1rUuNrDNlohhDc73Dr7JJqSg5vCu+dbUaXDV8MAT/8BFQX9a5Slc8r+/vzhrWNJU40QEIQP9ZCf2DS0rB4xFodCvJMJ5iGlI=
+	t=1750891827; cv=none; b=dLG2ap8GUUXd5SlrP8gdqGiXyDU7YDrwdVGM8227iuRQYvXT/F4yYG2S0hGudupdxCoRCnZeN3UoBmlwoHrOe/bYqZwnGe3HO0XBmskNE/ee+mldht9Xelj3uNsnvJILNW36bIbVVWENAwteQHMvRR5HIY1M4iItZu9jJqESWyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750890658; c=relaxed/simple;
-	bh=es2pAC8UJ6aAZOOo64AymW+sUCvL5KpwNeTvHXR6GyQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=etl8jC676z/6+BYBzAYFYdez+KXZvUtK/z6bz9zgGlDAIAnsHGSLvBBgrIK93gdUVEoZRd0WTJmuNEMH2Nd2MUMDE6ORjQKoaZvaeb62iVwqTO29ZEXhTcKLWfBQVa1SdFepSDt1zjkfq4Y9jXlFEteOsmojRx6WySrAKPRvCyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dN5O3BaP; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750890657; x=1782426657;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=es2pAC8UJ6aAZOOo64AymW+sUCvL5KpwNeTvHXR6GyQ=;
-  b=dN5O3BaPwcolxkWW8YDYhWql6hkRrRO7aqmt3uVSUDb850GbuLOODRWY
-   NzA9FEq5T0QiZklqMqMDUhn01i8QRZAREuDqzN7UPVD7eF2kjKv09+S1Z
-   P1w/7qcLE6J/LWHmQdRVoT9ptKKAxKUWBRo78GB/jgVj1h6xMuEGhvq0G
-   rcApgyThDa6VQmxDmskRU6osdFzpXeoJqcsl/WI4ASS3pnFLv/JGN89Js
-   hE9qajLu0gNj4f9DGd3USs21PB6MISzdqQI/jHV2invC0v3lPE0VrXn20
-   5X4FF0bhzAhNkIPCD+Z4hvtN1rW0Bw/T2cPFriDvcEBu33+44zhYrQM4c
-   w==;
-X-CSE-ConnectionGUID: oXxDcL1fSza7Cj4yxjo9Jw==
-X-CSE-MsgGUID: udCOUSlRQmuR3WvkI/dICA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="63773812"
-X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
-   d="scan'208";a="63773812"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 15:30:56 -0700
-X-CSE-ConnectionGUID: FVV2R/ABSsWS5xlvDo6ZMw==
-X-CSE-MsgGUID: S21WJEC/SjiWb3gJmRXOQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
-   d="scan'208";a="151955300"
-Received: from tmukhopa-mobl.amr.corp.intel.com (HELO [10.125.98.185]) ([10.125.98.185])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 15:30:56 -0700
-Message-ID: <daa7eb83-7413-4b6e-a241-84d306db0d43@linux.intel.com>
-Date: Wed, 25 Jun 2025 15:30:47 -0700
+	s=arc-20240116; t=1750891827; c=relaxed/simple;
+	bh=Odcr2IXToJcH3WZvPRdy6npsgtwYiC3dZ0TLDI/R+kI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=g1sWopiyyCBpM6xQ8WAu7/PfFG90vAoUmwXlGgJe+RqcyAp+CZGzxas8JTuPejFOLJAuxZDCyQJyjJrKGOiwImTfTUoszSY0EoCaVUygM5Gsd6gIwLYXEcW7mpQd8yC/CnxrLW1yc+AVNyhMnJRCZZHI2FJYfPhaAyUKOmqmXMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ELQJcIm3; arc=none smtp.client-ip=209.85.128.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f195.google.com with SMTP id 00721157ae682-708d90aa8f9so4651517b3.3;
+        Wed, 25 Jun 2025 15:50:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750891824; x=1751496624; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Odcr2IXToJcH3WZvPRdy6npsgtwYiC3dZ0TLDI/R+kI=;
+        b=ELQJcIm3Gd9SQaqqhKagGpWIQgB0xmlXEehS+bThfD36GH88OEE2HQZTnN/W8jNmpT
+         Hb3YJvXSyjW90T09zQNJIkJAeULZWxkZq4kkvQA9HKzGieE4PS7lRN0rYXJrHkGGoxS2
+         pBHjOpSiozTAJuguz0Jhl34XXan1OM/9SMsW6/LBh96TyP7FwOyPX4LtfdeeYZXsBThy
+         mHYiEWKpj2oPKZNc+lZr8fjvF96woFX3AVyM+d7XawAgoHug2lqiVfGoAWY8sd8WoYAy
+         cI9eyKCZs7J1jj2IDJsXBNu04+FvZPNJqr0vW3j5qoJtAmNmz81P9Gjlmd0rBXYvurw4
+         apig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750891824; x=1751496624;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Odcr2IXToJcH3WZvPRdy6npsgtwYiC3dZ0TLDI/R+kI=;
+        b=CQdI8i+As197akZDrZqEXYuXebN5qBunmsAIaTGWiahxLYuNc8v3HmBoLzBuO5rhic
+         MYhnOwe6B3h8xDjteivVdiF92TMNw09UWY52DcLvGLUdwi7zFAKfsowMgHU5IejOSZI8
+         FI5rWQj4Q4HYL2r3zm5AlH/2ZJ0DabK5scK4ivqFclBcAVvftjzYKHxaK+o/qoLO4sCS
+         alzZ+yl7wwxOcC5XIrShM88ttuk5iiz+w2i73ozpJSUMwUnm6FiI0BiNvly2U3ftc09o
+         C9k12FXndcMt36Hvk6pLtLdAVOe3YycyCl0CWIey3V4AgUM8vQ9pQVWbviEALOP3dbOG
+         z4Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCUT9nhH577JEugRt1MAnguW+gfRQ3NsyqWb72tYNvHOCYGeCGBzwAGvWGxSbMH50NTbhD6rpGprp70N@vger.kernel.org, AJvYcCUd239dtb9y3LdoDIhtAimVxKx7jmNopOWUJMBexhMZHIHMHPfg2MV47CFnRjRWqerKj5zPdW+K@vger.kernel.org, AJvYcCVPmzXM5ZfI4uvLd4G1+43exmMqJS3rCTlxqGh80acRUcTg4KxTqNWxraAv0jAEAot+hYTBGWyn1P0rOzQ3v3Y=@vger.kernel.org, AJvYcCWox6dVjC4QrSIBsaYZRieTP9URnQRj1awRFjfV0S0tj9pbKUvpRWWRifSGg5PUBakJjfogvO84gC3D@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTRnuMSo4FVg4KO9tu6FZsCYGYl3fOboi0BfDD7bRJK3Du9y9n
+	G5JgpgaqO3v0nEUUA/95PcwojIOa2kldI6RAb9pJ1T1VpDg2VPKyPJYKMxGCMQWmqQz+aCJ7hj1
+	N5+U3UMC0/pnZBBqXoQLsBxk1MSmb7mXgjekHbnaLPw==
+X-Gm-Gg: ASbGncuYxazkdx0EB/9p61ceG8c3s1s0v7F8RUpl8SEBB0aTy/GT7Oj9RapqyC8K7YI
+	q9wVen0Mr8WSNNSiSV4EY6/0UocY6cnIeP1yqyyznCy+uc+O5gGEMfrGZuNFg7XZxoyg5DTkTYk
+	GuhDS/kSWoIuOn+zYSM8sUtBTnTy5i0dAB7LkhS+MBHm7sNQ==
+X-Google-Smtp-Source: AGHT+IEWMzRYVR/8DjIj8kv2lGIl6tYWdeN3jHUuAkZgA1ELBZpMVFlCSRuAVegIdJVWaHMWkrlVbvNBmOkVU75K8pU=
+X-Received: by 2002:a05:690c:18:b0:70e:2d30:43d6 with SMTP id
+ 00721157ae682-71406e153a3mr69077877b3.38.1750891824548; Wed, 25 Jun 2025
+ 15:50:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] driver core: faux: fix Undefined Behavior in
- faux_device_destroy()
-To: Dan Carpenter <dan.carpenter@linaro.org>, Miguel Ojeda <ojeda@kernel.org>
-Cc: gregkh@linuxfoundation.org, Benjamin.Cheatham@amd.com,
- Jonathan.Cameron@huawei.com, dakr@kernel.org, dan.j.williams@intel.com,
- linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
- linux-kernel@vger.kernel.org, rafael.j.wysocki@intel.com, rafael@kernel.org,
- sudeep.holla@arm.com, Kees Cook <kees@kernel.org>
-References: <2025061313-theater-surrender-944c@gregkh>
- <20250614105037.1441029-1-ojeda@kernel.org>
- <685c13c5.050a0220.38a39d.dcf8@mx.google.com>
-Content-Language: en-GB
-From: Marc Herbert <marc.herbert@linux.intel.com>
-In-Reply-To: <685c13c5.050a0220.38a39d.dcf8@mx.google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <CAEmM+Qi-Waxk5qcR+nfip-QGXaKk0-Kq7QSq890e9oYOPjW+bA@mail.gmail.com>
+ <20250625202014.GA1585022@bhelgaas>
+In-Reply-To: <20250625202014.GA1585022@bhelgaas>
+From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
+Date: Thu, 26 Jun 2025 04:20:13 +0530
+X-Gm-Features: AX0GCFtqDnIARUFNXElc5Ra0vQgsvoERbrRzoUN4UINQwlpAAhvtUlBUtNIQzx0
+Message-ID: <CAEmM+Qg+xxMfXb=704OfwYLou7Mh_BNaTevLaGfiG2peZotJoA@mail.gmail.com>
+Subject: Re: Instability in ALL stable and LTS distro kernels (IRQ #16 being
+ disabled, PCIe bus errors, ath10k_pci) in Dell Inspiron 5567
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, ath10k@lists.infradead.org, 
+	linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Please ignore the last email (I haven't replied to everyone). Also,
+here's the actual updated dmesg (the previous one was the old one):
+https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/ra=
+w/78460e6931a055b6776afe756a95d467913d5ebd/updated-dmesg
 
-
-On 2025-06-25 08:20, Dan Carpenter wrote:
-> On Sat, Jun 14, 2025 at 12:50:37PM +0200, Miguel Ojeda wrote:
->> On Fri, 13 Jun 2025 20:33:42 -0400 Greg KH <gregkh@linuxfoundation.org> wrote:
->>>
->>> Great writeup, but as Miguel says, this isn't needed at all, the kernel
->>> relies on the compiler to be sane :)
->>
->> We may still want to clean them up, e.g. for tooling -- Kees/Dan: do we?
->> e.g. I see a similar case with discussion at:
->>
->>     https://lore.kernel.org/lkml/3f1e7aaa-501a-44f1-8122-28e9efa0a33c@web.de/
->>
->> Which in the end was picked up as commit 2df2c0caaecf ("fbdev: au1100fb:
->> Move a variable assignment behind a null pointer check").
-> 
-> Putting the declarations at the top was always just a style preference.
-
-No, "const" and variable scopes are not just "style", please do a
-bit of research. For instance...
-
-> Putting declarations at the top causes issues for __cleanup magic and...
-
-https://stackoverflow.com/questions/368385/implementing-raii-in-pure-c
-https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization#Compiler_%22cleanup%22_extensions
-
-Not just "style" either:
-- Automagically avoiding exploits like TUN https://lwn.net/Articles/342330/
-- The unusual flag -fno-delete-null-pointer-checks and incompatibility
-  with other analyzers and compilers
-- All the complex compiler discussions around those.
-
-Declaration-after-statement was an important (and obviously: optional)
-C99 feature that let C catch up with every other language. Forbidding it
-just for "style" would be a serious misunderstanding of that feature. I
-don't know any yet but there has to be some more important reason(s)
-than "style".
-
-From https://lore.kernel.org/lkml/4d54e4f6-0d98-4b42-9bea-169f3b8772bb@sabinyo.mountain/
-> Btw, this is testing dereferences where the kernel code is doing pointer math.
-
-Compiler optimizations may or may not care about that difference.  It
-seems gcc and clang both do care... for now (and even if that changes
-then I guess -fno-delete-null-pointer-checks would still be enough)
+On Thu, Jun 26, 2025 at 4:16=E2=80=AFAM Bandhan Pramanik
+<bandhanpramanik06.foss@gmail.com> wrote:
+>
+> Hello Bjorn,
+>
+> First of all, thanks a LOT for replying.
+>
+> I have included the files in my previous GitHub Gist. Sharing the raw
+> files for easier analysis.
+>
+> lspci -vv: https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1=
+d832a16180/raw/78460e6931a055b6776afe756a95d467913d5ebd/detailed-lspci.txt
+> dmesg: https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832=
+a16180/raw/78460e6931a055b6776afe756a95d467913d5ebd/dmesg.log
+>
+> On a different note, I had to use pci=3Dnoaer, so that the ring buffer
+> wouldn't get cleared that fast.
+>
+> Regarding the ath10k thing, none of the fixes worked this time. Only
+> irqpoll worked. I don't know if it's because of a disparity b/w GNOME
+> and KDE (because my daily driver is Fedora 42), but I'm 300% sure that
+> it's not just the Wi-Fi that's the issue here. It's most probably a
+> lot of issues here, and the harder issues to fix are usually the ones
+> closer to the hardware.
+>
+> Anyway, if you get something, please let me know.
+>
+> Bandhan
+>
 
