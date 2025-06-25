@@ -1,114 +1,136 @@
-Return-Path: <linux-acpi+bounces-14580-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14581-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39906AE7AE1
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 10:52:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51F87AE7B57
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 11:03:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A9074A0068
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 08:52:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DD65162100
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 09:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD785283FCF;
-	Wed, 25 Jun 2025 08:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC07D28ECEF;
+	Wed, 25 Jun 2025 09:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qdhhzZ/l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NuZCt9yX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3612F27D784;
-	Wed, 25 Jun 2025 08:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEB9285CBD;
+	Wed, 25 Jun 2025 09:02:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750841542; cv=none; b=AQC1VIlVvxvfu2Pcexfrgn+FuThf+uvzbsK4ierZffe9nDEEwZ0WIVZ2hc23/5eBFhcQeYA71twqTJwpEMghk3/sY192v/giAz1SQhyshoGnqtX7xivcECqSyWt2LlcsBLVdhWd+J54jC8O7MAt7VZKoKPI4z5yzOeWrQaz2+SE=
+	t=1750842127; cv=none; b=gc6HAtkMzk8BE3SI5MKQ59gPYDVY6Yj4+FfD3UpysM5mkC5T+AsdJ7GteHu3wUxtSKFk4HfYk1ZGg9or/oeeg+ezphzfEZLK6pTC+bHugqQviyTXb8YWjwqCS7WthvbGqK7Y7ZBB9PA9LTBE9zPeXjcYLFg9fGwBXawCD9nCzx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750841542; c=relaxed/simple;
-	bh=1aEymm9TW+31O+JYHnj+LSnYkKbL8stOxELJ4GSgqBI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wpzw4k61dLOiJ+/+cKvsaovzNm1xnJvZ24VAhFHIuMI1dg8MHaZ3UPi90J4Z7x//+s6yfREX3UhNVgsIgSdr2YQfDq6Kg9j6mKgs6E2i3oIArTTvrTpGDZ5TWrJFJ5kFSgeNaUeqm7oGRXCPA1IBKPKccWrNTrsqn2NuDeXiZsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qdhhzZ/l; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=kuB6DJokf+kOHeXrbarpBOCXQ2R6TXTfr6dB5Ad6/3o=; b=qdhhzZ/loUJj4/x5n1ZsfY53Nz
-	Fntzcq+G7Y/WZyznoGpiZ7N4mKDED4CDh/WdAgmi3O+iNUt7rgLHT3tHo5gFYzOj9lYVZpAm+ZnrP
-	G05fPGu8gkCAHZvkBTPR4I0oA+PUFsXB3oApC0I2V0hRhpNPY/5aMfB5xm29ewdmMfBHjM4tJbnLw
-	QxfeCT0jEuuQkqMrvyWdmXRe5fVFGCMyj45ECw6qFjSmQaMeCSy45iIgODWENrFchbf8SeEcFryJY
-	JJw69p01O0rNbx5o/QkCzhrKPISMe+xwHd1X/oTD9eXtsti2Bp90yL3XCAYmh7O5IOyLtZ1+D0yLZ
-	oBU97CHw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uULrR-00000008vs3-11Ci;
-	Wed, 25 Jun 2025 08:52:05 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id C97B3308983; Wed, 25 Jun 2025 10:52:04 +0200 (CEST)
-Date: Wed, 25 Jun 2025 10:52:04 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, james.morse@arm.com,
-	linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, gregkh@linuxfoundation.org,
-	Will Deacon <will@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Yicong Yang <yangyicong@huawei.com>, linuxarm@huawei.com,
-	Yushan Wang <wangyushan12@huawei.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, H Peter Anvin <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH v2 0/8] Cache coherency management subsystem
-Message-ID: <20250625085204.GC1613200@noisy.programming.kicks-ass.net>
-References: <20250624154805.66985-1-Jonathan.Cameron@huawei.com>
+	s=arc-20240116; t=1750842127; c=relaxed/simple;
+	bh=1W7arUVBB1d15aM5ROHQioZU9ZN5vTbbjFufqTMljjI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jgu+yErlp1k5B7chxZp+U980JXDQpgdhcYKjCTPIZRf9LPu4PNp8AMKYimIaYctFWdJe0TlWVB1ACXh6XVFjd0hMhW/Zxhjf2Rk3MDv8qAnftEo5j5pDxGMVhblCS9kkX7/dLU4hFb1FSftztZd52BYPWDzZGuiKFo8i1f7Gsr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NuZCt9yX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407C7C4CEEA;
+	Wed, 25 Jun 2025 09:02:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750842127;
+	bh=1W7arUVBB1d15aM5ROHQioZU9ZN5vTbbjFufqTMljjI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NuZCt9yXs3wPNf5vWm1VKzHQk2Xsdu2t355zrjpHl3z7VDgv/9R4whsVEFtVjGeov
+	 Ll3QlWDSXyZo6H3mZMA8+tC2bu2Xp5ytUln7P2i33ZwvYD6Z1WpCa3FwVR6fBzz4jh
+	 dUhZ1LKeBEMcp3/85ZGZP2daRCfl3w6nuTlVgqtZ+w9Wvc/9GR8OAr5brHEtIvlTaa
+	 +N6nVA2GoKuFW/YoGnvxBCgQd4vdIMf5uYC/AaHwHatYlqEQqlrgVCxUvyI4Ku2bgS
+	 dt+sqrlWl27aQeiOKU7f0FRCflB3LLNvFmkFTQLYXScpgVHhlCmxI6KyqE2TweJJ/B
+	 W3tAqYOhTz2LQ==
+Message-ID: <3f653a9f-e838-4298-9758-95e6fbec52bb@kernel.org>
+Date: Wed, 25 Jun 2025 11:02:03 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250624154805.66985-1-Jonathan.Cameron@huawei.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] gpiolib: acpi: Program debounce when finding GPIO
+To: Mario Limonciello <superm1@kernel.org>,
+ Mika Westerberg <westeri@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
+ <brgl@bgdev.pl>, Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
+ "open list:GPIO ACPI SUPPORT" <linux-acpi@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
+ <linux-input@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
+References: <20250624202211.1088738-1-superm1@kernel.org>
+ <20250624202211.1088738-2-superm1@kernel.org>
+Content-Language: en-US, nl
+From: Hans de Goede <hansg@kernel.org>
+In-Reply-To: <20250624202211.1088738-2-superm1@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jun 24, 2025 at 04:47:56PM +0100, Jonathan Cameron wrote:
+Hi Mario,
 
-> On x86 there is the much loved WBINVD instruction that causes a write back
-> and invalidate of all caches in the system. It is expensive but it is
+On 24-Jun-25 10:22 PM, Mario Limonciello wrote:
+> From: Mario Limonciello <mario.limonciello@amd.com>
+> 
+> When soc-button-array looks up the GPIO to use it calls acpi_find_gpio()
+> which will parse _CRS.
+> 
+> acpi_find_gpio.cold (drivers/gpio/gpiolib-acpi-core.c:953)
+> gpiod_find_and_request (drivers/gpio/gpiolib.c:4598 drivers/gpio/gpiolib.c:4625)
+> gpiod_get_index (drivers/gpio/gpiolib.c:4877)
+> 
+> The GPIO is setup basically, but the debounce information is discarded.
+> The platform will assert what debounce should be in _CRS, so program it
+> at the time it's available.
+> 
+> Cc: Hans de Goede <hansg@kernel.org>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>  drivers/gpio/gpiolib-acpi-core.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
+> index 12b24a717e43f..475cac2d95aa1 100644
+> --- a/drivers/gpio/gpiolib-acpi-core.c
+> +++ b/drivers/gpio/gpiolib-acpi-core.c
+> @@ -944,6 +944,7 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
+>  	bool can_fallback = acpi_can_fallback_to_crs(adev, con_id);
+>  	struct acpi_gpio_info info;
+>  	struct gpio_desc *desc;
+> +	int ret;
+>  
+>  	desc = __acpi_find_gpio(fwnode, con_id, idx, can_fallback, &info);
+>  	if (IS_ERR(desc))
+> @@ -957,6 +958,9 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
+>  
+>  	acpi_gpio_update_gpiod_flags(dflags, &info);
+>  	acpi_gpio_update_gpiod_lookup_flags(lookupflags, &info);
+> +	ret = gpio_set_debounce_timeout(desc, info.debounce * 10);
+> +	if (ret)
+> +		return ERR_PTR(ret);
 
-Expensive is not the only problem. It actively interferes with things
-like Cache-Allocation-Technology (RDT-CAT for the intel folks). Doing
-WBINVD utterly destroys the cache subsystem for everybody on the
-machine.
+IIRC this is going to fail sometimes, depending on which range of
+debounce values the GPIO controller support. Note that there already
+is another code-path in gpiolib-acpi-core.c which calls
+gpio_set_debounce_timeout() in acpi_request_own_gpiod() and it does:
 
-> necessary in a few corner cases. 
+        /* ACPI uses hundredths of milliseconds units */
+        ret = gpio_set_debounce_timeout(desc, agpio->debounce_timeout * 10);
+        if (ret)
+                dev_warn(chip->parent,
+                         "Failed to set debounce-timeout for pin 0x%04X, err %d\n",
+                         pin, ret);
 
-Don't we have things like CLFLUSH/CLFLUSHOPT/CLWB exactly so that we can
-avoid doing dumb things like WBINVD ?!?
+Making this a warning was done in commit cef0d022f553 ("gpiolib: acpi: Make
+set-debounce-timeout failures non fatal").
 
-> These are cases where the contents of
-> Physical Memory may change without any writes from the host. Whilst there
-> are a few reasons this might happen, the one I care about here is when
-> we are adding or removing mappings on CXL. So typically going from
-> there being actual memory at a host Physical Address to nothing there
-> (reads as zero, writes dropped) or visa-versa. 
+Otherwise I think this is fine.
 
-> The
-> thing that makes it very hard to handle with CPU flushes is that the
-> instructions are normally VA based and not guaranteed to reach beyond
-> the Point of Coherence or similar. You might be able to (ab)use
-> various flush operations intended to ensure persistence memory but
-> in general they don't work either.
+Regards,
 
-Urgh so this. Dan, Dave, are we getting new instructions to deal with
-this? I'm really not keen on having WBINVD in active use.
+Hans
+
 
 
