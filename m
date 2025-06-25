@@ -1,102 +1,130 @@
-Return-Path: <linux-acpi+bounces-14585-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14586-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF12AAE7D7A
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 11:40:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6B2AE7DB6
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 11:45:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96647163F71
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 09:39:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D2371C23060
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 09:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03D52D5C8F;
-	Wed, 25 Jun 2025 09:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DB12DAFBE;
+	Wed, 25 Jun 2025 09:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sHsgY6qT"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="T0hKL8t6"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70ADB288CB7;
-	Wed, 25 Jun 2025 09:27:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3936729A323;
+	Wed, 25 Jun 2025 09:32:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750843643; cv=none; b=oX25Q68QkrH2vetMPhjmOABA2JRAFtvMoivtx/mR79yUEdb2KIN7o3DXOzWgiHoX9EqMjPJVDnv/8XiHFQD/rS50fbywUoYlTPeYln/2pNzhwD0VoNihKPNu+wHnK79HjBu04U+AlAYKTWfDZQZlYz/+7nzL43FQaYr4jP8bfRU=
+	t=1750843937; cv=none; b=GA0fsGDOGanFke4+Ea3tqZ7z4s3vEhCBYMc/bvkN3uWPumexfAZ6Rrk4qi4TM+WJFbtAJ7nXV3WuD5TCVqoevIE3N1N4ud9OrdIXPQ1yqqUrszC6lw5qizbvfS809Wlz5acW0jdpXiov2RHEZ3wXCvggvJkmuu2Fe/Kt1v7upSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750843643; c=relaxed/simple;
-	bh=LpJpTA8+a1zc/RJHeusoxiRPSfqQxKO4gM6yc+uiJt0=;
+	s=arc-20240116; t=1750843937; c=relaxed/simple;
+	bh=wmlo0i7y7J244aINLuThG1MyR6ZNiLk68WnvjJsz/Kg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H6A4KjGAhkF/Yg1UgcUB2xVksZxRML85RNd/6Rf2NXnCOiT+lp3rNcGh3BDHB0CvGnRBCurWaBvbRGtaTZQ16PCEEkq+bMLAocSyxAs3LAwcY1VzYJ36aYGrUZefcc0jKJEotOrU0LDuntekzpW97PVjDcafaEJTwVTqPyc8jWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sHsgY6qT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D6FC4CEEA;
-	Wed, 25 Jun 2025 09:27:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750843643;
-	bh=LpJpTA8+a1zc/RJHeusoxiRPSfqQxKO4gM6yc+uiJt0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sHsgY6qTVa/7MiXn+Shg9Mg26XDKt2B9ZBkdvu7bfcRDPcml6L5K4SDHqchJDnXC5
-	 5+R9npyhTG8xXtte+zb0v1pgFjNYIMRkcPRnLStskdgiGLflPjQogucD2gxLRjuWGD
-	 uMUo+jjr14KNLUCVfnxzPbt6zEcE63Eb49AIs6ZGj5HCcxkZwvHP4PuyU/Xb0wkymi
-	 FaMbXW67PBlzbS7EKiqe2qLOkTmiuD8x3S6I3vGH98MNv3ILg2q93KAIgLTqHqLTRu
-	 j6AzAIK3wRWBxtdufCCUueo3Dpa2H1d7LND6myB/jnNtmEhXTDcBufw2mzjXnmQ3Cw
-	 l0Y7slShLruwg==
-Date: Wed, 25 Jun 2025 11:27:16 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Igor Korotin <igor.korotin.linux@gmail.com>, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-acpi@vger.kernel.org, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	lenb@kernel.org, wedsonaf@gmail.com, viresh.kumar@linaro.org,
-	alex.hung@amd.com, dingxiangfei2009@gmail.com
-Subject: Re: [PATCH v6 6/6] samples: rust: add ACPI match table example to
- platform driver
-Message-ID: <aFvA9LVmStikbBF7@cassiopeiae>
-References: <20250613133517.1229722-1-igor.korotin.linux@gmail.com>
- <20250613135407.1233005-1-igor.korotin.linux@gmail.com>
- <aFB2FZEFcXUsW8lN@pollux>
- <f29b4eba-bd79-4f74-940c-8cff65495ae0@gmail.com>
- <aFGisAm-n6Mt70Hd@pollux>
- <CAJZ5v0hBG-ccWdhiKtcasAVOph+===AZoOroznf2k5OG0BOnkg@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=DHr78eUSx4dii6UFBvW7/nxf4TuHiVytac4CaS83H5dgGJXPDq6lU7usv9h60LAyDPUFx1tE7qBNizZIa1SpGeM+CQZd2q0By3U2QCoNk76p4eoJFrvr/kIHSdJOUn4fYNoS3VKX+iwrca+1hGPgl2zfUJZTzVdSADVq2+PbFKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=T0hKL8t6; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=51MXSIz01v2zZUYglT8WCA+VxWNWBxG8GinukyiOxuM=; b=T0hKL8t6mooi63qc6S+et8AjEC
+	NVwOjCyKJ0NVeoGkxhfxlkPSOEAwqvdXxiNgnbDwJcu527SaM1mxQWC/cKtInWKKMKBvmZpCmV2EA
+	eAUPbUBIq1el0HbcRgXOzWAFWBzG8vI9Mzv9p70J/3QX1dfYCIT+6sPBPTEarR3OOXBuazAbLLQFy
+	xDBGoQ/8cJO91/xRVEMwE5PZCMfGvIkC8yKJoLjx4Ml8zhQfEQ8SV4LMlS7voq7Xcs8iUG8+wrEP0
+	qJ0amzUljiPfMKhQGnEVcPhAbjynpeywC4kz46mj82jGmUDPssxzsKj3oXfYGWCn4oTEj0ccQHFyj
+	97KGRIwg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uUMTy-00000005joy-1YGc;
+	Wed, 25 Jun 2025 09:31:54 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id C64AD308983; Wed, 25 Jun 2025 11:31:52 +0200 (CEST)
+Date: Wed, 25 Jun 2025 11:31:52 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>, james.morse@arm.com,
+	linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, gregkh@linuxfoundation.org,
+	Will Deacon <will@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Yicong Yang <yangyicong@huawei.com>, linuxarm@huawei.com,
+	Yushan Wang <wangyushan12@huawei.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCH v2 0/8] Cache coherency management subsystem
+Message-ID: <20250625093152.GZ1613376@noisy.programming.kicks-ass.net>
+References: <20250624154805.66985-1-Jonathan.Cameron@huawei.com>
+ <20250625085204.GC1613200@noisy.programming.kicks-ass.net>
+ <FB7122A4-BF5E-4C05-805A-2EE3240286A1@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0hBG-ccWdhiKtcasAVOph+===AZoOroznf2k5OG0BOnkg@mail.gmail.com>
+In-Reply-To: <FB7122A4-BF5E-4C05-805A-2EE3240286A1@zytor.com>
 
-On Wed, Jun 25, 2025 at 11:17:33AM +0200, Rafael J. Wysocki wrote:
-> On Tue, Jun 17, 2025 at 7:15 PM Danilo Krummrich <dakr@kernel.org> wrote:
+On Wed, Jun 25, 2025 at 02:12:39AM -0700, H. Peter Anvin wrote:
+> On June 25, 2025 1:52:04 AM PDT, Peter Zijlstra <peterz@infradead.org> wrote:
+> >On Tue, Jun 24, 2025 at 04:47:56PM +0100, Jonathan Cameron wrote:
 > >
-> > On Tue, Jun 17, 2025 at 05:39:07PM +0100, Igor Korotin wrote:
-> > > I could suggest on of the following:
-> > > DRV0001
-> > > DRVR0001
-> > > PDRV0001
+> >> On x86 there is the much loved WBINVD instruction that causes a write back
+> >> and invalidate of all caches in the system. It is expensive but it is
 > >
-> > This one looks reasonable to me.
+> >Expensive is not the only problem. It actively interferes with things
+> >like Cache-Allocation-Technology (RDT-CAT for the intel folks). Doing
+> >WBINVD utterly destroys the cache subsystem for everybody on the
+> >machine.
 > >
-> > > TEST0001
-> > > TST0001
+> >> necessary in a few corner cases. 
+> >
+> >Don't we have things like CLFLUSH/CLFLUSHOPT/CLWB exactly so that we can
+> >avoid doing dumb things like WBINVD ?!?
+> >
+> >> These are cases where the contents of
+> >> Physical Memory may change without any writes from the host. Whilst there
+> >> are a few reasons this might happen, the one I care about here is when
+> >> we are adding or removing mappings on CXL. So typically going from
+> >> there being actual memory at a host Physical Address to nothing there
+> >> (reads as zero, writes dropped) or visa-versa. 
+> >
+> >> The
+> >> thing that makes it very hard to handle with CPU flushes is that the
+> >> instructions are normally VA based and not guaranteed to reach beyond
+> >> the Point of Coherence or similar. You might be able to (ab)use
+> >> various flush operations intended to ensure persistence memory but
+> >> in general they don't work either.
+> >
+> >Urgh so this. Dan, Dave, are we getting new instructions to deal with
+> >this? I'm really not keen on having WBINVD in active use.
+> >
 > 
-> Can we please avoid using made up device IDs in the code, even if it
-> is just sample code?
+> WBINVD is the nuclear weapon to use when you have lost all notion of
+> where the problematic data can be, and amounts to a full reset of the
+> cache system. 
 > 
-> It is way better to use a real one that's been reserved already as
-> "never use in real ACPI tables" for some reason.  I think I can find a
-> few of these for you if need be.
-> 
-> Thanks!
+> WBINVD can block interrupts for many *milliseconds*, system wide, and
+> so is really only useful for once-per-boot type events, like MTRR
+> initialization.
 
-Sure! Please let me know which one you think fits best and I'll use it instead
-of "TST0001" when I apply the series.
-
-- Danilo
+Right this... But that CXL thing sounds like that's semi 'regular' to
+the point that providing some infrastructure around it makes sense. This
+should not be.
 
