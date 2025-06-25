@@ -1,107 +1,161 @@
-Return-Path: <linux-acpi+bounces-14592-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14593-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FA9AE85CE
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 16:10:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 031FEAE85BE
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 16:09:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E4883BF161
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 14:08:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 997D27B643A
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 14:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A01264634;
-	Wed, 25 Jun 2025 14:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21D0264A86;
+	Wed, 25 Jun 2025 14:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lngmZW6d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ikIPi8cU"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAAB1F460B;
-	Wed, 25 Jun 2025 14:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718B13074B2;
+	Wed, 25 Jun 2025 14:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750860503; cv=none; b=Hq3YXDqorE0Xk8UYOWRUQxruiie68MG9dJr/wljvmxKzlB1ECvngmqU8XoJ1kgwDZ8nhjcWPXBU1I+0bS0BQSIJwROcOazbKAyNM8K0zJ+OQzULMKgA5IiHegUqGTh0+2bmdHPCVzT1GDdIDuo2jL2v4Sg/0P/60So6czwh1HrA=
+	t=1750860577; cv=none; b=BCbKiOVfVT1mQrS26aD+Ezx2eOHlJhrt54e3UoweDZ0Jl6RG5lqiehGmdAFtHmB7G3sHLWcCFR5unyX1QPdVyxi42tQrNEg0PAJCx7JPnU2D1zaK20DrwcAcamDo1L6oixFKj/G+D0IWmDriqYzMKowoM2P4ID3vrhPvwjqtxhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750860503; c=relaxed/simple;
-	bh=4vIZXsuKUOK8a+9KYnOCvceaIEpUDoSD0Xk7uwoqMOM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KMmspn8iRhgMs/D+m26rsp81f1m6HmkZ6+ZgimeWuUf2+mCyhGltFWgjdhdvuEffRk0brcK6BhiFl4EUgyuXUi4IWv7RR3b3dgfGLjdb6zKegWJEn7nB+W9bdaBfr0yDTpOaD6QI7AMB1hJkVwcMVRhoKvCriTAlxlVq6gVCh7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lngmZW6d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C74C4CEEF;
-	Wed, 25 Jun 2025 14:08:23 +0000 (UTC)
+	s=arc-20240116; t=1750860577; c=relaxed/simple;
+	bh=mKmabAIo8Fb88oFDDtzqpED5rlh6TYCDvirbbBC1noU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UMo0vbncQksdlWieqF8T0XPSNZPT43dWvG4eWMHZGmUZyJuc7VtmUAZj5r8GcWtJt6bHyFSghhr7pbkxonPTGPPFeBd6Y9Eid1F5Qjc5WXzQYcrI0mVSsIw07lJ5flB4N+tNWHHnGv9y2lJKp6Pqx1ssV/Pz1p66a+hnlnIve1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ikIPi8cU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A0E1C4CEEA;
+	Wed, 25 Jun 2025 14:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750860503;
-	bh=4vIZXsuKUOK8a+9KYnOCvceaIEpUDoSD0Xk7uwoqMOM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lngmZW6d0OpP8fT7KC63MqY2H9hdncczxcomCYo6wSWtTNWpuz8+AIsrUiFz+fOPJ
-	 8fbN8gNOBbhO/8Fao/0x2HGRzaMfeTFc8hxnKzGVN5RALl9H+jaMWsBV8MiV3z7KSI
-	 CjiRa2BBx4DQ0UYeofft+dqdiCJ3tqULlAby6vr2ZVcj5EJVAkWpk7LGFzE+8H5Lie
-	 oBhWKD5bmtZ2xSrNSrdDKdQoGrH+vcfkBaZae0wG8j//aLCN4xXshLwbC2Qe9ueGzg
-	 JE5xEM/59eYm04/v5ydoUlBfZWN9oAM14Ku5vFMLNmkna22aCWJZT3+A4W0aEAxnVM
-	 TDag+MrLCvGjw==
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-60867565fb5so3004549a12.3;
-        Wed, 25 Jun 2025 07:08:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU/Mvq/yV2YJyuxRCir2W7Q066nimiCuzc7Sk8+y5Xd/F1omMi0YMe+7BjkslWerO/r32z+2uMR335Sh94I@vger.kernel.org, AJvYcCUKmvz/1oM6RqXKdajwCTp3xC6aOO2H/8shdoepSohfiFocDxCNhvRrIZ/OCVRbz75Fe1zVTNVnWeer@vger.kernel.org, AJvYcCXI1vRxNC330qJuJgel7/RTx6PkLQfzPUIPo8TsPD6lQMT5irCGzpAHAC8Cb8xfEaGvodKgOdqPjNOlaVJo9Xo=@vger.kernel.org, AJvYcCXgYtaHC58mtnJMfYlSlbHh/AZTCPe6bxl6lhV4F72bhV+Xtau8PFxc0XAdL7GgNXGGl+s0//Zmv2F3Mw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyLWD6lnYsiYD8RrKXtjNDKcELGnKw3AH1iXI4bjnHpcfudbT2
-	fZJG5AXADedH2PwbYCFZwWYD4oRdWcWk7ejMnDcBROukd3rtmB4ORHjHt+8+iBM390qmpU7IkKb
-	NSOK0afLSmgVCbJgli8zdmuiNspyhsw==
-X-Google-Smtp-Source: AGHT+IGRQMMmj3unS5ciqd3uH6EUFNd8IVgWwlI/rRMie8w0Ra7lYzi6iW8icoIkLFesEo0jH7PHkSh2vWz7wpa1Ab8=
-X-Received: by 2002:a17:907:2da9:b0:add:f62e:a300 with SMTP id
- a640c23a62f3a-ae0bebe8ff6mr342351766b.2.1750860501819; Wed, 25 Jun 2025
- 07:08:21 -0700 (PDT)
+	s=k20201202; t=1750860576;
+	bh=mKmabAIo8Fb88oFDDtzqpED5rlh6TYCDvirbbBC1noU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ikIPi8cU1y28w0Q0boFWDBnZ7Q66EBU8Jrs/z58KjVcd0wXNfEaS1l+nO6OjlPBkW
+	 3UNYbKb8l6urSqohhLJf/LD1fy+MA1h7TU6d+MA/00usOcv7+uyK+LWFo5U6x4Jm+A
+	 q7QbEz4Ss/b8IGu8DOjzaMs6uio9dsJ76VEBibUfufC3Dqqb+q9039NaALhPlJbaAg
+	 8RjLX5lk3jY17LZFgCinIjgyY3y79CiU9CJgFKaciq9JieEupd996VLvrYppFLTdpr
+	 Dp81d76OW9iIIGHVY917h4y6PU/hBi45WIvHdF7P9upx37wqY0w+vLhtDZcs1SMO+e
+	 zaQflR4c/EZFA==
+Message-ID: <1f8c0262-b376-43cb-b2c5-5b60e8cbf678@kernel.org>
+Date: Wed, 25 Jun 2025 09:09:34 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250620150914.276272-1-igor.korotin.linux@gmail.com> <20250620151504.278766-1-igor.korotin.linux@gmail.com>
-In-Reply-To: <20250620151504.278766-1-igor.korotin.linux@gmail.com>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 25 Jun 2025 09:08:10 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJZ2bPuBZ=gskWGuk6J-g8iEKUBSJzNPp1R_0h=-gDLjw@mail.gmail.com>
-X-Gm-Features: Ac12FXxJ0lIPGJmUoAyYij_5Tc5EGrA9gwnPxeT8GjAH4rphivqHLogw6AizxSc
-Message-ID: <CAL_JsqJZ2bPuBZ=gskWGuk6J-g8iEKUBSJzNPp1R_0h=-gDLjw@mail.gmail.com>
-Subject: Re: [PATCH v8 1/9] rust: device: implement FwNode::is_of_node()
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Alex Hung <alex.hung@amd.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Remo Senekowitsch <remo@buenzli.dev>, 
-	Tamir Duberstein <tamird@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Xiangfei Ding <dingxiangfei2009@gmail.com>, 
-	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Benno Lossin <lossin@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, Len Brown <lenb@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] Revert "Input: soc_button_array - debounce the
+ buttons"
+To: Hans de Goede <hansg@kernel.org>, Mika Westerberg <westeri@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
+ <brgl@bgdev.pl>, Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
+ "open list:GPIO ACPI SUPPORT" <linux-acpi@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
+ <linux-input@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
+References: <20250624202211.1088738-1-superm1@kernel.org>
+ <20250624202211.1088738-3-superm1@kernel.org>
+ <4a4d577b-a085-46e8-97b9-6df27461c870@kernel.org>
+Content-Language: en-US
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <4a4d577b-a085-46e8-97b9-6df27461c870@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 20, 2025 at 10:17=E2=80=AFAM Igor Korotin
-<igor.korotin.linux@gmail.com> wrote:
->
-> From: Danilo Krummrich <dakr@kernel.org>
->
-> Implement FwNode::is_of_node() in order to check whether a FwNode
-> instance is embedded in a struct device_node.
->
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
-> ---
->  MAINTAINERS                    | 1 +
->  rust/helpers/helpers.c         | 1 +
->  rust/helpers/of.c              | 8 ++++++++
->  rust/kernel/device/property.rs | 7 +++++++
->  4 files changed, 17 insertions(+)
->  create mode 100644 rust/helpers/of.c
+On 6/25/25 4:09 AM, Hans de Goede wrote:
+> Hi Mario,
+> 
+> On 24-Jun-25 10:22 PM, Mario Limonciello wrote:
+>> From: Mario Limonciello <mario.limonciello@amd.com>
+>>
+>> commit 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
+>> hardcoded all soc-button-array devices to use a 50ms debounce timeout
+>> but this doesn't work on all hardware.  The hardware I have on hand
+>> actually prescribes in the ASL that the timeout should be 0:
+>>
+>> GpioInt (Edge, ActiveBoth, Exclusive, PullUp, 0x0000,
+>>           "\\_SB.GPIO", 0x00, ResourceConsumer, ,)
+>> {   // Pin list
+>>      0x0000
+>> }
+>>
+>> Let the GPIO core program the debounce instead of hardcoding it into a
+>> driver.
+>>
+>> This reverts commit 5c4fa2a6da7fbc76290d1cb54a7e35633517a522.
+> 
+> This is going to cause problems I'm afraid I just checked and
+> based on randomly checking a few DSDTs of the tablets this driver
+> is used on, it seems the DSDT always specifies a debounce timeout
+> of 0 like your example above. And on many many devices using
+> the soc_button_array driver debouncing is actually necessary.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+That's unfortunate to hear.
+
+> 
+> May I ask what problem you are seeing with the 50ms debounce timeout /
+> what problem you are exactly trying to fix here ?
+
+The power button doesn't work to wake from suspend.  I bisected it down 
+to your commit and then later traced that debounce from the ASL never 
+gets set (pinctrl-amd's amd_gpio_set_debounce() is never called).
+
+Also comparing the GPIO register in Windows (where things work) Windows 
+never programs a debounce.
+
+So that's where both patches in this series came from.
+
+> 
+> drivers/input/keyboard/gpio_keys.c first will call gpiod_set_debounce()
+> it self with the 50 ms provided by soc_button_array and if that does
+> not work it will fall back to software debouncing. So I don't see how
+> the 50 ms debounce can cause problems, other then maybe making
+> really really (impossible?) fast double-clicks register as a single
+> click .
+> 
+> These buttons (e.g. volume up/down) are almost always simply mechanical
+> switches and these definitely will need debouncing, the 0 value from
+> the DSDT is plainly just wrong. There is no such thing as a not bouncing
+> mechanical switch.
+
+On one of these tablets can you check the GPIO in Windows to see if it's 
+using any debounce?
+
+> 
+> Regards,
+> 
+> Hans
+> 
+> 
+> 
+>>
+>> Cc: Hans de Goede <hansg@kernel.org>
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>> ---
+>>   drivers/input/misc/soc_button_array.c | 2 --
+>>   1 file changed, 2 deletions(-)
+>>
+>> diff --git a/drivers/input/misc/soc_button_array.c b/drivers/input/misc/soc_button_array.c
+>> index b8cad415c62ca..99490df42b6f2 100644
+>> --- a/drivers/input/misc/soc_button_array.c
+>> +++ b/drivers/input/misc/soc_button_array.c
+>> @@ -219,8 +219,6 @@ soc_button_device_create(struct platform_device *pdev,
+>>   		gpio_keys[n_buttons].active_low = info->active_low;
+>>   		gpio_keys[n_buttons].desc = info->name;
+>>   		gpio_keys[n_buttons].wakeup = info->wakeup;
+>> -		/* These devices often use cheap buttons, use 50 ms debounce */
+>> -		gpio_keys[n_buttons].debounce_interval = 50;
+>>   		n_buttons++;
+>>   	}
+>>   
+> 
+
 
