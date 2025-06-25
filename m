@@ -1,109 +1,165 @@
-Return-Path: <linux-acpi+bounces-14638-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14634-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0BF5AE8E91
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 21:26:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F70AE8E82
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 21:24:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D4E11C207C1
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 19:26:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 844634A53FF
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 19:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965402DFA35;
-	Wed, 25 Jun 2025 19:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA522DAFC3;
+	Wed, 25 Jun 2025 19:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="K1aoIQuV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mjjiscSN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D198F2DA76D;
-	Wed, 25 Jun 2025 19:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C8E29E0E5;
+	Wed, 25 Jun 2025 19:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750879551; cv=none; b=MH0JQK64EK7UOexp9IaOCw07bmRu2Vn+L1M4H7/6gCpl5HODhtcrvehxIeUYfajvjoo+nSxXbQkAJXIjnZA+iFjHFQS5GiNbmtgSL97xRq45ncEH3Iqtlfd7lXT1vFqlWEihJ3KEjCj4qO9XRMZnvxwnn5PUaOacK6OCpQH3+Ic=
+	t=1750879437; cv=none; b=Ok59dVyc/k7yd+p8z7A++2X0E9Um/9cV7olVBmiiAk5BeGrTk6snYKm+YGo61nMajWAzAHrYiQEeineqPtmIqkNnVsiQvd7cFye1xfmPIzW44vpqAUuJpPLutIcI/LiiWcwDXZo+dLrZ3reWkwThnGm6uvqse0QKT1MRiTJQ7dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750879551; c=relaxed/simple;
-	bh=jxivFLr78nWv4zamdS1SvrfawUIvx3vEs3eExPVBSTM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XlZjas1lrXwDo5qp2QLIyBOefM5gjOU3atNwpI9FfWyqlT88OfqgS8JVNoXfLhNbBSCols1uc4m4HprwL3lMpCIDz04/92IbxEdQs8sgMa3vlyrmxrmIQUHP5K6SlCerY0rQn8QFSpO0vm+kGIeCeJrLpUFZe+5dutrwwxrLP1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=K1aoIQuV; arc=none smtp.client-ip=79.96.170.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
-Received: from kreacher.localnet (unknown [5.63.189.50])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 59CB366E7D9;
-	Wed, 25 Jun 2025 21:25:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
-	s=dkim; t=1750879541;
-	bh=jxivFLr78nWv4zamdS1SvrfawUIvx3vEs3eExPVBSTM=;
-	h=From:Subject:Date;
-	b=K1aoIQuVGm4Ei4fIvNNM/1LT7hvr0NfOp90BO34yYlzle9hGrktVQhNSr5MtKrBW6
-	 +eyARTvqYOhED5nv5KSXv2ulsW8Qan+h3gkG8VZcAHzBnm18Uuk+ItT8j6njXVsCiE
-	 YCv3f408hiyjGBTbehiuetyXGSg2k2zd3KYEAyM7kov6qlUbpx/yGez5ShmMV8989h
-	 QWVLf53VmptnWayMoxj6z+6j4rBtehgs+oh0+o4z8IRr3ULJKmm/Ejx5dK4dgEtthr
-	 gQ+QPQdLI32wlzDL4rxPVF3dpgCyUO8lOGx8+x7ZzQAfYF8hVbV3PSQa62CQ/yDjvM
-	 HQnujmmwoKA/A==
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To: Linux PM <linux-pm@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Linux ACPI <linux-acpi@vger.kernel.org>,
- Linux PCI <linux-pci@vger.kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH v1 5/9] PM: Move needs_force_resume under CONFIG_PM_SLEEP
-Date: Wed, 25 Jun 2025 21:20:42 +0200
-Message-ID: <1947441.CQOukoFCf9@rjwysocki.net>
-In-Reply-To: <22759968.EfDdHjke4D@rjwysocki.net>
-References: <22759968.EfDdHjke4D@rjwysocki.net>
+	s=arc-20240116; t=1750879437; c=relaxed/simple;
+	bh=ImWZziYEqzoYqM1yZi/nIZNRa9eNS/1uwbab8RfLrBA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eHni2NA/VaZIZu/71YqOR6s8LhV8rHieiqAeyiS4oeAzVV1eOPkLR6OJjEFaWzdFoDTpDPMvX/DJ/ocQDf2wzPS9JasTlxfd6ZU96Pfhcv11djmCcABYbZ0+cP7Dh6Jdf6NnC/UbtOeTys5YE3n0lyd2+MEMmT3SO5e5NpLeNP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mjjiscSN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB69C4CEEA;
+	Wed, 25 Jun 2025 19:23:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750879437;
+	bh=ImWZziYEqzoYqM1yZi/nIZNRa9eNS/1uwbab8RfLrBA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mjjiscSNO4mtefis8fS3NE/WxvY8cBBoU0CD9M/c6doMx7RS1dQsgIvr8X2QzWcrX
+	 Zsn9E91o9bBVQt2Rn00X/pBf5g2Zk3FsXdHw3+paa9ZX3no7oLZh3qabo7Xjdnjzpy
+	 kZZtVRKTCvYScuQq/zNuMaPzjaoLbs9u4YXedByfYUnbawy8aneiyAU4HktLi4lMUs
+	 Hd/8RYOpIYTEtwHm4pmwbKPrqMUDKyh3MjMzLMRBWcGWHTW4KmtYiri3nxl118xdhD
+	 Q4VB+bXpL61VuV9W2lwduXREL+2PZGaNAKu6wAX6TVrEjr3OClovjbhxykk3OUtcD2
+	 OVThD/waphsDA==
+Message-ID: <57e9b1d5-faf1-4c7a-87fc-047e0dc102f9@kernel.org>
+Date: Wed, 25 Jun 2025 14:23:55 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 5.63.189.50
-X-CLIENT-HOSTNAME: 5.63.189.50
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: dmFkZTFU16MN1onAmfTggu3iKnPYA/STqEnOhMRWZkwNQSI5OpDf+u5DT2NkIXE+Nhe4mqxr9ks7U05Tnfbp21L5zWLAY+X8uGCUnkPai/a2KG4xxKx6eBqQiVngKpLwnPSZjvR8Q4dQfv5MKNDuphWx1Et6P/rcNTpUFGeZ3Ng1C9/8uA5jpLaNlvEnYZjWpU/0SCP+rHDTsSrswgF9Mks70F5evvoz0a/MhrLqsCe8JTvEOP0IBVuaTh/K6p4bcE/yKwFXFB6GIgqfD+zcy9GvwASdPeWl27ugbAiFeVCNlB4LFehOIpnBvg5juGRVEZAUcpiQXLbFVpM3kyVvpaAi61rFUVPziiGIl/qioLy9qJ3cNM0QfkBI1HMCZAPW9eawzWgdIbY7DDxrvfRGxZLBQvXnL+mnuvmI9vpRdJa0rytUUBRNEdJKpPW46gqiP8FsFNvlcDv08Wb4/+MAe+36v+8u5GRoWqTK3encyCtY48yHJiDO8aOF6v0nVNfqS3I2fvn9+UJn+QiSQP/J05CHXcV2AIK2fYSPDcokX6n42rRI/tuY5zGpTIBOvpi9ymlke5nHgrgncIPqWWk9ad12pzz66R0epSedwbhvaIj+xHNvoxgII1OSeQgPg25xls5+tugGxlQr3iIxIlztFCbUe7B90vAHSC+ZDeQj3Mazg/3AqA
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] Input: soc_button_array: Only debounce cherryview
+ and baytrail systems
+To: Hans de Goede <hansg@kernel.org>, Mika Westerberg <westeri@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
+ <brgl@bgdev.pl>, Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
+ "open list:GPIO ACPI SUPPORT" <linux-acpi@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
+ <linux-input@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
+References: <20250625181342.3175969-1-superm1@kernel.org>
+ <20250625181342.3175969-4-superm1@kernel.org>
+ <f5e1d50f-d85e-45a3-a131-f2da603c620c@kernel.org>
+Content-Language: en-US
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <f5e1d50f-d85e-45a3-a131-f2da603c620c@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On 6/25/25 2:03 PM, Hans de Goede wrote:
+> Hi,
+> 
+> On 25-Jun-25 8:13 PM, Mario Limonciello wrote:
+>> From: Mario Limonciello <mario.limonciello@amd.com>
+>>
+>> commit 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
+>> hardcoded all soc-button-array devices to use a 50ms debounce timeout
+>> but this doesn't work on all hardware.  The hardware I have on hand
+>> actually prescribes in the ASL that the timeout should be 0:
+>>
+>> GpioInt (Edge, ActiveBoth, Exclusive, PullUp, 0x0000,
+>>           "\\_SB.GPIO", 0x00, ResourceConsumer, ,)
+>> {   // Pin list
+>>      0x0000
+>> }
+>>
+>> Many cherryview and baytrail systems don't have accurate values in the
+>> ASL for debouncing and thus use software debouncing in gpio_keys. The
+>> value to use is programmed in soc_button_array.  Detect Cherry View
+>> and Baytrail using ACPI HID IDs used for those GPIO controllers and apply
+>> the 50ms only for those systems.
+>>
+>> Cc: Hans de Goede <hansg@kernel.org>
+>> Fixes: 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> 
+> I'm not a fan of this approach, I believe that we need to always debounce
+> when dealing with mechanical buttons otherwise we will get unreliable /
+> spurious input events.
+> 
+> My suggestion to deal with the issue where setting up debouncing at
+> the GPIO controller level is causing issues is to always use software
+> debouncing (which I suspect is what Windows does).
+> 
+> Let me copy and pasting my reply from the v1 thread with
+> a bit more detail on my proposal:
+> 
+> My proposal is to add a "no_hw_debounce" flag to
+> struct gpio_keys_platform_data and make the soc_button_array
+> driver set that regardless of which platform it is running on.
+> 
+> And then in gpio_keys.c do something like this:
+> 
+> diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
+> index f9db86da0818..2788d1e5782c 100644
+> --- a/drivers/input/keyboard/gpio_keys.c
+> +++ b/drivers/input/keyboard/gpio_keys.c
+> @@ -552,8 +552,11 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
+>   		bool active_low = gpiod_is_active_low(bdata->gpiod);
+>   
+>   		if (button->debounce_interval) {
+> -			error = gpiod_set_debounce(bdata->gpiod,
+> -					button->debounce_interval * 1000);
+> +			if (ddata->pdata->no_hw_debounce)
+> +				error = -EINVAL;
+> +			else
+> +				error = gpiod_set_debounce(bdata->gpiod,
+> +						button->debounce_interval * 1000);
+>   			/* use timer if gpiolib doesn't provide debounce */
+>   			if (error < 0)
+>   				bdata->software_debounce =
+> 
+> So keep debouncing, as that will always be necessary when dealing with
+> mechanical buttons, but always use software debouncing to avoid issues
+> like the issue you are seeing.
+> 
+> My mention of the BYT/CHT behavior in my previous email was to point
+> out that those already always use software debouncing for the 50 ms
+> debounce-period. It was *not* my intention to suggest to solve this
+> with platform specific quirks/behavior.
+> 
+> Regards,
+> 
+> Hans
 
-All of the code using the needs_force_resume flag in struct dev_pm_info
-is under CONFIG_PM_SLEEP now, so move that flag under CONFIG_PM_SLEEP
-too.
+I mentioned on the v1 too, but let's shift conversation here.
 
-No intentional functional impact.
+So essentially all platforms using soc_button_array would always turn on 
+software debouncing of 50ms?
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- include/linux/pm.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+In that case what happens if the hardware debounce was ALSO set from the 
+ASL?  You end up with double debouncing I would expect.
 
---- a/include/linux/pm.h
-+++ b/include/linux/pm.h
-@@ -683,6 +683,7 @@
- 	bool			smart_suspend:1;	/* Owned by the PM core */
- 	bool			must_resume:1;		/* Owned by the PM core */
- 	bool			may_skip_resume:1;	/* Set by subsystems */
-+	bool			needs_force_resume:1;
- #else
- 	bool			should_wakeup:1;
- #endif
-@@ -698,7 +699,6 @@
- 	bool			idle_notification:1;
- 	bool			request_pending:1;
- 	bool			deferred_resume:1;
--	bool			needs_force_resume:1;
- 	bool			runtime_auto:1;
- 	bool			ignore_children:1;
- 	bool			no_callbacks:1;
+Shouldn't you only turn on software debouncing when it's required?
 
+I'm wondering if considering the first two patches we should have 
+gpio-keys look up if hardware can support debounce, and then "only if it 
+can't" we program the value from soc button array.
 
-
+It can be done by having gpio_keys do a "get()" on debounce.  Iff the 
+driver returns -ENOTSUPP /then/ program the software debounce.
 
