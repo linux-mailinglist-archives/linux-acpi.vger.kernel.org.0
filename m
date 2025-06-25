@@ -1,120 +1,178 @@
-Return-Path: <linux-acpi+bounces-14613-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14614-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E7FAE8B6A
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 19:21:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8B1AE8B87
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 19:33:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBEF616DF89
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 17:21:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01A1E3A86D4
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 17:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B644F273D86;
-	Wed, 25 Jun 2025 17:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25E8285C9F;
+	Wed, 25 Jun 2025 17:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UfMpBhrU"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="wIv62U2M"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0863074AC;
-	Wed, 25 Jun 2025 17:21:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45819278E5A
+	for <linux-acpi@vger.kernel.org>; Wed, 25 Jun 2025 17:33:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750872100; cv=none; b=fKi1cQ2mjFB7RtF2S+jdkm74QBW5C5mldaVnRW0RTttZy7IFgQ3OGipuqSFJiu5mq1/iM6F9X+BZh577gQd68nh3DuQfOzljkNPczKccYWpOn4CZRkQaoyEgxcpWQEzLbszB6Qwy3isu5Wj/jZrYg4CywiEhq66vD8kG9PdpYwY=
+	t=1750872800; cv=none; b=dvKHNQRAwsZiMtSxrV/LNkQvt0KEcDtKR1rgWrkdtbqxfO3H0tWBAQHpI3j1Llm0TcIIfb4CCzJ0i1Ymw1udh8MQd6JviB5oIDqtvSF7VVv9CBOFHNAJMHJ3zHj7rtgKEd27vsTInSF5sBFi4d62PXckqemeGJekFcyA+94Wffo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750872100; c=relaxed/simple;
-	bh=guG45DLvKX7AACz8OfWdkmWxPqo8CO0/Q4YdI51rwwE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pYQlIdt2tl7YkVd9PedKoFmSwMS56vK7lNuCHV6TboJ5vGxHeMPT6ssCO3h5PNWxM4KuWSFDpqysY0FYWv7HxOMItsM4KB+tGKoMDSqKuDSkCyolLOsintEMgP1Jpt0tvgAVnq1JTpsr/38bprJhKGpS04hepOxFDSqBucBQ5UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UfMpBhrU; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750872099; x=1782408099;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=guG45DLvKX7AACz8OfWdkmWxPqo8CO0/Q4YdI51rwwE=;
-  b=UfMpBhrUPK957FORUY4C5y6WU6Hda8F895qBjJQ1NZAS5K6yoMYgmzmS
-   cf2A89agZvBnS9X94cfl8am+Evjf8JzDv3UpZ6yDTYWA8sXbcoePFgtak
-   E2Vcyvf24wDTAFiSXHJae2XS54ig795qCRcI69ue9fdQC4FtGO75vgPwN
-   Wi63HJqpG1goQsEk0KApiQFBOw/w5jTCXC5p3Y7k49ymFlOSCB/qJ8Fek
-   Q3fVSW4OARVNmB5DRPnRAfQy/0XJgRo8o6u1aXNGSpnwngR5ouTrbO4Is
-   QWkZ9NTqG9TEfmwcxAIt4V900zzfTRtzJd/Sh6kQcJfc1Md+m+mQsIiMi
-   g==;
-X-CSE-ConnectionGUID: 4y1nprCcRuW8ENlm9abweQ==
-X-CSE-MsgGUID: Yv1x17WNQZ+Sj31w64GiBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="70585840"
-X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
-   d="scan'208";a="70585840"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 10:21:38 -0700
-X-CSE-ConnectionGUID: BaUGF/e/QZWgm2SVsBgBkg==
-X-CSE-MsgGUID: iz7ZrVmsSwOZcWEB5acjGg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
-   d="scan'208";a="158035040"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa005.jf.intel.com with ESMTP; 25 Jun 2025 10:21:36 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 67C5027C; Wed, 25 Jun 2025 20:21:35 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] ACPI: LPSS: Remove AudioDSP related ID
-Date: Wed, 25 Jun 2025 20:21:32 +0300
-Message-ID: <20250625172133.3996325-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.47.2
+	s=arc-20240116; t=1750872800; c=relaxed/simple;
+	bh=+oiM/jJKH9YwxBfMrhanQg/Z/mRGBVXx53Iyt5TqR9M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GXWcWS3OOhH4y0ZXbCCj2mUeMz/bClhmUzN7o1nHga15ph893aGVVaenE/5o8XbikDG33ApDb6easoqxEbt6DNtdLOTf2fbxl14aorC5Xs4zsTzdIIdl6iBQ3pK4ryBWiXu59StS66QS9qR9MUB+yT1/nMDuHgYVeBH1d4jW5DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=wIv62U2M; arc=none smtp.client-ip=35.89.44.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+Received: from eig-obgw-5010a.ext.cloudfilter.net ([10.0.29.199])
+	by cmsmtp with ESMTPS
+	id TwVYuvp3gAfjwUTyIuZGmb; Wed, 25 Jun 2025 17:31:43 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id UTyHuOgxqLp4NUTyIue9gv; Wed, 25 Jun 2025 17:31:42 +0000
+X-Authority-Analysis: v=2.4 cv=LuqUyGdc c=1 sm=1 tr=0 ts=685c327e
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=y7jUFFJD1EYPe7d4fIfORw==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=7T7KSl7uo7wA:10 a=VwQbUJbxAAAA:8
+ a=BEqaKkcdS6MMFEc9jAMA:9 a=QEXdDO2ut3YA:10 a=xYX6OU9JNrHFPr8prv8u:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=+I84/MI9zoV9OsiCK1atS49l1Bex64d49JeV33lBug8=; b=wIv62U2Mmt0hJA2iAd6m8+N3JU
+	8PF7U9oJP3eyxnyFuhsHSdvk9Dm8iN83SezB/0pdsb4vTLL4Uf8JEGUj57qYQmHl450QGklqhMKX+
+	bcNCUyQ+ZvZPzwsZTQuz5+cS7qFosnJ1RiXOcwCelfTbViREMEA3cB2N57yEWoKKg3jUktV8KmZn+
+	p69NFE/kOFzjEKon4wlxPJN3tSAcl+P3soTW6+b9UCH9uuABSjLhg1fdRURMkHd6Euk/z0gZZzgWl
+	261ebL5h6nV2vvvCd4RVMyDHELG1X/Vfd4fUBsa2VuFKui6WcwOqDzmBmRRYpDZOFYHXii3fgckjT
+	goD3KpHw==;
+Received: from [177.238.16.137] (port=54862 helo=[192.168.0.27])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.1)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1uUTyG-00000004FMY-3YIQ;
+	Wed, 25 Jun 2025 12:31:40 -0500
+Message-ID: <e0adad17-5d4f-4309-9975-81971597da65@embeddedor.com>
+Date: Wed, 25 Jun 2025 11:31:33 -0600
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3][next] acpi: nfit: intel: avoid multiple
+ -Wflex-array-member-not-at-end warnings
+To: Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Ira Weiny <ira.weiny@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, nvdimm@lists.linux.dev,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org
+References: <aEneid7gdAZr1_kR@kspp> <202506250950.31C8A58E@keescook>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <202506250950.31C8A58E@keescook>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 177.238.16.137
+X-Source-L: No
+X-Exim-ID: 1uUTyG-00000004FMY-3YIQ
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.0.27]) [177.238.16.137]:54862
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 3
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfFrIE9CJj6OfBHn4aHWomfRpA5bVnzKnbZdUtfOXC2dgeowFJwNLQrvxSO0mLcHXlCRUNMdN7Ny4N5FuFe4P8sXc/hLzfxHKUi29+F79xQnhRrTLnZa8
+ WHJ8gfVd3mVin1it/VyiRsoT3wJSS4DAI5LlILt9lfn7dgS0ZNCras5ZWsGMX8lpvFYv9rIsDeL9Xsg7Pa7MnMI2pE1faGunO2DnkZD0x16byBxzpxMUPx88
 
-The AudioDSP drivers are in control for all functions of the hardware
-they have (they are multi-functional devices). The LPSS driver prepares
-for enumeration only single devices, such as DMA, UART, SPI, I²C. Hence
-the registration of AudioDSP should not be covered. Moreover, the very
-same ACPI _HID has been added by the catpt driver a few years ago.
 
-And even more serious issue with this, is that the register window at
-offset 0x800 is actually D-SRAM0 in case of AudioDSP and writing to it
-is a data corruption.
 
-That all being said, remove the AudioDSP ID from the LPSS driver,
-where it doesn't belong to.
+On 25/06/25 10:56, Kees Cook wrote:
+> On Wed, Jun 11, 2025 at 01:52:41PM -0600, Gustavo A. R. Silva wrote:
+>> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+>> getting ready to enable it, globally.
+>>
+>> Refactor multiple structs that contain flexible-array members in the
+>> middle by replacing them with unions.
+>>
+>> These changes preserve the memory layout while effectively adjusting
+>> it so that the flexible-array member is always treated as the last
+>> member.
+>>
+>> With these changes, fix a dozen instances of the following type of
+>> warning:
+>>
+>> drivers/acpi/nfit/intel.c:692:35: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+>>
+>> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+>> ---
+>> Changes in v3:
+>>   - Use union instead of DEFINE_RAW_FLEX().
+> 
+> I think your TRAILING_OVERLAP macro[1] is perfect here. I'll try to get that
+> landed for the next rc. Can you double-check that this works correctly
+> in these cases?
 
-Fixes: fb94b7b11c6a ("ASoC: Intel: Remove SST firmware components")
-Fixes: 05668be1b364 ("ASoC: Intel: Remove SST ACPI component")
-Fixes: 7a10b66a5df9 ("ASoC: Intel: catpt: Device driver lifecycle")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/acpi/x86/lpss.c | 3 ---
- 1 file changed, 3 deletions(-)
+Absolutely. If people prefer that route I'm happy to wait for the helper to
+land in linus' tree.
 
-diff --git a/drivers/acpi/x86/lpss.c b/drivers/acpi/x86/lpss.c
-index 258440b899a9..6daa6372f980 100644
---- a/drivers/acpi/x86/lpss.c
-+++ b/drivers/acpi/x86/lpss.c
-@@ -387,9 +387,6 @@ static const struct acpi_device_id acpi_lpss_device_ids[] = {
- 	{ "INT3435", LPSS_ADDR(lpt_uart_dev_desc) },
- 	{ "INT3436", LPSS_ADDR(lpt_sdio_dev_desc) },
- 
--	/* Wildcat Point LPSS devices */
--	{ "INT3438", LPSS_ADDR(lpt_spi_dev_desc) },
--
- 	{ }
- };
- 
--- 
-2.47.2
+> 
+>> @@ -55,9 +55,16 @@ static unsigned long intel_security_flags(struct nvdimm *nvdimm,
+>>   {
+>>   	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+>>   	unsigned long security_flags = 0;
+>> -	struct {
+>> +	/*
+>> +	 * This effectively creates a union between the flexible-array member
+>> +	 * and any members after _offset_to_fam.
+>> +	 */
+>> +	union {
+>>   		struct nd_cmd_pkg pkg;
+>> -		struct nd_intel_get_security_state cmd;
+>> +		struct {
+>> +			u8 _offset_to_fam[offsetof(struct nd_cmd_pkg, nd_payload)];
+>> +			struct nd_intel_get_security_state cmd;
+>> +		};
+>>   	} nd_cmd = {
+>>   		.pkg = {
+>>   			.nd_command = NVDIMM_INTEL_GET_SECURITY_STATE,
+> 
+> I think it would be a pretty small and direct replacement:
+> 
+> 	TRAILING_OVERLAP(struct nd_cmd_pkg, pkg, nd_payload,
+> 			 struct nd_intel_get_security_state cmd;
+> 	) nd_cmd = {
+> 		...
+
+Yes, this works. Hopefully, maintainers will comment on this and let us
+know what they prefer. :)
+
+Thanks!
+-Gustavo
+
+> 
+> -Kees
+> 
+> [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git/commit/?h=for-next/kspp&id=29bb79e9dbf1ba100125e39deb7147acd490903f
+> 
 
 
