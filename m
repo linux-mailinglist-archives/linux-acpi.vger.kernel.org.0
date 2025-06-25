@@ -1,150 +1,120 @@
-Return-Path: <linux-acpi+bounces-14612-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14613-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA86AE8B2E
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 19:09:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E7FAE8B6A
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 19:21:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 365E1680F70
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 17:07:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBEF616DF89
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 17:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F591C3F36;
-	Wed, 25 Jun 2025 17:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B644F273D86;
+	Wed, 25 Jun 2025 17:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UfMpBhrU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D272DE1FE;
-	Wed, 25 Jun 2025 17:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0863074AC;
+	Wed, 25 Jun 2025 17:21:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750871032; cv=none; b=TAulrDLtGmT4IPM+B30W8Du3bt5EUwJafeN03hU7NnH+hURCF/P/r07fCd6kKEN1XNYz8Vil5JugTPT7qB8AK0aNP7FImvsqs8vuHsQAoUsaF2XbqnHT0p8gOdAZWy2JjlAV29lX0TaFKKugt6+sTB6QmRHYmRmQfPg2g2mB98M=
+	t=1750872100; cv=none; b=fKi1cQ2mjFB7RtF2S+jdkm74QBW5C5mldaVnRW0RTttZy7IFgQ3OGipuqSFJiu5mq1/iM6F9X+BZh577gQd68nh3DuQfOzljkNPczKccYWpOn4CZRkQaoyEgxcpWQEzLbszB6Qwy3isu5Wj/jZrYg4CywiEhq66vD8kG9PdpYwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750871032; c=relaxed/simple;
-	bh=qHpJQgFbSnWLpLMIEMXz/hPE0rhwCApGoNHwZnNsbBM=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nAU8od0KuUeTGp9yJynIbp2vL1f88M5hkDwS1Xg6C0bhpnyeJzjKxIiHXYqFAMtnEFIuR7XXs+O4o/72GqtzzJf3LSn9IQN8Z2RfIyzHJY21A6oXJTWxuGDM4DXm2Z68OAdVeV8vkd9FYShnG1xUzjwAIxbEmu0SLva/mhxiU8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bS7Pk1vB4z6K9B9;
-	Thu, 26 Jun 2025 01:01:14 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7DA671402EC;
-	Thu, 26 Jun 2025 01:03:47 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 25 Jun
- 2025 19:03:46 +0200
-Date: Wed, 25 Jun 2025 18:03:43 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Peter Zijlstra <peterz@infradead.org>
-CC: "H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, <james.morse@arm.com>,
-	<linux-cxl@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-	<linux-mm@kvack.org>, <gregkh@linuxfoundation.org>, Will Deacon
-	<will@kernel.org>, Dan Williams <dan.j.williams@intel.com>, Davidlohr Bueso
-	<dave@stgolabs.net>, Yicong Yang <yangyicong@huawei.com>,
-	<linuxarm@huawei.com>, Yushan Wang <wangyushan12@huawei.com>, "Lorenzo
- Pieralisi" <lpieralisi@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Dave
- Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	<x86@kernel.org>, Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH v2 0/8] Cache coherency management subsystem
-Message-ID: <20250625180343.000020de@huawei.com>
-In-Reply-To: <20250625093152.GZ1613376@noisy.programming.kicks-ass.net>
-References: <20250624154805.66985-1-Jonathan.Cameron@huawei.com>
-	<20250625085204.GC1613200@noisy.programming.kicks-ass.net>
-	<FB7122A4-BF5E-4C05-805A-2EE3240286A1@zytor.com>
-	<20250625093152.GZ1613376@noisy.programming.kicks-ass.net>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1750872100; c=relaxed/simple;
+	bh=guG45DLvKX7AACz8OfWdkmWxPqo8CO0/Q4YdI51rwwE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pYQlIdt2tl7YkVd9PedKoFmSwMS56vK7lNuCHV6TboJ5vGxHeMPT6ssCO3h5PNWxM4KuWSFDpqysY0FYWv7HxOMItsM4KB+tGKoMDSqKuDSkCyolLOsintEMgP1Jpt0tvgAVnq1JTpsr/38bprJhKGpS04hepOxFDSqBucBQ5UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UfMpBhrU; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750872099; x=1782408099;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=guG45DLvKX7AACz8OfWdkmWxPqo8CO0/Q4YdI51rwwE=;
+  b=UfMpBhrUPK957FORUY4C5y6WU6Hda8F895qBjJQ1NZAS5K6yoMYgmzmS
+   cf2A89agZvBnS9X94cfl8am+Evjf8JzDv3UpZ6yDTYWA8sXbcoePFgtak
+   E2Vcyvf24wDTAFiSXHJae2XS54ig795qCRcI69ue9fdQC4FtGO75vgPwN
+   Wi63HJqpG1goQsEk0KApiQFBOw/w5jTCXC5p3Y7k49ymFlOSCB/qJ8Fek
+   Q3fVSW4OARVNmB5DRPnRAfQy/0XJgRo8o6u1aXNGSpnwngR5ouTrbO4Is
+   QWkZ9NTqG9TEfmwcxAIt4V900zzfTRtzJd/Sh6kQcJfc1Md+m+mQsIiMi
+   g==;
+X-CSE-ConnectionGUID: 4y1nprCcRuW8ENlm9abweQ==
+X-CSE-MsgGUID: Yv1x17WNQZ+Sj31w64GiBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="70585840"
+X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
+   d="scan'208";a="70585840"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 10:21:38 -0700
+X-CSE-ConnectionGUID: BaUGF/e/QZWgm2SVsBgBkg==
+X-CSE-MsgGUID: iz7ZrVmsSwOZcWEB5acjGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
+   d="scan'208";a="158035040"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa005.jf.intel.com with ESMTP; 25 Jun 2025 10:21:36 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 67C5027C; Wed, 25 Jun 2025 20:21:35 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] ACPI: LPSS: Remove AudioDSP related ID
+Date: Wed, 25 Jun 2025 20:21:32 +0300
+Message-ID: <20250625172133.3996325-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, 25 Jun 2025 11:31:52 +0200
-Peter Zijlstra <peterz@infradead.org> wrote:
+The AudioDSP drivers are in control for all functions of the hardware
+they have (they are multi-functional devices). The LPSS driver prepares
+for enumeration only single devices, such as DMA, UART, SPI, I²C. Hence
+the registration of AudioDSP should not be covered. Moreover, the very
+same ACPI _HID has been added by the catpt driver a few years ago.
 
-> On Wed, Jun 25, 2025 at 02:12:39AM -0700, H. Peter Anvin wrote:
-> > On June 25, 2025 1:52:04 AM PDT, Peter Zijlstra <peterz@infradead.org> wrote:  
-> > >On Tue, Jun 24, 2025 at 04:47:56PM +0100, Jonathan Cameron wrote:
-> > >  
-> > >> On x86 there is the much loved WBINVD instruction that causes a write back
-> > >> and invalidate of all caches in the system. It is expensive but it is  
-> > >
-> > >Expensive is not the only problem. It actively interferes with things
-> > >like Cache-Allocation-Technology (RDT-CAT for the intel folks). Doing
-> > >WBINVD utterly destroys the cache subsystem for everybody on the
-> > >machine.
-> > >  
-> > >> necessary in a few corner cases.   
-> > >
-> > >Don't we have things like CLFLUSH/CLFLUSHOPT/CLWB exactly so that we can
-> > >avoid doing dumb things like WBINVD ?!?
-> > >  
-> > >> These are cases where the contents of
-> > >> Physical Memory may change without any writes from the host. Whilst there
-> > >> are a few reasons this might happen, the one I care about here is when
-> > >> we are adding or removing mappings on CXL. So typically going from
-> > >> there being actual memory at a host Physical Address to nothing there
-> > >> (reads as zero, writes dropped) or visa-versa.   
-> > >  
-> > >> The
-> > >> thing that makes it very hard to handle with CPU flushes is that the
-> > >> instructions are normally VA based and not guaranteed to reach beyond
-> > >> the Point of Coherence or similar. You might be able to (ab)use
-> > >> various flush operations intended to ensure persistence memory but
-> > >> in general they don't work either.  
-> > >
-> > >Urgh so this. Dan, Dave, are we getting new instructions to deal with
-> > >this? I'm really not keen on having WBINVD in active use.
-> > >  
-> > 
-> > WBINVD is the nuclear weapon to use when you have lost all notion of
-> > where the problematic data can be, and amounts to a full reset of the
-> > cache system. 
-> > 
-> > WBINVD can block interrupts for many *milliseconds*, system wide, and
-> > so is really only useful for once-per-boot type events, like MTRR
-> > initialization.  
-> 
-> Right this... But that CXL thing sounds like that's semi 'regular' to
-> the point that providing some infrastructure around it makes sense. This
-> should not be.
+And even more serious issue with this, is that the register window at
+offset 0x800 is actually D-SRAM0 in case of AudioDSP and writing to it
+is a data corruption.
 
-I'm fully on board with the WBINVD issues (and hope for something new for
-the X86 world). However, this particular infrastructure (for those systems
-that can do so) is about pushing the problem and information to where it
-can be handled in a lot less disruptive fashion. It can take 'a while' but
-we are flushing only cache entries in the requested PA range. Other than
-some potential excess snoop traffic if the coherency tracking isn't precise,
-there should be limited affect on the rest of the system.
+That all being said, remove the AudioDSP ID from the LPSS driver,
+where it doesn't belong to.
 
-So, for the systems I particularly care about, the CXL case isn't that bad.
+Fixes: fb94b7b11c6a ("ASoC: Intel: Remove SST firmware components")
+Fixes: 05668be1b364 ("ASoC: Intel: Remove SST ACPI component")
+Fixes: 7a10b66a5df9 ("ASoC: Intel: catpt: Device driver lifecycle")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/acpi/x86/lpss.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Just for giggles, if you want some horror stories the (dropped) ARM PSCI
-spec provides for approaches that require synchronization of calls across
-all CPUs.
-
-"CPU Rendezvous" in the attributes of CLEAN_INV_MEMREGION requires all
-CPUs to make a call within an impdef (discoverable) timeout.
-https://developer.arm.com/documentation/den0022/falp1/?lang=en
-
-I gather no one actually needs that on 'real' systems - that is systems
-where we actually need to do these flushes! The ACPI 'RFC' doesn't support
-that delight.
-
-Jonathan
+diff --git a/drivers/acpi/x86/lpss.c b/drivers/acpi/x86/lpss.c
+index 258440b899a9..6daa6372f980 100644
+--- a/drivers/acpi/x86/lpss.c
++++ b/drivers/acpi/x86/lpss.c
+@@ -387,9 +387,6 @@ static const struct acpi_device_id acpi_lpss_device_ids[] = {
+ 	{ "INT3435", LPSS_ADDR(lpt_uart_dev_desc) },
+ 	{ "INT3436", LPSS_ADDR(lpt_sdio_dev_desc) },
+ 
+-	/* Wildcat Point LPSS devices */
+-	{ "INT3438", LPSS_ADDR(lpt_spi_dev_desc) },
+-
+ 	{ }
+ };
+ 
+-- 
+2.47.2
 
 
