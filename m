@@ -1,127 +1,104 @@
-Return-Path: <linux-acpi+bounces-14583-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14584-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A87AE7C49
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 11:20:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E27AAE7C8B
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 11:24:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 897595A648E
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 09:19:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D6D316BDDD
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 09:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96CE29C35C;
-	Wed, 25 Jun 2025 09:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708172882C7;
+	Wed, 25 Jun 2025 09:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="W+B0I6fa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XIFaz6HA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5AB2877CB;
-	Wed, 25 Jun 2025 09:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347A027FB28;
+	Wed, 25 Jun 2025 09:17:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750842839; cv=none; b=CBZm3XcitiKXr/uc797kOYkOmGOtVbEHa6lCSxzNc4HkCJMo2ythPQOMQnISh1j4WbsRAiNAvC1x1+Dd5JX3jC+zq6H3I7s/5s5MF/bTy0lU41xk34LuZ4n5bAr3SlYIIm1GGPDWFenTk1z/lFt7uKkGD3K++qhCSG6sYFhox8s=
+	t=1750843067; cv=none; b=rqHToYY2/qKbI0ZnJnQ+fNlW5M5KVUhWJrEmEmfTR4QyXc9Ptuu7mH/xk4Q26nWrzdxKcIh2A5lVeDI02oW0fly5AvWpPq75i5IAisL6WMQ+QEFDxHxwRsXPxUdRTT58crHk5QntVxQEo+edPqAfyp9mzqqJ133j+Up34Ykxacc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750842839; c=relaxed/simple;
-	bh=Q0/RM2kQyckW7LSQ3VeyfPEi1mattHTjXA79SYKL5MQ=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=R2TqWzsKYFBSHFrCFyCXMtntBgASa83bSsUd9J6NfGqvrQHMV21uSCcyKVVMaBi8ZrHGKHmUnFWcYvay7LgbZlFHvWsHI0fCr+Jz6l9NEZh4bzDuIDSsR4i5UQ0WLWNKHfRr/KpgXDUmYAL4jBGx7lBWTNFaVqzaxfHgAMt2sVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=W+B0I6fa; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 55P9CeH61706513
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Wed, 25 Jun 2025 02:12:40 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 55P9CeH61706513
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025062101; t=1750842761;
-	bh=Q0/RM2kQyckW7LSQ3VeyfPEi1mattHTjXA79SYKL5MQ=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=W+B0I6fat7CBMT8xxv1mOc55VFltc/zjXsP3OwTMiTTZtyf3Fsi+bvE02lJgVO1F2
-	 IuAz3EgL52KsFKV+kBlMfDlHRSSqrMPwCg18mlwvplgdehXFaGUTw6a++Ax4KL2kKw
-	 FIQeeDSEq/A0BTqA1La3+DGCze68qT1gBK+gs79Vc2z5CkyhDqmHK7WUQlL7UsHmOp
-	 d4ytIvUBcHN0QkrMS5NBIkyc85ZqDXjDMGXTKEDF86V1yqYddYtivujm+OYCDZjVGc
-	 u0Wjl5yVuoFGi7OgzLoMZ20RQT2WTKH3AXcxbMIqftnevMQ06REiTtc4pqGPTXnfDk
-	 hVKVhJdC3xoFg==
-Date: Wed, 25 Jun 2025 02:12:39 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Peter Zijlstra <peterz@infradead.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-CC: Catalin Marinas <catalin.marinas@arm.com>, james.morse@arm.com,
-        linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, gregkh@linuxfoundation.org,
-        Will Deacon <will@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Yicong Yang <yangyicong@huawei.com>, linuxarm@huawei.com,
-        Yushan Wang <wangyushan12@huawei.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH v2 0/8] Cache coherency management subsystem
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20250625085204.GC1613200@noisy.programming.kicks-ass.net>
-References: <20250624154805.66985-1-Jonathan.Cameron@huawei.com> <20250625085204.GC1613200@noisy.programming.kicks-ass.net>
-Message-ID: <FB7122A4-BF5E-4C05-805A-2EE3240286A1@zytor.com>
+	s=arc-20240116; t=1750843067; c=relaxed/simple;
+	bh=lzpnOdON6DVOT5w6AYitAh53ABW/+efYEjeRFM+K+0I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Kxlgh2lSiaOotCO8Oq6N7ILbsX9Jof1d39D76oQwKl4WuVBZeb3ZFrKz++h4XtAwnbuzCmfgNe6JsdGLTFUS444h7YQRgLgETsR0CAlL4uX/UNr/3puwJsiCuQ84+SJf1ZP7ez0NzAcKAjwK4XKws2dOcTKCpDHTX6bQUU5IwIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XIFaz6HA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E5EC4CEFC;
+	Wed, 25 Jun 2025 09:17:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750843066;
+	bh=lzpnOdON6DVOT5w6AYitAh53ABW/+efYEjeRFM+K+0I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=XIFaz6HAp30XC5+3kqWdbXtioch/sN2GYVla67EpZbZur7OMiWAmaWk+mVMmQjq7h
+	 xWUkKD+6vJNDyOBeSsHwjpwIqsWGm/tBIvAVKheCu/e9tpTOjHd+75Jq4gmLFMw2os
+	 /sY/85yf0wnByP76jCTiSiw9WgxezQacG7tUYcIkAj9GG3REgJR8nsBem1NNxfc2/D
+	 xbD1foSYRScGYKvWqMymjo5Ff89TmWU28FLjE2oOoiOn04Y9UT23ASghVz4gPcfbYQ
+	 YkAWMyhdPj/jkyF0Bkajv9n31IeX60kr0CslyJVzFdHSp+YnTbPE0n2UuNvp4JtF7o
+	 +8G0CsvspQGMQ==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-60ef07eb7f4so3340198eaf.3;
+        Wed, 25 Jun 2025 02:17:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWiEhFJM8CTNvkSpjjQGcYY1FQn2yDiZBdmMpDsyo1K3CXStMcllxuiVWa4GfwYbZyT/V3drg3B9Bb1zP3V@vger.kernel.org, AJvYcCXV/xggpJvnQe2r1FNbuHYnk5C8XPqNMrUnUa8sAJeI4Vy+lzYzT2ncCKtHUTae+XnXDuPqbzqr4hzMNf82Vv8=@vger.kernel.org, AJvYcCXb/b9X5Go/HbxN9hmY12Msyy1UH8yexaimP1zv1OVt0uTjf3ihIptKWNKAEFUD8Qitfnvf6ViQ0O7K@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4P6CEtEh6BLEmFOL9EMxFZU3qiENWsFEVg6B7X72lY0VhjKZo
+	lyeqbZgjQw8rUlP4jtcXxnVbS0IPd2F7furhzgK0ko0WDdLMvc6sWZ2scZloufuDyuBtM96hNuE
+	hqEi7vOtAHLJoNGQPYpSLX8gk1cdKrMc=
+X-Google-Smtp-Source: AGHT+IGwmHiP0k0AYczEQyTJX9RAeJkddhKZ8nYsuI6oroN+azy2At44HmYTpTB4O/qsehu29og+iFkdUwWY8+oAXOs=
+X-Received: by 2002:a05:6820:4c0d:b0:611:75a8:f6ca with SMTP id
+ 006d021491bc7-6119d87e6c2mr1465775eaf.6.1750843065563; Wed, 25 Jun 2025
+ 02:17:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20250613133517.1229722-1-igor.korotin.linux@gmail.com>
+ <20250613135407.1233005-1-igor.korotin.linux@gmail.com> <aFB2FZEFcXUsW8lN@pollux>
+ <f29b4eba-bd79-4f74-940c-8cff65495ae0@gmail.com> <aFGisAm-n6Mt70Hd@pollux>
+In-Reply-To: <aFGisAm-n6Mt70Hd@pollux>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 25 Jun 2025 11:17:33 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hBG-ccWdhiKtcasAVOph+===AZoOroznf2k5OG0BOnkg@mail.gmail.com>
+X-Gm-Features: Ac12FXzgbtqeoG_UDw0GugtkAlia8IsWynCbV-x9VcnNKKiUERwayNEWl_bRE4s
+Message-ID: <CAJZ5v0hBG-ccWdhiKtcasAVOph+===AZoOroznf2k5OG0BOnkg@mail.gmail.com>
+Subject: Re: [PATCH v6 6/6] samples: rust: add ACPI match table example to
+ platform driver
+To: Danilo Krummrich <dakr@kernel.org>, Igor Korotin <igor.korotin.linux@gmail.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, rafael@kernel.org, 
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, lenb@kernel.org, wedsonaf@gmail.com, 
+	viresh.kumar@linaro.org, alex.hung@amd.com, dingxiangfei2009@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On June 25, 2025 1:52:04 AM PDT, Peter Zijlstra <peterz@infradead=2Eorg> wr=
-ote:
->On Tue, Jun 24, 2025 at 04:47:56PM +0100, Jonathan Cameron wrote:
+On Tue, Jun 17, 2025 at 7:15=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
 >
->> On x86 there is the much loved WBINVD instruction that causes a write b=
-ack
->> and invalidate of all caches in the system=2E It is expensive but it is
+> On Tue, Jun 17, 2025 at 05:39:07PM +0100, Igor Korotin wrote:
+> > I could suggest on of the following:
+> > DRV0001
+> > DRVR0001
+> > PDRV0001
 >
->Expensive is not the only problem=2E It actively interferes with things
->like Cache-Allocation-Technology (RDT-CAT for the intel folks)=2E Doing
->WBINVD utterly destroys the cache subsystem for everybody on the
->machine=2E
+> This one looks reasonable to me.
 >
->> necessary in a few corner cases=2E=20
->
->Don't we have things like CLFLUSH/CLFLUSHOPT/CLWB exactly so that we can
->avoid doing dumb things like WBINVD ?!?
->
->> These are cases where the contents of
->> Physical Memory may change without any writes from the host=2E Whilst t=
-here
->> are a few reasons this might happen, the one I care about here is when
->> we are adding or removing mappings on CXL=2E So typically going from
->> there being actual memory at a host Physical Address to nothing there
->> (reads as zero, writes dropped) or visa-versa=2E=20
->
->> The
->> thing that makes it very hard to handle with CPU flushes is that the
->> instructions are normally VA based and not guaranteed to reach beyond
->> the Point of Coherence or similar=2E You might be able to (ab)use
->> various flush operations intended to ensure persistence memory but
->> in general they don't work either=2E
->
->Urgh so this=2E Dan, Dave, are we getting new instructions to deal with
->this? I'm really not keen on having WBINVD in active use=2E
->
+> > TEST0001
+> > TST0001
 
-WBINVD is the nuclear weapon to use when you have lost all notion of where=
- the problematic data can be, and amounts to a full reset of the cache syst=
-em=2E=20
+Can we please avoid using made up device IDs in the code, even if it
+is just sample code?
 
-WBINVD can block interrupts for many *milliseconds*, system wide, and so i=
-s really only useful for once-per-boot type events, like MTRR initializatio=
-n=2E
+It is way better to use a real one that's been reserved already as
+"never use in real ACPI tables" for some reason.  I think I can find a
+few of these for you if need be.
+
+Thanks!
 
