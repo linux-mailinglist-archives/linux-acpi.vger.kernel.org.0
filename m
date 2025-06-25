@@ -1,99 +1,69 @@
-Return-Path: <linux-acpi+bounces-14625-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14626-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FBFEAE8CCE
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 20:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4D8AE8D1D
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 20:56:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A31316AA3E
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 18:43:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CA8E4A2B06
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 18:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74ED2E06D1;
-	Wed, 25 Jun 2025 18:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD132DAFD7;
+	Wed, 25 Jun 2025 18:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="h+vlhtDq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gff5cji2"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A2A2DECC8
-	for <linux-acpi@vger.kernel.org>; Wed, 25 Jun 2025 18:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FBC1CAA7B;
+	Wed, 25 Jun 2025 18:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750876861; cv=none; b=phDca4t8Kw2+YTkAHHbSxpsgPatrERYeVwHB2NJAcQ+c3LKE0oddLElowc12qRBwC0R4f80srSAHTvt465UHFEoWwzdOsxmYLaANJ6yKm3kJK1y+19N242k5gxj/g/+5iXjVp53JApwaeCIOY3zCbXyEmIhWEB3NGM7XFd6C8OA=
+	t=1750877769; cv=none; b=A8qBfwJ9GH0yFSBIf0ykcRfC1ft9hlHylkehLbvqA5ijbPVvUh92rvjtiFfzjtT60lvBYoO84HNrZ4MP5M4v/BWcrOJ3TbZURw4I/l9vzMJH+Zzk4EU+X8wbpmVyfyBSRmRpH6AW0Ky62OmeikrQ3BUF2oOhevPXhTq3zpadl9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750876861; c=relaxed/simple;
-	bh=N1GrLsO5rn46Kd+qcM63O/s4L2k9YjjCFe0dE2dULaE=;
+	s=arc-20240116; t=1750877769; c=relaxed/simple;
+	bh=6xdnTIn9JsUPsSYNpRZM+JxKZeDZmlbySNAsX2t+WTI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E5gHYc0KBlQUrVWhb7t9Za/FxEYSy/Drn1ZH2hpSLrsgjK57FgxS/4y1dIPSzrbL3b0oa4EXPwPPBXyd83UIIRvxdyJpEnZrQlbJ01u1LoJwrpjJNq0+Yo1zeFvlooBgK2PTnvFbGyKjO9jRFU/35gN9WRLB8DvsPUlO4iXpLU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=h+vlhtDq; arc=none smtp.client-ip=209.85.160.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-2ef493de975so138148fac.1
-        for <linux-acpi@vger.kernel.org>; Wed, 25 Jun 2025 11:41:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750876859; x=1751481659; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kb/xkqJYQLzIZ67OSg3QEbtD8orcI+NoBMOMxQAdNnU=;
-        b=h+vlhtDqwBMBdZ3GGagXoA12jRQPy5RmdQZ9h/wCF5TPLzd+CB3ucvNtVQhE1fzsx2
-         psTfFcQolc1oYKpqof5UfBznbCvjDfDH1l/0YzMeDr6x0JiJhmF9tTxApa0Eprl5C8XC
-         74l7BIpdjxsf5ro1TGlZWq+8VXgrcVQqusnDX+jbwry3+MUGhtL+NPOxj9JONmpodWrZ
-         b7CBxNTZZDlD4hpTvOQSMRYwAsbrjJVYrQebp+bdVICAN555le4ZlZQRJbk9ULGkABX4
-         /yxZeCm/BQkCxAKIdYrmAKv4i4xQMllQIJxeuvuMyAjhy1hmyXUOAF6vQF2CKzfv/Eq+
-         hkTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750876859; x=1751481659;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kb/xkqJYQLzIZ67OSg3QEbtD8orcI+NoBMOMxQAdNnU=;
-        b=eGhH+i9cyifiVJcBplgvNmdPD9PX9Pi1AIvc1vvDzLTGnMOfyIoTtUbZCXq21xpVjX
-         D2q6/JRatcJs1ldZsT8twY0LLeXhe7MJuqbqw2xFieTcnBW+aWkf5zsurL7wH2yuTOlB
-         GRNsvsZA6P7m+d0AQTAyPKIdr3Tw2nldCpl1jTYcJucOR5CXABWMzYM7cJAr8mqiyZck
-         rbwlKzf+Nl1bibhwUjyCcd+5v8BBVe4tEvXbE3mb/4EI5PlbByMoCUppNUt78FAZ/5ud
-         ktt1+5CsbSTqKj3h4jomSBelsKwo18vUpJ2u0KpdpRnaEC2iDhepXaO3RLpAdlnU1RX/
-         rMTA==
-X-Forwarded-Encrypted: i=1; AJvYcCW3DctBeZQKS4HPpVeOGGNzldoo6Y8YOdpg0r8ltyaL4A8bzRYgvsIwtc+WJfZONwmulC/VY80VTalI@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLwf4PLxRee30IGq2O/9KWV/mCVLNblWl1u7LvxFaeRv1+LGw4
-	tqCl4QN9HpBuSsT4L5to5ZqixDRys/kmDjj7ykQ2TmanoxW5JcCaXIRp37wXtR4sZEU=
-X-Gm-Gg: ASbGncufYS8ETUSjYLtylGsGyXgg6u9ZXbKHeCQAk3MPcjqzATa/zP0kOMMBKJ1YxMG
-	79MJ+U6SJ5RAAiu/SrQdEz1oU1KkhewCvZ87aHYVxRo9QMwemDYnwWOYakPw0dvPuP/ZedBq5Fm
-	K6FZDt9d8Vd2uIw1ABMiwUdJ2UYkFhetg8zq2DhcUQqaBJTPisThZz6e8KvysawpG7pebto2NTj
-	Hd+zWCJRfe4B8QrkvuDI926qlQRopBZZzEKBzy5wqWYcV6pf9D2CxzbRmoMZFxEt9oOVFh0rdw7
-	WvWgr5s6rS1Sh3Rri731p2bMWnqMBzWekZ2KAVveoINcH/jjNSDmOSv/yp/cVJ1hWvePnrXdnZO
-	c9A==
-X-Google-Smtp-Source: AGHT+IG+FodkH8YjDqJZ084eAzz89kwRqhC0U0FmJInHRKqb6H43Svn4QKtYMZJI20MCcSldmzryog==
-X-Received: by 2002:a05:6871:e488:b0:296:a67c:d239 with SMTP id 586e51a60fabf-2efb21af511mr3039710fac.12.1750876859338;
-        Wed, 25 Jun 2025 11:40:59 -0700 (PDT)
-Received: from localhost ([2603:8080:b800:f700:3ee4:904:206f:ad8])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ee66559db2sm2665582fac.11.2025.06.25.11.40.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 11:40:58 -0700 (PDT)
-Date: Wed, 25 Jun 2025 21:40:56 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: "Luck, Tony" <tony.luck@intel.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	Zaid Alali <zaidal@os.amperecomputing.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=ou7V+M4w+0VrpHIjlkb4ssZCRyusQ0qGztpBoSwhDiwKmDZ89aiXYbhEeUtXay1u1KSk4Qxbfrj71kJcvoXNHqquhzMWR8w1xfbd+61fVN/se8PULGkw36yMcvICNzvE5scT+GbjzX7SqXvZCeMKmNSw6M/4RaKNlUQo2T05lh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gff5cji2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338B7C4CEEA;
+	Wed, 25 Jun 2025 18:56:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750877769;
+	bh=6xdnTIn9JsUPsSYNpRZM+JxKZeDZmlbySNAsX2t+WTI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Gff5cji2w4rVgfmpej2qu34cYAMMr+BzZ4UHZaIH5XAbQTuM9i+g7mUq2U5j40fHZ
+	 Z1q5bI29k3jsZWhuNj5yhDbG1Cf2CK2Ja0Ff7LDDsR3OOFfZ9Vzt2j15k/nXxeuZkT
+	 9YjFuV7bOl1cksFgU80Bm0WScsAeKZPxiJYfl/Gw6Nw4fguHRhvgpQzb9a5DuxXi9k
+	 r0a99nd/yLYW3OjYml4ONi/ceLO8lUzrdNYHwjtC2OmZGRegktJ+ySI9PYIagF4iS1
+	 BZaw35eG2KRHrrYA05zBh06BuCSR5KKlQpVgpHHc3LUu/B0aN9NxM4wAvkXLn1IoOB
+	 S80u/83hMdyFA==
+Date: Wed, 25 Jun 2025 13:56:08 -0500
+From: Rob Herring <robh@kernel.org>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-	Borislav Petkov <bp@alien8.de>, "Weiny, Ira" <ira.weiny@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	"Williams, Dan J" <dan.j.williams@intel.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH v2 next] ACPI: APEI: EINJ: prevent memory corruption in
- error_type_set()
-Message-ID: <be2b886f-4de7-46b5-9cc6-cc5299b1af02@suswa.mountain>
-References: <c71e7ba6-f127-4f49-acbf-20063dd26553@sabinyo.mountain>
- <ks34mfmv2vhwojpxlzv7tyordcjdo6zclcflplvs2wsl6gkbn5@3v5kguelmita>
- <757b5117-a865-4d31-b566-248048f87b29@suswa.mountain>
- <SJ1PR11MB6083603821632C25DA5D8EEBFC7BA@SJ1PR11MB6083.namprd11.prod.outlook.com>
+	Len Brown <lenb@kernel.org>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 06/12] dt-bindings: usb: usb-device: Add orientation
+ and rotation
+Message-ID: <20250625185608.GA2010256-robh@kernel.org>
+References: <20250605-uvc-orientation-v2-0-5710f9d030aa@chromium.org>
+ <20250605-uvc-orientation-v2-6-5710f9d030aa@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -102,21 +72,53 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <SJ1PR11MB6083603821632C25DA5D8EEBFC7BA@SJ1PR11MB6083.namprd11.prod.outlook.com>
+In-Reply-To: <20250605-uvc-orientation-v2-6-5710f9d030aa@chromium.org>
 
-On Wed, Jun 25, 2025 at 06:22:57PM +0000, Luck, Tony wrote:
-> > > +	if (count > sizeof(einj_buf))
+On Thu, Jun 05, 2025 at 05:52:59PM +0000, Ricardo Ribalda wrote:
+> For some devices, such as cameras, the OS needs to know where they are
+> mounted.
 > 
-> Why not:
-> 	/* Leave the last character for the NUL terminator */
-> 	if (count > sizeof(einj_buf) - 1)
-> 		return -EINVAL;
+> ACPI has a property for this purpose, which is parsed by
+> acpi_get_physical_device_location():
+> https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/06_Device_Configuration/Device_Configuration.html#pld-physical-location-of-device
 > 
-> here. Then skip the min(...) addition below.
+> In DT we have similar properties for video-interface-devices called
+> orientation and rotation:
+> Documentation/devicetree/bindings/media/video-interface-devices.yaml
+> 
+> Add rotation and orientation for usb-devices that matches the already
+> existing properties of video-interface-devices.
+> 
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+>  Documentation/devicetree/bindings/usb/usb-device.yaml | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 
-Yeah.  You're right.  That's a better fix.
+Comments from v1 still apply. Add a schema for *your* device (i.e. one 
+that only matches the compatible string of your device). Look for 
+anything that includes usb-device.yaml for an example. Your schema 
+should have something like this if you want to use 
+video-interface-devices.yaml properties:
 
-regards,
-dan carpenter
+allOf:
+  - $ref: /schemas/usb/usb-device.yaml#
+  - $ref: /schemas/media/video-interface-devices.yaml#
 
+> 
+> diff --git a/Documentation/devicetree/bindings/usb/usb-device.yaml b/Documentation/devicetree/bindings/usb/usb-device.yaml
+> index c676956810331b81f11f3624340fc3e612c98315..a44eb24c657993f88145377a4706ec419b6cd998 100644
+> --- a/Documentation/devicetree/bindings/usb/usb-device.yaml
+> +++ b/Documentation/devicetree/bindings/usb/usb-device.yaml
+> @@ -44,6 +44,14 @@ properties:
+>        - minimum: 1
+>          maximum: 255
+>  
+> +  orientation:
+> +    description: If present, specifies the orientation of the usb device.
+> +    $ref: /schemas/media/video-interface-devices.yaml#/properties/orientation
+
+Again, this is generally the wrong way to add properties from another 
+schema for your device. Above is the right way.
+
+Rob
 
