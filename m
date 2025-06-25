@@ -1,209 +1,130 @@
-Return-Path: <linux-acpi+bounces-14646-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14647-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD88DAE8EE3
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 21:42:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C6EAE8F5C
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 22:20:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFEC47A96E9
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 19:41:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15F2E6A16BC
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 20:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9795E2DAFDF;
-	Wed, 25 Jun 2025 19:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B118E2DAFA0;
+	Wed, 25 Jun 2025 20:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pINkPIvI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAJzgcGE"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D64A2D5C81;
-	Wed, 25 Jun 2025 19:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F85F2DA759;
+	Wed, 25 Jun 2025 20:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750880543; cv=none; b=UMg8hbylHNTzzov/kKXW85UwPsF6Cm/7L9xuw0oKJ46kM/2v/ws/VYUKa0LFtMSgYlnqO+afOndjnoRnvcEx+1UXUXo4OqdaWebCeNd45HBXluTqazZOGVxioADwIHCPLY+FsBMSznjzUzwGYBx9zAi8tMnscqQlX6cSlI2LHNM=
+	t=1750882816; cv=none; b=FqmkoduLmR0qnR2lvzfsnECxJwIogJAViQvwohKu8XA3+AnpJalu0ZqbrSbQmrJW33xo9srcVJ3asJ98CqOiuPHOtXRLBkefMqdMLkA3MtkypyeAnXnSU+V72nYeUUCnf291l1Vg2Ex52Ob+t9/vwvMhNXMswz63ql3uYGtj2l0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750880543; c=relaxed/simple;
-	bh=CjNKXvxO/4gk15CIk9SU0gSachKAURgD/j1MO4ru2uc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uVXjD5aNhLsZFRcnVXyHvepUpd2l7HSJy53m90hHfItQ7rmbzwMYOvVCONyp5HYhjXLWRQOxUIAdhBCaQVJWTYcW+NjY1MigoSAyrB7ylO0s2K4EtpcNioLGjdMUaNKg2dZoxppFiFD3yGUdmznWpor/fRtP1ziEptX7P9wYU8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pINkPIvI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB967C4CEEA;
-	Wed, 25 Jun 2025 19:42:20 +0000 (UTC)
+	s=arc-20240116; t=1750882816; c=relaxed/simple;
+	bh=Y5XeuJC6rpa9lv1GCVSFtD2ahPsD5739O5u959VDBjw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=DgRy03dGhCwUIt33X7GMG1kzhR0vBHsoZwetfOKWJ4HSrxGnWdheF4yboVXwAllY8hhhEwlJzIvEpZ1XztNcE2bTJ0/XHL9LEI5REagaTR+YasaQkoUO7PcDfdbMrAhbBXstLHitQ8G1GN6KV9SOsBiL8pb2YmLedTcmaCGS1zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAJzgcGE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C909AC4CEEA;
+	Wed, 25 Jun 2025 20:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750880543;
-	bh=CjNKXvxO/4gk15CIk9SU0gSachKAURgD/j1MO4ru2uc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pINkPIvIsYZFEn6g5F4lCIfTIQbnezryez2xsbQgrOAbTjFtTNuLrgf6DYBczUoWb
-	 0DLZ0I6mdKBMOTVvLilqgvgM+m5INwQzvktW1Kw1N+GRfVLSvCw10Du4xhXTGcNdng
-	 EyHzGmRHx1e4K3lCpwKJ76vccLYyiTFD0INQpF4AoY4w1megiTREicpLYDtBqVNBxg
-	 nf9GmZ9SAoMoSpmDhG9CAAJi8WHbJRBnpxeg2rPYhp8WiXIC59UGJSaXNmqF+vBOuP
-	 Vp2rLFCGhwrYLmAsOYxB2jhOgTpPiqoUYh+1tLwVozs+UD9qXBZG6LKmumwmdccHTY
-	 n3l10gmujvFlw==
-Message-ID: <a9bed0b4-b050-468b-91cb-bc4c81352046@kernel.org>
-Date: Wed, 25 Jun 2025 21:42:19 +0200
+	s=k20201202; t=1750882816;
+	bh=Y5XeuJC6rpa9lv1GCVSFtD2ahPsD5739O5u959VDBjw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=hAJzgcGEIqm5RXo2voZazqw/D5dbut5+GT5ItUc6w1ViuU4OhtRtBojPkTa3y5qej
+	 7Bjl2uvopVhLETQbvBqwn1x+ZCyTy4kb307WCDylqAAWDcn/D7bFLqAJzmQUVS+jtk
+	 IjeB2PKSglCumfF6AXnZnBJQI2t13soShhHdOCkm1vBAfBovv1+GywcwOC7soD9XMk
+	 YQ53rOZAZe+SEgdHSNh3lNmwbxB0KjkxDcJQ2/TGzPvJrxlfcIH9IYnX2iqe2uwgiu
+	 jRa2rvzb3I3bNrDH5/pKKt4jI1yBAzQHQ39/4TLfazXkk6pwHboqNaXUOxfOox7RKs
+	 oR26qpugCqkwA==
+Date: Wed, 25 Jun 2025 15:20:14 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>,
+	Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+	ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: Instability in ALL stable and LTS distro kernels (IRQ #16 being
+ disabled, PCIe bus errors, ath10k_pci) in Dell Inspiron 5567
+Message-ID: <20250625202014.GA1585022@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] Input: soc_button_array: Only debounce cherryview
- and baytrail systems
-To: Mario Limonciello <superm1@kernel.org>,
- Mika Westerberg <westeri@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
- <brgl@bgdev.pl>, Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
- "open list:GPIO ACPI SUPPORT" <linux-acpi@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
- <linux-input@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
-References: <20250625181342.3175969-1-superm1@kernel.org>
- <20250625181342.3175969-4-superm1@kernel.org>
- <f5e1d50f-d85e-45a3-a131-f2da603c620c@kernel.org>
- <57e9b1d5-faf1-4c7a-87fc-047e0dc102f9@kernel.org>
-Content-Language: en-US, nl
-From: Hans de Goede <hansg@kernel.org>
-In-Reply-To: <57e9b1d5-faf1-4c7a-87fc-047e0dc102f9@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAEmM+Qi-Waxk5qcR+nfip-QGXaKk0-Kq7QSq890e9oYOPjW+bA@mail.gmail.com>
 
-Hi,
+[+cc Jeff, ath10k maintainer]
 
-On 25-Jun-25 9:23 PM, Mario Limonciello wrote:
-> On 6/25/25 2:03 PM, Hans de Goede wrote:
->> Hi,
->>
->> On 25-Jun-25 8:13 PM, Mario Limonciello wrote:
->>> From: Mario Limonciello <mario.limonciello@amd.com>
->>>
->>> commit 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
->>> hardcoded all soc-button-array devices to use a 50ms debounce timeout
->>> but this doesn't work on all hardware.  The hardware I have on hand
->>> actually prescribes in the ASL that the timeout should be 0:
->>>
->>> GpioInt (Edge, ActiveBoth, Exclusive, PullUp, 0x0000,
->>>           "\\_SB.GPIO", 0x00, ResourceConsumer, ,)
->>> {   // Pin list
->>>      0x0000
->>> }
->>>
->>> Many cherryview and baytrail systems don't have accurate values in the
->>> ASL for debouncing and thus use software debouncing in gpio_keys. The
->>> value to use is programmed in soc_button_array.  Detect Cherry View
->>> and Baytrail using ACPI HID IDs used for those GPIO controllers and apply
->>> the 50ms only for those systems.
->>>
->>> Cc: Hans de Goede <hansg@kernel.org>
->>> Fixes: 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
->>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->>
->> I'm not a fan of this approach, I believe that we need to always debounce
->> when dealing with mechanical buttons otherwise we will get unreliable /
->> spurious input events.
->>
->> My suggestion to deal with the issue where setting up debouncing at
->> the GPIO controller level is causing issues is to always use software
->> debouncing (which I suspect is what Windows does).
->>
->> Let me copy and pasting my reply from the v1 thread with
->> a bit more detail on my proposal:
->>
->> My proposal is to add a "no_hw_debounce" flag to
->> struct gpio_keys_platform_data and make the soc_button_array
->> driver set that regardless of which platform it is running on.
->>
->> And then in gpio_keys.c do something like this:
->>
->> diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
->> index f9db86da0818..2788d1e5782c 100644
->> --- a/drivers/input/keyboard/gpio_keys.c
->> +++ b/drivers/input/keyboard/gpio_keys.c
->> @@ -552,8 +552,11 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
->>           bool active_low = gpiod_is_active_low(bdata->gpiod);
->>             if (button->debounce_interval) {
->> -            error = gpiod_set_debounce(bdata->gpiod,
->> -                    button->debounce_interval * 1000);
->> +            if (ddata->pdata->no_hw_debounce)
->> +                error = -EINVAL;
->> +            else
->> +                error = gpiod_set_debounce(bdata->gpiod,
->> +                        button->debounce_interval * 1000);
->>               /* use timer if gpiolib doesn't provide debounce */
->>               if (error < 0)
->>                   bdata->software_debounce =
->>
->> So keep debouncing, as that will always be necessary when dealing with
->> mechanical buttons, but always use software debouncing to avoid issues
->> like the issue you are seeing.
->>
->> My mention of the BYT/CHT behavior in my previous email was to point
->> out that those already always use software debouncing for the 50 ms
->> debounce-period. It was *not* my intention to suggest to solve this
->> with platform specific quirks/behavior.
->>
->> Regards,
->>
->> Hans
+On Thu, Jun 26, 2025 at 12:47:49AM +0530, Bandhan Pramanik wrote:
+> Hello,
 > 
-> I mentioned on the v1 too, but let's shift conversation here.
-
-Ack.
-
-> So essentially all platforms using soc_button_array would always turn on software debouncing of 50ms?
-
-Yes that is what my proposal entails.
-
-> In that case what happens if the hardware debounce was ALSO set from the ASL?  You end up with double debouncing I would expect.
-
-A hardware debounce of say 25 ms would still report the button down
-immediately, it just won't report any state changes for 25 ms
-after that, at least that is how I would expect this to work.
-
-So the 50 ms ignore-button-releases for the sw debounce will start
-at the same time as the hw ignore-button-release window and basically
-the longest window will win. So having both active should not really
-cause any problems.
-
-Still only using one or the other as you propose below would
-be better.
-
-> Shouldn't you only turn on software debouncing when it's required?
+> The following is the original thread, where a bug was reported to the
+> linux-wireless and ath10k mailing lists. The specific bug has been
+> detailed clearly here.
 > 
-> I'm wondering if considering the first two patches we should have gpio-keys look up if hardware can support debounce, and then "only if it can't" we program the value from soc button array.
+> https://lore.kernel.org/linux-wireless/690B1DB2-C9DC-4FAD-8063-4CED659B1701@gmail.com/T/#t
 > 
-> It can be done by having gpio_keys do a "get()" on debounce.  Iff the driver returns -ENOTSUPP /then/ program the software debounce.
+> There is also a Bugzilla report by me, which was opened later:
+> https://bugzilla.kernel.org/show_bug.cgi?id=220264
+> 
+> As stated, it is highly encouraged to check out all the logs,
+> especially the line of IRQ #16 in /proc/interrupts.
+> 
+> Here is where all the logs are:
+> https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180
+> (these logs are taken from an Arch liveboot)
+> 
+> On my daily driver, I found these on my IRQ #16:
+> 
+>   16:     173210          0          0          0 IR-IO-APIC
+> 16-fasteoi   i2c_designware.0, idma64.0, i801_smbus
+> 
+> The fixes stated on the Reddit post for this Wi-Fi card didn't quite
+> work. (But git-cloning the firmware files did give me some more time
+> to have stable internet)
+> 
+> This time, I had to go for the GRUB kernel parameters.
+> 
+> Right now, I'm using "irqpoll" to curb the errors caused.
+> "intel_iommu=off" did not work, and the Wi-Fi was constantly crashing
+> even then. Did not try out "pci=noaer" this time.
+> 
+> If it's of any concern, there is a very weird error in Chromium-based
+> browsers which has only happened after I started using irqpoll. When I
+> Google something, the background of the individual result boxes shows
+> as pure black, while the surrounding space is the usual
+> greyish-blackish, like we see in Dark Mode. Here is a picture of the
+> exact thing I'm experiencing: https://files.catbox.moe/mjew6g.png
+> 
+> If you notice anything in my logs/bug reports, please let me know.
+> (Because it seems like Wi-Fi errors are just a red herring, there are
+> some ACPI or PCIe-related errors in the computers of this model - just
+> a naive speculation, though.)
 
-Any special handling here should be done in soc_button_array since
-this is specific to how with ACPI we have the GPIO resource
-descriptors setting up the hw-debounce and then the need to do
-software debounce when that was not setup.
+Your dmesg log is incomplete, and we would need to see the entire
+thing.  It should start with something like this:
 
-As for checking for -ENOTSUPP I would make soc_button_array
-do something like this.
+  Linux version 6.8.0-60-generic (buildd@lcy02-amd64-054) (x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #63-Ubuntu SMP PREEMPT_DYNAMIC Tue Apr 15 19:04:15 UTC 2025 (Ubuntu 6.8.0-60.63-generic 6.8.12)
 
-ret = debounce_get()
-if (ret <= 0)
-	use-sw-debounce;
+Your lspci output doesn't include the necessary PCI details; collect
+it with "sudo lspci -vv".
 
-If hw-debounce is supported but not setup, either because
-the exact debounce value being requested is not supported
-or because the DSDT specified 0, then sw-debouncing should
-also be used.
+We should pick the most serious problem and focus on that instead of
+trying to solve everything at once.
 
-Note this will still require the use of a new no_hw_debounce
-flag so that we don't end up enabling hw-debounce in
-the hw-debounce is supported but not setup case.
+It sounds like the ath10k issue might be the biggest problem?  If
+"options ath10k_core skip_otp=y" is a workaround for this problem, it
+looks like some ath10k firmware thing, probably unrelated to the PCI
+core.
 
-Regards,
-
-Hans
-
-
-
+Bjorn
 
 
