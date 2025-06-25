@@ -1,90 +1,83 @@
-Return-Path: <linux-acpi+bounces-14589-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14590-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B511AE81F0
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 13:51:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF88EAE8280
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 14:19:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C82A2171F8B
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 11:51:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 729865A0BC2
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 12:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1AE25D213;
-	Wed, 25 Jun 2025 11:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122B225E823;
+	Wed, 25 Jun 2025 12:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YcZ6Rw2i"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YCQMnHHN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FADA25C704
-	for <linux-acpi@vger.kernel.org>; Wed, 25 Jun 2025 11:50:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5832147EF;
+	Wed, 25 Jun 2025 12:19:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750852256; cv=none; b=dZoIAn9Hw4wnDIDlKIddZ7T6krlWs9zl2ydNDiEArmNvyB6Lqqa90MnU5Q55juXrF4fPEDqyTAVkqCFlLpTcUrlJipgayHzFe56xhqh3ynOtH0XVSuUIaTpHyNK+jRXmjWR61dsoIKPL/zyQAOHljA8HDCWfCHtAcAuk3s0SGMw=
+	t=1750853980; cv=none; b=Tk+EKLBLZYIcaTGoFU52Pwl552UDHODCTl2rLCb2duNBnNIUHLJPsBaJCrEnWcr2xOPz4sWa5qm4Pfqt8DWBD/BY8C1FMWeNpP6YmAhV5HRriyQVf/89ZOpih7Vo+5fW2InfrQRaniDSXEnzu6MF4WNdEBg+PV52kniintXEh9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750852256; c=relaxed/simple;
-	bh=ccKVrwIbREFXa4j7XcS1J1dbdZcxku7g36ksBtNIWss=;
+	s=arc-20240116; t=1750853980; c=relaxed/simple;
+	bh=Jf/WnBQXn6g8/WrK555BMqtkJLwU4/g0UWPzaefHEqs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WinLi3teWSN1io2pq+wHGk0u8JxD0kvIW/aNadoxRX9/EHBnRZkIkI85KnZb63LtQUxKHf18B7fEQhjBUMgo0IQrm4SzvDvlnX3QXb5GjCc/EKHAkJcJcWcMNMqD9uXKuvL544qTk8dVp3uPIiAW7mrusZm9cmuNCwm2kAIGcG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YcZ6Rw2i; arc=none smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-2ea58f008e9so4981017fac.0
-        for <linux-acpi@vger.kernel.org>; Wed, 25 Jun 2025 04:50:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750852253; x=1751457053; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AoutNGAerTcoF/aenrsm72CtVJG212QTVx4YhnzRYkQ=;
-        b=YcZ6Rw2iiUo0d/sP97IM92RZq4tDAZiQyKcL8QUOQfWN7APNa5yFR6WgvYJpTcRO/k
-         S5C8mFIwpiY9hGlsnCX8IpoXA4E+hwJDQ9ZnBjQJJpbDKW8aSXY2Jr7ugztdh3/9r3U2
-         SVaMIUAhZ/js61l9kg+xl1qSUPgJM/l9oW1qnQdwNbSEPbbHsg5jlxkzO9sV1K0F9qEf
-         zj1qp97U5caV+Vuw4Gk/FJcPXggzduj/RcbBX6K5QBdKR5dIC88zCA+UPqH/QD/lsrnd
-         PQOu6DqlA7U0ws6s7gwEpzFkbvWcXRdwvgMFtNIo7qoffzeyXXyZGepLQuh/BHqFFpbr
-         s9Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750852253; x=1751457053;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AoutNGAerTcoF/aenrsm72CtVJG212QTVx4YhnzRYkQ=;
-        b=GqXA8oifVRpiouFbbgAgJ9bah2074jg73Aj0W+8E6FMQ/3900JbI7jC/UvM7hXCHh9
-         oUEO52JHIoiZaiZ/nsDEk0y2gaalLrsrQf5qLQtlPlluonVEWZkTmmBhscpwGeYSMeYS
-         c+kTiHxDeVjh9jKa7iguTbN5rWdC1olhXgArW3wEY0wM5H35bu9u1G6xwkFgKw44nm+0
-         dduK/ltpCaJR8Apc+uJZCKvtbbr0dgkiFuzZlGmgxA9NaOV/iUyM1WrwOhhfwMBMo/j9
-         X7VrDCwULFnJfZc8TQ7WUQT1OUOl5ro8A/qUgRQLKeaZlsACr4PFe+XmJYuqd0PJZReu
-         UTHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVztrUNGDvlGsdROiOSt8pgKTn6+0SGQqLaERzB+31mzHooA4n0MOegYxBit4CS2nLYTuhIouvVyaQk@vger.kernel.org
-X-Gm-Message-State: AOJu0YwL18oUiuSfYgn6sP6xdMkEmpnSXSPwngHrbuPQNKrNTgtgWf29
-	U6NgXVfcqR/U5qOtFJxPuXOOXDNpjN4fi4MASEi8PPuWBe2hOw01UFjtodw9tlMhEtQ=
-X-Gm-Gg: ASbGnct9Z9JhF1+nDAsHyBsFYHVJN1pYreAbzKJJ12b6/a8Pzxx9FJBn04hZxgXdasR
-	DPrlXRmsEdKyoINnZJS5mDjbnkW5MLppkZb5K8BscQbxp17v1ydyROc8jP5JuO3vVa92Uwee4xE
-	hGPAfPGy6GHHIZzhQWaWCG5/2j6LRD3xZoQnAvJZ5+H1kx97GzncXIXdgRslOSDeEMBhRnyFMOa
-	ssl0c7coOQFYnuZSunBr6XG8r+mrBIpp9E4h5UUEvpLhEQ69qo+ashUjMGzlfjIj+sQlM7UOT7S
-	MTghq1JEJ7AcEMwnN27/3VnGtpausFh2SY12qlUErVxQVLtV5ZHd1vdymDx6niYOTUT0cFEO+NK
-	dZTdd
-X-Google-Smtp-Source: AGHT+IHhifNSUvdslHEt+i0G2mhKHrYMYK7cb4RljD3ks4W3/ayaA/WwVBmac+YjncuYOBkqkdy7sg==
-X-Received: by 2002:a05:6871:2104:b0:29e:4ba5:4ddc with SMTP id 586e51a60fabf-2efb27645a8mr1809349fac.24.1750852253475;
-        Wed, 25 Jun 2025 04:50:53 -0700 (PDT)
-Received: from localhost ([2603:8080:b800:f700:22c9:dcd3:f442:dd1d])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2efbd439555sm185735fac.25.2025.06.25.04.50.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 04:50:52 -0700 (PDT)
-Date: Wed, 25 Jun 2025 14:50:50 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Colin Ian King <colin.i.king@gmail.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>,
-	Borislav Petkov <bp@alien8.de>, Ira Weiny <ira.weiny@intel.com>,
-	linux-acpi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] ACPI: APEI: EINJ: Fix check and iounmap of
- uninitialized pointer p
-Message-ID: <ba07c097-80e2-45e2-b579-fe270c04fabc@suswa.mountain>
-References: <20250624202937.523013-1-colin.i.king@gmail.com>
- <31b6548f-8ff7-4bc5-8a2c-78a5a9d5eb40@suswa.mountain>
+	 Content-Type:Content-Disposition:In-Reply-To; b=OF69ivKcc4udjsk8m8JPzPuj2wq2utyik9+aD1pe1XmgQVl3vT9GRQnBnC7UoZxhPrdHd2NwrAr3t0kgm1wVU1iCZBzDCMzi9kjjLxpT/jGGz1TxoGWkMEvpP0DNhr6egaX+eyIEqcrV7Z1TN5WLjPbYXAX7xT4CHQlrgekV6qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YCQMnHHN; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750853978; x=1782389978;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Jf/WnBQXn6g8/WrK555BMqtkJLwU4/g0UWPzaefHEqs=;
+  b=YCQMnHHNS1ilzb2t7WaM8R0QnnATMXfVyEustUpVAIlVWz/DK7Me7rt7
+   ASqfLxCJ50Xpyo45R0a2GmtVoV4n7CJwb3HraOOwdfR4JJGz30ES1HCvv
+   7ETFlPy2H8ZoL791E8j9FEkCZfSOaAEnc4E0GGKl0eDC1Nx7dSwdl+XRy
+   WODbUNUuP83xQ2JqLnIauWWeVy2awM0TbNvQAtU5aeV6cLo4sGpQc42wG
+   fEnneNODOB4pVc4htvsEOnLn7eFlGGkoHZ3hRMG73PRTygquqWzkKwT92
+   +YlEzOhrlpz79ovRkER+O2hP18KtC6ZWW8DDSmZ2eYvcXDygElhDeVo9U
+   g==;
+X-CSE-ConnectionGUID: NPqn4hzxSaCnDGo6EpilmQ==
+X-CSE-MsgGUID: TiJCOOdLTA+buWFsrnyj1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="52350417"
+X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
+   d="scan'208";a="52350417"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 05:19:35 -0700
+X-CSE-ConnectionGUID: YHRZb4YNSGqs4tk5oznBGA==
+X-CSE-MsgGUID: QyAipQ2oTx2fWr6ehkzPvg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
+   d="scan'208";a="157970991"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 05:19:31 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1uUP68-00000009lRF-3sCx;
+	Wed, 25 Jun 2025 15:19:28 +0300
+Date: Wed, 25 Jun 2025 15:19:28 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Mario Limonciello <superm1@kernel.org>
+Cc: Hans de Goede <hansg@kernel.org>, Mika Westerberg <westeri@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	"open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
+	"open list:GPIO ACPI SUPPORT" <linux-acpi@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH 1/2] gpiolib: acpi: Program debounce when finding GPIO
+Message-ID: <aFvpUBM0xSdM76xz@smile.fi.intel.com>
+References: <20250624202211.1088738-1-superm1@kernel.org>
+ <20250624202211.1088738-2-superm1@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -93,26 +86,30 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <31b6548f-8ff7-4bc5-8a2c-78a5a9d5eb40@suswa.mountain>
+In-Reply-To: <20250624202211.1088738-2-superm1@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Jun 25, 2025 at 12:31:10AM +0300, Dan Carpenter wrote:
-> On Tue, Jun 24, 2025 at 09:29:37PM +0100, Colin Ian King wrote:
-> > In the case where a request_mem_region call fails and pointer r is null
-> > the error exit path via label 'out' will check for a non-null pointer
-> > p and try to iounmap it. However, pointer p has not been assigned a
-> > value at this point, so it may potentially contain any garbage value.
-> > Fix this by ensuring pointer p is initialized to NULL.
-> > 
-> > Fixes: 1a35c88302a3 ("ACPI: APEI: EINJ: Fix kernel test sparse warnings")
-> > Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> > ---
+On Tue, Jun 24, 2025 at 03:22:10PM -0500, Mario Limonciello wrote:
+> From: Mario Limonciello <mario.limonciello@amd.com>
 > 
-> Good catch.  Apparently this isn't in my allyesconfig.  It's weird the
-> zero day bot didn't catch this either.
+> When soc-button-array looks up the GPIO to use it calls acpi_find_gpio()
+> which will parse _CRS.
+> 
+> acpi_find_gpio.cold (drivers/gpio/gpiolib-acpi-core.c:953)
+> gpiod_find_and_request (drivers/gpio/gpiolib.c:4598 drivers/gpio/gpiolib.c:4625)
+> gpiod_get_index (drivers/gpio/gpiolib.c:4877)
+> 
+> The GPIO is setup basically, but the debounce information is discarded.
+> The platform will assert what debounce should be in _CRS, so program it
+> at the time it's available.
 
-Never mind.  This is definitely in my allyesconfig.
+If this will be needed we can factor out acpi_gpio_set_debounce() with
+the warning and use it in both cases.
 
-regards,
-dan carpenter
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 
