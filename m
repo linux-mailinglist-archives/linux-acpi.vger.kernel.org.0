@@ -1,48 +1,48 @@
-Return-Path: <linux-acpi+bounces-14645-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14646-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB05AE8EC4
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 21:32:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD88DAE8EE3
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 21:42:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4676D16FBA0
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 19:32:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFEC47A96E9
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 19:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904121FECAD;
-	Wed, 25 Jun 2025 19:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9795E2DAFDF;
+	Wed, 25 Jun 2025 19:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FnP/20HZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pINkPIvI"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621941FC8;
-	Wed, 25 Jun 2025 19:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D64A2D5C81;
+	Wed, 25 Jun 2025 19:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750879966; cv=none; b=fNsbzCvZR9A3vR4BxTNvMSKx2W7ysda0LfXFko36Qzc3MSIr49UNYFm5H2+LTr0xGxSxz20hvNQXo4N7Nn+ftFlPL+tV2mxrjXiraxDN8InzBs7SqyJ0jstMPtb5k8XxSsfJ/PnUTkMOalARr8e0lUqM5dYP6z4XaY/o4l6iy7I=
+	t=1750880543; cv=none; b=UMg8hbylHNTzzov/kKXW85UwPsF6Cm/7L9xuw0oKJ46kM/2v/ws/VYUKa0LFtMSgYlnqO+afOndjnoRnvcEx+1UXUXo4OqdaWebCeNd45HBXluTqazZOGVxioADwIHCPLY+FsBMSznjzUzwGYBx9zAi8tMnscqQlX6cSlI2LHNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750879966; c=relaxed/simple;
-	bh=a4i1+PBHCN1xsBMmEZ0wjNOwvY3sVzRpMCk3lNsxY3w=;
+	s=arc-20240116; t=1750880543; c=relaxed/simple;
+	bh=CjNKXvxO/4gk15CIk9SU0gSachKAURgD/j1MO4ru2uc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s1GXEEwPYq7MuLKKHymToOjjR1D019VkV8BcH9GvTofd+TtUcO8mQNJVdSU6xECoADNTreNw16DM3VzUCRcRlZ3FmRmuKZ8TRDaq7jD3tmvPMK3/pbE2E4yjjfiu/uBiG4I5d1vnyoH3O4+N5jEHMtFJzpJnwubP2WNglEZb4kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FnP/20HZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6415C4CEF1;
-	Wed, 25 Jun 2025 19:32:43 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=uVXjD5aNhLsZFRcnVXyHvepUpd2l7HSJy53m90hHfItQ7rmbzwMYOvVCONyp5HYhjXLWRQOxUIAdhBCaQVJWTYcW+NjY1MigoSAyrB7ylO0s2K4EtpcNioLGjdMUaNKg2dZoxppFiFD3yGUdmznWpor/fRtP1ziEptX7P9wYU8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pINkPIvI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB967C4CEEA;
+	Wed, 25 Jun 2025 19:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750879966;
-	bh=a4i1+PBHCN1xsBMmEZ0wjNOwvY3sVzRpMCk3lNsxY3w=;
+	s=k20201202; t=1750880543;
+	bh=CjNKXvxO/4gk15CIk9SU0gSachKAURgD/j1MO4ru2uc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FnP/20HZTNjAZLDwHM4JpU8SRBdG+MplmF9vZhh/kUSAt8wz+vg5BaL91Mt6/QgtW
-	 GA2xXi220MnFPMFIgaMY1g1YR0gll5OArXFGFVHuV7cR4iUKbFTcTN9ptoe+gnmeGz
-	 NE8xBJUpSHeb7aAFjbhtv/J/WhQ7kQDO161p1kRzNTVaX1Cvn4h5cWdMwVBGam9K8m
-	 GfhJKvDEH/sgTx5rtBe9m82ehTR/JNbpsXI99o2XaxJr3rRROqgLW7D5kRxRpd967/
-	 T2acSPMKoI8ZqAi36QqWIijAwDfmDGemlgxIFlt/zGAomoemTCJ8qiKO248+G8hHyT
-	 kio53MX/XdMPQ==
-Message-ID: <ab90e09a-5c82-4d1c-a0dc-063ec48340eb@kernel.org>
-Date: Wed, 25 Jun 2025 21:32:41 +0200
+	b=pINkPIvIsYZFEn6g5F4lCIfTIQbnezryez2xsbQgrOAbTjFtTNuLrgf6DYBczUoWb
+	 0DLZ0I6mdKBMOTVvLilqgvgM+m5INwQzvktW1Kw1N+GRfVLSvCw10Du4xhXTGcNdng
+	 EyHzGmRHx1e4K3lCpwKJ76vccLYyiTFD0INQpF4AoY4w1megiTREicpLYDtBqVNBxg
+	 nf9GmZ9SAoMoSpmDhG9CAAJi8WHbJRBnpxeg2rPYhp8WiXIC59UGJSaXNmqF+vBOuP
+	 Vp2rLFCGhwrYLmAsOYxB2jhOgTpPiqoUYh+1tLwVozs+UD9qXBZG6LKmumwmdccHTY
+	 n3l10gmujvFlw==
+Message-ID: <a9bed0b4-b050-468b-91cb-bc4c81352046@kernel.org>
+Date: Wed, 25 Jun 2025 21:42:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] Revert "Input: soc_button_array - debounce the
- buttons"
+Subject: Re: [PATCH v2 3/3] Input: soc_button_array: Only debounce cherryview
+ and baytrail systems
 To: Mario Limonciello <superm1@kernel.org>,
  Mika Westerberg <westeri@kernel.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -62,52 +62,56 @@ Cc: "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
  open list <linux-kernel@vger.kernel.org>,
  "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
  <linux-input@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
-References: <20250624202211.1088738-1-superm1@kernel.org>
- <20250624202211.1088738-3-superm1@kernel.org>
- <4a4d577b-a085-46e8-97b9-6df27461c870@kernel.org>
- <1f8c0262-b376-43cb-b2c5-5b60e8cbf678@kernel.org>
- <92ab85ff-6314-4db0-ae12-9803ddde5037@kernel.org>
- <625952d3-01e9-426e-9739-86fe5cdfeb35@kernel.org>
- <4cfb5171-fc3d-4944-bcea-7dcf8e8e069a@kernel.org>
- <676b774e-5111-4eea-bc6e-968840193009@kernel.org>
+References: <20250625181342.3175969-1-superm1@kernel.org>
+ <20250625181342.3175969-4-superm1@kernel.org>
+ <f5e1d50f-d85e-45a3-a131-f2da603c620c@kernel.org>
+ <57e9b1d5-faf1-4c7a-87fc-047e0dc102f9@kernel.org>
 Content-Language: en-US, nl
 From: Hans de Goede <hansg@kernel.org>
-In-Reply-To: <676b774e-5111-4eea-bc6e-968840193009@kernel.org>
+In-Reply-To: <57e9b1d5-faf1-4c7a-87fc-047e0dc102f9@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Mario,
+Hi,
 
-On 25-Jun-25 9:10 PM, Mario Limonciello wrote:
-> On 6/25/25 1:57 PM, Hans de Goede wrote:
->> On 25-Jun-25 4:41 PM, Mario Limonciello wrote:
->>> On 6/25/25 9:31 AM, Hans de Goede wrote:
+On 25-Jun-25 9:23 PM, Mario Limonciello wrote:
+> On 6/25/25 2:03 PM, Hans de Goede wrote:
+>> Hi,
 >>
->> <snip>
+>> On 25-Jun-25 8:13 PM, Mario Limonciello wrote:
+>>> From: Mario Limonciello <mario.limonciello@amd.com>
+>>>
+>>> commit 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
+>>> hardcoded all soc-button-array devices to use a 50ms debounce timeout
+>>> but this doesn't work on all hardware.  The hardware I have on hand
+>>> actually prescribes in the ASL that the timeout should be 0:
+>>>
+>>> GpioInt (Edge, ActiveBoth, Exclusive, PullUp, 0x0000,
+>>>           "\\_SB.GPIO", 0x00, ResourceConsumer, ,)
+>>> {   // Pin list
+>>>      0x0000
+>>> }
+>>>
+>>> Many cherryview and baytrail systems don't have accurate values in the
+>>> ASL for debouncing and thus use software debouncing in gpio_keys. The
+>>> value to use is programmed in soc_button_array.  Detect Cherry View
+>>> and Baytrail using ACPI HID IDs used for those GPIO controllers and apply
+>>> the 50ms only for those systems.
+>>>
+>>> Cc: Hans de Goede <hansg@kernel.org>
+>>> Fixes: 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
+>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 >>
->>>> So maybe the windows ACPI0011 driver always uses a software-
->>>> debounce for the buttons? Windows not debouncing the mechanical
->>>> switches at all seems unlikely.
->>>>
->>>> I think the best way to fix this might be to add a no-hw-debounce
->>>> flag to the data passed from soc_button_array.c to gpio_keys.c
->>>> and have gpio_keys.c not call gpiod_set_debounce()  when the
->>>> no-hw-debounce flag is set.
->>>>
->>>> I've checked and both on Bay Trail and Cherry Trail devices
->>>> where soc_button_array is used a lot hw-debouncing is already
->>>> unused. pinctrl-baytrail.c does not accept 50 ms as a valid
->>>> value and pinctrl-cherryview.c does not support hw debounce
->>>> at all.
->>>
->>> That sounds a like a generally good direction to me.
->>>
->>> I think I would still like to see the ASL values translated into the hardware even if the ASL has a "0" value.
->>> So I would keep patch 1 but adjust for the warning you guys both called out.
->>>
->>> As you have this hardware would you be able to work out that quirk?
+>> I'm not a fan of this approach, I believe that we need to always debounce
+>> when dealing with mechanical buttons otherwise we will get unreliable /
+>> spurious input events.
 >>
->> I think we've a bit of miscommunication going on here.
+>> My suggestion to deal with the issue where setting up debouncing at
+>> the GPIO controller level is causing issues is to always use software
+>> debouncing (which I suspect is what Windows does).
+>>
+>> Let me copy and pasting my reply from the v1 thread with
+>> a bit more detail on my proposal:
 >>
 >> My proposal is to add a "no_hw_debounce" flag to
 >> struct gpio_keys_platform_data and make the soc_button_array
@@ -133,18 +137,67 @@ On 25-Jun-25 9:10 PM, Mario Limonciello wrote:
 >>               if (error < 0)
 >>                   bdata->software_debounce =
 >>
->> So keep debouncing, which I believe will always be necessary when
->> dealing with mechanical buttons, but always use software debouncing
->> (which I suspect is what Windows does) to avoid issues like the issue
->> you are seeing.
+>> So keep debouncing, as that will always be necessary when dealing with
+>> mechanical buttons, but always use software debouncing to avoid issues
+>> like the issue you are seeing.
+>>
+>> My mention of the BYT/CHT behavior in my previous email was to point
+>> out that those already always use software debouncing for the 50 ms
+>> debounce-period. It was *not* my intention to suggest to solve this
+>> with platform specific quirks/behavior.
+>>
+>> Regards,
+>>
+>> Hans
 > 
-> So essentially all platforms using soc_button_array would always turn on software debouncing of 50ms?
-> 
-> In that case what happens if the hardware debounce was ALSO set from the ASL?  You end up with double debouncing I would expect.
-> 
-> Shouldn't you only turn on software debouncing when it's required?
+> I mentioned on the v1 too, but let's shift conversation here.
 
-Lets continue this discussion in the v2 thread.
+Ack.
+
+> So essentially all platforms using soc_button_array would always turn on software debouncing of 50ms?
+
+Yes that is what my proposal entails.
+
+> In that case what happens if the hardware debounce was ALSO set from the ASL?  You end up with double debouncing I would expect.
+
+A hardware debounce of say 25 ms would still report the button down
+immediately, it just won't report any state changes for 25 ms
+after that, at least that is how I would expect this to work.
+
+So the 50 ms ignore-button-releases for the sw debounce will start
+at the same time as the hw ignore-button-release window and basically
+the longest window will win. So having both active should not really
+cause any problems.
+
+Still only using one or the other as you propose below would
+be better.
+
+> Shouldn't you only turn on software debouncing when it's required?
+> 
+> I'm wondering if considering the first two patches we should have gpio-keys look up if hardware can support debounce, and then "only if it can't" we program the value from soc button array.
+> 
+> It can be done by having gpio_keys do a "get()" on debounce.  Iff the driver returns -ENOTSUPP /then/ program the software debounce.
+
+Any special handling here should be done in soc_button_array since
+this is specific to how with ACPI we have the GPIO resource
+descriptors setting up the hw-debounce and then the need to do
+software debounce when that was not setup.
+
+As for checking for -ENOTSUPP I would make soc_button_array
+do something like this.
+
+ret = debounce_get()
+if (ret <= 0)
+	use-sw-debounce;
+
+If hw-debounce is supported but not setup, either because
+the exact debounce value being requested is not supported
+or because the DSDT specified 0, then sw-debouncing should
+also be used.
+
+Note this will still require the use of a new no_hw_debounce
+flag so that we don't end up enabling hw-debounce in
+the hw-debounce is supported but not setup case.
 
 Regards,
 
@@ -152,40 +205,5 @@ Hans
 
 
 
-
->>> Or if you want me to do it, I'll need something to go on how to how to effectively detect BYT and CYT hardware.
->>>
->>>>
->>>>> So that's where both patches in this series came from.
->>>>>
->>>>>>
->>>>>> drivers/input/keyboard/gpio_keys.c first will call gpiod_set_debounce()
->>>>>> it self with the 50 ms provided by soc_button_array and if that does
->>>>>> not work it will fall back to software debouncing. So I don't see how
->>>>>> the 50 ms debounce can cause problems, other then maybe making
->>>>>> really really (impossible?) fast double-clicks register as a single
->>>>>> click .
->>>>>>
->>>>>> These buttons (e.g. volume up/down) are almost always simply mechanical
->>>>>> switches and these definitely will need debouncing, the 0 value from
->>>>>> the DSDT is plainly just wrong. There is no such thing as a not bouncing
->>>>>> mechanical switch.
->>>>>
->>>>> On one of these tablets can you check the GPIO in Windows to see if it's using any debounce?
->>>>
->>>> I'm afraid I don't have Windows installed on any of these.
->>>>
->>>> But based on your testing + the DSDT specifying no debounce
->>>> for the GPIO I guess Windows just follows the DSDt when it
->>>> comes to setting up the hw debounce-settings and then uses
->>>> sw-debouncing on top to actually avoid very quick
->>>> press-release-press event cycles caused by the bouncing.
->>>>
->>>
->>> Yeah that sounds like a plausible hypothesis.
->>>
->>>
->>
-> 
 
 
