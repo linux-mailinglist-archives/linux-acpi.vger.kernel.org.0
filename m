@@ -1,129 +1,155 @@
-Return-Path: <linux-acpi+bounces-14628-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14629-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3963DAE8D40
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 20:58:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB067AE8D58
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 20:58:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6792C4A7147
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 18:58:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A12185A1EBC
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 18:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603392DCBF9;
-	Wed, 25 Jun 2025 18:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DFD2DF3E3;
+	Wed, 25 Jun 2025 18:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HHHjHwSr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXG6OcNP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93587285C9E
-	for <linux-acpi@vger.kernel.org>; Wed, 25 Jun 2025 18:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456612DECD5;
+	Wed, 25 Jun 2025 18:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750877878; cv=none; b=JMeARSF0osYC3hnl3LQqnHAlhFXyiCN6X47e6lelfHKXqUqEysU2BXyAfwhXBCOJjE6UaqeN8iJ7HiacIvNenCNMLTs5xe5k+6ke2NifPJk3wv+vDIf1a31V9rd298XcS/DHakSaCg5f8w+s+gdBQ2kf5Yk6gxuWEhnKjtqh0TY=
+	t=1750877889; cv=none; b=iXNWenwWczCk4NpnccNV+Ozsy8yFam72zdjmkjrh4o3Fp28M6xKtc285B4UWkhNoi6GphBL7Vwh2U7Qqm3ljsgmzpA5OzeR+OvIdTEJ/Mz36Dc3DyPyJo/PfYbYIXXHRHqbJy0mNjl8bUq5JmaRwCf9edUkTFhB60WkPMGhcalY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750877878; c=relaxed/simple;
-	bh=H1nIbQ51LzP26r3FyzLrx1fsskjj5Fl+oqqOWgYj5qY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=HZ7D3+86nZnNPJWlzhzNcf+sB1RmN61Eveq6VgQKJjHvHuN8pctaWx6P1C+mD0nU4m3zKXMG7Kbydg31uYPUqfR4b3OIGCJPtTDQSPwR58ir5gjl1SBBHY0JcI5wnKx897Xt6f5cPupalYWWJPN4Y1kSD/6wye3O8CqflEMAGWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HHHjHwSr; arc=none smtp.client-ip=209.85.210.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-73884ccffcbso58312a34.1
-        for <linux-acpi@vger.kernel.org>; Wed, 25 Jun 2025 11:57:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750877874; x=1751482674; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=idFC2oFkGWkgRu1swz+9drrbnHgsETd3u3GhQHpoMnk=;
-        b=HHHjHwSrydboVMDa2KX79ePXIg1CVsDYFiCuZoLTLipxPVDK1F/H6ny62Ygv6tAFoN
-         NVndEogNM3uQeHw8P+g5t/M8X22wgaAoGEqsljiRth4kOXywyL6YBgL/27mffnC2CewE
-         aQEvQwG7gLqrvrhN2xm8BW7pnKFEZg0e7zLcSw22HGEuerzJhVuLAw6oYq9Jr+cekQBE
-         BnluKFVBqLP3P2++GgAXK/AT27XEqxkXCCiyhlzHfGvzJ8gaL2zYdmkc/7DRf4VwRKxC
-         OmeUVRek9IYbBBpefc4jO9IcHKAQinVXA5+xbE6ximX6SHpK/Y+lIZw+mBk5bIQfD0Lb
-         HkZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750877874; x=1751482674;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=idFC2oFkGWkgRu1swz+9drrbnHgsETd3u3GhQHpoMnk=;
-        b=dveOeSKYna2B20079RNxUkQ7OJQ8EZK0funWMzEyxo/d5BlttiUVDekO6wUpyX8wjz
-         NWekJRWcBNfDk/OQCWCJ63vJsgvFxG55QcIFj9Z349r68svmFNRFKIXvFCDqtk654PHX
-         pRuRtw/NOen2wFRgXpwwrofwvrGr4dG0L6pBnBF6R6VlLkBf+ZG4TESTduamJMhdXAUc
-         n29aH5Y4ACq1q1FYUzoFFnJszZa8+duq8w4g+zUgPcMD5ztMjWhr12WHVY6+P4F53gB4
-         d0i3VtYus09y8zfTuP2HKlMQlmyUiv5RGC0lMk+YyxRxfVdRnlFeOO7tVhxHKUDoJwVz
-         Wyxw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhbtkarOdRgklpntgTHiIoymAMyjKh0yKLp77vOE1ibuG10tUXKVzUxxx7m+ywSUh3PmHfckWmNOcZ@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoNrZ96w/kYuTEsjYCoOs6U135eoUs+pgc2lK+aKfObEZnJ6r7
-	onyGRrDtaw4CQt5M9v6cr6yZR+xBEMv6bPU9NajbixKwLGQII04Qcz0OOeaUrE1+FYI=
-X-Gm-Gg: ASbGncuikzIG3TCBMgE1Wu1kuiUwnG2QHAvwyhjgFTH6PO+Rw1RPB00O0t+w9b+HZlX
-	QfqojnPgsezhfAA6V8tRwZJIKpwq9fIsoI3/PrQwqGsHKa2XhrFotce/jPOxm83KX1bvUsGGWQI
-	DlKjEjtJDk9OwXw6NUqsYHwMlizRONma1DPB+kqslFI8ny4OTdo24Mh7yYmFLnowU33j4lSq4qe
-	UFOD8ufQUBHcuqQlp+y03zjMOUG0RhB9k0mW+gX5H9EguGOZaguJOUKlfYvAbb1RlOiygmwpkFE
-	RDY8+oyMKjlMeuCyynHtC4cvKthtpn6SavkkXbjJos/ZL3/47Kcg5EAkA8mkx16sKiDZjw==
-X-Google-Smtp-Source: AGHT+IFULxSdU/YC3cPv8TMpcR9HigBXOMNkhwUT8MmP1kJ8gCSc2YxGcMd40BPtiHnFyyub103kRA==
-X-Received: by 2002:a05:6830:61c4:b0:72b:aa94:6d26 with SMTP id 46e09a7af769-73adc6fa96amr2404587a34.18.1750877874602;
-        Wed, 25 Jun 2025 11:57:54 -0700 (PDT)
-Received: from localhost ([2603:8080:b800:f700:1fca:a60b:12ab:43a3])
-        by smtp.gmail.com with UTF8SMTPSA id 46e09a7af769-73a90cc0257sm2284326a34.60.2025.06.25.11.57.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 11:57:54 -0700 (PDT)
-Date: Wed, 25 Jun 2025 13:57:52 -0500
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Zaid Alali <zaidal@os.amperecomputing.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>,
-	Borislav Petkov <bp@alien8.de>, Ira Weiny <ira.weiny@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Jon Hunter <jonathanh@nvidia.com>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH next] ACPI: APEI: EINJ: prevent memory corruption in
- error_type_set()
-Message-ID: <ae6286cf-4d73-4b97-8c0f-0782a65b8f51@sabinyo.mountain>
+	s=arc-20240116; t=1750877889; c=relaxed/simple;
+	bh=3OLpQwoBvTvHBPceDaTTwYm8KETmFqBGnz2ugi+2kUY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WVYNu2nDiaGLnLMyq9sEXC19redf5x3kze6+UFWBtmFXkKA+6uGQdZYfIAt2idaZfQuKV9JxCTcA0j7lQrmdSi3K+ji7ZnTTrBzYVr8tSAQX5Bfw66ks0qCZg8VmUfCDLtT1AmtQRl23KH4gkHp1c+01ZZhdn2f8MLy6ie2ncX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXG6OcNP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2724C4CEF3;
+	Wed, 25 Jun 2025 18:58:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750877888;
+	bh=3OLpQwoBvTvHBPceDaTTwYm8KETmFqBGnz2ugi+2kUY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GXG6OcNPEME1CEqWK/3A7LhmB2b7xbI5p/EVT28ITDiYMq2zAaR96iS3g4OFfJXn3
+	 BdpUEeXsvFjT6uYJMeV6en68QFHJGVc+460GUsGOkBQoM4O790OKFEFpjFw8c9OePf
+	 mwRkFf7v0TuLXonJF3g5TxOFjMhZb8FtxUXBiAiJDKRE4ae/mBWoy8FV69sl4Katke
+	 oB+n5s4J+SEji7uwUMNRwjZrdFupxRSrjD60i3cpz9zvafP8LANIUVu/TLjIspr0vC
+	 NzyDNCgFwYN5DTLWqK94sJdE7eYpLpPw2pKUWGmyh9HxhQKJvj5QdhwmPwBtBbMa0F
+	 EB0WsELaBv4MQ==
+Message-ID: <3ec49306-a21b-4f2a-b224-994f323148ab@kernel.org>
+Date: Wed, 25 Jun 2025 20:58:05 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] gpiolib: acpi: Add a helper for programming
+ debounce
+To: Mario Limonciello <superm1@kernel.org>,
+ Mika Westerberg <westeri@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
+ <brgl@bgdev.pl>, Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
+ "open list:GPIO ACPI SUPPORT" <linux-acpi@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
+ <linux-input@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
+References: <20250625181342.3175969-1-superm1@kernel.org>
+ <20250625181342.3175969-2-superm1@kernel.org>
+Content-Language: en-US, nl
+From: Hans de Goede <hansg@kernel.org>
+In-Reply-To: <20250625181342.3175969-2-superm1@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The "einj_buf" buffer is 32 chars.  If "count" is larger than that it
-results in memory corruption.  Cap it at 31 so that we leave the last
-character as a NUL terminator.  By the way, the highest reasonable value
-for "count" is 24.
+Hi,
 
-Fixes: 0c6176e1e186 ("ACPI: APEI: EINJ: Enable the discovery of EINJv2 capabilities")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
-v3: Style improvements.  Add a comment.
-v2: I introduces a bug in v1 because I put parentheses in the wrong place.
+On 25-Jun-25 8:13 PM, Mario Limonciello wrote:
+> From: Mario Limonciello <mario.limonciello@amd.com>
+> 
+> Debounce is programmed in two places and considered non-fatal in one of
+> them. Introduce a helper for programming debounce and show a warning
+> when failing to program.  This is a difference in behavior for the call
+> in acpi_dev_gpio_irq_wake_get_by().
+> 
+> Cc: Hans de Goede <hansg@kernel.org>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 
- drivers/acpi/apei/einj-core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Thanks, patch looks good to me:
 
-diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
-index d6d7e36e3647..f5cfa6310f0e 100644
---- a/drivers/acpi/apei/einj-core.c
-+++ b/drivers/acpi/apei/einj-core.c
-@@ -826,6 +826,10 @@ static ssize_t error_type_set(struct file *file, const char __user *buf,
- 	int rc;
- 	u64 val;
- 
-+	/* Leave the last character for the NUL terminator */
-+	if (count > sizeof(einj_buf) - 1)
-+		return -EINVAL;
-+
- 	memset(einj_buf, 0, sizeof(einj_buf));
- 	if (copy_from_user(einj_buf, buf, count))
- 		return -EFAULT;
--- 
-2.47.2
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+
+Regards,
+
+Hans
+
+
+
+> ---
+>  drivers/gpio/gpiolib-acpi-core.c | 24 +++++++++++++-----------
+>  1 file changed, 13 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
+> index 12b24a717e43f..1895e45bd9f16 100644
+> --- a/drivers/gpio/gpiolib-acpi-core.c
+> +++ b/drivers/gpio/gpiolib-acpi-core.c
+> @@ -291,6 +291,17 @@ acpi_gpio_to_gpiod_flags(const struct acpi_resource_gpio *agpio, int polarity)
+>  	return GPIOD_ASIS;
+>  }
+>  
+> +static void acpi_set_debounce_timeout(struct gpio_desc *desc, unsigned int timeout)
+> +{
+> +	int ret;
+> +
+> +	/* ACPI uses hundredths of milliseconds units */
+> +	ret = gpio_set_debounce_timeout(desc, timeout * 10);
+> +	if (ret)
+> +		dev_warn(&desc->gdev->dev,
+> +			 "Failed to set debounce-timeout: %d\n", ret);
+> +}
+> +
+>  static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
+>  						struct acpi_resource_gpio *agpio,
+>  						unsigned int index,
+> @@ -300,18 +311,12 @@ static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
+>  	enum gpiod_flags flags = acpi_gpio_to_gpiod_flags(agpio, polarity);
+>  	unsigned int pin = agpio->pin_table[index];
+>  	struct gpio_desc *desc;
+> -	int ret;
+>  
+>  	desc = gpiochip_request_own_desc(chip, pin, label, polarity, flags);
+>  	if (IS_ERR(desc))
+>  		return desc;
+>  
+> -	/* ACPI uses hundredths of milliseconds units */
+> -	ret = gpio_set_debounce_timeout(desc, agpio->debounce_timeout * 10);
+> -	if (ret)
+> -		dev_warn(chip->parent,
+> -			 "Failed to set debounce-timeout for pin 0x%04X, err %d\n",
+> -			 pin, ret);
+> +	acpi_set_debounce_timeout(desc, agpio->debounce_timeout);
+>  
+>  	return desc;
+>  }
+> @@ -1025,10 +1030,7 @@ int acpi_dev_gpio_irq_wake_get_by(struct acpi_device *adev, const char *con_id,
+>  			if (ret < 0)
+>  				return ret;
+>  
+> -			/* ACPI uses hundredths of milliseconds units */
+> -			ret = gpio_set_debounce_timeout(desc, info.debounce * 10);
+> -			if (ret)
+> -				return ret;
+> +			acpi_set_debounce_timeout(desc, info.debounce);
+>  
+>  			irq_flags = acpi_dev_get_irq_type(info.triggering,
+>  							  info.polarity);
 
 
