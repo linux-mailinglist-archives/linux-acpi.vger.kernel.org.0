@@ -1,90 +1,91 @@
-Return-Path: <linux-acpi+bounces-14607-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14608-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0101EAE89A1
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 18:23:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2198AE89EC
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 18:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D1AC3A3614
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 16:21:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 901ED189B444
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 16:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2BA026A1AA;
-	Wed, 25 Jun 2025 16:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7BA2BDC3F;
+	Wed, 25 Jun 2025 16:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HiVDlhRT"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="F6QbEofM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB89425C6EF;
-	Wed, 25 Jun 2025 16:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0FC1E1C3F
+	for <linux-acpi@vger.kernel.org>; Wed, 25 Jun 2025 16:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750868527; cv=none; b=aUmACAGe+jCKJp4Y1RvHnhonxX5kigTXqhOiyo7xUq8if0yvl02HKcnHKc/dJ8c6PLks3NjqZTtChKjTfgHwNkBQIDXIdwgio5XOvSH2ejWym5rltRtguhkfrWPg5UVr8bn55TqxfiJ0wRh6Lt4U6PzcQmKqwTDLTuZv6ixTNWM=
+	t=1750869289; cv=none; b=qOmF+Vq+bIzoHIfFPrWuNYvwz54jf9ga+ANhP8k8W4xwXALjTS/lZtDTRfT4lo/HBhtSOYBDxXhzgFz8C6lyz0BQW1XUBcRy+4BHIWZMRoAB28Mu6MlmJDyJzZZe4Ikd9kB3xKh5C0TxJ2uFyXF9JmALlImtSUALEgbLV/40F+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750868527; c=relaxed/simple;
-	bh=Ou8QHMFdgetDzK5dLd56qGIJObazJQu5Eap283Iz/b8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KKjtWN1n4RujQhQ8IO7k68UrBfUx8TxJSEgV0/JGfGS390gCnyco/0/AYG8CiWYQLBzD7tLjni8nHH3TqOd7F1BjTN9QDUHQ+U8PnoZjlOZs65tx/d5sF51VG58fNT/KkaS2b3gFHnh0FvB2e5s+xmITapgfHW5mos2Ch09Ya5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HiVDlhRT; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750868526; x=1782404526;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Ou8QHMFdgetDzK5dLd56qGIJObazJQu5Eap283Iz/b8=;
-  b=HiVDlhRTsEfeReLW4sNU9Lf8PYPIlsoq1/YKf+hGdfUEDYrTz6jhbnqm
-   RnszxQhiDKKNpHeuIGWcRIlaDqddMGNI05L1kPAORok4A1Q+yteErSZnn
-   6hWxCRLwcCXtxG5YKU8/P0pbr74Y64mxjw0TRlGgLGU8TsPbfE070a7it
-   UT6pIjJZoqnWag5lVtsmi2hAvsUKOCvdmWg8to0VRZKwTrmmrRotc5L0M
-   4blJvQ49ZgEJ3QrSYf4YqL3sOmoIffOZTvsPcwj26vLlra6+Gql3fnPvW
-   8pZfMrX+dy2G33qjkFQv4N9oZT+0rWJ88Liqe1hEJYinzddW3VYr8lIjm
-   A==;
-X-CSE-ConnectionGUID: Wtr9rhBcQfOoW3vkNHvryA==
-X-CSE-MsgGUID: STU5GK2lRhK6PpWlVReLCA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="53013152"
-X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
-   d="scan'208";a="53013152"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 09:22:05 -0700
-X-CSE-ConnectionGUID: HE36SdgBRouSxKN5A3ZuUA==
-X-CSE-MsgGUID: VNv6kMPsT8Gfurry55xSsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
-   d="scan'208";a="175913297"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 25 Jun 2025 09:21:59 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uUSsm-000TIU-3C;
-	Wed, 25 Jun 2025 16:21:56 +0000
-Date: Thu, 26 Jun 2025 00:21:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>, james.morse@arm.com,
-	linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, gregkh@linuxfoundation.org,
-	Will Deacon <will@kernel.org>,
+	s=arc-20240116; t=1750869289; c=relaxed/simple;
+	bh=+6wqgxxR7Me71qslHpVudiYavpXQSp6ulRA4pb2XVxU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=DAxGu80Tl+ftsbA7etdAmSwIswGK08LVCUUeTv8/Up5j1BRq3YOSL65+g9UXUcR06/iKX7Gik9czDhVFlgqN1brKXhtfjwe9I5rCdHZL3hC1XnB4TTQcyxGx3A4wjh7UC1BKXjDGqXuJi9/3TMKCbAx0N927H14VTjvR6WMrGec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=F6QbEofM; arc=none smtp.client-ip=209.85.167.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-408d14c7e92so75184b6e.3
+        for <linux-acpi@vger.kernel.org>; Wed, 25 Jun 2025 09:34:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1750869287; x=1751474087; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jrg5o6ZWqHe6BVlqH+ZmBJL3aCRbP2lK8tfCGzb7q8Y=;
+        b=F6QbEofMRVDnyk2LBARQTsljqJjMHBJKnGa40RaB1F5wyCfw45vKMCPxtlFqly40dq
+         OvRRlxZQieZj45OVU0OPdtXl4rfjWRG+NfGmHJNTXKjDFpXU2Jxz8OwENumSo5JrsZGm
+         7x0B9efNrVOjDtjRRbJ6uLQDRrI/H1V+sCTIt341SKrNrQSa5ORGbGtunCxfQ09rTy6R
+         Q/TjI5YPd/ELx+f5rOef4eOHvp2/gvi006lYQqVbAMPgkwt1MROHTxGDvAEwzNp5VudV
+         cHZhylbp3ZkXYS1ALaTGb9AoM9547EeBFOY5TRY8tJ9dRucTAwV1IVwrZhu+wCFrhT2d
+         sm9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750869287; x=1751474087;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jrg5o6ZWqHe6BVlqH+ZmBJL3aCRbP2lK8tfCGzb7q8Y=;
+        b=uZ1uwbq/qtND5lNQB1b5G1eNE0r9dARjjTCFVcda4BT7zbbSkaeCZre1kf4j4D0O5M
+         va3bmcvbVG1sjXR/H5V4VWPrcy0zSp+DYONBuh21xAORil9MXCCAYdcgOwxhUGv47jAR
+         ngyjdyzuZnbqmsVXsXgHf0BggKwkuvvOaPY290aat4WJBhkyHRYWpo4F3n/UUugZkZp4
+         KdBdwLQtlndtyfJzMoz+z9NYxlOSQchhCCzcfk2q1hrBpV/Q0kEUDbnuwlvE6/AtANP6
+         kKlOGEI1XAWrX2lEFZfhwNNTCaBndV9cqNll4MigF1llVOWWmLnKw5Cr4fvd18V/CWhd
+         6rbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXLelj8tMddgzrsZsU4HxpJbWaPPQZruTxjdiLW6oYO0diNBpBHrsot3vj8ZR1R9LETsfMpcI2CKgsm@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2P8mouxqku929fxNAfWfK+Tjq8fyHUIqICAwivpKvTpyQDd99
+	tEK1leKkaGUDPdf0OV6DraSFIyRUGRrnxzHNthMnYxBel2MRWF1ZsSefSnNU6o82/QQ=
+X-Gm-Gg: ASbGnctpX0YFyoWLApQ7MexMqU0+7GVi/NWlkcUXLL1SB7jNqJIyV8pstIb6PTeUPqy
+	rpyJs0M9zSWvi8BKNBZh8ObRRPx0Cclf39nWwEF2UauBhNkAwM9Pn9gognKae4RJUzxzFj8WCf8
+	kxUR1ya4eeOkqM1rMck5ZYTke5lUul84cfKsALyJ5WyCPTDJX5m/cp36Vcf1PMdrmfwc50NzSXr
+	EPiG8deNTTNRiOOKOEwaQ/5q7xQoBxXTOJieRLlj/mNVmW8zIwjbzaB+ihB80G3KNI7i+LKfbVG
+	71rqFIppR2tIAuESlKpWM5w/XPk0GGUo9rSceK+Dd9Xid/CG3a44qjtaVQ8s9LqOU+apP/EARXa
+	pkiBs
+X-Google-Smtp-Source: AGHT+IFVf2/OzoPY+jIiHiAS31rkntvWB5bTPdOgIz/Ycy0xkSwP2Hh43icKnrjelMBdDXYuYTI8ww==
+X-Received: by 2002:a05:6808:1898:b0:40a:a417:b62e with SMTP id 5614622812f47-40b05bf6ea8mr3342994b6e.21.1750869287243;
+        Wed, 25 Jun 2025 09:34:47 -0700 (PDT)
+Received: from localhost ([2603:8080:b800:f700:1fca:a60b:12ab:43a3])
+        by smtp.gmail.com with UTF8SMTPSA id 5614622812f47-40ac6d11be3sm2283728b6e.37.2025.06.25.09.34.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Jun 2025 09:34:46 -0700 (PDT)
+Date: Wed, 25 Jun 2025 11:34:38 -0500
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Zaid Alali <zaidal@os.amperecomputing.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>,
+	Borislav Petkov <bp@alien8.de>, Ira Weiny <ira.weiny@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Dan Williams <dan.j.williams@intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>
-Cc: oe-kbuild-all@lists.linux.dev, Yicong Yang <yangyicong@huawei.com>,
-	linuxarm@huawei.com, Yushan Wang <wangyushan12@huawei.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, H Peter Anvin <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH v2 5/8] arm64: Select
- GENERIC_CPU_CACHE_INVALIDATE_MEMREGION
-Message-ID: <202506260055.YivRG9iE-lkp@intel.com>
-References: <20250624154805.66985-6-Jonathan.Cameron@huawei.com>
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH v2 next] ACPI: APEI: EINJ: prevent memory corruption in
+ error_type_set()
+Message-ID: <c71e7ba6-f127-4f49-acbf-20063dd26553@sabinyo.mountain>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -93,58 +94,39 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250624154805.66985-6-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email haha only kidding
 
-Hi Jonathan,
+The "einj_buf" buffer is 32 chars.  Verify that "count" is not too large
+for that.  Also leave the last character as a NUL terminator to ensure
+the string is properly terminated.
 
-kernel test robot noticed the following build warnings:
+Fixes: 0c6176e1e186 ("ACPI: APEI: EINJ: Enable the discovery of EINJv2 capabilities")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+v2: I messed up the sizeof() calculation in the copy_from_user() and I put
+    the parentheses in the wrong place in v1.
 
-[auto build test WARNING on driver-core/driver-core-testing]
-[also build test WARNING on driver-core/driver-core-next driver-core/driver-core-linus arm64/for-next/core linus/master nvdimm/libnvdimm-for-next v6.16-rc3]
-[cannot apply to nvdimm/dax-misc next-20250625]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+ drivers/acpi/apei/einj-core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jonathan-Cameron/memregion-Support-fine-grained-invalidate-by-cpu_cache_invalidate_memregion/20250624-235402
-base:   driver-core/driver-core-testing
-patch link:    https://lore.kernel.org/r/20250624154805.66985-6-Jonathan.Cameron%40huawei.com
-patch subject: [PATCH v2 5/8] arm64: Select GENERIC_CPU_CACHE_INVALIDATE_MEMREGION
-config: arm64-allnoconfig (https://download.01.org/0day-ci/archive/20250626/202506260055.YivRG9iE-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250626/202506260055.YivRG9iE-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506260055.YivRG9iE-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/base/cache.c:31:5: warning: no previous prototype for 'cpu_cache_invalidate_memregion' [-Wmissing-prototypes]
-      31 | int cpu_cache_invalidate_memregion(int res_desc, phys_addr_t start, size_t len)
-         |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> drivers/base/cache.c:41:6: warning: no previous prototype for 'cpu_cache_has_invalidate_memregion' [-Wmissing-prototypes]
-      41 | bool cpu_cache_has_invalidate_memregion(void)
-         |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-vim +/cpu_cache_invalidate_memregion +31 drivers/base/cache.c
-
-b51d47491c68ae Yicong Yang 2025-06-24  30  
-b51d47491c68ae Yicong Yang 2025-06-24 @31  int cpu_cache_invalidate_memregion(int res_desc, phys_addr_t start, size_t len)
-b51d47491c68ae Yicong Yang 2025-06-24  32  {
-b51d47491c68ae Yicong Yang 2025-06-24  33  	guard(spinlock_irqsave)(&scfm_lock);
-b51d47491c68ae Yicong Yang 2025-06-24  34  	if (!scfm_data)
-b51d47491c68ae Yicong Yang 2025-06-24  35  		return -EOPNOTSUPP;
-b51d47491c68ae Yicong Yang 2025-06-24  36  
-b51d47491c68ae Yicong Yang 2025-06-24  37  	return scfm_data->invalidate_memregion(res_desc, start, len);
-b51d47491c68ae Yicong Yang 2025-06-24  38  }
-b51d47491c68ae Yicong Yang 2025-06-24  39  EXPORT_SYMBOL_NS_GPL(cpu_cache_invalidate_memregion, "DEVMEM");
-b51d47491c68ae Yicong Yang 2025-06-24  40  
-b51d47491c68ae Yicong Yang 2025-06-24 @41  bool cpu_cache_has_invalidate_memregion(void)
-
+diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
+index d6d7e36e3647..2206cbbdccfa 100644
+--- a/drivers/acpi/apei/einj-core.c
++++ b/drivers/acpi/apei/einj-core.c
+@@ -826,8 +826,11 @@ static ssize_t error_type_set(struct file *file, const char __user *buf,
+ 	int rc;
+ 	u64 val;
+ 
++	if (count > sizeof(einj_buf))
++		return -EINVAL;
++
+ 	memset(einj_buf, 0, sizeof(einj_buf));
+-	if (copy_from_user(einj_buf, buf, count))
++	if (copy_from_user(einj_buf, buf, min(count, sizeof(einj_buf) - 1)))
+ 		return -EFAULT;
+ 
+ 	if (strncmp(einj_buf, "V2_", 3) == 0) {
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.47.2
+
 
