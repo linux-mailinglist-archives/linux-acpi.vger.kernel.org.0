@@ -1,45 +1,46 @@
-Return-Path: <linux-acpi+bounces-14619-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14620-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3158CAE8C0F
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 20:13:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9613AE8C15
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 20:14:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D483A3B6AF7
-	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 18:13:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17B3718998EB
+	for <lists+linux-acpi@lfdr.de>; Wed, 25 Jun 2025 18:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0C02D5C8B;
-	Wed, 25 Jun 2025 18:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E7A2D8789;
+	Wed, 25 Jun 2025 18:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XHnfUBdM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZvrcL3GG"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783B91DDC23;
-	Wed, 25 Jun 2025 18:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1A42D663F;
+	Wed, 25 Jun 2025 18:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750875229; cv=none; b=TrEQXN8RLTf6+ujMaH746VTA3ouGiOQbsM/198WTAk9DLLOg/AbVViNiHoznl01F+zfMHOVOQ3+hLU89BAWjb2NfaVOY0IdZ8Wi3m+C54rjn61ZblAmybq8VzPbfB51gjKLPE+QPuatGzujJd5iIyrpRVC0BvMhxpVNXQ+bVelE=
+	t=1750875230; cv=none; b=WHRGV4k4ctCah/lp13CLIz5KM8dbOYPofQstwrstAZIpXuckkz+BN4f8pbyknITxun6WbfQTGB2hwG9t/rYCymUw8X2lhDLsKo4xnxNCKEugieFn+78F+D5NR8j0B3DZzgXX+NImHUiixCIv5oLQxOu9DyOGGcV0HNFNX6eyEcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750875229; c=relaxed/simple;
-	bh=9Im5M2S8mlD2pXkykOB+QJIaR/5k4oONgap9yEggcXI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MJTi9ezScGwDkKEOWECfL4Y6S4gLYdSsig4ragc7ZKtslJnmWmiiGsfn1kt7/ocj1Sk2MowLPPFI/3oDuSZf2RqpKevYZBrlEdhJA4m2jfIjvlL3dBYm6dmaM2ViSNiVsjBPcx2X+5Mo7QX/IkSL/pgRZyCljuVLP+sTo44GVig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XHnfUBdM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0A8C4CEEA;
-	Wed, 25 Jun 2025 18:13:47 +0000 (UTC)
+	s=arc-20240116; t=1750875230; c=relaxed/simple;
+	bh=mb/3i/lDJ5rX96P4Q2bvnD9bITtVi/z63alFGix49io=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nMFng0ThqMrOgpxahXWmmMv43R4HfCVQDo4XVwP2VcBtZq6FIw31rAQA9Dt1tNjhQKybBwf2WbAdePtEQjzI79vdTchZgoJSAy2CQIZlYUAeBnT0AOHZJc5NQHPVJm/YW6V39NEfPjSirezk9SW6uPgCjo843Gk9EYiIBhuKFFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZvrcL3GG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF3EC4CEF0;
+	Wed, 25 Jun 2025 18:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750875229;
-	bh=9Im5M2S8mlD2pXkykOB+QJIaR/5k4oONgap9yEggcXI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=XHnfUBdMGsSmFYJdp/T6JXkW7DnIsO/NiSpIw9DyZT0Szy22sbpwExmBaDtOXBery
-	 3+SSP0vWIYC3zadLUklxlC/WH/f5DSiUZ9HdvVJHVBS7uSgiW6z9XOqYeZJjvJbV+N
-	 zs9o3ncrHu8ANEHCvcWegdG58IGd8sIu5gDU2TpQJoVdD1U5JLSSZHWE0eWH90su1n
-	 aQPx4ut8FmkKeE+c6TMxVO9K5Z9ijW4efGmktk5EAMcwJMUSDyOqyrnNeXuqeIp1HM
-	 y2PG7xvcK+vn6kN6rP/1H/yWQrZceqPbDE4yyXw9W+5bUE2uyxwAkMMrAAE/ZH0AlP
-	 lDFpSsZLoXmhA==
+	s=k20201202; t=1750875230;
+	bh=mb/3i/lDJ5rX96P4Q2bvnD9bITtVi/z63alFGix49io=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZvrcL3GG+ahqPBaAf6bTgPmLTgv6W6/ibHK+rm7S0ngtM/L8cwn9B48CsmX7TJHeM
+	 n8jLnzWeKqTo9vGs9CTA4Lj23M27uhsRNjDQ2XIB5khbURsWwlysfyAGiDg9EtP1Z8
+	 j10RrPAo1NAvUWdXuS5YULf/jB25AMfymg8b1bPe4L/biFhNV/rNDagzDj/5oHmqGa
+	 35EnEbQKAS7C48gAxN6wBMfRk5n5V8OReRWrnndotQ7+oH/ViiF7mPFDyufRKWOIOR
+	 P0THkKuKfhakMUWjiJ5EQfL5b13Y6pG8erxx29CKSEof0T1T9s8khKSY+nH8Rc9J4J
+	 CwRCMembYonPA==
 From: Mario Limonciello <superm1@kernel.org>
 To: Hans de Goede <hansg@kernel.org>,
 	Mika Westerberg <westeri@kernel.org>,
@@ -52,10 +53,12 @@ Cc: linux-gpio@vger.kernel.org (open list:GPIO ACPI SUPPORT),
 	linux-kernel@vger.kernel.org (open list),
 	linux-input@vger.kernel.org (open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)...),
 	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v2 0/3] Fix soc-button-array debounce
-Date: Wed, 25 Jun 2025 13:13:39 -0500
-Message-ID: <20250625181342.3175969-1-superm1@kernel.org>
+Subject: [PATCH v2 1/3] gpiolib: acpi: Add a helper for programming debounce
+Date: Wed, 25 Jun 2025 13:13:40 -0500
+Message-ID: <20250625181342.3175969-2-superm1@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250625181342.3175969-1-superm1@kernel.org>
+References: <20250625181342.3175969-1-superm1@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -66,37 +69,71 @@ Content-Transfer-Encoding: 8bit
 
 From: Mario Limonciello <mario.limonciello@amd.com>
 
-I have some hardware in front of me that uses the soc-button-array
-driver but the power button doesn't work.
+Debounce is programmed in two places and considered non-fatal in one of
+them. Introduce a helper for programming debounce and show a warning
+when failing to program.  This is a difference in behavior for the call
+in acpi_dev_gpio_irq_wake_get_by().
 
-Digging into it, it's because the ASL prescribes a debounce of 0 for
-the power button, but the soc-button-array driver hardcodes 50ms.
-
-Hardcoding it to what the ASL expects the power button works.
-
-I looked at the callpath into the GPIO core and I believe it's
-because the debounce value from _CRS is never programmed to the
-hardware the way that the GPIO gets setup.
-
-This series add that programming path and then sets the hardcoded
-value on on some quirked systems.  Hopefully Hans can confirm this
-continues to work on the hardware that he originally developed the
-hardcoding for.
-
+Cc: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
-v2:
- * Add a helper for making ACPI debounce program nonfatal
- * Use a quirk instead of a revert
+ drivers/gpio/gpiolib-acpi-core.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-Mario Limonciello (3):
-  gpiolib: acpi: Add a helper for programming debounce
-  gpiolib: acpi: Program debounce when finding GPIO
-  Input: soc_button_array: Only debounce cherryview and baytrail systems
-
- drivers/gpio/gpiolib-acpi-core.c      | 25 ++++++++++++++-----------
- drivers/input/misc/soc_button_array.c | 21 ++++++++++++++++++++-
- 2 files changed, 34 insertions(+), 12 deletions(-)
-
+diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
+index 12b24a717e43f..1895e45bd9f16 100644
+--- a/drivers/gpio/gpiolib-acpi-core.c
++++ b/drivers/gpio/gpiolib-acpi-core.c
+@@ -291,6 +291,17 @@ acpi_gpio_to_gpiod_flags(const struct acpi_resource_gpio *agpio, int polarity)
+ 	return GPIOD_ASIS;
+ }
+ 
++static void acpi_set_debounce_timeout(struct gpio_desc *desc, unsigned int timeout)
++{
++	int ret;
++
++	/* ACPI uses hundredths of milliseconds units */
++	ret = gpio_set_debounce_timeout(desc, timeout * 10);
++	if (ret)
++		dev_warn(&desc->gdev->dev,
++			 "Failed to set debounce-timeout: %d\n", ret);
++}
++
+ static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
+ 						struct acpi_resource_gpio *agpio,
+ 						unsigned int index,
+@@ -300,18 +311,12 @@ static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
+ 	enum gpiod_flags flags = acpi_gpio_to_gpiod_flags(agpio, polarity);
+ 	unsigned int pin = agpio->pin_table[index];
+ 	struct gpio_desc *desc;
+-	int ret;
+ 
+ 	desc = gpiochip_request_own_desc(chip, pin, label, polarity, flags);
+ 	if (IS_ERR(desc))
+ 		return desc;
+ 
+-	/* ACPI uses hundredths of milliseconds units */
+-	ret = gpio_set_debounce_timeout(desc, agpio->debounce_timeout * 10);
+-	if (ret)
+-		dev_warn(chip->parent,
+-			 "Failed to set debounce-timeout for pin 0x%04X, err %d\n",
+-			 pin, ret);
++	acpi_set_debounce_timeout(desc, agpio->debounce_timeout);
+ 
+ 	return desc;
+ }
+@@ -1025,10 +1030,7 @@ int acpi_dev_gpio_irq_wake_get_by(struct acpi_device *adev, const char *con_id,
+ 			if (ret < 0)
+ 				return ret;
+ 
+-			/* ACPI uses hundredths of milliseconds units */
+-			ret = gpio_set_debounce_timeout(desc, info.debounce * 10);
+-			if (ret)
+-				return ret;
++			acpi_set_debounce_timeout(desc, info.debounce);
+ 
+ 			irq_flags = acpi_dev_get_irq_type(info.triggering,
+ 							  info.polarity);
 -- 
 2.43.0
 
