@@ -1,116 +1,113 @@
-Return-Path: <linux-acpi+bounces-14667-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14668-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D971AAE9391
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 03:04:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B0AAE946A
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 04:51:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65D5D188C3A0
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 01:04:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 195784E1723
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 02:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01722157493;
-	Thu, 26 Jun 2025 01:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858211CDFAC;
+	Thu, 26 Jun 2025 02:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E2NliNVE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nVfYZB59"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0312F1FF1;
-	Thu, 26 Jun 2025 01:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90392191499;
+	Thu, 26 Jun 2025 02:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750899831; cv=fail; b=ZGTDd36FJQ4bJcsayPXj7FflOAlQQ0COlq6wxbsNQJlqQLSl5GO5OBjIReMVioopaqAKUlOU49AqutCgYb8znUR83Ew7VhSK4aRy3bTtzzrnMSWCZLTpSfhDqZhg+BTEijPXO8eWIkE+mgACVI0c5S0MC9hh96i6B+sv6mP063M=
+	t=1750906287; cv=fail; b=VxIPHbCnNyqaLZ4jhK4aD/wd7U0cWFBlV4w84xUUi+4zZXMPxjKGIJlxG5BjMcX9zCqC4e0SAg60QrLWGEuHcndcPq8C6mKL4j+bH7A5NEUWdw8lWXyHyMoJghztvQ9598eW0dmvHnXnbK+zcIErv4n/WgxoMbBKtK6UAdkn0iQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750899831; c=relaxed/simple;
-	bh=jtXPTKsiCXYhBWIUkDcapLni2QU7yICASGShaEIDhsg=;
-	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
-	 Content-Type:MIME-Version; b=so9QvdsRfX8/LiIeqROC11x6fIQNHbmaIK5APrEcgYR+jzt4hGw5ofUltTegtHBvnw4Mvlbt8cBjrZVdmSOf3OpAKyHi/IdyJ2hwzX8StC+kHEajF4HubePQRHwsM75ZJ7YUN/MOQ+DSMeygttZNlRAMOe7ox+yU4Z7iJmpoFoM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E2NliNVE; arc=fail smtp.client-ip=192.198.163.13
+	s=arc-20240116; t=1750906287; c=relaxed/simple;
+	bh=8MkxAudyw7bJnlXbxV77pa2Qp42rSrZAlhm3aE67oyk=;
+	h=Date:From:To:CC:Subject:Message-ID:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=CG5UsG6MStaHxJSVupAIa5VHk7KCXRWFekc+/5+q2yZ29M5ursTAQ+EKOS/X7aFHlUHjTqgUZTgwsYPIeWFK/GmCkd2O+ZYZ9W0lRqmhJLxA1YSZ6W+h4sfnSmKQGnBrE7B0DKxRMpH0OqnF9UR0J+IfDVT3/eMKAgQggz4yT1s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nVfYZB59; arc=fail smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750899829; x=1782435829;
-  h=from:date:to:cc:message-id:in-reply-to:references:
-   subject:content-transfer-encoding:mime-version;
-  bh=jtXPTKsiCXYhBWIUkDcapLni2QU7yICASGShaEIDhsg=;
-  b=E2NliNVEtrbggGbeJDJXNlQ89jxHIm13LWnhWahOuDzZLLhas/SiVR+J
-   OnmDyogvQyJUMLAKIiAKH+8d5PRGI3fPI7MSm8n5A2KNmR+S44tkfWkcN
-   Mqb1xHKGFne8wzVb0epnQlaIK6F8LTLJ5TS27bTj73bHveHQoVCzoPfYU
-   iGyXzsUf+c2aT7M8Bdrdqo8nudJWS+j+l3FYwyNld8vrvEml1hWtxT3vL
-   65XauKMAK5u6W4xpOLEOhK0zPAE8KR+KRtwpm8netc3dTX9+VD90ssX9m
-   ZadOASZxHTrtPuzGtQMyVzeECv7MXFJSA1ArdnyRtDaoiJPlenFD3CSQv
-   w==;
-X-CSE-ConnectionGUID: sAD/I7DrR5i3IFMUjxh6zA==
-X-CSE-MsgGUID: aDS/4+hpREiZ8DbGOyPQnQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="55812410"
+  t=1750906284; x=1782442284;
+  h=date:from:to:cc:subject:message-id:in-reply-to:
+   mime-version;
+  bh=8MkxAudyw7bJnlXbxV77pa2Qp42rSrZAlhm3aE67oyk=;
+  b=nVfYZB59oTMbXVxUZnuCL72aci93u73SezOJWLeRByqFAOLSLsdmwlRp
+   gkjus2HSriBQEe+lXwKxn8ABPQY2kZkYXuJhivtnWEJw1ZuknUn3pOVzO
+   4lKRmQtqyg6uXYrJ5oK/2aVLHc4IIm7VqGO5JMLu05biTy38XZfbDo/80
+   wpuL2pkAKXseixWJwOAG+3h/Rxy3aW0jUhvDEK3HedcTlYfO/wn9lLDAc
+   9mnkSziZ6N2fetkBYW8k40oBdindDzAN+5G7i1fQmcFpa7nqB+Dq3Hn6W
+   1jUvh5LqCelh4na3CsS6tDOXy4II0rDo5ya6icqsEZdvTqXuQSZJINBUJ
+   Q==;
+X-CSE-ConnectionGUID: UpF6reQTRlW6lahKcPRtmA==
+X-CSE-MsgGUID: GtGectsXTL6RZUUFbjyM2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="53334484"
 X-IronPort-AV: E=Sophos;i="6.16,266,1744095600"; 
-   d="scan'208";a="55812410"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 18:03:48 -0700
-X-CSE-ConnectionGUID: dZdx0Q/kQmm0F5+YsCRg+Q==
-X-CSE-MsgGUID: vG3q/39XRXirlL2mBl4Y1Q==
+   d="scan'208";a="53334484"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 19:51:24 -0700
+X-CSE-ConnectionGUID: 0N5VrHWfQtmbWdSWU611Kw==
+X-CSE-MsgGUID: ZtbXnP11QNaz5OXUlb5JPA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,266,1744095600"; 
-   d="scan'208";a="151986889"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 18:03:48 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+   d="scan'208";a="156653129"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 19:51:23 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 25 Jun 2025 18:03:47 -0700
+ 15.2.1544.25; Wed, 25 Jun 2025 19:51:23 -0700
 Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Wed, 25 Jun 2025 18:03:47 -0700
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (40.107.96.47) by
+ 15.2.1544.25 via Frontend Transport; Wed, 25 Jun 2025 19:51:23 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (40.107.94.63) by
  edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 25 Jun 2025 18:03:45 -0700
+ 15.2.1544.25; Wed, 25 Jun 2025 19:51:21 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oiQ6+lccChhkIEGjuta/wIxvFqUKNXSsmM8goYfd/V0JGcaBKxphnYABdKv/8Ez15F81a4OFncLgoEplfDvhStH+WmF3GGl28XhwR6L3o9NeQQ805xKvTL1wCOUt7feGXpB5H6prxoen93X6Gm4lRt8ox1UPYVF8SJpZ0sEg/6/88CTw63Mt10ltEs+UWcWhZfKe3XEjKoz1QJPwUMsLG7mNdiZQ6SmtrPfEHZEjlwTpLFN4fblEcpTAf+WimlFwXUVp3h7447hT0t7DUJIFHfqn7PHLmeRuhS3p2QVeBO1W1WHME6eESR9my4kEqdHp9koIxfPzkuVmXWU1N3Gr6w==
+ b=AEZHe8NZ55bUk5WyxmyktZp9UTdRsMODvPSxLL8rvtI1zDdW9wk9VpeTjGR1/uQnoz+Lxg58FvrzBV2OCrhK9c2CwrJ+Xp0OE/9+Wx7FvgMLL1+/dtb/lnJybv9QZ9yH0Nq3IKHyM+5uL9BuruA8ihz1Ew/DBFx5zI5d8y3331JkW46R0wK3YcI5A3WpiFcI6tMX+4dlgXOrCH9Dk9mRISJBLgH6GC03PF6C0IJ6VRk1qGunb9DEb8bLmln+vG6BRMZfPO5BXR1SywkP1KarNnotL/CXef3vsHmai/e7gkk+ayWPwIG/EfGMKaTU0rdwdif8CiEBpE858qPlrkZPWg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B9ZeS2dfQbJmZqNbk7DvehYi8KtPx8Z7e8ckRK5jZhU=;
- b=GWs82GOWjUZh9azlkNwsuPIoV4fx7POsfqaDC/owqgCEa012RJ/HuHT8i+hERVqiuknSKcyNJVBRlXbCGbfMSmGZ2Sh9p/YwhAcfskxOvaciFLUjh2NJDBYg3veenxSQ1zPAx/BojM/bhS1y6FY++knLc57aoiMVcRpSCRAyzhti2R1U/LTEjff8mHKffAhqz+iyLUFgTT5Y8pyP0N8G1PaAeI6jI8BdvycQ+e2xSUD25Xep5lvkYnYOuvcmozN3ScjsDMVnWt8rbmutOW+AdqlOi4VCHC/AFDyc6/fb+ezF1OEI8lZHQEFzrWUII7Mp4do+NfsnyriDWZR8OWCPng==
+ bh=tBTTR1HjK6Op2oUEIh7uuFyr4baX5gKyWEeZUgSl8XY=;
+ b=BjLjWpGtr5YTOy8DSCakDY17LVMb3nwTybVWQNRQrgJloAxlF57oHxsMX9URL+OreyZv9oEC5mAlS8Mnr3xlnsexyST9JvOrgW6TdidbdEo8sMqo432jyf3wWptSmVaXUT9d6SvdpDIXHUoTFbZ6LC78+6+iUOoySzWAlEzotAWAuzGodlawkNMGkHvsg2AgAn1knubukHBC4uFO0LfXeXQ5yddHjs1QFN0vc3jwEi8wteU0E2I9TsiYgO6x+jhA1pFlD38GZVpc1mKykN7AdDOtoXcF/kZDRtVk9x5Wwqth0oJR/PUj2B/px5QSti4YvaFbF1uDFVCJAjomDZd7Hw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SA3PR11MB8118.namprd11.prod.outlook.com (2603:10b6:806:2f1::13)
- by PH7PR11MB5982.namprd11.prod.outlook.com (2603:10b6:510:1e1::20) with
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
+ by MW5PR11MB5761.namprd11.prod.outlook.com (2603:10b6:303:195::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.17; Thu, 26 Jun
- 2025 01:03:16 +0000
-Received: from SA3PR11MB8118.namprd11.prod.outlook.com
- ([fe80::c4e2:f07:bdaa:21ec]) by SA3PR11MB8118.namprd11.prod.outlook.com
- ([fe80::c4e2:f07:bdaa:21ec%6]) with mapi id 15.20.8857.026; Thu, 26 Jun 2025
- 01:03:15 +0000
-From: <dan.j.williams@intel.com>
-Date: Wed, 25 Jun 2025 18:03:13 -0700
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>, Kees Cook
-	<kees@kernel.org>, Dan Williams <dan.j.williams@intel.com>, Vishal Verma
-	<vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, Ira Weiny
-	<ira.weiny@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
-	<lenb@kernel.org>
-CC: <nvdimm@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, "Gustavo A. R. Silva"
-	<gustavoars@kernel.org>, <linux-hardening@vger.kernel.org>
-Message-ID: <685c9c515ffd8_1608bd1004d@dwillia2-xfh.jf.intel.com.notmuch>
-In-Reply-To: <aFxtOLs6Yv_uzgt4@kspp>
-References: <aFxtOLs6Yv_uzgt4@kspp>
-Subject: Re: [PATCH v4][for-next/hardening] acpi: nfit: intel: avoid multiple
- -Wflex-array-member-not-at-end warnings
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR05CA0031.namprd05.prod.outlook.com
- (2603:10b6:a03:33f::6) To SA3PR11MB8118.namprd11.prod.outlook.com
- (2603:10b6:806:2f1::13)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.28; Thu, 26 Jun
+ 2025 02:51:20 +0000
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c]) by LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c%3]) with mapi id 15.20.8857.025; Thu, 26 Jun 2025
+ 02:51:18 +0000
+Date: Thu, 26 Jun 2025 10:51:07 +0800
+From: kernel test robot <oliver.sang@intel.com>
+To: Brahmajit Das <listout@listout.xyz>
+CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, <linux-acpi@vger.kernel.org>,
+	<linux-hardening@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<rafael@kernel.org>, <lenb@kernel.org>, <lv.zheng@intel.com>,
+	<kees@kernel.org>, <rui.zhang@intel.com>, <len.brown@intel.com>,
+	<oliver.sang@intel.com>
+Subject: Re: [PATCH] ACPI / sysfs: Replace deprecated and unsafe functions
+ with sysfs_emit
+Message-ID: <202506261036.895ef959-lkp@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20250624133739.25215-1-listout@listout.xyz>
+X-ClientProxiedBy: SG2PR01CA0185.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:189::19) To LV3PR11MB8603.namprd11.prod.outlook.com
+ (2603:10b6:408:1b6::9)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -118,423 +115,195 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR11MB8118:EE_|PH7PR11MB5982:EE_
-X-MS-Office365-Filtering-Correlation-Id: 61df2412-f74c-48a1-e8a6-08ddb44d3b1b
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|MW5PR11MB5761:EE_
+X-MS-Office365-Filtering-Correlation-Id: 606d6bf1-5bff-4411-0eee-08ddb45c5323
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZUVadG44UjZpU1ZVemlRYWRsejdHcVlqOTUxSVBZK29MMTU5Z20vcmZUeWRS?=
- =?utf-8?B?NDc0eFoyOXB6QU9jQk1zVUhJOEY3NFhJbk5aVmkxbVdJS1JPbHlmSmVuTGhW?=
- =?utf-8?B?eGVvMlZEOGd2NGcwY0haazFrbU93QWgvSjA1K3JNSlNZOFBaSkg0cGpyN2tP?=
- =?utf-8?B?dVp4OFBnakVDMU12bGNkZjNtMldlQ2pjS2ZwMnViVGRiYVhQTVJZaXhtZUYw?=
- =?utf-8?B?K1lmQllBb1Y1TTIyb1RuL3lzbUp3VzRIN3c0Vjgxd2NES1RzTjAyekw2Vzlr?=
- =?utf-8?B?OTRJeWdIZ1VNZ2NTSU9xR3FOaFZTa3hEZXVSZmU4clMrbWRGUERCZ2liVXcw?=
- =?utf-8?B?NERhY0t6YUVQOGVXS001cGpPZWNhK0hLN05lNlpXUzZTNC9ZdTkwUjJwdGJB?=
- =?utf-8?B?ZDVwOUNhWGJqbXpJbmk3a3FiY01UcGg1alVYNXVGUEk4dXhtVlBrMjhhWEU3?=
- =?utf-8?B?QXc0NFFnZXVKTmJGdlZCN3BPY3NzMmJtQmZpY2xTSERKVmZGc0RrWHFWcWtD?=
- =?utf-8?B?c1lBZFlsdzRBRG9mT1A2ZC82N2RjTHNGT3Q1RFpVMlZKRk5QL2hZSllkUXVs?=
- =?utf-8?B?RnVrc3RjUjNRYXB1b09VYUJDV0hOcC8yQkZWU0I2aG9VNTBNVWpWMitsWDFa?=
- =?utf-8?B?UjBBbUhYaE0zVTJ6enJ0K0wwNG9Cb3ZtbHc3bTJNUzl0bDBzWGo0TDNzSm1q?=
- =?utf-8?B?Nm9PaFdTSE14VStpRFlwUmJJbVJUVkloZFZibjA1NlE2cGpjRUNSU3hYZUxC?=
- =?utf-8?B?SjZmU1F4YUxNS05DL2V4YTF5amFjYVhXUHp1OVpjVzRRZjlXZXczSy90Uld5?=
- =?utf-8?B?QnVlWWVGb3hmWG00aGdCMmFTeG4vNG8yM20zRnJCSjlrd2NXUkFLUkQ1cnRr?=
- =?utf-8?B?d0JOWEJrb1BnYkY4MWtXM0ZsM0tDV0lOaU1aZDRiZzg0TkZKZFVSdXBMUWZL?=
- =?utf-8?B?Ly9oWGNFbyt3VHZWOEg5RUE0ODMrSmRtWnlqMFJVdkNHTWdtNExYdXlxR0J4?=
- =?utf-8?B?QmxablgycEF3a3U0R3A3VnhYMXYwZzVBM2JSYis4d2Y1QytQaFRCWmM5MytI?=
- =?utf-8?B?VEQ4VmZBWlpaait1aVE4Vk1rbXNkQUsrbUpYVzdmeFlocFVuVnpCWGtPYXZK?=
- =?utf-8?B?WkpxUkpQWS9kOWNoWWFUMENmMjVIMWcySW5EaFhRaW9Ud2tnZnZCRUR5T0ll?=
- =?utf-8?B?a1VobW1aQ09EdTBMYzhJeUlUeWVWcHZ1MTI4K3k0RUpUMDRCQ21jR29ncjBw?=
- =?utf-8?B?NFc2dHJVamQ4c3pCVzhVRE51cEhQS0piZjZRNkIwOGNkbFczK0Nzd2puQklM?=
- =?utf-8?B?enJkczZOazRjbko4SmdWTFRldXJ4UGdvWXpDeThYSFJPNXdmWGN4Mk1oNWlY?=
- =?utf-8?B?YkkwNWp6ckc4OXNUdGNNZndFam9pdElXTHEwZWZOazM3TGcrbUF0VXRFVGFY?=
- =?utf-8?B?MjROM1k2ZXU4OHU1UTQ1V0dzSzBxSGFUMWFPOWtJMHlmL056dnRLZ2hPT3ox?=
- =?utf-8?B?L084RjZvdTRYNlJRd05yRUNFcEREYkw5R2k1L24wNUtqTldVOUpvNG9raXRT?=
- =?utf-8?B?OVNuOEZFTnBiUjRNMC8yN1IzYUVRTXVkd2ZWZ1NWTmR5KzhjRmhPRVhnV1Z2?=
- =?utf-8?B?L3Fya3lOb2VCZG4rSFBaSkZKMGl5ZVA2UVRkVGV2T1Vjdm5SSjc3azhYMDVY?=
- =?utf-8?B?THppUUtlNGlqU2NHUVJIOUNBZ0g2WEs5MTVCaUFLU0xzWVNGa3lya3p2c2Zq?=
- =?utf-8?B?MzExcW5lZzFGS1JtLytLRTAwNmhUTDBGSWV4TUlCazArN3hsTW4wemtRUm1W?=
- =?utf-8?B?ZVNQOTZlanBoOUdnZC9ieDZmU1NkVjNDcmFhTnNROHdLQ0h1aThEcGZJb0FC?=
- =?utf-8?B?RTlaQ0NTYjlWMi9leGlGaHhDMitoRXgwTFIvYXNGTXJ6ako5RlZGdGRNUXNv?=
- =?utf-8?Q?LGug5AfQTQY=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR11MB8118.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?+FrBFrGt4NsDEyy57PHrTEo824pl9kaypt/JEiH4MMer0yRGq4L/Jp/ZXR02?=
+ =?us-ascii?Q?2oevUSh8c5qCEohPnSsb3aR6dtYgR0iPb9v5b8njuqKx5MyLCdUoyuNwQIEO?=
+ =?us-ascii?Q?7xxOWvnFVFGDGkwh2hFma0YBn5ydsC3oIr+awN+GHRzps/JGH5153xNenggt?=
+ =?us-ascii?Q?I0xR/HrnQXLHitrCltuh4f0r347MHrSaohnfxoRkAAeYOCLYn3TujsZxnmzI?=
+ =?us-ascii?Q?3Rz/C1ix9DwP+8u7bt5ZpnPoz0z0fVKEdMBtmMVwEnE1+t8rVOG+VaKRSicF?=
+ =?us-ascii?Q?t/xAFAsb0tSmOtMgHbK5QIMDSq70agimXDncLviGrCT9X2FITP9dPjIiwRM6?=
+ =?us-ascii?Q?m6aTHDhX09p5LZMkkNOE6R8B47BXxHpgerFq8EdLx/FODPTCg08JjhlnyMg1?=
+ =?us-ascii?Q?oL44Ya4Nap/En4Ej945zoKQjVaMYZol7RbRfdmmfw6ObJ/B+Hhhav3FIlk3E?=
+ =?us-ascii?Q?w/lNHEgp6gwQWEmx30hrl3jWI5XsNT3+gbLNFb9+DwIR4kQuE5TAptbiITUO?=
+ =?us-ascii?Q?YKEV8Kh/rjjuVWPV8epRPDpsypqkdPUIBrtD64zuNGFNduW88Pj5r6qjeeOh?=
+ =?us-ascii?Q?SzMSaWIHvM48gwmlkM/3S/Zy8F+HLacx/38loNpj1vwWNz4UgxY/cZoNRyWb?=
+ =?us-ascii?Q?tYlipeTgJWB7bwKRBasf8UjT2InAKmxoMSqlkJ9VTbe6LOKiItvFqWNO8dMV?=
+ =?us-ascii?Q?fg9Z4AL3aQb6ueUu7ncbkuBsiV7cFstpIFvL1A4CwCgNo/HulH2CeXEMHMrS?=
+ =?us-ascii?Q?saJ1VZnWRGC8jXTIfTmNKIlXZQWxweWONj/9qb4BgBovlWwMAmUyQy9/bWXn?=
+ =?us-ascii?Q?Sa4sEA99LUM6eyxYughPYr5FqKVqW2Agx5tMvUmI0Olx8h5yzGDU3j3UNke2?=
+ =?us-ascii?Q?29+9fYmDNV+WS5WXPeAVIE9EQO+acFOdFD4OK18mNywbPlc0ilmg2xNQJO87?=
+ =?us-ascii?Q?spS2BKSrZQQdwRmk8wE7NqST9PBfND68QLifiK0ruTE4ut3cmB+y3u+E/tfA?=
+ =?us-ascii?Q?2kadBZdta5fxaF59xGhznGX/4MEKMs4CpNbpfX3wK/Qhq9h5Dg/TsyfVh5sZ?=
+ =?us-ascii?Q?X4oJCtFBbMEQrEJ+Bv33MohVKsnHAGZ7xSf+R3XwqZZEhTVuYRge2fPuUSJU?=
+ =?us-ascii?Q?CRNeA0KqPn8XGj8xoHx2DBHsmFkpXirfxvovJXhAZ9LrcCxXrUoldRjXyKF2?=
+ =?us-ascii?Q?dJuAlT5ROKbdiJYrBQEiJCThBf3I0qyFPiv6kt+Z0Qq4f4tlDLhHXDTIzO0O?=
+ =?us-ascii?Q?5iYzmJxLzi9HWwOcNSk8Emfc97c4OhVIE5fETpeBgLkItb9VoEUGb0qZ/Ibl?=
+ =?us-ascii?Q?OC1DfL2OAB/g6xOFxKRR+C9WnHqiVfaM249wFOSSnrPpyOx/o9Fux04uEZom?=
+ =?us-ascii?Q?opyPebSnSKxUQSKP2EtdyOgdeV7/?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SHAxMGkwSGViWTFHbEVoT3B5ZEVNcXlWOHdnWVRZckJUMlkrMldSTjRUaldn?=
- =?utf-8?B?azJMS2VzblpUSGplVWFpeXhKY0xuOHhDaEtMTGR2aVJPd29lbEJ2RXpFcHJ1?=
- =?utf-8?B?L0xTNU1YK0dvcXZNWWM5RUR1T3BkVmVSaWwwMWRRTHArNWs1azQ4WkNOS1lJ?=
- =?utf-8?B?RWc2d2NWOWRacXE2cFhaT1dJd3RtSmE4RzZJSVNvbjROTlVSS241R3d0eGpx?=
- =?utf-8?B?VWtTc0xzTWx2Rm5rUVBvaE9mT1dvaTRybjJDYS9peVdXVDdVWFRaK0pJeHoz?=
- =?utf-8?B?emNzM2p3VWM1MllTM0xFeExLSS9GWDJES3Z3NXpLOXhlOUdRT2Zzd1A5T25Y?=
- =?utf-8?B?Y0FTWTRIK0MzN2JUNHFLbmdpSFBUbjd5Z2kxQSsyTFUzRTNLTERkNWNYaE9M?=
- =?utf-8?B?NmF2RGw0YlRiZkxEclBrdTM5YmxVRmgzVUVJT1BKUlBjRVp4Z29Ybno3U0Ux?=
- =?utf-8?B?dW5OUGV4Z2tqN2IwUkM3VjZWRWh4dHNQaFJaY1FoWHl6SGR0dEVuc2xRRFE0?=
- =?utf-8?B?MEU4b1Q4OENEcTViV0dJc0tJdllNMGs5cVNGZmQ3VUZzMElCWVZva3VtSGZB?=
- =?utf-8?B?ZExHOUR5cC9NaXdlS1M5Q3pOWkFDdTBWanRCcEY0Ly9MbkFHWHB6WUVTNWgx?=
- =?utf-8?B?dzZpejBmTys0WkdCeXRxblUreUtLN0xPdjRLakhTQU5mMjdkSlVtUDFjMzY3?=
- =?utf-8?B?b1hRRkVUM3JPT0hHZ0JoajNRUDJCcjR2Tm5RZmJCbWlFUFR3Si9Qc1c5eE41?=
- =?utf-8?B?VzlHaEw2cmFlYTNKV2hlbnlvdkhVclpJRDFVVUJYeEZ2NVFDNGcwaWdvMjRq?=
- =?utf-8?B?ZWE1VFNxQi9JZHk4bXhxNFh6Q1FySmpZT1c4NlVHeHhnbVE2aGVwZWxIdlJx?=
- =?utf-8?B?a3VZaGxPU2JBSERjYmZGQ3lhdGcrNWZVQjNkSXN5bE1SdTRCMGVUT3ZsS3hG?=
- =?utf-8?B?TWpabmhMM0E2U0wzNWRsckJNU2d0R3ZIcFkrZWRDUjFucExCZkxwSFI5bm80?=
- =?utf-8?B?MGxsQXRoTGI3YXZzUGt5OFBPMEhlSGM0bGJRTmtqdlU1SFNCd0ZoZUd3c1V5?=
- =?utf-8?B?ejBYNzFTSjMzNkVFMG9WTnE5UzBHeU9ra2hhTEVKUmpHR08za1A4ZUlXTDF4?=
- =?utf-8?B?WFRadjBzUEVsbVNDNTh1WEJHNUlmaFBTclBLWklnTnNwd0I5by91dzVSN1BM?=
- =?utf-8?B?YU4zK1N4QjI1bWcrMjhOcFJBOTJNQU54RzdpT2pwUS91cmhsckkrVXJKSUxW?=
- =?utf-8?B?MW5GMEtrblZpUlEvNENQNUVHRm42RXBrY2JYNFhSU0VsR0o3KzY2MUhHZlBQ?=
- =?utf-8?B?VHlQeWJvY0xiWDJUVmcxUWlCRU1qZ1pWQWJ2bXdDK2hjU1dldk96eGZlemll?=
- =?utf-8?B?eDBicGZpbG40eUV2ek4rOXVXVkViOFJRK3VrZHJETTlDMGZxL0pNKzhreXFl?=
- =?utf-8?B?MW9KVDIxckhJYXVaYmdna1hiUjFDZWsyOGhFcStvWStMd3hLVTJPdXBXcjZO?=
- =?utf-8?B?b1RWOVA1ZjZXcHRuMWU3VkNrWko5MG9sNU50NUJsR0RlWGcvTkU3TC9IVDJz?=
- =?utf-8?B?YWlpWnRDMUE5QzEyWVNsajMzbEIxWEdWRnRKK1luNU5vb1hyNzRoUjR5cEtM?=
- =?utf-8?B?eG90YjFXVnBBZzVTNGg2aWczZnMxa2RUNHFkbjVDbzBKNHNmYTE0YytvOTRN?=
- =?utf-8?B?UllmRmFpeEYvcXlycE5zcVNscys3RWxSaVVjb2FwQ0tqdWxndmI5T3k0ckU5?=
- =?utf-8?B?V2NROWw2S01YTVdmb1NXU1V2Y3Bnc0JLbmRGVkR0V2tFV09aVUNheE9Iczdx?=
- =?utf-8?B?OU13STVHdndIL3JrbVpkalJiWjdhYng2eEw3ckN4SEJDNWhObVlCWE95ZEN2?=
- =?utf-8?B?WUV5K0U3dU1wamFVUk5CRjd5MUZ2R3JFNWhkc2JLemlEMGErdEtDOU85UUtj?=
- =?utf-8?B?TUFwOGljME04U2YzZXdJM2ZRcnlmZzVJSFpkUk9HalgrK2RzZzFVUS9Eb1N4?=
- =?utf-8?B?MmlzTzNYM2QwUi93cHUyYmdQWXE4RTlKS0JWQmIyQ01sYVFyeFJncXYxU3RO?=
- =?utf-8?B?SVFxdjdyU3lhaURFeTl2L3JqVG9yajA1cXBwMDArTk9NMnQ3OW5NREw4ZzUv?=
- =?utf-8?B?ZWNTMHFHcUVvaGhrRnBZWERYbXo0eElQYWZaT1RLZXZnZktNRnBGNHVVdDRq?=
- =?utf-8?B?TUE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 61df2412-f74c-48a1-e8a6-08ddb44d3b1b
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR11MB8118.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?/oGf1zIlwzwqefZeex8fL5RXI/GJu+MZizXSRl5/ByWz4IYcfF9fx6qIUmwH?=
+ =?us-ascii?Q?zj1nRhC0xaCBYhgYwG6gipHcFbigWj+2b5fc1dIyaf2hXViaaWh178ha6Ddq?=
+ =?us-ascii?Q?li6YO7yPg2kXZoaah91KKSsn9SMyePTNwXIa8MPYGZ6KsN6nMfeCd9lki0On?=
+ =?us-ascii?Q?/No/f4c7fSif7Y5dFC7MmcfUub5mNCb95sIwd1ctZDNLhA0s+oOrRgEWer3s?=
+ =?us-ascii?Q?ybjBge9JxXsYIci8zIyrljNjr55EVqApiJcno1+oMf6urPb6tdcTqIDcgED4?=
+ =?us-ascii?Q?uXDfATezZoDCpdg4r6eW3CC0qOvnJJeyxLGSa6UspXUxhIquPTFp9Ew1tij4?=
+ =?us-ascii?Q?+3fOXm5+wT+gNs0D7pxSFfiIN3sY6OqqWhLN40Z+KG07Gqjg5D/lxA3WJ1Pb?=
+ =?us-ascii?Q?TEzOJnP4xr5V2x1KUEGARmKhZmeEmcD7A3q7tXf3bNweBOXFCEbDIyYWkGJN?=
+ =?us-ascii?Q?/3wgZmDeYX2hLWzmpJEQWHoAJWeEJgh1No0bSPifCBKQh7xEjQwyiMzYKY6V?=
+ =?us-ascii?Q?qhFgV/5Y6vJY6ockOfyTIdijcnXw2a4tqxP30w99wYx3CyCnbd8YRfYG4gA+?=
+ =?us-ascii?Q?BIxwbMzmTo7zXJmyxXV3mno4Ve09HKKrx5iIkpsl4qBGGKrOV4/9pm3/txGl?=
+ =?us-ascii?Q?oMz347qV9OapdhJIRmFhyC82HEIO4xuRjFyVisMF5Ia/9zEgk6sbXXPTq4Dh?=
+ =?us-ascii?Q?hhEB8UxK4UVfRJi3FrdMh7L0ql09CTugnxmNDxxaM/lEnPzoIoAgLqP3261J?=
+ =?us-ascii?Q?iACoUzUZLoiUmZnvTWhUBbcrVtwZUfTVoboAMH+K5J+7gK1ny+wNopnUMZ3M?=
+ =?us-ascii?Q?Evd6RrsgitR9ECyB2gm7YsE3DOGte5j7MXfx0vZybQoG96y1+xdaPma4//R4?=
+ =?us-ascii?Q?NFBDnom6UkmSMFn6K3w7Q99oAGGJ7OyGnIARhRC9c7zCuSZvBmXeHkV18JFV?=
+ =?us-ascii?Q?/BMvx2vCqiIq2Ca7GgEP+yV9Z0PBQVOij/SFxk4cjjMzToYiBEnB78rNrFjK?=
+ =?us-ascii?Q?3KtOGPuVB/xl9AWGJlFYUzoFAH8G63VCxDY9bI2H5KD6sugA23rXZTv5sYf5?=
+ =?us-ascii?Q?Rldq0gmCxtGGTiqtIdqPogLVyk4FJR5mrql3S3uYd6Mxw46FN7RAtihLtnAS?=
+ =?us-ascii?Q?GgFhufdMdTzlFf0mvhUdmBO5x88ryHhZYB4wo8SEYbgOjLM1dWbn435xWml1?=
+ =?us-ascii?Q?oS4ap5RFlu3EKvFQk0s5/nX/scDPyxybouvF3Iou2b45W5E9DNSpLF061G1O?=
+ =?us-ascii?Q?mmLwhYyoym8RIuS2mVWuNRUw+cnBSJUVfJ8ILq+X/QgDr8jsHw1buOz9HOXd?=
+ =?us-ascii?Q?3w2qbJDkl+vZit4tNLdbBNVyBzazLifZZSeBRISfFDer96uA+tjEzNBXtVPA?=
+ =?us-ascii?Q?8UBxdsfYRoWSQvcPvebCu5ZzpDlP6Zy0Eluho8mGQXerNdGnks0kB5O5hbEU?=
+ =?us-ascii?Q?v03sKc9cEsbex2Kfmd1FnMu1OE33YrCCcowmxASx/Cg0mS2rq82HwYjtu1rX?=
+ =?us-ascii?Q?sacw9kHBsni1cjvI/YNx2q4kJuKkhLPsDW75rgmd0eolf6cqmbX16FWIJ1MK?=
+ =?us-ascii?Q?aNqvBuwt5zF9o7pPtFegUrEURx9URhi3asWoxNfZZOHnxL+n9MRHVxSApdnW?=
+ =?us-ascii?Q?oA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 606d6bf1-5bff-4411-0eee-08ddb45c5323
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2025 01:03:15.7358
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2025 02:51:18.4938
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xEyabyW6PAAyoq4FxOwL/uI1F5n9vDEJZnnelVFuYQNVhx2C+ae9or4ltY9+wzNq1c4VgTySqJIe5mxPgFCl+bEEN2UbB6urckt/nM/Ovqg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5982
+X-MS-Exchange-CrossTenant-UserPrincipalName: HkComtnlblT0KTg6G5aVH9F85vOxcxbrtEZ2HSWx9hK/NvRkxOV547736FvgKMloLfOrTePtjYsb2Jvq6DvilQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5761
 X-OriginatorOrg: intel.com
 
-Gustavo A. R. Silva wrote:
-> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-> getting ready to enable it, globally.
-> 
-> Use the new TRAILING_OVERLAP() helper to fix a dozen instances of
-> the following type of warning:
-> 
-> drivers/acpi/nfit/intel.c:692:35: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> 
-> Acked-by: Dan Williams <dan.j.williams@intel.com>
-> Tested-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> ---
-> This patch should go through:
-> https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git/ (for-next/hardening)
-> 
-> Changes in v4:
->  - Use the new TRAILING_OVERLAP() helper.
-> 
-> Changes in v3:
->  - Use union instead of DEFINE_RAW_FLEX().
->  - Link: https://lore.kernel.org/linux-hardening/aEneid7gdAZr1_kR@kspp/
-> 
-> Changes in v2:
->  - Use DEFINE_RAW_FLEX() instead of __struct_group().
->  - Link: https://lore.kernel.org/linux-hardening/Z-QpUcxFCRByYcTA@kspp/ 
-> 
-> v1:
->  - Link: https://lore.kernel.org/linux-hardening/Z618ILbAR8YAvTkd@kspp/
-> 
->  drivers/acpi/nfit/intel.c | 84 +++++++++++++++++----------------------
->  1 file changed, 36 insertions(+), 48 deletions(-)
-> 
-> diff --git a/drivers/acpi/nfit/intel.c b/drivers/acpi/nfit/intel.c
-> index 3902759abcba..d0b72e906428 100644
-> --- a/drivers/acpi/nfit/intel.c
-> +++ b/drivers/acpi/nfit/intel.c
-> @@ -55,10 +55,9 @@ static unsigned long intel_security_flags(struct nvdimm *nvdimm,
->  {
->  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
->  	unsigned long security_flags = 0;
-> -	struct {
-> -		struct nd_cmd_pkg pkg;
-> -		struct nd_intel_get_security_state cmd;
-> -	} nd_cmd = {
-> +	TRAILING_OVERLAP(struct nd_cmd_pkg, pkg, nd_payload,
-> +			 struct nd_intel_get_security_state cmd;
-> +	) nd_cmd = {
->  		.pkg = {
->  			.nd_command = NVDIMM_INTEL_GET_SECURITY_STATE,
->  			.nd_family = NVDIMM_FAMILY_INTEL,
-> @@ -120,10 +119,9 @@ static unsigned long intel_security_flags(struct nvdimm *nvdimm,
->  static int intel_security_freeze(struct nvdimm *nvdimm)
->  {
->  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
-> -	struct {
-> -		struct nd_cmd_pkg pkg;
-> -		struct nd_intel_freeze_lock cmd;
-> -	} nd_cmd = {
-> +	TRAILING_OVERLAP(struct nd_cmd_pkg, pkg, nd_payload,
-> +			 struct nd_intel_freeze_lock cmd;
-> +	) nd_cmd = {
->  		.pkg = {
->  			.nd_command = NVDIMM_INTEL_FREEZE_LOCK,
->  			.nd_family = NVDIMM_FAMILY_INTEL,
-> @@ -153,10 +151,9 @@ static int intel_security_change_key(struct nvdimm *nvdimm,
->  	unsigned int cmd = ptype == NVDIMM_MASTER ?
->  		NVDIMM_INTEL_SET_MASTER_PASSPHRASE :
->  		NVDIMM_INTEL_SET_PASSPHRASE;
-> -	struct {
-> -		struct nd_cmd_pkg pkg;
-> -		struct nd_intel_set_passphrase cmd;
-> -	} nd_cmd = {
-> +	TRAILING_OVERLAP(struct nd_cmd_pkg, pkg, nd_payload,
-> +			 struct nd_intel_set_passphrase cmd;
-> +	) nd_cmd = {
->  		.pkg = {
->  			.nd_family = NVDIMM_FAMILY_INTEL,
->  			.nd_size_in = ND_INTEL_PASSPHRASE_SIZE * 2,
-> @@ -195,10 +192,9 @@ static int __maybe_unused intel_security_unlock(struct nvdimm *nvdimm,
->  		const struct nvdimm_key_data *key_data)
->  {
->  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
-> -	struct {
-> -		struct nd_cmd_pkg pkg;
-> -		struct nd_intel_unlock_unit cmd;
-> -	} nd_cmd = {
-> +	TRAILING_OVERLAP(struct nd_cmd_pkg, pkg, nd_payload,
-> +			 struct nd_intel_unlock_unit cmd;
-> +	) nd_cmd = {
->  		.pkg = {
->  			.nd_command = NVDIMM_INTEL_UNLOCK_UNIT,
->  			.nd_family = NVDIMM_FAMILY_INTEL,
-> @@ -234,10 +230,9 @@ static int intel_security_disable(struct nvdimm *nvdimm,
->  {
->  	int rc;
->  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
-> -	struct {
-> -		struct nd_cmd_pkg pkg;
-> -		struct nd_intel_disable_passphrase cmd;
-> -	} nd_cmd = {
-> +	TRAILING_OVERLAP(struct nd_cmd_pkg, pkg, nd_payload,
-> +			 struct nd_intel_disable_passphrase cmd;
-> +	) nd_cmd = {
->  		.pkg = {
->  			.nd_command = NVDIMM_INTEL_DISABLE_PASSPHRASE,
->  			.nd_family = NVDIMM_FAMILY_INTEL,
-> @@ -277,10 +272,9 @@ static int __maybe_unused intel_security_erase(struct nvdimm *nvdimm,
->  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
->  	unsigned int cmd = ptype == NVDIMM_MASTER ?
->  		NVDIMM_INTEL_MASTER_SECURE_ERASE : NVDIMM_INTEL_SECURE_ERASE;
-> -	struct {
-> -		struct nd_cmd_pkg pkg;
-> -		struct nd_intel_secure_erase cmd;
-> -	} nd_cmd = {
-> +	TRAILING_OVERLAP(struct nd_cmd_pkg, pkg, nd_payload,
-> +			 struct nd_intel_secure_erase cmd;
-> +	) nd_cmd = {
->  		.pkg = {
->  			.nd_family = NVDIMM_FAMILY_INTEL,
->  			.nd_size_in = ND_INTEL_PASSPHRASE_SIZE,
-> @@ -318,10 +312,9 @@ static int __maybe_unused intel_security_query_overwrite(struct nvdimm *nvdimm)
->  {
->  	int rc;
->  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
-> -	struct {
-> -		struct nd_cmd_pkg pkg;
-> -		struct nd_intel_query_overwrite cmd;
-> -	} nd_cmd = {
-> +	TRAILING_OVERLAP(struct nd_cmd_pkg, pkg, nd_payload,
-> +			 struct nd_intel_query_overwrite cmd;
-> +	) nd_cmd = {
->  		.pkg = {
->  			.nd_command = NVDIMM_INTEL_QUERY_OVERWRITE,
->  			.nd_family = NVDIMM_FAMILY_INTEL,
-> @@ -354,10 +347,9 @@ static int __maybe_unused intel_security_overwrite(struct nvdimm *nvdimm,
->  {
->  	int rc;
->  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
-> -	struct {
-> -		struct nd_cmd_pkg pkg;
-> -		struct nd_intel_overwrite cmd;
-> -	} nd_cmd = {
-> +	TRAILING_OVERLAP(struct nd_cmd_pkg, pkg, nd_payload,
-> +			 struct nd_intel_overwrite cmd;
-> +	) nd_cmd = {
->  		.pkg = {
->  			.nd_command = NVDIMM_INTEL_OVERWRITE,
->  			.nd_family = NVDIMM_FAMILY_INTEL,
-> @@ -407,10 +399,9 @@ const struct nvdimm_security_ops *intel_security_ops = &__intel_security_ops;
->  static int intel_bus_fwa_businfo(struct nvdimm_bus_descriptor *nd_desc,
->  		struct nd_intel_bus_fw_activate_businfo *info)
->  {
-> -	struct {
-> -		struct nd_cmd_pkg pkg;
-> -		struct nd_intel_bus_fw_activate_businfo cmd;
-> -	} nd_cmd = {
-> +	TRAILING_OVERLAP(struct nd_cmd_pkg, pkg, nd_payload,
-> +			 struct nd_intel_bus_fw_activate_businfo cmd;
-> +	) nd_cmd = {
->  		.pkg = {
->  			.nd_command = NVDIMM_BUS_INTEL_FW_ACTIVATE_BUSINFO,
->  			.nd_family = NVDIMM_BUS_FAMILY_INTEL,
-> @@ -518,10 +509,9 @@ static enum nvdimm_fwa_capability intel_bus_fwa_capability(
->  static int intel_bus_fwa_activate(struct nvdimm_bus_descriptor *nd_desc)
->  {
->  	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
-> -	struct {
-> -		struct nd_cmd_pkg pkg;
-> -		struct nd_intel_bus_fw_activate cmd;
-> -	} nd_cmd = {
-> +	TRAILING_OVERLAP(struct nd_cmd_pkg, pkg, nd_payload,
-> +			 struct nd_intel_bus_fw_activate cmd;
-> +	) nd_cmd = {
->  		.pkg = {
->  			.nd_command = NVDIMM_BUS_INTEL_FW_ACTIVATE,
->  			.nd_family = NVDIMM_BUS_FAMILY_INTEL,
-> @@ -582,10 +572,9 @@ const struct nvdimm_bus_fw_ops *intel_bus_fw_ops = &__intel_bus_fw_ops;
->  static int intel_fwa_dimminfo(struct nvdimm *nvdimm,
->  		struct nd_intel_fw_activate_dimminfo *info)
->  {
-> -	struct {
-> -		struct nd_cmd_pkg pkg;
-> -		struct nd_intel_fw_activate_dimminfo cmd;
-> -	} nd_cmd = {
-> +	TRAILING_OVERLAP(struct nd_cmd_pkg, pkg, nd_payload,
-> +			 struct nd_intel_fw_activate_dimminfo cmd;
-> +	) nd_cmd = {
->  		.pkg = {
->  			.nd_command = NVDIMM_INTEL_FW_ACTIVATE_DIMMINFO,
->  			.nd_family = NVDIMM_FAMILY_INTEL,
-> @@ -688,10 +677,9 @@ static int intel_fwa_arm(struct nvdimm *nvdimm, enum nvdimm_fwa_trigger arm)
->  {
->  	struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
->  	struct acpi_nfit_desc *acpi_desc = nfit_mem->acpi_desc;
-> -	struct {
-> -		struct nd_cmd_pkg pkg;
-> -		struct nd_intel_fw_activate_arm cmd;
-> -	} nd_cmd = {
-> +	TRAILING_OVERLAP(struct nd_cmd_pkg, pkg, nd_payload,
-> +			 struct nd_intel_fw_activate_arm cmd;
-> +	) nd_cmd = {
-
-The regression is here.
 
 
->  		.pkg = {
->  			.nd_command = NVDIMM_INTEL_FW_ACTIVATE_ARM,
->  			.nd_family = NVDIMM_FAMILY_INTEL,
+Hello,
 
-So the full context is this:
+kernel test robot noticed "WARNING:at_fs/sysfs/file.c:#sysfs_emit" on:
 
-        union {
-                struct nd_cmd_pkg pkg;
-                struct {
-                        u8 _offset_to_fam[offsetof(struct nd_cmd_pkg, nd_payload)];
-                        struct nd_intel_fw_activate_arm cmd;
-                };
-        } nd_cmd = {
-                .pkg = {
-                        .nd_command = NVDIMM_INTEL_FW_ACTIVATE_ARM,
-                        .nd_family = NVDIMM_FAMILY_INTEL,
-                        .nd_size_in = sizeof(nd_cmd.cmd.activate_arm),
-                        .nd_size_out =
-                                sizeof(struct nd_intel_fw_activate_arm),
-                        .nd_fw_size =
-                                sizeof(struct nd_intel_fw_activate_arm),
-                },
-                .cmd = {
-                        .activate_arm = arm == NVDIMM_FWA_ARM
-                                ? ND_INTEL_DIMM_FWA_ARM
-                                : ND_INTEL_DIMM_FWA_DISARM,
-                },
-        };
+commit: 74191212ddb1a82ed54ddd75fcd820f3df79abef ("[PATCH] ACPI / sysfs: Replace deprecated and unsafe functions with sysfs_emit")
+url: https://github.com/intel-lab-lkp/linux/commits/Brahmajit-Das/ACPI-sysfs-Replace-deprecated-and-unsafe-functions-with-sysfs_emit/20250624-213919
+base: https://git.kernel.org/cgit/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link: https://lore.kernel.org/all/20250624133739.25215-1-listout@listout.xyz/
+patch subject: [PATCH] ACPI / sysfs: Replace deprecated and unsafe functions with sysfs_emit
 
-The problem is that the designated initialization of .cmd zeroes out the
-.pkg portion of the union. This incremental change works, and with it
-folded you can keep my Acked-by and Tested-by on v5.
+in testcase: boot
 
-You might want to remind folks about this designated initializer trap in
-the kdoc for TRAILING_OVERLAP().
+config: x86_64-rhel-9.4
+compiler: gcc-12
+test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 16G
 
--- 8< --
-diff --git a/drivers/acpi/nfit/intel.c b/drivers/acpi/nfit/intel.c
-index c88647428715..c63284ce9a87 100644
---- a/drivers/acpi/nfit/intel.c
-+++ b/drivers/acpi/nfit/intel.c
-@@ -511,29 +511,27 @@ static int intel_bus_fwa_activate(struct nvdimm_bus_descriptor *nd_desc)
- 	struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
-         TRAILING_OVERLAP(struct nd_cmd_pkg, pkg, nd_payload,
-                          struct nd_intel_bus_fw_activate cmd;
--        ) nd_cmd = {
--		.pkg = {
--			.nd_command = NVDIMM_BUS_INTEL_FW_ACTIVATE,
--			.nd_family = NVDIMM_BUS_FAMILY_INTEL,
--			.nd_size_in = sizeof(nd_cmd.cmd.iodev_state),
--			.nd_size_out =
--				sizeof(struct nd_intel_bus_fw_activate),
--			.nd_fw_size =
--				sizeof(struct nd_intel_bus_fw_activate),
--		},
-+        ) nd_cmd;
-+	int rc;
-+
-+	nd_cmd.pkg = (struct nd_cmd_pkg) {
-+		.nd_command = NVDIMM_BUS_INTEL_FW_ACTIVATE,
-+		.nd_family = NVDIMM_BUS_FAMILY_INTEL,
-+		.nd_size_in = sizeof(nd_cmd.cmd.iodev_state),
-+		.nd_size_out = sizeof(struct nd_intel_bus_fw_activate),
-+		.nd_fw_size = sizeof(struct nd_intel_bus_fw_activate),
-+	};
-+	nd_cmd.cmd = (struct nd_intel_bus_fw_activate) {
- 		/*
- 		 * Even though activate is run from a suspended context,
- 		 * for safety, still ask platform firmware to force
- 		 * quiesce devices by default. Let a module
- 		 * parameter override that policy.
- 		 */
--		.cmd = {
--			.iodev_state = acpi_desc->fwa_noidle
--				? ND_INTEL_BUS_FWA_IODEV_OS_IDLE
--				: ND_INTEL_BUS_FWA_IODEV_FORCE_IDLE,
--		},
-+		.iodev_state = acpi_desc->fwa_noidle ?
-+				       ND_INTEL_BUS_FWA_IODEV_OS_IDLE :
-+				       ND_INTEL_BUS_FWA_IODEV_FORCE_IDLE,
- 	};
--	int rc;
- 
- 	switch (intel_bus_fwa_state(nd_desc)) {
- 	case NVDIMM_FWA_ARMED:
-@@ -679,24 +677,22 @@ static int intel_fwa_arm(struct nvdimm *nvdimm, enum nvdimm_fwa_trigger arm)
- 	struct acpi_nfit_desc *acpi_desc = nfit_mem->acpi_desc;
- 	TRAILING_OVERLAP(struct nd_cmd_pkg, pkg, nd_payload,
- 			 struct nd_intel_fw_activate_arm cmd;
--	) nd_cmd = {
--		.pkg = {
--			.nd_command = NVDIMM_INTEL_FW_ACTIVATE_ARM,
--			.nd_family = NVDIMM_FAMILY_INTEL,
--			.nd_size_in = sizeof(nd_cmd.cmd.activate_arm),
--			.nd_size_out =
--				sizeof(struct nd_intel_fw_activate_arm),
--			.nd_fw_size =
--				sizeof(struct nd_intel_fw_activate_arm),
--		},
--		.cmd = {
--			.activate_arm = arm == NVDIMM_FWA_ARM
--				? ND_INTEL_DIMM_FWA_ARM
--				: ND_INTEL_DIMM_FWA_DISARM,
--		},
--	};
-+	) nd_cmd;
- 	int rc;
- 
-+	nd_cmd.pkg = (struct nd_cmd_pkg) {
-+		.nd_command = NVDIMM_INTEL_FW_ACTIVATE_ARM,
-+		.nd_family = NVDIMM_FAMILY_INTEL,
-+		.nd_size_in = sizeof(nd_cmd.cmd.activate_arm),
-+		.nd_size_out = sizeof(struct nd_intel_fw_activate_arm),
-+		.nd_fw_size = sizeof(struct nd_intel_fw_activate_arm),
-+	};
-+	nd_cmd.cmd = (struct nd_intel_fw_activate_arm) {
-+		.activate_arm = arm == NVDIMM_FWA_ARM ?
-+					ND_INTEL_DIMM_FWA_ARM :
-+					ND_INTEL_DIMM_FWA_DISARM,
-+	};
-+
- 	switch (intel_fwa_state(nvdimm)) {
- 	case NVDIMM_FWA_INVALID:
- 		return -ENXIO;
+(please refer to attached dmesg/kmsg for entire log/backtrace)
+
+
++----------------------------------------+------------+------------+
+|                                        | 3cd1e195f0 | 74191212dd |
++----------------------------------------+------------+------------+
+| WARNING:at_fs/sysfs/file.c:#sysfs_emit | 0          | 18         |
+| RIP:sysfs_emit                         | 0          | 18         |
++----------------------------------------+------------+------------+
+
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <oliver.sang@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202506261036.895ef959-lkp@intel.com
+
+
+[    0.410439][    T1] ------------[ cut here ]------------
+[    0.410995][    T1] invalid sysfs_emit: buf:(____ptrval____)
+[ 0.411411][ T1] WARNING: CPU: 0 PID: 1 at fs/sysfs/file.c:767 sysfs_emit (fs/sysfs/file.c:767) 
+[    0.412230][    T1] Modules linked in:
+[    0.412660][    T1] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.16.0-rc3-00031-g74191212ddb1 #1 VOLUNTARY
+[    0.413504][    T1] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+[ 0.414499][ T1] RIP: 0010:sysfs_emit (fs/sysfs/file.c:767) 
+[ 0.415012][ T1] Code: 10 e8 d5 8e b4 00 48 8b 54 24 18 65 48 2b 15 40 f5 69 02 75 1b c9 e9 d0 7c b6 00 48 89 fe 48 c7 c7 d9 be b6 ae e8 71 86 b3 ff <0f> 0b 31 c0 eb d6 e8 a6 88 b5 00 66 66 2e 0f 1f 84 00 00 00 00 00
+All code
+========
+   0:	10 e8                	adc    %ch,%al
+   2:	d5                   	(bad)
+   3:	8e b4 00 48 8b 54 24 	mov    0x24548b48(%rax,%rax,1),%?
+   a:	18 65 48             	sbb    %ah,0x48(%rbp)
+   d:	2b 15 40 f5 69 02    	sub    0x269f540(%rip),%edx        # 0x269f553
+  13:	75 1b                	jne    0x30
+  15:	c9                   	leave
+  16:	e9 d0 7c b6 00       	jmp    0xb67ceb
+  1b:	48 89 fe             	mov    %rdi,%rsi
+  1e:	48 c7 c7 d9 be b6 ae 	mov    $0xffffffffaeb6bed9,%rdi
+  25:	e8 71 86 b3 ff       	call   0xffffffffffb3869b
+  2a:*	0f 0b                	ud2		<-- trapping instruction
+  2c:	31 c0                	xor    %eax,%eax
+  2e:	eb d6                	jmp    0x6
+  30:	e8 a6 88 b5 00       	call   0xb588db
+  35:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
+  3c:	00 00 00 00 
+
+Code starting with the faulting instruction
+===========================================
+   0:	0f 0b                	ud2
+   2:	31 c0                	xor    %eax,%eax
+   4:	eb d6                	jmp    0xffffffffffffffdc
+   6:	e8 a6 88 b5 00       	call   0xb588b1
+   b:	66 66 2e 0f 1f 84 00 	data16 cs nopw 0x0(%rax,%rax,1)
+  12:	00 00 00 00 
+[    0.415674][    T1] RSP: 0000:ffffcdc1c0013cb8 EFLAGS: 00010282
+[    0.416230][    T1] RAX: 0000000000000000 RBX: 0000000000000000 RCX: c0000000ffff7fff
+[    0.417231][    T1] RDX: 0000000000000000 RSI: 00000000ffff7fff RDI: ffffffffaee63ba0
+[    0.418233][    T1] RBP: ffffcdc1c0013d08 R08: 0000000000000000 R09: 0000000000000003
+[    0.419233][    T1] R10: ffffcdc1c0013b58 R11: ffffffffaf1e3be8 R12: ffff8c28408940a0
+[    0.420232][    T1] R13: ffffffffadb37cd0 R14: 00000000000004e5 R15: 0000000000000000
+[    0.421234][    T1] FS:  0000000000000000(0000) GS:ffff8c2bbfdce000(0000) knlGS:0000000000000000
+[    0.422237][    T1] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.423179][    T1] CR2: ffff8c2b7ffff000 CR3: 000000010f024000 CR4: 00000000000406f0
+[    0.423631][    T1] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[    0.424609][    T1] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[    0.425613][    T1] Call Trace:
+[    0.426168][    T1]  <TASK>
+[ 0.426431][ T1] acpi_irq_stats_init (drivers/acpi/sysfs.c:887) 
+[ 0.427234][ T1] ? acpi_os_signal_semaphore (drivers/acpi/osl.c:1320) 
+[ 0.428079][ T1] ? acpi_ut_release_mutex (drivers/acpi/acpica/utmutex.c:329) 
+[ 0.428478][ T1] acpi_os_install_interrupt_handler (drivers/acpi/osl.c:568) 
+[ 0.429235][ T1] ? __pfx_acpi_init (drivers/acpi/bus.c:1440) 
+[ 0.429990][ T1] acpi_ev_install_xrupt_handlers (drivers/acpi/acpica/evevent.c:95) 
+[ 0.430500][ T1] ? __pfx_acpi_init (drivers/acpi/bus.c:1440) 
+[ 0.431233][ T1] acpi_bus_init (drivers/acpi/bus.c:1362) 
+[ 0.431971][ T1] ? acpi_ut_release_mutex (drivers/acpi/acpica/utmutex.c:329) 
+[ 0.432485][ T1] ? acpi_install_address_space_handler_internal+0x64/0xb0 
+[ 0.433605][ T1] ? __pfx_acpi_init (drivers/acpi/bus.c:1440) 
+[ 0.434234][ T1] ? __pfx_acpi_init (drivers/acpi/bus.c:1440) 
+[ 0.434989][ T1] acpi_init (drivers/acpi/bus.c:1456) 
+[ 0.435382][ T1] ? __pfx_scan_for_dmi_ipmi (drivers/char/ipmi/ipmi_dmi.c:215) 
+[ 0.435948][ T1] ? __pfx_acpi_init (drivers/acpi/bus.c:1440) 
+[ 0.436380][ T1] do_one_initcall (init/main.c:1274) 
+[ 0.436875][ T1] do_initcalls (init/main.c:1335 init/main.c:1352) 
+[ 0.437233][ T1] kernel_init_freeable (init/main.c:1588) 
+[ 0.437770][ T1] ? __pfx_kernel_init (init/main.c:1466) 
+[ 0.438231][ T1] kernel_init (init/main.c:1476) 
+[ 0.438714][ T1] ret_from_fork (arch/x86/kernel/process.c:154) 
+[ 0.439203][ T1] ? __pfx_kernel_init (init/main.c:1466) 
+[ 0.439386][ T1] ret_from_fork_asm (arch/x86/entry/entry_64.S:258) 
+[    0.439885][    T1]  </TASK>
+[    0.440230][    T1] ---[ end trace 0000000000000000 ]---
+
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20250626/202506261036.895ef959-lkp@intel.com
+
+
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
 
