@@ -1,183 +1,168 @@
-Return-Path: <linux-acpi+bounces-14675-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14676-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 049E7AE9A57
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 11:42:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5428AE9A78
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 11:55:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D92F3AC36D
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 09:41:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 255EE162E3C
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 09:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B475D2C15AA;
-	Thu, 26 Jun 2025 09:41:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ScBbOi07"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED00529C35F;
+	Thu, 26 Jun 2025 09:55:44 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B6415539A;
-	Thu, 26 Jun 2025 09:41:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6573D202C46;
+	Thu, 26 Jun 2025 09:55:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750930887; cv=none; b=mUiTUONG+Hu3SZhEGIYCo99jLkjHuWjZT/sujJuSA2PV0Xn1ybhXu22RiW1BHEQuyxsWzAN01V6Ygw81aDxrMu2PAdo0hSUxvL63cb3IAK36V3yYfuBrt9Q2xSIhsYHAFL+u2g0FMsaTsZiLpwpgYijm/A5M9O2CCcZgOAv4sKg=
+	t=1750931744; cv=none; b=L6vEh5T3t6nMdCjuN5LD8Z3aPjydsdezfHnNrShMssoIX+r0abYk23GOqWvKAr9OhtIYCcJUkA/Zm9eRraXmFTgkSl1IVRlT+KOcRaOd4xsCste60Rci6kpuTe7bDlUZxQ8khNQP2uO4HCoA8VKU+jyBkGnzbGV6QIsgi2msLk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750930887; c=relaxed/simple;
-	bh=kXlWtFJHYGZXpfxU2XTeWX5St19iKLmVxqcz6yj4hsI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eB4qGHjMVmBhMXrQhYOMASgxPVI7wL1Lu6r//cIc1s8nbQDbGx7bq1T85y7nreTfbpkIZQ/izwtuxIzFLb9/Q8y/OpKO1DFl8ZWkPDDXNTNr43Ef/sRjzsKDONViDF+iLBNmMax1+/0NfCPGKKcE2GiLLrbCWATQIRujfDqbaT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ScBbOi07; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B32AC4CEF4;
-	Thu, 26 Jun 2025 09:41:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750930887;
-	bh=kXlWtFJHYGZXpfxU2XTeWX5St19iKLmVxqcz6yj4hsI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ScBbOi07yuPICS41cWr23Z8x2Dj6pCzsY3pt4nv7xT5ANvkI/acXnHtiY+7hQGpXy
-	 DOBY0yVLXK7EIyR+Nl2j4tFeG/azHDbmgSDDSxqjctSEh3TQjTO4ix81yX4SSAFmR8
-	 YqaEejf66EIH2my6g0Hg5n23aGExiRYHLE9Fq4udNfCuR7RKI+vrnyaI5vugjrdg81
-	 NbctxnOxn97CxC1xPM3VIbGkknseMAVMTq/xKhyTfFv4rSMIY/yixJUSkCTTYr2QZe
-	 CZI5kh6vFcWDRO2sO2iz7vTkGBnBgWsESpZVMVNJBBBJiHqbCHHFPMX9ajqzwRmkFg
-	 QI/jxC941Nmsg==
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-611998766c0so441024eaf.1;
-        Thu, 26 Jun 2025 02:41:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU0aVubtXBluevkUkXfhG/FCNHWmBpY9UhQKoQrA0XvGD+O9dOvEmBfWjZ9UmWE8zGviY2K19yQsJHZ@vger.kernel.org, AJvYcCUbC4Z2E/6qJCJReW2ZqKgqj22qSQVp6K/sk7A2ziKHN6Nw/ops524+zR4Awn7UiGcfR0NP3/35uxk=@vger.kernel.org, AJvYcCVFSl/W1OOcfjbzb35OQIXCHqlWMWTL/U3FO9jri/PF73CG2dQwnUT1XV5WDEcovU2Zo+gnEHDXI13nXENI@vger.kernel.org, AJvYcCWeGMsPTEPZpLtlkRBHHwdt+TY2XqYnuSuUXmvuDTpobaw8vj+4cpUjDgnGvtobKn9IZuW787Xmk88t@vger.kernel.org
-X-Gm-Message-State: AOJu0YyST7/uH6ZVsazOhAOfyMoZa+YtaJvaC89+DRWFqTNVwPUKbSq0
-	peiP9p/xSk4CwrOzJM1l7yCGAzn2ibnk20+nWeH3eC9BON38/S+ob0VKoH3ALgVl/VE3TImaNzH
-	1eYm/r54ub62V8Vf6AxAwPff28dm4eMI=
-X-Google-Smtp-Source: AGHT+IFFwcMnbazn9ld0BJf02w2SGzFl4BsPLD6/WVI+cKUPMvArB0HpKkLKr9h1POnuYo1bzegPrS6Er7Okr8detwA=
-X-Received: by 2002:a05:6820:907:b0:611:b1b0:2adf with SMTP id
- 006d021491bc7-611b1b02e35mr448886eaf.1.1750930886224; Thu, 26 Jun 2025
- 02:41:26 -0700 (PDT)
+	s=arc-20240116; t=1750931744; c=relaxed/simple;
+	bh=OHAzZP1FNZp7wZtHHZ6Et6tNQRxEVtAxj73uffwLBMY=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RbhOS7vJ4cLLVzngm5aHSK3ivpXIK5oAtCGr3rUtchWqGdLPNeU0qF9Nrncq89moH1x/+P2CQITUx6o2UPOfkzydT5KE/zrI08IvQ+oPW6WY2sf8Jlj9TvBfOEVNtvBDHYfW3vW8Hq4kjK6zDrRNj7zsTDLs7mEKQLcsmw8amls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bSYvB2ts6z6M508;
+	Thu, 26 Jun 2025 17:54:46 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 610D61402EC;
+	Thu, 26 Jun 2025 17:55:33 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 26 Jun
+ 2025 11:55:32 +0200
+Date: Thu, 26 Jun 2025 10:55:30 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Peter Zijlstra <peterz@infradead.org>, <linuxarm@huawei.com>
+CC: "H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, <james.morse@arm.com>,
+	<linux-cxl@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+	<linux-mm@kvack.org>, <gregkh@linuxfoundation.org>, Will Deacon
+	<will@kernel.org>, Dan Williams <dan.j.williams@intel.com>, Davidlohr Bueso
+	<dave@stgolabs.net>, Yicong Yang <yangyicong@huawei.com>, Yushan Wang
+	<wangyushan12@huawei.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Mark
+ Rutland <mark.rutland@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, Andy Lutomirski
+	<luto@kernel.org>
+Subject: Re: [PATCH v2 0/8] Cache coherency management subsystem
+Message-ID: <20250626105530.000010be@huawei.com>
+In-Reply-To: <20250625180343.000020de@huawei.com>
+References: <20250624154805.66985-1-Jonathan.Cameron@huawei.com>
+	<20250625085204.GC1613200@noisy.programming.kicks-ass.net>
+	<FB7122A4-BF5E-4C05-805A-2EE3240286A1@zytor.com>
+	<20250625093152.GZ1613376@noisy.programming.kicks-ass.net>
+	<20250625180343.000020de@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <22759968.EfDdHjke4D@rjwysocki.net> <2045419.usQuhbGJ8B@rjwysocki.net>
- <CAPDyKFq8ea+YogkAExUOBc2TEqi1z9WZswqgP29bLbursFUApg@mail.gmail.com>
-In-Reply-To: <CAPDyKFq8ea+YogkAExUOBc2TEqi1z9WZswqgP29bLbursFUApg@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 26 Jun 2025 11:41:14 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0h-9UnvhrQ7YaaYPG5CktwV-i+ZeqAri8OhJQb4TVp82w@mail.gmail.com>
-X-Gm-Features: Ac12FXx4t9s1OQAcDGkW25YSbl2lqTUdJSGgwNxO3wpv-ubVObtrt96eUGaNFYE
-Message-ID: <CAJZ5v0h-9UnvhrQ7YaaYPG5CktwV-i+ZeqAri8OhJQb4TVp82w@mail.gmail.com>
-Subject: Re: [PATCH v1 4/9] PM: Move pm_runtime_force_suspend/resume() under CONFIG_PM_SLEEP
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux PM <linux-pm@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	Linux PCI <linux-pci@vger.kernel.org>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Thu, Jun 26, 2025 at 11:38=E2=80=AFAM Ulf Hansson <ulf.hansson@linaro.or=
-g> wrote:
->
-> On Wed, 25 Jun 2025 at 21:25, Rafael J. Wysocki <rjw@rjwysocki.net> wrote=
-:
-> >
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > Since pm_runtime_force_suspend/resume() and pm_runtime_need_not_resume(=
-)
-> > are only used during system-wide PM transitions, there is no reason to
-> > compile them in if CONFIG_PM_SLEEP is unset.
-> >
-> > Accordingly, move them all under CONFIG_PM_SLEEP and make the static
-> > inline stubs for pm_runtime_force_suspend/resume() return an error
-> > to indicate that they should not be used outside CONFIG_PM_SLEEP.
-> >
->
-> Just realized that there seems to be some drivers that actually make
-> use of pm_runtime_force_suspend() from their ->remove() callbacks.
->
-> To not break them, we probably need to leave this code to stay under CONF=
-IG_PM.
+On Wed, 25 Jun 2025 18:03:43 +0100
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-OK, pm_runtime_force_suspend() need not be under CONFIG_PM_SLEEP.
-That's not the case for the other two functions though AFAICS.
+> On Wed, 25 Jun 2025 11:31:52 +0200
+> Peter Zijlstra <peterz@infradead.org> wrote:
+> 
+> > On Wed, Jun 25, 2025 at 02:12:39AM -0700, H. Peter Anvin wrote:  
+> > > On June 25, 2025 1:52:04 AM PDT, Peter Zijlstra <peterz@infradead.org> wrote:    
+> > > >On Tue, Jun 24, 2025 at 04:47:56PM +0100, Jonathan Cameron wrote:
+> > > >    
+> > > >> On x86 there is the much loved WBINVD instruction that causes a write back
+> > > >> and invalidate of all caches in the system. It is expensive but it is    
+> > > >
+> > > >Expensive is not the only problem. It actively interferes with things
+> > > >like Cache-Allocation-Technology (RDT-CAT for the intel folks). Doing
+> > > >WBINVD utterly destroys the cache subsystem for everybody on the
+> > > >machine.
+> > > >    
+> > > >> necessary in a few corner cases.     
+> > > >
+> > > >Don't we have things like CLFLUSH/CLFLUSHOPT/CLWB exactly so that we can
+> > > >avoid doing dumb things like WBINVD ?!?
+> > > >    
+> > > >> These are cases where the contents of
+> > > >> Physical Memory may change without any writes from the host. Whilst there
+> > > >> are a few reasons this might happen, the one I care about here is when
+> > > >> we are adding or removing mappings on CXL. So typically going from
+> > > >> there being actual memory at a host Physical Address to nothing there
+> > > >> (reads as zero, writes dropped) or visa-versa.     
+> > > >    
+> > > >> The
+> > > >> thing that makes it very hard to handle with CPU flushes is that the
+> > > >> instructions are normally VA based and not guaranteed to reach beyond
+> > > >> the Point of Coherence or similar. You might be able to (ab)use
+> > > >> various flush operations intended to ensure persistence memory but
+> > > >> in general they don't work either.    
+> > > >
+> > > >Urgh so this. Dan, Dave, are we getting new instructions to deal with
+> > > >this? I'm really not keen on having WBINVD in active use.
+> > > >    
+> > > 
+> > > WBINVD is the nuclear weapon to use when you have lost all notion of
+> > > where the problematic data can be, and amounts to a full reset of the
+> > > cache system. 
+> > > 
+> > > WBINVD can block interrupts for many *milliseconds*, system wide, and
+> > > so is really only useful for once-per-boot type events, like MTRR
+> > > initialization.    
+> > 
+> > Right this... But that CXL thing sounds like that's semi 'regular' to
+> > the point that providing some infrastructure around it makes sense. This
+> > should not be.  
+> 
+> I'm fully on board with the WBINVD issues (and hope for something new for
+> the X86 world). However, this particular infrastructure (for those systems
+> that can do so) is about pushing the problem and information to where it
+> can be handled in a lot less disruptive fashion. It can take 'a while' but
+> we are flushing only cache entries in the requested PA range. Other than
+> some potential excess snoop traffic if the coherency tracking isn't precise,
+> there should be limited affect on the rest of the system.
+> 
+> So, for the systems I particularly care about, the CXL case isn't that bad.
+> 
+> Just for giggles, if you want some horror stories the (dropped) ARM PSCI
+> spec provides for approaches that require synchronization of calls across
+> all CPUs.
+> 
+> "CPU Rendezvous" in the attributes of CLEAN_INV_MEMREGION requires all
+> CPUs to make a call within an impdef (discoverable) timeout.
+> https://developer.arm.com/documentation/den0022/falp1/?lang=en
+> 
+> I gather no one actually needs that on 'real' systems - that is systems
+> where we actually need to do these flushes! The ACPI 'RFC' doesn't support
+> that delight.
 
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >  drivers/base/power/runtime.c |    4 ++++
-> >  include/linux/pm_runtime.h   |   20 ++++++++++++++------
-> >  2 files changed, 18 insertions(+), 6 deletions(-)
-> >
-> > --- a/drivers/base/power/runtime.c
-> > +++ b/drivers/base/power/runtime.c
-> > @@ -1941,6 +1941,8 @@
-> >         pm_request_idle(link->supplier);
-> >  }
-> >
-> > +#ifdef CONFIG_PM_SLEEP
-> > +
-> >  bool pm_runtime_need_not_resume(struct device *dev)
-> >  {
-> >         return atomic_read(&dev->power.usage_count) <=3D 1 &&
-> > @@ -2063,3 +2065,5 @@
-> >         return ret;
-> >  }
-> >  EXPORT_SYMBOL_GPL(pm_runtime_force_resume);
-> > +
-> > +#endif /* CONFIG_PM_SLEEP */
-> > --- a/include/linux/pm_runtime.h
-> > +++ b/include/linux/pm_runtime.h
-> > @@ -66,9 +66,6 @@
-> >
-> >  extern int pm_generic_runtime_suspend(struct device *dev);
-> >  extern int pm_generic_runtime_resume(struct device *dev);
-> > -extern bool pm_runtime_need_not_resume(struct device *dev);
-> > -extern int pm_runtime_force_suspend(struct device *dev);
-> > -extern int pm_runtime_force_resume(struct device *dev);
-> >
-> >  extern int __pm_runtime_idle(struct device *dev, int rpmflags);
-> >  extern int __pm_runtime_suspend(struct device *dev, int rpmflags);
-> > @@ -257,9 +254,6 @@
-> >
-> >  static inline int pm_generic_runtime_suspend(struct device *dev) { ret=
-urn 0; }
-> >  static inline int pm_generic_runtime_resume(struct device *dev) { retu=
-rn 0; }
-> > -static inline bool pm_runtime_need_not_resume(struct device *dev) {ret=
-urn true; }
-> > -static inline int pm_runtime_force_suspend(struct device *dev) { retur=
-n 0; }
-> > -static inline int pm_runtime_force_resume(struct device *dev) { return=
- 0; }
-> >
-> >  static inline int __pm_runtime_idle(struct device *dev, int rpmflags)
-> >  {
-> > @@ -330,6 +324,20 @@
-> >
-> >  #endif /* !CONFIG_PM */
-> >
-> > +#ifdef CONFIG_PM_SLEEP
-> > +
-> > +extern bool pm_runtime_need_not_resume(struct device *dev);
-> > +extern int pm_runtime_force_suspend(struct device *dev);
-> > +extern int pm_runtime_force_resume(struct device *dev);
-> > +
-> > +#else /* !CONFIG_PM_SLEEP */
-> > +
-> > +static inline bool pm_runtime_need_not_resume(struct device *dev) {ret=
-urn true; }
-> > +static inline int pm_runtime_force_suspend(struct device *dev) { retur=
-n -ENXIO; }
-> > +static inline int pm_runtime_force_resume(struct device *dev) { return=
- -ENXIO; }
-> > +
-> > +#endif /* CONFIG_PM_SLEEP */
-> > +
-> >  /**
-> >   * pm_runtime_idle - Conditionally set up autosuspend of a device or s=
-uspend it.
-> >   * @dev: Target device.
-> >
-> >
-> >
->
+Seems I introduced some confusion.  Let me try summarizing:
+
+1. x86 has a potential feature gap. From a CXL ecosystem point of view I'd
+   like to see that gap closed. (Inappropriate for me to make any proposals
+   on how to do it on that architecture).
+
+2. This patch set has nothing to do with x86 (beyond modifying a function
+   signature). The hardware it is targeting avoids many of the issues around
+   WBINVD. The solution is not specific to ARM64, though the implementation
+   I care about is on an ARM64 implementation.
+
+Right now, on x86 we have a functionally correct solution, this patch set
+adds infrastructure and 2 implementations to provide similar for other
+architectures.
+
+Jonathan
 
