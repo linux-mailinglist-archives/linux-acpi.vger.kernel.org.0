@@ -1,82 +1,48 @@
-Return-Path: <linux-acpi+bounces-14671-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14672-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E270AE976E
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 10:03:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6624EAE9846
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 10:27:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3727C17EB71
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 08:03:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 849D73B4635
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 08:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9154C23314B;
-	Thu, 26 Jun 2025 08:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5867025E46A;
+	Thu, 26 Jun 2025 08:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="UMY0CRr3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XSnP3GMD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C472256C73
-	for <linux-acpi@vger.kernel.org>; Thu, 26 Jun 2025 08:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F11206F23;
+	Thu, 26 Jun 2025 08:27:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750925005; cv=none; b=ohzyvEwK9I61XabjJi1YFBBdWNVYx0yCYO3UXC3rVlX57jmIQlIqMuL+vjmN1kn5E2NmGaaIZ6XLWR5BHFmtkDBH1uBGeu0kq91mZqHCZCYwMuH4Qeyke8A+p8lhX5OERkYRUfCidk3hIA6J9kzz/JaVt9gMvQNCi8k2TaQDtLU=
+	t=1750926427; cv=none; b=fRDo3bztdjdEyt+f7NfTgn6sHJtgkQQUwRIsaxtfk1Ox67NWyH9IZ24WJlzhtd9gz7O1HWCR4lm5AWcQlNK4x7ZSARCphwX93Uux5Q7dZorhLxgm3vlLUeyQ6Qz5TsmxrXolFRVqD4Fypjzp1R8xt0BMVNW0k9f1264RMe4589s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750925005; c=relaxed/simple;
-	bh=TX6cbqK3A7wm0xr8OkuHjx5m5oXahXwOVit8R3fCsJY=;
+	s=arc-20240116; t=1750926427; c=relaxed/simple;
+	bh=S7XC0tUcCHKvkT+Ed0WOUsQ6fokGOML9A7PYuyOW2Js=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IlPTPXccFqoHp/7mYj/0CVA5/iJqCqVBaEOdVgf69UJQQ4Ff/ZpOjeNiw12kiGwP42OTQrSLZIqMnKxJhUZ2xgPzLe+a/5kiwnyYuqPukCeUaFupSVyuV759bv3+XwJtEBuSqS7JTRf367J2C8T0T2fN+GfJg7/yTi2hPOKkBIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=UMY0CRr3; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-451dbe494d6so6844035e9.1
-        for <linux-acpi@vger.kernel.org>; Thu, 26 Jun 2025 01:03:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1750925002; x=1751529802; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=eASQdGU0xGhBkNS6Re9mJOkMCP/ZJe7Z9f/s6yhHpfI=;
-        b=UMY0CRr3MK6r+JkzVFNGb4ePcbdW52arXsHEFsA/6oieqDhxRNxw0tVMGHTIY60nAE
-         W0ZZ2LY6bfH69r+YXXOwAgOpbyHBw1xx06pRpbJfpvTI8EZDYUpVzUNZPzb+Avhd7MOk
-         MQ2n0qIDA1cIvgju+MnzGmru6Q6Dg1Z+wqBOn2uH4EW6tzm87+SqJJfJL+FYkMqHrfuS
-         Be0++E7A3Ig0+QycyEDw+rIeGG06RrDMmYzJlGbUwAjWhTf+Q5qWGBF8LYz3BmtN5iCo
-         Q3NgphZxvTEoWogLLLHYOn2H8g2ekKRHsZTslTVOWVHgqJ0hPmU7uflS2WNOpiV3Z8pf
-         cIVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750925002; x=1751529802;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eASQdGU0xGhBkNS6Re9mJOkMCP/ZJe7Z9f/s6yhHpfI=;
-        b=lqQ7LpEZxyIKs02vyhqXV/sax6NG6BDotPVLbC0puxfKDtvQgEXQRtybvs4fHGs2tv
-         Ck7BwpPs+mk1JuX0xHyzrWVudYKUJY8lZ9heUHmsL6vG38468eteEBMsyDa3gBMktVCx
-         h3HfmCiYeqMZTf1Pap6s0GUSltJr1q8HLY4qXkVeiQSshxglTEex1/I2WfaX4oj4JlKp
-         oQdEJJ9Mcy3XH1C18McrBx0Ol/AHF16KsHdtHWXEDSb8TX/jngkgevzIVoqu/5jgrGtB
-         fnjAWKhWtP1u3TrPVGkY7Jv8O8kf+UFZFKQ0uz7hwhRUrUdex6rvydlbsUxJATLKaFhd
-         FyFw==
-X-Forwarded-Encrypted: i=1; AJvYcCV0wFJRR72BL6PQxqBA1xyDwhc+7YlV1iWvkSivbt9rH0+Sum6yH8C49MZJU6ydsTjPpDExWz86yIBX@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOHRhsUDy0yJWR1LoptJYHsWXJarOuEtt0acozf50GWQB/6uF+
-	MQ2fKNzM8+Lw6NIO0GplovbX9bvilXmIDRTvkIztwUzV2wqGjAyznG8TsZbX7FHJeV1HnDR5slC
-	eQ2s2
-X-Gm-Gg: ASbGncsrKJH/9QoN958wJP1YHu1gIVH96hqfGflO8BDdV4UqBln9LAx3MIW/Nt84KLD
-	y19XBnY09IlnocTKGQQ5V+oTOJZEG+gJ8axAiIkYsiBUQo37tJmiKnpxJb5oa5C8P92rP1e2mHp
-	5vB6MwWtAQuaTh/2hCLtOuRPNjlIvazPklYNu5XmweplwfeewqwyWeQnUtm9mFdoao3tCrZRvDk
-	JbuyQuqSl+5HpbEsL2KdpJhDHU8LCvoU3RCJECXtfcUIRDqSD8sOGXu5HluYbXNog3JQbYbW848
-	WOYmOFcelGbkQADrhrZtOzonVHubkxv1+SrX0YDF7sqpgz/gyQd/MK6UatTWizfTJsAvm5WiZ5c
-	6
-X-Google-Smtp-Source: AGHT+IF6yQImeJzcD3ZrKiWueyJc8jgxSQIaNzReiWnJay/LPDvnwG+t/EWe4mdsd+HllkB5N/cBWg==
-X-Received: by 2002:a05:6000:2dc2:b0:3a5:2e59:833a with SMTP id ffacd0b85a97d-3a6ed5d62f2mr4861840f8f.1.1750925001683;
-        Thu, 26 Jun 2025 01:03:21 -0700 (PDT)
-Received: from [192.168.0.20] ([212.21.159.38])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e80f27besm6691313f8f.57.2025.06.26.01.03.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Jun 2025 01:03:21 -0700 (PDT)
-Message-ID: <52a37afe-c41b-4f20-bbdc-bddc3ae26260@suse.com>
-Date: Thu, 26 Jun 2025 11:03:20 +0300
+	 In-Reply-To:Content-Type; b=oWMFpAOxw8ey4b7R3VWlA3nMtCmDcvW03zzZyThE0XJKVunhsRxDIPzyRg5ehCArh0E7YhCmfqhp76clY2pYnfMGZc6cDU+beHxmD0ohwRBwIuOYv+w1uIVithFccqckooVxzq1v90JgQHEYtvwBYR1A/YGXo2GqDKjKCEFUvQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XSnP3GMD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4973AC4CEEB;
+	Thu, 26 Jun 2025 08:27:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750926426;
+	bh=S7XC0tUcCHKvkT+Ed0WOUsQ6fokGOML9A7PYuyOW2Js=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XSnP3GMD0cNxXVox/QwHFndk0tVEsnIBiJSb/MkTiDKTc0rn69/+3Q/YS9Brvun73
+	 637vfIkKFfd/6j7jMcmLHlqGYn5IlQqgC4h6wIjAerTblRWu1YBvGM+jQzNiqOuAtY
+	 K1SzHvcR+nKc3HfJK4YionNXMtDavQ4BrChdt2hp6qopr0V+heN0T1JTiyM3bjCYn7
+	 DpWEe9kAS8r/KCA4M/5/ZTMVCarDS+VZwZmCU7pR821lfGJ7le3fOV3x0ScBvP4j2g
+	 A/A2M6x4L1LUX/9UlzDCNCrncH2fG5n+QOgM/dUXe/kBDJrOE36eq+3XErdgacayBb
+	 KFIa8yGMmhQJw==
+Message-ID: <61843beb-263d-475b-9876-fb273dd8d7fe@kernel.org>
+Date: Thu, 26 Jun 2025 10:27:01 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -84,113 +50,109 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/22] x86/mce: Remove __mcheck_cpu_init_early()
-To: Yazen Ghannam <yazen.ghannam@amd.com>, x86@kernel.org,
- Tony Luck <tony.luck@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
- Smita.KoralahalliChannabasappa@amd.com, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
- linux-acpi@vger.kernel.org
-References: <20250624-wip-mca-updates-v4-0-236dd74f645f@amd.com>
- <20250624-wip-mca-updates-v4-10-236dd74f645f@amd.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20250624-wip-mca-updates-v4-10-236dd74f645f@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v3 3/4] Input: Don't program hw debounce for
+ soc_button_array devices
+To: Mario Limonciello <superm1@kernel.org>,
+ Mika Westerberg <westeri@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
+ <brgl@bgdev.pl>, Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
+ "open list:GPIO ACPI SUPPORT" <linux-acpi@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
+ <linux-input@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
+References: <20250625215813.3477840-1-superm1@kernel.org>
+ <20250625215813.3477840-4-superm1@kernel.org>
+Content-Language: en-US, nl
+From: Hans de Goede <hansg@kernel.org>
+In-Reply-To: <20250625215813.3477840-4-superm1@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
+Hi,
+
+On 25-Jun-25 23:58, Mario Limonciello wrote:
+> From: Mario Limonciello <mario.limonciello@amd.com>
+> 
+> Programming a hardware debounce of 50ms causes problems where a button
+> doesn't work properly anymore on some systems.  This debounce is intended
+> for compatibility with systems with a mechanical switch so soc_button_array
+> devices should only be using a sofware debounce.
+> 
+> Add support for indicating that a driver is only requesting gpio_keys
+> to use software debounce support and mark that in soc_button_array
+> accordingly.
+> 
+> Suggested-by: Hans de Goede <hansg@kernel.org>
+> Fixes: 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+
+Thanks, patch looks good to me:
+
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+
+Regards,
+
+Hans
 
 
-On 6/24/25 17:16, Yazen Ghannam wrote:
-> The __mcheck_cpu_init_early() function was introduced so that some
-> vendor-specific features are detected before the first MCA polling event
-> done in __mcheck_cpu_init_generic().
-> 
-> Currently, __mcheck_cpu_init_early() is only used on AMD-based systems and
-> additional code will be needed to support various system configurations.
-> 
-> However, the current and future vendor-specific code should be done during
-> vendor init. This keeps all the vendor code in a common location and
-> simplifies the generic init flow.
-> 
-> Move all the __mcheck_cpu_init_early() code into mce_amd_feature_init().
-> 
-> Also, move __mcheck_cpu_init_generic() after
-> __mcheck_cpu_init_prepare_banks() so that MCA is enabled after the first
-> MCA polling event.
-> 
-> Additionally, this brings the MCA init flow closer to what is described
-> in the x86 docs.
-> 
-> The AMD PPRs say
->    "The operating system must initialize the MCA_CONFIG registers prior to
->    initialization of the MCA_CTL registers.
-> 
->    The MCA_CTL registers must be initialized prior to enabling the error
->    reporting banks in MCG_CTL".
-> 
-> However, the Intel SDM "Machine-Check Initialization Pseudocode" says
-> MCG_CTL first then MCi_CTL.
-> 
-> But both agree that CR4.MCE should be set last.
-> 
-> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-> Tested-by: Tony Luck <tony.luck@intel.com>
-> Reviewed-by: Tony Luck <tony.luck@intel.com>
-> Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 
+> ---
+>  drivers/input/keyboard/gpio_keys.c    | 7 +++++--
+>  drivers/input/misc/soc_button_array.c | 1 +
+>  include/linux/gpio_keys.h             | 2 ++
+>  3 files changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
+> index f9db86da0818b..773aa5294d269 100644
+> --- a/drivers/input/keyboard/gpio_keys.c
+> +++ b/drivers/input/keyboard/gpio_keys.c
+> @@ -552,8 +552,11 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
+>  		bool active_low = gpiod_is_active_low(bdata->gpiod);
+>  
+>  		if (button->debounce_interval) {
+> -			error = gpiod_set_debounce(bdata->gpiod,
+> -					button->debounce_interval * 1000);
+> +			if (ddata->pdata->no_hw_debounce)
+> +				error = -EINVAL;
+> +			else
+> +				error = gpiod_set_debounce(bdata->gpiod,
+> +							   button->debounce_interval * 1000);
+>  			/* use timer if gpiolib doesn't provide debounce */
+>  			if (error < 0)
+>  				bdata->software_debounce =
+> diff --git a/drivers/input/misc/soc_button_array.c b/drivers/input/misc/soc_button_array.c
+> index b8cad415c62ca..dac940455bea8 100644
+> --- a/drivers/input/misc/soc_button_array.c
+> +++ b/drivers/input/misc/soc_button_array.c
+> @@ -232,6 +232,7 @@ soc_button_device_create(struct platform_device *pdev,
+>  	gpio_keys_pdata->buttons = gpio_keys;
+>  	gpio_keys_pdata->nbuttons = n_buttons;
+>  	gpio_keys_pdata->rep = autorepeat;
+> +	gpio_keys_pdata->no_hw_debounce = TRUE;
+>  
+>  	pd = platform_device_register_resndata(&pdev->dev, "gpio-keys",
+>  					       PLATFORM_DEVID_AUTO, NULL, 0,
+> diff --git a/include/linux/gpio_keys.h b/include/linux/gpio_keys.h
+> index 80fa930b04c67..c99f74467fda6 100644
+> --- a/include/linux/gpio_keys.h
+> +++ b/include/linux/gpio_keys.h
+> @@ -48,6 +48,7 @@ struct gpio_keys_button {
+>   * @enable:		platform hook for enabling the device
+>   * @disable:		platform hook for disabling the device
+>   * @name:		input device name
+> + * @no_hw_debounce:	avoid programming hardware debounce
+>   */
+>  struct gpio_keys_platform_data {
+>  	const struct gpio_keys_button *buttons;
+> @@ -57,6 +58,7 @@ struct gpio_keys_platform_data {
+>  	int (*enable)(struct device *dev);
+>  	void (*disable)(struct device *dev);
+>  	const char *name;
+> +	bool no_hw_debounce;
+>  };
+>  
+>  #endif
 
-IMO the change which moves __mcheck_cpu_init_generic should be in a 
-separate patch so that in the changelog it's abundantly clear that it's 
-a "world switch" function and its invocation timing is important.
-
-<snip>
-
-
-In any case:
-
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
 
