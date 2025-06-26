@@ -1,40 +1,79 @@
-Return-Path: <linux-acpi+bounces-14704-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14705-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A63FAEA43F
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 19:15:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B27AEA493
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 19:42:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CEB44E4CFA
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 17:14:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 679B07B3323
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 17:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A1C2E7179;
-	Thu, 26 Jun 2025 17:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3478B2ECE8D;
+	Thu, 26 Jun 2025 17:42:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZIBBs1PB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B672DAFB8
-	for <linux-acpi@vger.kernel.org>; Thu, 26 Jun 2025 17:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D195202C50;
+	Thu, 26 Jun 2025 17:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750958086; cv=none; b=dQw7tS4qmcQsNYJVq0hGre4fwDRyYorJplBL5om/lBavVtFd9rG0HzKRV2c5L/wwn+JlNQlSYt9hdU9XLTFqpNhpqLA+0uLsY6ngzrt+gCuXwSnNTq4ruGcYRz0/N/hEceBCAfvbwd1B9B02lV7qYatwlOzBj+qEhQn+tddvFIE=
+	t=1750959747; cv=none; b=nv6yDgWgjORShhWRF0nayMc6uQrc9pCJqUCP0gMNQ+6jbkkHEYXRFe+yHdOp/o191cnPSqX29bVhIbTnRisUKt25DdqwgkWENHh38K58SHPTawa59K/ZXm5lMb2UQVTJWGyjaMWYqzCW1YEz3cduyxJUr2x6y3M+J4cCNMWLPJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750958086; c=relaxed/simple;
-	bh=DIlaJtpBKlViAMvmQtKddLKkjCGcz+TWnZLLY3AHVbI=;
+	s=arc-20240116; t=1750959747; c=relaxed/simple;
+	bh=d/uFaFpLqxiJWZje950XRpP9HEjDy0svn2RVhXaZP6w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o6h+FrasOOltqxwSRgI9KQfultoQQOjCrXERZLe1E2WJtCP/Vhxihv41VxkJzc2qnTBvrk+5aq3SHWEZkCKq2gH6dhxOGzIT1bi/gVCvltwOouLrTIuEuBt/KfQ+0La/le5GZM74Fj0ESjV39jhKJkvIHwQFi9r0L9qcVwtT6Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 063C21758;
-	Thu, 26 Jun 2025 10:14:27 -0700 (PDT)
-Received: from [10.1.197.43] (eglon.cambridge.arm.com [10.1.197.43])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 24E373F762;
-	Thu, 26 Jun 2025 10:14:42 -0700 (PDT)
-Message-ID: <5f2316d0-165f-4a15-9762-dadce6940b06@arm.com>
-Date: Thu, 26 Jun 2025 18:14:41 +0100
+	 In-Reply-To:Content-Type; b=WQGjZ/0Dd4WJ3OO0HaurlrTPdpanp1qwQGjJmi284VlNLX6UHuuaOwZNHENcFB2SqBYRg7WuWem1g0e7KitRAPPqJ3pyUmxyqXoUHIAbUmoePXtyCdZuYUm+E951DzXdAc7S+I+y0VwCwFmWCgrlhI8G2+jf354kfYAVaYfQCQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZIBBs1PB; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3a536ecbf6fso765258f8f.2;
+        Thu, 26 Jun 2025 10:42:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750959744; x=1751564544; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9it6V+UE5SX4dDhUGK283b/ucph+OC15b+uAeGnEJBc=;
+        b=ZIBBs1PBblxWhuOkkVY84zVzw+nDZXUNniuDYQJrzSs87JGWyf38MmJKRMJi+4ibMg
+         lJ97AGpaiwQtd6A41uD7hS2Y7KOtTHc/266lRKvEiOaHhw+Ttm0aJhA99t2r0Ydv5/5T
+         gK+/lo4ILYWIZYDWxSYYc3J87Se1jSD7dmnihwMiBy7SFLmxO/EQtJ1q/+fnqCmGEnCv
+         SD5FbiGEy9T5SlkJkTtUMEJrGqtjfPds8zz9ftCfHP4gFwad00KTPTSHspm5GdgrpLYk
+         eKe7RYvOa1DYR3qdPLfuwwl1azOlsWHtZ80tPmCZhiBzQa35ksU6o4oo8MW71LxTzFqB
+         1HnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750959744; x=1751564544;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9it6V+UE5SX4dDhUGK283b/ucph+OC15b+uAeGnEJBc=;
+        b=uNAesVnoZuko4vb/M73twto/y090a/c8TDn2/l2a8LYAV8rQHMv7lFzBVui3WGzcnw
+         At4tneR7Xv8BuR+JENHtyII98/8BvoIxrz89na1xKqSoNlI54/bKDTR2b7pkDURxSjBE
+         ktqdA53ExHzcjS/1QApuOWSvV35i5i+xgx7xxQRW56iAXM6DDFzGlstTkFc4iceMvFv9
+         l+j7TePq6h3sowqcr8AQyWz41XDtjVyoN/al0e5fpAX8E40PG8avC5cWZCBfj/P/L84e
+         JYtpXeK5GOJrXJe8inmr0eZ2Cj5f8Nqjv54AHRWlWaGQx2mIqS/R7ibW9ng/v1mUJKdx
+         YR1w==
+X-Forwarded-Encrypted: i=1; AJvYcCUPWTQUVFe8x8U+x4iVpwa0LMugiqFDU/ln52bYoPct5/V0ZkX/p35WFibUG9AQyfyfo0BNahSH5c1P@vger.kernel.org, AJvYcCVejSgnGeESX6WBOJ4qUEHK8aVcBr95/tr0Z29mXVc99Cyl0eBN7Za395DUmdoFoNWy/0uY+CM9/TIvh7X5@vger.kernel.org, AJvYcCWWvErnrz0tBlDz+BVeqkIucAUA8SlfhgbIsXzDVYxULGSr6ta6fY2VhROlu4mroOLF77mVje4Ic/BrRA==@vger.kernel.org, AJvYcCXKcC/CwnU4JsIzSybjBRnusWdO7F2P7FMy6DxG2IG3QL3LRpdy5pE8ygiVBVP9pM1ZpglG0A0fFUM24qTjnwE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQbjJ0dKqWWY3B6jAy3iyuAiIDhgrtWzzt0KnGDaX0Dz6xRSOi
+	sJ60ZbdpQEFGPI91zBMXtp47JvGhNF2AF01W/1OusebBuWBXjr0DjMkP
+X-Gm-Gg: ASbGncs2VTMqLbhLVxWs5xE9QU92vub5t8FZIvyAmwnoLTrRaMDs8FkGxMz3o8zuGTh
+	yyGNNoICDb/UztkzEUI4uXb1CCsM53PfZnCxRz/zlzLcMuXjMP8wCgUPHPXha3JCQXv+CjbfxvT
+	g0v3SFKshhaYlN/tPtNCsxzhjGNZKO31LwRX62H6qBzP91d6AlsfiUlYvT7CZo1xi4PMMTxn1a9
+	A0RxyBsO1YidlmV9eeKuA9eYWeu1bGZw/kxzGHpjxegkwX0bveOBV0f7rQEtFgta84rGwZ/d3Ml
+	56hHnrk4O0Nsi5Q6dfdma1rn5EzSHZhWXVt5v6OHK2iGMe/trCBHfoMBf6sqEsgeg2KkOLU=
+X-Google-Smtp-Source: AGHT+IGr2M9MxH/JfMsZ07lpE1ikbaPFCtQUD7frnfdUMbPRMyzGWfcYKWrr5HHz3Nw1g/Fqcy5Sag==
+X-Received: by 2002:a05:6000:2082:b0:3a3:7ba5:93a5 with SMTP id ffacd0b85a97d-3a8feb85191mr466394f8f.26.1750959743398;
+        Thu, 26 Jun 2025 10:42:23 -0700 (PDT)
+Received: from [10.38.1.85] ([188.39.32.4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453823b6c21sm56282555e9.29.2025.06.26.10.42.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Jun 2025 10:42:23 -0700 (PDT)
+Message-ID: <31804bbf-1a0b-4312-8db6-532a008528a2@gmail.com>
+Date: Thu, 26 Jun 2025 18:40:06 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,61 +81,76 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] ACPI / PPTT: Add a helper to fill a cpumask from a
- processor container
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: linux-acpi@vger.kernel.org, Rafael Wysocki <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>, jeremy.linton@arm.com
-References: <20250612171336.4858-1-james.morse@arm.com>
- <20250612171336.4858-2-james.morse@arm.com>
- <20250623-incredible-overjoyed-foxhound-baa930@sudeepholla>
-Content-Language: en-GB
-From: James Morse <james.morse@arm.com>
-In-Reply-To: <20250623-incredible-overjoyed-foxhound-baa930@sudeepholla>
+Subject: Re: [PATCH v8 4/9] rust: acpi: add `acpi::DeviceId` abstraction
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>,
+ Saravana Kannan <saravanak@google.com>, Alex Hung <alex.hung@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Jakub Kicinski <kuba@kernel.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Remo Senekowitsch <remo@buenzli.dev>, Tamir Duberstein <tamird@gmail.com>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Xiangfei Ding <dingxiangfei2009@gmail.com>, devicetree@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ Len Brown <lenb@kernel.org>, Trevor Gross <tmgross@umich.edu>
+References: <20250620150914.276272-1-igor.korotin.linux@gmail.com>
+ <20250620152425.285683-1-igor.korotin.linux@gmail.com>
+ <c5d750fd-ffcf-4d07-bfff-ebe206faa41a@kernel.org>
+Content-Language: en-US
+From: Igor Korotin <igor.korotin.linux@gmail.com>
+In-Reply-To: <c5d750fd-ffcf-4d07-bfff-ebe206faa41a@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-Hi Sudeep,
-
-On 23/06/2025 14:08, Sudeep Holla wrote:
-> On Thu, Jun 12, 2025 at 05:13:33PM +0000, James Morse wrote:
->> The PPTT describes CPUs and caches, as well as processor containers.
->> The ACPI table for MPAM describes the set of CPUs that can access an MSC
->> with the UID of a processor container.
->>
->> Add a helper to find the processor container by its id, then walk
->> the possible CPUs to fill a cpumask with the CPUs that have this
->> processor container as a parent.
-
->> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
->> index 54676e3d82dd..aaf9b5a26d07 100644
->> --- a/drivers/acpi/pptt.c
->> +++ b/drivers/acpi/pptt.c
->> @@ -298,6 +298,97 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
->>  	return NULL;
->>  }
->>  
->> +/**
->> + * acpi_pptt_get_child_cpus() - Find all the CPUs below a PPTT processor node
->> + * @table_hdr:		A reference to the PPTT table.
->> + * @parent_node:	A pointer to the processor node in the @table_hdr.
->> + * @cpus:		A cpumask to fill with the CPUs below @parent_node.
->> + *
-
-> Is this cpus mask always cleared before acpi_pptt_get_child_cpus() is called.
-> Just checking if it makes sense to clear it before we start the loop in this
-> function or do we have a need to start with a pre-filled cpumask ?
-
-It's only got one caller, which does the cpumask_clear() - but I've been bitten by this,
-so getting them both to do it would be least surprising.
+Content-Transfer-Encoding: 8bit
 
 
-> Other than that, LGTM.
+
+On 6/26/25 16:25, Danilo Krummrich wrote:
+> On 6/20/25 5:24 PM, Igor Korotin wrote:
+>> +impl DeviceId {
+>> +    const ACPI_ID_LEN: usize = 16;
+>> +
+>> +    /// Create a new device id from an ACPI 'id' string.
+>> +    pub const fn new<const N: usize>(id: &[u8; N]) -> Self {
 > 
-> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+> Didn't notice before, but why was this silently changed from &CStr to
+> &[u8; N]
+> from v6 to v7?
+> 
+>> +        build_assert!(N <= Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
+>> +        // Replace with `bindings::acpi_device_id::default()` once
+>> stabilized for `const`.
+>> +        // SAFETY: FFI type is valid to be zero-initialized.
+>> +        let mut acpi: bindings::acpi_device_id = unsafe
+>> { core::mem::zeroed() };
+>> +        let mut i = 0;
+>> +        while i < N {
+>> +            acpi.id[i] = id[i];
+>> +            i += 1;
+>> +        }
+>> +
+>> +        Self(acpi)
+>> +    }
+>> +}
 
+In v6 I was asked to change assert! (runtime) to build_assert! (build time)
+It was as follows:
 
-Thanks!
+> +    pub const fn new(id: &'static CStr) -> Self {
+> +        assert!(id.len() <= Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
 
-James
+but id.len() breaks const context and so build_assert! triggers
+assertion. If I needed to explicitly describe change from CStr to
+[u8;20], then it's my bad.
+
+Thanks,
+Igor
 
