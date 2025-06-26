@@ -1,68 +1,68 @@
-Return-Path: <linux-acpi+bounces-14695-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14696-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 626B9AEA0F8
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 16:42:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47239AEA0F3
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 16:41:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF1CB5A4EB5
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 14:37:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 266281887D48
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 14:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006D02ED87D;
-	Thu, 26 Jun 2025 14:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A0A2EAB8A;
+	Thu, 26 Jun 2025 14:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rxqy48p1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FWw6tdhY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3442EB5B4;
-	Thu, 26 Jun 2025 14:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C782EAB7F;
+	Thu, 26 Jun 2025 14:35:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750948442; cv=none; b=FBIv7OuRLKiPTfv9ATAXS0SyRdfTXkIC7C/pKjExM2KrGVGJ20Sf0jKfGxFedkiagu5WRpCl4AiQn9zLNcv+RhzBFde5n0N0jnbMyZIUMoE7EJ6ntfxjeZLEEs+EBwarqmrxAzXrsMpS8lOWzUw0vNIvSzqHysmO5Ty1NY1FIMg=
+	t=1750948531; cv=none; b=rBUSf0FIqWazedSg87dw4dCOOy5ZsQeR+tqnyVJawmD3I9edAudLmILYHUxnks2V6jCOvjezZicCGY9h35+5oKEHrVmiKb/sFXEzCY1gbOd0udVL0GuSrTJ5Knx48VbX7an3PC8l641uxuulXDCxdsOynSYcIObtj6RVRvaBB+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750948442; c=relaxed/simple;
-	bh=xej6AQs5tkI/jQAFxSeQKq+f2GY61NJLaNlLTM9NbVw=;
+	s=arc-20240116; t=1750948531; c=relaxed/simple;
+	bh=u6Cb7btngty8OfoJXcvr5JbIB2Gkz2Muobtwau7/iPA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pO6PzgTqfwJ0pMRFliu9a2J1HQWq2dVWptUYL8gy1LFF2RwKphwx21pNqnfzwGoPS6z0d8qQDoWBhcV5UD0HnudVJfeqPKL+sdqNfvKmNCPhSwMAXxe3OeLhVtl8BfyEvsMsy0gkrT9CRkJSFvpiJWgV54ibY7HXSN3FApHuO9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rxqy48p1; arc=none smtp.client-ip=198.175.65.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=n8SCSgl3EGOreVI5gekZbhS0CGRM8iHqR9BBJx3PoiTdgPuxOppRmtViSotwfO8koYQ3HXCD2BcSjUu5KzdCIExa6XX11cJ1g6xroGXu0cb9wkMT1XqggnMobZhBMYt18eOLU5r3Ajv8JkRCUv6RE+FRjnhZP0azf+6ccNt3uDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FWw6tdhY; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750948438; x=1782484438;
+  t=1750948530; x=1782484530;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=xej6AQs5tkI/jQAFxSeQKq+f2GY61NJLaNlLTM9NbVw=;
-  b=Rxqy48p1yGnEzhysYicVNB+dyrki4/qopCOHqZBRi3rdlrKJj/d4Pye5
-   sX0ZWoh2zcTuT8saEczyJkv81ejXCyC+YjkKNx7ElB4ZFWyjioxbwIKGI
-   gIbYcRPMhPvgcrksIKn578wn11RPcmrNqO0FVPbQnmrI2NpcBDq1FdKWD
-   HKtg0PHiVG4ePPj9B9hnV+YKt7LY04EDbkkY6sj9KX6f2n6jhFtN4OW7e
-   wSgocsZZmXRl9neFI+es6G3EW+O7nGXmNXr3Q6LR3Ex/u1sudbPUx5Ysz
-   Q28qiCRVj7Cm9KhaCphW+mmdsaAPrlc7ukaCEoRBnThqD700+V6LevzZp
-   A==;
-X-CSE-ConnectionGUID: QLD26Q+aS5qjHUGs5DV/Iw==
-X-CSE-MsgGUID: NT4hwiMjReGuV1VkSLtuvg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="53119200"
+  bh=u6Cb7btngty8OfoJXcvr5JbIB2Gkz2Muobtwau7/iPA=;
+  b=FWw6tdhYrNKGNUsmaan9435+8xPpcmQmAeFHc2kiUgMUKoHys6CqDaIG
+   4jEhmp5AEthusM+oTmwIaXUxChulg8r+MtLRxMzjqAr8mbBTo4SDQiJAa
+   2mHTUVfHS0vIXoGbR8kVG0o49caiPzQjlU6Cq+DoOk3Tgln0BIfxuljbj
+   I3mHswkxM1QT6elHyOjWpMAaoYScTqX92GdbIa6CEp+LfO+qRoF5mzZGm
+   2QCXniAfsl1Mjnx+TrNZ2K++e7KlBTcUu8K9qcRmX6mO6eOrTjKDFiDlx
+   VYIikUzBDc4mLX+i1Eo/ISfg7d8hbTElrhj33+c6L6diYPPvE8m+rqXQG
+   w==;
+X-CSE-ConnectionGUID: QmKYcQffRXy52f8mNnC5GA==
+X-CSE-MsgGUID: JG1aHA0ARf+ZgDxVPiJCEQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="70677000"
 X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; 
-   d="scan'208";a="53119200"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 07:33:57 -0700
-X-CSE-ConnectionGUID: +1QKEstmTVuOGFn0EnpavA==
-X-CSE-MsgGUID: /8qtWYBtQrGuIeO1r3TJEQ==
+   d="scan'208";a="70677000"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 07:35:16 -0700
+X-CSE-ConnectionGUID: lR/QX+sGR6Ovj9wQXhkGkA==
+X-CSE-MsgGUID: EcVsQynBTta7FfyFaRSPIA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; 
-   d="scan'208";a="183561957"
+   d="scan'208";a="152830571"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 07:33:53 -0700
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 07:35:13 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uUnfj-0000000ACX3-0ebO;
-	Thu, 26 Jun 2025 17:33:51 +0300
-Date: Thu, 26 Jun 2025 17:33:50 +0300
+	id 1uUnh0-0000000ACXp-32dy;
+	Thu, 26 Jun 2025 17:35:10 +0300
+Date: Thu, 26 Jun 2025 17:35:10 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Mario Limonciello <superm1@kernel.org>
 Cc: Hans de Goede <hansg@kernel.org>, Mika Westerberg <westeri@kernel.org>,
@@ -74,11 +74,9 @@ Cc: Hans de Goede <hansg@kernel.org>, Mika Westerberg <westeri@kernel.org>,
 	open list <linux-kernel@vger.kernel.org>,
 	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>,
 	Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH v3 3/4] Input: Don't program hw debounce for
- soc_button_array devices
-Message-ID: <aF1aThiXUFhHxlZO@smile.fi.intel.com>
+Subject: Re: [PATCH v3 0/4] Fix soc-button-array debounce
+Message-ID: <aF1anq07UAkHCfPO@smile.fi.intel.com>
 References: <20250625215813.3477840-1-superm1@kernel.org>
- <20250625215813.3477840-4-superm1@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -87,27 +85,32 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250625215813.3477840-4-superm1@kernel.org>
+In-Reply-To: <20250625215813.3477840-1-superm1@kernel.org>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Jun 25, 2025 at 04:58:12PM -0500, Mario Limonciello wrote:
+On Wed, Jun 25, 2025 at 04:58:09PM -0500, Mario Limonciello wrote:
 > From: Mario Limonciello <mario.limonciello@amd.com>
 > 
-> Programming a hardware debounce of 50ms causes problems where a button
-> doesn't work properly anymore on some systems.  This debounce is intended
-> for compatibility with systems with a mechanical switch so soc_button_array
-> devices should only be using a sofware debounce.
+> I have some hardware in front of me that uses the soc-button-array
+> driver but the power button doesn't work.
 > 
-> Add support for indicating that a driver is only requesting gpio_keys
-> to use software debounce support and mark that in soc_button_array
-> accordingly.
+> Digging into it, it's because the ASL prescribes a debounce of 0 for
+> the power button, but the soc-button-array driver hardcodes 50ms.
+> 
+> Hardcoding it to what the ASL expects the power button works.
+> 
+> I looked at the callpath into the GPIO core and I believe it's
+> because the debounce value from _CRS is never programmed to the
+> hardware the way that the GPIO gets setup.
+> 
+> This series add that programming path and then sets the hardcoded
+> value on on some quirked systems.  Hopefully Hans can confirm this
+> continues to work on the hardware that he originally developed the
+> hardcoding for.
 
-...
-
-> +	gpio_keys_pdata->no_hw_debounce = TRUE;
-
-true
+There is no a note about routing the patch in upstream. My proposal to take
+GPIO ACPI library patch and provide and immutable tag for others.
 
 -- 
 With Best Regards,
