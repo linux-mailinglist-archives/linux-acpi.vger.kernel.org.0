@@ -1,140 +1,126 @@
-Return-Path: <linux-acpi+bounces-14679-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14680-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2217FAE9AE0
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 12:11:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B012AE9AF0
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 12:13:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E4DA1653FF
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 10:11:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE0521C4066F
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 10:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673D221D3DB;
-	Thu, 26 Jun 2025 10:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B3321CC59;
+	Thu, 26 Jun 2025 10:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jKz8j8yZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DvkBjQ7a"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960A121CC62
-	for <linux-acpi@vger.kernel.org>; Thu, 26 Jun 2025 10:11:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4017F21A444;
+	Thu, 26 Jun 2025 10:13:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750932671; cv=none; b=I5pG/d/6vvOCanLyjxAHS+3mX5VGXau84vX2tO/ea1EMVKHsXNguCLgLdHMGKH0V8g3saYDTQe1AWFh3c/5G02I+B4HTVkLu/+fY5h3L8yiwdCsH1hMHykAPPLAhjnrZ58xNo64iFYfQpQxmb6CMmcHVlcPJNinzleHvbpXhFdo=
+	t=1750932799; cv=none; b=G5bxbyyUYOD3IJ1ClqP9z/d0hVx37RdQ+Q+brcub9q8e8nesHarxXe+N5aR7MPnR1+co8dNlpJhifK2+Sac1TvdNube3xr+wL02IaZck3lhl2tsF930pth8hS8L9Uhi/YFWrSvIC4b/1zfFLQ266QnVxxqsDcPLyxONylFz1QFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750932671; c=relaxed/simple;
-	bh=6/CYJDnKQKVbQcwXiQ2rMzs2H9ssDvR6KIpjsUQ6QdI=;
+	s=arc-20240116; t=1750932799; c=relaxed/simple;
+	bh=H3Hm8ZwhG9stnp9URv+WVSn+KcRnfYN98pKgcSAUiNc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SEHh62P1e56hYq1pgZeaj5c2iP7ryg7RJcHpsDvb1nYi3YgSutMccGOz3uVk/fwLa8UpJvl88GRH5bfOhqCeR7Dkq79OxU3PiBsaASfPZBpnKfjD4Bt7fvMFMXdAb/CrxH4CW2cwDNkIDEQ3LLRfBtZOBVO7eWQujbr0k0tQurA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jKz8j8yZ; arc=none smtp.client-ip=209.85.219.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e8600a33792so530793276.0
-        for <linux-acpi@vger.kernel.org>; Thu, 26 Jun 2025 03:11:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750932668; x=1751537468; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9Q9r85ztpEpS9CYbZbkPRdk5F829Mu+gn5m9UjJJ67w=;
-        b=jKz8j8yZKBOa7biATTQpt47NE380p0arVVW2TvzqXbvq5RyIZnCMi7nhD/HhMXYxG9
-         14ETF+3PzaHQPT51FU9gAiJNWVJT85d/s62Z/nGx47ZAS3XiL9bxnMyzzcoNRbkZaOLu
-         Bkd578TgrI4eXkwPYweFBrsvKq4O9eYvRqwGWeN5V7lULHQgK5mVRsFHG16Azj4t/2SK
-         Lft3M3XvrCJQaDOO7S6P7H8OEktGZLHitpS5Y04PLE12f5xCteSaouVLNrkEWLL7i7d2
-         mMDby3gOo1GYd2hSAYRcTizT47AXZTWEDaRBRASJzsGv8l5L/L5Nh2agqwAlL8SrnNUn
-         x/dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750932668; x=1751537468;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9Q9r85ztpEpS9CYbZbkPRdk5F829Mu+gn5m9UjJJ67w=;
-        b=ZRzJlyRySKm3AE5/M6pDPxctE9TTlPl9qZNtOcAGYlLBK2Ko7g/9MvUisyrG/24tAt
-         2ENm2J+kCW3T8ZZ/t6JsIOW10A5WXFdN3dPLn0rriapkOwnP3MgdToTeOVSWtv1qvhn5
-         7iF++7RTKg+0UfpFqJPI2QEx3JVzMxcO5sfRCnKRQo9Y/PcIMAq2Dl1sC496i22FYI2D
-         GN/zKj9rUjACNY2RQLorokt92ebQYGjAgKK8YtQgaOFD1nkvd0ZUnyZfPbLZi/UPWxS5
-         JfoJpbzP+eZNR5WifVAt5sDHNjli/QUPwxfBuwaqbx2qcljcpJvxumiVcQM5Vuaqr6FK
-         DkYw==
-X-Forwarded-Encrypted: i=1; AJvYcCWn1MUL9oBhq14ucKg9EHkIetWFcFflJGgt1ErcqUfmLVAQ1ph9HejM8eTU2B28VxkmVl7qdjQLdm0A@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1hpS6dLhUuAMy5Hr7Z++vwSa/3w3lcRaOKFJv6vCnke7OUxOi
-	YbzmeXLIbJ8iyLne/WhXl5Oi54q1BXrw45Tt6dTxN2gmo+u7vgphlMOBkTRAn/VenoaCYgeIJ3H
-	fgr1ZA6SjGEFJ/aQW+m7d8QWCL43Tz5DCvhe74Cjuq6U5HuQY1YEg
-X-Gm-Gg: ASbGncuSoTgWTnoS+YDn1KIb81nPOSeKzIyB2o3oohwiW+NoNGAyUazmQCjz+chF4Ul
-	S7fTh62PTgIqn2Y0yOevMxMU1v0snpwEae1zmpf/n/rBXlmFxE1z+vOonwNAY6aGeaI1r9suOJQ
-	FWYHFFuITDYNi7pusVdDS3yBs7YTWKlC6z7WC4LTx9m4Rk
-X-Google-Smtp-Source: AGHT+IFTNjmMODL7y1EvHVTNC82M3od38DyxrG8NO+F9c5mpyvxWXa3dqoy9a/B0A36TiqGlH0TnxzyON/TB5m34CYM=
-X-Received: by 2002:a05:6902:210e:b0:e81:9581:4caa with SMTP id
- 3f1490d57ef6-e860178bba2mr7662593276.34.1750932668573; Thu, 26 Jun 2025
- 03:11:08 -0700 (PDT)
+	 To:Cc:Content-Type; b=d+fzX12eC0JqFGZIpJCqotvGLO+gKu5nwCY//eyr2jrl7fS1Ps6RPhzXgsdBDH5MbvpPfY7/RFtRlsHebEV3RfC78h4n7cDTT+Bkgw1dWJH3JkMliBZN+NH5EflPuk2u6acE0LXOrDfcXFXzmjpwdI7i2lWHZC/vZTzSt/nduVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DvkBjQ7a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D322FC4CEEE;
+	Thu, 26 Jun 2025 10:13:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750932798;
+	bh=H3Hm8ZwhG9stnp9URv+WVSn+KcRnfYN98pKgcSAUiNc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=DvkBjQ7ahSIoOADN2NmitD8McDEZktbk/DI2+1z5CsnABCFzdLmMkTRFH5XmGTSlh
+	 4TCNR8Ow1PgBWzzwEvyTIQDEtcHInnkSMD9935CBnPthrOJ30PMAFOdzG268rxD+Qq
+	 ZcBfxciOTh77AZCGwTcEaSEtb9HmHldLIkT6jFprxnN7uz2YUcHeKB7qDQmNV1/Ign
+	 ZwUJYFk79X8ap2xhpAxDbKl38acfV/FHM8S912RdEOpiD307WvsSlZDgLLhA37NEgE
+	 AY7RrQVZ7mR4mxOKXLHyfTM3zDuLlo7q+63o4WgvddMVISddMQ443RAh+KIwSu5GKH
+	 rAoe/uqAGGJFA==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-6119b103132so558094eaf.1;
+        Thu, 26 Jun 2025 03:13:18 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU9o1jaBdwHsOoHJVY1V7b0k9/3Xyt/CHqg/SGvye7nKjTSzrXYTcJk15/LGE9UJS56pJ1UHx8F/+SY@vger.kernel.org, AJvYcCV4KEOWiud24TS+9ZxMWfbamccDhouGTh/68CZIj8CMudEELUj8S2oauYXRDe3qX2UfufvXWBgkrH0=@vger.kernel.org, AJvYcCVz2CnuPmt6XS/1MhY6uBOyk0e4/OTI/kQqOntULxlmXv0cqerhiDhypwdqf1XPsSV2z22wHuYvqDxR+zkY@vger.kernel.org, AJvYcCXCF1eMLB1j9jlA0Scn/OnFYboK49TfCFwhpGUwPCoCt0XJJQFheMa+jZ+SfNZJq0L4n66rhKmWOVBV@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrmYmYRjTOdxU6geRe8+qZVaj4DJ2zYQEx7PAhmPE7adwOLyrq
+	h3l4mSo+48gxJv802NHbktqKMGwEr/KyHAKf5iP3RubQkVvpgwopG4TtxLoKbnjTH6isUTxzyya
+	iVF5if+WVBr3aq5u/KCpqfUzRjHv7wU8=
+X-Google-Smtp-Source: AGHT+IGmhhhTDTjzyUv7QYbeYPIjCPkSILNhAIbvZ55Xi9zhPPB+Su9YIRAsDQyg5mxjTNENArO3f70aGbVVhe2zxHM=
+X-Received: by 2002:a4a:e908:0:b0:611:3e54:8d0a with SMTP id
+ 006d021491bc7-611aaedb632mr2107247eaf.1.1750932798132; Thu, 26 Jun 2025
+ 03:13:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <22759968.EfDdHjke4D@rjwysocki.net> <3903497.kQq0lBPeGt@rjwysocki.net>
-In-Reply-To: <3903497.kQq0lBPeGt@rjwysocki.net>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 26 Jun 2025 12:10:31 +0200
-X-Gm-Features: Ac12FXzz6qmhiLsuzk245wnHwdyyM19B97SD0ZUjObz7zXjCLdLDg9DQbgqL-iI
-Message-ID: <CAPDyKFqXvNDqZjePwvF+mgs7bba47uoeH-7XvJkqZ2K4-bmXgg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/9] PM: Use true/false as power.needs_force_resume values
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Linux PM <linux-pm@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+References: <22759968.EfDdHjke4D@rjwysocki.net> <2045419.usQuhbGJ8B@rjwysocki.net>
+ <CAPDyKFq8ea+YogkAExUOBc2TEqi1z9WZswqgP29bLbursFUApg@mail.gmail.com>
+ <CAJZ5v0h-9UnvhrQ7YaaYPG5CktwV-i+ZeqAri8OhJQb4TVp82w@mail.gmail.com> <CAPDyKFoW5ag69LBnxvP5oGH1VAErBn17CAOzh=MX2toxAHwLxA@mail.gmail.com>
+In-Reply-To: <CAPDyKFoW5ag69LBnxvP5oGH1VAErBn17CAOzh=MX2toxAHwLxA@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 26 Jun 2025 12:13:06 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jx643Os_hvAwoOvYbP3VPhAhgWBqQJk+Rp8zn=w49w9Q@mail.gmail.com>
+X-Gm-Features: Ac12FXzA6Z2qh0lnHk5PDayOdrQi_SOG4nvj4QW4gomZsHlPCKtdeNrrZ7uMipg
+Message-ID: <CAJZ5v0jx643Os_hvAwoOvYbP3VPhAhgWBqQJk+Rp8zn=w49w9Q@mail.gmail.com>
+Subject: Re: [PATCH v1 4/9] PM: Move pm_runtime_force_suspend/resume() under CONFIG_PM_SLEEP
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, 
+	Linux PM <linux-pm@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
 	Linux ACPI <linux-acpi@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, 
 	Mika Westerberg <mika.westerberg@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 25 Jun 2025 at 21:25, Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+On Thu, Jun 26, 2025 at 12:05=E2=80=AFPM Ulf Hansson <ulf.hansson@linaro.or=
+g> wrote:
 >
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> On Thu, 26 Jun 2025 at 11:41, Rafael J. Wysocki <rafael@kernel.org> wrote=
+:
+> >
+> > On Thu, Jun 26, 2025 at 11:38=E2=80=AFAM Ulf Hansson <ulf.hansson@linar=
+o.org> wrote:
+> > >
+> > > On Wed, 25 Jun 2025 at 21:25, Rafael J. Wysocki <rjw@rjwysocki.net> w=
+rote:
+> > > >
+> > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > >
+> > > > Since pm_runtime_force_suspend/resume() and pm_runtime_need_not_res=
+ume()
+> > > > are only used during system-wide PM transitions, there is no reason=
+ to
+> > > > compile them in if CONFIG_PM_SLEEP is unset.
+> > > >
+> > > > Accordingly, move them all under CONFIG_PM_SLEEP and make the stati=
+c
+> > > > inline stubs for pm_runtime_force_suspend/resume() return an error
+> > > > to indicate that they should not be used outside CONFIG_PM_SLEEP.
+> > > >
+> > >
+> > > Just realized that there seems to be some drivers that actually make
+> > > use of pm_runtime_force_suspend() from their ->remove() callbacks.
+> > >
+> > > To not break them, we probably need to leave this code to stay under =
+CONFIG_PM.
+> >
+> > OK, pm_runtime_force_suspend() need not be under CONFIG_PM_SLEEP.
+> > That's not the case for the other two functions though AFAICS.
 >
-> Since power.needs_force_resume is a bool field, use true/false
-> as its values instead of 1/0, respectively.
->
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Right, but maybe better to keep them to avoid confusion?
 
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+There really is no point holding pm_runtime_need_not_resume() outside
+CONFIG_PM_SLEEP and pm_runtime_force_resume() really should not be
+used anywhere outside system resume flows.
 
-Kind regards
-Uffe
+> At least the corresponding flag is needed.
 
+What flag do you mean?  If pm_runtime_force_suspend() does not go
+under CONFIG_PM_SLEEP, needs_force_resume will not go under it either
+(so I'll drop the next patch altogether).
 
-> ---
->  drivers/base/power/runtime.c |    6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> --- a/drivers/base/power/runtime.c
-> +++ b/drivers/base/power/runtime.c
-> @@ -1827,7 +1827,7 @@
->         dev->power.request_pending = false;
->         dev->power.request = RPM_REQ_NONE;
->         dev->power.deferred_resume = false;
-> -       dev->power.needs_force_resume = 0;
-> +       dev->power.needs_force_resume = false;
->         INIT_WORK(&dev->power.work, pm_runtime_work);
->
->         dev->power.timer_expires = 0;
-> @@ -1997,7 +1997,7 @@
->                 pm_runtime_set_suspended(dev);
->         } else {
->                 __update_runtime_status(dev, RPM_SUSPENDED);
-> -               dev->power.needs_force_resume = 1;
-> +               dev->power.needs_force_resume = true;
->         }
->
->         return 0;
-> @@ -2047,7 +2047,7 @@
->
->         pm_runtime_mark_last_busy(dev);
->  out:
-> -       dev->power.needs_force_resume = 0;
-> +       dev->power.needs_force_resume = false;
->         pm_runtime_enable(dev);
->         return ret;
->  }
->
->
->
+Cheers, Rafael
 
