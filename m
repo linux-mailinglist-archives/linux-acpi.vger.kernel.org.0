@@ -1,48 +1,48 @@
-Return-Path: <linux-acpi+bounces-14734-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14735-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C140FAEA5E9
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 20:57:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FCE9AEA5F2
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 20:58:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 388A21C441B7
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 18:57:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECE4E16BB8E
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 18:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2142EF2AC;
-	Thu, 26 Jun 2025 18:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FFB2EF2AC;
+	Thu, 26 Jun 2025 18:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kD580T0I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U5fzGcgT"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D333A2EF298;
-	Thu, 26 Jun 2025 18:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579E925DCFD;
+	Thu, 26 Jun 2025 18:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750964254; cv=none; b=luKudm7fjCaIPeiRvtF7i1th1Ha2kxPq5rkEL2G3YCxlGsZLWnla06OJYp8EkFxzzb33LNXsBLYCo3p0wQisE/cjtS61FcY/DEnuibDuiQwzLNnKe9b2e6wLs6GN6XihxUwGidngzGsotNJTZL/n1i1rx+DrWBfOanYw1DLrZ4U=
+	t=1750964296; cv=none; b=O4TweabDThDBIs4VjoSPqU3WJB0ODdG7F3cEUg8vcGqqX/BwQgfzlDsDvI7r1UPlc+squ4JTsGRvdMJH290lLNNh/zkRLWSiWcOLZCAgdNuokdvrFu4doUvdUnYg1q4oI/oe/RIE66ldbluYbAmATVY3f88zB3QEzryGE+pBTxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750964254; c=relaxed/simple;
-	bh=Mz+UWV5NsS/PNATtjzCRHBoPaeJNZ+PldtKmc1FftJo=;
+	s=arc-20240116; t=1750964296; c=relaxed/simple;
+	bh=VuGdCO3UIva2y3pUx7i14W0KejS0P5aGUDN2EygFrdU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tkMMkjT0zqgvSQfB5H/amYV9boaJ4xXY/KgXeuThgMeiPUqf8S9tH1NEd6D/lrOXJ0bw+HJeW82L+GO8kan10u6CG9SmdDUuDGLOlCcVYyK5+TtwDpctcUv/4ShVaurxIevi/UPls6fZJkBm75314dwa9PjN8sPxA8ngzWuTAJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kD580T0I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 148C6C4CEEB;
-	Thu, 26 Jun 2025 18:57:31 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=d6bWqfZbXPffNp81VTYViEaBm6A2qTUyoV7YwCIjiAzxASXyE97Ny+1z60aAuTlxmDcuAZj1CHc6xkSswsW8+QLY9Coty9/Z3KrCBoX8iJ9oiq99Mafy93m9Hd5STATSYSlloT21RyFKKAb5E+daX6nhloWb7m17jbxigH/8HRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U5fzGcgT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E48D7C4CEEB;
+	Thu, 26 Jun 2025 18:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750964254;
-	bh=Mz+UWV5NsS/PNATtjzCRHBoPaeJNZ+PldtKmc1FftJo=;
+	s=k20201202; t=1750964296;
+	bh=VuGdCO3UIva2y3pUx7i14W0KejS0P5aGUDN2EygFrdU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kD580T0IA7MnoW7tYAG0L25GAP52rJSco/Yxosk/GqSEgCaB4RrFMFyxFlGvHVUYO
-	 SMY0FdabMESGn/JMwwrLUptVprQPg38MLFqbal3zg2JgxOwC4sgJhxPh4Afz5E1oPx
-	 lMz/47ZuDdq+DEJSD25gtE8OaLLNPEuibro0EfzS4C5y9E3UTwN0rViNpG8wqO89RY
-	 SvFYrlBmt/i+fbdWNxNigDbIRTRKEbrua7d+cEKNv5l9Y69oOj5x9GUpwmdqR1gS5a
-	 LRkSra0I2fEkJiZfxaGScnFDkPrzW0o2YjbKsDjVGshDr4Szgsv3C8UHUuD0gcjzqN
-	 EYh9JgihQJUZA==
-Message-ID: <284ea5c0-dca5-4e9e-a3e7-705eca794010@kernel.org>
-Date: Thu, 26 Jun 2025 20:57:30 +0200
+	b=U5fzGcgToOg1k6OP+Kk7KkJRXM1qcE0oFZaU7eOl7gfCRVqMAZHYvgwTMBU+5+CMY
+	 1FpBjjP+ZmPzO465fbgJtv7Yy2kvPRLMsjVReQ9VaeQxSyfggthbkNQW0+sLXz2liq
+	 xqC26eaLDzPGH5NJWY3kfJ2QqNyjjJ2/J+sipJU2Sgz1Pg9b8hMiJXbX+JXYQ7CYG1
+	 HS3k86UNlXONgQpm35x1FIDbqPtwuCnt8SzH70Ew9a9dca+00EBVQzAwnlLo8uUR/K
+	 nFdA/K/SQ3qVl1Qcbg4apnZuBD9KSa50OlfZbpOZTlxmWkz3vaaQsXdoVkEYV3czvZ
+	 0fFP0Enr+O1YQ==
+Message-ID: <6b51c18a-c8e9-40c4-8a6b-07f2af1cb531@kernel.org>
+Date: Thu, 26 Jun 2025 13:58:14 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -50,11 +50,10 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] Input: Don't send fake button presses to wake
- system
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Mario Limonciello <superm1@kernel.org>
-Cc: Mika Westerberg <westeri@kernel.org>,
+Subject: Re: [PATCH v2 3/3] Input: soc_button_array: Only debounce cherryview
+ and baytrail systems
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Hans de Goede <hansg@kernel.org>, Mika Westerberg <westeri@kernel.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
  <brgl@bgdev.pl>, "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
@@ -62,193 +61,192 @@ Cc: Mika Westerberg <westeri@kernel.org>,
  open list <linux-kernel@vger.kernel.org>,
  "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
  <linux-input@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
-References: <20250625215813.3477840-1-superm1@kernel.org>
- <20250625215813.3477840-5-superm1@kernel.org>
- <710f7c04-0099-4611-b2ea-4dd4219ad5e2@kernel.org>
- <23f30094-68cc-47fe-86e0-5289cb41e940@kernel.org>
- <rn2kp5tog2agvswva2ipqq2ytiqdcgccnocudsg6ckwfh4roei@provk2g6dita>
- <363c2b92-4bfc-4537-9fca-025eef09526f@kernel.org>
- <nxticocp26r5mmpkttritw76h5igw7bdpus6zaf5krkso2h5xy@wna6m2quekfi>
- <cbbf0caf-82ce-4427-9844-b11e0f5cacdb@kernel.org>
- <obpakvzyludc4jskqzyxf65dhqds7ie3jkbfsqdve32ouuaili@xvogkmwvbmbf>
-Content-Language: en-US, nl
-From: Hans de Goede <hansg@kernel.org>
-In-Reply-To: <obpakvzyludc4jskqzyxf65dhqds7ie3jkbfsqdve32ouuaili@xvogkmwvbmbf>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250625181342.3175969-1-superm1@kernel.org>
+ <20250625181342.3175969-4-superm1@kernel.org>
+ <f5e1d50f-d85e-45a3-a131-f2da603c620c@kernel.org>
+ <57e9b1d5-faf1-4c7a-87fc-047e0dc102f9@kernel.org>
+ <a9bed0b4-b050-468b-91cb-bc4c81352046@kernel.org>
+ <8fc9051f-bef3-43fc-83a1-172a0eb599dc@kernel.org>
+ <du46jt3mmkvceestjadbqmxbztp5xcurg4pzwzmqavo3pnfmak@tcfnufcu6de5>
+ <55b4cd56-1812-4048-bf16-4b5b94a842d7@kernel.org>
+ <vmjnwfg2mqr2anugefjtzezimcep27gi64d4wsctiu476w73rl@oo6r4o33jk44>
+Content-Language: en-US
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <vmjnwfg2mqr2anugefjtzezimcep27gi64d4wsctiu476w73rl@oo6r4o33jk44>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi,
-
-On 26-Jun-25 20:48, Dmitry Torokhov wrote:
-> On Thu, Jun 26, 2025 at 01:20:54PM -0500, Mario Limonciello wrote:
->> On 6/26/2025 1:07 PM, Dmitry Torokhov wrote:
->>> On Thu, Jun 26, 2025 at 12:53:02PM -0500, Mario Limonciello wrote:
->>>>
->>>>
->>>> On 6/26/25 12:44 PM, Dmitry Torokhov wrote:
->>>>> Hi Mario,
+On 6/26/2025 1:53 PM, Dmitry Torokhov wrote:
+> On Thu, Jun 26, 2025 at 01:30:15PM -0500, Mario Limonciello wrote:
+>> On 6/26/2025 1:27 PM, Dmitry Torokhov wrote:
+>>> On Wed, Jun 25, 2025 at 03:34:07PM -0500, Mario Limonciello wrote:
+>>>> On 6/25/25 2:42 PM, Hans de Goede wrote:
+>>>>> Hi,
 >>>>>
->>>>> On Thu, Jun 26, 2025 at 06:33:08AM -0500, Mario Limonciello wrote:
->>>>>>
->>>>>>
->>>>>> On 6/26/25 3:35 AM, Hans de Goede wrote:
->>>>>>> Hi Mario,
+>>>>> On 25-Jun-25 9:23 PM, Mario Limonciello wrote:
+>>>>>> On 6/25/25 2:03 PM, Hans de Goede wrote:
+>>>>>>> Hi,
 >>>>>>>
->>>>>>> On 25-Jun-25 23:58, Mario Limonciello wrote:
+>>>>>>> On 25-Jun-25 8:13 PM, Mario Limonciello wrote:
 >>>>>>>> From: Mario Limonciello <mario.limonciello@amd.com>
 >>>>>>>>
->>>>>>>> Sending an input event to wake a system does wake it, but userspace picks
->>>>>>>> up the keypress and processes it.  This isn't the intended behavior as it
->>>>>>>> causes a suspended system to wake up and then potentially turn off if
->>>>>>>> userspace is configured to turn off on power button presses.
+>>>>>>>> commit 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
+>>>>>>>> hardcoded all soc-button-array devices to use a 50ms debounce timeout
+>>>>>>>> but this doesn't work on all hardware.  The hardware I have on hand
+>>>>>>>> actually prescribes in the ASL that the timeout should be 0:
 >>>>>>>>
->>>>>>>> Instead send a PM wakeup event for the PM core to handle waking the system.
+>>>>>>>> GpioInt (Edge, ActiveBoth, Exclusive, PullUp, 0x0000,
+>>>>>>>>              "\\_SB.GPIO", 0x00, ResourceConsumer, ,)
+>>>>>>>> {   // Pin list
+>>>>>>>>         0x0000
+>>>>>>>> }
+>>>>>>>>
+>>>>>>>> Many cherryview and baytrail systems don't have accurate values in the
+>>>>>>>> ASL for debouncing and thus use software debouncing in gpio_keys. The
+>>>>>>>> value to use is programmed in soc_button_array.  Detect Cherry View
+>>>>>>>> and Baytrail using ACPI HID IDs used for those GPIO controllers and apply
+>>>>>>>> the 50ms only for those systems.
 >>>>>>>>
 >>>>>>>> Cc: Hans de Goede <hansg@kernel.org>
->>>>>>>> Fixes: 0f107573da417 ("Input: gpio_keys - handle the missing key press event in resume phase")
+>>>>>>>> Fixes: 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
 >>>>>>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->>>>>>>> ---
->>>>>>>>     drivers/input/keyboard/gpio_keys.c | 7 +------
->>>>>>>>     1 file changed, 1 insertion(+), 6 deletions(-)
->>>>>>>>
->>>>>>>> diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
->>>>>>>> index 773aa5294d269..4c6876b099c43 100644
->>>>>>>> --- a/drivers/input/keyboard/gpio_keys.c
->>>>>>>> +++ b/drivers/input/keyboard/gpio_keys.c
->>>>>>>> @@ -420,12 +420,7 @@ static irqreturn_t gpio_keys_gpio_isr(int irq, void *dev_id)
->>>>>>>>     		pm_stay_awake(bdata->input->dev.parent);
->>>>>>>>     		if (bdata->suspended  &&
->>>>>>>>     		    (button->type == 0 || button->type == EV_KEY)) {
->>>>>>>> -			/*
->>>>>>>> -			 * Simulate wakeup key press in case the key has
->>>>>>>> -			 * already released by the time we got interrupt
->>>>>>>> -			 * handler to run.
->>>>>>>> -			 */
->>>>>>>> -			input_report_key(bdata->input, button->code, 1);
->>>>>>>> +			pm_wakeup_event(bdata->input->dev.parent, 0);
->>>>>
->>>>> There is already pm_stay_awake() above.
->>>>
->>>> But that doesn't help with the fact that userspace gets KEY_POWER from this
->>>> and reacts to it.
->>>>
->>>>>
->>>>>>>>     		}
->>>>>>>>     	}
 >>>>>>>
->>>>>>> Hmm, we have the same problem on many Bay Trail / Cherry Trail
->>>>>>> windows 8 / win10 tablets, so  this has been discussed before and e.g.
->>>>>>> Android userspace actually needs the button-press (evdev) event to not
->>>>>>> immediately go back to sleep, so a similar patch has been nacked in
->>>>>>> the past.
+>>>>>>> I'm not a fan of this approach, I believe that we need to always debounce
+>>>>>>> when dealing with mechanical buttons otherwise we will get unreliable /
+>>>>>>> spurious input events.
 >>>>>>>
->>>>>>> At least for GNOME this has been fixed in userspace by ignoring
->>>>>>> power-button events the first few seconds after a resume from suspend.
+>>>>>>> My suggestion to deal with the issue where setting up debouncing at
+>>>>>>> the GPIO controller level is causing issues is to always use software
+>>>>>>> debouncing (which I suspect is what Windows does).
 >>>>>>>
+>>>>>>> Let me copy and pasting my reply from the v1 thread with
+>>>>>>> a bit more detail on my proposal:
+>>>>>>>
+>>>>>>> My proposal is to add a "no_hw_debounce" flag to
+>>>>>>> struct gpio_keys_platform_data and make the soc_button_array
+>>>>>>> driver set that regardless of which platform it is running on.
+>>>>>>>
+>>>>>>> And then in gpio_keys.c do something like this:
+>>>>>>>
+>>>>>>> diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
+>>>>>>> index f9db86da0818..2788d1e5782c 100644
+>>>>>>> --- a/drivers/input/keyboard/gpio_keys.c
+>>>>>>> +++ b/drivers/input/keyboard/gpio_keys.c
+>>>>>>> @@ -552,8 +552,11 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
+>>>>>>>              bool active_low = gpiod_is_active_low(bdata->gpiod);
+>>>>>>>                if (button->debounce_interval) {
+>>>>>>> -            error = gpiod_set_debounce(bdata->gpiod,
+>>>>>>> -                    button->debounce_interval * 1000);
+>>>>>>> +            if (ddata->pdata->no_hw_debounce)
+>>>>>>> +                error = -EINVAL;
+>>>>>>> +            else
+>>>>>>> +                error = gpiod_set_debounce(bdata->gpiod,
+>>>>>>> +                        button->debounce_interval * 1000);
+>>>>>>>                  /* use timer if gpiolib doesn't provide debounce */
+>>>>>>>                  if (error < 0)
+>>>>>>>                      bdata->software_debounce =
+>>>>>>>
+>>>>>>> So keep debouncing, as that will always be necessary when dealing with
+>>>>>>> mechanical buttons, but always use software debouncing to avoid issues
+>>>>>>> like the issue you are seeing.
+>>>>>>>
+>>>>>>> My mention of the BYT/CHT behavior in my previous email was to point
+>>>>>>> out that those already always use software debouncing for the 50 ms
+>>>>>>> debounce-period. It was *not* my intention to suggest to solve this
+>>>>>>> with platform specific quirks/behavior.
+>>>>>>>
+>>>>>>> Regards,
+>>>>>>>
+>>>>>>> Hans
 >>>>>>
->>>>>> The default behavior for logind is:
->>>>>>
->>>>>> HandlePowerKey=poweroff
->>>>>>
->>>>>> Can you share more about what version of GNOME has a workaround?
->>>>>> This was actually GNOME (on Ubuntu 24.04) that I found this issue.
->>>>>>
->>>>>> Nonetheless if this is dependent on an Android userspace problem could we
->>>>>> perhaps conditionalize it on CONFIG_ANDROID_BINDER_DEVICES?
+>>>>>> I mentioned on the v1 too, but let's shift conversation here.
 >>>>>
->>>>> No it is not only Android, other userspace may want to distinguish
->>>>> between normal and "dark" resume based on keyboard or other user
->>>>> activity.
+>>>>> Ack.
 >>>>>
->>>>> Thanks.
+>>>>>> So essentially all platforms using soc_button_array would always turn on software debouncing of 50ms?
 >>>>>
->>>> In this specific case does the key passed up to satisfy this userspace
->>>> requirement and keep it awake need to specifically be a fabricated
->>>> KEY_POWER?
+>>>>> Yes that is what my proposal entails.
+>>>>>
+>>>>>> In that case what happens if the hardware debounce was ALSO set from the ASL?  You end up with double debouncing I would expect.
+>>>>>
+>>>>> A hardware debounce of say 25 ms would still report the button down
+>>>>> immediately, it just won't report any state changes for 25 ms
+>>>>> after that, at least that is how I would expect this to work.
+>>>>>
+>>>>> So the 50 ms ignore-button-releases for the sw debounce will start
+>>>>> at the same time as the hw ignore-button-release window and basically
+>>>>> the longest window will win. So having both active should not really
+>>>>> cause any problems.
+>>>>>
+>>>>> Still only using one or the other as you propose below would
+>>>>> be better.
+>>>>>
+>>>>>> Shouldn't you only turn on software debouncing when it's required?
+>>>>>>
+>>>>>> I'm wondering if considering the first two patches we should have gpio-keys look up if hardware can support debounce, and then "only if it can't" we program the value from soc button array.
+>>>>>>
+>>>>>> It can be done by having gpio_keys do a "get()" on debounce.  Iff the driver returns -ENOTSUPP /then/ program the software debounce.
+>>>>>
+>>>>> Any special handling here should be done in soc_button_array since
+>>>>> this is specific to how with ACPI we have the GPIO resource
+>>>>> descriptors setting up the hw-debounce and then the need to do
+>>>>> software debounce when that was not setup.
+>>>>>
+>>>>> As for checking for -ENOTSUPP I would make soc_button_array
+>>>>> do something like this.
+>>>>>
+>>>>> ret = debounce_get()
+>>>>> if (ret <= 0)
+>>>>> 	use-sw-debounce;
+>>>>>
+>>>>> If hw-debounce is supported but not setup, either because
+>>>>> the exact debounce value being requested is not supported
+>>>>> or because the DSDT specified 0, then sw-debouncing should
+>>>>> also be used.
+>>>>>
+>>>>> Note this will still require the use of a new no_hw_debounce
+>>>>> flag so that we don't end up enabling hw-debounce in
+>>>>> the hw-debounce is supported but not setup case.
+>>>>>
+>>>>> Regards,
+>>>>>
+>>>>> Hans
+>>>>>
 >>>>
->>>> Or could we find a key that doesn't require some userspace to ignore
->>>> KEY_POWER?
->>>>
->>>> Maybe something like KEY_RESERVED, KEY_FN, or KEY_POWER2?
+>>>> I did some experiments with your proposal (letting SW debounce get
+>>>> programmed) and everything seems to work fine*.  I think you're right that
+>>>> setting a double debounce would be worst one wins.
 >>>
->>> The code makes no distinction between KEY_POWER and KEY_A or KEY_B, etc.
->>> It simply passes event to userspace for processing.
->>
->> Right.  I don't expect a problem with most keys, but my proposal is to
->> special case KEY_POWER while suspended.  If a key press event must be sent
->> to keep Android and other userspace happy I suggest sending something
->> different just for that situation.
-> 
-> I do not know if userspace specifically looks for KEY_POWER or if it
-> looks for user input in general, and I'd rather be on safe side and not
-> mangle user input.
-> 
-> As Hans mentioned, at least some userspace already prepared to deal with
-> this issue. And again, this only works if by the time ISR/debounce
-> runs the key is already released. What if it is still pressed? You still
-> going to observe KEY_POWER and need to suppress turning off the screen.
-> 
->>
->> Like this:
->>
->> diff --git a/drivers/input/keyboard/gpio_keys.c
->> b/drivers/input/keyboard/gpio_keys.c
->> index 773aa5294d269..66e788d381956 100644
->> --- a/drivers/input/keyboard/gpio_keys.c
->> +++ b/drivers/input/keyboard/gpio_keys.c
->> @@ -425,7 +425,10 @@ static irqreturn_t gpio_keys_gpio_isr(int irq, void
->> *dev_id)
->>                          * already released by the time we got interrupt
->>                          * handler to run.
->>                          */
->> -                       input_report_key(bdata->input, button->code, 1);
->> +                       if (button->code == KEY_POWER)
->> +                               input_report_key(bdata->input, KEY_WAKEUP,
->> 1);
-> 
-> Just FYI: Here your KEY_WAKEUP is stuck forever.
-> 
->> +                       else
->> +                               input_report_key(bdata->input, button->code,
->> 1);
->>                 }
->>         }
->>
->>
->>
->>>
->>> You need to fix your userspace. Even with your tweak it is possible for
->>> userspace to get a normal key event "too early" and turn off the screen
->>> again, so you still need to handle this situation.
+>>> I am confused, can you explain why do we need this new no_hw_debounce
+>>> flag? If AMD gpio driver is unable to program 50 ms debounce for a given
+>>> pin but does not return an error (or returns an error but leaves system
+>>> in a bad state) that is the issue in that driver and needs to be fixed
+>>> there? Why do we need to change soc_button_driver at all?
 >>>
 >>> Thanks.
 >>>
 >>
->> I want to note this driver works quite differently than how ACPI power
->> button does.
+>> The requested 50ms HW debounce gets programmed to the hardware register
+>> successfully.  It is within bound that the GPIO controller can support.
 >>
->> You can see in acpi_button_notify() that the "keypress" is only forwarded
->> when not suspended [1].  Otherwise it's just wakeup event (which is what my
->> patch was modeling).
->>
->> https://github.com/torvalds/linux/blob/v6.16-rc3/drivers/acpi/button.c#L461
->> [1]
+>> The problem is the power button does not function with a 50ms debounce.
+>> The firmware asserted that 0ms should have been programmed (by the _CRS
+>> value in GpioInt).
 > 
-> If you check acpi_button_resume() you will see that the events are sent
-> from there. Except that for some reason they chose to use KEY_WAKEUP and
-> not KEY_POWER, oh well. Unlike acpi button driver gpio_keys is used on
-> multiple other platforms.
-
-Interesting, but the ACPI button code presumably only does this on resume
-for a normal press while the system is awake it does use KEY_POWER, right ?
-
-Regards,
-
-Hans
-
-
+> I do not understand how debounce that is within the controller's
+> supported range can not work. The button is a switch that reports on and
+> off, there is nothing more to it, is there?
 > 
-> Thanks.
+> I feel there is a deeper problem that we simply trying to paper over.
 > 
 
+I never said the power button is a simple mechanical switch connected to 
+the GPIO.
+
+A lot of designs I've seen have the EC connected to the power button 
+GPIO and the EC does it's own debouncing of a physical switch to decide 
+to assert GPIO 0.
+
+My point here is if the firmware is asserting that there shouldn't be a 
+debounce programmed, programming one can lead to problems.
 
