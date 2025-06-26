@@ -1,269 +1,144 @@
-Return-Path: <linux-acpi+bounces-14731-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14732-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC069AEA5DA
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 20:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49460AEA5DE
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 20:54:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2075F3AA504
-	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 18:53:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0BBD3B28D5
+	for <lists+linux-acpi@lfdr.de>; Thu, 26 Jun 2025 18:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B278E2EE998;
-	Thu, 26 Jun 2025 18:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205162EE999;
+	Thu, 26 Jun 2025 18:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gXHsGyna"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BKMeFV4P"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010BE28D8FE;
-	Thu, 26 Jun 2025 18:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E142EE989;
+	Thu, 26 Jun 2025 18:54:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750964038; cv=none; b=DcUzdvoHucIjoHhB5l2XzDFwxQtGB1ck/exqldEuAT3S6xo/irnALkXzl7hNGS3t6SYy0csOMfbP2TWmkVBtb7PtUziLxd1Qkfwysw7AuguqDMhg6MLALeT/yheDsJcxJ3bttEmWzIb/cOB5WWXsh0VhD1conBnM+auwJdlLyq0=
+	t=1750964048; cv=none; b=eg5DpFJjqO+VdelTMhLkUDopvkchBEnRr+iXnywN06MTvDz13CeU9I/io/yT+aJUMxjzIGZrJldF/aVR7H1KuhN3FsP2W02ameLU5nBlPf4Qy5nv+N90FkEK+lyERjiXocZQJZWkz1dKL+gsihlc9oNfHTlcUH5vlu6bAqlJvNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750964038; c=relaxed/simple;
-	bh=eSd+W62ZmrEs0u9X1aX1h0TxhZg19pt4hdlo/vzP7VU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n6uSBm5n5VC2FVsCq1HvyT8NMl6RHUzWV/0cgzQ4GN8LU34c2cHzr4xeFXTZ51/682JbmzJF/C+dE4RxhQwrkkFdRQtmu/VWByIrQQZyUVM8K0Tq20A0uX8k01fEAwnj99f4jHnJegtWIlWMgGFjZV5Jha1pc1hd/vEig6pWOwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gXHsGyna; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-23526264386so14518415ad.2;
-        Thu, 26 Jun 2025 11:53:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750964036; x=1751568836; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=DZHVP2rmRcrCN3buEI5xZHWZRQLkAIzVepe2gnh5VLc=;
-        b=gXHsGyna6TLaewjzLZbeAq1+wHtNO5h/hcDYOgXd3+/fOEwAFcdCGzVKNFDfZvSznC
-         84aJipAZyr3O/jtgME/oa03pWEqmX3VeDwMb3Nm65IqAR93fc79OdyQMUPZEgoV1ax9R
-         3rzpNdhpE0+NiKfbAYh1sHHhgLrpuWEToTY9KpQyRGqLh1/gItICiPVbp+DRWxHedDKp
-         z/PZFwQOnhBFoFJ0ymHVeVM1RybayPRYBKEBmKbIPM7hVYKJDzujy9oM5Sa5NU95xEOT
-         2m7zTePYoHbf9c2XmfdqS2K5dnBDxoLNC1eoXfWUtG8zlYMo9sFDqBHiQqiGZVRRfPnp
-         TuJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750964036; x=1751568836;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DZHVP2rmRcrCN3buEI5xZHWZRQLkAIzVepe2gnh5VLc=;
-        b=awDwignV2dZpr8C8/IIzjKHhvBLmZiaxv2mco4Xj+5BfW+ZL03vnuvIGK6E1DSg5ao
-         XB50nwV0bDVHNbFYlU/lydKNotkKdcP1+gR8mtqP4pK4oCVMJy3Tw9ylH5swiVubhU47
-         ndFC/V1tGqrxg3B+9G/52k0b/bi/jsdVC+ciyCrzU6b4MRn/DWPI4CI5ipOX14epQ0YL
-         S0Dm24am7lrnsFYz/qI00Vwd0Q1d6waeVhhik70E+Bswrzlj6QlyuzO8xVlWt+48WINu
-         BKy/OnnALNDK+lZRjlhSSa5TBRrmBa4Qgdiw/Shdewd/19hglnNc5W0w8/Lw2ifb91KA
-         dSzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUl17DvNYsVSq8VbkAUVFuCILC5CtgO6b1Yl94oD1oX5gtwwJFJG5B8LvAatIliIoZDbtsJ/zAQTjM2ePgN@vger.kernel.org, AJvYcCVYQM2hJgjMfD27BUZih44as299iXGLnFJf/VE3OcXPavWFIBqwqZfqTAwALe6MIuByMMgcpEhH2PQZ+58=@vger.kernel.org, AJvYcCWxBa/Gl5I7zsjdXPxx1wET/SgcQM8DKm9KBY2IAh0U21UGHY/knoRgmyf/Qtl5AMsIDlsNd5F9NDWk@vger.kernel.org, AJvYcCXYG1+JXSBhgcWmHLW5VIiD92Rb9hc+UyQcq5r2bGQ5Tq0nj6PVzIXoJTqbpTN5Ju0WPJe582g6ePieVQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVzKJ/TpVJM/qXTYo/+XCvrbWT8GqYA4ouUyeO6n8/VTQuc2/9
-	INU+lXWqJdF3qTrL3RdLhC1h0o5UWldntWoWDpnbjZLLzRezoTDJT+xH
-X-Gm-Gg: ASbGncvWRrikty0dhkWDpSOaEvb+tlnYtM4ETQjOgifuK6SN2oG0jCkbrDe9Ms2Ywtb
-	7azgylSGIb5r5e2Ztbby4g01KMvEnvIVWWTG9XfJP4JZLx/dAvwa7ubNER6CTNUPcLVW/PpEdaZ
-	eD5yY/7UzvNocMSmwQy4H26+xpnc7CIKQ+0m6EqPuaaerS9c7+WZY3a/JW8MlfFUo1OJcqxV7yZ
-	tg+a7K6BNlrOFFu8aVdQCS0YF1/MQb0XnlJBzBsBDPoOhFCi4wLjd7FUNN6jYBOvsCJBt6Pw68w
-	aVox6eiUMNfSuMf3RdyWU9dC7kMnZ4stpC+CN8I51ZBYaOavcdmuS0U2iSGT9iE=
-X-Google-Smtp-Source: AGHT+IFusYX/Pt/FlUUiNvwucbYSeRtoJpyJeWrPTDwzjZyUC1UV9GcqXz0kITSDkE6CSKkJu8DuRg==
-X-Received: by 2002:a17:903:28c:b0:236:94ac:cc1a with SMTP id d9443c01a7336-23ac4624558mr4694395ad.27.1750964036156;
-        Thu, 26 Jun 2025 11:53:56 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:9c8f:acd3:efcb:bc3d])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23abe32be58sm4376655ad.86.2025.06.26.11.53.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Jun 2025 11:53:55 -0700 (PDT)
-Date: Thu, 26 Jun 2025 11:53:53 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Mario Limonciello <superm1@kernel.org>
-Cc: Hans de Goede <hansg@kernel.org>, Mika Westerberg <westeri@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Linus Walleij <linus.walleij@linaro.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>, 
-	"open list:GPIO ACPI SUPPORT" <linux-acpi@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH v2 3/3] Input: soc_button_array: Only debounce cherryview
- and baytrail systems
-Message-ID: <vmjnwfg2mqr2anugefjtzezimcep27gi64d4wsctiu476w73rl@oo6r4o33jk44>
-References: <20250625181342.3175969-1-superm1@kernel.org>
- <20250625181342.3175969-4-superm1@kernel.org>
- <f5e1d50f-d85e-45a3-a131-f2da603c620c@kernel.org>
- <57e9b1d5-faf1-4c7a-87fc-047e0dc102f9@kernel.org>
- <a9bed0b4-b050-468b-91cb-bc4c81352046@kernel.org>
- <8fc9051f-bef3-43fc-83a1-172a0eb599dc@kernel.org>
- <du46jt3mmkvceestjadbqmxbztp5xcurg4pzwzmqavo3pnfmak@tcfnufcu6de5>
- <55b4cd56-1812-4048-bf16-4b5b94a842d7@kernel.org>
+	s=arc-20240116; t=1750964048; c=relaxed/simple;
+	bh=CRPdtuLM0CcNjNtofnI5MLiYSs0adD0lF4Xm5lnvrSY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L1CyzZZdAbYEhDcb4Rn2dJEP5lIslo4d9Yyw92ut0jrK4uriOO81JriKlOFBzKL33AFNBfkIcZCEqE8/Ksvgsjgptnuuq5IMgoF9B/6wFJxB0/UxtF7qQJcFa62DNaGIhQQq2cSacnbIWP3+qlQKFVNJi7dI0AY/i+IbLyRDhLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BKMeFV4P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFADC4CEF1;
+	Thu, 26 Jun 2025 18:54:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750964047;
+	bh=CRPdtuLM0CcNjNtofnI5MLiYSs0adD0lF4Xm5lnvrSY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=BKMeFV4PVPkKfOkFYr695gOqYIoTw8tVSq+8qGOBqPV5pBZHFPuiW8dPKLpxw79lG
+	 iXnfSkPEAJYJBJRFRDciBichjIVqYZBWaGSr2c65mSg7OWaEfYUx4k8zXu6OKEjkhP
+	 vnDnKcr3hDGvIsPLt5Jor+ZXaoRjLIneA74QD3Q5LPP3PYisTyL0fgIIIMitmt2fYW
+	 mJPMHBU0mEmHM4jbWcFZnrZXWYTc4p1zCIXnC+uFIDqHCRI22lSbodDtF/253PeElI
+	 ooyF6kcSQV8r88m5P4St3PfGUSyv+QMut5poOMJHuOQF0+59voheNnKdGwltsbHjSX
+	 JPjul0kSWhHCw==
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-60f24b478e3so695334eaf.3;
+        Thu, 26 Jun 2025 11:54:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU77djavVfHa6FYpIIHrBj5W6xNyFbrGQR2C8hRnWmXrRLumJ8K43I1yGp8EQMOB35YshN+82rlwUL6Lw==@vger.kernel.org, AJvYcCUb4WHVx6n8hsAWxU3gd6mqnx9MAFyFMKT9BvfH/RaOjzvdl/8JPta+Zg3SPb/8zbUvCATv4+wc73xT+0cx@vger.kernel.org, AJvYcCW9/UK5CCI3sH2HSGvXHF6evxtriun5XUiRAAnUBuWRDU7eNWpc64IB3umQkfDnv69WlnYIsEltZRR5BoPwhwg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxInOUj+P4Q/UFqZz7bqX8SGjyVQE88dI4DNQCBgrXNH6Q1p3mo
+	jN/8JCzRy20V8OQOAWjyQ8yhHSdppMxbZcczY4G/BzPldSJeGU7ikcpAuenNNVFrq64APmMYW9m
+	sf3HCxncBsHtIsQEXKIglbueG0d9F3nU=
+X-Google-Smtp-Source: AGHT+IHGCoFMPvy2tuyy0NuptjbS5wcFjohojwnEfFAiT+MJGpjfp5uX8uCnCT7sPgbatsQ9sYdMGOJoB5pDXOE+ZHI=
+X-Received: by 2002:a4a:ee17:0:b0:611:b073:7c31 with SMTP id
+ 006d021491bc7-611b9174eb9mr282258eaf.8.1750964046633; Thu, 26 Jun 2025
+ 11:54:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <55b4cd56-1812-4048-bf16-4b5b94a842d7@kernel.org>
+References: <20250624202937.523013-1-colin.i.king@gmail.com>
+ <685c6cd3bf88b_2c35442946c@iweiny-mobl.notmuch> <04752c56-d6fb-4fab-99d2-93449c8c5d8d@gmail.com>
+In-Reply-To: <04752c56-d6fb-4fab-99d2-93449c8c5d8d@gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 26 Jun 2025 20:53:55 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gQ54bdD38a=s1AkjCT8_aRHqd+AV3e0EXJLWs7hoM=jw@mail.gmail.com>
+X-Gm-Features: Ac12FXzQq8iKHulv-jKbNd8syZa2NY8HQpU-5dzLaNTv0lklfRYcKXjpCJoIg9Q
+Message-ID: <CAJZ5v0gQ54bdD38a=s1AkjCT8_aRHqd+AV3e0EXJLWs7hoM=jw@mail.gmail.com>
+Subject: Re: [PATCH][next] ACPI: APEI: EINJ: Fix check and iounmap of
+ uninitialized pointer p
+To: "Colin King (gmail)" <colin.i.king@gmail.com>
+Cc: Ira Weiny <ira.weiny@intel.com>, "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, 
+	Borislav Petkov <bp@alien8.de>, linux-acpi@vger.kernel.org, kernel-janitors@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 26, 2025 at 01:30:15PM -0500, Mario Limonciello wrote:
-> On 6/26/2025 1:27 PM, Dmitry Torokhov wrote:
-> > On Wed, Jun 25, 2025 at 03:34:07PM -0500, Mario Limonciello wrote:
-> > > On 6/25/25 2:42 PM, Hans de Goede wrote:
-> > > > Hi,
-> > > > 
-> > > > On 25-Jun-25 9:23 PM, Mario Limonciello wrote:
-> > > > > On 6/25/25 2:03 PM, Hans de Goede wrote:
-> > > > > > Hi,
-> > > > > > 
-> > > > > > On 25-Jun-25 8:13 PM, Mario Limonciello wrote:
-> > > > > > > From: Mario Limonciello <mario.limonciello@amd.com>
-> > > > > > > 
-> > > > > > > commit 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
-> > > > > > > hardcoded all soc-button-array devices to use a 50ms debounce timeout
-> > > > > > > but this doesn't work on all hardware.  The hardware I have on hand
-> > > > > > > actually prescribes in the ASL that the timeout should be 0:
-> > > > > > > 
-> > > > > > > GpioInt (Edge, ActiveBoth, Exclusive, PullUp, 0x0000,
-> > > > > > >             "\\_SB.GPIO", 0x00, ResourceConsumer, ,)
-> > > > > > > {   // Pin list
-> > > > > > >        0x0000
-> > > > > > > }
-> > > > > > > 
-> > > > > > > Many cherryview and baytrail systems don't have accurate values in the
-> > > > > > > ASL for debouncing and thus use software debouncing in gpio_keys. The
-> > > > > > > value to use is programmed in soc_button_array.  Detect Cherry View
-> > > > > > > and Baytrail using ACPI HID IDs used for those GPIO controllers and apply
-> > > > > > > the 50ms only for those systems.
-> > > > > > > 
-> > > > > > > Cc: Hans de Goede <hansg@kernel.org>
-> > > > > > > Fixes: 5c4fa2a6da7fb ("Input: soc_button_array - debounce the buttons")
-> > > > > > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > > > > > 
-> > > > > > I'm not a fan of this approach, I believe that we need to always debounce
-> > > > > > when dealing with mechanical buttons otherwise we will get unreliable /
-> > > > > > spurious input events.
-> > > > > > 
-> > > > > > My suggestion to deal with the issue where setting up debouncing at
-> > > > > > the GPIO controller level is causing issues is to always use software
-> > > > > > debouncing (which I suspect is what Windows does).
-> > > > > > 
-> > > > > > Let me copy and pasting my reply from the v1 thread with
-> > > > > > a bit more detail on my proposal:
-> > > > > > 
-> > > > > > My proposal is to add a "no_hw_debounce" flag to
-> > > > > > struct gpio_keys_platform_data and make the soc_button_array
-> > > > > > driver set that regardless of which platform it is running on.
-> > > > > > 
-> > > > > > And then in gpio_keys.c do something like this:
-> > > > > > 
-> > > > > > diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
-> > > > > > index f9db86da0818..2788d1e5782c 100644
-> > > > > > --- a/drivers/input/keyboard/gpio_keys.c
-> > > > > > +++ b/drivers/input/keyboard/gpio_keys.c
-> > > > > > @@ -552,8 +552,11 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
-> > > > > >             bool active_low = gpiod_is_active_low(bdata->gpiod);
-> > > > > >               if (button->debounce_interval) {
-> > > > > > -            error = gpiod_set_debounce(bdata->gpiod,
-> > > > > > -                    button->debounce_interval * 1000);
-> > > > > > +            if (ddata->pdata->no_hw_debounce)
-> > > > > > +                error = -EINVAL;
-> > > > > > +            else
-> > > > > > +                error = gpiod_set_debounce(bdata->gpiod,
-> > > > > > +                        button->debounce_interval * 1000);
-> > > > > >                 /* use timer if gpiolib doesn't provide debounce */
-> > > > > >                 if (error < 0)
-> > > > > >                     bdata->software_debounce =
-> > > > > > 
-> > > > > > So keep debouncing, as that will always be necessary when dealing with
-> > > > > > mechanical buttons, but always use software debouncing to avoid issues
-> > > > > > like the issue you are seeing.
-> > > > > > 
-> > > > > > My mention of the BYT/CHT behavior in my previous email was to point
-> > > > > > out that those already always use software debouncing for the 50 ms
-> > > > > > debounce-period. It was *not* my intention to suggest to solve this
-> > > > > > with platform specific quirks/behavior.
-> > > > > > 
-> > > > > > Regards,
-> > > > > > 
-> > > > > > Hans
-> > > > > 
-> > > > > I mentioned on the v1 too, but let's shift conversation here.
-> > > > 
-> > > > Ack.
-> > > > 
-> > > > > So essentially all platforms using soc_button_array would always turn on software debouncing of 50ms?
-> > > > 
-> > > > Yes that is what my proposal entails.
-> > > > 
-> > > > > In that case what happens if the hardware debounce was ALSO set from the ASL?  You end up with double debouncing I would expect.
-> > > > 
-> > > > A hardware debounce of say 25 ms would still report the button down
-> > > > immediately, it just won't report any state changes for 25 ms
-> > > > after that, at least that is how I would expect this to work.
-> > > > 
-> > > > So the 50 ms ignore-button-releases for the sw debounce will start
-> > > > at the same time as the hw ignore-button-release window and basically
-> > > > the longest window will win. So having both active should not really
-> > > > cause any problems.
-> > > > 
-> > > > Still only using one or the other as you propose below would
-> > > > be better.
-> > > > 
-> > > > > Shouldn't you only turn on software debouncing when it's required?
-> > > > > 
-> > > > > I'm wondering if considering the first two patches we should have gpio-keys look up if hardware can support debounce, and then "only if it can't" we program the value from soc button array.
-> > > > > 
-> > > > > It can be done by having gpio_keys do a "get()" on debounce.  Iff the driver returns -ENOTSUPP /then/ program the software debounce.
-> > > > 
-> > > > Any special handling here should be done in soc_button_array since
-> > > > this is specific to how with ACPI we have the GPIO resource
-> > > > descriptors setting up the hw-debounce and then the need to do
-> > > > software debounce when that was not setup.
-> > > > 
-> > > > As for checking for -ENOTSUPP I would make soc_button_array
-> > > > do something like this.
-> > > > 
-> > > > ret = debounce_get()
-> > > > if (ret <= 0)
-> > > > 	use-sw-debounce;
-> > > > 
-> > > > If hw-debounce is supported but not setup, either because
-> > > > the exact debounce value being requested is not supported
-> > > > or because the DSDT specified 0, then sw-debouncing should
-> > > > also be used.
-> > > > 
-> > > > Note this will still require the use of a new no_hw_debounce
-> > > > flag so that we don't end up enabling hw-debounce in
-> > > > the hw-debounce is supported but not setup case.
-> > > > 
-> > > > Regards,
-> > > > 
-> > > > Hans
-> > > > 
-> > > 
-> > > I did some experiments with your proposal (letting SW debounce get
-> > > programmed) and everything seems to work fine*.  I think you're right that
-> > > setting a double debounce would be worst one wins.
-> > 
-> > I am confused, can you explain why do we need this new no_hw_debounce
-> > flag? If AMD gpio driver is unable to program 50 ms debounce for a given
-> > pin but does not return an error (or returns an error but leaves system
-> > in a bad state) that is the issue in that driver and needs to be fixed
-> > there? Why do we need to change soc_button_driver at all?
-> > 
-> > Thanks.
-> > 
-> 
-> The requested 50ms HW debounce gets programmed to the hardware register
-> successfully.  It is within bound that the GPIO controller can support.
-> 
-> The problem is the power button does not function with a 50ms debounce.
-> The firmware asserted that 0ms should have been programmed (by the _CRS
-> value in GpioInt).
+On Wed, Jun 25, 2025 at 11:43=E2=80=AFPM Colin King (gmail)
+<colin.i.king@gmail.com> wrote:
+>
+> On 25/06/2025 22:40, Ira Weiny wrote:
+> > Colin Ian King wrote:
+> >> In the case where a request_mem_region call fails and pointer r is nul=
+l
+> >> the error exit path via label 'out' will check for a non-null pointer
+> >> p and try to iounmap it. However, pointer p has not been assigned a
+> >> value at this point, so it may potentially contain any garbage value.
+> >> Fix this by ensuring pointer p is initialized to NULL.
+> >>
+> >> Fixes: 1a35c88302a3 ("ACPI: APEI: EINJ: Fix kernel test sparse warning=
+s")
+> >> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+> >> ---
+> >>   drivers/acpi/apei/einj-core.c | 2 +-
+> >>   1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-co=
+re.c
+> >> index 7930acd1d3f3..fc801587df8e 100644
+> >> --- a/drivers/acpi/apei/einj-core.c
+> >> +++ b/drivers/acpi/apei/einj-core.c
+> >> @@ -401,7 +401,7 @@ static int __einj_error_trigger(u64 trigger_paddr,=
+ u32 type,
+> >>      u32 table_size;
+> >>      int rc =3D -EIO;
+> >>      struct acpi_generic_address *trigger_param_region =3D NULL;
+> >> -    struct acpi_einj_trigger __iomem *p;
+> >> +    struct acpi_einj_trigger __iomem *p =3D NULL;
+> >
+> > Apparently my review of these was pretty weak...  :-/
+> >
+> > That said; Why not skip a goto as well?
+>
+> Because the goto uses a shared return path and hence reduces the amount
+> of return epilogue used in the generated code.
 
-I do not understand how debounce that is within the controller's
-supported range can not work. The button is a switch that reports on and
-off, there is nothing more to it, is there?
+Applied, thanks!
 
-I feel there is a deeper problem that we simply trying to paper over.
-
--- 
-Dmitry
+> > diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-cor=
+e.c
+> > index d6d7e36e3647..fae01795e7f6 100644
+> > --- a/drivers/acpi/apei/einj-core.c
+> > +++ b/drivers/acpi/apei/einj-core.c
+> > @@ -410,7 +410,7 @@ static int __einj_error_trigger(u64 trigger_paddr, =
+u32 type,
+> >                         (unsigned long long)trigger_paddr,
+> >                         (unsigned long long)trigger_paddr +
+> >                              sizeof(trigger_tab) - 1);
+> > -               goto out;
+> > +               return -EIO;
+> >          }
+> >          p =3D ioremap_cache(trigger_paddr, sizeof(*p));
+> >          if (!p) {
+> > @@ -502,7 +502,6 @@ static int __einj_error_trigger(u64 trigger_paddr, =
+u32 type,
+> >                             table_size - sizeof(trigger_tab));
+> >   out_rel_header:
+> >          release_mem_region(trigger_paddr, sizeof(trigger_tab));
+> > -out:
+> >          if (p)
+> >                  iounmap(p);
+> >
+>
 
