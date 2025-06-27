@@ -1,304 +1,174 @@
-Return-Path: <linux-acpi+bounces-14778-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14779-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39612AEBC9C
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 17:56:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61ED3AEBCB0
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 17:58:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DD2F175E3A
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 15:56:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1CFC6451FC
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 15:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0582E9EB9;
-	Fri, 27 Jun 2025 15:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724012E8E05;
+	Fri, 27 Jun 2025 15:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pipWipL0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b4tJ94JZ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1CB2E337C;
-	Fri, 27 Jun 2025 15:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2963819E990;
+	Fri, 27 Jun 2025 15:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751039770; cv=none; b=tbChnTZ93We17ZbJaAwgYJhQVLwaLAcp4Lmbod6RIijBIP0Z7qsj1ltsMBLxhil/ZjI8eWrUQu69gJ9qhGJ/WMqyYRRilM39f65g0o+lSJSAaUPV9ucjKqtjdUoTPwYSE4BdAzoWaKiuJwmCGqPrdvQRcv3kWqju6XQgiylwqHQ=
+	t=1751039919; cv=none; b=bR9chPMaORbaIfQnOBSduck6sEDrjc5b6Vjdb0mXWFtcgQaj+9mvp6Lv8cTMv9q6qcj+Eb82xNsumsGSvn1dP9bosnFe5mBYrDu7OXaHvaCJLSpcU4PEYni3rgoODNvxI9sBnkhZAEgTOxM20JAQu9NSdcgVqKDC8ILRGxymOgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751039770; c=relaxed/simple;
-	bh=Kt6hxMbhF45+pYPS+uUmuLJPgeX6AoKkm7uSpf8DRqo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s1vfoKmNxAzMUTAO5cICQgq0hcKDcBBE6OEdczqqB/KbHabz2jJO2a3qnf1H6zpVjvoVcrYcQp4Num208o4GAuJpYa4oVA+9B+YwQIHkVHEC4ZM+vn3cukgaOeiNzyCwe+LCfFbsOAppUUoC8KUkDc/X641Qonbo5ovdiUMwHtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pipWipL0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73412C4CEE3;
-	Fri, 27 Jun 2025 15:56:07 +0000 (UTC)
+	s=arc-20240116; t=1751039919; c=relaxed/simple;
+	bh=tBv0zN4w3fBWkY/nFOn0k+IhVxh6OQEYPfuuw9vKCvk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jfiq9Wl2ge9Vvl0GWciZkfrZXqScZ6GVoCwn9lxxARBLQfVGwjv/C+rjGj183umfD84M0ykVcv904w5kHF6kMdnc1IXNyaPrhZFrvXB1snWQSI1Pm2Oaa8DM0JKGqXh/hbc1KT2oqYVQjcm8VKfB41D7bjDWZzZ1pZMiham4WgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b4tJ94JZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7B3C4CEE3;
+	Fri, 27 Jun 2025 15:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751039769;
-	bh=Kt6hxMbhF45+pYPS+uUmuLJPgeX6AoKkm7uSpf8DRqo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pipWipL04tZelAzR+jqqfYj7pzCuL8Q0uvezlFXJstjwFlh34ihzYB0guOF/hU6IE
-	 HHP8+Gooh8HlkXycYTz8y/SeqDdoMdOqT42D3TwKtYLE5krR56LpB39uN1TqsIYkvk
-	 grFTvXy/7Qw4vCy3YHkiRw/2P2qkMRQyZLZlcJj2vwvJaZd7cb+dV5NnsVbqUITjf4
-	 kWkdG9f9PYc8z8gmh5+wIX6w8x6041oEyb0P1wFcrF/iP6ygiAEYULmHqAmQc6qNTy
-	 co4aRYJ+3RevvIkAzqmepJs/F4JqCBw55HcvKb402/DbzmwjqbdSEcDRtMi7Lj+8Kf
-	 AaZJhCXzyj2NA==
-Message-ID: <fdd635ce-5e8e-4123-8e8e-241a57b4d7fe@kernel.org>
-Date: Fri, 27 Jun 2025 17:56:05 +0200
+	s=k20201202; t=1751039918;
+	bh=tBv0zN4w3fBWkY/nFOn0k+IhVxh6OQEYPfuuw9vKCvk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b4tJ94JZTjGfbHmZDMM8bIuOky0BWZylZfr+Z7v8HXEL7evqfsEWw1BgYoEYnFfpX
+	 SdKj4hkTwOEnNMp6O4y/hMVwX+Tk/9SY3kG6RNby6zDETioc5MDSawDH9+LcaRgrsG
+	 Pz3RCeX3aRYkjYStdMtyjYME4zWrNpS+iykXmBun6VP+XXrF6ivxSzv5WeRN87gV/M
+	 HLSMkb13vj/LZuOP9gKQN4koUKfveUcJGZoe0jAWfkjC9sE+Y1rfFm+XLyHfVaaSV5
+	 SQAYvDPy3PQkLshJCnEyhDpwGRkyX80rd1xx5d7Iwju+Cm+YcCtjz9Kx4UzxQ1xIYx
+	 RCWGTryFzxJ0Q==
+Date: Fri, 27 Jun 2025 10:58:37 -0500
+From: Rob Herring <robh@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 00/28] lan966x pci device: Add support for SFPs
+Message-ID: <20250627155837.GC3234475-robh@kernel.org>
+References: <20250613134817.681832-1-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] Input: Don't send fake button presses to wake
- system
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Mario Limonciello <superm1@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Mika Westerberg
- <westeri@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
- <brgl@bgdev.pl>, "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
- "open list:GPIO ACPI SUPPORT" <linux-acpi@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
- <linux-input@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
-References: <vkau25ybcx3bcoa2jmxlukumunzii5h6em43anh6mmzk2kyiv7@kyych4kxc4zo>
- <0d71a686-da67-4686-8976-a17d0d1ca923@kernel.org>
- <CAJZ5v0gKUN1OdqAHnXNcFUAOfhpdRfa_o=L6TA2GZTpe1bMaNQ@mail.gmail.com>
- <exmgckzoakt2ncsdphqvymcadon7k6tl36a3zvrj2pv23dffps@znq23v3qbcm2>
- <CAJZ5v0j3ZyuEqSKQ+3K8M3BwPCxn5Z6KOwjyjt4cJW6HfxjPDw@mail.gmail.com>
- <hyvpl4gvxc6h2r3itfofjduwb3vpobyo7a7z6g3zapzscqtafh@ixsd4amyljva>
- <de548b27-4c43-4f30-af9d-b060101e6fd8@kernel.org>
- <75fixx6rgwsgsw6e765oxdcivcg2nkzx2fp2qywgx4vi3ihywh@ot7gdecsnttw>
- <1b0d2349-dbf7-47aa-95c9-1974e63d111a@kernel.org>
- <13025910-7639-400b-878a-cd0780c6534c@kernel.org>
- <4ajmcrl3bqeikki2etek5bafzszelgevr322tvuubx4pxxyju2@qqxz6lzcb6e5>
-Content-Language: en-US, nl
-From: Hans de Goede <hansg@kernel.org>
-In-Reply-To: <4ajmcrl3bqeikki2etek5bafzszelgevr322tvuubx4pxxyju2@qqxz6lzcb6e5>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250613134817.681832-1-herve.codina@bootlin.com>
 
-Hi Dmitry,
-
-On 27-Jun-25 4:44 PM, Dmitry Torokhov wrote:
-> On Fri, Jun 27, 2025 at 04:14:38PM +0200, Hans de Goede wrote:
->> Hi,
->>
->> On 27-Jun-25 4:06 PM, Mario Limonciello wrote:
->>> On 6/26/2025 11:56 PM, Dmitry Torokhov wrote:
->>>> On Thu, Jun 26, 2025 at 05:21:35PM -0500, Mario Limonciello wrote:
->>>>> On 6/26/2025 2:40 PM, Dmitry Torokhov wrote:
->>>>>> On Thu, Jun 26, 2025 at 09:31:12PM +0200, Rafael J. Wysocki wrote:
->>>>>>> On Thu, Jun 26, 2025 at 9:28 PM Dmitry Torokhov
->>>>>>> <dmitry.torokhov@gmail.com> wrote:
->>>>>>>>
->>>>>>>> On Thu, Jun 26, 2025 at 09:18:56PM +0200, Rafael J. Wysocki wrote:
->>>>>>>>> On Thu, Jun 26, 2025 at 9:16 PM Hans de Goede <hansg@kernel.org> wrote:
->>>>>>>>>>
->>>>>>>>>> Hi,
->>>>>>>>>>
->>>>>>>>>> On 26-Jun-25 21:14, Dmitry Torokhov wrote:
->>>>>>>>>>> On Thu, Jun 26, 2025 at 08:57:30PM +0200, Hans de Goede wrote:
->>>>>>>>>>>> Hi,
->>>>>>>>>>>>
->>>>>>>>>>>> On 26-Jun-25 20:48, Dmitry Torokhov wrote:
->>>>>>>>>>>>> On Thu, Jun 26, 2025 at 01:20:54PM -0500, Mario Limonciello wrote:
->>>>>>>> [...]
->>>>>>>>>>>>>> I want to note this driver works quite differently than how ACPI power
->>>>>>>>>>>>>> button does.
->>>>>>>>>>>>>>
->>>>>>>>>>>>>> You can see in acpi_button_notify() that the "keypress" is only forwarded
->>>>>>>>>>>>>> when not suspended [1].  Otherwise it's just wakeup event (which is what my
->>>>>>>>>>>>>> patch was modeling).
->>>>>>>>>>>>>>
->>>>>>>>>>>>>> https://github.com/torvalds/linux/blob/v6.16-rc3/drivers/acpi/button.c#L461
->>>>>>>>>>>>>> [1]
->>>>>>>>>>>>>
->>>>>>>>>>>>> If you check acpi_button_resume() you will see that the events are sent
->>>>>>>>>>>>> from there. Except that for some reason they chose to use KEY_WAKEUP and
->>>>>>>>>>>>> not KEY_POWER, oh well. Unlike acpi button driver gpio_keys is used on
->>>>>>>>>>>>> multiple other platforms.
->>>>>>>>>>>>
->>>>>>>>>>>> Interesting, but the ACPI button code presumably only does this on resume
->>>>>>>>>>>> for a normal press while the system is awake it does use KEY_POWER, right ?
->>>>>>>>>>>
->>>>>>>>>>> Yes. It is unclear to me why they chose to mangle the event on wakeup,
->>>>>>>>>>> it does not seem to be captured in the email discussions or in the patch
->>>>>>>>>>> description.
->>>>>>>>>>
->>>>>>>>>> I assume they did this to avoid the immediate re-suspend on wakeup by
->>>>>>>>>> power-button issue. GNOME has a workaround for this, but I assume that
->>>>>>>>>> some userspace desktop environments are still going to have a problem
->>>>>>>>>> with this.
->>>>>>>>>
->>>>>>>>> It was done for this reason IIRC, but it should have been documented
->>>>>>>>> more thoroughly.
->>>>>>>>
->>>>>>>> I assert that it should not have been done and instead dealt with in
->>>>>>>> userspace. There are numerous drivers in the kernel emitting
->>>>>>>> KEY_POWER. Let userspace decide how to handle this, what keys to ignore,
->>>>>>>> what keys to process and when.
->>>>>>>
->>>>>>> Please see my last message in this thread (just sent) and see the
->>>>>>> changelog of commit 16f70feaabe9 ("ACPI: button: trigger wakeup key
->>>>>>> events").
->>>>>>>
->>>>>>> This appears to be about cases when no event would be signaled to user
->>>>>>> space at all (power button wakeup from ACPI S3).
->>>>>>
->>>>>> Ahh, in S3 we do not know if we've been woken up with Sleep or Power
->>>>>> button, right? So we can not send the "right" event code and use
->>>>>> "neutral" KEY_WAKEUP for both. Is this right?
->>>>>>
->>>>>> Thanks.
->>>>>>
->>>>>
->>>>> I did some more experiments with this affected system that started this
->>>>> thread (which uses s2idle).
->>>>>
->>>>> I only applied patch 3 in this series to help the debounce behavior and
->>>>> figure out impacts from patch 4 with existing Linux userspace.
->>>>>
->>>>> If suspended using systemd in GNOME (click the GUI button) on Ubuntu 24.04
->>>>> the GNOME workaround mitigates this problem and no visible impact.
->>>>>
->>>>> If I suspend by hand using the kernel interface and then press power button
->>>>> to wake:
->>>>>
->>>>> # echo mem | sudo tee /sys/power/state:
->>>>>
->>>>> * When GNOME is running:
->>>>> I get the shutdown popup and it eventually shuts down.
->>>>>
->>>>> * When GNOME isn't running (just on a VT):
->>>>> System shuts down.
->>>>
->>>> For the latter you may want to raise an issue with systemd, and for the
->>>> former I guess it is being too clever and does not activate the
->>>> workaround if suspend was not initiated by it? I think Gnome is being
->>>> too careful.
->>>>
->>>> Thanks.
->>>>
->>>
->>> Sure I could file bugs with both the projects.
->>>
->>> But before I do if all userspace needs to account for this with a series of workarounds at resume time, you still think that is that really the best way forward?
->>>
->>> Hans, you have a lot of experience in the GNOME community.  Your thoughts?
->>
->> I guess it would be good to fix this in the kernel, sending
->> KEY_WAKEUP from gpio_key when the event is KEY_POWER and
->> we are going through the special wakeup path in gpio_keys.
->>
->> When this was discussed quite a while ago the ACPI button
->> driver simply did not send any event at all on wkaeup
->> by ACPI power-button. Know that it does send an event
->> it would be good to mimic this, at least when the gpio_key
->> devices where instantiated by soc_button_array.
->>
->> So maybe add a new field to struct gpio_keys_button
->> called wakeup_code and when that is not 0 use that
->> instead of the plain "code" member on wakeups ?
->>
->> That would keep the gpio_keys code generic while
->> allowing to mimic the ACPI button behavior.
->>
->> And then set wakeup_code to KEY_WAKEUP for
->> the power-button in soc_button_array.
->>
->> To me this sounds better then trying to fix all userspace
->> code which does something on KEY_POWER of which there
->> is quite a lot.
->>
->> The special GNOME power-button handling was always
->> a workaround because last time a kernel fix was
->> nacked. But now with the KEY_WAKEUP done by the ACPI
->> button code it looks like we do have a good way
->> to fix this in the kernel, so that would be better
->> IMHO.
->>
->> Dmitry, what do you think of adding a wakeup_code
->> field to struct gpio_keys_button and let the code
->> creating the gpio_keys_button decide if a different
->> code should be used on wakeup or not ?
+On Fri, Jun 13, 2025 at 03:47:40PM +0200, Herve Codina wrote:
+> Hi,
 > 
-> And what is the plan on dealing with all other drivers that emit
-> KEY_POWER?
+> This series add support for SFPs ports available on the LAN966x PCI
+> device. In order to have the SFPs supported, additional devices are
+> needed such as clock controller and I2C.
+> 
+> As a reminder, the LAN966x PCI device driver use a device-tree overlay
+> to describe devices available on the PCI board. Adding support for SFPs
+> ports consists in adding more devices in the already existing
+> device-tree overlay.
+> 
+> With those devices added, the device-tree overlay is more complex and
+> some consumer/supplier relationship are needed in order to remove
+> devices in correct order when the LAN966x PCI driver is removed.
+> 
+> Those links are typically provided by fw_devlink and we faced some
+> issues with fw_devlink and overlays.
+> 
+> This series gives the big picture related to the SFPs support from
+> fixing issues to adding new devices. Of course, it can be split if
+> needed.
+> 
+> The first part of the series (patch 1, 2 and 3) fixes fw_devlink when it
+> is used with overlay. Patches 1 and 3 were previously sent by Saravana
+> [0]. I just rebased them on top of v6.15-rc1 and added patch 2 in order
+> to take into account feedback received on the series sent by Saravana.
+> 
+> Those modification were not sufficient in our case and so, on top of
+> that, patch 4 and 5 fix some more issues related to fw_devlink.
+> 
+> Patches 6 to 12 introduce and use fw_devlink_set_device() in already
+> existing code.
+> 
+> Patches 13 and 14 are related also to fw_devlink but specific to PCI and
+> the device-tree nodes created during enumeration.
+> 
+> Patches 15, 15 and 17 are related fw_devlink too but specific to I2C
+> muxes. Patches purpose is to correctly set a link between an adapter
+> supplier and its consumer. Indeed, an i2c mux adapter's parent is not
+> the i2c mux supplier but the adapter the i2c mux is connected to. Adding
+> a new link between the adapter supplier involved when i2c muxes are used
+> avoid a freeze observed during device removal.
+> 
+> Patch 18 adds support for fw_delink on x86. fw_devlink is needed to have
+> the consumer/supplier relationship between devices in order to ensure a
+> correct device removal order. Adding fw_devlink support for x86 has been
+> tried in the past but was reverted [1] because it broke some systems.
+> Instead of enabling fw_devlink on *all* x86 system or on *all* x86
+> system except on those where it leads to issue, enable it only on system
+> where it is needed.
+> 
+> Patches 19 and 20 allow to build clock and i2c controller used by the
+> LAN966x PCI device when the LAN966x PCI device is enabled.
+> 
+> Patches 21 to 25 are specific to the LAN966x. They touch the current
+> dtso, split it in dtsi/dtso files, rename the dtso and improve the
+> driver to allow easier support for other boards.
+> 
+> The next patch (patch 26) update the LAN966x device-tree overlay itself
+> to have the SPF ports and devices they depends on described.
+> 
+> The last two patches (patches 27 and 28) sort the existing drivers in
+> the needed driver list available in the Kconfig help and add new drivers
+> in this list keep the list up to date with the devices described in the
+> device-tree overlay.
+> 
+> Once again, this series gives the big picture and can be split if
+> needed. Let me know.
 
-There actually aren't that many that I'm aware of.
+Please suggest how you think this should get merged? There's 8 
+maintainer trees involved here. Some parts can be merged independently? 
+We need to spread over 2 cycles? Greg just takes it all?
 
-Note that this gpio_keys KEY_POWER evdev event generation
-on resume issue goes way back until the last time we had
-this conversation and it still has not really been fixed.
-
-And I've not seen any bug-reports about the same problem
-with any other drivers.
-
-> What about acpi button behavior when using S0ix?
-
-AFAIK it is the same as with S3, at least it is not
-causing any issues. I've never seen the ACPI button code
-cause re-suspend immediately on wakeup by what for all
-intends and purposes is a spurious KEY_POWER event.
-
-Last time we discussed this I wasn't really happy with
-the outcome of the discussion but I just went for it
-because of Android's reliance on the event and we
-lacked a better plan.
-
-Now that we've a fix for this in the form of KEY_WAKEUP
-it is time to properly fix this instead of doing userspace
-kludges.
-
-> What about
-> holding power button for too long so that normal reporting "catches" the
-> pressed state?
-
-The key-down event is send as KEY_WAKEUP instead,
-so userspace sees KEY_WAKEUP pressed not KEY_POWER.
-
-> Kernel reports hardware events, interpreting them and applying certain
-> policies is task for userspace.
-
-And atm it is actually doing a shitty job of reporting
-hwevents because there is no way for userspace to be able
-to differentiate between:
-
-1. User pressed power-button to wakeup system
-2. User pressed power-button after resume to do
-   power-button-action (e.g. suspend system)
-
-Even though *the kernel* does *know* the difference.
-
-So the suggested change actually makes the kernel
-do its job of reporting hw-events better by making
-the reporting more accurate.
-
-ATM if I resume say a tablet with GNOME and then
-change my mind and press the power button within
-3 seconds of resume to suspend it again the second
-power-button press will outright be ignored
-
-The current userspace workaround is racy like this,
-again the whole workaround in GNOME is just an ugly
-kludge which I did back then because we couldn't
-agree on a better way to deal with this in the kernel /
-because just suppressing sending KEY_POWER would break
-Android.
-
-The suggested use of KEY_WAKEUP is lightyears better
-then doing ignore KEY_POWER events for xx seconds
-after resume which is simply always going to be racy
-and always was just an ugly hack / never was
-a great solution.
-
-Regards,
-
-Hans
-
-
-
-
+Rob
 
