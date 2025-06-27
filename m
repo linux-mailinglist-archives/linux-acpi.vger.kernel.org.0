@@ -1,80 +1,48 @@
-Return-Path: <linux-acpi+bounces-14768-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14770-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA65AEB60D
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 13:14:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 672A0AEB972
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 16:06:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C80947A2D7A
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 11:13:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72A0A564977
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 14:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E1E29AB18;
-	Fri, 27 Jun 2025 11:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529EF2DE1E7;
+	Fri, 27 Jun 2025 14:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ba7wgyry"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OeW7pb3H"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8919E26B77D
-	for <linux-acpi@vger.kernel.org>; Fri, 27 Jun 2025 11:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FE22DD5E7;
+	Fri, 27 Jun 2025 14:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751022885; cv=none; b=Ymjg/NHewFgNUBNARkCVUlZErlY3v8Ujg/P5LhS8jty+kydpvJD4SG49wjt9J6atlJ5Hbcd7Lf5+VB/iIe3IYEsyJF7Eh4lnyrHXRvv+PMoYsfjuV17jHGhB9F3lMBGWdBnX6CYnSWOsYYxDJvsWjijEdS6VUngo13c35lhrZ7Q=
+	t=1751033173; cv=none; b=L715xn9WlqQSrMTrYJ7ngTFDtXFm+PLwoVSFh1AOjFbNa+DE8hLCt5Cii9iX5Jrs1du4Sts2/CGINekzhNzc8KKqG76q8FSqwWBaqb+Rsf66yzZzAUSomPNeUFyXYE71t6dtHJLJSlaAyPalhwS+kUy/RUiXvRIEbqhoYoaiMaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751022885; c=relaxed/simple;
-	bh=w4MVazwHyGvA4nmO+5orzSzKQM8Ol8qd0ZCA8/lQu0g=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=o/v4Elml1pXJFNqiIUSf9oQYS32GQFzXS/Vm1l0q0A2D2xcoQFfO1FoIFtjNRwwx84YVVV5q6w6UjAuj51/aAhrwGBLZxtyRWpq0YS7pnx62vb/yKP/wwd6XrQUzIuodadbrno4s9DTpcBW2qpVtmyjI1sXdsJvQIDI9wRjDa8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ba7wgyry; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45310223677so12242935e9.0
-        for <linux-acpi@vger.kernel.org>; Fri, 27 Jun 2025 04:14:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1751022882; x=1751627682; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=sT2Dty8HASo3E301EIpFBwg887/bkP44U7q2iAJe4Gc=;
-        b=ba7wgyrys8Nen/h9u+bXusV2IJ1xLTJL68LtLHSSXbqafpS5TWeOl0RJWTP9A24Wg8
-         nEWWYLqqlOAhrwpBJMMMbhCw7HOrApSN5jZ3/ZguxCMiUQFw8ttJzAFProFCgAXO8mh2
-         1rLIluUFfSsjl0UkCyl49twlnmtnpD1BtoiG4PuGox4t/RSf9w4jQYVqYvXLm3oZBLm4
-         4MIP0yFzqceAedEVriueRrqSXqUlhCjzdKTiis04aCWTd37omYuRlIeZ8XOVNlP5RESi
-         IyfsXpGml3paUhLmSk/PAIZ1lCLpItw86EhzjBirg4hFe4V+S7uCYv8kTDrlyjuIhO8X
-         rfqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751022882; x=1751627682;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sT2Dty8HASo3E301EIpFBwg887/bkP44U7q2iAJe4Gc=;
-        b=IzJepMc59xGkR+lUMvF0AI3JiHcew6OixEswonwNQXp++9lLh99xMUSZjHvx1bzf27
-         t5zo1tGXzoEw0/zlWuqPJJ2jmCUqwRziTR5TWjINyGn7c0ZpMqIztEuP8vRnEqXXqvrx
-         jAJbGNVlXKQJs9TfrIsg8xybMTEn8MahlJ/CcG2ODyK1+0CXJgrHQqMPg0O2YYKXI34l
-         U0vdMJc/qWY/XRaoQnAmWUdi65yRGcVrBIK7Q4RjJEyG44l+PLR9IaZ45E2C4tEmUqIy
-         wiyBkrX+sc672ZyCnbl1M5rXGzjqJpQ6oMJy1BpX9+YTrXuFnMgYFFkO2+aDOHmLrtNC
-         x8wg==
-X-Forwarded-Encrypted: i=1; AJvYcCX9gJVIgNMcEd+Gc0wTXjtlxXBcHDQ9G2Fc9+9Lo5MsbPFDta5JLol4ennpyqEmJGET7BpZA40KgHTb@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIzaLwKmF9YD12cvT8cLa7p2x9uNbXuxG0EpBJrcnS5aDYMoeN
-	x1vskNi4KmLfX490agC80SF8FRQGAIcRqNmoqO1A6MVIKKj3JxAXA5Q5d34t3arfhnI=
-X-Gm-Gg: ASbGnctrqWDaTTOr45S31Hc5ovAKxTyUcxq9c1nXsJMasydIi96N9J+6sxJfVWjlZd5
-	xJuDT7JStsGQEiGeSbqEs1nnEM4DRqHhk62RWOvOOSkQQrFZkcCqnkBWek8JA99pTdEYwMAIWfw
-	E3Ax/yFW9Ywt7fJf30i6ulWXwNxVx2mfG+CDSb+7Cyoganzb2m+0tMRHZ/9O+iN1vT8bgNuUWDM
-	2wKx7gpXWSgXGOKeJX0LA/r6FSKLoMDFh1lyo4docnA7ZJBBdtc0zZfNKpb7TaljyGnmuIRzAxQ
-	YpwQ6FwsY5geKgbJU0FvfmS54rYiIymvdyrVAzjzVpPsWFkGs3lzK7QSKSuRiRCtaQ==
-X-Google-Smtp-Source: AGHT+IEwKKnJLjCucj3H+V14bUMgMBDIHsq7dD9B3IJhgOXR9ECVYmDuqEFe23uc3SMhFyT2EvpZ/g==
-X-Received: by 2002:a05:600c:5249:b0:450:cfe1:a827 with SMTP id 5b1f17b1804b1-4538ee95284mr35636735e9.31.1751022881721;
-        Fri, 27 Jun 2025 04:14:41 -0700 (PDT)
-Received: from [192.168.0.20] ([212.21.159.38])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a88c7e6f23sm2498309f8f.11.2025.06.27.04.14.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Jun 2025 04:14:41 -0700 (PDT)
-Message-ID: <fda62d41-ad87-4e33-9662-11d397a26f7c@suse.com>
-Date: Fri, 27 Jun 2025 14:14:40 +0300
+	s=arc-20240116; t=1751033173; c=relaxed/simple;
+	bh=5W+oZzTTB+4rVXd1JXNGCD611xXo1F4FQJhxF29NZcM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZB8XepB7n7MsEQLu93zf1Sp2iBN1dlm+dEvccont5HSlodjyCMIVz79++moDsSuDUUOK7crrKYWIEPybVCDXZ3nKQhqGtfn6dbAMQa0FjwwPxS1dyNobW21D1nlkJ0LV3Pskzlp5EZdXhZX0m3FfK1/ty3CJimGNHRNEsi2kuYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OeW7pb3H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A83FC4CEE3;
+	Fri, 27 Jun 2025 14:06:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751033172;
+	bh=5W+oZzTTB+4rVXd1JXNGCD611xXo1F4FQJhxF29NZcM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OeW7pb3HT5rxyoWJmyLCVyxgjnJsYpB8GgwGSY5N1+i6Q6eXieRfR4nO6Iem87BhE
+	 7q0pCTKMeKpZoqqGoXKDaQcmm4ip+n9D+8a3UeMtLSMbfm7FufdPBk2RckrkcQeXG2
+	 Nrj+WG/KJ4Sk7Zd2SO+lxvEz5KEzhto6WSL6tXRYb9Xg3o1rkZodSQWsGPAOH/Josn
+	 b+iiupoL502dq8D7+rbZZjaClcgCoFQTn8Yx72zRFcFdSzwulzf+1rQ5f4Mjci9WMi
+	 /G14PeRxfIJ0Qy90mQHjWtr2CQ6lqknpCvMBrYFhdvvWIPG4JrqVywk2clmHZEXxlI
+	 u3KobtwsdKNVQ==
+Message-ID: <1b0d2349-dbf7-47aa-95c9-1974e63d111a@kernel.org>
+Date: Fri, 27 Jun 2025 09:06:10 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -82,195 +50,137 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 08/22] x86/mce/amd: Put list_head in threshold_bank
-From: Nikolay Borisov <nik.borisov@suse.com>
-To: Yazen Ghannam <yazen.ghannam@amd.com>, x86@kernel.org,
- Tony Luck <tony.luck@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
- Smita.KoralahalliChannabasappa@amd.com, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
- linux-acpi@vger.kernel.org
-References: <20250624-wip-mca-updates-v4-0-236dd74f645f@amd.com>
- <20250624-wip-mca-updates-v4-8-236dd74f645f@amd.com>
- <68039ee2-5407-4bd4-9735-62674805eaad@suse.com>
+Subject: Re: [PATCH v3 4/4] Input: Don't send fake button presses to wake
+ system
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Hans de Goede <hansg@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Mika Westerberg <westeri@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
+ <brgl@bgdev.pl>, "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
+ "open list:GPIO ACPI SUPPORT" <linux-acpi@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
+ <linux-input@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
+References: <cbbf0caf-82ce-4427-9844-b11e0f5cacdb@kernel.org>
+ <obpakvzyludc4jskqzyxf65dhqds7ie3jkbfsqdve32ouuaili@xvogkmwvbmbf>
+ <284ea5c0-dca5-4e9e-a3e7-705eca794010@kernel.org>
+ <vkau25ybcx3bcoa2jmxlukumunzii5h6em43anh6mmzk2kyiv7@kyych4kxc4zo>
+ <0d71a686-da67-4686-8976-a17d0d1ca923@kernel.org>
+ <CAJZ5v0gKUN1OdqAHnXNcFUAOfhpdRfa_o=L6TA2GZTpe1bMaNQ@mail.gmail.com>
+ <exmgckzoakt2ncsdphqvymcadon7k6tl36a3zvrj2pv23dffps@znq23v3qbcm2>
+ <CAJZ5v0j3ZyuEqSKQ+3K8M3BwPCxn5Z6KOwjyjt4cJW6HfxjPDw@mail.gmail.com>
+ <hyvpl4gvxc6h2r3itfofjduwb3vpobyo7a7z6g3zapzscqtafh@ixsd4amyljva>
+ <de548b27-4c43-4f30-af9d-b060101e6fd8@kernel.org>
+ <75fixx6rgwsgsw6e765oxdcivcg2nkzx2fp2qywgx4vi3ihywh@ot7gdecsnttw>
 Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <68039ee2-5407-4bd4-9735-62674805eaad@suse.com>
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <75fixx6rgwsgsw6e765oxdcivcg2nkzx2fp2qywgx4vi3ihywh@ot7gdecsnttw>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-
-
-On 6/25/25 19:52, Nikolay Borisov wrote:
-> 
-> 
-> On 6/24/25 17:16, Yazen Ghannam wrote:
->> The threshold_bank structure is a container for one or more
->> threshold_block structures. Currently, the container has a single
->> pointer to the 'first' threshold_block structure which then has a linked
->> list of the remaining threshold_block structures.
+On 6/26/2025 11:56 PM, Dmitry Torokhov wrote:
+> On Thu, Jun 26, 2025 at 05:21:35PM -0500, Mario Limonciello wrote:
+>> On 6/26/2025 2:40 PM, Dmitry Torokhov wrote:
+>>> On Thu, Jun 26, 2025 at 09:31:12PM +0200, Rafael J. Wysocki wrote:
+>>>> On Thu, Jun 26, 2025 at 9:28 PM Dmitry Torokhov
+>>>> <dmitry.torokhov@gmail.com> wrote:
+>>>>>
+>>>>> On Thu, Jun 26, 2025 at 09:18:56PM +0200, Rafael J. Wysocki wrote:
+>>>>>> On Thu, Jun 26, 2025 at 9:16 PM Hans de Goede <hansg@kernel.org> wrote:
+>>>>>>>
+>>>>>>> Hi,
+>>>>>>>
+>>>>>>> On 26-Jun-25 21:14, Dmitry Torokhov wrote:
+>>>>>>>> On Thu, Jun 26, 2025 at 08:57:30PM +0200, Hans de Goede wrote:
+>>>>>>>>> Hi,
+>>>>>>>>>
+>>>>>>>>> On 26-Jun-25 20:48, Dmitry Torokhov wrote:
+>>>>>>>>>> On Thu, Jun 26, 2025 at 01:20:54PM -0500, Mario Limonciello wrote:
+>>>>> [...]
+>>>>>>>>>>> I want to note this driver works quite differently than how ACPI power
+>>>>>>>>>>> button does.
+>>>>>>>>>>>
+>>>>>>>>>>> You can see in acpi_button_notify() that the "keypress" is only forwarded
+>>>>>>>>>>> when not suspended [1].  Otherwise it's just wakeup event (which is what my
+>>>>>>>>>>> patch was modeling).
+>>>>>>>>>>>
+>>>>>>>>>>> https://github.com/torvalds/linux/blob/v6.16-rc3/drivers/acpi/button.c#L461
+>>>>>>>>>>> [1]
+>>>>>>>>>>
+>>>>>>>>>> If you check acpi_button_resume() you will see that the events are sent
+>>>>>>>>>> from there. Except that for some reason they chose to use KEY_WAKEUP and
+>>>>>>>>>> not KEY_POWER, oh well. Unlike acpi button driver gpio_keys is used on
+>>>>>>>>>> multiple other platforms.
+>>>>>>>>>
+>>>>>>>>> Interesting, but the ACPI button code presumably only does this on resume
+>>>>>>>>> for a normal press while the system is awake it does use KEY_POWER, right ?
+>>>>>>>>
+>>>>>>>> Yes. It is unclear to me why they chose to mangle the event on wakeup,
+>>>>>>>> it does not seem to be captured in the email discussions or in the patch
+>>>>>>>> description.
+>>>>>>>
+>>>>>>> I assume they did this to avoid the immediate re-suspend on wakeup by
+>>>>>>> power-button issue. GNOME has a workaround for this, but I assume that
+>>>>>>> some userspace desktop environments are still going to have a problem
+>>>>>>> with this.
+>>>>>>
+>>>>>> It was done for this reason IIRC, but it should have been documented
+>>>>>> more thoroughly.
+>>>>>
+>>>>> I assert that it should not have been done and instead dealt with in
+>>>>> userspace. There are numerous drivers in the kernel emitting
+>>>>> KEY_POWER. Let userspace decide how to handle this, what keys to ignore,
+>>>>> what keys to process and when.
+>>>>
+>>>> Please see my last message in this thread (just sent) and see the
+>>>> changelog of commit 16f70feaabe9 ("ACPI: button: trigger wakeup key
+>>>> events").
+>>>>
+>>>> This appears to be about cases when no event would be signaled to user
+>>>> space at all (power button wakeup from ACPI S3).
+>>>
+>>> Ahh, in S3 we do not know if we've been woken up with Sleep or Power
+>>> button, right? So we can not send the "right" event code and use
+>>> "neutral" KEY_WAKEUP for both. Is this right?
+>>>
+>>> Thanks.
+>>>
 >>
->> This results in an extra level of indirection where the 'first' block is
->> checked before iterating over the remaining blocks.
+>> I did some more experiments with this affected system that started this
+>> thread (which uses s2idle).
 >>
->> Remove the indirection by including the head of the block list in the
->> threshold_bank structure which already acts as a container for all the
->> bank's thresholding blocks.
+>> I only applied patch 3 in this series to help the debounce behavior and
+>> figure out impacts from patch 4 with existing Linux userspace.
 >>
->> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
->> Tested-by: Tony Luck <tony.luck@intel.com>
->> Reviewed-by: Tony Luck <tony.luck@intel.com>
->> Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
->> ---
+>> If suspended using systemd in GNOME (click the GUI button) on Ubuntu 24.04
+>> the GNOME workaround mitigates this problem and no visible impact.
 >>
->> Notes:
->>      Link:
->>      https://lore.kernel.org/r/20250415-wip-mca-updates- 
->> v3-4-8ffd9eb4aa56@amd.com
->>      v3->v4:
->>      * No change.
->>      v2->v3:
->>      * Added tags from Qiuxu and Tony.
->>      v1->v2:
->>      * New in v2.
+>> If I suspend by hand using the kernel interface and then press power button
+>> to wake:
 >>
->>   arch/x86/kernel/cpu/mce/amd.c | 43 +++++++++++ 
->> +-------------------------------
->>   1 file changed, 12 insertions(+), 31 deletions(-)
+>> # echo mem | sudo tee /sys/power/state:
 >>
->> diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/ 
->> amd.c
->> index 0ffbee329a8c..5d351ec863cd 100644
->> --- a/arch/x86/kernel/cpu/mce/amd.c
->> +++ b/arch/x86/kernel/cpu/mce/amd.c
->> @@ -241,7 +241,8 @@ struct threshold_block {
->>   struct threshold_bank {
->>       struct kobject        *kobj;
->> -    struct threshold_block    *blocks;
->> +    /* List of threshold blocks within this MCA bank. */
->> +    struct list_head    miscj;
->>   };
->>   static DEFINE_PER_CPU(struct threshold_bank **, threshold_banks);
->> @@ -900,9 +901,9 @@ static void log_and_reset_block(struct 
->> threshold_block *block)
->>    */
->>   static void amd_threshold_interrupt(void)
->>   {
->> -    struct threshold_block *first_block = NULL, *block = NULL, *tmp = 
->> NULL;
->> -    struct threshold_bank **bp = this_cpu_read(threshold_banks);
->> +    struct threshold_bank **bp = this_cpu_read(threshold_banks), 
->> *thr_bank;
->>       unsigned int bank, cpu = smp_processor_id();
->> +    struct threshold_block *block, *tmp;
->>       /*
->>        * Validate that the threshold bank has been initialized 
->> already. The
->> @@ -916,16 +917,11 @@ static void amd_threshold_interrupt(void)
->>           if (!(per_cpu(bank_map, cpu) & BIT_ULL(bank)))
->>               continue;
+>> * When GNOME is running:
+>> I get the shutdown popup and it eventually shuts down.
+>>
+>> * When GNOME isn't running (just on a VT):
+>> System shuts down.
 > 
-> <slight off topic>
+> For the latter you may want to raise an issue with systemd, and for the
+> former I guess it is being too clever and does not activate the
+> workaround if suspend was not initiated by it? I think Gnome is being
+> too careful.
 > 
-> nit: I wonder if instead of using per_cpu and manual bit testing can't a 
-> direct
-> call to x86_this_cpu_test_bit be a better solution. The assembly looks 
-> like:
-> 
-> [OLD]
-> 
-> xorl    %r14d, %r14d    # ivtmp.245
-> movq    %rax, 8(%rsp)   # cpu, %sfp
-> # arch/x86/kernel/cpu/mce/amd.c:917:        if (!(per_cpu(bank_map, cpu) 
-> & BIT_ULL(bank)))
-> movq    $bank_map, %rax #, __ptr
-> movq    %rax, (%rsp)    # __ptr, %sfp
-> .L236:
-> movq    8(%rsp), %rax   # %sfp, cpu
-> # arch/x86/kernel/cpu/mce/amd.c:917:        if (!(per_cpu(bank_map, cpu) 
-> & BIT_ULL(bank)))
-> movq    (%rsp), %rsi    # %sfp, __ptr
-> # arch/x86/kernel/cpu/mce/amd.c:917:        if (!(per_cpu(bank_map, cpu) 
-> & BIT_ULL(bank)))
-> movq    __per_cpu_offset(,%rax,8), %rax # __per_cpu_offset[cpu_23], 
-> __per_cpu_offset[cpu_23]
-> # arch/x86/kernel/cpu/mce/amd.c:917:        if (!(per_cpu(bank_map, cpu) 
-> & BIT_ULL(bank)))
-> movq    (%rax,%rsi), %rax
-> # arch/x86/kernel/cpu/mce/amd.c:917:        if (!(per_cpu(bank_map, cpu) 
-> & BIT_ULL(bank)))
-> btq %r14, %rax
-> 
-> [NEW]
-> 
-> xorl    %r15d, %r15d    # ivtmp.246
-> .L236:
-> # 917 "arch/x86/kernel/cpu/mce/amd.c" 1
-> btl %r15d, %gs:bank_map(%rip)   # ivtmp.246, *_9
-> 
-> 
-> That way you end up with a single btl (but I guess a version that uses 
-> btq should be added as well)
-> inside the loop rather than a bunch of instructions moving data around 
-> for per_cpu.
-> 
-> Alternatively, since this is running in interrupt context can't you use 
-> directly this_cpu_read(bank_map) and eliminate the smp_processor_id 
-> invocation?
-
-
-Actually the total number of banks are at most 128 as per the layout of 
-MCG_CAP register, so using btl is fine. Also I'm not sure why the 
-original code uses BIT_ULL vs just BIT since we can't have a 64bit value.
-
-
-> 
-> </slight off topic>
-> 
-> 
-> <snip>
+> Thanks.
 > 
 
+Sure I could file bugs with both the projects.
+
+But before I do if all userspace needs to account for this with a series 
+of workarounds at resume time, you still think that is that really the 
+best way forward?
+
+Hans, you have a lot of experience in the GNOME community.  Your thoughts?
 
