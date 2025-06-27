@@ -1,237 +1,178 @@
-Return-Path: <linux-acpi+bounces-14780-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14781-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40533AEBCE1
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 18:12:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96CDDAEBD24
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 18:24:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 059061C60A29
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 16:12:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EC67561CCC
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 16:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F1B2E9ED7;
-	Fri, 27 Jun 2025 16:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7262E9754;
+	Fri, 27 Jun 2025 16:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="da/fyb7J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q9+kRI24"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4CB2E973C;
-	Fri, 27 Jun 2025 16:12:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F5E2D3EE8;
+	Fri, 27 Jun 2025 16:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751040729; cv=none; b=TQBeHlHlzkj4JW7o2coIAC61Sb+q44kfLsqlnt06YBot5aoMFFecGgoPd7T/PRLIeXbZE8977ifl3hzJnXVRmzb0LCbIxeDQo7j58MKdBR4thu4oAyt6ir2yzm6Nauc66LA/Bw5yRbQwhzykKFE6FKAf0danyGxtCFSZJtGRY1g=
+	t=1751041367; cv=none; b=nv++dJlmLK3Z/+crg1Ye0k0wCz9mkR6xgN43sRYRipplAdMGnVkNV2oNRNQZTf99gxwzeSTZUdtU+kA+5eP7PsPux+6f4ygU4VIJNecIlETRZsoNIcjjksqRUJis+DZL+qKjnNhUpkblJWAro8TSUH7phmOHJ5Nl+xMgfSQdZvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751040729; c=relaxed/simple;
-	bh=LK6QY4UU3h9fKPWEGu4Bo9w7QBVoPO0VsOonrKWs6Zw=;
+	s=arc-20240116; t=1751041367; c=relaxed/simple;
+	bh=S4rQXSxYy7l30Jex5dOyQNVkfrqjgNBFJChd03NJJd4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pegE/WU399NzMDDf3DEGJLoOHgFyiF9yfGYlA7FnZnBR1GswgPOjxVH7XRnVBSv663t4KzCUnut79NiqXdeocEI8pad4SERSo57kGll72r1oT+eYJxiWlIjhwrllsKsMSZlEyF4bq8EeQ3sIyNIf/qifBDvpkgnYxU2Hgg23y3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=da/fyb7J; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751040728; x=1782576728;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=LK6QY4UU3h9fKPWEGu4Bo9w7QBVoPO0VsOonrKWs6Zw=;
-  b=da/fyb7Joao/zJBzRMpyCnEUA/YFUtDi10/l2GFLxpsaiKTw6Ue+IA4c
-   srWChAkOcPsnNQqT6HwIt4vUwtpojvHsQ3tJuRyur6Wl2234JqSMXoHfx
-   UPtOZKvc0bJntN5qVm1uJWujoQ/s7BZO+mmijTRDR3SmQhkh5nOURIB7y
-   MoonWrrNj7SXj9Mg9FrWwpHx39SXr93dGe7YwLxeOKOK1bHzVWgh1K3x8
-   l82IfaHQBT/SIJyAgelZElGA/dsaX2nfOOncC+HJg7+o2/e5n0HBM+IJG
-   +sN3CEOHPGOPoda3UIJoT5Ovo8TXAEYSB95iM42UXen9b9V+BydtdYxlZ
-   g==;
-X-CSE-ConnectionGUID: SzVTDHwORbao+UOWY1akZQ==
-X-CSE-MsgGUID: BCjxxpiLTWq9ZdORyvmV6Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="53300162"
-X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
-   d="scan'208";a="53300162"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 09:12:07 -0700
-X-CSE-ConnectionGUID: 3vZf4p7YShCaX9YgHIgV4g==
-X-CSE-MsgGUID: kFOld4pyTzmSLJZqhgzLiQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
-   d="scan'208";a="183880396"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 09:12:04 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uVBgG-0000000AX0g-3lpA;
-	Fri, 27 Jun 2025 19:12:00 +0300
-Date: Fri, 27 Jun 2025 19:12:00 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Hans de Goede <hansg@kernel.org>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Mario Limonciello <superm1@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nt/A/6TCDTZSTUeRThDAgS5pkheb6/eeWrJCEyzTxOqTRqNJYNrdvnmgIWSDXq0prj9YF/sL3kmUIZwoht9JKDgrIISvK07oi8AQhqirwSVbw7eE8YF6nNzZoHTJd1i/9CK1h1odOEJQP1uMqVPWS4V2iW6rxfjjyD8ORB7swlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q9+kRI24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3C2C4CEE3;
+	Fri, 27 Jun 2025 16:22:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751041366;
+	bh=S4rQXSxYy7l30Jex5dOyQNVkfrqjgNBFJChd03NJJd4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q9+kRI24E/sv8i/YQJ0N921DtCB+0kcRk3H1pQUMNQtT02K02PjfsySme4B8GniwI
+	 9dRRJgnIYjYIcYjcs5Tb6obHmqh8Twkaf0TCIOBrTfj53TmQdFrvAxOP+wruzM3Ril
+	 JCTW0cM7wsH4IW+Zw3XsSKRN7zxXgWdw8fzZVfaBSHnAOFcYr4+qCebHHiZca51pkr
+	 3BUYtnmUuDrHiFYPlicYhuFNogDvoLoyaU3CKheMqkHeHJarNuPc7Ks6Whuzf7UE8A
+	 TZW+lJ9Gtdsw5sd9/k4NKCLKh0F893QUDS6oOqMbIefzWUsXHa7lfFZkbD8l+/snV+
+	 iZPTmjg/hmAvQ==
+Date: Fri, 27 Jun 2025 11:22:45 -0500
+From: Rob Herring <robh@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Mika Westerberg <westeri@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	"open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
-	"open list:GPIO ACPI SUPPORT" <linux-acpi@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH v3 4/4] Input: Don't send fake button presses to wake
- system
-Message-ID: <aF7C0B038Qi-CUSk@smile.fi.intel.com>
-References: <CAJZ5v0gKUN1OdqAHnXNcFUAOfhpdRfa_o=L6TA2GZTpe1bMaNQ@mail.gmail.com>
- <exmgckzoakt2ncsdphqvymcadon7k6tl36a3zvrj2pv23dffps@znq23v3qbcm2>
- <CAJZ5v0j3ZyuEqSKQ+3K8M3BwPCxn5Z6KOwjyjt4cJW6HfxjPDw@mail.gmail.com>
- <hyvpl4gvxc6h2r3itfofjduwb3vpobyo7a7z6g3zapzscqtafh@ixsd4amyljva>
- <de548b27-4c43-4f30-af9d-b060101e6fd8@kernel.org>
- <75fixx6rgwsgsw6e765oxdcivcg2nkzx2fp2qywgx4vi3ihywh@ot7gdecsnttw>
- <1b0d2349-dbf7-47aa-95c9-1974e63d111a@kernel.org>
- <13025910-7639-400b-878a-cd0780c6534c@kernel.org>
- <4ajmcrl3bqeikki2etek5bafzszelgevr322tvuubx4pxxyju2@qqxz6lzcb6e5>
- <fdd635ce-5e8e-4123-8e8e-241a57b4d7fe@kernel.org>
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 18/28] of: property: Allow fw_devlink device-tree on
+ x86 when PCI device-tree node creation is enabled
+Message-ID: <20250627162245.GA3513535-robh@kernel.org>
+References: <20250613134817.681832-1-herve.codina@bootlin.com>
+ <20250613134817.681832-19-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fdd635ce-5e8e-4123-8e8e-241a57b4d7fe@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <20250613134817.681832-19-herve.codina@bootlin.com>
 
-On Fri, Jun 27, 2025 at 05:56:05PM +0200, Hans de Goede wrote:
-> On 27-Jun-25 4:44 PM, Dmitry Torokhov wrote:
-> > On Fri, Jun 27, 2025 at 04:14:38PM +0200, Hans de Goede wrote:
-> >> On 27-Jun-25 4:06 PM, Mario Limonciello wrote:
-> >>> On 6/26/2025 11:56 PM, Dmitry Torokhov wrote:
+On Fri, Jun 13, 2025 at 03:47:58PM +0200, Herve Codina wrote:
+> PCI drivers can use a device-tree overlay to describe the hardware
+> available on the PCI board. This is the case, for instance, of the
+> LAN966x PCI device driver.
+> 
+> Adding some more nodes in the device-tree overlay adds some more
+> consumer/supplier relationship between devices instantiated from this
+> overlay.
+> 
+> Those fw_node consumer/supplier relationships are handled by fw_devlink
+> and are created based on the device-tree parsing done by the
+> of_fwnode_add_links() function.
+> 
+> Those consumer/supplier links are needed in order to ensure a correct PM
+> runtime management and a correct removal order between devices.
+> 
+> For instance, without those links a supplier can be removed before its
+> consumers is removed leading to all kind of issue if this consumer still
+> want the use the already removed supplier.
+> 
+> The support for the usage of an overlay from a PCI driver has been added
+> on x86 systems in commit 1f340724419ed ("PCI: of: Create device tree PCI
+> host bridge node").
+> 
+> In the past, support for fw_devlink on x86 had been tried but this
+> support has been removed in commit 4a48b66b3f52 ("of: property: Disable
+> fw_devlink DT support for X86"). Indeed, this support was breaking some
+> x86 systems such as OLPC system and the regression was reported in [0].
+> 
+> Instead of disabling this support for all x86 system, a first approach
+> would be to use a finer grain and disable this support only for the
+> possible problematic subset of x86 systems (at least OLPC and CE4100).
+> 
+> This first approach could still leads to issues. Indeed, the list of
+> possible problematic system and the way to identify them using Kconfig
+> symbols is not well defined and so some system can be missed leading to
+> kernel regressions on those missing systems.
+> 
+> Use an other way and enable the support on x86 system only when this
+> support is needed by some specific feature. The usage of a device-tree
+> overlay by a PCI driver and thus the creation of PCI device-tree nodes
+> is a feature that needs it.
+> 
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Link: https://lore.kernel.org/lkml/3c1f2473-92ad-bfc4-258e-a5a08ad73dd0@web.de/ [0]
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/of/property.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/of/property.c b/drivers/of/property.c
+> index c1feb631e383..8b5cfee696e2 100644
+> --- a/drivers/of/property.c
+> +++ b/drivers/of/property.c
+> @@ -1605,7 +1605,7 @@ static int of_fwnode_add_links(struct fwnode_handle *fwnode)
+>  	const struct property *p;
+>  	struct device_node *con_np = to_of_node(fwnode);
+>  
+> -	if (IS_ENABLED(CONFIG_X86))
+> +	if (IS_ENABLED(CONFIG_X86) && !IS_ENABLED(CONFIG_PCI_DYNAMIC_OF_NODES))
 
-...
+I really want CONFIG_PCI_DYNAMIC_OF_NODES to go away at some point, not 
+add more users. 
 
-> >>> Hans, you have a lot of experience in the GNOME community.  Your thoughts?
-> >>
-> >> I guess it would be good to fix this in the kernel, sending
-> >> KEY_WAKEUP from gpio_key when the event is KEY_POWER and
-> >> we are going through the special wakeup path in gpio_keys.
-> >>
-> >> When this was discussed quite a while ago the ACPI button
-> >> driver simply did not send any event at all on wkaeup
-> >> by ACPI power-button. Know that it does send an event
-> >> it would be good to mimic this, at least when the gpio_key
-> >> devices where instantiated by soc_button_array.
-> >>
-> >> So maybe add a new field to struct gpio_keys_button
-> >> called wakeup_code and when that is not 0 use that
-> >> instead of the plain "code" member on wakeups ?
-> >>
-> >> That would keep the gpio_keys code generic while
-> >> allowing to mimic the ACPI button behavior.
-> >>
-> >> And then set wakeup_code to KEY_WAKEUP for
-> >> the power-button in soc_button_array.
-> >>
-> >> To me this sounds better then trying to fix all userspace
-> >> code which does something on KEY_POWER of which there
-> >> is quite a lot.
-> >>
-> >> The special GNOME power-button handling was always
-> >> a workaround because last time a kernel fix was
-> >> nacked. But now with the KEY_WAKEUP done by the ACPI
-> >> button code it looks like we do have a good way
-> >> to fix this in the kernel, so that would be better
-> >> IMHO.
-> >>
-> >> Dmitry, what do you think of adding a wakeup_code
-> >> field to struct gpio_keys_button and let the code
-> >> creating the gpio_keys_button decide if a different
-> >> code should be used on wakeup or not ?
-> > 
-> > And what is the plan on dealing with all other drivers that emit
-> > KEY_POWER?
-> 
-> There actually aren't that many that I'm aware of.
-> 
-> Note that this gpio_keys KEY_POWER evdev event generation
-> on resume issue goes way back until the last time we had
-> this conversation and it still has not really been fixed.
-> 
-> And I've not seen any bug-reports about the same problem
-> with any other drivers.
-> 
-> > What about acpi button behavior when using S0ix?
-> 
-> AFAIK it is the same as with S3, at least it is not
-> causing any issues. I've never seen the ACPI button code
-> cause re-suspend immediately on wakeup by what for all
-> intends and purposes is a spurious KEY_POWER event.
-> 
-> Last time we discussed this I wasn't really happy with
-> the outcome of the discussion but I just went for it
-> because of Android's reliance on the event and we
-> lacked a better plan.
-> 
-> Now that we've a fix for this in the form of KEY_WAKEUP
-> it is time to properly fix this instead of doing userspace
-> kludges.
-> 
-> > What about
-> > holding power button for too long so that normal reporting "catches" the
-> > pressed state?
-> 
-> The key-down event is send as KEY_WAKEUP instead,
-> so userspace sees KEY_WAKEUP pressed not KEY_POWER.
-> 
-> > Kernel reports hardware events, interpreting them and applying certain
-> > policies is task for userspace.
-> 
-> And atm it is actually doing a shitty job of reporting
-> hwevents because there is no way for userspace to be able
-> to differentiate between:
-> 
-> 1. User pressed power-button to wakeup system
-> 2. User pressed power-button after resume to do
->    power-button-action (e.g. suspend system)
-> 
-> Even though *the kernel* does *know* the difference.
-> 
-> So the suggested change actually makes the kernel
-> do its job of reporting hw-events better by making
-> the reporting more accurate.
-> 
-> ATM if I resume say a tablet with GNOME and then
-> change my mind and press the power button within
-> 3 seconds of resume to suspend it again the second
-> power-button press will outright be ignored
-> 
-> The current userspace workaround is racy like this,
-> again the whole workaround in GNOME is just an ugly
-> kludge which I did back then because we couldn't
-> agree on a better way to deal with this in the kernel /
-> because just suppressing sending KEY_POWER would break
-> Android.
-> 
-> The suggested use of KEY_WAKEUP is lightyears better
-> then doing ignore KEY_POWER events for xx seconds
-> after resume which is simply always going to be racy
-> and always was just an ugly hack / never was
-> a great solution.
+I think this should instead check for specific platforms not with 
+kconfig symbols but DT properties. For ce4100, you can just check the 
+root compatible string. For OLPC, there isn't a root compatible (in the 
+DT I have). You could check for /architecture == OLPC instead. There's 
+some virtualization guests using DT now too. I would think their DT's 
+are simple enough to avoid any fw_devlink issues. 
 
-My take away from this discussion that in a sleep state the power button
-(or actually any wakeup source) should tell userspace "hey, we want to wake
-up". It doesn't tell "hey, we want to wake to power off".
-This sounds good to me as a user. Yes, if laptop is sleeping we need to wake
-it up to continue, the power off is just a next step of this flow.
-The  expected hot topic here is the longer presses of power button, but I think
-if we have a timer and tell after say 3 second that the K_WUP was up and K_PW
-is down is not a solution, it will be always flaky.
+Alternatively, we could perhaps make x86 fw_devlink default off and then 
+enable it only when you create nodes. Maybe it has to be restricted a 
+sub tree of the DT to avoid any later interactions if devices are 
+unbound and rebound. Not a fully fleshed out idea...
 
-Just my 2c.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Rob
 
