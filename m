@@ -1,140 +1,253 @@
-Return-Path: <linux-acpi+bounces-14783-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14784-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08B4AEBE94
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 19:49:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2454AEBECF
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 20:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4613A642BCE
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 17:49:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF465188D078
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 18:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F422E9ED7;
-	Fri, 27 Jun 2025 17:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C632EB5D8;
+	Fri, 27 Jun 2025 18:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QDaBKqc7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dLnIXYsO"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38311F09A5;
-	Fri, 27 Jun 2025 17:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3202E9ED4;
+	Fri, 27 Jun 2025 18:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751046589; cv=none; b=mrtoOWlqW8Dh8KD+cyxOX9Ujyaev9nbykkS7MyIp5FHp3Zgyg7ZIVoi15vwG9GEBBAPzhoFY13wHobAm9soatPvvFg3OGw0eu84ZE8JVj3cwwmCIEd8ZzjJTy+GTWQy8ruQ6AcxTW2R0t0shzNGaIl1RI/ZksXyv1owND1sSddg=
+	t=1751047201; cv=none; b=I4AcaojeLd0H4/c7hdiKJ77rs6K1eroaICrBDz5D5teHQo+w8FMKFpe3ULJjxevQ+fVihXIZULrSFeTJ05hA1pDm2G2qHCagcJau/e3Kj1W8WvdFrQWT4gz1yupG8m/sqtp9sORCYjcibjcXiqgidGf34tc+s7foQ+40B8vbTxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751046589; c=relaxed/simple;
-	bh=fENVGkGcV01nrx8rwyk5yc++tYlpmC/4in3yTWfI+BU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bbMFCZQLINv8QjrLvBc/yfPykhqqF9Cjo00k07ZXilnMn4yDazQ7C/SvMyecXvCsF8WMGL9IFdw7fpWMb9tmE5phn7r/d/9EVwcsZ5TjFU2WKkPgW5Y7hJ9aXuPPnbhW/sEMY7UJVc5IfhyclqB6xT5VSfbNh8BXO7B8Z0lXDdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QDaBKqc7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C83C4CEFB;
-	Fri, 27 Jun 2025 17:49:49 +0000 (UTC)
+	s=arc-20240116; t=1751047201; c=relaxed/simple;
+	bh=nHxRyHCbw9/Oav+1LaTV2CIaLPhiooN7OeG4MPg7kKI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C7cuAq2+GJasfrToCeOW0lBqiCDj2ujp2q3bBeQO9HH0cpmqFQfNc6SFeNAGfGXuExSFSMZJXL/NfvLCk2Qd47hkQSiL9fCeuATYJcHDCMlOGkYE+FxDjNueByWEGTIL52LSAketQNFDYZFbaqA71leZFtF6BQbtI5dK80dyjUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dLnIXYsO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6EBC4CEE3;
+	Fri, 27 Jun 2025 17:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751046589;
-	bh=fENVGkGcV01nrx8rwyk5yc++tYlpmC/4in3yTWfI+BU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QDaBKqc73OAck/HvM0EVd5wtKUjUN7GPsOvpdjQ9yxQfT7gPphE3WJUX18LD5I3cV
-	 3I0DsaAXNiZrzbAjgH5RmUIHzuGV+il3/DAWKdEl1GqN7pgoGcBq/ue07wIRoUWsUt
-	 DTpXWcdsABzLOk1esyLFQ6+vPQhDQTQrIl2/oW859p+ENQfTmHeQIpUI/tNrE7f6Jx
-	 0HaPtNPil8h6RVpt0LhQKj8TbFYuz1YRJsqIZTzOr7g9NNuWwvAtNNz3sRmHxoyX4R
-	 hw1JP/ra1GDPoCgdErvqrQrL0xl6DZHuw+Uqxk597rbpThcBDon2oxslqivu081ygM
-	 1Gw7oJVnPaDng==
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ade5a0442dfso452627066b.1;
-        Fri, 27 Jun 2025 10:49:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUFcL3o8K4XcNCCwr/1Hn0poOddvQhQrl+98rz+OBpFX0ptmAaBjOFw2icmYhyPxanLDzt3Bs9Dsyz0@vger.kernel.org, AJvYcCV85OlD2kqLMH+Ja/mtvbCkla+glBX8wqNUUJe/yG2gHde+uYriYhSDOkr7yXOZpsmD6xnF8lws+cCI9g==@vger.kernel.org, AJvYcCVR33dTuoHXsGzVCTB+FMM8EMK9TJJo7JifLED2McI1RRmgmyuqnfMG7VQFSvbYyiojIpq/mrIRLMOINlny@vger.kernel.org, AJvYcCWnhdWYwqlaZEF2RE2uYpmQ//qLwa151J0iS4Vc8EJLhuZIxCl4pwBgYqcb+LIfH5uwVLFzvbLiBax7@vger.kernel.org, AJvYcCWrHIQdkFKqtu3aTQe3Rth8wTXCPpm4S9x5flUxxc26wlhd32JcGCxnhS/5ODR1wgyqwBYj/osYKFVE@vger.kernel.org, AJvYcCWympIu3XRPp0mybc36H/IdWUAq6GKlRTipRzrnuDEVdVT8/2HOhpdqq3/Mv597Gfh22MM2szwKsm7D@vger.kernel.org, AJvYcCXj269BJATXYJKaiwemrLrVPs3JuriT1yFOyGMIRecNlIeyCDGPUqOuYgRCRfP/dpshlW+Q0PgCADAZ@vger.kernel.org, AJvYcCXzOxcNMxXblyIensO8v/yRIGHlv0jZgNvVzCw8BGJKBIKV5e3X3ZJb0mhP+ST5jENabLIVP50ZB1mF@vger.kernel.org
-X-Gm-Message-State: AOJu0YztsrCYPhCat9rSiG0ZJpXcwuYjAABZTfK3HEg+1YoO9IEcQB6U
-	6JMZVZ7qUx6Vj1mNIyivWMcUXoAXi2TaGRiXtHa0r8CM5UIQwJPg1t8nyXWRj+7v6n7rJr7Gv6w
-	agkHDNUDKa82cwRcNh3KZXbHHACzjlg==
-X-Google-Smtp-Source: AGHT+IHT5hz4lr0pRGvdH2rjBfGZM81PcOoFrAQguTcQw3WkJwjxgHpGim6dbfGwqFeg5PpW/uAYH3Ohif/f2EVITXw=
-X-Received: by 2002:a17:907:cb86:b0:ae3:55bd:7724 with SMTP id
- a640c23a62f3a-ae355bd77f6mr319698366b.37.1751046587752; Fri, 27 Jun 2025
- 10:49:47 -0700 (PDT)
+	s=k20201202; t=1751047200;
+	bh=nHxRyHCbw9/Oav+1LaTV2CIaLPhiooN7OeG4MPg7kKI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dLnIXYsOLFU5f91sFEVR4n4Gv0Tr3l9RLdWH9Ur9ByywDTiq8c0iP96hyPoR9QY7j
+	 KyHZHdXYuNobKJxtOYT3olEyxaoIVy/CVZMI0LmxsM+VW6NNLoaslkyG2b4//ClEgD
+	 WwpuuSORZ6LcuSteMuSHgIQ2VMUYid8TSVUW9vmGriV5SMVQRa0K4NliNxQId3OSW4
+	 CoAqzjc1iYkmYvebAL/TgZA5sIGhr6SCFXNiDNxZHl9EiNF505OLnyK1dvv83excuJ
+	 T41DOzMKv0ud9T4IKKBaoARILaf/S1GUzhT8xAcegl2UsjPNwfrSd80OqTg8PYfRhy
+	 0AW6p6+u9/8jQ==
+Message-ID: <d967b0ed-da33-4cc1-9ec3-7dc1ab209d84@kernel.org>
+Date: Fri, 27 Jun 2025 19:59:56 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250613134817.681832-1-herve.codina@bootlin.com>
- <20250613134817.681832-19-herve.codina@bootlin.com> <20250627162245.GA3513535-robh@kernel.org>
- <aF7H4-toeb7Ouz3d@smile.fi.intel.com>
-In-Reply-To: <aF7H4-toeb7Ouz3d@smile.fi.intel.com>
-From: Rob Herring <robh@kernel.org>
-Date: Fri, 27 Jun 2025 12:49:36 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJCuevzu69bx3yWm3ZR9wZ+UsWuNXscig5KMm2WH4WxOw@mail.gmail.com>
-X-Gm-Features: Ac12FXz-QVHJXTEek87UkxSujkajQAR7GpuL-shCkOttrl-AQQGXN_bA70yoM5c
-Message-ID: <CAL_JsqJCuevzu69bx3yWm3ZR9wZ+UsWuNXscig5KMm2WH4WxOw@mail.gmail.com>
-Subject: Re: [PATCH v3 18/28] of: property: Allow fw_devlink device-tree on
- x86 when PCI device-tree node creation is enabled
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/4] Input: Don't send fake button presses to wake
+ system
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
-	Derek Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-cxl@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Mario Limonciello <superm1@kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Mika Westerberg <westeri@kernel.org>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
+ <brgl@bgdev.pl>, "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
+ "open list:GPIO ACPI SUPPORT" <linux-acpi@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
+ <linux-input@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
+References: <CAJZ5v0gKUN1OdqAHnXNcFUAOfhpdRfa_o=L6TA2GZTpe1bMaNQ@mail.gmail.com>
+ <exmgckzoakt2ncsdphqvymcadon7k6tl36a3zvrj2pv23dffps@znq23v3qbcm2>
+ <CAJZ5v0j3ZyuEqSKQ+3K8M3BwPCxn5Z6KOwjyjt4cJW6HfxjPDw@mail.gmail.com>
+ <hyvpl4gvxc6h2r3itfofjduwb3vpobyo7a7z6g3zapzscqtafh@ixsd4amyljva>
+ <de548b27-4c43-4f30-af9d-b060101e6fd8@kernel.org>
+ <75fixx6rgwsgsw6e765oxdcivcg2nkzx2fp2qywgx4vi3ihywh@ot7gdecsnttw>
+ <1b0d2349-dbf7-47aa-95c9-1974e63d111a@kernel.org>
+ <13025910-7639-400b-878a-cd0780c6534c@kernel.org>
+ <4ajmcrl3bqeikki2etek5bafzszelgevr322tvuubx4pxxyju2@qqxz6lzcb6e5>
+ <fdd635ce-5e8e-4123-8e8e-241a57b4d7fe@kernel.org>
+ <aF7C0B038Qi-CUSk@smile.fi.intel.com>
+Content-Language: en-US, nl
+From: Hans de Goede <hansg@kernel.org>
+In-Reply-To: <aF7C0B038Qi-CUSk@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 27, 2025 at 11:33=E2=80=AFAM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Fri, Jun 27, 2025 at 11:22:45AM -0500, Rob Herring wrote:
-> > On Fri, Jun 13, 2025 at 03:47:58PM +0200, Herve Codina wrote:
->
+Hi,
+
+On 27-Jun-25 6:12 PM, Andy Shevchenko wrote:
+> On Fri, Jun 27, 2025 at 05:56:05PM +0200, Hans de Goede wrote:
+>> On 27-Jun-25 4:44 PM, Dmitry Torokhov wrote:
+>>> On Fri, Jun 27, 2025 at 04:14:38PM +0200, Hans de Goede wrote:
+>>>> On 27-Jun-25 4:06 PM, Mario Limonciello wrote:
+>>>>> On 6/26/2025 11:56 PM, Dmitry Torokhov wrote:
+> 
 > ...
->
-> > > -   if (IS_ENABLED(CONFIG_X86))
-> > > +   if (IS_ENABLED(CONFIG_X86) && !IS_ENABLED(CONFIG_PCI_DYNAMIC_OF_N=
-ODES))
-> >
-> > I really want CONFIG_PCI_DYNAMIC_OF_NODES to go away at some point, not
-> > add more users.
-> >
-> > I think this should instead check for specific platforms not with
-> > kconfig symbols but DT properties. For ce4100, you can just check the
-> > root compatible string. For OLPC, there isn't a root compatible (in the
-> > DT I have). You could check for /architecture =3D=3D OLPC instead. Ther=
-e's
-> > some virtualization guests using DT now too. I would think their DT's
-> > are simple enough to avoid any fw_devlink issues.
->
-> I don't think this is good approach. The above check is more reliable in =
-my
-> opinion.
+> 
+>>>>> Hans, you have a lot of experience in the GNOME community.  Your thoughts?
+>>>>
+>>>> I guess it would be good to fix this in the kernel, sending
+>>>> KEY_WAKEUP from gpio_key when the event is KEY_POWER and
+>>>> we are going through the special wakeup path in gpio_keys.
+>>>>
+>>>> When this was discussed quite a while ago the ACPI button
+>>>> driver simply did not send any event at all on wkaeup
+>>>> by ACPI power-button. Know that it does send an event
+>>>> it would be good to mimic this, at least when the gpio_key
+>>>> devices where instantiated by soc_button_array.
+>>>>
+>>>> So maybe add a new field to struct gpio_keys_button
+>>>> called wakeup_code and when that is not 0 use that
+>>>> instead of the plain "code" member on wakeups ?
+>>>>
+>>>> That would keep the gpio_keys code generic while
+>>>> allowing to mimic the ACPI button behavior.
+>>>>
+>>>> And then set wakeup_code to KEY_WAKEUP for
+>>>> the power-button in soc_button_array.
+>>>>
+>>>> To me this sounds better then trying to fix all userspace
+>>>> code which does something on KEY_POWER of which there
+>>>> is quite a lot.
+>>>>
+>>>> The special GNOME power-button handling was always
+>>>> a workaround because last time a kernel fix was
+>>>> nacked. But now with the KEY_WAKEUP done by the ACPI
+>>>> button code it looks like we do have a good way
+>>>> to fix this in the kernel, so that would be better
+>>>> IMHO.
+>>>>
+>>>> Dmitry, what do you think of adding a wakeup_code
+>>>> field to struct gpio_keys_button and let the code
+>>>> creating the gpio_keys_button decide if a different
+>>>> code should be used on wakeup or not ?
+>>>
+>>> And what is the plan on dealing with all other drivers that emit
+>>> KEY_POWER?
+>>
+>> There actually aren't that many that I'm aware of.
+>>
+>> Note that this gpio_keys KEY_POWER evdev event generation
+>> on resume issue goes way back until the last time we had
+>> this conversation and it still has not really been fixed.
+>>
+>> And I've not seen any bug-reports about the same problem
+>> with any other drivers.
+>>
+>>> What about acpi button behavior when using S0ix?
+>>
+>> AFAIK it is the same as with S3, at least it is not
+>> causing any issues. I've never seen the ACPI button code
+>> cause re-suspend immediately on wakeup by what for all
+>> intends and purposes is a spurious KEY_POWER event.
+>>
+>> Last time we discussed this I wasn't really happy with
+>> the outcome of the discussion but I just went for it
+>> because of Android's reliance on the event and we
+>> lacked a better plan.
+>>
+>> Now that we've a fix for this in the form of KEY_WAKEUP
+>> it is time to properly fix this instead of doing userspace
+>> kludges.
+>>
+>>> What about
+>>> holding power button for too long so that normal reporting "catches" the
+>>> pressed state?
+>>
+>> The key-down event is send as KEY_WAKEUP instead,
+>> so userspace sees KEY_WAKEUP pressed not KEY_POWER.
+>>
+>>> Kernel reports hardware events, interpreting them and applying certain
+>>> policies is task for userspace.
+>>
+>> And atm it is actually doing a shitty job of reporting
+>> hwevents because there is no way for userspace to be able
+>> to differentiate between:
+>>
+>> 1. User pressed power-button to wakeup system
+>> 2. User pressed power-button after resume to do
+>>    power-button-action (e.g. suspend system)
+>>
+>> Even though *the kernel* does *know* the difference.
+>>
+>> So the suggested change actually makes the kernel
+>> do its job of reporting hw-events better by making
+>> the reporting more accurate.
+>>
+>> ATM if I resume say a tablet with GNOME and then
+>> change my mind and press the power button within
+>> 3 seconds of resume to suspend it again the second
+>> power-button press will outright be ignored
+>>
+>> The current userspace workaround is racy like this,
+>> again the whole workaround in GNOME is just an ugly
+>> kludge which I did back then because we couldn't
+>> agree on a better way to deal with this in the kernel /
+>> because just suppressing sending KEY_POWER would break
+>> Android.
+>>
+>> The suggested use of KEY_WAKEUP is lightyears better
+>> then doing ignore KEY_POWER events for xx seconds
+>> after resume which is simply always going to be racy
+>> and always was just an ugly hack / never was
+>> a great solution.
+> 
+> My take away from this discussion that in a sleep state the power button
+> (or actually any wakeup source) should tell userspace "hey, we want to wake
+> up". It doesn't tell "hey, we want to wake to power off".
+> This sounds good to me as a user. Yes, if laptop is sleeping we need to wake
+> it up to continue, the power off is just a next step of this flow.
 
-I'm fine with any solution that doesn't add a
-CONFIG_PCI_DYNAMIC_OF_NODES which we can't remove. Adding it was a
-kick the can down the road to merge the support worry the mixed
-usecase (on ACPI systems) later. It's now later.
+Exactly.
 
-> > Alternatively, we could perhaps make x86 fw_devlink default off
->
-> For my (little) knowledge I believe this is not feasible anymore.
-> Some x86 code (drivers) relies on fw_devlink nowadays. But take
-> this with grain of salt, I may be way mistaken.
+These are really 2 different events and the problem
+is that atm the kernel reports this as one and
+the same event type. It really is as simple as this.
 
-Doesn't the CONFIG_X86 check disable it?
+Note that I'm not proposing on making this change
+something which all gpio_keys drivers will get
+automatically.
 
-Rob
+My idea of adding a wakeup_code field to
+struct gpio_keys_button allows individual gpio_keys
+users to opt-in to the behavior of
+sending KEY_SOMETHINGELSE on wakeup-by-gpio-button-press.
+
+Since soc_button_array is only used on x86/ACPI platforms
+and since by far the most x86/ACPI platforms use
+the ACPI button code for the power-button, which already
+behaves this way I do not expect any userspace problems
+from doing such a change in soc_button_array because
+if that were a problem then we would already have bug
+reports because of the ACPI button code's behavior.
+
+> The  expected hot topic here is the longer presses of power button, but I think
+> if we have a timer and tell after say 3 second that the K_WUP was up and K_PW
+> is down is not a solution, it will be always flaky.
+
+If users do a long power-button press on x86 they are
+*always* trying to do a forced power-off and after 4s
+(or longer in some special cases) the hw itself will
+do such a forced poweroff. So I do not believe that
+we need to worry about long presses since those
+have a very specific meaning on x86/ACPI platforms.
+
+Also if there is a long press userspace will simply
+see KEY_WAKEUP never getting released, which is
+actually an accurate representation of things,
+the user woke up the system through the power-button
+and never released ir.
+
+Regards,
+
+Hans
+
+
+
 
