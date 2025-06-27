@@ -1,212 +1,228 @@
-Return-Path: <linux-acpi+bounces-14809-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14810-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92902AEC0F7
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 22:30:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D8ACAEC2D5
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Jun 2025 00:51:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE74D3BDE21
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 20:29:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8D063B594B
+	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 22:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6446C221DB9;
-	Fri, 27 Jun 2025 20:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3800B266EE7;
+	Fri, 27 Jun 2025 22:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s7YBeB7k"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=merlins.org header.i=@merlins.org header.b="cAiOl28O"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail1.merlins.org (magic.merlins.org [209.81.13.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358F6C2FB;
-	Fri, 27 Jun 2025 20:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E882CCA9
+	for <linux-acpi@vger.kernel.org>; Fri, 27 Jun 2025 22:51:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.81.13.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751056196; cv=none; b=IkEHG+VXZVQC915wnx9XhEAMOCMOTtnM/ozFN3z0Gfq6g6t4DHOboDGqCu7xTJMAQT4Ge1NLLMhy3a5zhRwjVeWtBdFLoVn9AGlv5Q4k00Y5PZhaSn0JqtnGxph21CJXEmffh9KmquqUbc3kbqf3oWZBD5QsVRX836DdidaDaRs=
+	t=1751064674; cv=none; b=p4Vx/zWcYLBEpgopjXTUayyNo3bYxknIuDp4IkjiDKpOHfli78JIQcgRDwOB8TqtkQ9lkrHdizdv6SsZ5xOgNQ61Rx7oUpGShyx9YxE1Y8HMKpnoFzYHQJj467ThvhdrPaBOvIEtX3RESvHh0xmebWaESeuGstD99DCFz++0PK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751056196; c=relaxed/simple;
-	bh=gT6NJnsYHPg1UMCs3hQfS9bGXsHDce6/hgDoZLEZD4Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KeDgXsslPfUi78t6ZRrhEK8MfPAP0kPGGf+MsSPnD6xXBY0l3MjuL82V8NshqqhfSnB230ofljgp6DjCI4VDzpBaQ8RB7vwRoykrUpJU6JIDGTzA+b8ZAKpnhYovj3IahiLbcfTGltgqCfJ4YNXZdVUFmx0w5NHYG8THG/CZf4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s7YBeB7k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B6FFC4CEE3;
-	Fri, 27 Jun 2025 20:29:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751056195;
-	bh=gT6NJnsYHPg1UMCs3hQfS9bGXsHDce6/hgDoZLEZD4Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=s7YBeB7kPh6XCsL6L5cdqezAkuSLTOVU3YHMPkD80Dz27soyoWERV9VgIGm6ZqZpM
-	 G0BOl1vNBuccaWoV8F9VMXBOrNd5FG919HYP9IVmfNccCY2eiCoCVi2ykr6rJT1vkh
-	 Yxe1eeKTyVnb+6RuDPSooOtkaQjsCYbj3tn2FLcvxvqHqvdy6ubz5e8I6ZhkLFaOms
-	 mknOVCV3DzzZzaQRKLeee+f3Bs0UDTFqlar7pRGNi5WFQg0jMod8eWmcJq9k/52Vpn
-	 Ty0YH9DeCu6q+YfaQNI+2c7jowk/9k5LSdGEoT3YcTPUm7LCU7adJ+Cl6sycQTwtOf
-	 svzTDwv/aiiCA==
-Message-ID: <01d6d630-2b78-4109-8197-af461631b048@kernel.org>
-Date: Fri, 27 Jun 2025 15:29:53 -0500
+	s=arc-20240116; t=1751064674; c=relaxed/simple;
+	bh=VrBC+MxIwgKQRfdozJ6MBshZJguqwkq7JzwY5k+FwCk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aj5z6T6o8BE8laHvvnS1vVOSj0Kc7GKZWpPUaRi5hgbcAxlbM0ylP09fGZRIB/gSyD6VYtf4BhkHCeqmiuMCfuKSmNKgOCE/285NtthvA8OonA90ZDH2F5ShiHzWI6I9xhiELTKCd87/81SDFiRhUhers6tXT1gmZnAByMOGc6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=merlins.org; spf=pass smtp.mailfrom=merlins.org; dkim=fail (0-bit key) header.d=merlins.org header.i=@merlins.org header.b=cAiOl28O reason="key not found in DNS"; arc=none smtp.client-ip=209.81.13.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=merlins.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=merlins.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=merlins.org
+	; s=key; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=xj/Xg0DW6omOLXDRzyJHCJ34in1YZzwpdsMNoeo1mbM=; b=cAiOl28OUNlw7t0/WLk3y8hWjB
+	h3XfCJIkqmd2PJwapHNb70tDdhJ0NaNDcUWBBfQs8sBCueL4tDgqy1me+vweTr7zl8vCGcfWBzRKm
+	+8JL6M2RZKDB4bFElpndiPJg/ZumEH7SlyJTGcugZIY1qYgpTCJycc50t+4Zy5CCD/+bhEXDWQbdm
+	t1KI8HZhAlJIflzAGVaPFsVU1LZGvLDtJ0r6Plx0VGbGsnJYMUtbfYLDamxqj/7auDxthRc6vcK5E
+	D+3m7l6FoNlyNhUpsXfT7ntvCE91YgOB2fss7YuYsECwPExJhxn5ExgtblqUdpFZB1rUFKnCmWhHc
+	KC2NtipQ==;
+Received: from [24.6.49.44] (port=50802 helo=sauron.svh.merlins.org)
+	by mail1.merlins.org with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim 4.94.2 #2)
+	id 1uVGM6-0005ET-P8 by authid <merlins.org> with srv_auth_plain; Fri, 27 Jun 2025 15:51:11 -0700
+Received: from merlin by sauron.svh.merlins.org with local (Exim 4.96)
+	(envelope-from <marc@merlins.org>)
+	id 1uVHuS-000TVd-11;
+	Fri, 27 Jun 2025 15:51:04 -0700
+Date: Fri, 27 Jun 2025 15:51:04 -0700
+From: Marc MERLIN <marc@merlins.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-acpi@vger.kernel.org
+Subject: Re: s2idle on kdell xps 9730 does go to sleep but laptop is warm
+Message-ID: <aF8gWDpwyREwf36O@merlins.org>
+References: <aCWbk4z50QYym9gV@merlins.org>
+ <CAJZ5v0j0NK29+D=RjsLgmAmh7_bujA5xXoLpo--FC2Gd98RMig@mail.gmail.com>
+ <aD4P7eU0tOgNhPI5@merlins.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] Input: Don't send fake button presses to wake
- system
-To: Hans de Goede <hansg@kernel.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Mika Westerberg <westeri@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
- <brgl@bgdev.pl>, "open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
- "open list:GPIO ACPI SUPPORT" <linux-acpi@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
- <linux-input@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>
-References: <CAJZ5v0j3ZyuEqSKQ+3K8M3BwPCxn5Z6KOwjyjt4cJW6HfxjPDw@mail.gmail.com>
- <hyvpl4gvxc6h2r3itfofjduwb3vpobyo7a7z6g3zapzscqtafh@ixsd4amyljva>
- <de548b27-4c43-4f30-af9d-b060101e6fd8@kernel.org>
- <75fixx6rgwsgsw6e765oxdcivcg2nkzx2fp2qywgx4vi3ihywh@ot7gdecsnttw>
- <1b0d2349-dbf7-47aa-95c9-1974e63d111a@kernel.org>
- <13025910-7639-400b-878a-cd0780c6534c@kernel.org>
- <4ajmcrl3bqeikki2etek5bafzszelgevr322tvuubx4pxxyju2@qqxz6lzcb6e5>
- <fdd635ce-5e8e-4123-8e8e-241a57b4d7fe@kernel.org>
- <eaf7bva2skjz6oo2s2f4agooplthvuztyr6tssa7rux764qw35@kscd3rtejfvn>
- <9f5e0c21-bc25-44d0-a4d4-6fd6e58a9f2e@kernel.org>
- <ly3mww7nq7uuqvdx7p2uzcrphhboeuep3yuwbaxwfimesitjaa@hf72i4vu5quo>
- <584af55f-1b73-4c17-bf85-c2d3ecf6692e@kernel.org>
- <e0469bf9-f12a-48a7-bd58-3ae346354987@kernel.org>
- <5c8ca17f-2f77-4492-ade7-a78dba45df7d@kernel.org>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <5c8ca17f-2f77-4492-ade7-a78dba45df7d@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aD4P7eU0tOgNhPI5@merlins.org>
+X-Sysadmin: BOFH
+X-URL: http://marc.merlins.org/
+X-SA-Exim-Connect-IP: 24.6.49.44
+X-SA-Exim-Mail-From: marc@merlins.org
 
-On 6/27/2025 3:25 PM, Hans de Goede wrote:
-> Hi,
-> 
-> On 27-Jun-25 9:44 PM, Mario Limonciello wrote:
->> On 6/27/2025 2:38 PM, Hans de Goede wrote:
->>> Hi,
->>>
->>> On 27-Jun-25 9:18 PM, Dmitry Torokhov wrote:
->>>> On Fri, Jun 27, 2025 at 01:56:53PM -0500, Mario Limonciello wrote:
->>>>> On 6/27/2025 1:36 PM, Dmitry Torokhov wrote:
->>>>>> On Fri, Jun 27, 2025 at 05:56:05PM +0200, Hans de Goede wrote:
->>>>
->>>> [ ... trim ... ]
->>>>
->>>>>>
->>>>>> 2. There is a patch from Mario (a8605b0ed187) suppressing sending
->>>>>> KEY_POWER as part of "normal" wakeup handling, pretty much the same as
->>>>>> what he and you are proposing to do in gpio-keys (and eventually in
->>>>>> every driver keyboard or button driver in the kernel). This means we no
->>>>>> longer can tell if wakeup is done by power button or sleep button (on
->>>>>> systems with dual-button models, see ACPI 4.8.3.1).
->>>>>
->>>>> Actually a8605b0ed187 was about a runtime regression not a suspend
->>>>> regression.  I didn't change anything with sending KEY_POWER during wakeup
->>>>> handling.
->>>>
->>>> Ah, right, ignorng events for "suspended" buttons was done in
->>>> e71eeb2a6bcc ("ACPI / button: Do not propagate wakeup-from-suspend
->>>> events"). Again trying to add heuristic to the kernel instead of
->>>> enlightening userspace.
->>>>
->>>> I am curious why the system is sending "Notify Wake" events when not
->>>> sleeping though?
->>>>
->>>> [ .. skip .. ]
->>>>
->>>>>
->>>>> FTR I did test Hans suggestion and it does work effectively (code below).
->>>>>
->>>>> diff --git a/drivers/input/keyboard/gpio_keys.c
->>>>> b/drivers/input/keyboard/gpio_keys.c
->>>>> index f9db86da0818b..3bc8c95e9943b 100644
->>>>> --- a/drivers/input/keyboard/gpio_keys.c
->>>>> +++ b/drivers/input/keyboard/gpio_keys.c
->>>>> @@ -425,7 +425,8 @@ static irqreturn_t gpio_keys_gpio_isr(int irq, void
->>>>> *dev_id)
->>>>>                            * already released by the time we got interrupt
->>>>>                            * handler to run.
->>>>>                            */
->>>>> -                       input_report_key(bdata->input, button->code, 1);
->>>>> +                       input_report_key(bdata->input, *bdata->code, 1);
->>>>> +                       input_sync(bdata->input);
->>>>
->>>> I start wondering if we should keep the fake press given that we do not
->>>> know for sure if wakeup truly happened because of this button press...
->>>
->>> AFAIK we cannot drop the fake press because then Android userspace
->>> will immediately go back to sleep again assuming the wakeup was
->>> e.g. just some data coming in from the modem which did not result
->>> in a notification to show, so no need to turn on the display,
->>> but instead immediately go back to sleep.
->>>
->>> IIRC last time we had this discussion (man years ago) the reason
->>> to send KEY_POWER was to let Android know that it should actualy
->>> turn on the display and show the unlock screen because the user
->>> wants that to happen.
->>>
->>> I believe this is also what the KEY_WAKEUP thing in the ACPI button
->>> code is for.
->>>
->>>> Can we track back to the wakeup source and determine this? It will not
->>>> help your problem, but I still believe userspace is where policy should
->>>> live.
->>>
->>> There is /sys/power/pm_wakeup_irq we could correlate that to the IRQ
->>> number of the ISR and then AFAICT we will definitively know if
->>> the power-button was the wakeup source ?
->>>
->>
->> So at least in my case when woken up by this power button press the IRQ isn't the one for the GPIO itself, but rather for the GPIO controller master interrupt.
->>
->> # cat /sys/power/pm_wakeup_irq
->> 7
->> # grep . /sys/kernel/irq/7/*
->> /sys/kernel/irq/7/actions:pinctrl_amd
->> /sys/kernel/irq/7/chip_name:IR-IO-APIC
->> /sys/kernel/irq/7/hwirq:7
->> /sys/kernel/irq/7/name:fasteoi
->> /sys/kernel/irq/7/per_cpu_count:0,0,0,0,0,5,0,0
->> /sys/kernel/irq/7/type:level
->> /sys/kernel/irq/7/wakeup:enabled
->>
->> # grep . /sys/kernel/irq/102/*
->> /sys/kernel/irq/102/actions:power
->> /sys/kernel/irq/102/chip_name:amd_gpio
->> /sys/kernel/irq/102/hwirq:0
->> /sys/kernel/irq/102/per_cpu_count:0,1,0,2,1,0,0,1
->> /sys/kernel/irq/102/type:edge
->> /sys/kernel/irq/102/wakeup:disabled
-> 
-> Ah, right.
-> 
-> But thinking more about this I do not think believe
-> that wakeup racing is really a big issue here.
-> 
-> Wakeup racing only hits if the button ISR runs before
-> gpio_keys_resume() has run and cleared the bdata->suspended
-> flag. IOW the button was pressed before the system has
-> completely resumed in that case the users intend to me
-> very clearly was to wakeup the system.
-> 
-> So I still believe that sending key-wakeup for the simulated
-> keypress is the right thing to do in wakeup race cases even
-> if the system was actually woken up by e.g. network traffic.
-> 
-> As for Mario's patch from earlier in the thread that needs
-> some more work because it will release the wrong code if
-> the release ISR runs after gpio_keys_resume().
- > > But working further on that only is useful if we can get
-> agreement from Dmitry on that approach.
-> 
+Were the logs I gave useful in any way, or just confirm that it's just
+some new-ish laptop (2 years old now) that sadly does things in ways
+that don't work well with linux?
 
-Right; good catch.  I had thought this was a risk but didn't want to 
-over-invest in solving it until we had alignment.  I mostly wanted to 
-share it to demonstrate the idea works.
+https://marc.merlins.org/tmp/merlin-sleep-6.14.5_dmesg.txt
+https://marc.merlins.org/tmp/merlin-sleep-6.14.5_acpi.txt
 
+
+On Mon, Jun 02, 2025 at 01:56:13PM -0700, Marc MERLIN wrote:
+> On Mon, Jun 02, 2025 at 04:23:42PM +0200, Rafael J. Wysocki wrote:
+> > >  With kernel 6.6.9 when I put the laptop to sleep, syslog shows that the
+> > >  laptop was sleeping for 9h, fans were stopped, but when I gabbed my
+> > >  laptop it was warm and burned 80% of the battery overnight.
+> > 
+> > First off, I'd try a newer kernel.  Say 6.15.0 (unless you boot with
+> > "nosmt" in the kernel command line).
+>  
+> Fair point, I somehow failed to upgrade the kernel on that machine.
+> I have a 6.14.5 kernel I just installed.
+> 
+> I also upgraded all firmware:
+> dpkggrep firmware | awk '{ print $1 }' | xargs apt-get install -t unstable  -y
+> 
+> > > And yet, linux was not running, my logs show the kernel went into ACPI
+> > > sleep and back out
+> > 
+> > It wouldn't be "ACPI sleep" if it was suspend-to-idle.
+> 
+> My thinkpad has:
+> sauron:~# cat /sys/power/mem_sleep
+> s2idle [deep]
+> 
+> The Dell XPS only has:
+> merlin:/usr/src# cat /sys/power/mem_sleep
+> [s2idle]
+> 
+> > What processor is there in your system?
+> 
+> model name      : 13th Gen Intel(R) Core(TM) i7-13700H
+> 
+> > Well, it obviously is not a complete log.
+> 
+> Ok, I tested again with the new kernel. The laptop didn't feel warm when
+> in sleep, but I lost 20% battery in 4H, which means the battery would
+> not last 24H in sleep
+> 
+> For logs, which one did you want?  I have pretty full logs here:
+> https://marc.merlins.org/tmp/merlin-sleep-6.14.5_dmesg.txt
+> https://marc.merlins.org/tmp/merlin-sleep-6.14.5_acpi.txt
+> 
+> One thing I changed recently is that unloading wireless altogether,
+> causes issues at times, so now I have
+> rfkill block wlan
+> instead of
+> killall wpa_supplicant &>/dev/null
+> pkill -f "dhclient.*wlan0"
+> ifconfig -a | grep -q wlan0 && ifconfig wlan0 down
+> rmmod iwlmvm
+> rmmod iwlwifi iwlagn iwlcore
+> rmmod ieee80211
+> rmmod ieee80211_crypt_wep 2>/dev/null
+> rmmod ieee80211_crypt_tkip 2>/dev/null
+> rmmod ieee80211_crypt 2>/dev/null
+> rmmod mac80211 2>/dev/null
+> rmmod cfg80211 2>/dev/null
+> 
+> This bit of dmesg just before sleep may be relevant:
+> [  226.365652] thunderbolt 0000:00:0d.2: save config 0x34: 0x00000080
+> [  226.365654] thunderbolt 0000:00:0d.3: save config 0x2c: 0x0bda1028
+> [  226.365655] thunderbolt 0000:00:0d.2: save config 0x38: 0x00000000
+> [  226.365656] thunderbolt 0000:00:0d.3: save config 0x30: 0x00000000
+> [  226.365657] thunderbolt 0000:00:0d.2: save config 0x3c: 0x000001ff
+> [  226.365659] thunderbolt 0000:00:0d.3: save config 0x34: 0x00000080
+> [  226.365661] thunderbolt 0000:00:0d.3: save config 0x38: 0x00000000
+> [  226.365663] thunderbolt 0000:00:0d.3: save config 0x3c: 0x000001ff
+> [  226.366245] thunderbolt 0000:00:0d.2: PME# enabled
+> [  226.366424] thunderbolt 0000:00:0d.3: PME# enabled
+> [  226.370305] pcieport 10000:e0:06.2: PCI PM: Suspend power state: D3hot
+> [  226.370328] pcieport 10000:e0:06.0: PCI PM: Suspend power state: D3hot
+> [  226.370539] vmd 0000:00:0e.0: save config 0x00: 0xa77f8086
+> [  226.370551] vmd 0000:00:0e.0: save config 0x04: 0x00100406
+> [  226.370555] vmd 0000:00:0e.0: save config 0x08: 0x01040000
+> [  226.370560] vmd 0000:00:0e.0: save config 0x0c: 0x00800000
+> [  226.370565] vmd 0000:00:0e.0: save config 0x10: 0x02000004
+> [  226.370575] vmd 0000:00:0e.0: save config 0x14: 0x00000062
+> [  226.370581] vmd 0000:00:0e.0: save config 0x18: 0x72000000
+> [  226.370587] vmd 0000:00:0e.0: save config 0x1c: 0x00000000
+> [  226.370592] vmd 0000:00:0e.0: save config 0x20: 0x07900004
+> [  226.370596] vmd 0000:00:0e.0: save config 0x24: 0x00000062
+> [  226.370600] vmd 0000:00:0e.0: save config 0x28: 0x00000000
+> [  226.370603] vmd 0000:00:0e.0: save config 0x2c: 0x0bda1028
+> [  226.370607] vmd 0000:00:0e.0: save config 0x30: 0x00000000
+> [  226.370611] vmd 0000:00:0e.0: save config 0x34: 0x00000080
+> [  226.370615] vmd 0000:00:0e.0: save config 0x38: 0x00000000
+> [  226.370620] vmd 0000:00:0e.0: save config 0x3c: 0x00000000
+> [  226.375481] intel-lpss 0000:00:15.1: ACPI _REG disconnect evaluation failed (5)
+> [  226.375487] mei_me 0000:00:16.0: PCI PM: Suspend power state: D3hot
+> [  226.375908] intel-lpss 0000:00:15.0: ACPI _REG disconnect evaluation failed (5)
+> [  226.376162] proc_thermal_pci 0000:00:04.0: PCI PM: Suspend power state: D3hot
+> [  226.377183] intel-lpss 0000:00:15.1: power state changed by ACPI to D3hot
+> [  226.377277] intel-lpss 0000:00:15.1: PCI PM: Suspend power state: D3hot
+> [  226.377771] intel-lpss 0000:00:15.0: power state changed by ACPI to D3hot
+> [  226.378257] rtsx_pci 0000:06:00.0: PCI PM: Suspend power state: D3hot
+> [  226.378422] intel-lpss 0000:00:15.0: PCI PM: Suspend power state: D3hot
+> [  226.378448] pcieport 0000:00:1c.0: save config 0x00: 0x51bb8086
+> [  226.378607] pcieport 0000:00:1c.0: save config 0x04: 0x00100407
+> [  226.378656] pcieport 0000:00:1c.0: save config 0x08: 0x06040001
+> [  226.378707] pcieport 0000:00:1c.0: save config 0x0c: 0x00810000
+> [  226.378758] pcieport 0000:00:1c.0: save config 0x10: 0x00000000
+> [  226.378782] pcieport 0000:00:1c.0: save config 0x14: 0x00000000
+> [  226.378806] pcieport 0000:00:1c.0: save config 0x18: 0x00060600
+> [  226.378830] pcieport 0000:00:1c.0: save config 0x1c: 0x000000f0
+> [  226.378853] pcieport 0000:00:1c.0: save config 0x20: 0x75007500
+> [  226.378877] pcieport 0000:00:1c.0: save config 0x24: 0x0001fff1
+> [  226.378899] pcieport 0000:00:1c.0: save config 0x28: 0x00000000
+> [  226.378905] pcieport 0000:00:1c.0: save config 0x2c: 0x00000000
+> [  226.378935] pcieport 0000:00:1c.0: save config 0x30: 0x00000000
+> [  226.378958] pcieport 0000:00:1c.0: save config 0x34: 0x00000040
+> [  226.378982] pcieport 0000:00:1c.0: save config 0x38: 0x00000000
+> [  226.379006] pcieport 0000:00:1c.0: save config 0x3c: 0x000204ff
+> [  226.379534] pcieport 0000:00:1c.0: PME# enabled
+> [  226.379589] thunderbolt 0000:00:0d.2: ACPI _REG disconnect evaluation failed (5)
+> [  226.380218] xhci_hcd 0000:00:0d.0: ACPI _REG disconnect evaluation failed (5)
+> [  226.381101] thunderbolt 0000:00:0d.3: ACPI _REG disconnect evaluation failed (5)
+> [  226.382316] iwlwifi 0000:00:14.3: power state changed by ACPI to D3hot
+> [  226.382528] iwlwifi 0000:00:14.3: PCI PM: Suspend power state: D3hot
+> [  226.383140] vmd 0000:00:0e.0: ACPI _REG disconnect evaluation failed (5)
+> [  226.384467] xhci_hcd 0000:00:14.0: power state changed by ACPI to D3hot
+> [  226.384574] xhci_hcd 0000:00:14.0: PCI PM: Suspend power state: D3hot
+> [  226.384813] vmd 0000:00:0e.0: power state changed by ACPI to D3hot
+> [  226.384825] vmd 0000:00:0e.0: PCI PM: Suspend power state: D3hot
+> [  226.385180] xhci_hcd 0000:00:0d.0: power state changed by ACPI to D3cold
+> [  226.385191] xhci_hcd 0000:00:0d.0: PCI PM: Suspend power state: D3cold
+> [  226.391528] pcieport 0000:00:1c.0: ACPI _REG disconnect evaluation failed (5)
+> [  226.392369] pcieport 0000:00:1c.0: power state changed by ACPI to D3hot
+> [  226.392484] pcieport 0000:00:1c.0: PCI PM: Suspend power state: D3hot
+> [  226.395162] thunderbolt 0000:00:0d.2: power state changed by ACPI to D3cold
+> [  226.395172] thunderbolt 0000:00:0d.2: PCI PM: Suspend power state: D3cold
+> [  226.396283] thunderbolt 0000:00:0d.3: power state changed by ACPI to D3cold
+> [  226.396291] thunderbolt 0000:00:0d.3: PCI PM: Suspend power state: D3cold
+> [14916.770339] ACPI: EC: interrupt unblocked
+> 
+> -- 
+> "A mouse is a device used to point at the xterm you want to type in" - A.S.R.
+>  
+> Home page: http://marc.merlins.org/                       | PGP 7F55D5F27AAF9D08
+
+-- 
+"A mouse is a device used to point at the xterm you want to type in" - A.S.R.
+ 
+Home page: http://marc.merlins.org/                       | PGP 7F55D5F27AAF9D08
 
