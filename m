@@ -1,228 +1,127 @@
-Return-Path: <linux-acpi+bounces-14810-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14811-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D8ACAEC2D5
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Jun 2025 00:51:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E16DCAEC3A7
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Jun 2025 02:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8D063B594B
-	for <lists+linux-acpi@lfdr.de>; Fri, 27 Jun 2025 22:50:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DF3B4A4871
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Jun 2025 00:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3800B266EE7;
-	Fri, 27 Jun 2025 22:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=merlins.org header.i=@merlins.org header.b="cAiOl28O"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C6614A4E0;
+	Sat, 28 Jun 2025 00:54:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail1.merlins.org (magic.merlins.org [209.81.13.136])
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E882CCA9
-	for <linux-acpi@vger.kernel.org>; Fri, 27 Jun 2025 22:51:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.81.13.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C960C2BAF9;
+	Sat, 28 Jun 2025 00:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751064674; cv=none; b=p4Vx/zWcYLBEpgopjXTUayyNo3bYxknIuDp4IkjiDKpOHfli78JIQcgRDwOB8TqtkQ9lkrHdizdv6SsZ5xOgNQ61Rx7oUpGShyx9YxE1Y8HMKpnoFzYHQJj467ThvhdrPaBOvIEtX3RESvHh0xmebWaESeuGstD99DCFz++0PK4=
+	t=1751072081; cv=none; b=O6feZqkTSYG11gbRDY699coxpThCb4zSn/owcVtfG6o8nSD7i4b44YfYRluty0sLPg33eVWZLGGUp+yYO5yhzwbCh6/42so5oIaBFEloeb8LrVMDJJ9CVHg29N2coTuNhRV/9sR8I78qETxQBZQRvTPIkFIlz7bQGhJBDcROLgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751064674; c=relaxed/simple;
-	bh=VrBC+MxIwgKQRfdozJ6MBshZJguqwkq7JzwY5k+FwCk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aj5z6T6o8BE8laHvvnS1vVOSj0Kc7GKZWpPUaRi5hgbcAxlbM0ylP09fGZRIB/gSyD6VYtf4BhkHCeqmiuMCfuKSmNKgOCE/285NtthvA8OonA90ZDH2F5ShiHzWI6I9xhiELTKCd87/81SDFiRhUhers6tXT1gmZnAByMOGc6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=merlins.org; spf=pass smtp.mailfrom=merlins.org; dkim=fail (0-bit key) header.d=merlins.org header.i=@merlins.org header.b=cAiOl28O reason="key not found in DNS"; arc=none smtp.client-ip=209.81.13.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=merlins.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=merlins.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=merlins.org
-	; s=key; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=xj/Xg0DW6omOLXDRzyJHCJ34in1YZzwpdsMNoeo1mbM=; b=cAiOl28OUNlw7t0/WLk3y8hWjB
-	h3XfCJIkqmd2PJwapHNb70tDdhJ0NaNDcUWBBfQs8sBCueL4tDgqy1me+vweTr7zl8vCGcfWBzRKm
-	+8JL6M2RZKDB4bFElpndiPJg/ZumEH7SlyJTGcugZIY1qYgpTCJycc50t+4Zy5CCD/+bhEXDWQbdm
-	t1KI8HZhAlJIflzAGVaPFsVU1LZGvLDtJ0r6Plx0VGbGsnJYMUtbfYLDamxqj/7auDxthRc6vcK5E
-	D+3m7l6FoNlyNhUpsXfT7ntvCE91YgOB2fss7YuYsECwPExJhxn5ExgtblqUdpFZB1rUFKnCmWhHc
-	KC2NtipQ==;
-Received: from [24.6.49.44] (port=50802 helo=sauron.svh.merlins.org)
-	by mail1.merlins.org with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim 4.94.2 #2)
-	id 1uVGM6-0005ET-P8 by authid <merlins.org> with srv_auth_plain; Fri, 27 Jun 2025 15:51:11 -0700
-Received: from merlin by sauron.svh.merlins.org with local (Exim 4.96)
-	(envelope-from <marc@merlins.org>)
-	id 1uVHuS-000TVd-11;
-	Fri, 27 Jun 2025 15:51:04 -0700
-Date: Fri, 27 Jun 2025 15:51:04 -0700
-From: Marc MERLIN <marc@merlins.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-Subject: Re: s2idle on kdell xps 9730 does go to sleep but laptop is warm
-Message-ID: <aF8gWDpwyREwf36O@merlins.org>
-References: <aCWbk4z50QYym9gV@merlins.org>
- <CAJZ5v0j0NK29+D=RjsLgmAmh7_bujA5xXoLpo--FC2Gd98RMig@mail.gmail.com>
- <aD4P7eU0tOgNhPI5@merlins.org>
+	s=arc-20240116; t=1751072081; c=relaxed/simple;
+	bh=hpqgdN9GMa6JTSo6elury4zstcyceOBRhYV2jn/jFAc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=E5EDN3RKWsXn2TL21RX8hR4uBD36F2wZtyJ65fWTCaWxmXDXx4/H4MHpfJd2Q/pWY9daqLdATjtZONMIX48xqOYq6VMwe8n5mB1zpP+aOxm93d2LVeKLG1bPQP3vcMSe4XVecE90q6Ee+1LV3AIT3WDJ/b0yxTwesKuZzTu23fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.255
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4bTYmC6gFtz1d1fy;
+	Sat, 28 Jun 2025 08:52:11 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id DDAE9180486;
+	Sat, 28 Jun 2025 08:54:35 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 28 Jun 2025 08:54:35 +0800
+Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
+ (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 28 Jun
+ 2025 08:54:34 +0800
+Message-ID: <99e8badc-cd1d-4a8f-a56d-6c534a18ab0f@huawei.com>
+Date: Sat, 28 Jun 2025 08:54:34 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aD4P7eU0tOgNhPI5@merlins.org>
-X-Sysadmin: BOFH
-X-URL: http://marc.merlins.org/
-X-SA-Exim-Connect-IP: 24.6.49.44
-X-SA-Exim-Mail-From: marc@merlins.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: processor: idle: Fix resource rollback in
+ acpi_processor_power_init
+To: <rafael@kernel.org>, <lenb@kernel.org>
+CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
+	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>, <yubowen8@huawei.com>,
+	<liuyonglong@huawei.com>
+References: <20250619061327.1674384-1-lihuisong@huawei.com>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <20250619061327.1674384-1-lihuisong@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-Were the logs I gave useful in any way, or just confirm that it's just
-some new-ish laptop (2 years old now) that sadly does things in ways
-that don't work well with linux?
+Kindly ping for review.
 
-https://marc.merlins.org/tmp/merlin-sleep-6.14.5_dmesg.txt
-https://marc.merlins.org/tmp/merlin-sleep-6.14.5_acpi.txt
-
-
-On Mon, Jun 02, 2025 at 01:56:13PM -0700, Marc MERLIN wrote:
-> On Mon, Jun 02, 2025 at 04:23:42PM +0200, Rafael J. Wysocki wrote:
-> > >  With kernel 6.6.9 when I put the laptop to sleep, syslog shows that the
-> > >  laptop was sleeping for 9h, fans were stopped, but when I gabbed my
-> > >  laptop it was warm and burned 80% of the battery overnight.
-> > 
-> > First off, I'd try a newer kernel.  Say 6.15.0 (unless you boot with
-> > "nosmt" in the kernel command line).
->  
-> Fair point, I somehow failed to upgrade the kernel on that machine.
-> I have a 6.14.5 kernel I just installed.
-> 
-> I also upgraded all firmware:
-> dpkggrep firmware | awk '{ print $1 }' | xargs apt-get install -t unstable  -y
-> 
-> > > And yet, linux was not running, my logs show the kernel went into ACPI
-> > > sleep and back out
-> > 
-> > It wouldn't be "ACPI sleep" if it was suspend-to-idle.
-> 
-> My thinkpad has:
-> sauron:~# cat /sys/power/mem_sleep
-> s2idle [deep]
-> 
-> The Dell XPS only has:
-> merlin:/usr/src# cat /sys/power/mem_sleep
-> [s2idle]
-> 
-> > What processor is there in your system?
-> 
-> model name      : 13th Gen Intel(R) Core(TM) i7-13700H
-> 
-> > Well, it obviously is not a complete log.
-> 
-> Ok, I tested again with the new kernel. The laptop didn't feel warm when
-> in sleep, but I lost 20% battery in 4H, which means the battery would
-> not last 24H in sleep
-> 
-> For logs, which one did you want?  I have pretty full logs here:
-> https://marc.merlins.org/tmp/merlin-sleep-6.14.5_dmesg.txt
-> https://marc.merlins.org/tmp/merlin-sleep-6.14.5_acpi.txt
-> 
-> One thing I changed recently is that unloading wireless altogether,
-> causes issues at times, so now I have
-> rfkill block wlan
-> instead of
-> killall wpa_supplicant &>/dev/null
-> pkill -f "dhclient.*wlan0"
-> ifconfig -a | grep -q wlan0 && ifconfig wlan0 down
-> rmmod iwlmvm
-> rmmod iwlwifi iwlagn iwlcore
-> rmmod ieee80211
-> rmmod ieee80211_crypt_wep 2>/dev/null
-> rmmod ieee80211_crypt_tkip 2>/dev/null
-> rmmod ieee80211_crypt 2>/dev/null
-> rmmod mac80211 2>/dev/null
-> rmmod cfg80211 2>/dev/null
-> 
-> This bit of dmesg just before sleep may be relevant:
-> [  226.365652] thunderbolt 0000:00:0d.2: save config 0x34: 0x00000080
-> [  226.365654] thunderbolt 0000:00:0d.3: save config 0x2c: 0x0bda1028
-> [  226.365655] thunderbolt 0000:00:0d.2: save config 0x38: 0x00000000
-> [  226.365656] thunderbolt 0000:00:0d.3: save config 0x30: 0x00000000
-> [  226.365657] thunderbolt 0000:00:0d.2: save config 0x3c: 0x000001ff
-> [  226.365659] thunderbolt 0000:00:0d.3: save config 0x34: 0x00000080
-> [  226.365661] thunderbolt 0000:00:0d.3: save config 0x38: 0x00000000
-> [  226.365663] thunderbolt 0000:00:0d.3: save config 0x3c: 0x000001ff
-> [  226.366245] thunderbolt 0000:00:0d.2: PME# enabled
-> [  226.366424] thunderbolt 0000:00:0d.3: PME# enabled
-> [  226.370305] pcieport 10000:e0:06.2: PCI PM: Suspend power state: D3hot
-> [  226.370328] pcieport 10000:e0:06.0: PCI PM: Suspend power state: D3hot
-> [  226.370539] vmd 0000:00:0e.0: save config 0x00: 0xa77f8086
-> [  226.370551] vmd 0000:00:0e.0: save config 0x04: 0x00100406
-> [  226.370555] vmd 0000:00:0e.0: save config 0x08: 0x01040000
-> [  226.370560] vmd 0000:00:0e.0: save config 0x0c: 0x00800000
-> [  226.370565] vmd 0000:00:0e.0: save config 0x10: 0x02000004
-> [  226.370575] vmd 0000:00:0e.0: save config 0x14: 0x00000062
-> [  226.370581] vmd 0000:00:0e.0: save config 0x18: 0x72000000
-> [  226.370587] vmd 0000:00:0e.0: save config 0x1c: 0x00000000
-> [  226.370592] vmd 0000:00:0e.0: save config 0x20: 0x07900004
-> [  226.370596] vmd 0000:00:0e.0: save config 0x24: 0x00000062
-> [  226.370600] vmd 0000:00:0e.0: save config 0x28: 0x00000000
-> [  226.370603] vmd 0000:00:0e.0: save config 0x2c: 0x0bda1028
-> [  226.370607] vmd 0000:00:0e.0: save config 0x30: 0x00000000
-> [  226.370611] vmd 0000:00:0e.0: save config 0x34: 0x00000080
-> [  226.370615] vmd 0000:00:0e.0: save config 0x38: 0x00000000
-> [  226.370620] vmd 0000:00:0e.0: save config 0x3c: 0x00000000
-> [  226.375481] intel-lpss 0000:00:15.1: ACPI _REG disconnect evaluation failed (5)
-> [  226.375487] mei_me 0000:00:16.0: PCI PM: Suspend power state: D3hot
-> [  226.375908] intel-lpss 0000:00:15.0: ACPI _REG disconnect evaluation failed (5)
-> [  226.376162] proc_thermal_pci 0000:00:04.0: PCI PM: Suspend power state: D3hot
-> [  226.377183] intel-lpss 0000:00:15.1: power state changed by ACPI to D3hot
-> [  226.377277] intel-lpss 0000:00:15.1: PCI PM: Suspend power state: D3hot
-> [  226.377771] intel-lpss 0000:00:15.0: power state changed by ACPI to D3hot
-> [  226.378257] rtsx_pci 0000:06:00.0: PCI PM: Suspend power state: D3hot
-> [  226.378422] intel-lpss 0000:00:15.0: PCI PM: Suspend power state: D3hot
-> [  226.378448] pcieport 0000:00:1c.0: save config 0x00: 0x51bb8086
-> [  226.378607] pcieport 0000:00:1c.0: save config 0x04: 0x00100407
-> [  226.378656] pcieport 0000:00:1c.0: save config 0x08: 0x06040001
-> [  226.378707] pcieport 0000:00:1c.0: save config 0x0c: 0x00810000
-> [  226.378758] pcieport 0000:00:1c.0: save config 0x10: 0x00000000
-> [  226.378782] pcieport 0000:00:1c.0: save config 0x14: 0x00000000
-> [  226.378806] pcieport 0000:00:1c.0: save config 0x18: 0x00060600
-> [  226.378830] pcieport 0000:00:1c.0: save config 0x1c: 0x000000f0
-> [  226.378853] pcieport 0000:00:1c.0: save config 0x20: 0x75007500
-> [  226.378877] pcieport 0000:00:1c.0: save config 0x24: 0x0001fff1
-> [  226.378899] pcieport 0000:00:1c.0: save config 0x28: 0x00000000
-> [  226.378905] pcieport 0000:00:1c.0: save config 0x2c: 0x00000000
-> [  226.378935] pcieport 0000:00:1c.0: save config 0x30: 0x00000000
-> [  226.378958] pcieport 0000:00:1c.0: save config 0x34: 0x00000040
-> [  226.378982] pcieport 0000:00:1c.0: save config 0x38: 0x00000000
-> [  226.379006] pcieport 0000:00:1c.0: save config 0x3c: 0x000204ff
-> [  226.379534] pcieport 0000:00:1c.0: PME# enabled
-> [  226.379589] thunderbolt 0000:00:0d.2: ACPI _REG disconnect evaluation failed (5)
-> [  226.380218] xhci_hcd 0000:00:0d.0: ACPI _REG disconnect evaluation failed (5)
-> [  226.381101] thunderbolt 0000:00:0d.3: ACPI _REG disconnect evaluation failed (5)
-> [  226.382316] iwlwifi 0000:00:14.3: power state changed by ACPI to D3hot
-> [  226.382528] iwlwifi 0000:00:14.3: PCI PM: Suspend power state: D3hot
-> [  226.383140] vmd 0000:00:0e.0: ACPI _REG disconnect evaluation failed (5)
-> [  226.384467] xhci_hcd 0000:00:14.0: power state changed by ACPI to D3hot
-> [  226.384574] xhci_hcd 0000:00:14.0: PCI PM: Suspend power state: D3hot
-> [  226.384813] vmd 0000:00:0e.0: power state changed by ACPI to D3hot
-> [  226.384825] vmd 0000:00:0e.0: PCI PM: Suspend power state: D3hot
-> [  226.385180] xhci_hcd 0000:00:0d.0: power state changed by ACPI to D3cold
-> [  226.385191] xhci_hcd 0000:00:0d.0: PCI PM: Suspend power state: D3cold
-> [  226.391528] pcieport 0000:00:1c.0: ACPI _REG disconnect evaluation failed (5)
-> [  226.392369] pcieport 0000:00:1c.0: power state changed by ACPI to D3hot
-> [  226.392484] pcieport 0000:00:1c.0: PCI PM: Suspend power state: D3hot
-> [  226.395162] thunderbolt 0000:00:0d.2: power state changed by ACPI to D3cold
-> [  226.395172] thunderbolt 0000:00:0d.2: PCI PM: Suspend power state: D3cold
-> [  226.396283] thunderbolt 0000:00:0d.3: power state changed by ACPI to D3cold
-> [  226.396291] thunderbolt 0000:00:0d.3: PCI PM: Suspend power state: D3cold
-> [14916.770339] ACPI: EC: interrupt unblocked
-> 
-> -- 
-> "A mouse is a device used to point at the xterm you want to type in" - A.S.R.
->  
-> Home page: http://marc.merlins.org/                       | PGP 7F55D5F27AAF9D08
-
--- 
-"A mouse is a device used to point at the xterm you want to type in" - A.S.R.
- 
-Home page: http://marc.merlins.org/                       | PGP 7F55D5F27AAF9D08
+在 2025/6/19 14:13, Huisong Li 写道:
+> There are two resource rollback issues in acpi_processor_power_init:
+> 1> Do not unregister acpi_idle_driver when do kzalloc failed.
+> 2> Do not free cpuidle device memory when register cpuidle device failed.
+>
+> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+> ---
+>   drivers/acpi/processor_idle.c | 24 +++++++++++++++++-------
+>   1 file changed, 17 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+> index 2c2dc559e0f8..3548ab9dac9e 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -1392,8 +1392,10 @@ int acpi_processor_power_init(struct acpi_processor *pr)
+>   		}
+>   
+>   		dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+> -		if (!dev)
+> -			return -ENOMEM;
+> +		if (!dev) {
+> +			retval = -ENOMEM;
+> +			goto unregister_driver;
+> +		}
+>   		per_cpu(acpi_cpuidle_device, pr->id) = dev;
+>   
+>   		acpi_processor_setup_cpuidle_dev(pr, dev);
+> @@ -1402,14 +1404,22 @@ int acpi_processor_power_init(struct acpi_processor *pr)
+>   		 * must already be registered before registering device
+>   		 */
+>   		retval = cpuidle_register_device(dev);
+> -		if (retval) {
+> -			if (acpi_processor_registered == 0)
+> -				cpuidle_unregister_driver(&acpi_idle_driver);
+> -			return retval;
+> -		}
+> +		if (retval)
+> +			goto free_cpuidle_device;
+> +
+>   		acpi_processor_registered++;
+>   	}
+>   	return 0;
+> +
+> +free_cpuidle_device:
+> +	per_cpu(acpi_cpuidle_device, pr->id) = NULL;
+> +	kfree(dev);
+> +
+> +unregister_driver:
+> +	if (acpi_processor_registered == 0)
+> +		cpuidle_unregister_driver(&acpi_idle_driver);
+> +
+> +	return retval;
+>   }
+>   
+>   int acpi_processor_power_exit(struct acpi_processor *pr)
 
