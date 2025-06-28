@@ -1,141 +1,112 @@
-Return-Path: <linux-acpi+bounces-14823-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14824-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DAE9AEC566
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Jun 2025 09:10:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85432AEC59A
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Jun 2025 09:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EEF24A274E
-	for <lists+linux-acpi@lfdr.de>; Sat, 28 Jun 2025 07:10:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A46083B9B3A
+	for <lists+linux-acpi@lfdr.de>; Sat, 28 Jun 2025 07:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5712522127A;
-	Sat, 28 Jun 2025 07:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DyBV4paP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA76221287;
+	Sat, 28 Jun 2025 07:42:09 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BDD1487D1;
-	Sat, 28 Jun 2025 07:10:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CED63FC2;
+	Sat, 28 Jun 2025 07:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751094640; cv=none; b=kcm25403x5R0YeQT1IpWaXdcZMi6GO8f98uzV0eR31jSBwmdjHOZEcnaDTRNytAsSmHqDwVInKRNF3ryG3XRCu/QfiLveAMgqPtt364yRIbLsw80eoCakfMJuAT5HuPvNUEwpi0r30WFG3YtlNHLOo6WM41eCoYAPePCbhO43i8=
+	t=1751096528; cv=none; b=EMsABkmTk9ycBjeSGPcqVobZeD0rxgv4nTOsUlCGjeeR42KHd84GzW9YWLriHUNW0EwZS/+4hBI+XIzdQZ0L+EEpE4Yw5QIjrisxWA7O5ev6eOGJ/zIVDJC+igewTOnWQCf16yvOfgoKa6TbL4nMF4I+vXnM1+Iz5IdE6PeeHNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751094640; c=relaxed/simple;
-	bh=2tVRa6wsMqTyE/oQPrMRT6Uokojksj6kxjX9glGnRB0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O6W+r8Y9Ld4ACwzzdDrg4KLGDOz+w5muMpbrlm8F+ARXlXHHxbQj2zXii8ydtPuLICMPQg8CDmCEElwpxDalq1CZg6gVxJf46fW0ygHY7RhaSZrOxk0aNk0BtLn9HkzXnkvqJ0GRGhCXxlNkXF6rpvYeDt86h63kkquDEwiyQ98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DyBV4paP; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751094638; x=1782630638;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2tVRa6wsMqTyE/oQPrMRT6Uokojksj6kxjX9glGnRB0=;
-  b=DyBV4paPGjWMC6O/bOl+XmiCUfAwyQDpstusmSVGi5pifVEnUQPDcKJn
-   gscjGr+2pSKHA0I3IDyUEpDJbVQlAv9krxP+/Kga5E0ECHDTCrh7tpH3o
-   xzGxc3xcOsYyxr1j8ke+mn/gNkEhngVdpe59BYhTomRPaxMrrRqZKFcG8
-   4Jc4PFN+6hIaRJHrNQdeP+ERITzBvBnHzqc3GDdoiYGSFfc+ma9yGli7S
-   pZywI7DHrSD9jySxXi3XkW7Vh/X1bgF53GT3K4bQuAfaDyfFnEgJMw+2q
-   9FekIx5m9kIUW5KWiAjRPVoE39VlzCRtU6pXQluGX/rUTmhhRl9JNhkdr
-   Q==;
-X-CSE-ConnectionGUID: tK32tqxARyWY4MDSJCWxPw==
-X-CSE-MsgGUID: m5SdEdJoTuet0G97mPo7WA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="57080301"
-X-IronPort-AV: E=Sophos;i="6.16,272,1744095600"; 
-   d="scan'208";a="57080301"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2025 00:10:37 -0700
-X-CSE-ConnectionGUID: ohOsf+HWQWOFrhTjoH3+RA==
-X-CSE-MsgGUID: zP+1cSr+RoWpV9omkLPlxw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,272,1744095600"; 
-   d="scan'208";a="158488584"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 28 Jun 2025 00:10:32 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uVPhm-000Wsw-0M;
-	Sat, 28 Jun 2025 07:10:30 +0000
-Date: Sat, 28 Jun 2025 15:10:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>, james.morse@arm.com,
-	linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, gregkh@linuxfoundation.org,
-	Will Deacon <will@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>
-Cc: oe-kbuild-all@lists.linux.dev, Yicong Yang <yangyicong@huawei.com>,
-	linuxarm@huawei.com, Yushan Wang <wangyushan12@huawei.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, H Peter Anvin <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2 5/8] arm64: Select
- GENERIC_CPU_CACHE_INVALIDATE_MEMREGION
-Message-ID: <202506281452.zc1D1sSz-lkp@intel.com>
-References: <20250624154805.66985-6-Jonathan.Cameron@huawei.com>
+	s=arc-20240116; t=1751096528; c=relaxed/simple;
+	bh=QZI4f0Jg7b0IvKOoiNsofEQtiG+a1gOaMn0v3Y3FbEQ=;
+	h=Subject:To:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=f+CEnzmSe48bKgQTt1L4QED1sR1GBGBCVJSz/xM8t89QW1iOyLXsqyiPTt91eS5oaFOhsucaH7jyugWh9g0BQ4yc0MXcwb/5vmDnKldOhYOW53ibGBFRAJ7dahW1AqgyOSGHrU4QRYMKA5khpYs6Q4EY7i62rqsyOkNVs30wOXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4bTklm3rKCz10XKK;
+	Sat, 28 Jun 2025 15:37:24 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 30664180492;
+	Sat, 28 Jun 2025 15:42:03 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 28 Jun 2025 15:42:02 +0800
+Subject: Re: [PATCH v2 0/2] ACPI: Improve SPCR handling and messaging on
+ SPCR-less systems
+To: Li Chen <me@linux.beauty>, Catalin Marinas <catalin.marinas@arm.com>, Will
+ Deacon <will@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown
+	<lenb@kernel.org>, Liu Wei <liuwei09@cestc.cn>, Ryan Roberts
+	<ryan.roberts@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Jonathan
+ Cameron <Jonathan.Cameron@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>
+References: <20250620131309.126555-1-me@linux.beauty>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <67983ddc-b8f8-43b5-209f-ca77c91fe56b@huawei.com>
+Date: Sat, 28 Jun 2025 15:42:01 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250624154805.66985-6-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20250620131309.126555-1-me@linux.beauty>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-Hi Jonathan,
+On 2025/6/20 21:13, Li Chen wrote:
+> From: Li Chen <chenl311@chinatelecom.cn>
+> This small series improves the kernel behavior and output when the ACPI SPCR
+> table is not present or not supported.
+> 
+> Currently, even on systems that completely lack an SPCR table, the kernel prints:
+> "Use ACPI SPCR as default console: Yes"
+> 
+> This may mislead users into thinking an SPCR table exists
+> when in fact there is no such table at all. This series addresses this in two steps:
+> 
+> Patch 1 ensures that acpi_parse_spcr() returns -ENODEV if CONFIG_ACPI_SPCR_TABLE is disabled.
+> 
+> Patch 2 updates arm64 acpi_boot_table_init() to only print the Yes
+> if acpi_parse_spcr() succeeds.
+> 
+> This results in cleaner and more accurate boot logs on ARM64.
+> 
+> Tested on both SPCR-enabled and SPCR-less qemu-system arm64 virt platform. [1]
+> 
+> Changelog:
+> v2: refine the printk message logic as suggested by Hanjun Guo. [2]
+> 
+> [1]: https://patchew.org/QEMU/20250528105404.457729-1-me@linux.beauty/
+> [2]: https://www.spinics.net/lists/kernel/msg5730585.html
+> 
+> Li Chen (2):
+>    ACPI: Return -ENODEV from acpi_parse_spcr() when SPCR support is
+>      disabled
+>    ACPI: Suppress misleading SPCR console message when SPCR table is
+>      absent
+> 
+>   arch/arm64/kernel/acpi.c | 10 +++++++---
+>   include/linux/acpi.h     |  2 +-
+>   2 files changed, 8 insertions(+), 4 deletions(-)
 
-kernel test robot noticed the following build warnings:
+This version looks good to me,
 
-[auto build test WARNING on driver-core/driver-core-testing]
-[also build test WARNING on driver-core/driver-core-next driver-core/driver-core-linus arm64/for-next/core linus/master nvdimm/libnvdimm-for-next v6.16-rc3]
-[cannot apply to nvdimm/dax-misc next-20250627]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jonathan-Cameron/memregion-Support-fine-grained-invalidate-by-cpu_cache_invalidate_memregion/20250624-235402
-base:   driver-core/driver-core-testing
-patch link:    https://lore.kernel.org/r/20250624154805.66985-6-Jonathan.Cameron%40huawei.com
-patch subject: [PATCH v2 5/8] arm64: Select GENERIC_CPU_CACHE_INVALIDATE_MEMREGION
-config: arm64-randconfig-r111-20250628 (https://download.01.org/0day-ci/archive/20250628/202506281452.zc1D1sSz-lkp@intel.com/config)
-compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project e04c938cc08a90ae60440ce22d072ebc69d67ee8)
-reproduce: (https://download.01.org/0day-ci/archive/20250628/202506281452.zc1D1sSz-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506281452.zc1D1sSz-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/base/cache.c:12:1: sparse: sparse: symbol 'scfm_lock' was not declared. Should it be static?
-   drivers/base/cache.c:14:6: sparse: sparse: context imbalance in 'generic_set_sys_cache_flush_method' - wrong count at exit
-   drivers/base/cache.c:27:9: sparse: sparse: context imbalance in 'generic_clr_sys_cache_flush_method' - wrong count at exit
-   drivers/base/cache.c:31:5: sparse: sparse: context imbalance in 'cpu_cache_invalidate_memregion' - wrong count at exit
-   drivers/base/cache.c:41:6: sparse: sparse: context imbalance in 'cpu_cache_has_invalidate_memregion' - wrong count at exit
-
-vim +/scfm_lock +12 drivers/base/cache.c
-
-b51d47491c68aef Yicong Yang 2025-06-24   9  
-b51d47491c68aef Yicong Yang 2025-06-24  10  
-b51d47491c68aef Yicong Yang 2025-06-24  11  static const struct system_cache_flush_method *scfm_data;
-b51d47491c68aef Yicong Yang 2025-06-24 @12  DEFINE_SPINLOCK(scfm_lock);
-b51d47491c68aef Yicong Yang 2025-06-24  13  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks
+Hanjun
 
