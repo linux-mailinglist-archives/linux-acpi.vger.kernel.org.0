@@ -1,47 +1,47 @@
-Return-Path: <linux-acpi+bounces-14836-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14837-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B392BAECF50
-	for <lists+linux-acpi@lfdr.de>; Sun, 29 Jun 2025 19:51:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C0D8AECF5F
+	for <lists+linux-acpi@lfdr.de>; Sun, 29 Jun 2025 20:01:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4671172A8B
-	for <lists+linux-acpi@lfdr.de>; Sun, 29 Jun 2025 17:51:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3170D169C7D
+	for <lists+linux-acpi@lfdr.de>; Sun, 29 Jun 2025 18:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFB0223DE7;
-	Sun, 29 Jun 2025 17:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AFE118787A;
+	Sun, 29 Jun 2025 18:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="iIQ1cyqn"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="NKuYfKRg"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9908C2576;
-	Sun, 29 Jun 2025 17:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B7C4A3C;
+	Sun, 29 Jun 2025 18:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751219473; cv=none; b=rRfkirOxFQ8ih8SdbM3tJyQdKA+np3RkSWXfeptMHGWeU5e9ONbfpBAvemGCyWbOou3FidcWU+AAGuhMB31srZHVGMFH9cnAUEh/knLS5n9xCIieFkLlqKUOY6KCJgFdRT39rghsMhW8JhpjM5e9xrnuWZGKQqjsbN9riubrV1M=
+	t=1751220108; cv=none; b=MbJh3/AR6WdtXEz1oggEpGqLhIWbIXXXDJyQDAGMVqBrCcPbQWzKC47ayMOT+GBMYcGgSw9B8Shny6tJRrMjzW/KqRV1B5khcrlaLmYDzWCRbo6jIVnODUCWupqOSz67G6B418TeiucRo29NT4j2tf5IBxoZmRrzS0VNqGKTz64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751219473; c=relaxed/simple;
-	bh=2zTrY0TOKhOB0p6IOz/CNCGwyOObgFpK0NbXlzS4VVE=;
+	s=arc-20240116; t=1751220108; c=relaxed/simple;
+	bh=VVIZcmw3kGEOhZxUnEIWRa2PjCOG8sqv0cjaVfxJixE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EKWhZopwkvZZKSvMH/qe46kUqt/e24CjrYPKqiLra1ilx2ksORHq2mkuqeRxwN+GWccMu9yhMfsxHbFcvhOvgIVFAl8W955jagclTW5hnZZm+WuOVN7B0Mr9YNFSNr1qopC5CpwjNSa4kdIusMbo3abchi4++76c/FOZghEWfDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=iIQ1cyqn; arc=none smtp.client-ip=213.167.242.64
+	 Content-Type:Content-Disposition:In-Reply-To; b=srXi4sC2Ebxx78ck/sJ/NngDvLYok/vmgzdcK/TxOgrYPBqLJOIC2IMoCN8DHLl3fISCmCuuyemOtkIYqO0N8wb3hYQb5h8uMDMIE7/6N2dhq+noRCPgNV8GuIq6SH/J0brgfEABrJLMMoKg60IQvHLJK4qIPkVfe009fzTl7ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=NKuYfKRg; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id A232616D7;
-	Sun, 29 Jun 2025 19:50:48 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 1EB9A16D7;
+	Sun, 29 Jun 2025 20:01:22 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1751219448;
-	bh=2zTrY0TOKhOB0p6IOz/CNCGwyOObgFpK0NbXlzS4VVE=;
+	s=mail; t=1751220082;
+	bh=VVIZcmw3kGEOhZxUnEIWRa2PjCOG8sqv0cjaVfxJixE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iIQ1cyqnBtxYMgCxNg+Rzz1a6DNB43ASSP52RHveqItQMMe9cKTjmjcGfcyh5IixQ
-	 QHwZfw2jK3+WoUbP1tKv6Ha+ibrZ54fUv8k03rphS/tju1B+tFeZk/Zf9GhWEd+u1O
-	 /b6+kNvsFfuIYP+qT3bAsvSCrOJQfcG28h3wsRYI=
-Date: Sun, 29 Jun 2025 20:50:45 +0300
+	b=NKuYfKRg7s6e2TtlWzHZyBD0lJlnl0zulGimGGfx3FsfYTnMNTnCBjirQkRg0ujz3
+	 i2lhPdVCzZb5bTuKY438MLuKOAwIBqobYJmd4U15iBs2LauyEXb9ofOmh/97hhazoo
+	 R2owP5LXUk2yarMPR0rk6mMt9pzM/CEe7uORAh9o=
+Date: Sun, 29 Jun 2025 21:01:19 +0300
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To: Ricardo Ribalda <ribalda@chromium.org>
 Cc: Hans de Goede <hdegoede@redhat.com>,
@@ -59,11 +59,11 @@ Cc: Hans de Goede <hdegoede@redhat.com>,
 	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 08/12] media: uvcvideo: Add support for
- V4L2_CID_CAMERA_ORIENTATION
-Message-ID: <20250629175045.GC6260@pendragon.ideasonboard.com>
+Subject: Re: [PATCH v2 09/12] media: uvcvideo: Add uvc_ctrl_query_entity
+ helper
+Message-ID: <20250629180119.GD6260@pendragon.ideasonboard.com>
 References: <20250605-uvc-orientation-v2-0-5710f9d030aa@chromium.org>
- <20250605-uvc-orientation-v2-8-5710f9d030aa@chromium.org>
+ <20250605-uvc-orientation-v2-9-5710f9d030aa@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -72,301 +72,172 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250605-uvc-orientation-v2-8-5710f9d030aa@chromium.org>
+In-Reply-To: <20250605-uvc-orientation-v2-9-5710f9d030aa@chromium.org>
 
 Hi Ricardo,
 
-On Thu, Jun 05, 2025 at 05:53:01PM +0000, Ricardo Ribalda wrote:
-> Fetch the orientation from the fwnode and map it into a control.
+On Thu, Jun 05, 2025 at 05:53:02PM +0000, Ricardo Ribalda wrote:
+> Create a helper function to query a control. The new function reduces
+> the number of arguments, calculates the length of the operation and
+> redirects the operation to the hardware or to the entity private
+> functions.
 > 
-> The uvc driver does not use the media controller, so we need to create a
-> virtual entity, like we previously did with the external gpio.
-> 
-> We do not re-purpose the external gpio entity because its is planned to
-> remove it.
-
-Comparing the GUIDs for the EXT_GPIO_CONTROLLER and SWENTITY, we have
-
-#define UVC_GUID_EXT_GPIO_CONTROLLER \
-	{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
-	 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x03}
-#define UVC_GUID_SWENTITY \
-	{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
-	 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x04}
-
-The GUIDs don't carry any special meaning in their values. I agree with
-the plan to drop the existing features of the GPIO entity, but wouldn't
-it be easier to rename UVC_GUID_EXT_GPIO_CONTROLLER to UVC_GUID_SWENTITY
-and UVC_EXT_GPIO_UNIT* to UVC_SWENTITY_UNIT* (the macros are not exposed
-to userspace), and later drop the existing GPIO controls from the entity
-?
-
 > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 > ---
->  drivers/media/usb/uvc/Makefile       |  3 +-
->  drivers/media/usb/uvc/uvc_ctrl.c     | 21 +++++++++++
->  drivers/media/usb/uvc/uvc_driver.c   | 14 +++++--
->  drivers/media/usb/uvc/uvc_entity.c   |  1 +
->  drivers/media/usb/uvc/uvc_swentity.c | 73 ++++++++++++++++++++++++++++++++++++
->  drivers/media/usb/uvc/uvcvideo.h     | 14 +++++++
->  include/linux/usb/uvc.h              |  3 ++
->  7 files changed, 125 insertions(+), 4 deletions(-)
+>  drivers/media/usb/uvc/uvc_ctrl.c | 81 ++++++++++++++++++++--------------------
+>  1 file changed, 41 insertions(+), 40 deletions(-)
 > 
-> diff --git a/drivers/media/usb/uvc/Makefile b/drivers/media/usb/uvc/Makefile
-> index 4f9eee4f81ab6436a8b90324a688a149b2c3bcd1..b4398177c4bb0a9bd49dfd4ca7f2e933b4a1d7df 100644
-> --- a/drivers/media/usb/uvc/Makefile
-> +++ b/drivers/media/usb/uvc/Makefile
-> @@ -1,6 +1,7 @@
->  # SPDX-License-Identifier: GPL-2.0
->  uvcvideo-objs  := uvc_driver.o uvc_queue.o uvc_v4l2.o uvc_video.o uvc_ctrl.o \
-> -		  uvc_status.o uvc_isight.o uvc_debugfs.o uvc_metadata.o
-> +		  uvc_status.o uvc_isight.o uvc_debugfs.o uvc_metadata.o \
-> +		  uvc_swentity.o
->  ifeq ($(CONFIG_MEDIA_CONTROLLER),y)
->  uvcvideo-objs  += uvc_entity.o
->  endif
 > diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-> index 47e8ccc39234d1769384b55539a21df07f3d57c7..b2768080c08aafa85acb9b7f318672c043d84e55 100644
+> index b2768080c08aafa85acb9b7f318672c043d84e55..21ec7b978bc7aca21db7cb8fd5d135d876f3330c 100644
 > --- a/drivers/media/usb/uvc/uvc_ctrl.c
 > +++ b/drivers/media/usb/uvc/uvc_ctrl.c
-> @@ -376,6 +376,13 @@ static const struct uvc_control_info uvc_ctrls[] = {
->  				| UVC_CTRL_FLAG_GET_DEF
->  				| UVC_CTRL_FLAG_AUTO_UPDATE,
->  	},
-> +	{
-> +		.entity		= UVC_GUID_SWENTITY,
-> +		.selector	= 0,
-> +		.index		= 0,
-> +		.size		= 1,
-> +		.flags		= UVC_CTRL_FLAG_GET_CUR,
-> +	},
+> @@ -576,6 +576,34 @@ static const struct uvc_control_mapping uvc_ctrl_power_line_mapping_uvc15 = {
+>  				  V4L2_CID_POWER_LINE_FREQUENCY_DISABLED),
 >  };
 >  
->  static const u32 uvc_control_classes[] = {
-> @@ -975,6 +982,17 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
->  		.data_type	= UVC_CTRL_DATA_TYPE_BITMASK,
->  		.name		= "Region of Interest Auto Ctrls",
->  	},
-> +	{
-> +		.id		= V4L2_CID_CAMERA_ORIENTATION,
-> +		.entity		= UVC_GUID_SWENTITY,
-> +		.selector	= 0,
-> +		.size		= 8,
-> +		.offset		= 0,
-> +		.v4l2_type	= V4L2_CTRL_TYPE_MENU,
-> +		.data_type	= UVC_CTRL_DATA_TYPE_ENUM,
-> +		.menu_mask	= GENMASK(V4L2_CAMERA_ORIENTATION_EXTERNAL,
-> +					  V4L2_CAMERA_ORIENTATION_FRONT),
-> +	},
->  };
->  
->  /* ------------------------------------------------------------------------
-> @@ -3210,6 +3228,9 @@ static int uvc_ctrl_init_chain(struct uvc_video_chain *chain)
->  		} else if (UVC_ENTITY_TYPE(entity) == UVC_EXT_GPIO_UNIT) {
->  			bmControls = entity->gpio.bmControls;
->  			bControlSize = entity->gpio.bControlSize;
-> +		} else if (UVC_ENTITY_TYPE(entity) == UVC_SWENTITY_UNIT) {
-> +			bmControls = entity->swentity.bmControls;
-> +			bControlSize = entity->swentity.bControlSize;
->  		}
->  
->  		/* Remove bogus/blacklisted controls */
-> diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-> index bcc97f71fa1703aea1119469fb32659c17d9409a..96eeb3aee546487d15f3c30dfe1775189ddf7e47 100644
-> --- a/drivers/media/usb/uvc/uvc_driver.c
-> +++ b/drivers/media/usb/uvc/uvc_driver.c
-> @@ -1869,11 +1869,15 @@ static int uvc_scan_device(struct uvc_device *dev)
->  		return -1;
->  	}
->  
-> -	/* Add GPIO entity to the first chain. */
-> -	if (dev->gpio_unit) {
-> +	/* Add virtual entities to the first chain. */
-> +	if (dev->gpio_unit || dev->swentity_unit) {
->  		chain = list_first_entry(&dev->chains,
->  					 struct uvc_video_chain, list);
-> -		list_add_tail(&dev->gpio_unit->chain, &chain->entities);
-> +		if (dev->gpio_unit)
-> +			list_add_tail(&dev->gpio_unit->chain, &chain->entities);
-> +		if (dev->swentity_unit)
-> +			list_add_tail(&dev->swentity_unit->chain,
-> +				      &chain->entities);
->  	}
->  
->  	return 0;
-> @@ -2249,6 +2253,10 @@ static int uvc_probe(struct usb_interface *intf,
->  	if (ret < 0)
->  		goto error;
->  
-> +	ret = uvc_swentity_init(dev);
-> +	if (ret < 0)
-> +		goto error;
-> +
->  	dev_info(&dev->udev->dev, "Found UVC %u.%02x device %s (%04x:%04x)\n",
->  		 dev->uvc_version >> 8, dev->uvc_version & 0xff,
->  		 udev->product ? udev->product : "<unnamed>",
-> diff --git a/drivers/media/usb/uvc/uvc_entity.c b/drivers/media/usb/uvc/uvc_entity.c
-> index cc68dd24eb42dce5b2846ca52a8dfa499c8aed96..d1a652ef35ec34801bd39a5124b834edf838a79e 100644
-> --- a/drivers/media/usb/uvc/uvc_entity.c
-> +++ b/drivers/media/usb/uvc/uvc_entity.c
-> @@ -106,6 +106,7 @@ static int uvc_mc_init_entity(struct uvc_video_chain *chain,
->  		case UVC_OTT_MEDIA_TRANSPORT_OUTPUT:
->  		case UVC_EXTERNAL_VENDOR_SPECIFIC:
->  		case UVC_EXT_GPIO_UNIT:
-> +		case UVC_SWENTITY_UNIT:
->  		default:
->  			function = MEDIA_ENT_F_V4L2_SUBDEV_UNKNOWN;
->  			break;
-> diff --git a/drivers/media/usb/uvc/uvc_swentity.c b/drivers/media/usb/uvc/uvc_swentity.c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..702a2c26e029a0655dade177ed2a9b88d7a4136d
-> --- /dev/null
-> +++ b/drivers/media/usb/uvc/uvc_swentity.c
-> @@ -0,0 +1,73 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + *      uvc_swentity.c  --  USB Video Class driver
-> + *
-> + *      Copyright 2025 Google LLC
-> + */
-> +
-> +#include <linux/kernel.h>
-> +#include <linux/usb/uvc.h>
-> +#include <media/v4l2-fwnode.h>
-> +#include "uvcvideo.h"
-
-Blank lines between header groups would be nice.
-
-> +
-> +static int uvc_swentity_get_cur(struct uvc_device *dev, struct uvc_entity *entity,
-> +				u8 cs, void *data, u16 size)
+> +static int uvc_ctrl_query_entity(struct uvc_device *dev,
+> +				 const struct uvc_control *ctrl, u8 query,
+> +				 void *data)
 > +{
-> +	if (size < 1)
-> +		return -EINVAL;
+> +	u16 len;
 > +
-> +	switch (entity->swentity.props.orientation) {
-> +	case V4L2_FWNODE_ORIENTATION_FRONT:
-> +		*(u8 *)data = V4L2_CAMERA_ORIENTATION_FRONT;
+> +	switch (query) {
+> +	case UVC_GET_INFO:
+> +		len = 1;
 > +		break;
-> +	case V4L2_FWNODE_ORIENTATION_BACK:
-> +		*(u8 *)data = V4L2_CAMERA_ORIENTATION_BACK;
+> +	case UVC_GET_LEN:
+> +		len = 2;
 > +		break;
 > +	default:
-> +		*(u8 *)data = V4L2_CAMERA_ORIENTATION_EXTERNAL;
+> +		len = ctrl->info.size;
+
+		break;
+
 > +	}
 > +
-> +	return 0;
+> +	if (query == UVC_GET_CUR && ctrl->entity->get_cur)
+> +		return ctrl->entity->get_cur(dev, ctrl->entity,
+> +					     ctrl->info.selector, data, len);
+> +	if (query == UVC_GET_INFO && ctrl->entity->get_info)
+> +		return ctrl->entity->get_info(dev, ctrl->entity,
+> +					      ctrl->info.selector, data);
+> +
+> +	return uvc_query_ctrl(dev, query, ctrl->entity->id, dev->intfnum,
+> +			      ctrl->info.selector, data, len);
 > +}
 > +
-> +static int uvc_swentity_get_info(struct uvc_device *dev,
-> +				 struct uvc_entity *entity, u8 cs, u8 *caps)
-> +{
-> +	*caps = UVC_CONTROL_CAP_GET;
-> +	return 0;
-> +}
-> +
-> +int uvc_swentity_init(struct uvc_device *dev)
-> +{
-> +	static const u8 uvc_swentity_guid[] = UVC_GUID_SWENTITY;
-> +	struct v4l2_fwnode_device_properties props;
-> +	struct uvc_entity *unit;
-> +	int ret;
-> +
-> +	ret = v4l2_fwnode_device_parse(&dev->udev->dev, &props);
-> +	if (ret)
-> +		return dev_err_probe(&dev->intf->dev, ret,
-> +				     "Can't parse fwnode\n");
-> +
-> +	if (props.orientation == V4L2_FWNODE_PROPERTY_UNSET)
-> +		return 0;
-> +
-> +	unit = uvc_alloc_entity(UVC_SWENTITY_UNIT, UVC_SWENTITY_UNIT_ID, 0, 1);
-> +	if (!unit)
-> +		return -ENOMEM;
-> +
-> +	memcpy(unit->guid, uvc_swentity_guid, sizeof(unit->guid));
-> +	unit->swentity.props = props;
-> +	unit->swentity.bControlSize = 1;
-> +	unit->swentity.bmControls = (u8 *)unit + sizeof(*unit);
-> +	unit->swentity.bmControls[0] = 1;
-> +	unit->get_cur = uvc_swentity_get_cur;
-> +	unit->get_info = uvc_swentity_get_info;
-> +	strscpy(unit->name, "SWENTITY", sizeof(unit->name));
-> +
-> +	list_add_tail(&unit->list, &dev->entities);
-> +
-> +	dev->swentity_unit = unit;
-> +
-> +	return 0;
-> +}
-> diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-> index dc23d8a97340dc4615d4182232d395106e6d9ed5..a931750bdea25b9062dcc7644bf5f2ed89c1cb4c 100644
-> --- a/drivers/media/usb/uvc/uvcvideo.h
-> +++ b/drivers/media/usb/uvc/uvcvideo.h
-> @@ -19,6 +19,7 @@
->  #include <media/v4l2-event.h>
->  #include <media/v4l2-fh.h>
->  #include <media/videobuf2-v4l2.h>
-> +#include <media/v4l2-fwnode.h>
+>  static const struct uvc_control_mapping *uvc_ctrl_filter_plf_mapping(
+>  	struct uvc_video_chain *chain, struct uvc_control *ctrl)
+>  {
+> @@ -1222,35 +1250,27 @@ static int uvc_ctrl_populate_cache(struct uvc_video_chain *chain,
+>  	int ret;
+>  
+>  	if (ctrl->info.flags & UVC_CTRL_FLAG_GET_DEF) {
+> -		ret = uvc_query_ctrl(chain->dev, UVC_GET_DEF, ctrl->entity->id,
+> -				     chain->dev->intfnum, ctrl->info.selector,
+> -				     uvc_ctrl_data(ctrl, UVC_CTRL_DATA_DEF),
+> -				     ctrl->info.size);
+> +		ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_DEF,
+> +					uvc_ctrl_data(ctrl, UVC_CTRL_DATA_DEF));
+>  		if (ret < 0)
+>  			return ret;
+>  	}
+>  
+>  	if (ctrl->info.flags & UVC_CTRL_FLAG_GET_MIN) {
+> -		ret = uvc_query_ctrl(chain->dev, UVC_GET_MIN, ctrl->entity->id,
+> -				     chain->dev->intfnum, ctrl->info.selector,
+> -				     uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MIN),
+> -				     ctrl->info.size);
+> +		ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_MIN,
+> +					uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MIN));
+>  		if (ret < 0)
+>  			return ret;
+>  	}
+>  	if (ctrl->info.flags & UVC_CTRL_FLAG_GET_MAX) {
+> -		ret = uvc_query_ctrl(chain->dev, UVC_GET_MAX, ctrl->entity->id,
+> -				     chain->dev->intfnum, ctrl->info.selector,
+> -				     uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MAX),
+> -				     ctrl->info.size);
+> +		ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_MAX,
+> +					uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MAX));
+>  		if (ret < 0)
+>  			return ret;
+>  	}
+>  	if (ctrl->info.flags & UVC_CTRL_FLAG_GET_RES) {
+> -		ret = uvc_query_ctrl(chain->dev, UVC_GET_RES, ctrl->entity->id,
+> -				     chain->dev->intfnum, ctrl->info.selector,
+> -				     uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES),
+> -				     ctrl->info.size);
+> +		ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_RES,
+> +					uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES));
+>  		if (ret < 0) {
+>  			if (UVC_ENTITY_TYPE(ctrl->entity) !=
+>  			    UVC_VC_EXTENSION_UNIT)
+> @@ -1291,16 +1311,7 @@ static int __uvc_ctrl_load_cur(struct uvc_video_chain *chain,
+>  		return 0;
+>  	}
+>  
+> -	if (ctrl->entity->get_cur)
+> -		ret = ctrl->entity->get_cur(chain->dev, ctrl->entity,
+> -					    ctrl->info.selector, data,
+> -					    ctrl->info.size);
+> -	else
+> -		ret = uvc_query_ctrl(chain->dev, UVC_GET_CUR,
+> -				     ctrl->entity->id, chain->dev->intfnum,
+> -				     ctrl->info.selector, data,
+> -				     ctrl->info.size);
+> -
+> +	ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_CUR, data);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> @@ -2164,11 +2175,8 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+>  			continue;
+>  
+>  		if (!rollback)
+> -			ret = uvc_query_ctrl(dev, UVC_SET_CUR, ctrl->entity->id,
+> -				dev->intfnum, ctrl->info.selector,
+> -				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
+> -				ctrl->info.size);
+> -
+> +			ret = uvc_ctrl_query_entity(dev, ctrl, UVC_SET_CUR,
+> +				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
+>  		if (!ret)
+>  			processed_ctrls++;
+>  
+> @@ -2570,13 +2578,7 @@ static int uvc_ctrl_get_flags(struct uvc_device *dev,
+>  	if (data == NULL)
+>  		return -ENOMEM;
+>  
+> -	if (ctrl->entity->get_info)
+> -		ret = ctrl->entity->get_info(dev, ctrl->entity,
+> -					     ctrl->info.selector, data);
+> -	else
+> -		ret = uvc_query_ctrl(dev, UVC_GET_INFO, ctrl->entity->id,
+> -				     dev->intfnum, info->selector, data, 1);
 
-Alphabetical order.
+Here ctrl->info isn't filled yet, so replacing info->selector with
+ctrl->info.selector won't work. Usage of ctrl->info.selector in the
+->get_info() branch looks like a bug.
 
+> -
+> +	ret = uvc_ctrl_query_entity(dev, ctrl, UVC_GET_INFO, data);
+>  	if (!ret) {
+>  		info->flags &= ~(UVC_CTRL_FLAG_GET_CUR |
+>  				 UVC_CTRL_FLAG_SET_CUR |
+> @@ -2654,8 +2656,7 @@ static int uvc_ctrl_fill_xu_info(struct uvc_device *dev,
+>  	info->selector = ctrl->index + 1;
 >  
->  /* --------------------------------------------------------------------------
->   * UVC constants
-> @@ -41,6 +42,9 @@
->  #define UVC_EXT_GPIO_UNIT		0x7ffe
->  #define UVC_EXT_GPIO_UNIT_ID		0x100
->  
-> +#define UVC_SWENTITY_UNIT		0x7ffd
-> +#define UVC_SWENTITY_UNIT_ID		0x101
-> +
->  /* ------------------------------------------------------------------------
->   * Driver specific constants.
->   */
-> @@ -242,6 +246,12 @@ struct uvc_entity {
->  			int irq;
->  			bool initialized;
->  		} gpio;
-> +
-> +		struct {
-> +			u8  bControlSize;
-> +			u8  *bmControls;
-> +			struct v4l2_fwnode_device_properties props;
-> +		} swentity;
->  	};
->  
->  	u8 bNrInPins;
-> @@ -617,6 +627,7 @@ struct uvc_device {
->  	} async_ctrl;
->  
->  	struct uvc_entity *gpio_unit;
-> +	struct uvc_entity *swentity_unit;
->  };
->  
->  enum uvc_handle_state {
-> @@ -836,4 +847,7 @@ void uvc_debugfs_cleanup_stream(struct uvc_streaming *stream);
->  size_t uvc_video_stats_dump(struct uvc_streaming *stream, char *buf,
->  			    size_t size);
->  
-> +/* swentity */
-> +int uvc_swentity_init(struct uvc_device *dev);
-> +
->  #endif
-> diff --git a/include/linux/usb/uvc.h b/include/linux/usb/uvc.h
-> index bce95153e5a65613a710d7316fc17cf5462b5bce..88a23e8919d1294da4308e0e3ca0eccdc66a318f 100644
-> --- a/include/linux/usb/uvc.h
-> +++ b/include/linux/usb/uvc.h
-> @@ -29,6 +29,9 @@
->  #define UVC_GUID_EXT_GPIO_CONTROLLER \
->  	{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
->  	 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x03}
-> +#define UVC_GUID_SWENTITY \
-> +	{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, \
-> +	 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x04}
->  
->  #define UVC_GUID_FORMAT_MJPEG \
->  	{ 'M',  'J',  'P',  'G', 0x00, 0x00, 0x10, 0x00, \
+>  	/* Query and verify the control length (GET_LEN) */
+> -	ret = uvc_query_ctrl(dev, UVC_GET_LEN, ctrl->entity->id, dev->intfnum,
+> -			     info->selector, data, 2);
+> +	ret = uvc_ctrl_query_entity(dev, ctrl, UVC_GET_LEN, data);
+
+Same here.
+
+>  	if (ret < 0) {
+>  		uvc_dbg(dev, CONTROL,
+>  			"GET_LEN failed on control %pUl/%u (%d)\n",
 
 -- 
 Regards,
