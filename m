@@ -1,150 +1,268 @@
-Return-Path: <linux-acpi+bounces-14845-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14846-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF17FAED31D
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 05:51:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045B1AED527
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 09:07:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07EBA171FBE
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 03:51:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 225E13ADAF8
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 07:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466F986344;
-	Mon, 30 Jun 2025 03:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9E221D3D2;
+	Mon, 30 Jun 2025 07:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="d7vqhopj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DzuYIRxc"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFCFA59
-	for <linux-acpi@vger.kernel.org>; Mon, 30 Jun 2025 03:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7DB215F72;
+	Mon, 30 Jun 2025 07:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751255496; cv=none; b=HACmFJ2gz9j/e6Nc9RleJskyN2AwoooKb0e9GVy4rlxgf0/Nvu5KUWrgUb2IUW4dWYA93eEPzN4DKgu3uNiiACktp5Df/1ZyS39oIbqKJU/iSB1si353RGBYC/FtU66u/+oKSVoK/87cGmXJ+jXHt+17wiMEj8fpcbqoO60daH0=
+	t=1751267197; cv=none; b=mmQ5QQ8XNPsxWhFFDOxchakGAvo5g5O01n8bIbQ6JMGlKoebR5pw1Sw0vdEjWELiV7enLx20sETgzqim9KVc65HJE4XetcIl6jGIvdwQs8JioYncmFmbNSV9c2TN0fXcmpuQkNE0330zYOma29aK6EM5LifKEyoHhcEdLsgYX48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751255496; c=relaxed/simple;
-	bh=QTzyOXu5qu2K9jHAadeJSq39OHr964W9UaOXOneTV9g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OgV51NLuqoCw06rJM+8k5xnRBzSomEozOirYKYcEb09wQYTvswouMcfYyjMTdym9XMAXoUGkOdUS4PiKPTR1nd4o+HchKvgBfUdq9yChGg+aPUkUMRpvMxc07qh3l83k818k3zukRo9ifMHxz2/xCpZexotmcHek5AZFjTHoy3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=d7vqhopj; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-742c7a52e97so4181277b3a.3
-        for <linux-acpi@vger.kernel.org>; Sun, 29 Jun 2025 20:51:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1751255494; x=1751860294; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UED82EXPvvwcKwvtCpX0i6qazNmJqZIAw5hRVMYvLpc=;
-        b=d7vqhopjBWRLP56ynLjf+xzDu/AGoISYQAJ7xUlErLkXrgV2fyTJHINB/GfwtvrRyn
-         rMOQYVHDMqPhAjk93A8BLw1UyjUQGhhprzVF/zw7POdEckkmFgB8Ms+i+RfuV7rZpP4h
-         QGj0uruJNqBxKxZLToxToNe+mJ7na981Na216hYcXh5ewrtp7xeEVbmjZN4bvJn/i/7e
-         W0IElfYG93jkWPqCNaB46OIu1xB7EZi9l7/9Ygn2ucQ/qJ5LUqOdhlUCcwK5Sp13gEPh
-         iMpkah3dK1nIIqNUxXhktueWYWy2G0I7kvGuUlZ7mGNCEsQ4aG86bU79HqBULxT2kGWp
-         S5Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751255494; x=1751860294;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UED82EXPvvwcKwvtCpX0i6qazNmJqZIAw5hRVMYvLpc=;
-        b=JGoVKSsd4RNJGF1cI/2ZXjMvoKtLbZ1McdDUUIDHMlIsa4agadFInmWsDaDPRNR/iG
-         iAe9Km2nkxvPdQb3tX8819VtcUxMzwG97+CVWeTyBm5xL/CNmyX3HfZDO8I4/aDC4+AE
-         tQ5njZnypxZI//1eC8iZhTR5IN46Rtak1ZbGicySKG4zu83qTBgYmSHcb08p7++jQl07
-         YZmFfQIZGXBOZ5+n5dBv0tQ9zqoy8C4+ZrilwJAVYFcDrvQ6fFvHXuv8h/Bgr+m0TSO4
-         nHX85Paro+4sm9qOFbCUeMq3d6D5ddpyR9x+O63MANTf/rTWSGCoGUG+SlECrZTbVIHJ
-         R/Lw==
-X-Forwarded-Encrypted: i=1; AJvYcCW5B8afTmtkusLS1ppOr7oNmA+je8sOFv/wwlOXAB4ZV/LC1kRPkVM0wV8NM+i8Ym7rDmijx0EO9O+s@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNYX/0NK+MDn1rPwWyzgFY53UliIcoDAplIooSFFDbOipmiu5V
-	v1bLqOxopXCG1sLFpPvgcyHKIsIF2j7cYNqcqMad2qzbdKeGuB6px+ued63nDHkd5yE=
-X-Gm-Gg: ASbGncuOLr0o/g0nDx2qHffyle3lowK5S/Ba9Vg6Gcg8Pabbr+RtPaG0Q5e2Zqz9cVl
-	TrN1KbseRIMxzP3iveVVNOtJgdrVq29NEAmbsCZeBp5Fz1kdSrupJ6BYbCAnD1bWokFgsGXcYWM
-	730h2AOq8k9KPt54fRPYVLglN1xq96A10VtLouKMuh+QWQlTDedc92TPGkb47e0ThSYk+UIDxJe
-	fFrrUFUL6sPFNrOlMmA8iLqbUp6fNCe7BsyZsTi0mC+0sJ29OvJBY825he2ea7qCGZZAJJ74PcZ
-	+Xs+j4kuKIR2Yw3WcLBKTnBDrdHqdKNIZFtXGby/E5OZspoXC+wYQw+OGTjFxcwqg8rKmg==
-X-Google-Smtp-Source: AGHT+IH50RyHuOnxZl2ccwGVqZn5SetEZq+s0+V/7t4N3nC29VesI3/CLLW5Bs7mTAzZWQEnHHyh/A==
-X-Received: by 2002:a05:6a00:1704:b0:749:bc7:1577 with SMTP id d2e1a72fcca58-74af6e6618emr15035867b3a.9.1751255494141;
-        Sun, 29 Jun 2025 20:51:34 -0700 (PDT)
-Received: from sunil-laptop ([103.97.166.196])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74af557b5c8sm7808043b3a.83.2025.06.29.20.51.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Jun 2025 20:51:33 -0700 (PDT)
-Date: Mon, 30 Jun 2025 09:21:22 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: Tomasz Jeznach <tjeznach@rivosinc.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Tomasz Jeznach <tjeznach@rivosinc.com>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Anup Patel <apatel@ventanamicro.com>,
-	Atish Patra <atishp@rivosinc.com>, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-	iommu@lists.linux.dev, Andrew Jones <ajones@ventanamicro.com>
-Subject: Re: [PATCH v3 0/3] RISC-V: Add ACPI support for IOMMU
-Message-ID: <aGIJuiSuZs17DSiM@sunil-laptop>
-References: <20250630034803.1611262-1-sunilvl@ventanamicro.com>
+	s=arc-20240116; t=1751267197; c=relaxed/simple;
+	bh=j733+QscBMRNMa4l7CcujmPxTXt/r1eIsNkfLH7J9wY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QKoS58C4dXi9vszyFAsslYabMj8zHp1lEVgKPfJG/d2Cj3qAfIW4m1DkJ/3cV3FHL+nv3dBCgh6axHghfeSj6c4iOvHYPNuc4GEbMcnwA9REAcPgdOv2xi82mI0a2bLKdoYU5aFRNYJ2JJemyrEh801diCawaECGyHH/682Qa/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DzuYIRxc; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751267196; x=1782803196;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=j733+QscBMRNMa4l7CcujmPxTXt/r1eIsNkfLH7J9wY=;
+  b=DzuYIRxc2bxkbRA1zs4SeS/DRTHgYEaHVz/OsiSD4vttU4Kp99HunYMB
+   h2ml8pALX4bOdB8j66tPQq1wOmC8yzstqfGHfLZrfmiVq2WbMm3EDsuTV
+   joUzEJmL3x1RYbn9K5i6aDgreNZaYDCkPFu74Z7IsOc43FwpKO19itV2M
+   9m5ADuejTrGQSJL7Os2Yq1I1Rv0i+esqQ1V6QgLVlNuElICgCkfDqbRUp
+   4ORwKnDB1C3xcst+KGXBOJHJYLGxsnzomqoHyFnNO6WnseO5V6xn4izll
+   5ZdkEbLP0h0HkExmUqDx5olUBh1N4VMcqmUq3w61ZUarIVzrCVdhBQZxU
+   Q==;
+X-CSE-ConnectionGUID: awzTm6xTTsWNfMgH1NUnlA==
+X-CSE-MsgGUID: CvTMaO/JTG+xrmQdfWddfg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11479"; a="52600156"
+X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; 
+   d="scan'208";a="52600156"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2025 00:06:35 -0700
+X-CSE-ConnectionGUID: MiAxahvASw2z6GR28Ii+7w==
+X-CSE-MsgGUID: acMQ7alxRX+NSTRPsuEwxQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,277,1744095600"; 
+   d="scan'208";a="177046704"
+Received: from agladkov-desk.ger.corp.intel.com (HELO svinhufvud.fi.intel.com) ([10.245.244.57])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2025 00:06:30 -0700
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by svinhufvud.fi.intel.com (Postfix) with ESMTP id C72BE44366;
+	Mon, 30 Jun 2025 10:06:28 +0300 (EEST)
+Message-ID: <1ac49bd3-1b65-4611-8c90-92fb2c2ffd4a@linux.intel.com>
+Date: Sun, 29 Jun 2025 12:21:47 +0300
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250630034803.1611262-1-sunilvl@ventanamicro.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/12] media: v4l: fwnode: Support ACPI's _PLD for
+ v4l2_fwnode_device_parse
+Content-Language: en-US
+To: Ricardo Ribalda <ribalda@chromium.org>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil
+ <hverkuil@xs4all.nl>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Linus Walleij
+ <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
+References: <20250605-uvc-orientation-v2-0-5710f9d030aa@chromium.org>
+ <20250605-uvc-orientation-v2-2-5710f9d030aa@chromium.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+In-Reply-To: <20250605-uvc-orientation-v2-2-5710f9d030aa@chromium.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Tomasz,
+Hi Ricardo,
 
-Could you please help reviewing this series?
+Thanks for the update.
 
-Thanks!
-Sunil
-On Mon, Jun 30, 2025 at 09:18:00AM +0530, Sunil V L wrote:
-> This series adds support for RISC-V IOMMU on ACPI based platforms.
-> RISC-V IO Mapping Table (RIMT) is a new static ACPI table [1] introduced
-> to communicate IOMMU information to the OS.
+On 6/5/25 20:52, Ricardo Ribalda wrote:
+> Currently v4l2_fwnode_device_parse() obtains the orientation and
+> rotation via fwnode properties.
 > 
-> [1] - https://github.com/riscv-non-isa/riscv-acpi-rimt/releases/download/v1.0/rimt-spec.pdf
+> Extend the function to support as well ACPI devices with _PLD info.
 > 
-> Changes since v2:
-> 	1) Rebased to 6.16-rc4
-> 	2) Removed Anup's SOB and link tags added by mistake in v2.
+> We give a higher priority to fwnode, because it might contain quirks
+> injected via swnodes.
 > 
-> Changes since v1:
-> 	1) Rebased to v6.16-rc1.
-> 	2) Dropped ACPICA patch since it is already available in 6.16-rc1.
-> 	3) Added Rafael's ACK.
-> 	4) Fixed few issues found by bots.
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+>   drivers/media/v4l2-core/v4l2-fwnode.c | 85 ++++++++++++++++++++++++++++++++---
+>   1 file changed, 79 insertions(+), 6 deletions(-)
 > 
+> diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
+> index cb153ce42c45d69600a3ec4e59a5584d7e791a2a..379290ab3cfde74c8f663d61837a9a95011b5ae0 100644
+> --- a/drivers/media/v4l2-core/v4l2-fwnode.c
+> +++ b/drivers/media/v4l2-core/v4l2-fwnode.c
+> @@ -15,6 +15,7 @@
+>    * Author: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+>    */
+>   #include <linux/acpi.h>
+> +#include <acpi/acpi_bus.h>
+>   #include <linux/kernel.h>
+>   #include <linux/mm.h>
+>   #include <linux/module.h>
+> @@ -807,16 +808,65 @@ int v4l2_fwnode_connector_add_link(struct fwnode_handle *fwnode,
+>   }
+>   EXPORT_SYMBOL_GPL(v4l2_fwnode_connector_add_link);
+>   
+> -int v4l2_fwnode_device_parse(struct device *dev,
+> -			     struct v4l2_fwnode_device_properties *props)
+> +static int v4l2_fwnode_device_parse_acpi(struct device *dev,
+> +					 struct v4l2_fwnode_device_properties *props)
+> +{
+> +	struct acpi_pld_info *pld;
+> +	int ret = 0;
+> +
+> +	if (!is_acpi_device_node(dev_fwnode(dev)))
+> +		return 0;
+> +
+> +	if (!acpi_get_physical_device_location(ACPI_HANDLE(dev), &pld)) {
+> +		dev_dbg(dev, "acpi _PLD call failed\n");
+
+I'd do:
+
+acpi_handle_debug(ACPI_HANDLE(dev), "cannot obtain _PLD\n");
+
+> +		return 0;
+> +	}
+> +
+> +	if (props->orientation != V4L2_FWNODE_PROPERTY_UNSET) {
+> +		switch (pld->panel) {
+> +		case ACPI_PLD_PANEL_FRONT:
+> +			props->orientation = V4L2_FWNODE_ORIENTATION_FRONT;
+> +			break;
+> +		case ACPI_PLD_PANEL_BACK:
+> +			props->orientation = V4L2_FWNODE_ORIENTATION_BACK;
+> +			break;
+> +		case ACPI_PLD_PANEL_TOP:
+> +		case ACPI_PLD_PANEL_LEFT:
+> +		case ACPI_PLD_PANEL_RIGHT:
+> +		case ACPI_PLD_PANEL_UNKNOWN:
+> +			props->orientation = V4L2_FWNODE_ORIENTATION_EXTERNAL;
+> +			break;
+> +		default:
+> +			dev_dbg(dev, "Unknown _PLD panel val %d\n", pld->panel);
+
+Similarly:
+
+acpi_handle_debug(ACPI_HANDLE(dev), "invalid panel %u in _PLD\n",
+		  pld->panel);
+
+> +			ret = -EINVAL;
+
+Should this be an error or should we simply ignore it here (and maybe 
+use acpi_handle_warn())?
+
+> +			goto done;
+> +		}
+> +	}
+> +
+> +	if (props->rotation != V4L2_FWNODE_PROPERTY_UNSET) {
+> +		switch (pld->rotation) {
+> +		case 0 ... 7:
+> +			props->rotation = pld->rotation * 45;
+> +			break;
+> +		default:
+> +			dev_dbg(dev, "Unknown _PLD rotation val %d\n", pld->panel);
+
+acpi_handle_debug(ACPI_HANDLE(dev), "invalid rotation %u in _PLD\n",
+		  pld->rotation);
+
+> +			ret = -EINVAL;
+> +			goto done;
+> +		}
+> +	}
+> +
+> +done:
+> +	ACPI_FREE(pld);
+> +	return ret;
+> +}
+> +
+> +static int v4l2_fwnode_device_parse_dt(struct device *dev,
+
+I'd call this v4l2_fwnode_device_parse_of() as we're parsing OF nodes 
+and properties here.
+
+> +				       struct v4l2_fwnode_device_properties *props)
+>   {
+>   	struct fwnode_handle *fwnode = dev_fwnode(dev);
+>   	u32 val;
+>   	int ret;
+>   
+> -	memset(props, 0, sizeof(*props));
+> -
+> -	props->orientation = V4L2_FWNODE_PROPERTY_UNSET;
+>   	ret = fwnode_property_read_u32(fwnode, "orientation", &val);
+>   	if (!ret) {
+>   		switch (val) {
+> @@ -833,7 +883,6 @@ int v4l2_fwnode_device_parse(struct device *dev,
+>   		dev_dbg(dev, "device orientation: %u\n", val);
+>   	}
+>   
+> -	props->rotation = V4L2_FWNODE_PROPERTY_UNSET;
+>   	ret = fwnode_property_read_u32(fwnode, "rotation", &val);
+>   	if (!ret) {
+>   		if (val >= 360) {
+> @@ -847,6 +896,30 @@ int v4l2_fwnode_device_parse(struct device *dev,
+>   
+>   	return 0;
+>   }
+> +
+> +int v4l2_fwnode_device_parse(struct device *dev,
+> +			     struct v4l2_fwnode_device_properties *props)
+> +{
+> +	int ret;
+> +
+> +	memset(props, 0, sizeof(*props));
+> +
+> +	props->orientation = V4L2_FWNODE_PROPERTY_UNSET;
+> +	props->rotation = V4L2_FWNODE_PROPERTY_UNSET;
+> +
+> +	/* Start by looking into swnodes and dt. */
+> +	ret =  v4l2_fwnode_device_parse_dt(dev, props);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Orientation and rotation found!, we are ready. */
+> +	if (props->orientation != V4L2_FWNODE_PROPERTY_UNSET &&
+> +	    props->rotation != V4L2_FWNODE_PROPERTY_UNSET)
+> +		return 0;
+
+I think you can remove this check without affecting the functionality.
+
+> +
+> +	/* Let's check the acpi table. */
+> +	return v4l2_fwnode_device_parse_acpi(dev, props);
+> +}
+>   EXPORT_SYMBOL_GPL(v4l2_fwnode_device_parse);
+>   
+>   /*
 > 
-> Sunil V L (3):
->   ACPI: RISC-V: Add support for RIMT
->   ACPI: scan: Add support for RISC-V in acpi_iommu_configure_id()
->   iommu/riscv: Add ACPI support
-> 
->  MAINTAINERS                          |   1 +
->  arch/riscv/Kconfig                   |   1 +
->  drivers/acpi/Kconfig                 |   4 +
->  drivers/acpi/riscv/Kconfig           |   7 +
->  drivers/acpi/riscv/Makefile          |   1 +
->  drivers/acpi/riscv/init.c            |   2 +
->  drivers/acpi/riscv/init.h            |   1 +
->  drivers/acpi/riscv/rimt.c            | 523 +++++++++++++++++++++++++++
->  drivers/acpi/scan.c                  |   9 +-
->  drivers/iommu/riscv/iommu-platform.c |  17 +-
->  drivers/iommu/riscv/iommu.c          |  10 +
->  include/linux/acpi_rimt.h            |  26 ++
->  12 files changed, 599 insertions(+), 3 deletions(-)
->  create mode 100644 drivers/acpi/riscv/Kconfig
->  create mode 100644 drivers/acpi/riscv/rimt.c
->  create mode 100644 include/linux/acpi_rimt.h
-> 
-> -- 
-> 2.43.0
-> 
+
+-- 
+Regards,
+
+Sakari Ailus
 
