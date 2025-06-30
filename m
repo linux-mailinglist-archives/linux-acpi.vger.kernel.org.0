@@ -1,301 +1,221 @@
-Return-Path: <linux-acpi+bounces-14866-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14867-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02A7AEE7FF
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 22:11:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49FB5AEE8B3
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 22:59:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 975BF7A1E62
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 20:09:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81B8C17F863
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 20:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C59202976;
-	Mon, 30 Jun 2025 20:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FBC028C870;
+	Mon, 30 Jun 2025 20:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MrDHvwih"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t/p92sSr"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE691B87F0;
-	Mon, 30 Jun 2025 20:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E383E25B2E1;
+	Mon, 30 Jun 2025 20:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751314271; cv=none; b=BAioQx9I+ijxgeRUWO1qzO6s/xq4xlD//hprQN0avEFXUmNkQGTJkmDusCIPxrG3k1xUxOateZCGTbCzCLvGkfRUcvgpmb8OAprNSb2JmvnhlLy7/SH4ei9ErPtZCKkUYX2bkB4klxeIkL/Z/v06qPO5OKDbddxh5VeWkyu7riM=
+	t=1751317122; cv=none; b=kymes5BI6DQYVEC1uBDTPh3zEwuLkCxmDJJS4IR+0cpmzWfrI+6kCaU/egx7yWXdlXEH7gtltzmMTnF6VQGlSLn9JmrgmxfzgFtFoxKgUM7PMpuoEBORKtbEbrlGI7yW+cW6AqUzCyAsFkWay0Acaf/CX3DVMbOGI3yhb0zS5pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751314271; c=relaxed/simple;
-	bh=CF8N+TwAuO0PoFnw1FLiMkt7/JQwaRY88SAx44FaeVw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sqdECW2NtRbEVZ/yNOt8bLJOKUJNhf8NWeplljMY8UW88nazK42kMNCSoFzjk4fN2ukHUcxrc+DYHonxqJSvMx755oLM7DHJqrjK+A5XRBbwTeQHE6CNnB1d5zeFSSetArMeDH1kYRRUGAFko/3rvBkhVMRpinUUCS/04o3Mdqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MrDHvwih; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBDDC4CEEB;
-	Mon, 30 Jun 2025 20:11:11 +0000 (UTC)
+	s=arc-20240116; t=1751317122; c=relaxed/simple;
+	bh=ketVR18fpnW4xkFERzMsiFpAF9jtuIK0RiDKnTgJDp8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=pAf7ejcfWWgDZPcKGMgK4X+JAmMmZMN/CX/0wJ1+euVuknaVeuyEnkbVc06oZssgio0cKG7qDiEUupaFc+nG2mh5bqdJFcjKE3hzZW6IFkxnQcIlTZQZfmMywIuxNA0oslLxOTP7dQod+On8ZjCiSCYtyUytZChP+m5f31hgXrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t/p92sSr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A8BC4CEEF;
+	Mon, 30 Jun 2025 20:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751314271;
-	bh=CF8N+TwAuO0PoFnw1FLiMkt7/JQwaRY88SAx44FaeVw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=MrDHvwih+6HKXG4deS9oTfTkK6q0kkCIdFuwgTx7Mwpca5Lqk8KVL2vOBeAikJIbB
-	 AA14ZInbFhOXTDb5sHly+HLFu8UdYC94/E8SiUjYIwlyOfUEZiOMoLB2x3ZcPpG1WT
-	 88T76kqy0hlR21wJaGlrXgQPcXURyjOOxPThvQ287unOwKULU3wghGrFJ/uFRzACRJ
-	 MB1viJ9QI7WTCL9biKIRLASCHN0VOxSX8HiRNF+yFnoGVe8EsZoLvpV8DcG80Wlbnl
-	 bJMjsUvU5Ro+5z7ryfRHXBAwPc7xQ9jiXDJZ8oKcEjLMLJ80mm1HZA+VtLEenzMNh+
-	 TlBpCt5lBaleg==
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-40669fd81b5so1501941b6e.1;
-        Mon, 30 Jun 2025 13:11:11 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU808v5M3A1L4VtaP946jMMxRxtIVlRFYWe/SWcJBm/qp8t+F49QFrkW6bu6nWAKtG6VcqmQv8OfLSW9UQs@vger.kernel.org, AJvYcCVjR0bw8oaGf6sT89Tzl600G3UJfZwVOcDIxYdAGyeUXNMy0h/tPid0fCuKgFmy5FePYP5Dy3w4hvGt@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx91rYkSMYuW6DQ0COlh4GKlUyJAUgvBV/NcNK1aXtE5M4A/ZBH
-	CbZ7iGpA1I0nPyj7hVtnznT1mhxEoa6CGwekyaG38z4aezVrrIMvS86VHdS9xr4ZBmUY6bMZy0E
-	V2y3GkMePIbBHDYz9ttBg4+drHfMWJKY=
-X-Google-Smtp-Source: AGHT+IH6VbaWNDgEp4LsIzOC5laKKwbjfEgyJslwNPDiGRh9moPgDyA+YDecbRWUixH02vzpC/9d13K0ebO8CBOHXVQ=
-X-Received: by 2002:a05:6808:1208:b0:40a:5765:eee2 with SMTP id
- 5614622812f47-40b33e18341mr12815177b6e.21.1751314270313; Mon, 30 Jun 2025
- 13:11:10 -0700 (PDT)
+	s=k20201202; t=1751317121;
+	bh=ketVR18fpnW4xkFERzMsiFpAF9jtuIK0RiDKnTgJDp8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=t/p92sSr9VA53atRBd9cx/zouvjFTcsKjHrlZbWgEVR0zWNMBNis4/GnOccgedGq4
+	 2tSC8gKs09uaUeiq4lcrHOeQO5MUMaZKtXd2B77yJwkJsckD1uedC9jeZw6u1z0RLl
+	 Fg2M2n3BBKLumQVdtar6u2oV5yjvtO121LJVaExd1LzWjfi0SSPR+ArUB0LCeYCg6L
+	 sWI/TjbZHwEDGtBs7H6nTj4k/Wt+9YKDPy4pUZmHJzqARjgSjp19AEwUJJfktKx+bW
+	 DVQnl0vow2inpXI5oQ0r7Q5key+SrQA57NvjrVGbghFOADly97xfSzcmnsnUI/uLes
+	 vugYY9PM3NXNw==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Zhe Qiao <qiaozhe@iscas.ac.cn>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
+	bhelgaas@google.com,
+	linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.15 06/23] Revert "PCI/ACPI: Fix allocated memory release on error in pci_acpi_scan_root()"
+Date: Mon, 30 Jun 2025 16:44:11 -0400
+Message-Id: <20250630204429.1357695-6-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250630204429.1357695-1-sashal@kernel.org>
+References: <20250630204429.1357695-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250604022956.3723438-1-yu.c.chen@intel.com>
-In-Reply-To: <20250604022956.3723438-1-yu.c.chen@intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 30 Jun 2025 22:10:59 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0j9r0TdS7EVRz0RHzi=F11t3EHq8xyf81=Z4kW0HXAueA@mail.gmail.com>
-X-Gm-Features: Ac12FXziDLO2YdCjInjGZYVycQtkKNscFf_UZIrwOZ99lmsmnm2u8OQjNpqKLYA
-Message-ID: <CAJZ5v0j9r0TdS7EVRz0RHzi=F11t3EHq8xyf81=Z4kW0HXAueA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: pfr_update: Add more debug information when
- firmware update failed
-To: Chen Yu <yu.c.chen@intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	"Govindarajulu, Hariganesh" <hariganesh.govindarajulu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.15.4
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 4, 2025 at 4:36=E2=80=AFAM Chen Yu <yu.c.chen@intel.com> wrote:
->
-> Users reported insufficient error information for debugging during
-> firmware update failures on certain platforms. Add verbose error logs
-> in the error code path to enhance debuggability.
->
-> Reported-by: "Govindarajulu, Hariganesh" <hariganesh.govindarajulu@intel.=
-com>
-> Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-> ---
->  drivers/acpi/pfr_update.c | 63 +++++++++++++++++++++++++++++----------
->  1 file changed, 48 insertions(+), 15 deletions(-)
->
-> diff --git a/drivers/acpi/pfr_update.c b/drivers/acpi/pfr_update.c
-> index 031d1ba81b86..318683744ed1 100644
-> --- a/drivers/acpi/pfr_update.c
-> +++ b/drivers/acpi/pfr_update.c
-> @@ -127,8 +127,11 @@ static int query_capability(struct pfru_update_cap_i=
-nfo *cap_hdr,
->                                           pfru_dev->rev_id,
->                                           PFRU_FUNC_QUERY_UPDATE_CAP,
->                                           NULL, ACPI_TYPE_PACKAGE);
-> -       if (!out_obj)
-> +       if (!out_obj) {
-> +               dev_dbg(pfru_dev->parent_dev,
-> +                       "Query cap failed with no object\n");
->                 return ret;
-> +       }
->
->         if (out_obj->package.count < CAP_NR_IDX ||
->             out_obj->package.elements[CAP_STATUS_IDX].type !=3D ACPI_TYPE=
-_INTEGER ||
-> @@ -141,13 +144,17 @@ static int query_capability(struct pfru_update_cap_=
-info *cap_hdr,
->             out_obj->package.elements[CAP_DRV_SVN_IDX].type !=3D ACPI_TYP=
-E_INTEGER ||
->             out_obj->package.elements[CAP_PLAT_ID_IDX].type !=3D ACPI_TYP=
-E_BUFFER ||
->             out_obj->package.elements[CAP_OEM_ID_IDX].type !=3D ACPI_TYPE=
-_BUFFER ||
-> -           out_obj->package.elements[CAP_OEM_INFO_IDX].type !=3D ACPI_TY=
-PE_BUFFER)
-> +           out_obj->package.elements[CAP_OEM_INFO_IDX].type !=3D ACPI_TY=
-PE_BUFFER) {
-> +               dev_dbg(pfru_dev->parent_dev,
-> +                       "Query cap failed with invalid package count/type=
-\n");
->                 goto free_acpi_buffer;
-> +       }
->
->         cap_hdr->status =3D out_obj->package.elements[CAP_STATUS_IDX].int=
-eger.value;
->         if (cap_hdr->status !=3D DSM_SUCCEED) {
->                 ret =3D -EBUSY;
-> -               dev_dbg(pfru_dev->parent_dev, "Error Status:%d\n", cap_hd=
-r->status);
-> +               dev_dbg(pfru_dev->parent_dev, "Query cap Error Status:%d\=
-n",
-> +                       cap_hdr->status);
->                 goto free_acpi_buffer;
->         }
->
-> @@ -193,24 +200,32 @@ static int query_buffer(struct pfru_com_buf_info *i=
-nfo,
->         out_obj =3D acpi_evaluate_dsm_typed(handle, &pfru_guid,
->                                           pfru_dev->rev_id, PFRU_FUNC_QUE=
-RY_BUF,
->                                           NULL, ACPI_TYPE_PACKAGE);
-> -       if (!out_obj)
-> +       if (!out_obj) {
-> +               dev_dbg(pfru_dev->parent_dev,
-> +                       "Query buf failed with no object\n");
->                 return ret;
-> +       }
->
->         if (out_obj->package.count < BUF_NR_IDX ||
->             out_obj->package.elements[BUF_STATUS_IDX].type !=3D ACPI_TYPE=
-_INTEGER ||
->             out_obj->package.elements[BUF_EXT_STATUS_IDX].type !=3D ACPI_=
-TYPE_INTEGER ||
->             out_obj->package.elements[BUF_ADDR_LOW_IDX].type !=3D ACPI_TY=
-PE_INTEGER ||
->             out_obj->package.elements[BUF_ADDR_HI_IDX].type !=3D ACPI_TYP=
-E_INTEGER ||
-> -           out_obj->package.elements[BUF_SIZE_IDX].type !=3D ACPI_TYPE_I=
-NTEGER)
-> +           out_obj->package.elements[BUF_SIZE_IDX].type !=3D ACPI_TYPE_I=
-NTEGER) {
-> +               dev_dbg(pfru_dev->parent_dev,
-> +                       "Query buf failed with invalid package count/type=
-\n");
->                 goto free_acpi_buffer;
-> +       }
->
->         info->status =3D out_obj->package.elements[BUF_STATUS_IDX].intege=
-r.value;
->         info->ext_status =3D
->                 out_obj->package.elements[BUF_EXT_STATUS_IDX].integer.val=
-ue;
->         if (info->status !=3D DSM_SUCCEED) {
->                 ret =3D -EBUSY;
-> -               dev_dbg(pfru_dev->parent_dev, "Error Status:%d\n", info->=
-status);
-> -               dev_dbg(pfru_dev->parent_dev, "Error Extended Status:%d\n=
-", info->ext_status);
-> +               dev_dbg(pfru_dev->parent_dev,
-> +                       "Query buf failed with Error Status:%d\n", info->=
-status);
-> +               dev_dbg(pfru_dev->parent_dev,
-> +                       "Query buf failed with Error Extended Status:%d\n=
-", info->ext_status);
->
->                 goto free_acpi_buffer;
->         }
-> @@ -295,12 +310,16 @@ static bool applicable_image(const void *data, stru=
-ct pfru_update_cap_info *cap,
->         m_img_hdr =3D data + size;
->
->         type =3D get_image_type(m_img_hdr, pfru_dev);
-> -       if (type < 0)
-> +       if (type < 0) {
-> +               dev_dbg(pfru_dev->parent_dev, "Invalid image type\n");
->                 return false;
-> +       }
->
->         size =3D adjust_efi_size(m_img_hdr, size);
-> -       if (size < 0)
-> +       if (size < 0) {
-> +               dev_dbg(pfru_dev->parent_dev, "Invalid image size\n");
->                 return false;
-> +       }
->
->         auth =3D data + size;
->         size +=3D sizeof(u64) + auth->auth_info.hdr.len;
-> @@ -346,8 +365,11 @@ static int start_update(int action, struct pfru_devi=
-ce *pfru_dev)
->         out_obj =3D acpi_evaluate_dsm_typed(handle, &pfru_guid,
->                                           pfru_dev->rev_id, PFRU_FUNC_STA=
-RT,
->                                           &in_obj, ACPI_TYPE_PACKAGE);
-> -       if (!out_obj)
-> +       if (!out_obj) {
-> +               dev_dbg(pfru_dev->parent_dev,
-> +                       "Update failed to start with no object\n");
->                 return ret;
-> +       }
->
->         if (out_obj->package.count < UPDATE_NR_IDX ||
->             out_obj->package.elements[UPDATE_STATUS_IDX].type !=3D ACPI_T=
-YPE_INTEGER ||
-> @@ -355,8 +377,11 @@ static int start_update(int action, struct pfru_devi=
-ce *pfru_dev)
->             out_obj->package.elements[UPDATE_AUTH_TIME_LOW_IDX].type !=3D=
- ACPI_TYPE_INTEGER ||
->             out_obj->package.elements[UPDATE_AUTH_TIME_HI_IDX].type !=3D =
-ACPI_TYPE_INTEGER ||
->             out_obj->package.elements[UPDATE_EXEC_TIME_LOW_IDX].type !=3D=
- ACPI_TYPE_INTEGER ||
-> -           out_obj->package.elements[UPDATE_EXEC_TIME_HI_IDX].type !=3D =
-ACPI_TYPE_INTEGER)
-> +           out_obj->package.elements[UPDATE_EXEC_TIME_HI_IDX].type !=3D =
-ACPI_TYPE_INTEGER) {
-> +               dev_dbg(pfru_dev->parent_dev,
-> +                       "Update failed with invalid package count/type\n"=
-);
->                 goto free_acpi_buffer;
-> +       }
->
->         update_result.status =3D
->                 out_obj->package.elements[UPDATE_STATUS_IDX].integer.valu=
-e;
-> @@ -365,8 +390,10 @@ static int start_update(int action, struct pfru_devi=
-ce *pfru_dev)
->
->         if (update_result.status !=3D DSM_SUCCEED) {
->                 ret =3D -EBUSY;
-> -               dev_dbg(pfru_dev->parent_dev, "Error Status:%d\n", update=
-_result.status);
-> -               dev_dbg(pfru_dev->parent_dev, "Error Extended Status:%d\n=
-",
-> +               dev_dbg(pfru_dev->parent_dev,
-> +                       "Update failed with Error Status:%d\n", update_re=
-sult.status);
-> +               dev_dbg(pfru_dev->parent_dev,
-> +                       "Update failed with Error Extended Status:%d\n",
->                         update_result.ext_status);
->
->                 goto free_acpi_buffer;
-> @@ -450,8 +477,10 @@ static ssize_t pfru_write(struct file *file, const c=
-har __user *buf,
->         if (ret)
->                 return ret;
->
-> -       if (len > buf_info.buf_size)
-> +       if (len > buf_info.buf_size) {
-> +               dev_dbg(pfru_dev->parent_dev, "Capsule image size too lar=
-ge\n");
->                 return -EINVAL;
-> +       }
->
->         iov.iov_base =3D (void __user *)buf;
->         iov.iov_len =3D len;
-> @@ -460,10 +489,14 @@ static ssize_t pfru_write(struct file *file, const =
-char __user *buf,
->         /* map the communication buffer */
->         phy_addr =3D (phys_addr_t)((buf_info.addr_hi << 32) | buf_info.ad=
-dr_lo);
->         buf_ptr =3D memremap(phy_addr, buf_info.buf_size, MEMREMAP_WB);
-> -       if (!buf_ptr)
-> +       if (!buf_ptr) {
-> +               dev_dbg(pfru_dev->parent_dev, "Failed to remap the buffer=
-\n");
->                 return -ENOMEM;
-> +       }
->
->         if (!copy_from_iter_full(buf_ptr, len, &iter)) {
-> +               dev_dbg(pfru_dev->parent_dev,
-> +                       "Failed to copy the data from the user space buff=
-er\n");
->                 ret =3D -EINVAL;
->                 goto unmap;
->         }
-> --
+From: Zhe Qiao <qiaozhe@iscas.ac.cn>
 
-Applied as 6.17 material, thanks!
+[ Upstream commit 2b8be57fa0c88ac824a906f29c04d728f9f6047a ]
+
+This reverts commit 631b2af2f357 ("PCI/ACPI: Fix allocated memory release
+on error in pci_acpi_scan_root()").
+
+The reverted patch causes the 'ri->cfg' and 'root_ops' resources to be
+released multiple times.
+
+When acpi_pci_root_create() fails, these resources have already been
+released internally by the __acpi_pci_root_release_info() function.
+
+Releasing them again in pci_acpi_scan_root() leads to incorrect behavior
+and potential memory issues.
+
+We plan to resolve the issue using a more appropriate fix.
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/aEmdnuw715btq7Q5@stanley.mountain/
+Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
+Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20250619072608.2075475-1-qiaozhe@iscas.ac.cn
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+Based on my analysis of the commit and examination of the kernel code, I
+need to determine if this revert should be backported.
+
+**YES**, this commit should be backported to stable kernel trees.
+
+## Extensive Explanation:
+
+### 1. **Critical Double-Free Bug Fix**
+This revert fixes a serious double-free bug introduced by commit
+631b2af2f357. The code analysis reveals that when
+`acpi_pci_root_create()` fails, it internally calls
+`__acpi_pci_root_release_info()`, which then invokes the `release_info`
+callback (`pci_acpi_generic_release_info()`). This callback already
+frees:
+- `ri->cfg` via `pci_ecam_free(ri->cfg)`
+- `ci->ops` (which is `root_ops`) via `kfree(ci->ops)`
+- `ri` via `kfree(ri)`
+
+The explicit cleanup added by the reverted commit causes these resources
+to be freed a second time, leading to memory corruption.
+
+### 2. **Error Path Issue - High Impact**
+The double-free occurs in the error handling path when
+`acpi_pci_root_create()` fails. While this is not the common case,
+PCI/ACPI initialization failures can occur due to:
+- Hardware issues
+- Firmware bugs
+- Resource allocation failures
+- Configuration problems
+
+When such failures occur, the double-free can cause kernel crashes, data
+corruption, or security vulnerabilities.
+
+### 3. **Simple and Safe Fix**
+The revert is straightforward - it removes the problematic error
+handling code that was incorrectly added. The code changes show:
+```diff
+- if (!root_ops)
+- goto free_ri;
++       if (!root_ops) {
++               kfree(ri);
++               return NULL;
++       }
+```
+This returns to the original, simpler error handling that only frees
+what hasn't been passed to `acpi_pci_root_create()` yet.
+
+### 4. **Matches Stable Backport Criteria**
+This fix meets the stable kernel criteria:
+- **Fixes a real bug**: Double-free causing potential crashes/corruption
+- **Small and contained**: Only modifies error paths in one function
+- **Already in Linus' tree**: This is a merged commit
+- **No new features**: Pure bug fix
+- **Low risk**: Reverts to previously known-working code
+
+### 5. **Similar to Successful Backports**
+Looking at the reference commits, this is similar to:
+- "ARM64: PCI: Fix struct acpi_pci_root_ops allocation failure path"
+  (Backported: YES) - Also fixed memory management in error paths
+- "Revert 'PCI: acpiphp: Reassign resources on bridge if necessary'"
+  (Backported: YES) - Also a revert fixing problematic behavior
+
+The commit message explicitly states "We plan to resolve the issue using
+a more appropriate fix," indicating the maintainers recognize there may
+be an underlying issue to address, but the immediate concern is fixing
+the double-free bug, making this suitable for stable backporting.
+
+ drivers/pci/pci-acpi.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index b78e0e4173244..af370628e5839 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -1676,19 +1676,24 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
+ 		return NULL;
+ 
+ 	root_ops = kzalloc(sizeof(*root_ops), GFP_KERNEL);
+-	if (!root_ops)
+-		goto free_ri;
++	if (!root_ops) {
++		kfree(ri);
++		return NULL;
++	}
+ 
+ 	ri->cfg = pci_acpi_setup_ecam_mapping(root);
+-	if (!ri->cfg)
+-		goto free_root_ops;
++	if (!ri->cfg) {
++		kfree(ri);
++		kfree(root_ops);
++		return NULL;
++	}
+ 
+ 	root_ops->release_info = pci_acpi_generic_release_info;
+ 	root_ops->prepare_resources = pci_acpi_root_prepare_resources;
+ 	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
+ 	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
+ 	if (!bus)
+-		goto free_cfg;
++		return NULL;
+ 
+ 	/* If we must preserve the resource configuration, claim now */
+ 	host = pci_find_host_bridge(bus);
+@@ -1705,14 +1710,6 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
+ 		pcie_bus_configure_settings(child);
+ 
+ 	return bus;
+-
+-free_cfg:
+-	pci_ecam_free(ri->cfg);
+-free_root_ops:
+-	kfree(root_ops);
+-free_ri:
+-	kfree(ri);
+-	return NULL;
+ }
+ 
+ void pcibios_add_bus(struct pci_bus *bus)
+-- 
+2.39.5
+
 
