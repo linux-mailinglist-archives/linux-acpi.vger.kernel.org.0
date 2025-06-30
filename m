@@ -1,227 +1,202 @@
-Return-Path: <linux-acpi+bounces-14864-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14865-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B40DCAEE71C
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 21:02:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 906F8AEE7F7
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 22:07:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 617627A2F38
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 19:00:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55DA6189D406
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 20:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088EB1D54F7;
-	Mon, 30 Jun 2025 19:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752601DFE26;
+	Mon, 30 Jun 2025 20:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gzSm/Ibw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="enJ4rWDg"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C865B43151;
-	Mon, 30 Jun 2025 19:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B13619F130;
+	Mon, 30 Jun 2025 20:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751310132; cv=none; b=W5IC9LX1F2IXI5+9SnvZ+gEHS3MBnWUZ1CQu3lbLSGqeso4OB007U0V64ilMvu39/s+zYWRb8pswgny9jFhiPe2i689POGxpFvq4hLN0JYwACgL4OZiKodlpesoXVszB+GNOdH8fbUMHoj+fV8Fy5lSbbqMp6u1IU3kqns2Tpok=
+	t=1751314032; cv=none; b=ajWp9ExhrMhQMPZSZ2DRfOwUpSsQWl7IQoIgeIUCAGIoznAcNb21xLX0T+85GJJ/ENt5L53KpRe7GNsvS7Wj6gbcdUEeT4Mhj3HyDE+Fu+JZjrLghpNuvLi+qriTkHpu1AVZjoKzQREo/oG6qjZeYPPV/YTge75/nCk5JYP79Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751310132; c=relaxed/simple;
-	bh=DdHZAQF33pLN1I2cF0iHqvYvM8clVhjNG6ouagfGknM=;
+	s=arc-20240116; t=1751314032; c=relaxed/simple;
+	bh=r1AWKj41a1sd0zceKrDNzhF2CygHLZVhZnJgrhIxi14=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EesfPmVvLRXXU3DPIQIykoH1/kbbr8qpRBlasXTG5Y4eB+lqzGlcLEgau84US8jq6ntNyeAp1FqwpRirA63bozqWZeB4YuEkrXFv1A42lIrRS13LfVOB7+HPcG7PKqDNRyqy56U6WOLeKSSVigDg+buOtFyzkg7ssWvXx9o3qI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gzSm/Ibw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92263C4CEEB;
-	Mon, 30 Jun 2025 19:02:12 +0000 (UTC)
+	 To:Cc:Content-Type; b=hbhDKzurCVUzR/HYd35RQuuQgJCJsi2QeCu5nwtDPGO8PQPwFxLHVRtIvJlTczVHgeic/3nkBZPrErx4MrFSQX3Qz0d8wBB8j/WqNcGog/xMzPTkTy7jgAjXzsdfT7rteAmBf//gbrancsiz9Jo0fVp0EH4f5IsQCb5Ec56zCro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=enJ4rWDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C404BC4CEF1;
+	Mon, 30 Jun 2025 20:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751310132;
-	bh=DdHZAQF33pLN1I2cF0iHqvYvM8clVhjNG6ouagfGknM=;
+	s=k20201202; t=1751314029;
+	bh=r1AWKj41a1sd0zceKrDNzhF2CygHLZVhZnJgrhIxi14=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=gzSm/Ibw7//EfhK/ofC/U2l4KLOfd7YKKB1g67zSNdYpfeilLRmiW37BD5NCQiFll
-	 Q6WXmVVpHKhhT6JHlzfb7oqtcHiKfsxTxsyyBmIJ8pUySFdRtGZ3AR3WkvsKyKobr4
-	 e0Fmf07nIRe+Usi8WLt2CkupNaF48r/PJJBwcr8PG1Xkh1zWKKlgPAH9lgtgMpf6Fw
-	 8dFVcytj4pAZEkt6WexGqgVyEvfrDKcSy+0t01Du/v5BVV/KRujgmdN0eUfqgA8CDU
-	 8GKhbMB5dmDhX6KVNu3qIbdy8byNHacvzF4FaOkd0nYe2108v0SBiWxIlJ21T8Jtsd
-	 cR4Fvq8Rtsm4A==
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-60eefb805a4so506452eaf.2;
-        Mon, 30 Jun 2025 12:02:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUlhXDhYk+64RLUHkRdoVmgxpepvzpx0tf//i4wNyzSYUy0SwgFogLI5rk+M70Kq8jrL0K619Vl/SIttg==@vger.kernel.org, AJvYcCUtHrHj/bi7EEWj6YHZRWgBd1gc8xWVYPZWgBXG3Ttb5hfdB2hKEtKjfbZHueoMfBSVSYos2QIcjU7xAxB6@vger.kernel.org, AJvYcCUyYwhkvXSkA6/zDaH4wCwgMyaci6cjVv3/KsL6vpOg+QjHMywsquhCOi28yfiFnTYr1cGAar7H2Hh3HfwW@vger.kernel.org, AJvYcCWNbaMOFtxJEOF61ekukGO6xhqq4J/zQVbMxS0yH/Ghzicb6GuEf2yr/VQqVUwydskWKhLFjpIaH14A@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLKiGo19tn/IwY9gS4CE1vsSn4LbJxXFQ44JG7d4O6N3d8sYUL
-	qmAaon0v/33lxeaO2W5Def2ibKdcunuTlRzA8enj45YjgDhXbwYH15tMj057wR8gV3KwuJ+YuB2
-	nV8EiqAMEGKGRycTqkUL1vad3cfxGXAs=
-X-Google-Smtp-Source: AGHT+IFm2vHgb+BKZqHK5J/LOVulMiaZwngKIVHYspoXk0NcIChmSW6R/HuiJFUCHaquIAYnbbZGw+bmqzhkdJ2yxBQ=
-X-Received: by 2002:a05:6820:270d:b0:611:4701:bcd2 with SMTP id
- 006d021491bc7-611b9116603mr9956287eaf.6.1751310131833; Mon, 30 Jun 2025
- 12:02:11 -0700 (PDT)
+	b=enJ4rWDgtU7O+aKA9rrgUJQjs5FBFVvwrqjGxU8Jd83sLw4yR00YvpCksbMpspRi8
+	 HsCjRTIG7/aZCdZ7HkYwkJhYR7M6kc7FQpS+GXJv5oafT+058zxFlWc3pMCKDx1ytA
+	 V8d/lLuDJzy1e3S/4pwUL3JbF1a2amyqc6LYSKsTr8JYsdTOx+BUwh6fqNLrg+VRER
+	 hojNCbxaeJqcjGGXYdAUNF/JD+cgqDKC535WwDlk7efnVBElJRSoORUrAwu/T5rsd6
+	 2Y7z9TQInQsfOXtyCGx3X9+JtD/6HNK/l/L15UNE4JAc0bN+Y79IvpojrAqZbDYhlt
+	 CwvGuNMAJxNYw==
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-6118b000506so1168749eaf.0;
+        Mon, 30 Jun 2025 13:07:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVGhzkWvJFEQV0IgONVAOWR7SKfrftRMujO4js/eX4I39AoMFBF+VIRaO3Ib09hN97EF33MZy4F2fpAGErQ@vger.kernel.org, AJvYcCX6CvOwLDXf5BUWdDplqgGhmyQPRBl5gOxGJCFoUJPuzKpneF4PvaTxyCOoy7NfAIv2FTd0N8Vl6tAF@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzrBIKJSRHTE1fYPebggOSmysfegLHG2RC2zUjfN2rm/l5eYrN
+	UR3De8nu1J3QhcX8wDj0EKjEgE7uuaM5qLAaxjB42Yp4D0+xRwU1wRJmWt4gYq3Ccrh309agz5w
+	G+Nb2VnG2DFhjwqqHcXmKbJqZCo+cKYo=
+X-Google-Smtp-Source: AGHT+IFslIZMTl4pJP0AqDhio6+67azk3qrKNhvD+UFrMTCrHmUWjBxpcaD/bHzG6Cp+7GjfV5H+KgUY19UtXhoQwRI=
+X-Received: by 2002:a4a:e90b:0:b0:611:80f3:eb44 with SMTP id
+ 006d021491bc7-611b90eca36mr9646540eaf.3.1751314028969; Mon, 30 Jun 2025
+ 13:07:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250627-rneri-wakeup-mailbox-v5-0-df547b1d196e@linux.intel.com> <20250627-rneri-wakeup-mailbox-v5-3-df547b1d196e@linux.intel.com>
-In-Reply-To: <20250627-rneri-wakeup-mailbox-v5-3-df547b1d196e@linux.intel.com>
+References: <20250527024259.56996-1-qiyuzhu2@amd.com>
+In-Reply-To: <20250527024259.56996-1-qiyuzhu2@amd.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 30 Jun 2025 21:02:00 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0h_oifyhJq4WiOzS0fcexrjeChJhVyAthfQCX=6v_GumA@mail.gmail.com>
-X-Gm-Features: Ac12FXyksNrv9JxF_gBnNjGxzTfNZOeM3Kqt38U6mwLvamITRF0pZ-6QBWI-N0s
-Message-ID: <CAJZ5v0h_oifyhJq4WiOzS0fcexrjeChJhVyAthfQCX=6v_GumA@mail.gmail.com>
-Subject: Re: [PATCH v5 03/10] dt-bindings: reserved-memory: Wakeup Mailbox for
- Intel processors
-To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Rob Herring <robh@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Michael Kelley <mhklinux@outlook.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Saurabh Sengar <ssengar@linux.microsoft.com>, 
-	Chris Oo <cho@microsoft.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
-	linux-hyperv@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Ricardo Neri <ricardo.neri@intel.com>, Yunhong Jiang <yunhong.jiang@linux.intel.com>
+Date: Mon, 30 Jun 2025 22:06:57 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0j9J-4-dv=0QxEPxYDS_epnjT9dGCNoZA0LpiDZa7sy8Q@mail.gmail.com>
+X-Gm-Features: Ac12FXzX06c4v2qxz4_NKajLb2NNnxBQRWYVOI3co3NqsscTI3xGPLK7ifhsdEg
+Message-ID: <CAJZ5v0j9J-4-dv=0QxEPxYDS_epnjT9dGCNoZA0LpiDZa7sy8Q@mail.gmail.com>
+Subject: Re: [PATCH v5] ACPI:PRM: Reduce unnecessary printing to avoid the
+ worries of regular users
+To: Zhu Qiyu <qiyuzhu2@amd.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 28, 2025 at 5:35=E2=80=AFAM Ricardo Neri
-<ricardo.neri-calderon@linux.intel.com> wrote:
+On Tue, May 27, 2025 at 4:43=E2=80=AFAM Zhu Qiyu <qiyuzhu2@amd.com> wrote:
 >
-> Add DeviceTree bindings to enumerate the wakeup mailbox used in platform
-> firmware for Intel processors.
+> Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
+> handler and context") introduces non-essential printing "Failed to find
+> VA for GUID: xxxx, PA: 0x0" which causes unnecessary worry for regular
+> users.
 >
-> x86 platforms commonly boot secondary CPUs using an INIT assert, de-asser=
-t
-> followed by Start-Up IPI messages. The wakeup mailbox can be used when th=
-is
-> mechanism is unavailable.
->
-> The wakeup mailbox offers more control to the operating system to boot
-> secondary CPUs than a spin-table. It allows the reuse of same wakeup vect=
-or
-> for all CPUs while maintaining control over which CPUs to boot and when.
-> While it is possible to achieve the same level of control using a spin-
-> table, it would require to specify a separate `cpu-release-addr` for each
-> secondary CPU.
->
-> The operation and structure of the mailbox is described in the
-> Multiprocessor Wakeup Structure defined in the ACPI specification. Note
-> that this structure does not specify how to publish the mailbox to the
-> operating system (ACPI-based platform firmware uses a separate table). No
-> ACPI table is needed in DeviceTree-based firmware to enumerate the mailbo=
-x.
->
-> Add a `compatible` property that the operating system can use to discover
-> the mailbox. Nodes wanting to refer to the reserved memory usually define=
- a
-> `memory-region` property. /cpus/cpu* nodes would want to refer to the
-> mailbox, but they do not have such property defined in the DeviceTree
-> specification. Moreover, it would imply that there is a memory region per
-> CPU.
->
-> Co-developed-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> Signed-off-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-> Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+> Refer to PRM Spec Section 4.1.2[1], both static data buffer address
 
-LGTM from the ACPI specification cross-referencing perspective, so
+s/Refer/According to/
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> and ACPI parameter buffer address may be NULL if they are not needed.
+> So there is no need to print out "Failed to find VA ... " to intimidate
+> regular users.
 
+s/intimidate regular users/confuse users/
+
+>
+> Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%2=
+0Mechanism%20-%20with%20legal%20notice.pdf # [1]
+>
+> Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
 > ---
-> Changes since v4:
->  - Specified the version and section of the ACPI spec in which the
->    wakeup mailbox is defined. (Rafael)
->  - Fixed a warning from yamllint about line lengths of URLs.
+> Previous versions can be found at:
+> v1: https://lore.kernel.org/linux-acpi/20250427075317.42687-1-qiyuzhu2@am=
+d.com/
+> v2: https://lore.kernel.org/linux-acpi/20250512010620.142155-1-qiyuzhu2@a=
+md.com/#r
+> v3: https://lore.kernel.org/linux-acpi/20250512011833.142204-1-qiyuzhu2@a=
+md.com/t/#u
+> v4: https://lore.kernel.org/linux-acpi/20250518062507.218855-1-qiyuzhu2@a=
+md.com/
 >
-> Changes since v3:
->  - Removed redefinitions of the mailbox and instead referred to ACPI
->    specification as per discussion on LKML.
->  - Clarified that DeviceTree-based firmware do not require the use of
->    ACPI tables to enumerate the mailbox. (Rob)
->  - Described the need of using a `compatible` property.
->  - Dropped the `alignment` property. (Krzysztof, Rafael)
->  - Used a real address for the mailbox node. (Krzysztof)
+> Changes in v2:
+>  - Reduce the code changes.
+> Changes in v3:
+>  - Fixed title letters not showing.
+> Changes in v4:
+>  - Only print the necessary warnings.
+> Changes in v5:
+>  - Add more cases of print warnings.
 >
-> Changes since v2:
->  - Implemented the mailbox as a reserved-memory node. Add to it a
->    `compatible` property. (Krzysztof)
->  - Explained the relationship between the mailbox and the `enable-mehod`
->    property of the CPU nodes.
->  - Expanded the documentation of the binding.
+>  drivers/acpi/prmt.c | 22 ++++++++++++++++++++--
+>  1 file changed, 20 insertions(+), 2 deletions(-)
 >
-> Changes since v1:
->  - Added more details to the description of the binding.
->  - Added requirement a new requirement for cpu@N nodes to add an
->    `enable-method`.
-> ---
->  .../reserved-memory/intel,wakeup-mailbox.yaml      | 50 ++++++++++++++++=
-++++++
->  1 file changed, 50 insertions(+)
+> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+> index e549914a636c..ed39502ed86f 100644
+> --- a/drivers/acpi/prmt.c
+> +++ b/drivers/acpi/prmt.c
+> @@ -85,8 +85,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
+>                 }
+>         }
 >
-> diff --git a/Documentation/devicetree/bindings/reserved-memory/intel,wake=
-up-mailbox.yaml b/Documentation/devicetree/bindings/reserved-memory/intel,w=
-akeup-mailbox.yaml
-> new file mode 100644
-> index 000000000000..a80d3bac44c2
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/reserved-memory/intel,wakeup-mail=
-box.yaml
-> @@ -0,0 +1,50 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/reserved-memory/intel,wakeup-mailbox.=
-yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Wakeup Mailbox for Intel processors
-> +
-> +description: |
-> +  The Wakeup Mailbox provides a mechanism for the operating system to wa=
-ke up
-> +  secondary CPUs on Intel processors. It is an alternative to the INIT-!=
-INIT-
-> +  SIPI sequence used on most x86 systems.
-> +
-> +  The structure and operation of the mailbox is described in the Multipr=
-ocessor
-> +  Wakeup Structure of the ACPI specification version 6.6 section 5.2.12.=
-19 [1].
-> +
-> +  The implementation of the mailbox in platform firmware is described in=
- the
-> +  Intel TDX Virtual Firmware Design Guide section 4.3.5 [2].
-> +
-> +  1: https://uefi.org/specs/ACPI/6.6/05_ACPI_Software_Programming_Model.=
-html#multiprocessor-wakeup-structure
-> +  2: https://www.intel.com/content/www/us/en/content-details/733585/inte=
-l-tdx-virtual-firmware-design-guide.html
-> +
-> +
-> +maintainers:
-> +  - Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-> +
-> +allOf:
-> +  - $ref: reserved-memory.yaml
-> +
-> +properties:
-> +  compatible:
-> +    const: intel,wakeup-mailbox
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    reserved-memory {
-> +        #address-cells =3D <2>;
-> +        #size-cells =3D <1>;
-> +
-> +        wakeup-mailbox@ffff0000 {
-> +            compatible =3D "intel,wakeup-mailbox";
-> +            reg =3D <0x0 0xffff0000 0x1000>;
-> +        };
-> +    };
+> -       pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa)=
+;
+> -
+>         return 0;
+>  }
 >
-> --
-> 2.43.0
+> @@ -154,13 +152,33 @@ acpi_parse_prmt(union acpi_subtable_headers *header=
+, const unsigned long end)
+>                 guid_copy(&th->guid, (guid_t *)handler_info->handler_guid=
+);
+>                 th->handler_addr =3D
+>                         (void *)efi_pa_va_lookup(&th->guid, handler_info-=
+>handler_address);
+> +               /*
+> +                * Refer to PRM Spec, both static data buffer address and
+> +                * ACPI parameter buffer address may be NULL if they are =
+not
+> +                * needed, so there print out warning if handler_addr is =
+zero.
+> +                */
+
+Change the comment above to something like "Print a warning message if
+handler_addr is zero which is not expected to ever happen."
+
+> +               if (unlikely(!th->handler_addr))
+> +                       pr_warn("Failed to find VA of handler for GUID: %=
+pUL, PA: 0x%llx",
+> +                               &th->guid, handler_info->handler_address)=
+;
 >
+>                 th->static_data_buffer_addr =3D
+>                         efi_pa_va_lookup(&th->guid, handler_info->static_=
+data_buffer_address);
+> +               /*
+> +                * As for the static_data_buffer_addr/acpi_param_buffer_a=
+ddr,
+> +                * if the physical address passed to efi_pa_va_lookup() i=
+s nonzero
+> +                * and the return value is zero, there should print out t=
+he warnings.
+> +                */
+
+Change the comment above to something like "According to the PRM
+specification, static_data_buffer_address can be zero, so avoid
+printing a warning message in that case."
+
+> +               if (unlikely(!th->static_data_buffer_addr && handler_info=
+->static_data_buffer_address))
+> +                       pr_warn("Failed to find VA of static data buffer =
+for GUID: %pUL, PA: 0x%llx",
+> +                               &th->guid, handler_info->static_data_buff=
+er_address);
+>
+>                 th->acpi_param_buffer_addr =3D
+>                         efi_pa_va_lookup(&th->guid, handler_info->acpi_pa=
+ram_buffer_address);
+>
+> +               if (unlikely(!th->acpi_param_buffer_addr && handler_info-=
+>acpi_param_buffer_address))
+> +                       pr_warn("Failed to find VA of acpi param buffer f=
+or GUID: %pUL, PA: 0x%llx",
+> +                               &th->guid, handler_info->acpi_param_buffe=
+r_address);
+
+And analogously here.
+
+> +
+>         } while (++cur_handler < tm->handler_count && (handler_info =3D g=
+et_next_handler(handler_info)));
+>
+>         return 0;
+>
+
+Thanks!
 
