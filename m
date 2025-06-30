@@ -1,129 +1,145 @@
-Return-Path: <linux-acpi+bounces-14871-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14873-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA17AEEA99
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Jul 2025 00:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41525AEEADE
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Jul 2025 01:25:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB64A7AD100
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 22:44:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B97627A3D30
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 23:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B4D2236E1;
-	Mon, 30 Jun 2025 22:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A54525C6E7;
+	Mon, 30 Jun 2025 23:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DN+y17LC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W11XVlA3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E922D4A0F;
-	Mon, 30 Jun 2025 22:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524F078F39;
+	Mon, 30 Jun 2025 23:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751323547; cv=none; b=EufWFcNViV25c87E4DjeO2ROh7EYWQsffwdnvgEWldV5fkNXQ24oLxCkxAdnJ41xpt3o1ONcv64/gD8EO+pE9ubHgWPzho2wTHWLDyg/rGQQQxoP4ndVMSUv0ZUGLqa8WVPHI1fSxJBHP3sCC03zyOu9/igF26eSJ/jtjNlB2xY=
+	t=1751325896; cv=none; b=udCwJSXJgxggstOXDo7+pRL/UlvpyKuKdVKQHccSBhFEoweJR+pON2E37dSWfsZYTj+YfR9iOhhmfDk1vR0coa0KSk2vnK/mD3AeAHP5o5nmr7jzNCSNpD0qBvyG+el2fuaPqwi/6zRcemZXytlZMmFqPAA2QvchsxyGizRGNpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751323547; c=relaxed/simple;
-	bh=Cfj5WSreGQsw3227MrakCwF7ZLW0BlXUEIMzeuyYw6w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BhXOwub+ydajz1WqmPI8N65Sr4QjmGrI+PrpxRd9w/O8HS1r9mnM0EV7ndcUhWkdq76Kje7Q71WpxMCAKdpVYpq6Fi6XcMwpoB3YALuGCWVribIuunPZqGIVkF/cm1KaaMzuQ++Kcg6FzlObS4FPL27L5TdMdfVQy5erhBQRUtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DN+y17LC; arc=none smtp.client-ip=198.175.65.12
+	s=arc-20240116; t=1751325896; c=relaxed/simple;
+	bh=OSVCA5D4jrahb3F584m0Qii4idTEbxrHmmdzdwhZcY8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=as+sRE9uEx3fJX/1arIx+kfBClyKuhq4xOpJKHj43DYXov4gf3D72iDXNCshFT125ANBB+HbyzJvKikYd8E4ltkr8HMYNMYCc+boa+NJ0nV7+u4ZwtNPrJq39xj+Wh2t1lAr+BKn4XWS537qR706p08WMyFx9FGyb0fIBLJkRVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W11XVlA3; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751323546; x=1782859546;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=Cfj5WSreGQsw3227MrakCwF7ZLW0BlXUEIMzeuyYw6w=;
-  b=DN+y17LCXZVd96wilsfFvzNkJseJDZg6GZ63FbzoWolBVs+dXCZinPZj
-   nQbkFYTuOvWcq6UTkOCK0PG7nefRSNTDuBSPe0j9pGBFaG2HymwQ6ZnOL
-   eV9tRSDZpNNPAG27e5+9QSiTqanpg3OQk0BkCzBycys8hfBkZTFdUZR6F
-   ycS0Ds5gBgavLYlr8o6hZqdVnc61b+YD1yS8e8Xv18/AGanfxWFsHvdlr
-   jch22K9ovBwbzJxIuw7O1V6HGmZNJJYrpylpgkmcCTWbXJTg79pTK7tmg
-   Q2FIABQ8ETH5reA1j40n0lz66dLswKGeT0M0WHAprTX9D3y8bOsGd9BSs
+  t=1751325895; x=1782861895;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=OSVCA5D4jrahb3F584m0Qii4idTEbxrHmmdzdwhZcY8=;
+  b=W11XVlA3//84DznInzAdEgzkMDMNgY6IB3cx5bBLX0ler4H2Fk6nAnwj
+   9R+X+VoSy402he4ufmHo0nH+QMFuIEz4NqpTj++Wjr2+AgrA0roUKOQfy
+   6BcV+RE8//amllS3OPdO9kwFM7EzRTfaShH4lMx91H7AR2NaFYSGJ783a
+   uBrvbaeKTh4BLeNPe2x6zLw4DXqxLQeqfiZtDG7c7egenMvvAagvRdMkf
+   YLnPauDXeSpGneV2fbA2MWemX6WLKZZM9dWMATI4P/Y+L2Dx+Av6Y9iM/
+   oAnERicmB0ezvRTYZxlS4ACRc3GA9kTfXwP4UmTrbIQtSDjfvmSLmYBpF
    w==;
-X-CSE-ConnectionGUID: 4WjxRnoMTj+h8tG/8yGE6A==
-X-CSE-MsgGUID: rGK6j75qRo6Z++I4sAK6eA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="65010827"
+X-CSE-ConnectionGUID: +dnh7BZ+TvGepCPE9Mi3Ow==
+X-CSE-MsgGUID: FY6Sd4qZT6+kXEKky/ZSKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="56188517"
 X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; 
-   d="scan'208";a="65010827"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2025 15:45:45 -0700
-X-CSE-ConnectionGUID: p/i6hdoVQ5iKbuHy0pypiA==
-X-CSE-MsgGUID: l2dPfkHOTmC98iA36F7JTw==
+   d="scan'208";a="56188517"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2025 16:24:46 -0700
+X-CSE-ConnectionGUID: i2xyQgECRQykHPPQIJq1IQ==
+X-CSE-MsgGUID: zJjClD91S7+bAgtlIpA9AQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; 
-   d="scan'208";a="159299158"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2025 15:45:45 -0700
-Date: Mon, 30 Jun 2025 15:51:44 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Chris Oo <cho@microsoft.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	linux-hyperv@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Ricardo Neri <ricardo.neri@intel.com>
-Subject: Re: [PATCH v5 01/10] x86/acpi: Add a helper functions to setup and
- access the wakeup mailbox
-Message-ID: <20250630225144.GC3072@ranerica-svr.sc.intel.com>
-References: <20250627-rneri-wakeup-mailbox-v5-0-df547b1d196e@linux.intel.com>
- <20250627-rneri-wakeup-mailbox-v5-1-df547b1d196e@linux.intel.com>
- <CAJZ5v0i+EOthnNexMs7hm1iX+PY0rCNCHjRgB5r5pJ3tz2aw+w@mail.gmail.com>
+   d="scan'208";a="159102654"
+Received: from yosephda-mobl.amr.corp.intel.com (HELO [10.125.210.206]) ([10.125.210.206])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2025 16:24:34 -0700
+Message-ID: <fe282f58-1627-480b-8f01-71d0effd5da8@linux.intel.com>
+Date: Mon, 30 Jun 2025 16:24:26 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0i+EOthnNexMs7hm1iX+PY0rCNCHjRgB5r5pJ3tz2aw+w@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] driver core: faux: fix Undefined Behavior in
+ faux_device_destroy()
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Dan Williams <dan.j.williams@intel.com>,
+ Greg KH <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Benjamin.Cheatham@amd.com, Jonathan.Cameron@huawei.com, dakr@kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
+ linux-kernel@vger.kernel.org, rafael.j.wysocki@intel.com, rafael@kernel.org,
+ sudeep.holla@arm.com, Dan Carpenter <dan.carpenter@linaro.org>,
+ Kees Cook <kees@kernel.org>
+References: <2025061313-theater-surrender-944c@gregkh>
+ <20250614105037.1441029-1-ojeda@kernel.org>
+ <2025061446-wriggle-modulator-f7f3@gregkh>
+ <a3a08e5d-bfea-4569-8d13-ed0a42d81b2a@linux.intel.com>
+ <2025061546-exile-baggage-c231@gregkh>
+ <bcd3848d-54dd-453e-b0b5-91cb72160645@linux.intel.com>
+ <6853586e9d366_1f9e10087@dwillia2-xfh.jf.intel.com.notmuch>
+ <206ebae8-4e2d-4e04-8872-fa3a56b3e398@linux.intel.com>
+ <p66tblbusj2uw4q35nytnangb7z5ziyrkenl67hjgfsatw3fdj@odgdtnzk7at6>
+Content-Language: en-GB
+From: Marc Herbert <marc.herbert@linux.intel.com>
+In-Reply-To: <p66tblbusj2uw4q35nytnangb7z5ziyrkenl67hjgfsatw3fdj@odgdtnzk7at6>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 30, 2025 at 08:55:25PM +0200, Rafael J. Wysocki wrote:
-> s/a helper/helper/ in the subject.
+On 2025-06-25 17:55, Kent Overstreet wrote:
+> the big con:
+> - they interact badly with gotos, you can get undefined behaviour from
+>   using a variable that wasn't actually defined _and the compiler will
+>   not warn you_
+> [...]
+> But the issue with gotos is worth highlighting. Be careful when using
+> them in code that hasn't been converted to __cleanup.
 
-Ugh! I missed this since v3. I corrected it. Thanks for noticing.
+Thanks Kent for sharing this.
 
-> 
-> On Sat, Jun 28, 2025 at 5:35 AM Ricardo Neri
-> <ricardo.neri-calderon@linux.intel.com> wrote:
-> >
-> > In preparation to move the functionality to wake secondary CPUs up out of
-> > the ACPI code, add two helper functions.
-> >
-> > The function acpi_setup_mp_wakeup_mailbox() stores the physical address of
-> > the mailbox and updates the wakeup_secondary_cpu_64() APIC callback.
-> >
-> > There is a slight change in behavior: now the APIC callback is updated
-> > before configuring CPU hotplug offline behavior. This is fine as the APIC
-> > callback continues to be updated unconditionally, regardless of the
-> > restriction on CPU offlining.
-> >
-> > The function acpi_madt_multiproc_wakeup_mailbox() returns a pointer to the
-> > mailbox. Use this helper function only in the portions of the code for
-> > which the variable acpi_mp_wake_mailbox will be out of scope once it is
-> > relocated out of the ACPI directory.
-> >
-> > The wakeup mailbox is only supported for CONFIG_X86_64 and needed only with
-> > CONFIG_SMP=y.
-> >
-> > Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-> 
-> With the above nit addressed
-> 
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+I got curious and found that clang -Wall is actually able to warn,
+at least in simple cases:
 
-Thank you!
+int goto_uninitialized_C99(int *ptr)
+{
+  if (!ptr)
+    goto cleanup;
+  const int i = 42;
+
+cleanup:
+  // clang warning, no gcc warning
+  printf("fin: i=%d\n", i);
+
+
+warning: variable 'i' is used uninitialized whenever 'if' condition
+   is true [-Wsometimes-uninitialized]
+
+
+gcc -Wall -Wextra does not say anything.
+Tested with clang version 18.1.3 and gcc 13.3.0
+
+
+Interestingly, there is no warning difference between C89 and C99 code
+for such a simple example. gcc warns for neither C89 code nor C99 code
+and clang warns for both.
+
+int goto_uninitialized_C89(int *ptr)
+{
+  int i;
+  if (!ptr)
+    goto cleanup;
+  i = 42
+
+cleanup:
+  /* clang warning, no gcc warning */
+  printf("fin: i=%d\n", i);
+
+
+(finally getting rid of gotos is one of the main purposes of RAII)
 
