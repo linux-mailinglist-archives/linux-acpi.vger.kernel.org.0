@@ -1,109 +1,217 @@
-Return-Path: <linux-acpi+bounces-14861-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14862-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E96AAEE6EA
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 20:40:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 932AAAEE703
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 20:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33B72188B48E
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 18:40:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D847189B0CE
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 18:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769A528DB67;
-	Mon, 30 Jun 2025 18:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC182E54D2;
+	Mon, 30 Jun 2025 18:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rrh7l/gM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DdhGKmzR"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409672F4A;
-	Mon, 30 Jun 2025 18:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B6479D2;
+	Mon, 30 Jun 2025 18:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751308827; cv=none; b=fDiuBe7HTMwHso/Crq6rNTvleHCntLjscogkOLvCBQdiO+rVbDJUqtX5Q8unvHXlUJVYYQCKtaOh1EoucvCjfeR7s5a7JiorGtOq8x6LT4/+63U5H8gND+Oy0ay2aRRxAaCuIKwGdeJuLjvg2eK7dUEZaRHXoenwp5dE4+d8ZIY=
+	t=1751309738; cv=none; b=axO2ut0FV6g7AZlhxPAEd8m7UECYsRHFULVazYiliH6vJGStUM/XUomC/hhVMIO/ZRMaz0besWBfisznDq8h0N4OFhrnHsxBDUwULNbRrPcLBrqqSSA+DgtGeXdOAuPkbAioy1EQhu2thejgzZrFcF7azJBTxkp/LredW2dSDSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751308827; c=relaxed/simple;
-	bh=HvnvaBYgdENhHqpQAACls3hq+6edewLfz6BoI0wweO4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YT1FzN80Fb4SicxlQp2i7SScndy47+3htWlW70xRubkHSxH4fmuhI8GccOQqvefrcKgX+kZoIlWPATGNOJe4BZGutCBT1rzR0tJxt0Vkxv9NHo+Awe1JKr765yXKraYbWrOQcVIelzfmCRsbFpHw+3cknUBBJRnP8QM0egMjNRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rrh7l/gM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7372C4CEE3;
-	Mon, 30 Jun 2025 18:40:25 +0000 (UTC)
+	s=arc-20240116; t=1751309738; c=relaxed/simple;
+	bh=p7WnF9DWkiE2Gdzjr0y3QZ/hVpLdgQL++uU/dzCSfFQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HOkenrwqxQHM5CawltVQTYPRAKQabqghsW1K6iTJmZlwsrIHRNmbCzwq4dOTIyk0jf2aHniS0MoMOg1YZjpX+wn9GeKNp00XjrPvsVs3mr9KGNXjIzj/F0eATwC92Taaufu7l6w36a6PtbloKkqd+i5Qtvj1/0eL6HCFHrrkCdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DdhGKmzR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B855AC4CEF1;
+	Mon, 30 Jun 2025 18:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751308826;
-	bh=HvnvaBYgdENhHqpQAACls3hq+6edewLfz6BoI0wweO4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rrh7l/gMT1u4tR6AO151tNM7udPNrjM40kmIEOjv49+M4ij+HeUQOH/M/TDNzf9Yz
-	 YH6kL0z/UQorYHo2qDSGiG2TAG1ZC121FvUi+HWJazRIpo7oM2a4NhsHl4ea5V3erT
-	 QdOpIfKwM16cqy6PG/5Tu2qZmUQPKlXwUi2FvRbFGF2JWDkh5HE6/9nlKboE5MMt4L
-	 Hlo5C5Ag9JcsCD/8o5BZj0hKpSGc/5i3TDZA7Z3i/EBpKKQmZ9w8/v2rhdaSEgNyaI
-	 wiHFfTey5e0QEOvDDQRrYzgkFi8SlWcufbyaQeDlpFFrLmq6kjhgiORA8QI1wJVbnr
-	 ps4FOhKyxI3ow==
-Message-ID: <9eac81e6-b4ee-4210-84ac-cbf7bf811130@kernel.org>
-Date: Mon, 30 Jun 2025 14:40:28 -0400
+	s=k20201202; t=1751309737;
+	bh=p7WnF9DWkiE2Gdzjr0y3QZ/hVpLdgQL++uU/dzCSfFQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=DdhGKmzRL19+3kQBx3yMJKSK8lxEnyv+onbYxR8wot8l6poEsYSR3bQfJ7BUAdVlL
+	 8Tx6Nho9Q8axXkSGHc748vrKzrJ7aS4x8ZMpdDEfQhMV6bi3q2R/J15h8gTdpV16rZ
+	 SUGXRs5yDkjbiXfGNWYunhp+hPcbf9HrpffAE189Bj2P3JsbDtRmNjZleqFezGvOAg
+	 rdyUbE8wuujIiFsbOLydHimuaLkU5fhoD1P99S7bsZmGRK4Qg27cTinOCc63FvuAll
+	 gVEDgzalDO9mi3Vm8FAdvgw+25mapTche0a2GbeH3JUJ7vp5qGNAZwyEaxsZYkXpbR
+	 TfiwQ8drVNUpQ==
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-735b9d558f9so1071526a34.2;
+        Mon, 30 Jun 2025 11:55:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV9E/uV2WV4bWV/wnv2P79UPJ3yYGq6Z1s3qW0h1nY28vb279O1sOLAa8OkE01gRWfPOJ2xptRM+4jPMHSd@vger.kernel.org, AJvYcCVN0pDnAHRbjy/x5GaN6eFvntY+v6Vic088RASn5avb1jtBhUN+WRzC4BPDpuyqZ1CnxRoKPY+Zjz9q@vger.kernel.org, AJvYcCWj0pK53S82Z1De6E0OGDOqubY/aO61fAU37nExLaMfQg8AAeFIngyg6SFIcLa56zBvJ9CYv84iHkSrBg+q@vger.kernel.org, AJvYcCXiQl2fJiRsK1WMdQQ9pK4Op73OIlwOYH1f0Jr2R/xo5skJv431Zi+ujRIBu0poSV+N3cq+xst8Cynn2w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnHAwRxHMBanv2YlBgVrPg4njIP+6YxM4f1N3mNV46QnsYQzZO
+	Kbx6YDtT4+R7zmRVOno/kaEM8TmsTT4vWwG10i4xeu4oYuoi0nY96S5uJl+uJHeBOIkxGWGrOaC
+	nLwT6MABW1pm1zNkH3RtYXxFO467iPxA=
+X-Google-Smtp-Source: AGHT+IHVLwd4OxwkvCyDp30OFrkyLqV3hiaG0N2GiR3mAT+Kfajnad7UwexjbjLRZFMzoLdL5pTxDqLLSFRMc73q24U=
+X-Received: by 2002:a05:6808:1646:b0:40a:f48f:2c10 with SMTP id
+ 5614622812f47-40b33c464e2mr11382918b6e.10.1751309737019; Mon, 30 Jun 2025
+ 11:55:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION][BISECTED] Dell Precision 7780 wakes up on its own
- from suspend
-To: Askar Safin <safinaskar@zohomail.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Linux i2c <linux-i2c@vger.kernel.org>,
- linux-acpi <linux-acpi@vger.kernel.org>,
- regressions <regressions@lists.linux.dev>,
- DellClientKernel <Dell.Client.Kernel@dell.com>,
- linux-gpio <linux-gpio@vger.kernel.org>, Raul E Rangel
- <rrangel@chromium.org>, Benjamin Tissoires <benjamin.tissoires@redhat.com>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
- Werner Sembach <wse@tuxedocomputers.com>
-References: <197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com>
- <5d7ee2bc-6595-46f1-8c8f-0c439f033407@kernel.org>
- <197af82e9e7.10ca643e5467232.6943045931834955890@zohomail.com>
- <6f42c722-cfa5-416d-8b63-730ad88e6b9d@kernel.org>
- <197bfafc23e.e6344936595425.1881540896161671378@zohomail.com>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <197bfafc23e.e6344936595425.1881540896161671378@zohomail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250627-rneri-wakeup-mailbox-v5-0-df547b1d196e@linux.intel.com> <20250627-rneri-wakeup-mailbox-v5-1-df547b1d196e@linux.intel.com>
+In-Reply-To: <20250627-rneri-wakeup-mailbox-v5-1-df547b1d196e@linux.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 30 Jun 2025 20:55:25 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0i+EOthnNexMs7hm1iX+PY0rCNCHjRgB5r5pJ3tz2aw+w@mail.gmail.com>
+X-Gm-Features: Ac12FXxLJjcnuW3nUc_r1s6Rsa0T03g4e7iaJ1R43QcOYsgg7pHNf2V9xIGOH0g
+Message-ID: <CAJZ5v0i+EOthnNexMs7hm1iX+PY0rCNCHjRgB5r5pJ3tz2aw+w@mail.gmail.com>
+Subject: Re: [PATCH v5 01/10] x86/acpi: Add a helper functions to setup and
+ access the wakeup mailbox
+To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Rob Herring <robh@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Michael Kelley <mhklinux@outlook.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Saurabh Sengar <ssengar@linux.microsoft.com>, 
+	Chris Oo <cho@microsoft.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
+	linux-hyperv@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ricardo Neri <ricardo.neri@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/30/2025 3:14 AM, Askar Safin wrote:
->   ---- On Fri, 27 Jun 2025 07:58:15 +0400  Mario Limonciello <superm1@kernel.org> wrote ---
->   > That's odd.  It should be made when the PMC core driver binds.  Maybe
->   > others will know what's missing here.
-> 
-> Command "grep -r -E -I last_hw_sleep ." in culpit kernel (1796f808e4bb2c074824d)
-> shows nothing. (This is somewhere around 6.1).
-> 
-> So, culpit commit is too old.
-> 
-> If you want, I can retest this thing on current master and on current master with
-> revert 1796f808e4bb2c074824d.
-> 
->   > I see in your bad config interrupt 14 is waking the system.  In the good
->   > config interrupt 8 is waking it.
->   >
->   > What is in /proc/interrupts?
-> 
-> /proc/interrupts from culpit kernel: https://paste.debian.net/1382819/
-> 
+s/a helper/helper/ in the subject.
+
+On Sat, Jun 28, 2025 at 5:35=E2=80=AFAM Ricardo Neri
+<ricardo.neri-calderon@linux.intel.com> wrote:
+>
+> In preparation to move the functionality to wake secondary CPUs up out of
+> the ACPI code, add two helper functions.
+>
+> The function acpi_setup_mp_wakeup_mailbox() stores the physical address o=
+f
+> the mailbox and updates the wakeup_secondary_cpu_64() APIC callback.
+>
+> There is a slight change in behavior: now the APIC callback is updated
+> before configuring CPU hotplug offline behavior. This is fine as the APIC
+> callback continues to be updated unconditionally, regardless of the
+> restriction on CPU offlining.
+>
+> The function acpi_madt_multiproc_wakeup_mailbox() returns a pointer to th=
+e
+> mailbox. Use this helper function only in the portions of the code for
+> which the variable acpi_mp_wake_mailbox will be out of scope once it is
+> relocated out of the ACPI directory.
+>
+> The wakeup mailbox is only supported for CONFIG_X86_64 and needed only wi=
+th
+> CONFIG_SMP=3Dy.
+>
+> Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+
+With the above nit addressed
+
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+> ---
+> Changes since v4:
+>  - None
+>
+> Changes since v3:
+>  - Squashed the two first patches of the series into one, both introduce
+>    helper functions. (Rafael)
+>  - Renamed setup_mp_wakeup_mailbox() as acpi_setup_mp_wakeup_mailbox().
+>    (Rafael)
+>  - Dropped the function prototype for !CONFIG_X86_64. (Rafael)
+>
+> Changes since v2:
+>  - Introduced this patch.
+>
+> Changes since v1:
+>  - N/A
+> ---
+>  arch/x86/include/asm/smp.h         |  3 +++
+>  arch/x86/kernel/acpi/madt_wakeup.c | 20 +++++++++++++++-----
+>  2 files changed, 18 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+> index 0c1c68039d6f..77dce560a70a 100644
+> --- a/arch/x86/include/asm/smp.h
+> +++ b/arch/x86/include/asm/smp.h
+> @@ -146,6 +146,9 @@ static inline struct cpumask *cpu_l2c_shared_mask(int=
+ cpu)
+>         return per_cpu(cpu_l2c_shared_map, cpu);
+>  }
+>
+> +void acpi_setup_mp_wakeup_mailbox(u64 addr);
+> +struct acpi_madt_multiproc_wakeup_mailbox *acpi_get_mp_wakeup_mailbox(vo=
+id);
+> +
+>  #else /* !CONFIG_SMP */
+>  #define wbinvd_on_cpu(cpu)     wbinvd()
+>  static inline int wbinvd_on_all_cpus(void)
+> diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/ma=
+dt_wakeup.c
+> index 6d7603511f52..c3ac5ecf3e7d 100644
+> --- a/arch/x86/kernel/acpi/madt_wakeup.c
+> +++ b/arch/x86/kernel/acpi/madt_wakeup.c
+> @@ -37,6 +37,7 @@ static void acpi_mp_play_dead(void)
+>
+>  static void acpi_mp_cpu_die(unsigned int cpu)
+>  {
+> +       struct acpi_madt_multiproc_wakeup_mailbox *mailbox =3D acpi_get_m=
+p_wakeup_mailbox();
+>         u32 apicid =3D per_cpu(x86_cpu_to_apicid, cpu);
+>         unsigned long timeout;
+>
+> @@ -46,13 +47,13 @@ static void acpi_mp_cpu_die(unsigned int cpu)
+>          *
+>          * BIOS has to clear 'command' field of the mailbox.
+>          */
+> -       acpi_mp_wake_mailbox->apic_id =3D apicid;
+> -       smp_store_release(&acpi_mp_wake_mailbox->command,
+> +       mailbox->apic_id =3D apicid;
+> +       smp_store_release(&mailbox->command,
+>                           ACPI_MP_WAKE_COMMAND_TEST);
+>
+>         /* Don't wait longer than a second. */
+>         timeout =3D USEC_PER_SEC;
+> -       while (READ_ONCE(acpi_mp_wake_mailbox->command) && --timeout)
+> +       while (READ_ONCE(mailbox->command) && --timeout)
+>                 udelay(1);
+>
+>         if (!timeout)
+> @@ -227,7 +228,7 @@ int __init acpi_parse_mp_wake(union acpi_subtable_hea=
+ders *header,
+>
+>         acpi_table_print_madt_entry(&header->common);
+>
+> -       acpi_mp_wake_mailbox_paddr =3D mp_wake->mailbox_address;
+> +       acpi_setup_mp_wakeup_mailbox(mp_wake->mailbox_address);
+>
+>         if (mp_wake->version >=3D ACPI_MADT_MP_WAKEUP_VERSION_V1 &&
+>             mp_wake->header.length >=3D ACPI_MADT_MP_WAKEUP_SIZE_V1) {
+> @@ -243,7 +244,16 @@ int __init acpi_parse_mp_wake(union acpi_subtable_he=
+aders *header,
+>                 acpi_mp_disable_offlining(mp_wake);
+>         }
+>
+> +       return 0;
+> +}
+> +
+> +void __init acpi_setup_mp_wakeup_mailbox(u64 mailbox_paddr)
+> +{
+> +       acpi_mp_wake_mailbox_paddr =3D mailbox_paddr;
+>         apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
+> +}
+>
+> -       return 0;
+> +struct acpi_madt_multiproc_wakeup_mailbox *acpi_get_mp_wakeup_mailbox(vo=
+id)
+> +{
+> +       return acpi_mp_wake_mailbox;
+>  }
+>
 > --
-> Askar Safin
-> https://types.pl/@safinaskar
-> 
-
-Looks like your interrupt 14 is ACPI device INTC1085:00.
-
-Some quick searches this seems to be an Intel GPIO controller.
-
-Andy,
-
-Any ideas how to debug next?
+> 2.43.0
+>
 
