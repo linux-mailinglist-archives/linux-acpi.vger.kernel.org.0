@@ -1,221 +1,200 @@
-Return-Path: <linux-acpi+bounces-14868-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14872-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A89A1AEE8E4
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 23:00:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D8E7AEEA9E
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Jul 2025 00:49:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82CD71BC318D
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 21:00:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43C9A3B8576
+	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 22:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6A523497B;
-	Mon, 30 Jun 2025 20:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DBB22D4E2;
+	Mon, 30 Jun 2025 22:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qsrT9QP4"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qZg6gb3u"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2063.outbound.protection.outlook.com [40.107.223.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4313721FF54;
-	Mon, 30 Jun 2025 20:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751317188; cv=none; b=lZ4W85osCM3hjHeHBpiF90noJjJWuwTgcp+HeOsg1mWymT3YFVjJfpjr8l84Vt8/wsZzC+TBjMzstn5mYJPTdIYli5wwgPRn/y4NAKiqLAg9qYApc/YrUlDYmGb3NfZznU9vjqQ2PydmG3te85inaheHt7AnMv7YySzEItu76r8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751317188; c=relaxed/simple;
-	bh=ketVR18fpnW4xkFERzMsiFpAF9jtuIK0RiDKnTgJDp8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=L94ru+I5lN8AS6YAZU7mLv2E2sTNMBZ7MC5dMnz3EYghOwuDyTN2hDczIlfhIXHFEXe1oRfnYkdPyWIsUlj1SOivadcdS5CAuG8s5+Dw+EW3bShNSE78LzRLkNo2/s3r4T2nBpYnTzAJbClHMf1X5Wv4rvpGeK6hRZScZePXvN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qsrT9QP4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A8EC4CEE3;
-	Mon, 30 Jun 2025 20:59:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751317187;
-	bh=ketVR18fpnW4xkFERzMsiFpAF9jtuIK0RiDKnTgJDp8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qsrT9QP4hpSZ7+iQwvQyzaAvp1GqENjmzjxVMW5CHElpIZsdveY7ZfISw4/MalZ9A
-	 PqUoJ8gH9qZzLjLKSyPVA3YqogUJo6yhFJgU59TEfxOPN+5lcvAVvfwux14jbKFKkg
-	 /ucNlT5O1LOvmNEdkYTk9kzUoVjE5F3Gp9Bl/uDHNe3Rq34ceTbi81B3gLyJ1wI+Yo
-	 lx0mpYFm+frK9fu90qugSwLtCducq1khGFWxcgWKLVNdsPA0Jn7iUiNM13c4CZkl4E
-	 SlRsJiKJwbqX+cPyapCm+Du8rVMHHzC2RU7AJ/i5h/ATOzS0p0G2F/pma5pdXdgwjX
-	 WUmgCGNEWVDeA==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Zhe Qiao <qiaozhe@iscas.ac.cn>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	bhelgaas@google.com,
-	linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 05/21] Revert "PCI/ACPI: Fix allocated memory release on error in pci_acpi_scan_root()"
-Date: Mon, 30 Jun 2025 16:45:20 -0400
-Message-Id: <20250630204536.1358327-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250630204536.1358327-1-sashal@kernel.org>
-References: <20250630204536.1358327-1-sashal@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5BB21ABA8;
+	Mon, 30 Jun 2025 22:49:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751323771; cv=fail; b=l1He5scQeA4kbcSejE6WqGZc/XF3OL9o9mRes0l5wLU1c5wBulOtQ7SPIOP7bxpS+pJE1kO4fshvfGVv1GHgHeJcjdzblkzjDeCsxbuzZ1lXllKdKq4ptKWHoP5iwXE5+XZFiEj3jTEStJSu6+xE8sQJZfUel7GwBOomSyhwELY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751323771; c=relaxed/simple;
+	bh=wkOBMGakypF5AUvhnUfTIvODqxI8yqk4YjJUQe8NkuY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=FtV7/UUWFVX9Z4KUrpuR67Qa/YNcqQmSNt6hxNxpL2QPAT7IcnAPwP65kq8dJQpGiZltU84f9YrL8Rx86Ol55RC4FxtIbo2QpUR6QQxImp2YpBTHdoOEbWrI5T7wceSCZHTAiABju2/gvNWYT8b0iDhCXDl8PF8fflxCwZ3eEZU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qZg6gb3u; arc=fail smtp.client-ip=40.107.223.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=naJG1JhJ+G/S+c8+i2o/Irjw1sThntpmiLtCroNBE2djgXUPkX3Uj8OriMkBSkJYKdUliCnXKo0I0EsP12kx0j1rq5zCZdz3W8e8kXtISVI6tM7o/oZw57b8fQU5zslYOSeHWxhM/ME18R9ZSvmrWXtV9urbpExxk3TuvfIADgkicCbsfIXKM0lRUpjzzL3vLROIt/QkOu7ZH8P4yDMPc4M3AWDi6T1VCCrh87eONYE7SMNrk5taqhuDXlLCRaoG8NG0hTrkx6GH3CSPoKm44O/agUdV2/Jb99/DzQG9cIizCUpInmVUdo5/+AwFKrj4yHYl5EKWKxZevcyQ3Bb/0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qRycKpLWJ5tBF/0KwEkr5FuE6Utd1KVp72BIqslKH3I=;
+ b=vZoESkjCDKKJ9K+Gegc/cLJ14YSgEXH+BgErdJB+othhBRaJCDzFU1x9ac6xDc3opJKeZBQCdb1938302qjIg3x6nnYJ3dG4UakSlyJPujDvH9iopqHx0Avp8/gmxoSkNlzd5hDN7hGF3Gl5RM7Lpo126SfuaLnkZHOGIY4MtBW+x9G3G/4/VLHXStsmC1Hwmye41cqRuEFIqwywWYla1BeYUeBBmsElSs7GFWzSlvnBUiwaEkIdek8cqZ/nnUGGuM7GGlRPhDnZeqDPg+qfrVh4bFNizL72H4usojhiCTwHHh891lmtSQiZld9WFIxP2y+5q+7ciSKyYsgb/ETEyA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qRycKpLWJ5tBF/0KwEkr5FuE6Utd1KVp72BIqslKH3I=;
+ b=qZg6gb3u7JxNVHhvYNaHJ6E3XzBRFNXDTkHoR0f53jvUy8FirA/yI4sCHkl/zs9n99QPPW1jHwAnBShgHCguhF+5YHgnhsVNle1S94CJvQm3nJrR5qLCUJriOU+kOp1vt8VKd0yP8AJ9v198wDlItzXT3KNm138qywO0hWsTZ5fBz9zjlShNWzfwd1ByPWr2hLmjkDBwnVRAsgVxG6Gp1ZolPfExZ00dp/e/AFD5VJwQ1eYAGyKmVt4407pKeCJZ7qxhifUId/FQkLRnO48UBOmZ5YTvcJRRaIkeXe1zFYFAD/vnCecBEhBCivtx0v76Gb9JkbSuOHwzSKDEXnW2Yw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by MW3PR12MB4491.namprd12.prod.outlook.com (2603:10b6:303:5c::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.31; Mon, 30 Jun
+ 2025 22:49:27 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%7]) with mapi id 15.20.8880.030; Mon, 30 Jun 2025
+ 22:49:27 +0000
+Date: Mon, 30 Jun 2025 19:49:24 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Nicolin Chen <nicolinc@nvidia.com>
+Cc: Baolu Lu <baolu.lu@linux.intel.com>, joro@8bytes.org, will@kernel.org,
+	robin.murphy@arm.com, rafael@kernel.org, lenb@kernel.org,
+	bhelgaas@google.com, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, patches@lists.linux.dev,
+	pjaroszynski@nvidia.com, vsethi@nvidia.com, helgaas@kernel.org
+Subject: Re: [PATCH RFC v2 3/4] iommu: Introduce iommu_dev_reset_prepare()
+ and iommu_dev_reset_done()
+Message-ID: <20250630224924.GC167785@nvidia.com>
+References: <cover.1751096303.git.nicolinc@nvidia.com>
+ <9042270b6c2d15a53e66d22d29b87c1c59e60669.1751096303.git.nicolinc@nvidia.com>
+ <e505c970-e519-44c6-a316-e5d186f216ca@linux.intel.com>
+ <20250630123814.GS167785@nvidia.com>
+ <aGLIEhoIiUIjI/MP@Asurada-Nvidia>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aGLIEhoIiUIjI/MP@Asurada-Nvidia>
+X-ClientProxiedBy: SA1PR02CA0003.namprd02.prod.outlook.com
+ (2603:10b6:806:2cf::9) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.35
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|MW3PR12MB4491:EE_
+X-MS-Office365-Filtering-Correlation-Id: d7bd7356-8d84-4930-946f-08ddb8285db2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?HuESrQnu8QrK/hBxDch9LKHoljDwvkn1xNrWCqu8u0qu0prAC5cFyiIM7Y0O?=
+ =?us-ascii?Q?TQ7Wk4jf5DRU/Ur43YwLS5gEZAUfJu5UABTMz/q3cD7Sj2CUFHeVDu4gGiA+?=
+ =?us-ascii?Q?2OOnhYRUr2BTes+h82T69eQazA6FSHUF7HOtpLm9kf2gE5rwDaOdm0IyiauT?=
+ =?us-ascii?Q?xmF+bS8qcfaK8rp+ask2mISQCMVm6BC6JaZ+C56rgcj+pgk3tIeigeeWoi/R?=
+ =?us-ascii?Q?E3QiETnddRYVCf5DhW3XstrY+YvaPnaqDv8piIuOhadCcGIdA7xsb19Qm4z2?=
+ =?us-ascii?Q?2+uTgw0OQb8jNlgMqzj8ix5/ES9cVg28d6AK6B82DCZr1bAiz0rGvC4EMqp0?=
+ =?us-ascii?Q?1+lNvIYr3Cit3OfvsS9wyNaiBWiQT+OsrUu5ioWAyPbM7YRJrZQzSKg7xcL7?=
+ =?us-ascii?Q?D8SPcg2gnoKehtSbQQwlKGFDb2wMGW9K9GZxp7bdo0xK/nWTXZBbyIAUVhdJ?=
+ =?us-ascii?Q?KkP39EEyp6XN9qfzjn6l5VDJu3bKx/15I/GoxWZL7C1iGGUArrkQFamj7fVl?=
+ =?us-ascii?Q?dgdKodZEozSTpkxgBGt//IcOrui/oew9VMZbwEUujYCUWBbfKJ1d6ein2PY9?=
+ =?us-ascii?Q?ANLn9guLg2MozY7GMvo0wbMwC+zX45a8TVHpgRB4Mb5Sb5o/R3U8kajeZ+4S?=
+ =?us-ascii?Q?ERefgj1fl+6vhsm/FpttZYfVRrTrz4PbF3XxQHmKcclXS52dgsGVWXcuNyfB?=
+ =?us-ascii?Q?YOzVMXlSJ2s6yF2q9xtGK24vi95O788z3gjuml4edtiRxvn3bNF8bJVWF5bB?=
+ =?us-ascii?Q?Ys/kupYL4v4Z0KzHN24NXiRafNFhmaVEVSd5wUTpfBypYWvgCFr4TRJbT9xn?=
+ =?us-ascii?Q?d4MsJ2l9pDW19fd6yQQe1ilplvHUR+tDpADp2BSdUFn/q2XpG7WmWBDkXN66?=
+ =?us-ascii?Q?wZbtJODCi8G2I9TeiVoTmmRWnHSGWfDkL8HY0Ld0MAoHV+M6ASAoPH5UlG9Y?=
+ =?us-ascii?Q?SnRQ0lZPAn+ABAfcXzQTIXseRDGDePKa5dWTnksPzoDLJOfXHA3HhTEkPKIm?=
+ =?us-ascii?Q?CONOOv21q6qxnsXTqR0F+6KSH0EPjW5n2pEmXhOay5Ki7j38LxycEbWkOx24?=
+ =?us-ascii?Q?kUgeAR62KUQjaiscm5Nuhk2PK1Z9F99Yios1zvt2jeS5PaERMgDKbJwvkHh+?=
+ =?us-ascii?Q?XAvvA9wbHuuuKFEwqyEi52ao93XIil5dXFkcBNbwFjoj4i820p0eF1OOECyC?=
+ =?us-ascii?Q?8TOXLV0OKXiv6qZBBcLICQ/KN0e8u0LhAaU1k1JKye6EuPjivJJU5lLtnpMy?=
+ =?us-ascii?Q?OODgIv+U7oO1Twk6izkaSyNYsvbnGzE7B/SFKjdetZ6dNazffkNfHawMVFXG?=
+ =?us-ascii?Q?UuHQmGnNLdKzVeAIlx8GUo1aZrW8kM1Wl3xnfpEN8JURcnfR8f6ibZlaExDA?=
+ =?us-ascii?Q?geFXcjyxX++Hb3mpeuXhi/69MjtsgPIKg9AKMIx4s2Y7CPPW5g=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?1lE0R/WOPlUYvEJ2B/vBlntoq+a+i2/4IM0bzQtKFAHY7c5UZ6qRpU/9VDHw?=
+ =?us-ascii?Q?ToEOYMw7QEitao4VsHovl7QoW//zoAaqb5x8aYi23pj45zWatR7LcjV5DI2t?=
+ =?us-ascii?Q?5wiML+iUbg2rBD/ecsjsL56UFAdC5abVjEPe0jhu0TKFkASDtQqeGWusCrYZ?=
+ =?us-ascii?Q?+KJfmvT8ACT3fxfob5qOlMIS+TS2R9+m/ivRzO14MyVMbEo5a3nqagd7Efqb?=
+ =?us-ascii?Q?e6yfMMMoSS2rsDVtxd3dUSmnnAAO9PFwPOgHRNgbH8dzPpHm+c3wonA9wsvk?=
+ =?us-ascii?Q?TMetc+I4VkDTuDdQNL3i+xUZEf3NkrQbT/jkrlwTRGfB3xWCbKcZMvcGBCuW?=
+ =?us-ascii?Q?V9xnjtLgkRg203BvK/JZpohPMFWwVZBBvLUXyB6kyedJb30YfPoP0eJliv/P?=
+ =?us-ascii?Q?3P2LrUDHd7njkjf9gMX3Xd59yGjY4apRLn/2zynqTgzT67cq4yFQixWHiC+D?=
+ =?us-ascii?Q?cW37P/vhqyFG2hMG3sD/s5KiYuf45ZusEKTw8IbghZo3LbQOO/GyqenprVea?=
+ =?us-ascii?Q?5BoJeyce/6MssO2g1YcxLRf6ZvjONxm4+vKs0TuzCkp1JVUFwp95dYxYGG30?=
+ =?us-ascii?Q?afmxNRt7/DzZt0Pzf98+44pDfFay6K63UZlmdvHGVOjoGtSpUfXubKQ84H5z?=
+ =?us-ascii?Q?UiIwiM3kWwgrhpfAV57fp2lYHf6i4+O0uBDds0lRsPOOFkjfklQPsyllbpu8?=
+ =?us-ascii?Q?YVHlXNyTINSXyZC7mZyn0MXN8DvaG/Bo2b7O/2Wh1HLpiCrlHW5lIKA1Pkwg?=
+ =?us-ascii?Q?c5vlKFDxbpnlrpwGKsVkBY5Hg9+vjPjeeADeVkSwy2bP7gj0HiKL8eeAe3dL?=
+ =?us-ascii?Q?E7NiIHVAIHcSoARMRruAm1ZWYe6XoTRIhpTRDUC5YlFGLWBw1ZLU8gaRO+CU?=
+ =?us-ascii?Q?CouZoFoyYL8XjJ8vTdp+lL3vpSr4KJqfFe5BDe29iaRkCCEb5h7KvtihdJFg?=
+ =?us-ascii?Q?U8g96kCgfAvxjZitreFsXMA4AHhtAR2U9p++1hRBmekSP1HMyKxxwSj4qeMH?=
+ =?us-ascii?Q?H3nWgDCkj4cTmFGkRbvzdOPZyOBl54Lux90U91jB/efxrk+HxM2+pUjxxY7F?=
+ =?us-ascii?Q?6lsNDMPBjKJ4b1XEZB4JED7Pgt4Yr1fTv6JecA6/7a69qYNS/4HDI6DiClD6?=
+ =?us-ascii?Q?5/6A/UAD0QyGTDTrqdyQfTckJ2GfmYCde8xt1aT4JKXAFewMumu4hMEolIlR?=
+ =?us-ascii?Q?wCSP06YVA5Mmub0HZLZxUxZkzRSmAwlxzz0J0nqQyjDjUZgexAl5u8faDfuH?=
+ =?us-ascii?Q?W/xzctfWBCxFRLzKl/VVvWBZMjQxWmVkJlrqJmd0XYHG86OHiF6g8hxlwFyE?=
+ =?us-ascii?Q?ROFOWQ0dJZnHGEiKTP52xUb1Uf11sECo4fEAi/+o5uuWqx/YGdrasqw9QBaj?=
+ =?us-ascii?Q?fKBz19P7tBDNwgw5eAGT5liu6qah/x131jleTKhOsbBgLrfgPZ36e+c+UByI?=
+ =?us-ascii?Q?QEOM91FV1sfR6MX5lM4P1hCONcrGqB5cpx3d6IIEwUkKB1b3w97axhYsw9go?=
+ =?us-ascii?Q?u8tDNsudTVk+CmBIgYDfL9HgjdVjPTFBJ9mKZnVhWsSWhAOQx3CObyG4sG+9?=
+ =?us-ascii?Q?4+6LvtUHc8+ZXdrOJxoiSkdyXBbnXlgi5HG01Kb7?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d7bd7356-8d84-4930-946f-08ddb8285db2
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2025 22:49:27.0064
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bEH9a4EpA77W7ksT+MDOh94G7qlwx82qRF+UBcHZldRbATIWNqrQJnR6vY9tdcDG
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4491
 
-From: Zhe Qiao <qiaozhe@iscas.ac.cn>
+On Mon, Jun 30, 2025 at 10:29:12AM -0700, Nicolin Chen wrote:
+> On Mon, Jun 30, 2025 at 09:38:14AM -0300, Jason Gunthorpe wrote:
+> > On Sat, Jun 28, 2025 at 09:28:12PM +0800, Baolu Lu wrote:
+> >  
+> > > Does this mean the IOMMU driver should disable ATS when ops-
+> > > >blocked_domain is used? This might not be feasible because ops-
+> > > >blocked_domain might possibly be attached to a PASID of a device,
+> > > while other PASIDs still use ATS for functionality.
+> > 
+> > No.. The above should be setting everything, including PASIDs to the
+> > blocked domain.
+> > 
+> > The driver doesn't have to disable ATS at the device, but ARM does.
+> 
+> Oh, the code is expecting a pci_disable_ats() call, as the next
+> patch will check if ats is disabled on the PCI side..
 
-[ Upstream commit 2b8be57fa0c88ac824a906f29c04d728f9f6047a ]
+I would not bother, it is alot more work to fix AMD and Intel iommu
+drivers and I don't think it really buys us anything..
 
-This reverts commit 631b2af2f357 ("PCI/ACPI: Fix allocated memory release
-on error in pci_acpi_scan_root()").
+> If that's the case, we'd have to leave the ATS enabled but only
+> trust that iommu driver won't issue any new ATS invalidation?
 
-The reverted patch causes the 'ri->cfg' and 'root_ops' resources to be
-released multiple times.
+Yes.
 
-When acpi_pci_root_create() fails, these resources have already been
-released internally by the __acpi_pci_root_release_info() function.
+> > ops->blocked_domain is not good, we support devices without static
+> > blocking domain. But yes, using DOMAIN_BLOCKED is not greap, there is
+> > a group->blocked_domain that should be used and will dynamicaly create
+> > an empty paging domain if needed.
+> 
+> You mean we should use the group->blocking_domain, even if it was
+> allocated to be a paging domain as the driver doesn't understand
+> a IOMMU_DOMAIN_BLOCKED yet?
 
-Releasing them again in pci_acpi_scan_root() leads to incorrect behavior
-and potential memory issues.
+Yes, and you just get a group->blocking_domain to assign for the same reason.
 
-We plan to resolve the issue using a more appropriate fix.
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/aEmdnuw715btq7Q5@stanley.mountain/
-Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
-Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20250619072608.2075475-1-qiaozhe@iscas.ac.cn
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-Based on my analysis of the commit and examination of the kernel code, I
-need to determine if this revert should be backported.
-
-**YES**, this commit should be backported to stable kernel trees.
-
-## Extensive Explanation:
-
-### 1. **Critical Double-Free Bug Fix**
-This revert fixes a serious double-free bug introduced by commit
-631b2af2f357. The code analysis reveals that when
-`acpi_pci_root_create()` fails, it internally calls
-`__acpi_pci_root_release_info()`, which then invokes the `release_info`
-callback (`pci_acpi_generic_release_info()`). This callback already
-frees:
-- `ri->cfg` via `pci_ecam_free(ri->cfg)`
-- `ci->ops` (which is `root_ops`) via `kfree(ci->ops)`
-- `ri` via `kfree(ri)`
-
-The explicit cleanup added by the reverted commit causes these resources
-to be freed a second time, leading to memory corruption.
-
-### 2. **Error Path Issue - High Impact**
-The double-free occurs in the error handling path when
-`acpi_pci_root_create()` fails. While this is not the common case,
-PCI/ACPI initialization failures can occur due to:
-- Hardware issues
-- Firmware bugs
-- Resource allocation failures
-- Configuration problems
-
-When such failures occur, the double-free can cause kernel crashes, data
-corruption, or security vulnerabilities.
-
-### 3. **Simple and Safe Fix**
-The revert is straightforward - it removes the problematic error
-handling code that was incorrectly added. The code changes show:
-```diff
-- if (!root_ops)
-- goto free_ri;
-+       if (!root_ops) {
-+               kfree(ri);
-+               return NULL;
-+       }
-```
-This returns to the original, simpler error handling that only frees
-what hasn't been passed to `acpi_pci_root_create()` yet.
-
-### 4. **Matches Stable Backport Criteria**
-This fix meets the stable kernel criteria:
-- **Fixes a real bug**: Double-free causing potential crashes/corruption
-- **Small and contained**: Only modifies error paths in one function
-- **Already in Linus' tree**: This is a merged commit
-- **No new features**: Pure bug fix
-- **Low risk**: Reverts to previously known-working code
-
-### 5. **Similar to Successful Backports**
-Looking at the reference commits, this is similar to:
-- "ARM64: PCI: Fix struct acpi_pci_root_ops allocation failure path"
-  (Backported: YES) - Also fixed memory management in error paths
-- "Revert 'PCI: acpiphp: Reassign resources on bridge if necessary'"
-  (Backported: YES) - Also a revert fixing problematic behavior
-
-The commit message explicitly states "We plan to resolve the issue using
-a more appropriate fix," indicating the maintainers recognize there may
-be an underlying issue to address, but the immediate concern is fixing
-the double-free bug, making this suitable for stable backporting.
-
- drivers/pci/pci-acpi.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index b78e0e4173244..af370628e5839 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -1676,19 +1676,24 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 		return NULL;
- 
- 	root_ops = kzalloc(sizeof(*root_ops), GFP_KERNEL);
--	if (!root_ops)
--		goto free_ri;
-+	if (!root_ops) {
-+		kfree(ri);
-+		return NULL;
-+	}
- 
- 	ri->cfg = pci_acpi_setup_ecam_mapping(root);
--	if (!ri->cfg)
--		goto free_root_ops;
-+	if (!ri->cfg) {
-+		kfree(ri);
-+		kfree(root_ops);
-+		return NULL;
-+	}
- 
- 	root_ops->release_info = pci_acpi_generic_release_info;
- 	root_ops->prepare_resources = pci_acpi_root_prepare_resources;
- 	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
- 	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
- 	if (!bus)
--		goto free_cfg;
-+		return NULL;
- 
- 	/* If we must preserve the resource configuration, claim now */
- 	host = pci_find_host_bridge(bus);
-@@ -1705,14 +1710,6 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
- 		pcie_bus_configure_settings(child);
- 
- 	return bus;
--
--free_cfg:
--	pci_ecam_free(ri->cfg);
--free_root_ops:
--	kfree(root_ops);
--free_ri:
--	kfree(ri);
--	return NULL;
- }
- 
- void pcibios_add_bus(struct pci_bus *bus)
--- 
-2.39.5
-
+Jason
 
