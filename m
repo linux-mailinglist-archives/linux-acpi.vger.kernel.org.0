@@ -1,129 +1,198 @@
-Return-Path: <linux-acpi+bounces-14878-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14879-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E044AEF5F8
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Jul 2025 13:00:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA11AEF657
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Jul 2025 13:20:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B66893A6A12
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Jul 2025 11:00:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62D1D4A209E
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Jul 2025 11:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D18727054A;
-	Tue,  1 Jul 2025 11:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416A526D4C1;
+	Tue,  1 Jul 2025 11:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="IcxruhGJ"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="KvcE3hiJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56E126CE10;
-	Tue,  1 Jul 2025 11:00:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6678625A2A4
+	for <linux-acpi@vger.kernel.org>; Tue,  1 Jul 2025 11:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751367652; cv=none; b=P1gRlXVhtTuXSKHPMZb1MP6hasQL6Ze11D58e5L70MQd0pA32I0AjYxhK2/L5HpHVZUXcvGT0NtNp/V0lYRFrheAShuaREUlCRREO64Z/0tk3wS2WLNZ3lggSNZ4VTBtj5kRxTMswcaXHQs3sL4xazpcshCeWRs2Mu290n0HEVU=
+	t=1751368796; cv=none; b=j3uq/Qw6njOLNFnnBcqv8SsE1zyGSr4ut4yqqiiUkfI73WISP1dqnOqONkqbVOJ9sN9eVjT/7DRTQNARwY2tTzBgYXlpq9MRShCvdiQXZtL/EjPUXytBKpCCQdeDRg0av9cMKsscKfsKScfymBqtxq1f9c9eR8nA1mg6mTiuUlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751367652; c=relaxed/simple;
-	bh=Ot7kZOdy+yQqlZJKbHBLYbYS5NsTV6IusHCngn2wRDM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CRUiA4dItob2SVdG5/2iINA+uCpSWNPFMsXIC7UApLrSxEKDJEzQ7Q+Lbp/wLjJiWddCGnp+5cAigCiXKb1yXvdDlCKZroj7YYgLwCE2drLXLHX03sQn+LDEx/oZe/LyRPD8PMX3LSVWOHoDP917xpFztxTX3kuEbiJDAHrtims=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=IcxruhGJ; arc=none smtp.client-ip=115.124.30.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1751367641; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=96MBiLIAT11qw69jnWPcKdKmmqG3+//p54YrohdRwbU=;
-	b=IcxruhGJH/8UKQPuL2qCo4hn/kojdZ8QMT0fJPwhjbETbZFgEBvJv3QSL8jFIklexo3C/W/HIBYPUHbF37MwXY/drT3sr+EJk3ar0hnGyIlrNZS2CkcD6itBtW6xHh12W1YtS3e6HIrdcMYd+IAIbjXHC/W7dr0eKL3TZYLBjp4=
-Received: from 30.246.181.60(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WgO.Cpy_1751367636 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 01 Jul 2025 19:00:38 +0800
-Message-ID: <6671c3cc-5119-4544-bcb5-17e8cc2d7057@linux.alibaba.com>
-Date: Tue, 1 Jul 2025 19:00:32 +0800
+	s=arc-20240116; t=1751368796; c=relaxed/simple;
+	bh=FeqVp2yCUZ3ij1peE3WeZz1cWGh+QgySUCT2N/2Xbjo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lqeAdCxWJWURzXeH8tONxvk18t1MI0EQVgFZZH42ZqAwGgziJFWwFuicjMy15OtlljZNJEbLRjQpboCBUB7X3R8VLyaXh02NsFmP1BOe3FsAA0DnLLj5+ykAAEAGGDz4olWzZbeaBMw8CkZOzLTn0jHpVaKn6YfNYGFWjCR2bnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=KvcE3hiJ; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-60700a745e5so6544925a12.3
+        for <linux-acpi@vger.kernel.org>; Tue, 01 Jul 2025 04:19:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1751368792; x=1751973592; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=bGjQ61S1++mVkf3/jYVKvuXkIa1IOFszhbgMmRDC9tQ=;
+        b=KvcE3hiJEeaZhWlUYMdg/Az5G8+zFauJvF+pZnzPpCvexezPa1pYhES0apTrXePJI0
+         X8BZDV7KIqsq4+foX5qxMjjejvHHoCiOZq46cFq5US/O3KGLW4OPvXdAjyYMlc2f8bmw
+         rhe37unhsOONKPiMnLWZMmraY3RrNG7Wp8PF0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751368792; x=1751973592;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bGjQ61S1++mVkf3/jYVKvuXkIa1IOFszhbgMmRDC9tQ=;
+        b=mOl4CNU9mFFLuLqHcj6chPia0lSL3RFh1+LbqIBabmVwf03JhHnQLVmO4PVxEbGk0v
+         qC+rYWJ95N8+6Ep76it7U57hDQ6zgiOYzURwSI+FjRjtBYXEL9A+1Len94sXZ5MqwiVM
+         TENYPFBEzBcdvdjPLI1cChZkCGC9MU8MS8Xkt+cMBCRyUGAkbWd/734fU9fkLEElia0p
+         HyP7vC0idoq8oJOV/ArdJps/nZnxGtKyWwOUDXstWJe5ElQ1FvD3f/CNROM9V032GpKv
+         d0cqV9Paol550IY/mXGo4XHq9mHGk2SsBhM47aQbKP10vmLlWEgeQVgohxB+vtuc2pUO
+         56cg==
+X-Forwarded-Encrypted: i=1; AJvYcCXL9tpAjlgG3J5xrefG7WUvsnQFEk3qax+PtSO1NI88nTC04oAziSkPPqY8OE8fihZirJAi312iuJ19@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzvbd4qQVPZhXl+JObudyOAY7nrYXJ9bxrE/53L8oXYcqMEQWvd
+	ptJ9RfCqnrGCXaaeuvAqFDXWrPxyybj6D58vB4ONKHlGYGCDw0jJkU2r1a0yzaUwtpi8ISTMVhU
+	vHIcmsw==
+X-Gm-Gg: ASbGncs/P/D1oQCLM810FG5QXfHb/UbdDhPwU5VMASgy1N58Wfem9C0UXNktRnJekw9
+	TvBsM2dKgPwgs08aO+sPPAag85Z7PD9XTrI7X6vVQfTZbntckmZ/1T/YDPkxXmKGSUl0zWM26Bg
+	4/Ph41ItWHN+6BswaZZsnoRDvf8GyQREaDXpuIDlN6GdC2sVbyXZGcsYS1t6b5sHwMmzxk/cSL/
+	Nle8YhF3lfHECB4mABFGnvw6yDZvonq+PDrjm2AHZlOp1P22zlAp96xXyD1lKDJyHxa96Ri/zFP
+	wqWvE1VN7YOPgfJxEv8AHiPRQf4y5i9SRAf1RMla1L+oNg8crZrl2tayT4I6D09bq8EDr9tNsfn
+	hUbT6jvYfFtHJjAHEINeX/uzT
+X-Google-Smtp-Source: AGHT+IE7NFoQDQG0a4Y4+JoLj4P/TajBGC0TMo/t2CtKZC8EWE4ZU4d00GI4uvrc8kocPlWIQOsHCw==
+X-Received: by 2002:a17:907:1ca3:b0:ae1:771d:aea4 with SMTP id a640c23a62f3a-ae3500c9236mr1736707166b.36.1751368792318;
+        Tue, 01 Jul 2025 04:19:52 -0700 (PDT)
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3a23ba50bsm243630566b.116.2025.07.01.04.19.52
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Jul 2025 04:19:52 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ae3b336e936so75111866b.3
+        for <linux-acpi@vger.kernel.org>; Tue, 01 Jul 2025 04:19:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXi8+e8y15o2FzYrSMie/QyKHwVeRYeTrfbaMZMfgVdxmpj0LzQlhmMoEexc40pu2wjyVbvJgPD32Fr@vger.kernel.org
+X-Received: by 2002:a05:6512:224b:b0:553:cf38:5ea1 with SMTP id
+ 2adb3069b0e04-5550b87b62cmr5806214e87.15.1751368403239; Tue, 01 Jul 2025
+ 04:13:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH v18 1/2] ACPI: APEI: send SIGBUS to current task if
- synchronous memory error not recovered
-To: Will Deacon <will@kernel.org>, Hanjun Guo <guohanjun@huawei.com>,
- rafael@kernel.org, Catalin Marinas <catalin.marinas@arm.com>
-Cc: "Luck, Tony" <tony.luck@intel.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
- ardb@kernel.org, ying.huang@linux.alibaba.com, ashish.kalra@amd.com,
- baolin.wang@linux.alibaba.com, tglx@linutronix.de,
- dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
- robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
- zhuo.song@linux.alibaba.com, sudeep.holla@arm.com, lpieralisi@kernel.org,
- linux-acpi@vger.kernel.org, yazen.ghannam@amd.com, mark.rutland@arm.com,
- mingo@redhat.com, robin.murphy@arm.com, Jonathan.Cameron@Huawei.com,
- bp@alien8.de, linux-arm-kernel@lists.infradead.org,
- wangkefeng.wang@huawei.com, tanxiaofei@huawei.com, mawupeng1@huawei.com,
- linmiaohe@huawei.com, naoya.horiguchi@nec.com, james.morse@arm.com,
- tongtiangen@huawei.com, gregkh@linuxfoundation.org, jarkko@kernel.org
-References: <20250404112050.42040-1-xueshuai@linux.alibaba.com>
- <20250404112050.42040-2-xueshuai@linux.alibaba.com>
- <0c0bc332-0323-4e43-a96b-dd5f5957ecc9@huawei.com>
- <709ee8d2-8969-424c-b32b-101c6a8220fb@linux.alibaba.com>
- <353809e7-5373-0d54-6ddb-767bc5af9e5f@huawei.com>
- <653abdd4-46d2-4956-b49c-8f9c309af34d@linux.alibaba.com>
- <de5d2417-dc92-b276-1125-4feb5151de7f@huawei.com>
- <f60f1128-0d42-48e5-9a06-6ed7ca10767f@linux.alibaba.com>
- <20250428152350.GA23615@willie-the-truck>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20250428152350.GA23615@willie-the-truck>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250605-uvc-orientation-v2-0-5710f9d030aa@chromium.org>
+ <20250605-uvc-orientation-v2-10-5710f9d030aa@chromium.org> <20250629181246.GE6260@pendragon.ideasonboard.com>
+In-Reply-To: <20250629181246.GE6260@pendragon.ideasonboard.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Tue, 1 Jul 2025 13:13:10 +0200
+X-Gmail-Original-Message-ID: <CANiDSCsu0RT4dcGyBJRutP=9HTe+niUoohxTZE=qJ8O_9ez=+A@mail.gmail.com>
+X-Gm-Features: Ac12FXyUB7J2CzeHXupatytT-Rncr6S6tZS3kWRK4b67_iOG9R3ef-6_Er_0YxQ
+Message-ID: <CANiDSCsu0RT4dcGyBJRutP=9HTe+niUoohxTZE=qJ8O_9ez=+A@mail.gmail.com>
+Subject: Re: [PATCH v2 10/12] media: uvcvideo: Add get_* functions to uvc_entity
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Hans de Goede <hdegoede@redhat.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Hans Verkuil <hverkuil@xs4all.nl>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
- >在 2025/4/28 23:23, Will Deacon 写道:
- >> On Fri, Apr 25, 2025 at 09:10:09AM +0800, Shuai Xue wrote:
- >>> 在 2025/4/25 09:00, Hanjun Guo 写道:
- >>>> Call force_sig(SIGBUS) directly in ghes_do_proc() is not my favourite,
- >>>> but I can bear that, please add
- >>>>
- >>>> Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
- >>>>
- >>>> Thanks
- >>>> Hanjun
- >>>
- >>> Thanks. Hanjun.
- >>>
- >>> @Rafael, @Catalin,
- >>>
- >>> Both patch 1 and 2 have reviewed-by tag from the arm64 ACPI 
-maintainers, Hanjun,
- >>> now. Are you happpy to pick and queue this patch set to acpi tree 
-or arm tree?
- >>
- >> Since this primarily touches drivers/acpi/apei/ghes.c, I think it should
- >> go via the ACPI tree and not the arm64 one.
- >>
- >> Will
- >
- >Hi, Will,
- >
- >Thank you for your confirmation :)
- >
- >@Rafael, do you have more comments on this patch set?
- >
- >Thanks you.
- >
- >Best Regards,
- >Shuai
+Hi Laurent
 
-Hi, all,
+On Sun, 29 Jun 2025 at 20:13, Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+>
+> Hi Ricardo,
+>
+> Thank you for the patch.
+>
+> On Thu, Jun 05, 2025 at 05:53:03PM +0000, Ricardo Ribalda wrote:
+> > Virtual entities need to provide more values than get_cur and get_cur
+>
+> I think you meant "get_info and get_cur".
+>
+> > for their controls. Add support for get_def, get_min, get_max and
+> > get_res.
+>
+> Do they ? The UVC specification defines controls that don't list
+> GET_DEF, GET_MIN, GET_MAX and GET_RES as mandatory requests. Can't we do
+> the same for the software controls ? This patch is meant to support the
+> UVC_SWENTITY_ORIENTATION and UVC_SWENTITY_ROTATION control in the next
+> patch, and those are read-only controls. Aren't GET_INFO and GET_CUR
+> enough ?
 
-Gentle ping.
+V4L2_CID_CAMERA_ROTATION has the type UVC_CTRL_DATA_TYPE_UNSIGNED,
+that time requires get_min and get_max.
+We can create a new type UVC_CTRL_DATA_TYPE_UNSIGNED_READ_ONLY that
+fakes min, max and res, but I think that it is cleaner this approach.
 
-Does ACPI or APEI tree still active? Looking forward to any response.
+>
+> >
+> > This is a preparation patch.
+> >
+> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > ---
+> >  drivers/media/usb/uvc/uvc_ctrl.c | 12 ++++++++++++
+> >  drivers/media/usb/uvc/uvcvideo.h |  8 ++++++++
+> >  2 files changed, 20 insertions(+)
+> >
+> > diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+> > index 21ec7b978bc7aca21db7cb8fd5d135d876f3330c..59be62ae24a4219fa9d7aacf2ae7382c95362178 100644
+> > --- a/drivers/media/usb/uvc/uvc_ctrl.c
+> > +++ b/drivers/media/usb/uvc/uvc_ctrl.c
+> > @@ -596,6 +596,18 @@ static int uvc_ctrl_query_entity(struct uvc_device *dev,
+> >       if (query == UVC_GET_CUR && ctrl->entity->get_cur)
+> >               return ctrl->entity->get_cur(dev, ctrl->entity,
+> >                                            ctrl->info.selector, data, len);
+> > +     if (query == UVC_GET_DEF && ctrl->entity->get_def)
+> > +             return ctrl->entity->get_def(dev, ctrl->entity,
+> > +                                          ctrl->info.selector, data, len);
+> > +     if (query == UVC_GET_MIN && ctrl->entity->get_min)
+> > +             return ctrl->entity->get_min(dev, ctrl->entity,
+> > +                                          ctrl->info.selector, data, len);
+> > +     if (query == UVC_GET_MAX && ctrl->entity->get_max)
+> > +             return ctrl->entity->get_max(dev, ctrl->entity,
+> > +                                          ctrl->info.selector, data, len);
+> > +     if (query == UVC_GET_RES && ctrl->entity->get_res)
+> > +             return ctrl->entity->get_res(dev, ctrl->entity,
+> > +                                          ctrl->info.selector, data, len);
+> >       if (query == UVC_GET_INFO && ctrl->entity->get_info)
+> >               return ctrl->entity->get_info(dev, ctrl->entity,
+> >                                             ctrl->info.selector, data);
+> > diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+> > index a931750bdea25b9062dcc7644bf5f2ed89c1cb4c..d6da8ed3ad4cf3377df49923e051fe04d83d2e38 100644
+> > --- a/drivers/media/usb/uvc/uvcvideo.h
+> > +++ b/drivers/media/usb/uvc/uvcvideo.h
+> > @@ -261,6 +261,14 @@ struct uvc_entity {
+> >                       u8 cs, u8 *caps);
+> >       int (*get_cur)(struct uvc_device *dev, struct uvc_entity *entity,
+> >                      u8 cs, void *data, u16 size);
+> > +     int (*get_def)(struct uvc_device *dev, struct uvc_entity *entity,
+> > +                    u8 cs, void *data, u16 size);
+> > +     int (*get_min)(struct uvc_device *dev, struct uvc_entity *entity,
+> > +                    u8 cs, void *data, u16 size);
+> > +     int (*get_max)(struct uvc_device *dev, struct uvc_entity *entity,
+> > +                    u8 cs, void *data, u16 size);
+> > +     int (*get_res)(struct uvc_device *dev, struct uvc_entity *entity,
+> > +                    u8 cs, void *data, u16 size);
+> >
+> >       unsigned int ncontrols;
+> >       struct uvc_control *controls;
+>
+> --
+> Regards,
+>
+> Laurent Pinchart
 
-Thanks.
 
-Best Regards,
-Shuai
+
+-- 
+Ricardo Ribalda
 
