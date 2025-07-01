@@ -1,95 +1,87 @@
-Return-Path: <linux-acpi+bounces-14882-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14883-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C09AEF797
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Jul 2025 14:00:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DCFCAEF97D
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Jul 2025 14:59:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D6DE3AAFE8
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Jul 2025 11:59:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BED921887175
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Jul 2025 12:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF970273D9F;
-	Tue,  1 Jul 2025 11:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FD02741B0;
+	Tue,  1 Jul 2025 12:59:02 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3242273816;
-	Tue,  1 Jul 2025 11:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F112515199A;
+	Tue,  1 Jul 2025 12:58:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751370808; cv=none; b=YHlt6w5LCGuUAMFHZ6s8acR1Z+XcII8SPd20DNIvCNnR0ETJpU7+kSbGUSUH8SoQvjus5axly679PVgpJFvxhbluf3C+XVMcULNUTQk8D92VgB8RkajgTL3QNJE83ApE1ZC+of+3pDkTplUruTL1OxIzLg6cqdrM3IMZGa0E4eY=
+	t=1751374742; cv=none; b=KCeeXJTUENWFmbICa5O5uHYg6uL/ghvsBopThePPcGnssuDG7ZMv+Yk89C5FOUUNjRXXywQZ+i1MzpUNxRWtQnpCGS41LSQbfg7TVjy6+m4xg1g3t6+cn9PbS2sa6bq7kcUK45BwdTZ+U37Ova/6GsV6/IZzRq9FYiI0kgyirzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751370808; c=relaxed/simple;
-	bh=C1e0NPrMRKSal2Xyocx28xd/iI/iJcEEAFn8lphPZaE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=juV8LFuwGMyeDI9LYs4xfn8JoJ+e4GkqhdxHiMDMynaqrPyRDjvD+FkXUXI8Ro++T5CXGQqtKJBGlUJict2Sfjf434JbygjdkNtx82usPmCHj6tHFzuGWtno8+KPHBjE6QmBG+nZvymnprOoFpxIQIP+Whd/2424lvuFYsLG8tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E77BC4CEEB;
-	Tue,  1 Jul 2025 11:53:26 +0000 (UTC)
-Date: Tue, 1 Jul 2025 12:53:23 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Li Chen <me@linux.beauty>, "Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Hanjun Guo <guohanjun@huawei.com>, Will Deacon <will@kernel.org>,
-	Len Brown <lenb@kernel.org>, Liu Wei <liuwei09@cestc.cn>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] ACPI: Return -ENODEV from acpi_parse_spcr() when
- SPCR support is disabled
-Message-ID: <aGPMM9Nw2-99sWRL@arm.com>
-References: <20250620131309.126555-1-me@linux.beauty>
- <20250620131309.126555-2-me@linux.beauty>
+	s=arc-20240116; t=1751374742; c=relaxed/simple;
+	bh=lhmN5pCn0NAigU26xzVSelUpTaIfuc6BOhdrCn4l+gE=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BYMgQZ3cypcOIvvc45SduZzArImKtggb9osi4LpbyXp9+1uIEQGmqg2BIKEsnn2w3ehNakVGIwNI7xkJSz0CzwM3H6MpW4vccIWcsnY1KG4GCxi3LoeuVWs2iB02GwOVrHVtZAjgTjLMBRwE0QGhBMSyj+CRlu9xr3qxET7f7uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bWjkM1yBrz6M4rV;
+	Tue,  1 Jul 2025 20:58:03 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 611131402F5;
+	Tue,  1 Jul 2025 20:58:57 +0800 (CST)
+Received: from localhost (10.122.19.247) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 1 Jul
+ 2025 14:58:56 +0200
+Date: Tue, 1 Jul 2025 13:58:55 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
+CC: <linux-cxl@vger.kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
+	"Len Brown" <lenb@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Dave
+ Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan
+ Williams <dan.j.williams@intel.com>, Mahesh J Salgaonkar
+	<mahesh@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas
+	<bhelgaas@google.com>, Tony Luck <tony.luck@intel.com>, Borislav Petkov
+	<bp@alien8.de>, <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <linux-pci@vger.kernel.org>,
+	<linux-edac@vger.kernel.org>
+Subject: Re: [PATCH 2/3 v4] ACPI: extlog: Trace CPER PCI Express Error
+ Section
+Message-ID: <20250701135855.00004406@huawei.com>
+In-Reply-To: <20250623145453.1046660-3-fabio.m.de.francesco@linux.intel.com>
+References: <20250623145453.1046660-1-fabio.m.de.francesco@linux.intel.com>
+	<20250623145453.1046660-3-fabio.m.de.francesco@linux.intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250620131309.126555-2-me@linux.beauty>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Fri, Jun 20, 2025 at 09:13:07PM +0800, Li Chen wrote:
-> From: Li Chen <chenl311@chinatelecom.cn>
-> 
-> If CONFIG_ACPI_SPCR_TABLE is disabled, acpi_parse_spcr()
-> currently returns 0, which may incorrectly suggest that
-> SPCR parsing was successful. This patch changes the behavior
-> to return -ENODEV to clearly indicate that SPCR support
-> is not available.
-> 
-> This prepares the codebase for future changes that depend
-> on acpi_parse_spcr() failure detection, such as suppressing
-> misleading console messages.
-> 
-> Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
-> ---
->  include/linux/acpi.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index f102c0fe34318..71e692f952905 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -1503,7 +1503,7 @@ int acpi_parse_spcr(bool enable_earlycon, bool enable_console);
->  #else
->  static inline int acpi_parse_spcr(bool enable_earlycon, bool enable_console)
->  {
-> -	return 0;
-> +	return -ENODEV;
->  }
->  #endif
+On Mon, 23 Jun 2025 16:54:19 +0200
+"Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com> wrote:
 
-Rafael, are you ok with this patch going via the arm64 tree?
-
-Thanks.
-
--- 
-Catalin
+> I/O Machine Check Architecture events may signal failing PCIe components
+> or links. The AER event contains details on what was happening on the wire
+> when the error was signaled.
+> 
+> Trace the CPER PCIe Error section (UEFI v2.10, Appendix N.2.7) reported
+> by the I/O MCA.
+> 
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
