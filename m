@@ -1,145 +1,156 @@
-Return-Path: <linux-acpi+bounces-14873-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14874-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41525AEEADE
-	for <lists+linux-acpi@lfdr.de>; Tue,  1 Jul 2025 01:25:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C13BAAEED07
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Jul 2025 05:34:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B97627A3D30
-	for <lists+linux-acpi@lfdr.de>; Mon, 30 Jun 2025 23:23:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A316F1894E41
+	for <lists+linux-acpi@lfdr.de>; Tue,  1 Jul 2025 03:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A54525C6E7;
-	Mon, 30 Jun 2025 23:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F1C1E0E08;
+	Tue,  1 Jul 2025 03:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W11XVlA3"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="dfkGlmQF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524F078F39;
-	Mon, 30 Jun 2025 23:24:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF2E1862A
+	for <linux-acpi@vger.kernel.org>; Tue,  1 Jul 2025 03:34:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751325896; cv=none; b=udCwJSXJgxggstOXDo7+pRL/UlvpyKuKdVKQHccSBhFEoweJR+pON2E37dSWfsZYTj+YfR9iOhhmfDk1vR0coa0KSk2vnK/mD3AeAHP5o5nmr7jzNCSNpD0qBvyG+el2fuaPqwi/6zRcemZXytlZMmFqPAA2QvchsxyGizRGNpc=
+	t=1751340850; cv=none; b=ryJWvGZCOGEt/aP2AIFxbt4PXpNRjZACzY49sEuWwYUBLG5IyvVnytrtg7F9wFf/WX4RkyNsQW1eR6JKVwo2PAJnezMFITdmoqFLuoycOb3MaQstuOPt6Yr+O8ZON1Z7A1+VJP/OJ0SMgzaH5AHwHEb9fG/SPByiGyzjgHhsRJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751325896; c=relaxed/simple;
-	bh=OSVCA5D4jrahb3F584m0Qii4idTEbxrHmmdzdwhZcY8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=as+sRE9uEx3fJX/1arIx+kfBClyKuhq4xOpJKHj43DYXov4gf3D72iDXNCshFT125ANBB+HbyzJvKikYd8E4ltkr8HMYNMYCc+boa+NJ0nV7+u4ZwtNPrJq39xj+Wh2t1lAr+BKn4XWS537qR706p08WMyFx9FGyb0fIBLJkRVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W11XVlA3; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751325895; x=1782861895;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=OSVCA5D4jrahb3F584m0Qii4idTEbxrHmmdzdwhZcY8=;
-  b=W11XVlA3//84DznInzAdEgzkMDMNgY6IB3cx5bBLX0ler4H2Fk6nAnwj
-   9R+X+VoSy402he4ufmHo0nH+QMFuIEz4NqpTj++Wjr2+AgrA0roUKOQfy
-   6BcV+RE8//amllS3OPdO9kwFM7EzRTfaShH4lMx91H7AR2NaFYSGJ783a
-   uBrvbaeKTh4BLeNPe2x6zLw4DXqxLQeqfiZtDG7c7egenMvvAagvRdMkf
-   YLnPauDXeSpGneV2fbA2MWemX6WLKZZM9dWMATI4P/Y+L2Dx+Av6Y9iM/
-   oAnERicmB0ezvRTYZxlS4ACRc3GA9kTfXwP4UmTrbIQtSDjfvmSLmYBpF
-   w==;
-X-CSE-ConnectionGUID: +dnh7BZ+TvGepCPE9Mi3Ow==
-X-CSE-MsgGUID: FY6Sd4qZT6+kXEKky/ZSKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="56188517"
-X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; 
-   d="scan'208";a="56188517"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2025 16:24:46 -0700
-X-CSE-ConnectionGUID: i2xyQgECRQykHPPQIJq1IQ==
-X-CSE-MsgGUID: zJjClD91S7+bAgtlIpA9AQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,278,1744095600"; 
-   d="scan'208";a="159102654"
-Received: from yosephda-mobl.amr.corp.intel.com (HELO [10.125.210.206]) ([10.125.210.206])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2025 16:24:34 -0700
-Message-ID: <fe282f58-1627-480b-8f01-71d0effd5da8@linux.intel.com>
-Date: Mon, 30 Jun 2025 16:24:26 -0700
+	s=arc-20240116; t=1751340850; c=relaxed/simple;
+	bh=0ILwCOvCew56oAyKwRacIstQKCp9aDHxuoc+AExHhy4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LiBnsPIKFkP44nTulgojGMrUZvbZfiiYLIxxG7AD+04pv/LMfVph6pgBRfi7VqohOBPyA8jSrRs4uQooxuy2Ktgc4pf+pIgv/VnVMetH+80gTD23EK4OQGqMrsy8vQiQC/7T830hoHmfWK6swXxBn7rDOxU2GadjWvU8EuzzBvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=dfkGlmQF; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-236377f00a1so50958035ad.3
+        for <linux-acpi@vger.kernel.org>; Mon, 30 Jun 2025 20:34:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1751340847; x=1751945647; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=31XS2nxYehKiliXMsYuVNFSQuv9hNJl6nMqw6J9ZvFA=;
+        b=dfkGlmQFk9zxeZBgviR7okPJ7Y7WQFSjF5AHbALGaWZ53viHKFVut50RZ21RH4bIEF
+         7Tn9aPwJNHKeVePdJjH4GhqVgKremHVCAczGwH+TxF5rpY39fgJUCFWJmsyE9qYAIa2i
+         EF9LPj+/wTxjXvA5IDYVp/Hu+eLbxem6xXRf8GTTJ0KZgUrk+OjiL7SnrJJTxA6k7qgv
+         EMe1kifBkWOWQgD0Vd215/Wbaj7rDpqzJq+1HoJgfPr2neLnN0g0vGGA0tYEKzST3K9a
+         qColmt8CLQW1YNj9zKyadFFPUs12QjjJnKwpOANcQ4lsu04vGdeXhXDxDbJi1WQHdeS6
+         c6cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751340847; x=1751945647;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=31XS2nxYehKiliXMsYuVNFSQuv9hNJl6nMqw6J9ZvFA=;
+        b=Yq8fCOoXzUSvCeZRSECk33m439aK9y/DqjFFyewwm53mbvZYqWz+SsDvQdDbgVH7FO
+         F6zZP2sSHsauv6L0ywhaoqd3mJnWV4qZM3VZjLkIDEOL742nQRw1VEo6OSLyVYo9wYgM
+         SvxbBwS+AcoluVXW/0jD8rzrb2FuoT+9IubXlkAUL8sVSikVSoInJoCQRN1ttHH1MIGk
+         i9lzbY7des/3bt1eQeEQGMK8dVOQKzMNifR+KqxUE4NLYEHQqcLN1dsq2Nxb/T3yoceE
+         GqhHDN1n/i/EQI6wQ6i4aiwUB9WvbFykXmv66XeKb9l9gaVWw+lZTUgSEcgJG/9uPVmK
+         tLDA==
+X-Forwarded-Encrypted: i=1; AJvYcCXv+95ECE/KrKzJEApj5g9DHZGFG7ilP4DfIqh/6P/DbkBLiOJYebg1Wge7dW2suMKwuSt+g9sKJCoD@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6J/lisF4BgedwVmYZ8pFsHOButV1oDLDayFgbTKc8sLdZqoko
+	l9KkcZ8nrw0D8E7p4iiGY1VTObF6Hs5me9xdF//i0cY1ZOoZMIusjAbl2Ax+uamZJqWDBJw6wVZ
+	3gMN4vl8=
+X-Gm-Gg: ASbGnctR9xO98a+4UNxH8o7oBosCA7stHeoyrS3cK7Y0zWtyXFRJhImhAda11S8xK2d
+	3LGfwjVpGsbahLeLZSiwvetQ36N6wEDGzt6XpXjdNQgmD8Bcn13tnmWUDUQxNLwdRkhUqqzsLMm
+	dcrlT+/Ai/A65ZRItsVFSBE3fEcknhPi5wk3qXc2/5muFjwrESiYOA1dyGz4qr9PPoub4KXi2Ey
+	1SyzqsFQfGF6ul1c97ycWr7zXmr2QkiJLSg8u/gpRbqznX2Hn30qFwikxZMHiQcjhf8pBDxLSO3
+	L7l31t7Zz9lg04AXuTSwdbvO3az1Z1pp0rAc9HZxdc7nMPNK9jr6hqfH3WjES831HSvboQ==
+X-Google-Smtp-Source: AGHT+IHBFOUU87e7HImdYW3OwpB6jU6VOhsQ+1GbwVU50fpWtSuIe6bavi41hI7Zk0rpNJpgH2mTrQ==
+X-Received: by 2002:a17:903:1a70:b0:236:6f5f:caaf with SMTP id d9443c01a7336-23ac40f4e43mr241646815ad.15.1751340847108;
+        Mon, 30 Jun 2025 20:34:07 -0700 (PDT)
+Received: from sunil-laptop ([103.97.166.196])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23acb3c90d5sm95757375ad.247.2025.06.30.20.34.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Jun 2025 20:34:06 -0700 (PDT)
+Date: Tue, 1 Jul 2025 09:03:55 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-acpi@vger.kernel.org, iommu@lists.linux.dev,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Tomasz Jeznach <tjeznach@rivosinc.com>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH v3 2/3] ACPI: scan: Add support for RISC-V in
+ acpi_iommu_configure_id()
+Message-ID: <aGNXIzi8vYL4AOj4@sunil-laptop>
+References: <20250630034803.1611262-1-sunilvl@ventanamicro.com>
+ <20250630034803.1611262-3-sunilvl@ventanamicro.com>
+ <20250630-c479c6607cf8c1430f11336f@orel>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] driver core: faux: fix Undefined Behavior in
- faux_device_destroy()
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Dan Williams <dan.j.williams@intel.com>,
- Greg KH <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>,
- Benjamin.Cheatham@amd.com, Jonathan.Cameron@huawei.com, dakr@kernel.org,
- linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
- linux-kernel@vger.kernel.org, rafael.j.wysocki@intel.com, rafael@kernel.org,
- sudeep.holla@arm.com, Dan Carpenter <dan.carpenter@linaro.org>,
- Kees Cook <kees@kernel.org>
-References: <2025061313-theater-surrender-944c@gregkh>
- <20250614105037.1441029-1-ojeda@kernel.org>
- <2025061446-wriggle-modulator-f7f3@gregkh>
- <a3a08e5d-bfea-4569-8d13-ed0a42d81b2a@linux.intel.com>
- <2025061546-exile-baggage-c231@gregkh>
- <bcd3848d-54dd-453e-b0b5-91cb72160645@linux.intel.com>
- <6853586e9d366_1f9e10087@dwillia2-xfh.jf.intel.com.notmuch>
- <206ebae8-4e2d-4e04-8872-fa3a56b3e398@linux.intel.com>
- <p66tblbusj2uw4q35nytnangb7z5ziyrkenl67hjgfsatw3fdj@odgdtnzk7at6>
-Content-Language: en-GB
-From: Marc Herbert <marc.herbert@linux.intel.com>
-In-Reply-To: <p66tblbusj2uw4q35nytnangb7z5ziyrkenl67hjgfsatw3fdj@odgdtnzk7at6>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250630-c479c6607cf8c1430f11336f@orel>
 
-On 2025-06-25 17:55, Kent Overstreet wrote:
-> the big con:
-> - they interact badly with gotos, you can get undefined behaviour from
->   using a variable that wasn't actually defined _and the compiler will
->   not warn you_
-> [...]
-> But the issue with gotos is worth highlighting. Be careful when using
-> them in code that hasn't been converted to __cleanup.
+On Mon, Jun 30, 2025 at 10:02:53AM +0200, Andrew Jones wrote:
+> On Mon, Jun 30, 2025 at 09:18:02AM +0530, Sunil V L wrote:
+> > acpi_iommu_configure_id() currently supports only IORT (ARM) and VIOT.
+> > Add support for RISC-V as well.
+> > 
+> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  drivers/acpi/scan.c | 9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> > index fb1fe9f3b1a3..70f57d58fd61 100644
+> > --- a/drivers/acpi/scan.c
+> > +++ b/drivers/acpi/scan.c
+> > @@ -11,6 +11,7 @@
+> >  #include <linux/kernel.h>
+> >  #include <linux/acpi.h>
+> >  #include <linux/acpi_iort.h>
+> > +#include <linux/acpi_rimt.h>
+> >  #include <linux/acpi_viot.h>
+> >  #include <linux/iommu.h>
+> >  #include <linux/signal.h>
+> > @@ -1628,8 +1629,12 @@ static int acpi_iommu_configure_id(struct device *dev, const u32 *id_in)
+> >  	}
+> >  
+> >  	err = iort_iommu_configure_id(dev, id_in);
+> > -	if (err && err != -EPROBE_DEFER)
+> > -		err = viot_iommu_configure(dev);
+> > +	if (err && err != -EPROBE_DEFER) {
+> > +		err = rimt_iommu_configure_id(dev, id_in);
+> > +		if (err && err != -EPROBE_DEFER)
+> > +			err = viot_iommu_configure(dev);
+> > +	}
+> 
+> This can just be
+> 
+>   err = iort_iommu_configure_id(dev, id_in);
+>   if (err...
+>      err = rimt_iommu_configure_id(dev, id_in);
+>   if (err...
+>      err = viot_iommu_configure(dev);
+> 
+> Thanks,
+> drew
+> 
+Sure. Let me update in the next version.
 
-Thanks Kent for sharing this.
-
-I got curious and found that clang -Wall is actually able to warn,
-at least in simple cases:
-
-int goto_uninitialized_C99(int *ptr)
-{
-  if (!ptr)
-    goto cleanup;
-  const int i = 42;
-
-cleanup:
-  // clang warning, no gcc warning
-  printf("fin: i=%d\n", i);
-
-
-warning: variable 'i' is used uninitialized whenever 'if' condition
-   is true [-Wsometimes-uninitialized]
-
-
-gcc -Wall -Wextra does not say anything.
-Tested with clang version 18.1.3 and gcc 13.3.0
-
-
-Interestingly, there is no warning difference between C89 and C99 code
-for such a simple example. gcc warns for neither C89 code nor C99 code
-and clang warns for both.
-
-int goto_uninitialized_C89(int *ptr)
-{
-  int i;
-  if (!ptr)
-    goto cleanup;
-  i = 42
-
-cleanup:
-  /* clang warning, no gcc warning */
-  printf("fin: i=%d\n", i);
-
-
-(finally getting rid of gotos is one of the main purposes of RAII)
+Thanks!
+Sunil
 
