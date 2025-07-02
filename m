@@ -1,128 +1,169 @@
-Return-Path: <linux-acpi+bounces-14945-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14946-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA45BAF5E9E
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 18:31:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18FFAAF5F3F
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 18:57:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C3E016F17F
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 16:32:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08C5D3AB815
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 16:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9311121C9E8;
-	Wed,  2 Jul 2025 16:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21FB2FC3AE;
+	Wed,  2 Jul 2025 16:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LIjXtCoc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sER/DzSx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC20E179A7;
-	Wed,  2 Jul 2025 16:31:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801B92F0E5E;
+	Wed,  2 Jul 2025 16:57:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751473915; cv=none; b=CGcFNh0e9xB4Nw+qs2XuX2LK+uSrItyD/4IjXLAUKdYxYOT/H52VvDOZyh/s1TLUwfWyxKVm9Nqd29E9fBu3moB+ug2n6G6zrxkgO49NaRYOkbhxnhawVbGmmp6mxTXSeU+7OGke/hPxI41vsdzTFKdcYFOAlRQv23cGTd4OXiQ=
+	t=1751475421; cv=none; b=e7KTjh+Lj1cM4DDt9/QzRPyZT5xeAVScEU4aRd5qZ/PtljoCgggr2FI7bC7xbQ2YMehF0TXIQPdtytTunI+l++pL2whm8DU5fLQknPE+VrH+gZkHueonkRze0SICS+Ivei8J5ZutzZmGdjN4pgjoOM3vNRU3M+qS7JT+T1wxClI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751473915; c=relaxed/simple;
-	bh=IrCNo4PC0NsD0HLz0/9tt4ktA9q6Z/+LdaUaSaX08Bs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VkAD4SV4txE8WCzDXtXdLxCnouMmyzd5kUVjVPO1OrUxQSdIr5xjF9PQyJvi3XRCCh/VpcZHNvcBmsYI7g1F+gvBhcf2iOdovR2gTbrP0vKjdPA7OsElm52/C6PDhJDNUE4zhZCPE0CUBQLuJsSA3z/H6D6LmpK3m8U+kBcuaZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LIjXtCoc; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751473914; x=1783009914;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IrCNo4PC0NsD0HLz0/9tt4ktA9q6Z/+LdaUaSaX08Bs=;
-  b=LIjXtCocoBCU7G+Yjv+QUsHlFtbec55yYweV31gx53/c3mgR7NlxVn3n
-   a5f8jJgS8rc0jqGXxLpjgkv9mQZp/OgwnQuSHpuIP1pmIsSovGPghK5CF
-   f64YF6ZSpS2julppBJ+S5mJSJStzhuX/rEcPhfUbn9gv3UAf3oeg3Vmun
-   0k/7APO2ZC37apILd3QLI6iz1FibguCrdrlymy8rvlFLiDdJJsQgSbfaI
-   NAjWBD8JVWsjgLLB+3WiUdGMND/sYJ1c1OFeT9AsqOKL0p0DHhBvFgboN
-   HnbHWvjCoxRNF2yUsQ3S0QaVVpjgAF6k1xYZ9qytQSAYDPrp2GDDLDgCs
-   Q==;
-X-CSE-ConnectionGUID: xyF0ZTR4TCG7oNhfQSyQ6w==
-X-CSE-MsgGUID: zK/D4CSOSq29a1TVdVDULQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="53656282"
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="53656282"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 09:31:33 -0700
-X-CSE-ConnectionGUID: o41iukwUTKKgv6CK8P0eiQ==
-X-CSE-MsgGUID: TJ1zwm1GSr6100lGBcwqBQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="153576647"
-Received: from agluck-desk3.sc.intel.com (HELO agluck-desk3) ([172.25.103.51])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 09:31:32 -0700
-Date: Wed, 2 Jul 2025 09:31:30 -0700
-From: "Luck, Tony" <tony.luck@intel.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	James Morse <james.morse@arm.com>, Borislav Petkov <bp@alien8.de>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH] acpi/ghes: add TAINT_MACHINE_CHECK on GHES panic path
-Message-ID: <aGVe4nv18dRHHV16@agluck-desk3>
-References: <20250702-add_tain-v1-1-9187b10914b9@debian.org>
+	s=arc-20240116; t=1751475421; c=relaxed/simple;
+	bh=5fLW9lHTWD1y79pwK2fgk5Kd5I6KUd1GhgRK6nF2tYI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZdOhbJQOUMH3wJSYDCHOfJBVhitp5rdPgEOpsXDguLuslYw3dJGGRKgIB9OWX56lIw8xIthUH9zHU8TSDdN2Kqtpvj5LsHFY8A4NVp5W43XqOCarGxJVk5/QolLsq4yK+eNbdHxaGipBAWGdx+bjdC1umaFrsD60kNbquz1X/Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sER/DzSx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025B1C4CEED;
+	Wed,  2 Jul 2025 16:57:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751475421;
+	bh=5fLW9lHTWD1y79pwK2fgk5Kd5I6KUd1GhgRK6nF2tYI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=sER/DzSxLf1cACrNLDFA83rnzm9Yg3EebdeAqx58yqiK8+c7PkNjE0vxNUv2apS/G
+	 2lPoZLTxhECQi7CmUZVgv9T2HSwj4c6gAz7aiFKwatOMMAq170Kl/dnj2QMDTvgkXa
+	 BMLZKktwQ08bMScdmxxW5+l+gJh08yituY7oCuLzPMFFq1Iyq0xoCp9qX/ONjpn743
+	 6I2Z0/hpHrNDR+lGUkdTrAb6leaLc2wHgTZOC8TwbwfoRfW3IAJi3wzK2/FbZvcfcG
+	 8gDWJ8Y/LgDObJsEmBXM+irkNgcmrhBhjMXdPgXbga2ePnNfe/Wfn8UK3KS7FpTeyH
+	 GtemJkj0F817g==
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-611e20dd2ffso898126eaf.2;
+        Wed, 02 Jul 2025 09:57:00 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUdA+xgBVFYNU1Jt4PYEkKdfyFdObMNhrynAT28nU7kiHOIlq+n23H3zgQWQjgiE8zBdVn2HIW60YOE@vger.kernel.org, AJvYcCVN57P8pKk/R381uDsSjKQ/vA8XOEret8nxnsWiKzKKr9OGaXkqawMYltI/IVdCLF6bHKVwxZpURt+hevT6@vger.kernel.org, AJvYcCWGbEqNT6SeVaSrZgV8rrgXaoGEx9JRBMVUIjd1G2MRF+poqNpD0sa5jZhqEeSlTGiW6zbDhVQORqZa/Q==@vger.kernel.org, AJvYcCWPuUHWzM0MPKH4nO4EXqwT9NK9s/3Stc5cH7ZxZzDwxBYDVhS45Cww5Elu+9DiK8fHLMCFR5ys/ytV@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoeapCdpPJxctxnas3i7rA4PDVwyy/eLmNJ3J+7dIrUw2HNRpi
+	R5EaE1e2bsVFgrrTMvLCYYpCix35tev4Z621o4s7vbIkxzcpm1yMEFHVa/BHZ5omP1pElImAqcq
+	aX0n57iRBRyt+BkBg7ATCsD6RzkNeVYc=
+X-Google-Smtp-Source: AGHT+IH9qNtwc3BZ2zcpxgSNEE28TzTLjJ7V6ei87dF1FcJIxoWDLz53sAGHsJJOhX0RJfWm/FheCXyuy0fLYb8IODw=
+X-Received: by 2002:a05:6808:1706:b0:40a:52cf:8870 with SMTP id
+ 5614622812f47-40bfde82cbcmr15178b6e.26.1751475420246; Wed, 02 Jul 2025
+ 09:57:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250702-add_tain-v1-1-9187b10914b9@debian.org>
+References: <20250702051345.1460497-1-apatel@ventanamicro.com>
+ <20250702051345.1460497-16-apatel@ventanamicro.com> <CAJZ5v0iYYuK2GF2Pg3NiO4vLFzoYm6Q3Dnk5O2DkMJm1R3qSfQ@mail.gmail.com>
+ <aGUaFX9WgTW1I_ZO@smile.fi.intel.com> <CAJZ5v0h=qzS67Xu6NUfN_LmQUmKF9=AtkaRrTx81td0m-mRNNg@mail.gmail.com>
+ <aGVK7NxRdDIGRzNR@sunil-laptop>
+In-Reply-To: <aGVK7NxRdDIGRzNR@sunil-laptop>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 2 Jul 2025 18:56:48 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hTzrxqfejxSxqh9igiDp=8LkBw+FGSf9CJ7j3RyTJLBQ@mail.gmail.com>
+X-Gm-Features: Ac12FXxz2sRU5vqvKRB8NuHZ48tg4u3JFhsyNnnrs4x6Kv_jRDKQqaFb0Fqjbyc
+Message-ID: <CAJZ5v0hTzrxqfejxSxqh9igiDp=8LkBw+FGSf9CJ7j3RyTJLBQ@mail.gmail.com>
+Subject: Re: [PATCH v7 15/24] ACPI: property: Add support for cells property
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Anup Patel <apatel@ventanamicro.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jassi Brar <jassisinghbrar@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Len Brown <lenb@kernel.org>, Rahul Pathak <rpathak@ventanamicro.com>, 
+	Leyfoon Tan <leyfoon.tan@starfivetech.com>, Atish Patra <atish.patra@linux.dev>, 
+	Andrew Jones <ajones@ventanamicro.com>, Samuel Holland <samuel.holland@sifive.com>, 
+	Anup Patel <anup@brainfault.org>, linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 02, 2025 at 08:39:51AM -0700, Breno Leitao wrote:
-> When a GHES (Generic Hardware Error Source) triggers a panic, add the
-> TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
+On Wed, Jul 2, 2025 at 5:06=E2=80=AFPM Sunil V L <sunilvl@ventanamicro.com>=
+ wrote:
+>
+> On Wed, Jul 02, 2025 at 02:39:30PM +0200, Rafael J. Wysocki wrote:
+> > On Wed, Jul 2, 2025 at 1:38=E2=80=AFPM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
+> > >
+> > > On Wed, Jul 02, 2025 at 12:20:55PM +0200, Rafael J. Wysocki wrote:
+> > > > On Wed, Jul 2, 2025 at 7:16=E2=80=AFAM Anup Patel <apatel@ventanami=
+cro.com> wrote:
+> > >
+> > > ...
+> > >
+> > > > >  static int acpi_fwnode_get_reference_args(const struct fwnode_ha=
+ndle *fwnode,
+> > > > >                                           const char *propname, c=
+onst char *nargs_prop,
+> > > > >                                           unsigned int args_count=
+, unsigned int index,
+> > >
+> > > > >         const struct acpi_device_data *data;
+> > > > >         struct fwnode_handle *ref_fwnode;
+> > > > >         struct acpi_device *device;
+> > > > > +       unsigned int nargs_count;
+> > > > >         int ret, idx =3D 0;
+> > >
+> > > > > +                       nargs_count =3D acpi_fwnode_get_args_coun=
+t(device, nargs_prop);
+> > > >
+> > > > I think it should work the same way as it used to for the callers t=
+hat
+> > > > pass args_count, so maybe
+> > > >
+> > > > if (!args_count)
+> > > >         args_count =3D acpi_fwnode_get_args_count(device, nargs_pro=
+p);
+> > >
+> > > But this is different variable.
+> >
+> > Of course it is different.  It is an acpi_fwnode_get_reference_args() p=
+arameter.
+> >
+> > > > >                         element++;
+> > > > > -
+> > > > >                         ret =3D acpi_get_ref_args(idx =3D=3D inde=
+x ? args : NULL,
+> > > > >                                                 acpi_fwnode_handl=
+e(device),
+> > > > > -                                               &element, end, ar=
+gs_count);
+> > > > > +                                               &element, end,
+> > > > > +                                               nargs_count ? nar=
+gs_count : args_count);
+> > > >
+> > > > And this change would not be necessary?
+> > >
+> > > This is not the same check as proposed above.
+> >
+> > No, it is not.
+> >
+> > It just makes the function work the same way it did before the change
+> > for the callers who passed nozero args_count and so they might be
+> > forgiven expecting that it would be taken into account.
+>
+> But if we do like this, the expectation of
+> fwnode_property_get_reference_args() will differ for DT and ACPI, right?
+> I mean nargs_prop should take higher precedence than nargs.
 
-While it might not strictly be a machine check that caused GHES to
-panic, it seems close enough from the available TAINT options.
+So you basically want acpi_fwnode_get_reference_args() to take
+nargs_prop into account (which could be explained much cleaner in the
+patch changelogs).
 
-So unless someone feels it would be better to create a new TAINT
-flag (TAINT_FATAL_GHES? TAINT_FIRMWARE_REPORTED_FATAL_ERRROR?)
-then this seems OK to me.
+Also, your changes don't modify the behavior of
+__acpi_node_get_property_reference() AFAICS, so this is OK.
 
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-
-> kernel as tainted due to a machine check event, improving diagnostics
-> and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
-> indicate lockdep remains valid.
-> 
-> At large scale deployment, this helps to quickly determin panics that
-> are coming due to hardware failures.
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->  drivers/acpi/apei/ghes.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index f0584ccad4519..3d44f926afe8e 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -1088,6 +1088,8 @@ static void __ghes_panic(struct ghes *ghes,
->  
->  	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
->  
-> +	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
-> +
->  	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
->  
->  	if (!panic_timeout)
-> 
-> ---
-> base-commit: e96ee511c906c59b7c4e6efd9d9b33917730e000
-> change-id: 20250702-add_tain-902925f3eb96
-> 
-> Best regards,
-> --  
-> Breno Leitao <leitao@debian.org>
-> 
+Never mind then, but you could pass nargs_prop along with the
+additional device parameter to acpi_get_ref_args() and make that
+function obtain the nargs_prop value.  In the patch, you need to get
+the nargs_prop value before calling it anyway in both places in which
+it is used.
 
