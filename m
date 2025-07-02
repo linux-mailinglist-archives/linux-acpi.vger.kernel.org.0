@@ -1,204 +1,118 @@
-Return-Path: <linux-acpi+bounces-14924-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14925-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35AFAAF13DB
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 13:29:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65CA2AF13E4
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 13:31:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E59FD4448B6
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 11:28:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3F0F4A1FFE
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 11:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4827D2367D3;
-	Wed,  2 Jul 2025 11:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF730263F38;
+	Wed,  2 Jul 2025 11:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VdjtxUyP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NM1XnPg3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0E92620FA;
-	Wed,  2 Jul 2025 11:29:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45630246781;
+	Wed,  2 Jul 2025 11:31:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751455750; cv=none; b=X4IoGLO4ceBaYzTz5pF9qysJaoV55gtYSjT1PNR17FLg3lDXQawpp2NjO7WNJY0mFCErJx4Z3aLc+y3wnU5HlyTHbj92txJzx7zG6dtysnKGsUtO3cH38pWR7QR88hxQp5syNV+uvHa4LU5sQlpUGFXCPff+bpgZ7JjRd1PBBSA=
+	t=1751455865; cv=none; b=KW+LDgJq6k8mHZ5gM1XWvO21RQRrtOB2mp4+GRPxynYVpisp3edgCUKG4B4dLFtS55Nrx5EmxswV+0bvv3c/8HV1NggAcHX9KnSEx5Cn/5apm+zhonRV4g6mHZGlhJZHpge8snEN4Bk/pHfvzVVMRG/2Q4pLX/ZZhd67HIiK/oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751455750; c=relaxed/simple;
-	bh=ye5X6obKoSEg1H58wS5paYr733c6PnCpeelFGlRpih0=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=gik18cLeH/n713jqRwZRKYXfc32Npj5dMYlzEbW0LNry0oggbYKqWQiEBgHXkuWCGvyY/WcokHkLbZ4uCxFyjwg1SIiunZT76WzrwDArp8Gm8Inmd9EnmxYBx7MlaqSoLo+6u8DZECejdO/g9fD3Co2rQi2cxMGkCUcW0wlOk1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VdjtxUyP; arc=none smtp.client-ip=192.198.163.8
+	s=arc-20240116; t=1751455865; c=relaxed/simple;
+	bh=BQCMzYb6py2zdb+YdFBHZxoeQM3A3WG6DoBX46UnyrI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jB83k2jrCBSLBljYsnChVGjdjVWwSgSv5bevq1EXmiAiZSl/IDT2Y2vhFVB9kTn2QYYEpi/CS8kwRTymya0li2/qb/kjTe/v8iD9mg1PzUruczv0KoOYfMeGtZ+vECOfER4LvyHX81HR4TjMbyXYMCwXWaYP0SCYW0BbRhf+03g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NM1XnPg3; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751455749; x=1782991749;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=ye5X6obKoSEg1H58wS5paYr733c6PnCpeelFGlRpih0=;
-  b=VdjtxUyPlgqQ9o/9kFQdDzpnAdaTbAFzwsCHxFrrPw/Up+Mgnu4prBj7
-   kMItUz8jayDydEIE04AbXgoti1v2kQYUN1Yrym+P0LVEYtfJNeDydUdba
-   jISk1AxeqBfX950ahZ9dyhqVcz3twcWKwkMFJZE+JUbl3IeWJO3XAse7V
-   ZnDsYyDdo4NtwRXhPCyQPezpsKksBN9YD9gNcsnCcFputcQbgKLQ19Q4V
-   W2Z6AWcJikv6QtFD86hy+2ceB4TfPWvZGhoGezZgU0WLlfmzO6zES0zjd
-   aXmN8HBpWVZ2EangxeF89N57txCa3ljIbKhaWzMgQjZJlsxKylB3c3K1o
-   w==;
-X-CSE-ConnectionGUID: HnHT6DM5TPmisifccTaGdg==
-X-CSE-MsgGUID: l26l8053TACx4A2RQdyEGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="71312956"
+  t=1751455865; x=1782991865;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BQCMzYb6py2zdb+YdFBHZxoeQM3A3WG6DoBX46UnyrI=;
+  b=NM1XnPg3myCeU+pXEhN9Tek1tPhAYdzp5DgAFBRLWV1cx/FpOyD6TCLP
+   rRipg3oUn14ZMclOzjiJX7Q8LsucCkhXpE4SkLi5uOsAszhnpcFe4nVCc
+   k4ThFFhpTKguj8C7nU72ziU5IPzQn8Lz1SxzSo2oOsoARKBo9Cc37v2UV
+   N8cyBN84ApPIAME/n6tKoG1x0aO6c21I1pRxoZnSAJpZM75Xjr1bkkd3F
+   PJhsb/XMntCS9mmude1JcsJLvlSqtTFEHaH4U+CtO0qon9/bApYZ2y8LE
+   TZUfccFU9rX3LMiEEz3S3O1+GLVg05mYcLKAazOeUmIDY1PzdCfvzP/CW
+   Q==;
+X-CSE-ConnectionGUID: Z6kCnSQ5Sf2PMssCiFudbw==
+X-CSE-MsgGUID: ap5u5udrS4uFiIQuNtFKGQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11481"; a="79186476"
 X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="71312956"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 04:29:07 -0700
-X-CSE-ConnectionGUID: 6LQ9sz59SMmbijbCNfm0/Q==
-X-CSE-MsgGUID: 8wdgoqVFRg63/w0PtLAeew==
+   d="scan'208";a="79186476"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 04:31:04 -0700
+X-CSE-ConnectionGUID: GgPq3gDpQmWwNZsum2/JhQ==
+X-CSE-MsgGUID: ITHP5AsvTvGxhlUG+acF+A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="153820832"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.228])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 04:29:02 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 2 Jul 2025 14:28:59 +0300 (EEST)
-To: Badal Nilawar <badal.nilawar@intel.com>
-cc: intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org, 
-    linux-pci@vger.kernel.org, anshuman.gupta@intel.com, 
-    "Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org, 
-    bhelgaas@google.com, lucas.demarchi@intel.com, rodrigo.vivi@intel.com, 
-    varun.gupta@intel.com, ville.syrjala@linux.intel.com, 
-    uma.shankar@intel.com
-Subject: Re: [PATCH v4 02/11] PCI/ACPI: Per root port allow one Aux power
- limit request
-In-Reply-To: <20250529111654.3140766-3-badal.nilawar@intel.com>
-Message-ID: <ec3bd3a0-98d3-3b55-198e-a27a2c1dfe8a@linux.intel.com>
-References: <20250529111654.3140766-1-badal.nilawar@intel.com> <20250529111654.3140766-3-badal.nilawar@intel.com>
+   d="scan'208";a="153456263"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 04:30:56 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1uWvfw-0000000Bu4U-04v5;
+	Wed, 02 Jul 2025 14:30:52 +0300
+Date: Wed, 2 Jul 2025 14:30:51 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Anup Patel <apatel@ventanamicro.com>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Alexandre Ghiti <alex@ghiti.fr>, Len Brown <lenb@kernel.org>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Rahul Pathak <rpathak@ventanamicro.com>,
+	Leyfoon Tan <leyfoon.tan@starfivetech.com>,
+	Atish Patra <atish.patra@linux.dev>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Anup Patel <anup@brainfault.org>, linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 06/24] byteorder: Add memcpy_to_le32() and
+ memcpy_from_le32()
+Message-ID: <aGUYa6PWYFy4TyLg@smile.fi.intel.com>
+References: <20250702051345.1460497-1-apatel@ventanamicro.com>
+ <20250702051345.1460497-7-apatel@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250702051345.1460497-7-apatel@ventanamicro.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, 29 May 2025, Badal Nilawar wrote:
+On Wed, Jul 02, 2025 at 10:43:27AM +0530, Anup Patel wrote:
+> Add common memcpy APIs for copying u32 array to/from __le32 array.
 
-> For given root port allow one Aux power limit request.
-> 
-> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
-> ---
->  drivers/acpi/scan.c     |  1 +
->  drivers/pci/pci-acpi.c  | 25 ++++++++++++++++++++++++-
->  include/acpi/acpi_bus.h |  2 ++
->  3 files changed, 27 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index fb1fe9f3b1a3..9ae7be9db01a 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -745,6 +745,7 @@ int acpi_device_add(struct acpi_device *device)
->  	INIT_LIST_HEAD(&device->physical_node_list);
->  	INIT_LIST_HEAD(&device->del_list);
->  	mutex_init(&device->physical_node_lock);
-> +	mutex_init(&device->power.aux_pwr_lock);
-
-Hi,
-
-mutex_destroy() also exists but I don't find any added by this patch?
-I think the pre-existing mutex might also have this same problem.
-
->  
->  	mutex_lock(&acpi_device_lock);
->  
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index 87f30910a5f1..d33efba4ca94 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -1451,6 +1451,7 @@ int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
->  	union acpi_object *out_obj;
->  	acpi_handle handle;
->  	int result, ret = -EINVAL;
-> +	struct acpi_device *adev;
->  
->  	if (!dev || !retry_interval)
->  		return -EINVAL;
-> @@ -1464,11 +1465,27 @@ int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
->  		return -ENODEV;
->  	}
->  
-> +	adev = ACPI_COMPANION(&dev->dev);
-> +	if (!adev)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&adev->power.aux_pwr_lock);
-> +
-> +	/* Check if aux power already granted */
-> +	if (adev->power.aux_power_limit) {
-> +		pci_info(dev, "D3cold Aux Power request already granted: %u mW\n",
-> +			 adev->power.aux_power_limit);
-> +		mutex_unlock(&adev->power.aux_pwr_lock);
-> +		return -EPERM;
-> +	}
-> +
->  	out_obj = acpi_evaluate_dsm_typed(handle, &pci_acpi_dsm_guid, 4,
->  					  DSM_PCI_D3COLD_AUX_POWER_LIMIT,
->  					  &in_obj, ACPI_TYPE_INTEGER);
-> -	if (!out_obj)
-> +	if (!out_obj) {
-> +		mutex_unlock(&adev->power.aux_pwr_lock);
->  		return -EINVAL;
-> +	}
->  
->  	result = out_obj->integer.value;
->  	if (retry_interval)
-> @@ -1478,14 +1495,17 @@ int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
->  	case 0x0:
->  		pci_dbg(dev, "D3cold Aux Power %u mW request denied\n",
->  			requested_power);
-> +		adev->power.aux_power_limit = 0;
->  		break;
->  	case 0x1:
->  		pci_info(dev, "D3cold Aux Power request granted: %u mW\n",
->  			 requested_power);
-> +		adev->power.aux_power_limit = requested_power;
->  		ret = 0;
->  		break;
->  	case 0x2:
->  		pci_info(dev, "D3cold Aux Power: Main power won't be removed\n");
-> +		adev->power.aux_power_limit = 0;
->  		ret = -EBUSY;
->  		break;
->  	default:
-> @@ -1500,9 +1520,12 @@ int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
->  			pci_err(dev, "D3cold Aux Power: Reserved or unsupported response: 0x%x\n",
->  				result);
->  		}
-> +		adev->power.aux_power_limit = 0;
->  		break;
->  	}
->  
-> +	mutex_unlock(&adev->power.aux_pwr_lock);
-> +
->  	ACPI_FREE(out_obj);
->  	return ret;
->  }
-> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-> index aad1a95e6863..c4ce3d84be00 100644
-> --- a/include/acpi/acpi_bus.h
-> +++ b/include/acpi/acpi_bus.h
-> @@ -294,6 +294,8 @@ struct acpi_device_power {
->  	struct acpi_device_power_flags flags;
->  	struct acpi_device_power_state states[ACPI_D_STATE_COUNT];	/* Power states (D0-D3Cold) */
->  	u8 state_for_enumeration; /* Deepest power state for enumeration */
-> +	u32 aux_power_limit;		/* aux power limit granted by bios */
-> +	struct mutex aux_pwr_lock;	/* prevent concurrent aux power limit requests */
->  };
->  
->  struct acpi_dep_data {
-> 
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
 -- 
- i.
+With Best Regards,
+Andy Shevchenko
+
 
 
