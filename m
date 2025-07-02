@@ -1,228 +1,167 @@
-Return-Path: <linux-acpi+bounces-14941-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14942-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35139AF5AD0
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 16:15:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 519B2AF5B76
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 16:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79E0317A8EF
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 14:14:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4451916BA69
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 14:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813392BDC31;
-	Wed,  2 Jul 2025 14:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3EA3093AB;
+	Wed,  2 Jul 2025 14:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CU8U4zrg"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="IzGM8IOk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDE52BDC09;
-	Wed,  2 Jul 2025 14:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C630309DC6
+	for <linux-acpi@vger.kernel.org>; Wed,  2 Jul 2025 14:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751465693; cv=none; b=J/1VpdpxTnpyZS9st9Q3RRzQUOIukqiSQ+gnmDuJsJJ+ZwlLOKzi/z6bYdUMDITcl8nHT2FwcarC2Zyocfh5wSYhNpZuzmTZAxNmh/b6KVDVffNhxDFz7MmDkaB2Z4Q7dfBHHaZxSXTpWhd5DARgsbdHGpdfoVQn139rysnRlkM=
+	t=1751467521; cv=none; b=IQ9OhGQBCaQY19NDAzPDBaQ05AZoiqG9ewz0FmDaROBdnaregdEZbnoUbv1Pcx7khcHpvi5CU2RLC6MPckc4fwu56LC2bPxd4sr7VOSRbr5H2UWUvhnpC3jV4wP/+JLpZ5W9Xza1gXSRcCOhmLYUWD0XGYMBrzRC8cxHKKGl9/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751465693; c=relaxed/simple;
-	bh=cprrfdfnU9GFDLUmsyw/iJaU4waUiVKSI0/qOUtlZWQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MFY//nACPORmjBtLr8tgkhUM8gUufmXMlL3iwMfAsYF2lIDm4Gp4SNZw8COaibf32Nsye0arcX2hKOwZaQX9F3Ftq/dP8bCY9dHKDZlmXFBeEbnREL4F0iqlnKQPtfqGzv9pItky0XMRgGg0nU8a0Qu4PtpOKjkmA4GObCQdqI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CU8U4zrg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D1EC4CEED;
-	Wed,  2 Jul 2025 14:14:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751465692;
-	bh=cprrfdfnU9GFDLUmsyw/iJaU4waUiVKSI0/qOUtlZWQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CU8U4zrgdeOOrMqsBqjl8oN28O7OcNV/P6D01cs7aHG6F7ElIR2/cSzbuEEyOVhU2
-	 +reIKaSU69qgR0WZl/X/ANpmKRT+okQj2Ly6Q3TsZf3gce4X1qjPYImKzqkrnd2HC/
-	 YxsGOzHVeY0S5Q+W5zXaX/2ShboY3qvtgseNqEN8ATsOcecLSjPPQ5cEjoj1T1xYhc
-	 VC3XmAIXIcQeGibL8OCprYAwmrIQOGehD/aNXyj6rebrX2TRws+YmXvSuGoQHBNruy
-	 LDn1n7W5YVVmVkJxvZhCzhiz+BaVB6o/qXC2VIO6I90r0cSRGSIw+W/dAbnUM0Q0/Y
-	 ZOgbGQZUB+ONA==
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-6118b000506so1655420eaf.0;
-        Wed, 02 Jul 2025 07:14:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUxu/QJ2AukRvYTJ1zOzJtL/ZvH1iWDrFAG52Oq75ZAAOjutXtBRLTI7+2J3HfY4qg/AK4w3mDPawhF6bHA@vger.kernel.org, AJvYcCV3lRs+IGlViacqBr6sDsiGSdI+AAEE48cW4a1fgeAy+Lv9prqMgz3/bP0sZfaqMSroLI2fuKhLbAM=@vger.kernel.org, AJvYcCVNSGl+dAiLB1kBYPWCTByUwdvmOFmNm2sNcG26sIPvdqYCl+cLkJAYjtq1sOh7rElsLhA6Z8PTKzUZ@vger.kernel.org, AJvYcCVhrHqIL9O6XPHFXGBTb0ZP0rN93rj7aBmKg3Cg7fpYsjqHeRhWfnEcsJx5tiredb5YEVajljxtfDZm@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVau6FaZEFz0cSeVM8QWPMZo4Vcu1qF5QPhmvERCZ33nDhfF2E
-	BIGKvVN7zH6AI7nmhmbOs/J3FMffmvDRC3K26Sc9Lf8QeKrhJkOnU7USr51RaWK8elRbDUH4km+
-	all0ix2lt7bLAzsjxR75Y7eIq0eQK2EM=
-X-Google-Smtp-Source: AGHT+IEQO+KXDVZLq6/myG09rxbBy9SiNjHPGLbzpRLxLdOAI4nqsRB01fCB2AilRBxPlGh/izIPC0xuI9X8tQrQ0l4=
-X-Received: by 2002:a05:6820:8c5:b0:611:e30a:f9c7 with SMTP id
- 006d021491bc7-612010ace40mr2343538eaf.7.1751465691971; Wed, 02 Jul 2025
- 07:14:51 -0700 (PDT)
+	s=arc-20240116; t=1751467521; c=relaxed/simple;
+	bh=YCLtjEou17wI5SQ0333An2jcT7S7VeJx1PUsRLs7g3A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NUnXG3jzzPTVk1xgh+pvYHhMaralIOQd0aav8BLnkzQQUElHUx8JikHHtG2S4tHRELxSDvk9o/l4e3hjEdkGaNpwfIT/xTDaX19LobYza7mv33rdUfw02Y+e8Flt4cbGWIfGFSglueMSsUh3FXWsCpnCSbcv+fpohVBrjztGLYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=IzGM8IOk; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-313a188174fso6534100a91.1
+        for <linux-acpi@vger.kernel.org>; Wed, 02 Jul 2025 07:45:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1751467520; x=1752072320; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ub3S+Dt/bu8miV+mMpV8No5VX9B8sDnT2TuQkds1xm4=;
+        b=IzGM8IOk5hZVxX8TIC1yu2d8gSyC3vh2teoMEuqulztZ1eLEJl4xWt4Y4LdwIAlLZS
+         z9O6YuEuT9Ko9LrwNpgEU7kDHCoLkCpywUpbBwFpJQtnVDqPPQ3JNFnukZHc8m5yp800
+         9Q3In8FDKQ9e8pDhKLGeargpLzjYxYhvBixwKU9UtSnI/Wl2cnWpt5YdEE6uM2YYa6CG
+         nWdpJKVJXBsNsLh3SGjCqwWf5EXLw9qdw+ANHDZCd4aYTZaRfKhdyXyNJox4b6HofaLN
+         LsHIjM+JveRoHNEAHscynr4HwbxI0SpYK/sIWnXT7IKx8HFEp4nJWZpDK2qEhUryDvkN
+         +fkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751467520; x=1752072320;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ub3S+Dt/bu8miV+mMpV8No5VX9B8sDnT2TuQkds1xm4=;
+        b=N9UV5i0iQap+pH+Xfcy85gNoJeTzoH6kUKB/LfGZUGw/XsXETTG1AsMLmsXlPXlDUh
+         4TxTrVBjn2eY6sWQdB22S2pBmahNdQw4DNUq0u0jO7USgwgT/RuhIUOFma4UlzJhoPun
+         G3DIHA1BmPd8oRIUh8DApi2RY7h91zSYm4Vv7UEikF/qNL0nilAC8TRs1t6A7GPp370l
+         6BciwNNafRMbI9T4GkkU3YNLY3ALWqSu0xQjQYt3YLn41oDD1jzWSgDQTHSHEEYCEmeb
+         rHYaUehsNsYwgTIwRhM562BQXwxyHB0ClOFaFT7SkoDooUPfLFQpErktKSoYarCzNwzd
+         4N3A==
+X-Forwarded-Encrypted: i=1; AJvYcCX3/PM/xlehVov1rhkbZBWcsS2zUKoxHlSBX/YlNDVmnmZzyoUFJD3PGFuq4GaAEmO79DLmATB7riUU@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLyoau/rHIUldFKp+9kGwjg2irup++ZlNla9Zv7f0aBipgAwzL
+	VHP8Na5htdDFcjTMOlGTJbyU5eIySQeZRJ1FP2ykkexxbtLnFezGnSOoCnX4ufthAuo=
+X-Gm-Gg: ASbGncsAQ9luSHIi605+7SEEkrvO5TdAWjv1MI7o6DlGka5hLMxKCwtAEtRovvUVY7a
+	MDN9erjSVd497QWimfHhMbExbMoUOPkPBPN+tqgLI8xCFxedcUW5wQm673R3Jc2TqTk2mqg5//4
+	Iu4fkdJO4op3wrAH5lRxaHBgrEUUkF80aP9mkkPgNx5nHdbc+VoD9k/9doa+AHDhAteAFHqz/qj
+	8dId2IqklkpVWH3Ovk2wU4y6oqAK8csZvTM5QfYfYgnLPZbX/oCd8VRxFkK3R8eYckNraLi5bzE
+	yF2fJdQn3K66iRVyyOP35qE5Mt0w/sYuYkUywWEMQqBwHy3K9Y8SNm/XyXOGwm4XlGT/LViMXaC
+	YgEV2
+X-Google-Smtp-Source: AGHT+IFPa9TeJNuPoAgMtcthgHelhMMx1yE/P2JRUakvM+iYhxMlIKjpAgWtoSbiHmHsdR0eqv5U7A==
+X-Received: by 2002:a17:90b:558d:b0:30e:e9f1:8447 with SMTP id 98e67ed59e1d1-31a917843a0mr4240732a91.4.1751467519591;
+        Wed, 02 Jul 2025 07:45:19 -0700 (PDT)
+Received: from sunil-laptop ([103.97.166.196])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31a9cc4c7c3sm17879a91.9.2025.07.02.07.45.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Jul 2025 07:45:19 -0700 (PDT)
+Date: Wed, 2 Jul 2025 20:15:04 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Anup Patel <apatel@ventanamicro.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Alexandre Ghiti <alex@ghiti.fr>, Len Brown <lenb@kernel.org>,
+	Rahul Pathak <rpathak@ventanamicro.com>,
+	Leyfoon Tan <leyfoon.tan@starfivetech.com>,
+	Atish Patra <atish.patra@linux.dev>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Anup Patel <anup@brainfault.org>, linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 14/24] ACPI: property: Refactor
+ acpi_fwnode_get_reference_args()
+Message-ID: <aGVF8Gqzs2YZf1Os@sunil-laptop>
+References: <20250702051345.1460497-1-apatel@ventanamicro.com>
+ <20250702051345.1460497-15-apatel@ventanamicro.com>
+ <CAJZ5v0ifCN7OWEw0DHpULSmXn4nCb9EdJMjQPJwmdoF_y0nfjA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5018768.GXAFRqVoOG@rjwysocki.net> <CAPDyKFp35SjpQmEQ02u7ZbsaFftaett_rBBf-7hbsBpGWH08hw@mail.gmail.com>
-In-Reply-To: <CAPDyKFp35SjpQmEQ02u7ZbsaFftaett_rBBf-7hbsBpGWH08hw@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 2 Jul 2025 16:14:40 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iDGb5KgE0pWKME5sL6wGE-nVOswqcs6K1uTTXB6zZBng@mail.gmail.com>
-X-Gm-Features: Ac12FXzx7QK9Gzgzo2obLKRzjthdFPV8AyJTMHoK965542I2TdIqjRdZ2IHt05U
-Message-ID: <CAJZ5v0iDGb5KgE0pWKME5sL6wGE-nVOswqcs6K1uTTXB6zZBng@mail.gmail.com>
-Subject: Re: [PATCH v3 0/9] PM: Reconcile different driver options for runtime
- PM integration with system sleep
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux PM <linux-pm@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	Linux PCI <linux-pci@vger.kernel.org>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0ifCN7OWEw0DHpULSmXn4nCb9EdJMjQPJwmdoF_y0nfjA@mail.gmail.com>
 
-On Wed, Jul 2, 2025 at 4:12=E2=80=AFPM Ulf Hansson <ulf.hansson@linaro.org>=
- wrote:
->
-> On Fri, 27 Jun 2025 at 21:29, Rafael J. Wysocki <rjw@rjwysocki.net> wrote=
-:
+On Wed, Jul 02, 2025 at 12:07:36PM +0200, Rafael J. Wysocki wrote:
+> On Wed, Jul 2, 2025 at 7:15 AM Anup Patel <apatel@ventanamicro.com> wrote:
 > >
-> > Hi Everyone,
+> > From: Sunil V L <sunilvl@ventanamicro.com>
 > >
-> > This is an update of the series the v2 of which was posted yesterday:
-> >
-> > https://lore.kernel.org/linux-pm/5015172.GXAFRqVoOG@rjwysocki.net/
-> >
-> > and the v1 is here:
-> >
-> > https://lore.kernel.org/linux-pm/22759968.EfDdHjke4D@rjwysocki.net/
-> >
-> > This update reorders the patches (again), updates the changelogs of som=
-e of
-> > them and changes the subject of one patch slightly.  It also adds a ker=
-neldoc
-> > comment to a new function in patch [5/9].
-> >
-> > This part of the cover letter still applies:
-> >
-> > "This series addresses a couple of issues related to the integration of=
- runtime
-> > PM with system sleep I was talking about at the OSMP-summit 2025:
-> >
-> > https://lwn.net/Articles/1021332/
-> >
-> > Most importantly, DPM_FLAG_SMART_SUSPEND cannot be used along with
-> > pm_runtime_force_suspend/resume() due to some conflicting expectations
-> > about the handling of device runtime PM status between these functions
-> > and the PM core.
-> >
-> > Also pm_runtime_force_suspend/resume() currently cannot be used in PCI
-> > drivers and in drivers that collaborate with the general ACPI PM domain
-> > because they both don't expect their mid-layer runtime PM callbacks to
-> > be invoked during system-wide suspend and resume.
-> >
-> > Patch [1/9] is a preparatory cleanup changing the code to use 'true' an=
-d
-> > 'false' as needs_force_resume flag values for consistency."
-> >
-> > Patch [2/9] (which was [3/9] in v2) puts pm_runtime_force_resume() and =
-one
-> > other function that is only used during system sleep transitions under
-> > CONFIG_PM_SLEEP.
-> >
-> > Patch [3/9] (which was [5/9] in v2) causes the smart_suspend flag to be=
- taken
-> > into account by pm_runtime_force_resume() which allows it to resume dev=
-ices
-> > with smart_suspend set whose runtime PM status has been changed to RPM_=
-ACTIVE
-> > by the PM core at the beginning of system resume.  After this patch, dr=
-ivers
-> > that use pm_runtime_force_suspend/resume() can also set DPM_FLAG_SMART_=
-SUSPEND
-> > which may be useful, for example, if devices handled by them are involv=
-ed in
-> > dependency chains with other devices setting DPM_FLAG_SMART_SUSPEND.
-> >
-> > Since patches [1,3/9] have been reviewed already and patch [2/9] should=
- not
-> > be particularly controversial, I think that patches [1-3/9] are good to=
- go.
-> >
-> > Patch [4/9] (which was [2/9] in v2), makes pm_runtime_reinit() clear
-> > needs_force_resume in case it was set during driver remove.
-> >
-> > Patch [5/9] (which was [4/9] in v2) makes pm_runtime_force_suspend() ch=
-eck
-> > needs_force_resume along with the device's runtime PM status upfront, a=
-nd bail
-> > out if it is set, which allows runtime PM status updates to be eliminat=
-ed from
-> > both that function and pm_runtime_force_resume().  I recalled too late =
-that
-> > it was actually necessary for the PCI PM and ACPI PM to work with
-> > pm_runtime_force_suspend() correctly after the subsequent changes and t=
-hat
-> > patch [3/9] did not depend on it.  I have also realized that patch [5/9=
-]
-> > potentially unbreaks drivers that call pm_runtime_force_suspend() from =
-their
-> > "remove" callbacks (see the patch changelog for a bit of an explanation=
-).
-> >
-> > Patch [6/9] (which has not been changed since v2) makes the code for ge=
-tting a
-> > runtime PM callback for a device a bit more straightforward, in prepara=
-tion for
-> > the subsequent changes.
-> >
-> > Patch [7/9] introduces a new device PM flag called strict_midlayer that
-> > can be set by middle layer code which doesn't want its runtime PM
-> > callbacks to be used during system-wide PM transitions, like the PCI bu=
-s
-> > type and the ACPI PM domain, and updates pm_runtime_force_suspend/resum=
-e()
-> > to take that flag into account.  Its changelog has been updated since v=
-2 and
-> > there is a new kerneldoc comment for dev_pm_set_strict_midlayer().
-> >
-> > Patch [8/9] modifies the ACPI PM "prepare" and "complete" callback func=
-tions,
-> > used by the general ACPI PM domain and by the ACPI LPSS PM domain, to s=
-et and
-> > clear strict_midlayer, respectively, which allows drivers collaborating=
- with it
-> > to use pm_runtime_force_suspend/resume().  The changelog of this patch =
-has been
-> > made a bit more precise since v2.
-> >
-> > That may be useful if such a driver wants to be able to work with diffe=
-rent
-> > PM domains on different systems.  It may want to work with the general =
-ACPI PM
-> > domain on systems using ACPI, or with another PM domain (or even multip=
-le PM
-> > domains at the same time) on systems without ACPI, and it may want to u=
-se
-> > pm_runtime_force_suspend/resume() as its system-wide PM callbacks.
-> >
-> > Patch [9/9] updates the PCI bus type to set and clear, respectively, st=
-rict_midlayer
-> > for all PCI devices in its "prepare" and "complete" PM callbacks, in ca=
-se some
-> > PCI drivers want to use pm_runtime_force_suspend/resume() in the future=
-.  They
-> > will still need to set DPM_FLAG_SMART_SUSPEND to avoid resuming their d=
-evices during
-> > system suspend, but now they may also use pm_runtime_force_suspend/resu=
-me() as
-> > suspend callbacks for the "regular suspend" phase of device suspend (or=
- invoke
-> > these functions from their suspend callbacks).  The changelog of this p=
-atch has
-> > been made a bit more precise since v2, like the changelog of patch [8/9=
-].
-> >
-> > As usual, please refer to individual patch changelogs for more details.
-> >
-> > Thanks!
-> >
->
-> For the v3 series, please add:
-> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+> > Currently acpi_fwnode_get_reference_args() calls the public function
+> > __acpi_node_get_property_reference() which ignores the nargs_prop
+> > parameter.
+> 
+> Which I suppose is a problem.  Why is it so?
+> 
+fwnode_property_get_reference_args() documents as below.
 
-Thank you!
+* @nargs_prop: The name of the property telling the number of
+ *              arguments in the referred node. NULL if @nargs is known,
+ *              otherwise @nargs is ignored. Only relevant on OF.
+ * @nargs:      Number of arguments. Ignored if @nargs_prop is non-NULL.
+
+You can see that nargs_prop is not supported with ACPI currently. Since
+fwnode_property_get_reference_args() calls
+__acpi_node_get_property_reference(), there is no way to determine the
+nargs from the nargs_prop currently with ACPI. Since
+fwnode_property_get_reference_args() is a common API across DT and ACPI,
+it is a problem for users.
+
+
+> > To fix this, make __acpi_node_get_property_reference() to
+> > call the static acpi_fwnode_get_reference() so that callers of
+> > fwnode_get_reference_args() can still pass a valid property name to
+> > fetch the number of arguments.
+> 
+> Are the current callers of acpi_fwnode_get_reference_args() going to
+> be affected by this change and if so, then how?
+> 
+Good question!. If some one is currently passing both valid nargs_prop and
+nargs with ACPI, now with this change it will start getting the value
+from nargs_prop which was simply ignored earlier. However, I see only 2
+combinations how fwnode_property_get_reference_args() is being used. 
+
+(nargs_prop = NULL) && (args_count !=0)
+or
+(nargs_prop != NULL) && (args_count = 0)
+
+So, IMO it should be safe to make this change. But let me know if I am
+missing something.
+
+Thanks!
+Sunil
 
