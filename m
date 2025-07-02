@@ -1,112 +1,91 @@
-Return-Path: <linux-acpi+bounces-14953-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14954-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A323AF60BE
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 20:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB99AF60CC
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 20:07:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A31E04E5C3A
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 18:04:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A821352507F
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 18:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1195130E820;
-	Wed,  2 Jul 2025 18:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A5830E836;
+	Wed,  2 Jul 2025 18:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B51d1mwc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cHHKi4ac"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABBF303DFD;
-	Wed,  2 Jul 2025 18:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85183253351;
+	Wed,  2 Jul 2025 18:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751479457; cv=none; b=Vg7X11ySHnIBF/eRHRwN19AEQ5BBksuZ56YKT2DmYfdE15hipvJ5LmBpEw5DQqlp3Txt70i/vFHrgchLslk4PlLwX+gSk6Ht52JfiDqnmo/cZ11OTwatUL9FYLRs1FEHUQeFma1Ag8QSXVNqm+fP7GG2CE0o+yvQplB9oEWSa2g=
+	t=1751479651; cv=none; b=f8bK+N1M1Klg7YlxsrAipIhp0r8mcLuWY+qQNCW7JM96rSQQcsXEpKcHHtge3jUMTcv/9C/SIMDrXUjnxF9Ud7qFJb7wM43CHj5UA3Ghne9w+eJUfxZqE/fuVFPcWvkXPukR9daBKZfh6+FbCg9BnaMOwFfo2LpbQdY+ArP/bps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751479457; c=relaxed/simple;
-	bh=rB7kDTHQ/uishKmXwIwf+woKkI5vPemOVne+kvr5XMw=;
+	s=arc-20240116; t=1751479651; c=relaxed/simple;
+	bh=CAna35rJ6GALV6IbfjyVSBAdiNUhdYkS0obyApasYHA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DSqxE5zJ/jO8UBfypelknwnTtsa7doEKMQ1RvnViq8CIixsk/iGodqby/BwanSltq7UeJhx9F3KacvPouvphAe2SzQKcIK4yQ5szeSWvPITQwcX9BwoYUsvbcgTAe7zShjJqqvTQA37ZysMYn0WdAi+zYcW8l8b8TGfgFNMxUsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B51d1mwc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7848C4CEE7;
-	Wed,  2 Jul 2025 18:04:16 +0000 (UTC)
+	 To:Cc:Content-Type; b=YN8kBiXgWdFf3biCsqxa6YYdfxmduGZvXDHEZ0UpUHVPWxSEgRsVi6j6QDwMcrdfWJ66SHjpJDhrzXwp2aRa5Rt/3p4WiRzlUNTveDMPad1+ziv4WB79VaqcAoHtJi/MtqmsVLeT6/Noj/lic1sLSXHvhu378NPzcmhXEpvJ7DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cHHKi4ac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016D6C4CEE7;
+	Wed,  2 Jul 2025 18:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751479456;
-	bh=rB7kDTHQ/uishKmXwIwf+woKkI5vPemOVne+kvr5XMw=;
+	s=k20201202; t=1751479651;
+	bh=CAna35rJ6GALV6IbfjyVSBAdiNUhdYkS0obyApasYHA=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=B51d1mwcN1fRUwVhtU0Jp4Jmc/LOF7u9soJ+unACltt7krszWojbDQX3hqYEuOxMk
-	 4+050x4ZZaBrQ2cOlxJsLd+BnvGv0eBYf5BDnNGpmuHRqZIuBSLK5GfrzJw/iXFTZC
-	 BcA1sZC1Z76T19jPZjh194FNepYTNZrrGggebwG9n8adY3gAq3NFY64CA1cEt1qh1J
-	 8miVTNiLHS85CzbIy3Yv+mnMyF8UNM2jzKboRjHobK83Y7j5ClNL4ZJ/4vp8A4xvHV
-	 WCETJcmCvvJYesIcvgT6nIY2ctiRTIKfIFnFDI7DhaTGz8OSe8Y7n7PtSilnbwJbD1
-	 XSn0OWtgIBDQQ==
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-60f24b478e3so2308904eaf.3;
-        Wed, 02 Jul 2025 11:04:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV1Z0j7UDHsObjmjQDRC2cZn82nQdvbZ1xusYi+W5RHgrU9OFT/lPDBtIKvobM3qU3Sf8dX24Wrm1Xj@vger.kernel.org, AJvYcCVVFuwb1s958jBjYDPQuveo5IRk61G+cIyV6Ga6dYjc2zJsxxkWa8GmKRDs3w2SPjfAtCiTuaxfI1xv0GJX@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbIFdmeSMQ4gnc1aIJDQP6QsTHR9+4W9E0FZkgSKcI6YQTo0RT
-	jXLKov+vsw656pwIU2Zr7ogkZFoz33CpToTnU9VNM0NePoug6UGxy1r9mW+FNjN5UdlbwGdZ15b
-	whegaSCiRevxykrEM3sXMT/nLZBBWbXY=
-X-Google-Smtp-Source: AGHT+IEns6wOYy4KSm5xHGLBBW4O7MP8WE+AxP1Ldh9mvi+EG8ZwJYGZjnClAScUQLVNPqJRq+Ykwfex8U8yV8fedMo=
-X-Received: by 2002:a05:6820:210a:b0:611:b00b:baa with SMTP id
- 006d021491bc7-612010c1c74mr2670255eaf.3.1751479456022; Wed, 02 Jul 2025
- 11:04:16 -0700 (PDT)
+	b=cHHKi4acxaVV+tHbNmbzBpn4Mk/9YnVaqvDchgSyWT/eNrKngO0RsSspl7QAz4tMK
+	 gF4sWTsWC8mmP56QNElLuJlxTbd5V9c7rx3MfLYwQmJhhwtA5XwGfGjBABdMsEPKnN
+	 +EOpvVtGVflL9qmsoQBen+If6Bc/Z/0ggJmTvRbrtiZJaJh+YaFPbywCdAGpoCPOhU
+	 eL2KYTeOEsGvOngjx16OS+fijy4ZhFSC6NyN5Hjo6yBeZNSWxnjbqQ3crh5Q5mWDuI
+	 +fthoLiHL2d41Z5q/0e575CwbbZVi4zdcFqCmG4050KKpPQuOP2BqEikASPqqt2yIz
+	 IcoY+W4Qe7OHQ==
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-72c47631b4cso3482617a34.1;
+        Wed, 02 Jul 2025 11:07:30 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUAhFjTrjYT+NbLThP0u+87xqE5ssc1nOY39yJ1sv4dpBmEM+ffRK3q9TXOhdOkKu5m3TZ3VbDmRiPBrjj9@vger.kernel.org, AJvYcCVZtRY+mj3TgcmT/XP0Kay5lRyUpIrTFXnURJYX/GY4o9u1bs/MI/GxtQ0Rj9DPdk7MHr2OmEwAEu+d@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYzXYaL2RDSUNxg1hqZWYbL+H990OVD600i/sg5aeQn6x+h7jM
+	g2zb7V6C6UghOm4oGRMVbXHg3e38vvQSAVTyvHY2pwP6mGgh7n+Ro5y9lJKM22Fq6f7CxoXX9rA
+	ZGE4O+QR5eSnlCbVr29KR2WpL1iTtEzA=
+X-Google-Smtp-Source: AGHT+IGWKwFOYlhIbYrgckIt5yGU/A31JTxlNE8phOBfmGIbSbxfaWqy7svZGEFTnrGzcmkJ4G0we3c4LZ92Xt3Tj0Y=
+X-Received: by 2002:a05:6808:f88:b0:40a:52e5:37df with SMTP id
+ 5614622812f47-40b8911371amr3195467b6e.39.1751479650323; Wed, 02 Jul 2025
+ 11:07:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250624142134.11317-1-listout@listout.xyz>
-In-Reply-To: <20250624142134.11317-1-listout@listout.xyz>
+References: <20250626130109.215848-1-andriy.shevchenko@linux.intel.com> <20250627044722.GN2824380@black.fi.intel.com>
+In-Reply-To: <20250627044722.GN2824380@black.fi.intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 2 Jul 2025 20:04:05 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gHpaAs9DtP7z1NoBPVEF0FQjBXEyRWoUTWhRCLF80Ajw@mail.gmail.com>
-X-Gm-Features: Ac12FXxFn50hgoqYdCib2K_DvxZ-UZ8NCXtwyD3sCmb4Dj-M25Ntwt7i2bn5g_M
-Message-ID: <CAJZ5v0gHpaAs9DtP7z1NoBPVEF0FQjBXEyRWoUTWhRCLF80Ajw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI / sysfs: Replace deprecated strcpy() with sysfs_emit
-To: Brahmajit Das <listout@listout.xyz>
-Cc: linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org, 
-	lv.zheng@intel.com, kees@kernel.org, rui.zhang@intel.com, len.brown@intel.com
+Date: Wed, 2 Jul 2025 20:07:19 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0j08S-Q9bXV-CyEFfVuTgDMjhqF+WnKuDCAq=zr_=PUiQ@mail.gmail.com>
+X-Gm-Features: Ac12FXwsUsP4b5PpYllMsXAo2qo1Wl8GWy5NaokNmmPhjzm31VnJ5-8owbQiAT0
+Message-ID: <CAJZ5v0j08S-Q9bXV-CyEFfVuTgDMjhqF+WnKuDCAq=zr_=PUiQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] Documentation: firmware-guide: gpio-properties:
+ Spelling and style fixes
+To: Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Mika Westerberg <westeri@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 24, 2025 at 4:21=E2=80=AFPM Brahmajit Das <listout@listout.xyz>=
- wrote:
+On Fri, Jun 27, 2025 at 6:47=E2=80=AFAM Mika Westerberg
+<mika.westerberg@linux.intel.com> wrote:
 >
-> strcpy() is deprecated; use sysfs_emit() instead. No functional changes
-> intended.
-
-It may be deprecated, but is it used incorrectly in this particular case?
-
-> Link: https://github.com/KSPP/linux/issues/88
-> Signed-off-by: Brahmajit Das <listout@listout.xyz>
-> ---
->  drivers/acpi/sysfs.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+> On Thu, Jun 26, 2025 at 04:01:09PM +0300, Andy Shevchenko wrote:
+> > - Use consistent style for active-high and active-low
+> > - For C and ASL code snippets use 4-space indentation consistently
+> > - Interleave case examples with the explanations of the certain case
+> > - Remove or add commas when appropriate
+> >
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 >
-> diff --git a/drivers/acpi/sysfs.c b/drivers/acpi/sysfs.c
-> index a48ebbf768f9..7ce90998ab97 100644
-> --- a/drivers/acpi/sysfs.c
-> +++ b/drivers/acpi/sysfs.c
-> @@ -181,10 +181,9 @@ static int param_set_trace_method_name(const char *v=
-al,
->
->         /* This is a hack.  We can't kmalloc in early boot. */
->         if (is_abs_path)
-> -               strcpy(trace_method_name, val);
-> +               sysfs_emit(trace_method_name, "%s", val);
->         else {
-> -               trace_method_name[0] =3D '\\';
-> -               strcpy(trace_method_name+1, val);
-> +               sysfs_emit(trace_method_name, "\%s", val);
->         }
+> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-The code does strlen() checks before this, I don't think that the
-change is an improvement.
-
->
->         /* Restore the original tracer state */
-> --
+Applied as 6.17 material, thanks!
 
