@@ -1,128 +1,273 @@
-Return-Path: <linux-acpi+bounces-14919-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14920-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 660F4AF11B1
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 12:22:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6594AAF1353
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 13:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 749B044398B
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 10:21:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C69DC3B88FB
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 11:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E6A2522A4;
-	Wed,  2 Jul 2025 10:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5A1256C70;
+	Wed,  2 Jul 2025 11:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKb9H5tj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ks6SUZYB"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EA0226CE1;
-	Wed,  2 Jul 2025 10:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E60236A9F;
+	Wed,  2 Jul 2025 11:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751451718; cv=none; b=ErtYBKOIlUx457rlf1kZ7SHebXLbx4KMCf4poPXhKjPmWHvsLrB0OgtBRnjt44SRhgeeDoNJEOOLIMFmH3u8ws5lbMD+5UpoOVnPJEm+9Rx+5Itob5m7644SL8l0m/hUe+h+Va0GgKDg7JpOpEM0DB8I4GH41LMHusMzAeCB8MM=
+	t=1751454501; cv=none; b=lUkYIAy+lXbeYuV4C2FSDFaxpmdgJY6AzdZ32R2c1++HpA5E7chjIOOyCq1zox2stJKx9ICEI9lPtB6Pq+zrdLamPeI/ssciK/AyDCUPxH/0qLbgOmHY6/qQHmr/qVWLAOloAHAH5cGc35OuIDVPL3Q95+ksXsgnSsqZwwpzwt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751451718; c=relaxed/simple;
-	bh=dev3dwMQN1yzY1rh7c/NWkAu3zaem3ULhrEy2Os6A3k=;
+	s=arc-20240116; t=1751454501; c=relaxed/simple;
+	bh=pGAsTwO4nedv4ZptOpPXY0xiBm1d9gCL8IfkcvWQVIM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HcHYegp5MWqKj7LmAGUjGMKwp5Sp8e9q7Gtx2LMpJUljHMM9H0sDa9EChJ8Q2G13es62Pafw0QSTmQyrxZHH0jbqc/IZ2mJqHhQdxRmI/306ZkJOxV0dw7CG5n0aBHjHQ7fjbqoYNdg+R585gwmvR+9UpDLumXsz0Pj0gfZYnnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKb9H5tj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1151EC4CEF4;
-	Wed,  2 Jul 2025 10:21:58 +0000 (UTC)
+	 To:Cc:Content-Type; b=XEa/2KHhe/spEzPNqMG0IN9lT8gvl0sWQX+9WewQBgtYtyRfwszqhM4uO8X7nr1wZK+SKo7CxMGXpoGp1ymnzhjT8MdfSY2NO6oEvXIj/pru8t7hYvsJOUfTiUNbu6jytLLq3zxphMUjUcGKgEl6/qWvfelVN0m9YaGrLV6AHns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ks6SUZYB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC785C4CEF0;
+	Wed,  2 Jul 2025 11:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751451718;
-	bh=dev3dwMQN1yzY1rh7c/NWkAu3zaem3ULhrEy2Os6A3k=;
+	s=k20201202; t=1751454501;
+	bh=pGAsTwO4nedv4ZptOpPXY0xiBm1d9gCL8IfkcvWQVIM=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=gKb9H5tjCKMpWdrmwlrz4o511Ue55dDLqhHuWDZQwxHTV2jvlbA4Bxo/YrK8TzDQ2
-	 GeyXY3dZHvu27WNWPlSyx4VUXfBtWXq0kfulrZewtKrJYEge60w+7ZwYJ2U0iX9Ukm
-	 u0rLb6x15YkOmZxjW1GTjqtI/nrdKvSkY04sImgXHd+t5xcT4Mc4Aq79bV5ljFe1vQ
-	 j7aC5qkma6xcP7DN8IYGBTKehW8g5unXI7947p0EIo/457fBaZ1cFXoEhbiGvtFLB1
-	 UcoBNTD5y0fUfHeLz+gBXnsLRXaV1CEJvZ2e35dzE9JJMd6SA4oQLnVEOVJtE464gW
-	 7/i1Z5O/GD9gg==
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-40a7322f081so1014040b6e.3;
-        Wed, 02 Jul 2025 03:21:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVefSB4rD8MaagsKqjYG0+8y3Y9R6cEUYQwFvsBlttg4o+R852DhN5Glul9wgSrTyjUmOHKczTChhSEVCec@vger.kernel.org, AJvYcCWf/tkyfWCIeW7bXX3Kk1VKy8VuRqmZ8JNkRDU+sUddgxubd09zTLUe/O7Xv241IgdnI7RA8T5dVHyv@vger.kernel.org, AJvYcCWx460XCh5wzO8e8xJRXxRkdcC6jyygxdLSO0vdUBnjbqO35P1XepB3k4c6ohPircW2ibxL4DPOh4OxGg==@vger.kernel.org, AJvYcCXIH/YM1ordZjBOWQGdTa/J4hQnVV6Ejf8rJCXjS3g4al4oJZVvUW/O0ABTz2Qq6avgHtJfV6wWSgUK@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEqxuopzDImb3Z5+rdtyoPtjBwjtEWsFOSupVnK5BBphD7Oa2e
-	7/ap3nevCpKx3rTFHFK12zp2PXygxfOlE9R+g+nekKr6aEsO3hFG72IH+uFkfv0c20Z52Wb9UUx
-	qdqTahqUQrIB15F+VxI8UWcvmzBoczAg=
-X-Google-Smtp-Source: AGHT+IE2Kkk8T0ZbVBmpiOQbam/pLa6wG5+XN/RreLIx2X9wnWq0x8o9JpWoqRvdPgQY0h9YV/+fKkFjda3J6bwfL00=
-X-Received: by 2002:a05:6808:1b99:b0:3f9:aeb6:6eac with SMTP id
- 5614622812f47-40b889192f1mr1729652b6e.30.1751451717345; Wed, 02 Jul 2025
- 03:21:57 -0700 (PDT)
+	b=Ks6SUZYBQhwE27ILoyNKcU94ZusLykB6qbwxZtjuinKo8gIxJi7VBzDXzv+DTcr4v
+	 L4o8S46mr4M68cT8nI0t7N8AXCDMZD2SzV4f/K04P769URLWERtg3l93vwvlJMeGnJ
+	 CUDrP2S6mU8IgrS01gnNvBRS7lJmxBKQ8QNFU9ThnRAsc4QqIc/6oEuPLTwutakM0D
+	 7ltx0V9vBftux18n8G6ifb8zWwhOAWocXws/sxwE8dk25QT+qgNKrVpyUufq4MreU2
+	 MBAkri1KWjjK1Rt5MsDSQ9A8fxdGhy3ys7yK0n9qMAqIKQiWw6bfPblGssWN9ehmzI
+	 Ln11vTxi+LOyA==
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-6120049f09fso423382eaf.2;
+        Wed, 02 Jul 2025 04:08:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWl33DqUASuwUwP8nwAJngblD9efWqgqpUMbr2JKM8kP6kc2pQjcu2cSBXTrcNg7FNb1F3qL+nHNnT4@vger.kernel.org, AJvYcCXIz5ofl6xaoreYqTElnLOlVjT+BQgNcrf2/DohPy6RyHR7u07va0riFXWDpuNiaKTzrTGkr5FKic6Y@vger.kernel.org
+X-Gm-Message-State: AOJu0YzB5ngJ+IbaJiFx8GaLOHP8Hvxr9fYgGtbSfIE1OEKa+0c6n+MM
+	T0lGoY8oI1XVorxv0uVnOGiuNbZFZXn93uIXMlfZrKxzxQRqKLHjkL4f6Afu9XDpw4RbDQGf+iW
+	MFUPj0rsj9cMsasex0W+6aJd1uSOVDDk=
+X-Google-Smtp-Source: AGHT+IHkIVCnmJgkGAu7G1qnWZGAGZtxEA3UbZ+srtYNJgnEnqT01JZaI/4hnS1PgFDjZXHE0guv+7GKe7AGEeeYKPY=
+X-Received: by 2002:a05:6820:150f:b0:611:e31c:5d23 with SMTP id
+ 006d021491bc7-612010c1539mr1515499eaf.4.1751454500115; Wed, 02 Jul 2025
+ 04:08:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250702051345.1460497-1-apatel@ventanamicro.com> <20250702051345.1460497-17-apatel@ventanamicro.com>
-In-Reply-To: <20250702051345.1460497-17-apatel@ventanamicro.com>
+References: <20250529111654.3140766-1-badal.nilawar@intel.com> <20250529111654.3140766-2-badal.nilawar@intel.com>
+In-Reply-To: <20250529111654.3140766-2-badal.nilawar@intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 2 Jul 2025 12:21:45 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gkCtxMWvgjS+CXOgC2QzCFFQ1bX6XA_D2HCOuGwT67kg@mail.gmail.com>
-X-Gm-Features: Ac12FXwD-4N8bNKSBtHuf_106cJhbwii5ybB7cDrqtVYJiIXKxNBIQd1GfJzRU8
-Message-ID: <CAJZ5v0gkCtxMWvgjS+CXOgC2QzCFFQ1bX6XA_D2HCOuGwT67kg@mail.gmail.com>
-Subject: Re: [PATCH v7 16/24] ACPI: scan: Update honor list for RPMI System MSI
-To: Anup Patel <apatel@ventanamicro.com>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jassi Brar <jassisinghbrar@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Len Brown <lenb@kernel.org>, Sunil V L <sunilvl@ventanamicro.com>, 
-	Rahul Pathak <rpathak@ventanamicro.com>, Leyfoon Tan <leyfoon.tan@starfivetech.com>, 
-	Atish Patra <atish.patra@linux.dev>, Andrew Jones <ajones@ventanamicro.com>, 
-	Samuel Holland <samuel.holland@sifive.com>, Anup Patel <anup@brainfault.org>, 
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Atish Patra <atishp@rivosinc.com>
+Date: Wed, 2 Jul 2025 13:08:08 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0h7BENMDCOHVD6ZdF7o1OwE=RAOzkC0+r+G=-3qpjfn0Q@mail.gmail.com>
+X-Gm-Features: Ac12FXxPFu3QcdhDxeEnqZD1NVDJtj98rI7oLIBr9DAoZ9EA3vlsdPhbwF6SqU8
+Message-ID: <CAJZ5v0h7BENMDCOHVD6ZdF7o1OwE=RAOzkC0+r+G=-3qpjfn0Q@mail.gmail.com>
+Subject: Re: [PATCH v4 01/11] PCI/ACPI: Add D3cold Aux Power Limit_DSM method
+To: Badal Nilawar <badal.nilawar@intel.com>
+Cc: intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org, 
+	linux-pci@vger.kernel.org, anshuman.gupta@intel.com, rafael@kernel.org, 
+	lenb@kernel.org, bhelgaas@google.com, ilpo.jarvinen@linux.intel.com, 
+	lucas.demarchi@intel.com, rodrigo.vivi@intel.com, varun.gupta@intel.com, 
+	ville.syrjala@linux.intel.com, uma.shankar@intel.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 2, 2025 at 7:16=E2=80=AFAM Anup Patel <apatel@ventanamicro.com>=
- wrote:
+On Thu, May 29, 2025 at 1:14=E2=80=AFPM Badal Nilawar <badal.nilawar@intel.=
+com> wrote:
 >
-> From: Sunil V L <sunilvl@ventanamicro.com>
+> From: Anshuman Gupta <anshuman.gupta@intel.com>
 >
-> The RPMI System MSI interrupt controller (just like PLIC and APLIC)
-> needs to probed prior to devices like GED which use interrupts provided
-> by it. Also, it has dependency on the SBI MPXY mailbox device.
+> Implement _DSM method 0Ah according to PCI firmware specifications,
+> section 4.6.10 Rev 3.3., to request auxilary power needed for the
+> device when in D3Cold.
 >
-> Add HIDs of RPMI System MSI and SBI MPXY mailbox devices to the honor
-> list so that those dependencies are handled.
+> Note that this implementation assumes only a single device below the
+> Downstream Port will request for Aux Power Limit under a given
+> Root Port because it does not track and aggregate requests
+> from all child devices below the Downstream Port as required
+> by Section 4.6.10 Rev 3.3.
 >
-> Reviewed-by: Atish Patra <atishp@rivosinc.com>
-> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+> One possible mitigation would be only allowing only first PCIe
+> Non-Bridge Endpoint Function 0 driver to call_DSM method 0Ah.
+>
+> Signed-off-by: Varun Gupta <varun.gupta@intel.com>
 
-This is fine by me, so
+What's this S-o-b for?
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
+> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 > ---
->  drivers/acpi/scan.c | 2 ++
->  1 file changed, 2 insertions(+)
+> V2(Bjorn/Rafael):
+>   - Call acpi_dsm_check() to find method 0Ah supported
+>   - Return retry interval to caller
+> V3(Kuppuswamy)
+>   - Add NULL check for retry interval
+> ---
+>  drivers/pci/pci-acpi.c   | 87 ++++++++++++++++++++++++++++++++++++++++
+>  include/linux/pci-acpi.h |  8 ++++
+>  2 files changed, 95 insertions(+)
 >
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index fb1fe9f3b1a3..54181b03b345 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -858,6 +858,8 @@ static const char * const acpi_honor_dep_ids[] =3D {
->         "INTC10CF", /* IVSC (MTL) driver must be loaded to allow i2c acce=
-ss to camera sensors */
->         "RSCV0001", /* RISC-V PLIC */
->         "RSCV0002", /* RISC-V APLIC */
-> +       "RSCV0005", /* RISC-V SBI MPXY MBOX */
-> +       "RSCV0006", /* RISC-V RPMI SYSMSI */
->         "PNP0C0F",  /* PCI Link Device */
->         NULL
->  };
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index af370628e583..87f30910a5f1 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -1421,6 +1421,93 @@ static void pci_acpi_optimize_delay(struct pci_dev=
+ *pdev,
+>         ACPI_FREE(obj);
+>  }
+>
+> +/**
+> + * pci_acpi_request_d3cold_aux_power - Request aux power while device is=
+ in D3Cold
+> + * @dev: PCI device instance
+> + * @requested_power: Requested auxiliary power in milliwatts
+> + * @retry_interval: Retry interval returned by platform to retry auxilia=
+ry
+> + *                  power request
+> + *
+> + * This function sends a request to the host BIOS via root port ACPI _DS=
+M Function 0Ah
+> + * for the auxiliary power needed by the PCI device when it is in D3Cold=
+.
+> + * It checks and evaluates the _DSM (Device Specific Method) to request =
+the auxiliary
+> + * power and handles the response accordingly.
+> + *
+> + * This function shall be only called by 1st non-bridge Endpoint driver
+> + * on Function 0. For a Multi-Function Device, the driver for Function 0=
+ is
+> + * required to report an aggregate power requirement covering all
+> + * functions contained within the device.
+> + *
+> + * Return: Returns 0 on success and errno on failure.
+> + */
+> +int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested=
+_power,
+> +                                     u32 *retry_interval)
+> +{
+> +       union acpi_object in_obj =3D {
+> +               .integer.type =3D ACPI_TYPE_INTEGER,
+> +               .integer.value =3D requested_power,
+> +       };
+> +
+> +       union acpi_object *out_obj;
+> +       acpi_handle handle;
+> +       int result, ret =3D -EINVAL;
+> +
+> +       if (!dev || !retry_interval)
+> +               return -EINVAL;
+> +
+> +       handle =3D ACPI_HANDLE(&dev->dev);
+> +       if (!handle)
+> +               return -EINVAL;
+> +
+> +       if (!acpi_check_dsm(handle, &pci_acpi_dsm_guid, 4, 1 << DSM_PCI_D=
+3COLD_AUX_POWER_LIMIT)) {
+> +               pci_dbg(dev, "ACPI _DSM 0%Xh not supported\n", DSM_PCI_D3=
+COLD_AUX_POWER_LIMIT);
+> +               return -ENODEV;
+> +       }
+> +
+> +       out_obj =3D acpi_evaluate_dsm_typed(handle, &pci_acpi_dsm_guid, 4=
+,
+> +                                         DSM_PCI_D3COLD_AUX_POWER_LIMIT,
+> +                                         &in_obj, ACPI_TYPE_INTEGER);
+> +       if (!out_obj)
+> +               return -EINVAL;
+> +
+> +       result =3D out_obj->integer.value;
+> +       if (retry_interval)
+> +               *retry_interval =3D 0;
+> +
+> +       switch (result) {
+> +       case 0x0:
+
+It would be better to use an enum for the possible return values.
+
+> +               pci_dbg(dev, "D3cold Aux Power %u mW request denied\n",
+> +                       requested_power);
+> +               break;
+> +       case 0x1:
+> +               pci_info(dev, "D3cold Aux Power request granted: %u mW\n"=
+,
+> +                        requested_power);
+> +               ret =3D 0;
+> +               break;
+> +       case 0x2:
+> +               pci_info(dev, "D3cold Aux Power: Main power won't be remo=
+ved\n");
+> +               ret =3D -EBUSY;
+> +               break;
+> +       default:
+> +               if (result >=3D 0x11 && result <=3D 0x1F) {
+
+if (!(result & ~0x1F))
+
+I think, and it would be better to use a symbol for this mask (and below to=
+o).
+
+> +                       if (retry_interval) {
+
+This has been checked already and is guaranteed to be nonzero at this point=
+.
+
+> +                               *retry_interval =3D result & 0xF;
+> +                               pci_warn(dev, "D3cold Aux Power request n=
+eeds retry interval: %u seconds\n",
+> +                                        *retry_interval);
+> +                               ret =3D -EAGAIN;
+> +                       }
+> +               } else {
+> +                       pci_err(dev, "D3cold Aux Power: Reserved or unsup=
+ported response: 0x%x\n",
+> +                               result);
+> +               }
+> +               break;
+> +       }
+> +
+> +       ACPI_FREE(out_obj);
+> +       return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_acpi_request_d3cold_aux_power);
+> +
+>  static void pci_acpi_set_external_facing(struct pci_dev *dev)
+>  {
+>         u8 val;
+> diff --git a/include/linux/pci-acpi.h b/include/linux/pci-acpi.h
+> index 078225b514d4..6079306ad754 100644
+> --- a/include/linux/pci-acpi.h
+> +++ b/include/linux/pci-acpi.h
+> @@ -121,6 +121,7 @@ extern const guid_t pci_acpi_dsm_guid;
+>  #define DSM_PCI_DEVICE_NAME                    0x07
+>  #define DSM_PCI_POWER_ON_RESET_DELAY           0x08
+>  #define DSM_PCI_DEVICE_READINESS_DURATIONS     0x09
+> +#define DSM_PCI_D3COLD_AUX_POWER_LIMIT         0x0A
+>
+>  #ifdef CONFIG_PCIE_EDR
+>  void pci_acpi_add_edr_notifier(struct pci_dev *pdev);
+> @@ -132,10 +133,17 @@ static inline void pci_acpi_remove_edr_notifier(str=
+uct pci_dev *pdev) { }
+>
+>  int pci_acpi_set_companion_lookup_hook(struct acpi_device *(*func)(struc=
+t pci_dev *));
+>  void pci_acpi_clear_companion_lookup_hook(void);
+> +int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested=
+_power,
+> +                                     u32 *retry_interval);
+>
+>  #else  /* CONFIG_ACPI */
+>  static inline void acpi_pci_add_bus(struct pci_bus *bus) { }
+>  static inline void acpi_pci_remove_bus(struct pci_bus *bus) { }
+> +static inline int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev,=
+ u32 requested_power,
+> +                                                   u32 *retry_interval)
+> +{
+> +       return -EOPNOTSUPP;
+> +}
+>  #endif /* CONFIG_ACPI */
+>
+>  #endif /* _PCI_ACPI_H_ */
 > --
-> 2.43.0
->
 
