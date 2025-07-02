@@ -1,220 +1,196 @@
-Return-Path: <linux-acpi+bounces-14939-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14940-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B1CDAF5A71
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 16:04:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1AFEAF5AAE
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 16:12:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2DB9165C15
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 14:04:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D368D3A5292
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 14:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B158427EFEC;
-	Wed,  2 Jul 2025 14:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB7A2BDC02;
+	Wed,  2 Jul 2025 14:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nDIzrr6W"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JzVfcQmI"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD089275AE8;
-	Wed,  2 Jul 2025 14:04:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0989F2BD037
+	for <linux-acpi@vger.kernel.org>; Wed,  2 Jul 2025 14:12:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751465045; cv=none; b=MVEULCZZW3sTSEgiI7h0t//ZwsTpvvL5QuKnFCFGZDmjh9uDfUJbeyEVqYN9kx6zDlPx0BPZD/4HfgzL1k8hFOMNN57GxWaiGUCe/3rErR+ml+kVy7ptFBIzaYLFCC9E0sVowQljlsqlIZh0DiRhFis4RLUc8pzpF/Qto14kolo=
+	t=1751465528; cv=none; b=GNEtfmROFpLSmTKNWtpW8jYSU3Ia6nVlUDIlPqYpdJUkq7ZQsA08mlJjczhZCVXmb7XRAQxl4MvUhynpmY+4i5E2Ug3D6zXKF1z+61OjvN6JDkbHMG8Y1K2ZiPn5eSeQ/Sz9KfDlJkhSWZv73Fjx2Fxrqhb4PBOzirTGpQNZwEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751465045; c=relaxed/simple;
-	bh=0MhlDQpiMGUkq4C8swXflDQe3D138a9T5O+UEquFdkM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EvVC4F8sjvcL2Q8C61l8N6l/QZI1dcX3Nbq61p/EC6xzGosyXDz0h5JsPaH7yEbknH934J0ch8OuVpye2VMgo6FbdqJ7/QVxUazAmGUwZZpj3YsojAkddXEJnQUg9E7G4MNsVQdIC6KLKC+6pT9xS6l6m0EapOPj+T3hIbGoOrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nDIzrr6W; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751465044; x=1783001044;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=0MhlDQpiMGUkq4C8swXflDQe3D138a9T5O+UEquFdkM=;
-  b=nDIzrr6WZ3yNs8YSjJD27PBeIwo/OTbVW2EjltVGR9c+abfrU+A6GgDc
-   ryOZW7TOS9UBFK+upk2PLG1POb5iW8RNYpG71mDPEvHVAf/NLy2atFiAr
-   8+Ahas6eddAfFDXQ7SUu2+CeoaJc4BeRnH31Pq3LdzSmyKZjNFB+rCwNj
-   t0I4Ql806qtm2RZJGbgnQf2PgDLVBn4bgt/inQJVTZ2EiG5t15yX/sDai
-   iF++aorK6SVESwqXauNGBt0mn9v0ZsAU9AA5N6STZKl9SUEfZVHpRl3Os
-   nq4Faw+B4AmA0urlkjv8gsKSJrgeIvqrEIfkooQnSXo+7DThhUhoAkUSQ
-   w==;
-X-CSE-ConnectionGUID: 7EjI6esURQiEE4e5/zaxXw==
-X-CSE-MsgGUID: jnW5S1bDSDOlNvhTC8TSWw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="64007800"
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="64007800"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 07:04:01 -0700
-X-CSE-ConnectionGUID: RIKC5saoTcWylZFYvMd+Sw==
-X-CSE-MsgGUID: 2OiPCNNORn+h4W0DRD7rSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="154430767"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 07:04:00 -0700
-Received: from [10.124.222.214] (unknown [10.124.222.214])
-	by linux.intel.com (Postfix) with ESMTP id EE48920B58A2;
-	Wed,  2 Jul 2025 07:03:58 -0700 (PDT)
-Message-ID: <83851fe3-58e4-41a0-b7cd-daee2d8d69aa@linux.intel.com>
-Date: Wed, 2 Jul 2025 07:03:58 -0700
+	s=arc-20240116; t=1751465528; c=relaxed/simple;
+	bh=JRJPH4m3gHOL8iOAGjaKdf0GbC0HHnVxh4Krznoo3KI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SX1AbHJUfy3mFvpINOpRpcLwaEBHM1/C1EtYiND2dPBF0Cvx9pqY8unLtod2TpQZUO87InSj4rJv4NW1VBCVsZpxMcGqvL/zHxaIJinzP/9/IISEMjtJCRrQ595Jjfdiey/hm5mko2Q2TmH3HWwUe9OT1fz2Lv9PoW7rGmhU3W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JzVfcQmI; arc=none smtp.client-ip=209.85.219.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e7311e66a8eso4154778276.2
+        for <linux-acpi@vger.kernel.org>; Wed, 02 Jul 2025 07:12:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1751465526; x=1752070326; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1mPoU1UCDxjl6IWc+jKm50U28f8v3ln7LdhgS9xFHd8=;
+        b=JzVfcQmIhRCBHkY7YMzvyyFHMH69W22USFiAIMlmWmJViWurdbP3UXDxOUX/ZB56DH
+         hriNNwFVMwhrsnyiXPsNHLdpwjXlAG2x+RN9Q44qwoBOFBbdXt1KEqsvlGpS550s0Xk9
+         wCrC1VKfTa4IMjvM3dLfwA/PYLwedmkAUXB+xPSJBbLsBAfjM9n+qNtzysq6H1G/qPix
+         +OruNqP2iKwIQPLiWDoDjNFmDj7wxRhmOqn/8b4FqR27y7826azVnBmT4XnY/JcXfYrM
+         sN08NyOhntVoojALkTFFZERbXodeU2OqZN9wWLhfwJOHfzn43EZRRv+nTDnxxxKdzA+N
+         tNVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751465526; x=1752070326;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1mPoU1UCDxjl6IWc+jKm50U28f8v3ln7LdhgS9xFHd8=;
+        b=NIuj9l0J65T9ka21tVRBV5Ku9Oxifcm8hJvibhkrIEJNwyYiQGHIAYhO3ZPC23fMgg
+         8v5YxO/Bwd3U8s021me8Kp/jSqSHjbHRumuId4gVLTpkZ8xgwv5TkrZXw8bkq7HElbwY
+         t1jZymFrDWXwWc6i738KdLormlm5hrszf8cnF/YJ0+p6WeBQeFYhW47/JTI1shBUvGJC
+         uPnWsbv87SY54gp6f5+BGAmnzFCJX65vB+H/DB9FVch3cBUU6dZIOSHZNyEx1kKBUCL0
+         DmCd7zIR+NFWFJFAqSOdu8kBa3CYPTy8LCk7hWD7v7Fe3M5oDYgsndvhXtMpNRw7MNvY
+         o5pg==
+X-Forwarded-Encrypted: i=1; AJvYcCUXo5hFZI09K7CL0s7pZ4ta/cYlGvL2OLDeFFUGsge/7dhmp1jXnscXAEx5mn9x3pp7zIQ0PYZY0N4X@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzcug1sLMRp8+fBToYxYbdiHVoeHFhjO2N9EpYhaVpAysfAYzjq
+	oOzZVW0QRiwOpJRglk/LMRkFHzj2NcLjABWbDdGTvT37WXUMqmBzkMAa+aQ0M24qTkBC6aUJ4LN
+	ZcXQsGT2yAkiissq9Hcmd9+TWzeLU88dmtq1KzatmBA==
+X-Gm-Gg: ASbGncsiL+wHiJuyafQutC9ZPKOJNZ1h/h7E2UOfnuwGW3Odm6DTxqtLIfAJTQqZkk+
+	s/zCPekSxun6DW3f9+Bu0lkNxnaqNWQBXEMC3kP3EaJMGmKEGJa6y7rqWduvUmhqYG0ObQ4bUCq
+	bSN51DqQOVRBq+blLXLmjjzlTddVkKT628yVqTsXMAKSyL
+X-Google-Smtp-Source: AGHT+IHPaXrxmHFVKX7Eql3EMD5x4On0T3oI0issqDZiJ0MoiOv4sD7i0/jMP72156cYMAUC8axQa4qkX4Dj4M+kpkU=
+X-Received: by 2002:a05:690c:6213:b0:70e:7882:ea91 with SMTP id
+ 00721157ae682-7164d4b88d2mr41815867b3.35.1751465525819; Wed, 02 Jul 2025
+ 07:12:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/11] PCI/ACPI: Per root port allow one Aux power
- limit request
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Badal Nilawar <badal.nilawar@intel.com>, intel-xe@lists.freedesktop.org,
- linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
- anshuman.gupta@intel.com, lenb@kernel.org, bhelgaas@google.com,
- ilpo.jarvinen@linux.intel.com, lucas.demarchi@intel.com,
- rodrigo.vivi@intel.com, varun.gupta@intel.com,
- ville.syrjala@linux.intel.com, uma.shankar@intel.com
-References: <20250529111654.3140766-1-badal.nilawar@intel.com>
- <20250529111654.3140766-3-badal.nilawar@intel.com>
- <98fc8402-0bda-4333-8407-75c7a6472375@linux.intel.com>
- <CAJZ5v0hm_UyEEXz+1LYGwGXNi908vYgKw0CD3C=wmBvT=vAh0Q@mail.gmail.com>
-Content-Language: en-US
-From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <CAJZ5v0hm_UyEEXz+1LYGwGXNi908vYgKw0CD3C=wmBvT=vAh0Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <5018768.GXAFRqVoOG@rjwysocki.net>
+In-Reply-To: <5018768.GXAFRqVoOG@rjwysocki.net>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Wed, 2 Jul 2025 16:11:30 +0200
+X-Gm-Features: Ac12FXynITunG4rG5UQO1EB1vzYUCxa7rAXh-RE6XqfZ0CLPy3V92JuMPVtw6hI
+Message-ID: <CAPDyKFp35SjpQmEQ02u7ZbsaFftaett_rBBf-7hbsBpGWH08hw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/9] PM: Reconcile different driver options for runtime
+ PM integration with system sleep
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Linux PM <linux-pm@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Linux ACPI <linux-acpi@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-
-On 7/2/25 4:11 AM, Rafael J. Wysocki wrote:
-> On Thu, May 29, 2025 at 11:41 PM Sathyanarayanan Kuppuswamy
-> <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
->>
->> On 5/29/25 4:16 AM, Badal Nilawar wrote:
->>> For given root port allow one Aux power limit request.
->>>
->>> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
->>> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
->>> ---
->>>    drivers/acpi/scan.c     |  1 +
->>>    drivers/pci/pci-acpi.c  | 25 ++++++++++++++++++++++++-
->>>    include/acpi/acpi_bus.h |  2 ++
->>>    3 files changed, 27 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
->>> index fb1fe9f3b1a3..9ae7be9db01a 100644
->>> --- a/drivers/acpi/scan.c
->>> +++ b/drivers/acpi/scan.c
->>> @@ -745,6 +745,7 @@ int acpi_device_add(struct acpi_device *device)
->>>        INIT_LIST_HEAD(&device->physical_node_list);
->>>        INIT_LIST_HEAD(&device->del_list);
->>>        mutex_init(&device->physical_node_lock);
->>> +     mutex_init(&device->power.aux_pwr_lock);
->>>
->>>        mutex_lock(&acpi_device_lock);
->>>
->>> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
->>> index 87f30910a5f1..d33efba4ca94 100644
->>> --- a/drivers/pci/pci-acpi.c
->>> +++ b/drivers/pci/pci-acpi.c
->>> @@ -1451,6 +1451,7 @@ int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
->>>        union acpi_object *out_obj;
->>>        acpi_handle handle;
->>>        int result, ret = -EINVAL;
->>> +     struct acpi_device *adev;
->>>
->>>        if (!dev || !retry_interval)
->>>                return -EINVAL;
->>> @@ -1464,11 +1465,27 @@ int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
->>>                return -ENODEV;
->>>        }
->>>
->>> +     adev = ACPI_COMPANION(&dev->dev);
->>> +     if (!adev)
->>> +             return -EINVAL;
->>> +
->>> +     mutex_lock(&adev->power.aux_pwr_lock);
->>> +
->>> +     /* Check if aux power already granted */
->>> +     if (adev->power.aux_power_limit) {
->>> +             pci_info(dev, "D3cold Aux Power request already granted: %u mW\n",
->>> +                      adev->power.aux_power_limit);
->>> +             mutex_unlock(&adev->power.aux_pwr_lock);
->>> +             return -EPERM;
->>> +     }
->>> +
->>>        out_obj = acpi_evaluate_dsm_typed(handle, &pci_acpi_dsm_guid, 4,
->>>                                          DSM_PCI_D3COLD_AUX_POWER_LIMIT,
->>>                                          &in_obj, ACPI_TYPE_INTEGER);
->>> -     if (!out_obj)
->>> +     if (!out_obj) {
->>> +             mutex_unlock(&adev->power.aux_pwr_lock);
->>>                return -EINVAL;
->>> +     }
->>>
->>>        result = out_obj->integer.value;
->>>        if (retry_interval)
->>> @@ -1478,14 +1495,17 @@ int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
->>>        case 0x0:
->>>                pci_dbg(dev, "D3cold Aux Power %u mW request denied\n",
->>>                        requested_power);
->>> +             adev->power.aux_power_limit = 0;
->>>                break;
->>>        case 0x1:
->>>                pci_info(dev, "D3cold Aux Power request granted: %u mW\n",
->>>                         requested_power);
->>> +             adev->power.aux_power_limit = requested_power;
->>>                ret = 0;
->>>                break;
->>>        case 0x2:
->>>                pci_info(dev, "D3cold Aux Power: Main power won't be removed\n");
->>> +             adev->power.aux_power_limit = 0;
->>>                ret = -EBUSY;
->>>                break;
->>>        default:
->>> @@ -1500,9 +1520,12 @@ int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
->>>                        pci_err(dev, "D3cold Aux Power: Reserved or unsupported response: 0x%x\n",
->>>                                result);
->>>                }
->>> +             adev->power.aux_power_limit = 0;
->>>                break;
->>>        }
->>>
->>> +     mutex_unlock(&adev->power.aux_pwr_lock);
->>> +
->>>        ACPI_FREE(out_obj);
->>>        return ret;
->>>    }
->>> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
->>> index aad1a95e6863..c4ce3d84be00 100644
->>> --- a/include/acpi/acpi_bus.h
->>> +++ b/include/acpi/acpi_bus.h
->>> @@ -294,6 +294,8 @@ struct acpi_device_power {
->>>        struct acpi_device_power_flags flags;
->>>        struct acpi_device_power_state states[ACPI_D_STATE_COUNT];      /* Power states (D0-D3Cold) */
->>>        u8 state_for_enumeration; /* Deepest power state for enumeration */
->>> +     u32 aux_power_limit;            /* aux power limit granted by bios */
->>> +     struct mutex aux_pwr_lock;      /* prevent concurrent aux power limit requests */
->>
->> Do you need a new lock ?
-> Yes.
+On Fri, 27 Jun 2025 at 21:29, Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
 >
->> Is it possible to reuse existing mutex like device_lock()?
-> No.
+> Hi Everyone,
 >
-> Doing such things results in code where nobody knows what the given
-> lock scope is.
+> This is an update of the series the v2 of which was posted yesterday:
+>
+> https://lore.kernel.org/linux-pm/5015172.GXAFRqVoOG@rjwysocki.net/
+>
+> and the v1 is here:
+>
+> https://lore.kernel.org/linux-pm/22759968.EfDdHjke4D@rjwysocki.net/
+>
+> This update reorders the patches (again), updates the changelogs of some of
+> them and changes the subject of one patch slightly.  It also adds a kerneldoc
+> comment to a new function in patch [5/9].
+>
+> This part of the cover letter still applies:
+>
+> "This series addresses a couple of issues related to the integration of runtime
+> PM with system sleep I was talking about at the OSMP-summit 2025:
+>
+> https://lwn.net/Articles/1021332/
+>
+> Most importantly, DPM_FLAG_SMART_SUSPEND cannot be used along with
+> pm_runtime_force_suspend/resume() due to some conflicting expectations
+> about the handling of device runtime PM status between these functions
+> and the PM core.
+>
+> Also pm_runtime_force_suspend/resume() currently cannot be used in PCI
+> drivers and in drivers that collaborate with the general ACPI PM domain
+> because they both don't expect their mid-layer runtime PM callbacks to
+> be invoked during system-wide suspend and resume.
+>
+> Patch [1/9] is a preparatory cleanup changing the code to use 'true' and
+> 'false' as needs_force_resume flag values for consistency."
+>
+> Patch [2/9] (which was [3/9] in v2) puts pm_runtime_force_resume() and one
+> other function that is only used during system sleep transitions under
+> CONFIG_PM_SLEEP.
+>
+> Patch [3/9] (which was [5/9] in v2) causes the smart_suspend flag to be taken
+> into account by pm_runtime_force_resume() which allows it to resume devices
+> with smart_suspend set whose runtime PM status has been changed to RPM_ACTIVE
+> by the PM core at the beginning of system resume.  After this patch, drivers
+> that use pm_runtime_force_suspend/resume() can also set DPM_FLAG_SMART_SUSPEND
+> which may be useful, for example, if devices handled by them are involved in
+> dependency chains with other devices setting DPM_FLAG_SMART_SUSPEND.
+>
+> Since patches [1,3/9] have been reviewed already and patch [2/9] should not
+> be particularly controversial, I think that patches [1-3/9] are good to go.
+>
+> Patch [4/9] (which was [2/9] in v2), makes pm_runtime_reinit() clear
+> needs_force_resume in case it was set during driver remove.
+>
+> Patch [5/9] (which was [4/9] in v2) makes pm_runtime_force_suspend() check
+> needs_force_resume along with the device's runtime PM status upfront, and bail
+> out if it is set, which allows runtime PM status updates to be eliminated from
+> both that function and pm_runtime_force_resume().  I recalled too late that
+> it was actually necessary for the PCI PM and ACPI PM to work with
+> pm_runtime_force_suspend() correctly after the subsequent changes and that
+> patch [3/9] did not depend on it.  I have also realized that patch [5/9]
+> potentially unbreaks drivers that call pm_runtime_force_suspend() from their
+> "remove" callbacks (see the patch changelog for a bit of an explanation).
+>
+> Patch [6/9] (which has not been changed since v2) makes the code for getting a
+> runtime PM callback for a device a bit more straightforward, in preparation for
+> the subsequent changes.
+>
+> Patch [7/9] introduces a new device PM flag called strict_midlayer that
+> can be set by middle layer code which doesn't want its runtime PM
+> callbacks to be used during system-wide PM transitions, like the PCI bus
+> type and the ACPI PM domain, and updates pm_runtime_force_suspend/resume()
+> to take that flag into account.  Its changelog has been updated since v2 and
+> there is a new kerneldoc comment for dev_pm_set_strict_midlayer().
+>
+> Patch [8/9] modifies the ACPI PM "prepare" and "complete" callback functions,
+> used by the general ACPI PM domain and by the ACPI LPSS PM domain, to set and
+> clear strict_midlayer, respectively, which allows drivers collaborating with it
+> to use pm_runtime_force_suspend/resume().  The changelog of this patch has been
+> made a bit more precise since v2.
+>
+> That may be useful if such a driver wants to be able to work with different
+> PM domains on different systems.  It may want to work with the general ACPI PM
+> domain on systems using ACPI, or with another PM domain (or even multiple PM
+> domains at the same time) on systems without ACPI, and it may want to use
+> pm_runtime_force_suspend/resume() as its system-wide PM callbacks.
+>
+> Patch [9/9] updates the PCI bus type to set and clear, respectively, strict_midlayer
+> for all PCI devices in its "prepare" and "complete" PM callbacks, in case some
+> PCI drivers want to use pm_runtime_force_suspend/resume() in the future.  They
+> will still need to set DPM_FLAG_SMART_SUSPEND to avoid resuming their devices during
+> system suspend, but now they may also use pm_runtime_force_suspend/resume() as
+> suspend callbacks for the "regular suspend" phase of device suspend (or invoke
+> these functions from their suspend callbacks).  The changelog of this patch has
+> been made a bit more precise since v2, like the changelog of patch [8/9].
+>
+> As usual, please refer to individual patch changelogs for more details.
+>
+> Thanks!
+>
 
-Got it. Thanks for the clarification.
+For the v3 series, please add:
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
-
+Kind regards
+Uffe
 
