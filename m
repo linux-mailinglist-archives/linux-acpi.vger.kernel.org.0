@@ -1,68 +1,68 @@
-Return-Path: <linux-acpi+bounces-14931-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14932-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8E6AF1501
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 14:07:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FC7AF15A7
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 14:29:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70A92520C23
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 12:07:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAB9D18883DB
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 12:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945F126C396;
-	Wed,  2 Jul 2025 12:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4767270EDD;
+	Wed,  2 Jul 2025 12:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lEQiOujZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aimjaRiN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FFE1624F7;
-	Wed,  2 Jul 2025 12:07:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302BB26FDA5;
+	Wed,  2 Jul 2025 12:28:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751458055; cv=none; b=qGjLBbVBRz6+INWALDlN+8KCtV5vaoSMGe+KdfJPM7f4BmTWzOs7B8fLGwq/+PntTDFV0TyQ4WPRxVhIO7BQ+2Cx1Gmvw3wt1BKAIm0trIqh33CJMlbhM2kTMvSb/7WaF1mJzTGEg/6EaJaAawDAsULM25NEGHRlsbyGruhS0y4=
+	t=1751459338; cv=none; b=bUC0fIM66uSU45HgBnaUZQM401fgn9hIZlJkDck+4fcsg0vaE7gR6kXnaDWbuKkLil10X1NZUfEhintOHAMOZiPPr+T3FOaCKcHf94b7uR982yqtxqmtsGGraQhEkLAtW7ijiymof89302KB/OKHWdjqWLmjCA9o4vW38sBboVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751458055; c=relaxed/simple;
-	bh=IR63JrJp4EpFgC2hqcOS6ZZUnx2E8wjz2gyvdSKhXcI=;
+	s=arc-20240116; t=1751459338; c=relaxed/simple;
+	bh=zoqxa8Dth/WIL+RSmgjM63YP+N6qBvdpGWSiRdatsBg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nZKSOyKRUze+0v4VUa52xKq1Uw+HmVxlRXue/IOpw6qD/+IN/+0a0kigMKtxrKLNpryHJrEbXRjhXuxsj0ICIX0jMutNNMwed8WVCjyqZZlmBSV9kxscMUxYS9+wigLOrRVamxshhMxuq3/nUPTgsQaXi/t7IsNf4OOfdZOGK6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lEQiOujZ; arc=none smtp.client-ip=192.198.163.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=o3GC0PCkc742SFReiOSnUXGtwI8Y8oPSp1bVzBNRnmrODK6UdulHV9oZVU3napdu04ACDmN2bdjEo4BGOerIUZBbUD64SiSA48b3UutQOjiVH0Ws6NoN6EMS1DgB/Pj2VrIEEcY3+n4m51UGUOk/Fr1FZeE8D5yCIyGlLk4ky30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aimjaRiN; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751458054; x=1782994054;
+  t=1751459338; x=1782995338;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=IR63JrJp4EpFgC2hqcOS6ZZUnx2E8wjz2gyvdSKhXcI=;
-  b=lEQiOujZxmBIZWffJH08A2FxdI/xZIiODCyRDtC3hXyJoOlWKU7LcB0u
-   dnCqPVkDYvZRjHfwrxIKlBJPbXcN4hGnh7PEro8pxc7M+fVQjbTIyHIge
-   OXlf+KuUiRVAbire6x4+FKeINxdRYycHzLRqSlEokVpfnw0QghPqwcGx6
-   UOTUzXTd33AqH67tSj8gSNn8OOKgyhSs5XtoRiI39lEvY1QvOxu+rYT+s
-   5asHtyb/AtPKRlAhbqLOaxwSAGW+AFYxVBQHGW9v9HauETtZ/nIJExVmC
-   ufKPbvt0DvcfJ5gIwnYqmMOO39jS4ajCCagevc9oZOMrQtF7uSFk4baI6
-   g==;
-X-CSE-ConnectionGUID: rpapoq/nQD6UFB0be2MkoA==
-X-CSE-MsgGUID: L6ilbGXsQqi3PwVOThMofQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="52866031"
+  bh=zoqxa8Dth/WIL+RSmgjM63YP+N6qBvdpGWSiRdatsBg=;
+  b=aimjaRiNhIDq/ud/a1Ouq7G6B8K1Rjec3heqITU4bucRJOzy6IY3cWL1
+   H7l1L81zaDSgFWQjCvN31AtBqhwW5fY2mMoGkBMYb42U11SrVnnlAMFi1
+   GLIQUzvR3V2BwihCUaZXYotR44YMUl84LYgjogeuc1dAveqsLZtJFe4+S
+   3fMwYvyh8MUy1rNdYTgeidK4Wwcd28+VmjFlb0HdTBmZ1ZPryqfnU+VMQ
+   neeAuvUM9mEWqbkr07nKNjUNjKQx+m09y8YX8PhHi//Hw3+bJ/wWhFAHZ
+   pFO1aRfl5OdHrQKH1kDnXU8vntw7XG9tAk5Asdz7gRmG3WS9+8K3D8UGv
+   w==;
+X-CSE-ConnectionGUID: OXtJ+nJQR5eWO8r3+dwVHA==
+X-CSE-MsgGUID: tyc9leZBQJiLva+69552UQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="57426623"
 X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="52866031"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 05:07:06 -0700
-X-CSE-ConnectionGUID: z0XQZcSdS1KNJrdm0gyElA==
-X-CSE-MsgGUID: vG0JtjgiTqqFY8WX4z6jag==
+   d="scan'208";a="57426623"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 05:28:57 -0700
+X-CSE-ConnectionGUID: ZYzfy1TaTmSmBpS29OqyAg==
+X-CSE-MsgGUID: c4FjoOfOQgG2bv26Z60xAg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="153512567"
+   d="scan'208";a="153839670"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 05:06:59 -0700
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 05:28:50 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uWwEp-0000000BuZm-1DFY;
-	Wed, 02 Jul 2025 15:06:55 +0300
-Date: Wed, 2 Jul 2025 15:06:54 +0300
+	id 1uWwZx-0000000Buum-1vQU;
+	Wed, 02 Jul 2025 15:28:45 +0300
+Date: Wed, 2 Jul 2025 15:28:45 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Anup Patel <apatel@ventanamicro.com>
 Cc: Michael Turquette <mturquette@baylibre.com>,
@@ -87,13 +87,11 @@ Cc: Michael Turquette <mturquette@baylibre.com>,
 	Samuel Holland <samuel.holland@sifive.com>,
 	Anup Patel <anup@brainfault.org>, linux-clk@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Atish Patra <atishp@rivosinc.com>
-Subject: Re: [PATCH v7 03/24] RISC-V: Add defines for the SBI message proxy
- extension
-Message-ID: <aGUg3h_vigc6mq5a@smile.fi.intel.com>
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 21/24] mailbox/riscv-sbi-mpxy: Add ACPI support
+Message-ID: <aGUl_S9irfhlHmy2@smile.fi.intel.com>
 References: <20250702051345.1460497-1-apatel@ventanamicro.com>
- <20250702051345.1460497-4-apatel@ventanamicro.com>
+ <20250702051345.1460497-22-apatel@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -102,43 +100,30 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250702051345.1460497-4-apatel@ventanamicro.com>
+In-Reply-To: <20250702051345.1460497-22-apatel@ventanamicro.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Jul 02, 2025 at 10:43:24AM +0530, Anup Patel wrote:
-> Add defines for the new SBI message proxy extension which is part
-> of the SBI v3.0 specification.
-
-Actually a few nit-picks.
-
-...
-
-> +enum sbi_ext_mpxy_fid {
-> +	SBI_EXT_MPXY_GET_SHMEM_SIZE,
-> +	SBI_EXT_MPXY_SET_SHMEM,
-> +	SBI_EXT_MPXY_GET_CHANNEL_IDS,
-> +	SBI_EXT_MPXY_READ_ATTRS,
-> +	SBI_EXT_MPXY_WRITE_ATTRS,
-> +	SBI_EXT_MPXY_SEND_MSG_WITH_RESP,
-> +	SBI_EXT_MPXY_SEND_MSG_WITHOUT_RESP,
-> +	SBI_EXT_MPXY_GET_NOTIFICATION_EVENTS
-
-Add a trailing comma.
-
-> +};
+On Wed, Jul 02, 2025 at 10:43:42AM +0530, Anup Patel wrote:
+> From: Sunil V L <sunilvl@ventanamicro.com>
+> 
+> Add ACPI support for the RISC-V SBI message proxy (MPXY) based
+> mailbox driver.
 
 ...
 
-> +/* Possible values of MSG_PROT_ID attribute */
-> +enum sbi_mpxy_msgproto_id {
-> +	SBI_MPXY_MSGPROTO_RPMI_ID = 0x0
+> -		if (dev_of_node(dev))
+> +		if (is_of_node(fwnode)) {
+>  			of_msi_configure(dev, dev_of_node(dev));
+> +		} else if (is_acpi_device_node(fwnode)) {
+> +			msi_domain = irq_find_matching_fwnode(imsic_acpi_get_fwnode(dev),
+> +							      DOMAIN_BUS_PLATFORM_MSI);
+> +			dev_set_msi_domain(dev, msi_domain);
+> +		}
 
-Add a trailing comma, and you might want to drop 0x. I don't know what else can
-be here, esp. in the future, but some kind of the description of this in TRM
-can shed a light on what is better pattern to use.
-
-> +};
+Actually you don't need to have the if-else-if if I am not mistaken.
+The OF does almost the same as it's done in the second branch for ACPI case.
+How many MSI parents this may have?
 
 -- 
 With Best Regards,
