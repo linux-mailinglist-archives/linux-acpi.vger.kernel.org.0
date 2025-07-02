@@ -1,158 +1,294 @@
-Return-Path: <linux-acpi+bounces-14916-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14917-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF10AF0A9D
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 07:20:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3F9AF1142
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 12:09:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 254177AAA63
-	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 05:19:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E8B93A7B44
+	for <lists+linux-acpi@lfdr.de>; Wed,  2 Jul 2025 10:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6242236E1;
-	Wed,  2 Jul 2025 05:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ED4F253938;
+	Wed,  2 Jul 2025 10:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="CUCd63pG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NXyEV+l4"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D016F2222BF
-	for <linux-acpi@vger.kernel.org>; Wed,  2 Jul 2025 05:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6872417E6;
+	Wed,  2 Jul 2025 10:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751433430; cv=none; b=jVvtVVckeIqUkLFYSHDOuF+EDj5iLXOcC+L6QUdRTc3c7RlEieF+x+btkSUDw9FrReEnNdnv4+f2B1b7nAfHDwn/vTS+cWQbh11zki/r50RZqsL0Ck1cw1AT6DaFS7RuCdVKC1n11KrmZsAqs3DRmrGT+uJlZrUJQOSedxBy43w=
+	t=1751450870; cv=none; b=t0lwJ+17XhauGxmkpoLu3ewHvWyqifEaG/v6tjOzzrPHD4G6BGPN2YE9C6uNPmDdf+RjeHLo3f4GMtn4M4P3ekzxL/6kQPwz8AvN4t2yKndemWW1OnrcFZIczd9gvS4/DoLPUTED4Z+esxtZNnvoh5CMh752Owsf7599hEzwHaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751433430; c=relaxed/simple;
-	bh=SIZVTA1dBlDgHWuqKkMeHUlssl6BYErjNhZuMkc2v6w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cRWxRUl/mJ19c47ol1g7XCXRdh4q4hYk35tqZXK9E/tgCdTS2GfdJKVwgHmSDvpNFo+epsj+34BX+EwgJVhOt05BVZqKe6Qo00OEPCoekyTHzO7JHk2JZEr4yGD6T3kncOd5bpG0AlgLhap9s2WdmAhqWBEpxeYi3duy9ehkrZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=CUCd63pG; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-234c5b57557so39449865ad.3
-        for <linux-acpi@vger.kernel.org>; Tue, 01 Jul 2025 22:17:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1751433428; x=1752038228; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t84+O6WBdBY0SCc3BtWc+Gw5ZYyMJomoxrVu9jQtsgg=;
-        b=CUCd63pGeGu4fUzMEvMVeiJTYiKkqwGwjNi21xlBefLtX/hUB1ogxNyQDNZrl/P1iN
-         feJFYgm2b18q4Oirn5PGBEtFyvn8x70pW1I/3mFb7UdRn4q6TSlB2blJ4sChn8XmSCwQ
-         s9rfXaikuXMpNZC6KVi7uZd7oO7glF9aCF2bZSSN9WdahH3lF5mQcDtLFoueSnSu/kJy
-         N1t3yG3FX4dQQGGY49xs4MfXUexnM3TNJ8Ii88lno/lERrej6ydoNqAAhs1FJQ7pGOFs
-         iZWFGRlI5ugSEG9Zsb3a7mzq/ytyNK2FTow2ak7ocZnGoWxWw67Ag6VCrpW/4gcrz6m4
-         vvaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751433428; x=1752038228;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t84+O6WBdBY0SCc3BtWc+Gw5ZYyMJomoxrVu9jQtsgg=;
-        b=qbMK1MeXNlSOxk9VujL1VFTrgu+SfgtzgEQaHiw3IGKkbiwAhK2yfb+NDsSLaROpaK
-         qyI9k4KuGJDX31pQYr/JlpydW6DauqrnvxxdHBPwZrC39hE3Vs74Zs3Jb6MFqeZslGFl
-         KJcNcX2pLPese2eCdOL/wfWpU5UjyyFfCTA4ozrcVl9ipFXP4rnc6VyjnOurulOFmPaU
-         YOYLAV8aFGFRRpYS1VfC/3yvdq4YnIRz6M+CKvhsSosu0WvTs1jTQUH8jCl5nsmMdZsJ
-         0b45uBrQUtdt4+CkWxaQiOqbcI4YtnUURBluqVuumKUDEN20rSN9W9WAF1Y4AlwY0s57
-         PEEg==
-X-Forwarded-Encrypted: i=1; AJvYcCUrJ+3J6oV8nzxGIybWEOMXyc5zQYqHlWK9U2CQfh46IAHG5PW4L4FbTLDomhhZXc/1HUBlDKVe8NCj@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrbOh1kMMHPn6kKbtoIZBfF49knKLw09ZLaZnzIi5ZhLZNOzVh
-	nOWULQ53G+9oYcfndlwYn1K7uu+76V0EOwOyT/w12yqPKPerR1RbYGqiOV5EP3rwXWpqHDfG2lk
-	C8uFl
-X-Gm-Gg: ASbGnct4rlD0KD9cc7bUzxB+rInK1xYWAFF93U/a89JxkjBS8iwTt4euySQdeP2FYCy
-	8Suc7KYfHoCO0Y1EkS+GY6GwXX6uW4wPyqpircJDXKkfwau23fkQFrYiPZJpwjNalOpXOSWvvA2
-	9DqdqObXVEGVoIql+wCDvbje260sTJtfCH8fHRyVwqu1s4oH6gXC+SR5pRURlUjaoy8I0MfI5vl
-	nVk0BCUpTRl81wa2Yy0BzwJ9+1dx1fSD6CpTQ+uZ1FstYFZ6302vEuF+fZi0n2rLTK7sMK8lZHu
-	26W6tknnN6LVb3jX5okLG4KYXwM6xhe1KkAKjRHphxJU9q238TLxumryOhDJi2yQrm1r8jE5OxV
-	Ji8RO+ge/fEd5QdhN
-X-Google-Smtp-Source: AGHT+IHF9jCGgWd1zPtdr7P6gyUcMpmB+BURtwnVFT7vtNKBR1DlMS0ym17Nq8ulkiJ1AGOTzoV1rA==
-X-Received: by 2002:a17:902:cf4f:b0:235:27b6:a897 with SMTP id d9443c01a7336-23c6e552a2bmr15106685ad.34.1751433427932;
-        Tue, 01 Jul 2025 22:17:07 -0700 (PDT)
-Received: from localhost.localdomain ([14.141.91.70])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23c6fe31933sm4719595ad.220.2025.07.01.22.17.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Jul 2025 22:17:07 -0700 (PDT)
-From: Anup Patel <apatel@ventanamicro.com>
-To: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Len Brown <lenb@kernel.org>,
-	Sunil V L <sunilvl@ventanamicro.com>,
-	Rahul Pathak <rpathak@ventanamicro.com>,
-	Leyfoon Tan <leyfoon.tan@starfivetech.com>,
-	Atish Patra <atish.patra@linux.dev>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Anup Patel <anup@brainfault.org>,
-	linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Anup Patel <apatel@ventanamicro.com>
-Subject: [PATCH v7 24/24] MAINTAINERS: Add entry for RISC-V RPMI and MPXY drivers
-Date: Wed,  2 Jul 2025 10:43:45 +0530
-Message-ID: <20250702051345.1460497-25-apatel@ventanamicro.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250702051345.1460497-1-apatel@ventanamicro.com>
-References: <20250702051345.1460497-1-apatel@ventanamicro.com>
+	s=arc-20240116; t=1751450870; c=relaxed/simple;
+	bh=weyTifFbm+9UaGAzEaZQa9PZjTRZ7slzMKMFXBEpui8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Tk3Ce4POlwJim9TjTz3vjvm7ikNYeSRttxzcRzJ31pylPMy+NdbDNxjgRls5f0TbtmsdS8pEbf6wPcN0Hj+4ZQ/rpceOQJiNma/dMmnxaK3K6P9zTZOSLIm1SncuDpM1FjwMYb+/CjZAJqo0TCiliiqjul26QGskdLddC7bLq4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NXyEV+l4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B786C4CEFE;
+	Wed,  2 Jul 2025 10:07:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751450869;
+	bh=weyTifFbm+9UaGAzEaZQa9PZjTRZ7slzMKMFXBEpui8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=NXyEV+l4prWmA5xNasJNgIgmUSgM3+Yt1Z/QGc3tu04lP7Vd/35XgG1bIgRYF6QbC
+	 hS+BNUi5W3ZeJZwhElILpy2EoCd0J8/7vcaATsh2V+yR4W/jv8iDQSMzoyf7V+Ggz0
+	 33j4MJ4bvLXmVPIUU3N/6UvmUqGHDwzNYx9ajuOeB4zwMoOnB6HaZwzZJolDGmNnj6
+	 Eyl38o0v5Cx7zG8V7a5LhakoabbxDhmevK4Q8cpgCr3LtW2gnsrQHfbql1ZrgOkFcD
+	 bxLHy8FIjT0wGCwFi9W6leaK6OdKg+oyBWDMj7TWBNil94GI6wHRS19liEy2PqhvmE
+	 Aq+JQaKrxTr7w==
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-40b32b6af9eso3109534b6e.1;
+        Wed, 02 Jul 2025 03:07:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUjzwE5Cf7LsrPTYK5cGF6DAEPYyY41Z2VpwFZDYd+YHohYHkigpvS0nrdB3zESPGfNOirM2wMbtLAT@vger.kernel.org, AJvYcCUzcniCTLJ9r6c9m18GLLPdC96sUme0ckh0GrFajwuwBmD8/bAWHXXwXuV62CSZ+NuCSqm6IkvaWBt1@vger.kernel.org, AJvYcCXXvYuN8BTZr7TQyMLQ7HxngfbJjpGqbSeopWrKbPBdbMf9g7aPO7RX5hxJk2zAXZ9Oly/18m5iYITfGA==@vger.kernel.org, AJvYcCXjXazA9qbbTexJguqJaev0oLADE02uAX3W/um8XQrcJ/rYrke47IqOH1wm65yMyo/6dnaiPl2OSglKlAui@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXTSzW/u5yBFNy3krn7jfgBD5ZAcJ5upsrogr/j3ahrYDsOpV2
+	7bQVZ3yh0yds4Wo/hPXc7qur3HmGXkPL42gwMbD1aVffpiTSYblVmKUT/DOGbHdfkeiGgNdycrA
+	PmVNiI8ikdeeXMUz7CYQY0CdH10iC/Nk=
+X-Google-Smtp-Source: AGHT+IGtIVuzmhoykn4M0axoi0CGQ6+4aSkLoPsqP+2+vacu7bYqMOdAim8lVESGAzHhcXoXAFFINc4I7/DELd8kc+U=
+X-Received: by 2002:a05:6808:1b07:b0:404:e0b3:12f with SMTP id
+ 5614622812f47-40b8876eecbmr1608611b6e.11.1751450868525; Wed, 02 Jul 2025
+ 03:07:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250702051345.1460497-1-apatel@ventanamicro.com> <20250702051345.1460497-15-apatel@ventanamicro.com>
+In-Reply-To: <20250702051345.1460497-15-apatel@ventanamicro.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 2 Jul 2025 12:07:36 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0ifCN7OWEw0DHpULSmXn4nCb9EdJMjQPJwmdoF_y0nfjA@mail.gmail.com>
+X-Gm-Features: Ac12FXwydwjWOWusGuVaIxI2hPrV2omvDChuKbmceQ_-F0JLp5oiXfu_5tSYAEY
+Message-ID: <CAJZ5v0ifCN7OWEw0DHpULSmXn4nCb9EdJMjQPJwmdoF_y0nfjA@mail.gmail.com>
+Subject: Re: [PATCH v7 14/24] ACPI: property: Refactor acpi_fwnode_get_reference_args()
+To: Anup Patel <apatel@ventanamicro.com>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jassi Brar <jassisinghbrar@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Len Brown <lenb@kernel.org>, Sunil V L <sunilvl@ventanamicro.com>, 
+	Rahul Pathak <rpathak@ventanamicro.com>, Leyfoon Tan <leyfoon.tan@starfivetech.com>, 
+	Atish Patra <atish.patra@linux.dev>, Andrew Jones <ajones@ventanamicro.com>, 
+	Samuel Holland <samuel.holland@sifive.com>, Anup Patel <anup@brainfault.org>, 
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add Rahul and myself as maintainers for RISC-V RPMI and MPXY drivers.
+On Wed, Jul 2, 2025 at 7:15=E2=80=AFAM Anup Patel <apatel@ventanamicro.com>=
+ wrote:
+>
+> From: Sunil V L <sunilvl@ventanamicro.com>
+>
+> Currently acpi_fwnode_get_reference_args() calls the public function
+> __acpi_node_get_property_reference() which ignores the nargs_prop
+> parameter.
 
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
----
- MAINTAINERS | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+Which I suppose is a problem.  Why is it so?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 4bac4ea21b64..c22434a2756b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -21397,6 +21397,21 @@ F:	drivers/perf/riscv_pmu.c
- F:	drivers/perf/riscv_pmu_legacy.c
- F:	drivers/perf/riscv_pmu_sbi.c
- 
-+RISC-V RPMI AND MPXY DRIVERS
-+M:	Rahul Pathak <rahul@summations.net>
-+M:	Anup Patel <anup@brainfault.org>
-+L:	linux-riscv@lists.infradead.org
-+F:	Documentation/devicetree/bindings/clock/riscv,rpmi-clock.yaml
-+F:	Documentation/devicetree/bindings/clock/riscv,rpmi-mpxy-clock.yaml
-+F:	Documentation/devicetree/bindings/interrupt-controller/riscv,rpmi-mpxy-system-msi.yaml
-+F:	Documentation/devicetree/bindings/interrupt-controller/riscv,rpmi-system-msi.yaml
-+F:	Documentation/devicetree/bindings/mailbox/riscv,rpmi-shmem-mbox.yaml
-+F:	Documentation/devicetree/bindings/mailbox/riscv,sbi-mpxy-mbox.yaml
-+F:	drivers/clk/clk-rpmi.c
-+F:	drivers/irqchip/irq-riscv-rpmi-sysmsi.c
-+F:	drivers/mailbox/riscv-sbi-mpxy-mbox.c
-+F:	include/linux/mailbox/riscv-rpmi-message.h
-+
- RISC-V SPACEMIT SoC Support
- M:	Yixun Lan <dlan@gentoo.org>
- L:	linux-riscv@lists.infradead.org
--- 
-2.43.0
+> To fix this, make __acpi_node_get_property_reference() to
+> call the static acpi_fwnode_get_reference() so that callers of
+> fwnode_get_reference_args() can still pass a valid property name to
+> fetch the number of arguments.
 
+Are the current callers of acpi_fwnode_get_reference_args() going to
+be affected by this change and if so, then how?
+
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+> ---
+>  drivers/acpi/property.c | 101 ++++++++++++++++++++--------------------
+>  1 file changed, 50 insertions(+), 51 deletions(-)
+>
+> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> index 436019d96027..d4863746fb11 100644
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -882,45 +882,10 @@ static struct fwnode_handle *acpi_parse_string_ref(=
+const struct fwnode_handle *f
+>         return &dn->fwnode;
+>  }
+>
+> -/**
+> - * __acpi_node_get_property_reference - returns handle to the referenced=
+ object
+> - * @fwnode: Firmware node to get the property from
+> - * @propname: Name of the property
+> - * @index: Index of the reference to return
+> - * @num_args: Maximum number of arguments after each reference
+> - * @args: Location to store the returned reference with optional argumen=
+ts
+> - *       (may be NULL)
+> - *
+> - * Find property with @name, verifify that it is a package containing at=
+ least
+> - * one object reference and if so, store the ACPI device object pointer =
+to the
+> - * target object in @args->adev.  If the reference includes arguments, s=
+tore
+> - * them in the @args->args[] array.
+> - *
+> - * If there's more than one reference in the property value package, @in=
+dex is
+> - * used to select the one to return.
+> - *
+> - * It is possible to leave holes in the property value set like in the
+> - * example below:
+> - *
+> - * Package () {
+> - *     "cs-gpios",
+> - *     Package () {
+> - *        ^GPIO, 19, 0, 0,
+> - *        ^GPIO, 20, 0, 0,
+> - *        0,
+> - *        ^GPIO, 21, 0, 0,
+> - *     }
+> - * }
+> - *
+> - * Calling this function with index %2 or index %3 return %-ENOENT. If t=
+he
+> - * property does not contain any more values %-ENOENT is returned. The N=
+ULL
+> - * entry must be single integer and preferably contain value %0.
+> - *
+> - * Return: %0 on success, negative error code on failure.
+> - */
+> -int __acpi_node_get_property_reference(const struct fwnode_handle *fwnod=
+e,
+> -       const char *propname, size_t index, size_t num_args,
+> -       struct fwnode_reference_args *args)
+> +static int acpi_fwnode_get_reference_args(const struct fwnode_handle *fw=
+node,
+> +                                         const char *propname, const cha=
+r *nargs_prop,
+> +                                         unsigned int args_count, unsign=
+ed int index,
+> +                                         struct fwnode_reference_args *a=
+rgs)
+>  {
+>         const union acpi_object *element, *end;
+>         const union acpi_object *obj;
+> @@ -999,7 +964,7 @@ int __acpi_node_get_property_reference(const struct f=
+wnode_handle *fwnode,
+>
+>                         ret =3D acpi_get_ref_args(idx =3D=3D index ? args=
+ : NULL,
+>                                                 acpi_fwnode_handle(device=
+),
+> -                                               &element, end, num_args);
+> +                                               &element, end, args_count=
+);
+>                         if (ret < 0)
+>                                 return ret;
+>
+> @@ -1017,7 +982,7 @@ int __acpi_node_get_property_reference(const struct =
+fwnode_handle *fwnode,
+>
+>                         ret =3D acpi_get_ref_args(idx =3D=3D index ? args=
+ : NULL,
+>                                                 ref_fwnode, &element, end=
+,
+> -                                               num_args);
+> +                                               args_count);
+>                         if (ret < 0)
+>                                 return ret;
+>
+> @@ -1039,6 +1004,50 @@ int __acpi_node_get_property_reference(const struc=
+t fwnode_handle *fwnode,
+>
+>         return -ENOENT;
+>  }
+> +
+> +/**
+> + * __acpi_node_get_property_reference - returns handle to the referenced=
+ object
+> + * @fwnode: Firmware node to get the property from
+> + * @propname: Name of the property
+> + * @index: Index of the reference to return
+> + * @num_args: Maximum number of arguments after each reference
+> + * @args: Location to store the returned reference with optional argumen=
+ts
+> + *       (may be NULL)
+> + *
+> + * Find property with @name, verifify that it is a package containing at=
+ least
+> + * one object reference and if so, store the ACPI device object pointer =
+to the
+> + * target object in @args->adev.  If the reference includes arguments, s=
+tore
+> + * them in the @args->args[] array.
+> + *
+> + * If there's more than one reference in the property value package, @in=
+dex is
+> + * used to select the one to return.
+> + *
+> + * It is possible to leave holes in the property value set like in the
+> + * example below:
+> + *
+> + * Package () {
+> + *     "cs-gpios",
+> + *     Package () {
+> + *        ^GPIO, 19, 0, 0,
+> + *        ^GPIO, 20, 0, 0,
+> + *        0,
+> + *        ^GPIO, 21, 0, 0,
+> + *     }
+> + * }
+> + *
+> + * Calling this function with index %2 or index %3 return %-ENOENT. If t=
+he
+> + * property does not contain any more values %-ENOENT is returned. The N=
+ULL
+> + * entry must be single integer and preferably contain value %0.
+> + *
+> + * Return: %0 on success, negative error code on failure.
+> + */
+> +int __acpi_node_get_property_reference(const struct fwnode_handle *fwnod=
+e,
+> +                                      const char *propname, size_t index=
+,
+> +                                      size_t num_args,
+> +                                      struct fwnode_reference_args *args=
+)
+> +{
+> +       return acpi_fwnode_get_reference_args(fwnode, propname, NULL, ind=
+ex, num_args, args);
+> +}
+>  EXPORT_SYMBOL_GPL(__acpi_node_get_property_reference);
+>
+>  static int acpi_data_prop_read_single(const struct acpi_device_data *dat=
+a,
+> @@ -1558,16 +1567,6 @@ acpi_fwnode_property_read_string_array(const struc=
+t fwnode_handle *fwnode,
+>                                    val, nval);
+>  }
+>
+> -static int
+> -acpi_fwnode_get_reference_args(const struct fwnode_handle *fwnode,
+> -                              const char *prop, const char *nargs_prop,
+> -                              unsigned int args_count, unsigned int inde=
+x,
+> -                              struct fwnode_reference_args *args)
+> -{
+> -       return __acpi_node_get_property_reference(fwnode, prop, index,
+> -                                                 args_count, args);
+> -}
+> -
+>  static const char *acpi_fwnode_get_name(const struct fwnode_handle *fwno=
+de)
+>  {
+>         const struct acpi_device *adev;
+> --
+> 2.43.0
+>
+>
 
