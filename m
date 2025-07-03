@@ -1,210 +1,144 @@
-Return-Path: <linux-acpi+bounces-14967-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14968-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FBCDAF6D60
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 10:47:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51EAEAF6E00
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 11:01:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 968031C80335
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 08:47:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B36B616DA80
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 09:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4372D29DD;
-	Thu,  3 Jul 2025 08:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LrYxjxAT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D24424A054;
+	Thu,  3 Jul 2025 09:01:08 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A4C1D63F0;
-	Thu,  3 Jul 2025 08:46:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEB42DE719;
+	Thu,  3 Jul 2025 09:01:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751532405; cv=none; b=CIxJWtj9Vs/yVZrVWh30fR6FoTcsc/vN6DABadz6Zlm8dkT9WgWIN7eGAQmLujLyGEbKFEbJwOTSh6pmr10+zp0cVqMAJxYhGFyGjD6N8f4aeFFOP3UKa+rAeEVt3QY68gwdgKhswjjj3dyE3ZxVt46XUEkCwRKdefAuYJclRDs=
+	t=1751533268; cv=none; b=tP3mFeMhKPvDBHJaFN3gPm0rQ5zCPfI/tVF3/xb6GO4N2zwKOu+lZV6iNEzkwRGPCVu28NKor8IBvaGP74k6oIY1lR+GuzJx+jeTorNTwcRI124La7vAuzQtzTC+JY4Q+S58j5s6IKkxjhBMAw1N1BHMG/v790NeXws8At1zsxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751532405; c=relaxed/simple;
-	bh=oGnwNU54b6KjKEBNmnldSK7G2EHT2bg7bXi44Ajxx2c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mGgnbG4emSswKOmOaqjQ+ux4ph16qD3PTorXTNW8O3j5peN42QuonMuObOdRk27z4GWAtc/tBo2pVRwhcoPA03jH5np7hEGMU0u5tkMr6X4nNef+KpOc5kOzcYl4L1vTHtUBmQFK6+wJHrn3EgHFCtL68zQV7Q4O//DxK6dUU7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LrYxjxAT; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7AD90432F4;
-	Thu,  3 Jul 2025 08:46:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1751532400;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/cYj0q/giLszIR3kilyQWrZxMIeIjICge0MHLXkjJFo=;
-	b=LrYxjxAThrFQpeyWKPo7KHXblOcrN7BiWBU1ybIgmr/F8jlZn3oMMuFSHLRpDBJCmRCA1w
-	MsFwFPjimMNCZQBEGw0AUhUDK+RAMDTtWJ2veBlFxBS70NDSyClS2oazJsm9GXuSSiABnA
-	oV403Rb+nr5PpxxEXLcxSLdmT4WfVx+scbhDaUmQmv71EzmVWmfh952msl/4kd5FhS3UgG
-	H6v5SK89osI7/Zr7u5WkZX5kRsBq/netzt1snf3UAWVuxgU+g1X7fWrnla9+ir1xgj8s0A
-	kz1ZlldSa5AVR+gsrbQOELucUNukpblb0eV9CI8FzxxdgnsPKwKF60r3zk4j5Q==
-Date: Thu, 3 Jul 2025 10:46:36 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Rob Herring <robh@kernel.org>, Pengutronix Kernel Team
- <kernel@pengutronix.de>
-Cc: Andrew Lunn <andrew@lunn.ch>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
- Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
- Shyti <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
- Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
- Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len
- Brown <lenb@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, Geert
- Uytterhoeven <geert+renesas@glider.be>, Davidlohr Bueso
- <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, Alison Schofield
- <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
- Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
- linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v3 00/28] lan966x pci device: Add support for SFPs
-Message-ID: <20250703104636.5012907d@bootlin.com>
-In-Reply-To: <20250627155837.GC3234475-robh@kernel.org>
-References: <20250613134817.681832-1-herve.codina@bootlin.com>
-	<20250627155837.GC3234475-robh@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1751533268; c=relaxed/simple;
+	bh=Mo+wz9nu02dz+aoXNRKbGA/Ov71kuD9aMYcHBnQD4H8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pr0BKzBX1iEFrCZnPs6VIxAVtEdU2a+yfzhkKeMu7aG5NxV62zGfmi9l6aI4A7ocZKHyDOnMIY3iM6vwACJXKCesWE92Rj/jQC7qXxt4QZ510+mbvlS+v2+cJBMpypXo/F6lu/vQY/my8hNxEBpWkInJUKHh0oAIRCeWO4C8cWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-60c3aafae23so1651913a12.1;
+        Thu, 03 Jul 2025 02:01:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751533265; x=1752138065;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PVlu1b7wLj7VB8eQ78+9zAplW6+7Gp9At3TBS0dvb98=;
+        b=sNSFo8RynMCiLtr+wIHbtGUCzpfMCJl9opNH4fkMo2vFm4ZwPafmtgRbFXCRd9hTn/
+         GWcEpH/SLB6k6euRRWEAkRKOcgAo34DBcNJ7udixCmVLaZjCI7L4sS00qZXM3gC3nls+
+         jMI4Z50Hkai88vL0Od/K1DCixIeG4xWgBZxOg5oZRh6XYiOoBW8dkokWxUsyS7+Z9+bD
+         iOwevWz272tCNvvjnXvr7vGeNH2MCREvF3heEiyOBvvhv+IT/NF+MBXyUmxDjXVjtJmo
+         fwNQNBnUyquB8qyWpAqKZDgcLPl4Rfz0A1BfeEYneR6/l2B8CDOeukokN/vzRJGSOlN5
+         ki6g==
+X-Forwarded-Encrypted: i=1; AJvYcCUqsrX+rSxOV23KCTcdAMZgANm3MbwvbO9NUQPKEKmN2VjkfHZGgc5biEtInYOaSrkNF4QQv/5APm6gwM2t@vger.kernel.org, AJvYcCXPtGbE5FMTWfpr1y5K/eDSpWap9wAE87Ei1L3dlriQ3IAoYHXPfIAT0oom8BP2l/ZzdCDhxLpzCwKg@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywz5TT5PkeSt97g0z/8NUA1wpSYWDCVoC5X22/Vn8VzRfRVHfZf
+	hE3WMGYMLLnjuHyvwn5s1SRmnh4VXsINktaASgOPocrR3LydbryEKrBfYVJeew==
+X-Gm-Gg: ASbGncty8+jVP57VZRFy0qSbRGhTSzAME5jox/SiaHRrRwh6GHTTkxdFMLgsXGa+vbj
+	HacM2R2a8DgWqe16ulXBDveUnXbjPXmpvYodxxjmFz/7kYsuTRu0N0YvTHO1v+0+TktKGgk6gG0
+	3TMDZPTh+MPd/x6lL7LdWg9o0j17FNSxt8LxpA1OewM4qJDsY+n9Lfno7yb58igx3+j9WLNANDC
+	dhRsS6q+kGU9Nur3uTwB7627FIfD93Qw7CGiaDXRRCOVDNYkdD+3vPoRuShmljKlc/nF5yjQWmX
+	c6SLr0Hfo4+dskudwZO4dMIsg6ZmXiOwSXw1LfqlK8bIxTqt7ghD
+X-Google-Smtp-Source: AGHT+IFd8yJMSsvw+b+7huXpKjDEedjWi+BrkvfSt+aeRPnS4MbkoDhJCGgrmKFvA/W3V4LkP63Z3w==
+X-Received: by 2002:a17:907:7f0e:b0:ad8:959c:c567 with SMTP id a640c23a62f3a-ae3dcabcaf6mr204783166b.10.1751533264617;
+        Thu, 03 Jul 2025 02:01:04 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:4::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3c915bce9sm228479466b.116.2025.07.03.02.01.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Jul 2025 02:01:04 -0700 (PDT)
+Date: Thu, 3 Jul 2025 02:01:01 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "Luck, Tony" <tony.luck@intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	James Morse <james.morse@arm.com>, Borislav Petkov <bp@alien8.de>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com, kbusch@kernel.org, rmikey@meta.com
+Subject: Re: [PATCH] acpi/ghes: add TAINT_MACHINE_CHECK on GHES panic path
+Message-ID: <aGZGzaGeldWYHOwG@gmail.com>
+References: <20250702-add_tain-v1-1-9187b10914b9@debian.org>
+ <aGVe4nv18dRHHV16@agluck-desk3>
+ <aGVq6khN+QdqD5Aj@gmail.com>
+ <aGVyX0jqwTPkCVqY@agluck-desk3>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduleekgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthekredtredtjeenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeviefffeegiedtleelieeghfejleeuueevkeevteegffehledtkeegudeigffgvdenucfkphepvdgrtddumegvtdgrmedvkeehmegsleektdemvgegtdgtmeeitgegfeemsgehsggsmegrgedvkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemvgdtrgemvdekheemsgelkedtmegvgedttgemiegtgeefmegshegssgemrgegvdekpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgeekpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgp
- dhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvg
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aGVyX0jqwTPkCVqY@agluck-desk3>
 
-Hi Rob,
-
-On Fri, 27 Jun 2025 10:58:37 -0500
-Rob Herring <robh@kernel.org> wrote:
-
-> On Fri, Jun 13, 2025 at 03:47:40PM +0200, Herve Codina wrote:
-> > Hi,
+On Wed, Jul 02, 2025 at 10:54:39AM -0700, Luck, Tony wrote:
+> On Wed, Jul 02, 2025 at 10:22:50AM -0700, Breno Leitao wrote:
+> > On Wed, Jul 02, 2025 at 09:31:30AM -0700, Luck, Tony wrote:
+> > > On Wed, Jul 02, 2025 at 08:39:51AM -0700, Breno Leitao wrote:
+> > > So unless someone feels it would be better to create a new TAINT
+> > > flag (TAINT_FATAL_GHES? TAINT_FIRMWARE_REPORTED_FATAL_ERRROR?)
+> > > then this seems OK to me.
 > > 
-> > This series add support for SFPs ports available on the LAN966x PCI
-> > device. In order to have the SFPs supported, additional devices are
-> > needed such as clock controller and I2C.
+> > Thanks. That brings another topic. I am seeing crashes and warnings that
+> > are only happening after recoverable errors. I.e, there is a GHES
+> > recoverable error, and then machine crashes minutes later. A classical
+> > example is when the PCI downstream port disappear, and recovers later,
+> > re-enumerating everything, which is simply chaotic.
 > > 
-> > As a reminder, the LAN966x PCI device driver use a device-tree overlay
-> > to describe devices available on the PCI board. Adding support for SFPs
-> > ports consists in adding more devices in the already existing
-> > device-tree overlay.
+> > I would like to be able to correlate the crash/warning with a machine
+> > that had a recoverable error. At scale, this improves the kernel
+> > monitoring by a lot.
 > > 
-> > With those devices added, the device-tree overlay is more complex and
-> > some consumer/supplier relationship are needed in order to remove
-> > devices in correct order when the LAN966x PCI driver is removed.
-> > 
-> > Those links are typically provided by fw_devlink and we faced some
-> > issues with fw_devlink and overlays.
-> > 
-> > This series gives the big picture related to the SFPs support from
-> > fixing issues to adding new devices. Of course, it can be split if
-> > needed.
-> > 
-> > The first part of the series (patch 1, 2 and 3) fixes fw_devlink when it
-> > is used with overlay. Patches 1 and 3 were previously sent by Saravana
-> > [0]. I just rebased them on top of v6.15-rc1 and added patch 2 in order
-> > to take into account feedback received on the series sent by Saravana.
-> > 
-> > Those modification were not sufficient in our case and so, on top of
-> > that, patch 4 and 5 fix some more issues related to fw_devlink.
-> > 
-> > Patches 6 to 12 introduce and use fw_devlink_set_device() in already
-> > existing code.
-> > 
-> > Patches 13 and 14 are related also to fw_devlink but specific to PCI and
-> > the device-tree nodes created during enumeration.
-> > 
-> > Patches 15, 15 and 17 are related fw_devlink too but specific to I2C
-> > muxes. Patches purpose is to correctly set a link between an adapter
-> > supplier and its consumer. Indeed, an i2c mux adapter's parent is not
-> > the i2c mux supplier but the adapter the i2c mux is connected to. Adding
-> > a new link between the adapter supplier involved when i2c muxes are used
-> > avoid a freeze observed during device removal.
-> > 
-> > Patch 18 adds support for fw_delink on x86. fw_devlink is needed to have
-> > the consumer/supplier relationship between devices in order to ensure a
-> > correct device removal order. Adding fw_devlink support for x86 has been
-> > tried in the past but was reverted [1] because it broke some systems.
-> > Instead of enabling fw_devlink on *all* x86 system or on *all* x86
-> > system except on those where it leads to issue, enable it only on system
-> > where it is needed.
-> > 
-> > Patches 19 and 20 allow to build clock and i2c controller used by the
-> > LAN966x PCI device when the LAN966x PCI device is enabled.
-> > 
-> > Patches 21 to 25 are specific to the LAN966x. They touch the current
-> > dtso, split it in dtsi/dtso files, rename the dtso and improve the
-> > driver to allow easier support for other boards.
-> > 
-> > The next patch (patch 26) update the LAN966x device-tree overlay itself
-> > to have the SPF ports and devices they depends on described.
-> > 
-> > The last two patches (patches 27 and 28) sort the existing drivers in
-> > the needed driver list available in the Kconfig help and add new drivers
-> > in this list keep the list up to date with the devices described in the
-> > device-tree overlay.
-> > 
-> > Once again, this series gives the big picture and can be split if
-> > needed. Let me know.  
+> > So, if we go toward using TAINT_FATAL_GHES, can we have two flavors?
+> > TAINT_FATAL_GHES_RECOVERABLE and TAINT_FATAL_GHES_FATAL?
 > 
-> Please suggest how you think this should get merged? There's 8 
-> maintainer trees involved here. Some parts can be merged independently? 
-> We need to spread over 2 cycles? Greg just takes it all?
+> Do you really want to TAINT for recoverable errors? If most errors
+> are successfully recovered, then a TAINT indication that a recovery
+> happened a week ago would be misleading.
 > 
-> Rob
+> Maybe better to save a timestamp for when the most recent recoverable
+> error occurred, then compare that against the current time in panic()
+> path and print warning if the recoverable error was "recent" (for
+> some TBD value of "recent").
 
-I will add this information in the next iteration.
+Thanks for your insight.
 
-I think, the merge strategy could be the following:
- - patches 1 to 14 could be merged by driver core maintainers in cycle N
+I believe it would be simpler to just add support for a TAINT that the
+hardware got an error while this kernel was booted. That is what I would
+like to indicate to the user.
 
- - patches 15 to 17 and 20 could be merged by I2C maintainers in cycle N
-   without any dependency issues against other patches.
+The user shouldn't not correlate that to the crash or panic. As you
+said, the hardware error could have happened weeks ago and completely
+unrelated.
 
- - patch 18 could be merged by OF maintainers in cycle N without any
-   dependency issues
+Tainting the kernel that a hardware error happen must NOT imply that the
+kernel crashed because of the hardware error.
 
- - patch 19 could be merged by clock maintainers in cycle N without any
-   dependency issues.
+Something similar happens with proprietary module taint
+(PROPRIETARY_MODULE). The kernel is tainted when an proprietary module
+is loaded, but, it does not imply that the crash came because of the
+external module being loaded. It is just an extra information that will
+help the investigation later.
 
- - patch 21 to 25 could be merged by misc maintainers in cycle N without any
-   dependency issues.
+In summary, I don't think we should solve the problem of correlation
+here, given it is not straightforward. I just want to tag that the
+hardware got an error while the kernel was running, and the operator can
+use this information the way they want.
 
- - patch 26 to 28, even if there is no compilation dependencies with other
-   patches, they need the other patches applied to have a working system and
-   so they could be merged in cycle N+1.
+Am I on the right track?
 
-Also, as the big picture and the goal of this series has been shown, I can
-extract patches from this series and send them alone depending on maintainers
-preferences.
+Thanks for the discussion,
+--breno
 
-Maintainers, just tell me.
 
-Best regards,
-Hervé
 
