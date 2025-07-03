@@ -1,143 +1,161 @@
-Return-Path: <linux-acpi+bounces-14962-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14963-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D19BAF6A33
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 08:23:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71091AF6A6F
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 08:38:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C8F31C24725
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 06:24:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A87D31C40A72
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 06:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3712928E61E;
-	Thu,  3 Jul 2025 06:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0404291C22;
+	Thu,  3 Jul 2025 06:38:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PwapMf4A"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9014227A904;
-	Thu,  3 Jul 2025 06:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6870D228CB0;
+	Thu,  3 Jul 2025 06:38:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751523833; cv=none; b=HMr1fE/MmgC4K/VVjywVru/zWgQnnC5K15vdLvvDw5ooGUMgUqQnftmIPC9p3usv8SQtO6g3jACREw5Ol6kc1uJCWi0Bwwdxj6+ydu91DUba1yh29On96sOYHWt//zDeUJAI70Kc7mY15PXQek8lAaCAoG03IVP2WTsm5xId7RA=
+	t=1751524684; cv=none; b=WYQqkfMWlGqUVdSnw4pVN0aYjX1GlGKEUOWLEXOYjnQrcdGF96BIre0iTkTvBS2atoPDT4+MKHRPn55g6L4iUE4kjr39XXJn5u+77rVuRr9oUEKNDJ3laGykS+0aTEUT13OZUBSWDg1piVMrtyrZaBFwMTOcZ/jRX7VxquKTDvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751523833; c=relaxed/simple;
-	bh=VfODPCvId0FnSD2H1u26I86YA5WLls8xlhZgh9zcarA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=WpeTApTmoBE/xMRJfBWv1ta+pubXenq7psVZq8O63+t1NSsYczfEC+mzUDKtN/t8ZGodON4Ei88DBZWXWQzXSuOSOEqXOrS6ufLw1t3byiNHwvMvpSEv2mOWHJuPQP4bSF6OpMUT527QUa8fFKOzvUZSdzF6RcQd6XOpXOQu3+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4bXmnR3ZfZzWfvW;
-	Thu,  3 Jul 2025 14:19:23 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 876B018007F;
-	Thu,  3 Jul 2025 14:23:46 +0800 (CST)
-Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 3 Jul 2025 14:23:46 +0800
-Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
- (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 3 Jul
- 2025 14:23:45 +0800
-Message-ID: <6a35291a-32e8-461e-a0e5-405b7b5d24ce@huawei.com>
-Date: Thu, 3 Jul 2025 14:23:44 +0800
+	s=arc-20240116; t=1751524684; c=relaxed/simple;
+	bh=ycFo1nLp5/0QWcqp2qZGxrXVZQq/5D3iTncGtW7GLO8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hhRnV1CSMqGL+4N2Qcljk4uqYmyCDYjyUReeDAwIRn6oS2plNDuGYwL3KH/w6PvaBfEgxFLdeRR4xua4soCcJrDuX28/3o7obAT6EjXtsIJdY4/LsLvfLO0Qitsd1+ZNf/zMo+hC8Ktg/Lq5jwg+l81aSqcYM01ADDXVb6/L9RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PwapMf4A; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 598C041B5F;
+	Thu,  3 Jul 2025 06:37:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1751524679;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4+WaR4VhxZXal3ni8c5FuKUZQzKkcDX9MLohXTPfTgg=;
+	b=PwapMf4AOf1u09JZyAvuq3MEs5Q4wJkpokCf2i9YxktO3oxlAqxu3Kuva4qlUMVWrZe6Ch
+	VsiHnhZuSck3prB2PK5yzQ3fhCQSCMLnythuh+f1I7Xp/uqgW095xyV41I1sLuK+fb2Rt4
+	34LwUAwFXNTWwxNYB2VkvYdynIt2L6NXbtpqKiJNhf9VRJHwM5lSz6I4HCFqw9fpinlL/Q
+	6J9qijxfXxGDsGK9I7GWGydnMqWvaV6jJyPnc6KvT53yUQPq+TtCmIIR/doowMzDlFQfuL
+	lyDTf+GBFBaRwnczT067UcPIVZgQ9a5tk0e34+6QyDx5/zD9/kxezacCrcPHxA==
+Date: Thu, 3 Jul 2025 08:37:55 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Andrew Lunn
+ <andrew@lunn.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn
+ Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, Stephen
+ Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
+ Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
+ Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len
+ Brown <lenb@kernel.org>, Daniel Scally <djrscally@gmail.com>, Heikki
+ Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Davidlohr Bueso
+ <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, Alison Schofield
+ <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
+ Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+ linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 18/28] of: property: Allow fw_devlink device-tree on
+ x86 when PCI device-tree node creation is enabled
+Message-ID: <20250703083755.2fee7e7c@bootlin.com>
+In-Reply-To: <CAL_JsqJCuevzu69bx3yWm3ZR9wZ+UsWuNXscig5KMm2WH4WxOw@mail.gmail.com>
+References: <20250613134817.681832-1-herve.codina@bootlin.com>
+	<20250613134817.681832-19-herve.codina@bootlin.com>
+	<20250627162245.GA3513535-robh@kernel.org>
+	<aF7H4-toeb7Ouz3d@smile.fi.intel.com>
+	<CAL_JsqJCuevzu69bx3yWm3ZR9wZ+UsWuNXscig5KMm2WH4WxOw@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: processor: idle: Fix resource rollback in
- acpi_processor_power_init
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linuxarm@huawei.com>,
-	<jonathan.cameron@huawei.com>, <zhanjie9@hisilicon.com>,
-	<zhenglifeng1@huawei.com>, <yubowen8@huawei.com>, <liuyonglong@huawei.com>
-References: <20250619061327.1674384-1-lihuisong@huawei.com>
- <CAJZ5v0gjkZ3a-BwgJxjUJbNwu5E_j9VUUHrR3M=a+KPTA-tZcA@mail.gmail.com>
-From: "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <CAJZ5v0gjkZ3a-BwgJxjUJbNwu5E_j9VUUHrR3M=a+KPTA-tZcA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemn100009.china.huawei.com (7.202.194.112)
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduleehkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthekredtredtjeenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedvhfeljedtfedtjeevffegtddutdeghfettdduhfeuhfdttdffieeuiefgvdfhvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvrgdtudemvgdtrgemvdekheemsgelkedtmegvgedttgemiegtgeefmegshegssgemrgegvdeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmedvkeehmegsleektdemvgegtdgtmeeitgegfeemsgehsggsmegrgedvkedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegkedprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrihihrdhshhgvvhgthhgvnhhkoheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgth
+ hdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggv
+X-GND-Sasl: herve.codina@bootlin.com
 
-Hi,
+Hi Rob, Andy,
 
-Thanks for your review.
+On Fri, 27 Jun 2025 12:49:36 -0500
+Rob Herring <robh@kernel.org> wrote:
 
+> On Fri, Jun 27, 2025 at 11:33 AM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > On Fri, Jun 27, 2025 at 11:22:45AM -0500, Rob Herring wrote:  
+> > > On Fri, Jun 13, 2025 at 03:47:58PM +0200, Herve Codina wrote:  
+> >
+> > ...
+> >  
+> > > > -   if (IS_ENABLED(CONFIG_X86))
+> > > > +   if (IS_ENABLED(CONFIG_X86) && !IS_ENABLED(CONFIG_PCI_DYNAMIC_OF_NODES))  
+> > >
+> > > I really want CONFIG_PCI_DYNAMIC_OF_NODES to go away at some point, not
+> > > add more users.
+> > >
+> > > I think this should instead check for specific platforms not with
+> > > kconfig symbols but DT properties. For ce4100, you can just check the
+> > > root compatible string. For OLPC, there isn't a root compatible (in the
+> > > DT I have). You could check for /architecture == OLPC instead. There's
+> > > some virtualization guests using DT now too. I would think their DT's
+> > > are simple enough to avoid any fw_devlink issues.  
+> >
+> > I don't think this is good approach. The above check is more reliable in my
+> > opinion.  
+> 
+> I'm fine with any solution that doesn't add a
+> CONFIG_PCI_DYNAMIC_OF_NODES which we can't remove. Adding it was a
+> kick the can down the road to merge the support worry the mixed
+> usecase (on ACPI systems) later. It's now later.
+> 
+> > > Alternatively, we could perhaps make x86 fw_devlink default off  
+> >
+> > For my (little) knowledge I believe this is not feasible anymore.
+> > Some x86 code (drivers) relies on fw_devlink nowadays. But take
+> > this with grain of salt, I may be way mistaken.  
+> 
+> Doesn't the CONFIG_X86 check disable it?
+> 
+> Rob
 
-在 2025/7/3 1:42, Rafael J. Wysocki 写道:
-> On Thu, Jun 19, 2025 at 8:13 AM Huisong Li <lihuisong@huawei.com> wrote:
->> There are two resource rollback issues in acpi_processor_power_init:
->> 1> Do not unregister acpi_idle_driver when do kzalloc failed.
->> 2> Do not free cpuidle device memory when register cpuidle device failed.
->>
->> Signed-off-by: Huisong Li <lihuisong@huawei.com>
->> ---
->>   drivers/acpi/processor_idle.c | 24 +++++++++++++++++-------
->>   1 file changed, 17 insertions(+), 7 deletions(-)
->>
->> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
->> index 2c2dc559e0f8..3548ab9dac9e 100644
->> --- a/drivers/acpi/processor_idle.c
->> +++ b/drivers/acpi/processor_idle.c
->> @@ -1392,8 +1392,10 @@ int acpi_processor_power_init(struct acpi_processor *pr)
->>                  }
->>
->>                  dev = kzalloc(sizeof(*dev), GFP_KERNEL);
->> -               if (!dev)
->> -                       return -ENOMEM;
->> +               if (!dev) {
->> +                       retval = -ENOMEM;
->> +                       goto unregister_driver;
-> No, unregistering the driver here is pointless.
-I don't quite understand why here is pointless. Can you explain it?
->
->> +               }
->>                  per_cpu(acpi_cpuidle_device, pr->id) = dev;
->>
->>                  acpi_processor_setup_cpuidle_dev(pr, dev);
->> @@ -1402,14 +1404,22 @@ int acpi_processor_power_init(struct acpi_processor *pr)
->>                   * must already be registered before registering device
->>                   */
->>                  retval = cpuidle_register_device(dev);
->> -               if (retval) {
->> -                       if (acpi_processor_registered == 0)
->> -                               cpuidle_unregister_driver(&acpi_idle_driver);
-> Pretty much the same as here.
->
-> It would be good to clean up dev here though.
-It is ok if above is pointless.
->
->> -                       return retval;
->> -               }
->> +               if (retval)
->> +                       goto free_cpuidle_device;
->> +
->>                  acpi_processor_registered++;
->>          }
->>          return 0;
->> +
->> +free_cpuidle_device:
->> +       per_cpu(acpi_cpuidle_device, pr->id) = NULL;
->> +       kfree(dev);
->> +
->> +unregister_driver:
->> +       if (acpi_processor_registered == 0)
->> +               cpuidle_unregister_driver(&acpi_idle_driver);
->> +
->> +       return retval;
->>   }
->>
->>   int acpi_processor_power_exit(struct acpi_processor *pr)
->> --
->> 2.33.0
->>
+Filtering out by Kconfig seems a no-go:
+  - Check for CONFIG_OLPC of CONFIG_X86_INTEL_CE as proposed in v1
+    (https://lore.kernel.org/lkml/20250407145546.270683-12-herve.codina@bootlin.com/)
+    was a no-go from Andy
+
+  - Check for CONFIG_PCI_DYNAMIC_OF_NODES as proposed here is a no-go from
+    Rob
+
+I will follow Rob's suggestion based on DT properties. With a DT property
+list, it would be easier to add more x86 fw_delink broken system in the list
+of the system to exclude.
+
+Best regards,
+Hervé
 
