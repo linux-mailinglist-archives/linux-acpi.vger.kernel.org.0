@@ -1,145 +1,93 @@
-Return-Path: <linux-acpi+bounces-14970-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14971-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44CCFAF7103
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 12:54:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B86AF7135
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 12:59:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8388D7ACB12
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 10:53:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92F493BF600
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 10:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200652E3390;
-	Thu,  3 Jul 2025 10:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39242E426A;
+	Thu,  3 Jul 2025 10:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="XsywZlyF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UUMtqbQ3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1D32E2EED
-	for <linux-acpi@vger.kernel.org>; Thu,  3 Jul 2025 10:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF282E3B14;
+	Thu,  3 Jul 2025 10:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751540075; cv=none; b=aCChuPtQ2iCrx/elf6OSBCEVHw+QNRmNyqlfEi2YVI3x+tyWjEypu87f99AtBKeOkATi26AUtIHNoDUwfZ8tRFnI4vOW3WXVCgJZadI4KAHlQDyPw/WA/hPZCeyMc7D5t2p4L+9F1ImlLwlwqoJ/0cDcRP5N8GupvEtXV+DTiGg=
+	t=1751540314; cv=none; b=NiQyZBO6gbBl54b4GvWvrb8T9VeS5Ao9whsvZXW5BH6RcQBFy/MyBid/f5KD0TOGYKDOBq8F/GXIK4wFFA+XMJvyMN3AiZ1KRiw9qqr9gDVklFJ4WHFL0nls2CtGRv0pEoPKDx55O1hePID7Q8nGDgk2mSjz/39zbJbqJ8nSFoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751540075; c=relaxed/simple;
-	bh=9Um7uqVayv1y9jJFqULzHKt3MEGzxLbLkz23BHaitvg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TUKYKRtPsobjku/k2YNaRuO54oZ6NFrto0oufzqq7y+Ey+l04TMu6E8OeitVaPQNdTuJkm+meyyo1S83z14LT4hQxkD/z5HYfU8QfByguLCRgRLo6al1eVdeXRYoeK8XGVq6NbM5xOnNAb6DxbVpF2fxNhdg2s5Xm/VcqDmRpJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=XsywZlyF; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-22c33677183so68760725ad.2
-        for <linux-acpi@vger.kernel.org>; Thu, 03 Jul 2025 03:54:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1751540073; x=1752144873; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2s+0RaBS3vJpNgepBHSmk/I/U4Dvicv46WDE7RU8TKg=;
-        b=XsywZlyFZKDwUjRTunWPaMQwmKfQIjlzjqhqMs2eLfuv79cc9CIu/BAOs4yJmruXaD
-         5ztuQUrvRkFL7ZAawFO90LoW+h8TavRg5CzQG1pfOqo0IusW2IMivbJRH5Zvu+smQLg6
-         KxUq+pTXMQFXXGU72hipZUFB9eMR3yoAbYSKoR//9rKWG/0NB94qmMSmfhYFbiyb/xKG
-         xd1T1h0RgelmR+PAR4b2WKuU2efv3cQAXqMavOKaqhO6AVfHYi+0R/vIidaj3BoUGhxO
-         xhu628Bny1QzZ481DpjTr5kUXw5axzJinK3MRsJ1w0fwG/hMJjFN6p3eNZ1yn78SEmwz
-         aN3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751540073; x=1752144873;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2s+0RaBS3vJpNgepBHSmk/I/U4Dvicv46WDE7RU8TKg=;
-        b=T9hjn3fB5SWSq0NIzIbzdAnPB4prEIPqm8ISjZqeidjU+IBLWoZD2yXxfHvaa+LYXa
-         BVGPsy5L8fGLrm5vuq0HamQMmTvlIm6pH97eE37TcXcCpFSpsIucbn+Yi5nMki8MkPpb
-         HxoU8iEy2KOPk3OTjIQaOQYtRkm0p/VZrBoZFlk++umn2OFhOQWc6BfcYvIaD7Q1W4vb
-         GwWdavJ/oZrDbBYGr4d7wCMnu0J2EQxsajudotPQ42oegwXyaZ1yS6e897cGkvbWROSe
-         e80ZKZ+2adzcgFMJLE5oPGXB2GnDbV8s87kOwBClHDdWd3pljzhEKMFSzYLbr0+X6GiZ
-         Md3g==
-X-Forwarded-Encrypted: i=1; AJvYcCWZzO8Txt3JCKfVqMTVtvHukhCYcAfntw47y/UXaVzQDAQN3krxYmIDboglUgo4htTKldkv0nOR2adi@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZOHwPWGyP5b1dkkPh5TwjIWBMCYpPv8m8iU2/DBuZmhKe8ace
-	8YlcvkDiupCutienPMPqmKekXpQkiSs42H5B+8ZYrGvLOE2A5/mxc5JNJ6XlkTfzsa4=
-X-Gm-Gg: ASbGncuDoCe3qMrNli9nPARTRiXUaAyjH5wwXleHaPvbXZJ1JKobNs0yR2xdKVGYB/2
-	Yd28h29CgRN47ONoWOvcBj4buYziIK1n94H1B4DNO7CU2ZHBLGL1rAWS5SgPEUTEIlQXyZz/wu7
-	W6LSaVJMxMBM2V1QaxNQAT51iWng0qv1KL0vkg1icbSL6ya3LyiuhCP506lh/Of/h33agRoJhFb
-	zM8T4vdWVwFSET1sq73MZL8trk4akX+YGYK2uBL/xS2qH4VBRQKBm5uc/zIYhzCOAJ04F2lUFls
-	bPJAg1qqqEm4i7lDml2qjtlOVaruz8A3n0iJTMUysb73/7m1bEx5i8I1wHeW1q1yxX5BGw==
-X-Google-Smtp-Source: AGHT+IFq25HTQ9QEIhNCp27zmZLx97EGsAxug71BXz+j7RxWXx0ck3JUwKi8dLTS3DtAE17Jq1LekQ==
-X-Received: by 2002:a17:903:2307:b0:234:8a4a:adad with SMTP id d9443c01a7336-23c797fd795mr34397665ad.26.1751540072871;
-        Thu, 03 Jul 2025 03:54:32 -0700 (PDT)
-Received: from sunil-laptop ([103.97.166.196])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23acb3b9344sm158881255ad.192.2025.07.03.03.54.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Jul 2025 03:54:32 -0700 (PDT)
-Date: Thu, 3 Jul 2025 16:24:18 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Anup Patel <apatel@ventanamicro.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Alexandre Ghiti <alex@ghiti.fr>, Len Brown <lenb@kernel.org>,
-	Rahul Pathak <rpathak@ventanamicro.com>,
-	Leyfoon Tan <leyfoon.tan@starfivetech.com>,
-	Atish Patra <atish.patra@linux.dev>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Anup Patel <anup@brainfault.org>, linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 21/24] mailbox/riscv-sbi-mpxy: Add ACPI support
-Message-ID: <aGZhWlxxQG0Z8awP@sunil-laptop>
-References: <20250702051345.1460497-1-apatel@ventanamicro.com>
- <20250702051345.1460497-22-apatel@ventanamicro.com>
- <aGUl_S9irfhlHmy2@smile.fi.intel.com>
+	s=arc-20240116; t=1751540314; c=relaxed/simple;
+	bh=QT+UMTSngX/Y5p2qhC+hFL6HSZRCai4FY0HH6/GPYOk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ofLTkQJ414y0tVUoFEoBcetdQo/f9z2KXWTVGhNqgTlFRov/cbpwGjurywylHwOpc060DT6owk3zz08MvrH44GPLwdp7ruN/RlaC9eR0T5mqvYtnu2Z9YC6AYI3CtRSpgXaeSVQHPdwdr4vnyidCAZsivxfr5vt/O3JRvk/C2Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UUMtqbQ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD2EC4CEED;
+	Thu,  3 Jul 2025 10:58:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751540314;
+	bh=QT+UMTSngX/Y5p2qhC+hFL6HSZRCai4FY0HH6/GPYOk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=UUMtqbQ3Q2tLXlhwGDUdoan9xc3WM2AN2sZk09QhjdZ6ePqDJIHhw2cq7nV7JmXrZ
+	 cCFONrm9GtlYnZuMKwbylvB2YJ8e2rZnpJq6KrXJSOcdjrAshC08fsxWtq941XBUUZ
+	 llTQ17F5I/J6tD6LlzE7kHKyWm3+bRujictY3LQApyRwCuF8jA3LA9hWnQFWMJSIFF
+	 GckamwHVs3tKhXs5f0UGJ8KbM47CjtCJFPoCdXX4XUsTgx/wbsjPXq1Z5uIOO0+7eV
+	 CbdbpUVR4FVaPypIv53FNeuvVlR68qir/bXbLDvC+pqsQR6Z4gKHiI9DtVbm1CLobY
+	 TBwdynt5Uu7RQ==
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-6119cd1a154so2556361eaf.0;
+        Thu, 03 Jul 2025 03:58:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVCFv0MZ3KB5m6viFDY3e0YXRTRFILG3O4Jw8T7Mq3TWx7OzkX639WwkyRGdp9AEXGvgPw1lOFd@vger.kernel.org, AJvYcCVOF60RdJJ8GcGXWcvVrQb1ToeCSDS8vIvt0uSeLH4R8GZRn6+FePzTsfc1BTg4PMstajCE2BJPvJLP@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxo/IKfY2xBB533F6DqlQLkz++Y7/9tzndW+XKIrMh0UgWS5eSF
+	w9FTbuGpBNja3wKQP23VnOSqwlMgte49vbLOMV1CSnHK6MTTPE2lgrr7SfUzQ5v37+pXqNii18f
+	Cr5usxQ9qaKU1YtUn5ZYWoQ+BdD5ejc0=
+X-Google-Smtp-Source: AGHT+IEkZIY74KxHtqE7rgWM1y5n2usPPPIJL/bq5hv2EkY0c5oJanY/D7gdAy71hBobfx5xsxXMvwili84lBtFf7Rw=
+X-Received: by 2002:a05:6820:2083:b0:612:be:496 with SMTP id
+ 006d021491bc7-61200f9ca09mr3829652eaf.2.1751540313630; Thu, 03 Jul 2025
+ 03:58:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aGUl_S9irfhlHmy2@smile.fi.intel.com>
+References: <87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev>
+In-Reply-To: <87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 3 Jul 2025 12:58:21 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hvPs2hSP+68+dAgtG-iJR8TBptt4ObTbB5iCf2=EXe=A@mail.gmail.com>
+X-Gm-Features: Ac12FXwk9R5RiEcUHk0ScgMN2y-X4qKTkjOo1EH-N_g8hmSYHRt3xtbFm79bzTc
+Message-ID: <CAJZ5v0hvPs2hSP+68+dAgtG-iJR8TBptt4ObTbB5iCf2=EXe=A@mail.gmail.com>
+Subject: Re: [REGRESSION] - Multiple userspace implementations of battery
+ estimate broken after "ACPI: battery: negate current when discharging"
+To: Matthew Schwartz <matthew.schwartz@linux.dev>
+Cc: pmarheine@chromium.org, regressions@lists.linux.dev, 
+	stable@vger.kernel.org, rafael.j.wysocki@intel.com, 
+	linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 02, 2025 at 03:28:45PM +0300, Andy Shevchenko wrote:
-> On Wed, Jul 02, 2025 at 10:43:42AM +0530, Anup Patel wrote:
-> > From: Sunil V L <sunilvl@ventanamicro.com>
-> > 
-> > Add ACPI support for the RISC-V SBI message proxy (MPXY) based
-> > mailbox driver.
-> 
-> ...
-> 
-> > -		if (dev_of_node(dev))
-> > +		if (is_of_node(fwnode)) {
-> >  			of_msi_configure(dev, dev_of_node(dev));
-> > +		} else if (is_acpi_device_node(fwnode)) {
-> > +			msi_domain = irq_find_matching_fwnode(imsic_acpi_get_fwnode(dev),
-> > +							      DOMAIN_BUS_PLATFORM_MSI);
-> > +			dev_set_msi_domain(dev, msi_domain);
-> > +		}
-> 
-> Actually you don't need to have the if-else-if if I am not mistaken.
-> The OF does almost the same as it's done in the second branch for ACPI case.
-> How many MSI parents this may have?
-> 
-OF already has a well defined interface to configure the MSI domain. The
-mechanisms existing today are different for DT vs ACPI to find out the
-fwnode of the MSI controller. So, it is done differently.
+Hi,
 
-In RISC-V case at least, there will be only one MSI parent.
+On Thu, Jul 3, 2025 at 3:55=E2=80=AFAM Matthew Schwartz
+<matthew.schwartz@linux.dev> wrote:
+>
+> Hello,
+>
+> I installed kernel 6.15.4 to find that my battery estimate on my handheld=
+ gaming device was completely inaccurate, instead giving negative values an=
+d an unknown estimated battery life in multiple places.
+>
+> After bisecting, I landed on "ACPI: battery: negate current when discharg=
+ing=E2=80=9D as the bad commit. This commit breaks not one but several user=
+space implementations of battery monitoring: Steam and MangoHud. Perhaps it=
+ breaks more, but those are the two I have noticed so far.
 
-Thanks,
-Sunil
+Thanks for letting me know, I'm queuing up a revert of this one.
 
