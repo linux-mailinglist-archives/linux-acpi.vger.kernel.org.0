@@ -1,127 +1,109 @@
-Return-Path: <linux-acpi+bounces-14975-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14976-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6CBAF7579
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 15:25:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E41AF7595
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 15:28:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D9CB5633DC
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 13:25:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E13C31BC3A0E
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 13:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96242D979D;
-	Thu,  3 Jul 2025 13:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E505146D6A;
+	Thu,  3 Jul 2025 13:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aREBEIjS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ojpeSv2E"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFCA18A6A7;
-	Thu,  3 Jul 2025 13:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571F71DDD1;
+	Thu,  3 Jul 2025 13:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751549088; cv=none; b=qYYx57DNiqpcSxc2KPCw1MqVrBc/1HFZo2eg4+qdrYj5ZN8sI/jgp2lWlnZDNqJnZnOXignx0V6q1j4YqWzPZ5l/akx7a3fEzT0TvVGETuhv9nphoWbWIkzLoAeOjXCBqyzvEPDmiI4YWLAfB3W46LvL0bKUFRsXiEYm0yCTZEU=
+	t=1751549315; cv=none; b=sfwPjkjTTjIvxpt4o6U+OWV7ZHWayvri4vZRmXOUvq1FAiZtM4VS0kGT2siVeJ4p0oEv4+/IMwQgXM8O7ewRvPIN8a2kYAQDlD9AslMvGl+CnfhEyDDkoLJoiq9amVuFLvYMinYtXMpdktErxJXTADbO4osSFD8p2RzktO2qjHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751549088; c=relaxed/simple;
-	bh=MMa+jF3el3GtnrW4iX2kpoHYC/QRRb5dOZUixMIAOmE=;
+	s=arc-20240116; t=1751549315; c=relaxed/simple;
+	bh=uO7svmE3p5aJ0qQFNv+IETH0e9rvsqr3oPE7wewnXME=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cDjfIJb4nULyK0Jp0HDe5E9Q3SRK34L4KA07mReSh7uRctIRB29Vny12yvgy7J31VXIvksOX1bMDtwNbk/pAp2jnh3/an+5UVhBN6DNBUZuHVJ2yuJeXpBqyhzWu8Ga7Rz5ouQz6VWjHO2yr7WZMAyBgHI7Q5t0J1TlmE3xuER4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aREBEIjS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37579C4CEF0;
-	Thu,  3 Jul 2025 13:24:48 +0000 (UTC)
+	 To:Cc:Content-Type; b=mZ8OBE9ZPgT+13tsoFfYHjIWrBlDUVLkMtrYgvwhiiq7Iv13t0ILHVm5chVS79vj/EFz3IrBHnpkF9ssrpD+4WXb39zwaEsBeVwcLdJxGA0I3pHD6q7ru44TZz+rW/itzAG+dkxfy8kHR38rkUtKd21chR+DLrSNAWBXWIuEjzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ojpeSv2E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC72CC4CEF2;
+	Thu,  3 Jul 2025 13:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751549088;
-	bh=MMa+jF3el3GtnrW4iX2kpoHYC/QRRb5dOZUixMIAOmE=;
+	s=k20201202; t=1751549314;
+	bh=uO7svmE3p5aJ0qQFNv+IETH0e9rvsqr3oPE7wewnXME=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=aREBEIjS2yi/Rzluj2Mno2b7cD5JzsPoT0Xld54xcVtyW8rnyg/86mlhCeJwzrWSb
-	 igPKiCJeQhs4DsvQQ6ri4khjDdi6ks6oOhMEG5BvfJ4On+eHyFLRevMGT0pLz9YqAZ
-	 MbbIrFMIwpigGulvjmPu3caItsCIHHMcAwQUSYSb5Fqby8avyZOiYwC7Eyu5juw47x
-	 yhaATv8RNuWNXuoOvgNHPFN9XQh11DpHirNuIvnPPDcf6y4pRWoDAjR6FBc7QanbaT
-	 hH03gR4ciGTVE2wUIwn5lrhAL0IkyPC22+hP6ZshxzPfMS1LR/qcaYEykFNycmQBf1
-	 GB42idTxDwJgQ==
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-60efc773b5fso4223273eaf.3;
-        Thu, 03 Jul 2025 06:24:48 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUfA5kDH9g5KM+7y5LtUWC3BBM9ITzBkjmdbphP+/1srrkxm4Jn8eqYOupphGa6T33U1jZLrc146qUEYiOi@vger.kernel.org, AJvYcCWTV0xDxwXy9veWV8RYE756xjJMlWYqF2zrZYWDYOCNrH0JzHKA6gJMHKppLRTnkTCwG6RbvXjo0gyk@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3nPkaqrrxFndbv//nkzKuM/veKKscTjmZtQ6c+Mv4POmBoS2V
-	3J8HGadFcLckcNfCmMcKv5QMXMRPZJ7xNC4KXb46fBxvXZ41o2ZgnCFGEVvU7OSxvrhtiiCjBDn
-	7UrDG6x+DRrRCmSOkgsaoQR46ttxSVKU=
-X-Google-Smtp-Source: AGHT+IGKOaYeS3uSQsqk3L/SgSbNDEzwcQYW/lvR9TwbMrEnG3OB9OGH2Dob8RRBvv9eIGtKPjYf00+J4SGWZYmFLJM=
-X-Received: by 2002:a05:6820:c83:b0:60b:ad9e:2bbf with SMTP id
- 006d021491bc7-61380a704f9mr1819072eaf.8.1751549087423; Thu, 03 Jul 2025
- 06:24:47 -0700 (PDT)
+	b=ojpeSv2EXiOCfKfSWMtzVtTyj5d89almMts8kTl59AkkUwOAGOZFXJ/X+DOt+inPU
+	 eI9jpzBec4BMZip5+QWKw/fNpJW0VQTmQj7neHXGoPdVe5+Ga4UJEHr5xENGh6l6PG
+	 wij7IDGekOg0HN8MqmW2DyfKWAhzm7ytfc6rJpnlMK7wgzvceAewNHRfKB7uNDK7gC
+	 bXDzoz14e/7o5utzyBYR1aONg0E5y3qpZNTiWcmBqiAmUNoDPB0qfLvb/QhbA8pEDo
+	 bIBvgR/ZFFUJR+usjecXEpDJ1buIk4jpkSEw4geLA482Jnm07m3uFujRTi/merFzQL
+	 OdV5AiFLOH5mA==
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-40a4bf1ebb7so3108731b6e.0;
+        Thu, 03 Jul 2025 06:28:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUlaWPyc6Haz4jGO7HkQdm8GtQ1TJN7p2fIs1Q049z77ZsyDI59ZLBEkrWcF3uQBgfV32SmWw6kKv445Gxd@vger.kernel.org, AJvYcCVJepq3fJQhDO/6jU6tP5AIg/tt2ViYyubLsHU2E3BUd9qezp0ZC4tce9WY1NWznBvPq1ZjwZQTJmkW@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyo6pHAnpZiNWrisM1ojZyrlIRRFg4/orDaIprENwJPNpmMKNJc
+	y5EtIG4D+LcB/ff+ihynOPa7ZLSO9AnJ9bNEVsG3AhCDkPKbWjRYccGJ7iNMFRdVAeXYcD7j09A
+	/Qkeq0+4k3LHJ93EkcYaMAYau2SaETZg=
+X-Google-Smtp-Source: AGHT+IEGCCiKDJLJCENo6kUx0hJBVCZ+uyR95fRlqylKafkB0DIx4T37LrRehxoiB6BAszat+PQ+3QAULARoETwGtaQ=
+X-Received: by 2002:a05:6808:8295:b0:40c:5b58:c9f9 with SMTP id
+ 5614622812f47-40c5b58cbd0mr2167344b6e.22.1751549314163; Thu, 03 Jul 2025
+ 06:28:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250702-add_tain-v1-1-9187b10914b9@debian.org> <aGVe4nv18dRHHV16@agluck-desk3>
-In-Reply-To: <aGVe4nv18dRHHV16@agluck-desk3>
+References: <20250703124215.12522-1-sebott@redhat.com>
+In-Reply-To: <20250703124215.12522-1-sebott@redhat.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 3 Jul 2025 15:24:35 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jx=OG5tTi5u8-sfM5SqwsV=kx_OYMSc3RVitAu+v9oHg@mail.gmail.com>
-X-Gm-Features: Ac12FXwZ52lQN_EfOqCn5vgNdSbeFhPO60u_A8pDMR7_gZJCPhSGndway-Yj5_U
-Message-ID: <CAJZ5v0jx=OG5tTi5u8-sfM5SqwsV=kx_OYMSc3RVitAu+v9oHg@mail.gmail.com>
-Subject: Re: [PATCH] acpi/ghes: add TAINT_MACHINE_CHECK on GHES panic path
-To: "Luck, Tony" <tony.luck@intel.com>, Breno Leitao <leitao@debian.org>
-Cc: Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, Borislav Petkov <bp@alien8.de>, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
+Date: Thu, 3 Jul 2025 15:28:23 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0huBwxiop1ZJ7reXyir42vjgm7xehn+xnhfe7RDwu9EGQ@mail.gmail.com>
+X-Gm-Features: Ac12FXzcYgXGY6ZNRymAann1Y9vXuuLgUvTVdkLDdAJaW4gBU1eKxfhu8qmNQJY
+Message-ID: <CAJZ5v0huBwxiop1ZJ7reXyir42vjgm7xehn+xnhfe7RDwu9EGQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: processor: fix acpi_object initialization
+To: Sebastian Ott <sebott@redhat.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 2, 2025 at 6:31=E2=80=AFPM Luck, Tony <tony.luck@intel.com> wro=
-te:
+On Thu, Jul 3, 2025 at 2:42=E2=80=AFPM Sebastian Ott <sebott@redhat.com> wr=
+ote:
 >
-> On Wed, Jul 02, 2025 at 08:39:51AM -0700, Breno Leitao wrote:
-> > When a GHES (Generic Hardware Error Source) triggers a panic, add the
-> > TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
+> Initialization of the local acpi_object in acpi_processor_get_info()
+> only sets the first 4 bytes to zero and is thus incomplete. This is
+> indicated by messages like:
+>         acpi ACPI0007:be: Invalid PBLK length [166288104]
 >
-> While it might not strictly be a machine check that caused GHES to
-> panic, it seems close enough from the available TAINT options.
+> Fix this by initializing all 16 bytes of the processor member of that
+> union.
 >
-> So unless someone feels it would be better to create a new TAINT
-> flag (TAINT_FATAL_GHES? TAINT_FIRMWARE_REPORTED_FATAL_ERRROR?)
-> then this seems OK to me.
+> Signed-off-by: Sebastian Ott <sebott@redhat.com>
+> ---
+>  drivers/acpi/acpi_processor.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> Reviewed-by: Tony Luck <tony.luck@intel.com>
+> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.=
+c
+> index 7cf6101cb4c7..2a99f5eb6962 100644
+> --- a/drivers/acpi/acpi_processor.c
+> +++ b/drivers/acpi/acpi_processor.c
+> @@ -275,7 +275,7 @@ static inline int acpi_processor_hotadd_init(struct a=
+cpi_processor *pr,
+>
+>  static int acpi_processor_get_info(struct acpi_device *device)
+>  {
+> -       union acpi_object object =3D { 0 };
+> +       union acpi_object object =3D { .processor =3D { 0 } };
+>         struct acpi_buffer buffer =3D { sizeof(union acpi_object), &objec=
+t };
+>         struct acpi_processor *pr =3D acpi_driver_data(device);
+>         int device_declaration =3D 0;
+> --
 
 Applied as 6.17 material, thanks!
-
-> > kernel as tainted due to a machine check event, improving diagnostics
-> > and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
-> > indicate lockdep remains valid.
-> >
-> > At large scale deployment, this helps to quickly determin panics that
-> > are coming due to hardware failures.
-> >
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
-> > ---
-> >  drivers/acpi/apei/ghes.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> > index f0584ccad4519..3d44f926afe8e 100644
-> > --- a/drivers/acpi/apei/ghes.c
-> > +++ b/drivers/acpi/apei/ghes.c
-> > @@ -1088,6 +1088,8 @@ static void __ghes_panic(struct ghes *ghes,
-> >
-> >       __ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
-> >
-> > +     add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
-> > +
-> >       ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
-> >
-> >       if (!panic_timeout)
-> >
-> > ---
-> > base-commit: e96ee511c906c59b7c4e6efd9d9b33917730e000
-> > change-id: 20250702-add_tain-902925f3eb96
-> >
-> > Best regards,
-> > --
-> > Breno Leitao <leitao@debian.org>
-> >
 
