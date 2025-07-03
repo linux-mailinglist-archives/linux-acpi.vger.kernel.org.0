@@ -1,109 +1,145 @@
-Return-Path: <linux-acpi+bounces-14976-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-14977-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0E41AF7595
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 15:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 171F0AF7639
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 15:54:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E13C31BC3A0E
-	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 13:28:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45C571C84DDA
+	for <lists+linux-acpi@lfdr.de>; Thu,  3 Jul 2025 13:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E505146D6A;
-	Thu,  3 Jul 2025 13:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62FC2E7F13;
+	Thu,  3 Jul 2025 13:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ojpeSv2E"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Iuo4jH+Y"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571F71DDD1;
-	Thu,  3 Jul 2025 13:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FEB2E7BD9;
+	Thu,  3 Jul 2025 13:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751549315; cv=none; b=sfwPjkjTTjIvxpt4o6U+OWV7ZHWayvri4vZRmXOUvq1FAiZtM4VS0kGT2siVeJ4p0oEv4+/IMwQgXM8O7ewRvPIN8a2kYAQDlD9AslMvGl+CnfhEyDDkoLJoiq9amVuFLvYMinYtXMpdktErxJXTADbO4osSFD8p2RzktO2qjHg=
+	t=1751550869; cv=none; b=OKUMMuhBtyouErkGNfKlrPWCg4KteOzPxtPoYasV4wYyFFnjAA6KdJF3IUnmEV1ArS3dsWi0LAQaY/CAO0iUlBvd4JD2L8lqv4ql6J+S9m0tLWwP1MmT3wg+poq4bNqmJWZ+o5RzRlihpbygMmzqrq1r8H9d6lsPY+zP9CCUoAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751549315; c=relaxed/simple;
-	bh=uO7svmE3p5aJ0qQFNv+IETH0e9rvsqr3oPE7wewnXME=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mZ8OBE9ZPgT+13tsoFfYHjIWrBlDUVLkMtrYgvwhiiq7Iv13t0ILHVm5chVS79vj/EFz3IrBHnpkF9ssrpD+4WXb39zwaEsBeVwcLdJxGA0I3pHD6q7ru44TZz+rW/itzAG+dkxfy8kHR38rkUtKd21chR+DLrSNAWBXWIuEjzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ojpeSv2E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC72CC4CEF2;
-	Thu,  3 Jul 2025 13:28:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751549314;
-	bh=uO7svmE3p5aJ0qQFNv+IETH0e9rvsqr3oPE7wewnXME=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ojpeSv2EXiOCfKfSWMtzVtTyj5d89almMts8kTl59AkkUwOAGOZFXJ/X+DOt+inPU
-	 eI9jpzBec4BMZip5+QWKw/fNpJW0VQTmQj7neHXGoPdVe5+Ga4UJEHr5xENGh6l6PG
-	 wij7IDGekOg0HN8MqmW2DyfKWAhzm7ytfc6rJpnlMK7wgzvceAewNHRfKB7uNDK7gC
-	 bXDzoz14e/7o5utzyBYR1aONg0E5y3qpZNTiWcmBqiAmUNoDPB0qfLvb/QhbA8pEDo
-	 bIBvgR/ZFFUJR+usjecXEpDJ1buIk4jpkSEw4geLA482Jnm07m3uFujRTi/merFzQL
-	 OdV5AiFLOH5mA==
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-40a4bf1ebb7so3108731b6e.0;
-        Thu, 03 Jul 2025 06:28:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUlaWPyc6Haz4jGO7HkQdm8GtQ1TJN7p2fIs1Q049z77ZsyDI59ZLBEkrWcF3uQBgfV32SmWw6kKv445Gxd@vger.kernel.org, AJvYcCVJepq3fJQhDO/6jU6tP5AIg/tt2ViYyubLsHU2E3BUd9qezp0ZC4tce9WY1NWznBvPq1ZjwZQTJmkW@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyo6pHAnpZiNWrisM1ojZyrlIRRFg4/orDaIprENwJPNpmMKNJc
-	y5EtIG4D+LcB/ff+ihynOPa7ZLSO9AnJ9bNEVsG3AhCDkPKbWjRYccGJ7iNMFRdVAeXYcD7j09A
-	/Qkeq0+4k3LHJ93EkcYaMAYau2SaETZg=
-X-Google-Smtp-Source: AGHT+IEGCCiKDJLJCENo6kUx0hJBVCZ+uyR95fRlqylKafkB0DIx4T37LrRehxoiB6BAszat+PQ+3QAULARoETwGtaQ=
-X-Received: by 2002:a05:6808:8295:b0:40c:5b58:c9f9 with SMTP id
- 5614622812f47-40c5b58cbd0mr2167344b6e.22.1751549314163; Thu, 03 Jul 2025
- 06:28:34 -0700 (PDT)
+	s=arc-20240116; t=1751550869; c=relaxed/simple;
+	bh=hkynFXqBgMDhBIacDm9GkRDPLniP47vYUeHzZhSjqPE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eddCL/2WAqbhIxeoZTgXOOl8fIXVfLrTyiudTVnbBsQD5HtjZ42vGxRcZ13DLMz02BPaLrbh4vVX1LoPWFfrgEh3KqK2SpsJdGCKUf0UgFSRKkxmhTGtAVH/WXorWJTK09jGVvWoQtVi6aMc+S/Z6WVIJk5GaEIAqbKJaqJbFrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Iuo4jH+Y; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751550868; x=1783086868;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hkynFXqBgMDhBIacDm9GkRDPLniP47vYUeHzZhSjqPE=;
+  b=Iuo4jH+YLzq6DVWUeAq2jZK5USPTOhYisKgOROVHg/s55NC2xcZdIgf0
+   PzjpnFL2MftsrgmnEDMTFfbtf3muJR/QAxJ02GQrOaKkMuTRJsQQhovfV
+   v35Mv2WwQ6nAERKeS+eRBoBvmOegCfkEZF5gkJ9INxf2mNArOtNgYn7Cm
+   yTBH7KMdEVwPnDYSu4pVeupIQ49IRuUpSB8h9l64Nc9ClYc3zPLWrChwh
+   Y3DQbyt6jLzAgHCXfz6SQOaaJoqJyqCPZrG+n90AnPye/txXQsSBlzw1Y
+   KUglGPg+/BhwkjfKc7xbopkhawHf0uEC7nd0lq1aJPpIxy6mWCVowht+j
+   w==;
+X-CSE-ConnectionGUID: AAjKmMZ4TRutFgd4UTxzpQ==
+X-CSE-MsgGUID: B3OULOP1Qom2ex9Jj1K0Ww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="57686384"
+X-IronPort-AV: E=Sophos;i="6.16,284,1744095600"; 
+   d="scan'208";a="57686384"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 06:54:27 -0700
+X-CSE-ConnectionGUID: Sz8pfLTHRumN6SVidx2zkw==
+X-CSE-MsgGUID: LlSnEty4TaS4oZ+RxqLYkg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,284,1744095600"; 
+   d="scan'208";a="153790365"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 06:54:21 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1uXKOG-0000000CDjq-1Yoc;
+	Thu, 03 Jul 2025 16:54:16 +0300
+Date: Thu, 3 Jul 2025 16:54:16 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: Anup Patel <apatel@ventanamicro.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Alexandre Ghiti <alex@ghiti.fr>, Len Brown <lenb@kernel.org>,
+	Rahul Pathak <rpathak@ventanamicro.com>,
+	Leyfoon Tan <leyfoon.tan@starfivetech.com>,
+	Atish Patra <atish.patra@linux.dev>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Anup Patel <anup@brainfault.org>, linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 21/24] mailbox/riscv-sbi-mpxy: Add ACPI support
+Message-ID: <aGaLiK0eW8Mc1YC3@smile.fi.intel.com>
+References: <20250702051345.1460497-1-apatel@ventanamicro.com>
+ <20250702051345.1460497-22-apatel@ventanamicro.com>
+ <aGUl_S9irfhlHmy2@smile.fi.intel.com>
+ <aGZhWlxxQG0Z8awP@sunil-laptop>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250703124215.12522-1-sebott@redhat.com>
-In-Reply-To: <20250703124215.12522-1-sebott@redhat.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 3 Jul 2025 15:28:23 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0huBwxiop1ZJ7reXyir42vjgm7xehn+xnhfe7RDwu9EGQ@mail.gmail.com>
-X-Gm-Features: Ac12FXzcYgXGY6ZNRymAann1Y9vXuuLgUvTVdkLDdAJaW4gBU1eKxfhu8qmNQJY
-Message-ID: <CAJZ5v0huBwxiop1ZJ7reXyir42vjgm7xehn+xnhfe7RDwu9EGQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: processor: fix acpi_object initialization
-To: Sebastian Ott <sebott@redhat.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aGZhWlxxQG0Z8awP@sunil-laptop>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Jul 3, 2025 at 2:42=E2=80=AFPM Sebastian Ott <sebott@redhat.com> wr=
-ote:
->
-> Initialization of the local acpi_object in acpi_processor_get_info()
-> only sets the first 4 bytes to zero and is thus incomplete. This is
-> indicated by messages like:
->         acpi ACPI0007:be: Invalid PBLK length [166288104]
->
-> Fix this by initializing all 16 bytes of the processor member of that
-> union.
->
-> Signed-off-by: Sebastian Ott <sebott@redhat.com>
-> ---
->  drivers/acpi/acpi_processor.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.=
-c
-> index 7cf6101cb4c7..2a99f5eb6962 100644
-> --- a/drivers/acpi/acpi_processor.c
-> +++ b/drivers/acpi/acpi_processor.c
-> @@ -275,7 +275,7 @@ static inline int acpi_processor_hotadd_init(struct a=
-cpi_processor *pr,
->
->  static int acpi_processor_get_info(struct acpi_device *device)
->  {
-> -       union acpi_object object =3D { 0 };
-> +       union acpi_object object =3D { .processor =3D { 0 } };
->         struct acpi_buffer buffer =3D { sizeof(union acpi_object), &objec=
-t };
->         struct acpi_processor *pr =3D acpi_driver_data(device);
->         int device_declaration =3D 0;
-> --
+On Thu, Jul 03, 2025 at 04:24:18PM +0530, Sunil V L wrote:
+> On Wed, Jul 02, 2025 at 03:28:45PM +0300, Andy Shevchenko wrote:
+> > On Wed, Jul 02, 2025 at 10:43:42AM +0530, Anup Patel wrote:
 
-Applied as 6.17 material, thanks!
+...
+
+> > > -		if (dev_of_node(dev))
+> > > +		if (is_of_node(fwnode)) {
+> > >  			of_msi_configure(dev, dev_of_node(dev));
+> > > +		} else if (is_acpi_device_node(fwnode)) {
+> > > +			msi_domain = irq_find_matching_fwnode(imsic_acpi_get_fwnode(dev),
+> > > +							      DOMAIN_BUS_PLATFORM_MSI);
+> > > +			dev_set_msi_domain(dev, msi_domain);
+> > > +		}
+> > 
+> > Actually you don't need to have the if-else-if if I am not mistaken.
+> > The OF does almost the same as it's done in the second branch for ACPI case.
+> > How many MSI parents this may have?
+> > 
+> OF already has a well defined interface to configure the MSI domain. The
+> mechanisms existing today are different for DT vs ACPI to find out the
+> fwnode of the MSI controller. So, it is done differently.
+
+I don't see how. The only difference I see is that OF iterates over all listed
+parents, if any, ACPI tries only one.
+
+So, perhaps it's a time to have a common API somewhere for this to be agnostic?
+Something like fwnode_msi_configure() in somewhere of IRQ MSI core?
+
+> In RISC-V case at least, there will be only one MSI parent.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
