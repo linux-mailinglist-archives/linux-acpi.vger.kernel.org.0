@@ -1,166 +1,195 @@
-Return-Path: <linux-acpi+bounces-15020-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15021-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CA00AF8F9E
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jul 2025 12:12:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E38A8AF90F5
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jul 2025 12:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D60915873B9
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jul 2025 10:12:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3666D1CA3766
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jul 2025 10:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1772EE96F;
-	Fri,  4 Jul 2025 10:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="NlfZj2fr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DB32EF9C4;
+	Fri,  4 Jul 2025 10:55:45 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE52D2F272D
-	for <linux-acpi@vger.kernel.org>; Fri,  4 Jul 2025 10:11:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5933C17;
+	Fri,  4 Jul 2025 10:55:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751623887; cv=none; b=QiRFHjGXD0sFkaPAUGlc9O09WgDiGmIZ834gQSBMWgkxB57Ca1Aekc7VMPCJK8s3hTIrb41+rBxDoy9PqdK9c3R0GZDkEnrmqneStPj/eyUsHcNlT21jo+r8dhJ3NrSqoqhCkaDdOFwGw4qd8bJQazh8vm3rCo+Juwgg17skNCY=
+	t=1751626545; cv=none; b=T5TWj68HTb8oGwTOXgGjDENNthTvbWk9oka87oyoh0oLgGku81b3BBho+3or5tiHVN/GOsMHbUtep520aYfEEi7LA8obW2PjzaJmMpVnCxvVmTERqlxmpLOUr7OIzhtp7aDdLG/ckbgg3Ia/wjZXbMVe8iVR+4BiNrMRsRJwQTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751623887; c=relaxed/simple;
-	bh=ZJfiMH6yrhrW4z13OYY/q+7njP7HRfoaeaZaIxvoLsg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AHkt76M+tUXlX4gtOEXmNIuJnKC71AlcF4C8wn6+sKFEgiP1KIR1sRvrmEICWXEwRRdOrzElZx0Url/gcTkZBrGAFD9ltzvo6BgdEMrS0S/RIU1tvvcP3CbBjcCQEzoIjDIOvRx6u7LUN2iIdw3Q/K4bpzpNX8es6BhBMt6hTJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=NlfZj2fr; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-553b6a349ccso1023929e87.0
-        for <linux-acpi@vger.kernel.org>; Fri, 04 Jul 2025 03:11:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1751623884; x=1752228684; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ThnYue16skpDKY73i8RkpzoMae/+gmhFicLx/ccew8c=;
-        b=NlfZj2frJ0MoI/3h7QveKv3Y0EgzXgLQw8j2Ge+Wo0BaXCzdjZufQmSA/ijuVDP9gi
-         gJz4g/4zLumrGQqytWbXxeWHMEK0gbxZzTnKz0n7dciwIIWnDBRKLTHvXypSBwF4d9i1
-         nzIqaSMslKbZh3agm9XKrIDh4JTKzk2qwzddiGAXIXGtyp7+cqPObMq3H+2oSMRCLEJG
-         JeqMmMdhVRY0YOqnhqCkiV5Ho1k8WTQduCIqx5tuK/tX66Mi0GDGRrjdo0KTeBKK6VPa
-         6dJSqsdmSoDN5QvRnopc0iXMyN3DGNdd08Za0D5A0OiMXr1MFTIDRjxVmRZAXd/GPNJZ
-         N2FA==
+	s=arc-20240116; t=1751626545; c=relaxed/simple;
+	bh=VHJxjtIueVu95g9CTT4FP5TOJfwkG07w26O/OKDvsts=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dj0jnWa3E7vQsHCiMi87VAM975itI6k8WOraMW5N02/dHA3ZvrsOxxgqeQTRUvhJoEXpE+EwsKTeGRnDLCDMwb3zvtFUdxiKoL35SEiBorhfC6on2OVLwTxgM6M1C8DNp1FCBSsW6fuqBVrorbCHL3o/o/+aXVAygeoyEN917Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-60dffae17f3so1350886a12.1;
+        Fri, 04 Jul 2025 03:55:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751623884; x=1752228684;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ThnYue16skpDKY73i8RkpzoMae/+gmhFicLx/ccew8c=;
-        b=cgH8q+Jx4n2NysDU7b2zg+I1HbeFMQKwMcQsX5hCorLkIUgnKI/DtF4dkH6qkdqlYP
-         1G9ng+sFCwmOTkXBhZ+LYer8WPelPMgPnoWI1muHwXg5Onk8Kg+IYSWl8gCtigXy/lLX
-         VcGRU3RDYWKIChjyQ81VMgl0F0CoskbLPIxnG16BNSmFyAtdL2DJgzVMHbz8dUkpLFcs
-         Cz+usJ5lKWtK8DnGEviMJWh+05pnpju+dVD1Sm1lym1rOspIdlFW0Ie4ocf+jgzVR/oD
-         qqI99ljGl3aR3CoeBAQ6ZlEbyuk2exOhvdQLjTPtWdQYtgqyQ9QgVhPQ/0s1UHjhWy1w
-         lwNg==
-X-Forwarded-Encrypted: i=1; AJvYcCXs8UXdLDUMShMIPjuekjuinqgDYpuvr6nsx0JmFUs0R9LFTYKYy3b2UpOb49IfHiM7EDIlucgDf9Av@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZ/e4XKrBj2uwuzp+AcoWaKyoI8TtwsNoqF2zHu2FFAFDnGm1w
-	ByVPM0n7lI/7zrlzTHK/dlptJHqTcwmSAmLvqrPzupcSK09i+7ndtT7JtYnv/Kel81+Dojqm3Nv
-	Ng5RMwaK6peMQYcOjdLbvOW0Pvq+pd40zEV9SHXTcFw==
-X-Gm-Gg: ASbGncuG7SvSxEVO4dgwrCX3k+6FQVMGg/4CQ4ZbZYvBfmRT0V9TRmaPCEj87YG/sLI
-	j8qb+vasrHWyAguNhUmn+cBGwWg1frEJnwjgoRhDOHMgqw6nqAbE8scNMLDJ2SAcxZXHg5zd3ud
-	zp+1yV4my0oAJd2cLPrrlGBXxaLj3GnO0sNRLA4O92KU+lu3BtO8yA/Ew=
-X-Google-Smtp-Source: AGHT+IFYm/wR4jTRlbIDDwF6FIxEmPbVXFWiC29PN2h5l87b4kSraGLAGzH7R/iggEXemYKU5MQvLCtTcORv1zFuOus=
-X-Received: by 2002:a05:6512:3c94:b0:553:291f:92d with SMTP id
- 2adb3069b0e04-556e617c939mr532276e87.57.1751623883637; Fri, 04 Jul 2025
- 03:11:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1751626542; x=1752231342;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yv58hde0UO9uLPlUaDiluXjUg7qKqQefSz6dT5yVAoo=;
+        b=b/8ZBJAu4R5d48qxxpk1UMuadjGXOdjaaBtgOjoScdLrCxM/vPp/8IVh55Xw71h5bI
+         bx0tcnChJTtPlDW7P9YyUj/r4a+kB39sfwSgeGPWZs4cA9qcwCXPE78I7A1BRkWwGutJ
+         gPoQGo197akcFRgZDlFL2WodaXcyz0GQ7GKNQfwOVX0M0wIQhdEbBwP+/2KpE+Y/R5q8
+         2U51ikzpGKx/nr6Xsi9KVgqxEAe4i4LDusoG0AKZiO546rQaWETH6eADINbQhAZeeVB2
+         zUuqR5axSoOJbRnyl1v0Hn8Gs7Iriph38iL/bpPuZLWrHnaxK6s1q1Q39NSWtFPFkr61
+         OukA==
+X-Forwarded-Encrypted: i=1; AJvYcCV524Gp+A8JXMljo8qqSn/2ll4+5go8U77mQN0kvvF3ZSK3+62SZlpOJXV856WYQK3MlK2d4md9U9fW@vger.kernel.org, AJvYcCVQBWlB4n5RMAG+DLy2npoHbvOjMVryyMRkd298fLGpu+TLUNWG2L04KbUfPTwHs3NGrfNg6z9p62wt@vger.kernel.org, AJvYcCVbPlpBw3SC+C/c7s3G7fOraoZEBc8LChf9AHZ1e8mbYMMn3+W3SrUwyklhyS59e5k5ikC3CqucBqH+xSB5@vger.kernel.org, AJvYcCWlZRpBJLkK7f7Byb5RYG26pTSBy9alhDIkPH6Lq7Nq7xgE3BhtTFiGwta1mtFYSwq5ABMToXl2+Vn3SQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6Ij+FW+Goy+mk73PDfHyZRxlRcUF8a3YN5rQRpeZd4MwwmfMT
+	rvnXkm0ANiSsGr6yaNQYwNnbNhHNsyOwFx2x9RyRLPheItASbqZXmL+A
+X-Gm-Gg: ASbGnctvgfJjXuEn+P9sBg94LcsHkU4VcgvsfoFUcLUjMUFCkodSBG8i4SWkntP1o1M
+	1AJkrXrV2ATvRyQBXvxdxBEx882qYBbrlKbLLtNJEgPjw/2qyGtDFBiu3lFcVfrJXeWB4PhMSxF
+	h3OG37nhfGULH9eCh+1toIcjuoLRyVwyQUrTXHh4CMnCnNIQt+b2XsXGLN8cP9x0g8e6CgJHwPd
+	b7Xe3DbpBVcXUREUG5STHoGLgyG7nwCNsQrCL9P9BXaakXtSvEikq7AIk9ZSMXEV4/A3oebZCfE
+	9uLrH/oIfTpi+u+zsHjzLSjGmwWv9YTu7nX0HpsAVKmOgJxgHP5MfTdSFeTb8DjJ
+X-Google-Smtp-Source: AGHT+IFDLwmmlf2pCDoT/UbXqN8FDaMYsjxO3JDjk+MnIFacPE/J/E3g5iO+lHClwh8fuZSOwgGPiQ==
+X-Received: by 2002:a17:907:c25:b0:ae3:64e2:c1e with SMTP id a640c23a62f3a-ae3fe457a97mr167133666b.10.1751626541398;
+        Fri, 04 Jul 2025 03:55:41 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:70::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f66d1c37sm153036766b.35.2025.07.04.03.55.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Jul 2025 03:55:40 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH 0/2] panic: taint flag for recoverable hardware errors
+Date: Fri, 04 Jul 2025 03:55:18 -0700
+Message-Id: <20250704-taint_recovered-v1-0-7a817f2d228e@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250704070356.1683992-1-apatel@ventanamicro.com> <20250704-attractive-sawfly-of-artistry-1c86a3@krzk-bin>
-In-Reply-To: <20250704-attractive-sawfly-of-artistry-1c86a3@krzk-bin>
-From: Anup Patel <apatel@ventanamicro.com>
-Date: Fri, 4 Jul 2025 15:41:11 +0530
-X-Gm-Features: Ac12FXzuBcUQShERIhU7sx8yxPVr9NpYbWLk5Qb0GVfeL-KIfhtDK6Kn6d-Jp8I
-Message-ID: <CAK9=C2Xt5r0Vjw916U7hV7jR1iRwfaLpvhLYTLmWec_p_1pziw@mail.gmail.com>
-Subject: Re: [PATCH v8 00/24] Linux SBI MPXY and RPMI drivers
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jassi Brar <jassisinghbrar@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Len Brown <lenb@kernel.org>, Sunil V L <sunilvl@ventanamicro.com>, 
-	Rahul Pathak <rpathak@ventanamicro.com>, Leyfoon Tan <leyfoon.tan@starfivetech.com>, 
-	Atish Patra <atish.patra@linux.dev>, Andrew Jones <ajones@ventanamicro.com>, 
-	Samuel Holland <samuel.holland@sifive.com>, Anup Patel <anup@brainfault.org>, 
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABazZ2gC/x3MWwqDMBAF0K0M99tAjH3YbEWkpOZq5yeWiUhB3
+ HuhZwHnQKUpK6IcMO5adS2I0jaC6Z3KQqcZURB8uPq779yWtGxP47TuNGbX5sD+4dOtv7zQCD7
+ GWb//cRjP8weEUURXYQAAAA==
+X-Change-ID: 20250703-taint_recovered-1d2e890a684b
+To: Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, 
+ Jonathan Corbet <corbet@lwn.net>, tony.luck@intel.com, rafael@kernel.org
+Cc: Alexei Starovoitov <ast@kernel.org>, kbusch@kernel.org, rmikey@meta.com, 
+ kuba@kernel.org, ast@kernel.org, linux-edac@vger.kernel.org, 
+ mchehab@kernel.org, bp@alien8.de, linux-acpi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ kernel-team@meta.com, Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.15-dev-dd21f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3770; i=leitao@debian.org;
+ h=from:subject:message-id; bh=VHJxjtIueVu95g9CTT4FP5TOJfwkG07w26O/OKDvsts=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBoZ7Mrc7V7nLH19ai/Bq48bcC/oEO5w4zubbmIL
+ dMeOvdQ4W2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaGezKwAKCRA1o5Of/Hh3
+ bZPgD/9agbNbYeIcTyFzFhptaDD9QCpNr3kTZ49I0FZ5h0HdEjfkUZT+p7V4WxdgfEG8mCltXoo
+ 2axTuviofV9XDDbWX68AnY82yQ2JVAFW51xPVBTdawiXLZhiZCknQ14Zj1FabdQtm+rwlsjBOgd
+ 6so4xlfC+OXOalokgqlL8v33z9W4VI0s6+aBLoJHZilHbc9+xfrf0DtWopIBXJ4wgDxKfaKoJ0U
+ Z7h0Y/ecHQsznBIa2yuQPfaR4dBPEfyfQ+eloKtrWWfnS6+OQKCFWOF6hMnspdglnhiAOPbA7Xi
+ orM/sWe6gYAAxHtlivlFElALCznCEpcAiXX6qcz4WUHGC6WvUGkQWtVhbzLShJ1fjagy5ji7Ibs
+ JKmOv47wMGfrtPKoUHDpgT3NpLXjBvRqpMdY46G6k5qanSWNZWVvfitXnodz5gL+CU1AzS2E5sw
+ cSu8edqPYv/nY7CUoez7HiAsvZlVJlvEIosAPl29lfWwLakOqxxEYjSV+w2VsEe5wNGEdOfj3QB
+ 4YUeuVeNCcVvXg/EYb/F3eHRifywY0rUlFbL3F1UJ4SsHQ1wwlFF54tVcpN33JPCmExfkmO7jPW
+ 6POmnN3FPIH6Gqet1C6L+64UN6OPetpS6LgcffsOSZTjsxceke+WxLkYLMzJPLnNjXA2N7LJUBe
+ NYzjnwTEjy+86xg==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-On Fri, Jul 4, 2025 at 1:15=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.org=
-> wrote:
->
-> On Fri, Jul 04, 2025 at 12:33:32PM +0530, Anup Patel wrote:
-> > The SBI v3.0 (MPXY extension) [1] and RPMI v1.0 [2] specifications
-> > are frozen and finished public review at the RISC-V International.
-> >
-> > Currently, most of the RPMI and MPXY drivers are in OpenSBI whereas
-> > Linux only has SBI MPXY mailbox controller driver, RPMI clock driver
-> > and RPMI system MSI driver This series also includes ACPI support
-> > for SBI MPXY mailbox controller and RPMI system MSI drivers.
-> >
-> > These patches can be found in the riscv_sbi_mpxy_mailbox_v8 branch
-> > at: https://github.com/avpatel/linux.git
-> >
-> > To test these patches, boot Linux on "virt,rpmi=3Don,aia=3Daplic-imsic"
-> > machine with OpenSBI and QEMU from the dev-upstream branch at:
-> > https://github.com/ventanamicro/opensbi.git
-> > https://github.com/ventanamicro/qemu.git
-> >
-> > [1] https://github.com/riscv-non-isa/riscv-sbi-doc/releases
-> > [2] https://github.com/riscv-non-isa/riscv-rpmi/releases
-> >
-> > Changes since v7:
-> >  - Addressed comments on PATCH3, PATCH7, PATCH10, PATCH14, and PATCH21
->
-> Which comments? What exactly did you change? Provide in-patch changelogs
-> explaining this, because what you wrote is way too vague.
->
+Overview
+========
 
-Apologies for being a bit lazy here. Most changes are pretty straight forwa=
-rd
-except the improvements in PATCH14. More detailed change log is below ...
+This patchset introduces a new kernel taint flag to track systems that
+have experienced recoverable hardware errors during runtime. The
+motivation comes from the operational challenges of managing large
+server fleets where hardware events are common, and having them tainting
+the kernel helps operators to correlate problems more easily.
 
-Changes since v7:
- - Addressed enum related nits in PATCH3
-   (Refer, https://lore.kernel.org/all/CAK9=3DC2VxhC6soxHtmacedbeCU=3DrFi84=
-Br1RvN2uPcBKoLhRaJw@mail.gmail.com/)
- - Addressed comments in PATCH7 as follows:
-   - Added minmax.h to includes
-   - Removed "rc" variable from mpxy_mbox_send_rpmi_data()
-   - Removed alignment and other checks from mpxy_mbox_peek_rpmi_data()
-   - Created separate function to restrict scope of channel_ids used
-in mpxy_mbox_probe()
-   (Refer, https://lore.kernel.org/all/CAK9=3DC2Ume2CmBYHYob7HSJHu=3DZdfdWM=
-+4JYPgFJ9Hir5Oi8cOg@mail.gmail.com/)
- - Improved comments for struct rpmi_clk_rates in PATCH10
-   (Refer, https://lore.kernel.org/all/CAK9=3DC2VfvsbFTjecQm0OSsssXbff7wC4f=
-qWf3CTmnpWSiaLcBw@mail.gmail.com/)
- - Improved refactoring of acpi_fwnode_get_reference_args() in PATCH14
-   (Refer, https://lore.kernel.org/all/20250702051345.1460497-15-apatel@ven=
-tanamicro.com/)
- - Improve nargs_count parsing in acpi_fwnode_get_reference_args() for PATC=
-H15
-   (Refer, https://lore.kernel.org/all/20250702051345.1460497-16-apatel@ven=
-tanamicro.com/)
- - Added more comments describing why need to explicitly set device
-MSI domain in PATCH21
-   (Refer, https://lore.kernel.org/all/aGaUmpw1pVWNAmpb@smile.fi.intel.com/=
-)
+This complement the new MACHINE_CHECK taint that got added for fatal
+errors. [1]
 
-Regards,
-Anup
+Problem Statement
+=================
+
+In large-scale deployments with thousands of servers, hardware errors
+are inevitable. While modern systems can recover from many hardware
+failures (corrected ECC errors, recoverable CPU errors, etc.), these
+events causes the kernel to behave in very different ways, which can
+cause  bugs due to the path that is rarely exercised.
+
+I experienced this pain very recently, where several machines were
+crashing due to a recoverable PCI offline port. The hardware was
+behaving correctly, but, during the recoverable process, the kernel goes
+through some code path that is rarely tested.
+
+In my case, the kernel recoverable process caused some issues that were
+hard to find the root cause. For instance, recoverable PCI events
+cause the device to suddently go offline, and later PCI re-enumeration,
+which would reinitalize the driver.
+
+The event above caused some real crashes in production, in very
+different ways. From those that I investigated, I found:
+
+	1) If the disk was going away, it was causing a file systems
+	   issue that got already fixed in 6.14 and 6.15
+
+	2) If the network was going away, it was causing some iommu
+	   issues discussed and fixed in [2].
+
+	3) Possible other issues, that were not easy to correlate, such
+	   as stalls, hungup tasks, memory leaks, warnings, etc.
+
+	  a) These are hidden today, and I would like to expose them
+	     with this patch.
+
+In summary, when investigating system issues, there's no trivial way to
+determine if a machine has previously experienced hardware problems that
+might be contributing to current instability, other than going host by
+host and scanning kernel logs.
+
+Proposed Solution
+=================
+
+Add a new taint flag to the kernel (HW_ERROR_RECOVERED - for the lack of
+a better name) that gets set whenever the kernel detects and recovers
+from hardware errors.
+
+The taint provides additional context during crash investigation *without*
+implying that crashes are necessarily caused by hardware failures
+(similar to how PROPRIETARY_MODULE taint works). It is just an extra
+information that will provide more context about that machine.
+
+This patchset focuses on ACPI/GHES, which handles most recoverable
+hardware errors I have experience with, but can be extended to other
+subsystems like EDAC HW_EVENT_ERR_CORRECTED in the future.
+
+--
+
+I would like to *thanks* Tony for the early discussions and
+encouragement.
+
+Link: https://lore.kernel.org/all/20250702-add_tain-v1-1-9187b10914b9@debian.org/ [1]
+Link: https://lore.kernel.org/all/20250409-page-pool-track-dma-v9-0-6a9ef2e0cba8@redhat.com/ [2]
+
+---
+Breno Leitao (2):
+      panic: add taint flag for recoverable hardware errors
+      acpi/ghes: taint kernel on recovered hardware errors
+
+ Documentation/admin-guide/tainted-kernels.rst | 7 ++++++-
+ drivers/acpi/apei/ghes.c                      | 7 +++++--
+ include/linux/panic.h                         | 3 ++-
+ kernel/panic.c                                | 1 +
+ tools/debugging/kernel-chktaint               | 8 ++++++++
+ 5 files changed, 22 insertions(+), 4 deletions(-)
+---
+base-commit: dc3cd0dfd91cad0611f0f0eace339a401da5d5ee
+change-id: 20250703-taint_recovered-1d2e890a684b
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
 
