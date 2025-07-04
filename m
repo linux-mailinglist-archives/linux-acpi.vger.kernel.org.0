@@ -1,113 +1,202 @@
-Return-Path: <linux-acpi+bounces-15018-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15019-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26987AF8CC7
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jul 2025 10:53:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE30DAF8D99
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jul 2025 11:08:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AD604A237F
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jul 2025 08:51:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F4A4767150
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jul 2025 09:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967212E541B;
-	Fri,  4 Jul 2025 08:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB7C2F50AC;
+	Fri,  4 Jul 2025 08:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z2BcaHqy"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IsFNgvOI"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9672E427E;
-	Fri,  4 Jul 2025 08:47:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7BC2F50B2;
+	Fri,  4 Jul 2025 08:57:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751618869; cv=none; b=dcI6yd9no8KKuUvdJm6CtGc0Xupme+adqYVcGkNSTE0RgadUh7U6Z1Il7KGKvKmbnkFR1ztjTPpRCyuENGwWLYQoL3gWZ75d47bPilmC1j6yp6swcu4polPaFtYL9y0Cab54hJzD94f+lLrlYNFMzwqkHt2zcS2FDWEheEIFI74=
+	t=1751619464; cv=none; b=f6movLKyJRvpjRiGsMj4mDQi0IS9UatXPem/F8Stpdrrfgu7C6Kxw/CgIkRPHG1vmfgm7w902VTlrELKkks9MfxAFvJIyizu7PcMET/BgSF6I6GLr6MqbGQV9E2HVZmoMTb7vrOkniJncMwMwoGCZMuTZo27rhmJcyUoShCnq2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751618869; c=relaxed/simple;
-	bh=O06EB5/Nw0pCMsSzvdgEuj50BETJhf7Tfv+JIgcMPGA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=plcaGndH7MmHnXIV07m07v/BSB9+5qxaLgekITqV25AlOBOjOIpnZsBrRYzHKIm5nhbTIUx/f9Iyd9SRWTHXnHP12YqtUh32lU32O9nqhBGnUXsw7fJ1vfuXWNcM4+/9Svh9ABsqQirw6VGKJP4rATk2J5ux4rGdxxMJGLibqBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z2BcaHqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DAE7C4CEE3;
-	Fri,  4 Jul 2025 08:47:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751618868;
-	bh=O06EB5/Nw0pCMsSzvdgEuj50BETJhf7Tfv+JIgcMPGA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Z2BcaHqy9hg1ujMYB7UVs5CDxCoPVrkBsOcv0PUwUgQDMbapYmcwhfBZHPu8mUKFH
-	 KNTVtzF6+LLvp0Wd6PD5zZ/ggl4A386UE7RdmUWzp5PGdLi1/xoTpHU4hVNuQZTnJE
-	 hagwQXfVvferuD7maMp7jU085JQ+5oMuFw7Gu4vePSENQvzaESplLesGo5hMrMp0hd
-	 qThCkQ+lwVj7Xco9YmAWK0BSta6fqsVYD0yfkUkiUNAhn3/1BBQH9vphFkwlrWoRzf
-	 BkxUEdhjZMnbyZOnimkryVuY7CJSj1ngWK3TQxtLNaTQxjWBpkKIU0F8AZUTWwnh/K
-	 TGoF5JCIS9drw==
-Message-ID: <cd6a9d6a-d995-47c0-b474-14440c40503f@kernel.org>
-Date: Fri, 4 Jul 2025 10:47:45 +0200
+	s=arc-20240116; t=1751619464; c=relaxed/simple;
+	bh=Hq3evHZffKrfDtkoD9VkUHgds86PykelMMQhzlru9Hs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=X/nxzsRwd1Tup1uKouZYYhidsPZFBNiij+ludw6SL+J2MW3YOEMJBtDI57LOteWkvJC+5CxVBHT6kU1k+EbltUZNIZhqAiHXNouGFHcjWdrW2GP/oN1SptdFmQDnY2lKPyi9jjfbigMWDmPihBfB6AfigX+wJw7aQ1mPzV47Jg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IsFNgvOI; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8E24143AEE;
+	Fri,  4 Jul 2025 08:57:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1751619453;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z/ao/2kml8jJZFHPFKKmBePrXHDwomfciEfTApf1ng0=;
+	b=IsFNgvOIXVOwfZalpbJl3HeOSXGJ/b0Br9jNwmVj8c8XWQeGRJ8yNf3TykuiXP9YVWVNg9
+	WswEtsNyDmTb6lPYtNo8jxAwOyYHr7+xBhPVcBIgta1Gmw8VnOWUw/IIgLl0UbPh+PxatT
+	QEnGVRZSbWRjlpWe41sTUlxkGP/Yq4rgQ07Ce2ffpGvDVrPXEuUvzR/vQ7m9UpYt7tin2Y
+	sLZZm9ZYReoWxyEcrLAoB6ePBBOxMVsZYJxN9iYmAivhvHar9hS8v4H3i9GFkWozo5fSTm
+	tDdAojqJukJpigemHSwc8gA9r4PchXfJlcnlZExGtC/OGPUfoanwJMSTvEwmSg==
+Date: Fri, 4 Jul 2025 10:57:25 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
+ Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
+ Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
+ Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len
+ Brown <lenb@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Davidlohr Bueso
+ <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, Alison Schofield
+ <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
+ Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+ linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 05/28] bus: simple-pm-bus: Populate child nodes at
+ probe
+Message-ID: <20250704105725.50cb72b9@bootlin.com>
+In-Reply-To: <20250703093302.4f7743ea@bootlin.com>
+References: <20250613134817.681832-1-herve.codina@bootlin.com>
+	<20250613134817.681832-6-herve.codina@bootlin.com>
+	<20250627155200.GB3234475-robh@kernel.org>
+	<20250703093302.4f7743ea@bootlin.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] - Multiple userspace implementations of battery
- estimate broken after "ACPI: battery: negate current when discharging"
-To: Peter Marheine <pmarheine@chromium.org>
-Cc: Matthew Schwartz <matthew.schwartz@linux.dev>,
- Sebastian Reichel <sre@kernel.org>, regressions@lists.linux.dev,
- stable@vger.kernel.org, rafael.j.wysocki@intel.com,
- linux-acpi@vger.kernel.org
-References: <87C1B2AF-D430-4568-B620-14B941A8ABA4@linux.dev>
- <84dfa466-d201-4a51-8794-6c64568bec95@kernel.org>
- <CAG_X_pC0jTe5fuNaK81veif-p9JeJyYpgb2E2R_RXBzfcj4_MQ@mail.gmail.com>
-Content-Language: en-US, nl
-From: Hans de Goede <hansg@kernel.org>
-In-Reply-To: <CAG_X_pC0jTe5fuNaK81veif-p9JeJyYpgb2E2R_RXBzfcj4_MQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddvvdejfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthekredtredtjeenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeviefffeegiedtleelieeghfejleeuueevkeevteegffehledtkeegudeigffgvdenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgeekpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhor
+ hhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvg
+X-GND-Sasl: herve.codina@bootlin.com
 
-Hi Peter,
+Hi Rob,
 
-On 4-Jul-25 6:56 AM, Peter Marheine wrote:
-> I'm not surprised that there exist a number of userspace programs that
-> assume the buggy ACPI battery behavior is the only one, but this does
-> leave us in the previous situation where there's a clear bug in the
-> ACPI driver.
+On Thu, 3 Jul 2025 09:33:02 +0200
+Herve Codina <herve.codina@bootlin.com> wrote:
+
+> Hi Rob,
 > 
->> But, the patch was actually doing the right thing, according to:
->>
->> Documentation/ABI/testing/sysfs-class-power
+> On Fri, 27 Jun 2025 10:52:00 -0500
+> Rob Herring <robh@kernel.org> wrote:
 > 
-> This is the key issue, since it's entirely plausible for a program
-> assuming non-negative battery current to run on a non-ACPI platform
-> and misbehave in the same way. If we're not going to fix the ACPI
-> driver to behave as specified for the kernel ABI, then the ABI needs
-> to be redefined to reflect the actual behavior. It's either that or we
-> give userspace an opportunity to fix itself (and I'm not sure exactly
-> how that would be done such that the clients which need to be fixed
-> discover that they need to be) and correct the driver's behavior
-> later.
+> > On Fri, Jun 13, 2025 at 03:47:45PM +0200, Herve Codina wrote:  
+> > > The simple-pm-bus driver handles several simple busses. When it is used
+> > > with busses other than a compatible "simple-pm-bus", it doesn't populate
+> > > its child devices during its probe.
+> > > 
+> > > This confuses fw_devlink and results in wrong or missing devlinks.
+> > > 
+> > > Once a driver is bound to a device and the probe() has been called,
+> > > device_links_driver_bound() is called.
+> > > 
+> > > This function performs operation based on the following assumption:
+> > >     If a child firmware node of the bound device is not added as a
+> > >     device, it will never be added.
+> > > 
+> > > Among operations done on fw_devlinks of those "never be added" devices,
+> > > device_links_driver_bound() changes their supplier.
+> > > 
+> > > With devices attached to a simple-bus compatible device, this change
+> > > leads to wrong devlinks where supplier of devices points to the device
+> > > parent (i.e. simple-bus compatible device) instead of the device itself
+> > > (i.e. simple-bus child).
+> > > 
+> > > When the device attached to the simple-bus is removed, because devlinks
+> > > are not correct, its consumers are not removed first.
+> > > 
+> > > In order to have correct devlinks created, make the simple-pm-bus driver
+> > > compliant with the devlink assumption and create its child devices
+> > > during its probe.    
+> > 
+> > IIRC, skipping child nodes was because there were problems with 
+> > letting the driver handle 'simple-bus'. How does this avoid that now?  
+> 
+> I don't know about the specific issues related to those problems. Do you
+> have some pointers about them?
+> 
+> > 
+> > The root of_platform_populate() that created the simple-bus device that 
+> > gets us to the probe here will continue descending into child nodes. 
+> > Meanwhile, the probe here is also descending into those same child 
+> > nodes. Best case, that's just redundant. Worst case, won't you still 
+> > have the same problem if the first of_platform_populate() creates the 
+> > devices first?
+> >   
+> 
+> Maybe we could simply avoid of_platform_populate() to be recursive when a
+> device populate by of_platform_populate() is one of devices handled by
+> the simple-bus driver and let the simple-bus driver do the job.
+> 
+> of_platform_populate will handle the first level. It will populate children
+> of the node given to of_platform_populate() and the children of those
+> children will be populate by the simple-bus driver.
+> 
+> I could try a modification in that way. Do you think it could be a correct
+> solution?
+> 
 
-Right, this is why I asked for bugs to be filed against the problematic
-userspace programs, so that we can try to fix the ACPI driver again in
-say 1 or 2 years from now.
+I have started to look at this solution and it's going to be more complex
+than than I thought.
 
-In the mean time you could submit a patch to document the known broken
-behavior of the ACPI battery driver in:
+Many MFD drivers uses a compatible of this kind (the same exist for bus
+driver with "simple-bus"):
+  compatible = "foo,bar", "simple-mfd";
 
-Documentation/ABI/testing/sysfs-class-power
+Usually the last compatible string ("simple-mfd" here) is a last fallback
+and the first string is the more specific one.
 
-with a big warning that userspace should not rely on this behavior.
+In the problematic case, "foo,bar" has a specific driver and the driver
+performs some operations at probe() but doesn't call of_platform_populate()
+and relies on the core to do the device creations (recursively) based on
+the "simple,mfd" string present in the compatible property.
 
-You could even document how to work around this, e.g.:
+Some other calls of_platform_populate() in they probe (which I think is
+correct) and in that case, the child device creation can be done at two
+location: specific driver probe() and core.
 
-"Negative currents are always discharging. Because of the broken ACPI
-battery driver behaviour positive currents should be seen as discharging
-rather then charging when the "status" sysfs attribute reports discharging."
+You pointed out that the core could create devices before the specific
+driver is probed. In that case, some of existing drivers calling
+of_platform_populate() are going to have issues.
 
-Regards,
+I can try to modify existing MFD and bus drivers (compatible fallback to
+simple-mfd, simple-bus, ...) in order to have them call of_platform_populate()
+in they probe() and after all problematic drivers are converted, the
+recursive creation of devices done in the core could be removed.
 
-Hans
+Before starting in that way, can you confirm that this is the right
+direction?
 
-
+Best regards,
+Hervé
 
