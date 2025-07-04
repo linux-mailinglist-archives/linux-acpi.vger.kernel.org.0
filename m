@@ -1,78 +1,78 @@
-Return-Path: <linux-acpi+bounces-15007-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15008-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E483AF88C6
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jul 2025 09:10:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BC41AF88C8
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jul 2025 09:10:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8CF81C21AE1
-	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jul 2025 07:10:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 596001C806A0
+	for <lists+linux-acpi@lfdr.de>; Fri,  4 Jul 2025 07:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA66279DAA;
-	Fri,  4 Jul 2025 07:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0026A279DC7;
+	Fri,  4 Jul 2025 07:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="RK6i798o"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="CXgt4lrb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE18274B22
-	for <linux-acpi@vger.kernel.org>; Fri,  4 Jul 2025 07:07:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680362749EE
+	for <linux-acpi@vger.kernel.org>; Fri,  4 Jul 2025 07:07:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751612855; cv=none; b=Ki+BpL/pMRa/VXDkF0uavxKgB8bEzTkLoUnqeSrMkiKHLHamSFEUlS5mwD7HjySyCuu0W30pXYiNpYA8YykvqVRFfeoYeC1dxnBOGBpaxR+pkh8iQSx/4odDYMZzubdJU+/KYpDaWS4cGaKPDZrD1/+SOrraadUbusVvKQnkKTQ=
+	t=1751612865; cv=none; b=e6QvrI9S1+azFzQvNN0gNTt9kWGONLdELG5AqaeqOaUwvJD3fspuSfid/fhupzzaikazEtjO+LPGzBtXQxZHBaZ/Oykb9mDJ6nY+2lzoEZ5hvCK+0XA7SEFU9G8yNFTOerJ5+D3UBIwCQtatDXPdhbQ+bLQKiFWcQRv5yliraBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751612855; c=relaxed/simple;
-	bh=uLkW3DQcKIIgVHib4AKQIVSEPy4uT4MPjoilFNj5tRA=;
+	s=arc-20240116; t=1751612865; c=relaxed/simple;
+	bh=bDMVpDUTCKSQxIzYquuybqhsrFm52uIQJL3fLHSkHZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j1dXNp7R6dtcogjaPvg5FKfeMohl+dbMMy3gqGLSo1j97ZqVl+5rDiBdmyD7PZu5Lek77ppfQ2DXdEFKVQJr5zT+25alOVw0c7kzBLTvEIrVhOU+gbL+DIelxXwZHA2nHrlz8IM1AXbzvg2WpT6fIN0ZvyHknvKMAFYwVEpSRYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=RK6i798o; arc=none smtp.client-ip=209.85.215.177
+	 MIME-Version; b=XHitXy1gyaBhDVFWUMoX+MuV4qkA5bU+LT6nmKYFw01/3+/PC9fqssJC/0SArQRSAnULDZt4pyJ9B/OUyYJ9su17UNPi0FDvxkq8q/W8r42sK41Mei23nmfYhaxpfsiZDF4Ys0yq5EFQDTZb1Xjs61ln89t+ofyLqeFX8moyo4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=CXgt4lrb; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b31d592bbe8so391650a12.2
-        for <linux-acpi@vger.kernel.org>; Fri, 04 Jul 2025 00:07:33 -0700 (PDT)
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-af6a315b491so600406a12.1
+        for <linux-acpi@vger.kernel.org>; Fri, 04 Jul 2025 00:07:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1751612853; x=1752217653; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1751612864; x=1752217664; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yiu9LW4OQPcl48oQrH2DU+mLfm2FHbXqcRasNtW9C8A=;
-        b=RK6i798oHw38np0BJcviII1esSH97BpY0O50SqJ+OZ1GawlTa3WR3pHqgsQMa6pkEh
-         8198kOCp/kdwVgAztz43Zn2vRPXVNEbUcv9TwlYharKOpR0zTP+d7K2xtJ/Uz54j4znx
-         P8DSXpMV3usj0Wr29+NMXm8EWzIXsTX37V5YUQ2cILMXu6EQRk+voQb77D6VjeJ5Yt6I
-         ZRPhXoOpQiypZ6SwEzeKctrZRHFfqbinRVQOFDLoB+h6ASlHT6/71CkwdnGiBwNM/XWC
-         A3rGbmnij4m8gUX4xkabQO2lYSI6CsFbhaDjpaXdKoTMn44G3FmDUUm/O4iIm9cpizk0
-         txGA==
+        bh=P3TJh+HyLkyeQ1VqRyPxzf43XEd03uT1gCuO+kpCcOM=;
+        b=CXgt4lrbFnNxr6JA1rf2+k722fPS3d2vOTLH7ON4W/F5T6/aOEUTYsSgCdRUstFafG
+         k++4+MsG7f4ItZ4f2Iz2KqJSJFV2Xk733MyWV0IV9R89AyF2zfimkKy8RCZwKU1gyYDH
+         LwYlStkCTvhAS1pBjIskzUD90WZVwrUxsrucOi/n76STYKuOZpDG8nyrwBGZaKsxdnaE
+         1y04ZP/a4xy3zQ2bhfeZglQSLMmG33jPGA00/E/kfXZlzCV5iWaBDUBcCXeUAI1Vlh6L
+         NDItnieiIBH5N68AJ6jyzvdSt+mf0h7krl56CESFM1YfSQGQ6dUkn1nhLmLQ43cl+AUt
+         yYXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751612853; x=1752217653;
+        d=1e100.net; s=20230601; t=1751612864; x=1752217664;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yiu9LW4OQPcl48oQrH2DU+mLfm2FHbXqcRasNtW9C8A=;
-        b=rnnOZd1I41pIIjzNoNl0p9W8kuCiLK7PaXJZx9oD1nHo3luWHI3Tj5TTr3k7waDr8W
-         0nsPWMPlVfgcPuoIR+u5KRgUvtpx7DIcd/WnydgUdP8rum0z+ACjiAKpFF7PNCF1Qx9X
-         q47n5q5H5a+gL9ynQV7+LwpHm71klw4+02dh+WOZPiIbdSuxWyS8rsjwAsWTK4xcsRJ+
-         t2EZAPD27N6u7G6iYALPdgnWlm7fxmffq0RDFQpXm8pRzlWZpA9G+9aq1k306M+Qjs3g
-         CZ/PEm3TeFBL1cQzFuLWATgUajPLEToCsfAGAJSHDQpfeg186grb2nCVIg9QIenHWuQB
-         6sxg==
-X-Forwarded-Encrypted: i=1; AJvYcCWnUJXTzsbPdW2OwurOh9HNG8Q8jO0b6MS62l0pcyVnQ1Tt+xVH3Q98zzeQbk4gb3gnVd0AYxhY3eFm@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxs/fRoOjmE4bRYSobFzk+bxOOi8vi4FwXSm/pXlkTSGXCGv5pg
-	U8qg4rSSa1H7Qfvj3W0rEBYccJ/JEmA1Ki/6ohOQI2qrxgpaVFvF2437oZ1Fltv2S8s=
-X-Gm-Gg: ASbGnctIbyf3JQmwCcai9/d+7GOxba/8VZ3hF9P+4xQ2BafEKPnYGPZlOBfgC8NY/qF
-	ufTpVM3WPcvVY0BI8KCt1ZBBtC72YAGG1YwgJaHe/2fkTkvN8XQqfSJ5ABSRbeNtJwE7IVx30to
-	5G9Uds+i4XNo5erscOrNgpimkEJhQjqw1ZHExW3zqU6FDTY8TtGULbXXYyqMsh3T6Xkqp3XpFup
-	Rm9tITjm9b3l9kPbAxUNNdP7MrUhrrWRXdoBTps3dB14PIZcYjr6XKAKMyJnb4E291A90LRMFol
-	TwbRvhCtTvy2AGQzTOOkBT+r5yYmWTSRT2SGygfH4PszAYZB3dtCCNQ/WD8Otlm67kHBINBBJRc
-	lpt3rqo1tnnB632J+MN8fQSySIA==
-X-Google-Smtp-Source: AGHT+IH8K2q+ff9EmJzgqGezoG5ijxAfT3GRB5m50yeRgyCl4S8KgAneBei7J20U/ic7bxWUp8DQog==
-X-Received: by 2002:a17:90b:2d92:b0:312:e744:5b76 with SMTP id 98e67ed59e1d1-31aac545a19mr2734380a91.33.1751612852693;
-        Fri, 04 Jul 2025 00:07:32 -0700 (PDT)
+        bh=P3TJh+HyLkyeQ1VqRyPxzf43XEd03uT1gCuO+kpCcOM=;
+        b=iZ8giVFQBIaItPovgKIqOq8M+Sk+4fg3sy71JmGYKGTTr62lV/a8qxOgvgXxPnv5xK
+         M4+iDNQeUEJZXGGUEA3+HQEnIoWHvjoDzXWOAPxwhOJY/0/c1yStfLpCEMFHb2vFFG+m
+         hjkydQdoXNH3QkSvtHba2nanZMRwTHSvme91QgpTy9X/SYGh9W5bZ7/nQP3MhLG4g0U6
+         XEqaNnm4yz0XtN8M1ZZGbUpoaQY4P7ZFNIr0AqCcmeGINFw7I87tizEkm3cN7kXM6gvZ
+         l7mo/+nBltFGTWKnJ2dDcB8aO5CGUwRa8lq2OYVq5TWbHT301l1E0AnRexeP3kMT1xmE
+         /vQg==
+X-Forwarded-Encrypted: i=1; AJvYcCWVsYD4CFlbhIlCJSQqIh3Gk9PJU/ls18F1iFunSCQIp3GtNOlREEJizgWnF000lGnU1tM1dlE2Mo0i@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVIkUblKVUyrTImTjCIybnEuuvJUPUVM+mTwDRJx1qE/KNsWUW
+	YeOaSIn2ysQpO/mUbOzjT3uRKdrDf9wnfwrLvvV9hP54f+1+U6aIKNBtQNXNwrKqmCc=
+X-Gm-Gg: ASbGncuf0MpUCEINmegprncyhwefIQzgzJZe0gvnj7owkV19kP8J8Q/bpAgX6sfFU3z
+	K35O4j2ug7LP+mPQPwonMG+KEl7A379XfTD+gNNjihyVwTXF29fSDb+Aj80s9z96ql+daWpzCs+
+	DYcAcYz+NzMqqOT9ZQrS4DbjkmhvlglaTiLjJJ12IYWw8CVXo7k5wJSgxeQBf4sGruSuJESFC6l
+	ooPnrxpooRhoAR/+2sa3l3Pa8+SqldrRObajNULEgr0W8LhOYtQfnNSdRztR1uAeam/Y7t1nch0
+	pExW5uluyGX4dJ+pCgcOdYj8ELL2dg5hQLRcqWOl7TWH8zBZXKcYwbx2gUe5wgMmopmfw9mPmiW
+	FuffJM/XuxOAIJ6HleDEDo25HyQ==
+X-Google-Smtp-Source: AGHT+IHRFTKO0VDW/jyTEW0IE+/OsJGDpLv9gEELtrJIpL7F8SbPvAzBJD3XM8BB/v/qFZ/tjbTf8Q==
+X-Received: by 2002:a17:90b:2548:b0:311:da03:3437 with SMTP id 98e67ed59e1d1-31aac4cd544mr2256497a91.27.1751612863613;
+        Fri, 04 Jul 2025 00:07:43 -0700 (PDT)
 Received: from anup-ubuntu-vm.localdomain ([103.97.166.196])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31aaae59a93sm1358697a91.12.2025.07.04.00.07.21
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31aaae59a93sm1358697a91.12.2025.07.04.00.07.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Jul 2025 00:07:32 -0700 (PDT)
+        Fri, 04 Jul 2025 00:07:43 -0700 (PDT)
 From: Anup Patel <apatel@ventanamicro.com>
 To: Michael Turquette <mturquette@baylibre.com>,
 	Stephen Boyd <sboyd@kernel.org>,
@@ -104,9 +104,9 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
 	linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Anup Patel <apatel@ventanamicro.com>
-Subject: [PATCH v8 17/24] ACPI: RISC-V: Create interrupt controller list in sorted order
-Date: Fri,  4 Jul 2025 12:33:49 +0530
-Message-ID: <20250704070356.1683992-18-apatel@ventanamicro.com>
+Subject: [PATCH v8 18/24] ACPI: RISC-V: Add support to update gsi range
+Date: Fri,  4 Jul 2025 12:33:50 +0530
+Message-ID: <20250704070356.1683992-19-apatel@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250704070356.1683992-1-apatel@ventanamicro.com>
 References: <20250704070356.1683992-1-apatel@ventanamicro.com>
@@ -120,42 +120,128 @@ Content-Transfer-Encoding: 8bit
 
 From: Sunil V L <sunilvl@ventanamicro.com>
 
-Currently, the interrupt controller list is created without any order.
-Create the list sorted with the GSI base of the interrupt controllers.
+Some RISC-V interrupt controllers like RPMI based system MSI interrupt
+controllers do not have MADT entry defined. These interrupt controllers
+exist only in the namespace. ACPI spec defines _GSB method to get the
+GSI base of the interrupt controller, However, there is no such standard
+method to get the GSI range. To support such interrupt controllers, set
+the GSI range of such interrupt controllers to non-overlapping range and
+provide API for interrupt controller driver to update it with proper
+value.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 Signed-off-by: Anup Patel <apatel@ventanamicro.com>
 ---
- drivers/acpi/riscv/irq.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/riscv/include/asm/irq.h |  5 +++++
+ drivers/acpi/riscv/irq.c     | 38 ++++++++++++++++++++++++++++++++++--
+ 2 files changed, 41 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/riscv/irq.c b/drivers/acpi/riscv/irq.c
-index cced960c2aef..33c073e2e71d 100644
---- a/drivers/acpi/riscv/irq.c
-+++ b/drivers/acpi/riscv/irq.c
-@@ -115,7 +115,7 @@ struct fwnode_handle *riscv_acpi_get_gsi_domain_id(u32 gsi)
- static int __init riscv_acpi_register_ext_intc(u32 gsi_base, u32 nr_irqs, u32 nr_idcs,
- 					       u32 id, u32 type)
- {
--	struct riscv_ext_intc_list *ext_intc_element;
-+	struct riscv_ext_intc_list *ext_intc_element, *node;
+diff --git a/arch/riscv/include/asm/irq.h b/arch/riscv/include/asm/irq.h
+index 7b038f3b7cb0..2caf049f09c8 100644
+--- a/arch/riscv/include/asm/irq.h
++++ b/arch/riscv/include/asm/irq.h
+@@ -40,6 +40,7 @@ unsigned long acpi_rintc_ext_parent_to_hartid(unsigned int plic_id, unsigned int
+ unsigned int acpi_rintc_get_plic_nr_contexts(unsigned int plic_id);
+ unsigned int acpi_rintc_get_plic_context(unsigned int plic_id, unsigned int ctxt_idx);
+ int __init acpi_rintc_get_imsic_mmio_info(u32 index, struct resource *res);
++int riscv_acpi_update_gsi_range(u32 gsi_base, u32 nr_irqs);
  
- 	ext_intc_element = kzalloc(sizeof(*ext_intc_element), GFP_KERNEL);
- 	if (!ext_intc_element)
-@@ -125,7 +125,12 @@ static int __init riscv_acpi_register_ext_intc(u32 gsi_base, u32 nr_irqs, u32 nr
- 	ext_intc_element->nr_irqs = nr_irqs;
- 	ext_intc_element->nr_idcs = nr_idcs;
- 	ext_intc_element->id = id;
--	list_add_tail(&ext_intc_element->list, &ext_intc_list);
-+	list_for_each_entry(node, &ext_intc_list, list) {
-+		if (node->gsi_base < ext_intc_element->gsi_base)
-+			break;
-+	}
-+
-+	list_add_tail(&ext_intc_element->list, &node->list);
+ #else
+ static inline int riscv_acpi_get_gsi_info(struct fwnode_handle *fwnode, u32 *gsi_base,
+@@ -74,6 +75,10 @@ static inline int __init acpi_rintc_get_imsic_mmio_info(u32 index, struct resour
  	return 0;
  }
  
++static inline int riscv_acpi_update_gsi_range(u32 gsi_base, u32 nr_irqs)
++{
++	return -ENODEV;
++}
+ #endif /* CONFIG_ACPI */
+ 
+ #endif /* _ASM_RISCV_IRQ_H */
+diff --git a/drivers/acpi/riscv/irq.c b/drivers/acpi/riscv/irq.c
+index 33c073e2e71d..cc1928422418 100644
+--- a/drivers/acpi/riscv/irq.c
++++ b/drivers/acpi/riscv/irq.c
+@@ -10,6 +10,8 @@
+ 
+ #include "init.h"
+ 
++#define RISCV_ACPI_INTC_FLAG_PENDING BIT(0)
++
+ struct riscv_ext_intc_list {
+ 	acpi_handle		handle;
+ 	u32			gsi_base;
+@@ -17,6 +19,7 @@ struct riscv_ext_intc_list {
+ 	u32			nr_idcs;
+ 	u32			id;
+ 	u32			type;
++	u32			flag;
+ 	struct list_head	list;
+ };
+ 
+@@ -69,6 +72,22 @@ static acpi_status riscv_acpi_update_gsi_handle(u32 gsi_base, acpi_handle handle
+ 	return AE_NOT_FOUND;
+ }
+ 
++int riscv_acpi_update_gsi_range(u32 gsi_base, u32 nr_irqs)
++{
++	struct riscv_ext_intc_list *ext_intc_element;
++
++	list_for_each_entry(ext_intc_element, &ext_intc_list, list) {
++		if (gsi_base == ext_intc_element->gsi_base &&
++		    (ext_intc_element->flag & RISCV_ACPI_INTC_FLAG_PENDING)) {
++			ext_intc_element->nr_irqs = nr_irqs;
++			ext_intc_element->flag &= ~RISCV_ACPI_INTC_FLAG_PENDING;
++			return 0;
++		}
++	}
++
++	return -ENODEV;
++}
++
+ int riscv_acpi_get_gsi_info(struct fwnode_handle *fwnode, u32 *gsi_base,
+ 			    u32 *id, u32 *nr_irqs, u32 *nr_idcs)
+ {
+@@ -115,14 +134,22 @@ struct fwnode_handle *riscv_acpi_get_gsi_domain_id(u32 gsi)
+ static int __init riscv_acpi_register_ext_intc(u32 gsi_base, u32 nr_irqs, u32 nr_idcs,
+ 					       u32 id, u32 type)
+ {
+-	struct riscv_ext_intc_list *ext_intc_element, *node;
++	struct riscv_ext_intc_list *ext_intc_element, *node, *prev;
+ 
+ 	ext_intc_element = kzalloc(sizeof(*ext_intc_element), GFP_KERNEL);
+ 	if (!ext_intc_element)
+ 		return -ENOMEM;
+ 
+ 	ext_intc_element->gsi_base = gsi_base;
+-	ext_intc_element->nr_irqs = nr_irqs;
++
++	/* If nr_irqs is zero, indicate it in flag and set to max range possible */
++	if (nr_irqs) {
++		ext_intc_element->nr_irqs = nr_irqs;
++	} else {
++		ext_intc_element->flag |= RISCV_ACPI_INTC_FLAG_PENDING;
++		ext_intc_element->nr_irqs = U32_MAX - ext_intc_element->gsi_base;
++	}
++
+ 	ext_intc_element->nr_idcs = nr_idcs;
+ 	ext_intc_element->id = id;
+ 	list_for_each_entry(node, &ext_intc_list, list) {
+@@ -130,6 +157,13 @@ static int __init riscv_acpi_register_ext_intc(u32 gsi_base, u32 nr_irqs, u32 nr
+ 			break;
+ 	}
+ 
++	/* Adjust the previous node's GSI range if that has pending registration */
++	prev = list_prev_entry(node, list);
++	if (!list_entry_is_head(prev, &ext_intc_list, list)) {
++		if (prev->flag & RISCV_ACPI_INTC_FLAG_PENDING)
++			prev->nr_irqs = ext_intc_element->gsi_base - prev->gsi_base;
++	}
++
+ 	list_add_tail(&ext_intc_element->list, &node->list);
+ 	return 0;
+ }
 -- 
 2.43.0
 
