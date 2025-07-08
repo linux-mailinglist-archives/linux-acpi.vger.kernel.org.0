@@ -1,140 +1,130 @@
-Return-Path: <linux-acpi+bounces-15063-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15064-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30B77AFC6F1
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jul 2025 11:22:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B07AFC737
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jul 2025 11:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E8581AA647E
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jul 2025 09:22:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 035A35605F0
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jul 2025 09:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18930221561;
-	Tue,  8 Jul 2025 09:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE87256C8D;
+	Tue,  8 Jul 2025 09:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VQKJrstN"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="hV4XSOhk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from out203-205-221-202.mail.qq.com (out203-205-221-202.mail.qq.com [203.205.221.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E0818A6DB;
-	Tue,  8 Jul 2025 09:22:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED491EE03D;
+	Tue,  8 Jul 2025 09:39:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751966552; cv=none; b=HD7pEqLdNrnJFRAQfwxu8czfBWRqR/iUE+QsSW4jfLXQCO2vXUwx0YU11NS9qtLNwTRdlQuNtg5Ljhn4uIMxnSlMqxaB22v+o3ZRql4YJHmz2WEGo3jFkk4FduG4y2kwEVYVQVQV2FpI/iIhqwj8uGWrNQ4MGULqeL07IoOSoIo=
+	t=1751967601; cv=none; b=cHrevwzKkEQx2/kXTwZ3/83PD5EGhp64yyLUo0w6nsNDzVMLo8U/jwmpj0ZehGC+0kKWRmXwRD8XDV5r7Gma0AoWFdnp3nD3fYu/0NRNJO/oOtFO7mzgNukNHiMkKN/wsYGX+T9YR+0GtIsmgUe7OFarIb78XgLTrVum2kQfWgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751966552; c=relaxed/simple;
-	bh=fNi8CbZrsjp3UKvN9dNkFPX/M5mAjHbTzquxS2QTpn4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GXx/tSLduDrfNSXCVnecK4ddfqxTGlUcIzYP5Cn1dYCk8nm5fJoVaDvd+E6SIRZn0xATu96Ne6mHSqmjlNjLma0SCogWo3ay21VGy/9TN4kXY6b7BHZWTLdxZi6uvdDcAoAYBeDbfuSmHSzkjJNBdMDYessToGFOEsyGFrz7d8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VQKJrstN; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751966550; x=1783502550;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=fNi8CbZrsjp3UKvN9dNkFPX/M5mAjHbTzquxS2QTpn4=;
-  b=VQKJrstNfvTXSNJpjuVxs4xGZ2b3HtNuHR7XGHVjnfq5VDK2eR6QpVbl
-   /A5ohxPKmMPyMCmkfx8AtZLfUahv/+rR5ndr6bS1zWjuGhy6NaErb3Owg
-   dDRV2OMLFYoeI4Ej6Mi9SCZM2E180TkH7lsCuas6uSm5qEhU9ue4UGhY3
-   jT7R7u0y+U9jZbzMTiwETIlXaoWwYEz87BsB7Y76ATIAhof0xPOfXRIzc
-   ESuKA0tr1cdW1S+N2qfdw28hjSwGt0U7bIATBj9sCQVkp8/gowR3yMZJr
-   2toGZOn6RhzaU8l8c8Px0P4Ai1YQqYUDH1lrLlonfXEbfSlBpvPBCfbw3
-   Q==;
-X-CSE-ConnectionGUID: yGV3DAE+Qmy4O/azHvOqSg==
-X-CSE-MsgGUID: d9ivVSDNRk+gEIUOcVH9Og==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54292759"
-X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; 
-   d="scan'208";a="54292759"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 02:22:29 -0700
-X-CSE-ConnectionGUID: TkV4LM6ORbi8hyA8Fqmigw==
-X-CSE-MsgGUID: Vx4UtHpvT3iz/IQlkz607Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; 
-   d="scan'208";a="179117759"
-Received: from cpetruta-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.230])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 02:22:24 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id C6BFD120898;
-	Tue,  8 Jul 2025 12:22:21 +0300 (EEST)
-Date: Tue, 8 Jul 2025 09:22:21 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 05/12] media: ipu-bridge: Use v4l2_fwnode for unknown
- rotations
-Message-ID: <aGzjTRSco39mKJcf@kekkonen.localdomain>
-References: <20250605-uvc-orientation-v2-0-5710f9d030aa@chromium.org>
- <20250605-uvc-orientation-v2-5-5710f9d030aa@chromium.org>
- <aGw_1T_Edm8--gXW@kekkonen.localdomain>
- <CANiDSCup2iRx+0RcaijSmbn04nBY4Ui9=esCPFsQzOKe=up9Gg@mail.gmail.com>
+	s=arc-20240116; t=1751967601; c=relaxed/simple;
+	bh=u7PNFRRuvaAuZJ0NtolVdmZY+LpdxtuLVkks7HD2h0k=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=M4UhkP3/yHQCYXECxCeHRzTN5GLb0OEj/BYbqi+yR536YgBuLwd6PK3ZaBKYOKZyEG7gzKdSqmQuMhlc+rLajczhW7+cJoUdBvI0tWdpcZ9JXHNUn9zJvZzOc1eVryA4pczpm2NPJax64f55TbYZkM+HzMUscxD27YaA36RFsMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=hV4XSOhk; arc=none smtp.client-ip=203.205.221.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1751967591;
+	bh=80RfFNsolAspBs0pCfqwxJdnYiu//WE8+0E2G617K/I=;
+	h=From:To:Cc:Subject:Date;
+	b=hV4XSOhkH9uYYRCC4tOU+U/Y7phtWqiGlW5lBNvHg1hOTrzOeEN2HH80IjIk2IR7t
+	 OVE7r9cUKz/jNcm6cqFDWhzdsmVZ4zErhqbZu8HL7QaefPa23QZYtBELU8D6IrHzkn
+	 g0pseIiUdjLCX+ZDzrcZXaHkYJwig1p77+XFEaMs=
+Received: from dcitdc.dci.com ([61.220.30.51])
+	by newxmesmtplogicsvrszc16-0.qq.com (NewEsmtp) with SMTP
+	id 9F21FEAB; Tue, 08 Jul 2025 17:39:50 +0800
+X-QQ-mid: xmsmtpt1751967590txjr0nf9x
+Message-ID: <tencent_3A33B864BD5DC73CBBE10CB481E4C546E107@qq.com>
+X-QQ-XMAILINFO: MfXGqYrvPcUt3f//s55822JJOeXXUQkju/CQDVxpskk/1IwoAX0cTVjS8uOlGC
+	 bYgz/LOxJxSo4Y4Welot8fhXzvOT6jr7yKsrj/0JypFLpTmCvFtW9kqjlCkaEZH6rBSD/niXOOn1
+	 KPes1H9D382soorggQ07nGXuZJ65m9ih5aAOHoSnB0K8DqMVHhrMldt5m1oTRFJdPqF0DewDZSMO
+	 3Hfizprq8btxi31zeoGv1dVmo+kp+ek1R5SUDWUwxJVBo27Pjihrcq4EHUyKa+C+nH9WqeT+IeUf
+	 Hy44FZNduGClGX9gKlRzeI98L8Yw3wH1nj7Oxds9UIsb5mwMUF/tYuBt5WTSeZ5pIroyVn/dgPMK
+	 UKvCS9T0V/78hgYDTrgTwogAX4kQvRi4dg6j22mdwMECdic74yINl8YJ5VqwQ7W7HarcVOY3Xg2t
+	 SRJMoyvX1+5gS+WeMg09qZ/B4d93YqJDzKq7RL16K/moDBr4MhFpaiXPtM4do55LpTTYS3m6lKiO
+	 4E/UPA6OO92+NCX4LFo8bdlITJ1/U6wzrhU7SEyNFrNCNWu3ykwjTT/BltLZxZohCIVbOR7VlJsT
+	 dw4+XCNceFUJxbyiTU3Ic3s6n4n1W7E+btnAFg4Bh0QoRk06pyAd1A8X3Dhlmf45PpYfIFrrysRU
+	 c8zDbRyc6vrxMbXrF0dSfWvpzaZ77AXJcs2ELxrSyyxCRPAe2LCWweg9ZuOBdAx0O0iWnR2zX4O7
+	 /6wJGaSm/YfbtftzVzJiS9QupbDC40WA77+vpA9SRnfD0V/5w7J2QTBdyjHa9DSnmYJhaTBlk4lP
+	 OeyN8bBtm9lJK8sJx9/fQABBY9OpbuQsqontcTq08sgFyuNZFWPCIDPCecca4iOHBxZEcb5xixfj
+	 idFVVAY6h/7g38PlbXHHi0xSCLt4/JmKmR8g/6iOBJM7KthozAFw/zHQE30mu7Af+lpBZkPZfBE1
+	 aOhZp9veF5t2piIyFx3u1V4RnVV8jRcwRa+jfhOBvWO9y+iPumleEJ8UStyecbaqYlQ0XDGUWSud
+	 ecCIdARg==
+X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
+From: shangsong <shangsong2@foxmail.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Shang song <shangsong2@lenovo.com>
+Subject: [PATCH 1/1] ACPI: PRM: Update address check for NULL handler
+Date: Tue,  8 Jul 2025 05:39:21 -0400
+X-OQ-MSGID: <20250708093921.2630431-1-shangsong2@foxmail.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiDSCup2iRx+0RcaijSmbn04nBY4Ui9=esCPFsQzOKe=up9Gg@mail.gmail.com>
 
-Hi Ricardo,
+From: Shang song <shangsong2@lenovo.com>
 
-On Tue, Jul 08, 2025 at 11:16:25AM +0200, Ricardo Ribalda wrote:
-> Hi Sakari
-> 
-> Thanks for your review
-> 
-> On Mon, 7 Jul 2025 at 23:45, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
-> >
-> > Hi Ricardo,
-> >
-> > On Thu, Jun 05, 2025 at 05:52:58PM +0000, Ricardo Ribalda wrote:
-> > > The v4l2_fwnode_device_properties contains information about the
-> > > rotation. Use it if the ssdb data is inconclusive.
-> >
-> > As SSDB and _PLD provide the same information, are they always aligned? Do
-> > you have any experience on how is this actually in firmware?
-> 
-> Not really, in ChromeOS we are pretty lucky to control the firmware.
-> 
-> @HdG Do you have some experience/opinion here?
-> 
-> >
-> > _PLD is standardised so it would seem reasonable to stick to that -- if it
-> > exists. Another approach could be to pick the one that doesn't translate to
-> > a sane default (0°).
-> 
-> I'd rather stick to the current prioritization unless there is a
-> strong argument against it. Otherwise there is a chance that we will
-> have regressions (outside CrOS)
+According to section "4.1.2 PRM Handler Information Structure" in the
+Platform Runtime Mechanism specification, the static data buffer and ACPI
+parameter buffer may be NULL if not required. Therefore, when either
+buffer is NULL, adding a check can prevent invalid virtual address
+conversion attempts.
 
-My point was rather there are no such rules currently for rotation: only
-SSDB was being used by the IPU bridge to obtain the rotation value,
-similarly only _PLD is consulted when it comes to orientation.
+Without this patch, the following dmesg log could be misleading or
+confusing to users:
 
--- 
-Regards,
+  kernel: Failed to find VA for GUID: 7626C6AE-F973-429C-A91C-107D7BE298B0, PA: 0x0
 
-Sakari Ailus
+Signed-off-by: Shang song <shangsong2@lenovo.com>
+---
+ drivers/acpi/prmt.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+index e549914a636c..a97f0f3a6590 100644
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -155,11 +155,21 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
+ 		th->handler_addr =
+ 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
+
+-		th->static_data_buffer_addr =
+-			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
++		/*
++		 * Per section "4.1.2 PRM Handler Information Structure" in
++		 * spec "Platform Runtime Mechanism", the static data buffer
++		 * and acpi parameter buffer may be NULL if they are not
++		 * needed.
++		 */
++		if (handler_info->static_data_buffer_address) {
++			th->static_data_buffer_addr =
++				efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
++		}
+
+-		th->acpi_param_buffer_addr =
+-			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
++		if (handler_info->acpi_param_buffer_address) {
++			th->acpi_param_buffer_addr =
++				efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
++		}
+
+ 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
+
+--
+2.43.5
+
 
