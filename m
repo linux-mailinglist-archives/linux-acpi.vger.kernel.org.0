@@ -1,206 +1,194 @@
-Return-Path: <linux-acpi+bounces-15070-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15071-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A45EAFD7A3
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jul 2025 21:52:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6747AFDBF2
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jul 2025 01:46:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F9F51896B68
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jul 2025 19:52:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C4A83B3A1A
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jul 2025 23:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370A723AB95;
-	Tue,  8 Jul 2025 19:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA1122FE02;
+	Tue,  8 Jul 2025 23:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vy9Zq8kd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ePNnI1Rk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6921DDA24;
-	Tue,  8 Jul 2025 19:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B9818E3F;
+	Tue,  8 Jul 2025 23:46:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752004312; cv=none; b=ca4pfbSC5Ze1RHC8HaiX1OI+aZN/auSCi8a3p5gdQQeU9BO1QjfN9tOkqmvxFuSHyMRVvbRZMjoC5UuKqyW1gS0x+CgM/lI/DJhqMkus1CvRucNV0P8vayLqJjJJztuVlHDs2B2myzi0xQKe5/F+nUC5mDCifEG5DFIkbwGB+1E=
+	t=1752018410; cv=none; b=imX2ALCHwkJNxbmopHhOmcc0UO6knc+B6wSla3znsV3/xkLgG4qAAfavoAQmfcQrFNhLcc1YJOcnXbKKSGYi6hTVneJU2ME+U5W2DQsGHPIHJGBsipzhwocyaBJTpiaZ0jbAZEP7OkLRs+8OyS+BWGax8ViGp1liy9hUsqWKHqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752004312; c=relaxed/simple;
-	bh=yTr2Lf6OzbgYuYzMP6Xk0nLwlLvEYoyDrhjaU0F+Y9I=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=h0wWwYb5wu5JeN+dBydELgKV/EUT40unLzTif9VGQ9ayTeXtl/m+VljZBsp6KjgEKcRFKTcp27iUFLpIZSDTpfwiYbkV/GqHaFUjo++Hfi0EHdiijd0Oer7XfRJhO4BrpkI6tvi9Ictpzw1ni/3CQ380aoNoKwBn17/B8qkwZuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vy9Zq8kd; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1752018410; c=relaxed/simple;
+	bh=MlpSgduVRBJdk395iMJ6yLimjvXQpIqGCCEMgZlsg6M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YirD9FG8efdxxGgfRop/ua55RsH0NLfUeRiERaiB4zn4GOQRC0ZSoW0RSTZOJD/ClrBorbpM1Hy1lVNfodRGjeQHKNnR9Xty1tXU+hvsXI2nxxzJd4T9r76Ql2GOw8WoNmjzIF8ycMeAj5jWJ2ONRPUaOmyw4Bgg01meFrfP5Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ePNnI1Rk; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752004311; x=1783540311;
-  h=date:from:to:cc:subject:message-id;
-  bh=yTr2Lf6OzbgYuYzMP6Xk0nLwlLvEYoyDrhjaU0F+Y9I=;
-  b=Vy9Zq8kdq/yjkTlSNIUljGMRqTlsyuGFC8JDRJ0fhE2i04obylfirioa
-   q9L4OCBD+CKGVM8j8g0OoKieMgc2J+ixyAGsJLxutOtGkMLyVGqri3msL
-   6svL8xsQHViA86x5Kvq/wKVhOo9u99kVLepVZxsUqZVr+V9acoiCtyZxW
-   rNSQOWtLGBJv95hNhMA6d01eZQYPvtZHVA9CH/5rENJKEoyChFlsf3dcG
-   us1ztYNWpS9j7NNS+nIcWfsvcTFOr8V5kKc17lwz0s+Dk5fpAusGA8k9K
-   Nk4f3Wz6GfQ13/Pj/AoRI+tAedl7YV8PrEZQFdNjI/AHf4GNqazdmhj1Y
-   Q==;
-X-CSE-ConnectionGUID: kbLkTwhzTFmGdnj+yuTCEw==
-X-CSE-MsgGUID: PlFAp+t2T92bBJ8xiFsvgw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="64951998"
+  t=1752018408; x=1783554408;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=MlpSgduVRBJdk395iMJ6yLimjvXQpIqGCCEMgZlsg6M=;
+  b=ePNnI1Rklo/1c2CII06FDMTNPFxv5YffmQbqisch/9WWMn35i+LhjeB0
+   JaxFqVmki9COX8GuMa5qaIta9S3tGP18/v4L6PcdfIHXwS2yqhA+28BP1
+   F2T84YjhWXKsh+ydKTWNK5VF0aUiBGosWL/H6liiHAoZhCb9mm6c5yZCE
+   yNnRyexqtIqGVX91SlABMJbPGLXyUDjLifoRaO88jHw3xafxH8fLk5N5O
+   81iFyste7mneSFlAgw1FdZkkR6908EV7sWpB7xu5c1G6kPWckSDY/QPwX
+   LcjU9Zicw1R4GWSFkWG4IIGM4sEYUW3kCNV+VWSwUgFolloVkpn9OGATB
+   A==;
+X-CSE-ConnectionGUID: 28bilIjgSmSguQIamSAKww==
+X-CSE-MsgGUID: yNVnkYAaSVqHo/4g1PqZUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54412895"
 X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="64951998"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 12:51:50 -0700
-X-CSE-ConnectionGUID: PqruNcHvTAeMHX3Yug7l5g==
-X-CSE-MsgGUID: wyBvPltBRuuxPQpRO2P3pQ==
+   d="scan'208";a="54412895"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 16:46:47 -0700
+X-CSE-ConnectionGUID: q7oi4U30RgSdrHZGPh6ycA==
+X-CSE-MsgGUID: 7IJhBtTFS2G52EautX/oBw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="161136258"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 08 Jul 2025 12:51:48 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uZELx-0002hq-2q;
-	Tue, 08 Jul 2025 19:51:45 +0000
-Date: Wed, 09 Jul 2025 03:50:48 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 133eb9f50b0fea3a4a19b95d3207f793ca5aa77a
-Message-ID: <202507090335.IEivsA0f-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+   d="scan'208";a="179305651"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.102])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 16:46:43 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 5D9BD11F8A6;
+	Wed,  9 Jul 2025 02:46:41 +0300 (EEST)
+Date: Tue, 8 Jul 2025 23:46:41 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 05/12] media: ipu-bridge: Use v4l2_fwnode for unknown
+ rotations
+Message-ID: <aG2t4cxwXKJ9MSQX@kekkonen.localdomain>
+References: <20250605-uvc-orientation-v2-0-5710f9d030aa@chromium.org>
+ <20250605-uvc-orientation-v2-5-5710f9d030aa@chromium.org>
+ <aGw_1T_Edm8--gXW@kekkonen.localdomain>
+ <CANiDSCup2iRx+0RcaijSmbn04nBY4Ui9=esCPFsQzOKe=up9Gg@mail.gmail.com>
+ <aGzjTRSco39mKJcf@kekkonen.localdomain>
+ <CANiDSCsqEHTnbvzLMoe_yxi8JRzp+2PQe3ksXhD=Y3+AqC_9hw@mail.gmail.com>
+ <aG0NI2V0Tfh2HZ6O@kekkonen.localdomain>
+ <CANiDSCu=wU_Oi7CLPcYTC3Xf_pGbDroaVitPAiAj7ND5pXy-6g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiDSCu=wU_Oi7CLPcYTC3Xf_pGbDroaVitPAiAj7ND5pXy-6g@mail.gmail.com>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 133eb9f50b0fea3a4a19b95d3207f793ca5aa77a  Merge branch 'pm-misc' into bleeding-edge
+On Tue, Jul 08, 2025 at 04:58:25PM +0200, Ricardo Ribalda wrote:
+> On Tue, 8 Jul 2025 at 14:21, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
+> >
+> > Hi Ricardo,
+> >
+> > On Tue, Jul 08, 2025 at 02:09:28PM +0200, Ricardo Ribalda wrote:
+> > > On Tue, 8 Jul 2025 at 11:22, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
+> > > >
+> > > > Hi Ricardo,
+> > > >
+> > > > On Tue, Jul 08, 2025 at 11:16:25AM +0200, Ricardo Ribalda wrote:
+> > > > > Hi Sakari
+> > > > >
+> > > > > Thanks for your review
+> > > > >
+> > > > > On Mon, 7 Jul 2025 at 23:45, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
+> > > > > >
+> > > > > > Hi Ricardo,
+> > > > > >
+> > > > > > On Thu, Jun 05, 2025 at 05:52:58PM +0000, Ricardo Ribalda wrote:
+> > > > > > > The v4l2_fwnode_device_properties contains information about the
+> > > > > > > rotation. Use it if the ssdb data is inconclusive.
+> > > > > >
+> > > > > > As SSDB and _PLD provide the same information, are they always aligned? Do
+> > > > > > you have any experience on how is this actually in firmware?
+> > > > >
+> > > > > Not really, in ChromeOS we are pretty lucky to control the firmware.
+> > > > >
+> > > > > @HdG Do you have some experience/opinion here?
+> > > > >
+> > > > > >
+> > > > > > _PLD is standardised so it would seem reasonable to stick to that -- if it
+> > > > > > exists. Another approach could be to pick the one that doesn't translate to
+> > > > > > a sane default (0°).
+> > > > >
+> > > > > I'd rather stick to the current prioritization unless there is a
+> > > > > strong argument against it. Otherwise there is a chance that we will
+> > > > > have regressions (outside CrOS)
+> > > >
+> > > > My point was rather there are no such rules currently for rotation: only
+> > > > SSDB was being used by the IPU bridge to obtain the rotation value,
+> > > > similarly only _PLD is consulted when it comes to orientation.
+> > >
+> > > So something like this:?
+> > >
+> > > static u32 ipu_bridge_parse_rotation(struct acpi_device *adev,
+> > >                                      struct ipu_sensor_ssdb *ssdb,
+> > >                                      struct
+> > > v4l2_fwnode_device_properties *props)
+> > > {
+> > >         if (props->rotation != V4L2_FWNODE_PROPERTY_UNSET)
+> > >                 return props->rotation;
+> > >
+> > >         switch (ssdb->degree) {
+> > >         case IPU_SENSOR_ROTATION_NORMAL:
+> > >                 return 0;
+> > >         case IPU_SENSOR_ROTATION_INVERTED:
+> > >                 return 180;
+> > >         }
+> > >
+> > >         dev_warn(ADEV_DEV(adev),
+> > >                  "Unknown rotation %d. Assume 0 degree rotation\n",
+> > >                  ssdb->degree);
+> >
+> > Maybe:
+> >
+> >         acpi_handle_warn(acpi_device_handle(adev), ...);
+> >
+> > ?
+> >
+> > >         return 0;
+> > > }
+> >
+> > Looks good to me. Maybe something similar for orientation?
+> 
+> Do you mean using ssdb also for orientation or using acpi_handle_warn?
+> 
+> 
+> I cannot find anything related to orientation for SSDB
+> https://github.com/coreboot/coreboot/blob/main/src/drivers/intel/mipi_camera/chip.h#L150
+> 
+> Am I looking in the right place?
 
-elapsed time: 1452m
+Ah, maybe SSDB has only rotation? At least it's less duplicated information
+in different format, so that's a good thing. So this just applies to
+rotation, it seems.
 
-configs tested: 112
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                   randconfig-001-20250708    gcc-13.4.0
-arc                   randconfig-002-20250708    gcc-8.5.0
-arc                        vdk_hs38_defconfig    gcc-15.1.0
-arm                               allnoconfig    clang-21
-arm                           imxrt_defconfig    clang-21
-arm                          ixp4xx_defconfig    gcc-15.1.0
-arm                   randconfig-001-20250708    clang-21
-arm                   randconfig-002-20250708    clang-17
-arm                   randconfig-003-20250708    gcc-10.5.0
-arm                   randconfig-004-20250708    clang-21
-arm64                             allnoconfig    gcc-15.1.0
-arm64                 randconfig-001-20250708    gcc-9.5.0
-arm64                 randconfig-002-20250708    clang-19
-arm64                 randconfig-003-20250708    clang-21
-arm64                 randconfig-004-20250708    gcc-8.5.0
-csky                              allnoconfig    gcc-15.1.0
-csky                  randconfig-001-20250708    gcc-13.4.0
-csky                  randconfig-002-20250708    gcc-15.1.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-21
-hexagon                          allyesconfig    clang-21
-hexagon               randconfig-001-20250708    clang-21
-hexagon               randconfig-002-20250708    clang-21
-i386        buildonly-randconfig-001-20250708    clang-20
-i386        buildonly-randconfig-002-20250708    clang-20
-i386        buildonly-randconfig-003-20250708    clang-20
-i386        buildonly-randconfig-004-20250708    gcc-12
-i386        buildonly-randconfig-005-20250708    clang-20
-i386        buildonly-randconfig-006-20250708    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-21
-loongarch             randconfig-001-20250708    clang-21
-loongarch             randconfig-002-20250708    clang-21
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-nios2                         10m50_defconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                               defconfig    gcc-14.2.0
-nios2                 randconfig-001-20250708    gcc-8.5.0
-nios2                 randconfig-002-20250708    gcc-8.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20250708    gcc-9.3.0
-parisc                randconfig-002-20250708    gcc-14.3.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc               randconfig-001-20250708    gcc-8.5.0
-powerpc               randconfig-002-20250708    clang-19
-powerpc               randconfig-003-20250708    clang-21
-powerpc64             randconfig-001-20250708    clang-21
-powerpc64             randconfig-002-20250708    clang-21
-powerpc64             randconfig-003-20250708    clang-21
-riscv                             allnoconfig    gcc-15.1.0
-riscv                               defconfig    clang-21
-riscv                 randconfig-001-20250708    clang-16
-riscv                 randconfig-002-20250708    gcc-11.5.0
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    clang-21
-s390                  randconfig-001-20250708    gcc-14.3.0
-s390                  randconfig-002-20250708    gcc-9.3.0
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                         ecovec24_defconfig    gcc-15.1.0
-sh                 kfr2r09-romimage_defconfig    gcc-15.1.0
-sh                    randconfig-001-20250708    gcc-11.5.0
-sh                    randconfig-002-20250708    gcc-15.1.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20250708    gcc-13.4.0
-sparc                 randconfig-002-20250708    gcc-13.4.0
-sparc64                             defconfig    clang-20
-sparc64               randconfig-001-20250708    clang-21
-sparc64               randconfig-002-20250708    gcc-15.1.0
-um                               alldefconfig    clang-21
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    gcc-12
-um                                  defconfig    clang-21
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20250708    clang-21
-um                    randconfig-002-20250708    clang-17
-um                           x86_64_defconfig    clang-21
-x86_64                            allnoconfig    clang-20
-x86_64      buildonly-randconfig-001-20250708    gcc-12
-x86_64      buildonly-randconfig-002-20250708    gcc-12
-x86_64      buildonly-randconfig-003-20250708    clang-20
-x86_64      buildonly-randconfig-004-20250708    gcc-12
-x86_64      buildonly-randconfig-005-20250708    clang-20
-x86_64      buildonly-randconfig-006-20250708    clang-20
-x86_64                              defconfig    gcc-11
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20250708    gcc-8.5.0
-xtensa                randconfig-002-20250708    gcc-9.3.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-- 
+Sakari Ailus
 
