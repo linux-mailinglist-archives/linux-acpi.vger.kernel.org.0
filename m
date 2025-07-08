@@ -1,45 +1,45 @@
-Return-Path: <linux-acpi+bounces-15055-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15056-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A47FDAFBEEA
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jul 2025 02:02:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5FB0AFBEF5
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jul 2025 02:03:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09D93560FED
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jul 2025 00:02:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A37A7A8C3B
+	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jul 2025 00:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8EB411712;
-	Tue,  8 Jul 2025 00:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65EF629D0E;
+	Tue,  8 Jul 2025 00:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WnTY/KRk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="omRcSkFf"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1A779DA;
-	Tue,  8 Jul 2025 00:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA02EEC3;
+	Tue,  8 Jul 2025 00:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751932953; cv=none; b=rAr69KyFM97MpexnE9UqEi0ixzyJY/Td635ie8ch1Emj0M1//zu93h1981EvZJ2czYmHFbigLIzALXqYITAY4oMlZOwIboYzbDDxU2U0vkwonofDIQ0YQnB4FfTxYkVYNQrhU/mt1LdWXZhiyyDeEIGuOzyxTVqcnCTg8mT0Xv0=
+	t=1751932965; cv=none; b=W9EggEiifKkqeUmgQVg5sbEWu2GWs9gdAUKbTavb6Zk7HPl27A5HgY+DixjpI1ZvBfQCL7nxU9bJ8gJdpq88oVZwgBOfur3yDrCTOytQo0YE/wN7/DKZFpUnls3pSPzmF6oU/LiQR3sEU3cGH6ye19wPdHJRzHHv0ywITJNcyiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751932953; c=relaxed/simple;
-	bh=/d4iOmSnG/Vh1H/PnfEjcqJlL6LQPz7FpYjpbY1m02s=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UAVZuEqbJAP65YfIGBSRA3JPUcc7z2+f84tBKXBhr7aKAZ6HiIlQLRlcYp8rcZGJ7Vy9PaMm2y14yFQ6AKnBye4jy5/oNtjro/be2UPmKE5osg0JEw5GUBcazSFiw5KHRUgwauRqEN2ECi0tQW8E9werwWEzMuZv9OlUN1jzNuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WnTY/KRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57223C4CEE3;
-	Tue,  8 Jul 2025 00:02:32 +0000 (UTC)
+	s=arc-20240116; t=1751932965; c=relaxed/simple;
+	bh=WOWj8fFWu0pzBgiNZaPRD2JRVEIDYA69FF8FPkP0azU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Fx2/5gjMUJI8dBGSzMHk/Qde0JYTOrnZ97ap7wEIFdxs68s5XUCNPdvolUn2vEgIxTWUkHkYgRMUhxFMbDy7fUslRqK59QC1Xew9MCG2j8WNfjzkel+WcLJPwg4+fA3mFLERYmxPcUnDEXNXo76kYVHQY0vMVVmnByYd2wVp4e0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=omRcSkFf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09468C4CEE3;
+	Tue,  8 Jul 2025 00:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751932953;
-	bh=/d4iOmSnG/Vh1H/PnfEjcqJlL6LQPz7FpYjpbY1m02s=;
+	s=k20201202; t=1751932963;
+	bh=WOWj8fFWu0pzBgiNZaPRD2JRVEIDYA69FF8FPkP0azU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=WnTY/KRk1DYhAdAjFXTbcIfN0FFedyCmUyvoVdSeinBOvZHbRWr6iMIf6yjPwTqjm
-	 ZcS3SqOaTCS18qUolt87oG7cdbBxUiLBVMe1MO4XhfY9KP4yWtqH8trEIfC8oBGiCZ
-	 /wVBBMHtVHfwodTNaHgLa7iKB3rsGwQy+afIvZhsIaKU7gQDnfszLpLt15o/hyOgO8
-	 Vif2Kxe7f0/6jkEEi9o2K36TugWEpGMjupHicH4KylhUkqoho2pKP08+TiaZvPKJbs
-	 FEhlECETb7MA+IZS3HSCzQ2rNiEfW0E9cF1J+ouLbCFvZKq7R6jjT/7PwapxOoPjBQ
-	 zMclDFXVuLHhw==
+	b=omRcSkFf5ZkkEYkISc+U4t8Nb/h7jyVMmpLxMa1jFswcx/4GQm+xOo0KtA+/WxNXR
+	 Z8DwsRAd8JTEU7WWi7N+if0Rn281km/Fo6duRJ3Q/TWCYC4uaMvVpOkudMZjSZXj7T
+	 vfthV9+Ky4yWF1nUk0CdSYJJUTXSBoo3PByjnEG4Vmxb27nm8Tdp6/HrcShx5UjnaK
+	 7NttuTPXxusGGJK2Q/KhB3189ZEMe8EaT5Su1+/zesUxp/SrArD3PI7xXZfvdXj1HC
+	 P4ihtDv5chi3cY8w885vRl1DVWWrSzLHpoSKsWPtcp2Y3zpWHMrU9Jnm4f7YTaoqJg
+	 chN5JCQnG3dkg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -48,9 +48,9 @@ Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 1/6] Revert "ACPI: battery: negate current when discharging"
-Date: Mon,  7 Jul 2025 20:02:25 -0400
-Message-Id: <20250708000230.793347-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 1/4] Revert "ACPI: battery: negate current when discharging"
+Date: Mon,  7 Jul 2025 20:02:38 -0400
+Message-Id: <20250708000241.793498-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.36
+X-stable-base: Linux 6.6.96
 Content-Transfer-Encoding: 8bit
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
@@ -152,7 +152,7 @@ change makes it even more suitable for stable backporting.
  1 file changed, 3 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 6a7ac34d73bda..65fa3444367a1 100644
+index cd3cbb7a36f85..e3cbaf3c3bbc1 100644
 --- a/drivers/acpi/battery.c
 +++ b/drivers/acpi/battery.c
 @@ -243,23 +243,10 @@ static int acpi_battery_get_property(struct power_supply *psy,
