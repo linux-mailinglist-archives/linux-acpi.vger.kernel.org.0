@@ -1,115 +1,266 @@
-Return-Path: <linux-acpi+bounces-15072-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15073-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6BDBAFEFDE
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jul 2025 19:30:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3EA5AFF218
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jul 2025 21:57:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4360F584ADE
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jul 2025 17:30:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E8871C8173D
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jul 2025 19:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2A8217F26;
-	Wed,  9 Jul 2025 17:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D533C2417D4;
+	Wed,  9 Jul 2025 19:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RXhKqJrq"
+	dkim=pass (2048-bit key) header.d=stgolabs.net header.i=@stgolabs.net header.b="bP5lh9VL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f194.google.com (mail-pf1-f194.google.com [209.85.210.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from crocodile.elm.relay.mailchannels.net (crocodile.elm.relay.mailchannels.net [23.83.212.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F792144CF;
-	Wed,  9 Jul 2025 17:30:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.194
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752082206; cv=none; b=FsJHiyfil5G4gmKPkM0GOAlSZ58x28f5c2zg8dmdm1OiU98ABr5c2I9FqatK5O9Vq3faBC3kG6R2tzbV5FLuiEFOYiA6oskBEluFPnRjRUnE/Z4gySkzqwTRRMRjr8XrS/XOwC9dLrfx1IAhLicPm8zTFIrXPPOdj4VCqidBO5Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752082206; c=relaxed/simple;
-	bh=EOj2lMga9i8OFABYK+OrsxlcZW0fasgfoQmLIBdlGY8=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=cE5ppIto5PrpWbCady/T0dTMSvCu6J8m57DfwaXejd5SJtm0rr1438+EiyvdnkCz0amtCzM543FXlU/bSoDpHlIrRJ9C51zGbnv81wkVnEVXakBDLZLjNqQ3u2ZKGQAyO59JtzKbmJIHtfSle3dV6yim6pAX2ylDqSWnlKzydmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RXhKqJrq; arc=none smtp.client-ip=209.85.210.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f194.google.com with SMTP id d2e1a72fcca58-7490cb9a892so117581b3a.0;
-        Wed, 09 Jul 2025 10:30:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752082204; x=1752687004; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=EOj2lMga9i8OFABYK+OrsxlcZW0fasgfoQmLIBdlGY8=;
-        b=RXhKqJrquwJ1EwRbXIFveBdUSzLxwREkOUkoDYY4nv+oYo3rDH3mLBq4eVwW7ZrSQH
-         h5jf2aDwtvf0BUMTZKvj9BOh5YcZVZgGV7g0w0N0wIzOtPsvUpm9Q6QipJg/UQrIpO3b
-         ZEPauRLWJwpgVVP7uCauGPg/0zPJcR03z+LWeorv2aq8jgRFnqvRU8ojgOCtD/SgiugL
-         n5YOEHg/LtT8s1rW6mlkyu1wA+PuP9JcBAc43IJSesjhfrAB4ZXLYjbq2qkGTh3H0MzS
-         V7BLPPGHTydcZiU2qHhavtiNgXfO8nY/cL4CSmhkOync7Wv8pfGg4ObNP39cD36Fkt9z
-         to8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752082204; x=1752687004;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EOj2lMga9i8OFABYK+OrsxlcZW0fasgfoQmLIBdlGY8=;
-        b=hH2PLSluVUf72JJIeIkawBjBOjBMKZ2ywOm68HMlqbnd4fOGzrnh6BwnEwJuyxQn5y
-         261Ic9ZOffuZ6+G9x9fJZ9d9GAKFQWIX/L2/pCFCIZalI/aWuqh2hFVARW2C+5qhpZ8b
-         2ywDab9wGD4Idw7QpA5SA6JnbOGpMzIGUnxyW7Hj9uk+pUn6SO0TR7zN6NCBqExGi8N3
-         21tDGHCDWshjV2GkyOM/U5P2+2gzlrsaGzmvrzbAje/ohX1dWij3D2o/bEw3SUqNxDiZ
-         AuKYm1XBp2f9VI7ObaN9pOYtus025eIH3CwhoFaNPP63mhxRqADPcKrocwikJBMTfXkX
-         /5aA==
-X-Forwarded-Encrypted: i=1; AJvYcCUHv55rMqDtwe5mjO93zmdjj3uz69p/txgdFnLlKpGIdAhL1XL6NOiq5987NGIJIMB5g3qRzvA0npzI@vger.kernel.org, AJvYcCWBNviX7E5M5qb9v7jYCHGEZbEkdcQqQs45V7QzFE8silwdpGbbmP84qBZjaUxEFoQ542Hne42eCvkGw0wdow4=@vger.kernel.org, AJvYcCWYuQbbPY5zR5H08Yk+0Xgm63HJ+6h2vhpqJLUbtclQSSH0S+R1/mw007hIVlDiJOyQRoPytDO58aGF@vger.kernel.org, AJvYcCWnDWQDg+QfeeXG0nADY5jI9IOyeDzKAZwTsoKbM6XonIcoFaEnBhx0ZRdV9YwvmO+0wmJvnh9J@vger.kernel.org
-X-Gm-Message-State: AOJu0YynZkpenkyceDtZsa9g710DsxpeSFtEd7K3oNJPKlxMk1DCwaAe
-	b4/TyMzMgSjhDIrIFHU75YjD2HmoaonZABFEPFkact6JlAJ3HClIMbP96CbxeHZTgH4=
-X-Gm-Gg: ASbGncvAT/tJJi+zEhCjkgGLLzosnoEz5XziVkFcJYxU6lo4GaT/gTaLVbp1m3tW0NR
-	VLPJj/fzuwgT0PiTR0whwuasq4UMR+g5ndrh1eiW5hldRyDtow7FjhJNy7pKhrvN9uvEClz8XZ5
-	kTVYB90wtf8mkz/5x0HyvTWEj4WfloIcrkNafro2jNjVAMxYpmMKFc6HROZTHuSwhm2FL9KWxRR
-	0cVOuSZrMNRJr4OG02UltcD4ql1yDNVCcpdFuHQI07TO65Jh82u6cHITZR6klGDyrlQMuHTFomV
-	9WhA0nMRtQRUnLqAs7MUpYJLQNk//7lvIMsBLYsqH9BP936GdsvxgVlLTDgWLFoMgk8N0sggo/C
-	Pvn8=
-X-Google-Smtp-Source: AGHT+IEoFN970f2Vz3fFerySBIi17puKzAo07Z7Kh48d+A/W1u5hYXGzjL22Gwcfkwgr1/kvAHijhg==
-X-Received: by 2002:a05:6a20:d8a:b0:220:3024:3d05 with SMTP id adf61e73a8af0-22fb444fe14mr912911637.16.1752082204448;
-        Wed, 09 Jul 2025 10:30:04 -0700 (PDT)
-Received: from [127.0.0.1] ([116.206.223.154])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b39c64f4e51sm3548305a12.36.2025.07.09.10.30.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Jul 2025 10:30:04 -0700 (PDT)
-Date: Wed, 09 Jul 2025 23:00:00 +0530
-From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
-To: Manivannan Sadhasivam <mani@kernel.org>
-CC: Bjorn Helgaas <helgaas@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
- linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
- ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
- stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_Instability_in_ALL_stable_an?=
- =?US-ASCII?Q?d_LTS_distro_kernels_=28IRQ_=2316_be?=
- =?US-ASCII?Q?ing_disabled=2C_PCIe_bus_errors=2C_a?=
- =?US-ASCII?Q?th10k=5Fpci=29_in_Dell_Inspiron_5567?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <2cq6jeywii5fscozazz2epugh6zflcpfbo4ffhjt2lyk76cq4m@vg2jcsmlhtho>
-References: <20250705195846.GA2011829@bhelgaas> <9D9D9375-1BD0-46EA-9E85-47A2D8325F98@gmail.com> <2cq6jeywii5fscozazz2epugh6zflcpfbo4ffhjt2lyk76cq4m@vg2jcsmlhtho>
-Message-ID: <FB89ECA8-93E2-4015-8DCF-6D362A53D825@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72BA20468C;
+	Wed,  9 Jul 2025 19:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.212.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752091016; cv=pass; b=ZtMAYjwOEpAeSeW9weSLiaYMxRyLUZ0jpF/j4piSYYBrY/R3hRVlAhTUFVrZ127HrFeadmu/WkvR2RRcpky5Tnlma2A7KBiC6ulFieD005vTJJQ6N7fWz9euhPFQz3GBDQbz0g88v7AU8yaobNmkVGaC505oPOP0dWm1DgKUByw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752091016; c=relaxed/simple;
+	bh=g9GRJAhdAGEmA5ZYVjwivHeYePoeYJ5mJKW6y6E9UTU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UvHSp9N5oZcafbSsZzQdxZ5DPJrjRhTVRVfFzf8gfD3YbaLxCbK5j4L2Hl0EULcqZ7wIdV0KLSv8129TFec4R5YLpjd4xeQQFfRz8Y4CRGqrMjFPp8A+UIrbHMHGW9fpdRKmFSHT0t3HL4kdA9Po+ZzkgJMAr7KRpCQEzEC/mj8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stgolabs.net; spf=pass smtp.mailfrom=stgolabs.net; dkim=pass (2048-bit key) header.d=stgolabs.net header.i=@stgolabs.net header.b=bP5lh9VL; arc=pass smtp.client-ip=23.83.212.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stgolabs.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 47B7F20BCA;
+	Wed,  9 Jul 2025 19:46:16 +0000 (UTC)
+Received: from pdx1-sub0-mail-a220.dreamhost.com (100-111-53-65.trex-nlb.outbound.svc.cluster.local [100.111.53.65])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 9754B23723;
+	Wed,  9 Jul 2025 19:46:15 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1752090375; a=rsa-sha256;
+	cv=none;
+	b=O1oyxt3r89XpSHlK1mgzZVayGQPg0X+1esZT0hTCsLWoLJbHWjq+e6iNDdBZE+jdAe2c8L
+	ZgrO+e1h9MKeks44XPZQxgndnA4dcqq+3SrxTqjklmnsQHkbVCo+Qhy2nAXPxExkMpAaZm
+	20Vj86rRci5Dna0Ki3I5NxUqCyN5Qsk2NB0ib+umeG/tJLZl8POLtjVFqVRa0pDIhT3qco
+	+icaJVQkAZOwI3LSO3iO998ZNd3JL012olr+VId3lDg8ryH0qoZ8mTTaSXLYr/bMDEsorV
+	vYyszvLLoCXWb1ajNWRIfCO4GPjjowtID5cYYTEmUM7TkpqpyOcxU2RaSDoH4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1752090375;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=76X/WazY2+6KOc3w73+FOE9+6MaDwTt4/NFSE4CQL4k=;
+	b=ffuuPuqOJwest0RDnOkHYJ1Do28Iea7WGbEn+gKLZzbnPBRhnWre5sIRfYZ+BsG/eAMO6E
+	tVDKTma52+/x+N0gOPv2BHZMTARZJzoEI4Qt6OWdb70EZy/pOudP1A45ClLxO2EA809f4k
+	WU35rovLunUqPnEBEldM9N0yJ1N2fqrvhbgbo5bf1gXMbyw3PAXkkzCm4YWQ4/7ySK+rvJ
+	8B0ts4SFy1hj2sRle1jMKEjjNnt9hOITiuRhBhCR+kQBhRKl9bRlSFPdzst4p7g+a5bUDW
+	qOrr/Ffmuipv2W/fwIsdnInNUMl43nZmZ3Vlc9qdAV2ixjatyCEfGYHiTA520g==
+ARC-Authentication-Results: i=1;
+	rspamd-5c976dc8b-7stp7;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Bottle-Obese: 349541e54122468c_1752090376120_4018561239
+X-MC-Loop-Signature: 1752090376120:3016696630
+X-MC-Ingress-Time: 1752090376120
+Received: from pdx1-sub0-mail-a220.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.111.53.65 (trex/7.1.3);
+	Wed, 09 Jul 2025 19:46:16 +0000
+Received: from offworld (syn-076-167-199-067.res.spectrum.com [76.167.199.67])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dave@stgolabs.net)
+	by pdx1-sub0-mail-a220.dreamhost.com (Postfix) with ESMTPSA id 4bcpPd6YJvz9D;
+	Wed,  9 Jul 2025 12:46:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+	s=dreamhost; t=1752090375;
+	bh=76X/WazY2+6KOc3w73+FOE9+6MaDwTt4/NFSE4CQL4k=;
+	h=Date:From:To:Cc:Subject:Content-Type;
+	b=bP5lh9VLP6FPboYWNC2Ty9LgfK/jIojqCiqisXD8BBuwPxUKVE9kQLEhKS4G/aEbR
+	 qYGAvJzv3s3GRAd6CppZnrcPLVCIphfhyJ6W6GR+fcsmBBe7yPjqKSUziG7KKuMPua
+	 67Fe7tRp25nVaTb4pMfn6ukRo3BApVNQyVgNzRFGYonwx0f7mP4TmIp+YEhGDlpf3P
+	 Oq4XmxcDqZiRcxi8rwMxT6ZMhwPN4DswM47g1bXq9ub2QgjCxCgbu1MpQUKaRNJGgN
+	 S8PWq+59LqwCCw/gC731dlH3kkenwU/J/6gQ5lFvI3zDGAc5W7xR2tBnfbaSNkc752
+	 1Gk+KmcVv7kbw==
+Date: Wed, 9 Jul 2025 12:46:11 -0700
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, james.morse@arm.com,
+	linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, gregkh@linuxfoundation.org,
+	Will Deacon <will@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Yicong Yang <yangyicong@huawei.com>, linuxarm@huawei.com,
+	Yushan Wang <wangyushan12@huawei.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, H Peter Anvin <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adam Manzanares <a.manzanares@samsung.com>
+Subject: Re: [PATCH v2 1/8] memregion: Support fine grained invalidate by
+ cpu_cache_invalidate_memregion()
+Message-ID: <20250709194611.f2d5q6dubzqeqhjr@offworld>
+Mail-Followup-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>, james.morse@arm.com,
+	linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, gregkh@linuxfoundation.org,
+	Will Deacon <will@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Yicong Yang <yangyicong@huawei.com>, linuxarm@huawei.com,
+	Yushan Wang <wangyushan12@huawei.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, H Peter Anvin <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adam Manzanares <a.manzanares@samsung.com>
+References: <20250624154805.66985-1-Jonathan.Cameron@huawei.com>
+ <20250624154805.66985-2-Jonathan.Cameron@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250624154805.66985-2-Jonathan.Cameron@huawei.com>
+User-Agent: NeoMutt/20220429
 
-Hello,=20
+On Tue, 24 Jun 2025, Jonathan Cameron wrote:
 
-I was actually a bit distracted by the things caused by the Automatic Part=
-itioning of Fedora=2E I'll inform that in Fedora Bugzilla=2E=2E=2E anyway=
-=2E
+>From: Yicong Yang <yangyicong@hisilicon.com>
+>
+>Extend cpu_cache_invalidate_memregion() to support invalidate certain
+>range of memory. Control of types of invlidation is left for when
+>usecases turn up. For now everything is Clean and Invalidate.
 
-I realised that making the modules will take 8-9 hours, I didn't even have=
- much of a success (because all the modules didn't properly load, particula=
-rly the firmware-N=2Ebin files couldn't be found)=2E=20
+Yes, this was always the idea for the final interface, but had
+kept it simple given x86's big hammer hoping for arm64 solution
+to come around.
 
-But I'll try to recompile the kernel, I'll just have to give it overnight =
-time=2E
+Acked-by: Davidlohr Bueso <dave@stgolabs.net>
 
-Bandhan
+>
+>Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+>Signed-off-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+>---
+> arch/x86/mm/pat/set_memory.c | 2 +-
+> drivers/cxl/core/region.c    | 6 +++++-
+> drivers/nvdimm/region.c      | 3 ++-
+> drivers/nvdimm/region_devs.c | 3 ++-
+> include/linux/memregion.h    | 8 ++++++--
+> 5 files changed, 16 insertions(+), 6 deletions(-)
+>
+>diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+>index 46edc11726b7..8b39aad22458 100644
+>--- a/arch/x86/mm/pat/set_memory.c
+>+++ b/arch/x86/mm/pat/set_memory.c
+>@@ -368,7 +368,7 @@ bool cpu_cache_has_invalidate_memregion(void)
+> }
+> EXPORT_SYMBOL_NS_GPL(cpu_cache_has_invalidate_memregion, "DEVMEM");
+>
+>-int cpu_cache_invalidate_memregion(int res_desc)
+>+int cpu_cache_invalidate_memregion(int res_desc, phys_addr_t start, size_t len)
+> {
+>	if (WARN_ON_ONCE(!cpu_cache_has_invalidate_memregion()))
+>		return -ENXIO;
+>diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+>index 6e5e1460068d..6e6e8ace0897 100644
+>--- a/drivers/cxl/core/region.c
+>+++ b/drivers/cxl/core/region.c
+>@@ -237,7 +237,11 @@ static int cxl_region_invalidate_memregion(struct cxl_region *cxlr)
+>		return -ENXIO;
+>	}
+>
+>-	cpu_cache_invalidate_memregion(IORES_DESC_CXL);
+>+	if (!cxlr->params.res)
+>+		return -ENXIO;
+>+	cpu_cache_invalidate_memregion(IORES_DESC_CXL,
+>+				       cxlr->params.res->start,
+>+				       resource_size(cxlr->params.res));
+>	return 0;
+> }
+>
+>diff --git a/drivers/nvdimm/region.c b/drivers/nvdimm/region.c
+>index 88dc062af5f8..033e40f4dc52 100644
+>--- a/drivers/nvdimm/region.c
+>+++ b/drivers/nvdimm/region.c
+>@@ -110,7 +110,8 @@ static void nd_region_remove(struct device *dev)
+>	 * here is ok.
+>	 */
+>	if (cpu_cache_has_invalidate_memregion())
+>-		cpu_cache_invalidate_memregion(IORES_DESC_PERSISTENT_MEMORY);
+>+		cpu_cache_invalidate_memregion(IORES_DESC_PERSISTENT_MEMORY,
+>+					       0, -1);
+> }
+>
+> static int child_notify(struct device *dev, void *data)
+>diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
+>index de1ee5ebc851..7e93766065d1 100644
+>--- a/drivers/nvdimm/region_devs.c
+>+++ b/drivers/nvdimm/region_devs.c
+>@@ -90,7 +90,8 @@ static int nd_region_invalidate_memregion(struct nd_region *nd_region)
+>		}
+>	}
+>
+>-	cpu_cache_invalidate_memregion(IORES_DESC_PERSISTENT_MEMORY);
+>+	cpu_cache_invalidate_memregion(IORES_DESC_PERSISTENT_MEMORY,
+>+				       0, -1);
+> out:
+>	for (i = 0; i < nd_region->ndr_mappings; i++) {
+>		struct nd_mapping *nd_mapping = &nd_region->mapping[i];
+>diff --git a/include/linux/memregion.h b/include/linux/memregion.h
+>index c01321467789..91d088ee3695 100644
+>--- a/include/linux/memregion.h
+>+++ b/include/linux/memregion.h
+>@@ -28,6 +28,9 @@ static inline void memregion_free(int id)
+>  * cpu_cache_invalidate_memregion - drop any CPU cached data for
+>  *     memregions described by @res_desc
+>  * @res_desc: one of the IORES_DESC_* types
+>+ * @start: start physical address of the target memory region.
+>+ * @len: length of the target memory region. -1 for all the regions of
+>+ *       the target type.
+>  *
+>  * Perform cache maintenance after a memory event / operation that
+>  * changes the contents of physical memory in a cache-incoherent manner.
+>@@ -46,7 +49,7 @@ static inline void memregion_free(int id)
+>  * the cache maintenance.
+>  */
+> #ifdef CONFIG_ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+>-int cpu_cache_invalidate_memregion(int res_desc);
+>+int cpu_cache_invalidate_memregion(int res_desc, phys_addr_t start, size_t len);
+> bool cpu_cache_has_invalidate_memregion(void);
+> #else
+> static inline bool cpu_cache_has_invalidate_memregion(void)
+>@@ -54,7 +57,8 @@ static inline bool cpu_cache_has_invalidate_memregion(void)
+>	return false;
+> }
+>
+>-static inline int cpu_cache_invalidate_memregion(int res_desc)
+>+static inline int cpu_cache_invalidate_memregion(int res_desc,
+>+						 phys_addr_t start, size_t len)
+> {
+>	WARN_ON_ONCE("CPU cache invalidation required");
+>	return -ENXIO;
+>--
+>2.48.1
+>
 
