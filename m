@@ -1,194 +1,115 @@
-Return-Path: <linux-acpi+bounces-15071-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15072-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6747AFDBF2
-	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jul 2025 01:46:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6BDBAFEFDE
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jul 2025 19:30:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C4A83B3A1A
-	for <lists+linux-acpi@lfdr.de>; Tue,  8 Jul 2025 23:46:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4360F584ADE
+	for <lists+linux-acpi@lfdr.de>; Wed,  9 Jul 2025 17:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA1122FE02;
-	Tue,  8 Jul 2025 23:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2A8217F26;
+	Wed,  9 Jul 2025 17:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ePNnI1Rk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RXhKqJrq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f194.google.com (mail-pf1-f194.google.com [209.85.210.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B9818E3F;
-	Tue,  8 Jul 2025 23:46:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F792144CF;
+	Wed,  9 Jul 2025 17:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752018410; cv=none; b=imX2ALCHwkJNxbmopHhOmcc0UO6knc+B6wSla3znsV3/xkLgG4qAAfavoAQmfcQrFNhLcc1YJOcnXbKKSGYi6hTVneJU2ME+U5W2DQsGHPIHJGBsipzhwocyaBJTpiaZ0jbAZEP7OkLRs+8OyS+BWGax8ViGp1liy9hUsqWKHqQ=
+	t=1752082206; cv=none; b=FsJHiyfil5G4gmKPkM0GOAlSZ58x28f5c2zg8dmdm1OiU98ABr5c2I9FqatK5O9Vq3faBC3kG6R2tzbV5FLuiEFOYiA6oskBEluFPnRjRUnE/Z4gySkzqwTRRMRjr8XrS/XOwC9dLrfx1IAhLicPm8zTFIrXPPOdj4VCqidBO5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752018410; c=relaxed/simple;
-	bh=MlpSgduVRBJdk395iMJ6yLimjvXQpIqGCCEMgZlsg6M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YirD9FG8efdxxGgfRop/ua55RsH0NLfUeRiERaiB4zn4GOQRC0ZSoW0RSTZOJD/ClrBorbpM1Hy1lVNfodRGjeQHKNnR9Xty1tXU+hvsXI2nxxzJd4T9r76Ql2GOw8WoNmjzIF8ycMeAj5jWJ2ONRPUaOmyw4Bgg01meFrfP5Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ePNnI1Rk; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752018408; x=1783554408;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=MlpSgduVRBJdk395iMJ6yLimjvXQpIqGCCEMgZlsg6M=;
-  b=ePNnI1Rklo/1c2CII06FDMTNPFxv5YffmQbqisch/9WWMn35i+LhjeB0
-   JaxFqVmki9COX8GuMa5qaIta9S3tGP18/v4L6PcdfIHXwS2yqhA+28BP1
-   F2T84YjhWXKsh+ydKTWNK5VF0aUiBGosWL/H6liiHAoZhCb9mm6c5yZCE
-   yNnRyexqtIqGVX91SlABMJbPGLXyUDjLifoRaO88jHw3xafxH8fLk5N5O
-   81iFyste7mneSFlAgw1FdZkkR6908EV7sWpB7xu5c1G6kPWckSDY/QPwX
-   LcjU9Zicw1R4GWSFkWG4IIGM4sEYUW3kCNV+VWSwUgFolloVkpn9OGATB
-   A==;
-X-CSE-ConnectionGUID: 28bilIjgSmSguQIamSAKww==
-X-CSE-MsgGUID: yNVnkYAaSVqHo/4g1PqZUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54412895"
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="54412895"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 16:46:47 -0700
-X-CSE-ConnectionGUID: q7oi4U30RgSdrHZGPh6ycA==
-X-CSE-MsgGUID: 7IJhBtTFS2G52EautX/oBw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="179305651"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.102])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 16:46:43 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 5D9BD11F8A6;
-	Wed,  9 Jul 2025 02:46:41 +0300 (EEST)
-Date: Tue, 8 Jul 2025 23:46:41 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 05/12] media: ipu-bridge: Use v4l2_fwnode for unknown
- rotations
-Message-ID: <aG2t4cxwXKJ9MSQX@kekkonen.localdomain>
-References: <20250605-uvc-orientation-v2-0-5710f9d030aa@chromium.org>
- <20250605-uvc-orientation-v2-5-5710f9d030aa@chromium.org>
- <aGw_1T_Edm8--gXW@kekkonen.localdomain>
- <CANiDSCup2iRx+0RcaijSmbn04nBY4Ui9=esCPFsQzOKe=up9Gg@mail.gmail.com>
- <aGzjTRSco39mKJcf@kekkonen.localdomain>
- <CANiDSCsqEHTnbvzLMoe_yxi8JRzp+2PQe3ksXhD=Y3+AqC_9hw@mail.gmail.com>
- <aG0NI2V0Tfh2HZ6O@kekkonen.localdomain>
- <CANiDSCu=wU_Oi7CLPcYTC3Xf_pGbDroaVitPAiAj7ND5pXy-6g@mail.gmail.com>
+	s=arc-20240116; t=1752082206; c=relaxed/simple;
+	bh=EOj2lMga9i8OFABYK+OrsxlcZW0fasgfoQmLIBdlGY8=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=cE5ppIto5PrpWbCady/T0dTMSvCu6J8m57DfwaXejd5SJtm0rr1438+EiyvdnkCz0amtCzM543FXlU/bSoDpHlIrRJ9C51zGbnv81wkVnEVXakBDLZLjNqQ3u2ZKGQAyO59JtzKbmJIHtfSle3dV6yim6pAX2ylDqSWnlKzydmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RXhKqJrq; arc=none smtp.client-ip=209.85.210.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f194.google.com with SMTP id d2e1a72fcca58-7490cb9a892so117581b3a.0;
+        Wed, 09 Jul 2025 10:30:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752082204; x=1752687004; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=EOj2lMga9i8OFABYK+OrsxlcZW0fasgfoQmLIBdlGY8=;
+        b=RXhKqJrquwJ1EwRbXIFveBdUSzLxwREkOUkoDYY4nv+oYo3rDH3mLBq4eVwW7ZrSQH
+         h5jf2aDwtvf0BUMTZKvj9BOh5YcZVZgGV7g0w0N0wIzOtPsvUpm9Q6QipJg/UQrIpO3b
+         ZEPauRLWJwpgVVP7uCauGPg/0zPJcR03z+LWeorv2aq8jgRFnqvRU8ojgOCtD/SgiugL
+         n5YOEHg/LtT8s1rW6mlkyu1wA+PuP9JcBAc43IJSesjhfrAB4ZXLYjbq2qkGTh3H0MzS
+         V7BLPPGHTydcZiU2qHhavtiNgXfO8nY/cL4CSmhkOync7Wv8pfGg4ObNP39cD36Fkt9z
+         to8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752082204; x=1752687004;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EOj2lMga9i8OFABYK+OrsxlcZW0fasgfoQmLIBdlGY8=;
+        b=hH2PLSluVUf72JJIeIkawBjBOjBMKZ2ywOm68HMlqbnd4fOGzrnh6BwnEwJuyxQn5y
+         261Ic9ZOffuZ6+G9x9fJZ9d9GAKFQWIX/L2/pCFCIZalI/aWuqh2hFVARW2C+5qhpZ8b
+         2ywDab9wGD4Idw7QpA5SA6JnbOGpMzIGUnxyW7Hj9uk+pUn6SO0TR7zN6NCBqExGi8N3
+         21tDGHCDWshjV2GkyOM/U5P2+2gzlrsaGzmvrzbAje/ohX1dWij3D2o/bEw3SUqNxDiZ
+         AuKYm1XBp2f9VI7ObaN9pOYtus025eIH3CwhoFaNPP63mhxRqADPcKrocwikJBMTfXkX
+         /5aA==
+X-Forwarded-Encrypted: i=1; AJvYcCUHv55rMqDtwe5mjO93zmdjj3uz69p/txgdFnLlKpGIdAhL1XL6NOiq5987NGIJIMB5g3qRzvA0npzI@vger.kernel.org, AJvYcCWBNviX7E5M5qb9v7jYCHGEZbEkdcQqQs45V7QzFE8silwdpGbbmP84qBZjaUxEFoQ542Hne42eCvkGw0wdow4=@vger.kernel.org, AJvYcCWYuQbbPY5zR5H08Yk+0Xgm63HJ+6h2vhpqJLUbtclQSSH0S+R1/mw007hIVlDiJOyQRoPytDO58aGF@vger.kernel.org, AJvYcCWnDWQDg+QfeeXG0nADY5jI9IOyeDzKAZwTsoKbM6XonIcoFaEnBhx0ZRdV9YwvmO+0wmJvnh9J@vger.kernel.org
+X-Gm-Message-State: AOJu0YynZkpenkyceDtZsa9g710DsxpeSFtEd7K3oNJPKlxMk1DCwaAe
+	b4/TyMzMgSjhDIrIFHU75YjD2HmoaonZABFEPFkact6JlAJ3HClIMbP96CbxeHZTgH4=
+X-Gm-Gg: ASbGncvAT/tJJi+zEhCjkgGLLzosnoEz5XziVkFcJYxU6lo4GaT/gTaLVbp1m3tW0NR
+	VLPJj/fzuwgT0PiTR0whwuasq4UMR+g5ndrh1eiW5hldRyDtow7FjhJNy7pKhrvN9uvEClz8XZ5
+	kTVYB90wtf8mkz/5x0HyvTWEj4WfloIcrkNafro2jNjVAMxYpmMKFc6HROZTHuSwhm2FL9KWxRR
+	0cVOuSZrMNRJr4OG02UltcD4ql1yDNVCcpdFuHQI07TO65Jh82u6cHITZR6klGDyrlQMuHTFomV
+	9WhA0nMRtQRUnLqAs7MUpYJLQNk//7lvIMsBLYsqH9BP936GdsvxgVlLTDgWLFoMgk8N0sggo/C
+	Pvn8=
+X-Google-Smtp-Source: AGHT+IEoFN970f2Vz3fFerySBIi17puKzAo07Z7Kh48d+A/W1u5hYXGzjL22Gwcfkwgr1/kvAHijhg==
+X-Received: by 2002:a05:6a20:d8a:b0:220:3024:3d05 with SMTP id adf61e73a8af0-22fb444fe14mr912911637.16.1752082204448;
+        Wed, 09 Jul 2025 10:30:04 -0700 (PDT)
+Received: from [127.0.0.1] ([116.206.223.154])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b39c64f4e51sm3548305a12.36.2025.07.09.10.30.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Jul 2025 10:30:04 -0700 (PDT)
+Date: Wed, 09 Jul 2025 23:00:00 +0530
+From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
+To: Manivannan Sadhasivam <mani@kernel.org>
+CC: Bjorn Helgaas <helgaas@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+ ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_Instability_in_ALL_stable_an?=
+ =?US-ASCII?Q?d_LTS_distro_kernels_=28IRQ_=2316_be?=
+ =?US-ASCII?Q?ing_disabled=2C_PCIe_bus_errors=2C_a?=
+ =?US-ASCII?Q?th10k=5Fpci=29_in_Dell_Inspiron_5567?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <2cq6jeywii5fscozazz2epugh6zflcpfbo4ffhjt2lyk76cq4m@vg2jcsmlhtho>
+References: <20250705195846.GA2011829@bhelgaas> <9D9D9375-1BD0-46EA-9E85-47A2D8325F98@gmail.com> <2cq6jeywii5fscozazz2epugh6zflcpfbo4ffhjt2lyk76cq4m@vg2jcsmlhtho>
+Message-ID: <FB89ECA8-93E2-4015-8DCF-6D362A53D825@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiDSCu=wU_Oi7CLPcYTC3Xf_pGbDroaVitPAiAj7ND5pXy-6g@mail.gmail.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 08, 2025 at 04:58:25PM +0200, Ricardo Ribalda wrote:
-> On Tue, 8 Jul 2025 at 14:21, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
-> >
-> > Hi Ricardo,
-> >
-> > On Tue, Jul 08, 2025 at 02:09:28PM +0200, Ricardo Ribalda wrote:
-> > > On Tue, 8 Jul 2025 at 11:22, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
-> > > >
-> > > > Hi Ricardo,
-> > > >
-> > > > On Tue, Jul 08, 2025 at 11:16:25AM +0200, Ricardo Ribalda wrote:
-> > > > > Hi Sakari
-> > > > >
-> > > > > Thanks for your review
-> > > > >
-> > > > > On Mon, 7 Jul 2025 at 23:45, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
-> > > > > >
-> > > > > > Hi Ricardo,
-> > > > > >
-> > > > > > On Thu, Jun 05, 2025 at 05:52:58PM +0000, Ricardo Ribalda wrote:
-> > > > > > > The v4l2_fwnode_device_properties contains information about the
-> > > > > > > rotation. Use it if the ssdb data is inconclusive.
-> > > > > >
-> > > > > > As SSDB and _PLD provide the same information, are they always aligned? Do
-> > > > > > you have any experience on how is this actually in firmware?
-> > > > >
-> > > > > Not really, in ChromeOS we are pretty lucky to control the firmware.
-> > > > >
-> > > > > @HdG Do you have some experience/opinion here?
-> > > > >
-> > > > > >
-> > > > > > _PLD is standardised so it would seem reasonable to stick to that -- if it
-> > > > > > exists. Another approach could be to pick the one that doesn't translate to
-> > > > > > a sane default (0°).
-> > > > >
-> > > > > I'd rather stick to the current prioritization unless there is a
-> > > > > strong argument against it. Otherwise there is a chance that we will
-> > > > > have regressions (outside CrOS)
-> > > >
-> > > > My point was rather there are no such rules currently for rotation: only
-> > > > SSDB was being used by the IPU bridge to obtain the rotation value,
-> > > > similarly only _PLD is consulted when it comes to orientation.
-> > >
-> > > So something like this:?
-> > >
-> > > static u32 ipu_bridge_parse_rotation(struct acpi_device *adev,
-> > >                                      struct ipu_sensor_ssdb *ssdb,
-> > >                                      struct
-> > > v4l2_fwnode_device_properties *props)
-> > > {
-> > >         if (props->rotation != V4L2_FWNODE_PROPERTY_UNSET)
-> > >                 return props->rotation;
-> > >
-> > >         switch (ssdb->degree) {
-> > >         case IPU_SENSOR_ROTATION_NORMAL:
-> > >                 return 0;
-> > >         case IPU_SENSOR_ROTATION_INVERTED:
-> > >                 return 180;
-> > >         }
-> > >
-> > >         dev_warn(ADEV_DEV(adev),
-> > >                  "Unknown rotation %d. Assume 0 degree rotation\n",
-> > >                  ssdb->degree);
-> >
-> > Maybe:
-> >
-> >         acpi_handle_warn(acpi_device_handle(adev), ...);
-> >
-> > ?
-> >
-> > >         return 0;
-> > > }
-> >
-> > Looks good to me. Maybe something similar for orientation?
-> 
-> Do you mean using ssdb also for orientation or using acpi_handle_warn?
-> 
-> 
-> I cannot find anything related to orientation for SSDB
-> https://github.com/coreboot/coreboot/blob/main/src/drivers/intel/mipi_camera/chip.h#L150
-> 
-> Am I looking in the right place?
+Hello,=20
 
-Ah, maybe SSDB has only rotation? At least it's less duplicated information
-in different format, so that's a good thing. So this just applies to
-rotation, it seems.
+I was actually a bit distracted by the things caused by the Automatic Part=
+itioning of Fedora=2E I'll inform that in Fedora Bugzilla=2E=2E=2E anyway=
+=2E
 
--- 
-Sakari Ailus
+I realised that making the modules will take 8-9 hours, I didn't even have=
+ much of a success (because all the modules didn't properly load, particula=
+rly the firmware-N=2Ebin files couldn't be found)=2E=20
+
+But I'll try to recompile the kernel, I'll just have to give it overnight =
+time=2E
+
+Bandhan
 
