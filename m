@@ -1,143 +1,94 @@
-Return-Path: <linux-acpi+bounces-15102-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15103-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7804FB01B36
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Jul 2025 13:54:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9BD2B01BCE
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Jul 2025 14:17:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C5351C83B02
-	for <lists+linux-acpi@lfdr.de>; Fri, 11 Jul 2025 11:55:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E905A1CA6BDE
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Jul 2025 12:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C0428C2A3;
-	Fri, 11 Jul 2025 11:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F40229AB0F;
+	Fri, 11 Jul 2025 12:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ilwu63lF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A05175D47;
-	Fri, 11 Jul 2025 11:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4C4299AA9;
+	Fri, 11 Jul 2025 12:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752234881; cv=none; b=qfr2SljVrn9uI71XZHWbzR8nZMGWiFqgELvXZru09UPWwn6oir7VEUZQV0Hl8L15CkO+Pqt+0pOlx6Y/Okur9KPfJAdbaXINKKnKoQity3B+m21s/Qzu1gBGxxowkUtDf/ehzwLNkqP7+t06r84Ij9pzcXxXNXzBfHanAklGSLU=
+	t=1752236140; cv=none; b=JoKzE+j/HUOuWcUUesNMMBfS3I+qC2bVDD9hjEf/ldCFy3ERQYr31fc2dl3lsimMd/jRpSLCW+Woqtvv+xq1WSUh1ZpmgjXBvD2nuYK80Zfcg5ts6ac9OtYqt8KnQenKO4vdvYyVMRWsPgBBLzBSPPMiBNAu1JIdjw9fG4jf3dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752234881; c=relaxed/simple;
-	bh=MmmoynlAW2R7u926XTC2KMukop+KN1gGZGE8iwpHwqk=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eX2Hokk+O0R+P3aZ98PuyPsoWvrn0yXZja8KaRztj/ZPjFzNAcWic+ns5qlK73hLrUKBKMtGdnrKdikD7qQuDoh+MUjvNyIz7khldg6X7HG6ng63fp2xx6RkGpgdewCzpOkdJ/buOod+lRy+D8V3hVegQ6qOp7ug7p6Y6jUFRsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bdqml1fHPz6L52V;
-	Fri, 11 Jul 2025 19:51:19 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3542B1402EF;
-	Fri, 11 Jul 2025 19:54:37 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 11 Jul
- 2025 13:54:36 +0200
-Date: Fri, 11 Jul 2025 12:54:34 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: <dan.j.williams@intel.com>
-CC: Catalin Marinas <catalin.marinas@arm.com>, <james.morse@arm.com>,
-	<linux-cxl@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-	<linux-mm@kvack.org>, <gregkh@linuxfoundation.org>, Will Deacon
-	<will@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Yicong Yang
-	<yangyicong@huawei.com>, <linuxarm@huawei.com>, Yushan Wang
-	<wangyushan12@huawei.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, "Mark
- Rutland" <mark.rutland@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, H Peter Anvin
-	<hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra
-	<peterz@infradead.org>
-Subject: Re: [PATCH v2 1/8] memregion: Support fine grained invalidate by
- cpu_cache_invalidate_memregion()
-Message-ID: <20250711125434.000050f3@huawei.com>
-In-Reply-To: <686eedb25ed02_24471002e@dwillia2-xfh.jf.intel.com.notmuch>
-References: <20250624154805.66985-1-Jonathan.Cameron@huawei.com>
-	<20250624154805.66985-2-Jonathan.Cameron@huawei.com>
-	<686eedb25ed02_24471002e@dwillia2-xfh.jf.intel.com.notmuch>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1752236140; c=relaxed/simple;
+	bh=n82RM4cgT4El7yNKeOkJ1+B9gFq+IBgDJwiJGDyoQKw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=W+Wzf/pNgiWd5kuupp6VkllRIZDR3DkGH+1pSrtmxxssCXPFHeIPyBPLfMgavS4C0VzEuxpYjDNPhyVXBxqEvChxJlp2Z9VtsOz3360t3MrJE26PsFYjVAoGVSqpP3uiuREFwj8wSAviLrs8FCjsmPHJvFahI568qjTdjair4/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ilwu63lF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC62C4CEED;
+	Fri, 11 Jul 2025 12:15:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752236138;
+	bh=n82RM4cgT4El7yNKeOkJ1+B9gFq+IBgDJwiJGDyoQKw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=ilwu63lFCyYgGCXpzoljE+Ssp/LjbyGVktjqkhe+S5vf8WIYt7R/1iHH6nC9IYpeA
+	 EdfwpsLFcWOrzMG5Juf5bLwjvC/feIl6gtjDVaA2TLTFL+wtS7riYM33x722uYj6Vx
+	 F9yOIimLMfCqg27rzoHqdggfrY/JFn3HUFWQCcN4GUIYYkfeQUqosBqEyMRVpKEBAi
+	 smbmkHQXo+rpfwcXwSUHjQ9ZCODE7C2pE0XJdB3EYNh0II9jPPSxwguXeUgDHSnBVP
+	 dlBsXWSjJg11MpoMcum2NRMu9SWjdJqHk/8htJFweRk0lp3dYqXTNIyaokJyzPjeCb
+	 kj5Gb/1ABU+xw==
+Date: Fri, 11 Jul 2025 07:15:37 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org, ath10k@lists.infradead.org,
+	linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: Instability in ALL stable and LTS distro kernels (IRQ #16 being
+ disabled, PCIe bus errors, ath10k_pci) in Dell Inspiron 5567
+Message-ID: <20250711121537.GA2289649@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAEmM+Qj=TA=WtQAXQZx6wCUpdsOQ4j66Kpyze3KNZHC79KfyRA@mail.gmail.com>
 
-On Wed, 9 Jul 2025 15:31:14 -0700
-<dan.j.williams@intel.com> wrote:
-
-> Jonathan Cameron wrote:
-> > From: Yicong Yang <yangyicong@hisilicon.com>
-> > 
-> > Extend cpu_cache_invalidate_memregion() to support invalidate certain
-> > range of memory. Control of types of invlidation is left for when  
+On Fri, Jul 11, 2025 at 12:36:12AM +0530, Bandhan Pramanik wrote:
+> Ok, we did it. Could reproduce the errors properly.
 > 
-> s/invlidation/invalidation/
+> Here are the journalctl logs:
 > 
-> > usecases turn up. For now everything is Clean and Invalidate.
-> > 
-> > Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> > Signed-off-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> > ---
-> >  arch/x86/mm/pat/set_memory.c | 2 +-
-> >  drivers/cxl/core/region.c    | 6 +++++-
-> >  drivers/nvdimm/region.c      | 3 ++-
-> >  drivers/nvdimm/region_devs.c | 3 ++-
-> >  include/linux/memregion.h    | 8 ++++++--
-> >  5 files changed, 16 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> > index 46edc11726b7..8b39aad22458 100644
-> > --- a/arch/x86/mm/pat/set_memory.c
-> > +++ b/arch/x86/mm/pat/set_memory.c
-> > @@ -368,7 +368,7 @@ bool cpu_cache_has_invalidate_memregion(void)
-> >  }
-> >  EXPORT_SYMBOL_NS_GPL(cpu_cache_has_invalidate_memregion, "DEVMEM");
-> >  
-> > -int cpu_cache_invalidate_memregion(int res_desc)
-> > +int cpu_cache_invalidate_memregion(int res_desc, phys_addr_t start, size_t len)
-> >  {
-> >  	if (WARN_ON_ONCE(!cpu_cache_has_invalidate_memregion()))
-> >  		return -ENXIO;
-> > diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-> > index 6e5e1460068d..6e6e8ace0897 100644
-> > --- a/drivers/cxl/core/region.c
-> > +++ b/drivers/cxl/core/region.c
-> > @@ -237,7 +237,11 @@ static int cxl_region_invalidate_memregion(struct cxl_region *cxlr)
-> >  		return -ENXIO;
-> >  	}
-> >  
-> > -	cpu_cache_invalidate_memregion(IORES_DESC_CXL);
-> > +	if (!cxlr->params.res)
-> > +		return -ENXIO;
-> > +	cpu_cache_invalidate_memregion(IORES_DESC_CXL,
-> > +				       cxlr->params.res->start,
-> > +				       resource_size(cxlr->params.res));  
+> Kernel level: https://gist.githubusercontent.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/a9e93c4ba41fb0b3d7602e6bfddce9aa5f3a19b2/KERNEL%2520journalctl%2520v6.16-rc4
+> User level: https://gist.githubusercontent.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/a9e93c4ba41fb0b3d7602e6bfddce9aa5f3a19b2/NON-KERNEL%2520journalctl%2520v6.16-rc4
+
+Thanks.  These logs look like the kernel doesn't include the patch I
+sent at https://lore.kernel.org/r/20250705195846.GA2011829@bhelgaas
+
+Can you please try with that patch?
+
+> Just so you know, I have used v6.16-rc4.
 > 
-> So lets abandon the never used @res_desc argument. It was originally
-> there for documentation and the idea that with HDM-DB CXL invalidation
-> could be triggered from the device. However, that never came to pass,
-> and the continued existence of the option is confusing especially if
-> the range may not be a strict subset of the res_desc.
+> Bandhan.
 > 
-> Alternatively, keep the @res_desc parameter and have the backend lookup
-> the ranges to flush from the descriptor, but I like that option less.
-> 
-
-I'll do that as a precursor so we can keep the discussion of that
-vs the range being added separate.
-
-Jonathan
-
-
+> On Wed, Jul 9, 2025 at 11:00 PM Bandhan Pramanik
+> <bandhanpramanik06.foss@gmail.com> wrote:
+> >
+> > Hello,
+> >
+> > I was actually a bit distracted by the things caused by the Automatic Partitioning of Fedora. I'll inform that in Fedora Bugzilla... anyway.
+> >
+> > I realised that making the modules will take 8-9 hours, I didn't even have much of a success (because all the modules didn't properly load, particularly the firmware-N.bin files couldn't be found).
+> >
+> > But I'll try to recompile the kernel, I'll just have to give it overnight time.
+> >
+> > Bandhan
 
