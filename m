@@ -1,136 +1,159 @@
-Return-Path: <linux-acpi+bounces-15094-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15095-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7505B00C0F
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Jul 2025 21:17:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF05B011F2
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Jul 2025 06:10:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F0BA3B0B1A
-	for <lists+linux-acpi@lfdr.de>; Thu, 10 Jul 2025 19:17:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44B423B3ED5
+	for <lists+linux-acpi@lfdr.de>; Fri, 11 Jul 2025 04:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E7221CC4F;
-	Thu, 10 Jul 2025 19:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E96C1A3155;
+	Fri, 11 Jul 2025 04:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="H+2YFCTn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yr5IYiYj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B39038DD8;
-	Thu, 10 Jul 2025 19:17:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BE73D6D;
+	Fri, 11 Jul 2025 04:10:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752175047; cv=none; b=qTjrUSKqZMLmTY9426AQdcMIMKLOuSkGPAo8CmqnG/e6TeJ+O3K6vzNZX25LVzf24cLR+kireA0tW8kWBmVI5Gxx+cs3R5Tql4skeJQvASAXrXgsI/MoJ9l+JirohQjp6AFZErBpjnjJe7YJ2SrPb2KzM0O/i1iOe8ImWhvPb/8=
+	t=1752207025; cv=none; b=GcMmgdkFyv8BklO8SDvLNy/PcQ1RE40+6xpVt6xZ/G9A4W2vXIAAp3DXjOjYF7Egzv/C6c/kBgE99UuRdxZ6YLSINV9LKF2yR5VLUfVr9FrTAKCMNhD21pPhHnbkZah7Co+Of2qGsqXct91xh6AxVjBPxz2E6jlAMBeoF0Gsu/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752175047; c=relaxed/simple;
-	bh=dK3+vVfqOJwgcvbSOXlTrXE17g//6OeCs7hq/OKo4hU=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=DhEMzHMCTQoeAbKaxYXdXGQ5qp9qK8R5pq50woQuD5C9sK47TgET6BrNy9vW6h/sUwDk2/F/5veGIYglWwuEMB3yLp3gZLF2C8lawIr6cp58yXsfsfc7NHcq6vsXuIjUAKoZuPwQ3flIAq9zX+scwM1Ip1TrQ7NAEtJqCa3HowU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=H+2YFCTn; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 56AJGXME778639
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 10 Jul 2025 12:16:34 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 56AJGXME778639
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025062101; t=1752174995;
-	bh=dK3+vVfqOJwgcvbSOXlTrXE17g//6OeCs7hq/OKo4hU=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=H+2YFCTnw5z6ZLmuZ9B1BVWch1D/9ZhhVQGNSyZbDzQrCCeVVzHocaCB1sQi4QU9r
-	 0C7ngFQOxCuhCK+pcoHRI+6BB6C8lJ+vTL5qIPXuMNidq+Mqe4sCI6TX74RFBOwba2
-	 vtVKDGjVg5M0FIXvySLLNsmT+JOjBN45GKe97AOAYfPpsWgNXzUPSepEbr2jmaRovM
-	 ck1NS7DVSImoOUSNby0QoW+XP/8Z1TSEFUdvPKEwZdEV6dfXhdXJMi717yROJRIbEJ
-	 d1PaNAZeAHojU682AVXBZ2cfMBYha32WzVsXtbTSuT7T46yVhu/ug35jtxbCOVOA2K
-	 +zI/CfaUj+IPg==
-Date: Thu, 10 Jul 2025 12:16:33 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: dan.j.williams@intel.com, Peter Zijlstra <peterz@infradead.org>
-CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Catalin Marinas <catalin.marinas@arm.com>, james.morse@arm.com,
-        linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org, gregkh@linuxfoundation.org,
-        Will Deacon <will@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
-        Yicong Yang <yangyicong@huawei.com>, linuxarm@huawei.com,
-        Yushan Wang <wangyushan12@huawei.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH v2 0/8] Cache coherency management subsystem
-User-Agent: K-9 Mail for Android
-In-Reply-To: <68701051ec185_1d3d1001d@dwillia2-xfh.jf.intel.com.notmuch>
-References: <20250624154805.66985-1-Jonathan.Cameron@huawei.com> <20250625085204.GC1613200@noisy.programming.kicks-ass.net> <FB7122A4-BF5E-4C05-805A-2EE3240286A1@zytor.com> <20250625093152.GZ1613376@noisy.programming.kicks-ass.net> <686f4e20c57cd_1d3d100b7@dwillia2-xfh.jf.intel.com.notmuch> <20250710105622.GA542000@noisy.programming.kicks-ass.net> <68700a5428a2f_1d3d1008b@dwillia2-xfh.jf.intel.com.notmuch> <575B5DF2-AE1D-43E9-9A4B-09FB78EFFC43@zytor.com> <68701051ec185_1d3d1001d@dwillia2-xfh.jf.intel.com.notmuch>
-Message-ID: <4CA4EB2A-8F45-4596-ADB9-B0C2307316B1@zytor.com>
+	s=arc-20240116; t=1752207025; c=relaxed/simple;
+	bh=sizDRPCJWGICcHP4/doFZ3qsK7Xiy8SySxy/WurYvy8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FMgZ9RpJP4GxSJDyviHyZoakEsSYQ5Af/9SMetlyY6rTvrjk5H/Fzxxf9xK4O/rINaVYkz1L/MP2vbQf2hnPZibRqurVHcyvDWLfC1ajAZHd2fiffPEDzVJY23Iv3TlXDOK+B5tr7NogV21ONBnEPr9zMRyYXh3VvWmROqwrN6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yr5IYiYj; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3137c2021a0so1384965a91.3;
+        Thu, 10 Jul 2025 21:10:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752207023; x=1752811823; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q9uNjF8oTtQxPk0+hEJW3L80kLHxLWNl8NSdzEDPj7U=;
+        b=Yr5IYiYjCZxNOxPtVbt6284Ojm+uvlbulGAcFWBaUPNXWkAQFmGKAVp2NcDra9IW1R
+         8Rvxr9gUHoEf0bK1FtxMAddu0NzDlOm5lp+nnkN5vRWWLytV2n1KDlAvcSHuNak+AULu
+         iM6X4z73iDdGv4smWprDjF/JFN8IvgnoE5ZTn5Nh6IZc1T9C/VJ09AD6mETuaO9ITv/i
+         BSSSQdAAuBRHDs67hqZAS0+esqiaT0XW4NKc6B2aj1hjTfEScszAtvGUfr27pxZw8VqM
+         KV6J0syk+xJUH9BSdeRUdqN3PciOpogpRhnuveyYUWvxsDbSQYF1RN2NcG4ZmXhj5TPG
+         ratg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752207023; x=1752811823;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Q9uNjF8oTtQxPk0+hEJW3L80kLHxLWNl8NSdzEDPj7U=;
+        b=fn+lTdZn3kM0Enp9rxIrxpN/vk3Umr/NVDxrGDinG4AMbNt1ijMbjBowCGY0IDOVzm
+         vT3nyewhHC0S7x3vPm+KMLCiwtmyHEgKnK28QbPU6d+DR1KjkyesPVUfQ8Uz4t1O81A7
+         1V/ibjdMSWVP7LiEkoV5BGyf5HeI41GwXjwVJdyAZLuiY5ztOFNjanq/Iq1s+pUwXN2P
+         CVGOinVSa+brETMARzP9SiiTIJOnVP0vipNIS7mIeL0fUZ0beLRmQYLcD93YzFLQoUmB
+         FzyAKVgpk0IMHAE3NO8WJnHeLw9nkLm7VB1flHGL6S48+sbr6S9INM+JyE6q5z+KVmKl
+         W21g==
+X-Forwarded-Encrypted: i=1; AJvYcCUJlW6M0iavS//Xi+CBYT/U6q/MezrVxE+/MSnnn4gneXpSeYk2PD9bnMYHgueFftZvy5AkZ7Qdwymg@vger.kernel.org, AJvYcCVcmPiZbwzKOF8ERwj3nD3coUKwl4EzUBApxgCf2nk1Y6Tm++c3PdhFdb+4x6r6RINq2ljtBQZt@vger.kernel.org, AJvYcCW6B7Fu4bnfykRuqn/ivouAatnC81H2JzDWtvurktSYk1UlH6OxdJtegWyj50HNTHGdwmDlMVb3e+IkEQ7Z@vger.kernel.org, AJvYcCWSEjQ6jKDz1P29bc73xhomzXmx2gnPzg4yD6BFuiqIWG1r6kHnHjPYpgbRhprCMjDfeAupLsAOegKyIc4fwYU=@vger.kernel.org, AJvYcCWt49ei4lxRUQKzp/pfAWdrPlyhnZc5u2On0tS8dAhmvIVC4wsTRKwhsfXdtfsr16JpQ6cSJuSmzQAmzg==@vger.kernel.org, AJvYcCXmBp81SaD1jq10g2kqoty57RwoLhOzfstxjCDqCjeYmla99Pc7ari0v6dwzlutQkYxDg3aVfx9/Ely@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfJoNBcB9hd1e9HYsBllUmy2oyfGvx1mZHfJ84as/LuVcgF8e8
+	LHpvu6jZYd2/jyidqxLPWgtOAqHoWzXVFI4YjAsbzGCdljoZcQMoOcpL
+X-Gm-Gg: ASbGncsdd7frMh6fk541bNHyXPLQxYlNMoKm/tQPOyOXIK+dIdU3rmfPRk69grivpWI
+	3lPyaQVhIi4fz5Mk9tnE3QHzalckPVguGRiniL9WyfDkgXgfzzpSM0fTa3mW4ZDNUYV0gcStVy+
+	uYb5GtBvekiYPYwFlpb1ZQnNun3jXS5jHZMvhEdGufZpjUycYi+pkpbRiYFpIEVNwv9rGH/fQhD
+	PUQ30vZMtIxccT+WGTSevK8V2yU8j4AtMdlRU/l8t9hK6D/lbVPNVYE9THuGDzX707+56q256BR
+	LoNxfVQp3p0hwE5Y7CWMtLNJelxY6OvXD0OO3vFDMzW7JHFnufXp0nJrI+XQValvHxMkIaWP5h/
+	eDFjuGekwj2VaHQ/DrC/Ov9Vrdr2lFMZPHXSQNuhct6UQcAnuDHZKifIDbud2+23zTYoepIc=
+X-Google-Smtp-Source: AGHT+IE1i7+doG0MB1VIutKCSwuGpp0+Wo3W3hUMtDdGs3TyfkwZmYkfICSEt4EID2JBsb8hwrtIGw==
+X-Received: by 2002:a17:90b:1f92:b0:312:daf3:bac9 with SMTP id 98e67ed59e1d1-31c4cdb9612mr2039246a91.34.1752207022787;
+        Thu, 10 Jul 2025 21:10:22 -0700 (PDT)
+Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b3bbe6f4fc8sm3902095a12.51.2025.07.10.21.10.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Jul 2025 21:10:22 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: alex.gaynor@gmail.com,
+	dakr@kernel.org,
+	gregkh@linuxfoundation.org,
+	ojeda@kernel.org,
+	rafael@kernel.org,
+	robh@kernel.org,
+	saravanak@google.com,
+	tmgross@umich.edu
+Cc: a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	bhelgaas@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	david.m.ertman@intel.com,
+	devicetree@vger.kernel.org,
+	gary@garyguo.net,
+	ira.weiny@intel.com,
+	kwilczynski@kernel.org,
+	lenb@kernel.org,
+	leon@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	lossin@kernel.org,
+	netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v4 0/3] rust: Build PHY device tables by using module_device_table macro
+Date: Fri, 11 Jul 2025 13:09:44 +0900
+Message-ID: <20250711040947.1252162-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On July 10, 2025 12:11:13 PM PDT, dan=2Ej=2Ewilliams@intel=2Ecom wrote:
->H=2E Peter Anvin wrote:
->[=2E=2E]
->> >> > In the near term though, current CXL platforms that do not support
->> >> > device-initiated-invalidate still need coarse cache management for=
- that
->> >> > original infrequent provisioning events=2E Folks that want to go f=
-urther
->> >> > and attempt frequent DCD events with WBINVD get to keep all the pi=
-eces=2E
->> >>=20
->> >> I would strongly prefer those pieces to include WARNs and or worse=
-=2E
->> >
->> >That is fair=2E It is not productive for the CXL subsystem to sit back=
- and
->> >hope that people notice the destructive side-effects of wbinvd and hop=
-e
->> >that leads to device changes=2E
->> >
->> >This discussion has me reconsidering that yes, it would indeed be bett=
-er
->> >to clflushopt loop over potentially terabytes on all CPUs=2E That shou=
-ld
->> >only be suffered rarely for the provisioning case, and for the DCD cas=
-e
->> >the potential add/remove events should be more manageable=2E
->> >
->> >drm already has drm_clflush_pages() for bulk cache management, CXL
->> >should just align on that approach=2E
->>=20
->> Let's not be flippant; looping over terabytes could take *hours*=2E But=
- those are hours during which the system is alive, and only one CPU needs t=
-o be looping=2E
->
->Do not all CPUs need to perform the invalidation for L1 copies of the
->line?
->
->Not trying to be flippant, but if wbinvd is only a one-shot per Peter's
->proposed policy and the system experiences another CXL reconfiguration
->event, then looping is the only option or fail the memory plug event=2E
->
->> The other question is: what happens if memory is unplugged and then a
->> cache line evicted? I'm guessing that existing memory hotplug
->> solutions simply drop the writeback, since the OS knows there is no
->> valid memory there, and so any cached data is inherently worthless=2E
->
->Right, the expectation is that unplug is always coordinated and that
->surprise unplug is unsupported / might lead to system instability=2E
->
->
+Build PHY device tables by using module_device_table macro.
 
-CLFLUSH goes through the cache coherency protocol and is therefore system =
-wide, which WBINVD is not=2E
+The PHY abstractions have been generating their own device tables
+manually instead of using the module_device_table macro provided by
+the device_id crate. However, the format of device tables occasionally
+changes [1] [2], requiring updates to both the device_id crate and the custom
+format used by the PHY abstractions, which is cumbersome to maintain.
+
+[1]: https://lore.kernel.org/lkml/20241119235705.1576946-14-masahiroy@kernel.org/
+[2]: https://lore.kernel.org/lkml/6e2f70b07a710e761eb68d089d96cee7b27bb2d5.1750511018.git.legion@kernel.org/
+
+Danilo, I incorporated your fixes into the first patch and mentioned
+them in the commit message. Let me know if you'd rather take a
+different approach.
+
+v4:
+- Rebased on driver-core-next
+- Improve docs based on Trevor's comments
+v3: https://lore.kernel.org/lkml/20250704041003.734033-1-fujita.tomonori@gmail.com/
+- Fix Safety comments and typo
+v2: https://lore.kernel.org/lkml/20250701141252.600113-1-fujita.tomonori@gmail.com/
+- Split off index-related parts of RawDeviceId into RawDeviceIdIndex
+v1: https://lore.kernel.org/lkml/20250623060951.118564-1-fujita.tomonori@gmail.com/
+
+
+FUJITA Tomonori (3):
+  rust: device_id: split out index support into a separate trait
+  rust: net::phy represent DeviceId as transparent wrapper over
+    mdio_device_id
+  rust: net::phy Change module_phy_driver macro to use
+    module_device_table macro
+
+ rust/kernel/acpi.rs      |  15 ++++--
+ rust/kernel/auxiliary.rs |  11 ++--
+ rust/kernel/device_id.rs |  91 ++++++++++++++++++++++++---------
+ rust/kernel/driver.rs    |   8 ++-
+ rust/kernel/net/phy.rs   | 106 +++++++++++++++++++--------------------
+ rust/kernel/of.rs        |  15 ++++--
+ rust/kernel/pci.rs       |  11 ++--
+ 7 files changed, 156 insertions(+), 101 deletions(-)
+
+
+base-commit: 3964d07dd821efe9680e90c51c86661a98e60a0f
+-- 
+2.43.0
+
 
