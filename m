@@ -1,211 +1,103 @@
-Return-Path: <linux-acpi+bounces-15113-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15114-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86621B029BE
-	for <lists+linux-acpi@lfdr.de>; Sat, 12 Jul 2025 09:42:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D107B02C9A
+	for <lists+linux-acpi@lfdr.de>; Sat, 12 Jul 2025 21:18:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BDBB1C224F1
-	for <lists+linux-acpi@lfdr.de>; Sat, 12 Jul 2025 07:42:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FA82189ACCF
+	for <lists+linux-acpi@lfdr.de>; Sat, 12 Jul 2025 19:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9975022157E;
-	Sat, 12 Jul 2025 07:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CACF7289806;
+	Sat, 12 Jul 2025 19:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JstjVc0b"
+	dkim=pass (1024-bit key) header.d=zohomail.com header.i=safinaskar@zohomail.com header.b="UULzpoNC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from sender4-pp-o95.zoho.com (sender4-pp-o95.zoho.com [136.143.188.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDAA22157F;
-	Sat, 12 Jul 2025 07:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752306075; cv=none; b=eBjg7Vaw99KU9l4N29x8Di0zLdzoj7lZTCEi03FrXf+/tkMo3alWuQu8VNAZJWKFE07qg2z3m2QWc/ZvhGtY1LuD8LH6zWbPyv5Gz/hr3sanUCiyc6q/0Tq6eT81phRKP1UTSL4v1Hvl4qKqhstxWmfTvrZRYezgf4hB+JAMTv4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752306075; c=relaxed/simple;
-	bh=kc63JS6G4xP4lSzu82XCqj2vToEGgOo4rcZGpLG9JOc=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=iYoeJWpDxpH8BwgbF5LybJ9p12luWrtEew2yXUCGNbxKj+5TUNdTuYwLdffxzjIbCnrwdLV+KjFweKRQxLEkQag95zXLHnPGsfhYrCf1Cz/9jRCJQfVrCqb7KkqWVkK5Kft7pnDnTIyT7sdynT5ryQPSwoKGa+8uH7p0kauLHC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JstjVc0b; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752306073; x=1783842073;
-  h=date:from:to:cc:subject:message-id;
-  bh=kc63JS6G4xP4lSzu82XCqj2vToEGgOo4rcZGpLG9JOc=;
-  b=JstjVc0btU85uLkvg4jdTZJxJO76yJhkm2FCw1yY9maPTSSrhgCaryfX
-   z925zy+BN1hIAC6CwmWXKWr1t++C0wh9oZOgxWbPMrPygy9mZNEjjUTLN
-   eWvBWDRnVVGk9cyt+8rfNVTXA0WqVkcAEboXPNUD1rHGlWVJ4o+6FUafq
-   G9nfVEDxnpqH+/qN6KN8/curAEMC+uSi4vBhaA5Cf5U8rKROHeE2XGE0F
-   TyI67wX53mSsfBncc/acQPhIHBIOAgldf8cEGXm/gJ0VIk9dxr9Z6jowF
-   W0D7DWMI9XwQNjEsThoT2KoqmGjxqyHnsosaxVLqmvaC3Cn6rIBkFf/cE
-   Q==;
-X-CSE-ConnectionGUID: TC1LPZqOSFeSftqE7UZn/Q==
-X-CSE-MsgGUID: TztxU9yMRsOvZnj/lVmrZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="42222576"
-X-IronPort-AV: E=Sophos;i="6.16,306,1744095600"; 
-   d="scan'208";a="42222576"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2025 00:41:13 -0700
-X-CSE-ConnectionGUID: 7GATgJq6SF2IkOiokvTAgw==
-X-CSE-MsgGUID: Dus/9sDNQ2OK5zhSbKcfiA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,306,1744095600"; 
-   d="scan'208";a="187507328"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 12 Jul 2025 00:41:12 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uaUr7-00079P-2N;
-	Sat, 12 Jul 2025 07:41:09 +0000
-Date: Sat, 12 Jul 2025 15:40:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 2a9fac3d32db6a4f7c0b4647aa17c183cf3afa19
-Message-ID: <202507121532.Vhk5emrG-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A6135946;
+	Sat, 12 Jul 2025 19:18:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.95
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752347904; cv=pass; b=jKHkuIkNEzLeVNiyVhmqQgiDnrQfCwDGSEBOAPdbaLcfcrsENlBQdqhCnTDu9h0OP+coPhogMHa2v1XjTZz8Fu+3ZrdcIIYETXuNU0NJBPqAN96Joi950ssctoJDvUic9pnndSMK2+lpO6aZPV1Z/pkhBd0qyo3rI+FlLwiBeI8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752347904; c=relaxed/simple;
+	bh=KCw9gDmDa8Y2gno2y7i7oAs/m+XnHgcATjygp51m4Ks=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Fnf4K8cK5oZElWXfdivzAwdorXbrlfLjmJF5gFKofhnjGtEnRDqQOpUln6FZG8kRLHk/u7hWaXgID/U0MS32gly8pNixAQ4O7+kLsDvXCknDg+i8/I5jeYYGhxNMddgc9zuKXYapyjzI3hzw26lxv1krcyS/b0fG0y78Npt+eOQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=safinaskar@zohomail.com header.b=UULzpoNC; arc=pass smtp.client-ip=136.143.188.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
+ARC-Seal: i=1; a=rsa-sha256; t=1752347895; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=nSSMwY6QoRfCv7c8n/fwv9DdtZ4wlMS8DfNS5NGnSynC0A1xa5a+RfN3M6bg7YH/NcW9DHfMDRULO7iOfy7KtOHU+cC8vkyXX21Un5VE840iGe+T/QFqkuAD/DC1xIHKsdcjTFhaD7y5qCwqEPSJqCF5QASW/r/4HrClZW7Kq7w=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1752347895; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=9+SeksEJ/B3oHTmDXitUpaGe7BOdYyJw+AFYp5mL8xg=; 
+	b=hTazcVIgPz4ZMjQFNIHUI45aKOzeZsobcNxZddBxFSA8IyWMHtF3Ijun4Lar3ficu8npVzFCL64FQKZdXmJDrLZcSIqlDvynY+Q0/RKJb2tqoBoZT+dxxivCavhauJAThG/L/c9gAlOaS3K6Sl4/CrvRvH1wmqM9K1PkAgBj4l4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=zohomail.com;
+	spf=pass  smtp.mailfrom=safinaskar@zohomail.com;
+	dmarc=pass header.from=<safinaskar@zohomail.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752347895;
+	s=zm2022; d=zohomail.com; i=safinaskar@zohomail.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID:Reply-To;
+	bh=9+SeksEJ/B3oHTmDXitUpaGe7BOdYyJw+AFYp5mL8xg=;
+	b=UULzpoNCpzcKryXoJdv8lA2NrO96lXYnyMIistFO2TbdHr5ZrXZQy7Fszor2gpyR
+	ogygrNCplebqedGOC9HywNPS/fMTuGF5fF+sMcrXqUrgJ432meNhee0nEbYr0NH9U43
+	oMcZgzZxwYsyOLgS8I0/rs4AU7BLN4e6j8icWj+E=
+Received: by mx.zohomail.com with SMTPS id 1752347892628997.4685098189007;
+	Sat, 12 Jul 2025 12:18:12 -0700 (PDT)
+From: Askar Safin <safinaskar@zohomail.com>
+To: bandhanpramanik06.foss@gmail.com
+Cc: ath10k@lists.infradead.org,
+	linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: Instability in ALL stable and LTS distro kernels (IRQ #16 being disabled, PCIe bus errors, ath10k_pci) in Dell Inspiron 5567
+Date: Sat, 12 Jul 2025 22:18:05 +0300
+Message-Id: <20250712191805.5238-1-safinaskar@zohomail.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <CAEmM+Qi-Waxk5qcR+nfip-QGXaKk0-Kq7QSq890e9oYOPjW+bA@mail.gmail.com>
+References: <CAEmM+Qi-Waxk5qcR+nfip-QGXaKk0-Kq7QSq890e9oYOPjW+bA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Feedback-ID: rr0801122753e21b1af32df72693f2c21c0000b81c9656ebead32314845f469649a9d58a1a6645690a316cce:zu08011227d26e261832766660a9590e3e00003488e544a1fbd2c6ea5fa976174713694cc20ba307517d9038:rf0801122c8eb209f952fe2d65418d80310000afa7de5bb988db7dd39c0f1f677807fc98d39697c23099823dfb1141c821:ZohoMail
+X-ZohoMailClient: External
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 2a9fac3d32db6a4f7c0b4647aa17c183cf3afa19  Merge branch 'pm-kexec' into bleeding-edge
+I saw problems with Atheros on my Dell Inspiron, too.
 
-elapsed time: 1279m
+These instructions helped me to reset the device without reboot:
 
-configs tested: 117
-configs skipped: 6
+https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1730331/comments/40
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I used modified script based on the one above (run as root):
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                   randconfig-001-20250711    gcc-8.5.0
-arc                   randconfig-002-20250711    gcc-8.5.0
-arm                              allmodconfig    gcc-15.1.0
-arm                               allnoconfig    clang-21
-arm                              allyesconfig    gcc-15.1.0
-arm                   randconfig-001-20250711    clang-19
-arm                   randconfig-002-20250711    clang-21
-arm                   randconfig-003-20250711    gcc-15.1.0
-arm                   randconfig-004-20250711    clang-20
-arm                           sunxi_defconfig    gcc-15.1.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.1.0
-arm64                 randconfig-001-20250711    clang-18
-arm64                 randconfig-002-20250711    clang-21
-arm64                 randconfig-003-20250711    gcc-12.3.0
-arm64                 randconfig-004-20250711    clang-21
-csky                              allnoconfig    gcc-15.1.0
-csky                  randconfig-001-20250711    gcc-14.3.0
-csky                  randconfig-002-20250711    gcc-15.1.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-21
-hexagon                          allyesconfig    clang-21
-hexagon               randconfig-001-20250711    clang-19
-hexagon               randconfig-002-20250711    clang-21
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250711    gcc-12
-i386        buildonly-randconfig-002-20250711    gcc-12
-i386        buildonly-randconfig-003-20250711    clang-20
-i386        buildonly-randconfig-004-20250711    clang-20
-i386        buildonly-randconfig-005-20250711    gcc-11
-i386        buildonly-randconfig-006-20250711    clang-20
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-21
-loongarch             randconfig-001-20250711    clang-21
-loongarch             randconfig-002-20250711    clang-21
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-mips                           gcw0_defconfig    clang-21
-mips                        qi_lb60_defconfig    clang-21
-nios2                             allnoconfig    gcc-14.2.0
-nios2                               defconfig    gcc-14.2.0
-nios2                 randconfig-001-20250711    gcc-10.5.0
-nios2                 randconfig-002-20250711    gcc-14.2.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                       virt_defconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20250711    gcc-12.4.0
-parisc                randconfig-002-20250711    gcc-14.3.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    clang-21
-powerpc               randconfig-001-20250711    clang-18
-powerpc               randconfig-002-20250711    clang-21
-powerpc               randconfig-003-20250711    clang-21
-powerpc64             randconfig-001-20250711    clang-21
-powerpc64             randconfig-002-20250711    clang-21
-powerpc64             randconfig-003-20250711    gcc-13.4.0
-riscv                            allmodconfig    clang-21
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                 randconfig-001-20250711    gcc-8.5.0
-riscv                 randconfig-002-20250711    gcc-12.4.0
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-15.1.0
-s390                  randconfig-001-20250711    clang-21
-s390                  randconfig-002-20250711    gcc-10.5.0
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                    randconfig-001-20250711    gcc-12.4.0
-sh                    randconfig-002-20250711    gcc-15.1.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20250711    gcc-10.3.0
-sparc                 randconfig-002-20250711    gcc-12.4.0
-sparc64               randconfig-001-20250711    gcc-8.5.0
-sparc64               randconfig-002-20250711    gcc-8.5.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    gcc-12
-um                    randconfig-001-20250711    clang-20
-um                    randconfig-002-20250711    clang-19
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250711    clang-20
-x86_64      buildonly-randconfig-002-20250711    clang-20
-x86_64      buildonly-randconfig-003-20250711    clang-20
-x86_64      buildonly-randconfig-004-20250711    gcc-12
-x86_64      buildonly-randconfig-005-20250711    clang-20
-x86_64      buildonly-randconfig-006-20250711    gcc-12
-x86_64                              defconfig    gcc-11
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                          iss_defconfig    gcc-15.1.0
-xtensa                randconfig-001-20250711    gcc-9.3.0
-xtensa                randconfig-002-20250711    gcc-14.3.0
+set -e
+rmmod ath10k_pci 2> /dev/null || :
+rmmod ath10k_core 2> /dev/null || :
+rmmod ath 2> /dev/null || :
+{ echo 1 > /sys/bus/pci/devices/0000\:03\:00.0/remove; } 2> /dev/null || :
+sleep 2
+echo 1 > /sys/bus/pci/rescan
+
+Try both scripts, one of them should work.
+
+If still doesn't work, try to run original script, then do hibernate, if still doesn't work, run script again.
+
+I finally was able to solve my problem by replacing Wi-Fi adapter. :) Here is my new Wi-Fi adapter:
+
+[    7.136347] iwlwifi 0000:03:00.0: Detected Intel(R) Dual Band Wireless AC 3160, REV=0x164
 
 --
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Askar Safin
 
