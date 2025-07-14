@@ -1,82 +1,82 @@
-Return-Path: <linux-acpi+bounces-15141-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15142-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC844B044B2
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 17:51:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C33B044E4
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 17:59:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DEDA175E73
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 15:51:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EF16188984B
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 16:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5A125C6F1;
-	Mon, 14 Jul 2025 15:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51AA25DB0B;
+	Mon, 14 Jul 2025 15:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="H6UkCAIX"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HRD+xeik"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3CA25A326
-	for <linux-acpi@vger.kernel.org>; Mon, 14 Jul 2025 15:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD7E25B305
+	for <linux-acpi@vger.kernel.org>; Mon, 14 Jul 2025 15:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752508286; cv=none; b=WjZTGG7aRMPU5W13ARGLRsMd/3EylamGmG/OKsLcAzPjIhYBF6wv7yoll4V6wBpJcnmPXQROwgb9g96AOjeJm+7woHaSWlVSnNCFa8PIRjHSDbMHGJtJzOxl1LX6BZWBYYfdroO1wXNG45iFXl2YHE+iCs8Soex+cOJCXmC17b0=
+	t=1752508784; cv=none; b=LKzk9/+NLzoM/B1IOksLGnjiBtKQu/62FUMiJ36WPampidS3rxRZBlhR4PWEi1l0Thnb6ogmGHk3wgUanyPEPR0M4Pzjrs0Jwv3WZGsXOMEHMEo/TKn/inU1zY3l4O2EaQ/Aw08VqW1tviPQrgc1G9RDahwEmZiy/FSNLF7VvAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752508286; c=relaxed/simple;
-	bh=BUEqJYqut2iTVt5+5KMeLcGgtNQULwQgbWxEHQyKu2s=;
+	s=arc-20240116; t=1752508784; c=relaxed/simple;
+	bh=jkfpbBDz6fsZzySxLlb7hy7jGu+rjZvw977kguTtv3k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=byf4Dw9KiuTh46nI4ct02V+g4KIbuIuK54RmANs09YYm2HfnSpInrzh2hzzr6bEB/ulagCPGhFp/7XRiDam9pLhmdI0pd2p/7a09R4z8mJ56/1HXPBTRINKXlApAGktQJ6qOH4H9fiw70fWYvfhitqQeVGF6ZcwrRZAgfWg+9XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=H6UkCAIX; arc=none smtp.client-ip=209.85.167.41
+	 To:Cc:Content-Type; b=KDeNdOlFMYqmaYzHKRdwjXjHIOxrxHRWpSXXKXyReZ7yHFGkEc8k80KAmvzuoNll91QCC6FIJYDjc3FfxvElbCRRs7LFieFgftPWUKdTWBhyXvr/cYtRTSHSq1/bqZYo9WatdLxPbpmGqPth7e8z03fOPXJ1lhkFzQmXYw9Mreg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=HRD+xeik; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-555024588a8so3993658e87.0
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Jul 2025 08:51:23 -0700 (PDT)
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-55628eaec6cso3822255e87.0
+        for <linux-acpi@vger.kernel.org>; Mon, 14 Jul 2025 08:59:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1752508282; x=1753113082; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1752508780; x=1753113580; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=JOUTiRTHZw62UnMALOtaZI8EYRouFJiKeX0szARAd/k=;
-        b=H6UkCAIXSiJsS9GmmzC5D8lHSKne++9vb90OG5/s44ImLwOZtetCDfkJGy6dbheKuc
-         yI5X4far3Yj25koh0ur89EPYnWVJAp/21MIr1E8FT+kafjugL+p7pHKSjBomAJzQNjRt
-         nP7j71g9UO4JBSB4f61FFnXp/bzAm+tDw5uu8=
+        bh=hof50iYCL5T7/Bkgw5ZGSrfNWjcSfleM91HbwvcCRsY=;
+        b=HRD+xeikeD6vQVifHUplqWFmZ3tniT2lPed1upbz7Ny3g0rr+9Nl12XBtGmdbI5bMX
+         YPHoa3tejbWxZXCdU8XqEvgA4n7WuawI1hBv6c+Tzihvnh8D+DBx+++SdAJ9bvr8zQuh
+         LHKZJDrohZTlHZA20MUBOj4z+8I30jwikDcMk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752508282; x=1753113082;
+        d=1e100.net; s=20230601; t=1752508780; x=1753113580;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=JOUTiRTHZw62UnMALOtaZI8EYRouFJiKeX0szARAd/k=;
-        b=KEmzbpgE1UfQFRi2KcxYhkHCpfhHVo0Y0UDeTquCnRzz90xe5HAbk0DkodQ1yLCIQb
-         aIDK8S/Hx/ywrvaOKHZ3xjhwxM1uZpMW7HK0NjeOi+iLJ3125Uj21zJXweqxQ9O/7NDM
-         8ICWEmfyk7xatRGgvzHWn2/SxPXiy2+9Hw9N8eRzVKEwBH32BKAhfQ7L4c18R0Gt7Sau
-         ycsQcgJRy6ymH3NW8hvRq7gtOvEge97MJjqlNiH6T9G8Xw8Ebi6h6WCPSqunKI06jM5T
-         1V3dzsJxe/fjf8JEA7jyKnAQGoIsqfS4p1El3XANCwYVATRym9CoKkZrtUn0LUjaoE78
-         fB9A==
-X-Forwarded-Encrypted: i=1; AJvYcCVVRZbaq6g7AQgu7kMkEv7G9NafaC9p34MqKLO4swBUiLq/oTc3nECr2zzqUlxHzNexHuJ9J4I3DpEX@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDbi6fm8xINtm3j05ZTkk1ixLMow5i6li/emljHil59cuOR/pM
-	UPIEeGw/bxJE9pMDaKycb/ZKhXZif66vG0lYyKgbPaRSDZgktxAxd3c8lNvpHPCzgYkJ+iV2Oua
-	kyfZcmA==
-X-Gm-Gg: ASbGnctHbCFCzSbd938WNmsk6izFkgkTyJTmKf2U0jWwIW4QlubsVHWII3ajN3NmX6M
-	vBiOA7tx5SxFpdSsFloSrccigHRgbl/iBZKk2uuhTatsFzKsHoS9UrF0wR/3grc92VneyzuoAmd
-	Rni7wZo/srG9JHO/AIVTPRodangxSGOMQrgS4g1N/zvrGAdMc/ygET8hWCHz697RG/hUClQ4E7S
-	JBHySKk3cb/pNnBtxPw5QKgU/VnciCaOiWh3aUKsLHMhhF4s9OFI1Cl4SGfpqoJD5OYv+t//Ce5
-	OP+C3ArbwYybGftvwB01VHwqmNkkBDFCKMP/MAyPWV03LI6uDEl4XpZvJuzJBF88L7LwrZ0Pwjq
-	NaXSOMWw3HbZriZ4C5iBjchkY0e9937wZ/tY+fFqysJhsjKORwPTm2U7ajyLgYw9g
-X-Google-Smtp-Source: AGHT+IGUGr4XOa3Bf7ipDKkGT7sYdPuyN57Mvavu034p1BTEtKkt/VIX0wIMrBSne8bCQG56do7ntQ==
-X-Received: by 2002:ac2:4c46:0:b0:54e:9066:9af7 with SMTP id 2adb3069b0e04-55a04603df9mr4048382e87.27.1752508281474;
-        Mon, 14 Jul 2025 08:51:21 -0700 (PDT)
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com. [209.85.208.180])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5593c9d094dsm1986313e87.91.2025.07.14.08.51.20
+        bh=hof50iYCL5T7/Bkgw5ZGSrfNWjcSfleM91HbwvcCRsY=;
+        b=Ju6eF5vjauURfPWCro5Hqp8wzqYLKCpbR4K2V8GyotDeJxbwMg5JCvMyRU10S892xR
+         lyVwH+X3aUiDagpBIYOtCy8rLO0Rf62xJJ8wuVCAYnvGRbEWj6dP2ljxuQTYnUOlmApl
+         vJGcenFQ3rlk/Q8u0bOopN4S4xZ5dw2OIqmiiSijTpF7FW28V58vwPMY3YedxelgttHo
+         FMKQAN4CQ6+LdigeftZ0TZtUXptgwrr4zX9+ewz+l7G8E8a0zdRDU2B3T6bsl3ezNDjF
+         FlCzQiCVuDzgjUEdRnkAbVft5QWvVl844lciV/Awf17NejrVBnMvGvBXtLPCyNt2lqV6
+         KMuA==
+X-Forwarded-Encrypted: i=1; AJvYcCXSjy3yg8WK0oSCplXpOT+7aRGM7VDw9RPHoZZqm+FZcNUesPU1T8UsbnF+6K7sMRQM1zwkPkgm8Y2N@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQuwJTfbSsdKlDbBeAtuC5IERFks/t+BvPx2rr8PqJwkSlf34g
+	vk69+yI7OzoVVoId5u3mhT2vi74O00p7m/y27JUXmnUbqS+YbK6JgrQGCWCseW/Hcpb5FMYTDy5
+	+wm7HLg==
+X-Gm-Gg: ASbGncsqK/6VVdF4c88ruRJkVzJZqtQajNmEG4UHqkDeSjTdpsBqvueEaSxDm3fsTwo
+	PfPMqeD6GhlxmuyH+EtyB1SddStZjRUiJESr1SDo1Cpw4qGsGnKGxbGO+0thlmv9b+MNYC4DJiY
+	wgWR+rqsW3IDS7OJUyflVCSm/nfK0QUv1SGMNjAxp3goCKENSiymfGg2dEOiYzjs1/ongFqZv21
+	0xOCSAIqUb5FQ7DSSqzPlmfJnu4LvZY8W0v1T55+f2GXmwhA4NYv5DfgONqFI3u12Tu4OYiJ6ha
+	GBdkby7g1T3vxO+M37jjDOXXeBU2OkJuiCxVm0xPiR9v/stomjnbrPwQs9va8BXGfPY8AUBXe+Q
+	HHA0Bfmktvg+OZM/ROLgSqr5F5htrhtjuCZaOR5AQtzY7S5g0MvCXnU67/T4RRQyG
+X-Google-Smtp-Source: AGHT+IEFImIpZX22jprh8z+jrKc5Yc1MzsnAwX7d+xN9gFzymNTOo6LYrslo/PL+/JTTlyTuiEwShw==
+X-Received: by 2002:a05:6512:12c3:b0:553:a339:2c34 with SMTP id 2adb3069b0e04-55a0464adf3mr4193930e87.44.1752508780334;
+        Mon, 14 Jul 2025 08:59:40 -0700 (PDT)
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com. [209.85.208.182])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55943b78e3csm1998804e87.222.2025.07.14.08.59.39
         for <linux-acpi@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Jul 2025 08:51:20 -0700 (PDT)
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-32b78b5aa39so39119931fa.1
-        for <linux-acpi@vger.kernel.org>; Mon, 14 Jul 2025 08:51:20 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVjaCh9T4j+JMjWuCgU8m5eHP85BBbrGp3goGAcoAoI7ZRZdH2+1LEcIb75fua+YKe/xkO4fIDTe7CX@vger.kernel.org
-X-Received: by 2002:a05:651c:214c:b0:32a:8035:3f65 with SMTP id
- 38308e7fff4ca-3305348a560mr20431831fa.36.1752508279445; Mon, 14 Jul 2025
- 08:51:19 -0700 (PDT)
+        Mon, 14 Jul 2025 08:59:40 -0700 (PDT)
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-32b3b250621so39032721fa.2
+        for <linux-acpi@vger.kernel.org>; Mon, 14 Jul 2025 08:59:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUOpvTU1HJ33uvp/V8fR2I3K2oDj61gkESFRhD+J7As1jxtO7GvXIUWyqeuE9VsD0/oDn9IaCR3wlKl@vger.kernel.org
+X-Received: by 2002:a2e:b5af:0:b0:32c:de97:6ff7 with SMTP id
+ 38308e7fff4ca-330535f6a83mr36141461fa.29.1752508778131; Mon, 14 Jul 2025
+ 08:59:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -84,18 +84,19 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250605-uvc-orientation-v2-0-5710f9d030aa@chromium.org>
- <20250605-uvc-orientation-v2-9-5710f9d030aa@chromium.org> <e573334d-da02-4d67-95ad-d372aa7f4a67@kernel.org>
-In-Reply-To: <e573334d-da02-4d67-95ad-d372aa7f4a67@kernel.org>
+ <20250605-uvc-orientation-v2-11-5710f9d030aa@chromium.org>
+ <20250629181440.GO24912@pendragon.ideasonboard.com> <CANiDSCvSP-NXpefOiKnGf53eUWKVf7iJqtXPEPN9e-Gaxt0k7A@mail.gmail.com>
+ <20250714143120.GJ8243@pendragon.ideasonboard.com>
+In-Reply-To: <20250714143120.GJ8243@pendragon.ideasonboard.com>
 From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 14 Jul 2025 17:51:06 +0200
-X-Gmail-Original-Message-ID: <CANiDSCu0uHa9EAwyr-4AMdU_UL0k1YxPdT+YKX6yS22nyWw_DA@mail.gmail.com>
-X-Gm-Features: Ac12FXwXunI1HhkoiTEAA1El4jNCwDB1UDYcjdPHccPPCbsUo8Spnc2mel0__-w
-Message-ID: <CANiDSCu0uHa9EAwyr-4AMdU_UL0k1YxPdT+YKX6yS22nyWw_DA@mail.gmail.com>
-Subject: Re: [PATCH v2 09/12] media: uvcvideo: Add uvc_ctrl_query_entity helper
-To: Hans de Goede <hansg@kernel.org>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede <hdegoede@redhat.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil <hverkuil@xs4all.nl>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, 
+Date: Mon, 14 Jul 2025 17:59:24 +0200
+X-Gmail-Original-Message-ID: <CANiDSCt6Xy_5bj6H7qFvG+g=FMfW7GWXvPGa5T+gdKPDqCa5BQ@mail.gmail.com>
+X-Gm-Features: Ac12FXx_F9n-LUsxRwoh8ZmPOJZUgV6UwgyllEtyANUua67LvfGkioCuWb8sCms
+Message-ID: <CANiDSCt6Xy_5bj6H7qFvG+g=FMfW7GWXvPGa5T+gdKPDqCa5BQ@mail.gmail.com>
+Subject: Re: [PATCH v2 11/12] media: uvcvideo: Add support for V4L2_CID_CAMERA_ROTATION
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Hans de Goede <hdegoede@redhat.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Hans Verkuil <hverkuil@xs4all.nl>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
@@ -105,208 +106,228 @@ Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede <hdegoed
 	linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 14 Jul 2025 at 16:24, Hans de Goede <hansg@kernel.org> wrote:
+On Mon, 14 Jul 2025 at 16:31, Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
 >
 > Hi Ricardo,
 >
-> On 5-Jun-25 19:53, Ricardo Ribalda wrote:
-> > Create a helper function to query a control. The new function reduces
-> > the number of arguments, calculates the length of the operation and
-> > redirects the operation to the hardware or to the entity private
-> > functions.
+> On Tue, Jul 01, 2025 at 01:26:51PM +0200, Ricardo Ribalda wrote:
+> > On Sun, 29 Jun 2025 at 20:15, Laurent Pinchart wrote:
+> > > On Thu, Jun 05, 2025 at 05:53:04PM +0000, Ricardo Ribalda wrote:
+> > > > Fetch the rotation from the fwnode and map it into a control.
+> > > >
+> > > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > > > ---
+> > > >  drivers/media/usb/uvc/uvc_ctrl.c     | 22 +++++++++++++--
+> > > >  drivers/media/usb/uvc/uvc_swentity.c | 55 ++++++++++++++++++++++++++++++++----
+> > > >  drivers/media/usb/uvc/uvcvideo.h     |  5 ++++
+> > > >  3 files changed, 74 insertions(+), 8 deletions(-)
+> > > >
+> > > > diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+> > > > index 59be62ae24a4219fa9d7aacf2ae7382c95362178..5788f0c0f6604da06a7bca1b9999d0957817e75e 100644
+> > > > --- a/drivers/media/usb/uvc/uvc_ctrl.c
+> > > > +++ b/drivers/media/usb/uvc/uvc_ctrl.c
+> > > > @@ -378,11 +378,18 @@ static const struct uvc_control_info uvc_ctrls[] = {
+> > > >       },
+> > > >       {
+> > > >               .entity         = UVC_GUID_SWENTITY,
+> > > > -             .selector       = 0,
+> > > > -             .index          = 0,
+> > > > +             .selector       = UVC_SWENTITY_ORIENTATION,
+> > > > +             .index          = UVC_SWENTITY_ORIENTATION,
+> > > >               .size           = 1,
+> > > >               .flags          = UVC_CTRL_FLAG_GET_CUR,
+> > > >       },
+> > > > +     {
+> > > > +             .entity         = UVC_GUID_SWENTITY,
+> > > > +             .selector       = UVC_SWENTITY_ROTATION,
+> > > > +             .index          = UVC_SWENTITY_ROTATION,
+> > > > +             .size           = 2,
+> > > > +             .flags          = UVC_CTRL_FLAG_GET_RANGE,
+> > > > +     },
+> > > >  };
+> > > >
+> > > >  static const u32 uvc_control_classes[] = {
+> > > > @@ -1025,7 +1032,7 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
+> > > >       {
+> > > >               .id             = V4L2_CID_CAMERA_ORIENTATION,
+> > > >               .entity         = UVC_GUID_SWENTITY,
+> > > > -             .selector       = 0,
+> > > > +             .selector       = UVC_SWENTITY_ORIENTATION,
+> > > >               .size           = 8,
+> > > >               .offset         = 0,
+> > > >               .v4l2_type      = V4L2_CTRL_TYPE_MENU,
+> > > > @@ -1033,6 +1040,15 @@ static const struct uvc_control_mapping uvc_ctrl_mappings[] = {
+> > > >               .menu_mask      = GENMASK(V4L2_CAMERA_ORIENTATION_EXTERNAL,
+> > > >                                         V4L2_CAMERA_ORIENTATION_FRONT),
+> > > >       },
+> > > > +     {
+> > > > +             .id             = V4L2_CID_CAMERA_SENSOR_ROTATION,
+> > > > +             .entity         = UVC_GUID_SWENTITY,
+> > > > +             .selector       = UVC_SWENTITY_ROTATION,
+> > > > +             .size           = 16,
+> > > > +             .offset         = 0,
+> > > > +             .v4l2_type      = V4L2_CTRL_TYPE_INTEGER,
+> > > > +             .data_type      = UVC_CTRL_DATA_TYPE_UNSIGNED,
+> > > > +     },
+> > > >  };
+> > > >
+> > > >  /* ------------------------------------------------------------------------
+> > > > diff --git a/drivers/media/usb/uvc/uvc_swentity.c b/drivers/media/usb/uvc/uvc_swentity.c
+> > > > index 702a2c26e029a0655dade177ed2a9b88d7a4136d..60f3166addbeb7d2e431d107b23034d2d11a1812 100644
+> > > > --- a/drivers/media/usb/uvc/uvc_swentity.c
+> > > > +++ b/drivers/media/usb/uvc/uvc_swentity.c
+> > > > @@ -10,10 +10,11 @@
+> > > >  #include <media/v4l2-fwnode.h>
+> > > >  #include "uvcvideo.h"
+> > > >
+> > > > -static int uvc_swentity_get_cur(struct uvc_device *dev, struct uvc_entity *entity,
+> > > > -                             u8 cs, void *data, u16 size)
+> > > > +static int uvc_swentity_get_orientation(struct uvc_device *dev,
+> > > > +                                     struct uvc_entity *entity, u8 cs,
+> > > > +                                     void *data, u16 size)
+> > > >  {
+> > > > -     if (size < 1)
+> > > > +     if (cs != UVC_SWENTITY_ORIENTATION || size != 1)
+> > > >               return -EINVAL;
+> > > >
+> > > >       switch (entity->swentity.props.orientation) {
+> > > > @@ -30,6 +31,31 @@ static int uvc_swentity_get_cur(struct uvc_device *dev, struct uvc_entity *entit
+> > > >       return 0;
+> > > >  }
+> > > >
+> > > > +static int uvc_swentity_get_rotation(struct uvc_device *dev,
+> > > > +                                  struct uvc_entity *entity, u8 cs, void *data,
+> > > > +                                  u16 size)
+> > > > +{
+> > > > +     if (cs != UVC_SWENTITY_ROTATION || size != 2)
+> > > > +             return -EINVAL;
+> > > > +
+> > > > +     ((u8 *)data)[0] = entity->swentity.props.rotation;
+> > > > +     ((u8 *)data)[1] = entity->swentity.props.rotation >> 8;
+> > > > +
+> > > > +     return 0;
+> > > > +}
+> > > > +
+> > > > +static int uvc_swentity_get_cur(struct uvc_device *dev, struct uvc_entity *entity,
+> > > > +                             u8 cs, void *data, u16 size)
+> > > > +{
+> > > > +     switch (cs) {
+> > > > +     case UVC_SWENTITY_ORIENTATION:
+> > > > +             return uvc_swentity_get_orientation(dev, entity, cs, data, size);
+> > > > +     case UVC_SWENTITY_ROTATION:
+> > > > +             return uvc_swentity_get_rotation(dev, entity, cs, data, size);
+> > > > +     }
+> > > > +     return -EINVAL;
+> > > > +}
+> > > > +
+> > > >  static int uvc_swentity_get_info(struct uvc_device *dev,
+> > > >                                struct uvc_entity *entity, u8 cs, u8 *caps)
+> > > >  {
+> > > > @@ -37,11 +63,22 @@ static int uvc_swentity_get_info(struct uvc_device *dev,
+> > > >       return 0;
+> > > >  }
+> > > >
+> > > > +static int uvc_swentity_get_res(struct uvc_device *dev, struct uvc_entity *entity,
+> > > > +                             u8 cs, void *res, u16 size)
+> > > > +{
+> > > > +     if (size == 0)
+> > > > +             return -EINVAL;
+> > >
+> > > The get_cur functions return an error if the size doesn't match the
+> > > expected size. I think you can return -EINVAL if size != 1.
+> > >
+> > > > +     ((u8 *)res)[0] = 1;
+> > > > +     memset(res + 1, 0, size - 1);
+> > >
+> > > And drop the memset.
+> > >
+> > > > +     return 0;
+> > > > +}
+> > > > +
+> > > >  int uvc_swentity_init(struct uvc_device *dev)
+> > > >  {
+> > > >       static const u8 uvc_swentity_guid[] = UVC_GUID_SWENTITY;
+> > > >       struct v4l2_fwnode_device_properties props;
+> > > >       struct uvc_entity *unit;
+> > > > +     u8 controls = 0;
+> > > >       int ret;
+> > > >
+> > > >       ret = v4l2_fwnode_device_parse(&dev->udev->dev, &props);
+> > > > @@ -49,7 +86,11 @@ int uvc_swentity_init(struct uvc_device *dev)
+> > > >               return dev_err_probe(&dev->intf->dev, ret,
+> > > >                                    "Can't parse fwnode\n");
+> > > >
+> > > > -     if (props.orientation == V4L2_FWNODE_PROPERTY_UNSET)
+> > > > +     if (props.orientation != V4L2_FWNODE_PROPERTY_UNSET)
+> > > > +             controls |= BIT(UVC_SWENTITY_ORIENTATION);
+> > > > +     if (props.rotation != V4L2_FWNODE_PROPERTY_UNSET)
+> > > > +             controls |= BIT(UVC_SWENTITY_ROTATION);
+> > > > +     if (!controls)
+> > > >               return 0;
+> > > >
+> > > >       unit = uvc_alloc_entity(UVC_SWENTITY_UNIT, UVC_SWENTITY_UNIT_ID, 0, 1);
+> > > > @@ -60,9 +101,13 @@ int uvc_swentity_init(struct uvc_device *dev)
+> > > >       unit->swentity.props = props;
+> > > >       unit->swentity.bControlSize = 1;
+> > > >       unit->swentity.bmControls = (u8 *)unit + sizeof(*unit);
+> > > > -     unit->swentity.bmControls[0] = 1;
+> > > > +     unit->swentity.bmControls[0] = controls;
+> > > >       unit->get_cur = uvc_swentity_get_cur;
+> > > >       unit->get_info = uvc_swentity_get_info;
+> > > > +     unit->get_res = uvc_swentity_get_res;
+> > > > +     unit->get_def = uvc_swentity_get_rotation;
+> > > > +     unit->get_min = uvc_swentity_get_rotation;
+> > > > +     unit->get_max = uvc_swentity_get_rotation;
+> > >
+> > > Why do you support GET_DEF, GET_MIN and GET_MAX for rotation only ?
 > >
-> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
->
-> Thanks, this looks like a nice cleanup.
->
-> > ---
-> >  drivers/media/usb/uvc/uvc_ctrl.c | 81 ++++++++++++++++++++--------------------
-> >  1 file changed, 41 insertions(+), 40 deletions(-)
+> > Orientation has enum type. It does not require min or max.
 > >
-> > diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-> > index b2768080c08aafa85acb9b7f318672c043d84e55..21ec7b978bc7aca21db7cb8fd5d135d876f3330c 100644
-> > --- a/drivers/media/usb/uvc/uvc_ctrl.c
-> > +++ b/drivers/media/usb/uvc/uvc_ctrl.c
-> > @@ -576,6 +576,34 @@ static const struct uvc_control_mapping uvc_ctrl_power_line_mapping_uvc15 = {
-> >                                 V4L2_CID_POWER_LINE_FREQUENCY_DISABLED),
-> >  };
-> >
-> > +static int uvc_ctrl_query_entity(struct uvc_device *dev,
-> > +                              const struct uvc_control *ctrl, u8 query,
-> > +                              void *data)
-> > +{
-> > +     u16 len;
-> > +
-> > +     switch (query) {
-> > +     case UVC_GET_INFO:
-> > +             len = 1;
-> > +             break;
-> > +     case UVC_GET_LEN:
-> > +             len = 2;
-> > +             break;
-> > +     default:
-> > +             len = ctrl->info.size;
-> > +     }
-> > +
-> > +     if (query == UVC_GET_CUR && ctrl->entity->get_cur)
-> > +             return ctrl->entity->get_cur(dev, ctrl->entity,
-> > +                                          ctrl->info.selector, data, len);
-> > +     if (query == UVC_GET_INFO && ctrl->entity->get_info)
-> > +             return ctrl->entity->get_info(dev, ctrl->entity,
-> > +                                           ctrl->info.selector, data);
-> > +
-> > +     return uvc_query_ctrl(dev, query, ctrl->entity->id, dev->intfnum,
-> > +                           ctrl->info.selector, data, len);
+> > For get_def I could use get_cur, but 0 is as good as any other value
+> > within range.
 >
-> Maybe:
->
->         if (query == UVC_GET_CUR && ctrl->entity->get_cur)
->                 return ctrl->entity->get_cur(dev, ctrl->entity,
->                                              ctrl->info.selector, data, len);
->         else if (query == UVC_GET_INFO && ctrl->entity->get_info)
->                 return ctrl->entity->get_info(dev, ctrl->entity,
->                                               ctrl->info.selector, data);
->         else
->                 return uvc_query_ctrl(dev, query, ctrl->entity->id, dev->intfnum,
->                                       ctrl->info.selector, data, len);
->
-> ?
->
-> That + Laurent's well observed remark about info->selector vs
-> ctrl->info.selector which I would probably have missed...
->
-> About Laurent's remark about one case of this pre-existing,
-> please fix this in a separate patch (I guess you would have done so
-> anyways, but just to be sure).
+> Both the orientation and rotation are read-only, and should report min
+> == max == def == cur. What am I missing ?
 
-I have changed the code a bit so we can always rely on
-ctrl->info.selector. I have made a small "preparation patch" getting
-ready for it. Keep an eye on the next version ;)
+V4L2_CID_CAMERA_ORIENTATION has type V4L2_CTRL_TYPE_MENU
+In _uvc_queryctrl_boundaries(), min and max are auto calculated, they
+are not based on information from the device.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/media/usb/uvc/uvc_ctrl.c#n1504
 
-There is no need to send a new patch fixing the current code because
-the only controls that could have invalid ctrl->info.selector are xu
-and software entities are not xu.
+I can change  unit->get_(def|min|max)=uvc_swentity_get_cur if you
+think that it is cleaner...
 
 Regards!
+
 >
+> > > >       strscpy(unit->name, "SWENTITY", sizeof(unit->name));
+> > > >
+> > > >       list_add_tail(&unit->list, &dev->entities);
+> > > > diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+> > > > index d6da8ed3ad4cf3377df49923e051fe04d83d2e38..7cca0dc75d11f6a13bc4f09676a5a00e80cb38f7 100644
+> > > > --- a/drivers/media/usb/uvc/uvcvideo.h
+> > > > +++ b/drivers/media/usb/uvc/uvcvideo.h
+> > > > @@ -45,6 +45,11 @@
+> > > >  #define UVC_SWENTITY_UNIT            0x7ffd
+> > > >  #define UVC_SWENTITY_UNIT_ID         0x101
+> > > >
+> > > > +enum {
+> > > > +     UVC_SWENTITY_ORIENTATION,
+> > > > +     UVC_SWENTITY_ROTATION
+> > > > +};
+> > > > +
+> > > >  /* ------------------------------------------------------------------------
+> > > >   * Driver specific constants.
+> > > >   */
+>
+> --
 > Regards,
 >
-> Hans
->
->
->
->
->
-> > +}
-> > +
-> >  static const struct uvc_control_mapping *uvc_ctrl_filter_plf_mapping(
-> >       struct uvc_video_chain *chain, struct uvc_control *ctrl)
-> >  {
-> > @@ -1222,35 +1250,27 @@ static int uvc_ctrl_populate_cache(struct uvc_video_chain *chain,
-> >       int ret;
-> >
-> >       if (ctrl->info.flags & UVC_CTRL_FLAG_GET_DEF) {
-> > -             ret = uvc_query_ctrl(chain->dev, UVC_GET_DEF, ctrl->entity->id,
-> > -                                  chain->dev->intfnum, ctrl->info.selector,
-> > -                                  uvc_ctrl_data(ctrl, UVC_CTRL_DATA_DEF),
-> > -                                  ctrl->info.size);
-> > +             ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_DEF,
-> > +                                     uvc_ctrl_data(ctrl, UVC_CTRL_DATA_DEF));
-> >               if (ret < 0)
-> >                       return ret;
-> >       }
-> >
-> >       if (ctrl->info.flags & UVC_CTRL_FLAG_GET_MIN) {
-> > -             ret = uvc_query_ctrl(chain->dev, UVC_GET_MIN, ctrl->entity->id,
-> > -                                  chain->dev->intfnum, ctrl->info.selector,
-> > -                                  uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MIN),
-> > -                                  ctrl->info.size);
-> > +             ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_MIN,
-> > +                                     uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MIN));
-> >               if (ret < 0)
-> >                       return ret;
-> >       }
-> >       if (ctrl->info.flags & UVC_CTRL_FLAG_GET_MAX) {
-> > -             ret = uvc_query_ctrl(chain->dev, UVC_GET_MAX, ctrl->entity->id,
-> > -                                  chain->dev->intfnum, ctrl->info.selector,
-> > -                                  uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MAX),
-> > -                                  ctrl->info.size);
-> > +             ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_MAX,
-> > +                                     uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MAX));
-> >               if (ret < 0)
-> >                       return ret;
-> >       }
-> >       if (ctrl->info.flags & UVC_CTRL_FLAG_GET_RES) {
-> > -             ret = uvc_query_ctrl(chain->dev, UVC_GET_RES, ctrl->entity->id,
-> > -                                  chain->dev->intfnum, ctrl->info.selector,
-> > -                                  uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES),
-> > -                                  ctrl->info.size);
-> > +             ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_RES,
-> > +                                     uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES));
-> >               if (ret < 0) {
-> >                       if (UVC_ENTITY_TYPE(ctrl->entity) !=
-> >                           UVC_VC_EXTENSION_UNIT)
-> > @@ -1291,16 +1311,7 @@ static int __uvc_ctrl_load_cur(struct uvc_video_chain *chain,
-> >               return 0;
-> >       }
-> >
-> > -     if (ctrl->entity->get_cur)
-> > -             ret = ctrl->entity->get_cur(chain->dev, ctrl->entity,
-> > -                                         ctrl->info.selector, data,
-> > -                                         ctrl->info.size);
-> > -     else
-> > -             ret = uvc_query_ctrl(chain->dev, UVC_GET_CUR,
-> > -                                  ctrl->entity->id, chain->dev->intfnum,
-> > -                                  ctrl->info.selector, data,
-> > -                                  ctrl->info.size);
-> > -
-> > +     ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_CUR, data);
-> >       if (ret < 0)
-> >               return ret;
-> >
-> > @@ -2164,11 +2175,8 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
-> >                       continue;
-> >
-> >               if (!rollback)
-> > -                     ret = uvc_query_ctrl(dev, UVC_SET_CUR, ctrl->entity->id,
-> > -                             dev->intfnum, ctrl->info.selector,
-> > -                             uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
-> > -                             ctrl->info.size);
-> > -
-> > +                     ret = uvc_ctrl_query_entity(dev, ctrl, UVC_SET_CUR,
-> > +                             uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
-> >               if (!ret)
-> >                       processed_ctrls++;
-> >
-> > @@ -2570,13 +2578,7 @@ static int uvc_ctrl_get_flags(struct uvc_device *dev,
-> >       if (data == NULL)
-> >               return -ENOMEM;
-> >
-> > -     if (ctrl->entity->get_info)
-> > -             ret = ctrl->entity->get_info(dev, ctrl->entity,
-> > -                                          ctrl->info.selector, data);
-> > -     else
-> > -             ret = uvc_query_ctrl(dev, UVC_GET_INFO, ctrl->entity->id,
-> > -                                  dev->intfnum, info->selector, data, 1);
-> > -
-> > +     ret = uvc_ctrl_query_entity(dev, ctrl, UVC_GET_INFO, data);
-> >       if (!ret) {
-> >               info->flags &= ~(UVC_CTRL_FLAG_GET_CUR |
-> >                                UVC_CTRL_FLAG_SET_CUR |
-> > @@ -2654,8 +2656,7 @@ static int uvc_ctrl_fill_xu_info(struct uvc_device *dev,
-> >       info->selector = ctrl->index + 1;
-> >
-> >       /* Query and verify the control length (GET_LEN) */
-> > -     ret = uvc_query_ctrl(dev, UVC_GET_LEN, ctrl->entity->id, dev->intfnum,
-> > -                          info->selector, data, 2);
-> > +     ret = uvc_ctrl_query_entity(dev, ctrl, UVC_GET_LEN, data);
-> >       if (ret < 0) {
-> >               uvc_dbg(dev, CONTROL,
-> >                       "GET_LEN failed on control %pUl/%u (%d)\n",
-> >
->
+> Laurent Pinchart
 
 
--- 
+
+--
 Ricardo Ribalda
 
