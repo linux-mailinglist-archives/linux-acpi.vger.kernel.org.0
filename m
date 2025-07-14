@@ -1,178 +1,76 @@
-Return-Path: <linux-acpi+bounces-15128-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15129-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A77BAB03F5D
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 15:12:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D46B03FC9
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 15:26:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3069C7A9E55
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 13:10:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C8E84A5A3A
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 13:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B8024DCE6;
-	Mon, 14 Jul 2025 13:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2052D255F3C;
+	Mon, 14 Jul 2025 13:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VVr8G+qD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZsDmcoNk"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50072E36F0;
-	Mon, 14 Jul 2025 13:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECD024EA8F;
+	Mon, 14 Jul 2025 13:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752498723; cv=none; b=I7LJHJG+sXCyyVMCzhQx+hZzovsd2eL1MMbfS6dSnxDlEKqFUwM/8tUnLysHouY0sjbGtOIOY7UA7Qu26wRj1b8K2YHqiXJzSKvzf03WTt0w0AP5Btgo3w3FBc36I/mkQcZU2bTs3JEbz+lh6SpnRMljtYgD6c3Uz0oMHrQ6Bx4=
+	t=1752499345; cv=none; b=IEoRvyYKh2wN6E8+92yI51E+TtHHvG8NqjBRFvQzZ5WuDOWVPr/ohClEIycTGhWddlmKZq5kIJXOSkg71tp89MUBfzuh5G5od3aEuciUaT8I27gph/WRYPEKk39VIVUQChfBiofh959+rko0FtE6LJ0nCzPXtH12eocUaEkY9B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752498723; c=relaxed/simple;
-	bh=ec+Udmi4sR8vkrCaJiGlwkEUhKa728+eNuhwSHOmtz8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TcINy01vQlcmzT94DnWuQrID4BeIFyXcHN0eeKKeMV656vO2mgeGVBhGIaGOYj6SMUmY+r7gdFhfJGFLpaWmNaE8WYXrZtEjbRWD50DAmjt1HuplglltefQwIQv7XMxmYhOCaYhQJtLHNMyMDBIxNAoUFeacuaRCmDIBzE0+alc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VVr8G+qD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9EBC4CEED;
-	Mon, 14 Jul 2025 13:11:57 +0000 (UTC)
+	s=arc-20240116; t=1752499345; c=relaxed/simple;
+	bh=bpBCFjoNvMeiJzCR4wwoil9X/vK9DGvXorTznsyyOWg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=RDBEEFkVbroIPob+vHmJhFol6CtfYLsHOiQSzyX7Ad9a7VfkNqqSoqnvylqFTqMXLqbm/IzwD2XsfP/Jo/SWfBSLCZ28gR5Stn1XQ0REP6N374pMlnIFEZwShv6RyVJZeZbZm+loPDXL9jx8uUaWnR1DmQxr166LANAi6zV4sBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZsDmcoNk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652FCC4CEED;
+	Mon, 14 Jul 2025 13:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752498722;
-	bh=ec+Udmi4sR8vkrCaJiGlwkEUhKa728+eNuhwSHOmtz8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VVr8G+qDqDdZUDyAuW3H1sLmJueWylzP37/u9WObNzf8RR85ZkKavXjnzGHFpb1tr
-	 wkniPWcwzPwcECydeSqkmawQ/by0UH8EJaY1qbz73UU3CcXAPWz/KCTQ5EO9jDjzHD
-	 Oa9FwT++n6gyYY46KsIzlmem0HbRaUC2p+BrCNgl8bZz+myC2f5j2QeGv2kR9a2hun
-	 twr0EBhHlsW6M4WQOWGRtg67jN2H67grS0UanVngnV6/lkYumKTLVvGEPR1paz1viP
-	 /tN5ug2V1u3NIbpb12UmZ6sxcdX7lMIxDFi7WjqcyRHxXGPUlEvJ9NlKXSREYpUYPW
-	 318PhowFjSpww==
-Message-ID: <ff8e5e11-6947-4d7e-98fa-26fdd4054a36@kernel.org>
-Date: Mon, 14 Jul 2025 15:11:55 +0200
+	s=k20201202; t=1752499344;
+	bh=bpBCFjoNvMeiJzCR4wwoil9X/vK9DGvXorTznsyyOWg=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=ZsDmcoNkt2PVQaXji7ww3gCpzZzJ6Jj9wpnojfjHvx566/r2Q+1jAxPpoTSCLr67C
+	 ZjsjPh0QPJ4czQz1ivsmLgcrDg+HzFeuJwkyCyWizFwy4+q8muc42kE9PO20+TKf9g
+	 AoKqKoIq2XNdOinOzynpgT0f1mQmpYU2kx4DOv+P9MZg89gJv3cBrFBe1oa8Jzj4vb
+	 PPIhJv9msqvMmPlQLU2d3xUlYa//zE25xqRXcMTQgVRa99Cga3L5OFrLICpvpb1fqq
+	 bOguDxLof6JpTydrhKFQo6MrBnWsFRiPOHMTRpxchS6COR9CLRlwRLvUC/iVztW0Lc
+	 IxsTZtqSspdWg==
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/12] media: ipu-bridge: Use v4l2_fwnode for unknown
- rotations
-To: Ricardo Ribalda <ribalda@chromium.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil
- <hverkuil@xs4all.nl>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Linus Walleij
- <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
-References: <20250605-uvc-orientation-v2-0-5710f9d030aa@chromium.org>
- <20250605-uvc-orientation-v2-5-5710f9d030aa@chromium.org>
- <aGw_1T_Edm8--gXW@kekkonen.localdomain>
- <CANiDSCup2iRx+0RcaijSmbn04nBY4Ui9=esCPFsQzOKe=up9Gg@mail.gmail.com>
- <aGzjTRSco39mKJcf@kekkonen.localdomain>
- <CANiDSCsqEHTnbvzLMoe_yxi8JRzp+2PQe3ksXhD=Y3+AqC_9hw@mail.gmail.com>
- <aG0NI2V0Tfh2HZ6O@kekkonen.localdomain>
- <CANiDSCu=wU_Oi7CLPcYTC3Xf_pGbDroaVitPAiAj7ND5pXy-6g@mail.gmail.com>
-Content-Language: en-US, nl
-From: Hans de Goede <hansg@kernel.org>
-In-Reply-To: <CANiDSCu=wU_Oi7CLPcYTC3Xf_pGbDroaVitPAiAj7ND5pXy-6g@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Mon, 14 Jul 2025 15:22:17 +0200
+Message-Id: <DBBT61D7DXVB.3S37NO2UW5RI7@kernel.org>
+Subject: Re: [PATCH v4 0/3] rust: Build PHY device tables by using
+ module_device_table macro
+Cc: "FUJITA Tomonori" <fujita.tomonori@gmail.com>, <alex.gaynor@gmail.com>,
+ <gregkh@linuxfoundation.org>, <ojeda@kernel.org>, <saravanak@google.com>,
+ <tmgross@umich.edu>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <bhelgaas@google.com>, <bjorn3_gh@protonmail.com>, <boqun.feng@gmail.com>,
+ <david.m.ertman@intel.com>, <devicetree@vger.kernel.org>,
+ <gary@garyguo.net>, <ira.weiny@intel.com>, <kwilczynski@kernel.org>,
+ <lenb@kernel.org>, <leon@kernel.org>, <linux-acpi@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <lossin@kernel.org>, <netdev@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+To: <rafael@kernel.org>, <robh@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250711040947.1252162-1-fujita.tomonori@gmail.com>
+In-Reply-To: <20250711040947.1252162-1-fujita.tomonori@gmail.com>
 
-Hi,
+On Fri Jul 11, 2025 at 6:09 AM CEST, FUJITA Tomonori wrote:
+> Build PHY device tables by using module_device_table macro.
 
-On 8-Jul-25 16:58, Ricardo Ribalda wrote:
-> On Tue, 8 Jul 2025 at 14:21, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
->>
->> Hi Ricardo,
->>
->> On Tue, Jul 08, 2025 at 02:09:28PM +0200, Ricardo Ribalda wrote:
->>> On Tue, 8 Jul 2025 at 11:22, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
->>>>
->>>> Hi Ricardo,
->>>>
->>>> On Tue, Jul 08, 2025 at 11:16:25AM +0200, Ricardo Ribalda wrote:
->>>>> Hi Sakari
->>>>>
->>>>> Thanks for your review
->>>>>
->>>>> On Mon, 7 Jul 2025 at 23:45, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
->>>>>>
->>>>>> Hi Ricardo,
->>>>>>
->>>>>> On Thu, Jun 05, 2025 at 05:52:58PM +0000, Ricardo Ribalda wrote:
->>>>>>> The v4l2_fwnode_device_properties contains information about the
->>>>>>> rotation. Use it if the ssdb data is inconclusive.
->>>>>>
->>>>>> As SSDB and _PLD provide the same information, are they always aligned? Do
->>>>>> you have any experience on how is this actually in firmware?
->>>>>
->>>>> Not really, in ChromeOS we are pretty lucky to control the firmware.
->>>>>
->>>>> @HdG Do you have some experience/opinion here?
->>>>>
->>>>>>
->>>>>> _PLD is standardised so it would seem reasonable to stick to that -- if it
->>>>>> exists. Another approach could be to pick the one that doesn't translate to
->>>>>> a sane default (0°).
->>>>>
->>>>> I'd rather stick to the current prioritization unless there is a
->>>>> strong argument against it. Otherwise there is a chance that we will
->>>>> have regressions (outside CrOS)
->>>>
->>>> My point was rather there are no such rules currently for rotation: only
->>>> SSDB was being used by the IPU bridge to obtain the rotation value,
->>>> similarly only _PLD is consulted when it comes to orientation.
->>>
->>> So something like this:?
->>>
->>> static u32 ipu_bridge_parse_rotation(struct acpi_device *adev,
->>>                                      struct ipu_sensor_ssdb *ssdb,
->>>                                      struct
->>> v4l2_fwnode_device_properties *props)
->>> {
->>>         if (props->rotation != V4L2_FWNODE_PROPERTY_UNSET)
->>>                 return props->rotation;
->>>
->>>         switch (ssdb->degree) {
->>>         case IPU_SENSOR_ROTATION_NORMAL:
->>>                 return 0;
->>>         case IPU_SENSOR_ROTATION_INVERTED:
->>>                 return 180;
->>>         }
->>>
->>>         dev_warn(ADEV_DEV(adev),
->>>                  "Unknown rotation %d. Assume 0 degree rotation\n",
->>>                  ssdb->degree);
->>
->> Maybe:
->>
->>         acpi_handle_warn(acpi_device_handle(adev), ...);
->>
->> ?
->>
->>>         return 0;
->>> }
->>
->> Looks good to me. Maybe something similar for orientation?
-> 
-> Do you mean using ssdb also for orientation or using acpi_handle_warn?
-> 
-> 
-> I cannot find anything related to orientation for SSDB
-> https://github.com/coreboot/coreboot/blob/main/src/drivers/intel/mipi_camera/chip.h#L150
-> 
-> Am I looking in the right place?
-
-I believe that orientation is only available in the PLD,
-so for orientation we can just use the value returned in
-v4l2_fwnode_device_properties defaulting to front when
-it is not set.
-
-Otherwise I agree with what has been discussed in this
-thread (for this patch) so far.
-
-Regards,
-
-Hans
-
+Rafael, Rob: Unless there are any concerns from your end, I'll pick this up
+soon.
 
