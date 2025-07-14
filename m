@@ -1,133 +1,175 @@
-Return-Path: <linux-acpi+bounces-15147-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15149-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DECB04634
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 19:11:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA263B04686
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 19:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7D2517DA0C
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 17:11:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DBD24A6B87
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 17:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 597E8263C9B;
-	Mon, 14 Jul 2025 17:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7889262FDE;
+	Mon, 14 Jul 2025 17:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="jS/5Spj2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vC3BlaM7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476281C28E;
-	Mon, 14 Jul 2025 17:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA361B040D;
+	Mon, 14 Jul 2025 17:30:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752513065; cv=none; b=VQnTv3mSSP1iVdeRv6hW0GJcd9nOprPSaW29uvJ0528CPlXzK8PClg5mP8alBpCPRCk7JKDGLwX/8AEQs3jwzA2oElZI0XErZGSlFu14wb13o9UsWv/H5AQmjRIM48cTHG+s/6MhPsK0fLVyhiqVZQ/HUit7cmw7lr3oOVVFwyA=
+	t=1752514232; cv=none; b=IKFEgANuVtIwqFVb8Paz1uuPE2KpLmCfJCG7S/ZLy46ToMVNJCN05/TDjWkLM0lmY3rIislby25IiYGABN4kMyE45rOFub+jjSMpW1IBb6tO4hZlpl/7EmbJtUnZCnup5KRf93aL5nDQuCH9U+cTWw3VEjmfxBR8uGkSyJL4vi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752513065; c=relaxed/simple;
-	bh=HrEik8OS/TomELtGnOcuXDGl/ZkDKHaioJAklEd7Hcg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nvm0h+/Ws4m+2XjBLHGDEBJHgdOahm4p640sN1yWnBLkDUGehGUiyf/jTiXMPykTYYe5EpztinD3gnyCOv9Uc+7z4Iev7YLhSY2ZrIaFzOCO7Pw6f9DehdYjanHVJHrZVH6c2Bo+lEbgp3o4VV4f5jxEV/g51lr/aXCkf9LAL8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=jS/5Spj2; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 341A040E0213;
-	Mon, 14 Jul 2025 17:11:00 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id HU8HYa_y-qGl; Mon, 14 Jul 2025 17:10:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1752513056; bh=H3LHvbA3luRk3OzAQbn3IeTQ0AzAwvKzHasVSRUwFyY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jS/5Spj2fYjgTxALNG/evjM16wSmihOkego297u1qXLMdcgikGmi1iJyK5503wiLr
-	 UQpwz2pH56HSGh5dh69VHqO6yhACoe/IJngx5ZKp1gGnABll4zCoAN+3/raXkLRQl9
-	 T9vItKpJh/kS6zH/0FUcwKtqd61RP2J+066yS2X/ZnM1VQzSrPs6NkVPEY4e+GxaLY
-	 gDpIDiO542tyTJuZaGw6ldn4XjeUpb/bqtO8et2WAYF/8ZPtHJ46F/7g+LCS2fjvg0
-	 HRcHlkPtHF9rQDQ27NXuCcn5JHvAWzlJ0s6BPoeGFOkuFe82Vug7svwWb6ZpTQfVrq
-	 0fmelAsIoDrN93rhyTFIM2B4mSZ/NM6a2mMV92J4BNRfAPhPWbZX502g454QaumgYw
-	 0I8PV/PLLDf6poWSShlVZI0FXdsUC7wMHtLVhJX5bw05IIZIyiwjPyDqoPD8pu5S16
-	 NpeUB8ybjs0Yd+H6jYiUO9ud5/JgXB7JC2xJoqAYVuvx9DuFwKkxD73MSmr7gujETe
-	 RVyr/G/4SsUckKVq/6KoDCX1A+0nYdtOy43W5rlS4qVcr13KdOyn6tFw1Fmnl/20jN
-	 ZXFM60aELrm9+jouGa8GzNGQcr5n+qe+RlmTRuW5J65dLWeSoNKJ3TvcxRCK+ycqlK
-	 2++DAUMt9tbRPpBt3ozsw6MI=
-Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1EAB840E00CE;
-	Mon, 14 Jul 2025 17:10:46 +0000 (UTC)
-Date: Mon, 14 Jul 2025 19:10:40 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Breno Leitao <leitao@debian.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>,
-	Robert Moore <robert.moore@intel.com>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev,
-	kernel-team@meta.com
-Subject: Re: [PATCH] ghes: Track number of recovered hardware errors
-Message-ID: <20250714171040.GOaHU6EKH2xxSZFnZd@fat_crate.local>
-References: <20250714-vmcore_hw_error-v1-1-8cf45edb6334@debian.org>
+	s=arc-20240116; t=1752514232; c=relaxed/simple;
+	bh=XewLOYfqb/7YOskJSpnvvo/9VcSLIkCqEbvjb0MSFEE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OVnqd2/9AUMUvuXEKP67aLZKk+Vhz7hZoGBkEbQ4/6EqMoOZsJ/jlRThnohN5AVwFDXgVWtJb4++exnBjva6B2i4gMKkVUwDf0t8KjUUrNUf6PJ9X4pL60oH1UgJRl4Wi79+04vk4e7JA2viW1HiWfNR8vcFAVpjeafx3tEODPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vC3BlaM7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38917C4CEFA;
+	Mon, 14 Jul 2025 17:30:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752514232;
+	bh=XewLOYfqb/7YOskJSpnvvo/9VcSLIkCqEbvjb0MSFEE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=vC3BlaM7f2IBlwpaGHoUkbNZRHgzwAXzEFSEpHaDofE+LDrxosQDKvHY4bEU2jJ5V
+	 hpD+ePz3X3cBR0VbtM7jCI+5JBSgzFiJVgmwK5FA+/zw4egBN0prmsXN7dpSpRA9bV
+	 Sl5841KwT9a0KuLIbDadQvy351QnkIx5ZpQULQ7UM66s9VGBB7JflEsi0cerg2ScCp
+	 tMvB0yJygsKorHVdiqXCfK2kSyVefetSPA2OD0d1Kpb6pw7P90B2AsHwYo/kyffPzz
+	 HuJzdX2/4RrBW50TgwfjCGyDnXE7h0J8qDwA/xWxphSt3s/nazOYSPscpjFJfda0q8
+	 mGvAB0vJ81zfg==
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-61590f8fea4so108965eaf.2;
+        Mon, 14 Jul 2025 10:30:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV9h9m4f86jS8EzWJ0PWily/Im3DtUWNX+DRmErz3mNCDojuRZdWMvOtrNopnnA5eqbNQjyW8lyIZlg@vger.kernel.org, AJvYcCVq83DZtyaSh2sO7gEIrAQBG4RhmsOhdnziNEpBnw10CetHN+gdIrbkU+7pBDVXpwcJlh17e5pXhUKYJw==@vger.kernel.org, AJvYcCWa0kilXghxyMdZF3lvaoMPEWZ+vr125mk7fh54HCsxmPKO24w7HO30HI+bdDa/KLTQWRfEdjz/oN8HHo9n@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlyeDVgXv59fL5/e1arPevpA0s2KaR+SU8rGFqr7n/if3sljlK
+	K7fGB38HvE7VOh89keuAAiUd1xs5i8s94SCLZQ9tO5Q2NgnXqLLO0yYu+5zHGmrzhdkR1+WwcHH
+	SM+YX4oTZaf7V8w1ZVrFgucLDCS/5qw8=
+X-Google-Smtp-Source: AGHT+IG4gzTqDxo2kiaKUs9NT7jG7S74R8m7Mf4wFxMthg+jlzsnlgq3c8r8+igPvIkveiZL9WDapKKnPzYucmsi8/0=
+X-Received: by 2002:a05:6820:4b0b:b0:611:75a8:f6ca with SMTP id
+ 006d021491bc7-613e60042aemr9525757eaf.6.1752514231388; Mon, 14 Jul 2025
+ 10:30:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250714-vmcore_hw_error-v1-1-8cf45edb6334@debian.org>
+References: <20250404112050.42040-1-xueshuai@linux.alibaba.com>
+ <20250404112050.42040-2-xueshuai@linux.alibaba.com> <0c0bc332-0323-4e43-a96b-dd5f5957ecc9@huawei.com>
+ <709ee8d2-8969-424c-b32b-101c6a8220fb@linux.alibaba.com> <353809e7-5373-0d54-6ddb-767bc5af9e5f@huawei.com>
+ <653abdd4-46d2-4956-b49c-8f9c309af34d@linux.alibaba.com> <de5d2417-dc92-b276-1125-4feb5151de7f@huawei.com>
+ <f60f1128-0d42-48e5-9a06-6ed7ca10767f@linux.alibaba.com> <20250428152350.GA23615@willie-the-truck>
+ <6671c3cc-5119-4544-bcb5-17e8cc2d7057@linux.alibaba.com> <CAJZ5v0j3NC2ki1XPXfznxZRBLaReDBJ+nzHFgvqMx5+MgERL-A@mail.gmail.com>
+ <3a465782-a8ff-4be8-9c15-e46f39196757@linux.alibaba.com>
+In-Reply-To: <3a465782-a8ff-4be8-9c15-e46f39196757@linux.alibaba.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 14 Jul 2025 19:30:19 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gfFHCvE2Uu8=GRb9=ueK51s1-0BDBkJbbDG0tQvD5pLA@mail.gmail.com>
+X-Gm-Features: Ac12FXyg6J3C22EsHHhK7h8dr6Kl_ZD1YWcAXSIJ5XogUO6kfZzV-U7v3B2lVCQ
+Message-ID: <CAJZ5v0gfFHCvE2Uu8=GRb9=ueK51s1-0BDBkJbbDG0tQvD5pLA@mail.gmail.com>
+Subject: Re: [RESEND PATCH v18 1/2] ACPI: APEI: send SIGBUS to current task if
+ synchronous memory error not recovered
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, 
+	"Luck, Tony" <tony.luck@intel.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	akpm@linux-foundation.org, linux-edac@vger.kernel.org, x86@kernel.org, 
+	justin.he@arm.com, ardb@kernel.org, ying.huang@linux.alibaba.com, 
+	ashish.kalra@amd.com, baolin.wang@linux.alibaba.com, tglx@linutronix.de, 
+	dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com, 
+	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com, 
+	zhuo.song@linux.alibaba.com, sudeep.holla@arm.com, lpieralisi@kernel.org, 
+	linux-acpi@vger.kernel.org, yazen.ghannam@amd.com, mark.rutland@arm.com, 
+	mingo@redhat.com, robin.murphy@arm.com, Jonathan.Cameron@huawei.com, 
+	bp@alien8.de, linux-arm-kernel@lists.infradead.org, 
+	wangkefeng.wang@huawei.com, tanxiaofei@huawei.com, mawupeng1@huawei.com, 
+	linmiaohe@huawei.com, naoya.horiguchi@nec.com, james.morse@arm.com, 
+	tongtiangen@huawei.com, gregkh@linuxfoundation.org, jarkko@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 14, 2025 at 09:57:29AM -0700, Breno Leitao wrote:
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index f0584ccad4519..3735cfba17667 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -118,6 +118,12 @@ static inline bool is_hest_sync_notify(struct ghes *ghes)
->  	return notify_type == ACPI_HEST_NOTIFY_SEA;
->  }
->  
-> +/* Count the number of hardware recovered errors, to be reported at
-> + * crash/vmcore
-> + */
+Hi,
 
-Kernel comments style format is:
+On Mon, Jul 14, 2025 at 1:54=E2=80=AFPM Shuai Xue <xueshuai@linux.alibaba.c=
+om> wrote:
+>
+> =E5=9C=A8 2025/7/1 21:56, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> > On Tue, Jul 1, 2025 at 1:00=E2=80=AFPM Shuai Xue <xueshuai@linux.alibab=
+a.com> wrote:
+> >>
+> >>   >=E5=9C=A8 2025/4/28 23:23, Will Deacon =E5=86=99=E9=81=93:
+> >>   >> On Fri, Apr 25, 2025 at 09:10:09AM +0800, Shuai Xue wrote:
+> >>   >>> =E5=9C=A8 2025/4/25 09:00, Hanjun Guo =E5=86=99=E9=81=93:
+> >>   >>>> Call force_sig(SIGBUS) directly in ghes_do_proc() is not my fav=
+ourite,
+> >>   >>>> but I can bear that, please add
+> >>   >>>>
+> >>   >>>> Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+> >>   >>>>
+> >>   >>>> Thanks
+> >>   >>>> Hanjun
+> >>   >>>
+> >>   >>> Thanks. Hanjun.
+> >>   >>>
+> >>   >>> @Rafael, @Catalin,
+> >>   >>>
+> >>   >>> Both patch 1 and 2 have reviewed-by tag from the arm64 ACPI
+> >> maintainers, Hanjun,
+> >>   >>> now. Are you happpy to pick and queue this patch set to acpi tre=
+e
+> >> or arm tree?
+> >>   >>
+> >>   >> Since this primarily touches drivers/acpi/apei/ghes.c, I think it=
+ should
+> >>   >> go via the ACPI tree and not the arm64 one.
+> >>   >>
+> >>   >> Will
+> >>   >
+> >>   >Hi, Will,
+> >>   >
+> >>   >Thank you for your confirmation :)
+> >>   >
+> >>   >@Rafael, do you have more comments on this patch set?
+> >>   >
+> >>   >Thanks you.
+> >>   >
+> >>   >Best Regards,
+> >>   >Shuai
+> >>
+> >> Hi, all,
+> >>
+> >> Gentle ping.
+> >>
+> >> Does ACPI or APEI tree still active? Looking forward to any response.
+> >
+> > For APEI changes, you need an ACK from one of the reviewers listed in
+> > the MAINTAINERS entry for APEI.
+> >
+> > Thanks!
+>
+> Hi, Rafael
+>
+> Sorry, I missed your email which goes in span (:
+>
+> ARM maintain @Catalin points that:
+>
+>  > James Morse is listed as reviewer of the ACPI APEI code but he's busy
+>  > with resctrl/MPAM. Adding Lorenzo, Sudeep and Hanjun as arm64 ACPI
+>  > maintainers, hopefully they can help.
+>
+> And Hanjun explictly gived his Reviewed-by tag in this thread, is that
+> happy for you for merge?
 
-	/*
-	 * A sentence ending with a full-stop.
-	 * Another sentence. ...
-	 * More sentences. ...
-	 */
+Not really.
 
-> +unsigned int ghes_recovered_erors;
-> +EXPORT_SYMBOL_GPL(ghes_recovered_erors);
+I need an ACK or R-by from a reviewer listed in the APEI entry in MAINTAINE=
+RS.
 
-If you're going to do this, then you can perhaps make this variable always
-present so that you don't need an export and call it "hardware_errors_count"
-or so and all machinery which deals with RAS - GHES, MCE, AER, bla, can
-increment it...
+If James Morse is not able to fill that role (and AFAICS he's not been
+for quite some time now), I'd expect someone else to step up.
 
-> @@ -223,6 +224,9 @@ static int __init crash_save_vmcoreinfo_init(void)
->  	VMCOREINFO_SYMBOL(kallsyms_offsets);
->  	VMCOREINFO_SYMBOL(kallsyms_relative_base);
->  #endif /* CONFIG_KALLSYMS */
-> +#ifdef CONFIG_ACPI_APEI_GHES
-> +	VMCOREINFO_NUMBER(ghes_recovered_erors);
-> +#endif
-
-... and then you can add it to the vmcore image unconditionally as a metric
-telling that the machine has had so and so hw errors.
-
-I'd say.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks!
 
