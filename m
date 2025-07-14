@@ -1,173 +1,357 @@
-Return-Path: <linux-acpi+bounces-15119-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15120-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8753B0342F
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 03:34:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 432E5B03D86
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 13:42:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82CB17A25DC
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 01:32:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F7907A6ED6
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 11:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F7F17B50F;
-	Mon, 14 Jul 2025 01:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C817F246798;
+	Mon, 14 Jul 2025 11:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Wzd1H7JS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E90153BED;
-	Mon, 14 Jul 2025 01:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661F12459C5;
+	Mon, 14 Jul 2025 11:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752456846; cv=none; b=UMenoUHJwjHr2sx5HC+oaJGczmZ6ihXv5w+bIlbq0/TbHaI3O3PbMRadleRhMEZ4Ft2q9V38AFxgELVB6SgRZ2giGAbVPp+g1k8/UDia8ygcMqNzOPaOHRhanmt0ecKKVQDHjU6Tvsiiw6c9mXShZ4JC8jtSD42rF2ydz0r/CsA=
+	t=1752493355; cv=none; b=TV6U09yq0hK1m30htpyp2szQDB+7vGQDrCuDew+0/bxNbxzElwcAk7pIhfDD2EHasFkj4iK/NF/pLH/cvG9IFhZI+w7fvy82E8IeW7ytO5gtQ1WCAueTmqnDbPP+JHMClr4fo+2QCXgfIp4fPj85XD0osSTndkld1iHuDfoCDms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752456846; c=relaxed/simple;
-	bh=yRSpgC7Rr4aHCZ7Ox1XCum5rSxpCLsdCyTsF1z5mcpk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=RohKCo+lXo/EobA1OkGUwPX8t5OTUc8usTg3+Brt2cx7cLj7A0JN7eM/n3qUdJfGENpsE+ieoA5jQfw+riEI+NZ6pKfXEVH23fTCWQ03J6/VFctFOjLfsXvGFNtEED6lM+QRxztOqSPRsz4/1xUq+3c6Sma+ZJBDgMU9Y3+A7RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bgPtm5k7rz2FbPT;
-	Mon, 14 Jul 2025 09:32:00 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9CAFE1A0174;
-	Mon, 14 Jul 2025 09:34:01 +0800 (CST)
-Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 14 Jul 2025 09:33:52 +0800
-Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
- (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 14 Jul
- 2025 09:33:52 +0800
-Message-ID: <4c1926ef-f9fa-49d5-8d5f-ed4ee2638d62@huawei.com>
-Date: Mon, 14 Jul 2025 09:33:51 +0800
+	s=arc-20240116; t=1752493355; c=relaxed/simple;
+	bh=fd9+qREBoXX6esb6iegrR6YDFkU5Ngt0lA8t+uxVkZ4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BiDIGTOtJO7BGibMlg44GMMQt3g+d2UzQglr/lw5qEW4MYIj9XO/vW/P2QnFhZNnxEbQlIaS+fnNkYhxYCjgMNoWqgpZRuSt3N834Ba7+iTir3laghgBePmHJrrJYoEcWiG7Am/Lf0Im72DjUzdftLh5Mb3gyDsOcu5vHdMBojA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Wzd1H7JS; arc=none smtp.client-ip=115.124.30.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1752493349; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=D93xzyjmfQmm8z/uIH/ZXHR+jhRjJ3+GEatzpkvlF9o=;
+	b=Wzd1H7JSxVM4PR2KASHCRx5OadgAMqTPjQhU1EOoFjMSP1l0zo+1BdqdKYYMoTcpRH3mPU6d8yKDSZeuNsNt3X+xQjy92RMxKjw5FczjY/VP4UGuFBmcjbQrRuaZlP9twxQQq971tGWPW4EU3BNvMglzdrEQn4rUCVz4CSaYk6I=
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WiufzqZ_1752493333 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 14 Jul 2025 19:42:27 +0800
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+To: catalin.marinas@arm.com,
+	sudeep.holla@arm.com,
+	guohanjun@huawei.com,
+	lpieralisi@kernel.org,
+	linux-acpi@vger.kernel.org,
+	yazen.ghannam@amd.com,
+	mark.rutland@arm.com,
+	mingo@redhat.com,
+	robin.murphy@arm.com,
+	Jonathan.Cameron@Huawei.com,
+	bp@alien8.de,
+	rafael@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	wangkefeng.wang@huawei.com,
+	tanxiaofei@huawei.com,
+	mawupeng1@huawei.com,
+	tony.luck@intel.com,
+	linmiaohe@huawei.com,
+	naoya.horiguchi@nec.com,
+	james.morse@arm.com,
+	tongtiangen@huawei.com,
+	gregkh@linuxfoundation.org,
+	will@kernel.org,
+	jarkko@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	linux-edac@vger.kernel.org,
+	x86@kernel.org,
+	xueshuai@linux.alibaba.com,
+	justin.he@arm.com,
+	ardb@kernel.org,
+	ying.huang@linux.alibaba.com,
+	ashish.kalra@amd.com,
+	baolin.wang@linux.alibaba.com,
+	tglx@linutronix.de,
+	dave.hansen@linux.intel.com,
+	lenb@kernel.org,
+	hpa@zytor.com,
+	robert.moore@intel.com,
+	lvying6@huawei.com,
+	xiexiuqi@huawei.com,
+	zhuo.song@linux.alibaba.com
+Subject: [PATCH v19 0/2] ACPI: APEI: fix potential hardlockup due to infinite SEA excepction loop
+Date: Mon, 14 Jul 2025 19:42:10 +0800
+Message-Id: <20250714114212.31660-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: processor: idle: Fix resource rollback in
- acpi_processor_power_init
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linuxarm@huawei.com>,
-	<jonathan.cameron@huawei.com>, <zhanjie9@hisilicon.com>,
-	<zhenglifeng1@huawei.com>, <yubowen8@huawei.com>, <liuyonglong@huawei.com>,
-	<lihuisong@huawei.com>
-References: <20250619061327.1674384-1-lihuisong@huawei.com>
- <CAJZ5v0gjkZ3a-BwgJxjUJbNwu5E_j9VUUHrR3M=a+KPTA-tZcA@mail.gmail.com>
- <6a35291a-32e8-461e-a0e5-405b7b5d24ce@huawei.com>
- <CAJZ5v0hXHgyCKoEOMTtp0c_yu__vGGDcPnqaUML2Xg7hyJWc3g@mail.gmail.com>
-From: "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <CAJZ5v0hXHgyCKoEOMTtp0c_yu__vGGDcPnqaUML2Xg7hyJWc3g@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemn100009.china.huawei.com (7.202.194.112)
 
+Dear maintainer:
 
-在 2025/7/3 19:09, Rafael J. Wysocki 写道:
-> On Thu, Jul 3, 2025 at 8:23 AM lihuisong (C) <lihuisong@huawei.com> wrote:
->> Hi,
->>
->> Thanks for your review.
->>
->>
->> 在 2025/7/3 1:42, Rafael J. Wysocki 写道:
->>> On Thu, Jun 19, 2025 at 8:13 AM Huisong Li <lihuisong@huawei.com> wrote:
->>>> There are two resource rollback issues in acpi_processor_power_init:
->>>> 1> Do not unregister acpi_idle_driver when do kzalloc failed.
->>>> 2> Do not free cpuidle device memory when register cpuidle device failed.
->>>>
->>>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
->>>> ---
->>>>    drivers/acpi/processor_idle.c | 24 +++++++++++++++++-------
->>>>    1 file changed, 17 insertions(+), 7 deletions(-)
->>>>
->>>> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
->>>> index 2c2dc559e0f8..3548ab9dac9e 100644
->>>> --- a/drivers/acpi/processor_idle.c
->>>> +++ b/drivers/acpi/processor_idle.c
->>>> @@ -1392,8 +1392,10 @@ int acpi_processor_power_init(struct acpi_processor *pr)
->>>>                   }
->>>>
->>>>                   dev = kzalloc(sizeof(*dev), GFP_KERNEL);
->>>> -               if (!dev)
->>>> -                       return -ENOMEM;
->>>> +               if (!dev) {
->>>> +                       retval = -ENOMEM;
->>>> +                       goto unregister_driver;
->>> No, unregistering the driver here is pointless.
->> I don't quite understand why here is pointless. Can you explain it?
-> When this function is run for another CPU, it will attempt to register
-> the driver again if it is unregistered here.
-Yeah, got it.
-So registering cpuidle also has a potential race issue here.
->
-> Quite frankly, the driver should be registered before running this
-> function because it is a CPU hotplug callback and registering a
-> cpuidle driver from within it is quite questionable.
->
-> Alternatively, it can be registered when all of the CPUs have been brought up.
-Agree with you.
-The reason why is that the initialization of acpi_idle_driver depands on 
-the power management information of CPU.
-But the power management information of CPU is obtained in this callback.
-I have an idea.
-Because acpi_idle_driver is applied to all possiable CPUs. And use the 
-power information of the first onlined CPU to initialize and register 
-acpi_idle_driver, currently.
-So I think we can use this logic and dependency to extract a function to 
-initialize and register acpi_idle_driver. And put this function to 
-acpi_processor_driver_init().
-I tested it is ok.
-What do you think about this?
+I am writing to respectfully request your review and consideration for merging
+this patch series, which addresses potential hardlockup due to infinite
+SEA excepction loop ( see bellow for details).
 
-/Huisong
->
->>>> +               }
->>>>                   per_cpu(acpi_cpuidle_device, pr->id) = dev;
->>>>
->>>>                   acpi_processor_setup_cpuidle_dev(pr, dev);
->>>> @@ -1402,14 +1404,22 @@ int acpi_processor_power_init(struct acpi_processor *pr)
->>>>                    * must already be registered before registering device
->>>>                    */
->>>>                   retval = cpuidle_register_device(dev);
->>>> -               if (retval) {
->>>> -                       if (acpi_processor_registered == 0)
->>>> -                               cpuidle_unregister_driver(&acpi_idle_driver);
->>> Pretty much the same as here.
->>>
->>> It would be good to clean up dev here though.
->> It is ok if above is pointless.
->>>> -                       return retval;
->>>> -               }
->>>> +               if (retval)
->>>> +                       goto free_cpuidle_device;
->>>> +
->>>>                   acpi_processor_registered++;
->>>>           }
->>>>           return 0;
->>>> +
->>>> +free_cpuidle_device:
->>>> +       per_cpu(acpi_cpuidle_device, pr->id) = NULL;
->>>> +       kfree(dev);
->>>> +
->>>> +unregister_driver:
->>>> +       if (acpi_processor_registered == 0)
->>>> +               cpuidle_unregister_driver(&acpi_idle_driver);
->>>> +
->>>> +       return retval;
->>>>    }
->>>>
->>>>    int acpi_processor_power_exit(struct acpi_processor *pr)
->>>> --
->>>> 2.33.0
->>>>
+As noted by @Catalin, 
+
+> James Morse is listed as reviewer of the ACPI APEI code but he's busy
+> with resctrl/MPAM. Adding Lorenzo, Sudeep and Hanjun as arm64 ACPI
+> maintainers, hopefully they can help. 
+
+This patch series has undergone extensive review through 19 iterations Received
+13 'Reviewed-by' tags from various reviewers. Notably includes review approval
+from arm64 ACPI maintainer Hanjun Guo.
+
+The patches have been thoroughly tested and refined based on community feedback.
+I believe they are ready for integration into the mainline kernel. 
+
+I would greatly appreciate your time in reviewing these changes and
+providing your ack if you find them acceptable for merging.  
+
+Thank you for your continued support and maintenance of the kernel.
+
+changes since last v18:
+- add reviewed-by tag for patch 1-2 from Hanjun 
+
+no code changes since last v18:
+- drop a mm/hwpoison patch which is merged into mainline
+
+changes singce v17:
+- rebase to Linux 6.13-rc7 with no functional changes
+- add reviewed-by tag for patch 1-3 from Jane Chu
+- add reviewed-by tag for patch 3 from Yazen
+
+changes singce v16:
+- add reviewed-by tag for patch 1 and patch 2 from Yazen
+- rewrite warning message for force kill (per Yazen)
+- warn with dev_err in ghes (per Jarkko)
+- add return value -ENXIO in memory_failure comments  (per Yazen)
+- Link: https://lore.kernel.org/lkml/20241104015430.98599-1-xueshuai@linux.alibaba.com/
+
+changes singce v15:
+- add HW_ERR and GHES_PFX prefix per Yazen 
+
+changes since v14:
+- add reviewed-by tags from Jarkko and Jonathan
+- remove local variable and use twcb->pfn
+
+changes since v13:
+- add reviewed-by tag from Jarkko
+- rename task_work to ghes_task_work (per Jarkko)
+
+changes since v12:
+- tweak error message for force kill (per Jarkko)
+- fix comments style (per Jarkko)
+- fix commit log typo (per Jarko)
+
+changes since v11:
+- rebase to Linux 6.11-rc6
+- fix grammer and typo in commit log (per Borislav)
+- remove `sync_` perfix of `sync_task_work`  (per Borislav)
+- comments flags and description of `task_work`  (per Borislav)
+
+changes since v10:
+- rebase to v6.8-rc2
+
+changes since v9:
+- split patch 2 to address exactly one issue in one patch (per Borislav)
+- rewrite commit log according to template (per Borislav)
+- pickup reviewed-by tag of patch 1 from James Morse
+- alloc and free twcb through gen_pool_{alloc, free) (Per James)
+- rewrite cover letter
+
+changes since v8:
+- remove the bug fix tag of patch 2 (per Jarkko Sakkinen)
+- remove the declaration of memory_failure_queue_kick (per Naoya Horiguchi)
+- rewrite the return value comments of memory_failure (per Naoya Horiguchi)
+
+changes since v7:
+- rebase to Linux v6.6-rc2 (no code changed)
+- rewritten the cover letter to explain the motivation of this patchset
+
+changes since v6:
+- add more explicty error message suggested by Xiaofei
+- pick up reviewed-by tag from Xiaofei
+- pick up internal reviewed-by tag from Baolin
+
+changes since v5 by addressing comments from Kefeng:
+- document return value of memory_failure()
+- drop redundant comments in call site of memory_failure() 
+- make ghes_do_proc void and handle abnormal case within it
+- pick up reviewed-by tag from Kefeng Wang 
+
+changes since v4 by addressing comments from Xiaofei:
+- do a force kill only for abnormal sync errors
+
+changes since v3 by addressing comments from Xiaofei:
+- do a force kill for abnormal memory failure error such as invalid PA,
+unexpected severity, OOM, etc
+- pcik up tested-by tag from Ma Wupeng
+
+changes since v2 by addressing comments from Naoya:
+- rename mce_task_work to sync_task_work
+- drop ACPI_HEST_NOTIFY_MCE case in is_hest_sync_notify()
+- add steps to reproduce this problem in cover letter
+
+changes since v1:
+- synchronous events by notify type
+- Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
+
+## Cover Letter
+
+There are two major types of uncorrected recoverable (UCR) errors :
+
+- Synchronous error: The error is detected and raised at the point of the
+  consumption in the execution flow, e.g. when a CPU tries to access
+  a poisoned cache line. The CPU will take a synchronous error exception
+  such as Synchronous External Abort (SEA) on Arm64 and Machine Check
+  Exception (MCE) on X86. OS requires to take action (for example, offline
+  failure page/kill failure thread) to recover this uncorrectable error.
+
+- Asynchronous error: The error is detected out of processor execution
+  context, e.g. when an error is detected by a background scrubber. Some data
+  in the memory are corrupted. But the data have not been consumed. OS is
+  optional to take action to recover this uncorrectable error.
+
+Currently, both synchronous and asynchronous error use
+memory_failure_queue() to schedule memory_failure() exectute in kworker
+context. As a result, when a user-space process is accessing a poisoned
+data, a data abort is taken and the memory_failure() is executed in the
+kworker context:
+
+  - will send wrong si_code by SIGBUS signal in early_kill mode, and
+  - can not kill the user-space in some cases resulting a synchronous
+    error infinite loop
+
+Issue 1: send wrong si_code in early_kill mode
+
+Since commit a70297d22132 ("ACPI: APEI: set memory failure flags as
+MF_ACTION_REQUIRED on synchronous events")', the flag MF_ACTION_REQUIRED
+could be used to determine whether a synchronous exception occurs on
+ARM64 platform.  When a synchronous exception is detected, the kernel is
+expected to terminate the current process which has accessed poisoned
+page. This is done by sending a SIGBUS signal with an error code
+BUS_MCEERR_AR, indicating an action-required machine check error on
+read.
+
+However, when kill_proc() is called to terminate the processes who have
+the poisoned page mapped, it sends the incorrect SIGBUS error code
+BUS_MCEERR_AO because the context in which it operates is not the one
+where the error was triggered.
+
+To reproduce this problem:
+
+  # STEP1: enable early kill mode
+  #sysctl -w vm.memory_failure_early_kill=1
+  vm.memory_failure_early_kill = 1
+
+  # STEP2: inject an UCE error and consume it to trigger a synchronous error
+  #einj_mem_uc single
+  0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+  injecting ...
+  triggering ...
+  signal 7 code 5 addr 0xffffb0d75000
+  page not present
+  Test passed
+
+The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_AO
+error and it is not fact.
+
+To fix it, queue memory_failure() as a task_work so that it runs in
+the context of the process that is actually consuming the poisoned data.
+
+After this patch set:
+
+  # STEP1: enable early kill mode
+  #sysctl -w vm.memory_failure_early_kill=1
+  vm.memory_failure_early_kill = 1
+
+  # STEP2: inject an UCE error and consume it to trigger a synchronous error
+  #einj_mem_uc single
+  0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+  injecting ...
+  triggering ...
+  signal 7 code 4 addr 0xffffb0d75000
+  page not present
+  Test passed
+
+The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_AR
+error as we expected.
+
+Issue 2: a synchronous error infinite loop due to memory_failure() failed
+
+If a user-space process, e.g. devmem, a poisoned page which has been set
+HWPosion flag, kill_accessing_process() is called to send SIGBUS to the
+current processs with error info. Because the memory_failure() is
+executed in the kworker contex, it will just do nothing but return
+EFAULT. So, devmem will access the posioned page and trigger an
+excepction again, resulting in a synchronous error infinite loop. Such
+loop may cause platform firmware to exceed some threshold and reboot
+when Linux could have recovered from this error.
+
+To reproduce this problem:
+
+  # STEP 1: inject an UCE error, and kernel will set HWPosion flag for related page
+  #einj_mem_uc single
+  0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+  injecting ...
+  triggering ...
+  signal 7 code 4 addr 0xffffb0d75000
+  page not present
+  Test passed
+
+  # STEP 2: access the same page and it will trigger a synchronous error infinite loop
+  devmem 0x4092d55b400
+
+To fix it, if memory_failure() failed, perform a force kill to current process.
+
+Issue 3: a synchronous error infinite loop due to no memory_failure() queued
+
+No memory_failure() work is queued unless all bellow preconditions check passed:
+
+- `if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))` in ghes_handle_memory_failure()
+- `if (flags == -1)` in ghes_handle_memory_failure()
+- `if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))` in ghes_do_memory_failure()
+- `if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) ` in ghes_do_memory_failure()
+
+If the preconditions are not passed, the user-space process will trigger SEA again.
+This loop can potentially exceed the platform firmware threshold or even
+trigger a kernel hard lockup, leading to a system reboot.
+
+To fix it, if no memory_failure() queued, perform a force kill to current process.
+
+And the the memory errors triggered in kernel-mode[5], also relies on this
+patchset to kill the failure thread.
+
+Lv Ying and XiuQi from Huawei also proposed to address similar problem[2][4].
+Acknowledge to discussion with them.
+
+[1] Add ARMv8 RAS virtualization support in QEMU https://patchew.org/QEMU/20200512030609.19593-1-gengdongjiu@huawei.com/
+[2] https://lore.kernel.org/lkml/20221205115111.131568-3-lvying6@huawei.com/
+[3] https://lkml.kernel.org/r/20220914064935.7851-1-xueshuai@linux.alibaba.com
+[4] https://lore.kernel.org/lkml/20221209095407.383211-1-lvying6@huawei.com/
+[5] https://patchwork.kernel.org/project/linux-arm-kernel/cover/20240528085915.1955987-1-tongtiangen@huawei.com/
+
+Shuai Xue (2):
+  ACPI: APEI: send SIGBUS to current task if synchronous memory error
+    not recovered
+  ACPI: APEI: handle synchronous exceptions in task work
+
+ drivers/acpi/apei/ghes.c | 88 +++++++++++++++++++++++++---------------
+ include/acpi/ghes.h      |  3 --
+ include/linux/mm.h       |  1 -
+ mm/memory-failure.c      | 13 ------
+ 4 files changed, 55 insertions(+), 50 deletions(-)
+
+-- 
+2.39.3
+
 
