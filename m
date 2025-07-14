@@ -1,48 +1,48 @@
-Return-Path: <linux-acpi+bounces-15134-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15135-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D994FB04194
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 16:27:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F73FB041A6
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 16:30:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E2504A5A75
-	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 14:25:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 084DB4A7906
+	for <lists+linux-acpi@lfdr.de>; Mon, 14 Jul 2025 14:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C474256C60;
-	Mon, 14 Jul 2025 14:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822BB255F56;
+	Mon, 14 Jul 2025 14:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9eUJDtC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YjPOQ6sF"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A2919ABC6;
-	Mon, 14 Jul 2025 14:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACE222129F;
+	Mon, 14 Jul 2025 14:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752503080; cv=none; b=oQy0SHIR3Fh3Wxg7cC8q/Yu4ds673SbgHrTFV7pbo7SX1RfdmSqbeEc+z8XW2nRlOJBEP2NIFmdUHfqLxA5GYkR/SQ7MGHPG+ixakpi4u9meKl+odQ8OhaUv0JcIp//I7zeQbX/BE0s21gBHgHbXrCAaAaGK9QHzet5XCUh2TKE=
+	t=1752503330; cv=none; b=low50mDb8yMXY6acczdz6UWBqHQsAsZ9L62xMC79K5skXQEMAjAL9BfTSPe8Xqx4e1ZCXC3+HcIM/bcS1Y0O7XaOKkRAkdyXnTTsn7GtfzQ+T8W8rbHAOzhnLPnmH/Za2sIICri3ypSGCxmCRf2Gn56cHoaD3YrVRbQ2ROOEvKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752503080; c=relaxed/simple;
-	bh=6VoKxzA38OaFQTk9RyCTeiLiQrhyEWeycwBS3+3rAOE=;
+	s=arc-20240116; t=1752503330; c=relaxed/simple;
+	bh=/P5aV1LHkhzKUZr0ZcTRFRiNCSIXBZhwy8QEEM9Ppms=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZXBmOF5y/DDFVF7vFx+DOY5IBeDtk89FuuoCU1poSln5wsqxOousap0ZmZ8OiUoxLnmUJWV9fuM1IGlUUCdvbkceJuUpEvtUApDF92nqC1uUyG0tiX4D8oSI3MERtUaEAIpDQ7henrz01rqMPmye1vJqyHNHM/j+2iR/iEBbmJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9eUJDtC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC603C4CEED;
-	Mon, 14 Jul 2025 14:24:34 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=S+tbBTsapncUL4Neo1WiE9ey3OayHtxs+ZFIKSOEEZ2SXXGFD3VtnCtZoxjtnqq8UV+2+DXkEP+uIB3SfYXt5p5A8BFYtvZmlhKHyCMsEy33kmzpoF6LQw0VPBoO4EBsht74PWnKNP1E9jmgPx8fYJ2bpYbXj+TGbx7xwijXJdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YjPOQ6sF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4FBC4CEED;
+	Mon, 14 Jul 2025 14:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752503079;
-	bh=6VoKxzA38OaFQTk9RyCTeiLiQrhyEWeycwBS3+3rAOE=;
+	s=k20201202; t=1752503329;
+	bh=/P5aV1LHkhzKUZr0ZcTRFRiNCSIXBZhwy8QEEM9Ppms=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=t9eUJDtCn/UGjWsbyBcjY/Ab+R4W9jMQRB5D8H7YleXBIIiiGlL3dE5LEELjsQY5B
-	 uPhKZo2fMgNUY7OTTNqcet0OA+fzs3f1kDcfBWvfRL639jEeE+Tfe/FpxxzVYipEQ+
-	 AmHGewXlfJ5cmyz0ERm0gc3b/IRAytqGs9Ja8V1+cHOsWEZI2mRjlGCa9RxnLYgfIx
-	 9pPVvTZLuVI/ntQgzRd23/mA58OBrHBtCzztBH4W424g+9wwl8GT3oYCIWEk3Tmqbc
-	 ICnx3fqsSx3/+zujBYhN0ntORwFi44r21F5R+Si1iuT4RhBSglU05575G3OeeaaA8Y
-	 uvkX+myYrZI0Q==
-Message-ID: <e573334d-da02-4d67-95ad-d372aa7f4a67@kernel.org>
-Date: Mon, 14 Jul 2025 16:24:32 +0200
+	b=YjPOQ6sFAV7RywsgYZQy98VtWBWzwu49z5lGcVdDNfsGeDwWhtlgDuXyUK5DV9kkk
+	 N/9f9az7L/auquAPKX+3HvjrFSkHra4lgNuaqIBvcJBTmTU0bCu/drKMDId0nhnB2n
+	 HVPYJnVr+3feqChmDrt72v+bckxvFhcsxtM9rezu6jaPKZJHHlyDc56IEhqsEJgwQ9
+	 i4Uf4b2YDyEbNICCtIZ8JVP5Kh8mJYQbz3M6EwDvr/NEkH0NY80x/Oue/H4E2pip3B
+	 wbFdp2ZwiPinw58pLRZrMzt0+NHwqmaW9Tqp9VlEns32xuPTLZJeoluUJ0/PThsMGz
+	 fN27fntIQiNzQ==
+Message-ID: <7c9306c4-1897-41be-b2c1-cb98166ba51a@kernel.org>
+Date: Mon, 14 Jul 2025 16:28:43 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -50,100 +50,67 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/12] media: uvcvideo: Add uvc_ctrl_query_entity
- helper
+Subject: Re: [PATCH v2 10/12] media: uvcvideo: Add get_* functions to
+ uvc_entity
 To: Ricardo Ribalda <ribalda@chromium.org>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Hans de Goede <hdegoede@redhat.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Hans de Goede <hdegoede@redhat.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil
  <hverkuil@xs4all.nl>, Sakari Ailus <sakari.ailus@linux.intel.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Linus Walleij
  <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
  linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org
 References: <20250605-uvc-orientation-v2-0-5710f9d030aa@chromium.org>
- <20250605-uvc-orientation-v2-9-5710f9d030aa@chromium.org>
+ <20250605-uvc-orientation-v2-10-5710f9d030aa@chromium.org>
+ <20250629181246.GE6260@pendragon.ideasonboard.com>
+ <CANiDSCsu0RT4dcGyBJRutP=9HTe+niUoohxTZE=qJ8O_9ez=+A@mail.gmail.com>
 Content-Language: en-US, nl
 From: Hans de Goede <hansg@kernel.org>
-In-Reply-To: <20250605-uvc-orientation-v2-9-5710f9d030aa@chromium.org>
+In-Reply-To: <CANiDSCsu0RT4dcGyBJRutP=9HTe+niUoohxTZE=qJ8O_9ez=+A@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Ricardo,
+Hi Ricardo, Laurent,
 
-On 5-Jun-25 19:53, Ricardo Ribalda wrote:
-> Create a helper function to query a control. The new function reduces
-> the number of arguments, calculates the length of the operation and
-> redirects the operation to the hardware or to the entity private
-> functions.
+On 1-Jul-25 13:13, Ricardo Ribalda wrote:
+> Hi Laurent
 > 
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-
-Thanks, this looks like a nice cleanup.
-
-> ---
->  drivers/media/usb/uvc/uvc_ctrl.c | 81 ++++++++++++++++++++--------------------
->  1 file changed, 41 insertions(+), 40 deletions(-)
+> On Sun, 29 Jun 2025 at 20:13, Laurent Pinchart
+> <laurent.pinchart@ideasonboard.com> wrote:
+>>
+>> Hi Ricardo,
+>>
+>> Thank you for the patch.
+>>
+>> On Thu, Jun 05, 2025 at 05:53:03PM +0000, Ricardo Ribalda wrote:
+>>> Virtual entities need to provide more values than get_cur and get_cur
+>>
+>> I think you meant "get_info and get_cur".
+>>
+>>> for their controls. Add support for get_def, get_min, get_max and
+>>> get_res.
+>>
+>> Do they ? The UVC specification defines controls that don't list
+>> GET_DEF, GET_MIN, GET_MAX and GET_RES as mandatory requests. Can't we do
+>> the same for the software controls ? This patch is meant to support the
+>> UVC_SWENTITY_ORIENTATION and UVC_SWENTITY_ROTATION control in the next
+>> patch, and those are read-only controls. Aren't GET_INFO and GET_CUR
+>> enough ?
 > 
-> diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-> index b2768080c08aafa85acb9b7f318672c043d84e55..21ec7b978bc7aca21db7cb8fd5d135d876f3330c 100644
-> --- a/drivers/media/usb/uvc/uvc_ctrl.c
-> +++ b/drivers/media/usb/uvc/uvc_ctrl.c
-> @@ -576,6 +576,34 @@ static const struct uvc_control_mapping uvc_ctrl_power_line_mapping_uvc15 = {
->  				  V4L2_CID_POWER_LINE_FREQUENCY_DISABLED),
->  };
->  
-> +static int uvc_ctrl_query_entity(struct uvc_device *dev,
-> +				 const struct uvc_control *ctrl, u8 query,
-> +				 void *data)
-> +{
-> +	u16 len;
-> +
-> +	switch (query) {
-> +	case UVC_GET_INFO:
-> +		len = 1;
-> +		break;
-> +	case UVC_GET_LEN:
-> +		len = 2;
-> +		break;
-> +	default:
-> +		len = ctrl->info.size;
-> +	}
-> +
-> +	if (query == UVC_GET_CUR && ctrl->entity->get_cur)
-> +		return ctrl->entity->get_cur(dev, ctrl->entity,
-> +					     ctrl->info.selector, data, len);
-> +	if (query == UVC_GET_INFO && ctrl->entity->get_info)
-> +		return ctrl->entity->get_info(dev, ctrl->entity,
-> +					      ctrl->info.selector, data);
-> +
-> +	return uvc_query_ctrl(dev, query, ctrl->entity->id, dev->intfnum,
-> +			      ctrl->info.selector, data, len);
+> V4L2_CID_CAMERA_ROTATION has the type UVC_CTRL_DATA_TYPE_UNSIGNED,
+> that time requires get_min and get_max.
+> We can create a new type UVC_CTRL_DATA_TYPE_UNSIGNED_READ_ONLY that
+> fakes min, max and res, but I think that it is cleaner this approach.
 
-Maybe:
+If I read this right, then we could at least drop adding get_def and
+get_res callbacks from this patch, right?
 
-	if (query == UVC_GET_CUR && ctrl->entity->get_cur)
-		return ctrl->entity->get_cur(dev, ctrl->entity,
-					     ctrl->info.selector, data, len);
-	else if (query == UVC_GET_INFO && ctrl->entity->get_info)
-		return ctrl->entity->get_info(dev, ctrl->entity,
-					      ctrl->info.selector, data);
-	else
-		return uvc_query_ctrl(dev, query, ctrl->entity->id, dev->intfnum,
-				      ctrl->info.selector, data, len);
-
-?
-
-That + Laurent's well observed remark about info->selector vs
-ctrl->info.selector which I would probably have missed...
-
-About Laurent's remark about one case of this pre-existing,
-please fix this in a separate patch (I guess you would have done so
-anyways, but just to be sure).
+Can you do that for the next version please?
 
 Regards,
 
@@ -152,113 +119,63 @@ Hans
 
 
 
-
-> +}
-> +
->  static const struct uvc_control_mapping *uvc_ctrl_filter_plf_mapping(
->  	struct uvc_video_chain *chain, struct uvc_control *ctrl)
->  {
-> @@ -1222,35 +1250,27 @@ static int uvc_ctrl_populate_cache(struct uvc_video_chain *chain,
->  	int ret;
->  
->  	if (ctrl->info.flags & UVC_CTRL_FLAG_GET_DEF) {
-> -		ret = uvc_query_ctrl(chain->dev, UVC_GET_DEF, ctrl->entity->id,
-> -				     chain->dev->intfnum, ctrl->info.selector,
-> -				     uvc_ctrl_data(ctrl, UVC_CTRL_DATA_DEF),
-> -				     ctrl->info.size);
-> +		ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_DEF,
-> +					uvc_ctrl_data(ctrl, UVC_CTRL_DATA_DEF));
->  		if (ret < 0)
->  			return ret;
->  	}
->  
->  	if (ctrl->info.flags & UVC_CTRL_FLAG_GET_MIN) {
-> -		ret = uvc_query_ctrl(chain->dev, UVC_GET_MIN, ctrl->entity->id,
-> -				     chain->dev->intfnum, ctrl->info.selector,
-> -				     uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MIN),
-> -				     ctrl->info.size);
-> +		ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_MIN,
-> +					uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MIN));
->  		if (ret < 0)
->  			return ret;
->  	}
->  	if (ctrl->info.flags & UVC_CTRL_FLAG_GET_MAX) {
-> -		ret = uvc_query_ctrl(chain->dev, UVC_GET_MAX, ctrl->entity->id,
-> -				     chain->dev->intfnum, ctrl->info.selector,
-> -				     uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MAX),
-> -				     ctrl->info.size);
-> +		ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_MAX,
-> +					uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MAX));
->  		if (ret < 0)
->  			return ret;
->  	}
->  	if (ctrl->info.flags & UVC_CTRL_FLAG_GET_RES) {
-> -		ret = uvc_query_ctrl(chain->dev, UVC_GET_RES, ctrl->entity->id,
-> -				     chain->dev->intfnum, ctrl->info.selector,
-> -				     uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES),
-> -				     ctrl->info.size);
-> +		ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_RES,
-> +					uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES));
->  		if (ret < 0) {
->  			if (UVC_ENTITY_TYPE(ctrl->entity) !=
->  			    UVC_VC_EXTENSION_UNIT)
-> @@ -1291,16 +1311,7 @@ static int __uvc_ctrl_load_cur(struct uvc_video_chain *chain,
->  		return 0;
->  	}
->  
-> -	if (ctrl->entity->get_cur)
-> -		ret = ctrl->entity->get_cur(chain->dev, ctrl->entity,
-> -					    ctrl->info.selector, data,
-> -					    ctrl->info.size);
-> -	else
-> -		ret = uvc_query_ctrl(chain->dev, UVC_GET_CUR,
-> -				     ctrl->entity->id, chain->dev->intfnum,
-> -				     ctrl->info.selector, data,
-> -				     ctrl->info.size);
-> -
-> +	ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_CUR, data);
->  	if (ret < 0)
->  		return ret;
->  
-> @@ -2164,11 +2175,8 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
->  			continue;
->  
->  		if (!rollback)
-> -			ret = uvc_query_ctrl(dev, UVC_SET_CUR, ctrl->entity->id,
-> -				dev->intfnum, ctrl->info.selector,
-> -				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
-> -				ctrl->info.size);
-> -
-> +			ret = uvc_ctrl_query_entity(dev, ctrl, UVC_SET_CUR,
-> +				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
->  		if (!ret)
->  			processed_ctrls++;
->  
-> @@ -2570,13 +2578,7 @@ static int uvc_ctrl_get_flags(struct uvc_device *dev,
->  	if (data == NULL)
->  		return -ENOMEM;
->  
-> -	if (ctrl->entity->get_info)
-> -		ret = ctrl->entity->get_info(dev, ctrl->entity,
-> -					     ctrl->info.selector, data);
-> -	else
-> -		ret = uvc_query_ctrl(dev, UVC_GET_INFO, ctrl->entity->id,
-> -				     dev->intfnum, info->selector, data, 1);
-> -
-> +	ret = uvc_ctrl_query_entity(dev, ctrl, UVC_GET_INFO, data);
->  	if (!ret) {
->  		info->flags &= ~(UVC_CTRL_FLAG_GET_CUR |
->  				 UVC_CTRL_FLAG_SET_CUR |
-> @@ -2654,8 +2656,7 @@ static int uvc_ctrl_fill_xu_info(struct uvc_device *dev,
->  	info->selector = ctrl->index + 1;
->  
->  	/* Query and verify the control length (GET_LEN) */
-> -	ret = uvc_query_ctrl(dev, UVC_GET_LEN, ctrl->entity->id, dev->intfnum,
-> -			     info->selector, data, 2);
-> +	ret = uvc_ctrl_query_entity(dev, ctrl, UVC_GET_LEN, data);
->  	if (ret < 0) {
->  		uvc_dbg(dev, CONTROL,
->  			"GET_LEN failed on control %pUl/%u (%d)\n",
+>>> This is a preparation patch.
+>>>
+>>> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+>>> ---
+>>>  drivers/media/usb/uvc/uvc_ctrl.c | 12 ++++++++++++
+>>>  drivers/media/usb/uvc/uvcvideo.h |  8 ++++++++
+>>>  2 files changed, 20 insertions(+)
+>>>
+>>> diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+>>> index 21ec7b978bc7aca21db7cb8fd5d135d876f3330c..59be62ae24a4219fa9d7aacf2ae7382c95362178 100644
+>>> --- a/drivers/media/usb/uvc/uvc_ctrl.c
+>>> +++ b/drivers/media/usb/uvc/uvc_ctrl.c
+>>> @@ -596,6 +596,18 @@ static int uvc_ctrl_query_entity(struct uvc_device *dev,
+>>>       if (query == UVC_GET_CUR && ctrl->entity->get_cur)
+>>>               return ctrl->entity->get_cur(dev, ctrl->entity,
+>>>                                            ctrl->info.selector, data, len);
+>>> +     if (query == UVC_GET_DEF && ctrl->entity->get_def)
+>>> +             return ctrl->entity->get_def(dev, ctrl->entity,
+>>> +                                          ctrl->info.selector, data, len);
+>>> +     if (query == UVC_GET_MIN && ctrl->entity->get_min)
+>>> +             return ctrl->entity->get_min(dev, ctrl->entity,
+>>> +                                          ctrl->info.selector, data, len);
+>>> +     if (query == UVC_GET_MAX && ctrl->entity->get_max)
+>>> +             return ctrl->entity->get_max(dev, ctrl->entity,
+>>> +                                          ctrl->info.selector, data, len);
+>>> +     if (query == UVC_GET_RES && ctrl->entity->get_res)
+>>> +             return ctrl->entity->get_res(dev, ctrl->entity,
+>>> +                                          ctrl->info.selector, data, len);
+>>>       if (query == UVC_GET_INFO && ctrl->entity->get_info)
+>>>               return ctrl->entity->get_info(dev, ctrl->entity,
+>>>                                             ctrl->info.selector, data);
+>>> diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+>>> index a931750bdea25b9062dcc7644bf5f2ed89c1cb4c..d6da8ed3ad4cf3377df49923e051fe04d83d2e38 100644
+>>> --- a/drivers/media/usb/uvc/uvcvideo.h
+>>> +++ b/drivers/media/usb/uvc/uvcvideo.h
+>>> @@ -261,6 +261,14 @@ struct uvc_entity {
+>>>                       u8 cs, u8 *caps);
+>>>       int (*get_cur)(struct uvc_device *dev, struct uvc_entity *entity,
+>>>                      u8 cs, void *data, u16 size);
+>>> +     int (*get_def)(struct uvc_device *dev, struct uvc_entity *entity,
+>>> +                    u8 cs, void *data, u16 size);
+>>> +     int (*get_min)(struct uvc_device *dev, struct uvc_entity *entity,
+>>> +                    u8 cs, void *data, u16 size);
+>>> +     int (*get_max)(struct uvc_device *dev, struct uvc_entity *entity,
+>>> +                    u8 cs, void *data, u16 size);
+>>> +     int (*get_res)(struct uvc_device *dev, struct uvc_entity *entity,
+>>> +                    u8 cs, void *data, u16 size);
+>>>
+>>>       unsigned int ncontrols;
+>>>       struct uvc_control *controls;
+>>
+>> --
+>> Regards,
+>>
+>> Laurent Pinchart
+> 
+> 
 > 
 
 
