@@ -1,80 +1,85 @@
-Return-Path: <linux-acpi+bounces-15160-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15161-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FA3B057A6
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Jul 2025 12:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC2FEB057D6
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Jul 2025 12:31:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B13197AB2A9
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Jul 2025 10:19:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9655F7AE554
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Jul 2025 10:30:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52F426E6F1;
-	Tue, 15 Jul 2025 10:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C043B26D4D9;
+	Tue, 15 Jul 2025 10:31:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="kfByKl+f"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB4C274670;
-	Tue, 15 Jul 2025 10:20:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED8E28F4;
+	Tue, 15 Jul 2025 10:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752574841; cv=none; b=dC5qeFJArxbjsgDJjZiozLiV1ItHqyb6Z5hOlecIldIDiU8Hd+Sc+epYGefNkehNynvCdjF1+7WNDy65emSS72axeBPk+5wFYlHa3UyJcsPR+ZV8HxPgP3KThQxOrmwaLyfygeKkOh40P+XJ6K1jRLWLmKFyfrZ9Hf5FmDSnItM=
+	t=1752575511; cv=none; b=HBpJmDerT9Ea1aEjygD9VEZaOgpFEjwsgsbRVjHf4W3eRFFLYwzPaqA0m+V+Uj6vZzg9b4h/1fsxBeFCLFLpHgTbDlFuyYefsQnkCWnKuzjrZ/r+uNIYr7xlzhgpbe8rsevuDyWcyiP/Q3IT9yCwoyapP+8KQIIxh7rTWPOtk1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752574841; c=relaxed/simple;
-	bh=yd41TFE712Y/bFRqCxiGmx0ghvtl3Xu3zBj9HG9TbaY=;
+	s=arc-20240116; t=1752575511; c=relaxed/simple;
+	bh=XebkX95wcEKQnKte28NcMhjW/zd225Us26tVO6Iz2YY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pBj0+GuMzHj+GqaZ210HjSumOWUHVvEFNKyRoEXgwaSPAMqa7bqqF1gDWwXPSi3kJKX/i1CW+yCZZ72gO24V4t5N5l6UCmyYtxatsa7g8rx9ZGH2REExPvYbH2t3E9Q2oN4WfcZP011GKqcxVo5+LM5yo4Xxe5fHNsjJva/IhF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-60c01b983b6so1749494a12.0;
-        Tue, 15 Jul 2025 03:20:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752574838; x=1753179638;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YdbUlKo89GUT2GFFy0xJ3nknbIlOKbofILyfW59SRy0=;
-        b=OPSI6kRsKh1o65Ml22UtFpQnjGJWk8T+WOev1Vmu2Ql+Rl79VsGC+A1uihFUv12P2f
-         yNvEBINiNckSInSs5AoKTDDH8+yDBpq5vzEh2R8qt1jdj2MaslzPauQ/fWO42ofMHyyp
-         FA4OrIwtUAthX2d8pvCLVkShfR3X4SsekT0EczTmviexNU94Auy2DCCMF+86r9NM4rUF
-         kSZM+npMJp1h4dg5hiQ6sc5E43vSHarKLk25Vbbk1pwBNvYVtzp0nVvRO+qvsSBy9/z+
-         UGvyIL9W7rBIwU0uCCzdAa6rSKNMPXQ8R/pQySKNPRbjPH8n3PUNcW2w5spjgGiHV7ez
-         Og2A==
-X-Forwarded-Encrypted: i=1; AJvYcCUtxSUHYcwY8bRbz0GxVX/s2tkg5Sr3bhyb8rgSJlkggmt5yQAMKJ0cC5Dwlyp7OWJ/Ts/R0GGndCTA@vger.kernel.org, AJvYcCXV5R8h/F6DandRXLaf1CFWAy2eFnPqydeVL28jA1rxgWeLjvrKh+vP0bEGaEIzKGFwecAaJibYb5I0N/Hp@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRWItaKs/rP4m8hvLdgJjMIMg//efHILnXAXr4Rlq0HyaEB8W2
-	KqUTaqtQCi+5YRhR6l8lxbJKU6JzMCz8VN1hB1NHQQqiAaihCUxF8Bpd
-X-Gm-Gg: ASbGncs+Xbwk4j285Xt60dwdFxqh3ccnt3QnWgD6Nxw+2RcxU8kmSs2VuhOxaRtAyXV
-	geOvJ65pw4Kbce6lnc88Wcf5Fi5Rqfv2z+pPkQn+GrEe1RyrbC0HOh90J0H8fAgUppexxbMaXT7
-	hmPs1bWyNtKe3s4auD1+sM7pVGIoG3b1GNQ+rX1Us4Ej9foqUvW5Kl+2bmnGlX9bBIuxLrnkdM2
-	mNycwAlOHAon6XQWfBM4o8hHOul6/ikLMXjfOg6sAOne3piV7GVCd21nsH/5GoN1UImSnodYdUX
-	UXV1bwFtLslKeg1O1hcd8Qi/QDidyBSF6wdPAGcyqsFTp/9ZnNvNn1D8PQ5NC7xSIBBW6LZwaRb
-	UqwMqf/3zDmqDeYqyyBdA
-X-Google-Smtp-Source: AGHT+IGS6mBNikdxOB0R7A3Wc1cgRVtqHvOiuCHl17RaVwd6varOAGIQu/ykD7SPjndmuYx4FDWTOw==
-X-Received: by 2002:a05:6402:40d6:b0:600:129:444e with SMTP id 4fb4d7f45d1cf-6126648d8e3mr2488643a12.4.1752574837792;
-        Tue, 15 Jul 2025 03:20:37 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff::])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-611c94f4587sm7018897a12.5.2025.07.15.03.20.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Jul 2025 03:20:37 -0700 (PDT)
-Date: Tue, 15 Jul 2025 03:20:35 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: "Luck, Tony" <tony.luck@intel.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, 
-	"Moore, Robert" <robert.moore@intel.com>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "acpica-devel@lists.linux.dev" <acpica-devel@lists.linux.dev>, 
+	 Content-Type:Content-Disposition:In-Reply-To; b=uY/+coKr/1L0XenEGq6n/xyI0Br7vFNsis2vfeZckgnXGBJzGB/hOYlFmqmt13zJUx+3pbQcaSz33le0cWyCGHfxBWbH3zeL5K73jBq+WD1CnYuG5xqoQuLSzV1UbtcLG69vjI6aqVtmaJBN4d/a4OeEoOlbrCs9QB2gQITtuOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=kfByKl+f reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1980C40E0215;
+	Tue, 15 Jul 2025 10:31:48 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id A0infUpuRe_C; Tue, 15 Jul 2025 10:31:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1752575501; bh=ZeK8/hSot3trf3uPAOW7h8n9eMuR+wJSK+K8dpRpwsc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kfByKl+fmWuix5Vv24mjwKVc86RjZOUmh9GhJJYI3yPOuMuWniu4tH28ISiX3+4xR
+	 MAnrZIHXA4EFe/jWk7QjeMrJWJBPi6idZtBsmzsrkPuO/1YcJ0UfWNMA8pOG9V0i6q
+	 U+WRh/oXcM/GMwyvNZsC4pUEiSwX7cfa3pUxdNIXPZD8mgNLbWZSQGFif7Y7fz6YB5
+	 2m5D/FtieT2nFvL6ATZtoPtrIUZiHZZ9ZwJCWT19k9EU561sLQXC9g7SIePc8nObpq
+	 BHCjAnACm14AoUiGSDoBGfiQta4sLRmWQXNb5ONL+3/oPDuerufjrBUnzAHF0szKQe
+	 Kefy79TfX/Oiri7gEkSrrKSJz+ehQf7zEJaWCvtzlZMkuXntYe7X5bK+sulXYXzCS6
+	 bK8od/W9eLd9l7E4pRYos8G43WRAqNKd988TJidlT4TCU4PNiOui/MUJUOXhWNdfvT
+	 yMQUkx8X6cHSC3VCXlbV2PO7iJHSr7Hz/l9O5TgpTTTuUvJQ56G8YoS5cZHh/FVKsl
+	 mAzOTGYmUtrSzsxfCuHiq6EqFo5sgQAlPVNNkFjNYAgqoDPfUEypZCaPY4RcL/8Fpg
+	 l8BLOJNZJl/VvP4DruiU+wb+a1Yhlr0KaYt9MW3dz7nt+fIHfkOSQEL+6wTBuLtvAc
+	 X4oY9veU7HsV5PsFgopNdph8=
+Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0D28240E015D;
+	Tue, 15 Jul 2025 10:31:31 +0000 (UTC)
+Date: Tue, 15 Jul 2025 12:31:25 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Breno Leitao <leitao@debian.org>
+Cc: "Luck, Tony" <tony.luck@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+	"Moore, Robert" <robert.moore@intel.com>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"acpica-devel@lists.linux.dev" <acpica-devel@lists.linux.dev>,
 	"kernel-team@meta.com" <kernel-team@meta.com>
 Subject: Re: [PATCH] ghes: Track number of recovered hardware errors
-Message-ID: <kyprjdilgyz3xgw3slnrsemptnpp6h75mipv6a3lgp2dmwqekg@s7azbepy7nu2>
+Message-ID: <20250715103125.GFaHYt_TnFQW6ti0ST@fat_crate.local>
 References: <20250714-vmcore_hw_error-v1-1-8cf45edb6334@debian.org>
  <20250714171040.GOaHU6EKH2xxSZFnZd@fat_crate.local>
  <SJ1PR11MB6083C38E6DA922E05E1748D6FC54A@SJ1PR11MB6083.namprd11.prod.outlook.com>
  <20250714173556.GQaHU__LL6IUIPCDIW@fat_crate.local>
  <aHWC-J851eaHa_Au@agluck-desk3>
  <20250715082939.GAaHYRc3Yn49jyvYzc@fat_crate.local>
+ <kyprjdilgyz3xgw3slnrsemptnpp6h75mipv6a3lgp2dmwqekg@s7azbepy7nu2>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -83,29 +88,34 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250715082939.GAaHYRc3Yn49jyvYzc@fat_crate.local>
+In-Reply-To: <kyprjdilgyz3xgw3slnrsemptnpp6h75mipv6a3lgp2dmwqekg@s7azbepy7nu2>
+Content-Transfer-Encoding: quoted-printable
 
-Hello Borislav,
+On Tue, Jul 15, 2025 at 03:20:35AM -0700, Breno Leitao wrote:
+> For instance, If every investigation (as you suggested above) take just
+> a couple of minutes, there simply wouldn=E2=80=99t be enough hours in t=
+he day,
+> even working 24x7, to keep up with the volume.
 
-On Tue, Jul 15, 2025 at 10:29:39AM +0200, Borislav Petkov wrote:
-> We have all of that info in rasdaemon. If the machine explodes, one can simply
-> read out its database from the core file. 
-> 
-> And if you don't run rasdaemon, you can read out dmesg from the vmcore where
-> the errors should have been dumped anyway.
+Well, first of all, it would help considerably if you put the use case in=
+ the
+commit message.
 
-I approach this from a slightly different perspective, given my
-experience overseeing millions of servers and having to diagnose kernel
-problems across such a massive fleet.
+Then, are you saying that when examining kernel crashes, you don't look a=
+t
+dmesg in the core file?
 
-To be candid, when you’re operating at that scale, kernel crashes and
-hardware errors are unfortunately a common occurrence.
+I find that hard to believe.
 
-For instance, If every investigation (as you suggested above) take just
-a couple of minutes, there simply wouldn’t be enough hours in the day,
-even working 24x7, to keep up with the volume.
+Because if you do look at dmesg and if you would grep it for hw errors - =
+we do
+log those if desired, AFAIR - you don't need anything new.
 
-Thanks for the review and suggestions,
---breno
+I'd say...
+
+--=20
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
