@@ -1,198 +1,208 @@
-Return-Path: <linux-acpi+bounces-15164-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15165-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A046EB05A70
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Jul 2025 14:41:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9101B05AA9
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Jul 2025 14:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7A3A7B0B9C
-	for <lists+linux-acpi@lfdr.de>; Tue, 15 Jul 2025 12:39:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DD9E16DE07
+	for <lists+linux-acpi@lfdr.de>; Tue, 15 Jul 2025 12:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F086A2E06E6;
-	Tue, 15 Jul 2025 12:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8992D8790;
+	Tue, 15 Jul 2025 12:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ldj1uTFe"
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="JwdFa28O"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F452E0415;
-	Tue, 15 Jul 2025 12:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B305E274FDB;
+	Tue, 15 Jul 2025 12:53:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752583253; cv=none; b=pAqzmw9U+hLQprTTvQRfoBmzS36Hjk0SHDyHQSEeRw/rdHNFC1nX6xCSiH0F4hCG8dA29GdlFoVTlQqqceHKxAP/1alMFOvb2F96KSdWBt+XIGiY52jH7Y6kOAAGaOKrRmBHYEkzH7Gm49Q482YUItzD4PcRAZy1VMEJrX2PQAs=
+	t=1752584033; cv=none; b=D5vAHSGjVH4j0QVWOVj2jGAu6bb4W8ples1T1QpmsYCP20b/STJ9D0coLSq2MgZkgsoKiWpZ5b7wjb5VPkPiFqnzUTnuaYVzFLr/FSJ7fv1T2ZiHREby2KPeiDSX1W8w8S2UdcRw9ueAJ9QiE0aJfsS1MUxtyqT4ls4QPCyq1ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752583253; c=relaxed/simple;
-	bh=TfeoKILN6uGz1OGlxgj30IyoFkYk5lj4H8dBRWQrclQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ennUiPPQpPmtdZPHYENq6L7EVvepJ60i8nbzzhGipubIZ1tGFEN7mNvYWoDTF7NBJm5uc2XoXhN4qJZ+gwt0O39dDHXrtHVGwRxxtv8XmYaErQz/tKB3yeQU1BLY2qoCyWUaUc/BU61iaWRS01kFAJ9UfYtW/8JSn9G2meXbuxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ldj1uTFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E64C4CEFC;
-	Tue, 15 Jul 2025 12:40:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752583253;
-	bh=TfeoKILN6uGz1OGlxgj30IyoFkYk5lj4H8dBRWQrclQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Ldj1uTFeF8vRtelS18jNkjoSIN+J0Dpm3JC9C8F5fhh9n0WLBVYVqmqUQUVjO1vdo
-	 UvZgyFgUk//9F9vQZDrK0hk0kvwwOmMnUqTO7w52dz1SDRE8lArgb4v1+vJedgzWls
-	 RfDVQvGJJFbXSWn/KX8d/TweuYV71vee0M0cxak+3W4DV7i4yoGPOGfvWX5KwiUlEW
-	 qzbFVHik4j6wWDDFkL468tJtQU/xmJqGGYG1LBroafoN387acc9Lb5EJSjx+QuP9eh
-	 o5DujpfqbCSYOzkOjOwScai+9ypqlZT/Tir24UTLEReuDDigOZbeOq2RHlb7jrIMtF
-	 PPcfgLXKf0Vuw==
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-615831a3a78so797961eaf.1;
-        Tue, 15 Jul 2025 05:40:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVjb1b9tdrxWR8PS0ff4QuZ9do04+bPySQUyIkgHHWVc+bmm1879FsKnAAt9AgNyISO93nZsmI0Cdtz@vger.kernel.org, AJvYcCW3NigeA/lwjJ1Td+NqC+OkDJ0MiQR+td0o95zW7Y7kkc5NsTa8ZtPCaRad/OImFpy6dBukRvsoym5pPQ==@vger.kernel.org, AJvYcCWFMaz8gLKL1hSY6uxok42Oa+b7M4EdaQJERoBOl5MCqilqcC1gTOnS89EEv/YMnP/CrwOYSNaWKVBaQB63@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYoUiwJuvX0uyQY/LGhg94MVaMj5ezpmNhAUZdL7SPN+zVW70q
-	nJOzWxHP0wqNY9G8oigMtqgFrBWwY1Fxsv4cT7H8VJFXFno88kiLyv7di7g44N9+cj78X3+wVMe
-	tXvC4GXzKNlFd4BKNRs+wvUg1uzw2ldY=
-X-Google-Smtp-Source: AGHT+IE3VFsF0gCgkTbX+pN39J81tOvuuA0nHR7XTTqD3toqPIZXLr17a7eF4UGTVFewKNiMTJbsM+Wk4nshukXwDTo=
-X-Received: by 2002:a05:6820:2009:b0:611:f244:dfa5 with SMTP id
- 006d021491bc7-613e5eea6d1mr12571655eaf.2.1752583252489; Tue, 15 Jul 2025
- 05:40:52 -0700 (PDT)
+	s=arc-20240116; t=1752584033; c=relaxed/simple;
+	bh=VaardJX2iRea1C+C6uoZRox1q6VzhIfK0Xgf+GMvnwA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D0OOcYO+31Oysx0KyIHtRPgpfzJdQCVzIgWg6v6daQXo1OWCSO26NtXST6a7hiUNsYHY+IhJM386uPT/ffTpYbrMAOhQ/SwOqOn/jgK9mBF4fUhkB22YuPtQZ1aJBrr1S6k/cHsn8w7KkFjDz3d8kFD+gGnx7qqzrAfO4MNNfvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=JwdFa28O reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6C5A140E00DE;
+	Tue, 15 Jul 2025 12:53:49 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id AX8hCwGg8sVx; Tue, 15 Jul 2025 12:53:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1752584025; bh=qRq/rWrw1WYtVn6UsmTaFfjIP6wqH9ETQ4UF4JDPXFA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JwdFa28OHtMTLkVIDW9inpXxxF9Io5b4ZzlEM1y96/+bemxZmQFtRBNSm73xqY2qH
+	 O4a4maWyMsbcYB+jtUPex3xRtNWMMFShL16RvWKWTs/EG2WWlKRzlDPr9bhUFs5GtJ
+	 cTn5QJl4jNoO9s5h/56+KtmoKWxDIF1fcIGrmTCCc5JusIYrdUfZmOMsV2tg3cWnQT
+	 DTybTRSpT4f7rruqYfQMbEYwPd59rFKiQ32Y0d29NyStDayNX5gSMsqD1VjhqDzhN1
+	 wvwEf3vtDiRAvzqnxi3+yzs/OrKcJrftG4JQgCh10bdTWuGCFIHBDJA7BL0v3YS93U
+	 /AALXxVm4sPMSD4F+t3mlZ2eITP30YWZteynPse2LTz1TqTl+cdvfZc6kuXC9sjuws
+	 4RTeoz8KnJsDgNDQxZdYHeWhZkO5pcy+Ct1VUH1kj4+kv/qMuudmfiMgQsHurYMmh2
+	 HDCZHltnpxw9557RxmMbub16VUOJcLjFexCniVZO3X34MdmnTAaeTGU4/Ltq7LqJNb
+	 J9r16tWLM7H7na30o3EreeiEBjLvIWJJLIQXsWp32GFk5lUN/MpK5U7hcxknDA/Jj6
+	 qGF3pQEQ4HSnMGwBPa310AVOqjQGtgXTVErfcKBdws1orhXRYmsfc3IAgjiw+kN4OT
+	 L0wMY3hGyRXkrYfcULztYub4=
+Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8F8B040E0216;
+	Tue, 15 Jul 2025 12:53:32 +0000 (UTC)
+Date: Tue, 15 Jul 2025 14:53:27 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Breno Leitao <leitao@debian.org>, Alexander Graf <graf@amazon.com>,
+	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+	Peter Gonda <pgonda@google.com>
+Cc: "Luck, Tony" <tony.luck@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+	"Moore, Robert" <robert.moore@intel.com>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"acpica-devel@lists.linux.dev" <acpica-devel@lists.linux.dev>,
+	"kernel-team@meta.com" <kernel-team@meta.com>
+Subject: Re: [PATCH] ghes: Track number of recovered hardware errors
+Message-ID: <20250715125327.GGaHZPRz9QLNNO-7q8@fat_crate.local>
+References: <20250714-vmcore_hw_error-v1-1-8cf45edb6334@debian.org>
+ <20250714171040.GOaHU6EKH2xxSZFnZd@fat_crate.local>
+ <SJ1PR11MB6083C38E6DA922E05E1748D6FC54A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <20250714173556.GQaHU__LL6IUIPCDIW@fat_crate.local>
+ <aHWC-J851eaHa_Au@agluck-desk3>
+ <20250715082939.GAaHYRc3Yn49jyvYzc@fat_crate.local>
+ <kyprjdilgyz3xgw3slnrsemptnpp6h75mipv6a3lgp2dmwqekg@s7azbepy7nu2>
+ <20250715103125.GFaHYt_TnFQW6ti0ST@fat_crate.local>
+ <vs5x5qvw2veurxdljmdiumqpseze2myx6quw3rmt7li7d3dbin@duoky4z44zzz>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250404112050.42040-1-xueshuai@linux.alibaba.com>
- <20250404112050.42040-2-xueshuai@linux.alibaba.com> <0c0bc332-0323-4e43-a96b-dd5f5957ecc9@huawei.com>
- <709ee8d2-8969-424c-b32b-101c6a8220fb@linux.alibaba.com> <353809e7-5373-0d54-6ddb-767bc5af9e5f@huawei.com>
- <653abdd4-46d2-4956-b49c-8f9c309af34d@linux.alibaba.com> <de5d2417-dc92-b276-1125-4feb5151de7f@huawei.com>
- <f60f1128-0d42-48e5-9a06-6ed7ca10767f@linux.alibaba.com> <20250428152350.GA23615@willie-the-truck>
- <6671c3cc-5119-4544-bcb5-17e8cc2d7057@linux.alibaba.com> <CAJZ5v0j3NC2ki1XPXfznxZRBLaReDBJ+nzHFgvqMx5+MgERL-A@mail.gmail.com>
- <3a465782-a8ff-4be8-9c15-e46f39196757@linux.alibaba.com> <CAJZ5v0gfFHCvE2Uu8=GRb9=ueK51s1-0BDBkJbbDG0tQvD5pLA@mail.gmail.com>
- <20250715140530.42c6bdc4@sal.lan>
-In-Reply-To: <20250715140530.42c6bdc4@sal.lan>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 15 Jul 2025 14:40:41 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0ikkHeopHQb2Gxr4GnW3rqtowpWu_DEa5ahLK6f2nHH9Q@mail.gmail.com>
-X-Gm-Features: Ac12FXwKRYlUaFcGojWqkbjqTj5QJ0Jc1mh4fnplvgyugSBLLnhZkoPPPY9gJ9A
-Message-ID: <CAJZ5v0ikkHeopHQb2Gxr4GnW3rqtowpWu_DEa5ahLK6f2nHH9Q@mail.gmail.com>
-Subject: Re: [RESEND PATCH v18 1/2] ACPI: APEI: send SIGBUS to current task if
- synchronous memory error not recovered
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Hanjun Guo <guohanjun@huawei.com>, "Luck, Tony" <tony.luck@intel.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, 
-	linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com, 
-	ardb@kernel.org, ying.huang@linux.alibaba.com, ashish.kalra@amd.com, 
-	baolin.wang@linux.alibaba.com, tglx@linutronix.de, 
-	dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com, 
-	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com, 
-	zhuo.song@linux.alibaba.com, sudeep.holla@arm.com, lpieralisi@kernel.org, 
-	linux-acpi@vger.kernel.org, yazen.ghannam@amd.com, mark.rutland@arm.com, 
-	mingo@redhat.com, robin.murphy@arm.com, Jonathan.Cameron@huawei.com, 
-	bp@alien8.de, linux-arm-kernel@lists.infradead.org, 
-	wangkefeng.wang@huawei.com, tanxiaofei@huawei.com, mawupeng1@huawei.com, 
-	linmiaohe@huawei.com, naoya.horiguchi@nec.com, james.morse@arm.com, 
-	tongtiangen@huawei.com, gregkh@linuxfoundation.org, jarkko@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <vs5x5qvw2veurxdljmdiumqpseze2myx6quw3rmt7li7d3dbin@duoky4z44zzz>
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 15, 2025 at 2:06=E2=80=AFPM Mauro Carvalho Chehab
-<mchehab+huawei@kernel.org> wrote:
->
-> Em Mon, 14 Jul 2025 19:30:19 +0200
-> "Rafael J. Wysocki" <rafael@kernel.org> escreveu:
->
-> > Hi,
-> >
-> > On Mon, Jul 14, 2025 at 1:54=E2=80=AFPM Shuai Xue <xueshuai@linux.aliba=
-ba.com> wrote:
-> > >
-> > > =E5=9C=A8 2025/7/1 21:56, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> > > > On Tue, Jul 1, 2025 at 1:00=E2=80=AFPM Shuai Xue <xueshuai@linux.al=
-ibaba.com> wrote:
-> > > >>
-> > > >>   >=E5=9C=A8 2025/4/28 23:23, Will Deacon =E5=86=99=E9=81=93:
-> > > >>   >> On Fri, Apr 25, 2025 at 09:10:09AM +0800, Shuai Xue wrote:
-> > > >>   >>> =E5=9C=A8 2025/4/25 09:00, Hanjun Guo =E5=86=99=E9=81=93:
-> > > >>   >>>> Call force_sig(SIGBUS) directly in ghes_do_proc() is not my=
- favourite,
-> > > >>   >>>> but I can bear that, please add
-> > > >>   >>>>
-> > > >>   >>>> Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
-> > > >>   >>>>
-> > > >>   >>>> Thanks
-> > > >>   >>>> Hanjun
-> > > >>   >>>
-> > > >>   >>> Thanks. Hanjun.
-> > > >>   >>>
-> > > >>   >>> @Rafael, @Catalin,
-> > > >>   >>>
-> > > >>   >>> Both patch 1 and 2 have reviewed-by tag from the arm64 ACPI
-> > > >> maintainers, Hanjun,
-> > > >>   >>> now. Are you happpy to pick and queue this patch set to acpi=
- tree
-> > > >> or arm tree?
-> > > >>   >>
-> > > >>   >> Since this primarily touches drivers/acpi/apei/ghes.c, I thin=
-k it should
-> > > >>   >> go via the ACPI tree and not the arm64 one.
-> > > >>   >>
-> > > >>   >> Will
-> > > >>   >
-> > > >>   >Hi, Will,
-> > > >>   >
-> > > >>   >Thank you for your confirmation :)
-> > > >>   >
-> > > >>   >@Rafael, do you have more comments on this patch set?
-> > > >>   >
-> > > >>   >Thanks you.
-> > > >>   >
-> > > >>   >Best Regards,
-> > > >>   >Shuai
-> > > >>
-> > > >> Hi, all,
-> > > >>
-> > > >> Gentle ping.
-> > > >>
-> > > >> Does ACPI or APEI tree still active? Looking forward to any respon=
-se.
-> > > >
-> > > > For APEI changes, you need an ACK from one of the reviewers listed =
-in
-> > > > the MAINTAINERS entry for APEI.
-> > > >
-> > > > Thanks!
-> > >
-> > > Hi, Rafael
-> > >
-> > > Sorry, I missed your email which goes in span (:
-> > >
-> > > ARM maintain @Catalin points that:
-> > >
-> > >  > James Morse is listed as reviewer of the ACPI APEI code but he's b=
-usy
-> > >  > with resctrl/MPAM. Adding Lorenzo, Sudeep and Hanjun as arm64 ACPI
-> > >  > maintainers, hopefully they can help.
-> > >
-> > > And Hanjun explictly gived his Reviewed-by tag in this thread, is tha=
-t
-> > > happy for you for merge?
-> >
-> > Not really.
-> >
-> > I need an ACK or R-by from a reviewer listed in the APEI entry in MAINT=
-AINERS.
-> >
-> > If James Morse is not able to fill that role (and AFAICS he's not been
-> > for quite some time now), I'd expect someone else to step up.
+On Tue, Jul 15, 2025 at 05:02:39AM -0700, Breno Leitao wrote:
+> Hello Borislav,
+>=20
+> On Tue, Jul 15, 2025 at 12:31:25PM +0200, Borislav Petkov wrote:
+> > On Tue, Jul 15, 2025 at 03:20:35AM -0700, Breno Leitao wrote:
+> > > For instance, If every investigation (as you suggested above) take =
+just
+> > > a couple of minutes, there simply wouldn=E2=80=99t be enough hours =
+in the day,
+> > > even working 24x7, to keep up with the volume.
+> >=20
+> > Well, first of all, it would help considerably if you put the use cas=
+e in the
+> > commit message.
+>=20
+> Sorry, my bad. I can do better if we decide that this is worth pursuing=
+.
+>=20
+> > Then, are you saying that when examining kernel crashes, you don't lo=
+ok at
+> > I find that hard to believe.
+>=20
+> We absolutely do examine kernel messages when investigating crashes, an=
+d
+> over time we've developed an extensive set of regular expressions to
+> identify relevant errors.
+>=20
+> In practice, what you're describing is very similar to the workflow we
+> already use. For example, here are just a few of the regex patterns we
+> match in dmesg, grouped by category:
+>=20
+>     (r"Machine check: Processor context corrupt", "cpu"),
+>     (r"Kernel panic - not syncing: Panicing machine check CPU died", "c=
+pu"),
+>     (r"Machine check: Data load in unrecoverable area of kernel", "memo=
+ry"),
+>     (r"Instruction fetch error in kernel", "memory"),
+>     (r"\[Hardware Error\]: +section_type: memory error", "memory"),
+>     (r"EDAC skx MC\d: HANDLING MCE MEMORY ERROR", "memory"),
+>     (r"\[Hardware Error\]:   section_type: general processor error", "c=
+pu"),
+>     (r"UE memory read error on", "memory"),
+>=20
+> And that=E2=80=99s just a partial list. We have 26 regexps for various =
+issues,
+> and I wouldn=E2=80=99t be surprised if other large operators use a simi=
+lar
+> approach.
+>=20
+> While this system mostly works, there are real advantages to
+> consolidating this logic in the kernel itself, as I=E2=80=99m proposing=
+:
+>=20
+>     * Reduces the risk of mistakes
+>     	- Less chance of missing changes or edge cases.
+>=20
+>     * Centralizes effort
+> 	- Users don=E2=80=99t have to maintain their own lists; the logic live=
+s
+> 	  closer to the source of truth.
+>=20
+>     * Simplifies maintenance
+> 	- Avoids the constant need to update regexps if message strings
+> 	  change.
+>=20
+>     * Easier validation
+> 	- It becomes straightforward to cross-check that all relevant
+> 	  messages are being captured.
+>=20
+>     * Automatic accounting
+> 	- Any new or updated messages are immediately reflected.
+>=20
+>     * Lower postmortem overhead
+> 	- Requires less supporting infrastructure for crash analysis.
+>=20
+>     * Netconsole support
+> 	- Makes this status data available via netconsole, which is
+> 	  helpful for those users.
 
-Hi Mauro,
+Yap, this is more like it. Those sound to me like good reasons to have th=
+is
+additional logging.
 
-> Rafael,
->
-> If you want, I can step-up to help with APEI review. Besides my work
-> with RAS/EDAC in the past, I'm doing some work those days adding
-> APEI injection in QEMU those days (currently focused on ARM error
-> injection via SEA and GPIO).
+It would be really good to sync with other cloud providers here so that w=
+e can
+do this one solution which fits all. Lemme CC some other folks I know who=
+ do
+cloud gunk and leave the whole mail for their pleasure.
 
-Thank you!
+Newly CCed folks, you know how to find the whole discussion. :-)
 
-OK, let me send a MAINTAINERS update with a list of new APEI reviewers.
+Thx.
+
+> > Because if you do look at dmesg and if you would grep it for hw error=
+s - we do
+> > log those if desired, AFAIR - you don't need anything new.
+>=20
+> Understood. If you don=E2=80=99t see additional value in kernel-side
+> counting, I can certainly keep relying on our current method. For
+> us, though, having this functionality built in feels more robust and
+> sustainable.
+>=20
+> Thanks for the discussion,
+> --breno
+
+--=20
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
