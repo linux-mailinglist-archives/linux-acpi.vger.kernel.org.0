@@ -1,78 +1,78 @@
-Return-Path: <linux-acpi+bounces-15187-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15188-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3A9B073B5
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jul 2025 12:42:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 654C5B073B9
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jul 2025 12:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE4BC7B8917
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jul 2025 10:40:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 750997B85F0
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jul 2025 10:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C002F3C34;
-	Wed, 16 Jul 2025 10:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3FC2F49EB;
+	Wed, 16 Jul 2025 10:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="aQb5cfsD"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="NZRwvBL7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A17A2F3C21
-	for <linux-acpi@vger.kernel.org>; Wed, 16 Jul 2025 10:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F262F432F
+	for <linux-acpi@vger.kernel.org>; Wed, 16 Jul 2025 10:41:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752662479; cv=none; b=FqmtLnvdWZGSQjVQrW3DreNBusjDT+RTKG2whTOQaZdJ+6MoL4ZZepHeCgdiF53543T73umJPBQ1Z+R5x4zsU7IJ9WGnkZ+6nRFy9pa2Sx+dFMm5DdgD4G0omspcZMrUVJcTXZLfO7fvtRQJ9tnPvMziyV7FsfxeGpHn7SwEvH0=
+	t=1752662484; cv=none; b=ctPU26RT6Latzzq+hxTbAWnncQ259OEsuZZdI7xUX5hxwLUgILVi+UH7yVPIbmbq+TcES1shYInkL+6YlzIjOaw9dpGWavfz94CtwuH5vKh6c+p4gGSg2cAB4drOH6f+0Y8KIW5y1FG+O8sMe/ZGSJpHeX9MJfASX8SLtk0XSFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752662479; c=relaxed/simple;
-	bh=yuUDmVMvgxXqB9rDPx4gcql1xgvyC39B2Fu/k0legb4=;
+	s=arc-20240116; t=1752662484; c=relaxed/simple;
+	bh=yeEgt3B7oP+kZLvu/rWotic5mkE4aCWzjFVNCBZaVhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I0sldfY9125+O3of6FYzMA2DBE3TC2egYsb0uu3x1/c0DbGc1fwvHsUlvdfzuLwBqbth2N8OwcJa5jsK3aNLiIU7wEHZCHUSadYfF2SkxfHFB0D/PHu+xPcvEb/bEY5Cupi6I1I5HqD5NNeAZcbz4fGncXbNO3S66rXyHCVGR0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=aQb5cfsD; arc=none smtp.client-ip=209.85.210.178
+	 MIME-Version; b=QFkFFpJyC7m0STw5XGLj314DDG2eJB+PuFlaIs/0QsTv5PDdAlVb/o2Te6gvBlmOMv9c3i0uoZD1V2ESEpw1+ZHhOSSBHB1U9HzTh0lktu+aALXuXoz4twSj1YH5QP7/scDjZnTUjLn81TovGMEr5DxujX2LvuEdTF+IMCPat0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=NZRwvBL7; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-74af4af04fdso572397b3a.1
-        for <linux-acpi@vger.kernel.org>; Wed, 16 Jul 2025 03:41:17 -0700 (PDT)
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-742c7a52e97so5334148b3a.3
+        for <linux-acpi@vger.kernel.org>; Wed, 16 Jul 2025 03:41:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1752662477; x=1753267277; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1752662482; x=1753267282; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z7cvuMytsIqdpckbaG4B9pE2XfMgVLihHPB3qJC2jIQ=;
-        b=aQb5cfsDQvuTrsHQCumHo09VochHKLUU/NvStHLR9LeYV4p8YVQ3SYM+mk1M5RAmdE
-         aD3zaK0N5m6Sa+JG6FmM3jQTAvZCQDwk6+iUAxhIRHL0dY2Ri/I28qF555GsPOXVWWf4
-         lnBQTQUGLdLHwHvdTwYVGV5tojqPAX0lFfcVd6Z+WjDSOoCYuLDKob5JtviKp16mtOnV
-         IRtNH6/oPKJ+QVd8OXmUbHryueqHybsUs3uOORNPQ+NFM8KCX55ZMoQoWtxDtH/Mg5SS
-         CRxrLxgmlai6Ee9vHBNyT/7hOgAxcCdhAHcqHcbty2qFUw9qBZU64C+os5X46jQUfZC8
-         byWA==
+        bh=YaG3DvsXq5/AKyC1GLSjgb34PJp+nqhxTUl2VKU3MC8=;
+        b=NZRwvBL7TQCUevVXlVOVDtTEb4fXOJ0970bmPnHHjezYtwcOFyf23lbCu1M0BUwOjd
+         c4KZvgeZtaYKGCIPa7SqZc4IoR0TNYVLA6hS/4Str8WlMLipmxs+Onzc8OYEImAivX16
+         rlsPJAVHgkRo/A9dRoxO6PFVs/FrDIRYFRgMGw4uXseFg5dVpGlR3qJyRkaeACbw6HWC
+         j+SthCv7wctN/ZzgYz9xhW9nrzO1aKvoa230paMOl62wr2YoS6v9y+qnkDAOYHHAAxAH
+         8h+fp5h3g2/IuEuPlT0SSlc5hPBSm0oKy7NO1SgVHZhkjdBsoNWZ2W15H8vzXHzcBlfC
+         Y0Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752662477; x=1753267277;
+        d=1e100.net; s=20230601; t=1752662482; x=1753267282;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=z7cvuMytsIqdpckbaG4B9pE2XfMgVLihHPB3qJC2jIQ=;
-        b=NPmvS2jIkBK6CvjyQ43Q5HBORT5TcmepqZCYgiA6vUIxhXva27QVjfLOki17f9Plc0
-         LhnYlX98uwYKRMVIDHDLZ9WwQyFnO0zHNvK5S73weiu9d0ua/6d/QHupAp6jZmNfxolU
-         7w8q9eTUbpIc/Q2AII8IwfNMoPxaRZMWLFnFwcxFtDqO9Tq8i4Reg5EGR9vIKEu860do
-         hKWrYuL12S0j/8j8omRg9LVczelBwSe++WLy6dRr5LYphg6/6lDS/jUzleq68n0rlpUQ
-         Q6Veug+bjOL47JWtvTWd30XOEpVlF4Xv0EALW8Oi41DcsIrRXCV+hOPitqV65m3xAZQ4
-         w+7g==
-X-Forwarded-Encrypted: i=1; AJvYcCWk0VQH6/u6Gxu1A0awfdnZMpgtJPUkoz8zBXWlVaLvL86VPFDcmqVzAlui5gJndd75oUx4+KLQsWjT@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDEo5ucMxUW1LT4fZ1UHQu61PHPOuV+X3msK1yhtQBFe3WUgzf
-	FyVeVQTsTw+OWtYextnl/NYKACahNVCoa1dLx95dEgoeOmXUPwkeOICy70pGQfkeV1o=
-X-Gm-Gg: ASbGncv8FBPNmVZhGF2gGakxTb1Bwzt0uwSSnAC5tIbAO4t2CEtGxHVC4E6mv2OtvJx
-	p8Vu1lEXazDkjSgzT6n0coOXEtVZbhpUxWdG5ftx0xNVGqu3Owpky8xRDycxHx0zQxNacKuDLC8
-	434IBjXOZ4k9pSKVrCrriz19gp8/ZHh54ZNf9iHrqtFhblA0jqAQmPiB8gRgWfYSxQQeaQ7DUQc
-	HkAwGsnfnBxxXJNQnaOn03PYE04Jvdk6qJjr1wrYMT24MNMhFxIoGwRx1+BdmBCKyP5M39RwOWl
-	zayRiO4Neesnjx6oWkQuX4aBPsJdBBq0w9mGGBsjrn5CKi99Rwk4BG732Ujk/e3RozkrbqqGJKx
-	Ohw5JQERkJgY5zSdg1ORZ2UOwoJ+CpodA
-X-Google-Smtp-Source: AGHT+IEQo8BTjEA8dv3qComAn579iCusbeX0bf7sGC5ygFF46Xvcz6+6fNZHsSta4XexDcpmpBEqRg==
-X-Received: by 2002:a05:6a21:3285:b0:231:c73:7a76 with SMTP id adf61e73a8af0-237e041c1b8mr4454127637.2.1752662476512;
-        Wed, 16 Jul 2025 03:41:16 -0700 (PDT)
+        bh=YaG3DvsXq5/AKyC1GLSjgb34PJp+nqhxTUl2VKU3MC8=;
+        b=CpfQV80h3y4fl/7IKk8dg4k8DqaMwK+pM/wHOn/2v/Q1cRwRogbYcoHPMj0kB+yWEa
+         UeQ0Tw2Bm3NPrffIauPTdqfRhuQv8ePo4q4fA6cqJbMqUu8ba9jORuh4nNNZtpgKw0mf
+         yujTMz9NVR4rvLjLqLWMSvqRqm9VANkuPLGGovB9/4uVus9S31jq7zvoJ3BcMrXUNzV2
+         SMOxej5GRLfmbvQAd5pWejp7xNP1VMaixIRbEtbNAb62FrsRRG5fRbrYMFCLv7AFF+7d
+         OpDMacdj7qEJX2qlYZiHMpsPGNpRFn0stlYht9zUUpYajdt2viFrEf3uUuiFiCbrVm2u
+         Ks7w==
+X-Forwarded-Encrypted: i=1; AJvYcCX4ym/er61l5g9f/8dWUkHdGom6ggidxIpHvBeKkTCm+qPFKENrYkTfFg6EHf1cI7BkxzyhQYkF1udX@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFO8LwDAtKXru/Z6nHnXY/IFPmjTJgXZ10qfsaDdmvtbrCYG+6
+	nn3oQieKK705l4XG7JNN48p+Ww2i3acwR24eGIkwuYLRaFDBLLIHLLu89VGBDeNDee0=
+X-Gm-Gg: ASbGnctuQSrDNwQMRGjUZLdOoRZKGSFMqYRrgLNVz5hoJASlmfNf5eFJfSKO2yn8iGy
+	ULbItGrd5T7HPYRdLaMbIITCZUcQ2JvLIGFTFWn6By5wWx8UXQ37WfrV66ogxgdyMZvahsEyeDM
+	OTVkk5Z+8L0Ae2DVT23cf4gshzX2z5JAFkYNXrIMg4ZU/UIPelT15jtVc6gIms9vxhd2sfqMcWG
+	t6QcM+RdzwMzm+Bkb2NYLIdU7lFLiZj35VOR5RhN+FaZ/N6ASOwq0WLgjA0Tc1ikUTsc/wHLdhz
+	HaOBGyTZTwedptNvXkTEb83OQCuaPOU7J+8jSSk1zj5nSh3bXsLEqTg10bcppAVHEW/Zcs6oFRe
+	vaanvkrd7aRtCOntuuCSYkscZ4gvZ6OL8
+X-Google-Smtp-Source: AGHT+IEC8Wh248xbvV7SVKKzD0alSVzVgeFsgJh9ogEs3+/ngP7xonwyOrkgTHqNNgbjcXTmqAIWTg==
+X-Received: by 2002:a05:6a00:2387:b0:749:540:ca72 with SMTP id d2e1a72fcca58-756ea8b944bmr4580850b3a.24.1752662481956;
+        Wed, 16 Jul 2025 03:41:21 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.195.230])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74eb9f1af40sm13946709b3a.72.2025.07.16.03.41.07
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74eb9f1af40sm13946709b3a.72.2025.07.16.03.41.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 03:41:15 -0700 (PDT)
+        Wed, 16 Jul 2025 03:41:21 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: linux-kernel@vger.kernel.org,
 	linux-riscv@lists.infradead.org,
@@ -91,10 +91,10 @@ Cc: Paul Walmsley <paul.walmsley@sifive.com>,
 	Anup Patel <apatel@ventanamicro.com>,
 	Andrew Jones <ajones@ventanamicro.com>,
 	Sunil V L <sunilvl@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>
-Subject: [PATCH v5 1/3] ACPI: RISC-V: Add support for RIMT
-Date: Wed, 16 Jul 2025 16:10:57 +0530
-Message-ID: <20250716104059.3539482-2-sunilvl@ventanamicro.com>
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH v5 2/3] ACPI: scan: Add support for RISC-V in acpi_iommu_configure_id()
+Date: Wed, 16 Jul 2025 16:10:58 +0530
+Message-ID: <20250716104059.3539482-3-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250716104059.3539482-1-sunilvl@ventanamicro.com>
 References: <20250716104059.3539482-1-sunilvl@ventanamicro.com>
@@ -106,677 +106,39 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-RISC-V IO Mapping Table (RIMT) is a static ACPI table to communicate
-IOMMU information to the OS. The spec is available at [1].
-
-The changes at high level are,
-	a) Initialize data structures required for IOMMU/device
-	   configuration using the data from RIMT. Provide APIs required
-	   for device configuration.
-	b) Provide an API for IOMMU drivers to register the
-	   fwnode with RIMT data structures. This API will create a
-	   fwnode for PCIe IOMMU.
-
-[1] - https://github.com/riscv-non-isa/riscv-acpi-rimt
+acpi_iommu_configure_id() currently supports only IORT (ARM) and VIOT.
+Add support for RISC-V as well.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- MAINTAINERS                 |   1 +
- arch/riscv/Kconfig          |   1 +
- drivers/acpi/Kconfig        |   4 +
- drivers/acpi/riscv/Kconfig  |   7 +
- drivers/acpi/riscv/Makefile |   1 +
- drivers/acpi/riscv/init.c   |   2 +
- drivers/acpi/riscv/init.h   |   1 +
- drivers/acpi/riscv/rimt.c   | 520 ++++++++++++++++++++++++++++++++++++
- include/linux/acpi_rimt.h   |  28 ++
- 9 files changed, 565 insertions(+)
- create mode 100644 drivers/acpi/riscv/Kconfig
- create mode 100644 drivers/acpi/riscv/rimt.c
- create mode 100644 include/linux/acpi_rimt.h
+ drivers/acpi/scan.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 60bba48f5479..426540c1fa3d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -345,6 +345,7 @@ L:	linux-acpi@vger.kernel.org
- L:	linux-riscv@lists.infradead.org
- S:	Maintained
- F:	drivers/acpi/riscv/
-+F:	include/linux/acpi_rimt.h
- 
- ACPI PCC(Platform Communication Channel) MAILBOX DRIVER
- M:	Sudeep Holla <sudeep.holla@arm.com>
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index d71ea0f4466f..67bbf3b7302d 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -16,6 +16,7 @@ config RISCV
- 	select ACPI_MCFG if (ACPI && PCI)
- 	select ACPI_PPTT if ACPI
- 	select ACPI_REDUCED_HARDWARE_ONLY if ACPI
-+	select ACPI_RIMT if ACPI
- 	select ACPI_SPCR_TABLE if ACPI
- 	select ARCH_DMA_DEFAULT_COHERENT
- 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index 7bc40c2735ac..4381803c308c 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -546,6 +546,10 @@ if ARM64
- source "drivers/acpi/arm64/Kconfig"
- endif
- 
-+if RISCV
-+source "drivers/acpi/riscv/Kconfig"
-+endif
-+
- config ACPI_PPTT
- 	bool
- 
-diff --git a/drivers/acpi/riscv/Kconfig b/drivers/acpi/riscv/Kconfig
-new file mode 100644
-index 000000000000..046296a18d00
---- /dev/null
-+++ b/drivers/acpi/riscv/Kconfig
-@@ -0,0 +1,7 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# ACPI Configuration for RISC-V
-+#
-+
-+config ACPI_RIMT
-+	bool
-diff --git a/drivers/acpi/riscv/Makefile b/drivers/acpi/riscv/Makefile
-index a96fdf1e2cb8..1284a076fa88 100644
---- a/drivers/acpi/riscv/Makefile
-+++ b/drivers/acpi/riscv/Makefile
-@@ -2,3 +2,4 @@
- obj-y					+= rhct.o init.o irq.o
- obj-$(CONFIG_ACPI_PROCESSOR_IDLE)	+= cpuidle.o
- obj-$(CONFIG_ACPI_CPPC_LIB)		+= cppc.o
-+obj-$(CONFIG_ACPI_RIMT)			+= rimt.o
-diff --git a/drivers/acpi/riscv/init.c b/drivers/acpi/riscv/init.c
-index 673e4d5dd752..7c00f7995e86 100644
---- a/drivers/acpi/riscv/init.c
-+++ b/drivers/acpi/riscv/init.c
-@@ -10,4 +10,6 @@
- void __init acpi_arch_init(void)
- {
- 	riscv_acpi_init_gsi_mapping();
-+	if (IS_ENABLED(CONFIG_ACPI_RIMT))
-+		riscv_acpi_rimt_init();
- }
-diff --git a/drivers/acpi/riscv/init.h b/drivers/acpi/riscv/init.h
-index 0b9a07e4031f..1680aa2aaf23 100644
---- a/drivers/acpi/riscv/init.h
-+++ b/drivers/acpi/riscv/init.h
-@@ -2,3 +2,4 @@
- #include <linux/init.h>
- 
- void __init riscv_acpi_init_gsi_mapping(void);
-+void __init riscv_acpi_rimt_init(void);
-diff --git a/drivers/acpi/riscv/rimt.c b/drivers/acpi/riscv/rimt.c
-new file mode 100644
-index 000000000000..bd108f624ba0
---- /dev/null
-+++ b/drivers/acpi/riscv/rimt.c
-@@ -0,0 +1,520 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2024-2025, Ventana Micro Systems Inc
-+ *	Author: Sunil V L <sunilvl@ventanamicro.com>
-+ *
-+ */
-+
-+#define pr_fmt(fmt)	"ACPI: RIMT: " fmt
-+
-+#include <linux/acpi.h>
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index fb1fe9f3b1a3..f022f32de8a4 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -11,6 +11,7 @@
+ #include <linux/kernel.h>
+ #include <linux/acpi.h>
+ #include <linux/acpi_iort.h>
 +#include <linux/acpi_rimt.h>
-+#include <linux/iommu.h>
-+#include <linux/list.h>
-+#include <linux/pci.h>
-+#include <linux/platform_device.h>
-+#include "init.h"
-+
-+struct rimt_fwnode {
-+	struct list_head list;
-+	struct acpi_rimt_node *rimt_node;
-+	struct fwnode_handle *fwnode;
-+};
-+
-+static LIST_HEAD(rimt_fwnode_list);
-+static DEFINE_SPINLOCK(rimt_fwnode_lock);
-+
-+#define RIMT_TYPE_MASK(type)	(1 << (type))
-+#define RIMT_IOMMU_TYPE		BIT(0)
-+
-+/* Root pointer to the mapped RIMT table */
-+static struct acpi_table_header *rimt_table;
-+
-+/**
-+ * rimt_set_fwnode() - Create rimt_fwnode and use it to register
-+ *		       iommu data in the rimt_fwnode_list
-+ *
-+ * @rimt_node: RIMT table node associated with the IOMMU
-+ * @fwnode: fwnode associated with the RIMT node
-+ *
-+ * Returns: 0 on success
-+ *          <0 on failure
-+ */
-+static int rimt_set_fwnode(struct acpi_rimt_node *rimt_node,
-+			   struct fwnode_handle *fwnode)
-+{
-+	struct rimt_fwnode *np;
-+
-+	np = kzalloc(sizeof(*np), GFP_ATOMIC);
-+
-+	if (WARN_ON(!np))
-+		return -ENOMEM;
-+
-+	INIT_LIST_HEAD(&np->list);
-+	np->rimt_node = rimt_node;
-+	np->fwnode = fwnode;
-+
-+	spin_lock(&rimt_fwnode_lock);
-+	list_add_tail(&np->list, &rimt_fwnode_list);
-+	spin_unlock(&rimt_fwnode_lock);
-+
-+	return 0;
-+}
-+
-+/**
-+ * rimt_get_fwnode() - Retrieve fwnode associated with an RIMT node
-+ *
-+ * @node: RIMT table node to be looked-up
-+ *
-+ * Returns: fwnode_handle pointer on success, NULL on failure
-+ */
-+static struct fwnode_handle *rimt_get_fwnode(struct acpi_rimt_node *node)
-+{
-+	struct fwnode_handle *fwnode = NULL;
-+	struct rimt_fwnode *curr;
-+
-+	spin_lock(&rimt_fwnode_lock);
-+	list_for_each_entry(curr, &rimt_fwnode_list, list) {
-+		if (curr->rimt_node == node) {
-+			fwnode = curr->fwnode;
-+			break;
-+		}
-+	}
-+	spin_unlock(&rimt_fwnode_lock);
-+
-+	return fwnode;
-+}
-+
-+static acpi_status rimt_match_node_callback(struct acpi_rimt_node *node,
-+					    void *context)
-+{
-+	acpi_status status = AE_NOT_FOUND;
-+	struct device *dev = context;
-+
-+	if (node->type == ACPI_RIMT_NODE_TYPE_IOMMU) {
-+		struct acpi_rimt_iommu *iommu_node = (struct acpi_rimt_iommu *)&node->node_data;
-+
-+		if (dev_is_pci(dev)) {
-+			struct pci_dev *pdev;
-+			u16 bdf;
-+
-+			pdev = to_pci_dev(dev);
-+			bdf = PCI_DEVID(pdev->bus->number, pdev->devfn);
-+			if ((pci_domain_nr(pdev->bus) == iommu_node->pcie_segment_number) &&
-+			    bdf == iommu_node->pcie_bdf) {
-+				status = AE_OK;
-+			} else {
-+				status = AE_NOT_FOUND;
-+			}
-+		} else {
-+			struct platform_device *pdev = to_platform_device(dev);
-+			struct resource *res;
-+
-+			res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+			if (res && res->start == iommu_node->base_address)
-+				status = AE_OK;
-+			else
-+				status = AE_NOT_FOUND;
-+		}
-+	} else if (node->type == ACPI_RIMT_NODE_TYPE_PCIE_ROOT_COMPLEX) {
-+		struct acpi_rimt_pcie_rc *pci_rc;
-+		struct pci_bus *bus;
-+
-+		bus = to_pci_bus(dev);
-+		pci_rc = (struct acpi_rimt_pcie_rc *)node->node_data;
-+
-+		/*
-+		 * It is assumed that PCI segment numbers maps one-to-one
-+		 * with root complexes. Each segment number can represent only
-+		 * one root complex.
-+		 */
-+		status = pci_rc->pcie_segment_number == pci_domain_nr(bus) ?
-+							AE_OK : AE_NOT_FOUND;
-+	} else if (node->type == ACPI_RIMT_NODE_TYPE_PLAT_DEVICE) {
-+		struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER, NULL };
-+		struct acpi_rimt_platform_device *ncomp;
-+		struct device *plat_dev = dev;
-+		struct acpi_device *adev;
-+
-+		/*
-+		 * Walk the device tree to find a device with an
-+		 * ACPI companion; there is no point in scanning
-+		 * RIMT for a device matching a platform device if
-+		 * the device does not have an ACPI companion to
-+		 * start with.
-+		 */
-+		do {
-+			adev = ACPI_COMPANION(plat_dev);
-+			if (adev)
-+				break;
-+
-+			plat_dev = plat_dev->parent;
-+		} while (plat_dev);
-+
-+		if (!adev)
-+			return status;
-+
-+		status = acpi_get_name(adev->handle, ACPI_FULL_PATHNAME, &buf);
-+		if (ACPI_FAILURE(status)) {
-+			dev_warn(plat_dev, "Can't get device full path name\n");
-+			return status;
-+		}
-+
-+		ncomp = (struct acpi_rimt_platform_device *)node->node_data;
-+		status = !strcmp(ncomp->device_name, buf.pointer) ?
-+							AE_OK : AE_NOT_FOUND;
-+		acpi_os_free(buf.pointer);
-+	}
-+
-+	return status;
-+}
-+
-+static struct acpi_rimt_node *rimt_scan_node(enum acpi_rimt_node_type type,
-+					     void *context)
-+{
-+	struct acpi_rimt_node *rimt_node, *rimt_end;
-+	struct acpi_table_rimt *rimt;
-+	int i;
-+
-+	if (!rimt_table)
-+		return NULL;
-+
-+	/* Get the first RIMT node */
-+	rimt = (struct acpi_table_rimt *)rimt_table;
-+	rimt_node = ACPI_ADD_PTR(struct acpi_rimt_node, rimt,
-+				 rimt->node_offset);
-+	rimt_end = ACPI_ADD_PTR(struct acpi_rimt_node, rimt_table,
-+				rimt_table->length);
-+
-+	for (i = 0; i < rimt->num_nodes; i++) {
-+		if (WARN_TAINT(rimt_node >= rimt_end, TAINT_FIRMWARE_WORKAROUND,
-+			       "RIMT node pointer overflows, bad table!\n"))
-+			return NULL;
-+
-+		if (rimt_node->type == type &&
-+		    ACPI_SUCCESS(rimt_match_node_callback(rimt_node, context)))
-+			return rimt_node;
-+
-+		rimt_node = ACPI_ADD_PTR(struct acpi_rimt_node, rimt_node,
-+					 rimt_node->length);
-+	}
-+
-+	return NULL;
-+}
-+
-+static bool rimt_pcie_rc_supports_ats(struct acpi_rimt_node *node)
-+{
-+	struct acpi_rimt_pcie_rc *pci_rc;
-+
-+	pci_rc = (struct acpi_rimt_pcie_rc *)node->node_data;
-+	return pci_rc->flags & ACPI_RIMT_PCIE_ATS_SUPPORTED;
-+}
-+
-+static int rimt_iommu_xlate(struct device *dev, struct acpi_rimt_node *node, u32 deviceid)
-+{
-+	struct fwnode_handle *rimt_fwnode;
-+
-+	if (!node)
-+		return -ENODEV;
-+
-+	rimt_fwnode = rimt_get_fwnode(node);
-+
-+	/*
-+	 * The IOMMU drivers may not be probed yet.
-+	 * Defer the IOMMU configuration
-+	 */
-+	if (!rimt_fwnode)
-+		return -EPROBE_DEFER;
-+
-+	return acpi_iommu_fwspec_init(dev, deviceid, rimt_fwnode);
-+}
-+
-+struct rimt_pci_alias_info {
-+	struct device *dev;
-+	struct acpi_rimt_node *node;
-+	const struct iommu_ops *ops;
-+};
-+
-+static int rimt_id_map(struct acpi_rimt_id_mapping *map, u8 type, u32 rid_in, u32 *rid_out)
-+{
-+	if (rid_in < map->source_id_base ||
-+	    (rid_in > map->source_id_base + map->num_ids))
-+		return -ENXIO;
-+
-+	*rid_out = map->dest_id_base + (rid_in - map->source_id_base);
-+	return 0;
-+}
-+
-+static struct acpi_rimt_node *rimt_node_get_id(struct acpi_rimt_node *node,
-+					       u32 *id_out, int index)
-+{
-+	struct acpi_rimt_platform_device *plat_node;
-+	u32 id_mapping_offset, num_id_mapping;
-+	struct acpi_rimt_pcie_rc *pci_node;
-+	struct acpi_rimt_id_mapping *map;
-+	struct acpi_rimt_node *parent;
-+
-+	if (node->type == ACPI_RIMT_NODE_TYPE_PCIE_ROOT_COMPLEX) {
-+		pci_node = (struct acpi_rimt_pcie_rc *)&node->node_data;
-+		id_mapping_offset = pci_node->id_mapping_offset;
-+		num_id_mapping = pci_node->num_id_mappings;
-+	} else if (node->type == ACPI_RIMT_NODE_TYPE_PLAT_DEVICE) {
-+		plat_node = (struct acpi_rimt_platform_device *)&node->node_data;
-+		id_mapping_offset = plat_node->id_mapping_offset;
-+		num_id_mapping = plat_node->num_id_mappings;
-+	} else {
-+		return NULL;
-+	}
-+
-+	if (!id_mapping_offset || !num_id_mapping || index >= num_id_mapping)
-+		return NULL;
-+
-+	map = ACPI_ADD_PTR(struct acpi_rimt_id_mapping, node,
-+			   id_mapping_offset + index * sizeof(*map));
-+
-+	/* Firmware bug! */
-+	if (!map->dest_offset) {
-+		pr_err(FW_BUG "[node %p type %d] ID map has NULL parent reference\n",
-+		       node, node->type);
-+		return NULL;
-+	}
-+
-+	parent = ACPI_ADD_PTR(struct acpi_rimt_node, rimt_table, map->dest_offset);
-+
-+	if (node->type == ACPI_RIMT_NODE_TYPE_PLAT_DEVICE ||
-+	    node->type == ACPI_RIMT_NODE_TYPE_PCIE_ROOT_COMPLEX) {
-+		*id_out = map->dest_offset;
-+		return parent;
-+	}
-+
-+	return NULL;
-+}
-+
-+static struct acpi_rimt_node *rimt_node_map_id(struct acpi_rimt_node *node,
-+					       u32 id_in, u32 *id_out,
-+					       u8 type_mask)
-+{
-+	struct acpi_rimt_platform_device *plat_node;
-+	u32 id_mapping_offset, num_id_mapping;
-+	struct acpi_rimt_pcie_rc *pci_node;
-+	u32 id = id_in;
-+
-+	/* Parse the ID mapping tree to find specified node type */
-+	while (node) {
-+		struct acpi_rimt_id_mapping *map;
-+		int i, rc = 0;
-+		u32 map_id = id;
-+
-+		if (RIMT_TYPE_MASK(node->type) & type_mask) {
-+			if (id_out)
-+				*id_out = id;
-+			return node;
-+		}
-+
-+		if (node->type == ACPI_RIMT_NODE_TYPE_PCIE_ROOT_COMPLEX) {
-+			pci_node = (struct acpi_rimt_pcie_rc *)&node->node_data;
-+			id_mapping_offset = pci_node->id_mapping_offset;
-+			num_id_mapping = pci_node->num_id_mappings;
-+		} else if (node->type == ACPI_RIMT_NODE_TYPE_PLAT_DEVICE) {
-+			plat_node = (struct acpi_rimt_platform_device *)&node->node_data;
-+			id_mapping_offset = plat_node->id_mapping_offset;
-+			num_id_mapping = plat_node->num_id_mappings;
-+		} else {
-+			goto fail_map;
-+		}
-+
-+		if (!id_mapping_offset || !num_id_mapping)
-+			goto fail_map;
-+
-+		map = ACPI_ADD_PTR(struct acpi_rimt_id_mapping, node,
-+				   id_mapping_offset);
-+
-+		/* Firmware bug! */
-+		if (!map->dest_offset) {
-+			pr_err(FW_BUG "[node %p type %d] ID map has NULL parent reference\n",
-+			       node, node->type);
-+			goto fail_map;
-+		}
-+
-+		/* Do the ID translation */
-+		for (i = 0; i < num_id_mapping; i++, map++) {
-+			rc = rimt_id_map(map, node->type, map_id, &id);
-+			if (!rc)
-+				break;
-+		}
-+
-+		if (i == num_id_mapping)
-+			goto fail_map;
-+
-+		node = ACPI_ADD_PTR(struct acpi_rimt_node, rimt_table,
-+				    rc ? 0 : map->dest_offset);
-+	}
-+
-+fail_map:
-+	/* Map input ID to output ID unchanged on mapping failure */
-+	if (id_out)
-+		*id_out = id_in;
-+
-+	return NULL;
-+}
-+
-+static struct acpi_rimt_node *rimt_node_map_platform_id(struct acpi_rimt_node *node, u32 *id_out,
-+							u8 type_mask, int index)
-+{
-+	struct acpi_rimt_node *parent;
-+	u32 id;
-+
-+	parent = rimt_node_get_id(node, &id, index);
-+	if (!parent)
-+		return NULL;
-+
-+	if (!(RIMT_TYPE_MASK(parent->type) & type_mask))
-+		parent = rimt_node_map_id(parent, id, id_out, type_mask);
-+	else
-+		if (id_out)
-+			*id_out = id;
-+
-+	return parent;
-+}
-+
-+static int rimt_pci_iommu_init(struct pci_dev *pdev, u16 alias, void *data)
-+{
-+	struct rimt_pci_alias_info *info = data;
-+	struct acpi_rimt_node *parent;
-+	u32 deviceid;
-+
-+	parent = rimt_node_map_id(info->node, alias, &deviceid, RIMT_IOMMU_TYPE);
-+	return rimt_iommu_xlate(info->dev, parent, deviceid);
-+}
-+
-+/*
-+ * RISC-V supports IOMMU as a PCI device or a platform device.
-+ * When it is a platform device, there should be a namespace device as
-+ * well along with RIMT. To create the link between RIMT information and
-+ * the platform device, the IOMMU driver should register itself with the
-+ * RIMT module. This is true for PCI based IOMMU as well.
-+ */
-+int rimt_iommu_register(struct device *dev)
-+{
-+	struct fwnode_handle *rimt_fwnode;
-+	struct acpi_rimt_node *node;
-+
-+	node = rimt_scan_node(ACPI_RIMT_NODE_TYPE_IOMMU, dev);
-+	if (!node) {
-+		pr_err("Could not find IOMMU node in RIMT\n");
-+		return -ENODEV;
-+	}
-+
-+	if (dev_is_pci(dev)) {
-+		rimt_fwnode = acpi_alloc_fwnode_static();
-+		if (!rimt_fwnode)
-+			return -ENOMEM;
-+
-+		rimt_fwnode->dev = dev;
-+		if (!dev->fwnode)
-+			dev->fwnode = rimt_fwnode;
-+
-+		rimt_set_fwnode(node, rimt_fwnode);
-+	} else {
-+		rimt_set_fwnode(node, dev->fwnode);
-+	}
-+
-+	return 0;
-+}
-+
-+#ifdef CONFIG_IOMMU_API
-+
-+static int rimt_plat_iommu_map(struct device *dev, struct acpi_rimt_node *node)
-+{
-+	struct acpi_rimt_node *parent;
-+	int err = -ENODEV, i = 0;
-+	u32 deviceid = 0;
-+
-+	do {
-+		parent = rimt_node_map_platform_id(node, &deviceid,
-+						   RIMT_IOMMU_TYPE,
-+						   i++);
-+
-+		if (parent)
-+			err = rimt_iommu_xlate(dev, parent, deviceid);
-+	} while (parent && !err);
-+
-+	return err;
-+}
-+
-+static int rimt_plat_iommu_map_id(struct device *dev,
-+				  struct acpi_rimt_node *node,
-+				  const u32 *in_id)
-+{
-+	struct acpi_rimt_node *parent;
-+	u32 deviceid;
-+
-+	parent = rimt_node_map_id(node, *in_id, &deviceid, RIMT_IOMMU_TYPE);
-+	if (parent)
-+		return rimt_iommu_xlate(dev, parent, deviceid);
-+
-+	return -ENODEV;
-+}
-+
-+/**
-+ * rimt_iommu_configure_id - Set-up IOMMU configuration for a device.
-+ *
-+ * @dev: device to configure
-+ * @id_in: optional input id const value pointer
-+ *
-+ * Returns: 0 on success, <0 on failure
-+ */
-+int rimt_iommu_configure_id(struct device *dev, const u32 *id_in)
-+{
-+	struct acpi_rimt_node *node;
-+	int err = -ENODEV;
-+
-+	if (dev_is_pci(dev)) {
-+		struct iommu_fwspec *fwspec;
-+		struct pci_bus *bus = to_pci_dev(dev)->bus;
-+		struct rimt_pci_alias_info info = { .dev = dev };
-+
-+		node = rimt_scan_node(ACPI_RIMT_NODE_TYPE_PCIE_ROOT_COMPLEX, &bus->dev);
-+		if (!node)
-+			return -ENODEV;
-+
-+		info.node = node;
-+		err = pci_for_each_dma_alias(to_pci_dev(dev),
-+					     rimt_pci_iommu_init, &info);
-+
-+		fwspec = dev_iommu_fwspec_get(dev);
-+		if (fwspec && rimt_pcie_rc_supports_ats(node))
-+			fwspec->flags |= IOMMU_FWSPEC_PCI_RC_ATS;
-+	} else {
-+		node = rimt_scan_node(ACPI_RIMT_NODE_TYPE_PLAT_DEVICE, dev);
-+		if (!node)
-+			return -ENODEV;
-+
-+		err = id_in ? rimt_plat_iommu_map_id(dev, node, id_in) :
-+			      rimt_plat_iommu_map(dev, node);
-+	}
-+
-+	return err;
-+}
-+
-+#endif
-+
-+void __init riscv_acpi_rimt_init(void)
-+{
-+	acpi_status status;
-+
-+	/* rimt_table will be used at runtime after the rimt init,
-+	 * so we don't need to call acpi_put_table() to release
-+	 * the RIMT table mapping.
-+	 */
-+	status = acpi_get_table(ACPI_SIG_RIMT, 0, &rimt_table);
-+	if (ACPI_FAILURE(status)) {
-+		if (status != AE_NOT_FOUND) {
-+			const char *msg = acpi_format_exception(status);
-+
-+			pr_err("Failed to get table, %s\n", msg);
-+		}
-+
-+		return;
-+	}
-+}
-diff --git a/include/linux/acpi_rimt.h b/include/linux/acpi_rimt.h
-new file mode 100644
-index 000000000000..fad3adc4d899
---- /dev/null
-+++ b/include/linux/acpi_rimt.h
-@@ -0,0 +1,28 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ *  Copyright (C) 2024-2025, Ventana Micro Systems Inc.
-+ *	Author: Sunil V L <sunilvl@ventanamicro.com>
-+ */
-+
-+#ifndef _ACPI_RIMT_H
-+#define _ACPI_RIMT_H
-+
-+#ifdef CONFIG_ACPI_RIMT
-+int rimt_iommu_register(struct device *dev);
-+#else
-+static inline int rimt_iommu_register(struct device *dev)
-+{
-+	return -ENODEV;
-+}
-+#endif
-+
-+#if defined(CONFIG_IOMMU_API) && defined(CONFIG_ACPI_RIMT)
-+int rimt_iommu_configure_id(struct device *dev, const u32 *id_in);
-+#else
-+static inline int rimt_iommu_configure_id(struct device *dev, const u32 *id_in)
-+{
-+	return -ENODEV;
-+}
-+#endif
-+
-+#endif /* _ACPI_RIMT_H */
+ #include <linux/acpi_viot.h>
+ #include <linux/iommu.h>
+ #include <linux/signal.h>
+@@ -1628,8 +1629,11 @@ static int acpi_iommu_configure_id(struct device *dev, const u32 *id_in)
+ 	}
+ 
+ 	err = iort_iommu_configure_id(dev, id_in);
++	if (err && err != -EPROBE_DEFER)
++		err = rimt_iommu_configure_id(dev, id_in);
+ 	if (err && err != -EPROBE_DEFER)
+ 		err = viot_iommu_configure(dev);
++
+ 	mutex_unlock(&iommu_probe_device_lock);
+ 
+ 	return err;
 -- 
 2.43.0
 
