@@ -1,109 +1,119 @@
-Return-Path: <linux-acpi+bounces-15202-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15203-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90259B07A6A
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jul 2025 17:55:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD50B07D44
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jul 2025 20:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06A5618942C9
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jul 2025 15:55:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BB3A1AA469D
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jul 2025 18:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235C82F3C1D;
-	Wed, 16 Jul 2025 15:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CE229B20A;
+	Wed, 16 Jul 2025 18:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="jm/afVQ1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lWzeJQC+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D7F2F2C5A;
-	Wed, 16 Jul 2025 15:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED07E288CA1;
+	Wed, 16 Jul 2025 18:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752681336; cv=none; b=oOrybdj6QkZ899/M0OaumS45Cq8aO1W/pYAGfkvPVrtjKGaItFGvJz8uRhqo3uT9T600GgCSrechoAliSXoU2/VkzGP+Flpgo3m1BuKOZiDbytQOFl22qYxMsWDULIRy0TCkmUs4ryDA/DCClTHHOJ90fQWZRqm/YDDKT9PbxbM=
+	t=1752692358; cv=none; b=DO4eVD/eaplM9wfr6YLktBcetKbfbNIV4M1qAY34bQL/32hd6JiRbg0i0JF7GzwZ5qBnxyyW6wxa6Ou9hNo23uFIBX/7kczXQTaG0jlb7ug3oLKtr/cJtQva4NZP4ZVkkZnTxSYU5wgjQhxlIDeLQXfzTKm9tZDosnKTSecppDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752681336; c=relaxed/simple;
-	bh=a9Cg9NOcIUQupCuavDAFI79yKwc0Isv17jQ5UTa9D8o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FSP7ezPIxGAxPMs9vT277wU0ZZHqeiVM+aQjs8H1C2KU7b9SUXfqnTR9OwGQhtgrY1hexz8EtBYr5SbpXTg4K+AmzpwneE6jQAxUQ6ltVyIHFC/5CtXUAyu1eE0OduIzvCoeScL8jeXkjMof7UmCmgdTmmR6hAARQLWJEo1upqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=jm/afVQ1; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 773D940E00CE;
-	Wed, 16 Jul 2025 15:55:29 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id wQNLSl_5hiRE; Wed, 16 Jul 2025 15:55:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1752681325; bh=VsP7hQUBZY9EYcZrcPke+dSpTYsqhDZGcDKwjNT91bQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jm/afVQ1W5lUuofxiirhazGqYU7W2tt9RaBhYIM+z7V7HflCiOgxSXn981NTRLJWO
-	 VkOgZ9ruow62srw9D51xRouxpv0LUJJEYRPUJbcbjYsU78bz4E2kA1tHG2AH/FM6MI
-	 /Dizobc0xZah+vjiul2mB5UgrDHaXBMIIwRfx/2f7mGgNH68MR0aCYUAS6wD0AKoEa
-	 iqaoHAkXD/569TwLDwhlIHBHVcIb4u7aKODNSVABJfbzcvjda1e5NdWdIaHmxHPNcD
-	 8Vrnf/3wsCUGSHIlrMPXVye8OMStvFKzb1T1RloXzQ6IqDhbySfNlfUcZw6zUdSzom
-	 BtHQPeSfC0J1mS5h1lWLesn9HAdy3vCUJsqmmB6c0Kmk0PDkLB4sMTQrhmhPLbE0iS
-	 IjbTdvcGLgT5bg/Clv5kBpp6OzExDnuEVpq/mG9ykLLz9RX+yqO/ztH8H+PYn9/9HG
-	 TrxrF1xw4+DxsHrEpPEhInsumEuijZfj1I13dcmHvETzmEUF70nHbUyW4bhDfe8ZvA
-	 b76Ze2G39VrMq7zAo0d9Q0qki06L6vqgq46RoIuAQeSI8rXZgIeRZ6GsgtdWciBhH1
-	 y+satILbc74eT5MIo4wV+QaS4p6QLodwLJOojr8blu6qHSCuPMcw1Bo9oTCzd7h7oq
-	 BB+vlpxGnuxZYJ/QqNq8J3BU=
-Received: from rn.tnic (unknown [78.130.214.207])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 9B30440E021C;
-	Wed, 16 Jul 2025 15:54:50 +0000 (UTC)
-Date: Wed, 16 Jul 2025 17:56:47 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, shiju.jose@huawei.com,
-	linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
-	leo.duran@amd.com, Yazen.Ghannam@amd.com, mchehab@kernel.org,
-	linux-mm@kvack.org, linuxarm@huawei.com, rientjes@google.com,
-	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
-	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
-	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
-	duenwen@google.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
-	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
-	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
-	wanghuiqiang@huawei.com
-Subject: Re: [PATCH v9 0/2] ACPI: Add support for ACPI RAS2 feature table
-Message-ID: <20250716155647.GAaHfLv-S5YG71nLgY@renoirsky.local>
-References: <20250617161417.1681-1-shiju.jose@huawei.com>
- <20250716152818.00006759@huawei.com>
- <CAJZ5v0hqFOssbnsgcc9c6HASc9FRvth804SJ8oSb5aUKZDu9hQ@mail.gmail.com>
+	s=arc-20240116; t=1752692358; c=relaxed/simple;
+	bh=/omEhvjVTapPD90QGO2cVGPkfSWUs2Njdx/dD9e79V8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UcqQ82LwVvomUESzoUVV8ITrK6t9NFPPVSTtzL6YmZ5NQ5vQFGeJIuQOKfHyUy5pQDuu2dET4F77jzV6YVzvePaGfDla8COOle59DmuQtNDusekmzIah5sxntdWAkrtYFy+x+zgmS6QPrD2hzNslLnJMt1vjILvZPtNaixVcjzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lWzeJQC+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721FEC4CEF6;
+	Wed, 16 Jul 2025 18:59:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752692357;
+	bh=/omEhvjVTapPD90QGO2cVGPkfSWUs2Njdx/dD9e79V8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=lWzeJQC+mr+oca7xZC3nO0JaKoztvyGFGTDpi5pXfwfCj00YtvhclPclptQ0HDjcr
+	 5hpsawMvEp3Kns1TH1gPrk1Y67UFx4zkELTGsgkWexTrghArMDuEJ8WxXWzOFAl2Fi
+	 BdxOU9Y4XiKA+9pmJuMbyI7DNe7pby+a07Oh1O8ynLfp37v1GgQQoRQPoV8YtfCFyc
+	 0xdjf0RaAMgTl1FaEYwMxGSJT3iXODLfPaE8vaoxxCu9q0be+4DRT05dWyQbeCv8JJ
+	 ml20dwYj7XlY9lMXjoV0l5+DLDEc992rZMrNAby1ODr9Zdou0bljZPFIBL0mkNFXtl
+	 X3WCa4/lSDu+w==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-60d666804ebso642901eaf.1;
+        Wed, 16 Jul 2025 11:59:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUez4EVJGkJRZIVpGC+dxhVTuQMDnUoQSFglVnzZRsI9aT0MJLqiJZNOMXJFgKvqlfd3lnkEJ16vC5xxlk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhHlctlCgHdojRD5rJiuczVF6spLw65krDfHG3VMrTSA9EvS74
+	nImA8+jm1Wn5SXn3k1IHsroPi1NJlzRWVu4ykj5gdOV81GvcLaIyGjS2VbOQJfO0PS6MyU03dc6
+	5goNzRqHj1O8yH5P+MNwPg94JUZnhz5E=
+X-Google-Smtp-Source: AGHT+IHNiSZSOiDpfj4Ghoq7jk4CaTDYvI0dRNkivlLTQMRgzcWUP4tRe5rmsbs0JHmGP2fEZEWsDySvyL9QsZSdklM=
+X-Received: by 2002:a4a:ee17:0:b0:613:bd07:54cc with SMTP id
+ 006d021491bc7-615acb4ab78mr472990eaf.0.1752692356749; Wed, 16 Jul 2025
+ 11:59:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0hqFOssbnsgcc9c6HASc9FRvth804SJ8oSb5aUKZDu9hQ@mail.gmail.com>
+References: <12722151.O9o76ZdvQC@rjwysocki.net> <998ca55d-13b5-4f10-819e-47d674ba3504@linux.alibaba.com>
+In-Reply-To: <998ca55d-13b5-4f10-819e-47d674ba3504@linux.alibaba.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 16 Jul 2025 20:59:05 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iBQ6MDgTKx9F0vG5EsDCMswkAknZaAHtohAqA8qG=GrA@mail.gmail.com>
+X-Gm-Features: Ac12FXxG0MwX8IAG9qg6MQ8xDH_WFTmdb7QvIY4R3_Nmk4QK4-4oEXkTK5QofNw
+Message-ID: <CAJZ5v0iBQ6MDgTKx9F0vG5EsDCMswkAknZaAHtohAqA8qG=GrA@mail.gmail.com>
+Subject: Re: [PATCH v1] ACPI: APEI: MAINTAINERS: Update reviewers for APEI
+To: Shuai Xue <xueshuai@linux.alibaba.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Hanjun Guo <guohanjun@huawei.com>
+Cc: Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Borislav Petkov <bp@alien8.de>, Len Brown <lenb@kernel.org>, Tony Luck <tony.luck@intel.com>, 
+	James Morse <james.morse@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 16, 2025 at 04:42:13PM +0200, Rafael J. Wysocki wrote:
-> So what's missing is his ACK on this series.
+On Wed, Jul 16, 2025 at 3:37=E2=80=AFAM Shuai Xue <xueshuai@linux.alibaba.c=
+om> wrote:
+>
+>
+>
+> =E5=9C=A8 2025/7/15 21:20, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > Update the ACPI APEI entry in MAINTAINERS by dropping the reviewers
+> > who have not been responsive for over a year and adding a list of
+> > new reviewers.
+> >
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >
+> > The new people in the new APEI reviewers list, please send your ACKs fo=
+r this
+> > change, thanks!
+> >
+> > ---
+> >   MAINTAINERS |    5 +++--
+> >   1 file changed, 3 insertions(+), 2 deletions(-)
+> >
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -306,10 +306,11 @@
+> >
+> >   ACPI APEI
+> >   M:  "Rafael J. Wysocki" <rafael@kernel.org>
+> > -R:   Len Brown <lenb@kernel.org>
+> > -R:   James Morse <james.morse@arm.com>
+> >   R:  Tony Luck <tony.luck@intel.com>
+> >   R:  Borislav Petkov <bp@alien8.de>
+> > +R:   Hanjun Guo <guohanjun@huawei.com>
+> > +R:   Mauro Carvalho Chehab <mchehab@kernel.org>
+> > +R:   Shuai Xue <xueshuai@linux.alibaba.com>
+> >   L:  linux-acpi@vger.kernel.org
+> >   F:  drivers/acpi/apei/
+> >
+>
+> Acked-by: Shuai Xue <xueshuai@linux.alibaba.com>
 
-Rafael forgot: Shiju, him and I had a private thread where you folks
-wanted me to take it and I said, I need to review it properly first.
-
-You need to decide what you wanna do and I'll try to find time to take
-a look.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Applied, thank you all!
 
