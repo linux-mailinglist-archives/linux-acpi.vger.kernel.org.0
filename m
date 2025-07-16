@@ -1,166 +1,287 @@
-Return-Path: <linux-acpi+bounces-15200-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15201-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B06BB079C7
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jul 2025 17:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0C9B07A02
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jul 2025 17:36:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8007169CDB
-	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jul 2025 15:27:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58916581B87
+	for <lists+linux-acpi@lfdr.de>; Wed, 16 Jul 2025 15:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C940B273D9E;
-	Wed, 16 Jul 2025 15:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB9A28BAAD;
+	Wed, 16 Jul 2025 15:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b="Jda32v08"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="cgCwbx7i"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3EC1E0E14
-	for <linux-acpi@vger.kernel.org>; Wed, 16 Jul 2025 15:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934641428E7
+	for <linux-acpi@vger.kernel.org>; Wed, 16 Jul 2025 15:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752679635; cv=none; b=Uq6GsTBZphcNDEGUd/PKzzy+hbwGeue7pWTj0WK+Mn5CGdQo1EtvPFzQ3N5kWCaIHKCz1+VUX3eHtY4iCPDA39ORToNQfe62VgnZVU1CVM6I5DBEM2PQ23G+zukGCVpfgBewoL4BtFm4zPYKydq0JxIJqZ+OyQ3rMoJjSKGYfk8=
+	t=1752680174; cv=none; b=LojkzH/G3BzWZTLeWX+aXt1dFH+euqSfBuFnsxu4QKVJpVdyHKptDaTFFEchN06brfURqbUaF8xGcgcmxwk3f+Cj4ompL71B3QXEs03JnzTlJy7MC5Oz1EeLDAE/5COqqidJBkIJLvSRpzE7ToDIFxJSgMLG6wSqzddxu4lObsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752679635; c=relaxed/simple;
-	bh=c9K3Jeyllh9acXj8/pMhkma1YgpPHnE/1br2gKtyXNY=;
-	h=Date:Subject:In-Reply-To:CC:From:To:Message-ID:Mime-Version:
-	 Content-Type; b=V8Z8oebEzmJYO1fb4g1qW3lCqZayyagj86t5yshLOh/z5Ed3dQiu/G1nCXYB6dWiOyZfVB+1DJcS+9IFD9f9T4NCqG/c6QGSvPEz6LvAsq7GzrFl6JQ5eZXO0xF7n6i6Ka+q7S/NJM1IURYxe7klIAxCZ/KwHcQe6lKinJ1Ui+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com; spf=pass smtp.mailfrom=dabbelt.com; dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b=Jda32v08; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dabbelt.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-74b54cead6cso50217b3a.1
-        for <linux-acpi@vger.kernel.org>; Wed, 16 Jul 2025 08:27:13 -0700 (PDT)
+	s=arc-20240116; t=1752680174; c=relaxed/simple;
+	bh=UOlPAAovmKrMRUsNzrf+Fv+Hb6gtp5IG/AXs7W9HC1g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ifsXuEwl+JSh0P10QFbnzekiF8EUcJo+ForGQI/AHlhB5/HBPfiDP/PUvzZIioryaoC/6WWxuaEdpjXit+CdMuU55iaq7tRhQHNsWyBq3u8FRlIDTAUQ/d4SXbiHyKwXWbP/sEsixgBPFej8d2J4c9coGfGdhKgnkhdpa3CsdSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=cgCwbx7i; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-32e14cf205cso38261fa.1
+        for <linux-acpi@vger.kernel.org>; Wed, 16 Jul 2025 08:36:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1752679632; x=1753284432; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DLHXWx3e4qVyWFktNcTinbMTNqw3Gsd0ZZ2hzOlFYG4=;
-        b=Jda32v08Ah3rz+x38BsvdPZZ3V0SZnG8L0Djg/kNAeZPOo9/eUMf+IqEJXuItY+b01
-         ZI5XgM6OLnZW6DVC8R6Nx/90sPNJs48hCN5qTv5Oye/NPE78822As8XfFTynMlTDFCdH
-         rhs+QFuV7aT6qhEa+DgL2rWkYNa4jL0StHtJ27vt/ZbrNagfDYH05XS3pVkvKFCI1NKs
-         mzkNzIU90Xghu3u3Clxr/aFyYdVc1uZFK/8bZokk/PF68fXahuLF/Vu3glSV3deQM4Zj
-         xAYrhwn9pkJ0lQWxYapYxobh23KFIgDqmgC90aUTbrbZ+AEPbw7GbHpI0FsJNgdkQC78
-         s5Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752679632; x=1753284432;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+        d=ventanamicro.com; s=google; t=1752680171; x=1753284971; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DLHXWx3e4qVyWFktNcTinbMTNqw3Gsd0ZZ2hzOlFYG4=;
-        b=KqvQVUeu+e5zYYdHlui75HG0kf6/rew9P4RteUqWZjEBpFlc21jeHBUTvIIhoYL1vu
-         i0h7c9B7ybHEwBsoxWflNGM0zblnl9fnKlClgmUO72vjaqY7PNi9G4L9oV+XoNlCbfnO
-         2XDHwu7ehtRXVHYDjd8A0bY15jB9lAjMV4f3gjc2+LnnqF2BMbcJzs4R3K0LYwaOnBzN
-         KBtxOMx6wkMAdsaSGnI98SJ9G9RfMBu+Ua512Pe0CoFHQuHSaA7CDdDVI+uRWYIDj0dG
-         4USRB2k+LI4kCxs6ogzHuvM+r2jMJNYYZP9o4wyCofwViBXdt83xYYArXIDRQHJI30/0
-         lP0w==
-X-Forwarded-Encrypted: i=1; AJvYcCU0xDgurlgmuZn0fTdvxFijKd91EumLn7j/uY2XERyUp6wDe0NI8yC/XH5Yav6PPz81ZfQGrERC+cF7@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoH/sAWGVpxPwR/bnbd+2vEzn7WKgUbkK7pNegC1dgwen+4/Pc
-	3n3QjhT3xJs2LY1ntaFhNQMJUpv7wXfn/xVguKq+QYi7wEjy+wv+Ec5m0BIpAIfmAso=
-X-Gm-Gg: ASbGncv/TCdZmR1yy9J+j0qweNwK+DLq5ShJeaQnTlQOnHNZByI/HM6WbtGIRBTbBn9
-	DYsFaPm4EEOyJIb3Ab211OXXGyYhpDrpT5QsKTwXxsusgzwl5dll8PXWo6fmXJOlNoJsVDTghix
-	ikGO4pKHXUWlIWd7weIk2jzaFFcGdQXY94nvithgjUnMg3k562aliN7+oH62usf5uS2UcwkNByI
-	DhFEH/+qKqAXX0ZYWbO/BXmm5ck8ZvwpkpjurOOrgoRGYM1s3t00yHZNFvqVw7n24ec/bKMvK4b
-	GvRiL4TZA41jsEc7yFki0oTLyEzW18iHBATRZYbwNkMVTiFlwmGmVadiP+lTIrrzt1etxDUpI0w
-	ZyyqFAic0N2jKZmnKZMN1
-X-Google-Smtp-Source: AGHT+IH7iBG8I47ZPk3kjc8DlfJqKS+H6u2KneCpl6yYfAutQXIcMVrF/w+WWdKN0EwIATcq6Y7GTg==
-X-Received: by 2002:a05:6a00:22d0:b0:748:e0ee:dcff with SMTP id d2e1a72fcca58-75723d7d2c8mr4843826b3a.11.1752679632185;
-        Wed, 16 Jul 2025 08:27:12 -0700 (PDT)
-Received: from localhost ([2620:10d:c090:500::4:b02a])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-74eb9f22c01sm14929679b3a.101.2025.07.16.08.27.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 08:27:11 -0700 (PDT)
-Date: Wed, 16 Jul 2025 08:27:11 -0700 (PDT)
-X-Google-Original-Date: Wed, 16 Jul 2025 08:27:09 PDT (-0700)
-Subject:     Re: [PATCH v5 0/3] RISC-V: Add ACPI support for IOMMU
-In-Reply-To: <20250716104059.3539482-1-sunilvl@ventanamicro.com>
-CC: linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-  linux-acpi@vger.kernel.org, iommu@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>,
-  Alexandre Ghiti <alex@ghiti.fr>, rafael@kernel.org, lenb@kernel.org, tjeznach@rivosinc.com, joro@8bytes.org,
-  Will Deacon <will@kernel.org>, robin.murphy@arm.com, Atish Patra <atishp@rivosinc.com>,
-  apatel@ventanamicro.com, ajones@ventanamicro.com, Sunil V L <sunilvl@ventanamicro.com>
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: Sunil V L <sunilvl@ventanamicro.com>
-Message-ID: <mhng-E714E5B9-0828-46CE-B890-9AE61C2E341D@palmerdabbelt-mac>
+        bh=d44dYcfHmwqbX+zpmz2euXgeuat7OAXV3SVWxkrjZNE=;
+        b=cgCwbx7iHP5+AzQrhzGLjwZZgrxn/VCBKuNGMMx/d1THlgEEv5AIjID/LlTaKHv5as
+         QY1UTEcdYt3imHNscU985vhBKe2aig5IxazMMsOV0EPv//OPGsp1sRINLCCiLch65OsL
+         KHI3JgfPlSxdhwWhhqi+BDdtFRDOvNngRmM1kuxWzHVKL4jjNAbTwJq8yzMuOlC2YEM4
+         gpbCDJN7cCZslZGaFCSbpnjc+v+GGkg3kgEVwheNUxtV06VkudNbCLu2hEoHAmHsy2Bj
+         IS8zA41J6J5RFbkVvcKzzfZmsEiSHunEnr7N8cAf6po6maOFNpnetUYN9/RUQcvO1ahm
+         qCkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752680171; x=1753284971;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=d44dYcfHmwqbX+zpmz2euXgeuat7OAXV3SVWxkrjZNE=;
+        b=hWvoIzIuxQwdzW1tAoyRTVCBC5v5bscq/AdswX5JiRluT2py5C27af/VSIFCPILnzz
+         0nOKNkL2N1Yc5k4HasQtj6OfMXH6HjUvAEMYKaB5YMBSluyrd9H4K8clEonb4e4brhqq
+         Q44R7qz53E5bOisFG/LsPKO6DhdOjFX1UJ2ANmTQeI8/RzEymZCwqTWYzfmQl5gZpBiJ
+         mGjKka3ALrNbVsE3i6GbXp2oTnTLyNeyeeE8HwH6lhHPx1UbLv7N1pkFTa5gr/P3Hwz5
+         2HhpdP4gRsjnkn+0MtSci2EyacLozhVYRu55o4O1qX3aaYoYCgjuddm70TIdjsqxzC+H
+         PyFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUbJqAHj/RbK+Y5aPfoaQRAQkYmuFj87OpjxHvwpH+/Ztc5lJB1hW73mPIe6Dp1Pf38nUL7ng5e2P80@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsykuTDFukBb98pB/yX4uAvuNSVGyoez0iiOFbX88smqI980nd
+	aAV415TFPmWCmHRIcuBFDbwyJ2Ppu1quDOtKu4JxeOIawA19b3i0ZCR1U+Xty+Q7b2pxMB8bNDR
+	vHI8IbYoPJabihTJRHLYFIJlWv149Re/eac8UepxHlA==
+X-Gm-Gg: ASbGncsl9LzluO3SB2p/svYFoN3Cu2jQzm5nXJvf//gHVghXE33nhrq9R32wHuCCbi2
+	8uXvXwJa+9+5dPdHtda+a+s4mlshwCW0d8EBANlNnRbZwenN+q0CiigDI8xgKk5HW9T5XbG61FN
+	A0YjqT1NhUXUwy1AhVuXHSCoDVynXVFVeUt98HNaYKpZ00BekL2hCPYG7JdP9ijJPF0IjCdnZgE
+	kFqgUA=
+X-Google-Smtp-Source: AGHT+IHU9G+jOG1JR6TA+0PMNpzeORjZBKpBQWTiu105me1EpFHWyXS44ekens1krtL2zYDhYV41TvUtVC15iDhIVIg=
+X-Received: by 2002:a05:651c:88c:b0:310:81a0:64f7 with SMTP id
+ 38308e7fff4ca-3308f5df10emr7433971fa.24.1752680170539; Wed, 16 Jul 2025
+ 08:36:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+References: <20250704070356.1683992-1-apatel@ventanamicro.com> <74f147f3-c671-41f0-bfe7-a59aadc73f1b@ghiti.fr>
+In-Reply-To: <74f147f3-c671-41f0-bfe7-a59aadc73f1b@ghiti.fr>
+From: Anup Patel <apatel@ventanamicro.com>
+Date: Wed, 16 Jul 2025 21:05:58 +0530
+X-Gm-Features: Ac12FXzbe5BOnCFn1O4nVsR27ZwfI4fS2L19PcJ1MRU0GdaiTAjWgXHKlujTpVk
+Message-ID: <CAK9=C2Vf2gqj73CJbCepQVecwjKNDu1TMUShnvXcMUwEztHPtA@mail.gmail.com>
+Subject: Re: [PATCH v8 00/24] Linux SBI MPXY and RPMI drivers
+To: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jassi Brar <jassisinghbrar@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Len Brown <lenb@kernel.org>, Sunil V L <sunilvl@ventanamicro.com>, 
+	Rahul Pathak <rpathak@ventanamicro.com>, Leyfoon Tan <leyfoon.tan@starfivetech.com>, 
+	Atish Patra <atish.patra@linux.dev>, Andrew Jones <ajones@ventanamicro.com>, 
+	Samuel Holland <samuel.holland@sifive.com>, Anup Patel <anup@brainfault.org>, 
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 16 Jul 2025 03:40:56 PDT (-0700), Sunil V L wrote:
-> This series adds support for RISC-V IOMMU on ACPI based platforms.
-> RISC-V IO Mapping Table (RIMT) is a new static ACPI table [1] introduced
-> to communicate IOMMU information to the OS.
+On Wed, Jul 16, 2025 at 6:52=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr> wro=
+te:
 >
-> [1] - https://github.com/riscv-non-isa/riscv-acpi-rimt/releases/download/v1.0/rimt-spec.pdf
+> Hi Anup,
 >
-> Changes since v4:
-> 	1) Rebased to 6.16-rc6
-> 	2) Addressed Anup's feedback on formatting.
-> 	3) Added RB tag from Will and Anup.
+> On 7/4/25 09:03, Anup Patel wrote:
+> > The SBI v3.0 (MPXY extension) [1] and RPMI v1.0 [2] specifications
+> > are frozen and finished public review at the RISC-V International.
+> >
+> > Currently, most of the RPMI and MPXY drivers are in OpenSBI whereas
+> > Linux only has SBI MPXY mailbox controller driver, RPMI clock driver
+> > and RPMI system MSI driver This series also includes ACPI support
+> > for SBI MPXY mailbox controller and RPMI system MSI drivers.
+> >
+> > These patches can be found in the riscv_sbi_mpxy_mailbox_v8 branch
+> > at: https://github.com/avpatel/linux.git
+> >
+> > To test these patches, boot Linux on "virt,rpmi=3Don,aia=3Daplic-imsic"
+> > machine with OpenSBI and QEMU from the dev-upstream branch at:
+> > https://github.com/ventanamicro/opensbi.git
+> > https://github.com/ventanamicro/qemu.git
+> >
+> > [1] https://github.com/riscv-non-isa/riscv-sbi-doc/releases
+> > [2] https://github.com/riscv-non-isa/riscv-rpmi/releases
+> >
+> > Changes since v7:
+> >   - Addressed comments on PATCH3, PATCH7, PATCH10, PATCH14, and PATCH21
+> >
+> > Changes since v6:
+> >   - Rebased the series on Linux-6.16-rc4
+> >   - Added Stephen's Reviewed-by in appropriate patches
+> >   - Addressed Andy's comments on PATCH5, PATCH6, PATCH9, and PATCH14
+> >   - New PATCH6 in this series which is factored-out from PATCH7
+> >
+> > Changes since v5:
+> >   - Rebased the series on Linux-6.16-rc2
+> >   - Added Conor's Reviewed-by in all DT binding patches
+> >   - Addressed Andy's comments on PATCH5
+> >   - Addressed Tglx's comments on PATCH12 and PATCH21
+> >
+> > Changes since v4:
+> >   - Rebased the series on Linux-6.16-rc1
+> >   - Dropped PATCH1 since a similar change is already merged
+> >     https://lore.kernel.org/linux-riscv/20250523101932.1594077-4-cleger=
+@rivosinc.com/
+> >   - Addressed Andy's comments on PATCH4, PATCH5, PATCH6, PATCH7,
+> >     PATCH13, and PATCH17
+> >   - Addressed Atish's comments on PATCH11 and PATCH12
+> >   - Addressed Conor's comments on PATCH9
+> >
+> > Changes since v3:
+> >   - Rebased the series on Linux-6.15-rc7
+> >   - Updated PATCH2 DT bindings as-per Rob's suggestion
+> >   - Improved request_threaded_irq() usage in PATCH7
+> >   - Updated PATCH10 clk-rpmi driver as-per commments from Andy
+> >   - Updated PATCH13 irq-riscv-rpmi-sysmsi driver as-per comments
+> >     from Andy and Tglx
+> >   - Addressed ACPI related comments in PATCH14, PATCH15, PATCH18,
+> >     PATCH20 and PATCH21
+> >
+> > Changes since v2:
+> >   - Dropped the "RFC" tag from series since the SBI v3.0 and
+> >     RPMI v1.0 specifications are now frozen
+> >   - Rebased the series on Linux-6.15-rc5
+> >   - Split PATCH8 of v2 into two patches adding separate DT
+> >     bindings for "riscv,rpmi-mpxy-clock" and "riscv,rpmi-clock"
+> >   - Split PATCH10 of v2 into two patches adding separate DT
+> >     bindings for "riscv,rpmi-mpxy-system-msi" and
+> >     "riscv,rpmi-system-msi"
+> >   - Addressed comments from TGLX on PATCH11 of v2 adding irqchip
+> >     driver for RPMI system MSI
+> >   - Addressed ACPI related comments in PATCH15 and PATCH16 of v2
+> >   - New PATCH17 and PATCH18 in this series
+> >
+> > Changes since v1:
+> >   - Addressed DT bindings related comments in PATCH2, PATCH3, and
+> >     PATCH7 of v1 series
+> >   - Addressed comments in PATCH6 and PATCH8 of v1 series
+> >   - New PATCH6 in v2 series to allow fwnode based mailbox channel
+> >     request
+> >   - New PATCH10 and PATCH11 to add RPMI system MSI based interrupt
+> >     controller driver
+> >   - New PATCH12 to PATCH16 which adds ACPI support in SBI MPXY
+> >     mailbox driver and RPMI system MSI driver
+> >   - New PATCH17 to enable required kconfig option to allow graceful
+> >     shutdown on QEMU virt machine
+> >
+> > Anup Patel (14):
+> >    dt-bindings: mailbox: Add bindings for RPMI shared memory transport
+> >    dt-bindings: mailbox: Add bindings for RISC-V SBI MPXY extension
+> >    RISC-V: Add defines for the SBI message proxy extension
+> >    mailbox: Add common header for RPMI messages sent via mailbox
+> >    mailbox: Allow controller specific mapping using fwnode
+> >    byteorder: Add memcpy_to_le32() and memcpy_from_le32()
+> >    mailbox: Add RISC-V SBI message proxy (MPXY) based mailbox driver
+> >    dt-bindings: clock: Add RPMI clock service message proxy bindings
+> >    dt-bindings: clock: Add RPMI clock service controller bindings
+> >    dt-bindings: Add RPMI system MSI message proxy bindings
+> >    dt-bindings: Add RPMI system MSI interrupt controller bindings
+> >    irqchip: Add driver for the RPMI system MSI service group
+> >    RISC-V: Enable GPIO keyboard and event device in RV64 defconfig
+> >    MAINTAINERS: Add entry for RISC-V RPMI and MPXY drivers
+> >
+> > Rahul Pathak (1):
+> >    clk: Add clock driver for the RISC-V RPMI clock service group
+> >
+> > Sunil V L (9):
+> >    ACPI: property: Refactor acpi_fwnode_get_reference_args() to support
+> >      nargs_prop
+> >    ACPI: Add support for nargs_prop in acpi_fwnode_get_reference_args()
+> >    ACPI: scan: Update honor list for RPMI System MSI
+> >    ACPI: RISC-V: Create interrupt controller list in sorted order
+> >    ACPI: RISC-V: Add support to update gsi range
+> >    ACPI: RISC-V: Add RPMI System MSI to GSI mapping
+> >    irqchip/irq-riscv-imsic-early: Export imsic_acpi_get_fwnode()
+> >    mailbox/riscv-sbi-mpxy: Add ACPI support
+> >    irqchip/riscv-rpmi-sysmsi: Add ACPI support
+> >
+> >   .../bindings/clock/riscv,rpmi-clock.yaml      |   64 ++
+> >   .../bindings/clock/riscv,rpmi-mpxy-clock.yaml |   64 ++
+> >   .../riscv,rpmi-mpxy-system-msi.yaml           |   67 ++
+> >   .../riscv,rpmi-system-msi.yaml                |   74 ++
+> >   .../mailbox/riscv,rpmi-shmem-mbox.yaml        |  124 ++
+> >   .../bindings/mailbox/riscv,sbi-mpxy-mbox.yaml |   51 +
+> >   MAINTAINERS                                   |   15 +
+> >   arch/riscv/configs/defconfig                  |    2 +
+> >   arch/riscv/include/asm/irq.h                  |    6 +
+> >   arch/riscv/include/asm/sbi.h                  |   63 +
+> >   drivers/acpi/property.c                       |  128 ++-
+> >   drivers/acpi/riscv/irq.c                      |   75 +-
+> >   drivers/acpi/scan.c                           |    2 +
+> >   drivers/base/property.c                       |    2 +-
+> >   drivers/clk/Kconfig                           |    8 +
+> >   drivers/clk/Makefile                          |    1 +
+> >   drivers/clk/clk-rpmi.c                        |  616 ++++++++++
+> >   drivers/irqchip/Kconfig                       |    7 +
+> >   drivers/irqchip/Makefile                      |    1 +
+> >   drivers/irqchip/irq-riscv-imsic-early.c       |    2 +
+> >   drivers/irqchip/irq-riscv-rpmi-sysmsi.c       |  328 ++++++
+> >   drivers/mailbox/Kconfig                       |   11 +
+> >   drivers/mailbox/Makefile                      |    2 +
+> >   drivers/mailbox/mailbox.c                     |   65 +-
+> >   drivers/mailbox/riscv-sbi-mpxy-mbox.c         | 1017 ++++++++++++++++=
++
+> >   include/linux/byteorder/generic.h             |   16 +
+> >   include/linux/mailbox/riscv-rpmi-message.h    |  243 ++++
+> >   include/linux/mailbox_controller.h            |    3 +
+> >   include/linux/wordpart.h                      |   16 +
+> >   29 files changed, 2990 insertions(+), 83 deletions(-)
+> >   create mode 100644 Documentation/devicetree/bindings/clock/riscv,rpmi=
+-clock.yaml
+> >   create mode 100644 Documentation/devicetree/bindings/clock/riscv,rpmi=
+-mpxy-clock.yaml
+> >   create mode 100644 Documentation/devicetree/bindings/interrupt-contro=
+ller/riscv,rpmi-mpxy-system-msi.yaml
+> >   create mode 100644 Documentation/devicetree/bindings/interrupt-contro=
+ller/riscv,rpmi-system-msi.yaml
+> >   create mode 100644 Documentation/devicetree/bindings/mailbox/riscv,rp=
+mi-shmem-mbox.yaml
+> >   create mode 100644 Documentation/devicetree/bindings/mailbox/riscv,sb=
+i-mpxy-mbox.yaml
+> >   create mode 100644 drivers/clk/clk-rpmi.c
+> >   create mode 100644 drivers/irqchip/irq-riscv-rpmi-sysmsi.c
+> >   create mode 100644 drivers/mailbox/riscv-sbi-mpxy-mbox.c
+> >   create mode 100644 include/linux/mailbox/riscv-rpmi-message.h
+> >
 >
-> Changes since v3:
-> 	1) Rebased to 6.16-rc5
-> 	2) Addressed Drew's feedback on v3.
-> 		a) Reordered calling rimt_iommu_configure_id().
-> 		b) Removed unnecessary inline.
-> 		c) Added pr_fmt.
-> 		d) Removed redundant rimt_iommu_configure_id() stub.
-> 	3) Added Drew's RB tag in PATCH 3.
+> Most of the patches have been AB/RB by their respective maintainers, so
+> how do you expect the patchset to be merged? Should it go through the
+> riscv tree?
 >
-> Changes since v2:
-> 	1) Rebased to 6.16-rc4
-> 	2) Removed Anup's SOB and link tags added by mistake in v2.
+> Let me know how you want to proceed, I'd be happy to merge it if that's
+> easier for everyone.
 >
-> Changes since v1:
-> 	1) Rebased to v6.16-rc1.
-> 	2) Dropped ACPICA patch since it is already available in 6.16-rc1.
-> 	3) Added Rafael's ACK.
-> 	4) Fixed few issues found by bots.
->
-> Sunil V L (3):
->   ACPI: RISC-V: Add support for RIMT
->   ACPI: scan: Add support for RISC-V in acpi_iommu_configure_id()
->   iommu/riscv: Add ACPI support
->
->  MAINTAINERS                          |   1 +
->  arch/riscv/Kconfig                   |   1 +
->  drivers/acpi/Kconfig                 |   4 +
->  drivers/acpi/riscv/Kconfig           |   7 +
->  drivers/acpi/riscv/Makefile          |   1 +
->  drivers/acpi/riscv/init.c            |   2 +
->  drivers/acpi/riscv/init.h            |   1 +
->  drivers/acpi/riscv/rimt.c            | 520 +++++++++++++++++++++++++++
->  drivers/acpi/scan.c                  |   4 +
->  drivers/iommu/riscv/iommu-platform.c |  17 +-
->  drivers/iommu/riscv/iommu.c          |  10 +
->  include/linux/acpi_rimt.h            |  28 ++
 
-Thanks.  Anup came to the patchwork meeting this morning and asked me to 
-pick it up.  It only barely touches arch/riscv stuff so I'd figured it 
-was going somewhere else, but happy to do so.  I've picked it up into my 
-staging tree as
+We discussed this series in today's patchwork meeting and
+Palmer has agreed to take this through the RISC-V tree. He
+will also provide a shared tag for the benefit of other maintainers.
 
-    *   e5efe466d9bd - (HEAD -> for-next, palmer/for-next) Merge patch series "RISC-V: Add ACPI support for IOMMU" (2 minutes ago) <Palmer Dabbelt>
-    |\
-    | * 368ed89f7ac9 - iommu/riscv: Add ACPI support (2 minutes ago) <Sunil V L>
-    | * 0d7c16d0df92 - ACPI: scan: Add support for RISC-V in acpi_iommu_configure_id() (2 minutes ago) <Sunil V L>
-    | * ea35561bc965 - ACPI: RISC-V: Add support for RIMT (2 minutes ago) <Sunil V L>
+Please sync-up with Palmer whenever you can.
 
-it should show up on for-next assuming it builds and such (it's behind 
-some fixes, so might take a bit).  Happy to do a tag if someone wants, 
-just let me know...
-
->  12 files changed, 595 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/acpi/riscv/Kconfig
->  create mode 100644 drivers/acpi/riscv/rimt.c
->  create mode 100644 include/linux/acpi_rimt.h
-
+Thanks,
+Anup
 
