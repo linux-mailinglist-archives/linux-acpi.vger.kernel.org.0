@@ -1,355 +1,117 @@
-Return-Path: <linux-acpi+bounces-15209-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15210-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EED1B0887D
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jul 2025 10:54:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBECBB08A11
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jul 2025 11:59:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4379E1C2295D
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jul 2025 08:53:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC77A7BDBF8
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jul 2025 09:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B8B28726C;
-	Thu, 17 Jul 2025 08:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D902291C3A;
+	Thu, 17 Jul 2025 09:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="xWHrAi2p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UhvWfng3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815CE287253;
-	Thu, 17 Jul 2025 08:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70121288CBE;
+	Thu, 17 Jul 2025 09:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752742374; cv=none; b=bVK6BrndGdY5bZJhaRpmqc5yKShZnK+yufZDgc5dJnh8XdswoYEIUzZYaRpCQLXvY83PrYybPt1yf65pUY4TQHhX+otUQWwnxI9ILjrtgFXDpBGCvc56aLV3FXGX1nLg6Y5/8dJ7OQy9dsVzG3M4zCAZRFNFhTXV2Rn4gPsBMD4=
+	t=1752746283; cv=none; b=sR2zo9dYchMXQyEgGki0jvyOdDr74+yQEWWdjpwgRm4pQbHz3kXx/dpJkkV4OON6fVmoTpIBeeDaDcOh6xMAj4bpEI+B0PGxmgniEMHlwTWlqCHhc1BVzt45tsuzRhQSEvqiGXaNXZgtUjIond3RIDLoAibaAZlfSE0bueHoMrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752742374; c=relaxed/simple;
-	bh=ytAsy/vavJPcE7Vcm9shahUUbwVlqhcR3CZxTdfJH6Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ReB9jF/vakuCoYPPjBuo41eXIUn3Wv4aA3MdeksqrvEaN41tfX9VC7Uabm7mfIf4g6tjrkgZkv3Q0B5SzdoRkDVTPGr8O/5mYR3NKGkhjUi0vzDPEqTYrOCJVrgDRFi0Ajf7gKHBSWyjcBVFfvUmreBkHBa0AzCLJHUr8pYNzuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=xWHrAi2p; arc=none smtp.client-ip=115.124.30.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1752742362; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=izEHRbUDFXVD/qrVi0rkduqZr+AH5if+rSaP/Tz+aXs=;
-	b=xWHrAi2pt/8dyichi2lcqMO91azBlRGT0kxxC+KCNS1F6J+8TXvgr2BfGmHUjAxjkvnT/vDE7Tc8u7wc5uPm+UsNLRjynQSUGrnN1FMfVAvknqOvKsUmlwGhVhEBE9kIRR/QuZL+DCIJIViggdehMXiCzm12HANFUk7rHdzb5vQ=
-Received: from 30.246.162.71(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Wj7R5AM_1752742357 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 17 Jul 2025 16:52:39 +0800
-Message-ID: <e932c232-bf54-4acb-b49d-e72bbb98c1ea@linux.alibaba.com>
-Date: Thu, 17 Jul 2025 16:52:37 +0800
+	s=arc-20240116; t=1752746283; c=relaxed/simple;
+	bh=UcUgBkuYffStTu9fwls0Y3+yc53zyJShMuqRpuh0m6U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=im6TFTLGZlQgj81EIexbybFBpSayOKRquBPTERxosSjeDt44gPPYW6f7V3UUiulGxHC/augHznRJj6v9utIeMLepmKPKbPJnO28AgCVXIw5wn73BdKKoxWKmm6RfDu5A2Lsb8vk1EL3ZSigDkvtiqS6eF3Njcg7ekXcqsjlt/C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UhvWfng3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46846C4CEE3;
+	Thu, 17 Jul 2025 09:58:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752746283;
+	bh=UcUgBkuYffStTu9fwls0Y3+yc53zyJShMuqRpuh0m6U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UhvWfng3K9WZ0rqIyPCE+c3v/AD/aq47bpEszhmoia4fLXW3W9JL1eimyr6/pUyDq
+	 H1Q4N81D1NDt4X12/6FIjOxVKPvv+VYGj5n6YQ+UmSKSNSckfFH8cOCQB6csLeRMMg
+	 af2a29ptpPbP2icx80CsOlWpYonOkXMUnvz5is9fjezihWGMLl22rqg8R1ivi1sZb+
+	 zELsDeUScZYjFgE94OdkQRP1J27LmHVaXw1zFlx1Pvs+ytdm+WkuNnJMCIS0vrbB00
+	 1TMhIt/hDBX7S/YCwCGYqtJ+dUB2clUtoXBrPzVx/7sItHqDhlIDKIYycvrNxCDBXQ
+	 0byBA1G8EV/ow==
+Date: Thu, 17 Jul 2025 10:57:57 +0100
+From: Will Deacon <will@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+	Robert Moore <robert.moore@intel.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev,
+	kernel-team@meta.com, Catalin Marinas <catalin.marinas@arm.com>,
+	osandov@fb.com, leo.yan@arm.com, rmikey@meta.com
+Subject: Re: [PATCH v2] arm64: Mark kernel as tainted on SAE and SError panic
+Message-ID: <aHjJJf4KTzXLBjM0@willie-the-truck>
+References: <20250716-vmcore_hw_error-v2-1-f187f7d62aba@debian.org>
+ <aHd8uvMegWXHyhvN@J2N7QTR9R3>
+ <xdvsnmcgfk7kkeq4r43l2c3h4vrlhuy4s6g2nybzsibyna3ipd@tkb7elmgn5m5>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 0/2] ACPI: APEI: fix potential hardlockup due to
- infinite SEA excepction loop
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: catalin.marinas@arm.com, sudeep.holla@arm.com, guohanjun@huawei.com,
- lpieralisi@kernel.org, linux-acpi@vger.kernel.org, yazen.ghannam@amd.com,
- mark.rutland@arm.com, mingo@redhat.com, robin.murphy@arm.com,
- Jonathan.Cameron@huawei.com, bp@alien8.de,
- linux-arm-kernel@lists.infradead.org, wangkefeng.wang@huawei.com,
- tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com,
- linmiaohe@huawei.com, naoya.horiguchi@nec.com, james.morse@arm.com,
- tongtiangen@huawei.com, gregkh@linuxfoundation.org, will@kernel.org,
- jarkko@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- akpm@linux-foundation.org, linux-edac@vger.kernel.org, x86@kernel.org,
- justin.he@arm.com, ardb@kernel.org, ying.huang@linux.alibaba.com,
- ashish.kalra@amd.com, baolin.wang@linux.alibaba.com, tglx@linutronix.de,
- dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
- robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
- zhuo.song@linux.alibaba.com
-References: <20250714114212.31660-1-xueshuai@linux.alibaba.com>
- <CAJZ5v0gmuBwCXovP7WvmUss7midrJdPXNDCbhTV0tCWMb_V2ZQ@mail.gmail.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <CAJZ5v0gmuBwCXovP7WvmUss7midrJdPXNDCbhTV0tCWMb_V2ZQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <xdvsnmcgfk7kkeq4r43l2c3h4vrlhuy4s6g2nybzsibyna3ipd@tkb7elmgn5m5>
 
-
-
-在 2025/7/17 03:09, Rafael J. Wysocki 写道:
-> On Mon, Jul 14, 2025 at 1:42 PM Shuai Xue <xueshuai@linux.alibaba.com> wrote:
->>
->> Dear maintainer:
->>
->> I am writing to respectfully request your review and consideration for merging
->> this patch series, which addresses potential hardlockup due to infinite
->> SEA excepction loop ( see bellow for details).
->>
->> As noted by @Catalin,
->>
->>> James Morse is listed as reviewer of the ACPI APEI code but he's busy
->>> with resctrl/MPAM. Adding Lorenzo, Sudeep and Hanjun as arm64 ACPI
->>> maintainers, hopefully they can help.
->>
->> This patch series has undergone extensive review through 19 iterations Received
->> 13 'Reviewed-by' tags from various reviewers. Notably includes review approval
->> from arm64 ACPI maintainer Hanjun Guo.
->>
->> The patches have been thoroughly tested and refined based on community feedback.
->> I believe they are ready for integration into the mainline kernel.
->>
->> I would greatly appreciate your time in reviewing these changes and
->> providing your ack if you find them acceptable for merging.
->>
->> Thank you for your continued support and maintenance of the kernel.
->>
->> changes since last v18:
->> - add reviewed-by tag for patch 1-2 from Hanjun
->>
->> no code changes since last v18:
->> - drop a mm/hwpoison patch which is merged into mainline
->>
->> changes singce v17:
->> - rebase to Linux 6.13-rc7 with no functional changes
->> - add reviewed-by tag for patch 1-3 from Jane Chu
->> - add reviewed-by tag for patch 3 from Yazen
->>
->> changes singce v16:
->> - add reviewed-by tag for patch 1 and patch 2 from Yazen
->> - rewrite warning message for force kill (per Yazen)
->> - warn with dev_err in ghes (per Jarkko)
->> - add return value -ENXIO in memory_failure comments  (per Yazen)
->> - Link: https://lore.kernel.org/lkml/20241104015430.98599-1-xueshuai@linux.alibaba.com/
->>
->> changes singce v15:
->> - add HW_ERR and GHES_PFX prefix per Yazen
->>
->> changes since v14:
->> - add reviewed-by tags from Jarkko and Jonathan
->> - remove local variable and use twcb->pfn
->>
->> changes since v13:
->> - add reviewed-by tag from Jarkko
->> - rename task_work to ghes_task_work (per Jarkko)
->>
->> changes since v12:
->> - tweak error message for force kill (per Jarkko)
->> - fix comments style (per Jarkko)
->> - fix commit log typo (per Jarko)
->>
->> changes since v11:
->> - rebase to Linux 6.11-rc6
->> - fix grammer and typo in commit log (per Borislav)
->> - remove `sync_` perfix of `sync_task_work`  (per Borislav)
->> - comments flags and description of `task_work`  (per Borislav)
->>
->> changes since v10:
->> - rebase to v6.8-rc2
->>
->> changes since v9:
->> - split patch 2 to address exactly one issue in one patch (per Borislav)
->> - rewrite commit log according to template (per Borislav)
->> - pickup reviewed-by tag of patch 1 from James Morse
->> - alloc and free twcb through gen_pool_{alloc, free) (Per James)
->> - rewrite cover letter
->>
->> changes since v8:
->> - remove the bug fix tag of patch 2 (per Jarkko Sakkinen)
->> - remove the declaration of memory_failure_queue_kick (per Naoya Horiguchi)
->> - rewrite the return value comments of memory_failure (per Naoya Horiguchi)
->>
->> changes since v7:
->> - rebase to Linux v6.6-rc2 (no code changed)
->> - rewritten the cover letter to explain the motivation of this patchset
->>
->> changes since v6:
->> - add more explicty error message suggested by Xiaofei
->> - pick up reviewed-by tag from Xiaofei
->> - pick up internal reviewed-by tag from Baolin
->>
->> changes since v5 by addressing comments from Kefeng:
->> - document return value of memory_failure()
->> - drop redundant comments in call site of memory_failure()
->> - make ghes_do_proc void and handle abnormal case within it
->> - pick up reviewed-by tag from Kefeng Wang
->>
->> changes since v4 by addressing comments from Xiaofei:
->> - do a force kill only for abnormal sync errors
->>
->> changes since v3 by addressing comments from Xiaofei:
->> - do a force kill for abnormal memory failure error such as invalid PA,
->> unexpected severity, OOM, etc
->> - pcik up tested-by tag from Ma Wupeng
->>
->> changes since v2 by addressing comments from Naoya:
->> - rename mce_task_work to sync_task_work
->> - drop ACPI_HEST_NOTIFY_MCE case in is_hest_sync_notify()
->> - add steps to reproduce this problem in cover letter
->>
->> changes since v1:
->> - synchronous events by notify type
->> - Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
->>
->> ## Cover Letter
->>
->> There are two major types of uncorrected recoverable (UCR) errors :
->>
->> - Synchronous error: The error is detected and raised at the point of the
->>    consumption in the execution flow, e.g. when a CPU tries to access
->>    a poisoned cache line. The CPU will take a synchronous error exception
->>    such as Synchronous External Abort (SEA) on Arm64 and Machine Check
->>    Exception (MCE) on X86. OS requires to take action (for example, offline
->>    failure page/kill failure thread) to recover this uncorrectable error.
->>
->> - Asynchronous error: The error is detected out of processor execution
->>    context, e.g. when an error is detected by a background scrubber. Some data
->>    in the memory are corrupted. But the data have not been consumed. OS is
->>    optional to take action to recover this uncorrectable error.
->>
->> Currently, both synchronous and asynchronous error use
->> memory_failure_queue() to schedule memory_failure() exectute in kworker
->> context. As a result, when a user-space process is accessing a poisoned
->> data, a data abort is taken and the memory_failure() is executed in the
->> kworker context:
->>
->>    - will send wrong si_code by SIGBUS signal in early_kill mode, and
->>    - can not kill the user-space in some cases resulting a synchronous
->>      error infinite loop
->>
->> Issue 1: send wrong si_code in early_kill mode
->>
->> Since commit a70297d22132 ("ACPI: APEI: set memory failure flags as
->> MF_ACTION_REQUIRED on synchronous events")', the flag MF_ACTION_REQUIRED
->> could be used to determine whether a synchronous exception occurs on
->> ARM64 platform.  When a synchronous exception is detected, the kernel is
->> expected to terminate the current process which has accessed poisoned
->> page. This is done by sending a SIGBUS signal with an error code
->> BUS_MCEERR_AR, indicating an action-required machine check error on
->> read.
->>
->> However, when kill_proc() is called to terminate the processes who have
->> the poisoned page mapped, it sends the incorrect SIGBUS error code
->> BUS_MCEERR_AO because the context in which it operates is not the one
->> where the error was triggered.
->>
->> To reproduce this problem:
->>
->>    # STEP1: enable early kill mode
->>    #sysctl -w vm.memory_failure_early_kill=1
->>    vm.memory_failure_early_kill = 1
->>
->>    # STEP2: inject an UCE error and consume it to trigger a synchronous error
->>    #einj_mem_uc single
->>    0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
->>    injecting ...
->>    triggering ...
->>    signal 7 code 5 addr 0xffffb0d75000
->>    page not present
->>    Test passed
->>
->> The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_AO
->> error and it is not fact.
->>
->> To fix it, queue memory_failure() as a task_work so that it runs in
->> the context of the process that is actually consuming the poisoned data.
->>
->> After this patch set:
->>
->>    # STEP1: enable early kill mode
->>    #sysctl -w vm.memory_failure_early_kill=1
->>    vm.memory_failure_early_kill = 1
->>
->>    # STEP2: inject an UCE error and consume it to trigger a synchronous error
->>    #einj_mem_uc single
->>    0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
->>    injecting ...
->>    triggering ...
->>    signal 7 code 4 addr 0xffffb0d75000
->>    page not present
->>    Test passed
->>
->> The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_AR
->> error as we expected.
->>
->> Issue 2: a synchronous error infinite loop due to memory_failure() failed
->>
->> If a user-space process, e.g. devmem, a poisoned page which has been set
->> HWPosion flag, kill_accessing_process() is called to send SIGBUS to the
->> current processs with error info. Because the memory_failure() is
->> executed in the kworker contex, it will just do nothing but return
->> EFAULT. So, devmem will access the posioned page and trigger an
->> excepction again, resulting in a synchronous error infinite loop. Such
->> loop may cause platform firmware to exceed some threshold and reboot
->> when Linux could have recovered from this error.
->>
->> To reproduce this problem:
->>
->>    # STEP 1: inject an UCE error, and kernel will set HWPosion flag for related page
->>    #einj_mem_uc single
->>    0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
->>    injecting ...
->>    triggering ...
->>    signal 7 code 4 addr 0xffffb0d75000
->>    page not present
->>    Test passed
->>
->>    # STEP 2: access the same page and it will trigger a synchronous error infinite loop
->>    devmem 0x4092d55b400
->>
->> To fix it, if memory_failure() failed, perform a force kill to current process.
->>
->> Issue 3: a synchronous error infinite loop due to no memory_failure() queued
->>
->> No memory_failure() work is queued unless all bellow preconditions check passed:
->>
->> - `if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))` in ghes_handle_memory_failure()
->> - `if (flags == -1)` in ghes_handle_memory_failure()
->> - `if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))` in ghes_do_memory_failure()
->> - `if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) ` in ghes_do_memory_failure()
->>
->> If the preconditions are not passed, the user-space process will trigger SEA again.
->> This loop can potentially exceed the platform firmware threshold or even
->> trigger a kernel hard lockup, leading to a system reboot.
->>
->> To fix it, if no memory_failure() queued, perform a force kill to current process.
->>
->> And the the memory errors triggered in kernel-mode[5], also relies on this
->> patchset to kill the failure thread.
->>
->> Lv Ying and XiuQi from Huawei also proposed to address similar problem[2][4].
->> Acknowledge to discussion with them.
->>
->> [1] Add ARMv8 RAS virtualization support in QEMU https://patchew.org/QEMU/20200512030609.19593-1-gengdongjiu@huawei.com/
->> [2] https://lore.kernel.org/lkml/20221205115111.131568-3-lvying6@huawei.com/
->> [3] https://lkml.kernel.org/r/20220914064935.7851-1-xueshuai@linux.alibaba.com
->> [4] https://lore.kernel.org/lkml/20221209095407.383211-1-lvying6@huawei.com/
->> [5] https://patchwork.kernel.org/project/linux-arm-kernel/cover/20240528085915.1955987-1-tongtiangen@huawei.com/
->>
->> Shuai Xue (2):
->>    ACPI: APEI: send SIGBUS to current task if synchronous memory error
->>      not recovered
->>    ACPI: APEI: handle synchronous exceptions in task work
->>
->>   drivers/acpi/apei/ghes.c | 88 +++++++++++++++++++++++++---------------
->>   include/acpi/ghes.h      |  3 --
->>   include/linux/mm.h       |  1 -
->>   mm/memory-failure.c      | 13 ------
->>   4 files changed, 55 insertions(+), 50 deletions(-)
->>
->> --
+On Wed, Jul 16, 2025 at 03:52:55AM -0700, Breno Leitao wrote:
+> On Wed, Jul 16, 2025 at 11:19:38AM +0100, Mark Rutland wrote:
+> > On Wed, Jul 16, 2025 at 02:42:01AM -0700, Breno Leitao wrote:
+> > > Set TAINT_MACHINE_CHECK when SError or Synchronous External Abort (SEA)
+> > > interrupts trigger a panic to flag potential hardware faults. This
+> > > tainting mechanism aids in debugging and enables correlation of
+> > > hardware-related crashes in large-scale deployments.
+> > > 
+> > > This change aligns with similar patches[1] that mark machine check
+> > > events when the system crashes due to hardware errors.
+> > > 
+> > > Link: https://lore.kernel.org/all/20250702-add_tain-v1-1-9187b10914b9@debian.org/ [1]
+> > > Signed-off-by: Breno Leitao <leitao@debian.org>
+> > > ---
+> > > Changes in v2:
+> > > - Also taint the kernel on Synchronous External Abort panics (Will Deacon)
+> > > - Link to v1: https://lore.kernel.org/r/20250714-vmcore_hw_error-v1-1-8cf45edb6334@debian.org
+> > 
+> > I think something went wrong when respinning this patch, because the v1
+> > link above is incorrect, and should be:
+> > 
+> >   https://lore.kernel.org/linux-arm-kernel/20250710-arm_serror-v1-1-2a3def3740d7@debian.org/
+> > 
+> > The Cc header for this posting matches that of the unrelated patch (and
+> > excludes Will, Catalin, etc), rather than that of the real v1. The
+> > change-id trailer also doesn't match v1.
+> > 
+> > The actual patch and commit message look fine to me, so:
 > 
-> Both patches applied as 6.17 material with some minor edits in the changelogs.
+> Sorry about it, it was totally my mess with b4 on two different
+> machines/branches. I've been testing it on a arm64 hosts that
+> has no email access. When I picked the patch into the machine with
+> email, I messed up where to cherry pick and branches.
+>  
+> > Acked-by: Mark Rutland <mark.rutland@arm.com>
+> > 
+> > I assume that Will or Catalin will be happy to pick this up. I've added
+> > those missing folk to this reply, so I don't imagine this should need a
+> > respin.
 > 
-> Thanks!
+> Thanks. I will not respin then (unless requested).
+> 
+> Sorry for the mess,
 
-Hi, Rafael,
+No probs, I'll figure it out!
 
-After nearly three years and 19 revisions, this patch series has finally
-been merged. I am deeply grateful to all 13 reviewers for their
-professional feedback and valuable suggestions throughout the process.
-
-Rafael, thank you as well for your approval. I'm also pleased to see new
-reviewers joining the APEI area.
-
-Best regards,
-Shuai
+Will
 
