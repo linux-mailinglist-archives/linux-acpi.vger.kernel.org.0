@@ -1,138 +1,97 @@
-Return-Path: <linux-acpi+bounces-15218-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15219-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA9F0B08AC7
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jul 2025 12:35:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6493B08B3A
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jul 2025 12:53:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28CAA1A62829
-	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jul 2025 10:34:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2478517FB42
+	for <lists+linux-acpi@lfdr.de>; Thu, 17 Jul 2025 10:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09DB29E0F5;
-	Thu, 17 Jul 2025 10:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C54BB2DCF77;
+	Thu, 17 Jul 2025 10:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yam7EXq6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SFv82nLd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAF529DB80;
-	Thu, 17 Jul 2025 10:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985582DCF73;
+	Thu, 17 Jul 2025 10:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752748385; cv=none; b=Ry7eP7v+cwpgeEM7bgaUUciArhb9Xb+0ZzDpzXkEBsOt+iaUDfqNVkKkXVvT+X/lffRv7LuWtKhexyRa5cpa4nfyKj/fXIg2XU82NzhZV5dqhYfKmuGkSqnx+QCuWUmVv/glbm4fM8L0fk7TVW2z5jLRdhomW8eU9Zyf6fILo3U=
+	t=1752749192; cv=none; b=jhoMb6xpvRDiFYs+3+ci7UZYLofpxwYTYNel0Y14baqGh++xfno6TPq9ljYw1TpOSMPsNs2TVsY9HFPMjaazMoUZXbLfFr+BBn+bLEE2rvNTdAiC+Act1FVGYhKwPSY2w8LRxFcbJExTWoQbXfej5bjpubj1g70bJmiRQGoZDn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752748385; c=relaxed/simple;
-	bh=Q1EP3fcNvNx8PjpgFAFaM/WAmgg9+NrPEMcfSO1OfvQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CfFKh0hJzZCRVJDWUIOzjMjBoe3C7zxfp7CPmBl5CEmahF18aHVZ390pAD0BM87c+3UIrQnEKEyuSxHxEP0CQhOnOx8s6TPVngykibcBrmjxa6t6BHKtsTCavFPa9OefXgiynJpeT8XkLXY+GsgFMtZM7iZnebJ4JRAXckeuUZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yam7EXq6; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3a50956e5d3so605085f8f.1;
-        Thu, 17 Jul 2025 03:33:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752748383; x=1753353183; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5hAdkFjzlZ96J9ZvADDEOxzZCwxKXpOY5bpgjR9cuyI=;
-        b=Yam7EXq6THzjjWwUzB6kw/P2K3YvTODJTJ/ZckCQDkpPtGQ0YZ6HJ91DGmrWTuGfP9
-         vHIGhc3omFgcLJbPX1622yccZxFgR6+vO57908tCFrtGjeYbtJQioCexWafg4CwfxQN4
-         jCfu0K/pJzEDQGgzuNxUmJ30aDsKOPcjuYRVjO4XGQWUnzIyQGMM6+uJRpfU2IAlVRAL
-         XmlboH8neQ7Kh0ELpMWsQ9xHCFBjLDlOnl3+/PLa8d2cUbLIhe8Dz9m4KPObnjHVJva4
-         V1ak2G59iG3nPpdPd/zNyygPVzSUJIVrvco1VUNe/gpkTQLo9gkzfy2uxLv5ihDfN0XI
-         34nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752748383; x=1753353183;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5hAdkFjzlZ96J9ZvADDEOxzZCwxKXpOY5bpgjR9cuyI=;
-        b=dP+URilrA6NaiTf2dHYsfjouX97DV1n91JX5s+jg30GwCdF06EtGvywMsNwwQZu4Kb
-         ty8McIfWoelCfs6WGvxaXZx7XotHmboNof4AlqXNdyDS+nPWvYUXcWYietYzgM6raUuN
-         quUY+HnfdL4iw/V1juJfV8oSP5jSD72Am9EngdJuGuaxopFrvHyXdwCRDhOF3LO+RVaE
-         sQmYvn2tyM0UIkX9HEAt3ETlT1smf/+5rtE9Ehlhddwt5xIWi+IejQIpY4/m87kevO+F
-         ytXbqZWHe3Kxe+1cUNxiMAHsSY3aVBmT0PedHAr19mbdVG2wCIHDUaNglvMKFkz70BnN
-         JBdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUjwCk4QONUExn1aLjkZAunFU6H7kZJOQ+u/RmM1ihR3GAGq2kdT5K9iLQMyQEbIKB1aegs4lEKhgk=@vger.kernel.org, AJvYcCVRtuKFMEhN26vawTsN7TvDn9kglvcupgvawUkWFoEP8JjTnuMGVslvPvzuO24RNuGiLVDv2zf+kLtPXA==@vger.kernel.org, AJvYcCWXH2uhy4ncDrAn/okj+PaClMt0hxTHt0xPTez9v3qtNu8ZjKGQ/KL+TG56nEIwDDFwa9XIgo+vxk8y@vger.kernel.org, AJvYcCWbjC/JIrV9tF0vAR9BqBc5fBIniVrSnQwaVam5fi4wzXhRrDfLnHaFl2FGpeS5df+2yE6TYxfLgrEM@vger.kernel.org, AJvYcCXbNiNOGFZn75Z/k/bhYrTmMyIo5KPBwx5zEXOQ9gCZspXo4pzjQCkjyJLtMx39I44h9apKo8nzdnziXVES@vger.kernel.org
-X-Gm-Message-State: AOJu0YyI+ucyFEZUrOk9eLpxKDbJznRsYDP0O0mB4LIifSy8cjDSM4tL
-	ZkxR5+6srVBTsaDn7JGu2UIBES42tK9Dvdxz0tG7iFcgKpaWn4SCcYeG
-X-Gm-Gg: ASbGncufmnJcGb/kVFS3APtBNCgvvL+ny/E3spAOGeqTgljT0QeCJEcV7Dn1WNYKCTZ
-	Tuw7XA/rsD7ySAFaI4+fZ8D8yNLAuvpR6d/BcMtgCEBeOt8CrB4g+1fdVfAk/KQCT7UEs01u5hO
-	BRB3z5ZxlZColeUfEPRGVcnUF8bGG91vqB292chyI2ZfGADgLXp6jhXK/37Z11BTpBO0h8Mq0xI
-	njFooRqrmzUT1Xxc1GuzPIOpq96jcu6QX02jUO9jW3q0EwHhvGVkZa8LadUGRKrviT9f7Y1x2N4
-	mcgzdI1emMa53iCl2clruCnEECITLr7ZrwCzgNu+kxMYGZtZe+ipjuTHQwAOXrdDJv8XbpmX4p7
-	fz6xK80H2yZY78yMjHlm5FDpVvgTQGjhMDnIkj6vS4OT/A4OPR7ZybQJ1mGEpHAZsmmPLQsl+Oq
-	/GaIJBU//Fmiy8TeV1wPnYZn/s
-X-Google-Smtp-Source: AGHT+IEqfCFpIQcuogdtVlks+s7mtGT9PHZg7lN5UDyP9j1DEHEgnDRrYCSmStX9iLPaLpOJf76oyg==
-X-Received: by 2002:a05:6000:1ac9:b0:3b6:d7c:f4ce with SMTP id ffacd0b85a97d-3b60dd88801mr5936545f8f.54.1752748382518;
-        Thu, 17 Jul 2025 03:33:02 -0700 (PDT)
-Received: from localhost (p200300e41f4e9b00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f4e:9b00:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b612db7060sm2629613f8f.52.2025.07.17.03.33.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Jul 2025 03:33:01 -0700 (PDT)
-From: Thierry Reding <thierry.reding@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: x86@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sh@vger.kernel.org,
-	linux-pci@vger.kernel.org,
+	s=arc-20240116; t=1752749192; c=relaxed/simple;
+	bh=0qgMdt/0EtzMZfFqcKJGGFv4x+9cNMvWf5W808j3enc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WXJqYi3UG6sqNGHw0EoO2LWPiYu2BCSsKzVODSJK0CSBpg/j2V4JQaeeE3OMlKjhuBStuqqgMoBkBoKBahxyi23H6/EK9NmmLU8H7E+RAaDhkAir8M1CpHOdi9cx74jReLbAzZ/xskENtnEEI0oE1PibebuvNvZ9D2lHVII5Mtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SFv82nLd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A968C4CEED;
+	Thu, 17 Jul 2025 10:46:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752749192;
+	bh=0qgMdt/0EtzMZfFqcKJGGFv4x+9cNMvWf5W808j3enc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SFv82nLdSEfLmuwrqHSkDWdQe2axVz877mdrMR1KigU7QY3lIVBPN/5mdqIfHaLqH
+	 3ilBMk4VRGEBqjTfOBp8t1ywLpC0msDeH3AKVKhbDPx2vlg5Kw+tZY0JiO/N4EVTj4
+	 7VkQ2OQfb0BacFJmehrD46qDqYjXrdc8kIt70BF7XO0vp04YayoHNIM1N5tbO85zUo
+	 y93bOsm4zMvEuj5eN+CRpLwWFrWFettiK02Sk9hL7Hi9vg1t6KmEiUXWbeR+ZC8kwr
+	 ldbdgu+0lIAAqNcR/to+L3qAL1UX9KtgphquVjQYwic/JHtbUX8KjCPaeWqCKohDi+
+	 kBjzM6YrGNx8g==
+From: Will Deacon <will@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Robert Moore <robert.moore@intel.com>,
+	Breno Leitao <leitao@debian.org>
+Cc: catalin.marinas@arm.com,
+	kernel-team@android.com,
+	Will Deacon <will@kernel.org>,
 	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 7/7] soc/tegra: pmc: Derive PMC context from syscore ops
-Date: Thu, 17 Jul 2025 12:32:41 +0200
-Message-ID: <20250717103241.2806798-8-thierry.reding@gmail.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250717103241.2806798-1-thierry.reding@gmail.com>
-References: <20250717103241.2806798-1-thierry.reding@gmail.com>
+	linux-kernel@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2] arm64: Mark kernel as tainted on SAE and SError panic
+Date: Thu, 17 Jul 2025 11:46:18 +0100
+Message-Id: <175274683701.735514.4319542940682343455.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250716-vmcore_hw_error-v2-1-f187f7d62aba@debian.org>
+References: <20250716-vmcore_hw_error-v2-1-f187f7d62aba@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-From: Thierry Reding <treding@nvidia.com>
+On Wed, 16 Jul 2025 02:42:01 -0700, Breno Leitao wrote:
+> Set TAINT_MACHINE_CHECK when SError or Synchronous External Abort (SEA)
+> interrupts trigger a panic to flag potential hardware faults. This
+> tainting mechanism aids in debugging and enables correlation of
+> hardware-related crashes in large-scale deployments.
+> 
+> This change aligns with similar patches[1] that mark machine check
+> events when the system crashes due to hardware errors.
+> 
+> [...]
 
-Rather than relying on a global variable, make use of the fact that the
-syscore ops are embedded in the PMC context and can be obtained via
-container_of().
+Applied to arm64 (for-next/misc), thanks!
 
-Signed-off-by: Thierry Reding <treding@nvidia.com>
----
- drivers/soc/tegra/pmc.c | 3 +++
- 1 file changed, 3 insertions(+)
+[1/1] arm64: Mark kernel as tainted on SAE and SError panic
+      https://git.kernel.org/arm64/c/d7ce7e3a8464
 
-diff --git a/drivers/soc/tegra/pmc.c b/drivers/soc/tegra/pmc.c
-index 455e55cbd2cc..a5c179636a69 100644
---- a/drivers/soc/tegra/pmc.c
-+++ b/drivers/soc/tegra/pmc.c
-@@ -3143,6 +3143,7 @@ static void tegra186_pmc_process_wake_events(struct tegra_pmc *pmc, unsigned int
- 
- static void tegra186_pmc_wake_syscore_resume(struct syscore_ops *ops)
- {
-+	struct tegra_pmc *pmc = container_of(ops, struct tegra_pmc, syscore);
- 	u32 status, mask;
- 	unsigned int i;
- 
-@@ -3156,6 +3157,8 @@ static void tegra186_pmc_wake_syscore_resume(struct syscore_ops *ops)
- 
- static int tegra186_pmc_wake_syscore_suspend(struct syscore_ops *ops)
- {
-+	struct tegra_pmc *pmc = container_of(ops, struct tegra_pmc, syscore);
-+
- 	wke_read_sw_wake_status(pmc);
- 
- 	/* flip the wakeup trigger for dual-edge triggered pads
+Cheers,
 -- 
-2.50.0
+Will
 
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
 
