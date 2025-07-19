@@ -1,176 +1,197 @@
-Return-Path: <linux-acpi+bounces-15239-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15240-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD77B0AFEC
-	for <lists+linux-acpi@lfdr.de>; Sat, 19 Jul 2025 14:38:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39438B0B0F5
+	for <lists+linux-acpi@lfdr.de>; Sat, 19 Jul 2025 18:57:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 639811897AE0
-	for <lists+linux-acpi@lfdr.de>; Sat, 19 Jul 2025 12:39:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 702813BD84F
+	for <lists+linux-acpi@lfdr.de>; Sat, 19 Jul 2025 16:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB9521FF4E;
-	Sat, 19 Jul 2025 12:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFE3220F29;
+	Sat, 19 Jul 2025 16:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YJkTRXR/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eE5Z+zeJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E6E1F956;
-	Sat, 19 Jul 2025 12:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D32820B80A;
+	Sat, 19 Jul 2025 16:57:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752928730; cv=none; b=KPDzL5ABHU3AcmlIZY3YDMFYsVem4pJ7v6pafH9IYhWjneUus0TUsTo3L0GUXiA9DIpvaY2fdbYa2HZf+sjh0qnSqebUNhmc/UvdB7ithDFKkQ87JMY5UCBuiFWLxZZuKLCVhhK6v11R/KHGUPDQ4YYD3TEi7n4wYx6q4bCV7Bk=
+	t=1752944262; cv=none; b=ZgR/KXRbzLipLUfVQMJSG5KMtOet1RwyeZdvJaNf66d6BqDkTcnuQIRM2PnsMT08C4+KM8JLuXUOTjmHADIoJ4ORKXT2GZKKlw/Oc8R1oULYxIU6UalLxrGSr5W+OoKuiLSibr1vxAQZftQoMr8TrwSJwWFhHBPU9JthA6mm4Fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752928730; c=relaxed/simple;
-	bh=/a02GhmI4psaSZMGtMQ5WtrsQFuTeKvocvb3Uey5pw4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YoOdrP80AaxK/HO0960xkSXG8OF7qw5o/7RlMOkW8V17p753cj7lynYh4RW8pysVdNOFuqfyAnwgFjVSfvt3xtdXfkXEcKHVNnvaiof2iyE6uKQVkF0Ie+gPgI47Mb9Jj6FWYiB25qOTqDlPoe2V0nkQmHvTMhLKdgOIscCVlBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YJkTRXR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B81C4CEE3;
-	Sat, 19 Jul 2025 12:38:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752928729;
-	bh=/a02GhmI4psaSZMGtMQ5WtrsQFuTeKvocvb3Uey5pw4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YJkTRXR/joeJNwH+i1L32NKheS7fpdMqzPCZlXTlGYf8vHG/GhXs/1t/N5a3OlTlI
-	 n/IGTKeMGQW5St1PNHc1KcCl9MHcHT2HHtx+fygQJKYsAiYXodrdfhkEgDBTYE0X8h
-	 MvZ1rG+gfPjVoVCEFEwICGpQM/yk8kMU5WNwsc5IIu1tcZwHouDmcK9YIrJMLgrHUF
-	 z7rE98IpjA9VN+S13jac04pLKG9m8R9OI81hC8h8FU+U/yfSk0fVuAC0OBtJTB/Rj4
-	 f7fHq85hM7tVdJVY9OTl1QHtVqag//OemWftHZqd1ODb+rVQb9IPo/esAcZcLj2yI0
-	 l4hQ5CJP1xCHA==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>
-Subject:
- [PATCH v1] ACPI/PNP: Use my kernel.org address in MAINTAINERS and ABI docs
-Date: Sat, 19 Jul 2025 14:38:41 +0200
-Message-ID: <2796086.mvXUDI8C0e@rjwysocki.net>
-Organization: Linux Kernel Development
+	s=arc-20240116; t=1752944262; c=relaxed/simple;
+	bh=IqIQNUzmsFKNMuX6ZUyl2Blli6THQnw1yXSl+ZE8nGg=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=fecCFT7z/UKjGgS5j3PlrnHjoW+ZVu/M9yW/Z53gOiXEuAjAC1s4/QVjmdyx2zE0d1DrvNySTS9mnf/1R5d/AAnM+k2nsy3i/uzyrX38qma5yuC4VX8ZWo4wdCUaKIHEi5casE+ChWbQeXzDlfjNLmSfg0Ug1e4jMJrXyZs7x+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eE5Z+zeJ; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752944261; x=1784480261;
+  h=date:from:to:cc:subject:message-id;
+  bh=IqIQNUzmsFKNMuX6ZUyl2Blli6THQnw1yXSl+ZE8nGg=;
+  b=eE5Z+zeJ6HQqCLcbIHCy8G0NoiKszU4B+RPL7a3Jrp+e9bEoRnpWsGFJ
+   rlptNzvaIU3TVgvyIsQ104bzSo4HeWyBfSlJI2Qakyw0tav+FzrbJSG5M
+   TU5zshYj1mp5Gy8KeKhn40Pi0dPowjnLWa1Qse+K11U5B1hArUF+Kycwn
+   vApKdavsRdWr1q9dbMHxGHn+pNbd74FIiO7plopSFMSYNFx+utWWpdAOl
+   4ACk0r51ysGzENISQdLtYJW5w8SerE6EtMtmeoB+kW9+Jr1zMx1EU4zZi
+   O6gtVnKcwXou4p98GzIOaQPypxpFwtcGBWGU8nYOwDkmU02rOfhyMqedP
+   Q==;
+X-CSE-ConnectionGUID: MdXzov3ERrSfurNsyNMjQQ==
+X-CSE-MsgGUID: t3cnivopReylroQINSl+jQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11497"; a="55094421"
+X-IronPort-AV: E=Sophos;i="6.16,324,1744095600"; 
+   d="scan'208";a="55094421"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2025 09:57:40 -0700
+X-CSE-ConnectionGUID: /Wn4JqhvQASiLD7oe92w/A==
+X-CSE-MsgGUID: OtLR9tWtSMKmQpBMDZ/Tkw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,324,1744095600"; 
+   d="scan'208";a="158127643"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 19 Jul 2025 09:57:39 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1udAsS-000Fdw-2s;
+	Sat, 19 Jul 2025 16:57:36 +0000
+Date: Sun, 20 Jul 2025 00:57:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ dfb7659050ceed4ded91729e45f2fc464eb59aa0
+Message-ID: <202507200006.uJXr6eeX-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
 
-From: Rafael J. Wysocki <rafael@kernel.org>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: dfb7659050ceed4ded91729e45f2fc464eb59aa0  Merge branch 'pm-sleep' into linux-next
 
-For the sake of consistency, use my kernel.org address in all Contact
-records in sysfs-bus-acpi and in the MAINTAINERS records related to
-ACPI and PNP.
+elapsed time: 1444m
 
-Signed-off-by: Rafael J. Wysocki <rafael@kernel.org>
----
- Documentation/ABI/testing/sysfs-bus-acpi |   18 +++++++++---------
- MAINTAINERS                              |    4 ++--
- 2 files changed, 11 insertions(+), 11 deletions(-)
+configs tested: 103
+configs skipped: 3
 
---- a/Documentation/ABI/testing/sysfs-bus-acpi
-+++ b/Documentation/ABI/testing/sysfs-bus-acpi
-@@ -1,6 +1,6 @@
- What:		/sys/bus/acpi/devices/.../path
- Date:		December 2006
--Contact:	Rafael J. Wysocki <rjw@rjwysocki.net>
-+Contact:	Rafael J. Wysocki <rafael@kernel.org>
- Description:
- 		This attribute indicates the full path of ACPI namespace
- 		object associated with the device object.  For example,
-@@ -12,7 +12,7 @@
- 
- What:		/sys/bus/acpi/devices/.../modalias
- Date:		July 2007
--Contact:	Rafael J. Wysocki <rjw@rjwysocki.net>
-+Contact:	Rafael J. Wysocki <rafael@kernel.org>
- Description:
- 		This attribute indicates the PNP IDs of the device object.
- 		That is acpi:HHHHHHHH:[CCCCCCC:].  Where each HHHHHHHH or
-@@ -20,7 +20,7 @@
- 
- What:		/sys/bus/acpi/devices/.../hid
- Date:		April 2005
--Contact:	Rafael J. Wysocki <rjw@rjwysocki.net>
-+Contact:	Rafael J. Wysocki <rafael@kernel.org>
- Description:
- 		This attribute indicates the hardware ID (_HID) of the
- 		device object.  For example, PNP0103.
-@@ -29,14 +29,14 @@
- 
- What:		/sys/bus/acpi/devices/.../description
- Date:		October 2012
--Contact:	Rafael J. Wysocki <rjw@rjwysocki.net>
-+Contact:	Rafael J. Wysocki <rafael@kernel.org>
- Description:
- 		This attribute contains the output of the device object's
- 		_STR control method, if present.
- 
- What:		/sys/bus/acpi/devices/.../adr
- Date:		October 2012
--Contact:	Rafael J. Wysocki <rjw@rjwysocki.net>
-+Contact:	Rafael J. Wysocki <rafael@kernel.org>
- Description:
- 		This attribute contains the output of the device object's
- 		_ADR control method, which is present for ACPI device
-@@ -45,14 +45,14 @@
- 
- What:		/sys/bus/acpi/devices/.../uid
- Date:		October 2012
--Contact:	Rafael J. Wysocki <rjw@rjwysocki.net>
-+Contact:	Rafael J. Wysocki <rafael@kernel.org>
- Description:
- 		This attribute contains the output of the device object's
- 		_UID control method, if present.
- 
- What:		/sys/bus/acpi/devices/.../eject
- Date:		December 2006
--Contact:	Rafael J. Wysocki <rjw@rjwysocki.net>
-+Contact:	Rafael J. Wysocki <rafael@kernel.org>
- Description:
- 		Writing 1 to this attribute will trigger hot removal of
- 		this device object.  This file exists for every device
-@@ -60,7 +60,7 @@
- 
- What:		/sys/bus/acpi/devices/.../status
- Date:		Jan, 2014
--Contact:	Rafael J. Wysocki <rjw@rjwysocki.net>
-+Contact:	Rafael J. Wysocki <rafael@kernel.org>
- Description:
- 		(RO) Returns the ACPI device status: enabled, disabled or
- 		functioning or present, if the method _STA is present.
-@@ -90,7 +90,7 @@
- 
- What:		/sys/bus/acpi/devices/.../hrv
- Date:		Apr, 2016
--Contact:	Rafael J. Wysocki <rjw@rjwysocki.net>
-+Contact:	Rafael J. Wysocki <rafael@kernel.org>
- Description:
- 		(RO) Allows users to read the hardware version of non-PCI
- 		hardware, if the _HRV control method is present.  It is mostly
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -315,8 +315,8 @@
- F:	drivers/acpi/apei/
- 
- ACPI COMPONENT ARCHITECTURE (ACPICA)
-+M:	"Rafael J. Wysocki" <rafael@kernel.org>
- M:	Robert Moore <robert.moore@intel.com>
--M:	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
- L:	linux-acpi@vger.kernel.org
- L:	acpica-devel@lists.linux.dev
- S:	Supported
-@@ -19769,7 +19769,7 @@
- F:	drivers/iio/magnetometer/rm3100*
- 
- PNP SUPPORT
--M:	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-+M:	"Rafael J. Wysocki" <rafael@kernel.org>
- L:	linux-acpi@vger.kernel.org
- S:	Maintained
- F:	drivers/pnp/
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    gcc-15.1.0
+arc                         haps_hs_defconfig    gcc-15.1.0
+arc                   randconfig-001-20250719    gcc-14.3.0
+arc                   randconfig-002-20250719    gcc-15.1.0
+arm                              allmodconfig    gcc-15.1.0
+arm                               allnoconfig    clang-21
+arm                              allyesconfig    gcc-15.1.0
+arm                   randconfig-001-20250719    gcc-14.3.0
+arm                   randconfig-002-20250719    clang-21
+arm                   randconfig-003-20250719    clang-21
+arm                   randconfig-004-20250719    clang-16
+arm                         socfpga_defconfig    gcc-15.1.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.1.0
+arm64                 randconfig-001-20250719    clang-20
+arm64                 randconfig-002-20250719    clang-18
+arm64                 randconfig-003-20250719    gcc-15.1.0
+arm64                 randconfig-004-20250719    clang-20
+csky                             alldefconfig    gcc-15.1.0
+csky                              allnoconfig    gcc-15.1.0
+csky                  randconfig-001-20250719    gcc-15.1.0
+csky                  randconfig-002-20250719    gcc-11.5.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-21
+hexagon                          allyesconfig    clang-21
+hexagon               randconfig-001-20250719    clang-21
+hexagon               randconfig-002-20250719    clang-21
+i386        buildonly-randconfig-001-20250719    clang-20
+i386        buildonly-randconfig-002-20250719    gcc-12
+i386        buildonly-randconfig-003-20250719    gcc-12
+i386        buildonly-randconfig-004-20250719    clang-20
+i386        buildonly-randconfig-005-20250719    clang-20
+i386        buildonly-randconfig-006-20250719    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-21
+loongarch             randconfig-001-20250719    clang-18
+loongarch             randconfig-002-20250719    gcc-15.1.0
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    gcc-15.1.0
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20250719    gcc-11.5.0
+nios2                 randconfig-002-20250719    gcc-8.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20250719    gcc-8.5.0
+parisc                randconfig-002-20250719    gcc-8.5.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                      katmai_defconfig    clang-21
+powerpc               randconfig-001-20250719    clang-19
+powerpc               randconfig-002-20250719    gcc-10.5.0
+powerpc               randconfig-003-20250719    gcc-12.5.0
+powerpc64             randconfig-001-20250719    gcc-8.5.0
+powerpc64             randconfig-002-20250719    clang-21
+powerpc64             randconfig-003-20250719    gcc-10.5.0
+riscv                             allnoconfig    gcc-15.1.0
+riscv                 randconfig-001-20250719    clang-21
+riscv                 randconfig-002-20250719    clang-21
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-15.1.0
+s390                  randconfig-001-20250719    gcc-9.5.0
+s390                  randconfig-002-20250719    gcc-9.5.0
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                    randconfig-001-20250719    gcc-13.4.0
+sh                    randconfig-002-20250719    gcc-15.1.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20250719    gcc-15.1.0
+sparc                 randconfig-002-20250719    gcc-15.1.0
+sparc64               randconfig-001-20250719    gcc-9.5.0
+sparc64               randconfig-002-20250719    gcc-9.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-21
+um                               allyesconfig    gcc-12
+um                    randconfig-001-20250719    clang-16
+um                    randconfig-002-20250719    clang-21
+x86_64                            allnoconfig    clang-20
+x86_64      buildonly-randconfig-001-20250719    clang-20
+x86_64      buildonly-randconfig-002-20250719    clang-20
+x86_64      buildonly-randconfig-003-20250719    clang-20
+x86_64      buildonly-randconfig-004-20250719    gcc-12
+x86_64      buildonly-randconfig-005-20250719    clang-20
+x86_64      buildonly-randconfig-006-20250719    gcc-12
+x86_64                              defconfig    gcc-11
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20250719    gcc-14.3.0
+xtensa                randconfig-002-20250719    gcc-8.5.0
 
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
