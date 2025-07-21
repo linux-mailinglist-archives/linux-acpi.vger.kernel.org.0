@@ -1,119 +1,154 @@
-Return-Path: <linux-acpi+bounces-15260-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15261-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D4EB0C720
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 17:00:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 120D4B0C7DB
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 17:43:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF1037A2697
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 14:59:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CB783AD45B
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 15:43:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8201AA7BF;
-	Mon, 21 Jul 2025 15:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gtUiAtrt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15142DF3E8;
+	Mon, 21 Jul 2025 15:43:31 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DDCF13C81B;
-	Mon, 21 Jul 2025 15:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09195170A2B;
+	Mon, 21 Jul 2025 15:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753110032; cv=none; b=IBrLxGc0jqDqKl7NzzlgI6ZFO+CRG86+8qSapho27otyf3MQ57d7A6UjMkJv4tz7X+yE3al1EBISDTSbVhHSh+bTE27AUdvcMIj+N/3JT+vF2kRoy/EwnDDJ8wqLmvc9Ott9Rpdy62mntdN0INWURtsRSkKi7bTnL0S0ah8XfGw=
+	t=1753112611; cv=none; b=b3D/13gVM0i8Fd8dPN3eX9EVF3DyCDS7sTzn6dSRa24d8sMR4w+A1oD0K1EA+5ahOWJuYmJtztFdp9MVa0WN7SdBRTFeQ5gRtwXDk13VxIglo9KMVZbi8buW2irgMRrmmblRl+JvXcYjAanigQpqjLySIj15ImHH0obQpWRGfAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753110032; c=relaxed/simple;
-	bh=1u26kY1ws9cxhBGjecBiZxykAFQE/6GBsWlroHxvc6Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S+ZC3BA1AYuSxLRudxhunMkArXYn9ZriWRJ1v3bpFHHm225C/IijcBlzVSuqhh1HkoMCkGiPsWhkNlc33On0m2u6onUxj7wppI6j2CkLxrB5tmZg54K6edFIOBwEZNL0XQKpem9zldTSE15M0lyrU3NJ61K4kF8Hom/rCHoq20E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gtUiAtrt; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1753112611; c=relaxed/simple;
+	bh=FmHzynu9CSyBjY7snrkDKw/+CacF/IzAQo3vvCbvS+8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ByCd8QCoNqYkMEjhXbrUcpDxZFAKqh1S0fs6quqbVTDD4k+WYcPAKFuxRQ62GzcUFOI7KRAQ4HgsQYp8vZf82eEt7qmKKE3HN/Ow1OBGwkCOZF2CUzbojJv1cxjzSjlxGbHrjQMxt0T1NbAVvO/Y2BL2b/UX/H2iKht4WFEPlxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3a531fcaa05so1994522f8f.3;
-        Mon, 21 Jul 2025 08:00:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753110029; x=1753714829; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2PB0irW/PF5RfhguedJlSTXVHWilPTDJ158mA6czsCc=;
-        b=gtUiAtrteKyVTlB8t2xu64W+BzIrBelFx/mwl+jfI/duxwz6WFJI3cjUgGKCHauc31
-         1ZyjZZBhW5PW0rcOOBnHXx+2Rbx+oR1puUuT1LoDmvnr5hLKqj35QTVe2pUTvOvSB5sP
-         cIxsnjjMznSJ3VAGvZHA6U9hiXZn11GwvpO0hilSP7wWzi39M+s80HRhlMpA/NfDygOW
-         NKDyp/4EzIk8nPWkHD+vFIMJ71va/jTT4t+RwfH8ywEYq+d1wC6P5ksB0n9lKVoFdAOm
-         6mKQaCvIiRH1d7D/Ac8/u886SMM1LxIEGicKR6Y8CHDi8EJbqZrLxoSbq/p/31+QfiYA
-         X6ow==
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6077dea37easo6978369a12.3;
+        Mon, 21 Jul 2025 08:43:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753110029; x=1753714829;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2PB0irW/PF5RfhguedJlSTXVHWilPTDJ158mA6czsCc=;
-        b=lhBt+vf3iYFbu8EdNYEhCqnUdizqPDla/jPDJLiQZGx6kkEv9NUP4gYXedsdqFfEb/
-         PymULiOKmeCUbHXgm5Tn2VBx4rJunAxnEluBBUGOkCW6d1MkJ8F2OnDiJBM/uxRZB2so
-         gmMXNnj82iQ5reP835F/QSkKe41tFRYB/FSzLMIUBzRby0Pxv25r6tYNxjdYOzJZHEu7
-         q9Uph+v3Yx2ObhVmKWwFRBfrPfTlogjierFwgsFqnMpup6vLkmyikhU7Ix/jOeaNoTwl
-         +LfrVGT9YzM+I3LWLUbrHRcQIs6w1zD790pyUgGLxYgDbCWJiZjK2anBtUT8AB2H+Y/4
-         RtSw==
-X-Forwarded-Encrypted: i=1; AJvYcCVFVlnsdX+r/52pZrFvn9x0eI7UUZpw4nDH6BibU73ojk2VYkN+ESiEVmd/ZJis1TczF2I531f+UY49@vger.kernel.org, AJvYcCVTWqcdcJVUimvBSK1OjATmlmBbGafDwcGloShudmdAA7KG0J0w1uRgXS5Dy8DE7MCaXmRj9wJGGB4KiHOD@vger.kernel.org, AJvYcCWkmfmM141bnfFrUFPzpTUbHCsr1agx+oKz/jxJd2VmfvC+qjH/KtWdxZfQyFFhKESXY4XRL+R1l4cB@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4OkRVKJRgcyZbysDMAHtn4lKYZEWK7e1G1pDk3PxaUoVxlreK
-	XZtXYD29IbjU0NdzuaKk9u+iOz2Dx5g49ZaBnay/tK0Mimm831jOJ8ER2EpK1m/BnDQ=
-X-Gm-Gg: ASbGncs+FE2LmTYTS3sWoSp8yghMDEwowLpZF1jIxpIs+4M5vWBz5Ul7h20zcNsjBbn
-	7U4SgAiuNStKZP1zAq7iDtrfs9fjCXe33CiqMzdG3RE/ZdFxu2m2ajNeobiCHEhy4wxyAZJMZVx
-	sSMliwRcOFUywVjZPUdPBT8EtEsx/FFGcIIXcZFDzeijvhE5OSk4UoRDara+MgJn4iri3u+7Vgr
-	n2BAaaMHcGskVnRPiHf14iyZVEXgix5kLTN6znoUBgE3A/qBjUlpC9CuPG9yaVGW5YtwOlH5rIP
-	+U7YGhlsuz/PT2SqNw/Q7FOm95iLEkCnkgsrMmAqn9U7K3poMFlYQBsD4hloPhMfKWirUeLcFS2
-	eUGMoXUrk2wlz+BT5dsTM
-X-Google-Smtp-Source: AGHT+IEnm5Z2sHlscy3eq1RJ/Z17vAMa+liMVtNJyEdVCWAmNxBB9ZDteQYhEZsZXd+wtJZbuTe+Hw==
-X-Received: by 2002:a05:6000:40ca:b0:3a8:6262:e78 with SMTP id ffacd0b85a97d-3b60e513909mr14535725f8f.37.1753110028526;
-        Mon, 21 Jul 2025 08:00:28 -0700 (PDT)
-Received: from localhost ([87.254.0.133])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b61ca25410sm10808671f8f.1.2025.07.21.08.00.23
+        d=1e100.net; s=20230601; t=1753112608; x=1753717408;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q8EMch7mkTjcU9bPeMD8J/i/5F0EvPo6dc4/iWe3Dl8=;
+        b=cvlXpL555Dil8P857eWH+XR0hmotVtqiwaClLhIbwQM8fFgRMCg71pc5WimBpg3n3R
+         HgnoUVeoEPskXSBEQJXGPg0sYfF3/8Womdc4A3/mpSn2P6HwQwE3f2hNWNyjViQxLfBB
+         kLbEW19BLVfyawk93hWq71WxPxiCB64MM6s8TsQ35Z9cR5W/sm59TIiR26Cm+r7k9Bgh
+         ObjAR+VQ1PiYNOFlB0vZAtjAsDPKuAoc3ruHb5VZ1G9ofb5ByNSOCKdE0BGjXaPFNxCw
+         h917UFBmAnMKnNqQilXZOibIcgYOMitWHinTiqt51K22exqn25spTOEH6Z7la4dz6HWt
+         PvkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUGXAmtW2G+HXtWvXhIOhCgPKMp+YT8G5GbftnOjlfPEvsl/hRF8Xnf/k9bc2wfH2wjMMkjSfaWbclGxa4r@vger.kernel.org, AJvYcCVlKN65A7hfV/Xq8iWUMWMfy2RNIBcpKTULF5lzJvjioWteE+ALpDeD7rf+sG5m7UMCgQSDFS72hTZo@vger.kernel.org, AJvYcCX+pbJClUaJz6cJAaQ0+XcB9a66mTImlkKTci4fcCAFOhPta6Tqt7AuH1ikD4DKBtXaEpXVG1eKfsMG@vger.kernel.org, AJvYcCX0/7jIwcIW/+uZhXY+GE0MiqueWKrKymmN3F8E22CgC+dRAEr7pKtF8bk2gwdEeA6f4ER4IvVl2w1e5Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXqRVK8GFOfzKtOeItjxOkO1b7C0z31vfSZbesXOQtubg23Yaz
+	1eZB7W4F4uQoQwWOiKGaJzJ7ngSUujAUFDWiYjf8CDbp4Gh7eV194j49B/lt1g==
+X-Gm-Gg: ASbGnctRkWi6JFs/Q/ch7+GmjJoHeBktZISeWuU7UYqBIcAPP5u6dw3GeBkAj8bYuhi
+	UK4xW6S1pLTviFoHqYu4goyLGS5C9jUiPhpEciVCs1EN7Xp9HvW3WbofK8MvBqJWkKkL4AS2KL1
+	luSeG3xcHwNe8SiKr3yYZaNTG+dKg89ms1l1NO6xJxmIdrRrP5hRYge50VVVLjER1g0mN8SezGY
+	WH4mT8KL18HXsPfaLdGjQQDu/DWdFUO7Py2vXz7wh8Z2cWFgf9ZqkclasA7hviuX0kbvtB81hvV
+	r3RPx/A4+oy81ar+JQJgU9EE/5wjtn7NlwAsYMnJhDJVh/gY/umZf0cJ0XEvndDhncHzuiclcYa
+	vEAl2tnLRiPhbeVD9P4TRASM=
+X-Google-Smtp-Source: AGHT+IHiVZajLNzCqasc/a84TFi9Eq0YagQ04C+1iS6aqNPgOjIXzg/tFI2BWhK3viZOkIp11MJmpg==
+X-Received: by 2002:a05:6402:13c8:b0:612:b573:f4bb with SMTP id 4fb4d7f45d1cf-612b57401cfmr14728022a12.0.1753112608001;
+        Mon, 21 Jul 2025 08:43:28 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:4::])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-612c8f0a0e2sm5675860a12.4.2025.07.21.08.43.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Jul 2025 08:00:24 -0700 (PDT)
-From: Colin Ian King <colin.i.king@gmail.com>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ACPI: pci_link: Remove space before \n newline
-Date: Mon, 21 Jul 2025 15:59:52 +0100
-Message-ID: <20250721145952.2601422-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.50.0
+        Mon, 21 Jul 2025 08:43:27 -0700 (PDT)
+Date: Mon, 21 Jul 2025 08:43:24 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Borislav Petkov <bp@alien8.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, 
+	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev, osandov@osandov.com, 
+	xueshuai@linux.alibaba.com, konrad.wilk@oracle.com, linux-edac@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2] vmcoreinfo: Track and log recoverable hardware errors
+Message-ID: <crxrexye2nmqebct6eisgkvpc7btrg6ckh5qr7tmhpkdnqys2h@6dpf2j6yhlxq>
+References: <20250721-vmcore_hw_error-v2-1-ab65a6b43c5a@debian.org>
+ <20250721135718.GAaH5HPinaKvXjM-1g@renoirsky.local>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250721135718.GAaH5HPinaKvXjM-1g@renoirsky.local>
 
-There is an extraneous space before a newline in an acpi_handle_debug
-message.  Remove it.
+Hello Borislav,
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/acpi/pci_link.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, Jul 21, 2025 at 03:57:18PM +0200, Borislav Petkov wrote:
+> On Mon, Jul 21, 2025 at 03:13:40AM -0700, Breno Leitao wrote:
+> > Introduce a generic infrastructure for tracking recoverable hardware
+> > errors (HW errors that did not cause a panic) and record them for vmcore
+> > consumption. This aids post-mortem crash analysis tools by preserving
+> > a count and timestamp for the last occurrence of such errors.
+> > 
+> > This patch adds centralized logging for three common sources of
+> 
+> "Add centralized... "
 
-diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
-index 08e10b6226dc..e4560b33b8ad 100644
---- a/drivers/acpi/pci_link.c
-+++ b/drivers/acpi/pci_link.c
-@@ -268,7 +268,7 @@ static int acpi_pci_link_get_current(struct acpi_pci_link *link)
- 
- 	link->irq.active = irq;
- 
--	acpi_handle_debug(handle, "Link at IRQ %d \n", link->irq.active);
-+	acpi_handle_debug(handle, "Link at IRQ %d\n", link->irq.active);
- 
-       end:
- 	return result;
--- 
-2.50.0
+Ack!
 
+> > recoverable hardware errors:
+> > 
+> >   - PCIe AER Correctable errors
+> >   - x86 Machine Check Exceptions (MCE)
+> >   - APEI/CPER GHES corrected or recoverable errors
+> > 
+> > hwerror_tracking is write-only at kernel runtime, and it is meant to be
+> > read from vmcore using tools like crash/drgn. For example, this is how
+> > it looks like when opening the crashdump from drgn.
+> > 
+> > 	>>> prog['hwerror_tracking']
+> > 	(struct hwerror_tracking_info [3]){
+> > 		{
+> > 			.count = (int)844,
+> > 			.timestamp = (time64_t)1752852018,
+> > 		},
+> > 		...
+> > 
+> 
+> I'm still missing the justification why rasdaemon can't be used here.
+> You did explain it already in past emails.
+
+Sorry, I will update it.
+
+> > +enum hwerror_tracking_source {
+> > +	HWE_RECOV_AER,
+> > +	HWE_RECOV_MCE,
+> > +	HWE_RECOV_GHES,
+> > +	HWE_RECOV_MAX,
+> > +};
+> 
+> Are we confident this separation will serve all cloud dudes?
+
+I am not, but, I've added them to CC list of this patch, so, they are
+more than free to chime in.
+
+> > +void hwerror_tracking_log(enum hwerror_tracking_source src)
+> 
+> A function should have a verb in its name explaining what it does:
+> 
+> hwerr_log_error_type()
+> 
+> or so.
+
+Ack!
+
+I will wait a bit more and send an updated version.
+
+Thanks for the review
+--breno
 
