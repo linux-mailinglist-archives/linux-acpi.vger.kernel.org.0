@@ -1,103 +1,119 @@
-Return-Path: <linux-acpi+bounces-15259-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15260-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B769FB0C6DC
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 16:49:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D4EB0C720
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 17:00:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 867846C1178
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 14:48:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF1037A2697
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 14:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBEA28033C;
-	Mon, 21 Jul 2025 14:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8201AA7BF;
+	Mon, 21 Jul 2025 15:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m/OS7QD4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gtUiAtrt"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09052DE6E7;
-	Mon, 21 Jul 2025 14:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DDCF13C81B;
+	Mon, 21 Jul 2025 15:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753109246; cv=none; b=mOT9tUSRAkFU1IK9Gw+o5VasNRNY7OcBUpESmPCDHTIup32y03kjKIRtZDBNuAV1Z1OWZNcKqD6L8JBVXRbAc0ilNphmlLjp3BchEILAt/dZD0Rb4qJ1Xgs57XiJ0KoXWeVl7k6C6oRDP5CphL9nCYWWJegMRo+7uC3sv4WgCEg=
+	t=1753110032; cv=none; b=IBrLxGc0jqDqKl7NzzlgI6ZFO+CRG86+8qSapho27otyf3MQ57d7A6UjMkJv4tz7X+yE3al1EBISDTSbVhHSh+bTE27AUdvcMIj+N/3JT+vF2kRoy/EwnDDJ8wqLmvc9Ott9Rpdy62mntdN0INWURtsRSkKi7bTnL0S0ah8XfGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753109246; c=relaxed/simple;
-	bh=POu/6RcXAXPlWdUQ1qT/BoxmsEBrEVB56P9NerCYWXA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=og+kvtFU2G1sfeBCIDQW6CyfPduxq1b0iiRjmomk4CYkOhioUFP344ReWgGuOJkWH6G4u5iyib5K5qEUvUVCQX5ORH84HyrB2ASqF3jm6EisF8X/HpvdqKN52Xf0H2y8MjicfObjttTHNSaqHh68iIB8Szixll4aLA9SwSCfdGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m/OS7QD4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E61C4CEF6;
-	Mon, 21 Jul 2025 14:47:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753109245;
-	bh=POu/6RcXAXPlWdUQ1qT/BoxmsEBrEVB56P9NerCYWXA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=m/OS7QD4PjEOHiqPVua/M/GbjGqpBGpwAzYznGumevTm5tzkrOHn5Cpc7DI3CLw2L
-	 QUZcs58AVvMPFzkrK6SUPoiB1bTr6/00d/1D7hZUGyRuQPcYBzYbj/6Kvchopsqcco
-	 g1y4vNzkAI/5FxhOhTCHCWQ/cjqsQPTFuowrYtvth96bMlKUp7NWSh/79XLQOSFO5E
-	 D5+RBk9NAzjalB2x3NLX24fXs3/8hYGeqzE9dcw8R2f3A+cVN23rc9r+A9A7V7Yhwp
-	 rlz385JAONbkQag6eMu3KpmWtYr1SsLIezsxHqvjnqWKgEyo4sFdOKYr4WmH8xwz09
-	 CpbOx/IA3++5g==
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-61593d5f92bso2517019eaf.1;
-        Mon, 21 Jul 2025 07:47:25 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVga2zwH5uH3TpUMFbzGLT2b/OgHs/ufcAhgbdxlvDFG84VcEYaXCu+ENKhRMvL3gHN7w4wZXuS3fyikw==@vger.kernel.org, AJvYcCWTuKlohwT+CxqGK87Q1zUmqvCCsUXMwqqC+ECg2EZAUsmD0q+PxnHQuBZX0LkqMI9bppR8u8p4ZvujAL6g@vger.kernel.org, AJvYcCX0b6L86YIRrkpYqb01aCdEpc/7b/yvp1eyF+R/52srgyFbksAkH68zfawfOelXwznQP4YeHDgmmwHD3OzOfGA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/eN0UVfcxb4h7SU9fN4ZFCC0XnxSKCFvs3+d0iXap2gnhtfZU
-	4TqMrDR7PuELyGo0CROIJE12Rk63K2+jIHpBdbenr5eZlsz2AuKGQVj/oNOGGsFB9PYelKMf/ty
-	pESj9FGFW/QtG6Ef3/DKfZzDRHVDm7Is=
-X-Google-Smtp-Source: AGHT+IEWdKVsxpzzKcxBaQkADZ6sERyQIlgfA82t1NIlBXHjio6fztFwfCBQrBDTOY4HMy0B7xBmmLv4qujQWpdVL8U=
-X-Received: by 2002:a05:6820:6ac7:b0:615:9a1e:8d30 with SMTP id
- 006d021491bc7-615acc73b58mr12078604eaf.2.1753109244758; Mon, 21 Jul 2025
- 07:47:24 -0700 (PDT)
+	s=arc-20240116; t=1753110032; c=relaxed/simple;
+	bh=1u26kY1ws9cxhBGjecBiZxykAFQE/6GBsWlroHxvc6Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S+ZC3BA1AYuSxLRudxhunMkArXYn9ZriWRJ1v3bpFHHm225C/IijcBlzVSuqhh1HkoMCkGiPsWhkNlc33On0m2u6onUxj7wppI6j2CkLxrB5tmZg54K6edFIOBwEZNL0XQKpem9zldTSE15M0lyrU3NJ61K4kF8Hom/rCHoq20E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gtUiAtrt; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3a531fcaa05so1994522f8f.3;
+        Mon, 21 Jul 2025 08:00:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753110029; x=1753714829; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2PB0irW/PF5RfhguedJlSTXVHWilPTDJ158mA6czsCc=;
+        b=gtUiAtrteKyVTlB8t2xu64W+BzIrBelFx/mwl+jfI/duxwz6WFJI3cjUgGKCHauc31
+         1ZyjZZBhW5PW0rcOOBnHXx+2Rbx+oR1puUuT1LoDmvnr5hLKqj35QTVe2pUTvOvSB5sP
+         cIxsnjjMznSJ3VAGvZHA6U9hiXZn11GwvpO0hilSP7wWzi39M+s80HRhlMpA/NfDygOW
+         NKDyp/4EzIk8nPWkHD+vFIMJ71va/jTT4t+RwfH8ywEYq+d1wC6P5ksB0n9lKVoFdAOm
+         6mKQaCvIiRH1d7D/Ac8/u886SMM1LxIEGicKR6Y8CHDi8EJbqZrLxoSbq/p/31+QfiYA
+         X6ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753110029; x=1753714829;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2PB0irW/PF5RfhguedJlSTXVHWilPTDJ158mA6czsCc=;
+        b=lhBt+vf3iYFbu8EdNYEhCqnUdizqPDla/jPDJLiQZGx6kkEv9NUP4gYXedsdqFfEb/
+         PymULiOKmeCUbHXgm5Tn2VBx4rJunAxnEluBBUGOkCW6d1MkJ8F2OnDiJBM/uxRZB2so
+         gmMXNnj82iQ5reP835F/QSkKe41tFRYB/FSzLMIUBzRby0Pxv25r6tYNxjdYOzJZHEu7
+         q9Uph+v3Yx2ObhVmKWwFRBfrPfTlogjierFwgsFqnMpup6vLkmyikhU7Ix/jOeaNoTwl
+         +LfrVGT9YzM+I3LWLUbrHRcQIs6w1zD790pyUgGLxYgDbCWJiZjK2anBtUT8AB2H+Y/4
+         RtSw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFVlnsdX+r/52pZrFvn9x0eI7UUZpw4nDH6BibU73ojk2VYkN+ESiEVmd/ZJis1TczF2I531f+UY49@vger.kernel.org, AJvYcCVTWqcdcJVUimvBSK1OjATmlmBbGafDwcGloShudmdAA7KG0J0w1uRgXS5Dy8DE7MCaXmRj9wJGGB4KiHOD@vger.kernel.org, AJvYcCWkmfmM141bnfFrUFPzpTUbHCsr1agx+oKz/jxJd2VmfvC+qjH/KtWdxZfQyFFhKESXY4XRL+R1l4cB@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4OkRVKJRgcyZbysDMAHtn4lKYZEWK7e1G1pDk3PxaUoVxlreK
+	XZtXYD29IbjU0NdzuaKk9u+iOz2Dx5g49ZaBnay/tK0Mimm831jOJ8ER2EpK1m/BnDQ=
+X-Gm-Gg: ASbGncs+FE2LmTYTS3sWoSp8yghMDEwowLpZF1jIxpIs+4M5vWBz5Ul7h20zcNsjBbn
+	7U4SgAiuNStKZP1zAq7iDtrfs9fjCXe33CiqMzdG3RE/ZdFxu2m2ajNeobiCHEhy4wxyAZJMZVx
+	sSMliwRcOFUywVjZPUdPBT8EtEsx/FFGcIIXcZFDzeijvhE5OSk4UoRDara+MgJn4iri3u+7Vgr
+	n2BAaaMHcGskVnRPiHf14iyZVEXgix5kLTN6znoUBgE3A/qBjUlpC9CuPG9yaVGW5YtwOlH5rIP
+	+U7YGhlsuz/PT2SqNw/Q7FOm95iLEkCnkgsrMmAqn9U7K3poMFlYQBsD4hloPhMfKWirUeLcFS2
+	eUGMoXUrk2wlz+BT5dsTM
+X-Google-Smtp-Source: AGHT+IEnm5Z2sHlscy3eq1RJ/Z17vAMa+liMVtNJyEdVCWAmNxBB9ZDteQYhEZsZXd+wtJZbuTe+Hw==
+X-Received: by 2002:a05:6000:40ca:b0:3a8:6262:e78 with SMTP id ffacd0b85a97d-3b60e513909mr14535725f8f.37.1753110028526;
+        Mon, 21 Jul 2025 08:00:28 -0700 (PDT)
+Received: from localhost ([87.254.0.133])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b61ca25410sm10808671f8f.1.2025.07.21.08.00.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Jul 2025 08:00:24 -0700 (PDT)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] ACPI: pci_link: Remove space before \n newline
+Date: Mon, 21 Jul 2025 15:59:52 +0100
+Message-ID: <20250721145952.2601422-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250721135016.2500117-1-colin.i.king@gmail.com>
-In-Reply-To: <20250721135016.2500117-1-colin.i.king@gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 21 Jul 2025 16:47:13 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0i7tGiYOWX138ODmX6QTxuF09gCADHX-aVXD_h3y5iFjQ@mail.gmail.com>
-X-Gm-Features: Ac12FXxcjsguRVd_BYILBY4h1G6hudEeRQHcR3qRKDMhPSoFCr2obJ8c4H6N87k
-Message-ID: <CAJZ5v0i7tGiYOWX138ODmX6QTxuF09gCADHX-aVXD_h3y5iFjQ@mail.gmail.com>
-Subject: Re: [PATCH][next] ACPI: processor_throttling: Remove space before \n newline
-To: Colin Ian King <colin.i.king@gmail.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 21, 2025 at 3:50=E2=80=AFPM Colin Ian King <colin.i.king@gmail.=
-com> wrote:
->
-> There is a extraneous space before a newline in a pr_warn message.
-> Remove it.
->
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-> ---
->  drivers/acpi/processor_throttling.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/processor_throttling.c b/drivers/acpi/processor=
-_throttling.c
-> index d1541a386fbc..f9c2bc1d4a3a 100644
-> --- a/drivers/acpi/processor_throttling.c
-> +++ b/drivers/acpi/processor_throttling.c
-> @@ -235,7 +235,7 @@ static int acpi_processor_throttling_notifier(unsigne=
-d long event, void *data)
->                 if (pr->throttling_platform_limit > target_state)
->                         target_state =3D pr->throttling_platform_limit;
->                 if (target_state >=3D p_throttling->state_count) {
-> -                       pr_warn("Exceed the limit of T-state \n");
-> +                       pr_warn("Exceed the limit of T-state\n");
->                         target_state =3D p_throttling->state_count - 1;
->                 }
->                 p_tstate->target_state =3D target_state;
-> --
+There is an extraneous space before a newline in an acpi_handle_debug
+message.  Remove it.
 
-Applied (as 6.17 material), thanks!
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/acpi/pci_link.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
+index 08e10b6226dc..e4560b33b8ad 100644
+--- a/drivers/acpi/pci_link.c
++++ b/drivers/acpi/pci_link.c
+@@ -268,7 +268,7 @@ static int acpi_pci_link_get_current(struct acpi_pci_link *link)
+ 
+ 	link->irq.active = irq;
+ 
+-	acpi_handle_debug(handle, "Link at IRQ %d \n", link->irq.active);
++	acpi_handle_debug(handle, "Link at IRQ %d\n", link->irq.active);
+ 
+       end:
+ 	return result;
+-- 
+2.50.0
+
 
