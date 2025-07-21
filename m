@@ -1,179 +1,412 @@
-Return-Path: <linux-acpi+bounces-15257-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15258-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC27EB0C595
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 15:56:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5534CB0C617
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 16:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F0C61AA15A4
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 13:56:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0BA75435D0
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 14:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1202D97B6;
-	Mon, 21 Jul 2025 13:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4522DAFBD;
+	Mon, 21 Jul 2025 14:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="S/hMs1J1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eCwKqd29"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF13A85C5E;
-	Mon, 21 Jul 2025 13:55:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5766C2877F4;
+	Mon, 21 Jul 2025 14:20:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753106160; cv=none; b=luwvIkMwOWEj2O4xp+AQewfqwMFa9QHpIQdmF/ego4u1XYbMvKBZQywkN54CUntHkGte3BT2q7B/9aRVYrRgIkZIKzu9XQd26NvSnTJ5+OAPhtS9qqj5xWHm65cHhXknHQ76VFGVfsnK59vSQCYzkrJaK4R4Oq4qSY4VOF0N4Ds=
+	t=1753107648; cv=none; b=D6tIZKpE9iNYlWdcvKhFVchqN6ST/ZzcI92P1K6B9Fe83v6TxSHrCQo2E4xwso/HOQ1cPmFDPGzXwpdE+rS0dCvMYqQ/pHwzkkMJzhxLokLehnoIa5xYqJ8N0htXIrx7JPXJU/qirWEEMzC3dZOThQfrUSLr6NZ88DrGamIsZpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753106160; c=relaxed/simple;
-	bh=luNd2hdiHpXbkn51CVS1PrnHahAzaRIMafg/kGX72tU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vDw8IokZ3y4j9L3tiCUPjyGa8EwdOmRxv6mqpH7Jxg7upcYi/ZtFMCJdA+77F7IekCeFnN0YmSvHRSmvph4eA5OCueyEQwXc+5CeDDHpJ2lGUOahvbbw7vuCYjG9pAodJNbgU1qDhviFyFQYbgK8cWPzY0UcDa7d6m1NNXFtzYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=S/hMs1J1; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 476F640E00CE;
-	Mon, 21 Jul 2025 13:55:48 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id tNtVBVq-EtrH; Mon, 21 Jul 2025 13:55:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1753106144; bh=nlscqHmlqxD6hBwb5iB6jeV5V3isx4CM7hl7kXHzeP8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S/hMs1J1tWF4XHylcao5H5R4Z4XLI9EyXKPqtAYOghbP7FblaU/9tnLnjUThM5b9p
-	 HMi7nTm+ZKfPwpMoK6nQCr0pFjdtKr8zkPfmIvgCTPZDtuhzz5KSjq74tssBg9LRbs
-	 Rz74d2M3sc00RXK4mvhSIOZwC6TxAZxslXvu8C4huXxMuKzsGbS9asDdvHqrquiZC0
-	 4T5pa0zP5Vqo8yw8iHQCGQ0qUxfowJfMMEprHZRsoLdo6aqlJAk5cb8PTPeZ7+dkJf
-	 JJsGUCuxgRv79TkeZmVUU/xyEMjXVcmSBhKvyvjPghpf9f7Q1WHkSfBwAiMUiE8KnJ
-	 A1uoeaARQ2HvyC1Fbirh1RbXi0aIA2fP5rauaT1E/s/bduEIz81n/ANMRSQliAIKHJ
-	 FThek94c7sT30G6u7YKLW+EjCvjcndFjg+fGTT/V67Ln9DcEYEsDCIS/EjGmLe5qle
-	 b9Gr2PDtqA/sxmuAeMJ2iljDz/FX+momdWOx7VfBqAmtqZ6M58UeTfgvvwbu+RbrrI
-	 YNxE1q8Ke8cSZLZQehucpd7Se5vUQMdNZ7Gfjvy6QbjeiRoXyjdC/7uYGhwOjANozr
-	 7s6nkYTPUJ/W+Vwgaf3Xq7y92pA+9PRJzb0feA9Mo7jm6NpKllBW5D43GG8VQ1vwGr
-	 SMc9qLT6n9IdU6NqsPK5zgJg=
-Received: from rn.tnic (unknown [78.130.214.207])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id DF69640E01F6;
-	Mon, 21 Jul 2025 13:55:17 +0000 (UTC)
-Date: Mon, 21 Jul 2025 15:57:18 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Breno Leitao <leitao@debian.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>,
-	Robert Moore <robert.moore@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev,
-	osandov@osandov.com, xueshuai@linux.alibaba.com,
-	konrad.wilk@oracle.com, linux-edac@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2] vmcoreinfo: Track and log recoverable hardware errors
-Message-ID: <20250721135718.GAaH5HPinaKvXjM-1g@renoirsky.local>
-References: <20250721-vmcore_hw_error-v2-1-ab65a6b43c5a@debian.org>
+	s=arc-20240116; t=1753107648; c=relaxed/simple;
+	bh=C9pPx1ziRMwXsfwlpnkCBu2lnLsBx0/XWNqv2vC+pkM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uN3m/t2zlJI9GFlZ+5i2kCTjlFwKPTft8+FXn64gtVIAdlnm+Tz3YEv/kenVWqxQWB/Q5mZzDlw+Ry/vdzu6751vCHPuoY7gOqmY8P/nYo6T133zqNvJp+8TVRkI4CM2Zjdw4zj0XKVIcao7bNuNf61sDuuMrpOpKU0Z98aH8JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eCwKqd29; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B72AC4CEF7;
+	Mon, 21 Jul 2025 14:20:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753107648;
+	bh=C9pPx1ziRMwXsfwlpnkCBu2lnLsBx0/XWNqv2vC+pkM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=eCwKqd29IDqmMKeQ8NwZXjesd3Ym17z4tH3BsqyxOtZBPpQz5iEAH769+VIR1UuEK
+	 i9deLmcS0cNn0T+e1YaYOMYOoyJ579Ze4f9yF4i29E0oj6144PzZ8iPfK/cqxhrUM+
+	 6W9Gbs0mjN3BS3YV8timdgGMrzcqus+uw8AU1s+fzyNvFYhjA8GS+qddlAJYZC/T8I
+	 7dWiGFAW4CrD0gW3GrLwGOLes4ObNVJXjZDATuTqkVm+WrYQMlJwcikpvKURUwLCv+
+	 +lUW7yk2rRis3aQpeNapTCswSP1IPPpbHdKrnhmZN8gI5Z+Jbvz386DCNwhSYKlvRK
+	 T20bKcZtJ5eAQ==
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-61390809a36so1429202eaf.1;
+        Mon, 21 Jul 2025 07:20:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUK+Aj4qhn6AmSPQdpqyyPAM0zE8ISzKWEQ25pG1XSEgoh05Vip0K5UfFxZxOs+ZpE0ZdM2KDmtxkG8@vger.kernel.org, AJvYcCVEifq7tFCVdhml48c/27c3Wqrgq7kGKsX6OvhkzzeBADZGvv9H208tF7YPuURRQRhTGvggDU4hKqwsKZc4@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWf36VS6cGFWzgXMifPpuIAe4cyKj2LWEYVzF6nNS+m2uDu74e
+	48RRRAqsv7NUcYP+WAbGDH9GfvhT5f2ZvTtGd/t9SNhTZMuLKS/VeEgNX7stMMVWYJpwJ1lWEMS
+	3RySbpl5kHkuXR5oTxLhdgb1oWYconKo=
+X-Google-Smtp-Source: AGHT+IFJ3kDdM5H+GRuOgNJJBwjIOxESOp1AjwLoWvDHUkQ5KKAYOCJXvOdKVA/Db2Lun62V4eTjhDIhzSHQN2Ps0DE=
+X-Received: by 2002:a05:6820:6689:b0:615:e0be:75df with SMTP id
+ 006d021491bc7-615e0be7626mr1790796eaf.3.1753107647178; Mon, 21 Jul 2025
+ 07:20:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250721-vmcore_hw_error-v2-1-ab65a6b43c5a@debian.org>
+References: <999bc59ab1cb18764c5b85afb75da9625365ce1a.1752959347.git.mail@maciej.szmigiero.name>
+In-Reply-To: <999bc59ab1cb18764c5b85afb75da9625365ce1a.1752959347.git.mail@maciej.szmigiero.name>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 21 Jul 2025 16:20:36 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jKgKzsdGq6scU7fozFgerhPLEMJi93RHV7f=iRc1VY8Q@mail.gmail.com>
+X-Gm-Features: Ac12FXztYK4pFzYYmyF2NyGePQz9Aqoeg3arWmeIFM5KfmzCW98r5A8A7nUH9rw
+Message-ID: <CAJZ5v0jKgKzsdGq6scU7fozFgerhPLEMJi93RHV7f=iRc1VY8Q@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: PM: Add HP EliteBook 855 G7 WWAN modem power
+ resource quirk
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 21, 2025 at 03:13:40AM -0700, Breno Leitao wrote:
-> Introduce a generic infrastructure for tracking recoverable hardware
-> errors (HW errors that did not cause a panic) and record them for vmcore
-> consumption. This aids post-mortem crash analysis tools by preserving
-> a count and timestamp for the last occurrence of such errors.
-> 
-> This patch adds centralized logging for three common sources of
+On Sat, Jul 19, 2025 at 11:26=E2=80=AFPM Maciej S. Szmigiero
+<mail@maciej.szmigiero.name> wrote:
+>
+> This laptop (and possibly similar models too) has power resource called
+> "GP12.PXP_" for its Intel XMM7360 WWAN modem.
+>
+> For this power resource to turn ON power for the modem it needs certain
+> internal flag called "ONEN" to be set:
+>
+> Method (_ON, 0, NotSerialized) // _ON_: Power On
+> {
+>         If (^^^LPCB.EC0.ECRG)
+>         {
+>                 If ((ONEN =3D=3D Zero))
+>                 {
+>                         Return (Zero)
+>                 }
+> (..)
+>         }
+> }
+>
+> This flag only gets set from this power resource "_OFF" method, while the
+> actual modem power gets turned off during suspend by "GP12.PTS" method
+> called from the global "_PTS" (Prepare To Sleep) method.
+>
+> In fact, this power resource "_OFF" method implementation just sets the
+> aforementioned flag:
+>
+> Method (_OFF, 0, NotSerialized) // _OFF: Power Off
+> {
+>         OFEN =3D Zero
+>         ONEN =3D One
+> }
+>
+> Upon hibernation finish we try to set this power resource back ON since i=
+ts
+> "_STA" method returns 0 and the resource is still considered in use as it
+> is declared as required for D0 for both the modem ACPI device (GP12.PWAN)
+> and its parent PCIe port ACPI device (GP12).
+> But the "_ON" method won't do anything since that "ONEN" flag is not set.
 
-"Add centralized... "
+ONEN is not set when the image kernel gets control, which is not
+unexpected (the _OFF method of this power resource has not been
+evaluated yet), but I wonder why the power resource is off at that
+point.
 
-> recoverable hardware errors:
-> 
->   - PCIe AER Correctable errors
->   - x86 Machine Check Exceptions (MCE)
->   - APEI/CPER GHES corrected or recoverable errors
-> 
-> hwerror_tracking is write-only at kernel runtime, and it is meant to be
-> read from vmcore using tools like crash/drgn. For example, this is how
-> it looks like when opening the crashdump from drgn.
-> 
-> 	>>> prog['hwerror_tracking']
-> 	(struct hwerror_tracking_info [3]){
-> 		{
-> 			.count = (int)844,
-> 			.timestamp = (time64_t)1752852018,
-> 		},
-> 		...
-> 
+_PTS is only evaluated while preparing to hibernate or suspend the
+system, so the restore kernel (the one started to load the image and
+jump to the target kernel stored in the image) does not evaluate it
+and the power resource is off nevertheless.
 
-I'm still missing the justification why rasdaemon can't be used here.
-You did explain it already in past emails.
+I gather that during regular initialization it gets turned on somehow?
 
-> +enum hwerror_tracking_source {
-> +	HWE_RECOV_AER,
-> +	HWE_RECOV_MCE,
-> +	HWE_RECOV_GHES,
-> +	HWE_RECOV_MAX,
-> +};
+> Overall, this means the modem is dead after hibernation finish until the
+> laptop is rebooted since the modem power has been cut by "_PTS" and its P=
+CI
+> configuration was lost and not able to be restored.
 
-Are we confident this separation will serve all cloud dudes?
+Well, I'm not sure about this.
+
+_PTS is evaluated during hibernation, but the BIOS gets control next.
+It reinitializes the platform (presumably not completely) and starts
+the boot loader which loads the restore kernel, which carries out a
+regular kernel initialization of the platform including the
+acpi_scan_init(), and that should turn the power resource in question
+on.  It doesn't do it and I wonder why.
+
+Something seems to be missing in that path.
+
+Anyway, it looks like it might suffice to add an initialization quirk
+for this power resource to evaluate _OFF and _ON for it to start with,
+in acpi_add_power_resource().
+
+> The easiest way to workaround this issue is to call this power resource
+> "_OFF" method before calling the "_ON" method to make sure the "ONEN"
+> flag gets properly set.
+>
+> This makes the modem alive once again after hibernation finish - with
+> properly restored PCI configuration space.
+>
+> Since this platform does *not* support S3 the fact that
+> acpi_resume_power_resources() is also called during resume from S3 is
+> not a problem there.
+>
+> Do the DMI based quirk matching and quirk flag initialization just
+> once - in acpi_power_resources_init() function similar to existing
+> acpi_*_init() functions.
+>
+> This way the whole resume path overhead of this change on other systems
+> amounts to hp_eb_gp12pxp_quirk flag comparison.
+>
+> Opportunistically convert the single already existing DMI match-based
+> quirk in this ACPI power resource handler ("leave unused power
+> resources on" quirk) to the same one-time initialization in
+> acpi_power_resources_init() function instead of re-running that DMI
+> match each time acpi_turn_off_unused_power_resources() gets called.
+>
+> Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+> ---
+>
+> This Intel WWAN modem in general has *a lot* of issues with
+> suspend/resume on various laptop platforms (not only HP).
+>
+> More patches are needed for these, hopefully they can be mainlined
+> too so suspend/resume work out of the box for users (that's
+> important functionality on a laptop).
+>
+> See the following ModemManager issue containing patches also for
+> Thinkpad T14 G1 and Dell Precision 3561:
+> https://gitlab.freedesktop.org/mobile-broadband/ModemManager/-/issues/992
+>
+>
+> Changes from v1:
+> * Move hp_eb_gp12pxp_quirk flag initialization via DMI match to
+>   new acpi_power_resources_init() function for reduced resume path
+>   overhead.
+>
+> * Move also the existing DMI match-based quirk for leaving unused power
+>   resources ON to acpi_power_resources_init() function for consistency.
+>
+> * Update patch description about acpi_resume_power_resources() being
+>   called also from S3 resume not being an issue on this platform.
+>
+>  drivers/acpi/internal.h |  1 +
+>  drivers/acpi/power.c    | 86 ++++++++++++++++++++++++++++++++++++++++-
+>  drivers/acpi/scan.c     |  1 +
+>  3 files changed, 87 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+> index e2781864fdce..63354972ab0b 100644
+> --- a/drivers/acpi/internal.h
+> +++ b/drivers/acpi/internal.h
+> @@ -140,6 +140,7 @@ int __acpi_device_uevent_modalias(const struct acpi_d=
+evice *adev,
+>  /* ---------------------------------------------------------------------=
+-----
+>                                    Power Resource
+>     ---------------------------------------------------------------------=
+----- */
+> +void acpi_power_resources_init(void);
+>  void acpi_power_resources_list_free(struct list_head *list);
+>  int acpi_extract_power_resources(union acpi_object *package, unsigned in=
+t start,
+>                                  struct list_head *list);
+> diff --git a/drivers/acpi/power.c b/drivers/acpi/power.c
+> index b7243d7563b1..944c17b471d5 100644
+> --- a/drivers/acpi/power.c
+> +++ b/drivers/acpi/power.c
+> @@ -23,6 +23,7 @@
+>
+>  #define pr_fmt(fmt) "ACPI: PM: " fmt
+>
+> +#include <linux/delay.h>
+>  #include <linux/dmi.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> @@ -63,6 +64,9 @@ struct acpi_power_resource_entry {
+>         struct acpi_power_resource *resource;
+>  };
+>
+> +static bool hp_eb_gp12pxp_quirk;
+> +static bool leave_unused_power_resources_on_quirk;
+
+This name is a bit too long IMV.  unused_power_resources_quirk would suffic=
+e.
 
 > +
-> +#ifdef CONFIG_VMCORE_INFO
-> +void hwerror_tracking_log(enum hwerror_tracking_source src);
-> +#else
-> +void hwerror_tracking_log(enum hwerror_tracking_source src) {};
-> +#endif
-> +
->  #endif /* LINUX_VMCORE_INFO_H */
-> diff --git a/kernel/vmcore_info.c b/kernel/vmcore_info.c
-> index e066d31d08f89..23d7ddcd55cdd 100644
-> --- a/kernel/vmcore_info.c
-> +++ b/kernel/vmcore_info.c
-> @@ -31,6 +31,13 @@ u32 *vmcoreinfo_note;
->  /* trusted vmcoreinfo, e.g. we can make a copy in the crash memory */
->  static unsigned char *vmcoreinfo_data_safecopy;
->  
-> +struct hwerror_tracking_info {
-> +	int __data_racy count;
-> +	time64_t __data_racy timestamp;
-> +};
-> +
-> +static struct hwerror_tracking_info hwerror_tracking[HWE_RECOV_MAX];
-> +
->  Elf_Word *append_elf_note(Elf_Word *buf, char *name, unsigned int type,
->  			  void *data, size_t data_len)
->  {
-> @@ -118,6 +125,17 @@ phys_addr_t __weak paddr_vmcoreinfo_note(void)
+>  static LIST_HEAD(acpi_power_resource_list);
+>  static DEFINE_MUTEX(power_resource_list_lock);
+>
+> @@ -992,6 +996,18 @@ struct acpi_device *acpi_add_power_resource(acpi_han=
+dle handle)
 >  }
->  EXPORT_SYMBOL(paddr_vmcoreinfo_note);
->  
-> +void hwerror_tracking_log(enum hwerror_tracking_source src)
+>
+>  #ifdef CONFIG_ACPI_SLEEP
+> +static bool resource_is_gp12pxp(acpi_handle handle)
+> +{
+> +       const char *path;
+> +       bool ret;
+> +
+> +       path =3D acpi_handle_path(handle);
+> +       ret =3D path && strcmp(path, "\\_SB_.PCI0.GP12.PXP_") =3D=3D 0;
+> +       kfree(path);
 
-A function should have a verb in its name explaining what it does:
+Having to do this on every resume for every power resource on this
+platform seems a bit overkill to me.
 
-hwerr_log_error_type()
+Besides, if you add a new function for it, you might as well put
+everything including the final delay to it and call it instead of
+__acpi_power_on() for the quirky power resource.
 
-or so.
+That would be much cleaner code IMV.
 
--- 
-Regards/Gruss,
-    Boris.
+> +
+> +       return ret;
+> +}
+> +
+>  void acpi_resume_power_resources(void)
+>  {
+>         struct acpi_power_resource *resource;
+> @@ -1013,8 +1029,34 @@ void acpi_resume_power_resources(void)
+>
+>                 if (state =3D=3D ACPI_POWER_RESOURCE_STATE_OFF
+>                     && resource->ref_count) {
+> +                       bool eb_gp12pxp =3D hp_eb_gp12pxp_quirk &&
+> +                               resource_is_gp12pxp(resource->device.hand=
+le);
+> +
+> +                       if (eb_gp12pxp) {
+> +                               acpi_handle_notice(resource->device.handl=
+e,
+> +                                                  "HP EB quirk - turning=
+ OFF before ON\n");
+> +                               __acpi_power_off(resource);
+> +                       }
+> +
+>                         acpi_handle_debug(resource->device.handle, "Turni=
+ng ON\n");
+>                         __acpi_power_on(resource);
+> +
+> +                       if (eb_gp12pxp) {
+> +                               /*
+> +                                * Use the same delay as DSDT uses in mod=
+em _RST
+> +                                * method.
+> +                                *
+> +                                * Otherwise we get "Unable to change pow=
+er
+> +                                * state from unknown to D0, device
+> +                                * inaccessible" error for the modem PCI =
+device
+> +                                * after thaw.
+> +                                *
+> +                                * This power resource is normally being =
+enabled
+> +                                * only during thaw (once) so this wait i=
+s not
+> +                                * a performance issue.
+> +                                */
+> +                               msleep(200);
+> +                       }
+>                 }
+>
+>                 mutex_unlock(&resource->resource_lock);
+> @@ -1024,6 +1066,41 @@ void acpi_resume_power_resources(void)
+>  }
+>  #endif
+>
+> +static const struct dmi_system_id dmi_hp_elitebook_gp12pxp_quirk[] =3D {
+> +/*
+> + * This laptop (and possibly similar models too) has power resource call=
+ed
+> + * "GP12.PXP_" for its WWAN modem.
+> + *
+> + * For this power resource to turn ON power for the modem it needs certa=
+in
+> + * internal flag called "ONEN" to be set.
+> + * This flag only gets set from this power resource "_OFF" method, while=
+ the
+> + * actual modem power gets turned off during suspend by "GP12.PTS" metho=
+d
+> + * called from the global "_PTS" (Prepare To Sleep) method.
+> + * On the other hand, this power resource "_OFF" method implementation j=
+ust
+> + * sets the aforementioned flag without actually doing anything else (it
+> + * doesn't contain any code to actually turn off power).
+> + *
+> + * The above means that when upon hibernation finish we try to set this
+> + * power resource back ON since its "_STA" method returns 0 (while the r=
+esource
+> + * is still considered in use) its "_ON" method won't do anything since
+> + * that "ONEN" flag is not set.
+> + * Overall, this means the modem is dead until laptop is rebooted since =
+its
+> + * power has been cut by "_PTS" and its PCI configuration was lost and n=
+ot able
+> + * to be restored.
+> + *
+> + * The easiest way to workaround the issue is to call this power resourc=
+e
+> + * "_OFF" method before calling the "_ON" method to make sure the "ONEN"
+> + * flag gets properly set.
+> + */
+> +       {
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "HP"),
+> +                       DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 855 G7 =
+Notebook PC"),
+> +               },
+> +       },
+> +       {}
+> +};
+> +
+>  static const struct dmi_system_id dmi_leave_unused_power_resources_on[] =
+=3D {
+>         {
+>                 /*
+> @@ -1046,7 +1123,7 @@ void acpi_turn_off_unused_power_resources(void)
+>  {
+>         struct acpi_power_resource *resource;
+>
+> -       if (dmi_check_system(dmi_leave_unused_power_resources_on))
+> +       if (leave_unused_power_resources_on_quirk)
 
-https://people.kernel.org/tglx/notes-about-netiquette
+I'd prefer this change to go into a separate preparatory patch, along
+with the addition of acpi_power_resources_init().
+
+>                 return;
+>
+>         mutex_lock(&power_resource_list_lock);
+> @@ -1065,3 +1142,10 @@ void acpi_turn_off_unused_power_resources(void)
+>
+>         mutex_unlock(&power_resource_list_lock);
+>  }
+> +
+> +void __init acpi_power_resources_init(void)
+> +{
+> +       hp_eb_gp12pxp_quirk =3D dmi_check_system(dmi_hp_elitebook_gp12pxp=
+_quirk);
+> +       leave_unused_power_resources_on_quirk =3D
+> +               dmi_check_system(dmi_leave_unused_power_resources_on);
+> +}
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index fb1fe9f3b1a3..bb74e7834435 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -2702,6 +2702,7 @@ void __init acpi_scan_init(void)
+>         acpi_memory_hotplug_init();
+>         acpi_watchdog_init();
+>         acpi_pnp_init();
+> +       acpi_power_resources_init();
+>         acpi_int340x_thermal_init();
+>         acpi_init_lpit();
+
+I'm not yet convinced about adding a quirk to
+acpi_resume_power_resources().  I'd very much prefer to add one to the
+initialization part.
 
