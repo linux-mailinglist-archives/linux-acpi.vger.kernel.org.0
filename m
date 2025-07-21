@@ -1,47 +1,47 @@
-Return-Path: <linux-acpi+bounces-15263-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15264-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24969B0CB6C
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 22:14:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 248E9B0CC1C
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 22:50:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E7133A8E3C
-	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 20:14:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CF84545BEA
+	for <lists+linux-acpi@lfdr.de>; Mon, 21 Jul 2025 20:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A337239E94;
-	Mon, 21 Jul 2025 20:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF89623B633;
+	Mon, 21 Jul 2025 20:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lFAdcpLW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="USwBlGGy"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F84E2AD0F;
-	Mon, 21 Jul 2025 20:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B0222F16C;
+	Mon, 21 Jul 2025 20:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753128877; cv=none; b=Mh7JYSGj5moFlYfhbbQ7sOuRnHCjI7KPknehWuxAHgs7B/2S8z9AxtUB9onhaIXMNedlNEELb5+Vs3XRhRbwDUKKgEKOsMioBR8w+KZwfQbNIOJdfuwzct8SV5+ovIYtMD+MIEi5Wn86JDkdjwZmr1yGTwd5Q4GDLY5NYlRbeyI=
+	t=1753130994; cv=none; b=XcF5tWe03lfzSPFwvh9DS8+1MX74O3iRvJOvF9EbsgSwioqcLgmaPwHtiunOnwHPf16v10FsTUXRoTD+1pCFNZu1G5gAOm4VPlddyagvA2gxIWOWN4II1j2v1s+JpKiHsiE3FnOPOHhSLJE/K4aV6DxWgLYdQkN3FSS6UMnB7Es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753128877; c=relaxed/simple;
-	bh=4r/4nG1qgmsh/c5VG19N2iiUSmLvYYkyHl3DeygcpXA=;
+	s=arc-20240116; t=1753130994; c=relaxed/simple;
+	bh=RGpMFousrm9JXr2aga1XoiQZq81gXpkDZQCrU7p8kG4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MhzxgDWdlJ0HMexi0D6afif5SDahzMtkLQHqf/P+Xiru62VdSsf0D9ns7YVvreL/O41l1YtyfSyN2IVxh64o4bfHo2dSkc/z3NuaXfNxsf0raOCus6V0AzdSJ08dTpiuo3xwPDwvgoGlnLe2UcEEpOKrkzHOOWS6pm2vbHig4nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lFAdcpLW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75591C4CEED;
-	Mon, 21 Jul 2025 20:14:36 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=J+n0C7+8nLAWgOnQW0vsAOF+FaLhTTplzKC54xFgeQ6Gu6Yfxn82pTzBXT7OIcicQDss77m0fR5TKg4i6AgdpM5k8LR3a1Qvi/HMsV6fjtQoClC2B2Nh+HMcxqviyz4ogdjjtSdxhmiUaMIn2yEw5re21gJzMp9WCXi7VWIa34g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=USwBlGGy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464E6C4CEF4;
+	Mon, 21 Jul 2025 20:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753128876;
-	bh=4r/4nG1qgmsh/c5VG19N2iiUSmLvYYkyHl3DeygcpXA=;
+	s=k20201202; t=1753130994;
+	bh=RGpMFousrm9JXr2aga1XoiQZq81gXpkDZQCrU7p8kG4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lFAdcpLWaHxUml6OxVBwU6HF1hrXLHYFkb/H/aJEA6dwrS3fNYgpHHD9vBXhtoV4B
-	 DnlKcNVrSuy3OpcCNz5sLZixJ87BNNsHf8Wz/iXbKKuKn/4kGIyWtHqBOtZbDd1IXJ
-	 HugdwrRmbPiDKguHMjzYQAyiU+QjuAhDHP4sI+9soOwfvMemYiSYDeWbZvGVJV9Fex
-	 I+fr6vfi5W5pHpIw/Uwwc0t82cvI6vzhJdTGqyaczDCk68iZYr7Dm3hhNM2Cwu5lkJ
-	 0NpKGkTxKOKNy3D+Lz3rZTszczYJyLaRnmSD0gVfod3q27zUYqquJUIShZDNnZldk2
-	 WRNb0JXBCq60A==
-Date: Mon, 21 Jul 2025 13:14:36 -0700
+	b=USwBlGGycUbYKwRlz8H1PUciShFkTuZXfVpLM5MtEpyQ2A97ZmBOIYa0cGOwBplAM
+	 P/UloDehuLPGSIqgqNRVeLye3ZQJwvjrIvND/8XbCEE/heb6TuWjlHXRTmnHic7i+/
+	 ufyzJfA+Tj1dnxW4WNlS2ijwfnLETqFwratBaRXG4lRw2vboY071pv4Rgj4gG0uneL
+	 vJADYIT6M2Sug0BnFp+wdbmKStgy/2g++iMRLOa45PAedgg8EJByYxkT5u6rz9xzId
+	 7//OhF3fMircm2SYJfkHca/mWkXbMTQEr5KB9GUZB1xfjt2aV3YLzdWsmNabD0jVLY
+	 gzg6qfQMQz07w==
+Date: Mon, 21 Jul 2025 13:49:53 -0700
 From: Kees Cook <kees@kernel.org>
 To: Will Deacon <will@kernel.org>
 Cc: Ard Biesheuvel <ardb@kernel.org>, Mike Rapoport <rppt@kernel.org>,
@@ -87,13 +87,14 @@ Cc: Ard Biesheuvel <ardb@kernel.org>, Mike Rapoport <rppt@kernel.org>,
 	linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
 	llvm@lists.linux.dev
 Subject: Re: [PATCH v3 04/13] x86: Handle KCOV __init vs inline mismatches
-Message-ID: <202507211311.8DAC4C7@keescook>
+Message-ID: <202507211349.D93679FB25@keescook>
 References: <20250717231756.make.423-kees@kernel.org>
  <20250717232519.2984886-4-kees@kernel.org>
  <aHoHkDvvp4AHIzU1@kernel.org>
  <202507181541.B8CFAC7E@keescook>
  <CAMj1kXGAwjChyFvjQcTbL8dFXkFWnn9n47bkN7FP=+EsLNsJdg@mail.gmail.com>
  <aH42--h-ARsvX5Wk@willie-the-truck>
+ <202507211311.8DAC4C7@keescook>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -102,77 +103,81 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aH42--h-ARsvX5Wk@willie-the-truck>
+In-Reply-To: <202507211311.8DAC4C7@keescook>
 
-On Mon, Jul 21, 2025 at 01:47:55PM +0100, Will Deacon wrote:
-> On Sun, Jul 20, 2025 at 04:10:01PM +1000, Ard Biesheuvel wrote:
-> > On Sat, 19 Jul 2025 at 08:51, Kees Cook <kees@kernel.org> wrote:
-> > > On Fri, Jul 18, 2025 at 11:36:32AM +0300, Mike Rapoport wrote:
-> > > > On Thu, Jul 17, 2025 at 04:25:09PM -0700, Kees Cook wrote:
-> > > > > When KCOV is enabled all functions get instrumented, unless the
-> > > > > __no_sanitize_coverage attribute is used. To prepare for
-> > > > > __no_sanitize_coverage being applied to __init functions, we have to
-> > > > > handle differences in how GCC's inline optimizations get resolved. For
-> > > > > x86 this means forcing several functions to be inline with
-> > > > > __always_inline.
+On Mon, Jul 21, 2025 at 01:14:36PM -0700, Kees Cook wrote:
+> On Mon, Jul 21, 2025 at 01:47:55PM +0100, Will Deacon wrote:
+> > On Sun, Jul 20, 2025 at 04:10:01PM +1000, Ard Biesheuvel wrote:
+> > > On Sat, 19 Jul 2025 at 08:51, Kees Cook <kees@kernel.org> wrote:
+> > > > On Fri, Jul 18, 2025 at 11:36:32AM +0300, Mike Rapoport wrote:
+> > > > > On Thu, Jul 17, 2025 at 04:25:09PM -0700, Kees Cook wrote:
+> > > > > > When KCOV is enabled all functions get instrumented, unless the
+> > > > > > __no_sanitize_coverage attribute is used. To prepare for
+> > > > > > __no_sanitize_coverage being applied to __init functions, we have to
+> > > > > > handle differences in how GCC's inline optimizations get resolved. For
+> > > > > > x86 this means forcing several functions to be inline with
+> > > > > > __always_inline.
+> > > > > >
+> > > > > > Signed-off-by: Kees Cook <kees@kernel.org>
 > > > > >
-> > > > > Signed-off-by: Kees Cook <kees@kernel.org>
-> > > >
-> > > > ...
-> > > >
-> > > > > diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> > > > > index bb19a2534224..b96746376e17 100644
-> > > > > --- a/include/linux/memblock.h
-> > > > > +++ b/include/linux/memblock.h
-> > > > > @@ -463,7 +463,7 @@ static inline void *memblock_alloc_raw(phys_addr_t size,
-> > > > >                                       NUMA_NO_NODE);
-> > > > >  }
+> > > > > ...
 > > > > >
-> > > > > -static inline void *memblock_alloc_from(phys_addr_t size,
-> > > > > +static __always_inline void *memblock_alloc_from(phys_addr_t size,
-> > > > >                                             phys_addr_t align,
-> > > > >                                             phys_addr_t min_addr)
+> > > > > > diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> > > > > > index bb19a2534224..b96746376e17 100644
+> > > > > > --- a/include/linux/memblock.h
+> > > > > > +++ b/include/linux/memblock.h
+> > > > > > @@ -463,7 +463,7 @@ static inline void *memblock_alloc_raw(phys_addr_t size,
+> > > > > >                                       NUMA_NO_NODE);
+> > > > > >  }
+> > > > > >
+> > > > > > -static inline void *memblock_alloc_from(phys_addr_t size,
+> > > > > > +static __always_inline void *memblock_alloc_from(phys_addr_t size,
+> > > > > >                                             phys_addr_t align,
+> > > > > >                                             phys_addr_t min_addr)
+> > > > >
+> > > > > I'm curious why from all memblock_alloc* wrappers this is the only one that
+> > > > > needs to be __always_inline?
 > > > >
-> > > > I'm curious why from all memblock_alloc* wrappers this is the only one that
-> > > > needs to be __always_inline?
-> > >
-> > > Thread-merge[1], adding Will Deacon, who was kind of asking the same
-> > > question.
-> > >
-> > > Based on what I can tell, GCC has kind of fragile inlining logic, in the
-> > > sense that it can change whether or not it inlines something based on
-> > > optimizations. It looks like the kcov instrumentation being added (or in
-> > > this case, removed) from a function changes the optimization results,
-> > > and some functions marked "inline" are _not_ inlined. In that case, we end up
-> > > with __init code calling a function not marked __init, and we get the
-> > > build warnings I'm trying to eliminate.
-> 
-> Got it, thanks for the explanation!
-> 
-> > > So, to Will's comment, yes, the problem is somewhat fragile (though
-> > > using either __always_inline or __init will deterministically solve it).
-> > > We've tripped over this before with GCC and the solution has usually
-> > > been to just use __always_inline and move on.
-> > >
+> > > > Thread-merge[1], adding Will Deacon, who was kind of asking the same
+> > > > question.
+> > > >
+> > > > Based on what I can tell, GCC has kind of fragile inlining logic, in the
+> > > > sense that it can change whether or not it inlines something based on
+> > > > optimizations. It looks like the kcov instrumentation being added (or in
+> > > > this case, removed) from a function changes the optimization results,
+> > > > and some functions marked "inline" are _not_ inlined. In that case, we end up
+> > > > with __init code calling a function not marked __init, and we get the
+> > > > build warnings I'm trying to eliminate.
 > > 
-> > Given that 'inline' is already a macro in the kernel, could we just
-> > add __attribute__((__always_inline__)) to it when KCOV is enabled?
+> > Got it, thanks for the explanation!
+> > 
+> > > > So, to Will's comment, yes, the problem is somewhat fragile (though
+> > > > using either __always_inline or __init will deterministically solve it).
+> > > > We've tripped over this before with GCC and the solution has usually
+> > > > been to just use __always_inline and move on.
+> > > >
+> > > 
+> > > Given that 'inline' is already a macro in the kernel, could we just
+> > > add __attribute__((__always_inline__)) to it when KCOV is enabled?
+> > 
+> > That sounds like a more robust approach and, by the sounds of it, we
+> > could predicate it on GCC too. That would also provide a neat place for
+> > a comment describing the problem.
+> > 
+> > Kees, would that work for you?
 > 
-> That sounds like a more robust approach and, by the sounds of it, we
-> could predicate it on GCC too. That would also provide a neat place for
-> a comment describing the problem.
+> That seems like an extremely large hammer for this problem, IMO. It
+> feels like it could cause new strange corner cases. I'd much prefer the
+> small fixes I've currently got since it keeps it focused. KCOV is
+> already enabled for "allmodconfig", so any new instances would be found
+> very quickly, etc. (And GCC's fragility in this regard has already been
+> exposed to these cases -- it's just that I changed one of the
+> combinations of __init vs inline vs instrumentation.
 > 
-> Kees, would that work for you?
+> I could give it a try, if you really prefer the big hammer approach...
 
-That seems like an extremely large hammer for this problem, IMO. It
-feels like it could cause new strange corner cases. I'd much prefer the
-small fixes I've currently got since it keeps it focused. KCOV is
-already enabled for "allmodconfig", so any new instances would be found
-very quickly, etc. (And GCC's fragility in this regard has already been
-exposed to these cases -- it's just that I changed one of the
-combinations of __init vs inline vs instrumentation.
-
-I could give it a try, if you really prefer the big hammer approach...
+I gave it a try -- it fails spectacularly. ;) Let's stick to my small
+fixes instead?
 
 -- 
 Kees Cook
