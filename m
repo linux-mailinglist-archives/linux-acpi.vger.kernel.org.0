@@ -1,307 +1,220 @@
-Return-Path: <linux-acpi+bounces-15284-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15285-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E510B0E239
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 18:57:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 091E8B0E28C
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 19:25:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 811F4548308
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 16:57:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31D163B72BE
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 17:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EF227F4D5;
-	Tue, 22 Jul 2025 16:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A7927F749;
+	Tue, 22 Jul 2025 17:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ceFrNi1k"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589BA1FECAF;
-	Tue, 22 Jul 2025 16:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC9D27EC78;
+	Tue, 22 Jul 2025 17:25:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753203414; cv=none; b=WTErUfB014oA2E/+VxnHTBAjyQ1xiFSYgncIskXsY8r8AEceK2xtqy4mjqPaLWS0TbZDcoRe8tFZv8DQJkbBOP0ZnwQYo0e7TMIX/Hwzp/qB10y86OBOjC7ipbO6wk5LIPuvroduxK/Wph8cSEuD078QF3jaeZrS7/NhQN7Jx5A=
+	t=1753205103; cv=none; b=kNvJKsjbUwsWZ945chHu6WrWh7N6lDdJDzpYVqG4HueeTGnfi0xLc98PmUNuER0QTzGtPyyTUECkGcklhQh+Q0JEulWzlHJkA4Ljv+0k3475KIA8chXW3twb/0FoZPoF52O41r8ehjKvBFUctPtB2+9OMJVuBmNp2T6PA2Ft3/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753203414; c=relaxed/simple;
-	bh=mDC8389t2+JWUjueofRYUrCIHY6cXFw3h6b4pxyIR1A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZB7me35BfHp+sBtaGtnmv4pWuwfmhjUT21CZ3ORd9sEhStZy+mwbS+qtMjtDquDKZmpSBW70EJ/4Tmt4+TTtV0N5aKKNYa50gQCNtfmOf7iHUJIwoIEWMTG7yVtQoK8aPnev3gvZTSw5xZH/K30lEXwkpgCDTsRb6znKRMmQvqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-607cc1a2bd8so9005344a12.2;
-        Tue, 22 Jul 2025 09:56:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753203411; x=1753808211;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Y65MISs+ayKi1h/c+6Q6S5YM36LuH85b0lohq9HpFs4=;
-        b=nTwNbEvz7QXtX7SjyisR9JpjL4pyd4OWvCONOAQtQ78jQQkvj1RjngbXgfBNRQkBs6
-         IwvT4fzF/X1eeoLt+pyuXMAtzoD/zvuj41xcggd5k4F0/xxjeMieWc2541pDgRA7q0Dx
-         xEkTdYMM99dBLVY8BY27NOmW++FVdVdUPJ8T4VUEYUN6kLbB4RQKsgxA50BtEMJMoSss
-         YmiqpCcijVQsNL2vvkWrfOIsuVDcNAT53Mqs3G8tsmmq0WSFmaKtfP5PZ7g8tKal7SK4
-         PXOXFQUf9v8t/jQAnCBo8wnoXBFDwmHUFa6u7n2NE1WviAXWIpd3FuGnYhBnGJjeeZIW
-         1KMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUzAKRORDIt8daBqfRohmtn3VhOOawMJ7lruqBULI1Q8F2abneaBqirZWF9v6Ax2M9ipSZUz5pfhNtU3OYV@vger.kernel.org, AJvYcCV6OBNIbJcCRQ/SOxvtE+bkCmipDnVcU0SQPiuNIISPtE8r6rt26kOvu2ywvcfjVORTCqumnvbSH4Z6@vger.kernel.org, AJvYcCVbxFMMCGvCBd4B76eENv+yVSYHHibGeJS8gjQuQ93QmsTmayVmd2ZqnkxMBv3zz6ESLCPVuKQBQ4vv@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPD0inmYRHwzqh4t1zYq8I99XecYPUJtAQ5ZDxgqiHsY4AcVde
-	Jsw0iCSQTrR0j7cUNkvCSF6ejckNxyP7EB55RnrVM/Lo921J+5kIh8iJ
-X-Gm-Gg: ASbGncv3LmuaFYE1w13I+vZ/B3p3etaVlwJMZIJv6Pm7BC/5ehf5V2niqMmWfMjqZZ5
-	4bVi9baj/SCOAaa1FJOLdGBazRE8g+3LhBJgWBm/r749llMUlIrin2DSpd6FtZv6YopusmKNBRO
-	fEyjJ+a26kNhbQJsujl9XfNAuFSFYjk1K9sFlFyej7nbiqccekexcoNpOrvgeY8AvNSXbpOyMHb
-	mTuSlM6gCOqAPxBdBI7573ODAPfiRBgvkmRHIRBM1HKotIGfQpmYkSsf3/rOl546Z60ihJF0H9/
-	SrkB20dGZNmReoxIEbXFifRSiVrpP0NhsNW+7aMLRw9lJaIO+QzXvr/a/SnipzriuQQC4a0GESC
-	yirq5ABqOYU/qB8e3ws+vyRE=
-X-Google-Smtp-Source: AGHT+IH1AYyufkWnx6tJRuJWQqKT1LagkvCibf5kL4lR2YqMxA4GaifFCKYDzqx6UoyX8YSH9UzPZQ==
-X-Received: by 2002:a17:907:a647:b0:ad8:a935:b8ff with SMTP id a640c23a62f3a-ae9ce094585mr2656153566b.31.1753203410260;
-        Tue, 22 Jul 2025 09:56:50 -0700 (PDT)
-Received: from localhost ([2a03:2880:30ff:7::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6c7d81e9sm891979866b.49.2025.07.22.09.56.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Jul 2025 09:56:49 -0700 (PDT)
-From: Breno Leitao <leitao@debian.org>
-Date: Tue, 22 Jul 2025 09:56:37 -0700
-Subject: [PATCH v3] vmcoreinfo: Track and log recoverable hardware errors
+	s=arc-20240116; t=1753205103; c=relaxed/simple;
+	bh=Pz10GjGrwbBssSWDb1PxSY6xRzltyNWVn72u1fnSTtU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hGiJpmLBlU3ysgrQITpWYWrIAy85J+08eMfgKwmr9f5oiqepvvgmVvGc/V3KjVsrClvw9MX8SxlpEnzQm57h68QTiCV6wh63qUGxj+sOpaQ0oeHHQ71lMaXkWwDuoLgTUHydbFfva7ml2CGRdqP9Pj++R2sI5hA0I4fFdufRV98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ceFrNi1k; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753205101; x=1784741101;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=Pz10GjGrwbBssSWDb1PxSY6xRzltyNWVn72u1fnSTtU=;
+  b=ceFrNi1kQz1IU4aRPgFA4/4k7xUek7GyDlBOG1h6Pqh0gTgIvvdQ2kVy
+   B2ixlmGifAHDxUzkr5yb63ZF6B4zmoyKx465+BkQenuimwEcGyCQ0LmfK
+   uGzjpLvZGabSqQNcMEi4uJK/tmsONi4MtSSYWiA82GOiM0EY0/76/TOxe
+   U6rOVHkrtzDkXZsiDcqHh98kkW9801NZ0prJ2WMP3oGE19bAbpOp6aN2I
+   gsNGWOtbeIksh/z039hnkEHlsznu5Uwb8RylClzehHQKatMOGh+Yje7oR
+   otrZHxuZsxWHJEy1GV3A0MFPddv/9yMG3/DsinNxZFN9AzcTRlgr9AKJ6
+   g==;
+X-CSE-ConnectionGUID: wyGCjv23SU6TxrOX7qxFiQ==
+X-CSE-MsgGUID: uelW5UUvSmun65GghSm3Ag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="58084680"
+X-IronPort-AV: E=Sophos;i="6.16,332,1744095600"; 
+   d="scan'208";a="58084680"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 10:25:00 -0700
+X-CSE-ConnectionGUID: zIHaSsJmToq4YiGQYZ8xzQ==
+X-CSE-MsgGUID: iy/iskv2RwSC9oTvTTPiYg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,332,1744095600"; 
+   d="scan'208";a="196291876"
+Received: from dwesterg-mobl1.amr.corp.intel.com ([10.125.108.137])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 10:25:00 -0700
+Message-ID: <4f534cc70650111e420d5ac9040df4e546eed336.camel@linux.intel.com>
+Subject: Re: [BUG] intel_pstate: CPU frequencies miscalculated/incorrectly
+ detected on Arrow Lake hardware
+From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To: Aaron Rainbolt <arainbolt@kfocus.org>, lenb@kernel.org, rjw@rjwysocki.net
+Cc: linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	kernel-team@lists.ubuntu.com
+Date: Tue, 22 Jul 2025 10:24:42 -0700
+In-Reply-To: <20250722113133.3a048c7a@kf-m2g5>
+References: <20250517223323.6e13bf58@kf-m2g5>
+	 <20250722113133.3a048c7a@kf-m2g5>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250722-vmcore_hw_error-v3-1-ff0683fc1f17@debian.org>
-X-B4-Tracking: v=1; b=H4sIAMTCf2gC/23PwQrCMBAE0F8Je26k2aSp9uR/iEiSbm0ONrKVq
- JT+u1QUFL0OzBtmgpE40giNmIApxzGmARqhCwGhd8ORZGyhEYAlVmVd1jKfQmI69NcDMSeWGtH
- ghmzQykIh4MzUxdtT3O0LAX0cL4nvz4GslvRlKfNjZSWVXIfOVNR6q7XZtuSjG1aJj7BgGT8B+
- wugVLJT67qrW4vOu0+geL9A9b/ovK2c9UaH6qu4n+f5AaB/gXMpAQAA
-X-Change-ID: 20250707-vmcore_hw_error-322429e6c316
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
- James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, 
- Borislav Petkov <bp@alien8.de>, Robert Moore <robert.moore@intel.com>, 
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- acpica-devel@lists.linux.dev, osandov@osandov.com, 
- xueshuai@linux.alibaba.com, konrad.wilk@oracle.com, 
- linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-pci@vger.kernel.org, kernel-team@meta.com, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-dd21f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6616; i=leitao@debian.org;
- h=from:subject:message-id; bh=mDC8389t2+JWUjueofRYUrCIHY6cXFw3h6b4pxyIR1A=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBof8LQP0mW5Apo3fJr4Kr3UWtr7a5fUV3ENzs3z
- bsR6oroctuJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaH/C0AAKCRA1o5Of/Hh3
- bfrmEACWV0Y2NzNaS+rMrKfK+UXuqYwjEo8CgQ+ePFSlXXZwP6FW3WTvwMh7PSTQdr7ywWj4Axk
- wwTbPaFU5BYeUK1aKZ8d3hkkuT7SD9ea4mOPr9rqK9h6yw+NkQbC/CuKVWHzuv8mpDZavcZ7b+V
- oK04g/W4hahVLe0TcmPc1npBK4Bk+cubix+NP7YG1TelB2vHAr44zCdlp732X+0sIZ7vSqg+IHV
- FSWEEMoU5x/aG75jE7VKxbfgpOBkqenHN7akQrh6MnD7eahJu2fY/q5HQOUmXPAv0oE9ZMOOjK6
- iYAkjaL8E3pGUksfwB4omeIzF/J5bnMwm3TMamhYbrx/5A3MCn0JBiTxkPpjw8OOE0ySRFEXX49
- 2jbUXS+1tr9sx6TgQUKt729saRYUe5fJBuoYMA+b8OqebtNpV43EKQgA2q5pGqA/ak4R78MeDOT
- Bnq1CGyZ0oH1UqLbMxjrEQZVGUQbM8xhmluGo57IG5crD6XJjLNzjx5xloqE4Ohvj1SZ/mAnHYy
- DzJRuAiLhkYtcxVEombXzHMpYVO+7jflrN7vsn8ND67bODDLjUbd7V475HSx2pTxD+P4aLKnju3
- BgYljXOPgd5Pdi6NphcpJaC+OteLJxrk/F0hrvVL2Cql5+QkBy32qJ/+FSUul+BxYmqfjU9mbQu
- E0VQF/26shq/x+Q==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-Introduce a generic infrastructure for tracking recoverable hardware
-errors (HW errors that did not cause a panic) and record them for vmcore
-consumption. This aids post-mortem crash analysis tools by preserving
-a count and timestamp for the last occurrence of such errors.
+On Tue, 2025-07-22 at 11:31 -0500, Aaron Rainbolt wrote:
+> On Sat, 17 May 2025 22:33:23 -0500
+> Aaron Rainbolt <arainbolt@kfocus.org> wrote:
+>=20
+> > We have tested three systems with Arrow Lake CPUs, and all of them
+> > report incorrect max and base frequencies. Two systems have Ultra 9
+> > 275 HX CPUs, and one has an Ultra 5 225 H. The problem occurs with
+> > both the Ubuntu 6.11 kernel and the 6.14.6 mainline kernel.
+> >=20
+> > How these values are misreported appears to depend on the CPU. On
+> > the
+> > Ultra 9 275HX systems when running Ubuntu=E2=80=99s 6.11.0-1015-oem ker=
+nel,
+> > the max reported frequency on a golden core is 5000000; however,
+> > the
+> > CPU spec says it should be 5400000. In contrast, on an Ultra 5 225H
+> > system, the max reported frequency on a golden core is 6200000;
+> > however, the spec says it should be 4900000.=20
+> >=20
+> > This bug is troublesome to end users because many CPU monitoring
+> > apps
+> > will report the CPU is running quite a bit slower or faster than
+> > the
+> > spec. Tools such as cpupower-gui, cpufreq-info, and cpufreq-set all
+> > show incorrect values because they read cpuinfo_max_freq and
+> > base_frequency, and write scaling_max_freq values in
+> > /sys/devices/system/cpu/cpufreq/policy* directories.=20
+> >=20
+> > The following bash script shows the incorrect values read from the
+> > cpuinfo_max_freq and base_frequency files. It also shows how the
+> > actual max frequencies attained are as expected. The example values
+> > shown come from an Ultra 9 275 HX CPU.
+> >=20
+> > =C2=A0=C2=A0=C2=A0 echo; echo '=3D=3D BEGIN =3D=3D';
+> > =C2=A0=C2=A0=C2=A0 echo 'Ensure turbo is on';
+> > =C2=A0=C2=A0=C2=A0 cd /sys/devices/system/cpu;
+> > =C2=A0=C2=A0=C2=A0 echo '0' |sudo tee intel_pstate/no_turbo > /dev/null=
+;
+> > =C2=A0=C2=A0=C2=A0 if grep -q '0' intel_pstate/no_turbo; then echo 'Tur=
+bo is on';
+> > fi
+> >=20
+> > =C2=A0=C2=A0=C2=A0 echo; echo 'Find top 2 golden cores';
+> > =C2=A0=C2=A0=C2=A0 cd /sys/devices/system/cpu/cpufreq/;
+> > =C2=A0=C2=A0=C2=A0 grep . policy*/cpuinfo_max_freq \
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | awk -F: '{print $2" "$1}' |sort -rn | =
+head -n2;
+> > =C2=A0=C2=A0=C2=A0 #> 5000000 policy2/cpuinfo_max_freq
+> > =C2=A0=C2=A0=C2=A0 #> 5000000 policy3/cpuinfo_max_freq=C2=A0=20
+> >=20
+> > =C2=A0=C2=A0=C2=A0 echo; echo 'Confirm misreporting: per spec, this sho=
+uld be
+> > 5400000!'; grep . policy2/cpuinfo_max_freq; # 500000
+> >=20
+> > =C2=A0=C2=A0=C2=A0 echo; echo 'Confirm misreporting: per spec, this sho=
+uld be
+> > 2700000!' grep . policy2/base_frequency; # 2500000
+> >=20
+> > =C2=A0=C2=A0=C2=A0 echo; echo '# Run a CPU benchmark now, then press [ =
+Enter ] to
+> > see top 3 freqs.'; echo 'This will take 6 seconds to complete.';
+> > =C2=A0=C2=A0=C2=A0 read -r -p '# You should see that the freqs match th=
+e CPU
+> > specs.
+> > ';\ for i in {0..5}; do
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 grep . policy*/scaling_cur_freq | awk -F=
+: '{print $2" "$1}';
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sleep 1;
+> > =C2=A0=C2=A0=C2=A0 done |sort -rn |head -n3=20
+> > =C2=A0=C2=A0=C2=A0 #> 5400000 policy2/scaling_cur_freq
+> > =C2=A0=C2=A0=C2=A0 #> 5320159 policy2/scaling_cur_freq
+> > =C2=A0=C2=A0=C2=A0 #> 5241886 policy3/scaling_cur_freq=C2=A0=20
+> >=20
+> > =C2=A0=C2=A0=C2=A0 echo; echo '=3D=3D END=C2=A0=C2=A0 =3D=3D'; echo;
+> >=20
+> > The actual results, when running the above script, shows the
+> > cpuinfo_max_freq and base_frequencies values do not match those
+> > specified by Intel. With the 6.11.0-1021-oem Ubuntu Kernel, we see
+> > the
+> > following:
+> >=20
+> > > Turbo? | Core | Freq (spec) | Freq (report) | Freq (actual) |
+> > > Yes=C2=A0=C2=A0=C2=A0 | P=C2=A0=C2=A0=C2=A0 | 5.4 GHz=C2=A0=C2=A0=C2=
+=A0=C2=A0 | 5.0 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 5.4 GHz=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> > > No=C2=A0=C2=A0=C2=A0=C2=A0 | P=C2=A0=C2=A0=C2=A0 | 2.7 GHz=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 2.5 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2.7 GHz=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> > > Yes=C2=A0=C2=A0=C2=A0 | E=C2=A0=C2=A0=C2=A0 | 4.6 GHz=C2=A0=C2=A0=C2=
+=A0=C2=A0 | 4.6 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 4.6 GHz=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> > > No=C2=A0=C2=A0=C2=A0=C2=A0 | E=C2=A0=C2=A0=C2=A0 | 2.1 GHz=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 2.1 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2.1 GHz=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> >=20
+> > We have verified the cores are operating at their specified
+> > frequencies by running a demanding CPU benchmark while graphing
+> > frequencies with KDE System Monitor, on all 3 systems. This tool
+> > appeared to graph scaling_cur_freq values. Notice E-cores appear to
+> > be correctly reported. Also, all systems misinterpret values
+> > written
+> > to scaling_max_req with the apparent same error deltas: on the
+> > Ultra
+> > 9 275 HX, setting this value to 5000000 results in actual max
+> > frequencies of 5400000. Setting it to 2500000 results in max
+> > 2700000.
+> > Setting it to 1650000 results in max 2100000.
+> >=20
+> > The behavior with the 6.14.6 kernel is worse than with 6.11, with
+> > all
+> > values under-reported. Actual frequencies were not tested on
+> > 6.14.6:
+> >=20
+> > > Turbo? | Core | Freq (spec) | Freq (report) |
+> > > Yes=C2=A0=C2=A0=C2=A0 | P=C2=A0=C2=A0=C2=A0 | 5.4 GHz=C2=A0=C2=A0=C2=
+=A0=C2=A0 | 3.9 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> > > No=C2=A0=C2=A0=C2=A0=C2=A0 | P=C2=A0=C2=A0=C2=A0 | 2.7 GHz=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 2.0 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> > > Yes=C2=A0=C2=A0=C2=A0 | E=C2=A0=C2=A0=C2=A0 | 4.6 GHz=C2=A0=C2=A0=C2=
+=A0=C2=A0 | 3.3 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> > > No=C2=A0=C2=A0=C2=A0=C2=A0 | E=C2=A0=C2=A0=C2=A0 | 2.1 GHz=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 1.5 GHz=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> >=20
+> > Is it possible the math currently used for calculating CPU
+> > frequencies
+> > is no longer correct for Arrow Lake CPUs? This seems similar to the
+> > issue that was fixed by commit f5c8cf2 (cpufreq: intel_pstate:
+> > hybrid:
+> > Use known scaling factor for P-cores).
+>=20
+> Following up on this, is there any update or possible fix we could
+> test?
+I asked for some dumps before. We can try to inform the OEM of the
+system as this is a BIOS tables issue. What is the make and model of
+your system?
 
-Add centralized logging for three common sources of recoverable hardware
-errors:
-
-  - PCIe AER Correctable errors
-  - x86 Machine Check Exceptions (MCE)
-  - APEI/CPER GHES corrected or recoverable errors
-
-hwerror_data is write-only at kernel runtime, and it is meant to be
-read from vmcore using tools like crash/drgn. For example, this is how
-it looks like when opening the crashdump from drgn.
-
-	>>> prog['hwerror_data']
-	(struct hwerror_info[3]){
-		{
-			.count = (int)844,
-			.timestamp = (time64_t)1752852018,
-		},
-		...
-
-This helps fleet operators quickly triage whether a crash may be
-influenced by hardware recoverable errors (which executes a uncommon
-code path in the kernel), especially when recoverable errors occurred
-shortly before a panic, such as the bug fixed by
-commit ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them
-when destroying the pool")
-
-This is not intended to replace full hardware diagnostics but provides
-a fast way to correlate hardware events with kernel panics quickly.
-
-Suggested-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
-Changes in v3:
-- Add more information about this feature in the commit message
-  (Borislav Petkov)
-- Renamed the function to hwerr_log_error_type() and use hwerr as
-  suffix (Borislav Petkov)
-- Make the empty function static inline (kernel test robot)
-- Link to v2: https://lore.kernel.org/r/20250721-vmcore_hw_error-v2-1-ab65a6b43c5a@debian.org
-
-Changes in v2:
-- Split the counter by recoverable error (Tony Luck)
-- Link to v1: https://lore.kernel.org/r/20250714-vmcore_hw_error-v1-1-8cf45edb6334@debian.org
----
- arch/x86/kernel/cpu/mce/core.c |  3 +++
- drivers/acpi/apei/ghes.c       |  8 ++++++--
- drivers/pci/pcie/aer.c         |  2 ++
- include/linux/vmcore_info.h    | 14 ++++++++++++++
- kernel/vmcore_info.c           | 18 ++++++++++++++++++
- 5 files changed, 43 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 4da4eab56c81d..cb225a42eebbb 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -45,6 +45,7 @@
- #include <linux/task_work.h>
- #include <linux/hardirq.h>
- #include <linux/kexec.h>
-+#include <linux/vmcore_info.h>
- 
- #include <asm/fred.h>
- #include <asm/cpu_device_id.h>
-@@ -1692,6 +1693,8 @@ noinstr void do_machine_check(struct pt_regs *regs)
- out:
- 	instrumentation_end();
- 
-+	/* Given it didn't panic, mark it as recoverable */
-+	hwerr_log_error_type(HWERR_RECOV_MCE);
- clear:
- 	mce_wrmsrq(MSR_IA32_MCG_STATUS, 0);
- }
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index a0d54993edb3b..ebda2aa3d68f2 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -43,6 +43,7 @@
- #include <linux/uuid.h>
- #include <linux/ras.h>
- #include <linux/task_work.h>
-+#include <linux/vmcore_info.h>
- 
- #include <acpi/actbl1.h>
- #include <acpi/ghes.h>
-@@ -1136,13 +1137,16 @@ static int ghes_proc(struct ghes *ghes)
- {
- 	struct acpi_hest_generic_status *estatus = ghes->estatus;
- 	u64 buf_paddr;
--	int rc;
-+	int rc, sev;
- 
- 	rc = ghes_read_estatus(ghes, estatus, &buf_paddr, FIX_APEI_GHES_IRQ);
- 	if (rc)
- 		goto out;
- 
--	if (ghes_severity(estatus->error_severity) >= GHES_SEV_PANIC)
-+	sev = ghes_severity(estatus->error_severity);
-+	if (sev == GHES_SEV_RECOVERABLE || sev ==  GHES_SEV_CORRECTED)
-+		hwerr_log_error_type(HWERR_RECOV_GHES);
-+	else if (sev >= GHES_SEV_PANIC)
- 		__ghes_panic(ghes, estatus, buf_paddr, FIX_APEI_GHES_IRQ);
- 
- 	if (!ghes_estatus_cached(estatus)) {
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index e286c197d7167..1ab744a3b7310 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -30,6 +30,7 @@
- #include <linux/kfifo.h>
- #include <linux/ratelimit.h>
- #include <linux/slab.h>
-+#include <linux/vmcore_info.h>
- #include <acpi/apei.h>
- #include <acpi/ghes.h>
- #include <ras/ras_event.h>
-@@ -746,6 +747,7 @@ static void pci_dev_aer_stats_incr(struct pci_dev *pdev,
- 	switch (info->severity) {
- 	case AER_CORRECTABLE:
- 		aer_info->dev_total_cor_errs++;
-+		hwerr_log_error_type(HWERR_RECOV_AER);
- 		counter = &aer_info->dev_cor_errs[0];
- 		max = AER_MAX_TYPEOF_COR_ERRS;
- 		break;
-diff --git a/include/linux/vmcore_info.h b/include/linux/vmcore_info.h
-index 37e003ae52626..39afce28bfaac 100644
---- a/include/linux/vmcore_info.h
-+++ b/include/linux/vmcore_info.h
-@@ -77,4 +77,18 @@ extern u32 *vmcoreinfo_note;
- Elf_Word *append_elf_note(Elf_Word *buf, char *name, unsigned int type,
- 			  void *data, size_t data_len);
- void final_note(Elf_Word *buf);
-+
-+enum hwerr_error_type {
-+	HWERR_RECOV_AER,
-+	HWERR_RECOV_MCE,
-+	HWERR_RECOV_GHES,
-+	HWERR_RECOV_MAX,
-+};
-+
-+#ifdef CONFIG_VMCORE_INFO
-+void hwerr_log_error_type(enum hwerr_error_type src);
-+#else
-+static inline void hwerr_log_error_type(enum hwerr_error_type src) {};
-+#endif
-+
- #endif /* LINUX_VMCORE_INFO_H */
-diff --git a/kernel/vmcore_info.c b/kernel/vmcore_info.c
-index e066d31d08f89..4b5ab45d468f5 100644
---- a/kernel/vmcore_info.c
-+++ b/kernel/vmcore_info.c
-@@ -31,6 +31,13 @@ u32 *vmcoreinfo_note;
- /* trusted vmcoreinfo, e.g. we can make a copy in the crash memory */
- static unsigned char *vmcoreinfo_data_safecopy;
- 
-+struct hwerr_info {
-+	int __data_racy count;
-+	time64_t __data_racy timestamp;
-+};
-+
-+static struct hwerr_info hwerr_data[HWERR_RECOV_MAX];
-+
- Elf_Word *append_elf_note(Elf_Word *buf, char *name, unsigned int type,
- 			  void *data, size_t data_len)
- {
-@@ -118,6 +125,17 @@ phys_addr_t __weak paddr_vmcoreinfo_note(void)
- }
- EXPORT_SYMBOL(paddr_vmcoreinfo_note);
- 
-+void hwerr_log_error_type(enum hwerr_error_type src)
-+{
-+	if (src < 0 || src >= HWERR_RECOV_MAX)
-+		return;
-+
-+	/* No need to atomics/locks given the precision is not important */
-+	hwerr_data[src].count++;
-+	hwerr_data[src].timestamp = ktime_get_real_seconds();
-+}
-+EXPORT_SYMBOL_GPL(hwerr_log_error_type);
-+
- static int __init crash_save_vmcoreinfo_init(void)
- {
- 	vmcoreinfo_data = (unsigned char *)get_zeroed_page(GFP_KERNEL);
-
----
-base-commit: 97987520025658f30bb787a99ffbd9bbff9ffc9d
-change-id: 20250707-vmcore_hw_error-322429e6c316
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+Thanks,
+Srinivas
 
