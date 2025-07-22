@@ -1,112 +1,121 @@
-Return-Path: <linux-acpi+bounces-15277-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15278-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE264B0DE92
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 16:29:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A038B0DF36
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 16:45:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 913B75866C4
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 14:20:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E14E172D9A
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 14:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A5B2ED874;
-	Tue, 22 Jul 2025 14:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96712EAB7A;
+	Tue, 22 Jul 2025 14:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ei5JrRZT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hjGF1Ng9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEFF2ECE9D;
-	Tue, 22 Jul 2025 14:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB63570838;
+	Tue, 22 Jul 2025 14:39:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753193783; cv=none; b=AmwJsljSeXGz776vrM/WNbC9b3ExERVN5wbz6icxkc1gaU/ISEhwtehR+GJXWDk+x9xafLbobajNgd9SeI3qOtWQFD1RvjVCDhBQJ24bogHAmpbkcrgxAbMVPv+fTloCmjyXVy8NIkunMmrx0R1NIetuKGCyV7j+RxGZfjn2Vt0=
+	t=1753195165; cv=none; b=Ye6SaRxDmiHWTHISlxNsAh1SV42InU1SSwMXi5Q6VZ/qVqpjP+KB3tROMyGD8jmYLj3YGgYeAlo698fcgEDKyUUeC1n+taHxITgUEMcogiS8jvMw7sgJfEbr9Bw7iCois7Q5lM0YDbFAAHQOJw84c7IlyX4GDsD55fV/AeqD4AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753193783; c=relaxed/simple;
-	bh=lvlIsTL0552lQuywV3G4MsYNUlFAfmcSfSeYBIIh/yY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S9Jra0yhnYPvg42YUGwLAUwjRVqgZOPGb0IzhAVvhdgzdTo/pbt2tZvQXK7nW14HfRI1Dly5Ib8X6PvFYoUaUmr8H6pl1Z3bOYLN9NfeGKrILHop8pTcacYWbVIieGBkVbNPHUDJYQFlCBA9qFxmheO1S0X4wH92I8r7jPVyJQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ei5JrRZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B386DC4CEEB;
-	Tue, 22 Jul 2025 14:16:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193783;
-	bh=lvlIsTL0552lQuywV3G4MsYNUlFAfmcSfSeYBIIh/yY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ei5JrRZTyN4C5B/4kFm4mwRhz+yqyweq7Xu0VMe2JC6B36JyEJjvIhc0YpT2ob8/3
-	 uIgaSeOb/sndGFzmsiBkJyC+aljVAtzdyWS/X4+aylan5gA6gM89fmmOlI1Hv+6l5T
-	 FMUDpu5MUXtgb06TpotvnTRYwnOAeo49xyDNAkks=
-Date: Tue, 22 Jul 2025 16:08:09 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Thierry Reding <thierry.reding@gmail.com>
-Cc: x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, linux-mips@vger.kernel.org,
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-sh@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/7] syscore: Pass context data to callbacks
-Message-ID: <2025072218-decipher-spree-327d@gregkh>
-References: <20250717103241.2806798-1-thierry.reding@gmail.com>
- <2025071716-phoney-object-1648@gregkh>
- <rzbzah5iigz25jtxyqadnitkzkazxsaxntajhlfrfdslyioevk@pylcjkfh5n42>
- <2025071919-patience-cattishly-cf7c@gregkh>
- <l54i36uk33je744w4f47tehdopk5dsjotvozfv5b2hehmxrwpq@eins7awyq4dy>
+	s=arc-20240116; t=1753195165; c=relaxed/simple;
+	bh=evC1DJGyohfqttWOa/YapWO9JgbCdy7a+QBu40TKE8M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qgzI9XIKFJcwIlVsKwhBxOAju7/trWHPuZK/14GDlp8/DbgsPllms8/RfLkHrDo2hTaiG+Pg2sowxvybC0lYEfaHNvqB/SwZ1QnU6b4a7ZjlZ4VGt/C3YP3Js3bItYDQnlH/4/rM93ccJpDgkS1ETOy7bmEXZr6xv2fWtXwj4qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hjGF1Ng9; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753195164; x=1784731164;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=evC1DJGyohfqttWOa/YapWO9JgbCdy7a+QBu40TKE8M=;
+  b=hjGF1Ng9AbYfmcOUjNEZCmJlTpLVSeONoIjCnEX6SE/T7BeebeeqBQut
+   zeEH8m0c+8R23Qv/EmhEtEE61S2eI0C8qxxMlL7llUB+pbP70tVg41JV/
+   wG0HDN4dj3nKWWVI3c9UfQsjN5D0RM/X8QP4XgLSAKyvr+CedSxpp65pU
+   PYb9whHN3SwTy+XgppRohhxFgiafnf6wlX/EuIlrQ/0vQoX4mGa64oSih
+   L/XNmhvTSpg0+cf70o3wmGn3z3HGn0NnY4Qfdiw1g6duF1jyQH2Qf3ymu
+   RMibpT6vIUaf9bbnu73ChNFIuh2ttqOt2V278JPBUHVHPMU1EdrvegKUA
+   w==;
+X-CSE-ConnectionGUID: 6Xv/qgDoS3uyo4e8OlEgDg==
+X-CSE-MsgGUID: F5ESOWFgTmy2T6QhDKy2AA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="54667676"
+X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; 
+   d="scan'208";a="54667676"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 07:39:23 -0700
+X-CSE-ConnectionGUID: 8pnyQWiGTMO7UiIPOZIabg==
+X-CSE-MsgGUID: GO5eu8wfR+ugLAPG1lQrog==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; 
+   d="scan'208";a="164820245"
+Received: from chenyu-dev.sh.intel.com ([10.239.62.107])
+  by orviesa005.jf.intel.com with ESMTP; 22 Jul 2025 07:39:21 -0700
+From: Chen Yu <yu.c.chen@intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chen Yu <yu.chen.surf@foxmail.com>,
+	Chen Yu <yu.c.chen@intel.com>,
+	"Govindarajulu, Hariganesh" <hariganesh.govindarajulu@intel.com>
+Subject: [PATCH] ACPI: pfr_update: Fix the driver update version check
+Date: Tue, 22 Jul 2025 22:32:33 +0800
+Message-Id: <20250722143233.3970607-1-yu.c.chen@intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <l54i36uk33je744w4f47tehdopk5dsjotvozfv5b2hehmxrwpq@eins7awyq4dy>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 22, 2025 at 03:56:40PM +0200, Thierry Reding wrote:
-> On Sat, Jul 19, 2025 at 08:52:41AM +0200, Greg Kroah-Hartman wrote:
-> > On Fri, Jul 18, 2025 at 03:49:37PM +0200, Thierry Reding wrote:
-> > > On Thu, Jul 17, 2025 at 02:11:41PM +0200, Greg Kroah-Hartman wrote:
-> > > > On Thu, Jul 17, 2025 at 12:32:34PM +0200, Thierry Reding wrote:
-> [...]
-> > > 	struct syscore;
-> > > 
-> > > 	struct syscore_ops {
-> > > 		int (*suspend)(struct syscore *syscore);
-> > > 		void (*resume)(struct syscore *syscore);
-> > > 		void (*shutdown)(struct syscore *syscore);
-> > > 	};
-> > > 
-> > > 	struct syscore {
-> > > 		const struct syscore_ops *ops;
-> > > 		struct list_head node;
-> > > 	};
-> > > 
-> > > Is that what you had in mind?
-> > 
-> > I missed the list_head, so yes, this would be better, but don't pass
-> > back the syscore structure, how about just a void * instead, making the
-> > whole container_of() stuff go away?
-> 
-> Yeah, that's a possibility. I personally don't like passing the void *
-> around because it's easier to make mistakes that way. I also find it
-> unintuitive because it doesn't immediately show you what the functions
-> expect.
-> 
-> My understanding is that the container_of() should get optimized away
-> most of the time, so there aren't any obvious downsides that I can see.
+The security-version-number check should be used rather
+than the runtime version check for driver update. Otherwise
+the firmware update would fail when the update binary
+has a lower number of the runtime version than the
+current one.
 
-container_of() is just pointer math, but a cast is even faster :)
+Reported-by: "Govindarajulu, Hariganesh" <hariganesh.govindarajulu@intel.com>
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+---
+ drivers/acpi/pfr_update.c  | 2 +-
+ include/uapi/linux/pfrut.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-> But I don't feel very strongly, so if you have a strong preference for
-> void pointers, I can do that.
+diff --git a/drivers/acpi/pfr_update.c b/drivers/acpi/pfr_update.c
+index 031d1ba81b86..08b9b2bc2d97 100644
+--- a/drivers/acpi/pfr_update.c
++++ b/drivers/acpi/pfr_update.c
+@@ -310,7 +310,7 @@ static bool applicable_image(const void *data, struct pfru_update_cap_info *cap,
+ 	if (type == PFRU_CODE_INJECT_TYPE)
+ 		return payload_hdr->rt_ver >= cap->code_rt_version;
+ 
+-	return payload_hdr->rt_ver >= cap->drv_rt_version;
++	return payload_hdr->svn_ver >= cap->drv_svn;
+ }
+ 
+ static void print_update_debug_info(struct pfru_updated_result *result,
+diff --git a/include/uapi/linux/pfrut.h b/include/uapi/linux/pfrut.h
+index 42fa15f8310d..b77d5c210c26 100644
+--- a/include/uapi/linux/pfrut.h
++++ b/include/uapi/linux/pfrut.h
+@@ -89,6 +89,7 @@ struct pfru_payload_hdr {
+ 	__u32 hw_ver;
+ 	__u32 rt_ver;
+ 	__u8 platform_id[16];
++	__u32 svn_ver;
+ };
+ 
+ enum pfru_dsm_status {
+-- 
+2.25.1
 
-That's what you really want to have here, it's a syscore data type
-thing, that the callback wants to reference.  Just like a irqrequest_t
-function passes back a void * that the handler "knows" how to deal with
-properly.
-
-thanks,
-
-greg k-h
 
