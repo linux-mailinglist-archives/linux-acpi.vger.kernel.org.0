@@ -1,217 +1,194 @@
-Return-Path: <linux-acpi+bounces-15282-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15283-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C33EB0E14E
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 18:09:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D073B0E1F0
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 18:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C8F6AA77B7
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 16:09:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 186E77B6F82
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 16:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB04A27A451;
-	Tue, 22 Jul 2025 16:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B63027A928;
+	Tue, 22 Jul 2025 16:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="NxYOh0wn"
+	dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b="dzuAxxHP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B23C1E5B69;
-	Tue, 22 Jul 2025 16:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A79C1E4A9
+	for <linux-acpi@vger.kernel.org>; Tue, 22 Jul 2025 16:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753200585; cv=none; b=IF3OSXnq+3Zk+8bdOEocXigVm4r4XTapug9vqq1GZS76cIhZYndCLjwqlHBhtjkbSxb3N4N0WOixRa5aYtiJrMysker+vr2BmLpKXWjO2u1C/2A+z7XXaU1UKKm1HxatNq9yBBEfZ5Ke4PiHtwqIk5Hp5eGmaAP7QOjAApQUG+o=
+	t=1753201899; cv=none; b=Ik4R+/9nXGK48rFj4NJHusMqnGyTtFhE5MAOWpmoEGo1ChgCacfpFjGGrZzhRSKaV23w3BYz7uOLIIEzF0q8QY+/elFCuK+zZM2F7ekXhYnTs1+8P6JTddb3ZCdrsgfkfVTXvBrLEfFY+kc5AKO70IAO1APaepTlWR8OJXpVNvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753200585; c=relaxed/simple;
-	bh=DNMSnCUpupSxBs2I5aWAsVBdwIy2uXQbv4wv/xdkf98=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Gk2mIiR7ooGdFvgiCktfg56VfDTFQUeTgucFBoHCL1MCnuTbhc8h2DiOvKzKwNGK1DJz0DWKKwQPm1U3zl1evy77nByalMs2y46gSFNfucbwAUEYTFSRj2QkOrM3Okfcs7HdS0tgP9mMjMHusIW5peeE2UfXzIhHI8wLcmOWnl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=NxYOh0wn; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1753200579; x=1753805379; i=w_armin@gmx.de;
-	bh=WQ2S25k3eRQ+d9qHupzJvo+pxYLzJFrIHbpZgH924og=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=NxYOh0wngz9/esO+3CGUjE6NAOUHmOPwMX6d51uNnIr5BrpSOcj+R1fAplqlJJ8w
-	 CMDk04GwIrDZJuoAnvhJrFtkC1abfBd6GmGlHJCoMZ+nF7j7NaaCcmE7O2HsQAetS
-	 1PXfcymb4e3/JRTE9PYl1hkPMfFQRSQt0TVD68HNJ3xOrRGpwI3yFXmiTfcGJZTr7
-	 Nqecmdmqs+TPGgMi7h7JXJsoMRZmSYqOmrHOvlmZRY55XsQNEhlRovhSypTrHMJlw
-	 huU6LhH9725UebdUMCfKsFgzN8Ak6T4HmctTzJflkX6hPsIhyGUqyNJ8WCx4ElaRF
-	 iFUILPondjniqPwrVw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.0.24] ([87.177.78.219]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MPogF-1uHTU00oZH-00LbpD; Tue, 22
- Jul 2025 18:09:39 +0200
-Message-ID: <616bdb32-0d57-476b-8ad0-f2be3c5c9fbe@gmx.de>
-Date: Tue, 22 Jul 2025 18:09:37 +0200
+	s=arc-20240116; t=1753201899; c=relaxed/simple;
+	bh=8O69cNoFD7AllVOnd5n3rFHoG9oHmmDpmVgaClQAryo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GxmoRp2T6ahrb0Hf5rgnowjOvkmt8n9mEY6YezRa6knMbAOnZES04LHIKAl8Xb1yy6OfISzj/uBqtvhz3YGzvhM6stWPPFR9gz6qVoUV22PcqLCMTUIYB+gELOciM4Q6GWDPSQ/t6LMdcxrXFgHnpKRH4M8UNcH07NHr9Eh4QvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org; spf=pass smtp.mailfrom=kfocus.org; dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b=dzuAxxHP; arc=none smtp.client-ip=209.85.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kfocus.org
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-73e810dc4cdso1531895a34.0
+        for <linux-acpi@vger.kernel.org>; Tue, 22 Jul 2025 09:31:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kfocus-org.20230601.gappssmtp.com; s=20230601; t=1753201896; x=1753806696; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:organization:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OKxVxL/LAoBoT2zvn03u4QS0XQT3tH4BCQl9mQgSLO0=;
+        b=dzuAxxHPKGNG32wdvuNFFPEEsCrKFAvl6ijzTDMJfF71Bsk+IG9dZr4QM9A7pLpz0T
+         5hwQUUanf/P2gc+C4CHWId/U4Ipp7u7hifC/o6FTFyf2e1MZehowxAb78g7rAGj4360f
+         ll/+oxuLTf2SqfqjZZ2xPdkGU7DDLTuQgzHuqlwKn9Sy90qZxNjtg1DHFoplgcbNwtop
+         BP+sYEszlmEUW9bIuX2g1m2UDThJGa1IJDNk9UJX1Mm7ubTHb/WvyE+FXeG3bjAaJApF
+         r09Avfai9W+ZSaJtaxO5dxt4qihhes0w4WdCsNVERNVdkY0js+Ln+cD1GrJn3WVUHB0/
+         TtvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753201896; x=1753806696;
+        h=content-transfer-encoding:mime-version:organization:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OKxVxL/LAoBoT2zvn03u4QS0XQT3tH4BCQl9mQgSLO0=;
+        b=DA8LB2RzN7NYAfW2KcHvsaDgsOZihjSRoBWMCMIwB0VtvH11axceu9KkDy58+QimWI
+         6BdriAFJewNv9GMqOehEGdi8yycfXDff5SQLIh/2o/p1oTQI0eWNBrajyAdfnkVzGteS
+         SAVcH1Swbe3rVITtW9ygaqgSVmm7ofIjM4sZW9VXQwFM4iZFcsuZt2+ImeiZ/90nTHoZ
+         B1G9rY8cekg89MJ9JkpLRvAeMIDJ3hCyz3bOg1WgYG3avN6ACvyJf6wQOjV5gWhPg4iR
+         yJ/HbOLsGmowiY412Mdj0itdgEyyFxo2znu7EsiaH8jey0haRhJRjukRdDF5Wi83RT38
+         nO4g==
+X-Forwarded-Encrypted: i=1; AJvYcCV6wBEBcdKyefIQi7/y9EuxvFHtqqAmzSc+n6Qf/2QbSnsW+M0eMw0WvW+CJZIqxpVW6vrQO5pY5Fw4@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJ9e2lS30Efo6ue6GmxhSuP9SLQvBqqmdZMBZbJ6VV8D+9uvl/
+	4DfIZziGV/ryr8u4mxiXiurQLlZFwyYK2WNf3YmODzrveKlVHM5FktXqFCRWiyJIg+s=
+X-Gm-Gg: ASbGncv6TmC9aMJr/C8KkZAn4T1Q4TguJ/rXuezcJDsbtZZ0C9zJ6eY60yNmq4v9LaQ
+	D+UPkR3sUwsiwlQkz629rDQaAiGmWwGLAyO3brEMayfCFAE9/Xnfqgpy+nvcE5VJKxtGHH0wNpr
+	3faFc9oIDLsGCROr01VOWz9KMZxzWH4pqydvQyAf6susgGuu1qf46YEfOJXtdIr5kIu29kmz3bv
+	d/zycv0/lDmDsFZqUM5cYSWlWxX45h8RYJ1OnOcexH11JcCrEFnIM0iOnC8nVvEbump+Yp1Brrz
+	CBq2cPss21nTb5GRak1LrHWJVeuL/07HylnE+AjNe/qL533KMRtw5NwdOyBzhkzUVZeOPfYN0PC
+	muswlAUUkC4+2Cnseqeif
+X-Google-Smtp-Source: AGHT+IEJXPfNhEgj6Ylfn91LH0XYYsRLvRZhaGuYQ2/jHp5T9SVcaV36Pthzwfk9FBWVTgeM/c78VA==
+X-Received: by 2002:a05:6830:d07:b0:72b:84a7:47e0 with SMTP id 46e09a7af769-73e649c8a5dmr18665143a34.1.1753201896532;
+        Tue, 22 Jul 2025 09:31:36 -0700 (PDT)
+Received: from kf-m2g5 ([2607:fb90:bf84:45ad:48e4:ec32:d2d1:cd6e])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-5084c786c5dsm2627468173.15.2025.07.22.09.31.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Jul 2025 09:31:36 -0700 (PDT)
+Date: Tue, 22 Jul 2025 11:31:33 -0500
+From: Aaron Rainbolt <arainbolt@kfocus.org>
+To: srinivas.pandruvada@linux.intel.com, lenb@kernel.org, rjw@rjwysocki.net
+Cc: linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ kernel-team@lists.ubuntu.com
+Subject: Re: [BUG] intel_pstate: CPU frequencies miscalculated/incorrectly
+ detected on Arrow Lake hardware
+Message-ID: <20250722113133.3a048c7a@kf-m2g5>
+In-Reply-To: <20250517223323.6e13bf58@kf-m2g5>
+References: <20250517223323.6e13bf58@kf-m2g5>
+Organization: Kubuntu Focus
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Missing ACPI driver for a keyboard button in Xiaomi RedmiBook Pro
- 16
-To: Nikita Krasnov <nikita.nikita.krasnov@gmail.com>,
- linux-acpi@vger.kernel.org, linux-input@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, linux@weissschuh.net, fengwk94@gmail.com
-References: <6c7e2d8a-8c79-4311-8126-c888a6519c71@gmail.com>
- <68cc7f60-39b1-47f3-9120-82f8b0f26d9c@gmx.de>
- <b1f1fa0f-fd32-4e5d-a9df-9ac2af428a86@gmail.com>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <b1f1fa0f-fd32-4e5d-a9df-9ac2af428a86@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Scq8WI1nb8wnBmhwIyLj4+kc/Sl6hL1757rHz6Wf3XPvaR+s6ai
- 3ZdleLYoeC7wt5utu8Y0jpC5Sdlci31s2WGSzjWEnazC6Y7gyNEMqLow2786aP5wUHLkKQ5
- ymYblf3v8a8RaMtahsGZdYwRthb96TNH0lKlwNMWmBUtV71Z2RB96TOytwY6tla7pJUM3WQ
- pDL9/4GU6vOgSAZ5lL/Fw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:zYRX0oVDKKY=;0y4dghwAOa/CZ8rzZeh9MzwXLfe
- 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
 
-Am 22.07.25 um 14:48 schrieb Nikita Krasnov:
+On Sat, 17 May 2025 22:33:23 -0500
+Aaron Rainbolt <arainbolt@kfocus.org> wrote:
 
-> On Mon, Jul 21, 2025 at 02:23:32AM +0300 Armin Wolf wrote:
->> please share the whole output of acpidump as the DSDT contains only two=
- unrelated
->> WMI devices.
-> Sure! I've attached a ZIP archive with the output of the `acpidump -b`.
->
->> I think that we do not need another driver in this case, as the xiaomi-=
-wmi driver
->> is responsible for handling WMI events on Xiaomi devices. I can check w=
-hat needs
->> to be done in order to add support for those additional keyboard events=
-, but for
->> that i need the full output of acpidump.
-> Btw, I'd appreciate if you didn't patch the driver yourself and instead
-> let me do it. This is a golden opportunity for me to gain some
-> experience! :D
+> We have tested three systems with Arrow Lake CPUs, and all of them
+> report incorrect max and base frequencies. Two systems have Ultra 9
+> 275 HX CPUs, and one has an Ultra 5 225 H. The problem occurs with
+> both the Ubuntu 6.11 kernel and the 6.14.6 mainline kernel.
+>=20
+> How these values are misreported appears to depend on the CPU. On the
+> Ultra 9 275HX systems when running Ubuntu=E2=80=99s 6.11.0-1015-oem kerne=
+l,
+> the max reported frequency on a golden core is 5000000; however, the
+> CPU spec says it should be 5400000. In contrast, on an Ultra 5 225H
+> system, the max reported frequency on a golden core is 6200000;
+> however, the spec says it should be 4900000.=20
+>=20
+> This bug is troublesome to end users because many CPU monitoring apps
+> will report the CPU is running quite a bit slower or faster than the
+> spec. Tools such as cpupower-gui, cpufreq-info, and cpufreq-set all
+> show incorrect values because they read cpuinfo_max_freq and
+> base_frequency, and write scaling_max_freq values in
+> /sys/devices/system/cpu/cpufreq/policy* directories.=20
+>=20
+> The following bash script shows the incorrect values read from the
+> cpuinfo_max_freq and base_frequency files. It also shows how the
+> actual max frequencies attained are as expected. The example values
+> shown come from an Ultra 9 275 HX CPU.
+>=20
+>     echo; echo '=3D=3D BEGIN =3D=3D';
+>     echo 'Ensure turbo is on';
+>     cd /sys/devices/system/cpu;
+>     echo '0' |sudo tee intel_pstate/no_turbo > /dev/null;
+>     if grep -q '0' intel_pstate/no_turbo; then echo 'Turbo is on'; fi
+>=20
+>     echo; echo 'Find top 2 golden cores';
+>     cd /sys/devices/system/cpu/cpufreq/;
+>     grep . policy*/cpuinfo_max_freq \
+>       | awk -F: '{print $2" "$1}' |sort -rn | head -n2;
+>     #> 5000000 policy2/cpuinfo_max_freq
+>     #> 5000000 policy3/cpuinfo_max_freq =20
+>=20
+>     echo; echo 'Confirm misreporting: per spec, this should be
+> 5400000!'; grep . policy2/cpuinfo_max_freq; # 500000
+>=20
+>     echo; echo 'Confirm misreporting: per spec, this should be
+> 2700000!' grep . policy2/base_frequency; # 2500000
+>=20
+>     echo; echo '# Run a CPU benchmark now, then press [ Enter ] to
+> see top 3 freqs.'; echo 'This will take 6 seconds to complete.';
+>     read -r -p '# You should see that the freqs match the CPU specs.
+> ';\ for i in {0..5}; do
+>       grep . policy*/scaling_cur_freq | awk -F: '{print $2" "$1}';
+>       sleep 1;
+>     done |sort -rn |head -n3=20
+>     #> 5400000 policy2/scaling_cur_freq
+>     #> 5320159 policy2/scaling_cur_freq
+>     #> 5241886 policy3/scaling_cur_freq =20
+>=20
+>     echo; echo '=3D=3D END   =3D=3D'; echo;
+>=20
+> The actual results, when running the above script, shows the
+> cpuinfo_max_freq and base_frequencies values do not match those
+> specified by Intel. With the 6.11.0-1021-oem Ubuntu Kernel, we see the
+> following:
+>=20
+> | Turbo? | Core | Freq (spec) | Freq (report) | Freq (actual) |
+> | Yes    | P    | 5.4 GHz     | 5.0 GHz       | 5.4 GHz       |
+> | No     | P    | 2.7 GHz     | 2.5 GHz       | 2.7 GHz       |
+> | Yes    | E    | 4.6 GHz     | 4.6 GHz       | 4.6 GHz       |
+> | No     | E    | 2.1 GHz     | 2.1 GHz       | 2.1 GHz       |
+>=20
+> We have verified the cores are operating at their specified
+> frequencies by running a demanding CPU benchmark while graphing
+> frequencies with KDE System Monitor, on all 3 systems. This tool
+> appeared to graph scaling_cur_freq values. Notice E-cores appear to
+> be correctly reported. Also, all systems misinterpret values written
+> to scaling_max_req with the apparent same error deltas: on the Ultra
+> 9 275 HX, setting this value to 5000000 results in actual max
+> frequencies of 5400000. Setting it to 2500000 results in max 2700000.
+> Setting it to 1650000 results in max 2100000.
+>=20
+> The behavior with the 6.14.6 kernel is worse than with 6.11, with all
+> values under-reported. Actual frequencies were not tested on 6.14.6:
+>=20
+> | Turbo? | Core | Freq (spec) | Freq (report) |
+> | Yes    | P    | 5.4 GHz     | 3.9 GHz       |
+> | No     | P    | 2.7 GHz     | 2.0 GHz       |
+> | Yes    | E    | 4.6 GHz     | 3.3 GHz       |
+> | No     | E    | 2.1 GHz     | 1.5 GHz       |
+>=20
+> Is it possible the math currently used for calculating CPU frequencies
+> is no longer correct for Arrow Lake CPUs? This seems similar to the
+> issue that was fixed by commit f5c8cf2 (cpufreq: intel_pstate: hybrid:
+> Use known scaling factor for P-cores).
 
-Sure, but you have to develop a new WMI driver for your device because aft=
-er looking at the
-ACPI tables (SSDT20 in particular) i came to the conclusion that the xiaom=
-i-wmi driver cannot
-be used in this case.
-
-> If you may, there are some questions I have about this issue:
->
->   1. From what I saw on the internet, ACPI is a protocol
->      (specification?) for how the power management is done on the modern
->      hardware. What do keyboard events have to do with ACPI? Is it
->      because the keypress here is handled by the firmware?
-
-The hotkey events cannot be delivered over the standard keyboard interface=
- as there are no scan codes
-defined for all of those events. Because of this the platform firmware (in=
- this case ACPI) provides a
-virtual device (the WMI device) for receiving those events from the (embed=
-ded) keyboard controller.
-
->
->   2. Where in the kernel source tree can I seem some similar drivers?
->      Something to understand there general structure and internals.
-
-Take a look at https://docs.kernel.org/wmi/driver-development-guide.html.
-
-In your case you need to write a WMI event driver for the following WMI de=
-vice:
-
-class WMIEvent : __ExtrinsicEvent {
-};
-
-[WMI, Dynamic, Provider("WmiProv"), Locale("MS\\0x40A"), Description("Root=
- WMI HID_EVENT20"), guid("{46c93e13-ee9b-4262-8488-563bca757fef}")]
-class HID_EVENT20 : WmiEvent {
-   [key, read] string InstanceName;
-   [read] boolean Active;
-   [WmiDataId(1), read, write, Description("Package Data")] uint8 EventDet=
-ail[32];
-};
-
-The event data of this WMI event device is a buffer with a size of 32 byte=
-s. The "EV20" ACPI control method
-is responsible for filling this buffer with information regarding hotkey e=
-vents. I suggest that you write a
-skeleton driver first that basically prints the content of this buffer to =
-the kernel log using print_hex_dump_bytes().
-
-This way you can determine the mapping between WMI event numbers and the h=
-otkeys. In your case the event data seems
-to be structured like this:
-
-	1. byte: event class
-	2. byte: event number
-	3. byte: event payload
-
-If you need further help just ask me :).
-
->   3. What is WMI? Primarily in the context of the Linux kernel, of
->      course There is Documentation/driver-api/wmi.rst, but it hard to
->      understand what exactly is it talking about if you had no prior
->      experience with writing drivers.
-
-ACPI-WMI is a Windows-specific extension of the ACPI interface. It=20
-allows the firmware to expose custom management interfaces (WMI objects)=
-=20
-of the Windows Management Interface (WMI). We implement a subset of the=20
-WMI interface inside the Linux kernel to be able to control the various=20
-platform-specific settings being exposed this way. Thanks, Armin Wolf
-
+Following up on this, is there any update or possible fix we could
+test?
 
