@@ -1,170 +1,189 @@
-Return-Path: <linux-acpi+bounces-15268-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15269-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BAACB0D640
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 11:48:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6182AB0D7AD
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 13:06:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72723170747
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 09:48:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 004BD3BBD1B
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 11:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3AF7288C0F;
-	Tue, 22 Jul 2025 09:48:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uY3jpVhI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EDD2E2651;
+	Tue, 22 Jul 2025 11:06:26 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A385523C50E;
-	Tue, 22 Jul 2025 09:48:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB09242D89;
+	Tue, 22 Jul 2025 11:06:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753177701; cv=none; b=A2exwGr6o3S5CJQF5boUPL3t/0LR30lIpp3VHrak4EiWa4pSq8UYFKZoMiabKtf7jurlIInKlOrd5s3P3MlWTL/0lCsYwdyoWRPml63fL9h2aHux59lweXm4pTaLvxnMYx4XrHvAtzI0UCww98Hh8/BLdg0fNPNpd/g9P8n9rUc=
+	t=1753182386; cv=none; b=SQTP6p6BjicawP96JzYXKj4w9qmTzSXlwSx15C2fMr1XXcFZK1lv0kypfUdNtXA0RcUKoeskhG//1kSzaR/dOElrd+2Cv0Lm+9g1FTmifmqQXmlSzyEyqRtQI9vY47rxCmfqy+o1x2Pkeh8O9pKQkqiZMQnRZIcRFHSIL0AYoTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753177701; c=relaxed/simple;
-	bh=/fkjRHbtz6L40UsKyBjKVzJsr6GgvV345DTaJqD2qqw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IFnKHMjc5ddNyzQEmEqhhyoapxFaMnA7U4Y87uwJSdgBNfo5BUDIWTUoj0VagGnEOt++MLSivc1Q4LHnXO3fV3HPF2VmwKZRgzIH+hMzUsRrMNa2qziraIx5Fyp1OulGFrkNmPN3pTy/AiV4J7yINNWIAztUD0TxA6gFpywY/gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uY3jpVhI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D80FC4CEF5;
-	Tue, 22 Jul 2025 09:48:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753177701;
-	bh=/fkjRHbtz6L40UsKyBjKVzJsr6GgvV345DTaJqD2qqw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uY3jpVhIrJXrnJoyRCM8Kz2D0ikZfV4UaKvE/s46ETcnW2xM2RH5rsH8+p48fg62n
-	 DV8wmvTmHkUzx1fCy3HqiosXk9ZXn4bG7y40hh5jLWNMF6jzx4g42KmtN7a9uKBlcs
-	 DnnNnMT+MEwE282k60g5dW6QNwypY/myaHwjZhyUgLOCkUVNkx8EiSWJWpTMqlUe4p
-	 BLU8CthLpRmFfyVndjD81unqnPDKaxlETV1P5NW51h7k3TmRmp5HliIUrMJ48y4atG
-	 zMB+tiBaj8tBwNXgc9N7sTsaBeu7jJlqg3CCBfj5cdqlGr7JEC8SMqzBKpj9ZlwHSi
-	 6wLSTNEOwDsiA==
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-613b02e801aso3053827eaf.2;
-        Tue, 22 Jul 2025 02:48:21 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWQQdZDRHwqnx2keYzaX8N8Nk3hgW+OIQAz77YYvRz3ABy/y+a9/+zBZYcskytWn8rRb7c9ycEdX9GfAPrY@vger.kernel.org, AJvYcCWv1L1+tTtY6fKCEqAo7HzOGC70GRUYr/Yem37gzUlJmuKWc9m0LHLRmaYwVMpys2TcIwNHQayQnOlUbCQSMFk=@vger.kernel.org, AJvYcCX0c9xSb42bz1AU49BLiu8nQsXd+ECC/MtIYq7sZbKjYdxXWJ86/xVXV3nJkRso28FljIDqDeU9ERtZ@vger.kernel.org, AJvYcCXhnMhFIyiWvQHrMsronmsqEvBopTjv6A3xOYdlt/zMpv7EO0F64BAzq8ucyElWmx7GkqhtuliKUczNpw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqMNZYldIkh6Bqo4gWz/jiHrCO3MHYoPPDoI/mtHbUrPJXljyi
-	A4RFUPPzEU9sEbC6DwG/RqCJB678SHVmovh2vS0aDM/Z5GfqccWDFkkrGo30mRrpo/UMDaN5R40
-	Auh5q89dkzHuCivnvtgKlALwyLewld1k=
-X-Google-Smtp-Source: AGHT+IEfTTSEyAOWYu++w5ruAiPqSTMP5i2OLym7qvAO9o3zZKs/j+u5M18LziWEI2JeDHbEZLYaFm+Dh+IghvOJRP4=
-X-Received: by 2002:a05:6820:8186:b0:615:ca49:388f with SMTP id
- 006d021491bc7-615ca493bf4mr8078409eaf.4.1753177700484; Tue, 22 Jul 2025
- 02:48:20 -0700 (PDT)
+	s=arc-20240116; t=1753182386; c=relaxed/simple;
+	bh=gYJWcfMA+4JwuKa4pqmCzXGEn9gI6ZQKiZEdFTNaSKY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=GabaNLjl95Nhy4S/aArTG+jvrf2CSffQEo2WZ4nFhATi/4Kld2FnTZ/2MOewOoCjGRxvvuO50sy5pfhsZ9hps6E4vScbotOwVB+17QN7I/80Rom+hcDVUbN1SGlKeJkFml15bZyG030qnS5JMquSnfhyHY+SN/rGQIk/dErbjGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4bmZB14bmqz2RVwG;
+	Tue, 22 Jul 2025 19:03:05 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id BDDAB1402C1;
+	Tue, 22 Jul 2025 19:05:17 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 22 Jul 2025 19:05:17 +0800
+Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
+ (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 22 Jul
+ 2025 19:05:16 +0800
+Message-ID: <f60aa4a2-35aa-41f6-b56d-6eb114e10ab2@huawei.com>
+Date: Tue, 22 Jul 2025 19:05:16 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250721145952.2601422-1-colin.i.king@gmail.com> <20250721214004.GA2756360@bhelgaas>
-In-Reply-To: <20250721214004.GA2756360@bhelgaas>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 22 Jul 2025 11:48:07 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gT1X9zuoAfxGS5XP0s1TD1tyP2shbC_cbiRJPjDg4=jA@mail.gmail.com>
-X-Gm-Features: Ac12FXyrTfRVdkTJQlvj2cygHb3kv9Y5PxK2A1xgwD3hpMohtoUsDBnOxKEKga0
-Message-ID: <CAJZ5v0gT1X9zuoAfxGS5XP0s1TD1tyP2shbC_cbiRJPjDg4=jA@mail.gmail.com>
-Subject: Re: [PATCH][next] ACPI: pci_link: Remove space before \n newline
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Colin Ian King <colin.i.king@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, kernel-janitors@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: processor: idle: Fix resource rollback in
+ acpi_processor_power_init
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linuxarm@huawei.com>,
+	<jonathan.cameron@huawei.com>, <zhanjie9@hisilicon.com>,
+	<zhenglifeng1@huawei.com>, <yubowen8@huawei.com>, <liuyonglong@huawei.com>,
+	<lihuisong@huawei.com>
+References: <20250619061327.1674384-1-lihuisong@huawei.com>
+ <CAJZ5v0gjkZ3a-BwgJxjUJbNwu5E_j9VUUHrR3M=a+KPTA-tZcA@mail.gmail.com>
+ <6a35291a-32e8-461e-a0e5-405b7b5d24ce@huawei.com>
+ <CAJZ5v0hXHgyCKoEOMTtp0c_yu__vGGDcPnqaUML2Xg7hyJWc3g@mail.gmail.com>
+ <4c1926ef-f9fa-49d5-8d5f-ed4ee2638d62@huawei.com>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <4c1926ef-f9fa-49d5-8d5f-ed4ee2638d62@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-On Mon, Jul 21, 2025 at 11:40=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org>=
- wrote:
->
-> On Mon, Jul 21, 2025 at 03:59:52PM +0100, Colin Ian King wrote:
-> > There is an extraneous space before a newline in an acpi_handle_debug
-> > message.  Remove it.
-> >
-> > Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
->
-> FWIW,
->
-> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
->
-> Fixes for more ACPI-related typos below, feel free to squash or I can
-> send separately.
+Hi Rafael,
 
-If I can assume your sign-off on this, no need to resend.
+Can you take a look at my reply?
+If it is ok to you, I will send it later.
 
-> > ---
-> >  drivers/acpi/pci_link.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/acpi/pci_link.c b/drivers/acpi/pci_link.c
-> > index 08e10b6226dc..e4560b33b8ad 100644
-> > --- a/drivers/acpi/pci_link.c
-> > +++ b/drivers/acpi/pci_link.c
-> > @@ -268,7 +268,7 @@ static int acpi_pci_link_get_current(struct acpi_pc=
-i_link *link)
-> >
-> >       link->irq.active =3D irq;
-> >
-> > -     acpi_handle_debug(handle, "Link at IRQ %d \n", link->irq.active);
-> > +     acpi_handle_debug(handle, "Link at IRQ %d\n", link->irq.active);
-> >
-> >        end:
-> >       return result;
+/Huisong
+在 2025/7/14 9:33, lihuisong (C) 写道:
 >
-> diff --git a/Documentation/ABI/testing/sysfs-firmware-acpi b/Documentatio=
-n/ABI/testing/sysfs-firmware-acpi
-> index f4de60c4134d..72e7c9161ce7 100644
-> --- a/Documentation/ABI/testing/sysfs-firmware-acpi
-> +++ b/Documentation/ABI/testing/sysfs-firmware-acpi
-> @@ -108,15 +108,15 @@ Description:
->                 number of a "General Purpose Events" (GPE).
+> 在 2025/7/3 19:09, Rafael J. Wysocki 写道:
+>> On Thu, Jul 3, 2025 at 8:23 AM lihuisong (C) <lihuisong@huawei.com> 
+>> wrote:
+>>> Hi,
+>>>
+>>> Thanks for your review.
+>>>
+>>>
+>>> 在 2025/7/3 1:42, Rafael J. Wysocki 写道:
+>>>> On Thu, Jun 19, 2025 at 8:13 AM Huisong Li <lihuisong@huawei.com> 
+>>>> wrote:
+>>>>> There are two resource rollback issues in acpi_processor_power_init:
+>>>>> 1> Do not unregister acpi_idle_driver when do kzalloc failed.
+>>>>> 2> Do not free cpuidle device memory when register cpuidle device 
+>>>>> failed.
+>>>>>
+>>>>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+>>>>> ---
+>>>>>    drivers/acpi/processor_idle.c | 24 +++++++++++++++++-------
+>>>>>    1 file changed, 17 insertions(+), 7 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/acpi/processor_idle.c 
+>>>>> b/drivers/acpi/processor_idle.c
+>>>>> index 2c2dc559e0f8..3548ab9dac9e 100644
+>>>>> --- a/drivers/acpi/processor_idle.c
+>>>>> +++ b/drivers/acpi/processor_idle.c
+>>>>> @@ -1392,8 +1392,10 @@ int acpi_processor_power_init(struct 
+>>>>> acpi_processor *pr)
+>>>>>                   }
+>>>>>
+>>>>>                   dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+>>>>> -               if (!dev)
+>>>>> -                       return -ENOMEM;
+>>>>> +               if (!dev) {
+>>>>> +                       retval = -ENOMEM;
+>>>>> +                       goto unregister_driver;
+>>>> No, unregistering the driver here is pointless.
+>>> I don't quite understand why here is pointless. Can you explain it?
+>> When this function is run for another CPU, it will attempt to register
+>> the driver again if it is unregistered here.
+> Yeah, got it.
+> So registering cpuidle also has a potential race issue here.
+>>
+>> Quite frankly, the driver should be registered before running this
+>> function because it is a CPU hotplug callback and registering a
+>> cpuidle driver from within it is quite questionable.
+>>
+>> Alternatively, it can be registered when all of the CPUs have been 
+>> brought up.
+> Agree with you.
+> The reason why is that the initialization of acpi_idle_driver depands 
+> on the power management information of CPU.
+> But the power management information of CPU is obtained in this callback.
+> I have an idea.
+> Because acpi_idle_driver is applied to all possiable CPUs. And use the 
+> power information of the first onlined CPU to initialize and register 
+> acpi_idle_driver, currently.
+> So I think we can use this logic and dependency to extract a function 
+> to initialize and register acpi_idle_driver. And put this function to 
+> acpi_processor_driver_init().
+> I tested it is ok.
+> What do you think about this?
 >
->                 A GPE vectors to a specified handler in AML, which
-> -               can do a anything the BIOS writer wants from
-> +               can do anything the BIOS writer wants from
->                 OS context.  GPE 0x12, for example, would vector
->                 to a level or edge handler called _L12 or _E12.
->                 The handler may do its business and return.
-> -               Or the handler may send send a Notify event
-> +               Or the handler may send a Notify event
->                 to a Linux device driver registered on an ACPI device,
->                 such as a battery, or a processor.
->
-> -               To figure out where all the SCI's are coming from,
-> +               To figure out where all the SCIs are coming from,
->                 /sys/firmware/acpi/interrupts contains a file listing
->                 every possible source, and the count of how many
->                 times it has triggered::
-> diff --git a/Documentation/firmware-guide/acpi/gpio-properties.rst b/Docu=
-mentation/firmware-guide/acpi/gpio-properties.rst
-> index db0c0b1f3700..1e603189b5b1 100644
-> --- a/Documentation/firmware-guide/acpi/gpio-properties.rst
-> +++ b/Documentation/firmware-guide/acpi/gpio-properties.rst
-> @@ -92,8 +92,8 @@ and polarity settings. The table below shows the expect=
-ations:
->  |             | Low         | as low, assuming active                   =
-    |
->  +-------------+-------------+-------------------------------------------=
-----+
->
-> -That said, for our above example the both GPIOs, since the bias setting
-> -is explicit and _DSD is present, will be treated as active with a high
-> +That said, for our above example, since the bias setting is explicit and
-> +_DSD is present, both GPIOs will be treated as active with a high
->  polarity and Linux will configure the pins in this state until a driver
->  reprograms them differently.
->
-> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-> index c2ab2783303f..a984ccd4a2a0 100644
-> --- a/drivers/acpi/bus.c
-> +++ b/drivers/acpi/bus.c
-> @@ -1406,7 +1406,7 @@ static int __init acpi_bus_init(void)
->                 goto error1;
->
->         /*
-> -        * Register the for all standard device notifications.
-> +        * Register for all standard device notifications.
->          */
->         status =3D
->             acpi_install_notify_handler(ACPI_ROOT_OBJECT, ACPI_SYSTEM_NOT=
-IFY,
+> /Huisong
+>>
+>>>>> +               }
+>>>>>                   per_cpu(acpi_cpuidle_device, pr->id) = dev;
+>>>>>
+>>>>>                   acpi_processor_setup_cpuidle_dev(pr, dev);
+>>>>> @@ -1402,14 +1404,22 @@ int acpi_processor_power_init(struct 
+>>>>> acpi_processor *pr)
+>>>>>                    * must already be registered before registering 
+>>>>> device
+>>>>>                    */
+>>>>>                   retval = cpuidle_register_device(dev);
+>>>>> -               if (retval) {
+>>>>> -                       if (acpi_processor_registered == 0)
+>>>>> - cpuidle_unregister_driver(&acpi_idle_driver);
+>>>> Pretty much the same as here.
+>>>>
+>>>> It would be good to clean up dev here though.
+>>> It is ok if above is pointless.
+>>>>> -                       return retval;
+>>>>> -               }
+>>>>> +               if (retval)
+>>>>> +                       goto free_cpuidle_device;
+>>>>> +
+>>>>>                   acpi_processor_registered++;
+>>>>>           }
+>>>>>           return 0;
+>>>>> +
+>>>>> +free_cpuidle_device:
+>>>>> +       per_cpu(acpi_cpuidle_device, pr->id) = NULL;
+>>>>> +       kfree(dev);
+>>>>> +
+>>>>> +unregister_driver:
+>>>>> +       if (acpi_processor_registered == 0)
+>>>>> + cpuidle_unregister_driver(&acpi_idle_driver);
+>>>>> +
+>>>>> +       return retval;
+>>>>>    }
+>>>>>
+>>>>>    int acpi_processor_power_exit(struct acpi_processor *pr)
+>>>>> -- 
+>>>>> 2.33.0
+>>>>>
 
