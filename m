@@ -1,137 +1,193 @@
-Return-Path: <linux-acpi+bounces-15273-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15274-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A22B0DAB5
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 15:27:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 200C5B0DAD7
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 15:30:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2E4F3B1163
-	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 13:26:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A81841C23B85
+	for <lists+linux-acpi@lfdr.de>; Tue, 22 Jul 2025 13:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA3202E426F;
-	Tue, 22 Jul 2025 13:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42792E426F;
+	Tue, 22 Jul 2025 13:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qIMiSyOw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="icCzbYE3"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AB8DDC3;
-	Tue, 22 Jul 2025 13:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC5C2D3EFB;
+	Tue, 22 Jul 2025 13:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753190815; cv=none; b=KQ2VzrJkjoJ8Ab3R7xAa1B+d9WfkROcJ2KCvCXpHX8FD9s2hjrGKWr2MtHm0XmqXjD2AFiTYEgRxYsU7vuyIJnvWkZPHaBbiSrXIR+UtIll7G9hL+/wRMYsT5McRV+PNhf1ZZjetqMJF1b+PlMWATOLgJtrJer4fZEgS8aKxbpo=
+	t=1753190973; cv=none; b=jUbfq6LzYuDe8e2xZhmDFylAk82T8N+MMEYIKpBxojGEidYm6Vylg0yaPAmkkshn63vdVSCUD90HSWt9MO0R3nd1J32RRgIX4mb0D6rlNoWgRNSg1PxGtO5l89YlRRw1xld2RfKsd6w/+ImvwDJYoACPN0XaAhdiTKSZlVwGOhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753190815; c=relaxed/simple;
-	bh=920Ca2ouMMHxRdAAUWeWoX9aUz6BMIrpWi9RTdL86rg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=UUgDTG48aDDgOo9nAotIDfk6txHHoRdiSTax4inVnPe3UbjVnAfb4x7tCFZU+Ua78/wbBOnI0ZL0vGHqLhB5wA44xZXjwq/ebLpRFHHR/V4YJTc0aaqi29kXAVrg4I4Gm97+UdANCLsAbSrtJfYWlgtz5Uui5Vh3a2jV1cZZMks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qIMiSyOw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1215C4CEF1;
-	Tue, 22 Jul 2025 13:26:54 +0000 (UTC)
+	s=arc-20240116; t=1753190973; c=relaxed/simple;
+	bh=v5BLSIwd7srHi/OWA5ndIBkdalmEzmLEQmrp+RewTTQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IGItBp7f0LJtFN0uHXVdSHBZ7Iu7ohLohoEN0sVtiLa0UUj8G20bvsqoZjSP4BErfMdtD4RlWkyaRGSWt6bsjq7zMwMV4jXbODJdDpGEMpH1y8lqKrHlolk0AgMXEnqGIcwunW3BYJWaZpefdQsci7y5deQ/aHn4RQNvfZPCnrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=icCzbYE3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B00BC4CEEB;
+	Tue, 22 Jul 2025 13:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753190815;
-	bh=920Ca2ouMMHxRdAAUWeWoX9aUz6BMIrpWi9RTdL86rg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=qIMiSyOweINPcFI7ATAonMAECBG/QwDPtxozhYz1HEi+KIZAJDrvbF0KrLP3my+ee
-	 Ufdvh4ab8i5uZeE3tYdElEhmzChIl0BR0kjxVHAjQaeajK2oalFBW0MrwM4XTjYxM5
-	 dhmYw00eJAomhQ6eAXBMOdko0Ox6xTZFMJl4WUjM+2cUYUrCJVLtN+0Ysardl5kU+v
-	 MAlN+2AhMP/FlkF1iLDeOm4KBj2oYQLRCUtWrQpd2dHQwaVvsmfGE+uXCWzlPeuRMa
-	 HcHn05cwyWvkhH5TPdcUm3eHhwhceKje9kz/TCEbCorYX1+oIDJUnzdFTWdT7Oiclx
-	 6neytYnhfE8Mg==
-Date: Tue, 22 Jul 2025 08:26:53 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Colin Ian King <colin.i.king@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Len Brown <lenb@kernel.org>,
-	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] ACPI: pci_link: Remove space before \n newline
-Message-ID: <20250722132653.GA2781885@bhelgaas>
+	s=k20201202; t=1753190972;
+	bh=v5BLSIwd7srHi/OWA5ndIBkdalmEzmLEQmrp+RewTTQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=icCzbYE3Gw4FMkjzZQGdd5PRl3DLgwJi4XEJMOcR2bhXW2g1yFhd+T0X/aqMi3/BP
+	 CibFuID4nbj6OAYkc1NMOYpqf8N3QkVei13FupO8PIGWwd7LMLFew2Gjxu4KdVUg1O
+	 DkTKaYgXxxbbsiX0+w7BLz0w/qJZtmL94y+JVE7CzC9ZZx6kQNyfp3ET4nPZ9scvga
+	 Dn2CpPG5UqY1IGli6LRySAYz4YmMRdxPp1TJllyeOcCWdL2WRYt94l/h9D04DE4+Uc
+	 MGgZG1jWvtMVVXZVVriPuhmhhcn2IesGNkPl/Ho6XBcy/wvha6uvWcQ0AKEDdQ4Ukm
+	 HjjZtlQLlu8FQ==
+Date: Tue, 22 Jul 2025 14:29:19 +0100
+From: Will Deacon <will@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Kees Cook <kees@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+	Michal Wilczynski <michal.wilczynski@intel.com>,
+	Juergen Gross <jgross@suse.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Roger Pau Monne <roger.pau@citrix.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Usama Arif <usama.arif@bytedance.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Thomas Huth <thuth@redhat.com>, Brian Gerst <brgerst@gmail.com>,
+	kvm@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
+	platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+	linux-mm@kvack.org, Ingo Molnar <mingo@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, sparclinux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v3 04/13] x86: Handle KCOV __init vs inline mismatches
+Message-ID: <aH-SL2V2bSPkJ18o@willie-the-truck>
+References: <20250717231756.make.423-kees@kernel.org>
+ <20250717232519.2984886-4-kees@kernel.org>
+ <aHoHkDvvp4AHIzU1@kernel.org>
+ <202507181541.B8CFAC7E@keescook>
+ <CAMj1kXGAwjChyFvjQcTbL8dFXkFWnn9n47bkN7FP=+EsLNsJdg@mail.gmail.com>
+ <aH42--h-ARsvX5Wk@willie-the-truck>
+ <202507211311.8DAC4C7@keescook>
+ <202507211349.D93679FB25@keescook>
+ <CAMj1kXGoy7D+_hKyQrT_uXdjuFMYGUEMDYdRf6mx69PLeuBQQg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0gT1X9zuoAfxGS5XP0s1TD1tyP2shbC_cbiRJPjDg4=jA@mail.gmail.com>
+In-Reply-To: <CAMj1kXGoy7D+_hKyQrT_uXdjuFMYGUEMDYdRf6mx69PLeuBQQg@mail.gmail.com>
 
-On Tue, Jul 22, 2025 at 11:48:07AM +0200, Rafael J. Wysocki wrote:
-> On Mon, Jul 21, 2025 at 11:40 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> ...
+On Tue, Jul 22, 2025 at 04:55:47PM +1000, Ard Biesheuvel wrote:
+> On Tue, 22 Jul 2025 at 06:49, Kees Cook <kees@kernel.org> wrote:
 > >
-> > Fixes for more ACPI-related typos below, feel free to squash or I can
-> > send separately.
+> > On Mon, Jul 21, 2025 at 01:14:36PM -0700, Kees Cook wrote:
+> > > On Mon, Jul 21, 2025 at 01:47:55PM +0100, Will Deacon wrote:
+> > > > On Sun, Jul 20, 2025 at 04:10:01PM +1000, Ard Biesheuvel wrote:
+> > > > > On Sat, 19 Jul 2025 at 08:51, Kees Cook <kees@kernel.org> wrote:
+> > > > > > On Fri, Jul 18, 2025 at 11:36:32AM +0300, Mike Rapoport wrote:
+> > > > > > > On Thu, Jul 17, 2025 at 04:25:09PM -0700, Kees Cook wrote:
+> > > > > > > > When KCOV is enabled all functions get instrumented, unless the
+> > > > > > > > __no_sanitize_coverage attribute is used. To prepare for
+> > > > > > > > __no_sanitize_coverage being applied to __init functions, we have to
+> > > > > > > > handle differences in how GCC's inline optimizations get resolved. For
+> > > > > > > > x86 this means forcing several functions to be inline with
+> > > > > > > > __always_inline.
+> > > > > > > >
+> > > > > > > > Signed-off-by: Kees Cook <kees@kernel.org>
+> > > > > > >
+> > > > > > > ...
+> > > > > > >
+> > > > > > > > diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+> > > > > > > > index bb19a2534224..b96746376e17 100644
+> > > > > > > > --- a/include/linux/memblock.h
+> > > > > > > > +++ b/include/linux/memblock.h
+> > > > > > > > @@ -463,7 +463,7 @@ static inline void *memblock_alloc_raw(phys_addr_t size,
+> > > > > > > >                                       NUMA_NO_NODE);
+> > > > > > > >  }
+> > > > > > > >
+> > > > > > > > -static inline void *memblock_alloc_from(phys_addr_t size,
+> > > > > > > > +static __always_inline void *memblock_alloc_from(phys_addr_t size,
+> > > > > > > >                                             phys_addr_t align,
+> > > > > > > >                                             phys_addr_t min_addr)
+> > > > > > >
+> > > > > > > I'm curious why from all memblock_alloc* wrappers this is the only one that
+> > > > > > > needs to be __always_inline?
+> > > > > >
+> > > > > > Thread-merge[1], adding Will Deacon, who was kind of asking the same
+> > > > > > question.
+> > > > > >
+> > > > > > Based on what I can tell, GCC has kind of fragile inlining logic, in the
+> > > > > > sense that it can change whether or not it inlines something based on
+> > > > > > optimizations. It looks like the kcov instrumentation being added (or in
+> > > > > > this case, removed) from a function changes the optimization results,
+> > > > > > and some functions marked "inline" are _not_ inlined. In that case, we end up
+> > > > > > with __init code calling a function not marked __init, and we get the
+> > > > > > build warnings I'm trying to eliminate.
+> > > >
+> > > > Got it, thanks for the explanation!
+> > > >
+> > > > > > So, to Will's comment, yes, the problem is somewhat fragile (though
+> > > > > > using either __always_inline or __init will deterministically solve it).
+> > > > > > We've tripped over this before with GCC and the solution has usually
+> > > > > > been to just use __always_inline and move on.
+> > > > > >
+> > > > >
+> > > > > Given that 'inline' is already a macro in the kernel, could we just
+> > > > > add __attribute__((__always_inline__)) to it when KCOV is enabled?
+> > > >
+> > > > That sounds like a more robust approach and, by the sounds of it, we
+> > > > could predicate it on GCC too. That would also provide a neat place for
+> > > > a comment describing the problem.
+> > > >
+> > > > Kees, would that work for you?
+> > >
+> > > That seems like an extremely large hammer for this problem, IMO. It
+> > > feels like it could cause new strange corner cases. I'd much prefer the
+> > > small fixes I've currently got since it keeps it focused. KCOV is
+> > > already enabled for "allmodconfig", so any new instances would be found
+> > > very quickly, etc. (And GCC's fragility in this regard has already been
+> > > exposed to these cases -- it's just that I changed one of the
+> > > combinations of __init vs inline vs instrumentation.
+> > >
+> > > I could give it a try, if you really prefer the big hammer approach...
+> >
+> > I gave it a try -- it fails spectacularly. ;) Let's stick to my small
+> > fixes instead?
+> >
 > 
-> If I can assume your sign-off on this, no need to resend.
+> Fair enough :-)
 
-Of course, sorry, my fault:
+(but please add the helpful explanation you provided to the commit message!)
 
-commit 9cdbf361a40d ("ACPI: Fix typos")
-Author: Bjorn Helgaas <bhelgaas@google.com>
-Date:   Mon Jul 21 16:37:14 2025 -0500
-
-    ACPI: Fix typos
-    
-    Fix typos in documentation and comments.
-    
-    Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-
-
-diff --git a/Documentation/ABI/testing/sysfs-firmware-acpi b/Documentation/ABI/testing/sysfs-firmware-acpi
-index f4de60c4134d..72e7c9161ce7 100644
---- a/Documentation/ABI/testing/sysfs-firmware-acpi
-+++ b/Documentation/ABI/testing/sysfs-firmware-acpi
-@@ -108,15 +108,15 @@ Description:
- 		number of a "General Purpose Events" (GPE).
- 
- 		A GPE vectors to a specified handler in AML, which
--		can do a anything the BIOS writer wants from
-+		can do anything the BIOS writer wants from
- 		OS context.  GPE 0x12, for example, would vector
- 		to a level or edge handler called _L12 or _E12.
- 		The handler may do its business and return.
--		Or the handler may send send a Notify event
-+		Or the handler may send a Notify event
- 		to a Linux device driver registered on an ACPI device,
- 		such as a battery, or a processor.
- 
--		To figure out where all the SCI's are coming from,
-+		To figure out where all the SCIs are coming from,
- 		/sys/firmware/acpi/interrupts contains a file listing
- 		every possible source, and the count of how many
- 		times it has triggered::
-diff --git a/Documentation/firmware-guide/acpi/gpio-properties.rst b/Documentation/firmware-guide/acpi/gpio-properties.rst
-index db0c0b1f3700..1e603189b5b1 100644
---- a/Documentation/firmware-guide/acpi/gpio-properties.rst
-+++ b/Documentation/firmware-guide/acpi/gpio-properties.rst
-@@ -92,8 +92,8 @@ and polarity settings. The table below shows the expectations:
- |             | Low         | as low, assuming active                       |
- +-------------+-------------+-----------------------------------------------+
- 
--That said, for our above example the both GPIOs, since the bias setting
--is explicit and _DSD is present, will be treated as active with a high
-+That said, for our above example, since the bias setting is explicit and
-+_DSD is present, both GPIOs will be treated as active with a high
- polarity and Linux will configure the pins in this state until a driver
- reprograms them differently.
- 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index c2ab2783303f..a984ccd4a2a0 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -1406,7 +1406,7 @@ static int __init acpi_bus_init(void)
- 		goto error1;
- 
- 	/*
--	 * Register the for all standard device notifications.
-+	 * Register for all standard device notifications.
- 	 */
- 	status =
- 	    acpi_install_notify_handler(ACPI_ROOT_OBJECT, ACPI_SYSTEM_NOTIFY,
+Will
 
