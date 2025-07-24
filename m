@@ -1,155 +1,340 @@
-Return-Path: <linux-acpi+bounces-15310-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15311-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D30B10B24
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jul 2025 15:15:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE499B10B2D
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jul 2025 15:15:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E11C5802F0
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jul 2025 13:15:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8D763BAAD0
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jul 2025 13:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836F02D5C6A;
-	Thu, 24 Jul 2025 13:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65089264623;
+	Thu, 24 Jul 2025 13:15:35 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.avm.de (mail.avm.de [212.42.244.120])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B023F2D6405;
-	Thu, 24 Jul 2025 13:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588C44400;
+	Thu, 24 Jul 2025 13:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753362905; cv=none; b=m+YonTJQF6SKGC2g2mPgI99apzgt7GFTiJvPhKwCmReqcTtl0z3384umuhtup3aa8w/2qgT9ZYEjd9D/+3MIyDaGQpEGe9O+2Nb0bUUIxSwy40z7EjkcGtc44yA0m8/5s1gjKOoOoAxSTDVIiAgS04vcJk1nrZ7ReJMf2uZ8tOo=
+	t=1753362935; cv=none; b=B0IddJAE7ghP7bERjtawrybsiT7mWHo0xzAvGK7wpLVwTPR2r3c32IFs1uUGpz7ihQ3WtpevBuKPlM42S4k4Zy98Z9DI2GSw9aiPApRqyMOxYHXDqWTHyaXPwwac3WbNBDZ5iqIQ2NdLhCcBIsiUAYZ913zKpt2e0sHWRBD3gG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753362905; c=relaxed/simple;
-	bh=ne/XcgrgO/KJ5Vpn5Kmd1KTfFMh8OZxebN5iFuDYEM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RP9xDJCNfzdKSa+xNXYbL10zkz9slWLyA2dey0l9rXBb/aqlE6ZEYH5om7t7Nv/7iGGu8qEt/ByUAPKDTsNABCACWOgtuiSuiDHAl/8k6r4BrYS34zejdW1xkUpWBdsHM+dmDP2NtGku1lMTe7XMUL/ldH56HDj2YpS9c3wquCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=avm.de; arc=none smtp.client-ip=212.42.244.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
-Received: from [212.42.244.71] (helo=mail.avm.de)
-	by mail.avm.de with ESMTP (eXpurgate 4.53.4)
-	(envelope-from <n.schier@avm.de>)
-	id 6882306d-0380-7f0000032729-7f000001eb7c-1
-	for <multiple-recipients>; Thu, 24 Jul 2025 15:09:01 +0200
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
-	by mail.avm.de (Postfix) with ESMTPS;
-	Thu, 24 Jul 2025 15:09:01 +0200 (CEST)
-Received: from buildd.core.avm.de (buildd-sv-01.avm.de [172.16.0.225])
-	by mail-auth.avm.de (Postfix) with ESMTPA id 09A4980AA3;
-	Thu, 24 Jul 2025 15:09:02 +0200 (CEST)
-Received: from l-nschier-aarch64.ads.avm.de (unknown [IPv6:fde4:4c1b:acd5:6472::1])
-	by buildd.core.avm.de (Postfix) with ESMTPS id 6DAEF184464;
-	Thu, 24 Jul 2025 15:09:00 +0200 (CEST)
-Date: Thu, 24 Jul 2025 15:08:58 +0200
-From: Nicolas Schier <nicolas.schier@linux.dev>
-To: Kees Cook <kees@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-kbuild@vger.kernel.org, kasan-dev@googlegroups.com,
-	linux-hardening@vger.kernel.org, Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Gavin Shan <gshan@redhat.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	James Morse <james.morse@arm.com>,
-	Oza Pawandeep <quic_poza@quicinc.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
-	Michal Wilczynski <michal.wilczynski@intel.com>,
-	Juergen Gross <jgross@suse.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	Roger Pau Monne <roger.pau@citrix.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Usama Arif <usama.arif@bytedance.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Thomas Huth <thuth@redhat.com>, Brian Gerst <brgerst@gmail.com>,
-	Hou Wenlong <houwenlong.hwl@antgroup.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Andy Lutomirski <luto@kernel.org>, Baoquan He <bhe@redhat.com>,
-	Alexander Graf <graf@amazon.com>,
-	Changyuan Lyu <changyuanl@google.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Jan Beulich <jbeulich@suse.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Bibo Mao <maobibo@loongson.cn>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, x86@kernel.org,
-	kvm@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
-	platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
-	linux-mm@kvack.org, kexec@lists.infradead.org,
-	linux-security-module@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v4 4/4] kstack_erase: Support Clang stack depth tracking
-Message-ID: <20250724-optimistic-armadillo-of-joviality-e59222@l-nschier-aarch64>
-References: <20250724054419.it.405-kees@kernel.org>
- <20250724055029.3623499-4-kees@kernel.org>
+	s=arc-20240116; t=1753362935; c=relaxed/simple;
+	bh=TF+EvEU97tw/++Aux3bzOk/z4Xx3ED1KKXq5a9vHUuU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=UsulepBMn49qF2CJ8p753Lt1/Xh12qYyGf8eEsO5zUm66/j9t3qBHsjq4oHbOLAP0jzQ+ZSA0rjrhbpXQIq5jQeoBnWsAPMPVI97jhI1NV4dIYh6SNQqOsFbudaNIJUGQH1hYnK/lp3Kon0gHbQ7uGdKw12pfap7DULONVo3Xto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4bnrww5Btcz2Cfw9;
+	Thu, 24 Jul 2025 21:11:12 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6713B140109;
+	Thu, 24 Jul 2025 21:15:23 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 24 Jul 2025 21:15:23 +0800
+Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
+ (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 24 Jul
+ 2025 21:15:22 +0800
+Message-ID: <b5da2c2a-8621-45a8-865f-b6e90089b586@huawei.com>
+Date: Thu, 24 Jul 2025 21:15:21 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20250724055029.3623499-4-kees@kernel.org>
-Organization: AVM GmbH
-X-purgate-ID: 149429::1753362541-3C575E1C-2FB622E2/0/0
-X-purgate-type: clean
-X-purgate-size: 870
-X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
-X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
-X-purgate: clean
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ACPI: processor: idle: Fix resource leak and potential
+ concurrent in acpi_processor_power_init()
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linuxarm@huawei.com>,
+	<jonathan.cameron@huawei.com>, <zhanjie9@hisilicon.com>,
+	<zhenglifeng1@huawei.com>, <yubowen8@huawei.com>, <liuyonglong@huawei.com>,
+	<lihuisong@huawei.com>
+References: <20250723121034.3685996-1-lihuisong@huawei.com>
+ <CAJZ5v0gOi5kUKVWSwaPW=4Kmjkj1kj=nzaZ0jTa8fAAy32ZytA@mail.gmail.com>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <CAJZ5v0gOi5kUKVWSwaPW=4Kmjkj1kj=nzaZ0jTa8fAAy32ZytA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-On Wed, Jul 23, 2025 at 10:50:28PM -0700, Kees Cook wrote:
-> Wire up CONFIG_KSTACK_ERASE to Clang 21's new stack depth tracking
-> callback[1] option.
->=20
-> Link: https://clang.llvm.org/docs/SanitizerCoverage.html#tracing-stack-de=
-pth [1]
-> Signed-off-by: Kees Cook <kees@kernel.org>
-> ---
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Masahiro Yamada <masahiroy@kernel.org>
-> Cc: Nathan Chancellor <nathan@kernel.org>
-> Cc: Nicolas Schier <nicolas.schier@linux.dev>
-> Cc: Marco Elver <elver@google.com>
-> Cc: Andrey Konovalov <andreyknvl@gmail.com>
-> Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-> Cc: <linux-kbuild@vger.kernel.org>
-> Cc: <kasan-dev@googlegroups.com>
-> Cc: <linux-hardening@vger.kernel.org>
-> ---
 
-Acked-by: Nicolas Schier <n.schier@avm.de>
+在 2025/7/23 21:35, Rafael J. Wysocki 写道:
+> On Wed, Jul 23, 2025 at 2:10 PM Huisong Li <lihuisong@huawei.com> wrote:
+>> There are three kind of issues:
+>> 1> There are two resource leak issues in acpi_processor_power_init:
+>>     a> Don't unregister acpi_idle_driver when do kzalloc failed.
+> This is not a resource leak.  As I said before, the driver need not be
+> unregistered on a memory allocation failure.
+Ok, will remove it.
+>
+>>     b> Don't free cpuidle device memory when register cpuidle device failed.
+> This is a separate minor issue that needs to be addressed by a separate patch.
+Got it.  will add a separate patch in next version.
+>
+>> 2> There isn't lock to prevent the global acpi_processor_registered, which
+>>     may lead to concurrent register cpuidle driver.
+> That's not obvious because in principle the code in question is only
+> run during initialization which is serialized.
+>
+> In theory, it could run in parallel CPU online, but that at least is
+> not default behavior AFAICS.
+Ack.
+>
+> In any case, if you claim something like this, it is advisable to
+> mention a specific scenario in which the race in question can happen.
+
+Yeah.
+
+Anyway, it is ok if the initialization is serialized as you mentioned.
+
+
+>
+>> 3> The cpuidle driver should be registered in advance when all of the CPUs
+>>     have been brought up instead of being in a CPU hotplug callback.
+> The "in advance" piece above is rather confusing and it can be dropped
+> without changing the meaning of the rest of the sentence.
+Ack
+>
+>> To solve these issues, so add a new function to initialize acpi_idle_driver
+>> based on the power management information of an available CPU and register
+>> cpuidle driver in acpi_processor_driver_init().
+> I think that the main problem here is that the cpuidle driver is
+> registered from within a CPU hotplug callback, which is questionable
+> and confusing.  Usually, however, this doesn't lead to any functional
+> issues AFAICS.
+Ok, this patch will use this tone in the commit log.
+>
+>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+>> ---
+>>   v2: register cpuidle driver in advance when all of the CPUs have been
+>>       brought up.
+>>       v1 link: https://patchwork.kernel.org/project/linux-acpi/patch/20250619061327.1674384-1-lihuisong@huawei.com/
+>> ---
+>>   drivers/acpi/processor_driver.c |  5 +++
+>>   drivers/acpi/processor_idle.c   | 71 ++++++++++++++++++++++-----------
+>>   include/acpi/processor.h        |  9 +++++
+>>   3 files changed, 62 insertions(+), 23 deletions(-)
+>>
+>> diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
+>> index 65e779be64ff..ff944c93b6ff 100644
+>> --- a/drivers/acpi/processor_driver.c
+>> +++ b/drivers/acpi/processor_driver.c
+>> @@ -263,6 +263,10 @@ static int __init acpi_processor_driver_init(void)
+>>          if (result < 0)
+>>                  return result;
+>>
+>> +       result = acpi_processor_register_idle_driver();
+>> +       if (result)
+>> +               pr_info("register idle driver failed, ret = %d.\n", result);
+> This registers the cpuidle driver before registering cpuidle devices
+> for all CPUs.
+>
+> It would be better to make acpi_processor_register_idle_driver() print
+> the diagnostic message on failures and then it won't need to return a
+> value.
+Ack
+>
+> Note that it may fail if intel_idle is already registered, for
+> example, so the message should rather be a debug-level one.
+All right.
+>> +
+>>          result = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
+>>                                     "acpi/cpu-drv:online",
+>>                                     acpi_soft_cpu_online, NULL);
+>> @@ -301,6 +305,7 @@ static void __exit acpi_processor_driver_exit(void)
+>>
+>>          cpuhp_remove_state_nocalls(hp_online);
+>>          cpuhp_remove_state_nocalls(CPUHP_ACPI_CPUDRV_DEAD);
+>> +       acpi_processor_unregister_idle_driver();
+>>          driver_unregister(&acpi_processor_driver);
+>>   }
+>>
+>> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+>> index 2c2dc559e0f8..2408f1076631 100644
+>> --- a/drivers/acpi/processor_idle.c
+>> +++ b/drivers/acpi/processor_idle.c
+>> @@ -1360,7 +1360,52 @@ int acpi_processor_power_state_has_changed(struct acpi_processor *pr)
+>>          return 0;
+>>   }
+>>
+>> -static int acpi_processor_registered;
+>> +int acpi_processor_register_idle_driver(void)
+>> +{
+>> +       struct acpi_processor *pr;
+>> +       int cpu;
+>> +       int ret;
+> The ret variable needs to be initialized here or tools will complain,
+> and so it may be initialized to -ENODEV:
+>
+> int ret = -ENODEV;
+Ack
+>
+>> +
+>> +       /*
+>> +        * Acpi idle driver is used by all possible CPUs.
+>> +        * Install the idle handler by the processor power info of one in them.
+>> +        * Note that we use previously set idle handler will be used on
+>> +        * platforms that only support C1.
+>> +        */
+>> +       for_each_cpu(cpu, (struct cpumask *)cpu_possible_mask) {
+>> +               pr = per_cpu(processors, cpu);
+>> +               if (pr == NULL)
+> "if (!pr)" please.
+Ack
+>
+>> +                       continue;
+>> +
+>> +               ret = acpi_processor_get_power_info(pr);
+> if (ret)
+>          continue;
+Please see the following reply.
+>
+>> +               if (!ret) {
+>> +                       pr->flags.power_setup_done = 1;
+> I think this is set here to prevent the subsequent
+> acpi_processor_setup_cpuidle_states() call from bailing out, but is
+> this not too early to set it?
+Setting to 1 is necessary here,
+otherwise acpi_processor_setup_cpuidle_states would not initialize 
+acpi_idle_driver because this flag is false.
+>
+>> +                       break;
+>> +               }
+>> +       }
+>> +
+>> +       if (unlikely(!pr))
+>> +               return -ENODEV;
+> This is unnecessary if ret is initialized to -ENODEV;
+ok
+>
+>> +
+>> +       if (ret) {
+>> +               pr_err("%s get power information failed.\n",
+>> +                      acpi_idle_driver.name);
+> This message is confusing at best.  It should be something like "No
+> ACPI power information for any CPUs" and the driver name in it has no
+> purpose.
+Ack
+>
+>> +               return ret;
+>> +       }
+>> +
+>> +       acpi_processor_setup_cpuidle_states(pr);
+> I'd call this in the loop right before breaking out of it, so the
+> scope of pr is clear.
+will fix it as you said.
+>
+>> +       ret = cpuidle_register_driver(&acpi_idle_driver);
+>> +       if (ret)
+> Print a diagnostic message here and do not return a value (ie. make
+> the function void).
+All right.
+>
+>> +               return ret;
+>> +
+>> +       pr_debug("%s registered with cpuidle\n", acpi_idle_driver.name);
+>> +       return 0;
+>> +}
+>> +
+>> +void acpi_processor_unregister_idle_driver(void)
+>> +{
+>> +       cpuidle_unregister_driver(&acpi_idle_driver);
+>> +}
+>>
+>>   int acpi_processor_power_init(struct acpi_processor *pr)
+>>   {
+>> @@ -1375,22 +1420,7 @@ int acpi_processor_power_init(struct acpi_processor *pr)
+>>          if (!acpi_processor_get_power_info(pr))
+>>                  pr->flags.power_setup_done = 1;
+>>
+>> -       /*
+>> -        * Install the idle handler if processor power management is supported.
+>> -        * Note that we use previously set idle handler will be used on
+>> -        * platforms that only support C1.
+>> -        */
+>>          if (pr->flags.power) {
+>> -               /* Register acpi_idle_driver if not already registered */
+>> -               if (!acpi_processor_registered) {
+>> -                       acpi_processor_setup_cpuidle_states(pr);
+>> -                       retval = cpuidle_register_driver(&acpi_idle_driver);
+>> -                       if (retval)
+>> -                               return retval;
+>> -                       pr_debug("%s registered with cpuidle\n",
+>> -                                acpi_idle_driver.name);
+>> -               }
+>> -
+>>                  dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+>>                  if (!dev)
+>>                          return -ENOMEM;
+>> @@ -1403,11 +1433,10 @@ int acpi_processor_power_init(struct acpi_processor *pr)
+>>                   */
+>>                  retval = cpuidle_register_device(dev);
+>>                  if (retval) {
+>> -                       if (acpi_processor_registered == 0)
+>> -                               cpuidle_unregister_driver(&acpi_idle_driver);
+>> +                       per_cpu(acpi_cpuidle_device, pr->id) = NULL;
+>> +                       kfree(dev);
+> These two lines should be added in a separate patch.
+Ack.
+>
+>
+>>                          return retval;
+>>                  }
+>> -               acpi_processor_registered++;
+>>          }
+>>          return 0;
+>>   }
+>> @@ -1421,10 +1450,6 @@ int acpi_processor_power_exit(struct acpi_processor *pr)
+>>
+>>          if (pr->flags.power) {
+>>                  cpuidle_unregister_device(dev);
+>> -               acpi_processor_registered--;
+>> -               if (acpi_processor_registered == 0)
+>> -                       cpuidle_unregister_driver(&acpi_idle_driver);
+>> -
+>>                  kfree(dev);
+>>          }
+>>
+>> diff --git a/include/acpi/processor.h b/include/acpi/processor.h
+>> index d0eccbd920e5..3cb41a3f2d9a 100644
+>> --- a/include/acpi/processor.h
+>> +++ b/include/acpi/processor.h
+>> @@ -423,6 +423,8 @@ int acpi_processor_power_init(struct acpi_processor *pr);
+>>   int acpi_processor_power_exit(struct acpi_processor *pr);
+>>   int acpi_processor_power_state_has_changed(struct acpi_processor *pr);
+>>   int acpi_processor_hotplug(struct acpi_processor *pr);
+>> +int acpi_processor_register_idle_driver(void);
+>> +void acpi_processor_unregister_idle_driver(void);
+>>   #else
+>>   static inline int acpi_processor_power_init(struct acpi_processor *pr)
+>>   {
+>> @@ -443,6 +445,13 @@ static inline int acpi_processor_hotplug(struct acpi_processor *pr)
+>>   {
+>>          return -ENODEV;
+>>   }
+>> +static int acpi_processor_register_idle_driver(void)
+>> +{
+>> +       return -ENODEV;
+>> +}
+>> +static void acpi_processor_unregister_idle_driver(void)
+>> +{
+>> +}
+>>   #endif /* CONFIG_ACPI_PROCESSOR_IDLE */
+>>
+>>   /* in processor_thermal.c */
+>> --
+>> 2.33.0
+>>
 
