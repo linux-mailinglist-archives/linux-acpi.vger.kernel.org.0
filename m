@@ -1,81 +1,46 @@
-Return-Path: <linux-acpi+bounces-15304-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15305-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBFEB10119
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jul 2025 08:51:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B35B10295
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jul 2025 10:01:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F4CC3AA078
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jul 2025 06:50:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 635361CE1411
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jul 2025 08:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2521A317D;
-	Thu, 24 Jul 2025 06:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C29273D75;
+	Thu, 24 Jul 2025 08:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RxmMO8Bo"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="LM0qJgU4"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535E1F9E8;
-	Thu, 24 Jul 2025 06:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19497273D6D;
+	Thu, 24 Jul 2025 08:00:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753339867; cv=none; b=mWbjFEAlzN3f/n0S5gk4mbSDBy+il8vofDzBB9+rXaElQx+48qwQjO2GSnpdzR4nqGFYo+OM6dERyVHC8Af3Y8Hcblenb2K4ZOPb7fahP7Dg4+C7Q7mlXPZ01xdXCo+1bJfNxlHXD+61uKo3JAsXo75Y7vCpRTCAcdCJskMRsGs=
+	t=1753344026; cv=none; b=JML8sk/9speOOF/EriCjH9CeNtREe3kZ369WV+qj8aEDf4ciI3k64kVAW2WavxMXz14y8wPGpV59zvSoKNTioc9EMd7I/SOVvJuh/5MK9DQJyWBMbldLhzSZ2qgEYMi4voccIK5w6hBHXDWrX7fpEfJprdNdrBh8RFertoKR5v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753339867; c=relaxed/simple;
-	bh=w0X0br7o2eWaC/sCuDPbuNtjMrXI9dlkmLAYFCHsKxw=;
+	s=arc-20240116; t=1753344026; c=relaxed/simple;
+	bh=MZ9iUvSan3K97ELZMhoz0roLdqaBdfjuluYaezK//9k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k0PgkO+7lqkuB0JLlsyVVqkkQvYdCa3iKvVT7bjrTB0lg2PZc3HpiVv0zv8LyqN177LWkOH70UJhCUPGZiu2xfO2RP458edLQ+zj0VMoINmu1l+y2NLuNZaJ56GGKjTACyhkmCwBHMGDEaF+ZkTU/yc+GvVpQwv1dxVhS6ahZMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RxmMO8Bo; arc=none smtp.client-ip=209.85.128.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-45600581226so6157005e9.1;
-        Wed, 23 Jul 2025 23:51:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753339864; x=1753944664; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yzVCG5SoHn4Tr6BCxb/1N9GpLGi9jl777U0laKdYkLA=;
-        b=RxmMO8BorFBF0mjlPVAVCgLA3M3vEHHFjUYDfZCg2rcDKU9ZYmjOIL6XS+b3H55ZFC
-         4stupBolSL6/0UEuz5mRhu5iigBeaBemy3vl8pylq2DixeRd78voeQtKaAdJ+jFTrRaV
-         6c2aL4DOZszTgOln0lEMBEciFsiYwbmjz3FQkwGSDARH+3C9gISf/Zd5ZOGyXkmXYLbr
-         lE2hg5aZAWCvdLyxAXvYqgGP6B9VAdqQdzULAC1cS6hIxdKiaU49rh+NgJ9R4imsygzQ
-         jufGUOQXsRJZ0b8W7u3OOeG+DB+tgqk1JYQeyflEOkAUihV3foZNdXuuINhd5hdZhaNJ
-         +voQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753339864; x=1753944664;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yzVCG5SoHn4Tr6BCxb/1N9GpLGi9jl777U0laKdYkLA=;
-        b=m7l1PX8JRX1SRocJT2QLDDogLzo4VaccOsTgZJ5CQ2mFjtmE3dxOOSBy1xaaJi7Qwo
-         pPanIn2/iuWAd44Scfv0Xj5qB++8CH1HLbUc+x6t/+cW9PYO3AXEif/TWN4bZQtdQBmW
-         7Vd7ER2BWHKUmkyPsAHSqvp/DaaBBtjWH1bLG9Yip3+BIVgTk+wbmW0psmmkvsNdXFVK
-         cfVzgQ1BoZ6QEBcH4/d616yUg8ml7zhzZZaOuGmZVM+DETMIC5NWkoNh4WAqcPA7N6Dw
-         cNF7cx38SG0utbd1yTYhwjeyO4b3CP3gR1UlBx/FXqjmAg6OdRZuxhsQkBMQu/0FpALf
-         SWHA==
-X-Forwarded-Encrypted: i=1; AJvYcCUMTIcDvMqq9cuxkeyHqSr+ENYYF89rlhkumWSIjYuR6DbNe0BqvBEtbwqDcCfcnGEk1M8Hmh/Cbnle@vger.kernel.org, AJvYcCWLeNBmu/5X89H1giwRkEqvofEPj81JKNDUOdZeCC1gnNFy/YX+dLL2zoCqA4zhN3PnkqTrsC7eOFbzI+cR@vger.kernel.org, AJvYcCXC2wGVfr36RH/yotRVwTjyGbNdumON8c+A5suGd65doErLL30KfJvRwgvc3F+jDg5A92dP1c9QNR5E@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsNZ7KuuH0HToH6heGJyQ4pF2nbOkn5ylv84gr/b8jwgiKTE7k
-	+cWmYAt4BOAciuX92CxZ5DfWRG51pMdXMZZjVX4PPSLSS42wiTVlPoFB
-X-Gm-Gg: ASbGncsmDyTRNMAMIbxmxPESj/Y36npqN4b/mbgD98PKNg64LM820/aijbjr2e/n5L5
-	YfHdGHZHSyjO9HZof8GHn21tMPGZgabDjY0Wd1xeYun6fHmxM2ksKdvqUZyick8RgD9sjXhoAgF
-	SBhIF7TE2xzgVtUf3TtGg2rDwaoUihg58cKlNhG/yWgl7clpdlH2sBRQwEn7jnCyCDRk0kNzEqU
-	+Op+M/SCDxa0U/KJCuXqIq6ZXBwNm3rLxAE52CozzZHC4Q89CLRii53BTESX3IEoj4QDUucvG8v
-	DVK5DGO20BtsY6RGgh/15WmzjS4nSO2AxR0a/tm7/lpd0jT8Qne84WbJ/QycRWBahjeoRhE3+Wn
-	80QVxuDuoLxSKuDjj6nrfGPrr0Fpl+VoFUoR+54MTJAmNwObvchtSytkV0Z485v0H2otJc723dc
-	Ch91h4aXbJLfXkrQ==
-X-Google-Smtp-Source: AGHT+IE9DAuzXlfO0T8BGbEaaDzrFKFbm9v9bayHfXRPMGOtvkB3z1CVZtyVEbYlFxT1eRAuNH/DWg==
-X-Received: by 2002:a05:600c:1e26:b0:456:25e7:bed with SMTP id 5b1f17b1804b1-45868c97accmr53096245e9.14.1753339863187;
-        Wed, 23 Jul 2025 23:51:03 -0700 (PDT)
-Received: from [26.26.26.1] (9.126.207.35.bc.googleusercontent.com. [35.207.126.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b76fcace54sm1166324f8f.45.2025.07.23.23.50.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Jul 2025 23:51:02 -0700 (PDT)
-Message-ID: <4f7e4bfb-1bc7-4c87-a9f1-8c8b6ee9a336@gmail.com>
-Date: Thu, 24 Jul 2025 14:50:53 +0800
+	 In-Reply-To:Content-Type; b=SrFIwbcIZY76S7FAaxbUPfYXNVvinMsLYW/wAKaMNpAqOFIZpdukOvSg/gdYVdW0gMb36OP65Twt3henwm6+0v+tyE/gkpwkvbsrqVl5bC+1VtX9shNGJSVq1+5ABQHQ5vhFk3H8Cz2R9ijP7ahsLhaxuVzY7xISzF8/QV81a00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=LM0qJgU4; arc=none smtp.client-ip=115.124.30.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1753344013; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=nhf3IJcOYSpRMKrPjWNbbcWsyyetTfh18hHD10/wjt4=;
+	b=LM0qJgU4u3MDZ4uXZY0UGAAgXezfj9n+F21ea/Zs1EaUNgZuGmDXXuUMSFhk4EZ+Zgway65Xq5HoDg9Anh0CXBNHLbeDhp7yoU4IWJJiNPwMvbKAA5XP1aLNS1ZNR4FnOYMcByX4VJ2HGicBQtTqEii5phlGG8enCPWtFkr6uQo=
+Received: from 30.246.181.19(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Wjlb2GV_1753344010 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 24 Jul 2025 16:00:11 +0800
+Message-ID: <7ce9731a-b212-4e27-8809-0559eb36c5f2@linux.alibaba.com>
+Date: Thu, 24 Jul 2025 16:00:09 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -83,99 +48,153 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 0/4] Disable ATS via iommu during PCI resets
-To: Nicolin Chen <nicolinc@nvidia.com>, jgg@nvidia.com, joro@8bytes.org,
- will@kernel.org, robin.murphy@arm.com, rafael@kernel.org, lenb@kernel.org,
- bhelgaas@google.com
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
- patches@lists.linux.dev, pjaroszynski@nvidia.com, vsethi@nvidia.com,
- helgaas@kernel.org, baolu.lu@linux.intel.com
-References: <cover.1751096303.git.nicolinc@nvidia.com>
-Content-Language: en-US
-From: Ethan Zhao <etzhao1900@gmail.com>
-In-Reply-To: <cover.1751096303.git.nicolinc@nvidia.com>
+Subject: Re: [PATCH v3] vmcoreinfo: Track and log recoverable hardware errors
+To: Breno Leitao <leitao@debian.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>,
+ Borislav Petkov <bp@alien8.de>, Robert Moore <robert.moore@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ acpica-devel@lists.linux.dev, osandov@osandov.com, konrad.wilk@oracle.com,
+ linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org, kernel-team@meta.com
+References: <20250722-vmcore_hw_error-v3-1-ff0683fc1f17@debian.org>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20250722-vmcore_hw_error-v3-1-ff0683fc1f17@debian.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+Hi, Breno,
 
+在 2025/7/23 00:56, Breno Leitao 写道:
+> Introduce a generic infrastructure for tracking recoverable hardware
+> errors (HW errors that did not cause a panic) and record them for vmcore
+> consumption. This aids post-mortem crash analysis tools by preserving
+> a count and timestamp for the last occurrence of such errors.
+> 
+> Add centralized logging for three common sources of recoverable hardware
+> errors:
 
-On 6/28/2025 3:42 PM, Nicolin Chen wrote:
-> Hi all,
-> 
-> PCIe permits a device to ignore ATS invalidation TLPs, while processing a
-> reset. This creates a problem visible to the OS where an ATS invalidation
-> command will time out: e.g. an SVA domain will have no coordination with a
-> reset event and can racily issue ATS invalidations to a resetting device.
-> 
-> The OS should do something to mitigate this as we do not want production
-> systems to be reporting critical ATS failures, especially in a hypervisor
-> environment. Broadly, OS could arrange to ignore the timeouts, block page
-> table mutations to prevent invalidations, or disable and block ATS.
-> 
-> The PCIe spec in sec 10.3.1 IMPLEMENTATION NOTE recommends to disable and
-> block ATS before initiating a Function Level Reset. It also mentions that
-> other reset methods could have the same vulnerability as well.
-> 
-> Provide a callback from the PCI subsystem that will enclose the reset and
-> have the iommu core temporarily change all the attached domain to BLOCKED.
-> After attaching a BLOCKED domain, IOMMU drivers should fence any incoming
-> ATS queries, synchronously stop issuing new ATS invalidations, and wait
-> for all ATS invalidations to complete. This can avoid any ATS invaliation
-> timeouts.
+The term "recoverable" is highly ambiguous. Even within the x86
+architecture, different vendors define errors differently. I'm not
+trying to be pedantic about classification. As far as I know, for 2-bit
+memory errors detected by scrub, AMD defines them as deferred errors
+(DE) and handles them with log_error_deferred, while Intel uses
+machine_check_poll. For 2-bit memory errors consumed by processes, both
+Intel and AMD use MCE handling viado_machine_check(). Does your
+HWERR_RECOV_MCE only focus on synchronous UE errors handled in
+do_machine_check? What makes it special?
 
-This approach seems effective for reset operations initiated through 
-software interface functions, but how would we handle those triggered by 
-hardware mechanisms? For example, resets caused by PCIe DPC mechanisms, 
-device firmware, or manual hot-plug operations?
+> 
+>    - PCIe AER Correctable errors
+>    - x86 Machine Check Exceptions (MCE)
+>    - APEI/CPER GHES corrected or recoverable errors
+> 
+> hwerror_data is write-only at kernel runtime, and it is meant to be
+> read from vmcore using tools like crash/drgn. For example, this is how
+> it looks like when opening the crashdump from drgn.
+> 
+> 	>>> prog['hwerror_data']
+> 	(struct hwerror_info[3]){
+> 		{
+> 			.count = (int)844,
+> 			.timestamp = (time64_t)1752852018,
+> 		},
+> 		...
+> 
+> This helps fleet operators quickly triage whether a crash may be
+> influenced by hardware recoverable errors (which executes a uncommon
+> code path in the kernel), especially when recoverable errors occurred
+> shortly before a panic, such as the bug fixed by
+> commit ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them
+> when destroying the pool")
+> 
+> This is not intended to replace full hardware diagnostics but provides
+> a fast way to correlate hardware events with kernel panics quickly.
+> 
+> Suggested-by: Tony Luck <tony.luck@intel.com>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+> Changes in v3:
+> - Add more information about this feature in the commit message
+>    (Borislav Petkov)
+> - Renamed the function to hwerr_log_error_type() and use hwerr as
+>    suffix (Borislav Petkov)
+> - Make the empty function static inline (kernel test robot)
+> - Link to v2: https://lore.kernel.org/r/20250721-vmcore_hw_error-v2-1-ab65a6b43c5a@debian.org
+> 
+> Changes in v2:
+> - Split the counter by recoverable error (Tony Luck)
+> - Link to v1: https://lore.kernel.org/r/20250714-vmcore_hw_error-v1-1-8cf45edb6334@debian.org
+> ---
+>   arch/x86/kernel/cpu/mce/core.c |  3 +++
+>   drivers/acpi/apei/ghes.c       |  8 ++++++--
+>   drivers/pci/pcie/aer.c         |  2 ++
+>   include/linux/vmcore_info.h    | 14 ++++++++++++++
+>   kernel/vmcore_info.c           | 18 ++++++++++++++++++
+>   5 files changed, 43 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+> index 4da4eab56c81d..cb225a42eebbb 100644
+> --- a/arch/x86/kernel/cpu/mce/core.c
+> +++ b/arch/x86/kernel/cpu/mce/core.c
+> @@ -45,6 +45,7 @@
+>   #include <linux/task_work.h>
+>   #include <linux/hardirq.h>
+>   #include <linux/kexec.h>
+> +#include <linux/vmcore_info.h>
+>   
+>   #include <asm/fred.h>
+>   #include <asm/cpu_device_id.h>
+> @@ -1692,6 +1693,8 @@ noinstr void do_machine_check(struct pt_regs *regs)
+>   out:
+>   	instrumentation_end();
+>   
+> +	/* Given it didn't panic, mark it as recoverable */
+> +	hwerr_log_error_type(HWERR_RECOV_MCE);
+>   clear:
+>   	mce_wrmsrq(MSR_IA32_MCG_STATUS, 0);
+>   }
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index a0d54993edb3b..ebda2aa3d68f2 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -43,6 +43,7 @@
+>   #include <linux/uuid.h>
+>   #include <linux/ras.h>
+>   #include <linux/task_work.h>
+> +#include <linux/vmcore_info.h>
+>   
+>   #include <acpi/actbl1.h>
+>   #include <acpi/ghes.h>
+> @@ -1136,13 +1137,16 @@ static int ghes_proc(struct ghes *ghes)
+>   {
+>   	struct acpi_hest_generic_status *estatus = ghes->estatus;
+>   	u64 buf_paddr;
+> -	int rc;
+> +	int rc, sev;
+>   
+>   	rc = ghes_read_estatus(ghes, estatus, &buf_paddr, FIX_APEI_GHES_IRQ);
+>   	if (rc)
+>   		goto out;
+>   
+> -	if (ghes_severity(estatus->error_severity) >= GHES_SEV_PANIC)
+> +	sev = ghes_severity(estatus->error_severity);
+> +	if (sev == GHES_SEV_RECOVERABLE || sev ==  GHES_SEV_CORRECTED)
+> +		hwerr_log_error_type(HWERR_RECOV_GHES);
 
-Thanks,
-Ethan
-> 
-> When a device is resetting, any new domain attachment should be deferred,
-> until the reset is finished. The iommu callback will log the
-> 
-> However, if there is a domain attachment/replacement happening during an
-> ongoing reset, the ATS might be re-enabled between the two function calls.
-> Introduce a new pending_reset flag in iommu_group to defer any attachment
-> during a reset, allowing iommu core to cache the target domains in the SW
-> level but bypassing the driver. The iommu_dev_reset_done() will re-attach
-> these soft-attached domains via __iommu_attach_device/set_group_pasid().
-> 
-> Notes:
-> - This only works for IOMMU drivers that implemented ops->blocked_domain
-> correctly with pci_disable_ats().
-> - This only works for IOMMU drivers that will not issue ATS invalidation
-> requests to the device, after it's docked at ops->blocked_domain.
-> Driver should fix itself to align with the aforementioned notes.
-> 
-> This is on Github:
-> https://github.com/nicolinc/iommufd/commits/iommu_dev_reset-rfcv2
-> 
-> Changelog
-> v2
->   * [iommu] Update kdocs, inline comments, and commit logs
->   * [iommu] Replace long-holding group->mutex with a pending_reset flag
->   * [pci] Abort reset routines if iommu_dev_reset_prepare() fails
->   * [pci] Apply the same vulnerability fix to other reset functions
-> v1
->   https://lore.kernel.org/all/cover.1749494161.git.nicolinc@nvidia.com/
-> 
-> Thanks
-> Nicolin
-> 
-> Nicolin Chen (4):
->    iommu: Lock group->mutex in iommu_deferred_attach
->    iommu: Pass in gdev to __iommu_device_set_domain
->    iommu: Introduce iommu_dev_reset_prepare() and iommu_dev_reset_done()
->    pci: Suspend iommu function prior to resetting a device
-> 
->   include/linux/iommu.h  |  12 +++
->   drivers/iommu/iommu.c  | 180 ++++++++++++++++++++++++++++++++++++++---
->   drivers/pci/pci-acpi.c |  21 ++++-
->   drivers/pci/pci.c      |  84 +++++++++++++++++--
->   drivers/pci/quirks.c   |  27 ++++++-
->   5 files changed, 307 insertions(+), 17 deletions(-)
-> 
+APEI does not define an error type named GHES. GHES is just a kernel
+driver name. Many hardware error types can be handled in GHES (see
+ghes_do_proc), for example, AER is routed by GHES when firmware-first
+mode is used. As far as I know, firmware-first mode is commonly used in
+production. Should GHES errors be categorized into AER, memory, and CXL
+memory instead?
 
+Thanks.
+Shuai
 
