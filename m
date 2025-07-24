@@ -1,155 +1,255 @@
-Return-Path: <linux-acpi+bounces-15312-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15313-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AECF9B10B9E
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jul 2025 15:36:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC3BB10CA4
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jul 2025 16:06:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00AD6B0016F
-	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jul 2025 13:34:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5E757A7CFC
+	for <lists+linux-acpi@lfdr.de>; Thu, 24 Jul 2025 14:05:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B292D4B7F;
-	Thu, 24 Jul 2025 13:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148A0190676;
+	Thu, 24 Jul 2025 14:06:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iOaaqcuD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB51613BC0C;
-	Thu, 24 Jul 2025 13:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6BE14286;
+	Thu, 24 Jul 2025 14:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753364078; cv=none; b=GddP4x7VQayeZO/VshKBsOB9Fj+Ogf9kXLgY8BBrz/bWcecENqK4KB1xlsskQIoW3Je0/KpEzraMeU1MuXohxhSBUTfJauI3+UTk9OhFVdLBhCC66xL7o4WvZRcAMq3wmakkdgpTgoBdiMaj5zPy+4b3xmIxYCTaD0dFY7bhedY=
+	t=1753365994; cv=none; b=fH+BwHOR/vaaFAofzOnZUKFYHSicifnKraWlirUUMd1RNei0d1XXmUIF4qxzD02r7MQR5NRDerhMY0avsaWzIuwxUmJ9uueegRteL/1ntakGcLqcTekYXpBafLqgof39Z3EFbNjM1fr3r+d1MUWKO8AR/hez25JlLUY5C7BoykE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753364078; c=relaxed/simple;
-	bh=MVJ3E/91h69I0bmDMezkRZP4rkHbijJOQ6KILSOiZCE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D5TyZl0Q/3dEAIVMrh+F5EwN6S8zkpA3m/nPOtrkN1yhMDK4zPqNQ2CJ3LaPpijwzi8y1wZPKKv1W/sUNXcbQ95y3JxmQeGjVTKVsluR+pT7WJ+Lkxt3SZs7X8jpFEshXmmiSTE5BBTu7RoEjAqY5dmjkqMaFUHrMlBiG9T2Wp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-af2a2a54a95so162762066b.0;
-        Thu, 24 Jul 2025 06:34:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753364075; x=1753968875;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/fx+2jC1brmgVu9hs4XiOEifPBnLGokabrEM+R2kq2s=;
-        b=pAH/Z8xdK0+QpGizQ6NuqWHfiFMAaYNv2Tov10c2YcezJaCxR8WlODx/ugavmVPyYR
-         tqd5Vo0UvtLUm6eLDc4Luxbib+gfOx9C7/CktiAxXWZ+wHa6KyJlGvr2GvVaghkxfyDo
-         Pqh0UIAP5Yw8nt5Zuy7vH59gMNumCN6DIj32OhTt+4YGhVrWc9AlSzEDR2qTscH/kYBR
-         KExYk4vlp7rhsjqEB57TkSEgsybWgW+c0Lrd+x9VN9UO7oBARgzYDiH+p8Ch7RR1Kycc
-         RadCJQ1UXAtnUmYIZNdiTtwO2t23EBinzyK4EhwBpCByd9w7VNogEEanIi+Fn/MX4+en
-         IkKw==
-X-Forwarded-Encrypted: i=1; AJvYcCW6cFmtOT5l0dGa5Mlo8J0r2MgHainsQ1B2CKc4GzsqIUTsyEEas8Iv2KIz3fDH7lBbOGtNEyg2MidNcg==@vger.kernel.org, AJvYcCWAG1MdyVBLDOi9Jx5nEvpF0tHcfsSdxV40ssk5M2hHpqqHn6GCr3kLtdT1Y6WveE1gIfXdmP3+i3rL@vger.kernel.org, AJvYcCWco3+clfJrs7fd0vyNbzmXEovTeIOkE70+NXEFtm2eagGvpPBcFvupu1PkRuYpjcmHz57u7z6rSp5A@vger.kernel.org, AJvYcCXtSym/WcXizoM0yWfgrKDp6DJBNRWmWW9HQZ8Nqctp0s2M2e7HWuvY9BHwdqoAhE6XfmUNbyKxCxyo/4TE@vger.kernel.org
-X-Gm-Message-State: AOJu0YyefYRXlDMZXDTr4JRXMpR5b52SOMsZu3uTBl3rjV07HlLCiESl
-	GekYevEwhtVnLYf4cd8lvItm+p/hb3AVLPpX3D+rIN48VVNTGj/5sbUv
-X-Gm-Gg: ASbGnctVAr+M8C9xMzOwxb76ahgBTFuyAlW7lPUnJwcc+27lZoy6RNxQ984C/rfVEjg
-	+csaBqeN0aBY/25B/pKnJxLZHRknFXg0UAeJtFpzTojuzA7RjfgPCzWsJTs10ZyFU/F4UWqm5TT
-	szRmMZ2NCQPzgpVV063ALJKPHrx45Ps2LkrV2msHuMTMxagB4LkLvkbm2FSpsKsfW70YVKtm9gt
-	OLY2zyTEkcOwO7LShWCn9qu3fVfcZzutwrp7TmLq80odssPA4YYoPt2QJ74v0TNAZZKilk8AQDr
-	I/Rx8kN63uyBwXK3i7pYpH1/Vo9PudSfKhmFGcODqaorrbXGLSf8l+7j+pV9Iua95cvCVjGMtKg
-	BbWI8AMxRZg==
-X-Google-Smtp-Source: AGHT+IErTV5E5SvHgukSA8OS+U/Vctcx7DT/kAXhifsJMwbjohYquNlfTpV+af0AGvLRHpjhkGn6qQ==
-X-Received: by 2002:a17:907:e8e:b0:aec:76c6:6ef6 with SMTP id a640c23a62f3a-af2f8d4fc6amr617861566b.50.1753364074854;
-        Thu, 24 Jul 2025 06:34:34 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af47f861d7bsm111509066b.119.2025.07.24.06.34.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jul 2025 06:34:34 -0700 (PDT)
-Date: Thu, 24 Jul 2025 06:34:31 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, 
-	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev, osandov@osandov.com, 
-	konrad.wilk@oracle.com, linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-pci@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v3] vmcoreinfo: Track and log recoverable hardware errors
-Message-ID: <4qh2wbcbzdajh2tvki26qe4tqjazmyvbn7v7aqqhkxpitdrexo@ucch4ppo7i4e>
-References: <20250722-vmcore_hw_error-v3-1-ff0683fc1f17@debian.org>
- <7ce9731a-b212-4e27-8809-0559eb36c5f2@linux.alibaba.com>
+	s=arc-20240116; t=1753365994; c=relaxed/simple;
+	bh=xQo5KEqoF1PffvNp9AFrbP5Uz2nyeKq2oyhFi5dQqxg=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=igmrmCm2aNdfYaVJLz3fE9fpX3LQZDV31ZmZSePQiRyG6obp4vLtFdo8WyszlBfud4BkMyCmK+0TTIYwFcrz+CmDLh7Ffp8533cuM+HZpt9xBajTypMd60RLnkuRzpTXzYniPZ99aPztNkObXvaRwpd5oTJChFMB0JJLZ7nsoyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iOaaqcuD; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753365992; x=1784901992;
+  h=date:from:to:cc:subject:message-id;
+  bh=xQo5KEqoF1PffvNp9AFrbP5Uz2nyeKq2oyhFi5dQqxg=;
+  b=iOaaqcuDpg+1m5i4FYUv9CEEZwXaF7lRtXttV/drbvpyU7WXl3wLMJlg
+   W39+MkshjVMyn6Ri/g/O51ODbatiVhkYpfn6vOdCLVdBEHv9orI2rCRtF
+   EtJvttupmjxsPzglZDxXYfpD/LENvsm+lGJ/UhxDq0KASt0LJAKLXiJol
+   MCdkzjPy1rfuZ6bVNPZZXupIa7s5h5BVrB73/EVjBONxhO3eCxBnRat6P
+   ej06KtskfZolkpPFOBbVBThmOq2B+KegQjAz6wlnj4SP6wOrDkWcKSfOr
+   FYZCEFxAsQZmKzIFHf7jEw6mWZQepnUrx6+ba9VafJd/vsLC4crMZdaW/
+   g==;
+X-CSE-ConnectionGUID: PJg9C+jkRv2ENSwmzX3d8Q==
+X-CSE-MsgGUID: t5UFlC+oRH6q+b3bfRFSkQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="66382240"
+X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; 
+   d="scan'208";a="66382240"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 07:06:31 -0700
+X-CSE-ConnectionGUID: nd9DgN1LQqG+Kc3PwLL8Ow==
+X-CSE-MsgGUID: vf7GIPvARfG26Wiatij3HQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; 
+   d="scan'208";a="191175796"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 24 Jul 2025 07:06:30 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uewaa-000KVn-0b;
+	Thu, 24 Jul 2025 14:06:28 +0000
+Date: Thu, 24 Jul 2025 22:06:10 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 77d832285656c59238e7992f12296e18657251ee
+Message-ID: <202507242258.lSgpTN9e-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7ce9731a-b212-4e27-8809-0559eb36c5f2@linux.alibaba.com>
 
-Hello Shuai,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 77d832285656c59238e7992f12296e18657251ee  Merge branch 'pm-cpufreq' into linux-next
 
-On Thu, Jul 24, 2025 at 04:00:09PM +0800, Shuai Xue wrote:
-> 在 2025/7/23 00:56, Breno Leitao 写道:
-> > Introduce a generic infrastructure for tracking recoverable hardware
-> > errors (HW errors that did not cause a panic) and record them for vmcore
-> > consumption. This aids post-mortem crash analysis tools by preserving
-> > a count and timestamp for the last occurrence of such errors.
-> > 
-> > Add centralized logging for three common sources of recoverable hardware
-> > errors:
-> 
-> The term "recoverable" is highly ambiguous. Even within the x86
-> architecture, different vendors define errors differently. I'm not
-> trying to be pedantic about classification. As far as I know, for 2-bit
-> memory errors detected by scrub, AMD defines them as deferred errors
-> (DE) and handles them with log_error_deferred, while Intel uses
-> machine_check_poll. For 2-bit memory errors consumed by processes,
-> both Intel and AMD use MCE handling via do_machine_check(). Does your
-> HWERR_RECOV_MCE only focus on synchronous UE errors handled in
-> do_machine_check? What makes it special?
+elapsed time: 1447m
 
-I understand that deferred errors (DE) detected by memory scrubbing are
-typically silent and may not significantly impact system stability. In
-other words, I’m not convinced that including DE metrics in crash dumps
-would be helpful for correlating crashes with hardware issues—it might
-just add noise.
+configs tested: 161
+configs skipped: 3
 
-Do you think it would be valuable to also log these events within
-log_error_deferred()?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> > -	if (ghes_severity(estatus->error_severity) >= GHES_SEV_PANIC)
-> > +	sev = ghes_severity(estatus->error_severity);
-> > +	if (sev == GHES_SEV_RECOVERABLE || sev ==  GHES_SEV_CORRECTED)
-> > +		hwerr_log_error_type(HWERR_RECOV_GHES);
-> 
-> APEI does not define an error type named GHES. GHES is just a kernel
-> driver name. Many hardware error types can be handled in GHES (see
-> ghes_do_proc), for example, AER is routed by GHES when firmware-first
-> mode is used. As far as I know, firmware-first mode is commonly used in
-> production. Should GHES errors be categorized into AER, memory, and CXL
-> memory instead?
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    gcc-15.1.0
+arc                         haps_hs_defconfig    gcc-15.1.0
+arc                   randconfig-001-20250723    gcc-8.5.0
+arc                   randconfig-001-20250724    gcc-13.4.0
+arc                   randconfig-002-20250723    gcc-9.5.0
+arc                   randconfig-002-20250724    gcc-15.1.0
+arm                              allmodconfig    gcc-15.1.0
+arm                               allnoconfig    clang-22
+arm                              allyesconfig    gcc-15.1.0
+arm                        multi_v7_defconfig    gcc-15.1.0
+arm                   randconfig-001-20250723    gcc-13.4.0
+arm                   randconfig-001-20250724    gcc-10.5.0
+arm                   randconfig-002-20250723    gcc-13.4.0
+arm                   randconfig-002-20250724    clang-22
+arm                   randconfig-003-20250723    clang-16
+arm                   randconfig-003-20250724    gcc-8.5.0
+arm                   randconfig-004-20250723    clang-22
+arm                   randconfig-004-20250724    gcc-12.5.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.1.0
+arm64                 randconfig-001-20250723    clang-22
+arm64                 randconfig-001-20250724    gcc-8.5.0
+arm64                 randconfig-002-20250723    clang-16
+arm64                 randconfig-002-20250724    clang-22
+arm64                 randconfig-003-20250723    clang-16
+arm64                 randconfig-003-20250724    gcc-13.4.0
+arm64                 randconfig-004-20250723    clang-22
+arm64                 randconfig-004-20250724    clang-22
+csky                              allnoconfig    gcc-15.1.0
+csky                  randconfig-001-20250723    gcc-12.5.0
+csky                  randconfig-001-20250724    gcc-13.4.0
+csky                  randconfig-002-20250723    gcc-14.3.0
+csky                  randconfig-002-20250724    gcc-10.5.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-22
+hexagon                          allyesconfig    clang-22
+hexagon               randconfig-001-20250723    clang-22
+hexagon               randconfig-001-20250724    clang-22
+hexagon               randconfig-002-20250723    clang-22
+hexagon               randconfig-002-20250724    clang-22
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250723    clang-20
+i386        buildonly-randconfig-001-20250724    gcc-12
+i386        buildonly-randconfig-002-20250723    clang-20
+i386        buildonly-randconfig-002-20250724    clang-20
+i386        buildonly-randconfig-003-20250723    clang-20
+i386        buildonly-randconfig-003-20250724    clang-20
+i386        buildonly-randconfig-004-20250723    clang-20
+i386        buildonly-randconfig-004-20250724    clang-20
+i386        buildonly-randconfig-005-20250723    gcc-11
+i386        buildonly-randconfig-005-20250724    clang-20
+i386        buildonly-randconfig-006-20250723    clang-20
+i386        buildonly-randconfig-006-20250724    clang-20
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-22
+loongarch             randconfig-001-20250723    gcc-15.1.0
+loongarch             randconfig-001-20250724    clang-22
+loongarch             randconfig-002-20250723    clang-22
+loongarch             randconfig-002-20250724    gcc-13.4.0
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    gcc-15.1.0
+m68k                          hp300_defconfig    gcc-15.1.0
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+mips                          eyeq6_defconfig    clang-22
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20250723    gcc-8.5.0
+nios2                 randconfig-001-20250724    gcc-11.5.0
+nios2                 randconfig-002-20250723    gcc-11.5.0
+nios2                 randconfig-002-20250724    gcc-8.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                generic-64bit_defconfig    gcc-15.1.0
+parisc                randconfig-001-20250723    gcc-8.5.0
+parisc                randconfig-001-20250724    gcc-14.3.0
+parisc                randconfig-002-20250723    gcc-15.1.0
+parisc                randconfig-002-20250724    gcc-8.5.0
+parisc64                         alldefconfig    gcc-15.1.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                          allmodconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                          allyesconfig    clang-22
+powerpc                     ksi8560_defconfig    gcc-15.1.0
+powerpc               randconfig-001-20250723    gcc-10.5.0
+powerpc               randconfig-001-20250724    clang-22
+powerpc               randconfig-002-20250723    gcc-8.5.0
+powerpc               randconfig-002-20250724    gcc-8.5.0
+powerpc               randconfig-003-20250723    gcc-12.5.0
+powerpc               randconfig-003-20250724    clang-22
+powerpc                    sam440ep_defconfig    gcc-15.1.0
+powerpc64             randconfig-001-20250723    clang-22
+powerpc64             randconfig-001-20250724    clang-22
+powerpc64             randconfig-002-20250723    clang-22
+powerpc64             randconfig-002-20250724    gcc-13.4.0
+powerpc64             randconfig-003-20250723    clang-22
+powerpc64             randconfig-003-20250724    gcc-15.1.0
+riscv                            allmodconfig    clang-22
+riscv                             allnoconfig    gcc-15.1.0
+riscv                            allyesconfig    clang-16
+riscv                 randconfig-001-20250723    gcc-9.5.0
+riscv                 randconfig-002-20250723    clang-22
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.1.0
+s390                  randconfig-001-20250723    clang-22
+s390                  randconfig-002-20250723    clang-20
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                    randconfig-001-20250723    gcc-12.5.0
+sh                    randconfig-002-20250723    gcc-9.5.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20250723    gcc-8.5.0
+sparc                 randconfig-002-20250723    gcc-8.5.0
+sparc64               randconfig-001-20250723    gcc-12.5.0
+sparc64               randconfig-002-20250723    gcc-14.3.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-12
+um                                  defconfig    clang-22
+um                    randconfig-001-20250723    gcc-12
+um                    randconfig-002-20250723    clang-22
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250723    gcc-12
+x86_64      buildonly-randconfig-001-20250724    gcc-12
+x86_64      buildonly-randconfig-002-20250723    gcc-11
+x86_64      buildonly-randconfig-002-20250724    clang-20
+x86_64      buildonly-randconfig-003-20250723    gcc-11
+x86_64      buildonly-randconfig-003-20250724    gcc-12
+x86_64      buildonly-randconfig-004-20250723    clang-20
+x86_64      buildonly-randconfig-004-20250724    gcc-12
+x86_64      buildonly-randconfig-005-20250723    gcc-12
+x86_64      buildonly-randconfig-005-20250724    clang-20
+x86_64      buildonly-randconfig-006-20250723    gcc-12
+x86_64      buildonly-randconfig-006-20250724    gcc-12
+x86_64                              defconfig    gcc-11
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20250723    gcc-13.4.0
+xtensa                randconfig-002-20250723    gcc-10.5.0
 
-I also considered slicing the data differently initially, but then
-realized it would add more complexity than necessary for my needs.
-
-If you believe we should further subdivide the data, I’m happy to do so.
-
-You’re suggesting a structure like this, which would then map to the
-corresponding CPER_SEC_ sections:
-
-	enum hwerr_error_type {
-	HWERR_RECOV_AER,     // maps to CPER_SEC_PCIE
-	HWERR_RECOV_MCE,     // maps to default MCE + CPER_SEC_PCIE
-	HWERR_RECOV_CXL,     // maps to CPER_SEC_CXL_*
-	HWERR_RECOV_MEMORY,  // maps to CPER_SEC_PLATFORM_MEM
-	}
-
-Additionally, what about events related to CPU, Firmware, or DMA
-errors—for example, CPER_SEC_PROC, CPER_SEC_FW, CPER_SEC_DMAR? Should we
-include those in the classification as well?
-
-
-Thanks for your review and for the ongoing discussion!
---breno
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
