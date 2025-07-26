@@ -1,192 +1,250 @@
-Return-Path: <linux-acpi+bounces-15320-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15321-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A968CB12233
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Jul 2025 18:42:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1BE7B12836
+	for <lists+linux-acpi@lfdr.de>; Sat, 26 Jul 2025 02:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6056A3B49C8
-	for <lists+linux-acpi@lfdr.de>; Fri, 25 Jul 2025 16:41:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27D68174243
+	for <lists+linux-acpi@lfdr.de>; Sat, 26 Jul 2025 00:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69BE2EF28E;
-	Fri, 25 Jul 2025 16:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D51B13790B;
+	Sat, 26 Jul 2025 00:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XE4OmoYD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kBaBfcy8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2068.outbound.protection.outlook.com [40.107.220.68])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61730243378;
-	Fri, 25 Jul 2025 16:42:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753461742; cv=fail; b=LScgvnY+eH6AuXAcx/GIvajm543RQChfBRVYWz/6IcSZyupWbmz8B4l7k96/NFPw/GtpQlPlKD6k6kzDPSC5ZRVWQV+ee5I8Ks71/e2fgh7J6eGFWGZKOaxabpDsrAGpehvt+Zw9OgxinBk32Mm5S1iCT2pwqsy5F/mi6Gv78Co=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753461742; c=relaxed/simple;
-	bh=UyZMB1dcPYxNJs078xJnBsifJYkKd+IEUP3g+aDoZUo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h4UkwtC/LLBvlrFeI8nZswgzrEzBsPKFgX7JJ3unQq/styT6UN9/nA+360ATwUkIKze9keLBsPw5KBtamZoqkMty0SFvo+DUZPDlRZ0IDhYJQ79GXH/Z2unI/TVqLWPfLavIF7xby0g2Nm9rFS+aIgu5h0Yeljb4TPzAyxYvDnY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XE4OmoYD; arc=fail smtp.client-ip=40.107.220.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p0yn7HGNXbMA04KPbT8qho4gwwFAaMwLitCil7Vwlb2fXPJsG59v+Ut+T8dzoN05YVqle2dAoiPH8AtLaQwm3Ue6ySW5wwzvNbUorCdN1shY2AwwLBTQAcLVRqKu1o6rfNujufQ4lVVDUy+jXIfXU08U49Vj9aG+pHB1iQzKTrSOJ6voS+HCZjbhLJdQZ0N8UzHZkEHrIGPf4ENTsPM6h1SO3q6iIDMz4pGYHdGs4rTiXhhIqGFnDjMQOWauB+3eNG5W8jhs0W8awc1yjFsgqikYGEnCiWKOiVzFAkrY+AxDGIiHTLaMUWsWNw4fTg57iOt/cbLmw9zLQI+4r/CNaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0cEw2jGRRXTVNjDx8dNqM7En4f2cjK+RJPnjm/RqJSU=;
- b=CHeC+7JTlBhTSs6oVvyMHSdBIp0C5+CVNB8wbJvx7XzVQ1fU0xYtKacym6yhAQs0gvOJjcqBsVoC/Jgv5sZuD/8Ojd23KqwkzS2+Xpl65yTQ+nposo0DCnzOYbg2skVM3OxsiVMaX5Nhfo9tQC3UtuLLWtTpSLFfbw+Cdp6CH8F3aknsJS3VMUU+NqgofzTAXT1SP0yyerxZbMbvrdrbRfUSRNg3xkNnMYFqVT8dYylLEv0Ly4MM8Yi2XAzZb2UUVaGq1ddbZSfKIZVRGy3r0FUG6icwDP6IZEdCg5jUuMrQRXFc8RITPFebH/Z7MJx/F2I8XGO0T4yLJIsbFQmTJg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0cEw2jGRRXTVNjDx8dNqM7En4f2cjK+RJPnjm/RqJSU=;
- b=XE4OmoYDa+Tmw0+MaIkZxIozURyhxTYi8os6kMP/t+WWIa/inmX0Ak2ZwWZzjh9eU/K7pxhk2rZSvPbN0C3bM5+Q5yiLTasafbnwNeU/mHe76x/8lT89kGKitmdsjOwuMhIpIBaW0Or8naQAVp8cTS2eb1PTt9BFybkFeecmUYF9oKG3tx0LVjjpY9bO5N3boy9nlIdaNtpJ/Apc7I5khufn9xkiFF2fKCN2d481UK7LQ47/zc6YmHSIdtU+ueJGxeyzuKM+5JSMgTQre8EdqvKSS3fJ2bRSC+iQIhLupw/28Wc+YudntjEJkSBnv2cf4g4cTrzUCbBmFtxp2XdM5w==
-Received: from SJ0PR13CA0172.namprd13.prod.outlook.com (2603:10b6:a03:2c7::27)
- by PH0PR12MB7488.namprd12.prod.outlook.com (2603:10b6:510:1e9::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.23; Fri, 25 Jul
- 2025 16:42:16 +0000
-Received: from CO1PEPF000042AE.namprd03.prod.outlook.com
- (2603:10b6:a03:2c7:cafe::86) by SJ0PR13CA0172.outlook.office365.com
- (2603:10b6:a03:2c7::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8989.7 via Frontend Transport; Fri,
- 25 Jul 2025 16:42:16 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- CO1PEPF000042AE.mail.protection.outlook.com (10.167.243.43) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8964.20 via Frontend Transport; Fri, 25 Jul 2025 16:42:16 +0000
-Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Fri, 25 Jul
- 2025 09:42:00 -0700
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Fri, 25 Jul 2025 09:41:59 -0700
-Received: from Asurada-Nvidia (10.127.8.14) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Fri, 25 Jul 2025 09:41:58 -0700
-Date: Fri, 25 Jul 2025 09:41:57 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Ethan Zhao <etzhao1900@gmail.com>
-CC: <jgg@nvidia.com>, <joro@8bytes.org>, <will@kernel.org>,
-	<robin.murphy@arm.com>, <rafael@kernel.org>, <lenb@kernel.org>,
-	<bhelgaas@google.com>, <iommu@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, <patches@lists.linux.dev>,
-	<pjaroszynski@nvidia.com>, <vsethi@nvidia.com>, <helgaas@kernel.org>,
-	<baolu.lu@linux.intel.com>
-Subject: Re: [PATCH RFC v2 0/4] Disable ATS via iommu during PCI resets
-Message-ID: <aIOz1bzgfK9q0n4b@Asurada-Nvidia>
-References: <cover.1751096303.git.nicolinc@nvidia.com>
- <4f7e4bfb-1bc7-4c87-a9f1-8c8b6ee9a336@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467762B9BA;
+	Sat, 26 Jul 2025 00:43:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753490611; cv=none; b=qPi4tXDvCFfEt/BfNZrNP1ELuTpeoZu4ZYEN5iRrVUjIb2Xb6BdXQ3B7v9MNsesJZMQGDyAMGzVaN7PirM3x1B/QC2727rSdZAF+EJaMiQyTuoCpfZBvU5fqavjRJMu0OpCXM1gfmn/PtJRkmexRiNkOMa80ebUCTQTg8wnU4W8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753490611; c=relaxed/simple;
+	bh=FRa9xY4x5DiJRX0obptGEWaAk44wN8I8KzUTZYrUCjI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=teWuTX5tshkXvp0VMN50DKvVldt+QmyROOaSpwIZ/6Q2oqEBk6eqO8I+MW5pGZkwUznaux4V1EYcrWINNjOOIcknbPR6RlBw80t7g70RROl/eGXTJ3ATDmW8A0+YrOaa/tvRA/Kf07IsVCUs8G6m8Ke5btiUbvvTrMdP3pVwbZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kBaBfcy8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1170C4CEE7;
+	Sat, 26 Jul 2025 00:43:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753490610;
+	bh=FRa9xY4x5DiJRX0obptGEWaAk44wN8I8KzUTZYrUCjI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kBaBfcy8cvOEOsPzmxHVilPiLtCGr+TDf8X/qOm2ye9g94waAiMThV6LQwkD5mGES
+	 PDjLL+F1jsLeU64wJNGH2USu78DXOVIauVdSn5Za3ug6EyGqMkDWY68qx6CO1Gpj84
+	 N2fKc/oxH+okv+yKP2JrlydnIbTVzpb6w9fxjXPvPbNQT1zbh2x+enrj7WanGNqURj
+	 oluIdS5LRKkHy5qC/5rWJa6TJsIQMsqWbSs6k1imrXOBgatcUYq26mfwhTEKJwXKN7
+	 wK8GX+boueI26+UPx4/MDOH6NBVBpUuOSwVrQlpds5FDuUw13v4g1+lMsu+qwH3eh6
+	 5w2Rudv02W7cA==
+Date: Fri, 25 Jul 2025 17:43:13 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Will Deacon <will@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Gavin Shan <gshan@redhat.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	James Morse <james.morse@arm.com>,
+	Oza Pawandeep <quic_poza@quicinc.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+	Michal Wilczynski <michal.wilczynski@intel.com>,
+	Juergen Gross <jgross@suse.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Kirill A. Shutemov" <kas@kernel.org>,
+	Roger Pau Monne <roger.pau@citrix.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Usama Arif <usama.arif@bytedance.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Thomas Huth <thuth@redhat.com>, Brian Gerst <brgerst@gmail.com>,
+	Marco Elver <elver@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Hou Wenlong <houwenlong.hwl@antgroup.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>, Baoquan He <bhe@redhat.com>,
+	Alexander Graf <graf@amazon.com>,
+	Changyuan Lyu <changyuanl@google.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Jan Beulich <jbeulich@suse.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Bibo Mao <maobibo@loongson.cn>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+	kvm@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
+	platform-driver-x86@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-efi@vger.kernel.org,
+	linux-mm@kvack.org, kasan-dev@googlegroups.com,
+	linux-kbuild@vger.kernel.org, linux-hardening@vger.kernel.org,
+	kexec@lists.infradead.org, linux-security-module@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v4 0/4] stackleak: Support Clang stack depth tracking
+Message-ID: <20250726004313.GA3650901@ax162>
+References: <20250724054419.it.405-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4f7e4bfb-1bc7-4c87-a9f1-8c8b6ee9a336@gmail.com>
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000042AE:EE_|PH0PR12MB7488:EE_
-X-MS-Office365-Filtering-Correlation-Id: a8b234ab-94ce-4b98-1b85-08ddcb9a3725
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|82310400026|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?IZyhEi2D+lXWw0sI6YM7NHdhhBU++5S0CobsBzxNEwBmRv/x7+1oYumpXFGk?=
- =?us-ascii?Q?ytohOxdv0mylpjZgfuG63qCWz9kfPgyazKy2ib6m0pZ8OmbIHeGpGMtJ8hr5?=
- =?us-ascii?Q?1V0AtW18oRzaT8zm6ozPqw3hgx7IlCUl0SUPy8QLpCQ+2VZLZoEo68wHZdV6?=
- =?us-ascii?Q?v2yQTQ57eiido+GZCH0JikrdixNhmT/2X4J/IPhM+M4NQfhza9oZKnB2EWjS?=
- =?us-ascii?Q?Un8e7UOb0pD9wU+IGUO+mecVqL3OZEtU8qNPbpn9o0zDs+C7CeF2IC+YgtZP?=
- =?us-ascii?Q?zJUFGdOHwSZuYNb23XjWRB0vPhRozxpFdIAbJJ5EVUcJok4n5xzvPsCI22ZS?=
- =?us-ascii?Q?NHRunguvPnQ+WPmefzVNVcVhtNRbqcEPu3G7zAeHkt0Jr2JnYo5b7XPwQAFD?=
- =?us-ascii?Q?FRksJymMWbMbEWCeUz8MNEV3qjsz1isB16VCcF8RI9V9GnXkR5i2wYnhVd2A?=
- =?us-ascii?Q?eZL/NQQ/mQrlBtPstf8uGLGDD5YEAjS0QvKSouTP5uvNWYlJy917g9/JPfYW?=
- =?us-ascii?Q?G/KiwhJGrO4nDoZHV0Djz6uUWdrTQCSOaQFSXaNPblnTzegCnveW4s/REExR?=
- =?us-ascii?Q?V4F+PGz0CcO5gLqZB7k+WZ6cu1H/FNgyjP96EDpSl9QlsJteqpBwXY8Xz5o/?=
- =?us-ascii?Q?ab229L2uocikIQ+1DKTYv/iHESr7jhdRUG1mlAHGbk68VdgSALX3fbblcQ80?=
- =?us-ascii?Q?M4yz7SRC/2eWZmcwb0kJheLqvSxDFvvOYy/tyvn+IfqFZwBQfQ68KrOYcYpT?=
- =?us-ascii?Q?juVY+YWqm1EUNUa4q2oYAEgJPTsazw1s5sYljocFm6xGjrRWL1p+yD/NMMN1?=
- =?us-ascii?Q?xKTeiijeTAxv/uo2Z4D1hLW/7pjQz7Usk10ik49g6QtkKxcIb724b8RAH/LR?=
- =?us-ascii?Q?+3Lo5O1KymwE86Np75m0GI+havFKGiV4EI+bK462eBBH6isgTBJ7rIXM4PZg?=
- =?us-ascii?Q?J4dCOd2e/MGpiCIujomeoog/wo9lfSxHvHsrrxy4NL3MBO65hJw1aej0kNo9?=
- =?us-ascii?Q?8ddubwOOcixVHH7bej7Y0hlVIEoyIy6d1ikY/tvaxQ0RnEKKj839/xRtnVTS?=
- =?us-ascii?Q?G+u2T/XSwKgQNSAG1D2qm3R77EyAHZ3qce124VhaGvGb2ndgMIVRxD1LlXdo?=
- =?us-ascii?Q?JB0EXhrxNBHYw2aSBTKCqFllJAJt2zlqNOuHR+8XNcnTEpJBAvc9JzIQO1fj?=
- =?us-ascii?Q?AH0Inzce7Kkpk0k4j1kGcvEc0TsMjiJExZQ2lZon5GxYXqx9TDRe13RpbSeD?=
- =?us-ascii?Q?2Ua+rJ8eAmrKG7M48/CLwccwwVnsCT90v6TF+xpv2HDF6LEd8wMQ8nNwhT1R?=
- =?us-ascii?Q?ma/R2I/6cRTS2kGK3rmh8+IiFV7SvREZkPkXlDjH+hAfjbAutypToRYwu8Dz?=
- =?us-ascii?Q?LSO6G5XHA5Fkv95S4CAtsDc2Ovlp3q7zPfHpPgFHGTelDFRRUbVv4LASSj4X?=
- =?us-ascii?Q?vXUxAooyNz4uOGonrYVi7sJ2hRYRsBui503qv4nCERZIJzzW0vCmlWbbHdJH?=
- =?us-ascii?Q?O2HcNSIxQ6dLCWfoRl1im0h7bdLk5l6F/vV7?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2025 16:42:16.6137
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a8b234ab-94ce-4b98-1b85-08ddcb9a3725
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000042AE.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7488
+In-Reply-To: <20250724054419.it.405-kees@kernel.org>
 
-On Thu, Jul 24, 2025 at 02:50:53PM +0800, Ethan Zhao wrote:
-> On 6/28/2025 3:42 PM, Nicolin Chen wrote:
-> > PCIe permits a device to ignore ATS invalidation TLPs, while processing a
-> > reset. This creates a problem visible to the OS where an ATS invalidation
-> > command will time out: e.g. an SVA domain will have no coordination with a
-> > reset event and can racily issue ATS invalidations to a resetting device.
-> > 
-> > The OS should do something to mitigate this as we do not want production
-> > systems to be reporting critical ATS failures, especially in a hypervisor
-> > environment. Broadly, OS could arrange to ignore the timeouts, block page
-> > table mutations to prevent invalidations, or disable and block ATS.
-> > 
-> > The PCIe spec in sec 10.3.1 IMPLEMENTATION NOTE recommends to disable and
-> > block ATS before initiating a Function Level Reset. It also mentions that
-> > other reset methods could have the same vulnerability as well.
-> > 
-> > Provide a callback from the PCI subsystem that will enclose the reset and
-> > have the iommu core temporarily change all the attached domain to BLOCKED.
-> > After attaching a BLOCKED domain, IOMMU drivers should fence any incoming
-> > ATS queries, synchronously stop issuing new ATS invalidations, and wait
-> > for all ATS invalidations to complete. This can avoid any ATS invaliation
-> > timeouts.
+Hi Kees,
+
+On Wed, Jul 23, 2025 at 10:50:24PM -0700, Kees Cook wrote:
+>  v4:
+>   - rebase on for-next/hardening tree (took subset of v3 patches)
+>   - improve commit logs for x86 and arm64 changes (Mike, Will, Ard)
+>  v3: https://lore.kernel.org/lkml/20250717231756.make.423-kees@kernel.org/
+>  v2: https://lore.kernel.org/lkml/20250523043251.it.550-kees@kernel.org/
+>  v1: https://lore.kernel.org/lkml/20250507180852.work.231-kees@kernel.org/
 > 
-> This approach seems effective for reset operations initiated through
-> software interface functions, but how would we handle those triggered by
-> hardware mechanisms? For example, resets caused by PCIe DPC mechanisms,
-> device firmware, or manual hot-plug operations?
+> Hi,
+> 
+> These are the remaining changes needed to support Clang stack depth
+> tracking for kstack_erase (nee stackleak).
 
-That's a good point. But I am not sure what SW can do about those.
+A few build issues that I see when building next-20250725, which seem
+related to this series.
 
-IIUIC, DPC resets PCI at the HW level, SW only gets a notification
-after the HW reset finishes. So, during this HW reset, iommu might
-issue ATC invalidations (resulting in invalidation timeout noises)
-since at the SW level the device is still actively attached to an
-IOMMU instance. Right?
+1. I see
 
-Nicolin
+  ld.lld: error: undefined symbol: __sanitizer_cov_stack_depth
+  >>> referenced by atags_to_fdt.c
+  >>>               arch/arm/boot/compressed/atags_to_fdt.o:(atags_to_fdt)
+  make[5]: *** [arch/arm/boot/compressed/Makefile:152: arch/arm/boot/compressed/vmlinux] Error 1
+
+when building ARCH=arm allmodconfig on next-20250725. The following diff appears to cure that one.
+
+diff --git a/arch/arm/boot/compressed/Makefile b/arch/arm/boot/compressed/Makefile
+index f9075edfd773..f6142946b162 100644
+--- a/arch/arm/boot/compressed/Makefile
++++ b/arch/arm/boot/compressed/Makefile
+@@ -9,7 +9,6 @@ OBJS		=
+ 
+ HEAD	= head.o
+ OBJS	+= misc.o decompress.o
+-CFLAGS_decompress.o += $(DISABLE_KSTACK_ERASE)
+ ifeq ($(CONFIG_DEBUG_UNCOMPRESS),y)
+ OBJS	+= debug.o
+ AFLAGS_head.o += -DDEBUG
+@@ -96,7 +95,7 @@ KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
+ 
+ ccflags-y := -fpic $(call cc-option,-mno-single-pic-base,) -fno-builtin \
+ 	     -I$(srctree)/scripts/dtc/libfdt -fno-stack-protector \
+-	     -I$(obj)
++	     -I$(obj) $(DISABLE_KSTACK_ERASE)
+ ccflags-remove-$(CONFIG_FUNCTION_TRACER) += -pg
+ asflags-y := -DZIMAGE
+ 
+--
+
+2. I see
+
+  kernel/kstack_erase.c:168:2: warning: function with attribute 'no_caller_saved_registers' should only call a function with attribute 'no_caller_saved_registers' or be compiled with '-mgeneral-regs-only' [-Wexcessive-regsave]
+    168 |         BUILD_BUG_ON(CONFIG_KSTACK_ERASE_TRACK_MIN_SIZE > KSTACK_ERASE_SEARCH_DEPTH);
+        |         ^
+  include/linux/build_bug.h:50:2: note: expanded from macro 'BUILD_BUG_ON'
+     50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+        |         ^
+  include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_ON_MSG'
+     39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+        |                                     ^
+  include/linux/compiler_types.h:568:2: note: expanded from macro 'compiletime_assert'
+    568 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+        |         ^
+  include/linux/compiler_types.h:556:2: note: expanded from macro '_compiletime_assert'
+    556 |         __compiletime_assert(condition, msg, prefix, suffix)
+        |         ^
+  include/linux/compiler_types.h:549:4: note: expanded from macro '__compiletime_assert'
+    549 |                         prefix ## suffix();                             \
+        |                         ^
+  <scratch space>:97:1: note: expanded from here
+     97 | __compiletime_assert_521
+        | ^
+  kernel/kstack_erase.c:168:2: note: '__compiletime_assert_521' declared here
+  include/linux/build_bug.h:50:2: note: expanded from macro 'BUILD_BUG_ON'
+     50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+        |         ^
+  include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_ON_MSG'
+     39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+        |                                     ^
+  include/linux/compiler_types.h:568:2: note: expanded from macro 'compiletime_assert'
+    568 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+        |         ^
+  include/linux/compiler_types.h:556:2: note: expanded from macro '_compiletime_assert'
+    556 |         __compiletime_assert(condition, msg, prefix, suffix)
+        |         ^
+  include/linux/compiler_types.h:546:26: note: expanded from macro '__compiletime_assert'
+    546 |                 __noreturn extern void prefix ## suffix(void)           \
+        |                                        ^
+  <scratch space>:96:1: note: expanded from here
+     96 | __compiletime_assert_521
+        | ^
+  kernel/kstack_erase.c:172:11: warning: function with attribute 'no_caller_saved_registers' should only call a function with attribute 'no_caller_saved_registers' or be compiled with '-mgeneral-regs-only' [-Wexcessive-regsave]
+    172 |         if (sp < current->lowest_stack &&
+        |                  ^
+  arch/x86/include/asm/current.h:28:17: note: expanded from macro 'current'
+     28 | #define current get_current()
+        |                 ^
+  arch/x86/include/asm/current.h:20:44: note: 'get_current' declared here
+     20 | static __always_inline struct task_struct *get_current(void)
+        |                                            ^
+  kernel/kstack_erase.c:173:37: warning: function with attribute 'no_caller_saved_registers' should only call a function with attribute 'no_caller_saved_registers' or be compiled with '-mgeneral-regs-only' [-Wexcessive-regsave]
+    173 |             sp >= stackleak_task_low_bound(current)) {
+        |                                            ^
+  arch/x86/include/asm/current.h:28:17: note: expanded from macro 'current'
+     28 | #define current get_current()
+        |                 ^
+  arch/x86/include/asm/current.h:20:44: note: 'get_current' declared here
+     20 | static __always_inline struct task_struct *get_current(void)
+        |                                            ^
+
+when building ARCH=i386 allmodconfig.
+
+3. I see
+
+  In file included from kernel/fork.c:96:
+  include/linux/kstack_erase.h:29:37: error: passing 'const struct task_struct *' to parameter of type 'struct task_struct *' discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
+     29 |         return (unsigned long)end_of_stack(tsk) + sizeof(unsigned long);
+        |                                            ^~~
+  include/linux/sched/task_stack.h:56:63: note: passing argument to parameter 'p' here
+     56 | static inline unsigned long *end_of_stack(struct task_struct *p)
+        |                                                               ^
+
+when building ARCH=loongarch allmodconfig, which does not support
+CONFIG_THREAD_INFO_IN_TASK it seems.
+
+Cheers,
+Nathan
 
