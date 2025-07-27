@@ -1,209 +1,185 @@
-Return-Path: <linux-acpi+bounces-15329-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15330-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07507B1306B
-	for <lists+linux-acpi@lfdr.de>; Sun, 27 Jul 2025 18:25:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9532B1323A
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Jul 2025 00:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C2B2177FDD
-	for <lists+linux-acpi@lfdr.de>; Sun, 27 Jul 2025 16:25:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA2367A2E39
+	for <lists+linux-acpi@lfdr.de>; Sun, 27 Jul 2025 22:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACCCF21A454;
-	Sun, 27 Jul 2025 16:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24E424A047;
+	Sun, 27 Jul 2025 22:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WpezOtRF"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="hNU2T5RX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2046.outbound.protection.outlook.com [40.107.237.46])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112FD21C160;
-	Sun, 27 Jul 2025 16:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753633508; cv=fail; b=r8vFSJPD6N/yA8ajfk23EUWMsmcVSYCdM4nePCmRPcTH9HZngu4TSGuu6n0Y9TflKqTjwOVZSIt+9oPITopGpbZuq/HJtrVFE7uBPWKl3sjkhoJJ7kt+btFvZgC6d5VMCZFKoJVIv8FtuU25TreubhD0GOuX5cd3EZPkR671CZY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753633508; c=relaxed/simple;
-	bh=eVTggPgAvH0r5WUnRC2rlzijXcTpiAXc4a8HnibQjqo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=tDJCChj2GIiXSQ077qrXbY6SXdnFNnqAaiQ/tiLCZyeU+cVKcT/p1P+Srmg7CDDoPgjFOKerq7bKCQ7GQyZBsLatZdp3NF38Wwkzpd3vW66l8u32XoK61hBLcr6ESTDLet620B0GsrnfMWGvqbSHIxu0Xqr1iE7IWXy/GCGK/OY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WpezOtRF; arc=fail smtp.client-ip=40.107.237.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VTPZoStg10kf8FX2jaZpb89pqozhLbUJZrgVUEYykxeBDnkcvPQVgGup+VsN4GIPg2KgcugvLKQDVd+lQf1MIaXYmV2gpn4e8IFQmt1HFeOQhfkhi+lBVh7rEcSlrbXBkskXtNiUh7Ni4n4oECEicQTcfFlRg9m4apk5rEMlL8MFTogFyvzd10wFn35eeMnvDliBoUlPuGljc2v9/BNcG3rsOki9S/fMEsGFciAb1yF6kdCKI9LC1IcYY5VszPOwCj4fJqxDtwPhAjMtMONadH5I8GpwYVliNo/kJEUjM1xvTwS0mWn0/9/otp5XGWV5iUrZA02YvHOF5cGtWmJsnw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zeBcLBmniWNZyUThaqSA5QcCjoSx3g6oBK51X0m9XVU=;
- b=yWfKBTf7tZeQG9KBMXdfQLWqXZf1yhoBkSUMqJNNMngzfwj5ZlPyYbomo0IMzRRFWjXdBR32g2sRqSPvS5jnLX+un35C0USEIZeUe6Z5o41MdppNUPWDLJAVGT74M3rbH3+CzSYGrCY5hOsvF+b/VQp/yMypccqVskx3gBsIxaqHGoHaXgW/IrACKyo5LqiSLhDH+UX3mH325POQGJd4EETUZXusbTDBvY/NBodVg0gCnqy3JXHXHUUjwqdzq/QkitK8ANUBfsd0WUyPWTyUOldWxh3SvByfz5YClqSEuRt5jVW3d/Sk7IPKbBQPVaIn7os6sseo4uchYArQyk3QQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zeBcLBmniWNZyUThaqSA5QcCjoSx3g6oBK51X0m9XVU=;
- b=WpezOtRF+6POvZuM9mFVOgrqHoGBiHfDULLgXBrVuGfTmF+u/RRcA6rwQemqNJjlIa3TQ9n2McxvtpNj6u7SRdargHX0a5bNCw9A0mmeR9B/EnO8UZExRQt1OMj5BD/e3uu56jiGfzUMibaIGQdir3XJ1p2dqGfhivQ4rA9wyScqWHNRHRzGsS/NPm9qrNX7FW2TH2ZZ8BLoGNJsm1vz///YZv+9fNfB1FlfiA98zpze8CshzgJv/W3t7bF8TSkZ3bs4lGVtWvWZoaiYHjikRsJy/fZ4AhKPM0zlxBpuVSuatOSocf7M6A3gHM6PH2sSNsTWJAik3+Wb6SPzmrUFzA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by PH7PR12MB6739.namprd12.prod.outlook.com (2603:10b6:510:1aa::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.39; Sun, 27 Jul
- 2025 16:25:04 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%7]) with mapi id 15.20.8964.024; Sun, 27 Jul 2025
- 16:25:03 +0000
-Date: Sun, 27 Jul 2025 13:25:01 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
-	rafael@kernel.org, lenb@kernel.org, bhelgaas@google.com,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-	patches@lists.linux.dev, pjaroszynski@nvidia.com, vsethi@nvidia.com,
-	helgaas@kernel.org, baolu.lu@linux.intel.com
-Subject: Re: [PATCH RFC v2 3/4] iommu: Introduce iommu_dev_reset_prepare()
- and iommu_dev_reset_done()
-Message-ID: <20250727162501.GD7551@nvidia.com>
-References: <cover.1751096303.git.nicolinc@nvidia.com>
- <9042270b6c2d15a53e66d22d29b87c1c59e60669.1751096303.git.nicolinc@nvidia.com>
- <20250704154342.GN1410929@nvidia.com>
- <aIAJfYMKYKyZZRqx@Asurada-Nvidia>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aIAJfYMKYKyZZRqx@Asurada-Nvidia>
-X-ClientProxiedBy: YT4P288CA0057.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:b01:d2::14) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F005B198E8C;
+	Sun, 27 Jul 2025 22:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753655052; cv=none; b=adN8xogCP1YCx+nJ2kpw8/L9tnFomPbwYvrDtlYynpKmkeAQD5a3n2BEkJ3h+w1uhZCXt7XFfMtEtqjvr9C0/iF5hMGEBIYv+eRNgAmU7QX6BcH5O59qaLv3HwZn5RMbcEt+a0PHdoOjF3Gud9YjeBIhO4vdyc+RUgHGawT9ZHo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753655052; c=relaxed/simple;
+	bh=ISZBQJUakdaBUwOdxrBWUAiu/Vjs+cOfRQdcsu6fu/M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=h4JlPoXDhT3jEmmIlNZcZ4zI+gKhVXZaS8WDWB7HZrS1o/bsoN/vsgKZyV7l4E6SXrqNejtJkWGV8JkiHALR7GvTUxFI2SLnOGG1JIj2trZkP/BTOHdaiH0j4Yuh+FyX08b68XsRZ/wJfs1pDQqPYUpwjUYESLWcZeHuv2RgNGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=hNU2T5RX; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1753655043; x=1754259843; i=w_armin@gmx.de;
+	bh=ISZBQJUakdaBUwOdxrBWUAiu/Vjs+cOfRQdcsu6fu/M=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=hNU2T5RXhC8EhZ/FXCtnIW5/9Y1uBITwm73W4k7sMxjLzWoTl/aRPfeJXQurUKRU
+	 mvC4fAYpyH7LqQ9ZKGGFdRLJWiMqbxB7G7eDiiLyGHAJ1RRF26o0i8CXfGIgVs/Mf
+	 FdbkGr021IRbuHdKcXO0edPupKO8h4fISGcvsuU7XDFebsL3KEo4tLQMZ9hxxRLLW
+	 nigg9OMYw5VkcbcUPDyknw9kpgQnQmK2jPFuHwm8JhgCycXlUO6pSI/BJLxs9WSj8
+	 PFD3PY2HG5hm2PO2ZOAVwIr2AKpQVJiS0EMowK8xK6pWB5IJLNLDkULlBp7mfXGZv
+	 FP6bQeWaPLK/sOrHYw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.69] ([87.177.78.219]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M3lYB-1ufsXI0q0p-008T6U; Mon, 28
+ Jul 2025 00:24:03 +0200
+Message-ID: <b4707664-6177-45ff-a284-36e921f316e7@gmx.de>
+Date: Mon, 28 Jul 2025 00:24:02 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|PH7PR12MB6739:EE_
-X-MS-Office365-Filtering-Correlation-Id: e1e08fd8-9393-4b19-30f4-08ddcd2a240c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+yti0xcL4+zIPn8Kgzbebb+0qGnDBZzw1UbI1lwUuCpmcvNsScQu/r6qeTnq?=
- =?us-ascii?Q?6RJxDcR/Erkrlx5WtGT4B3q/MjWcBGgxYn5ykrQfFlOCljbZBqxt043HxvX5?=
- =?us-ascii?Q?uYJBHTg/VzPPWaJ3ucB2kDb87kJoUG58JIsvTyneU6HtrWxMYhHuMdGhx/Bw?=
- =?us-ascii?Q?LUJXWVBKM8+xkIkbRdU4wW59TOFMDnN6zU1aP9/+wYNpZCF4IOvRoL2zux5B?=
- =?us-ascii?Q?BljN9u1v26fZGwEqpnxhhRPYozl/MTzXNs4f9ewFaou1XMQwjMHq8PTDMpg+?=
- =?us-ascii?Q?M0rQzac2Ldo8mn5weJ6/GGJno1blE/Dco9IOhSx9DUILA/f4pweqi1kKeUpA?=
- =?us-ascii?Q?JVlNdNg3a2IDhkgDND+KLOKruhVN7rMRD80Ux5a3GCfj4EAwJn+3omWAu60o?=
- =?us-ascii?Q?MeVHlKj49KrnW8j0jQkkCOYWUffa31sdawAYcLh0tNkARdF8lazPB3yAug0l?=
- =?us-ascii?Q?9lcb494bbWFsXpC13NT0XBIGkzZljlzn9SdwpJ+eqkz0TUBLpLb1bJ9IqiPX?=
- =?us-ascii?Q?v9xxTyjKYUsdxFdjaGN5Bm507XmJ4F/AKlQxX7NLI1TKhRtthC65ibu+pS1V?=
- =?us-ascii?Q?X8DH6W9AL6XhHssqr6hHsy2eBK4tkGYPlXVvyB1XDeBIz17H2YBPe0zMabM8?=
- =?us-ascii?Q?zBua3a2jEjasBKafNoGC4yxa5ENcfqkg5HAfo94NuMgLrzCbH7vf9GkZaxNf?=
- =?us-ascii?Q?J7r5FAlA7nZnouXoqvuwTJ/uNsGwr9IeDKex70jZIWObqkqDtrpDwnlVUSt2?=
- =?us-ascii?Q?c6pSnsy7mY8Yte5EgV+oHj1vWDFdtTlCM32T15VqHRZOhpZ9APMzEaWFEF4V?=
- =?us-ascii?Q?Y+pFAISDyKYh/VEFv1P1JewA1vGOGl3LKaU9yALWh3T7jhqkywn9AEOPVn67?=
- =?us-ascii?Q?fi+yoC9nN1d/h/SqHgFRFPz7SaCv7Rcqw6UwF17aH1DyzHl8gkyT0hCIUd5Y?=
- =?us-ascii?Q?ecVc7jynZgohXpn82jfB5hOFjE+6ocgNUEIstrgsHCRvlsEu0xTfPm+5gxEa?=
- =?us-ascii?Q?tG91lFopuQZYIC1LWShVid2eJhJ/CPxBeU5AgMeE0w36yvSqZ8XU/hsjX8zA?=
- =?us-ascii?Q?SdiEgmkv5yALMXY4Q6lI0XpMPnAGBbGXNQP+HhCe5WbktTjyt4kUvh21VAzF?=
- =?us-ascii?Q?VlNLwknsYz2+EjWFT+FFP4Px3zJJN08N8g2N40E2vHRDMVL3lS5UkdwfRs/3?=
- =?us-ascii?Q?CC8IiLYcGk7+zfRvRsKaW1Tu64l1QKCY0XouKydJLnXSg31wC31zTlJW5h/t?=
- =?us-ascii?Q?B1ot7ioQtOxt+De72Exl6Qyvv7NwzT97dprqf65Jc+wq2Tsxc6PdMGEOm7B0?=
- =?us-ascii?Q?WubI/C37mkNDqQL4fWQK6wDiSowN9dJdUqF9oHc3CFC7HKyPOMr+lVdusMjf?=
- =?us-ascii?Q?D/32YrboJHGAi5+QnPYSg3lfXViHj38hM1lr2c/OCl1w98bZXg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gR+QFk9i7n2eALnugIGKc29cr0gpe8IUFAXJUoPvCtFKf4Z0g5ggR4NhW/KU?=
- =?us-ascii?Q?3EhATK1bkDMqX/8F9m5KKXaWVyL60p4kNHmxaP+smM2ACl/opozmEPJjjomS?=
- =?us-ascii?Q?5rel5Vq9Ph+uRC2ce6bKbGxQxajf+1lgxXx8F9PhXYTtaSvcaJWwQKD/beag?=
- =?us-ascii?Q?omyMUHga5qan67dF1fdoSjY+YXD5Ululr9CNui6RH++efIXDdoKYs5J3bx+1?=
- =?us-ascii?Q?sdqfkBv/zBOp74CFynB37bSFav0To9U8UrF+IjRa1ANLG1QCcd0AnLepXgz4?=
- =?us-ascii?Q?Zt5CSme1jwIBiGO19xwFgmyOh7GMkBNHFcmbbUmJq/3bmznq9eunHndSKceQ?=
- =?us-ascii?Q?KPEB6LNmNNv8lxjV3EEuA6JqbAcMiKuFq5QZT7Z1DEc3EPxD9b8ybtHfVAcO?=
- =?us-ascii?Q?CoKyF7afr50letUmFrFv4vLXby2BSahrO6kF77YidGW4TkmMbFUHPzr7yNIa?=
- =?us-ascii?Q?Pfm0z8klLVEMrbgL7k5oOBVLRKeT/bv+0qfEm3Tz6Z4NzYarRfgoi5MjCx5+?=
- =?us-ascii?Q?seJIa1bRC2JltOlrxbGdSwBTCPOn/GcD/2+gZesgZfGFr5/jeTUXqJcv7hl2?=
- =?us-ascii?Q?ly2vth3hsx3kNVmjJd6aT2kUWLG8Cr2+yJRUoghaUBubRt4+aAYTdib5h86n?=
- =?us-ascii?Q?8V8ZeBvoiqjxru808T4BjE/gAUB/NWDbqisgBWLgFaUN+wgeXGqkJorWRg+i?=
- =?us-ascii?Q?gVvY2F2x1c+E4rUMJJ3UjZslP4haXD7bXfmzUdjjTnj93qExhVR97bUyDyQO?=
- =?us-ascii?Q?WPq8mlvJAiTlfG333hdsgza370ojsTHVTtG8q1ZTf/q7icc4Rx8RShtX1mOx?=
- =?us-ascii?Q?GACRJATs2huk3meVQXnFTO4oVoHc1vzUhVrXjA4qQnm5P8yPcmDnRxvheKvi?=
- =?us-ascii?Q?Xk4dq6cz2KhNl9NAFfdQSA1SJUJud3EGI+QW9L52mfNACB9/1MrdyfPcxhit?=
- =?us-ascii?Q?jdSGW5FBPcX7onRfWV3dAf07qPOYwVAeueN+w8ZKRdBzTWl1N0ZTWoYFodtK?=
- =?us-ascii?Q?ik5/PEt26ZVe13nWQMWFkvIfrOWUoG4W2vgkI0IruljBi+eEW1MupuLvjWON?=
- =?us-ascii?Q?itptOAGk2lsqsrcWP2UXY1Iv2W1ZTaPtnhkS01TtAhYqiadFW8nImhV6AlDm?=
- =?us-ascii?Q?iyZeZ+Dh0kzs06uhrMl21Xfprw4HRyO4/mLzy6FixitohPd/G8R0WRtHWuO3?=
- =?us-ascii?Q?9QX75Oi6PJ67pdQs3wwD15kheRxb2anCoUNmZO1mtyS2XxU3r4vht+ASH3nJ?=
- =?us-ascii?Q?yVLPa1+V6+pwKu9NW1lKsPPz7hmkVy80MnGK1P1irIodurbUiA8RbciEucEo?=
- =?us-ascii?Q?0xa63thXj3TOPo63xWxdDYYlZ9TZyw5JFSCWxghRssDhhkkgcaASczGS/49z?=
- =?us-ascii?Q?BwPTuBhHyxWihzUOaplIEFsadolCRh2Ul85RR3IZ301xe4/oAl+fE4r5Wayy?=
- =?us-ascii?Q?nVkB8BWzG0W59MXWOlb1FvngF7Ham5/iMHfL/2m4L8/g5LM1nIozULxfIxPo?=
- =?us-ascii?Q?uCyCcUB5/wl3vl+eeJvSrRb39t/XK4m3I3ILP82pR5r89N3Jas0UHoM5zJOu?=
- =?us-ascii?Q?tEJvYM5VxDfRqV+J6G4=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e1e08fd8-9393-4b19-30f4-08ddcd2a240c
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2025 16:25:03.6487
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /JMX5kmVJ8/ZpXyPWRl2AKL+IEMhUBnAsBl7m8oaB4gx+QwJWgrLFjHOltruxA6S
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6739
+User-Agent: Mozilla Thunderbird
+Subject: Re: Missing ACPI driver for a keyboard button in Xiaomi RedmiBook Pro
+ 16
+To: Nikita Krasnov <nikita.nikita.krasnov@gmail.com>,
+ linux-acpi@vger.kernel.org, linux-input@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, linux@weissschuh.net, fengwk94@gmail.com
+References: <6c7e2d8a-8c79-4311-8126-c888a6519c71@gmail.com>
+ <68cc7f60-39b1-47f3-9120-82f8b0f26d9c@gmx.de>
+ <b1f1fa0f-fd32-4e5d-a9df-9ac2af428a86@gmail.com>
+ <616bdb32-0d57-476b-8ad0-f2be3c5c9fbe@gmx.de>
+ <8f3d1015-3bef-4e7f-abea-c6665163af16@gmail.com>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <8f3d1015-3bef-4e7f-abea-c6665163af16@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:Tuj1I0LqUjg1MkBY7z6AIBTFJGkhEfPWMH0MnLYx2ceSDa0BYaS
+ C3qz5pX9Gj3BzwLgDciWnsxt9A69xW6MlizH/wqmBy+ApCg6Dv83nooEuP7LVMEfan22d6G
+ YQjJ64c5CX9yZF/DZl3JsCj2LLeiu/9KYoLsHAemwapHxeAC7pE/FASivr49aDKXf6SrBI5
+ YFmissVOnSXKZWHC02IoA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:8q2+l2z9yLo=;Cf1COkLEV6IUXFjLRdEmqOeJCM9
+ GAykuKFcMWBD7FAntReo1/Veqa+uiMhak+dB19voeYGJFY5oLogZK1c5XXK+7uXCuFmE6Kuo9
+ OaYF3Uaz9yCvz9iN8G4r5N2NeIunscaXv5aGhXF6y6wIImiofEb15ekeV9hr7HQkhOhM59VHy
+ pkdb4h4RMtvQfYoD4YpyYSoKENgNEBfT9Xa1y7tiC7EAjqsSUm0DHrSmMUi5adJ7HSx8xagD1
+ KMJyOabkxi5by5nOMzuiYpSzDUDHpL6F2wLdme9NXH7gFYK5SyB2G2gtdMTfS6wDMcOAAGp+m
+ eViRjmO1Fslzf0WL6Z3FVbO0qtjx88GHxGeXVHT7o5juZ6OsgPDXwdDm9Ap7iLUlep+ZE4jDH
+ YaWIdCzmc8C/q29x5K3nakkVxk3nKdfAp/7Ftx4aMCQCZNaUa2WccWhsjHNPIIiC9X4x0sWc2
+ +tsBW6Qv1FWwRmV5r7/jC6RAU2GRV+mJJI0R1WeAC5lmJclQqswWgj/eI8Da9vOJLvv0ePiIP
+ sNWlji7hrtTrfbxQQ12dw+00RwRbQ+S4YBUWjIcdt7ARDKj4wvu4eWP2RG07J6uergS+t9vS8
+ 5LmK3l44cZ1pFtoYLHx+cJIVlNBzKCrlPVS3FkrQzR8rvjrWBMig7vnmld0NUgBZLXWnNGQTJ
+ 6Y5O/YI/sKvMTWEwQow7bqizCCjj6WAeV+ELEV7XNAmBP/0RqXHXU5EoSPpXyUJe+yStIdU4A
+ Rcw5wcwOxAG/HZyYXIJDYoL2mM6i9r9JVR7CzREuWnsfHGcFROX4ebnjnEVnUPopbusO0PE/X
+ 8OHpQTACrexUTeiPRbUvreCTFMC+xt+YO/wvoFAKfMlLvQYnMW546BdXx+JEEYkPLudcBerVl
+ /A+GhJTinuLYCXNChk6YbPO7TaQpKB6AoO2IcAohdQfl5FILC7XA5C9j3B1tzw/tTVZ7nJZMo
+ +x1+7xhVR0i1Xtp6NTG2KzG6McDToMVoxjrKXLUApuLbgRc1yGYnrjyEkjQ7iWP+YB0zdJly0
+ tSEl+Q4QUtQdrK8lmDn07jsqONmmUPOE0lJT0PBTkvcNftfF+EPyCUSfJJpkind9/YgS5FDmR
+ IsFP3EFX9NYt0/IgqyOg5VMQjE/XbGwZGHFZrK7o4m8wg0P8AqXHId5NW9p4FMh8Bpj6Onr6E
+ dBOyOef14ZZgnTn/stx3kH2WRnT+F/qgMd+9F8LNh2Eh5mKRthUBtsfr1MyEULoarpAw6pLN5
+ Pt5DTYHAZ9Egqip4Gegbie+vne8uaqXoK5+QeWfIhag9cPlSXiienG0rLkjHqYRc7HVUgsEed
+ ctKZsmCM1Z22x7I3+bhWeASaDkWKxNZzWg8OsDFRwjzuU8RQXcaDjGGwoztLWMQig6YocqvcI
+ F+4v08YvSqAf7I3VyGM/y4D5anW6nE7TR19Sq6N4zNmBr3DOxuk32FSrrtfomtRR6KbyvWq3b
+ g1icU87eCpqubZp/7i8YBqEIkPJiMcxwA5/D06UdVLA+oAkUJFxIGRuQgrEJD25HIcnbS8RM8
+ v8Cs4tMZaCvgkL/i/kLPDd05+hUa5lh3AV5X/qfQX7fR2YYWbP0Y4LYUSgO5wdFqj8zFro0eK
+ bCa8Ygm1uLNn9gv3uiFeVda4HaYprp6yB2hCTOHxIzyz3ZPaTvYYlJGUVtcMTAoKEs6u8/QJ3
+ iSDdNAC+mc+gsts5YAxXN8jwjRMNyusQFKwpOYSnpUpLwvxNetHbtyqOHSFDvTrKqn5vyE98q
+ h0MpjSSM0tEgjqEjK6Mfq02tsDHjTVcwqjK17Wa6LOwZCy4hWniQ6DmZEP2M2DlI+8dr8Ea+F
+ dVEftY+IOxgCPef/IpOWHh/kNjej7BUSRQiIRBhT1EqOm8qmvg3Gm7f8U/ZwSZNiE2bYof8HQ
+ Ev2tmkKHy1CtWG0xgm8l9t0smQWceKEbHhkwRqFCPpe1pre0cmPYyxOxqjcH+CF5kBVwQIk2i
+ /MvEgZ4GEko1IxGo4xuPbOo1l+kEPJjEMcweEsLwRJ0cIE/4KPOV/oeEwR8RiH6dqtyzRyGcN
+ U0sYBrRbxy+Pg7fRDUqHC2ysBpc7xLAAACYVUFlGM/GbgNh9Sug9FvW5385i59lWHZ+jX9ehO
+ C7tvSTCkjY39oZkmr8gXNw2oLdF6bxNa/auqh4XWEN/hq00iCxS49m6jPLNARL3m4cP+8CJoY
+ 8AzejEQKpbNRseIA+ShLI0VcyQ9fof/gt+37vWeyOV4jcwCuV/ZTvBAJjzQiIh4IyVzeuZHX2
+ 8l60csW7IL+9oWDNROjI7xmvPyBhwfg46dmXpe1Fi3Bz6NVW8bwy4+d+CrVimO7A+0U17JRME
+ mTFUKrTlDlXBeQYrc4jFJq7fHrZDVHO5edH5JK+KnOmFJtpqtccbxe4fmskymMjAQLBWdJBfu
+ imaWflLojDppv5Y6q6yh7vSRJSQQjunujEWyQ8rZpdFXn3J9cPAtYAqaDKnYbZ3h4XmgpCNKS
+ oZCMPVZFyG2/Gnf593VQJiu+TlHktUONOHfB29Opswk+DZtVfrWPpslKiwtmOyfWTMGUSaDHs
+ Qkh29FytVuldpk2NoDLpiZlIV7I+S/kUE8z52QPdrket8qusIS3hvF2gzClhPAqhr7MRJ7NQo
+ smgK9ihlKYD4ETZgaVj+PPa46/17bzllVhZxo23tI58OIm7WNsz15ZKSiTKZcgi+uKEtWKCyJ
+ +EUnKbEjhEpAPob7wzWoEqAjDc3bbhsgIe5jRGGz2oLBmocpQLL5DTlNjTguuYRpYRGPwfMtY
+ GBmsHqrusDc3Bgep1cN2/uYBXF0PFyuOfd9BpmaHWiD1LnRPAwwU52n//37GUxXKOF7sULuVb
+ nnufCfmrSGiExWxmGpjD/Gu5P73ittiIJIFV0crIeUS8hjSajpUyvrrmaSJeU74boprUMvNdl
+ mlzfgAZGyXTXEBWf55LanHsXfXu82LM5pcqQg/SSVHZoQHuvNbqVlx2XMCcQUUfa9RMqW5ruu
+ X5zewHMf6rPyQVMc5KHlGPO+HkdcnJQ2qzEnvu7GxGVMgrxUoY46NwnVDd3hplhEk5saeop7x
+ 9S4DSPhkv7YxjaVOXDm5TZ+t+RfccvYkWu2JpI0XnR3V9r1CGTVDJDHMANPgzAqhu1lh2jPaz
+ U3lP/fqCOHM0927A4oZdQs2xRQnHqacTstINcPDAlAFy6HPJJzvfEyhLIimsZJy7iDa/4A8R2
+ Oj4uDdpbUDJ1wZMboo0F7iuOSAm5ooHadnIo9Kj8N8cfv+PHqcTE3f+Mj6GtkXLlG3aYV6e2i
+ o6c2sh+FFMCwZplw4RpEP265Rwf+61qnpl61eUmaOx9ohyxXzn8LxQ8LrWlBqbu9BOYRd3UR8
+ tYVN2CuPS8VxQcvkr9IryW/bqXkLdMoIlt4PxwppeBBKaC4KBkqiO+XRqZ5o7KyDDDzJjyRAK
+ NWCnBhzxOkiW+y5HAbzIZc04sypuTrhIRvGmtHiqf59TRwL2e6xd/c9BNvD9GC
 
-On Tue, Jul 22, 2025 at 02:58:21PM -0700, Nicolin Chen wrote:
-> > /*
-> >  * This is called on the dma mapping fast path so avoid locking. This
-> >  * is racy, but we have an expectation that the driver will setup its
-> >  * DMAs inside probe while still single threaded to avoid racing.
-> >  */
-> > if (dev->iommu && !READ_ONCE(dev->iommu->attach_deferred))
-> 
-> This triggers a build error as attach_deferred is a bit-field. So I
-> am changing it from "u32 attach_deferred:1" to "bool" for this.
+Am 27.07.25 um 13:23 schrieb Nikita Krasnov:
 
-Bleck, that seems undesirable.
+> Hello again!
+>
+> Sorry for taking so long. Real life stuff gets in the way :(
+>
+> On Tue, Jul 22, 2025 at 07:09:37PM +0300 Armin Wolf wrote:
+>> Take a look at https://docs.kernel.org/wmi/driver-development-guide.html.
+> Thanks! Coupled with articles [1] and [2] this was a very good
+> introduction to WMI and ACPI.
 
-> And, to keep the original logic, I think it should be:
-> 	if (!dev->iommu || !READ_ONCE(dev->iommu->attach_deferred))
+Please note that the LWN article regarding WMI drivers is quite outdated. Please follow the
+WMI driver development guide from the kernel documentation instead.
 
-That doesn't seem right, if there is no iommu by the time a driver is
-probed there never will be an iommu and this device should be running
-in direct mode only.
+>> Sure, but you have to develop a new WMI driver for your device because after looking at the
+>> ACPI tables (SSDT20 in particular) i came to the conclusion that the xiaomi-wmi driver cannot
+>> be used in this case.
+> Why is that? Is it because xiaomi-wmi is using deprecated GUID-based WMI
+> interface?
 
-> > And of course it is already quite crazy to be doing FLR during a
-> > device probe so this is not a realistic scenario.
-> 
-> Hmm, I am not sure about that, as I see iommu_deferred_attach() get
-> mostly invoked by a dma_alloc() or even a dma_map(). So, this might
-> not be confined to a device probe?
+No, it is because your device is using a different WMI interface for delivering events. Device manufacturers
+are not exactly known for using the same WMI interfaces for a long time :(.
 
-Once you do deferred_attach the first time it is done and won't have
-any further impact. So long as the dev->iommu->attach_deferred guards
-any changes to domains it is unlikely to be racing with FLR.
+> Btw, it's so weird for me that there are many laptop models, but only
+> one *-wmi.c file per manufacturer (be it Xiaomi, ThinkPad, MSI or Asus).
+> Is it because most of the time we write a driver for a specific piece of
+> hardware that may be reused in different laptop models?
 
-> > Either ignore this condition with the rational that we are about to
-> > reset it so it doesn't matter, or we need to establish a new paging
-> > domain for isolation purposes that has the RMR setup.
-> 
-> Ah, you are right. ARM MSI in a VM uses RMR and sets this.
-> 
-> But does it also raise a question that a VM having RMR can't use
-> the blocked_domain, as __iommu_device_set_domain() has the exact
-> same check rejecting blocked_domain? Not sure if there would be
-> some unintended consequnce though...
+Usually a given WMI interface is used on a wide range of models so that the device manufacturers
+do not have to develop a giant number of backends for their control center applications under Windows.
 
-Sounds like it needs some sorting out.. For the purposes of FLR I
-think the blocked domain is OK, so maybe just move some of those
-checks around?
+That is why many WMI driver work on a wide range of devices from a given manufacturer.
 
-Jason
+>> I suggest that you write a skeleton driver first that basically prints
+>> the content of this buffer to the kernel log using print_hex_dump_bytes().
+> About that... Would you be okay with me implementing this driver in
+> Rust? I assume it's you, an ACPI WMI DRIVER maintainer, whose permission
+> needs to be granted to green-light this?
+
+Personally i have no problem with you writing a WMI driver in Rust, but currently we have
+no suitable bindings for the WMI driver API. Additionally i am currently designing a new
+WMI driver API that will make it easier to implement the necessary Rust bindings, so the
+whole thing might take some time.
+
+Would it be possible for you to implement the WMI driver in C?
+
+Thanks,
+Armin Wolf
+
+> [1]: https://lwn.net/Articles/391230/
+> [2]: https://lwn.net/Articles/367630/
+>
+> --
+> Nikita Krasnov
 
