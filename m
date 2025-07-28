@@ -1,149 +1,99 @@
-Return-Path: <linux-acpi+bounces-15361-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15362-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A98B136A7
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Jul 2025 10:30:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2635BB1371B
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Jul 2025 10:59:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A35A61733D3
-	for <lists+linux-acpi@lfdr.de>; Mon, 28 Jul 2025 08:29:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 203233B730B
+	for <lists+linux-acpi@lfdr.de>; Mon, 28 Jul 2025 08:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4560E266B41;
-	Mon, 28 Jul 2025 08:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27FCC2356BA;
+	Mon, 28 Jul 2025 08:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mz29zVDR"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="iNeeMEJk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5C2266581;
-	Mon, 28 Jul 2025 08:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47AC52264BF
+	for <linux-acpi@vger.kernel.org>; Mon, 28 Jul 2025 08:59:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753691104; cv=none; b=WdCvvAgMo2NEWx8IwVUYFFK9J5h+b3pz8oL7FMJGdBDF8FxeZNnzJ7NYRYEPfEKqDPzCoZrXmdEvjI7uehfd43L//yExMgx2UvT4SakCtuN42y0NRlnP6xuOUcNShBTqELu8kSZ1h11BnkuIVt4TIXs6lWnFuJX3XMekAxIcZVI=
+	t=1753693166; cv=none; b=VNvZdGjnN2CTIhpQhRU4jGHedaJOP/JN6ZGrNpOHIhoX6p9Pd57Ik16r7D9eLclTwD4Bm/zmsE2MmTITIzcYblZz0mGU0SWzrh57nKyBzgsF0hg0rQPxbTTVdTNDALkZ8ond4m8MBCQlnd6FZxYz4jHQ93C7v2akVKpPW6awGKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753691104; c=relaxed/simple;
-	bh=3vcIBee/NbsvEu80GFPtvaNBMX//h7roLKyHUYZ6P1c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UszJr5q479JR7mVqs7RNQ07kz4hp/+ZPxF7w/z9lp1cSNoakOhOkVXoChojImFU7BBYnSzjlm8bmGttW4r8uQZSGgOtAR5RSaBYDBkCBtVxHxPNOhhke5j7Mc8sLgTZ7wqp8L68MuKmKrLHkyglZLnhWRNfFb4TRIefXl542euk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mz29zVDR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D1BC4CEE7;
-	Mon, 28 Jul 2025 08:25:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753691104;
-	bh=3vcIBee/NbsvEu80GFPtvaNBMX//h7roLKyHUYZ6P1c=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=mz29zVDRT8liVIK8t1ESFDAN2IRTTIukTWs75GH8BWCt2F2vEfkPVXkwiIe51qLbh
-	 w4WPMdfQfuBndExKcVFjpoOkMJCZG7WsfeluFPGwYZoDfT9j876pLJSbxji/1zNsd9
-	 U5g9pgg4K/aNFsngP3s7pZI3fZixnZ5zIvA/a1T0P+XssZBoCasqk2oR7iFWTmyB8d
-	 TS0BZQEat3oRiMwx0T2J4cnlxNxTZBufZKYaxtQIuI07SlXsFD/qy73Y/aFzqufFh+
-	 60k8+YVDowgzieP3HJgDvNj1odFWrVwaLM9Lq0XobcypLlE7gdF17NNhc5pBYy8GNi
-	 ptC54BXElc+5A==
-From: chrisl@kernel.org
-Date: Mon, 28 Jul 2025 01:24:55 -0700
-Subject: [PATCH RFC 25/25] PCI/LUO: Clean up PCI_SER_GET()
+	s=arc-20240116; t=1753693166; c=relaxed/simple;
+	bh=xLg5wrRv3uIutSp8GiAgUsSA5JkF9P6KCUXkTQXZfb8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lrgFEkS6h0KRvqZ3y9BIVpP2wJfalPOzAY5KjA7+QF2FruZ8LhwDqpDyjlp1dtp8k4/gBkZ1zGhbK8rCwPC2Ky7zTtWayhexkRjUk7FI5WIpejbWanstaX+qQXzZrSKUgaIod2AWXRo7VCnQjncFyct0jBKhzJRXqKSJH5fBvMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=iNeeMEJk; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=xLg5
+	wrRv3uIutSp8GiAgUsSA5JkF9P6KCUXkTQXZfb8=; b=iNeeMEJkla4iJ0QliodP
+	FsN0aXW+MDhR6bNeu8HvrzA/SIzqKOZf3T1OYthK+hjS7ynKZeHqdnaiUG1xk61Y
+	AnJoIGa/ERimtCGhcNd9+/sJ09TlV5/17f5svTYgN0ubFpHUmky/F1IDhMNdCbJd
+	unzvrP1aYy5OswFj6S+q9lRX2u3KjbHndGFMxl4AaSe355/aOcVseRThPmkTi+Gu
+	mYAhaz1zAk4ZKxgBPWikjaRnOXlFKYz526DLAQjm5jjBt9vCAVTcrvPYGLv6KmI0
+	R28XWVjbGm3YmbSQZpZikjI6+ssMbROathYr9DsNLXiTrbCzrIZwDtfCTbzXCPLZ
+	Hg==
+Received: (qmail 3375602 invoked from network); 28 Jul 2025 10:59:21 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 28 Jul 2025 10:59:21 +0200
+X-UD-Smtp-Session: l3s3148p1@B5nogfk6yq8gAwDPXyC3AG0QzsW8mHdp
+Date: Mon, 28 Jul 2025 10:59:20 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: "fangzhong.zhou" <myth5@myth5.com>
+Cc: westeri@kernel.org, linux-i2c@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] i2c: Force DLL0945 touchpad i2c freq to 100khz
+Message-ID: <aIc76DpLL28RLimy@shikoro>
+References: <20250620052832.26614-1-myth5@myth5.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250728-luo-pci-v1-25-955b078dd653@kernel.org>
-References: <20250728-luo-pci-v1-0-955b078dd653@kernel.org>
-In-Reply-To: <20250728-luo-pci-v1-0-955b078dd653@kernel.org>
-To: Bjorn Helgaas <bhelgaas@google.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
- Len Brown <lenb@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
- linux-acpi@vger.kernel.org, David Matlack <dmatlack@google.com>, 
- Pasha Tatashin <tatashin@google.com>, Jason Miu <jasonmiu@google.com>, 
- Vipin Sharma <vipinsh@google.com>, Saeed Mahameed <saeedm@nvidia.com>, 
- Adithya Jayachandran <ajayachandra@nvidia.com>, 
- Parav Pandit <parav@nvidia.com>, William Tu <witu@nvidia.com>, 
- Mike Rapoport <rppt@kernel.org>, Chris Li <chrisl@kernel.org>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>
-X-Mailer: b4 0.14.2
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="DItPbqVh5hfarFP+"
+Content-Disposition: inline
+In-Reply-To: <20250620052832.26614-1-myth5@myth5.com>
 
-From: David Matlack <dmatlack@google.com>
 
-Refactor PCI_SER_GET() to be more readable by storing the pointer
-to struct pci_dev_ser in an intermediate variable and adding a helper
-function to_pci_dev_ser().
+--DItPbqVh5hfarFP+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Change pci_lu_adopt() to return a boolean since it is only used to check
-if a device has preserved state.
+On Fri, Jun 20, 2025 at 01:28:31PM +0800, fangzhong.zhou wrote:
+> Signed-off-by: fangzhong.zhou <myth5@myth5.com>
 
-Opportunistically fix the formatting on the static inline prototype of
-pci_liveupdate_reclaim_resource() as well.
+Please add a commit message indicating on which laptop you encountered
+the issue, what happened before and after the fix.
 
-No functional change intended.
 
-Signed-off-by: David Matlack <dmatlack@google.com>
-Signed-off-by: Chris Li <chrisl@kernel.org>
----
- drivers/pci/pci.h | 32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+--DItPbqVh5hfarFP+
+Content-Type: application/pgp-signature; name="signature.asc"
 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 7af32edb128faef9c5e2665ca5055374f7fd30ea..d092cea96dc22cca5d3526c720cfb8b330c47683 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -1196,27 +1196,37 @@ static inline int pci_msix_write_tph_tag(struct pci_dev *pdev, unsigned int inde
- 	 PCI_CONF1_EXT_REG(reg))
- 
- #ifdef CONFIG_LIVEUPDATE
--#define PCI_SER_GET(__pci_dev, __var, __def)			\
--	(__pci_dev->dev.lu.dev_state) ?				\
--	((struct pci_dev_ser *)__pci_dev->dev.lu.dev_state)->__var : __def
--
- void pci_liveupdate_restore(struct pci_dev *dev);
- void pci_liveupdate_override_driver(struct pci_dev *dev);
--static inline struct pci_dev_ser *pci_lu_adopt(struct pci_dev *dev)
-+static inline struct pci_dev_ser *to_pci_dev_ser(struct pci_dev *dev)
-+{
-+	return dev->dev.lu.dev_state;
-+}
-+static inline bool pci_lu_adopt(struct pci_dev *dev)
- {
--	return dev->dev.lu.requested ? dev->dev.lu.dev_state : NULL;
-+	return dev->dev.lu.requested && to_pci_dev_ser(dev);
- }
- int pci_liveupdate_reclaim_resource(struct pci_dev *dev);
- #else
--#define PCI_SER_GET(__dev, __var, __def) __def
--
- static inline void pci_liveupdate_restore(struct pci_dev *dev) {}
- static inline void pci_liveupdate_override_driver(struct pci_dev *dev) {}
--static inline struct pci_dev_ser *pci_lu_adopt(struct pci_dev *dev)
-+static inline struct pci_dev_ser *to_pci_dev_ser(struct pci_dev *dev)
- {
- 	return NULL;
- }
--static inline int pci_liveupdate_reclaim_resource(
--	struct pci_dev *dev) { return -ENXIO; }
-+static inline bool pci_lu_adopt(struct pci_dev *dev)
-+{
-+	return false;
-+}
-+static inline int pci_liveupdate_reclaim_resource(struct pci_dev *dev)
-+{
-+	return -ENXIO;
-+}
- #endif
-+
-+#define PCI_SER_GET(__pci_dev, __field, __default) ({			\
-+	struct pci_dev_ser *__ser = to_pci_dev_ser(__pci_dev);		\
-+									\
-+	__ser ? __ser->__field : __default;				\
-+})
- #endif /* DRIVERS_PCI_H */
+-----BEGIN PGP SIGNATURE-----
 
--- 
-2.50.1.487.gc89ff58d15-goog
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmiHO+gACgkQFA3kzBSg
+KbYKOw//T0ofs9q6ex9h3NBazj6e/ikGF5HaJd0aeotWVtADV8ehIgFG66qIKJd3
+gmIpmPm6W1zS4XZ1Za0SqvM0/zGA6Uy/pU+IZDayKOjv8Xsm6qK1WbPfAwSXJyme
+fo+6BZfV+8l56aJjjyNEgtxfBXnHt3Skq394yLj2Vivgsg+BNAsLfuMJkjXU+QhR
+Q/TSG2+2zSmpCc1wZqNz3Q9I4JLraHLpUOBbvHOug9M82vgN3FJn09t/Cao/CWgh
+X4dmsPAfC2QZ6c7knVWAqZvDKqgUPplriexYE3mMJ/n9FBP04LEfgQQCLmLYJqND
+AYdgWOo2B86461Hkrq1PaIDIdA6K2Zls/PDCPcruS7zZKzCEg3DWUCjUP2DIeA4d
+j4+x/cEiTL3NalduJDmX2VHLVPsFsh18X59c40TmjepaEeCGdxNM4bbd/OmTYWlo
+dT6V9psur3tPyEXmVkonpRp+78DL5Y6iwmjC72awIXcKJIBnQc8+ca9c0j7SmmL4
+BFv1oSC146fj6ZjzwrAobJ6bGy+93cNN+mADf1vcL8zm7SbLzsZ8Drrpdk+0QleJ
+bbQXic8PEu2qcetwsOfzBIiu13B8fT82RKxq1GGpkR0RJ+TgNBZx5pCWgznUXwjy
+K3dZhhevjF0Nuuq8mdIt5xDIhtMI/WXIiUlPfTIYJk0+iFAT8rY=
+=iGLu
+-----END PGP SIGNATURE-----
 
+--DItPbqVh5hfarFP+--
 
