@@ -1,141 +1,176 @@
-Return-Path: <linux-acpi+bounces-15396-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15397-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C20B14810
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Jul 2025 08:16:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58BC5B14819
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Jul 2025 08:20:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 591411AA0258
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Jul 2025 06:17:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7390A1AA0557
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Jul 2025 06:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636C319ADBF;
-	Tue, 29 Jul 2025 06:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9D1234963;
+	Tue, 29 Jul 2025 06:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oie9yO+K"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="ZDNM/n3E"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B08186A;
-	Tue, 29 Jul 2025 06:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3CC1DE4CA;
+	Tue, 29 Jul 2025 06:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753769813; cv=none; b=Zvh6BhHWUdATaghoIexMdunzHd1NLX24qWCnIAw8p/2mHtty+YJ9hJtIRETzeQAiby8ebjTFAjXGnbttNZbT0k7sri/3XsizorA+jTFD1O3Jmbu5EeUeD8lNrgq8l/u6Z43ZX9ESkmpFwvL1M94bop+nuD8qbxdw0IRaF3mgAl0=
+	t=1753770047; cv=none; b=Kll83FgcFyfAc/wlJY0a3nbjZxnqTORua2JlfWt6S60Z+flPkS85IVaqt2mzaLRxx7fTBfx1HzNEGW6xN2xcpvwolOcuXwgY4XOZmlI2levijXtzvgA8motuTmD/vY3socjOvCqZwJcsYDuD/B0aIqxvLPwk12c1QC2SqbtkXK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753769813; c=relaxed/simple;
-	bh=wTnoAzg5SgQHuoVQdRdLoINjYsqmiKdXxCqy4IBJh4c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f6H3vbWYN7iIWZj5sTJjWCedoHB7qMhVr4XQ1qrhP+7Fbi/xDdKuMYxn0bvw8FQEJilxdGYu05JrKRzeTv3H86aAzf/CCBCZJjQDEoA6oLDWvUs4ATt4B2cLGsdaQwwYUcRHjsFbZVUl6ET6Hhq3D3//3eKCfSlKt7bdVCj/Mps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oie9yO+K; arc=none smtp.client-ip=209.85.221.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-3a4ef2c2ef3so4304797f8f.2;
-        Mon, 28 Jul 2025 23:16:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753769810; x=1754374610; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EuJHExjp9oNluHLopPDQOcmTjqGBwTBeOtcBmZlA+3w=;
-        b=Oie9yO+KkyKmTglZQSGVVGO2HFBK4exipXk+aRvFOVejlZEqbgRyobZAHL2jpB8oAR
-         G8f81J7Lc3zuhzQ9GYQmjstR6gIurR0Itxi0cIYy3kfHnm8qjlWSchoDxWis0TXG9RPb
-         9KwjRLqMEpaY9FnWW5Iq6yYjAlenmpBuwcw2Ez0afIY4xvcYHIrIZGWEtHL3x8h9l3fw
-         vHZhQc+r5bC/99i+g8vFR4TrFiMfiApFO9K3jsVSN0sRgCUufLwsf5ZY7FlpDm0ZUUJ6
-         yWdgkt2vNhLtrETjxKZ915mPYrMFpt+f/6BK9y4zICPMZuMco1AZ/9jkzcaGnEkVE2QI
-         RrFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753769810; x=1754374610;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EuJHExjp9oNluHLopPDQOcmTjqGBwTBeOtcBmZlA+3w=;
-        b=PKTD1ERq20kcTtN+jmkI875lufAe0al2Rl+r0GIrUXryc32LEHr839R716ECmLGM2F
-         q0koqbQDwYXjNQMcXodq7f/008iqxqHTpDaE873uHe709Mhbn6oCRAiXvRKifpFz0sI8
-         YIAfP/0r/+aIMdGxGzVCEPSUOURLuM25GwHJtpD8oHXWYDBiZ9hz7IZp05CgHeXDnTrh
-         kODbC80s1/jfUYtieuiLD3nFph/5GAajFmLiVTM5jV82W3DjAMjgK1H5rbvYxekqpnpf
-         IECrzrRlR30xdxQDKD4KX5cQjZrIFsmIw02SYrbUBB9FvM2rOH62v1sM+OdzVt0eK4iF
-         tAvg==
-X-Forwarded-Encrypted: i=1; AJvYcCVaWzgp82XuK36NpLUduqpWvvfZfa2P9TLPlKVB3JsEvpC2T2wSt2sS/0J5YkfF8klC8KFbg2KTuVHQ@vger.kernel.org, AJvYcCWYnYzAa8zLrqj7uPkUO7rOlZCvtMOrXEWHc2NVXqv/STI1YHrc9862haYutZ/46iC1CWB1hbv4wtpW02Jh@vger.kernel.org, AJvYcCWbOgT3ydWRGKLOkEXnWrn9j18lp/NkF7rdmjszly5ZmS2xfPTbQiJ93WE/KzMPILHmsCTBosOhkikB@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTFUZoQsY+YFx8enJPjWIPvxq0QL5qx98wJTfwW93bx0MGqhkj
-	rbokuRRfTBL65goQlmKlcK1//5jxwk3rzpXa/LHifPQoYNJsBKbDwjWZ
-X-Gm-Gg: ASbGnctP3doTgDq2HIgj5uClb3mrdL95FA/axmxMWTWOmW9en8m6X1dsgz4xviKc3Fd
-	VsEx2fklZlgdyeIe/2GJw8zE+6g5V1cXOfDvYMDHVWOW2nhEec8q22c616aICOsBY5CSozfX3U/
-	Rs9O+BUbeTCyQrZBgu3V/vOy0ZMeGuifg5YlbruV7nkCldFySS3kh9ehM7+InORTxnUiN576u+W
-	V+wV1kudSk14HDYAYAC3AYp4zJqMZnlLTLDvFj7xOhNlIwijtlVTp0JTq4HmdiNQdXesU3PsZ3V
-	Fn3DcUNrrO7Jx8J9zEXcT8ah9y7mD374qB8oIUvv/EcRgXNycDEg8/8KaCDd6/u3jHO5RV31fkH
-	LyvSOI9rypvb9sYjMzYg6pJMZa+gavq3DvRoV31N7YXeuJENDSkUuuSRHOXK8LSeybMwJwhx1KG
-	cQH65iKC1MW9Ivy90LRyJvmk1TerGPiZDJkcQ=
-X-Google-Smtp-Source: AGHT+IFZiUcA4w11LB+vPoG9+WgvjzJn2Lg7goJvqZWvIHe8uQeH2yzKGxTThZpRNn9MQWBJHoc45w==
-X-Received: by 2002:a5d:588b:0:b0:3b7:8473:312c with SMTP id ffacd0b85a97d-3b78473319dmr5207539f8f.0.1753769809715;
-        Mon, 28 Jul 2025 23:16:49 -0700 (PDT)
-Received: from [26.26.26.1] (ec2-63-178-178-86.eu-central-1.compute.amazonaws.com. [63.178.178.86])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4588d89c50fsm10876755e9.0.2025.07.28.23.16.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Jul 2025 23:16:49 -0700 (PDT)
-Message-ID: <d7543795-b172-4452-8789-e1c810d8075a@gmail.com>
-Date: Tue, 29 Jul 2025 14:16:43 +0800
+	s=arc-20240116; t=1753770047; c=relaxed/simple;
+	bh=QERG914yg3BynZPFquWTcOlz7UCP7Mz3s+ofkSOPeTI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=drsw6vNDpUQ58ioXi2jaSz3tCIazUMfKRUc7y2wgT10M2p/cRXOiRx+FnS9mIN4j0ocJO2swgQnblt7VvMmEkh53A5cLbEGcrF78Pe/6RJY+ygnXfPeI7rxLsM6FqTDf7xZIwzxoYV6GANZIafP4RYHXwfZbD2r7ybN5jyQhgXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=ZDNM/n3E; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1753770041; x=1754374841; i=w_armin@gmx.de;
+	bh=o00hO2gJzLfPANfIB1Jx+zNaKBkDbKqP/X3srWbHW/I=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=ZDNM/n3E1r31himIel9pl+ThSm+FfWkm9UDAPGUQ/rpAqOAfkiKn1UBkpCsKFJjk
+	 LL1tKNWd9UVjz0cGUEE+2hjvP/Mo4yThe0x0wd0NPgfitl5AuCZb7Dts75xnq++kl
+	 yMlgMw+pzgjWTNcSoPTQYKjy60hIfIAILZirquFLilBL3yro3H83Wcilkfpzdz+lm
+	 zMOAnnAUkbto1jFXRucp5+9+r76R7gSnB2rEoSBmlEqY/SbEm6Xw5szN/e7IlAtY5
+	 vxN2gPTZhtYKxejlzKqUKLNEPDMpaot41gjlsWxaCMYy+yMcRA3t3lsvau3r75osv
+	 cAXoP4mSgzwHuthE4w==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from mx-amd-b650.fritz.box ([87.177.78.219]) by mail.gmx.net
+ (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1MD9XF-1upgF741DN-00DMDs; Tue, 29 Jul 2025 08:20:41 +0200
+From: Armin Wolf <W_Armin@gmx.de>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	me@0upti.me
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPI: EC: Relax sanity check of the ECDT ID string
+Date: Tue, 29 Jul 2025 08:20:38 +0200
+Message-Id: <20250729062038.303734-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 0/4] Disable ATS via iommu during PCI resets
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Nicolin Chen <nicolinc@nvidia.com>, joro@8bytes.org, will@kernel.org,
- robin.murphy@arm.com, rafael@kernel.org, lenb@kernel.org,
- bhelgaas@google.com, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
- patches@lists.linux.dev, pjaroszynski@nvidia.com, vsethi@nvidia.com,
- helgaas@kernel.org, baolu.lu@linux.intel.com
-References: <cover.1751096303.git.nicolinc@nvidia.com>
- <4f7e4bfb-1bc7-4c87-a9f1-8c8b6ee9a336@gmail.com>
- <aIOz1bzgfK9q0n4b@Asurada-Nvidia>
- <606f65e1-ccfc-4492-a32f-90343be654e7@gmail.com>
- <20250727162041.GC7551@nvidia.com>
-Content-Language: en-US
-From: Ethan Zhao <etzhao1900@gmail.com>
-In-Reply-To: <20250727162041.GC7551@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:EyH4Pb7b5VvhkOzB1GQeKT7WkqQZHBCaF+f3TAG7il324AbGqtR
+ UnAahqBTFG2tML12d8ahBiYuuNB7BYAWPNT8gCurs8uR4o8Dd+lJr+yz6PIz3mzAlGquT0h
+ MNyyqGDS77DD1mY+5DctbmCJMXzxVLJaKAE66/16UMfqJZmTK1Lt96KzkbChCY6MHR2cYYO
+ BrzRHYtFFHSpwA2pTCvbA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:xCPOztklf70=;Zrpy/hzOX9UznhtY0S/M0UF8Jj/
+ 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
 
+It turns out that the ECDT table inside the ThinkBook 14 G7 IML
+contains a valid EC description but an invalid ID string
+("_SB.PC00.LPCB.EC0"). Ignoring this ECDT based on the invalid
+ID string prevents the kernel from detecting the built-in touchpad,
+so relax the sanity check of the ID string and only reject ECDTs
+with empty ID strings.
 
+Compile-tested only.
 
-On 7/28/2025 12:20 AM, Jason Gunthorpe wrote:
-> On Sun, Jul 27, 2025 at 08:48:26PM +0800, Ethan Zhao wrote:
-> 
->> At least, we can do some attempt in DPC and Hot-plug driver, and then
->> push the hardware specification update to provide pre-reset notification for
->> DPC & hotplug. does it make sense ?
-> 
-> I think DPC is a different case..
-More complex and practical case.
-> 
-> If we get a DPC we should also push the iommu into blocking, disable
-> ATS and abandon any outstanding ATC invalidations as part of
-> recovering from the DPC. Once everythings is cleaned up we can set the
-Yup, even pure software resets, there might be ATC invalidation pending
-  (in software queue or HW queue).
-> iommu back up again and allow the driver to recover the device.
-> 
-> I think the current series is a good step along that path, but we'd
-> also need to improve the drivers to handle abandonding/aborting the
-> ATC invalidations.
-Also aborting ATC invalidation works as per-condition for DPC or 
-Hot-plug cases. agree, such improvement seems necessary.
-> 
-> IMHO DPC and SW initiated reset are separate projects.
-Of Course, Rome wasn't built in a day; I endorse the success philosophy 
-of restricting project scope. The discussion is purely focused on 
-technical methodology.
+Reported-by: Ilya K <me@0upti.me>
+Fixes: 7a0d59f6a913 ("ACPI: EC: Ignore ECDT tables with an invalid ID stri=
+ng")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+=2D--
+ drivers/acpi/ec.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-Thanks,
-Ethan
-
-> 
-> Jason
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 75c7db8b156a..7855bbf752b1 100644
+=2D-- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -2033,7 +2033,7 @@ void __init acpi_ec_ecdt_probe(void)
+ 		goto out;
+ 	}
+=20
+-	if (!strstarts(ecdt_ptr->id, "\\")) {
++	if (!strlen(ecdt_ptr->id)) {
+ 		/*
+ 		 * The ECDT table on some MSI notebooks contains invalid data, together
+ 		 * with an empty ID string ("").
+@@ -2042,9 +2042,13 @@ void __init acpi_ec_ecdt_probe(void)
+ 		 * a "fully qualified reference to the (...) embedded controller device=
+",
+ 		 * so this string always has to start with a backslash.
+ 		 *
+-		 * By verifying this we can avoid such faulty ECDT tables in a safe way=
+.
++		 * However some ThinkBook machines have a ECDT table with a valid EC
++		 * description but an invalid ID string ("_SB.PC00.LPCB.EC0").
++		 *
++		 * Because of this we only check if the ID string is empty in order to
++		 * avoid the obvious cases.
+ 		 */
+-		pr_err(FW_BUG "Ignoring ECDT due to invalid ID string \"%s\"\n", ecdt_p=
+tr->id);
++		pr_err(FW_BUG "Ignoring ECDT due to empty ID string\n");
+ 		goto out;
+ 	}
+=20
+=2D-=20
+2.39.5
 
 
