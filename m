@@ -1,115 +1,127 @@
-Return-Path: <linux-acpi+bounces-15408-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15409-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD657B14E0D
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Jul 2025 15:05:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A59EEB14E3B
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Jul 2025 15:15:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 160DB18A1A39
-	for <lists+linux-acpi@lfdr.de>; Tue, 29 Jul 2025 13:06:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E44713B0FFB
+	for <lists+linux-acpi@lfdr.de>; Tue, 29 Jul 2025 13:15:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A1C14B086;
-	Tue, 29 Jul 2025 13:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDF217A2EA;
+	Tue, 29 Jul 2025 13:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=listout.xyz header.i=@listout.xyz header.b="yoetLX9R"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="bi4oRcMx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94241442F4;
-	Tue, 29 Jul 2025 13:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8707F2F24
+	for <linux-acpi@vger.kernel.org>; Tue, 29 Jul 2025 13:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753794343; cv=none; b=ZvdVh+KJXd8GORe9w2SiAtSxmVzlolSFL1YVxtquJ/7n81SMFaqZpk0Y4w8+C38jvwATCIdr+jcNe06SGnal6IKXR+7pHT3uY1VQvEPGDRBGPD1mSs6Gz6pofPf1ZnIIaQ4etKMWoK1sPEYH0/E2LybF+XzV63P6g4a39/Cw33c=
+	t=1753794952; cv=none; b=n6uHOMgk9k87VOFKWD9UGAfys9s3Kft9E8XgMqyLuAkM4DMUI2cqBpaK8W4bW3ARwhduBseV7q+UfS/rMHe7gLHHqPp3ODPcAs2vMev9xb5CHMoSPCjX3IwYURQkXv9EbMoLNaWKt3GZdz9U1wZ8ObJXv7oMqAGzRPNJeYPKcfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753794343; c=relaxed/simple;
-	bh=E8U4HaasjlSJK1+GMTnWdvQ5jIArAlNSX8Ddx7nmH8I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kEp5KOeJa3HGdLwr1UXD10/c/qub72oI4L29itE4R1GagFVNvpU8Lly9fJnl0aA0+9Vc/cDUqm2wunciCxR5tZchbpZ+F5tHhHRrBn4BXPsRb7hA1rL4Z5JwvCMXOjhL8ouCZiiXT6jDJJdUepmYG/jMwopYl7ZA+y2v6Q4+uf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=listout.xyz; spf=pass smtp.mailfrom=listout.xyz; dkim=pass (2048-bit key) header.d=listout.xyz header.i=@listout.xyz header.b=yoetLX9R; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=listout.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=listout.xyz
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	s=arc-20240116; t=1753794952; c=relaxed/simple;
+	bh=4hevu+mkIo+ZyFTkMUsbQzGJiy8lshyYA23UrQl0XYk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IaogAUZzrzxOJO0eDtb9pRew4r+8IZJtXOUps7wfKeN1iErJQPH3sCe0sZRsxPCHUw6S2E5lmSg0sZs+kDw16jymBr0E1m5VoVF57znuz+oSm8WQg04NMqn4AdbS1LNGBBYs59ddCS8ti1t7yk7leSe9OQkSoYr5HG3eUFm+jQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=bi4oRcMx; arc=none smtp.client-ip=185.125.188.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4brwZB09kmz9sd7;
-	Tue, 29 Jul 2025 15:05:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=listout.xyz; s=MBO0001;
-	t=1753794338;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=CLHsjtMIuXd91H+odZvaVwTEqjWhiAprj4V1F8Qa8sM=;
-	b=yoetLX9RIBNkYz/d0StCabOiUAILBQyQyVXoS7bho7SybnrE0r/2aUkIj+HDHqar1LuWRI
-	gBGn65KJzWK/UHoWa0EhSSNM/EXPjwivx6Bc6cxipu6RM9/qis2dTpnExx5TtoIbHgeYTw
-	DDVFEqAaqk5XX8i/YyshZqO3UQTd0D7I+eTPRXU3rb/oObHBTZsDmuKeS1zsgu8J1N5P6p
-	jUyfbcE4qYcKXiKfk3bsMQnA1ViNxiZAiN1/HIDBCswt0nmkKCPIij8qjg30l8DpJNZzBv
-	qKxURbdM1b+9jIoCNz/rHJyBntTSbImkQd1CYoHEy6vw8+9FUjOnUxKHOxYsTA==
-From: Brahmajit Das <listout@listout.xyz>
-To: linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: robert.moore@intel.com,
-	rafael.j.wysocki@intel.com,
-	lenb@kernel.org,
-	jrtc27@jrtc27.com,
-	x0rw3ll@gmail.com
-Subject: [RFC PATCH] Revert "ACPICA: Avoid subobject buffer overflow when validating RSDP signature"
-Date: Tue, 29 Jul 2025 18:35:24 +0530
-Message-ID: <20250729130524.7226-1-listout@listout.xyz>
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 3C1DA3F489
+	for <linux-acpi@vger.kernel.org>; Tue, 29 Jul 2025 13:15:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1753794941;
+	bh=uny/SuoHIBoMNtC0T+beSanQb5XxCkus1H23LWxlO6U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=bi4oRcMxPw+o6RXEDhnuPecaTCXkrWU0Bxm7W9qsowk2Tls+mYL31Lb9cBGX4PR2l
+	 jRGsv+W0AQwG9Xxvm3GiwkM1K3VO/7+B1X4eJ3FhPar85J8bvqU6mheOsiu8Y3mcfh
+	 XaPbhdodZK8XCYtbWE/vbZkyvSFvtAKzJCDHykPZMthRcOxqL21PHf2z8fJ7f+RQEF
+	 z9T1dZyPRenaSrtdoPd3/EykG+v9YLDF6VlbmUhBhwhok4kHOe0kvVaPs2P7wq45N8
+	 oobXNLhnhtl8AKV8lWNgt6Q88sul5ahpSF0cqxRxtcXhD6KzZlI21dmm1uqAHXkDh8
+	 +jq3OOxg07ZPw==
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4561dbbcc7eso17074205e9.2
+        for <linux-acpi@vger.kernel.org>; Tue, 29 Jul 2025 06:15:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753794941; x=1754399741;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uny/SuoHIBoMNtC0T+beSanQb5XxCkus1H23LWxlO6U=;
+        b=BgH1ZWcVEYDye6teHpozab7mCD45dIbh6ZaZB4ZFfdPMHhVhdUw1PdJ+8+eLRIf6b/
+         eYop3p43XqzxcsN+6NBBjzaMd1SkYMlN8bkdR0jLq4bBZYR0Cyzof1mkTuK7nf7f8AmR
+         mb4H9E+GdSsX+EOaQOddXDY99WoBNXXcHDmvVgyfMtou/LcFijAq2gGyu7I7bMav8tX3
+         kSgwZFXUcuec4DG/QWtM4yi0WDCCT3CPSE7ZNtCW0AP164gFn5Q9S07DdLIaSpREnAC5
+         Ri3o7vdF2k1ot1VWhHPxS6vsI9ZUZ4mbOmjTNR8F4KyWgKwku1obPwvnAJWx/5jt47kp
+         t3KA==
+X-Forwarded-Encrypted: i=1; AJvYcCV25yzjnrckgrX3kxjKgsPHDYO3yXijtJ4/0kUj/N9pcVJapR2zzlcct7yk6mkPQncFCDdo3fIhPZ2h@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCk6cvGo+2hliNIBO1gO/BPhJgz/ETPez18BkB+6dqjCc5lK3Y
+	0rlZ7dSKMmks3MIZGuYYlu7T4gacPcapKpKvmP60xFoXmpZLrFzD+eJ2mXm0+IyEKCsIERJVRk2
+	KaL1FaSCD2PH3ppIW0MKgQQLIVR0AZFOW1ww88/v6AFs7XMXWcfeWjOke+d18+PX44zg9i1oCWL
+	POgGs=
+X-Gm-Gg: ASbGnctTz+tKHFXt4wr1aYlnxT7XV3W6SJyEyjQqQc5g6V4MKIFuN8GKwTmhEWOa02b
+	yBMwmTJDupSEaS8ovqHyArb5TdXDWhR3yWFQxfygTv/GhvQ73D5lnq2dLf7WIcYDQCaoLdyjmvu
+	ECY/DrEoK6w/QJl1/1Mo8Kv34ttAkNBNBW3GiCm5QLljPY1sd4DiHYbG/uesU0GzjdL+/62jKHK
+	vii9CWgRGU8hNWv1dwaIwl92ehYkjpW3VsIceVHisjcApeaj45+E33UdXhrJrGAwWcmog9tnovF
+	T1AEtNZ1Yfy268GvfX4IKDsrYDU5B+xlBJRtxvsOk45H9i8xUrLU3wSmvwrFGgWW9CEwF0ivKQO
+	iJyVDz3ETNoDVp+Xrc9JvvS8A78Ljbg==
+X-Received: by 2002:a05:600c:1d1e:b0:456:11a6:a511 with SMTP id 5b1f17b1804b1-4587643e9a5mr124000325e9.20.1753794940670;
+        Tue, 29 Jul 2025 06:15:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFFGFwVBVYLuvqEixHBxqvK7UIN3R4LE5ewPV8saNCAcqdz9QJsAsp8Vk+uifuz7LBLpE6WuA==
+X-Received: by 2002:a05:600c:1d1e:b0:456:11a6:a511 with SMTP id 5b1f17b1804b1-4587643e9a5mr124000125e9.20.1753794940339;
+        Tue, 29 Jul 2025 06:15:40 -0700 (PDT)
+Received: from workstation5 (ip-005-147-080-091.um06.pools.vodafone-ip.de. [5.147.80.91])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b778eb9bdfsm12024338f8f.20.2025.07.29.06.15.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Jul 2025 06:15:39 -0700 (PDT)
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+To: Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexandre Ghiti <alex@ghiti.fr>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Yunhui Cui <cuiyunhui@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	linux-riscv@lists.infradead.org,
+	kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Subject: [PATCH 0/2] ACPI: support BGRT table on RISC-V
+Date: Tue, 29 Jul 2025 15:15:33 +0200
+Message-ID: <20250729131535.522205-1-heinrich.schuchardt@canonical.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This reverts commit a3e525feaeec436cd9f82f84e345f0d18dc2638f.
+The BGRT table is used to display a vendor logo in the boot process.
+There is no good reason why RISC-V should not support it.
 
-With 64b9dfd0776e9 there is the following build error:
+Remove the architecture constraint.
 
-In file included from ./include/acpi/acpi.h:24,
-                 from drivers/acpi/acpica/tbprint.c:10:
-drivers/acpi/acpica/tbprint.c: In function ‘acpi_tb_print_table_header’:
-./include/acpi/actypes.h:530:43: error: ‘strncmp’ argument 1 declared attribute ‘nonstring’ is smaller than the specified bound 8 [-Werror=stringop-overread]
-  530 | #define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8))
-      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/acpi/acpica/tbprint.c:105:20: note: in expansion of macro ‘ACPI_VALIDATE_RSDP_SIG’
-  105 |         } else if (ACPI_VALIDATE_RSDP_SIG(ACPI_CAST_PTR(struct acpi_table_rsdp,
-      |                    ^~~~~~~~~~~~~~~~~~~~~~
-In file included from ./include/acpi/acpi.h:26:
-./include/acpi/actbl.h:69:14: note: argument ‘signature’ declared here
-   69 |         char signature[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;       /* ASCII table signature */
-      |              ^~~~~~~~~
-cc1: all warnings being treated as errors
+Heinrich Schuchardt (2):
+  RISC-V: ACPI: enable parsing the BGRT table
+  ACPI: support BGRT table on RISC-V
 
-With the overread checking in 64b9dfd0776e9, I think we can safely
-revert this and fix the build error.
+ arch/riscv/kernel/acpi.c | 3 +++
+ drivers/acpi/Kconfig     | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
----
- drivers/acpi/acpica/tbprint.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/acpica/tbprint.c b/drivers/acpi/acpica/tbprint.c
-index fd64460a2e26..73d854daad76 100644
---- a/drivers/acpi/acpica/tbprint.c
-+++ b/drivers/acpi/acpica/tbprint.c
-@@ -102,8 +102,7 @@ acpi_tb_print_table_header(acpi_physical_address address,
- 		ACPI_INFO(("%-4.4s 0x%8.8X%8.8X %06X",
- 			   header->signature, ACPI_FORMAT_UINT64(address),
- 			   header->length));
--	} else if (ACPI_VALIDATE_RSDP_SIG(ACPI_CAST_PTR(struct acpi_table_rsdp,
--							header)->signature)) {
-+	} else if (ACPI_VALIDATE_RSDP_SIG(header->signature)) {
- 
- 		/* RSDP has no common fields */
- 
 -- 
-2.50.1
+2.50.0
 
 
