@@ -1,112 +1,134 @@
-Return-Path: <linux-acpi+bounces-15417-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15419-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F04B15829
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Jul 2025 06:49:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD50B16154
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Jul 2025 15:21:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8461C7A13FB
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Jul 2025 04:47:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06B4416A9CA
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Jul 2025 13:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F169049625;
-	Wed, 30 Jul 2025 04:48:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="K3KsrKTf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A59265CAB;
+	Wed, 30 Jul 2025 13:21:00 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m1973199.qiye.163.com (mail-m1973199.qiye.163.com [220.197.31.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E4B101E6
-	for <linux-acpi@vger.kernel.org>; Wed, 30 Jul 2025 04:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD66E1531E3
+	for <linux-acpi@vger.kernel.org>; Wed, 30 Jul 2025 13:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753850933; cv=none; b=QaJ6mCbimjztulKIJ1iI6dsmJPtHud0rTWs2YaSuxg7OtTcXrN1djZv35fOahMh0Bh4KFh2AIhEn+URxEJAJ/Tp1Q1Hbe6yOKeUiuOhkaQ0+IeQEPQliEZZwFNoPtYRqzXUHDwr+q1+RDMQn2W2l+RvPB/+oI2CaIlxvZ+HBsOA=
+	t=1753881660; cv=none; b=MGsoDYXbYjCIZy7vWb88P59jjYT+LsZbmjyVZh6hTMJWaACk7scuvMs8qQWFZ5ZD5A6AhKc4xQhn38swF6re7b7qhkpJzrzc/z4+BAYYgaQed108v255DvLUcuLwSRmo59UVis2LfWGQYXWhs+yxwafJLZqalC7Z/UybK4OySJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753850933; c=relaxed/simple;
-	bh=qs9mK1h01cJwpcAJVuJpTtrdkdGZS+I5iU8Wh59JrWw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MIzNMTjs1HV73eG6UF6bn7PfubCOteyvt/od89k2Q5hGKbzQnJcnKVATdkk3T7B49sKn/skfrnnQ6rec0VCqTjO6sXNa/wrLPInbLRmk0I0KAOF0QM1ruPe8DPFBQ5iTkKutsWYEU4ASw5AbN4QdhR41Wj0YnyrnD1FG63VGMds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=K3KsrKTf; arc=none smtp.client-ip=209.85.166.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-87c28e9e7ddso54148539f.1
-        for <linux-acpi@vger.kernel.org>; Tue, 29 Jul 2025 21:48:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1753850931; x=1754455731; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VPl1wFVqasFlsqib0+/3K33ZAFpU1sORgwmap3qJ55s=;
-        b=K3KsrKTf5W/UZbw2UBF9Iw66+RmR24sL4fGKkc1D3w/RWIaZ/Hpk45fF87rVkFihDs
-         KtzTitODXUanOKLdViZJaZbJsMpqelkkkypLSzRZ4rJkHZ2dGQMxsYOEf4xeYyqwJl8h
-         tgRfnZW05IhAC+S4yWS0Gz0Rux3sou79FFOQghLDorZididkBXR26XfuEWouPE4KhORT
-         DaCGELmRmE36URktESpzOBeW52uQdWJTPaoNBTwYEV9D1KCDL3EAf7Hw5QoP2uuElRrQ
-         EMajfo43z8hnrTQ15MkZmCvv2w4NHa15iMQAyaZ8tYEMJ822iBUCKKkxCeIkXnovaS6l
-         kUrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753850931; x=1754455731;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VPl1wFVqasFlsqib0+/3K33ZAFpU1sORgwmap3qJ55s=;
-        b=edNlYWrxgkczHnKNRVKFgW12y9OIBjOTQXMpr6I6Fj865hTHNqEktIccJ+r8RtbGdh
-         vE549Jk13gi7t5yHstRH2/rEJYVgKU9W846B1mcaf7qgcRPP1IZyTdpzxLb8coKVG5S3
-         SQ0yzdKVViBNr/jCDaTen6u9NjYL5WT7wfTWIqZ+7mt9Kinx6lkL7/9G1UuJgnq/ozza
-         FfM9J2nLL6S4Q5pCnjlcezmyNochyfL99gldFwVEBwDYIQRZNstyOvRG2eP5w0HYtIDB
-         TI8lfg6bxVSH3bv8Xyb+wnGwy7qs2UdS+qYIBmskbhiOhHSikecG+aPf2aGlWr+dj3Jb
-         ADBA==
-X-Forwarded-Encrypted: i=1; AJvYcCV0FCbFKrQqLujhyD5qcvXtMyd7zqtrVOIHlV9BG6aHDzI4ujojMPdTA7G6aWP2+DjUpHegCcDh13MY@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyt0qeSZHGk5qRntRfBTd3Mv+22donyVXJnp8uEa152AOtbqg1+
-	U4qsAskA5LVyJGdDe0NpHXbHChIl1SBB7htGO0ZkXmcSSHuRv7Rp+NBrynSzFJZ/G7g=
-X-Gm-Gg: ASbGncuY0vxLQYjn/p7bjWQ10M266JZLvv5lI73QDQvAqsFAhAZAll5Aknhd8lPqrtv
-	JOtuf1jWFJ8AyQUsplYVvxhetVvPgOcu37w0PrBqSczZ5Oc/Qod0AAAdpm3tJt2s6/p/utFBR3o
-	djMNkd7kZMnNQnU60UWg72c1x7OayleHREwA3M2u2UmHy7nvpDx6Yp0CnLMRQI53B3LusxUrB3f
-	Wo0d7Q9pjxlMQEQmLJEsOK4Z3DCkqhZDA59F42FCYHDKOTLPfCHJ33ulRnKBLhixXmd06WihXRR
-	0+o1BeyB7XktfbNPZtvPqNwz+hncDXbzrLwy35DBRgvGDykTSInK12cY61adXcn0tZy5z0qhwnj
-	lsR/hzfn0ZXEbmliP3oX1lHsO3nvwNg==
-X-Google-Smtp-Source: AGHT+IEsXPHu9g+BneDfRP9LOcvRJRqJp98NpR+/ErEyM7y7imVQRsQERm1/6PmyACRIulSbKbv+yQ==
-X-Received: by 2002:a05:6602:340e:b0:880:f66f:b896 with SMTP id ca18e2360f4ac-88137c61a84mr417789039f.11.1753850931495;
-        Tue, 29 Jul 2025 21:48:51 -0700 (PDT)
-Received: from sunil-laptop ([106.51.198.219])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-880f79b3631sm281156439f.14.2025.07.29.21.48.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Jul 2025 21:48:50 -0700 (PDT)
-Date: Wed, 30 Jul 2025 10:18:41 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Yunhui Cui <cuiyunhui@bytedance.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	linux-riscv@lists.infradead.org, kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 0/2] ACPI: support BGRT table on RISC-V
-Message-ID: <aImkKUw4OVyiLlXe@sunil-laptop>
-References: <20250729131535.522205-1-heinrich.schuchardt@canonical.com>
+	s=arc-20240116; t=1753881660; c=relaxed/simple;
+	bh=buSAAuE3jhA4CJ9SRu0YEm87vPVm4Zkxc48QH7+Rz5E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WrnAN9dd6/xlVI2RXDDGnfpDI2Fp9uv7xbPFqA0Y1UIiIes0biO4PwtEkTib/CvWkToKXMans+nuvLpH9YbZzR3M1g5SMfvHYVG7VkRSDMcSYF6y1WPD/fRE93RaikJ3ImreuNd2f9wQ1iOO+tfYbI1BYkHke2cntxjC9rKHmbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn; spf=pass smtp.mailfrom=easystack.cn; arc=none smtp.client-ip=220.197.31.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=easystack.cn
+Received: from localhost.localdomain (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id de08c15c;
+	Wed, 30 Jul 2025 20:45:17 +0800 (GMT+08:00)
+From: Zhen Ni <zhen.ni@easystack.cn>
+To: sudeep.holla@arm.com,
+	jassisinghbrar@gmail.com
+Cc: linux-acpi@vger.kernel.org,
+	Zhen Ni <zhen.ni@easystack.cn>
+Subject: [PATCH] mailbox: pcc: Add missed acpi_put_table() to fix memory leak
+Date: Wed, 30 Jul 2025 20:45:08 +0800
+Message-Id: <20250730124508.939257-1-zhen.ni@easystack.cn>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250729131535.522205-1-heinrich.schuchardt@canonical.com>
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a985b5d99d20229kunm4047c82cc9d7
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVlDT01CVkgfSRpJT00YTE4aGFYVFAkWGhdVGRETFh
+	oSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0lPT09IVUpLS1
+	VKQktLWQY+
 
-On Tue, Jul 29, 2025 at 03:15:33PM +0200, Heinrich Schuchardt wrote:
-> The BGRT table is used to display a vendor logo in the boot process.
-> There is no good reason why RISC-V should not support it.
-> 
-> Remove the architecture constraint.
-> 
-Thanks!
+In pcc_mbox_probe(), the PCCT table acquired via acpi_get_table()
+is only released in error paths but not in the success path. This
+leads to a permanent ACPI memory leak when the driver successfully
+initializes.
 
-For the series:
-Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+The label name 'err' is no longer accurate because it handles both:
+1. Error cases
+2. Success case
+
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+---
+ drivers/mailbox/pcc.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index f6714c233f5a..509b6a96c785 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -763,19 +763,19 @@ static int pcc_mbox_probe(struct platform_device *pdev)
+ 					 GFP_KERNEL);
+ 	if (!pcc_mbox_channels) {
+ 		rc = -ENOMEM;
+-		goto err;
++		goto out_put_pcct;
+ 	}
+ 
+ 	chan_info = devm_kcalloc(dev, count, sizeof(*chan_info), GFP_KERNEL);
+ 	if (!chan_info) {
+ 		rc = -ENOMEM;
+-		goto err;
++		goto out_put_pcct;
+ 	}
+ 
+ 	pcc_mbox_ctrl = devm_kzalloc(dev, sizeof(*pcc_mbox_ctrl), GFP_KERNEL);
+ 	if (!pcc_mbox_ctrl) {
+ 		rc = -ENOMEM;
+-		goto err;
++		goto out_put_pcct;
+ 	}
+ 
+ 	/* Point to the first PCC subspace entry */
+@@ -796,17 +796,17 @@ static int pcc_mbox_probe(struct platform_device *pdev)
+ 		    !pcc_mbox_ctrl->txdone_irq) {
+ 			pr_err("Platform Interrupt flag must be set to 1");
+ 			rc = -EINVAL;
+-			goto err;
++			goto out_put_pcct;
+ 		}
+ 
+ 		if (pcc_mbox_ctrl->txdone_irq) {
+ 			rc = pcc_parse_subspace_irq(pchan, pcct_entry);
+ 			if (rc < 0)
+-				goto err;
++				goto out_put_pcct;
+ 		}
+ 		rc = pcc_parse_subspace_db_reg(pchan, pcct_entry);
+ 		if (rc < 0)
+-			goto err;
++			goto out_put_pcct;
+ 
+ 		pcc_parse_subspace_shmem(pchan, pcct_entry);
+ 
+@@ -827,9 +827,8 @@ static int pcc_mbox_probe(struct platform_device *pdev)
+ 	rc = mbox_controller_register(pcc_mbox_ctrl);
+ 	if (rc)
+ 		pr_err("Err registering PCC as Mailbox controller: %d\n", rc);
+-	else
+-		return 0;
+-err:
++
++out_put_pcct:
+ 	acpi_put_table(pcct_tbl);
+ 	return rc;
+ }
+-- 
+2.20.1
+
 
