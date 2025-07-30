@@ -1,137 +1,144 @@
-Return-Path: <linux-acpi+bounces-15425-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15426-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F7EB16562
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Jul 2025 19:23:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B421B165A0
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Jul 2025 19:38:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03C40566D24
-	for <lists+linux-acpi@lfdr.de>; Wed, 30 Jul 2025 17:23:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EB205808EA
+	for <lists+linux-acpi@lfdr.de>; Wed, 30 Jul 2025 17:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A25B2DECD6;
-	Wed, 30 Jul 2025 17:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BB22DECBF;
+	Wed, 30 Jul 2025 17:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="ByzjVFWP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7AB1D7E41;
-	Wed, 30 Jul 2025 17:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10958248881;
+	Wed, 30 Jul 2025 17:38:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753896182; cv=none; b=bs6OoNW7amOlMYNLqtiJ9yk9/5JyCCIAcWpBaGRH3yFyHb0WEWbY3vU3poaAHZ610ZK+17wk+jfzQ4MRNKGrq8Qy/y8l0OZha8WCiPKBhsI0s5N/CL7gd4YYQ2qstVMiwYskXVoCLkByz68UwljSVKYf16xvwzpw86LvjnIY2h8=
+	t=1753897134; cv=none; b=EHWtFOHS84EaY118xVL3tQPqtN93s6okpSQxbNKwAD4RVO1R0hhVHK9E5n4CO0rIL/t/PUDtkHdA8mqzDcBATrRn6jl5ljIxswMMyNoDCUEh8CFod43M/eauIF6P85DFd0aWY4qsoSSKGCJsMf9TR7xPjGGzY6gulpltgWx51fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753896182; c=relaxed/simple;
-	bh=2inB9lrYIxnh5dD0KnQ79CfqCqa2mBwK28Hu1ed57RY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nyKxbBM5g8AXkrBswQjUE05h2GNiRvsipyYufFSMLFy2nyuqhx7P7MdBAMBd9hYpn4g53KsNouK9TFvO2lgb0c3TC7qeFG3q5FGkYP/1ecf5onJ6DsHvOHtWwqBzsOEzuZwO1KyzYomU7OhCJeAZkxsY+Mq0NQdq/5Iy3/IY9K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ae36dc91dc7so2845466b.2;
-        Wed, 30 Jul 2025 10:23:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753896179; x=1754500979;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RVG5g2ageWB6fvYTmlrchc1VftQuavVCJU6Q16hxq1Q=;
-        b=TWsJFbVmcJ+2unhu6eVN9mU6koxU7zwsliO+KRn0dym5wi8MJNeN5kn6PfMbSkh/10
-         r7KmwZsbOl4EZY8cAS98q0E2zOALhq5Y3Sa55AKmszu8o4bCfdGQk7//4lc9nTL4xt6n
-         uwe7L8Zjld6YrSVnLFnzS+xwpNLaxgumy55ddvrz36qbzkOdiJM2IAORBFOPLNzTd/uT
-         GXr6d0ayttRFdcjc0d+XHYW1d71GrVd+PCcaLzBDO4ZclHCIWZaRZeUaQGd6vIBO+wC0
-         SmVuvOyTItC+sdPJs1Ww97noa+v/auv70LNbZugXNiGiRM8l/HLLhP68HFg56y9oDPXV
-         dQjw==
-X-Forwarded-Encrypted: i=1; AJvYcCU2RbvdzOPiEHreN593rrstqTuHqvrFPf8HzsOi0gJBwej/FLXl28lW3ngwKuWTHIgBE15Gq4skuU0T@vger.kernel.org, AJvYcCUpKqLRNX2kHuJtZR/zn1WpMPUGExNrpJ+bh4RbXJpqRB1hgn7OrYcvy1N5foI78mmTZi0jNphEeWf4@vger.kernel.org, AJvYcCX0geZbygbugmleA+KoSBCNE6m3N4R6ZEUAethNPh9W6UbQW/fqihhUOHNLMXIGyX76UX01/piq4qyCgdnb@vger.kernel.org, AJvYcCXWfkAIZqsAzqMhkJWh/fOWXA5IzZFRdxKeV8MJv3nZr2jB5o5bD/7/AKjRIZymsNShWy9Yy9atpueWcg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEftKqWYmY3O8h/J9jbwaaxkLsXng1moLqxPSmUVa8GfNGp5Iw
-	TLN8O01RAH8Sum6B6UN76HrI9DQbX5CGuykq98fQJMu1kSvOOm+wb/VN
-X-Gm-Gg: ASbGncuAm5mxYRjzc4kDrk19ESn8YXjGf61k9GypwnK637vevGeWWauKacXS5WWrCuz
-	H72Aup6388uWGg3jv67VbcX7zE587VHqYkCjMQQRwLwHtzq1CH0dEXhTZD/kq2gzy0kvwxSRuUM
-	9ELTZllvRIah7KgKIC1GJXY0HVszHZm/jhxtbdtRPb/dtWvyeRAUYoBMMkUZ7YsM8U0+RM/rrTS
-	GJ9WVC/4K/mSrtm2I/1zDxl7qOGYeWFvp3oGWzA50HaGFiEkyvQSK7eMLZi5i8nbA6l3UiKuDpX
-	yiFL12vqIYgtffy3juA9RJBpXmNnCBg0LNnxy6i/J7OKyG+D/pSy3Lul+j6CWH7QIuTQskB9rKA
-	WBDVvYXsiTbrz
-X-Google-Smtp-Source: AGHT+IEUbbT7MGZ9RPV14AyB319B+ILu1Zn4HTqqRjqhmc6jefo1B6r2lcAh4WufQuwJ5cKV1ZycMA==
-X-Received: by 2002:a17:907:3d0f:b0:ade:3eb6:3c6 with SMTP id a640c23a62f3a-af8fd71454bmr552748166b.15.1753896178789;
-        Wed, 30 Jul 2025 10:22:58 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:9::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af635a63a5bsm781297566b.93.2025.07.30.10.22.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Jul 2025 10:22:58 -0700 (PDT)
-Date: Wed, 30 Jul 2025 10:22:55 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Shuai Xue <xueshuai@linux.alibaba.com>, 
-	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, 
-	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev, osandov@osandov.com, 
-	konrad.wilk@oracle.com, linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-pci@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v3] vmcoreinfo: Track and log recoverable hardware errors
-Message-ID: <4w7adjalaisxhdx4l2zzl6ghanky4geijl523q2ezz7b5kj4kq@fr44nlwsw6qa>
-References: <20250722-vmcore_hw_error-v3-1-ff0683fc1f17@debian.org>
- <7ce9731a-b212-4e27-8809-0559eb36c5f2@linux.alibaba.com>
- <4qh2wbcbzdajh2tvki26qe4tqjazmyvbn7v7aqqhkxpitdrexo@ucch4ppo7i4e>
- <fdb5dced-ea5a-48b8-bbb4-fc3ade7f3df8@linux.alibaba.com>
- <ldlansfiesfxf4a6dzp5z2etquz5jgiq6ttx3al6q7sesgros6@xh4lkevbzsow>
- <4ef01be1-44b2-4bf5-afec-a90d4f71e955@linux.alibaba.com>
- <2a7ok3hdq3hmz45fzosd5vve4qpn6zy5uoogg33warsekigazu@wgfi7qsg5ixo>
- <a87c5e74-082f-4be6-bbfd-4867bf72ddcc@linux.alibaba.com>
- <zc4jm3hwvtwo5y2knk2bqzwmpf7ma7bdzs6uv2osavzcdew3nk@lfjrlp6sr7zz>
- <20250730182137.18605ea1@foz.lan>
+	s=arc-20240116; t=1753897134; c=relaxed/simple;
+	bh=wTaM4EIZupPze/D4abES2l3zjaFFgNQ0twjNa9GR1Eg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Pbx1Z3vlcbamsY8CBiiOZ8HQ2wkFHg37+2FM4y9CoxbEBTWvbjMDM1jHsqTSHlLnDd3L3waPIgU+VZi/5eJMErJd12iAJ1ZEOZerxHt1DCd7fiuWRH5RRwXYrGeawqk2Q7DIbMdyxIaTbO4E4AJWkd+GePJng4iun0WdT2+tlRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=ByzjVFWP; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1753897129; x=1754501929; i=w_armin@gmx.de;
+	bh=wTaM4EIZupPze/D4abES2l3zjaFFgNQ0twjNa9GR1Eg=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=ByzjVFWPrK0R1adXQGQ8Jv5UPL/aZNfOX4J4icUFFnTDvHw+9xTwwAxnef7YfQ3d
+	 UeUNOwO2Jbm53QDVHznc4q7a0XZB7dEhYJgQO/YvMezEIfcbmRUqooQPVE9pHRNEu
+	 olzqDr/BxjK+dr776S4AvNMrsT/BazuYdyN8QdVxDlKQmjiEWFfxHA2Gw8R7/YoPu
+	 jwqN/UnMM5q24Lmkuuwe1lFGY5s6npqpkKswh7mlSpBOxD6Ytyo3dIpWOnzbLXQao
+	 pqWmx4fZk2Y6g6gEGgstF8geDYOxwaG522qMa/Pm0+YEGrDCGmMnEeLNENvxpkFr/
+	 pwscD7MNAeH1nWf3Og==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.69] ([87.177.78.219]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MkHMP-1uF0s52EUz-00nbDq; Wed, 30
+ Jul 2025 19:38:48 +0200
+Message-ID: <abf93c41-b026-486e-94bc-e1c2b46b81f8@gmx.de>
+Date: Wed, 30 Jul 2025 19:38:47 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250730182137.18605ea1@foz.lan>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: EC: Relax sanity check of the ECDT ID string
+To: Ilya K <me@0upti.me>, rafael@kernel.org, lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250729062038.303734-1-W_Armin@gmx.de>
+ <e911ca96-fe8f-4cc5-bf68-f20ec7da46be@0upti.me>
+ <d8f9875b-03be-465b-9715-addd8334a782@gmx.de>
+ <992be8dd-f0da-4a3c-8f82-85a6a605e2cb@0upti.me>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <992be8dd-f0da-4a3c-8f82-85a6a605e2cb@0upti.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:b16ofJ6TS7urR6IjDHEoK913HHi2esjyWmQ4JFBW1hsq7m/4w/l
+ AiW2xoavQdA9bftOvoxK0wscU0L0rvW4Pry9/38Lu45KQCdwoCeLNA7o2Civc+VcdIFHiWz
+ Ry8+Ng6dKmkLuAo/DQhJUrmukapyAX+Zpas+o6CRhkOgOghMQ8UVXpbU2Ih5QPRo/CGfFai
+ cJ3JOhYCcdfX/urUhXwFQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:+mFvznxMq08=;hQegvhYBY+SziLYq9YMMaJsjg9V
+ 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
+ 7P8xUiQ2eLv4ExAOGYYFXS5+J1yhNKZQ=
 
-Hello Mauro,
+Am 30.07.25 um 18:59 schrieb Ilya K:
 
-On Wed, Jul 30, 2025 at 06:21:37PM +0200, Mauro Carvalho Chehab wrote:
-> Em Wed, 30 Jul 2025 06:11:52 -0700
-> Breno Leitao <leitao@debian.org> escreveu:
-> > On Wed, Jul 30, 2025 at 10:13:13AM +0800, Shuai Xue wrote:
-> > > In ghes_log_hwerr(), you're counting both CPER_SEV_CORRECTED and
-> > > CPER_SEV_RECOVERABLE errors:  
-> > 
-> > Thanks. I was reading this code a bit more, and I want to make sure my
-> > understanding is correct, giving I was confused about CORRECTED and
-> > RECOVERABLE errors.
-> > 
-> > CPER_SEV_CORRECTED means it is corrected in the background, and the OS
-> > was not even notified about it. That includes 1-bit ECC error.
-> > THose are not the errors we are interested in, since they are irrelavant
-> > to the OS.
-> 
-> Hardware-corrected errors aren't irrelevant. The rasdaemon utils capture
-> such errors, as they may be a symptom of a hardware defect. In a matter
-> of fact, at rasdamon, thresholds can be set to trigger an action, like
-> for instance, disable memory blocks that contain defective memories.
+>> The Linux kernel is not a verification kit, so i am against keeping the old check. Instead i suggest that we ensure that
+>> the FWTS project (https://github.com/fwts/fwts) detects such invalid ECDT tables. Can you share the full output of
+>> acpidump so that i can run the fwts tool on it?
+>>
+> Uploaded here: https://github.com/K900/21mr-acpi-dumps
+>
+> Thanks!
 
-Sorry, I meant that Hardware-corrected errors aren't relevant in the
-context of this patch, where we are errors that the OS has some
-influence and decision.
+FWTS already warns that the ID string is wrong, so all good on this site.
 
-> This is specially relevant on HPC and supercomputer workloads, where
-> it is a lot cheaper to disable a block of bad memory than to lose
-> an entire job because that could take several weeks of run time on
-> a supercomputer, just because a defective memory ended causing a
-> failure at the application.
+Thanks,
+Armin Wolf
 
-Agree. These errors are used in several ways, including to detect
-hardware aging and hardware replacement at maintenance windows.
-
-In this patchset, I am more focused on what information to add to
-crashdump, so, it makes it easy to correlate crashes to hardware events,
-and RECOVERABLE are the main ones.
 
