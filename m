@@ -1,133 +1,118 @@
-Return-Path: <linux-acpi+bounces-15450-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15451-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9FDB173A6
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Jul 2025 17:02:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2420AB17612
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Jul 2025 20:18:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D55E18906CC
-	for <lists+linux-acpi@lfdr.de>; Thu, 31 Jul 2025 15:02:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D0553A9AB2
+	for <lists+linux-acpi@lfdr.de>; Thu, 31 Jul 2025 18:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9417D1D54FA;
-	Thu, 31 Jul 2025 15:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A11F2C1592;
+	Thu, 31 Jul 2025 18:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="hYYEbT29"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hh77aC3B"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F5681E
-	for <linux-acpi@vger.kernel.org>; Thu, 31 Jul 2025 15:01:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246C8239E91
+	for <linux-acpi@vger.kernel.org>; Thu, 31 Jul 2025 18:18:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753974098; cv=none; b=VjgU5Q+pnVAAxyUkP9u07cNVyGM8BqnNDiKUCjW2+DAEjtQiojn8DAWsd2L4MPQs2UMLDmOAb7Z/KWPO+hg41bnSvaDQCxCl8q0z8i4efAte5n3nDNVwa4ubQ5MSj+WqrBXW1p7aZufQciBA9gG0GiDIEQB5rId3v0H6ikk5GZI=
+	t=1753985891; cv=none; b=CQMEOUyiWxQqq0rqHLDw7kbRpjNfB+B64L5ka5pDpcFOEp1scCcvSn3+tAHpwFpZ66hCAJ/gzqLS5VCd2IOCoYGqstunqaOnQD4Ws1Q2qotffpow65j3P+WtWarGY/n0f6fH1y9/dFp+Lc5KwHZJLZPu26bUETG98ZUsmjCOSnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753974098; c=relaxed/simple;
-	bh=siuBD+FpkcpteagvwXUhGcZcBy/qT4fyxc83l1gE0Ng=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qSpQKDLPAF14GJJ+6t2/GSDxwEpH/Ds+UPooW6J85KWu2a/vM52MghkgmE0MkiGQEgW71WqFvd3cp4nFqQbyswFeN/2hlsjeP6J48NguVamnqMUS24amzEF2aSrea634Wh3ItT7Uaqf0XdqKJu51zsXB/MPuTvlsh3vap1mCPQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=hYYEbT29; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-7072ed7094aso8988646d6.1
-        for <linux-acpi@vger.kernel.org>; Thu, 31 Jul 2025 08:01:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1753974094; x=1754578894; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=siuBD+FpkcpteagvwXUhGcZcBy/qT4fyxc83l1gE0Ng=;
-        b=hYYEbT29c5SRmAjQpFlscVTc85ax69ZIeuGrjNxAnobHM1xx3S6HPpDlQiLNDGTOjl
-         NNuaqlbow7y7+pcU9hCc+uNzt/13Sa8jJF0Bh2T1CV1jYceOhn6FjJ4bG4L8BkzzUAfc
-         ZVjBdeTi6PqPVy8d7sXdRUtsjIlq2Tw9bC8ictmvKNT8PLHhp0j7E4XmZGIOba+c9hWm
-         yh8BtTZRxy55+8J3gOOL0ijaP1ylEtCZ7kqVp91A0d391NGocgWd0NQsEsRrtWlwnetR
-         7lqeQvH5uW+aH8FCA/ukEz1jgKzMvk6BO7KYKCZkmFHrgYVrEDZ8fs7JEg88f58IQGbP
-         yYXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753974094; x=1754578894;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=siuBD+FpkcpteagvwXUhGcZcBy/qT4fyxc83l1gE0Ng=;
-        b=sz7ekmAtUOMCnvOdlRh8uZicRvf19Fbr5g1R/efoeCpzO06XvphkKfUjf5FRaSDshe
-         Wbe/gY3CEaIK6FMs9tS0VcZ+5nnQY/yNyKxp9m1nUjveYG50wgbi0eOrX1l9+EyUcMwR
-         6aqGPto7sayRIANK26+ICo2FUnhUNxqNtvBSY8f1pPuByuxBUEot2ST0m3mIPL4jtQ+9
-         fqC9cLQrAz1PybkqZvdAH1LjmTD4px1v5xdI6GdMtSRq226VR4AqpozFBTBGVji+7Cje
-         ZrLw/E/D5PesjzEFNe8U1JZmsZRfdaeKEk035+xZ8io23uvreWOVrJxXQeHZTFT7sv1R
-         38qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUZ3aGimSIEOo4ywh4cToogow42J3dgeioEPN+5liC9yFonjvy1Rkpf5OkZpjeZIHBGgSQZX3KWaCqr@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAOhjltLoGu3EigT2pLJYL+LeFwons9eB+0IFN71hUMoFn5dlb
-	oXIT4JT+Ol9os51uB7989ESWW/dKDP0PWBBUUlKwwsuNXNtYn4dsxAW68NHRSou8sXo=
-X-Gm-Gg: ASbGncsuklSOgpZHIl4hscZVFRSdoOf8LG8vI/6KdmP4XG9ZCH4MiTmJglowqNXXCrF
-	hK0ToJHNenLwjvgQrjnvmsxEh9M1KOqDZzeSaGeeVVNsFsOVnx2fX/VOFEqygOpd0YYnyeAWlCT
-	pZHrjv0qwKPlQGxEdtXpjSR7KyjRqSphtYOK7tNpCOiIcbbP7xCsWaUKgO/4s99P9OlrStQFUug
-	kU5n06bmFLu3S9QTU8hcfLPY7qoeViZMGBaA1giJ4fEDKovJjqSWbbjjlib2PQsXVorOlN+0nwn
-	ju8Z0C3uMMmAPj8RsqmR8YCfAKSNFt1nM3n5EbDb3/IJ05ctjk9FPem7c+ihfFx0Szr28k42U6U
-	kX+jxnkW4JpjsmUyLQYO1FQtGLVJaOeivAiSfc9ExzPImQ9GtMY1Fpfx+Wmkarbvi+Y4R
-X-Google-Smtp-Source: AGHT+IF3QfXy1mTLzNpz2l3j8n+LbRT0h59stfgYKkxbxlcga8yiKajrseiPdkpwZAVYyKpNGhDCSQ==
-X-Received: by 2002:a05:6214:2021:b0:707:5633:d6f5 with SMTP id 6a1803df08f44-7076725cab3mr110105336d6.49.1753974094185;
-        Thu, 31 Jul 2025 08:01:34 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077cea880csm8151756d6.92.2025.07.31.08.01.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Jul 2025 08:01:33 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1uhUmi-00000000pgD-2vq5;
-	Thu, 31 Jul 2025 12:01:32 -0300
-Date: Thu, 31 Jul 2025 12:01:32 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Chris Li <chrisl@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, David Matlack <dmatlack@google.com>,
-	Pasha Tatashin <tatashin@google.com>,
-	Jason Miu <jasonmiu@google.com>, Vipin Sharma <vipinsh@google.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>, William Tu <witu@nvidia.com>,
-	Mike Rapoport <rppt@kernel.org>, Leon Romanovsky <leon@kernel.org>
-Subject: Re: [PATCH RFC 20/25] PCI/LUO: Avoid write to liveupdate devices at
- boot
-Message-ID: <20250731150132.GV26511@ziepe.ca>
-References: <20250728-luo-pci-v1-0-955b078dd653@kernel.org>
- <20250728-luo-pci-v1-20-955b078dd653@kernel.org>
- <87zfconsaw.ffs@tglx>
- <CAF8kJuOM=2oEFP20xWtQ==ECwF_vNB032Os3-N12zY1xVau-yw@mail.gmail.com>
+	s=arc-20240116; t=1753985891; c=relaxed/simple;
+	bh=2cLq6ukYlaFpgGQBtKOou69OVdEUdYfHbEKfkg++xcc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Cj26ZmInkuQOZhnWjg05gt48vfEM12zNcyDZC0P2omjViGsP7O1d0qlR2y/QXMOFfgU7HRZNeqjlqndckVAOO1DwXzGMgQkqcTPhojmTDPj5tR35mtDY6VJhcd7ruzf9QDlsiu/tFY5YouQlq/03069e8Pk6Mjtc+O0WoHAwQ8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hh77aC3B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979F1C4CEFE;
+	Thu, 31 Jul 2025 18:18:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753985889;
+	bh=2cLq6ukYlaFpgGQBtKOou69OVdEUdYfHbEKfkg++xcc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Hh77aC3BVVgvZ/0eUIH95b7LMb+StQr0x8xMg9K0rC10cjy9vJdM9ifdt8QEJQBlY
+	 54a/f1XwxZcsLX0TbkU9KBRpkZ04X2ppFibxzZEsmdZwY9KCy0QTJJlMNjZNBh0b6e
+	 DMdnBn9OYW6C/pNhdZJXAEZaPo7HWKEfwqOSB7FH+99EXZ/8YKWkRn+VF3j3x9UTvT
+	 gjw1NOTSS/2l3CbGkeh/6kofdoH26oN6+BLHUGY08NtmPpnoNwgiOW+RY2Wkivb/pK
+	 jCNSTBYO6qypl/eV7LNRhvJOaUH7sS+zLYpwh3GdwqJTeVMj9DtNaMFGqOgEBMb8Bp
+	 w/KHCG7aa5bAg==
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-61594007beeso10202eaf.3;
+        Thu, 31 Jul 2025 11:18:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXRS0P4c8WN6XAO+JP3QnfhCnHAash3S6A3DAtLmYw6NW3IWIy/xhMCC33jEJRkIkzUHA8WufUJmLr6xw==@vger.kernel.org, AJvYcCXSflwxg+WFu+SJRSJX+oqZoAKi4kXK321ZXTy5mipcnYbuKQDSR4phgoJ+5MMVjDg2bfa/6tQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzcc69Iw8iQGkmR5LtxrILeQAINIT2Fg8jtUquq0+mAKPQ4zpSK
+	ythbOoevqnU2y2fXcEec72/zhsvMXcSENzuDTX5gkbuMx3efbW3xwZZzFU8A2rjTcoHiesudr0X
+	ptxNXLkjtl4mNIvqP8ZDWShsgf20yoIA=
+X-Google-Smtp-Source: AGHT+IFPUom2p903mHPUTDU4ONASdutryjcvQHiJdb35lmiGjDZYxh6K4+M78CRYbhmxfLP+Nmr9+TUYV8a6Mz74FWQ=
+X-Received: by 2002:a05:6820:152a:b0:619:7ffe:b0c6 with SMTP id
+ 006d021491bc7-6197ffec3e6mr554355eaf.8.1753985888743; Thu, 31 Jul 2025
+ 11:18:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAF8kJuOM=2oEFP20xWtQ==ECwF_vNB032Os3-N12zY1xVau-yw@mail.gmail.com>
+References: <20250729131535.522205-1-heinrich.schuchardt@canonical.com>
+ <20250729131535.522205-3-heinrich.schuchardt@canonical.com> <84a22949-88e7-4a6c-b14e-e8448724b034@ghiti.fr>
+In-Reply-To: <84a22949-88e7-4a6c-b14e-e8448724b034@ghiti.fr>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 31 Jul 2025 20:17:42 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hvaw=m8zPDJn0vPvw5RBxUsRzyvjHPiganPkxHGCisRw@mail.gmail.com>
+X-Gm-Features: Ac12FXxSy76Neb_YIdL32z9WvuqzYoazaALdgfoMCCtIkVT-a0GD5NPPLdPSJv0
+Message-ID: <CAJZ5v0hvaw=m8zPDJn0vPvw5RBxUsRzyvjHPiganPkxHGCisRw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ACPI: support BGRT table on RISC-V
+To: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Ryan Roberts <ryan.roberts@arm.com>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, kernel@vger.kernel.org, 
+	Yunhui Cui <cuiyunhui@bytedance.com>, linux-acpi@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-riscv@lists.infradead.org, 
+	Len Brown <lenb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 29, 2025 at 06:51:27PM -0700, Chris Li wrote:
+On Thu, Jul 31, 2025 at 3:13=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr> wro=
+te:
+>
+> Hi Heinrich,
+>
+> On 7/29/25 15:15, Heinrich Schuchardt wrote:
+> > The BGRT table is used to display a vendor logo in the boot process.
+> > There is no good reason why RISC-V should not support it.
+> >
+> > Remove the architecture constraint.
+> >
+> > Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+> > ---
+> >   drivers/acpi/Kconfig | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> > index 7bc40c2735ac0..2b83c91bb1a78 100644
+> > --- a/drivers/acpi/Kconfig
+> > +++ b/drivers/acpi/Kconfig
+> > @@ -460,7 +460,7 @@ config ACPI_HED
+> >
+> >   config ACPI_BGRT
+> >       bool "Boottime Graphics Resource Table support"
+> > -     depends on EFI && (X86 || ARM64 || LOONGARCH)
+> > +     depends on EFI
+> >       help
+> >         This driver adds support for exposing the ACPI Boottime Graphic=
+s
+> >         Resource Table, which allows the operating system to obtain
+>
+>
+> @Rafael: If you ack this patch, I can merge that for 6.17 as I haven't
+> sent my PR yet, just let me know!
 
-> They follow a pattern that the original kernel needs to write to the
-> device and change the device state. The liveupdate device needs to
-> maintain the previous state not changed, therefore needs to prevent
-> such write initialization in liveupdate case.
+There you go:
 
-No, I fundamentally reject this position and your testing methodology.
-
-The new kernel *should* be writing to config space and it *should* be
-doing things like clearing and gaining control over MSI. It is fully
-wrong to be blocking it like you are doing just to satify some
-incorrect qemu based test checking for no config access.
-
-Only some config accesse are bad. Each and every "bad" one needs to be
-clearly explained *why* it is bad and only then mitigated.
-
-Most mitigation are far harder than just if'ing around the config
-write. My ATS/PASID/etc example for instance.
-
-Jason
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
 
