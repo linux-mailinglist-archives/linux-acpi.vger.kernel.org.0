@@ -1,147 +1,176 @@
-Return-Path: <linux-acpi+bounces-15466-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15467-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB697B186C1
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Aug 2025 19:33:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E640B1894B
+	for <lists+linux-acpi@lfdr.de>; Sat,  2 Aug 2025 01:04:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E91727B4D0B
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Aug 2025 17:31:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7DA91C8434E
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Aug 2025 23:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573141DF963;
-	Fri,  1 Aug 2025 17:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621C7229B21;
+	Fri,  1 Aug 2025 23:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZK3uZiUV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAF12110E;
-	Fri,  1 Aug 2025 17:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0602222B7
+	for <linux-acpi@vger.kernel.org>; Fri,  1 Aug 2025 23:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754069586; cv=none; b=Y7+Fvt+wnuCLww3A6aB0fzPa+tb77QTB2Jiui5aDP3OR35nIMFSurmvF61emqjsfZtCPbhGqLj2/gl17xXQ122nqjkdIemZ1jj/vZE4dwiwSCB4rxMlO1UMO7mYSz+tPS4ar68PNQ2NE94JtzPPYep0yauD2ODdrWRKvuM0L1VA=
+	t=1754089492; cv=none; b=ans31dJav3H6rwzYXO2QDVCfJJopiVhuj+uM2v14QJiyqyMEn6nyEBLExOYimttOmTCUWZ33pkqoMRqIKUpYBxdg5Gz5YyW9+VBdYFjc6S1en6l3u+93QF3XZGTBxo40JHay9K8irKn1LwWHfQ53nG0qaPM3G6OhpscYgf++22g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754069586; c=relaxed/simple;
-	bh=S/6oJy7AwWjk5WWn/SdrcVe0148J1pYjzgLA1lyfg0I=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jdaIuVvYnIyTCwYz2gb4Y01DY0uHdF5xFC7H/PjHxN4BvQVG68H7LTcJxQUGpkL40EJ55kId7+1wKoiM9uMMO7v3Lu++fO3roMZrE4s0kerzm57/Lzf/8iwJr4mGcTzoE/R0AOqFcqJ8Q2EnuzUgfcKdLHYMYwePHI7wZzj95Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bttGK4H7pz6L4t9;
-	Sat,  2 Aug 2025 01:28:41 +0800 (CST)
-Received: from frapeml500006.china.huawei.com (unknown [7.182.85.219])
-	by mail.maildlp.com (Postfix) with ESMTPS id B99701402EF;
-	Sat,  2 Aug 2025 01:33:00 +0800 (CST)
-Received: from frapeml500007.china.huawei.com (7.182.85.172) by
- frapeml500006.china.huawei.com (7.182.85.219) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 1 Aug 2025 19:33:00 +0200
-Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
- frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
- Fri, 1 Aug 2025 19:33:00 +0200
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Shiju Jose <shiju.jose@huawei.com>, Daniel Ferguson
-	<danielf@os.amperecomputing.com>, "rafael@kernel.org" <rafael@kernel.org>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "bp@alien8.de"
-	<bp@alien8.de>, "tony.luck@intel.com" <tony.luck@intel.com>,
-	"lenb@kernel.org" <lenb@kernel.org>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "mchehab@kernel.org"
-	<mchehab@kernel.org>
-CC: Jonathan Cameron <jonathan.cameron@huawei.com>, "linux-mm@kvack.org"
-	<linux-mm@kvack.org>, Linuxarm <linuxarm@huawei.com>, "rientjes@google.com"
-	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
- Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
-	"vanshikonda@os.amperecomputing.com" <vanshikonda@os.amperecomputing.com>
-Subject: RE: [PATCH v9 2/2] ras: mem: Add memory ACPI RAS2 driver
-Thread-Topic: [PATCH v9 2/2] ras: mem: Add memory ACPI RAS2 driver
-Thread-Index: AQHb36LyCBzLg1T4lUmQbc9HcxtQS7RDI7AAgAYEALCABSzmsA==
-Date: Fri, 1 Aug 2025 17:33:00 +0000
-Message-ID: <9802cc9c80e745e9a4fffa0685a65f79@huawei.com>
-References: <20250617161417.1681-1-shiju.jose@huawei.com>
- <20250617161417.1681-3-shiju.jose@huawei.com>
- <547ed8fb-d6b7-4b6b-a38b-bf13223971b1@os.amperecomputing.com>
- <a1df7aa762954b35bc5fe2b1f6d9ed78@huawei.com>
-In-Reply-To: <a1df7aa762954b35bc5fe2b1f6d9ed78@huawei.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1754089492; c=relaxed/simple;
+	bh=9KR/tNiOgAxan+X0qaqlPVk+bks29bd7diAxAiAcQGQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TvkZDytMjavOX3Hbe1T8u2FsSwoqzq1jvQUfh6MGSVDoyM0U3h3E4jnFPmq7bnTcKSn9L/ThoXKhRm4SVaKNQoRLd+Ab3p2IG5f/+vsRh/Mmm5kz/VLNjZdqL0ajYLAM9eT/hLEzNaGt1P7Xnl6vCVnoBaxZIVsFnqdMJCLEuoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZK3uZiUV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A63C113CF
+	for <linux-acpi@vger.kernel.org>; Fri,  1 Aug 2025 23:04:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754089491;
+	bh=9KR/tNiOgAxan+X0qaqlPVk+bks29bd7diAxAiAcQGQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZK3uZiUVFwAWl30Yexuz/b/kEsVFNgxSShy0KDZ3dcj+PGh+5hZPIa7116Kw56oRi
+	 xIUPfRhFO9abHI4foqY/U5fQcE+wR8hESz1RfQjERV2ELkGNIkPTGqrY+dDNr3l2iW
+	 g/gdAulYF0jeO7UeLdLzIiQszVTsqmKrWSApYsDK01p5fhx0gYu08K5CuPgHuLXv5l
+	 vJ7le98Img26C37dCWrsuOjRxMHZPfD5xU1rJj7CW1rRugCVokQX74RR554JHt/Nib
+	 UJG3i6GTw0Rg78g5Vkig3L9XXjOKuHlQ6Sf6F0RPKZI+3yhElmAqPE+ZRBqAToRWhz
+	 493UTA+fTfY8w==
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-456007cfcd7so11855e9.1
+        for <linux-acpi@vger.kernel.org>; Fri, 01 Aug 2025 16:04:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXFV+XcDjRTx9SYpiyaddWxcGF+QEr3A0fd4d+K9hhWzG1QZEDXR6wFmCX6N3iD27kw48wfdGtnkAry@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6RKvGM4tfjFvShwnWl8vlpMCS4DO7TZ74NvQ+YjNAv65CoZeV
+	ywACtdVpNGz7LYE8MUhJuk++LxxCy/uFT/q+Ruxc8BcmgAkazebpPH0HSv2T9YbPSa9hVVPEabD
+	dHzZDY0ye/14POnjzRm0sI0s+u9/4EdcnRosajoDU
+X-Google-Smtp-Source: AGHT+IHCeGxdJGl6Rwma71WQbR98WU5ymsS87qBsgPEiwP1y/FmbZ2BSVF4t0BFrnDfmre4oNRzorh3ZwFlO3Q8Byh0=
+X-Received: by 2002:a05:600c:1c25:b0:439:8f59:2c56 with SMTP id
+ 5b1f17b1804b1-458b6e822b0mr517815e9.2.1754089490309; Fri, 01 Aug 2025
+ 16:04:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20250728-luo-pci-v1-0-955b078dd653@kernel.org>
+ <20250728-luo-pci-v1-20-955b078dd653@kernel.org> <87zfconsaw.ffs@tglx>
+ <CAF8kJuOM=2oEFP20xWtQ==ECwF_vNB032Os3-N12zY1xVau-yw@mail.gmail.com> <20250731150132.GV26511@ziepe.ca>
+In-Reply-To: <20250731150132.GV26511@ziepe.ca>
+From: Chris Li <chrisl@kernel.org>
+Date: Fri, 1 Aug 2025 16:04:39 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuPbJWea+o=GTFEM6KRCq4DxDad+83+vM0Np+n=Mmzqzag@mail.gmail.com>
+X-Gm-Features: Ac12FXzFtHTJHakYV4RYMb4cJgU-1h5y9qOlDd4pooYwaMDWI_1OEJfpSnDXlvk
+Message-ID: <CAF8kJuPbJWea+o=GTFEM6KRCq4DxDad+83+vM0Np+n=Mmzqzag@mail.gmail.com>
+Subject: Re: [PATCH RFC 20/25] PCI/LUO: Avoid write to liveupdate devices at boot
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	David Matlack <dmatlack@google.com>, Pasha Tatashin <tatashin@google.com>, 
+	Jason Miu <jasonmiu@google.com>, Vipin Sharma <vipinsh@google.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
+	Parav Pandit <parav@nvidia.com>, William Tu <witu@nvidia.com>, Mike Rapoport <rppt@kernel.org>, 
+	Leon Romanovsky <leon@kernel.org>, Junaid Shahid <junaids@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Pi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogU2hpanUgSm9zZSA8c2hpanUuam9z
-ZUBodWF3ZWkuY29tPg0KPlNlbnQ6IDAxIEF1Z3VzdCAyMDI1IDE4OjI5DQo+VG86IERhbmllbCBG
-ZXJndXNvbiA8ZGFuaWVsZkBvcy5hbXBlcmVjb21wdXRpbmcuY29tPjsgcmFmYWVsQGtlcm5lbC5v
-cmc7DQo+bGludXgtZWRhY0B2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWFjcGlAdmdlci5rZXJuZWwu
-b3JnOyBsaW51eC0NCj5kb2NAdmdlci5rZXJuZWwub3JnOyBicEBhbGllbjguZGU7IHRvbnkubHVj
-a0BpbnRlbC5jb207IGxlbmJAa2VybmVsLm9yZzsNCj5sZW8uZHVyYW5AYW1kLmNvbTsgWWF6ZW4u
-R2hhbm5hbUBhbWQuY29tOyBtY2hlaGFiQGtlcm5lbC5vcmcNCj5DYzogSm9uYXRoYW4gQ2FtZXJv
-biA8am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsgbGludXgtDQo+bW1Aa3ZhY2sub3JnOyBM
-aW51eGFybSA8bGludXhhcm1AaHVhd2VpLmNvbT47IHJpZW50amVzQGdvb2dsZS5jb207DQo+amlh
-cWl5YW5AZ29vZ2xlLmNvbTsgSm9uLkdyaW1tQGFtZC5jb207IGRhdmUuaGFuc2VuQGxpbnV4Lmlu
-dGVsLmNvbTsNCj5uYW95YS5ob3JpZ3VjaGlAbmVjLmNvbTsgamFtZXMubW9yc2VAYXJtLmNvbTsg
-anRob3VnaHRvbkBnb29nbGUuY29tOw0KPnNvbWFzdW5kYXJhbS5hQGhwZS5jb207IGVyZGVtYWt0
-YXNAZ29vZ2xlLmNvbTsgcGdvbmRhQGdvb2dsZS5jb207DQo+ZHVlbndlbkBnb29nbGUuY29tOyBn
-dGhlbGVuQGdvb2dsZS5jb207DQo+d3NjaHdhcnR6QGFtcGVyZWNvbXB1dGluZy5jb207IGRmZXJn
-dXNvbkBhbXBlcmVjb21wdXRpbmcuY29tOw0KPndic0Bvcy5hbXBlcmVjb21wdXRpbmcuY29tOyBu
-aWZhbi5jeGxAZ21haWwuY29tOyB0YW54aWFvZmVpDQo+PHRhbnhpYW9mZWlAaHVhd2VpLmNvbT47
-IFplbmd0YW8gKEIpIDxwcmltZS56ZW5nQGhpc2lsaWNvbi5jb20+OyBSb2JlcnRvDQo+U2Fzc3Ug
-PHJvYmVydG8uc2Fzc3VAaHVhd2VpLmNvbT47IGthbmdrYW5nLnNoZW5AZnV0dXJld2VpLmNvbTsN
-Cj53YW5naHVpcWlhbmcgPHdhbmdodWlxaWFuZ0BodWF3ZWkuY29tPjsNCj52YW5zaGlrb25kYUBv
-cy5hbXBlcmVjb21wdXRpbmcuY29tDQo+U3ViamVjdDogUkU6IFtQQVRDSCB2OSAyLzJdIHJhczog
-bWVtOiBBZGQgbWVtb3J5IEFDUEkgUkFTMiBkcml2ZXINCj4NCj4+LS0tLS1PcmlnaW5hbCBNZXNz
-YWdlLS0tLS0NCj4+RnJvbTogRGFuaWVsIEZlcmd1c29uIDxkYW5pZWxmQG9zLmFtcGVyZWNvbXB1
-dGluZy5jb20+DQpbLi4uXQ0KPj4zKSBUaGlzIGlzIGEgc3BlY2lhbCBjYXNlIG9mICMyLiBEdXJp
-bmcgZHJpdmVyIGxvYWQsIHJhczJfcHJvYmUgaXNzdWVzDQo+PmEgR0VUX1BBVFJPTF9QQVJBTUVU
-RVJTIHVzaW5nIGEgYmFzZSBhbmQgc2l6ZSBlcXVhbCB0byAwLiBUaGUgYmFzZSBhbmQNCj4+c2l6
-ZSBhcmUgemVybyBiZWNhdXNlIHJlcXVlc3RlZF9hZGRyZXNzX3JhbmdlIGlzIGFsbG9jYXRlZCB3
-aXRoDQo+Pmt6YWxsb2MuIEluIHRoaXMgY2FzZSwgd2UgbWF5IG5vdCBiZSBnZXR0aW5nIHRoZSBp
-bml0aWFsIHZhbHVlcyBmcm9tIHRoZSBjb3JyZWN0DQo+cmFuZ2UuDQo+SW4gdGhlIHByb2JlIHN0
-YWdlLCB3aGlsZSBpc3N1ZSBHRVRfUEFUUk9MX1BBUkFNRVRFUlMsIGRyaXZlciBoYXMgbm8NCj5p
-bmZvcm1hdGlvbiBhYm91dCB0aGUgICdyZXF1ZXN0ZWRfYWRkcmVzc19yYW5nZScgc3VwcG9zZWQg
-dG8gc2V0IG90aGVyIHRoYW4NCj5zZXQgdG8gMCBiZWNhdXNlDQo+UkFTMiAoJ1JBUzIgUGxhdGZv
-cm0gQ29tbXVuaWNhdGlvbiBDaGFubmVsIFNoYXJlZCBNZW1vcnkgUmVnaW9uJyB0YWJsZT8pDQo+
-ZG9lcyBub3QgZGVmaW5lIGZpZWxkcyBmb3IgdGhlIHBsYXRmb3JtIHRvIGFkdmVydGlzZSB0aGUg
-c3VwcG9ydGVkIGZ1bGwgYWRkcmVzcw0KPnJhbmdlIGZvciBhIHNjcnViYmVyLg0KUGxlYXNlIGln
-bm9yZSB0aGlzIGFzIGl0IHdhcyBzb2x2ZWQuDQoNCj4+DQo+PlByb3Bvc2VkIFNvbHV0aW9uOg0K
-Pj5XaGF0IHdlIHByb3Bvc2UsIGlzIHRvIGluc3RlYWQgb2YgemVyb2luZyBvdXQgdGhlIGJhc2Ug
-YW5kIHNpemUgYWZ0ZXINCj4+YW4gZXJyb3IsIHVzZSB0aGUgZnVsbCByYW5nZSBvZiB0aGUgY3Vy
-cmVudCBOVU1BIG5vZGUuIFdlIGJlbGlldmUgdGhhdA0KPj5hIHN1cGVyc2V0IG9mIGEgY3VycmVu
-dGx5IGFjdGl2ZSBzY3J1YiByYW5nZSBjYW4gcHJvcGVybHkgcmVwb3J0IGFsbA0KPj50aGUgcmVs
-ZXZhbnQgYW5kIGNvcnJlY3QgaW5mb3JtYXRpb24uDQo+PlRvIGJlIGNvbXBsaWFudCB3aXRoIHRo
-ZSBzcGVjaWZpY2F0aW9uLCBGVyBzaG91bGQgc2V0ICJGbGFncyIgZmllbGQgaWYNCj4+dGhlcmUg
-aXMgYW55IG9uLWRlbWFuZCBzY3J1YiBpbiBwcm9ncmVzcyBvbiBhbnkgbWVtb3J5IHJhbmdlIGlu
-IHRoZQ0KPj5OVU1BIG5vZGUuIEFnYWluLCB0aGlzIHNvbHV0aW9uIGFzc3VtZXMgdGhhdCB0aGUg
-ZHJpdmVyIGRvZXMgbm90IGFsbG93DQo+Pm1vcmUgdGhhbiBvbmUgc2NydWJiZXIgdG8gcnVuIHdp
-dGhpbiBhIHNpbmdsZSBOVU1BIG5vZGUuIEFsbCB0aHJlZQ0KPj5wcm9ibGVtcyBjYW4gYmUgc29s
-dmVkIGluIHRoZSBzYW1lIHdheS4NCj4+DQo+PldoYXQgZG8geW91IHRoaW5rPw0KPkhpIERhbmll
-bCwNCj4NCj5QbGVhc2UgY2hlY2sgdGhlIHYxMCBvZiB0aGUgUkFTMiBzZXJpZXMgc2VudCB3aXRo
-IGNoYW5nZXMgZm9yIHlvdXINCj5yZXF1aXJlbWVudHMuDQo+YW5kIHJlcXVlc3QgcGxlYXNlIHRl
-c3QgaW4geW91ciBzeXN0ZW0gYW5kIHNoYXJlIHRoZSBmZWVkYmFjay4NCj4NCj5odHRwczovL2xv
-cmUua2VybmVsLm9yZy9hbGwvMjAyNTA4MDExNzIwNDAuMjE3NS0xLXNoaWp1Lmpvc2VAaHVhd2Vp
-LmNvbS8NCj4+DQo+PlJlZ2FyZHMsDQo+Pn5EYW5pZWwNCj4NCj5UaGFua3MsDQo+U2hpanUNCg==
+On Thu, Jul 31, 2025 at 8:02=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> wrot=
+e:
+>
+> On Tue, Jul 29, 2025 at 06:51:27PM -0700, Chris Li wrote:
+>
+> > They follow a pattern that the original kernel needs to write to the
+> > device and change the device state. The liveupdate device needs to
+> > maintain the previous state not changed, therefore needs to prevent
+> > such write initialization in liveupdate case.
+>
+> No, I fundamentally reject this position and your testing methodology.
+>
+> The new kernel *should* be writing to config space and it *should* be
+> doing things like clearing and gaining control over MSI. It is fully
+> wrong to be blocking it like you are doing just to satify some
+> incorrect qemu based test checking for no config access.
+
+First of all, let me clarify that the PCI PF and VF tests I mention in
+the cover letter are run on the real data center servers, not qemu.
+QEMU does not have the correct IOMMU simulation for my workstation
+anyway. I do use qemu in development to quickly check if I screwed up
+something badly. The real test is always on the real machine. Our
+internal test dashboard has reached a high two digit number now, all
+with real hardware.
+
+With that out of the way. Let me explain why we did it the way we did.
+I believe you and I eventually want the same thing, just different
+ways to get there. I am also working on a series that allows fine
+grain control of  PCI preservation. It allows the driver to select
+exactly what needs to be preserved, rather than the current
+"preserved" vs "depended" control. With the fine grain control, it can
+basically do what you described, allow new kernel writes to config
+space they don't want to preserve. However this RFC series is already
+getting very long, that is why I did not include the fine grain
+control series in this RFC. Keep in mind that this is just RFC, I want
+to demonstrate the problem space, and what source code needs to be
+modified in order to preserve all config space. It is not the final
+version that gets merged. Your feedback is important to us.
+
+My philosophy is that the LUO PCI subsystem is for service of the PCI
+device driver. Ultimately it is the PCI device driver who decides what
+part of the config space they want to preserve or overwrite. The PCI
+layer is just there to facilitate that service.
+
+Regarding the testing. There are many different tests we can write and
+run. Preserving all config space is just one of them.  We also have
+other tests that partially preserve the config space and write to some
+config as it needs to. That is why I need to have the fine grain
+control series.
+
+If you still think it is unjustifiable to have one test try to
+preserve all config space for liveupdate. Please elaborate your
+reasoning. I am very curious.
+With the fine grained control we let the driver decide what the driver
+wants to preserve vs not, will that remove your objection?
+
+> Only some config accesse are bad. Each and every "bad" one needs to be
+> clearly explained *why* it is bad and only then mitigated.
+
+That is exactly the reason why we have the conservative test that
+preserves every config space test as a starting point. It does not
+mean that is the ending point.  We also have tests that only partially
+preserve the config space driver actually needs. When things break, we
+can quickly compare to find out not preserving which register will
+break which device. This incremental approach is very effective to
+deal with very complex devices.
+
+Another constraint is that the data center servers are dependent on
+the network device able to connect to the network appropriately. Take
+diorite NIC  for example, if I try only preserving ATS/PASID did not
+finish the rest of liveupdate, the nic wasn't able to boot up and
+connect to the network all the way. Even if the test passes for the
+ATS part, the over test fails because the server is not back online. I
+can't include that test into the test dashboard, because it brings
+down the server. The only way to recover from that is rebooting the
+server, which takes a long time for a big server. I can only keep that
+non-passing test as my own private developing test, not the regression
+test set.
+
+That is the reason we to have some conservative tests passing first,
+then expand to the more risky tests. We are actually quickly expanding
+our test metrics for doing more and more interesting(and risky) stuff.
+
+I hope that clarifies the eventual end goal and the development
+approach we take.
+
+> Most mitigation are far harder than just if'ing around the config
+> write. My ATS/PASID/etc example for instance.
+
+Exactly why we can't add those risky(non working) tests into the
+dashboard before the conservative passing one.
+
+Chris
 
