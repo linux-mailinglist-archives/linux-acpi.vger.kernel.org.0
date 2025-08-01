@@ -1,55 +1,65 @@
-Return-Path: <linux-acpi+bounces-15454-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15455-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC445B183F5
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Aug 2025 16:36:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F81B18439
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Aug 2025 16:52:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE7851719B2
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Aug 2025 14:36:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E9E11C2723A
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Aug 2025 14:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2683926C386;
-	Fri,  1 Aug 2025 14:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734301B95B;
+	Fri,  1 Aug 2025 14:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="NmO6MXy0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ajdphpqS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E4424A076;
-	Fri,  1 Aug 2025 14:35:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF76E2F5B;
+	Fri,  1 Aug 2025 14:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754058959; cv=none; b=cGguRZN+H1b8oUfpKCNc5/C9gjDFeFesCWWABtc4nLvUZetp8jLHg8BII0FJFmB/dLUMZm5jHas6l82Gg2p11XIVSdo6YB2vl9MobWodByUm7Dv/t8g2nPfuipp+Bh1rFE87NtVJ6EANW0I6RA91/FyCkL4sxJM3fnGNQZhgYac=
+	t=1754059941; cv=none; b=HumVE32VcAFpPFaHECv9iywlFMQb/of5yqKjWCpBtZTQxpVy1a69SFhmvNgOk01uOqU66s5oZmXIWDBluR88VTRxA5NNRVXZ37gBnEVku6VhfUafVM4+kJbsTcq9BQeRowHxv05NLWCVe3L3Xo6wFwc0RDagzWewGixlq8olYLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754058959; c=relaxed/simple;
-	bh=g6m2jbm65MBrZ5g+L05KT79qCKQTBK8haBjYhOKBGKk=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=GF2p0cbXGdNT2jOy0UCCVcEY0KW0q8VtRGmiHSGjQW/H5EdrbZppy0KuMujdqNnzTojiSBsDcMPXMOcN4rjl3zYxDasOHTiaAcjSDKrE/XIffWbgDRQWsGhY5ja19zO7MnQqbuDqFw8yNjDccTeeerf/uK/kVEFDPDAn5aOdk8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=NmO6MXy0; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1754058949; x=1754663749; i=markus.elfring@web.de;
-	bh=7eRDLl/W59iQ/iiSZive7iNGHCs54NrjItQ26fqmRX0=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=NmO6MXy0v4SRhKHQ6EbObCAKOQY1XYy299K+sH0JHyUEL+qcj3HdNgpjinpHrxxt
-	 xmEMfjGL2eITC8IW7IR0qPvYHZPE98FIjurEsfZZqLg9/JfJ87ZQbGqZhVfENGm0x
-	 22KJlhcQzS47CUI4VXl1OmWo0B9R2gqAOkSgPOszU5o4RQ4K618cMe5Hb1R125C9E
-	 elONo+xnBgOOvu22z6XgLXHUlOTiPmsNbujdQ3F1pLHym1e1EFGaq+uXsUaL8l9ze
-	 h22/9KDPUs2fAXVBjsXI09pWZFazPw7ouF4W2vr44+FW3tYcWpNbzZETypko95szD
-	 vQqPL0VHyriVDSumLQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.92.221]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MAtwr-1uolp62cq9-005OfW; Fri, 01
- Aug 2025 16:35:49 +0200
-Message-ID: <7160bd86-3061-4549-abf0-074b84f4872c@web.de>
-Date: Fri, 1 Aug 2025 16:35:47 +0200
+	s=arc-20240116; t=1754059941; c=relaxed/simple;
+	bh=sBCCqUHyxvz+lx9/+L/ZjF2F6jrGowmd9wNhC0XHTCo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nrt0CQQb/hhDolF39IeNxjyu1Qi9Z5zcnk0b05b9UQmwp7NocZmMAXIIeS1n35D7uUaOyXx7nEJlYZ08EAclSyxyWykKYH8j62P+kwUXK8Z9cWbbq/dDpOpisK7hin1M//b9iFgW8rfy2jUm+2/+RWleCsFGbG1y16bbj/VSJlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ajdphpqS; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754059940; x=1785595940;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=sBCCqUHyxvz+lx9/+L/ZjF2F6jrGowmd9wNhC0XHTCo=;
+  b=ajdphpqSoMP9MdQiUCLZ6G2ZZelW/D6WL7CYT5PqvoCP9Row7VOIJcg2
+   wYihYHcaDXUqvs/37hnXZi30/U6ceBbz3YbxK2ZdpKv3nFpKJeDse4z8d
+   IQ1O5zkj2JtKWQLziSzt6c34sso4cqghe4/9MgHKtMiMsH5I49ApmdoLu
+   xRqb8qG+4o1ZJdK5a6o4Wv3oS1K0a2h0TPCCMbBuVqxNYN6H7QRPmvFi2
+   7ShrrgslVAuCJbHqKNBq5T9Nu6rJ7u75BGVodJCAKx2SPfSOPBepag1lw
+   HE+iUU6DorBYNDwvQOzrl/1bz8PtNSFNQ8sIKphMklinHkAcN/r+5Lm5k
+   A==;
+X-CSE-ConnectionGUID: h8c0ikomRp2g6MzzWPWlEg==
+X-CSE-MsgGUID: CpVSsLNkRJiBq0+cVCPJaQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="55467988"
+X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
+   d="scan'208";a="55467988"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2025 07:52:18 -0700
+X-CSE-ConnectionGUID: Nl9OPwNcQKKMMDbkvbHtxA==
+X-CSE-MsgGUID: 1BXYkWYaTV2Xzf1rXpYVdA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
+   d="scan'208";a="162864754"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO [10.125.109.249]) ([10.125.109.249])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2025 07:52:18 -0700
+Message-ID: <85663f65-d746-4e2c-b8a6-d594d9d0ba42@intel.com>
+Date: Fri, 1 Aug 2025 07:52:17 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -57,125 +67,128 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Zhen Ni <zhen.ni@easystack.cn>, linux-acpi@vger.kernel.org,
- Jassi Brar <jassisinghbrar@gmail.com>, Sudeep Holla <sudeep.holla@arm.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org
-References: <20250730124508.939257-1-zhen.ni@easystack.cn>
-Subject: Re: [PATCH] mailbox: pcc: Add missed acpi_put_table() to fix memory
- leak
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250730124508.939257-1-zhen.ni@easystack.cn>
+Subject: Re: [PATCH v4] vmcoreinfo: Track and log recoverable hardware errors
+To: Breno Leitao <leitao@debian.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>,
+ Borislav Petkov <bp@alien8.de>, Robert Moore <robert.moore@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ acpica-devel@lists.linux.dev, osandov@osandov.com,
+ xueshuai@linux.alibaba.com, konrad.wilk@oracle.com,
+ linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org, kernel-team@meta.com, osandov@fb.com
+References: <20250801-vmcore_hw_error-v4-1-fa1fe65edb83@debian.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20250801-vmcore_hw_error-v4-1-fa1fe65edb83@debian.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ZJ3sCxff2AGvJKbxFUk2i1qTkbhdKzvIER2yePnCpaTSsyhK9Dv
- xhbVRlKCR3TnSJo56ZmEsXgwaBlSPPHoekxvb7HoEBJOkwYGzS5ueDi/RZHEBZNd8TRvlSP
- J73ZoE/1KpG8aHzJCUax3dUQ0Yfsgshr8Uvn9E5aCZTHrH4GdBjKkBDKSy0FqUkrpzpntlV
- GfebPSxwSBNOkJUne4TQQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:lO4MKiLO2g8=;makkuCL/MS2GitpDyra0g7AJO9q
- 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
- F24NS4tR08BJUr0UhCueB20=
+Content-Transfer-Encoding: 7bit
 
-> In pcc_mbox_probe(), the PCCT table acquired via acpi_get_table()
-> is only released in error paths but not in the success path. This
-> leads to a permanent ACPI memory leak when the driver successfully
-> initializes.
+On 8/1/25 05:31, Breno Leitao wrote:
+> Introduce a generic infrastructure for tracking recoverable hardware
+> errors (HW errors that are visible to the OS but does not cause a panic)
+> and record them for vmcore consumption.
+...
 
-How do you think about to add any tags (like =E2=80=9CFixes=E2=80=9D and =
-=E2=80=9CCc=E2=80=9D) accordingly?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.16#n145
+Are there patches for the consumer side of this, too? Or do humans
+looking at crash dumps have to know what to go digging for?
 
+In either case, don't we need documentation for this new ABI?
 
-> The label name 'err' is no longer accurate because it handles both:
-> 1. Error cases
-> 2. Success case
-
-See also:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.16#n94
-
-
-=E2=80=A6
-> +++ b/drivers/mailbox/pcc.c
-> @@ -763,19 +763,19 @@ static int pcc_mbox_probe(struct platform_device *=
-pdev)
->  					 GFP_KERNEL);
->  	if (!pcc_mbox_channels) {
->  		rc =3D -ENOMEM;
-> -		goto err;
-> +		goto out_put_pcct;
+> diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+> index 4da4eab56c81d..f85759453f89a 100644
+> --- a/arch/x86/kernel/cpu/mce/core.c
+> +++ b/arch/x86/kernel/cpu/mce/core.c
+> @@ -45,6 +45,7 @@
+>  #include <linux/task_work.h>
+>  #include <linux/hardirq.h>
+>  #include <linux/kexec.h>
+> +#include <linux/vmcore_info.h>
+>  
+>  #include <asm/fred.h>
+>  #include <asm/cpu_device_id.h>
+> @@ -1690,6 +1691,9 @@ noinstr void do_machine_check(struct pt_regs *regs)
 >  	}
-> =20
->  	chan_info =3D devm_kcalloc(dev, count, sizeof(*chan_info), GFP_KERNEL)=
-;
->  	if (!chan_info) {
->  		rc =3D -ENOMEM;
-> -		goto err;
-> +		goto out_put_pcct;
->  	}
-> =20
->  	pcc_mbox_ctrl =3D devm_kzalloc(dev, sizeof(*pcc_mbox_ctrl), GFP_KERNEL=
-);
->  	if (!pcc_mbox_ctrl) {
->  		rc =3D -ENOMEM;
-> -		goto err;
-> +		goto out_put_pcct;
->  	}
-=E2=80=A6
+>  
+>  out:
+> +	/* Given it didn't panic, mark it as recoverable */
+> +	hwerr_log_error_type(HWERR_RECOV_MCE);
+> +
 
-Can such exception handling be shared by using another jump target like =
-=E2=80=9Ce_nomem=E2=80=9D?
+Does "MCE" mean anything outside of x86?
 
-Regards,
-Markus
+I wonder if this would be better left as "HWERR_RECOV_ARCH" or something.
+
+...
+> +void hwerr_log_error_type(enum hwerr_error_type src)
+> +{
+> +	if (src < 0 || src >= HWERR_RECOV_MAX)
+> +		return;
+> +
+> +	/* No need to atomics/locks given the precision is not important */
+
+Sure, but it's not even more lines of code to do:
+
+	atomic_inc(&hwerr_data[src].count);
+	WRITE_ONCE(hwerr_data[src].timestamp, ktime_get_real_seconds());
+
+So why not?
+
+> +	hwerr_data[src].count++;
+> +	hwerr_data[src].timestamp = ktime_get_real_seconds();
+> +}
+> +EXPORT_SYMBOL_GPL(hwerr_log_error_type);
+
+I'd also love to hear more about _actual_ users of this. Surely, someone
+hit a real world problem and thought this would be a nifty solution. Who
+was that? What problem did they hit? How does this help them?
 
