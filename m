@@ -1,198 +1,166 @@
-Return-Path: <linux-acpi+bounces-15469-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15470-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28796B18AA4
-	for <lists+linux-acpi@lfdr.de>; Sat,  2 Aug 2025 06:12:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEC8DB18EC7
+	for <lists+linux-acpi@lfdr.de>; Sat,  2 Aug 2025 15:50:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49D96564BB6
-	for <lists+linux-acpi@lfdr.de>; Sat,  2 Aug 2025 04:12:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A82D3BE4A1
+	for <lists+linux-acpi@lfdr.de>; Sat,  2 Aug 2025 13:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1DA194A45;
-	Sat,  2 Aug 2025 04:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0030623BCE7;
+	Sat,  2 Aug 2025 13:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="L+QSlnhy"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="EzeXwANA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94E0158535
-	for <linux-acpi@vger.kernel.org>; Sat,  2 Aug 2025 04:12:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A20E238C1A
+	for <linux-acpi@vger.kernel.org>; Sat,  2 Aug 2025 13:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754107953; cv=none; b=WyXMMwKFySPG0OzzjjHY9UKGjpD9pdyMAYUaGBM3j9RJxk3LZ70zCpZ3lv3+J9CAb1wIFW4FmMtjtXPhj10SZNTELqY8LNiGxX9KSjlYfz9QG6mSmNtqT57xwTk4VZolgu3Sh7tQ93jziqCrN5CRXyjYWt26HlE7qYFoGijWsN8=
+	t=1754142638; cv=none; b=neGj976RJ5Hk8ajA9C1epz/R0YdGAUEFIFIm4FPCzkM5QyMNN9ZOVK7N3R54y+FiyxdyZDZZkYHFg1RYJPRzkJPyOa+SfuK9PE6ejVYN9XFGfqjqrNfHrGtdMa6brPGA8YQYBsjpeMts/BEQJH1ww0Rp6qPj8adQ0LDYi+D8GNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754107953; c=relaxed/simple;
-	bh=jiSy6EgaRG9Ud8aFoKJwA0IhJhNFA8CwUL0Sj/LVdWg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WyBlFvGrC4BIanj9gF1vGJ6c+boMHeQuuOev4H9iV2V4JOUey6iHcRuJ0WhAvIMqeglp9fjrhnWXAZhT6w6tIIlElmAHxJRR+P2qjpuQuHb5MTtSzU30sr1Wp/qSpZUYpWa/G0LAZKnnlOUwvd1mSzRERmsjo97mAJ4alcfUswA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=L+QSlnhy; arc=none smtp.client-ip=209.85.166.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
-Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-3e406ca2d22so7930175ab.1
-        for <linux-acpi@vger.kernel.org>; Fri, 01 Aug 2025 21:12:31 -0700 (PDT)
+	s=arc-20240116; t=1754142638; c=relaxed/simple;
+	bh=LuZKFpWuGGzaZA5PO666vYIpjfV7fVYnGa8m+zu7hYE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hqmaGIGQR18AMsI3MzUnyZewRygaYUA+aUDABOhMMWaPDjzp5AYll23O8lu4TDkMR8FNADHASwYYwGuUbu8yh0TwF7ioZh2uXZfZwgAmeKTJ+BdQePw6GIPydjD1PqvL4jdXd9uT8bLDO/ZnJIwGHrOlBV5wVRlgxJfreqXW+4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=EzeXwANA; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4ab8403b6daso27257391cf.2
+        for <linux-acpi@vger.kernel.org>; Sat, 02 Aug 2025 06:50:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1754107951; x=1754712751; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ip2rHPlCiGFGcr5YGyF7kmeRLuJtKeayor/PNig1fgE=;
-        b=L+QSlnhy6ypqQOWBUSQhU9qaWdi+P2lVkRTeDvbiXhEVh1j8gr3vZ4bo/wovMmrpkm
-         edSpm3fhBnetYfo+t4SKySHWSScwW6IFkj6AeE5KiuJ657Ibw9X37WWeuzJEiquet8Zx
-         osRZ8esPNb5PSu6npexUrUO7PzkNP8f5KsKNqNdp9Sd8a8lHmI1bgw5/aMddsSIy1q8i
-         gl2NuOHISk4Y4OSGu6GL1iIIYvJGNx3cDUTW9y8l6N1AHOBtJPOTg0/QDgDQ/88Ny/Vr
-         ARUvI1dtpBKGxiXUmBbtVOtGrauDCFUpTnG/jP1UE6fAIEmqwmQyy3YaWIX91H5aBaZA
-         tJaw==
+        d=ziepe.ca; s=google; t=1754142636; x=1754747436; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Fuk2lxrqPOrpRrouda4o7p4C2uIw6lx4ISriZi45ts4=;
+        b=EzeXwANA/LFJXeWiL5EANqVgjd7j0bHOI7NqR1mJQQcXrf09J8mV3uZhixOipku761
+         QTLqZEwdsbGnSwDuR070Elu+R645I0zWgFv7WK7v8Fn0EsQXr8rgiU4+M6C5X/o2ozfn
+         uBB60cLP9ayh2ZC/EYMkpyuUKYchCEgs/knhRiOzFRhPI5QTUsr6ZyMMgtY2kmfuxxR5
+         bU9aR95ybjVhVQa4+B0lS6z4e9mpt971cm+O2pKxXgp2q4OKGSxugg2010dG7n43Dh4/
+         aR/HBjsVWWVFIR9KZ3n9PHYwkiSFvPfsRpUbvKAgiPQ9PcYnw7jM1BbmYQ220WzhB6eU
+         xD2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754107951; x=1754712751;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ip2rHPlCiGFGcr5YGyF7kmeRLuJtKeayor/PNig1fgE=;
-        b=ZS84+UFF0iwSckW3cIMI/2IV08/0YtmKqnGN3ER4j+Ox7v3d8axqB8TMcn5PRgAKtN
-         b5DP6HV2dnm/WjUIPCKCd5ywCUJa5cFDO3xTwmCdzYZS3gQmd1FGSl71rJsIBwaM3kNQ
-         1GvS289Vz7pfTBWlaqwSY9qKaCkTlftigw26W0ncYaRxFayGiayhaQbDv0j+ry6+wRIk
-         rmeQ4mScpMH3N2mlRGIw/YDq1DE68P5pw0XMwYyNTybolZGmiz265K1PApdNWtfAipcU
-         dvi6lLH2QQLtvxQk+cFHyHB1N+LRCAQDZqml+/iojZxO1IsN028m1+ktZaHf4HaFgzyW
-         ugWA==
-X-Forwarded-Encrypted: i=1; AJvYcCVVMmGnz2DxZpFhoihTaWRyTdFL6Lpy/nUpqFTGTjWek00B+YKfeC6vK6Msr8CrlD9iR0lh2RLmL1Sk@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxHxrCCoPF/0v7zfehcumqGMMxU6d6Ln2NDZceB1srqPBLiG1H
-	PgTodqRlM9dArh7xjXPhEAV7EImR5Zzdbk/bytVpudTUQfUZEpJwA8NAjsdiJ3mtJQ0=
-X-Gm-Gg: ASbGncserakYezpSyzEnVakGsuuUuiqnpN4/pL2ksXFQUkKEvzIvTWgDbkH64ohhl+P
-	U6bKHl2Kh6ambhjHoHST8AoIU1iWi7D+Nxq/Pykyu+izYSO0SuHWJJiEKa/v7ssKDLGC5utyMby
-	sjCRDk+DNrVYCS/L0IQjdAbOK/hd0rTDHwQiLv8vwYUouPqaa7ouXS5jk0osL4N+cyF1g4/gZlb
-	Oo4nr5l/HenQaZrsKd35pLio1q7yhjhdAcHyexXC3cfpNMNgaBCCvrCu4Q/D+C8dug21tQxTO0a
-	68MCmzLPTREePagL2KJUzl0rajy6EpSwtTphdmrjtupF6ig5hEMol61s/0ULYxaRR/OJntPPgGW
-	66DiXfjNFtD7zVTFmM6eVamqwpOOtM93fw0SQFWmsX4L5jBLo
-X-Google-Smtp-Source: AGHT+IFWXv/meUt6qnzrJTilZJBXyZAntv/HisFVx8CQALlAxTer9z3pL9Su5iQx9S/dGPdOHi5YGA==
-X-Received: by 2002:a05:6e02:2487:b0:3e3:b6ab:f869 with SMTP id e9e14a558f8ab-3e416191ba5mr36293525ab.13.1754107950776;
-        Fri, 01 Aug 2025 21:12:30 -0700 (PDT)
-Received: from [100.64.0.1] ([170.85.11.2])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-50a55d5da1csm1652544173.65.2025.08.01.21.12.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Aug 2025 21:12:30 -0700 (PDT)
-Message-ID: <612a13d3-d3a6-460b-90fd-c26e47b80711@sifive.com>
-Date: Fri, 1 Aug 2025 23:12:28 -0500
+        d=1e100.net; s=20230601; t=1754142636; x=1754747436;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Fuk2lxrqPOrpRrouda4o7p4C2uIw6lx4ISriZi45ts4=;
+        b=TAwD93HcynFv1pBj+FYX1kqR/2pjA+RYLJmJbChhEmLAzbuVPF95HUNeMRZhpLzdHN
+         UQeItjqJdojKGyyY86Ah8YXJnkNG7La5+W8rLJvxxsc7unzn35RXkT63rXNzQT0sT7YD
+         fZjO2kzX4ASpJjOY/DOil6dI3X9XQsNAT4bAaIbygE5UPB7Fv9fc2FccGz/s1QS0F/iU
+         GiLOOEJ76qfZOfWPcLw6/Eabjx8L9H+k6jhifq9BNbPEocP12XKCdrfJiGVXnHMMaltC
+         7aJvtF1tbHb/zOpkT2/hNQrQ0I1ajBJMBUW0GCqYaxSKZvS/f2fFVow0/uKptTV9i01V
+         9jXg==
+X-Forwarded-Encrypted: i=1; AJvYcCXHdxRI/ln8RYjM/wtFjGTRLDk9rbwiZ1hoo8XKtlN7KzwpGrG+pBTY2Cxz9rc2zbOjRaZaTJ5csHdU@vger.kernel.org
+X-Gm-Message-State: AOJu0YyetpR5EreCZHfjF8FO95xPtbCPqvHAFdlyQ+s9UYxWWn8XYGhg
+	hy9WaSaWVU6LhfXvpyVsnbrnS7oLBq8hlfhKwbuaVppbTMeQrMif+zojHyZbNzC3I4k=
+X-Gm-Gg: ASbGncv4vk7rJZwqrL46G2fyMKXP4UingdhUJb7n3HyOoR8NnKZg/H1Zovk4s5YFB4U
+	G63mOTwf0Mi6MllKFraP9qW62JOhMsn6o2vPja737YtUKgVZfFJ4IhWesPb4TQmv8aEgJBejjsF
+	Sp4rHCKtOqShdkb1/ttXuzbSOuVWzWyhND7ouJI0iQSdbYeM/irwe4/zHAgd6EcxdrulwRU0tiA
+	yVY0RGFooe/EnX+UfkNxu6Z5O/DEAPmxBvs3PJjaqioWiU6UwEkd879sQQgPEOZ+1abeRilN83W
+	V/P9yS1DqWFWlj0JQIex3uXCIjucTb4sB0yG0r0bD80LXJoUeMLkrsfKoKohQlm1NoC7EZbPDzE
+	jwCwTo/6y5l60oi7q3sd+5Eb0SArdBAvx2juMjny8D6u9vDc5QkqG3Ii4nUww6mFioopJ
+X-Google-Smtp-Source: AGHT+IEpsAH58cOIvisp67GeJBP3mYHAiMC91cTAnICy/rrQ4pDbqvjQWBKRPW9T1q+TGAIxQC7cxw==
+X-Received: by 2002:a05:622a:1aa6:b0:476:875e:516d with SMTP id d75a77b69052e-4af10aabea4mr38643861cf.36.1754142636187;
+        Sat, 02 Aug 2025 06:50:36 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077c9d8affsm34886696d6.5.2025.08.02.06.50.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Aug 2025 06:50:35 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1uiCd8-00000001A65-3qAw;
+	Sat, 02 Aug 2025 10:50:34 -0300
+Date: Sat, 2 Aug 2025 10:50:34 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Chris Li <chrisl@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org, David Matlack <dmatlack@google.com>,
+	Pasha Tatashin <tatashin@google.com>,
+	Jason Miu <jasonmiu@google.com>, Vipin Sharma <vipinsh@google.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>, William Tu <witu@nvidia.com>,
+	Mike Rapoport <rppt@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+	Junaid Shahid <junaids@google.com>
+Subject: Re: [PATCH RFC 20/25] PCI/LUO: Avoid write to liveupdate devices at
+ boot
+Message-ID: <20250802135034.GJ26511@ziepe.ca>
+References: <20250728-luo-pci-v1-0-955b078dd653@kernel.org>
+ <20250728-luo-pci-v1-20-955b078dd653@kernel.org>
+ <87zfconsaw.ffs@tglx>
+ <CAF8kJuOM=2oEFP20xWtQ==ECwF_vNB032Os3-N12zY1xVau-yw@mail.gmail.com>
+ <20250731150132.GV26511@ziepe.ca>
+ <CAF8kJuPbJWea+o=GTFEM6KRCq4DxDad+83+vM0Np+n=Mmzqzag@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 02/24] dt-bindings: mailbox: Add bindings for RISC-V
- SBI MPXY extension
-To: Anup Patel <apatel@ventanamicro.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Alexandre Ghiti <alex@ghiti.fr>,
- Len Brown <lenb@kernel.org>, Sunil V L <sunilvl@ventanamicro.com>,
- Rahul Pathak <rpathak@ventanamicro.com>,
- Leyfoon Tan <leyfoon.tan@starfivetech.com>,
- Atish Patra <atish.patra@linux.dev>, Andrew Jones <ajones@ventanamicro.com>,
- Anup Patel <anup@brainfault.org>, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- Conor Dooley <conor.dooley@microchip.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jassi Brar <jassisinghbrar@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>, "Rafael J . Wysocki"
- <rafael@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
- <brgl@bgdev.pl>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-References: <20250728094032.63545-1-apatel@ventanamicro.com>
- <20250728094032.63545-3-apatel@ventanamicro.com>
-From: Samuel Holland <samuel.holland@sifive.com>
-Content-Language: en-US
-In-Reply-To: <20250728094032.63545-3-apatel@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAF8kJuPbJWea+o=GTFEM6KRCq4DxDad+83+vM0Np+n=Mmzqzag@mail.gmail.com>
 
-Hi Anup,
+On Fri, Aug 01, 2025 at 04:04:39PM -0700, Chris Li wrote:
+> My philosophy is that the LUO PCI subsystem is for service of the PCI
+> device driver. Ultimately it is the PCI device driver who decides what
+> part of the config space they want to preserve or overwrite. The PCI
+> layer is just there to facilitate that service.
 
-On 2025-07-28 4:40 AM, Anup Patel wrote:
-> Add device tree bindings for the RISC-V SBI Message Proxy (MPXY)
-> extension as a mailbox controller.
+I don't think this makes any sense at all. There is nothing the device
+driver can contribute here.
+ 
+> If you still think it is unjustifiable to have one test try to
+> preserve all config space for liveupdate. 
+
+I do think it is unjustifiable, it is architecurally wrong. You only
+should be preserving the absolute bare minimum of config space bits
+and everything else should be rewritten by the next kernel in the
+normal way. This MSI is a prime example of a nonsensical outcome if
+you take the position the config space should not be written to.
+
+> > Only some config accesse are bad. Each and every "bad" one needs to be
+> > clearly explained *why* it is bad and only then mitigated.
 > 
-> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-> Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-> ---
->  .../bindings/mailbox/riscv,sbi-mpxy-mbox.yaml | 51 +++++++++++++++++++
->  1 file changed, 51 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mailbox/riscv,sbi-mpxy-mbox.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/mailbox/riscv,sbi-mpxy-mbox.yaml b/Documentation/devicetree/bindings/mailbox/riscv,sbi-mpxy-mbox.yaml
-> new file mode 100644
-> index 000000000000..061437a0b45a
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mailbox/riscv,sbi-mpxy-mbox.yaml
-> @@ -0,0 +1,51 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mailbox/riscv,sbi-mpxy-mbox.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: RISC-V SBI Message Proxy (MPXY) extension based mailbox
-> +
-> +maintainers:
-> +  - Anup Patel <anup@brainfault.org>
-> +
-> +description: |
-> +  The RISC-V SBI Message Proxy (MPXY) extension [1] allows supervisor
-> +  software to send messages through the SBI implementation (M-mode
-> +  firmware or HS-mode hypervisor). The underlying message protocol
-> +  and message format used by the supervisor software could be some
-> +  other standard protocol compatible with the SBI MPXY extension
-> +  (such as RISC-V Platform Management Interface (RPMI) [2]).
-> +
-> +  ===========================================
-> +  References
-> +  ===========================================
-> +
-> +  [1] RISC-V Supervisor Binary Interface (SBI) v3.0 (or higher)
-> +      https://github.com/riscv-non-isa/riscv-sbi-doc/releases
-> +
-> +  [2] RISC-V Platform Management Interface (RPMI) v1.0 (or higher)
-> +      https://github.com/riscv-non-isa/riscv-rpmi/releases
-> +
-> +properties:
-> +  compatible:
-> +    const: riscv,sbi-mpxy-mbox
-> +
-> +  "#mbox-cells":
-> +    const: 2
-> +    description:
-> +      The first cell specifies channel_id of the SBI MPXY channel,
-> +      the second cell specifies MSG_PROT_ID of the SBI MPXY channel
+> That is exactly the reason why we have the conservative test that
+> preserves every config space test as a starting point. 
 
-What is the purpose of the second mailbox cell?
+That is completely the opposite of what I said. Preserving everything
+is giving up on the harder job of identifying which bits cannot be
+changed, explaining why they can't be changed, and then mitigating
+only those things.
 
-The client can probe the message protocol using a SBI call, if it doesn't just
-assume a protocol based on the kind of node that references this mailbox. The
-SBI implementation knows the message protocol from the kind of node that
-instantiates the channel (for example riscv,rpmi-mpxy-clock has
-riscv,sbi-mpxy-channel-id). So this cell looks redundant.
+> Another constraint is that the data center servers are dependent on
+> the network device able to connect to the network appropriately. Take
+> diorite NIC  for example, if I try only preserving ATS/PASID did not
+> finish the rest of liveupdate, the nic wasn't able to boot up and
+> connect to the network all the way. Even if the test passes for the
+> ATS part, the over test fails because the server is not back online. I
+> can't include that test into the test dashboard, because it brings
+> down the server. The only way to recover from that is rebooting the
+> server, which takes a long time for a big server. I can only keep that
+> non-passing test as my own private developing test, not the regression
+> test set.
 
-Regards,
-Samuel
+I have no idea what this is trying to say and it sounds like you also
+can't explain exactly what is "wrong" and justify why things are being
+preserved.
 
-> +
-> +required:
-> +  - compatible
-> +  - "#mbox-cells"
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    mailbox {
-> +          compatible = "riscv,sbi-mpxy-mbox";
-> +          #mbox-cells = <2>;
-> +    };
+Again, your series should be starting simpler. Perserve the dumbest
+simplest PCI configuration. Certainly no switches, P2P, ATS or
+PASID. When that is working you can then add on more complex PCI
+features piece by piece.
 
+Jason
 
