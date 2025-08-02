@@ -1,126 +1,198 @@
-Return-Path: <linux-acpi+bounces-15468-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15469-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCB7B189F5
-	for <lists+linux-acpi@lfdr.de>; Sat,  2 Aug 2025 02:52:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28796B18AA4
+	for <lists+linux-acpi@lfdr.de>; Sat,  2 Aug 2025 06:12:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 130E556614E
-	for <lists+linux-acpi@lfdr.de>; Sat,  2 Aug 2025 00:52:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49D96564BB6
+	for <lists+linux-acpi@lfdr.de>; Sat,  2 Aug 2025 04:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE00C45BE3;
-	Sat,  2 Aug 2025 00:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1DA194A45;
+	Sat,  2 Aug 2025 04:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iPGFbx8R"
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="L+QSlnhy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7AE182B4;
-	Sat,  2 Aug 2025 00:52:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94E0158535
+	for <linux-acpi@vger.kernel.org>; Sat,  2 Aug 2025 04:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754095935; cv=none; b=QgRMZWRwcUtzvTQCgYAY1Q4UykM3EesSRiM44ilWmWv6QTnZ8GW/JQay+PCsSBwzzGIm9C0C5Hy6r26enS1Gubf5Ph2EQjWeFmf1TQ9lYZwWy8Y4NkbshZfuW75AI9l91j3VmHM1kn7iIjVAGe76g13KfaO8EmH5ONSN76BjESI=
+	t=1754107953; cv=none; b=WyXMMwKFySPG0OzzjjHY9UKGjpD9pdyMAYUaGBM3j9RJxk3LZ70zCpZ3lv3+J9CAb1wIFW4FmMtjtXPhj10SZNTELqY8LNiGxX9KSjlYfz9QG6mSmNtqT57xwTk4VZolgu3Sh7tQ93jziqCrN5CRXyjYWt26HlE7qYFoGijWsN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754095935; c=relaxed/simple;
-	bh=cLiV1YAVc0XpLVydFzX5qDQFT8RxMUqUxFC45R3+Hu0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E35/dql52jj4hHtz5wU84Y6Hb9dnRaor9AmGawZTA5Brz3T03K0edE8D6ypePKJu6b3XwOTHz2JPb992Z/LeYrSSXojBCDQuCztyF99qPhrYaSbXLRDKP7Yo7OTGa5TqJBtQsQ9sXXaJLWUiBoZrqabCwhsOiHlp+R50gin4THE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iPGFbx8R; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754095934; x=1785631934;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cLiV1YAVc0XpLVydFzX5qDQFT8RxMUqUxFC45R3+Hu0=;
-  b=iPGFbx8RMzp+Zpeg+TXBcZzMhL163nD2LC6lgxfNciyqf8Uxb9/W0fuX
-   5LphLFeW+9BZqYnkGMD9eXSKwYoSrRwgm5Bl6YX/l7ZhF/D+0dABi5ogv
-   qqhvaV0DsVcFe4bQvJRsPw7dCht/rcbm5KMibypFXjmySXE5gKQRJHF4V
-   jhnm8PTs1PPz3k246rJYTBanTCwucmXxkAckJEvUU8Y5vHYw1n8Bav9EA
-   ehnyqn1KSWeMjgJvz+XsRhAsGStZjP7sFxepTckMAC4NVTqKaVh6r5X8l
-   rquLe64SKjLFYSZm3VgI/1QMSABb1w7KIz+LV+sVkM8Y+dKOaGNu08mSf
-   Q==;
-X-CSE-ConnectionGUID: ZGST44dWStqyACh5N7BW0g==
-X-CSE-MsgGUID: 28dXcmVmRlGIaPSE2j/LCA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="67020061"
-X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
-   d="scan'208";a="67020061"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2025 17:52:13 -0700
-X-CSE-ConnectionGUID: rhpO9yacQcSx45fuiX/l8g==
-X-CSE-MsgGUID: +seHoRPmSrS3nDsJ+5KE6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
-   d="scan'208";a="164083746"
-Received: from lkp-server01.sh.intel.com (HELO 160750d4a34c) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 01 Aug 2025 17:52:07 -0700
-Received: from kbuild by 160750d4a34c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ui0Tk-000536-2p;
-	Sat, 02 Aug 2025 00:52:04 +0000
-Date: Sat, 2 Aug 2025 08:51:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: Breno Leitao <leitao@debian.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
-	Robert Moore <robert.moore@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <helgaas@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-media@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linux.dev, osandov@osandov.com,
-	xueshuai@linux.alibaba.com, konrad.wilk@oracle.com,
-	linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org, kernel-team@meta.com, osandov@fb.com,
-	Breno Leitao <leitao@debian.org>
-Subject: Re: [PATCH v4] vmcoreinfo: Track and log recoverable hardware errors
-Message-ID: <202508020814.lzX1CZpj-lkp@intel.com>
-References: <20250801-vmcore_hw_error-v4-1-fa1fe65edb83@debian.org>
+	s=arc-20240116; t=1754107953; c=relaxed/simple;
+	bh=jiSy6EgaRG9Ud8aFoKJwA0IhJhNFA8CwUL0Sj/LVdWg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WyBlFvGrC4BIanj9gF1vGJ6c+boMHeQuuOev4H9iV2V4JOUey6iHcRuJ0WhAvIMqeglp9fjrhnWXAZhT6w6tIIlElmAHxJRR+P2qjpuQuHb5MTtSzU30sr1Wp/qSpZUYpWa/G0LAZKnnlOUwvd1mSzRERmsjo97mAJ4alcfUswA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=L+QSlnhy; arc=none smtp.client-ip=209.85.166.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-3e406ca2d22so7930175ab.1
+        for <linux-acpi@vger.kernel.org>; Fri, 01 Aug 2025 21:12:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1754107951; x=1754712751; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ip2rHPlCiGFGcr5YGyF7kmeRLuJtKeayor/PNig1fgE=;
+        b=L+QSlnhy6ypqQOWBUSQhU9qaWdi+P2lVkRTeDvbiXhEVh1j8gr3vZ4bo/wovMmrpkm
+         edSpm3fhBnetYfo+t4SKySHWSScwW6IFkj6AeE5KiuJ657Ibw9X37WWeuzJEiquet8Zx
+         osRZ8esPNb5PSu6npexUrUO7PzkNP8f5KsKNqNdp9Sd8a8lHmI1bgw5/aMddsSIy1q8i
+         gl2NuOHISk4Y4OSGu6GL1iIIYvJGNx3cDUTW9y8l6N1AHOBtJPOTg0/QDgDQ/88Ny/Vr
+         ARUvI1dtpBKGxiXUmBbtVOtGrauDCFUpTnG/jP1UE6fAIEmqwmQyy3YaWIX91H5aBaZA
+         tJaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754107951; x=1754712751;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ip2rHPlCiGFGcr5YGyF7kmeRLuJtKeayor/PNig1fgE=;
+        b=ZS84+UFF0iwSckW3cIMI/2IV08/0YtmKqnGN3ER4j+Ox7v3d8axqB8TMcn5PRgAKtN
+         b5DP6HV2dnm/WjUIPCKCd5ywCUJa5cFDO3xTwmCdzYZS3gQmd1FGSl71rJsIBwaM3kNQ
+         1GvS289Vz7pfTBWlaqwSY9qKaCkTlftigw26W0ncYaRxFayGiayhaQbDv0j+ry6+wRIk
+         rmeQ4mScpMH3N2mlRGIw/YDq1DE68P5pw0XMwYyNTybolZGmiz265K1PApdNWtfAipcU
+         dvi6lLH2QQLtvxQk+cFHyHB1N+LRCAQDZqml+/iojZxO1IsN028m1+ktZaHf4HaFgzyW
+         ugWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVVMmGnz2DxZpFhoihTaWRyTdFL6Lpy/nUpqFTGTjWek00B+YKfeC6vK6Msr8CrlD9iR0lh2RLmL1Sk@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxHxrCCoPF/0v7zfehcumqGMMxU6d6Ln2NDZceB1srqPBLiG1H
+	PgTodqRlM9dArh7xjXPhEAV7EImR5Zzdbk/bytVpudTUQfUZEpJwA8NAjsdiJ3mtJQ0=
+X-Gm-Gg: ASbGncserakYezpSyzEnVakGsuuUuiqnpN4/pL2ksXFQUkKEvzIvTWgDbkH64ohhl+P
+	U6bKHl2Kh6ambhjHoHST8AoIU1iWi7D+Nxq/Pykyu+izYSO0SuHWJJiEKa/v7ssKDLGC5utyMby
+	sjCRDk+DNrVYCS/L0IQjdAbOK/hd0rTDHwQiLv8vwYUouPqaa7ouXS5jk0osL4N+cyF1g4/gZlb
+	Oo4nr5l/HenQaZrsKd35pLio1q7yhjhdAcHyexXC3cfpNMNgaBCCvrCu4Q/D+C8dug21tQxTO0a
+	68MCmzLPTREePagL2KJUzl0rajy6EpSwtTphdmrjtupF6ig5hEMol61s/0ULYxaRR/OJntPPgGW
+	66DiXfjNFtD7zVTFmM6eVamqwpOOtM93fw0SQFWmsX4L5jBLo
+X-Google-Smtp-Source: AGHT+IFWXv/meUt6qnzrJTilZJBXyZAntv/HisFVx8CQALlAxTer9z3pL9Su5iQx9S/dGPdOHi5YGA==
+X-Received: by 2002:a05:6e02:2487:b0:3e3:b6ab:f869 with SMTP id e9e14a558f8ab-3e416191ba5mr36293525ab.13.1754107950776;
+        Fri, 01 Aug 2025 21:12:30 -0700 (PDT)
+Received: from [100.64.0.1] ([170.85.11.2])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-50a55d5da1csm1652544173.65.2025.08.01.21.12.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 Aug 2025 21:12:30 -0700 (PDT)
+Message-ID: <612a13d3-d3a6-460b-90fd-c26e47b80711@sifive.com>
+Date: Fri, 1 Aug 2025 23:12:28 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250801-vmcore_hw_error-v4-1-fa1fe65edb83@debian.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 02/24] dt-bindings: mailbox: Add bindings for RISC-V
+ SBI MPXY extension
+To: Anup Patel <apatel@ventanamicro.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Alexandre Ghiti <alex@ghiti.fr>,
+ Len Brown <lenb@kernel.org>, Sunil V L <sunilvl@ventanamicro.com>,
+ Rahul Pathak <rpathak@ventanamicro.com>,
+ Leyfoon Tan <leyfoon.tan@starfivetech.com>,
+ Atish Patra <atish.patra@linux.dev>, Andrew Jones <ajones@ventanamicro.com>,
+ Anup Patel <anup@brainfault.org>, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Conor Dooley <conor.dooley@microchip.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jassi Brar <jassisinghbrar@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, "Rafael J . Wysocki"
+ <rafael@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
+ <brgl@bgdev.pl>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+References: <20250728094032.63545-1-apatel@ventanamicro.com>
+ <20250728094032.63545-3-apatel@ventanamicro.com>
+From: Samuel Holland <samuel.holland@sifive.com>
+Content-Language: en-US
+In-Reply-To: <20250728094032.63545-3-apatel@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Breno,
+Hi Anup,
 
-kernel test robot noticed the following build warnings:
+On 2025-07-28 4:40 AM, Anup Patel wrote:
+> Add device tree bindings for the RISC-V SBI Message Proxy (MPXY)
+> extension as a mailbox controller.
+> 
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+> ---
+>  .../bindings/mailbox/riscv,sbi-mpxy-mbox.yaml | 51 +++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mailbox/riscv,sbi-mpxy-mbox.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/mailbox/riscv,sbi-mpxy-mbox.yaml b/Documentation/devicetree/bindings/mailbox/riscv,sbi-mpxy-mbox.yaml
+> new file mode 100644
+> index 000000000000..061437a0b45a
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mailbox/riscv,sbi-mpxy-mbox.yaml
+> @@ -0,0 +1,51 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/mailbox/riscv,sbi-mpxy-mbox.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: RISC-V SBI Message Proxy (MPXY) extension based mailbox
+> +
+> +maintainers:
+> +  - Anup Patel <anup@brainfault.org>
+> +
+> +description: |
+> +  The RISC-V SBI Message Proxy (MPXY) extension [1] allows supervisor
+> +  software to send messages through the SBI implementation (M-mode
+> +  firmware or HS-mode hypervisor). The underlying message protocol
+> +  and message format used by the supervisor software could be some
+> +  other standard protocol compatible with the SBI MPXY extension
+> +  (such as RISC-V Platform Management Interface (RPMI) [2]).
+> +
+> +  ===========================================
+> +  References
+> +  ===========================================
+> +
+> +  [1] RISC-V Supervisor Binary Interface (SBI) v3.0 (or higher)
+> +      https://github.com/riscv-non-isa/riscv-sbi-doc/releases
+> +
+> +  [2] RISC-V Platform Management Interface (RPMI) v1.0 (or higher)
+> +      https://github.com/riscv-non-isa/riscv-rpmi/releases
+> +
+> +properties:
+> +  compatible:
+> +    const: riscv,sbi-mpxy-mbox
+> +
+> +  "#mbox-cells":
+> +    const: 2
+> +    description:
+> +      The first cell specifies channel_id of the SBI MPXY channel,
+> +      the second cell specifies MSG_PROT_ID of the SBI MPXY channel
 
-[auto build test WARNING on 89748acdf226fd1a8775ff6fa2703f8412b286c8]
+What is the purpose of the second mailbox cell?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Breno-Leitao/vmcoreinfo-Track-and-log-recoverable-hardware-errors/20250801-211624
-base:   89748acdf226fd1a8775ff6fa2703f8412b286c8
-patch link:    https://lore.kernel.org/r/20250801-vmcore_hw_error-v4-1-fa1fe65edb83%40debian.org
-patch subject: [PATCH v4] vmcoreinfo: Track and log recoverable hardware errors
-config: x86_64-defconfig (https://download.01.org/0day-ci/archive/20250802/202508020814.lzX1CZpj-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-12) 11.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250802/202508020814.lzX1CZpj-lkp@intel.com/reproduce)
+The client can probe the message protocol using a SBI call, if it doesn't just
+assume a protocol based on the kind of node that references this mailbox. The
+SBI implementation knows the message protocol from the kind of node that
+instantiates the channel (for example riscv,rpmi-mpxy-clock has
+riscv,sbi-mpxy-channel-id). So this cell looks redundant.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508020814.lzX1CZpj-lkp@intel.com/
+Regards,
+Samuel
 
-All warnings (new ones prefixed by >>):
+> +
+> +required:
+> +  - compatible
+> +  - "#mbox-cells"
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    mailbox {
+> +          compatible = "riscv,sbi-mpxy-mbox";
+> +          #mbox-cells = <2>;
+> +    };
 
->> vmlinux.o: warning: objtool: hwerr_log_error_type+0x23: call to ktime_get_real_seconds() leaves .noinstr.text section
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
