@@ -1,131 +1,153 @@
-Return-Path: <linux-acpi+bounces-15479-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15481-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E99AB19489
-	for <lists+linux-acpi@lfdr.de>; Sun,  3 Aug 2025 18:54:47 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D92D3B19513
+	for <lists+linux-acpi@lfdr.de>; Sun,  3 Aug 2025 22:04:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDCD43B4FA4
-	for <lists+linux-acpi@lfdr.de>; Sun,  3 Aug 2025 16:54:45 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C9C684E02E2
+	for <lists+linux-acpi@lfdr.de>; Sun,  3 Aug 2025 20:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE851D9A54;
-	Sun,  3 Aug 2025 16:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N9gmRP7Q"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB441A08A4;
+	Sun,  3 Aug 2025 20:04:03 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C0E1D63DF;
-	Sun,  3 Aug 2025 16:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1E4173;
+	Sun,  3 Aug 2025 20:03:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754240082; cv=none; b=U5UiBLgnfMma7zdn6YnifPKtOclXfzGg8p/JosTssV2AThu22V6deg8YPRjAIM36XapZBQAMNOQ1TcgFahoduEDKG8RP9A425U9DTryjeuGjqTbPxD6bLDLVs3kuKVZPZFrojdjNpH6c27u8Z1HLDmyjUIMB3oLoWv8xJCkUZ1g=
+	t=1754251443; cv=none; b=kmDnrFuD3yIzYHYE/E271tYE/nrR+74qOteXsohX0o+bjS26n5qGPAksw0/pPHcWnOtzJEEhjsUfTLlUwkJLgJ+GuX9olpvAmlVi+aG1iomq2w5++3R0CeRFRJsV9m7lGXKNTSYX4RySZ8VTM4Kgzkb08pwhUH7Rp1ziTE1G7TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754240082; c=relaxed/simple;
-	bh=013LWtY1z9ycHf9/jlJK5Gk4unBMj8NZDKNYsGQFV9Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h6RJtmumOh0tchoMB7av84LAGbkeMDNFzkUrVuV2GybQNdJUiaZYB77mt1JgpHIX/a6fttJpU0ShvgU5vAlzvqmR/LvICZDT3nplH1c5S1vhcbguPhdPqE+g1BCq/+F5v4fCYo878wwcHEoa7ScRIudNh15FB4T83EsnHH6NyK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N9gmRP7Q; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-76bd041c431so2929116b3a.2;
-        Sun, 03 Aug 2025 09:54:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754240080; x=1754844880; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pV9w0CQoRcUYhHYMt23UhoOkZT5o/JoD/yUyCBLIk2k=;
-        b=N9gmRP7QGIgX2lrvrHz01ovDZjAts5z4PIoSzB5pk/qtCv8270K9GWRPfl2Pe/HU23
-         E/F3wKYKPOeMNLHkL0u84t44L2wWxENbwpj8HWD5xOOw0iMmRUekgwrDrMOsf71S4EuU
-         2WGH3za0XbJwF+rwFHkpVsKHqP7c5E+T69GHt8Xq+fgNv6fs9aP3Als0fKFJemlYbafK
-         +5AYwtOYABAYeJ1P7kDRY7e8OZ6woVpU0nOPwNZSOopyxMiovkOoZBualNHQulXcURC6
-         7bqL3P9eJR8awAXGrfB2ZlRiXKvP+9GKEFmm67IioAQcxDDTopTaN35T4PtAq5oJv/3m
-         amrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754240080; x=1754844880;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pV9w0CQoRcUYhHYMt23UhoOkZT5o/JoD/yUyCBLIk2k=;
-        b=Czjrsvt9eUoAN+nqV5WhDZbfU8dpj+oe1l/cMYayp5SDfDaY6/jDChnisR0/uaJNvu
-         5VXlrveQ+InPowmx5DNU/66MiMBPQyfGG/hJa6/CtNB54nYLpV3TDEGJO9ShC6OFC253
-         Q3i4gkYHoVdY5HQnuylzMQUbhaDPXnoRGvebtgIAReCBCwkQwpYwtW6uo+HvGGym6NY7
-         jFjOu/PM3KQUHYEvJhftmG61tdiQVnGoEGVy8tCp0vuQipvo9XDbUXwjUdtBEBIejCel
-         gP/kEMbdk3fuDyhQVqteV1G/MpJjtOFvH9j0wQYHDTW5+j5Sn3jch0xXg013FKRPGVdn
-         yPig==
-X-Forwarded-Encrypted: i=1; AJvYcCV5xt3fg1H6kFxnhIqauLvBz8u8bNKzfaUetoKW1CM5ku6jBfG8OPQgKZahFu2v3ggBZPISNtP2tKTS@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx78g7iQdhp5gxeCTzoZyMIoObD81xqfmxwuNBk0ihYBHnGbOHL
-	Qmo/B1tQiJ3Q5np+tWCDBLjIuWZ1RG9/IuZPQBAIqmSsvwi5jGH9HErz
-X-Gm-Gg: ASbGncsPuPs8oJCTlCNGyjvcaIzwKlRVLudd0bC5T8TS9idYZOcdCeKLHlpPddkH15C
-	Vi8XHMt+eCjiowCf+acGbHG4GtS7Xb3q93aMItuFX8iCVm6IvcxzjjRSYVdBt2rKS0JvzYkdYRj
-	+Jl3ctGYCQ9hKSAVnbqDTNudP/07vp4ByzFN61HjcL2qq1z+/RfHrT5C8nooHEb4feDiRzJP0Bb
-	Y6ILkeP1sAJXeBiXNRFjwnoudvP/fc9ovYRmTwZmXxXlVcLaCKaLnc21mTCCDRz38VytSeRCi2r
-	FVjf4P5Lm+ltZHsmcl+Yw2lEk90YxpFVaTrc3T3JRsWLeVMm0LHzkEJghReZ+wWah3AEJioyM4Y
-	N+w2nIytvgP5dbh0=
-X-Google-Smtp-Source: AGHT+IEo1gq33O5aUys0+8ALaihfteRTIBvMO85xRSUFfSJcipaf9qogGiVbnN9HwPKG58PZb99ALw==
-X-Received: by 2002:a05:6a20:734e:b0:238:3f54:78f2 with SMTP id adf61e73a8af0-23df91932cfmr10086332637.44.1754240080330;
-        Sun, 03 Aug 2025 09:54:40 -0700 (PDT)
-Received: from [192.168.79.25] ([49.207.53.32])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b422b7841besm7475766a12.3.2025.08.03.09.54.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 03 Aug 2025 09:54:40 -0700 (PDT)
-Message-ID: <b30ef694-56c2-4023-8d6e-de8f7b8e10e6@gmail.com>
-Date: Sun, 3 Aug 2025 22:24:34 +0530
+	s=arc-20240116; t=1754251443; c=relaxed/simple;
+	bh=MpvstN48VRF2YFHT2xv8Ztsaz8o3z76oJbw6FLylYpo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=js8F/ZDB0VsLdqz/t5tIns4SWguxivk8EFQofstCI6FcHk0j5+hQ9DOs2OmaaaE/8n4N/wYrHS9EwcIakycbOGENB6uSslpgUHhIcg2acrW9bFqPK9MagU8n9aC2lf+OPud0oy1s2jrXrO9OM+PLdXVVj6NXm71CvoZZsk3BR4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=pass smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vps-ovh.mhejs.net
+Received: from MUA
+	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <mhej@vps-ovh.mhejs.net>)
+	id 1uieDs-00000000Mul-1pdc;
+	Sun, 03 Aug 2025 21:18:20 +0200
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/2] HP EliteBook 855 G7 WWAN modem power resource quirk
+Date: Sun,  3 Aug 2025 21:18:10 +0200
+Message-ID: <cover.1754243159.git.mail@maciej.szmigiero.name>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] acpi: remove unnecessary parenthesis from return
- statement
-To: Markus Elfring <Markus.Elfring@web.de>,
- Diksha Kumari <dkdevgan@outlook.com>, linux-acpi@vger.kernel.org,
- acpica-devel@lists.linux.dev
-Cc: LKML <linux-kernel@vger.kernel.org>, Len Brown <lenb@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Robert Moore <robert.moore@intel.com>
-References: <20250803153829.6545-1-dikshakdevgan@gmail.com>
- <a62ff710-4216-4c4a-9ca1-b376a3703531@web.de>
-Content-Language: en-US
-From: Diksha Kumari <dikshakdevgan@gmail.com>
-In-Reply-To: <a62ff710-4216-4c4a-9ca1-b376a3703531@web.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Sender: mhej@vps-ovh.mhejs.net
+
+This laptop (and possibly similar models too) has power resource called
+"GP12.PXP_" for its Intel XMM7360 WWAN modem.
+
+For this power resource to turn ON power for the modem it needs certain
+internal flag called "ONEN" to be set:
+Method (_ON, 0, NotSerialized) // _ON_: Power On
+{
+	If (^^^LPCB.EC0.ECRG)
+	{
+		If ((ONEN == Zero))
+		{
+                        Return (Zero)
+		}
+(..)
+	}
+}
+
+This flag only gets set from this power resource "_OFF" method, while the
+actual modem power gets turned off during suspend by "GP12.PTS" method
+called from the global "_PTS" (Prepare To Sleep) method.
+
+In fact, this power resource "_OFF" method implementation just sets the
+aforementioned flag:
+Method (_OFF, 0, NotSerialized) // _OFF: Power Off
+{
+	OFEN = Zero
+	ONEN = One
+}
+
+Upon hibernation finish we try to set this power resource back ON since its
+"_STA" method returns 0 and the resource is still considered in use as it
+is declared as required for D0 for both the modem ACPI device (GP12.PWAN)
+and its parent PCIe port ACPI device (GP12).
+But the "_ON" method won't do anything since that "ONEN" flag is not set.
+
+Overall, this means the modem is dead after hibernation finish until the
+laptop is rebooted since the modem power has been cut by "_PTS" and its PCI
+configuration was lost and not able to be restored.
+
+The easiest way to workaround this issue is to call this power resource
+"_OFF" method before calling the "_ON" method to make sure the "ONEN"
+flag gets properly set.
+
+This makes the modem alive once again after hibernation finish - with
+properly restored PCI configuration space.
+
+Since this platform does *not* support S3 the fact that
+acpi_resume_power_resources() is also called during resume from S3 is
+not a problem there.
+
+Do the DMI based quirk matching and quirk flag initialization just
+once - in acpi_power_resources_init() function similar to existing
+acpi_*_init() functions.
+
+This way the whole resume path overhead of this change on other systems
+amounts to simple hp_eb_gp12pxp_quirk flag comparison.
+
+Opportunistically convert the single already existing DMI match-based
+quirk in this ACPI power resource handler ("leave unused power
+resources on" quirk) to the same one-time initialization in
+acpi_power_resources_init() function instead of re-running that DMI
+match each time acpi_turn_off_unused_power_resources() gets called.
 
 
-On 03/08/25 21:38, Markus Elfring wrote:
->> checkpatch.pl is generating a warning when return value is enclosed
->> in parenthesis. Remove the parenthesis to improve code readability.
->                               parentheses?
-This is my first patch, so i am not sure what you mean by this.
->
-> You propose to omit also some curly brackets, don't you?
-ok, i will include this in the next version.
->
-> …> ---
->>   drivers/acpi/acpica/dbconvert.c | 43 +++++++++++++++------------------
-> …
->
-> Did you overlook the addition of patch version descriptions?
-> https://lore.kernel.org/all/?q=%22This+looks+like+a+new+version+of+a+previously+submitted+patch%22
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.16#n310
+This Intel WWAN modem in general has *a lot* of issues with
+suspend/resume on various laptop platforms (not only HP).
 
-yes, went through the document, thanks for the information. I will add 
-the change log in next version.
+More patches are needed for these, hopefully they can be mainlined
+too so suspend/resume work out of the box for users (that's
+important functionality on a laptop).
+
+See the following ModemManager issue containing patches also for
+Thinkpad T14 G1 and Dell Precision 3561:
+https://gitlab.freedesktop.org/mobile-broadband/ModemManager/-/issues/992
 
 
-Thanks for reviewing the patch and feedback.
+Changes from v2:
+* Split out the change adding power resource init function and converting
+  existing DMI-based quirk into a separate preparatory patch.
 
-Regards,
+* Create a replacement __acpi_power_on() method for the affected power
+  resource (including the power OFF and delay part) and call it from
+  acpi_resume_power_resources() instead of ordinary __acpi_power_on()
+  on the affected platform.
 
-Diksha
+* Rename leave_unused_power_resources_on_quirk into suggested shorter
+  unused_power_resources_quirk.
 
-> Regards,
-> Markus
+
+Maciej S. Szmigiero (2):
+  ACPI: PM: Add power resource init function
+  ACPI: PM: Add HP EliteBook 855 G7 WWAN modem power resource quirk
+
+ drivers/acpi/internal.h |  1 +
+ drivers/acpi/power.c    | 90 +++++++++++++++++++++++++++++++++++++++--
+ drivers/acpi/scan.c     |  1 +
+ 3 files changed, 89 insertions(+), 3 deletions(-)
+
 
