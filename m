@@ -1,69 +1,60 @@
-Return-Path: <linux-acpi+bounces-15500-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15501-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49095B198AB
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 02:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECAECB19904
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 02:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B240E3B9B42
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 00:36:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F0F53BA8D2
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 00:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07CB7192B90;
-	Mon,  4 Aug 2025 00:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A911E3762;
+	Mon,  4 Aug 2025 00:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="llxn3MPB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cw0XOTtR"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FE629A2;
-	Mon,  4 Aug 2025 00:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7471C549F;
+	Mon,  4 Aug 2025 00:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754267738; cv=none; b=VMZ59SDXA2h6DEDCGnqjugvCCZrkq428W/ihq9/deq0/IzC+BOPLoI4CpefcWr76r+Mvu6oH4qibgrrycwg2ekY7jJ8MqBnYHbKUgX+AI6ixt5Z3CD77BJ/HHbv/lbVNm5YrQO2TlGpaMYM3vf90Xylh7UdE7DEcupIBELWXFUI=
+	t=1754267856; cv=none; b=geesBSgbJKUCGmJMvBp80XPE1vwMHg2xxUZ2/4S/OLLLZ827cTRZR98vla0nlBT+SUVtw4ypW/xLLipAlBlCz/rfK3NTPSAW04kA7hTLUQ2P3TqmzFwOdBSBCCgnStk1KfzLj6Aa3VmVN2smVPxWMQGu6yeNK2W06lXJebb2BVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754267738; c=relaxed/simple;
-	bh=O5L2DRVRfguleWwQFioGujeGlo/Kl5N2G3uASTyCixU=;
+	s=arc-20240116; t=1754267856; c=relaxed/simple;
+	bh=9pKxRtep6EtStNPbYP+ARYdOs9PWjvAh1I3OkH3w7Tk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oLgROaKoQAMqbqux/08U441Luv1VvLVZqUAPv3ORMhosH4FqSOtOdXtyI1myhooC/F8HDg+91+p5xgNOXaz28EgTmBnuLpyZuMFr1t9QCdBc/ZXJcC61dwLapd142e3pqa0F2vasllK3F0MwCu4uYQ/Xh2YsYgWjxSEvKq7daj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=llxn3MPB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F4EC4CEF0;
-	Mon,  4 Aug 2025 00:35:33 +0000 (UTC)
+	 MIME-Version; b=Cy1JK21Bax71A577KIF8xucJ+wSDboSO9NVgPSFceCPJ+n9IwscXqvMKA14r4Hvap0iQIy6B8W+cYfa9aSXZh3QcARr678YlJziy22I5BV4Mr2KcaJLJPw7lc5PsHZjDPE+jrmGsWQ9BrraJOhb27LSy25RvqUUJNsgVNLVdQbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cw0XOTtR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314EFC4CEF8;
+	Mon,  4 Aug 2025 00:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754267736;
-	bh=O5L2DRVRfguleWwQFioGujeGlo/Kl5N2G3uASTyCixU=;
+	s=k20201202; t=1754267856;
+	bh=9pKxRtep6EtStNPbYP+ARYdOs9PWjvAh1I3OkH3w7Tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=llxn3MPB7c2viT54SHZ6IMD1af519nVB7TUGEotxnPuLSq3F9QO7jZlGXTyPgh3zE
-	 MD0M35/EgNIA4GctzAm4YJ7i6a/89f59QF5792hi1LDnTgT9DkS8mnv2o1EBlrF+N3
-	 1PUPcoIWL0Ts5ZbUuO1c4UEfhKRmSZjkulRziPTNQAqb7M044TaZZTKlCsMmv4WJyi
-	 kZB7MnFqBJgLqO0ebIa5H+kYSi+dyvVvPr8EEY9HrQkAqJDlHRiREh/zJ/HwvMH0bD
-	 UmRCAqJtW0gI86VPuuK777C48A4EOStA77QSgJAYAuNxR8knsdvryZND70v4uUUiUP
-	 UgFu520AtXMlg==
+	b=cw0XOTtRiT4eKD5AcwRVBBjBHlv8AVD/3mi72qJ31LwrRnaeGPU3wEQe8oF7tIVOT
+	 6z1A+RGl5KUbQ7EBlMz4iCAbguepUD2z+ammAcBZAazQMqtl/nEBGkAsBasHuW7Shi
+	 7FJEA5VhgfqFRlJ2sm73IWE3I3k1CCGBEMmG4KMbQJ6Fe+zOhk1rzGGrf9wCcDVwGg
+	 H4VpZJtCNmNIk1Hvo4sB3SN0WqVKOfq0Ebc6K3xItIk3IyG0fsXoC0HkyxBFjlmkra
+	 XEbgl+9qfadCkU0SdAIbGUrh/ikzhNZC7qGl1LRWq8Wtp/Nze3KzmMadX/gIUeQ9iI
+	 39AE6xT6/QOdA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Tony Luck <tony.luck@intel.com>,
+Cc: Zhu Qiyu <qiyuzhu2@amd.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
-	dave.jiang@intel.com,
-	ira.weiny@intel.com,
-	xueshuai@linux.alibaba.com,
-	Smita.KoralahalliChannabasappa@amd.com,
-	u.kleine-koenig@baylibre.com,
-	peterz@infradead.org,
-	mingo@kernel.org,
-	bp@alien8.de,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 34/59] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
-Date: Sun,  3 Aug 2025 20:33:48 -0400
-Message-Id: <20250804003413.3622950-34-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 23/51] ACPI: PRM: Reduce unnecessary printing to avoid user confusion
+Date: Sun,  3 Aug 2025 20:36:15 -0400
+Message-Id: <20250804003643.3625204-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250804003413.3622950-1-sashal@kernel.org>
-References: <20250804003413.3622950-1-sashal@kernel.org>
+In-Reply-To: <20250804003643.3625204-1-sashal@kernel.org>
+References: <20250804003643.3625204-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -72,94 +63,142 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.101
+X-stable-base: Linux 6.1.147
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+From: Zhu Qiyu <qiyuzhu2@amd.com>
 
-[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
+[ Upstream commit 3db5648c4d608b5483470efc1da9780b081242dd ]
 
-When a GHES (Generic Hardware Error Source) triggers a panic, add the
-TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
-kernel as tainted due to a machine check event, improving diagnostics
-and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
-indicate lockdep remains valid.
+Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
+handler and context") introduced non-essential printing "Failed to find
+VA for GUID: xxxx, PA: 0x0" which may confuse users to think that
+something wrong is going on while it is not the case.
 
-At large scale deployment, this helps to quickly determine panics that
-are coming due to hardware failures.
+According to the PRM Spec Section 4.1.2 [1], both static data buffer
+address and ACPI parameter buffer address may be NULL if they are not
+needed, so there is no need to print out the "Failed to find VA ... "
+in those cases.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
+Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
+Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
+Link: https://patch.msgid.link/20250704014104.82524-1-qiyuzhu2@amd.com
+[ rjw: Edits in new comments, subject and changelog ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Based on my analysis of this commit, here is my assessment:
-
-**Backport Status: YES**
+**YES**
 
 This commit should be backported to stable kernel trees for the
 following reasons:
 
-1. **Fixes a real diagnostic issue**: The commit adds the
-   TAINT_MACHINE_CHECK flag when GHES (Generic Hardware Error Source)
-   triggers a panic. This is important for post-mortem analysis at
-   scale, as explicitly stated in the commit message: "At large scale
-   deployment, this helps to quickly determine panics that are coming
-   due to hardware failures."
+## Bug Fix for User-Visible Issue
+The commit fixes false warning messages that were confusing users. The
+original commit 088984c8d54c (which was already backported to stable
+with "Cc: All applicable <stable@vger.kernel.org>") introduced an
+unconditional warning in `efi_pa_va_lookup()`:
 
-2. **Small and contained change**: The patch adds only a single line of
-   code (`add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);`) in the
-   `__ghes_panic()` function at drivers/acpi/apei/ghes.c:1091. This
-   meets the stable kernel rule of being under 100 lines.
+```c
+pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
+```
 
-3. **Obviously correct**: The change follows established kernel
-   patterns. Looking at the grep results, other machine check handlers
-   already use this same pattern:
-   - arch/x86/kernel/cpu/mce/core.c:1640
-   - arch/powerpc/kernel/mce.c:332
-   - arch/x86/kernel/cpu/mce/p5.c:40
-   - arch/x86/kernel/cpu/mce/winchip.c:24
+This warning was printed even when the physical address (PA) was
+legitimately 0/NULL, which according to the PRM specification is valid
+for both `static_data_buffer_address` and `acpi_param_buffer_address`
+when they are not needed.
 
-4. **No architectural changes**: This is purely a diagnostic improvement
-   that adds taint information without changing any functionality or
-   behavior of the GHES panic path.
+## Small and Contained Fix
+The fix is minimal and surgical:
+1. Removes the unconditional warning from `efi_pa_va_lookup()`
+2. Adds conditional warnings only when addresses are non-zero but lookup
+   fails:
+   - For handler_addr: warns if lookup fails (this should never be zero)
+   - For static_data_buffer_addr: only warns if
+     `handler_info->static_data_buffer_address` is non-zero but lookup
+     fails
+   - For acpi_param_buffer_addr: only warns if
+     `handler_info->acpi_param_buffer_address` is non-zero but lookup
+     fails
 
-5. **Minimal risk**: The change uses LOCKDEP_STILL_OK flag, indicating
-   that lockdep remains valid after the taint, which is the safer option
-   compared to LOCKDEP_NOW_UNRELIABLE used in some other machine check
-   paths.
+## Regression Fix
+Since the problematic commit 088984c8d54c has been backported to v6.12
+stable kernels, this fix addresses a regression in stable trees where
+users are seeing confusing warning messages for legitimate NULL
+addresses.
 
-6. **Real benefit for users**: For organizations running Linux at scale,
-   being able to quickly identify hardware-related panics through the
-   taint flag provides significant operational value for triaging
-   issues.
+## Low Risk
+The change:
+- Does not modify any functional behavior
+- Only adjusts when warning messages are printed
+- Has no architectural changes or side effects
+- Is confined to the ACPI PRM subsystem
 
-The commit meets all the stable kernel criteria: it's small, obviously
-correct, fixes a real diagnostic limitation that affects users
-(especially at scale), and has been reviewed by Tony Luck who is a
-recognized maintainer in the RAS (Reliability, Availability, and
-Serviceability) subsystem.
+## Clear Benefit
+The fix eliminates user confusion from false warnings while maintaining
+proper warnings for actual error conditions (when a non-zero address
+fails lookup).
 
- drivers/acpi/apei/ghes.c | 2 ++
- 1 file changed, 2 insertions(+)
+Given that the original problematic commit is in stable kernels and this
+is a targeted fix for that regression with minimal risk, it clearly
+meets the stable backporting criteria.
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 22db720b128b..ec364c254112 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -912,6 +912,8 @@ static void __ghes_panic(struct ghes *ghes,
+ drivers/acpi/prmt.c | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+index 7747ca4168ab..215ca8d60616 100644
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -85,8 +85,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
+ 		}
+ 	}
  
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
+-	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
+-
+ 	return 0;
+ }
  
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
+@@ -154,13 +152,37 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
+ 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
+ 		th->handler_addr =
+ 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
++		/*
++		 * Print a warning message if handler_addr is zero which is not expected to
++		 * ever happen.
++		 */
++		if (unlikely(!th->handler_addr))
++			pr_warn("Failed to find VA of handler for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->handler_address);
+ 
+ 		th->static_data_buffer_addr =
+ 			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
++		/*
++		 * According to the PRM specification, static_data_buffer_address can be zero,
++		 * so avoid printing a warning message in that case.  Otherwise, if the
++		 * return value of efi_pa_va_lookup() is zero, print the message.
++		 */
++		if (unlikely(!th->static_data_buffer_addr && handler_info->static_data_buffer_address))
++			pr_warn("Failed to find VA of static data buffer for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->static_data_buffer_address);
+ 
+ 		th->acpi_param_buffer_addr =
+ 			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
+ 
++		/*
++		 * According to the PRM specification, acpi_param_buffer_address can be zero,
++		 * so avoid printing a warning message in that case.  Otherwise, if the
++		 * return value of efi_pa_va_lookup() is zero, print the message.
++		 */
++		if (unlikely(!th->acpi_param_buffer_addr && handler_info->acpi_param_buffer_address))
++			pr_warn("Failed to find VA of acpi param buffer for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->acpi_param_buffer_address);
 +
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
+ 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
  
- 	if (!panic_timeout)
+ 	return 0;
 -- 
 2.39.5
 
