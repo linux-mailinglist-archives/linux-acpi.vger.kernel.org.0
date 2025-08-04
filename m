@@ -1,126 +1,210 @@
-Return-Path: <linux-acpi+bounces-15484-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15485-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E890B196E4
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 02:05:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B80AB1970B
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 02:24:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 343111892D93
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 00:06:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CE957A47CA
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 00:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7197F2E3703;
-	Mon,  4 Aug 2025 00:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9874380C02;
+	Mon,  4 Aug 2025 00:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="arI/F6s0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cOdnHKMl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC4738D;
-	Mon,  4 Aug 2025 00:05:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2EB12DDA1;
+	Mon,  4 Aug 2025 00:24:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754265945; cv=none; b=smWFqDIt8NsyGOhtHZ6sGYD6WVLvR2fmtpTV5dYy+plotTclVZ+DcaUSSkWjA+lbWtjYSKH9vrQmF+iW8482jBHS6XZz9j4QLVrjjotsYmurJUOzWS2hEPHLHgz1I9TDLStl+lhKbdwToPN9pqO5pBPNuiKpq1h0pX4mSoIIwVw=
+	t=1754267073; cv=none; b=bk0ZfpMerNxWkwOYl/x1d36duNMVMQW2JzttBjS1GpwPbG+xeVfbzMoP6k2ooWORq1UuiW0xRr7J6M3p6nPhKNdgewcaFJGBKmeegEKCCQ1bVSpWGJ0hH9l7PmU6E+dquuoNzMImdfS5rsHfh6VWMA3XfbygGM1VzUR16vFvVxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754265945; c=relaxed/simple;
-	bh=9KNKvPGAn/W7k7hCCGpLEmkYx8HoMwBR2BuHqnqD4Jc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WWwwk5r6K3Tc251QTuCcQD00k/p9yGV5InRCW3CgRJbcGCO/HM8vqURihJNyNsPylF6lrKiIVVUd+q9qJBqIUc2Fx+R2C0hv+bYIuiIFjOFHalw0ByTc9ORiYGeqG+sIVbOSfho6tWk3mqtyY1BmLutfSbjKJp8oaYZ7QBpWDEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=arI/F6s0; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754265943; x=1785801943;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9KNKvPGAn/W7k7hCCGpLEmkYx8HoMwBR2BuHqnqD4Jc=;
-  b=arI/F6s0WyZOBsSPWBh74heSfOVGbYG+9Pu6elFYKHd9//wwS87k0EN+
-   DeNksDu5xZ76BqShr5U+VQ/thaEs3JzI7bdykIvwYo27xHPR7gwfhKJRZ
-   XzfLOD0Wy4XKMNEQaJW0pq7Oc4kd09kogFhwUwljEW8X68sSBLCot/pTI
-   jBcfni562gvTVVOKZk0AI26i1k6nld5INbsAWCpT5yG4THJO63ICEBWu2
-   4PQVN6HbrfgIywm4fEwqkNCJNfBZ5z6fij954gSjRnFVUDaSO+fqOx8+r
-   3iRftrt4zOi+AC7N4DWU/QrKcYQPun50OqLO8V2mztZ4uF5IBg2SA3WAx
-   g==;
-X-CSE-ConnectionGUID: Xs+11953TSayzf8gakm1FA==
-X-CSE-MsgGUID: ZS2jd5ARTJqr0hxkK6OWQQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11511"; a="55573909"
-X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
-   d="scan'208";a="55573909"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2025 17:05:42 -0700
-X-CSE-ConnectionGUID: SqTPPasQRUm79hJM7o9n4g==
-X-CSE-MsgGUID: BfNupMSDSl6xzF4jpyegdQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
-   d="scan'208";a="164410220"
-Received: from lkp-server01.sh.intel.com (HELO 160750d4a34c) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 03 Aug 2025 17:05:37 -0700
-Received: from kbuild by 160750d4a34c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uiihq-0006gm-1T;
-	Mon, 04 Aug 2025 00:05:34 +0000
-Date: Mon, 4 Aug 2025 08:05:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: Breno Leitao <leitao@debian.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
-	Robert Moore <robert.moore@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <helgaas@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-media@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linux.dev, osandov@osandov.com,
-	xueshuai@linux.alibaba.com, konrad.wilk@oracle.com,
-	linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org, kernel-team@meta.com, osandov@fb.com,
-	Breno Leitao <leitao@debian.org>
-Subject: Re: [PATCH v4] vmcoreinfo: Track and log recoverable hardware errors
-Message-ID: <202508040737.rlDPN1um-lkp@intel.com>
-References: <20250801-vmcore_hw_error-v4-1-fa1fe65edb83@debian.org>
+	s=arc-20240116; t=1754267073; c=relaxed/simple;
+	bh=XsFEYhjgq5AiUdfD3xVjimrYtujktK3Y+Wu3CQSl38k=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=u6mm6adpEbj6raf2TTiQJhIb9eDejO7FIVt0FMMcK03dYmOo+wyfHthzd5PB8mb9cmdP7iKhHx/qMxHeCFiOf7SgzXlAhQMkVW6AF5EMzwc2frRry3Gq4/HXM/ciM4GNuHZ5ZgBKDXyj/oBbTDcMJHlgnojdCatj3R2RAulv51U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cOdnHKMl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4D1C4CEEB;
+	Mon,  4 Aug 2025 00:24:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754267073;
+	bh=XsFEYhjgq5AiUdfD3xVjimrYtujktK3Y+Wu3CQSl38k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cOdnHKMlXZSYS1iy7WPMEimRWO8vcgfRUS0I5+xfYBFTRtYmd9JNopwEOvrMRpzJu
+	 3BPaML5db4Zg7bM4LPgd4jqS77IcYASwVnedkB2gMhJAMrMF4ov1hj8XH0tqDgE9M7
+	 enpMgcU3UbZmsxG3jxESQMOrttT3F18A+/32gnOKk2rl/X950buIxKj9e34rf5EcKa
+	 lfxxJeTOu3QRB5I1SjiVfacKVLcZ1IdbDbymer3xfbD436WGKLvHYev0xlQ+jUurYV
+	 5M6ONd697V1hV+JilYqKnohaMBbu6DpHkE7fdNHzD5XVSjkaRPHHCqUqTtMGsqnyeM
+	 kLaCrEpGumm3A==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Shuai Xue <xueshuai@linux.alibaba.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
+	ira.weiny@intel.com,
+	dave.jiang@intel.com,
+	tony.luck@intel.com,
+	Smita.KoralahalliChannabasappa@amd.com,
+	leitao@debian.org,
+	mingo@kernel.org,
+	peterz@infradead.org,
+	bp@alien8.de,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.16 16/85] ACPI: APEI: send SIGBUS to current task if synchronous memory error not recovered
+Date: Sun,  3 Aug 2025 20:22:25 -0400
+Message-Id: <20250804002335.3613254-16-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250804002335.3613254-1-sashal@kernel.org>
+References: <20250804002335.3613254-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250801-vmcore_hw_error-v4-1-fa1fe65edb83@debian.org>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.16
+Content-Transfer-Encoding: 8bit
 
-Hi Breno,
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-kernel test robot noticed the following build errors:
+[ Upstream commit 79a5ae3c4c5eb7e38e0ebe4d6bf602d296080060 ]
 
-[auto build test ERROR on 89748acdf226fd1a8775ff6fa2703f8412b286c8]
+If a synchronous error is detected as a result of user-space process
+triggering a 2-bit uncorrected error, the CPU will take a synchronous
+error exception such as Synchronous External Abort (SEA) on Arm64. The
+kernel will queue a memory_failure() work which poisons the related
+page, unmaps the page, and then sends a SIGBUS to the process, so that
+a system wide panic can be avoided.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Breno-Leitao/vmcoreinfo-Track-and-log-recoverable-hardware-errors/20250801-211624
-base:   89748acdf226fd1a8775ff6fa2703f8412b286c8
-patch link:    https://lore.kernel.org/r/20250801-vmcore_hw_error-v4-1-fa1fe65edb83%40debian.org
-patch subject: [PATCH v4] vmcoreinfo: Track and log recoverable hardware errors
-config: x86_64-randconfig-076-20250803 (https://download.01.org/0day-ci/archive/20250804/202508040737.rlDPN1um-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250804/202508040737.rlDPN1um-lkp@intel.com/reproduce)
+However, no memory_failure() work will be queued when abnormal
+synchronous errors occur. These errors can include situations like
+invalid PA, unexpected severity, no memory failure config support,
+invalid GUID section, etc. In such a case, the user-space process will
+trigger SEA again.  This loop can potentially exceed the platform
+firmware threshold or even trigger a kernel hard lockup, leading to a
+system reboot.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508040737.rlDPN1um-lkp@intel.com/
+Fix it by performing a force kill if no memory_failure() work is queued
+for synchronous errors.
 
-All errors (new ones prefixed by >>):
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://patch.msgid.link/20250714114212.31660-2-xueshuai@linux.alibaba.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
->> vmlinux.o: error: objtool: hwerr_log_error_type+0x3b: call to ktime_get_real_seconds() leaves .noinstr.text section
+LLM Generated explanations, may be completely bogus:
 
+**Backport Status: YES**
+
+This commit should be backported to stable kernel trees for the
+following reasons:
+
+1. **Critical Bug Fix**: The commit fixes a serious issue where
+   synchronous memory errors that cannot be recovered (abnormal
+   synchronous errors) would cause an infinite loop. The commit message
+   clearly describes how "the user-space process will trigger SEA again.
+   This loop can potentially exceed the platform firmware threshold or
+   even trigger a kernel hard lockup, leading to a system reboot."
+
+2. **Security and Stability Impact**: The bug can lead to:
+   - Infinite exception loops
+   - Platform firmware threshold exceeded
+   - Kernel hard lockups
+   - Unexpected system reboots
+
+   These are severe stability issues that affect system reliability.
+
+3. **Small and Contained Fix**: The code change is minimal and well-
+   contained:
+  ```c
+  + /*
+  +  * If no memory failure work is queued for abnormal synchronous
+  +  * errors, do a force kill.
+  +  */
+  + if (sync && !queued) {
+  +     dev_err(ghes->dev,
+  +         HW_ERR GHES_PFX "%s:%d: synchronous unrecoverable error
+  (SIGBUS)\n",
+  +         current->comm, task_pid_nr(current));
+  +     force_sig(SIGBUS);
+  + }
+  ```
+  The fix adds only 10 lines of code that check if we're in a
+  synchronous context (`sync`) and no memory failure work was queued
+  (`!queued`), then sends SIGBUS to the current process.
+
+4. **Clear Problem and Solution**: The commit addresses a specific gap
+   in error handling. When `ghes_handle_memory_failure()` returns false
+   (meaning no memory_failure() work was queued) for synchronous errors,
+   the process that triggered the error continues execution and will hit
+   the same error again, creating an infinite loop.
+
+5. **Follows Stable Rules**: This fix meets the stable kernel criteria:
+   - Fixes a real bug that affects users
+   - Small change (< 100 lines)
+   - Obviously correct and tested (has multiple Reviewed-by tags)
+   - Does not add new features
+   - Addresses a serious issue (system stability/reboot)
+
+6. **Related to Previous Work**: This appears to be part of a series
+   addressing synchronous error handling issues in GHES. The commit
+   c1f1fda14137 mentioned in the git log shows ongoing work to properly
+   handle synchronous exceptions, and this commit addresses a critical
+   gap where abnormal synchronous errors weren't being handled at all.
+
+The fix ensures that when a synchronous memory error cannot be properly
+handled through the normal memory_failure() path, the kernel will at
+least terminate the offending process with SIGBUS rather than allowing
+it to continue and create an infinite exception loop that can crash the
+system.
+
+ drivers/acpi/apei/ghes.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index f0584ccad451..281a0a2f6730 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -902,6 +902,17 @@ static bool ghes_do_proc(struct ghes *ghes,
+ 		}
+ 	}
+ 
++	/*
++	 * If no memory failure work is queued for abnormal synchronous
++	 * errors, do a force kill.
++	 */
++	if (sync && !queued) {
++		dev_err(ghes->dev,
++			HW_ERR GHES_PFX "%s:%d: synchronous unrecoverable error (SIGBUS)\n",
++			current->comm, task_pid_nr(current));
++		force_sig(SIGBUS);
++	}
++
+ 	return queued;
+ }
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.39.5
+
 
