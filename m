@@ -1,253 +1,156 @@
-Return-Path: <linux-acpi+bounces-15521-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15522-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79B5B1A951
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 20:59:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD9B5B1A9CB
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 21:50:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6050462154D
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 18:59:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28ADE7A5261
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 19:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E9528507D;
-	Mon,  4 Aug 2025 18:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF385233D9E;
+	Mon,  4 Aug 2025 19:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P1bcNxz0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ezXsiYyn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF302253EE;
-	Mon,  4 Aug 2025 18:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FDCA920;
+	Mon,  4 Aug 2025 19:49:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754333948; cv=none; b=NzrU043UsezqGixFPGt3UZYAjSKrQDYn9g25mtb1TOPZYV2jllYYSfRx5gbrJxHHYgiKddnxCFG9yS/UnOReaZNqi+C/ze5DTr9HrEiUo12fVevsI3N5HX5KK/2PgjMbFOJ82xd80IANAQp7EHMrOBS9GEPSjVWDePgBX1/U7hc=
+	t=1754336998; cv=none; b=Px+b9deVzhw8myGxl6c1LXMgzg3vMWDDFxd/F7YG1ttcE+Z9RTwJo3jXdOk4QyepJfQuN7rAhmo2AsSutZAqO3IK20CNcs5aQd+NasqG7ALS0jbBB9ShFyDjwPm3vROyhBFKR9KtNFwKG21fmxqIbAVE/KwieeB5DubS9xL5gVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754333948; c=relaxed/simple;
-	bh=cEmRum5XYAzlQ9YsYVZG/YOXocwoC+rRSdZyIJuBJ3g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BLa/Mmw/28dnKsepG7BMGhZLcNIq2xxkCgqBeedyL7k1fxHkO6a1oZHzI5Z1Cb7GD6sxkQg2tiT28dk99f5TJ+442R4wxHa4X6Q1RutHP6zkP9W+g4BWg5Z/F3WzN/noR2X9pa/nthwY0zg/5KuWl2PfmjreMqMSii3IJKnAyc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P1bcNxz0; arc=none smtp.client-ip=209.85.214.169
+	s=arc-20240116; t=1754336998; c=relaxed/simple;
+	bh=GNzexns6pcPBUTEkIeqnIu/h9x9Gke1nRAkCyAK2Td4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dR/XHasUTBV5aDIRs0u2vu6yKuYclOUGBiXxhlFSc6Ro4HMLl6/40pi/ux89LNy8RTJXknEHKhciV4t0iBqD0bF3Vu0fqQoAl2j4WXzOjQdNYPoK6zmX+scVdeBQbo8vk4bS0VEap5xf3/r3uakl/VgYdyYTK//nMnuBKZ9rEbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ezXsiYyn; arc=none smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-23fc5aedaf0so33158545ad.2;
-        Mon, 04 Aug 2025 11:59:07 -0700 (PDT)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-af922ab4849so687049266b.3;
+        Mon, 04 Aug 2025 12:49:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754333946; x=1754938746; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZMHrDBTVCapZN4Ij1l4T90M7GkuqWi+q6Y/GUZJOE5A=;
-        b=P1bcNxz0lMSA1cAPw2zWL97OhShj/6Qwzypski3ehoQZ+gIsI6UVST0FMjuu4P7oQ7
-         Py5KjdR80MUIHjWQlcI8RXyGfGtst537IjWZuNeCC5n6JHoJO/y1dmWf/An4H4+Oc1T7
-         ev0JB+B4ua26HJHeXS3xu9bkYxc7gV2wJgOCSPALTBwB2FLqiHUllIJJL3Pq3D3X3hkj
-         3L62D0Oyw2+Zd4ku5iTOsupa1Zj2M9mwHgunpLxth673wbWJogi/QJjweeDEVq2bmkTZ
-         XY2Yj4lsXPEcJt4cBbVPkYgNDGCxmrJfNVCAo2jVAWqc7sNARtHDn0sPJJ4zvYwe/3gy
-         carA==
+        d=gmail.com; s=20230601; t=1754336995; x=1754941795; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GNzexns6pcPBUTEkIeqnIu/h9x9Gke1nRAkCyAK2Td4=;
+        b=ezXsiYynU03TOXBCxB4z6tuoNoX/55qoqhLz7pxKiZKRx96Opni0fsZ1xTAgC3DBq/
+         Z94Mcf/QQQN2j7R0ESCKTIn9SOC+iE8bi9bovJZ5IHFpuLB/T8vESppsdGjHYvmpSn7w
+         6Xt4KtOCSJG0gzEgiu808ZpDoDvSRR8gj3PaTRPZbfOcH1CZcKNx1nE20062VAB+unU1
+         yjD3nZgv9bNpWtARXTtiwLML2NMhLeLVhJQR0noC/cznxgN8xzTYYoUxcwE6ndMrf+4+
+         kSrjxQSbB6IIuE+cAe10w7duUqm+7JAkN+pdNg1W2BvuMjCrZ2IhLjPIkpCRIbSQa7zr
+         FHsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754333946; x=1754938746;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZMHrDBTVCapZN4Ij1l4T90M7GkuqWi+q6Y/GUZJOE5A=;
-        b=N/w5Vi7Bf6gyQw2QGEiusjTivw3Ur+OeVk5zkNgXg6bYTaICQntjS9rF7FkHyTh8fu
-         1stZkzjTHXTbxxWqOIEwlZCoJTKVNAQKbe6aIRlS1ZEzvg1KI51qKW0uqa3sL2PEDaVT
-         XV6gH6cyzQP/d2vNeeNMJxeonc0e3gUArp7cbaS5fpUEf75AXRC9yvsvm8DWbvRE+loz
-         B3UTqQZFpKU4C5b87EIEpfxbRQKdjphG+GwWURNctVP+4lDLc+msra9JPPBSgw4Q5a5R
-         3QGGE3Cw23JVDMKh2cG5MHOwkTE7iWCgsY7wkPLBliAJwynsmpTt1o3v3kf+8K9/iIms
-         Y77g==
-X-Forwarded-Encrypted: i=1; AJvYcCV+QnWwp3sQgCGRmLrqRPslcQu3Y9REzp+YKbwnRJylXS8VORS5ArTC+1khJAVtvEBcQ2ApbL9Hp+Cr@vger.kernel.org, AJvYcCXngoW6oIWad/OkNN1E7GmM54es5kx61PQT0Y3jR9tf/FbPJGz+vbhAlk47d7PS1icxDUZg6U6im9zRIlb2@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYKQEEF9vQ7vmQmbLBIofSJvjB5wUoaV058HJWntLieIiZFQN3
-	ZssJmIStKG7gcdrRgsvHpUTGF5GZIjLy6D2d05cW6Y+usEpWniyJuPOb
-X-Gm-Gg: ASbGncsUSWng/SBTlyppjZ3Edp4Z0JezjQIQ9afbEIzg0QrBcSHR9Ri70Mx2SWuhpa7
-	HYrJ+JxRFw+oed2vTNOV1jZL6LiMsyUTKSTHJJtJe5BMYnx3R77pNFmJ6U0BIbkVl5TO+BoUjjF
-	7pSYzX2NMaLL9KHNVOx+UGbs+gt3/RwP+wVhm+ejqTn7d0/QtJEZktYpze4Tf111OvCHBunXiMj
-	Uc41rgqUtIYCRFY2I0YNOzKSk3w2FPdDj7c9BvPCIEpQzcqcwy2sDnblXAEYFuZ2rzsepJb0Vc+
-	Qsfu5CQ0NXpWGwdrmfinxggxUoRPYFpEdQHU+U8bWa31XOwL3aCnQbIWHDKKN22eESTfL7it8m1
-	/jPTvZmuv5+fTSCE=
-X-Google-Smtp-Source: AGHT+IEOnucQk03b0U4cuDeXdIZDNb3Av5jSWL1ukaJL0ECYCD8PzJA4YIhmCdjbvBLf0PScyJPtrQ==
-X-Received: by 2002:a17:903:2d1:b0:23f:d8e4:ded2 with SMTP id d9443c01a7336-24247066a0fmr142738105ad.53.1754333946401;
-        Mon, 04 Aug 2025 11:59:06 -0700 (PDT)
-Received: from diksha-pc.. ([2401:4900:1f27:8800:4f4d:8f79:7e46:47aa])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e8976d13sm115046835ad.109.2025.08.04.11.58.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Aug 2025 11:59:06 -0700 (PDT)
-From: Diksha Kumari <dikshakdevgan@gmail.com>
-To: rafael@kernel.org,
-	robert.moore@intel.com,
-	lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Markus.Elfring@web.de
-Cc: Diksha Kumari <dikshakdevgan@gmail.com>
-Subject: [PATCH V3] acpi: remove unnecessary return parentheses and conditional braces
-Date: Tue,  5 Aug 2025 00:28:26 +0530
-Message-Id: <20250804185826.29723-1-dikshakdevgan@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1754336995; x=1754941795;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GNzexns6pcPBUTEkIeqnIu/h9x9Gke1nRAkCyAK2Td4=;
+        b=f3uzRgCZ3HW1v0F9So/2/OAq9Y7T/TkHF+cit8FKSEYQ8XCIRKwsBsEJfJCfnmfraX
+         Jk39Wlw22vmm1sv9VoqmnwMSFcJ3la+rGwsBh/tm+Vlw6Do0YNbLuq/HVi3GGNeaystD
+         L2jOlWNFKtOYSy7pBevohw51CRICq4UAqNtre5nxXzjnlDRFpIqValPeHQH2o0m6ZBrD
+         C8CHTw7hhCGAtBtrJcxmyZDZY7IoqwAaug4sMngFlYe5CYvBAJfAMQdyqIHaKHl/4NFX
+         YP2vLY9kqm9UBnaxm38V18/xjYrJ0Dl37w1J9hYlOroVxs0T6HZRZCzW2afPBSlPm/xR
+         PzSw==
+X-Forwarded-Encrypted: i=1; AJvYcCVkVkeDP069LkG774qJwyfgH8YuiviNGZyjBPLhV5QeN80I/KqBZ04DfZKa7SELU6mYxTGgfnyZrMCD@vger.kernel.org, AJvYcCWYyx8nW8PxiTod469sM6613m63xaCZNrCudvRHSEVbIYcTjqIW8qI8O3Ph4tDWAnwRTwIBswxCjFM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmayEOcMWlUPuXNe3WTHJN7HktS05GocFfUKY6C2fwP8UkQDi2
+	GZKzG4+eZ7orneNelxvJKjkhXVGVz67WzdyIL328BykT1vOuPWeJ/ES0Zt9iWEFx0XOyBkd+gGy
+	DFebuYmhBfBDi462dP4sa8rMz3uO1mdg=
+X-Gm-Gg: ASbGncv2207x6rgYKWqKchi+w61H+IrVvbogufh5q7sgoe9AELV20MTN04IqRQydBxw
+	a/Vz27Mfz6S+s1pKxnarYF5fmV5gSPrz1cwo1WarOt5PoyI37Guqkgk3xCsGKJb68xXWUIxlfX7
+	bLKJwnVHDx2JQTu4gABWxwJMhXDi908dTc/uVaG+DQ3gQ5yB27r7cWmFAfeTn0uths8G3cYzJ1f
+	q7xa+w=
+X-Google-Smtp-Source: AGHT+IGcMq3bxCdaYN7JTYB4ZRdZj5ChB4GQUWGwwN1A04vvH51/5tRA4ycCUTXjUODp6yMy5vQnnC3OMmCbWz5atD4=
+X-Received: by 2002:a17:907:9407:b0:ae0:cc5f:88ef with SMTP id
+ a640c23a62f3a-af9401af514mr1075474166b.32.1754336995289; Mon, 04 Aug 2025
+ 12:49:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CACTEcX6oXBot1VBApOyKVMVXsAN9BsvQMLa8J0iKpNeB-eLttQ@mail.gmail.com>
+ <642d439ea1be8e48ee5c47fd3921a786452fb931@intel.com> <CACTEcX5Y3PNXNkhnK1dGFe+k3sigOZNpj66KKGAS9XeHqRu35w@mail.gmail.com>
+ <0b15e33603a46f6cc7ad7d09a156044f11367169@intel.com> <CACTEcX47bUd2tp=LYkQnhK29Js=vLN0JfXL8Aq6mOFBVYumpzQ@mail.gmail.com>
+ <CABgObfZKKeqMrAUyS8CB4ARkW_8Z9QREgpgYcq2jxoQ9ppS6MA@mail.gmail.com>
+In-Reply-To: <CABgObfZKKeqMrAUyS8CB4ARkW_8Z9QREgpgYcq2jxoQ9ppS6MA@mail.gmail.com>
+From: Andy Mindful <andy.mindful@gmail.com>
+Date: Mon, 4 Aug 2025 22:49:43 +0300
+X-Gm-Features: Ac12FXwoncyyo3lMGdVFGmeOSercSw0CMzqTN4N7YKEyC89vLmt21SqpqVGopCE
+Message-ID: <CACTEcX7oa+Shj=uYiRMoWpng+RZXDeQrOa-VTRmzVVtXJMCgLQ@mail.gmail.com>
+Subject: Re: [REGRESSION] tty lockup and WWAN loss after hibernate/suspend in
+ 6.8+ on ThinkPad X1 Carbon Gen 10
+To: regressions@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-acpi@vger.kernel.org, rafael@kernel.org, ville.syrjala@linux.intel.com, 
+	tglx@linutronix.de, Christian Brauner <brauner@kernel.org>, 
+	Jani Nikula <jani.nikula@intel.com>, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This patch removes unnecessary parentheses around return values and curly braces from single-statement conditionals.
-Curly braces are removed only from conditionals that are directly related to the return statements being cleaned up.
-Other instances of one-line conditionals remain unchanged to limit the scope of this patch.
+Can you please advise on how to bisect further?
 
-These changes address checkpatch.pl warnings and improve code readability.
+andy@lenovo:~/linux-stable$ git bisect bad
+The merge base 0dd3ee31125508cd67f7e7172247f05b7fd1753a is bad.
+This means the bug has been fixed between
+0dd3ee31125508cd67f7e7172247f05b7fd1753a and
+[6fc5460ed8dd0edf29e7c5cfb1ef9b1aa04208a1].
 
-v3:
-- Updated commit message
+andy@DESKTOP-0R165CF:~/linux-stable$ git bisect log
+git bisect start
+# status: waiting for both good and bad commits
+# good: [6fc5460ed8dd0edf29e7c5cfb1ef9b1aa04208a1] Linux 6.7.11
+git bisect good 6fc5460ed8dd0edf29e7c5cfb1ef9b1aa04208a1
+# status: waiting for bad commit, 1 good commit known
+# bad: [6613476e225e090cc9aad49be7fa504e290dd33d] Linux 6.8-rc1
+git bisect bad 6613476e225e090cc9aad49be7fa504e290dd33d
+# bad: [0dd3ee31125508cd67f7e7172247f05b7fd1753a] Linux 6.7
+git bisect bad 0dd3ee31125508cd67f7e7172247f05b7fd1753a
 
-v2:
-- Addressed review comments
-- Updated commit message
+andy@lenovo:~/linux-stable$ git status
+HEAD detached at 0dd3ee311255
+You are currently bisecting, started from branch '6fc5460ed8dd'.
+(use "git bisect reset" to get back to the original branch)
 
-Signed-off-by: Diksha Kumari <dikshakdevgan@gmail.com>
----
- drivers/acpi/acpica/dbconvert.c | 43 +++++++++++++++------------------
- 1 file changed, 19 insertions(+), 24 deletions(-)
+It is not moving further.
 
-diff --git a/drivers/acpi/acpica/dbconvert.c b/drivers/acpi/acpica/dbconvert.c
-index 8dbab6932049..5f53388b6f1e 100644
---- a/drivers/acpi/acpica/dbconvert.c
-+++ b/drivers/acpi/acpica/dbconvert.c
-@@ -31,9 +31,8 @@ acpi_status acpi_db_hex_char_to_value(int hex_char, u8 *return_value)
- 
- 	/* Digit must be ascii [0-9a-fA-F] */
- 
--	if (!isxdigit(hex_char)) {
--		return (AE_BAD_HEX_CONSTANT);
--	}
-+	if (!isxdigit(hex_char))
-+		return AE_BAD_HEX_CONSTANT;
- 
- 	if (hex_char <= 0x39) {
- 		value = (u8)(hex_char - 0x30);
-@@ -42,7 +41,7 @@ acpi_status acpi_db_hex_char_to_value(int hex_char, u8 *return_value)
- 	}
- 
- 	*return_value = value;
--	return (AE_OK);
-+	return AE_OK;
- }
- 
- /*******************************************************************************
-@@ -68,19 +67,17 @@ static acpi_status acpi_db_hex_byte_to_binary(char *hex_byte, u8 *return_value)
- 	/* High byte */
- 
- 	status = acpi_db_hex_char_to_value(hex_byte[0], &local0);
--	if (ACPI_FAILURE(status)) {
--		return (status);
--	}
-+	if (ACPI_FAILURE(status))
-+		return status;
- 
- 	/* Low byte */
- 
- 	status = acpi_db_hex_char_to_value(hex_byte[1], &local1);
--	if (ACPI_FAILURE(status)) {
--		return (status);
--	}
-+	if (ACPI_FAILURE(status))
-+		return status;
- 
- 	*return_value = (u8)((local0 << 4) | local1);
--	return (AE_OK);
-+	return AE_OK;
- }
- 
- /*******************************************************************************
-@@ -122,9 +119,8 @@ acpi_db_convert_to_buffer(char *string, union acpi_object *object)
- 	}
- 
- 	buffer = ACPI_ALLOCATE(length);
--	if (!buffer) {
--		return (AE_NO_MEMORY);
--	}
-+	if (!buffer)
-+		return AE_NO_MEMORY;
- 
- 	/* Convert the command line bytes to the buffer */
- 
-@@ -132,7 +128,7 @@ acpi_db_convert_to_buffer(char *string, union acpi_object *object)
- 		status = acpi_db_hex_byte_to_binary(&string[i], &buffer[j]);
- 		if (ACPI_FAILURE(status)) {
- 			ACPI_FREE(buffer);
--			return (status);
-+			return status;
- 		}
- 
- 		j++;
-@@ -145,7 +141,7 @@ acpi_db_convert_to_buffer(char *string, union acpi_object *object)
- 	object->type = ACPI_TYPE_BUFFER;
- 	object->buffer.pointer = buffer;
- 	object->buffer.length = length;
--	return (AE_OK);
-+	return AE_OK;
- }
- 
- /*******************************************************************************
-@@ -175,7 +171,7 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object *object)
- 	    ACPI_ALLOCATE_ZEROED(DB_DEFAULT_PKG_ELEMENTS *
- 				 sizeof(union acpi_object));
- 	if (!elements)
--		return (AE_NO_MEMORY);
-+		return AE_NO_MEMORY;
- 
- 	this = string;
- 	for (i = 0; i < (DB_DEFAULT_PKG_ELEMENTS - 1); i++) {
-@@ -190,7 +186,7 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object *object)
- 		if (ACPI_FAILURE(status)) {
- 			acpi_db_delete_objects(i + 1, elements);
- 			ACPI_FREE(elements);
--			return (status);
-+			return status;
- 		}
- 
- 		this = next;
-@@ -199,7 +195,7 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object *object)
- 	object->type = ACPI_TYPE_PACKAGE;
- 	object->package.count = i;
- 	object->package.elements = elements;
--	return (AE_OK);
-+	return AE_OK;
- }
- 
- /*******************************************************************************
-@@ -251,7 +247,7 @@ acpi_db_convert_to_object(acpi_object_type type,
- 		break;
- 	}
- 
--	return (status);
-+	return status;
- }
- 
- /*******************************************************************************
-@@ -272,9 +268,8 @@ u8 *acpi_db_encode_pld_buffer(struct acpi_pld_info *pld_info)
- 	u32 dword;
- 
- 	buffer = ACPI_ALLOCATE_ZEROED(ACPI_PLD_BUFFER_SIZE);
--	if (!buffer) {
--		return (NULL);
--	}
-+	if (!buffer)
-+		return NULL;
- 
- 	/* First 32 bits */
- 
-@@ -331,7 +326,7 @@ u8 *acpi_db_encode_pld_buffer(struct acpi_pld_info *pld_info)
- 		ACPI_MOVE_32_TO_32(&buffer[4], &dword);
- 	}
- 
--	return (ACPI_CAST_PTR(u8, buffer));
-+	return ACPI_CAST_PTR(u8, buffer);
- }
- 
- /*******************************************************************************
--- 
-2.34.1
-
+=D0=BF=D0=BD, 4 =D1=81=D0=B5=D1=80=D0=BF. 2025=E2=80=AF=D1=80. =D0=BE 17:50=
+ Paolo Bonzini <pbonzini@redhat.com> =D0=BF=D0=B8=D1=88=D0=B5:
+>
+> On Mon, Aug 4, 2025 at 12:57=E2=80=AFPM Andy Mindful <andy.mindful@gmail.=
+com> wrote:
+> > Double-checked bisect, looks like I've have found broken commit:
+> >
+> > > > git bisect bad
+> > > > The merge base ba5afb9a84df2e6b26a1b6389b98849cd16ea757 is bad.
+> > > > This means the bug has been fixed between
+> > > > ba5afb9a84df2e6b26a1b6389b98849cd16ea757 and
+> > > > [1b1934dbbdcf9aa2d507932ff488cec47999cf3f
+> > > > 61da593f4458f25c59f65cfd9ba1bda570db5db7
+> > > > 6fc5460ed8dd0edf29e7c5cfb1ef9b1aa04208a1
+> > > > ba5afb9a84df2e6b26a1b6389b98849cd16ea757].
+>
+> This skip is messing up the results:
+>
+> # skip: [0dd3ee31125508cd67f7e7172247f05b7fd1753a] Linux 6.7
+> git bisect skip 0dd3ee31125508cd67f7e7172247f05b7fd1753a
+>
+> and there are still 3858 commits in
+> ba5afb9a84df2e6b26a1b6389b98849cd16ea757..{1b1934dbbdcf9aa2d507932ff488ce=
+c47999cf3f,61da593f4458f25c59f65cfd9ba1bda570db5db7,ba5afb9a84df2e6b26a1b63=
+89b98849cd16ea757}
+>
+> Any chance you can get 6.7 to work and restrict the range further?
+>
+> Thanks,
+>
+> Paolo
+>
 
