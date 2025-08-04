@@ -1,57 +1,66 @@
-Return-Path: <linux-acpi+bounces-15491-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15492-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78119B197B4
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 02:30:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9466EB197C6
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 02:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A33731883C77
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 00:30:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DEC63B8848
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 00:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF2F1C5D77;
-	Mon,  4 Aug 2025 00:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032F919755B;
+	Mon,  4 Aug 2025 00:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iPFEj1jE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WPTdXtb7"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B191C5D59;
-	Mon,  4 Aug 2025 00:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF28813B5A9;
+	Mon,  4 Aug 2025 00:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754267384; cv=none; b=jpbr0v1FtWUagkCk/xQahxtkfGhxFhJJLN+nWe/GNmJXThqlbZg1skfTBewcCzDxgtp1g4FYopab5GO2EvVFaKZXThMWuashMfHjRJzA+hS9rP/RkqHP94Qt2iqhLpHIdOIVkc3ZHryzNi5SMhHoanI/H6XcL8MGFr0vKBdhamE=
+	t=1754267390; cv=none; b=qScVdttauyoAoxdpHfFtcK0JZ0Xw6RtmUV6ps8ajVB5shGVrRWa51Uzp6RHGrWca53PtDsur3En2vAtXFVWllugQJAEuPTEIzYdxyvXBnIrlWbOfcE6PHqj/aXs0my73GmaSoQgGo5cHtPxzcyLKUrYMeW/UYL0EkP+zaFzZAc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754267384; c=relaxed/simple;
-	bh=36k2kzJQnwalS6kxkh2DRBoVmv1e/6kwottWw8Nag98=;
+	s=arc-20240116; t=1754267390; c=relaxed/simple;
+	bh=91WQJzO0/8B1MAGCDa6vdYWD9+ywd2CT1zwdvugA6oc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=M2eehoNqmkcQv35Hflfzz/Z64zDdgpG9byyBpBVHVIgguTsrTBLYpSDEtY0P039CEE1U9YBNJbduxuHFF/NM15XHv9v1zCQ3BAWQ41tGNFL5o53gctmOQUrerMCF7JoZi55Eewu1DZb1Eml3Yqr9VWSI5GHifcIsmLiTPgNgX18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iPFEj1jE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6C3C4CEEB;
-	Mon,  4 Aug 2025 00:29:42 +0000 (UTC)
+	 MIME-Version; b=uHIyeNwYa8RM/9Cqmc5Zu+6BkR5HXdc/eNho9Hde7sjx1sPqFOf/I9CoEIN59DWHHR5fjk72S0gAKaHeOS0Cz8fSLUNByuN8/3KpgQFsuI2wf8Sj8Ov0c+IrcczAQR4hOsPqlcuGh9YxecIDK+68aDKfLq1tH2YQxvG0A17ZeqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WPTdXtb7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D3BC4CEEB;
+	Mon,  4 Aug 2025 00:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754267384;
-	bh=36k2kzJQnwalS6kxkh2DRBoVmv1e/6kwottWw8Nag98=;
+	s=k20201202; t=1754267390;
+	bh=91WQJzO0/8B1MAGCDa6vdYWD9+ywd2CT1zwdvugA6oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iPFEj1jECdgE2tW5+01/ayVGSBwLnblJW0fj2/5KYapihfUSgb/UoAR59tuYOG7lZ
-	 PnAypDRL3OqXuNwB80JWKUvctguHA/BWCr9CaRg6Isnq+IGdSn5A2UnFAI/HnK/e3h
-	 hRQG6AuVHEMRZoWaKQa38woESstgkFGXGzkyUPngCKhWI+ZcSrOfwhdRPYh75/0KD9
-	 kvqeKLqpn08johKC3kTPyIr+g8bROo5DgZeEdndQDwLmgZmLwkjNX/wRilKDItca3F
-	 +HKiMu7uthL9tsfeF85po2auB8IruH5ZNIJ1a84PPvLpmGvjtAjeG8rcx0MUL2xB1O
-	 4l5H7nrXM9RHA==
+	b=WPTdXtb7f2jNzQSWNnN9vCnsNTrWpceAiMYVaWKDAjBZMCNjFlNO2kJGtg5G8dK9e
+	 9bT+FsBlUXKEWdw3CoVbpmKqTZ6ZEKuiOs8FM0xFTKK5QMqjkyictthlec6IK+DapK
+	 l5kJxJprYPD/uZmBFfRsnidaleXp9juBOFYRsqnx+kUTYsmKf4fd0ZruZOgGZMgbQk
+	 rPp3OW0iW/cvF5C1cMvBMe/UcpQqOP7UK4xRcYJYj2KtEAu5tCsPMifgAUCD/7Svg2
+	 wncEGs5uyfH+Bb2rHIGVv0d0lycoJGWL43cWMQzaRKkAf79xt4SxSnNUwoPL7ttHmu
+	 CABkrGvgdQp/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Sebastian Ott <sebott@redhat.com>,
+Cc: Breno Leitao <leitao@debian.org>,
+	Tony Luck <tony.luck@intel.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
+	ira.weiny@intel.com,
+	dave.jiang@intel.com,
+	Jonathan.Cameron@huawei.com,
+	Smita.KoralahalliChannabasappa@amd.com,
+	xueshuai@linux.alibaba.com,
+	mingo@kernel.org,
+	peterz@infradead.org,
+	bp@alien8.de,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.15 45/80] ACPI: processor: fix acpi_object initialization
-Date: Sun,  3 Aug 2025 20:27:12 -0400
-Message-Id: <20250804002747.3617039-45-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.15 47/80] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
+Date: Sun,  3 Aug 2025 20:27:14 -0400
+Message-Id: <20250804002747.3617039-47-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250804002747.3617039-1-sashal@kernel.org>
 References: <20250804002747.3617039-1-sashal@kernel.org>
@@ -66,108 +75,91 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.15.9
 Content-Transfer-Encoding: 8bit
 
-From: Sebastian Ott <sebott@redhat.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 13edf7539211d8f7d0068ce3ed143005f1da3547 ]
+[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
 
-Initialization of the local acpi_object in acpi_processor_get_info()
-only sets the first 4 bytes to zero and is thus incomplete. This is
-indicated by messages like:
-	acpi ACPI0007:be: Invalid PBLK length [166288104]
+When a GHES (Generic Hardware Error Source) triggers a panic, add the
+TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
+kernel as tainted due to a machine check event, improving diagnostics
+and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
+indicate lockdep remains valid.
 
-Fix this by initializing all 16 bytes of the processor member of that
-union.
+At large scale deployment, this helps to quickly determine panics that
+are coming due to hardware failures.
 
-Signed-off-by: Sebastian Ott <sebott@redhat.com>
-Link: https://patch.msgid.link/20250703124215.12522-1-sebott@redhat.com
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Based on my analysis, here is my determination:
+Based on my analysis of this commit, here is my assessment:
 
 **Backport Status: YES**
 
-## Extensive Explanation:
+This commit should be backported to stable kernel trees for the
+following reasons:
 
-This commit fixes a critical initialization bug in the ACPI processor
-driver that causes incorrect error messages and potentially incorrect
-behavior. Here's why this is a good candidate for stable backport:
+1. **Fixes a real diagnostic issue**: The commit adds the
+   TAINT_MACHINE_CHECK flag when GHES (Generic Hardware Error Source)
+   triggers a panic. This is important for post-mortem analysis at
+   scale, as explicitly stated in the commit message: "At large scale
+   deployment, this helps to quickly determine panics that are coming
+   due to hardware failures."
 
-### 1. **Clear Bug Fix**
-The commit fixes an incomplete initialization issue where `union
-acpi_object object = { 0 };` only initializes the first 4 bytes (the
-size of `acpi_object_type type`), leaving the remaining bytes of the
-union uninitialized. This results in garbage values in fields like
-`object.processor.pblk_length`, causing spurious error messages like
-"Invalid PBLK length [166288104]".
+2. **Small and contained change**: The patch adds only a single line of
+   code (`add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);`) in the
+   `__ghes_panic()` function at drivers/acpi/apei/ghes.c:1091. This
+   meets the stable kernel rule of being under 100 lines.
 
-### 2. **User-Visible Impact**
-The bug causes confusing error messages in system logs during ACPI
-processor initialization. The error message shown in the commit (`acpi
-ACPI0007:be: Invalid PBLK length [166288104]`) indicates that
-uninitialized memory is being read and interpreted as a length value.
+3. **Obviously correct**: The change follows established kernel
+   patterns. Looking at the grep results, other machine check handlers
+   already use this same pattern:
+   - arch/x86/kernel/cpu/mce/core.c:1640
+   - arch/powerpc/kernel/mce.c:332
+   - arch/x86/kernel/cpu/mce/p5.c:40
+   - arch/x86/kernel/cpu/mce/winchip.c:24
 
-### 3. **Minimal and Contained Fix**
-The fix is extremely simple - changing:
-```c
-union acpi_object object = { 0 };
-```
-to:
-```c
-union acpi_object object = { .processor = { 0 } };
-```
+4. **No architectural changes**: This is purely a diagnostic improvement
+   that adds taint information without changing any functionality or
+   behavior of the GHES panic path.
 
-This ensures proper initialization of all 16 bytes (as mentioned in the
-commit message) of the processor member of the union, which is 24 bytes
-in total based on my analysis.
+5. **Minimal risk**: The change uses LOCKDEP_STILL_OK flag, indicating
+   that lockdep remains valid after the taint, which is the safer option
+   compared to LOCKDEP_NOW_UNRELIABLE used in some other machine check
+   paths.
 
-### 4. **No Architectural Changes**
-This is a pure bug fix with no feature additions or architectural
-changes. It simply corrects the initialization to prevent reading
-uninitialized memory.
+6. **Real benefit for users**: For organizations running Linux at scale,
+   being able to quickly identify hardware-related panics through the
+   taint flag provides significant operational value for triaging
+   issues.
 
-### 5. **Low Risk of Regression**
-The change is minimal and only affects initialization. It doesn't alter
-any logic or behavior beyond ensuring that the union is properly zeroed
-out. The designated initializer syntax is standard C and well-supported.
+The commit meets all the stable kernel criteria: it's small, obviously
+correct, fixes a real diagnostic limitation that affects users
+(especially at scale), and has been reviewed by Tony Luck who is a
+recognized maintainer in the RAS (Reliability, Availability, and
+Serviceability) subsystem.
 
-### 6. **Critical Subsystem**
-While ACPI is a critical subsystem, this fix is confined to the
-initialization of a local variable in `acpi_processor_get_info()`. The
-scope is limited and the fix is conservative.
+ drivers/acpi/apei/ghes.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-### 7. **Follows Stable Rules**
-This commit perfectly follows the stable kernel rules:
-- Fixes a real bug (uninitialized memory access)
-- Small change (single line)
-- Obviously correct
-- Already tested (merged into mainline)
-- Fixes an issue that users see (error messages in logs)
-
-The uninitialized memory access could potentially lead to more serious
-issues beyond just incorrect error messages, as the code makes decisions
-based on the `pblk_length` value (checking if it equals 6). This makes
-the fix even more important for stable kernels.
-
- drivers/acpi/acpi_processor.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index 7cf6101cb4c7..2a99f5eb6962 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -275,7 +275,7 @@ static inline int acpi_processor_hotadd_init(struct acpi_processor *pr,
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index fe9bd27367ee..ce9b8e8a5d09 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -1099,6 +1099,8 @@ static void __ghes_panic(struct ghes *ghes,
  
- static int acpi_processor_get_info(struct acpi_device *device)
- {
--	union acpi_object object = { 0 };
-+	union acpi_object object = { .processor = { 0 } };
- 	struct acpi_buffer buffer = { sizeof(union acpi_object), &object };
- 	struct acpi_processor *pr = acpi_driver_data(device);
- 	int device_declaration = 0;
+ 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
+ 
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
++
+ 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
+ 
+ 	if (!panic_timeout)
 -- 
 2.39.5
 
