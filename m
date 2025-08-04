@@ -1,131 +1,126 @@
-Return-Path: <linux-acpi+bounces-15483-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15484-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6ABB19529
-	for <lists+linux-acpi@lfdr.de>; Sun,  3 Aug 2025 22:39:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E890B196E4
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 02:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BFD11729FF
-	for <lists+linux-acpi@lfdr.de>; Sun,  3 Aug 2025 20:39:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 343111892D93
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 00:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B466E1FDA92;
-	Sun,  3 Aug 2025 20:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7197F2E3703;
+	Mon,  4 Aug 2025 00:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="B6QLDIoL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="arI/F6s0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA5E1F4C99
-	for <linux-acpi@vger.kernel.org>; Sun,  3 Aug 2025 20:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC4738D;
+	Mon,  4 Aug 2025 00:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754253587; cv=none; b=SxQLSFD8T3uheLW4iWKW8nhfOhcV+GApKfK6fGU2ZrQdGm0Bt2BPQDAKzg7ZADpAE6+Jip7RIw3kFJWlsrO151zI0wZaXLQHlXwN8qaTZcVjy2hu+TR2j0lnUid+NYJa5vPWEvvEbz7nJi+G//n7VXE8d61IWUH4aFqoP9qN+Pg=
+	t=1754265945; cv=none; b=smWFqDIt8NsyGOhtHZ6sGYD6WVLvR2fmtpTV5dYy+plotTclVZ+DcaUSSkWjA+lbWtjYSKH9vrQmF+iW8482jBHS6XZz9j4QLVrjjotsYmurJUOzWS2hEPHLHgz1I9TDLStl+lhKbdwToPN9pqO5pBPNuiKpq1h0pX4mSoIIwVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754253587; c=relaxed/simple;
-	bh=/V2Z+npwgBOy7ELDvke0PVLYyAic3BukFbB7ezf7YEM=;
+	s=arc-20240116; t=1754265945; c=relaxed/simple;
+	bh=9KNKvPGAn/W7k7hCCGpLEmkYx8HoMwBR2BuHqnqD4Jc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fv2zwgz7zJnbxJCMJ1GJeyWPPyhzsVq0M2t0MUNLpj8kDSbItrB6TGz8mOog1ar36LKrAYp0DvhdyxQLNSOqGozRdvvPLE4oOecdqfHfZ0EKUxO7uTkMHV4CyhGE5b+XpncD4bow5IfggQOLrBpow27v24av0dPeILqRJC9gPtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=B6QLDIoL; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=xBGj
-	UNBVOVmmIAZVRsis37AwiFXDOkn54l2Kq5vvR/8=; b=B6QLDIoL+H5+orw29XFr
-	Mw5dDjkTqjKT4GeJVJFmmcFkr0n0LKWBea5/Y5RNXEFTO2eFX4FdbXWyUCh1sps+
-	t4Be/lN80O7P6L/pCyx4msWeAx3Z+YxXtfz88nHVxGXI0cBAxpH4C2qDDXFvdCAz
-	zWkcNHuEqwF7gNxqtf8XaO/OskoqtvpUvZ9AZn0jYGKJKIZMSq7U9BSclD9T7abq
-	DJDxOwLLhcTZFpGwCv2HeVFO7RbmEeQIR5BsGu68q8SMH0rQn9HZ+mLeYM/vxGYF
-	Nl/2DapGbH6qekLZMKfnXGJlSEyTB/eyqsEwfhwdBVcutiAX/aOdQeOFwz2RTZYn
-	tQ==
-Received: (qmail 1644826 invoked from network); 3 Aug 2025 22:39:42 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 3 Aug 2025 22:39:42 +0200
-X-UD-Smtp-Session: l3s3148p1@WlKc/Xs74tEujntd
-Date: Sun, 3 Aug 2025 22:39:42 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: "fangzhong.zhou" <myth5@myth5.com>
-Cc: linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org, westeri@kernel.org
-Subject: Re: [PATCH v1] i2c: Force DLL0945 touchpad i2c freq to 100khz
-Message-ID: <aI_JDslnEsGEOz0W@shikoro>
-References: <20250801145405.11445-1-myth5@myth5.com>
- <20250802231554.9920-1-myth5@myth5.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=WWwwk5r6K3Tc251QTuCcQD00k/p9yGV5InRCW3CgRJbcGCO/HM8vqURihJNyNsPylF6lrKiIVVUd+q9qJBqIUc2Fx+R2C0hv+bYIuiIFjOFHalw0ByTc9ORiYGeqG+sIVbOSfho6tWk3mqtyY1BmLutfSbjKJp8oaYZ7QBpWDEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=arI/F6s0; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754265943; x=1785801943;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9KNKvPGAn/W7k7hCCGpLEmkYx8HoMwBR2BuHqnqD4Jc=;
+  b=arI/F6s0WyZOBsSPWBh74heSfOVGbYG+9Pu6elFYKHd9//wwS87k0EN+
+   DeNksDu5xZ76BqShr5U+VQ/thaEs3JzI7bdykIvwYo27xHPR7gwfhKJRZ
+   XzfLOD0Wy4XKMNEQaJW0pq7Oc4kd09kogFhwUwljEW8X68sSBLCot/pTI
+   jBcfni562gvTVVOKZk0AI26i1k6nld5INbsAWCpT5yG4THJO63ICEBWu2
+   4PQVN6HbrfgIywm4fEwqkNCJNfBZ5z6fij954gSjRnFVUDaSO+fqOx8+r
+   3iRftrt4zOi+AC7N4DWU/QrKcYQPun50OqLO8V2mztZ4uF5IBg2SA3WAx
+   g==;
+X-CSE-ConnectionGUID: Xs+11953TSayzf8gakm1FA==
+X-CSE-MsgGUID: ZS2jd5ARTJqr0hxkK6OWQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11511"; a="55573909"
+X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
+   d="scan'208";a="55573909"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2025 17:05:42 -0700
+X-CSE-ConnectionGUID: SqTPPasQRUm79hJM7o9n4g==
+X-CSE-MsgGUID: BfNupMSDSl6xzF4jpyegdQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
+   d="scan'208";a="164410220"
+Received: from lkp-server01.sh.intel.com (HELO 160750d4a34c) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 03 Aug 2025 17:05:37 -0700
+Received: from kbuild by 160750d4a34c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uiihq-0006gm-1T;
+	Mon, 04 Aug 2025 00:05:34 +0000
+Date: Mon, 4 Aug 2025 08:05:33 +0800
+From: kernel test robot <lkp@intel.com>
+To: Breno Leitao <leitao@debian.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+	Robert Moore <robert.moore@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Bjorn Helgaas <helgaas@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-media@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	acpica-devel@lists.linux.dev, osandov@osandov.com,
+	xueshuai@linux.alibaba.com, konrad.wilk@oracle.com,
+	linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org, kernel-team@meta.com, osandov@fb.com,
+	Breno Leitao <leitao@debian.org>
+Subject: Re: [PATCH v4] vmcoreinfo: Track and log recoverable hardware errors
+Message-ID: <202508040737.rlDPN1um-lkp@intel.com>
+References: <20250801-vmcore_hw_error-v4-1-fa1fe65edb83@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="M2alkwaavH87HfJT"
-Content-Disposition: inline
-In-Reply-To: <20250802231554.9920-1-myth5@myth5.com>
-
-
---M2alkwaavH87HfJT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250801-vmcore_hw_error-v4-1-fa1fe65edb83@debian.org>
 
-On Sun, Aug 03, 2025 at 07:15:54AM +0800, fangzhong.zhou wrote:
-> This patch fixes an issue where the touchpad cursor movement becomes
-> slow on the Dell Precision 5560. Force the touchpad freq to 100khz
-> as a workaround.
->=20
-> Tested on Dell Precision 5560 with 6.14 to 6.14.6. Cursor movement
-> is now smooth and responsive.
->=20
-> Changes in v1:
-> 	- No code changes from first commit.
+Hi Breno,
 
-The "Changes" section should go below "---". I fixed it.
+kernel test robot noticed the following build errors:
 
->=20
-> Signed-off-by: fangzhong.zhou <myth5@myth5.com>
-> ---
->  drivers/i2c/i2c-core-acpi.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-> index d2499f302..5b424637b 100644
-> --- a/drivers/i2c/i2c-core-acpi.c
-> +++ b/drivers/i2c/i2c-core-acpi.c
-> @@ -371,6 +371,7 @@ static const struct acpi_device_id i2c_acpi_force_100=
-khz_device_ids[] =3D {
->  	 * a 400KHz frequency. The root cause of the issue is not known.
->  	 */
->  	{ "ELAN06FA", 0 },
-> +	{ "DLL0945", 0 },
+[auto build test ERROR on 89748acdf226fd1a8775ff6fa2703f8412b286c8]
 
-I moved it up to keep alphabetical sorting.
+url:    https://github.com/intel-lab-lkp/linux/commits/Breno-Leitao/vmcoreinfo-Track-and-log-recoverable-hardware-errors/20250801-211624
+base:   89748acdf226fd1a8775ff6fa2703f8412b286c8
+patch link:    https://lore.kernel.org/r/20250801-vmcore_hw_error-v4-1-fa1fe65edb83%40debian.org
+patch subject: [PATCH v4] vmcoreinfo: Track and log recoverable hardware errors
+config: x86_64-randconfig-076-20250803 (https://download.01.org/0day-ci/archive/20250804/202508040737.rlDPN1um-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250804/202508040737.rlDPN1um-lkp@intel.com/reproduce)
 
-With these changes:
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508040737.rlDPN1um-lkp@intel.com/
 
-Applied to for-next (for 6.17 mergewindow), thanks!
+All errors (new ones prefixed by >>):
 
+>> vmlinux.o: error: objtool: hwerr_log_error_type+0x3b: call to ktime_get_real_seconds() leaves .noinstr.text section
 
---M2alkwaavH87HfJT
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmiPyQ0ACgkQFA3kzBSg
-KbZsDw//XNt9KdGjODlkU5C0lt8kboqAs0LgbslaENEm52h4YSTBr6f+l8WlvkUX
-c4ho3aZpm+mfrOQ9k1x7F3Xw5AH1OZ9cMy9WONrA1fT7AtbKMTdDqz4/Ya7yfgF1
-VFyivHRIEgpzY8CQyjovkYJeIJ94MbiL7DESP60AQJ06obx9Nr+RLFshztIobPrc
-PfdvzYlhyjev2jo21i8MV61FSA0g5iR1iH9NBPzcBU+APvJEwDFX7P7Rj6pfeCtk
-yfnfta/lBsq2JoiXRLCm54IL3t+f75+hqc4Y8k30uEHetHBm0tYAubwyZhb+MOHl
-LNEFD8Y3A1tbfOxjP8XyosKkqLBgJcCyHO8BKxpo5sAabqWXRNdRBXK2u//iV36n
-11tjL2A8Q4zF+AfBwpR7BujEfgQ4IiivXDn/6j1vtz0fS7y4KoPYy6MyRVn/vyrN
-/d7TuSx2XCcpyXe6tMXt8Wl/IRhmjIjfJkAk7WKajqs+P/uaJD0KN5bn2T+AQmNI
-722ZF2Ovw+YPMSx8PzMea5UwR9c+fpq+s3FMX7wX3tCNrowzVldTYqAs8yF5faTZ
-IJ0NvnPs3ngvbUe3KhUVHXQaun8elz1M57GSPjNCc0YRw93GSKryn+bc5uCqOYz/
-AZxy0ujmhDttFTTYfUL/QIUj/oJ/RzxNPCC6QBh6e0QDEXBzwCg=
-=O3sl
------END PGP SIGNATURE-----
-
---M2alkwaavH87HfJT--
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
