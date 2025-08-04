@@ -1,69 +1,74 @@
-Return-Path: <linux-acpi+bounces-15496-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15497-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C7FB19846
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 02:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3233DB1988C
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 02:36:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFB553AC524
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 00:33:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F0AD3A6FD2
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 00:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8408418FC86;
-	Mon,  4 Aug 2025 00:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207711DDC1D;
+	Mon,  4 Aug 2025 00:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PGy3q2ZG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qcIHtowv"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5971435957;
-	Mon,  4 Aug 2025 00:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB62F18CBE1;
+	Mon,  4 Aug 2025 00:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754267576; cv=none; b=dKk0rJ5Z+b97ADX9W9N/rT8RS2tHgIEa2vI5RKHvqyjJVswkrrg1tfjn4EEf0PwS+7wJRpzIUAHtI5mPzO2mCHG94u/87nOgooQPpZLlMS0urcVjbhgWrZ9DCWVKl3ZROnaKVXYl+XsMvbZZIBS5hWvsdgtSpMB+EI/Meq54MQw=
+	t=1754267684; cv=none; b=t34SpKMXUwILIYInh6Sybnyf5DXQwMapvO/kzuRIrVHUF41U8m7G9kj64SfnKJMMsmt60lPGzkKVjdLoSr10VUPga42wlCX70M/GmSgQ+HQLgSoRaAhAksgqnArVeceMaHBSDIuEkY0jNEGOG+eY1mc82yuXfq+PoNgxUdeepjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754267576; c=relaxed/simple;
-	bh=0kf+eGk6S4jp1wEUtI7igVO6a3lsu/bpCp1RhAw6MrA=;
+	s=arc-20240116; t=1754267684; c=relaxed/simple;
+	bh=y/8Y2wynoW07rEiEirAZUgUncfS+p5loxRk13NnDrWg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=r/AbskvceFrIZtrDSbzwt/Y8pYQsOq0pp3Qk5pk+BPW6Qm9JkRFwwwBZU1+8D55KMsCja5/+oT7rdrcAGMOfn0gzzn3/BLEiLXVAlHM11q7AhjW3Uc0jUdt9LkhkWIZHCLYRNCvB+EnbA8Hyq9SsqiQBnx2Dz2oDU8d7LKEeQdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PGy3q2ZG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EC5C4CEEB;
-	Mon,  4 Aug 2025 00:32:53 +0000 (UTC)
+	 MIME-Version; b=HR0zgqCw31lnCGi6n2/dta3+GP/afKnbWg2MDvNflxsnUXCS0UiYoML/ktnvYs3T4uSrrPk3fsd6TIvpjHxkg2zPyblkpofoiYI2TbH3c6q8O2vXUa98cRjNucQG+9NljFPIEM98zvC0YnX3krNqJytAJLchtfyeKZWSbtl5LsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qcIHtowv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746F9C4CEEB;
+	Mon,  4 Aug 2025 00:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754267576;
-	bh=0kf+eGk6S4jp1wEUtI7igVO6a3lsu/bpCp1RhAw6MrA=;
+	s=k20201202; t=1754267683;
+	bh=y/8Y2wynoW07rEiEirAZUgUncfS+p5loxRk13NnDrWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PGy3q2ZGXa4L6XiE5ztkNlQJpVz5tGw40QjXlbBl3HxbqXKtzejZ2PxArh5hktCPX
-	 lJ9X4LfeqvwOd84RDEw6fT0qUlrqnG9vcC6FrCH9P6545yHr3l5lOpiTXhNPCmWmuq
-	 NUdzxQgcddkbpoxYgF8ouqQcfyuHY6D58aKpQX8QXB5tvU2YrHK3m5p7N4xbTPpLOV
-	 1ZxcGjMvczpAauSU5u+3lKoC3+8HE+u8xxxfMq2HhMI4WLAGn5q9skT8aY3wnARZol
-	 GoX7coL8Zxnp5ieTxbQh2PIYun+yBBHWYRB9PZlOf1s46uKESnLpqG2DQ6SkY6PGEK
-	 wIJu5ndVuGpPg==
+	b=qcIHtowvN/TqjvNTrPdCVRazdSVmGaF1GbavrGZ3rG6kF6tvQVr69Cn5C6TWNEz3l
+	 Bd9SPm8refsnIDLQdksbb8z4nQwV90bqHIRW08haDQHu2NOCPrwgL62sAl3s3L47lj
+	 EOm4at7hvge9TaWjuRHixD5oyo1DCicC1YpWM6YQsQ6SE1PB8Lvvgk7UmAaGxogcKC
+	 lE8fJbbPezmDzSn7Yf1axnExf0YIiuIPkepIfOmHnyKQ1KXysVaXjXMjde9Ie9r7WB
+	 uwZGxDHsZMcW66R0wuhU5lOdw2jPti9oH9NBXs+/OiXg3cajrj4zGrT6ZTvfrP1UOi
+	 Ie7xDTX8yzeiA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Tony Luck <tony.luck@intel.com>,
+Cc: Shuai Xue <xueshuai@linux.alibaba.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
-	ira.weiny@intel.com,
 	dave.jiang@intel.com,
-	xueshuai@linux.alibaba.com,
+	ira.weiny@intel.com,
+	tony.luck@intel.com,
 	Smita.KoralahalliChannabasappa@amd.com,
-	quic_hyiwei@quicinc.com,
 	u.kleine-koenig@baylibre.com,
+	quic_hyiwei@quicinc.com,
+	mingo@kernel.org,
 	bp@alien8.de,
 	peterz@infradead.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 40/69] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
-Date: Sun,  3 Aug 2025 20:30:50 -0400
-Message-Id: <20250804003119.3620476-40-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 11/59] ACPI: APEI: send SIGBUS to current task if synchronous memory error not recovered
+Date: Sun,  3 Aug 2025 20:33:25 -0400
+Message-Id: <20250804003413.3622950-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250804003119.3620476-1-sashal@kernel.org>
-References: <20250804003119.3620476-1-sashal@kernel.org>
+In-Reply-To: <20250804003413.3622950-1-sashal@kernel.org>
+References: <20250804003413.3622950-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -72,94 +77,134 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.41
+X-stable-base: Linux 6.6.101
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
+[ Upstream commit 79a5ae3c4c5eb7e38e0ebe4d6bf602d296080060 ]
 
-When a GHES (Generic Hardware Error Source) triggers a panic, add the
-TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
-kernel as tainted due to a machine check event, improving diagnostics
-and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
-indicate lockdep remains valid.
+If a synchronous error is detected as a result of user-space process
+triggering a 2-bit uncorrected error, the CPU will take a synchronous
+error exception such as Synchronous External Abort (SEA) on Arm64. The
+kernel will queue a memory_failure() work which poisons the related
+page, unmaps the page, and then sends a SIGBUS to the process, so that
+a system wide panic can be avoided.
 
-At large scale deployment, this helps to quickly determine panics that
-are coming due to hardware failures.
+However, no memory_failure() work will be queued when abnormal
+synchronous errors occur. These errors can include situations like
+invalid PA, unexpected severity, no memory failure config support,
+invalid GUID section, etc. In such a case, the user-space process will
+trigger SEA again.  This loop can potentially exceed the platform
+firmware threshold or even trigger a kernel hard lockup, leading to a
+system reboot.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
+Fix it by performing a force kill if no memory_failure() work is queued
+for synchronous errors.
+
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://patch.msgid.link/20250714114212.31660-2-xueshuai@linux.alibaba.com
+[ rjw: Changelog edits ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Based on my analysis of this commit, here is my assessment:
-
 **Backport Status: YES**
 
 This commit should be backported to stable kernel trees for the
 following reasons:
 
-1. **Fixes a real diagnostic issue**: The commit adds the
-   TAINT_MACHINE_CHECK flag when GHES (Generic Hardware Error Source)
-   triggers a panic. This is important for post-mortem analysis at
-   scale, as explicitly stated in the commit message: "At large scale
-   deployment, this helps to quickly determine panics that are coming
-   due to hardware failures."
+1. **Critical Bug Fix**: The commit fixes a serious issue where
+   synchronous memory errors that cannot be recovered (abnormal
+   synchronous errors) would cause an infinite loop. The commit message
+   clearly describes how "the user-space process will trigger SEA again.
+   This loop can potentially exceed the platform firmware threshold or
+   even trigger a kernel hard lockup, leading to a system reboot."
 
-2. **Small and contained change**: The patch adds only a single line of
-   code (`add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);`) in the
-   `__ghes_panic()` function at drivers/acpi/apei/ghes.c:1091. This
-   meets the stable kernel rule of being under 100 lines.
+2. **Security and Stability Impact**: The bug can lead to:
+   - Infinite exception loops
+   - Platform firmware threshold exceeded
+   - Kernel hard lockups
+   - Unexpected system reboots
 
-3. **Obviously correct**: The change follows established kernel
-   patterns. Looking at the grep results, other machine check handlers
-   already use this same pattern:
-   - arch/x86/kernel/cpu/mce/core.c:1640
-   - arch/powerpc/kernel/mce.c:332
-   - arch/x86/kernel/cpu/mce/p5.c:40
-   - arch/x86/kernel/cpu/mce/winchip.c:24
+   These are severe stability issues that affect system reliability.
 
-4. **No architectural changes**: This is purely a diagnostic improvement
-   that adds taint information without changing any functionality or
-   behavior of the GHES panic path.
+3. **Small and Contained Fix**: The code change is minimal and well-
+   contained:
+  ```c
+  + /*
+  +  * If no memory failure work is queued for abnormal synchronous
+  +  * errors, do a force kill.
+  +  */
+  + if (sync && !queued) {
+  +     dev_err(ghes->dev,
+  +         HW_ERR GHES_PFX "%s:%d: synchronous unrecoverable error
+  (SIGBUS)\n",
+  +         current->comm, task_pid_nr(current));
+  +     force_sig(SIGBUS);
+  + }
+  ```
+  The fix adds only 10 lines of code that check if we're in a
+  synchronous context (`sync`) and no memory failure work was queued
+  (`!queued`), then sends SIGBUS to the current process.
 
-5. **Minimal risk**: The change uses LOCKDEP_STILL_OK flag, indicating
-   that lockdep remains valid after the taint, which is the safer option
-   compared to LOCKDEP_NOW_UNRELIABLE used in some other machine check
-   paths.
+4. **Clear Problem and Solution**: The commit addresses a specific gap
+   in error handling. When `ghes_handle_memory_failure()` returns false
+   (meaning no memory_failure() work was queued) for synchronous errors,
+   the process that triggered the error continues execution and will hit
+   the same error again, creating an infinite loop.
 
-6. **Real benefit for users**: For organizations running Linux at scale,
-   being able to quickly identify hardware-related panics through the
-   taint flag provides significant operational value for triaging
-   issues.
+5. **Follows Stable Rules**: This fix meets the stable kernel criteria:
+   - Fixes a real bug that affects users
+   - Small change (< 100 lines)
+   - Obviously correct and tested (has multiple Reviewed-by tags)
+   - Does not add new features
+   - Addresses a serious issue (system stability/reboot)
 
-The commit meets all the stable kernel criteria: it's small, obviously
-correct, fixes a real diagnostic limitation that affects users
-(especially at scale), and has been reviewed by Tony Luck who is a
-recognized maintainer in the RAS (Reliability, Availability, and
-Serviceability) subsystem.
+6. **Related to Previous Work**: This appears to be part of a series
+   addressing synchronous error handling issues in GHES. The commit
+   c1f1fda14137 mentioned in the git log shows ongoing work to properly
+   handle synchronous exceptions, and this commit addresses a critical
+   gap where abnormal synchronous errors weren't being handled at all.
 
- drivers/acpi/apei/ghes.c | 2 ++
- 1 file changed, 2 insertions(+)
+The fix ensures that when a synchronous memory error cannot be properly
+handled through the normal memory_failure() path, the kernel will at
+least terminate the offending process with SIGBUS rather than allowing
+it to continue and create an infinite exception loop that can crash the
+system.
+
+ drivers/acpi/apei/ghes.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 94e3d3fe11ae..91f9267c07ea 100644
+index 2abf20736702..22db720b128b 100644
 --- a/drivers/acpi/apei/ghes.c
 +++ b/drivers/acpi/apei/ghes.c
-@@ -996,6 +996,8 @@ static void __ghes_panic(struct ghes *ghes,
+@@ -715,6 +715,17 @@ static bool ghes_do_proc(struct ghes *ghes,
+ 		}
+ 	}
  
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
- 
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
++	/*
++	 * If no memory failure work is queued for abnormal synchronous
++	 * errors, do a force kill.
++	 */
++	if (sync && !queued) {
++		dev_err(ghes->dev,
++			HW_ERR GHES_PFX "%s:%d: synchronous unrecoverable error (SIGBUS)\n",
++			current->comm, task_pid_nr(current));
++		force_sig(SIGBUS);
++	}
 +
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
+ 	return queued;
+ }
  
- 	if (!panic_timeout)
 -- 
 2.39.5
 
