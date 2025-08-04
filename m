@@ -1,70 +1,57 @@
-Return-Path: <linux-acpi+bounces-15485-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15486-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B80AB1970B
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 02:24:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 537B7B1972B
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 02:25:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CE957A47CA
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 00:23:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62BDA174233
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 00:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9874380C02;
-	Mon,  4 Aug 2025 00:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75FAD13959D;
+	Mon,  4 Aug 2025 00:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cOdnHKMl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZEuL0Umm"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2EB12DDA1;
-	Mon,  4 Aug 2025 00:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E12412FF69;
+	Mon,  4 Aug 2025 00:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754267073; cv=none; b=bk0ZfpMerNxWkwOYl/x1d36duNMVMQW2JzttBjS1GpwPbG+xeVfbzMoP6k2ooWORq1UuiW0xRr7J6M3p6nPhKNdgewcaFJGBKmeegEKCCQ1bVSpWGJ0hH9l7PmU6E+dquuoNzMImdfS5rsHfh6VWMA3XfbygGM1VzUR16vFvVxQ=
+	t=1754267129; cv=none; b=Y9CbecLczkQh57YWvx1RlLe9vAbnHv1YV/PmmOIKgFFY9POMyTQJLzHbcfOl3mBta3yCmRUxyZVeCGEsm/cETdQQbm2wqGiSy12J4OrTmnkZG/zHMAZnHq/bnPllJ9OyHTT0jUXrtsxP/cs7/kb+/O8Wkl8D1UYf8r0/8flHWmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754267073; c=relaxed/simple;
-	bh=XsFEYhjgq5AiUdfD3xVjimrYtujktK3Y+Wu3CQSl38k=;
+	s=arc-20240116; t=1754267129; c=relaxed/simple;
+	bh=JxkoWGjRIeBhg6g/b62/nOUvvYKsN6/cJNsLmyZ80x0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=u6mm6adpEbj6raf2TTiQJhIb9eDejO7FIVt0FMMcK03dYmOo+wyfHthzd5PB8mb9cmdP7iKhHx/qMxHeCFiOf7SgzXlAhQMkVW6AF5EMzwc2frRry3Gq4/HXM/ciM4GNuHZ5ZgBKDXyj/oBbTDcMJHlgnojdCatj3R2RAulv51U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cOdnHKMl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4D1C4CEEB;
-	Mon,  4 Aug 2025 00:24:30 +0000 (UTC)
+	 MIME-Version; b=mFdZxedj6yg8/z70RBbT3v7ld78irLxItfQf4J2Ce4GM1kaWtYvFCp9fAHHOp5eNX2xuvPgVgWcmPsBBDWMWvPjDFdF6hB3Bq38BN9sOCx7yWQ63NMgqZ/IYns9I+ueNk8g6VhmFypO44nXc9PwXZnQ7pfrmJHsVAw9Rqo1fST4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZEuL0Umm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FF0C4CEF8;
+	Mon,  4 Aug 2025 00:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754267073;
-	bh=XsFEYhjgq5AiUdfD3xVjimrYtujktK3Y+Wu3CQSl38k=;
+	s=k20201202; t=1754267129;
+	bh=JxkoWGjRIeBhg6g/b62/nOUvvYKsN6/cJNsLmyZ80x0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOdnHKMlXZSYS1iy7WPMEimRWO8vcgfRUS0I5+xfYBFTRtYmd9JNopwEOvrMRpzJu
-	 3BPaML5db4Zg7bM4LPgd4jqS77IcYASwVnedkB2gMhJAMrMF4ov1hj8XH0tqDgE9M7
-	 enpMgcU3UbZmsxG3jxESQMOrttT3F18A+/32gnOKk2rl/X950buIxKj9e34rf5EcKa
-	 lfxxJeTOu3QRB5I1SjiVfacKVLcZ1IdbDbymer3xfbD436WGKLvHYev0xlQ+jUurYV
-	 5M6ONd697V1hV+JilYqKnohaMBbu6DpHkE7fdNHzD5XVSjkaRPHHCqUqTtMGsqnyeM
-	 kLaCrEpGumm3A==
+	b=ZEuL0Umms2zh/acZLuMLTVldksR/m83yNW1J/4f5x9NJDuA1bgppeHMTUW2Yvh3FE
+	 apU6IydAGGZOBQejI6BDR9W+fsBo1oUvv/6bbclJOTri3BuyWOsECMpQ9nlRSzaFFT
+	 cA90smdrK9rOYEDhBrgqeXMExcCalAMvGEu90k8F7ya1gw2pXdK09d5PkJUTXA5+3k
+	 Hhw/jo50hpx/23Xfd0qXXQe0f8YnH1PMjvaUkZoCHSINIbXgdMTyPgzrMDtMYCcpC3
+	 Wwb6CxHK0EQE+EvK5ijfqB4aaUw9RndspuwbryW3meKSruV28bkuCCpq+e1L1y0w4/
+	 dMHa3PPVj6y5g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Shuai Xue <xueshuai@linux.alibaba.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Hanjun Guo <guohanjun@huawei.com>,
+Cc: Zhu Qiyu <qiyuzhu2@amd.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
-	ira.weiny@intel.com,
-	dave.jiang@intel.com,
-	tony.luck@intel.com,
-	Smita.KoralahalliChannabasappa@amd.com,
-	leitao@debian.org,
-	mingo@kernel.org,
-	peterz@infradead.org,
-	bp@alien8.de,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.16 16/85] ACPI: APEI: send SIGBUS to current task if synchronous memory error not recovered
-Date: Sun,  3 Aug 2025 20:22:25 -0400
-Message-Id: <20250804002335.3613254-16-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.16 38/85] ACPI: PRM: Reduce unnecessary printing to avoid user confusion
+Date: Sun,  3 Aug 2025 20:22:47 -0400
+Message-Id: <20250804002335.3613254-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250804002335.3613254-1-sashal@kernel.org>
 References: <20250804002335.3613254-1-sashal@kernel.org>
@@ -79,131 +66,139 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.16
 Content-Transfer-Encoding: 8bit
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Zhu Qiyu <qiyuzhu2@amd.com>
 
-[ Upstream commit 79a5ae3c4c5eb7e38e0ebe4d6bf602d296080060 ]
+[ Upstream commit 3db5648c4d608b5483470efc1da9780b081242dd ]
 
-If a synchronous error is detected as a result of user-space process
-triggering a 2-bit uncorrected error, the CPU will take a synchronous
-error exception such as Synchronous External Abort (SEA) on Arm64. The
-kernel will queue a memory_failure() work which poisons the related
-page, unmaps the page, and then sends a SIGBUS to the process, so that
-a system wide panic can be avoided.
+Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
+handler and context") introduced non-essential printing "Failed to find
+VA for GUID: xxxx, PA: 0x0" which may confuse users to think that
+something wrong is going on while it is not the case.
 
-However, no memory_failure() work will be queued when abnormal
-synchronous errors occur. These errors can include situations like
-invalid PA, unexpected severity, no memory failure config support,
-invalid GUID section, etc. In such a case, the user-space process will
-trigger SEA again.  This loop can potentially exceed the platform
-firmware threshold or even trigger a kernel hard lockup, leading to a
-system reboot.
+According to the PRM Spec Section 4.1.2 [1], both static data buffer
+address and ACPI parameter buffer address may be NULL if they are not
+needed, so there is no need to print out the "Failed to find VA ... "
+in those cases.
 
-Fix it by performing a force kill if no memory_failure() work is queued
-for synchronous errors.
-
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Reviewed-by: Jane Chu <jane.chu@oracle.com>
-Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
-Link: https://patch.msgid.link/20250714114212.31660-2-xueshuai@linux.alibaba.com
-[ rjw: Changelog edits ]
+Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
+Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
+Link: https://patch.msgid.link/20250704014104.82524-1-qiyuzhu2@amd.com
+[ rjw: Edits in new comments, subject and changelog ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-**Backport Status: YES**
+**YES**
 
 This commit should be backported to stable kernel trees for the
 following reasons:
 
-1. **Critical Bug Fix**: The commit fixes a serious issue where
-   synchronous memory errors that cannot be recovered (abnormal
-   synchronous errors) would cause an infinite loop. The commit message
-   clearly describes how "the user-space process will trigger SEA again.
-   This loop can potentially exceed the platform firmware threshold or
-   even trigger a kernel hard lockup, leading to a system reboot."
+## Bug Fix for User-Visible Issue
+The commit fixes false warning messages that were confusing users. The
+original commit 088984c8d54c (which was already backported to stable
+with "Cc: All applicable <stable@vger.kernel.org>") introduced an
+unconditional warning in `efi_pa_va_lookup()`:
 
-2. **Security and Stability Impact**: The bug can lead to:
-   - Infinite exception loops
-   - Platform firmware threshold exceeded
-   - Kernel hard lockups
-   - Unexpected system reboots
+```c
+pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
+```
 
-   These are severe stability issues that affect system reliability.
+This warning was printed even when the physical address (PA) was
+legitimately 0/NULL, which according to the PRM specification is valid
+for both `static_data_buffer_address` and `acpi_param_buffer_address`
+when they are not needed.
 
-3. **Small and Contained Fix**: The code change is minimal and well-
-   contained:
-  ```c
-  + /*
-  +  * If no memory failure work is queued for abnormal synchronous
-  +  * errors, do a force kill.
-  +  */
-  + if (sync && !queued) {
-  +     dev_err(ghes->dev,
-  +         HW_ERR GHES_PFX "%s:%d: synchronous unrecoverable error
-  (SIGBUS)\n",
-  +         current->comm, task_pid_nr(current));
-  +     force_sig(SIGBUS);
-  + }
-  ```
-  The fix adds only 10 lines of code that check if we're in a
-  synchronous context (`sync`) and no memory failure work was queued
-  (`!queued`), then sends SIGBUS to the current process.
+## Small and Contained Fix
+The fix is minimal and surgical:
+1. Removes the unconditional warning from `efi_pa_va_lookup()`
+2. Adds conditional warnings only when addresses are non-zero but lookup
+   fails:
+   - For handler_addr: warns if lookup fails (this should never be zero)
+   - For static_data_buffer_addr: only warns if
+     `handler_info->static_data_buffer_address` is non-zero but lookup
+     fails
+   - For acpi_param_buffer_addr: only warns if
+     `handler_info->acpi_param_buffer_address` is non-zero but lookup
+     fails
 
-4. **Clear Problem and Solution**: The commit addresses a specific gap
-   in error handling. When `ghes_handle_memory_failure()` returns false
-   (meaning no memory_failure() work was queued) for synchronous errors,
-   the process that triggered the error continues execution and will hit
-   the same error again, creating an infinite loop.
+## Regression Fix
+Since the problematic commit 088984c8d54c has been backported to v6.12
+stable kernels, this fix addresses a regression in stable trees where
+users are seeing confusing warning messages for legitimate NULL
+addresses.
 
-5. **Follows Stable Rules**: This fix meets the stable kernel criteria:
-   - Fixes a real bug that affects users
-   - Small change (< 100 lines)
-   - Obviously correct and tested (has multiple Reviewed-by tags)
-   - Does not add new features
-   - Addresses a serious issue (system stability/reboot)
+## Low Risk
+The change:
+- Does not modify any functional behavior
+- Only adjusts when warning messages are printed
+- Has no architectural changes or side effects
+- Is confined to the ACPI PRM subsystem
 
-6. **Related to Previous Work**: This appears to be part of a series
-   addressing synchronous error handling issues in GHES. The commit
-   c1f1fda14137 mentioned in the git log shows ongoing work to properly
-   handle synchronous exceptions, and this commit addresses a critical
-   gap where abnormal synchronous errors weren't being handled at all.
+## Clear Benefit
+The fix eliminates user confusion from false warnings while maintaining
+proper warnings for actual error conditions (when a non-zero address
+fails lookup).
 
-The fix ensures that when a synchronous memory error cannot be properly
-handled through the normal memory_failure() path, the kernel will at
-least terminate the offending process with SIGBUS rather than allowing
-it to continue and create an infinite exception loop that can crash the
-system.
+Given that the original problematic commit is in stable kernels and this
+is a targeted fix for that regression with minimal risk, it clearly
+meets the stable backporting criteria.
 
- drivers/acpi/apei/ghes.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/acpi/prmt.c | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index f0584ccad451..281a0a2f6730 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -902,6 +902,17 @@ static bool ghes_do_proc(struct ghes *ghes,
+diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+index e549914a636c..be033bbb126a 100644
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -85,8 +85,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
  		}
  	}
  
-+	/*
-+	 * If no memory failure work is queued for abnormal synchronous
-+	 * errors, do a force kill.
-+	 */
-+	if (sync && !queued) {
-+		dev_err(ghes->dev,
-+			HW_ERR GHES_PFX "%s:%d: synchronous unrecoverable error (SIGBUS)\n",
-+			current->comm, task_pid_nr(current));
-+		force_sig(SIGBUS);
-+	}
-+
- 	return queued;
+-	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
+-
+ 	return 0;
  }
  
+@@ -154,13 +152,37 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
+ 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
+ 		th->handler_addr =
+ 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
++		/*
++		 * Print a warning message if handler_addr is zero which is not expected to
++		 * ever happen.
++		 */
++		if (unlikely(!th->handler_addr))
++			pr_warn("Failed to find VA of handler for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->handler_address);
+ 
+ 		th->static_data_buffer_addr =
+ 			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
++		/*
++		 * According to the PRM specification, static_data_buffer_address can be zero,
++		 * so avoid printing a warning message in that case.  Otherwise, if the
++		 * return value of efi_pa_va_lookup() is zero, print the message.
++		 */
++		if (unlikely(!th->static_data_buffer_addr && handler_info->static_data_buffer_address))
++			pr_warn("Failed to find VA of static data buffer for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->static_data_buffer_address);
+ 
+ 		th->acpi_param_buffer_addr =
+ 			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
+ 
++		/*
++		 * According to the PRM specification, acpi_param_buffer_address can be zero,
++		 * so avoid printing a warning message in that case.  Otherwise, if the
++		 * return value of efi_pa_va_lookup() is zero, print the message.
++		 */
++		if (unlikely(!th->acpi_param_buffer_addr && handler_info->acpi_param_buffer_address))
++			pr_warn("Failed to find VA of acpi param buffer for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->acpi_param_buffer_address);
++
+ 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
+ 
+ 	return 0;
 -- 
 2.39.5
 
