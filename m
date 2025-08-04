@@ -1,57 +1,57 @@
-Return-Path: <linux-acpi+bounces-15501-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15502-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECAECB19904
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 02:40:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E83B198D7
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 02:38:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F0F53BA8D2
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 00:38:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECAD01897C61
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Aug 2025 00:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A911E3762;
-	Mon,  4 Aug 2025 00:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D111F130B;
+	Mon,  4 Aug 2025 00:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cw0XOTtR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jes3PRZ5"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7471C549F;
-	Mon,  4 Aug 2025 00:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2F51E7C38;
+	Mon,  4 Aug 2025 00:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754267856; cv=none; b=geesBSgbJKUCGmJMvBp80XPE1vwMHg2xxUZ2/4S/OLLLZ827cTRZR98vla0nlBT+SUVtw4ypW/xLLipAlBlCz/rfK3NTPSAW04kA7hTLUQ2P3TqmzFwOdBSBCCgnStk1KfzLj6Aa3VmVN2smVPxWMQGu6yeNK2W06lXJebb2BVk=
+	t=1754267866; cv=none; b=K9FUyMPcKWvzgfxAudJoiMCh/DyRzjEHii5koNeN6WK8PAKYl9E+b9eqSSRg5oHWpZFGMxlXtRezjxjyQMqHwcnhJO38yNO3+7HF+3SAgkZdmc+BmyCw/Yw1k44U1rER8CD5EcdOPp3r4t6eKiYVIXVodfdFABck30IvsTDPing=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754267856; c=relaxed/simple;
-	bh=9pKxRtep6EtStNPbYP+ARYdOs9PWjvAh1I3OkH3w7Tk=;
+	s=arc-20240116; t=1754267866; c=relaxed/simple;
+	bh=j+0MW+exHE04Kl+zR/ro3FPj+d8z5IJ5CYki4O8t98I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Cy1JK21Bax71A577KIF8xucJ+wSDboSO9NVgPSFceCPJ+n9IwscXqvMKA14r4Hvap0iQIy6B8W+cYfa9aSXZh3QcARr678YlJziy22I5BV4Mr2KcaJLJPw7lc5PsHZjDPE+jrmGsWQ9BrraJOhb27LSy25RvqUUJNsgVNLVdQbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cw0XOTtR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314EFC4CEF8;
-	Mon,  4 Aug 2025 00:37:35 +0000 (UTC)
+	 MIME-Version; b=uTBnXxmFmWoPBgFLbXmjcQgYTy+LAxUI0OrSRaNRDpylPkv79Y32ga/Q6ANC8qjmPoWV7TxJKbV8ShBEpfDfhn5NYeygOpLPw1rXjyIz/7GC9+exbMGPvphzsLdnTBXvFq/8KqVP68f2zPd/UbjmFce6s6O5QvqzZxVfbj7zRKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jes3PRZ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1911EC4CEFB;
+	Mon,  4 Aug 2025 00:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754267856;
-	bh=9pKxRtep6EtStNPbYP+ARYdOs9PWjvAh1I3OkH3w7Tk=;
+	s=k20201202; t=1754267866;
+	bh=j+0MW+exHE04Kl+zR/ro3FPj+d8z5IJ5CYki4O8t98I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cw0XOTtRiT4eKD5AcwRVBBjBHlv8AVD/3mi72qJ31LwrRnaeGPU3wEQe8oF7tIVOT
-	 6z1A+RGl5KUbQ7EBlMz4iCAbguepUD2z+ammAcBZAazQMqtl/nEBGkAsBasHuW7Shi
-	 7FJEA5VhgfqFRlJ2sm73IWE3I3k1CCGBEMmG4KMbQJ6Fe+zOhk1rzGGrf9wCcDVwGg
-	 H4VpZJtCNmNIk1Hvo4sB3SN0WqVKOfq0Ebc6K3xItIk3IyG0fsXoC0HkyxBFjlmkra
-	 XEbgl+9qfadCkU0SdAIbGUrh/ikzhNZC7qGl1LRWq8Wtp/Nze3KzmMadX/gIUeQ9iI
-	 39AE6xT6/QOdA==
+	b=jes3PRZ5LBguMhUNQ5qOufJL9IUeVuKbWphmGIIadeJjVSlQR3VLmtusvxFcSQPeL
+	 ZU5GB9ONBkpZ7cDIOvDYnnqPrWaoIDN+LN4oTjik54R3x1MWMwcsHGCBG9bPqPRfj+
+	 VXJQ2hPX0t4t7y7/q7GVIru5Vo2UmXHIJyLOY7SrVA3kvbeDx7MZVlJFAil7zfelqZ
+	 /XX6dntdCGweLy4MtCg81MMTnZb0XsxHZg/eBx/jabFu14/UBVBSe1LOhzWSrRyS8q
+	 Rc9uwC23+WkeZeh+hPncyVU3VVopT2MHvrXBb4Zkj4c6nxcOOBdynS01rhMa3xGet/
+	 19UZTcZFWtSNQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Zhu Qiyu <qiyuzhu2@amd.com>,
+Cc: Sebastian Ott <sebott@redhat.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 23/51] ACPI: PRM: Reduce unnecessary printing to avoid user confusion
-Date: Sun,  3 Aug 2025 20:36:15 -0400
-Message-Id: <20250804003643.3625204-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 28/51] ACPI: processor: fix acpi_object initialization
+Date: Sun,  3 Aug 2025 20:36:20 -0400
+Message-Id: <20250804003643.3625204-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250804003643.3625204-1-sashal@kernel.org>
 References: <20250804003643.3625204-1-sashal@kernel.org>
@@ -66,139 +66,108 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.147
 Content-Transfer-Encoding: 8bit
 
-From: Zhu Qiyu <qiyuzhu2@amd.com>
+From: Sebastian Ott <sebott@redhat.com>
 
-[ Upstream commit 3db5648c4d608b5483470efc1da9780b081242dd ]
+[ Upstream commit 13edf7539211d8f7d0068ce3ed143005f1da3547 ]
 
-Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
-handler and context") introduced non-essential printing "Failed to find
-VA for GUID: xxxx, PA: 0x0" which may confuse users to think that
-something wrong is going on while it is not the case.
+Initialization of the local acpi_object in acpi_processor_get_info()
+only sets the first 4 bytes to zero and is thus incomplete. This is
+indicated by messages like:
+	acpi ACPI0007:be: Invalid PBLK length [166288104]
 
-According to the PRM Spec Section 4.1.2 [1], both static data buffer
-address and ACPI parameter buffer address may be NULL if they are not
-needed, so there is no need to print out the "Failed to find VA ... "
-in those cases.
+Fix this by initializing all 16 bytes of the processor member of that
+union.
 
-Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
-Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
-Link: https://patch.msgid.link/20250704014104.82524-1-qiyuzhu2@amd.com
-[ rjw: Edits in new comments, subject and changelog ]
+Signed-off-by: Sebastian Ott <sebott@redhat.com>
+Link: https://patch.msgid.link/20250703124215.12522-1-sebott@redhat.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-**YES**
+Based on my analysis, here is my determination:
 
-This commit should be backported to stable kernel trees for the
-following reasons:
+**Backport Status: YES**
 
-## Bug Fix for User-Visible Issue
-The commit fixes false warning messages that were confusing users. The
-original commit 088984c8d54c (which was already backported to stable
-with "Cc: All applicable <stable@vger.kernel.org>") introduced an
-unconditional warning in `efi_pa_va_lookup()`:
+## Extensive Explanation:
 
+This commit fixes a critical initialization bug in the ACPI processor
+driver that causes incorrect error messages and potentially incorrect
+behavior. Here's why this is a good candidate for stable backport:
+
+### 1. **Clear Bug Fix**
+The commit fixes an incomplete initialization issue where `union
+acpi_object object = { 0 };` only initializes the first 4 bytes (the
+size of `acpi_object_type type`), leaving the remaining bytes of the
+union uninitialized. This results in garbage values in fields like
+`object.processor.pblk_length`, causing spurious error messages like
+"Invalid PBLK length [166288104]".
+
+### 2. **User-Visible Impact**
+The bug causes confusing error messages in system logs during ACPI
+processor initialization. The error message shown in the commit (`acpi
+ACPI0007:be: Invalid PBLK length [166288104]`) indicates that
+uninitialized memory is being read and interpreted as a length value.
+
+### 3. **Minimal and Contained Fix**
+The fix is extremely simple - changing:
 ```c
-pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
+union acpi_object object = { 0 };
+```
+to:
+```c
+union acpi_object object = { .processor = { 0 } };
 ```
 
-This warning was printed even when the physical address (PA) was
-legitimately 0/NULL, which according to the PRM specification is valid
-for both `static_data_buffer_address` and `acpi_param_buffer_address`
-when they are not needed.
+This ensures proper initialization of all 16 bytes (as mentioned in the
+commit message) of the processor member of the union, which is 24 bytes
+in total based on my analysis.
 
-## Small and Contained Fix
-The fix is minimal and surgical:
-1. Removes the unconditional warning from `efi_pa_va_lookup()`
-2. Adds conditional warnings only when addresses are non-zero but lookup
-   fails:
-   - For handler_addr: warns if lookup fails (this should never be zero)
-   - For static_data_buffer_addr: only warns if
-     `handler_info->static_data_buffer_address` is non-zero but lookup
-     fails
-   - For acpi_param_buffer_addr: only warns if
-     `handler_info->acpi_param_buffer_address` is non-zero but lookup
-     fails
+### 4. **No Architectural Changes**
+This is a pure bug fix with no feature additions or architectural
+changes. It simply corrects the initialization to prevent reading
+uninitialized memory.
 
-## Regression Fix
-Since the problematic commit 088984c8d54c has been backported to v6.12
-stable kernels, this fix addresses a regression in stable trees where
-users are seeing confusing warning messages for legitimate NULL
-addresses.
+### 5. **Low Risk of Regression**
+The change is minimal and only affects initialization. It doesn't alter
+any logic or behavior beyond ensuring that the union is properly zeroed
+out. The designated initializer syntax is standard C and well-supported.
 
-## Low Risk
-The change:
-- Does not modify any functional behavior
-- Only adjusts when warning messages are printed
-- Has no architectural changes or side effects
-- Is confined to the ACPI PRM subsystem
+### 6. **Critical Subsystem**
+While ACPI is a critical subsystem, this fix is confined to the
+initialization of a local variable in `acpi_processor_get_info()`. The
+scope is limited and the fix is conservative.
 
-## Clear Benefit
-The fix eliminates user confusion from false warnings while maintaining
-proper warnings for actual error conditions (when a non-zero address
-fails lookup).
+### 7. **Follows Stable Rules**
+This commit perfectly follows the stable kernel rules:
+- Fixes a real bug (uninitialized memory access)
+- Small change (single line)
+- Obviously correct
+- Already tested (merged into mainline)
+- Fixes an issue that users see (error messages in logs)
 
-Given that the original problematic commit is in stable kernels and this
-is a targeted fix for that regression with minimal risk, it clearly
-meets the stable backporting criteria.
+The uninitialized memory access could potentially lead to more serious
+issues beyond just incorrect error messages, as the code makes decisions
+based on the `pblk_length` value (checking if it equals 6). This makes
+the fix even more important for stable kernels.
 
- drivers/acpi/prmt.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ drivers/acpi/acpi_processor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-index 7747ca4168ab..215ca8d60616 100644
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -85,8 +85,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
- 		}
- 	}
+diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+index 8bd5c4fa91f2..cfa75b14caa2 100644
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -216,7 +216,7 @@ static inline int acpi_processor_hotadd_init(struct acpi_processor *pr)
  
--	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
--
- 	return 0;
- }
- 
-@@ -154,13 +152,37 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
- 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
- 		th->handler_addr =
- 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
-+		/*
-+		 * Print a warning message if handler_addr is zero which is not expected to
-+		 * ever happen.
-+		 */
-+		if (unlikely(!th->handler_addr))
-+			pr_warn("Failed to find VA of handler for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->handler_address);
- 
- 		th->static_data_buffer_addr =
- 			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
-+		/*
-+		 * According to the PRM specification, static_data_buffer_address can be zero,
-+		 * so avoid printing a warning message in that case.  Otherwise, if the
-+		 * return value of efi_pa_va_lookup() is zero, print the message.
-+		 */
-+		if (unlikely(!th->static_data_buffer_addr && handler_info->static_data_buffer_address))
-+			pr_warn("Failed to find VA of static data buffer for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->static_data_buffer_address);
- 
- 		th->acpi_param_buffer_addr =
- 			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
- 
-+		/*
-+		 * According to the PRM specification, acpi_param_buffer_address can be zero,
-+		 * so avoid printing a warning message in that case.  Otherwise, if the
-+		 * return value of efi_pa_va_lookup() is zero, print the message.
-+		 */
-+		if (unlikely(!th->acpi_param_buffer_addr && handler_info->acpi_param_buffer_address))
-+			pr_warn("Failed to find VA of acpi param buffer for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->acpi_param_buffer_address);
-+
- 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
- 
- 	return 0;
+ static int acpi_processor_get_info(struct acpi_device *device)
+ {
+-	union acpi_object object = { 0 };
++	union acpi_object object = { .processor = { 0 } };
+ 	struct acpi_buffer buffer = { sizeof(union acpi_object), &object };
+ 	struct acpi_processor *pr = acpi_driver_data(device);
+ 	int device_declaration = 0;
 -- 
 2.39.5
 
