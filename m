@@ -1,172 +1,135 @@
-Return-Path: <linux-acpi+bounces-15531-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15532-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BCBBB1B3E6
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Aug 2025 15:00:20 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CA5BB1B879
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Aug 2025 18:27:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05B4B3A5E11
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Aug 2025 13:00:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5DA5C4E03A7
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Aug 2025 16:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7614B188580;
-	Tue,  5 Aug 2025 13:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA884291C1F;
+	Tue,  5 Aug 2025 16:27:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UOnhD7gO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74ED17996;
-	Tue,  5 Aug 2025 13:00:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE2472630;
+	Tue,  5 Aug 2025 16:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754398815; cv=none; b=L/RxXtQ35lQlYa54SPhqdjoigtVTRSSuMRxsjA7gr4U62QTtKlQVMscOCLciNffrryESLwz9zjvUZFu3OZmYgO/xcpVx1/RV/Wg2hhfu4JB4TMt9UOsRSXLOAE8Q++EnBvL2kh0j0DXORxYXCRMxkgAm8Fl7HrLwyvh/8vSwuLU=
+	t=1754411269; cv=none; b=jbhSZaF7bWu1gcd9pJYcT4++SezLCNk0/fb3OTuXcdblYbZVZzuefoJTHNJCiLDbquLlKwbTD3ValmQYJG3cQoNdoXNG24b1pXoUEEWqv+2zO3C1lARflvS1EJglVjzxSToGVZEgSgrdTwxt4S8BSwfX8F5c6hDxJGYcrIxCYIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754398815; c=relaxed/simple;
-	bh=4t7dMcqzc7zDlbYdbuJAk8tlv9zQyDoso6MSnjmvM50=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sdlaTrk9DCw8tUM8zrs/4/SRZHSOqbC/1EYW7j+BYZ1c66sUYMhx5DnMszoA6YaAqTDiHVJpo7UKGWZCNHCb9sKov/ioWXNB8BMr+YsPxP1EYqqHd7Cp0BJGuo52WI7nLUi4fZ1knxVjXikoD6HrAW7wekIn4Zq4HIEIsqwsIOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+	s=arc-20240116; t=1754411269; c=relaxed/simple;
+	bh=5BJyQyJpgV+yQh2Ditn8oy8a04n9ISc9q8hHHgTLqBU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KxcgI26KbH86DT62jSjVOBRObHDGtj394/UbH4GSrBdGRpopqQEquYZx+lefyHnhCCyBMSfn+ss3segzSXLVTn6hs9UAL7gFuNITnmRwq02viWnLtKLqqEPZl87b/fhtdYbxKkXkVmFbSt4TLGwinB2EZ4hSRohUkAzlRZzmTpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UOnhD7gO; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6154655c8aeso7587848a12.3;
-        Tue, 05 Aug 2025 06:00:13 -0700 (PDT)
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-23fe2be6061so519865ad.0;
+        Tue, 05 Aug 2025 09:27:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754411267; x=1755016067; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+3O50zNUML0rXrgIz2L4u9X6MchbPe/SOppfxHs5UVY=;
+        b=UOnhD7gOSdrochvqwP0lOpDYrwADZkM0D8Kv42fL/4UtlgSqMmpf+SzyPlVthB7dRS
+         tIKqDyMpsUXMNBW2kNSo+w+2QTomgOsjEaYwWSaWivvJShtCu9SqFmSZ8bGIfV8fIoYN
+         QtBQARj9Ghe3PNIP4JLi6Y2fN3q683RkRK+qA5n/tr6L9yNQ7e+fxNwxLQ5mPP5Lmdp1
+         q7ChCTzxkt78gPMuh1SsANm7IA07t9e3aFs2ZaLP8d6EVEkaJmHE0krgTzIyyu0gB7cZ
+         gBnF6qZ8/dIoIAL55UcLPOy2klHDqPO8mVUaJH0Two9r83J93AEeJxX2rNc/DOPfkLqr
+         w9NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754398812; x=1755003612;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BzQHx1i5Fs/JOgRu+gEHkLfTlj9ZTI1ibV6XEx4O938=;
-        b=JUsTIk7LiRZfCbPteZKgD13Bx88wsb/6aaBGdpECOA11fFVTAEXvWFaa9mmEjwoqua
-         VUAS/r5FFWrqc9Cy4VdcFQ9xKe5yUIXNt56kqMMJjIzKQDY4J07fwIKalVtHPac/MKrX
-         +/fIlCzXoGdtnYSWRv9o2erF9YODUE3AOwQspOS5G15FTUZTHpYsVF3442oBT8YQ+KUS
-         f+WEcf3sU8c0AX21CVlZbfFs77tom7GTzB/szbTy/4Feg9wyvaDfvdt99zvsOvf+7bc7
-         D1FW+OV1Erg+p7hvUmblgBCT4OktQfnOA3TMlz9eRAiPYMuZlZVoYhSVYSJzFoB2MYP4
-         YrCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCgcvL5VOmL+Lq0sXH3cv9fMgFIq0iamPy2BDLkJWWkl/o40zgMqn6phl91T2GQYHepwFnsYhysKhj@vger.kernel.org, AJvYcCW+hjNKoa+zChQB5GBQ28LG6lb45BULULlf7LCut3PQ1oXEswZCq0rcWkaJrz0CJG7VOAi2efM/QZ+n@vger.kernel.org, AJvYcCWf4neT7Wh71m/7ilqF/YwstPxXBtd4d1whDDsU18psOilGwVVRnByvix33RLIxxVx/3cjeGLHXl5+PKluK@vger.kernel.org, AJvYcCWsltZkemN8/vG86hEj3dkrcLQ3GIgsH8OxXv2R07HUpzOqAPU3JQiNJPGgBosAYBKkEuADEW4wHJiQUA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTrM1KFLXiUP3OfLYQ7l0yI5FobOeJ2tvJ8fgYDTstkRFzKDnO
-	IxJI2nlm5fVgDVoWOT+11zqZuJn6KywZWYKwdn6mXFjcW/z2GBMT03Mi
-X-Gm-Gg: ASbGncuWcljrjn0P6YdrsguMVELhzOOFKQ5JRVzdFHtdpC+AD8JBbQNqJ5bTm0MxOZT
-	LNZ2QeU17bItx9aTnnudgenXUlr9tJKdeI/696omhLcNkpawLkNjnXrGOOl24TbZPCBNEVXw08P
-	1DRSxuax5qDs33wraQtbacaGimm88YKXTGmnrl/Ru+DgS0BQFPu9IWqH7uW66u9ydNfqht17nnb
-	R0GKRrRenACyMJqLYSQLPkLrEfLhDbiAVQpb2A4G1YzvY434CJ3Ar9F/an1RqgwC9pYOp4S1j6N
-	UvTvQO7Xg7Hkd4J1K/wFrb9c39GU3eHo73BVEqq9zzLyASWm0n46Sg9RHEuXELdFDuIzYme0feN
-	lMUFupVtnKmnS
-X-Google-Smtp-Source: AGHT+IGjZSNpW7mJUj3kJ0f8IpMzBnPj+YUjP2KOPDwITdV1e7i/FDQIvzJwDgp/H8IFr3t8Mztalg==
-X-Received: by 2002:a05:6402:4402:b0:615:b0e2:124b with SMTP id 4fb4d7f45d1cf-615e715bd27mr13276935a12.24.1754398811018;
-        Tue, 05 Aug 2025 06:00:11 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:8::])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a8f2a448sm8429117a12.20.2025.08.05.06.00.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Aug 2025 06:00:10 -0700 (PDT)
-Date: Tue, 5 Aug 2025 06:00:07 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, 
-	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev, osandov@osandov.com, 
-	xueshuai@linux.alibaba.com, konrad.wilk@oracle.com, linux-edac@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, kernel-team@meta.com, osandov@fb.com
-Subject: Re: [PATCH v4] vmcoreinfo: Track and log recoverable hardware errors
-Message-ID: <j4ac55vpiemdjdbfzoktoqv763fhpv6q2agmgaeggvahfj5kuy@v7l5lrrdwkjj>
-References: <20250801-vmcore_hw_error-v4-1-fa1fe65edb83@debian.org>
- <85663f65-d746-4e2c-b8a6-d594d9d0ba42@intel.com>
- <f3yl424iqiyctgz4j36hzjrhkgae3a2h5smhalm2qbmq3nrpzd@oeuprthscfez>
- <0c045f1b-44d0-430c-9e8a-58b65dd84453@intel.com>
- <buhwuankenpnvmio6jeoxverixoyfpn2eh62ix7vzxw7xvlxcv@rpibcrufr2yg>
- <842d675e-4c22-4f13-b40b-c4b5208e4223@intel.com>
- <ipdhflmgqrlq2vor657fiwex66jqw2do747uvu3tvrcsvtvdjj@lg5zrcua2dgn>
- <529fbbc1-90fe-467b-9bd2-d1a18bb38670@intel.com>
+        d=1e100.net; s=20230601; t=1754411267; x=1755016067;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+3O50zNUML0rXrgIz2L4u9X6MchbPe/SOppfxHs5UVY=;
+        b=I2khUOIUkS+9bNOY+ff7QHNtddRWkv0i5UhQYMAg/rqSn/AsksA/f41bVc9TI9so/b
+         8StR27DT2iN8Yn28jOGM0TIpPbGhgcKc2qFYJzcucmK509x0kjYhYIToVeCFmpe5Juvz
+         zrkgWQqNexGVcVS+yMdriQrZCc7rJfEgMqx0msdyIwdgoF+dI+aK37xCbinLnhuU91Pa
+         wIhg90eTVQnEALIbSUeIGYqo30ry54xsfq2R0gXBlgvg+UTN8S6xpyeVTndeWnKX8Xu6
+         LyoIEt2jmgamuSNdaXXNpQTHBhS6E9QOpVFa7jAwb/2GgqGpFmSfX47L6uFEfwnEepPr
+         3WLw==
+X-Forwarded-Encrypted: i=1; AJvYcCW4rwAoUqFA/g9/gSj6nzl9/OTQ9l4ZWuaB2MOPgfMd3y1Jh6EfAHcIQ8wt562WIH+QtZqTi6lO/j4F@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzviTgf5lPS2bJFcTtPlEy51LQ2dCs+8HBZCruL2ocu79eOYSe
+	+WZ4dYJ1rfJDS1idRIfmI7S5e2+hUbarD50dxagDh5TiY7ab33q8Df2gBB0zNMow
+X-Gm-Gg: ASbGncsLWZ7WuPAnO722TfhF92ptrZLIt0YsDI1w9VJ0/YnyGMPp15X7NYGVi4WYZEc
+	8hrbwXsSNFXw+eRGirqAorVEmc65siiyq/MiVepYQByI+kgAzu52shNxBHwf3fTJeNOmzpxK+NM
+	zsX5Apzc42EedqEQEyU8yM+kOZV+9bnYj0vTGatT47QOOAwILYKyjMhHGWSbKl5XT9bAgltzjIo
+	rGWnRyfoXNikL35VackYU8NoFNVtDKeZsgy00R5fdtuf7zDONChPr+KtuHSyh+0u5epNND/Es+p
+	nVbXZq+dqYPpOgMMD+XwzyCyXaw/NIZBcvybxbJFK22dxCc9vansYB+13m5DnMqd1VHvehY0is0
+	vbYAnUWc7V7p3KFcmWEHoilCb1cAFBidPaB7vs2XV9SmWwojLXqSjrbeE595o5XePkC8qq9UIUL
+	rt
+X-Google-Smtp-Source: AGHT+IHd19vjUFBW1J+x03NMEuyJK581n036vQ9x7nKm3KkZ/4nVoUzKV04IA+ulDj2XieVTIyuOvA==
+X-Received: by 2002:a17:902:d508:b0:215:b1e3:c051 with SMTP id d9443c01a7336-24288d2ef67mr49304575ad.11.1754411267413;
+        Tue, 05 Aug 2025 09:27:47 -0700 (PDT)
+Received: from ?IPV6:2401:4900:1f27:8800:d28b:e1ed:c83b:1281? ([2401:4900:1f27:8800:d28b:e1ed:c83b:1281])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1f0f7bfsm137074095ad.41.2025.08.05.09.27.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Aug 2025 09:27:47 -0700 (PDT)
+Message-ID: <4dc74bbe-da7b-4f40-a5e4-130ef20dbaa8@gmail.com>
+Date: Tue, 5 Aug 2025 21:57:42 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <529fbbc1-90fe-467b-9bd2-d1a18bb38670@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3] acpi: remove unnecessary return parentheses and
+ conditional braces
+To: Markus Elfring <Markus.Elfring@web.de>, linux-acpi@vger.kernel.org,
+ acpica-devel@lists.linux.dev
+Cc: LKML <linux-kernel@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Robert Moore <robert.moore@intel.com>
+References: <20250804185826.29723-1-dikshakdevgan@gmail.com>
+ <927e03af-6682-44c5-9225-fb269b0a6e1c@web.de>
+Content-Language: en-US
+From: Diksha Kumari <dikshakdevgan@gmail.com>
+In-Reply-To: <927e03af-6682-44c5-9225-fb269b0a6e1c@web.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 04, 2025 at 10:41:05AM -0700, Dave Hansen wrote:
-> On 8/4/25 10:12, Breno Leitao wrote:
-> ...
-> > +- These errros are divided by are, which includes CPU, Memory, PCI, CXL and
-> > +  others.
-> 
-> There's a double typo in there I think:
-> 
-> 	errros => errors
-> and
-> 	are,=>area,
-> 
-> > --- a/include/linux/vmcore_info.h
-> > +++ b/include/linux/vmcore_info.h
-> > @@ -77,4 +77,20 @@ extern u32 *vmcoreinfo_note;
-> >  Elf_Word *append_elf_note(Elf_Word *buf, char *name, unsigned int type,
-> >  			  void *data, size_t data_len);
-> >  void final_note(Elf_Word *buf);
-> > +
-> > +enum hwerr_error_type {
-> > +	HWERR_RECOV_CPU,
-> > +	HWERR_RECOV_MEMORY,
-> > +	HWERR_RECOV_PCI,
-> > +	HWERR_RECOV_CXL,
-> > +	HWERR_RECOV_OTHERS,
-> > +	HWERR_RECOV_MAX,
-> > +};
-> That enum needs to go into an abi header.
 
-Agree. I came up with something like the change below. Is it the right
-thing to mark the enum as stable ABI?
+On 05/08/25 01:54, Markus Elfring wrote:
+>> This patch removes …
+> See also:
+>
+> * https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.16#n94
+>
+> * https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.16#n658
+>
+ok, i will do the changes in the next revision.
+> …
+>
+>> These changes address checkpatch.pl warnings and improve code readability.
+>>
+>> v3:
+>> - Updated commit message
+> …> ---
+>>   drivers/acpi/acpica/dbconvert.c | 43 +++++++++++++++------------------
+> …
+>
+> Please move your patch version descriptions behind the marker line.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.16#n784
 
-Thanks
---breno
+ok, will do the changes in the next revision.
 
-diff --git a/include/linux/vmcore_info.h b/include/linux/vmcore_info.h
-index 37e003ae52626..e71518caacdfc 100644
---- a/include/linux/vmcore_info.h
-+++ b/include/linux/vmcore_info.h
-@@ -5,6 +5,7 @@
- #include <linux/linkage.h>
- #include <linux/elfcore.h>
- #include <linux/elf.h>
-+#include <uapi/linux/vmcore.h>
 
- #define CRASH_CORE_NOTE_HEAD_BYTES ALIGN(sizeof(struct elf_note), 4)
- #define CRASH_CORE_NOTE_NAME_BYTES ALIGN(sizeof(NN_PRSTATUS), 4)
-@@ -77,4 +78,11 @@ extern u32 *vmcoreinfo_note;
- Elf_Word *append_elf_note(Elf_Word *buf, char *name, unsigned int type,
-                          void *data, size_t data_len);
- void final_note(Elf_Word *buf);
-+
-+#ifdef CONFIG_VMCORE_INFO
-+void hwerr_log_error_type(enum hwerr_error_type src);
-+#else
-+static inline void hwerr_log_error_type(enum hwerr_error_type src) {};
-+#endif
-+
- #endif /* LINUX_VMCORE_INFO_H */
-diff --git a/include/uapi/linux/vmcore.h b/include/uapi/linux/vmcore.h
-index 3e9da91866ffd..2ba89fafa518a 100644
---- a/include/uapi/linux/vmcore.h
-+++ b/include/uapi/linux/vmcore.h
-@@ -15,4 +15,13 @@ struct vmcoredd_header {
-        __u8 dump_name[VMCOREDD_MAX_NAME_BYTES]; /* Device dump's name */
- };
+Thanks again for the feedback.
 
-+enum hwerr_error_type {
-+       HWERR_RECOV_CPU,
-+       HWERR_RECOV_MEMORY,
-+       HWERR_RECOV_PCI,
-+       HWERR_RECOV_CXL,
-+       HWERR_RECOV_OTHERS,
-+       HWERR_RECOV_MAX,
-+};
-+
- #endif /* _UAPI_VMCORE_H */
+Regards,
+
+Diksha
+
+> Regards,
+> Markus
 
