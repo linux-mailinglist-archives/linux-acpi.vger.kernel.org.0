@@ -1,120 +1,251 @@
-Return-Path: <linux-acpi+bounces-15552-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15553-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B65D7B1CC2E
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Aug 2025 20:51:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D65DB1CC77
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Aug 2025 21:22:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD88F7B0630
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Aug 2025 18:49:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 735ED56474A
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Aug 2025 19:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07A62BCF41;
-	Wed,  6 Aug 2025 18:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A67429E0F2;
+	Wed,  6 Aug 2025 19:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="UG8+KSEm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gm0PPXII"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740B6299A8E
-	for <linux-acpi@vger.kernel.org>; Wed,  6 Aug 2025 18:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2985215F6C;
+	Wed,  6 Aug 2025 19:22:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754506256; cv=none; b=CFdkR0N78Rb1IV3Ot9TRR0sidWMKHz330XjghqsRbbnzmngjGY83Ewaboj1Z+sbZ3RiEkasj2KQvnUOdJ1FIXQ0c85zuDrpdhEnDySZV2vPPsuUPYFyNcCHTdLRbNc+/bKngk0EVCjU7zGp1D2Roed9CK44iVo02gJFbPdxhDro=
+	t=1754508170; cv=none; b=RCJZq/gSTr754Eur4wuSXTPa2K+JRL94cF8BKZV7UUkOtLC2nY41zffotSM1rnu/L55CFesdBf0ce5BgJfD41srcwBVf15/2ZFwpmJqv5igic/Om3bu7sJ0Zp6L3WqnyYI0ZA8IEone6/bj9AM7Sqfrhe9Xl8f4vZwRQ0nW9kME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754506256; c=relaxed/simple;
-	bh=4L7OnCYNKnrx/l5GKbgkr0QaMN4bC6LphZ7ZI4fQNsc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N5jtsU0f3HK4OCVou3WqlOi3k+KcrzcyGxtudnfW2laVvw4OvqW9m8Z23V5fgvWTwjkbcW8BOqQkcVI3QnLRYNbSmale5pUEFv5tqdJyg+wMbiXh0OnmOyg+zI8i+jt6u1NmT2vNVPGHDXUPcqaAFCCcdyWYWPq7g8TOK04yimo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=UG8+KSEm; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from localhost (unknown [10.10.165.9])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 8141C4028381;
-	Wed,  6 Aug 2025 18:50:43 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 8141C4028381
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1754506243;
-	bh=9j5CexT8bdFIHvMhQ9FMXMaZBJvFjFE6SMxQVK0pW4U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UG8+KSEmkifDq2ZyI+1rN+2dOIND8R1c/hVFcwNNE71s8sqYGgGykOBs/pizrZ/PF
-	 Gr7ath7i5jryrqAnDwmDfntX2OKFNwHiK5hhIqsY3Yi1ZJ0bg1q8XMYmdQZu9b4SeR
-	 zAZaCg4e4bYEKh19cY9rvj2cGTuGfSAwOWvbaaOk=
-Date: Wed, 6 Aug 2025 21:50:43 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Niyas Sait <niyas.sait@linaro.org>, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Robert Moore <robert.moore@intel.com>, 
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, lvc-project@linuxtesting.org
-Subject: Re: [lvc-project] [PATCH] ACPICA: fix largest possible resource
- descriptor index
-Message-ID: <ydubyehjdctffxhcr3ou6d7p7q7mwtmnwby5m6sbxcdepvpelt@sfblrcg7p36f>
-References: <20250806161301.233242-1-dmantipov@yandex.ru>
+	s=arc-20240116; t=1754508170; c=relaxed/simple;
+	bh=0Smmvk7/7PBIfJOmFbelMA4iOxCor7rfdYx7f5lWz+s=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f2KIzGMgd0qqhCLAGsOswD4sjGCgBieS7o0nifOr/X4P7/OR1y4qWt7zNpo0iiM+m8pYQCb1GIKDB50UbUmFGcNLLSzC4fxDX7362IScC+yQ9sBhEiiLxwevFVIfF9ybwUobGF5OH6ITXde8i+ZC2J4E7LSD4EaEwAaLF3CLe+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gm0PPXII; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-76bfabdbef5so310635b3a.1;
+        Wed, 06 Aug 2025 12:22:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754508168; x=1755112968; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4AyOWdEDqjQgldlgukYNr30YcKFtHC6pdaPLRv6HM7w=;
+        b=Gm0PPXIIASrJtii5dDIUrU4sXz9qVjI+zj8HKS03FlGvHRX9CtUWoYYqtjZliwYsET
+         6qU1pvUc9VjEo2R6hsVHHpmnYxTeG1qDetDnUQYpvJIFw2axbl7kvkCxqBrcdwGmbmai
+         lwi51HV4RZaabKM4IeadyCFIu/+lyPMlX+uJCiW25SLVNHoOSYs4dE8PquL1eWqyAam1
+         eBIeASoPUfPahBnOXiN43DnR7oEih107VZwW/yce683kkjnxgNfNL8daZYIK3VG3LcaS
+         L22MU9ggV3izjrAV3x+jpgoLwxY4PTRzctq4gXE4deSpJt1LJ121faOqDEMk3oTer0tI
+         909g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754508168; x=1755112968;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4AyOWdEDqjQgldlgukYNr30YcKFtHC6pdaPLRv6HM7w=;
+        b=f49WJzf7TqPHxbaDlVYAodWH0ZX4vVAJZHabfjE7ap4tW8D/mAQ6TXdJi0ZYeACwT3
+         eb6kwIKgma88BCXRJY88ggztsdPGRzL4ZiUJOymFu1DZqQpZmWrrl80fEcriY09Lm3O+
+         Bsffvr8O/r1UcXmaZmFfiRmh9xpP12owvYw4JVpCqT02yaCBVEFWOyyAmcI954TMHwoo
+         kP1lro3+rFAZdgeORypVIEV4Q/lcS9tgKDz78O7j1GCxe4XMoArnPYtjZJpZJ6nDwjQj
+         BC7ALrXtopqWbfVpqOJkSOrLxncnfzOuI5zNKOOg1kmWFns5LqD4a9GfSlOnFR2bnAI6
+         Aq8A==
+X-Forwarded-Encrypted: i=1; AJvYcCU0xThyLKeHyFEfYaxZSMpVvEMDF0g281/Jw5lZPpvjff7ziyrbUdFLW7LgG8lnz00/c5sB9ejqxRIKR0QQ@vger.kernel.org, AJvYcCUT+/hC0Zum3o8XvkgcTpug+qiP8r7+gY9NZZdsU+VYXHvQuqErjxmam0vJZJ1/4ITxcsTtSo22mKii@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxq0/jZ8rpSyA7F9FMB8bLQm/xI9l33QTFGDy+BaxBIQOEZj/gl
+	zugvElZ1CA1hAclO3WCUlWopOK5JVMS182QdS4t38BEqonk0xwQ4jhHK
+X-Gm-Gg: ASbGncskcjkuUVGxWXEUxgDQPEFoAPnBCHGnsAjhpbfao/n3Eb/HP+gMmvLMjf8LgpZ
+	nligCAWLb4t5fAUjX1JgJfmytgVbsgQLQUJxYbflToed15oDA+HrL/WIsAnxIKwtCoamQje6Ff9
+	e5SnBrjAdSPp0Y+rN5E2MXduZ0u0LeGIHjtqmOLF/mUcfjF9fNB8acZhNWrk8H9L/vpXKwUx3s2
+	MPGy3tS6OA2x0UaMKeh08lAsZDi423XQhq89JaCO380/Y25ZeshBS1xk1+q8RoOLZqQGtKPZhje
+	2PqQndCL4319P1RKUmvfOVBkqOLCia0ciAvPGCTpsB7J/AiyG0JNpBmTc/iRgFQmJC6e2Vmxqxw
+	1XbDxDYkCxUFXca3nMqt0OLoc+jVQLcfyg5RrMw2o
+X-Google-Smtp-Source: AGHT+IF6JEuKE3Jn3aX/UVQAo0grixOintA1fW1G8ukMtbQ142BQH0FQqo5RG9vdd72dWReaWCJnvQ==
+X-Received: by 2002:a05:6a21:6d85:b0:240:21e1:cbbd with SMTP id adf61e73a8af0-24031455135mr6502150637.26.1754508167931;
+        Wed, 06 Aug 2025 12:22:47 -0700 (PDT)
+Received: from diksha-pc.. ([2401:4900:1f27:8350:374b:b9dd:a07b:cf15])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bd1d4e312sm15528619b3a.17.2025.08.06.12.22.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Aug 2025 12:22:47 -0700 (PDT)
+From: Diksha Kumari <dikshakdevgan@gmail.com>
+To: rafael@kernel.org,
+	robert.moore@intel.com,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Markus.Elfring@web.de
+Cc: Diksha Kumari <dikshakdevgan@gmail.com>
+Subject: [PATCH v4] acpi: remove unnecessary return parentheses and conditional braces
+Date: Thu,  7 Aug 2025 00:52:40 +0530
+Message-Id: <20250806192240.31849-1-dikshakdevgan@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250806161301.233242-1-dmantipov@yandex.ru>
+Content-Transfer-Encoding: 8bit
 
-Hey Dmitry,
+remove unnecessary parentheses around return values and curly braces from
+single-statement conditionals. Curly braces are removed only from
+conditionals that are directly related to the return statements being
+cleaned up. Other instances of one-line conditionals remain unchanged to
+limit the scope of this patch. These changes address checkpatch.pl
+warnings and improve code readability.
 
-On Wed, 06. Aug 19:13, Dmitry Antipov wrote:
-> ACPI_RESOURCE_NAME_LARGE_MAX should be equal to the last actually
-> used resource descriptor index (ACPI_RESOURCE_NAME_CLOCK_INPUT).
-> Otherwise 'resource_index' in 'acpi_ut_validate_resource()' may be
-> clamped incorrectly and resulting value may issue an out-of-bounds
-> access for 'acpi_gbl_resource_types' array. Compile tested only.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: 520d4a0ee5b6 ("ACPICA: add support for ClockInput resource (v6.5)")
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> ---
+Signed-off-by: Diksha Kumari <dikshakdevgan@gmail.com>
+---
+V3 -> V4: Corrected commit message and patch format
+V2 -> V3: Updated commit message and added changelogs
+V1 -> V2: Addressed review comments and updated commit message
 
-ACPICA patches should go through the separate Github project [1] first.
-Please see [2] and [3] for examples.
+ drivers/acpi/acpica/dbconvert.c | 43 +++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 24 deletions(-)
 
-[1]: https://github.com/acpica/acpica
-[2]: https://docs.kernel.org/driver-api/acpi/linuxized-acpica.html
-[3]: https://lore.kernel.org/acpica-devel/CAJZ5v0i7LYzF13M0qdeYWXZ7uO6HUpAS7pE5RJnOAJtKB8o88A@mail.gmail.com/T/#u
+diff --git a/drivers/acpi/acpica/dbconvert.c b/drivers/acpi/acpica/dbconvert.c
+index 8dbab6932049..5f53388b6f1e 100644
+--- a/drivers/acpi/acpica/dbconvert.c
++++ b/drivers/acpi/acpica/dbconvert.c
+@@ -31,9 +31,8 @@ acpi_status acpi_db_hex_char_to_value(int hex_char, u8 *return_value)
+ 
+ 	/* Digit must be ascii [0-9a-fA-F] */
+ 
+-	if (!isxdigit(hex_char)) {
+-		return (AE_BAD_HEX_CONSTANT);
+-	}
++	if (!isxdigit(hex_char))
++		return AE_BAD_HEX_CONSTANT;
+ 
+ 	if (hex_char <= 0x39) {
+ 		value = (u8)(hex_char - 0x30);
+@@ -42,7 +41,7 @@ acpi_status acpi_db_hex_char_to_value(int hex_char, u8 *return_value)
+ 	}
+ 
+ 	*return_value = value;
+-	return (AE_OK);
++	return AE_OK;
+ }
+ 
+ /*******************************************************************************
+@@ -68,19 +67,17 @@ static acpi_status acpi_db_hex_byte_to_binary(char *hex_byte, u8 *return_value)
+ 	/* High byte */
+ 
+ 	status = acpi_db_hex_char_to_value(hex_byte[0], &local0);
+-	if (ACPI_FAILURE(status)) {
+-		return (status);
+-	}
++	if (ACPI_FAILURE(status))
++		return status;
+ 
+ 	/* Low byte */
+ 
+ 	status = acpi_db_hex_char_to_value(hex_byte[1], &local1);
+-	if (ACPI_FAILURE(status)) {
+-		return (status);
+-	}
++	if (ACPI_FAILURE(status))
++		return status;
+ 
+ 	*return_value = (u8)((local0 << 4) | local1);
+-	return (AE_OK);
++	return AE_OK;
+ }
+ 
+ /*******************************************************************************
+@@ -122,9 +119,8 @@ acpi_db_convert_to_buffer(char *string, union acpi_object *object)
+ 	}
+ 
+ 	buffer = ACPI_ALLOCATE(length);
+-	if (!buffer) {
+-		return (AE_NO_MEMORY);
+-	}
++	if (!buffer)
++		return AE_NO_MEMORY;
+ 
+ 	/* Convert the command line bytes to the buffer */
+ 
+@@ -132,7 +128,7 @@ acpi_db_convert_to_buffer(char *string, union acpi_object *object)
+ 		status = acpi_db_hex_byte_to_binary(&string[i], &buffer[j]);
+ 		if (ACPI_FAILURE(status)) {
+ 			ACPI_FREE(buffer);
+-			return (status);
++			return status;
+ 		}
+ 
+ 		j++;
+@@ -145,7 +141,7 @@ acpi_db_convert_to_buffer(char *string, union acpi_object *object)
+ 	object->type = ACPI_TYPE_BUFFER;
+ 	object->buffer.pointer = buffer;
+ 	object->buffer.length = length;
+-	return (AE_OK);
++	return AE_OK;
+ }
+ 
+ /*******************************************************************************
+@@ -175,7 +171,7 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object *object)
+ 	    ACPI_ALLOCATE_ZEROED(DB_DEFAULT_PKG_ELEMENTS *
+ 				 sizeof(union acpi_object));
+ 	if (!elements)
+-		return (AE_NO_MEMORY);
++		return AE_NO_MEMORY;
+ 
+ 	this = string;
+ 	for (i = 0; i < (DB_DEFAULT_PKG_ELEMENTS - 1); i++) {
+@@ -190,7 +186,7 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object *object)
+ 		if (ACPI_FAILURE(status)) {
+ 			acpi_db_delete_objects(i + 1, elements);
+ 			ACPI_FREE(elements);
+-			return (status);
++			return status;
+ 		}
+ 
+ 		this = next;
+@@ -199,7 +195,7 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object *object)
+ 	object->type = ACPI_TYPE_PACKAGE;
+ 	object->package.count = i;
+ 	object->package.elements = elements;
+-	return (AE_OK);
++	return AE_OK;
+ }
+ 
+ /*******************************************************************************
+@@ -251,7 +247,7 @@ acpi_db_convert_to_object(acpi_object_type type,
+ 		break;
+ 	}
+ 
+-	return (status);
++	return status;
+ }
+ 
+ /*******************************************************************************
+@@ -272,9 +268,8 @@ u8 *acpi_db_encode_pld_buffer(struct acpi_pld_info *pld_info)
+ 	u32 dword;
+ 
+ 	buffer = ACPI_ALLOCATE_ZEROED(ACPI_PLD_BUFFER_SIZE);
+-	if (!buffer) {
+-		return (NULL);
+-	}
++	if (!buffer)
++		return NULL;
+ 
+ 	/* First 32 bits */
+ 
+@@ -331,7 +326,7 @@ u8 *acpi_db_encode_pld_buffer(struct acpi_pld_info *pld_info)
+ 		ACPI_MOVE_32_TO_32(&buffer[4], &dword);
+ 	}
+ 
+-	return (ACPI_CAST_PTR(u8, buffer));
++	return ACPI_CAST_PTR(u8, buffer);
+ }
+ 
+ /*******************************************************************************
+-- 
+2.34.1
 
->  drivers/acpi/acpica/aclocal.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/acpica/aclocal.h b/drivers/acpi/acpica/aclocal.h
-> index 0c41f0097e8d..f98640086f4e 100644
-> --- a/drivers/acpi/acpica/aclocal.h
-> +++ b/drivers/acpi/acpica/aclocal.h
-> @@ -1141,7 +1141,7 @@ struct acpi_port_info {
->  #define ACPI_RESOURCE_NAME_PIN_GROUP_FUNCTION   0x91
->  #define ACPI_RESOURCE_NAME_PIN_GROUP_CONFIG     0x92
->  #define ACPI_RESOURCE_NAME_CLOCK_INPUT          0x93
-> -#define ACPI_RESOURCE_NAME_LARGE_MAX            0x94
-> +#define ACPI_RESOURCE_NAME_LARGE_MAX            0x93
-
-I think some brief comment in the code explaining the reasoning for such a
-definition for the MAX value would be worth it.
-
-Though another way is to tweak the check inside acpi_ut_validate_resource()
-to have '>=':
-
-	if (resource_type > ACPI_RESOURCE_NAME_LARGE_MAX) {
-		goto invalid_resource;
-	}
-
-Maybe that'd be a bit clearer?
-
-Thanks!
-
->  
->  /*****************************************************************************
->   *
-> -- 
-> 2.50.1
 
