@@ -1,60 +1,50 @@
-Return-Path: <linux-acpi+bounces-15547-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15548-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CAE7B1C9A0
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Aug 2025 18:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A8FB1CA65
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Aug 2025 19:15:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BCF8625E4E
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Aug 2025 16:14:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC6F83B2DB4
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Aug 2025 17:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA374299AB1;
-	Wed,  6 Aug 2025 16:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0571E7C03;
+	Wed,  6 Aug 2025 17:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="XAjsJpb1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WJ0K6HTZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69A9299AA0
-	for <linux-acpi@vger.kernel.org>; Wed,  6 Aug 2025 16:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EAEC35898;
+	Wed,  6 Aug 2025 17:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754496838; cv=none; b=DFTQVIJ/8rU6dQ4HopJofeDumJocInaMULjMx7eQmPxJhGaPlRb0dgVEcKYSlp501WiNDAqyL85tEr+vggIGKaqiTYHwGI2VFkwqKcQ14pjmEq/uUqQomD9QOqIlkyBhPM8wIX+QqDq9J64LrFFEmapIPOX5d3M04dONw4od8Q8=
+	t=1754500523; cv=none; b=ZM0xHSKEV7QDixOSGeHXEEJFTF+blL+/T5r1csWHs1H9NauhiOlLw9Ne5KUd8UMKgLFuLfXVNIF63jC7ZRFpUNcJ9FBDu24U185fMBcFgpHw/NHUJCnQY2o/PfCCBjdZvZhlLmOVShKoeZIuS1R56k/8QBZWt9qi0KK1n2tDhZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754496838; c=relaxed/simple;
-	bh=6ISx/nw3+eOU66AbHs7u3iNQmuaQbReknNmnLszrGhU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ChO+8qJIcdQv5P5CZtU3UEJ4PQwmEtv0uBgHWlwiyIZxBilzhRx5d9ygKdHVQ7TuTJBTrdXBgMeq++j4yrRVHqNeMSivcXEciSafR/5ipWXkVnrPpk2cmGLqWvu7jBzTMY2E0AOD/qyCco9QYkQ5PyEbS7FmxY//UqiLrHBQgws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=XAjsJpb1; arc=none smtp.client-ip=178.154.239.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-67.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-67.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:384c:0:640:64ee:0])
-	by forward100b.mail.yandex.net (Yandex) with ESMTPS id D4ADF80601;
-	Wed, 06 Aug 2025 19:13:46 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-67.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id iDkRkoZNA4Y0-dXQ0zFAK;
-	Wed, 06 Aug 2025 19:13:46 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1754496826; bh=X+v/n9rLerBM2RmlNzlMSZsG8oTEMlbl7bgj1hgRlno=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=XAjsJpb1WmOITWC9sW5dpJLnHHrI4yTCtNlMxN/WbW0O3O/A0OAer3YisJt6hjN70
-	 DyS3Elis5HXTVYAGr9Brs/YRojphEx6mS+uZYBO5Guaxx9nDn0GWLITPL4rZGxOlql
-	 eXiB9egVtYSuQYWncYTkcdDcNAk6frYLKV7oXiQI=
-Authentication-Results: mail-nwsmtp-smtp-production-main-67.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Niyas Sait <niyas.sait@linaro.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Robert Moore <robert.moore@intel.com>
-Cc: linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	lvc-project@linuxtesting.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] ACPICA: fix largest possible resource descriptor index
-Date: Wed,  6 Aug 2025 19:13:01 +0300
-Message-ID: <20250806161301.233242-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1754500523; c=relaxed/simple;
+	bh=I3R0ZZuPVZjnQiFgtmFRVCZ2r5++kREGhtzLYMxzees=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=g4nFu53h8cAZrvQNv1tkBaJQZt7N4qAbCmKV4IUnJCGyQwpgorpyDvxBOIKJofnsbln+jzprLQbsQ/lqJ7XkoNkf+/knvpi82+SDwl4Kn6CzuxfXapXcO9rIQRftOrl8uSg3h/KXqkGn+vSF+16BSDYUg7wJn02Xy+L1JJEp9T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WJ0K6HTZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CE8C4CEE7;
+	Wed,  6 Aug 2025 17:15:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754500522;
+	bh=I3R0ZZuPVZjnQiFgtmFRVCZ2r5++kREGhtzLYMxzees=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=WJ0K6HTZEfT8BNH+os9kpt9pf57Ww0MKKW5Q7tRMASQtIpPlQvkgZtJGsw3KeEdBK
+	 BaretPZGh8nFdv8U5zaWt1OzwhKxoJ/IkUeZPYDzwBy08EJGVTNbKkcbH2X8J81Bl+
+	 21pdP1RoBJTIjViiGoDvOqsFOk0J250MYa855KdnLPkSAN5fW+l5PCNRAocBooOQJd
+	 ijz9vEfwOt0CurH2++NyCsU+zuubaqSiZDz6GiTYBAV/K4DmuHSOdm9A0yC3KXDUwt
+	 DdIvUQUmIwjvd/OCQc5uEfiC6otmfcVZXBuEDT9eCIYmSOCPwtX8P6YDl4Km+UYygT
+	 xfKN+B9hO+jeg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADDD6383BF63;
+	Wed,  6 Aug 2025 17:15:37 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -62,35 +52,52 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v5 0/3] RISC-V: Add ACPI support for IOMMU
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <175450053651.2863135.8588545093021909171.git-patchwork-notify@kernel.org>
+Date: Wed, 06 Aug 2025 17:15:36 +0000
+References: <20250716104059.3539482-1-sunilvl@ventanamicro.com>
+In-Reply-To: <20250716104059.3539482-1-sunilvl@ventanamicro.com>
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, iommu@lists.linux.dev, apatel@ventanamicro.com,
+ tjeznach@rivosinc.com, alex@ghiti.fr, rafael@kernel.org,
+ robin.murphy@arm.com, joro@8bytes.org, atishp@rivosinc.com,
+ palmer@dabbelt.com, paul.walmsley@sifive.com, ajones@ventanamicro.com,
+ will@kernel.org, lenb@kernel.org
 
-ACPI_RESOURCE_NAME_LARGE_MAX should be equal to the last actually
-used resource descriptor index (ACPI_RESOURCE_NAME_CLOCK_INPUT).
-Otherwise 'resource_index' in 'acpi_ut_validate_resource()' may be
-clamped incorrectly and resulting value may issue an out-of-bounds
-access for 'acpi_gbl_resource_types' array. Compile tested only.
+Hello:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This series was applied to riscv/linux.git (for-next)
+by Palmer Dabbelt <palmer@dabbelt.com>:
 
-Fixes: 520d4a0ee5b6 ("ACPICA: add support for ClockInput resource (v6.5)")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/acpi/acpica/aclocal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, 16 Jul 2025 16:10:56 +0530 you wrote:
+> This series adds support for RISC-V IOMMU on ACPI based platforms.
+> RISC-V IO Mapping Table (RIMT) is a new static ACPI table [1] introduced
+> to communicate IOMMU information to the OS.
+> 
+> [1] - https://github.com/riscv-non-isa/riscv-acpi-rimt/releases/download/v1.0/rimt-spec.pdf
+> 
+> Changes since v4:
+> 	1) Rebased to 6.16-rc6
+> 	2) Addressed Anup's feedback on formatting.
+> 	3) Added RB tag from Will and Anup.
+> 
+> [...]
 
-diff --git a/drivers/acpi/acpica/aclocal.h b/drivers/acpi/acpica/aclocal.h
-index 0c41f0097e8d..f98640086f4e 100644
---- a/drivers/acpi/acpica/aclocal.h
-+++ b/drivers/acpi/acpica/aclocal.h
-@@ -1141,7 +1141,7 @@ struct acpi_port_info {
- #define ACPI_RESOURCE_NAME_PIN_GROUP_FUNCTION   0x91
- #define ACPI_RESOURCE_NAME_PIN_GROUP_CONFIG     0x92
- #define ACPI_RESOURCE_NAME_CLOCK_INPUT          0x93
--#define ACPI_RESOURCE_NAME_LARGE_MAX            0x94
-+#define ACPI_RESOURCE_NAME_LARGE_MAX            0x93
- 
- /*****************************************************************************
-  *
+Here is the summary with links:
+  - [v5,1/3] ACPI: RISC-V: Add support for RIMT
+    https://git.kernel.org/riscv/c/ea35561bc965
+  - [v5,2/3] ACPI: scan: Add support for RISC-V in acpi_iommu_configure_id()
+    https://git.kernel.org/riscv/c/0d7c16d0df92
+  - [v5,3/3] iommu/riscv: Add ACPI support
+    https://git.kernel.org/riscv/c/368ed89f7ac9
+
+You are awesome, thank you!
 -- 
-2.50.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
