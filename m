@@ -1,100 +1,150 @@
-Return-Path: <linux-acpi+bounces-15556-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15557-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F5BB1D135
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Aug 2025 05:28:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC678B1D2FA
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Aug 2025 09:07:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F0A8625F30
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Aug 2025 03:28:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C0B73AAF5B
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Aug 2025 07:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E22195808;
-	Thu,  7 Aug 2025 03:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B1822DA0C;
+	Thu,  7 Aug 2025 07:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="kyVuJYVC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-m1973185.qiye.163.com (mail-m1973185.qiye.163.com [220.197.31.85])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C5F189;
-	Thu,  7 Aug 2025 03:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625F31D5ABA;
+	Thu,  7 Aug 2025 07:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754537335; cv=none; b=UhcwFbB5sOwQ9jBEcd+JLYklZMkrKRYk1eR+2ZjS07SUthLTYWNBPSCwQJGC98SQEjp0FO8wkGgIx0ronLxom+iUin2Hce1tWI14Xd6F8+vQWM7BgR4m1vgsl5uDMKm6wA3GSMER2iFRekrs24ZW60TDOfEAzNIQnkCS4RSinPA=
+	t=1754550438; cv=none; b=XSaUQPsK3ru8AP/Z4YLLfDRc51CiOrbiCuM49SPYeg9TQfKg2JDatFg++EwcYIqmBgdVBeMmYWEMP/aNxJUKUcVBFYcX2JmGO9PJsBLn1sF4Ly6B8DCXyqyKBBamqXW2OoiwlS2BLyCxX6q/jMskFkEg84otbEato3/zvwUje+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754537335; c=relaxed/simple;
-	bh=joX9Rft8lA6tlKiAX3uOHsmPB6vlm1mjB7sZ/GaK4mU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Fub45+mtisHq1W+Rc4u8TEg/34m65WAwGBV6jzSEZDHHzAyCFNwx7ZMcUIXpZQd/eHshH2Rh3eDggqlyGHEX/7DIYxsQJ2uHtd8KLXBH+bVAwz3o0aGPkxTYOJays+FNZPPmKXMXdNBmdNqli/jNuM0tYNVibVEfFB4oLcEJWBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn; spf=pass smtp.mailfrom=easystack.cn; arc=none smtp.client-ip=220.197.31.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=easystack.cn
-Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id e43c2145;
-	Thu, 7 Aug 2025 11:28:39 +0800 (GMT+08:00)
-From: Zhen Ni <zhen.ni@easystack.cn>
-To: sudeep.holla@arm.com,
-	jassisinghbrar@gmail.com
-Cc: linux-acpi@vger.kernel.org,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v5] mailbox: pcc: Add missed acpi_put_table() to fix memory leak
-Date: Thu,  7 Aug 2025 11:28:31 +0800
-Message-Id: <20250807032831.451863-1-zhen.ni@easystack.cn>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20250805034829.168187-1-zhen.ni@easystack.cn>
-References: <20250805034829.168187-1-zhen.ni@easystack.cn>
+	s=arc-20240116; t=1754550438; c=relaxed/simple;
+	bh=zkoi1u9rRTeLoqOid1Hi3KnNhzzCFY0gV6iN5SemtZI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tMvTExdS9PNpy5PT/Cz6SAIc66jmzzkvRtgTPZb/sU1889Uabu2OnZXMnXj9IcSwqjA3hwPaQO5w93Bzf5P8WMsytiQizryaRWgNZHV1NY+8iRq5BAcJp893gpF9zpb13VdJzurg19GEc87HPnkEEUctnguXk/E/2yohzd8AbjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=kyVuJYVC; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=OC4ewFJt3pSuBvem9jBIWzZT0RIGds8UTBu+dI6BD+U=; t=1754550436;
+	x=1754982436; b=kyVuJYVC7hP7z22UIkA/qb7ShLLcQaPC/nnOtBIH9I8oACh6mbpUSgLDmvJ26
+	e054g/yjT4cmPQn2ZnXJXKpjueFTl7Ye8tGLDVikB+PTIRfYvnu/MMUPMyZLsQS2fvgcX1RqHUy6Q
+	hoKBOqXNmrTnYCZuZ1FiUNGdlGGNiH9q0mFmUeAcI8xJdhJw76pmOYy8qCZlcNH3aM1JN5ZMBOF4E
+	+By0llJIrveelh4/3s9Uf7ctXajVBJS33QwVP189kKPNeTYJyMKIAZHhivlCHGa0e3ZTkvNXhjlyI
+	FoBebFSzlde0Mb09WR3B+9nkK5idVR/aWC8p0TjmFx7Sti9wQQ==;
+Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
+	id 1ujuiW-00FZpR-29;
+	Thu, 07 Aug 2025 09:07:12 +0200
+Message-ID: <d6b93806-2d0b-40b2-a795-16ab78bc0048@leemhuis.info>
+Date: Thu, 7 Aug 2025 09:07:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a988292ddc80229kunmffa02a95735091
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVkZGElKVk5MTx5IShpLQhoaTFYVFAkWGhdVGRETFh
-	oSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0lPT09LVUpLS1
-	VLWQY+
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] tty lockup and WWAN loss after hibernate/suspend in
+ 6.8+ on ThinkPad X1 Carbon Gen 10
+To: Andy Mindful <andy.mindful@gmail.com>, regressions@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-acpi@vger.kernel.org, rafael@kernel.org,
+ ville.syrjala@linux.intel.com, tglx@linutronix.de,
+ Christian Brauner <brauner@kernel.org>, Jani Nikula <jani.nikula@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+References: <CACTEcX6oXBot1VBApOyKVMVXsAN9BsvQMLa8J0iKpNeB-eLttQ@mail.gmail.com>
+ <642d439ea1be8e48ee5c47fd3921a786452fb931@intel.com>
+ <CACTEcX5Y3PNXNkhnK1dGFe+k3sigOZNpj66KKGAS9XeHqRu35w@mail.gmail.com>
+ <0b15e33603a46f6cc7ad7d09a156044f11367169@intel.com>
+ <CACTEcX47bUd2tp=LYkQnhK29Js=vLN0JfXL8Aq6mOFBVYumpzQ@mail.gmail.com>
+ <CABgObfZKKeqMrAUyS8CB4ARkW_8Z9QREgpgYcq2jxoQ9ppS6MA@mail.gmail.com>
+ <CACTEcX7oa+Shj=uYiRMoWpng+RZXDeQrOa-VTRmzVVtXJMCgLQ@mail.gmail.com>
+ <CACTEcX7hsRkzYEBg4pQd5s36p_ZXJM=dtxSGmBjfkt5sWrXP8g@mail.gmail.com>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 n7RI
+In-Reply-To: <CACTEcX7hsRkzYEBg4pQd5s36p_ZXJM=dtxSGmBjfkt5sWrXP8g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1754550436;d41eb4ca;
+X-HE-SMSGID: 1ujuiW-00FZpR-29
 
-Fixes a permanent ACPI memory leak in the success path by adding
-acpi_put_table().
+On 06.08.25 10:40, Andy Mindful wrote:
+> 
+> Can somebody advise how to properly bisect issues in linux-stable
+> repository between v6.7.11 to v6.8-rc1 tags?
 
-Fixes: ce028702ddbc ("mailbox: pcc: Move bulk of PCCT parsing into pcc_mbox_probe")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
----
-Changes in v5:
-- Discard err label modification
-Changes in v4:
-- Change goto target from err to put_table.
-- Remove goto tatget err_nomem
-- Update commit msg
-Changes in v3:
-- Add goto label err_nomem, keep the err label.
-- Update commit msg
-Changes in v2:
-- Add tags of 'Fixes' and 'Cc'
-- Change goto target from out_put_pcct to e_nomem
----
- drivers/mailbox/pcc.c | 2 --
- 1 file changed, 2 deletions(-)
+You can't directly bisect, as their development paths diverged with
+v6.7; so if 6.7.11 is working, it might be due to a change that was
+added between 6.7 and 6.7.11 (this is unlikely, but a possibility). So
+you have to check if 6.7 is working and then bisect between 6.7 and
+6.8-rc1 (in case 6.7 was fine) or between 6.7 and 6.7.11 (in case it was
+not).
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index f6714c233f5a..70d47f8759eb 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -827,8 +827,6 @@ static int pcc_mbox_probe(struct platform_device *pdev)
- 	rc = mbox_controller_register(pcc_mbox_ctrl);
- 	if (rc)
- 		pr_err("Err registering PCC as Mailbox controller: %d\n", rc);
--	else
--		return 0;
- err:
- 	acpi_put_table(pcct_tbl);
- 	return rc;
--- 
-2.20.1
+But TBH: from your bisection results you shared in this thread so far it
+looks a bit like your test is unreliable. Likely because it's a timing
+issue or something like that which makes things work or not. That, the
+age of kernels you try to bisect, and what Maciej explained elsewhere in
+this thread at
+https://lore.kernel.org/all/cfc561fb-29a9-4a19-a2e5-0f3f28e5e63a@maciej.szmigiero.name/
+makes me think that it's not worth a bisection, as I guess the result is
+unlikely to change anything (but I could be wrong).
+
+Ciao, Thorsten
 
 
