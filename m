@@ -1,188 +1,125 @@
-Return-Path: <linux-acpi+bounces-15554-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15555-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4767B1CFDF
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Aug 2025 02:50:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D11D4B1D12F
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Aug 2025 05:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89507164738
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Aug 2025 00:50:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D6E21AA2006
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Aug 2025 03:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B242145346;
-	Thu,  7 Aug 2025 00:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTz9IEpv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE3213A3F2;
+	Thu,  7 Aug 2025 03:18:00 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m49218.qiye.163.com (mail-m49218.qiye.163.com [45.254.49.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537C578F34
-	for <linux-acpi@vger.kernel.org>; Thu,  7 Aug 2025 00:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635EF189;
+	Thu,  7 Aug 2025 03:17:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754527851; cv=none; b=lFroqzXrQZZGbn766po9xgQj6A7ofBSHOYHUWsOW572L8oBar8GEAT3q3vpoWmse0UzGxKj+OBYb3uHZQznQqUtOpN/LKVfJ2itJ70oOYfKva0fSUruMl6ifLbxrrpkQGr/0mRj+lvx+El3s1MWJaftJI3hodheuOi1tfDXJ79A=
+	t=1754536680; cv=none; b=Gea0Mc/8b2ghmBfxdX6OzWh6CaVpSYFgVxMVxeNSFNs1qFMN79vuwZiwX/YV+p37DDA5sS0VD0bpUkmkgD49/dU52MAeRtaTwIWbAr/Jz2Jcke6G5G+rSzh6LRSOiuAM/tqKQQQ04UvBzZ9egZbRDYdWDfJfQS4iFCiquM2/HuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754527851; c=relaxed/simple;
-	bh=grPj4nUiqlg/GvMehvwd/PM7Ps+66XCt4iskjSNeqTI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NtjbB7Rxnww6j4Bz82sIiK/xA1e3vOmz6bKfNezgRd/jCVzVhM5kZFpeo32oca+fYNUES7sIfPOJGf5xuPIg4rcFFW/oNrnaroADvuy4Vxqrz95DHskGup4s7ZQJ5poNCqtbxcL/TfedAT6S0FDb6DNATl3yXZOozKzFoLjlMrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTz9IEpv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C79C116B1
-	for <linux-acpi@vger.kernel.org>; Thu,  7 Aug 2025 00:50:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754527850;
-	bh=grPj4nUiqlg/GvMehvwd/PM7Ps+66XCt4iskjSNeqTI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=HTz9IEpvRGU5Kag0/OLxpBfg31H/M5cMUEZ3opwD93imc7f4sGxKgs3oUex89I2nb
-	 hxzO6iowo+ZbiQ70YFpfKaBTo/wZ1uDMb3ImAwgkUtrprdBZ/C7w1GSZ85i9S2wINF
-	 flqmfWsLLtA7qsIVS5IR2pkuUqjXvBh9SIoIkJcYGTgIpPKsPLM58AvSkhXVLjzvPk
-	 qvejLXRMKRvkwtIY9Dyp2rSxbxSOZPw0Dnu4di3x/SBgqtzC0fYPSfeTTUGajbYr2d
-	 k840k1dNkB+jRAMX/wnJPz4hATkHNcA5iGcyQR9p+xJkmaG4YiRPu88jd0T5Z69vR5
-	 xgQphFzj9cBCQ==
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-459d5ab32d1so33545e9.0
-        for <linux-acpi@vger.kernel.org>; Wed, 06 Aug 2025 17:50:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUitL80HLPNlW75a7/R+kIubBo935m9lNrMSQj4AK1ucAB3Rl7Kl+3+ak7rCmUL88ybG70k+TLbgnY9@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywt+KwmB1CsSH5/CATAfm4L0ehhnUPvPLXebiIepdrQ8HqILuFV
-	mcZZuO7NAW5GQae/GS6P8w5YYxTybaCjZ1+L7YEgocWGhOus6tkTlQG7XPPAAcygU16lsIUCIxE
-	QNF9cmceI0sQ4/JNxGSRZ1r3aH6FqnIMGWMMluTuZ
-X-Google-Smtp-Source: AGHT+IGd7AVqzUBj3ViITTLxWIkbOiciEeiGJAqp3Zj3Tc1+LEEggLoa5F5uWFg80218MiuBPCcZLN8HDT/+zDOogCY=
-X-Received: by 2002:a05:600c:a215:b0:453:65f4:f4c8 with SMTP id
- 5b1f17b1804b1-459eee38e99mr254455e9.3.1754527849296; Wed, 06 Aug 2025
- 17:50:49 -0700 (PDT)
+	s=arc-20240116; t=1754536680; c=relaxed/simple;
+	bh=NrAAULTbUGrcBeLEENrwD2qDSx9oCRI/90MAU0LbqUE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WTB/HUDvMAM/XWuYU+vzJh5er4k8MaKtvJfWd3BkYTHgon+9w1aJiNDgKQqFjDdVwWSSdau0+BeZTfF5NP3tnkpY4b4wJUqrBFJA50tOYFMX5RYUcDLd67wUUs69KZ5fUxSQutX1KQzLBftpHK0ykTQBb14poC/GxA7vqiURcLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn; spf=pass smtp.mailfrom=easystack.cn; arc=none smtp.client-ip=45.254.49.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=easystack.cn
+Received: from localhost.localdomain (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id e438fb18;
+	Thu, 7 Aug 2025 11:12:37 +0800 (GMT+08:00)
+From: Zhen Ni <zhen.ni@easystack.cn>
+To: rafael@kernel.org,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	Zhen Ni <zhen.ni@easystack.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] ACPI: tables: FPDT: Fix memory leak in acpi_init_fpdt()
+Date: Thu,  7 Aug 2025 11:12:29 +0800
+Message-Id: <20250807031229.449657-1-zhen.ni@easystack.cn>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250728-luo-pci-v1-0-955b078dd653@kernel.org>
- <20250728-luo-pci-v1-20-955b078dd653@kernel.org> <87zfconsaw.ffs@tglx>
- <CAF8kJuOM=2oEFP20xWtQ==ECwF_vNB032Os3-N12zY1xVau-yw@mail.gmail.com>
- <20250731150132.GV26511@ziepe.ca> <CAF8kJuPbJWea+o=GTFEM6KRCq4DxDad+83+vM0Np+n=Mmzqzag@mail.gmail.com>
- <20250802135034.GJ26511@ziepe.ca>
-In-Reply-To: <20250802135034.GJ26511@ziepe.ca>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 6 Aug 2025 17:50:37 -0700
-X-Gmail-Original-Message-ID: <CAF8kJuN4yjBzaTuAA9wERbxbJQs=YSf-1RY_nHu+XvMybpYbfA@mail.gmail.com>
-X-Gm-Features: Ac12FXwr_lgsbosoQEiUbhniouBJKo-bOKc3xyjaNCaRQ66umGk7SeForY_LB9o
-Message-ID: <CAF8kJuN4yjBzaTuAA9wERbxbJQs=YSf-1RY_nHu+XvMybpYbfA@mail.gmail.com>
-Subject: Re: [PATCH RFC 20/25] PCI/LUO: Avoid write to liveupdate devices at boot
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Pasha Tatashin <tatashin@google.com>, 
-	Jason Miu <jasonmiu@google.com>, Vipin Sharma <vipinsh@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Parav Pandit <parav@nvidia.com>, William Tu <witu@nvidia.com>, Mike Rapoport <rppt@kernel.org>, 
-	Leon Romanovsky <leon@kernel.org>, Junaid Shahid <junaids@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9882842cc20229kunmd5671b45730dd0
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVkaHkhCVhodH0kYSkkZHUIfQ1YVFAkWGhdVGRETFh
+	oSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0lPT09IVUpLS1
+	VKQktLWQY+
 
-Hi Jason,
+acpi_put_table() is only called when kobject_create_and_add() or
+fpdt_process_subtable() fails, but not on the success path. This causes
+a memory leak if initialization succeeds.
 
-Thanks for your feedback.
+Ensure acpi_put_table() is called in all cases by adding a put_table
+label and routing both success and failure paths through it. Drop the
+err_subtable label since kobject_put() is only needed when
+fpdt_process_subtable() fails.
 
-On Sat, Aug 2, 2025 at 6:50=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> wrote=
-:
->
-> On Fri, Aug 01, 2025 at 04:04:39PM -0700, Chris Li wrote:
-> > My philosophy is that the LUO PCI subsystem is for service of the PCI
-> > device driver. Ultimately it is the PCI device driver who decides what
-> > part of the config space they want to preserve or overwrite. The PCI
-> > layer is just there to facilitate that service.
->
-> I don't think this makes any sense at all. There is nothing the device
-> driver can contribute here.
+Fixes: d1eb86e59be0 ("ACPI: tables: introduce support for FPDT table")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+---
+ drivers/acpi/acpi_fpdt.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-I am considering that the device driver owner will know a lot more
-device internal knowledge, e.g. why it needs to reserve this and that
-register where the PCI layer might not know much about the internal
-device behavior.
+diff --git a/drivers/acpi/acpi_fpdt.c b/drivers/acpi/acpi_fpdt.c
+index 271092f2700a..c8aea5bb187c 100644
+--- a/drivers/acpi/acpi_fpdt.c
++++ b/drivers/acpi/acpi_fpdt.c
+@@ -275,7 +275,7 @@ static int __init acpi_init_fpdt(void)
+ 	struct acpi_table_header *header;
+ 	struct fpdt_subtable_entry *subtable;
+ 	u32 offset = sizeof(*header);
+-	int result;
++	int result = 0;
+ 
+ 	status = acpi_get_table(ACPI_SIG_FPDT, 0, &header);
+ 
+@@ -285,7 +285,7 @@ static int __init acpi_init_fpdt(void)
+ 	fpdt_kobj = kobject_create_and_add("fpdt", acpi_kobj);
+ 	if (!fpdt_kobj) {
+ 		result = -ENOMEM;
+-		goto err_nomem;
++		goto put_table;
+ 	}
+ 
+ 	while (offset < header->length) {
+@@ -295,8 +295,10 @@ static int __init acpi_init_fpdt(void)
+ 		case SUBTABLE_S3PT:
+ 			result = fpdt_process_subtable(subtable->address,
+ 					      subtable->type);
+-			if (result)
+-				goto err_subtable;
++			if (result) {
++				kobject_put(fpdt_kobj);
++				goto put_table;
++			}
+ 			break;
+ 		default:
+ 			/* Other types are reserved in ACPI 6.4 spec. */
+@@ -304,11 +306,8 @@ static int __init acpi_init_fpdt(void)
+ 		}
+ 		offset += sizeof(*subtable);
+ 	}
+-	return 0;
+-err_subtable:
+-	kobject_put(fpdt_kobj);
+ 
+-err_nomem:
++put_table:
+ 	acpi_put_table(header);
+ 	return result;
+ }
+-- 
+2.20.1
 
-> > If you still think it is unjustifiable to have one test try to
-> > preserve all config space for liveupdate.
->
-> I do think it is unjustifiable, it is architecurally wrong. You only
-> should be preserving the absolute bare minimum of config space bits
-> and everything else should be rewritten by the next kernel in the
-> normal way. This MSI is a prime example of a nonsensical outcome if
-> you take the position the config space should not be written to.
-
-OK. Let me rework the V2 with your approach.
-
->
-> > > Only some config accesse are bad. Each and every "bad" one needs to b=
-e
-> > > clearly explained *why* it is bad and only then mitigated.
-> >
-> > That is exactly the reason why we have the conservative test that
-> > preserves every config space test as a starting point.
->
-> That is completely the opposite of what I said. Preserving everything
-> is giving up on the harder job of identifying which bits cannot be
-> changed, explaining why they can't be changed, and then mitigating
-> only those things.
-
-We can still preserve every thing then work backwards to preserve
-less.  As I said, I will rework V2 with your approach preserving bare
-minimum as the starting place.
-
-> > Another constraint is that the data center servers are dependent on
-> > the network device able to connect to the network appropriately. Take
-> > diorite NIC  for example, if I try only preserving ATS/PASID did not
-> > finish the rest of liveupdate, the nic wasn't able to boot up and
-> > connect to the network all the way. Even if the test passes for the
-> > ATS part, the over test fails because the server is not back online. I
-> > can't include that test into the test dashboard, because it brings
-> > down the server. The only way to recover from that is rebooting the
-> > server, which takes a long time for a big server. I can only keep that
-> > non-passing test as my own private developing test, not the regression
-> > test set.
->
-> I have no idea what this is trying to say and it sounds like you also
-> can't explain exactly what is "wrong" and justify why things are being
-> preserved.
-
-I know what register is causing the trouble but I think we are under a
-different philosophy of addressing the problem from different ends.
-Another consideration is the device testing matrixs. The kexec with
-device liveupdate is a rare event. With that many device state
-re-initializing might trigger some very rare bug in the device or
-firmware. So it might be due to the device internal implementation,
-even though PCI spec might say otherwise or undefined.
-
-Anyway, let me do it your way in V2 then.
-
-> Again, your series should be starting simpler. Perserve the dumbest
-> simplest PCI configuration. Certainly no switches, P2P, ATS or
-> PASID. When that is working you can then add on more complex PCI
-> features piece by piece.
-
-With the V1 the patch series deliverable is having an Intel diorite
-NVMe device preserve every config space access and pass to the vfio
-and iommu people to build the vfio and iommu on top of it. Let's
-forget about V1.
-
-With V2 I want to start with the minimal end. No switches,P2P, ATS or
-PASID. I need some help to define what is deliverable in such a
-minimal preserve. e.g. Do I be able to read back the config value not
-changed then call it a day. Or do I expect to see the device fully
-initialized, it is able to be used by the user space. Will the device
-need to perform any DMA? Interrupt?
-
-I will probably find a device as simple as possible and it is attached
-to the root PCI host bridge, not the PCI-PCI bridge.
-Maybe no interrupt as the first step. One possibility is using the
-Intel DSA device that does the DMA streaming.
-
-If you have any other feedback on the candidate device and deliverable
-test for V2, I am looking forward to it.
-
-Thanks.
-
-Chris
 
