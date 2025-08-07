@@ -1,150 +1,375 @@
-Return-Path: <linux-acpi+bounces-15557-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15558-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC678B1D2FA
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Aug 2025 09:07:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C9DBB1D38C
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Aug 2025 09:42:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C0B73AAF5B
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Aug 2025 07:07:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 004CB7B2D86
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Aug 2025 07:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B1822DA0C;
-	Thu,  7 Aug 2025 07:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07EA323C4F1;
+	Thu,  7 Aug 2025 07:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="kyVuJYVC"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="GbQe1VFa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625F31D5ABA;
-	Thu,  7 Aug 2025 07:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8556F242D8C
+	for <linux-acpi@vger.kernel.org>; Thu,  7 Aug 2025 07:42:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754550438; cv=none; b=XSaUQPsK3ru8AP/Z4YLLfDRc51CiOrbiCuM49SPYeg9TQfKg2JDatFg++EwcYIqmBgdVBeMmYWEMP/aNxJUKUcVBFYcX2JmGO9PJsBLn1sF4Ly6B8DCXyqyKBBamqXW2OoiwlS2BLyCxX6q/jMskFkEg84otbEato3/zvwUje+w=
+	t=1754552538; cv=none; b=A5yp9fdhk7g58ijfai5CD3apf4AEOA4mbzeH6RJ161JxXXmVNySiFRNfPCnTiZmhAbhx4jJF04i0PwRoRAZ6gBUuxhu6XI9tGc2qMmSZEwFiTa5F6tQRlhSuF9zXpufweSByl2wJH0SVp3xUfP77J2rZxNJdo6QBJ/bUCjFzeCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754550438; c=relaxed/simple;
-	bh=zkoi1u9rRTeLoqOid1Hi3KnNhzzCFY0gV6iN5SemtZI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tMvTExdS9PNpy5PT/Cz6SAIc66jmzzkvRtgTPZb/sU1889Uabu2OnZXMnXj9IcSwqjA3hwPaQO5w93Bzf5P8WMsytiQizryaRWgNZHV1NY+8iRq5BAcJp893gpF9zpb13VdJzurg19GEc87HPnkEEUctnguXk/E/2yohzd8AbjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=kyVuJYVC; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=OC4ewFJt3pSuBvem9jBIWzZT0RIGds8UTBu+dI6BD+U=; t=1754550436;
-	x=1754982436; b=kyVuJYVC7hP7z22UIkA/qb7ShLLcQaPC/nnOtBIH9I8oACh6mbpUSgLDmvJ26
-	e054g/yjT4cmPQn2ZnXJXKpjueFTl7Ye8tGLDVikB+PTIRfYvnu/MMUPMyZLsQS2fvgcX1RqHUy6Q
-	hoKBOqXNmrTnYCZuZ1FiUNGdlGGNiH9q0mFmUeAcI8xJdhJw76pmOYy8qCZlcNH3aM1JN5ZMBOF4E
-	+By0llJIrveelh4/3s9Uf7ctXajVBJS33QwVP189kKPNeTYJyMKIAZHhivlCHGa0e3ZTkvNXhjlyI
-	FoBebFSzlde0Mb09WR3B+9nkK5idVR/aWC8p0TjmFx7Sti9wQQ==;
-Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	id 1ujuiW-00FZpR-29;
-	Thu, 07 Aug 2025 09:07:12 +0200
-Message-ID: <d6b93806-2d0b-40b2-a795-16ab78bc0048@leemhuis.info>
-Date: Thu, 7 Aug 2025 09:07:11 +0200
+	s=arc-20240116; t=1754552538; c=relaxed/simple;
+	bh=FiZl7dBM01nTpHTio21jd/nJKd4QC3gAoTSrHH1QJgg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=R8kcaA6WafGrJUoWJLNoCI+i4BY0IVXgw0ri88qpt50bkwWAZP90K4vDODoTcqMh8spRXdSXUrsjlWibmXoabKjS0EEbG17ZhN5dGomvnx0/na6GuJUJ//xz/qe+ASKqpKaXlKEi3tCbgh6QNbfIgt1ZiwVBsXt6J7Dst653/dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=GbQe1VFa; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-617b36cc489so1344739a12.0
+        for <linux-acpi@vger.kernel.org>; Thu, 07 Aug 2025 00:42:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1754552533; x=1755157333; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=vRngVDSFiad8P3vLgxpfrf7smMW2bm5yBF8353hqHug=;
+        b=GbQe1VFabzM1zOtpBS4n1C6QKuwIme+70LlAF3G6AVLZ5C+7aM3SgyeVJD7KErnc0c
+         z+Ip9tVXK4C8zn3OtEdmsPV7TAsx1tOV1ArYYc+tPaxLhC27pbewsTS1tt0DaMUk1ya7
+         ybz7CH4d8rrkndpX+5ssqWlXsniWtNrTWZC8w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754552533; x=1755157333;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vRngVDSFiad8P3vLgxpfrf7smMW2bm5yBF8353hqHug=;
+        b=mZTvHNxZL5B1ZbC6ut0k7cgwFaSXlgwOyQUtHRhHIyVD9IJdhuy8UWRP7F1O/FcrXU
+         hXAPhZqmJDqY8KgRcUmOnW6j79INOXCfh1dEWLY5rumCgoXY+x/FaP8MQ3S32b75E5MT
+         7XRF7j01Z8zfWcj8lJgfTqVbHOiXei10lKYOSuuO5gB7dstKbjgiOKdayheCJ54e6efb
+         HEWVKJrZUyme/9eVgNt0tcr4Lrmx6scR8NnsVQSTmSCLGekYniqRYHxngSSpGxt7U6gv
+         c11472ALw80Nnsj6kA4Z/y7UrnYqQl/aZQX/R3+P2fbHZzQnLWLbxaoHjQbGREmWIbqe
+         9xSw==
+X-Forwarded-Encrypted: i=1; AJvYcCX8uXVhqjh9K3g1c33vJYwVibDL39Do8iuLMQfuSfFZBO2JxUVwqIq8v6J4udFqQ+UiDnQv32MgycXF@vger.kernel.org
+X-Gm-Message-State: AOJu0YzX2bqkFdGP0W6pzkbdpEsVnYuR8Ew2Dx6+LUJ2CGQlKAXWXYyE
+	Z7ilS8IZCYx8k7TSDUt+xf5JcfsypacYScxQu0iTBjmrcYdZSgY1nvBxg31//MYBmmB+uPSqO5q
+	51KyIdw==
+X-Gm-Gg: ASbGncv/fPkN+P9CsYPVBzrDELQKSs3wxzkMMqYqJjYl1HG54SsCFC2+9OMj5sYtalB
+	omSg8oaU/M0ho7FvYRLgGyj+O8dLpNSBzUWMLw73OcEf6ltPtmwEKW8Kd3P6tPDh3wNNCQ4Wyk6
+	tbi8qvhTyg0xjHMUk/LjxWODAEiCkCUwoiJ8mDtLUXuNHz0dOKEDXRehpXbf7ncol8skr+V69TA
+	bdYAm8nctbb2PJ9xXy06kph4TLJGylBTlCDJPLrqB/hRoNJz9j+YEqbos6cgzmsnIYnllNd15eF
+	wrCsw39CeSIj62D20MiCFWLXku4xEZlpIcL8ukWlwtKYTOnyofRI4VED/fytKRy2va3GZFTQ8VD
+	0kTjWhh5tqxBCd0yMwvaNZPc8vpD4kUsIGPTF17fnYlbY9lLMCukWNN+58gtM
+X-Google-Smtp-Source: AGHT+IFOgFynnk7m+HLv+ASss4gueXSrSwN1u6rQ4nojI5307bOs/k6ftD7YSp8cdfTKWoSPyUcXog==
+X-Received: by 2002:a17:907:6d1b:b0:af9:88a2:b7a7 with SMTP id a640c23a62f3a-af99048b9a1mr554913066b.48.1754552532598;
+        Thu, 07 Aug 2025 00:42:12 -0700 (PDT)
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com. [209.85.208.45])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a21c081sm1243346666b.97.2025.08.07.00.42.12
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Aug 2025 00:42:12 -0700 (PDT)
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6157ed5dc51so1088436a12.1
+        for <linux-acpi@vger.kernel.org>; Thu, 07 Aug 2025 00:42:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVURD6mBmQKKQYUcOwwgnLIhkps5FBV2qouSoThK3URI0HVj1d+0xMF2kpbXY7HHO9MsQ006fLr7SCV@vger.kernel.org
+X-Received: by 2002:a2e:b54b:0:b0:332:2a32:2856 with SMTP id
+ 38308e7fff4ca-333813c4660mr13208821fa.29.1754552127402; Thu, 07 Aug 2025
+ 00:35:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] tty lockup and WWAN loss after hibernate/suspend in
- 6.8+ on ThinkPad X1 Carbon Gen 10
-To: Andy Mindful <andy.mindful@gmail.com>, regressions@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-acpi@vger.kernel.org, rafael@kernel.org,
- ville.syrjala@linux.intel.com, tglx@linutronix.de,
- Christian Brauner <brauner@kernel.org>, Jani Nikula <jani.nikula@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-References: <CACTEcX6oXBot1VBApOyKVMVXsAN9BsvQMLa8J0iKpNeB-eLttQ@mail.gmail.com>
- <642d439ea1be8e48ee5c47fd3921a786452fb931@intel.com>
- <CACTEcX5Y3PNXNkhnK1dGFe+k3sigOZNpj66KKGAS9XeHqRu35w@mail.gmail.com>
- <0b15e33603a46f6cc7ad7d09a156044f11367169@intel.com>
- <CACTEcX47bUd2tp=LYkQnhK29Js=vLN0JfXL8Aq6mOFBVYumpzQ@mail.gmail.com>
- <CABgObfZKKeqMrAUyS8CB4ARkW_8Z9QREgpgYcq2jxoQ9ppS6MA@mail.gmail.com>
- <CACTEcX7oa+Shj=uYiRMoWpng+RZXDeQrOa-VTRmzVVtXJMCgLQ@mail.gmail.com>
- <CACTEcX7hsRkzYEBg4pQd5s36p_ZXJM=dtxSGmBjfkt5sWrXP8g@mail.gmail.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 n7RI
-In-Reply-To: <CACTEcX7hsRkzYEBg4pQd5s36p_ZXJM=dtxSGmBjfkt5sWrXP8g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1754550436;d41eb4ca;
-X-HE-SMSGID: 1ujuiW-00FZpR-29
+References: <20250605-uvc-orientation-v2-0-5710f9d030aa@chromium.org>
+ <20250605-uvc-orientation-v2-10-5710f9d030aa@chromium.org>
+ <20250629181246.GE6260@pendragon.ideasonboard.com> <CANiDSCsu0RT4dcGyBJRutP=9HTe+niUoohxTZE=qJ8O_9ez=+A@mail.gmail.com>
+ <20250714142926.GI8243@pendragon.ideasonboard.com> <CANiDSCvFe23xmrJ0-qbWWa6+vKGb+QdDFV8VSLkmWdAnfsFtzw@mail.gmail.com>
+ <20250715193505.GB19299@pendragon.ideasonboard.com> <CANiDSCtvt6qnROQ0_-0iG5hqkU_uHZABujZPN7xuh7pUASSGyw@mail.gmail.com>
+In-Reply-To: <CANiDSCtvt6qnROQ0_-0iG5hqkU_uHZABujZPN7xuh7pUASSGyw@mail.gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Thu, 7 Aug 2025 09:35:14 +0200
+X-Gmail-Original-Message-ID: <CANiDSCsNjBEWR5HA9bhFNnXB7Cazj7o0wBnn53gzpoBBcYFkFw@mail.gmail.com>
+X-Gm-Features: Ac12FXyjct6ihC0OshwY5F1qdouFOZPK3DFRcqPyUc52eVa5roZ1nWwW2xk9ZpI
+Message-ID: <CANiDSCsNjBEWR5HA9bhFNnXB7Cazj7o0wBnn53gzpoBBcYFkFw@mail.gmail.com>
+Subject: Re: [PATCH v2 10/12] media: uvcvideo: Add get_* functions to uvc_entity
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Hans de Goede <hdegoede@redhat.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Hans Verkuil <hverkuil@xs4all.nl>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 06.08.25 10:40, Andy Mindful wrote:
-> 
-> Can somebody advise how to properly bisect issues in linux-stable
-> repository between v6.7.11 to v6.8-rc1 tags?
+Hi Laurent
 
-You can't directly bisect, as their development paths diverged with
-v6.7; so if 6.7.11 is working, it might be due to a change that was
-added between 6.7 and 6.7.11 (this is unlikely, but a possibility). So
-you have to check if 6.7 is working and then bisect between 6.7 and
-6.8-rc1 (in case 6.7 was fine) or between 6.7 and 6.7.11 (in case it was
-not).
+On Wed, 16 Jul 2025 at 12:32, Ricardo Ribalda <ribalda@chromium.org> wrote:
+>
+> On Tue, 15 Jul 2025 at 21:35, Laurent Pinchart
+> <laurent.pinchart@ideasonboard.com> wrote:
+> >
+> > On Mon, Jul 14, 2025 at 05:46:40PM +0200, Ricardo Ribalda wrote:
+> > > On Mon, 14 Jul 2025 at 16:30, Laurent Pinchart wrote:
+> > > > On Tue, Jul 01, 2025 at 01:13:10PM +0200, Ricardo Ribalda wrote:
+> > > > > On Sun, 29 Jun 2025 at 20:13, Laurent Pinchart wrote:
+> > > > > > On Thu, Jun 05, 2025 at 05:53:03PM +0000, Ricardo Ribalda wrote:
+> > > > > > > Virtual entities need to provide more values than get_cur and get_cur
+> > > > > >
+> > > > > > I think you meant "get_info and get_cur".
+> > > > > >
+> > > > > > > for their controls. Add support for get_def, get_min, get_max and
+> > > > > > > get_res.
+> > > > > >
+> > > > > > Do they ? The UVC specification defines controls that don't list
+> > > > > > GET_DEF, GET_MIN, GET_MAX and GET_RES as mandatory requests. Can't we do
+> > > > > > the same for the software controls ? This patch is meant to support the
+> > > > > > UVC_SWENTITY_ORIENTATION and UVC_SWENTITY_ROTATION control in the next
+> > > > > > patch, and those are read-only controls. Aren't GET_INFO and GET_CUR
+> > > > > > enough ?
+> > > > >
+> > > > > V4L2_CID_CAMERA_ROTATION has the type UVC_CTRL_DATA_TYPE_UNSIGNED,
+> > > > > that time requires get_min and get_max.
+> > > >
+> > > > Where does that requirement come from ? Is it because how the
+> > > > corresponding V4L2 type (V4L2_CTRL_TYPE_INTEGER) is handled in
+> > > > uvc_ctrl_clamp() ? uvc_ctrl_clamp() is only called when setting a
+> > > > control, from uvc_ctrl_set(), and V4L2_CID_CAMERA_ROTATION should be
+> > > > read-only.
+> > >
+> > > It its for VIDIOC_QUERY_EXT_CTRL
+> > >
+> > > uvc_query_v4l2_ctrl -> __uvc_query_v4l2_ctrl -> __uvc_queryctrl_boundaries
+> > >
+> > > We need to list the min, max, def and step for every control. They are
+> > > fetched with uvc_ctrl_populate_cache()
+> >
+> > Ah, I see, thanks.
+> >
+> > For GET_RES, I think we can leave it unimplemented.
+> > __uvc_queryctrl_boundaries() will set v4l2_ctrl->step = 0 which seems to
+> > be the right behaviour for a read-only control whose value never
+> > changes.
+>
+> That will break v4l2-compatiblity. Step needs to be != 0
+> https://git.linuxtv.org/v4l-utils.git/tree/utils/v4l2-compliance/v4l2-test-controls.cpp#n77
+>
+> Control ioctls (Input 0):
+>                 fail: v4l2-test-controls.cpp(77): step == 0
+>                 fail: v4l2-test-controls.cpp(201): invalid control 009a0923
+>
+> >
+> > As for the minimum and maximum, they are currently set to 0 if the
+> > corresponding operations are not supported. I wonder if we should set
+> > them to the current value instead for read-only controls (as in controls
+> > whose flags report support for GET_CUR only)..
+>
+> I am not sure that I like that approach IMO the code looks worse...
+> but if you prefer that, we can go that way
 
-But TBH: from your bisection results you shared in this thread so far it
-looks a bit like your test is unreliable. Likely because it's a timing
-issue or something like that which makes things work or not. That, the
-age of kernels you try to bisect, and what Maciej explained elsewhere in
-this thread at
-https://lore.kernel.org/all/cfc561fb-29a9-4a19-a2e5-0f3f28e5e63a@maciej.szmigiero.name/
-makes me think that it's not worth a bisection, as I guess the result is
-unlikely to change anything (but I could be wrong).
+I am almost ready to send a new version.
 
-Ciao, Thorsten
+What approach do you prefer?
 
+Regards!
+
+>
+>
+> diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+> index ec472e111248..47224437018b 100644
+> --- a/drivers/media/usb/uvc/uvc_ctrl.c
+> +++ b/drivers/media/usb/uvc/uvc_ctrl.c
+> @@ -35,6 +35,8 @@
+>  /* ------------------------------------------------------------------------
+>   * Controls
+>   */
+> +static int __uvc_ctrl_load_cur(struct uvc_video_chain *chain,
+> +                              struct uvc_control *ctrl);
+>
+>  static const struct uvc_control_info uvc_ctrls[] = {
+>         {
+> @@ -1272,6 +1274,13 @@ static int uvc_ctrl_populate_cache(struct
+> uvc_video_chain *chain,
+>                                         uvc_ctrl_data(ctrl, UVC_CTRL_DATA_DEF));
+>                 if (ret < 0)
+>                         return ret;
+> +       } else if (!(ctrl->info.flags & UVC_CTRL_FLAG_SET_CUR)) {
+> +               ret = __uvc_ctrl_load_cur(chain, ctrl);
+> +               if (!ret) {
+> +                       memcpy(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_DEF),
+> +                              uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
+> +                              ctrl->info.size);
+> +               }
+>         }
+>
+>         if (ctrl->info.flags & UVC_CTRL_FLAG_GET_MIN) {
+> @@ -1279,14 +1288,31 @@ static int uvc_ctrl_populate_cache(struct
+> uvc_video_chain *chain,
+>                                         uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MIN));
+>                 if (ret < 0)
+>                         return ret;
+> +       } else if (!(ctrl->info.flags & UVC_CTRL_FLAG_SET_CUR)) {
+> +               ret = __uvc_ctrl_load_cur(chain, ctrl);
+> +               if (!ret) {
+> +                       memcpy(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MIN),
+> +                              uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
+> +                              ctrl->info.size);
+> +               }
+>         }
+> +
+>         if (ctrl->info.flags & UVC_CTRL_FLAG_GET_MAX) {
+>                 ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_MAX,
+>                                         uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MAX));
+>                 if (ret < 0)
+>                         return ret;
+> +       } else if (!(ctrl->info.flags & UVC_CTRL_FLAG_SET_CUR)) {
+> +               ret = __uvc_ctrl_load_cur(chain, ctrl);
+> +               if (!ret) {
+> +                       memcpy(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MAX),
+> +                              uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
+> +                              ctrl->info.size);
+> +               }
+>         }
+> +
+>         if (ctrl->info.flags & UVC_CTRL_FLAG_GET_RES) {
+> +               u8 *res;
+>                 ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_RES,
+>                                         uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES));
+>                 if (ret < 0) {
+> @@ -1304,7 +1330,13 @@ static int uvc_ctrl_populate_cache(struct
+> uvc_video_chain *chain,
+>                                       "an XU control. Enabling workaround.\n");
+>                         memset(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES), 0,
+>                                ctrl->info.size);
+> +                       res = uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES);
+> +                       *res = 1
+>                 }
+> +       } else {
+> +               memset(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES), 0,
+> ctrl->info.size);
+> +               res = uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES);
+> +               *res = 1;
+>         }
+>
+>         ctrl->cached = 1;
+> @@ -1541,11 +1573,8 @@ static int __uvc_queryctrl_boundaries(struct
+> uvc_video_chain *chain,
+>                         return ret;
+>         }
+>
+> -       if (ctrl->info.flags & UVC_CTRL_FLAG_GET_DEF)
+>                 v4l2_ctrl->default_value = uvc_mapping_get_s32(mapping,
+>                                 UVC_GET_DEF, uvc_ctrl_data(ctrl,
+> UVC_CTRL_DATA_DEF));
+> -       else
+> -               v4l2_ctrl->default_value = 0;
+>
+>         switch (mapping->v4l2_type) {
+>         case V4L2_CTRL_TYPE_MENU:
+> @@ -1576,23 +1605,14 @@ static int __uvc_queryctrl_boundaries(struct
+> uvc_video_chain *chain,
+>                 break;
+>         }
+>
+> -       if (ctrl->info.flags & UVC_CTRL_FLAG_GET_MIN)
+> -               v4l2_ctrl->minimum = uvc_mapping_get_s32(mapping, UVC_GET_MIN,
+> -                               uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MIN));
+> -       else
+> -               v4l2_ctrl->minimum = 0;
+> +       v4l2_ctrl->minimum = uvc_mapping_get_s32(mapping, UVC_GET_MIN,
+> +                                       uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MIN));
+>
+> -       if (ctrl->info.flags & UVC_CTRL_FLAG_GET_MAX)
+> -               v4l2_ctrl->maximum = uvc_mapping_get_s32(mapping, UVC_GET_MAX,
+> -                               uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MAX));
+> -       else
+> -               v4l2_ctrl->maximum = 0;
+> +       v4l2_ctrl->maximum = uvc_mapping_get_s32(mapping, UVC_GET_MAX,
+> +                                       uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MAX));
+>
+> -       if (ctrl->info.flags & UVC_CTRL_FLAG_GET_RES)
+> -               v4l2_ctrl->step = uvc_mapping_get_s32(mapping, UVC_GET_RES,
+> -                               uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES));
+> -       else
+> -               v4l2_ctrl->step = 0;
+> +       v4l2_ctrl->step = uvc_mapping_get_s32(mapping, UVC_GET_RES,
+> +                                       uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES));
+>
+>         return 0;
+>  }
+>
+> >
+> > > > > We can create a new type UVC_CTRL_DATA_TYPE_UNSIGNED_READ_ONLY that
+> > > > > fakes min, max and res, but I think that it is cleaner this approach.
+> > > > >
+> > > > > > > This is a preparation patch.
+> > > > > > >
+> > > > > > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > > > > > > ---
+> > > > > > >  drivers/media/usb/uvc/uvc_ctrl.c | 12 ++++++++++++
+> > > > > > >  drivers/media/usb/uvc/uvcvideo.h |  8 ++++++++
+> > > > > > >  2 files changed, 20 insertions(+)
+> > > > > > >
+> > > > > > > diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+> > > > > > > index 21ec7b978bc7aca21db7cb8fd5d135d876f3330c..59be62ae24a4219fa9d7aacf2ae7382c95362178 100644
+> > > > > > > --- a/drivers/media/usb/uvc/uvc_ctrl.c
+> > > > > > > +++ b/drivers/media/usb/uvc/uvc_ctrl.c
+> > > > > > > @@ -596,6 +596,18 @@ static int uvc_ctrl_query_entity(struct uvc_device *dev,
+> > > > > > >       if (query == UVC_GET_CUR && ctrl->entity->get_cur)
+> > > > > > >               return ctrl->entity->get_cur(dev, ctrl->entity,
+> > > > > > >                                            ctrl->info.selector, data, len);
+> > > > > > > +     if (query == UVC_GET_DEF && ctrl->entity->get_def)
+> > > > > > > +             return ctrl->entity->get_def(dev, ctrl->entity,
+> > > > > > > +                                          ctrl->info.selector, data, len);
+> > > > > > > +     if (query == UVC_GET_MIN && ctrl->entity->get_min)
+> > > > > > > +             return ctrl->entity->get_min(dev, ctrl->entity,
+> > > > > > > +                                          ctrl->info.selector, data, len);
+> > > > > > > +     if (query == UVC_GET_MAX && ctrl->entity->get_max)
+> > > > > > > +             return ctrl->entity->get_max(dev, ctrl->entity,
+> > > > > > > +                                          ctrl->info.selector, data, len);
+> > > > > > > +     if (query == UVC_GET_RES && ctrl->entity->get_res)
+> > > > > > > +             return ctrl->entity->get_res(dev, ctrl->entity,
+> > > > > > > +                                          ctrl->info.selector, data, len);
+> > > > > > >       if (query == UVC_GET_INFO && ctrl->entity->get_info)
+> > > > > > >               return ctrl->entity->get_info(dev, ctrl->entity,
+> > > > > > >                                             ctrl->info.selector, data);
+> > > > > > > diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+> > > > > > > index a931750bdea25b9062dcc7644bf5f2ed89c1cb4c..d6da8ed3ad4cf3377df49923e051fe04d83d2e38 100644
+> > > > > > > --- a/drivers/media/usb/uvc/uvcvideo.h
+> > > > > > > +++ b/drivers/media/usb/uvc/uvcvideo.h
+> > > > > > > @@ -261,6 +261,14 @@ struct uvc_entity {
+> > > > > > >                       u8 cs, u8 *caps);
+> > > > > > >       int (*get_cur)(struct uvc_device *dev, struct uvc_entity *entity,
+> > > > > > >                      u8 cs, void *data, u16 size);
+> > > > > > > +     int (*get_def)(struct uvc_device *dev, struct uvc_entity *entity,
+> > > > > > > +                    u8 cs, void *data, u16 size);
+> > > > > > > +     int (*get_min)(struct uvc_device *dev, struct uvc_entity *entity,
+> > > > > > > +                    u8 cs, void *data, u16 size);
+> > > > > > > +     int (*get_max)(struct uvc_device *dev, struct uvc_entity *entity,
+> > > > > > > +                    u8 cs, void *data, u16 size);
+> > > > > > > +     int (*get_res)(struct uvc_device *dev, struct uvc_entity *entity,
+> > > > > > > +                    u8 cs, void *data, u16 size);
+> > > > > > >
+> > > > > > >       unsigned int ncontrols;
+> > > > > > >       struct uvc_control *controls;
+> >
+> > --
+> > Regards,
+> >
+> > Laurent Pinchart
+>
+>
+>
+> --
+> Ricardo Ribalda
+
+
+
+-- 
+Ricardo Ribalda
 
