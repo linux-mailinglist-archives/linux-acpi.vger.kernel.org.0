@@ -1,315 +1,186 @@
-Return-Path: <linux-acpi+bounces-15583-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15584-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEBA8B20040
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Aug 2025 09:27:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7B62B201B7
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Aug 2025 10:23:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 067FF1760CC
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Aug 2025 07:27:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD79A16CD5A
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Aug 2025 08:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2A82D9792;
-	Mon, 11 Aug 2025 07:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218A32DCF43;
+	Mon, 11 Aug 2025 08:22:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="cVAkmlMP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazon11013037.outbound.protection.outlook.com [52.101.127.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB94A2D879D;
-	Mon, 11 Aug 2025 07:27:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754897257; cv=none; b=TW0AVdatX11Y0+xaxrj9cl7BSAu7hyC+sS/JFSFA/3viOZk4Lm27ED26xuJk1783dh4J0pdDCrt+F77q51jtORCq7sQNoy5n+DX5y12Sch49G9nN0taCnyWeAuO1O23Ckvr6495nHKzprD8B5SZGrsB/p5cM5s0GPFRyCw3ezac=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754897257; c=relaxed/simple;
-	bh=7In0APipBxYztvMciKOwywMsghjmq6Nbt71Lm7V7KOI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Sub2jO5SREOZ7Be5qtuEVlyfJZUfizPlq325da1jOa2uQEJyZL5dQsqrIaKCwidCSjPZAGsDjgKM2I7Md1h7rTFoPHI/QC2FGAj3k2d9p85I1mYEClTb3C60rPO4txxfS0yzRHRByFSdSu2VfMS+Zms/YaMKL4gxFOoEEQQ1N4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: a281b462768411f0b29709d653e92f7d-20250811
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED, IP_UNFAMILIAR, SRC_UNFAMILIAR
-	DN_TRUSTED, SRC_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED
-	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_BAD, CIE_GOOD_SPF
-	CIE_UNKNOWN, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_T1
-	AMN_GOOD, AMN_C_TI, AMN_C_BU, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:0d026300-57ae-43b8-b99b-ffdbed3ba909,IP:10,
-	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:5,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-10
-X-CID-INFO: VERSION:1.1.45,REQID:0d026300-57ae-43b8-b99b-ffdbed3ba909,IP:10,UR
-	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-10
-X-CID-META: VersionHash:6493067,CLOUDID:7e0d3e1ee74fae7613c1de3ccc5d5296,BulkI
-	D:250811152729XBBZWQNU,BulkQuantity:0,Recheck:0,SF:19|23|38|43|66|72|74|78
-	|81|82|102,TC:nil,Content:0|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil
-	,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:
-	0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FSD
-X-UUID: a281b462768411f0b29709d653e92f7d-20250811
-X-User: tianyaxiong@kylinos.cn
-Received: from localhost.localdomain [(106.16.203.49)] by mailgw.kylinos.cn
-	(envelope-from <tianyaxiong@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 660309298; Mon, 11 Aug 2025 15:27:28 +0800
-From: Yaxiong Tian <tianyaxiong@kylinos.cn>
-To: rafael@kernel.org,
-	daniel.lezcano@linaro.org,
-	lenb@kernel.org,
-	robert.moore@intel.com
-Cc: linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	Yaxiong Tian <tianyaxiong@kylinos.cn>,
-	Shaobo Huang <huangshaobo2075@phytium.com.cn>,
-	Yinfeng Wang <wangyinfeng@phytium.com.cn>,
-	Xu Wang <wangxu@phytium.com.cn>
-Subject: [PATCH 2/2] ACPI: processor: idle: Replace single idle driver with per-CPU model for better hybrid CPU support
-Date: Mon, 11 Aug 2025 15:27:23 +0800
-Message-Id: <20250811072723.762608-1-tianyaxiong@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250811072349.753478-1-tianyaxiong@kylinos.cn>
-References: <20250811072349.753478-1-tianyaxiong@kylinos.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A222DAFDE;
+	Mon, 11 Aug 2025 08:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.127.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754900567; cv=fail; b=FUy4YujLfM5feLPjXJjuBkjV/eT9BFtZhR95KJ898c7mh5pOuMvX69lSjMAZBN+jjtNAs0PlOGPIKQlbjfbttLksv5AxG3IwMEaF58TQ+yaOao3l/uzlcNm+FtRE7Hiisksee9paTH6FKCduP0hJWRuqeXiy7HoO4jO4ZChCqq8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754900567; c=relaxed/simple;
+	bh=niwPD5V7mtTsNUDLQ41mYL8zo5FxTmk8BpuCersdkGM=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=WoaB2yy6EyqxuLMT9NbGHqhD4cvHQqLWQH0LZX4ppPyS2ZUB+Hs2mcPIUGcLd3HipC6Um1ce5IcHuyVfwckD4sqG3WwCogaikqM9K1UpFddN1Y4fHdvkGqJSZS+W5UTXrwSc8+D2PYwuz7nTMwrLvAMIreGRfdDXMs5KtDghuwI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=cVAkmlMP; arc=fail smtp.client-ip=52.101.127.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VM4NrciA/514SZp5cc8IrBd+GuO1aOW6eGehd3/CPcsj97IVQJQg+XUvk1LjTNLbR+uy8+DI5VL5flLm0kilYOyRj2nDWUki5pQHt9Uanl2XRTiTBv6exKsR3t8voV3a1R5EmN1EI9fNiBJbHHq8ddE/ee9vUnWJxcLyRxKw7d284h/UAIQ/tMdVoOnuDsSWm8euZuJ+RggmqFRTl6BYpZDBWqL2FXtOKhdjJeS00d/X+dvVV3/yvoHEPL+XXzCLmE+IEWsf8zjqZGtxInrJJw5t3lXp+DNTeM6zOih2bj+svqLsdpGKUq5RacsEe4U7segPl2KsA46eIRCWTGTa0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kS2DCFVazNTlDjG+FBscIg/fNzcmcHP+gbW/6qdE7Lg=;
+ b=J0eS55BJGQ6xvlCamZvppz4dBhXQmE1RbyOv6Q0r8KgGVrHw4myHOFjtE2SPrA6Bjsl1IBxyhB34T2TsOHjJQMXcTkl9l207m+PCVw8+TtQQ+EctqjPUM1Tu4jmyBPfSA+m23h9rGNIX3wSq6s1Tj/WgjiClgKm7A+KuQBFlAED+JlgNbSz9PN4pHKGAafS9Qts8mSu+EYhAlGQ01VuQLUJV07XICHPA3Dyy2vPGgjPbGXd6MbzUr1nPrVQSMCA4iLPBHskwXodiWu0zI7QkyopAM99e4D6AZH81jAJDQXXhParvYZpfJtOqc+uZUW7MA2+Ts00PAoLAtA+mbBV+gA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kS2DCFVazNTlDjG+FBscIg/fNzcmcHP+gbW/6qdE7Lg=;
+ b=cVAkmlMPZsNJpN0WeDAzFWy1Q5cHTWmvJ3byTCgsmKJimCE/vYJv3WrwPZV6WJIfrHgfreKwyFYj+EOhybpXpC4nZe9/NxGIc4mJaW4KScfVTVzn1wZKVwVJkih+tKCzfcbYEl/oQsLt62Vz26VIsaBGFwMiFMJuSfbGfrv5XCv6rGfgtXwgD6yizhPDXywVxluc752UVZbOX4IbvowdtbBlxOXKiEG74CC9qe/NdT08GrAcKBfWruqK5//v4lIsSRYMtLdt2HPd7WNic3Yv1C5dWbHALXjKzwtMHnp2DJedK1pWPbIfBpf1QyS3FNUoFRfanwWU/AdqaYd5xGbmZg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from SEZPR06MB5576.apcprd06.prod.outlook.com (2603:1096:101:c9::14)
+ by SEZPR06MB6231.apcprd06.prod.outlook.com (2603:1096:101:e8::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Mon, 11 Aug
+ 2025 08:22:41 +0000
+Received: from SEZPR06MB5576.apcprd06.prod.outlook.com
+ ([fe80::5c0a:2748:6a72:99b6]) by SEZPR06MB5576.apcprd06.prod.outlook.com
+ ([fe80::5c0a:2748:6a72:99b6%5]) with mapi id 15.20.9009.018; Mon, 11 Aug 2025
+ 08:22:41 +0000
+From: Liao Yuanhong <liaoyuanhong@vivo.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-acpi@vger.kernel.org (open list:ACPI),
+	linux-pci@vger.kernel.org (open list:PCI SUBSYSTEM),
+	linux-kernel@vger.kernel.org (open list)
+Cc: Liao Yuanhong <liaoyuanhong@vivo.com>
+Subject: [PATCH] PCI: acpiphp_ibm: Using kmemdup() to simplify code
+Date: Mon, 11 Aug 2025 16:22:23 +0800
+Message-Id: <20250811082223.377017-1-liaoyuanhong@vivo.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TYWP286CA0009.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:178::7) To SEZPR06MB5576.apcprd06.prod.outlook.com
+ (2603:1096:101:c9::14)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SEZPR06MB5576:EE_|SEZPR06MB6231:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3d6cae40-f8f6-49ae-1db8-08ddd8b03d87
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|366016|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?3LR7gULLl7APSB4nNFddSqbDpTl3LVMTqPe5OCJ+3cQ4FXJW9qPhHLR7Db2U?=
+ =?us-ascii?Q?qo5KVt5I/GR9baF5SXEBzXIU251PN8qmy7BT/ojrLuite/ZcyGfveskry5DX?=
+ =?us-ascii?Q?vaaMHpWh5vqDaHwpoeJpjpa76+z+kOihyEm5URaL4k238/hvTpz97yUPqNXF?=
+ =?us-ascii?Q?yw0didgxo0ZrBI/K8jRkMspbFbPBRTsCa9IEdKdYc08C177hKf98sa2AT2Z3?=
+ =?us-ascii?Q?bz1YIq0OCQZmOZS4aHdcomEkGtfF0jVMNnhiWXGPDAM0a46kYKNSsX4quMsq?=
+ =?us-ascii?Q?BfLcj6RKZzZywP9pdr/nDVBGZHx5Zc5BFTe0n/tvG+K9uPK1icy73BqoSIZj?=
+ =?us-ascii?Q?2Nd4dpF0IoWTtcDfT5aoXuMSViQ1gCA87boZwMj4DDBC3M+eCQe0S1gmGchI?=
+ =?us-ascii?Q?nOFucjqTPsXdiTpH3OQtETfC+Be8/D+UbDQE2tQCZ++HYiCMbQhrKqTGte6r?=
+ =?us-ascii?Q?eS2ghVxN9lhnwRhbdNxXGrKdnxUfvSoEv34gD1sFqyOU+xn6ZAQUTRA9qlF3?=
+ =?us-ascii?Q?QY08qjOmW00TbWG61AbQpTM+BGF7c297YsxfRNBcD1k2GIWV5z8EZINqGrCv?=
+ =?us-ascii?Q?JyOV34+chsFbnrUjR95ULrmqoINOG9kfNGxEphm3+U4lb2JCNFM6EhCGJbui?=
+ =?us-ascii?Q?OiYjtmfLfXU9MAIiL0vcZYKaF+JsbsyE61IOAJdk0GPMljxSsFhE/wEEeVh+?=
+ =?us-ascii?Q?EQpkEPTpxcf4vrpVIG4GuO0I9VbBCbVegFSG8pwxpQrlkK1+FKm6WDkd+syR?=
+ =?us-ascii?Q?3l7WyaOox6BjQbaaHce0+MHesCuTU10wu5HqTHt2E09+B1QzLU1F7e5qXTSr?=
+ =?us-ascii?Q?47Uz4p/vrCU6rWES1nGV+4vdDQHalNwRMOXnCqzekFxdfiriv/tBJGbX9JSA?=
+ =?us-ascii?Q?NcYjBFxrBq8nr7Pjt8TFg+ipS0JusCvJiBRTZGQqD+WFKLq0silyULlxdiR+?=
+ =?us-ascii?Q?BUKAZqORV1PE+sF6VbYjt84X5nsQWSJdDoASdln2lhFxEGtQQHUzKdzb9VWR?=
+ =?us-ascii?Q?pmajcJrxy3MonapBKIOWHJtM4OZvyZ/g/y5RSraTiogl9g0ztRoi9DzSBwbC?=
+ =?us-ascii?Q?4SRwvN9KgYgLcnZ5m840x/6qVc7waCS8mj7dsB5Z07oHMN434P49ewwAFwv7?=
+ =?us-ascii?Q?MV52Vj+dxkX9yzwwf2POoGffxCK6+KLYFlQPdYqTgxY4IIBt2vDMvku3vDyu?=
+ =?us-ascii?Q?MMAv/DELG2FHjwF1Jn7bm9fkmYkgxfwJoCr90bdTt9ygt7gPJafsct2mITT3?=
+ =?us-ascii?Q?yZYgFa73Iah120IyBa7e/us/0YTEAlhaudxO5JTulNEzStnPCMR+uPGfTs+Y?=
+ =?us-ascii?Q?O0rM+Nj4ExD+p/321ItneHogCuRBd7gIHfy6rFX2gs45iwgeA2icOSmm6J5j?=
+ =?us-ascii?Q?FszXY9rWI6/fMXNxGpLoTIRXbDAxyds78LZz+1NUtnOwmwVXKnSxWbl/hMUG?=
+ =?us-ascii?Q?beZMaJaFuK7CXvpiJNfc7LnJfqsddU0l5HUOVFDR2XlQIxT+gIv04Q=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR06MB5576.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?FagCC1ONNQy5DXzO6VEXPoyztG81TP9uHqKkJ5td3sRVoRGGZE5LX9w6iOgY?=
+ =?us-ascii?Q?Dhfzbht0cpxsqK3WKCEzN7E2ZhqPedC3P6mazHQsOPtp6nadjiOaxef6k9sw?=
+ =?us-ascii?Q?bDVR2u3JVIBwnXb9GHxGmTpoSMohYGxqle7x8YIGXvSJQx+Fi1xGhzwtUFyK?=
+ =?us-ascii?Q?fOzrIhdZ+Q5WaY28ddHIcmjSEphAx8VRwEPREnwjEoBEJHul1NQ9AYC81BQY?=
+ =?us-ascii?Q?cABk5mAvFbPn18syR3vAJEa0qQuGnzOzCg07OfrpXUM5uR/PCo1i6jQ6YHp0?=
+ =?us-ascii?Q?eonPaxliFjhcv7FmweHnRSmSI4Zmt/vNCu8swxl6X26zYXQhbBajNfET51Go?=
+ =?us-ascii?Q?vpm9+TEsc2DpYd7q5oYJ1Y74Z5O4i31gQWMIz4EcNbwm7PAdo2aUPWheERfp?=
+ =?us-ascii?Q?11bECDuQDSYYbY950gVKJUm4re8NRcQgcL5ELpAqhB2c+YOJkiE6gpCMNJdw?=
+ =?us-ascii?Q?bCkOAHluG4ghx2KRwV0ZhFIsFVSI9yVspj46MiUcXOEWVec1cZRGE1FcefIo?=
+ =?us-ascii?Q?Dio95eoMFpdDTZ0+nJuelmLuxZFVJsaI9XOeLTzYAcgbMvedNERTuSZXucqU?=
+ =?us-ascii?Q?xbVEcOM9xZwVNDhML5dPvTyE4biEcwp6w98AbCAkCvVQdkQOk5wbPlBV5twh?=
+ =?us-ascii?Q?9q5KssjDtDQLOFB30TCsxgNZFU+Ardv0xNx0OCI2l+dLsW+4SeIvtoQFHKal?=
+ =?us-ascii?Q?meZ5R7uO1Pbgt5o32WTsUd2BJD6ixdlQmnC6qt40L+cdYih8rcTjkquSNmGr?=
+ =?us-ascii?Q?t4eWiwPQjWO1FcHUZDubX9SquZznrY/qBEBWAHMd1dhvQ6SHm2r5vUMQ5/6o?=
+ =?us-ascii?Q?j4AcVsp1IE2EujgIpbF2jXSgSKfo+4aNbR0qFallu9ea1DgKD2Ih5K1XhUsp?=
+ =?us-ascii?Q?OY2vZcnAc4YQzxgzcjM0CP5h3sFlzrL3uazvErD4HzsZcPcCuchuLQEUjho8?=
+ =?us-ascii?Q?aD4BX/eJOHCwCX2OivDWNtDX5YhvmXrXuRwrtVF5GSfsIv5BUJYgGs8fWbud?=
+ =?us-ascii?Q?aeY/P8Pqww4biQTRgPPi11UnDyvFEw5Zu1zyiCsFhCeqrkHbqN8A6Eexi+Iq?=
+ =?us-ascii?Q?bfvLh9iRINbiZoQjPAAK4+uvD0mJsrSKz3jPErsUg233zzAw6laciDQTtcYD?=
+ =?us-ascii?Q?sQqUau2KfQaU1xGogL/8AjP+aGVFVglFFjOKHyAEU++5Ik12WH3DiwhbIae4?=
+ =?us-ascii?Q?C9mQt47qpcUIUdgUdqZZFMmp++AF1GOMjWinm1zlYfqg5vtqeMrtOkoltydu?=
+ =?us-ascii?Q?SgqIO03HISZ05mgTqENR2Q+XpxMaFmn8jRKg+R18dLesYHo6SeayQROb8nMW?=
+ =?us-ascii?Q?iIz0we6zI8R8hhvScfLjCUFRyPlcDFw96ApCC5wUwGPq3ywMAbgjB2oaVqdL?=
+ =?us-ascii?Q?9z7MZjUxEUfcJCQB2JUVuf1tonGpXC3ypQJspYWcX2yZa1OxmujNAfUIZIhV?=
+ =?us-ascii?Q?QERZaw1s05zylTGZB7+ZbJFt1ay4+Bw8iB9JMwcl1V9Rq03L1d0OWq79SxGV?=
+ =?us-ascii?Q?LZUfKhK3Ocs5+XoteCFsda5k/N6kkTKtNZRxLh2K82Of+uIS1dlz19lWd8tO?=
+ =?us-ascii?Q?IrBV0aiGFZubVAPpGPMIpXhY+HA+UC8turFFF815?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d6cae40-f8f6-49ae-1db8-08ddd8b03d87
+X-MS-Exchange-CrossTenant-AuthSource: SEZPR06MB5576.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 08:22:41.6681
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AD82g7VN6/twrB9N9y/njdnvOLWF/VkI/kt4YBBSmWa4JIeXtSdV9dEGtv6X4qeW8qAT0W2ljhtQMzR2sojt+g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR06MB6231
 
-Current implementations of hybrid architectures (e.g., ARM64 big.LITTLE
-and Intel Alder Lake) feature CPU cores with different exit latencies.
-Using a single driver to describe_LPI states for all core types is
-therefore suboptimal. This is further supported by ACPI specification
-8.4.4.1 which states: "In a processor hierarchy, each node has its
-own _LPI low-power states specific to that node."
+Use kmemdup() to replace the original code's allocate-and-copy operations.
+It enhances code readability and simplifies nested conditionals.
 
-To address these limitations, we replace the monolithic idle driver
-with a per-CPU model. This approach enables accurate idle state representation
-for each core type
-
-Tested-by: Shaobo Huang <huangshaobo2075@phytium.com.cn>
-Signed-off-by: Yaxiong Tian <tianyaxiong@kylinos.cn>
-Signed-off-by: Shaobo Huang <huangshaobo2075@phytium.com.cn>
-Signed-off-by: Yinfeng Wang <wangyinfeng@phytium.com.cn>
-Signed-off-by: Xu Wang<wangxu@phytium.com.cn>
+Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
 ---
- drivers/acpi/Kconfig            |  1 +
- drivers/acpi/processor_driver.c |  3 +-
- drivers/acpi/processor_idle.c   | 60 ++++++++++++++++-----------------
- include/acpi/processor.h        |  2 +-
- 4 files changed, 34 insertions(+), 32 deletions(-)
+ drivers/pci/hotplug/acpiphp_ibm.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index ca00a5dbcf75..d92c0faca978 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -276,6 +276,7 @@ config ACPI_PROCESSOR_CSTATE
- config ACPI_PROCESSOR_IDLE
- 	bool
- 	select CPU_IDLE
-+	select CPU_IDLE_MULTIPLE_DRIVERS
+diff --git a/drivers/pci/hotplug/acpiphp_ibm.c b/drivers/pci/hotplug/acpiphp_ibm.c
+index 18e01cd55a8e..6a16c8e8238f 100644
+--- a/drivers/pci/hotplug/acpiphp_ibm.c
++++ b/drivers/pci/hotplug/acpiphp_ibm.c
+@@ -140,11 +140,8 @@ static union apci_descriptor *ibm_slot_from_id(int id)
+ 		ret = des;
  
- config ACPI_MCFG
- 	bool
-diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
-index 65e779be64ff..22db9c904437 100644
---- a/drivers/acpi/processor_driver.c
-+++ b/drivers/acpi/processor_driver.c
-@@ -166,7 +166,8 @@ static int __acpi_processor_start(struct acpi_device *device)
- 	if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
- 		dev_dbg(&device->dev, "CPPC data invalid or not present\n");
- 
--	if (!cpuidle_get_driver() || cpuidle_get_driver() == &acpi_idle_driver)
-+	if (!cpuidle_get_cpu_driver_by_cpu(pr->id) || cpuidle_get_cpu_driver_by_cpu(pr->id)
-+			== per_cpu_ptr(&acpi_idle_driver, pr->id))
- 		acpi_processor_power_init(pr);
- 
- 	acpi_pss_perf_init(pr);
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 2c2dc559e0f8..4922110da0bf 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -51,15 +51,12 @@ module_param(latency_factor, uint, 0644);
- 
- static DEFINE_PER_CPU(struct cpuidle_device *, acpi_cpuidle_device);
- 
--struct cpuidle_driver acpi_idle_driver = {
--	.name =		"acpi_idle",
--	.owner =	THIS_MODULE,
--};
-+DEFINE_PER_CPU(struct cpuidle_driver, acpi_idle_driver);
- 
- #ifdef CONFIG_ACPI_PROCESSOR_CSTATE
- void acpi_idle_rescan_dead_smt_siblings(void)
- {
--	if (cpuidle_get_driver() == &acpi_idle_driver)
-+	if (cpuidle_get_driver() == this_cpu_ptr(&acpi_idle_driver))
- 		arch_cpu_rescan_dead_smt_siblings();
+ ibm_slot_done:
+-	if (ret) {
+-		ret = kmalloc(sizeof(union apci_descriptor), GFP_KERNEL);
+-		if (ret)
+-			memcpy(ret, des, sizeof(union apci_descriptor));
+-	}
++	if (ret)
++		ret = kmemdup(des, sizeof(union apci_descriptor), GFP_KERNEL);
+ 	kfree(table);
+ 	return ret;
  }
- 
-@@ -738,12 +735,13 @@ static int acpi_processor_setup_cpuidle_cx(struct acpi_processor *pr,
- 	int i, count = ACPI_IDLE_STATE_START;
- 	struct acpi_processor_cx *cx;
- 	struct cpuidle_state *state;
-+	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
- 
- 	if (max_cstate == 0)
- 		max_cstate = 1;
- 
- 	for (i = 1; i < ACPI_PROCESSOR_MAX_POWER && i <= max_cstate; i++) {
--		state = &acpi_idle_driver.states[count];
-+		state = &drv->states[count];
- 		cx = &pr->power.states[i];
- 
- 		if (!cx->valid)
-@@ -776,7 +774,7 @@ static int acpi_processor_setup_cstates(struct acpi_processor *pr)
- 	int i, count;
- 	struct acpi_processor_cx *cx;
- 	struct cpuidle_state *state;
--	struct cpuidle_driver *drv = &acpi_idle_driver;
-+	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
- 
- 	if (max_cstate == 0)
- 		max_cstate = 1;
-@@ -1198,7 +1196,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
- 	int i;
- 	struct acpi_lpi_state *lpi;
- 	struct cpuidle_state *state;
--	struct cpuidle_driver *drv = &acpi_idle_driver;
-+	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
- 
- 	if (!pr->flags.has_lpi)
- 		return -EOPNOTSUPP;
-@@ -1232,7 +1230,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
- static int acpi_processor_setup_cpuidle_states(struct acpi_processor *pr)
- {
- 	int i;
--	struct cpuidle_driver *drv = &acpi_idle_driver;
-+	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
- 
- 	if (!pr->flags.power_setup_done || !pr->flags.power)
- 		return -EINVAL;
-@@ -1316,13 +1314,7 @@ int acpi_processor_power_state_has_changed(struct acpi_processor *pr)
- 	if (!pr->flags.power_setup_done)
- 		return -ENODEV;
- 
--	/*
--	 * FIXME:  Design the ACPI notification to make it once per
--	 * system instead of once per-cpu.  This condition is a hack
--	 * to make the code that updates C-States be called once.
--	 */
--
--	if (pr->id == 0 && cpuidle_get_driver() == &acpi_idle_driver) {
-+	if (cpuidle_get_cpu_driver_by_cpu(pr->id) == per_cpu_ptr(&acpi_idle_driver, pr->id)) {
- 
- 		/* Protect against cpu-hotplug */
- 		cpus_read_lock();
-@@ -1360,12 +1352,14 @@ int acpi_processor_power_state_has_changed(struct acpi_processor *pr)
- 	return 0;
- }
- 
--static int acpi_processor_registered;
- 
- int acpi_processor_power_init(struct acpi_processor *pr)
- {
- 	int retval;
-+	struct cpumask *cpumask;
- 	struct cpuidle_device *dev;
-+	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
-+
- 
- 	if (disabled_by_idle_boot_param())
- 		return 0;
-@@ -1382,14 +1376,21 @@ int acpi_processor_power_init(struct acpi_processor *pr)
- 	 */
- 	if (pr->flags.power) {
- 		/* Register acpi_idle_driver if not already registered */
--		if (!acpi_processor_registered) {
--			acpi_processor_setup_cpuidle_states(pr);
--			retval = cpuidle_register_driver(&acpi_idle_driver);
--			if (retval)
--				return retval;
--			pr_debug("%s registered with cpuidle\n",
--				 acpi_idle_driver.name);
-+		acpi_processor_setup_cpuidle_states(pr);
-+
-+		drv->name = "acpi_idle";
-+		drv->owner = THIS_MODULE;
-+		cpumask = kzalloc(cpumask_size(), GFP_KERNEL);
-+		cpumask_set_cpu(pr->id, cpumask);
-+		drv->cpumask = cpumask;
-+
-+		retval = cpuidle_register_driver(drv);
-+		if (retval) {
-+			kfree(cpumask);
-+			return retval;
- 		}
-+		pr_debug("cpu %d:%s registered with cpuidle\n", pr->id,
-+			 drv->name);
- 
- 		dev = kzalloc(sizeof(*dev), GFP_KERNEL);
- 		if (!dev)
-@@ -1403,11 +1404,10 @@ int acpi_processor_power_init(struct acpi_processor *pr)
- 		 */
- 		retval = cpuidle_register_device(dev);
- 		if (retval) {
--			if (acpi_processor_registered == 0)
--				cpuidle_unregister_driver(&acpi_idle_driver);
-+			cpuidle_unregister_driver(drv);
-+			kfree(cpumask);
- 			return retval;
- 		}
--		acpi_processor_registered++;
- 	}
- 	return 0;
- }
-@@ -1415,17 +1415,17 @@ int acpi_processor_power_init(struct acpi_processor *pr)
- int acpi_processor_power_exit(struct acpi_processor *pr)
- {
- 	struct cpuidle_device *dev = per_cpu(acpi_cpuidle_device, pr->id);
-+	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
- 
- 	if (disabled_by_idle_boot_param())
- 		return 0;
- 
- 	if (pr->flags.power) {
- 		cpuidle_unregister_device(dev);
--		acpi_processor_registered--;
--		if (acpi_processor_registered == 0)
--			cpuidle_unregister_driver(&acpi_idle_driver);
-+		cpuidle_unregister_driver(drv);
- 
- 		kfree(dev);
-+		kfree(drv->cpumask);
- 	}
- 
- 	pr->flags.power_setup_done = 0;
-diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-index d0eccbd920e5..36940c6b96cc 100644
---- a/include/acpi/processor.h
-+++ b/include/acpi/processor.h
-@@ -417,7 +417,7 @@ static inline void acpi_processor_throttling_init(void) {}
- #endif	/* CONFIG_ACPI_CPU_FREQ_PSS */
- 
- /* in processor_idle.c */
--extern struct cpuidle_driver acpi_idle_driver;
-+DECLARE_PER_CPU(struct cpuidle_driver, acpi_idle_driver);
- #ifdef CONFIG_ACPI_PROCESSOR_IDLE
- int acpi_processor_power_init(struct acpi_processor *pr);
- int acpi_processor_power_exit(struct acpi_processor *pr);
 -- 
-2.25.1
+2.34.1
 
 
