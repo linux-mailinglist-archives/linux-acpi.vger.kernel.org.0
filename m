@@ -1,186 +1,220 @@
-Return-Path: <linux-acpi+bounces-15584-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15585-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B62B201B7
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Aug 2025 10:23:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B82B20663
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Aug 2025 12:54:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD79A16CD5A
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Aug 2025 08:23:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02B8F3B158C
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Aug 2025 10:54:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218A32DCF43;
-	Mon, 11 Aug 2025 08:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="cVAkmlMP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AEC23BCED;
+	Mon, 11 Aug 2025 10:52:49 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazon11013037.outbound.protection.outlook.com [52.101.127.37])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A222DAFDE;
-	Mon, 11 Aug 2025 08:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.127.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754900567; cv=fail; b=FUy4YujLfM5feLPjXJjuBkjV/eT9BFtZhR95KJ898c7mh5pOuMvX69lSjMAZBN+jjtNAs0PlOGPIKQlbjfbttLksv5AxG3IwMEaF58TQ+yaOao3l/uzlcNm+FtRE7Hiisksee9paTH6FKCduP0hJWRuqeXiy7HoO4jO4ZChCqq8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754900567; c=relaxed/simple;
-	bh=niwPD5V7mtTsNUDLQ41mYL8zo5FxTmk8BpuCersdkGM=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=WoaB2yy6EyqxuLMT9NbGHqhD4cvHQqLWQH0LZX4ppPyS2ZUB+Hs2mcPIUGcLd3HipC6Um1ce5IcHuyVfwckD4sqG3WwCogaikqM9K1UpFddN1Y4fHdvkGqJSZS+W5UTXrwSc8+D2PYwuz7nTMwrLvAMIreGRfdDXMs5KtDghuwI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=cVAkmlMP; arc=fail smtp.client-ip=52.101.127.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VM4NrciA/514SZp5cc8IrBd+GuO1aOW6eGehd3/CPcsj97IVQJQg+XUvk1LjTNLbR+uy8+DI5VL5flLm0kilYOyRj2nDWUki5pQHt9Uanl2XRTiTBv6exKsR3t8voV3a1R5EmN1EI9fNiBJbHHq8ddE/ee9vUnWJxcLyRxKw7d284h/UAIQ/tMdVoOnuDsSWm8euZuJ+RggmqFRTl6BYpZDBWqL2FXtOKhdjJeS00d/X+dvVV3/yvoHEPL+XXzCLmE+IEWsf8zjqZGtxInrJJw5t3lXp+DNTeM6zOih2bj+svqLsdpGKUq5RacsEe4U7segPl2KsA46eIRCWTGTa0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kS2DCFVazNTlDjG+FBscIg/fNzcmcHP+gbW/6qdE7Lg=;
- b=J0eS55BJGQ6xvlCamZvppz4dBhXQmE1RbyOv6Q0r8KgGVrHw4myHOFjtE2SPrA6Bjsl1IBxyhB34T2TsOHjJQMXcTkl9l207m+PCVw8+TtQQ+EctqjPUM1Tu4jmyBPfSA+m23h9rGNIX3wSq6s1Tj/WgjiClgKm7A+KuQBFlAED+JlgNbSz9PN4pHKGAafS9Qts8mSu+EYhAlGQ01VuQLUJV07XICHPA3Dyy2vPGgjPbGXd6MbzUr1nPrVQSMCA4iLPBHskwXodiWu0zI7QkyopAM99e4D6AZH81jAJDQXXhParvYZpfJtOqc+uZUW7MA2+Ts00PAoLAtA+mbBV+gA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kS2DCFVazNTlDjG+FBscIg/fNzcmcHP+gbW/6qdE7Lg=;
- b=cVAkmlMPZsNJpN0WeDAzFWy1Q5cHTWmvJ3byTCgsmKJimCE/vYJv3WrwPZV6WJIfrHgfreKwyFYj+EOhybpXpC4nZe9/NxGIc4mJaW4KScfVTVzn1wZKVwVJkih+tKCzfcbYEl/oQsLt62Vz26VIsaBGFwMiFMJuSfbGfrv5XCv6rGfgtXwgD6yizhPDXywVxluc752UVZbOX4IbvowdtbBlxOXKiEG74CC9qe/NdT08GrAcKBfWruqK5//v4lIsSRYMtLdt2HPd7WNic3Yv1C5dWbHALXjKzwtMHnp2DJedK1pWPbIfBpf1QyS3FNUoFRfanwWU/AdqaYd5xGbmZg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SEZPR06MB5576.apcprd06.prod.outlook.com (2603:1096:101:c9::14)
- by SEZPR06MB6231.apcprd06.prod.outlook.com (2603:1096:101:e8::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Mon, 11 Aug
- 2025 08:22:41 +0000
-Received: from SEZPR06MB5576.apcprd06.prod.outlook.com
- ([fe80::5c0a:2748:6a72:99b6]) by SEZPR06MB5576.apcprd06.prod.outlook.com
- ([fe80::5c0a:2748:6a72:99b6%5]) with mapi id 15.20.9009.018; Mon, 11 Aug 2025
- 08:22:41 +0000
-From: Liao Yuanhong <liaoyuanhong@vivo.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linux-acpi@vger.kernel.org (open list:ACPI),
-	linux-pci@vger.kernel.org (open list:PCI SUBSYSTEM),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Liao Yuanhong <liaoyuanhong@vivo.com>
-Subject: [PATCH] PCI: acpiphp_ibm: Using kmemdup() to simplify code
-Date: Mon, 11 Aug 2025 16:22:23 +0800
-Message-Id: <20250811082223.377017-1-liaoyuanhong@vivo.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYWP286CA0009.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:178::7) To SEZPR06MB5576.apcprd06.prod.outlook.com
- (2603:1096:101:c9::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F776275B0F;
+	Mon, 11 Aug 2025 10:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754909569; cv=none; b=ryk5JsiEHCvvTryH1TZwNLVlg5J6jRNWO56wui5iB0H4b1EvNA3/xo9qRBWb24lf4Ym4ZqLRuPQnExjWofelgBlNtKWxwwyis75aWoD7RU2FgL7Vo5JX+QyiBNIBPGdF80Cu1pjNOw1iQNGgNw0aPaLidYKL6/VQcN9+FjOrTr0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754909569; c=relaxed/simple;
+	bh=Wd35ZKPMzIKq6KqNhzq7CNK0q0T3QY26+Wt3PhA5IiU=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UYq24mfmWxtSO+rUjy5z+IC+kT6j9M2A4NrF01nENjqUkVJH7hmeFxkjNAxodzIIT2Zd6OtkG9mrduambf30XhT0QQXw+V52ubCLZ8lbrxY3OzzNFYBA0H48zMe2BkM9l+dek6ss0S8T0tfLbwEBc56jNyfUEq1a5y5gEBL8SRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c0rvG169Pz6L5XV;
+	Mon, 11 Aug 2025 18:47:54 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id CBD301402EF;
+	Mon, 11 Aug 2025 18:52:40 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 11 Aug
+ 2025 12:52:40 +0200
+Date: Mon, 11 Aug 2025 11:52:38 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+CC: Daniel Ferguson <danielf@os.amperecomputing.com>, Ard Biesheuvel
+	<ardb@kernel.org>, Jonathan Corbet <corbet@lwn.net>, "Rafael J. Wysocki"
+	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, James Morse
+	<james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, Borislav Petkov
+	<bp@alien8.de>, <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-efi@vger.kernel.org>,
+	<linux-edac@vger.kernel.org>, Jason Tian <jason@os.amperecomputing.com>,
+	Shengwei Luo <luoshengwei@huawei.com>, Shiju Jose <shiju.jose@huawei.com>
+Subject: Re: [PATCH v4 1/5] RAS: Report all ARM processor CPER information
+ to userspace
+Message-ID: <20250811115238.0000272b@huawei.com>
+In-Reply-To: <20250809175519.74b08ea9@foz.lan>
+References: <20250805-mauro_v3-v6-16-rev2-v4-0-ea538759841c@os.amperecomputing.com>
+	<20250805-mauro_v3-v6-16-rev2-v4-1-ea538759841c@os.amperecomputing.com>
+	<20250808162209.000068f5@huawei.com>
+	<20250809175519.74b08ea9@foz.lan>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SEZPR06MB5576:EE_|SEZPR06MB6231:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3d6cae40-f8f6-49ae-1db8-08ddd8b03d87
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3LR7gULLl7APSB4nNFddSqbDpTl3LVMTqPe5OCJ+3cQ4FXJW9qPhHLR7Db2U?=
- =?us-ascii?Q?qo5KVt5I/GR9baF5SXEBzXIU251PN8qmy7BT/ojrLuite/ZcyGfveskry5DX?=
- =?us-ascii?Q?vaaMHpWh5vqDaHwpoeJpjpa76+z+kOihyEm5URaL4k238/hvTpz97yUPqNXF?=
- =?us-ascii?Q?yw0didgxo0ZrBI/K8jRkMspbFbPBRTsCa9IEdKdYc08C177hKf98sa2AT2Z3?=
- =?us-ascii?Q?bz1YIq0OCQZmOZS4aHdcomEkGtfF0jVMNnhiWXGPDAM0a46kYKNSsX4quMsq?=
- =?us-ascii?Q?BfLcj6RKZzZywP9pdr/nDVBGZHx5Zc5BFTe0n/tvG+K9uPK1icy73BqoSIZj?=
- =?us-ascii?Q?2Nd4dpF0IoWTtcDfT5aoXuMSViQ1gCA87boZwMj4DDBC3M+eCQe0S1gmGchI?=
- =?us-ascii?Q?nOFucjqTPsXdiTpH3OQtETfC+Be8/D+UbDQE2tQCZ++HYiCMbQhrKqTGte6r?=
- =?us-ascii?Q?eS2ghVxN9lhnwRhbdNxXGrKdnxUfvSoEv34gD1sFqyOU+xn6ZAQUTRA9qlF3?=
- =?us-ascii?Q?QY08qjOmW00TbWG61AbQpTM+BGF7c297YsxfRNBcD1k2GIWV5z8EZINqGrCv?=
- =?us-ascii?Q?JyOV34+chsFbnrUjR95ULrmqoINOG9kfNGxEphm3+U4lb2JCNFM6EhCGJbui?=
- =?us-ascii?Q?OiYjtmfLfXU9MAIiL0vcZYKaF+JsbsyE61IOAJdk0GPMljxSsFhE/wEEeVh+?=
- =?us-ascii?Q?EQpkEPTpxcf4vrpVIG4GuO0I9VbBCbVegFSG8pwxpQrlkK1+FKm6WDkd+syR?=
- =?us-ascii?Q?3l7WyaOox6BjQbaaHce0+MHesCuTU10wu5HqTHt2E09+B1QzLU1F7e5qXTSr?=
- =?us-ascii?Q?47Uz4p/vrCU6rWES1nGV+4vdDQHalNwRMOXnCqzekFxdfiriv/tBJGbX9JSA?=
- =?us-ascii?Q?NcYjBFxrBq8nr7Pjt8TFg+ipS0JusCvJiBRTZGQqD+WFKLq0silyULlxdiR+?=
- =?us-ascii?Q?BUKAZqORV1PE+sF6VbYjt84X5nsQWSJdDoASdln2lhFxEGtQQHUzKdzb9VWR?=
- =?us-ascii?Q?pmajcJrxy3MonapBKIOWHJtM4OZvyZ/g/y5RSraTiogl9g0ztRoi9DzSBwbC?=
- =?us-ascii?Q?4SRwvN9KgYgLcnZ5m840x/6qVc7waCS8mj7dsB5Z07oHMN434P49ewwAFwv7?=
- =?us-ascii?Q?MV52Vj+dxkX9yzwwf2POoGffxCK6+KLYFlQPdYqTgxY4IIBt2vDMvku3vDyu?=
- =?us-ascii?Q?MMAv/DELG2FHjwF1Jn7bm9fkmYkgxfwJoCr90bdTt9ygt7gPJafsct2mITT3?=
- =?us-ascii?Q?yZYgFa73Iah120IyBa7e/us/0YTEAlhaudxO5JTulNEzStnPCMR+uPGfTs+Y?=
- =?us-ascii?Q?O0rM+Nj4ExD+p/321ItneHogCuRBd7gIHfy6rFX2gs45iwgeA2icOSmm6J5j?=
- =?us-ascii?Q?FszXY9rWI6/fMXNxGpLoTIRXbDAxyds78LZz+1NUtnOwmwVXKnSxWbl/hMUG?=
- =?us-ascii?Q?beZMaJaFuK7CXvpiJNfc7LnJfqsddU0l5HUOVFDR2XlQIxT+gIv04Q=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR06MB5576.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?FagCC1ONNQy5DXzO6VEXPoyztG81TP9uHqKkJ5td3sRVoRGGZE5LX9w6iOgY?=
- =?us-ascii?Q?Dhfzbht0cpxsqK3WKCEzN7E2ZhqPedC3P6mazHQsOPtp6nadjiOaxef6k9sw?=
- =?us-ascii?Q?bDVR2u3JVIBwnXb9GHxGmTpoSMohYGxqle7x8YIGXvSJQx+Fi1xGhzwtUFyK?=
- =?us-ascii?Q?fOzrIhdZ+Q5WaY28ddHIcmjSEphAx8VRwEPREnwjEoBEJHul1NQ9AYC81BQY?=
- =?us-ascii?Q?cABk5mAvFbPn18syR3vAJEa0qQuGnzOzCg07OfrpXUM5uR/PCo1i6jQ6YHp0?=
- =?us-ascii?Q?eonPaxliFjhcv7FmweHnRSmSI4Zmt/vNCu8swxl6X26zYXQhbBajNfET51Go?=
- =?us-ascii?Q?vpm9+TEsc2DpYd7q5oYJ1Y74Z5O4i31gQWMIz4EcNbwm7PAdo2aUPWheERfp?=
- =?us-ascii?Q?11bECDuQDSYYbY950gVKJUm4re8NRcQgcL5ELpAqhB2c+YOJkiE6gpCMNJdw?=
- =?us-ascii?Q?bCkOAHluG4ghx2KRwV0ZhFIsFVSI9yVspj46MiUcXOEWVec1cZRGE1FcefIo?=
- =?us-ascii?Q?Dio95eoMFpdDTZ0+nJuelmLuxZFVJsaI9XOeLTzYAcgbMvedNERTuSZXucqU?=
- =?us-ascii?Q?xbVEcOM9xZwVNDhML5dPvTyE4biEcwp6w98AbCAkCvVQdkQOk5wbPlBV5twh?=
- =?us-ascii?Q?9q5KssjDtDQLOFB30TCsxgNZFU+Ardv0xNx0OCI2l+dLsW+4SeIvtoQFHKal?=
- =?us-ascii?Q?meZ5R7uO1Pbgt5o32WTsUd2BJD6ixdlQmnC6qt40L+cdYih8rcTjkquSNmGr?=
- =?us-ascii?Q?t4eWiwPQjWO1FcHUZDubX9SquZznrY/qBEBWAHMd1dhvQ6SHm2r5vUMQ5/6o?=
- =?us-ascii?Q?j4AcVsp1IE2EujgIpbF2jXSgSKfo+4aNbR0qFallu9ea1DgKD2Ih5K1XhUsp?=
- =?us-ascii?Q?OY2vZcnAc4YQzxgzcjM0CP5h3sFlzrL3uazvErD4HzsZcPcCuchuLQEUjho8?=
- =?us-ascii?Q?aD4BX/eJOHCwCX2OivDWNtDX5YhvmXrXuRwrtVF5GSfsIv5BUJYgGs8fWbud?=
- =?us-ascii?Q?aeY/P8Pqww4biQTRgPPi11UnDyvFEw5Zu1zyiCsFhCeqrkHbqN8A6Eexi+Iq?=
- =?us-ascii?Q?bfvLh9iRINbiZoQjPAAK4+uvD0mJsrSKz3jPErsUg233zzAw6laciDQTtcYD?=
- =?us-ascii?Q?sQqUau2KfQaU1xGogL/8AjP+aGVFVglFFjOKHyAEU++5Ik12WH3DiwhbIae4?=
- =?us-ascii?Q?C9mQt47qpcUIUdgUdqZZFMmp++AF1GOMjWinm1zlYfqg5vtqeMrtOkoltydu?=
- =?us-ascii?Q?SgqIO03HISZ05mgTqENR2Q+XpxMaFmn8jRKg+R18dLesYHo6SeayQROb8nMW?=
- =?us-ascii?Q?iIz0we6zI8R8hhvScfLjCUFRyPlcDFw96ApCC5wUwGPq3ywMAbgjB2oaVqdL?=
- =?us-ascii?Q?9z7MZjUxEUfcJCQB2JUVuf1tonGpXC3ypQJspYWcX2yZa1OxmujNAfUIZIhV?=
- =?us-ascii?Q?QERZaw1s05zylTGZB7+ZbJFt1ay4+Bw8iB9JMwcl1V9Rq03L1d0OWq79SxGV?=
- =?us-ascii?Q?LZUfKhK3Ocs5+XoteCFsda5k/N6kkTKtNZRxLh2K82Of+uIS1dlz19lWd8tO?=
- =?us-ascii?Q?IrBV0aiGFZubVAPpGPMIpXhY+HA+UC8turFFF815?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d6cae40-f8f6-49ae-1db8-08ddd8b03d87
-X-MS-Exchange-CrossTenant-AuthSource: SEZPR06MB5576.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 08:22:41.6681
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AD82g7VN6/twrB9N9y/njdnvOLWF/VkI/kt4YBBSmWa4JIeXtSdV9dEGtv6X4qeW8qAT0W2ljhtQMzR2sojt+g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR06MB6231
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Use kmemdup() to replace the original code's allocate-and-copy operations.
-It enhances code readability and simplifies nested conditionals.
+On Sat, 9 Aug 2025 17:55:19 +0200
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 
-Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
----
- drivers/pci/hotplug/acpiphp_ibm.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+> Em Fri, 8 Aug 2025 16:22:09 +0100
+> Jonathan Cameron <Jonathan.Cameron@huawei.com> escreveu:
+> 
+> > On Tue, 05 Aug 2025 11:35:38 -0700
+> > Daniel Ferguson <danielf@os.amperecomputing.com> wrote:
+> >   
+> > > From: Jason Tian <jason@os.amperecomputing.com>
+> > > 
+> > > The ARM processor CPER record was added in UEFI v2.6 and remained
+> > > unchanged up to v2.10.
+> > > 
+> > > Yet, the original arm_event trace code added by
+> > > 
+> > >   e9279e83ad1f ("trace, ras: add ARM processor error trace event")
+> > > 
+> > > is incomplete, as it only traces some fields of UAPI 2.6 table N.16, not
+> > > exporting any information from tables N.17 to N.29 of the record.
+> > > 
+> > > This is not enough for the user to be able to figure out what has
+> > > exactly happened or to take appropriate action.
+> > > 
+> > > According to the UEFI v2.9 specification chapter N2.4.4, the ARM
+> > > processor error section includes:
+> > > 
+> > > - several (ERR_INFO_NUM) ARM processor error information structures
+> > >   (Tables N.17 to N.20);
+> > > - several (CONTEXT_INFO_NUM) ARM processor context information
+> > >   structures (Tables N.21 to N.29);
+> > > - several vendor specific error information structures. The
+> > >   size is given by Section Length minus the size of the other
+> > >   fields.
+> > > 
+> > > In addition, it also exports two fields that are parsed by the GHES
+> > > driver when firmware reports it, e.g.:
+> > > 
+> > > - error severity
+> > > - CPU logical index
+> > > 
+> > > Report all of these information to userspace via a the ARM tracepoint so
+> > > that userspace can properly record the error and take decisions related
+> > > to CPU core isolation according to error severity and other info.
+> > > 
+> > > The updated ARM trace event now contains the following fields:
+> > > 
+> > > ======================================  =============================
+> > > UEFI field on table N.16                ARM Processor trace fields
+> > > ======================================  =============================
+> > > Validation                              handled when filling data for
+> > >                                         affinity MPIDR and running
+> > >                                         state.
+> > > ERR_INFO_NUM                            pei_len
+> > > CONTEXT_INFO_NUM                        ctx_len
+> > > Section Length                          indirectly reported by
+> > >                                         pei_len, ctx_len and oem_len
+> > > Error affinity level                    affinity
+> > > MPIDR_EL1                               mpidr
+> > > MIDR_EL1                                midr
+> > > Running State                           running_state
+> > > PSCI State                              psci_state
+> > > Processor Error Information Structure   pei_err - count at pei_len
+> > > Processor Context                       ctx_err- count at ctx_len
+> > > Vendor Specific Error Info              oem - count at oem_len
+> > > ======================================  =============================
+> > > 
+> > > It should be noted that decoding of tables N.17 to N.29, if needed, will
+> > > be handled in userspace. That gives more flexibility, as there won't be
+> > > any need to flood the kernel with micro-architecture specific error
+> > > decoding.
+> > > 
+> > > Also, decoding the other fields require a complex logic, and should be
+> > > done for each of the several values inside the record field.  So, let
+> > > userspace daemons like rasdaemon decode them, parsing such tables and
+> > > having vendor-specific micro-architecture-specific decoders.
+> > > 
+> > >   [mchehab: modified description, solved merge conflicts and fixed coding style]
+> > > 
+> > > Fixes: e9279e83ad1f ("trace, ras: add ARM processor error trace event")
+> > >     
+> > 
+> > Fixes tag is part of the main tag block so no blank line here.
+> > There are at least some scripts running on the kernel tree that trip
+> > up on this (and one that moans at the submitter ;)
+> > 
+> > I'd also add something to explain the SoB sequence for the curious.
+> >   
+> > > Co-developed-by: Jason Tian <jason@os.amperecomputing.com>    
+> > 
+> > Jason's the Author, so shouldn't have a Co-dev tag.
+> > There is some info on this in
+> > https://docs.kernel.org/process/submitting-patches.html  
+> 
+> My understanding is that all co-authors shall have co-developed-by
+> and SoB. Anyway, doesn't matter much in practice, I guess.
 
-diff --git a/drivers/pci/hotplug/acpiphp_ibm.c b/drivers/pci/hotplug/acpiphp_ibm.c
-index 18e01cd55a8e..6a16c8e8238f 100644
---- a/drivers/pci/hotplug/acpiphp_ibm.c
-+++ b/drivers/pci/hotplug/acpiphp_ibm.c
-@@ -140,11 +140,8 @@ static union apci_descriptor *ibm_slot_from_id(int id)
- 		ret = des;
- 
- ibm_slot_done:
--	if (ret) {
--		ret = kmalloc(sizeof(union apci_descriptor), GFP_KERNEL);
--		if (ret)
--			memcpy(ret, des, sizeof(union apci_descriptor));
--	}
-+	if (ret)
-+		ret = kmemdup(des, sizeof(union apci_descriptor), GFP_KERNEL);
- 	kfree(table);
- 	return ret;
- }
--- 
-2.34.1
+Nope.  In the description the docs say "in addition to the author
+attribute in the From: tag"  There are also examples where there
+isn't a Co-dev for the From author including the subtle question of
+ordering if someone else posts that patch.
+
+I have a vague recollection one of the scripts checking linux-next
+might moan about this. 
+
+> 
+> >   
+> > > Signed-off-by: Jason Tian <jason@os.amperecomputing.com>
+> > > Co-developed-by: Shengwei Luo <luoshengwei@huawei.com>
+> > > Signed-off-by: Shengwei Luo <luoshengwei@huawei.com>
+> > > Co-developed-by: Daniel Ferguson <danielf@os.amperecomputing.com>
+> > > Signed-off-by: Daniel Ferguson <danielf@os.amperecomputing.com>    
+> > 
+> > As person submitting I'd normally expect your SoB last.
+> >   
+> > > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>    
+> > 
+> > I guess this is because Mauro posted an earlier version in which
+> > case this is arguably correct, but likely to confuse.
+> > For cases like this I add comments.  
+> 
+> If the patch is identical, and it is just a resubmission,
+> I would keep the original order.
+> 
+> Otherwise, if Daniel did some changes at the code (except for a
+> trivial rebase stuff), better to move his co-developed-by/SoB to
+> the end, eventually adding:
+> 
+> [Daniel: <did something>] before the custody chain block.
+
+Docs are clear that sender of the patch must be last SoB.
+That's also checked by the some of the tag block check scripts
+I think.  There's an example of exactly this case in the in the
+submitting-patches.rst file (last one in the section that talks
+about Co-developed-by.
+
+For meaning I don't care that much, but keeping to the rigid
+rules in that doc makes it easier for scripts to check for the
+more important stuff like whether all necessary SoB are there.
+
+Jonathan
+
+> 
+> Thanks,
+> Mauro
+> 
 
 
