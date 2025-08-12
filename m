@@ -1,85 +1,88 @@
-Return-Path: <linux-acpi+bounces-15605-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15606-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A202BB22840
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Aug 2025 15:22:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E82BB2282E
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Aug 2025 15:19:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 783721BC52F5
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Aug 2025 13:12:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76D61621EFC
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Aug 2025 13:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97084279346;
-	Tue, 12 Aug 2025 13:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A25226AA91;
+	Tue, 12 Aug 2025 13:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h4I6pp98"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFD6wlqr"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F23926B2C8;
-	Tue, 12 Aug 2025 13:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8339263C8E;
+	Tue, 12 Aug 2025 13:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755004276; cv=none; b=nVzRN0cEpf4t2Qt8s+ek37q6ZxIlkhE7tCdTMO8w1mSOule1Pfkcrew1LrG3G1oAQ2y9tP7s2+EEK3KsyLutS9IFsLZAvv+sorrzLm/bwSt7BmuKzVWRdoCICXhMkr8KNNL+n/b2hEyUZSQTYbRt/TPgI11kS7Fedgu3QJgVd7w=
+	t=1755004365; cv=none; b=P5UpCXOi+3vtS/B99a2mXdGop5okfaMPvLikzmxJafKcNZOofBaKilf1xnLRUHb1duhi7HFt/yv+WTm7koSw9eTqhU7Pp0cVIyNJOjufK9E7/UDeKjpFWPiVmL0X4zF8RZf3euG7fYJJ7WvoGF+CHQkamxJzU2opB8iXvUmwzyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755004276; c=relaxed/simple;
-	bh=5qa0J3Om+9en/e7dJz1OITwTbWAQZ5Tl2ZwIUN3aK/I=;
+	s=arc-20240116; t=1755004365; c=relaxed/simple;
+	bh=u1y83lzylh/onoHVhjG9k4+Kl2BBhLWMnEb7+R0ZrFg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hciT7KnJHV7xeB8iLBBKbTiJ+AT5LlWP66p7VQBfqdJopsgcwmiTk+tCoh2ropCFK09jApR+1HEOQFqe17NUDAbLG9Vc4TGkoy709EFYATRLM6yAtVKdyPCdGYUUoME2h0BOlc+jK2BoSSCqJ6J+Zt7EpAg0QkMHqfESDjvwjsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h4I6pp98; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067A1C4CEF0;
-	Tue, 12 Aug 2025 13:11:16 +0000 (UTC)
+	 To:Cc:Content-Type; b=bdmlyHQf5hmtrMtw9foJ69AtjyaN/7dk5n3HPozsqdCEytr/eJ5GnB5woVh213zj5P4g6GXQ748Li+Dir1XJCH+sIfpIOBHRtUAT1bhnXj7syiV4ZxDogVhX4YTpyutFEBtdOjjYA36hyIQbOokWq9gntzloOmW9Hu2Nmo+wt/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFD6wlqr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94142C4CEF0;
+	Tue, 12 Aug 2025 13:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755004276;
-	bh=5qa0J3Om+9en/e7dJz1OITwTbWAQZ5Tl2ZwIUN3aK/I=;
+	s=k20201202; t=1755004364;
+	bh=u1y83lzylh/onoHVhjG9k4+Kl2BBhLWMnEb7+R0ZrFg=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=h4I6pp98jJh5XfKuLy3Wu+798tWeoHgRp6BrZDZEW4PybajvCmYZyWEaRFU1lYRpH
-	 L7mqIVEbX/cZEWQtioViUqbm2Q6BvEnvPDsXeiGB0KRyuJWmrDJwGl/QyO1yfYa4gT
-	 A4M3xrqXhPHQvdfRfdO5G5fg+fjKmss0TbJbaDNG0WalZg0OY+3DRT0/NOWKr++MC8
-	 jndMjwKdBSFSDddzK2DsMwPEaFd7WsYLJKbJ/QXA6qqt1Ht1huDf6Vh70maFgDdlcB
-	 R3v34BD/l+ZR78LtXrZc3eu7voUEek3vDJePouXlhmmxn5+Yw6FH5xM6L/SdyoEWBu
-	 eg5JlWSw4G2yw==
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-619a915c65fso2941567eaf.3;
-        Tue, 12 Aug 2025 06:11:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWpd38VNuyRo37xIvDhvMOQ5rFJtIOWSVAgq7dgKszfOg6oh+uCT6pCby7RFw8zQZV42tVQKbIWO7VEbOJK@vger.kernel.org, AJvYcCXqCJ6FfVSlkDuagvebjKyDyl/znN1hZPbyTEX1ifIH3JopHACDGGAeAt6SC17uFNRyUBleqPOZHNdL@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4qp5zdggtUpn35I6Vnh7muSBsgz++wM3Uk0tiKtKLz2PbvUq7
-	zQtrzGdozyKoEhQTWJbdTCC+OcFw1CxYk/TRaflUnbJ+vTU3Tz2znMAE7MDK5hLvRX1dniqfFFf
-	KnUVre0xGbGyB+Lt/imwASXjb7FFkWp0=
-X-Google-Smtp-Source: AGHT+IFuLV6yjXEEI8oqpZer834q6yQFOQbYYGTR045ln1zplUNOmcMKLeZ6ClO2lw3H99+ilRz7NBjIjuyQ7BRESgA=
-X-Received: by 2002:a05:6820:60b:b0:61b:924a:b7a3 with SMTP id
- 006d021491bc7-61b924ac435mr5554342eaf.1.1755004275349; Tue, 12 Aug 2025
- 06:11:15 -0700 (PDT)
+	b=aFD6wlqrzCS9QMpRbUoeQM6LQYA3uK2MTpTCZaYMfAxzKErdaYFV73GoViFQ19/QN
+	 fRmlwXG9IQc5F17b7GdK7te+/8Uz6amRnr2aEKjBlXL63yn49nag7vqlhnp6jvk0p5
+	 Xnjnrj9urTI/B2WGyYXOvH28wnF6xlPF84nw2uh0mBzFuh1PePkCOAA3uM3hDaBXm9
+	 AeYfwA+oNI8bHHY6bU8KLa0qc/vFBDpK68jFzImsvT67hfn74YX2bqPPLBtmHEbkKN
+	 O9zRK7Nw/lZBIWEW6FT2A0+vvr734Y1uncOlYNC5bZ3yQ4Eb+8xsQTRWLY1HKhMQrj
+	 h61Cb7Mz7NoaQ==
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-619a915c65fso2942443eaf.3;
+        Tue, 12 Aug 2025 06:12:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVWfLfUs1F+2VBQktKIunwDEmF3bXTXh4KrQqZzbX61Yw3Cb+rS6HPUXBITiVwC2jlAnwl5GGOnPNM4Vlug@vger.kernel.org, AJvYcCX6bA1sAByvcZC2zBHMDtGgY/vVJ2xdlEbLHo0spXHmGGP+pLac7uUG97eXbF0dySwP6zu2RihSBeRX@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaA6KMF+aJPQ9S86KKcdVJvmjYQUvlbZXRrZPj716mUYDu9VY2
+	PmEVJsWoSaqVXlNwanKnMhV5WyAwbJghI/TtXbyR9+Ucb/NpLdB/V0RT+Z0JFXSTF2E93dZcWgE
+	pSvQTmZ4PlYSL+S70Emwplk0CnrEoKkY=
+X-Google-Smtp-Source: AGHT+IFnx2cMQ/xfCiNnv3WMRxLUHvCguIfYsfLVwwQNY/p63PZKGTDj5RgzE9c/IH7rX+sjYt79+8mN8y6JXDjf35c=
+X-Received: by 2002:a05:6820:811:b0:61b:756e:b0ae with SMTP id
+ 006d021491bc7-61b7c305455mr8077339eaf.2.1755004363905; Tue, 12 Aug 2025
+ 06:12:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250811122240.541469-1-zhao.xichao@vivo.com>
-In-Reply-To: <20250811122240.541469-1-zhao.xichao@vivo.com>
+References: <20250806123821.381002-1-liaoyuanhong@vivo.com>
+In-Reply-To: <20250806123821.381002-1-liaoyuanhong@vivo.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 12 Aug 2025 15:11:04 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gz6AepoYjyWjefUp6xRQiX9KZ3AyGyPo73RW-2SdaoTA@mail.gmail.com>
-X-Gm-Features: Ac12FXwEP_i-_uF9x-OmXuYAgXyY_hbzpuFkeTBslkUo2PoS8PlGUNT1BJNBl3Q
-Message-ID: <CAJZ5v0gz6AepoYjyWjefUp6xRQiX9KZ3AyGyPo73RW-2SdaoTA@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: Use str_plural() to simplify the code
-To: Xichao Zhao <zhao.xichao@vivo.com>
-Cc: rafael@kernel.org, robert.moore@intel.com, lenb@kernel.org, 
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
+Date: Tue, 12 Aug 2025 15:12:32 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hhVBEvFq6ggxbV421J_+w+d7bhbaJ=15W9oLvEDiXpsg@mail.gmail.com>
+X-Gm-Features: Ac12FXwYz_QsR6m1wAtUCdQPhKAGi5wZ7oPxRe-4LTaiY-5MO1XTuOuDrIwNwfA
+Message-ID: <CAJZ5v0hhVBEvFq6ggxbV421J_+w+d7bhbaJ=15W9oLvEDiXpsg@mail.gmail.com>
+Subject: Re: [PATCH] acpi: Use swap() to simplify code
+To: Liao Yuanhong <liaoyuanhong@vivo.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Robert Moore <robert.moore@intel.com>, 
+	Len Brown <lenb@kernel.org>, 
+	"open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <linux-acpi@vger.kernel.org>, 
+	"open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <acpica-devel@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 11, 2025 at 2:22=E2=80=AFPM Xichao Zhao <zhao.xichao@vivo.com> =
-wrote:
+On Wed, Aug 6, 2025 at 2:38=E2=80=AFPM Liao Yuanhong <liaoyuanhong@vivo.com=
+> wrote:
 >
-> Use the string choice helper function str_plural() to simplify the code.
+> Replace the original swapping logic with swap() to improve readability an=
+d
+> remove temporary variables
 >
-> Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
+> Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
 > ---
->  drivers/acpi/acpica/utpredef.c | 2 +-
+>  drivers/acpi/acpica/nsrepair2.c | 8 ++------
 
 ACPICA changes need to be submitted as pull requests to the upstream
 ACPICA project on GitHub.  Corresponding Linux patches can only be
@@ -89,23 +92,38 @@ Link: tags).
 
 Thanks!
 
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  1 file changed, 2 insertions(+), 6 deletions(-)
 >
-> diff --git a/drivers/acpi/acpica/utpredef.c b/drivers/acpi/acpica/utprede=
-f.c
-> index d9bd80e2d32a..658aeb397111 100644
-> --- a/drivers/acpi/acpica/utpredef.c
-> +++ b/drivers/acpi/acpica/utpredef.c
-> @@ -248,7 +248,7 @@ acpi_ut_display_predefined_method(char *buffer,
->         printf("%4.4s    Requires %s%u argument%s",
->                this_name->info.name,
->                (this_name->info.argument_list & ARG_COUNT_IS_MINIMUM) ?
-> -              "(at least) " : "", arg_count, arg_count !=3D 1 ? "s" : ""=
-);
-> +              "(at least) " : "", arg_count, str_plural(arg_count));
+> diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepa=
+ir2.c
+> index 8dbb870f40d2..e3df5968165b 100644
+> --- a/drivers/acpi/acpica/nsrepair2.c
+> +++ b/drivers/acpi/acpica/nsrepair2.c
+> @@ -875,7 +875,6 @@ acpi_ns_sort_list(union acpi_operand_object **element=
+s,
+>  {
+>         union acpi_operand_object *obj_desc1;
+>         union acpi_operand_object *obj_desc2;
+> -       union acpi_operand_object *temp_obj;
+>         u32 i;
+>         u32 j;
 >
->         /* Display the types for any arguments */
->
+> @@ -891,11 +890,8 @@ acpi_ns_sort_list(union acpi_operand_object **elemen=
+ts,
+>                               obj_desc2->integer.value))
+>                             || ((sort_direction =3D=3D ACPI_SORT_DESCENDI=
+NG)
+>                                 && (obj_desc1->integer.value <
+> -                                   obj_desc2->integer.value))) {
+> -                               temp_obj =3D elements[j - 1];
+> -                               elements[j - 1] =3D elements[j];
+> -                               elements[j] =3D temp_obj;
+> -                       }
+> +                                   obj_desc2->integer.value)))
+> +                               swap(elements[j], elements[j - 1]);
+>                 }
+>         }
+>  }
 > --
 > 2.34.1
 >
