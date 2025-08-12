@@ -1,131 +1,161 @@
-Return-Path: <linux-acpi+bounces-15606-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15607-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E82BB2282E
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Aug 2025 15:19:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0B4B22807
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Aug 2025 15:15:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76D61621EFC
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Aug 2025 13:12:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F0E77AD632
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Aug 2025 13:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A25226AA91;
-	Tue, 12 Aug 2025 13:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB38242D89;
+	Tue, 12 Aug 2025 13:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFD6wlqr"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="CTrNUvy7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8339263C8E;
-	Tue, 12 Aug 2025 13:12:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690EB275B19
+	for <linux-acpi@vger.kernel.org>; Tue, 12 Aug 2025 13:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755004365; cv=none; b=P5UpCXOi+3vtS/B99a2mXdGop5okfaMPvLikzmxJafKcNZOofBaKilf1xnLRUHb1duhi7HFt/yv+WTm7koSw9eTqhU7Pp0cVIyNJOjufK9E7/UDeKjpFWPiVmL0X4zF8RZf3euG7fYJJ7WvoGF+CHQkamxJzU2opB8iXvUmwzyk=
+	t=1755004531; cv=none; b=kPItVlwJa9DPbSs6ybVLv63Sil62sCN83MMrKV6UIzk3W3CCwGbtjBNscaYn5MOD+hjh0S9ixG01YceQ5iTjtwMlDkkeygGNhXF1HoDuK2Z3Vs1UNWUOkcRv/eBl9Jt2II79rDXTQls29n5zHOCQWa3zSewrWrcP296FE87GgDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755004365; c=relaxed/simple;
-	bh=u1y83lzylh/onoHVhjG9k4+Kl2BBhLWMnEb7+R0ZrFg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bdmlyHQf5hmtrMtw9foJ69AtjyaN/7dk5n3HPozsqdCEytr/eJ5GnB5woVh213zj5P4g6GXQ748Li+Dir1XJCH+sIfpIOBHRtUAT1bhnXj7syiV4ZxDogVhX4YTpyutFEBtdOjjYA36hyIQbOokWq9gntzloOmW9Hu2Nmo+wt/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFD6wlqr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94142C4CEF0;
-	Tue, 12 Aug 2025 13:12:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755004364;
-	bh=u1y83lzylh/onoHVhjG9k4+Kl2BBhLWMnEb7+R0ZrFg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=aFD6wlqrzCS9QMpRbUoeQM6LQYA3uK2MTpTCZaYMfAxzKErdaYFV73GoViFQ19/QN
-	 fRmlwXG9IQc5F17b7GdK7te+/8Uz6amRnr2aEKjBlXL63yn49nag7vqlhnp6jvk0p5
-	 Xnjnrj9urTI/B2WGyYXOvH28wnF6xlPF84nw2uh0mBzFuh1PePkCOAA3uM3hDaBXm9
-	 AeYfwA+oNI8bHHY6bU8KLa0qc/vFBDpK68jFzImsvT67hfn74YX2bqPPLBtmHEbkKN
-	 O9zRK7Nw/lZBIWEW6FT2A0+vvr734Y1uncOlYNC5bZ3yQ4Eb+8xsQTRWLY1HKhMQrj
-	 h61Cb7Mz7NoaQ==
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-619a915c65fso2942443eaf.3;
-        Tue, 12 Aug 2025 06:12:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVWfLfUs1F+2VBQktKIunwDEmF3bXTXh4KrQqZzbX61Yw3Cb+rS6HPUXBITiVwC2jlAnwl5GGOnPNM4Vlug@vger.kernel.org, AJvYcCX6bA1sAByvcZC2zBHMDtGgY/vVJ2xdlEbLHo0spXHmGGP+pLac7uUG97eXbF0dySwP6zu2RihSBeRX@vger.kernel.org
-X-Gm-Message-State: AOJu0YxaA6KMF+aJPQ9S86KKcdVJvmjYQUvlbZXRrZPj716mUYDu9VY2
-	PmEVJsWoSaqVXlNwanKnMhV5WyAwbJghI/TtXbyR9+Ucb/NpLdB/V0RT+Z0JFXSTF2E93dZcWgE
-	pSvQTmZ4PlYSL+S70Emwplk0CnrEoKkY=
-X-Google-Smtp-Source: AGHT+IFnx2cMQ/xfCiNnv3WMRxLUHvCguIfYsfLVwwQNY/p63PZKGTDj5RgzE9c/IH7rX+sjYt79+8mN8y6JXDjf35c=
-X-Received: by 2002:a05:6820:811:b0:61b:756e:b0ae with SMTP id
- 006d021491bc7-61b7c305455mr8077339eaf.2.1755004363905; Tue, 12 Aug 2025
- 06:12:43 -0700 (PDT)
+	s=arc-20240116; t=1755004531; c=relaxed/simple;
+	bh=KLnmQ4Q2BktvwUYMgm4VPtBXX+pAFSd/TT/FrW29OQ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZHTWNh4hUoqmKzq/Rzx3jj3RCef9rer50NbIYDSi3QNChxPHlzSEGPlTa2s/IlUI2gSdZCHc3/zPpgQ0X5C7O8lFKh9zzEEn1mw9pDnn3FIdxDf06KXrjRLnDRO4QJPfqoiGmWIIRlOvnX7TUGPNeHRR4lXg78CPX6AwT6qzZcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=CTrNUvy7; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-24099fade34so39292125ad.0
+        for <linux-acpi@vger.kernel.org>; Tue, 12 Aug 2025 06:15:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1755004530; x=1755609330; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=CIZ+4Wv9ojpY1/fI9C11E1ch7d9wvWodMXJMaf6VoBs=;
+        b=CTrNUvy7c/JbL4eUkp7lSZP/tbgsepeD/c0Gj0BrwsTlmtSFYTw55A/SnPwYFMmk4C
+         YbkSe8GIp/p5ujWqZ94c44XazTJOYKqkEdaRVYrM0MKY815KpO0LQWfMTRjKS1htc0di
+         vd3ptWQLVz/oQ+eg5tmup2PlvHrTJuWefN5iH6XvAwQp4zSN3YliEnDYJXpJy6f8vMhO
+         GpHso91NWpF7uJ3+kAFVDs916du7Rrtrh/FYforTp7SzZeN0G3By/uZc5v+CC0DsT1d4
+         wpxajMrx2mxfSp6zVfvztF31YeSWpFU2+FCUc/GXkuoGHw0OoExrS/ZoCCEcuyRPo69W
+         G41g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755004530; x=1755609330;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CIZ+4Wv9ojpY1/fI9C11E1ch7d9wvWodMXJMaf6VoBs=;
+        b=jYO4DPneCIGrMsS2F76mmVFxrEriHV4COsve60MFiBp8l9aAtDZVihO4EndSniYTK0
+         U8sFCbGX50f1X9QLJG43csl8VSwaY1Fd8PpTVu6DhXuXrPp4IuyKPHWjjXjZo46ZWM9/
+         thGkZjPVgsIeVSceh03/tP/xMczDl1U0I02du2OUl44bqM2HWc1nnR5RXcCpt/UghP3P
+         6Y5hmLMpsZXOiqkkOO8OoSqjn8NAV8Cq1HP9n89wwJtGAz7F8omO+5tsn513m7Yk7yd3
+         Xt9t+PeDEy4jDc8JlzBJ5CnfIlqTItZECUDb5hqnrCPF22WFxOH5JsveBjmnkQY2JB5s
+         aIMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0G5japAPdEmydSp8RQsOVfD/1voAqJbAlR4KXxH6smfFJunuxjV0IaJK8xHWY/vw2hbwN2SlnWJXi@vger.kernel.org
+X-Gm-Message-State: AOJu0YznpSAcnyQE2CIHbkdMWgxzuhYouEaxdo01bAMqbbxIRmKt9A5j
+	gEYgUO065bvB5fc4s1ia0szfRdF5+oRqdlBRTxPXCncBqy0PdzUCL5mW1OPVh6kYNxk=
+X-Gm-Gg: ASbGncvDOG8oygfq0IupfB4PEpeO/K7wckgjdhhkMXjVNB9/LAytPc60kxt6RyBFodC
+	WJTn/o5rlDQmrgM05DGnh4ZgXnDsCvsCkWjaB2uhRHbrHBS98d4bmrqEk45XxxfG0ZeekS4+iif
+	hxvi56KiRJDPN+1qZByRGMKI3C+pTXtwYOtzTxvRuO95zBOIrNTSrHDBoyV7MNQilxONQ+Vi+EN
+	yNG8khxG/98lGyAcoD72LtZuXEpPjiaj+LG+yq1d2aVlv+pFinnlZiHSrIn2s9m7JEi5DLJOGX9
+	wzF2AVgrCG+pLqatKf+8O6gyxO5iHgD8HN8KQEGOETJPTCezhgaVD3g1UO7Govln2W2efvhi7Xf
+	tX9yhj+7d++yAiKSDU9Mdu+9xBtI=
+X-Google-Smtp-Source: AGHT+IFryvq0NSXrxuldQjBSYbOlN7Rlx50CKMnuKseVMjAVcE6lnBOuAaWxNGVUjJ4OlINPVdOdDQ==
+X-Received: by 2002:a17:903:41d1:b0:237:e696:3d56 with SMTP id d9443c01a7336-242fc316303mr60853235ad.32.1755004529704;
+        Tue, 12 Aug 2025 06:15:29 -0700 (PDT)
+Received: from sunil-laptop ([106.51.199.3])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1f1efe8sm297489915ad.69.2025.08.12.06.15.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Aug 2025 06:15:29 -0700 (PDT)
+Date: Tue, 12 Aug 2025 18:45:20 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: yunhui cui <cuiyunhui@bytedance.com>
+Cc: rafael@kernel.org, lenb@kernel.org, paul.walmsley@sifive.com,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+	linux-acpi@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Anup Patel <apatel@ventanamicro.com>,
+	Rahul Pathak <rpathak@ventanamicro.com>
+Subject: Re: [PATCH] ACPI: RISC-V: CPPC: Add CSR_CYCLE for CPPC FFH
+Message-ID: <aJs-aPH32OxpzR3G@sunil-laptop>
+References: <20250515094301.40016-1-cuiyunhui@bytedance.com>
+ <CAEEQ3w=XqoKmVu1kvc5XUbGbQJsHVkRx=T65tXvYEYo0HCTcnQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250806123821.381002-1-liaoyuanhong@vivo.com>
-In-Reply-To: <20250806123821.381002-1-liaoyuanhong@vivo.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 12 Aug 2025 15:12:32 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hhVBEvFq6ggxbV421J_+w+d7bhbaJ=15W9oLvEDiXpsg@mail.gmail.com>
-X-Gm-Features: Ac12FXwYz_QsR6m1wAtUCdQPhKAGi5wZ7oPxRe-4LTaiY-5MO1XTuOuDrIwNwfA
-Message-ID: <CAJZ5v0hhVBEvFq6ggxbV421J_+w+d7bhbaJ=15W9oLvEDiXpsg@mail.gmail.com>
-Subject: Re: [PATCH] acpi: Use swap() to simplify code
-To: Liao Yuanhong <liaoyuanhong@vivo.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Robert Moore <robert.moore@intel.com>, 
-	Len Brown <lenb@kernel.org>, 
-	"open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <linux-acpi@vger.kernel.org>, 
-	"open list:ACPI COMPONENT ARCHITECTURE (ACPICA)" <acpica-devel@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAEEQ3w=XqoKmVu1kvc5XUbGbQJsHVkRx=T65tXvYEYo0HCTcnQ@mail.gmail.com>
 
-On Wed, Aug 6, 2025 at 2:38=E2=80=AFPM Liao Yuanhong <liaoyuanhong@vivo.com=
-> wrote:
->
-> Replace the original swapping logic with swap() to improve readability an=
-d
-> remove temporary variables
->
-> Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
-> ---
->  drivers/acpi/acpica/nsrepair2.c | 8 ++------
+On Tue, Aug 12, 2025 at 07:25:44PM +0800, yunhui cui wrote:
+> Hi Sunil,
+> 
+> On Thu, May 15, 2025 at 5:44 PM Yunhui Cui <cuiyunhui@bytedance.com> wrote:
+> >
+> > Add the read of CSR_CYCLE to cppc_ffh_csr_read() to fix the
+> > warning message: "CPPC Cpufreq: cppc_scale_freq_wokrfn: failed
+> > to read perf counters".
+> >
+> > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> > ---
+> >  drivers/acpi/riscv/cppc.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/acpi/riscv/cppc.c b/drivers/acpi/riscv/cppc.c
+> > index 4cdff387deff6..c1acaeb18eac3 100644
+> > --- a/drivers/acpi/riscv/cppc.c
+> > +++ b/drivers/acpi/riscv/cppc.c
+> > @@ -69,11 +69,14 @@ static void cppc_ffh_csr_read(void *read_data)
+> >         struct sbi_cppc_data *data = (struct sbi_cppc_data *)read_data;
+> >
+> >         switch (data->reg) {
+> > -       /* Support only TIME CSR for now */
+> >         case CSR_TIME:
+> >                 data->ret.value = csr_read(CSR_TIME);
+> >                 data->ret.error = 0;
+> >                 break;
+> > +       case CSR_CYCLE:
+> > +               data->ret.value = csr_read(CSR_CYCLE);
+> > +               data->ret.error = 0;
+> > +               break;
+> >         default:
+> >                 data->ret.error = -EINVAL;
+> >                 break;
+> > --
+> > 2.39.2
+> >
+> 
+> The purpose of cppc_ffh_csr_read() is to calculate the actual
+> frequency of the CPU, which is delta_CSR_CYCLE/delta_CSR_XXX.
+> 
+> CSR_XXX should be a reference clock and does not count during WFI
+> (Wait For Interrupt).
+> 
+> Similar solutions include: x86's aperf/mperf, and ARM64's AMU with
+> registers SYS_AMEVCNTR0_CORE_EL0/SYS_AMEVCNTR0_CONST_EL0.
+> 
+> However, we know that CSR_TIME in the current code does count during
+> WFI. So, is this design unreasonable?
+> 
+> Should we consider proposing an extension to support such a dedicated
+> counter (a reference clock that does not count during WFI)? This way,
+> the value can be obtained directly in S-mode without trapping to
+> M-mode, especially since reading this counter is very frequent.
+> 
+Hi Yunhui,
 
-ACPICA changes need to be submitted as pull requests to the upstream
-ACPICA project on GitHub.  Corresponding Linux patches can only be
-applied after those changes have been accepted upstream (and those
-patches need to point to the corresponding upstream ACPICA commits via
-Link: tags).
+Yes, but we anticipated that vendors might define their own custom CSRs.
+So, we introduced FFH encoding to accommodate such cases.
 
-Thanks!
-
->  1 file changed, 2 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepa=
-ir2.c
-> index 8dbb870f40d2..e3df5968165b 100644
-> --- a/drivers/acpi/acpica/nsrepair2.c
-> +++ b/drivers/acpi/acpica/nsrepair2.c
-> @@ -875,7 +875,6 @@ acpi_ns_sort_list(union acpi_operand_object **element=
-s,
->  {
->         union acpi_operand_object *obj_desc1;
->         union acpi_operand_object *obj_desc2;
-> -       union acpi_operand_object *temp_obj;
->         u32 i;
->         u32 j;
->
-> @@ -891,11 +890,8 @@ acpi_ns_sort_list(union acpi_operand_object **elemen=
-ts,
->                               obj_desc2->integer.value))
->                             || ((sort_direction =3D=3D ACPI_SORT_DESCENDI=
-NG)
->                                 && (obj_desc1->integer.value <
-> -                                   obj_desc2->integer.value))) {
-> -                               temp_obj =3D elements[j - 1];
-> -                               elements[j - 1] =3D elements[j];
-> -                               elements[j] =3D temp_obj;
-> -                       }
-> +                                   obj_desc2->integer.value)))
-> +                               swap(elements[j], elements[j - 1]);
->                 }
->         }
->  }
-> --
-> 2.34.1
->
->
+Thanks,
+Sunil
 
