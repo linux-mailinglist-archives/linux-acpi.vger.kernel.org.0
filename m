@@ -1,152 +1,131 @@
-Return-Path: <linux-acpi+bounces-15636-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15637-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBA07B248D3
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Aug 2025 13:49:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0F3B24918
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Aug 2025 14:05:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6AA17AA3C9
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Aug 2025 11:48:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E14487BC159
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Aug 2025 12:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67B52F8BE8;
-	Wed, 13 Aug 2025 11:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F37A2FE568;
+	Wed, 13 Aug 2025 12:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PiJQgE2L"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xHm4nDIj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E54F2F83DA;
-	Wed, 13 Aug 2025 11:49:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AE72F83CC
+	for <linux-acpi@vger.kernel.org>; Wed, 13 Aug 2025 12:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755085786; cv=none; b=t4Ku+cbJ/b0K+zl4KgxXPuQ/ImHE7ggKM77d+jpc/el8LeYvioUv+HoXEUOxDx3w9hVHPrfZZ7hTWF0ZTvOK5dGP9FjMjEzZl1s8Yze9o/k0xg6J3k52X+TwW61GZe5VYOlaCYy3PhO6hOf6/xxNUQ7+/JW1vTecub8Hi5R7SQs=
+	t=1755086623; cv=none; b=AN3p+WjrVBe70xEfUP11yDYN3zMWY9p+xekChzvZXxru+K4OAFPCqVNH/mZkrDKM67wsiUNcNrNars2cpkrwDXrbTPMdT4I63b5K89OOc0W2lhpHRRl0R3NEiEjsbtw1LW4Wv3gaBxZO9WO/co/Slp+DPYiYRH7XYUIOl4iHIQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755085786; c=relaxed/simple;
-	bh=jbUHFRMCEJ633GL1BbQLDmJ+7eS9XZAeMgSV7aBmOmo=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QvZnE7xSdzOrb2/56td9SZ/fa7zoOlygW7726oWQQx6M2VELUQRNo+T58XljOFn2QvnOxqmZ1laNF5Y7VG5z3QIPAVRqf/B5701hVnEPYsZOCWL+vuq31xt0x2fkqQp3wWM3toeImLN5GAIDCz3NbHfbQtAwFXpzOb6I8G0rLWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PiJQgE2L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED93FC4CEEB;
-	Wed, 13 Aug 2025 11:49:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755085786;
-	bh=jbUHFRMCEJ633GL1BbQLDmJ+7eS9XZAeMgSV7aBmOmo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PiJQgE2LerNskr6vM/T/80oJLRM2vlDTXhyVo903ONQCKltOF3ZuXRT0zLwEpxZTa
-	 1uZWo1zU1D+drWqqnmb4zOWY6LaDOQB3Ft6ydJxfytCXL5cylLSREdHUIZJY7dS19n
-	 HCgVcZEFj8V5dfTgro2d600JDos1TP2h1RAuZEbKDtrLeWs73xaxSzlr/+YfaUhWsT
-	 dwjEYdpl2UNy7cVrMHvFz2ANQJzggtNGnFMMdNvyTU0y1uZG0//yWVb4Z/5lLnf09J
-	 osDe046Jm3cMrslAlUymtYzyQXBYfyS3kZibc8REgUOFCfGY20E2pvxYX03Xk5ivP3
-	 rlJa9RaSbaSmw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1um9zD-0072kI-H4;
-	Wed, 13 Aug 2025 12:49:43 +0100
-Date: Wed, 13 Aug 2025 12:49:43 +0100
-Message-ID: <86ikir8mqw.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sudeep Holla <sudeep.holla@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: 	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH 0/4] clocksource: Add standalone MMIO ARM arch timer driver
-In-Reply-To: <aJx4g8z3l438Qgnv@raptor>
-References: <20250807160243.1970533-1-maz@kernel.org>
-	<20250813-macho-snobbish-alpaca-ff07fa@sudeepholla>
-	<aJx4g8z3l438Qgnv@raptor>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1755086623; c=relaxed/simple;
+	bh=WELsSM3AtKEclzA9q3wHWqr7DDhmuuJHaSOln9m13CY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Xrw271K9ZD/jlW+rVyXdNWSNYviQhEWmoXX/d8X7kSsT0MwsL49hEv/B4gsi7QlZRrYvtIYRtE0+suBe0XEsojmXbQJzshKjb5ZOIkHZU5ILE2lrdJYE28WTmuY7p8R4lAow+NeZ/tj3GooxoEUxZga8i1Vg5EvWGqQ8tMPVDic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xHm4nDIj; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3b913a76ba9so1557458f8f.3
+        for <linux-acpi@vger.kernel.org>; Wed, 13 Aug 2025 05:03:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755086619; x=1755691419; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3XvjMpS+8oWnYVArmJHtXmTPeaMaVACHoQ9sHAWIeo4=;
+        b=xHm4nDIjOqFxlLk/Teb0mz3eMj9EIniQGMZwIHny6e4tAB/zWyIy7+xJt5ugZxRr8o
+         0vaFwpP7I9eK91sghw/hfuk6XuchQ69X010eoav7Wo71pfQWXrbuBWDeh9JQb8pIVJAl
+         JZPZYPUa5s3GrH7TtTNzduNwjZ5uFoSEFZYv1hjUgxF+CSdPtJLxZkli+q4PNSNQJn6P
+         RHora+2TNPW0m8xS574D1yi7fBTlta9LcyXQ2g1hx/iJMZNF4x+hfmfBB8l6Cd0D7Fni
+         u/6zTscajhXVODNiSvL7Xkf12ve9Hby8W2ss1q+s+gg5rqFXwgIq3apxk0DBZ0yD9cjT
+         Y9fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755086620; x=1755691420;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3XvjMpS+8oWnYVArmJHtXmTPeaMaVACHoQ9sHAWIeo4=;
+        b=Upo0TpSXwCLNYlAjr1LGtDAmBXZIombw6cIL4Rkd5JLI/XUgMBzX0rrG80oLHRUHDw
+         C3TWq47qUn0xekbw7wl1tC+pphAuo9FmqwNUyDPdl5K2Goptq/G0bo74nIsmjNIPRQ4Z
+         oxOABp3D24MRakIjKCtNgJ0rzWE5Fy0uAqMjRr0psidwH5xizDd452QVyo5HsNMzlsZ/
+         zt9oM++V9CZO69Jy1q13Pi/1X9GW0lkYts4WI1FmfRQwL1y9Ms7c0/lAUKLBXkFyTYwf
+         EhUk3bY03E/uxG6iBLoiiq0APgc0expb1jjjQ39rgIeG0N+WfMwDSnvR2KdaYDLV3Hz8
+         bRGg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0ZpOCXO2bDl+k8VIcfWw0aPDXD9bwD/iV+io1mQYM38ClkzXoEcYYLEw1CR1mPSSlWK1BnmsIHs4Z@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3s3sWlBjHw29CCUcURru6vfBnRtlNKURqjrcTd04QMLFMR8Q1
+	1ny+UzXa/JfM/PMG7140wdTTxOtDFPKsUGflfDQHgyfwUskwXUb9Op0lQ+WkR9dJrxQ=
+X-Gm-Gg: ASbGnctdxvO/ahSi6B897wkZis2Bmh0TmUnYA+IfXtVaH8MVh9M5Z4XaF71LuC/vlGF
+	yb1KUdvAtqNzQ2yBfiZPFaUYiFctgwJDNMnGH82N11yEvi9w6SEhsvWhIzVL3gGBDqlihEk0vnX
+	eoiCleH8d19+N4mBJvUs86cifUfHgzf+kprcyPv/VZ0HwJHYLEGq3qyVSF0IWS9rmaQiPzTE0Gr
+	9tYPPXjDd1R2vBQzDKVjNXNJpPQsxxAPfmD/baX8dHggwNtSUPSjKmfQMLcre8DKmB5o5m5hi6d
+	+/w1tn/tDA8x6M+mpX5wVEfF4vV8VKvX7YkM5JPsHJUwnnEb6wW1xtYKzWWcz2A1D9iy9jFLjJW
+	hgCzUBm3iCV/oN8cXjsakZGV0+CcdNy1CMLI3RUFu6RU/zXUZjs9996We+3exXQ==
+X-Google-Smtp-Source: AGHT+IHxp+VeWjHiqQ8aBd+gz91GtrFP/7x1AqDysrQKifIk/EESEugnh5wrM4RvHZhNCnsTelpLKQ==
+X-Received: by 2002:a05:6000:290c:b0:3a6:f2a7:d0bb with SMTP id ffacd0b85a97d-3b917d29dacmr2224481f8f.12.1755086619388;
+        Wed, 13 Aug 2025 05:03:39 -0700 (PDT)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3b90fdc85a4sm8298461f8f.60.2025.08.13.05.03.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Aug 2025 05:03:38 -0700 (PDT)
+Message-ID: <f7f01234-ce5f-41d2-8a73-17f6b86dcd1f@linaro.org>
+Date: Wed, 13 Aug 2025 14:03:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: sudeep.holla@arm.com, alexandru.elisei@arm.com, linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, lpieralisi@kernel.org, guohanjun@huawei.com, rafael@kernel.org, daniel.lezcano@linaro.org, tglx@linutronix.de, mark.rutland@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] clocksource: Add standalone MMIO ARM arch timer
+ driver
+To: Marc Zyngier <maz@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Mark Rutland <mark.rutland@arm.com>
+References: <20250807160243.1970533-1-maz@kernel.org>
+ <20250813-macho-snobbish-alpaca-ff07fa@sudeepholla> <aJx4g8z3l438Qgnv@raptor>
+ <86ikir8mqw.wl-maz@kernel.org>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <86ikir8mqw.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, 13 Aug 2025 12:35:31 +0100,
-Alexandru Elisei <alexandru.elisei@arm.com> wrote:
-> 
-> Hello,
-> 
-> On Wed, Aug 13, 2025 at 11:55:48AM +0100, Sudeep Holla wrote:
-> > +Alexandru
-> > 
-> > On Thu, Aug 07, 2025 at 05:02:39PM +0100, Marc Zyngier wrote:
-> > > For the past 10 years, both Mark and I have been lamenting about the
-> > > sorry state of the badly named "arch_timer" driver, and about the way
-> > > the MMIO part is intricately weaved into the system-register part.
-> > > 
-> > > The time has finally come to have a stab at it.
-> > > 
-> > > This small series simply creates a new timer driver for the MMIO arch
-> > > timer, and only that. It is an actual driver, and not some kludge that
-> > > has to run super early (that's what the per-CPU timers are for). This
-> > > allows, in turn, a pretty large cleanup of the per-CPU driver, though
-> > > there is more to come -- one thing at a time.
-> > > 
-> > > As an added bonus, we get a clocksource, which the original code
-> > > didn't provide. Just in case it might be useful. The end-result is far
-> > > more readable, and about 100 lines smaller.
-> > > 
-> > 
-> > (Tested it on Juno R2 and FVP in both DT and ACPI boot)
-> > 
-> > Tested-by: Sudeep Holla <sudeep.holla@arm.com>
-> > Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+On 13/08/2025 13:49, Marc Zyngier wrote:
+> On Wed, 13 Aug 2025 12:35:31 +0100,
+> Alexandru Elisei <alexandru.elisei@arm.com> wrote:
 
-Thanks!
+[ ... ]
 
-> > 
-> > Alexandru found it useful(avoids some unexpected hang IIUC) in his setup
-> > based on bootwrapper which doesn't initialise MMIO timers.
+>> ls: cannot access '/dev/kvm': No such file or directory
+>>
+>> With this series, if firmware doesn't configure access to the memory-mapped
+>> timer:
+>>
+>> [    0.549399] kvm [1]: Hyp nVHE mode initialized successfully
+>> ..
+>> [    2.018050] arch-timer-mmio 2a810000.timer: Unable to find a suitable frame in timer @ 0x000000002a810000
+>> [    2.018123] arch-timer-mmio 2a810000.timer: probe with driver arch-timer-mmio failed with error -22
 > 
-> Just FYI, this is the testing that I did.
-> 
-> Without this series, if firmware (boot-wrapper-aarch64 in my testing) doesn't
-> configure access to the memory-mapped timer:
-> 
-> [    0.000000] arch_timer: Unable to find a suitable frame in timer @ 0x000000002a810000
-> [    0.000000] Failed to initialize '/timer@2a810000': -22
-> ..
-> [    0.528000] kvm [1]: kvm_arch_timer: uninitialized timecounter
-> ..
+> Ah, you have managed to test the error path. Thanks for that!
 
-Right, that's one of the many problems with the tight coupling between
-sysreg and MMIO timers -- if one fails, they both fail, and you're
-pretty lucky if you manage to limp along after that.
+Applied (including patch 1/4)
 
-> # ls /dev/kvm
-> ls: cannot access '/dev/kvm': No such file or directory
-> 
-> With this series, if firmware doesn't configure access to the memory-mapped
-> timer:
-> 
-> [    0.549399] kvm [1]: Hyp nVHE mode initialized successfully
-> ..
-> [    2.018050] arch-timer-mmio 2a810000.timer: Unable to find a suitable frame in timer @ 0x000000002a810000
-> [    2.018123] arch-timer-mmio 2a810000.timer: probe with driver arch-timer-mmio failed with error -22
-
-Ah, you have managed to test the error path. Thanks for that!
-
-	M.
+Thanks
 
 -- 
-Without deviation from the norm, progress is not possible.
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
