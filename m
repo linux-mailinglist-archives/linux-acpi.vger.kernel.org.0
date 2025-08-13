@@ -1,165 +1,94 @@
-Return-Path: <linux-acpi+bounces-15631-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15632-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB005B24787
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Aug 2025 12:39:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A36BB247C1
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Aug 2025 12:56:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69536681AAE
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Aug 2025 10:39:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6439C1AA7FDE
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Aug 2025 10:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D292F530B;
-	Wed, 13 Aug 2025 10:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LNXckvA6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADD62F5322;
+	Wed, 13 Aug 2025 10:55:56 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE572F0C47;
-	Wed, 13 Aug 2025 10:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA45221277;
+	Wed, 13 Aug 2025 10:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755081546; cv=none; b=Y4pwsSlSUDbjVQ/BMqgvi1vIl8+AD3Dbub/eGGSM7XNwys2kZS3pyGFomC/WpD6NLYu8voOilWZ84EsbQCPtXeCdeFgFhDXE+yzAHTtJTSPOpdQBza7VQT4MHv/jR0GHBr55UHgdX28BV14/oBR6+wR2q6T4bdYKYvH4Tk5bIZw=
+	t=1755082556; cv=none; b=PYG2l/cUyI+JC4SAlD9pnFoslg7/07KyBVa59nPbgAWqhIIx3EyxvIWY0g5dDTfuoNiAZvsXoITVcpcaqPreJ/ZVWvscjbRntpJrgszbNuVXnoQDrPJV4RgeAmbRlELneQnFV2hF3KSty5i8TLmQqdZygIK/L1ikPZ8SUmwSeKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755081546; c=relaxed/simple;
-	bh=aXoBFKPVtOLDSWQLuAWRKFBkuFwU5jnleTaoiI3kTS0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CTu3KTb6NOBvI4Hg1IOOBHWxAMwpL5Ve4gWhOOdlBFArpOjw5cDB6nDzEcnROH/3e7PNh3nzJucKzAwm8T3EiSv40glTx4DHLH01K/2uflrJNEtcBF4vovlnmw3tYke7L4Vl1Q9a7fj/4QMcqz7OnS5cd4L0BFy7tbIPqc36CiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LNXckvA6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9E3C4CEEB;
-	Wed, 13 Aug 2025 10:39:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755081546;
-	bh=aXoBFKPVtOLDSWQLuAWRKFBkuFwU5jnleTaoiI3kTS0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=LNXckvA6e3lIz9Q5Um9v6u260QtFN3sj2/AXIlsiTs5cnZTIalABRpobZMw/t2bB+
-	 p4VMFl/C4llF1w1gQK0N6kefQUuvbqIlPY5pkbAieJCiFx7U7kymbHP2ay7sc8sfhY
-	 Wz53QTaWgaDhUgAlxWPhngCj5x2bHnIfv5dzGJRDADWg2bMiKabTwJ68j/0zoxQm/+
-	 Renj5H50OsdwbMkDJyS92p7InEyhlf7BvlYYhwtWOyWjgDXhAtpzomFi2aeMv+WwV7
-	 Mmqw3KHCMt8evfH5b8Ug1ImyxzPh/uOFNPgqFmJ+7eDIb3WuGUrW90ctoSq2VZEilk
-	 gEBYopnMQK9eQ==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
- Sudeep Holla <sudeep.holla@arm.com>,
- Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-Subject:
- [PATCH v1] ACPI: processor: idle: Eliminate static variable flat_state_cnt
-Date: Wed, 13 Aug 2025 12:38:58 +0200
-Message-ID: <10715991.nUPlyArG6x@rafael.j.wysocki>
-Organization: Linux Kernel Development
+	s=arc-20240116; t=1755082556; c=relaxed/simple;
+	bh=aAOWSyLd3a+OefNauWnbfg+j1F9KxO967PQXIBalszw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gHfR+uPMMP5D1kFKvV0PXc8LLFPsCk6SEGIeWKbVKwpePpcmCH84yCrnvixpA7S+mBOsuWD6DQvMZzSSZZv+CziHIThfuEvzRM1fgt9JbGKD65FaHNwOrSuyDNWiOjA0xVhBCwOB73vY1eGd1H0N+9a21p9fwaeoR6p7Rk5/lt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9F78512FC;
+	Wed, 13 Aug 2025 03:55:45 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BE9C03F63F;
+	Wed, 13 Aug 2025 03:55:51 -0700 (PDT)
+Date: Wed, 13 Aug 2025 11:55:48 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 0/4] clocksource: Add standalone MMIO ARM arch timer
+ driver
+Message-ID: <20250813-macho-snobbish-alpaca-ff07fa@sudeepholla>
+References: <20250807160243.1970533-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250807160243.1970533-1-maz@kernel.org>
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
++Alexandru
 
-Instead of using static variable flat_state_cnt to pass data between
-functions involved in the _LPI information processing, pass the current
-number of "flattened" idle states to flatten_lpi_states() and make it
-return the updated number of those states.  At the same time, use a
-local variable called state_count to store the number of "flattened"
-idle states found so far in acpi_processor_get_lpi_info().
+On Thu, Aug 07, 2025 at 05:02:39PM +0100, Marc Zyngier wrote:
+> For the past 10 years, both Mark and I have been lamenting about the
+> sorry state of the badly named "arch_timer" driver, and about the way
+> the MMIO part is intricately weaved into the system-register part.
+> 
+> The time has finally come to have a stab at it.
+> 
+> This small series simply creates a new timer driver for the MMIO arch
+> timer, and only that. It is an actual driver, and not some kludge that
+> has to run super early (that's what the per-CPU timers are for). This
+> allows, in turn, a pretty large cleanup of the per-CPU driver, though
+> there is more to come -- one thing at a time.
+> 
+> As an added bonus, we get a clocksource, which the original code
+> didn't provide. Just in case it might be useful. The end-result is far
+> more readable, and about 100 lines smaller.
+> 
 
-No intentional functional impact.
+(Tested it on Juno R2 and FVP in both DT and ACPI boot)
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/processor_idle.c |   25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+Tested-by: Sudeep Holla <sudeep.holla@arm.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -998,11 +998,6 @@
- 	return ret;
- }
- 
--/*
-- * flat_state_cnt - the number of composite LPI states after the process of flattening
-- */
--static int flat_state_cnt;
--
- /**
-  * combine_lpi_states - combine local and parent LPI states to form a composite LPI state
-  *
-@@ -1045,9 +1040,10 @@
- 	curr_level->composite_states[curr_level->composite_states_size++] = t;
- }
- 
--static int flatten_lpi_states(struct acpi_processor *pr,
--			      struct acpi_lpi_states_array *curr_level,
--			      struct acpi_lpi_states_array *prev_level)
-+static unsigned int flatten_lpi_states(struct acpi_processor *pr,
-+				       unsigned int flat_state_cnt,
-+				       struct acpi_lpi_states_array *curr_level,
-+				       struct acpi_lpi_states_array *prev_level)
- {
- 	int i, j, state_count = curr_level->size;
- 	struct acpi_lpi_state *p, *t = curr_level->entries;
-@@ -1087,7 +1083,7 @@
- 	}
- 
- 	kfree(curr_level->entries);
--	return 0;
-+	return flat_state_cnt;
- }
- 
- int __weak acpi_processor_ffh_lpi_probe(unsigned int cpu)
-@@ -1102,6 +1098,7 @@
- 	acpi_handle handle = pr->handle, pr_ahandle;
- 	struct acpi_device *d = NULL;
- 	struct acpi_lpi_states_array info[2], *tmp, *prev, *curr;
-+	unsigned int state_count;
- 
- 	/* make sure our architecture has support */
- 	ret = acpi_processor_ffh_lpi_probe(pr->id);
-@@ -1114,14 +1111,13 @@
- 	if (!acpi_has_method(handle, "_LPI"))
- 		return -EINVAL;
- 
--	flat_state_cnt = 0;
- 	prev = &info[0];
- 	curr = &info[1];
- 	handle = pr->handle;
- 	ret = acpi_processor_evaluate_lpi(handle, prev);
- 	if (ret)
- 		return ret;
--	flatten_lpi_states(pr, prev, NULL);
-+	state_count = flatten_lpi_states(pr, 0, prev, NULL);
- 
- 	status = acpi_get_parent(handle, &pr_ahandle);
- 	while (ACPI_SUCCESS(status)) {
-@@ -1143,18 +1139,19 @@
- 			break;
- 
- 		/* flatten all the LPI states in this level of hierarchy */
--		flatten_lpi_states(pr, curr, prev);
-+		state_count = flatten_lpi_states(pr, state_count, curr, prev);
- 
- 		tmp = prev, prev = curr, curr = tmp;
- 
- 		status = acpi_get_parent(handle, &pr_ahandle);
- 	}
- 
--	pr->power.count = flat_state_cnt;
- 	/* reset the index after flattening */
--	for (i = 0; i < pr->power.count; i++)
-+	for (i = 0; i < state_count; i++)
- 		pr->power.lpi_states[i].index = i;
- 
-+	pr->power.count = state_count;
-+
- 	/* Tell driver that _LPI is supported. */
- 	pr->flags.has_lpi = 1;
- 	pr->flags.power = 1;
+Alexandru found it useful(avoids some unexpected hang IIUC) in his setup
+based on bootwrapper which doesn't initialise MMIO timers.
 
-
-
+-- 
+Regards,
+Sudeep
 
