@@ -1,204 +1,117 @@
-Return-Path: <linux-acpi+bounces-15695-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15696-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82B8BB26C3E
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 18:14:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32639B26C6E
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 18:23:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAF051882039
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 16:14:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78970172283
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 16:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB58C220F55;
-	Thu, 14 Aug 2025 16:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D44F220F55;
+	Thu, 14 Aug 2025 16:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ec8Ya6XB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E293E17D346;
-	Thu, 14 Aug 2025 16:13:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B177E1DD889;
+	Thu, 14 Aug 2025 16:17:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755188028; cv=none; b=ZJ2bBpm7c7Ur6QAB5iuLZeYoQbGC5t4tknjy3BIXC+VarT1WbUObO1ZjzK9M9DT/rX/PesjJ8fRXTcc01G+1+LwwulIMDBsTcJ3j54+5WPqJ6RounGbG38A5V0VcdA2dfBFUYWwLk8raFpTXcQQsQLNNRm8lJrgcC+N54UD+/Dc=
+	t=1755188237; cv=none; b=MGev7OGRX/HhairEvA+LWD/M86KukiK9yA36OiXCKVeHDow/1kqf+5A99fAX5br2ol2HuZrKIZjf1tArzHtFA5vKXtq4v6/Ap2WQQk9Y2fym75Nv5O+pSjrXx8YLRYNzudqUWV5+Oy7qXFnJPjZbOvbn7q7+oFs3cQoS8oOxi2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755188028; c=relaxed/simple;
-	bh=FipTccn1zY0e8KcfPWQwq9vsqe8F2fCuI41sg9kkj1k=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZPlxlkevLqZ1/+LZYxhhFH5NossuidxsI9mcnMunnnozZtw5c/3DZw7eNyQjlxth4T6xQ2cU6O3qTiieZqIe3CtRT9VH3hW6w6/5muofJ1VRWsZXMJFHdnVxe6oL6pYfFxb7bqP7eJ8TZZpKWdd620uSjSoQv6zQdASIzxPfaGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c2qwX2xNYz6L5PD;
-	Fri, 15 Aug 2025 00:10:52 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id CE4E714010C;
-	Fri, 15 Aug 2025 00:13:36 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 14 Aug
- 2025 18:13:35 +0200
-Date: Thu, 14 Aug 2025 17:13:34 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Daniel Ferguson <danielf@os.amperecomputing.com>
-CC: Ard Biesheuvel <ardb@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, "James
- Morse" <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, "Borislav
- Petkov" <bp@alien8.de>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-efi@vger.kernel.org>, <linux-edac@vger.kernel.org>, "Mauro Carvalho
- Chehab" <mchehab+huawei@kernel.org>
-Subject: Re: [PATCH v5 3/5] efi/cper: Add a new helper function to print
- bitmasks
-Message-ID: <20250814171334.00002f29@huawei.com>
-In-Reply-To: <20250813-mauro_v3-v6-16-rev2-v5-3-954db8ccfbe6@os.amperecomputing.com>
-References: <20250813-mauro_v3-v6-16-rev2-v5-0-954db8ccfbe6@os.amperecomputing.com>
-	<20250813-mauro_v3-v6-16-rev2-v5-3-954db8ccfbe6@os.amperecomputing.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1755188237; c=relaxed/simple;
+	bh=VP/ziay4XX20JtXwVWku6vtOhHXC9F3yoIDWnipRVhk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qhKU3tm26LkH0hhFgtLEdBrMdEvZ1SgK/IdK7K28JRK2q6oKcfaoGpO5eVcyv49WXw7zKVwOosJVHWQXEzaKKu82fE5nIcBXk+wYlRpYYhAqMN894xmd1yz/nV4P6hnNuHZ4zEKb/iR+SbomrFnhab1U8w8RLa3hBen3svF1gVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ec8Ya6XB; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755188236; x=1786724236;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=VP/ziay4XX20JtXwVWku6vtOhHXC9F3yoIDWnipRVhk=;
+  b=Ec8Ya6XBO8lDSCu0t7p9uNAMqPriYcuHX2wuAhnk2/nOaRXdBlEbe/N+
+   Q0fTDbjlnCGYvogIjCn4fm47nwK/d1Qu2u1Ng6fXvRyH+tQIwpWhLGtSa
+   TQqRO0jI2zFz2d2uuzOXBFAlxRlPFfJs2PXAx/ozBqjsd8IiAkOtIUPv8
+   Va5vrFgJoYZiCIDTsPirjCTAfxXzbbP72beI63Qr5/MaVNleOa0Db3WAW
+   GzF6R63tSAkQK1EkbzWJ2bld06+GpGrKVNUPxh6IdPet3BW81uwoqM3l5
+   FhtEqBca/JN6XS/S/Nxq5NW+gLV3vvhqOUFr8Pfm7cx0jdbeyeF6LUuA7
+   g==;
+X-CSE-ConnectionGUID: bLQ77NQ+RyGLNb5Hi+UNyQ==
+X-CSE-MsgGUID: Sy+6P0JHTEaonqyw56Vxpw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11522"; a="57435664"
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
+   d="scan'208";a="57435664"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2025 09:17:15 -0700
+X-CSE-ConnectionGUID: kUnWyTSASNmiq/wvy5LufQ==
+X-CSE-MsgGUID: j09L6sUWTfKzx8dpzmkifg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
+   d="scan'208";a="166435476"
+Received: from inaky-mobl1.amr.corp.intel.com (HELO agluck-desk3.home.arpa) ([10.124.223.60])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2025 09:17:13 -0700
+From: Tony Luck <tony.luck@intel.com>
+To: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc: Borislav Petkov <bp@alien8.de>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Len Brown <lenb@kernel.org>,
+	Zaid Alali <zaidal@os.amperecomputing.com>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	Tony Luck <tony.luck@intel.com>,
+	"Lai, Yi1" <yi1.lai@intel.com>
+Subject: [PATCH] ACPI: APEI: EINJ: Check if user asked for EINJV2 injection
+Date: Thu, 14 Aug 2025 09:17:06 -0700
+Message-ID: <20250814161706.4489-1-tony.luck@intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Transfer-Encoding: 8bit
 
-On Wed, 13 Aug 2025 14:19:16 -0700
-Daniel Ferguson <danielf@os.amperecomputing.com> wrote:
+On an EINJV2 capable system, users may still use the old injection
+interface but einj_get_parameter_address() takes the EINJV2 path to map
+the parameter structure. This results in the address the user supplied
+being stored to the wrong location and the BIOS injecting based on an
+uninitialized field (0x0 in the reported case).
 
-> From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> 
-> Add a helper function to print a string with names associated
-> to each bit field.
-> 
-> A typical example is:
-> 
-> 	const char * const bits[] = {
-> 		"bit 3 name",
-> 		"bit 4 name",
-> 		"bit 5 name",
-> 	};
-> 	char str[120];
->         unsigned int bitmask = BIT(3) | BIT(5);
-> 
-> 	#define MASK  GENMASK(5,3)
-> 
-> 	cper_bits_to_str(str, sizeof(str), FIELD_GET(MASK, bitmask),
-> 			 bits, ARRAY_SIZE(bits));
-> 
-> The above code fills string "str" with "bit 3 name|bit 5 name".
-> 
-> Reviewed-by; Jonathan Cameron <Jonathan.Cameron@huawei.com>
-My typo still here :(
+Check the version of the request when mapping the EINJ parameter
+structure in BIOS reserved memory.
 
-So drop that garbage and
+Fixes: 691a0f0a557b ("ACPI: APEI: EINJ: Discover EINJv2 parameters")
+Reported-by: Lai, Yi1 <yi1.lai@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+---
+ drivers/acpi/apei/einj-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-> ---
->  drivers/firmware/efi/cper.c | 60 +++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/cper.h        |  2 ++
->  2 files changed, 62 insertions(+)
-> 
-> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-> index 928409199a1a4009b11cf3189fe036ad8861169c..79ba688a64f8da7af2dad097b9331c72afc73864 100644
-> --- a/drivers/firmware/efi/cper.c
-> +++ b/drivers/firmware/efi/cper.c
-> @@ -12,6 +12,7 @@
->   * Specification version 2.4.
->   */
->  
-> +#include <linux/bitmap.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/time.h>
-> @@ -106,6 +107,65 @@ void cper_print_bits(const char *pfx, unsigned int bits,
->  		printk("%s\n", buf);
->  }
->  
-> +/**
-> + * cper_bits_to_str - return a string for set bits
-> + * @buf: buffer to store the output string
-> + * @buf_size: size of the output string buffer
-> + * @bits: bit mask
-> + * @strs: string array, indexed by bit position
-> + * @strs_size: size of the string array: @strs
-> + *
-> + * Add to @buf the bitmask in hexadecimal. Then, for each set bit in @bits,
-> + * add the corresponding string describing the bit in @strs to @buf.
-> + *
-> + * A typical example is::
-> + *
-> + *	const char * const bits[] = {
-> + *		"bit 3 name",
-> + *		"bit 4 name",
-> + *		"bit 5 name",
-> + *	};
-> + *	char str[120];
-> + *	unsigned int bitmask = BIT(3) | BIT(5);
-> + *	#define MASK GENMASK(5,3)
-> + *
-> + *	cper_bits_to_str(str, sizeof(str), FIELD_GET(MASK, bitmask),
-> + *			 bits, ARRAY_SIZE(bits));
-> + *
-> + * The above code fills the string ``str`` with ``bit 3 name|bit 5 name``.
-> + *
-> + * Return: number of bytes stored or an error code if lower than zero.
-> + */
-> +int cper_bits_to_str(char *buf, int buf_size, unsigned long bits,
-> +		     const char * const strs[], unsigned int strs_size)
-> +{
-> +	int len = buf_size;
-> +	char *str = buf;
-> +	int i, size;
-> +
-> +	*buf = '\0';
-> +
-> +	for_each_set_bit(i, &bits, strs_size) {
-> +		if (!(bits & BIT_ULL(i)))
-> +			continue;
-> +
-> +		if (*buf && len > 0) {
-> +			*str = '|';
-> +			len--;
-> +			str++;
-> +		}
-> +
-> +		size = strscpy(str, strs[i], len);
-> +		if (size < 0)
-> +			return size;
-> +
-> +		len -= size;
-> +		str += size;
-> +	}
-> +	return len - buf_size;
-> +}
-> +EXPORT_SYMBOL_GPL(cper_bits_to_str);
-> +
->  static const char * const proc_type_strs[] = {
->  	"IA32/X64",
->  	"IA64",
-> diff --git a/include/linux/cper.h b/include/linux/cper.h
-> index 0ed60a91eca9d6425c9a41947a927b59f7aa2c71..58f40477c824e61c7f798978947bf1f441ce45ad 100644
-> --- a/include/linux/cper.h
-> +++ b/include/linux/cper.h
-> @@ -588,6 +588,8 @@ const char *cper_mem_err_type_str(unsigned int);
->  const char *cper_mem_err_status_str(u64 status);
->  void cper_print_bits(const char *prefix, unsigned int bits,
->  		     const char * const strs[], unsigned int strs_size);
-> +int cper_bits_to_str(char *buf, int buf_size, unsigned long bits,
-> +		     const char * const strs[], unsigned int strs_size);
->  void cper_mem_err_pack(const struct cper_sec_mem_err *,
->  		       struct cper_mem_err_compact *);
->  const char *cper_mem_err_unpack(struct trace_seq *,
-> 
+diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
+index bf8dc92a373a..99f1b841fba9 100644
+--- a/drivers/acpi/apei/einj-core.c
++++ b/drivers/acpi/apei/einj-core.c
+@@ -315,7 +315,7 @@ static void __iomem *einj_get_parameter_address(void)
+ 			memcpy_fromio(&v5param, p, v5param_size);
+ 			acpi5 = 1;
+ 			check_vendor_extension(pa_v5, &v5param);
+-			if (available_error_type & ACPI65_EINJV2_SUPP) {
++			if (is_v2 && available_error_type & ACPI65_EINJV2_SUPP) {
+ 				len = v5param.einjv2_struct.length;
+ 				offset = offsetof(struct einjv2_extension_struct, component_arr);
+ 				max_nr_components = (len - offset) /
+-- 
+2.50.1
 
 
