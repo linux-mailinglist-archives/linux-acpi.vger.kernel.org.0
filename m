@@ -1,103 +1,132 @@
-Return-Path: <linux-acpi+bounces-15672-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15673-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0E1B2613F
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 11:44:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8177B26231
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 12:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFDE95802A5
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 09:36:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E38901894A97
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 10:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57FC3303CB0;
-	Thu, 14 Aug 2025 09:31:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ClexRkY9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C292FAC0B;
+	Thu, 14 Aug 2025 10:13:53 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA3E303CAB;
-	Thu, 14 Aug 2025 09:31:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D702E9EB4;
+	Thu, 14 Aug 2025 10:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755163907; cv=none; b=UsrDN4bIDxuX7hhhNRkL1k9UL7Yk7BJeFp2ZzQm1RLpBMA+fomvauppm5/6ACNr9tpczinMxZAe/H9f/NMj+oM2bUIsRFgUP+pbLIYej0Zqji4iIACDeozXii6FUkC3DFoLvkibDOSP8yXiVy1w6jXAyGQ/I2vMjF9EuMmx1T04=
+	t=1755166433; cv=none; b=RyxmJgrioP65QmHzK5JKDDtgGtjZsqVQEb/9NUJs4PkT+SLF5T6lJc7QjKbMmC+hV+EA1dWKAMP5vK0H+W6d7ogNigSzsCdD7riYTY1dYvOqLWfzjQ2d4h9N86InzQO/JpdTrznSKDH5Sm85u9+47GKTmiYH860bnUXZLstKzhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755163907; c=relaxed/simple;
-	bh=KU8iCPwOBksDO7Sd3iDRD2on8k7W4YiXdZipzP3STXA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jU0uFq4+LUp4zPYiovgKeoSGeCeuqZe+GTc+wvWYHQ0H9+BKk2ItfnqPXYtflck6J+uySRb72fgb/uRoZpHkP4fdQwB13yTbtA6B/WWWQlXfsgc/IllaSK49MuujUKF3jKNJCuKF00x00NGHK18HpY58Oo2jUyPlBAnZUja5RS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ClexRkY9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06397C4CEF1;
-	Thu, 14 Aug 2025 09:31:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755163907;
-	bh=KU8iCPwOBksDO7Sd3iDRD2on8k7W4YiXdZipzP3STXA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ClexRkY9V6MGiVefVjvEicea1kMdZiPoA5yMywBPlX3UHH2B+SP6rUWndbLKJyKYb
-	 ZzXqK9yG0gVw79md48fk4zSskDhpsKLdHSf5sEwmSz2AClWY9PzLovxxNRnoRdC7Bg
-	 OGaqqcKdcTb/2VzuMfc9AuvW3m/p45dgot1fLnq/U5MdZItWJVHhJ4CdcD+AJy0q4p
-	 Z3krhLk0tJF0vPRDH0v5yYuEW4scpANbwxd8as86ODgqQPN5Lt377VdiVx9yBfJNjU
-	 fGtmNNiWeTV3RmlVAPCKoRgv9DMB2rLyNKrBD9mkivH3bJw9/wOGan5tejGI46k9ES
-	 k76D8aoTzyQWg==
-From: Benno Lossin <lossin@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: linux-acpi@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 10/11] rust: acpi: replace `core::mem::zeroed` with `pin_init::zeroed`
-Date: Thu, 14 Aug 2025 11:30:37 +0200
-Message-ID: <20250814093046.2071971-11-lossin@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250814093046.2071971-1-lossin@kernel.org>
-References: <20250814093046.2071971-1-lossin@kernel.org>
+	s=arc-20240116; t=1755166433; c=relaxed/simple;
+	bh=Bg9AzY3Mn0AYL1nBIXFeDIoVS+u15WrCOpXgAgnHRFc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kCA1ZS2AT5Obnk/38GzlNsVyI9+ca4/1ibPJt9zsw9dbe3eotChwWbg7ngu3pGWedYMUAyRA2te8+i/ftnhbHXbX4umKkmZKOE+YirnHneOQCvNOJZUeE9Hg3+VeucEHr57v3XQWZe0vkUFjiF1X/HSmmy8NynKoFkW3wGb/Hcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 43B7A1691;
+	Thu, 14 Aug 2025 03:13:43 -0700 (PDT)
+Received: from [10.1.32.48] (e122027.cambridge.arm.com [10.1.32.48])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8A06E3F738;
+	Thu, 14 Aug 2025 03:13:49 -0700 (PDT)
+Message-ID: <8e58b01b-772d-4ca7-a681-34f10baa07e6@arm.com>
+Date: Thu, 14 Aug 2025 11:13:47 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] clocksource/drivers/arm_arch_timer: Add standalone
+ MMIO driver
+To: Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Mark Rutland <mark.rutland@arm.com>
+References: <20250807160243.1970533-1-maz@kernel.org>
+ <20250807160243.1970533-3-maz@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20250807160243.1970533-3-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-All types in `bindings` implement `Zeroable` if they can, so use
-`pin_init::zeroed` instead of relying on `unsafe` code.
+On 07/08/2025 17:02, Marc Zyngier wrote:
+> Add a new driver for the MMIO side of the ARM architected timer.
+> Most of it has been lifted from the existing arch timer code,
+> massaged, and finally rewritten.
+> 
+> It supports both DT and ACPI as firmware descriptions.
+> 
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> ---
+>  MAINTAINERS                               |   1 +
+>  drivers/clocksource/arm_arch_timer_mmio.c | 420 ++++++++++++++++++++++
+>  2 files changed, 421 insertions(+)
+>  create mode 100644 drivers/clocksource/arm_arch_timer_mmio.c
+> 
+[...]
+> +static void arch_timer_mmio_setup(struct arch_timer *at, int irq)
+> +{
+> +	at->evt = (struct clock_event_device) {
+> +		.features		   = (CLOCK_EVT_FEAT_ONESHOT |
+> +					      CLOCK_EVT_FEAT_DYNIRQ),
+> +		.name			   = "arch_mem_timer",
+> +		.rating			   = 400,
+> +		.cpumask		   = cpu_possible_mask,
+> +		.irq 			   = irq,
+> +		.set_next_event		   = arch_timer_mmio_set_next_event,
+> +		.set_state_oneshot_stopped = arch_timer_mmio_shutdown,
+> +		.set_state_shutdown	   = arch_timer_mmio_shutdown,
+> +	};
+> +
+> +	at->evt.set_state_shutdown(&at->evt);
+> +
+> +	clockevents_config_and_register(&at->evt, at->rate, 0xf, CLOCKSOURCE_MASK(56));
 
-If this ends up not compiling in the future, something in bindgen or on
-the C side changed and is most likely incorrect.
+This doesn't work on 32 bit - clockevents_config_and_register()'s final
+argument is an unsigned long, and a 56 bit mask doesn't fit. This
+triggers a compiler warning:
 
-Signed-off-by: Benno Lossin <lossin@kernel.org>
----
- rust/kernel/acpi.rs | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/clocksource/arm_arch_timer_mmio.c: In function
+'arch_timer_mmio_setup':
+ ./include/linux/bits.h:47:9: error: conversion from 'long long unsigned
+int' to 'long unsigned int' changes value from '72057594037927935' to
+'4294967295' [-Werror=overflow]
+    47 |         ((t)(GENMASK_INPUT_CHECK(h, l) +                        \
+       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    48 |              (type_max(t) << (l) &                              \
+       |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    49 |               type_max(t) >> (BITS_PER_TYPE(t) - 1 - (h)))))
+       |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ./include/linux/bits.h:52:33: note: in expansion of macro 'GENMASK_TYPE'
+    52 | #define GENMASK_ULL(h, l)       GENMASK_TYPE(unsigned long
+long, h, l)
+       |                                 ^~~~~~~~~~~~
+ ./include/linux/clocksource.h:153:32: note: in expansion of macro
+'GENMASK_ULL'
+   153 | #define CLOCKSOURCE_MASK(bits) GENMASK_ULL((bits) - 1, 0)
+       |                                ^~~~~~~~~~~
+ drivers/clocksource/arm_arch_timer_mmio.c:255:66: note: in expansion of
+macro 'CLOCKSOURCE_MASK'
+   255 |         clockevents_config_and_register(&at->evt, at->rate,
+0xf, CLOCKSOURCE_MASK(56));
+       |
+ ^~~~~~~~~~~~~~~~
 
-diff --git a/rust/kernel/acpi.rs b/rust/kernel/acpi.rs
-index 7ae317368b00..f9488be9249c 100644
---- a/rust/kernel/acpi.rs
-+++ b/rust/kernel/acpi.rs
-@@ -42,9 +42,7 @@ pub const fn new(id: &'static CStr) -> Self {
-             "ID exceeds 16 bytes"
-         );
-         let src = id.as_bytes_with_nul();
--        // Replace with `bindings::acpi_device_id::default()` once stabilized for `const`.
--        // SAFETY: FFI type is valid to be zero-initialized.
--        let mut acpi: bindings::acpi_device_id = unsafe { core::mem::zeroed() };
-+        let mut acpi: bindings::acpi_device_id = pin_init::zeroed();
-         let mut i = 0;
-         while i < src.len() {
-             acpi.id[i] = src[i];
--- 
-2.50.1
+Possible this should really be min(CLOCKSOURCE_MASK(56), ULONG_MAX)? But
+I'm not familiar enough with this code. Most likely it's dead code on a
+32 bit platform.
+
+Thanks,
+Steve
 
 
