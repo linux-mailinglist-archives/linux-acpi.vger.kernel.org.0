@@ -1,56 +1,59 @@
-Return-Path: <linux-acpi+bounces-15708-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15709-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119C5B26D67
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 19:18:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F11B26EFA
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 20:34:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 745A81CE2EC0
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 17:18:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80B0FAA484C
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 18:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD467233722;
-	Thu, 14 Aug 2025 17:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F906229B12;
+	Thu, 14 Aug 2025 18:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d0Ur2pFm"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4DB1FDA89;
-	Thu, 14 Aug 2025 17:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525B81F17E8;
+	Thu, 14 Aug 2025 18:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755191869; cv=none; b=Mn1a5Qd1U3ZB4RYQZVg0r9i7v7HyXr983Pge0adD602i+aJwMHumQRHWStF+NWk06ZwdXfLuA90SCNspdxpL33xTrvuFXZ771z8ZeSLS4ToJU+ljOTQSeLobg9dSm63/H8iNsM4A0sFfRYrsHi6+94l0V5bu5kWtJo+WWzyfQhY=
+	t=1755196483; cv=none; b=Cui/EjLMwk/qDU3AmgkpmSlYJp0L6Tz060rKBbV6FKvgZyvEv+lSFs6lSHKmbP52L88pIaAeAIT0MOJE3ZQFMXj52juuE41nytVCjGSQ4/wZRAm4OqhWsLWK4UikzsFrd86pOmGjNgF+mtXcnfAJl/kTgM8IXPc2+8ljy0WNHKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755191869; c=relaxed/simple;
-	bh=15XAYO+sq/kHK8xcSoxAlV9cVyAFymsUoB4bUTPGo4I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eGBg9aGbN2t4DfrY08lYufFhkou0ZqFS10eHNPm83A8u8UMyJo+E3GlnHIbjeFyk+7n1HTbnHc9juHr9RB8xOxX23OKluDmrCluh1OUDFmf3amYsMIv2rjpL/bNm6zXKmChazHctXZoC6FNMQbK+b+t+TNdBjzeF5o8NM7/VhFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896C0C4CEED;
-	Thu, 14 Aug 2025 17:17:48 +0000 (UTC)
-From: Dave Jiang <dave.jiang@intel.com>
-To: linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	dakr@kernel.org,
-	dave@stgolabs.net,
-	jonathan.cameron@huawei.com,
-	alison.schofield@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	dan.j.williams@intel.com,
-	marc.herbert@linux.intel.com,
-	akpm@linux-foundation.org,
-	david@redhat.com
-Subject: [PATCH 4/4] acpi/hmat: Remove now unused hmat_update_target_coordinates()
-Date: Thu, 14 Aug 2025 10:16:50 -0700
-Message-ID: <20250814171650.3002930-5-dave.jiang@intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250814171650.3002930-1-dave.jiang@intel.com>
-References: <20250814171650.3002930-1-dave.jiang@intel.com>
+	s=arc-20240116; t=1755196483; c=relaxed/simple;
+	bh=KcnvQ+2Mg7vqTBYoonDuT8ouwkhD3sgg4o8J43s5bSQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BrpOtm7wffHscG+AZVBB5o4YXBhJKS/MK4+0eFZsGAMUddE0AAJ6zSyeVyYi9KJG7gEDPwWKj5HlOdpydSe5os7QdzX7dBiEMCmLskydij1y+7r9tjH0yu2vQnjbL5X8rQmqTFhEyd5MHl4DxJ7TPOHu0TTdo5Tzxr5kRNj2bPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d0Ur2pFm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E19C4CEED;
+	Thu, 14 Aug 2025 18:34:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755196482;
+	bh=KcnvQ+2Mg7vqTBYoonDuT8ouwkhD3sgg4o8J43s5bSQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=d0Ur2pFm0ZP48Mw6klRUT8j4koklQmINneOZBM7M5dfae+6v8ZqRi/KGun4X0D1ey
+	 vYfm773Qp8KgVi0PpWPScg+WOyabQAkTLQNUpJB2eG4SXib+hicKjTxBx2rPOa79jf
+	 GMemwmadrn2pLHjvOdMgCmz9jciSqBDzYLaCrFksagieUX0s9fExRVTAGrQdTWYFyE
+	 9LuWYUEwIb1L0To58Etd2rV9DyTttfj5rQXcNO3qbECfavmGO7ChvvKIsqoHrLkwyh
+	 rNYkkWjbkT6RIL0B92Z3JNTh3t+NboiLIeGuztoyaWnBWCP6YqAYSSpgHxlAh8Baem
+	 R5N818YY9pFeg==
+From: "Mario Limonciello (AMD)" <superm1@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Mika Westerberg <westeri@kernel.org>,
+	linux-gpio@vger.kernel.org (open list:GPIO ACPI SUPPORT),
+	linux-acpi@vger.kernel.org (open list:GPIO ACPI SUPPORT),
+	linux-input@vger.kernel.org (open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)...),
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Amit Chaudhari <amitchaudhari@mac.com>
+Subject: [PATCH 1/2] gpiolib: acpi: Add quirk for ASUS ProArt PX13
+Date: Thu, 14 Aug 2025 13:34:29 -0500
+Message-ID: <20250814183430.3887973-1-superm1@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -59,106 +62,46 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Remove deadcode since CXL no longer calls hmat_update_target_coordinates().
+The ASUS ProArt PX13 has a spurious wakeup event from the touchpad
+a few moments after entering hardware sleep.  This can be avoided
+by preventing the touchpad from being a wake source.
 
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Add to the wakeup ignore list.
+
+Reported-by: Amit Chaudhari <amitchaudhari@mac.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4482
+Tested-by: Amit Chaudhari <amitchaudhari@mac.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
 ---
- drivers/acpi/numa/hmat.c | 28 ----------------------------
- drivers/cxl/core/cdat.c  |  6 ------
- drivers/cxl/core/core.h  |  2 --
- include/linux/acpi.h     | 12 ------------
- 4 files changed, 48 deletions(-)
+ drivers/gpio/gpiolib-acpi-quirks.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index 5d32490dc4ab..5a36d57289b4 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -367,34 +367,6 @@ static void hmat_update_target_access(struct memory_target *target,
- 	}
- }
+diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi-quirks.c
+index c13545dce3492..bfb04e67c4bc8 100644
+--- a/drivers/gpio/gpiolib-acpi-quirks.c
++++ b/drivers/gpio/gpiolib-acpi-quirks.c
+@@ -344,6 +344,20 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
+ 			.ignore_interrupt = "AMDI0030:00@8",
+ 		},
+ 	},
++	{
++		/*
++		 * Spurious wakeups from TP_ATTN# pin
++		 * Found in BIOS 5.35
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/4482
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_FAMILY, "ProArt PX13"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "ASCP1A00:00@8",
++		},
++	},
+ 	{} /* Terminating entry */
+ };
  
--int hmat_update_target_coordinates(int nid, struct access_coordinate *coord,
--				   enum access_coordinate_class access)
--{
--	struct memory_target *target;
--	int pxm;
--
--	if (nid == NUMA_NO_NODE)
--		return -EINVAL;
--
--	pxm = node_to_pxm(nid);
--	guard(mutex)(&target_lock);
--	target = find_mem_target(pxm);
--	if (!target)
--		return -ENODEV;
--
--	hmat_update_target_access(target, ACPI_HMAT_READ_LATENCY,
--				  coord->read_latency, access);
--	hmat_update_target_access(target, ACPI_HMAT_WRITE_LATENCY,
--				  coord->write_latency, access);
--	hmat_update_target_access(target, ACPI_HMAT_READ_BANDWIDTH,
--				  coord->read_bandwidth, access);
--	hmat_update_target_access(target, ACPI_HMAT_WRITE_BANDWIDTH,
--				  coord->write_bandwidth, access);
--
--	return 0;
--}
--EXPORT_SYMBOL_GPL(hmat_update_target_coordinates);
--
- static __init void hmat_add_locality(struct acpi_hmat_locality *hmat_loc)
- {
- 	struct memory_locality *loc;
-diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
-index c891fd618cfd..bca1ec279651 100644
---- a/drivers/cxl/core/cdat.c
-+++ b/drivers/cxl/core/cdat.c
-@@ -1075,9 +1075,3 @@ void cxl_region_perf_data_calculate(struct cxl_region *cxlr,
- 		cxlr->coord[i].write_bandwidth += perf->coord[i].write_bandwidth;
- 	}
- }
--
--int cxl_update_hmat_access_coordinates(int nid, struct cxl_region *cxlr,
--				       enum access_coordinate_class access)
--{
--	return hmat_update_target_coordinates(nid, &cxlr->coord[access], access);
--}
-diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
-index a253d308f3c9..0476c3b648de 100644
---- a/drivers/cxl/core/core.h
-+++ b/drivers/cxl/core/core.h
-@@ -137,8 +137,6 @@ enum cxl_poison_trace_type {
- 
- long cxl_pci_get_latency(struct pci_dev *pdev);
- int cxl_pci_get_bandwidth(struct pci_dev *pdev, struct access_coordinate *c);
--int cxl_update_hmat_access_coordinates(int nid, struct cxl_region *cxlr,
--				       enum access_coordinate_class access);
- int cxl_port_get_switch_dport_bandwidth(struct cxl_port *port,
- 					struct access_coordinate *c);
- 
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 1c5bb1e887cd..5ff5d99f6ead 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1595,18 +1595,6 @@ static inline void acpi_use_parent_companion(struct device *dev)
- 	ACPI_COMPANION_SET(dev, ACPI_COMPANION(dev->parent));
- }
- 
--#ifdef CONFIG_ACPI_HMAT
--int hmat_update_target_coordinates(int nid, struct access_coordinate *coord,
--				   enum access_coordinate_class access);
--#else
--static inline int hmat_update_target_coordinates(int nid,
--						 struct access_coordinate *coord,
--						 enum access_coordinate_class access)
--{
--	return -EOPNOTSUPP;
--}
--#endif
--
- #ifdef CONFIG_ACPI_NUMA
- bool acpi_node_backed_by_real_pxm(int nid);
- #else
 -- 
-2.50.1
+2.43.0
 
 
