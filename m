@@ -1,50 +1,51 @@
-Return-Path: <linux-acpi+bounces-15691-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15688-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EAE9B26B89
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 17:52:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36715B26B83
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 17:51:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E81CF1CE2482
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 15:47:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B93E81CE1F9D
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 15:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27FF245020;
-	Thu, 14 Aug 2025 15:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CB123A99E;
+	Thu, 14 Aug 2025 15:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fkxLPkez"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jr50G62H"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8835242D70;
-	Thu, 14 Aug 2025 15:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C94239072;
+	Thu, 14 Aug 2025 15:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755186390; cv=none; b=qX/EFIigm5NtYXNS7+O7hFTJTVGZsoSzCwyRJ3H3qdoNH8JVG+CpnE1hWJpUTIEPUymOnXw3BAfYxaYWrD3CGkJ2umh7PYR7D67atlhWv9a+TQdXsufBnAZOype5rEbN0eASDmzAbv4PBelEws3N/yLz9wzhibDu6F04iPXeFb0=
+	t=1755186388; cv=none; b=mNUeyVwHjnbsmA+VmC25K/L7II3yJiLzuJhxA1MQlvhchhSl/wZ1k/MbY7MqTMDVDfEwjmz3AFVT8HNswxWBjfuK01LQNOoGFJlKDAqEs5Ns4745ROzCwY04GBQh+yjyxGcnt5wBImHxePaC45Sk7RvTf9z+STspm7HwuCC2gw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755186390; c=relaxed/simple;
-	bh=LU2AjF6g6ffItPa2bvywFmHrveZHplbThPGtNa1fwAo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g/uHw036iYpY6CMOR5k+L2N5JVbXiEnN8zfzLXrV+dLfLzEHwPmqK8sXdNXZBUt6xiuhQ8D9FCX6c8g3dwLvEEDbaSni8N+7uW8lRJ91UxfUz/H9BcIBJrr2hQF7ffDBTAbT9iQDFw3DMvnmtj4hvWeLgOL+ERojbC4hceZEvQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fkxLPkez; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5EE6C4CEEF;
-	Thu, 14 Aug 2025 15:46:30 +0000 (UTC)
+	s=arc-20240116; t=1755186388; c=relaxed/simple;
+	bh=vgKNO9KMKM8wBYx2jsyzSgi+p35j799z+r40TDqKnfM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=F0s5eeVzOZrm6DcENxyQ2m9cfb0UTqMrm1gaa67LoAbjkUs7qwFFXNPvkc7bWrAFF6w2GFVXJUSB06+2+Rj6UEAVe6J43MJvlGPFYi6kLgRZIQX/UWdDy7ORyvmkxXcIfWHIVXVoJN+OJnHb2Wg5bb4FIB0bY5j7lQdUBfzqolo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jr50G62H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFB1C4CEEF;
+	Thu, 14 Aug 2025 15:46:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755186390;
-	bh=LU2AjF6g6ffItPa2bvywFmHrveZHplbThPGtNa1fwAo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fkxLPkezxMG4OBdKPxcNEBpXusbQ7qOGmM2EiRkXvhQR7LyxzwdZiL7HdnRWb6dWJ
-	 +XHnm2qQgm6HhprZGb8trsrlEz+JQ1DQ7CewnIoq9lrldAP6WhjKycbCTI1ETtcGXl
-	 BesJOehqWCxLeTTicF02poMMI+3Nm2C8u0BbyttBnrnGwQVv0q1YqZi9uxhtn2jae/
-	 sPxJhjHM14ZaN7ojpydEK2AIX+ZfTBlDBB3i9NhXAmiqmXkG9c/eHJdGhy91AhRn7m
-	 oKMzcbYCmYlu6mcmqEb1m9gpQ096oFhYxF7iU25Ratbpo7QE0rBkgX4UeUm97Q7XNL
-	 f+R4r8DpQwbGQ==
+	s=k20201202; t=1755186388;
+	bh=vgKNO9KMKM8wBYx2jsyzSgi+p35j799z+r40TDqKnfM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jr50G62H1Qx9CHSo0nMhM7RMBO9Uw6ApNxLok7rtAUSGkBwZ+JhCsnpYGVJRtHPvM
+	 NnLKi5V0XyhSxRWo1/MqhhHRggOgfi2HRkVxD0QR8f1W1zrGkcc/NBV25d4NHzjd2k
+	 MHiTlN8dc7WzXm81tD/nYXEIKVJbgq17C9rQ96Xc/+UwXheHmA+JQCrvZGGYW4QXI3
+	 XLgjtECPozalHMeOGvLIIa+Y/GziVCIuEqS9I5iHEzObHll/blbvk6dD8bvcJPIjHI
+	 ibywTtkmMtz1bF4kGaRZwPZobJbetf6q9xhssw5zeSEpSgj9pEdXBeBY8zDDoQw6+a
+	 2AkCgiRl2uHzA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1uma9p-007VqB-Gu;
+	id 1uma9p-007VqB-Qx;
 	Thu, 14 Aug 2025 16:46:25 +0100
 From: Marc Zyngier <maz@kernel.org>
 To: linux-kernel@vger.kernel.org,
@@ -59,10 +60,12 @@ Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
 	Mark Rutland <mark.rutland@arm.com>,
 	Alexandru Elisei <alexandru.elisei@arm.com>,
 	Steven Price <steven.price@arm.com>
-Subject: [PATCH v2 0/4] clocksource: Add standalone MMIO ARM arch timer driver
-Date: Thu, 14 Aug 2025 16:46:18 +0100
-Message-Id: <20250814154622.10193-1-maz@kernel.org>
+Subject: [PATCH v2 1/4] ACPI: GTDT: Generate platform devices for MMIO timers
+Date: Thu, 14 Aug 2025 16:46:19 +0100
+Message-Id: <20250814154622.10193-2-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20250814154622.10193-1-maz@kernel.org>
+References: <20250814154622.10193-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -75,47 +78,80 @@ X-SA-Exim-Rcpt-To: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, lin
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-For the past 10 years, both Mark and I have been lamenting about the
-sorry state of the badly named "arch_timer" driver, and about the way
-the MMIO part is intricately weaved into the system-register part.
+In preparation for the MMIO timer support code becoming an actual
+driver, mimic what is done for the SBSA watchdog and expose
+a synthetic device for each MMIO timer block.
 
-The time has finally come to take a stab at it.
+Tested-by: Sudeep Holla <sudeep.holla@arm.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://lore.kernel.org/r/20250807160243.1970533-2-maz@kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ drivers/acpi/arm64/gtdt.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-This small series simply creates a new timer driver for the MMIO arch
-timer, and only that. It is an actual driver, and not some kludge that
-has to run super early (that's what the per-CPU timers are for). This
-allows, in turn, a pretty large cleanup of the per-CPU driver, though
-there is more to come -- one thing at a time.
-
-As an added bonus, we get a clocksource, which the original code
-didn't provide. Just in case it might be useful. The end-result is far
-more readable, and about 100 lines smaller.
-
-Patches on top of 6.17-rc1.
-
-* From v1 [1]:
-
-  - Narrow the max delta to something that fits an unsigned long, as
-    the core code doesn't deal with 64bit quantities on 32bit CPUs.
-
-  - Collected RBs and TBs from Sudeep, with thanks.
-
-Marc Zyngier (4):
-  ACPI: GTDT: Generate platform devices for MMIO timers
-  clocksource/drivers/arm_arch_timer: Add standalone MMIO driver
-  clocksource/drivers/arm_arch_timer_mmio: Switch over to standalone
-    driver
-  clocksource/drivers/arm_arch_timer_mmio: Add MMIO clocksource
-
- MAINTAINERS                               |   1 +
- drivers/acpi/arm64/gtdt.c                 |  29 +-
- drivers/clocksource/Makefile              |   1 +
- drivers/clocksource/arm_arch_timer.c      | 686 ++--------------------
- drivers/clocksource/arm_arch_timer_mmio.c | 440 ++++++++++++++
- include/clocksource/arm_arch_timer.h      |   5 -
- 6 files changed, 532 insertions(+), 630 deletions(-)
- create mode 100644 drivers/clocksource/arm_arch_timer_mmio.c
-
+diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
+index 70f8290b659de..fd995a1d3d248 100644
+--- a/drivers/acpi/arm64/gtdt.c
++++ b/drivers/acpi/arm64/gtdt.c
+@@ -388,11 +388,11 @@ static int __init gtdt_import_sbsa_gwdt(struct acpi_gtdt_watchdog *wd,
+ 	return 0;
+ }
+ 
+-static int __init gtdt_sbsa_gwdt_init(void)
++static int __init gtdt_platform_timer_init(void)
+ {
+ 	void *platform_timer;
+ 	struct acpi_table_header *table;
+-	int ret, timer_count, gwdt_count = 0;
++	int ret, timer_count, gwdt_count = 0, mmio_timer_count = 0;
+ 
+ 	if (acpi_disabled)
+ 		return 0;
+@@ -414,20 +414,41 @@ static int __init gtdt_sbsa_gwdt_init(void)
+ 		goto out_put_gtdt;
+ 
+ 	for_each_platform_timer(platform_timer) {
++		ret = 0;
++
+ 		if (is_non_secure_watchdog(platform_timer)) {
+ 			ret = gtdt_import_sbsa_gwdt(platform_timer, gwdt_count);
+ 			if (ret)
+-				break;
++				continue;
+ 			gwdt_count++;
++		} else 	if (is_timer_block(platform_timer)) {
++			struct arch_timer_mem atm = {};
++			struct platform_device *pdev;
++
++			ret = gtdt_parse_timer_block(platform_timer, &atm);
++			if (ret)
++				continue;
++
++			pdev = platform_device_register_data(NULL, "gtdt-arm-mmio-timer",
++							     gwdt_count, &atm,
++							     sizeof(atm));
++			if (IS_ERR(pdev)) {
++				pr_err("Can't register timer %d\n", gwdt_count);
++				continue;
++			}
++
++			mmio_timer_count++;
+ 		}
+ 	}
+ 
+ 	if (gwdt_count)
+ 		pr_info("found %d SBSA generic Watchdog(s).\n", gwdt_count);
++	if (mmio_timer_count)
++		pr_info("found %d Generic MMIO timer(s).\n", mmio_timer_count);
+ 
+ out_put_gtdt:
+ 	acpi_put_table(table);
+ 	return ret;
+ }
+ 
+-device_initcall(gtdt_sbsa_gwdt_init);
++device_initcall(gtdt_platform_timer_init);
 -- 
 2.39.2
 
