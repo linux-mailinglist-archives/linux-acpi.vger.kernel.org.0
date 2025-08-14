@@ -1,287 +1,200 @@
-Return-Path: <linux-acpi+bounces-15661-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15662-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7A21B259E8
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 05:39:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52538B25AB3
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 07:12:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F44A6880AA
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 03:38:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D39957B99EA
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 05:10:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECD517A2EC;
-	Thu, 14 Aug 2025 03:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A7021C195;
+	Thu, 14 Aug 2025 05:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="YP5XH4CS"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="MkSCPga1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348F7157493
-	for <linux-acpi@vger.kernel.org>; Thu, 14 Aug 2025 03:38:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B5021A44C
+	for <linux-acpi@vger.kernel.org>; Thu, 14 Aug 2025 05:12:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755142694; cv=none; b=Xx1Lg2Qw5/dhfInulEUt0UlnMow5bQQ+sptfA8IOY2JpA0klaUzMTmD3Uy/5gG9Xkqi2MU5FSDAcYYU4nSeNKWbn5U3fDAlCCIr+76aNdbRJ/6XE+bLgcp32+xKtxA94SEB4LTPKmweJELCq9Ag08JFyIUf81qZc6giR9C9/07I=
+	t=1755148333; cv=none; b=IGoisobmPwllfBjimjAEbeZJH7uN6SUB1GiI499Jvk2aBRdKcQtHuKtPuBllBvMlO+0FpgP3mK8bD5exg7OEiSpazc0W81ld985Dzr744pukoY+8CGAX2FK8MC9hTqAjAw+Sp/99rvVjj2v7dOvZuPtvkk6bmtfdEVJnIGwpAsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755142694; c=relaxed/simple;
-	bh=uOHw+GnFS8frKp1UKJKEw+bBulS8fbGkEDbwotcBUL4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uIi7teLu585wmDo6lqXjbbyL2PX3ydLv3RPahEGPbp5+Ict47johBC//LOhhO4rIWZoBC38jE3lsH6paksLchd8ApbobwkZGQsCXLg2iYP4kZxFTXwmWl33Dck5C/iFKgdDwD5xdrtxLGzlvOjym/pSfnMlwE/+P/wUrQpn8/RA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=YP5XH4CS; arc=none smtp.client-ip=209.85.167.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-435e2b89f9dso1411b6e.1
-        for <linux-acpi@vger.kernel.org>; Wed, 13 Aug 2025 20:38:11 -0700 (PDT)
+	s=arc-20240116; t=1755148333; c=relaxed/simple;
+	bh=YaF6qaNbfZR7C1UmE5o7deC1mp8iVKvjMQoaZqOQFxk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Zbd/4AXxCU8JdcZsgt+YaApcyibmhP7uSib/y+tb0RMkZgJDaq5IqgEchoW6mZTaXFWNlCPXWD9FjU4mTvcN8sx56hbzvlA+v5SZ3E49k0/HXHWIoj/84hFVXfj3dJ1a5i9XpAQ2pX36qhsUjoc66WO/wMIi2i0CXgiYgAoEXdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=MkSCPga1; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6188b657bddso1044332a12.1
+        for <linux-acpi@vger.kernel.org>; Wed, 13 Aug 2025 22:12:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1755142691; x=1755747491; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aUu6oSbO6D+uUoB3TSxixh5CZbC6ogSp8+KOXMU+i3c=;
-        b=YP5XH4CST1XRLTAuGuZ2TgnuZrKxT3nz9kVREVsq4u4ylm0JdsDK0UVq4GkNZ5FZSL
-         Wu1fGL60+GiKENR1wjnknvnDFIFd46sA+vVO6cGcVbIRhSS5zRIaKv3cZG6H8qXxk1np
-         kWCdUZYKIRrlENY+TIMB1p7eRXiRzA5Sx/7tJ+0w/PyW8HvLJ2CTlLdcHp4Gy4E0U5PE
-         OjeXw2XhGt4DqB9GbTQAL7HKjRr27f0kagHMkjqoUhq+PFOw/NikoYfzOOI//Iq50jUr
-         ckZk24ONXLPso8xq0VYEF5wauvP0wSJ4N5L/rjQbGqlf/Xm4fsOOfAzDcP+UC+AweRmZ
-         inwg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1755148328; x=1755753128; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7UUaCbQk/tQidZQRYXdHI6wdrBH3WftKB2sa5wcWzvs=;
+        b=MkSCPga1F8ROO/73OwExDxZ30IIkxPfsTbp7VVUYF0fF49q0cqfGEpjhLHaiU633HF
+         rigVXFScFOb6FJnYs3MG5F1tG6d/sCYuBpKz3XqVWTC9De/TKSnZsFUMWXa2cDOB3sxw
+         JOzpJuD8doyqiOssXLH4B2dIMdoYUvziu6+y0Gg5nc2m56ZMbG1o6hs9GfRuHvGyyi8w
+         4ajivJ8lVAufAXnhtBhi42zEQUYyhXYQZEziZyzyB2VRcGpY9rxUbKmBTwBVjsAlvYXy
+         d5HhOJRvoUfVjUZawoEjMWgELQKyRKKDG3chgZxyCmdUBwfLzpICK9p6h6o1fkPdLmUH
+         bEDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755142691; x=1755747491;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aUu6oSbO6D+uUoB3TSxixh5CZbC6ogSp8+KOXMU+i3c=;
-        b=iMb2gbhS7+uUtF3c7+0ud+2YpEsFT8sJfjcfHW4YsH3+dg86JDa7NoRlk/FsZBkmLz
-         8ZUdWyUQZBBVlOVrtQleibnflLn7PIXJWH96jqaIgChwqWH/StdNSb+sbR4pqsrrBfVD
-         VeR4M61d+PfNspnepzSnZgrvPE7GPNi6gdtq4+vdnBipRdfjvDccz/Dh0+YaiypEFPD9
-         eJK1Iuw1YDEgdGZYCIKIbl/+/1LNkCzCZPdtnkHLQzWVdk98HGroGN8RiHZQrOx/5XAz
-         +9lR/UTlFximCKJwjnbL65LPDhqFwyr9DEbIfn0YdsbZSFtKRKVamhxa8SpREmg08Ivw
-         jAMg==
-X-Forwarded-Encrypted: i=1; AJvYcCV1ihBSVyzWVENmzw9DarUv0NbVWzUKlzmlEFxmxkVmNB71TzXRRLMdJdwMqEz+q323baf1k2epdPfO@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiGvfbGcFAH6sJEGmHGOeaTrmL+NXt7JjFRAWs9xDjYoMKMoe3
-	TCrcaYSsLIYl6jf6DUeRGaM2AUNQs6z/2dm5FJIwY0Y06r5Vf9CxqdYn+71aijhB6FPr8AKvlz0
-	AHuSkRA6/mkK52GwAUo0HoZjAWScpMizSoHk5hunL/A==
-X-Gm-Gg: ASbGncsF8KsX446Tphin3gHZXSY1cCC7qTR7iLS6guoyQsGS3RU54EqEd/TuuT5LSM9
-	i29Fxkd35n+Xy5de9FhP4LXk2ALO6d/GO/5faEZaYz32MHpp3vqwx+J8kE2GnhByB5bjt9AO7/h
-	thTbMM1snaLaUH3HVGPvIkLNz5IXLVnRI7ikvQW0J2NzCaLBTyeIqy7WyGhBhJhIEHydA89GP//
-	BiwIBRn/1Nek0M9QIFp
-X-Google-Smtp-Source: AGHT+IFjHWcdv5oE5C1YN1jOSYALZcdBu+X0+1pQuzNgk6FzmgT8QU+Oy6pHz6bk7kpTc2WG6bJwuRY/duk1idFQEI8=
-X-Received: by 2002:a05:6808:4f25:b0:415:9306:2e3b with SMTP id
- 5614622812f47-435df7c755dmr904332b6e.23.1755142690957; Wed, 13 Aug 2025
- 20:38:10 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755148328; x=1755753128;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7UUaCbQk/tQidZQRYXdHI6wdrBH3WftKB2sa5wcWzvs=;
+        b=VheKP5b1I77UujHha2DmitqbyOJi9W4ZwHUxN9iscqxqxOnZU5PbaalyffXp/2zg9F
+         u7sqB6Sc2fw5zHcQsSvqpmK0TrCBwr+fZ+ofL0mDTKZfI3xdXjjjcjFnHk6KHLzdi+LO
+         gHAATpxD4kndXTvnvwjaQUhd9cro58zVXitH2w0oicOM8Rl8F5WewsOjvDdxBNtvoBmb
+         emzP5+ouwCs1jHs6XTRNjBRg/qxBb8qH8ctZIpKcze8gXSldwk/TfY8HPZ60FeTAzJts
+         AhFubFiadZF4ozRlgbnAksK2bWgE9weVQGskJAMfg91/tEGW+PWaPt4FApkNKTIV9e9g
+         HE4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU/n7jf0ydYIfsxpwoDIpqF2kqfBAZVzhassCBgM/BQQ8AsdVFcpfXmG2+nWwFYarEnPZ57T7s/7PpL@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4Tj0gqSxWhYa/aI/gpQ6yOE2BTIC3R08O9/FiDO04XHRYTlLI
+	w5E7qEpiAIf3L6zckobMssMqTN3YxqFcPWxsrWSU8aaOtLDk1rE1Qc5k96lFars6E24=
+X-Gm-Gg: ASbGnctOHxQyMDTh1iyLAyA6Xdbi0dQlihw75KAqkjz3x07o1V0+o9o5XThllnzQS3n
+	z2E++qznixC0JCsEqn6ILuQET07p/vll3l8OKoKNHCGme/TseMyZZaRJjGPSn45jXjrkAo7hlfd
+	92OQFEIgPBLmDaG50GeKuMAJMbDlAffEVSQWlHMM98OMydSKTNKZXGNZd/yBQdpnxwlBiRF8vFH
+	frPRVOJgXVTk47OzvSLzpQWd6pvsglzXX+wAGvBeDOo32WpF7FPnYuWT23BhtsUOGN6EWKvI+ci
+	qp7NvfBUNa751rHq9Q+VQvgMs2gqArlXxjPBvLLJJMwRK7EtJlpw5rq39xHuOyJPnJ6MVU7LAwy
+	4BhchtozLeLkYKeak9wbHGgg5L0A6C4Soshk3dw==
+X-Google-Smtp-Source: AGHT+IE2qNMmiWwpZbVyrEo69mF6dA6ewxgwveepPO3c3U2g6RrCgHK7XTCos3mlcSqU5U6vEPad3Q==
+X-Received: by 2002:a05:6402:354c:b0:615:cb9c:d5a2 with SMTP id 4fb4d7f45d1cf-6188c1fb55dmr1316865a12.18.1755148328431;
+        Wed, 13 Aug 2025 22:12:08 -0700 (PDT)
+Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
+        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-61865823411sm3172298a12.28.2025.08.13.22.12.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 22:12:07 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Zaid Alali <zaidal@os.amperecomputing.com>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Cc: Tony Luck <tony.luck@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPI: APEI: EINJ: Fix resource leak by remove callback in .exit.text
+Date: Thu, 14 Aug 2025 07:11:57 +0200
+Message-ID: <20250814051157.35867-2-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250515094301.40016-1-cuiyunhui@bytedance.com>
- <CAEEQ3w=XqoKmVu1kvc5XUbGbQJsHVkRx=T65tXvYEYo0HCTcnQ@mail.gmail.com>
- <aJs-aPH32OxpzR3G@sunil-laptop> <CAEEQ3wnHFPBPC0U59rDBJaZYxJ24uJzJ7NDQO0gfmVqoiQwNOw@mail.gmail.com>
- <aJtKZhvNX0p3obFw@sunil-laptop> <CAEEQ3wmomscuAzuiRyJu4ha8tiM=s1Y-ytQROPTWr1DScMNL3g@mail.gmail.com>
- <aJwiXKWXik8BmpL8@sunil-laptop> <CAEEQ3wky3LXK=ge1wBkHD0ZWtwUF-aBn44EK0Uxa+_2DB1Giqw@mail.gmail.com>
- <CAK9=C2VOaAJZxCeM-5QPj5B-ie68LivJyQcM8KwKjdL9u00RJg@mail.gmail.com>
-In-Reply-To: <CAK9=C2VOaAJZxCeM-5QPj5B-ie68LivJyQcM8KwKjdL9u00RJg@mail.gmail.com>
-From: yunhui cui <cuiyunhui@bytedance.com>
-Date: Thu, 14 Aug 2025 11:37:58 +0800
-X-Gm-Features: Ac12FXxW1tpavd5e7r8AJU48FLd8aGJQvqCB0NLX9F_9NFjMnhVNy3qquQBWkqQ
-Message-ID: <CAEEQ3wmDygvLn-EK_hCumOuCkPjKWfnmwiA+kz4p9N=thG0pXA@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH] ACPI: RISC-V: CPPC: Add CSR_CYCLE for CPPC FFH
-To: Anup Patel <apatel@ventanamicro.com>
-Cc: Sunil V L <sunilvl@ventanamicro.com>, rafael@kernel.org, lenb@kernel.org, 
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	alex@ghiti.fr, linux-acpi@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Rahul Pathak <rpathak@ventanamicro.com>, 
-	juwenlong@bytedance.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3107; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=YaF6qaNbfZR7C1UmE5o7deC1mp8iVKvjMQoaZqOQFxk=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBonXAe4wXCd+w9j012xGyTT62s1jZjYP8qMlwkY VgjJDWWVa6JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaJ1wHgAKCRCPgPtYfRL+ TneRCAC2WyUwTXznndtVthjtYInPYamfSX2NFfpWVuHokH3cjFu3g5qKEMAbIyhhImFwn3LAHFM q2EBEddDIFu3hhV0bfaFW1WAAWQnUw/wLTbZOfMIMjT8y5TDSycQdjjTK0WIURH6lfshxqzILxM 4eYP4zuLu8XAv/j4k1Smzyt6JFFdA0bK6rpIkz4vx+X7tD8/8gjVPNSAp31xarETNBOMiK0t00s NF5jqzx4G9X4oFozftrXlZk9MDupzmRLsWyWFVc+FmHTNxEi4q/13KFciAte9zzs05BnmzmzIFC p/56E0SgI9fUGJ6d+80/klkpUfWHCxf2fCzDU8zh1piFDpVn
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-Hi Anup,
+The .remove() callback is also used during error handling in
+faux_probe(). As einj_remove() was marked with __exit it's not linked
+into the kernel if the driver is built-in, potentially resulting in
+resource leaks.
 
-On Wed, Aug 13, 2025 at 7:12=E2=80=AFPM Anup Patel <apatel@ventanamicro.com=
-> wrote:
->
-> On Wed, Aug 13, 2025 at 12:14=E2=80=AFPM yunhui cui <cuiyunhui@bytedance.=
-com> wrote:
-> >
-> > Hi Sunil,
-> >
-> > On Wed, Aug 13, 2025 at 1:28=E2=80=AFPM Sunil V L <sunilvl@ventanamicro=
-.com> wrote:
-> > >
-> > > Hi Yunhui,
-> > >
-> > > On Wed, Aug 13, 2025 at 11:23:39AM +0800, yunhui cui wrote:
-> > > > Hi Sunil,
-> > > >
-> > > > On Tue, Aug 12, 2025 at 10:06=E2=80=AFPM Sunil V L <sunilvl@ventana=
-micro.com> wrote:
-> > > > >
-> > > [...]
-> > > > > > > >
-> > > > > > > > The purpose of cppc_ffh_csr_read() is to calculate the actu=
-al
-> > > > > > > > frequency of the CPU, which is delta_CSR_CYCLE/delta_CSR_XX=
-X.
-> > > > > > > >
-> > > > > > > > CSR_XXX should be a reference clock and does not count duri=
-ng WFI
-> > > > > > > > (Wait For Interrupt).
-> > > > > > > >
-> > > > > > > > Similar solutions include: x86's aperf/mperf, and ARM64's A=
-MU with
-> > > > > > > > registers SYS_AMEVCNTR0_CORE_EL0/SYS_AMEVCNTR0_CONST_EL0.
-> > > > > > > >
-> > > > > > > > However, we know that CSR_TIME in the current code does cou=
-nt during
-> > > > > > > > WFI. So, is this design unreasonable?
-> > > > > > > >
-> > > > > > > > Should we consider proposing an extension to support such a=
- dedicated
-> > > > > > > > counter (a reference clock that does not count during WFI)?=
- This way,
-> > > > > > > > the value can be obtained directly in S-mode without trappi=
-ng to
-> > > > > > > > M-mode, especially since reading this counter is very frequ=
-ent.
-> > > > > > > >
-> > > > > > > Hi Yunhui,
-> > > > > > >
-> > > > > > > Yes, but we anticipated that vendors might define their own c=
-ustom CSRs.
-> > > > > > > So, we introduced FFH encoding to accommodate such cases.
-> > > > > > >
-> > > > > > > Thanks,
-> > > > > > > Sunil
-> > > > > >
-> > > > > > As mentioned earlier, it is best to directly read CSR_XXX (a re=
-ference
-> > > > > > clock that does not count during WFI) and CSR_CYCLE in S-mode, =
-rather
-> > > > > > than trapping to SBI.
-> > > > > >
-> > > > > No. I meant direct CSR access itself not SBI. Please take a look =
-at
-> > > > > Table 6 of RISC-V FFH spec.
-> > > > >
-> > > > > > drivers/acpi/riscv/cppc.c is a generic driver that is not speci=
-fic to
-> > > > > > any vendor. Currently, the upstream code already uses CSR_TIME,=
- and
-> > > > > > the logic of CSR_TIME is incorrect.
-> > > > > >
-> > > ACPI spec for "Reference Performance Register" says,
-> > >
-> > > "The Reference Performance Counter Register counts at a fixed rate an=
-y
-> > > time the processor is active. It is not affected by changes to Desire=
-d
-> > > Performance, processor throttling, etc."
-> > >
-> > > > > CSR_TIME is just an example. It is upto the vendor how _CPC objec=
-ts are
-> > > > > encoded using FFH. The linux code doesn't mean one should use CSR=
-_TIME
-> > > > > always.
-> > > >
-> > > > First, the example of CSR_TIME is incorrect. What is needed is a
-> > > > CSR_XXX (a reference clock that does not count during WFI).
-> > > >
-> > > > Second, you mentioned that each vendor can customize their own
-> > > > implementations. But should all vendors' CSR_XXX/YYY/... be added t=
-o
-> > > > drivers/acpi/riscv/cppc.c? Shouldn=E2=80=99t drivers/acpi/riscv/cpp=
-c.c fall
-> > > > under the scope defined by the RISC-V architecture?
-> > > >
-> > > No. One can implement similar to csr_read_num() in opensbi. We didn't
-> > > add it since there was no HW implementing such thing. What I am
-> > > saying is we have FFH encoding to support such case.
-> > >
-> > > > >
-> > > > > > It would be best to promote a specification to support CSR_XXX,=
- just
-> > > > > > like what has been done for x86 and arm64. What do you think?
-> > > > > >
-> > > > > Wouldn't above work? For a standard extension, you may have to pr=
-ovide
-> > > > > more data with actual HW.
-> > > >
-> > > > This won=E2=80=99t work. May I ask how the current upstream code ca=
-n calculate
-> > > > the actual CPU frequency using CSR_TIME without trapping to SBI?
-> > > > This is a theoretical logical issue. Why is data needed here?
-> > > >
-> > > As I mentioned above, one can implement a generic CSR read without
-> > > trapping to SBI.
-> > >
-> > > > Could you take a look at the "AMU events and event numbers" chapter=
- in
-> > > > the ARM64 manual?
-> > > >
-> > > As-per ACPI spec reference performance counter is not affected by CPU
-> > > state. The RISC-V FFH encoding is sufficiently generic to support thi=
-s
-> > > requirement, even if the standard CSR_TIME cannot be used. In such
-> > > cases, an alternative CSR can be encodeded, accessed via an OS-level
-> > > abstraction such as csr_read_num().
-> >
-> > So what you're saying is that we should submit a patch like this, right=
-?
-> >
-> > diff --git a/drivers/acpi/riscv/cppc.c b/drivers/acpi/riscv/cppc.c
-> > index 440cf9fb91aab..953c259d46c69 100644
-> > --- a/drivers/acpi/riscv/cppc.c
-> > +++ b/drivers/acpi/riscv/cppc.c
-> > @@ -66,16 +66,8 @@ static void cppc_ffh_csr_read(void *read_data)
-> >  {
-> >         struct sbi_cppc_data *data =3D (struct sbi_cppc_data *)read_dat=
-a;
-> >
-> > -       switch (data->reg) {
-> > -       /* Support only TIME CSR for now */
-> > -       case CSR_TIME:
-> > -               data->ret.value =3D csr_read(CSR_TIME);
-> > -               data->ret.error =3D 0;
-> > -               break;
-> > -       default:
-> > -               data->ret.error =3D -EINVAL;
-> > -               break;
-> > -       }
-> > +       data->ret.value =3D csr_read_num(data->reg);
-> > +       data->ret.error =3D 0;
-> >  }
-> >
-> > If that's the case, the robustness of the code cannot be guaranteed,
-> > because the range of CSRs from different vendors is unknown.
->
-> ACPI FFH is allows mapping to any CSR.
+Also remove the comment justifying the __exit annotation which doesn't
+apply any more since the driver was converted to the faux device
+interface.
 
-Yes, FFH can map any CSR, and this is not the point of contention.
+Fixes: 6cb9441bfe8d ("ACPI: APEI: EINJ: Transition to the faux device interface")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+Hello,
 
-If that's the case, the CSR_TIME used in the current kernel code is
-inappropriate. Some vendors may design a counter that does not count
-during WFI, making CSR_TIME irrelevant. Even if counting continues
-during WFI, are you planning to have one counter operate in S-mode
-while the other traps to M-mode?
+note that the intention seems to be that this construct is safe, see
+commit c393befa14ab ("driver core: faux: Suppress bind attributes").
+Note further that I don't have a machine to test that so this is only
+based on code reading. An appropriate test might be:
 
-In that case, the code would need to be modified as proposed above. Do
-you agree?
+| diff --git a/drivers/base/faux.c b/drivers/base/faux.c
+| index f5fbda0a9a44..decb15f1194a 100644
+| --- a/drivers/base/faux.c
+| +++ b/drivers/base/faux.c
+| @@ -39,6 +39,8 @@ static int faux_match(struct device *dev, const struct device_driver *drv)
+|  	return 1;
+|  }
+|  
+| +static int once;
+| +
+|  static int faux_probe(struct device *dev)
+|  {
+|  	struct faux_object *faux_obj = to_faux_object(dev);
+| @@ -56,7 +58,11 @@ static int faux_probe(struct device *dev)
+|  	 * Add groups after the probe succeeds to ensure resources are
+|  	 * initialized correctly
+|  	 */
+| -	ret = device_add_groups(dev, faux_obj->groups);
+| +
+| +	if (once++)
+| +		ret = -ENOMEM;
+| +	else
+| +		ret = device_add_groups(dev, faux_obj->groups);
+|  	if (ret && faux_ops && faux_ops->remove)
+|  		faux_ops->remove(faux_dev);
+ 
+(quoted to make sure that this hunk won't be used when the patch is
+applied).
 
-Without a specification defining these two counters, the above code
-would lack robustness.
+Even if the faux device interface is fixed not to rely on .remove() the
+comment in einj-core.c needs some love.
 
->
-> >
-> > Since each vendor will define their own CSRs, why not formalize them
-> > into a specification?
->
-> The _CPC objects in the ACPI table point to platform specific mechanisms
-> of accessing CPPC CSR so it can point to a vendor specific CSR.
->
-> Regards,
-> Anup
+Best regards
+Uwe
 
-Thanks,
-Yunhui
+ drivers/acpi/apei/einj-core.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
+index bf8dc92a373a..1204fa3df285 100644
+--- a/drivers/acpi/apei/einj-core.c
++++ b/drivers/acpi/apei/einj-core.c
+@@ -1091,7 +1091,7 @@ static int __init einj_probe(struct faux_device *fdev)
+ 	return rc;
+ }
+ 
+-static void __exit einj_remove(struct faux_device *fdev)
++static void einj_remove(struct faux_device *fdev)
+ {
+ 	struct apei_exec_context ctx;
+ 
+@@ -1114,15 +1114,9 @@ static void __exit einj_remove(struct faux_device *fdev)
+ }
+ 
+ static struct faux_device *einj_dev;
+-/*
+- * einj_remove() lives in .exit.text. For drivers registered via
+- * platform_driver_probe() this is ok because they cannot get unbound at
+- * runtime. So mark the driver struct with __refdata to prevent modpost
+- * triggering a section mismatch warning.
+- */
+-static struct faux_device_ops einj_device_ops __refdata = {
++static struct faux_device_ops einj_device_ops = {
+ 	.probe = einj_probe,
+-	.remove = __exit_p(einj_remove),
++	.remove = einj_remove,
+ };
+ 
+ static int __init einj_init(void)
+
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+-- 
+2.50.1
+
 
