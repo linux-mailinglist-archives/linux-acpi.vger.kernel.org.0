@@ -1,298 +1,148 @@
-Return-Path: <linux-acpi+bounces-15663-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15664-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2664B25B3D
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 07:51:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04CA3B25B83
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 08:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B71A4189782A
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 05:49:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03EF156085B
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 06:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F70227B95;
-	Thu, 14 Aug 2025 05:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83CB23236D;
+	Thu, 14 Aug 2025 06:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="U1+zTnoz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UmiIXJIT"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B0822541C
-	for <linux-acpi@vger.kernel.org>; Thu, 14 Aug 2025 05:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2650722AE65;
+	Thu, 14 Aug 2025 06:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755150508; cv=none; b=TlKGTMZQz+EVJqmksj9Cpmq920FR7d5T/WxTZCK4o6n71/kTNktu0Oag7Rfk1N3XoAItc3Z6YFhTVBz7KWOSk5PHcSCdnto8aupsy5ZQTtdSB2/2PK6T7Vx0gWd9y1VRQpn8u1jxmSTDzlSH2aNe2QrW8o73Soj/LyUdET/gq38=
+	t=1755151437; cv=none; b=ADF3DbJlENjGMhXaHRMdBeaW9JvCNGvAJ8nksczERKmQLPZES8v/FcYqDhUYsle6MJ1pAtj5kx+K8gr5sxmWxb5QzsOP/gFdJK9ih5t2Ntf5vy+juE5JeYwhalkXftUVyMWdCBD5wxPnG3DFx2BLzEj/Jr+rdlCBOamfUjKeJdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755150508; c=relaxed/simple;
-	bh=EnO7gUYfftgvv/e+AlrK2p84IrrBv8aNOUY7tpolDek=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Lelxh/uiJ+JPu3rlf+yER6uNlbdJXevWuRGreRXKFOsLY31B41yuqSxlShNQgEzVASFwGVmFO+5FgbCZ4+vdbqUnaEyS89v8Cc2R6G2mPv0AOV5POkPh/TVcUcdkta1lfDQcltnBIiM23fnIsS2lJe4/mHgQmdHa9XpPT9/9mFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=U1+zTnoz; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-333f8d39e94so3915251fa.0
-        for <linux-acpi@vger.kernel.org>; Wed, 13 Aug 2025 22:48:25 -0700 (PDT)
+	s=arc-20240116; t=1755151437; c=relaxed/simple;
+	bh=j0vNBj2gpH35ScOLHQLz1YkYvPcpxqiqC0ReXni/6xg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=cJ82KvjJBTu1AAERMN1uDj0far9W56m6QCcy6/Oq7nP62/qk6CtcvZJSTDcYVE4dQSYt7GBvKF4c7dJfPoKjCtlfw5oDIRmA3koQcsx+h5YFajhCEryIIjqCnK/H6a27RDLAmegop1oEpjveYj9+06ikq5c9cc07gFU9tAWPDig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UmiIXJIT; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-244581c3b43so4439675ad.2;
+        Wed, 13 Aug 2025 23:03:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1755150504; x=1755755304; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jq8gnnel9LZRFbimfyn0o9ie2eLRCQN7eTZ1xYFVwp0=;
-        b=U1+zTnozYoHlKXs6ICo358tqnwoR0Wl6i70YcnQqjXYhjHp1gAMFHVVB/E2DVrmpj5
-         IcNOvLcqn7NhNWV1V+nYdPNaXJ4M7Pv1Y4CywpszOE2sOxNP6Fo+tqNAeYz676rwWHJc
-         R+kThcDOVxQ2hAF6WQ4XmMAYCM0vBP0tjtVtTQo/KAZKv7nopUzfRfSJgF45hoafhOIu
-         EBakdgkoVBVSHxZwnsH14eZI72Yrp0A6+nH62YjHKTSsA5blXExtjXOfPm6+HwStcCqs
-         6tNnyORmwLWfnI+wGe4IPd1bZrMMupKjYX3IJBuPLBlKLtpojuTF7rYSxW1bw4/xQ52A
-         +Z8A==
+        d=gmail.com; s=20230601; t=1755151435; x=1755756235; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YXSdbUvV7zwhM2KrNQ09Pxxed345/wSQFLElkhqFCsk=;
+        b=UmiIXJITJNetxFETs9lpFEwBdDBQM6am28Kia6MIlYRv/6OUZ+6XPLQBbPp8Ou14rH
+         5bVgrFL4I4IIvq6UVN5o8JUb6vrUaHVcZHM5H4TX2XUkh0EvRnhAe9B0uBcURXNU4zcc
+         yOfa8A0Bu2QtOk5+jE2nNB+Q148o0947gRzcmHUZ00RTKLJdrs1fO1zVjenRJhJIa76E
+         VWdy4ytqfwK09jqFuIsg56bg/Bq32vFbIjOXrLTKcJzicvWSD1VZWpM3LH7PsxB2wPA0
+         b+qwXC5R/k8avBkl3XMxeCKAMIqJVlXYRgg7Idvt9Ecd8KlskJaTmQdpJJ4xEYI12Dmc
+         hbzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755150504; x=1755755304;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jq8gnnel9LZRFbimfyn0o9ie2eLRCQN7eTZ1xYFVwp0=;
-        b=WchngPoICf5uBgfNr6c2IN4LGVcAobP0YLE8L5zuN4bxUbMUe0mmiWLEXp4OD2m43w
-         KG15gbgh+BZSvlQm2S22WMRjeK0RfDjBDU4ePeJMJf0SE9Ex5+k/gpt8615/Pj9P+H4T
-         qdTdyzHJJ3ueXM/I6yMrCDRdedZ3G0Piq1V6yt7KFXUs42brQkHCTpxDpTPbWcb+26Lt
-         6kyB/EHWJdV9VvqaODLJMWEgJ6UP+TUr4zZc/3lNc1Lr6Tbkk9kSWB3m2XQGfUhdZx61
-         M+vzkEvi8LNTKVuRG+YRP7cJ5ugqYJaf6yH0QTY/NFNVgOurtZa93EcUapBRwujsv7ch
-         i9ew==
-X-Forwarded-Encrypted: i=1; AJvYcCVu3SIDrvH1dmVikCSB/0PAOpbJMvqzOO1lFU5AjYAjJ1Cc3WiAzjlnbNyVo0RagfhU1DyUChA7Fmen@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmIMDtQtY7invmG0NKkRga4XDc3I3WgVgBI1ame+iRmRIUctg0
-	JUjgoAegkZi4oKPzoCvByJ9n/UZneos1sbShaW2lY0gnj9CoOHfaZ+28DUasYhIdBTrJ5Rd61iv
-	ejxidHyy+/um1bqRebjoP5fIo+ud6oFlbYMxs5IVSYg==
-X-Gm-Gg: ASbGncvjBbn9TuMQMz+8K8d1ORDBpeSSNVSILOqJPbOrEMMb9zLflQR2R5UwhOUg+C/
-	6h70CcokRbk2TcG9IP0ghMZR4MPRAoE0Ea9y/x1Ny0kpQ80iAOrAszAK9oMz/qXyQi85tNcasDh
-	Ls6u+ZkAvyTdklKvst2OSnKjJZa5qAfqZWo/8Ca3dO2ofn2TeyOQeFSwMl3QZEQNjTvHJwdGKGj
-	ebtqii+UDvKrwf0Fac=
-X-Google-Smtp-Source: AGHT+IHhCtG5+TOkXctTQmejLJ1+lFtgzdiZI9hAQlzmYcHcQiwcJ94XXudSRNfjECSqpfteb/+HqsXWxJPNnvya25I=
-X-Received: by 2002:a2e:a36e:0:b0:32a:869e:4c13 with SMTP id
- 38308e7fff4ca-333fa72e974mr2692591fa.14.1755150503808; Wed, 13 Aug 2025
- 22:48:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755151435; x=1755756235;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YXSdbUvV7zwhM2KrNQ09Pxxed345/wSQFLElkhqFCsk=;
+        b=khqtJK8drql/CNCzCReUC/78CpTCyIqLK3LA5GP8KI+PV8FEugr1GiQD2pEBtrQMCa
+         KnZegnSKp8PHtv9PYR9sIMDS8GudEsqxRRNYZncZ4Ud5QRbOJEdWV2m/xinx91ZvmpE6
+         DFqmigmm98NqCr8Z6yg5/V7wHqlUHIm9DSqsVTW9x3bxOg2LCDP5qPWZ8KMcca9/95Qt
+         LgNhcOHi3ArfA6YTZSqZZAH55Cuvizdni381zR7btJwBWYxTYdGOaDDeX+0i5SCh+3Sw
+         scPBpiBhy8wtjcjlWbpl4vZpO9l5K5Gsx4RJaK+Jjm8uYCQ0XEOdcf8AQcCk5VbkXxyK
+         aQRw==
+X-Forwarded-Encrypted: i=1; AJvYcCUtGrIGUvzzJe8fvMT0lnALDpVlWcjCyda/iBfLiKcJ15lArX3y77Vl9Ljayfajg18egfXsfol7Hzht@vger.kernel.org, AJvYcCWCp3ywBKSKV1Kz9YhdqqmWCUVpNo8FI0+gsEtabAZHoDbyuS7tE8FSXhWoVNY+rscEP8JVPPT7qpHS8fiP@vger.kernel.org
+X-Gm-Message-State: AOJu0Yytzel12uwHEfsjRNo+3FVL1PbzWekNkTU4fE1u+syHL35iDn3m
+	e9Cr4yfXPCGez4xDyJHhbY0Vy4DQyZ6rcIeaWNZGlqKNKByZ3SogYjz1
+X-Gm-Gg: ASbGnctd63XTW83Ibnz7NI+DGQ0LdNtNjyxef/DxJj4PdRUPMw9eFOWx84FVeIXwmvo
+	UTZTRTQjIHyiCHJqGBWuQ//W8ilOx41eg3f6hiCPhuvWqpFscMZuW9uy/He/fUiYOMaa0j7norq
+	ZuZomnewfFR5mv2XnpV7R3yO64mzHdrW4HoCSstD+tuuP+0BVW3aVjogQTBbBwtQ1JhqA/EWZ//
+	OXgN76TdnRPjY/CATsbNXyEsBpszjQekYI5KQh/V6l3lfV0UnMUWoLo9S8jZB3XlAJ70SxE6ZFU
+	u1W5o1sLRgQFuJ4LUpVYRmqHhIUvB1ilSN+PLyUdn2m2TYgJWRKTy+oZO2pkMwP7wYTuz/ppDd2
+	rRy8ZEmaN73OGr9XrscOROHo=
+X-Google-Smtp-Source: AGHT+IGh+C/BbqiOozv0lDUV64n+P/dOZFC/hb8RcQUr/ch7AH7JfXdgNhR0bMXz9N/hI15sWZzFRg==
+X-Received: by 2002:a17:903:11c4:b0:240:3584:6174 with SMTP id d9443c01a7336-2445851908fmr24440015ad.21.1755151435177;
+        Wed, 13 Aug 2025 23:03:55 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:bd82:9778:4ed6:7372])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1f0f603sm341999675ad.48.2025.08.13.23.03.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 23:03:54 -0700 (PDT)
+Date: Wed, 13 Aug 2025 23:03:52 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] software node: Constify node_group in registration functions
+Message-ID: <2zny5grbgtwbplynxffxg6dkgjgqf45aigwmgxio5stesdr3wi@gf2zamk5amic>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250515094301.40016-1-cuiyunhui@bytedance.com>
- <CAEEQ3w=XqoKmVu1kvc5XUbGbQJsHVkRx=T65tXvYEYo0HCTcnQ@mail.gmail.com>
- <aJs-aPH32OxpzR3G@sunil-laptop> <CAEEQ3wnHFPBPC0U59rDBJaZYxJ24uJzJ7NDQO0gfmVqoiQwNOw@mail.gmail.com>
- <aJtKZhvNX0p3obFw@sunil-laptop> <CAEEQ3wmomscuAzuiRyJu4ha8tiM=s1Y-ytQROPTWr1DScMNL3g@mail.gmail.com>
- <aJwiXKWXik8BmpL8@sunil-laptop> <CAEEQ3wky3LXK=ge1wBkHD0ZWtwUF-aBn44EK0Uxa+_2DB1Giqw@mail.gmail.com>
- <CAK9=C2VOaAJZxCeM-5QPj5B-ie68LivJyQcM8KwKjdL9u00RJg@mail.gmail.com> <CAEEQ3wmDygvLn-EK_hCumOuCkPjKWfnmwiA+kz4p9N=thG0pXA@mail.gmail.com>
-In-Reply-To: <CAEEQ3wmDygvLn-EK_hCumOuCkPjKWfnmwiA+kz4p9N=thG0pXA@mail.gmail.com>
-From: Anup Patel <apatel@ventanamicro.com>
-Date: Thu, 14 Aug 2025 11:18:10 +0530
-X-Gm-Features: Ac12FXyrfbViQgrEQhqP_2MvMXsDZ6jc2RCF3VF-aE5KR9wmZtzeUd1ieaEQCLY
-Message-ID: <CAK9=C2X+6vs=Xa7XnreRs4+e5OjeJA-XtwwUM4GHq7pT=Fs-5A@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH] ACPI: RISC-V: CPPC: Add CSR_CYCLE for CPPC FFH
-To: yunhui cui <cuiyunhui@bytedance.com>
-Cc: Sunil V L <sunilvl@ventanamicro.com>, rafael@kernel.org, lenb@kernel.org, 
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	alex@ghiti.fr, linux-acpi@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Rahul Pathak <rpathak@ventanamicro.com>, 
-	juwenlong@bytedance.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Thu, Aug 14, 2025 at 9:08=E2=80=AFAM yunhui cui <cuiyunhui@bytedance.com=
-> wrote:
->
-> Hi Anup,
->
-> On Wed, Aug 13, 2025 at 7:12=E2=80=AFPM Anup Patel <apatel@ventanamicro.c=
-om> wrote:
-> >
-> > On Wed, Aug 13, 2025 at 12:14=E2=80=AFPM yunhui cui <cuiyunhui@bytedanc=
-e.com> wrote:
-> > >
-> > > Hi Sunil,
-> > >
-> > > On Wed, Aug 13, 2025 at 1:28=E2=80=AFPM Sunil V L <sunilvl@ventanamic=
-ro.com> wrote:
-> > > >
-> > > > Hi Yunhui,
-> > > >
-> > > > On Wed, Aug 13, 2025 at 11:23:39AM +0800, yunhui cui wrote:
-> > > > > Hi Sunil,
-> > > > >
-> > > > > On Tue, Aug 12, 2025 at 10:06=E2=80=AFPM Sunil V L <sunilvl@venta=
-namicro.com> wrote:
-> > > > > >
-> > > > [...]
-> > > > > > > > >
-> > > > > > > > > The purpose of cppc_ffh_csr_read() is to calculate the ac=
-tual
-> > > > > > > > > frequency of the CPU, which is delta_CSR_CYCLE/delta_CSR_=
-XXX.
-> > > > > > > > >
-> > > > > > > > > CSR_XXX should be a reference clock and does not count du=
-ring WFI
-> > > > > > > > > (Wait For Interrupt).
-> > > > > > > > >
-> > > > > > > > > Similar solutions include: x86's aperf/mperf, and ARM64's=
- AMU with
-> > > > > > > > > registers SYS_AMEVCNTR0_CORE_EL0/SYS_AMEVCNTR0_CONST_EL0.
-> > > > > > > > >
-> > > > > > > > > However, we know that CSR_TIME in the current code does c=
-ount during
-> > > > > > > > > WFI. So, is this design unreasonable?
-> > > > > > > > >
-> > > > > > > > > Should we consider proposing an extension to support such=
- a dedicated
-> > > > > > > > > counter (a reference clock that does not count during WFI=
-)? This way,
-> > > > > > > > > the value can be obtained directly in S-mode without trap=
-ping to
-> > > > > > > > > M-mode, especially since reading this counter is very fre=
-quent.
-> > > > > > > > >
-> > > > > > > > Hi Yunhui,
-> > > > > > > >
-> > > > > > > > Yes, but we anticipated that vendors might define their own=
- custom CSRs.
-> > > > > > > > So, we introduced FFH encoding to accommodate such cases.
-> > > > > > > >
-> > > > > > > > Thanks,
-> > > > > > > > Sunil
-> > > > > > >
-> > > > > > > As mentioned earlier, it is best to directly read CSR_XXX (a =
-reference
-> > > > > > > clock that does not count during WFI) and CSR_CYCLE in S-mode=
-, rather
-> > > > > > > than trapping to SBI.
-> > > > > > >
-> > > > > > No. I meant direct CSR access itself not SBI. Please take a loo=
-k at
-> > > > > > Table 6 of RISC-V FFH spec.
-> > > > > >
-> > > > > > > drivers/acpi/riscv/cppc.c is a generic driver that is not spe=
-cific to
-> > > > > > > any vendor. Currently, the upstream code already uses CSR_TIM=
-E, and
-> > > > > > > the logic of CSR_TIME is incorrect.
-> > > > > > >
-> > > > ACPI spec for "Reference Performance Register" says,
-> > > >
-> > > > "The Reference Performance Counter Register counts at a fixed rate =
-any
-> > > > time the processor is active. It is not affected by changes to Desi=
-red
-> > > > Performance, processor throttling, etc."
-> > > >
-> > > > > > CSR_TIME is just an example. It is upto the vendor how _CPC obj=
-ects are
-> > > > > > encoded using FFH. The linux code doesn't mean one should use C=
-SR_TIME
-> > > > > > always.
-> > > > >
-> > > > > First, the example of CSR_TIME is incorrect. What is needed is a
-> > > > > CSR_XXX (a reference clock that does not count during WFI).
-> > > > >
-> > > > > Second, you mentioned that each vendor can customize their own
-> > > > > implementations. But should all vendors' CSR_XXX/YYY/... be added=
- to
-> > > > > drivers/acpi/riscv/cppc.c? Shouldn=E2=80=99t drivers/acpi/riscv/c=
-ppc.c fall
-> > > > > under the scope defined by the RISC-V architecture?
-> > > > >
-> > > > No. One can implement similar to csr_read_num() in opensbi. We didn=
-'t
-> > > > add it since there was no HW implementing such thing. What I am
-> > > > saying is we have FFH encoding to support such case.
-> > > >
-> > > > > >
-> > > > > > > It would be best to promote a specification to support CSR_XX=
-X, just
-> > > > > > > like what has been done for x86 and arm64. What do you think?
-> > > > > > >
-> > > > > > Wouldn't above work? For a standard extension, you may have to =
-provide
-> > > > > > more data with actual HW.
-> > > > >
-> > > > > This won=E2=80=99t work. May I ask how the current upstream code =
-can calculate
-> > > > > the actual CPU frequency using CSR_TIME without trapping to SBI?
-> > > > > This is a theoretical logical issue. Why is data needed here?
-> > > > >
-> > > > As I mentioned above, one can implement a generic CSR read without
-> > > > trapping to SBI.
-> > > >
-> > > > > Could you take a look at the "AMU events and event numbers" chapt=
-er in
-> > > > > the ARM64 manual?
-> > > > >
-> > > > As-per ACPI spec reference performance counter is not affected by C=
-PU
-> > > > state. The RISC-V FFH encoding is sufficiently generic to support t=
-his
-> > > > requirement, even if the standard CSR_TIME cannot be used. In such
-> > > > cases, an alternative CSR can be encodeded, accessed via an OS-leve=
-l
-> > > > abstraction such as csr_read_num().
-> > >
-> > > So what you're saying is that we should submit a patch like this, rig=
-ht?
-> > >
-> > > diff --git a/drivers/acpi/riscv/cppc.c b/drivers/acpi/riscv/cppc.c
-> > > index 440cf9fb91aab..953c259d46c69 100644
-> > > --- a/drivers/acpi/riscv/cppc.c
-> > > +++ b/drivers/acpi/riscv/cppc.c
-> > > @@ -66,16 +66,8 @@ static void cppc_ffh_csr_read(void *read_data)
-> > >  {
-> > >         struct sbi_cppc_data *data =3D (struct sbi_cppc_data *)read_d=
-ata;
-> > >
-> > > -       switch (data->reg) {
-> > > -       /* Support only TIME CSR for now */
-> > > -       case CSR_TIME:
-> > > -               data->ret.value =3D csr_read(CSR_TIME);
-> > > -               data->ret.error =3D 0;
-> > > -               break;
-> > > -       default:
-> > > -               data->ret.error =3D -EINVAL;
-> > > -               break;
-> > > -       }
-> > > +       data->ret.value =3D csr_read_num(data->reg);
-> > > +       data->ret.error =3D 0;
-> > >  }
-> > >
-> > > If that's the case, the robustness of the code cannot be guaranteed,
-> > > because the range of CSRs from different vendors is unknown.
-> >
-> > ACPI FFH is allows mapping to any CSR.
->
-> Yes, FFH can map any CSR, and this is not the point of contention.
->
-> If that's the case, the CSR_TIME used in the current kernel code is
-> inappropriate. Some vendors may design a counter that does not count
-> during WFI, making CSR_TIME irrelevant. Even if counting continues
-> during WFI, are you planning to have one counter operate in S-mode
-> while the other traps to M-mode?
->
-> In that case, the code would need to be modified as proposed above. Do
-> you agree?
+The software_node_register_node_group() and
+software_node_unregister_node_group() functions take in essence an
+array of pointers to software_node structs. Since the functions do not
+modify the array declare the argument as constant, so that static
+arrays can be declared as const and annotated as __initconst.
 
-I disagree.
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+---
+ drivers/base/swnode.c    | 5 ++---
+ include/linux/property.h | 4 ++--
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-Like Sunil already explained, if an implementation has reference counter
-which does not count during WFI state then for such implementation the
-delivered performance counter should also not increment during WFI
-to maintain the relative delta of increments. This means if an implementati=
-on
-uses TIME CSR as reference counter then for such implementation
-the delivered performance counter should increment accordingly. Ultimately,
-what matters is OS being able to correctly compute the performance level
-using reference and delivered performance counters.
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index deda7f35a059..be1e9e61a7bf 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -844,7 +844,7 @@ swnode_register(const struct software_node *node, struct swnode *parent,
+  * of this function or by ordering the array such that parent comes before
+  * child.
+  */
+-int software_node_register_node_group(const struct software_node **node_group)
++int software_node_register_node_group(const struct software_node * const *node_group)
+ {
+ 	unsigned int i;
+ 	int ret;
+@@ -877,8 +877,7 @@ EXPORT_SYMBOL_GPL(software_node_register_node_group);
+  * remove the nodes individually, in the correct order (child before
+  * parent).
+  */
+-void software_node_unregister_node_group(
+-		const struct software_node **node_group)
++void software_node_unregister_node_group(const struct software_node * const *node_group)
+ {
+ 	unsigned int i = 0;
+ 
+diff --git a/include/linux/property.h b/include/linux/property.h
+index f718dd4789e5..a8cc3e102f45 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -573,8 +573,8 @@ const struct software_node *
+ software_node_find_by_name(const struct software_node *parent,
+ 			   const char *name);
+ 
+-int software_node_register_node_group(const struct software_node **node_group);
+-void software_node_unregister_node_group(const struct software_node **node_group);
++int software_node_register_node_group(const struct software_node * const *node_group);
++void software_node_unregister_node_group(const struct software_node * const *node_group);
+ 
+ int software_node_register(const struct software_node *node);
+ void software_node_unregister(const struct software_node *node);
+-- 
+2.51.0.rc0.215.g125493bb4a-goog
 
->
-> Without a specification defining these two counters, the above code
-> would lack robustness.
 
-Can you elaborate the "robustness" part ?
-Do you have data to back your claims ?
-
-Regards,
-Anup
+-- 
+Dmitry
 
