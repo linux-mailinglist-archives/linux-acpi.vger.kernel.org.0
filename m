@@ -1,56 +1,57 @@
-Return-Path: <linux-acpi+bounces-15674-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15675-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C234CB2635B
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 12:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D3B2B263F6
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 13:16:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C56C9E4445
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 10:51:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4F619E3365
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 11:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1782EA472;
-	Thu, 14 Aug 2025 10:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7FE92F39C3;
+	Thu, 14 Aug 2025 11:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZGQe08AH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t1NNCoDS"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F4F1A23A4;
-	Thu, 14 Aug 2025 10:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA382F39A4;
+	Thu, 14 Aug 2025 11:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755168657; cv=none; b=cjC4wyXStw5wtFLqrVG2vLpDqjJwaCrwq0PrARMHbCpclTx+4s+ws9UPOiyCOgx7rcT+7uOi7UkZfqHmDunJqOHxtBjvzCuPi0XMgTJjeAL1Bco+DBicEtHqhj6IsrjHFqU3pSHh1QtZJNmggdzwz3XEbKIbjZYjw+GVOs1T6D0=
+	t=1755170046; cv=none; b=uGwThPIqLKgSFPFmj6rDR/dGPJBXmyhRFbVp4mdIhfR8SoM19MOwQ49raM3IW92T77PzD+TNkV3RidO6jcTWzIdALPcFyJHHS9YESkiBlo/2OMSTKEXLnk00kFkkThdL7K5bM7yFSmj5/rdEKG9p5RHDEyyQlI3pMki+DyipLiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755168657; c=relaxed/simple;
-	bh=5FZMVn/f9zmbDS+pM2DrCxTMUD+WFq5mD1JzKYBhC24=;
+	s=arc-20240116; t=1755170046; c=relaxed/simple;
+	bh=Zp1LwTzGyu5opfZZQrk1YaVyVYP61aThHFWSJdfT0J0=;
 	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sJjMHMiMVM4nHqbEDdDaL6+BLA4DU5TTUWDFnswebc9Ez8d07fJxr7zf9Rs9PnHOgzJhgoZAmb73e4esUxxF3dz+e6eI2U6q/swzjiTVG8sJf07iOW3RS0mKs/mpAKUY6psqJ84L6WJYhIqzHeQyjYBPag6abDDLb/nOruI6rtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZGQe08AH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CB8C4CEEF;
-	Thu, 14 Aug 2025 10:50:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZSWmI7vhhiG/z3byqHAWzJMjuqR8uNHZ1sraeimaM9UBQMLReQJ9X8xN6zoFMl2cSS5VRgB4mOetnsFwMdEbL5WuJ5u4XzFujkz0zZUysPRrW7vAb0OZqiwivVEwMQ78S3r+aJYeRhg5UEv7cKXZTXOI9LW9A/wOJXF7iadOIGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t1NNCoDS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39150C4CEEF;
+	Thu, 14 Aug 2025 11:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755168657;
-	bh=5FZMVn/f9zmbDS+pM2DrCxTMUD+WFq5mD1JzKYBhC24=;
+	s=k20201202; t=1755170046;
+	bh=Zp1LwTzGyu5opfZZQrk1YaVyVYP61aThHFWSJdfT0J0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZGQe08AHBlMcDNPQYWP71w7jEYy5jVpSuxqsiifbm9k7soSAyKAMCDd46MCc4tbUG
-	 F+u8HY4ZzP5oBVIUJFBRzGAusfchiFY6u8XEvJ2GiAOJtP4wjoooke02Rp64sbKNST
-	 1YsBknLvmkRf0S56M5NwL44ofUyvEC+Y0Z0NBkd/s4Wr3b2wua359374gpEZ6X4eAO
-	 9vny4f8rk8vN4pgxLNg6xeI22ccFnLCa7z1LUP1mndPd9Dvax88T0SIaBOaDBewNqd
-	 cThdnBpAboxxCKNjVNMOsRgQZHklhHgCVUlB1OAvKFWXTpnrCmnFs4JKKtwJttdU+a
-	 Vous6kyZFgO4A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	b=t1NNCoDSYRuWtD7PfLDno+SNNPsMDobPhxKPDCWbIbMWnrFJQriYfQFKY6zOpEMoQ
+	 ///hIoz8SEul3HnFinP+t93BiMm63HUrtQuSNoU6KhDt+4FPQ6StaXyMlTfmSxDhNh
+	 QYLXFoCmo+/p1XFAIv9t+5dAmyZCHdkOqYS/BpAA4nJj2X4zXkEAyaErLVOqxPiiB5
+	 vSNrI489fs994s//ajfkcFCY9E9yXjp0yM6dKOCGtVnkoeF5tLHY1TyAefInQH4s1u
+	 4v/17xiX1gX+kNDiejPRYKXbvs8sG93PPdFhhHK6qYChnyZ5RD9ksy1ZskU6KLZyGp
+	 RlyZzHjJBxSLA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1umVXq-007PWx-Gi;
-	Thu, 14 Aug 2025 11:50:54 +0100
-Date: Thu, 14 Aug 2025 11:49:26 +0100
-Message-ID: <86ldnmdvpl.wl-maz@kernel.org>
+	id 1umVuG-007Q0C-4x;
+	Thu, 14 Aug 2025 12:14:04 +0100
+Date: Thu, 14 Aug 2025 12:14:03 +0100
+Message-ID: <871ppetatg.wl-maz@kernel.org>
 From: Marc Zyngier <maz@kernel.org>
-To: 	Daniel Lezcano <daniel.lezcano@linaro.org>, Steven Price <steven.price@arm.com>
+To: Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Steven Price <steven.price@arm.com>
 Cc: linux-kernel@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -61,10 +62,11 @@ Cc: linux-kernel@vger.kernel.org,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Mark Rutland <mark.rutland@arm.com>
 Subject: Re: [PATCH 2/4] clocksource/drivers/arm_arch_timer: Add standalone MMIO driver
-In-Reply-To: <8e58b01b-772d-4ca7-a681-34f10baa07e6@arm.com>
+In-Reply-To: <86ldnmdvpl.wl-maz@kernel.org>
 References: <20250807160243.1970533-1-maz@kernel.org>
 	<20250807160243.1970533-3-maz@kernel.org>
 	<8e58b01b-772d-4ca7-a681-34f10baa07e6@arm.com>
+	<86ldnmdvpl.wl-maz@kernel.org>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
  (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -80,67 +82,74 @@ X-SA-Exim-Rcpt-To: daniel.lezcano@linaro.org, steven.price@arm.com, linux-kernel
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, 14 Aug 2025 11:13:47 +0100,
-Steven Price <steven.price@arm.com> wrote:
+On Thu, 14 Aug 2025 11:49:26 +0100,
+Marc Zyngier <maz@kernel.org> wrote:
 > 
-> On 07/08/2025 17:02, Marc Zyngier wrote:
-> > Add a new driver for the MMIO side of the ARM architected timer.
-> > Most of it has been lifted from the existing arch timer code,
-> > massaged, and finally rewritten.
+> On Thu, 14 Aug 2025 11:13:47 +0100,
+> Steven Price <steven.price@arm.com> wrote:
 > > 
-> > It supports both DT and ACPI as firmware descriptions.
+> > On 07/08/2025 17:02, Marc Zyngier wrote:
+> > > Add a new driver for the MMIO side of the ARM architected timer.
+> > > Most of it has been lifted from the existing arch timer code,
+> > > massaged, and finally rewritten.
+> > > 
+> > > It supports both DT and ACPI as firmware descriptions.
+> > > 
+> > > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > > ---
+> > >  MAINTAINERS                               |   1 +
+> > >  drivers/clocksource/arm_arch_timer_mmio.c | 420 ++++++++++++++++++++++
+> > >  2 files changed, 421 insertions(+)
+> > >  create mode 100644 drivers/clocksource/arm_arch_timer_mmio.c
+> > > 
+> > [...]
+> > > +static void arch_timer_mmio_setup(struct arch_timer *at, int irq)
+> > > +{
+> > > +	at->evt = (struct clock_event_device) {
+> > > +		.features		   = (CLOCK_EVT_FEAT_ONESHOT |
+> > > +					      CLOCK_EVT_FEAT_DYNIRQ),
+> > > +		.name			   = "arch_mem_timer",
+> > > +		.rating			   = 400,
+> > > +		.cpumask		   = cpu_possible_mask,
+> > > +		.irq 			   = irq,
+> > > +		.set_next_event		   = arch_timer_mmio_set_next_event,
+> > > +		.set_state_oneshot_stopped = arch_timer_mmio_shutdown,
+> > > +		.set_state_shutdown	   = arch_timer_mmio_shutdown,
+> > > +	};
+> > > +
+> > > +	at->evt.set_state_shutdown(&at->evt);
+> > > +
+> > > +	clockevents_config_and_register(&at->evt, at->rate, 0xf, CLOCKSOURCE_MASK(56));
 > > 
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > ---
-> >  MAINTAINERS                               |   1 +
-> >  drivers/clocksource/arm_arch_timer_mmio.c | 420 ++++++++++++++++++++++
-> >  2 files changed, 421 insertions(+)
-> >  create mode 100644 drivers/clocksource/arm_arch_timer_mmio.c
-> > 
-> [...]
-> > +static void arch_timer_mmio_setup(struct arch_timer *at, int irq)
-> > +{
-> > +	at->evt = (struct clock_event_device) {
-> > +		.features		   = (CLOCK_EVT_FEAT_ONESHOT |
-> > +					      CLOCK_EVT_FEAT_DYNIRQ),
-> > +		.name			   = "arch_mem_timer",
-> > +		.rating			   = 400,
-> > +		.cpumask		   = cpu_possible_mask,
-> > +		.irq 			   = irq,
-> > +		.set_next_event		   = arch_timer_mmio_set_next_event,
-> > +		.set_state_oneshot_stopped = arch_timer_mmio_shutdown,
-> > +		.set_state_shutdown	   = arch_timer_mmio_shutdown,
-> > +	};
-> > +
-> > +	at->evt.set_state_shutdown(&at->evt);
-> > +
-> > +	clockevents_config_and_register(&at->evt, at->rate, 0xf, CLOCKSOURCE_MASK(56));
+> > This doesn't work on 32 bit - clockevents_config_and_register()'s final
+> > argument is an unsigned long, and a 56 bit mask doesn't fit. This
+> > triggers a compiler warning:
 > 
-> This doesn't work on 32 bit - clockevents_config_and_register()'s final
-> argument is an unsigned long, and a 56 bit mask doesn't fit. This
-> triggers a compiler warning:
+> Already reported, see 20250814111657.7debc9f1@canb.auug.org.au.
+> 
+> > Possible this should really be min(CLOCKSOURCE_MASK(56), ULONG_MAX)? But
+> > I'm not familiar enough with this code. Most likely it's dead code on a
+> > 32 bit platform.
+> 
+> No, this definitely exists on 32bit crap, since it has been part of
+> the architecture from the ARMv7+VE days.
+> 
+> I think this is more of an impedance mismatch between the
+> CLOCKSOURCE_MASK() helper and the clockevents_config_and_register(),
+> and a (unsigned long) cast would do the trick.
 
-Already reported, see 20250814111657.7debc9f1@canb.auug.org.au.
+Of course not. That would just result in a big fat zero.
 
-> Possible this should really be min(CLOCKSOURCE_MASK(56), ULONG_MAX)? But
-> I'm not familiar enough with this code. Most likely it's dead code on a
-> 32 bit platform.
+> But it also means that the per-cpu timer also gets truncated the same
+> way, and that has interesting impacts on how often the timer is
+> reprogrammed.
 
-No, this definitely exists on 32bit crap, since it has been part of
-the architecture from the ARMv7+VE days.
-
-I think this is more of an impedance mismatch between the
-CLOCKSOURCE_MASK() helper and the clockevents_config_and_register(),
-and a (unsigned long) cast would do the trick.
-
-But it also means that the per-cpu timer also gets truncated the same
-way, and that has interesting impacts on how often the timer is
-reprogrammed.
-
-Daniel, do you want a patch on top or a new series?
+That question still stand, and I wonder whether we have ugly bugs
+lurking on 32bit platforms because of that... I'll try and have a
+look.
 
 	M.
 
 -- 
-Without deviation from the norm, progress is not possible.
+Jazz isn't dead. It just smells funny.
 
