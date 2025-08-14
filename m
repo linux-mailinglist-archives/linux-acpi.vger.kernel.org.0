@@ -1,319 +1,101 @@
-Return-Path: <linux-acpi+bounces-15670-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15671-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D33AB25D96
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 09:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E69FB25E74
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 10:10:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B57715C1D6F
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 07:34:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 147F717CADE
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 08:10:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BD826CE06;
-	Thu, 14 Aug 2025 07:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE99D2E7184;
+	Thu, 14 Aug 2025 08:10:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DLbJ0NC1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3386926AABE;
-	Thu, 14 Aug 2025 07:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F3827587D;
+	Thu, 14 Aug 2025 08:10:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755156732; cv=none; b=qRDSpURu/und0twP29TlHwKkrMSRkvGmxSmPBtohis+Af4GEq7lEgYRt2H7LbXK48ymAXC5XhV8fflLpfR4R8qDI+HEmn8CGdCluvi6YvEgDZz5sWigsohK1s5URhSY4GSo6O5AeBwzBfhM/FyDoyuKPD756u+p/SDiR+hPdHuA=
+	t=1755159040; cv=none; b=jJStjg3CQoB6VRd5bYjK8QCOTCqxyRaKUasbvLD8GrHPoRjfzrmQdKfwZpJ7D8B0RCZXTd1t1P3VnXmU6NXv1M4JKBN5cYs237/WHEGYAKsoNRysPYCJS8XmfybdDyECY6JBL9v9sGUUSTQ1ogSCcjft8Q960WDoFDTW4OUYpPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755156732; c=relaxed/simple;
-	bh=aNB8RnFOdlm/LD47HYzXVx3mQUZ+WpdbIN7fgCe1BFo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ospJnPA2Us0GzMQ+8IDgoPeUcdohm/h5vsyyyZFCO50HcjD1NVABipkFuFHsrJWP+GgMerbuu4hPCTMxbld4u2Lvsp30n7AEh6CtV24EF2jWvGRCuMOUI3aHcoO0xMcrbNS5w1wDf7MzG4xjyJS4OP92iE8JIfSpahukyJ3JxQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: c49f289678e011f0b29709d653e92f7d-20250814
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED, IP_UNFAMILIAR, SRC_UNFAMILIAR
-	DN_TRUSTED, SRC_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED
-	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:c69afa9d-4fb1-4cb6-ae03-e0a15a42b7b4,IP:10,
-	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACT
-	ION:release,TS:-20
-X-CID-INFO: VERSION:1.1.45,REQID:c69afa9d-4fb1-4cb6-ae03-e0a15a42b7b4,IP:10,UR
-	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-20
-X-CID-META: VersionHash:6493067,CLOUDID:5a8228b419ed3b3c0bb95fde1e630080,BulkI
-	D:250814153204NL75FUNS,BulkQuantity:0,Recheck:0,SF:17|19|23|38|43|66|74|78
-	|81|82|102,TC:nil,Content:0|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil
-	,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:
-	0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-UUID: c49f289678e011f0b29709d653e92f7d-20250814
-X-User: tianyaxiong@kylinos.cn
-Received: from localhost.localdomain [(175.2.165.11)] by mailgw.kylinos.cn
-	(envelope-from <tianyaxiong@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 75132995; Thu, 14 Aug 2025 15:32:01 +0800
-From: Yaxiong Tian <tianyaxiong@kylinos.cn>
-To: rafael@kernel.org,
-	daniel.lezcano@linaro.org,
-	lenb@kernel.org,
-	robert.moore@intel.com
-Cc: linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	Yaxiong Tian <tianyaxiong@kylinos.cn>,
-	Shaobo Huang <huangshaobo2075@phytium.com.cn>,
-	Yinfeng Wang <wangyinfeng@phytium.com.cn>,
-	Xu Wang <wangxu@phytium.com.cn>
-Subject: [PATCH v2 2/2] ACPI: processor: idle: Replace single idle driver with per-CPU model for better hybrid CPU support
-Date: Thu, 14 Aug 2025 15:31:56 +0800
-Message-Id: <20250814073156.1022939-1-tianyaxiong@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250814072934.1016694-1-tianyaxiong@kylinos.cn>
-References: <20250814072934.1016694-1-tianyaxiong@kylinos.cn>
+	s=arc-20240116; t=1755159040; c=relaxed/simple;
+	bh=8PGdpqI11ac8Y8fSWkUX0aKnppBjPfTLxK1xdjlz6cE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=PtEhGhFRSOTxnEqm7Iw+VTGJAl/s2l//MyjB190sPlDAMHS3ZvQdETwlYsCdXKPua1bPmE1RTTOGtRFQaDUXjXMIxslxEgL5z79wF+3QR70LNp6f21x80Mn1umGoKqbWT0Gx5qW/G1HalFm7cr1FO7jY4ZPM0didQIlUC3S2O10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DLbJ0NC1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2747C4CEF4;
+	Thu, 14 Aug 2025 08:10:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755159040;
+	bh=8PGdpqI11ac8Y8fSWkUX0aKnppBjPfTLxK1xdjlz6cE=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=DLbJ0NC153asI54kpXF/bKi1f5qTjJYsdUrlcRx7KzPAUp3hOB3VlFXB2QW7nMuiK
+	 tNAuNlLZzXMh5kyDx4qeuZA+eFTi9ZHbFPq7QZ4nIOLtndciGqwzCJN/rXowebYeng
+	 h7yTuboG83nXDd+Buqo5VVartYvky3YZ+6YMqRrsaYBUGjjRudUE6LutBc93y9fZAG
+	 VflSSnl1UZlFjNfQWsNH8ltDGKwlrLSo3XQeaAvYbjQMoaq9r9jWSxc41YktvdTf8C
+	 qqZ3E+bbhcSlbLc0C0YRYrSk15I0J2lvCVoRPuhIQwY1gjU0+JBx5AVe9d72U5QYeA
+	 FRGRzpivjT7zg==
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 14 Aug 2025 10:10:31 +0200
+Message-Id: <DC1ZY7PYGCK6.2LDYPXE3XSUMK@kernel.org>
+Cc: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <kunit-dev@googlegroups.com>,
+ <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v3 11/11] rust: acpi: use `core::ffi::CStr` method names
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Tamir Duberstein" <tamird@gmail.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
+ <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
+ Romanovsky" <leon@kernel.org>, "Breno Leitao" <leitao@debian.org>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>,
+ "Luis Chamberlain" <mcgrof@kernel.org>, "Russ Weight"
+ <russ.weight@linux.dev>, "Brendan Higgins" <brendan.higgins@linux.dev>,
+ "David Gow" <davidgow@google.com>, "Rae Moar" <rmoar@google.com>, "FUJITA
+ Tomonori" <fujita.tomonori@gmail.com>, "Rob Herring" <robh@kernel.org>,
+ "Saravana Kannan" <saravanak@google.com>, "Jocelyn Falempe"
+ <jfalempe@redhat.com>, "Javier Martinez Canillas" <javierm@redhat.com>,
+ "Arnd Bergmann" <arnd@arndb.de>, "Len Brown" <lenb@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250813-core-cstr-fanout-1-v3-0-545c14bc44ff@gmail.com>
+ <20250813-core-cstr-fanout-1-v3-11-545c14bc44ff@gmail.com>
+In-Reply-To: <20250813-core-cstr-fanout-1-v3-11-545c14bc44ff@gmail.com>
 
-Current implementations of hybrid architectures (e.g., ARM64 big.LITTLE
-and Intel Alder Lake) feature CPU cores with different exit latencies.
-Using a single driver to describe_LPI states for all core types is
-therefore suboptimal. This is further supported by ACPI specification
-8.4.4.1 which states: "In a processor hierarchy, each node has its
-own _LPI low-power states specific to that node."
+On Wed Aug 13, 2025 at 5:42 PM CEST, Tamir Duberstein wrote:
+> Prepare for `core::ffi::CStr` taking the place of `kernel::str::CStr` by
+> avoid methods that only exist on the latter.
+>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-To address these limitations, we replace the monolithic idle driver
-with a per-CPU model. This approach enables accurate idle state representation
-for each core type
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
-Tested-by: Shaobo Huang <huangshaobo2075@phytium.com.cn>
-Signed-off-by: Yaxiong Tian <tianyaxiong@kylinos.cn>
-Signed-off-by: Shaobo Huang <huangshaobo2075@phytium.com.cn>
-Signed-off-by: Yinfeng Wang <wangyinfeng@phytium.com.cn>
-Signed-off-by: Xu Wang<wangxu@phytium.com.cn>
 ---
- drivers/acpi/Kconfig            |  1 +
- drivers/acpi/processor_driver.c |  3 +-
- drivers/acpi/processor_idle.c   | 66 +++++++++++++++++----------------
- include/acpi/processor.h        |  2 +-
- 4 files changed, 39 insertions(+), 33 deletions(-)
+Cheers,
+Benno
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index ca00a5dbcf75..d92c0faca978 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -276,6 +276,7 @@ config ACPI_PROCESSOR_CSTATE
- config ACPI_PROCESSOR_IDLE
- 	bool
- 	select CPU_IDLE
-+	select CPU_IDLE_MULTIPLE_DRIVERS
- 
- config ACPI_MCFG
- 	bool
-diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
-index 65e779be64ff..22db9c904437 100644
---- a/drivers/acpi/processor_driver.c
-+++ b/drivers/acpi/processor_driver.c
-@@ -166,7 +166,8 @@ static int __acpi_processor_start(struct acpi_device *device)
- 	if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
- 		dev_dbg(&device->dev, "CPPC data invalid or not present\n");
- 
--	if (!cpuidle_get_driver() || cpuidle_get_driver() == &acpi_idle_driver)
-+	if (!cpuidle_get_cpu_driver_by_cpu(pr->id) || cpuidle_get_cpu_driver_by_cpu(pr->id)
-+			== per_cpu_ptr(&acpi_idle_driver, pr->id))
- 		acpi_processor_power_init(pr);
- 
- 	acpi_pss_perf_init(pr);
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 2c2dc559e0f8..857dc56654d4 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -51,16 +51,17 @@ module_param(latency_factor, uint, 0644);
- 
- static DEFINE_PER_CPU(struct cpuidle_device *, acpi_cpuidle_device);
- 
--struct cpuidle_driver acpi_idle_driver = {
--	.name =		"acpi_idle",
--	.owner =	THIS_MODULE,
--};
-+DEFINE_PER_CPU(struct cpuidle_driver, acpi_idle_driver);
- 
- #ifdef CONFIG_ACPI_PROCESSOR_CSTATE
- void acpi_idle_rescan_dead_smt_siblings(void)
- {
--	if (cpuidle_get_driver() == &acpi_idle_driver)
--		arch_cpu_rescan_dead_smt_siblings();
-+	int cpu;
-+	for_each_possible_cpu(cpu)
-+		if (cpuidle_get_driver() == per_cpu_ptr(&acpi_idle_driver, cpu)) {
-+			arch_cpu_rescan_dead_smt_siblings();
-+			return;
-+		}
- }
- 
- static
-@@ -738,12 +739,13 @@ static int acpi_processor_setup_cpuidle_cx(struct acpi_processor *pr,
- 	int i, count = ACPI_IDLE_STATE_START;
- 	struct acpi_processor_cx *cx;
- 	struct cpuidle_state *state;
-+	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
- 
- 	if (max_cstate == 0)
- 		max_cstate = 1;
- 
- 	for (i = 1; i < ACPI_PROCESSOR_MAX_POWER && i <= max_cstate; i++) {
--		state = &acpi_idle_driver.states[count];
-+		state = &drv->states[count];
- 		cx = &pr->power.states[i];
- 
- 		if (!cx->valid)
-@@ -776,7 +778,7 @@ static int acpi_processor_setup_cstates(struct acpi_processor *pr)
- 	int i, count;
- 	struct acpi_processor_cx *cx;
- 	struct cpuidle_state *state;
--	struct cpuidle_driver *drv = &acpi_idle_driver;
-+	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
- 
- 	if (max_cstate == 0)
- 		max_cstate = 1;
-@@ -1198,7 +1200,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
- 	int i;
- 	struct acpi_lpi_state *lpi;
- 	struct cpuidle_state *state;
--	struct cpuidle_driver *drv = &acpi_idle_driver;
-+	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
- 
- 	if (!pr->flags.has_lpi)
- 		return -EOPNOTSUPP;
-@@ -1232,7 +1234,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
- static int acpi_processor_setup_cpuidle_states(struct acpi_processor *pr)
- {
- 	int i;
--	struct cpuidle_driver *drv = &acpi_idle_driver;
-+	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
- 
- 	if (!pr->flags.power_setup_done || !pr->flags.power)
- 		return -EINVAL;
-@@ -1316,13 +1318,7 @@ int acpi_processor_power_state_has_changed(struct acpi_processor *pr)
- 	if (!pr->flags.power_setup_done)
- 		return -ENODEV;
- 
--	/*
--	 * FIXME:  Design the ACPI notification to make it once per
--	 * system instead of once per-cpu.  This condition is a hack
--	 * to make the code that updates C-States be called once.
--	 */
--
--	if (pr->id == 0 && cpuidle_get_driver() == &acpi_idle_driver) {
-+	if (cpuidle_get_cpu_driver_by_cpu(pr->id) == per_cpu_ptr(&acpi_idle_driver, pr->id)) {
- 
- 		/* Protect against cpu-hotplug */
- 		cpus_read_lock();
-@@ -1360,12 +1356,14 @@ int acpi_processor_power_state_has_changed(struct acpi_processor *pr)
- 	return 0;
- }
- 
--static int acpi_processor_registered;
- 
- int acpi_processor_power_init(struct acpi_processor *pr)
- {
- 	int retval;
-+	struct cpumask *cpumask;
- 	struct cpuidle_device *dev;
-+	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
-+
- 
- 	if (disabled_by_idle_boot_param())
- 		return 0;
-@@ -1382,14 +1380,21 @@ int acpi_processor_power_init(struct acpi_processor *pr)
- 	 */
- 	if (pr->flags.power) {
- 		/* Register acpi_idle_driver if not already registered */
--		if (!acpi_processor_registered) {
--			acpi_processor_setup_cpuidle_states(pr);
--			retval = cpuidle_register_driver(&acpi_idle_driver);
--			if (retval)
--				return retval;
--			pr_debug("%s registered with cpuidle\n",
--				 acpi_idle_driver.name);
-+		acpi_processor_setup_cpuidle_states(pr);
-+
-+		drv->name = "acpi_idle";
-+		drv->owner = THIS_MODULE;
-+		cpumask = kzalloc(cpumask_size(), GFP_KERNEL);
-+		cpumask_set_cpu(pr->id, cpumask);
-+		drv->cpumask = cpumask;
-+
-+		retval = cpuidle_register_driver(drv);
-+		if (retval) {
-+			kfree(cpumask);
-+			return retval;
- 		}
-+		pr_debug("cpu %d:%s registered with cpuidle\n", pr->id,
-+			 drv->name);
- 
- 		dev = kzalloc(sizeof(*dev), GFP_KERNEL);
- 		if (!dev)
-@@ -1403,11 +1408,10 @@ int acpi_processor_power_init(struct acpi_processor *pr)
- 		 */
- 		retval = cpuidle_register_device(dev);
- 		if (retval) {
--			if (acpi_processor_registered == 0)
--				cpuidle_unregister_driver(&acpi_idle_driver);
-+			cpuidle_unregister_driver(drv);
-+			kfree(cpumask);
- 			return retval;
- 		}
--		acpi_processor_registered++;
- 	}
- 	return 0;
- }
-@@ -1415,17 +1419,17 @@ int acpi_processor_power_init(struct acpi_processor *pr)
- int acpi_processor_power_exit(struct acpi_processor *pr)
- {
- 	struct cpuidle_device *dev = per_cpu(acpi_cpuidle_device, pr->id);
-+	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
- 
- 	if (disabled_by_idle_boot_param())
- 		return 0;
- 
- 	if (pr->flags.power) {
- 		cpuidle_unregister_device(dev);
--		acpi_processor_registered--;
--		if (acpi_processor_registered == 0)
--			cpuidle_unregister_driver(&acpi_idle_driver);
-+		cpuidle_unregister_driver(drv);
- 
- 		kfree(dev);
-+		kfree(drv->cpumask);
- 	}
- 
- 	pr->flags.power_setup_done = 0;
-diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-index d0eccbd920e5..36940c6b96cc 100644
---- a/include/acpi/processor.h
-+++ b/include/acpi/processor.h
-@@ -417,7 +417,7 @@ static inline void acpi_processor_throttling_init(void) {}
- #endif	/* CONFIG_ACPI_CPU_FREQ_PSS */
- 
- /* in processor_idle.c */
--extern struct cpuidle_driver acpi_idle_driver;
-+DECLARE_PER_CPU(struct cpuidle_driver, acpi_idle_driver);
- #ifdef CONFIG_ACPI_PROCESSOR_IDLE
- int acpi_processor_power_init(struct acpi_processor *pr);
- int acpi_processor_power_exit(struct acpi_processor *pr);
--- 
-2.25.1
-
+> ---
+>  rust/kernel/acpi.rs | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
 
