@@ -1,35 +1,35 @@
-Return-Path: <linux-acpi+bounces-15669-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15670-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D84B25DAF
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 09:39:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D33AB25D96
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 09:37:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46A85B633E3
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 07:32:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B57715C1D6F
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Aug 2025 07:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF89226A1D0;
-	Thu, 14 Aug 2025 07:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BD826CE06;
+	Thu, 14 Aug 2025 07:32:12 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DF826AA88;
-	Thu, 14 Aug 2025 07:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3386926AABE;
+	Thu, 14 Aug 2025 07:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755156720; cv=none; b=juXMDO192KdJP6LSnOz5rgoov7yxga55eGZnLJXvgviYwr+DhmmJdQa4bVL2cl5o3Uq4rmpCDapFD8Rd1u3mmRQz7koyMoKVpAoQ6ezRm4edwdNHh/msQO7YOVmXMVGSmo64HHwQi2wYXVQNQzfH1kcP9yA5NUxzUXO0UpVcrmM=
+	t=1755156732; cv=none; b=qRDSpURu/und0twP29TlHwKkrMSRkvGmxSmPBtohis+Af4GEq7lEgYRt2H7LbXK48ymAXC5XhV8fflLpfR4R8qDI+HEmn8CGdCluvi6YvEgDZz5sWigsohK1s5URhSY4GSo6O5AeBwzBfhM/FyDoyuKPD756u+p/SDiR+hPdHuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755156720; c=relaxed/simple;
-	bh=Ek71y/Vysl6TXj+/+lo0qw6uZeFpzglWXMM5szs8uNY=;
+	s=arc-20240116; t=1755156732; c=relaxed/simple;
+	bh=aNB8RnFOdlm/LD47HYzXVx3mQUZ+WpdbIN7fgCe1BFo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aLWaG5H5uMx6sf3F69YspNj0hcickZeYVZ4pLA4Y7goCNOGH5xN2fcKUtZLdok4qSSvZf2cgIeh0XQmPHUrbQzJbtJ1DxJPK5C2w9IsEJv3fCX7BhUKbF8bUgr5JYK22iGGSC3hI7mo03K3YamUweZ290mHvweEQ837VI3g43XE=
+	 MIME-Version; b=ospJnPA2Us0GzMQ+8IDgoPeUcdohm/h5vsyyyZFCO50HcjD1NVABipkFuFHsrJWP+GgMerbuu4hPCTMxbld4u2Lvsp30n7AEh6CtV24EF2jWvGRCuMOUI3aHcoO0xMcrbNS5w1wDf7MzG4xjyJS4OP92iE8JIfSpahukyJ3JxQY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: be08fdf478e011f0b29709d653e92f7d-20250814
+X-UUID: c49f289678e011f0b29709d653e92f7d-20250814
 X-CTIC-Tags:
 	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
 	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
@@ -39,26 +39,26 @@ X-CTIC-Tags:
 	DN_TRUSTED, SRC_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED
 	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:a1cca3fd-f7f4-4ebc-a19b-8c0e60923681,IP:10,
-	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-INFO: VERSION:1.1.45,REQID:a1cca3fd-f7f4-4ebc-a19b-8c0e60923681,IP:10,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:bea4d67dd8856528292b6e946ba2286f,BulkI
-	D:250814153152UFZ3QEB5,BulkQuantity:0,Recheck:0,SF:17|19|23|38|43|66|74|78
+X-CID-O-INFO: VERSION:1.1.45,REQID:c69afa9d-4fb1-4cb6-ae03-e0a15a42b7b4,IP:10,
+	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACT
+	ION:release,TS:-20
+X-CID-INFO: VERSION:1.1.45,REQID:c69afa9d-4fb1-4cb6-ae03-e0a15a42b7b4,IP:10,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-20
+X-CID-META: VersionHash:6493067,CLOUDID:5a8228b419ed3b3c0bb95fde1e630080,BulkI
+	D:250814153204NL75FUNS,BulkQuantity:0,Recheck:0,SF:17|19|23|38|43|66|74|78
 	|81|82|102,TC:nil,Content:0|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil
 	,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:
 	0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-UUID: be08fdf478e011f0b29709d653e92f7d-20250814
+X-UUID: c49f289678e011f0b29709d653e92f7d-20250814
 X-User: tianyaxiong@kylinos.cn
 Received: from localhost.localdomain [(175.2.165.11)] by mailgw.kylinos.cn
 	(envelope-from <tianyaxiong@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 1345372979; Thu, 14 Aug 2025 15:31:50 +0800
+	with ESMTP id 75132995; Thu, 14 Aug 2025 15:32:01 +0800
 From: Yaxiong Tian <tianyaxiong@kylinos.cn>
 To: rafael@kernel.org,
 	daniel.lezcano@linaro.org,
@@ -72,9 +72,9 @@ Cc: linux-pm@vger.kernel.org,
 	Shaobo Huang <huangshaobo2075@phytium.com.cn>,
 	Yinfeng Wang <wangyinfeng@phytium.com.cn>,
 	Xu Wang <wangxu@phytium.com.cn>
-Subject: [PATCH v2 1/2] cpuidle: Add interface to get cpuidle_driver by CPU ID
-Date: Thu, 14 Aug 2025 15:31:44 +0800
-Message-Id: <20250814073144.1022355-1-tianyaxiong@kylinos.cn>
+Subject: [PATCH v2 2/2] ACPI: processor: idle: Replace single idle driver with per-CPU model for better hybrid CPU support
+Date: Thu, 14 Aug 2025 15:31:56 +0800
+Message-Id: <20250814073156.1022939-1-tianyaxiong@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250814072934.1016694-1-tianyaxiong@kylinos.cn>
 References: <20250814072934.1016694-1-tianyaxiong@kylinos.cn>
@@ -86,8 +86,16 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Some drivers need to obtain the cpuidle_driver via CPU ID before the
-cpuidle_device is registered. Therefore, this interface is added.
+Current implementations of hybrid architectures (e.g., ARM64 big.LITTLE
+and Intel Alder Lake) feature CPU cores with different exit latencies.
+Using a single driver to describe_LPI states for all core types is
+therefore suboptimal. This is further supported by ACPI specification
+8.4.4.1 which states: "In a processor hierarchy, each node has its
+own _LPI low-power states specific to that node."
+
+To address these limitations, we replace the monolithic idle driver
+with a per-CPU model. This approach enables accurate idle state representation
+for each core type
 
 Tested-by: Shaobo Huang <huangshaobo2075@phytium.com.cn>
 Signed-off-by: Yaxiong Tian <tianyaxiong@kylinos.cn>
@@ -95,59 +103,216 @@ Signed-off-by: Shaobo Huang <huangshaobo2075@phytium.com.cn>
 Signed-off-by: Yinfeng Wang <wangyinfeng@phytium.com.cn>
 Signed-off-by: Xu Wang<wangxu@phytium.com.cn>
 ---
- drivers/cpuidle/driver.c | 16 ++++++++++++++++
- include/linux/cpuidle.h  |  4 ++++
- 2 files changed, 20 insertions(+)
+ drivers/acpi/Kconfig            |  1 +
+ drivers/acpi/processor_driver.c |  3 +-
+ drivers/acpi/processor_idle.c   | 66 +++++++++++++++++----------------
+ include/acpi/processor.h        |  2 +-
+ 4 files changed, 39 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/cpuidle/driver.c b/drivers/cpuidle/driver.c
-index 9bbfa594c442..8647f8165863 100644
---- a/drivers/cpuidle/driver.c
-+++ b/drivers/cpuidle/driver.c
-@@ -353,6 +353,22 @@ struct cpuidle_driver *cpuidle_get_cpu_driver(struct cpuidle_device *dev)
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index ca00a5dbcf75..d92c0faca978 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -276,6 +276,7 @@ config ACPI_PROCESSOR_CSTATE
+ config ACPI_PROCESSOR_IDLE
+ 	bool
+ 	select CPU_IDLE
++	select CPU_IDLE_MULTIPLE_DRIVERS
+ 
+ config ACPI_MCFG
+ 	bool
+diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
+index 65e779be64ff..22db9c904437 100644
+--- a/drivers/acpi/processor_driver.c
++++ b/drivers/acpi/processor_driver.c
+@@ -166,7 +166,8 @@ static int __acpi_processor_start(struct acpi_device *device)
+ 	if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
+ 		dev_dbg(&device->dev, "CPPC data invalid or not present\n");
+ 
+-	if (!cpuidle_get_driver() || cpuidle_get_driver() == &acpi_idle_driver)
++	if (!cpuidle_get_cpu_driver_by_cpu(pr->id) || cpuidle_get_cpu_driver_by_cpu(pr->id)
++			== per_cpu_ptr(&acpi_idle_driver, pr->id))
+ 		acpi_processor_power_init(pr);
+ 
+ 	acpi_pss_perf_init(pr);
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index 2c2dc559e0f8..857dc56654d4 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -51,16 +51,17 @@ module_param(latency_factor, uint, 0644);
+ 
+ static DEFINE_PER_CPU(struct cpuidle_device *, acpi_cpuidle_device);
+ 
+-struct cpuidle_driver acpi_idle_driver = {
+-	.name =		"acpi_idle",
+-	.owner =	THIS_MODULE,
+-};
++DEFINE_PER_CPU(struct cpuidle_driver, acpi_idle_driver);
+ 
+ #ifdef CONFIG_ACPI_PROCESSOR_CSTATE
+ void acpi_idle_rescan_dead_smt_siblings(void)
+ {
+-	if (cpuidle_get_driver() == &acpi_idle_driver)
+-		arch_cpu_rescan_dead_smt_siblings();
++	int cpu;
++	for_each_possible_cpu(cpu)
++		if (cpuidle_get_driver() == per_cpu_ptr(&acpi_idle_driver, cpu)) {
++			arch_cpu_rescan_dead_smt_siblings();
++			return;
++		}
  }
- EXPORT_SYMBOL_GPL(cpuidle_get_cpu_driver);
  
-+/**
-+ * cpuidle_get_cpu_driver_by_cpu - return the driver registered for a CPU.
-+ * @cpu_num: a valid cpu num
-+ *
-+ * Returns a struct cpuidle_driver pointer, or NULL if no driver is registered
-+ * for the CPU associated with @cpu.
-+ */
-+struct cpuidle_driver *cpuidle_get_cpu_driver_by_cpu(int cpu_num)
-+{
-+	if (cpu_num < 0 || cpu_num >= nr_cpu_ids)
-+		return NULL;
-+
-+	return __cpuidle_get_cpu_driver(cpu_num);
-+}
-+EXPORT_SYMBOL_GPL(cpuidle_get_cpu_driver_by_cpu);
-+
- /**
-  * cpuidle_driver_state_disabled - Disable or enable an idle state
-  * @drv: cpuidle driver owning the state
-diff --git a/include/linux/cpuidle.h b/include/linux/cpuidle.h
-index a9ee4fe55dcf..aebbaae6a501 100644
---- a/include/linux/cpuidle.h
-+++ b/include/linux/cpuidle.h
-@@ -200,6 +200,7 @@ extern void cpuidle_disable_device(struct cpuidle_device *dev);
- extern int cpuidle_play_dead(void);
+ static
+@@ -738,12 +739,13 @@ static int acpi_processor_setup_cpuidle_cx(struct acpi_processor *pr,
+ 	int i, count = ACPI_IDLE_STATE_START;
+ 	struct acpi_processor_cx *cx;
+ 	struct cpuidle_state *state;
++	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
  
- extern struct cpuidle_driver *cpuidle_get_cpu_driver(struct cpuidle_device *dev);
-+extern struct cpuidle_driver *cpuidle_get_cpu_driver_by_cpu(int cpu_num);
- static inline struct cpuidle_device *cpuidle_get_device(void)
- {return __this_cpu_read(cpuidle_devices); }
- #else
-@@ -240,6 +241,9 @@ static inline void cpuidle_disable_device(struct cpuidle_device *dev) { }
- static inline int cpuidle_play_dead(void) {return -ENODEV; }
- static inline struct cpuidle_driver *cpuidle_get_cpu_driver(
- 	struct cpuidle_device *dev) {return NULL; }
-+
-+static inline struct cpuidle_driver *cpuidle_get_cpu_driver_by_cpu(
-+	int cpu_num) {return NULL; };
- static inline struct cpuidle_device *cpuidle_get_device(void) {return NULL; }
- #endif
+ 	if (max_cstate == 0)
+ 		max_cstate = 1;
  
+ 	for (i = 1; i < ACPI_PROCESSOR_MAX_POWER && i <= max_cstate; i++) {
+-		state = &acpi_idle_driver.states[count];
++		state = &drv->states[count];
+ 		cx = &pr->power.states[i];
+ 
+ 		if (!cx->valid)
+@@ -776,7 +778,7 @@ static int acpi_processor_setup_cstates(struct acpi_processor *pr)
+ 	int i, count;
+ 	struct acpi_processor_cx *cx;
+ 	struct cpuidle_state *state;
+-	struct cpuidle_driver *drv = &acpi_idle_driver;
++	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
+ 
+ 	if (max_cstate == 0)
+ 		max_cstate = 1;
+@@ -1198,7 +1200,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
+ 	int i;
+ 	struct acpi_lpi_state *lpi;
+ 	struct cpuidle_state *state;
+-	struct cpuidle_driver *drv = &acpi_idle_driver;
++	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
+ 
+ 	if (!pr->flags.has_lpi)
+ 		return -EOPNOTSUPP;
+@@ -1232,7 +1234,7 @@ static int acpi_processor_setup_lpi_states(struct acpi_processor *pr)
+ static int acpi_processor_setup_cpuidle_states(struct acpi_processor *pr)
+ {
+ 	int i;
+-	struct cpuidle_driver *drv = &acpi_idle_driver;
++	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
+ 
+ 	if (!pr->flags.power_setup_done || !pr->flags.power)
+ 		return -EINVAL;
+@@ -1316,13 +1318,7 @@ int acpi_processor_power_state_has_changed(struct acpi_processor *pr)
+ 	if (!pr->flags.power_setup_done)
+ 		return -ENODEV;
+ 
+-	/*
+-	 * FIXME:  Design the ACPI notification to make it once per
+-	 * system instead of once per-cpu.  This condition is a hack
+-	 * to make the code that updates C-States be called once.
+-	 */
+-
+-	if (pr->id == 0 && cpuidle_get_driver() == &acpi_idle_driver) {
++	if (cpuidle_get_cpu_driver_by_cpu(pr->id) == per_cpu_ptr(&acpi_idle_driver, pr->id)) {
+ 
+ 		/* Protect against cpu-hotplug */
+ 		cpus_read_lock();
+@@ -1360,12 +1356,14 @@ int acpi_processor_power_state_has_changed(struct acpi_processor *pr)
+ 	return 0;
+ }
+ 
+-static int acpi_processor_registered;
+ 
+ int acpi_processor_power_init(struct acpi_processor *pr)
+ {
+ 	int retval;
++	struct cpumask *cpumask;
+ 	struct cpuidle_device *dev;
++	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
++
+ 
+ 	if (disabled_by_idle_boot_param())
+ 		return 0;
+@@ -1382,14 +1380,21 @@ int acpi_processor_power_init(struct acpi_processor *pr)
+ 	 */
+ 	if (pr->flags.power) {
+ 		/* Register acpi_idle_driver if not already registered */
+-		if (!acpi_processor_registered) {
+-			acpi_processor_setup_cpuidle_states(pr);
+-			retval = cpuidle_register_driver(&acpi_idle_driver);
+-			if (retval)
+-				return retval;
+-			pr_debug("%s registered with cpuidle\n",
+-				 acpi_idle_driver.name);
++		acpi_processor_setup_cpuidle_states(pr);
++
++		drv->name = "acpi_idle";
++		drv->owner = THIS_MODULE;
++		cpumask = kzalloc(cpumask_size(), GFP_KERNEL);
++		cpumask_set_cpu(pr->id, cpumask);
++		drv->cpumask = cpumask;
++
++		retval = cpuidle_register_driver(drv);
++		if (retval) {
++			kfree(cpumask);
++			return retval;
+ 		}
++		pr_debug("cpu %d:%s registered with cpuidle\n", pr->id,
++			 drv->name);
+ 
+ 		dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+ 		if (!dev)
+@@ -1403,11 +1408,10 @@ int acpi_processor_power_init(struct acpi_processor *pr)
+ 		 */
+ 		retval = cpuidle_register_device(dev);
+ 		if (retval) {
+-			if (acpi_processor_registered == 0)
+-				cpuidle_unregister_driver(&acpi_idle_driver);
++			cpuidle_unregister_driver(drv);
++			kfree(cpumask);
+ 			return retval;
+ 		}
+-		acpi_processor_registered++;
+ 	}
+ 	return 0;
+ }
+@@ -1415,17 +1419,17 @@ int acpi_processor_power_init(struct acpi_processor *pr)
+ int acpi_processor_power_exit(struct acpi_processor *pr)
+ {
+ 	struct cpuidle_device *dev = per_cpu(acpi_cpuidle_device, pr->id);
++	struct cpuidle_driver *drv = per_cpu_ptr(&acpi_idle_driver, pr->id);
+ 
+ 	if (disabled_by_idle_boot_param())
+ 		return 0;
+ 
+ 	if (pr->flags.power) {
+ 		cpuidle_unregister_device(dev);
+-		acpi_processor_registered--;
+-		if (acpi_processor_registered == 0)
+-			cpuidle_unregister_driver(&acpi_idle_driver);
++		cpuidle_unregister_driver(drv);
+ 
+ 		kfree(dev);
++		kfree(drv->cpumask);
+ 	}
+ 
+ 	pr->flags.power_setup_done = 0;
+diff --git a/include/acpi/processor.h b/include/acpi/processor.h
+index d0eccbd920e5..36940c6b96cc 100644
+--- a/include/acpi/processor.h
++++ b/include/acpi/processor.h
+@@ -417,7 +417,7 @@ static inline void acpi_processor_throttling_init(void) {}
+ #endif	/* CONFIG_ACPI_CPU_FREQ_PSS */
+ 
+ /* in processor_idle.c */
+-extern struct cpuidle_driver acpi_idle_driver;
++DECLARE_PER_CPU(struct cpuidle_driver, acpi_idle_driver);
+ #ifdef CONFIG_ACPI_PROCESSOR_IDLE
+ int acpi_processor_power_init(struct acpi_processor *pr);
+ int acpi_processor_power_exit(struct acpi_processor *pr);
 -- 
 2.25.1
 
