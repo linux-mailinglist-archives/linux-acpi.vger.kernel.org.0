@@ -1,74 +1,74 @@
-Return-Path: <linux-acpi+bounces-15716-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15717-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE964B27654
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Aug 2025 04:50:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A63B2779D
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Aug 2025 06:07:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 589F63AFCF6
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Aug 2025 02:47:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E190F5862E7
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Aug 2025 04:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC4E017B425;
-	Fri, 15 Aug 2025 02:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83EF14A4CC;
+	Fri, 15 Aug 2025 04:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="csICdsra"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="QJilNiSO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4AC17A318
-	for <linux-acpi@vger.kernel.org>; Fri, 15 Aug 2025 02:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770EA13FEE
+	for <linux-acpi@vger.kernel.org>; Fri, 15 Aug 2025 04:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755226030; cv=none; b=Amb09WQfrUPa4WPg2cmJVAQZAsNNaLv00xDtHakLEgxBUNBMYE+u4C09PfWce/P9wLr04cg5dLhB5xKQ4ZoNTOvPTgzqCiygJxvAlipMCqPT8tq2ppIEVgxdWqA8Msp/Xr2ewIvQ/Sbn4l4ME/Q2zfsAPq8MIHFaVvvVSpROWwk=
+	t=1755230875; cv=none; b=iCQdpKrn1eyMwsQCC0DShxa7T+v4hBWEB87ckQ7sKtOAyQeLjs06g4F/ehQyHU4zXqza9eKwKBoXATugat4ALT407RKpWDQGuOEFwu8NRSnlu1pbBY1o8aYYCFnTwZLu7tJ0a1j8lhxc64AGI1u3D1vpLN/WRJFatr3vwMnCO4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755226030; c=relaxed/simple;
-	bh=FgEGBlwB3ciJlGICTiEIBmOCk6trtHsuEUI/77KBQ5A=;
+	s=arc-20240116; t=1755230875; c=relaxed/simple;
+	bh=RwSO4Q1T6ctIKjfszGR4iMk4KLc300sw36PpMImwZjw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gbXGNvkfTAM+dBqJHfZN8cAN/nVmRdhW87whzSjAWqtXsadEL9860HaX/btbFiRp1PMwSSK7Cww4sKbvXeIZ36W5gRVEGso/xQzIKQzwLm8ir1ojqRsU7chQR8ykbgiJvzWilCrVMhbK/k5odnhBhPZ4vOANpzmJRn9bOE6AIM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=csICdsra; arc=none smtp.client-ip=209.85.167.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-435de7aebb7so1028951b6e.2
-        for <linux-acpi@vger.kernel.org>; Thu, 14 Aug 2025 19:47:07 -0700 (PDT)
+	 To:Cc:Content-Type; b=kmM9xnAakc3B3gab7yDfFmf+YVh8XUmv3sQC3XsMLmjGCCccc8cw6cQNGfL05aV5NHxa7wi/uC02dXLVuGwWs5nhRiJ9VgSjpaWLpkNrKq6LsTWzeAx1Knya1iEEz1GwJV/7+EI65Ibsnt1+7cEPivQei0hScFK9mBhxWg7wbu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=QJilNiSO; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-333f9145edaso11353661fa.2
+        for <linux-acpi@vger.kernel.org>; Thu, 14 Aug 2025 21:07:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1755226027; x=1755830827; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1755230871; x=1755835671; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=i22p/aw9mrQuKl9gbWNZhMqSoSRUivedkHT3ITohh0M=;
-        b=csICdsraVeI4hxkgS905p6H4zsiAIl6ycoQbLDziD6CMfJKLa9U9LV9A4Jekz2VcGT
-         gazQt5lfwUZbFGyxR5pV4pAcGksOlkZwBGxsF8A4rFwsVLCvYKW44svAXiRyJJ77NVNL
-         zyLYmziABQtkXiENIHXIFhBtLvzPK1w+xocnlwZ9AXdJnsLtjXpZ46imY1YbwWCTKhvK
-         jClQ7yZHpQgNfE0rbQrvKPW2fS+tNh6zq8KPun4VJtm/vaVorw3HNB8ac6uCuLT0lQPl
-         Z01LvqM8Xws68CRFn0LdzM85ZcSlj3UKA0gLfrZjcjnkiWgppDwckmbGmI0VIx34oXwn
-         9ieQ==
+        bh=f9e8pHPVBpJpnZzAbKWbiPECwlXFdrGDdyBGbrFe0a8=;
+        b=QJilNiSOOkFYe7hEzuegJiMdRDQVFSdTd3D0qR+DarJsAGo0ai1PYHXmZc1XDfRL/3
+         ujCMLYFBpUD4GZ+RoRkW5xzjekjl9gCEZcCQPPoD3M59gg2u4zGvxmh1o75lOj7oVzzl
+         S7q4WpK/Goz+992V5zhnnBilBCzqP3dM0n6pC3yia4jHRMJ+ulfWUY7HVISwh2GOmtgT
+         MAz95wZsf8NROaXOvn47uXM6KTJjMcsoxFt0G7mqgth3yvyYooYWiqWcuiO3vcAaD8ry
+         Hv8jVD2D2Nj71NVZpjvjEhppauYVXFWyk+WDtTlUxOjUZiO1eoHCjDQOpAzoiYULWCYZ
+         HDbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755226027; x=1755830827;
+        d=1e100.net; s=20230601; t=1755230871; x=1755835671;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=i22p/aw9mrQuKl9gbWNZhMqSoSRUivedkHT3ITohh0M=;
-        b=oeiw+RCnfDy8feTl+IIaNTkH6LuY1RjyK1srkaVWbMvT6W8V1nxfZQoSjb/y8gZF3n
-         EtkYCI118i06JHVPSWjuqIaEPsrXjp9AIgQkNa5AWLlBFv2Aue9JJk0CelerED3sAYCJ
-         oEI7Lrwjt2XU0J/xSa3OViL8WP/N3IwuHepAEpX0u279NZfQ/FuFLqnpxcxnNrNECNOG
-         pA8pwBi7xMJXv6skwMqcKK4k1RvPOkByBEDCMDAE2ObL2jgxLxKtsP1pry96gWs4pvCM
-         DbDzw8qjSAgVgwjEe6LJVk2RG5r23QvPYXvx+uKylaRXO+gelLWRgna/ocfwjMJCu4uJ
-         NqQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUmfsY+jZ+bXD1yXC6p9UDMHzCrU0Y8Y3LKrHYfDu7ID/bkeWAI3IIC/yIoJv4Jq7V+j2HjBJT+DToq@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIk5p15OnQ7N0Fa+f/Ff9PX53qJ7AnrpPoKiW5Vn6ba1Ahgujm
-	rY+EKz0sPUIvEd+efn94BROM7dxRjLRgAymv3BnldJbmQxeBIgdJv/m/EUYzeWhwvdikN71Ma8n
-	8UYv+Xyr3TvKZof1dQBNXe5vXGRrYsJ0DWiufZH8aTw==
-X-Gm-Gg: ASbGncvYVj6Y0nZ9ZL8GKjk4MXV8LSYApqjcNyIHmFI6M+PiZVTQS+paZnCAHGZXejt
-	mtfMXGqJqSxU2dyhTrKiu5hhOCelAlhYLpc0zcweymKhaHHhyoxsJOsWKNYX9xNtDk/bYLSFd+E
-	cp42F212mXXbuy/P97iKNJT+i2is1H35AARSzdDWxFoLpO1rVtDlZI8VWWxH2JJzktulTK1JXPc
-	v4/EZBiAt1DWmA6RNBf9HPk
-X-Google-Smtp-Source: AGHT+IFQ5d8tJ25Ui1eA5Dvb0jLpOC9919b2NPrp4OSov+1adrsc3N2mQy1gf8rgbrxNJwHxWsgq/SBoimc4pYFKYbQ=
-X-Received: by 2002:a05:6808:23d0:b0:433:f8ac:2eca with SMTP id
- 5614622812f47-435ec4fb0aamr192856b6e.27.1755226027030; Thu, 14 Aug 2025
- 19:47:07 -0700 (PDT)
+        bh=f9e8pHPVBpJpnZzAbKWbiPECwlXFdrGDdyBGbrFe0a8=;
+        b=ssjNl7pFOM77+CIyq0Q9cVKO4pGwb0nUt9KvLRPDkZ/vtNGQbGSRmGQ5HBulDBhdpP
+         PEXTetmzcTlKJnG/86RKoNZg0KRIr0YISFyhJTKI/RRQxRYvbzwTvUwhsNV3eZdGimWr
+         oDqusKBJTJNLTGA+4TiuxHqc9h05vXVEh5rUVzbGhYlKpMt4htysDuHpfTO0AW2gu5zk
+         wXw0epeY7RffI2xZ+g+CDgy/7Dql/DFYc27rFLClQMClnlL5or56ys5HbHb2RgJG9BCe
+         hhFLkVVmkbBiYSRjmWbeHHGlrH3v1qC8kTtDqfVxPyRdiKYW734I41o0/Ol+yOHQm2X0
+         hlpw==
+X-Forwarded-Encrypted: i=1; AJvYcCXa2IyG6eh90kdgCJo2zP08LW+VZgu11m82mqsgD0CfarIdt+43HMh6FSwr1z+t1UTMEh4VWn9lKDFF@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOkfoZs8Ibt2qnD17JnYBMt3/aILHmQ4M5yvk/i+AF5j8E8TLt
+	5Qj+1V1cz2HxK43CCreGn6UlvTSN2OtuFfwz1Iu5hGKwi9qO4UorUX1YsfdC9Y2+ve7qK7WeRrF
+	tb8BWEYca+gNYJaQahATokjaElQk2CAuXTn7YWeAEAQ==
+X-Gm-Gg: ASbGncv0e6EMQOqBIyRnqA82FN8M+II55RkAfbTdl6vTt1F9BTgvZOYQxaan6l0Ae6R
+	0NeXg0sMLocEL3Bvz3Lz49GBUNmMHhj0fsBy+i7oJsN2FmxJFzdo7vSXEXbOfacHNbZ7C9aC1qX
+	R7dw+2IUTq/O2orw9MQYtgQZydVJunaJXJHIyl80djy53K6R0OIwPMS/P86u+kYIfZkLqDt/Zk3
+	7qO0Axb
+X-Google-Smtp-Source: AGHT+IHHhpvLwRQzTYqEsi0JA5Co1f+dJaEUkGOCKAbt2sHrX46XmG0yA6YeiQZ6UI8h4oZENwbeMXIQZ7Ym5pmUDQM=
+X-Received: by 2002:a05:651c:2208:b0:32f:1c0f:fb73 with SMTP id
+ 38308e7fff4ca-334099bb9e9mr2387571fa.36.1755230871331; Thu, 14 Aug 2025
+ 21:07:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -86,22 +86,20 @@ References: <20250515094301.40016-1-cuiyunhui@bytedance.com>
  <CAEEQ3wm9shktdzUeO5RczE-=qdDUS30TGASOFtnMEcuw7L7jZw@mail.gmail.com>
  <CAK9=C2UDVnpHs04VmzmjjmTYkE--dX2NtoWXGXoX=vVm=SF_5Q@mail.gmail.com> <4A3F784D-4844-48D8-AE84-B4D25BCB78B4@jrtc27.com>
 In-Reply-To: <4A3F784D-4844-48D8-AE84-B4D25BCB78B4@jrtc27.com>
-From: yunhui cui <cuiyunhui@bytedance.com>
-Date: Fri, 15 Aug 2025 10:46:55 +0800
-X-Gm-Features: Ac12FXwPrR70zso9xdRXBCPyrDokgjQt3elf-TdGrHXD-NoX5_YBF4DYT8WvjwM
-Message-ID: <CAEEQ3wm5M9WgraQsVkoESTZ4bHYvV23yqOMvVZ3XV8zhE4Bs3w@mail.gmail.com>
+From: Anup Patel <apatel@ventanamicro.com>
+Date: Fri, 15 Aug 2025 09:37:41 +0530
+X-Gm-Features: Ac12FXysveFy5MvqM7-gcPY6uzwVpoOKdQwpt1C0H9OnoApa3rWZLFWDQwrcUnU
+Message-ID: <CAK9=C2XXsMq_x80R+jH2LDEYYZnBWgXcBAUSbV0tQwEb2OX6yA@mail.gmail.com>
 Subject: Re: [External] [PATCH] ACPI: RISC-V: CPPC: Add CSR_CYCLE for CPPC FFH
 To: Jessica Clarke <jrtc27@jrtc27.com>
-Cc: Anup Patel <apatel@ventanamicro.com>, aou@eecs.berkeley.edu, juwenlong@bytedance.com, 
+Cc: yunhui cui <cuiyunhui@bytedance.com>, aou@eecs.berkeley.edu, juwenlong@bytedance.com, 
 	alex@ghiti.fr, rafael@kernel.org, linux-kernel@vger.kernel.org, 
 	linux-acpi@vger.kernel.org, palmer@dabbelt.com, paul.walmsley@sifive.com, 
 	linux-riscv@lists.infradead.org, Rahul Pathak <rpathak@ventanamicro.com>, lenb@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Jessica,
-
-On Fri, Aug 15, 2025 at 12:57=E2=80=AFAM Jessica Clarke <jrtc27@jrtc27.com>=
+On Thu, Aug 14, 2025 at 10:27=E2=80=AFPM Jessica Clarke <jrtc27@jrtc27.com>=
  wrote:
 >
 > On 14 Aug 2025, at 14:37, Anup Patel <apatel@ventanamicro.com> wrote:
@@ -338,6 +336,14 @@ vel
  at
 > 3072 entry points, perhaps also minus the few that are allocated and
 > clearly not sensible things to use for this, like stval.
+
+Yes, we don't need a switch case for all possible 4096 CSRs in
+csr_read_num() and csr_write_num(). For S-mode, it will mostly
+contain HPM counters and custom CSRs.
+
+I am already working on a patch along these lines which will be
+posted in the next few days.
+
 >
 > But I think that=E2=80=99s not a reasonable approach to take, and if ther=
 e is
@@ -350,14 +356,19 @@ their
 > counter to use for each of the two calls it supports. That=E2=80=99s a mu=
 ch
 > better world to be in.
-
-Agreed. Because the second operand of the csrr instruction must be a
-constant, a switch-case conversion is therefore necessary.
-
->
-> Jessica
 >
 
-Thanks,
-Yunhui
+Like mentioned in this thread, the time CSR can be used as
+reference perf counter and for delivered perf counter, we have
+multiple options: 1) RPMI CPPC fast channel, 2) SBI CPPC call,
+and 3) custom CSR. In fact, the QEMU PoC which we had posted
+previously already has RPMI CPPC fast channel for delivered
+perf counter which we access from OpenSBI.
+
+If a platform vendor wants to implement a reference perf counter
+and delivered perf counter differently then they can always have
+custom CSRs.
+
+Regards,
+Anup
 
