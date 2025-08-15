@@ -1,118 +1,111 @@
-Return-Path: <linux-acpi+bounces-15730-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15731-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C17B27EB5
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Aug 2025 12:52:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B69A9B28049
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Aug 2025 15:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BDA11BC7F02
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Aug 2025 10:51:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E8CC17E11B
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Aug 2025 13:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981932FCC07;
-	Fri, 15 Aug 2025 10:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="IQ+QY05c"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2E43019BB;
+	Fri, 15 Aug 2025 13:01:58 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355B22E06D7
-	for <linux-acpi@vger.kernel.org>; Fri, 15 Aug 2025 10:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18CB29A9CD;
+	Fri, 15 Aug 2025 13:01:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755255090; cv=none; b=r87ZZbsEwYZyjHr9wf6f2mVHOCfLihl2OpmXNwbiMdZ+IkA1IKLyMrkCyXT2yc8gLktYHW+ERRPPwZLLxwczbnDwOnWREeIJibGI1Fi4Z4mn3g5jor3V6xGDXfqaHxA6CODo1/MnzhxtzAs+Pk2dYyaYpszLb6T9i5GbR4ck0e8=
+	t=1755262918; cv=none; b=uJaqCRwOobWNfEjfwN6FfCEDsPadxcedkoa8GUNm0rWsmOiWs0LQgJjddL64Fj+ycJ8uCwKaFfTYABn9EuQQOwntBl/vaXQEZ1nwMBXWWIRnlE1nSnn5qSB933OvFLYyMOpT6uPGzb0/HtYmyT1hlAcPwXgqmEOtFdoir1ooWbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755255090; c=relaxed/simple;
-	bh=5856zXIPk9IgqnEkrq9a7ikopP8h2OIrgLDCAzSSICg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jSaW7p9oCipU+dlYrTqdWcdjLAfZ7Ysf0vwMLQkix8N88su/4aSWsHs7DiljqlWOHOOg/SuV98dkdgugSJh6jp0S6w4oKQRp8qo5ezg/4iffEFC3tHQSXXaL2Ryeg/OfrA1Nfoh6IWA4ex0SOW0ni10EjiVQ7HavJ25DMEubK0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=IQ+QY05c; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-76e1ff326bbso2317257b3a.1
-        for <linux-acpi@vger.kernel.org>; Fri, 15 Aug 2025 03:51:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1755255088; x=1755859888; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dix/CPpSMGWXSWO0Y4aNEfoYpWHiRGQqO96WVTnVXQ0=;
-        b=IQ+QY05cviOzbYXd1UPOuwVpj9LmvcuwLWQ4wyIWQWr4bdyg6jaEjE1gtQ8oaBRfW5
-         6noxC8tGbdI2HQ9IMCF18bQmbWCGCs+VdX8FdI/Rgltl6C6rlqyWEiSp1Al9j0Jswdtu
-         +0uH7iF1WeH6ar4odHB8p3GWpmILtSVYekjW2VLYkDaJx24dGKipi+pmQGPTOoBrkC+q
-         7WlwOffYGHHkyZX2orK+Ay+ZYWhqQX0uUDFUnx1GwCP9AQjh4Sh4+TM/g94b2wq7u7gf
-         BiewxbUZw2sQb6a9sDUgs6uAnGsPEt4sHJLynxQPnt20nqCNZ2dARUPJVCW1X6Crlsyv
-         UMXA==
+	s=arc-20240116; t=1755262918; c=relaxed/simple;
+	bh=Bgm3l0Ii+pdLDcq8PslxRwDPo/0S3hZF9AREVvp4txM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=nyWDBRqNdOzTbnWEwy4clANuafHHk8pOReDY0eRs09tWOT0p9yqTN4fmXI9ZXctNY3sxP9RuITUqL/dd158POWZb2YJoC2D0IuxlK8zMwIt3KWHbot5GGudLG3ilViUkM39yAaYZl21bnsw3cUq+ukMQYKZ2BhwhqBdRgQ6gyuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-afcb7a7bad8so260931866b.3;
+        Fri, 15 Aug 2025 06:01:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755255088; x=1755859888;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Dix/CPpSMGWXSWO0Y4aNEfoYpWHiRGQqO96WVTnVXQ0=;
-        b=Q+QyH1yr5roLMK44/5YVdZ7N58wkMD2O5Oi3TKHWAMRFpiV+fMoPO8rD33ddvk1S3j
-         I8O6OcaDuBPK2XCM+MZ2RA+THOJ/be4KWbuUnoNPe4A81vI3qTsnBZD3Pby2cYFRu1Ps
-         SAp/znrvm5TrffjkJ4IUGqtWo4Z1ULBgqDzQ69XrSn6g/exAIpSQzb99WVyQsx10ENnS
-         UJkHmv1aw8kyINSPvU+qNn1vJpW1BcdiK2J7PR0zoxlal+cYgnhySjKh7iVkl5BcGGAi
-         KSFVWZjIoF/84RlG76681X43RtZB8Vx68oy8GncCf4vrbfgOqVWUUmkrBPxJ2RDKpwWR
-         zRfw==
-X-Forwarded-Encrypted: i=1; AJvYcCVgz66mW9ZNR6vwbeRmKAdSn9NprGtQbSlwgMJpX1ebq6TU61InYN4Ogi7DHTnEL0U4/qf75p4Po76k@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxmu6gadG3DSEFRNYzgwzwqi2aXuZJzThIYxN+fm7fhWw14LSyq
-	Dx7q5QsSwOgUDrYoffCZ26tQuNBJnaxoc9g0ZI8jogvMQmqmT+yVxkAj86HLb2t6xUw=
-X-Gm-Gg: ASbGncvV4HhI9VhDrnn1AzlkJVDmG2je0CnKKQmSZoGZJNE2e2uV6Yravois0R9kV8J
-	DXthD1dkghtb4c0zu1oqe7zpx2ZU5K9C0gKUFixBl+EtARMPec1lHLz7QVnkOdWXmm0TXWe+RQi
-	4rkdpSZ4r++dhaYfggj6duy5Cdk6ntw3Jj7NE1uVM30Hk462WlkOHYetQgECdeQ4qxptJoksq0e
-	BzoYQKVEnrLqUvRU1Y684pQUUg5gpmctdqHeZsbHAJLQGTJaGOZ91BGcgYcR83PghX9BBMlywdc
-	Q0tYyQj2hFRNzC8fkRjvCvFubZxQCgQTkB5qEuXqUNP3keEaGMh+6HZq0KnJ4POelMM6oESTpFB
-	ZNed8XrskuwbZYuCjpe8orBLt1RY=
-X-Google-Smtp-Source: AGHT+IEmNprlP3EyYzXw2mJxg75wrJzN+aQ6IJA3e06q3ZiRiLLueRHZsG1qP8n+zVyH+f5AwDAHpw==
-X-Received: by 2002:a17:903:1252:b0:240:1ed3:fc28 with SMTP id d9443c01a7336-2446bd2d05fmr30011465ad.12.1755255088359;
-        Fri, 15 Aug 2025 03:51:28 -0700 (PDT)
-Received: from sunil-laptop ([106.51.199.3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446ca9ee0esm11563455ad.8.2025.08.15.03.51.21
+        d=1e100.net; s=20230601; t=1755262915; x=1755867715;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p8G3MB2xb1XINJDky7zAxxmWQS1sB1q+0jgsFdjchDE=;
+        b=Y0udhm4exGe5FJ/zJMv+pa3CDCRDJlSNPLR/mPmYo0NqqcH87exWlACVg/gCoCynBF
+         VbqkT8iJiNztmAMAKt8SJkXJN3EjG91WM7Jrd9LI+F7zrUrMQu4DeT8zo3vec9FC8MZ1
+         XBJijkeAav5wBhJRXfdQwZObYLkOvKlPweWPbhoaZiJ+5x7EQcIr3DCqZlBIJmECrKwt
+         z3clID8s92azPt112UKVO9tn7gxpYHsKKKhRDwA2MrO4PMNLShZxCDhjTeVDnFx4o96R
+         KW8wE0dvaVgpEyBV6UzdCBZP8+a9yK3yCHrSJzEpOm4X/brTmMoWLhiKuQrDVcasdE/O
+         KS5w==
+X-Forwarded-Encrypted: i=1; AJvYcCXMPyNwYL7iLVeM2WMjiEvw5C6sUGgNfcSHRi93vtOpyat7B6u5xuy/QwqTyx0BwRIspZtVaCl1mmtDVw==@vger.kernel.org, AJvYcCXXQuMmTxnloRJzGRk4GtF0dIplF5rcZ37qn+ZueIAHgvUcAUfQipWstz5uF4QatFuZR4Qzl2Yq3VSrnDdd@vger.kernel.org, AJvYcCXwDHK/GO40U334qr8d6Cz3k4OzspiEnsgLvWSsl/1Z+V1uuAj4ALkOHdA3tlS1YIPmf46JGjuO@vger.kernel.org
+X-Gm-Message-State: AOJu0YytJ0pxP7L3ulxGfpX7cjGNVw0QAJRwPc7na1AbYyATSJCGUkkX
+	/tTrkasVd31nfrK6ORXDfEjmTLINm5OW/6fE/yjSpQNyk+b7BXO3ewD3OK6VPA==
+X-Gm-Gg: ASbGncu3QraQWKyT9ytSod/8hdxHHI0P+txi0MuUAxMDu/ZLbKCLlvs4x35SptgmWme
+	WqkKRs1msxnqgeNWoPGibDOPGTgnudsQ5va8n02dBpVZIvo/LlAHMt9OYkcPD7ZcMWwGj3xii47
+	PiOtPOQXfigL6FsmXOKP0rwft09sUVxJGXmvfqQOnBcTmzZ933qGEKFO5KbBJHwVEshf20UQNuj
+	bXVG56vGikrwfdboaD1cPzBIR2N/ujLzasRbMSHcSpdJ+qMoyNwV6rfFnUhYswzwrpxXRjOJQx/
+	NE71VcxHV1a2otqdTy39ova8pkkKqE+qxH/h/hu/0TiiHRGUH7W2wKOK7TfMl3SweFbh8XH6C/V
+	5HnJQWPf/BX489tuEWko6HN2n
+X-Google-Smtp-Source: AGHT+IEK0vyQ+opzYgrHi1DhojLvyELLab/hZQjZ0nNY6qUF04KViCKlcgX9AKwmiM2X/iEdJKN1hA==
+X-Received: by 2002:a17:907:dac:b0:ae3:bb0a:1ccd with SMTP id a640c23a62f3a-afcdc080f1fmr171396466b.26.1755262914631;
+        Fri, 15 Aug 2025 06:01:54 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:73::])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-618af9d30c2sm1490564a12.10.2025.08.15.06.01.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Aug 2025 03:51:27 -0700 (PDT)
-Date: Fri, 15 Aug 2025 16:21:16 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: XianLiang Huang <huangxianliang@lanxincomputing.com>
-Cc: ajones@ventanamicro.com, alex@ghiti.fr, anup@brainfault.org,
-	apatel@ventanamicro.com, atishp@rivosinc.com, iommu@lists.linux.dev,
-	joro@8bytes.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-	palmer@dabbelt.com, paul.walmsley@sifive.com, rafael@kernel.org,
-	robin.murphy@arm.com, tjeznach@rivosinc.com, will@kernel.org
-Subject: Re: [PATCH v5 1/3] ACPI: RISC-V: Add support for RIMT
-Message-ID: <aJ8RJCFM8p_GrFXk@sunil-laptop>
-References: <20250716104059.3539482-2-sunilvl@ventanamicro.com>
- <20250815075541.29941-1-huangxianliang@lanxincomputing.com>
+        Fri, 15 Aug 2025 06:01:54 -0700 (PDT)
+Date: Fri, 15 Aug 2025 06:01:51 -0700
+From: Breno Leitao <leitao@debian.org>
+To: linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: usamaarif642@gmail.com, gpiccoli@igalia.com, kerneljasonxing@gmail.com, 
+	osandov@osandov.com, konrad.wilk@oracle.com, pgonda@google.com, graf@amazon.com, 
+	xueshuai@linux.alibaba.com, mimi0213kimo@gmail.com
+Subject: [ANNOUNCEMENT] LPC 2025: System Monitoring and Observability
+ Microconference
+Message-ID: <6zbk3jazg7wheklq7t7mexj4ie4tlsgdylzobgofqacb5moxc3@r4d6222hyog6>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250815075541.29941-1-huangxianliang@lanxincomputing.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 15, 2025 at 03:55:41PM +0800, XianLiang Huang wrote:
-> Hi Sunil,
-> 
-> On Wed, 16 Jul 2025 16:10:57 +0530, Sunil V L wrote:
-> > +	parent = ACPI_ADD_PTR(struct acpi_rimt_node, rimt_table, map->dest_offset);
-> > +
-> > +	if (node->type == ACPI_RIMT_NODE_TYPE_PLAT_DEVICE ||
-> > +	    node->type == ACPI_RIMT_NODE_TYPE_PCIE_ROOT_COMPLEX) {
-> > +		*id_out = map->dest_offset;
-> > +		return parent;
-> > +	}
-> 
-> Why do we assign dest_offset to id_out? The dest_offset is the iommu offset, not
-> a valid deviceid required for platform device in rimt_plat_iommu_map?
-> 
-Good catch!. Thanks!. It should be dest_id_base. Let me fix it in next
-revision.
+We are pleased to announce the Call for Proposals (CFP) for the System
+Monitoring and Observability Microconference at the 2025 Linux Plumbers
+Conference (LPC), taking place in Tokyo, Japan, from December 11–13,
+2025:
 
-Thanks!
-Sunil
+  https://lpc.events/event/19/sessions/239/
+
+This microconference provides a valuable forum for key engineering areas
+such as:
+
+   - Kernel Health and Runtime Monitoring
+   - Hardware Integration and Error Detection
+   - Correlation of Issues (crashes, stalls, bugs)
+   - Virtualization Stack Monitoring
+   - Memory Management and Analysis
+   - Anomaly Detection Algorithms for System Behavior
+   - Automated Analysis, Remediation and post mortem analyzes
+
+The purpose of each talk is to share challenges and discuss potential
+improvements. Sessions will last 20 to 30 minutes and aim to encourage
+brainstorming and open dialogue about ongoing issues rather than
+delivering immediate solutions.
+
+The conference acts as both a knowledge-sharing platform and a strategic
+venue for guiding the future of kernel technologies to better meet the
+demands of large-scale infrastructure.
+
+We invite you to submit your proposals here:
+https://lpc.events/event/19/abstracts/
 
