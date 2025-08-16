@@ -1,74 +1,74 @@
-Return-Path: <linux-acpi+bounces-15752-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15753-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3F8B28BE1
-	for <lists+linux-acpi@lfdr.de>; Sat, 16 Aug 2025 10:30:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F0AB28BF8
+	for <lists+linux-acpi@lfdr.de>; Sat, 16 Aug 2025 10:42:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C6027B1FFA
-	for <lists+linux-acpi@lfdr.de>; Sat, 16 Aug 2025 08:28:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2F905C753E
+	for <lists+linux-acpi@lfdr.de>; Sat, 16 Aug 2025 08:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FDD1E8342;
-	Sat, 16 Aug 2025 08:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47813238159;
+	Sat, 16 Aug 2025 08:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="dZZRx9oF"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="ho1YfLzU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F633770B
-	for <linux-acpi@vger.kernel.org>; Sat, 16 Aug 2025 08:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAA61E1E1C
+	for <linux-acpi@vger.kernel.org>; Sat, 16 Aug 2025 08:42:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755333022; cv=none; b=KHXktHrL11hwo4IEKPerB5B/I/d/lOme0LW658i/dhQF3o7p0Zu5TDKulRfKjBNmR0v6JbPLmX9LDWfCG1sZaRt/nN951GzUhPdrxVGTPRstSFLzl2ACfkVNOgivyWjxhHRDC6VLK072YBQNsrntla9rCc6VPpGUVtmB/xFtIJg=
+	t=1755333759; cv=none; b=KOEzZP2SIg6qffAZBODYu9ahs5UzHCFvxCH9MGZ9LNBAPc/YqzJULi35nV5shZuIyi/RnnjprCLAM4E4iQTdf9644pfk0PX9wIJbhfz/z96O0Rh+gAZS/WBPmkadLF50p9S2fv43Z0UjwVjWGjoM1ur+O9Y2QdiXqRlbAeFJkv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755333022; c=relaxed/simple;
-	bh=ybTasye67ll+G1+S+rEoBvfI5uGN+1c1DzSfrmamFI4=;
+	s=arc-20240116; t=1755333759; c=relaxed/simple;
+	bh=d65PHt7h3Ht/KQGMdAlcMhYKtNBnOObEyI6Fnc7QJ88=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UCfhBxGIekUDHF9KKqKgnQ9JK2unobKtjI/DuqeCUNezONP/ew9bmJKYDbe2H9HKxlWeV8sEU+dmLk+YuuBv7qe7JBmcM43EPNfuK9fMzAzk9CyU4QknxbeQNwQ55uGOWA3mYdZFlV7dqUIw/SIom4Dy7I5TmCFE7b8s3gagGz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=dZZRx9oF; arc=none smtp.client-ip=209.85.208.172
+	 To:Cc:Content-Type; b=DMcwYOraAr6fwvnlz4RQq0mMjD8tRC8X/qq1BpGLdHtCnQJZy2WGuekr662ixXlTUtzDgJ0NRtkwoSkdMP2Gcs+D+m3wsXlnAUk/40LQ9Vn1LacSu79rKPrm56Wzns+Px0m2otP5QGnwsY/Ge+wmKJtKvgZm4qyvTC4dwH0/AfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=ho1YfLzU; arc=none smtp.client-ip=209.85.167.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-333f8d1ecffso19859111fa.0
-        for <linux-acpi@vger.kernel.org>; Sat, 16 Aug 2025 01:30:20 -0700 (PDT)
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-55ce4d3b746so3145473e87.1
+        for <linux-acpi@vger.kernel.org>; Sat, 16 Aug 2025 01:42:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1755333018; x=1755937818; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1755333755; x=1755938555; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ERxMgw2kpDYIcEN4b7OBl7/5abBT2Agrn9m7lX6uaGA=;
-        b=dZZRx9oFXlzdHw09lv3qSRrtcDWJmdN9CmRJ6UxLmePejsOuOihchy1MfnvoS8ToVj
-         OlxEsUQSIsHbWmXjv4HSlH9OXX4iR7e9CicLzdAv1AFNIud5chBI9KYWKT7iJnuk2D3T
-         EUEj0i3Tj7rCJoKsbYA7/KDvhalFEB0fe9DIOoS+w5PNMIKjUyKpqx5NgSjOPza0ATvv
-         RBQb0ZL/ioq+JKSxOnZflXqOAVVTGdhllsPdLGMfGfUvkeDTtbIWRzwoEaLHs0n8ShrQ
-         xxmLt2X7D00HhcDxZZiJ8QBi6DF1sXv0oiuPw1dbnzF1yJVO2DBhYs28XnjvH4CdHeNy
-         2W6w==
+        bh=ihYXXz9o9cjYPSNj67KJq15CtaTxUe12z8+pHHWdiko=;
+        b=ho1YfLzU9QdI1G4WkTsf9u87sN62kzsAc826Aw8Ol0Ch6bdVRTHweJNx9WZhPFcuL6
+         Kn/JvrVPzeKB81fKI+Q8+0ehMgiXTtTpCN7EW09bzRoW91VI/7Nvo6T2OKlluPeGHCUu
+         GOCKg29ju8d8wGiKV4g/Uz/WUhxqceFs792ZKlsErD5vkweJaGS2vJTiQm3yPc+IJHSN
+         LmPDF8vnn8y0G5bgSC7KNV1ol+pbUX/aWKM4WDyNYurDAnLfSXqmoQF3IaBktigkb5ja
+         LAB4dOYhO3bWkYKbhOYWPhKdapPfSt8K2HlcpddLiw9gtw5SkrvstwV0idbPzIpUs7Ai
+         WT5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755333018; x=1755937818;
+        d=1e100.net; s=20230601; t=1755333755; x=1755938555;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ERxMgw2kpDYIcEN4b7OBl7/5abBT2Agrn9m7lX6uaGA=;
-        b=MZwPkwfUmAf/HOE9QLI51AOJ6yVghKcmERnpCUl0hotRmnoIinM5N+/1qAyuHlk1BU
-         bcS91XMWJrSwp5UMxIWHsuqdH8JUZXOAQiVABIVqrbDF2yUsTxs7IlUlMthQKArbKL5O
-         wjepKCxo+7jUtOQKWjNPw69DJg1Kyipm31SFSgQhphadnKxqdYkYk3wyWFF8n4UyWp9b
-         mccCduimUknTRExnmpaDyufEB8uQbqtCOhJwafNzZGTYeXClPffNqeO3kDpTmoJQuHvO
-         f5JjgzntS7rFcsrBq2ZWHJyzTDmeP/g2BHQlEPtEBVEq26FrTZpHqpwlbD6uzj39mEJl
-         rSgA==
-X-Forwarded-Encrypted: i=1; AJvYcCVw0IrqmfP45Bk+5zvZkRBDZKFp72qxTWk5PvxhdXd7xH7/O4Zj9jt2RryXqGS7txFWZ2XDdHDdFENu@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyc8wwkb2HlKYQkBLr2tyeF+w+y+IeW6ctjuSAtvz5AaEXTC1Dt
-	w4a9ipx2Dvw+lmXUlB/0GjPCv1O1Vf5QHpC8c+j5Zr7rjcqOeT6GveU+8IYFFeeKXK+lQDvGLOt
-	YY9JbUVEZZvW7+SlLsUOlxx6ffzxxKWKC4UFoMuOdpQ==
-X-Gm-Gg: ASbGnctOokorhYWmsvdx59/XIZvJ+dFBJwchfksgiW5UC+l1h6eQBA/IsVX9niD7wJV
-	weTOyxazSeBlooV3/pTydIYQfz7ybu5EZIXPHTjg2EDSqbZeUJ1cj1sa/Y5GTKKjgXO7r0nqw8R
-	d+ZNE1pnYXmJNHolr7ucB6KZ4Qz1u1LOfuudZ6L0/P4dKkxZXKwG4iYwuY4t3X/2aTtoGToDUHv
-	EndsTY=
-X-Google-Smtp-Source: AGHT+IEST4Hz1W6gN8Tp0q2vE+c0oXk55HJWk6Wusd2HGHaqZsEJzSfdSxtmeot6CG5ZxyPg8a3TAz84PqZoJqjFmzo=
-X-Received: by 2002:a2e:a00e:0:10b0:334:97:10c8 with SMTP id
- 38308e7fff4ca-3340986afc2mr7761541fa.4.1755333018132; Sat, 16 Aug 2025
- 01:30:18 -0700 (PDT)
+        bh=ihYXXz9o9cjYPSNj67KJq15CtaTxUe12z8+pHHWdiko=;
+        b=GnrZJuT6aFOBf3OnVQHfAI+fRJ7r12oiWZ6zoez6lrVd176tMImSfGYOQef0GpvZw9
+         vuSU4kV75CcV2Jq5NHMh1/T+0EG6dPVJO/vvVPVxq8zM3SHH0q0JsIdWYR8vmM1XVuk3
+         Yt1sPTxIpRmZWw4FEFNg8RZnIiNW5H5T84Vi3CRIuWrNBKcXcUbFjeXIIRUJqjBNpkVQ
+         1LgTzP7TlMtphHip6NE5JHy/o89QYtsJ8L67cYzhu/rw7ETkIJ+w38zqPqPnt/XuUaYI
+         IjIZMvzlNipZg7Y497/u2zvRUxzj+iUWNJVS1UriyEkAn+EQJiLssr54vT8ujGapk/QR
+         8RYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVngrQeRm56xwN3qgxgKEMT4A4juvCoqVfAtWfgClU90ts+rhTYtlcv/c2cLz1WzTT0fbEjrVn+m/wL@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjyYqjAihLQqazbyCPFsmZET4mIDQJ7EhWnUvvlc7LRYfOTuZw
+	kqhai5g40XRNcszYLnbO3nXKjUVIRepFBZp7CRAQ1spRCUtFbji7rKG0ph8exJMrf4GPDH/D40v
+	MG0SEt/0o7z3E1v3HTJiGs7eRwQ1h434m11X1IpsVkw==
+X-Gm-Gg: ASbGnctzx8FINodHyUXTFhZrrySTvPsI38ueWtuDRjzuwkx2OOIIP8rlr3kEeo2vMXr
+	XA1vPXLjZzdepGSUYhAizs26tAVp83Prd1EBfuDl2y9p9Qh+BmYwZQOtfIO3SM6uYlc+0Nq6CT5
+	FwcgzQH7fHgwDUYbDy2HV2FQunNE6Vy897YH/9klijRo+EFMOL9cOsidXFQNxIGU9v06BiOa8ii
+	jov94E=
+X-Google-Smtp-Source: AGHT+IHd93gFDsfSeH+6hKdXUyx7eyTlOzSh+cqWVIEalrd8dXAm7pt/QRaacvUrMvURzZJoFprZ5FpQX5OfW35bVyM=
+X-Received: by 2002:a05:6512:3a2:b0:558:fad0:2518 with SMTP id
+ 2adb3069b0e04-55ce62e6b19mr1649919e87.27.1755333755198; Sat, 16 Aug 2025
+ 01:42:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -76,27 +76,28 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250815161406.76370-1-apatel@ventanamicro.com>
- <20250815161406.76370-3-apatel@ventanamicro.com> <20250815-e69bdc695cf78e6ce07e580c@orel>
-In-Reply-To: <20250815-e69bdc695cf78e6ce07e580c@orel>
+ <20250815161406.76370-3-apatel@ventanamicro.com> <89865f17-f405-445a-874d-9361fe247bfe@iscas.ac.cn>
+In-Reply-To: <89865f17-f405-445a-874d-9361fe247bfe@iscas.ac.cn>
 From: Anup Patel <apatel@ventanamicro.com>
-Date: Sat, 16 Aug 2025 14:00:07 +0530
-X-Gm-Features: Ac12FXyKiNxNt01bHkxj5VizDPtJcwrdzgQ6aEx_XK-xKa-rmi7zdvozfKXtcOY
-Message-ID: <CAK9=C2UA6EF=RQ0C9qK2CGEun3GGndq_G1UpTju23GNSfRaRbw@mail.gmail.com>
+Date: Sat, 16 Aug 2025 14:12:23 +0530
+X-Gm-Features: Ac12FXyz8wuFa7cPjtTNVg42nY9wMyrUOE31nc7JPbMBqyFFW-8P3CDmu_S96ZE
+Message-ID: <CAK9=C2VWSpREd0Hqg3TuLcVxG1=Ddfqn9ouNcowxHdCfJWgmJg@mail.gmail.com>
 Subject: Re: [PATCH 2/2] RISC-V: Add common csr_read_num() and csr_write_num() functions
-To: Andrew Jones <ajones@ventanamicro.com>
+To: Vivian Wang <wangruikang@iscas.ac.cn>
 Cc: Sunil V L <sunilvl@ventanamicro.com>, "Rafael J . Wysocki" <rafael@kernel.org>, 
 	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
 	Alexandre Ghiti <alex@ghiti.fr>, Len Brown <lenb@kernel.org>, Atish Patra <atish.patra@linux.dev>, 
-	Anup Patel <anup@brainfault.org>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, linux-acpi@vger.kernel.org, 
+	Andrew Jones <ajones@ventanamicro.com>, Anup Patel <anup@brainfault.org>, 
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, linux-acpi@vger.kernel.org, 
 	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 16, 2025 at 1:32=E2=80=AFAM Andrew Jones <ajones@ventanamicro.c=
-om> wrote:
+On Sat, Aug 16, 2025 at 9:54=E2=80=AFAM Vivian Wang <wangruikang@iscas.ac.c=
+n> wrote:
 >
-> On Fri, Aug 15, 2025 at 09:44:06PM +0530, Anup Patel wrote:
+>
+> On 8/16/25 00:14, Anup Patel wrote:
 > > In RISC-V, there is no CSR read/write instruction which takes CSR
 > > number via register so add common csr_read_num() and csr_write_num()
 > > functions which allow accessing certain CSRs by passing CSR number
@@ -126,28 +127,6 @@ h
 ;
 > > +extern void csr_write_num(unsigned long csr_num, unsigned long val, in=
 t *out_err);
->
-> My preference would be for an interface with the return/err parameters th=
-e
-> other way around, i.e.
->
-> int csr_read_num(unsigned long csr_num, unsigned long *val);
-> int csr_write_num(unsigned long csr_num, unsigned long val);
->
-> and then ensure all callers always check that the return value is zero
-> before proceeding to use val or assume val was written.
-
-I had considered this but the problem with this approach is that
-individual switch cases in csr_read_num() become roughly 4
-instructions because value read from CSR has to written to a
-memory location.
-
-The current approach results in just 2 instructions for each
-switch-case. Additionally, the current prototypes of csr_read_num()
-and csr_write_num() are closer to csr_read() and csr_write()
-respectively.
-
->
 > > +
 > >  #endif /* __ASSEMBLY__ */
 > >
@@ -245,224 +224,100 @@ respectively.
 > > +     switchcase_csr_read_128(__csr_num + 0);                 \
 > > +     switchcase_csr_read_128(__csr_num + 128)
 > > +
-> > +     if (out_err)
-> > +             *out_err =3D 0;
-> > +
-> > +     switch (csr_num) {
-> > +     switchcase_csr_read_32(CSR_CYCLE);
-> > +     switchcase_csr_read_32(CSR_CYCLEH);
-> > +     switchcase_csr_read_256(CSR_CUSTOM0_U_RW_BASE);
-> > +     switchcase_csr_read_64(CSR_CUSTOM1_U_RO_BASE);
-> > +     switchcase_csr_read_64(CSR_CUSTOM2_S_RW_BASE);
-> > +     switchcase_csr_read_64(CSR_CUSTOM3_S_RW_BASE);
-> > +     switchcase_csr_read_64(CSR_CUSTOM4_S_RO_BASE);
-> > +     switchcase_csr_read_64(CSR_CUSTOM5_HS_RW_BASE);
-> > +     switchcase_csr_read_64(CSR_CUSTOM6_HS_RW_BASE);
-> > +     switchcase_csr_read_64(CSR_CUSTOM7_HS_RO_BASE);
-> > +#ifdef CONFIG_RISCV_M_MODE
-> > +     switchcase_csr_read_64(CSR_CUSTOM8_M_RW_BASE);
-> > +     switchcase_csr_read_64(CSR_CUSTOM9_M_RW_BASE);
-> > +     switchcase_csr_read_64(CSR_CUSTOM10_M_RO_BASE);
-> > +#endif
-> > +     default:
-> > +             if (out_err)
-> > +                     *out_err =3D -EINVAL;
-> > +             else
-> > +                     pr_err("%s: csr 0x%lx not supported\n", __func__,=
- csr_num);
-> > +             break;
-> > +     }
-> > +
-> > +     return 0;
-> > +#undef switchcase_csr_read_256
-> > +#undef switchcase_csr_read_128
-> > +#undef switchcase_csr_read_64
-> > +#undef switchcase_csr_read_32
-> > +#undef switchcase_csr_read_16
-> > +#undef switchcase_csr_read_8
-> > +#undef switchcase_csr_read_4
-> > +#undef switchcase_csr_read_2
-> > +#undef switchcase_csr_read
-> > +}
-> > +EXPORT_SYMBOL_GPL(csr_read_num);
-> > +
-> > +void csr_write_num(unsigned long csr_num, unsigned long val, int *out_=
-err)
-> > +{
-> > +#define switchcase_csr_write(__csr_num, __val)                       \
-> > +     case (__csr_num):                                       \
-> > +             csr_write(__csr_num, __val);                    \
-> > +             break
-> > +#define switchcase_csr_write_2(__csr_num, __val)             \
-> > +     switchcase_csr_write(__csr_num + 0, __val);             \
-> > +     switchcase_csr_write(__csr_num + 1, __val)
-> > +#define switchcase_csr_write_4(__csr_num, __val)             \
-> > +     switchcase_csr_write_2(__csr_num + 0, __val);           \
-> > +     switchcase_csr_write_2(__csr_num + 2, __val)
-> > +#define switchcase_csr_write_8(__csr_num, __val)             \
-> > +     switchcase_csr_write_4(__csr_num + 0, __val);           \
-> > +     switchcase_csr_write_4(__csr_num + 4, __val)
-> > +#define switchcase_csr_write_16(__csr_num, __val)            \
-> > +     switchcase_csr_write_8(__csr_num + 0, __val);           \
-> > +     switchcase_csr_write_8(__csr_num + 8, __val)
-> > +#define switchcase_csr_write_32(__csr_num, __val)            \
-> > +     switchcase_csr_write_16(__csr_num + 0, __val);          \
-> > +     switchcase_csr_write_16(__csr_num + 16, __val)
-> > +#define switchcase_csr_write_64(__csr_num, __val)            \
-> > +     switchcase_csr_write_32(__csr_num + 0, __val);          \
-> > +     switchcase_csr_write_32(__csr_num + 32, __val)
-> > +#define switchcase_csr_write_128(__csr_num, __val)           \
-> > +     switchcase_csr_write_64(__csr_num + 0, __val);          \
-> > +     switchcase_csr_write_64(__csr_num + 64, __val)
-> > +#define switchcase_csr_write_256(__csr_num, __val)           \
-> > +     switchcase_csr_write_128(__csr_num + 0, __val);         \
-> > +     switchcase_csr_write_128(__csr_num + 128, __val)
-> > +
-> > +     if (out_err)
-> > +             *out_err =3D 0;
-> > +
-> > +     switch (csr_num) {
-> > +     switchcase_csr_write_256(CSR_CUSTOM0_U_RW_BASE, val);
-> > +     switchcase_csr_write_64(CSR_CUSTOM2_S_RW_BASE, val);
-> > +     switchcase_csr_write_64(CSR_CUSTOM3_S_RW_BASE, val);
-> > +     switchcase_csr_write_64(CSR_CUSTOM5_HS_RW_BASE, val);
-> > +     switchcase_csr_write_64(CSR_CUSTOM6_HS_RW_BASE, val);
-> > +#ifdef CONFIG_RISCV_M_MODE
-> > +     switchcase_csr_write_64(CSR_CUSTOM8_M_RW_BASE, val);
-> > +     switchcase_csr_write_64(CSR_CUSTOM9_M_RW_BASE, val);
-> > +#endif
-> > +     default:
-> > +             if (out_err)
-> > +                     *out_err =3D -EINVAL;
-> > +             else
-> > +                     pr_err("%s: csr 0x%lx not supported\n", __func__,=
- csr_num);
-> > +             break;
-> > +     }
-> > +#undef switchcase_csr_write_256
-> > +#undef switchcase_csr_write_128
-> > +#undef switchcase_csr_write_64
-> > +#undef switchcase_csr_write_32
-> > +#undef switchcase_csr_write_16
-> > +#undef switchcase_csr_write_8
-> > +#undef switchcase_csr_write_4
-> > +#undef switchcase_csr_write_2
-> > +#undef switchcase_csr_write
-> > +}
-> > +EXPORT_SYMBOL_GPL(csr_write_num);
-> > diff --git a/drivers/acpi/riscv/cppc.c b/drivers/acpi/riscv/cppc.c
-> > index 42c1a9052470..fe491937ed25 100644
-> > --- a/drivers/acpi/riscv/cppc.c
-> > +++ b/drivers/acpi/riscv/cppc.c
-> > @@ -65,24 +65,19 @@ static void sbi_cppc_write(void *write_data)
-> >  static void cppc_ffh_csr_read(void *read_data)
-> >  {
-> >       struct sbi_cppc_data *data =3D (struct sbi_cppc_data *)read_data;
-> > +     int err;
-> >
-> > -     switch (data->reg) {
-> > -     /* Support only TIME CSR for now */
-> > -     case CSR_TIME:
-> > -             data->ret.value =3D csr_read(CSR_TIME);
-> > -             data->ret.error =3D 0;
-> > -             break;
-> > -     default:
-> > -             data->ret.error =3D -EINVAL;
-> > -             break;
-> > -     }
-> > +     data->ret.value =3D csr_read_num(data->reg, &err);
-> > +     data->ret.error =3D err;
-> >  }
-> >
-> >  static void cppc_ffh_csr_write(void *write_data)
-> >  {
-> >       struct sbi_cppc_data *data =3D (struct sbi_cppc_data *)write_data=
-;
-> > +     int err;
-> >
-> > -     data->ret.error =3D -EINVAL;
-> > +     csr_write_num(data->reg, data->val, &err);
-> > +     data->ret.error =3D err;
-> >  }
-> >
-> >  /*
-> > diff --git a/drivers/perf/riscv_pmu.c b/drivers/perf/riscv_pmu.c
-> > index 7644147d50b4..aa053254448d 100644
-> > --- a/drivers/perf/riscv_pmu.c
-> > +++ b/drivers/perf/riscv_pmu.c
-> > @@ -16,6 +16,7 @@
-> >  #include <linux/smp.h>
-> >  #include <linux/sched_clock.h>
-> >
-> > +#include <asm/csr.h>
-> >  #include <asm/sbi.h>
-> >
-> >  static bool riscv_perf_user_access(struct perf_event *event)
-> > @@ -88,46 +89,6 @@ void arch_perf_update_userpage(struct perf_event *ev=
-ent,
-> >       userpg->cap_user_time_short =3D 1;
-> >  }
-> >
-> > -static unsigned long csr_read_num(int csr_num)
-> > -{
-> > -#define switchcase_csr_read(__csr_num, __val)                {\
-> > -     case __csr_num:                                 \
-> > -             __val =3D csr_read(__csr_num);            \
-> > -             break; }
-> > -#define switchcase_csr_read_2(__csr_num, __val)              {\
-> > -     switchcase_csr_read(__csr_num + 0, __val)        \
-> > -     switchcase_csr_read(__csr_num + 1, __val)}
-> > -#define switchcase_csr_read_4(__csr_num, __val)              {\
-> > -     switchcase_csr_read_2(__csr_num + 0, __val)      \
-> > -     switchcase_csr_read_2(__csr_num + 2, __val)}
-> > -#define switchcase_csr_read_8(__csr_num, __val)              {\
-> > -     switchcase_csr_read_4(__csr_num + 0, __val)      \
-> > -     switchcase_csr_read_4(__csr_num + 4, __val)}
-> > -#define switchcase_csr_read_16(__csr_num, __val)     {\
-> > -     switchcase_csr_read_8(__csr_num + 0, __val)      \
-> > -     switchcase_csr_read_8(__csr_num + 8, __val)}
-> > -#define switchcase_csr_read_32(__csr_num, __val)     {\
-> > -     switchcase_csr_read_16(__csr_num + 0, __val)     \
-> > -     switchcase_csr_read_16(__csr_num + 16, __val)}
-> > -
-> > -     unsigned long ret =3D 0;
-> > -
-> > -     switch (csr_num) {
-> > -     switchcase_csr_read_32(CSR_CYCLE, ret)
-> > -     switchcase_csr_read_32(CSR_CYCLEH, ret)
-> > -     default :
-> > -             break;
-> > -     }
-> > -
-> > -     return ret;
-> > -#undef switchcase_csr_read_32
-> > -#undef switchcase_csr_read_16
-> > -#undef switchcase_csr_read_8
-> > -#undef switchcase_csr_read_4
-> > -#undef switchcase_csr_read_2
-> > -#undef switchcase_csr_read
-> > -}
-> > -
-> >  /*
-> >   * Read the CSR of a corresponding counter.
-> >   */
-> > @@ -139,7 +100,7 @@ unsigned long riscv_pmu_ctr_read_csr(unsigned long =
-csr)
-> >               return -EINVAL;
-> >       }
-> >
-> > -     return csr_read_num(csr);
-> > +     return csr_read_num(csr, NULL);
-> >  }
-> >
-> >  u64 riscv_pmu_ctr_get_width_mask(struct perf_event *event)
-> > --
-> > 2.43.0
-> >
 >
-> Other than the suggestion to flip the interface,
+> That's... a bit horrendous.
 >
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> Since we know that each inner case is quite simple, can we just do our
+> own jump table for that? Each case can be one csrr/csrw and one jal
+> (possibly pad to 8 bytes), and we can just jump to
+> label + (csr_num - range_start) * 8. See bottom of this message for an
+> untested prototype.
+>
+> Vivian "dramforever" Wang
+>
+> UNTESTED prototype:
+>
+> #define CSR_CYCLE 0xc00
+> #define CSR_CYCLEH 0xc80
+>
+> /* Force expand argument if macro */
+> #define str(_x) #_x
+>
+> unsigned long csr_read_num(long csr_num)
+> {
+>         unsigned long res, tmp;
+>
+>         /*
+>          * Generate a jump table for each range. Each (inner) case is 8 b=
+ytes of
+>          * code, a csrr instruction and a jump, possibly padded, so we ju=
+st jump
+>          * to label_1f + (csr_num - _start) * 8
+>          */
+> #define csr_read_case_range(_start, _size)                               =
+       \
+>         case (_start) ... ((_start) + (_size) - 1):                      =
+       \
+>                 asm volatile (                                           =
+       \
+>                                 "       lla %[tmp], 1f\n"                =
+       \
+>                                 "       add %[tmp], %[tmp], %[offset]\n" =
+       \
+>                                 "       jr %[tmp]\n"                     =
+       \
+>                                 "1:\n"                                   =
+       \
+>                                 "       .rept (" str(_size) ")\n"        =
+       \
+>                                 "       csrr %[res], (" str(_start) " + \=
+\+)\n" \
+>                                 "       j 2f\n"                          =
+       \
+>                                 "       .balign 4\n"                     =
+       \
+>                                 "       .endr\n"                         =
+       \
+>                                 "2:\n"                                   =
+       \
+>                                 : [tmp] "=3D&r"(tmp), [res] "=3Dr"(res)  =
+           \
+>                                 : [offset] "r"((csr_num - _start) * 8)   =
+       \
+>                                 : );                                     =
+       \
+>                 break;                                                   =
+       \
+>
+>
+>         switch (csr_num) {
+>         csr_read_case_range(CSR_CYCLE, 4)
+>         csr_read_case_range(CSR_CYCLEH, 4)
+>
+>         /* ... other cases */
+>
+>         default:
+>                 /* Error handling */
+>         }
+>
+> #undef csr_read_case_range
+>
+>         return res;
+> }
+
+Clearly you have trust issues with compiler switch-case optimizations
+and your proposed solution looks horrendous to me.
+
+Your proposed solution is effectively a nested switch case where
+there is a higher-level jump-table generated by the compiler which
+selects a range case and within each range case you have a hand
+assembled jump table. If you analyse the effective number of
+instructions involved in accessing an CSR then it will be much
+more than the current approach.
+
+The current approach relies on a compiler optimized jump table
+where each switch-case is just two instructions (12 bytes) for
+both csr_read_num() and csr_write_num().
 
 Regards,
 Anup
