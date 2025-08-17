@@ -1,39 +1,80 @@
-Return-Path: <linux-acpi+bounces-15754-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15755-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95ACB28D6B
-	for <lists+linux-acpi@lfdr.de>; Sat, 16 Aug 2025 13:26:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4FDDB29275
+	for <lists+linux-acpi@lfdr.de>; Sun, 17 Aug 2025 11:38:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2F933BB084
-	for <lists+linux-acpi@lfdr.de>; Sat, 16 Aug 2025 11:26:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92AF67A2ED3
+	for <lists+linux-acpi@lfdr.de>; Sun, 17 Aug 2025 09:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26DF828688C;
-	Sat, 16 Aug 2025 11:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C41221FA0;
+	Sun, 17 Aug 2025 09:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FDJk5aZ7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5341B21FF3F;
-	Sat, 16 Aug 2025 11:26:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992D71D6BB;
+	Sun, 17 Aug 2025 09:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755343613; cv=none; b=p93Y7FJOJSWlJ5N7aGccXDBB4yuTbV4Yl6k7PtV3cvhLIPzRVksQANr0nYmoY48p/ePNHy3pIVEw0c1coKeof64+x7CZQ5zCmOla22/LsNDlpiWjUuUSXZvjPtcSirH4WyEeb7ihQNfwWtBGAJWkG6sOtn/tclNV4m4iRU3mDio=
+	t=1755423515; cv=none; b=MS82D4PSnb9uDmfjXtJVxSpDRpisWHa6n2EIfWVrEK8keYDO/N6w7rNubeGiUrAErz9U/4JzQWMn27B39sZ5SXsiVRriC3EQVqOAg6LnMBE91wDgEYyo5vwyGTYbZhtgwFDcyxSFTPBF3aV0aL+Jkmo/kUdPvbo+5HC7wnRPD78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755343613; c=relaxed/simple;
-	bh=YB4lGrcSUba+o7QPviwqtchjCljGl39IbF8SyIF+eNg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pXnhwxiJB3DfYfcLMp0kYFJGBrLO9uQyWM4305pXl0wvLRnPFWmvAteMB5zeel0zKKyCsHPFPKpBGDDKJaFCF/AcNDkqFuerRoBIhoeoaWjyLw7Xxw2rZbLKkpH9Fxi5jW/4jV9dM7J74QXUAyzfwBiGX6X9CDOCsW+DGWD+b/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [192.168.0.104] (unknown [114.241.87.235])
-	by APP-05 (Coremail) with SMTP id zQCowACXLV7eaqBo6I9YDA--.55398S2;
-	Sat, 16 Aug 2025 19:26:22 +0800 (CST)
-Message-ID: <8fc2da6d-0ad7-48ec-b1ed-df6ae6ddebf4@iscas.ac.cn>
-Date: Sat, 16 Aug 2025 19:26:22 +0800
+	s=arc-20240116; t=1755423515; c=relaxed/simple;
+	bh=c8YRrckfoSfijJ8+9Yeqa5yV4ks/1VCihLQAEoIt5LM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=aW06BeHyPzutQrv7+SuAF9gpmAqwSZACcamvXOZAYYXWr7b3P/+7vGilkWeJ2g8B9RVPWYDEGcQ89/tbpPqlnROvmwoNXJ1D1kUNQb4mXA+FY/riM0HFZwFeXkXT6Cf9nF+XT5l5wJ0/WaEhKoWdr1saAvyRSc3sfFBXW4Ix0GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FDJk5aZ7; arc=none smtp.client-ip=209.85.214.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-24456f3f669so31185495ad.1;
+        Sun, 17 Aug 2025 02:38:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755423513; x=1756028313; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=V+glvcUxBNLETyj4EbzaF6Mcl14MmSj24IXXGqr4BWU=;
+        b=FDJk5aZ7IDQGla/M8atFp6I2vlUA25wSdhpURbZp0L39pDptwxJAqMqFMQ7PF74RfV
+         txBTx5SPrP/yoslhdlGQRhk1xG9ALUOXkisNlXaHqg5CaY/+Oac0ifcEvuPbV01PwhKc
+         fFZtjguOcXRr+tWo8141HDd945eEMKMML3cfYr9v/BlfKASTlaOefjRYn4FBvDMlLUgT
+         g8Ldsk5AoXe0uuT7uzDGuACieCxToFMiIUw/Y15NkwqTXYVx2IYCAfDtoFC5xjDKjxGK
+         ryegQ/o2Hz2T33hS2d0gwhdV4IpRCFALNI0m0LlE+t5jnL9waJTgZHxrlIgHl16R/vJB
+         ofyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755423513; x=1756028313;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V+glvcUxBNLETyj4EbzaF6Mcl14MmSj24IXXGqr4BWU=;
+        b=gyouzOTv0w5uiDLU9QrjdgaSi84h8Cguf7kxnBWVrvO9EGclDEb8gRuKCNEu1W+9jV
+         NTDPo86CAoOcpq2yru2dMVAb5nAnI3iOpvSrNXZaP007/7u/kFj7RGTDuNmOmAOvA52f
+         yp48DnjE6NyDkbh1ZRkPl4zOpPB6LIZwmu+rEuTh03xU4yz1Nb9hrNMc+6Hm7fz0f6oM
+         3erZ1ennEwyaP9qWNlNVdgUlxWX9kUi1KHtCmpWNuMAqH38dN/Tu/T0DgDHqd+2GT9HE
+         rNUavvj2dxlF0DAHq5J2IWwXLIrKwJcu1vFo3RP8u1//U8m/KW6Jdl0X/l9PyOMA2FGr
+         tGjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUb1nqblZsT2oYBOpwa8L+nJhS3jOUmrxNfslkZk3VpcfyeLLcwfuakEtzAWPb2LYFUchz/jfqA@vger.kernel.org, AJvYcCVoc40OAZFBxXqoC4TKM1vvAo0SF72V4LGcECkgDgYu1h+GbYelMHDeTjfAHWa+vdtZiGACWAJdBWVylKp95b8=@vger.kernel.org, AJvYcCXkPWLBN0RweAs1hCW1RbiNkPEw/U+ALCFBXBKlNOvCXXIDNwL2dVpz5AfEz5FoL2cBLNCNCcgImYj4@vger.kernel.org, AJvYcCXs5tW9MxIb60DdceIphpFwtn9WrMLbC2T68VZL5lyGhtp1zL8NKOsPtfwTVCgbZHJONeTmSscXeEEL@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmbfdiP9KxQZodKPnfo/dBaDrzKz9HMl2XoKUO3RAb18dNaMD0
+	uaGhctPXTCW3htiwfWpkW4NUMl+7swauSMjsNHhXdL4ns9xZjZ/8DOTLcsfOVGrbnH8=
+X-Gm-Gg: ASbGncv7q/aBqq98QQQGozmt9Ffi72XeasehPZODvUl7vziOqxL1+F6Op/dxJz/vWJC
+	owZX8Frm9Mc7VyPsJhIT86V11xu5p3YEeB6Q53R4xUe1geNt2HxG1lizuW6pu1WoU4sAMmLjcmU
+	uCQeGBn0dtW6GJhHq+JlwzgfG1zSzwesXQFBmYdhsx6uCkq7jJmgKKIN/rK4UNjTv39hdx++vHZ
+	Cp+vngYJekk3tqcklfpgDLRUmheYnJZAWwR8m9H7Tt8SEbDT/afU80zxzJYl/jOK11v/tRENDb0
+	PIJPFJhnu9Hr6P77Edg9dVCScGWKsKFZuZYf+AVUs0ZbxuWKAoKtxNk1l5hl1DrTYhPNRYiOCMC
+	x0ZoddmeV079vWbu4UyblpAi6yLVUpp/sPw1lmOrZXteANewAZylPBIL4
+X-Google-Smtp-Source: AGHT+IHkGdbvw5mBqyT/2JEfiXA/xt9ZKA48sqXHZkrOlalPiagbZZCBEljY1VqxFuyOzhpXRp8Wcw==
+X-Received: by 2002:a17:902:da82:b0:242:b138:8119 with SMTP id d9443c01a7336-2445988787emr180301885ad.26.1755423512654;
+        Sun, 17 Aug 2025 02:38:32 -0700 (PDT)
+Received: from [192.168.0.218] ([116.206.223.216])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446ca9d02csm51916845ad.7.2025.08.17.02.38.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 17 Aug 2025 02:38:32 -0700 (PDT)
+Message-ID: <db9749a0-9c6a-4781-b5fd-82eb129a9c36@gmail.com>
+Date: Sun, 17 Aug 2025 15:08:27 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -41,258 +82,59 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] RISC-V: Add common csr_read_num() and csr_write_num()
- functions
-To: Anup Patel <apatel@ventanamicro.com>
-Cc: Sunil V L <sunilvl@ventanamicro.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>, Palmer Dabbelt
- <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Alexandre Ghiti <alex@ghiti.fr>, Len Brown <lenb@kernel.org>,
- Atish Patra <atish.patra@linux.dev>, Andrew Jones <ajones@ventanamicro.com>,
- Anup Patel <anup@brainfault.org>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, linux-acpi@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20250815161406.76370-1-apatel@ventanamicro.com>
- <20250815161406.76370-3-apatel@ventanamicro.com>
- <89865f17-f405-445a-874d-9361fe247bfe@iscas.ac.cn>
- <CAK9=C2VWSpREd0Hqg3TuLcVxG1=Ddfqn9ouNcowxHdCfJWgmJg@mail.gmail.com>
+Subject: [PATCH TEST] ath10k: Testing Mani's ASPM patch (QCA9377, v6.16-rc1)
+From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+ Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
+ linux-acpi@vger.kernel.org, ath10k@lists.infradead.org,
+ linux-wireless@vger.kernel.org, stable@vger.kernel.org
+References: <FB546B0D-2209-4FA0-9DC9-A75C0BC9FA4F@gmail.com>
+ <20250711163645.GA2294895@bhelgaas>
+ <CAEmM+QiSZBoJV2n6944tYU7fcrzKRTUgsKRdqwDEkKkZiPVCMw@mail.gmail.com>
+ <04489490-aca2-4e67-8eb2-e95f223ead3c@gmail.com>
 Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <CAK9=C2VWSpREd0Hqg3TuLcVxG1=Ddfqn9ouNcowxHdCfJWgmJg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <04489490-aca2-4e67-8eb2-e95f223ead3c@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACXLV7eaqBo6I9YDA--.55398S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxtr1xAr15Kry8tFW8Xw4Utwb_yoW3GrWfpr
-	Wqkayqkr1UAr4Ig34a9Fn8JryrX3ZYgFW7G340q347Zr4Dtry3Gry0g34YkryqgFZ7J34D
-	uF1q9w1fC3sxtrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvqb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4
-	A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
-	w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMc
-	vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY
-	1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
-	C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
-	wI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
-	v20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
-	jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0x
-	ZFpf9x07betCcUUUUU=
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+
+Hello everyone,
+
+I was actually trying to build a kernel for someone else using build 
+automation scripts. They still didn't compile. (Here's the relevant 
+thread I'm referring to: 
+https://lore.kernel.org/ath10k/176B76BC-6801-4C3F-A774-9611B43ED4AF@gmail.com/T/#t) 
+
+Regardless, I tested the patches by Mani 
+(https://lore.kernel.org/r/20250716-ath-aspm-fix-v1-0-dd3e62c1b692@oss.qualcomm.com).
+
+Here are the logs:
+
+Without pcie_aspm=off (did not work): 
+https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/84edf89740919e3cba2ac33e567110b14e2d3627/patch-dmesg
+
+With pcie_aspm=off (worked, no issues observed): 
+https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/84edf89740919e3cba2ac33e567110b14e2d3627/patch-dmesg-pcie_aspm_off
+
+I'm not fully sure what the logs imply, but thanks, it did work even 
+after playing YouTube videos for two hours (might not even work in the 
+future, cannot be certain). Earlier, my laptop had its Wi-Fi turning off 
+within minutes because of IRQ #16 being flooded, in every kernel I 
+tested so far. Now, it does work.
+
+There can be seen certain stuff in the second log, where it took some 
+time to connect to Wi-Fi, but I think it is mostly fine.
+
+Thanks to those who have prepared the patches and those who did bear 
+with me, but there's one request I still need to make.
+
+For anyone who has built patched kernels for Ubuntu and exported in DEB 
+files, I would appreciate any guidance or pointers on how to do the 
+same, as my efforts to use "make deb-pkg" have been futile: 
+https://github.com/BandhanPramanik/ath10k-patched-kernel-ppa/actions/runs/16975573959/job/48123563881
 
 
-On 8/16/25 16:42, Anup Patel wrote:
-> On Sat, Aug 16, 2025 at 9:54 AM Vivian Wang <wangruikang@iscas.ac.cn> wrote:
->>
->> On 8/16/25 00:14, Anup Patel wrote:
->>> In RISC-V, there is no CSR read/write instruction which takes CSR
->>> number via register so add common csr_read_num() and csr_write_num()
->>> functions which allow accessing certain CSRs by passing CSR number
->>> as parameter. These common functions will be first used by the
->>> ACPI CPPC driver and RISC-V PMU driver.
->>>
->>> Signed-off-by: Anup Patel <apatel@ventanamicro.com>
->>> ---
->>>  arch/riscv/include/asm/csr.h |   3 +
->>>  arch/riscv/kernel/Makefile   |   1 +
->>>  arch/riscv/kernel/csr.c      | 177 +++++++++++++++++++++++++++++++++++
->>>  drivers/acpi/riscv/cppc.c    |  17 ++--
->>>  drivers/perf/riscv_pmu.c     |  43 +--------
->>>  5 files changed, 189 insertions(+), 52 deletions(-)
->>>  create mode 100644 arch/riscv/kernel/csr.c
->>>
->>> diff --git a/arch/riscv/include/asm/csr.h b/arch/riscv/include/asm/csr.h
->>> index 6fed42e37705..1540626b3540 100644
->>> --- a/arch/riscv/include/asm/csr.h
->>> +++ b/arch/riscv/include/asm/csr.h
->>> @@ -575,6 +575,9 @@
->>>                             : "memory");                      \
->>>  })
->>>
->>> +extern unsigned long csr_read_num(unsigned long csr_num, int *out_err);
->>> +extern void csr_write_num(unsigned long csr_num, unsigned long val, int *out_err);
->>> +
->>>  #endif /* __ASSEMBLY__ */
->>>
->>>  #endif /* _ASM_RISCV_CSR_H */
->>> diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
->>> index c7b542573407..0a75e20bde18 100644
->>> --- a/arch/riscv/kernel/Makefile
->>> +++ b/arch/riscv/kernel/Makefile
->>> @@ -50,6 +50,7 @@ obj-y       += soc.o
->>>  obj-$(CONFIG_RISCV_ALTERNATIVE) += alternative.o
->>>  obj-y        += cpu.o
->>>  obj-y        += cpufeature.o
->>> +obj-y        += csr.o
->>>  obj-y        += entry.o
->>>  obj-y        += irq.o
->>>  obj-y        += process.o
->>> diff --git a/arch/riscv/kernel/csr.c b/arch/riscv/kernel/csr.c
->>> new file mode 100644
->>> index 000000000000..f7de45bb597c
->>> --- /dev/null
->>> +++ b/arch/riscv/kernel/csr.c
->>> @@ -0,0 +1,177 @@
->>> +// SPDX-License-Identifier: GPL-2.0
->>> +/*
->>> + * Copyright (c) 2025 Ventana Micro Systems Inc.
->>> + */
->>> +
->>> +#define pr_fmt(fmt) "riscv: " fmt
->>> +#include <linux/err.h>
->>> +#include <linux/export.h>
->>> +#include <linux/printk.h>
->>> +#include <linux/types.h>
->>> +#include <asm/csr.h>
->>> +
->>> +#define CSR_CUSTOM0_U_RW_BASE                0x800
->>> +#define CSR_CUSTOM0_U_RW_COUNT               0x100
->>> +
->>> +#define CSR_CUSTOM1_U_RO_BASE                0xCC0
->>> +#define CSR_CUSTOM1_U_RO_COUNT               0x040
->>> +
->>> +#define CSR_CUSTOM2_S_RW_BASE                0x5C0
->>> +#define CSR_CUSTOM2_S_RW_COUNT               0x040
->>> +
->>> +#define CSR_CUSTOM3_S_RW_BASE                0x9C0
->>> +#define CSR_CUSTOM3_S_RW_COUNT               0x040
->>> +
->>> +#define CSR_CUSTOM4_S_RO_BASE                0xDC0
->>> +#define CSR_CUSTOM4_S_RO_COUNT               0x040
->>> +
->>> +#define CSR_CUSTOM5_HS_RW_BASE               0x6C0
->>> +#define CSR_CUSTOM5_HS_RW_COUNT              0x040
->>> +
->>> +#define CSR_CUSTOM6_HS_RW_BASE               0xAC0
->>> +#define CSR_CUSTOM6_HS_RW_COUNT              0x040
->>> +
->>> +#define CSR_CUSTOM7_HS_RO_BASE               0xEC0
->>> +#define CSR_CUSTOM7_HS_RO_COUNT              0x040
->>> +
->>> +#define CSR_CUSTOM8_M_RW_BASE                0x7C0
->>> +#define CSR_CUSTOM8_M_RW_COUNT               0x040
->>> +
->>> +#define CSR_CUSTOM9_M_RW_BASE                0xBC0
->>> +#define CSR_CUSTOM9_M_RW_COUNT               0x040
->>> +
->>> +#define CSR_CUSTOM10_M_RO_BASE               0xFC0
->>> +#define CSR_CUSTOM10_M_RO_COUNT              0x040
->>> +
->>> +unsigned long csr_read_num(unsigned long csr_num, int *out_err)
->>> +{
->>> +#define switchcase_csr_read(__csr_num)                               \
->>> +     case (__csr_num):                                       \
->>> +             return csr_read(__csr_num)
->>> +#define switchcase_csr_read_2(__csr_num)                     \
->>> +     switchcase_csr_read(__csr_num + 0);                     \
->>> +     switchcase_csr_read(__csr_num + 1)
->>> +#define switchcase_csr_read_4(__csr_num)                     \
->>> +     switchcase_csr_read_2(__csr_num + 0);                   \
->>> +     switchcase_csr_read_2(__csr_num + 2)
->>> +#define switchcase_csr_read_8(__csr_num)                     \
->>> +     switchcase_csr_read_4(__csr_num + 0);                   \
->>> +     switchcase_csr_read_4(__csr_num + 4)
->>> +#define switchcase_csr_read_16(__csr_num)                    \
->>> +     switchcase_csr_read_8(__csr_num + 0);                   \
->>> +     switchcase_csr_read_8(__csr_num + 8)
->>> +#define switchcase_csr_read_32(__csr_num)                    \
->>> +     switchcase_csr_read_16(__csr_num + 0);                  \
->>> +     switchcase_csr_read_16(__csr_num + 16)
->>> +#define switchcase_csr_read_64(__csr_num)                    \
->>> +     switchcase_csr_read_32(__csr_num + 0);                  \
->>> +     switchcase_csr_read_32(__csr_num + 32)
->>> +#define switchcase_csr_read_128(__csr_num)                   \
->>> +     switchcase_csr_read_64(__csr_num + 0);                  \
->>> +     switchcase_csr_read_64(__csr_num + 64)
->>> +#define switchcase_csr_read_256(__csr_num)                   \
->>> +     switchcase_csr_read_128(__csr_num + 0);                 \
->>> +     switchcase_csr_read_128(__csr_num + 128)
->>> +
->> That's... a bit horrendous.
->>
->> Since we know that each inner case is quite simple, can we just do our
->> own jump table for that? Each case can be one csrr/csrw and one jal
->> (possibly pad to 8 bytes), and we can just jump to
->> label + (csr_num - range_start) * 8. See bottom of this message for an
->> untested prototype.
->>
->> Vivian "dramforever" Wang
->>
->> UNTESTED prototype:
->>
->> #define CSR_CYCLE 0xc00
->> #define CSR_CYCLEH 0xc80
->>
->> /* Force expand argument if macro */
->> #define str(_x) #_x
->>
->> unsigned long csr_read_num(long csr_num)
->> {
->>         unsigned long res, tmp;
->>
->>         /*
->>          * Generate a jump table for each range. Each (inner) case is 8 bytes of
->>          * code, a csrr instruction and a jump, possibly padded, so we just jump
->>          * to label_1f + (csr_num - _start) * 8
->>          */
->> #define csr_read_case_range(_start, _size)                                      \
->>         case (_start) ... ((_start) + (_size) - 1):                             \
->>                 asm volatile (                                                  \
->>                                 "       lla %[tmp], 1f\n"                       \
->>                                 "       add %[tmp], %[tmp], %[offset]\n"        \
->>                                 "       jr %[tmp]\n"                            \
->>                                 "1:\n"                                          \
->>                                 "       .rept (" str(_size) ")\n"               \
->>                                 "       csrr %[res], (" str(_start) " + \\+)\n" \
->>                                 "       j 2f\n"                                 \
->>                                 "       .balign 4\n"                            \
->>                                 "       .endr\n"                                \
->>                                 "2:\n"                                          \
->>                                 : [tmp] "=&r"(tmp), [res] "=r"(res)             \
->>                                 : [offset] "r"((csr_num - _start) * 8)          \
->>                                 : );                                            \
->>                 break;                                                          \
->>
->>
->>         switch (csr_num) {
->>         csr_read_case_range(CSR_CYCLE, 4)
->>         csr_read_case_range(CSR_CYCLEH, 4)
->>
->>         /* ... other cases */
->>
->>         default:
->>                 /* Error handling */
->>         }
->>
->> #undef csr_read_case_range
->>
->>         return res;
->> }
-> Clearly you have trust issues with compiler switch-case optimizations
-> and your proposed solution looks horrendous to me.
-
-What I am concerned about is less whether the compiler generates better
-code, but more that you would need to build out these macros to write
-out the cases. I was trying to make it so that you can just have one
-macro that would work for any (constant) range.
-
-> Your proposed solution is effectively a nested switch case where
-> there is a higher-level jump-table generated by the compiler which
-> selects a range case and within each range case you have a hand
-> assembled jump table. If you analyse the effective number of
-> instructions involved in accessing an CSR then it will be much
-> more than the current approach.
-
-If you think it is more important that this is all handled within one
-jump table for the fastest generated code possible, no problem.
-
-Vivian "dramforever" Wang
-
-> The current approach relies on a compiler optimized jump table
-> where each switch-case is just two instructions (12 bytes) for
-> both csr_read_num() and csr_write_num().
->
-> Regards,
-> Anup
+Bandhan Pramanik
+বন্ধন প্রামাণিক
 
 
