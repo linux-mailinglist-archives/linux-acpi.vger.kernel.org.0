@@ -1,112 +1,138 @@
-Return-Path: <linux-acpi+bounces-15756-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15757-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61365B29660
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 03:52:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E4DDB297A8
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 06:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F332171418
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 01:52:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3D99196154F
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 04:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB6822F76B;
-	Mon, 18 Aug 2025 01:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834B92459DC;
+	Mon, 18 Aug 2025 04:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IXdC9qmk"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="bD/89RYa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4024722A817;
-	Mon, 18 Aug 2025 01:52:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14659214228
+	for <linux-acpi@vger.kernel.org>; Mon, 18 Aug 2025 04:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755481944; cv=none; b=UO4f4AEuRIrgh6hMGHnEdQr3ZrFLMfYwUlkTWEYNXIqrcYAl6Z6wAD6HQ1xJkb5j8BGOtM4J+niMCZmzU0jmUcJww1G3jGFL2H6N/u5m6ikchom1IcNxLs+ZDEkUW7y68QwDfxIUXcgWaFih1Ta9r/skFm/jJnopxgWzNP01d/k=
+	t=1755490089; cv=none; b=cac5gsT0ViL5HjW/Eo2Al+LxWwSvAP+ngw3HOr8ymsmFcmsRWGd40ocOa33ObOCXtkqtnvH0yFBPfalmDFz0VzqWJJyVPOeSfEezS27F1aB8kojlvIJpIKkv47JuJDlvokWZilMhaQohxwd8IvYeaK+j/FiTc2xWo5DS/wJdnY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755481944; c=relaxed/simple;
-	bh=eXQkZ2Lv1D+oMa+sk/PjVmJUjE55kmzBr6nmJ2/KlhY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AxBEtmoatGPdOWiAwUya6Ry1c3515M+qTLJ8e5E9req0bQr2ZwU0w5qF/ytriCqaQTgDHWqsQxl3mukSfa7J+LDrJfyELdvzU16Dteyq0KeAvU/gebmdJBI26iFtTJe58ZZ5HrdDFjyY3JjSj3XGXJTL9HzqR24of8Q64OegIG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXdC9qmk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07666C4CEEB;
-	Mon, 18 Aug 2025 01:52:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755481943;
-	bh=eXQkZ2Lv1D+oMa+sk/PjVmJUjE55kmzBr6nmJ2/KlhY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=IXdC9qmkO0KOQTAs+cU/bW60Vm9oPA4TLDOdMprJS5QlAc/04Wom4Dgoe66T8AuPe
-	 iTQ0nAZW2KvVU9e8atwDV/cukoIIRl4T+/igXoQy3lhmWq95JRsOezL9gCs5jOeA3l
-	 N4WjoWhEVL41/mp1ouG9z7Onoy/LnsufpRILklQloMRvgHWtuAiKzAC2/R7Vdtl8e2
-	 /E6yUMFBy1mGPDavyNhU9jfZlNRkq7kl6z9rUDuR7R0yqTQb6W4jhoK+qSJq/vYLI9
-	 nHldzfHUzta/iNCuwuZhzVYH0UG6ZMXfZIQSF4SzV4wmY0cYwmP37eL+szS05SluAj
-	 0n8zTX7DJg81Q==
-From: "Mario Limonciello (AMD)" <superm1@kernel.org>
-To: mario.limonciello@amd.com,
-	westeri@kernel.org,
-	andriy.shevchenko@linux.intel.com,
-	linus.walleij@linaro.org,
-	brgl@bgdev.pl
-Cc: "Mario Limonciello (AMD)" <superm1@kernel.org>,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH] gpiolib: acpi: Program debounce when finding GPIO
-Date: Sun, 17 Aug 2025 20:52:07 -0500
-Message-ID: <20250818015219.3604648-1-superm1@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1755490089; c=relaxed/simple;
+	bh=8O7GqK435KZtTl8W855dePMkFjN3aUWnLH8hHcxBbKk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iPkgkxSQzmgDb9Jg6ZKfFW0myAtdIE/fgWIWByhTtN69mdZbvcxR70XfOZOD+5YP7MjClQ4AJYGZM5IU597ZbuvC+CTW4WXfVwIxf5zrgpY2n+e5GKKBF2UCcXZqSg90GEC3RB+jwpwo3O0TBWzXVxoqZDwm7PMk2o1YwCM+7VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=bD/89RYa; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2445826fd9dso40666615ad.3
+        for <linux-acpi@vger.kernel.org>; Sun, 17 Aug 2025 21:08:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1755490087; x=1756094887; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HqYW3/niXX/hrER2h0jNeJd0YnT4zpM9DFH12VPKBec=;
+        b=bD/89RYawBk7oQj6dpQxstQOi8RtNiDPYNQzBPVoh59XzqGBiZzahcV8bq2tj2HSfo
+         9na6li54L3WqvMrLX+w3HMVdNi3riz+BT64+Dyry6AKaJzMIMKqe7YWV+YkfyZNCfC+g
+         xbyAaec8z0XvXJ/udJhvKUMberg8aK3/NPmTvRkO69N1UaKz1VSzR3/hv0069IPJnWRN
+         f+SbgDvYz8msHC2RxWDbnDGJk6gzuz881+iaIWeoFv0FMAoWHG8axqf3DKlaKdB675lH
+         QDSFqV8iWQfTX/gud4AqZHFKqexJijoDN3O/+s2u5Gp+okObb6p9p5NME1VD+IDUMbqP
+         aiFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755490087; x=1756094887;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HqYW3/niXX/hrER2h0jNeJd0YnT4zpM9DFH12VPKBec=;
+        b=NoImzhljQ7DiCe/51tSZVATVytC41UYhdm0tiNhoWyzCHFH9i+luQLEzcpQry/Tsoj
+         2vziDbeLPVOI6BJaLmFyFf9d9BXv1mHS8n3riBARchoeaqN35dwh+HyzpWwznmQG/WO6
+         AdFAxJum/3eeos7L1OaHXgd2U450WiuNGk6cpIMIDhqQKwOv7nj40biZ5k7c+FYgSRYe
+         OJkEuZrtERn2qG5HfLXd5LtMwDgtRtfBG3mM+GF5NCymOr6QTJrrnLA/gr8tSpmu0yk6
+         ferS3aj/7TKqp/9/Ea0mJyDXq3BqnMNeT7XHsJALDN+HmJNuaqYUr9ysmEK91JmgpTlU
+         JBhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWChb2RO8izBFdkUyEcZ66IPmodqfSY8ZViP6H+A+4grnArylyXMTbmjeoiybVfwssRIZgqycLoVQdk@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXl7WDRHgIalItkHqPhpzl5aIdlcwK+unXwWsbqqQiJrdX0pwE
+	ScjYUYuCPG0I9E+rRyKAyRn/xFaXg8q04kbQ3U+4rkF9LkDTLn5dYxQkm4PjIzx/qTU=
+X-Gm-Gg: ASbGncse00KhduPv3o4tXTGYDDlQTrk8hItfaU08q0S0xfZC1/VdWSfAkRTTmWWkPW+
+	wUme4Sz64upu5gPzM+AjAkcdcF03PI7r9B1AGPssk1FoaxV9Z7TbOU5IMa98SBwpEVuJ5jO8+uR
+	33BikgLtg75B4gM1GGmT3QkNOp7teUrXGW/8V4tCXBsxQtK1sDyY1Yl4xyQMhue2EuDuEDFcpjW
+	4He4iwUxNIcJxJmLEzgBjlUMUBTqv0enwdOeDlJXPgM3U3NCBfbP+Ns/if/bc6RHfKRzDAxqxtp
+	N89/u0Bmh5GMpzzk3fTxZ4qCQSURSikzM0LbXN+KvRDFdhDaLNAuvVXNhYoqt8xSsZxs5ugMHTH
+	Rtt93FtE+ng2Jklh49r5si2sSgx4=
+X-Google-Smtp-Source: AGHT+IFtt6MKC6uRsTqYvk5xcpF9n7P7wcfIkwiveUPUOkCEFAvbc2mFtbWODk1+Ww5xxAQfbkJcXw==
+X-Received: by 2002:a17:903:2ac4:b0:23e:22dc:665c with SMTP id d9443c01a7336-2446d888ab1mr173360925ad.33.1755490087274;
+        Sun, 17 Aug 2025 21:08:07 -0700 (PDT)
+Received: from sunil-laptop ([106.51.199.3])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446cb065a6sm67472495ad.52.2025.08.17.21.08.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Aug 2025 21:08:06 -0700 (PDT)
+Date: Mon, 18 Aug 2025 09:37:58 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: Anup Patel <apatel@ventanamicro.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Alexandre Ghiti <alex@ghiti.fr>, Len Brown <lenb@kernel.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-acpi@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] ACPI: RISC-V: Fix FFH_CPPC_CSR error handling
+Message-ID: <aKKnHltuYeTTB_pA@sunil-laptop>
+References: <20250815161406.76370-1-apatel@ventanamicro.com>
+ <20250815161406.76370-2-apatel@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250815161406.76370-2-apatel@ventanamicro.com>
 
-When soc-button-array looks up the GPIO to use it calls acpi_find_gpio()
-which will parse _CRS.
-
-acpi_find_gpio.cold (drivers/gpio/gpiolib-acpi-core.c:953)
-gpiod_find_and_request (drivers/gpio/gpiolib.c:4598 drivers/gpio/gpiolib.c:4625)
-gpiod_get_index (drivers/gpio/gpiolib.c:4877)
-
-The GPIO is setup basically, but the debounce information is discarded.
-The platform will assert what debounce should be in _CRS, so program it
-at the time it's available.
-
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
----
-v4:
- * Just add a direct call instead
- * drop tag
- * update commit message
----
- drivers/gpio/gpiolib-acpi-core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
-index 12b24a717e43f..6388e8e363dee 100644
---- a/drivers/gpio/gpiolib-acpi-core.c
-+++ b/drivers/gpio/gpiolib-acpi-core.c
-@@ -944,6 +944,7 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
- 	bool can_fallback = acpi_can_fallback_to_crs(adev, con_id);
- 	struct acpi_gpio_info info;
- 	struct gpio_desc *desc;
-+	int ret;
- 
- 	desc = __acpi_find_gpio(fwnode, con_id, idx, can_fallback, &info);
- 	if (IS_ERR(desc))
-@@ -957,6 +958,11 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
- 
- 	acpi_gpio_update_gpiod_flags(dflags, &info);
- 	acpi_gpio_update_gpiod_lookup_flags(lookupflags, &info);
-+	/* ACPI uses hundredths of milliseconds units */
-+	ret = gpio_set_debounce_timeout(desc, info.debounce * 10);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
- 	return desc;
- }
- 
--- 
-2.43.0
-
+On Fri, Aug 15, 2025 at 09:44:05PM +0530, Anup Patel wrote:
+> The cppc_ffh_csr_read() and cppc_ffh_csr_write() returns Linux error
+> code in "data->ret.error" so cpc_read_ffh() and cpc_write_ffh() must
+> not use sbi_err_map_linux_errno() for FFH_CPPC_CSR.
+> 
+> Fixes: 30f3ffbee86b ("ACPI: RISC-V: Add CPPC driver")
+> Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+> ---
+>  drivers/acpi/riscv/cppc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/acpi/riscv/cppc.c b/drivers/acpi/riscv/cppc.c
+> index 440cf9fb91aa..42c1a9052470 100644
+> --- a/drivers/acpi/riscv/cppc.c
+> +++ b/drivers/acpi/riscv/cppc.c
+> @@ -119,7 +119,7 @@ int cpc_read_ffh(int cpu, struct cpc_reg *reg, u64 *val)
+>  
+>  		*val = data.ret.value;
+>  
+> -		return (data.ret.error) ? sbi_err_map_linux_errno(data.ret.error) : 0;
+> +		return data.ret.error;
+>  	}
+>  
+>  	return -EINVAL;
+> @@ -148,7 +148,7 @@ int cpc_write_ffh(int cpu, struct cpc_reg *reg, u64 val)
+>  
+>  		smp_call_function_single(cpu, cppc_ffh_csr_write, &data, 1);
+>  
+> -		return (data.ret.error) ? sbi_err_map_linux_errno(data.ret.error) : 0;
+> +		return data.ret.error;
+>  	}
+>  
+>  	return -EINVAL;
+> -- 
+> 2.43.0
+> 
+Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
 
