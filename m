@@ -1,216 +1,466 @@
-Return-Path: <linux-acpi+bounces-15788-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15789-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B494AB298B9
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 07:00:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F888B299F1
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 08:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F15A2189F892
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 05:00:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68FFA17C8C8
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 06:42:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FCBC26B777;
-	Mon, 18 Aug 2025 04:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2ACC26E711;
+	Mon, 18 Aug 2025 06:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="Ju2/2KRS"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="S1ofeuAZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F55F27057C
-	for <linux-acpi@vger.kernel.org>; Mon, 18 Aug 2025 04:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3233275B18
+	for <linux-acpi@vger.kernel.org>; Mon, 18 Aug 2025 06:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755493112; cv=none; b=qb3/rvDEJT18jqJAn2mYeI2WRTL3dE5cmMh9NLxXaf7m84zqr8zwWt/LoMDhFZUSOWERLTDmt7iC7cwBYFhiQnvapIkMfCXFOqeWW2J8+Pzt/8mcaVF6ZP+Keuk1QJVK6PtbJ48w4+EVDl6zaWFx6GEPfS207xZACEuWtOLRN9k=
+	t=1755499314; cv=none; b=itoCOZydmUaetbG7sQUcb/THVrI8sd/OGIFtRzHNr14Li8DjJa4Wo+BxAHL2P71eNIF4i+tePD8zEZ7Iv7OYotnGj28orP8tfcwDhVU2uVg5/GJP4kzdrmZ/qLkr21i7iSdk4U6/01NQNr+sKTztwHBjwyFGBJrmeCCFKptTcEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755493112; c=relaxed/simple;
-	bh=wOw6JV14X14ffQE6SMj0By+YxAglNmvsry080ZEuXl4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zljhn91+UtnIBuIuJPIxs9YaDIvkaScrdn07/xnmrdC/7nwqA56e1H7seYPtsUKuiWIrdpt4R9r16AonhOv9/i1+SjngnaC9b5Z8uBP/qFCElIfa8jrcOcjJKTtNnM5uCflWTR9h/aYsgJuMfzqx6FZ+OvBx1rtFPFLq8kThlMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=Ju2/2KRS; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-76e563b25c4so653359b3a.0
-        for <linux-acpi@vger.kernel.org>; Sun, 17 Aug 2025 21:58:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1755493110; x=1756097910; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NTa6xqW99KKtlVHpIkJtLfUt2l8dIJi8RFcjVe+ZZ0s=;
-        b=Ju2/2KRSAnlsMQsTEpOG97jDqzQc6JWLd1kPDt14HHF+hoT/d8tkfqD7dl2p4wYus5
-         ObmgXq6ZImKnHvrl4ou9DWqQjb9s5tgeQ9aJZRfPEbMJ26HLMJmcTXbmpq78xnheHhAH
-         wAVXcmXAW+6pLjDmsfmsQZqWAl/S9zSrtfKI146LVJt9S5zkb/ZU2zrd3kOXhDCW1y0Z
-         pce/oeE24sV64ehI8zmDP2q/K6kgI1SYCirXlFBVn8fmxPyaK7gYd1gexocT43F9PZbc
-         LYMLsvLC38rqBFal9+DPOhA68U98iNtGRIXb8RnfOS/tyrlRs9NfU7JQFtpJbMQIRVDE
-         CxNQ==
+	s=arc-20240116; t=1755499314; c=relaxed/simple;
+	bh=4EBVhoBFeF7pNGClKVleaoGFSm/cPIuw0WEv7H0jc9Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=C0ML5GgggyiONE8BWj/WGGfgQrQ2ljtl0mZf5jt13CzcjrF9bp8d5NWsthjPsvThdqIiBu2NWHNNk4mw8ZDVYNfXb6NP67ml1Sx2UCMyCTxuG1lma3CYrkospsANqFiw7n5/dhQkEaYuKZ0VrcMacKytcjj+ypAw+Rwuo28IGUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=S1ofeuAZ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57HLTSJA023991
+	for <linux-acpi@vger.kernel.org>; Mon, 18 Aug 2025 06:41:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=l8N9ttvKyCBAcyEDvuaLoM
+	1BSXehm0oCXcCPSraNLCM=; b=S1ofeuAZEvausPNcfPdvnKZWbPTOWDSn/I7BEC
+	fEzcKChFEREcdnUgDUZ0liwYbWKPM8rZPt1QO6jTgcF7psCTS7i5PGkOE6QI5JZ+
+	KHyXq3fCcqVTX2TNJW8aE6hSDVQ07wo13XXPL6m308u3dn1gS4TZLJGYH+UVZxaP
+	N5c049QcgEAx92YW7CGLG4srnZufUn6OZjs+cmknhQDuglZbtyx7y+zif+BWwBD5
+	rLKoMV37K5sMLFRlSxJZfA3l9dBzOODYODOqjuY6k3pCnQT61mXkUULbWa5h5/21
+	Fb+5mmW8neh+DKoOx0rQ8WtgQ3aJv0kjv4N5E7mgkhK3nJmQ==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48jhjybjru-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-acpi@vger.kernel.org>; Mon, 18 Aug 2025 06:41:51 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-24458264c5aso37840375ad.3
+        for <linux-acpi@vger.kernel.org>; Sun, 17 Aug 2025 23:41:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755493110; x=1756097910;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NTa6xqW99KKtlVHpIkJtLfUt2l8dIJi8RFcjVe+ZZ0s=;
-        b=WCMSCwTRXEcOUlI6ERYWCYVFyYlf4kUkRUro3sxwH8KVCchkbW5PvTMC6iVizFjwp6
-         KAxN9NVgw04sYD5U84mytZxQiJ99+RSeraJ8zRO8aVZi4m82TqrNvLVSdN9isrUAbO4Y
-         Ju3V+q0HBAynRFoblwO7vV2RDGrbjapqUnJWmz5ztTSp4hNVk50o3ufaDNH6P8ZDuNEc
-         WU2/HfRltXIRTfDwCW/tCKo4ijFMo++c0Drh3FEt/V2as3kxC3foz+3llC67dJzC0uTE
-         UsEruEb2e9XRDS7Jv+jeB0NpMwyN//I1r6t1euvtk9REyNswGL5OwK6TT9UqR5ZwrVFJ
-         vO/w==
-X-Forwarded-Encrypted: i=1; AJvYcCWqig7oC+OlVAVM+Em7eWDKWhejy9/eULvWMBYZ/+RvNmnpB99nfHd/c6nTpJJbWZHglDFzz4A19x2t@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9M1SuNv4d8Ef/1Kv33hCvDPyUHhCtSrrJO3cOwA0zIT6Vraj8
-	80Hehifg99SRY8sVaZ8NQNt76ambOCrmpKUWWMZGLduj/FpLYR+7x2iRX9I8iP6kdUM=
-X-Gm-Gg: ASbGncs9AxFdGvwsOrar6MwzotJqCOfYMxhjRAFRtRqoVFJLmW5qosh2H8Ow7GHMt5e
-	cMtxABHj0zouA3txsqPNTP/bqPj1Oxle7RHqJh6DK6jmnWsRsQOig9F+lMXez+T5cmQ5kSXtCL7
-	lKGPbuKO7Amtmk+s+6Bn8A42w01MPNnIBiCNmUbVkxd6QPqb5Tfc2xTzRTRq51w9FvtvCepu2pT
-	Zy0siY7n/ikVCaduxMxsv8zVgEVjQBbwmByymRncAWNmui5azb7r4Z/kxczRfqFGtvSe32MZwkD
-	cikZMkFx7OQBDpnmtmftJ+QQQ7ilwaKiEFtg/G7DfxxdPKxMYtF6WfuXZHFPKTSOfz8CaYDNl5A
-	LzkoipgGhqmeREZD8heeQRk7wM9Bjsens1YxfCAay
-X-Google-Smtp-Source: AGHT+IGBQAQ9QouKj4M7l+2CqoGFg6HgZE82/OKBnQvuZfjFIYQJQta7bAXmxzrYRho/3qFml+C5sQ==
-X-Received: by 2002:a05:6a20:3ca1:b0:240:265f:4eb0 with SMTP id adf61e73a8af0-240d300688bmr17338262637.4.1755493109991;
-        Sun, 17 Aug 2025 21:58:29 -0700 (PDT)
-Received: from sunil-pc.Dlink ([106.51.199.3])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e4528c264sm6124047b3a.43.2025.08.17.21.58.25
+        d=1e100.net; s=20230601; t=1755499310; x=1756104110;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=l8N9ttvKyCBAcyEDvuaLoM1BSXehm0oCXcCPSraNLCM=;
+        b=Jr0l3EvAqta3ENxRn5J0OTpR25rbMwkVzWOyA7uLImZCJiQ2puYcUjbal9klvMLcfT
+         L00ERhZl6IQimv6dcby4UV/Vj08w14zyqR6UXTX5fD3o2AqM8+fKdijGxDEU7SSqPvY9
+         ZZcJE4Dp7JmGeuEEQTiZcKk+JMbcICecHUx1RjvrE98kwdc4AEwgy0TxUqhSQvRiBfae
+         Ehn1Vv07F+3qbRyRcblML9ebCX0ohc8AwXSUjU+2p8mfIRLrIpI6RrJjpFxWshwA4GR7
+         Ud8I8CvGSk+Kas8hSMVe8tKmIwSOFiqYSSAmgq4KfGxVNifNFGfPAbKg7gRbn/cfb1RE
+         qn+g==
+X-Forwarded-Encrypted: i=1; AJvYcCXelF3IM/v4UG1d6o0TeX0i9XCRvup9QMLxrEoiz2xfgTBDIV5Susncj5ouZIYEwluqYs4W6Q1xnfmz@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywnjz472ZvaLt6eEHI2tzJK7VcszgwWD1VN18hM7NuWRM4d9ybT
+	aHEMoQJsEBoEoV4cQI7/rtplf/tHq4SMO5iGr0nxZQQaejSpt3S556p7uYhknbytVhNbGIZABVi
+	n50idvDJPh31QBIPm11/FBR5lcYAW6Amm7KMgkWjouRfQDaFwU3wKX+SYFAw8fmKd
+X-Gm-Gg: ASbGncvfUDKLUzkybL5e+0r9/XEkyYhzr1VET7utZAL4Frti7983uGaQt8IlkSQPp3n
+	+vQqJ2eNbwtuLUlwNw59hGyFyFelRoW8A2wI/RZzTHY01bkiv3TvV2uZxm/zCWdnhT9Fg0beYwP
+	VzASokm1PVMsfrIgzI29YmUw1uap9xcV+sIuMS7i7v0BYtb6hhzikvGLlD0PBwWeSQSI/CwSfsw
+	u1EgiZbxo4N+TO4/7s3xTu5nPYu0crws0+9kqJD4dkNvnUoIQW6DCw2mcd2iKx9ZPpCjqUCSCFH
+	3r35TIVENc4lxDZ480xniUfTa5+7ywydJnLf3/RdAGE=
+X-Received: by 2002:a17:902:c951:b0:240:22af:91c7 with SMTP id d9443c01a7336-2446d71db3fmr134372705ad.14.1755499310162;
+        Sun, 17 Aug 2025 23:41:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGmF5KBA9eIDDl75sJwjMQCpOEjZ8TR6DA+JYR6yCjrU7iJmsnLTLQaYA9/NFl8UsVIfaN9mw==
+X-Received: by 2002:a17:902:c951:b0:240:22af:91c7 with SMTP id d9443c01a7336-2446d71db3fmr134372375ad.14.1755499309632;
+        Sun, 17 Aug 2025 23:41:49 -0700 (PDT)
+Received: from hu-pbrahma-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446d53bf5dsm70069295ad.114.2025.08.17.23.41.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Aug 2025 21:58:29 -0700 (PDT)
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-acpi@vger.kernel.org,
-	iommu@lists.linux.dev
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Tomasz Jeznach <tjeznach@rivosinc.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sunil V L <sunilvl@ventanamicro.com>,
-	Andrew Jones <ajones@ventanamicro.com>
-Subject: [PATCH v6 3/3] iommu/riscv: Add ACPI support
-Date: Mon, 18 Aug 2025 10:28:07 +0530
-Message-ID: <20250818045807.763922-4-sunilvl@ventanamicro.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250818045807.763922-1-sunilvl@ventanamicro.com>
-References: <20250818045807.763922-1-sunilvl@ventanamicro.com>
+        Sun, 17 Aug 2025 23:41:48 -0700 (PDT)
+From: pratyush.brahma@oss.qualcomm.com
+X-Google-Original-From: Pratyush
+Date: Mon, 18 Aug 2025 12:11:15 +0530
+Subject: [PATCH] mm/numa: Rename memory_add_physaddr_to_nid to
+ memory_get_phys_to_nid
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250818-numa_memblks-v1-1-9eb29ade560a@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAArLomgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDC0MT3bzS3MT43NTcpJzsYt0kU5NEC3MLCyODlFQloJaCotS0zAqwcdG
+ xQH5GZnFJflElyPTa2loAgXpdgW0AAAA=
+X-Change-ID: 20250814-numa_memblks-b54a878820de
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Danilo Krummrich <dakr@kernel.org>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Jonathan Cameron <jonathan.cameron@huawei.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+        Dexuan Cui <decui@microsoft.com>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mike Rapoport <rppt@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-acpi@vger.kernel.org,
+        nvdimm@lists.linux.dev, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+        xen-devel@lists.xenproject.org,
+        Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755499297; l=12122;
+ i=pratyush.brahma@oss.qualcomm.com; s=20250808; h=from:subject:message-id;
+ bh=//n/Cd8/21p2TwuLHbKJjrZr/VX2C3LDE0HHjeHcn3A=;
+ b=YhwC5Lk4afAnAuPN/u4jW8oYab0ctCO2cz+geSxr4bRuihGdwIV2yM1kuCXBVrnF+tdcuoDdH
+ v7S65fFa5CkAcFfEgaPVnJ6mv1qtlUNsSBr4p0Efj25v9textGh8WHy
+X-Developer-Key: i=pratyush.brahma@oss.qualcomm.com; a=ed25519;
+ pk=ZeXF1N8hxU6j3G/ajMI+du/TVXMZQaXDwnJyznB69ms=
+X-Proofpoint-ORIG-GUID: YNYP3BO7-KfcLPbMQsv94Z9-mJur6UJL
+X-Authority-Analysis: v=2.4 cv=ZJHXmW7b c=1 sm=1 tr=0 ts=68a2cb2f cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=qb4DzySmTAYQGscL8MYA:9
+ a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-GUID: YNYP3BO7-KfcLPbMQsv94Z9-mJur6UJL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE2MDAyOCBTYWx0ZWRfX/KaFt5LrKPr3
+ AZtuNEG/irRmkhMnpkaWqNSs3hJAMJzebquWPainyNV6CJQX3bK2Eqvx4kOBLpHDcsteOwW8k4C
+ NL7qGvXifuCo+7QuubdczsCxHpgEFGF+NsPEUC+AvDvx8joRnuqZAhQBVAwxVJyU0dp92V74N68
+ YK7mljz5WgJcfj76+6YasJ7HcJSJB4WjLGodbAUJ0yc9p54fN9jya758uo7rUDevRALaf6x179W
+ zINzKpiT1hEjHDlCjsiSCg8QPgUOu85VF7cH9IcshdsAo8aseYnR3+sJSCp3WyvD8VTIgoAylCo
+ ms1liNfKl0Tgzil5YrP0plrDI/xfoS5Q0/dSUmwycnRnYlFuTKpCLGflV8z6DrRvYkhqE0BPZYv
+ nWs4GRJ/
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-18_03,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 phishscore=0 suspectscore=0 clxscore=1011
+ bulkscore=0 spamscore=0 impostorscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508160028
 
-RISC-V IO Mapping Table (RIMT) provides the information about the IOMMU
-to the OS in ACPI. Add support for ACPI in RISC-V IOMMU drivers by using
-RIMT data.
+From: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
 
-The changes at high level are,
+The function `memory_add_physaddr_to_nid` seems a misnomer.
+It does not to "add" a physical address to a NID mapping,
+but rather it gets the NID associated with a given physical address.
 
-a) Register the IOMMU with RIMT data structures.
-b) Enable probing of platform IOMMU in ACPI way using the ACPIID defined
-   for the RISC-V IOMMU in the BRS spec [1]. Configure the MSI domain if
-   the platform IOMMU uses MSIs.
+Improve the semantic clarity of the API by renaming to a more
+descriptive name.
 
-[1] - https://github.com/riscv-non-isa/riscv-brs/blob/main/acpi-id.adoc
-
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Acked-by: Will Deacon <will@kernel.org>
+Signed-off-by: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
 ---
- drivers/iommu/riscv/iommu-platform.c | 17 ++++++++++++++++-
- drivers/iommu/riscv/iommu.c          | 10 ++++++++++
- 2 files changed, 26 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/sparsemem.h | 4 ++--
+ arch/powerpc/mm/mem.c                | 4 ++--
+ arch/s390/include/asm/sparsemem.h    | 4 ++--
+ drivers/acpi/acpi_memhotplug.c       | 2 +-
+ drivers/acpi/nfit/core.c             | 2 +-
+ drivers/base/memory.c                | 2 +-
+ drivers/cxl/pmem.c                   | 2 +-
+ drivers/dax/cxl.c                    | 2 +-
+ drivers/hv/hv_balloon.c              | 6 +++---
+ drivers/nvdimm/virtio_pmem.c         | 2 +-
+ drivers/virtio/virtio_mem.c          | 2 +-
+ drivers/xen/balloon.c                | 2 +-
+ include/linux/numa.h                 | 6 +++---
+ include/linux/numa_memblks.h         | 4 ++--
+ mm/numa.c                            | 6 +++---
+ mm/numa_memblks.c                    | 4 ++--
+ 16 files changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/iommu/riscv/iommu-platform.c b/drivers/iommu/riscv/iommu-platform.c
-index 725e919b97ef..83a28c83f991 100644
---- a/drivers/iommu/riscv/iommu-platform.c
-+++ b/drivers/iommu/riscv/iommu-platform.c
-@@ -10,6 +10,8 @@
-  *	Tomasz Jeznach <tjeznach@rivosinc.com>
-  */
+diff --git a/arch/powerpc/include/asm/sparsemem.h b/arch/powerpc/include/asm/sparsemem.h
+index d072866842e4229159fcb6635745fd19a2788413..cdb5594616c8e32ab8ae3d209d0b2df20f3564f6 100644
+--- a/arch/powerpc/include/asm/sparsemem.h
++++ b/arch/powerpc/include/asm/sparsemem.h
+@@ -14,8 +14,8 @@
  
-+#include <linux/acpi.h>
-+#include <linux/irqchip/riscv-imsic.h>
- #include <linux/kernel.h>
- #include <linux/msi.h>
- #include <linux/of_irq.h>
-@@ -46,6 +48,7 @@ static int riscv_iommu_platform_probe(struct platform_device *pdev)
- 	enum riscv_iommu_igs_settings igs;
- 	struct device *dev = &pdev->dev;
- 	struct riscv_iommu_device *iommu = NULL;
-+	struct irq_domain *msi_domain;
- 	struct resource *res = NULL;
- 	int vec, ret;
+ #ifdef CONFIG_MEMORY_HOTPLUG
+ extern int remove_section_mapping(unsigned long start, unsigned long end);
+-extern int memory_add_physaddr_to_nid(u64 start);
+-#define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
++extern int memory_get_phys_to_nid(u64 start);
++#define memory_get_phys_to_nid memory_get_phys_to_nid
  
-@@ -76,8 +79,13 @@ static int riscv_iommu_platform_probe(struct platform_device *pdev)
- 	switch (igs) {
- 	case RISCV_IOMMU_CAPABILITIES_IGS_BOTH:
- 	case RISCV_IOMMU_CAPABILITIES_IGS_MSI:
--		if (is_of_node(dev->fwnode))
-+		if (is_of_node(dev_fwnode(dev))) {
- 			of_msi_configure(dev, to_of_node(dev->fwnode));
-+		} else {
-+			msi_domain = irq_find_matching_fwnode(imsic_acpi_get_fwnode(dev),
-+							      DOMAIN_BUS_PLATFORM_MSI);
-+			dev_set_msi_domain(dev, msi_domain);
-+		}
+ #ifdef CONFIG_NUMA
+ extern int hot_add_scn_to_nid(unsigned long scn_addr);
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index 3ddbfdbfa9413a17d8321885724ce432d967005a..5665b2e2fc68df8634613c11706e1a9158a3a616 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -54,11 +54,11 @@ EXPORT_SYMBOL(__phys_mem_access_prot);
+ static DEFINE_MUTEX(linear_mapping_mutex);
  
- 		if (!dev_get_msi_domain(dev)) {
- 			dev_warn(dev, "failed to find an MSI domain\n");
-@@ -150,6 +158,12 @@ static const struct of_device_id riscv_iommu_of_match[] = {
- 	{},
- };
+ #ifdef CONFIG_NUMA
+-int memory_add_physaddr_to_nid(u64 start)
++int memory_get_phys_to_nid(u64 start)
+ {
+ 	return hot_add_scn_to_nid(start);
+ }
+-EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
++EXPORT_SYMBOL_GPL(memory_get_phys_to_nid);
+ #endif
  
-+static const struct acpi_device_id riscv_iommu_acpi_match[] = {
-+	{ "RSCV0004", 0 },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(acpi, riscv_iommu_acpi_match);
-+
- static struct platform_driver riscv_iommu_platform_driver = {
- 	.probe = riscv_iommu_platform_probe,
- 	.remove = riscv_iommu_platform_remove,
-@@ -158,6 +172,7 @@ static struct platform_driver riscv_iommu_platform_driver = {
- 		.name = "riscv,iommu",
- 		.of_match_table = riscv_iommu_of_match,
- 		.suppress_bind_attrs = true,
-+		.acpi_match_table = riscv_iommu_acpi_match,
- 	},
- };
+ int __weak create_section_mapping(unsigned long start, unsigned long end,
+diff --git a/arch/s390/include/asm/sparsemem.h b/arch/s390/include/asm/sparsemem.h
+index 668dfc5de538742269af1b25151372506105fd4d..744c67dce4c106d063cb5436b37412045da0fd2a 100644
+--- a/arch/s390/include/asm/sparsemem.h
++++ b/arch/s390/include/asm/sparsemem.h
+@@ -7,11 +7,11 @@
  
-diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
-index 2d0d31ba2886..7d9370aa58f0 100644
---- a/drivers/iommu/riscv/iommu.c
-+++ b/drivers/iommu/riscv/iommu.c
-@@ -12,6 +12,8 @@
+ #ifdef CONFIG_NUMA
  
- #define pr_fmt(fmt) "riscv-iommu: " fmt
+-static inline int memory_add_physaddr_to_nid(u64 addr)
++static inline int memory_get_phys_to_nid(u64 addr)
+ {
+ 	return 0;
+ }
+-#define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
++#define memory_get_phys_to_nid memory_get_phys_to_nid
  
-+#include <linux/acpi.h>
-+#include <linux/acpi_rimt.h>
- #include <linux/compiler.h>
- #include <linux/crash_dump.h>
- #include <linux/init.h>
-@@ -1650,6 +1652,14 @@ int riscv_iommu_init(struct riscv_iommu_device *iommu)
- 		goto err_iodir_off;
+ static inline int phys_to_target_node(u64 start)
+ {
+diff --git a/drivers/acpi/acpi_memhotplug.c b/drivers/acpi/acpi_memhotplug.c
+index d0c1a71007d0a3054608bec8fddc8e86bdffb78b..6f968243ffc3cc5864e73b914d1bf67748e30e66 100644
+--- a/drivers/acpi/acpi_memhotplug.c
++++ b/drivers/acpi/acpi_memhotplug.c
+@@ -183,7 +183,7 @@ static int acpi_memory_enable_device(struct acpi_memory_device *mem_device)
+ 			continue;
+ 		/* We want a single node for the whole memory group */
+ 		if (node < 0)
+-			node = memory_add_physaddr_to_nid(info->start_addr);
++			node = memory_get_phys_to_nid(info->start_addr);
+ 		total_length += info->length;
  	}
  
-+	if (!acpi_disabled) {
-+		rc = rimt_iommu_register(iommu->dev);
-+		if (rc) {
-+			dev_err_probe(iommu->dev, rc, "cannot register iommu with RIMT\n");
-+			goto err_remove_sysfs;
-+		}
-+	}
-+
- 	rc = iommu_device_register(&iommu->iommu, &riscv_iommu_ops, iommu->dev);
- 	if (rc) {
- 		dev_err_probe(iommu->dev, rc, "cannot register iommu interface\n");
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index ae035b93da087812dee6ec47d9ef4aa97dc8e7bc..04c3ab311e4d5923aef50252efabd193c5fb7850 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -2630,7 +2630,7 @@ static int acpi_nfit_register_region(struct acpi_nfit_desc *acpi_desc,
+ 
+ 	/* Fallback to address based numa information if node lookup failed */
+ 	if (ndr_desc->numa_node == NUMA_NO_NODE) {
+-		ndr_desc->numa_node = memory_add_physaddr_to_nid(spa->address);
++		ndr_desc->numa_node = memory_get_phys_to_nid(spa->address);
+ 		dev_info(acpi_desc->dev, "changing numa node from %d to %d for nfit region [%pa-%pa]",
+ 			NUMA_NO_NODE, ndr_desc->numa_node, &res.start, &res.end);
+ 	}
+diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+index 5c6c1d6bb59f1241a5f42a3396be1a8e2058c965..f657520855408804761afec379e3c0b2a238b239 100644
+--- a/drivers/base/memory.c
++++ b/drivers/base/memory.c
+@@ -599,7 +599,7 @@ static ssize_t probe_store(struct device *dev, struct device_attribute *attr,
+ 	if (ret)
+ 		return ret;
+ 
+-	nid = memory_add_physaddr_to_nid(phys_addr);
++	nid = memory_get_phys_to_nid(phys_addr);
+ 	ret = __add_memory(nid, phys_addr,
+ 			   MIN_MEMORY_BLOCK_SIZE * sections_per_block,
+ 			   MHP_NONE);
+diff --git a/drivers/cxl/pmem.c b/drivers/cxl/pmem.c
+index e197883690efc11f60c31bd56aeb5695665d422b..471aed4e11241948e994d0b9d53600c147e38fb0 100644
+--- a/drivers/cxl/pmem.c
++++ b/drivers/cxl/pmem.c
+@@ -410,7 +410,7 @@ static int cxl_pmem_region_probe(struct device *dev)
+ 	ndr_desc.res = res;
+ 	ndr_desc.provider_data = cxlr_pmem;
+ 
+-	ndr_desc.numa_node = memory_add_physaddr_to_nid(res->start);
++	ndr_desc.numa_node = memory_get_phys_to_nid(res->start);
+ 	ndr_desc.target_node = phys_to_target_node(res->start);
+ 	if (ndr_desc.target_node == NUMA_NO_NODE) {
+ 		ndr_desc.target_node = ndr_desc.numa_node;
+diff --git a/drivers/dax/cxl.c b/drivers/dax/cxl.c
+index 13cd94d32ff7a1d70af7821c1aecd7490302149d..35843791872ba466f571c022e1484816368a1198 100644
+--- a/drivers/dax/cxl.c
++++ b/drivers/dax/cxl.c
+@@ -15,7 +15,7 @@ static int cxl_dax_region_probe(struct device *dev)
+ 	struct dev_dax_data data;
+ 
+ 	if (nid == NUMA_NO_NODE)
+-		nid = memory_add_physaddr_to_nid(cxlr_dax->hpa_range.start);
++		nid = memory_get_phys_to_nid(cxlr_dax->hpa_range.start);
+ 
+ 	dax_region = alloc_dax_region(dev, cxlr->id, &cxlr_dax->hpa_range, nid,
+ 				      PMD_SIZE, IORESOURCE_DAX_KMEM);
+diff --git a/drivers/hv/hv_balloon.c b/drivers/hv/hv_balloon.c
+index 2b4080e51f97c30e7adb06faa56b1403bc08b53c..8878aac6da9cd3bd6f499eae2588e989b7219af3 100644
+--- a/drivers/hv/hv_balloon.c
++++ b/drivers/hv/hv_balloon.c
+@@ -725,7 +725,7 @@ static void hv_mem_hot_add(unsigned long start, unsigned long size,
+ 
+ 		reinit_completion(&dm_device.ol_waitevent);
+ 
+-		nid = memory_add_physaddr_to_nid(PFN_PHYS(start_pfn));
++		nid = memory_get_phys_to_nid(PFN_PHYS(start_pfn));
+ 		ret = add_memory(nid, PFN_PHYS((start_pfn)),
+ 				 HA_BYTES_IN_CHUNK, MHP_MERGE_RESOURCE);
+ 
+@@ -1701,8 +1701,8 @@ static int hot_add_enabled(void)
+ {
+ 	/*
+ 	 * Disable hot add on ARM64, because we currently rely on
+-	 * memory_add_physaddr_to_nid() to get a node id of a hot add range,
+-	 * however ARM64's memory_add_physaddr_to_nid() always return 0 and
++	 * memory_get_phys_to_nid() to get a node id of a hot add range,
++	 * however ARM64's memory_get_phys_to_nid() always return 0 and
+ 	 * DM_MEM_HOT_ADD_REQUEST doesn't have the NUMA node information for
+ 	 * add_memory().
+ 	 */
+diff --git a/drivers/nvdimm/virtio_pmem.c b/drivers/nvdimm/virtio_pmem.c
+index 2396d19ce5496974f8b93b54cc8c95e48dda103d..df6a3fd552d11a577d85708f80e7558ea83839d2 100644
+--- a/drivers/nvdimm/virtio_pmem.c
++++ b/drivers/nvdimm/virtio_pmem.c
+@@ -100,7 +100,7 @@ static int virtio_pmem_probe(struct virtio_device *vdev)
+ 
+ 	ndr_desc.res = &res;
+ 
+-	ndr_desc.numa_node = memory_add_physaddr_to_nid(res.start);
++	ndr_desc.numa_node = memory_get_phys_to_nid(res.start);
+ 	ndr_desc.target_node = phys_to_target_node(res.start);
+ 	if (ndr_desc.target_node == NUMA_NO_NODE) {
+ 		ndr_desc.target_node = ndr_desc.numa_node;
+diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
+index 1688ecd69a0445d5c21d108a9a1d60577f96d7ac..6154f03a12c3efa65728f626e43b6270245d439c 100644
+--- a/drivers/virtio/virtio_mem.c
++++ b/drivers/virtio/virtio_mem.c
+@@ -2858,7 +2858,7 @@ static int virtio_mem_init(struct virtio_mem *vm)
+ 
+ 	/* Determine the nid for the device based on the lowest address. */
+ 	if (vm->nid == NUMA_NO_NODE)
+-		vm->nid = memory_add_physaddr_to_nid(vm->addr);
++		vm->nid = memory_get_phys_to_nid(vm->addr);
+ 
+ 	dev_info(&vm->vdev->dev, "start address: 0x%llx", vm->addr);
+ 	dev_info(&vm->vdev->dev, "region size: 0x%llx", vm->region_size);
+diff --git a/drivers/xen/balloon.c b/drivers/xen/balloon.c
+index 2de37dcd75566fc1a03b75232cbe17fc0f53909d..93ca270ddd516ec11bc3f096eb518b9789d92664 100644
+--- a/drivers/xen/balloon.c
++++ b/drivers/xen/balloon.c
+@@ -284,7 +284,7 @@ static enum bp_state reserve_additional_memory(void)
+ 	if (!resource)
+ 		goto err;
+ 
+-	nid = memory_add_physaddr_to_nid(resource->start);
++	nid = memory_get_phys_to_nid(resource->start);
+ 
+ #ifdef CONFIG_XEN_HAVE_PVMMU
+ 	/*
+diff --git a/include/linux/numa.h b/include/linux/numa.h
+index e6baaf6051bcff6c23308d3b67f790053fbd29dc..ed65a20f39718a5a3157f6f9db60561f4418b000 100644
+--- a/include/linux/numa.h
++++ b/include/linux/numa.h
+@@ -33,8 +33,8 @@ int numa_nearest_node(int node, unsigned int state);
+ 
+ int nearest_node_nodemask(int node, nodemask_t *mask);
+ 
+-#ifndef memory_add_physaddr_to_nid
+-int memory_add_physaddr_to_nid(u64 start);
++#ifndef memory_get_phys_to_nid
++int memory_get_phys_to_nid(u64 start);
+ #endif
+ 
+ #ifndef phys_to_target_node
+@@ -54,7 +54,7 @@ static inline int nearest_node_nodemask(int node, nodemask_t *mask)
+ 	return NUMA_NO_NODE;
+ }
+ 
+-static inline int memory_add_physaddr_to_nid(u64 start)
++static inline int memory_get_phys_to_nid(u64 start)
+ {
+ 	return 0;
+ }
+diff --git a/include/linux/numa_memblks.h b/include/linux/numa_memblks.h
+index 991076cba7c5016d845eb40a2f9887f73fa83862..37cc0987e738f8aa2eb5c8f1ca2c94394def4780 100644
+--- a/include/linux/numa_memblks.h
++++ b/include/linux/numa_memblks.h
+@@ -53,8 +53,8 @@ static inline int numa_emu_cmdline(char *str)
+ #ifdef CONFIG_NUMA_KEEP_MEMINFO
+ extern int phys_to_target_node(u64 start);
+ #define phys_to_target_node phys_to_target_node
+-extern int memory_add_physaddr_to_nid(u64 start);
+-#define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
++extern int memory_get_phys_to_nid(u64 start);
++#define memory_get_phys_to_nid memory_get_phys_to_nid
+ #endif /* CONFIG_NUMA_KEEP_MEMINFO */
+ 
+ #endif /* CONFIG_NUMA_MEMBLKS */
+diff --git a/mm/numa.c b/mm/numa.c
+index 7d5e06fe5bd4a2790b83dd7dbe646617f6476d8c..f7b5ac8aea608368b75c606970187eb147ddf427 100644
+--- a/mm/numa.c
++++ b/mm/numa.c
+@@ -40,14 +40,14 @@ void __init alloc_offline_node_data(int nid)
+ 
+ /* Stub functions: */
+ 
+-#ifndef memory_add_physaddr_to_nid
+-int memory_add_physaddr_to_nid(u64 start)
++#ifndef memory_get_phys_to_nid
++int memory_get_phys_to_nid(u64 start)
+ {
+ 	pr_info_once("Unknown online node for memory at 0x%llx, assuming node 0\n",
+ 			start);
+ 	return 0;
+ }
+-EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
++EXPORT_SYMBOL_GPL(memory_get_phys_to_nid);
+ #endif
+ 
+ #ifndef phys_to_target_node
+diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+index 541a99c4071a67e5b0ef66f4136dee268a880003..346039bd933390fb014931fc61ccd2f96a773c37 100644
+--- a/mm/numa_memblks.c
++++ b/mm/numa_memblks.c
+@@ -580,7 +580,7 @@ int phys_to_target_node(u64 start)
+ }
+ EXPORT_SYMBOL_GPL(phys_to_target_node);
+ 
+-int memory_add_physaddr_to_nid(u64 start)
++int memory_get_phys_to_nid(u64 start)
+ {
+ 	int nid = meminfo_to_nid(&numa_meminfo, start);
+ 
+@@ -588,6 +588,6 @@ int memory_add_physaddr_to_nid(u64 start)
+ 		nid = numa_meminfo.blk[0].nid;
+ 	return nid;
+ }
+-EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
++EXPORT_SYMBOL_GPL(memory_get_phys_to_nid);
+ 
+ #endif /* CONFIG_NUMA_KEEP_MEMINFO */
+
+---
+base-commit: 479058002c32b77acac43e883b92174e22c4be2d
+change-id: 20250814-numa_memblks-b54a878820de
+
+Best regards,
 -- 
-2.43.0
+Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
 
 
