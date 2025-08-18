@@ -1,118 +1,115 @@
-Return-Path: <linux-acpi+bounces-15807-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15808-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D740FB2ADD1
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 18:10:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D53B2ADD6
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 18:11:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C97586221A9
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 16:09:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E8953B33D7
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 16:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBADA3375DF;
-	Mon, 18 Aug 2025 16:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460BD32A3D9;
+	Mon, 18 Aug 2025 16:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JoxCO4uF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQ6eMRyh"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3138334737;
-	Mon, 18 Aug 2025 16:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9D7322546;
+	Mon, 18 Aug 2025 16:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755533336; cv=none; b=qwX5yVOtB9wJuVvpZ5TXTvXAzH3TXFO6ZQT14l7Eup6dXqGiW+FESB3BtfdUttrxIJjrVqkzqUtC6KCoewY9fLHw/RGhGitLIvJFt+zzO4WXtGidDbqygBHbC1gq+nxTLa8BrQ88fqH7aocKQlAnkjDtaipZeiJZtZoRhA+leqA=
+	t=1755533502; cv=none; b=BWWaCyZKtBch5PVhwlHBmyLGtJMx+NEv9Crjtvlx8mW9VYkiRdcizHgl7n3Q+28gzzEh8wuZ+g8ZNLLYnwAt8goKsVYg/uHCs3wBHNblrcfHmg8aaQhKg0MzPin9gPRbVahnZwj59K9CZ9ppfAaciTUWX3NROysjmlWDCTK8yj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755533336; c=relaxed/simple;
-	bh=praVVRYQknEmW2PnOYAUW4g/6bcrHTZgh8UjIqOn6e4=;
+	s=arc-20240116; t=1755533502; c=relaxed/simple;
+	bh=DA2OL45OCBR1TJ2bykT55Ml1phhesDr/KzBENSzRPoc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kOXukLcRky0lJlcWCw4dYtef+CLXgf8iZGiv8IhKD/AUiTWGboFvDu9fu9PuMahTLj3SsIWjmza0g3YZIHDBbQoFRKjh1lIkCUdJe2U+TtsYqZhDe7F6zwYdAcTE2dEGJEvqrsk55AhWMnQON/FgLPnkaUJyvKfHqIEmn+9Gr2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JoxCO4uF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57F23C19421;
-	Mon, 18 Aug 2025 16:08:56 +0000 (UTC)
+	 To:Cc:Content-Type; b=kdSSD1OJilFwYPbMqFDyam7jzhZcz8DhP2aUncl8QMJn5dqbBNnKUkBcXtfGBzEsRiq5yppnfMWN1y+LQHxKHmm7wyzoWgd0zeqn2da0+CWUL+w0j2g8XYkVE6gUHE+OzcdHIrKFX0h6FjeMPfAn1IN7c1hE760XfvJTi7ytEM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQ6eMRyh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9996DC4AF09;
+	Mon, 18 Aug 2025 16:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755533336;
-	bh=praVVRYQknEmW2PnOYAUW4g/6bcrHTZgh8UjIqOn6e4=;
+	s=k20201202; t=1755533501;
+	bh=DA2OL45OCBR1TJ2bykT55Ml1phhesDr/KzBENSzRPoc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=JoxCO4uFGu7BGkAzNrwPeiok1VrtnD0fOKf66zu3gaNU8PiIlLYI1yWqXvCzPC4IT
-	 w/dJ8CJXWBqiU4AsLouwY6U0QasKGD2sNVPrR5WeQkIGyDNx5WZdBcWpQJ6ZbJHUYh
-	 2SdP610Lw2LyAigmoxvlOuEor4JFC+kygH96uDrjpfxuY1oIbas+l6Pi8fqAC3FwSm
-	 4/ODHGp3YsTF6AxM7iB6bWCSzpMA/4VSfwENCnfuE5bIvoGKm7/F14l1n+RG6ItpYs
-	 EFoImdonprr9kZTqtB04dJUDwIKR6TnWVmT3/YvKyprqjNPKIcPNu6qzyz93nYW3Pe
-	 mcYzWLhlL1g9Q==
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-30cce86052cso2613336fac.1;
-        Mon, 18 Aug 2025 09:08:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU6EW+fVaeQ+GZ6AT7XDC5vvyECVI/a7N+Zv+hSMIroYKr9E3PH0lB6zEyYiyHZqjmjyzZSUtgBkgCJsVIf@vger.kernel.org, AJvYcCUmg2qAtg4YgGttN4TeHMjXS56xTieVYlgLsXXUIZoWIW3VEVvtGUGivTsEIuLbtLTcKSQSjs5YkILh@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmUE78ozcUpZzIEXIu0wW0aqbFgPI5Y4f9s8CMdalYT3WgEfK+
-	JkQ2d1nUs6cEQOJXSBaxxVnwvz5zNVUm17m1pLW41oPKO3zNcSIjT5lzUgnHQeDtBh7sr5qCmuZ
-	/5KGO51c2AsSLeGXCPKPs9aWG1BlBILo=
-X-Google-Smtp-Source: AGHT+IFkq5KncVYHEk/LN9k0et6idyAoVR2GJ7EVldfLfvV7MKWlr0LQMntLQzrYg4NzYalRknRoMllv2VqRTyG+JhQ=
-X-Received: by 2002:a05:6870:3d9a:b0:2d5:b7b7:2d6e with SMTP id
- 586e51a60fabf-310aafe4464mr7621787fac.38.1755533335571; Mon, 18 Aug 2025
- 09:08:55 -0700 (PDT)
+	b=nQ6eMRyhcJaRYj88m0OBCu19k0BuZR6ddgKbe1p6UefKyG2ibNz8uATq5a9qstqD4
+	 9ILu9m/QvrqsNHFfJ/RKUSWj9c5xJI0Tvf44+45iL414sq2TBRzXMhmpShqSQn1Eqd
+	 0gplahw+vYZJiGfnReKptDmtltfP/9eAlNf3yY3QmNo77lqASeeFHmHexB4eU57fxS
+	 pWZ+1qZyX74ee5ybVdLw6z773fOSm0oSdOLyQRlfeJxl1kDL5c2RHIdi3VgVAfx7Rk
+	 ZirpEDrCpX/TFptiSg3RzjAq4dqUui5dfZzMg9A1Bj4tBi9Ylneq8K6xcpHG7PHDtZ
+	 eK4MnvlbEfBdQ==
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-3110269717aso193974fac.1;
+        Mon, 18 Aug 2025 09:11:41 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV+HBMjiUjU/BjH2lxihE2w3GXA6dTfgOvFli9R1DTKb83H9QuPJEHCIRK8evIuwglhePY/qviADnHtIpuI@vger.kernel.org, AJvYcCVsxqBLOWAyTuo7AdwJUWpxcTYkZxLxcl4gAUJCMQSMmVVCQCUDiru+dw/Iwshn3HnE6WaV3C0xz5Xu@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywykel/XDCZoBrdEcXX8B8UH5bZ1+XaGJ9cXZJ5SV7U+9YrHYlD
+	d/JFV1JF5KQKM4+jl5YgJc+DYRasv001oDbA49Fhea9kEPH7DsLlPy7TvcZlsKauaDkU2woEnBZ
+	hrxEGvdbc8hUwQHqUf4Ftl2bsQ8JYkhc=
+X-Google-Smtp-Source: AGHT+IGRp9f0ioUBjySVzfXidVBa+XHyCZfz8f8VuFeDGWT+KV57H8QNmIA3QWX4Ufn7LrA+hEC1Rjs7o0cf48peGh0=
+X-Received: by 2002:a05:6870:1f19:b0:2e9:925b:206f with SMTP id
+ 586e51a60fabf-3110842a516mr89866fac.17.1755533500977; Mon, 18 Aug 2025
+ 09:11:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250814161706.4489-1-tony.luck@intel.com> <230e2659-7838-2165-4490-3b3f89cb7838@huawei.com>
-In-Reply-To: <230e2659-7838-2165-4490-3b3f89cb7838@huawei.com>
+References: <20250815024207.3038-1-hanchunchao@inspur.com> <547301a8-5a66-7958-15be-0bcf01dd8a62@huawei.com>
+In-Reply-To: <547301a8-5a66-7958-15be-0bcf01dd8a62@huawei.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 18 Aug 2025 18:08:38 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0g8+XsUsYa0vNeCMcjx1wmMf99PfbYfofSqtaOqDajaow@mail.gmail.com>
-X-Gm-Features: Ac12FXxUylNn3wz4tNeEKNr6XV_DMtzkj2Zt0mREl5vK_65erZjinrFq4jvlxXU
-Message-ID: <CAJZ5v0g8+XsUsYa0vNeCMcjx1wmMf99PfbYfofSqtaOqDajaow@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: APEI: EINJ: Check if user asked for EINJV2 injection
-To: Hanjun Guo <guohanjun@huawei.com>, Tony Luck <tony.luck@intel.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Borislav Petkov <bp@alien8.de>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>, 
-	Len Brown <lenb@kernel.org>, Zaid Alali <zaidal@os.amperecomputing.com>, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev, "Lai, Yi1" <yi1.lai@intel.com>
+Date: Mon, 18 Aug 2025 18:11:23 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iTc+F8AX_sOY_79A9AeTJMe+QiCdK9ZTSwJ8fi4djB=Q@mail.gmail.com>
+X-Gm-Features: Ac12FXwNWiT8VzzqS9Kmb7N0NYAwTVvby8mVUV2dCdK4l0REuhuU_SXYD5Nmzz8
+Message-ID: <CAJZ5v0iTc+F8AX_sOY_79A9AeTJMe+QiCdK9ZTSwJ8fi4djB=Q@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: APEI: EINJ: fix potential NULL dereference in __einj_error_inject
+To: Hanjun Guo <guohanjun@huawei.com>, tony.luck@intel.com, 
+	Charles Han <hanchunchao@inspur.com>
+Cc: bp@alien8.de, mchehab@kernel.org, xueshuai@linux.alibaba.com, 
+	lenb@kernel.org, ira.weiny@intel.com, zaidal@os.amperecomputing.com, 
+	Jonathan.Cameron@huawei.com, colin.i.king@gmail.com, dan.carpenter@linaro.org, 
+	dan.j.williams@intel.com, sudeep.holla@arm.com, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 18, 2025 at 5:58=E2=80=AFPM Hanjun Guo <guohanjun@huawei.com> w=
+On Mon, Aug 18, 2025 at 6:07=E2=80=AFPM Hanjun Guo <guohanjun@huawei.com> w=
 rote:
 >
-> On 2025/8/15 0:17, Tony Luck wrote:
-> > On an EINJV2 capable system, users may still use the old injection
-> > interface but einj_get_parameter_address() takes the EINJV2 path to map
-> > the parameter structure. This results in the address the user supplied
-> > being stored to the wrong location and the BIOS injecting based on an
-> > uninitialized field (0x0 in the reported case).
+> On 2025/8/15 10:42, Charles Han wrote:
+> > The __einj_error_inject() function allocates memory via kmalloc()
+> > without checking for allocation failure, which could lead to a
+> > NULL pointer dereference.
 > >
-> > Check the version of the request when mapping the EINJ parameter
-> > structure in BIOS reserved memory.
+> > Return -ENOMEM in case allocation fails.
 > >
-> > Fixes: 691a0f0a557b ("ACPI: APEI: EINJ: Discover EINJv2 parameters")
-> > Reported-by: Lai, Yi1 <yi1.lai@intel.com>
-> > Signed-off-by: Tony Luck <tony.luck@intel.com>
+> > Fixes: b47610296d17 ("ACPI: APEI: EINJ: Enable EINJv2 error injections"=
+)
+> > Signed-off-by: Charles Han <hanchunchao@inspur.com>
 > > ---
-> >   drivers/acpi/apei/einj-core.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >   drivers/acpi/apei/einj-core.c | 3 +++
+> >   1 file changed, 3 insertions(+)
 > >
 > > diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-cor=
 e.c
-> > index bf8dc92a373a..99f1b841fba9 100644
+> > index bf8dc92a373a..93a3ae1325e5 100644
 > > --- a/drivers/acpi/apei/einj-core.c
 > > +++ b/drivers/acpi/apei/einj-core.c
-> > @@ -315,7 +315,7 @@ static void __iomem *einj_get_parameter_address(voi=
-d)
-> >                       memcpy_fromio(&v5param, p, v5param_size);
-> >                       acpi5 =3D 1;
-> >                       check_vendor_extension(pa_v5, &v5param);
-> > -                     if (available_error_type & ACPI65_EINJV2_SUPP) {
-> > +                     if (is_v2 && available_error_type & ACPI65_EINJV2=
-_SUPP) {
-> >                               len =3D v5param.einjv2_struct.length;
-> >                               offset =3D offsetof(struct einjv2_extensi=
-on_struct, component_arr);
-> >                               max_nr_components =3D (len - offset) /
+> > @@ -540,6 +540,9 @@ static int __einj_error_inject(u32 type, u32 flags,=
+ u64 param1, u64 param2,
+> >               struct set_error_type_with_address *v5param;
+> >
+> >               v5param =3D kmalloc(v5param_size, GFP_KERNEL);
+> > +             if (!v5param)
+> > +                     return -ENOMEM;
+> > +
+> >               memcpy_fromio(v5param, einj_param, v5param_size);
+> >               v5param->type =3D type;
+> >               if (type & ACPI5_VENDOR_BIT) {
 >
-> Reviewed-by: Hanjun Guo <gouhanjun@huawei.com>
+> Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
 
 Applied as 6.17-rc material, thanks!
 
