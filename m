@@ -1,115 +1,189 @@
-Return-Path: <linux-acpi+bounces-15808-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15809-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D53B2ADD6
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 18:11:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F02ACB2ADF5
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 18:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E8953B33D7
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 16:11:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB9D44E2579
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 16:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460BD32A3D9;
-	Mon, 18 Aug 2025 16:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2B5335BAE;
+	Mon, 18 Aug 2025 16:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQ6eMRyh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bcbrFitr"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9D7322546;
-	Mon, 18 Aug 2025 16:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EE0229B2A;
+	Mon, 18 Aug 2025 16:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755533502; cv=none; b=BWWaCyZKtBch5PVhwlHBmyLGtJMx+NEv9Crjtvlx8mW9VYkiRdcizHgl7n3Q+28gzzEh8wuZ+g8ZNLLYnwAt8goKsVYg/uHCs3wBHNblrcfHmg8aaQhKg0MzPin9gPRbVahnZwj59K9CZ9ppfAaciTUWX3NROysjmlWDCTK8yj0=
+	t=1755534066; cv=none; b=EppvBVvAxj2pa8wldeGmVtZ9eewF2Q+ZvV4QLDBSKg/Axd2fccbQnyKVKhxnpp7ifdX8rx7CSTqEqfPIRuMoQAWIAwP1dvqARPfsiJVKYlK/tfT6YOY3r7GZjd7P/eLBvV2MtWROVpRrNnVYugoMCyfYHLICgIlOCxnS5sM5csU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755533502; c=relaxed/simple;
-	bh=DA2OL45OCBR1TJ2bykT55Ml1phhesDr/KzBENSzRPoc=;
+	s=arc-20240116; t=1755534066; c=relaxed/simple;
+	bh=qUKrvyW0beuc+sw2BGlkXExMSVbJbG2RqtuPQDlzROo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kdSSD1OJilFwYPbMqFDyam7jzhZcz8DhP2aUncl8QMJn5dqbBNnKUkBcXtfGBzEsRiq5yppnfMWN1y+LQHxKHmm7wyzoWgd0zeqn2da0+CWUL+w0j2g8XYkVE6gUHE+OzcdHIrKFX0h6FjeMPfAn1IN7c1hE760XfvJTi7ytEM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQ6eMRyh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9996DC4AF09;
-	Mon, 18 Aug 2025 16:11:41 +0000 (UTC)
+	 To:Cc:Content-Type; b=NyRTbxYbWDhGHgillUqG8uqeeR8H82s2MRv5dk45oMPQevZmva1/ho9Y9EhCOCie0vElK39ILKwX1wrg7Nty75C8NOi0fXjqTH23rpGL92gUfWA/nJCXe6MHsE+0IbnToTZP8B13I52EhMr+hxgT1UvgFd4oyJ4D67nQMvhZ8Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bcbrFitr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB2CC4AF09;
+	Mon, 18 Aug 2025 16:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755533501;
-	bh=DA2OL45OCBR1TJ2bykT55Ml1phhesDr/KzBENSzRPoc=;
+	s=k20201202; t=1755534066;
+	bh=qUKrvyW0beuc+sw2BGlkXExMSVbJbG2RqtuPQDlzROo=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nQ6eMRyhcJaRYj88m0OBCu19k0BuZR6ddgKbe1p6UefKyG2ibNz8uATq5a9qstqD4
-	 9ILu9m/QvrqsNHFfJ/RKUSWj9c5xJI0Tvf44+45iL414sq2TBRzXMhmpShqSQn1Eqd
-	 0gplahw+vYZJiGfnReKptDmtltfP/9eAlNf3yY3QmNo77lqASeeFHmHexB4eU57fxS
-	 pWZ+1qZyX74ee5ybVdLw6z773fOSm0oSdOLyQRlfeJxl1kDL5c2RHIdi3VgVAfx7Rk
-	 ZirpEDrCpX/TFptiSg3RzjAq4dqUui5dfZzMg9A1Bj4tBi9Ylneq8K6xcpHG7PHDtZ
-	 eK4MnvlbEfBdQ==
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-3110269717aso193974fac.1;
-        Mon, 18 Aug 2025 09:11:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV+HBMjiUjU/BjH2lxihE2w3GXA6dTfgOvFli9R1DTKb83H9QuPJEHCIRK8evIuwglhePY/qviADnHtIpuI@vger.kernel.org, AJvYcCVsxqBLOWAyTuo7AdwJUWpxcTYkZxLxcl4gAUJCMQSMmVVCQCUDiru+dw/Iwshn3HnE6WaV3C0xz5Xu@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywykel/XDCZoBrdEcXX8B8UH5bZ1+XaGJ9cXZJ5SV7U+9YrHYlD
-	d/JFV1JF5KQKM4+jl5YgJc+DYRasv001oDbA49Fhea9kEPH7DsLlPy7TvcZlsKauaDkU2woEnBZ
-	hrxEGvdbc8hUwQHqUf4Ftl2bsQ8JYkhc=
-X-Google-Smtp-Source: AGHT+IGRp9f0ioUBjySVzfXidVBa+XHyCZfz8f8VuFeDGWT+KV57H8QNmIA3QWX4Ufn7LrA+hEC1Rjs7o0cf48peGh0=
-X-Received: by 2002:a05:6870:1f19:b0:2e9:925b:206f with SMTP id
- 586e51a60fabf-3110842a516mr89866fac.17.1755533500977; Mon, 18 Aug 2025
- 09:11:40 -0700 (PDT)
+	b=bcbrFitr9YGR3P5hWECUFThj39D+FjqmBUYx075ZcWu+LoPzLCULfB2Zgal8U5wzT
+	 NthJbQy8ldxPVI1K6cRfcddreox1mRDkpkgglflgjOOfkL9p8mGdOYEKHub/BYkHJr
+	 Pr0gG6hEtz2kBngwjBtG0Z1xSjBSBLj+q7F3KnY5TCdDO9L7QfXax3pkRr7hoNJ+Z3
+	 p9NxWR+hh09gLI0p1lOYDKNqJEN0cgzcifnJuTsJwoutwR6z2rFmNH7ik5RURafM4n
+	 Vf2J3yelpTjt5Y2Soe56HGbZVu4wXlrOGN+Kn+ZZGkn44SYfRjNCbXSsPlg7G32Qmn
+	 5kPUEiq8VQuJg==
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-61bd4e24ac7so1335608eaf.2;
+        Mon, 18 Aug 2025 09:21:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUx2+IAdDsgavhyJPdeydCKx4naQZTMdjFyEYY94tRbxSssmVTrvyIfUPL2llLyPWomxh5UeIXe13FmtgCU@vger.kernel.org, AJvYcCWY9zZsXrLVBVZ80qlnD2Bs9gCLlmlti9kTybM/wz/bvpLAguu7z4kNY7pHiUfegAhF5AtxTwR6S9LC@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUQptqoTXm6sO2uw73HCZbPfNqcJi8iVJDmMw9ioEaLNrzyDS2
+	u/4LxO6mz2ZmPV7a48GkMQoEBY43QFaCA7m72AKIZ/siwqEHW0myUPC+i6egTYsmEkbuHXxSnIz
+	44N9NWb7gNQU/JsLP8vY7iAzUaojfivI=
+X-Google-Smtp-Source: AGHT+IE8+JuEsDQNcm0X/WVYZdNkKbvLVNjlUE8NpD1s8kswPVsJGRw/6WgSjumINfgbdXgeY+FpMZiezy30Pdm0kPM=
+X-Received: by 2002:a05:6820:1c88:b0:61c:a11:ce96 with SMTP id
+ 006d021491bc7-61c0a11ddc6mr3534246eaf.8.1755534065224; Mon, 18 Aug 2025
+ 09:21:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250815024207.3038-1-hanchunchao@inspur.com> <547301a8-5a66-7958-15be-0bcf01dd8a62@huawei.com>
-In-Reply-To: <547301a8-5a66-7958-15be-0bcf01dd8a62@huawei.com>
+References: <20250814051157.35867-2-u.kleine-koenig@baylibre.com>
+In-Reply-To: <20250814051157.35867-2-u.kleine-koenig@baylibre.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 18 Aug 2025 18:11:23 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iTc+F8AX_sOY_79A9AeTJMe+QiCdK9ZTSwJ8fi4djB=Q@mail.gmail.com>
-X-Gm-Features: Ac12FXwNWiT8VzzqS9Kmb7N0NYAwTVvby8mVUV2dCdK4l0REuhuU_SXYD5Nmzz8
-Message-ID: <CAJZ5v0iTc+F8AX_sOY_79A9AeTJMe+QiCdK9ZTSwJ8fi4djB=Q@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: APEI: EINJ: fix potential NULL dereference in __einj_error_inject
-To: Hanjun Guo <guohanjun@huawei.com>, tony.luck@intel.com, 
-	Charles Han <hanchunchao@inspur.com>
-Cc: bp@alien8.de, mchehab@kernel.org, xueshuai@linux.alibaba.com, 
-	lenb@kernel.org, ira.weiny@intel.com, zaidal@os.amperecomputing.com, 
-	Jonathan.Cameron@huawei.com, colin.i.king@gmail.com, dan.carpenter@linaro.org, 
-	dan.j.williams@intel.com, sudeep.holla@arm.com, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Mon, 18 Aug 2025 18:20:48 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hSoG8tTvY+im+h0ObUhM5_GDWbUa=6Doc1SRRNnuxfiw@mail.gmail.com>
+X-Gm-Features: Ac12FXwjxxmfI0rOk-5SHu5dRy9Ve7UNBCcDlleto6Zdv0AgFx7Sq90-BCd2Qck
+Message-ID: <CAJZ5v0hSoG8tTvY+im+h0ObUhM5_GDWbUa=6Doc1SRRNnuxfiw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: APEI: EINJ: Fix resource leak by remove callback in .exit.text
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Ira Weiny <ira.weiny@intel.com>, 
+	Zaid Alali <zaidal@os.amperecomputing.com>, Colin Ian King <colin.i.king@gmail.com>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, Hanjun Guo <guohanjun@huawei.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>, 
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	sudeep.holla@arm.covm, Danilo Krummrich <dakr@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 18, 2025 at 6:07=E2=80=AFPM Hanjun Guo <guohanjun@huawei.com> w=
-rote:
+On Thu, Aug 14, 2025 at 7:12=E2=80=AFAM Uwe Kleine-K=C3=B6nig
+<u.kleine-koenig@baylibre.com> wrote:
 >
-> On 2025/8/15 10:42, Charles Han wrote:
-> > The __einj_error_inject() function allocates memory via kmalloc()
-> > without checking for allocation failure, which could lead to a
-> > NULL pointer dereference.
-> >
-> > Return -ENOMEM in case allocation fails.
-> >
-> > Fixes: b47610296d17 ("ACPI: APEI: EINJ: Enable EINJv2 error injections"=
-)
-> > Signed-off-by: Charles Han <hanchunchao@inspur.com>
-> > ---
-> >   drivers/acpi/apei/einj-core.c | 3 +++
-> >   1 file changed, 3 insertions(+)
-> >
-> > diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-cor=
-e.c
-> > index bf8dc92a373a..93a3ae1325e5 100644
-> > --- a/drivers/acpi/apei/einj-core.c
-> > +++ b/drivers/acpi/apei/einj-core.c
-> > @@ -540,6 +540,9 @@ static int __einj_error_inject(u32 type, u32 flags,=
- u64 param1, u64 param2,
-> >               struct set_error_type_with_address *v5param;
-> >
-> >               v5param =3D kmalloc(v5param_size, GFP_KERNEL);
-> > +             if (!v5param)
-> > +                     return -ENOMEM;
-> > +
-> >               memcpy_fromio(v5param, einj_param, v5param_size);
-> >               v5param->type =3D type;
-> >               if (type & ACPI5_VENDOR_BIT) {
+> The .remove() callback is also used during error handling in
+> faux_probe(). As einj_remove() was marked with __exit it's not linked
+> into the kernel if the driver is built-in, potentially resulting in
+> resource leaks.
 >
-> Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+> Also remove the comment justifying the __exit annotation which doesn't
+> apply any more since the driver was converted to the faux device
+> interface.
+>
+> Fixes: 6cb9441bfe8d ("ACPI: APEI: EINJ: Transition to the faux device int=
+erface")
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
 
-Applied as 6.17-rc material, thanks!
+Until the faux device code is updated, this is needed, so applied as
+6.17-rc material.
+
+Thanks!
+
+> ---
+> Hello,
+>
+> note that the intention seems to be that this construct is safe, see
+> commit c393befa14ab ("driver core: faux: Suppress bind attributes").
+> Note further that I don't have a machine to test that so this is only
+> based on code reading. An appropriate test might be:
+>
+> | diff --git a/drivers/base/faux.c b/drivers/base/faux.c
+> | index f5fbda0a9a44..decb15f1194a 100644
+> | --- a/drivers/base/faux.c
+> | +++ b/drivers/base/faux.c
+> | @@ -39,6 +39,8 @@ static int faux_match(struct device *dev, const struc=
+t device_driver *drv)
+> |       return 1;
+> |  }
+> |
+> | +static int once;
+> | +
+> |  static int faux_probe(struct device *dev)
+> |  {
+> |       struct faux_object *faux_obj =3D to_faux_object(dev);
+> | @@ -56,7 +58,11 @@ static int faux_probe(struct device *dev)
+> |        * Add groups after the probe succeeds to ensure resources are
+> |        * initialized correctly
+> |        */
+> | -     ret =3D device_add_groups(dev, faux_obj->groups);
+> | +
+> | +     if (once++)
+> | +             ret =3D -ENOMEM;
+> | +     else
+> | +             ret =3D device_add_groups(dev, faux_obj->groups);
+> |       if (ret && faux_ops && faux_ops->remove)
+> |               faux_ops->remove(faux_dev);
+>
+> (quoted to make sure that this hunk won't be used when the patch is
+> applied).
+>
+> Even if the faux device interface is fixed not to rely on .remove() the
+> comment in einj-core.c needs some love.
+>
+> Best regards
+> Uwe
+>
+>  drivers/acpi/apei/einj-core.c | 12 +++---------
+>  1 file changed, 3 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.=
+c
+> index bf8dc92a373a..1204fa3df285 100644
+> --- a/drivers/acpi/apei/einj-core.c
+> +++ b/drivers/acpi/apei/einj-core.c
+> @@ -1091,7 +1091,7 @@ static int __init einj_probe(struct faux_device *fd=
+ev)
+>         return rc;
+>  }
+>
+> -static void __exit einj_remove(struct faux_device *fdev)
+> +static void einj_remove(struct faux_device *fdev)
+>  {
+>         struct apei_exec_context ctx;
+>
+> @@ -1114,15 +1114,9 @@ static void __exit einj_remove(struct faux_device =
+*fdev)
+>  }
+>
+>  static struct faux_device *einj_dev;
+> -/*
+> - * einj_remove() lives in .exit.text. For drivers registered via
+> - * platform_driver_probe() this is ok because they cannot get unbound at
+> - * runtime. So mark the driver struct with __refdata to prevent modpost
+> - * triggering a section mismatch warning.
+> - */
+> -static struct faux_device_ops einj_device_ops __refdata =3D {
+> +static struct faux_device_ops einj_device_ops =3D {
+>         .probe =3D einj_probe,
+> -       .remove =3D __exit_p(einj_remove),
+> +       .remove =3D einj_remove,
+>  };
+>
+>  static int __init einj_init(void)
+>
+> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+> --
+> 2.50.1
+>
+>
 
