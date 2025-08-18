@@ -1,140 +1,112 @@
-Return-Path: <linux-acpi+bounces-15755-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15756-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4FDDB29275
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 Aug 2025 11:38:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61365B29660
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 03:52:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92AF67A2ED3
-	for <lists+linux-acpi@lfdr.de>; Sun, 17 Aug 2025 09:37:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F332171418
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 01:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C41221FA0;
-	Sun, 17 Aug 2025 09:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB6822F76B;
+	Mon, 18 Aug 2025 01:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FDJk5aZ7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IXdC9qmk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992D71D6BB;
-	Sun, 17 Aug 2025 09:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4024722A817;
+	Mon, 18 Aug 2025 01:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755423515; cv=none; b=MS82D4PSnb9uDmfjXtJVxSpDRpisWHa6n2EIfWVrEK8keYDO/N6w7rNubeGiUrAErz9U/4JzQWMn27B39sZ5SXsiVRriC3EQVqOAg6LnMBE91wDgEYyo5vwyGTYbZhtgwFDcyxSFTPBF3aV0aL+Jkmo/kUdPvbo+5HC7wnRPD78=
+	t=1755481944; cv=none; b=UO4f4AEuRIrgh6hMGHnEdQr3ZrFLMfYwUlkTWEYNXIqrcYAl6Z6wAD6HQ1xJkb5j8BGOtM4J+niMCZmzU0jmUcJww1G3jGFL2H6N/u5m6ikchom1IcNxLs+ZDEkUW7y68QwDfxIUXcgWaFih1Ta9r/skFm/jJnopxgWzNP01d/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755423515; c=relaxed/simple;
-	bh=c8YRrckfoSfijJ8+9Yeqa5yV4ks/1VCihLQAEoIt5LM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=aW06BeHyPzutQrv7+SuAF9gpmAqwSZACcamvXOZAYYXWr7b3P/+7vGilkWeJ2g8B9RVPWYDEGcQ89/tbpPqlnROvmwoNXJ1D1kUNQb4mXA+FY/riM0HFZwFeXkXT6Cf9nF+XT5l5wJ0/WaEhKoWdr1saAvyRSc3sfFBXW4Ix0GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FDJk5aZ7; arc=none smtp.client-ip=209.85.214.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-24456f3f669so31185495ad.1;
-        Sun, 17 Aug 2025 02:38:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755423513; x=1756028313; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=V+glvcUxBNLETyj4EbzaF6Mcl14MmSj24IXXGqr4BWU=;
-        b=FDJk5aZ7IDQGla/M8atFp6I2vlUA25wSdhpURbZp0L39pDptwxJAqMqFMQ7PF74RfV
-         txBTx5SPrP/yoslhdlGQRhk1xG9ALUOXkisNlXaHqg5CaY/+Oac0ifcEvuPbV01PwhKc
-         fFZtjguOcXRr+tWo8141HDd945eEMKMML3cfYr9v/BlfKASTlaOefjRYn4FBvDMlLUgT
-         g8Ldsk5AoXe0uuT7uzDGuACieCxToFMiIUw/Y15NkwqTXYVx2IYCAfDtoFC5xjDKjxGK
-         ryegQ/o2Hz2T33hS2d0gwhdV4IpRCFALNI0m0LlE+t5jnL9waJTgZHxrlIgHl16R/vJB
-         ofyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755423513; x=1756028313;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V+glvcUxBNLETyj4EbzaF6Mcl14MmSj24IXXGqr4BWU=;
-        b=gyouzOTv0w5uiDLU9QrjdgaSi84h8Cguf7kxnBWVrvO9EGclDEb8gRuKCNEu1W+9jV
-         NTDPo86CAoOcpq2yru2dMVAb5nAnI3iOpvSrNXZaP007/7u/kFj7RGTDuNmOmAOvA52f
-         yp48DnjE6NyDkbh1ZRkPl4zOpPB6LIZwmu+rEuTh03xU4yz1Nb9hrNMc+6Hm7fz0f6oM
-         3erZ1ennEwyaP9qWNlNVdgUlxWX9kUi1KHtCmpWNuMAqH38dN/Tu/T0DgDHqd+2GT9HE
-         rNUavvj2dxlF0DAHq5J2IWwXLIrKwJcu1vFo3RP8u1//U8m/KW6Jdl0X/l9PyOMA2FGr
-         tGjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUb1nqblZsT2oYBOpwa8L+nJhS3jOUmrxNfslkZk3VpcfyeLLcwfuakEtzAWPb2LYFUchz/jfqA@vger.kernel.org, AJvYcCVoc40OAZFBxXqoC4TKM1vvAo0SF72V4LGcECkgDgYu1h+GbYelMHDeTjfAHWa+vdtZiGACWAJdBWVylKp95b8=@vger.kernel.org, AJvYcCXkPWLBN0RweAs1hCW1RbiNkPEw/U+ALCFBXBKlNOvCXXIDNwL2dVpz5AfEz5FoL2cBLNCNCcgImYj4@vger.kernel.org, AJvYcCXs5tW9MxIb60DdceIphpFwtn9WrMLbC2T68VZL5lyGhtp1zL8NKOsPtfwTVCgbZHJONeTmSscXeEEL@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmbfdiP9KxQZodKPnfo/dBaDrzKz9HMl2XoKUO3RAb18dNaMD0
-	uaGhctPXTCW3htiwfWpkW4NUMl+7swauSMjsNHhXdL4ns9xZjZ/8DOTLcsfOVGrbnH8=
-X-Gm-Gg: ASbGncv7q/aBqq98QQQGozmt9Ffi72XeasehPZODvUl7vziOqxL1+F6Op/dxJz/vWJC
-	owZX8Frm9Mc7VyPsJhIT86V11xu5p3YEeB6Q53R4xUe1geNt2HxG1lizuW6pu1WoU4sAMmLjcmU
-	uCQeGBn0dtW6GJhHq+JlwzgfG1zSzwesXQFBmYdhsx6uCkq7jJmgKKIN/rK4UNjTv39hdx++vHZ
-	Cp+vngYJekk3tqcklfpgDLRUmheYnJZAWwR8m9H7Tt8SEbDT/afU80zxzJYl/jOK11v/tRENDb0
-	PIJPFJhnu9Hr6P77Edg9dVCScGWKsKFZuZYf+AVUs0ZbxuWKAoKtxNk1l5hl1DrTYhPNRYiOCMC
-	x0ZoddmeV079vWbu4UyblpAi6yLVUpp/sPw1lmOrZXteANewAZylPBIL4
-X-Google-Smtp-Source: AGHT+IHkGdbvw5mBqyT/2JEfiXA/xt9ZKA48sqXHZkrOlalPiagbZZCBEljY1VqxFuyOzhpXRp8Wcw==
-X-Received: by 2002:a17:902:da82:b0:242:b138:8119 with SMTP id d9443c01a7336-2445988787emr180301885ad.26.1755423512654;
-        Sun, 17 Aug 2025 02:38:32 -0700 (PDT)
-Received: from [192.168.0.218] ([116.206.223.216])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446ca9d02csm51916845ad.7.2025.08.17.02.38.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 17 Aug 2025 02:38:32 -0700 (PDT)
-Message-ID: <db9749a0-9c6a-4781-b5fd-82eb129a9c36@gmail.com>
-Date: Sun, 17 Aug 2025 15:08:27 +0530
+	s=arc-20240116; t=1755481944; c=relaxed/simple;
+	bh=eXQkZ2Lv1D+oMa+sk/PjVmJUjE55kmzBr6nmJ2/KlhY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AxBEtmoatGPdOWiAwUya6Ry1c3515M+qTLJ8e5E9req0bQr2ZwU0w5qF/ytriCqaQTgDHWqsQxl3mukSfa7J+LDrJfyELdvzU16Dteyq0KeAvU/gebmdJBI26iFtTJe58ZZ5HrdDFjyY3JjSj3XGXJTL9HzqR24of8Q64OegIG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXdC9qmk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07666C4CEEB;
+	Mon, 18 Aug 2025 01:52:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755481943;
+	bh=eXQkZ2Lv1D+oMa+sk/PjVmJUjE55kmzBr6nmJ2/KlhY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IXdC9qmkO0KOQTAs+cU/bW60Vm9oPA4TLDOdMprJS5QlAc/04Wom4Dgoe66T8AuPe
+	 iTQ0nAZW2KvVU9e8atwDV/cukoIIRl4T+/igXoQy3lhmWq95JRsOezL9gCs5jOeA3l
+	 N4WjoWhEVL41/mp1ouG9z7Onoy/LnsufpRILklQloMRvgHWtuAiKzAC2/R7Vdtl8e2
+	 /E6yUMFBy1mGPDavyNhU9jfZlNRkq7kl6z9rUDuR7R0yqTQb6W4jhoK+qSJq/vYLI9
+	 nHldzfHUzta/iNCuwuZhzVYH0UG6ZMXfZIQSF4SzV4wmY0cYwmP37eL+szS05SluAj
+	 0n8zTX7DJg81Q==
+From: "Mario Limonciello (AMD)" <superm1@kernel.org>
+To: mario.limonciello@amd.com,
+	westeri@kernel.org,
+	andriy.shevchenko@linux.intel.com,
+	linus.walleij@linaro.org,
+	brgl@bgdev.pl
+Cc: "Mario Limonciello (AMD)" <superm1@kernel.org>,
+	linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH] gpiolib: acpi: Program debounce when finding GPIO
+Date: Sun, 17 Aug 2025 20:52:07 -0500
+Message-ID: <20250818015219.3604648-1-superm1@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH TEST] ath10k: Testing Mani's ASPM patch (QCA9377, v6.16-rc1)
-From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
- Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org, ath10k@lists.infradead.org,
- linux-wireless@vger.kernel.org, stable@vger.kernel.org
-References: <FB546B0D-2209-4FA0-9DC9-A75C0BC9FA4F@gmail.com>
- <20250711163645.GA2294895@bhelgaas>
- <CAEmM+QiSZBoJV2n6944tYU7fcrzKRTUgsKRdqwDEkKkZiPVCMw@mail.gmail.com>
- <04489490-aca2-4e67-8eb2-e95f223ead3c@gmail.com>
-Content-Language: en-US
-In-Reply-To: <04489490-aca2-4e67-8eb2-e95f223ead3c@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hello everyone,
+When soc-button-array looks up the GPIO to use it calls acpi_find_gpio()
+which will parse _CRS.
 
-I was actually trying to build a kernel for someone else using build 
-automation scripts. They still didn't compile. (Here's the relevant 
-thread I'm referring to: 
-https://lore.kernel.org/ath10k/176B76BC-6801-4C3F-A774-9611B43ED4AF@gmail.com/T/#t) 
+acpi_find_gpio.cold (drivers/gpio/gpiolib-acpi-core.c:953)
+gpiod_find_and_request (drivers/gpio/gpiolib.c:4598 drivers/gpio/gpiolib.c:4625)
+gpiod_get_index (drivers/gpio/gpiolib.c:4877)
 
-Regardless, I tested the patches by Mani 
-(https://lore.kernel.org/r/20250716-ath-aspm-fix-v1-0-dd3e62c1b692@oss.qualcomm.com).
+The GPIO is setup basically, but the debounce information is discarded.
+The platform will assert what debounce should be in _CRS, so program it
+at the time it's available.
 
-Here are the logs:
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+---
+v4:
+ * Just add a direct call instead
+ * drop tag
+ * update commit message
+---
+ drivers/gpio/gpiolib-acpi-core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Without pcie_aspm=off (did not work): 
-https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/84edf89740919e3cba2ac33e567110b14e2d3627/patch-dmesg
-
-With pcie_aspm=off (worked, no issues observed): 
-https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/84edf89740919e3cba2ac33e567110b14e2d3627/patch-dmesg-pcie_aspm_off
-
-I'm not fully sure what the logs imply, but thanks, it did work even 
-after playing YouTube videos for two hours (might not even work in the 
-future, cannot be certain). Earlier, my laptop had its Wi-Fi turning off 
-within minutes because of IRQ #16 being flooded, in every kernel I 
-tested so far. Now, it does work.
-
-There can be seen certain stuff in the second log, where it took some 
-time to connect to Wi-Fi, but I think it is mostly fine.
-
-Thanks to those who have prepared the patches and those who did bear 
-with me, but there's one request I still need to make.
-
-For anyone who has built patched kernels for Ubuntu and exported in DEB 
-files, I would appreciate any guidance or pointers on how to do the 
-same, as my efforts to use "make deb-pkg" have been futile: 
-https://github.com/BandhanPramanik/ath10k-patched-kernel-ppa/actions/runs/16975573959/job/48123563881
-
-
-Bandhan Pramanik
-বন্ধন প্রামাণিক
+diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
+index 12b24a717e43f..6388e8e363dee 100644
+--- a/drivers/gpio/gpiolib-acpi-core.c
++++ b/drivers/gpio/gpiolib-acpi-core.c
+@@ -944,6 +944,7 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
+ 	bool can_fallback = acpi_can_fallback_to_crs(adev, con_id);
+ 	struct acpi_gpio_info info;
+ 	struct gpio_desc *desc;
++	int ret;
+ 
+ 	desc = __acpi_find_gpio(fwnode, con_id, idx, can_fallback, &info);
+ 	if (IS_ERR(desc))
+@@ -957,6 +958,11 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
+ 
+ 	acpi_gpio_update_gpiod_flags(dflags, &info);
+ 	acpi_gpio_update_gpiod_lookup_flags(lookupflags, &info);
++	/* ACPI uses hundredths of milliseconds units */
++	ret = gpio_set_debounce_timeout(desc, info.debounce * 10);
++	if (ret)
++		return ERR_PTR(ret);
++
+ 	return desc;
+ }
+ 
+-- 
+2.43.0
 
 
