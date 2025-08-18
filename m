@@ -1,466 +1,288 @@
-Return-Path: <linux-acpi+bounces-15789-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15790-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F888B299F1
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 08:44:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D8BB29A3C
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 08:55:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68FFA17C8C8
-	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 06:42:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CFB87A93E3
+	for <lists+linux-acpi@lfdr.de>; Mon, 18 Aug 2025 06:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2ACC26E711;
-	Mon, 18 Aug 2025 06:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CD21487E9;
+	Mon, 18 Aug 2025 06:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="S1ofeuAZ"
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="D9wyBT5x"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from esa6.hc1455-7.c3s2.iphmx.com (esa6.hc1455-7.c3s2.iphmx.com [68.232.139.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3233275B18
-	for <linux-acpi@vger.kernel.org>; Mon, 18 Aug 2025 06:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D076E27876E;
+	Mon, 18 Aug 2025 06:54:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755499314; cv=none; b=itoCOZydmUaetbG7sQUcb/THVrI8sd/OGIFtRzHNr14Li8DjJa4Wo+BxAHL2P71eNIF4i+tePD8zEZ7Iv7OYotnGj28orP8tfcwDhVU2uVg5/GJP4kzdrmZ/qLkr21i7iSdk4U6/01NQNr+sKTztwHBjwyFGBJrmeCCFKptTcEU=
+	t=1755500101; cv=none; b=mL1A7ih50/76D1DibQqNTsNRB52M93LldYG+MtkpVhFYV6If4mxuYUYxKTacUGnnIyYdMSu2+Tmycm8a3pidNtym0nYbcIUJu459lbB5YkxhiSYTykBCt1z2N1bXx/IgAEnhElKayyejCwPx/kcA3PK80M4NQGtvhXP2F1S1kCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755499314; c=relaxed/simple;
-	bh=4EBVhoBFeF7pNGClKVleaoGFSm/cPIuw0WEv7H0jc9Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=C0ML5GgggyiONE8BWj/WGGfgQrQ2ljtl0mZf5jt13CzcjrF9bp8d5NWsthjPsvThdqIiBu2NWHNNk4mw8ZDVYNfXb6NP67ml1Sx2UCMyCTxuG1lma3CYrkospsANqFiw7n5/dhQkEaYuKZ0VrcMacKytcjj+ypAw+Rwuo28IGUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=S1ofeuAZ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57HLTSJA023991
-	for <linux-acpi@vger.kernel.org>; Mon, 18 Aug 2025 06:41:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=l8N9ttvKyCBAcyEDvuaLoM
-	1BSXehm0oCXcCPSraNLCM=; b=S1ofeuAZEvausPNcfPdvnKZWbPTOWDSn/I7BEC
-	fEzcKChFEREcdnUgDUZ0liwYbWKPM8rZPt1QO6jTgcF7psCTS7i5PGkOE6QI5JZ+
-	KHyXq3fCcqVTX2TNJW8aE6hSDVQ07wo13XXPL6m308u3dn1gS4TZLJGYH+UVZxaP
-	N5c049QcgEAx92YW7CGLG4srnZufUn6OZjs+cmknhQDuglZbtyx7y+zif+BWwBD5
-	rLKoMV37K5sMLFRlSxJZfA3l9dBzOODYODOqjuY6k3pCnQT61mXkUULbWa5h5/21
-	Fb+5mmW8neh+DKoOx0rQ8WtgQ3aJv0kjv4N5E7mgkhK3nJmQ==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48jhjybjru-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-acpi@vger.kernel.org>; Mon, 18 Aug 2025 06:41:51 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-24458264c5aso37840375ad.3
-        for <linux-acpi@vger.kernel.org>; Sun, 17 Aug 2025 23:41:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755499310; x=1756104110;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l8N9ttvKyCBAcyEDvuaLoM1BSXehm0oCXcCPSraNLCM=;
-        b=Jr0l3EvAqta3ENxRn5J0OTpR25rbMwkVzWOyA7uLImZCJiQ2puYcUjbal9klvMLcfT
-         L00ERhZl6IQimv6dcby4UV/Vj08w14zyqR6UXTX5fD3o2AqM8+fKdijGxDEU7SSqPvY9
-         ZZcJE4Dp7JmGeuEEQTiZcKk+JMbcICecHUx1RjvrE98kwdc4AEwgy0TxUqhSQvRiBfae
-         Ehn1Vv07F+3qbRyRcblML9ebCX0ohc8AwXSUjU+2p8mfIRLrIpI6RrJjpFxWshwA4GR7
-         Ud8I8CvGSk+Kas8hSMVe8tKmIwSOFiqYSSAmgq4KfGxVNifNFGfPAbKg7gRbn/cfb1RE
-         qn+g==
-X-Forwarded-Encrypted: i=1; AJvYcCXelF3IM/v4UG1d6o0TeX0i9XCRvup9QMLxrEoiz2xfgTBDIV5Susncj5ouZIYEwluqYs4W6Q1xnfmz@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywnjz472ZvaLt6eEHI2tzJK7VcszgwWD1VN18hM7NuWRM4d9ybT
-	aHEMoQJsEBoEoV4cQI7/rtplf/tHq4SMO5iGr0nxZQQaejSpt3S556p7uYhknbytVhNbGIZABVi
-	n50idvDJPh31QBIPm11/FBR5lcYAW6Amm7KMgkWjouRfQDaFwU3wKX+SYFAw8fmKd
-X-Gm-Gg: ASbGncvfUDKLUzkybL5e+0r9/XEkyYhzr1VET7utZAL4Frti7983uGaQt8IlkSQPp3n
-	+vQqJ2eNbwtuLUlwNw59hGyFyFelRoW8A2wI/RZzTHY01bkiv3TvV2uZxm/zCWdnhT9Fg0beYwP
-	VzASokm1PVMsfrIgzI29YmUw1uap9xcV+sIuMS7i7v0BYtb6hhzikvGLlD0PBwWeSQSI/CwSfsw
-	u1EgiZbxo4N+TO4/7s3xTu5nPYu0crws0+9kqJD4dkNvnUoIQW6DCw2mcd2iKx9ZPpCjqUCSCFH
-	3r35TIVENc4lxDZ480xniUfTa5+7ywydJnLf3/RdAGE=
-X-Received: by 2002:a17:902:c951:b0:240:22af:91c7 with SMTP id d9443c01a7336-2446d71db3fmr134372705ad.14.1755499310162;
-        Sun, 17 Aug 2025 23:41:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGmF5KBA9eIDDl75sJwjMQCpOEjZ8TR6DA+JYR6yCjrU7iJmsnLTLQaYA9/NFl8UsVIfaN9mw==
-X-Received: by 2002:a17:902:c951:b0:240:22af:91c7 with SMTP id d9443c01a7336-2446d71db3fmr134372375ad.14.1755499309632;
-        Sun, 17 Aug 2025 23:41:49 -0700 (PDT)
-Received: from hu-pbrahma-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446d53bf5dsm70069295ad.114.2025.08.17.23.41.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Aug 2025 23:41:48 -0700 (PDT)
-From: pratyush.brahma@oss.qualcomm.com
-X-Google-Original-From: Pratyush
-Date: Mon, 18 Aug 2025 12:11:15 +0530
-Subject: [PATCH] mm/numa: Rename memory_add_physaddr_to_nid to
- memory_get_phys_to_nid
+	s=arc-20240116; t=1755500101; c=relaxed/simple;
+	bh=SYqtjbS5xj6kVXRvjoAEi4rEMpnH5VOdZ8cA9FjUtd8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=lozyMcslg8gBztuIqlAs2RR+XYwytW30ghw4TYJ0lppiPQQ3iLHkxsLhb/wFxy7F+NJlwsjLqVSqTWffU6pj669/1sc5bi4CYepYAbfjG/5te6P/E7vqbnwHNs7QDnnH+ytAtDzf0jztYDSyHHJZpkp9C78z24b6E3W6o7BWA44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aa.jp.fujitsu.com; spf=pass smtp.mailfrom=aa.jp.fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=D9wyBT5x; arc=none smtp.client-ip=68.232.139.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aa.jp.fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aa.jp.fujitsu.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1755500099; x=1787036099;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=SYqtjbS5xj6kVXRvjoAEi4rEMpnH5VOdZ8cA9FjUtd8=;
+  b=D9wyBT5xnouc8i3JV88+qZ/Y3iy3gJbqBeo/0k+oxz+pge6WdQHCbxdb
+   GSSeRTlJtAprdnAgukl8cbEBll3G7AzpVDP+aWM+KsMu333W114ToMnIC
+   x8KSC3WcD1mE4AN1lltxRN5rlufaOq+X4dt3BQCJDWn2JNMo0W1/TJz2C
+   lNdeDTQvdwum+lUVGmtmRYp6REFZ3VwNXEn2TRcrW+oFyxcNoco9mW8Vh
+   7Y9Vf/gUpd3PTy1l9N9bjPjaEz5r2jHDxqo42rGlDrw/VXvjXieldxJ1C
+   SEyvCYx6CVESQd4X/OQR7Od4WakvKwllc5BM6CW8yJk4GWO23SNlQTQpz
+   g==;
+X-CSE-ConnectionGUID: 2uPg1gbcSqa6U0vsdjVMUA==
+X-CSE-MsgGUID: 9p1Pm3zLS7WtHCkVUs3EdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11524"; a="212937784"
+X-IronPort-AV: E=Sophos;i="6.17,293,1747666800"; 
+   d="scan'208";a="212937784"
+Received: from unknown (HELO az2uksmgr3.o.css.fujitsu.com) ([52.151.125.19])
+  by esa6.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 15:54:52 +0900
+Received: from az2uksmgm2.o.css.fujitsu.com (unknown [10.151.22.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgr3.o.css.fujitsu.com (Postfix) with ESMTPS id 7D88C1002B84;
+	Mon, 18 Aug 2025 06:54:51 +0000 (UTC)
+Received: from az2uksmom2.o.css.fujitsu.com (az2uksmom2.o.css.fujitsu.com [10.151.22.203])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 37B991800257;
+	Mon, 18 Aug 2025 06:54:51 +0000 (UTC)
+Received: from sm-arm-grace07.ssoft.mng.com (sm-x86-stp01.soft.fujitsu.com [10.124.178.20])
+	by az2uksmom2.o.css.fujitsu.com (Postfix) with ESMTP id 8F6941400126;
+	Mon, 18 Aug 2025 06:54:46 +0000 (UTC)
+From: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
+Subject: [PATCH] ACPI: AGDI: Add interrupt signaling mode support
+Date: Mon, 18 Aug 2025 15:54:32 +0900
+Message-ID: <20250818065437.85905-1-fj1078ii@aa.jp.fujitsu.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250818-numa_memblks-v1-1-9eb29ade560a@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAArLomgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDC0MT3bzS3MT43NTcpJzsYt0kU5NEC3MLCyODlFQloJaCotS0zAqwcdG
- xQH5GZnFJflElyPTa2loAgXpdgW0AAAA=
-X-Change-ID: 20250814-numa_memblks-b54a878820de
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-        David Hildenbrand <david@redhat.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Danilo Krummrich <dakr@kernel.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-        Dexuan Cui <decui@microsoft.com>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-acpi@vger.kernel.org,
-        nvdimm@lists.linux.dev, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-        xen-devel@lists.xenproject.org,
-        Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1755499297; l=12122;
- i=pratyush.brahma@oss.qualcomm.com; s=20250808; h=from:subject:message-id;
- bh=//n/Cd8/21p2TwuLHbKJjrZr/VX2C3LDE0HHjeHcn3A=;
- b=YhwC5Lk4afAnAuPN/u4jW8oYab0ctCO2cz+geSxr4bRuihGdwIV2yM1kuCXBVrnF+tdcuoDdH
- v7S65fFa5CkAcFfEgaPVnJ6mv1qtlUNsSBr4p0Efj25v9textGh8WHy
-X-Developer-Key: i=pratyush.brahma@oss.qualcomm.com; a=ed25519;
- pk=ZeXF1N8hxU6j3G/ajMI+du/TVXMZQaXDwnJyznB69ms=
-X-Proofpoint-ORIG-GUID: YNYP3BO7-KfcLPbMQsv94Z9-mJur6UJL
-X-Authority-Analysis: v=2.4 cv=ZJHXmW7b c=1 sm=1 tr=0 ts=68a2cb2f cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=qb4DzySmTAYQGscL8MYA:9
- a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
-X-Proofpoint-GUID: YNYP3BO7-KfcLPbMQsv94Z9-mJur6UJL
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE2MDAyOCBTYWx0ZWRfX/KaFt5LrKPr3
- AZtuNEG/irRmkhMnpkaWqNSs3hJAMJzebquWPainyNV6CJQX3bK2Eqvx4kOBLpHDcsteOwW8k4C
- NL7qGvXifuCo+7QuubdczsCxHpgEFGF+NsPEUC+AvDvx8joRnuqZAhQBVAwxVJyU0dp92V74N68
- YK7mljz5WgJcfj76+6YasJ7HcJSJB4WjLGodbAUJ0yc9p54fN9jya758uo7rUDevRALaf6x179W
- zINzKpiT1hEjHDlCjsiSCg8QPgUOu85VF7cH9IcshdsAo8aseYnR3+sJSCp3WyvD8VTIgoAylCo
- ms1liNfKl0Tgzil5YrP0plrDI/xfoS5Q0/dSUmwycnRnYlFuTKpCLGflV8z6DrRvYkhqE0BPZYv
- nWs4GRJ/
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-18_03,2025-08-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 phishscore=0 suspectscore=0 clxscore=1011
- bulkscore=0 spamscore=0 impostorscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508160028
+Content-Transfer-Encoding: 8bit
 
-From: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
+AGDI has two types of signaling modes: SDEI and interrupt.
+Currently, the AGDI driver only supports SDEI.
+Therefore, add support for interrupt singaling mode
+The interrupt vector is retrieved from the AGDI table, and call panic
+function when an interrupt occurs.
+SDEI & Interrupt mode is not supported.
 
-The function `memory_add_physaddr_to_nid` seems a misnomer.
-It does not to "add" a physical address to a NID mapping,
-but rather it gets the NID associated with a given physical address.
-
-Improve the semantic clarity of the API by renaming to a more
-descriptive name.
-
-Signed-off-by: Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
+Signed-off-by: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
 ---
- arch/powerpc/include/asm/sparsemem.h | 4 ++--
- arch/powerpc/mm/mem.c                | 4 ++--
- arch/s390/include/asm/sparsemem.h    | 4 ++--
- drivers/acpi/acpi_memhotplug.c       | 2 +-
- drivers/acpi/nfit/core.c             | 2 +-
- drivers/base/memory.c                | 2 +-
- drivers/cxl/pmem.c                   | 2 +-
- drivers/dax/cxl.c                    | 2 +-
- drivers/hv/hv_balloon.c              | 6 +++---
- drivers/nvdimm/virtio_pmem.c         | 2 +-
- drivers/virtio/virtio_mem.c          | 2 +-
- drivers/xen/balloon.c                | 2 +-
- include/linux/numa.h                 | 6 +++---
- include/linux/numa_memblks.h         | 4 ++--
- mm/numa.c                            | 6 +++---
- mm/numa_memblks.c                    | 4 ++--
- 16 files changed, 27 insertions(+), 27 deletions(-)
+ drivers/acpi/arm64/agdi.c | 114 +++++++++++++++++++++++++++++++++++---
+ include/acpi/actbl2.h     |   4 +-
+ 2 files changed, 110 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/sparsemem.h b/arch/powerpc/include/asm/sparsemem.h
-index d072866842e4229159fcb6635745fd19a2788413..cdb5594616c8e32ab8ae3d209d0b2df20f3564f6 100644
---- a/arch/powerpc/include/asm/sparsemem.h
-+++ b/arch/powerpc/include/asm/sparsemem.h
-@@ -14,8 +14,8 @@
+diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
+index e0df3daa4abf0..c514bb874c5d3 100644
+--- a/drivers/acpi/arm64/agdi.c
++++ b/drivers/acpi/arm64/agdi.c
+@@ -16,7 +16,11 @@
+ #include "init.h"
  
- #ifdef CONFIG_MEMORY_HOTPLUG
- extern int remove_section_mapping(unsigned long start, unsigned long end);
--extern int memory_add_physaddr_to_nid(u64 start);
--#define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
-+extern int memory_get_phys_to_nid(u64 start);
-+#define memory_get_phys_to_nid memory_get_phys_to_nid
+ struct agdi_data {
++	unsigned char flags;
+ 	int sdei_event;
++	unsigned int gsiv;
++	bool use_nmi;
++	int irq;
+ };
  
- #ifdef CONFIG_NUMA
- extern int hot_add_scn_to_nid(unsigned long scn_addr);
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 3ddbfdbfa9413a17d8321885724ce432d967005a..5665b2e2fc68df8634613c11706e1a9158a3a616 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -54,11 +54,11 @@ EXPORT_SYMBOL(__phys_mem_access_prot);
- static DEFINE_MUTEX(linear_mapping_mutex);
- 
- #ifdef CONFIG_NUMA
--int memory_add_physaddr_to_nid(u64 start)
-+int memory_get_phys_to_nid(u64 start)
- {
- 	return hot_add_scn_to_nid(start);
- }
--EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
-+EXPORT_SYMBOL_GPL(memory_get_phys_to_nid);
- #endif
- 
- int __weak create_section_mapping(unsigned long start, unsigned long end,
-diff --git a/arch/s390/include/asm/sparsemem.h b/arch/s390/include/asm/sparsemem.h
-index 668dfc5de538742269af1b25151372506105fd4d..744c67dce4c106d063cb5436b37412045da0fd2a 100644
---- a/arch/s390/include/asm/sparsemem.h
-+++ b/arch/s390/include/asm/sparsemem.h
-@@ -7,11 +7,11 @@
- 
- #ifdef CONFIG_NUMA
- 
--static inline int memory_add_physaddr_to_nid(u64 addr)
-+static inline int memory_get_phys_to_nid(u64 addr)
- {
+ static int agdi_sdei_handler(u32 sdei_event, struct pt_regs *regs, void *arg)
+@@ -48,6 +52,55 @@ static int agdi_sdei_probe(struct platform_device *pdev,
  	return 0;
  }
--#define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
-+#define memory_get_phys_to_nid memory_get_phys_to_nid
  
- static inline int phys_to_target_node(u64 start)
++static irqreturn_t agdi_interrupt_handler_nmi(int irq, void *dev_id)
++{
++	nmi_panic(NULL, "Arm Generic Diagnostic Dump and Reset NMI Interrupt event issued\n");
++	return IRQ_HANDLED;
++}
++
++static irqreturn_t agdi_interrupt_handler_irq(int irq, void *dev_id)
++{
++	panic("Arm Generic Diagnostic Dump and Reset Interrupt event issued\n");
++	return IRQ_HANDLED;
++}
++
++static int agdi_interrupt_probe(struct platform_device *pdev,
++				struct agdi_data *adata)
++{
++	unsigned long irq_flags;
++	int ret;
++	int irq;
++
++	irq = acpi_register_gsi(NULL, adata->gsiv, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_HIGH);
++	if (irq < 0) {
++		dev_err(&pdev->dev, "cannot register GSI#%d (%d)\n", adata->gsiv, irq);
++		return irq;
++	}
++
++	irq_flags = IRQF_PERCPU | IRQF_NOBALANCING | IRQF_NO_AUTOEN |
++		    IRQF_NO_THREAD;
++	/* try NMI first */
++	ret = request_nmi(irq, &agdi_interrupt_handler_nmi, irq_flags,
++			  "agdi_interrupt_nmi", NULL);
++	if (ret) {
++		ret = request_irq(irq, &agdi_interrupt_handler_irq,
++				  irq_flags, "agdi_interrupt_irq", NULL);
++		if (ret) {
++			dev_err(&pdev->dev, "cannot register IRQ %d\n", ret);
++			acpi_unregister_gsi(adata->gsiv);
++			return ret;
++		}
++		enable_irq(irq);
++		adata->irq = irq;
++	} else {
++		enable_nmi(irq);
++		adata->irq = irq;
++		adata->use_nmi = true;
++	}
++
++	return 0;
++}
++
+ static int agdi_probe(struct platform_device *pdev)
  {
-diff --git a/drivers/acpi/acpi_memhotplug.c b/drivers/acpi/acpi_memhotplug.c
-index d0c1a71007d0a3054608bec8fddc8e86bdffb78b..6f968243ffc3cc5864e73b914d1bf67748e30e66 100644
---- a/drivers/acpi/acpi_memhotplug.c
-+++ b/drivers/acpi/acpi_memhotplug.c
-@@ -183,7 +183,7 @@ static int acpi_memory_enable_device(struct acpi_memory_device *mem_device)
- 			continue;
- 		/* We want a single node for the whole memory group */
- 		if (node < 0)
--			node = memory_add_physaddr_to_nid(info->start_addr);
-+			node = memory_get_phys_to_nid(info->start_addr);
- 		total_length += info->length;
+ 	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
+@@ -55,12 +108,20 @@ static int agdi_probe(struct platform_device *pdev)
+ 	if (!adata)
+ 		return -EINVAL;
+ 
+-	return agdi_sdei_probe(pdev, adata);
++	switch (adata->flags & ACPI_AGDI_SIGNALING_MODE_MASK) {
++	case ACPI_AGDI_SIGNALING_MODE_SDEI:
++		return agdi_sdei_probe(pdev, adata);
++
++	case ACPI_AGDI_SIGNALING_MODE_INTERRUPT:
++		return agdi_interrupt_probe(pdev, adata);
++	}
++
++	return 0;
+ }
+ 
+-static void agdi_remove(struct platform_device *pdev)
++static void agdi_sdei_remove(struct platform_device *pdev,
++			     struct agdi_data *adata)
+ {
+-	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
+ 	int err, i;
+ 
+ 	err = sdei_event_disable(adata->sdei_event);
+@@ -83,6 +144,34 @@ static void agdi_remove(struct platform_device *pdev)
+ 			adata->sdei_event, ERR_PTR(err));
+ }
+ 
++static void agdi_interrupt_remove(struct platform_device *pdev,
++				  struct agdi_data *adata)
++{
++	if (adata->irq != -1) {
++		if (adata->use_nmi)
++			free_nmi(adata->irq, NULL);
++		else
++			free_irq(adata->irq, NULL);
++
++		acpi_unregister_gsi(adata->gsiv);
++	}
++}
++
++static void agdi_remove(struct platform_device *pdev)
++{
++	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
++
++	switch (adata->flags & ACPI_AGDI_SIGNALING_MODE_MASK) {
++	case ACPI_AGDI_SIGNALING_MODE_SDEI:
++		agdi_sdei_remove(pdev, adata);
++		break;
++
++	case ACPI_AGDI_SIGNALING_MODE_INTERRUPT:
++		agdi_interrupt_remove(pdev, adata);
++		break;
++	}
++}
++
+ static struct platform_driver agdi_driver = {
+ 	.driver = {
+ 		.name = "agdi",
+@@ -94,7 +183,7 @@ static struct platform_driver agdi_driver = {
+ void __init acpi_agdi_init(void)
+ {
+ 	struct acpi_table_agdi *agdi_table;
+-	struct agdi_data pdata;
++	struct agdi_data pdata = {0};
+ 	struct platform_device *pdev;
+ 	acpi_status status;
+ 
+@@ -103,12 +192,23 @@ void __init acpi_agdi_init(void)
+ 	if (ACPI_FAILURE(status))
+ 		return;
+ 
+-	if (agdi_table->flags & ACPI_AGDI_SIGNALING_MODE) {
+-		pr_warn("Interrupt signaling is not supported");
++	switch (agdi_table->flags & ACPI_AGDI_SIGNALING_MODE_MASK) {
++	case ACPI_AGDI_SIGNALING_MODE_SDEI:
++		pdata.sdei_event = agdi_table->sdei_event;
++		break;
++
++	case ACPI_AGDI_SIGNALING_MODE_INTERRUPT:
++		pdata.gsiv = agdi_table->gsiv;
++		break;
++
++	default:
++		pr_warn("Signaling mode(%d) is not supported",
++			agdi_table->flags & ACPI_AGDI_SIGNALING_MODE_MASK);
+ 		goto err_put_table;
  	}
  
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index ae035b93da087812dee6ec47d9ef4aa97dc8e7bc..04c3ab311e4d5923aef50252efabd193c5fb7850 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -2630,7 +2630,7 @@ static int acpi_nfit_register_region(struct acpi_nfit_desc *acpi_desc,
+-	pdata.sdei_event = agdi_table->sdei_event;
++	pdata.irq = -1;
++	pdata.flags = agdi_table->flags;
  
- 	/* Fallback to address based numa information if node lookup failed */
- 	if (ndr_desc->numa_node == NUMA_NO_NODE) {
--		ndr_desc->numa_node = memory_add_physaddr_to_nid(spa->address);
-+		ndr_desc->numa_node = memory_get_phys_to_nid(spa->address);
- 		dev_info(acpi_desc->dev, "changing numa node from %d to %d for nfit region [%pa-%pa]",
- 			NUMA_NO_NODE, ndr_desc->numa_node, &res.start, &res.end);
- 	}
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index 5c6c1d6bb59f1241a5f42a3396be1a8e2058c965..f657520855408804761afec379e3c0b2a238b239 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -599,7 +599,7 @@ static ssize_t probe_store(struct device *dev, struct device_attribute *attr,
- 	if (ret)
- 		return ret;
+ 	pdev = platform_device_register_data(NULL, "agdi", 0, &pdata, sizeof(pdata));
+ 	if (IS_ERR(pdev))
+diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+index 048f5f47f8b88..9ddbdd772f139 100644
+--- a/include/acpi/actbl2.h
++++ b/include/acpi/actbl2.h
+@@ -339,7 +339,9 @@ struct acpi_table_agdi {
  
--	nid = memory_add_physaddr_to_nid(phys_addr);
-+	nid = memory_get_phys_to_nid(phys_addr);
- 	ret = __add_memory(nid, phys_addr,
- 			   MIN_MEMORY_BLOCK_SIZE * sections_per_block,
- 			   MHP_NONE);
-diff --git a/drivers/cxl/pmem.c b/drivers/cxl/pmem.c
-index e197883690efc11f60c31bd56aeb5695665d422b..471aed4e11241948e994d0b9d53600c147e38fb0 100644
---- a/drivers/cxl/pmem.c
-+++ b/drivers/cxl/pmem.c
-@@ -410,7 +410,7 @@ static int cxl_pmem_region_probe(struct device *dev)
- 	ndr_desc.res = res;
- 	ndr_desc.provider_data = cxlr_pmem;
+ /* Mask for Flags field above */
  
--	ndr_desc.numa_node = memory_add_physaddr_to_nid(res->start);
-+	ndr_desc.numa_node = memory_get_phys_to_nid(res->start);
- 	ndr_desc.target_node = phys_to_target_node(res->start);
- 	if (ndr_desc.target_node == NUMA_NO_NODE) {
- 		ndr_desc.target_node = ndr_desc.numa_node;
-diff --git a/drivers/dax/cxl.c b/drivers/dax/cxl.c
-index 13cd94d32ff7a1d70af7821c1aecd7490302149d..35843791872ba466f571c022e1484816368a1198 100644
---- a/drivers/dax/cxl.c
-+++ b/drivers/dax/cxl.c
-@@ -15,7 +15,7 @@ static int cxl_dax_region_probe(struct device *dev)
- 	struct dev_dax_data data;
+-#define ACPI_AGDI_SIGNALING_MODE (1)
++#define ACPI_AGDI_SIGNALING_MODE_MASK (3)
++#define ACPI_AGDI_SIGNALING_MODE_SDEI (0)
++#define ACPI_AGDI_SIGNALING_MODE_INTERRUPT (1)
  
- 	if (nid == NUMA_NO_NODE)
--		nid = memory_add_physaddr_to_nid(cxlr_dax->hpa_range.start);
-+		nid = memory_get_phys_to_nid(cxlr_dax->hpa_range.start);
- 
- 	dax_region = alloc_dax_region(dev, cxlr->id, &cxlr_dax->hpa_range, nid,
- 				      PMD_SIZE, IORESOURCE_DAX_KMEM);
-diff --git a/drivers/hv/hv_balloon.c b/drivers/hv/hv_balloon.c
-index 2b4080e51f97c30e7adb06faa56b1403bc08b53c..8878aac6da9cd3bd6f499eae2588e989b7219af3 100644
---- a/drivers/hv/hv_balloon.c
-+++ b/drivers/hv/hv_balloon.c
-@@ -725,7 +725,7 @@ static void hv_mem_hot_add(unsigned long start, unsigned long size,
- 
- 		reinit_completion(&dm_device.ol_waitevent);
- 
--		nid = memory_add_physaddr_to_nid(PFN_PHYS(start_pfn));
-+		nid = memory_get_phys_to_nid(PFN_PHYS(start_pfn));
- 		ret = add_memory(nid, PFN_PHYS((start_pfn)),
- 				 HA_BYTES_IN_CHUNK, MHP_MERGE_RESOURCE);
- 
-@@ -1701,8 +1701,8 @@ static int hot_add_enabled(void)
- {
- 	/*
- 	 * Disable hot add on ARM64, because we currently rely on
--	 * memory_add_physaddr_to_nid() to get a node id of a hot add range,
--	 * however ARM64's memory_add_physaddr_to_nid() always return 0 and
-+	 * memory_get_phys_to_nid() to get a node id of a hot add range,
-+	 * however ARM64's memory_get_phys_to_nid() always return 0 and
- 	 * DM_MEM_HOT_ADD_REQUEST doesn't have the NUMA node information for
- 	 * add_memory().
- 	 */
-diff --git a/drivers/nvdimm/virtio_pmem.c b/drivers/nvdimm/virtio_pmem.c
-index 2396d19ce5496974f8b93b54cc8c95e48dda103d..df6a3fd552d11a577d85708f80e7558ea83839d2 100644
---- a/drivers/nvdimm/virtio_pmem.c
-+++ b/drivers/nvdimm/virtio_pmem.c
-@@ -100,7 +100,7 @@ static int virtio_pmem_probe(struct virtio_device *vdev)
- 
- 	ndr_desc.res = &res;
- 
--	ndr_desc.numa_node = memory_add_physaddr_to_nid(res.start);
-+	ndr_desc.numa_node = memory_get_phys_to_nid(res.start);
- 	ndr_desc.target_node = phys_to_target_node(res.start);
- 	if (ndr_desc.target_node == NUMA_NO_NODE) {
- 		ndr_desc.target_node = ndr_desc.numa_node;
-diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
-index 1688ecd69a0445d5c21d108a9a1d60577f96d7ac..6154f03a12c3efa65728f626e43b6270245d439c 100644
---- a/drivers/virtio/virtio_mem.c
-+++ b/drivers/virtio/virtio_mem.c
-@@ -2858,7 +2858,7 @@ static int virtio_mem_init(struct virtio_mem *vm)
- 
- 	/* Determine the nid for the device based on the lowest address. */
- 	if (vm->nid == NUMA_NO_NODE)
--		vm->nid = memory_add_physaddr_to_nid(vm->addr);
-+		vm->nid = memory_get_phys_to_nid(vm->addr);
- 
- 	dev_info(&vm->vdev->dev, "start address: 0x%llx", vm->addr);
- 	dev_info(&vm->vdev->dev, "region size: 0x%llx", vm->region_size);
-diff --git a/drivers/xen/balloon.c b/drivers/xen/balloon.c
-index 2de37dcd75566fc1a03b75232cbe17fc0f53909d..93ca270ddd516ec11bc3f096eb518b9789d92664 100644
---- a/drivers/xen/balloon.c
-+++ b/drivers/xen/balloon.c
-@@ -284,7 +284,7 @@ static enum bp_state reserve_additional_memory(void)
- 	if (!resource)
- 		goto err;
- 
--	nid = memory_add_physaddr_to_nid(resource->start);
-+	nid = memory_get_phys_to_nid(resource->start);
- 
- #ifdef CONFIG_XEN_HAVE_PVMMU
- 	/*
-diff --git a/include/linux/numa.h b/include/linux/numa.h
-index e6baaf6051bcff6c23308d3b67f790053fbd29dc..ed65a20f39718a5a3157f6f9db60561f4418b000 100644
---- a/include/linux/numa.h
-+++ b/include/linux/numa.h
-@@ -33,8 +33,8 @@ int numa_nearest_node(int node, unsigned int state);
- 
- int nearest_node_nodemask(int node, nodemask_t *mask);
- 
--#ifndef memory_add_physaddr_to_nid
--int memory_add_physaddr_to_nid(u64 start);
-+#ifndef memory_get_phys_to_nid
-+int memory_get_phys_to_nid(u64 start);
- #endif
- 
- #ifndef phys_to_target_node
-@@ -54,7 +54,7 @@ static inline int nearest_node_nodemask(int node, nodemask_t *mask)
- 	return NUMA_NO_NODE;
- }
- 
--static inline int memory_add_physaddr_to_nid(u64 start)
-+static inline int memory_get_phys_to_nid(u64 start)
- {
- 	return 0;
- }
-diff --git a/include/linux/numa_memblks.h b/include/linux/numa_memblks.h
-index 991076cba7c5016d845eb40a2f9887f73fa83862..37cc0987e738f8aa2eb5c8f1ca2c94394def4780 100644
---- a/include/linux/numa_memblks.h
-+++ b/include/linux/numa_memblks.h
-@@ -53,8 +53,8 @@ static inline int numa_emu_cmdline(char *str)
- #ifdef CONFIG_NUMA_KEEP_MEMINFO
- extern int phys_to_target_node(u64 start);
- #define phys_to_target_node phys_to_target_node
--extern int memory_add_physaddr_to_nid(u64 start);
--#define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
-+extern int memory_get_phys_to_nid(u64 start);
-+#define memory_get_phys_to_nid memory_get_phys_to_nid
- #endif /* CONFIG_NUMA_KEEP_MEMINFO */
- 
- #endif /* CONFIG_NUMA_MEMBLKS */
-diff --git a/mm/numa.c b/mm/numa.c
-index 7d5e06fe5bd4a2790b83dd7dbe646617f6476d8c..f7b5ac8aea608368b75c606970187eb147ddf427 100644
---- a/mm/numa.c
-+++ b/mm/numa.c
-@@ -40,14 +40,14 @@ void __init alloc_offline_node_data(int nid)
- 
- /* Stub functions: */
- 
--#ifndef memory_add_physaddr_to_nid
--int memory_add_physaddr_to_nid(u64 start)
-+#ifndef memory_get_phys_to_nid
-+int memory_get_phys_to_nid(u64 start)
- {
- 	pr_info_once("Unknown online node for memory at 0x%llx, assuming node 0\n",
- 			start);
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
-+EXPORT_SYMBOL_GPL(memory_get_phys_to_nid);
- #endif
- 
- #ifndef phys_to_target_node
-diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-index 541a99c4071a67e5b0ef66f4136dee268a880003..346039bd933390fb014931fc61ccd2f96a773c37 100644
---- a/mm/numa_memblks.c
-+++ b/mm/numa_memblks.c
-@@ -580,7 +580,7 @@ int phys_to_target_node(u64 start)
- }
- EXPORT_SYMBOL_GPL(phys_to_target_node);
- 
--int memory_add_physaddr_to_nid(u64 start)
-+int memory_get_phys_to_nid(u64 start)
- {
- 	int nid = meminfo_to_nid(&numa_meminfo, start);
- 
-@@ -588,6 +588,6 @@ int memory_add_physaddr_to_nid(u64 start)
- 		nid = numa_meminfo.blk[0].nid;
- 	return nid;
- }
--EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
-+EXPORT_SYMBOL_GPL(memory_get_phys_to_nid);
- 
- #endif /* CONFIG_NUMA_KEEP_MEMINFO */
-
----
-base-commit: 479058002c32b77acac43e883b92174e22c4be2d
-change-id: 20250814-numa_memblks-b54a878820de
-
-Best regards,
+ /*******************************************************************************
+  *
 -- 
-Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>
+2.43.0
 
 
