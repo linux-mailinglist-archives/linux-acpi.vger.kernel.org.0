@@ -1,151 +1,166 @@
-Return-Path: <linux-acpi+bounces-15820-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15821-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA856B2B778
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Aug 2025 05:14:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8CDBB2B77D
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Aug 2025 05:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB1C37A89D5
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Aug 2025 03:13:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D4F64E1C5E
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Aug 2025 03:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D9F2D2499;
-	Tue, 19 Aug 2025 03:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDC42D3EEE;
+	Tue, 19 Aug 2025 03:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ToeFspIY"
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="lIocyK96"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB8C2D2494;
-	Tue, 19 Aug 2025 03:14:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074C24A35;
+	Tue, 19 Aug 2025 03:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755573292; cv=none; b=mN0P8fUYF74tQVYLVUYAcBxbtDdO0Ta5UJuJa6wyktfNo9gBVsZVHKM5LUDheeQ9y2kwYDhvD0es8DffelnZ/7T32wi9scqyYpMKUshQEUQNysNSbqTgwr3q9CE7mfsuRzZPnpYXAMkA4YIGwzfcKsHYIKeCQFb3mtk9JAj6SPc=
+	t=1755574005; cv=none; b=HeT0GN2fnM/+QdCdyDSDCTtgoe3X+e6AgsJICTSFMTg7KLQGkAeht8UiAwoY25stw8gPuIgD3QIMuxzwjg+XxF1JnFrwToRZ+PR/D1U0V5Tkl67+UeChzdA8Jq8+IjrWzWIwJdy+02+VF0yubo1EssI2VQOuRTxg6xyHHonpzl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755573292; c=relaxed/simple;
-	bh=LxlrR9y3l9B1O3j3VWx5sgYjS8asj4a64ifyNhQl3PI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ID3n1RBdcPyuOAIHM4o2S7nca35j5zoug/2kpSoX8iMhJ/kVFmS4WKN8DJ0HeARoIf1cjAwxUEbAeNPULpxQzdFuxGovfzj0VflTBe9hok+mRPf4ZQo8OFie9BTwl2z7cljwS9WxWqi+7f6Xz/GWHvPVdwHglQYU5oUlcZW05UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ToeFspIY; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755573290; x=1787109290;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=LxlrR9y3l9B1O3j3VWx5sgYjS8asj4a64ifyNhQl3PI=;
-  b=ToeFspIYVB+JEWvAGUzdJmk0RVy0jG5C0bizTfJUq10MHDwCTlOdyCiQ
-   9dPjP9Ok7/CgNHG9hZI8ggiwiug5kSwg6+2PHigXz5pUeI6bJsim9qnRP
-   C3LLyP5kj7MtRpYFEf7qlpSCLHulLjxLEjcLRcfB0cc7QDdh6VjsFFfNZ
-   JssNUrVNA2bMB2DB581dz/b0p0ZV3ihy3GICiE7u31whwufVj+s3ZbIoK
-   R4Tp/88CMUYAo/vtApZ9dXezvhPHZC7Z4vWqxKUN5RidIwYzdv+GN8k64
-   ySCeEiMMzDqTuIvoGQQ+g2jCk8UrRPISCOtqYQ//bPwljbn0xVZ2e4Tx/
-   Q==;
-X-CSE-ConnectionGUID: A1AyEoK6RkuPNN2Y3RwbZg==
-X-CSE-MsgGUID: fqkDk2yaSH6eLc1Ac3uqHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11526"; a="57665038"
-X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
-   d="scan'208";a="57665038"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 20:14:50 -0700
-X-CSE-ConnectionGUID: zilxxI6GSgGGUkjyRwoWNA==
-X-CSE-MsgGUID: o+lzAP11T1CM4lG+w8RhxQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
-   d="scan'208";a="173080724"
-Received: from c02x38vbjhd2mac.jf.intel.com (HELO [10.54.75.30]) ([10.54.75.30])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 20:14:49 -0700
-Message-ID: <3e48429a-b52d-43a1-b48a-06fb46f0a37c@linux.intel.com>
-Date: Mon, 18 Aug 2025 20:14:45 -0700
+	s=arc-20240116; t=1755574005; c=relaxed/simple;
+	bh=v2fOmGvCEa1uf4z/p4esCXg2wiXJmeWbshwawmhZPck=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V3cGpzrmgI8LsF6TJiBSYoGbvt3iuBf8PFiZ3bzrSI3ppXabx2cZL/5FbvSmQuJuF8LPJZMmSuxnJu2aXnjVqiOrcB4T8CTOLQ3/HnBiR+1pS/CFfQleC3iolvOZO+OYuu0pevbtm3i6PppGOTVt+iON9InaaU5ZC6rLQKs6hfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=lIocyK96; arc=none smtp.client-ip=178.21.23.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
+Received: from mail01.disroot.lan (localhost [127.0.0.1])
+	by disroot.org (Postfix) with ESMTP id 1BC3F22D7F;
+	Tue, 19 Aug 2025 05:26:40 +0200 (CEST)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+ by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id 6mf-pBRRXyKk; Tue, 19 Aug 2025 05:26:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1755573999; bh=v2fOmGvCEa1uf4z/p4esCXg2wiXJmeWbshwawmhZPck=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lIocyK96JzLEoWkrV/InqiZnpuh5giFNVn7nTAr4tSxuJTGEOC7rFrJr9L4axHtEN
+	 f4+O36eWEssxmtQCGx6ey9rkLp9UTPIRu76Rlr25CobclxH0YkZLuJhd05iC/ae24o
+	 Y7Uf4iu104epCpo/in1Ff7Ih3VPWj6kMJqSqwv8qXtm2rpMn/ExADKsClvRBUUbslN
+	 28HPJYDduR8hNPecYhtNDv5tpExyjmu4YLliYLLpeRvgxwByWf+Edtkt0aRFW58Efd
+	 8suHStYpx+zphVDOflDvS+HYKlStJ/Il3+fNPjB+1J7kY3kjLLFaK5HPaqoyxpscxC
+	 BrIm4QZw5cBxA==
+Date: Tue, 19 Aug 2025 03:26:18 +0000
+From: Yao Zi <ziyao@disroot.org>
+To: Anup Patel <apatel@ventanamicro.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Alexandre Ghiti <alex@ghiti.fr>, Len Brown <lenb@kernel.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-acpi@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] RISC-V: Add common csr_read_num() and
+ csr_write_num() functions
+Message-ID: <aKPu2g1MOZBBzQbV@pie>
+References: <20250818143600.894385-1-apatel@ventanamicro.com>
+ <20250818143600.894385-3-apatel@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] mm/memory_hotplug: Update comment for hotplug memory
- callback priorities
-To: Dave Jiang <dave.jiang@intel.com>, David Hildenbrand <david@redhat.com>,
- linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
- dave@stgolabs.net, jonathan.cameron@huawei.com, alison.schofield@intel.com,
- vishal.l.verma@intel.com, ira.weiny@intel.com, dan.j.williams@intel.com,
- akpm@linux-foundation.org
-References: <20250814171650.3002930-1-dave.jiang@intel.com>
- <20250814171650.3002930-2-dave.jiang@intel.com>
- <c3e30bf7-403a-4105-8e04-a73b80039ea5@redhat.com>
- <cd3d3e33-7b2e-45f1-977f-2d634ff1ef81@intel.com>
-Content-Language: en-GB
-From: Marc Herbert <marc.herbert@linux.intel.com>
-In-Reply-To: <cd3d3e33-7b2e-45f1-977f-2d634ff1ef81@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250818143600.894385-3-apatel@ventanamicro.com>
 
-
-
-On 2025-08-18 07:08, Dave Jiang wrote:
+On Mon, Aug 18, 2025 at 08:06:00PM +0530, Anup Patel wrote:
+> In RISC-V, there is no CSR read/write instruction which takes CSR
+> number via register so add common csr_read_num() and csr_write_num()
+> functions which allow accessing certain CSRs by passing CSR number
+> as parameter. These common functions will be first used by the
+> ACPI CPPC driver and RISC-V PMU driver.
 > 
+> Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+> Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+> ---
+>  arch/riscv/include/asm/csr.h |   3 +
+>  arch/riscv/kernel/Makefile   |   1 +
+>  arch/riscv/kernel/csr.c      | 165 +++++++++++++++++++++++++++++++++++
+>  drivers/acpi/riscv/cppc.c    |  17 ++--
+>  drivers/perf/riscv_pmu.c     |  54 ++----------
+>  5 files changed, 184 insertions(+), 56 deletions(-)
+>  create mode 100644 arch/riscv/kernel/csr.c
 > 
-> On 8/16/25 12:29 AM, David Hildenbrand wrote:
->> On 14.08.25 19:16, Dave Jiang wrote:
->>> Add clarification to comment for memory hotplug callback ordering as the
->>> current comment does not provide clear language on which callback happens
->>> first.
->>>
->>> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
->>> ---
->>>   include/linux/memory.h | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/include/linux/memory.h b/include/linux/memory.h
->>> index 40eb70ccb09d..02314723e5bd 100644
->>> --- a/include/linux/memory.h
->>> +++ b/include/linux/memory.h
->>> @@ -116,7 +116,7 @@ struct mem_section;
->>>     /*
->>>    * Priorities for the hotplug memory callback routines (stored in decreasing
->>> - * order in the callback chain)
->>> + * order in the callback chain). The callback ordering happens from high to low.
->>>    */
->>>   #define DEFAULT_CALLBACK_PRI    0
->>>   #define SLAB_CALLBACK_PRI    1
->>
->> "stored in decreasing order in the callback chain"
->>
->> is pretty clear? It's a chain after all that gets called.
-> 
-> I can drop the patch. For some reason when I read it I'm thinking the opposite, and when Marc was also confused I started questioning things.
-> 
+> diff --git a/arch/riscv/include/asm/csr.h b/arch/riscv/include/asm/csr.h
+> index 6fed42e37705..1540626b3540 100644
+> --- a/arch/riscv/include/asm/csr.h
+> +++ b/arch/riscv/include/asm/csr.h
+> @@ -575,6 +575,9 @@
+>  			      : "memory");			\
+>  })
+>  
+> +extern unsigned long csr_read_num(unsigned long csr_num, int *out_err);
+> +extern void csr_write_num(unsigned long csr_num, unsigned long val, int *out_err);
 
-I think we both found the current comment confusing (even together!)
-because:
+I think it's more consistent to directly return the error code, and for
+csr_read_num, we could pass out the read value by a pointer. e.g.
 
-- It very briefly alludes to an implementation detail (the chain)
-  without really getting into detail. A "chain" could be bi-directional;
-  why not? This one is... "most likely" not. Doubt.
+	int csr_read_num(unsigned long csr_num, unsigned long *val);
+	int csr_write_num(unsigned long csr_num, unsigned long val);
 
-- Higher priorities can have lower numbers, example: "P1 bugs". Not the
-  case here, but this "double standards" situation makes _all_
-  priorities suspicious and confusing.
+This allows the caller to eliminate a variable for temporarily storing
+the error code if they use it just after the invokation, and fits the
+common convention of Linux better.
 
-- Constants that come first in the file are called last.
+> +
+>  #endif /* __ASSEMBLY__ */
+>  
+>  #endif /* _ASM_RISCV_CSR_H */
 
+...
 
-I would go further than Dave and also drop the "chain" implementation
-detail because it makes the reader to think too much.  Not needed and
-distracting at this particular point in the file.
+> diff --git a/drivers/acpi/riscv/cppc.c b/drivers/acpi/riscv/cppc.c
+> index 42c1a9052470..fe491937ed25 100644
+> --- a/drivers/acpi/riscv/cppc.c
+> +++ b/drivers/acpi/riscv/cppc.c
+> @@ -65,24 +65,19 @@ static void sbi_cppc_write(void *write_data)
+>  static void cppc_ffh_csr_read(void *read_data)
+>  {
+>  	struct sbi_cppc_data *data = (struct sbi_cppc_data *)read_data;
+> +	int err;
+>  
+> -	switch (data->reg) {
+> -	/* Support only TIME CSR for now */
+> -	case CSR_TIME:
+> -		data->ret.value = csr_read(CSR_TIME);
+> -		data->ret.error = 0;
+> -		break;
+> -	default:
+> -		data->ret.error = -EINVAL;
+> -		break;
+> -	}
+> +	data->ret.value = csr_read_num(data->reg, &err);
+> +	data->ret.error = err;
+>  }
+>  
+>  static void cppc_ffh_csr_write(void *write_data)
+>  {
+>  	struct sbi_cppc_data *data = (struct sbi_cppc_data *)write_data;
+> +	int err;
+>  
+> -	data->ret.error = -EINVAL;
+> +	csr_write_num(data->reg, data->val, &err);
+> +	data->ret.error = err;
+>  }
 
-/*
- * Priorities for the hotplug memory callback routines.
- * Invoked from high to low.
- */
+This could be simplified as
 
-  => Hopefully zero cognitive load.
+	data->ret.error = csr_write_num(data->reg, data->val);
 
+and variable err could be dropped.
 
+Best regards,
+Yao Zi
 
