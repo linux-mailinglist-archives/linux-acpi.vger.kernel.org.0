@@ -1,261 +1,255 @@
-Return-Path: <linux-acpi+bounces-15844-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15845-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E71B2CA75
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Aug 2025 19:23:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A5F4B2CCC3
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Aug 2025 21:08:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E43E1C25FEC
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Aug 2025 17:23:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 563FC17F209
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Aug 2025 19:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64FF1302CBD;
-	Tue, 19 Aug 2025 17:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DCC26D4E8;
+	Tue, 19 Aug 2025 19:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="K1xux7em"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d74O/EWW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2086.outbound.protection.outlook.com [40.107.236.86])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1031F8733;
-	Tue, 19 Aug 2025 17:22:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755624161; cv=fail; b=osdfAecj53W7cf6Z+/XJNbFCShKgn2jhvUJ+f9l7W7Tz4iUJbL/2xt2KfdfYLXOXxBnB6JJZMdTzEkbHvrVC9i5gEU4OMf8Td1jsTBiHauZB3Mnv2pKSEKfXH8871wi5RyrtZceaCJSN19wvL/2HixTO3AvMtsDCh0hfhn4Fx94=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755624161; c=relaxed/simple;
-	bh=gYWaPTS4YdSg0wP8oMIFzHhyVqz0GtylpFIaOeR3h88=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=twDbJmJJegB1ChWV2K01JFnc8pFjyCp3LmVpCB3GRuxJnNbQD8of+mU+Q1oHL0onBlzuCLShlKX02YH29719/F32MTOy60pS614lPeA8uwCZCcnPsucmcGMkahCbwpluBki0bEAdRJ0PetfbTsxomhAMTM7x+JhhIAwLg2KfEZI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=K1xux7em; arc=fail smtp.client-ip=40.107.236.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Eu6949MSJmIEEDkP9qwY64DEf13t6MFD/mhXDJ2j51Z7KfSqClgy2QokedllU5jNXYyMILxQzqMoL3emN2atj5qE+E/xsBRved52fxJisfVPPW4WH+jnrvhgxQBkWNPsPR6DH1JU7h0tbcC5R9pSdCCXeYOFgJdL46cPfeixRbeP4tt6VhoYS5XAuz6mImMLNgC5EQxIYzno0SfrxCagFXyH+XcTDtwHlz+66UYSgX6BJvHOCD/WcLKK0WdsKHj9fxVDzeegtxjaDvLwVHGxjWEnZs27AHqU+QzyjkvrZjTdzQ3J2Oso5XeOlO7uvnHpSR/sM4Z1fnF2zOOGcThs5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ys1gH2e5j8xiZRvGCwTNRL2yYA1Sfu6NnXvCiYNcMQ4=;
- b=JyUASeB7okbhaJquVZB4+3ngCTrx4U8Fafm9xYhD7twGyt0vfxjQr/ZjthngJztLWDZBkGHVcjU3lVvCVRoJxkqnFGX1yiudhWJVpdTJFgT4M9HgrzcGjqVUj711zuNDcSb/grQ1/HIijgTWc9xGrZVUm1K9bQo9ts3U076OoLm+eVB8OKM59vbHDbr2ID64wkePQlBgiI12kTN1hgS2biBR+ICH3hGl5uSaI28vnMTciR8xPio8F3q59ULFAwN98tjfmygdAR1Yh9BsfqYdWswCVk41iqWzvX0V6iAgN+yI2b/tkfCu1aYW/CyIHT/j6YK8hFoaL6KaQa+0w1cNAA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ys1gH2e5j8xiZRvGCwTNRL2yYA1Sfu6NnXvCiYNcMQ4=;
- b=K1xux7emZOHeeE+GMUaqhIWbe2GvN2szzxVYGeNJRINCQbW6nAZjM9f1UWlcxl7RsFLhn16FzJigmRNquwp5xB6+BsdAnOx10ZhsZhpM8o0AsAZmjKij9oEgbNLbHxQJyPDaatCorXO8V6ufw2Br/4w1Ix4CQ5YeIXto++L804cfaiaQMuU3iJyoKynq3/RL1VlNy8bfAGxpQMjJ7NPH8cjiQIfDOwbc+c+VeelMyYTgdP1zmTzyoudJmIMKD8ZFp8S//9qzsnYFGTX7LS273L1wdZHVJB+N3EgBnsa7A4kugZlCC2o7NJHQne037ITFXD1CDqaZok2YRGRFNmwZ4Q==
-Received: from BN0PR03CA0033.namprd03.prod.outlook.com (2603:10b6:408:e7::8)
- by SA5PPF530AE3851.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8c9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Tue, 19 Aug
- 2025 17:22:35 +0000
-Received: from BN1PEPF00004689.namprd05.prod.outlook.com
- (2603:10b6:408:e7:cafe::75) by BN0PR03CA0033.outlook.office365.com
- (2603:10b6:408:e7::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9031.20 via Frontend Transport; Tue,
- 19 Aug 2025 17:22:34 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- BN1PEPF00004689.mail.protection.outlook.com (10.167.243.134) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9052.8 via Frontend Transport; Tue, 19 Aug 2025 17:22:34 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 19 Aug
- 2025 10:22:23 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Tue, 19 Aug 2025 10:22:23 -0700
-Received: from Asurada-Nvidia (10.127.8.12) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Tue, 19 Aug 2025 10:22:21 -0700
-Date: Tue, 19 Aug 2025 10:22:20 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: <robin.murphy@arm.com>, <joro@8bytes.org>, <bhelgaas@google.com>,
-	<will@kernel.org>, <robin.clark@oss.qualcomm.com>, <yong.wu@mediatek.com>,
-	<matthias.bgg@gmail.com>, <angelogioacchino.delregno@collabora.com>,
-	<thierry.reding@gmail.com>, <vdumpa@nvidia.com>, <jonathanh@nvidia.com>,
-	<rafael@kernel.org>, <lenb@kernel.org>, <kevin.tian@intel.com>,
-	<yi.l.liu@intel.com>, <baolu.lu@linux.intel.com>,
-	<linux-arm-kernel@lists.infradead.org>, <iommu@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, <linux-tegra@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-	<patches@lists.linux.dev>, <pjaroszynski@nvidia.com>, <vsethi@nvidia.com>,
-	<helgaas@kernel.org>, <etzhao1900@gmail.com>
-Subject: Re: [PATCH v3 3/5] iommu: Add iommu_get_domain_for_dev_locked()
- helper
-Message-ID: <aKSyzI9Xz3J0nhfk@Asurada-Nvidia>
-References: <cover.1754952762.git.nicolinc@nvidia.com>
- <a69557026b7e2353bae67104bbe6a88f0682305e.1754952762.git.nicolinc@nvidia.com>
- <20250818143949.GO802098@nvidia.com>
- <aKNhIr08fK+xIYcg@Asurada-Nvidia>
- <20250818234241.GF802098@nvidia.com>
- <aKQG9/skig6F8LdQ@Asurada-Nvidia>
- <20250819125249.GG802098@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6456E258ECE
+	for <linux-acpi@vger.kernel.org>; Tue, 19 Aug 2025 19:08:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755630528; cv=none; b=bHsMQAgjtPA35YrW/52+4AVVQKTIp22qEq8m5tRHgVFJSDtWK/yOTpFSlfJW933ITirkETn8yBF9mjOdXo+Cr2vnY3ORtFuQdlCCTWjAqS5SprIjenOmIjDwisLH8AXPkBR6peoOKXPgbfhzpLeRJ3y6Rb6bUeWdBHQgQo658+M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755630528; c=relaxed/simple;
+	bh=0mDx7AEoJYqa+BhkILOyTABBC//CuPUeHs4Xv+po9/I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gPH7pfOXl1i4NoQrWp/NK8Ci6aF7gC30ZokoINFPOC/qe3HWjWrEDvOOVjcSKggF00AiL8O2k+Wk6uxCJfaN9ah35w+XQEEfEEdvnaB7kHrrumch7/39OQZSVftTDsM2LD38/ElbAGI2eMFqltV62kJuLHJz5UB5wrF6uXhj8gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d74O/EWW; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755630525;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=NVBphbulaafdV9POZPA6QMtZt5qejno98z8OzC7Nom8=;
+	b=d74O/EWWNmWmHjfvOMcse+sUcQ3Erw8ba8Bu28eMyRSYDPUR3Xy0GF8gnmcUVE7aZ2s2Ii
+	m8qdbWCD8tydMn9+bZpZB8zCQNUf1KgnHLtRzhQmdjUgryIFnOz9PLSMtAfgRxPN8PA04t
+	M/6GqSkHzljZTCVNk4vvxEUQvJtz0AQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-169-m4fj4l4cO1CnDg7qvfPSmA-1; Tue, 19 Aug 2025 15:08:43 -0400
+X-MC-Unique: m4fj4l4cO1CnDg7qvfPSmA-1
+X-Mimecast-MFC-AGG-ID: m4fj4l4cO1CnDg7qvfPSmA_1755630522
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45a1ac1bf0dso1068445e9.0
+        for <linux-acpi@vger.kernel.org>; Tue, 19 Aug 2025 12:08:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755630522; x=1756235322;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NVBphbulaafdV9POZPA6QMtZt5qejno98z8OzC7Nom8=;
+        b=AlY2P4aOWwELAP+QYjjo1xLGr9ZKa3OvuSp/0gmLSGt3QyVzeQItzF8UznaOmBK6me
+         FggyNejjyhQpqHSbPrXMEGHUFKpzMuexfcpNAKoEseiQqn7oPloeaE5tMpmCUTD5G5pa
+         6hhebd2jiV6OaAacujahi41/5wGlUM33NaQXUc3BqciftgPELOgbfoddwYZ2YRoBysHh
+         HE+7vQTFo4zAe6f7hAEBcmXk5iIK8Rw2PAqVW/P5VsX8Vyt5n6QP69oK0cPCT+ktvNXo
+         ZBp+wG/0QSFAEZsTrHXdLknrbWIpOC+WK+kR1hY1UUm/aQLCHi1KFLIyBsoGX5kV0o4F
+         XemQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVh9iFqGciFmS9eVwEEypoOVYA3xqU0gLi2gc9woMBNkBNIcrtBNOnySbD660F6PuXCMnU2+bpSp7Dp@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaMuWRwp00uqbjHvvHv5LMka3jFMEyxQCru0yr4+CfAB9koR/q
+	fqwO3eHsZlofnNy8/pOAtjF3KfUd+CzH3/sIHDYKfY4ypjZRIWxhhmMmWniPNGGDqsNSW+EsnRR
+	d0JlfeBCPRuNFPUTZMWoFsbDFk8GPeyTWZNE1tXvfMYM8NsUNmv4Szqm19V1zSeA=
+X-Gm-Gg: ASbGncv6TGWyAUhhFUQVCmCTREq04EMmv0k+GIGOajx0gYH7/bK94Y4Gqk+TxFNvM61
+	pn6ycU7EE83CbFw+N/ahmu2mPkC6tB2UBlLtmQWaLmQxLczHWEF+F1FWZbTHKB8q4V9CIWZIXrs
+	8F9uti5TTgCLJLw+VFRKjHyjYKVWYomyidwS66KsYqf7HCYstY5RN56SPWJ7WaZg1jwOZ5KSu7w
+	tJy1njFr8vZ4UzLVYG5zzWkuCLF543aoZ4zZs6mz7FNy4K3g4Nsz7PsA4CG5hUcB9RfkeSt/by+
+	bx5AuFOkSd5q3tPIsAJiplztCQESSBOMSpZ/B+N/cefAYieQNjokufWEh+RmzQLV2xzM
+X-Received: by 2002:a05:600c:630c:b0:458:d289:3e26 with SMTP id 5b1f17b1804b1-45b4741f876mr3645725e9.2.1755630522021;
+        Tue, 19 Aug 2025 12:08:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHVsEVqK9Xi5sH5XY/LzfsWeJWrVW+95aQl6Wwc5VOQomSdSsdeuP6QBZzhHOLkKVbK7Z2qdQ==
+X-Received: by 2002:a05:600c:630c:b0:458:d289:3e26 with SMTP id 5b1f17b1804b1-45b4741f876mr3645435e9.2.1755630521491;
+        Tue, 19 Aug 2025 12:08:41 -0700 (PDT)
+Received: from [192.168.3.141] (p57a1a207.dip0.t-ipconnect.de. [87.161.162.7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c07778939bsm4501685f8f.46.2025.08.19.12.08.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Aug 2025 12:08:40 -0700 (PDT)
+Message-ID: <429302cf-1574-4263-b1cb-cb4062509a14@redhat.com>
+Date: Tue, 19 Aug 2025 21:08:39 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250819125249.GG802098@nvidia.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00004689:EE_|SA5PPF530AE3851:EE_
-X-MS-Office365-Filtering-Correlation-Id: 585e9789-a4a4-47ac-9913-08dddf44fcdd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|36860700013|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?JSV2/NcBFWPYEo3I8e3g0fijZi57fj+q4pWrCPKY+6Sc60z3T4oZyX1K+v4t?=
- =?us-ascii?Q?T10oDq9RsMlVIx1iJlCMK+VGlTQIdaa0Pmn7IVHPspk2Oc3PQ1KpOXOEUbs9?=
- =?us-ascii?Q?Jutlqp44pHbjnTMAcOaII38J80ax9pzt2E+saO+wmnheimml7comXRN4To67?=
- =?us-ascii?Q?tBzhwgpfPgV5T9FBMJxMpXVHMzEpnrKpWsP5kJwYXd3gYb+8YBFeXfesK/zV?=
- =?us-ascii?Q?ENMLgcwGFkXJa9jGhmbRcpc8Wnmefys71rqF3xWN4SjV7EQ+zCVh0oBhakHv?=
- =?us-ascii?Q?0ogaL/tF52RcUnKhZbZmOGgws3qx9BNA0qkUAjNfw4PdamznVnWZkFOnqsd5?=
- =?us-ascii?Q?YqCWASFHd4PdX9j1pCJwo2TuXohFWxO+Y91swJPoLNlxrPvD4LiKMubsvHqN?=
- =?us-ascii?Q?X4JP3xTUbiJy2Uz+ZDn8yp2jJ2o11SCt0GLw20EJVy6bO2zVdTJzRlHduDoA?=
- =?us-ascii?Q?pPimEX/KLk3gNmGDeB/Ry6Ftz03brssXuunW+AoKr1ArThh6z9Uc1foDTCYx?=
- =?us-ascii?Q?f7ffwrPLATaE2oi6uXNTy55bfepAzG/L+JwLpRtpAWD5yxMMQUg1TWro981a?=
- =?us-ascii?Q?m0jGwjYd0IW1jz2YuL5i3YgshoOn6uqp8GS2neGPwnX10+c5Dl/72Lf2yYyP?=
- =?us-ascii?Q?eSse8pS35fUqLfl1uuXlQ7bNBtKerpip8+5YILhx8cQFWer8emXZnAPhWlgr?=
- =?us-ascii?Q?G3JfyUoUGQWN0C6mOlBfBOVAlPKkFP9ykgA3YaNt+yt5JPNcajY13EUNIKop?=
- =?us-ascii?Q?aXrqDhjrAzaMbhV4oAeo+OB9Ym1B60JgLsNNlx+K7loSNafVRzJnh8HVJH3L?=
- =?us-ascii?Q?Ma4a42FyoeMrN0dMFKoE0FHeymT5D4JgrtBJo4UkZCYcwJylY+uKqDiFzN5P?=
- =?us-ascii?Q?Th6ets1H/5YfGX6zqbWYPvs6NBvHLAhGHuW34yVlXyKRqkyuLl/pQjLSiedY?=
- =?us-ascii?Q?lxno4WB6h4aIX7jCYU6WTaqW7CxxrxE8baFETZGrZ6MPkoHoRcW4FLpPUnKR?=
- =?us-ascii?Q?zzxIJQ0Gh5rIeld+a1ZepZtB7IavC/tAqYVU7OKaI8qjfPBOnCzDM18DZX/q?=
- =?us-ascii?Q?91elMigZZ3+EIIyfYTZ/o/s8E+xlzo8ONvyEuU+4TEfjWKH4BvC5FHmB0ycs?=
- =?us-ascii?Q?i2KTZR/3jEBIf0RWZt20WO+ot9QXwAkaXJOgR6ANLDRJmDPRUnGMA2vH+lZ6?=
- =?us-ascii?Q?LFU6DC1jOSzf2nfJcmZ8X7w+TZKrUg4ZZElbA5rz+9hEL6kEJmDriFFilqO6?=
- =?us-ascii?Q?XMYDnFfxorwUlOKc0Mu8J9EUb5ozx3FI64mL1quzix85olBvxWrEKngJ7cfu?=
- =?us-ascii?Q?YHlYAS0nvbeDa8W9DHyMWbJ1MGJmrDiKh0knr/FSvtc0v2h9oc8OjpkUDNXO?=
- =?us-ascii?Q?boPRn99oOW0jRMgcMvBjUcivYRS5OtY2wR42ytBYoaAy2Y5bN4aIQFVQhWA8?=
- =?us-ascii?Q?N4up/mJsZDJk/TdTIS0pE5FHNiWT4iCjZAz/CyNo+UzUg0U14KrURpdtgyjg?=
- =?us-ascii?Q?pkH/wRSSnv9GU9uduuUPJOx0ceRZ2X56yVGB?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 17:22:34.7852
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 585e9789-a4a4-47ac-9913-08dddf44fcdd
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00004689.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF530AE3851
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] mm/memory_hotplug: Update comment for hotplug memory
+ callback priorities
+To: Dave Jiang <dave.jiang@intel.com>,
+ Marc Herbert <marc.herbert@linux.intel.com>, linux-cxl@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
+ dave@stgolabs.net, jonathan.cameron@huawei.com, alison.schofield@intel.com,
+ vishal.l.verma@intel.com, ira.weiny@intel.com, dan.j.williams@intel.com,
+ akpm@linux-foundation.org
+References: <20250814171650.3002930-1-dave.jiang@intel.com>
+ <20250814171650.3002930-2-dave.jiang@intel.com>
+ <c3e30bf7-403a-4105-8e04-a73b80039ea5@redhat.com>
+ <cd3d3e33-7b2e-45f1-977f-2d634ff1ef81@intel.com>
+ <3e48429a-b52d-43a1-b48a-06fb46f0a37c@linux.intel.com>
+ <83a930e5-660e-49ed-8c34-66c4edf93665@redhat.com>
+ <41ec1e23-e0f6-4275-ba9b-a34c2cbddbd9@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <41ec1e23-e0f6-4275-ba9b-a34c2cbddbd9@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 19, 2025 at 09:52:49AM -0300, Jason Gunthorpe wrote:
-> On Mon, Aug 18, 2025 at 10:09:11PM -0700, Nicolin Chen wrote:
-> > Yes, I've thought about that. The concern is that some other place
-> > someday may want to use iommu_get_domain_for_dev() in similar cases
-> > but would find that it doesn't work. So it would have to duplicate
-> > the domain pointer in its "master" structure.
-> > 
-> > Overall, having a _locked version feels cleaner to me.
+On 19.08.25 17:39, Dave Jiang wrote:
 > 
-> We probably need the locked version, but it just shouldn't be called very
-> much..
-
-OK. Let's have one patch upgrading the attach_dev to pass in the
-old domain pointer (aligning with the SVA version of attach_dev),
-and another patch adding the _locked version that then will have
-very limited callers.
-
-> > > With sensible internal locking
-> > 
-> > Hmm, I feel this iommu_get_translation_mode() is somewhat the same
-> > as the current iommu_get_domain_for_dev(). It would just return the
-> > group->domain->type v.s. group->domain, right?
-> > 
-> > This doesn't have any UAF concern though.
 > 
-> Yes, no UAF concern is the point
-
-I see.
-
-> > > So that is another bunch. Not sure what will be left after.
-> > 
-> > I recall that some of the drivers manages their own domains, e.g.
-> >     drivers/gpu/drm/tegra/drm.c
-> > 
-> > So, they would want more out of the domain pointer than just type.
+> On 8/19/25 2:18 AM, David Hildenbrand wrote:
+>> On 19.08.25 05:14, Marc Herbert wrote:
+>>>
+>>>
+>>> On 2025-08-18 07:08, Dave Jiang wrote:
+>>>>
+>>>>
+>>>> On 8/16/25 12:29 AM, David Hildenbrand wrote:
+>>>>> On 14.08.25 19:16, Dave Jiang wrote:
+>>>>>> Add clarification to comment for memory hotplug callback ordering as the
+>>>>>> current comment does not provide clear language on which callback happens
+>>>>>> first.
+>>>>>>
+>>>>>> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+>>>>>> ---
+>>>>>>     include/linux/memory.h | 2 +-
+>>>>>>     1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>>
+>>>>>> diff --git a/include/linux/memory.h b/include/linux/memory.h
+>>>>>> index 40eb70ccb09d..02314723e5bd 100644
+>>>>>> --- a/include/linux/memory.h
+>>>>>> +++ b/include/linux/memory.h
+>>>>>> @@ -116,7 +116,7 @@ struct mem_section;
+>>>>>>       /*
+>>>>>>      * Priorities for the hotplug memory callback routines (stored in decreasing
+>>>>>> - * order in the callback chain)
+>>>>>> + * order in the callback chain). The callback ordering happens from high to low.
+>>>>>>      */
+>>>>>>     #define DEFAULT_CALLBACK_PRI    0
+>>>>>>     #define SLAB_CALLBACK_PRI    1
+>>>>>
+>>>>> "stored in decreasing order in the callback chain"
+>>>>>
+>>>>> is pretty clear? It's a chain after all that gets called.
+>>>>
+>>>> I can drop the patch. For some reason when I read it I'm thinking the opposite, and when Marc was also confused I started questioning things.
+>>>>
+>>>
+>>> I think we both found the current comment confusing (even together!)
+>>> because:
+>>>
+>>> - It very briefly alludes to an implementation detail (the chain)
+>>>     without really getting into detail. A "chain" could be bi-directional;
+>>>     why not? This one is... "most likely" not. Doubt.
+>>>
+>>
+>> Please note that the memory notifier is really just using the generic *notifier chain* mechanism as documented in include/linux/notifier.h.
+>>
+>> Here is a good summary of that mechanism. I don't quite agree with the "implementation detail" part, but that information might indeed not be required here.
+>>
+>> https://0xax.gitbooks.io/linux-insides/content/Concepts/linux-cpu-4.html
+>>
+>>> - Higher priorities can have lower numbers, example: "P1 bugs". Not the
+>>>     case here, but this "double standards" situation makes _all_
+>>>     priorities suspicious and confusing.
+>>>
+>>
+>> Yes, "priorities" are handled differently in different context.
+>>
+>>> - Constants that come first in the file are called last.
+>>
+>> Yes, but that part makes perfect sense to me.
+>>   > I would go further than Dave and also drop the "chain" implementation
+>>> detail because it makes the reader to think too much.  Not needed and
+>>> distracting at this particular point in the file.
+>>
+>>   > /*
+>>>    * Priorities for the hotplug memory callback routines.
+>>>    * Invoked from high to low.
+>>>    */
+>>>
+>>>     => Hopefully zero cognitive load.
+>>
+>> Still confusion about how a high priority translates to a number, maybe?
+>>
+>> /*
+>>   * Priorities for the hotplug memory callback routines. Invoked from
+>>   * high to low. Higher priorities corresponds to higher numbers.
+>>   */
+>>
 > 
-> This looks like it wants an 'is currently attached' operation
-
-That's certainly one of the wide use cases. And I think we could
-have an IOMMU_DOMAIN_NONE to fit that into the type helper.
-
-Yet, I also see some other cases that cannot be helped with the
-type function. Just listing a few:
-
-1) domain matching (and type)
-drivers/gpu/drm/tegra/drm.c:965:        if (domain && domain->type != IOMMU_DOMAIN_IDENTITY &&
-drivers/gpu/drm/tegra/drm.c:966:            domain != tegra->domain)
-drivers/gpu/drm/tegra/drm.c-967-                return 0;
-
-2) page size
-drivers/gpu/drm/arm/malidp_planes.c:307:	mmu_dom = iommu_get_domain_for_dev(mp->base.dev->dev);
-drivers/gpu/drm/arm/malidp_planes.c-308-	if (mmu_dom)
-drivers/gpu/drm/arm/malidp_planes.c-309-		return mmu_dom->pgsize_bitmap;
-
-3) iommu_iova_to_phys
-drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c:2597:	dom = iommu_get_domain_for_dev(adev->dev);
-drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c-2598-
-drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c-2599-	while (size) {
-drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c-2600-		phys_addr_t addr = *pos & PAGE_MASK;
-drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c-2601-		loff_t off = *pos & ~PAGE_MASK;
-drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c-2602-		size_t bytes = PAGE_SIZE - off;
-drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c-2603-		unsigned long pfn;
-drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c-2604-		struct page *p;
-drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c-2605-		void *ptr;
-drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c-2606-
-drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c-2607-		bytes = min(bytes, size);
-drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c-2608-
-drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c:2609:		addr = dom ? iommu_iova_to_phys(dom, addr) : addr;
-
-4) map/unmap
-drivers/net/ipa/ipa_mem.c:465:  domain = iommu_get_domain_for_dev(dev);
-drivers/net/ipa/ipa_mem.c-466-  if (!domain) {
-drivers/net/ipa/ipa_mem.c-467-          dev_err(dev, "no IOMMU domain found for IMEM\n");
-drivers/net/ipa/ipa_mem.c-468-          return -EINVAL;
-drivers/net/ipa/ipa_mem.c-469-  }
-drivers/net/ipa/ipa_mem.c-470-
-drivers/net/ipa/ipa_mem.c-471-  /* Align the address down and the size up to page boundaries */
-drivers/net/ipa/ipa_mem.c-472-  phys = addr & PAGE_MASK;
-drivers/net/ipa/ipa_mem.c-473-  size = PAGE_ALIGN(size + addr - phys);
-drivers/net/ipa/ipa_mem.c-474-  iova = phys;    /* We just want a direct mapping */
-drivers/net/ipa/ipa_mem.c-475-
-drivers/net/ipa/ipa_mem.c-476-  ret = iommu_map(domain, iova, phys, size, IOMMU_READ | IOMMU_WRITE,
-...
-drivers/net/ipa/ipa_mem.c:495:  domain = iommu_get_domain_for_dev(dev);
-drivers/net/ipa/ipa_mem.c-496-  if (domain) {
-drivers/net/ipa/ipa_mem.c-497-          size_t size;
-drivers/net/ipa/ipa_mem.c-498-
-drivers/net/ipa/ipa_mem.c-499-          size = iommu_unmap(domain, ipa->imem_iova, ipa->imem_size);
+> This reads clear to me. I will adopt this comment if there are no additional objections.
 
 
-We could probably invent something for case 1-3. But for case 4,
-it feels that iommu_get_domain_for_dev() is the only helper..
+Feel free to add
 
-Thanks
-Nicolin
+Acked-by: David Hildenbrand <david@redhat.com>
+
+
+-- 
+Cheers
+
+David / dhildenb
+
 
