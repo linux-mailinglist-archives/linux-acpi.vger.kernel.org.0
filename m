@@ -1,212 +1,169 @@
-Return-Path: <linux-acpi+bounces-15841-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15842-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78C94B2CA01
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Aug 2025 18:54:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57831B2CA38
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Aug 2025 19:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 167FD5E5909
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Aug 2025 16:54:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BE5F3ACD09
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Aug 2025 17:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900B72BEC4E;
-	Tue, 19 Aug 2025 16:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3782D248A;
+	Tue, 19 Aug 2025 17:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hErvLQcZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B796C255E53;
-	Tue, 19 Aug 2025 16:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C21C2C3251;
+	Tue, 19 Aug 2025 17:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755622469; cv=none; b=hdpNUNcQKI9MkO5atyvvMZVbipK1epXKTXUFh9Nnea2Ea/9t0s3ZsowhWiiy6p+3c8EL+C3i59EOeldOqmJjicG2X+tGX2TVgaz6G42X/ziBpdz6V0N6tk5pQXEz2zRdflS3H4llQrcX/DryJOXG9NAyg+ynnohrwkrvBw6kZRE=
+	t=1755622847; cv=none; b=FH/HzYi9LX8yvrhOHkDjUQQYvgl0z4257pR63PCbyPNRMnCLWPa3gtlCJLBHGdwsXzbVYxVPw6Nwfdz9O1eXzF5qmqipF1MmF+5iqu44NqGub17AjLYdsDicHv57ECoRbXF0NvUqMpCJxaluA8AaUr1q5HHNWEeyjsXCIey3SnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755622469; c=relaxed/simple;
-	bh=aTvhuH50RKyGagT1nC1O+DaUbd9uQE1xNum/vjc31Jk=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gPYza/gkne/LHjgVehE41r5Ybbbh3E7R0yH+jACDn3IYsEm+AmYKWzosYCYipurOO9ZeLdL3D5ddBLwa9RGqQfFQ37fHkV1QZjSMB53QNmpFRasDODW272zO5zijHq5WAZ3Ln7m7DsYptrkmqcHU1VESUnMtBL0D5y40lRTsp7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4c5wZy4t9jz6L5BV;
-	Wed, 20 Aug 2025 00:51:22 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3FAA61402F2;
-	Wed, 20 Aug 2025 00:54:23 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 19 Aug
- 2025 18:54:21 +0200
-Date: Tue, 19 Aug 2025 17:54:20 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: <shiju.jose@huawei.com>
-CC: <rafael@kernel.org>, <bp@alien8.de>, <akpm@linux-foundation.org>,
-	<rppt@kernel.org>, <dferguson@amperecomputing.com>,
-	<linux-edac@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-doc@vger.kernel.org>, <tony.luck@intel.com>,
-	<lenb@kernel.org>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
-	<mchehab@kernel.org>, <linuxarm@huawei.com>, <rientjes@google.com>,
-	<jiaqiyan@google.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
-	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
-	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
-	<duenwen@google.com>, <gthelen@google.com>, <wschwartz@amperecomputing.com>,
-	<wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>,
-	<prime.zeng@hisilicon.com>, <roberto.sassu@huawei.com>,
-	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>
-Subject: Re: [PATCH v11 1/3] mm: Add support to retrieve physical address
- range of memory from the node ID
-Message-ID: <20250819175420.00007ce6@huawei.com>
-In-Reply-To: <20250812142616.2330-2-shiju.jose@huawei.com>
-References: <20250812142616.2330-1-shiju.jose@huawei.com>
-	<20250812142616.2330-2-shiju.jose@huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1755622847; c=relaxed/simple;
+	bh=xiU5oRgSMxK8MyzWGKDSyVfiCDxHG1djlZcPWGpqMfI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kaelJguAj+czOVxaAMKMQneUMuxMD/gTxbXCUg6/Ic6pRH0tVKHQYpF4E2zzdepTjuiNXs2pMyUqOl2imDxtSCDv2g/CTYT2BX9hs/VJv+nBQWoBBT8Mn1KIU19iG4M1WE9493bX+aKYxpQwMO+PIMwp6XSyZoqdA4qNPbk1a9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hErvLQcZ; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755622845; x=1787158845;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=xiU5oRgSMxK8MyzWGKDSyVfiCDxHG1djlZcPWGpqMfI=;
+  b=hErvLQcZ0BLMcBOYM78IyqwqS33FIFeloLuBCc11+4na/s8nX/SU0lRp
+   8T6gbLZdanxO4gtWgy59l2HzyMMDjtnpePxSm4Zf1WqUvmPKSx857+JQl
+   RYqKQWPEZHx0EWjQDUX783ckrIasjiTlI2auOBzNOgUm/KxEJcpyONXKB
+   cQee6B5Ou8Q0OW+ZHeFf61qMnetPQ1IU/hR/XUdozJpbx5hf6+ngQeVE2
+   x9wfwJMGIqsRpWyDJMjYkr24vQTACMUPTKxrHER0UmPEPcWOV/cOlyP/Z
+   S4P73M8WlkVS1KcsqBwB3Bx4VEJ+drU+Uf1BXbqSnPiKIV8Kmrmn3Ca0H
+   w==;
+X-CSE-ConnectionGUID: to5kdY66TNaBBOKrqYbg7g==
+X-CSE-MsgGUID: 4MummMR3TzKhnrDIKh/nIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57939815"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="57939815"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 10:00:44 -0700
+X-CSE-ConnectionGUID: 3yXvRdrmTEWL9XnLI20t0w==
+X-CSE-MsgGUID: xICEYJtuSfmHp85psMMl6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="167391015"
+Received: from unknown (HELO [10.247.119.200]) ([10.247.119.200])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 10:00:36 -0700
+Message-ID: <a9fa7e25-b3a1-425d-97cb-206f218aa1af@intel.com>
+Date: Tue, 19 Aug 2025 10:00:30 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
- frapeml500008.china.huawei.com (7.182.85.71)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] drivers/base/node: Add a helper function
+ node_update_perf_attrs()
+To: David Hildenbrand <david@redhat.com>, linux-cxl@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
+ dave@stgolabs.net, jonathan.cameron@huawei.com, alison.schofield@intel.com,
+ vishal.l.verma@intel.com, ira.weiny@intel.com, dan.j.williams@intel.com,
+ marc.herbert@linux.intel.com, akpm@linux-foundation.org
+References: <20250814171650.3002930-1-dave.jiang@intel.com>
+ <20250814171650.3002930-3-dave.jiang@intel.com>
+ <c0600abd-18fd-4bfa-ba8d-45303ee3a9ee@redhat.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <c0600abd-18fd-4bfa-ba8d-45303ee3a9ee@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 12 Aug 2025 15:26:13 +0100
-<shiju.jose@huawei.com> wrote:
 
-> From: Shiju Jose <shiju.jose@huawei.com>
+
+On 8/18/25 2:49 AM, David Hildenbrand wrote:
+> On 14.08.25 19:16, Dave Jiang wrote:
+>> Add helper function node_update_perf_attrs() to allow update of node access
+>> coordinates computed by an external agent such as CXL. The helper allows
+>> updating of coordinates after the attribute being created by HMAT.
+>>
+>> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+>> ---
+>>   drivers/base/node.c  | 39 +++++++++++++++++++++++++++++++++++++++
+>>   include/linux/node.h |  8 ++++++++
+>>   2 files changed, 47 insertions(+)
+>>
+>> diff --git a/drivers/base/node.c b/drivers/base/node.c
+>> index 3399594136b2..cf395da18c9b 100644
+>> --- a/drivers/base/node.c
+>> +++ b/drivers/base/node.c
+>> @@ -248,6 +248,45 @@ void node_set_perf_attrs(unsigned int nid, struct access_coordinate *coord,
+>>   }
+>>   EXPORT_SYMBOL_GPL(node_set_perf_attrs);
+>>   +/**
+>> + * node_update_perf_attrs - Update the performance values for given access class
+>> + * @nid: Node identifier to be updated
+>> + * @coord: Heterogeneous memory performance coordinates
+>> + * @access: The access class the for the given attributes
 > 
-> In the numa_memblks, a lookup facility is required to retrieve the
-> physical address range of memory in a NUMA node. ACPI RAS2 memory
-> features are among the use cases.
+> "the for": there is probably something missing
+
+looks like extra 'the'
+
 > 
-> Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-
-Looks fine to me.  Mike, what do you think?
-
-One passing comment inline.
-
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-
-> ---
->  include/linux/numa.h         |  9 +++++++++
->  include/linux/numa_memblks.h |  2 ++
->  mm/numa.c                    | 10 ++++++++++
->  mm/numa_memblks.c            | 37 ++++++++++++++++++++++++++++++++++++
->  4 files changed, 58 insertions(+)
+>> + */
+>> +void node_update_perf_attrs(unsigned int nid, struct access_coordinate *coord,
+>> +                enum access_coordinate_class access)
+>> +{
+>> +    struct node_access_nodes *access_node;
+>> +    struct node *node;
+>> +    int i;
+>> +
+>> +    if (WARN_ON_ONCE(!node_online(nid)))
+>> +        return;
+>> +
+>> +    node = node_devices[nid];
+>> +    list_for_each_entry(access_node, &node->access_list, list_node) {
+>> +        if (access_node->access != access)
+>> +            continue;
+>> +
+>> +        access_node->coord = *coord;
+>> +        for (i = 0; access_attrs[i]; i++) {
+>> +            sysfs_notify(&access_node->dev.kobj,
+>> +                     NULL, access_attrs[i]->name);
+>> +        }
+>> +        break;
+>> +    }
+>> +
+>> +    /* When setting CPU access coordinates, update mempolicy */
+>> +    if (access == ACCESS_COORDINATE_CPU) {
+>> +        if (mempolicy_set_node_perf(nid, coord)) {
+>> +            pr_info("failed to set mempolicy attrs for node %d\n",
+>> +                nid);
+>> +        }
+> if (access == ACCESS_COORDINATE_CPU &&
+>     mempolicy_set_node_perf(nid, coord))
+>     pr_info("failed to set mempolicy attrs for node %d\n", nid);
 > 
-> diff --git a/include/linux/numa.h b/include/linux/numa.h
-> index e6baaf6051bc..1d1aabebd26b 100644
-> --- a/include/linux/numa.h
-> +++ b/include/linux/numa.h
-> @@ -41,6 +41,10 @@ int memory_add_physaddr_to_nid(u64 start);
->  int phys_to_target_node(u64 start);
->  #endif
->  
-> +#ifndef nid_get_mem_physaddr_range
-> +int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end);
-> +#endif
-> +
->  int numa_fill_memblks(u64 start, u64 end);
->  
->  #else /* !CONFIG_NUMA */
-> @@ -63,6 +67,11 @@ static inline int phys_to_target_node(u64 start)
->  	return 0;
->  }
->  
-> +static inline int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end)
-> +{
-> +	return 0;
-> +}
-> +
->  static inline void alloc_offline_node_data(int nid) {}
->  #endif
->  
-> diff --git a/include/linux/numa_memblks.h b/include/linux/numa_memblks.h
-> index 991076cba7c5..7b32d96d0134 100644
-> --- a/include/linux/numa_memblks.h
-> +++ b/include/linux/numa_memblks.h
-> @@ -55,6 +55,8 @@ extern int phys_to_target_node(u64 start);
->  #define phys_to_target_node phys_to_target_node
->  extern int memory_add_physaddr_to_nid(u64 start);
->  #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
-> +extern int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end);
-> +#define nid_get_mem_physaddr_range nid_get_mem_physaddr_range
->  #endif /* CONFIG_NUMA_KEEP_MEMINFO */
->  
->  #endif /* CONFIG_NUMA_MEMBLKS */
-> diff --git a/mm/numa.c b/mm/numa.c
-> index 7d5e06fe5bd4..5335af1fefee 100644
-> --- a/mm/numa.c
-> +++ b/mm/numa.c
-> @@ -59,3 +59,13 @@ int phys_to_target_node(u64 start)
->  }
->  EXPORT_SYMBOL_GPL(phys_to_target_node);
->  #endif
-> +
-> +#ifndef nid_get_mem_physaddr_range
-> +int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end)
-> +{
-> +	pr_info_once("Unknown target phys addr range for node=%d\n", nid);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(nid_get_mem_physaddr_range);
-> +#endif
-> diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-> index 541a99c4071a..e1e56b7a3499 100644
-> --- a/mm/numa_memblks.c
-> +++ b/mm/numa_memblks.c
-> @@ -590,4 +590,41 @@ int memory_add_physaddr_to_nid(u64 start)
->  }
->  EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
->  
-> +/**
-> + * nid_get_mem_physaddr_range - Get the physical address range
-> + *				of the memblk in the NUMA node.
-> + * @nid: NUMA node ID of the memblk
-> + * @start: Start address of the memblk
-> + * @end: End address of the memblk
-> + *
-> + * Find the lowest contiguous physical memory address range of the memblk
-> + * in the NUMA node with the given nid and return the start and end
-> + * addresses.
-> + *
-> + * RETURNS:
-> + * 0 on success, -errno on failure.
-> + */
-> +int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end)
-> +{
-> +	struct numa_meminfo *mi = &numa_meminfo;
-> +	int i;
-> +
-> +	if (!numa_valid_node(nid))
-> +		return -EINVAL;
-> +
-> +	for (i = 0; i < mi->nr_blks; i++) {
-> +		if (mi->blk[i].nid == nid) {
-> +			*start = mi->blk[i].start;
-> +			/*
-> +			 * Assumption: mi->blk[i].end is the last address
-> +			 * in the range + 1.
+> or
+> 
+> if (access != ACCESS_COORDINATE_CPU)
+>     return
+> if (mempolicy_set_node_perf(nid, coord))
+>     pr_info("failed to set mempolicy attrs for node %d\n", nid);
+> 
+ok
 
-This was my fault for asking on internal review if this was documented
-anywhere. It's kind of implicitly obvious when reading numa_memblk.c
-because there are a bunch of end - 1 prints.
-So can probably drop this comment.
 
-> +			 */
-> +			*end = mi->blk[i].end;
-> +			return 0;
-> +		}
-> +	}
-> +
-> +	return -ENODEV;
-> +}
-> +EXPORT_SYMBOL_GPL(nid_get_mem_physaddr_range);
->  #endif /* CONFIG_NUMA_KEEP_MEMINFO */
-
+> 
+> With both things sorted
+> 
+> Acked-by: David Hildenbrand <david@redhat.com>
+> 
+Thanks for the ack
 
