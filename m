@@ -1,120 +1,106 @@
-Return-Path: <linux-acpi+bounces-15870-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15871-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 705C1B2E445
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 19:45:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6143BB2E5C8
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 21:47:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A096B1C8590F
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 17:44:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B83167B9B2F
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 19:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64DD261B77;
-	Wed, 20 Aug 2025 17:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="0bnL8T2y"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC31246BBA;
+	Wed, 20 Aug 2025 19:47:26 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08896258EDD;
-	Wed, 20 Aug 2025 17:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BD98F49;
+	Wed, 20 Aug 2025 19:47:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755711862; cv=none; b=jZ74kGe4E8URwwnpoeTH70KZiTyHb8SkaiLd6cn/AVwdDDYfQsyR8IdmJmWn1YlzcA2ZtCbBJPPZTQP4qNnzy+Uh8fgUt4KyAuMM2usgJJf2J2dY7I7T7FyKU87+dyclepPJq0j7Bzge3uOc+xVFR0J1G0KHIPVJxM00ei+Wke0=
+	t=1755719246; cv=none; b=TdoxNF1WDKlKolakAbtH/TKYJDfuSIdYveiiIirRd6xlLyEYgnFb6pmxv1jc1YFdhlY6CHD0e1I+uEERwsEUK2W/V3VaI/epkCiOWmq2DPKvUxFGmAGf616nheVrcUdrOwr6CcLwWH4/Y9GHt+hAWZHyoA57RN7R125KN8nx84A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755711862; c=relaxed/simple;
-	bh=KdiDUstdHQrni4Yr7Jvhf1893eG6oulvykElyBviLoE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VwS0pBEN+Q49OZKsk46Vg3qjYpvx1vukiq+POWlxdZQF+HXI+JDWnABImP3QUsXEeJoMQv48H0QjdOQnVHKlk3kAiaM8PCUKTxldRE9zj4OzxuDy0QMWGVx0gtHTXNnhszuJiBDPPk9YpBNQEPIFvaUhAuBQOqIvvQGcwSnUhhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=0bnL8T2y; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=YxAG2wevlF9hvSfOpG1gi4gKf2kHDvkSjadttXruPpE=; b=0bnL8T2ybDOrHa+Py3KB+20XsQ
-	krFSkRJ/lGSHI9KlQ0qlkdhK+qS23YBluLAvVOyoBvbJO/SbTCQXDRBwJo0tZ+Cp1m4DSS1z7XGDT
-	bq75CSkTotCMGqtD4tBJ7i8YIpE632ix5UOtckpT48GQey1yMweypKEPi1eouIUYb+w6RTQ0TeOYI
-	wwoHU5dIl+eMuf1/t1xis+rSnKTjBKynLeo+mDeoVyVPXnDdZUOyF4W1BgoI2zlm/SJELWzpgpvX9
-	8tvSWxDqv45x4EHLAoK02HGSqLAaZNADQVCvJUVy3JC9HhNc1ybuyAFZufFH2NHAbbXOxL6igBxc6
-	4N59ti0g==;
-Received: from [50.53.25.54] (helo=[192.168.254.17])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uomrD-0000000Eaag-3xcU;
-	Wed, 20 Aug 2025 17:44:20 +0000
-Message-ID: <a68bf620-14b5-4500-8cb9-26a7b28af058@infradead.org>
-Date: Wed, 20 Aug 2025 10:44:18 -0700
+	s=arc-20240116; t=1755719246; c=relaxed/simple;
+	bh=0QRnWeSO3F/xWWbuXBtV4uFZx51lyDTg5SXS3HLdvBU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N9AoW+aCT1qt/LOLGg66kQGdu30z4sP5DxpGg7zDI/JbDTNuJejGgyDQHLJK7bZvP5WlBi0cMMcvuSh+pJJwQF+KGDp2WAcuW5xChLDTO3DPlF5jZRF6uxpNeO/jDTyqLA6zJc9w1adJs3Xt2SUbid1exurZloma9h2SoEdgdj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A786C4CEE7;
+	Wed, 20 Aug 2025 19:47:24 +0000 (UTC)
+From: Dave Jiang <dave.jiang@intel.com>
+To: linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	dave@stgolabs.net,
+	jonathan.cameron@huawei.com,
+	alison.schofield@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	dan.j.williams@intel.com,
+	marc.herbert@linux.intel.com,
+	akpm@linux-foundation.org,
+	david@redhat.com
+Subject: [PATCH v2 0/4] cxl, acpi/hmat, node: Update CXL access coordinates to node directly
+Date: Wed, 20 Aug 2025 12:47:00 -0700
+Message-ID: <20250820194704.4130565-1-dave.jiang@intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/8] lib: Support
- ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Catalin Marinas <catalin.marinas@arm.com>, james.morse@arm.com,
- linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
- Will Deacon <will@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
- Davidlohr Bueso <dave@stgolabs.net>, "H . Peter Anvin" <hpa@zytor.com>,
- Peter Zijlstra <peterz@infradead.org>
-Cc: Yicong Yang <yangyicong@huawei.com>, linuxarm@huawei.com,
- Yushan Wang <wangyushan12@huawei.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- Andy Lutomirski <luto@kernel.org>
-References: <20250820102950.175065-1-Jonathan.Cameron@huawei.com>
- <20250820102950.175065-4-Jonathan.Cameron@huawei.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20250820102950.175065-4-Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+
+I plan to take this series through the CXL tree when all the necessary tags
+are received.
+
+Rafael, please ack patches 3/4 and 4/4 if you are happy with the changes.
+
+Thank you!
+
+v2:
+- Use clearer comment from DavidH for 1/4. (DavidH)
+- Fix comment in 2/4. (DavidH)
+- Streamline code in 2/4. (DavidH)
+- Add description to observed issue. (Dan)
+- Add correct Fixes tag. (Dan)
+- Add cc to stable for fix patch. (Dan)
+- Add mechansim to only update on first region for the node. (Jonathan)
+
+The series aim to clean up the current CXL memory region hotplug notifier by
+removing the update path through HMAT and updating the node access coordinates
+directly. With the existing implementation, the CXL memory hotplug notifier
+gets called first. It updates the HMAT target access coordinates. And then
+the HMAT notifier gets called and create the node sysfs attribs. The new
+implemenation flips the callback ordering and directly updates the sysfs
+attribs already created in the node and leaves HMAT data structures alone.
+
+Dave Jiang (4):
+  mm/memory_hotplug: Update comment for hotplug memory callback
+    priorities
+  drivers/base/node: Add a helper function node_update_perf_attrs()
+  cxl, acpi/hmat: Update CXL access coordinates directly instead of
+    through HMAT
+  acpi/hmat: Remove now unused hmat_update_target_coordinates()
+
+ drivers/acpi/numa/hmat.c  | 34 ----------------------------------
+ drivers/base/node.c       | 38 ++++++++++++++++++++++++++++++++++++++
+ drivers/cxl/core/cdat.c   | 11 -----------
+ drivers/cxl/core/core.h   |  3 ---
+ drivers/cxl/core/region.c | 21 +++++++++++++--------
+ include/linux/acpi.h      | 12 ------------
+ include/linux/memory.h    |  6 +++---
+ include/linux/node.h      |  8 ++++++++
+ 8 files changed, 62 insertions(+), 71 deletions(-)
 
 
-
-On 8/20/25 3:29 AM, Jonathan Cameron wrote:
-> +struct cache_coherency_device *
-> +_cache_coherency_device_alloc(const struct coherency_ops *ops, size_t size);
-> +/**
-> + * cache_coherency_device_alloc - Allocate a cache coherency device
-> + * @ops: Cache maintenance operations
-> + * @drv_struct: structure that contains the struct cache_coherency_device
-> + * @member: Name of the struct cache_coherency_device member in @drv_struct.
-> + *
-> + * This allocates and initializes the cache_coherency_device embedded in the
-> + * drv_struct. Upon success the pointer must be freed via
-> + * cache_coherency_device_free().
-> + *
-> + * Returns a 'drv_struct \*' on success, NULL on error.
-
-Preferably:
-
- * Returns: a &drv_struct * on success, %NULL on error.
-
-
-> + */
-> +#define cache_coherency_device_alloc(ops, drv_struct, member)	    \
-> +	({								    \
-> +		static_assert(__same_type(struct cache_coherency_device,    \
-> +					  ((drv_struct *)NULL)->member));   \
-> +		static_assert(offsetof(drv_struct, member) == 0);	    \
-> +		(drv_struct *)_cache_coherency_device_alloc(ops,	    \
-> +			sizeof(drv_struct));				    \
-> +	})
-> +void cache_coherency_device_free(struct cache_coherency_device *ccd);
-> +
-> +#endif
-
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
 -- 
-~Randy
+2.50.1
 
 
