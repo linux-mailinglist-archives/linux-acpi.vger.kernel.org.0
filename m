@@ -1,108 +1,99 @@
-Return-Path: <linux-acpi+bounces-15868-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15869-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ADA5B2E2F9
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 19:08:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C59EB2E302
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 19:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 780D7567C0A
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 17:07:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBEBF5E07A9
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 17:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C233C32A3D5;
-	Wed, 20 Aug 2025 17:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9275E327798;
+	Wed, 20 Aug 2025 17:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="R/9SvcRf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J64JIAJf"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E8436CE0D;
-	Wed, 20 Aug 2025 17:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF832512E6
+	for <linux-acpi@vger.kernel.org>; Wed, 20 Aug 2025 17:09:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755709632; cv=none; b=mTRC8TOECUEcUmb8kC1FB4KJ3e/Ie3qU0rfmhnQnu3tkp8Vygja1HPRXecnEaTiWxyLlG5u4QytTsx/ZUZGQVPRFY0ALvU8ADv18LKFKfsGNpDAx8hR6pSH8QHd+SyltnwlAe/aRzWvn5UGLa4l69f4rXOUaLrUs29Qi6E0ia28=
+	t=1755709778; cv=none; b=N9v6iiAezp1+iNo5tIp0OPbrmqyMFOCoug4oAWl+m7TzKVot82o8Cvrhm+GdQFQ/cN5gEr0HeOMnN7FWM6XHUU/jtGYm/q1PjH+2b5LK7KWJew+pjOA1F5amF3HHcGHqGcIxwRFbdvfc9LeMTmbKTIUv6nf9gzcC/TF8NxYR5qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755709632; c=relaxed/simple;
-	bh=zJJXarkWRvK9U5sgJZh498uNlfpa8H3ZMfTenpd3sjA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VXxM8yW9yTorhWDXlUgf8wbOjC0+Pi23ELVzqLm4uHd5Kp5CPPs33daeUcVD8eXYsq6D+A2siN7cRweNaz/83kIOvqFPBDDlabd0YyDQvi9T9pdXv8WORflAy5NuYzIYsvKDU3HmGKqfsaeJ3RDAGKlKuuAKEPhiR2yA/Qe7wWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=R/9SvcRf; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=qayB9LeR+RX6qridAjwC/zM9VoXQvXrNVT4vZTRfnEA=; b=R/9SvcRfJuRvlkls/k6xHiZo0X
-	7JJOUj/v+RIkIQ3mpC3FpeaiwocGruY1eprsKXh06G8RTQcg5BAQTeprwpvLcw4Mi8DmFYXTFgEdM
-	R0JZ7nWeBSdQngpgJTmRBhg0RtStcBJOJaHl0CrcWj1wApC62jEkVYeDLiUJ0YNfheUyM+3NbDgVk
-	mBRPhB+APpGklJ7AQyKqWdv5YlxKFmReO9DU1jffLEvPUGP1oKzNXeC9HkH99Er6Iw+K7Fv6gq9M3
-	Wp6KGkNzn+Ea767MMcS0lG6kMbPI5qWa+JxC+1jxfYqL26wuFOSF3kY56cfDDhYAqM1Wc7wp/yMyv
-	Gdjhnkhw==;
-Received: from [50.53.25.54] (helo=[192.168.254.17])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uomHF-0000000ETuY-2LE7;
-	Wed, 20 Aug 2025 17:07:09 +0000
-Message-ID: <dc829b1a-f0d5-42b8-b128-e305a1ceb32b@infradead.org>
-Date: Wed, 20 Aug 2025 10:07:08 -0700
+	s=arc-20240116; t=1755709778; c=relaxed/simple;
+	bh=oEB+J2o8NjqjCKmmtVWW4X5GZzlATjq0iFJDmU7mYdE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B0eJr6fctiRK9w4QNQWnBU2Ok3aiKYj8v6R7E8sbqBxGENkW37x+LOOFxiGtmQ7kpAnJ3C1JdeWmGytUvNbyWRCK0VxOLBo9RQPnVvSqyDDQVJByKdXpiyOFiAKBQcFNl6wCrUbunL1K9ynZU3+ayZChsREatLvhXOL1VgFSjo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J64JIAJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0869AC4CEE7;
+	Wed, 20 Aug 2025 17:09:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755709776;
+	bh=oEB+J2o8NjqjCKmmtVWW4X5GZzlATjq0iFJDmU7mYdE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=J64JIAJfmKV0CQEqXM5Vl65D7FPV+qU08gqdx+qOqyr/0bim8yV3RhuoLezzlYeEc
+	 NePs6455UDuyY0FJTicltzLUS2wYraKhp1ZawQuxXrluhK2RK0r/oKqnNiDuZThh6S
+	 n80aO+K2SoAFK4+kzntLdtcXp/b4wlJ5RVpApnzN7X/bK0Kvl7ZOkZlTaWY6V6qQgO
+	 CVAZCcyLRlahe227AicTrN257cQP3r+WEtOnWZb2YGb+el8/zUpsWh1FHkZriQv1Wn
+	 QbM0/B0KgivXA1CGg9WnHGdtu2MDO1KFGKN1ATd9h7+nzQQK+hANb72EBC6NGIKwZ3
+	 mrnaQlu1CpLYg==
+From: "Mario Limonciello (AMD)" <superm1@kernel.org>
+To: mario.limonciello@amd.com,
+	rafael@kernel.org,
+	lenb@kernel.org
+Cc: "Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Daniel Dadap <ddadap@nvidia.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Wilson Alvarez <wilson.e.alvarez@rubonnek.com>,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: video: force native for Lenovo 82K8
+Date: Wed, 20 Aug 2025 12:09:26 -0500
+Message-ID: <20250820170927.895573-1-superm1@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 7/8] acpi: PoC of Cache control via ACPI0019 and _DSM
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Catalin Marinas <catalin.marinas@arm.com>, james.morse@arm.com,
- linux-cxl@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
- Will Deacon <will@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
- Davidlohr Bueso <dave@stgolabs.net>, "H . Peter Anvin" <hpa@zytor.com>,
- Peter Zijlstra <peterz@infradead.org>
-Cc: Yicong Yang <yangyicong@huawei.com>, linuxarm@huawei.com,
- Yushan Wang <wangyushan12@huawei.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- Andy Lutomirski <luto@kernel.org>
-References: <20250820102950.175065-1-Jonathan.Cameron@huawei.com>
- <20250820102950.175065-8-Jonathan.Cameron@huawei.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20250820102950.175065-8-Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Lenovo 82K8 has a broken brightness control provided by nvidia_wmi_ec.
+Add a quirk to prevent using it.
 
-On 8/20/25 3:29 AM, Jonathan Cameron wrote:
-> diff --git a/drivers/cache/Kconfig b/drivers/cache/Kconfig
-> index 4551b28e14dd..158d3819004e 100644
-> --- a/drivers/cache/Kconfig
-> +++ b/drivers/cache/Kconfig
-> @@ -3,6 +3,13 @@ menu "Cache Drivers"
->  
->  if GENERIC_CPU_CACHE_MAINTENANCE
->  
-> +config ACPI_CACHE_CONTROL
-> +       tristate "ACPI cache maintenance"
-> +       depends on ARM64 && ACPI
-> +       help
+Cc: Daniel Dadap <ddadap@nvidia.com>
+Cc: Hans de Goede <hansg@kernel.org>
+Reported-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4512
+Tested-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+---
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-If there is a v4, please use one tab to indent the 3 lines above.
-
-> +         ACPI0019 device ID in DSDT identifies an interface that may be used
-
-and tab + 2 spaces to indent the 1 line above.
-
-> +	 to carry out certain forms of cache flush operation.
-
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index d507d5e084354..4cf74f173c785 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -948,6 +948,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
+ 		},
+ 	},
++	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4512 */
++	{
++	 .callback = video_detect_force_native,
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "82K8"),
++		},
++	},
+ 	{ },
+ };
+ 
 -- 
-~Randy
+2.43.0
 
 
