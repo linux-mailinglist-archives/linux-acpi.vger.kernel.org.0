@@ -1,114 +1,102 @@
-Return-Path: <linux-acpi+bounces-15864-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15865-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F25B2DE40
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 15:48:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F053B2DFBC
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 16:42:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 671844E5537
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 13:48:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7B7A189119B
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 14:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BC417A309;
-	Wed, 20 Aug 2025 13:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A4D2DECA1;
+	Wed, 20 Aug 2025 14:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SlkxVxQX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R8UgzY2f"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95313AC1C;
-	Wed, 20 Aug 2025 13:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D622DEA61;
+	Wed, 20 Aug 2025 14:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755697608; cv=none; b=TWjgyj2PxkhffKnN6PJtK8HDJJUt2glDaXUBvO8HAzDfIVgTScBFBh5e0MI5JzMabL+eElEGpfpcMwOyHYTHtiX1/bl/cwTIDzjpFv+92YY0vkTdkYzDNZ0HwMzH5zv8sAJEsO3/BvHJOmCRajUFPPJHhWsOgnHekOs3TZwoVq0=
+	t=1755700951; cv=none; b=JT7kBEgUzlJHI6GtsFEEjPriQSV1VgN7+4yNGE9l8t9xj5DJUbp/3nxHipJuLTBpWthpiOIiyB3Yy4VOS4Lxxtm2wTn795Qi9i2ooWIsJ0bVPPoRSwNb4ARhrQZfiiCw/u5thT9u6GBQ03aOKazYLa2KphdAhshtLwKYYr7bH6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755697608; c=relaxed/simple;
-	bh=eL6OmjUfcEblm9jH5gM1guK7rt+rufzeVM6JcMHixQE=;
+	s=arc-20240116; t=1755700951; c=relaxed/simple;
+	bh=0gKp/AFQ6m78tlQIdTDtIDcggV7Ya5QNvm8nvwpsFNo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FOzDAxU6RcYNdrOZA0VM3C6diZQZlLpExVhfxeCBf+XstfERRbldA0KSUZ6JLHDrYqexayvmmxb7WdgYkLd1m8HNexkW4mPjCwEDzw8rXGpcapabaZGF53PH8yIl4kpf42aj9Q2Cq8g38kwQ7m5qbZnR1nZyCMtIa8xTjBUl8gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SlkxVxQX; arc=none smtp.client-ip=198.175.65.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=fh3/6Pd8praFhJjZzG4s5eEdo3dCeTFqJePwCaMQ+Hi+vzbe2O9ch7l8HnskRJ/5hYvSKiHcw3HSLV94ubmAh4CbkbdL0t5w0B7dlWXyHC0niTbaUTQiVrhTnSWXDLI2YwZ1gZTkJhXGVUDdBxDHV3+6RTWsgIjEyVD7icPK5Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R8UgzY2f; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755697607; x=1787233607;
+  t=1755700951; x=1787236951;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=eL6OmjUfcEblm9jH5gM1guK7rt+rufzeVM6JcMHixQE=;
-  b=SlkxVxQXsKSSw7Ch3LrellylHMS4ecvg+QSebN3NeABJVCk/EpnSBGEt
-   pBc8tSiFxnZPVJh8KuLy2uFH901oQCOzoo28CRsUFdWvxS69hsdkQFv23
-   Kn6hu0mli9RO/hrj7AiRVy/EnpZkJqFlDpbpDGjGzS8QW1E3sGn5Yor7E
-   iKqSxxoCh/MCKW8A/4kctMq/wyH364JAemrHcwbSJJaJmz5ta7q2y4y1C
-   E6v16ElpDFgVyCzqmhtvXLeYAjo7tc+MKLwss/6QPFkw+vGlxq0UT+Lyq
-   UFaK62kz9MKJ37HNcf9niwNXHwQ7oF9es6qgsrzk3xZDohyRZtdgrq517
-   g==;
-X-CSE-ConnectionGUID: 6O9OFjRvRVmXhe2cC+RJ8A==
-X-CSE-MsgGUID: a01x5E7qRLuQ7PFBWe41bA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="61791966"
+   mime-version:in-reply-to;
+  bh=0gKp/AFQ6m78tlQIdTDtIDcggV7Ya5QNvm8nvwpsFNo=;
+  b=R8UgzY2fJGPknDEz2Ticf4TN70zbiPbyY5UknLECnLoz0b5elopBCRSj
+   rmjGDKLf6pHg55G8fNSMzsKQ8/N/1EwnVkZrFCpHy6jKzGmD7JkPQ5tlv
+   X6nBWYD9LQ9aXD9dQmoSQQ8dLVk0QgtINJwl+67YAzGew0rzY2tNL03fC
+   2jDT2e7j46ltrAD13e1NTdKYe4H4nkKVUArfH3ulEja5zm8QjJzLczppG
+   cVr6nJ6M1QHGmXILPpmsELDoUrgqLEAQovcjWFr4YJddi1Aak7t80WrdG
+   FHszNZhVyq1y3Jw9VZ5rinM5ZXCcb0F3pxXcBgi6o5HAwryTswsYE7PAk
+   A==;
+X-CSE-ConnectionGUID: xo0DaE4zRH+aWO0M4F1VtA==
+X-CSE-MsgGUID: GU8acDaYQ3aLuF9LZYllxg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="56998517"
 X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="61791966"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 06:46:44 -0700
-X-CSE-ConnectionGUID: QTAel4swTlqBwgC7IBaZrQ==
-X-CSE-MsgGUID: wCBv+13xSjKB8AAPAD4/lw==
+   d="scan'208";a="56998517"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 07:42:30 -0700
+X-CSE-ConnectionGUID: WNplai92SVyoBkC8iQa2BQ==
+X-CSE-MsgGUID: h+FDO9+KQHmrl4/YJ+7ELA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="168081449"
+   d="scan'208";a="172408812"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 06:46:42 -0700
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 07:42:27 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uoj9D-00000006woZ-37qk;
-	Wed, 20 Aug 2025 16:46:39 +0300
-Date: Wed, 20 Aug 2025 16:46:39 +0300
+	id 1uok1B-00000006xcZ-1WD8;
+	Wed, 20 Aug 2025 17:42:25 +0300
+Date: Wed, 20 Aug 2025 17:42:25 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: "Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Mika Westerberg <westeri@kernel.org>,
-	"open list:GPIO ACPI SUPPORT" <linux-gpio@vger.kernel.org>,
-	"open list:GPIO ACPI SUPPORT" <linux-acpi@vger.kernel.org>,
-	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>,
-	Amit Chaudhari <amitchaudhari@mac.com>
-Subject: Re: [PATCH 1/2] gpiolib: acpi: Add quirk for ASUS ProArt PX13
-Message-ID: <aKXRvzPdeKnM2RTS@smile.fi.intel.com>
-References: <20250814183430.3887973-1-superm1@kernel.org>
- <CACRpkdba9c9FdJoAufRVEKxXRP-kk5QZusiqxmWoY6D-gK9tYA@mail.gmail.com>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] software node: Constify node_group in registration
+ functions
+Message-ID: <aKXe0VnhLlhllHba@smile.fi.intel.com>
+References: <2zny5grbgtwbplynxffxg6dkgjgqf45aigwmgxio5stesdr3wi@gf2zamk5amic>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkdba9c9FdJoAufRVEKxXRP-kk5QZusiqxmWoY6D-gK9tYA@mail.gmail.com>
+In-Reply-To: <2zny5grbgtwbplynxffxg6dkgjgqf45aigwmgxio5stesdr3wi@gf2zamk5amic>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Aug 19, 2025 at 02:16:28PM +0200, Linus Walleij wrote:
-> On Thu, Aug 14, 2025 at 8:34 PM Mario Limonciello (AMD)
-> <superm1@kernel.org> wrote:
-> 
-> > The ASUS ProArt PX13 has a spurious wakeup event from the touchpad
-> > a few moments after entering hardware sleep.  This can be avoided
-> > by preventing the touchpad from being a wake source.
-> >
-> > Add to the wakeup ignore list.
-> >
-> > Reported-by: Amit Chaudhari <amitchaudhari@mac.com>
-> > Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4482
-> > Tested-by: Amit Chaudhari <amitchaudhari@mac.com>
-> > Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-> 
-> Bartosz is on vacation and this patch series is half-pinctrl so I applied this
-> and patch 2/2 for pin control fixes.
+On Wed, Aug 13, 2025 at 11:03:52PM -0700, Dmitry Torokhov wrote:
+> The software_node_register_node_group() and
+> software_node_unregister_node_group() functions take in essence an
+> array of pointers to software_node structs. Since the functions do not
+> modify the array declare the argument as constant, so that static
+> arrays can be declared as const and annotated as __initconst.
 
-I also was on vacation and become to full speed next week. But series is fine,
-just one nit-pick I commented on, it can be addressed in a separate followup.
+If it compiles and works, no objection from me from code perspective:
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
 -- 
 With Best Regards,
