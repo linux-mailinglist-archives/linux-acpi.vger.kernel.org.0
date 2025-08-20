@@ -1,114 +1,223 @@
-Return-Path: <linux-acpi+bounces-15850-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15851-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E68B2D4D1
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 09:27:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E379B2D4EC
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 09:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 557B717F59C
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 07:26:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 767515E08D3
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 07:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0412F2D6E72;
-	Wed, 20 Aug 2025 07:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7832D77EA;
+	Wed, 20 Aug 2025 07:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aksLANPG"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C502D660A;
-	Wed, 20 Aug 2025 07:26:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E70A2D12F1;
+	Wed, 20 Aug 2025 07:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755674778; cv=none; b=eXNHXwQrezRWrgpoA0FSHdr3AuMN5vtkuFQZjWKlhIooQwjh2p6m+v5eSrRe9ZebMPOj6nENWOA/pZd38L8aQ7bim6voDM0BVfrbs/j6MLLgnO190JSrnWzhlcT/FWJ+RqeSAH3mm4VEaIno0CYgrfPE8tsMq1p/vdaMc+OESk8=
+	t=1755675268; cv=none; b=oHGv51o3BIrFdQzfPFQTo2jJlKsoWS3qJ94Yko/+2oLSiEB4811R2ofhZf9MITx7zF3vH7106998NaLYmPcRJXZN4IQ0GtrEWpndzqVw/vz7C/n86oBRXeN3avkmlkKMra/WARcrn+hwPEUmeEqniUeiBSxlz5QjYg1Fr5+xHZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755674778; c=relaxed/simple;
-	bh=zPnGrSb0K3cnzhxgzKjh/vnK+d19vA/C2BdsVgWufQ0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TtL767kCwtL9yPP5P9JdSpGk++JbwUqNFMPQdTcEHWFFtAG65A5oQzgT2GrRBafhr7edbTLhIJihRmKPcuBHOHbou1P1iNpV3WoIFjBnbVpc9IsCS6Nk6zcnI0m15QpVrdIckjN4goarm0tNrUfEhMANRJ3HpBrO9la4JaNs/k4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: from relay15.mail.gandi.net (relay15.mail.gandi.net [217.70.178.235])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id DF522580CC5;
-	Wed, 20 Aug 2025 07:12:54 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4E781442EB;
-	Wed, 20 Aug 2025 07:12:44 +0000 (UTC)
-Message-ID: <b18c4283-388a-4b4a-91cb-ae686d7efc11@ghiti.fr>
-Date: Wed, 20 Aug 2025 09:12:43 +0200
+	s=arc-20240116; t=1755675268; c=relaxed/simple;
+	bh=S0V/4dKtt8sp5Rr98YYau2qnf57W5w/l2pXbvrWzIZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kFUAjtsTfmnaHqulSrxU1SV33lOYF4rznm0p6ImzMwegiMt2S6vpi7y84Seqa6bXQ54a35rrNNiPSggAwFCx37U77IaJS2NxWv5GD4/gysuFbe0ll1IuFHRfZsSNZUg6k9cHm4w8WfW095jq1UNepc3MJiXGpyHjmW2pWMQ0SHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aksLANPG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E56EC4CEEB;
+	Wed, 20 Aug 2025 07:34:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755675267;
+	bh=S0V/4dKtt8sp5Rr98YYau2qnf57W5w/l2pXbvrWzIZE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aksLANPGpnI9UQe5XTTQfMLhWuAJfl4+lnUMD7idLLVt/7G9V17mbP2+ZVsieHrkJ
+	 BaP2URMB7jrlbkiQnAvyih2743LQBwny1XJjC3jqtpy8q+zOBXVOjJKoY7jnyPr+/4
+	 g/d7HOMIt3S/WVb2PUjeMQD8HVuB4cDz29q85/KOkhOpUpPQeg5sySUDHAB/j0qVp7
+	 OPdwxIuaYdDRnSLNmiWhNPRBwYX+2JDnESggo5FwcPLsLWEWreiI9lpk3I34F4bn7U
+	 D7Q2snD2Xzqdg3UGTCkZnYHRMpMkD0sP4sqvk7+576a0tL7C6KLY86LHTK9GOIjxjV
+	 mEVgXf8lxy/yg==
+Date: Wed, 20 Aug 2025 10:34:13 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: shiju.jose@huawei.com, rafael@kernel.org, bp@alien8.de,
+	akpm@linux-foundation.org, dferguson@amperecomputing.com,
+	linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org, tony.luck@intel.com,
+	lenb@kernel.org, leo.duran@amd.com, Yazen.Ghannam@amd.com,
+	mchehab@kernel.org, linuxarm@huawei.com, rientjes@google.com,
+	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+	duenwen@google.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, wbs@os.amperecomputing.com,
+	nifan.cxl@gmail.com, tanxiaofei@huawei.com,
+	prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
+	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com
+Subject: Re: [PATCH v11 1/3] mm: Add support to retrieve physical address
+ range of memory from the node ID
+Message-ID: <aKV6dVkPiBPw595T@kernel.org>
+References: <20250812142616.2330-1-shiju.jose@huawei.com>
+ <20250812142616.2330-2-shiju.jose@huawei.com>
+ <20250819175420.00007ce6@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] ACPI: RISC-V: Fix FFH_CPPC_CSR error handling
-To: Anup Patel <apatel@ventanamicro.com>, Sunil V L
- <sunilvl@ventanamicro.com>, "Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Len Brown <lenb@kernel.org>,
- Atish Patra <atish.patra@linux.dev>, Andrew Jones <ajones@ventanamicro.com>,
- Anup Patel <anup@brainfault.org>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, linux-acpi@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- Troy Mitchell <troy.mitchell@linux.dev>
-References: <20250818143600.894385-1-apatel@ventanamicro.com>
- <20250818143600.894385-2-apatel@ventanamicro.com>
-Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <20250818143600.894385-2-apatel@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduheejjeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomheptehlvgigrghnughrvgcuifhhihhtihcuoegrlhgvgiesghhhihhtihdrfhhrqeenucggtffrrghtthgvrhhnpedthfelfeejgeehveegleejleelgfevhfekieffkeeujeetfedvvefhledvgeegieenucfkphepvdgrtdegmegtvggttdemuddvudgumehfvdefvdemjegufhekmegsfhegsgemgeeliegvmeduugegsgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtgeemtggvtgdtmeduvdduugemfhdvfedvmeejughfkeemsghfgegsmeegleeivgemudgugegspdhhvghloheplgfkrfggieemvdgrtdegmegtvggttdemuddvudgumehfvdefvdemjegufhekmegsfhegsgemgeeliegvmeduugegsggnpdhmrghilhhfrhhomheprghlvgigsehghhhithhirdhfrhdpnhgspghrtghpthhtohepudehpdhrtghpthhtoheprghprghtvghlsehvvghnthgrnhgrmhhitghrohdrtghomhdprhgtphhtthhopehsuhhnihhlvhhlsehvvghnthgrnhgrmhhitghrohdrtghomhdprhgtphhtthhopehrrghfrggvlheskhgvrhhnv
- ghlrdhorhhgpdhrtghpthhtohepphgrlhhmvghrsegurggssggvlhhtrdgtohhmpdhrtghpthhtohepphgruhhlrdifrghlmhhslhgvhiesshhifhhivhgvrdgtohhmpdhrtghpthhtoheplhgvnhgssehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrthhishhhrdhprghtrhgrsehlihhnuhigrdguvghvpdhrtghpthhtoheprghjohhnvghssehvvghnthgrnhgrmhhitghrohdrtghomh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250819175420.00007ce6@huawei.com>
 
-Hi Anup,
+On Tue, Aug 19, 2025 at 05:54:20PM +0100, Jonathan Cameron wrote:
+> On Tue, 12 Aug 2025 15:26:13 +0100
+> <shiju.jose@huawei.com> wrote:
+> 
+> > From: Shiju Jose <shiju.jose@huawei.com>
+> > 
+> > In the numa_memblks, a lookup facility is required to retrieve the
+> > physical address range of memory in a NUMA node. ACPI RAS2 memory
+> > features are among the use cases.
+> > 
+> > Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> > Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> 
+> Looks fine to me.  Mike, what do you think?
 
-On 8/18/25 16:35, Anup Patel wrote:
-> The cppc_ffh_csr_read() and cppc_ffh_csr_write() returns Linux error
-> code in "data->ret.error" so cpc_read_ffh() and cpc_write_ffh() must
-> not use sbi_err_map_linux_errno() for FFH_CPPC_CSR.
->
-> Fixes: 30f3ffbee86b ("ACPI: RISC-V: Add CPPC driver")
-> Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-> Reviewed-by: Troy Mitchell <troy.mitchell@linux.dev>
-> ---
->   drivers/acpi/riscv/cppc.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/riscv/cppc.c b/drivers/acpi/riscv/cppc.c
-> index 440cf9fb91aa..42c1a9052470 100644
-> --- a/drivers/acpi/riscv/cppc.c
-> +++ b/drivers/acpi/riscv/cppc.c
-> @@ -119,7 +119,7 @@ int cpc_read_ffh(int cpu, struct cpc_reg *reg, u64 *val)
->   
->   		*val = data.ret.value;
->   
-> -		return (data.ret.error) ? sbi_err_map_linux_errno(data.ret.error) : 0;
-> +		return data.ret.error;
->   	}
->   
->   	return -EINVAL;
-> @@ -148,7 +148,7 @@ int cpc_write_ffh(int cpu, struct cpc_reg *reg, u64 val)
->   
->   		smp_call_function_single(cpu, cppc_ffh_csr_write, &data, 1);
->   
-> -		return (data.ret.error) ? sbi_err_map_linux_errno(data.ret.error) : 0;
-> +		return data.ret.error;
->   	}
->   
->   	return -EINVAL;
+I still don't see why we can't use existing functions like
+get_pfn_range_for_nid() or memblock_search_pfn_nid().
 
+Or even node_start_pfn() and node_spanned_pages().
 
-I picked this up for fixes, cc stable and I'll send this patch for some 
-6.17-rcX.
+> One passing comment inline.
+> 
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> 
+> > ---
+> >  include/linux/numa.h         |  9 +++++++++
+> >  include/linux/numa_memblks.h |  2 ++
+> >  mm/numa.c                    | 10 ++++++++++
+> >  mm/numa_memblks.c            | 37 ++++++++++++++++++++++++++++++++++++
+> >  4 files changed, 58 insertions(+)
+> > 
+> > diff --git a/include/linux/numa.h b/include/linux/numa.h
+> > index e6baaf6051bc..1d1aabebd26b 100644
+> > --- a/include/linux/numa.h
+> > +++ b/include/linux/numa.h
+> > @@ -41,6 +41,10 @@ int memory_add_physaddr_to_nid(u64 start);
+> >  int phys_to_target_node(u64 start);
+> >  #endif
+> >  
+> > +#ifndef nid_get_mem_physaddr_range
+> > +int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end);
+> > +#endif
+> > +
+> >  int numa_fill_memblks(u64 start, u64 end);
+> >  
+> >  #else /* !CONFIG_NUMA */
+> > @@ -63,6 +67,11 @@ static inline int phys_to_target_node(u64 start)
+> >  	return 0;
+> >  }
+> >  
+> > +static inline int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end)
+> > +{
+> > +	return 0;
+> > +}
+> > +
+> >  static inline void alloc_offline_node_data(int nid) {}
+> >  #endif
+> >  
+> > diff --git a/include/linux/numa_memblks.h b/include/linux/numa_memblks.h
+> > index 991076cba7c5..7b32d96d0134 100644
+> > --- a/include/linux/numa_memblks.h
+> > +++ b/include/linux/numa_memblks.h
+> > @@ -55,6 +55,8 @@ extern int phys_to_target_node(u64 start);
+> >  #define phys_to_target_node phys_to_target_node
+> >  extern int memory_add_physaddr_to_nid(u64 start);
+> >  #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
+> > +extern int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end);
+> > +#define nid_get_mem_physaddr_range nid_get_mem_physaddr_range
+> >  #endif /* CONFIG_NUMA_KEEP_MEMINFO */
+> >  
+> >  #endif /* CONFIG_NUMA_MEMBLKS */
+> > diff --git a/mm/numa.c b/mm/numa.c
+> > index 7d5e06fe5bd4..5335af1fefee 100644
+> > --- a/mm/numa.c
+> > +++ b/mm/numa.c
+> > @@ -59,3 +59,13 @@ int phys_to_target_node(u64 start)
+> >  }
+> >  EXPORT_SYMBOL_GPL(phys_to_target_node);
+> >  #endif
+> > +
+> > +#ifndef nid_get_mem_physaddr_range
+> > +int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end)
+> > +{
+> > +	pr_info_once("Unknown target phys addr range for node=%d\n", nid);
+> > +
+> > +	return 0;
+> > +}
+> > +EXPORT_SYMBOL_GPL(nid_get_mem_physaddr_range);
+> > +#endif
+> > diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+> > index 541a99c4071a..e1e56b7a3499 100644
+> > --- a/mm/numa_memblks.c
+> > +++ b/mm/numa_memblks.c
+> > @@ -590,4 +590,41 @@ int memory_add_physaddr_to_nid(u64 start)
+> >  }
+> >  EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
+> >  
+> > +/**
+> > + * nid_get_mem_physaddr_range - Get the physical address range
+> > + *				of the memblk in the NUMA node.
+> > + * @nid: NUMA node ID of the memblk
+> > + * @start: Start address of the memblk
+> > + * @end: End address of the memblk
+> > + *
+> > + * Find the lowest contiguous physical memory address range of the memblk
+> > + * in the NUMA node with the given nid and return the start and end
+> > + * addresses.
+> > + *
+> > + * RETURNS:
+> > + * 0 on success, -errno on failure.
+> > + */
+> > +int nid_get_mem_physaddr_range(int nid, u64 *start, u64 *end)
+> > +{
+> > +	struct numa_meminfo *mi = &numa_meminfo;
+> > +	int i;
+> > +
+> > +	if (!numa_valid_node(nid))
+> > +		return -EINVAL;
+> > +
+> > +	for (i = 0; i < mi->nr_blks; i++) {
+> > +		if (mi->blk[i].nid == nid) {
+> > +			*start = mi->blk[i].start;
+> > +			/*
+> > +			 * Assumption: mi->blk[i].end is the last address
+> > +			 * in the range + 1.
+> 
+> This was my fault for asking on internal review if this was documented
+> anywhere. It's kind of implicitly obvious when reading numa_memblk.c
+> because there are a bunch of end - 1 prints.
+> So can probably drop this comment.
+> 
+> > +			 */
+> > +			*end = mi->blk[i].end;
+> > +			return 0;
+> > +		}
+> > +	}
+> > +
+> > +	return -ENODEV;
+> > +}
+> > +EXPORT_SYMBOL_GPL(nid_get_mem_physaddr_range);
+> >  #endif /* CONFIG_NUMA_KEEP_MEMINFO */
+> 
 
-Thanks,
-
-Alex
-
+-- 
+Sincerely yours,
+Mike.
 
