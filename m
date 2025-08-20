@@ -1,197 +1,109 @@
-Return-Path: <linux-acpi+bounces-15848-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15849-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C34B2D288
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 05:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 509BFB2D322
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 06:45:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 700303B0920
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 03:19:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD0586869A7
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Aug 2025 04:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1A827604B;
-	Wed, 20 Aug 2025 03:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF03C194C86;
+	Wed, 20 Aug 2025 04:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b6jzAC/o"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GP+5wQBE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com [209.85.218.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD112258ECA;
-	Wed, 20 Aug 2025 03:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF61E78F34
+	for <linux-acpi@vger.kernel.org>; Wed, 20 Aug 2025 04:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755659945; cv=none; b=Y5Bm/5PdcZfyLcoBaIURYB/GCf37H7Mg5YJQ4L4kqtsfItDJr/RjTfVSdG7YcxX/sAiEAJNAKvtbbE0hybcS9I5GeWopkzuQ9iNtOd0cghPrKr4lrs63r9UCS2U2cCnjja4hU7mLN7ElCS4Mu2tdUCmYzJbkqSIM1hNghACqUOk=
+	t=1755665075; cv=none; b=VFuRileHkQbOd/gU8zGGjBYf+ileAu8bEor5gsoR/R1Qg16fQtcp4zA6OKHjnZzMSbC1FemaOm7qGgo7J9at9t5kGlyFLUJDcFpXZ+KSqOUI0kd9+Yypon1DCycspAjV7OytsvVjPeatdWrUoh5fIg6HzirSVIbRA5BSBRiAej0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755659945; c=relaxed/simple;
-	bh=VxNrcNs0+HcvFMuKWSGBXGXSfd8y+whfhfnRdUacxr8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UB+38Bj8pvPAsUsS6i3UMOkPdz15syJV0Ixn9abCZKGZbdOp+56DYgA0gn7+6eSTGneNV6U16hqSQi0xZifEuUtrwWrvm8ktv+XxD3NfJPpupbN8FdAF5NM1F+TODQL6kkLahzWrYzu6E7M9dyrkLCczlb3DuyUErsDeSfuvo7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b6jzAC/o; arc=none smtp.client-ip=209.85.218.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f68.google.com with SMTP id a640c23a62f3a-afcb7ae31caso1081678366b.3;
-        Tue, 19 Aug 2025 20:19:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755659942; x=1756264742; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/vdg4dKKl5Y5qxmdvIci/v8EsYo7STve3t3ZtY/n9Z0=;
-        b=b6jzAC/opmUJPUfGAVuh6XzUJAPB7oZdCzXoUlPSIy3WaldeEwyosPA8HRkf5MhjPy
-         2zA2ThOFECkdqkIiJaafpjpC6uSFj8zID/JBz1lwPgrMLly07Q6rBX5Qxe2PZww+cR/S
-         l8iz9KW3rExt19lhxQcV52D9fx0jST1c8q3tg8XTR/nAuCXJ8x3PvQ9UfZ2yVUgR4dbp
-         bXvIQ6+/d1eGcQqltqApzlBUIDzyNzUuRW4UGI6TAGoH/jJ3uHap/8PtS3vhi8EV57ca
-         xGrEqu46A9X+lBruB0LpudcwrX76i2MKBinHvkVt69vB1OKfS/mS+C/uFd1cIcR6V2iG
-         +piA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755659942; x=1756264742;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/vdg4dKKl5Y5qxmdvIci/v8EsYo7STve3t3ZtY/n9Z0=;
-        b=iO41GXjJHLVLA1z897Jn3JAgQU5epAPz2Y0u/1sYOsqAtgmA3miCFM1M+c9XTPLbpk
-         khHK5G6PJQX7hKTogxjp80T4iXAOuNT+krxTiTgccI9BuF3FjiCvadEca+kbZzJ4Zs3z
-         /g8V35z4F9Q0+LWOU7ZU87UPQ3sQVXNsiOtpsEYptY0fob5cfFJU6FOeSE4zTJQZgPx8
-         dTxfX4/b3KggpisCNYcF4hIk92xZMgvBDQrHt3fIdNjCIDFE9wOBPiUwbgHRe0p5uf5y
-         /rAUK6b8EqXp2uq43F3+LEgsiXxwgdnuxiK+lJTNjKH4vOZqhl55TAjycXSpKd3tEvuO
-         sshQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV0g9dM055bnx4miV3vX2CYRgdDrfUtLGkHVCZ5vuKzu45ecLEzimY8V6UOmMG/BBDcyZkiYawIZesm@vger.kernel.org, AJvYcCWddljnhT/L32fSrJJy+oDBSD+YaJq5jEhdQwnwCb/3Q9jEK2YXDOeCJxYJ8ryaNxoE/1kky9NncPf9Qu4=@vger.kernel.org, AJvYcCXXqdjYbUiIO47CfRwss/LnzPQJHfFBVq3bwLQquy1FAESDkVjaABJzVCACOOzpNMbbetFGe4D0g75fheBO@vger.kernel.org, AJvYcCXapww5zxkXMyX7TzVlDUvAp62BSWQG3jvtCWSPzkuDcw2en2PSnkOkOhv9H220XpEPMEef9fjxseUrDJNvwQ==@vger.kernel.org, AJvYcCXdo5GeByoA61dZ3Ps64BI8An78zAB6auQhJF0n0EYoxLVpEkXIu0bNF8yvt7AcgNEYGZlQjr0n46JM@vger.kernel.org
-X-Gm-Message-State: AOJu0YxaSQld2T9/uVvT7e3qAvt68qr3tK1nFl14rwp7ewLEMVYumaYc
-	xlIjQhtpf96QSaBymm4a366TKXMAyZg6GvvziKvS6GsP8KNzlAxPlD6D
-X-Gm-Gg: ASbGncsm1WER2baOi+0hI8MND45eJC5lNVNcYeOQlk5aCFFAjmcZ7QDhCuCcNjQEeYT
-	237mjm1+bRr3v52wKJSAbPoD5FuCeqho0mlvzKTG19NRvvtTFiUWCZw4su/cig7Mv+LIaNxcOy1
-	xcF4i5HggcbzsE/lXcI3h8j4kwKi6KgyUhZmE1xG+rEMjvm9Kuvz7Sx2qpnUEtQZWIf7fhpCS6B
-	9/NhhJsl2RMsDjYwPQ4TeD/pgOF33hwLiuTWmS5ageW7FedOBrvKEu9BR93wciTQ+4tWjii359A
-	g7sDH415qwdYWOGlyRQj7KvB5jnMrK3l2+8sCLUlPCC3DaXwKBfbnvkAntOYc2+rvkl6YbC911U
-	VC9OzoYCdqoSnBxerihEMNeKTr/uoyU6wpVKarQACg/DGQpV+7HzMIPwlA9kiWP/bujd+nOXt/s
-	TMMP6rXpyXkYkSOyjrsEmyv7+4MCrLQlgPkA==
-X-Google-Smtp-Source: AGHT+IEIwwlIwoTIiNuhUQ07/bBrVkoWwe0s7LnQYSy2POy+c888AvHzKbMqqWN1VrmqgpQIHAF1pA==
-X-Received: by 2002:a17:906:6a1d:b0:af9:237c:bb35 with SMTP id a640c23a62f3a-afdf00e2e81mr95410766b.22.1755659941758;
-        Tue, 19 Aug 2025 20:19:01 -0700 (PDT)
-Received: from [26.26.26.1] (ec2-3-75-144-20.eu-central-1.compute.amazonaws.com. [3.75.144.20])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afded52ea4asm96482666b.101.2025.08.19.20.18.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Aug 2025 20:19:01 -0700 (PDT)
-Message-ID: <d6b852bc-328a-41af-b125-e250c72c0d22@gmail.com>
-Date: Wed, 20 Aug 2025 11:18:52 +0800
+	s=arc-20240116; t=1755665075; c=relaxed/simple;
+	bh=Wuo+MVG+FGFpbnTbhgHJA2dTrPMPvyXhLahkY+nbLAA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gGnLJPiA7YUlIGsPJjSW5nKJcH6soa7lynbj/j38PVVdhBnjh22lyfLbKDlhUp/lv9d093YQrZdmCS+xekou0cmQERL5rzFqrZ7VbRsRDc8IjtqnAHwCSJlfbZ7CWQ3jf/gElLjIcw4oWU2d4l/NwVMUoFshf/Y+boucChCzz/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GP+5wQBE; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755665074; x=1787201074;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Wuo+MVG+FGFpbnTbhgHJA2dTrPMPvyXhLahkY+nbLAA=;
+  b=GP+5wQBEC4kPYDoWT1Oqby2PHCI3abEZ+lLBOWAvwnbnFHuouoRlPWH2
+   fhpl8TQYc9LqBe1c1Wum6zTIVlIeqb+jSP/Pz0AGDhtcPBs5B1jMn+StD
+   ZALaUOpyQ/LF2AcKXqzvfHcaB4MM0qfixojbeOY5nNW869ki2fM2xRwMu
+   8qFp4nuF4RJEYNHW2+Q060UltvFDj9pV72dbcVR/6JrqDR9x7oP7ixyTY
+   t2i/DyxhF9H7sxVPE1FXH2owHuX0rCSe7lyRcoXQvIlBf6njhL/BtF2Sj
+   X9lOimL9zoDCf+Xe2sd8tKBhIORq+jp2AEiUXbdVjfnJjFLQfDXAEyyQ+
+   w==;
+X-CSE-ConnectionGUID: H3UkthB4TGy2MVZ9T4oSlA==
+X-CSE-MsgGUID: URr6e4RwTW+CqWxeFGYNRw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="57992491"
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="57992491"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 21:44:33 -0700
+X-CSE-ConnectionGUID: aiILRsOERx+HTP0gswZ4Vg==
+X-CSE-MsgGUID: 4JBBgmBiR+KB+Z6cBSiyXw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
+   d="scan'208";a="172271647"
+Received: from baandr0id001.iind.intel.com ([10.66.253.151])
+  by fmviesa005.fm.intel.com with ESMTP; 19 Aug 2025 21:44:32 -0700
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+To: rafael@kernel.org,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Subject: [PATCH] ACPI: Battery: Fix incorrect fallthrough in extract_package()
+Date: Wed, 20 Aug 2025 10:13:09 +0530
+Message-Id: <20250820044309.4133802-1-kaushlendra.kumar@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/5] pci: Suspend iommu function prior to resetting a
- device
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: robin.murphy@arm.com, joro@8bytes.org, bhelgaas@google.com,
- jgg@nvidia.com, will@kernel.org, robin.clark@oss.qualcomm.com,
- yong.wu@mediatek.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, thierry.reding@gmail.com,
- vdumpa@nvidia.com, jonathanh@nvidia.com, rafael@kernel.org, lenb@kernel.org,
- kevin.tian@intel.com, yi.l.liu@intel.com, baolu.lu@linux.intel.com,
- linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
- patches@lists.linux.dev, pjaroszynski@nvidia.com, vsethi@nvidia.com,
- helgaas@kernel.org
-References: <cover.1754952762.git.nicolinc@nvidia.com>
- <3749cd6a1430ac36d1af1fadaa4d90ceffef9c62.1754952762.git.nicolinc@nvidia.com>
- <550635db-00ce-410e-add0-77c1a75adb11@gmail.com>
- <aKTzq6SLGB22Xq5b@Asurada-Nvidia>
-Content-Language: en-US
-From: Ethan Zhao <etzhao1900@gmail.com>
-In-Reply-To: <aKTzq6SLGB22Xq5b@Asurada-Nvidia>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+Fix incorrect fallthrough behavior in the ACPI_TYPE_BUFFER case of
+extract_package().
 
+The current code processes ACPI_TYPE_BUFFER data and then falls through
+to also process it as ACPI_TYPE_STRING data, which is incorrect. The
+buffer case should copy the buffer data and then break, not fall through
+to the string handling code. This ensures that buffer and string types
+are handled correctly and independently in the switch statement.
 
-On 8/20/2025 5:59 AM, Nicolin Chen wrote:
-> On Tue, Aug 19, 2025 at 10:12:41PM +0800, Ethan Zhao wrote:
->> On 8/12/2025 6:59 AM, Nicolin Chen wrote:
->>> @@ -4529,13 +4530,26 @@ EXPORT_SYMBOL(pci_wait_for_pending_transaction);
->>>     */
->>>    int pcie_flr(struct pci_dev *dev)
->>>    {
->>> +	int ret = 0;
->>> +
->>>    	if (!pci_wait_for_pending_transaction(dev))
->>>    		pci_err(dev, "timed out waiting for pending transaction; performing function level reset anyway\n");
->>> +	/*
->>> +	 * Per PCIe r6.3, sec 10.3.1 IMPLEMENTATION NOTE, software disables ATS
->>> +	 * before initiating a reset. Notify the iommu driver that enabled ATS.
->>> +	 * Have to call it after waiting for pending DMA transaction.
->>> +	 */
->>> +	ret = iommu_dev_reset_prepare(&dev->dev);
-> 
->> If we dont' consider the association between IOMMU and devices in FLR(),
->> it can be understood that more complex processing logic resides outside
->> this function. However, if the FLR() function already synchironizes and
->> handles the association with IOMMU like this (disabling ATS by attaching
->> device to blocking domain), then how would the following scenarios
->> behave ?
-> 
-> That's a good point. The iommu-level reset is per struct device.
-> So, basically it'll match with the FLR per pci_dev. Yet, the RID
-> isolation between siblings might be a concern:
-> 
->> 1. Reset one of PCIe alias devices.
-> 
-> IIRC, an alias device might have:
-> 
->   a) one pci_dev; multiple RIDs
-> 
->      In this case, neither FLR nor IOMMU isolates between RIDs.
->      So, both FLR and IOMMU blocking will reset all RIDs. There
->      should be no issue resulted from the IOMMU blocking.
-> 
->   b) multiple pci_devs; single RID
-> 
->      In this case, FLR only resets one device, while the IOMMU-
->      level reset will block the entire RID (i.e. all devices),
->      since they share the single translation tunnel. This could
->      break the siblings, if they aren't also being reset along.
-Yup, such alias devices might not have ATS cap. because of they
-are PCI devices or they share the RID(BDF), so checking ATS cap
-condition might be useful here to skip the prepare()/done() .>
->> 2. Reset PF when its VFs are actvie.
-> 
->   c) multiple pci_devs with their own RIDs
-> 
->      In this case, either FLR or IOMMU only resets the PF. That
->      being said, VFs might be affected since PF is resetting?
->      If there is an issue, I don't see it coming from the IOMMU-
->      level reset..
-Each of the PF and its VFs has it owns RID(BDF), but the VFs' life
-depends on the living of PF, resetting PF, means all its VFs are
-lost.
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+---
+ drivers/acpi/battery.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-There is no processing logic about PF and its VFs in FLR() yet.
-my understanding the upper layer callers should consider the
-complexity of such case.
-
-While we introducing the connection of IOMMU & device in FLR(),
-seems we brought some of the logic from the outside to the inside
-part.
-
-One method might we don't handle PF either by explicit checking its
-VF configuration existing to skip prepare()/done() ? till we have
-much clearer handling logic about it.
-
-Thanks,
-Ethan
-   > d
-> Thus, case b might be breaking. So, perhaps we should add a few
-> conditions when calling iommu_dev_reset_prepare/done():
->   + Make sure that the pci_dev has ATS capability
->   + Make sure no sibling pci_dev(s) sharing the same RID
->   + Any others?
-> 
-> Thanks
-> Nicolin
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 6905b56bf3e4..18fc5d828e70 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -445,8 +445,9 @@ static int extract_package(struct acpi_battery *battery,
+ 			case ACPI_TYPE_BUFFER:
+ 				if (len > element->buffer.length + 1)
+ 					len = element->buffer.length + 1;
++				strscpy(ptr, element->buffer.pointer, len);
+ 
+-				fallthrough;
++				break;
+ 			case ACPI_TYPE_STRING:
+ 				strscpy(ptr, element->string.pointer, len);
+ 
+-- 
+2.34.1
 
 
