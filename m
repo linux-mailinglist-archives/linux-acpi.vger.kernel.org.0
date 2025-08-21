@@ -1,372 +1,256 @@
-Return-Path: <linux-acpi+bounces-15878-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15879-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5F4B2EC65
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Aug 2025 05:51:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C01FEB2F095
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Aug 2025 10:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB0931CC4AC1
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Aug 2025 03:51:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 877DC1721A3
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Aug 2025 08:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9601A2E1C7C;
-	Thu, 21 Aug 2025 03:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719922E9ECF;
+	Thu, 21 Aug 2025 08:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="VooRY4fq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eMZiarTv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2133.outbound.protection.outlook.com [40.107.93.133])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85822E091C;
-	Thu, 21 Aug 2025 03:51:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF19519F135;
+	Thu, 21 Aug 2025 08:07:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755748287; cv=fail; b=pk+XvoHb6FtVXUxjqqA4G1IJahtsUI/yDC4L+V8UqIjfLuQSVuHr8ZcGS6WkuwozCWEAmsAGBy88gms0KPb/Az+MDIi6NFvt4KZYHy+N12kYw9eddMBQCw+1XGQ3pUE+9zSOdFjAE9wNgVuipag++fyNfapIT2+vfh8HMrnzvrQ=
+	t=1755763633; cv=fail; b=M4LmedCG0UQ618G1n6jiROFFw8CsdNJBD1vtrlLlTcAmdjMRrhUVOdDrvHBzc+M9Ot2d8ZripIv0ttmHzIyTpbvh+xNRbZQoyQsH3BcRUV9JUyFaZ1p3yxNxNckBXAi3jUfPQKjie6YbZafUyyDiyAl0dyreMkAPZszYHR2akj0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755748287; c=relaxed/simple;
-	bh=7HU7lVXomKnwYJGhYrzfHNswjCPrrl+VbMCQXHuyYSk=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 Content-Type:MIME-Version; b=mLoMnvuIPpcP8N7Y+blu24EObESbP9yZYzu0DE2uXdcPlwSDZvvvGY+nr0LUpWe6qATEZKXdsWY5zKbOIjzSj09gOF3zA7GpXnfNtrb/sDzpydpZT6XCiExTzP1A7CK7dLDks4iFtTo/Lxg1BC4wZHkdKK6agfuLmYLl+zKbBhY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=VooRY4fq; arc=fail smtp.client-ip=40.107.93.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
+	s=arc-20240116; t=1755763633; c=relaxed/simple;
+	bh=QenybGyXjte4Pytn1sutOZG2IaiCaq4oXeZ9sqON0KA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=QWtFos5TBKFyg4V+eZaIYm+GG51mGH8AZeNIXDPcMRtyt4mecJkO/ojmBCz7CnsKe/sSpDeuvm7TUQiGXhtexmaVborSXado0KttuFQkURUAhIC2V+gjH9LR/epf5mKfjBl+cckNqXDApOHfom7yRMDlQxPW/CIZwPLN14m6qug=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eMZiarTv; arc=fail smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755763632; x=1787299632;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=QenybGyXjte4Pytn1sutOZG2IaiCaq4oXeZ9sqON0KA=;
+  b=eMZiarTvA/79S3/K3YfAcKYIOC6oArAN2kunRQHS0CL1wELoKVndA1Ks
+   iLjfihzlEb5IeK8jQ/zGml0LrnGiPEYMvzazA6RzRFLqv10aprkLNhy32
+   O09zaSNqqqaIr0/r5F77Q5hT6QDyQ52M4DYB4WismcUQ63Xcw9BIH/nWX
+   1ytpbYh1U7OJwdYQlUOW+7nxEmGSRTigvzQLTgOh4ohw5mUJDsq+yD7lY
+   +2Lhmxu6B7VNS7OKbPsRHaPgd7AQU/9gssIuMLhsLg16dw745zh4nenRi
+   x5YQkEx7nBywYXW/V6kRcjLlxSAfJEqoLPfHYJuEiGVm7QOYVVUq8i+88
+   g==;
+X-CSE-ConnectionGUID: rh1C4HWyTze4bQmwS/aelw==
+X-CSE-MsgGUID: J1q5Mek1TGi612d0TvLHYQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="80641179"
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
+   d="scan'208";a="80641179"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 01:07:11 -0700
+X-CSE-ConnectionGUID: H1YCUIO3QIGckE7N76rM4A==
+X-CSE-MsgGUID: OHazC6h6SAWMN/TsDBnstw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,306,1747724400"; 
+   d="scan'208";a="199328729"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 01:07:11 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 21 Aug 2025 01:07:10 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Thu, 21 Aug 2025 01:07:10 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (40.107.237.87)
+ by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 21 Aug 2025 01:07:09 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VFFUy6oV1w5CGBi267GVJkChvZK4zNZcpVp8eiz/MwTVjuumXF0QrZo4+/uJD73Gg0t3Q7LwrKdvrHDX1U64Nj1GLh5I7/Rn+GQ3AvwAWJzBJUdJ0e1E6zZVYryDgLJNDGo4foVzBEONCzwn3QortMoOxfzHwt/i9pKJ8RYc/HoS4ActNpDfOYPv8dlIKQjM+QauFEmya+iB6fwY4NhUWgxkT6MdugZMWSmfJg/CZd36CC+aZr/cs9ZJDfNI6AWA4lzK6G8gvjCz/u340t1iaLTnRp6OUUFLZ2u8wjitYhzdRdh3sulQA7k6nQqR4sRkWP5/FByoyRtiSas3eG8liw==
+ b=Qeo1ir9BkJYoK07C7cdYpY5ArRi2nMWffwc9RPsbqldI6jBt2ZRugOv1KuAhDxGBHucXZ07F2gMzVRUvwPXeGK52lzsYIr4KGUkOMeTeaONvcIQ6FRzq8mFzgl0BMhA8rHDOhcD4DMhHwMylviTyfru0O/cOk5T8Tpo3jYFr6mPXMmIr8W/gdyp/XX0sjjJiiiMRROB1VSHoWnI8VDTBPcIda1bsk8Q3GkovtqGllYLok2Boqz80/s9LVRgngvnxU9ZWPm8pyYJvzT4LDtAZi4+fHELrKk97TK+4/fy8dNYqW7dZVYDIkjzf8RZoYrhmvC1V7GyL1zHLqPYbsDzmOw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HQeRNUwsTzSYgCXoFkVy9afiZXbW9eSb3Xz5g5K0FZQ=;
- b=QE0PlXRF9I2KnwSnWf7pVVbq02K2z7ZTs/+Z6elxzW+Kgq43+l4ei2+OfFo6btEYyLKcHYnUTqgJZXTbU55TKnPI1JDHuGTGnRBHBX0WwrCnpiTi+iBuQRKmnOl42stsnIKHcclxYHWfK2ktpnLDOaFKiNroEe+J1Ih1XldoBnGqUirE28gUoPgd221NyZ2hDMsF+Jd7ayXSM2U4FjRG0WlzVfviGC8ALFLVKZjjOYVMXncOhHZpYAvCLQe41eLaebqx0R/9GZNGs1eM+O0iHbfj6PmuiBEgxISux/YL8KfQUla0aXTlyXts+xwPS5+bNy0oWzxNnQbVQilGJEgr5g==
+ bh=cCIvWERQYHBo5NgYoRXZX+DytAN8ayLR8gbNZcMsS4Y=;
+ b=G4WoyYI7GoOOhrMYbs1XBNhajPK11sH5JAUk1/NGZfUS1KZqSteO61ChPu6nQBVlRE5gp6N64YB3IMp6X6t95agBlwTtmB6GnDNCUm7ksFslRr2GHmMxSRFzxMA2CPLFKhF5hlz4OOomD/pVt2YVt9H/zgEILDSgnLUyXcp+jy3v48eRG2GpsV5Qvn/w9LJTL1q1rScCMxnwoveiLAu5B7v4Jzii46Em48t6fzgTky01BiOqcdg2DKW7OMZu1c11Ws8DCyE2sdUL30n5JmZ/iuxe2EAna1bJgmlEUQoAi9RlF4AUL0piSvPyNi2ZyVo0ACGETShkSPZlA+70Vry8gg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=os.amperecomputing.com; dkim=pass
- header.d=os.amperecomputing.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HQeRNUwsTzSYgCXoFkVy9afiZXbW9eSb3Xz5g5K0FZQ=;
- b=VooRY4fq+q1AABHwzhtDLBsueMiYJ9+RzUvXL1cNdfOCiZPKDMdYDDI/JgKNj8CkzeGQjw3xPzLGRLcJr7DUE6wcEma29EEyEqZDS6f9dmOfHtTpKe4Yrfnwac6UMj4Hak3DmExIVjjRWcPlDmM3+NmbVKlpWs4XisBC4C+SmdU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
-Received: from MW4PR01MB6228.prod.exchangelabs.com (2603:10b6:303:76::7) by
- CH7PR01MB9026.prod.exchangelabs.com (2603:10b6:610:24b::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9052.14; Thu, 21 Aug 2025 03:51:21 +0000
-Received: from MW4PR01MB6228.prod.exchangelabs.com
- ([fe80::13ba:df5b:8558:8bba]) by MW4PR01MB6228.prod.exchangelabs.com
- ([fe80::13ba:df5b:8558:8bba%6]) with mapi id 15.20.9052.013; Thu, 21 Aug 2025
- 03:51:21 +0000
-Date: Wed, 20 Aug 2025 20:51:18 -0700 (PDT)
-From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-To: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
-cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-    Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-    "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-    linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ACPI: AGDI: Add interrupt signaling mode support
-In-Reply-To: <20250818065437.85905-1-fj1078ii@aa.jp.fujitsu.com>
-Message-ID: <a6d5d830-b1f2-c14b-7753-82f35baec8b4@os.amperecomputing.com>
-References: <20250818065437.85905-1-fj1078ii@aa.jp.fujitsu.com>
-Content-Type: text/plain; format=flowed; charset=US-ASCII
-X-ClientProxiedBy: MW4PR03CA0292.namprd03.prod.outlook.com
- (2603:10b6:303:b5::27) To MW4PR01MB6228.prod.exchangelabs.com
- (2603:10b6:303:76::7)
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BN9PR11MB5276.namprd11.prod.outlook.com (2603:10b6:408:135::18)
+ by DS0PR11MB8232.namprd11.prod.outlook.com (2603:10b6:8:15d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.14; Thu, 21 Aug
+ 2025 08:07:01 +0000
+Received: from BN9PR11MB5276.namprd11.prod.outlook.com
+ ([fe80::b576:d3bd:c8e0:4bc1]) by BN9PR11MB5276.namprd11.prod.outlook.com
+ ([fe80::b576:d3bd:c8e0:4bc1%4]) with mapi id 15.20.9031.023; Thu, 21 Aug 2025
+ 08:07:01 +0000
+From: "Tian, Kevin" <kevin.tian@intel.com>
+To: Nicolin Chen <nicolinc@nvidia.com>
+CC: "robin.murphy@arm.com" <robin.murphy@arm.com>, "joro@8bytes.org"
+	<joro@8bytes.org>, "bhelgaas@google.com" <bhelgaas@google.com>,
+	"jgg@nvidia.com" <jgg@nvidia.com>, "will@kernel.org" <will@kernel.org>,
+	"robin.clark@oss.qualcomm.com" <robin.clark@oss.qualcomm.com>,
+	"yong.wu@mediatek.com" <yong.wu@mediatek.com>, "matthias.bgg@gmail.com"
+	<matthias.bgg@gmail.com>, "angelogioacchino.delregno@collabora.com"
+	<angelogioacchino.delregno@collabora.com>, "thierry.reding@gmail.com"
+	<thierry.reding@gmail.com>, "vdumpa@nvidia.com" <vdumpa@nvidia.com>,
+	"jonathanh@nvidia.com" <jonathanh@nvidia.com>, "rafael@kernel.org"
+	<rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>, "Liu, Yi L"
+	<yi.l.liu@intel.com>, "baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "iommu@lists.linux.dev"
+	<iommu@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-arm-msm@vger.kernel.org"
+	<linux-arm-msm@vger.kernel.org>, "linux-mediatek@lists.infradead.org"
+	<linux-mediatek@lists.infradead.org>, "linux-tegra@vger.kernel.org"
+	<linux-tegra@vger.kernel.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, "patches@lists.linux.dev"
+	<patches@lists.linux.dev>, "Jaroszynski, Piotr" <pjaroszynski@nvidia.com>,
+	"Sethi, Vikram" <vsethi@nvidia.com>, "helgaas@kernel.org"
+	<helgaas@kernel.org>, "etzhao1900@gmail.com" <etzhao1900@gmail.com>
+Subject: RE: [PATCH v3 3/5] iommu: Add iommu_get_domain_for_dev_locked()
+ helper
+Thread-Topic: [PATCH v3 3/5] iommu: Add iommu_get_domain_for_dev_locked()
+ helper
+Thread-Index: AQHcCxPRj0zb6W5cHUaGmJqSwKG0krRja68AgACnqICACLm4YA==
+Date: Thu, 21 Aug 2025 08:07:01 +0000
+Message-ID: <BN9PR11MB5276CCC219B8456DAF289AD78C32A@BN9PR11MB5276.namprd11.prod.outlook.com>
+References: <cover.1754952762.git.nicolinc@nvidia.com>
+ <a69557026b7e2353bae67104bbe6a88f0682305e.1754952762.git.nicolinc@nvidia.com>
+ <BN9PR11MB52769ACDFED7201CE282FE3C8C34A@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <aJ+AP18ucw3Jb6QO@Asurada-Nvidia>
+In-Reply-To: <aJ+AP18ucw3Jb6QO@Asurada-Nvidia>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN9PR11MB5276:EE_|DS0PR11MB8232:EE_
+x-ms-office365-filtering-correlation-id: 8abb978e-8b82-48b1-3911-08dde089b570
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?MxDD9+WanT6eYV4up5pyL61nvC3vp1MRe3YMezWRxUo1ijm8LzCJ8p1ZfPr8?=
+ =?us-ascii?Q?9it7Zj/3b80/7dn2Jyd0J/2S4HAqMgWnosI3QHstg0UK7a10KllpFnaOApyC?=
+ =?us-ascii?Q?vdZDOYrKjMbWOaAw6OTq5f27/Y9vHTG5TO5NlYu5ydRjpySDOGzMy84PWbQ2?=
+ =?us-ascii?Q?cyVTwizkarmgZDpPDn7LBb/+2qahlvpcoaaZ1zHWaf6/lg4FEnRDgeO6j+RE?=
+ =?us-ascii?Q?14FeccrwcYdXf+72ECdxu5HKC1bo0jIgGYeeWMOK/BgvfSmFakaUebyVGaTx?=
+ =?us-ascii?Q?HE/TcQimgE3CJ2p1sT/p4cM7NwlsYV9hd8pAFvpkSUBItdYOxc2LWEeqmQmx?=
+ =?us-ascii?Q?Bzf577xBZGrXCZ1KNUy+q/hLrevAb7v5f+VHXmw9XBU6YBs+EBVO2Gtpab5k?=
+ =?us-ascii?Q?1QH+yDSFBWecU8COeTLZ6UVWWChnLLSjHeibIstY4FZteAJb0jf9S7K5dQ6Q?=
+ =?us-ascii?Q?wLRDM+3DGkVStb03nRaQvxeSKpu8wOIZc3Fk9PealPz0cLLn99YpQIhjEGXQ?=
+ =?us-ascii?Q?ZgM3iP7bZ0cHsvQtGBAQTXa3O3YNmF4hAc4ck/LWwV7QxWw6wLMo5g2HkDW+?=
+ =?us-ascii?Q?RZEZCzsSwypI74gxteRpAfednZ9eMx/LxmfI9J6+4thbyrYsB+1A/T5OkTd2?=
+ =?us-ascii?Q?2shgASmtZp05KPVlj+becqXNeWlQhbH8A2QjSQL5Ih6OtKIzrf11RGmHCy01?=
+ =?us-ascii?Q?pO0Re8FysvQdQCUxWQ7IZtIKGAGJQR4Smpxurc/kdvUCcVgNY2++v0uKM2wo?=
+ =?us-ascii?Q?px/euXDjioc6DpNnDe8v1h4uz6063ovaJjCzMjDEltkw1txvgbQgJbguK+dQ?=
+ =?us-ascii?Q?+A7CqSgnXW5SO6cFgNpzycZBnW94s5ivqkcUvc08jF0uWTk9uGTAO2GZ8STG?=
+ =?us-ascii?Q?0QTbQc12EJEM/VK3d4AiWNH040FTxXi6LRv7RwgcQH2N6p5IvW/JVz3sEys4?=
+ =?us-ascii?Q?3cdH78V4+/hh1wW4mT9MK9Sq7I4TkNrlvF4e/+zGlKUg5glxwtPDJyC4uoew?=
+ =?us-ascii?Q?4cF9YeWGs9rAL4tICSTu0TX6V+BLw9i0rDlyQxQCtmQeT3G2RcZ3UVzlkzsV?=
+ =?us-ascii?Q?6EvhcpmzfJkmpS77c+xrOrWPTH08IrhnV5DuzNq4hZ0IJzlCgeg4Zr2PkDvc?=
+ =?us-ascii?Q?svDomFUrQl5+C7VeOWSxGNicn0xjrtiolhxr7ELdAV2avloJNgUtzVwqrLnK?=
+ =?us-ascii?Q?r/WM8bx1DF1iazRF9AKit3d4dx4o4Sv0ClrDbTbPrhrhA7i8qGXU0VZ+be4f?=
+ =?us-ascii?Q?th5f8CdB6CWZ8Ew9HhPilIKHd8fTQNm4ukUY2f9a0yh072Ac/kKEtYsjvTam?=
+ =?us-ascii?Q?rB35BlNq49i9cl9sfcU+OIndhp5YWKnOw8xhjxHlArmp+9ORHEZHPyC4DFeq?=
+ =?us-ascii?Q?OznAOto3mrNGiFxYhMuCeUgQ1vEX3CkpsT9MVKzziqsLYnpIsvjv/WneF0Yt?=
+ =?us-ascii?Q?kAVBtF0RCU9q1Y6PAoS+dBEOuHL6kfqG/GE+q/X8GBDVfmuVP2tpsw=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5276.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?lW68hgbVu/oYy++9D9VZpUtd1SIOZawQDgfVJpaHCN78Jiv2/Ma90WUQe1L0?=
+ =?us-ascii?Q?RtDjucm1wuvKYeIzQs5r23AwY9EMZ9FPituWag/Vrea7WM57uYN/LCHNKan1?=
+ =?us-ascii?Q?z+svqMmW+i2tNCKtyyEIqahhtc4GApkqXEpTH9S2mB/5kDvVKkuom4L5LTcU?=
+ =?us-ascii?Q?bCJqrDfIT3f7sRkpIwkkBh/c1H+5up0jcRIvtfnQ5ezvl3w6i555LCnPEiJj?=
+ =?us-ascii?Q?EmpMEtedNio6W6fsfUIRt8bsSZDckOlHepLW8/jx7UPSuvaUGgA8MnDz2ooi?=
+ =?us-ascii?Q?dGYqFhkHzlJWzEPJWtfQqVGOebtiUHY363RqGqHDnBpY7xrEQ8/C3grAdu57?=
+ =?us-ascii?Q?cMwvqkBDSV6+KoEuMnei9P+T6fNVeNRVUueHXH5saQB7RLbWF9/3dEFme1M6?=
+ =?us-ascii?Q?l1N2vjgA34U6dBsrnujNWOBGvV9FIxGFOIC9rZPAlykLrF4fapdlziEW9FR3?=
+ =?us-ascii?Q?3YEJr5GjYawI4UW49mfVgsOhi2hQzW7RKTnnsgE+PkOt1ohzv24u/1RRaCaF?=
+ =?us-ascii?Q?Ve1ePlTy7/NiVzKKLwPPFQVkzYY2hLPLO52zKHdYWO1v+Zxth/goXwFEkKcH?=
+ =?us-ascii?Q?P+NhaS6SWDuFk3y7z7dM8xaeO4k10x9ZV0sMOO+ueWuh5DzsKJnqIfgKEh83?=
+ =?us-ascii?Q?/9wyKknJrrvATrShP+cMYwB3klLiorrK5Z92POuDWHzlW2t2oYxCINp9ELG5?=
+ =?us-ascii?Q?G9MwgsNDK01PUKeM0DX79AIRq6DOm2PET0QgicsKGY7Iz0WM289RaIll9Ulg?=
+ =?us-ascii?Q?tno61kuinzdfi+KLrPZDSw2AHCgrB2jLt0m2x8JbxFo7jx3I6DBvnMwFoS8o?=
+ =?us-ascii?Q?2P5iXQ5gUAXi9Bzfh5eY4G7G7uqNGfb7d3nez83/dK1NAHMtrEaVo2tZBfYw?=
+ =?us-ascii?Q?+fwAx4XC2E34i0FWp1Ie7B4piXC6DyQhfo9hGWshNjokE1qx7PiwxTk9odLT?=
+ =?us-ascii?Q?AwzAzA/kd2xQwegShUk6WtKLuJN1M5l5W3yhvd34Rj1SCpKB7XyQPRxBWwqn?=
+ =?us-ascii?Q?owbd+5b3nemwMmQwLV42W7Wzb/Jupni93lkQEGGsyr+eSiPw6D19/CoG9E/s?=
+ =?us-ascii?Q?+dY0TRv2gdQWay/f3d5YzHAhnI04vDXShTdjxI0zut0ZeHirY9f9L8dtr+Qf?=
+ =?us-ascii?Q?mPBCBcJtvbS6fXb1ENGtf+QEjoqAazKcHZMGE6HAKhlHnkJpMZtmHA1MbwL/?=
+ =?us-ascii?Q?t1Vq/chjMhtkZU6jcDUaF9Og4c6BnZQAOz2lG+J9My1CqSEdXmosPrO3HhKa?=
+ =?us-ascii?Q?/shxWVHuIWXs/mpHBLGFqiqLiaP8a/g1ehLPGw+tdpj5iabJqnKmWF4aQgf7?=
+ =?us-ascii?Q?M6vri+iJJ7QWpzvlKqco2WyJfojE8gzafSA5iHOqIZMYiGZMm+EX5zoxs2nL?=
+ =?us-ascii?Q?dZJGKZxRD92C64ivL/cWYzUj1o6UcnTkMGi9xgX+FNDoMdZ9hxFlO2mz+cvP?=
+ =?us-ascii?Q?lOzc9WNyfuw//4oxRvUNDRoSsZgJFpR3piLZ5sInhRaxoC5ydLxx9/mrG9y7?=
+ =?us-ascii?Q?w715Pt2OeBz6HTKtHrYQ80g5exVP1zEcAamZP2scIi9hKASW6YSLFOabmPAP?=
+ =?us-ascii?Q?ze+DIEFEhhgvtiahscRdYuXGwFzaA4EvFVVymxp5?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR01MB6228:EE_|CH7PR01MB9026:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2183fc2e-551b-4192-6dfe-08dde065fd8c
-X-MS-Exchange-AtpMessageProperties: SA
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|366016|1800799024|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?YKOZDqNEADhWk8WX6LRaa1gQ6/E3pyuXWu+tDW0uVEa3yblC8M5olwvy+wgx?=
- =?us-ascii?Q?8GTvbH5wUAiXwnbR98NDMv+Dbrgt4M6xnTNhBE10Spbgw8FTbTCF0WwESkfE?=
- =?us-ascii?Q?yZHmC/Ts4ucXP7VbRcMO8TqFy4znVuXH/ZOWHnplbaEfGfGLiooWIMbx9K/Y?=
- =?us-ascii?Q?zZn8VUcp7poRI2cNQG8fzw79c3tpRK2dYOmt/CO/EUG20naxS+ImCWT+Ru+7?=
- =?us-ascii?Q?9BmdULC7Mmb5vUCATLtMsgYCmijIsHw/kMX9CvMXurhqV1SBB1QyNsJQdyPd?=
- =?us-ascii?Q?WJKz29zX0Lk2ltuIjDyGZUWAbEEM+vXPM1pCT9hrGsAx5GGZEgEE8mAwfThK?=
- =?us-ascii?Q?mJYr4Ady0/14mVZeSanlpmytIp3rtUZdCfS3GW2qoZdpYKO2W3IeDDjxUMWs?=
- =?us-ascii?Q?TZUMBLHO11uENfZEEunH1j2ytEAvlI41ZbDlnXnUFKEyJGqId2T6y5a1ra4f?=
- =?us-ascii?Q?Cv86qr63gHScS1fEgm2TFYHJ2yJwy7CTpXlvYJtYIscH1TQ5VoXFWh49SPli?=
- =?us-ascii?Q?ye4xIPos5TDSbiT31ONm6XFc30GdqewhySMkYCww8fdL3EvSjuNDXWY7KsEu?=
- =?us-ascii?Q?OzURDwdFeIjvz4GVOBem4YDzuwKkuWu7nXEi3W/hp2J6MP25FEwOXUehwIW8?=
- =?us-ascii?Q?l3uETse0ivLGvD4Bet03TO3iO411T3IDS4hwgXm+BytFeiLD20Iu5POZF+Qk?=
- =?us-ascii?Q?IZE2173kQHB64JzISZHk6eszSZRi9eaiX3luabDBmPR031FBd3iILouSlAIo?=
- =?us-ascii?Q?EJHFDYJfDA7x+Lr5oJMbC7z1YDiFPEgxpe3qLg7qXj5X8PXeMb8RfkbLPc6K?=
- =?us-ascii?Q?vlE7H5r+wizBoPDW/52AYYtVTAFYvBvZJdBsEQCJ/l4t0coKwtihZztS7de7?=
- =?us-ascii?Q?amWbZbzJvtj8izb/kEerGC+wN7CR9rp5iZO+aeq8gxFoteGdFUMfOUDVWV5h?=
- =?us-ascii?Q?bNGRSNOzGJ3l+shEoV/tcPjKOJ8ECMxAunYFHs4TXhmbe9lDzUCjUyK/lRGH?=
- =?us-ascii?Q?Nu48nz+tk7Kcn5YjoWjfAjZZoSDsyxQ8aHyY1oUNTZvcXM39hR6En9vAjQv8?=
- =?us-ascii?Q?j3z61Y59Ql9KnV28w36m8Zr7TNtSV+dq1wdLjDgHdRjpaAebmZ3t0LyBCZoa?=
- =?us-ascii?Q?BJXoDX5dC38nmhXBxL65Xu5MMmNu0VVWPS8gvJwePQ36Jcc3m1QQUamwDbSB?=
- =?us-ascii?Q?te+wCM7KO0OIaUfU2qmRX8w2pNNrcYmjsbvgYaKxD6jXJmTD5vXKKSxMV7SO?=
- =?us-ascii?Q?23cfgqXW0nSiBl970IZqH6ZoGYX6P7pX+j8gRrSbv1F1f19aAlD9vjt7ZI0O?=
- =?us-ascii?Q?VUYdREdRMnTGfUQ3bdluRS6D2entaZAo0ki048icuCgo8PgaK++kJrpDMzQf?=
- =?us-ascii?Q?gC4o61usJvswxGOx06nh7/9214qQ4uOoYmAXogkEvraDfHpUoEYcygBsClrT?=
- =?us-ascii?Q?qQc8yhaPdlWqqbWJ3QP/2VaCZ2OJkrAAc1Lr5ve7bSILYmpwFUZcWA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR01MB6228.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?JK1UbsVVyLxaUCw+ATaKH1GUwR15JHTrHb8jwa6EMVR4s493g5EFBqbHiRja?=
- =?us-ascii?Q?6mC5NWqJ4DbOLtJNk9gS76FgoFycBY4X+N3+mwhknzhkZj2Vwphi9rXLh+zb?=
- =?us-ascii?Q?V1c91zwPbQsLfX8NVPY8YBdGeoZqNxFJf6lLnnVFXizQ+DLZl5uc692srAhu?=
- =?us-ascii?Q?qrgIgN+mm1LX9ACmi68CF6joRc8gD7UURDQdKcFa9XaDkQYyUBKn27M9mBl+?=
- =?us-ascii?Q?O9O/IZWh8oMnadFJSS6kMMAp9Rycqhx2m3YfiEWU/u0LQWQ6ti3JVLWAQR6X?=
- =?us-ascii?Q?1km0b5oCFKx6Z3oepKxv333udu0YM78v92puAvYXbCdctGPxw2IqymEewV5G?=
- =?us-ascii?Q?eLTiZAvVa5VpvydRxMCqhML21+9WGdXMIv++Pbr4fE2cVn1GUyF6kzLh1DBt?=
- =?us-ascii?Q?/aZRDGjNfQEg6aze/IKSka5qkdM9HOe29o+9XwzjClSN1Qv4EUKhRwJFfqyx?=
- =?us-ascii?Q?Lk/K9v/nEYF5wxpKgJoV5mFZQWNdeQrCEnLdgqV4SEQ09py3CVDHBrTiqu6L?=
- =?us-ascii?Q?/sYw5s5eEdnQz5zsjCX+/q/8KcnOvyVvM0ns1gW7J9Deb/TOk5fm+6kT4e1l?=
- =?us-ascii?Q?iwsYpHJF340yl6DS5K6dTpZ2XHEjWE5QhHllGL9nf4yiqXNhfhDTB7qN3Vjk?=
- =?us-ascii?Q?O1PhJtbc7gIh4wyu/3GQay/smtVz8+dP4szkRxYDsRqt7UFMKOiMs5QjsfH2?=
- =?us-ascii?Q?p8i571FMKA/6acWiVC7KV3gsHxlqY4g6CrLE/FKLFUxHJrLeu2lJ1Gimz+OH?=
- =?us-ascii?Q?RfAdcOzdek6WbEtZnDm9vG8QxTQ0PKzs2GLK13KIxhtonH1B7hpfTarFVpYG?=
- =?us-ascii?Q?Driskc+E/K3x+y+KjC0OhzDqingu0VhhzcKRLzkeNE2D5BRnMrJa16IpQrRx?=
- =?us-ascii?Q?X0ors+rTysK6pQQrYXFbfqLab5tWZkajKzXURh4ba43LSKJStY43oCVOkBEV?=
- =?us-ascii?Q?IZpMtYuLJQKY898Jn8GtR7GRHiQFdof5OCiQTx67RO0tSDOtjIVDiAWzNVA+?=
- =?us-ascii?Q?vqV6rx6EiMAwOm7Nc0+KKWrN0T9+2E5t/SIzRC3C0L0Id72PXYSbd1kmghEF?=
- =?us-ascii?Q?6S83YU20Ip59KaCsRXiZUoNW9RIgK/IC3r6y6lFYx8vrrhr3XpnApoh4ncmt?=
- =?us-ascii?Q?AZKw3euZklkdX+1hC8ECL41iZfmn6RPG8LIZGKfCD19CpShvmASqSs9QHNy2?=
- =?us-ascii?Q?H/GwuL7t11uLYR/XA+sFQHyEVcfhP6vol/JufUXf7Icy0llX15Gpv4f+qwjF?=
- =?us-ascii?Q?KYbtlMggX5j38Cy0nRMHrau+EUHgRW/Q6D2SOJjTKgrXaGyajZpROcsoS6Cb?=
- =?us-ascii?Q?VaeiHh/JRHzB0yxbCGmpFTJGLheAmFyOfkmECz/pj+rSvABDD/IX38FgpBaI?=
- =?us-ascii?Q?yGFRYZKxNml+rVZcfS5iDzLc/FH3iUm1N0bQYklbOOz73+Db/M8ZeURRnvqg?=
- =?us-ascii?Q?2xcuwdI89GJ/wmBrnn2toVMLRM0EyRuMG7zaANzJgIcipKPlaaIClWwQiGmT?=
- =?us-ascii?Q?Koh8g3OO0MNjOtUjdiwRbrzpoUuXRlV35AzbfAKM4sXjonbrtNLhNs1LlaA5?=
- =?us-ascii?Q?o7bCvC+sJ0RYfqea+9zlGcQebo9ZipUniJyX9waP7t2awsfWY8uI7LBobgnD?=
- =?us-ascii?Q?CplBatn0hovbLbtB8B8iozU=3D?=
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2183fc2e-551b-4192-6dfe-08dde065fd8c
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR01MB6228.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2025 03:51:20.9861
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5276.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8abb978e-8b82-48b1-3911-08dde089b570
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Aug 2025 08:07:01.5273
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HjQ1b9/8Q9ZknnHCgNQLokw55b5fIHeWv8AMi8zL3lDfCTDdWaeV5n+byW1To800UNdqRjOk0wCoF50LCVDMHCf5FKXw1M1vGZVq0VwAi6TW0y7ODRbZP5PwDaGHGC9y
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH7PR01MB9026
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: K9OHLQ/JMbr+Bu1cpyALg37LMdbefF82JJB1MjxPQ5qXCXFsdXW60BtFKs4cEgi8ml/tPKcl6OV3VFYZ0cVMDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8232
+X-OriginatorOrg: intel.com
 
+> From: Nicolin Chen <nicolinc@nvidia.com>
+> Sent: Saturday, August 16, 2025 2:45 AM
+>=20
+> On Fri, Aug 15, 2025 at 08:55:28AM +0000, Tian, Kevin wrote:
+> > > From: Nicolin Chen <nicolinc@nvidia.com>
+> > > Sent: Tuesday, August 12, 2025 6:59 AM
+> > > So, iommu_get_domain_for_dev() should check the gdev flag and return
+> the
+> > > blocked domain if the flag is set. But the caller of this API could h=
+old
+> > > the group->mutex already or not, making it difficult to add the lock.
+> > >
+> > > Introduce a new iommu_get_domain_for_dev_locked() helper to be used
+> by
+> > > those drivers in a context that is already under the protection of th=
+e
+> > > group->mutex, e.g. those attach_dev callback functions. And roll out =
+the
+> > > new helper to all the existing IOMMU drivers.
+> >
+> > iommu_get_domain_for_dev() is also called outside of attach_dev
+> > callback functions, e.g. malidp_get_pgsize_bitmap(). and the returned
+> > info according to the attached domain might be saved in static
+> > structures, e.g.:
+> >
+> > 	ms->mmu_prefetch_pgsize =3D malidp_get_pgsize_bitmap(mp);
+> >
+> > would that cause weird issues when blocking domain is returned
+> > though one may not expect reset to happen at that point?
+>=20
+> We aren't changing the iommu_get_domain_for_dev(). So, it should
+> be used exclusively for functions that are outside group->mutex,
+> like this one, i.e. they should still get the group->domain v.s.
+> the blocked domain.
+>=20
 
-Hi Kazuhiro
-
-On Mon, 18 Aug 2025, Kazuhiro Abe wrote:
-> AGDI has two types of signaling modes: SDEI and interrupt.
-> Currently, the AGDI driver only supports SDEI.
-> Therefore, add support for interrupt singaling mode
-> The interrupt vector is retrieved from the AGDI table, and call panic
-> function when an interrupt occurs.
-> SDEI & Interrupt mode is not supported.
->
-> Signed-off-by: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
-> ---
-> drivers/acpi/arm64/agdi.c | 114 +++++++++++++++++++++++++++++++++++---
-> include/acpi/actbl2.h     |   4 +-
-> 2 files changed, 110 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
-> index e0df3daa4abf0..c514bb874c5d3 100644
-> --- a/drivers/acpi/arm64/agdi.c
-> +++ b/drivers/acpi/arm64/agdi.c
-> @@ -16,7 +16,11 @@
-> #include "init.h"
->
-> struct agdi_data {
-> +	unsigned char flags;
-> 	int sdei_event;
-> +	unsigned int gsiv;
-> +	bool use_nmi;
-> +	int irq;
-> };
->
-> static int agdi_sdei_handler(u32 sdei_event, struct pt_regs *regs, void *arg)
-> @@ -48,6 +52,55 @@ static int agdi_sdei_probe(struct platform_device *pdev,
-> 	return 0;
-> }
->
-> +static irqreturn_t agdi_interrupt_handler_nmi(int irq, void *dev_id)
-> +{
-> +	nmi_panic(NULL, "Arm Generic Diagnostic Dump and Reset NMI Interrupt event issued\n");
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static irqreturn_t agdi_interrupt_handler_irq(int irq, void *dev_id)
-> +{
-> +	panic("Arm Generic Diagnostic Dump and Reset Interrupt event issued\n");
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int agdi_interrupt_probe(struct platform_device *pdev,
-> +				struct agdi_data *adata)
-> +{
-> +	unsigned long irq_flags;
-> +	int ret;
-> +	int irq;
-> +
-> +	irq = acpi_register_gsi(NULL, adata->gsiv, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_HIGH);
-> +	if (irq < 0) {
-> +		dev_err(&pdev->dev, "cannot register GSI#%d (%d)\n", adata->gsiv, irq);
-> +		return irq;
-> +	}
-> +
-> +	irq_flags = IRQF_PERCPU | IRQF_NOBALANCING | IRQF_NO_AUTOEN |
-> +		    IRQF_NO_THREAD;
-> +	/* try NMI first */
-> +	ret = request_nmi(irq, &agdi_interrupt_handler_nmi, irq_flags,
-> +			  "agdi_interrupt_nmi", NULL);
-> +	if (ret) {
-> +		ret = request_irq(irq, &agdi_interrupt_handler_irq,
-> +				  irq_flags, "agdi_interrupt_irq", NULL);
-> +		if (ret) {
-> +			dev_err(&pdev->dev, "cannot register IRQ %d\n", ret);
-> +			acpi_unregister_gsi(adata->gsiv);
-> +			return ret;
-> +		}
-> +		enable_irq(irq);
-> +		adata->irq = irq;
-> +	} else {
-> +		enable_nmi(irq);
-> +		adata->irq = irq;
-> +		adata->use_nmi = true;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> static int agdi_probe(struct platform_device *pdev)
-> {
-> 	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
-> @@ -55,12 +108,20 @@ static int agdi_probe(struct platform_device *pdev)
-> 	if (!adata)
-> 		return -EINVAL;
->
-> -	return agdi_sdei_probe(pdev, adata);
-> +	switch (adata->flags & ACPI_AGDI_SIGNALING_MODE_MASK) {
-> +	case ACPI_AGDI_SIGNALING_MODE_SDEI:
-> +		return agdi_sdei_probe(pdev, adata);
-> +
-> +	case ACPI_AGDI_SIGNALING_MODE_INTERRUPT:
-> +		return agdi_interrupt_probe(pdev, adata);
-> +	}
-> +
-> +	return 0;
-> }
->
-> -static void agdi_remove(struct platform_device *pdev)
-> +static void agdi_sdei_remove(struct platform_device *pdev,
-> +			     struct agdi_data *adata)
-> {
-> -	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
-> 	int err, i;
->
-> 	err = sdei_event_disable(adata->sdei_event);
-> @@ -83,6 +144,34 @@ static void agdi_remove(struct platform_device *pdev)
-> 			adata->sdei_event, ERR_PTR(err));
-> }
->
-> +static void agdi_interrupt_remove(struct platform_device *pdev,
-> +				  struct agdi_data *adata)
-> +{
-> +	if (adata->irq != -1) {
-> +		if (adata->use_nmi)
-> +			free_nmi(adata->irq, NULL);
-> +		else
-> +			free_irq(adata->irq, NULL);
-> +
-> +		acpi_unregister_gsi(adata->gsiv);
-> +	}
-> +}
-> +
-> +static void agdi_remove(struct platform_device *pdev)
-> +{
-> +	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
-> +
-> +	switch (adata->flags & ACPI_AGDI_SIGNALING_MODE_MASK) {
-> +	case ACPI_AGDI_SIGNALING_MODE_SDEI:
-> +		agdi_sdei_remove(pdev, adata);
-> +		break;
-> +
-> +	case ACPI_AGDI_SIGNALING_MODE_INTERRUPT:
-> +		agdi_interrupt_remove(pdev, adata);
-> +		break;
-> +	}
-> +}
-> +
-> static struct platform_driver agdi_driver = {
-> 	.driver = {
-> 		.name = "agdi",
-> @@ -94,7 +183,7 @@ static struct platform_driver agdi_driver = {
-> void __init acpi_agdi_init(void)
-> {
-> 	struct acpi_table_agdi *agdi_table;
-> -	struct agdi_data pdata;
-> +	struct agdi_data pdata = {0};
-> 	struct platform_device *pdev;
-> 	acpi_status status;
->
-> @@ -103,12 +192,23 @@ void __init acpi_agdi_init(void)
-> 	if (ACPI_FAILURE(status))
-> 		return;
->
-> -	if (agdi_table->flags & ACPI_AGDI_SIGNALING_MODE) {
-> -		pr_warn("Interrupt signaling is not supported");
-> +	switch (agdi_table->flags & ACPI_AGDI_SIGNALING_MODE_MASK) {
-> +	case ACPI_AGDI_SIGNALING_MODE_SDEI:
-> +		pdata.sdei_event = agdi_table->sdei_event;
-> +		break;
-> +
-> +	case ACPI_AGDI_SIGNALING_MODE_INTERRUPT:
-> +		pdata.gsiv = agdi_table->gsiv;
-> +		break;
-> +
-> +	default:
-> +		pr_warn("Signaling mode(%d) is not supported",
-> +			agdi_table->flags & ACPI_AGDI_SIGNALING_MODE_MASK);
-> 		goto err_put_table;
-> 	}
->
-> -	pdata.sdei_event = agdi_table->sdei_event;
-> +	pdata.irq = -1;
-> +	pdata.flags = agdi_table->flags;
->
-> 	pdev = platform_device_register_data(NULL, "agdi", 0, &pdata, sizeof(pdata));
-> 	if (IS_ERR(pdev))
-> diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-> index 048f5f47f8b88..9ddbdd772f139 100644
-> --- a/include/acpi/actbl2.h
-> +++ b/include/acpi/actbl2.h
-> @@ -339,7 +339,9 @@ struct acpi_table_agdi {
->
-> /* Mask for Flags field above */
->
-> -#define ACPI_AGDI_SIGNALING_MODE (1)
-> +#define ACPI_AGDI_SIGNALING_MODE_MASK (3)
-> +#define ACPI_AGDI_SIGNALING_MODE_SDEI (0)
-> +#define ACPI_AGDI_SIGNALING_MODE_INTERRUPT (1)
->
-> /*******************************************************************************
->  *
-
-Like Hanjun mentioned, these should go through ACPICA project. When you do 
-that could you also add the SDEI flag to the other places, which are 
-needed for iasl to be able to decode AGDI tables. You can find them if you 
-take a look at my patch in ACPICA project.
-
-Cheers, Ilkka
-
-> -- 
-> 2.43.0
->
->
->
+Usually the difference between func() and func_locked() is only about
+whether the caller holds a lock. If they mean to return different
+domains, may need better naming (though I don't have a good option
+now)...
 
