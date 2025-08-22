@@ -1,38 +1,38 @@
-Return-Path: <linux-acpi+bounces-15928-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15929-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9537B31EFE
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 17:41:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA44B31F06
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 17:42:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 749A85C0CB1
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 15:36:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB503681339
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 15:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34FB285C80;
-	Fri, 22 Aug 2025 15:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0AA28467D;
+	Fri, 22 Aug 2025 15:33:01 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C91C233712;
-	Fri, 22 Aug 2025 15:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F6624DD15;
+	Fri, 22 Aug 2025 15:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755876775; cv=none; b=Ba9MWCuMJhK3We/ndSES7vKiYZEv+o1BD5EI4M/Kca7KtwwE8t8QoGqxBdrCmqPAy1aE/BnlpGiGbwr9FGN4pot1ZoGfdFN7UOBHYdjlmAdMMBeScq1lsnSSUqxjwev2JglAfHM0fljQbeRvQUCnpYHgIJ6JB9MOnpcYslBIT7g=
+	t=1755876781; cv=none; b=nuhPVsJ8JO+SsAg4afHuYEfPiOfoSRo9gEjeaJjYnqlnDiLmO8x6OidUL/SaZH/DIQk3OYFAaDaEzEOXYeqqp2FIIVmYnhtUx0oiNkeSgxNGerKENWn7eQQ1z7HSORn1XJ6/uGuA9Hztl1vKV1wLIgrEBQxFZ4HY6NQVlxstgiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755876775; c=relaxed/simple;
-	bh=WMbYLx7wftmnKm+gAYMtfmtcXYgZ093690PaIbCtmeY=;
+	s=arc-20240116; t=1755876781; c=relaxed/simple;
+	bh=482lR6qZEXMuwO0xSwqkMMzje9b+l5mSPWDxSUXfvvQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RLWMW2pLXuSIJ4qLNI3C0xNUyN4Vt6C/yy/+y6pEmbebICivIYu3zMOpQTdPbS3Hu2q6ueGIW9mW7Pc/hmr2WKk7a1CU3L3YDxTQLzo75hUsrGLKXa+XI3nXzsPWreAyr5372x3HbkByO2sTyp3VZAmcJaEcclINDoDhz8tMtb8=
+	 MIME-Version; b=cSWsdbyl3ZbHp7Y7LINnjyv9IunXyR/hS3O+YmaCY63ZnKz8UvfsDop87kIB78x9GlxT5ueP1fIopFTlPfPmZyxVGk55o1+RhXLGVGS6oqvbofzO5W/rLNb4PQhs/t5c9U8qLT36jmTAgAOV+YFWj51/GPaRQWNOP4vUxRpwEnA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8310F27DD;
-	Fri, 22 Aug 2025 08:32:45 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 25C3A2880;
+	Fri, 22 Aug 2025 08:32:51 -0700 (PDT)
 Received: from merodach.members.linode.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4C9863F63F;
-	Fri, 22 Aug 2025 08:32:48 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 17D423F63F;
+	Fri, 22 Aug 2025 08:32:53 -0700 (PDT)
 From: James Morse <james.morse@arm.com>
 To: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -71,11 +71,10 @@ Cc: James Morse <james.morse@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Rohit Mathew <Rohit.Mathew@arm.com>
-Subject: [PATCH 19/33] arm_mpam: Reset MSC controls from cpu hp callbacks
-Date: Fri, 22 Aug 2025 15:30:00 +0000
-Message-Id: <20250822153048.2287-20-james.morse@arm.com>
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 20/33] arm_mpam: Add a helper to touch an MSC from any CPU
+Date: Fri, 22 Aug 2025 15:30:01 +0000
+Message-Id: <20250822153048.2287-21-james.morse@arm.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20250822153048.2287-1-james.morse@arm.com>
 References: <20250822153048.2287-1-james.morse@arm.com>
@@ -87,222 +86,86 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When a CPU comes online, it may bring a newly accessible MSC with
-it. Only the default partid has its value reset by hardware, and
-even then the MSC might not have been reset since its config was
-previously dirtyied. e.g. Kexec.
+Resetting RIS entries from the cpuhp callback is easy as the
+callback occurs on the correct CPU. This won't be true for any other
+caller that wants to reset or configure an MSC.
 
-Any in-use partid must have its configuration restored, or reset.
-In-use partids may be held in caches and evicted later.
+Add a helper that schedules the provided function if necessary.
+Prevent the cpuhp callbacks from changing the MSC state by taking the
+cpuhp lock.
 
-MSC are also reset when CPUs are taken offline to cover cases where
-firmware doesn't reset the MSC over reboot using UEFI, or kexec
-where there is no firmware involvement.
-
-If the configuration for a RIS has not been touched since it was
-brought online, it does not need resetting again.
-
-To reset, write the maximum values for all discovered controls.
-
-CC: Rohit Mathew <Rohit.Mathew@arm.com>
 Signed-off-by: James Morse <james.morse@arm.com>
 ---
-Changes since RFC:
- * Last bitmap write will always be non-zero.
-  * Dropped READ_ONCE() - teh value can no longer change.
----
- drivers/resctrl/mpam_devices.c  | 121 ++++++++++++++++++++++++++++++++
- drivers/resctrl/mpam_internal.h |   8 +++
- 2 files changed, 129 insertions(+)
+ drivers/resctrl/mpam_devices.c | 37 +++++++++++++++++++++++++++++++---
+ 1 file changed, 34 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-index bb62de6d3847..c1f01dd748ad 100644
+index c1f01dd748ad..759244966736 100644
 --- a/drivers/resctrl/mpam_devices.c
 +++ b/drivers/resctrl/mpam_devices.c
-@@ -7,6 +7,7 @@
- #include <linux/atomic.h>
- #include <linux/arm_mpam.h>
- #include <linux/bitfield.h>
-+#include <linux/bitmap.h>
- #include <linux/cacheinfo.h>
- #include <linux/cpu.h>
- #include <linux/cpumask.h>
-@@ -849,8 +850,115 @@ static int mpam_msc_hw_probe(struct mpam_msc *msc)
- 	return 0;
+@@ -906,20 +906,51 @@ static void mpam_reset_ris_partid(struct mpam_msc_ris *ris, u16 partid)
+ 	mutex_unlock(&msc->part_sel_lock);
  }
  
-+static void mpam_reset_msc_bitmap(struct mpam_msc *msc, u16 reg, u16 wd)
-+{
-+	u32 num_words, msb;
-+	u32 bm = ~0;
-+	int i;
-+
-+	lockdep_assert_held(&msc->part_sel_lock);
-+
-+	if (wd == 0)
-+		return;
-+
-+	/*
-+	 * Write all ~0 to all but the last 32bit-word, which may
-+	 * have fewer bits...
-+	 */
-+	num_words = DIV_ROUND_UP(wd, 32);
-+	for (i = 0; i < num_words - 1; i++, reg += sizeof(bm))
-+		__mpam_write_reg(msc, reg, bm);
-+
-+	/*
-+	 * ....and then the last (maybe) partial 32bit word. When wd is a
-+	 * multiple of 32, msb should be 31 to write a full 32bit word.
-+	 */
-+	msb = (wd - 1) % 32;
-+	bm = GENMASK(msb, 0);
-+	__mpam_write_reg(msc, reg, bm);
-+}
-+
-+static void mpam_reset_ris_partid(struct mpam_msc_ris *ris, u16 partid)
-+{
-+	u16 bwa_fract = MPAMCFG_MBW_MAX_MAX;
-+	struct mpam_msc *msc = ris->vmsc->msc;
-+	struct mpam_props *rprops = &ris->props;
-+
-+	mpam_assert_srcu_read_lock_held();
-+
-+	mutex_lock(&msc->part_sel_lock);
-+	__mpam_part_sel(ris->ris_idx, partid, msc);
-+
-+	if (mpam_has_feature(mpam_feat_cpor_part, rprops))
-+		mpam_reset_msc_bitmap(msc, MPAMCFG_CPBM, rprops->cpbm_wd);
-+
-+	if (mpam_has_feature(mpam_feat_mbw_part, rprops))
-+		mpam_reset_msc_bitmap(msc, MPAMCFG_MBW_PBM, rprops->mbw_pbm_bits);
-+
-+	if (mpam_has_feature(mpam_feat_mbw_min, rprops))
-+		mpam_write_partsel_reg(msc, MBW_MIN, 0);
-+
-+	if (mpam_has_feature(mpam_feat_mbw_max, rprops))
-+		mpam_write_partsel_reg(msc, MBW_MAX, bwa_fract);
-+
-+	if (mpam_has_feature(mpam_feat_mbw_prop, rprops))
-+		mpam_write_partsel_reg(msc, MBW_PROP, bwa_fract);
-+	mutex_unlock(&msc->part_sel_lock);
-+}
-+
-+static void mpam_reset_ris(struct mpam_msc_ris *ris)
-+{
-+	u16 partid, partid_max;
-+
-+	mpam_assert_srcu_read_lock_held();
-+
-+	if (ris->in_reset_state)
-+		return;
-+
-+	spin_lock(&partid_max_lock);
-+	partid_max = mpam_partid_max;
-+	spin_unlock(&partid_max_lock);
-+	for (partid = 0; partid < partid_max; partid++)
-+		mpam_reset_ris_partid(ris, partid);
-+}
-+
-+static void mpam_reset_msc(struct mpam_msc *msc, bool online)
-+{
-+	int idx;
-+	struct mpam_msc_ris *ris;
-+
-+	mpam_assert_srcu_read_lock_held();
-+
-+	mpam_mon_sel_outer_lock(msc);
-+	idx = srcu_read_lock(&mpam_srcu);
-+	list_for_each_entry_srcu(ris, &msc->ris, msc_list, srcu_read_lock_held(&mpam_srcu)) {
-+		mpam_reset_ris(ris);
-+
-+		/*
-+		 * Set in_reset_state when coming online. The reset state
-+		 * for non-zero partid may be lost while the CPUs are offline.
-+		 */
-+		ris->in_reset_state = online;
-+	}
-+	srcu_read_unlock(&mpam_srcu, idx);
-+	mpam_mon_sel_outer_unlock(msc);
-+}
-+
- static int mpam_cpu_online(unsigned int cpu)
+-static void mpam_reset_ris(struct mpam_msc_ris *ris)
++/*
++ * Called via smp_call_on_cpu() to prevent migration, while still being
++ * pre-emptible.
++ */
++static int mpam_reset_ris(void *arg)
  {
-+	int idx;
-+	struct mpam_msc *msc;
+ 	u16 partid, partid_max;
++	struct mpam_msc_ris *ris = arg;
+ 
+ 	mpam_assert_srcu_read_lock_held();
+ 
+ 	if (ris->in_reset_state)
+-		return;
++		return 0;
+ 
+ 	spin_lock(&partid_max_lock);
+ 	partid_max = mpam_partid_max;
+ 	spin_unlock(&partid_max_lock);
+ 	for (partid = 0; partid < partid_max; partid++)
+ 		mpam_reset_ris_partid(ris, partid);
 +
-+	idx = srcu_read_lock(&mpam_srcu);
-+	list_for_each_entry_srcu(msc, &mpam_all_msc, glbl_list, srcu_read_lock_held(&mpam_srcu)) {
-+		if (!cpumask_test_cpu(cpu, &msc->accessibility))
-+			continue;
-+
-+		if (atomic_fetch_inc(&msc->online_refs) == 0)
-+			mpam_reset_msc(msc, true);
-+	}
-+	srcu_read_unlock(&mpam_srcu, idx);
-+
- 	return 0;
- }
- 
-@@ -886,6 +994,19 @@ static int mpam_discovery_cpu_online(unsigned int cpu)
- 
- static int mpam_cpu_offline(unsigned int cpu)
- {
-+	int idx;
-+	struct mpam_msc *msc;
-+
-+	idx = srcu_read_lock(&mpam_srcu);
-+	list_for_each_entry_srcu(msc, &mpam_all_msc, glbl_list, srcu_read_lock_held(&mpam_srcu)) {
-+		if (!cpumask_test_cpu(cpu, &msc->accessibility))
-+			continue;
-+
-+		if (atomic_dec_and_test(&msc->online_refs))
-+			mpam_reset_msc(msc, false);
-+	}
-+	srcu_read_unlock(&mpam_srcu, idx);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
-index a2b0ff411138..466d670a01eb 100644
---- a/drivers/resctrl/mpam_internal.h
-+++ b/drivers/resctrl/mpam_internal.h
-@@ -5,6 +5,7 @@
- #define MPAM_INTERNAL_H
- 
- #include <linux/arm_mpam.h>
-+#include <linux/atomic.h>
- #include <linux/cpumask.h>
- #include <linux/io.h>
- #include <linux/llist.h>
-@@ -43,6 +44,7 @@ struct mpam_msc {
- 	struct pcc_mbox_chan	*pcc_chan;
- 	u32			nrdy_usec;
- 	cpumask_t		accessibility;
-+	atomic_t		online_refs;
- 
- 	/*
- 	 * probe_lock is only take during discovery. After discovery these
-@@ -248,6 +250,7 @@ struct mpam_msc_ris {
- 	u8			ris_idx;
- 	u64			idr;
- 	struct mpam_props	props;
-+	bool			in_reset_state;
- 
- 	cpumask_t		affinity;
- 
-@@ -267,6 +270,11 @@ struct mpam_msc_ris {
- extern struct srcu_struct mpam_srcu;
- extern struct list_head mpam_classes;
- 
-+static inline void mpam_assert_srcu_read_lock_held(void)
-+{
-+	WARN_ON_ONCE(!srcu_read_lock_held((&mpam_srcu)));
++	return 0;
 +}
 +
- /* System wide partid/pmg values */
- extern u16 mpam_partid_max;
- extern u8 mpam_pmg_max;
++/*
++ * Get the preferred CPU for this MSC. If it is accessible from this CPU,
++ * this CPU is preferred. This can be preempted/migrated, it will only result
++ * in more work.
++ */
++static int mpam_get_msc_preferred_cpu(struct mpam_msc *msc)
++{
++	int cpu = raw_smp_processor_id();
++
++	if (cpumask_test_cpu(cpu, &msc->accessibility))
++		return cpu;
++
++	return cpumask_first_and(&msc->accessibility, cpu_online_mask);
++}
++
++static int mpam_touch_msc(struct mpam_msc *msc, int (*fn)(void *a), void *arg)
++{
++	lockdep_assert_irqs_enabled();
++	lockdep_assert_cpus_held();
++	mpam_assert_srcu_read_lock_held();
++
++	return smp_call_on_cpu(mpam_get_msc_preferred_cpu(msc), fn, arg, true);
+ }
+ 
+ static void mpam_reset_msc(struct mpam_msc *msc, bool online)
+@@ -932,7 +963,7 @@ static void mpam_reset_msc(struct mpam_msc *msc, bool online)
+ 	mpam_mon_sel_outer_lock(msc);
+ 	idx = srcu_read_lock(&mpam_srcu);
+ 	list_for_each_entry_srcu(ris, &msc->ris, msc_list, srcu_read_lock_held(&mpam_srcu)) {
+-		mpam_reset_ris(ris);
++		mpam_touch_msc(msc, &mpam_reset_ris, ris);
+ 
+ 		/*
+ 		 * Set in_reset_state when coming online. The reset state
 -- 
 2.20.1
 
