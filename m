@@ -1,38 +1,38 @@
-Return-Path: <linux-acpi+bounces-15953-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15954-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 388C8B31F36
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 17:45:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9D1B31F5A
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 17:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F45B1D081D6
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 15:42:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A537B664912
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 15:42:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0611327FB35;
-	Fri, 22 Aug 2025 15:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494783375A6;
+	Fri, 22 Aug 2025 15:35:22 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1902727703A;
-	Fri, 22 Aug 2025 15:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AB828031C;
+	Fri, 22 Aug 2025 15:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755876916; cv=none; b=ZDZOi2qUYlNNwQqo9dtC9N/C2Jz4L0gByjJ9eOdhB2K7DFWf9gotQQcPMupfZf+iezO+8a2gObAhzKahE3Qx0E5i9hVuhJBQ9gqqJ2eJYcMcT8eEfzwQ/95S2qRXdssyn8QxOOg3048rbMTPh+K4btrzPRB3MPpNOtXW9cEllrE=
+	t=1755876922; cv=none; b=YahmP2Kbsgq0B3e33JKja41Tj9ETCHJMpgnH5Zh0XsABAkCINfxGOo+MX1hKBOEiBhNF8uVydySSDWExDlqxyvUL8BFRsLZVtOm5s7mdtPnFBXNDRaYFOYx280vwltBiNCn4sU/BtHoPHzJY27erLANV2WEhe82S5CZjFHcbEl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755876916; c=relaxed/simple;
-	bh=vIuGdNRCPU5J+19v/hxIlIGyES0PhAoT/cRI6hbqitk=;
+	s=arc-20240116; t=1755876922; c=relaxed/simple;
+	bh=s3Xj+lbMOvTmdXj7q5KRK49H5FJws7pRFoVYzoSjSUw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=riepn5UwTl7pDZzGJ7dRQYDOS5QnxTgpyz6lFJgMzWvb5NTzg5QHSatpPoKJWZLV3XKrs0dUv5249gRAlAFwj/lNZcAVcmCIDfzEaSXC3C0I6TxUZbqq6o1r2nWfx1Wj1DtigsNkbopCvVX0pfbw+9MpA6yfljVw4ZTAIN8ENiw=
+	 MIME-Version; b=HtpD9mFSzHa/dg28uUqxXAlr1/MF3dT0lPaBw5tYKQLLUCSRDVn61fTlc/Xw0vIGvUsMO3XtBGEWs58Tr6wk/JAWUU2bnwQaHmI9LPSr4aLZUt1kVs+dpGd6EqpZkM5tfcKawrYxAzZnKg3hc5UL/kGU/KcYwdClN4vuG2ZRGsE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 39E102880;
-	Fri, 22 Aug 2025 08:35:06 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 02E582880;
+	Fri, 22 Aug 2025 08:35:12 -0700 (PDT)
 Received: from merodach.members.linode.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2B5873F63F;
-	Fri, 22 Aug 2025 08:35:09 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C52F63F63F;
+	Fri, 22 Aug 2025 08:35:14 -0700 (PDT)
 From: James Morse <james.morse@arm.com>
 To: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -72,9 +72,9 @@ Cc: James Morse <james.morse@arm.com>,
 	Will Deacon <will@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 10/33] arm_mpam: Add probe/remove for mpam msc driver and kbuild boiler plate
-Date: Fri, 22 Aug 2025 15:30:25 +0000
-Message-Id: <20250822153048.2287-45-james.morse@arm.com>
+Subject: [PATCH 11/33] arm_mpam: Add support for memory controller MSC on DT platforms
+Date: Fri, 22 Aug 2025 15:30:26 +0000
+Message-Id: <20250822153048.2287-46-james.morse@arm.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20250822153048.2287-1-james.morse@arm.com>
 References: <20250822153048.2287-1-james.morse@arm.com>
@@ -86,506 +86,122 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Probing MPAM is convoluted. MSCs that are integrated with a CPU may
-only be accessible from those CPUs, and they may not be online.
-Touching the hardware early is pointless as MPAM can't be used until
-the system-wide common values for num_partid and num_pmg have been
-discovered.
+From: Shanker Donthineni <sdonthineni@nvidia.com>
 
-Start with driver probe/remove and mapping the MSC.
+The device-tree binding has two examples for MSC associated with
+memory controllers. Add the support to discover the component_id
+from the device-tree and create 'memory' RIS.
 
-CC: Carl Worth <carl@os.amperecomputing.com>
+Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
+[ morse: split out of a bigger patch, added affinity piece ]
 Signed-off-by: James Morse <james.morse@arm.com>
 ---
-Changes since RFC:
- * Check for status=broken DT devices.
- * Moved all the files around.
- * Made Kconfig symbols depend on EXPERT
----
- arch/arm64/Kconfig              |   1 +
- drivers/Kconfig                 |   2 +
- drivers/Makefile                |   1 +
- drivers/resctrl/Kconfig         |  11 ++
- drivers/resctrl/Makefile        |   4 +
- drivers/resctrl/mpam_devices.c  | 336 ++++++++++++++++++++++++++++++++
- drivers/resctrl/mpam_internal.h |  62 ++++++
- 7 files changed, 417 insertions(+)
- create mode 100644 drivers/resctrl/Kconfig
- create mode 100644 drivers/resctrl/Makefile
- create mode 100644 drivers/resctrl/mpam_devices.c
- create mode 100644 drivers/resctrl/mpam_internal.h
+ drivers/resctrl/mpam_devices.c | 67 ++++++++++++++++++++++++----------
+ 1 file changed, 47 insertions(+), 20 deletions(-)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index e51ccf1da102..ea3c54e04275 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -2062,6 +2062,7 @@ config ARM64_TLB_RANGE
- 
- config ARM64_MPAM
- 	bool "Enable support for MPAM"
-+	select ARM64_MPAM_DRIVER
- 	select ACPI_MPAM if ACPI
- 	help
- 	  Memory Partitioning and Monitoring is an optional extension
-diff --git a/drivers/Kconfig b/drivers/Kconfig
-index 4915a63866b0..3054b50a2f4c 100644
---- a/drivers/Kconfig
-+++ b/drivers/Kconfig
-@@ -251,4 +251,6 @@ source "drivers/hte/Kconfig"
- 
- source "drivers/cdx/Kconfig"
- 
-+source "drivers/resctrl/Kconfig"
-+
- endmenu
-diff --git a/drivers/Makefile b/drivers/Makefile
-index b5749cf67044..f41cf4eddeba 100644
---- a/drivers/Makefile
-+++ b/drivers/Makefile
-@@ -194,5 +194,6 @@ obj-$(CONFIG_HTE)		+= hte/
- obj-$(CONFIG_DRM_ACCEL)		+= accel/
- obj-$(CONFIG_CDX_BUS)		+= cdx/
- obj-$(CONFIG_DPLL)		+= dpll/
-+obj-y				+= resctrl/
- 
- obj-$(CONFIG_S390)		+= s390/
-diff --git a/drivers/resctrl/Kconfig b/drivers/resctrl/Kconfig
-new file mode 100644
-index 000000000000..dff7b87280ab
---- /dev/null
-+++ b/drivers/resctrl/Kconfig
-@@ -0,0 +1,11 @@
-+# Confusingly, this is everything but the CPU bits of MPAM. CPU here means
-+# CPU resources, not containers or cgroups etc.
-+config ARM64_MPAM_DRIVER
-+	bool "MPAM driver for System IP, e,g. caches and memory controllers"
-+	depends on ARM64_MPAM && EXPERT
-+
-+config ARM64_MPAM_DRIVER_DEBUG
-+	bool "Enable debug messages from the MPAM driver."
-+	depends on ARM64_MPAM_DRIVER
-+	help
-+	  Say yes here to enable debug messages from the MPAM driver.
-diff --git a/drivers/resctrl/Makefile b/drivers/resctrl/Makefile
-new file mode 100644
-index 000000000000..92b48fa20108
---- /dev/null
-+++ b/drivers/resctrl/Makefile
-@@ -0,0 +1,4 @@
-+obj-$(CONFIG_ARM64_MPAM_DRIVER)			+= mpam.o
-+mpam-y						+= mpam_devices.o
-+
-+cflags-$(CONFIG_ARM64_MPAM_DRIVER_DEBUG)	+= -DDEBUG
 diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-new file mode 100644
-index 000000000000..a0d9a699a6e7
---- /dev/null
+index a0d9a699a6e7..71a1fb1a9c75 100644
+--- a/drivers/resctrl/mpam_devices.c
 +++ b/drivers/resctrl/mpam_devices.c
-@@ -0,0 +1,336 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// Copyright (C) 2025 Arm Ltd.
-+
-+#define pr_fmt(fmt) "%s:%s: " fmt, KBUILD_MODNAME, __func__
-+
-+#include <linux/acpi.h>
-+#include <linux/arm_mpam.h>
-+#include <linux/cacheinfo.h>
-+#include <linux/cpu.h>
-+#include <linux/cpumask.h>
-+#include <linux/device.h>
-+#include <linux/errno.h>
-+#include <linux/gfp.h>
-+#include <linux/list.h>
-+#include <linux/lockdep.h>
-+#include <linux/mutex.h>
-+#include <linux/of.h>
-+#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
-+#include <linux/printk.h>
-+#include <linux/slab.h>
-+#include <linux/spinlock.h>
-+#include <linux/srcu.h>
-+#include <linux/types.h>
-+
-+#include <acpi/pcc.h>
-+
-+#include "mpam_internal.h"
-+
-+/*
-+ * mpam_list_lock protects the SRCU lists when writing. Once the
-+ * mpam_enabled key is enabled these lists are read-only,
-+ * unless the error interrupt disables the driver.
-+ */
-+static DEFINE_MUTEX(mpam_list_lock);
-+static LIST_HEAD(mpam_all_msc);
-+
-+static struct srcu_struct mpam_srcu;
-+
-+/* MPAM isn't available until all the MSC have been probed. */
-+static u32 mpam_num_msc;
-+
-+static void mpam_discovery_complete(void)
-+{
-+	pr_err("Discovered all MSC\n");
-+}
-+
-+static int mpam_dt_count_msc(void)
-+{
-+	int count = 0;
-+	struct device_node *np;
-+
-+	for_each_compatible_node(np, NULL, "arm,mpam-msc") {
-+		if (of_device_is_available(np))
-+			count++;
-+	}
-+
-+	return count;
-+}
-+
-+static int mpam_dt_parse_resource(struct mpam_msc *msc, struct device_node *np,
-+				  u32 ris_idx)
-+{
-+	int err = 0;
-+	u32 level = 0;
-+	unsigned long cache_id;
-+	struct device_node *cache;
-+
-+	do {
-+		if (of_device_is_compatible(np, "arm,mpam-cache")) {
-+			cache = of_parse_phandle(np, "arm,mpam-device", 0);
-+			if (!cache) {
+@@ -62,41 +62,63 @@ static int mpam_dt_parse_resource(struct mpam_msc *msc, struct device_node *np,
+ 				  u32 ris_idx)
+ {
+ 	int err = 0;
+-	u32 level = 0;
+-	unsigned long cache_id;
+-	struct device_node *cache;
++	u32 class_id = 0, component_id = 0;
++	struct device_node *cache = NULL, *memory = NULL;
++	enum mpam_class_types type = MPAM_CLASS_UNKNOWN;
+ 
+ 	do {
++		/* What kind of MSC is this? */
+ 		if (of_device_is_compatible(np, "arm,mpam-cache")) {
+ 			cache = of_parse_phandle(np, "arm,mpam-device", 0);
+ 			if (!cache) {
+ 				pr_err("Failed to read phandle\n");
+ 				break;
+ 			}
++			type = MPAM_CLASS_CACHE;
+ 		} else if (of_device_is_compatible(np->parent, "cache")) {
+ 			cache = of_node_get(np->parent);
++			type = MPAM_CLASS_CACHE;
++		} else if (of_device_is_compatible(np, "arm,mpam-memory")) {
++			memory = of_parse_phandle(np, "arm,mpam-device", 0);
++			if (!memory) {
 +				pr_err("Failed to read phandle\n");
 +				break;
 +			}
-+		} else if (of_device_is_compatible(np->parent, "cache")) {
-+			cache = of_node_get(np->parent);
-+		} else {
-+			/* For now, only caches are supported */
-+			cache = NULL;
-+			break;
-+		}
-+
-+		err = of_property_read_u32(cache, "cache-level", &level);
-+		if (err) {
-+			pr_err("Failed to read cache-level\n");
-+			break;
-+		}
-+
-+		cache_id = cache_of_calculate_id(cache);
-+		if (cache_id == ~0UL) {
-+			err = -ENOENT;
-+			break;
-+		}
-+
-+		err = mpam_ris_create(msc, ris_idx, MPAM_CLASS_CACHE, level,
-+				      cache_id);
-+	} while (0);
-+	of_node_put(cache);
-+
-+	return err;
-+}
-+
-+static int mpam_dt_parse_resources(struct mpam_msc *msc, void *ignored)
-+{
-+	int err, num_ris = 0;
-+	const u32 *ris_idx_p;
-+	struct device_node *iter, *np;
-+
-+	np = msc->pdev->dev.of_node;
-+	for_each_child_of_node(np, iter) {
-+		ris_idx_p = of_get_property(iter, "reg", NULL);
-+		if (ris_idx_p) {
-+			num_ris++;
-+			err = mpam_dt_parse_resource(msc, iter, *ris_idx_p);
++			type = MPAM_CLASS_MEMORY;
++		} else if (of_device_is_compatible(np, "arm,mpam-memory-controller-msc")) {
++			memory = of_node_get(np->parent);
++			type = MPAM_CLASS_MEMORY;
+ 		} else {
+-			/* For now, only caches are supported */
+-			cache = NULL;
++			/*
++			 * For now, only caches and memory controllers are
++			 * supported.
++			 */
+ 			break;
+ 		}
+ 
+-		err = of_property_read_u32(cache, "cache-level", &level);
+-		if (err) {
+-			pr_err("Failed to read cache-level\n");
+-			break;
+-		}
+-
+-		cache_id = cache_of_calculate_id(cache);
+-		if (cache_id == ~0UL) {
+-			err = -ENOENT;
+-			break;
++		/* Determine the class and component ids, based on type. */
++		if (type == MPAM_CLASS_CACHE) {
++			err = of_property_read_u32(cache, "cache-level", &class_id);
 +			if (err) {
-+				of_node_put(iter);
-+				return err;
++				pr_err("Failed to read cache-level\n");
++				break;
 +			}
-+		}
-+	}
-+
-+	if (!num_ris)
-+		mpam_dt_parse_resource(msc, np, 0);
-+
-+	return err;
-+}
-+
-+/*
-+ * An MSC can control traffic from a set of CPUs, but may only be accessible
-+ * from a (hopefully wider) set of CPUs. The common reason for this is power
-+ * management. If all the CPUs in a cluster are in PSCI:CPU_SUSPEND, the
-+ * the corresponding cache may also be powered off. By making accesses from
-+ * one of those CPUs, we ensure this isn't the case.
-+ */
-+static int update_msc_accessibility(struct mpam_msc *msc)
-+{
-+	struct device_node *parent;
-+	u32 affinity_id;
-+	int err;
-+
-+	if (!acpi_disabled) {
-+		err = device_property_read_u32(&msc->pdev->dev, "cpu_affinity",
-+					       &affinity_id);
-+		if (err)
++			component_id = cache_of_calculate_id(cache);
++			if (component_id == ~0UL) {
++				err = -ENOENT;
++				break;
++			}
++		} else if (type == MPAM_CLASS_MEMORY) {
++			err = of_node_to_nid(np);
++			component_id = (err == NUMA_NO_NODE) ? 0 : err;
++			class_id = 255;
+ 		}
+ 
+-		err = mpam_ris_create(msc, ris_idx, MPAM_CLASS_CACHE, level,
+-				      cache_id);
++		err = mpam_ris_create(msc, ris_idx, type, class_id,
++				      component_id);
+ 	} while (0);
+ 	of_node_put(cache);
++	of_node_put(memory);
+ 
+ 	return err;
+ }
+@@ -157,9 +179,14 @@ static int update_msc_accessibility(struct mpam_msc *msc)
+ 		cpumask_copy(&msc->accessibility, cpu_possible_mask);
+ 		err = 0;
+ 	} else {
+-		err = -EINVAL;
+-		pr_err("Cannot determine accessibility of MSC: %s\n",
+-		       dev_name(&msc->pdev->dev));
++		if (of_device_is_compatible(parent, "memory")) {
 +			cpumask_copy(&msc->accessibility, cpu_possible_mask);
-+		else
-+			acpi_pptt_get_cpus_from_container(affinity_id,
-+							  &msc->accessibility);
-+
-+		return 0;
-+	}
-+
-+	/* This depends on the path to of_node */
-+	parent = of_get_parent(msc->pdev->dev.of_node);
-+	if (parent == of_root) {
-+		cpumask_copy(&msc->accessibility, cpu_possible_mask);
-+		err = 0;
-+	} else {
-+		err = -EINVAL;
-+		pr_err("Cannot determine accessibility of MSC: %s\n",
-+		       dev_name(&msc->pdev->dev));
-+	}
-+	of_node_put(parent);
-+
-+	return err;
-+}
-+
-+static int fw_num_msc;
-+
-+static void mpam_pcc_rx_callback(struct mbox_client *cl, void *msg)
-+{
-+	/* TODO: wake up tasks blocked on this MSC's PCC channel */
-+}
-+
-+static void mpam_msc_drv_remove(struct platform_device *pdev)
-+{
-+	struct mpam_msc *msc = platform_get_drvdata(pdev);
-+
-+	if (!msc)
-+		return;
-+
-+	mutex_lock(&mpam_list_lock);
-+	mpam_num_msc--;
-+	platform_set_drvdata(pdev, NULL);
-+	list_del_rcu(&msc->glbl_list);
-+	synchronize_srcu(&mpam_srcu);
-+	devm_kfree(&pdev->dev, msc);
-+	mutex_unlock(&mpam_list_lock);
-+}
-+
-+static int mpam_msc_drv_probe(struct platform_device *pdev)
-+{
-+	int err;
-+	struct mpam_msc *msc;
-+	struct resource *msc_res;
-+	void *plat_data = pdev->dev.platform_data;
-+
-+	mutex_lock(&mpam_list_lock);
-+	do {
-+		msc = devm_kzalloc(&pdev->dev, sizeof(*msc), GFP_KERNEL);
-+		if (!msc) {
-+			err = -ENOMEM;
-+			break;
-+		}
-+
-+		mutex_init(&msc->probe_lock);
-+		mutex_init(&msc->part_sel_lock);
-+		mutex_init(&msc->outer_mon_sel_lock);
-+		raw_spin_lock_init(&msc->inner_mon_sel_lock);
-+		msc->id = mpam_num_msc++;
-+		msc->pdev = pdev;
-+		INIT_LIST_HEAD_RCU(&msc->glbl_list);
-+		INIT_LIST_HEAD_RCU(&msc->ris);
-+
-+		err = update_msc_accessibility(msc);
-+		if (err)
-+			break;
-+		if (cpumask_empty(&msc->accessibility)) {
-+			pr_err_once("msc:%u is not accessible from any CPU!",
-+				    msc->id);
++			err = 0;
++		} else {
 +			err = -EINVAL;
-+			break;
++			pr_err("Cannot determine accessibility of MSC: %s\n",
++			       dev_name(&msc->pdev->dev));
 +		}
-+
-+		if (device_property_read_u32(&pdev->dev, "pcc-channel",
-+					     &msc->pcc_subspace_id))
-+			msc->iface = MPAM_IFACE_MMIO;
-+		else
-+			msc->iface = MPAM_IFACE_PCC;
-+
-+		if (msc->iface == MPAM_IFACE_MMIO) {
-+			void __iomem *io;
-+
-+			io = devm_platform_get_and_ioremap_resource(pdev, 0,
-+								    &msc_res);
-+			if (IS_ERR(io)) {
-+				pr_err("Failed to map MSC base address\n");
-+				err = PTR_ERR(io);
-+				break;
-+			}
-+			msc->mapped_hwpage_sz = msc_res->end - msc_res->start;
-+			msc->mapped_hwpage = io;
-+		} else if (msc->iface == MPAM_IFACE_PCC) {
-+			msc->pcc_cl.dev = &pdev->dev;
-+			msc->pcc_cl.rx_callback = mpam_pcc_rx_callback;
-+			msc->pcc_cl.tx_block = false;
-+			msc->pcc_cl.tx_tout = 1000; /* 1s */
-+			msc->pcc_cl.knows_txdone = false;
-+
-+			msc->pcc_chan = pcc_mbox_request_channel(&msc->pcc_cl,
-+								 msc->pcc_subspace_id);
-+			if (IS_ERR(msc->pcc_chan)) {
-+				pr_err("Failed to request MSC PCC channel\n");
-+				err = PTR_ERR(msc->pcc_chan);
-+				break;
-+			}
-+		}
-+
-+		list_add_rcu(&msc->glbl_list, &mpam_all_msc);
-+		platform_set_drvdata(pdev, msc);
-+	} while (0);
-+	mutex_unlock(&mpam_list_lock);
-+
-+	if (!err) {
-+		/* Create RIS entries described by firmware */
-+		if (!acpi_disabled)
-+			err = acpi_mpam_parse_resources(msc, plat_data);
-+		else
-+			err = mpam_dt_parse_resources(msc, plat_data);
-+	}
-+
-+	if (!err && fw_num_msc == mpam_num_msc)
-+		mpam_discovery_complete();
-+
-+	if (err && msc)
-+		mpam_msc_drv_remove(pdev);
-+
-+	return err;
-+}
-+
-+static const struct of_device_id mpam_of_match[] = {
-+	{ .compatible = "arm,mpam-msc", },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, mpam_of_match);
-+
-+static struct platform_driver mpam_msc_driver = {
-+	.driver = {
-+		.name = "mpam_msc",
-+		.of_match_table = of_match_ptr(mpam_of_match),
-+	},
-+	.probe = mpam_msc_drv_probe,
-+	.remove = mpam_msc_drv_remove,
-+};
-+
-+/*
-+ * MSC that are hidden under caches are not created as platform devices
-+ * as there is no cache driver. Caches are also special-cased in
-+ * update_msc_accessibility().
-+ */
-+static void mpam_dt_create_foundling_msc(void)
-+{
-+	int err;
-+	struct device_node *cache;
-+
-+	for_each_compatible_node(cache, NULL, "cache") {
-+		err = of_platform_populate(cache, mpam_of_match, NULL, NULL);
-+		if (err)
-+			pr_err("Failed to create MSC devices under caches\n");
-+	}
-+}
-+
-+static int __init mpam_msc_driver_init(void)
-+{
-+	if (!system_supports_mpam())
-+		return -EOPNOTSUPP;
-+
-+	init_srcu_struct(&mpam_srcu);
-+
-+	if (!acpi_disabled)
-+		fw_num_msc = acpi_mpam_count_msc();
-+	else
-+		fw_num_msc = mpam_dt_count_msc();
-+
-+	if (fw_num_msc <= 0) {
-+		pr_err("No MSC devices found in firmware\n");
-+		return -EINVAL;
-+	}
-+
-+	if (acpi_disabled)
-+		mpam_dt_create_foundling_msc();
-+
-+	return platform_driver_register(&mpam_msc_driver);
-+}
-+subsys_initcall(mpam_msc_driver_init);
-diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
-new file mode 100644
-index 000000000000..07e0f240eaca
---- /dev/null
-+++ b/drivers/resctrl/mpam_internal.h
-@@ -0,0 +1,62 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+// Copyright (C) 2024 Arm Ltd.
-+
-+#ifndef MPAM_INTERNAL_H
-+#define MPAM_INTERNAL_H
-+
-+#include <linux/arm_mpam.h>
-+#include <linux/cpumask.h>
-+#include <linux/io.h>
-+#include <linux/mailbox_client.h>
-+#include <linux/mutex.h>
-+#include <linux/resctrl.h>
-+#include <linux/sizes.h>
-+
-+struct mpam_msc {
-+	/* member of mpam_all_msc */
-+	struct list_head        glbl_list;
-+
-+	int			id;
-+	struct platform_device *pdev;
-+
-+	/* Not modified after mpam_is_enabled() becomes true */
-+	enum mpam_msc_iface	iface;
-+	u32			pcc_subspace_id;
-+	struct mbox_client	pcc_cl;
-+	struct pcc_mbox_chan	*pcc_chan;
-+	u32			nrdy_usec;
-+	cpumask_t		accessibility;
-+
-+	/*
-+	 * probe_lock is only take during discovery. After discovery these
-+	 * properties become read-only and the lists are protected by SRCU.
-+	 */
-+	struct mutex		probe_lock;
-+	unsigned long		ris_idxs[128 / BITS_PER_LONG];
-+	u32			ris_max;
-+
-+	/* mpam_msc_ris of this component */
-+	struct list_head	ris;
-+
-+	/*
-+	 * part_sel_lock protects access to the MSC hardware registers that are
-+	 * affected by MPAMCFG_PART_SEL. (including the ID registers that vary
-+	 * by RIS).
-+	 * If needed, take msc->lock first.
-+	 */
-+	struct mutex		part_sel_lock;
-+
-+	/*
-+	 * mon_sel_lock protects access to the MSC hardware registers that are
-+	 * affeted by MPAMCFG_MON_SEL.
-+	 * If needed, take msc->lock first.
-+	 */
-+	struct mutex		outer_mon_sel_lock;
-+	raw_spinlock_t		inner_mon_sel_lock;
-+	unsigned long		inner_mon_sel_flags;
-+
-+	void __iomem		*mapped_hwpage;
-+	size_t			mapped_hwpage_sz;
-+};
-+
-+#endif /* MPAM_INTERNAL_H */
+ 	}
+ 	of_node_put(parent);
+ 
 -- 
 2.20.1
 
