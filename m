@@ -1,169 +1,109 @@
-Return-Path: <linux-acpi+bounces-15983-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15984-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535C5B322B6
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 21:19:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2802B322CB
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 21:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29EA562729D
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 19:19:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AFA51D636F0
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 19:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3EEE299A8A;
-	Fri, 22 Aug 2025 19:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C442D0C75;
+	Fri, 22 Aug 2025 19:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CXF7ZgV0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hyn2+mIg"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744E04A1A;
-	Fri, 22 Aug 2025 19:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0048C29994B;
+	Fri, 22 Aug 2025 19:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755890361; cv=none; b=QxC+iUUQb0KjBtHCbcuJ7LqIa9Sbd5uWPTzcVLS3d8r+EIVrZvTm+aDYNMJP3C4RaTdFIo6/3DFNuZNQSedUzkESYhVCR6kNDbETgD6I3JcE0xWJcgeiRpXelef9OAGRZyD31pnh/T4kU0NkK6qFx12CeNgysgv6WrZ6vm080NQ=
+	t=1755890871; cv=none; b=O+3VM2WD35Pm1xSBn9Akc/OnCQ5QNw4aLGQfOjK5Sjhr83fSTC2G500l3vIglth8lTQVD2J8uZHOiguhXj9rOqRMjXP9QdxZBz+taRLNXhIx8IS95821CV+vajlBw+IZvF5UmqDOsFZ9zrKIaI+VQNLXzn0Wrj3PPKdrlBuZPng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755890361; c=relaxed/simple;
-	bh=qOjbyBxmY6N2jwMWuIegMYipIdgnTqoEJNjKy3WY4YQ=;
+	s=arc-20240116; t=1755890871; c=relaxed/simple;
+	bh=UrSFc4ceG2KOC9f1OqXNvzvbLgWDesJ+3YD6m1xObDA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rg3fFleCNDGnaGiZii1XGL1wW2LiGe9reIGPS41atV8n7J7HPIFDeOHsT6wbPQnTlABapVqAFcjw+gA2qU1OVucjZy1ef35/CkMZ8fnv3P9YlOZUWY0chIbt65uZQXSsuAZOPgln+7rzwMc/NnkqU+gzJ66h2MyZAETXAnxs934=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CXF7ZgV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041D5C113CF;
-	Fri, 22 Aug 2025 19:19:21 +0000 (UTC)
+	 To:Cc:Content-Type; b=Oet4GxtnDEPz33+yWeZTausQxsWhRPU5tiqdiZa40LnkvmtayQjPzZ2Ut9q177T3WZi6CdWjN7i/4ceNGVdunr/adcJeefdQ1yK6bT4ik0x/ACa/5PpgInudwvVIA69pRrIw16bgZhJRmqFWpYc4rEXtaRv7DiB3eoFNibZt688=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hyn2+mIg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB43C4CEED;
+	Fri, 22 Aug 2025 19:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755890361;
-	bh=qOjbyBxmY6N2jwMWuIegMYipIdgnTqoEJNjKy3WY4YQ=;
+	s=k20201202; t=1755890870;
+	bh=UrSFc4ceG2KOC9f1OqXNvzvbLgWDesJ+3YD6m1xObDA=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CXF7ZgV0zypYkEwV6ARegi1H3MyZvIPkbb7v7TR+jm1c4tNC9qlf82d5V+RPvrzyo
-	 3/WCa9L9OtNCamEcRp3D9bBcCHzIY8K9dtHu7qKlU6KkuXN8RWCDdP6JCCy64Ghh1z
-	 AINHK8HdjPXjabB75jPwm0T41MtHxdZ4M4F/HzAXK2SyKIjcVt8N5ryBh/tSiEpG0T
-	 AHgaC5FiuUrZ+979VeqAuYqSX9RYeplDoIvIsyLzOIAe90PZQgPcmCOzvA7LaLeASq
-	 hdb/RWOi5nNDhev85e3u7e0jxYB2DPV9GdUdvSqUiDIcV6QR1uJ1l9DuVIHcxkJoK+
-	 l64GLp2uYgZXg==
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-30cce534a91so1114171fac.0;
-        Fri, 22 Aug 2025 12:19:20 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWYwaUJ1v6cUi/Zm5I6LHKeJYvb4pMnbG0HeKxW/YMX/PnSwyK9lJanIZmk/8GrzhacUDS66nCWK/Zn@vger.kernel.org, AJvYcCWymcKTRyP2dESp9mfd9z4wx/eBB5o0zh5+1xTVZP+rmNnXlMs/e+xxxf79eA6UWotqh0uYjl9l9bEu@vger.kernel.org
-X-Gm-Message-State: AOJu0YwngauHneI4wrBEqenVMKfaqMvQFqdLzFva6Ap/YTl/QbYtD29O
-	cC2gygqL4zS/MeW8j6Wni4t/UfnlL4ntl/Ka5yUoArWH8Bu0MwY0/G6SRoh3sXyjCxs1X6Bp7pv
-	9nLDeE5tVlk3CWtVId0bLsaSeny4En7g=
-X-Google-Smtp-Source: AGHT+IFpfe0e3l/uwtd2JvLB8n+LhJpZexkLKTEHaCSJ2v0cIYYtIsnI9Fc6o3YHX8vzts3+3TsPtfSejs/INvOShfg=
-X-Received: by 2002:a05:6870:d114:b0:307:bb94:2260 with SMTP id
- 586e51a60fabf-314dcd2a03amr1765237fac.24.1755890360256; Fri, 22 Aug 2025
- 12:19:20 -0700 (PDT)
+	b=hyn2+mIgBo8O7wkfPZAqZP0AC6dPtJFLg++z7ishNacZ2IUtLAJGLYlA39gbq/YCD
+	 rdZFYzBDXikwOVfV186z7i5uAcea0aULJFBm9qbog5RLqA3IDCC2LjUNDNtOluj0t1
+	 ioR43MDInW6RG/3huccUvuV7NFPV30qgXrsGKNweBivnqMbQ4Q4IdsLTImdi2uqPHv
+	 V4yTMptbG815KymqMRD2E85sMzCn4uJNbDO10bDeX+9zUuFewUI4+v4WsaH2lEW8ux
+	 lUGrtSy3sCOwOwYLsbu9XvaC3YtGok0JFk8lPROqyAPL/23N0fN+K5Gti3v6VmIXLF
+	 IV6WkIRAYZB8w==
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-61bc52fd7a4so1945553eaf.0;
+        Fri, 22 Aug 2025 12:27:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXt9VYY63lYZeOUKB1cmft2nbRbf1+xOY7hQWkIfZsgzQ1JFsRV/57RrKr8C4+MhRhMap5+lxGXODZD@vger.kernel.org, AJvYcCXwGAwrTQ2iWK3r0erKSGp89FabxK2a0uQZqipoEtpvS/SixeKhzyHE+S6N0ZifEY2CiGm4hKqzZca3ab/V@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYSkd7Ed1Tp+fUcdfULmP5qYHQhQACkXHdezLImpp2V03GySDt
+	/DhIBHacY7IBmOw0YvT0mVbVVHP8m6q4WXvcPooqY4wKFOEBSdus487NHvO4gjlKIXpNSkqLdKD
+	qlvxlS/+BOo5gHL4d9ZE1Nxmm7368MBs=
+X-Google-Smtp-Source: AGHT+IFwyQIR5WWfBTC+i7HkpeOSpK0phH5gxCkFaPo2TqBE2UYaYKYoFKiUQF3I1397M+baz0oJdPJhuoG/nqkczxo=
+X-Received: by 2002:a05:6870:b507:b0:314:9689:a466 with SMTP id
+ 586e51a60fabf-314dd6e64d7mr2103441fac.22.1755890869635; Fri, 22 Aug 2025
+ 12:27:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250730214718.10679-1-Benjamin.Cheatham@amd.com> <20250730214718.10679-15-Benjamin.Cheatham@amd.com>
-In-Reply-To: <20250730214718.10679-15-Benjamin.Cheatham@amd.com>
+References: <20250728070612.1260859-1-lihuisong@huawei.com> <20250728070612.1260859-2-lihuisong@huawei.com>
+In-Reply-To: <20250728070612.1260859-2-lihuisong@huawei.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 22 Aug 2025 21:19:09 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0joDdAyqAzjbwTfR9sfSstU++SuOKZX8pL+1ZeGDqVnDA@mail.gmail.com>
-X-Gm-Features: Ac12FXwcXAYLHqCeM84ga1EjauG4v-FFKkcIXVwiBTNnRDC7KokCxGEI6OmAkSE
-Message-ID: <CAJZ5v0joDdAyqAzjbwTfR9sfSstU++SuOKZX8pL+1ZeGDqVnDA@mail.gmail.com>
-Subject: Re: [PATCH 14/16] ACPI: Add CXL isolation _OSC fields
-To: Ben Cheatham <Benjamin.Cheatham@amd.com>
-Cc: linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, Dave Jiang <dave.jiang@intel.com>
+Date: Fri, 22 Aug 2025 21:27:38 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0ir6ds5KGMQAUwb-hEdwhbuALHdYzDspT9z=W4md1rsOw@mail.gmail.com>
+X-Gm-Features: Ac12FXxeNPnp9DZtU-EOTSVEq2I6VEFp-0bTRwQXvdmuJ7s9CENx8TIn4dVonGs
+Message-ID: <CAJZ5v0ir6ds5KGMQAUwb-hEdwhbuALHdYzDspT9z=W4md1rsOw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] ACPI: processor: idle: Fix memory leak when
+ register cpuidle device failed
+To: Huisong Li <lihuisong@huawei.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linuxarm@huawei.com, 
+	jonathan.cameron@huawei.com, zhanjie9@hisilicon.com, zhenglifeng1@huawei.com, 
+	yubowen8@huawei.com, liuyonglong@huawei.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Cc: Dave
-
-On Wed, Jul 30, 2025 at 11:50=E2=80=AFPM Ben Cheatham <Benjamin.Cheatham@am=
-d.com> wrote:
+On Mon, Jul 28, 2025 at 9:06=E2=80=AFAM Huisong Li <lihuisong@huawei.com> w=
+rote:
 >
-> Add CXL Timeout and Isolation _OSC support and control fields, as
-> defined in the ECN at the link below. The ECN contents are expected to
-> appear in the CXL 4.0 specification. The link is only accessible to CXL
-> SSWG members, so a brief overview is provided here:
+> The cpuidle device's memory has been leaked when register cpuidle
+> device failed in acpi_processor_power_init().
 >
-> The ECN adds several fields to the CXL _OSC method (CXL 3.2 9.18.2)
-> for the purpose of reserving CXL isolation features for the platform
-> firmware's use. The fields introduced for kernel support reserve
-> toggling the CXL.mem isolation enable bit in the isolation control
-> register (CXL 3.2 8.2.4.24.2) and how the host is notified isolation has
-> occurred.
->
-> These fields will be used by the CXL driver to enable CXL isolation
-> according to the result of the handshake. Descriptions of these fields
-> are included in the commit messages of the commits where they are used.
->
-> Link: https://members.computeexpresslink.org/wg/software_systems/document=
-/3118
-> Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
-
-In case you need this
-
-Acked-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-
+> Fixes: 3d339dcbb56d ("cpuidle / ACPI : move cpuidle_device field out of t=
+he acpi_processor_power structure")
+> Signed-off-by: Huisong Li <lihuisong@huawei.com>
 > ---
->  drivers/acpi/pci_root.c | 9 +++++++++
->  include/linux/acpi.h    | 3 +++
->  2 files changed, 12 insertions(+)
+>  drivers/acpi/processor_idle.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> index 74ade4160314..33a922e160fc 100644
-> --- a/drivers/acpi/pci_root.c
-> +++ b/drivers/acpi/pci_root.c
-> @@ -145,10 +145,13 @@ static struct pci_osc_bit_struct cxl_osc_support_bi=
-t[] =3D {
->         { OSC_CXL_2_0_PORT_DEV_REG_ACCESS_SUPPORT, "CXL20PortDevRegAccess=
-" },
->         { OSC_CXL_PROTOCOL_ERR_REPORTING_SUPPORT, "CXLProtocolErrorReport=
-ing" },
->         { OSC_CXL_NATIVE_HP_SUPPORT, "CXLNativeHotPlug" },
-> +       { OSC_CXL_TIMEOUT_ISOLATION_SUPPORT, "CXLTimeoutIsolation" },
->  };
->
->  static struct pci_osc_bit_struct cxl_osc_control_bit[] =3D {
->         { OSC_CXL_ERROR_REPORTING_CONTROL, "CXLMemErrorReporting" },
-> +       { OSC_CXL_MEM_ISOLATION_CONTROL, "CXLMemIsolation" },
-> +       { OSC_CXL_ISOLATION_NOTIF_CONTROL, "CXLIsolationNotifications" },
->  };
->
->  static void decode_osc_bits(struct acpi_pci_root *root, char *msg, u32 w=
-ord,
-> @@ -493,6 +496,8 @@ static u32 calculate_cxl_support(void)
->                 support |=3D OSC_CXL_PROTOCOL_ERR_REPORTING_SUPPORT;
->         if (IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE))
->                 support |=3D OSC_CXL_NATIVE_HP_SUPPORT;
-> +       if (IS_ENABLED(CONFIG_CXL_ISOLATION))
-> +               support |=3D OSC_CXL_TIMEOUT_ISOLATION_SUPPORT;
->
->         return support;
->  }
-> @@ -535,6 +540,10 @@ static u32 calculate_cxl_control(void)
->         if (IS_ENABLED(CONFIG_MEMORY_FAILURE))
->                 control |=3D OSC_CXL_ERROR_REPORTING_CONTROL;
->
-> +       if (IS_ENABLED(CONFIG_CXL_ISOLATION))
-> +               control |=3D (OSC_CXL_MEM_ISOLATION_CONTROL |
-> +                           OSC_CXL_ISOLATION_NOTIF_CONTROL);
-> +
->         return control;
->  }
->
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index f102c0fe3431..f172182aa029 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -626,9 +626,12 @@ extern u32 osc_sb_native_usb4_control;
->  #define OSC_CXL_2_0_PORT_DEV_REG_ACCESS_SUPPORT        0x00000002
->  #define OSC_CXL_PROTOCOL_ERR_REPORTING_SUPPORT 0x00000004
->  #define OSC_CXL_NATIVE_HP_SUPPORT              0x00000008
-> +#define OSC_CXL_TIMEOUT_ISOLATION_SUPPORT      0x00000010
->
->  /* CXL _OSC: Capabilities DWORD 5: Control Field */
->  #define OSC_CXL_ERROR_REPORTING_CONTROL                0x00000001
-> +#define OSC_CXL_MEM_ISOLATION_CONTROL          0x00000002
-> +#define OSC_CXL_ISOLATION_NOTIF_CONTROL                0x00000020
->
->  static inline u32 acpi_osc_ctx_get_pci_control(struct acpi_osc_context *=
-context)
->  {
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.=
+c
+> index 2c2dc559e0f8..031738390f2d 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -1405,6 +1405,8 @@ int acpi_processor_power_init(struct acpi_processor=
+ *pr)
+>                 if (retval) {
+>                         if (acpi_processor_registered =3D=3D 0)
+>                                 cpuidle_unregister_driver(&acpi_idle_driv=
+er);
+> +                       kfree(dev);
+> +                       per_cpu(acpi_cpuidle_device, pr->id) =3D NULL;
+>                         return retval;
+>                 }
+>                 acpi_processor_registered++;
 > --
+
+Applied as 6.18 material with minor adjustments, thanks!
 
