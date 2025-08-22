@@ -1,37 +1,38 @@
-Return-Path: <linux-acpi+bounces-15909-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15910-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1FBB31EB3
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 17:34:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD9B9B31EC4
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 17:36:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A9DC16FB03
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 15:31:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38152A281E6
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 15:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4C1214204;
-	Fri, 22 Aug 2025 15:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EACF5230268;
+	Fri, 22 Aug 2025 15:31:13 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B552F21D3CD;
-	Fri, 22 Aug 2025 15:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3261225A5B;
+	Fri, 22 Aug 2025 15:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755876670; cv=none; b=QlFQIBzqshbWaAxxDrEazZBvaZJa/qlBH5Ga+9NiI3o2IE9Yx3LHZ1aWgfEq+FZhO41wC5maQ7K9RIpwbr59y/cCSNWVZCfaXYziwHFcRqp2Ey3HCIZzj3PrqIrxsNI3YqyvdTp7EvPX3zaF6ok047rU/K7M5OAgeSHhyG0YXPE=
+	t=1755876673; cv=none; b=goEUFPjq227wDToVh18g5yn6pIwruM0O85vsMiBf2rHrSmipSYdoYfB6cMuM6YkPALi2KQK/2E0b22d+wP0Ij9hf5+fdjQUoABtFz6gMultUV535FS930G/Yw1pXuUjNrRUjXaUGh9KVIIAwkfYzyiU9rlI3wYLrI43CED0rrfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755876670; c=relaxed/simple;
-	bh=+hoU4wxg242iRgLe3Vo5s1Sa9/tEfDVtgMJ/pID/5Wg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oJ+dPW0do6IJ5kUr6nCJPzTbEmn6UaVta4/W2TnQm4Qk/wYUGbAirDs0zhHBFGwZiG/EFtbB9KsP41tXlKRJKczLWMpdwNiw9lW2+DdfdlcspnjYK0we69SQjl3Is11x9IZFbVHH/p6acxCiXWL71iNZSPjJoe+qwyMogYj0hdo=
+	s=arc-20240116; t=1755876673; c=relaxed/simple;
+	bh=9QqXXJStw71ZU66vliOsj/UdHd+j+97HYjUzko96Bhw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=HsTWau6uvV86CwvdThdw2i7Ta6XD7M3YFCNvevNGpozf0AzBm8dY7xBkNY+J4hBsu35isiyAWUlW1Xmy4GpL2sjSJMJQVMxgRB0F1Av4rAaa0Rm6AIHbDxo8nM4UI0W3kZZPWtFl43D6ynqN0gjinUWFixAkL0CmqUOgGLeOxdQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3481215A1;
-	Fri, 22 Aug 2025 08:30:53 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A680827DC;
+	Fri, 22 Aug 2025 08:31:02 -0700 (PDT)
 Received: from merodach.members.linode.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 21EC13F63F;
-	Fri, 22 Aug 2025 08:30:56 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 970AB3F63F;
+	Fri, 22 Aug 2025 08:31:05 -0700 (PDT)
 From: James Morse <james.morse@arm.com>
 To: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -71,10 +72,12 @@ Cc: James Morse <james.morse@arm.com>,
 	Will Deacon <will@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 00/33] arm_mpam: Add basic mpam driver
-Date: Fri, 22 Aug 2025 15:29:41 +0000
-Message-Id: <20250822153048.2287-1-james.morse@arm.com>
+Subject: [PATCH 01/33] cacheinfo: Expose the code to generate a cache-id from a device_node
+Date: Fri, 22 Aug 2025 15:29:42 +0000
+Message-Id: <20250822153048.2287-2-james.morse@arm.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20250822153048.2287-1-james.morse@arm.com>
+References: <20250822153048.2287-1-james.morse@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -83,128 +86,80 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hello,
+The MPAM driver identifies caches by id for use with resctrl. It
+needs to know the cache-id when probe-ing, but the value isn't set
+in cacheinfo until device_initcall().
 
-This is just enough MPAM driver for the ACPI and DT pre-requisites.
-It doesn't contain any of the resctrl code, meaning you can't actually drive it
-from user-space yet. Becuase of that, its hidden behind CONFIG_EXPERT.
-This will change once the user interface is connected up.
+Expose the code that generates the cache-id. The parts of the MPAM
+driver that run early can use this to set up the resctrl structures
+before cacheinfo is ready in device_initcall().
 
-This is the initial group of patches that allows the resctrl code to be built
-on top. Including that will increase the number of trees that may need to
-coordinate, so breaking it up make sense.
+Signed-off-by: James Morse <james.morse@arm.com>
+---
+Changes since v1:
+ * Renamed cache_of_get_id() cache_of_calculate_id().
+---
+ drivers/base/cacheinfo.c  | 19 +++++++++++++------
+ include/linux/cacheinfo.h |  1 +
+ 2 files changed, 14 insertions(+), 6 deletions(-)
 
-The locking looks very strange - but is influenced by the 'mpam-fb' firmware
-interface specification that is still alpha. That thing needs to wait for an
-interrupt after every system register write, which significantly impacts the
-driver. Some features just won't work, e.g. reading the monitor registers via
-perf.
-The aim is to not have to make invasive changes to the locking to support the
-firmware interface, hence it looks strange from day-1.
-
-I've not found a platform that can test all the behaviours around the monitors,
-so this is where I'd expect the most bugs.
-
-The MPAM spec that describes all the system and MMIO registers can be found here:
-https://developer.arm.com/documentation/ddi0598/db/?lang=en
-(Ignored the 'RETIRED' warning - that is just arm moving the documentation around.
- This document has the best overview)
-
-The expectation is this will go via the arm64 tree.
-
-
-This series is based on v6.17-rc2, and can be retrieved from:
-https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git mpam/driver/rv1
-
-The rest of the driver can be found here:
-https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git mpam/snapshot/v6.17-rc2
-
-What is MPAM? Set your time-machine to 2020:
-https://lore.kernel.org/lkml/20201030161120.227225-1-james.morse@arm.com/
-
-This series was previously posted here:
-[RFC] lore.kernel.org/r/20250711183648.30766-2-james.morse@arm.com
-
-
-Bugs welcome,
-Thanks,
-
-James Morse (29):
-  cacheinfo: Expose the code to generate a cache-id from a device_node
-  drivers: base: cacheinfo: Add helper to find the cache size from
-    cpu+level
-  ACPI / PPTT: Add a helper to fill a cpumask from a processor container
-  ACPI / PPTT: Stop acpi_count_levels() expecting callers to clear
-    levels
-  ACPI / PPTT: Find cache level by cache-id
-  ACPI / PPTT: Add a helper to fill a cpumask from a cache_id
-  arm64: kconfig: Add Kconfig entry for MPAM
-  ACPI / MPAM: Parse the MPAM table
-  arm_mpam: Add probe/remove for mpam msc driver and kbuild boiler plate
-  arm_mpam: Add the class and component structures for ris firmware
-    described
-  arm_mpam: Add MPAM MSC register layout definitions
-  arm_mpam: Add cpuhp callbacks to probe MSC hardware
-  arm_mpam: Probe MSCs to find the supported partid/pmg values
-  arm_mpam: Add helpers for managing the locking around the mon_sel
-    registers
-  arm_mpam: Probe the hardware features resctrl supports
-  arm_mpam: Merge supported features during mpam_enable() into
-    mpam_class
-  arm_mpam: Reset MSC controls from cpu hp callbacks
-  arm_mpam: Add a helper to touch an MSC from any CPU
-  arm_mpam: Extend reset logic to allow devices to be reset any time
-  arm_mpam: Register and enable IRQs
-  arm_mpam: Use a static key to indicate when mpam is enabled
-  arm_mpam: Allow configuration to be applied and restored during cpu
-    online
-  arm_mpam: Probe and reset the rest of the features
-  arm_mpam: Add helpers to allocate monitors
-  arm_mpam: Add mpam_msmon_read() to read monitor value
-  arm_mpam: Track bandwidth counter state for overflow and power
-    management
-  arm_mpam: Add helper to reset saved mbwu state
-  arm_mpam: Add kunit test for bitmap reset
-  arm_mpam: Add kunit tests for props_mismatch()
-
-Rob Herring (1):
-  dt-bindings: arm: Add MPAM MSC binding
-
-Rohit Mathew (2):
-  arm_mpam: Probe for long/lwd mbwu counters
-  arm_mpam: Use long MBWU counters if supported
-
-Shanker Donthineni (1):
-  arm_mpam: Add support for memory controller MSC on DT platforms
-
- .../devicetree/bindings/arm/arm,mpam-msc.yaml |  200 ++
- arch/arm64/Kconfig                            |   19 +
- drivers/Kconfig                               |    2 +
- drivers/Makefile                              |    1 +
- drivers/acpi/arm64/Kconfig                    |    3 +
- drivers/acpi/arm64/Makefile                   |    1 +
- drivers/acpi/arm64/mpam.c                     |  331 ++
- drivers/acpi/pptt.c                           |  230 +-
- drivers/acpi/tables.c                         |    2 +-
- drivers/base/cacheinfo.c                      |   19 +-
- drivers/resctrl/Kconfig                       |   24 +
- drivers/resctrl/Makefile                      |    4 +
- drivers/resctrl/mpam_devices.c                | 2909 +++++++++++++++++
- drivers/resctrl/mpam_internal.h               |  692 ++++
- drivers/resctrl/test_mpam_devices.c           |  390 +++
- include/linux/acpi.h                          |   26 +
- include/linux/arm_mpam.h                      |   56 +
- include/linux/cacheinfo.h                     |   16 +
- 18 files changed, 4911 insertions(+), 14 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/arm/arm,mpam-msc.yaml
- create mode 100644 drivers/acpi/arm64/mpam.c
- create mode 100644 drivers/resctrl/Kconfig
- create mode 100644 drivers/resctrl/Makefile
- create mode 100644 drivers/resctrl/mpam_devices.c
- create mode 100644 drivers/resctrl/mpam_internal.h
- create mode 100644 drivers/resctrl/test_mpam_devices.c
- create mode 100644 include/linux/arm_mpam.h
-
+diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
+index 613410705a47..f6289d142ba9 100644
+--- a/drivers/base/cacheinfo.c
++++ b/drivers/base/cacheinfo.c
+@@ -207,11 +207,10 @@ static bool match_cache_node(struct device_node *cpu,
+ #define arch_compact_of_hwid(_x)	(_x)
+ #endif
+ 
+-static void cache_of_set_id(struct cacheinfo *this_leaf,
+-			    struct device_node *cache_node)
++unsigned long cache_of_calculate_id(struct device_node *cache_node)
+ {
+ 	struct device_node *cpu;
+-	u32 min_id = ~0;
++	unsigned long min_id = ~0UL;
+ 
+ 	for_each_of_cpu_node(cpu) {
+ 		u64 id = of_get_cpu_hwid(cpu, 0);
+@@ -219,15 +218,23 @@ static void cache_of_set_id(struct cacheinfo *this_leaf,
+ 		id = arch_compact_of_hwid(id);
+ 		if (FIELD_GET(GENMASK_ULL(63, 32), id)) {
+ 			of_node_put(cpu);
+-			return;
++			return ~0UL;
+ 		}
+ 
+ 		if (match_cache_node(cpu, cache_node))
+ 			min_id = min(min_id, id);
+ 	}
+ 
+-	if (min_id != ~0) {
+-		this_leaf->id = min_id;
++	return min_id;
++}
++
++static void cache_of_set_id(struct cacheinfo *this_leaf,
++			    struct device_node *cache_node)
++{
++	unsigned long id = cache_of_calculate_id(cache_node);
++
++	if (id != ~0UL) {
++		this_leaf->id = id;
+ 		this_leaf->attributes |= CACHE_ID;
+ 	}
+ }
+diff --git a/include/linux/cacheinfo.h b/include/linux/cacheinfo.h
+index c8f4f0a0b874..2dcbb69139e9 100644
+--- a/include/linux/cacheinfo.h
++++ b/include/linux/cacheinfo.h
+@@ -112,6 +112,7 @@ int acpi_get_cache_info(unsigned int cpu,
+ #endif
+ 
+ const struct attribute_group *cache_get_priv_group(struct cacheinfo *this_leaf);
++unsigned long cache_of_calculate_id(struct device_node *np);
+ 
+ /*
+  * Get the cacheinfo structure for the cache associated with @cpu at
 -- 
 2.20.1
 
