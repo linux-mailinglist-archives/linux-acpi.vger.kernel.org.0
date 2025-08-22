@@ -1,38 +1,38 @@
-Return-Path: <linux-acpi+bounces-15955-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15956-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0693FB31F3C
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 17:46:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B48B31F42
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 17:46:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CAA71CC5F76
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 15:42:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADF9B1D23B58
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 15:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C40280339;
-	Fri, 22 Aug 2025 15:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD21533A021;
+	Fri, 22 Aug 2025 15:35:33 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63446280A51;
-	Fri, 22 Aug 2025 15:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F22BA28134C;
+	Fri, 22 Aug 2025 15:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755876929; cv=none; b=NcNp9ZaC6pZUTD52Os3CrcFU4S2FM6QniwYhhqlPOuNtyJsLKhddtiI0nZI3Tsca0rOuZX/NV8mDKExfTHrk/wyG+waNVFxcSFokrMFYKTfuQGajpk4PCxrVW6OrMMyhsBkM5JPff7xS2jTxI5Vmej96DqV8kuX2mhn7pYU6YPU=
+	t=1755876933; cv=none; b=BaD/5aSgvO0/ZKALeT+7rMy/sQQg50ITu1aG9Sl5Vzg1lxp252RV9V89Se76OZp0Z3UBBLTophGVHAtiUbivu0K13BNw4Te5XuNon0HFt39dwVhUgbo8WSCgXYznYndp+Ig2RsWHfRh2Ti6Rfav4MorQ/qcFU+LyWHRlsCNXnzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755876929; c=relaxed/simple;
-	bh=rO1UJzDV98/vppIKoHqddqmx3hapljNfVW/hUFGiJY0=;
+	s=arc-20240116; t=1755876933; c=relaxed/simple;
+	bh=CnCRiR9Hhx0tPwGqihebUQ/GVFmFcbIVpe+sldLi6Ro=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gGqvfHBkKitqY5W+YAyg2p/ZlEKPt658U1pwb1HHu3IgfL1XAoKRmjeDO6Zem+YMVcBt4xGwK4UfnLd7o+3NcgkJ7XlVkGKMvXesultIsk9z7aS3w4nm+4ADQohsNgEudBwpdiACG1YFzWMUzl+t8rQsmaAkbWdgLY2TqD+hGvs=
+	 MIME-Version; b=ZNsx85iLx94lqAnqD76QXMuT3QobFa3lz74JKS1Sf9gv0YLhWd+1FzkO5uEOSD8g8a8nIPtrpdwldFyXGCc3Pyg5Lr6A3TtcPWWzSzYfKjyHAbWvbkFZ5VynG7sm0kq1X9ud+r4Rxo2dvxBd97WHBPM91EvgMBfnQhzS8Pqr14Y=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B0B7715A1;
-	Fri, 22 Aug 2025 08:35:17 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A5A615A1;
+	Fri, 22 Aug 2025 08:35:23 -0700 (PDT)
 Received: from merodach.members.linode.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 861D53F63F;
-	Fri, 22 Aug 2025 08:35:20 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 420033F63F;
+	Fri, 22 Aug 2025 08:35:26 -0700 (PDT)
 From: James Morse <james.morse@arm.com>
 To: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -71,11 +71,10 @@ Cc: James Morse <james.morse@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Ben Horgan <ben.horgan@arm.com>
-Subject: [PATCH 12/33] arm_mpam: Add the class and component structures for ris firmware described
-Date: Fri, 22 Aug 2025 15:30:27 +0000
-Message-Id: <20250822153048.2287-47-james.morse@arm.com>
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 13/33] arm_mpam: Add MPAM MSC register layout definitions
+Date: Fri, 22 Aug 2025 15:30:28 +0000
+Message-Id: <20250822153048.2287-48-james.morse@arm.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20250822153048.2287-1-james.morse@arm.com>
 References: <20250822153048.2287-1-james.morse@arm.com>
@@ -87,705 +86,298 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-An MSC is a container of resources, each identified by their RIS index.
-Some RIS are described by firmware to provide their position in the system.
-Others are discovered when the driver probes the hardware.
+Memory Partitioning and Monitoring (MPAM) has memory mapped devices
+(MSCs) with an identity/configuration page.
 
-To configure a resource it needs to be found by its class, e.g. 'L2'.
-There are two kinds of grouping, a class is a set of components, which
-are visible to user-space as there are likely to be multiple instances
-of the L2 cache. (e.g. one per cluster or package)
+Add the definitions for these registers as offset within the page(s).
 
-struct mpam_components are a set of struct mpam_vmsc. A vMSC groups the
-RIS in an MSC that control the same logical piece of hardware. (e.g. L2).
-This is to allow hardware implementations where two controls are presented
-as different RIS. Re-combining these RIS allows their feature bits to
-be or-ed. This structure is not visible outside mpam_devices.c
-
-struct mpam_vmsc are then a set of struct mpam_msc_ris, which are not
-visible as each L2 cache may be composed of individual slices which need
-to be configured the same as the hardware is not able to distribute the
-configuration.
-
-Add support for creating and destroying these structures.
-
-A gfp is passed as the structures may need creating when a new RIS entry
-is discovered when probing the MSC.
-
-CC: Ben Horgan <ben.horgan@arm.com>
+Link: https://developer.arm.com/documentation/ihi0099/latest/
 Signed-off-by: James Morse <james.morse@arm.com>
 ---
 Changes since RFC:
- * removed a pr_err() debug message that crept in.
+ * Renamed MSMON_CFG_MBWU_CTL_TYPE_CSU as MSMON_CFG_CSU_CTL_TYPE_CSU
+ * Whitepsace churn.
+ * Cite a more recent document.
+ * Removed some stale feature, fixed some names etc.
 ---
- drivers/resctrl/mpam_devices.c  | 488 +++++++++++++++++++++++++++++++-
- drivers/resctrl/mpam_internal.h |  91 ++++++
- include/linux/arm_mpam.h        |   8 +-
- 3 files changed, 574 insertions(+), 13 deletions(-)
+ drivers/resctrl/mpam_internal.h | 266 ++++++++++++++++++++++++++++++++
+ 1 file changed, 266 insertions(+)
 
-diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-index 71a1fb1a9c75..5baf2a8786fb 100644
---- a/drivers/resctrl/mpam_devices.c
-+++ b/drivers/resctrl/mpam_devices.c
-@@ -20,7 +20,6 @@
- #include <linux/printk.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
--#include <linux/srcu.h>
- #include <linux/types.h>
- 
- #include <acpi/pcc.h>
-@@ -35,11 +34,483 @@
- static DEFINE_MUTEX(mpam_list_lock);
- static LIST_HEAD(mpam_all_msc);
- 
--static struct srcu_struct mpam_srcu;
-+struct srcu_struct mpam_srcu;
- 
- /* MPAM isn't available until all the MSC have been probed. */
- static u32 mpam_num_msc;
- 
-+/*
-+ * An MSC is a physical container for controls and monitors, each identified by
-+ * their RIS index. These share a base-address, interrupts and some MMIO
-+ * registers. A vMSC is a virtual container for RIS in an MSC that control or
-+ * monitor the same thing. Members of a vMSC are all RIS in the same MSC, but
-+ * not all RIS in an MSC share a vMSC.
-+ * Components are a group of vMSC that control or monitor the same thing but
-+ * are from different MSC, so have different base-address, interrupts etc.
-+ * Classes are the set components of the same type.
-+ *
-+ * The features of a vMSC is the union of the RIS it contains.
-+ * The features of a Class and Component are the common subset of the vMSC
-+ * they contain.
-+ *
-+ * e.g. The system cache may have bandwidth controls on multiple interfaces,
-+ * for regulating traffic from devices independently of traffic from CPUs.
-+ * If these are two RIS in one MSC, they will be treated as controlling
-+ * different things, and will not share a vMSC/component/class.
-+ *
-+ * e.g. The L2 may have one MSC and two RIS, one for cache-controls another
-+ * for bandwidth. These two RIS are members of the same vMSC.
-+ *
-+ * e.g. The set of RIS that make up the L2 are grouped as a component. These
-+ * are sometimes termed slices. They should be configured the same, as if there
-+ * were only one.
-+ *
-+ * e.g. The SoC probably has more than one L2, each attached to a distinct set
-+ * of CPUs. All the L2 components are grouped as a class.
-+ *
-+ * When creating an MSC, struct mpam_msc is added to the all mpam_all_msc list,
-+ * then linked via struct mpam_ris to a vmsc, component and class.
-+ * The same MSC may exist under different class->component->vmsc paths, but the
-+ * RIS index will be unique.
-+ */
-+LIST_HEAD(mpam_classes);
-+
-+/* List of all objects that can be free()d after synchronise_srcu() */
-+static LLIST_HEAD(mpam_garbage);
-+
-+#define init_garbage(x)	init_llist_node(&(x)->garbage.llist)
-+
-+static struct mpam_vmsc *
-+mpam_vmsc_alloc(struct mpam_component *comp, struct mpam_msc *msc, gfp_t gfp)
-+{
-+	struct mpam_vmsc *vmsc;
-+
-+	lockdep_assert_held(&mpam_list_lock);
-+
-+	vmsc = kzalloc(sizeof(*vmsc), gfp);
-+	if (!comp)
-+		return ERR_PTR(-ENOMEM);
-+	init_garbage(vmsc);
-+
-+	INIT_LIST_HEAD_RCU(&vmsc->ris);
-+	INIT_LIST_HEAD_RCU(&vmsc->comp_list);
-+	vmsc->comp = comp;
-+	vmsc->msc = msc;
-+
-+	list_add_rcu(&vmsc->comp_list, &comp->vmsc);
-+
-+	return vmsc;
-+}
-+
-+static struct mpam_vmsc *mpam_vmsc_get(struct mpam_component *comp,
-+				       struct mpam_msc *msc, bool alloc,
-+				       gfp_t gfp)
-+{
-+	struct mpam_vmsc *vmsc;
-+
-+	lockdep_assert_held(&mpam_list_lock);
-+
-+	list_for_each_entry(vmsc, &comp->vmsc, comp_list) {
-+		if (vmsc->msc->id == msc->id)
-+			return vmsc;
-+	}
-+
-+	if (!alloc)
-+		return ERR_PTR(-ENOENT);
-+
-+	return mpam_vmsc_alloc(comp, msc, gfp);
-+}
-+
-+static struct mpam_component *
-+mpam_component_alloc(struct mpam_class *class, int id, gfp_t gfp)
-+{
-+	struct mpam_component *comp;
-+
-+	lockdep_assert_held(&mpam_list_lock);
-+
-+	comp = kzalloc(sizeof(*comp), gfp);
-+	if (!comp)
-+		return ERR_PTR(-ENOMEM);
-+	init_garbage(comp);
-+
-+	comp->comp_id = id;
-+	INIT_LIST_HEAD_RCU(&comp->vmsc);
-+	/* affinity is updated when ris are added */
-+	INIT_LIST_HEAD_RCU(&comp->class_list);
-+	comp->class = class;
-+
-+	list_add_rcu(&comp->class_list, &class->components);
-+
-+	return comp;
-+}
-+
-+static struct mpam_component *
-+mpam_component_get(struct mpam_class *class, int id, bool alloc, gfp_t gfp)
-+{
-+	struct mpam_component *comp;
-+
-+	lockdep_assert_held(&mpam_list_lock);
-+
-+	list_for_each_entry(comp, &class->components, class_list) {
-+		if (comp->comp_id == id)
-+			return comp;
-+	}
-+
-+	if (!alloc)
-+		return ERR_PTR(-ENOENT);
-+
-+	return mpam_component_alloc(class, id, gfp);
-+}
-+
-+static struct mpam_class *
-+mpam_class_alloc(u8 level_idx, enum mpam_class_types type, gfp_t gfp)
-+{
-+	struct mpam_class *class;
-+
-+	lockdep_assert_held(&mpam_list_lock);
-+
-+	class = kzalloc(sizeof(*class), gfp);
-+	if (!class)
-+		return ERR_PTR(-ENOMEM);
-+	init_garbage(class);
-+
-+	INIT_LIST_HEAD_RCU(&class->components);
-+	/* affinity is updated when ris are added */
-+	class->level = level_idx;
-+	class->type = type;
-+	INIT_LIST_HEAD_RCU(&class->classes_list);
-+
-+	list_add_rcu(&class->classes_list, &mpam_classes);
-+
-+	return class;
-+}
-+
-+static struct mpam_class *
-+mpam_class_get(u8 level_idx, enum mpam_class_types type, bool alloc, gfp_t gfp)
-+{
-+	bool found = false;
-+	struct mpam_class *class;
-+
-+	lockdep_assert_held(&mpam_list_lock);
-+
-+	list_for_each_entry(class, &mpam_classes, classes_list) {
-+		if (class->type == type && class->level == level_idx) {
-+			found = true;
-+			break;
-+		}
-+	}
-+
-+	if (found)
-+		return class;
-+
-+	if (!alloc)
-+		return ERR_PTR(-ENOENT);
-+
-+	return mpam_class_alloc(level_idx, type, gfp);
-+}
-+
-+#define add_to_garbage(x)				\
-+do {							\
-+	__typeof__(x) _x = x;				\
-+	(_x)->garbage.to_free = (_x);			\
-+	llist_add(&(_x)->garbage.llist, &mpam_garbage);	\
-+} while (0)
-+
-+static void mpam_class_destroy(struct mpam_class *class)
-+{
-+	lockdep_assert_held(&mpam_list_lock);
-+
-+	list_del_rcu(&class->classes_list);
-+	add_to_garbage(class);
-+}
-+
-+static void mpam_comp_destroy(struct mpam_component *comp)
-+{
-+	struct mpam_class *class = comp->class;
-+
-+	lockdep_assert_held(&mpam_list_lock);
-+
-+	list_del_rcu(&comp->class_list);
-+	add_to_garbage(comp);
-+
-+	if (list_empty(&class->components))
-+		mpam_class_destroy(class);
-+}
-+
-+static void mpam_vmsc_destroy(struct mpam_vmsc *vmsc)
-+{
-+	struct mpam_component *comp = vmsc->comp;
-+
-+	lockdep_assert_held(&mpam_list_lock);
-+
-+	list_del_rcu(&vmsc->comp_list);
-+	add_to_garbage(vmsc);
-+
-+	if (list_empty(&comp->vmsc))
-+		mpam_comp_destroy(comp);
-+}
-+
-+static void mpam_ris_destroy(struct mpam_msc_ris *ris)
-+{
-+	struct mpam_vmsc *vmsc = ris->vmsc;
-+	struct mpam_msc *msc = vmsc->msc;
-+	struct platform_device *pdev = msc->pdev;
-+	struct mpam_component *comp = vmsc->comp;
-+	struct mpam_class *class = comp->class;
-+
-+	lockdep_assert_held(&mpam_list_lock);
-+
-+	cpumask_andnot(&comp->affinity, &comp->affinity, &ris->affinity);
-+	cpumask_andnot(&class->affinity, &class->affinity, &ris->affinity);
-+	clear_bit(ris->ris_idx, msc->ris_idxs);
-+	list_del_rcu(&ris->vmsc_list);
-+	list_del_rcu(&ris->msc_list);
-+	add_to_garbage(ris);
-+	ris->garbage.pdev = pdev;
-+
-+	if (list_empty(&vmsc->ris))
-+		mpam_vmsc_destroy(vmsc);
-+}
-+
-+/*
-+ * There are two ways of reaching a struct mpam_msc_ris. Via the
-+ * class->component->vmsc->ris, or via the msc.
-+ * When destroying the msc, the other side needs unlinking and cleaning up too.
-+ */
-+static void mpam_msc_destroy(struct mpam_msc *msc)
-+{
-+	struct platform_device *pdev = msc->pdev;
-+	struct mpam_msc_ris *ris, *tmp;
-+
-+	lockdep_assert_held(&mpam_list_lock);
-+
-+	list_del_rcu(&msc->glbl_list);
-+	platform_set_drvdata(pdev, NULL);
-+
-+	list_for_each_entry_safe(ris, tmp, &msc->ris, msc_list)
-+		mpam_ris_destroy(ris);
-+
-+	add_to_garbage(msc);
-+	msc->garbage.pdev = pdev;
-+}
-+
-+static void mpam_free_garbage(void)
-+{
-+	struct mpam_garbage *iter, *tmp;
-+	struct llist_node *to_free = llist_del_all(&mpam_garbage);
-+
-+	if (!to_free)
-+		return;
-+
-+	synchronize_srcu(&mpam_srcu);
-+
-+	llist_for_each_entry_safe(iter, tmp, to_free, llist) {
-+		if (iter->pdev)
-+			devm_kfree(&iter->pdev->dev, iter->to_free);
-+		else
-+			kfree(iter->to_free);
-+	}
-+}
-+
-+/* Called recursively to walk the list of caches from a particular CPU */
-+static void __mpam_get_cpumask_from_cache_id(int cpu, struct device_node *cache_node,
-+					     unsigned long cache_id,
-+					     u32 cache_level,
-+					     cpumask_t *affinity)
-+{
-+	int err;
-+	u32 iter_level;
-+	unsigned long iter_cache_id;
-+	struct device_node *iter_node __free(device_node) = of_find_next_cache_node(cache_node);
-+
-+	if (!iter_node)
-+		return;
-+
-+	err = of_property_read_u32(iter_node, "cache-level", &iter_level);
-+	if (err)
-+		return;
-+
-+	/*
-+	 * get_cpu_cacheinfo_id() isn't ready until sometime
-+	 * during device_initcall(). Use cache_of_calculate_id().
-+	 */
-+	iter_cache_id = cache_of_calculate_id(iter_node);
-+	if (cache_id == ~0UL)
-+		return;
-+
-+	if (iter_level == cache_level && iter_cache_id == cache_id)
-+		cpumask_set_cpu(cpu, affinity);
-+
-+	__mpam_get_cpumask_from_cache_id(cpu, iter_node, cache_id, cache_level,
-+					 affinity);
-+}
-+
-+/*
-+ * The cacheinfo structures are only populated when CPUs are online.
-+ * This helper walks the device tree to include offline CPUs too.
-+ */
-+int mpam_get_cpumask_from_cache_id(unsigned long cache_id, u32 cache_level,
-+				   cpumask_t *affinity)
-+{
-+	int cpu;
-+
-+	if (!acpi_disabled)
-+		return acpi_pptt_get_cpumask_from_cache_id(cache_id, affinity);
-+
-+	for_each_possible_cpu(cpu) {
-+		struct device_node *cpu_node __free(device_node) = of_get_cpu_node(cpu, NULL);
-+		if (!cpu_node) {
-+			pr_err("Failed to find cpu%d device node\n", cpu);
-+			return -ENOENT;
-+		}
-+
-+		__mpam_get_cpumask_from_cache_id(cpu, cpu_node, cache_id,
-+						 cache_level, affinity);
-+			continue;
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * cpumask_of_node() only knows about online CPUs. This can't tell us whether
-+ * a class is represented on all possible CPUs.
-+ */
-+static void get_cpumask_from_node_id(u32 node_id, cpumask_t *affinity)
-+{
-+	int cpu;
-+
-+	for_each_possible_cpu(cpu) {
-+		if (node_id == cpu_to_node(cpu))
-+			cpumask_set_cpu(cpu, affinity);
-+	}
-+}
-+
-+static int get_cpumask_from_cache(struct device_node *cache,
-+				  cpumask_t *affinity)
-+{
-+	int err;
-+	u32 cache_level;
-+	unsigned long cache_id;
-+
-+	err = of_property_read_u32(cache, "cache-level", &cache_level);
-+	if (err) {
-+		pr_err("Failed to read cache-level from cache node\n");
-+		return -ENOENT;
-+	}
-+
-+	cache_id = cache_of_calculate_id(cache);
-+	if (cache_id == ~0UL) {
-+		pr_err("Failed to calculate cache-id from cache node\n");
-+		return -ENOENT;
-+	}
-+
-+	return mpam_get_cpumask_from_cache_id(cache_id, cache_level, affinity);
-+}
-+
-+static int mpam_ris_get_affinity(struct mpam_msc *msc, cpumask_t *affinity,
-+				 enum mpam_class_types type,
-+				 struct mpam_class *class,
-+				 struct mpam_component *comp)
-+{
-+	int err;
-+
-+	switch (type) {
-+	case MPAM_CLASS_CACHE:
-+		err = mpam_get_cpumask_from_cache_id(comp->comp_id, class->level,
-+						     affinity);
-+		if (err)
-+			return err;
-+
-+		if (cpumask_empty(affinity))
-+			pr_warn_once("%s no CPUs associated with cache node",
-+				     dev_name(&msc->pdev->dev));
-+
-+		break;
-+	case MPAM_CLASS_MEMORY:
-+		get_cpumask_from_node_id(comp->comp_id, affinity);
-+		/* affinity may be empty for CPU-less memory nodes */
-+		break;
-+	case MPAM_CLASS_UNKNOWN:
-+		return 0;
-+	}
-+
-+	cpumask_and(affinity, affinity, &msc->accessibility);
-+
-+	return 0;
-+}
-+
-+static int mpam_ris_create_locked(struct mpam_msc *msc, u8 ris_idx,
-+				  enum mpam_class_types type, u8 class_id,
-+				  int component_id, gfp_t gfp)
-+{
-+	int err;
-+	struct mpam_vmsc *vmsc;
-+	struct mpam_msc_ris *ris;
-+	struct mpam_class *class;
-+	struct mpam_component *comp;
-+
-+	lockdep_assert_held(&mpam_list_lock);
-+
-+	if (test_and_set_bit(ris_idx, msc->ris_idxs))
-+		return -EBUSY;
-+
-+	ris = devm_kzalloc(&msc->pdev->dev, sizeof(*ris), gfp);
-+	if (!ris)
-+		return -ENOMEM;
-+	init_garbage(ris);
-+
-+	class = mpam_class_get(class_id, type, true, gfp);
-+	if (IS_ERR(class))
-+		return PTR_ERR(class);
-+
-+	comp = mpam_component_get(class, component_id, true, gfp);
-+	if (IS_ERR(comp)) {
-+		if (list_empty(&class->components))
-+			mpam_class_destroy(class);
-+		return PTR_ERR(comp);
-+	}
-+
-+	vmsc = mpam_vmsc_get(comp, msc, true, gfp);
-+	if (IS_ERR(vmsc)) {
-+		if (list_empty(&comp->vmsc))
-+			mpam_comp_destroy(comp);
-+		return PTR_ERR(vmsc);
-+	}
-+
-+	err = mpam_ris_get_affinity(msc, &ris->affinity, type, class, comp);
-+	if (err) {
-+		if (list_empty(&vmsc->ris))
-+			mpam_vmsc_destroy(vmsc);
-+		return err;
-+	}
-+
-+	ris->ris_idx = ris_idx;
-+	INIT_LIST_HEAD_RCU(&ris->vmsc_list);
-+	ris->vmsc = vmsc;
-+
-+	cpumask_or(&comp->affinity, &comp->affinity, &ris->affinity);
-+	cpumask_or(&class->affinity, &class->affinity, &ris->affinity);
-+	list_add_rcu(&ris->vmsc_list, &vmsc->ris);
-+
-+	return 0;
-+}
-+
-+int mpam_ris_create(struct mpam_msc *msc, u8 ris_idx,
-+		    enum mpam_class_types type, u8 class_id, int component_id)
-+{
-+	int err;
-+
-+	mutex_lock(&mpam_list_lock);
-+	err = mpam_ris_create_locked(msc, ris_idx, type, class_id,
-+				     component_id, GFP_KERNEL);
-+	mutex_unlock(&mpam_list_lock);
-+	if (err)
-+		mpam_free_garbage();
-+
-+	return err;
-+}
-+
- static void mpam_discovery_complete(void)
- {
- 	pr_err("Discovered all MSC\n");
-@@ -179,7 +650,10 @@ static int update_msc_accessibility(struct mpam_msc *msc)
- 		cpumask_copy(&msc->accessibility, cpu_possible_mask);
- 		err = 0;
- 	} else {
--		if (of_device_is_compatible(parent, "memory")) {
-+		if (of_device_is_compatible(parent, "cache")) {
-+			err = get_cpumask_from_cache(parent,
-+						     &msc->accessibility);
-+		} else if (of_device_is_compatible(parent, "memory")) {
- 			cpumask_copy(&msc->accessibility, cpu_possible_mask);
- 			err = 0;
- 		} else {
-@@ -209,11 +683,10 @@ static void mpam_msc_drv_remove(struct platform_device *pdev)
- 
- 	mutex_lock(&mpam_list_lock);
- 	mpam_num_msc--;
--	platform_set_drvdata(pdev, NULL);
--	list_del_rcu(&msc->glbl_list);
--	synchronize_srcu(&mpam_srcu);
--	devm_kfree(&pdev->dev, msc);
-+	mpam_msc_destroy(msc);
- 	mutex_unlock(&mpam_list_lock);
-+
-+	mpam_free_garbage();
- }
- 
- static int mpam_msc_drv_probe(struct platform_device *pdev)
-@@ -230,6 +703,7 @@ static int mpam_msc_drv_probe(struct platform_device *pdev)
- 			err = -ENOMEM;
- 			break;
- 		}
-+		init_garbage(msc);
- 
- 		mutex_init(&msc->probe_lock);
- 		mutex_init(&msc->part_sel_lock);
 diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
-index 07e0f240eaca..d49bb884b433 100644
+index d49bb884b433..6e0982a1a9ac 100644
 --- a/drivers/resctrl/mpam_internal.h
 +++ b/drivers/resctrl/mpam_internal.h
-@@ -7,10 +7,27 @@
- #include <linux/arm_mpam.h>
- #include <linux/cpumask.h>
- #include <linux/io.h>
-+#include <linux/llist.h>
- #include <linux/mailbox_client.h>
- #include <linux/mutex.h>
- #include <linux/resctrl.h>
- #include <linux/sizes.h>
-+#include <linux/srcu.h>
+@@ -150,4 +150,270 @@ extern struct list_head mpam_classes;
+ int mpam_get_cpumask_from_cache_id(unsigned long cache_id, u32 cache_level,
+ 				   cpumask_t *affinity);
+ 
++/*
++ * MPAM MSCs have the following register layout. See:
++ * Arm Memory System Resource Partitioning and Monitoring (MPAM) System
++ * Component Specification.
++ * https://developer.arm.com/documentation/ihi0099/latest/
++ */
++#define MPAM_ARCHITECTURE_V1    0x10
++
++/* Memory mapped control pages: */
++/* ID Register offsets in the memory mapped page */
++#define MPAMF_IDR		0x0000  /* features id register */
++#define MPAMF_MSMON_IDR		0x0080  /* performance monitoring features */
++#define MPAMF_IMPL_IDR		0x0028  /* imp-def partitioning */
++#define MPAMF_CPOR_IDR		0x0030  /* cache-portion partitioning */
++#define MPAMF_CCAP_IDR		0x0038  /* cache-capacity partitioning */
++#define MPAMF_MBW_IDR		0x0040  /* mem-bw partitioning */
++#define MPAMF_PRI_IDR		0x0048  /* priority partitioning */
++#define MPAMF_CSUMON_IDR	0x0088  /* cache-usage monitor */
++#define MPAMF_MBWUMON_IDR	0x0090  /* mem-bw usage monitor */
++#define MPAMF_PARTID_NRW_IDR	0x0050  /* partid-narrowing */
++#define MPAMF_IIDR		0x0018  /* implementer id register */
++#define MPAMF_AIDR		0x0020  /* architectural id register */
++
++/* Configuration and Status Register offsets in the memory mapped page */
++#define MPAMCFG_PART_SEL	0x0100  /* partid to configure: */
++#define MPAMCFG_CPBM		0x1000  /* cache-portion config */
++#define MPAMCFG_CMAX		0x0108  /* cache-capacity config */
++#define MPAMCFG_CMIN		0x0110  /* cache-capacity config */
++#define MPAMCFG_MBW_MIN		0x0200  /* min mem-bw config */
++#define MPAMCFG_MBW_MAX		0x0208  /* max mem-bw config */
++#define MPAMCFG_MBW_WINWD	0x0220  /* mem-bw accounting window config */
++#define MPAMCFG_MBW_PBM		0x2000  /* mem-bw portion bitmap config */
++#define MPAMCFG_PRI		0x0400  /* priority partitioning config */
++#define MPAMCFG_MBW_PROP	0x0500  /* mem-bw stride config */
++#define MPAMCFG_INTPARTID	0x0600  /* partid-narrowing config */
++
++#define MSMON_CFG_MON_SEL	0x0800  /* monitor selector */
++#define MSMON_CFG_CSU_FLT	0x0810  /* cache-usage monitor filter */
++#define MSMON_CFG_CSU_CTL	0x0818  /* cache-usage monitor config */
++#define MSMON_CFG_MBWU_FLT	0x0820  /* mem-bw monitor filter */
++#define MSMON_CFG_MBWU_CTL	0x0828  /* mem-bw monitor config */
++#define MSMON_CSU		0x0840  /* current cache-usage */
++#define MSMON_CSU_CAPTURE	0x0848  /* last cache-usage value captured */
++#define MSMON_MBWU		0x0860  /* current mem-bw usage value */
++#define MSMON_MBWU_CAPTURE	0x0868  /* last mem-bw value captured */
++#define MSMON_MBWU_L		0x0880  /* current long mem-bw usage value */
++#define MSMON_MBWU_CAPTURE_L	0x0890  /* last long mem-bw value captured */
++#define MSMON_CAPT_EVNT		0x0808  /* signal a capture event */
++#define MPAMF_ESR		0x00F8  /* error status register */
++#define MPAMF_ECR		0x00F0  /* error control register */
++
++/* MPAMF_IDR - MPAM features ID register */
++#define MPAMF_IDR_PARTID_MAX		GENMASK(15, 0)
++#define MPAMF_IDR_PMG_MAX		GENMASK(23, 16)
++#define MPAMF_IDR_HAS_CCAP_PART		BIT(24)
++#define MPAMF_IDR_HAS_CPOR_PART		BIT(25)
++#define MPAMF_IDR_HAS_MBW_PART		BIT(26)
++#define MPAMF_IDR_HAS_PRI_PART		BIT(27)
++#define MPAMF_IDR_EXT			BIT(28)
++#define MPAMF_IDR_HAS_IMPL_IDR		BIT(29)
++#define MPAMF_IDR_HAS_MSMON		BIT(30)
++#define MPAMF_IDR_HAS_PARTID_NRW	BIT(31)
++#define MPAMF_IDR_HAS_RIS		BIT(32)
++#define MPAMF_IDR_HAS_EXTD_ESR		BIT(38)
++#define MPAMF_IDR_HAS_ESR		BIT(39)
++#define MPAMF_IDR_RIS_MAX		GENMASK(59, 56)
++
++/* MPAMF_MSMON_IDR - MPAM performance monitoring ID register */
++#define MPAMF_MSMON_IDR_MSMON_CSU		BIT(16)
++#define MPAMF_MSMON_IDR_MSMON_MBWU		BIT(17)
++#define MPAMF_MSMON_IDR_HAS_LOCAL_CAPT_EVNT	BIT(31)
++
++/* MPAMF_CPOR_IDR - MPAM features cache portion partitioning ID register */
++#define MPAMF_CPOR_IDR_CPBM_WD			GENMASK(15, 0)
++
++/* MPAMF_CCAP_IDR - MPAM features cache capacity partitioning ID register */
++#define MPAMF_CCAP_IDR_CMAX_WD			GENMASK(5, 0)
++#define MPAMF_CCAP_IDR_CASSOC_WD		GENMASK(12, 8)
++#define MPAMF_CCAP_IDR_HAS_CASSOC		BIT(28)
++#define MPAMF_CCAP_IDR_HAS_CMIN			BIT(29)
++#define MPAMF_CCAP_IDR_NO_CMAX			BIT(30)
++#define MPAMF_CCAP_IDR_HAS_CMAX_SOFTLIM		BIT(31)
++
++/* MPAMF_MBW_IDR - MPAM features memory bandwidth partitioning ID register */
++#define MPAMF_MBW_IDR_BWA_WD		GENMASK(5, 0)
++#define MPAMF_MBW_IDR_HAS_MIN		BIT(10)
++#define MPAMF_MBW_IDR_HAS_MAX		BIT(11)
++#define MPAMF_MBW_IDR_HAS_PBM		BIT(12)
++#define MPAMF_MBW_IDR_HAS_PROP		BIT(13)
++#define MPAMF_MBW_IDR_WINDWR		BIT(14)
++#define MPAMF_MBW_IDR_BWPBM_WD		GENMASK(28, 16)
++
++/* MPAMF_PRI_IDR - MPAM features priority partitioning ID register */
++#define MPAMF_PRI_IDR_HAS_INTPRI	BIT(0)
++#define MPAMF_PRI_IDR_INTPRI_0_IS_LOW	BIT(1)
++#define MPAMF_PRI_IDR_INTPRI_WD		GENMASK(9, 4)
++#define MPAMF_PRI_IDR_HAS_DSPRI		BIT(16)
++#define MPAMF_PRI_IDR_DSPRI_0_IS_LOW	BIT(17)
++#define MPAMF_PRI_IDR_DSPRI_WD		GENMASK(25, 20)
++
++/* MPAMF_CSUMON_IDR - MPAM cache storage usage monitor ID register */
++#define MPAMF_CSUMON_IDR_NUM_MON	GENMASK(15, 0)
++#define MPAMF_CSUMON_IDR_HAS_OFLOW_CAPT	BIT(24)
++#define MPAMF_CSUMON_IDR_HAS_CEVNT_OFLW	BIT(25)
++#define MPAMF_CSUMON_IDR_HAS_OFSR	BIT(26)
++#define MPAMF_CSUMON_IDR_HAS_OFLOW_LNKG	BIT(27)
++#define MPAMF_CSUMON_IDR_HAS_XCL	BIT(29)
++#define MPAMF_CSUMON_IDR_CSU_RO		BIT(30)
++#define MPAMF_CSUMON_IDR_HAS_CAPTURE	BIT(31)
++
++/* MPAMF_MBWUMON_IDR - MPAM memory bandwidth usage monitor ID register */
++#define MPAMF_MBWUMON_IDR_NUM_MON	GENMASK(15, 0)
++#define MPAMF_MBWUMON_IDR_HAS_RWBW	BIT(28)
++#define MPAMF_MBWUMON_IDR_LWD		BIT(29)
++#define MPAMF_MBWUMON_IDR_HAS_LONG	BIT(30)
++#define MPAMF_MBWUMON_IDR_HAS_CAPTURE	BIT(31)
++
++/* MPAMF_PARTID_NRW_IDR - MPAM PARTID narrowing ID register */
++#define MPAMF_PARTID_NRW_IDR_INTPARTID_MAX      GENMASK(15, 0)
++
++/* MPAMF_IIDR - MPAM implementation ID register */
++#define MPAMF_IIDR_PRODUCTID	GENMASK(31, 20)
++#define MPAMF_IIDR_PRODUCTID_SHIFT	20
++#define MPAMF_IIDR_VARIANT	GENMASK(19, 16)
++#define MPAMF_IIDR_VARIANT_SHIFT	16
++#define MPAMF_IIDR_REVISON	GENMASK(15, 12)
++#define MPAMF_IIDR_REVISON_SHIFT	12
++#define MPAMF_IIDR_IMPLEMENTER	GENMASK(11, 0)
++#define MPAMF_IIDR_IMPLEMENTER_SHIFT	0
++
++/* MPAMF_AIDR - MPAM architecture ID register */
++#define MPAMF_AIDR_ARCH_MAJOR_REV	GENMASK(7, 4)
++#define MPAMF_AIDR_ARCH_MINOR_REV	GENMASK(3, 0)
++
++/* MPAMCFG_PART_SEL - MPAM partition configuration selection register */
++#define MPAMCFG_PART_SEL_PARTID_SEL	GENMASK(15, 0)
++#define MPAMCFG_PART_SEL_INTERNAL	BIT(16)
++#define MPAMCFG_PART_SEL_RIS		GENMASK(27, 24)
++
++/* MPAMCFG_CMAX - MPAM cache capacity configuration register */
++#define MPAMCFG_CMAX_SOFTLIM		BIT(31)
++#define MPAMCFG_CMAX_CMAX		GENMASK(15, 0)
++
++/* MPAMCFG_CMIN - MPAM cache capacity configuration register */
++#define MPAMCFG_CMIN_CMIN		GENMASK(15, 0)
 +
 +/*
-+ * Structures protected by SRCU may not be freed for a surprising amount of
-+ * time (especially if perf is running). To ensure the MPAM error interrupt can
-+ * tear down all the structures, build a list of objects that can be gargbage
-+ * collected once synchronize_srcu() has returned.
-+ * If pdev is non-NULL, use devm_kfree().
++ * MPAMCFG_MBW_MIN - MPAM memory minimum bandwidth partitioning configuration
++ *                   register
 + */
-+struct mpam_garbage {
-+	/* member of mpam_garbage */
-+	struct llist_node	llist;
++#define MPAMCFG_MBW_MIN_MIN		GENMASK(15, 0)
 +
-+	void			*to_free;
-+	struct platform_device	*pdev;
-+};
- 
- struct mpam_msc {
- 	/* member of mpam_all_msc */
-@@ -57,6 +74,80 @@ struct mpam_msc {
- 
- 	void __iomem		*mapped_hwpage;
- 	size_t			mapped_hwpage_sz;
++/*
++ * MPAMCFG_MBW_MAX - MPAM memory maximum bandwidth partitioning configuration
++ *                   register
++ */
++#define MPAMCFG_MBW_MAX_MAX		GENMASK(15, 0)
++#define MPAMCFG_MBW_MAX_HARDLIM		BIT(31)
 +
-+	struct mpam_garbage	garbage;
-+};
++/*
++ * MPAMCFG_MBW_WINWD - MPAM memory bandwidth partitioning window width
++ *                     register
++ */
++#define MPAMCFG_MBW_WINWD_US_FRAC	GENMASK(7, 0)
++#define MPAMCFG_MBW_WINWD_US_INT	GENMASK(23, 8)
 +
-+struct mpam_class {
-+	/* mpam_components in this class */
-+	struct list_head	components;
++/* MPAMCFG_PRI - MPAM priority partitioning configuration register */
++#define MPAMCFG_PRI_INTPRI		GENMASK(15, 0)
++#define MPAMCFG_PRI_DSPRI		GENMASK(31, 16)
 +
-+	cpumask_t		affinity;
++/*
++ * MPAMCFG_MBW_PROP - Memory bandwidth proportional stride partitioning
++ *                    configuration register
++ */
++#define MPAMCFG_MBW_PROP_STRIDEM1	GENMASK(15, 0)
++#define MPAMCFG_MBW_PROP_EN		BIT(31)
 +
-+	u8			level;
-+	enum mpam_class_types	type;
++/*
++ * MPAMCFG_INTPARTID - MPAM internal partition narrowing configuration register
++ */
++#define MPAMCFG_INTPARTID_INTPARTID	GENMASK(15, 0)
++#define MPAMCFG_INTPARTID_INTERNAL	BIT(16)
 +
-+	/* member of mpam_classes */
-+	struct list_head	classes_list;
++/* MSMON_CFG_MON_SEL - Memory system performance monitor selection register */
++#define MSMON_CFG_MON_SEL_MON_SEL	GENMASK(15, 0)
++#define MSMON_CFG_MON_SEL_RIS		GENMASK(27, 24)
 +
-+	struct mpam_garbage	garbage;
-+};
++/* MPAMF_ESR - MPAM Error Status Register */
++#define MPAMF_ESR_PARTID_MON	GENMASK(15, 0)
++#define MPAMF_ESR_PMG		GENMASK(23, 16)
++#define MPAMF_ESR_ERRCODE	GENMASK(27, 24)
++#define MPAMF_ESR_OVRWR		BIT(31)
++#define MPAMF_ESR_RIS		GENMASK(35, 32)
 +
-+struct mpam_component {
-+	u32			comp_id;
++/* MPAMF_ECR - MPAM Error Control Register */
++#define MPAMF_ECR_INTEN		BIT(0)
 +
-+	/* mpam_vmsc in this component */
-+	struct list_head	vmsc;
++/* Error conditions in accessing memory mapped registers */
++#define MPAM_ERRCODE_NONE			0
++#define MPAM_ERRCODE_PARTID_SEL_RANGE		1
++#define MPAM_ERRCODE_REQ_PARTID_RANGE		2
++#define MPAM_ERRCODE_MSMONCFG_ID_RANGE		3
++#define MPAM_ERRCODE_REQ_PMG_RANGE		4
++#define MPAM_ERRCODE_MONITOR_RANGE		5
++#define MPAM_ERRCODE_INTPARTID_RANGE		6
++#define MPAM_ERRCODE_UNEXPECTED_INTERNAL	7
 +
-+	cpumask_t		affinity;
++/*
++ * MSMON_CFG_CSU_FLT - Memory system performance monitor configure cache storage
++ *                    usage monitor filter register
++ */
++#define MSMON_CFG_CSU_FLT_PARTID	GENMASK(15, 0)
++#define MSMON_CFG_CSU_FLT_PMG		GENMASK(23, 16)
 +
-+	/* member of mpam_class:components */
-+	struct list_head	class_list;
++/*
++ * MSMON_CFG_CSU_CTL - Memory system performance monitor configure cache storage
++ *                    usage monitor control register
++ * MSMON_CFG_MBWU_CTL - Memory system performance monitor configure memory
++ *                     bandwidth usage monitor control register
++ */
++#define MSMON_CFG_x_CTL_TYPE			GENMASK(7, 0)
++#define MSMON_CFG_MBWU_CTL_OFLOW_STATUS_L	BIT(15)
++#define MSMON_CFG_x_CTL_MATCH_PARTID		BIT(16)
++#define MSMON_CFG_x_CTL_MATCH_PMG		BIT(17)
++#define MSMON_CFG_x_CTL_SCLEN			BIT(19)
++#define MSMON_CFG_x_CTL_SUBTYPE			GENMASK(22, 20)
++#define MSMON_CFG_x_CTL_OFLOW_FRZ		BIT(24)
++#define MSMON_CFG_x_CTL_OFLOW_INTR		BIT(25)
++#define MSMON_CFG_x_CTL_OFLOW_STATUS		BIT(26)
++#define MSMON_CFG_x_CTL_CAPT_RESET		BIT(27)
++#define MSMON_CFG_x_CTL_CAPT_EVNT		GENMASK(30, 28)
++#define MSMON_CFG_x_CTL_EN			BIT(31)
 +
-+	/* parent: */
-+	struct mpam_class	*class;
++#define MSMON_CFG_MBWU_CTL_TYPE_MBWU			0x42
++#define MSMON_CFG_CSU_CTL_TYPE_CSU			0
 +
-+	struct mpam_garbage	garbage;
- };
- 
-+struct mpam_vmsc {
-+	/* member of mpam_component:vmsc_list */
-+	struct list_head	comp_list;
++/*
++ * MSMON_CFG_MBWU_FLT - Memory system performance monitor configure memory
++ *                     bandwidth usage monitor filter register
++ */
++#define MSMON_CFG_MBWU_FLT_PARTID		GENMASK(15, 0)
++#define MSMON_CFG_MBWU_FLT_PMG			GENMASK(23, 16)
++#define MSMON_CFG_MBWU_FLT_RWBW			GENMASK(31, 30)
 +
-+	/* mpam_msc_ris in this vmsc */
-+	struct list_head	ris;
++/*
++ * MSMON_CSU - Memory system performance monitor cache storage usage monitor
++ *            register
++ * MSMON_CSU_CAPTURE -  Memory system performance monitor cache storage usage
++ *                     capture register
++ * MSMON_MBWU  - Memory system performance monitor memory bandwidth usage
++ *               monitor register
++ * MSMON_MBWU_CAPTURE - Memory system performance monitor memory bandwidth usage
++ *                     capture register
++ */
++#define MSMON___VALUE		GENMASK(30, 0)
++#define MSMON___NRDY		BIT(31)
++#define MSMON___NRDY_L		BIT(63)
++#define MSMON___L_VALUE		GENMASK(43, 0)
++#define MSMON___LWD_VALUE	GENMASK(62, 0)
 +
-+	/* All RIS in this vMSC are members of this MSC */
-+	struct mpam_msc		*msc;
-+
-+	/* parent: */
-+	struct mpam_component	*comp;
-+
-+	struct mpam_garbage	garbage;
-+};
-+
-+struct mpam_msc_ris {
-+	u8			ris_idx;
-+
-+	cpumask_t		affinity;
-+
-+	/* member of mpam_vmsc:ris */
-+	struct list_head	vmsc_list;
-+
-+	/* member of mpam_msc:ris */
-+	struct list_head	msc_list;
-+
-+	/* parent: */
-+	struct mpam_vmsc	*vmsc;
-+
-+	struct mpam_garbage	garbage;
-+};
-+
-+/* List of all classes - protected by srcu*/
-+extern struct srcu_struct mpam_srcu;
-+extern struct list_head mpam_classes;
-+
-+int mpam_get_cpumask_from_cache_id(unsigned long cache_id, u32 cache_level,
-+				   cpumask_t *affinity);
++/*
++ * MSMON_CAPT_EVNT - Memory system performance monitoring capture event
++ *                  generation register
++ */
++#define MSMON_CAPT_EVNT_NOW	BIT(0)
 +
  #endif /* MPAM_INTERNAL_H */
-diff --git a/include/linux/arm_mpam.h b/include/linux/arm_mpam.h
-index 0edefa6ba019..406a77be68cb 100644
---- a/include/linux/arm_mpam.h
-+++ b/include/linux/arm_mpam.h
-@@ -36,11 +36,7 @@ static inline int acpi_mpam_parse_resources(struct mpam_msc *msc,
- static inline int acpi_mpam_count_msc(void) { return -EINVAL; }
- #endif
- 
--static inline int mpam_ris_create(struct mpam_msc *msc, u8 ris_idx,
--				  enum mpam_class_types type, u8 class_id,
--				  int component_id)
--{
--	return -EINVAL;
--}
-+int mpam_ris_create(struct mpam_msc *msc, u8 ris_idx,
-+		    enum mpam_class_types type, u8 class_id, int component_id);
- 
- #endif /* __LINUX_ARM_MPAM_H */
 -- 
 2.20.1
 
