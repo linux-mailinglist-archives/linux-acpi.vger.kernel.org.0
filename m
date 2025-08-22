@@ -1,38 +1,38 @@
-Return-Path: <linux-acpi+bounces-15940-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15941-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A99C7B31F0C
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 17:42:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88691B31F35
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 17:45:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38F6B1B617C7
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 15:39:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBA82B44D48
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Aug 2025 15:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87E3309DCB;
-	Fri, 22 Aug 2025 15:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E98D25A322;
+	Fri, 22 Aug 2025 15:34:09 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D84263899;
-	Fri, 22 Aug 2025 15:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB354263F4E;
+	Fri, 22 Aug 2025 15:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755876843; cv=none; b=oa45m/Kv8C2pVxyn6EUzsk5i7zOw/XY707R5xblyC5bE20wh1kc2Om+3RvvuN5RVyXdcB9W9kWCkGPOe3d6RnSlof4E+mYOJKI8TNFP9eppiJ8yi+/ZoHqcU38k6PfyPVO/W5vWUGAisErgLPuUvsi/FXDnS1E9Ke90FRRmJEUg=
+	t=1755876849; cv=none; b=X12DAZMMqmIHF6z7lbYFVZpFG0JmpdgCdDsS8rifKTlWC/w60PYJxJ/zOkcLIiZQfk4eeNB8aWYWhYUWTcENjs2vKQsuFIzi1jv0mT63wGiESwmTdv16m+/j3902GbJwc/HGAhc/JuVxJI33DyS0Vw4HETFQeZqKiRgJbL6Ssb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755876843; c=relaxed/simple;
-	bh=18sehYH0E8APdpVHinIWVpga+ncSNyEOb9yu9LBVPzI=;
+	s=arc-20240116; t=1755876849; c=relaxed/simple;
+	bh=6pZPHCBdZGWJ2iBr/oY/7x1I2KQSchwTuv6iBfvTpq4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RrI5FltohFqt8dKeT6QZQ7ugMJLIUy4wVmKprSY1Hno9qjl6DQANZDHn+qWxProhpQrvlUuVDl1ToaGFPsEnG+6/Vko1KsT+ZgpKHT9ysHEoPalzE3rdc7vU4nlHM5K63/0Z37j+Gtyd6qVucDodpvSh36SvZ59l1NIZogoja5w=
+	 MIME-Version; b=iuAL/Rw4NB6PAsuW24x4kS0D7kiDt171Vje6qwNLdxPhHZDbJH4hqVDg+VBsm6IcqB6YZZPpQdW8NC40DnksueQBPBZ8C9udgjsjlYrLbcB0bV2P+sve1CuvU6EEoQFddx2KVHp9bv65au8IIOLtCL22C2u99kvtXNvqiTUQntc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 32CCE27B5;
-	Fri, 22 Aug 2025 08:33:53 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E645227DC;
+	Fri, 22 Aug 2025 08:33:58 -0700 (PDT)
 Received: from merodach.members.linode.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 26AD63F63F;
-	Fri, 22 Aug 2025 08:33:56 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B90BD3F63F;
+	Fri, 22 Aug 2025 08:34:01 -0700 (PDT)
 From: James Morse <james.morse@arm.com>
 To: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -71,10 +71,11 @@ Cc: James Morse <james.morse@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 31/33] arm_mpam: Add helper to reset saved mbwu state
-Date: Fri, 22 Aug 2025 15:30:12 +0000
-Message-Id: <20250822153048.2287-32-james.morse@arm.com>
+	Danilo Krummrich <dakr@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 32/33] arm_mpam: Add kunit test for bitmap reset
+Date: Fri, 22 Aug 2025 15:30:13 +0000
+Message-Id: <20250822153048.2287-33-james.morse@arm.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20250822153048.2287-1-james.morse@arm.com>
 References: <20250822153048.2287-1-james.morse@arm.com>
@@ -86,137 +87,132 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-resctrl expects to reset the bandwidth counters when the filesystem
-is mounted.
+The bitmap reset code has been a source of bugs. Add a unit test.
 
-To allow this, add a helper that clears the saved mbwu state. Instead
-of cross calling to each CPU that can access the component MSC to
-write to the counter, set a flag that causes it to be zero'd on the
-the next read. This is easily done by forcing a configuration update.
+This currently has to be built in, as the rest of the driver is
+builtin.
 
+Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: James Morse <james.morse@arm.com>
 ---
- drivers/resctrl/mpam_devices.c  | 49 +++++++++++++++++++++++++++++++--
- drivers/resctrl/mpam_internal.h |  5 +++-
- 2 files changed, 51 insertions(+), 3 deletions(-)
+ drivers/resctrl/Kconfig             | 13 ++++++
+ drivers/resctrl/mpam_devices.c      |  4 ++
+ drivers/resctrl/test_mpam_devices.c | 68 +++++++++++++++++++++++++++++
+ 3 files changed, 85 insertions(+)
+ create mode 100644 drivers/resctrl/test_mpam_devices.c
 
+diff --git a/drivers/resctrl/Kconfig b/drivers/resctrl/Kconfig
+index dff7b87280ab..f5e0609975e4 100644
+--- a/drivers/resctrl/Kconfig
++++ b/drivers/resctrl/Kconfig
+@@ -4,8 +4,21 @@ config ARM64_MPAM_DRIVER
+ 	bool "MPAM driver for System IP, e,g. caches and memory controllers"
+ 	depends on ARM64_MPAM && EXPERT
+ 
++menu "ARM64 MPAM driver options"
++
+ config ARM64_MPAM_DRIVER_DEBUG
+ 	bool "Enable debug messages from the MPAM driver."
+ 	depends on ARM64_MPAM_DRIVER
+ 	help
+ 	  Say yes here to enable debug messages from the MPAM driver.
++
++config MPAM_KUNIT_TEST
++	bool "KUnit tests for MPAM driver " if !KUNIT_ALL_TESTS
++	depends on KUNIT=y
++	default KUNIT_ALL_TESTS
++	help
++	  Enable this option to run tests in the MPAM driver.
++
++	  If unsure, say N.
++
++endmenu
 diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-index 8fbcf6eb946a..65c30ebfe001 100644
+index 65c30ebfe001..4cf5aae88c53 100644
 --- a/drivers/resctrl/mpam_devices.c
 +++ b/drivers/resctrl/mpam_devices.c
-@@ -1155,9 +1155,11 @@ static u64 mpam_msmon_overflow_val(struct mpam_msc_ris *ris)
- static void __ris_msmon_read(void *arg)
- {
- 	bool nrdy = false;
-+	bool config_mismatch;
- 	struct mon_read *m = arg;
- 	u64 now, overflow_val = 0;
- 	struct mon_cfg *ctx = m->ctx;
-+	bool reset_on_next_read = false;
- 	struct mpam_msc_ris *ris = m->ris;
- 	struct msmon_mbwu_state *mbwu_state;
- 	struct mpam_props *rprops = &ris->props;
-@@ -1172,6 +1174,14 @@ static void __ris_msmon_read(void *arg)
- 		  FIELD_PREP(MSMON_CFG_MON_SEL_RIS, ris->ris_idx);
- 	mpam_write_monsel_reg(msc, CFG_MON_SEL, mon_sel);
- 
-+	if (m->type == mpam_feat_msmon_mbwu) {
-+		mbwu_state = &ris->mbwu_state[ctx->mon];
-+		if (mbwu_state) {
-+			reset_on_next_read = mbwu_state->reset_on_next_read;
-+			mbwu_state->reset_on_next_read = false;
-+		}
-+	}
-+
- 	/*
- 	 * Read the existing configuration to avoid re-writing the same values.
- 	 * This saves waiting for 'nrdy' on subsequent reads.
-@@ -1179,7 +1189,10 @@ static void __ris_msmon_read(void *arg)
- 	read_msmon_ctl_flt_vals(m, &cur_ctl, &cur_flt);
- 	clean_msmon_ctl_val(&cur_ctl);
- 	gen_msmon_ctl_flt_vals(m, &ctl_val, &flt_val);
--	if (cur_flt != flt_val || cur_ctl != (ctl_val | MSMON_CFG_x_CTL_EN))
-+	config_mismatch = cur_flt != flt_val ||
-+			  cur_ctl != (ctl_val | MSMON_CFG_x_CTL_EN);
-+
-+	if (config_mismatch || reset_on_next_read)
- 		write_msmon_ctl_flt_vals(m, ctl_val, flt_val);
- 
- 	switch (m->type) {
-@@ -1212,7 +1225,6 @@ static void __ris_msmon_read(void *arg)
- 		if (nrdy)
- 			break;
- 
--		mbwu_state = &ris->mbwu_state[ctx->mon];
- 		if (!mbwu_state)
- 			break;
- 
-@@ -1314,6 +1326,39 @@ int mpam_msmon_read(struct mpam_component *comp, struct mon_cfg *ctx,
- 	return err;
+@@ -2903,3 +2903,7 @@ static int __init mpam_msc_driver_init(void)
  }
- 
-+void mpam_msmon_reset_mbwu(struct mpam_component *comp, struct mon_cfg *ctx)
-+{
-+	int idx;
-+	struct mpam_msc *msc;
-+	struct mpam_vmsc *vmsc;
-+	struct mpam_msc_ris *ris;
+ /* Must occur after arm64_mpam_register_cpus() from arch_initcall() */
+ subsys_initcall(mpam_msc_driver_init);
 +
-+	if (!mpam_is_enabled())
++#ifdef CONFIG_MPAM_KUNIT_TEST
++#include "test_mpam_devices.c"
++#endif
+diff --git a/drivers/resctrl/test_mpam_devices.c b/drivers/resctrl/test_mpam_devices.c
+new file mode 100644
+index 000000000000..8e9d6c88171c
+--- /dev/null
++++ b/drivers/resctrl/test_mpam_devices.c
+@@ -0,0 +1,68 @@
++// SPDX-License-Identifier: GPL-2.0
++// Copyright (C) 2024 Arm Ltd.
++/* This file is intended to be included into mpam_devices.c */
++
++#include <kunit/test.h>
++
++static void test_mpam_reset_msc_bitmap(struct kunit *test)
++{
++	char *buf = kunit_kzalloc(test, SZ_16K, GFP_KERNEL);
++	struct mpam_msc fake_msc;
++	u32 *test_result;
++
++	if (!buf)
 +		return;
 +
-+	idx = srcu_read_lock(&mpam_srcu);
-+	list_for_each_entry_rcu(vmsc, &comp->vmsc, comp_list) {
-+		if (!mpam_has_feature(mpam_feat_msmon_mbwu, &vmsc->props))
-+			continue;
++	fake_msc.mapped_hwpage = buf;
++	fake_msc.mapped_hwpage_sz = SZ_16K;
++	cpumask_copy(&fake_msc.accessibility, cpu_possible_mask);
 +
-+		msc = vmsc->msc;
-+		mpam_mon_sel_outer_lock(msc);
-+		list_for_each_entry_rcu(ris, &vmsc->ris, vmsc_list) {
-+			if (!mpam_has_feature(mpam_feat_msmon_mbwu, &ris->props))
-+				continue;
++	mutex_init(&fake_msc.part_sel_lock);
++	mutex_lock(&fake_msc.part_sel_lock);
 +
-+			if (WARN_ON_ONCE(!mpam_mon_sel_inner_lock(msc)))
-+				continue;
++	test_result = (u32 *)(buf + MPAMCFG_CPBM);
 +
-+			ris->mbwu_state[ctx->mon].correction = 0;
-+			ris->mbwu_state[ctx->mon].reset_on_next_read = true;
-+			mpam_mon_sel_inner_unlock(msc);
-+		}
-+		mpam_mon_sel_outer_unlock(msc);
-+	}
-+	srcu_read_unlock(&mpam_srcu, idx);
++	mpam_reset_msc_bitmap(&fake_msc, MPAMCFG_CPBM, 0);
++	KUNIT_EXPECT_EQ(test, test_result[0], 0);
++	KUNIT_EXPECT_EQ(test, test_result[1], 0);
++	test_result[0] = 0;
++	test_result[1] = 0;
++
++	mpam_reset_msc_bitmap(&fake_msc, MPAMCFG_CPBM, 1);
++	KUNIT_EXPECT_EQ(test, test_result[0], 1);
++	KUNIT_EXPECT_EQ(test, test_result[1], 0);
++	test_result[0] = 0;
++	test_result[1] = 0;
++
++	mpam_reset_msc_bitmap(&fake_msc, MPAMCFG_CPBM, 16);
++	KUNIT_EXPECT_EQ(test, test_result[0], 0xffff);
++	KUNIT_EXPECT_EQ(test, test_result[1], 0);
++	test_result[0] = 0;
++	test_result[1] = 0;
++
++	mpam_reset_msc_bitmap(&fake_msc, MPAMCFG_CPBM, 32);
++	KUNIT_EXPECT_EQ(test, test_result[0], 0xffffffff);
++	KUNIT_EXPECT_EQ(test, test_result[1], 0);
++	test_result[0] = 0;
++	test_result[1] = 0;
++
++	mpam_reset_msc_bitmap(&fake_msc, MPAMCFG_CPBM, 33);
++	KUNIT_EXPECT_EQ(test, test_result[0], 0xffffffff);
++	KUNIT_EXPECT_EQ(test, test_result[1], 1);
++	test_result[0] = 0;
++	test_result[1] = 0;
++
++	mutex_unlock(&fake_msc.part_sel_lock);
 +}
 +
- static void mpam_reset_msc_bitmap(struct mpam_msc *msc, u16 reg, u16 wd)
- {
- 	u32 num_words, msb;
-diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
-index 9f627b5f72a1..bbf0306abc82 100644
---- a/drivers/resctrl/mpam_internal.h
-+++ b/drivers/resctrl/mpam_internal.h
-@@ -297,10 +297,12 @@ struct mon_cfg {
- 
- /*
-  * Changes to enabled and cfg are protected by the msc->lock.
-- * Changes to prev_val and correction are protected by the msc's mon_sel_lock.
-+ * Changes to reset_on_next_read, prev_val and correction are protected by the
-+ * msc's mon_sel_lock.
-  */
- struct msmon_mbwu_state {
- 	bool		enabled;
-+	bool		reset_on_next_read;
- 	struct mon_cfg	cfg;
- 
- 	/* The value last read from the hardware. Used to detect overflow. */
-@@ -410,6 +412,7 @@ int mpam_apply_config(struct mpam_component *comp, u16 partid,
- 
- int mpam_msmon_read(struct mpam_component *comp, struct mon_cfg *ctx,
- 		    enum mpam_device_features, u64 *val);
-+void mpam_msmon_reset_mbwu(struct mpam_component *comp, struct mon_cfg *ctx);
- 
- int mpam_get_cpumask_from_cache_id(unsigned long cache_id, u32 cache_level,
- 				   cpumask_t *affinity);
++static struct kunit_case mpam_devices_test_cases[] = {
++	KUNIT_CASE(test_mpam_reset_msc_bitmap),
++	{}
++};
++
++static struct kunit_suite mpam_devices_test_suite = {
++	.name = "mpam_devices_test_suite",
++	.test_cases = mpam_devices_test_cases,
++};
++
++kunit_test_suites(&mpam_devices_test_suite);
 -- 
 2.20.1
 
