@@ -1,262 +1,215 @@
-Return-Path: <linux-acpi+bounces-15989-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-15990-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 123ACB32ACC
-	for <lists+linux-acpi@lfdr.de>; Sat, 23 Aug 2025 18:22:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80AA8B32BC8
+	for <lists+linux-acpi@lfdr.de>; Sat, 23 Aug 2025 22:02:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A113B3AE0DD
-	for <lists+linux-acpi@lfdr.de>; Sat, 23 Aug 2025 16:18:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6F1C1B61A06
+	for <lists+linux-acpi@lfdr.de>; Sat, 23 Aug 2025 20:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3E12EA170;
-	Sat, 23 Aug 2025 16:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9752E8B6C;
+	Sat, 23 Aug 2025 20:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mwOT3Eah"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Imvgl4Uw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2087.outbound.protection.outlook.com [40.107.100.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80392E92A0;
-	Sat, 23 Aug 2025 16:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755965638; cv=none; b=qdvNF8ZFGKjnX0udMuBwvQmsP1oFIZaz+WNf0+7zaX12nNEdEDuNUMWNQbMaJejbI5Dwi9GpCtekp30g9C9q4de3n7oLVDDZpohzqP68GrzGzyDJ6rLMmjHgfFQTY4xjeOAYLbeZ23A+iUDxP7Vuklko1b8v1ELA1NA+Q4ia+hc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755965638; c=relaxed/simple;
-	bh=XaPvEnRFO7P4KvitECQfWezTdZsWUoJ2K1hXS1ViaaQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ajsv4sSZ2sbDdnBc9lKwW/SAjIoIx9yljqraVGEAakvYQkeLVnxp0QKq0h4nElEKmXCnRThnWqQ3VFzzcvTY4AA5OMumpRaDDPTWE3MWXy+pF+1PbVSIFKgdCSm3pNk7nkgMJlgitDw9m+I2FJryFaROL3HoWdVLhgN6sYODvKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mwOT3Eah; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A3CC4CEE7;
-	Sat, 23 Aug 2025 16:13:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755965637;
-	bh=XaPvEnRFO7P4KvitECQfWezTdZsWUoJ2K1hXS1ViaaQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mwOT3EahRhLnSDnBsMWD8EGciO+59kw6Z3vnNjDr3+IIUSCK15El8g7D9hs3utaA9
-	 BjWYog1TETd4M9qD/rxV7BmE29+QjuU5maMNZ5o2mHUxTO0ikFlurKseDdN7OOcxWf
-	 jO8vEoU3Tp9x0p0Fk8mVnSFKqom4IOaXGm0ZY/uZwXatlccylisBaxdmf6zirrKb96
-	 umBwHhk+uHlhWc51D/vihVb5l/OQ6qmAwH0tU51fsOoa/AHR7kQ8EI5sapf2A0aAOr
-	 pu4wgWutV6l5UTx2e8kvGf0SypMMhaWc002l71cJhQmWcXnfKtk92P/McZkqH+PQ0+
-	 HizWK4HyDyEEQ==
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-3111c59720dso1527092fac.1;
-        Sat, 23 Aug 2025 09:13:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV0Jq1PiotXiA0CdR7YNJ8qpy8PEF1SDZhbIEqLsjpfNI9OnrYAspthArmVWBQ7CDu3m1EEGdFA8Rm3gddR@vger.kernel.org, AJvYcCWrZmVWKZ7IHEXylGfSF71iVdnWK2cn0vojbU+Efsvrv3AmxY4adQUSGy8DvAqvZ0/Jzm/Esa+P7Y57@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTbZmxXvdhGLqJbUZokuMBGXavdlX+/XlV8myped2CjQ5+C5mo
-	kdo+uGIkbNM+5DSMxI4scc9xEkQZ/cOsD2iah+KTRQf8lgdFzf8q6C2ubmFOwt3TcB3jjzWgcia
-	Ktgh+wFQFjbsl30qunVX7t8hCn7RihOA=
-X-Google-Smtp-Source: AGHT+IHQEQMNRFxeAFDw7ZZNHI4KcgNqKGMxdGr0V6CWZ143cN26OeQMrUwAFF3q9rtDoJ5ONnscfNKcf0YyvCNPGr4=
-X-Received: by 2002:a05:6808:1925:b0:40b:999f:b2f0 with SMTP id
- 5614622812f47-4378513f9bdmr2855384b6e.0.1755965636515; Sat, 23 Aug 2025
- 09:13:56 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F463A55;
+	Sat, 23 Aug 2025 20:01:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.87
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755979307; cv=fail; b=C2dlKd5Rz99iXQ6pWQ7Sboc067S/kRnsqO5jTfKq0qxVo0v55d7S5x4z10LGw2fjT4G8sjQjNw6Lw1McbA88TFhDBEdiQnIoygF6wDxYerhpzVHG75tS4YaAQ6NCqpiRspWaLm9nTf6FC30M6NxnFBey4FRKLrWxQIAh+keaJCI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755979307; c=relaxed/simple;
+	bh=MlvKtD/2ePHeAHfIKWaweCTqsQx1PJ8i2KUyvnyfKMw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=H7reaMOKc5PSJNzz7Zkv+j6x9O/+GhINmbhyZRXFHIpDVOGfVGMMnHF6n9KFNmeN1qPvRmzzoA3OD+oIX+yHJDP/rmG9sAvlbeqXd82+vlDiYjsGUcPmL87ffFcw0rsMyuvPBzWlyUb+Bt7vN3HKkCaN7kF0kDSWSdmT82rHEiI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Imvgl4Uw; arc=fail smtp.client-ip=40.107.100.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yPcYuwS+wZhZPvWL5EGZG3QQvTvoe3x7WxbyKD/g/+GW5+lTpAABxgp9n4GmJBUgAGCM7zYbg2iaYBXvrkQ2INJr96pjia9wIyZcpwfsiVhEcryDz7r+l0NBSH1jQAL1xrtJYxsuwPGEejw3n/4rmbD3bnXToT8YOay+vCyON0vrLsbjcZNj16kvZMytrkPSZ61PJPZiBTMlxZV6In9SqXmAKJFoFmqK5weC9q1Qdfz2F1rLn5/BMLEMWPhTTsAD6tegaIWXNc339n/peAEflcpJlNcfSgCnVCBKS/fbJQbGnxmzx8zXz71hVZar0OtsHtM5Rbz84lDu30qGuXZLmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EVJey4KyszBthu206QBovK39P7/VAziRrjhN5Y2Et18=;
+ b=hLQw/Ea77jrmdkxvmgwrSNKnhboxPYXAj1pWAeZHKjaY7XYXg/wAGA4rHoV23jXDPZMmKLs8rPX7tftMpFesR8Y9T7zpWOBtGIxRidxblu3vr31NfiEpFxJvUyU1CKtK4zb1jUmnO7wr5ri7Vko6LCisFiGwvmLMJ9qB7ZbLaqJxI3akw4QZ2TSLCiDOAd4k4zXbkPMAy/II4t0ndOHlDpn6QkBdUJh/pDQnz19Hc5LciruopXT/LNBn2utXyWwrgQ8qxGhPNl4uX52NNN8ncDbsD2pWyf/FEXcaHiG/4Ey46pN0es/7smgUsYAQV/IvfaiFxtgY/ssEZSB8kPlRcw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EVJey4KyszBthu206QBovK39P7/VAziRrjhN5Y2Et18=;
+ b=Imvgl4UwU268sLzTW8/WcO55Xk+iZIP2rvTO3eaOOPEeWwCrQC1V8SpfhvukWIj6ilA5ELYCSQKF60jepv+ovJov8qGxCK9FJ0cwfEs/BFYxMJSvHxOjm4pAxqk6cr1iayR1CX2KV5jHf4cqQDbsWyrMf1uyHEOuQXuW3HrgY4FD4StbmGqqdmj5zzRu5Tq59DR7gn0QfI1Tq752VWUgd4OjRAf+720LxnVFYKY/cESkKtE9//YYGBFIFEa1RsGfNLy8kd1+pXSu9NhO+b42MBsz6RLc5e8AVQ5Q+WSU0sxRbnu6XzY6JdBxIRdzHOk8vPTQBK+LVYtuMr6ZDcTJ4A==
+Received: from SN6PR04CA0075.namprd04.prod.outlook.com (2603:10b6:805:f2::16)
+ by PH7PR12MB9126.namprd12.prod.outlook.com (2603:10b6:510:2f0::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.19; Sat, 23 Aug
+ 2025 20:01:41 +0000
+Received: from SA2PEPF00003AE8.namprd02.prod.outlook.com
+ (2603:10b6:805:f2:cafe::c) by SN6PR04CA0075.outlook.office365.com
+ (2603:10b6:805:f2::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.20 via Frontend Transport; Sat,
+ 23 Aug 2025 20:01:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SA2PEPF00003AE8.mail.protection.outlook.com (10.167.248.8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9052.8 via Frontend Transport; Sat, 23 Aug 2025 20:01:41 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Sat, 23 Aug
+ 2025 13:01:30 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Sat, 23 Aug
+ 2025 13:01:29 -0700
+Received: from sumitg-l4t.nvidia.com (10.127.8.14) by mail.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server id 15.2.1544.14 via Frontend
+ Transport; Sat, 23 Aug 2025 13:01:23 -0700
+From: Sumit Gupta <sumitg@nvidia.com>
+To: <rafael@kernel.org>, <viresh.kumar@linaro.org>, <lenb@kernel.org>,
+	<robert.moore@intel.com>, <corbet@lwn.net>, <pierre.gondois@arm.com>,
+	<zhenglifeng1@huawei.com>, <ray.huang@amd.com>, <gautham.shenoy@amd.com>,
+	<mario.limonciello@amd.com>, <perry.yuan@amd.com>,
+	<linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <acpica-devel@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>
+CC: <linux-tegra@vger.kernel.org>, <treding@nvidia.com>,
+	<jonathanh@nvidia.com>, <vsethi@nvidia.com>, <ksitaraman@nvidia.com>,
+	<sanjayc@nvidia.com>, <bbasu@nvidia.com>, <sumitg@nvidia.com>
+Subject: [PATCH v2 0/7] Enhanced autonomous selection and API
+Date: Sun, 24 Aug 2025 01:31:13 +0530
+Message-ID: <20250823200121.1320197-1-sumitg@nvidia.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250728070612.1260859-1-lihuisong@huawei.com> <20250728070612.1260859-3-lihuisong@huawei.com>
-In-Reply-To: <20250728070612.1260859-3-lihuisong@huawei.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Sat, 23 Aug 2025 18:13:44 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jckgZfuh=yAqoftG1Q-1z0ngLXQa4TX-iwuy54UmWMng@mail.gmail.com>
-X-Gm-Features: Ac12FXwRVEFVjYqhwBmbr-fMWP6hx7gXW6rHkFyiOf8ARTCUMeoFlL5z7tBeYq0
-Message-ID: <CAJZ5v0jckgZfuh=yAqoftG1Q-1z0ngLXQa4TX-iwuy54UmWMng@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] ACPI: processor: idle: Optimize acpi idle driver registration
-To: Huisong Li <lihuisong@huawei.com>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linuxarm@huawei.com, 
-	jonathan.cameron@huawei.com, zhanjie9@hisilicon.com, zhenglifeng1@huawei.com, 
-	yubowen8@huawei.com, liuyonglong@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003AE8:EE_|PH7PR12MB9126:EE_
+X-MS-Office365-Filtering-Correlation-Id: 732237ac-9c3e-428c-621b-08dde27fe0e0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|82310400026|36860700013|376014|13003099007|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?SbWHYlBPgQEW4loTwoexkukP4Pb/XIxDGtLLBMdsXGnuwnsR7FIRes15tvV1?=
+ =?us-ascii?Q?wvv76NwMm7g1YXGilcNnR+oNtW2PFBEtnv6547b13N8fh1HysFLMjSWj+Bq4?=
+ =?us-ascii?Q?yspksD+cbutTEunjYxLe1RBtzErMQmt7vQqgi/XpBmQD78wW6zaw5YzevFEE?=
+ =?us-ascii?Q?LlPKnat1hPFbqrvy1dzvAWlQDabM0Drhuoe4vZX2duBVZ3sZYiCuNu3FzZOY?=
+ =?us-ascii?Q?hQHK7xxk7Df95DqUxkEQCKiI3HqrJBN5P/2d4gqBmMfZvmzWz/fFx5EV7BwW?=
+ =?us-ascii?Q?C16Qk80QNZOO2MSs24TYZPOlrwtFRjM8hmmFs7ED5+X8mFZOgapGuNjOs4km?=
+ =?us-ascii?Q?n1whb0RJ5JyUtdCXryI3oPRAMLFm4F1gVliKruetHlqaeIV3HU23BetoGoGm?=
+ =?us-ascii?Q?KZXm4ix/dS2tIfDOM/TbYYdMVTqUm/W3xSYorM7WGlnyu7lT3n6jOCf7B1hZ?=
+ =?us-ascii?Q?xsp6s0OjINO4o4f3+M+jJAfiwu7YzJJ7dZhzWRdfdEiX6Hb2SOO9VvRKvUsM?=
+ =?us-ascii?Q?JTfU6/qjSDWukbwwnIbdy6PW5VosYIhEMoOHNJhEK7KZla5XSNVX/7CEHhGL?=
+ =?us-ascii?Q?X89h4kMqpOijLX3YETS9dZ3nBx0CLSKwIqhpQPQJazxZLS+0qwYYB83MU8xZ?=
+ =?us-ascii?Q?fVmmxT8nV6FRXOwaEo4Wbo7MCu5XmvSjdTvf6ITB4oveXXaEmF8miJ2lwv3P?=
+ =?us-ascii?Q?f4JWvZPBdou2K1ZpUssyvsFFk+1cjYhp56qvOoIANt9B+W6EMG/B1ceIRGyf?=
+ =?us-ascii?Q?Gi/tJxFqUT6GbKMj+IwldJZnZE01bsoMnGDa0mub/ExeE3i2zvpz+p5igA0e?=
+ =?us-ascii?Q?rWxUo41naIWtiTCZ47Px5oRqafL5a+Tqv8lyBh0hiEk0exaAleJUv6uRLYgM?=
+ =?us-ascii?Q?eP/yCMb4x2BO0elVGsvXw3tj+xsQxKvPj8kvp6AD1TkMxH6nAMUo0AJfXngQ?=
+ =?us-ascii?Q?2eMiRWeBMvFyctF41XG5oxxNOixs3R4BVoGb9mM5Hl6zBlNI6G1LEOMcvjRg?=
+ =?us-ascii?Q?HVFNw70nk5itvp34gn+tsSf17MuvOhZtRxFtaiZgYv/Q6XimXKqML9i/zn2v?=
+ =?us-ascii?Q?csTud8p14OHBq75FJOPV+IVWWSTUAJZVar9cvAcd6xIezTtxoufiOrUDRASf?=
+ =?us-ascii?Q?LG19t0OVi2fi426MT95NMpN9NhGYUcCMqECkhbZDQN7A29kLYIPiGkC28TPc?=
+ =?us-ascii?Q?IYpXZ2H2DbQk74/5l5Zib3G7UYWCDCN3h9H+7YHTqHDGT2zLqHNcA7dwM8RA?=
+ =?us-ascii?Q?UqdrKFnB/98bi6T2iknbS588ZBaxEBL6+e4nqUNTzv0cl3YH3HON6hBatfdh?=
+ =?us-ascii?Q?2K6uhWQss5ujxkd+p83OXn6/oNRr7Dfr0hyo5BqYHWaLLYwIOXDtEp3U0Uus?=
+ =?us-ascii?Q?nx/qxpMwxuH1q9kUGl3sV7iiVyfXG9In6pvYZ7STqQK6k5gMEN0Fvrp81msO?=
+ =?us-ascii?Q?NWB6aPMbN9PV8NIx0zNC8xfDdbBpyzQDCMXaH1K/C+9ZAqZXKuzJA2kNs/MX?=
+ =?us-ascii?Q?mcxaDQwKoMV0nnoL9WZqT1Ah0zhI2yizbVjWr8kYK4GNAkf53Hz8EoAsDA?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(82310400026)(36860700013)(376014)(13003099007)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2025 20:01:41.6121
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 732237ac-9c3e-428c-621b-08dde27fe0e0
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF00003AE8.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9126
 
-On Mon, Jul 28, 2025 at 9:06=E2=80=AFAM Huisong Li <lihuisong@huawei.com> w=
-rote:
->
-> Currently, the acpi idle driver is registered from within a CPU
-> hotplug callback. Although this didn't cause any functional issues,
-> this is questionable and confusing. And it is better to register
-> the cpuidle driver when all of the CPUs have been brought up.
->
-> So add a new function to initialize acpi_idle_driver based on the
-> power management information of an available CPU and register cpuidle
-> driver in acpi_processor_driver_init().
->
-> Signed-off-by: Huisong Li <lihuisong@huawei.com>
-> ---
->  drivers/acpi/processor_driver.c |  3 ++
->  drivers/acpi/processor_idle.c   | 65 +++++++++++++++++++++------------
->  include/acpi/processor.h        |  8 ++++
->  3 files changed, 53 insertions(+), 23 deletions(-)
->
-> diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_dri=
-ver.c
-> index 65e779be64ff..bc9f58a02c1d 100644
-> --- a/drivers/acpi/processor_driver.c
-> +++ b/drivers/acpi/processor_driver.c
-> @@ -263,6 +263,8 @@ static int __init acpi_processor_driver_init(void)
->         if (result < 0)
->                 return result;
->
-> +       acpi_processor_register_idle_driver();
-> +
->         result =3D cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
->                                    "acpi/cpu-drv:online",
->                                    acpi_soft_cpu_online, NULL);
-> @@ -301,6 +303,7 @@ static void __exit acpi_processor_driver_exit(void)
->
->         cpuhp_remove_state_nocalls(hp_online);
->         cpuhp_remove_state_nocalls(CPUHP_ACPI_CPUDRV_DEAD);
-> +       acpi_processor_unregister_idle_driver();
->         driver_unregister(&acpi_processor_driver);
->  }
->
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.=
-c
-> index 031738390f2d..c71802d42e8a 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -1360,7 +1360,48 @@ int acpi_processor_power_state_has_changed(struct =
-acpi_processor *pr)
->         return 0;
->  }
->
-> -static int acpi_processor_registered;
-> +void acpi_processor_register_idle_driver(void)
-> +{
-> +       struct acpi_processor *pr;
-> +       int ret =3D -ENODEV;
-> +       int cpu;
-> +
-> +       /*
-> +        * Acpi idle driver is used by all possible CPUs.
-> +        * Install the idle handler by the processor power info of one in=
- them.
-> +        * Note that we use previously set idle handler will be used on
-> +        * platforms that only support C1.
-> +        */
-> +       for_each_cpu(cpu, (struct cpumask *)cpu_possible_mask) {
-> +               pr =3D per_cpu(processors, cpu);
-> +               if (!pr)
-> +                       continue;
-> +
-> +               ret =3D acpi_processor_get_power_info(pr);
-> +               if (!ret) {
-> +                       pr->flags.power_setup_done =3D 1;
-> +                       acpi_processor_setup_cpuidle_states(pr);
-> +                       break;
-> +               }
-> +       }
-> +
-> +       if (ret) {
-> +               pr_debug("No ACPI power information from any CPUs.\n");
-> +               return;
-> +       }
-> +
-> +       ret =3D cpuidle_register_driver(&acpi_idle_driver);
-> +       if (ret) {
-> +               pr_debug("register %s failed.\n", acpi_idle_driver.name);
-> +               return;
-> +       }
-> +       pr_debug("%s registered with cpuidle.\n", acpi_idle_driver.name);
-> +}
-> +
-> +void acpi_processor_unregister_idle_driver(void)
-> +{
-> +       cpuidle_unregister_driver(&acpi_idle_driver);
-> +}
->
->  int acpi_processor_power_init(struct acpi_processor *pr)
->  {
-> @@ -1375,22 +1416,7 @@ int acpi_processor_power_init(struct acpi_processo=
-r *pr)
->         if (!acpi_processor_get_power_info(pr))
->                 pr->flags.power_setup_done =3D 1;
->
-> -       /*
-> -        * Install the idle handler if processor power management is supp=
-orted.
-> -        * Note that we use previously set idle handler will be used on
-> -        * platforms that only support C1.
-> -        */
->         if (pr->flags.power) {
-> -               /* Register acpi_idle_driver if not already registered */
-> -               if (!acpi_processor_registered) {
-> -                       acpi_processor_setup_cpuidle_states(pr);
-> -                       retval =3D cpuidle_register_driver(&acpi_idle_dri=
-ver);
-> -                       if (retval)
-> -                               return retval;
-> -                       pr_debug("%s registered with cpuidle\n",
-> -                                acpi_idle_driver.name);
-> -               }
-> -
->                 dev =3D kzalloc(sizeof(*dev), GFP_KERNEL);
->                 if (!dev)
->                         return -ENOMEM;
-> @@ -1403,13 +1429,10 @@ int acpi_processor_power_init(struct acpi_process=
-or *pr)
->                  */
->                 retval =3D cpuidle_register_device(dev);
->                 if (retval) {
-> -                       if (acpi_processor_registered =3D=3D 0)
-> -                               cpuidle_unregister_driver(&acpi_idle_driv=
-er);
->                         kfree(dev);
->                         per_cpu(acpi_cpuidle_device, pr->id) =3D NULL;
->                         return retval;
->                 }
-> -               acpi_processor_registered++;
->         }
->         return 0;
->  }
-> @@ -1423,10 +1446,6 @@ int acpi_processor_power_exit(struct acpi_processo=
-r *pr)
->
->         if (pr->flags.power) {
->                 cpuidle_unregister_device(dev);
-> -               acpi_processor_registered--;
-> -               if (acpi_processor_registered =3D=3D 0)
-> -                       cpuidle_unregister_driver(&acpi_idle_driver);
-> -
->                 kfree(dev);
->         }
->
-> diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-> index d0eccbd920e5..1249f5e81d92 100644
-> --- a/include/acpi/processor.h
-> +++ b/include/acpi/processor.h
-> @@ -423,6 +423,8 @@ int acpi_processor_power_init(struct acpi_processor *=
-pr);
->  int acpi_processor_power_exit(struct acpi_processor *pr);
->  int acpi_processor_power_state_has_changed(struct acpi_processor *pr);
->  int acpi_processor_hotplug(struct acpi_processor *pr);
-> +void acpi_processor_register_idle_driver(void);
-> +void acpi_processor_unregister_idle_driver(void);
->  #else
->  static inline int acpi_processor_power_init(struct acpi_processor *pr)
->  {
-> @@ -443,6 +445,12 @@ static inline int acpi_processor_hotplug(struct acpi=
-_processor *pr)
->  {
->         return -ENODEV;
->  }
-> +static void acpi_processor_register_idle_driver(void)
-> +{
-> +}
-> +static void acpi_processor_unregister_idle_driver(void)
-> +{
-> +}
->  #endif /* CONFIG_ACPI_PROCESSOR_IDLE */
->
->  /* in processor_thermal.c */
-> --
+This patch series enhances the ACPI CPPC CPUFREQ driver with
+comprehensive support for autonomous selection, expanded runtime
+control interfaces and improved API naming.
 
-Applied as 6.18 material, thanks!
+It adds support for below:
+- Expose sysfs to read/write the Mininum/Maximum Performance Register
+  and update the policy min/max accordingly.
+    /sys/.../cpufreq/policy*/min_perf and max_perf
 
-While at it, in the future, please always spell ACPI in capitals in
-patch subjects, changelogs and code comments.
+- Expose sysfs to read/write the Performance Limited Register.
+    /sys/.../cpufreq/policy*/perf_limited
+
+- When toggling autonomous selection, synchronize the policy limits
+  by updating the policy min/max.
+
+- System-wide autonomous mode configuration via 'auto_sel_mode' boot
+  parameter. Mode can be switched dynamically on individual CPUs.
+
+- Rename APIs to improve the inconsistent naming for clarity.
+
+The patches are grouped as below:
+- Patch 1: Improvement for clarity. Can be applied independently.
+- Patch 2: Extend existing APIs. Can be applied independently.
+- Patch 3: Sysfs to update min/max_perf. Can be applied independently.
+- Patch 4: Sysfs to update perf_limited. Can be applied independently.
+- Patch 5: Update policy min/max on auto_select. Depends on 'Patch 3'.
+- Patch 6: add syfs documentation. Depends on 'Patch 3 and 4'.
+- Patch 7: Boot Parameter Support. Depends on 'Patch 3 and 5'.
+
+---
+v1[1] -> v2:
+- Move CPC register set sysfs from acpi_cppc to cpufreq directory.
+- No sysfs to set auto_sel and epp. They were merged from diff series.
+- Remove 'cppc_cpufreq_epp' instance of the 'cppc_cpufreq' driver.
+- Synchronize perf_min/max with policy min/max.
+- Update policy min/max Toggling auto_select.
+- add sysfs to update the perf_limited register.
+
+Sumit Gupta (7):
+  ACPI: CPPC: add perf control read API and clarify naming
+  ACPI: CPPC: extend APIs to support auto_sel and epp
+  ACPI: CPPC: add APIs and sysfs interface for min/max_perf
+  ACPI: CPPC: add APIs and sysfs interface for perf_limited register
+  cpufreq: CPPC: update policy min/max when toggling auto_select
+  cpufreq: CPPC: Add sysfs for min/max_perf and perf_limited
+  cpufreq: CPPC: add autonomous mode boot parameter support
+
+ .../ABI/testing/sysfs-devices-system-cpu      |  43 ++
+ .../admin-guide/kernel-parameters.txt         |  12 +
+ drivers/acpi/cppc_acpi.c                      | 208 ++++++++-
+ drivers/cpufreq/amd-pstate.c                  |   2 +-
+ drivers/cpufreq/cppc_cpufreq.c                | 400 +++++++++++++++++-
+ include/acpi/cppc_acpi.h                      |  51 ++-
+ 6 files changed, 668 insertions(+), 48 deletions(-)
+
+[1] https://lore.kernel.org/lkml/20250211103737.447704-1-sumitg@nvidia.com/
+
+-- 
+2.34.1
+
 
