@@ -1,48 +1,48 @@
-Return-Path: <linux-acpi+bounces-16003-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16004-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80739B331F6
-	for <lists+linux-acpi@lfdr.de>; Sun, 24 Aug 2025 20:14:18 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 129A7B331DD
+	for <lists+linux-acpi@lfdr.de>; Sun, 24 Aug 2025 20:12:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA95448136B
-	for <lists+linux-acpi@lfdr.de>; Sun, 24 Aug 2025 18:12:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ECF474E2350
+	for <lists+linux-acpi@lfdr.de>; Sun, 24 Aug 2025 18:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0AD12E1C52;
-	Sun, 24 Aug 2025 18:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7384E2E1EE4;
+	Sun, 24 Aug 2025 18:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="re7nT/rl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PxkUux/d"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938072E1753;
-	Sun, 24 Aug 2025 18:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AC12E172D;
+	Sun, 24 Aug 2025 18:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756058977; cv=none; b=GCA/xBXrN4UVnT6SVQNhc3jy7xwelqLxD5+Enk1Yk+FaCJTBr6QnfSUMXoTUyjTniSkDIfUEM5qtn89GAtqOEZKibuwqU/V8MUOBLnaal+wbjuF9SCcx4yWVLGGW5VZpSyHkoRT2l5dj9Y1KvR0nsrioNuOJ/XYiISL9fOYLdm4=
+	t=1756058985; cv=none; b=rhIJEmv+DFp6h5YXESNEsxxoP11cp9Ykv3roUZRM00Ty+Phbu/Tj4garE5p+YYBkvRjsoEdhAlP2LRrvG6tPdzrGJaJ/z0/qKjDRGk4Ve/ipQUxe1GmQ0qInznJ8AEdDCWuhitbikjKTalVH7C3NyArAg+WK1sunLTgMWWcJpHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756058977; c=relaxed/simple;
-	bh=y0/reVtRZ0GYrGQ7Fxsls5cjah4RtDLIcll/K48+B3c=;
+	s=arc-20240116; t=1756058985; c=relaxed/simple;
+	bh=2jFcS7RMzBU3cP0FxT/WG01cmzVqgCgNvZZKtC23fog=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lKwlQz13aCdMePFy5TBRFh2+a8PquXyC2j5hFEPtN7kBsjsbpn4VITCYAyyXi2ZBqON456cUJ9zMXWV2nNxBOBAyvDtCRn4pE8wTpZG1YlCQv3/qTJeNUFrui8NHBPglGfkNE/zVedVvYsZ7WVXcck1swY8pOOShh9mFYJpwzgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=re7nT/rl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24DB1C4CEEB;
-	Sun, 24 Aug 2025 18:09:28 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=cWSvxYwrpLqm/cIB5plaUiVQ9Wmh0LwLcbWwteFEsBleOZuycT4O26wq7PXLjElAJLu01b42p/GRbjTjgQyoSqcL9u01r7G11HrTUypJrHf1bmH/IY3gN2nFCBn2gyrMUWZUnWRBWm05oey8YR6S8PnG9uqueAcKe6EivvmUTdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PxkUux/d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A2EC4CEF4;
+	Sun, 24 Aug 2025 18:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756058977;
-	bh=y0/reVtRZ0GYrGQ7Fxsls5cjah4RtDLIcll/K48+B3c=;
+	s=k20201202; t=1756058985;
+	bh=2jFcS7RMzBU3cP0FxT/WG01cmzVqgCgNvZZKtC23fog=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=re7nT/rlt1N2SM2Ixwux4yCMVMMg7L8eLYaEh9d8R09AZqqZQai/1VmjfUFZOGYlB
-	 19DZQVpxImsdA8GqqgtuI+BMfGLsCV+74nX9kNTg69i6MouSiUy4ctmny5TwHfQeyQ
-	 JfHgAQHh6dGSgy/fgfTobfhwTBWluGlL2i7lAcFJQc9bLVHxIrzK7mq3f1mp04noFI
-	 35ZzrUu7bTTKGARV0vQSzNXc+DvDd53nhWwATdE+kLk+fYRJzIHvXfGRbQZnfE6Abw
-	 ZS7qlF/Cev2n1YOuLyB7BEd79pQe2aJIDwbFfKYsW4h2RPbXTf00T3kJNflcuPLRSw
-	 LkPmbEuF+nAKw==
-Message-ID: <6fdc9ddc-7411-462e-ae71-82c81f7f8f1e@kernel.org>
-Date: Sun, 24 Aug 2025 19:24:11 +0200
+	b=PxkUux/dfAZ5WdFrXk1fI8RkhNPTfdhbdVU4+dfXg7oWG67LIFao2MaHOrxLOF0QE
+	 O8e2rla0zuY5bMKRvB5xbIA2312MgxI4S3m9I4SHfWwOmrQTBsSBXKupQTec38kxat
+	 kr7ehTBIt9ELHz9aTtglbQG0B4LsPY1xzfy/Q+RILYJo9OTs32wJj7/RXqCHijXZML
+	 +J0/VMiL4Kn1Toqb8MJ7lyA88QFAzngNq56HN8GA5kBQy/GeqimGgXScoasHfBKg1S
+	 EEZWRNfzEixN6LOvUb/BF/Nw3ElkQ1GrhAIZ1iMR+2vRzP/wFuPsuRCHC5lJomzGUf
+	 PqmSoW4h8X2tw==
+Message-ID: <172e9dd6-3b25-4fdf-943e-2bd559117519@kernel.org>
+Date: Sun, 24 Aug 2025 19:25:20 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -50,7 +50,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/33] arm_mpam: Add basic mpam driver
+Subject: Re: [PATCH 02/33] drivers: base: cacheinfo: Add helper to find the
+ cache size from cpu+level
 To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
  devicetree@vger.kernel.org
@@ -75,6 +76,7 @@ Cc: shameerali.kolothum.thodi@huawei.com,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Danilo Krummrich <dakr@kernel.org>
 References: <20250822153048.2287-1-james.morse@arm.com>
+ <20250822153048.2287-3-james.morse@arm.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -120,36 +122,27 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250822153048.2287-1-james.morse@arm.com>
+In-Reply-To: <20250822153048.2287-3-james.morse@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 22/08/2025 17:29, James Morse wrote:
-> Hello,
+> MPAM needs to know the size of a cache associated with a particular CPU.
+> The DT/ACPI agnostic way of doing this is to ask cacheinfo.
 > 
-> This is just enough MPAM driver for the ACPI and DT pre-requisites.
-> It doesn't contain any of the resctrl code, meaning you can't actually drive it
-> from user-space yet. Becuase of that, its hidden behind CONFIG_EXPERT.
-> This will change once the user interface is connected up.
+> Add a helper to do this.
 > 
-> This is the initial group of patches that allows the resctrl code to be built
-> on top. Including that will increase the number of trees that may need to
-> coordinate, so breaking it up make sense.
+> Signed-off-by: James Morse <james.morse@arm.com>
 > 
+> ---
+> Changes since v1:
 
-There was v1 of this, so that's a v2. Start using b4 to get it right,
-because you just make it difficult for us to review.
+You marked this as v1.
 
-Try yourself:
-
-b4 diff <this-patchset>
-
-Works? No.
-
-Also, for some reason you sent it twice, so again: use b4.
-
-
-
+>  * Converted to kdoc.
+>  * Simplified helper to use get_cpu_cacheinfo_level().
+Please use consistent subject prefixes. Look at previous patch subject
+prefix.
 
 Best regards,
 Krzysztof
