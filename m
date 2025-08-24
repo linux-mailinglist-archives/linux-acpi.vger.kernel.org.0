@@ -1,147 +1,153 @@
-Return-Path: <linux-acpi+bounces-15998-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16000-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6683B32C46
-	for <lists+linux-acpi@lfdr.de>; Sun, 24 Aug 2025 00:03:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8CCB32CAC
+	for <lists+linux-acpi@lfdr.de>; Sun, 24 Aug 2025 02:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 863D3587A5A
-	for <lists+linux-acpi@lfdr.de>; Sat, 23 Aug 2025 22:03:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CA5318935AC
+	for <lists+linux-acpi@lfdr.de>; Sun, 24 Aug 2025 00:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAA0213E90;
-	Sat, 23 Aug 2025 22:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD97CA5A;
+	Sun, 24 Aug 2025 00:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M28z2Dci"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="13TqfuMa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AF515C0;
-	Sat, 23 Aug 2025 22:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374A319A;
+	Sun, 24 Aug 2025 00:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755986618; cv=none; b=Pr2VNfobtIJe85VagG2JgN5IRA/2/sJamTqLuzPcaz4H19S2DJaic2n9w2zYYjNMWl+2nS19aqTQtCrOmjCLtgmXgti6PHJ7V7Ec3nLLmOJ2tm37A1mHeGAJQyZca+7HvL7G3AQj1kZ7cRawBXujx9/JKcWvTIGDV2weEjW/BlM=
+	t=1755994092; cv=none; b=On5gLs5t45pO8ABmIyYMTjqCHUmhKorIeSAQsXSBDtZsIppO9+AocU/XhjNj2hvWO/0BrktIIyw8C+7l4ukTYv0rF9y/p12VbAIhbqJISgwxfNuaEgsZbb1mYIH5u60Od+2yyVOG8xL3HAHdBr1d9Oh75zFcIcTo2xzda4bXi8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755986618; c=relaxed/simple;
-	bh=9gdp7M094EoAHFgmksGn4KjDgeeGaU9nsvDsm1VWUuU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pmkcbp+Hy5VSDcs9ysOhAsJZZmtAGfJV7rrV4TPd5OUnBBYIxJVRXJ889EONo5xEKTaNgUSot9JJB+O63dC17bVYuOcZGPS335zt8Rm9oCllghdYS/KWAo55T2R22VCRz75jBgx1uGE4gGPgeZBuOI2jlRbtS1TaJqaHot9YoX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M28z2Dci; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7e87035a7c3so473783585a.0;
-        Sat, 23 Aug 2025 15:03:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755986615; x=1756591415; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fOyX3xsmEr0cfR533WjUXZGAthPGKOXZvKXp0vJLWOY=;
-        b=M28z2DciYmbHZ3Sj0MJgIXMoMOpx9aIiCoEQ5Ci8WZHMp2jYVxrWxo0YK5ixx9XqsJ
-         5yb55Gjae5RMqz/3UaELQJgj6FOuD0EyWfUjC1GcHfdnT+tSnOKn1ZtbL0ATYajkQJ9l
-         grOYR0QCvlOyJR0eLPnVTmHDeRENtiXIu8tIRoRhU/rJym9r1FiuXldV5J8iO5Je8dpj
-         iyHU0sRx7+3vGzS3hFbvUp29WaiBIUnUE0BQj2zMiA3srg5CZdVSGlQhOYcDv+QoPCwu
-         rZeP9CX6MhtZgR6+FTUtxpKR4RneMXqwCB9TznqP+rBA3F5TkDwfiLd6xf+3SDr4WW95
-         ZaEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755986615; x=1756591415;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fOyX3xsmEr0cfR533WjUXZGAthPGKOXZvKXp0vJLWOY=;
-        b=bNrf27+GxbNOtyEFAlV+gtTgqkpxLmFKRfNELDzppwPFGzBLWDhay7HsUV1hy15ekG
-         pT7tt3r1dTXiXCBgphU1DElvQMKmllLahKKisp76TUjMGs7OtRhA02gPYi+xBVIlf5N8
-         QoQKGDKTsoE8VLasIS8Fe1U9G9m+L5zDQNLDyMm1T5I2I0bfrkY4Q4uE0kKpEpGbSc9g
-         8DaW+JYImUh0jwaTNylOsbVttbJXNRk3kE3lchKGinHv/BprHSXQiOxyPq/0BYFT/tp0
-         LxsF3gtZVo33Z64It4OxZr+lZ6EMhFL/PsvoOiJn4/+E7wL2vDe3dHQdQrcKU0qKqF5w
-         ta1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVcmXxBbAO2wJhhc8k3l8FZuJCt8zjNurqomeuWyIw1U3beLEjuCX7TRUkhx09cgJpHuAiE7BdtZwG7@vger.kernel.org, AJvYcCXaYDpu2JOwcjvsLIcyBoqRb6cSk2abLnU1jhTX4w0i+YOp01EuBRblkumkhIUpytbgkMb+cEARAlnW@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywf86uAu4zruYhxQeUxLAFK4BzcJAFOTd9m0Ic7kulSFOrqyvH8
-	fSu2qFEj2dEjvVe4d04/NKgJKMdS4wg3iBjDhTJqrn2mk3knOG1s6lcv
-X-Gm-Gg: ASbGncubsr4491kFBCqOAP7PW/mo7kX6vEF6pr1E1IYOZnrThtmDOH0fdAvtKW0oYAB
-	jFyYnnmpb/7RuFDkx4yvMQ1G+knm1Z50Isgi/1X8f1/PkLYvG1T3MI75sxAJxxxQjMcbkYGoRVG
-	NWpXv5te6U4m4pxVrqIe1grD0V6Y5C78vnKiPAgwiBW2I2o3JHhkgDeFH75vwoY5v9OXIrE4Zv1
-	OR/w20w86iMRveXTlNQ61fOlrQ8RBpsrNgW6PNqUAtdqYcDUEWU78mPAMQg31yX+o1wQdKzxT5t
-	kjdWbmJOmtB+Sd8IKz4dOwzWtt4piqqrZFQByXrj2GLOrXB4dwZjDxhf8sqbMfn9eeKjbGBqOVa
-	9u8sPV2chYbhQ8/k8ut+d0p5EgZjRc5N0uvzYTzJ3wwPAZ1xaA7DXo16DKQ==
-X-Google-Smtp-Source: AGHT+IGhcRLCy7w/nvfoyZtyXVKXhyD54tDcha2AXgxEaPEJiOmejbL1l814zItyeQEFj8+RHUD5Kw==
-X-Received: by 2002:a05:620a:d88:b0:7d5:ca37:79a0 with SMTP id af79cd13be357-7ea10fae57cmr820612885a.18.1755986615541;
-        Sat, 23 Aug 2025 15:03:35 -0700 (PDT)
-Received: from cr-x-redhat96-nsd-2.fyre.ibm.com ([129.41.87.0])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ebf36e7640sm204557285a.59.2025.08.23.15.03.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Aug 2025 15:03:34 -0700 (PDT)
-From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-To: bhelgaas@google.com,
-	rafael@kernel.org
-Cc: lenb@kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Subject: [PATCH] drivers: acpi: Use str_low_high() helper
-Date: Sat, 23 Aug 2025 15:03:11 -0700
-Message-ID: <20250823220311.2035533-1-chelsyratnawat2001@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1755994092; c=relaxed/simple;
+	bh=L9aGCyqYIqfiE/709OdRQZek+aVPISbBSeqD8LeS+PY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S3TdV2ZP5iwM/4vW7A6CTxcrntEEIaebXQmx9Yx7Iziqr8c9Cz1I8PTS/5oryRWuhyrbhtXTG78Egf0CEn4aofE+sMslChI5ivSUjrL5I2VezYOvZhSgRf+5BnDsCENl6+Bs5zyfsdyMIi/DjtY4cyWx5GsqLNa/1ieygS5f0Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=13TqfuMa; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=MyBjjN2I/3jlsDrVJT+yGV+wBVpUEwoIMa9ewpZMCMg=; b=13TqfuMa5/zhkRt1zTNt8DhjeH
+	d7iQITJGOl0IJWojBPtm6GzoTnyNr5cmPKHVCauU0ACUxyJbiv36OckcHHWc/10jTi61ty7ZZZ9PC
+	pvP6X9nmj/dtb7/tZa4OdA/gsr3beaKLMxsy9xtG+XBTU5hRv23DYpvCL0dxpAUc4wtzEgOM2icI4
+	6RrgjZfEH9POix9PWwuL+QPjurX3mP0jng2c+Bzs0v2N9Z7t2EWvMzemOJS2X8miZYcY8P5NV6m2W
+	pBbIhMmbQplHRrd4Ndt+2hgmAV+71wRxWZ15Ninr6FcrkiiAwe0y3fGmACK5TT5D538ALyoiuSuFG
+	jSAPqudQ==;
+Received: from [50.53.25.54] (helo=[192.168.254.17])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1upyHD-00000005U69-0Xmu;
+	Sun, 24 Aug 2025 00:08:03 +0000
+Message-ID: <769e0ce4-1f96-4de5-a8a9-48166d6e3a91@infradead.org>
+Date: Sat, 23 Aug 2025 17:08:01 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/7] cpufreq: CPPC: Add sysfs for min/max_perf and
+ perf_limited
+To: Sumit Gupta <sumitg@nvidia.com>, rafael@kernel.org,
+ viresh.kumar@linaro.org, lenb@kernel.org, robert.moore@intel.com,
+ corbet@lwn.net, pierre.gondois@arm.com, zhenglifeng1@huawei.com,
+ ray.huang@amd.com, gautham.shenoy@amd.com, mario.limonciello@amd.com,
+ perry.yuan@amd.com, linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-doc@vger.kernel.org, acpica-devel@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Cc: linux-tegra@vger.kernel.org, treding@nvidia.com, jonathanh@nvidia.com,
+ vsethi@nvidia.com, ksitaraman@nvidia.com, sanjayc@nvidia.com,
+ bbasu@nvidia.com
+References: <20250823200121.1320197-1-sumitg@nvidia.com>
+ <20250823200121.1320197-7-sumitg@nvidia.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20250823200121.1320197-7-sumitg@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Remove hard-coded strings by using the str_low_high() helper
-function.
 
-Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
----
- drivers/acpi/pci_irq.c  | 3 ++-
- drivers/acpi/resource.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
-index 630fe0a34bc6..ad81aa03fe2f 100644
---- a/drivers/acpi/pci_irq.c
-+++ b/drivers/acpi/pci_irq.c
-@@ -22,6 +22,7 @@
- #include <linux/acpi.h>
- #include <linux/slab.h>
- #include <linux/interrupt.h>
-+#include <linux/string_choices.h>
- 
- struct acpi_prt_entry {
- 	struct acpi_pci_id	id;
-@@ -468,7 +469,7 @@ int acpi_pci_irq_enable(struct pci_dev *dev)
- 	dev_dbg(&dev->dev, "PCI INT %c%s -> GSI %u (%s, %s) -> IRQ %d\n",
- 		pin_name(pin), link_desc, gsi,
- 		(triggering == ACPI_LEVEL_SENSITIVE) ? "level" : "edge",
--		(polarity == ACPI_ACTIVE_LOW) ? "low" : "high", dev->irq);
-+		str_low_high(polarity == ACPI_ACTIVE_LOW), dev->irq);
- 
- 	kfree(entry);
- 	return 0;
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index b1ab192d7a08..55b195ad5c7e 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -17,6 +17,7 @@
- #include <linux/slab.h>
- #include <linux/irq.h>
- #include <linux/dmi.h>
-+#include <linux/string_choices.h>
- 
- #ifdef CONFIG_X86
- #define valid_IRQ(i) (((i) != 0) && ((i) != 2))
-@@ -773,7 +774,7 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
- 			pr_warn("ACPI: IRQ %d override to %s%s, %s%s\n", gsi,
- 				t ? "level" : "edge",
- 				trig == triggering ? "" : "(!)",
--				p ? "low" : "high",
-+				str_low_high(p),
- 				pol == polarity ? "" : "(!)");
- 			triggering = trig;
- 			polarity = pol;
+On 8/23/25 1:01 PM, Sumit Gupta wrote:
+> Add sysfs interfaces for Minimum Performance, Maximum Performance
+> and Performance Limited Register in the cppc_cpufreq driver.
+> 
+> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+> ---
+>  .../ABI/testing/sysfs-devices-system-cpu      | 43 +++++++++++++++++++
+>  1 file changed, 43 insertions(+)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
+> index ab8cd337f43a..4bce0dbc48c9 100644
+> --- a/Documentation/ABI/testing/sysfs-devices-system-cpu
+> +++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
+> @@ -327,6 +327,49 @@ Description:	Energy performance preference
+>  
+>  		This file is only present if the cppc-cpufreq driver is in use.
+>  
+> +What:           /sys/devices/system/cpu/cpuX/cpufreq/min_perf
+> +Date:           Aug 2025
+> +Contact:        linux-pm@vger.kernel.org
+> +Description:    Minimum Performance
+
+Preferably these 4 lines above use tab(s) after the ':' for indentation
+instead of spaces. (in 3 places, i.e., each sysfs file entry).
+
+> +
+> +		Read/write a 32 bits value from/to this file. This file
+> +		conveys the minimum performance level at which the platform
+> +		may run. Minimum performance may be set to any performance
+> +		value in the range [Lowest Performance, Highest Performance],
+> +		inclusive but must be set to a value that is less than or
+> +		equal to that specified by the Maximum Performance Register.
+> +
+> +		Writing to this file only has meaning when Autonomous Selection
+> +		is enabled.
+> +
+> +		This file is only present if the cppc-cpufreq driver is in use.
+> +
+> +What:           /sys/devices/system/cpu/cpuX/cpufreq/max_perf
+> +Date:           Aug 2025
+> +Contact:        linux-pm@vger.kernel.org
+> +Description:    Minimum Performance
+> +
+> +		Read/write a 32 bits value from/to this file. This file conveys
+> +		the maximum performance level at which the platform may run.
+> +		Maximum performance may be set to any performance value in the
+> +		range [Lowest Performance, Highest Performance], inclusive.
+> +
+> +		Writing to this file only has meaning when Autonomous Selection is
+> +		enabled.
+> +
+> +		This file is only present if the cppc-cpufreq driver is in use.
+> +
+> +What:           /sys/devices/system/cpu/cpuX/cpufreq/perf_limited
+> +Date:           Aug 2025
+> +Contact:        linux-pm@vger.kernel.org
+> +Description:    Minimum Performance
+> +
+> +		Read/write a 32 bits value from/to this file. This file indicates
+> +		to OSPM that an unpredictable event has limited processor
+> +		performance, and the delivered performance may be less than
+> +		desired/minimum performance.
+> +
+> +		This file is only present if the cppc-cpufreq driver is in use.
+>  
+>  What:		/sys/devices/system/cpu/cpu*/cache/index3/cache_disable_{0,1}
+>  Date:		August 2008
+
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+
+Thanks.
+
 -- 
-2.47.3
-
+~Randy
 
