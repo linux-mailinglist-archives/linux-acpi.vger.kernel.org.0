@@ -1,168 +1,107 @@
-Return-Path: <linux-acpi+bounces-16048-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16049-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5BE8B34A31
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 20:22:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3EB7B34A48
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 20:23:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B301D188A7F6
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 18:22:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69C1B18919F7
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 18:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089E6317703;
-	Mon, 25 Aug 2025 18:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3693125A2B5;
+	Mon, 25 Aug 2025 18:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="KL+4v/W3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+UVO2XC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246793176F2;
-	Mon, 25 Aug 2025 18:20:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1263A1DE2AD
+	for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 18:23:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756146005; cv=none; b=qsPE2cQfB8uL7lUg2Y29sIKEvAjSpIpLfreeaIB0rWWNouP5d43m2+Trstyf53noJe3hS7Hgm7ixZAlWZyLdfyFgLWPp/W/SgKmGWOwlfS24EIGvZr5jIqWvnwKOz1Jis7qPffa8FCsrVrBXdyyaAdH+yhnnnb8kIF++13/EFY8=
+	t=1756146187; cv=none; b=f8ko+gjj93ratQIWuoAXmkGn3i9r+QuznU+/fNpecirLaQbF5l2ZfIaKjQvj6+sOHOUaCjeTSj2Z7PHLGKI3sTGIeF3/vx2NlnmuIkrB8LoSxvmWn5ut3gmClo2DkEURkNIRDXV8k8ayg5QrVLH++aCGVKhrYMDmBSUhwPuQsgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756146005; c=relaxed/simple;
-	bh=aAwTPXQh1nuJcufA98Iwnj6MWRHsIh4AZ9nakBeRnao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kRf+LfYsRYEM3yyI7WaITkW9dcthcen+Aydr5nay0fBGtaM0CHJVzFoAyz9zhkPCutiudxj6MphxoNoHfsSooW62KpNg2VMzYeUvHqtCFFaDDn/YMAmFxp1HiPnopb2z/k8aDTS1Jtp40gcWkTQ++45dOrJl+uvGn4Cr3OylkEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=KL+4v/W3; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A2BC940E0217;
-	Mon, 25 Aug 2025 18:19:59 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id KubZ5abhUqSV; Mon, 25 Aug 2025 18:19:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1756145994; bh=b5wthSsJUK1RqCaVz6R6zihnJQ15f+w0dowfb9yRFp8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KL+4v/W32RXUE0kCq3La2X43xpi7U2ujA1zDiFUEeulKlmfRe41co4Ic5u/bn2SF2
-	 rfctD840oVnK34nmZgRsEORlmx3Lhyywt23tYxeGWwjlx4NBwapwRQJWZZFqeMLPg5
-	 bfaTUvz0UC09uQT8vs5D2px96b2OS/yMePybRN0HsrlW3C8YtxAUIcs6Tp2ZV5sN/m
-	 qv+e0+BsJwVgEdSyTCCK/3TTZy/JAPWojUiSl1r0mcUl215Co/AWnmsKDtCuh+nxuy
-	 qCUQR0x9oWBt74yqkdGxSzMvHqMdcX3zcaEelSsXhQpb83OIehUffoC2zPuF0QPpo1
-	 IQMeE3L7Y/Qv+C31Ws8rhgB5x3soWZubGHVpDorudtdEYljJ/zejg4jfr5XOA114ZG
-	 54p0+mNbd4/0cuAZZ8yG+JpXQdpYQuhujPD7CzWRRcCWY7Vnna5LoIyq5wwK9QrpfT
-	 eB+DpAaGZilHi7Aa6XxO7JwDEBcDg2ZibwTkydmvn4ozm2EucRX0tiAlt/faAFuki9
-	 DO8TDGABCLCQA+cAp6cto9fbSiMAYhqaB/zpvJC+69TkQq5aktpZ4G8WOhq3bZl3Vi
-	 Fj8LXX/WSquewk4pL5AsO3XHFOVNDt/3bWKniX1nSVPvhh73vXlZyJehLB5DaT/PMx
-	 ec6TLwHAiwUexzC3jqABkV4k=
-Received: from zn.tnic (pd953092e.dip0.t-ipconnect.de [217.83.9.46])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 39CD640E016C;
-	Mon, 25 Aug 2025 18:19:44 +0000 (UTC)
-Date: Mon, 25 Aug 2025 20:19:38 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Yazen Ghannam <yazen.ghannam@amd.com>
-Cc: x86@kernel.org, Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-	Smita.KoralahalliChannabasappa@amd.com,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v5 03/20] x86/mce/amd: Remove smca_banks_map
-Message-ID: <20250825181938.GEaKypOt7t1p8G-YkI@fat_crate.local>
-References: <20250825-wip-mca-updates-v5-0-865768a2eef8@amd.com>
- <20250825-wip-mca-updates-v5-3-865768a2eef8@amd.com>
+	s=arc-20240116; t=1756146187; c=relaxed/simple;
+	bh=iSMcoZ4atfJaIXhnMbeC3f7/SSxgkpEllz9vNNn5qqU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QJjnpeFT+Agy2oqFkoc8f8TeMVS/Kcz47yNRcy2P0SbulxE+Sj4Y+Jfcy0wmQ6nM58anog2UUgvGusnbknRQKQVcSVrmiW4xB/Vj9/+symA2kt/FkEMjJHIKGOGT2MxjKMDxIe+Nkf/S9tbxXKm/M1Qkc1gIhgSR9+5zk+sGoaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+UVO2XC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9991DC4CEED
+	for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 18:23:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756146186;
+	bh=iSMcoZ4atfJaIXhnMbeC3f7/SSxgkpEllz9vNNn5qqU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=N+UVO2XCke5B5QTgNTm+m+NhjE2HuZkz3565kVuccxrhkyBqq1VOYjVyFBlToeTKF
+	 JkgSHOCetXHHFDVS8aIhR/26VBo2qFNgXACFflrkk4Li8FLLOumpmR1Rgs/TpnkGr4
+	 7563BO9GjPWcAwAngpmgt4eh6wfg2cwzVuim8ARrirJFbJ+Se5cpl3vkv8vJ2D9i64
+	 i/WyWqjb0db0ixxtAKfKixQYREln9eyJMq8JfFhOUIAquJN0VUBiyjtixI8x9ZgNV7
+	 a1FvBmp8LN/4cy6Y8cR/xjUZcfcfAfFj2Nf9VUdU6St/DzaWVSW6QQXPqUi+1XGYRb
+	 iDsyBXJDx2dXA==
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-30cce8c3afaso2961381fac.1
+        for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 11:23:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU3lPFwOaFbDVNceXE3+rtGPEUNcLDBznRH8eI8nuiXM+an3z3IEBNIie5AMDT8I3t7wHhh1MbfNqYj@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5SDkk7fSH4Ehyn3HxF45iUT0Q2+5jXpZdBUwGbbPalCcvk82v
+	XTv/ocT5PfQNE+OuVOAH5sdt7DOr/EMM4obnfQbuD+delIrBhDBpXUQHgc/XjOp0i4emX0gmJ9u
+	iVlzogYTpS6sTtKYE4+S4tqShypy4kXw=
+X-Google-Smtp-Source: AGHT+IFxquLl/IZ4CrbPg4j3bqlODWwBV7B4xVBtQVW0JPBoJlhuGxpfJbI7dUm6LPQBYbyA+90DPeAqJcwH1A6m1LQ=
+X-Received: by 2002:a05:6871:d80a:b0:315:29a5:fc3b with SMTP id
+ 586e51a60fabf-31529a63857mr1847539fac.15.1756146185988; Mon, 25 Aug 2025
+ 11:23:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250825-wip-mca-updates-v5-3-865768a2eef8@amd.com>
+References: <20250822061946.472594-1-kaushlendra.kumar@intel.com>
+In-Reply-To: <20250822061946.472594-1-kaushlendra.kumar@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 25 Aug 2025 20:22:54 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0j8vP-6eNEqmc=SwxrnfUkQQv+eGG-OzchwXYVDQQP=JA@mail.gmail.com>
+X-Gm-Features: Ac12FXy__xIZa8zy5FkTM4rscvWQfSnK-3-IF1-4-NrfXcCIpZeQAlSj20HR_F4
+Message-ID: <CAJZ5v0j8vP-6eNEqmc=SwxrnfUkQQv+eGG-OzchwXYVDQQP=JA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI / device_sysfs: Use ACPI_FREE for ACPI object deallocation
+To: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 25, 2025 at 05:33:00PM +0000, Yazen Ghannam wrote:
-> The MCx_MISC0[BlkPtr] field was used on legacy systems to hold a
-> register offset for the next MCx_MISC* register. In this way, an
-> implementation-specific number of registers can be discovered at
-> runtime.
-> 
-> The MCAX/SMCA register space simplifies this by always including
-> the MCx_MISC[1-4] registers. The MCx_MISC0[BlkPtr] field is used to
-> indicate (true/false) whether any MCx_MISC[1-4] registers are present.
-> 
-> Currently, MCx_MISC0[BlkPtr] is checked early and cached to be used
-> during sysfs init later. This is unnecessary as the MCx_MISC0 register
-> is read again later anyway.
-> 
-> Remove the smca_banks_map variable as it is effectively redundant, and
-> use a direct register/bit check instead.
-> 
-> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-> Tested-by: Tony Luck <tony.luck@intel.com>
-> Reviewed-by: Tony Luck <tony.luck@intel.com>
-> Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+On Fri, Aug 22, 2025 at 8:21=E2=80=AFAM Kaushlendra Kumar
+<kaushlendra.kumar@intel.com> wrote:
+>
+> Replace kfree() with ACPI_FREE() for deallocating ACPI objects in the
+> description_show() function.
+>
+> The str_obj variable contains an ACPI object that was allocated through
+> ACPI subsystem functions. Such objects should be freed using ACPI_FREE()
+> rather than the generic kfree() to ensure proper cleanup and maintain
+> consistency with ACPI memory management conventions.
+>
+> Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 > ---
-> 
-> Notes:
->     Link:
->     https://lore.kernel.org/r/20250624-wip-mca-updates-v4-7-236dd74f645f@amd.com
->     
->     v4->v5:
->     * Keep MCx_MISC0[BlkPtr] check to be compliant with uarch.
+>  drivers/acpi/device_sysfs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+> index 3961fc47152c..cd199fbe4dc9 100644
+> --- a/drivers/acpi/device_sysfs.c
+> +++ b/drivers/acpi/device_sysfs.c
+> @@ -464,7 +464,7 @@ static ssize_t description_show(struct device *dev,
+>
+>         buf[result++] =3D '\n';
+>
+> -       kfree(str_obj);
+> +       ACPI_FREE(str_obj);
+>
+>         return result;
+>  }
+> --
 
-I'm not sure I understand what that means...?
+Applied as 6.18 material under a modified subject and with a new changelog.
 
-Anyway, some more cleanup ontop:
-
----
-diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index 580682af432d..7e36bc0d0e6c 100644
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -498,17 +498,6 @@ static void deferred_error_interrupt_enable(struct cpuinfo_x86 *c)
- 	wrmsr(MSR_CU_DEF_ERR, low, high);
- }
- 
--static u32 smca_get_block_address(unsigned int bank, unsigned int block, u32 low)
--{
--	if (!block)
--		return MSR_AMD64_SMCA_MCx_MISC(bank);
--
--	if (!(low & MASK_BLKPTR_LO))
--		return 0;
--
--	return MSR_AMD64_SMCA_MCx_MISCy(bank, block - 1);
--}
--
- static u32 get_block_address(u32 current_addr, u32 low, u32 high,
- 			     unsigned int bank, unsigned int block,
- 			     unsigned int cpu)
-@@ -518,8 +507,15 @@ static u32 get_block_address(u32 current_addr, u32 low, u32 high,
- 	if ((bank >= per_cpu(mce_num_banks, cpu)) || (block >= NR_BLOCKS))
- 		return addr;
- 
--	if (mce_flags.smca)
--		return smca_get_block_address(bank, block, low);
-+	if (mce_flags.smca) {
-+		if (!block)
-+			return MSR_AMD64_SMCA_MCx_MISC(bank);
-+
-+		if (!(low & MASK_BLKPTR_LO))
-+			return 0;
-+
-+		return MSR_AMD64_SMCA_MCx_MISCy(bank, block - 1);
-+	}
- 
- 	/* Fall back to method we used for older processors: */
- 	switch (block) {
-
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks!
 
