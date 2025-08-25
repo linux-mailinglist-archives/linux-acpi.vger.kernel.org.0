@@ -1,138 +1,108 @@
-Return-Path: <linux-acpi+bounces-16044-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16045-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F219B34951
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 19:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 483ABB34969
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 19:55:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21C051B2253F
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 17:49:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B27EB188A7B2
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 17:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B8A30274D;
-	Mon, 25 Aug 2025 17:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED6D1DF965;
+	Mon, 25 Aug 2025 17:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HM5rIDWl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+E+Fqam"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F4E301028;
-	Mon, 25 Aug 2025 17:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8C42750E6
+	for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 17:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756144162; cv=none; b=Y9ISJAs2cPCnUJuvn/P+Ckz6HxkL+VAnqVJQOIK3gq6a9ALUw/Ca01+vnyQf0ycDbvU5Yw78m+ZR/IgETDYs0m2BMx6KpgHWM4/uPQqkEDHTx1h7AlCUppMT5huWskPNgh9qv0dxOWsXnywle4fQCP8Nu88s/ccjvRxrJkUfS/I=
+	t=1756144521; cv=none; b=JYuwYjGCJWFUIkBPliJviIN8HPJZkbiXlaN8kFzez4lQtmVGN8V009ohFpec4qjeokzf2bANTsyZguseMNeXbUzLWAjJQYdIVhJ4sz1/TfXnMLG2OHDqB7+6seHXkdSIqX9dxOpzXTemgEqRabnrQJ7gWicJZC/D5VLSOZLo0LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756144162; c=relaxed/simple;
-	bh=cEUhbMRCFKmm+uFN3EMPbSNsPyu9bPCOJ8ppa/HAe8U=;
+	s=arc-20240116; t=1756144521; c=relaxed/simple;
+	bh=woAvs9PHK6xOgfyjNsiU4NUIjDQuwKh91IoT1/uO2ec=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S9R17gf4ZmmAwDNbdhjTJidUWmpMoG2n3tDK16MVmoogJKJ8yVIvBAXV+LQV2AOIqvIoEnn84jilJlaFFJc+knRrZV4pdJSDzeBfdFuJ1E1sfvAAFBc/nG1Pl3TUbtXYz9MFanGpIs3eQ4VT4ifVgbkZeYK+eu0NQp3jOST04/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HM5rIDWl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D379BC4CEED;
-	Mon, 25 Aug 2025 17:49:21 +0000 (UTC)
+	 To:Cc:Content-Type; b=KfxKL3TX8aZ1OmXgTOOusGAsLQTvkIaJ44Mtn1mNWCjLqJx+hwXpX+ldKrFb2dQ1/dQIPfj4qNt1E0xR+KoR05PD/Kv2bO9jMw2Q2ywQpV4z0RUS0SjF79wNpFONuw7c1rl4YZj/vw0ZTDP7Wt5ao/XdK4X2rPK5S1nwN9ATTF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+E+Fqam; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61647C4CEED
+	for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 17:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756144161;
-	bh=cEUhbMRCFKmm+uFN3EMPbSNsPyu9bPCOJ8ppa/HAe8U=;
+	s=k20201202; t=1756144521;
+	bh=woAvs9PHK6xOgfyjNsiU4NUIjDQuwKh91IoT1/uO2ec=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=HM5rIDWlZyfQqmKyGBXOUMQQCwl+fhHBcnU6hnjEkRsCfYu+MqouD0G0RV9moGRkW
-	 c3XJm3kI3hccXkNUzwWLS8Yk6bWzqyoqhEneCgcxndXcMlYEmcV4dD6roJwt8HbV9x
-	 QZv+vqOTomoaeBDV/CBD2eQxLpPYY1LIzMuNX45b+THINiF207f5U1lO1W0YcOhenA
-	 8cQqE4CPX4loLL4NzCFBROC/1o1LvGkb7OkXWKpeffDaS1lv7tgGFWv8DXiE8Us6rR
-	 cH3K/dhyMVfzQvl8xBtF2XsdvzytY7CdmukdqscWPkL+kg0Z6dR0o188u0AOZXfh4X
-	 XJA56DtmfFLYw==
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-30cce90227aso1556557fac.1;
-        Mon, 25 Aug 2025 10:49:21 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUt6IP4xix/NL/ogwEfx3g+DCWSRXjc4ZZC/4/5yHEfMvjFttnBE9dZBdDRw0mJrMgT5iOHljC25BNk@vger.kernel.org, AJvYcCVPN1tai6DFdZZYNqjh8N3vPYyh0yGielBLUPPVevAVl7aHkE7UUjGx94K3zbzFdUsTfK8nWn8Uc6dtRL/W@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4fBkG0D7M2Mh+LP5tL91ppJS+VlaEeKU46gALo6MEBxEQs2KX
-	BDc86oSrJFQN0XCd50OV7DPc8unW+WaV+9g6wIJ/6l3tr8Pt7LKwF5qwuRxzqMKGekR9pnII+5R
-	S/OVOsfTzSyuL3eFcrhpyJDBogPTz5RI=
-X-Google-Smtp-Source: AGHT+IE6mDpyqsUnzu3XQeVctx9ajbuKtjmqSz7jYzI2BuY4v0JQLpEDtCNXYDbNn1WhYg0gg8xnahdKa9SE7C4UOnk=
-X-Received: by 2002:a05:6871:e805:b0:314:b6a6:68a0 with SMTP id
- 586e51a60fabf-314dcdadd0dmr5498726fac.40.1756144161192; Mon, 25 Aug 2025
- 10:49:21 -0700 (PDT)
+	b=T+E+FqamqO5CJgDYpQh6tE7Er4orznCraCWEu3iWjztKs1pwMK9mWQMFnrrckDBb8
+	 sXZN0Ivh5bRSKXPh2WUvAXaQ0WW6xsK+h9lW1TdIEyCZ72a4kCr7L1lpKRK6Ji4eal
+	 GRjI8ChwDrnCiJYI9ur9CKRRbOcH1bKbMDmskySyW3kBZT+poZq3LD9mTBKdeVnzj/
+	 y9kXaGsiX5GQgOUgJnjlV6HAHrFuM94VNeXaPKKCHxa4oQBK7FuXdxPK8jhVY0MrnE
+	 sE8ymckUl3p4Txn8s7cpohzvytXdOqWx8y9DWea1nCYbYdYm3cpF/n8XaQxBtai2pR
+	 LjWTLXeZwVpPA==
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-61d99c87ddcso928772eaf.2
+        for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 10:55:21 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXETFUkVIce6gGHXogNRIPjKbG9skX+HmSvhovWOKN6aIK1OGKWP8QK0hIrHpXlFsUK6hJBrNcpZlXL@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8zRnVKcwPUWljCWmyFTB5KdzBR2NNPOD8Q+DcM9Zsnu2InUkC
+	nCyw0B1l5o/9AMtmVl/NyWbDoIK4kgeRgDUVhbGltCGPA6SepTET1cFEVi7ol7j5BxLi3nw/UdN
+	UB+2H/w/dOOJ3kNIDpH7L+JszrGYu4E8=
+X-Google-Smtp-Source: AGHT+IGZWuHYZyft0oOxSyVAxn8xr7fDWvqTRxNaHDpzf5N7GQn9n0srBAiZm6VMnMbi0iaRimHLLxLmzINWOQCdGGE=
+X-Received: by 2002:a05:6820:16a8:b0:61d:d011:16b5 with SMTP id
+ 006d021491bc7-61dd0113f43mr3437829eaf.5.1756144520733; Mon, 25 Aug 2025
+ 10:55:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <tencent_FEF72BEF631815ED2479A6D1E32C34797B05@qq.com>
-In-Reply-To: <tencent_FEF72BEF631815ED2479A6D1E32C34797B05@qq.com>
+References: <20250819073517.3962847-1-kaushlendra.kumar@intel.com>
+In-Reply-To: <20250819073517.3962847-1-kaushlendra.kumar@intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 25 Aug 2025 19:49:10 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gAz5J99ig7eu9AVhEHkusRpW_G=PXRy+E9vGc+MVE6rg@mail.gmail.com>
-X-Gm-Features: Ac12FXyBPCJ5ujevKH8qsi1mzK5PBNu_lyz37sIUPVBFyPzPNNwUWZBiumxRqS0
-Message-ID: <CAJZ5v0gAz5J99ig7eu9AVhEHkusRpW_G=PXRy+E9vGc+MVE6rg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PRM: Optimize the judgment logic for the PRM handler_address
-To: shangsong <shangsong2@foxmail.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, shangsong2@lenovo.com
+Date: Mon, 25 Aug 2025 19:55:09 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hyuOR6gNRnikja84T5MXYtVYbeTX0NmgTnDLF166ObRA@mail.gmail.com>
+X-Gm-Features: Ac12FXy6j4jn8XY2coTYnCKDNLzLjz4YHz3stT17ipfLJoPjdjcUU39aiSITJdI
+Message-ID: <CAJZ5v0hyuOR6gNRnikja84T5MXYtVYbeTX0NmgTnDLF166ObRA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PM: s2idle: Fix memory leak in lpi_device_get_constraints()
+To: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 19, 2025 at 4:28=E2=80=AFAM shangsong <shangsong2@foxmail.com> =
-wrote:
+On Tue, Aug 19, 2025 at 9:36=E2=80=AFAM Kaushlendra Kumar
+<kaushlendra.kumar@intel.com> wrote:
 >
-> From: Shang song (Lenovo) <shangsong2@lenovo.com>
->
-> If the handler_address or mapped VA is NULL, the related buffer
-> address and VA can be ignored.
->
-> Signed-off-by: Shang song <shangsong2@lenovo.com>
-> ---
->  drivers/acpi/prmt.c | 19 ++++++++++++++++---
->  1 file changed, 16 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-> index be033bbb126a..3a501fcd78df 100644
-> --- a/drivers/acpi/prmt.c
-> +++ b/drivers/acpi/prmt.c
-> @@ -150,15 +150,28 @@ acpi_parse_prmt(union acpi_subtable_headers *header=
-, const unsigned long end)
->                 th =3D &tm->handlers[cur_handler];
->
->                 guid_copy(&th->guid, (guid_t *)handler_info->handler_guid=
-);
-> +
-> +               /*
-> +                * Print a error message if handler_address is NULL, the =
-parse of VA also
-> +                * can be skipped.
-> +                */
-> +               if (unlikely(!handler_info->handler_address)) {
-> +                       pr_err("Skipping handler with NULL address for GU=
-ID: %pUL",
-> +                                       (guid_t *)handler_info->handler_g=
-uid);
+> Add proper cleanup of lpi_constraints_table to prevent memory leaks
+> when  the driver is reloaded
 
-pr_info(), please.
+Which driver do you mean?
 
-> +                       continue;
-> +               }
-> +
->                 th->handler_addr =3D
->                         (void *)efi_pa_va_lookup(&th->guid, handler_info-=
->handler_address);
->                 /*
-> -                * Print a warning message if handler_addr is zero which =
-is not expected to
-> -                * ever happen.
-> +                * Print a warning message and skip the parse of VA if ha=
-ndler_addr is zero
-> +                * which is not expected to ever happen.
->                  */
-> -               if (unlikely(!th->handler_addr))
-> +               if (unlikely(!th->handler_addr)) {
->                         pr_warn("Failed to find VA of handler for GUID: %=
-pUL, PA: 0x%llx",
->                                 &th->guid, handler_info->handler_address)=
-;
-> +                       continue;
-> +               }
+> or lpi_device_get_constraints() is called multiple times.
+
+How exactly?
+
+> The function lpi_device_get_constraints() allocates memory for
+> lpi_constraints_table using kcalloc() but never frees any previously
+> allocated memory. This leads to a memory leak on subsequent calls to
+> the function.
+
+What subsequent calls?
+
+> Fix this by:
+> 1. Adding a new helper function lpi_constraints_table_free() that properl=
+y
+>    frees the allocated memory and resets the table pointer and size
+> 2. Calling this cleanup function before allocating new memory in
+>    lpi_device_get_constraints()
 >
->                 th->static_data_buffer_addr =3D
->                         efi_pa_va_lookup(&th->guid, handler_info->static_=
-data_buffer_address);
-> --
+> This ensures that any previously allocated lpi_constraints_table is
+> properly freed before allocating a new one, preventing memory leaks.
+
+No, really.
+
+You need to say how exactly the memory is leaked, or there is nothing to fi=
+x.
+
+Thanks!
 
