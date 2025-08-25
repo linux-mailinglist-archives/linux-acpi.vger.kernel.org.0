@@ -1,186 +1,137 @@
-Return-Path: <linux-acpi+bounces-16053-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16054-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABAD9B34E5B
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 23:48:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4C83B34F12
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Aug 2025 00:33:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 919DC1A87746
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 21:48:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C51816944E
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 22:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF12283FE9;
-	Mon, 25 Aug 2025 21:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58B61EB5D6;
+	Mon, 25 Aug 2025 22:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PPW2/S1l"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="beSoNAHn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2079.outbound.protection.outlook.com [40.107.100.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C501DAC95;
-	Mon, 25 Aug 2025 21:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.79
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756158507; cv=fail; b=Ut6IpEV3h/HDLW7loZX2LkdR82cuSkO7Lk3YvYliNKgBNL2vJU685Fm7ky0Begb259mG2fRZjFPLVxhGDlu2A9PCahUO2KQ5YjDA/J28hifCySOnqihhC+O1wCsMeB/9mwUvq8UPMSDd6OpapwsBynOBZBDAHIt0hjdOWtzmGmE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756158507; c=relaxed/simple;
-	bh=4EdXee4xirRWerNYkSZ3kEZTKwZSj76kLF2WqBHgupo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nuwhXcKyyw4FJssnPSQX1XUS1IXXey5Rn/R7K2yrerEALbd+y9nEoSL4Aua3vhmA7Lp61f5H1HLXKjvM6HAEPx8K2dQn9+D0jqjMspIuIPk8Kj900hZY5eA3rGQlEDJBTcarRASmlWo2UZOI+oK3EylAnrClrjXyjfEuZRd9T8Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PPW2/S1l; arc=fail smtp.client-ip=40.107.100.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=agEUotijWqBW0djgzuQvdOi3rVTEKoqObCdT6JpdhVnzR+QgGKGjwSicXed89f8APjQzRLmpGsLbdiIHMSossB0/BQe9Mma4eT7omnnm+ulMDM6VRPG+o1IzKqp7XPYZ7GxfgqXWXqCmSRcEE/vIfl8rxEJGm/J4CA4oL9WCfuCHWA9/EQnxe6GDvgb10i5O/SgDWmS57dN9m3OUMgnFuQvfZP3kxzzG/iOoubLi2gDGvIKzkRXFfZyYK8lusiIfZxHaLl7qARYoM4mhuWv8mg10wmd6WoBt/1auirHIYOwJav9NklrkyrHDcwEE93I3IIOixRKXi/UDV0bjoYu3RA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zfkGQa4kNxkmKuOFVEVd297VQre0X0sWx8XS1JniY6M=;
- b=e8Ys8zwaCNpMIg9k/m76U3Bkf3+1/gDsvUv5sEbP/JzLQGUCRHqVIvhSiHMpe4uCK1J5uDbAn4D5PizzrwIgG4AfjHkvCNZxprej/lwDOLRTf+b1GCjJiEqlpUIU3SNvUb8BS1cDcn9gQLb2iT2ytIuK+PvSe0nKGuiceJHPFEIqmazsy1Wtvd3XIFuJFWTsMULxOFXzhb4xm7vvBuMEAfP5+TYjVxFZ4IO1ClRrat1UuvvObC1V0CRtc0bkc/Khf74xfZbOKsAL+4yaMd9a8KIBCnglojn1eUoi6vSEWJ9e9X3A1n1SKd69GmuwQ09Ug77HdmkQScPBqLWenzSsOQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zfkGQa4kNxkmKuOFVEVd297VQre0X0sWx8XS1JniY6M=;
- b=PPW2/S1lFdu9ZqMFvyeOG/uMoYDGAo3VANKqVyHnUdIhhclF6/Gb4FwCDPke45t1CVaSkB/oli8qoUEyqKuLpDfZY+iznkBVY90gokxjHIoancKUjnYcjCtEiK0F5IbzLqbOezefZySeLYeqyQZqqVb1y7rci5v0iBYI5hxdTjRamEPJIFuWpl7WcCsWBLRTE5YlQTwSdAjXk1pS5F3FzNKD4Gw9ylS5VAfaGHmYifxuhY2jDH0Eris094Hls2iG62mGrHrwjiZGe3taE9H8imISVko0uqG5MVDZrNYA21ADyE0naF7kSrcDAudP2q87/QmYzsREkKFmtDcNkuNGxQ==
-Received: from SJ0PR05CA0003.namprd05.prod.outlook.com (2603:10b6:a03:33b::8)
- by BY5PR12MB4132.namprd12.prod.outlook.com (2603:10b6:a03:209::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.14; Mon, 25 Aug
- 2025 21:48:21 +0000
-Received: from SJ1PEPF00002312.namprd03.prod.outlook.com
- (2603:10b6:a03:33b:cafe::3f) by SJ0PR05CA0003.outlook.office365.com
- (2603:10b6:a03:33b::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.13 via Frontend Transport; Mon,
- 25 Aug 2025 21:48:21 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ1PEPF00002312.mail.protection.outlook.com (10.167.242.166) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9073.11 via Frontend Transport; Mon, 25 Aug 2025 21:48:21 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 25 Aug
- 2025 14:48:04 -0700
-Received: from 9491a72-lcedt.nvidia.com (10.126.230.35) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Mon, 25 Aug 2025 14:48:03 -0700
-From: Nirmoy Das <nirmoyd@nvidia.com>
-To: <linux-acpi@vger.kernel.org>
-CC: Bjorn Helgaas <bhelgaas@google.com>, "Rafael J . Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, Vidya Sagar
-	<vidyas@nvidia.com>, <linux-pci@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <nirmoyd@nvidia.com>
-Subject: [PATCH] ACPI/PCI: Fix memory leak fix in pci_acpi_preserve_config
-Date: Mon, 25 Aug 2025 14:46:42 -0700
-Message-ID: <20250825214642.142135-1-nirmoyd@nvidia.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2700451C5A
+	for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 22:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756161234; cv=none; b=dJF/8s+CxsakBX6WRHbNLqic2cQhirfaxGmLVpCLftyJUqmFZllPkX6W7dWJRPSMQ9/llyBYPVAh14qFEg/bXqW+nhWpPuyLEuDbfjHqgMmPhd/6WnRdKbvWYQaATK0znoXoJkGyIKzFlT7PTabS3mnnB6oR8mES16vnT30U+rI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756161234; c=relaxed/simple;
+	bh=hKdSvLo2bz8p72OWEP0hZUcMo6Klib216DabiEfHw7o=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=XxLDmpgVNchvk9eVXQzWCKeO0Mk2UiGrJFj7kWJWo1R2DIUeIzFefkJxgGFhINmLb3QdIYH/hNrYzxIsJdbHar3KlvwZLJzGv6irmbo47/S+xWi14HnPmVFZZDIglVW5/TWGhtk794ylq7uRYVCWQNN6vm50HPAU7vQPK1tMIGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jiaqiyan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=beSoNAHn; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jiaqiyan.bounces.google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-325b2959306so2275385a91.0
+        for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 15:33:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756161232; x=1756766032; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=IChvdfBS9wMpenq+Mm5AVlJVJMnn9aA/VrNPYUMhdCQ=;
+        b=beSoNAHnIO4vFndwK2CvE6X/XRKIppDX9S9P+bkyWpHUF/vYPGyGXEmxcjKXt6xaQB
+         KvTLygdMGs4qWWD8hlQ2fuzeQD8+PUFIUloy+/V2V9TmT/U1Rrb+mc3X1yvvhTocuuXl
+         7HDPZeVl1HXs+8dg2l/7lBxT0wn4nMIsL3a1RuhNXIhlieTpvKmu+oT/mUB5q0bsD3d1
+         gfu0x+6HrKUgn54jozDAqvLhqfKQQ9kk6b2iDK/B8J0Q69pDdj/cBfZhbw+HhTp/jC72
+         t8WeS9mKrkS8BoEPgI7tPDEYZwQIZsioidjqsMIcHji3SuV4GBa7dZdYgp9Ce25c0qJ3
+         2+Jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756161232; x=1756766032;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IChvdfBS9wMpenq+Mm5AVlJVJMnn9aA/VrNPYUMhdCQ=;
+        b=vda+MraiwoqSLy4Gk1Jtzu3Fmqrm8Tr9A7BFE7CxB4rww+HyFNb1joSZqPbuiD1sri
+         pCiCRJdjgQr79A2RkM2CP7cXMkeTMOv42FlU9JtoEuskVq/mzeMyIxMWjCfbQLR3Fmc5
+         tefoIskPsGfrulhdS5Eikyrz244rk0zxnhnXJpWg8VIWmKTCHZNNPbIoJGfpSRm9/L7m
+         ymYLFzSubNxYuHngoCthVT5yCpQJUbpFfDMVDt+PDk+MbKY6KIMTABFy+LGPw4NQBp9B
+         g3xnn8/9eicTablrekCM11qXveediPHowj93wYyLT/vSL8kizlx7fx/hH5rKY028Wtta
+         oSuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX9XaUKoVQMPUiFbvXMKr/m5yGBMet1UD0LtdYbRe8jEj18wdgvav+XoQNtf8BtWTRL1VxH9h654mGx@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxjO4qgDRajSj9q0KE6iLUHVfdvBNPEG/eUuEwhZ+Kugx5vAia
+	swB2qHAytD+a1NsMO1pQCdjEjlDSq8bzWqPdORRq/jOuUqI7AQp8LPL+TVgN+xN+6ut5n7Vvex4
+	t2c/7jNDoXrFAig==
+X-Google-Smtp-Source: AGHT+IEVLiKUIeoBjyCsebxXipdFCCm06uPKusjXHZml8E70gNBEvvQ39nsMgG+SkIFJcsC3llllB4E4mvNVOw==
+X-Received: from pjkk5.prod.google.com ([2002:a17:90b:57e5:b0:325:9fa7:5d07])
+ (user=jiaqiyan job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:4c45:b0:31f:b51:eef9 with SMTP id 98e67ed59e1d1-3251774b612mr17865676a91.17.1756161232239;
+ Mon, 25 Aug 2025 15:33:52 -0700 (PDT)
+Date: Mon, 25 Aug 2025 22:33:48 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002312:EE_|BY5PR12MB4132:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5cf41892-43e8-43c1-37a3-08dde4211c0f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?oe4uEBJ1TtIHzsR5Q8XVP9SQNKfrFuwPrGBOgfkSZOPvhk6dEFiTSYquHP0K?=
- =?us-ascii?Q?XsKRQj7pAlNobSW0jaIyv2Od+9IP8VlSM5b8XE+20Jdwa/icKnb91sBScEIi?=
- =?us-ascii?Q?kZ7YZOJgEkUm/Louv2ZHJ5DBd0gMcVeRMXoMJiDO6Bkd+jh8TuUEAitnQSj/?=
- =?us-ascii?Q?N/cK+15OT4lT8wA31pHqdvKQrH1J0fZFCqxJVby7GBcuuXfRU+GzUqHqTKCt?=
- =?us-ascii?Q?74ZqvTxKsBJpgPZ9ryzNvrWGMZ/i5kQpD3daktHUwaSprHw+hQaHQCGbKFDu?=
- =?us-ascii?Q?qZ/AR7p5tPkAufEtOgtU2J+1cGjRbMJ5tjkey66AFHjCj9mJ6BtZEV9qCIbV?=
- =?us-ascii?Q?C6wY+nQIRKB+7Nnm7wKDpL8dzOR+va31TqsEpYvSlU7/6VsVz5v7PpxoPL1b?=
- =?us-ascii?Q?uxDZe4oflZBv/o38vCJ2mEjEdjYGcwiOMHdrYV4WnxNVFUDVDJ8ozAVHEXK4?=
- =?us-ascii?Q?Nvx8iDEEeWHkvxKKyf8S6qKHFU+0zO7VorFkkYZSi6rnqICmmPlYfLhIpaOg?=
- =?us-ascii?Q?eTGkhhFG5tS//u8VDPq+mYaIxGdf3cYjJ48pUTib+vBDKa107ZTTl7HW4qfr?=
- =?us-ascii?Q?YTh6nsZtiowVRDG86r8GjgPpAV4YHyCK9Rrzay/cMHfgEmg463xKZLdqfxFE?=
- =?us-ascii?Q?HzMb+Xz04EwWrCBgVM0OG9clMNDCUD6EhwlD07v+RN5PxNcdh+zOkavN+kEh?=
- =?us-ascii?Q?6jO9llGbhphZKL/H190NY3es9WYRsDiaU2YC2dZ5CbCpy91olrggIsNP5soo?=
- =?us-ascii?Q?3z1miV3uLVpAQCGDDjQqgxlHsufmZ6PfHcIsc+M/Mtw0v9VKLDVq9DyoeZ+4?=
- =?us-ascii?Q?hXgthw66boaSGv6H9wa2aIsUCW4DK+RdE86g3V1kP1r5FB7AFxNsiAEXNJ6e?=
- =?us-ascii?Q?nCPKx+FeZNNLiPK7cSDpLWM1oEq1Y2P0H/bWxAW0cpnJIMu4pWBEVrie+fHm?=
- =?us-ascii?Q?iqHV8TJdpYDNxIcf6WCHhW+SMCNxZXuwhTBtPaKmt1HF/I9hUVS1mmLj6EtU?=
- =?us-ascii?Q?uwuCY4YOf+kRhfddq5lND0+vIzMbFAG3m9mlCM6CfbUoaxVU4hZnT+aTPQNe?=
- =?us-ascii?Q?2426hsK1Tq/X6J/KPAa55YpwhWJnCQCyNZwRviLdeHSuyv3oL5YS0S3bJd3l?=
- =?us-ascii?Q?MwGsN4VSBviNfwXofKufH1v2RY+I6lXhaIrT3pGROtCFbN47cx9Lk9KCPTIr?=
- =?us-ascii?Q?4aR4WMRx1WQaOtqaMwoBFWIAunOXHVVmZmgQoNppwg7w6pRQ8WBVIgIeMP0e?=
- =?us-ascii?Q?MjGqg1uS81mIUk9vlA4sLwVDdHsYmzk/yF0gujmIxGcO0iVg8Aizl5FLdy4T?=
- =?us-ascii?Q?ZlYNbzs5seLkADrawz/28wNYEcDZlahOnrzffYOpYu+h53kAHBvEjmgEdeXs?=
- =?us-ascii?Q?nDrsXwZ19YzdlkjIRMAA7D4OjnFD/oDAoJ2O0gRyt83WWRny0UkeDp2xq533?=
- =?us-ascii?Q?mnOwg70UJ4Q24zRyIe0DWZOWvQfKI2kaqjXRsP1+U34itiCm2jiIXiU2wNJo?=
- =?us-ascii?Q?W4lNyE11TqlVfGlgXfvPDc447+icgbQ6968t?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2025 21:48:21.0949
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5cf41892-43e8-43c1-37a3-08dde4211c0f
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002312.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4132
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.268.g9569e192d0-goog
+Message-ID: <20250825223348.3780279-1-jiaqiyan@google.com>
+Subject: [PATCH v1] ACPI: APEI: EINJ: Allow injection on legacy persistent memory
+From: Jiaqi Yan <jiaqiyan@google.com>
+To: tony.luck@intel.com, rafael@kernel.org
+Cc: bp@alien8.de, guohanjun@huawei.com, mchehab@kernel.org, 
+	xueshuai@linux.alibaba.com, linux-acpi@vger.kernel.org, 
+	Jiaqi Yan <jiaqiyan@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-The pci_acpi_preserve_config() function is leaking memory by returning
-early without freeing the ACPI object on success. Fix that by always
-freeing the obj which is not needed by the caller.
+Legacy persistent memory, e.g. Device DAX configured like the following
 
-Fixes: 9d7d5db8e78e ("PCI: Move PRESERVE_BOOT_CONFIG _DSM evaluation to pci_register_host_bridge()")
-Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
+  440000000-303fffffff : Persistent Memory (legacy)
+      440000000-47fffffff : dax1.0
+      480000000-4bfffffff : dax2.0
+      4c0000000-4ffffffff : dax3.0
+      500000000-53fffffff : dax4.0
+      ...
+
+can support recover from Machine Check Exception due to memory failure.
+Therefore there is need to test it by injecting memory error
+using EINJ to legacy persistent memory.
+
+However, current EINJ only check if physical address falls into the
+IORES_DESC_PERSISTENT_MEMORY_LEGACY region. So attempt to inject
+error to "Persistent Memory (legacy)" fails with -EINVAL.
+
+Allow EINJ to inject at physical address belongin to
+IORES_DESC_PERSISTENT_MEMORY_LEGACY.
+
+Tested on a machine configured with Device DAX:
+  memmap=4G!12G nd_e820.pmem=12G,4G,mode=fsdax memmap=176G!17G
+  nd_e820.pmem=17G,1G,mode=devdax,align=1G memmap=176G!209G
+  nd_e820.pmem=209G,1G,mode=devdax,align=1G memmap=176G!401G
+  nd_e820.pmem=401G,1G,mode=devdax,align=1G memmap=176G!593G
+  nd_e820.pmem=593G,1G,mode=devdax,align=1G
+
+Injected error at 0x35238d2000, within Device DAX region and
+allocated to a userspace test process. EINJ driver now issue the
+injection request to firmware, and firmware logs shows injection
+at 0x35238d2000 succeeded. The userspace test process then
+accessed 0x35238d2000, caused a MCE, and killed by SIGBUS.
+
+Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
 ---
- drivers/pci/pci-acpi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/acpi/apei/einj-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index ddb25960ea47d..9369377725fa0 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -122,6 +122,8 @@ phys_addr_t acpi_pci_root_get_mcfg_addr(acpi_handle handle)
- 
- bool pci_acpi_preserve_config(struct pci_host_bridge *host_bridge)
- {
-+	bool ret = false;
-+
- 	if (ACPI_HANDLE(&host_bridge->dev)) {
- 		union acpi_object *obj;
- 
-@@ -135,11 +137,11 @@ bool pci_acpi_preserve_config(struct pci_host_bridge *host_bridge)
- 					      1, DSM_PCI_PRESERVE_BOOT_CONFIG,
- 					      NULL, ACPI_TYPE_INTEGER);
- 		if (obj && obj->integer.value == 0)
--			return true;
-+			ret = true;
- 		ACPI_FREE(obj);
- 	}
- 
--	return false;
-+	return ret;
- }
- 
- /* _HPX PCI Setting Record (Type 0); same as _HPP */
+diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
+index 2561b045acc7b..e746fa66f92ff 100644
+--- a/drivers/acpi/apei/einj-core.c
++++ b/drivers/acpi/apei/einj-core.c
+@@ -712,6 +712,8 @@ int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2, u64 param3,
+ 				!= REGION_INTERSECTS) &&
+ 	     (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DESC_PERSISTENT_MEMORY)
+ 				!= REGION_INTERSECTS) &&
++	     (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DESC_PERSISTENT_MEMORY_LEGACY)
++				!= REGION_INTERSECTS) &&
+ 	     (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DESC_SOFT_RESERVED)
+ 				!= REGION_INTERSECTS) &&
+ 	     !arch_is_platform_page(base_addr)))
 -- 
-2.43.0
+2.51.0.268.g9569e192d0-goog
 
 
