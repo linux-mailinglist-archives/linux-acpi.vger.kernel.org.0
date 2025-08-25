@@ -1,103 +1,148 @@
-Return-Path: <linux-acpi+bounces-16012-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16013-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D16B342C3
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 16:10:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C924B342E4
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 16:14:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C74BA5E7BE9
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 14:03:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35C3E188DE1B
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 14:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E583C2F3C01;
-	Mon, 25 Aug 2025 14:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20A52F3613;
+	Mon, 25 Aug 2025 14:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="EKpByuyw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e4fvRADW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902682F3C0D;
-	Mon, 25 Aug 2025 13:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D5C2F0C67;
+	Mon, 25 Aug 2025 14:13:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756130400; cv=none; b=ZbSzSSsgYnXyJBwDubCUIxv2jdjclDNdqYFlT63oFJq/3vM5qI3WAy0sCHNsbFVodsEoazPSJBs9VVb20PI4B583GVqqNl98i0BcPYsyZ+ODNHvfAQsUjmSunpMkCffH/Mql0bfXQWkqAmf0Bg1i1qOQfSnvCc8j3oSEURapKu4=
+	t=1756131220; cv=none; b=ZJHZNU55OmRkiypag930Biy1oYcKfytF8IGYyDO4LYU212KKoYuCIGQg27Lv2xpBR3fM81AERGvm6eD6EjX9vBfad76VF3aY1pEhxJ7GjUtCKIGrA+QY1tXNNVfzv+1tppCQCqINLU/GEfFpbVrwBC7L5LmPdrlzRYdszV7PKXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756130400; c=relaxed/simple;
-	bh=rYRD/HZ3Tpzk1DQ5Y829POkVTZM8tM0nQEqE/Y36k6Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ICwFrGe5hzvPCkZ+4jPHyalR9adqxjb9Pi89+YZCxXMF2A4iyKLI0q4EuZ2+zeUyDqcfgkvz5ExurYhxNObm14F9cm/DXrPMkx4BsfdZUtUr2Qd32i0UVsgE5Hng8mqlawrOQBCMU/DgRv6WGwVRx8xxcZQPsICN+xst62Cz+ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=EKpByuyw; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3774240E02A2;
-	Mon, 25 Aug 2025 13:59:55 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id PLN_WYZWnhHb; Mon, 25 Aug 2025 13:59:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1756130391; bh=jUnQvc6mz4vGDxL//LckkTiwfWtaOdXiv2Ln9tXl+H4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EKpByuyw8kwp9sPrCsif66id90g9LoluXmrL3IDiCjYVG/30hEKbE27vOf71PG7v4
-	 3yRg1OaOrr1HRmZ3doJNzkqHOZN7UWfubMp0xiXNNpq0QJcgv5l+1m3K1War8Z4/bi
-	 xTtWmyCk4qmu5O+8SUk4nhYBb7YwxwTi1+k1rjb7XYuLIKR2RAIaaCtSyHCkkzZW6k
-	 QdG7meNt7QtN14+JpcoXcGZPR1oBSnDgDI5g1oDBU+NQf300nVOhWEBa96Ii/sETH7
-	 OsG4aY6O/lwcur5H9JCXkeejW599XyoQpXUcbNmslCLFVeQ6nt1XWTUUxMUFm3GSWZ
-	 plVCGALeMhrourm+rr1789h7LzLkvUJK4TSccHwgkN7WZirW9UiUu13djB+D8ojMl5
-	 xflkHYw1ZnD5y7XGDbW2XeDq+CddUg5o0IQI2CL7xFon+oG9H3IwsJKn8JNcdhlaIa
-	 vTW4S/GY6BYOx3f7kysRVNqUgxHAA+a/3ESh6m20+XGuv5Q7UMeaStQAJhDJVVM5Hv
-	 PprchRKq5dbNQxIjMvM/VeG79nI/UmtJDMQSLjzxaIIg1JTBiLUsSy8pOFwm5NXC7e
-	 f8deXd+xqU/MXJDM19yjoSrgQg0P236effTJEoB69JBuhl4uXhM1iNBBlv2h9qx7En
-	 SPNqiMaEfpz0/x429ixx4GwE=
-Received: from zn.tnic (pd953092e.dip0.t-ipconnect.de [217.83.9.46])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9103D40E01A1;
-	Mon, 25 Aug 2025 13:59:40 +0000 (UTC)
-Date: Mon, 25 Aug 2025 15:59:33 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Yazen Ghannam <yazen.ghannam@amd.com>, x86@kernel.org,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-edac@vger.kernel.org, Smita.KoralahalliChannabasappa@amd.com,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4 08/22] x86/mce/amd: Put list_head in threshold_bank
-Message-ID: <20250825135933.GTaKxsRXQSsvN1dN26@fat_crate.local>
-References: <20250624-wip-mca-updates-v4-0-236dd74f645f@amd.com>
- <20250624-wip-mca-updates-v4-8-236dd74f645f@amd.com>
- <68039ee2-5407-4bd4-9735-62674805eaad@suse.com>
+	s=arc-20240116; t=1756131220; c=relaxed/simple;
+	bh=3RLeKCKpDIk2eBgGx5sPwZfoBKyVmeEo49RWhYh8Kh8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dTsyf0mcbEDs6eEmvARn0HrN2tLlZjh9PzZDzXTaqRBjnI0InWwCJJXgJPBXA2P3r/OlxyoIPM1bI0cYp8wbsIqyvxNJpjKq9tw4HjP8FQq3NsdxKXw5iXLZd0PbCyuSLCR3adVZ1+IskrIuMfGwwDgdLPfJuTP7bg6zr70SguU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e4fvRADW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0460DC19425;
+	Mon, 25 Aug 2025 14:13:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756131220;
+	bh=3RLeKCKpDIk2eBgGx5sPwZfoBKyVmeEo49RWhYh8Kh8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=e4fvRADWc2SiGyvairwMKdDw1zm1wGOXThGQeER0f4MYqsGYBRhD4UrfH+q2kimaE
+	 978Vxb2gnRrcxwK29zKxBr5sDuyaM7DyuM68nemBfDcJoWAJvdefCrMf4ky3tm3mTR
+	 ZEf5XaC0Deu8RHdTatQRuIX1UHKAPHYmvItTm0G3jHrBoDa0LYl7qMs/ZPY2JpgApc
+	 lQtDHIn1yKhsLsiU+tvHyxR+ZutYlrHGoRZcd4IzOHtkeInzrDGgR65atrSWLdNsYt
+	 TaeLwZDvBl70cfWDcKc3Px3Inhk2GTRE0IlvBDIzWF32uT29HeibPtjI2oz6UM54HE
+	 cW6lqbzTmXm7Q==
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-74381fbd6f3so973401a34.2;
+        Mon, 25 Aug 2025 07:13:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU+ZKTcs2H+vLrKgIvFTXZBL0dsN6xLsr3ZC9I78D2Wu2hIH+8jkMSP41/cYIq51kdSw6CDRP2SZCw=@vger.kernel.org, AJvYcCU31NAMHGLiJSL7vGtItCLJY5s0jUAdR3sMwyRfm+qSikp7Liz6sk6nvOeef71BgF2oQIt9P6brS/8mrIw=@vger.kernel.org, AJvYcCUCIsGROdz8+qKvGy/zMPWBArUZIwHjHyOukJZdmFLSv86OWtmW3hFzobmb6viQiH0ilrE=@vger.kernel.org, AJvYcCUpaEvqIJcfrfK/wGmf+4jCmiLaEteujEieTnq78FTPn1snhOrfTBWVsHAv6ePGCQEuWAMpTJvzytkTyvkk@vger.kernel.org, AJvYcCUzdfnb7kLofKFxb1y3Q8fvI/X+T///5bVgsI6rwx9y8iWqk6NoPms12ttCNos9Xf7fqKEzLlNyfHhrxA==@vger.kernel.org, AJvYcCWemMcSx2OIbdB0hnJpGaiFoi/MxP4jomzuwUQvthWat4O+8GcCqlc1YdHzSj0oF7WTTGj6DdZm2XMPyRWKbydObT8=@vger.kernel.org, AJvYcCXp15T8q27ZRMIj8oIT/97J40RVT4aNPUenkJy+iThwifFJDUB5CFSBBCaBLD6cA1+r3iF1rDUaIZd5mw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxizDsgkRU4NZXkaOR4avUd7h7nVnM7GAnn9L7xwup6WzHwBdcv
+	Rjx5F+sL5x8blwTQWJ1bqnHyBpClUw0UjVYI0AfuyuKPqEnAiay1xGidaI/Oc3xy417ymzb6MGM
+	95pXfpIwqw40MPnlC79galVaEPEDKB0k=
+X-Google-Smtp-Source: AGHT+IGEnV+1YshDCmjAscdFjkSNQru4o/XG/DWYuObgbMiwP57k9JdqOZlPe3YdSW0fnLXsvsMiCF3QToEZVDUm+Q8=
+X-Received: by 2002:a05:6830:d18:b0:742:fd7f:e105 with SMTP id
+ 46e09a7af769-74500aafdb9mr6734918a34.19.1756131219164; Mon, 25 Aug 2025
+ 07:13:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <68039ee2-5407-4bd4-9735-62674805eaad@suse.com>
+References: <20250825092833.42441-1-zhangzihuan@kylinos.cn>
+In-Reply-To: <20250825092833.42441-1-zhangzihuan@kylinos.cn>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 25 Aug 2025 16:13:27 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0g7rJn=z5p4DuJJoPpZrR5ismYftpDWp5X=z74DqaGYBQ@mail.gmail.com>
+X-Gm-Features: Ac12FXwCyvYKc8Ipwt4NeaLRZNsWY9t1kMBiUFhDRbkfLg-XPnoGM5Pxq1PIQzg
+Message-ID: <CAJZ5v0g7rJn=z5p4DuJJoPpZrR5ismYftpDWp5X=z74DqaGYBQ@mail.gmail.com>
+Subject: Re: [PATCH v1] cpufreq: use __free() for all cpufreq_cpu_get() references
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer <mmayer@broadcom.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
+	Chanwoo Choi <cw00.choi@samsung.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>, 
+	Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, x86@kernel.org, 
+	kvm@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 25, 2025 at 07:52:26PM +0300, Nikolay Borisov wrote:
-> That way you end up with a single btl (but I guess a version that uses btq
-> should be added as well) inside the loop rather than a bunch of instructions
-> moving data around for per_cpu.
+On Mon, Aug 25, 2025 at 11:29=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylinos.=
+cn> wrote:
+>
+> This patch replaces all remaining uses of cpufreq_cpu_get() with
+> the __free(cpufreq_cpu_put) annotation.
+>
+> Motivation:
+> - Ensures automatic cleanup of policy references when they go out of scop=
+e,
+>   reducing the risk of forgetting to call cpufreq_cpu_put() on early retu=
+rn
+>   or error paths.
+> - Brings the code in line with the latest kernel coding style and best
+>   practices for managing reference-counted objects.
+> - No functional changes are introduced; behavior remains the same,
+>   but reference counting is now safer and easier to maintain.
+>
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  arch/arm64/kernel/topology.c                  |  9 +++----
+>  arch/x86/kvm/x86.c                            | 10 ++++----
+>  drivers/acpi/processor_thermal.c              | 13 ++++------
+>  drivers/cpufreq/brcmstb-avs-cpufreq.c         |  4 +---
+>  drivers/cpufreq/cppc_cpufreq.c                |  4 +---
+>  drivers/cpufreq/intel_pstate.c                |  3 +--
+>  drivers/cpufreq/longhaul.c                    |  3 +--
+>  drivers/cpufreq/mediatek-cpufreq.c            |  6 ++---
+>  drivers/cpufreq/powernv-cpufreq.c             |  6 ++---
+>  drivers/cpufreq/s5pv210-cpufreq.c             |  3 +--
+>  drivers/cpufreq/tegra186-cpufreq.c            |  3 +--
+>  drivers/devfreq/governor_passive.c            | 19 ++++-----------
+>  drivers/gpu/drm/i915/gt/intel_llc.c           |  3 +--
+>  drivers/macintosh/windfarm_cpufreq_clamp.c    |  4 +---
+>  drivers/powercap/dtpm_cpu.c                   | 24 ++++++-------------
+>  drivers/thermal/imx_thermal.c                 |  7 ++----
+>  .../ti-soc-thermal/ti-thermal-common.c        |  5 +---
+>  kernel/power/energy_model.c                   |  7 ++----
+>  18 files changed, 40 insertions(+), 93 deletions(-)
 
-There's also this_cpu_ptr() etc.
+This changes different pieces of code maintained by different people
+and the changes are not interdependent AFAICS, so better send it as a
+series of separate patches.
 
-You know how I always take patches, right?
-
-:-)
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks!
 
