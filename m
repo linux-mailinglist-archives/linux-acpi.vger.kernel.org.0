@@ -1,148 +1,181 @@
-Return-Path: <linux-acpi+bounces-16013-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16014-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C924B342E4
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 16:14:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D9A6B3442C
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 16:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35C3E188DE1B
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 14:14:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 244A72A205D
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 14:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20A52F3613;
-	Mon, 25 Aug 2025 14:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342EF2FDC31;
+	Mon, 25 Aug 2025 14:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e4fvRADW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GfNH551w"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D5C2F0C67;
-	Mon, 25 Aug 2025 14:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52E72FE049;
+	Mon, 25 Aug 2025 14:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756131220; cv=none; b=ZJHZNU55OmRkiypag930Biy1oYcKfytF8IGYyDO4LYU212KKoYuCIGQg27Lv2xpBR3fM81AERGvm6eD6EjX9vBfad76VF3aY1pEhxJ7GjUtCKIGrA+QY1tXNNVfzv+1tppCQCqINLU/GEfFpbVrwBC7L5LmPdrlzRYdszV7PKXQ=
+	t=1756132068; cv=none; b=s+jEhQrcK5UqK/gigDQZNkCLWm5DyhgQ6y+H8uLGK02cva+ePhaQFxsL6fxJyWwHn4xk3Yk31Ht8zodSpCHurHO3RpiGn6S8WfCGvzK+6PAGNSWpaukKX7whC8cXRLoeyHqmtDUapkgGZPc4mrkwV+kfvlu0wqgty+zZMU/TAmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756131220; c=relaxed/simple;
-	bh=3RLeKCKpDIk2eBgGx5sPwZfoBKyVmeEo49RWhYh8Kh8=;
+	s=arc-20240116; t=1756132068; c=relaxed/simple;
+	bh=ApS4gDzX8ZQaQ8AaSrrS8ONp7lmRrBdcwtLiHDw75r4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dTsyf0mcbEDs6eEmvARn0HrN2tLlZjh9PzZDzXTaqRBjnI0InWwCJJXgJPBXA2P3r/OlxyoIPM1bI0cYp8wbsIqyvxNJpjKq9tw4HjP8FQq3NsdxKXw5iXLZd0PbCyuSLCR3adVZ1+IskrIuMfGwwDgdLPfJuTP7bg6zr70SguU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e4fvRADW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0460DC19425;
-	Mon, 25 Aug 2025 14:13:40 +0000 (UTC)
+	 To:Cc:Content-Type; b=JR37qPs+2208vKxGMqC6jY2Jk/naSgE4ICP//cQ7jCuhp4PjrA20z2kgCL7gc3jQdJxATnphmFR56/TLO4O8sX8ZlCSdykXv/+F+clvjMAXn+NhWztO+Mq+cFQwE+EIdv7qTwceU2mke/DJGr3pgI0E+oa2RVAHKP8EOGhbWg24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GfNH551w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E63C4CEF4;
+	Mon, 25 Aug 2025 14:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756131220;
-	bh=3RLeKCKpDIk2eBgGx5sPwZfoBKyVmeEo49RWhYh8Kh8=;
+	s=k20201202; t=1756132067;
+	bh=ApS4gDzX8ZQaQ8AaSrrS8ONp7lmRrBdcwtLiHDw75r4=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=e4fvRADWc2SiGyvairwMKdDw1zm1wGOXThGQeER0f4MYqsGYBRhD4UrfH+q2kimaE
-	 978Vxb2gnRrcxwK29zKxBr5sDuyaM7DyuM68nemBfDcJoWAJvdefCrMf4ky3tm3mTR
-	 ZEf5XaC0Deu8RHdTatQRuIX1UHKAPHYmvItTm0G3jHrBoDa0LYl7qMs/ZPY2JpgApc
-	 lQtDHIn1yKhsLsiU+tvHyxR+ZutYlrHGoRZcd4IzOHtkeInzrDGgR65atrSWLdNsYt
-	 TaeLwZDvBl70cfWDcKc3Px3Inhk2GTRE0IlvBDIzWF32uT29HeibPtjI2oz6UM54HE
-	 cW6lqbzTmXm7Q==
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-74381fbd6f3so973401a34.2;
-        Mon, 25 Aug 2025 07:13:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU+ZKTcs2H+vLrKgIvFTXZBL0dsN6xLsr3ZC9I78D2Wu2hIH+8jkMSP41/cYIq51kdSw6CDRP2SZCw=@vger.kernel.org, AJvYcCU31NAMHGLiJSL7vGtItCLJY5s0jUAdR3sMwyRfm+qSikp7Liz6sk6nvOeef71BgF2oQIt9P6brS/8mrIw=@vger.kernel.org, AJvYcCUCIsGROdz8+qKvGy/zMPWBArUZIwHjHyOukJZdmFLSv86OWtmW3hFzobmb6viQiH0ilrE=@vger.kernel.org, AJvYcCUpaEvqIJcfrfK/wGmf+4jCmiLaEteujEieTnq78FTPn1snhOrfTBWVsHAv6ePGCQEuWAMpTJvzytkTyvkk@vger.kernel.org, AJvYcCUzdfnb7kLofKFxb1y3Q8fvI/X+T///5bVgsI6rwx9y8iWqk6NoPms12ttCNos9Xf7fqKEzLlNyfHhrxA==@vger.kernel.org, AJvYcCWemMcSx2OIbdB0hnJpGaiFoi/MxP4jomzuwUQvthWat4O+8GcCqlc1YdHzSj0oF7WTTGj6DdZm2XMPyRWKbydObT8=@vger.kernel.org, AJvYcCXp15T8q27ZRMIj8oIT/97J40RVT4aNPUenkJy+iThwifFJDUB5CFSBBCaBLD6cA1+r3iF1rDUaIZd5mw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxizDsgkRU4NZXkaOR4avUd7h7nVnM7GAnn9L7xwup6WzHwBdcv
-	Rjx5F+sL5x8blwTQWJ1bqnHyBpClUw0UjVYI0AfuyuKPqEnAiay1xGidaI/Oc3xy417ymzb6MGM
-	95pXfpIwqw40MPnlC79galVaEPEDKB0k=
-X-Google-Smtp-Source: AGHT+IGEnV+1YshDCmjAscdFjkSNQru4o/XG/DWYuObgbMiwP57k9JdqOZlPe3YdSW0fnLXsvsMiCF3QToEZVDUm+Q8=
-X-Received: by 2002:a05:6830:d18:b0:742:fd7f:e105 with SMTP id
- 46e09a7af769-74500aafdb9mr6734918a34.19.1756131219164; Mon, 25 Aug 2025
- 07:13:39 -0700 (PDT)
+	b=GfNH551wfTBWzJ7Tb+DVoCiZNSBsceXV9k/VaP+xn/QRxbopZUI0A/We1cCB2eBYK
+	 KgWmh5aKOW+gGcGnxf6lP3nWKGgw5LFlFqM53O0x4bTqPPlPmtKv1L6UlOSLVvDSrZ
+	 C1m9gMs9RYz+EonbOd2u6qBxo1AMMfQoy5qfL0SdK9q1pquOpc8Kya3B+CnIFAD+po
+	 fvOBFBLACCZiOut/AfCjrOXq4gntyQHApttB/LU5JMebTYey4Hcb+CE7U8Nr4kMNjf
+	 WNKoD3zjgrY01zQVfLzzKPWlfcFVXiATsFYA+ks2QrsYx8ndIbXTPrFupx6mHN/3uX
+	 853pKEyh/AcHA==
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-435de818a74so2582098b6e.2;
+        Mon, 25 Aug 2025 07:27:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUgLcnkbTgyHQpBqpnGwq8ptcJehGpKLujfs1C89k9iphAIPRzbt0haVJw6xsnh/+t245svCa9OfuEy@vger.kernel.org, AJvYcCWhON5Y38hZNJGnkmG3gbeVAAZzUHUUtUpudkFVfJxN5SFlmJ8AQ6PoLeHkmxVZTOe73vO4vYpGm6QmtfeO@vger.kernel.org
+X-Gm-Message-State: AOJu0YyftzIQ/jAsZjyOJg30v0aAtLdMDXas/Xwbyfm9jntY8x/u9Syw
+	yLcgkRJIv9t9gQJJNzKAE3F9oNeGhLIzN5HUW2XoBcWFAaFGhSMgTrga+2oljoWzKcjipPtys8H
+	jmLhcRKGd99aUpGz3vDSCMMyvdaOJ4R8=
+X-Google-Smtp-Source: AGHT+IEfbADSfLPLF8aW/ef/eVAG9EAIbckoOgXEoHNZQ+lyedT/ZZmze+Z7aldFTfdeDSpsh196TTWDrv/F7sgHe18=
+X-Received: by 2002:a05:6808:15a9:b0:435:bb78:e304 with SMTP id
+ 5614622812f47-43785248e4bmr5227278b6e.32.1756132066577; Mon, 25 Aug 2025
+ 07:27:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250825092833.42441-1-zhangzihuan@kylinos.cn>
-In-Reply-To: <20250825092833.42441-1-zhangzihuan@kylinos.cn>
+References: <cover.1754243159.git.mail@maciej.szmigiero.name>
+In-Reply-To: <cover.1754243159.git.mail@maciej.szmigiero.name>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 25 Aug 2025 16:13:27 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0g7rJn=z5p4DuJJoPpZrR5ismYftpDWp5X=z74DqaGYBQ@mail.gmail.com>
-X-Gm-Features: Ac12FXwCyvYKc8Ipwt4NeaLRZNsWY9t1kMBiUFhDRbkfLg-XPnoGM5Pxq1PIQzg
-Message-ID: <CAJZ5v0g7rJn=z5p4DuJJoPpZrR5ismYftpDWp5X=z74DqaGYBQ@mail.gmail.com>
-Subject: Re: [PATCH v1] cpufreq: use __free() for all cpufreq_cpu_get() references
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer <mmayer@broadcom.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
-	Chanwoo Choi <cw00.choi@samsung.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, x86@kernel.org, 
-	kvm@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org, 
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Mon, 25 Aug 2025 16:27:35 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0ifhK_Or1h20taM79qLXBHhe3BNObDHg3K56SRnG250Gw@mail.gmail.com>
+X-Gm-Features: Ac12FXypDQda601Y44Rps_hoWC632jcEgcPvrKWT__hGDnrP2BMLxIGup1UHvWU
+Message-ID: <CAJZ5v0ifhK_Or1h20taM79qLXBHhe3BNObDHg3K56SRnG250Gw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] HP EliteBook 855 G7 WWAN modem power resource quirk
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 25, 2025 at 11:29=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylinos.=
-cn> wrote:
+On Sun, Aug 3, 2025 at 9:18=E2=80=AFPM Maciej S. Szmigiero
+<mail@maciej.szmigiero.name> wrote:
 >
-> This patch replaces all remaining uses of cpufreq_cpu_get() with
-> the __free(cpufreq_cpu_put) annotation.
+> This laptop (and possibly similar models too) has power resource called
+> "GP12.PXP_" for its Intel XMM7360 WWAN modem.
 >
-> Motivation:
-> - Ensures automatic cleanup of policy references when they go out of scop=
-e,
->   reducing the risk of forgetting to call cpufreq_cpu_put() on early retu=
-rn
->   or error paths.
-> - Brings the code in line with the latest kernel coding style and best
->   practices for managing reference-counted objects.
-> - No functional changes are introduced; behavior remains the same,
->   but reference counting is now safer and easier to maintain.
+> For this power resource to turn ON power for the modem it needs certain
+> internal flag called "ONEN" to be set:
+> Method (_ON, 0, NotSerialized) // _ON_: Power On
+> {
+>         If (^^^LPCB.EC0.ECRG)
+>         {
+>                 If ((ONEN =3D=3D Zero))
+>                 {
+>                         Return (Zero)
+>                 }
+> (..)
+>         }
+> }
 >
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> ---
->  arch/arm64/kernel/topology.c                  |  9 +++----
->  arch/x86/kvm/x86.c                            | 10 ++++----
->  drivers/acpi/processor_thermal.c              | 13 ++++------
->  drivers/cpufreq/brcmstb-avs-cpufreq.c         |  4 +---
->  drivers/cpufreq/cppc_cpufreq.c                |  4 +---
->  drivers/cpufreq/intel_pstate.c                |  3 +--
->  drivers/cpufreq/longhaul.c                    |  3 +--
->  drivers/cpufreq/mediatek-cpufreq.c            |  6 ++---
->  drivers/cpufreq/powernv-cpufreq.c             |  6 ++---
->  drivers/cpufreq/s5pv210-cpufreq.c             |  3 +--
->  drivers/cpufreq/tegra186-cpufreq.c            |  3 +--
->  drivers/devfreq/governor_passive.c            | 19 ++++-----------
->  drivers/gpu/drm/i915/gt/intel_llc.c           |  3 +--
->  drivers/macintosh/windfarm_cpufreq_clamp.c    |  4 +---
->  drivers/powercap/dtpm_cpu.c                   | 24 ++++++-------------
->  drivers/thermal/imx_thermal.c                 |  7 ++----
->  .../ti-soc-thermal/ti-thermal-common.c        |  5 +---
->  kernel/power/energy_model.c                   |  7 ++----
->  18 files changed, 40 insertions(+), 93 deletions(-)
+> This flag only gets set from this power resource "_OFF" method, while the
+> actual modem power gets turned off during suspend by "GP12.PTS" method
+> called from the global "_PTS" (Prepare To Sleep) method.
+>
+> In fact, this power resource "_OFF" method implementation just sets the
+> aforementioned flag:
+> Method (_OFF, 0, NotSerialized) // _OFF: Power Off
+> {
+>         OFEN =3D Zero
+>         ONEN =3D One
+> }
+>
+> Upon hibernation finish we try to set this power resource back ON since i=
+ts
+> "_STA" method returns 0 and the resource is still considered in use as it
+> is declared as required for D0 for both the modem ACPI device (GP12.PWAN)
+> and its parent PCIe port ACPI device (GP12).
+> But the "_ON" method won't do anything since that "ONEN" flag is not set.
+>
+> Overall, this means the modem is dead after hibernation finish until the
+> laptop is rebooted since the modem power has been cut by "_PTS" and its P=
+CI
+> configuration was lost and not able to be restored.
+>
+> The easiest way to workaround this issue is to call this power resource
+> "_OFF" method before calling the "_ON" method to make sure the "ONEN"
+> flag gets properly set.
+>
+> This makes the modem alive once again after hibernation finish - with
+> properly restored PCI configuration space.
+>
+> Since this platform does *not* support S3 the fact that
+> acpi_resume_power_resources() is also called during resume from S3 is
+> not a problem there.
+>
+> Do the DMI based quirk matching and quirk flag initialization just
+> once - in acpi_power_resources_init() function similar to existing
+> acpi_*_init() functions.
+>
+> This way the whole resume path overhead of this change on other systems
+> amounts to simple hp_eb_gp12pxp_quirk flag comparison.
+>
+> Opportunistically convert the single already existing DMI match-based
+> quirk in this ACPI power resource handler ("leave unused power
+> resources on" quirk) to the same one-time initialization in
+> acpi_power_resources_init() function instead of re-running that DMI
+> match each time acpi_turn_off_unused_power_resources() gets called.
+>
+>
+> This Intel WWAN modem in general has *a lot* of issues with
+> suspend/resume on various laptop platforms (not only HP).
+>
+> More patches are needed for these, hopefully they can be mainlined
+> too so suspend/resume work out of the box for users (that's
+> important functionality on a laptop).
+>
+> See the following ModemManager issue containing patches also for
+> Thinkpad T14 G1 and Dell Precision 3561:
+> https://gitlab.freedesktop.org/mobile-broadband/ModemManager/-/issues/992
+>
+>
+> Changes from v2:
+> * Split out the change adding power resource init function and converting
+>   existing DMI-based quirk into a separate preparatory patch.
+>
+> * Create a replacement __acpi_power_on() method for the affected power
+>   resource (including the power OFF and delay part) and call it from
+>   acpi_resume_power_resources() instead of ordinary __acpi_power_on()
+>   on the affected platform.
+>
+> * Rename leave_unused_power_resources_on_quirk into suggested shorter
+>   unused_power_resources_quirk.
+>
+>
+> Maciej S. Szmigiero (2):
+>   ACPI: PM: Add power resource init function
+>   ACPI: PM: Add HP EliteBook 855 G7 WWAN modem power resource quirk
+>
+>  drivers/acpi/internal.h |  1 +
+>  drivers/acpi/power.c    | 90 +++++++++++++++++++++++++++++++++++++++--
+>  drivers/acpi/scan.c     |  1 +
+>  3 files changed, 89 insertions(+), 3 deletions(-)
 
-This changes different pieces of code maintained by different people
-and the changes are not interdependent AFAICS, so better send it as a
-series of separate patches.
+Both patches applied as 6.18 material with some minor edits in the
+changelog of the second patch.
 
 Thanks!
 
