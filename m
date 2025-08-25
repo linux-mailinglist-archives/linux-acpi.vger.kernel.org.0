@@ -1,114 +1,127 @@
-Return-Path: <linux-acpi+bounces-16018-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16019-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95043B344B9
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 16:57:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16788B3450C
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 17:04:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55CA83A2902
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 14:57:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBF05485878
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 15:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E7B2F3C31;
-	Mon, 25 Aug 2025 14:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6912F9C2A;
+	Mon, 25 Aug 2025 15:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ta7ChnMV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJ3B3sW1"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FE31C5486;
-	Mon, 25 Aug 2025 14:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B37230BD9;
+	Mon, 25 Aug 2025 15:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756133829; cv=none; b=RO8yBHE8nqz08g783vZZgTSAB11l2r9G8uh+G0ubD0Lm+AGD+mYp4aSeObbB2ZGWBTvGSa16y19x9A+YeUvfunHPJJyyvqj3r8rOB/4HBtymRJE4N9dEhh8QO6pEsMGhjG+AAWf0lBdWP8iINNiKcE2naL4GFgzSJ3LC8wWWA+c=
+	t=1756134044; cv=none; b=t7+lkLT/uH2G28IP02TTwF3dGMhAPmNujMBSJundPVDKdc5/sCUiWdxvWIfxHUmOi0ncY8pPn0o0aqTBGObhtnnH0aeQSYsDdluRbL4KY9NUUdRatMMBqYKwTBqHN9uaix9Da6oZlzyYlnUgXojJEbNBU575zornYxHNVdOnY2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756133829; c=relaxed/simple;
-	bh=tY8TXkykPrjBK4IPNJfIRkS0VjGKW1olRODNSwXcnco=;
+	s=arc-20240116; t=1756134044; c=relaxed/simple;
+	bh=Ugep9HJbeJfe8M4p8+iQD78EvwPborb+MpXZjz1LLv0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oM34WFzFW/SfThn7Zy5jQiiibHjEgyT+FX90bVLlu2IdaP5vKJTDN8vrdyLpEusb8Sf/pqaStGoEWBFX0tKHRwwJfkVGqt1VyPfBDH6/KGtwNWkTYgK1LgfIWrtgu6jQsLA7BYcrvUq0p4CbmJZpyqAhDrq8xF4Er0lZJUiEJyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ta7ChnMV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444E0C4CEF4;
-	Mon, 25 Aug 2025 14:57:09 +0000 (UTC)
+	 To:Cc:Content-Type; b=Z0b7Mhg9wDVOi/VZpHiWLvxuZk3ri78vGuXxh1GkBmkn/9WLr3Um7jRe7m/FP6UvZDmr+s9+2Zw31tfO7EAYb4Kusg0PSSDpwo3NpYX/xv7MMWlpfcmA9wutZw8ppzYupL63g8n8coBbXiRW84dvURe81BZE2QkdJ/kJWTR5Nbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJ3B3sW1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192F6C4CEED;
+	Mon, 25 Aug 2025 15:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756133829;
-	bh=tY8TXkykPrjBK4IPNJfIRkS0VjGKW1olRODNSwXcnco=;
+	s=k20201202; t=1756134044;
+	bh=Ugep9HJbeJfe8M4p8+iQD78EvwPborb+MpXZjz1LLv0=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ta7ChnMVSjsdsqH7svpUwMqf7Pz5wC7PWeFoTZzKavZS2xbjzQyp+UTJDXFzpXXQs
-	 enU+XtKfgP7BzZU+uL5nta0tC9AsEP3VIdcBob652VbdrAJCO3ydlqZKmC9nIuOBW5
-	 iX1IbPNSlLfcr0KX/xwaLVS2rAQpGBKI3mMntXrP6e3EqwvjHFw9B87V7pyPeOIaUp
-	 /CPVrJh/scKAfP3KoT36KeVrUzlMxrqLsxxp4jnW2Ez+TlM5Cr0UXx/dj6ooDxTped
-	 UD96LskbnhHGy+zsjYiPrJOdrVCWZvrrGBk28A/cxWseJICEqdz20I29v+bnblv08r
-	 1QQTXLA5MrUmw==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-30ccebab736so3257666fac.3;
-        Mon, 25 Aug 2025 07:57:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWCzSBvn90b+3Mojc2eqUWkTkiwKTGAO73s/kZEkGj8hdJGEx0juBkDtNvFoBQA2dnZ51orQFCu6oo=@vger.kernel.org, AJvYcCXJbAAXtwjOQGXM/9mT+RB0k+pjZB+oEjzCZKpWIbNfUTuwzRGeljMoIwTutwVYrk4lBeLYWL1ahP+d7yyR@vger.kernel.org, AJvYcCXvyOXWCaqipUrdhvf7xdnVhjhQlcSPCzDyeMxxTmuj1t+Z0mIejJqknHY7TJEWSqFtjYW1WJWjY4QE@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVD42XYr9B1tasY9QB1xOEketMcpmG/90WaQqYGpynvdpFOs0c
-	GOfN+nmJWZt82bUi66MLnekeu4txJKFOBsFU587RF8OFe5vT8mRDsFUPX/jlVehaZRcnQaP50Ma
-	a8duq7JJiaVvxgoUKMGGv6E2i+b0PsCI=
-X-Google-Smtp-Source: AGHT+IGvB9xOXfVR+M1XersCBlaasX/VvIr6WHKDsJ/Iv2XSPDAmudlo3CsScfqb2fgCasliY1ryQqv1MwvyEHm+eU8=
-X-Received: by 2002:a05:6870:88a0:b0:30b:6dc6:d5ef with SMTP id
- 586e51a60fabf-314dcd5d1c0mr5366796fac.32.1756133828619; Mon, 25 Aug 2025
- 07:57:08 -0700 (PDT)
+	b=RJ3B3sW1HPRV/CTE9MtLN1EOuCSt7b45AHK1+O05ynTUpvw3tfOKETm0augsqAedL
+	 M908nFI2nPV5M9LiGteC6X9Pzi32TpthSl0GovzZUpKzh61MUc2EYi43IYswLCUEKn
+	 oIXDqRzO7+yBb+TT8rS50oulKoQnCdeQao+f5HgUC4gk8na/Zo9lSo5DMS4yWAGu3E
+	 PiMXU/7aw2zp0FIyIoc1P40BsqbBaPK/1mm1hNdOs0NZho2EulbTMY9ZbEDcb0Vo9q
+	 7jLSDnGl6ufuX7O/8uSppxhP6on6Pp1YQapYuyF9Ho8wcg2M7jFhFONqaGXCHpc/FR
+	 vOz7bGG1PBEow==
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-74526ca7a46so246511a34.2;
+        Mon, 25 Aug 2025 08:00:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU7l5eyvsdcXKF1eRPmmLUHh6Z2PaXeyoXORMNpsghynL5Er3LtDHGtjwIXe/CFAgcLYqPnaKsFzZCgwXK8@vger.kernel.org, AJvYcCUoLZF2jpPpN4O2KVBMQCtFYv53CKojDsAApUXKh3A+oktLoNQma8hE2Krb2NA7W4OEwxPt/R02ECA2@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQvJq4jLCA1GLfND3CGk5PyW024dvalC6IXjthr7OhcbCMpIYZ
+	fKgBdS0ajGsUxf7p98rDW7L6UEA32LifuWfyOb9GpcllE1FaPIK6/A9RWApgNieA3Lgse27a5Cw
+	i8sxiwbCVFZluWqQLnMfVNfRj5npFeYU=
+X-Google-Smtp-Source: AGHT+IEIVMcl7vcY7/0g28+jH/GnesR/QNks6r5gFelznLt35hSp/7TVbhkQ9Oj6ak2sa1zxL8Lb4hUwuDTJMlZOWnA=
+X-Received: by 2002:a05:6830:6993:b0:741:c135:6afe with SMTP id
+ 46e09a7af769-74500900005mr6914482a34.5.1756134043404; Mon, 25 Aug 2025
+ 08:00:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250814072934.1016694-1-tianyaxiong@kylinos.cn> <20250814073156.1022939-1-tianyaxiong@kylinos.cn>
-In-Reply-To: <20250814073156.1022939-1-tianyaxiong@kylinos.cn>
+References: <20250815-acpi_fix-v1-1-a05ebfe1b8ac@uniontech.com>
+In-Reply-To: <20250815-acpi_fix-v1-1-a05ebfe1b8ac@uniontech.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 25 Aug 2025 16:56:57 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hGj3=GxnLkj0adm+ENSk7YbzNZRPiBTgm_bKZsH3OYDw@mail.gmail.com>
-X-Gm-Features: Ac12FXzRjYE2csZ_OCSOdpP4wrPZ-eVam9nKg0GHm5mnlFEOke9NQBhN0m6QdEI
-Message-ID: <CAJZ5v0hGj3=GxnLkj0adm+ENSk7YbzNZRPiBTgm_bKZsH3OYDw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] ACPI: processor: idle: Replace single idle driver
- with per-CPU model for better hybrid CPU support
-To: Yaxiong Tian <tianyaxiong@kylinos.cn>
-Cc: rafael@kernel.org, daniel.lezcano@linaro.org, lenb@kernel.org, 
-	robert.moore@intel.com, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, Shaobo Huang <huangshaobo2075@phytium.com.cn>, 
-	Yinfeng Wang <wangyinfeng@phytium.com.cn>, Xu Wang <wangxu@phytium.com.cn>
+Date: Mon, 25 Aug 2025 17:00:32 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iaAgpGhtH27j0hRDF7-S9F7uHZ4GZkmbfVLQOEN+6tbg@mail.gmail.com>
+X-Gm-Features: Ac12FXy9-BKrAqjrnflwZ9xHHH9i3P1dUbJZUPC6joJq9vDyUifwXwn9qEFGP-A
+Message-ID: <CAJZ5v0iaAgpGhtH27j0hRDF7-S9F7uHZ4GZkmbfVLQOEN+6tbg@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: add more parameter validation for acpi_walk_namespace()
+To: cryolitia@uniontech.com
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Robert Moore <robert.moore@intel.com>, 
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, wangyuli@uniontech.com, 
+	guanwentao@uniontech.com, niecheng1@uniontech.com, zhanjun@uniontech.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 14, 2025 at 9:32=E2=80=AFAM Yaxiong Tian <tianyaxiong@kylinos.c=
-n> wrote:
+On Fri, Aug 15, 2025 at 10:56=E2=80=AFAM Cryolitia PukNgae via B4 Relay
+<devnull+cryolitia.uniontech.com@kernel.org> wrote:
 >
-> Current implementations of hybrid architectures (e.g., ARM64 big.LITTLE
-> and Intel Alder Lake) feature CPU cores with different exit latencies.
-
-This is not true for Intel platforms, all of the CPUs in there have
-the same set of C-states.
-
-> Using a single driver to describe_LPI states for all core types is
-> therefore suboptimal. This is further supported by ACPI specification
-> 8.4.4.1 which states: "In a processor hierarchy, each node has its
-> own _LPI low-power states specific to that node."
+> From: Cryolitia PukNgae <cryolitia@uniontech.com>
 >
-> To address these limitations, we replace the monolithic idle driver
+> On the Honor FMB-P-PCB laptop, an incorrect ACPI table causes
+> sdw_intel_acpi_scan to pass a NULL pointer as start_object to
+> acpi_walk_namespace() when calling it, which eventually causes the
+> kernel to report a NULL pointer dereference[1].
+>
+> 1. https://gist.github.com/Cryolitia/a860ffc97437dcd2cd988371d5b73ed7
+>
+> Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
 
-It cannot be replaced or you potentially open a Pandora's box of
-regressions on old systems in the field.
-
-> with a per-CPU model. This approach enables accurate idle state represent=
-ation
-> for each core type
-
-The per-CPU model can be used instead of the "monolithic idle driver"
-only if the platform is actually known to be hybrid.
-
-> Tested-by: Shaobo Huang <huangshaobo2075@phytium.com.cn>
-> Signed-off-by: Yaxiong Tian <tianyaxiong@kylinos.cn>
-> Signed-off-by: Shaobo Huang <huangshaobo2075@phytium.com.cn>
-> Signed-off-by: Yinfeng Wang <wangyinfeng@phytium.com.cn>
-> Signed-off-by: Xu Wang<wangxu@phytium.com.cn>
-
-What do all of the above S-o-b mean?  Are these people involved in the
-development of the code?  In that case Co-developed-by is also needed.
+Please submit ACPICA changes to the upstream ACPICA project on GitHub
+as pull requests.  Once they have been merged upstream, you can submit
+a Linux patch based on the upstream one with a pointer to the
+corresponding upstream commit.
 
 Thanks!
+
+> ---
+>  drivers/acpi/acpica/nsxfeval.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/acpica/nsxfeval.c b/drivers/acpi/acpica/nsxfeva=
+l.c
+> index f9d059647cc52e94ce013af3382addba338820e8..c1f318ea7d5fcd846dc158b15=
+5286a6f5bba4cff 100644
+> --- a/drivers/acpi/acpica/nsxfeval.c
+> +++ b/drivers/acpi/acpica/nsxfeval.c
+> @@ -564,7 +564,7 @@ acpi_walk_namespace(acpi_object_type type,
+>
+>         /* Parameter validation */
+>
+> -       if ((type > ACPI_TYPE_LOCAL_MAX) ||
+> +       if ((type > ACPI_TYPE_LOCAL_MAX) || (start_object =3D=3D NULL) ||
+>             (!max_depth) || (!descending_callback && !ascending_callback)=
+) {
+>                 return_ACPI_STATUS(AE_BAD_PARAMETER);
+>         }
+>
+> ---
+> base-commit: 24ea63ea387714634813359e2c8e0e6c36952f73
+> change-id: 20250815-acpi_fix-3724e6c4da02
+>
+> Best regards,
+> --
+> Cryolitia PukNgae <cryolitia@uniontech.com>
+>
+>
 
