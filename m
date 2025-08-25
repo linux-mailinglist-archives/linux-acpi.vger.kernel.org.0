@@ -1,108 +1,113 @@
-Return-Path: <linux-acpi+bounces-16045-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16046-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 483ABB34969
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 19:55:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA4E7B3497A
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 19:59:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B27EB188A7B2
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 17:55:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32C445E7A0C
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 17:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED6D1DF965;
-	Mon, 25 Aug 2025 17:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2714308F0F;
+	Mon, 25 Aug 2025 17:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+E+Fqam"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nWVJqaeO"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8C42750E6
-	for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 17:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC11308F08
+	for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 17:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756144521; cv=none; b=JYuwYjGCJWFUIkBPliJviIN8HPJZkbiXlaN8kFzez4lQtmVGN8V009ohFpec4qjeokzf2bANTsyZguseMNeXbUzLWAjJQYdIVhJ4sz1/TfXnMLG2OHDqB7+6seHXkdSIqX9dxOpzXTemgEqRabnrQJ7gWicJZC/D5VLSOZLo0LQ=
+	t=1756144714; cv=none; b=iqqFPaQFpI6jgqKzp6E0ybfT46t09HvoE45YxmulFGcFeEwvVXwEmhP0/9YGjT/vnCgwd0hW8RmBLCUY+NdRkX7nk/DEmIKOA+FsN5ts/w/DLcECrnSQiXMisI6WsP0eQT/i1GBKt+LbaVVBf0qFxhWPjZS9Ec9BHwAYXmZCtPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756144521; c=relaxed/simple;
-	bh=woAvs9PHK6xOgfyjNsiU4NUIjDQuwKh91IoT1/uO2ec=;
+	s=arc-20240116; t=1756144714; c=relaxed/simple;
+	bh=2ukWM2rpOWZWYuwRv/Vk/ZErRVjUVZsb8scUEbQDWuY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KfxKL3TX8aZ1OmXgTOOusGAsLQTvkIaJ44Mtn1mNWCjLqJx+hwXpX+ldKrFb2dQ1/dQIPfj4qNt1E0xR+KoR05PD/Kv2bO9jMw2Q2ywQpV4z0RUS0SjF79wNpFONuw7c1rl4YZj/vw0ZTDP7Wt5ao/XdK4X2rPK5S1nwN9ATTF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+E+Fqam; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61647C4CEED
-	for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 17:55:21 +0000 (UTC)
+	 To:Cc:Content-Type; b=VMTgqpLPHn3SjRk3tyjzKKlJbowm0aH0Rg2N2nYoYDid/fYFqIaFQR37f2lSuWGloq6/CkYtT8sstKeuXvnfOjUHwooYMocUXI2G44FB2Ks3RCzK+RGA6ZhbupF8alYgfAB4HYQrSW+lXo4xSUmu7usGVijK7RQjBgo8AUyj+WI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nWVJqaeO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF945C116C6
+	for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 17:58:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756144521;
-	bh=woAvs9PHK6xOgfyjNsiU4NUIjDQuwKh91IoT1/uO2ec=;
+	s=k20201202; t=1756144713;
+	bh=2ukWM2rpOWZWYuwRv/Vk/ZErRVjUVZsb8scUEbQDWuY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=T+E+FqamqO5CJgDYpQh6tE7Er4orznCraCWEu3iWjztKs1pwMK9mWQMFnrrckDBb8
-	 sXZN0Ivh5bRSKXPh2WUvAXaQ0WW6xsK+h9lW1TdIEyCZ72a4kCr7L1lpKRK6Ji4eal
-	 GRjI8ChwDrnCiJYI9ur9CKRRbOcH1bKbMDmskySyW3kBZT+poZq3LD9mTBKdeVnzj/
-	 y9kXaGsiX5GQgOUgJnjlV6HAHrFuM94VNeXaPKKCHxa4oQBK7FuXdxPK8jhVY0MrnE
-	 sE8ymckUl3p4Txn8s7cpohzvytXdOqWx8y9DWea1nCYbYdYm3cpF/n8XaQxBtai2pR
-	 LjWTLXeZwVpPA==
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-61d99c87ddcso928772eaf.2
-        for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 10:55:21 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXETFUkVIce6gGHXogNRIPjKbG9skX+HmSvhovWOKN6aIK1OGKWP8QK0hIrHpXlFsUK6hJBrNcpZlXL@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8zRnVKcwPUWljCWmyFTB5KdzBR2NNPOD8Q+DcM9Zsnu2InUkC
-	nCyw0B1l5o/9AMtmVl/NyWbDoIK4kgeRgDUVhbGltCGPA6SepTET1cFEVi7ol7j5BxLi3nw/UdN
-	UB+2H/w/dOOJ3kNIDpH7L+JszrGYu4E8=
-X-Google-Smtp-Source: AGHT+IGZWuHYZyft0oOxSyVAxn8xr7fDWvqTRxNaHDpzf5N7GQn9n0srBAiZm6VMnMbi0iaRimHLLxLmzINWOQCdGGE=
-X-Received: by 2002:a05:6820:16a8:b0:61d:d011:16b5 with SMTP id
- 006d021491bc7-61dd0113f43mr3437829eaf.5.1756144520733; Mon, 25 Aug 2025
- 10:55:20 -0700 (PDT)
+	b=nWVJqaeOwRuBKVDLdMVbdrFBoDy5JHVp1Yo1Ye4vN6IZUpbcKNsanS39jIkOILPDj
+	 47tYptZTxEig8eb0LQ1mSZ2fVapuc4hw4n3a39mlfnQZ/tMHipwLajbhRWVvdWXSzO
+	 /Sq/2UyS/eu1e9IS1n98za/DLEIyRyGyecx5gZJZoAiO9nz/ZQwfb/rWISoZ+QgQ4L
+	 IWgvUmyHPu9treSDXW/fAPCYUtAhaXonHIy1zMk6llcHI4toM49QGIHKaOrxDcVIwk
+	 kJKUVhGoEg4nmkgI8ZsW+YP9zxg4Agfs16xoVjrlXjQB1cCpZEYimI0zVHacBiHpJl
+	 BlsBOGMM6sb1g==
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-30cce8c3afaso2942950fac.1
+        for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 10:58:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXAvVI8fTrF/HH8DZ3rMSHNGuriyS0ZGO+HNokb2ncJXllLcXcyEx+O3wRDoE93AAXqTR6QYNTxcVW6@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvSFa2pHy7rjnxkc77M0i0Gs4qmSuK5V8zB+AJTes8rmiCNRhp
+	Ijjqfm5bJwTBYu52twIYPRVnmJ2vrIvAzSGEgS+zPTSvjZoMTiE91xgho03dffXqHoS8ei2Q+Xu
+	MfCUJurC7E1PDtS+xYuNPYd0sHV2lris=
+X-Google-Smtp-Source: AGHT+IEMhic5625tNI9PADD4za00lU0OQOvu4/pkjQL98z33TtGtemDOVxF8H+pr4SYUrJBaet5ImtuNaWgqsqisb+w=
+X-Received: by 2002:a05:6870:c0cf:b0:2e4:c5be:8e6c with SMTP id
+ 586e51a60fabf-314dcabe825mr5378914fac.1.1756144712989; Mon, 25 Aug 2025
+ 10:58:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250819073517.3962847-1-kaushlendra.kumar@intel.com>
-In-Reply-To: <20250819073517.3962847-1-kaushlendra.kumar@intel.com>
+References: <20250820044309.4133802-1-kaushlendra.kumar@intel.com>
+In-Reply-To: <20250820044309.4133802-1-kaushlendra.kumar@intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 25 Aug 2025 19:55:09 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hyuOR6gNRnikja84T5MXYtVYbeTX0NmgTnDLF166ObRA@mail.gmail.com>
-X-Gm-Features: Ac12FXy6j4jn8XY2coTYnCKDNLzLjz4YHz3stT17ipfLJoPjdjcUU39aiSITJdI
-Message-ID: <CAJZ5v0hyuOR6gNRnikja84T5MXYtVYbeTX0NmgTnDLF166ObRA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PM: s2idle: Fix memory leak in lpi_device_get_constraints()
+Date: Mon, 25 Aug 2025 19:58:21 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gUBsr6Q=A6Nfr=pSEJA6mBv++iaT7a7uq1yd5rX=oxig@mail.gmail.com>
+X-Gm-Features: Ac12FXwNn3wEMxmEibZsqjKBULBDXWno1kfHpepO4sknuwzMhjr_EbATbIS5_C4
+Message-ID: <CAJZ5v0gUBsr6Q=A6Nfr=pSEJA6mBv++iaT7a7uq1yd5rX=oxig@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: Battery: Fix incorrect fallthrough in extract_package()
 To: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 19, 2025 at 9:36=E2=80=AFAM Kaushlendra Kumar
+On Wed, Aug 20, 2025 at 6:44=E2=80=AFAM Kaushlendra Kumar
 <kaushlendra.kumar@intel.com> wrote:
 >
-> Add proper cleanup of lpi_constraints_table to prevent memory leaks
-> when  the driver is reloaded
-
-Which driver do you mean?
-
-> or lpi_device_get_constraints() is called multiple times.
-
-How exactly?
-
-> The function lpi_device_get_constraints() allocates memory for
-> lpi_constraints_table using kcalloc() but never frees any previously
-> allocated memory. This leads to a memory leak on subsequent calls to
-> the function.
-
-What subsequent calls?
-
-> Fix this by:
-> 1. Adding a new helper function lpi_constraints_table_free() that properl=
-y
->    frees the allocated memory and resets the table pointer and size
-> 2. Calling this cleanup function before allocating new memory in
->    lpi_device_get_constraints()
+> Fix incorrect fallthrough behavior in the ACPI_TYPE_BUFFER case of
+> extract_package().
 >
-> This ensures that any previously allocated lpi_constraints_table is
-> properly freed before allocating a new one, preventing memory leaks.
+> The current code processes ACPI_TYPE_BUFFER data and then falls through
+> to also process it as ACPI_TYPE_STRING data, which is incorrect. The
+> buffer case should copy the buffer data and then break, not fall through
+> to the string handling code. This ensures that buffer and string types
+> are handled correctly and independently in the switch statement.
+>
+> Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+> ---
+>  drivers/acpi/battery.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+> index 6905b56bf3e4..18fc5d828e70 100644
+> --- a/drivers/acpi/battery.c
+> +++ b/drivers/acpi/battery.c
+> @@ -445,8 +445,9 @@ static int extract_package(struct acpi_battery *batte=
+ry,
+>                         case ACPI_TYPE_BUFFER:
+>                                 if (len > element->buffer.length + 1)
+>                                         len =3D element->buffer.length + =
+1;
+> +                               strscpy(ptr, element->buffer.pointer, len=
+);
 
-No, really.
+Why do you think that duplicating code is a good idea?
 
-You need to say how exactly the memory is leaked, or there is nothing to fi=
-x.
-
-Thanks!
+>
+> -                               fallthrough;
+> +                               break;
+>                         case ACPI_TYPE_STRING:
+>                                 strscpy(ptr, element->string.pointer, len=
+);
+>
+> --
 
