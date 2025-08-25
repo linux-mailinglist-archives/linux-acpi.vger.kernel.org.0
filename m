@@ -1,137 +1,107 @@
-Return-Path: <linux-acpi+bounces-16054-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16055-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4C83B34F12
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Aug 2025 00:33:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 771CCB34F18
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Aug 2025 00:37:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C51816944E
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 22:33:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C38B2A561C
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 22:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58B61EB5D6;
-	Mon, 25 Aug 2025 22:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A707029B8D3;
+	Mon, 25 Aug 2025 22:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="beSoNAHn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VV0wD93P"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2700451C5A
-	for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 22:33:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FB129B783;
+	Mon, 25 Aug 2025 22:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756161234; cv=none; b=dJF/8s+CxsakBX6WRHbNLqic2cQhirfaxGmLVpCLftyJUqmFZllPkX6W7dWJRPSMQ9/llyBYPVAh14qFEg/bXqW+nhWpPuyLEuDbfjHqgMmPhd/6WnRdKbvWYQaATK0znoXoJkGyIKzFlT7PTabS3mnnB6oR8mES16vnT30U+rI=
+	t=1756161453; cv=none; b=FuXvVyJb97cCkBpMYQzy/veXYuqbfUC2wwsINMZ9L4BLVOgSdDS+n7/eF3DTEJ+4jDHPTvY3FCu+MIzFFt5pVdt7KwNcdGL79M79qcFLxZSCoWkikTh2G5PXnj6iM0hMHMSB0Hakn95K1SLnWaw2E8fHgbaIMuJ1E9ehKkJqXqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756161234; c=relaxed/simple;
-	bh=hKdSvLo2bz8p72OWEP0hZUcMo6Klib216DabiEfHw7o=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=XxLDmpgVNchvk9eVXQzWCKeO0Mk2UiGrJFj7kWJWo1R2DIUeIzFefkJxgGFhINmLb3QdIYH/hNrYzxIsJdbHar3KlvwZLJzGv6irmbo47/S+xWi14HnPmVFZZDIglVW5/TWGhtk794ylq7uRYVCWQNN6vm50HPAU7vQPK1tMIGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jiaqiyan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=beSoNAHn; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jiaqiyan.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-325b2959306so2275385a91.0
-        for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 15:33:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756161232; x=1756766032; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=IChvdfBS9wMpenq+Mm5AVlJVJMnn9aA/VrNPYUMhdCQ=;
-        b=beSoNAHnIO4vFndwK2CvE6X/XRKIppDX9S9P+bkyWpHUF/vYPGyGXEmxcjKXt6xaQB
-         KvTLygdMGs4qWWD8hlQ2fuzeQD8+PUFIUloy+/V2V9TmT/U1Rrb+mc3X1yvvhTocuuXl
-         7HDPZeVl1HXs+8dg2l/7lBxT0wn4nMIsL3a1RuhNXIhlieTpvKmu+oT/mUB5q0bsD3d1
-         gfu0x+6HrKUgn54jozDAqvLhqfKQQ9kk6b2iDK/B8J0Q69pDdj/cBfZhbw+HhTp/jC72
-         t8WeS9mKrkS8BoEPgI7tPDEYZwQIZsioidjqsMIcHji3SuV4GBa7dZdYgp9Ce25c0qJ3
-         2+Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756161232; x=1756766032;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IChvdfBS9wMpenq+Mm5AVlJVJMnn9aA/VrNPYUMhdCQ=;
-        b=vda+MraiwoqSLy4Gk1Jtzu3Fmqrm8Tr9A7BFE7CxB4rww+HyFNb1joSZqPbuiD1sri
-         pCiCRJdjgQr79A2RkM2CP7cXMkeTMOv42FlU9JtoEuskVq/mzeMyIxMWjCfbQLR3Fmc5
-         tefoIskPsGfrulhdS5Eikyrz244rk0zxnhnXJpWg8VIWmKTCHZNNPbIoJGfpSRm9/L7m
-         ymYLFzSubNxYuHngoCthVT5yCpQJUbpFfDMVDt+PDk+MbKY6KIMTABFy+LGPw4NQBp9B
-         g3xnn8/9eicTablrekCM11qXveediPHowj93wYyLT/vSL8kizlx7fx/hH5rKY028Wtta
-         oSuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX9XaUKoVQMPUiFbvXMKr/m5yGBMet1UD0LtdYbRe8jEj18wdgvav+XoQNtf8BtWTRL1VxH9h654mGx@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxjO4qgDRajSj9q0KE6iLUHVfdvBNPEG/eUuEwhZ+Kugx5vAia
-	swB2qHAytD+a1NsMO1pQCdjEjlDSq8bzWqPdORRq/jOuUqI7AQp8LPL+TVgN+xN+6ut5n7Vvex4
-	t2c/7jNDoXrFAig==
-X-Google-Smtp-Source: AGHT+IEVLiKUIeoBjyCsebxXipdFCCm06uPKusjXHZml8E70gNBEvvQ39nsMgG+SkIFJcsC3llllB4E4mvNVOw==
-X-Received: from pjkk5.prod.google.com ([2002:a17:90b:57e5:b0:325:9fa7:5d07])
- (user=jiaqiyan job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4c45:b0:31f:b51:eef9 with SMTP id 98e67ed59e1d1-3251774b612mr17865676a91.17.1756161232239;
- Mon, 25 Aug 2025 15:33:52 -0700 (PDT)
-Date: Mon, 25 Aug 2025 22:33:48 +0000
+	s=arc-20240116; t=1756161453; c=relaxed/simple;
+	bh=bRkID7EIJJq/oVofnIksYjaHn0Ek+raLoQLfxWEpfD8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=QKpd9V/gyA1Si6Jh2a3EXNmkYEK+0IgjbZqewlUwdrU3+foyVgVLsyUePWF2bwcFDMXyIxBUmsXnsMhIDxprLr0G/7T1ul/0aL2VDJhXUfbnE/X0JqcdgYnmvl7gOZLZ43q0MiuL3AHocuzlvg1OEz6IWFkBskLuVeuhy5bC44E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VV0wD93P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC616C4CEED;
+	Mon, 25 Aug 2025 22:37:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756161453;
+	bh=bRkID7EIJJq/oVofnIksYjaHn0Ek+raLoQLfxWEpfD8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=VV0wD93P0JrXAib+Kml9Hd2JmfWNiO0OC1wqOEkheIbjoBeNUd7zva+/Za4mi4K7N
+	 d8tG9O+NaiKChGDpDSgykFtVIHbmQuc+eupg4Zj45SIehdT+9MzQnE3p/v9hbFVSiT
+	 6ky+cGvJ3LLDP8oIkx4JxnjhSh0Fd1iBC4tx37XLf3av3z3GUk+JMvFq7zyCLUCBdE
+	 VQOYtoD5bUUrVvOq9kZ3x3T97go7j6kiDZ3UU7aEM5x17p9dPT3+82O/fdYcKNRRTa
+	 Jxz3TVdmr0JFA7nA7tFx6YXxvZQv3pbE0Orbo9zjcuhPtRkc6icdayN7yvta9LyUoh
+	 WJWrUqapTc2tw==
+Date: Mon, 25 Aug 2025 17:37:31 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Nirmoy Das <nirmoyd@nvidia.com>
+Cc: linux-acpi@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Vidya Sagar <vidyas@nvidia.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ACPI/PCI: Fix memory leak fix in pci_acpi_preserve_config
+Message-ID: <20250825223731.GA808746@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.268.g9569e192d0-goog
-Message-ID: <20250825223348.3780279-1-jiaqiyan@google.com>
-Subject: [PATCH v1] ACPI: APEI: EINJ: Allow injection on legacy persistent memory
-From: Jiaqi Yan <jiaqiyan@google.com>
-To: tony.luck@intel.com, rafael@kernel.org
-Cc: bp@alien8.de, guohanjun@huawei.com, mchehab@kernel.org, 
-	xueshuai@linux.alibaba.com, linux-acpi@vger.kernel.org, 
-	Jiaqi Yan <jiaqiyan@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250825214642.142135-1-nirmoyd@nvidia.com>
 
-Legacy persistent memory, e.g. Device DAX configured like the following
+On Mon, Aug 25, 2025 at 02:46:42PM -0700, Nirmoy Das wrote:
+> The pci_acpi_preserve_config() function is leaking memory by returning
+> early without freeing the ACPI object on success. Fix that by always
+> freeing the obj which is not needed by the caller.
+> 
+> Fixes: 9d7d5db8e78e ("PCI: Move PRESERVE_BOOT_CONFIG _DSM evaluation to pci_register_host_bridge()")
+> Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
 
-  440000000-303fffffff : Persistent Memory (legacy)
-      440000000-47fffffff : dax1.0
-      480000000-4bfffffff : dax2.0
-      4c0000000-4ffffffff : dax3.0
-      500000000-53fffffff : dax4.0
-      ...
+Applied to pci/misc for v6.18, thanks!
 
-can support recover from Machine Check Exception due to memory failure.
-Therefore there is need to test it by injecting memory error
-using EINJ to legacy persistent memory.
-
-However, current EINJ only check if physical address falls into the
-IORES_DESC_PERSISTENT_MEMORY_LEGACY region. So attempt to inject
-error to "Persistent Memory (legacy)" fails with -EINVAL.
-
-Allow EINJ to inject at physical address belongin to
-IORES_DESC_PERSISTENT_MEMORY_LEGACY.
-
-Tested on a machine configured with Device DAX:
-  memmap=4G!12G nd_e820.pmem=12G,4G,mode=fsdax memmap=176G!17G
-  nd_e820.pmem=17G,1G,mode=devdax,align=1G memmap=176G!209G
-  nd_e820.pmem=209G,1G,mode=devdax,align=1G memmap=176G!401G
-  nd_e820.pmem=401G,1G,mode=devdax,align=1G memmap=176G!593G
-  nd_e820.pmem=593G,1G,mode=devdax,align=1G
-
-Injected error at 0x35238d2000, within Device DAX region and
-allocated to a userspace test process. EINJ driver now issue the
-injection request to firmware, and firmware logs shows injection
-at 0x35238d2000 succeeded. The userspace test process then
-accessed 0x35238d2000, caused a MCE, and killed by SIGBUS.
-
-Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
----
- drivers/acpi/apei/einj-core.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
-index 2561b045acc7b..e746fa66f92ff 100644
---- a/drivers/acpi/apei/einj-core.c
-+++ b/drivers/acpi/apei/einj-core.c
-@@ -712,6 +712,8 @@ int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2, u64 param3,
- 				!= REGION_INTERSECTS) &&
- 	     (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DESC_PERSISTENT_MEMORY)
- 				!= REGION_INTERSECTS) &&
-+	     (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DESC_PERSISTENT_MEMORY_LEGACY)
-+				!= REGION_INTERSECTS) &&
- 	     (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DESC_SOFT_RESERVED)
- 				!= REGION_INTERSECTS) &&
- 	     !arch_is_platform_page(base_addr)))
--- 
-2.51.0.268.g9569e192d0-goog
-
+> ---
+>  drivers/pci/pci-acpi.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+> index ddb25960ea47d..9369377725fa0 100644
+> --- a/drivers/pci/pci-acpi.c
+> +++ b/drivers/pci/pci-acpi.c
+> @@ -122,6 +122,8 @@ phys_addr_t acpi_pci_root_get_mcfg_addr(acpi_handle handle)
+>  
+>  bool pci_acpi_preserve_config(struct pci_host_bridge *host_bridge)
+>  {
+> +	bool ret = false;
+> +
+>  	if (ACPI_HANDLE(&host_bridge->dev)) {
+>  		union acpi_object *obj;
+>  
+> @@ -135,11 +137,11 @@ bool pci_acpi_preserve_config(struct pci_host_bridge *host_bridge)
+>  					      1, DSM_PCI_PRESERVE_BOOT_CONFIG,
+>  					      NULL, ACPI_TYPE_INTEGER);
+>  		if (obj && obj->integer.value == 0)
+> -			return true;
+> +			ret = true;
+>  		ACPI_FREE(obj);
+>  	}
+>  
+> -	return false;
+> +	return ret;
+>  }
+>  
+>  /* _HPX PCI Setting Record (Type 0); same as _HPP */
+> -- 
+> 2.43.0
+> 
 
