@@ -1,197 +1,428 @@
-Return-Path: <linux-acpi+bounces-16010-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16011-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B52B33B4D
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 11:40:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6918B33E00
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 13:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C600B177B89
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 09:40:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16CA6189F514
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 11:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FAD2D0611;
-	Mon, 25 Aug 2025 09:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5724E2D9EDC;
+	Mon, 25 Aug 2025 11:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="SC7bCRpG";
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b="hWMraJX3"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WFeXTt5t"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8922C3756;
-	Mon, 25 Aug 2025 09:40:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.149.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756114827; cv=fail; b=DyOhsr9mRRRtNk5cZglxdhWO3B6Ew0pCaqj4oF7M89AMHY6MF6Z8usJwV0OPgflYmYef4930RIqODZ8tVH1tXN7CY0z+UXs5H6HUxE3xc7Ys4nEMH6RSiAfZHO7gkbJqDOCdCxfW4zT4xH32MQhqM9a6tzyagMPP1ETM/BDns9o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756114827; c=relaxed/simple;
-	bh=bBZjP1ZteDJZXJFe4Q5GKKm8vkDfS9DvqKWNMBoOdCs=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEE42E9738;
+	Mon, 25 Aug 2025 11:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756121417; cv=none; b=GJABoiXEpz73ZY2KQpexAHoNol6cvzbTJhcwc/Yh73UQsb86JOQVXoF3kwQxbuOwWd/FmrCzuo6nGh9OMujj5v2iaQa6djKWu8TegGIVpXGGUlbEz8O+4N+fl+ojoDHmMxuWvxwKlaQSVTTEC5JFhOrR0T5sGaYuh8L6pYX44kQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756121417; c=relaxed/simple;
+	bh=G6t0vi9alebHFBK5rvhbgaNL3riXc5sqA04gp+fkOnA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oUbxOXDynMw778ET7gz9ARvEjou5w1FyL4jj1MkMCAOi+HC8Fvn2HhjpU/9+HNMAdjCxwgRjUALYuWfLjdY2g8uO9FAzuukQ+u/15MkuDzN4gajXOcTbL+X+1CiS2w+BwxpKRWxmq0JkCXEXzTrbnvpO6T/gXv8AEO8suKqPsJ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=SC7bCRpG; dkim=fail (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b=hWMraJX3 reason="signature verification failed"; arc=fail smtp.client-ip=67.231.149.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-	by mx0a-001ae601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 57P48FNC102372;
-	Mon, 25 Aug 2025 04:40:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	PODMain02222019; bh=yh0lSvSZRjOFRRePI8Jmy8HHdoPKox4MBryQK2tfXKQ=; b=
-	SC7bCRpG6wMMxeGXD/n0i6yWxVyGlSb4wHZ4ARgNK15rMDHUHiuOQ4esHmQsgxjm
-	Y3qTQ58EnExLNQlW/cw4wmLDBUj9qmWZuLJln8DmTcvIlpXEgo645YVxQfynBRBW
-	8lv1/nTQzhO0nSq1YjcYauDjVQKvU8VLh3SEEViMUtgPpPOA449ZUH5nhjqOPrt5
-	7YZhhm4OnGi0UwhNh08iiLDAyOT03U9ZCRLBRa6hok8oWkJjTuxZVsKG1sIOgDQQ
-	Diz61dwsJP7YtQw1gtOKSr9ooNQrWMwo8kv5fSniprf+faQnH/vBfRh4oXgpSgcD
-	WihQ7LVk5bIoGsPRgJMfVQ==
-Received: from nam04-dm6-obe.outbound.protection.outlook.com (mail-dm6nam04on2090.outbound.protection.outlook.com [40.107.102.90])
-	by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 48qb209y3j-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 25 Aug 2025 04:40:10 -0500 (CDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IzBHZkKhNKPpAVanNtEK3q42GgCOAjHpLgpOlJAAxX/YqPCYsQv6/uZoCfu6c6xBCtw+VGgU/51LCmF16QUGwQnhArUFrgc5NjVKG/GLUOpYwiZ5rcceFei3RlTWjm6qlO4BlaHPWVXqwkofXc1NrG/Vxa0WbPJeAlWChyuTHlhBifiVl+oix4yg53LZOdd4Sfo8FUh3yDzWdhEQQBJwZsvsgMCBQ/UFWrsTkyYt8SL7oesnHv6PjyT0mRELY/7wQ8N9XJz9IKCRmsp9PDLpTznJbKGEZ13pSXeFHSE772sogg/qoEjgX0UXIZThL4nStT5xQo0xT+FRjr4+KDCi/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P2i6xD8B1akasXK+kf5JNEQWSIjJ05NgS5X962ladtM=;
- b=O99ui+FkToXE2WKNHuhIspNKiqbSzJyuq+CWkBbh/L7CJmuUEkIGmdyxGUe3aLfq0c4mPr2Ksd8TFzTXUrIIXmsLrFDsrgorISzV6sRlIWwLYogLYBPu0Tn24luCk/LFjRuTpsr/g7Glog4BuJ5AHXmz0jLIqlzf14QF/Lo/Wxj+HtyYouanHsv9IMeWC8eM6DlZqO5B9xlLlKbII30BvTxxrcNmfiQXLD2HIzEwir/l4UWFu/IKPSCX41dCxC/yGz4XHgXmLxKnEG3WxbaEUgz+it/OwZw7D242Vc6nVVj8P3MOarSgTIQFP0ssgqpOV8/5H4lRuuCI6RfQ2fNoNg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 84.19.233.75) smtp.rcpttodomain=cirrus.com
- smtp.mailfrom=opensource.cirrus.com; dmarc=fail (p=reject sp=reject pct=100)
- action=oreject header.from=opensource.cirrus.com; dkim=none (message not
- signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cirrus4.onmicrosoft.com; s=selector2-cirrus4-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P2i6xD8B1akasXK+kf5JNEQWSIjJ05NgS5X962ladtM=;
- b=hWMraJX3J9beGizto0dtgFzax7Xj8zYyDE6MyHhi1vInTPlMI7qpfyWK0TmvFGykK5k0XgcvDptQe5ozUhJB1HN+YRSW8DnZfXO9p+JQOS5OlO/CvseUC02QAoAdu5Ve25EsjW5kymNgUdyCQ8NOY/AXrxaPVlWhiN9+c9P/pHY=
-Received: from MW4PR03CA0050.namprd03.prod.outlook.com (2603:10b6:303:8e::25)
- by LV3PR19MB8478.namprd19.prod.outlook.com (2603:10b6:408:212::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.19; Mon, 25 Aug
- 2025 09:40:06 +0000
-Received: from CO1PEPF000075F1.namprd03.prod.outlook.com
- (2603:10b6:303:8e:cafe::82) by MW4PR03CA0050.outlook.office365.com
- (2603:10b6:303:8e::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.21 via Frontend Transport; Mon,
- 25 Aug 2025 09:40:06 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 84.19.233.75)
- smtp.mailfrom=opensource.cirrus.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=oreject header.from=opensource.cirrus.com;
-Received-SPF: Fail (protection.outlook.com: domain of opensource.cirrus.com
- does not designate 84.19.233.75 as permitted sender)
- receiver=protection.outlook.com; client-ip=84.19.233.75;
- helo=edirelay1.ad.cirrus.com;
-Received: from edirelay1.ad.cirrus.com (84.19.233.75) by
- CO1PEPF000075F1.mail.protection.outlook.com (10.167.249.40) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.11
- via Frontend Transport; Mon, 25 Aug 2025 09:40:04 +0000
-Received: from ediswmail9.ad.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
-	by edirelay1.ad.cirrus.com (Postfix) with ESMTPS id C5A8E406547;
-	Mon, 25 Aug 2025 09:40:02 +0000 (UTC)
-Received: from opensource.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPSA id A1C6E82024A;
-	Mon, 25 Aug 2025 09:40:02 +0000 (UTC)
-Date: Mon, 25 Aug 2025 10:40:01 +0100
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
-To: Maciej Strozek <mstrozek@opensource.cirrus.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-        Robert Moore <robert.moore@intel.com>, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev,
-        patches@opensource.cirrus.com
-Subject: Re: [PATCH v3] ACPICA: Add SoundWire File Table (SWFT) signature
-Message-ID: <aKwvcaCGuKGCXosa@opensource.cirrus.com>
-References: <20250811134505.1162661-1-mstrozek@opensource.cirrus.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=T8aGpn1hnaRpNNxqkM66zPZBHQ+FtgyrmCULUCKHRGmAEpGEvCRVdcjTpGqLN44CAiXPXbgwAYdScVyOByonjCwk2vS1LFPhdIJ1jjvpG49fqmpBM4F0WJR6ZOh9kGzi+zKimWDfchibR8IodgZU0jJm+X+qgW2bsb9cdRVI888=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WFeXTt5t; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57PAuFQ1016927;
+	Mon, 25 Aug 2025 11:29:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=pZVH01D2Gd/ZuxBDWHvMdhmbI57qiN
+	XppeatopYJClM=; b=WFeXTt5tlq7bvmFwDwurN2gxIAJS4Sbtzub9xJRMuUUCWG
+	dnN+VgZwrU+C7OAoBOS7dQLtS9avFToeFD88Xjc+lW70Zit8RLPH2JZHPbK7MHxb
+	v0D+pVyzXtrwYQl3kI+QLZ7QQLNBqOFnM1k0uGpSZ1+CyNFOS702oVm2UXUhr26g
+	QqYmWP5K4me05w/KlbcV8jlyClHMpN0GwiL9exsIxxhhvb59HKuryvQ6LoqGJJOX
+	azP5+JccDMK8pigXUHrrcngDK4tPx7KmxBkljdhf7EI3Ims4+KAlu4PkVvsOtnHJ
+	SJYiHaa74A1UrHZh5hhabVWUJ/85+yELHuGX+z6g==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5av8jkr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 11:29:07 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57PBJCuS013823;
+	Mon, 25 Aug 2025 11:29:06 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5av8jkq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 11:29:06 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57PB3VZR002512;
+	Mon, 25 Aug 2025 11:29:05 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 48qt6m5am6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 11:29:05 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57PBT3gH52166968
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 25 Aug 2025 11:29:03 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 971AE20043;
+	Mon, 25 Aug 2025 11:29:03 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C97EF20040;
+	Mon, 25 Aug 2025 11:28:50 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.98.110.17])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 25 Aug 2025 11:28:50 +0000 (GMT)
+Date: Mon, 25 Aug 2025 16:58:48 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Markus Mayer <mmayer@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tursulin@ursulin.net>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Daniel Lezcano <daniel.lezcano@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+        Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        zhenglifeng <zhenglifeng1@huawei.com>,
+        "H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>,
+        Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Lukasz Luba <lukasz.luba@arm.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Beata Michalska <beata.michalska@arm.com>,
+        Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+        Sumit Gupta <sumitg@nvidia.com>,
+        Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
+        x86@kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        imx@lists.linux.dev, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] cpufreq: use __free() for all cpufreq_cpu_get()
+ references
+Message-ID: <aKxI8D5mgLRyydb3@li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com>
+References: <20250825092833.42441-1-zhangzihuan@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250811134505.1162661-1-mstrozek@opensource.cirrus.com>
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000075F1:EE_|LV3PR19MB8478:EE_
-X-MS-Office365-Filtering-Correlation-Id: c131b913-1477-4007-9ba6-08dde3bb5ec4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|61400799027|376014|36860700013|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?n8jK2mY5HJJemiB5hX6d8b3ZLFewtOcvpVGZiKvDOZ0qsXI8zSAqSVdhH0?=
- =?iso-8859-1?Q?vaNy9oDQv5uNbsdtC95B4q6ku+HvcgMgkgz5XfioayvUybWAep/Rtyj5Xy?=
- =?iso-8859-1?Q?erd27Mx3T5tKTsnGyTFadKs0mxN+zJhXsuhOJ5dKBQiCIt5agoSYXTkl0o?=
- =?iso-8859-1?Q?loQeKHwwm87iArjJpuIwmd0xv2ZrOdwyv6miGHQlBhDocw/dL9EtbROELu?=
- =?iso-8859-1?Q?8dDC+T6hq2HFBYBvxnOQN80LLcQY6IXSa3E1iYXHTKZJEhpjZfbwXR+rG0?=
- =?iso-8859-1?Q?qN718YIFgV1sGiWKskit4BcWoYQs9n/oJKJCebLLiW7n2YCmIayP2CQt03?=
- =?iso-8859-1?Q?Sq++cMjKjlklHlsRtn/4RklN8r354OaS7eVh8aoj7w0BoWK3SbjWpx+Bqj?=
- =?iso-8859-1?Q?xtN1yOKVuOSWpGIStpMW2rpr8VNFQNN86tlGHvX2yy6jHU1PGjPCoPyuDC?=
- =?iso-8859-1?Q?yl19Tfrg5SoNezxe6cQCgURbF5x5X/oN39EjC44+Aeku0CLEk3HNsyz9NJ?=
- =?iso-8859-1?Q?wnw+UvZ1HSAvpfjsiw4AwYcUHqlqGG6QlLEIwQXCSTZ+4qLT62mKOJl97u?=
- =?iso-8859-1?Q?BaA+6OnXQOAeJGzNVfd4sMzVvIFMiJvKydboo/nQkkob+0oJ/MxWvdIMh2?=
- =?iso-8859-1?Q?XX1eU8+c+D9fL8Jp6z5VONX9n1OBzVKudCH9HpGLtYo05hxjXxonjzvKWl?=
- =?iso-8859-1?Q?f/gv2WxUuTgY6cBuDAMNm9nOdIzcAL+DAoeZgFdFJp3Xq0AOilPc43YQB/?=
- =?iso-8859-1?Q?LrOAfa/Ay7iRt44WXwLIUcYM2+0lK9p0EJ7niK4nJ36PFOeZV6h9z2egUr?=
- =?iso-8859-1?Q?KyBMN2kplufj14orGm4XpXx7l2CvMm8Zsk/cZM+UApgBhTWudq78B2frCM?=
- =?iso-8859-1?Q?xhRmohg+U+TM/APc/H3RXxVJyhiY2Kl7idxuqBlHH1iUeCRfV+xn77dieA?=
- =?iso-8859-1?Q?GwxhrMIynG2FFhKZo6nF1upl3K1E8oJQ6d2IRu57s00HSyerGdDgRAPZBI?=
- =?iso-8859-1?Q?u8K5R6S7jJRk4jHCna0qu9g7YgqvLBBEmUNu4sJ+Kgek1i6P96kAyLVTSS?=
- =?iso-8859-1?Q?/FkFVq5yAA8AzNySXjdde0u+mCcmpv7K0NZq0zOQ3Rf+KFoh52gd5vv53e?=
- =?iso-8859-1?Q?DsoKsM1a6uw9x3vkdExV+HZx1QqW22WSHfo084R0W684hm044mKhNxJ2df?=
- =?iso-8859-1?Q?xfwqt1pqZV+Oz3zGJq4D91Y4ZUnVRuvY/SIjj8W8u2GlKdUFW+63tEgKVC?=
- =?iso-8859-1?Q?4O3zIyeeoLXjqMu9PI7EsxsJx+dB6XdOK+tcbcp/T6v2OOi4BxMZhLXDq4?=
- =?iso-8859-1?Q?7NzqzjICGMl17w1fnocm+/eWKg2ZWGQB7iQzOVpY/2+j10KYQyrgGdbzOT?=
- =?iso-8859-1?Q?8pCHK79QkY/8dWHj3jiF+TTciU0xmWsXQgjSzUaXeeYiuCr53sDmYHdGlM?=
- =?iso-8859-1?Q?rWow4isG2tQGCBazn3ET8dco/WwlxeZs1f418DSGF/p5CBNItuRBYUSDUt?=
- =?iso-8859-1?Q?xzKHmQrdm1f0Q1piq6XKTjmGnqHviNoAaWjJukCIOymA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:84.19.233.75;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:edirelay1.ad.cirrus.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(82310400026)(61400799027)(376014)(36860700013)(13003099007);DIR:OUT;SFP:1102;
-X-OriginatorOrg: opensource.cirrus.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2025 09:40:04.1536
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c131b913-1477-4007-9ba6-08dde3bb5ec4
-X-MS-Exchange-CrossTenant-Id: bec09025-e5bc-40d1-a355-8e955c307de8
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bec09025-e5bc-40d1-a355-8e955c307de8;Ip=[84.19.233.75];Helo=[edirelay1.ad.cirrus.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000075F1.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR19MB8478
-X-Authority-Analysis: v=2.4 cv=GbkXnRXL c=1 sm=1 tr=0 ts=68ac2f7a cx=c_pps
- a=OkheQ7YMNxSF7aQwypjV+w==:117 a=h1hSm8JtM9GN1ddwPAif2w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=8nJEP1OIZ-IA:10 a=2OwXVqhp2XgA:10
- a=RWc_ulEos4gA:10 a=NEAV23lmAAAA:8 a=w1d2syhTAAAA:8 a=JQJDhRPD3OthYt_GnVkA:9
- a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI1MDA4NiBTYWx0ZWRfX/7HRzKq5/RF2
- DqTSdPTt1al6f1G0b3rMntH/9fJehrjY4KU0S0QT5e3sC9eVXBrA92+MmQ3Ry46d4zFAl9vFWzi
- TgZkdBvJLjCc+Qu5A/NEiYcYPNMcv7Adz77SClQFy3ppXvhFKpFEBWuoW73p/YIAGk1XXWBngD9
- lhKhlTjgugi42is02lkNuAHMklXg0NAcHE7UzGJX3Oq0vxJ+R6y4FjDCoX1E5RqNO3r9tyQl5mO
- ttZdnXQTgai0mfyQtrlEP+Y8n9Hyhkpmqxs2XCqUgfJjyK0X5Dypsa6RxVCARyhzmS2klI1qLM5
- ZRG/Zm36Ad9brpN2fYFk0ql+/8U/EkVsE9+gkedoIckQJOG5/mDD67PeX6vL58=
-X-Proofpoint-ORIG-GUID: T2FXsJZzuDvvbrDaJ9lej9uSyeOhq22Z
-X-Proofpoint-GUID: T2FXsJZzuDvvbrDaJ9lej9uSyeOhq22Z
-X-Proofpoint-Spam-Reason: safe
+In-Reply-To: <20250825092833.42441-1-zhangzihuan@kylinos.cn>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 0HsQaFGcKHYEMjGxfTSlUJWF6XneJCL9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAyMSBTYWx0ZWRfX/4+yCBHiZkyj
+ BezOHO0JD1p7OO2PV8xmQ1v5shFYKr21Uw1c2F4fW4uXyPCsxOE6ILKOy08exTWUNA73a36dDQc
+ c4y6wbPoU5LvDYQlXlcAhPLqk3LFWCLZ3dICMLqR2WHDlet2Ldgi5be5Hduqsg6kr8/WbswzYXj
+ eL+wfLc/Jeqecx6jg74QDQFlvafBQN6LUG8LrX8tqwzhzd9GgzIeu7kk/N0P/CWyJHwlrc5PIUz
+ Z4q/fYjm6PpSFTkG5SI7ARvGOK+wODTfBZnnKDnPI4C3Bn1Qhf3Y6EvQDrYoSo6dxKELAUhByqt
+ uCcp7lr/HsMOwiulBYsJ81MWSKnZa8+YC9DKTxtqevYNdz87q6XWFXB9AUbfcQ36nGSAmLoiq7W
+ P4ME2Djp
+X-Proofpoint-ORIG-GUID: gtLwqruV6tGzAQkR_fGqnCUDyXx-v5l-
+X-Authority-Analysis: v=2.4 cv=SNNCVPvH c=1 sm=1 tr=0 ts=68ac4903 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=2OwXVqhp2XgA:10 a=I94fdbTdu9Vpa8W20_wA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-25_05,2025-08-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 bulkscore=0 phishscore=0 clxscore=1011
+ impostorscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230021
 
-On Mon, Aug 11, 2025 at 02:45:05PM +0100, Maciej Strozek wrote:
-> The File Download (FDL) process of SoundWire Class Audio (SDCA) driver,
-> which provides code/data which may be required by an SDCA device,
-> utilizes SWFT to obtain that code/data. There is a single SWFT for the
-> system, and SWFT can contain multiple files (information about the file
-> as well as its binary contents). The SWFT has a standard ACPI Descriptor
-> Table Header, followed by SoundWire File definitions as described in
-> Discovery and Configuration (DisCo) Specification for SoundWire®
+On Mon, Aug 25, 2025 at 05:28:33PM +0800, Zihuan Zhang wrote:
+> This patch replaces all remaining uses of cpufreq_cpu_get() with
+> the __free(cpufreq_cpu_put) annotation.
 > 
-> Link: https://github.com/acpica/acpica/commit/18c96022
-> Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
+> Motivation:
+> - Ensures automatic cleanup of policy references when they go out of scope,
+>   reducing the risk of forgetting to call cpufreq_cpu_put() on early return
+>   or error paths.
+> - Brings the code in line with the latest kernel coding style and best
+>   practices for managing reference-counted objects.
+> - No functional changes are introduced; behavior remains the same,
+>   but reference counting is now safer and easier to maintain.
+> 
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 > ---
+>  arch/arm64/kernel/topology.c                  |  9 +++----
+>  arch/x86/kvm/x86.c                            | 10 ++++----
+>  drivers/acpi/processor_thermal.c              | 13 ++++------
+>  drivers/cpufreq/brcmstb-avs-cpufreq.c         |  4 +---
+>  drivers/cpufreq/cppc_cpufreq.c                |  4 +---
+>  drivers/cpufreq/intel_pstate.c                |  3 +--
+>  drivers/cpufreq/longhaul.c                    |  3 +--
+>  drivers/cpufreq/mediatek-cpufreq.c            |  6 ++---
+>  drivers/cpufreq/powernv-cpufreq.c             |  6 ++---
+>  drivers/cpufreq/s5pv210-cpufreq.c             |  3 +--
+>  drivers/cpufreq/tegra186-cpufreq.c            |  3 +--
+>  drivers/devfreq/governor_passive.c            | 19 ++++-----------
+>  drivers/gpu/drm/i915/gt/intel_llc.c           |  3 +--
+>  drivers/macintosh/windfarm_cpufreq_clamp.c    |  4 +---
+>  drivers/powercap/dtpm_cpu.c                   | 24 ++++++-------------
+>  drivers/thermal/imx_thermal.c                 |  7 ++----
+>  .../ti-soc-thermal/ti-thermal-common.c        |  5 +---
+>  kernel/power/energy_model.c                   |  7 ++----
+>  18 files changed, 40 insertions(+), 93 deletions(-)
+> 
+> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+> index 5d07ee85bdae..e3cb6d54f35b 100644
+> --- a/arch/arm64/kernel/topology.c
+> +++ b/arch/arm64/kernel/topology.c
+> @@ -307,17 +307,16 @@ int arch_freq_get_on_cpu(int cpu)
+>  		 */
+>  		if (!housekeeping_cpu(cpu, HK_TYPE_TICK) ||
+>  		    time_is_before_jiffies(last_update + msecs_to_jiffies(AMU_SAMPLE_EXP_MS))) {
+> -			struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  			int ref_cpu;
+>  
+> +			policy = cpufreq_cpu_get(cpu);
+>  			if (!policy)
+>  				return -EINVAL;
+>  
+>  			if (!cpumask_intersects(policy->related_cpus,
+> -						housekeeping_cpumask(HK_TYPE_TICK))) {
+> -				cpufreq_cpu_put(policy);
+> +						housekeeping_cpumask(HK_TYPE_TICK)))
+>  				return -EOPNOTSUPP;
+> -			}
+>  
+>  			for_each_cpu_wrap(ref_cpu, policy->cpus, cpu + 1) {
+>  				if (ref_cpu == start_cpu) {
+> @@ -329,8 +328,6 @@ int arch_freq_get_on_cpu(int cpu)
+>  					break;
+>  			}
+>  
+> -			cpufreq_cpu_put(policy);
+> -
+>  			if (ref_cpu >= nr_cpu_ids)
+>  				/* No alternative to pull info from */
+>  				return -EAGAIN;
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index a1c49bc681c4..2a825f4ec701 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -9492,16 +9492,14 @@ static void kvm_timer_init(void)
+>  		max_tsc_khz = tsc_khz;
+>  
+>  		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
+> -			struct cpufreq_policy *policy;
+> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  			int cpu;
+>  
+>  			cpu = get_cpu();
+>  			policy = cpufreq_cpu_get(cpu);
+> -			if (policy) {
+> -				if (policy->cpuinfo.max_freq)
+> -					max_tsc_khz = policy->cpuinfo.max_freq;
+> -				cpufreq_cpu_put(policy);
+> -			}
+> +			if (policy && policy->cpuinfo.max_freq)
+> +				max_tsc_khz = policy->cpuinfo.max_freq;
+> +
+>  			put_cpu();
+>  		}
+>  		cpufreq_register_notifier(&kvmclock_cpufreq_notifier_block,
+> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_thermal.c
+> index 1219adb11ab9..8367a81c4842 100644
+> --- a/drivers/acpi/processor_thermal.c
+> +++ b/drivers/acpi/processor_thermal.c
+> @@ -64,17 +64,14 @@ static int phys_package_first_cpu(int cpu)
+>  
+>  static int cpu_has_cpufreq(unsigned int cpu)
+>  {
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  
+>  	if (!acpi_processor_cpufreq_init)
+>  		return 0;
+>  
+>  	policy = cpufreq_cpu_get(cpu);
+> -	if (policy) {
+> -		cpufreq_cpu_put(policy);
+> -		return 1;
+> -	}
+> -	return 0;
+> +
+> +	return !!policy;
+>  }
+>  
+>  static int cpufreq_get_max_state(unsigned int cpu)
+> @@ -95,7 +92,7 @@ static int cpufreq_get_cur_state(unsigned int cpu)
+>  
+>  static int cpufreq_set_cur_state(unsigned int cpu, int state)
+>  {
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  	struct acpi_processor *pr;
+>  	unsigned long max_freq;
+>  	int i, ret;
+> @@ -127,8 +124,6 @@ static int cpufreq_set_cur_state(unsigned int cpu, int state)
+>  		max_freq = (policy->cpuinfo.max_freq *
+>  			    (100 - reduction_step(i) * cpufreq_thermal_reduction_pctg)) / 100;
+>  
+> -		cpufreq_cpu_put(policy);
+> -
+>  		ret = freq_qos_update_request(&pr->thermal_req, max_freq);
+>  		if (ret < 0) {
+>  			pr_warn("Failed to update thermal freq constraint: CPU%d (%d)\n",
+> diff --git a/drivers/cpufreq/brcmstb-avs-cpufreq.c b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+> index 5940d262374f..71450cca8e9f 100644
+> --- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
+> +++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+> @@ -480,7 +480,7 @@ static bool brcm_avs_is_firmware_loaded(struct private_data *priv)
+>  
+>  static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
+>  {
+> -	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
+>  	struct private_data *priv;
+>  
+>  	if (!policy)
+> @@ -488,8 +488,6 @@ static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
+>  
+>  	priv = policy->driver_data;
+>  
+> -	cpufreq_cpu_put(policy);
+> -
+>  	return brcm_avs_get_frequency(priv->base);
+>  }
+>  
+> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+> index 4a17162a392d..7183754b1f31 100644
+> --- a/drivers/cpufreq/cppc_cpufreq.c
+> +++ b/drivers/cpufreq/cppc_cpufreq.c
+> @@ -726,7 +726,7 @@ static int cppc_get_perf_ctrs_sample(int cpu,
+>  static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+>  {
+>  	struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
+> -	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
+>  	struct cppc_cpudata *cpu_data;
+>  	u64 delivered_perf;
+>  	int ret;
+> @@ -736,8 +736,6 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+>  
+>  	cpu_data = policy->driver_data;
+>  
+> -	cpufreq_cpu_put(policy);
+> -
+>  	ret = cppc_get_perf_ctrs_sample(cpu, &fb_ctrs_t0, &fb_ctrs_t1);
+>  	if (ret) {
+>  		if (ret == -EFAULT)
+> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+> index f366d35c5840..fb962140af56 100644
+> --- a/drivers/cpufreq/intel_pstate.c
+> +++ b/drivers/cpufreq/intel_pstate.c
+> @@ -1698,7 +1698,7 @@ static ssize_t store_no_turbo(struct kobject *a, struct kobj_attribute *b,
+>  static void update_qos_request(enum freq_qos_req_type type)
+>  {
+>  	struct freq_qos_request *req;
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  	int i;
+>  
+>  	for_each_possible_cpu(i) {
+> @@ -1710,7 +1710,6 @@ static void update_qos_request(enum freq_qos_req_type type)
+>  			continue;
+>  
+>  		req = policy->driver_data;
+> -		cpufreq_cpu_put(policy);
+>  
+>  		if (!req)
+>  			continue;
+> diff --git a/drivers/cpufreq/longhaul.c b/drivers/cpufreq/longhaul.c
+> index ba0e08c8486a..ae5596919671 100644
+> --- a/drivers/cpufreq/longhaul.c
+> +++ b/drivers/cpufreq/longhaul.c
+> @@ -950,7 +950,7 @@ static int __init longhaul_init(void)
+>  
+>  static void __exit longhaul_exit(void)
+>  {
+> -	struct cpufreq_policy *policy = cpufreq_cpu_get(0);
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(0);
+>  	int i;
+>  
+>  	for (i = 0; i < numscales; i++) {
+> @@ -968,7 +968,6 @@ static void __exit longhaul_exit(void)
+>  		}
+>  	}
+>  
+> -	cpufreq_cpu_put(policy);
+>  	cpufreq_unregister_driver(&longhaul_driver);
+>  	kfree(longhaul_table);
+>  }
+> diff --git a/drivers/cpufreq/mediatek-cpufreq.c b/drivers/cpufreq/mediatek-cpufreq.c
+> index f3f02c4b6888..1fae060e16d9 100644
+> --- a/drivers/cpufreq/mediatek-cpufreq.c
+> +++ b/drivers/cpufreq/mediatek-cpufreq.c
+> @@ -320,7 +320,7 @@ static int mtk_cpufreq_opp_notifier(struct notifier_block *nb,
+>  	struct dev_pm_opp *new_opp;
+>  	struct mtk_cpu_dvfs_info *info;
+>  	unsigned long freq, volt;
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  	int ret = 0;
+>  
+>  	info = container_of(nb, struct mtk_cpu_dvfs_info, opp_nb);
+> @@ -354,11 +354,9 @@ static int mtk_cpufreq_opp_notifier(struct notifier_block *nb,
+>  
+>  			dev_pm_opp_put(new_opp);
+>  			policy = cpufreq_cpu_get(info->opp_cpu);
+> -			if (policy) {
+> +			if (policy)
+>  				cpufreq_driver_target(policy, freq / 1000,
+>  						      CPUFREQ_RELATION_L);
+> -				cpufreq_cpu_put(policy);
+> -			}
+>  		}
+>  	}
+>  
+> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
+> index 7d9a5f656de8..ea9d78bbeb38 100644
+> --- a/drivers/cpufreq/powernv-cpufreq.c
+> +++ b/drivers/cpufreq/powernv-cpufreq.c
+> @@ -892,7 +892,7 @@ static int powernv_cpufreq_reboot_notifier(struct notifier_block *nb,
+>  				unsigned long action, void *unused)
+>  {
+>  	int cpu;
+> -	struct cpufreq_policy *cpu_policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
 
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+There's a typo here. I got a compile error because of wrong variable name.
 
 Thanks,
-Charles
+Gautam
 
