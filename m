@@ -1,187 +1,167 @@
-Return-Path: <linux-acpi+bounces-16057-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16058-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33536B34FC6
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Aug 2025 01:42:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8B72B34FEB
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Aug 2025 02:03:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59F707B2DF2
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Aug 2025 23:40:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7FA21B2265C
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Aug 2025 00:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535D62C0F9E;
-	Mon, 25 Aug 2025 23:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A011548C;
+	Tue, 26 Aug 2025 00:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IcnZBpQs"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nGT4Kb8X"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E841F4CA4;
-	Mon, 25 Aug 2025 23:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F52EAF9
+	for <linux-acpi@vger.kernel.org>; Tue, 26 Aug 2025 00:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756165329; cv=none; b=jtMWGT3GWY6onjfXopMwoRDCiQG4X9WIwy+15aw3zPbEzkJx9HHFf6v3QCG/4Dp6qkyQbcIiIQL6rDPjdO2IxgJI/k3dkqx3Vv5UvrS1BRAr76U8zcCL5Iu0i9cA72q0xp6SBrHPLTLaNvMCiXW24TwFeOlPjLo5ccK89fEmcrc=
+	t=1756166623; cv=none; b=QCFjLT6Kdtuy47mODUiPWZXY0CcmLY4efEEoWiUWeHizoOZS91qVS9aAnqWPaxhnv4Y/znmbOrAG8pblVTJXw10Zaf/EGLvQsum3Z+5+o6NNKOH64Qq1kP/PBRg2BkqY3NK29uhX6MdVe1WXfnqS6B2VJN38y1Q4wzD9dmyx4Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756165329; c=relaxed/simple;
-	bh=J367x8GJDZMLTwx8qc/sItzW7eQs4mCr/b+cuY5NxP8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QXEVRYstGsNSPwXsHACIIU26xvSguihpAfpqTueOevembMoaqlmDkzbTQy6qBWry87MBSLd+9d33VUkAA99SMmx5yxAsI9B8ELw5+W87l0mGn1rAzMHbotjA6bVlAy6/0HtlQr+VC1JKD4I+wF5VTJqAuhxsXouWyUEwqT0iL64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IcnZBpQs; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756165328; x=1787701328;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=J367x8GJDZMLTwx8qc/sItzW7eQs4mCr/b+cuY5NxP8=;
-  b=IcnZBpQsX6O14Z3wbJNKy7JHnZRYRRxjDFANfG/USgbEXbiMDDxWqV9c
-   Yb2MMKA0HQ8aNJgO3zqlHPAX33x9LwTAdeKPv7du05Ci0BSNR6ipmZjIv
-   qRXqsG6cwYv7WJ/fHvfCzMrGKqGGqxyKA/G9rO+V3sNtnmzHZ99COMRah
-   DMxqzxa/Us0Qe1Pc+g2mLWaUzYSL/XAnC1KHlHVyufE0eoe2xjkN3ZAAL
-   Uw9+UP4SypRjU/7PMaMIe+u055zg1RUDe32oOz71r3nPwVGts3UMTbAcR
-   Zbf045B4G/EqA9SA+v/3q1rBa9MGeniTQ+mGmf+vLQ56eLVqSTdq3KYUP
-   w==;
-X-CSE-ConnectionGUID: Xig1s7u3Q52ebqwaUiTFDQ==
-X-CSE-MsgGUID: alBgCzlvRt+DzeEZOYN1lQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="80981788"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="80981788"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 16:42:07 -0700
-X-CSE-ConnectionGUID: ZQLJOKNrSkypbFLo7ru5Gg==
-X-CSE-MsgGUID: jg/agINJQwqHtf0ttoLzjg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
-   d="scan'208";a="169020979"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa009.jf.intel.com with ESMTP; 25 Aug 2025 16:41:54 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uqgoV-000O4R-2c;
-	Mon, 25 Aug 2025 23:41:27 +0000
-Date: Tue, 26 Aug 2025 07:41:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sumit Gupta <sumitg@nvidia.com>, rafael@kernel.org,
-	viresh.kumar@linaro.org, lenb@kernel.org, robert.moore@intel.com,
-	corbet@lwn.net, pierre.gondois@arm.com, zhenglifeng1@huawei.com,
-	ray.huang@amd.com, gautham.shenoy@amd.com,
-	mario.limonciello@amd.com, perry.yuan@amd.com,
-	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-doc@vger.kernel.org, acpica-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-tegra@vger.kernel.org, treding@nvidia.com,
-	jonathanh@nvidia.com, vsethi@nvidia.com, ksitaraman@nvidia.com,
-	sanjayc@nvidia.com, bbasu@nvidia.com, sumitg@nvidia.com
-Subject: Re: [PATCH v2 1/7] ACPI: CPPC: add perf control read API and clarify
- naming
-Message-ID: <202508260711.I7imWLTG-lkp@intel.com>
-References: <20250823200121.1320197-2-sumitg@nvidia.com>
+	s=arc-20240116; t=1756166623; c=relaxed/simple;
+	bh=cbg//jCx9UEMU6IgD5fa0/vfNwsndCZx54KubtM8yOw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NDUEF8ARKvUKiHvajXGG/yRIGoTluEEuaJS1vnZfP74UbH+jte8DK+4ay84P9kx81yJ3qZRDJiINrcYwdPP9bqUQ1vgihUj/MNk2qYxl+QoxyeLO4yrAhKd67zZNJEK1l955mXEfoQQWwrDbfOJ3RH+p4jEEJUg8kVGW4+7u9L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nGT4Kb8X; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-459fc675d11so21135e9.1
+        for <linux-acpi@vger.kernel.org>; Mon, 25 Aug 2025 17:03:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756166620; x=1756771420; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Jp0X3104SBCDge2qa7nzeQhf8jC5G3xyTNrHUAomQTs=;
+        b=nGT4Kb8X4oMKd1fgNFADF4Wv89+riM64mJ++HTQqPqXKM2ilwTvtCp/eb9zlVoRnVs
+         fKhCUszXnu1FmX3t+Bi+OgIKHAQYrsVBVrA67eDy3X6dDleYRdiQwDbwXspSL/s1wDU2
+         VBCOxYfeuMoGcatdNIYeAN2TMtoiHAtd0Vq1LWUedOMVgQhFLca2wlWvDucRm1LnPPyK
+         4EiVU9a7cIx4eCrJClErBv6EYJJgXqD4alu0l4KOlR1r+0o+6i6oBOqTzyuTf7yKXjZs
+         +KOH0uWYZwGLbjtK7yj5fbNEjfe8JAWx4I/NhVDLeDU2eZ+J+p+IX+66KpayAAUuVNBv
+         h5OQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756166620; x=1756771420;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Jp0X3104SBCDge2qa7nzeQhf8jC5G3xyTNrHUAomQTs=;
+        b=d+8XHtr3d/zqhy1M0e2/lccqhCcgtkvvUjVT1GHSGexR37yI8D6g1j69IxS4LVNXRq
+         mIFXvE4tOmz2X+B8JX6zpA44HpHGjsbUuHa8ioHkOAaPUg3+3lB5XzzaQbaU4zDrLg9R
+         BD94aTGNZRA5CUP8TXjOiR5UFCD5XPzMlwlWMs9rnMYzk2pG/UAan++2qLilc7Py6+s8
+         VXxh6KBGGrWephX/umZOrCnTEo9rN9TnEbm3lrWDuKen29g2GLEs+5l2FLPZGnICXPRa
+         S+nTQNwg7F70HVb0CkpDG0pZl7Lfx9oDTboF6VH/duM1J5tviOYPdRHxugIi1fFnCM9N
+         l7Ig==
+X-Forwarded-Encrypted: i=1; AJvYcCUxjvZrKz361oFQiFai8K66ky07YhBeZqJywDvwK4Rb80KWnnpuFOZ/OvNhbRPTHyVag/S73s4J61B+@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNXD2zlTc+yALr9W2rZuAemgPXJdaRxwGJN5j4Gfo9X+tXsqnU
+	J9o9aUdZAUcF4UY05Al5Pdgiydfa0dsO7XP+GhvYl/SlS8IhWZC/mgoXJS4pIUEfNdJVhQ7lii0
+	y0zTnDZrkQHb4TiCOT3c2m67xMTmGqvO8CMl5O1pv
+X-Gm-Gg: ASbGnctwQMB8J7Hvl0OaPE5sEsH1jwCO0HAEf8Uu/n5XI5nRzIXzRNdk5gyIIE2gwyY
+	XCJYwEg+KGhxj7gtrUUGkA7UUrQ2Hi0+0Y/Ud1LRKwRHF6ZZg3YYWg255p7/kiGp3qMCpdEn6UK
+	CLXRGyb4mCfY8uuUEKVFjDHK2qTw5hrm8k25gU9SxoQ0R/wT50ym1h6bflOu7VqK8buUx+3KTIb
+	a9IHif9rfrxW/3Px4rk925iE7hvQxPwKSm/gocOLf50
+X-Google-Smtp-Source: AGHT+IHSgB+bYb4MI+mf1DCxTNsoVXDLl1N8W8tMqDfT1PKvMXvIjgarLk+h9LijUfSFFdk18Y0rx025r4yfmrbjnp4=
+X-Received: by 2002:a05:600c:a408:b0:453:672b:5b64 with SMTP id
+ 5b1f17b1804b1-45b66a2b6b4mr238495e9.2.1756166620039; Mon, 25 Aug 2025
+ 17:03:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250823200121.1320197-2-sumitg@nvidia.com>
+References: <20250825223348.3780279-1-jiaqiyan@google.com> <aKzuCobhkx9X-axW@agluck-desk3>
+In-Reply-To: <aKzuCobhkx9X-axW@agluck-desk3>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Mon, 25 Aug 2025 17:03:28 -0700
+X-Gm-Features: Ac12FXwg9TWLkI45dLcPuLwhOhMpZNUrFkczfls3rp0PRG3DYIHiYtDOlsRM2ME
+Message-ID: <CACw3F52ov0ZwaecdP2Ky-N5h6hC4dwDZfjysoVF4oF-AhMRbbA@mail.gmail.com>
+Subject: Re: [PATCH v1] ACPI: APEI: EINJ: Allow injection on legacy persistent memory
+To: "Luck, Tony" <tony.luck@intel.com>, Dan Williams <dan.j.williams@intel.com>, rafael@kernel.org
+Cc: bp@alien8.de, guohanjun@huawei.com, mchehab@kernel.org, 
+	xueshuai@linux.alibaba.com, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Sumit,
+On Mon, Aug 25, 2025 at 4:13=E2=80=AFPM Luck, Tony <tony.luck@intel.com> wr=
+ote:
+>
+> On Mon, Aug 25, 2025 at 10:33:48PM +0000, Jiaqi Yan wrote:
+> > Legacy persistent memory, e.g. Device DAX configured like the following
+> >
+> >   440000000-303fffffff : Persistent Memory (legacy)
+> >       440000000-47fffffff : dax1.0
+> >       480000000-4bfffffff : dax2.0
+> >       4c0000000-4ffffffff : dax3.0
+> >       500000000-53fffffff : dax4.0
+> >       ...
+> >
+> > can support recover from Machine Check Exception due to memory failure.
+> > Therefore there is need to test it by injecting memory error
+> > using EINJ to legacy persistent memory.
+> >
+> > However, current EINJ only check if physical address falls into the
+> > IORES_DESC_PERSISTENT_MEMORY_LEGACY region. So attempt to inject
+> > error to "Persistent Memory (legacy)" fails with -EINVAL.
+> >
+> > Allow EINJ to inject at physical address belongin to
+> > IORES_DESC_PERSISTENT_MEMORY_LEGACY.
+> >
+> > Tested on a machine configured with Device DAX:
+> >   memmap=3D4G!12G nd_e820.pmem=3D12G,4G,mode=3Dfsdax memmap=3D176G!17G
+> >   nd_e820.pmem=3D17G,1G,mode=3Ddevdax,align=3D1G memmap=3D176G!209G
+> >   nd_e820.pmem=3D209G,1G,mode=3Ddevdax,align=3D1G memmap=3D176G!401G
+> >   nd_e820.pmem=3D401G,1G,mode=3Ddevdax,align=3D1G memmap=3D176G!593G
+> >   nd_e820.pmem=3D593G,1G,mode=3Ddevdax,align=3D1G
+> >
+> > Injected error at 0x35238d2000, within Device DAX region and
+> > allocated to a userspace test process. EINJ driver now issue the
+> > injection request to firmware, and firmware logs shows injection
+> > at 0x35238d2000 succeeded. The userspace test process then
+> > accessed 0x35238d2000, caused a MCE, and killed by SIGBUS.
+> >
+> > Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+> > ---
+> >  drivers/acpi/apei/einj-core.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-cor=
+e.c
+> > index 2561b045acc7b..e746fa66f92ff 100644
+> > --- a/drivers/acpi/apei/einj-core.c
+> > +++ b/drivers/acpi/apei/einj-core.c
+> > @@ -712,6 +712,8 @@ int einj_error_inject(u32 type, u32 flags, u64 para=
+m1, u64 param2, u64 param3,
+> >                               !=3D REGION_INTERSECTS) &&
+> >            (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DE=
+SC_PERSISTENT_MEMORY)
+> >                               !=3D REGION_INTERSECTS) &&
+> > +          (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DE=
+SC_PERSISTENT_MEMORY_LEGACY)
+> > +                             !=3D REGION_INTERSECTS) &&
+>
+> I chatted offline with Dan Williams. He wondered whether this sanity
+> check should just be reduced to pass through any address except MMIO
+> and leave it to the BIOS to decide what is a legitimate injection
+> target.
 
-kernel test robot noticed the following build errors:
+I guess that's fine, but wonder should the EINJ driver still exclude
+IORES_DESC_ACPI_TABLES and IORES_DESC_ACPI_NV_STORAGE? to prevent
+that, say, by coincidence or not an error "corrupted" EINJ table
+itself, or "corrupted" other ACPI data.
 
-[auto build test ERROR on rafael-pm/linux-next]
-[also build test ERROR on rafael-pm/bleeding-edge linus/master v6.17-rc3 next-20250825]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Sumit-Gupta/ACPI-CPPC-add-perf-control-read-API-and-clarify-naming/20250824-040531
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20250823200121.1320197-2-sumitg%40nvidia.com
-patch subject: [PATCH v2 1/7] ACPI: CPPC: add perf control read API and clarify naming
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20250826/202508260711.I7imWLTG-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250826/202508260711.I7imWLTG-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508260711.I7imWLTG-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/cpufreq/amd-pstate.c:524:8: error: call to undeclared function 'cppc_set_perf'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     524 |         ret = cppc_set_perf(cpudata->cpu, &perf_ctrls);
-         |               ^
-   drivers/cpufreq/amd-pstate.c:524:8: note: did you mean 'cppc_set_epp'?
-   include/acpi/cppc_acpi.h:170:12: note: 'cppc_set_epp' declared here
-     170 | extern int cppc_set_epp(int cpu, u64 epp_val);
-         |            ^
-   1 error generated.
-
-
-vim +/cppc_set_perf +524 drivers/cpufreq/amd-pstate.c
-
-e059c184da47e9 Huang Rui         2021-12-24  480  
-77fbea69b0ffad Mario Limonciello 2024-12-09  481  static int shmem_update_perf(struct cpufreq_policy *policy, u8 min_perf,
-555bbe67a622b2 Dhananjay Ugwekar 2025-02-05  482  			     u8 des_perf, u8 max_perf, u8 epp, bool fast_switch)
-e059c184da47e9 Huang Rui         2021-12-24  483  {
-77fbea69b0ffad Mario Limonciello 2024-12-09  484  	struct amd_cpudata *cpudata = policy->driver_data;
-e059c184da47e9 Huang Rui         2021-12-24  485  	struct cppc_perf_ctrls perf_ctrls;
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  486  	u64 value, prev;
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  487  	int ret;
-e059c184da47e9 Huang Rui         2021-12-24  488  
-fff395796917ac Mario Limonciello 2024-12-09  489  	if (cppc_state == AMD_PSTATE_ACTIVE) {
-77fbea69b0ffad Mario Limonciello 2024-12-09  490  		int ret = shmem_set_epp(policy, epp);
-fff395796917ac Mario Limonciello 2024-12-09  491  
-fff395796917ac Mario Limonciello 2024-12-09  492  		if (ret)
-fff395796917ac Mario Limonciello 2024-12-09  493  			return ret;
-fff395796917ac Mario Limonciello 2024-12-09  494  	}
-fff395796917ac Mario Limonciello 2024-12-09  495  
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  496  	value = prev = READ_ONCE(cpudata->cppc_req_cached);
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  497  
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  498  	value &= ~(AMD_CPPC_MAX_PERF_MASK | AMD_CPPC_MIN_PERF_MASK |
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  499  		   AMD_CPPC_DES_PERF_MASK | AMD_CPPC_EPP_PERF_MASK);
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  500  	value |= FIELD_PREP(AMD_CPPC_MAX_PERF_MASK, max_perf);
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  501  	value |= FIELD_PREP(AMD_CPPC_DES_PERF_MASK, des_perf);
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  502  	value |= FIELD_PREP(AMD_CPPC_MIN_PERF_MASK, min_perf);
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  503  	value |= FIELD_PREP(AMD_CPPC_EPP_PERF_MASK, epp);
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  504  
-77fbea69b0ffad Mario Limonciello 2024-12-09  505  	if (trace_amd_pstate_epp_perf_enabled()) {
-77fbea69b0ffad Mario Limonciello 2024-12-09  506  		union perf_cached perf = READ_ONCE(cpudata->perf);
-77fbea69b0ffad Mario Limonciello 2024-12-09  507  
-77fbea69b0ffad Mario Limonciello 2024-12-09  508  		trace_amd_pstate_epp_perf(cpudata->cpu,
-77fbea69b0ffad Mario Limonciello 2024-12-09  509  					  perf.highest_perf,
-77fbea69b0ffad Mario Limonciello 2024-12-09  510  					  epp,
-77fbea69b0ffad Mario Limonciello 2024-12-09  511  					  min_perf,
-77fbea69b0ffad Mario Limonciello 2024-12-09  512  					  max_perf,
-77fbea69b0ffad Mario Limonciello 2024-12-09  513  					  policy->boost_enabled,
-77fbea69b0ffad Mario Limonciello 2024-12-09  514  					  value != prev);
-77fbea69b0ffad Mario Limonciello 2024-12-09  515  	}
-77fbea69b0ffad Mario Limonciello 2024-12-09  516  
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  517  	if (value == prev)
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  518  		return 0;
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  519  
-e059c184da47e9 Huang Rui         2021-12-24  520  	perf_ctrls.max_perf = max_perf;
-e059c184da47e9 Huang Rui         2021-12-24  521  	perf_ctrls.min_perf = min_perf;
-e059c184da47e9 Huang Rui         2021-12-24  522  	perf_ctrls.desired_perf = des_perf;
-e059c184da47e9 Huang Rui         2021-12-24  523  
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09 @524  	ret = cppc_set_perf(cpudata->cpu, &perf_ctrls);
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  525  	if (ret)
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  526  		return ret;
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  527  
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  528  	WRITE_ONCE(cpudata->cppc_req_cached, value);
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  529  
-9f5daa2f2f6ddd Mario Limonciello 2024-12-09  530  	return 0;
-e059c184da47e9 Huang Rui         2021-12-24  531  }
-e059c184da47e9 Huang Rui         2021-12-24  532  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> >            (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DE=
+SC_SOFT_RESERVED)
+> >                               !=3D REGION_INTERSECTS) &&
+> >            !arch_is_platform_page(base_addr)))
+> > --
+> > 2.51.0.268.g9569e192d0-goog
+>
+> -Tony
 
