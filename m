@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-16092-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16093-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F14B37DDE
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 10:30:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C0BB37E21
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 10:53:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 458521B6184F
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 08:30:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A7411B6526C
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 08:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169373376BA;
-	Wed, 27 Aug 2025 08:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F5033CE96;
+	Wed, 27 Aug 2025 08:53:55 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512DD2F28F4;
-	Wed, 27 Aug 2025 08:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30152335BC1;
+	Wed, 27 Aug 2025 08:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756283427; cv=none; b=VuZiU6GnS/sTUmv3jhnH3O6thdzMVy4uYOJhnVRwk/71MITCGY0zX58zYX6kW64WoT2Fn/vA3T9/vKxZrSE/nU0LcNpnWE7sdFi/jSqTgXZv8NXSo+xR4CjYaedV7QheOABYlnd6zyEFY+r0bUzfzBUnogfJTBwjVqQRrJEhQek=
+	t=1756284835; cv=none; b=NJZlHVf2m8PjGOz2eIuEidUpXVC29n5Sl37XBobZ2tRTxZjQxRu2A6h2jgsS0Xjjz4V0xfl83OvwPsbH0CaitApkMmTinb65f0uT1lBrm6po25W4wGF3WpANsoMckSuIWc8Og1lk3AK8D+LZDJ1URqJinfyw9fPPOQRiwvtzfwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756283427; c=relaxed/simple;
-	bh=Hk1XVBq87Wloo/8yCfniyVuXNqm9lv0mufttpAK51xA=;
+	s=arc-20240116; t=1756284835; c=relaxed/simple;
+	bh=P38O43fMuBeGBKDmS2PF3LrHlp668kFtyl36Iw5bUrI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dpuAkaZXloYtH7G9BwO2wzd6Cpcwf4zwD5GmddNF03SQmLevsER5LO2jxINpVLqqeyM2BApwTT0aWfJ+3GgbFF1yyma7t0wo+iNd4bwILue6BkFWXPoTP0jMGUi5pUfGn36RYW7u27PQA/uMIvq/SwpSsuAYLRlQgpw+pIuRtgI=
+	 In-Reply-To:Content-Type; b=i+SHBp7lNJ4IpIioW0KsbY6irCArybLIue7jpoOirirbjByJ/92PKxptRPBXNP0RHM8MYCukPcbF9vwBKgVUTTwpBmGNTQmtwb61sRu+EUhkpt+yQwMVvyybJp+G7DF+RHMesV56yO2F9Yktq4PufpSxcYHqzrlDLCMlDqulPB0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 228811691;
-	Wed, 27 Aug 2025 01:30:16 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 159921655;
+	Wed, 27 Aug 2025 01:53:44 -0700 (PDT)
 Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 31FA33F694;
-	Wed, 27 Aug 2025 01:30:15 -0700 (PDT)
-Message-ID: <70f4c2ce-1dbd-4596-af78-bca1cdbbb581@arm.com>
-Date: Wed, 27 Aug 2025 09:30:13 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3EE013F738;
+	Wed, 27 Aug 2025 01:53:47 -0700 (PDT)
+Message-ID: <0c8a6a7c-3d0d-4093-8bc5-3a04f70b00fa@arm.com>
+Date: Wed, 27 Aug 2025 09:53:45 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,115 +42,90 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/18] arm64: topology: Use __free(put_cpufreq_policy)
- for policy reference
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>,
- "Rafael J . wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer
- <mmayer@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
- <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>,
- Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
- <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
- Sumit Gupta <sumitg@nvidia.com>,
- Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
- linux-pm@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-tegra@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
- <20250827023202.10310-2-zhangzihuan@kylinos.cn>
+Subject: Re: [PATCH 07/33] arm64: kconfig: Add Kconfig entry for MPAM
+To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+ devicetree@vger.kernel.org
+Cc: shameerali.kolothum.thodi@huawei.com,
+ D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Rex Nie <rex.nie@jaguarmicro.com>,
+ Dave Martin <dave.martin@arm.com>, Koba Ko <kobak@nvidia.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, fenghuay@nvidia.com,
+ baisheng.gao@unisoc.com, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>
+References: <20250822153048.2287-1-james.morse@arm.com>
+ <20250822153048.2287-8-james.morse@arm.com>
 From: Ben Horgan <ben.horgan@arm.com>
 Content-Language: en-US
-In-Reply-To: <20250827023202.10310-2-zhangzihuan@kylinos.cn>
+In-Reply-To: <20250822153048.2287-8-james.morse@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Zihuan,
+Hi James,
 
-On 8/27/25 03:31, Zihuan Zhang wrote:
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
+On 8/22/25 16:29, James Morse wrote:
+> The bulk of the MPAM driver lives outside the arch code because it
+> largely manages MMIO devices that generate interrupts. The driver
+> needs a Kconfig symbol to enable it, as MPAM is only found on arm64
+> platforms, that is where the Kconfig option makes the most sense.
 > 
-> No functional change intended.
+> This Kconfig option will later be used by the arch code to enable
+> or disable the MPAM context-switch code, and registering the CPUs
+> properties with the MPAM driver.
 > 
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 > ---
->  arch/arm64/kernel/topology.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
+>  arch/arm64/Kconfig | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
 > 
-> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-> index 5d07ee85bdae..e3cb6d54f35b 100644
-> --- a/arch/arm64/kernel/topology.c
-> +++ b/arch/arm64/kernel/topology.c
-> @@ -307,17 +307,16 @@ int arch_freq_get_on_cpu(int cpu)
->  		 */
->  		if (!housekeeping_cpu(cpu, HK_TYPE_TICK) ||
->  		    time_is_before_jiffies(last_update + msecs_to_jiffies(AMU_SAMPLE_EXP_MS))) {
-> -			struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
-> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
-Based on the guidance, in include/linux/cleanup.h, I would expect the
-assignment to be done on this line.
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index e9bbfacc35a6..658e47fc0c5a 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -2060,6 +2060,23 @@ config ARM64_TLB_RANGE
+>  	  ARMv8.4-TLBI provides TLBI invalidation instruction that apply to a
+>  	  range of input addresses.
+>  
+> +config ARM64_MPAM
+> +	bool "Enable support for MPAM"
+> +	help
+> +	  Memory Partitioning and Monitoring is an optional extension
+> +	  that allows the CPUs to mark load and store transactions with
+> +	  labels for partition-id and performance-monitoring-group.
+> +	  System components, such as the caches, can use the partition-id
+> +	  to apply a performance policy. MPAM monitors can use the
+> +	  partition-id and performance-monitoring-group to measure the
+> +	  cache occupancy or data throughput.
+> +
+> +	  Use of this extension requires CPU support, support in the
+> +	  memory system components (MSC), and a description from firmware
+> +	  of where the MSC are in the address space.
+> +
+> +	  MPAM is exposed to user-space via the resctrl pseudo filesystem.
+> +
+>  endmenu # "ARMv8.4 architectural features"
 
-"...the recommendation is to always define and assign variables in one
- * statement and not group variable definitions at the top of the
- * function when __free() is used."
->  			int ref_cpu;
+Should this be moved to "ARMv8.2 architectural features" rather than the
+8.4 menu? In the arm reference manual, version L.b, I see FEAT_MPAM
+listed in the section A2.2.3.1 Features added to the Armv8.2 extension
+in later releases.
+
 >  
-> +			policy = cpufreq_cpu_get(cpu);
->  			if (!policy)
->  				return -EINVAL;
->  
->  			if (!cpumask_intersects(policy->related_cpus,
-> -						housekeeping_cpumask(HK_TYPE_TICK))) {
-> -				cpufreq_cpu_put(policy);
-> +						housekeeping_cpumask(HK_TYPE_TICK)))
->  				return -EOPNOTSUPP;
-> -			}
->  
->  			for_each_cpu_wrap(ref_cpu, policy->cpus, cpu + 1) {
->  				if (ref_cpu == start_cpu) {
-> @@ -329,8 +328,6 @@ int arch_freq_get_on_cpu(int cpu)
->  					break;
->  			}
->  
-> -			cpufreq_cpu_put(policy);
-> -
->  			if (ref_cpu >= nr_cpu_ids)
->  				/* No alternative to pull info from */
->  				return -EAGAIN;
+>  menu "ARMv8.5 architectural features"
 
 Thanks,
 
