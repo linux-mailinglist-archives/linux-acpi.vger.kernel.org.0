@@ -1,39 +1,39 @@
-Return-Path: <linux-acpi+bounces-16101-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16102-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC811B38032
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 12:46:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E8BCB38035
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 12:46:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BA8C34E404E
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 10:46:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1955D7C7D68
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 10:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7096028D8E8;
-	Wed, 27 Aug 2025 10:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5752BE620;
+	Wed, 27 Aug 2025 10:46:48 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554C120ED;
-	Wed, 27 Aug 2025 10:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74EAF2853E3;
+	Wed, 27 Aug 2025 10:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756291578; cv=none; b=AtkGISt0BbejYMK7xwEIMgsD3qEW7K59wZme5HmwKuamhT84NnBOrW2U7PoKtVtc2KVxhxIA1PB1D2GyLqDmhwuP29bwCMgcp5nnVRq20Xi0nkaUHDqrU5ibj5PuEtqOxRFw9N8vcKIN4DTpJbdncfAS7IzOoIHYTt2qMb/dZrk=
+	t=1756291608; cv=none; b=RRhW/1c95C39oXFEgmvsymxhYTrkM8TLd2zzLr30WDfg/NMaXUwo/4F7Mqw66+KOWxXGdkyNabA+ZN02IToBpBcgsN6BgDt2pEyhZWdFJgS7XJcgA7CWGhINa/r4N6UXDq09h1Vm4O2MOIX3cpLYZwr5cUvU9E6aVXbAjJPkgRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756291578; c=relaxed/simple;
-	bh=WAQA74idaX90UlIpUem5NDOqd5djJuJGPghggS60YDk=;
+	s=arc-20240116; t=1756291608; c=relaxed/simple;
+	bh=NEeFWbxSjOhaJkreE/MdcTRInyZBXBYCV9SQqK9qwfs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DNqH07/nTKqAw4ij5XxZbz/SSZ2Rq534J8ArZWGABJ2k8xdKnuc1/viy/vs497gKrHtIcDyHPzFo4LS/znljpZ3FmwL/aJrEnnYIJO0AfzQ3UAqHMhjMzAmW2wmzlpJqhgrSHrIw8/G2JARMo7+EEpemmd/kEVHFaHDzJ85JS7o=
+	 Content-Type:Content-Disposition:In-Reply-To; b=bK2B+H0EhiRNZJRW90d5mTY3EwFZGxoK5HQpdAMaxxcD7mPbNyDMxbEMVjCMScJ8+/vhXw/k/6ZviGoblpmOmetnbQEjHrdELJFWoWDVPwnupHxojnHFCX0w9jbcHUvm/ilf85DBg2Crq+M2DOdTIg29kEdSIEHxjQmUTI0ctO4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 517931688;
-	Wed, 27 Aug 2025 03:46:07 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7A1D71688;
+	Wed, 27 Aug 2025 03:46:37 -0700 (PDT)
 Received: from e133380.arm.com (e133380.arm.com [10.1.197.68])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CB74E3F738;
-	Wed, 27 Aug 2025 03:46:09 -0700 (PDT)
-Date: Wed, 27 Aug 2025 11:46:02 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0753D3F738;
+	Wed, 27 Aug 2025 03:46:39 -0700 (PDT)
+Date: Wed, 27 Aug 2025 11:46:37 +0100
 From: Dave Martin <Dave.Martin@arm.com>
 To: James Morse <james.morse@arm.com>
 Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -61,11 +61,11 @@ Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	Will Deacon <will@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH 01/33] cacheinfo: Expose the code to generate a cache-id
- from a device_node
-Message-ID: <aK7h6seHNWs5rO9Q@e133380.arm.com>
+Subject: Re: [PATCH 02/33] drivers: base: cacheinfo: Add helper to find the
+ cache size from cpu+level
+Message-ID: <aK7iDey7LATOXIUb@e133380.arm.com>
 References: <20250822153048.2287-1-james.morse@arm.com>
- <20250822153048.2287-2-james.morse@arm.com>
+ <20250822153048.2287-3-james.morse@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -74,65 +74,63 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250822153048.2287-2-james.morse@arm.com>
+In-Reply-To: <20250822153048.2287-3-james.morse@arm.com>
 
-Hi James,
+Hi,
 
-On Fri, Aug 22, 2025 at 03:29:42PM +0000, James Morse wrote:
-> The MPAM driver identifies caches by id for use with resctrl. It
-> needs to know the cache-id when probe-ing, but the value isn't set
-> in cacheinfo until device_initcall().
+On Fri, Aug 22, 2025 at 03:29:43PM +0000, James Morse wrote:
+> MPAM needs to know the size of a cache associated with a particular CPU.
+> The DT/ACPI agnostic way of doing this is to ask cacheinfo.
 > 
-> Expose the code that generates the cache-id. The parts of the MPAM
-> driver that run early can use this to set up the resctrl structures
-> before cacheinfo is ready in device_initcall().
-
-Why can't the MPAM driver just consume the precomputed cache-id
-information?
-
-Possible reasons are that the MPAM driver probes too early, or that it
-must parse the PPTT directly (which is true) and needs to label caches
-consistently with the way the kernel does it.
-
+> Add a helper to do this.
 > 
 > Signed-off-by: James Morse <james.morse@arm.com>
+> 
 > ---
 > Changes since v1:
->  * Renamed cache_of_get_id() cache_of_calculate_id().
+>  * Converted to kdoc.
+>  * Simplified helper to use get_cpu_cacheinfo_level().
 > ---
->  drivers/base/cacheinfo.c  | 19 +++++++++++++------
->  include/linux/cacheinfo.h |  1 +
->  2 files changed, 14 insertions(+), 6 deletions(-)
+>  include/linux/cacheinfo.h | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
 > 
-> diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
-> index 613410705a47..f6289d142ba9 100644
-> --- a/drivers/base/cacheinfo.c
-> +++ b/drivers/base/cacheinfo.c
-> @@ -207,11 +207,10 @@ static bool match_cache_node(struct device_node *cpu,
->  #define arch_compact_of_hwid(_x)	(_x)
->  #endif
+> diff --git a/include/linux/cacheinfo.h b/include/linux/cacheinfo.h
+> index 2dcbb69139e9..e12d6f2c6a57 100644
+> --- a/include/linux/cacheinfo.h
+> +++ b/include/linux/cacheinfo.h
+> @@ -148,6 +148,21 @@ static inline int get_cpu_cacheinfo_id(int cpu, int level)
+>  	return ci ? ci->id : -1;
+>  }
 >  
-> -static void cache_of_set_id(struct cacheinfo *this_leaf,
-> -			    struct device_node *cache_node)
-> +unsigned long cache_of_calculate_id(struct device_node *cache_node)
->  {
->  	struct device_node *cpu;
-> -	u32 min_id = ~0;
-> +	unsigned long min_id = ~0UL;
+> +/**
+> + * get_cpu_cacheinfo_size() - Get the size of the cache.
+> + * @cpu:      The cpu that is associated with the cache.
+> + * @level:    The level of the cache as seen by @cpu.
+> + *
+> + * Callers must hold the cpuhp lock.
+> + * Returns the cache-size on success, or 0 for an error.
+> + */
 
-Why the change of type here?
+Nit: Maybe use the wording
 
-This does mean that 0xffffffff can now be generated as a valid cache-id,
-but if that is necessary then this patch is also fixing a bug in the
-code -- but the commit message doesn't say anything about that.
+	cpuhp lock must be held.
 
-For a patch that is just exposing an internal result, it may be
-better to keep the original type.  ~(u32)0 is already used as an
-exceptional value.
+in the kerneldoc here, to match the other helpers it sits alongside.
 
-[...]
+Otherwise, looks reasonable.
 
-Otherwise, this looks reasonable to me.
+> +static inline unsigned int get_cpu_cacheinfo_size(int cpu, int level)
+> +{
+> +	struct cacheinfo *ci = get_cpu_cacheinfo_level(cpu, level);
+> +
+> +	return ci ? ci->size : 0;
+> +}
+> +
+
+Orphaned function?
+
+Can fs/resctrl/rdtgroup.c:rdtgroup_cbm_to_size() be ported to use this?
+If so, this wouldn't just be dead code in this series.
 
 Cheers
 ---Dave
