@@ -1,60 +1,40 @@
-Return-Path: <linux-acpi+bounces-16091-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16092-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B870CB37C43
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 09:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F14B37DDE
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 10:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E34E5188E384
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 07:53:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 458521B6184F
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 08:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB1632145B;
-	Wed, 27 Aug 2025 07:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169373376BA;
+	Wed, 27 Aug 2025 08:30:27 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7B51A9F86;
-	Wed, 27 Aug 2025 07:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512DD2F28F4;
+	Wed, 27 Aug 2025 08:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756281180; cv=none; b=loL5I2KC4KEzDqTiT1ycHTY11OdU6PQCbxzQfhUqirxJKKBHIGZTF+UeWHP7Q36Xyu+aJ7CHz/PEuJbmg4bzx9zXn3o1UQEh5LfDPr97cFmVonQONvKzwJhnjucVCCgKg2HTAmdcOq/O+tey2WPqcq17QDeIJidroFx4wxDDO4I=
+	t=1756283427; cv=none; b=VuZiU6GnS/sTUmv3jhnH3O6thdzMVy4uYOJhnVRwk/71MITCGY0zX58zYX6kW64WoT2Fn/vA3T9/vKxZrSE/nU0LcNpnWE7sdFi/jSqTgXZv8NXSo+xR4CjYaedV7QheOABYlnd6zyEFY+r0bUzfzBUnogfJTBwjVqQRrJEhQek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756281180; c=relaxed/simple;
-	bh=t/7jF4HzApSGOAuft7CjB89pJWIK0eoDPs3XyyfXOW0=;
+	s=arc-20240116; t=1756283427; c=relaxed/simple;
+	bh=Hk1XVBq87Wloo/8yCfniyVuXNqm9lv0mufttpAK51xA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hA91a0HNZkqASZYVQ1y+kjofiv3QXVRjFI9f/s7BnjU0MAuFerD2cGPQDb1tVZ7jFIUv73M8l6jL/uZhEgpGG+N9NdUWHAQbhkm65kjS2anz/dIp2zw3koMf5XKlvvERatvnJEwmFID9UMeVCpJyc8APs66NVCyhWvEEkDH+oGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: d3e5785c831a11f0b29709d653e92f7d-20250827
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:13314357-5ac7-4a30-a0f8-4170a13db8b3,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:d6d895d233e5934b84c0d63ae6c55bd7,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
-	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: d3e5785c831a11f0b29709d653e92f7d-20250827
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <tianyaxiong@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1407213635; Wed, 27 Aug 2025 15:52:49 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 5DFD1E008FAA;
-	Wed, 27 Aug 2025 15:52:49 +0800 (CST)
-X-ns-mid: postfix-68AEB951-303610565
-Received: from [10.42.13.21] (unknown [10.42.13.21])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 93400E008FA3;
-	Wed, 27 Aug 2025 15:52:47 +0800 (CST)
-Message-ID: <a369a7a9-9132-4b37-8ba2-501503477bb8@kylinos.cn>
-Date: Wed, 27 Aug 2025 15:52:46 +0800
+	 In-Reply-To:Content-Type; b=dpuAkaZXloYtH7G9BwO2wzd6Cpcwf4zwD5GmddNF03SQmLevsER5LO2jxINpVLqqeyM2BApwTT0aWfJ+3GgbFF1yyma7t0wo+iNd4bwILue6BkFWXPoTP0jMGUi5pUfGn36RYW7u27PQA/uMIvq/SwpSsuAYLRlQgpw+pIuRtgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 228811691;
+	Wed, 27 Aug 2025 01:30:16 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 31FA33F694;
+	Wed, 27 Aug 2025 01:30:15 -0700 (PDT)
+Message-ID: <70f4c2ce-1dbd-4596-af78-bca1cdbbb581@arm.com>
+Date: Wed, 27 Aug 2025 09:30:13 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -62,76 +42,118 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] ACPI: processor: idle: Replace single idle driver
- with per-CPU model for better hybrid CPU support
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: daniel.lezcano@linaro.org, lenb@kernel.org, robert.moore@intel.com,
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
- Shaobo Huang <huangshaobo2075@phytium.com.cn>,
- Yinfeng Wang <wangyinfeng@phytium.com.cn>, Xu Wang <wangxu@phytium.com.cn>
-References: <20250814072934.1016694-1-tianyaxiong@kylinos.cn>
- <20250814073156.1022939-1-tianyaxiong@kylinos.cn>
- <CAJZ5v0hGj3=GxnLkj0adm+ENSk7YbzNZRPiBTgm_bKZsH3OYDw@mail.gmail.com>
+Subject: Re: [PATCH v2 01/18] arm64: topology: Use __free(put_cpufreq_policy)
+ for policy reference
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>,
+ "Rafael J . wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer
+ <mmayer@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-tegra@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
+ <20250827023202.10310-2-zhangzihuan@kylinos.cn>
+From: Ben Horgan <ben.horgan@arm.com>
 Content-Language: en-US
-From: Yaxiong Tian <tianyaxiong@kylinos.cn>
-In-Reply-To: <CAJZ5v0hGj3=GxnLkj0adm+ENSk7YbzNZRPiBTgm_bKZsH3OYDw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250827023202.10310-2-zhangzihuan@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+Hi Zihuan,
 
-=E5=9C=A8 2025/8/25 22:56, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> On Thu, Aug 14, 2025 at 9:32=E2=80=AFAM Yaxiong Tian <tianyaxiong@kylin=
-os.cn> wrote:
->> Current implementations of hybrid architectures (e.g., ARM64 big.LITTL=
-E
->> and Intel Alder Lake) feature CPU cores with different exit latencies.
-> This is not true for Intel platforms, all of the CPUs in there have
-> the same set of C-states.
-Yes,it is.
->
->> Using a single driver to describe_LPI states for all core types is
->> therefore suboptimal. This is further supported by ACPI specification
->> 8.4.4.1 which states: "In a processor hierarchy, each node has its
->> own _LPI low-power states specific to that node."
->>
->> To address these limitations, we replace the monolithic idle driver
-> It cannot be replaced or you potentially open a Pandora's box of
-> regressions on old systems in the field.
-I agree with this point. Regarding the potential risk, does it
-make sense to=C2=A0 mitigate it through the following two approaches?
+On 8/27/25 03:31, Zihuan Zhang wrote:
+> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> annotation for policy references. This reduces the risk of reference
+> counting mistakes and aligns the code with the latest kernel style.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  arch/arm64/kernel/topology.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+> index 5d07ee85bdae..e3cb6d54f35b 100644
+> --- a/arch/arm64/kernel/topology.c
+> +++ b/arch/arm64/kernel/topology.c
+> @@ -307,17 +307,16 @@ int arch_freq_get_on_cpu(int cpu)
+>  		 */
+>  		if (!housekeeping_cpu(cpu, HK_TYPE_TICK) ||
+>  		    time_is_before_jiffies(last_update + msecs_to_jiffies(AMU_SAMPLE_EXP_MS))) {
+> -			struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
+Based on the guidance, in include/linux/cleanup.h, I would expect the
+assignment to be done on this line.
 
-1) Restrict the usage of this multiple driver functionality to
-the ARM64 platform only.
-2) Use a mutex-protected global variable to indicate whether
-the platform utilizes _LPI instead of C-states. This variable
-would be determined during initialization via
-acpi_has_method(handle, "_LPI"), and the multiple driver
-would only be used if the platform employs _LPI.
+"...the recommendation is to always define and assign variables in one
+ * statement and not group variable definitions at the top of the
+ * function when __free() is used."
+>  			int ref_cpu;
+>  
+> +			policy = cpufreq_cpu_get(cpu);
+>  			if (!policy)
+>  				return -EINVAL;
+>  
+>  			if (!cpumask_intersects(policy->related_cpus,
+> -						housekeeping_cpumask(HK_TYPE_TICK))) {
+> -				cpufreq_cpu_put(policy);
+> +						housekeeping_cpumask(HK_TYPE_TICK)))
+>  				return -EOPNOTSUPP;
+> -			}
+>  
+>  			for_each_cpu_wrap(ref_cpu, policy->cpus, cpu + 1) {
+>  				if (ref_cpu == start_cpu) {
+> @@ -329,8 +328,6 @@ int arch_freq_get_on_cpu(int cpu)
+>  					break;
+>  			}
+>  
+> -			cpufreq_cpu_put(policy);
+> -
+>  			if (ref_cpu >= nr_cpu_ids)
+>  				/* No alternative to pull info from */
+>  				return -EAGAIN;
 
-Alternatively, the other option is to let users implement their
-own drivers. Although many ARM64 users still initialize their
-systems using the ACPI method rather than the traditional
-device tree approach, and they hope to reuse the ACPI idle driver.
->
->> with a per-CPU model. This approach enables accurate idle state repres=
-entation
->> for each core type
-> The per-CPU model can be used instead of the "monolithic idle driver"
-> only if the platform is actually known to be hybrid.
-Yes,select CPU_IDLE_MULTIPLE_DRIVERS if ARM64=C2=A0 can=C2=A0 resolve thi=
-s issue.
->
->> Tested-by: Shaobo Huang <huangshaobo2075@phytium.com.cn>
->> Signed-off-by: Yaxiong Tian <tianyaxiong@kylinos.cn>
->> Signed-off-by: Shaobo Huang <huangshaobo2075@phytium.com.cn>
->> Signed-off-by: Yinfeng Wang <wangyinfeng@phytium.com.cn>
->> Signed-off-by: Xu Wang<wangxu@phytium.com.cn>
-> What do all of the above S-o-b mean?  Are these people involved in the
-> development of the code?  In that case Co-developed-by is also needed.
->
-> Thanks!
-Thank you for your response. If it makes sense, continue to follow up,
-I will address both the issues mentioned above and the problem
-in the previous patch.
+Thanks,
+
+Ben
+
 
