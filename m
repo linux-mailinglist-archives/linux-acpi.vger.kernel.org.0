@@ -1,231 +1,199 @@
-Return-Path: <linux-acpi+bounces-16069-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16070-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AEA0B36BCA
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Aug 2025 16:48:58 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E99B377C8
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 04:32:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C44514E154E
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Aug 2025 14:48:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 784DE4E127A
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 02:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB90E25B1DC;
-	Tue, 26 Aug 2025 14:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145102741C0;
+	Wed, 27 Aug 2025 02:32:43 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39BF23909F;
-	Tue, 26 Aug 2025 14:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDE713C9C4;
+	Wed, 27 Aug 2025 02:32:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756219543; cv=none; b=RLXcV1gME098rX0XUcBm7pVaEhAT/4bBRgMR+dcROh8Z3Yb8Wgplu8qOh8too5Hko1x9JFtlfKWIuO1OdPgNSewGIxzZZHGcxAliy3hjdcA2MEDgpBDT6JxKzNkcaFNwTX4ipFl3UY8bMlyYro+MtSbMkMEt28cBiuCBTyJJqF4=
+	t=1756261963; cv=none; b=IRnsdX5xmS+Ll5m3fiwosLEAAhSgZSASbj2V+S4vJ9gputxcwZEbMuG2vqeiIdghOezbjrSogXLolhdFgE7yZueoJ94cYxrnl/kfSLooGlJcfBDZwOAqugDtCdSLkin8YF8sJxkYigAhbFhoUHnIKDiFh331SBjFlJSoOzbb4Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756219543; c=relaxed/simple;
-	bh=2fWgL7XfnpaWGM5FEhG6+RL0uaOcwp7SSNkzvy3fCTc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VtVjjFpfb255PfdnN+mdPeIsBO+fSsnldry9Ewh2Ti837Uogqa9eYG/xCf2cUhP+tfvcED7DDKGIOoi0NrUtev93jwDf8xmZqMkvKP3jh9FMgDNoAkGn8iB35Cs9w9DGbmmIrVa9e4xh3CC6t45SksoQ26EnGrG+V78KuWtsJ+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EF0861F91;
-	Tue, 26 Aug 2025 07:45:32 -0700 (PDT)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1305F3F694;
-	Tue, 26 Aug 2025 07:45:35 -0700 (PDT)
-Message-ID: <b032775e-1729-441a-8ec4-dd85f70055e8@arm.com>
-Date: Tue, 26 Aug 2025 15:45:34 +0100
+	s=arc-20240116; t=1756261963; c=relaxed/simple;
+	bh=tM4NryZJs6GQGYE6ScL3QFX0jBO6MscpaIpuSf538RA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D7N6smpYpwNoZ04RHXdlOkWfdACTn6TL4MsVTBrMLv/Y/3At4nuOWhxWY0e/EegLN0biEgwCujT6x2Zs0r9lzkIoCj0+mwNvAMbDsui1bFlesyfzTdeTW5ZBfavZszPP5+6QPQgIM35TNjMQYxYaIdoksDn5kHPvbf9UOhxN2zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 1690209e82ee11f0b29709d653e92f7d-20250827
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:47738ced-a2cf-4a9c-b6ce-8380b7cf3455,IP:0,U
+	RL:0,TC:0,Content:30,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:30
+X-CID-META: VersionHash:6493067,CLOUDID:46aa175651b4578b186727c6037c583c,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850,TC:nil,Content:4|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 1690209e82ee11f0b29709d653e92f7d-20250827
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1728057702; Wed, 27 Aug 2025 10:32:34 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 56943E008FAA;
+	Wed, 27 Aug 2025 10:32:33 +0800 (CST)
+X-ns-mid: postfix-68AE6E40-207889202
+Received: from localhost.localdomain (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id C0D71E008FAA;
+	Wed, 27 Aug 2025 10:32:14 +0800 (CST)
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+To: "Rafael J . wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Markus Mayer <mmayer@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Eduardo Valentin <edubezval@gmail.com>,
+	Keerthy <j-keerthy@ti.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: zhenglifeng <zhenglifeng1@huawei.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Len Brown <lenb@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Beata Michalska <beata.michalska@arm.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pavel Machek <pavel@kernel.org>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	linux-pm@vger.kernel.org,
+	x86@kernel.org,
+	kvm@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-tegra@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-omap@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Zihuan Zhang <zhangzihuan@kylinos.cn>
+Subject: [PATCH v2 00/18] cpufreq: use __free() for all cpufreq_cpu_get() references
+Date: Wed, 27 Aug 2025 10:31:44 +0800
+Message-Id: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/33] ACPI / PPTT: Add a helper to fill a cpumask from a
- processor container
-To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: shameerali.kolothum.thodi@huawei.com,
- D Scott Phillips OS <scott@os.amperecomputing.com>,
- carl@os.amperecomputing.com, lcherian@marvell.com,
- bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
- baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
- Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
- dfustini@baylibre.com, amitsinght@marvell.com,
- David Hildenbrand <david@redhat.com>, Rex Nie <rex.nie@jaguarmicro.com>,
- Dave Martin <dave.martin@arm.com>, Koba Ko <kobak@nvidia.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, fenghuay@nvidia.com,
- baisheng.gao@unisoc.com, Jonathan Cameron <jonathan.cameron@huawei.com>,
- Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
- Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>
-References: <20250822153048.2287-1-james.morse@arm.com>
- <20250822153048.2287-4-james.morse@arm.com>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <20250822153048.2287-4-james.morse@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-Hi James,
+This patchset converts all remaining cpufreq users to rely on the
+__free(put_cpufreq_policy) annotation for policy references, instead of
+calling cpufreq_cpu_put() manually.
 
-The patch logic update makes sense to me. Just a nit.
+Motivation:
+- Reduce the chance of reference counting mistakes
+- Make the code more consistent with the latest kernel style
+- behavior remains the same, but reference counting is now safer=20
+  and easier to maintain.
 
-On 8/22/25 16:29, James Morse wrote:
-> The PPTT describes CPUs and caches, as well as processor containers.
-> The ACPI table for MPAM describes the set of CPUs that can access an MSC
-> with the UID of a processor container.
-> 
-> Add a helper to find the processor container by its id, then walk
-> the possible CPUs to fill a cpumask with the CPUs that have this
-> processor container as a parent.
-> 
-> CC: Dave Martin <dave.martin@arm.com>
-> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-> Signed-off-by: James Morse <james.morse@arm.com>
-> ---
-> Changes since RFC:
->  * Dropped has_leaf_flag dodging of acpi_pptt_leaf_node()
->  * Added missing : in kernel-doc
->  * Made helper return void as this never actually returns an error.
-> ---
->  drivers/acpi/pptt.c  | 86 ++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/acpi.h |  3 ++
->  2 files changed, 89 insertions(+)
-> 
-> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> index 54676e3d82dd..4791ca2bdfac 100644
-> --- a/drivers/acpi/pptt.c
-> +++ b/drivers/acpi/pptt.c
-> @@ -298,6 +298,92 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
->  	return NULL;
->  }
->  
-> +/**
-> + * acpi_pptt_get_child_cpus() - Find all the CPUs below a PPTT processor node
-> + * @table_hdr:		A reference to the PPTT table.
-> + * @parent_node:	A pointer to the processor node in the @table_hdr.
-> + * @cpus:		A cpumask to fill with the CPUs below @parent_node.
-> + *
-> + * Walks up the PPTT from every possible CPU to find if the provided
-> + * @parent_node is a parent of this CPU.
-> + */
-> +static void acpi_pptt_get_child_cpus(struct acpi_table_header *table_hdr,
-> +				     struct acpi_pptt_processor *parent_node,
-> +				     cpumask_t *cpus)
-> +{
-> +	struct acpi_pptt_processor *cpu_node;
-> +	u32 acpi_id;
-> +	int cpu;
-> +
-> +	cpumask_clear(cpus);
-> +
-> +	for_each_possible_cpu(cpu) {
-> +		acpi_id = get_acpi_id_for_cpu(cpu);
-> +		cpu_node = acpi_find_processor_node(table_hdr, acpi_id);
-> +
-> +		while (cpu_node) {
-> +			if (cpu_node == parent_node) {
-> +				cpumask_set_cpu(cpu, cpus);
-> +				break;
-> +			}
-> +			cpu_node = fetch_pptt_node(table_hdr, cpu_node->parent);
-> +		}
-> +	}
-> +}
-> +
-> +/**
-> + * acpi_pptt_get_cpus_from_container() - Populate a cpumask with all CPUs in a
-> + *                                       processor containers
-> + * @acpi_cpu_id:	The UID of the processor container.
-> + * @cpus:		The resulting CPU mask.
-> + *
-> + * Find the specified Processor Container, and fill @cpus with all the cpus
-> + * below it.
-> + *
-> + * Not all 'Processor' entries in the PPTT are either a CPU or a Processor
-> + * Container, they may exist purely to describe a Private resource. CPUs
-> + * have to be leaves, so a Processor Container is a non-leaf that has the
-> + * 'ACPI Processor ID valid' flag set.
-> + *
-> + * Return: 0 for a complete walk, or an error if the mask is incomplete.
-> + */
-> +void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus)
-> +{
-> +	struct acpi_pptt_processor *cpu_node;
-> +	struct acpi_table_header *table_hdr;
-> +	struct acpi_subtable_header *entry;
-> +	unsigned long table_end;
-> +	acpi_status status;
-> +	bool leaf_flag;
-> +	u32 proc_sz;
-> +
-> +	cpumask_clear(cpus);
-> +
-> +	status = acpi_get_table(ACPI_SIG_PPTT, 0, &table_hdr);
-> +	if (ACPI_FAILURE(status))
-> +		return;
-> +
-> +	table_end = (unsigned long)table_hdr + table_hdr->length;
-> +	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
-> +			     sizeof(struct acpi_table_pptt));
-> +	proc_sz = sizeof(struct acpi_pptt_processor);
-> +	while ((unsigned long)entry + proc_sz <= table_end) {
-> +		cpu_node = (struct acpi_pptt_processor *)entry;
-> +		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
-> +		    cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_ID_VALID) {
-> +			leaf_flag = acpi_pptt_leaf_node(table_hdr, cpu_node);
-nit: Consider dropping the boolean leaf_flag and just using
-acpi_pptt_leaf_node() in the condition. The name leaf_flag is slightly
-overloaded to include the case when the acpi leaf flag is not supported
-and dropping it would make the code more succinct.
-> +			if (!leaf_flag) {
-> +				if (cpu_node->acpi_processor_id == acpi_cpu_id)
-> +					acpi_pptt_get_child_cpus(table_hdr, cpu_node, cpus);
-> +			}
-> +		}
-> +		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
-> +				     entry->length);
-> +	}
-> +
-> +	acpi_put_table(table_hdr);
-> +}
-> +
->  static u8 acpi_cache_type(enum cache_type type)
->  {
->  	switch (type) {
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 1c5bb1e887cd..f97a9ff678cc 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -1541,6 +1541,7 @@ int find_acpi_cpu_topology(unsigned int cpu, int level);
->  int find_acpi_cpu_topology_cluster(unsigned int cpu);
->  int find_acpi_cpu_topology_package(unsigned int cpu);
->  int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
-> +void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus);
->  #else
->  static inline int acpi_pptt_cpu_is_thread(unsigned int cpu)
->  {
-> @@ -1562,6 +1563,8 @@ static inline int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
->  {
->  	return -EINVAL;
->  }
-> +static inline void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id,
-> +						     cpumask_t *cpus) { }
->  #endif
->  
->  void acpi_arch_init(void);
+The changes are split into 18 patches as they touch different subsystems
+and are maintained by different people. There is no functional change.
 
-Thanks,
+V2:
+ - Fix compile error in powernv-cpufreq.c
+ - Split patch to separate logical changes
 
-Ben
+Zihuan Zhang (18):
+  arm64: topology: Use __free(put_cpufreq_policy) for policy reference
+  KVM: x86: Use __free(put_cpufreq_policy) for policy reference
+  ACPI: processor: thermal: Use __free(put_cpufreq_policy) for policy
+    reference
+  cpufreq: brcmstb-avs-cpufreq: Use __free(put_cpufreq_policy) for
+    policy reference
+  cpufreq: CPPC: Use __free(put_cpufreq_policy) for policy reference
+  cpufreq: intel_pstate: Use __free(put_cpufreq_policy) for policy
+    reference
+  cpufreq: longhaul: Use __free(put_cpufreq_policy) for policy reference
+  cpufreq: mediatek: Use __free(put_cpufreq_policy) for policy reference
+  cpufreq: powernv: Use __free(put_cpufreq_policy) for policy reference
+  cpufreq: s5pv210: Use __free(put_cpufreq_policy) for policy reference
+  cpufreq: tegra186: Use __free(put_cpufreq_policy) for policy reference
+  PM / devfreq: Use __free(put_cpufreq_policy) for policy reference
+  drm/i915: Use __free(put_cpufreq_policy) for policy reference
+  cpufreq: powerpc: macintosh: Use __free(put_cpufreq_policy) for policy
+    reference
+  powercap: dtpm_cpu: Use __free(put_cpufreq_policy) for policy
+    reference
+  thermal: imx: Use __free(put_cpufreq_policy) for policy reference
+  thermal/drivers/ti-soc-thermal:  Use __free(put_cpufreq_policy) for
+    policy reference
+  PM: EM: Use __free(put_cpufreq_policy) for policy reference
+
+ arch/arm64/kernel/topology.c                  |  9 +++----
+ arch/x86/kvm/x86.c                            | 10 ++++----
+ drivers/acpi/processor_thermal.c              | 12 +++-------
+ drivers/cpufreq/brcmstb-avs-cpufreq.c         |  4 +---
+ drivers/cpufreq/cppc_cpufreq.c                |  4 +---
+ drivers/cpufreq/intel_pstate.c                |  3 +--
+ drivers/cpufreq/longhaul.c                    |  3 +--
+ drivers/cpufreq/mediatek-cpufreq.c            |  6 ++---
+ drivers/cpufreq/powernv-cpufreq.c             |  7 +++---
+ drivers/cpufreq/s5pv210-cpufreq.c             |  3 +--
+ drivers/cpufreq/tegra186-cpufreq.c            |  3 +--
+ drivers/devfreq/governor_passive.c            | 19 ++++-----------
+ drivers/gpu/drm/i915/gt/intel_llc.c           |  3 +--
+ drivers/macintosh/windfarm_cpufreq_clamp.c    |  4 +---
+ drivers/powercap/dtpm_cpu.c                   | 24 ++++++-------------
+ drivers/thermal/imx_thermal.c                 | 13 ++++------
+ .../ti-soc-thermal/ti-thermal-common.c        | 12 ++++------
+ kernel/power/energy_model.c                   |  7 ++----
+ 18 files changed, 46 insertions(+), 100 deletions(-)
+
+--=20
+2.25.1
 
 
