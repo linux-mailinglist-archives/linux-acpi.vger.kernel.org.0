@@ -1,121 +1,130 @@
-Return-Path: <linux-acpi+bounces-16121-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16122-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C35B3892F
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 20:01:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED70B38EC2
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 00:51:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 267DD3AF736
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 18:01:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD18E188F9B2
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 22:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964D8225762;
-	Wed, 27 Aug 2025 18:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE74D30F94B;
+	Wed, 27 Aug 2025 22:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=antheas.dev header.i=@antheas.dev header.b="MVpLRtR4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QKhb4886"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from relay10.grserver.gr (relay10.grserver.gr [37.27.248.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD58113E41A;
-	Wed, 27 Aug 2025 18:00:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.27.248.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2298D30C61C;
+	Wed, 27 Aug 2025 22:51:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756317659; cv=none; b=siv+OCGCbwIOG9wTbXkpKtkzwJS1jAiny53Di7LWiOagMz6D64YAWRsRNjxY6TNXzQSx7wsj/rTQTvAn5PiWEe9I4n3TvRjemHkm7BSvhVeRFXNh8+hP1Bc+1Oo9Ix2zIOJYevt6v9qoJ36NAc4GEt/QfjbxqCNK6zMIe4mxqDQ=
+	t=1756335107; cv=none; b=HnwxsPqNmV/ryZ+U3nhDmSBWFMLXxg2QQ3egF0MTEwkPiWQ4xMY3kSusu4tvXo63jaU4iOUt+iyVBkB0iid9LlsG62FErHc7eVj/tmiPp5PXGa3hhhVWrvVYYw7oKWIHkd+uhsTm0AqNUCDPjEMGGg3e8X6jSDWdnn9oqsUw4bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756317659; c=relaxed/simple;
-	bh=sWCGTZe2jXvPtA8z2lu570Aoie8t2QFzT5hY5nOrwfA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A1Ri5rs5kQJ5W+V7Gao9KvhJHzyz5G8T1PUPQ9FkWTvIEaOIHKIs4tOtF3QCG1DbM1bI8qX8urg2RskNor88orptXzNpHeElZX183VpSWnIIv/oa6pea3p5r/HDYFC6j3h+aFW5LCOCTV5hZqO3ThxU6K4dorW4m3u4vXJegZNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev; spf=pass smtp.mailfrom=antheas.dev; dkim=temperror (0-bit key) header.d=antheas.dev header.i=@antheas.dev header.b=MVpLRtR4; arc=none smtp.client-ip=37.27.248.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antheas.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antheas.dev
-Received: from relay10 (localhost.localdomain [127.0.0.1])
-	by relay10.grserver.gr (Proxmox) with ESMTP id BA9CD4935F;
-	Wed, 27 Aug 2025 21:00:55 +0300 (EEST)
-Received: from linux3247.grserver.gr (linux3247.grserver.gr [213.158.90.240])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by relay10.grserver.gr (Proxmox) with ESMTPS id D1F18491B2;
-	Wed, 27 Aug 2025 21:00:54 +0300 (EEST)
-Received: from antheas-z13 (x5996a855.customers.hiper-net.dk [89.150.168.85])
-	by linux3247.grserver.gr (Postfix) with ESMTPSA id 46B711FF6EE;
-	Wed, 27 Aug 2025 21:00:53 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=antheas.dev;
-	s=default; t=1756317654;
-	bh=mAfJYfiIgzNvgbEcVv2Z96v/vZoKteB0l8ih2gQ1320=; h=From:To:Subject;
-	b=MVpLRtR4iwD1M9ubl2FuzG299pfztxD02lRHoDZxEZzC1+SjyevrgNNmC6HXDHu0u
-	 M2Ycbdk9otUWK4sUL9L/ETL3QEUB/K2l17lITN3NLx2fDUZLTT/qA6ON0d/inHOvTd
-	 715zFxn+qarC+XTPIHU0VicAVQZnRU7Jw5dc6KLwvSsHheqgMHW70wgWgCbPnwiDjR
-	 t039h6jzC/Q4mNR3p2Wt+OMuj4vdrx9aXmomqOiChLCugjVKJJP6EeIr8KbgMqvjqr
-	 qw0bo38hNPNhH5CtVO70958YBKSV/nM61UfxhBhkEljWLaL0YyCMAZ6yftciozJfH4
-	 kRkCkNF4lGciw==
-Authentication-Results: linux3247.grserver.gr;
-	spf=pass (sender IP is 89.150.168.85) smtp.mailfrom=lkml@antheas.dev smtp.helo=antheas-z13
-Received-SPF: pass (linux3247.grserver.gr: connection is authenticated)
-From: Antheas Kapenekakis <lkml@antheas.dev>
-To: linux-gpio@vger.kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mika Westerberg <westeri@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Antheas Kapenekakis <lkml@antheas.dev>
-Subject: [PATCH v1] gpiolib: acpi: Ignore touchpad wakeup on GPD G1619-05
-Date: Wed, 27 Aug 2025 19:58:42 +0200
-Message-ID: <20250827175842.3697418-1-lkml@antheas.dev>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1756335107; c=relaxed/simple;
+	bh=9cV81rIGpOy/YM5fTPAKbxKdQSFcMwRfOq2BESMcKzI=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Q7pJDDnbwFNURxPPyrI3daiZTLIdKUDp7siLlxO16qDT8v6SYz4xk3o8NBhi+dzEhIGoHBP/rMYtAZFp0M+8XrJcXB84PFOGpCTZFSR5B0Nm4qOU5E2SJfnMtkogLKIYWCXt7NQk3l6NYQ4nsGPjTxbLUyRoUljrua+Lbu4RZ4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QKhb4886; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7e872c3a0d5so45098685a.2;
+        Wed, 27 Aug 2025 15:51:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756335104; x=1756939904; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qLKctxTOQt+KSqUzMXlw+wuQaBiyEtfCcGttdld7tsQ=;
+        b=QKhb4886oOnYK6Yg6mbXpGSsOePzYL4FM/6XmqPCMQsm6SJ8VRgxEAR3IbnqSuBIye
+         JkXah48elK7HUiTRKh/x/3zrQlXFuK3yiDsKmmrMa/sPGxc6XuziK/y34my13bc0B5w4
+         JaI6fUtBSSO8orJX0LZtDucXifhHtQ+lb1Gl3suSgXGUrBZYvMjjjB2SQZRmsJaG2NTE
+         6E29yKmnraZz3LWGvQi42PrWkrFwjNIziboprrC20e31Bj/UKlqUv2h66owbNdRAYBnm
+         5ZxRQhMSF8i5ZRSTN11KzdrBpfaeYHCnx1KD3AsK67ql4bs1WG+ftUUMjiBDtAMZtHUp
+         FfEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756335104; x=1756939904;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qLKctxTOQt+KSqUzMXlw+wuQaBiyEtfCcGttdld7tsQ=;
+        b=wOgincKKER5mKerFCQnp/DXO16v79ddIuGycXe9tJ+MwG8a5J2p4JNY2w13pmTelLo
+         YCQ7qksqU/xxl5xfoQqpEiYOxU4ZcY5XSGV1a3/YrIu/5HXsqfk1nS2ToHmWXq9q0tkS
+         EupUJ7GFw7uTtzqS54o+8Ih/jmA/4++LPz2u68aNRBxWTmphEmoUXMw0y+OmEXhCRFyT
+         u3rr33ZJi/C6F7KXuA9801WZJtFAB3tLardrO1ogDhhUD/mMGrkK7MsPjuvFsA1a+pB+
+         Wbfor5MwOQucR7q6NB7b9qvJd+AYFQ6EX8+bPwIyS1QQ7pOlzV1+PqiBsRSiYniinii/
+         a3Ow==
+X-Forwarded-Encrypted: i=1; AJvYcCXT3xER31WBL2YZitE0QUp9sRdIsM3XBLqk4DrU04GkcKy1M7qjcTYgOR4Qc0M/yDKhkAQ6e35lglK1Ggo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4HwkKiwkA9A/FSb1pPmoUC39WEIQkLo2MdYur9W1a7+jlkmY4
+	SvwPKyJlE+ardXtuhsY7KsCpTWrLxgGIg9RLzwfatnHMGIK71H5aSYg8ydTl28Yk
+X-Gm-Gg: ASbGncujLbaw7hg/8didsmqk9Mfumk5K6qXxLOvIqz4exwjlK2dz0lsFnUw0wwOPQWx
+	BzBXFB2Uy6qY9g0byjoEwSIjUwHbQxT3fn5LFBw19xUQdoAKGS8RPgHOPoQzXlnuoON5aZ8E7kv
+	kqPmmjnXcmtcroCGWuSNFh7G4cmXfzpPAKxz+nyvJs16AjJomt+cUZhDco+7Sst9oL6AYS/BdRb
+	7BWoa1bfPH6krA9WM5y6IVFpAraTmx1ikAfnUKnKAxx4Jq0NrsDwpFgO0hPSexq5haCI5RAAKy+
+	adX9evb3v4PpwFpqBYUUXILGAl7AjU3FJ3H/SgnYsU1W/vAoELF7KQIW1f+kpw3Fzg04CVZaWsi
+	pW3D7/ZWlxA2gZmxv0tYpvXMLAFvtUlFaQ2dV7s9vTEKBqTXsCy4FiJd1fv0=
+X-Google-Smtp-Source: AGHT+IHDaHYGBqi8tCPu0bIHe3JLhoBlRb53NPj46J4iH1xg9p0MMmSeFejFKBzOsvMzWFaf7j+VMA==
+X-Received: by 2002:a05:620a:4495:b0:7e6:9b9f:2fe9 with SMTP id af79cd13be357-7ea11093f3bmr2170227485a.56.1756335104314;
+        Wed, 27 Aug 2025 15:51:44 -0700 (PDT)
+Received: from daniel-desktop3.localnet ([204.48.94.112])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ebf2b4f01fsm966237185a.36.2025.08.27.15.51.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Aug 2025 15:51:43 -0700 (PDT)
+From: Daniel Tang <danielzgtg.opensource@gmail.com>
+To: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH] acpi: TAD: Add missing sysfs_remove_group for ACPI_TAD_RT
+Date: Wed, 27 Aug 2025 18:51:41 -0400
+Message-ID: <7674021.TlGXAFRqVo@daniel-desktop3>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: 
- <175631765413.1413749.7209228509442678446@linux3247.grserver.gr>
-X-PPP-Vhost: antheas.dev
-X-Virus-Scanned: clamav-milter 1.4.3 at linux3247.grserver.gr
-X-Virus-Status: Clean
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-Same issue as G1619-04 in commit 805c74eac8cb ("gpiolib: acpi: Ignore
-touchpad wakeup on GPD G1619-04"), Strix Point lineup uses 05.
+Previously, after `rmmod acpi_tad`, `modprobe acpi_tad` would fail
+with this dmesg:
 
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+sysfs: cannot create duplicate filename '/devices/platform/ACPI000E:00/time'
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x6c/0x90
+ dump_stack+0x10/0x20
+ sysfs_warn_dup+0x8b/0xa0
+ sysfs_add_file_mode_ns+0x122/0x130
+ internal_create_group+0x1dd/0x4c0
+ sysfs_create_group+0x13/0x20
+ acpi_tad_probe+0x147/0x1f0 [acpi_tad]
+ platform_probe+0x42/0xb0
+ </TASK>
+acpi-tad ACPI000E:00: probe with driver acpi-tad failed with error -17
+
+Fixes: 3230b2b3c1ab5a0d3f99d5850bfdc4bf48d11cdd ("ACPI: TAD: Add low-level support for real time capability")
+Signed-off-by: Daniel Tang <danielzgtg.opensource@gmail.com>
 ---
- drivers/gpio/gpiolib-acpi-quirks.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/acpi/acpi_tad.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi-quirks.c
-index c13545dce349..bb63138c4b5b 100644
---- a/drivers/gpio/gpiolib-acpi-quirks.c
-+++ b/drivers/gpio/gpiolib-acpi-quirks.c
-@@ -317,6 +317,18 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
- 			.ignore_wake = "PNP0C50:00@8",
- 		},
- 	},
-+	{
-+		/*
-+		 * Same as G1619-04. New model.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "GPD"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "G1619-05"),
-+		},
-+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_wake = "PNP0C50:00@8",
-+		},
-+	},
- 	{
- 		/*
- 		 * Spurious wakeups from GPIO 11
-
-base-commit: 1b237f190eb3d36f52dffe07a40b5eb210280e00
+diff --git a/drivers/acpi/acpi_tad.c b/drivers/acpi/acpi_tad.c
+index 91d7d90c47da..33418dd6768a 100644
+--- a/drivers/acpi/acpi_tad.c
++++ b/drivers/acpi/acpi_tad.c
+@@ -565,6 +565,9 @@ static void acpi_tad_remove(struct platform_device *pdev)
+ 
+ 	pm_runtime_get_sync(dev);
+ 
++	if (dd->capabilities & ACPI_TAD_RT)
++		sysfs_remove_group(&dev->kobj, &acpi_tad_time_attr_group);
++
+ 	if (dd->capabilities & ACPI_TAD_DC_WAKE)
+ 		sysfs_remove_group(&dev->kobj, &acpi_tad_dc_attr_group);
+ 
 -- 
-2.51.0
+2.48.1
 
 
 
