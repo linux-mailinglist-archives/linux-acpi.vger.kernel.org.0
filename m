@@ -1,205 +1,139 @@
-Return-Path: <linux-acpi+bounces-16100-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16101-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91527B37FCC
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 12:23:10 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC811B38032
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 12:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EBC23BEA6F
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 10:23:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BA8C34E404E
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 10:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D91823D7EC;
-	Wed, 27 Aug 2025 10:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="cM2D6X/l"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7096028D8E8;
+	Wed, 27 Aug 2025 10:46:18 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2044.outbound.protection.outlook.com [40.107.237.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDAA223301;
-	Wed, 27 Aug 2025 10:23:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756290185; cv=fail; b=dYcR3fySezxRc52hNmTPLgdo14RyH0u9lb9yUClwXRBh2vNCJDjO1OppzU0vpAlMvnbuQ8gVHFVyIDFcjA+tWCpZHMbtUHyj6+AxmM+gPFCj2Bt/tte3SLTFGAkdLABb7e+ra/oWEpS7wUpZa9zZJij2UkPhclfP13lN3mxtoMU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756290185; c=relaxed/simple;
-	bh=j33lNq/1eyvB5bGNrgdJxwQGRL/0AYQYavlRnUCREv4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=DOme9e3luREbTG8qd1nvcbYRlIsUFT2c0kNlepIVU9nPycHif8I6uK523X8lq1OCaUObi+4Q84NJRwZ/RqCp9E1dLHoeh48xHJgj2oor+f9mJfhwAskR2Pe0XsBe9rMYYjxTNGuAarYuvu6ki4OmYclhg7AdXxbDAO6FizyTLwQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=cM2D6X/l; arc=fail smtp.client-ip=40.107.237.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tgAVX2MCyHloIME33yG1xAJZZDBYmXUOsftC3Fr6FJcEH2q2u4eF/8YX52R4KzfSKhLHi4fz4FXgOSz1VEa+EHVYdfLPJPlEIGj6NwtlsIrRGpcf2rXFD04GB51HYHtF46fL9xE69JYiLr6de1eVUOB8y2Hry+03yUzeLIwCjtcR3EpzNbG9RjqXXOV+scK7hfiLTI85OOBotb6ui9SAqVtft9vBR5iKf5D2RUo32+bRZF4ofhGzpwrhP0msZ+eLaWyhpAUNZR5/r+RL+DHYmtEyaLkOfWmF0QFu2ATjMVn9ZTcqgVqHg8Orlmt6TF8Q4jDXQoLqp33nT1IyoOC1lA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=X06AKaUU5+2cN09CEvDU38sXrjJCE0Ujw2tHpH7PLro=;
- b=RPyzVJQ1FzT6R4kr6lJ2Tq/lcTeW1o7CLQpX5fLUDvwgvD0v5FwSWIookUrMocmaRqgI8ekFtbAh9f1VflHOe2rfB5R6PnJmRkzM4DkOQC6igTfG03bczRzDAgAguCXP7ewci0VpOUq1ymXyY9LSaOnbGqjOhYEsZ600rJ9P7mt9ZJkQfOqmKV2K5p7ErX7Ro/5y8/FT/Xw8M7QGucoaZ/0PZNL4INfg6QNq6ITn7XaJ29/ntT9fIa4prSHisGm7VvQ06B2CsjsemV/un7HDb6mEufrvJr5a6DA5AyrWehhsIjv8iEyMxihoUN/OKPx2CuBVGw5eGhVcYeHMkmKuZw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=X06AKaUU5+2cN09CEvDU38sXrjJCE0Ujw2tHpH7PLro=;
- b=cM2D6X/lTf7pKOARsJTUCA8cBS2WW1za/ihR8WACQZBGwSQJnRuZnjnuZKCpYoDVO+0wXw06wlO+y31nkpl3Mu9fs2x59R9dpuids5NzuR5wD0ohugQe0fEK9kmalidpQ2SgtJaqQdyH7sJ0uNeUb1EnbgvD+rEwmrqzHWdT1klBG9bVGbMl/KWY36slsqKqa3J70eOodM6+mbYcZv39jKUGU4oQqyXg1gwfaXufB22gG8aDa1E1sjBNkxHPbyT8D9IydKjmeXvoZEtSnQFXdBfuNFiSLWBgaitdkZ1t98p5jEzIiABbwYt2sPuZUkO2aWYaCuy8WtD5GtoEKvWV/A==
-Received: from BN0PR02CA0031.namprd02.prod.outlook.com (2603:10b6:408:e5::6)
- by DM6PR12MB4171.namprd12.prod.outlook.com (2603:10b6:5:21f::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.24; Wed, 27 Aug
- 2025 10:23:00 +0000
-Received: from BL02EPF0001A0FA.namprd03.prod.outlook.com
- (2603:10b6:408:e5:cafe::ab) by BN0PR02CA0031.outlook.office365.com
- (2603:10b6:408:e5::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.22 via Frontend Transport; Wed,
- 27 Aug 2025 10:22:59 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BL02EPF0001A0FA.mail.protection.outlook.com (10.167.242.101) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9073.11 via Frontend Transport; Wed, 27 Aug 2025 10:22:59 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 27 Aug
- 2025 03:22:39 -0700
-Received: from [10.64.161.125] (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 27 Aug
- 2025 03:22:36 -0700
-Message-ID: <b35dc03c-a947-4139-8e70-dbfb5c701cdf@nvidia.com>
-Date: Wed, 27 Aug 2025 12:21:33 +0200
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554C120ED;
+	Wed, 27 Aug 2025 10:46:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756291578; cv=none; b=AtkGISt0BbejYMK7xwEIMgsD3qEW7K59wZme5HmwKuamhT84NnBOrW2U7PoKtVtc2KVxhxIA1PB1D2GyLqDmhwuP29bwCMgcp5nnVRq20Xi0nkaUHDqrU5ibj5PuEtqOxRFw9N8vcKIN4DTpJbdncfAS7IzOoIHYTt2qMb/dZrk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756291578; c=relaxed/simple;
+	bh=WAQA74idaX90UlIpUem5NDOqd5djJuJGPghggS60YDk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DNqH07/nTKqAw4ij5XxZbz/SSZ2Rq534J8ArZWGABJ2k8xdKnuc1/viy/vs497gKrHtIcDyHPzFo4LS/znljpZ3FmwL/aJrEnnYIJO0AfzQ3UAqHMhjMzAmW2wmzlpJqhgrSHrIw8/G2JARMo7+EEpemmd/kEVHFaHDzJ85JS7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 517931688;
+	Wed, 27 Aug 2025 03:46:07 -0700 (PDT)
+Received: from e133380.arm.com (e133380.arm.com [10.1.197.68])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CB74E3F738;
+	Wed, 27 Aug 2025 03:46:09 -0700 (PDT)
+Date: Wed, 27 Aug 2025 11:46:02 +0100
+From: Dave Martin <Dave.Martin@arm.com>
+To: James Morse <james.morse@arm.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+	shameerali.kolothum.thodi@huawei.com,
+	D Scott Phillips OS <scott@os.amperecomputing.com>,
+	carl@os.amperecomputing.com, lcherian@marvell.com,
+	bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+	baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+	Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+	dfustini@baylibre.com, amitsinght@marvell.com,
+	David Hildenbrand <david@redhat.com>,
+	Rex Nie <rex.nie@jaguarmicro.com>, Koba Ko <kobak@nvidia.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>, fenghuay@nvidia.com,
+	baisheng.gao@unisoc.com,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+	Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH 01/33] cacheinfo: Expose the code to generate a cache-id
+ from a device_node
+Message-ID: <aK7h6seHNWs5rO9Q@e133380.arm.com>
+References: <20250822153048.2287-1-james.morse@arm.com>
+ <20250822153048.2287-2-james.morse@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI/PCI: Fix memory leak fix in pci_acpi_preserve_config
-To: Bjorn Helgaas <helgaas@kernel.org>
-CC: <linux-acpi@vger.kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, "Rafael
- J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Vidya Sagar
-	<vidyas@nvidia.com>, <linux-pci@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20250825223731.GA808746@bhelgaas>
-Content-Language: en-US
-From: Nirmoy Das <nirmoyd@nvidia.com>
-In-Reply-To: <20250825223731.GA808746@bhelgaas>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FA:EE_|DM6PR12MB4171:EE_
-X-MS-Office365-Filtering-Correlation-Id: 54d6872b-2e36-453d-5e7a-08dde553b2a8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VXlEN0ExTDdrNGp5eVZVMGtieW5BM0FIaGFSWnk3RG9MVG5SQ0FJa0JBeHY3?=
- =?utf-8?B?dHJGSDZzbkE0ZXlkWm5kYUd0ZjY4K1JVQ3BnT0R0QkpyRmNqS0svUHJyYlBn?=
- =?utf-8?B?Qktrb3RzR1N3bXBuSUdFME4yencveEJtUk92dzRaMEtFOHJQU3llZUtnbmNv?=
- =?utf-8?B?Y0JCQ2VpeFJuU2JpUzNrNG1KUXgrbFNrOWpITWNRS0lWbTJFamFjcERlb2xX?=
- =?utf-8?B?WU5DY1BXTituaU1xRUloUVcrUzVnVVFzUm5oNFBCRXFUa0xZYVZKS1djS000?=
- =?utf-8?B?anBTcjJHekE2ZjhERFE5b0dMYm1KMW5Calc4QWVqQmdZRjFSOUpiTU5TR3B4?=
- =?utf-8?B?R21uMGZja0dsbTZuYW1mUkQ0OElMVU8wdk1ycDA4VEFQTmRhUUI3Uk9QdGVh?=
- =?utf-8?B?VmMyRXkrQnY0OFUrd0cwWE9hdGJWYWV1dXBLNERCNURZSkhORXR2RkpDUC9U?=
- =?utf-8?B?VUVaajQyczQzK0dGMTREaUNwclZkam5VUXFFb2VJYkJ3ZTVSRCsxMndhN3Ny?=
- =?utf-8?B?UkxmQW1ub1VTM0NkM05VN1h1Ykozc2Y4am51bHBMRWNEMzVaS2F2TStMR0NE?=
- =?utf-8?B?eFNkUU9vdXk2Uld0dkQrMUtqb0FUbmMwMmo1eW4rNmxjT0hVM3lnREFhWWMw?=
- =?utf-8?B?Q0xkekQyMEVMUFBXNURLb0tuT0dPNXNEYXhpZk1DQ2dSSThCSENyanJCbVdM?=
- =?utf-8?B?YXhBTXk4NkV4eXV0cVVlczNlU2o0R01haTBoUGNxQWhSSGMxSnlUNEhxdE0r?=
- =?utf-8?B?dVBLTW12cTBvamtIQkVxWmQrbUN5c1gzR0xOSlFiYkZrVDFtWGk4aVJHcXhU?=
- =?utf-8?B?N0E2ZDNjcXlvMkZYZXVuM2tnM2cwdEozaHlEUGRDaXE0TzMybHRvd1V1Qm9R?=
- =?utf-8?B?ajZ2dStucG5WdXlVVWpmd01wSG1TTEZZZ096RGlYbVdtV1YyR1FSVFZuUTE4?=
- =?utf-8?B?d2dVamJuNVY4TThVMmU3OFRzUUhKV2diWVFHWFFvQk94cWlDTGVBTTltT3Q0?=
- =?utf-8?B?WlNiRUFXcFhJQlY2S29NSjRteGxmR1A0cXVwK3JuSGJOU1l1RUlVWEFmWmxG?=
- =?utf-8?B?M0pIOXZBZUZ5OHBJdnE4QWFJMGNVbHVlZ0t4cFlyekJaN2lYREw5by9YWjl5?=
- =?utf-8?B?bjB2eUxEeE1Ob0ZNSFA0aWlidjZTNlVSSjVqTmNlcGhtWUhWeWFHOXhOV09Q?=
- =?utf-8?B?cERZNlp5cDdTZ1FySWluZEM3aDlWejBVUVV0YzNJeFRac1o5NzRJNTY0U2JQ?=
- =?utf-8?B?Rm92RTFEajRmb3AyTlJHdnFaQUZBZ1Y2QUFqbEpvQTBwZ3JINHlaRll0NTlw?=
- =?utf-8?B?MUdaaWFSaXRkMWxoaXU3aVNjNnU3Q1pwc2Ird0I0UmZMWHlQVzdweitvejla?=
- =?utf-8?B?S1g4dVozeXdJYkZuY0JDd1V2VzdYSW9FZlhxL1BSbjVPV3p4Tko2TldxWDNK?=
- =?utf-8?B?OEJpcnRBYk9CeENXQi9RdHVzRXR2aExzWlUyVndWYjlNcis4d2haalhXYzFJ?=
- =?utf-8?B?UFBQZDJpSWZjOVByRzFKaG9WL1l3ay92YTRCc1FVRmNKMlFsNVV1YktZbUxZ?=
- =?utf-8?B?eUdpalo4eFdQTUNoeHlxeFhUUkhCZ1RxVkt6MkNlSUM3VWg5RkFoY2M5U3Jt?=
- =?utf-8?B?T2w5RnhsS0JGMkphZkc0Q2IwVGhTN1NpMmE4Q2VPYlp0cU9jbzVSMlNrQlRa?=
- =?utf-8?B?aFMybTJSa2p1Q3AyRGprdmxmbnZmUDRCVmpLZjJoQ2xTRkhLd1RuQUkrSlU3?=
- =?utf-8?B?L0tNZEtTaWZZT0J5VzBqVUZ4K1Z6VlB0QXNYSEUzWEJsTVp3WHhreDVoRkNL?=
- =?utf-8?B?ZWdnMStxZUNNdFNCaC9UMHlEejVJY2tzbzczeTNPTDFDNWdPbWdIM1lLSWoz?=
- =?utf-8?B?LytKNUdOVnZsdjA1b0dQMHhXWEpwNWZmcUdNQTRXTWkwaGVaYUMxdmVVbVJV?=
- =?utf-8?B?ZnZPWnJQY2VFZlpST1FXTUFCUGJqa1lnWWt1NnpBR1cxdnV2K0Q2am9rU0Yw?=
- =?utf-8?B?K3g0RndzTTFpOW15M0FIS1RadzlZWGg2a2k1Lys1cGFDTjRGNHdhNzBGbjg2?=
- =?utf-8?Q?Hgok+8?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2025 10:22:59.7152
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54d6872b-2e36-453d-5e7a-08dde553b2a8
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A0FA.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4171
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250822153048.2287-2-james.morse@arm.com>
 
+Hi James,
 
-On 26.08.25 00:37, Bjorn Helgaas wrote:
-> On Mon, Aug 25, 2025 at 02:46:42PM -0700, Nirmoy Das wrote:
->> The pci_acpi_preserve_config() function is leaking memory by returning
->> early without freeing the ACPI object on success. Fix that by always
->> freeing the obj which is not needed by the caller.
->>
->> Fixes: 9d7d5db8e78e ("PCI: Move PRESERVE_BOOT_CONFIG _DSM evaluation to pci_register_host_bridge()")
->> Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
-> Applied to pci/misc for v6.18, thanks!
-Thanks Bjorn!
->
->> ---
->>   drivers/pci/pci-acpi.c | 6 ++++--
->>   1 file changed, 4 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
->> index ddb25960ea47d..9369377725fa0 100644
->> --- a/drivers/pci/pci-acpi.c
->> +++ b/drivers/pci/pci-acpi.c
->> @@ -122,6 +122,8 @@ phys_addr_t acpi_pci_root_get_mcfg_addr(acpi_handle handle)
->>   
->>   bool pci_acpi_preserve_config(struct pci_host_bridge *host_bridge)
->>   {
->> +	bool ret = false;
->> +
->>   	if (ACPI_HANDLE(&host_bridge->dev)) {
->>   		union acpi_object *obj;
->>   
->> @@ -135,11 +137,11 @@ bool pci_acpi_preserve_config(struct pci_host_bridge *host_bridge)
->>   					      1, DSM_PCI_PRESERVE_BOOT_CONFIG,
->>   					      NULL, ACPI_TYPE_INTEGER);
->>   		if (obj && obj->integer.value == 0)
->> -			return true;
->> +			ret = true;
->>   		ACPI_FREE(obj);
->>   	}
->>   
->> -	return false;
->> +	return ret;
->>   }
->>   
->>   /* _HPX PCI Setting Record (Type 0); same as _HPP */
->> -- 
->> 2.43.0
->>
+On Fri, Aug 22, 2025 at 03:29:42PM +0000, James Morse wrote:
+> The MPAM driver identifies caches by id for use with resctrl. It
+> needs to know the cache-id when probe-ing, but the value isn't set
+> in cacheinfo until device_initcall().
+> 
+> Expose the code that generates the cache-id. The parts of the MPAM
+> driver that run early can use this to set up the resctrl structures
+> before cacheinfo is ready in device_initcall().
+
+Why can't the MPAM driver just consume the precomputed cache-id
+information?
+
+Possible reasons are that the MPAM driver probes too early, or that it
+must parse the PPTT directly (which is true) and needs to label caches
+consistently with the way the kernel does it.
+
+> 
+> Signed-off-by: James Morse <james.morse@arm.com>
+> ---
+> Changes since v1:
+>  * Renamed cache_of_get_id() cache_of_calculate_id().
+> ---
+>  drivers/base/cacheinfo.c  | 19 +++++++++++++------
+>  include/linux/cacheinfo.h |  1 +
+>  2 files changed, 14 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
+> index 613410705a47..f6289d142ba9 100644
+> --- a/drivers/base/cacheinfo.c
+> +++ b/drivers/base/cacheinfo.c
+> @@ -207,11 +207,10 @@ static bool match_cache_node(struct device_node *cpu,
+>  #define arch_compact_of_hwid(_x)	(_x)
+>  #endif
+>  
+> -static void cache_of_set_id(struct cacheinfo *this_leaf,
+> -			    struct device_node *cache_node)
+> +unsigned long cache_of_calculate_id(struct device_node *cache_node)
+>  {
+>  	struct device_node *cpu;
+> -	u32 min_id = ~0;
+> +	unsigned long min_id = ~0UL;
+
+Why the change of type here?
+
+This does mean that 0xffffffff can now be generated as a valid cache-id,
+but if that is necessary then this patch is also fixing a bug in the
+code -- but the commit message doesn't say anything about that.
+
+For a patch that is just exposing an internal result, it may be
+better to keep the original type.  ~(u32)0 is already used as an
+exceptional value.
+
+[...]
+
+Otherwise, this looks reasonable to me.
+
+Cheers
+---Dave
 
