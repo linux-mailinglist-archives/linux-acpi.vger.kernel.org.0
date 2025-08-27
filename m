@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-16119-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16120-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA5CB3884F
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 19:11:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A10B38853
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 19:12:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE70F1B60943
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 17:12:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE3111B61EEE
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Aug 2025 17:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7D72FF152;
-	Wed, 27 Aug 2025 17:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3A730BB80;
+	Wed, 27 Aug 2025 17:11:52 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F3E223710;
-	Wed, 27 Aug 2025 17:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FE8223710;
+	Wed, 27 Aug 2025 17:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756314707; cv=none; b=NjRH+SmiRPRP9GK2wtdX5NJCvuXrysyqc3oaR8UILBpJKN5WXugOjZVv3uY0zSItfxCiWcawqA9JwVnoRtdOQ4FU/rrKAC5oGj4qoEfi4O7vIcnJG/xSWe149pgcaGydJsnfQ/a330gs1UgYlru2wKbhGJLO3QGcNwzDOGQCxPg=
+	t=1756314712; cv=none; b=R3c1VcOozZSrac/FQHLtjyiJAcZ57m0KcuHhIqcI01+yjam3fM2esPeIdpwhuqoMt5je38O3nnR4Vp8sk1njVRk4mlUqA9GrJe7zQLq6C8hw5s7q6uIBTXVuX3fAlqQHW76mLwgiXdFX11QiIJDDI3O1f4eClmN9wJWkcKoaXv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756314707; c=relaxed/simple;
-	bh=Zv4tlqmeyNrFaUpCqrhKxtlapI7AXU2/uUSIsRpFUeU=;
+	s=arc-20240116; t=1756314712; c=relaxed/simple;
+	bh=3aUjH47u8cHdPsl1BdlKxTzAA50pWkY6dUI3rJzJI2M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CFVLyZLQOs6AGCZN/k84UaMCTrfVYnWpmL+jTt+wfCGmj52V3YYRDjjhcy0qfUwCCZ/lU9oSRnvwFPVKWbhF7ypIUbWOjqgXE+0TIx7M9VMJ+lPm5NaWnz1RRxCN/ICoPQCiClOeEzLz7EibVGxVK1rZm8lQ0af8HW80d+QQbHQ=
+	 In-Reply-To:Content-Type; b=EftWHftbpJSOq0fzZVSQE1wNY9310WmufV8yvzfdlfbP9AWFb9lldjhzMTFgx2Dhlqw1hOaL0tmtRHomZocZQhh+fVnD6aLI22MzXZryaKpyD7JAlL9SDBdod8X2rhGZLymHwZgiw7jtuUJQH0fGz+5PQXqGUmXZSId2TpjuwkU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5932C2720;
-	Wed, 27 Aug 2025 10:11:36 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 88CCE15A1;
+	Wed, 27 Aug 2025 10:11:41 -0700 (PDT)
 Received: from [10.1.196.42] (eglon.cambridge.arm.com [10.1.196.42])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5161E3F694;
-	Wed, 27 Aug 2025 10:11:38 -0700 (PDT)
-Message-ID: <9fde0d3c-52e7-4545-a273-4b37b865997c@arm.com>
-Date: Wed, 27 Aug 2025 18:11:38 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E4A633F694;
+	Wed, 27 Aug 2025 10:11:44 -0700 (PDT)
+Message-ID: <2ac66605-ee6a-495b-a0fb-910926abd8b0@arm.com>
+Date: Wed, 27 Aug 2025 18:11:43 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -44,10 +44,10 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 02/33] drivers: base: cacheinfo: Add helper to find the
  cache size from cpu+level
-To: Krzysztof Kozlowski <krzk@kernel.org>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: shameerali.kolothum.thodi@huawei.com,
+To: Dave Martin <Dave.Martin@arm.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+ shameerali.kolothum.thodi@huawei.com,
  D Scott Phillips OS <scott@os.amperecomputing.com>,
  carl@os.amperecomputing.com, lcherian@marvell.com,
  bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
@@ -55,10 +55,10 @@ Cc: shameerali.kolothum.thodi@huawei.com,
  Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
  dfustini@baylibre.com, amitsinght@marvell.com,
  David Hildenbrand <david@redhat.com>, Rex Nie <rex.nie@jaguarmicro.com>,
- Dave Martin <dave.martin@arm.com>, Koba Ko <kobak@nvidia.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, fenghuay@nvidia.com,
- baisheng.gao@unisoc.com, Jonathan Cameron <jonathan.cameron@huawei.com>,
- Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
  Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
  <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
@@ -69,39 +69,68 @@ Cc: shameerali.kolothum.thodi@huawei.com,
  Danilo Krummrich <dakr@kernel.org>
 References: <20250822153048.2287-1-james.morse@arm.com>
  <20250822153048.2287-3-james.morse@arm.com>
- <172e9dd6-3b25-4fdf-943e-2bd559117519@kernel.org>
+ <aK7iDey7LATOXIUb@e133380.arm.com>
 Content-Language: en-GB
 From: James Morse <james.morse@arm.com>
-In-Reply-To: <172e9dd6-3b25-4fdf-943e-2bd559117519@kernel.org>
+In-Reply-To: <aK7iDey7LATOXIUb@e133380.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Krzysztof,
+Hi Dave,
 
-On 24/08/2025 18:25, Krzysztof Kozlowski wrote:
-> On 22/08/2025 17:29, James Morse wrote:
+On 27/08/2025 11:46, Dave Martin wrote:
+> Hi,
+> 
+> On Fri, Aug 22, 2025 at 03:29:43PM +0000, James Morse wrote:
 >> MPAM needs to know the size of a cache associated with a particular CPU.
 >> The DT/ACPI agnostic way of doing this is to ask cacheinfo.
 >>
 >> Add a helper to do this.
 
->> ---
->> Changes since v1:
+>> diff --git a/include/linux/cacheinfo.h b/include/linux/cacheinfo.h
+>> index 2dcbb69139e9..e12d6f2c6a57 100644
+>> --- a/include/linux/cacheinfo.h
+>> +++ b/include/linux/cacheinfo.h
+>> @@ -148,6 +148,21 @@ static inline int get_cpu_cacheinfo_id(int cpu, int level)
+>>  	return ci ? ci->id : -1;
+>>  }
+>>  
+>> +/**
+>> + * get_cpu_cacheinfo_size() - Get the size of the cache.
+>> + * @cpu:      The cpu that is associated with the cache.
+>> + * @level:    The level of the cache as seen by @cpu.
+>> + *
+>> + * Callers must hold the cpuhp lock.
+>> + * Returns the cache-size on success, or 0 for an error.
+>> + */
 > 
-> You marked this as v1.
+> Nit: Maybe use the wording
+> 
+> 	cpuhp lock must be held.
+> 
+> in the kerneldoc here, to match the other helpers it sits alongside.
+> 
+> Otherwise, looks reasonable.
 
-Oops - that should say RFC. I'll fix all those.
+Sure,
 
 
->>  * Converted to kdoc.
->>  * Simplified helper to use get_cpu_cacheinfo_level().
+>> +static inline unsigned int get_cpu_cacheinfo_size(int cpu, int level)
+>> +{
+>> +	struct cacheinfo *ci = get_cpu_cacheinfo_level(cpu, level);
+>> +
+>> +	return ci ? ci->size : 0;
+>> +}
+>> +
+> 
+> Orphaned function?
+> 
+> Can fs/resctrl/rdtgroup.c:rdtgroup_cbm_to_size() be ported to use this?
+> If so, this wouldn't just be dead code in this series.
 
-> Please use consistent subject prefixes. Look at previous patch subject
-> prefix.
-
-Presumably the previous patch in my series - this is a side effect of multiple branches
-that were written at different times getting combined! I'll change it to 'cacheinfo:' as
-that seems to be the most popular recently.
+Ah - I thought the MPAM driver was pulling this value in, but its the resctrl glue code.
+I was trying to reduce the number of trees this touches - its probably best to kick this
+into the next series that adds the resctrl code as its pretty trivial.
 
 
 Thanks,
