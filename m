@@ -1,184 +1,411 @@
-Return-Path: <linux-acpi+bounces-16132-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16133-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B8EB39899
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 11:43:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB21FB3993A
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 12:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A2CA986222
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 09:43:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4CCC1652CB
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 10:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A532ECD32;
-	Thu, 28 Aug 2025 09:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JJ89yqsM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20553081C8;
+	Thu, 28 Aug 2025 10:11:35 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DA82EB84B;
-	Thu, 28 Aug 2025 09:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6D43019A5;
+	Thu, 28 Aug 2025 10:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756374016; cv=none; b=iwEIK4KeeaGfMHdEU8Lj1tFeodlS6BEiMM6yWI5BUC5hf3TC8n8Tz+HBx1lItXruWPZ7llX7sbdAN1cyJ9VBpvM9Mk2/zQkV+4nCoQ++x/J4zLblpTYfFImS6ZY93C3NIZ0m+Bu3sCzchPtgNDiybSFOhtS6mSHDpFqzLq/MVrw=
+	t=1756375895; cv=none; b=QLeD2dDNIx3iOcMPa6PZNRw3YZvw6OQGkgW31Y4fimf5aJsJKQxzYmcMtCm40qebzMuBQsUJ7V77w90uPNoHEojbtNLap/MPS0lXzSiYJi7X6ZgKqBkNdoxF6NXxXE0nL6lTfpa+u84S4KFNVwrDf14snQMtvL9abeKw+bgo0dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756374016; c=relaxed/simple;
-	bh=Cl0m1kDKpWeagimjoCyJC2nNVcFJOKHXK8N9AWWvIRE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PWjtMwHik0IV1dxaOdgqBsNcnTrTTzRXi0xgmGTD70kRkbs85J1F6ZZl0+Qt+6t8HMN0NpxvqxK1HGg0ONZmXhDIPAE+X64uh+FnnERGPWPFsphMPWTReCE+VzzXEOoU2OLQnTao2V0WJuIVE7KflxadzHBZr67z9z3IPUyUOpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JJ89yqsM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4004EC4CEFC;
-	Thu, 28 Aug 2025 09:40:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756374016;
-	bh=Cl0m1kDKpWeagimjoCyJC2nNVcFJOKHXK8N9AWWvIRE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=JJ89yqsM/siAb1VR6ZJU3bEFaUkNGoy0qdWneQKwaNTbKw9v5mNgvGxJA28E63mh8
-	 Upq25haYXC1EwPZL5mZ2pA6J2O7jYs80WZygAwabYpOC504atc6SOmn/XDviZLtv/u
-	 Dkhv5fJWuapG9S8NjjHS5krDPTFQktzMc6uGIyrrf1CtjntEwSY+BeVohNBKzjYck9
-	 vc8aBvirQTUlJJbQyNuCJvdcB69O+ndDUle/uzIu+YrtfNIQ654vov6hDZekcrOcRL
-	 5uf6Pz1m20Ccro9eZRk6B2A29o17/4zQC0wXfU4vOxKUBk+cvk6B8LwZnfbzjU2bLw
-	 ryOgMyPpw3vEg==
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-30cceb3be82so715373fac.2;
-        Thu, 28 Aug 2025 02:40:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUiFB/UFu1N0ZnTKqAR7jDshLPTAg829ij5rlYHMqEp0u+M0AexWFNC6Z0A9xtUVlB/4C/t5aWw7p4=@vger.kernel.org, AJvYcCUkdycEW+9kHgwCMXHAfsTYsQg7+nVyxfoFXzHpuCA+6wOzZEwyqCsaVnYfeP5Futxnp8PQ6yp3HMNYu4FfKrA40zo=@vger.kernel.org, AJvYcCUonPOnRlFo0mcqL06BWkPneOaJaoFtYJ/3pQN0UaQa5GX5CuGhNTkeor21j6cm+pnvKn4sX+9bjW6FmA==@vger.kernel.org, AJvYcCVg0FZ36TSQTocwz39aZnj+tMLerFOnWM3RSBcdmaywU++sUxnJfshcvJgh6ban6qTKwTY=@vger.kernel.org, AJvYcCVrAlxbM0F2b08GxzUuVtkTqrn/qpsDWwFWiyYTQCIewtyl8sQJHizLCHbKu0B66FT6nZIHLFGG7vta7Ks=@vger.kernel.org, AJvYcCWAbMVIHu07tKcHSJf7ms/QsimIqVEov6fjquvTp0vh00re5kqmzTR0L1XlpvcvTc2U22108FxeAThheWon@vger.kernel.org, AJvYcCWWvyVqMAfLAIERec1CbZopIXgz3939IyGJrvhnG3XBoclOzEZ0BCOI0IdGIAtQDt1iu+kKGsopsAJ5Xg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcYOLKt6QaZkOk/lPYhKCw6defQgFSYtvm2N5RzBzJ07O9zzjl
-	5pYX8kCJtJOVz0HeV+mYwNTVRO9VgoOrFcR79jcXMGiKKD/9Il3lGjNBfgjyzybS6RGjje//IpG
-	HpxPet1FnS7beFeV5beoUZ6unk9N4U0g=
-X-Google-Smtp-Source: AGHT+IGV4ScW5OAU3iglUFz6GOl/SaxSbnlEKhbCLP2wFA8xAwCena16hSLRSa/lAp17g1juuguW4VQdAzFwj9/LUxc=
-X-Received: by 2002:a05:6870:9710:b0:310:b613:5fdb with SMTP id
- 586e51a60fabf-314dcb575e6mr9287838fac.7.1756374014938; Thu, 28 Aug 2025
- 02:40:14 -0700 (PDT)
+	s=arc-20240116; t=1756375895; c=relaxed/simple;
+	bh=VCTNvX/f/d/+iWw0tqtTHF0g+u3hX7B5nMWWOQe1Ei0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dF7bHZ+gikPOIy6ONjL5rSopuxgH0NDDSeEkDniC6wtXdasHPxWrgI1M7Bf9NBpPxXaLi3XLwOm7gXYJegOqSdmLmSIOAMwX7USnaMYAccKRfAW6xIguktCZ5HPqVtDIWZnKw1V47QgME/NY7GHuTfS+WEA0P4IPtYzILLTdKSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E43EA1688;
+	Thu, 28 Aug 2025 03:11:23 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 11AD93F738;
+	Thu, 28 Aug 2025 03:11:25 -0700 (PDT)
+Message-ID: <13767875-3744-47f3-98ec-a808c0c22f21@arm.com>
+Date: Thu, 28 Aug 2025 11:11:24 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250827023202.10310-1-zhangzihuan@kylinos.cn> <20250827023202.10310-4-zhangzihuan@kylinos.cn>
-In-Reply-To: <20250827023202.10310-4-zhangzihuan@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 28 Aug 2025 11:40:03 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jA7HjNc6VQWdjuwLnmd751kV01NXC4v8Pyn8h-r70BzQ@mail.gmail.com>
-X-Gm-Features: Ac12FXyk8AzMIpXHgrT8Z1UHGDrWUNjtTLP9mZxojpyASBCiNu69qRn54WdH-2Y
-Message-ID: <CAJZ5v0jA7HjNc6VQWdjuwLnmd751kV01NXC4v8Pyn8h-r70BzQ@mail.gmail.com>
-Subject: Re: [PATCH v2 03/18] ACPI: processor: thermal: Use
- __free(put_cpufreq_policy) for policy reference
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer <mmayer@broadcom.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
-	Chanwoo Choi <cw00.choi@samsung.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, x86@kernel.org, 
-	kvm@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org, 
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 25/33] arm_mpam: Probe and reset the rest of the features
+To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+ devicetree@vger.kernel.org
+Cc: shameerali.kolothum.thodi@huawei.com,
+ D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Rex Nie <rex.nie@jaguarmicro.com>,
+ Dave Martin <dave.martin@arm.com>, Koba Ko <kobak@nvidia.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, fenghuay@nvidia.com,
+ baisheng.gao@unisoc.com, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Zeng Heng <zengheng4@huawei.com>
+References: <20250822153048.2287-1-james.morse@arm.com>
+ <20250822153048.2287-26-james.morse@arm.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <20250822153048.2287-26-james.morse@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 27, 2025 at 4:33=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylinos.c=
-n> wrote:
->
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
->
-> No functional change intended.
->
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Hi James,
+
+On 8/22/25 16:30, James Morse wrote:
+> MPAM supports more features than are going to be exposed to resctrl.
+> For partid other than 0, the reset values of these controls isn't
+> known.
+> 
+> Discover the rest of the features so they can be reset to avoid any
+> side effects when resctrl is in use.
+> 
+> PARTID narrowing allows MSC/RIS to support less configuration space than
+> is usable. If this feature is found on a class of device we are likely
+> to use, then reduce the partid_max to make it usable. This allows us
+> to map a PARTID to itself.
+> 
+> CC: Rohit Mathew <Rohit.Mathew@arm.com>
+> CC: Zeng Heng <zengheng4@huawei.com>
+> CC: Dave Martin <Dave.Martin@arm.com>
+> Signed-off-by: James Morse <james.morse@arm.com>
 > ---
->  drivers/acpi/processor_thermal.c | 12 +++---------
->  1 file changed, 3 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_th=
-ermal.c
-> index 1219adb11ab9..f99ed0812934 100644
-> --- a/drivers/acpi/processor_thermal.c
-> +++ b/drivers/acpi/processor_thermal.c
-> @@ -64,17 +64,13 @@ static int phys_package_first_cpu(int cpu)
->
->  static int cpu_has_cpufreq(unsigned int cpu)
->  {
-> -       struct cpufreq_policy *policy;
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy);
->
->         if (!acpi_processor_cpufreq_init)
->                 return 0;
->
->         policy =3D cpufreq_cpu_get(cpu);
-> -       if (policy) {
-> -               cpufreq_cpu_put(policy);
-> -               return 1;
-> -       }
-> -       return 0;
-> +       return !!policy;
-
-If you want to make this change, please also change the return type of
-the function to bool.
-
+>  drivers/resctrl/mpam_devices.c  | 175 ++++++++++++++++++++++++++++++++
+>  drivers/resctrl/mpam_internal.h |  16 ++-
+>  2 files changed, 189 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+> index 8f6df2406c22..aedd743d6827 100644
+> --- a/drivers/resctrl/mpam_devices.c
+> +++ b/drivers/resctrl/mpam_devices.c
+> @@ -213,6 +213,15 @@ static void __mpam_part_sel(u8 ris_idx, u16 partid, struct mpam_msc *msc)
+>  	__mpam_part_sel_raw(partsel, msc);
 >  }
->
->  static int cpufreq_get_max_state(unsigned int cpu)
-> @@ -95,7 +91,7 @@ static int cpufreq_get_cur_state(unsigned int cpu)
->
->  static int cpufreq_set_cur_state(unsigned int cpu, int state)
+>  
+> +static void __mpam_intpart_sel(u8 ris_idx, u16 intpartid, struct mpam_msc *msc)
+> +{
+> +	u32 partsel = FIELD_PREP(MPAMCFG_PART_SEL_RIS, ris_idx) |
+> +		      FIELD_PREP(MPAMCFG_PART_SEL_PARTID_SEL, intpartid) |
+> +		      MPAMCFG_PART_SEL_INTERNAL;
+> +
+> +	__mpam_part_sel_raw(partsel, msc);
+> +}
+> +
+>  int mpam_register_requestor(u16 partid_max, u8 pmg_max)
 >  {
-> -       struct cpufreq_policy *policy;
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  	int err = 0;
+> @@ -743,10 +752,35 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
+>  	int err;
+>  	struct mpam_msc *msc = ris->vmsc->msc;
+>  	struct mpam_props *props = &ris->props;
+> +	struct mpam_class *class = ris->vmsc->comp->class;
+>  
+>  	lockdep_assert_held(&msc->probe_lock);
+>  	lockdep_assert_held(&msc->part_sel_lock);
+>  
+> +	/* Cache Capacity Partitioning */
+> +	if (FIELD_GET(MPAMF_IDR_HAS_CCAP_PART, ris->idr)) {
+> +		u32 ccap_features = mpam_read_partsel_reg(msc, CCAP_IDR);
+> +
+> +		props->cmax_wd = FIELD_GET(MPAMF_CCAP_IDR_CMAX_WD, ccap_features);
+> +		if (props->cmax_wd &&
+> +		    FIELD_GET(MPAMF_CCAP_IDR_HAS_CMAX_SOFTLIM, ccap_features))
+> +			mpam_set_feature(mpam_feat_cmax_softlim, props);
+> +
+> +		if (props->cmax_wd &&
+> +		    !FIELD_GET(MPAMF_CCAP_IDR_NO_CMAX, ccap_features))
+> +			mpam_set_feature(mpam_feat_cmax_cmax, props);
+> +
+> +		if (props->cmax_wd &&
+> +		    FIELD_GET(MPAMF_CCAP_IDR_HAS_CMIN, ccap_features))
+> +			mpam_set_feature(mpam_feat_cmax_cmin, props);
+> +
+> +		props->cassoc_wd = FIELD_GET(MPAMF_CCAP_IDR_CASSOC_WD, ccap_features);
+> +
+> +		if (props->cassoc_wd &&
+> +		    FIELD_GET(MPAMF_CCAP_IDR_HAS_CASSOC, ccap_features))
+> +			mpam_set_feature(mpam_feat_cmax_cassoc, props);
+> +	}
+> +
+>  	/* Cache Portion partitioning */
+>  	if (FIELD_GET(MPAMF_IDR_HAS_CPOR_PART, ris->idr)) {
+>  		u32 cpor_features = mpam_read_partsel_reg(msc, CPOR_IDR);
+> @@ -769,6 +803,31 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
+>  		props->bwa_wd = FIELD_GET(MPAMF_MBW_IDR_BWA_WD, mbw_features);
+>  		if (props->bwa_wd && FIELD_GET(MPAMF_MBW_IDR_HAS_MAX, mbw_features))
+>  			mpam_set_feature(mpam_feat_mbw_max, props);
+> +
+> +		if (props->bwa_wd && FIELD_GET(MPAMF_MBW_IDR_HAS_MIN, mbw_features))
+> +			mpam_set_feature(mpam_feat_mbw_min, props);
+> +
+> +		if (props->bwa_wd && FIELD_GET(MPAMF_MBW_IDR_HAS_PROP, mbw_features))
+> +			mpam_set_feature(mpam_feat_mbw_prop, props);
+> +	}
+> +
+> +	/* Priority partitioning */
+> +	if (FIELD_GET(MPAMF_IDR_HAS_PRI_PART, ris->idr)) {
+> +		u32 pri_features = mpam_read_partsel_reg(msc, PRI_IDR);
+> +
+> +		props->intpri_wd = FIELD_GET(MPAMF_PRI_IDR_INTPRI_WD, pri_features);
+> +		if (props->intpri_wd && FIELD_GET(MPAMF_PRI_IDR_HAS_INTPRI, pri_features)) {
+> +			mpam_set_feature(mpam_feat_intpri_part, props);
+> +			if (FIELD_GET(MPAMF_PRI_IDR_INTPRI_0_IS_LOW, pri_features))
+> +				mpam_set_feature(mpam_feat_intpri_part_0_low, props);
+> +		}
+> +
+> +		props->dspri_wd = FIELD_GET(MPAMF_PRI_IDR_DSPRI_WD, pri_features);
+> +		if (props->dspri_wd && FIELD_GET(MPAMF_PRI_IDR_HAS_DSPRI, pri_features)) {
+> +			mpam_set_feature(mpam_feat_dspri_part, props);
+> +			if (FIELD_GET(MPAMF_PRI_IDR_DSPRI_0_IS_LOW, pri_features))
+> +				mpam_set_feature(mpam_feat_dspri_part_0_low, props);
+> +		}
+>  	}
+>  
+>  	/* Performance Monitoring */
+> @@ -832,6 +891,21 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
+>  			 */
+>  		}
+>  	}
+> +
+> +	/*
+> +	 * RIS with PARTID narrowing don't have enough storage for one
+> +	 * configuration per PARTID. If these are in a class we could use,
+> +	 * reduce the supported partid_max to match the number of intpartid.
+> +	 * If the class is unknown, just ignore it.
+> +	 */
+> +	if (FIELD_GET(MPAMF_IDR_HAS_PARTID_NRW, ris->idr) &&
+> +	    class->type != MPAM_CLASS_UNKNOWN) {
+> +		u32 nrwidr = mpam_read_partsel_reg(msc, PARTID_NRW_IDR);
+> +		u16 partid_max = FIELD_GET(MPAMF_PARTID_NRW_IDR_INTPARTID_MAX, nrwidr);
+> +
+> +		mpam_set_feature(mpam_feat_partid_nrw, props);
+> +		msc->partid_max = min(msc->partid_max, partid_max);
+> +	}
+>  }
+>  
+>  static int mpam_msc_hw_probe(struct mpam_msc *msc)
+> @@ -929,13 +1003,29 @@ static void mpam_reset_msc_bitmap(struct mpam_msc *msc, u16 reg, u16 wd)
+>  static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
+>  				      struct mpam_config *cfg)
+>  {
+> +	u32 pri_val = 0;
+> +	u16 cmax = MPAMCFG_CMAX_CMAX;
+>  	u16 bwa_fract = MPAMCFG_MBW_MAX_MAX;
+>  	struct mpam_msc *msc = ris->vmsc->msc;
+>  	struct mpam_props *rprops = &ris->props;
+> +	u16 dspri = GENMASK(rprops->dspri_wd, 0);
+> +	u16 intpri = GENMASK(rprops->intpri_wd, 0);
+>  
+>  	mutex_lock(&msc->part_sel_lock);
+>  	__mpam_part_sel(ris->ris_idx, partid, msc);
+>  
+> +	if (mpam_has_feature(mpam_feat_partid_nrw, rprops)) {
+> +		/* Update the intpartid mapping */
+> +		mpam_write_partsel_reg(msc, INTPARTID,
+> +				       MPAMCFG_INTPARTID_INTERNAL | partid);
+> +
+> +		/*
+> +		 * Then switch to the 'internal' partid to update the
+> +		 * configuration.
+> +		 */
+> +		__mpam_intpart_sel(ris->ris_idx, partid, msc);
+> +	}
+> +
+>  	if (mpam_has_feature(mpam_feat_cpor_part, rprops)) {
+>  		if (mpam_has_feature(mpam_feat_cpor_part, cfg))
+>  			mpam_write_partsel_reg(msc, CPBM, cfg->cpbm);
+> @@ -964,6 +1054,29 @@ static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
+>  
+>  	if (mpam_has_feature(mpam_feat_mbw_prop, rprops))
+>  		mpam_write_partsel_reg(msc, MBW_PROP, bwa_fract);
+> +
+> +	if (mpam_has_feature(mpam_feat_cmax_cmax, rprops))
+> +		mpam_write_partsel_reg(msc, CMAX, cmax);
+> +
+> +	if (mpam_has_feature(mpam_feat_cmax_cmin, rprops))
+> +		mpam_write_partsel_reg(msc, CMIN, 0);
 
-This isn't correct AFAICS at least formally because the scope of the
-variable is the whole function, so it won't get out of scope at the
-point where you want cpufreq_cpu_put() to be called.
+Missing reset for cmax_cassoc. I wonder if it makes sense to have
+separate enums for partitioning features, which require reset, and the rest.
+> +
+> +	if (mpam_has_feature(mpam_feat_intpri_part, rprops) ||
+> +	    mpam_has_feature(mpam_feat_dspri_part, rprops)) {
+> +		/* aces high? */
+> +		if (!mpam_has_feature(mpam_feat_intpri_part_0_low, rprops))
+> +			intpri = 0;
+> +		if (!mpam_has_feature(mpam_feat_dspri_part_0_low, rprops))
+> +			dspri = 0;
+> +
+> +		if (mpam_has_feature(mpam_feat_intpri_part, rprops))
+> +			pri_val |= FIELD_PREP(MPAMCFG_PRI_INTPRI, intpri);
+> +		if (mpam_has_feature(mpam_feat_dspri_part, rprops))
+> +			pri_val |= FIELD_PREP(MPAMCFG_PRI_DSPRI, dspri);
+> +
+> +		mpam_write_partsel_reg(msc, PRI, pri_val);
+> +	}
+> +
+>  	mutex_unlock(&msc->part_sel_lock);
+>  }
+>  
+> @@ -1529,6 +1642,16 @@ static bool mpam_has_bwa_wd_feature(struct mpam_props *props)
+>  	return false;
+>  }
+>  
+> +/* Any of these features mean the CMAX_WD field is valid. */
+> +static bool mpam_has_cmax_wd_feature(struct mpam_props *props)
+> +{
+> +	if (mpam_has_feature(mpam_feat_cmax_cmax, props))
+> +		return true;
+> +	if (mpam_has_feature(mpam_feat_cmax_cmin, props))
+> +		return true;
+> +	return false;
+> +}
+> +
+>  #define MISMATCHED_HELPER(parent, child, helper, field, alias)		\
+>  	helper(parent) &&						\
+>  	((helper(child) && (parent)->field != (child)->field) ||	\
+> @@ -1583,6 +1706,23 @@ static void __props_mismatch(struct mpam_props *parent,
+>  		parent->bwa_wd = min(parent->bwa_wd, child->bwa_wd);
+>  	}
+>  
+> +	if (alias && !mpam_has_cmax_wd_feature(parent) && mpam_has_cmax_wd_feature(child)) {
+> +		parent->cmax_wd = child->cmax_wd;
+> +	} else if (MISMATCHED_HELPER(parent, child, mpam_has_cmax_wd_feature,
+> +				     cmax_wd, alias)) {
+> +		pr_debug("%s took the min cmax_wd\n", __func__);
+> +		parent->cmax_wd = min(parent->cmax_wd, child->cmax_wd);
+> +	}
+> +
+> +	if (CAN_MERGE_FEAT(parent, child, mpam_feat_cmax_cassoc, alias)) {
+> +		parent->cassoc_wd = child->cassoc_wd;
+> +	} else if (MISMATCHED_FEAT(parent, child, mpam_feat_cmax_cassoc,
+> +				   cassoc_wd, alias)) {
+> +		pr_debug("%s cleared cassoc_wd\n", __func__);
+> +		mpam_clear_feature(mpam_feat_cmax_cassoc, &parent->features);
+> +		parent->cassoc_wd = 0;
+> +	}
+> +
+>  	/* For num properties, take the minimum */
+>  	if (CAN_MERGE_FEAT(parent, child, mpam_feat_msmon_csu, alias)) {
+>  		parent->num_csu_mon = child->num_csu_mon;
+> @@ -1600,6 +1740,41 @@ static void __props_mismatch(struct mpam_props *parent,
+>  		parent->num_mbwu_mon = min(parent->num_mbwu_mon, child->num_mbwu_mon);
+>  	}
+>  
+> +	if (CAN_MERGE_FEAT(parent, child, mpam_feat_intpri_part, alias)) {
+> +		parent->intpri_wd = child->intpri_wd;
+> +	} else if (MISMATCHED_FEAT(parent, child, mpam_feat_intpri_part,
+> +				   intpri_wd, alias)) {
+> +		pr_debug("%s took the min intpri_wd\n", __func__);
+> +		parent->intpri_wd = min(parent->intpri_wd, child->intpri_wd);
+> +	}
+> +
+> +	if (CAN_MERGE_FEAT(parent, child, mpam_feat_dspri_part, alias)) {
+> +		parent->dspri_wd = child->dspri_wd;
+> +	} else if (MISMATCHED_FEAT(parent, child, mpam_feat_dspri_part,
+> +				   dspri_wd, alias)) {
+> +		pr_debug("%s took the min dspri_wd\n", __func__);
+> +		parent->dspri_wd = min(parent->dspri_wd, child->dspri_wd);
+> +	}
+> +
+> +	/* TODO: alias support for these two */
+> +	/* {int,ds}pri may not have differing 0-low behaviour */
+> +	if (mpam_has_feature(mpam_feat_intpri_part, parent) &&
+> +	    (!mpam_has_feature(mpam_feat_intpri_part, child) ||
+> +	     mpam_has_feature(mpam_feat_intpri_part_0_low, parent) !=
+> +	     mpam_has_feature(mpam_feat_intpri_part_0_low, child))) {
+> +		pr_debug("%s cleared intpri_part\n", __func__);
+> +		mpam_clear_feature(mpam_feat_intpri_part, &parent->features);
+> +		mpam_clear_feature(mpam_feat_intpri_part_0_low, &parent->features);
+> +	}
+> +	if (mpam_has_feature(mpam_feat_dspri_part, parent) &&
+> +	    (!mpam_has_feature(mpam_feat_dspri_part, child) ||
+> +	     mpam_has_feature(mpam_feat_dspri_part_0_low, parent) !=
+> +	     mpam_has_feature(mpam_feat_dspri_part_0_low, child))) {
+> +		pr_debug("%s cleared dspri_part\n", __func__);
+> +		mpam_clear_feature(mpam_feat_dspri_part, &parent->features);
+> +		mpam_clear_feature(mpam_feat_dspri_part_0_low, &parent->features);
+> +	}
+> +
+>  	if (alias) {
+>  		/* Merge features for aliased resources */
+>  		parent->features |= child->features;
+> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
+> index 70cba9f22746..23445aedbabd 100644
+> --- a/drivers/resctrl/mpam_internal.h
+> +++ b/drivers/resctrl/mpam_internal.h
+> @@ -157,16 +157,23 @@ static inline void mpam_mon_sel_lock_held(struct mpam_msc *msc)
+>   * When we compact the supported features, we don't care what they are.
+>   * Storing them as a bitmap makes life easy.
+>   */
+> -typedef u16 mpam_features_t;
+> +typedef u32 mpam_features_t;
+>  
+>  /* Bits for mpam_features_t */
+>  enum mpam_device_features {
+> -	mpam_feat_ccap_part = 0,
+> +	mpam_feat_cmax_softlim,
+> +	mpam_feat_cmax_cmax,
+> +	mpam_feat_cmax_cmin,
+> +	mpam_feat_cmax_cassoc,
+>  	mpam_feat_cpor_part,
+>  	mpam_feat_mbw_part,
+>  	mpam_feat_mbw_min,
+>  	mpam_feat_mbw_max,
+>  	mpam_feat_mbw_prop,
+> +	mpam_feat_intpri_part,
+> +	mpam_feat_intpri_part_0_low,
+> +	mpam_feat_dspri_part,
+> +	mpam_feat_dspri_part_0_low,
+>  	mpam_feat_msmon,
+>  	mpam_feat_msmon_csu,
+>  	mpam_feat_msmon_csu_capture,
+> @@ -176,6 +183,7 @@ enum mpam_device_features {
+>  	mpam_feat_msmon_mbwu_rwbw,
+>  	mpam_feat_msmon_mbwu_hw_nrdy,
+>  	mpam_feat_msmon_capt,
+> +	mpam_feat_partid_nrw,
+>  	MPAM_FEATURE_LAST,
+>  };
+>  static_assert(BITS_PER_TYPE(mpam_features_t) >= MPAM_FEATURE_LAST);
+> @@ -187,6 +195,10 @@ struct mpam_props {
+>  	u16			cpbm_wd;
+>  	u16			mbw_pbm_bits;
+>  	u16			bwa_wd;
+> +	u16			cmax_wd;
+> +	u16			cassoc_wd;
+> +	u16			intpri_wd;
+> +	u16			dspri_wd;
+>  	u16			num_csu_mon;
+>  	u16			num_mbwu_mon;
+>  };
 
-The policy variable should be defined in the block following the "for"
-loop (and actually all of the local variables except for "i" can be
-defined there).
+Thanks,
 
-Or better still, please move that block to a separate function
-containing all of the requisite local variable definitions and call
-that function for each online CPU.
+Ben
 
->         struct acpi_processor *pr;
->         unsigned long max_freq;
->         int i, ret;
-> @@ -127,8 +123,6 @@ static int cpufreq_set_cur_state(unsigned int cpu, in=
-t state)
->                 max_freq =3D (policy->cpuinfo.max_freq *
->                             (100 - reduction_step(i) * cpufreq_thermal_re=
-duction_pctg)) / 100;
->
-> -               cpufreq_cpu_put(policy);
-> -
->                 ret =3D freq_qos_update_request(&pr->thermal_req, max_fre=
-q);
->                 if (ret < 0) {
->                         pr_warn("Failed to update thermal freq constraint=
-: CPU%d (%d)\n",
-> --
 
