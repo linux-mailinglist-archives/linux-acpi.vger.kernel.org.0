@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-16153-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16154-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13798B3A50E
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 17:58:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F09B3A511
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 17:58:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24D8B1C845DB
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 15:58:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02EC89884D3
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 15:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C57257852;
-	Thu, 28 Aug 2025 15:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF13258EDB;
+	Thu, 28 Aug 2025 15:58:29 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E19814A4DB;
-	Thu, 28 Aug 2025 15:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C550A258EC9;
+	Thu, 28 Aug 2025 15:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756396695; cv=none; b=fbc5uf/pNPXs44vH1smhMjhbPOQHW8VzHwkrOMMg7RQal2eB+GDDgWG6/vKMXu4vdoRhVYXZwkiuZ54TET29E4sKqBp/+RvnlH9pnlSiwDIIMxP5FD5p7In80BtK6ynnI+AyTvj/SouanAHgXMNTdHulAtaTzsZ8El33+mE0wy4=
+	t=1756396709; cv=none; b=XJn/3Z66XfWLq80rxJLQqwNqZmCjFqYz/kJnqnv4cVBW4I2LX6GCfKX4yMV39fZ/dBX5eRUS7JRf35i6DOmHnwt3Aos048DExo1FzNI5601lgWgnX+6IFktMwyqol/JAe6Tko8cMxgP5vKE+Aq45nxXac9F7yBBSGUamdTOlDVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756396695; c=relaxed/simple;
-	bh=Wb9XOl0j1HQBxna2JUDeiX5DYAqiL6uJpW3PDADBgAk=;
+	s=arc-20240116; t=1756396709; c=relaxed/simple;
+	bh=NrbZvEIKNT4VmJu9MDU0+OiupMqdTCllle3ZHFAZgWg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=byUyrz98oRKMNb/2X+Qy2fxJumme0/+0Hj64XAkI9T2UWu5mxfQF0kdkU7Q8HXkD+ECzb3QGIlof4iCGhb2fIiJk67L79t37mIBRUfOUpMKNCKBV5z3Pn1LIkR6alv4c6vzOhfVwOrZGYGuTxinzMmTjAuMUKQCTv0ASFkx/Cec=
+	 In-Reply-To:Content-Type; b=gMbPE+yOoHuXoWS5j+bMDuZhoBNvexxRfhH/vnktSrdJKzl4vxSWuAEXL983b8YVVd/70/kYdTBCVlb6G50tFaxMNrIpFzNjwbFkgNWaibkJbVfl36AbAu35YD97WYkb01cNvbb3+wrWTpucAHpstKUg9xBsfT5rbjR0DIRfOKo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7DCBC2944;
-	Thu, 28 Aug 2025 08:58:04 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D88942A31;
+	Thu, 28 Aug 2025 08:58:18 -0700 (PDT)
 Received: from [10.1.196.42] (eglon.cambridge.arm.com [10.1.196.42])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B706B3F694;
-	Thu, 28 Aug 2025 08:58:05 -0700 (PDT)
-Message-ID: <cc4881e8-5d90-4992-8cbf-650ea2efa5ca@arm.com>
-Date: Thu, 28 Aug 2025 16:58:05 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A42E43F694;
+	Thu, 28 Aug 2025 08:58:18 -0700 (PDT)
+Message-ID: <2e4c3c00-b248-421e-8ff1-d24b7b03be1a@arm.com>
+Date: Thu, 28 Aug 2025 16:58:16 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,11 +42,11 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/33] ACPI / PPTT: Find cache level by cache-id
+Subject: Re: [PATCH 06/33] ACPI / PPTT: Add a helper to fill a cpumask from a
+ cache_id
 To: Dave Martin <Dave.Martin@arm.com>
 Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
- shameerali.kolothum.thodi@huawei.com,
  D Scott Phillips OS <scott@os.amperecomputing.com>,
  carl@os.amperecomputing.com, lcherian@marvell.com,
  bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
@@ -67,98 +67,60 @@ Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Danilo Krummrich <dakr@kernel.org>
 References: <20250822153048.2287-1-james.morse@arm.com>
- <20250822153048.2287-6-james.morse@arm.com>
- <aK7jEMqM/FoB4ABW@e133380.arm.com>
+ <20250822153048.2287-7-james.morse@arm.com>
+ <aK7ju2caTjqf1+VN@e133380.arm.com>
 Content-Language: en-GB
 From: James Morse <james.morse@arm.com>
-In-Reply-To: <aK7jEMqM/FoB4ABW@e133380.arm.com>
+In-Reply-To: <aK7ju2caTjqf1+VN@e133380.arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Dave,
 
-On 27/08/2025 11:50, Dave Martin wrote:
-> Hi,
+On 27/08/2025 11:53, Dave Martin wrote:
+> On Fri, Aug 22, 2025 at 03:29:47PM +0000, James Morse wrote:
+>> MPAM identifies CPUs by the cache_id in the PPTT cache structure.
+>>
+>> The driver needs to know which CPUs are associated with the cache,
+>> the CPUs may not all be online, so cacheinfo does not have the
+>> information.
 > 
-> On Fri, Aug 22, 2025 at 03:29:46PM +0000, James Morse wrote:
->> The MPAM table identifies caches by id. The MPAM driver also wants to know
->> the cache level to determine if the platform is of the shape that can be
->> managed via resctrl. Cacheinfo has this information, but only for CPUs that
->> are online.
->>
->> Waiting for all CPUs to come online is a problem for platforms where
->> CPUs are brought online late by user-space.
->>
->> Add a helper that walks every possible cache, until it finds the one
->> identified by cache-id, then return the level.
->> Add a cleanup based free-ing mechanism for acpi_get_table().
+> Nit: cacheinfo lacking the information is not a consequence of the
+> driver needing it.
+> 
+> Maybe split the sentence:
+> 
+> -> "[...] associated with the cache. The CPUs may not [...]"
 
-> Does this mean that the early secondaries must be spread out across the
-> whole topology so that everything can be probed?
->
-> (i.e., a random subset is no good?)
-
-For the mpam driver - it needs to see each cache with mpam hardware, which means a CPU
-associated with each cache needs to be online. Random is fine - provided you get lucky.
+Sure,
 
 
-> If so, is this documented somewhere, such as in booting.rst?
-
-booting.rst is for the bootloader.
-Late secondaries is a bit of a niche sport, I've only seen it commonly done in VMs.
-Most platforms so far have their MPAM controls on a global L3, so this requirement doesn't
-make much of a difference.
-
-The concern is that if resctrl gets probed after user-space has started, whatever
-user-space service is supposed to set it up will have concluded its not supported. Working
-with cache-ids for offline CPUs means you don't have to bring all the CPUs online - only
-enough so that every piece of hardware is reachable.
-
-
-> Maybe this is not a new requirement -- it's not an area that I'm very
-> familiar with.
-
-Hard to say - its a potentially surprising side effect of glomming OS accessible registers
-onto the side of hardware that can be automatically powered off. (PSCI CPU_SUSPEND).
-
-I did try getting cacheinfo to populate all the CPUs at boot, regardless of whether they
-were online. Apparently that doesn't work for PowerPC where the properties of CPUs can
-change while they are offline. (presumably due to RAS or a firmware update)
-
+>> Add a helper to pull this information out of the PPTT.
 
 >> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
->> index 8f9b9508acba..660457644a5b 100644
+>> index 660457644a5b..cb93a9a7f9b6 100644
 >> --- a/drivers/acpi/pptt.c
 >> +++ b/drivers/acpi/pptt.c
->> @@ -907,3 +907,67 @@ int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
->>  	return find_acpi_cpu_topology_tag(cpu, PPTT_ABORT_PACKAGE,
->>  					  ACPI_PPTT_ACPI_IDENTICAL);
+>> @@ -971,3 +971,65 @@ int find_acpi_cache_level_from_id(u32 cache_id)
+>>  
+>>  	return -ENOENT;
 >>  }
 >> +
 >> +/**
->> + * find_acpi_cache_level_from_id() - Get the level of the specified cache
+>> + * acpi_pptt_get_cpumask_from_cache_id() - Get the cpus associated with the
+>> + *					   specified cache
 >> + * @cache_id: The id field of the unified cache
+>> + * @cpus: Where to build the cpumask
 >> + *
->> + * Determine the level relative to any CPU for the unified cache identified by
->> + * cache_id. This allows the property to be found even if the CPUs are offline.
->> + *
->> + * The returned level can be used to group unified caches that are peers.
+>> + * Determine which CPUs are below this cache in the PPTT. This allows the property
+>> + * to be found even if the CPUs are offline.
 >> + *
 >> + * The PPTT table must be rev 3 or later,
 >> + *
->> + * If one CPUs L2 is shared with another as L3, this function will return
->> + * an unpredictable value.
->> + *
 >> + * Return: -ENOENT if the PPTT doesn't exist, or the cache cannot be found.
-> 
-> Nit: doesn't exist or its revision is too old.
-
-... its not old, but there is no published spec for that revision... unsupported?
-
-
->> + * Otherwise returns a value which represents the level of the specified cache.
+>> + * Otherwise returns 0 and sets the cpus in the provided cpumask.
 >> + */
->> +int find_acpi_cache_level_from_id(u32 cache_id)
+>> +int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus)
 >> +{
 >> +	u32 acpi_cpu_id;
 >> +	int level, cpu, num_levels;
@@ -166,98 +128,71 @@ change while they are offline. (presumably due to RAS or a firmware update)
 >> +	struct acpi_pptt_cache_v1 *cache_v1;
 >> +	struct acpi_pptt_processor *cpu_node;
 >> +	struct acpi_table_header *table __free(acpi_table) = acpi_get_table_ret(ACPI_SIG_PPTT, 0);
-
-> acpi_get_pptt() ? (See comment on patch 3.)
-
-Yup,
-
-> Comments there also suggest that the acpi_put_table() may be
-> unnecessary, at least on some paths.
-> 
-> I haven't tried to understand the ins and outs of this.
-
-It's grabbing one reference and using it for everything, because it needs to 'map' the
-table in atomic context due to cpuhp, but can't.
-Given how frequently its used, there is no problem just leaving it mapped.
-
-
+>> +
+>> +	cpumask_clear(cpus);
 >> +
 >> +	if (IS_ERR(table))
->> +		return PTR_ERR(table);
+>> +		return -ENOENT;
 >> +
 >> +	if (table->revision < 3)
 >> +		return -ENOENT;
 >> +
 >> +	/*
->> +	 * If we found the cache first, we'd still need to walk from each CPU
->> +	 * to find the level...
+>> +	 * If we found the cache first, we'd still need to walk from each cpu.
 >> +	 */
-
-> ^ Possibly confusing comment?  The cache id is the starting point for
-> calling this function.  Is there a world in which we are at this point
-> without first having found the cache node?
-> 
-> (If the comment is just a restatement of part of the kerneldoc
-> description, maybe just drop it.)
-
-It's describing the alternate world where the table is searched to find the cache first,
-but then we'd still need to walk the table another NR_CPUs times, which can't be avoided.
-I'll drop it - it was justifying why its done this way round...
-
-
 >> +	for_each_possible_cpu(cpu) {
 >> +		acpi_cpu_id = get_acpi_id_for_cpu(cpu);
 >> +		cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
 >> +		if (!cpu_node)
->> +			return -ENOENT;
+>> +			return 0;
 >> +		num_levels = acpi_count_levels(table, cpu_node, NULL);
-> 
-> Is the initial call to acpi_count_levels() really needed here?
-> 
-> It feels a bit like we end up enumerating the whole topology two or
-> three times here; once to count how many levels there are, and then
-> again to examine the nodes, and once more inside acpi_find_cache_node().
-> 
-> Why can't we just walk until we run out of levels?
-
-This is looking for a unified cache - and we don't know where those start.
-We could walk the first 100 caches, and stop once we start getting unified caches, then
-they stop again ... but this seemed simpler.
-
-
-> I may be missing some details of how these functions interact -- if
-> this is only run at probe time, compact, well-factored code is
-> more important than making things as fast as possible.
-
-
->> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
->> index f97a9ff678cc..30c10b1dcdb2 100644
->> --- a/include/linux/acpi.h
->> +++ b/include/linux/acpi.h
-> 
-> [...]
-> 
->> @@ -221,6 +222,17 @@ void acpi_reserve_initial_tables (void);
->>  void acpi_table_init_complete (void);
->>  int acpi_table_init (void);
->>  
->> +static inline struct acpi_table_header *acpi_get_table_ret(char *signature, u32 instance)
->> +{
->> +	struct acpi_table_header *table;
->> +	int status = acpi_get_table(signature, instance, &table);
 >> +
->> +	if (ACPI_FAILURE(status))
->> +		return ERR_PTR(-ENOENT);
->> +	return table;
->> +}
+>> +		/* Start at 1 for L1 */
+>> +		for (level = 1; level <= num_levels; level++) {
+>> +			cache = acpi_find_cache_node(table, acpi_cpu_id,
+>> +						     ACPI_PPTT_CACHE_TYPE_UNIFIED,
+>> +						     level, &cpu_node);
+>> +			if (!cache)
+>> +				continue;
+>> +
+>> +			cache_v1 = ACPI_ADD_PTR(struct acpi_pptt_cache_v1,
+>> +						cache,
+>> +						sizeof(struct acpi_pptt_cache));
+>> +
+>> +			if (cache->flags & ACPI_PPTT_CACHE_ID_VALID &&
+>> +			    cache_v1->cache_id == cache_id)
+>> +				cpumask_set_cpu(cpu, cpus);
 
-> This feels like something that ought to exist already.  If not, why
-> not?  If so, are there open-coded versions of this spread around the
-> ACPI tree that should be ported to use it?
+> Again, it feels like we are repeating the same walk multiple times to
+> determine how deep the table is (on which point the table is self-
+> describing anyway), and then again to derive some static property, and
+> then we are then doing all of that work multiple times to derive
+> different static properties, etc.
+> 
+> Can we not just walk over the tables once and stash the derived
+> properties somewhere?
+
+That is possible - but its a more invasive change to the PPTT parsing code.
+Before the introduction of the leaf flag, the search for a processor also included a
+search to check if the discovered node was a leaf.
+
+I think this is trading time - walking over the table multiple times, against the memory
+you'd need to de-serialise the tree to find the necessary properties quickly. I think the
+reason Jeremy L went this way was because there may never be another request into this
+code, so being ready with a quick answer was a waste of memory.
+
+MPAM doesn't change this - all these things are done up front during driver probing, and
+the values are cached by the driver.
 
 
-It's a cleanup idiom helper that lets the compiler do this automagically - but its moot as
-its not going to be needed in the pptt because of the acpi_get_pptt() thing.
+> I'm still getting my head around this parsing code, so I'm not saying
+> that the approach is incorrect here -- just wondering whether there is
+> a way to make it simpler.
+
+It's walked at boot, and on cpu-hotplug. Neither are particularly performance critical.
+
+I agree that as platforms get bigger, there will be a tipping point ... I don't think
+anyone has complained yet!
 
 
 Thanks,
