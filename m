@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-16156-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16157-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA28CB3A5DB
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 18:14:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF8DB3A5E0
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 18:15:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66361581ED9
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 16:13:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB2DD582636
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 16:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857982D6407;
-	Thu, 28 Aug 2025 16:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CED92D24AC;
+	Thu, 28 Aug 2025 16:13:52 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB612D23B6;
-	Thu, 28 Aug 2025 16:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7481023B61B;
+	Thu, 28 Aug 2025 16:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756397602; cv=none; b=ef1JcG3SZH7ykuTGzrKBTsZXkOrgm9tZ5UqcHpGdzELX+MuLQylpa0DnXx77gbUXci/4cy4fCXeA6vEP68vTrHKA1f9CjRIaLegE66c94axGOU0rPXe8lWg8CoGgkLMz31kbnOZxUIVlMUONSUdJyWm00o/w8NJMBHXXe0uZ5kA=
+	t=1756397632; cv=none; b=o63hLP2B8PICHeTWXcn162yTI2dKRC2v2CvcmKdmsDpjTRlUu5sH2iOZhiGWCgNV64/nHvJo0jdWLqVfG2rznJDVzWDTOHr6gRhDy9dsVDASDded2zn4k5IxIfdPKJkLMnIyI3U4+y48cWbOkC7B0/MldiT4+6eC9Olgkz62hoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756397602; c=relaxed/simple;
-	bh=O2M2ewyT9BTwMaGPRohrg857neoQ+0bApEVjgrSurBA=;
+	s=arc-20240116; t=1756397632; c=relaxed/simple;
+	bh=8j0hjLuP+hf4sknhXbIoCQCopv57E5f/rYXRGnMV1VU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dmZUv0pmUMh91LtOTnbWgHoKSSyfYNypCCPCsanimTfesxD+ZYFANFo/9nwdHLx4txX6rddIDxaVZ9WWV+Sb2MCcMUnHh2SAAiwdpfdo3kmE5AsetwYsVn9kzIAulVU5tyP3kxLp0qnR3zq8/d4HegwKFkiypccqroUtKHW9mt0=
+	 In-Reply-To:Content-Type; b=rxRsHQENNqabdynNYYwa65vo4bZOXfnhjpWAL+VDKrcqQML4KiL3ZW+tp24L7fi7swwL4lNo3EmCuQ782eOIy+p/pOniTRHFsbg/fo0N/xlK72TI9l4SV5qqaWW0ZfM0b+hcqdzGv2jciGbNUS9jeY2pd8ASWor+NoUal2MvVUw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 89BC41688;
-	Thu, 28 Aug 2025 09:13:11 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 755482944;
+	Thu, 28 Aug 2025 09:13:41 -0700 (PDT)
 Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 688EE3F694;
-	Thu, 28 Aug 2025 09:13:14 -0700 (PDT)
-Message-ID: <8635e616-79b7-4d7d-a8b8-aa76ba027bc4@arm.com>
-Date: Thu, 28 Aug 2025 17:13:13 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 68E543F694;
+	Thu, 28 Aug 2025 09:13:44 -0700 (PDT)
+Message-ID: <1996dbf6-df9f-4785-9111-5ba52e789285@arm.com>
+Date: Thu, 28 Aug 2025 17:13:43 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,7 +42,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 20/33] arm_mpam: Add a helper to touch an MSC from any CPU
+Subject: Re: [PATCH 24/33] arm_mpam: Allow configuration to be applied and
+ restored during cpu online
 To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
  devicetree@vger.kernel.org
@@ -67,106 +68,477 @@ Cc: shameerali.kolothum.thodi@huawei.com,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Danilo Krummrich <dakr@kernel.org>
 References: <20250822153048.2287-1-james.morse@arm.com>
- <20250822153048.2287-21-james.morse@arm.com>
+ <20250822153048.2287-25-james.morse@arm.com>
 From: Ben Horgan <ben.horgan@arm.com>
 Content-Language: en-US
-In-Reply-To: <20250822153048.2287-21-james.morse@arm.com>
+In-Reply-To: <20250822153048.2287-25-james.morse@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi James,
 
 On 8/22/25 16:30, James Morse wrote:
-> Resetting RIS entries from the cpuhp callback is easy as the
-> callback occurs on the correct CPU. This won't be true for any other
-> caller that wants to reset or configure an MSC.
+> When CPUs come online the original configuration should be restored.
+> Once the maximum partid is known, allocate an configuration array for
+> each component, and reprogram each RIS configuration from this.
 > 
-> Add a helper that schedules the provided function if necessary.
-> Prevent the cpuhp callbacks from changing the MSC state by taking the
-> cpuhp lock.
-At first, I thought this was referring to something done in the patch.
-Consider changing to something like:
+> The MPAM spec describes how multiple controls can interact. To prevent
+> this happening by accident, always reset controls that don't have a
+> valid configuration. This allows the same helper to be used for
+> configuration and reset.
 
-Callers should take the cpuhp lock to prevent the cpuhp callbacks from
-changing the MSC state.
-
-Regardless, this looks good to me.
-
-Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+What in particular are you worried about here? It does seem a bit
+wasteful that to update a single control in a ris all the controls in
+that ris are updated. This is needed for reset and restore but do we
+really want if we are just changing one control, e.g. the cache portion
+bitmap.
 
 > 
+> CC: Dave Martin <Dave.Martin@arm.com>
 > Signed-off-by: James Morse <james.morse@arm.com>
 > ---
->  drivers/resctrl/mpam_devices.c | 37 +++++++++++++++++++++++++++++++---
->  1 file changed, 34 insertions(+), 3 deletions(-)
+> Changes since RFC:
+>  * Added a comment about the ordering around max_partid.
+>  * Allocate configurations after interrupts are registered to reduce churn.
+>  * Added mpam_assert_partid_sizes_fixed();
+> ---
+>  drivers/resctrl/mpam_devices.c  | 253 +++++++++++++++++++++++++++++---
+>  drivers/resctrl/mpam_internal.h |  26 +++-
+>  2 files changed, 251 insertions(+), 28 deletions(-)
 > 
 > diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-> index c1f01dd748ad..759244966736 100644
+> index b424af666b1e..8f6df2406c22 100644
 > --- a/drivers/resctrl/mpam_devices.c
 > +++ b/drivers/resctrl/mpam_devices.c
-> @@ -906,20 +906,51 @@ static void mpam_reset_ris_partid(struct mpam_msc_ris *ris, u16 partid)
+> @@ -112,6 +112,16 @@ LIST_HEAD(mpam_classes);
+>  /* List of all objects that can be free()d after synchronise_srcu() */
+>  static LLIST_HEAD(mpam_garbage);
+>  
+> +/*
+> + * Once mpam is enabled, new requestors cannot further reduce the available
+> + * partid. Assert that the size is fixed, and new requestors will be turned
+> + * away.
+> + */
+> +static void mpam_assert_partid_sizes_fixed(void)
+> +{
+> +	WARN_ON_ONCE(!partid_max_published);
+> +}
+> +
+>  static u32 __mpam_read_reg(struct mpam_msc *msc, u16 reg)
+>  {
+>  	WARN_ON_ONCE(reg + sizeof(u32) > msc->mapped_hwpage_sz);
+> @@ -374,12 +384,16 @@ static void mpam_class_destroy(struct mpam_class *class)
+>  	add_to_garbage(class);
+>  }
+>  
+> +static void __destroy_component_cfg(struct mpam_component *comp);
+> +
+>  static void mpam_comp_destroy(struct mpam_component *comp)
+>  {
+>  	struct mpam_class *class = comp->class;
+>  
+>  	lockdep_assert_held(&mpam_list_lock);
+>  
+> +	__destroy_component_cfg(comp);
+> +
+>  	list_del_rcu(&comp->class_list);
+>  	add_to_garbage(comp);
+>  
+> @@ -911,51 +925,90 @@ static void mpam_reset_msc_bitmap(struct mpam_msc *msc, u16 reg, u16 wd)
+>  	__mpam_write_reg(msc, reg, bm);
+>  }
+>  
+> -static void mpam_reset_ris_partid(struct mpam_msc_ris *ris, u16 partid)
+> +/* Called via IPI. Call while holding an SRCU reference */
+> +static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
+> +				      struct mpam_config *cfg)
+>  {
+>  	u16 bwa_fract = MPAMCFG_MBW_MAX_MAX;
+>  	struct mpam_msc *msc = ris->vmsc->msc;
+>  	struct mpam_props *rprops = &ris->props;
+>  
+> -	mpam_assert_srcu_read_lock_held();
+> -
+>  	mutex_lock(&msc->part_sel_lock);
+>  	__mpam_part_sel(ris->ris_idx, partid, msc);
+>  
+> -	if (mpam_has_feature(mpam_feat_cpor_part, rprops))
+> -		mpam_reset_msc_bitmap(msc, MPAMCFG_CPBM, rprops->cpbm_wd);
+> +	if (mpam_has_feature(mpam_feat_cpor_part, rprops)) {
+> +		if (mpam_has_feature(mpam_feat_cpor_part, cfg))
+> +			mpam_write_partsel_reg(msc, CPBM, cfg->cpbm);
+> +		else
+> +			mpam_reset_msc_bitmap(msc, MPAMCFG_CPBM,
+> +					      rprops->cpbm_wd);
+> +	}
+>  
+> -	if (mpam_has_feature(mpam_feat_mbw_part, rprops))
+> -		mpam_reset_msc_bitmap(msc, MPAMCFG_MBW_PBM, rprops->mbw_pbm_bits);
+> +	if (mpam_has_feature(mpam_feat_mbw_part, rprops)) {
+> +		if (mpam_has_feature(mpam_feat_mbw_part, cfg))
+> +			mpam_write_partsel_reg(msc, MBW_PBM, cfg->mbw_pbm);
+> +		else
+> +			mpam_reset_msc_bitmap(msc, MPAMCFG_MBW_PBM,
+> +					      rprops->mbw_pbm_bits);
+> +	}
+>  
+>  	if (mpam_has_feature(mpam_feat_mbw_min, rprops))
+>  		mpam_write_partsel_reg(msc, MBW_MIN, 0);
+>  
+> -	if (mpam_has_feature(mpam_feat_mbw_max, rprops))
+> -		mpam_write_partsel_reg(msc, MBW_MAX, bwa_fract);
+> +	if (mpam_has_feature(mpam_feat_mbw_max, rprops)) {
+> +		if (mpam_has_feature(mpam_feat_mbw_max, cfg))
+> +			mpam_write_partsel_reg(msc, MBW_MAX, cfg->mbw_max);
+> +		else
+> +			mpam_write_partsel_reg(msc, MBW_MAX, bwa_fract);
+> +	}
+>  
+>  	if (mpam_has_feature(mpam_feat_mbw_prop, rprops))
+>  		mpam_write_partsel_reg(msc, MBW_PROP, bwa_fract);
 >  	mutex_unlock(&msc->part_sel_lock);
 >  }
 >  
-> -static void mpam_reset_ris(struct mpam_msc_ris *ris)
-> +/*
-> + * Called via smp_call_on_cpu() to prevent migration, while still being
-> + * pre-emptible.
-> + */
-> +static int mpam_reset_ris(void *arg)
->  {
->  	u16 partid, partid_max;
-> +	struct mpam_msc_ris *ris = arg;
->  
->  	mpam_assert_srcu_read_lock_held();
->  
->  	if (ris->in_reset_state)
-> -		return;
+> +struct reprogram_ris {
+> +	struct mpam_msc_ris *ris;
+> +	struct mpam_config *cfg;
+> +};
+> +
+> +/* Call with MSC lock held */
+> +static int mpam_reprogram_ris(void *_arg)
+> +{
+> +	u16 partid, partid_max;
+> +	struct reprogram_ris *arg = _arg;
+> +	struct mpam_msc_ris *ris = arg->ris;
+> +	struct mpam_config *cfg = arg->cfg;
+> +
+> +	if (ris->in_reset_state)
 > +		return 0;
->  
->  	spin_lock(&partid_max_lock);
->  	partid_max = mpam_partid_max;
->  	spin_unlock(&partid_max_lock);
->  	for (partid = 0; partid < partid_max; partid++)
->  		mpam_reset_ris_partid(ris, partid);
+> +
+> +	spin_lock(&partid_max_lock);
+> +	partid_max = mpam_partid_max;
+> +	spin_unlock(&partid_max_lock);
+> +	for (partid = 0; partid <= partid_max; partid++)
+> +		mpam_reprogram_ris_partid(ris, partid, cfg);
 > +
 > +	return 0;
 > +}
 > +
-> +/*
-> + * Get the preferred CPU for this MSC. If it is accessible from this CPU,
-> + * this CPU is preferred. This can be preempted/migrated, it will only result
-> + * in more work.
-> + */
-> +static int mpam_get_msc_preferred_cpu(struct mpam_msc *msc)
-> +{
-> +	int cpu = raw_smp_processor_id();
+>  /*
+>   * Called via smp_call_on_cpu() to prevent migration, while still being
+>   * pre-emptible.
+>   */
+>  static int mpam_reset_ris(void *arg)
+>  {
+> -	u16 partid, partid_max;
+>  	struct mpam_msc_ris *ris = arg;
+> +	struct reprogram_ris reprogram_arg;
+> +	struct mpam_config empty_cfg = { 0 };
+>  
+>  	if (ris->in_reset_state)
+>  		return 0;
+>  
+> -	spin_lock(&partid_max_lock);
+> -	partid_max = mpam_partid_max;
+> -	spin_unlock(&partid_max_lock);
+> -	for (partid = 0; partid < partid_max; partid++)
+> -		mpam_reset_ris_partid(ris, partid);
+> +	reprogram_arg.ris = ris;
+> +	reprogram_arg.cfg = &empty_cfg;
 > +
-> +	if (cpumask_test_cpu(cpu, &msc->accessibility))
-> +		return cpu;
-> +
-> +	return cpumask_first_and(&msc->accessibility, cpu_online_mask);
-> +}
-> +
-> +static int mpam_touch_msc(struct mpam_msc *msc, int (*fn)(void *a), void *arg)
-> +{
-> +	lockdep_assert_irqs_enabled();
-> +	lockdep_assert_cpus_held();
-> +	mpam_assert_srcu_read_lock_held();
-> +
-> +	return smp_call_on_cpu(mpam_get_msc_preferred_cpu(msc), fn, arg, true);
+> +	mpam_reprogram_ris(&reprogram_arg);
+>  
+>  	return 0;
 >  }
+> @@ -986,13 +1039,11 @@ static int mpam_touch_msc(struct mpam_msc *msc, int (*fn)(void *a), void *arg)
 >  
 >  static void mpam_reset_msc(struct mpam_msc *msc, bool online)
-> @@ -932,7 +963,7 @@ static void mpam_reset_msc(struct mpam_msc *msc, bool online)
->  	mpam_mon_sel_outer_lock(msc);
->  	idx = srcu_read_lock(&mpam_srcu);
->  	list_for_each_entry_srcu(ris, &msc->ris, msc_list, srcu_read_lock_held(&mpam_srcu)) {
-> -		mpam_reset_ris(ris);
-> +		mpam_touch_msc(msc, &mpam_reset_ris, ris);
+>  {
+> -	int idx;
+>  	struct mpam_msc_ris *ris;
 >  
->  		/*
->  		 * Set in_reset_state when coming online. The reset state
+>  	mpam_assert_srcu_read_lock_held();
+>  
+>  	mpam_mon_sel_outer_lock(msc);
+> -	idx = srcu_read_lock(&mpam_srcu);
+>  	list_for_each_entry_srcu(ris, &msc->ris, msc_list, srcu_read_lock_held(&mpam_srcu)) {
+>  		mpam_touch_msc(msc, &mpam_reset_ris, ris);
+>  
+> @@ -1002,10 +1053,42 @@ static void mpam_reset_msc(struct mpam_msc *msc, bool online)
+>  		 */
+>  		ris->in_reset_state = online;
+>  	}
+> -	srcu_read_unlock(&mpam_srcu, idx);
+>  	mpam_mon_sel_outer_unlock(msc);
+>  }
+>  
+> +static void mpam_reprogram_msc(struct mpam_msc *msc)
+> +{
+> +	u16 partid;
+> +	bool reset;
+> +	struct mpam_config *cfg;
+> +	struct mpam_msc_ris *ris;
+> +
+> +	/*
+> +	 * No lock for mpam_partid_max as partid_max_published has been
+> +	 * set by mpam_enabled(), so the values can no longer change.
+> +	 */
+> +	mpam_assert_partid_sizes_fixed();
+> +
+> +	guard(srcu)(&mpam_srcu);
+> +	list_for_each_entry_rcu(ris, &msc->ris, msc_list) {
+> +		if (!mpam_is_enabled() && !ris->in_reset_state) {
+> +			mpam_touch_msc(msc, &mpam_reset_ris, ris);
+> +			ris->in_reset_state = true;
+> +			continue;
+> +		}
+> +
+> +		reset = true;
+> +		for (partid = 0; partid <= mpam_partid_max; partid++) {
+> +			cfg = &ris->vmsc->comp->cfg[partid];
+> +			if (cfg->features)
+> +				reset = false;
+> +
+> +			mpam_reprogram_ris_partid(ris, partid, cfg);
+> +		}
+> +		ris->in_reset_state = reset;
+> +	}
+> +}
+> +
+>  static void _enable_percpu_irq(void *_irq)
+>  {
+>  	int *irq = _irq;
+> @@ -1027,7 +1110,7 @@ static int mpam_cpu_online(unsigned int cpu)
+>  			_enable_percpu_irq(&msc->reenable_error_ppi);
+>  
+>  		if (atomic_fetch_inc(&msc->online_refs) == 0)
+> -			mpam_reset_msc(msc, true);
+> +			mpam_reprogram_msc(msc);
+>  	}
+>  	srcu_read_unlock(&mpam_srcu, idx);
+>  
+> @@ -1807,6 +1890,45 @@ static void mpam_unregister_irqs(void)
+>  	cpus_read_unlock();
+>  }
+>  
+> +static void __destroy_component_cfg(struct mpam_component *comp)
+> +{
+> +	add_to_garbage(comp->cfg);
+> +}
+> +
+> +static int __allocate_component_cfg(struct mpam_component *comp)
+> +{
+> +	mpam_assert_partid_sizes_fixed();
+> +
+> +	if (comp->cfg)
+> +		return 0;
+> +
+> +	comp->cfg = kcalloc(mpam_partid_max + 1, sizeof(*comp->cfg), GFP_KERNEL);
+> +	if (!comp->cfg)
+> +		return -ENOMEM;
+> +	init_garbage(comp->cfg);
+> +
+> +	return 0;
+> +}
+> +
+> +static int mpam_allocate_config(void)
+> +{
+> +	int err = 0;
+> +	struct mpam_class *class;
+> +	struct mpam_component *comp;
+> +
+> +	lockdep_assert_held(&mpam_list_lock);
+> +
+> +	list_for_each_entry(class, &mpam_classes, classes_list) {
+> +		list_for_each_entry(comp, &class->components, class_list) {
+> +			err = __allocate_component_cfg(comp);
+> +			if (err)
+> +				return err;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static void mpam_enable_once(void)
+>  {
+>  	int err;
+> @@ -1826,12 +1948,21 @@ static void mpam_enable_once(void)
+>  	 */
+>  	cpus_read_lock();
+>  	mutex_lock(&mpam_list_lock);
+> -	mpam_enable_merge_features(&mpam_classes);
+> +	do {
+> +		mpam_enable_merge_features(&mpam_classes);
+>  
+> -	err = mpam_register_irqs();
+> -	if (err)
+> -		pr_warn("Failed to register irqs: %d\n", err);
+> +		err = mpam_register_irqs();
+> +		if (err) {
+> +			pr_warn("Failed to register irqs: %d\n", err);
+> +			break;
+> +		}
+>  
+> +		err = mpam_allocate_config();
+> +		if (err) {
+> +			pr_err("Failed to allocate configuration arrays.\n");
+> +			break;
+> +		}
+> +	} while (0);
+>  	mutex_unlock(&mpam_list_lock);
+>  	cpus_read_unlock();
+>  
+> @@ -1856,6 +1987,9 @@ static void mpam_reset_component_locked(struct mpam_component *comp)
+>  
+>  	might_sleep();
+>  	lockdep_assert_cpus_held();
+> +	mpam_assert_partid_sizes_fixed();
+> +
+> +	memset(comp->cfg, 0, (mpam_partid_max * sizeof(*comp->cfg)));
+>  
+>  	idx = srcu_read_lock(&mpam_srcu);
+>  	list_for_each_entry_rcu(vmsc, &comp->vmsc, comp_list) {
+> @@ -1960,6 +2094,79 @@ void mpam_enable(struct work_struct *work)
+>  		mpam_enable_once();
+>  }
+>  
+> +struct mpam_write_config_arg {
+> +	struct mpam_msc_ris *ris;
+> +	struct mpam_component *comp;
+> +	u16 partid;
+> +};
+> +
+> +static int __write_config(void *arg)
+> +{
+> +	struct mpam_write_config_arg *c = arg;
+> +
+> +	mpam_reprogram_ris_partid(c->ris, c->partid, &c->comp->cfg[c->partid]);
+> +
+> +	return 0;
+> +}
+> +
+> +#define maybe_update_config(cfg, feature, newcfg, member, changes) do { \
+> +	if (mpam_has_feature(feature, newcfg) &&			\
+> +	    (newcfg)->member != (cfg)->member) {			\
+> +		(cfg)->member = (newcfg)->member;			\
+> +		cfg->features |= (1 << feature);			\
+> +									\
+> +		(changes) |= (1 << feature);				\
+> +	}								\
+> +} while (0)
+> +
+> +static mpam_features_t mpam_update_config(struct mpam_config *cfg,
+> +					  const struct mpam_config *newcfg)
+> +{
+> +	mpam_features_t changes = 0;
+> +
+> +	maybe_update_config(cfg, mpam_feat_cpor_part, newcfg, cpbm, changes);
+> +	maybe_update_config(cfg, mpam_feat_mbw_part, newcfg, mbw_pbm, changes);
+> +	maybe_update_config(cfg, mpam_feat_mbw_max, newcfg, mbw_max, changes);
+> +
+> +	return changes;
+> +}
+> +
+> +/* TODO: split into write_config/sync_config */
+> +/* TODO: add config_dirty bitmap to drive sync_config */
+Any changes to come for these TODO comments?
+
+> +int mpam_apply_config(struct mpam_component *comp, u16 partid,
+> +		      struct mpam_config *cfg)
+> +{
+> +	struct mpam_write_config_arg arg;
+> +	struct mpam_msc_ris *ris;
+> +	struct mpam_vmsc *vmsc;
+> +	struct mpam_msc *msc;
+> +	int idx;
+> +
+> +	lockdep_assert_cpus_held();
+> +
+> +	/* Don't pass in the current config! */
+> +	WARN_ON_ONCE(&comp->cfg[partid] == cfg);
+> +
+> +	if (!mpam_update_config(&comp->cfg[partid], cfg))
+> +		return 0;
+> +
+> +	arg.comp = comp;
+> +	arg.partid = partid;
+> +
+> +	idx = srcu_read_lock(&mpam_srcu);
+> +	list_for_each_entry_rcu(vmsc, &comp->vmsc, comp_list) {
+> +		msc = vmsc->msc;
+> +
+> +		list_for_each_entry_rcu(ris, &vmsc->ris, vmsc_list) {
+> +			arg.ris = ris;
+> +			mpam_touch_msc(msc, __write_config, &arg);
+> +		}
+> +	}
+> +	srcu_read_unlock(&mpam_srcu, idx);
+> +
+> +	return 0;
+> +}
+> +
+>  /*
+>   * MSC that are hidden under caches are not created as platform devices
+>   * as there is no cache driver. Caches are also special-cased in
+> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
+> index 3476ee97f8ac..70cba9f22746 100644
+> --- a/drivers/resctrl/mpam_internal.h
+> +++ b/drivers/resctrl/mpam_internal.h
+> @@ -191,11 +191,7 @@ struct mpam_props {
+>  	u16			num_mbwu_mon;
+>  };
+>  
+> -static inline bool mpam_has_feature(enum mpam_device_features feat,
+> -				    struct mpam_props *props)
+> -{
+> -	return (1 << feat) & props->features;
+> -}
+> +#define mpam_has_feature(_feat, x)	((1 << (_feat)) & (x)->features)
+>  
+>  static inline void mpam_set_feature(enum mpam_device_features feat,
+>  				    struct mpam_props *props)
+> @@ -226,6 +222,17 @@ struct mpam_class {
+>  	struct mpam_garbage	garbage;
+>  };
+>  
+> +struct mpam_config {
+> +	/* Which configuration values are valid. 0 is used for reset */
+> +	mpam_features_t		features;
+> +
+> +	u32	cpbm;
+> +	u32	mbw_pbm;
+> +	u16	mbw_max;
+> +
+> +	struct mpam_garbage	garbage;
+> +};
+> +
+>  struct mpam_component {
+>  	u32			comp_id;
+>  
+> @@ -234,6 +241,12 @@ struct mpam_component {
+>  
+>  	cpumask_t		affinity;
+>  
+> +	/*
+> +	 * Array of configuration values, indexed by partid.
+> +	 * Read from cpuhp callbacks, hold the cpuhp lock when writing.
+> +	 */
+> +	struct mpam_config	*cfg;
+> +
+>  	/* member of mpam_class:components */
+>  	struct list_head	class_list;
+>  
+> @@ -298,6 +311,9 @@ extern u8 mpam_pmg_max;
+>  void mpam_enable(struct work_struct *work);
+>  void mpam_disable(struct work_struct *work);
+>  
+> +int mpam_apply_config(struct mpam_component *comp, u16 partid,
+> +		      struct mpam_config *cfg);
+> +
+>  int mpam_get_cpumask_from_cache_id(unsigned long cache_id, u32 cache_level,
+>  				   cpumask_t *affinity);
+>  
 
 Thanks,
 
