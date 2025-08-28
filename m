@@ -1,382 +1,176 @@
-Return-Path: <linux-acpi+bounces-16142-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16143-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189A7B39F48
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 15:44:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46519B3A15E
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 16:23:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0988B3A20BE
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 13:44:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 211E8A201FF
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 14:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B4C3112BA;
-	Thu, 28 Aug 2025 13:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B88D314B98;
+	Thu, 28 Aug 2025 14:09:10 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F951A5B8B;
-	Thu, 28 Aug 2025 13:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23AF320DD52;
+	Thu, 28 Aug 2025 14:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756388691; cv=none; b=OptVjlZfzVr/SHC2MswmrlprWPru9w0t9Jaboic4MB0PPrJj/77d/2ULpL9R71rFm7Vsv4VDPhe+bpbqyhBWDQlJz3lPqa5bMJ9rDV/IkX4JzZQwu7e1H1jteGvboNXVtX+Gku2MYAS024R2J7gA2yrCmhCQD9kXcBg9ZuWFFUE=
+	t=1756390150; cv=none; b=hqZXoLNoFUM+FqCLifDCGBt3jKtku/5MMI/NzgZmWtNsuEOdwnOspo8XAyeHGx5yPnZ1tjpGl7aBXvlgBZQyrjxICuJrjiRIELdZFi+YVGk1fceL5lmILOQ9qok2UoiM/DB/okqqkj5EqvdaJLg8iGTLDFVC3fJbeweLaRVv2wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756388691; c=relaxed/simple;
-	bh=0e1wl8KD9W2dJNhMmZD7OWJHIVn1H54k14Oc7BBtOto=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aGJU8sjxwwxAKc2XnsitekiDJqDcC3VjOFP6aT3hOJ9lEd2jzT2gdyItyMGDdA156618yxmVcSDKcZQzpjWqCaKF918msEyKdbgMnXkKBCo6tfgZvoigwmVYVxmFl9WVU6ousCxO3VrTMKuxt08pOindDQrowGVGsOlZl8yihq4=
+	s=arc-20240116; t=1756390150; c=relaxed/simple;
+	bh=9lBWETV5L/TU142h0CIOLyDQrqk/HobWCZgRjMj0yoo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GMyLB5sg9Czf+NSPzBmyLUqO0IEFcmmntOs8ViT6wFH5QqTFiIjiC9aYeN4mnlSQ/1L3n/kukzSLcPB/BHxF/t417U0nUJ9IeUnEaaR4ZuxpPEDBuvMRqYGAgd8TWezWsvN/U9uOt0/CdmGA9JyutH5U2DEFm99wzfvhLBQjhxI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 147011688;
-	Thu, 28 Aug 2025 06:44:40 -0700 (PDT)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9B9523F738;
-	Thu, 28 Aug 2025 06:44:42 -0700 (PDT)
-Message-ID: <17f4507c-c244-42ee-bea0-57ed22e0a05f@arm.com>
-Date: Thu, 28 Aug 2025 14:44:40 +0100
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EDFA11688;
+	Thu, 28 Aug 2025 07:08:58 -0700 (PDT)
+Received: from e133380.arm.com (e133380.arm.com [10.1.197.68])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BE0943F694;
+	Thu, 28 Aug 2025 07:09:01 -0700 (PDT)
+Date: Thu, 28 Aug 2025 15:08:45 +0100
+From: Dave Martin <Dave.Martin@arm.com>
+To: James Morse <james.morse@arm.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+	D Scott Phillips OS <scott@os.amperecomputing.com>,
+	carl@os.amperecomputing.com, lcherian@marvell.com,
+	bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+	baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+	Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+	dfustini@baylibre.com, amitsinght@marvell.com,
+	David Hildenbrand <david@redhat.com>,
+	Rex Nie <rex.nie@jaguarmicro.com>, Koba Ko <kobak@nvidia.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>, fenghuay@nvidia.com,
+	baisheng.gao@unisoc.com,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+	Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH 01/33] cacheinfo: Expose the code to generate a cache-id
+ from a device_node
+Message-ID: <aLBi7dmFd7+Bqu/j@e133380.arm.com>
+References: <20250822153048.2287-1-james.morse@arm.com>
+ <20250822153048.2287-2-james.morse@arm.com>
+ <aK7h6seHNWs5rO9Q@e133380.arm.com>
+ <17675117-79ef-42e3-9c21-4bc46e73d6b1@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/33] arm_mpam: Probe the hardware features resctrl
- supports
-To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: shameerali.kolothum.thodi@huawei.com,
- D Scott Phillips OS <scott@os.amperecomputing.com>,
- carl@os.amperecomputing.com, lcherian@marvell.com,
- bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
- baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
- Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
- dfustini@baylibre.com, amitsinght@marvell.com,
- David Hildenbrand <david@redhat.com>, Rex Nie <rex.nie@jaguarmicro.com>,
- Dave Martin <dave.martin@arm.com>, Koba Ko <kobak@nvidia.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, fenghuay@nvidia.com,
- baisheng.gao@unisoc.com, Jonathan Cameron <jonathan.cameron@huawei.com>,
- Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
- Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>
-References: <20250822153048.2287-1-james.morse@arm.com>
- <20250822153048.2287-18-james.morse@arm.com>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <20250822153048.2287-18-james.morse@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <17675117-79ef-42e3-9c21-4bc46e73d6b1@arm.com>
 
 Hi James,
 
-On 8/22/25 16:29, James Morse wrote:
-> Expand the probing support with the control and monitor types
-> we can use with resctrl.
+On Wed, Aug 27, 2025 at 06:11:25PM +0100, James Morse wrote:
+> Hi Dave,
 > 
-> CC: Dave Martin <Dave.Martin@arm.com>
-> Signed-off-by: James Morse <james.morse@arm.com>
-> ---
-> Changes since RFC:
->  * Made mpam_ris_hw_probe_hw_nrdy() more in C.
->  * Added static assert on features bitmap size.
-> ---
->  drivers/resctrl/mpam_devices.c  | 156 +++++++++++++++++++++++++++++++-
->  drivers/resctrl/mpam_internal.h |  54 +++++++++++
->  2 files changed, 209 insertions(+), 1 deletion(-)
+> On 27/08/2025 11:46, Dave Martin wrote:
+> > On Fri, Aug 22, 2025 at 03:29:42PM +0000, James Morse wrote:
+> >> The MPAM driver identifies caches by id for use with resctrl. It
+> >> needs to know the cache-id when probe-ing, but the value isn't set
+> >> in cacheinfo until device_initcall().
+> >>
+> >> Expose the code that generates the cache-id. The parts of the MPAM
+> >> driver that run early can use this to set up the resctrl structures
+> >> before cacheinfo is ready in device_initcall().
 > 
-> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-> index 012e09e80300..290a04f8654f 100644
-> --- a/drivers/resctrl/mpam_devices.c
-> +++ b/drivers/resctrl/mpam_devices.c
-> @@ -102,7 +102,7 @@ static LLIST_HEAD(mpam_garbage);
->  
->  static u32 __mpam_read_reg(struct mpam_msc *msc, u16 reg)
->  {
-> -	WARN_ON_ONCE(reg > msc->mapped_hwpage_sz);
-> +	WARN_ON_ONCE(reg + sizeof(u32) > msc->mapped_hwpage_sz);
-Update in the patch that introduced this line.
+> > Why can't the MPAM driver just consume the precomputed cache-id
+> > information?
+> 
+> Because it would need to wait until cacheinfo was ready, and it would still
+> need a way of getting the cache-id for caches where all the CPUs are offline.
+> 
+> The resctrl glue code has a waitqueue to wait for device_initcall_sync(), but that is
+> asynchronous to driver probing, its triggered by the schedule_work() from the cpuhp
+> callbacks. This bit is about the driver's use, which just gets probed whenever the core
+> code feels like it.
+> 
+> I toyed with always using cacheinfo for everything, and just waiting - but the MPAM driver
+> already has to parse the PPTT to find the information it needs on ACPI platforms, so the
+> wait would only happen on DT.
+> 
+> It seemed simpler to grab what the value would be, instead of waiting (or probe defer) -
+> especially as this is also needed for caches where all the CPUs are offline.
+> 
+> (I'll add the offline-cpus angle to the commit message)
 
->  	WARN_ON_ONCE(!cpumask_test_cpu(smp_processor_id(), &msc->accessibility));
->  
->  	return readl_relaxed(msc->mapped_hwpage + reg);
-> @@ -131,6 +131,20 @@ static inline void _mpam_write_partsel_reg(struct mpam_msc *msc, u16 reg, u32 va
->  }
->  #define mpam_write_partsel_reg(msc, reg, val)  _mpam_write_partsel_reg(msc, MPAMCFG_##reg, val)
->  
-> +static inline u32 _mpam_read_monsel_reg(struct mpam_msc *msc, u16 reg)
-> +{
-> +	mpam_mon_sel_lock_held(msc);
-> +	return __mpam_read_reg(msc, reg);
-> +}
-> +#define mpam_read_monsel_reg(msc, reg) _mpam_read_monsel_reg(msc, MSMON_##reg)
-> +
-> +static inline void _mpam_write_monsel_reg(struct mpam_msc *msc, u16 reg, u32 val)
-> +{
-> +	mpam_mon_sel_lock_held(msc);
-> +	__mpam_write_reg(msc, reg, val);
-> +}
-> +#define mpam_write_monsel_reg(msc, reg, val)   _mpam_write_monsel_reg(msc, MSMON_##reg, val)
-> +
->  static u64 mpam_msc_read_idr(struct mpam_msc *msc)
->  {
->  	u64 idr_high = 0, idr_low;
-> @@ -643,6 +657,139 @@ static struct mpam_msc_ris *mpam_get_or_create_ris(struct mpam_msc *msc,
->  	return found;
->  }
->  
-> +/*
-> + * IHI009A.a has this nugget: "If a monitor does not support automatic behaviour
-> + * of NRDY, software can use this bit for any purpose" - so hardware might not
-> + * implement this - but it isn't RES0.
-> + *
-> + * Try and see what values stick in this bit. If we can write either value,
-> + * its probably not implemented by hardware.
-> + */
-> +static bool _mpam_ris_hw_probe_hw_nrdy(struct mpam_msc_ris * ris, u32 mon_reg)
-> +{
-> +	u32 now;
-> +	u64 mon_sel;
-> +	bool can_set, can_clear;
-> +	struct mpam_msc *msc = ris->vmsc->msc;
-> +
-> +	if (WARN_ON_ONCE(!mpam_mon_sel_inner_lock(msc)))
-> +		return false;
-> +
-> +	mon_sel = FIELD_PREP(MSMON_CFG_MON_SEL_MON_SEL, 0) |
-> +		  FIELD_PREP(MSMON_CFG_MON_SEL_RIS, ris->ris_idx);
-> +	_mpam_write_monsel_reg(msc, mon_reg, mon_sel);
-> +
-> +	_mpam_write_monsel_reg(msc, mon_reg, MSMON___NRDY);
-> +	now = _mpam_read_monsel_reg(msc, mon_reg);
-> +	can_set = now & MSMON___NRDY;
-> +
-> +	_mpam_write_monsel_reg(msc, mon_reg, 0);
-> +	now = _mpam_read_monsel_reg(msc, mon_reg);
-> +	can_clear = !(now & MSMON___NRDY);
-> +	mpam_mon_sel_inner_unlock(msc);
-> +
-> +	return (!can_set || !can_clear);
-> +}
-> +
-> +#define mpam_ris_hw_probe_hw_nrdy(_ris, _mon_reg)			\
-> +        _mpam_ris_hw_probe_hw_nrdy(_ris, MSMON_##_mon_reg)
-> +
-> +static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
-> +{
-> +	int err;
-> +	struct mpam_msc *msc = ris->vmsc->msc;
-> +	struct mpam_props *props = &ris->props;
-> +
-> +	lockdep_assert_held(&msc->probe_lock);
-> +	lockdep_assert_held(&msc->part_sel_lock);
-> +
-> +	/* Cache Portion partitioning */
-> +	if (FIELD_GET(MPAMF_IDR_HAS_CPOR_PART, ris->idr)) {
-> +		u32 cpor_features = mpam_read_partsel_reg(msc, CPOR_IDR);
-> +
-> +		props->cpbm_wd = FIELD_GET(MPAMF_CPOR_IDR_CPBM_WD, cpor_features);
-> +		if (props->cpbm_wd)
-> +			mpam_set_feature(mpam_feat_cpor_part, props);
-> +	}
-> +
-> +	/* Memory bandwidth partitioning */
-> +	if (FIELD_GET(MPAMF_IDR_HAS_MBW_PART, ris->idr)) {
-> +		u32 mbw_features = mpam_read_partsel_reg(msc, MBW_IDR);
-> +
-> +		/* portion bitmap resolution */
-> +		props->mbw_pbm_bits = FIELD_GET(MPAMF_MBW_IDR_BWPBM_WD, mbw_features);
-> +		if (props->mbw_pbm_bits &&
-> +		    FIELD_GET(MPAMF_MBW_IDR_HAS_PBM, mbw_features))
-> +			mpam_set_feature(mpam_feat_mbw_part, props);
-> +
-> +		props->bwa_wd = FIELD_GET(MPAMF_MBW_IDR_BWA_WD, mbw_features);
-> +		if (props->bwa_wd && FIELD_GET(MPAMF_MBW_IDR_HAS_MAX, mbw_features))
-> +			mpam_set_feature(mpam_feat_mbw_max, props);
-> +	}
-> +
-> +	/* Performance Monitoring */
-> +	if (FIELD_GET(MPAMF_IDR_HAS_MSMON, ris->idr)) {
-> +		u32 msmon_features = mpam_read_partsel_reg(msc, MSMON_IDR);
-> +
-> +		/*
-> +		 * If the firmware max-nrdy-us property is missing, the
-> +		 * CSU counters can't be used. Should we wait forever?
-> +		 */
-> +		err = device_property_read_u32(&msc->pdev->dev,
-> +					       "arm,not-ready-us",
-> +					       &msc->nrdy_usec);
-> +
-> +		if (FIELD_GET(MPAMF_MSMON_IDR_MSMON_CSU, msmon_features)) {
-> +			u32 csumonidr;
-> +
-> +			csumonidr = mpam_read_partsel_reg(msc, CSUMON_IDR);
-> +			props->num_csu_mon = FIELD_GET(MPAMF_CSUMON_IDR_NUM_MON, csumonidr);
-> +			if (props->num_csu_mon) {
-> +				bool hw_managed;
-> +
-> +				mpam_set_feature(mpam_feat_msmon_csu, props);
-> +
-> +				/* Is NRDY hardware managed? */
-> +				mpam_mon_sel_outer_lock(msc);
-> +				hw_managed = mpam_ris_hw_probe_hw_nrdy(ris, CSU);
-> +				mpam_mon_sel_outer_unlock(msc);
-> +				if (hw_managed)
-> +					mpam_set_feature(mpam_feat_msmon_csu_hw_nrdy, props);
-> +			}
-> +
-> +			/*
-> +			 * Accept the missing firmware property if NRDY appears
-> +			 * un-implemented.
-> +			 */
-> +			if (err && mpam_has_feature(mpam_feat_msmon_csu_hw_nrdy, props))
-> +				pr_err_once("Counters are not usable because not-ready timeout was not provided by firmware.");
-> +		}
-> +		if (FIELD_GET(MPAMF_MSMON_IDR_MSMON_MBWU, msmon_features)) {
-> +			bool hw_managed;
-> +			u32 mbwumonidr = mpam_read_partsel_reg(msc, MBWUMON_IDR);
-> +
-> +			props->num_mbwu_mon = FIELD_GET(MPAMF_MBWUMON_IDR_NUM_MON, mbwumonidr);
-> +			if (props->num_mbwu_mon)
-> +				mpam_set_feature(mpam_feat_msmon_mbwu, props);
-> +
-> +			if (FIELD_GET(MPAMF_MBWUMON_IDR_HAS_RWBW, mbwumonidr))
-> +				mpam_set_feature(mpam_feat_msmon_mbwu_rwbw, props);
-> +
-> +			/* Is NRDY hardware managed? */
-> +			mpam_mon_sel_outer_lock(msc);
-> +			hw_managed = mpam_ris_hw_probe_hw_nrdy(ris, MBWU);
-> +			mpam_mon_sel_outer_unlock(msc);
-> +			if (hw_managed)
-> +				mpam_set_feature(mpam_feat_msmon_mbwu_hw_nrdy, props);
-> +
-> +			/*
-> +			 * Don't warn about any missing firmware property for
-> +			 * MBWU NRDY - it doesn't make any sense!
-> +			 */
-> +		}
-> +	}
-> +}
-> +
->  static int mpam_msc_hw_probe(struct mpam_msc *msc)
->  {
->  	u64 idr;
-> @@ -663,6 +810,7 @@ static int mpam_msc_hw_probe(struct mpam_msc *msc)
->  
->  	idr = mpam_msc_read_idr(msc);
->  	mutex_unlock(&msc->part_sel_lock);
-> +
->  	msc->ris_max = FIELD_GET(MPAMF_IDR_RIS_MAX, idr);
->  
->  	/* Use these values so partid/pmg always starts with a valid value */
-> @@ -683,6 +831,12 @@ static int mpam_msc_hw_probe(struct mpam_msc *msc)
->  		ris = mpam_get_or_create_ris(msc, ris_idx);
->  		if (IS_ERR(ris))
->  			return PTR_ERR(ris);
-> +		ris->idr = idr;
-> +
-> +		mutex_lock(&msc->part_sel_lock);
-> +		__mpam_part_sel(ris_idx, 0, msc);
-> +		mpam_ris_hw_probe(ris);
-> +		mutex_unlock(&msc->part_sel_lock);
->  	}
->  
->  	spin_lock(&partid_max_lock);
-> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
-> index c6f087f9fa7d..9f6cd4a68cce 100644
-> --- a/drivers/resctrl/mpam_internal.h
-> +++ b/drivers/resctrl/mpam_internal.h
-> @@ -136,6 +136,56 @@ static inline void mpam_mon_sel_lock_held(struct mpam_msc *msc)
->  		lockdep_assert_preemption_enabled();
->  }
->  
-> +/*
-> + * When we compact the supported features, we don't care what they are.
-> + * Storing them as a bitmap makes life easy.
-> + */
-> +typedef u16 mpam_features_t;
-> +
-> +/* Bits for mpam_features_t */
-> +enum mpam_device_features {
-> +	mpam_feat_ccap_part = 0,
-> +	mpam_feat_cpor_part,
-> +	mpam_feat_mbw_part,
-> +	mpam_feat_mbw_min,
-> +	mpam_feat_mbw_max,
-> +	mpam_feat_mbw_prop,
-> +	mpam_feat_msmon,
-> +	mpam_feat_msmon_csu,
-> +	mpam_feat_msmon_csu_capture,
-> +	mpam_feat_msmon_csu_hw_nrdy,
-> +	mpam_feat_msmon_mbwu,
-> +	mpam_feat_msmon_mbwu_capture,
-> +	mpam_feat_msmon_mbwu_rwbw,
-> +	mpam_feat_msmon_mbwu_hw_nrdy,
-> +	mpam_feat_msmon_capt,
-> +	MPAM_FEATURE_LAST,
+Ack
 
-This isn't all the features or just the features supported by resctrl.
-Just add them all in this patch?
+> > Possible reasons are that the MPAM driver probes too early,
+> 
+> yup,
+> 
+> > or that it
+> > must parse the PPTT directly (which is true) and needs to label caches
+> > consistently with the way the kernel does it.
+> 
+> It needs to match what will be exposed to user-space from cacheinfo.
+> This isn't about the PPTT, its the value that is generated for DT systems.
 
-> +};
-> +static_assert(BITS_PER_TYPE(mpam_features_t) >= MPAM_FEATURE_LAST);
-> +#define MPAM_ALL_FEATURES      ((1 << MPAM_FEATURE_LAST) - 1)
-Unused?
+Right -- confused myself there.  From the point of view of this series,
+the usage scenario isn't clear at this point.
 
-> +
-> +struct mpam_props {
-> +	mpam_features_t		features;
-> +
-> +	u16			cpbm_wd;
-> +	u16			mbw_pbm_bits;
-> +	u16			bwa_wd;
-> +	u16			num_csu_mon;
-> +	u16			num_mbwu_mon;
-> +};
-> +
-> +static inline bool mpam_has_feature(enum mpam_device_features feat,
-> +				    struct mpam_props *props)
-> +{
-> +	return (1 << feat) & props->features;
-> +}
-> +
-> +static inline void mpam_set_feature(enum mpam_device_features feat,
-> +				    struct mpam_props *props)
-> +{
-> +	props->features |= (1 << feat);
-> +}
-> +
->  struct mpam_class {
->  	/* mpam_components in this class */
->  	struct list_head	components;
-> @@ -175,6 +225,8 @@ struct mpam_vmsc {
->  	/* mpam_msc_ris in this vmsc */
->  	struct list_head	ris;
->  
-> +	struct mpam_props	props;
-> +
->  	/* All RIS in this vMSC are members of this MSC */
->  	struct mpam_msc		*msc;
->  
-> @@ -186,6 +238,8 @@ struct mpam_vmsc {
->  
->  struct mpam_msc_ris {
->  	u8			ris_idx;
-> +	u64			idr;
-> +	struct mpam_props	props;
->  
->  	cpumask_t		affinity;
->  
+> The driver has to know if its ACPI or DT to call the appropriate thing to get cache-ids
+> before cacheinfo is ready.
 
-Thanks,
+I see.  This might be worth stating in the commit message.
 
-Ben
+> >> diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
+> >> index 613410705a47..f6289d142ba9 100644
+> >> --- a/drivers/base/cacheinfo.c
+> >> +++ b/drivers/base/cacheinfo.c
+> >> @@ -207,11 +207,10 @@ static bool match_cache_node(struct device_node *cpu,
+> >>  #define arch_compact_of_hwid(_x)	(_x)
+> >>  #endif
+> >>  
+> >> -static void cache_of_set_id(struct cacheinfo *this_leaf,
+> >> -			    struct device_node *cache_node)
+> >> +unsigned long cache_of_calculate_id(struct device_node *cache_node)
+> >>  {
+> >>  	struct device_node *cpu;
+> >> -	u32 min_id = ~0;
+> >> +	unsigned long min_id = ~0UL;
+> 
+> > Why the change of type here?
+> 
+> This is a hang over from Rob's approach of making the cache-id 64 bit.
 
+Ah, right.
+
+(I have assumed that 0xffffffff is never going to clash with a valid
+value.)
+
+> > This does mean that 0xffffffff can now be generated as a valid cache-id,
+> > but if that is necessary then this patch is also fixing a bug in the
+> > code -- but the commit message doesn't say anything about that.
+> > 
+> > For a patch that is just exposing an internal result, it may be
+> > better to keep the original type.  ~(u32)0 is already used as an
+> > exceptional value.
+> 
+> Yup, I'll fix that.
+
+OK -- it works either way, of course, but this should make the patch a
+little less noisy.
+
+Cheers
+---Dave
 
