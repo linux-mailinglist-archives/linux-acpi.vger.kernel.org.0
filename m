@@ -1,112 +1,136 @@
-Return-Path: <linux-acpi+bounces-16135-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16139-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A269B39AEE
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 13:04:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CA9B39B6A
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 13:23:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8EEC560747
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 11:03:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C30F1691CA
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 11:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555C030E0C5;
-	Thu, 28 Aug 2025 11:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549DC30BBA6;
+	Thu, 28 Aug 2025 11:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iJVbwR9E"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qt1kh0yC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29AC430DD11;
-	Thu, 28 Aug 2025 11:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE97244691;
+	Thu, 28 Aug 2025 11:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756378999; cv=none; b=uzlujb5HQ5FUxESW5Jm3IQEW6Ofl4sOOuvw4pZdNZeCe57i20PsCTjuwOMuVq9GEdpy19EyoFipqe5N51/MrKk5z5doWzXh1Nkc2dtnQuLPrvRszk40MudHmswZIkZ5v0T1mC3O76Z4EQzFQaJpCG7MzfbY+6HkjsOqS8LyISYQ=
+	t=1756380178; cv=none; b=ZivJeGmrCOM0Jeq3YSaM4BtwWLdaxw/N1JJc6VLt20YI1S2NxgTMwX1+awKwN9rG1GXsnPJmOr/HIZtTbDLWUt13Je7sDT5cDz3MPEDixv/Jmz5FZeqmSqILeIYizzoRa0vngh+ljeN9m7KF3HMSPkNOciT6gOopv7Wlg4tyEW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756378999; c=relaxed/simple;
-	bh=pjzAij7OpPaAmTNVqtQzbQpcumXq8d1CkhrUy4uidvo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QkaYCquSMIW6/Y0YJbJuaLcNZjUeeZHNbm9CykDJBmsyTDktCfY65U9CqwQn/jnY7UHFUKdyvMoTnNvH3u92uc2kHNvlLCQYymcvNDrTmWo876lRe3/xbkN4gAJ6zmwVBsqpfpaie96+RMceTBnnc5Bf9HzZ9J+/qW8nNYagoso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iJVbwR9E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07FD0C4CEF6;
-	Thu, 28 Aug 2025 11:03:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756378998;
-	bh=pjzAij7OpPaAmTNVqtQzbQpcumXq8d1CkhrUy4uidvo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=iJVbwR9Ey1vPlkNXduKN6HwFO8hqpA39J8h7gOCQX34bfvbjY1IXJU3fzrOxt5ziw
-	 QQ2pIEY3VzMcpcUtH6YoQMqRNIz+83+sWXN4L1tUjuj8YOwUMsC0TUJEOaJtrZEKaB
-	 atOtmQ59xeHFS5OCJdfaB/PGydTHHdLZXQv/nvxnh4xKiYhwVtllS1rCKjWoggX/SW
-	 no2IbAY6HdTfRhaeOizQS+hW2r7UYD/J6akhL6buCNrxtl51EcfntjWy3COHgmE3/2
-	 Q7sWAQxDB1JYRrW77fzV8uCy3b3vgXz5r1XOx9SOSd0cYj5AKc9V4ZRiH8DyHS+wm8
-	 SlEbbF4CHV2+Q==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
- Zhang Rui <rui.zhang@intel.com>, Armin Wolf <w_armin@gmx.de>
-Subject:
- [PATCH v1] ACPI: fan: Fold two simple functions into their only caller
-Date: Thu, 28 Aug 2025 13:03:13 +0200
-Message-ID: <3386797.aeNJFYEL58@rafael.j.wysocki>
-Organization: Linux Kernel Development
+	s=arc-20240116; t=1756380178; c=relaxed/simple;
+	bh=fvV1/34M0q/gAMQ253l/U84MmKBcsMJLgosMs2oZQgk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=d/iv61m2I+TkmV3UGbPnvSUt7w3+7WzfeYdAba8KFn5cWOVI9wr4IIPQVNRaeXjmXkCdunDpvcn96vtvtPcXuXzxvMaGw6UNI48TUZKxO3pGKU36xrRMo2+3vvuwCF5/455Maka4GaaFr0SnffQ97nMPjxzmBNdlbqVnmZSnkXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qt1kh0yC; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2445824dc27so7139685ad.3;
+        Thu, 28 Aug 2025 04:22:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756380176; x=1756984976; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PxeMfx1+uNFbtk5b+iMV6QezPtIYzUJuvmOTjg2DLuM=;
+        b=Qt1kh0yC0vw6jItCiCV9czAn4OxUuWnFj4N5JpMiJpbj0sAgDXYu9+mGe9LHRkJgQ2
+         lvZgeAvisXSaBFB8tM7pgmQ9knbZrvAs1ypnG0yKEJMa+/GFNvUJGJGpcQBKojNLE43Y
+         nofVOyfUHq/piwG50hZBRXhgxVvGSzAYxDTTrRD5oUmaxs6tNcc64V8TU2qYtcDlhNNc
+         qz8dL8THwnv9/3rW4mXFPJNUFZTGohLW/tcUISN/WWEazQil38RnyPNnjLKksr/sgrY7
+         78QjKisVDqJzF+P9oHKCkGI2uY5IBR/MF5O/z6bqlkE0fDF8B3ESYE7sim7GSMTIxe2R
+         I/xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756380176; x=1756984976;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PxeMfx1+uNFbtk5b+iMV6QezPtIYzUJuvmOTjg2DLuM=;
+        b=UhrpCDLqTJpaX+ZgWymxslGSr3gR0ni8s/LQ3VeLWsQ4yB05xDeWUAV8HD4/K8VIou
+         AX9/ozU0UK/04U7sQX4uu+3pxsZgsTmaJdeoo4VEKj/mpDa2HRkmJoeHQGZjmblpvv2g
+         yAUHPtXc3K5+S0zIjdq6kGkiWxZ7+Z3Z7SQ7m5pDDL7Zwv+gatdBEviR0DklS8pNl/Ub
+         +W/k6F+fC6nHbkDv/WOjNaJKkwyWExPH+nLwdaFFm98bx1wUmDO4+P3iXwuGGmP5ClXy
+         mWKKM0kuoZoeFvzUrPG6/9O2VnVihVnODP+mM3bfw7DQPLs0UPJdG07rJNqRpDujCUvX
+         NTug==
+X-Forwarded-Encrypted: i=1; AJvYcCVBr6DgtmPWhbHdXj1CTfsfzvvVa7zCOMkysAvIGKps70G1JpgfNQ84fZBFQk18pLfRJRsskyE3@vger.kernel.org, AJvYcCWjwRlTwc6k3+H0LcjOisJarhehSPWbV54Q8Ywso8f5Pwa/TvaDs+rImEa64V3oaMVBQco=@vger.kernel.org, AJvYcCWpp76uyiENM6t509yPUC4nYseUZ6HPpuqVS8qHRrf/tNGJXbG3FSPx2lOTDWswoN+6AwjvMbFQOCq28w==@vger.kernel.org, AJvYcCXvR08hnM5jb73cboeoRv3nPFY2gooM0MZ43wqjSz1tZdD4IAkU8nH6IxHNpRS+TWsGiAjOcbSbrcLx/Jfr@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmBuF3KO703f2KJGAixIW9chkaVIDaiUN9kAQhX94s/89Z0By4
+	zAJOg+f0i/sJDg7sAlUFbbgrBl93iIRMypC6fPHDQP3Sxibthimb77h8
+X-Gm-Gg: ASbGnctIbRq63VKxrki0H2ekp3f9sZWXOkSfjRliJprT2aLr+aJzLLgvKurDXGtIONB
+	uEWNkK5Km95fg8FJg8w38c5suHJkt5dzJdYjYCR7PcI/R5teEfo37ZSI2FOTrakuhdfOKZOBarj
+	8jKzy8rRZOs/19a6JuJmhgKUHMafqWYNIpnpueG3R9qJSvhfBvcr/04nvxw9JugdPEElxXNAgGH
+	c3C0ninF2lxFh2HEcXQzYiR0/+m6wRFiz8B+x66tsC2UV9TDuAilcPd7K2PprsgeC8MZ93efgkA
+	0ErCp4R8cTXCH7aTS+WPv3IbwDxTCoeSihffMdJmqZIJJMtn3PMqptDe94Uj4/BVMsluBt4KxVL
+	ULx8SUg2o3SOuI0sAHUWAgL01UTTVqUbSVhUOP81kjnsqsxFzbeRRyTWUH0wroIXvTj973noUxM
+	kyGr8Ipy/XHA9DbEZgN5wvOQ==
+X-Google-Smtp-Source: AGHT+IHQiVu4toyB2lDInXoaA+fupYv0LkXXDoJV5p3MjYWV2/Hw1sV5uJxKSw9UtwpQSAHlRTlqsQ==
+X-Received: by 2002:a17:902:fd0e:b0:242:accd:bbe8 with SMTP id d9443c01a7336-2462ef4ca76mr245371675ad.36.1756380175971;
+        Thu, 28 Aug 2025 04:22:55 -0700 (PDT)
+Received: from localhost.localdomain ([112.97.57.188])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-3276f57ab3esm4952547a91.3.2025.08.28.04.22.48
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 28 Aug 2025 04:22:55 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Joerg Roedel <jroedel@suse.de>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: linmq006@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] ACPI/IORT: Fix memory leak in iort_rmr_alloc_sids()
+Date: Thu, 28 Aug 2025 19:22:43 +0800
+Message-Id: <20250828112243.61460-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+If krealloc_array() fails in iort_rmr_alloc_sids(), the function returns
+NULL but does not free the original 'sids' allocation. This results in a
+memory leak since the caller overwrites the original pointer with the
+NULL return value.
 
-Both acpi_fan_has_fst() and acpi_fan_is_acpi4() are called from one
-place only, so fold them both into there caller which yields slightly
-leaner code that is somewhat easier to follow.
-
-No intentional functional impact.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 491cf4a6735a ("ACPI/IORT: Add support to retrieve IORT RMR reserved regions")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 ---
- drivers/acpi/fan_core.c |   18 ++++--------------
- 1 file changed, 4 insertions(+), 14 deletions(-)
+This follows the same pattern as the fix in commit 06615967d488
+("bpf, verifier: Fix memory leak in array reallocation for stack state").
+---
+ drivers/acpi/arm64/iort.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/fan_core.c
-+++ b/drivers/acpi/fan_core.c
-@@ -203,18 +203,6 @@
-  * --------------------------------------------------------------------------
- */
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 98759d6199d3..65f0f56ad753 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -937,8 +937,10 @@ static u32 *iort_rmr_alloc_sids(u32 *sids, u32 count, u32 id_start,
  
--static bool acpi_fan_has_fst(struct acpi_device *device)
--{
--	return acpi_has_method(device->handle, "_FST");
--}
--
--static bool acpi_fan_is_acpi4(struct acpi_device *device)
--{
--	return acpi_has_method(device->handle, "_FIF") &&
--	       acpi_has_method(device->handle, "_FPS") &&
--	       acpi_has_method(device->handle, "_FSL");
--}
--
- static int acpi_fan_get_fif(struct acpi_device *device)
- {
- 	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-@@ -331,9 +319,11 @@
- 	device->driver_data = fan;
- 	platform_set_drvdata(pdev, fan);
+ 	new_sids = krealloc_array(sids, count + new_count,
+ 				  sizeof(*new_sids), GFP_KERNEL);
+-	if (!new_sids)
++	if (!new_sids) {
++		kfree(sids);
+ 		return NULL;
++	}
  
--	if (acpi_fan_has_fst(device)) {
-+	if (acpi_has_method(device->handle, "_FST")) {
- 		fan->has_fst = true;
--		fan->acpi4 = acpi_fan_is_acpi4(device);
-+		fan->acpi4 = acpi_has_method(device->handle, "_FIF") &&
-+				acpi_has_method(device->handle, "_FPS") &&
-+				acpi_has_method(device->handle, "_FSL");
- 	}
- 
- 	if (fan->acpi4) {
-
-
+ 	for (i = count; i < total_count; i++)
+ 		new_sids[i] = id_start++;
+-- 
+2.39.5 (Apple Git-154)
 
 
