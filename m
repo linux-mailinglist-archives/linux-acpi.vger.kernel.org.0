@@ -1,175 +1,92 @@
-Return-Path: <linux-acpi+bounces-16127-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16128-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7074B391B1
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 04:33:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE201B392C6
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 07:10:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E66BA1B218A3
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 02:33:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EA19684D33
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Aug 2025 05:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967B71EEA49;
-	Thu, 28 Aug 2025 02:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1C1227E9B;
+	Thu, 28 Aug 2025 05:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RmsSA2p3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CEF1C01;
-	Thu, 28 Aug 2025 02:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFF4AD4B;
+	Thu, 28 Aug 2025 05:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756348393; cv=none; b=qdQwRnG7ZRTW0FD4CrqYNHyD5vx2DxFGZSPQocFhga+M1BL3SiH7TfC+VQgo5ha3UhlEM5v4q14tne4LQMnCW7cO/s4jd9mFFhPyCelaH0Fx5vuNq1B8k0ofEJXTQpR5a8qcxHImoGdT+ePtLjUV4UCRZv9CgfCfng6ajpc/zuU=
+	t=1756357844; cv=none; b=TZ1dYbXyPKePU+dXIQBMTSZEyRDpb6EYQ/OYvigPCsVNDT1R8pAQkeE8JCyLvnu2n2Ga20puMagh1x9tsj+gXc6jlawfJcB76+b4isgwmoFwvtpiYJleRzysv58D7prnBRx6ceIPKFoBW0hkYIgUWwCpW8tYwa7HbH5WFMn2gXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756348393; c=relaxed/simple;
-	bh=a96c67ue2iadTZlK8+Yj568Jo90zgVFy17g6x/9BkaU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QlKfrw6q4GgAs4aILQxDp08sveGD9zeO5KLfKp05I/qKSoTNejiwI5wwR7ZHhWFLBh1qzmcvqyHgWVf89O4u21KX5KHASHiLrzPm9Qdoj7XwVGGIz+AkbYp78C5CkVl004fUgn5wj3Pfv7mpP4HtfczyZFBiTw6gwo3uki0IeMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 502860d683b711f0b29709d653e92f7d-20250828
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:bbfdf95e-1728-4506-9bc0-05a18e21652f,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:f93684e576c78dc40936662dca05dad7,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-UUID: 502860d683b711f0b29709d653e92f7d-20250828
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 469337678; Thu, 28 Aug 2025 10:32:59 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 4C11EE008FAC;
-	Thu, 28 Aug 2025 10:32:59 +0800 (CST)
-X-ns-mid: postfix-68AFBFDB-172902359
-Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id ADF7BE008FAB;
-	Thu, 28 Aug 2025 10:32:47 +0800 (CST)
-Message-ID: <6f6c1e35-101d-4ef1-ac6e-5db337ccdd84@kylinos.cn>
-Date: Thu, 28 Aug 2025 10:32:46 +0800
+	s=arc-20240116; t=1756357844; c=relaxed/simple;
+	bh=hYuzW/b5tw73H+pYWRUvLnELjNQzmmtpnxTVoViYqGY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gt1YKBKa7H9ulNYIPXD/b4FLKD5Xbw6tvE4XMqrykBbhv+Y7QnOIRQ6udHD6+NN71gAugG9VZGBV439P0W3dLe0rnE/k/xGwj5bUkHAY8+g4NRcw+nlUw5kOo4Mtu/nCUzVrYSb8VWGulOfHoPnY2Gx7pYucnd8Qnpo2qzd2VVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RmsSA2p3; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756357844; x=1787893844;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hYuzW/b5tw73H+pYWRUvLnELjNQzmmtpnxTVoViYqGY=;
+  b=RmsSA2p3Rd7MuTixHpO1/QKp6R9P7oEP/h54iykcjW0c/HE+eEFM18mR
+   lDFB5k6tnSNiGfvxDtcldpifx1297V2v0faZKxX8MSG6lnJyevYWM+P8V
+   oM91fDhcWh1cPs/7YqHYfHxpM/IwvBPRtgGvCK3/0jEGM/LnUTKiS2G+z
+   oKCz00ZpPggqV7Crs5ZqkV57Daz7q/0E+IQdDPEoi7Oy65KEEfgxjWLoc
+   3qWjRv9QB/cfuBkrJFyYlSd9aUGO6esTEzd1jgOs1Qvlmnc5mfkbKmbB7
+   KMV486NggUvRl0li2BzjRJ0RyKPXd7WSwODRjdQV7p8AaLY69Pq06Ty4W
+   g==;
+X-CSE-ConnectionGUID: Fr5eodzbSte1mmyPXZDJEw==
+X-CSE-MsgGUID: 5e1SkLOSQGmlw+PGLorVUA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="69210915"
+X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
+   d="scan'208";a="69210915"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2025 22:10:42 -0700
+X-CSE-ConnectionGUID: zWmwx2OuTp2zyrHSWeuh3Q==
+X-CSE-MsgGUID: rk/YRmOgSfqMJ8bwB3HAhg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
+   d="scan'208";a="169920528"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa007.jf.intel.com with ESMTP; 27 Aug 2025 22:10:40 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1001)
+	id 2CF0194; Thu, 28 Aug 2025 07:10:38 +0200 (CEST)
+Date: Thu, 28 Aug 2025 07:10:38 +0200
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Antheas Kapenekakis <lkml@antheas.dev>
+Cc: linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mika Westerberg <westeri@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH v1] gpiolib: acpi: Ignore touchpad wakeup on GPD G1619-05
+Message-ID: <20250828051038.GT476609@black.igk.intel.com>
+References: <20250827175842.3697418-1-lkml@antheas.dev>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/18] arm64: topology: Use __free(put_cpufreq_policy)
- for policy reference
-To: Sudeep Holla <sudeep.holla@arm.com>, Ben Horgan <ben.horgan@arm.com>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer
- <mmayer@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
- <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>,
- Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
- <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
- Sumit Gupta <sumitg@nvidia.com>,
- Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
- Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
- x86@kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-omap@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
- <20250827023202.10310-2-zhangzihuan@kylinos.cn>
- <70f4c2ce-1dbd-4596-af78-bca1cdbbb581@arm.com>
- <1756341899099493.57.seg@mailgw.kylinos.cn>
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <1756341899099493.57.seg@mailgw.kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250827175842.3697418-1-lkml@antheas.dev>
 
+On Wed, Aug 27, 2025 at 07:58:42PM +0200, Antheas Kapenekakis wrote:
+> Same issue as G1619-04 in commit 805c74eac8cb ("gpiolib: acpi: Ignore
+> touchpad wakeup on GPD G1619-04"), Strix Point lineup uses 05.
+> 
+> Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
 
-=E5=9C=A8 2025/8/27 17:17, Sudeep Holla =E5=86=99=E9=81=93:
-> On Wed, Aug 27, 2025 at 09:30:13AM +0100, Ben Horgan wrote:
->> Hi Zihuan,
->>
->> On 8/27/25 03:31, Zihuan Zhang wrote:
->>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
->>> annotation for policy references. This reduces the risk of reference
->>> counting mistakes and aligns the code with the latest kernel style.
->>>
->>> No functional change intended.
->>>
->>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
->>> ---
->>>   arch/arm64/kernel/topology.c | 9 +++------
->>>   1 file changed, 3 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topolog=
-y.c
->>> index 5d07ee85bdae..e3cb6d54f35b 100644
->>> --- a/arch/arm64/kernel/topology.c
->>> +++ b/arch/arm64/kernel/topology.c
->>> @@ -307,17 +307,16 @@ int arch_freq_get_on_cpu(int cpu)
->>>   		 */
->>>   		if (!housekeeping_cpu(cpu, HK_TYPE_TICK) ||
->>>   		    time_is_before_jiffies(last_update + msecs_to_jiffies(AMU_SAM=
-PLE_EXP_MS))) {
->>> -			struct cpufreq_policy *policy =3D cpufreq_cpu_get(cpu);
->>> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
->> Based on the guidance, in include/linux/cleanup.h, I would expect the
->> assignment to be done on this line.
->>
->> "...the recommendation is to always define and assign variables in one
->>   * statement and not group variable definitions at the top of the
->>   * function when __free() is used."
->>
-> Agreed. I did something similar recently and there was a code path wher=
-e
-> variable wasn't initialised and ended up with freeing unassigned pointe=
-r.
-> So it is more than just a recommendation sometimes.
->
-Thanks a lot for your suggestions.
-
-We are also considering introducing a WITH_CPUFREQ_POLICY wrapper to=20
-encapsulate the cpufreq_cpu_get/put usage, so that the release order=20
-won=E2=80=99t be accidentally changed.
-
-Link:=20
-https://lore.kernel.org/all/874d821e-8ea3-40ac-921b-c19bb380a456@kylinos.=
-cn/
-
-Do you have any suggestions or preferences on this direction?
-
-
+Reviewed-by: Mika Westerberg <westeri@kernel.org>
 
