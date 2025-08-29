@@ -1,126 +1,158 @@
-Return-Path: <linux-acpi+bounces-16165-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16166-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E97B3B21A
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 06:23:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18290B3B2D0
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 08:00:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4C65565EAF
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 04:23:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F0F07AD8F6
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 05:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD878635B;
-	Fri, 29 Aug 2025 04:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308D322759C;
+	Fri, 29 Aug 2025 05:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uth4TT9R"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="p514Sl+B"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1AB8821;
-	Fri, 29 Aug 2025 04:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE90A21D3E8
+	for <linux-acpi@vger.kernel.org>; Fri, 29 Aug 2025 05:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756441406; cv=none; b=Zr7ss226axu2ZkPs0oAMs+SELm9/8/ElKLFTKaA88WWtZErCk684qZFqZz9n6/IgN4y60Olojx+8QF0j++1OJEeE1Zl3uOkF8CXhpcOdiY6G7upQeyIgupV5Xq/8z+OMgEOYpWUCb9p8+vySqT7Mu/QbIui+nzpXNOHxLSPyHyc=
+	t=1756447192; cv=none; b=FEq8WyMtR3z/X+lZ3340w+0Opa5dEvUZCOXOkr/pIpEwx/HjqX7/bR47cIwcdlrWju9WHC60dCFKQxb2bergPHA2gcljF8Y8R48HSczcY7T/aPEi3HosE+WNX2rpa5DhmiuLpfi83JRRIzPCzJB/9nH3V5XPCDlQT9VaTStiY7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756441406; c=relaxed/simple;
-	bh=T9LMVgGcKV1Pl4nv8nPVa+Y3TUkwZBT3XArHw1YhQwY=;
+	s=arc-20240116; t=1756447192; c=relaxed/simple;
+	bh=3Us6gLaZK2VccDGA6IMnqvs0nFzgbS6I49Q/8l1+6ks=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f1Uw8Ngnc/qBTVB1jHlZROn2CQ6m1oSgi9sZMbsVlAWIRwWtZnHVYBIn13WInhYE4iAeAxK+/z141QiLGkQvP3nDPAi4mpgn0tpccSE1rhMDvGx1302J+P6Xj9sK2OaSAOmEsPTq1X1TJ4330ZxRC27WjFV306q9+FqQFYCHmu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uth4TT9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3C9C4CEF0;
-	Fri, 29 Aug 2025 04:23:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756441406;
-	bh=T9LMVgGcKV1Pl4nv8nPVa+Y3TUkwZBT3XArHw1YhQwY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uth4TT9RMBqheGxNHOLlG+gah+0ELGAvawFgO39ue4OpAIt3wJ1u2KFCPRj4M0VqP
-	 cv/x8KmSe9bhItEL+/7Mu0hU8Uix2sEwJfbR/CemowOA8sJBdnBPoFTZs6zR4gUEDK
-	 rtIQ0KJ/KEB4pDrlvf2mifj0j+fTV/SfZ9B0FtkE=
-Date: Fri, 29 Aug 2025 06:23:22 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: =?iso-8859-1?Q?Jean-Fran=E7ois?= Lessard <jefflessard3@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] device property: Add scoped fwnode child node iterators
-Message-ID: <2025082953-splendor-unsold-e4f2@gregkh>
-References: <20250829021802.16241-1-jefflessard3@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=bQ/EdmUhfx0okhJX8kOM5dnnTyKfPAK6e/3DvE9hXFs7qXKJgHxwhAyeRyKkOm8TPXAfmr4eHn5cDlQtnR3Rw6e/mzay2+O1K+Jm3/vP3MNd/gKDzU588pM50T5NeNQxKpLtbNxDYkkpyLDWSQQtTxQFhGO9SWm2bevEPan8vJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=p514Sl+B; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7704f3c4708so2117091b3a.1
+        for <linux-acpi@vger.kernel.org>; Thu, 28 Aug 2025 22:59:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1756447188; x=1757051988; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Csp0y2UiuYBIoSGq3QglK9zewj1/hbg1F372AFvl94U=;
+        b=p514Sl+BuFb2jJ5R5DjvdPuZbJD/3N094aXwj3h0r/jhqjJ8E7yP+k817tMndGWuRR
+         FJyrpnjrOC1v44RKZW8+hYv/s/oQyyrlN51j6gPDRgosyonW7nobHk+dEVSc4NB36Yw4
+         PuqLoIM2bQWrSvT363c+fY0yOV3vZSKbC+7dp3aQmV8szSfmyrtVMuT0C6uReUSabLLQ
+         QNCTGNg39LLVhpXBLI27D+yN4JWIztFIMPiYxMxgFB1nTSvmERBka41rfpTaGJms0EBS
+         6QVx0xOpRrajJT7Gzpak3rJcIdO5m+Vx4yWFoMbU026CqovfiV44HAzTUMYSrkn9uYWg
+         J/Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756447188; x=1757051988;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Csp0y2UiuYBIoSGq3QglK9zewj1/hbg1F372AFvl94U=;
+        b=lUu5fL8Il0QT35UIGnyCr+TAjbHJIn2AvbYdLG61hAlMhwFNEfUD9i7UqF1WcmbtO5
+         VNIH1El3Z0Go1Wwab2quj7A1HWHB6h88aEQMTL9N1Ryw7TniEGiAmuGRpk+gQ01Yiy1+
+         jA018yfvKJqSlay5uP2winRuUtD2VVv2zR/moLPs5NNI59gdlP5eAdndb1EI0EYh/Yao
+         SnRPczFaabHeSFrIsbltqzDrIc/kqQt946IhP4GURV2qp5Z5OIkIyWxSIgzvqs8ekaUn
+         qu+8C2wIuJuiBIXoDCS6hMbULVsraKgsCcoIN9leLfKnm8ju2OIpBrZnXzhr/OKcjaJt
+         OVDg==
+X-Forwarded-Encrypted: i=1; AJvYcCU2fShm96etrVAVvk7Xig+bcb4MhB+MA6Cx57yfz9JLGnX14oMSxvDlhoS4MgcxRV0XaGoFZxcvYxZX@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlN88MaW+3YF5DF4wgwagb7lIdsuUVi89SzpVDDNAP49dtdAW0
+	ivn8PdR/7fu10kXW3OTR78p3eTc9ny01OQ6UpMnmSsPYp20f2cQ7zC8E63jSBKJ3XG0=
+X-Gm-Gg: ASbGncvpMYjnQ0wxnPvSnxhOmVgfJ34oqk8jIuJtnG1jqHIIdmQuUmdKCZZMew3g8yF
+	udrYjD+csplldju4DfAnnY5LxZSTGAm+CLv1KbZtuC71mG8xruXqda7YmqSt74F0p4EYR1JC4sc
+	0R+j3ifySou2F8dHSXy64kpQnueREJGa8KII+KPMw5rSsZ6XgXKuusQHlPXj62xkFNFcpHSb/pg
+	BbnrDFN66Y3EcXw1usvqNm1SP4TWQ8g6MXeQkL5jdkSAsAFSeQZcuSPYoKlO7lxyQMrAd7Q2SUu
+	V+Mpb719bQLWEzSZOFrwB9bbdRprfb6PtLRrOrRSv7Cq4dalHPFs1SRK/U50mkO3i1HT9UVO4kJ
+	FUGFSIhjsZDC2X8cm0QV9jcBkvDS3K43I4oA=
+X-Google-Smtp-Source: AGHT+IFsar3WOaSA9RKNM7TPFf9gG0iXTxdUF2CW8raU1SyelgEQswrlDbapLb2rA7PUFkb3M17NCQ==
+X-Received: by 2002:a05:6a00:10d5:b0:772:2850:783d with SMTP id d2e1a72fcca58-772285079c4mr3285667b3a.22.1756447188084;
+        Thu, 28 Aug 2025 22:59:48 -0700 (PDT)
+Received: from localhost ([122.172.87.165])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a2b14c1sm1263485b3a.31.2025.08.28.22.59.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Aug 2025 22:59:47 -0700 (PDT)
+Date: Fri, 29 Aug 2025 11:29:44 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Markus Mayer <mmayer@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	zhenglifeng <zhenglifeng1@huawei.com>,
+	"H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>,
+	Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Beata Michalska <beata.michalska@arm.com>,
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
+	x86@kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 04/18] cpufreq: brcmstb-avs-cpufreq: Use
+ __free(put_cpufreq_policy) for policy reference
+Message-ID: <20250829055944.ragfnh62q2cuew3e@vireshk-i7>
+References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
+ <20250827023202.10310-5-zhangzihuan@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250829021802.16241-1-jefflessard3@gmail.com>
+In-Reply-To: <20250827023202.10310-5-zhangzihuan@kylinos.cn>
 
-On Thu, Aug 28, 2025 at 10:17:59PM -0400, Jean-François Lessard wrote:
-> Add scoped versions of fwnode child node iterators that automatically
-> handle reference counting cleanup using the __free() attribute:
+On 27-08-25, 10:31, Zihuan Zhang wrote:
+> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> annotation for policy references. This reduces the risk of reference
+> counting mistakes and aligns the code with the latest kernel style.
 > 
-> - fwnode_for_each_child_node_scoped()
-> - fwnode_for_each_named_child_node_scoped()
-> - fwnode_for_each_available_child_node_scoped()
+> No functional change intended.
 > 
-> These macros follow the same pattern as existing scoped iterators in the
-> kernel, ensuring fwnode references are automatically released when the
-> iterator variable goes out of scope. This prevents resource leaks and
-> eliminates the need for manual cleanup in error paths.
-> 
-> The implementation mirrors the non-scoped variants but uses
-> __free(fwnode_handle) for automatic resource management, providing a safer
-> and more convenient interface for drivers iterating over firmware node
-> children.
-> 
-> Signed-off-by: Jean-François Lessard <jefflessard3@gmail.com>
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 > ---
-> 
-> Notes:
->     checkpatch reports false positives that are intentionally ignored:
->     COMPLEX_MACRO, MACRO_ARG_REUSE, MACRO_ARG_PRECEDENCE
->     This is a standard iterator pattern following kernel conventions.
-> 
->  include/linux/property.h | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/include/linux/property.h b/include/linux/property.h
-> index 82f0cb3ab..279c244db 100644
-> --- a/include/linux/property.h
-> +++ b/include/linux/property.h
-> @@ -176,6 +176,20 @@ struct fwnode_handle *fwnode_get_next_available_child_node(
->  	for (child = fwnode_get_next_available_child_node(fwnode, NULL); child;\
->  	     child = fwnode_get_next_available_child_node(fwnode, child))
->  
-> +#define fwnode_for_each_child_node_scoped(fwnode, child)		\
-> +	for (struct fwnode_handle *child __free(fwnode_handle) =	\
-> +		fwnode_get_next_child_node(fwnode, NULL);		\
-> +	     child; child = fwnode_get_next_child_node(fwnode, child))
-> +
-> +#define fwnode_for_each_named_child_node_scoped(fwnode, child, name)	\
-> +	fwnode_for_each_child_node_scoped(fwnode, child)		\
-> +		for_each_if(fwnode_name_eq(child, name))
-> +
-> +#define fwnode_for_each_available_child_node_scoped(fwnode, child)	\
-> +	for (struct fwnode_handle *child __free(fwnode_handle) =	\
-> +		fwnode_get_next_available_child_node(fwnode, NULL);	\
-> +	     child; child = fwnode_get_next_available_child_node(fwnode, child))
-> +
->  struct fwnode_handle *device_get_next_child_node(const struct device *dev,
->  						 struct fwnode_handle *child);
->  
+>  drivers/cpufreq/brcmstb-avs-cpufreq.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 
-We need a real user of this before we can add them, so please do that as
-part of a patch series.
+Applied. Thanks.
 
-thanks
-
-greg k-h
+-- 
+viresh
 
