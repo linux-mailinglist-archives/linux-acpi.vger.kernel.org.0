@@ -1,197 +1,124 @@
-Return-Path: <linux-acpi+bounces-16186-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16187-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03003B3BDCC
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 16:32:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 703E6B3BE8F
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 16:52:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9394681958
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 14:31:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3CE3188E18B
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 14:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4062931CA76;
-	Fri, 29 Aug 2025 14:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD17A31AF25;
+	Fri, 29 Aug 2025 14:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tehsvk-net.20230601.gappssmtp.com header.i=@tehsvk-net.20230601.gappssmtp.com header.b="dFNtocKr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2469205AA1;
-	Fri, 29 Aug 2025 14:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5445829E110
+	for <linux-acpi@vger.kernel.org>; Fri, 29 Aug 2025 14:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756477829; cv=none; b=papLHrHuKkPqXQIA7Oe+6EyZIBgm718fH70c2kcgmx5CFzWk6ZZD1GRrgmgGYlmheHS2dG2fJkL/vwhumE/0VpIaM7A5X1sEkVLVExXKwK/L8ZK8EzXP3W/IKbRhqbiFahaFQSfMn/3AVcV1w06KDC9f4WZA+hBAiTQyRxVm1no=
+	t=1756479165; cv=none; b=hPRBvoK3sbUBE29+O/p+wBM2qqtkuuWZ5r9tELeAqJUAiJKUKSONuqPmkLttD3BRGPFRcUjE/+ck+uV6cTjMGyAiUoPqJ4VqvNkK6MZ3sF0s7Ucc9o6B19NOcWBzLX7ZIwFYbSAsNxodBdidsK4LzlZnqxM//Pa0YAkkvwehO/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756477829; c=relaxed/simple;
-	bh=qubuGzVfMaLFSQG/gjHJt9Hipl9/9FCZ0mhroHks2Qo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=loPRN74sBGEIBILkkCuKJKGl34ZSWA3UZXT8/gj2dqgx6F3Ifd3GUVc8OoCQj5aBvRJkgCXCCT3a+Jy9/AP4sOGmYQD1xnVppbSoLrm1PuidmIM3QqFbi2pZAzoG9OGmB32zVj+UxoKxPuQrd8Rcvxg295BD65ahKlB1lwRirz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CE48B19F0;
-	Fri, 29 Aug 2025 07:30:17 -0700 (PDT)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0CD023F694;
-	Fri, 29 Aug 2025 07:30:20 -0700 (PDT)
-Message-ID: <c2a814d6-e235-4589-bdb0-63d08d4ca008@arm.com>
-Date: Fri, 29 Aug 2025 15:30:19 +0100
+	s=arc-20240116; t=1756479165; c=relaxed/simple;
+	bh=pbxV2Mavk1lMiJMhfJQeb8/mI1z3zntxdHr6u3BjEJc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oBl7Xh/IOjupSlRh/CL3WHPDTsXdHH1vfK5rUQh4FUnzBKu7bpxHVXRFCRAV1mzOn+qOrr/mkpfydg5Ms4lq+OH/BqILkMkxgpTi+GIPPDKj8S4AVyq4WmcNZ6qxonKsrf+JDVg79s30YO6d+0IlOrX0C0z/bvgGs0cRAbzi97E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tehsvk.net; spf=pass smtp.mailfrom=tehsvk.net; dkim=pass (2048-bit key) header.d=tehsvk-net.20230601.gappssmtp.com header.i=@tehsvk-net.20230601.gappssmtp.com header.b=dFNtocKr; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tehsvk.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tehsvk.net
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-affc2eb83c5so4230166b.2
+        for <linux-acpi@vger.kernel.org>; Fri, 29 Aug 2025 07:52:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tehsvk-net.20230601.gappssmtp.com; s=20230601; t=1756479161; x=1757083961; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YAO3ZMwu5xYp39Ji5NepqL908pahfUuulyMV8nWLF2E=;
+        b=dFNtocKrkD3b+LGnUGpnGZvrJTpss7N+lbXWOj1VqHekrlXyzQDKnGfUF4Vz5lJrkv
+         vqw76HOol/9bHRkaQo5Z3WssRHDrm7OfS/sW77SELzbVYssvdm/yIV1u0V7NYVPebfLw
+         a59ksIh7nUZ22AB7ObWu7gwJ19+jWuOxpbkmF37TG2FDKRHH2N5cLa2/FZ8PuYcBAgUV
+         jEX4EMtADb2zykg4KJgIbpLv+oglX50et45vizX6q2PfFbL9A0qiWZ4RPle1Qbt/S/B/
+         RIB9uVfO3kofmkJV5Y5WDzkyjCgBeSet9pdb5q6Y92Ol7IAUlGmcmpahYmcjYnhzacN+
+         Ea7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756479161; x=1757083961;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YAO3ZMwu5xYp39Ji5NepqL908pahfUuulyMV8nWLF2E=;
+        b=xJarqPCahaRzxMKEKF2OGE1Z7g8mWKQIM0bQc29RQMOPJmefttZ9FK8ZPRFmaw+qnG
+         6w3tzQxPGW7DgRUt0L/Pvoa0wZrylnZAu8NsL52b+j7Tbw3VFj1oxVn1E/jbfng4MUGd
+         7WyuHkz9dbZO4mMkqIfGIy6OIa3Kdm8IeF+LzYn/1iKI7e1OwKE+nCFburelFLCB4bmP
+         OS0hSArl/N/M9bDNf+9xD8vhX1kXnQvvNmzKanmSHXeu89UAws2m3zg42OexhhCD2Af1
+         wf8NbmtAQ5D+X1RoftYwupsoOnW4msLurkUeh2jl+evm6JFt3fhBXZ88WiM4r03N7H0d
+         aN5Q==
+X-Gm-Message-State: AOJu0Yw5gL1oMk7Arqy7scR3P5PZxhrljEfE/xORZBw3gDvpgtl6Ftfh
+	Iw8zLLV6EV8lS9Hu6UJA+KoXu3P+hpZ9Y1VAxo1LvuN6NcuOgXAx6/OScNwLnMtnjzGQ+dEpWys
+	TgiVllv1n3g==
+X-Gm-Gg: ASbGnctPtYLvY6SuyPKPZ9XvTiLQ89PSDeIVBR9wulTk3emFHWOb1cX19zM4otbEX7n
+	ymHaayuWeec8DBMUyWeL0xovrQsTyq1w/f5Bu6X7X2+W7RXuUJqvL4PpXltFuJAnyB+XfQMNX9i
+	6axaGhkvh4XqulkyfnlACGOAcCoMXbRqgtAK70FVNVuDKHPxmCcI7pDRMOCCxzfzMZEoPzISm63
+	RgYKMlrZcBvQXL+3sGSV9syGJawA+2iXsXSl+th9nweUvSz6Xch+wLs+ez6YHAH+vwfAuKmOtqO
+	/iw4UtVJLjhMbAaC5gCHxxU/ksFGuVkhvcpaYYDax0iHwzuiosb2tcZvOaqOgGdJ8d+zljstvsW
+	Z37r0gPodvLsfRdY/ULX9mLIBlREyOKu/xUkmBqEPX+j/Q12O9uVd2ko=
+X-Google-Smtp-Source: AGHT+IGI4LwarnpKpqmefv3ZKJsmqOze2BLYKHXw9ym9VMS7r/n+3DilKdheD3uR9kM26iVbykZhtA==
+X-Received: by 2002:a17:907:86a5:b0:afe:bbeb:1f56 with SMTP id a640c23a62f3a-afebbeb24ffmr1019354666b.36.1756479161358;
+        Fri, 29 Aug 2025 07:52:41 -0700 (PDT)
+Received: from nas-i.. (ip-213-124-217-71.ip.prioritytelecom.net. [213.124.217.71])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afefca0a960sm212407766b.37.2025.08.29.07.52.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Aug 2025 07:52:40 -0700 (PDT)
+From: Sam van Kampen <sam@tehsvk.net>
+To: linux-acpi@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Sam van Kampen <sam@tehsvk.net>
+Subject: [PATCH] ACPI: resource: Skip IRQ override on ASUS Vivobook Pro N6506CU
+Date: Fri, 29 Aug 2025 14:52:22 +0000
+Message-ID: <20250829145221.2294784-2-sam@tehsvk.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 21/33] arm_mpam: Extend reset logic to allow devices to be
- reset any time
-To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: shameerali.kolothum.thodi@huawei.com,
- D Scott Phillips OS <scott@os.amperecomputing.com>,
- carl@os.amperecomputing.com, lcherian@marvell.com,
- bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
- baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
- Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
- dfustini@baylibre.com, amitsinght@marvell.com,
- David Hildenbrand <david@redhat.com>, Rex Nie <rex.nie@jaguarmicro.com>,
- Dave Martin <dave.martin@arm.com>, Koba Ko <kobak@nvidia.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, fenghuay@nvidia.com,
- baisheng.gao@unisoc.com, Jonathan Cameron <jonathan.cameron@huawei.com>,
- Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
- Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>
-References: <20250822153048.2287-1-james.morse@arm.com>
- <20250822153048.2287-22-james.morse@arm.com>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <20250822153048.2287-22-james.morse@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi James,
+Just like the other Vivobooks here, the N6506CU has its keyboard IRQ
+described as ActiveLow in the DSDT, which the kernel overrides to
+EdgeHigh, causing the internal keyboard not to work.
 
-On 8/22/25 16:30, James Morse wrote:
-> cpuhp callbacks aren't the only time the MSC configuration may need to
-> be reset. Resctrl has an API call to reset a class.
-> If an MPAM error interrupt arrives it indicates the driver has
-> misprogrammed an MSC. The safest thing to do is reset all the MSCs
-> and disable MPAM.
-> 
-> Add a helper to reset RIS via their class. Call this from mpam_disable(),
-> which can be scheduled from the error interrupt handler.
-> 
-> Signed-off-by: James Morse <james.morse@arm.com>
-> ---
->  drivers/resctrl/mpam_devices.c  | 62 +++++++++++++++++++++++++++++++--
->  drivers/resctrl/mpam_internal.h |  1 +
->  2 files changed, 61 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-> index 759244966736..3516cbe8623e 100644
-> --- a/drivers/resctrl/mpam_devices.c
-> +++ b/drivers/resctrl/mpam_devices.c
-> @@ -915,8 +915,6 @@ static int mpam_reset_ris(void *arg)
->  	u16 partid, partid_max;
->  	struct mpam_msc_ris *ris = arg;
->  
-> -	mpam_assert_srcu_read_lock_held();
-> -
->  	if (ris->in_reset_state)
->  		return 0;
->  
-> @@ -1569,6 +1567,66 @@ static void mpam_enable_once(void)
->  	       mpam_partid_max + 1, mpam_pmg_max + 1);
->  }
->  
-> +static void mpam_reset_component_locked(struct mpam_component *comp)
-> +{
-> +	int idx;
-> +	struct mpam_msc *msc;
-> +	struct mpam_vmsc *vmsc;
-> +	struct mpam_msc_ris *ris;
-> +
-> +	might_sleep();
-> +	lockdep_assert_cpus_held();
-> +
-> +	idx = srcu_read_lock(&mpam_srcu);
-> +	list_for_each_entry_rcu(vmsc, &comp->vmsc, comp_list) {
-> +		msc = vmsc->msc;
-> +
-> +		list_for_each_entry_rcu(ris, &vmsc->ris, vmsc_list) {
-> +			if (!ris->in_reset_state)
-> +				mpam_touch_msc(msc, mpam_reset_ris, ris);
-> +			ris->in_reset_state = true;
-> +		}
-> +	}
-> +	srcu_read_unlock(&mpam_srcu, idx);
-> +}
-> +
-> +static void mpam_reset_class_locked(struct mpam_class *class)
-> +{
-> +	int idx;
-> +	struct mpam_component *comp;
-> +
-> +	lockdep_assert_cpus_held();
-> +
-> +	idx = srcu_read_lock(&mpam_srcu);
-> +	list_for_each_entry_rcu(comp, &class->components, class_list)
-> +		mpam_reset_component_locked(comp);
-> +	srcu_read_unlock(&mpam_srcu, idx);
-> +}
-> +
-> +static void mpam_reset_class(struct mpam_class *class)
-> +{
-> +	cpus_read_lock();
-> +	mpam_reset_class_locked(class);
-> +	cpus_read_unlock();
-> +}
-> +
-> +/*
-> + * Called in response to an error IRQ.
-> + * All of MPAMs errors indicate a software bug, restore any modified
-> + * controls to their reset values.
-> + */
-> +void mpam_disable(void)
-> +{
-> +	int idx;
-> +	struct mpam_class *class;
-> +
-> +	idx = srcu_read_lock(&mpam_srcu);
-> +	list_for_each_entry_srcu(class, &mpam_classes, classes_list,
-> +				 srcu_read_lock_held(&mpam_srcu))
+Add the N6506CU to the irq1_level_low_skip_override[] quirk table to fix
+this.
 
-Why do you use list_for_each_entry_srcu() here when in other places you
-use list_for_each_entry_rcu()?
+Signed-off-by: Sam van Kampen <sam@tehsvk.net>
+---
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-> +		mpam_reset_class(class);
-> +	srcu_read_unlock(&mpam_srcu, idx);
-> +}
-> +
->  /*
->   * Enable mpam once all devices have been probed.
->   * Scheduled by mpam_discovery_cpu_online() once all devices have been created.
-> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
-> index 466d670a01eb..b30fee2b7674 100644
-> --- a/drivers/resctrl/mpam_internal.h
-> +++ b/drivers/resctrl/mpam_internal.h
-> @@ -281,6 +281,7 @@ extern u8 mpam_pmg_max;
->  
->  /* Scheduled work callback to enable mpam once all MSC have been probed */
->  void mpam_enable(struct work_struct *work);
-> +void mpam_disable(void);
->  
->  int mpam_get_cpumask_from_cache_id(unsigned long cache_id, u32 cache_level,
->  				   cpumask_t *affinity);
-
-Thanks,
-
-Ben
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index b1ab192d7a08..ddedb6956a0d 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -510,6 +510,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "N6506M"),
+ 		},
+ 	},
++	{
++		/* Asus Vivobook Pro N6506CU* */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "N6506CU"),
++		},
++	},
+ 	{
+ 		/* LG Electronics 17U70P */
+ 		.matches = {
+-- 
+2.43.0
 
 
