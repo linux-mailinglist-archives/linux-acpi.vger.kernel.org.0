@@ -1,147 +1,110 @@
-Return-Path: <linux-acpi+bounces-16196-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16197-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58813B3C430
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 23:18:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EBEEB3C4CC
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Aug 2025 00:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0546B4E2015
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 21:18:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EBC2585C35
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 22:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6D4264A60;
-	Fri, 29 Aug 2025 21:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cTF1qr6g"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E2F276031;
+	Fri, 29 Aug 2025 22:29:33 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050131EEA49;
-	Fri, 29 Aug 2025 21:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DC81D61BB;
+	Fri, 29 Aug 2025 22:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756502284; cv=none; b=ReICshlY3i4xKXd8QLhAdps6AoTDN2OpY3X8v+gj1G8vrSV6YE6FAWVnVqdNBuo/kDnuoijuVWJjrNSV8smmc7lgPJlEQV0eXjTd6K4C7ibWmOhk31cvE0OLVvmxU8SLYzhGVx+ixeArW+Hp1eA1OkczwY4ATiBCMvRI+HlmQ/8=
+	t=1756506573; cv=none; b=N6M/Knoeq1XuRDfC2xSvmvg5+Zj+gOOWCOEGuzQ5wC4f+nJifuGygjdMTaQpTnf3nc/mZEGjg55H/OrO+ggFX9BU0EeO8QWS5MswbjJgjIDKxf445meF+CWW7j8SKgDcKWsqt9MOw3w5es5lMJR02RaQsPwRotKLz8hnFSBG5zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756502284; c=relaxed/simple;
-	bh=V5VOMAjw9pzEl70en0MP+3pcBujDo0p2tlcA6Iwhj08=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=KdxfetHFKFz/Ui447a7Xk/yO97URuOZAXNkMM3VOyUZPMQXLzQ4y2SbQv+DeSC0zWWN2Vve4CN9qV5+nUT2yDKbFI4DxHa1Z55X7wARDbx5rKCVeoRKllo6Zy9uI77tBYZGsaq7s+pJyxy09hP39z+4rE8lI+W8hUX0tXlCFmqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cTF1qr6g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8E6C4CEF0;
-	Fri, 29 Aug 2025 21:18:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756502283;
-	bh=V5VOMAjw9pzEl70en0MP+3pcBujDo0p2tlcA6Iwhj08=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=cTF1qr6gFycOdtViqBehM1mwJmfXzfYP+ZHDqakqlmGuO18OPu7EJxuqBPjbkolvL
-	 qOxyZ4ZX6PBxKF6Y0I4ZTcz4v/tOkzZG4R0ZohsfxpaWtdJOfA8hiUEcZl+I0hvIbP
-	 mEXIVFKiifrZQEXq47mc7+8EuwpjhADw05aGzMbr5TqBL9v5w1YOPzezEmHpEBCLHj
-	 ZVsQdN3oZZbcIBF+e537fOz9HTTWFObWhdCnCU9zrXgEK1vSezg6ArLxCRu3dX5PDS
-	 4JUBXpK3uOMKHxjZ9GHz3s1Us6VsQrWHYGdCjHdjlcRryaOzKIjDXzJ/8o/VcOO3qR
-	 zztYif2H5i5wA==
-Date: Fri, 29 Aug 2025 16:18:01 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Cc: linux-pci@vger.kernel.org, bhelgaas@google.com, mahesh@linux.ibm.com,
-	oohall@gmail.com, linuxppc-dev@lists.ozlabs.org,
-	linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
-	james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
-	dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com, linmiaohe@huawei.com,
-	shiju.jose@huawei.com, adam.c.preble@intel.com, lukas@wunner.de,
-	Smita.KoralahalliChannabasappa@amd.com, rrichter@amd.com,
-	linux-cxl@vger.kernel.org, linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org, erwin.tsaur@intel.com,
-	sathyanarayanan.kuppuswamy@intel.com, dan.j.williams@intel.com,
-	feiting.wanyan@intel.com, yudong.wang@intel.com,
-	chao.p.peng@intel.com, qingshun.wang@linux.intel.com,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Matthew W Carlis <mattc@purestorage.com>
-Subject: Re: [PATCH v5 2/2] PCI/AER: Print UNCOR_STATUS bits that might be
- ANFE
-Message-ID: <20250829211801.GA1025641@bhelgaas>
+	s=arc-20240116; t=1756506573; c=relaxed/simple;
+	bh=nkEs4vYTB1eTT7mV0Lw0Yk9UVaevXLO8VmSQ2dytcMo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OwqRD7MXS0NTFir2JbYWx4Ztaga4CHbe4hDEf4ChOwBcZ0KRXGrA+FxhqlKuPTCCcFyo4X2Fy5l2GTRpvRDwl4bbRsslds4PfXz/pO+TAFLJJJy368IFqOy8UvnFDlMhhVMEErPfuvnJUdgVL0ZGP4AMnyJ/agYr9xUgwCfAm+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC07C4CEF0;
+	Fri, 29 Aug 2025 22:29:31 +0000 (UTC)
+From: Dave Jiang <dave.jiang@intel.com>
+To: linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	dave@stgolabs.net,
+	jonathan.cameron@huawei.com,
+	alison.schofield@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	dan.j.williams@intel.com,
+	marc.herbert@linux.intel.com,
+	akpm@linux-foundation.org,
+	david@redhat.com
+Subject: [PATCH v3 0/4] cxl, acpi/hmat, node: Update CXL access coordinates to node directly
+Date: Fri, 29 Aug 2025 15:29:03 -0700
+Message-ID: <20250829222907.1290912-1-dave.jiang@intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240620025857.206647-3-zhenzhong.duan@intel.com>
+Content-Transfer-Encoding: 8bit
 
-[+cc Matt]
+I plan to take this series through the CXL tree when all the necessary tags
+are received.
 
-On Thu, Jun 20, 2024 at 10:58:57AM +0800, Zhenzhong Duan wrote:
-> When an Advisory Non-Fatal error(ANFE) triggers, both correctable error(CE)
-> status and ANFE related uncorrectable error(UE) status will be printed:
-> 
->   AER: Correctable error message received from 0000:b7:02.0
->   PCIe Bus Error: severity=Correctable, type=Transaction Layer, (Receiver ID)
->     device [8086:0db0] error status/mask=00002000/00000000
->      [13] NonFatalErr
->     Uncorrectable errors that may cause Advisory Non-Fatal:
->      [12] TLP
-> 
-> Tested-by: Yudong Wang <yudong.wang@intel.com>
-> Co-developed-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-> Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> ---
->  drivers/pci/pcie/aer.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 3dcfa0191169..ba3a54092f2c 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -681,6 +681,7 @@ static void __aer_print_error(struct pci_dev *dev,
->  {
->  	const char **strings;
->  	unsigned long status = info->status & ~info->mask;
-> +	unsigned long anfe_status = info->anfe_status;
->  	const char *level, *errmsg;
->  	int i;
->  
-> @@ -701,6 +702,20 @@ static void __aer_print_error(struct pci_dev *dev,
->  				info->first_error == i ? " (First)" : "");
->  	}
->  	pci_dev_aer_stats_incr(dev, info);
-> +
-> +	if (!anfe_status)
-> +		return;
+Rafael, please ack patches 3/4 and 4/4 if you are happy with the changes.
 
-__aer_print_error() is used by both native AER handling, where Linux
-fields the AER interrupt and reads the AER status registers directly,
-and APEI GHES firmware-first error handling, where platform firmware
-fields the AER interrupt, reads the AER status registers, and packages
-them up to hand off to Linux via aer_recover_queue().
+Thank you!
 
-But the previous patch only sets info->anfe_status for the native
-path, so the APEI GHES path doesn't get the benefit of this change.
+v3:
+- Fix grammar in comment. (DavidH)
+- Use nodemask instead of xarray. (Jonathan)
 
-I think both paths should log the same ANFE information.
+v2:
+- Use clearer comment from DavidH for 1/4. (DavidH)
+- Fix comment in 2/4. (DavidH)
+- Streamline code in 2/4. (DavidH)
+- Add description to observed issue. (Dan)
+- Add correct Fixes tag. (Dan)
+- Add cc to stable for fix patch. (Dan)
+- Add mechansim to only update on first region for the node. (Jonathan)
 
-> +
-> +	strings = aer_uncorrectable_error_string;
-> +	pci_printk(level, dev, "Uncorrectable errors that may cause Advisory Non-Fatal:\n");
-> +
-> +	for_each_set_bit(i, &anfe_status, 32) {
-> +		errmsg = strings[i];
-> +		if (!errmsg)
-> +			errmsg = "Unknown Error Bit";
-> +
-> +		pci_printk(level, dev, "   [%2d] %s\n", i, errmsg);
-> +	}
->  }
->  
->  void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
-> -- 
-> 2.34.1
-> 
+The series aim to clean up the current CXL memory region hotplug notifier by
+removing the update path through HMAT and updating the node access coordinates
+directly. With the existing implementation, the CXL memory hotplug notifier
+gets called first. It updates the HMAT target access coordinates. And then
+the HMAT notifier gets called and create the node sysfs attribs. The new
+implemenation flips the callback ordering and directly updates the sysfs
+attribs already created in the node and leaves HMAT data structures alone.
+
+Dave Jiang (4):
+  mm/memory_hotplug: Update comment for hotplug memory callback
+    priorities
+  drivers/base/node: Add a helper function node_update_perf_attrs()
+  cxl, acpi/hmat: Update CXL access coordinates directly instead of
+    through HMAT
+  acpi/hmat: Remove now unused hmat_update_target_coordinates()
+
+ drivers/acpi/numa/hmat.c  | 34 ----------------------------------
+ drivers/base/node.c       | 38 ++++++++++++++++++++++++++++++++++++++
+ drivers/cxl/core/cdat.c   | 11 -----------
+ drivers/cxl/core/core.h   |  3 ---
+ drivers/cxl/core/region.c | 20 ++++++++++++--------
+ include/linux/acpi.h      | 12 ------------
+ include/linux/memory.h    |  6 +++---
+ include/linux/node.h      |  8 ++++++++
+ 8 files changed, 61 insertions(+), 71 deletions(-)
+
+
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+-- 
+2.50.1
+
 
