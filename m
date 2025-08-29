@@ -1,34 +1,34 @@
-Return-Path: <linux-acpi+bounces-16198-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16199-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFE69B3C4CE
-	for <lists+linux-acpi@lfdr.de>; Sat, 30 Aug 2025 00:29:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1850B3C4D0
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Aug 2025 00:30:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90869585EAD
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 22:29:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DB28585FB3
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 22:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D167627EFEB;
-	Fri, 29 Aug 2025 22:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F30292B44;
+	Fri, 29 Aug 2025 22:29:46 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B044F13C8EA;
-	Fri, 29 Aug 2025 22:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7349B286D57;
+	Fri, 29 Aug 2025 22:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756506579; cv=none; b=QHnh+IpEXH7KUW3CuwWmuV1NDdRKTDC/FZIb6tUdzDhVJmVGXO+EIF1MC8fQ3ydfI/Q02tLLZmuKpekqI/HmQ+USlYD3D2bpBvLZaJiz+vXVC6F03FYGY4F22Gng4JKMtJuqcUv4LYZdk2CwYdZxhJQxl50BKkyR3zEjjpuZvLs=
+	t=1756506586; cv=none; b=Fw8I/W2BNrviUeWYZ1fjHBOS1lIT4Egd7ORx25P9NjuM2ch6dwMNruWR8vZDu7yre5nw1aETc7rTZs1Ok7duNgf/4zNXR5qo76eT3hZQFF3D6B3ldkqf3XhSItm3U2TdtVJ2EFWmHFhe22/lJhHd2MaK/OmzAdicCqGeq2T9N5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756506579; c=relaxed/simple;
-	bh=o13hbnQtjN++eKtLxKRDI31j4XlT0fvy8S8WwwWo9kA=;
+	s=arc-20240116; t=1756506586; c=relaxed/simple;
+	bh=gHoLisKmk0/pP+fypUHdRRQphWlNFnt9oOjY5Kn24Z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AlZHukmLwuR2X2KBAEXOrzTtg5NYM9e0/dD2bQQVJpKrRb6DnDZsDXVgkkjhf5TXK3sqIKuq3iftboGJbmA00DiHP4wEYcqBOFbCTrhDkPEjjmbU7EYXsNc6boUNwUq6QGNJV8TbLi/egx73ev9QOx+pXKE2BgKwRan5F3DDoQ4=
+	 MIME-Version; b=f9MAWJ6NNve8lvKsW/l/x+NCRzjrzeFOty+2DF9QUr//zA45JwNAKf2NEfFrzsl6AyuRR1vPl/k/LjR/TjSyNIwW4OP32aRS1n0IQR/3UCf7843SukHb52pSYRomsDHP6nUcYklQ+fuCTAwvnuzQ0f/8a3kiMvfUugtasNSwxE0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEA3C4CEF0;
-	Fri, 29 Aug 2025 22:29:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBD1C4CEF0;
+	Fri, 29 Aug 2025 22:29:44 +0000 (UTC)
 From: Dave Jiang <dave.jiang@intel.com>
 To: linux-cxl@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
@@ -45,9 +45,9 @@ Cc: gregkh@linuxfoundation.org,
 	marc.herbert@linux.intel.com,
 	akpm@linux-foundation.org,
 	david@redhat.com
-Subject: [PATCH v3 1/4] mm/memory_hotplug: Update comment for hotplug memory callback priorities
-Date: Fri, 29 Aug 2025 15:29:04 -0700
-Message-ID: <20250829222907.1290912-2-dave.jiang@intel.com>
+Subject: [PATCH v3 2/4] drivers/base/node: Add a helper function node_update_perf_attrs()
+Date: Fri, 29 Aug 2025 15:29:05 -0700
+Message-ID: <20250829222907.1290912-3-dave.jiang@intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250829222907.1290912-1-dave.jiang@intel.com>
 References: <20250829222907.1290912-1-dave.jiang@intel.com>
@@ -59,35 +59,93 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add clarification to comment for memory hotplug callback ordering as the
-current comment does not provide clear language on which callback happens
-first.
+Add helper function node_update_perf_attrs() to allow update of node access
+coordinates computed by an external agent such as CXL. The helper allows
+updating of coordinates after the attribute being created by HMAT.
 
 Acked-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 ---
-v3:
-- Update grammar (DavidH)
----
- include/linux/memory.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/node.c  | 38 ++++++++++++++++++++++++++++++++++++++
+ include/linux/node.h |  8 ++++++++
+ 2 files changed, 46 insertions(+)
 
-diff --git a/include/linux/memory.h b/include/linux/memory.h
-index 40eb70ccb09d..1305102688d0 100644
---- a/include/linux/memory.h
-+++ b/include/linux/memory.h
-@@ -115,8 +115,8 @@ struct notifier_block;
- struct mem_section;
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index 3399594136b2..db18a1c32637 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -248,6 +248,44 @@ void node_set_perf_attrs(unsigned int nid, struct access_coordinate *coord,
+ }
+ EXPORT_SYMBOL_GPL(node_set_perf_attrs);
  
- /*
-- * Priorities for the hotplug memory callback routines (stored in decreasing
-- * order in the callback chain)
-+ * Priorities for the hotplug memory callback routines. Invoked from
-+ * high to low. Higher priorities correspond to higher numbers.
-  */
- #define DEFAULT_CALLBACK_PRI	0
- #define SLAB_CALLBACK_PRI	1
++/**
++ * node_update_perf_attrs - Update the performance values for given access class
++ * @nid: Node identifier to be updated
++ * @coord: Heterogeneous memory performance coordinates
++ * @access: The access class for the given attributes
++ */
++void node_update_perf_attrs(unsigned int nid, struct access_coordinate *coord,
++			    enum access_coordinate_class access)
++{
++	struct node_access_nodes *access_node;
++	struct node *node;
++	int i;
++
++	if (WARN_ON_ONCE(!node_online(nid)))
++		return;
++
++	node = node_devices[nid];
++	list_for_each_entry(access_node, &node->access_list, list_node) {
++		if (access_node->access != access)
++			continue;
++
++		access_node->coord = *coord;
++		for (i = 0; access_attrs[i]; i++) {
++			sysfs_notify(&access_node->dev.kobj,
++				     NULL, access_attrs[i]->name);
++		}
++		break;
++	}
++
++	/* When setting CPU access coordinates, update mempolicy */
++	if (access != ACCESS_COORDINATE_CPU)
++		return;
++
++	if (mempolicy_set_node_perf(nid, coord))
++		pr_info("failed to set mempolicy attrs for node %d\n", nid);
++}
++EXPORT_SYMBOL_GPL(node_update_perf_attrs);
++
+ /**
+  * struct node_cache_info - Internal tracking for memory node caches
+  * @dev:	Device represeting the cache level
+diff --git a/include/linux/node.h b/include/linux/node.h
+index 2c7529335b21..866e3323f1fd 100644
+--- a/include/linux/node.h
++++ b/include/linux/node.h
+@@ -85,6 +85,8 @@ struct node_cache_attrs {
+ void node_add_cache(unsigned int nid, struct node_cache_attrs *cache_attrs);
+ void node_set_perf_attrs(unsigned int nid, struct access_coordinate *coord,
+ 			 enum access_coordinate_class access);
++void node_update_perf_attrs(unsigned int nid, struct access_coordinate *coord,
++			    enum access_coordinate_class access);
+ #else
+ static inline void node_add_cache(unsigned int nid,
+ 				  struct node_cache_attrs *cache_attrs)
+@@ -96,6 +98,12 @@ static inline void node_set_perf_attrs(unsigned int nid,
+ 				       enum access_coordinate_class access)
+ {
+ }
++
++static inline void node_update_perf_attrs(unsigned int nid,
++					  struct access_coordinate *coord,
++					  enum access_coordinate_class access)
++{
++}
+ #endif
+ 
+ struct node {
 -- 
 2.50.1
 
