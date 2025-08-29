@@ -1,213 +1,119 @@
-Return-Path: <linux-acpi+bounces-16193-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16194-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAFF7B3C15D
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 18:57:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0099CB3C170
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 19:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07DF0188E277
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 16:57:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFC44567CBF
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 17:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A26A33A008;
-	Fri, 29 Aug 2025 16:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B75218AC1;
+	Fri, 29 Aug 2025 17:02:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CTksd1s9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664A03081BE;
-	Fri, 29 Aug 2025 16:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6963A1DB
+	for <linux-acpi@vger.kernel.org>; Fri, 29 Aug 2025 17:02:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756486620; cv=none; b=dyV5sd32wRE8CaRClPuHTH7MEsJ0i0VmGFWKd31fnaaFWzE6Z07yiKX0kspyVCeVBwQ3k1VsPZ6bNEfUkoqJuPzWs+E1IgCjEFU7QRwbceUcbsYqTHEtJVIzsZ2n4OZ8Fe8oevQEAodsmxiPjVwfEcuPFilSU4kRIfp3OhU2R+I=
+	t=1756486946; cv=none; b=ASVD3LnoKnHw3CTke5JUUr5/C14P6WHminnFFVCEHgDvAlSHG3TwckQ0Ho+NUFcIrDkaAAx5T5u5RRVizeg3fY4+sEPxEcQjTqttJD0tNDjAzyd06HzLwluwK2Ph0E+30gxPYVIpjRE6DCI88CZwithhVY54MVsm+zVSv6iQsOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756486620; c=relaxed/simple;
-	bh=kb2fY1IV7K43cE3ikrAg8qLiIqn49GbYUA49McI1fGw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s+67bu1+pA0EuJ1anv7uStET9zvYz5HaeAJBBApiduye7oeUJfKGdLPEAJ16ew76iHenTdQqPJsHj090lagcC1jClZ/xX8u0xICNwBindGfGfSceeokre7yZCTa2DSA9ojxi7Vc6xQ9f9gFUiFU+uvr9VNqmcs46hDcO9zVmcd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2033B12FC;
-	Fri, 29 Aug 2025 09:56:49 -0700 (PDT)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8F50B3F738;
-	Fri, 29 Aug 2025 09:56:51 -0700 (PDT)
-Message-ID: <ee847bec-ad08-473e-96b5-407872c2a0f2@arm.com>
-Date: Fri, 29 Aug 2025 17:56:49 +0100
+	s=arc-20240116; t=1756486946; c=relaxed/simple;
+	bh=jckHIqF6i2pBFamtML/gMy0ZqD2SuPtuowG9SJKDWMY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lky1kX3JdzGetbA+bML7/OqoyDHmMOeixh0dbFsiIszF6mn34LcrsahtmOqwuXu6v7QHm7b1uHX5luV7n88dBgwbjn9f3zfTZciLRiKoOyyhdvHDsj6RV7YSKsGnRju7x07XZf4KXsC2Ds0+Xw/nRLASdgN2BmQhV244JrznYKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CTksd1s9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11209C4CEF8
+	for <linux-acpi@vger.kernel.org>; Fri, 29 Aug 2025 17:02:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756486946;
+	bh=jckHIqF6i2pBFamtML/gMy0ZqD2SuPtuowG9SJKDWMY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=CTksd1s9xY3D0u83iS89bdocTJ09tnw1g9g+hpKj1CK5cqCdJmF0hc8bl4T4EVp3m
+	 gPRjB6HfzJrWbXuQZp29GIsx6RBX46JuQEibY4RG4q4hahVkmjfxgXOSsIXTynqo9s
+	 1FDoItIRV+Zv1ZIQ4tHD/KMlUlDTi2KDWWvu9tQXO2M5007NyEiuMedK3N5TnY2MHI
+	 kfQd53mA5PeKNL2y7xgWhRbSJsjyE9HkM41EXEz3xiSw6b1KdBFNhZdMbahKPhmUFM
+	 zhoCoGbIfnadZLsmE2nHHGoYrsCp1HYuOClPVIAXZiGqQk+eXWFwQaHHjQLrJ7C2lx
+	 +aWRWBoQy2Slg==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-61e266ab733so440009eaf.1
+        for <linux-acpi@vger.kernel.org>; Fri, 29 Aug 2025 10:02:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXwkIAW6xJKNxCdMOOOWOO6N93WlPXbihpu5QDD9VzsMOgRnM6PWipvofzUm6RzJiSo2rGPIg5l8+mU@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzs/A4hXpUeajIgjrTDR6FDTW78bzAr6YG6KeJi5k1QTDV1Jtgy
+	vTJrURvC+a1PpCx0FFJqISwi1VM1k2jT4PSTUDYggvkxg3vNpre06y972PBF0fPBeABxV4GvJ2z
+	2901mUZPl2LjuhiC5zXEcYEWKee1eYyc=
+X-Google-Smtp-Source: AGHT+IG9Vf5FW7DEcOzXTmI+SdGyTY6utY2avMM/kXK5FjQwmV/DQokNRVb6fgLdg7jgG0yhffJknqZl2eY+AsF0ZxM=
+X-Received: by 2002:a05:6820:1691:b0:61e:2989:5eff with SMTP id
+ 006d021491bc7-61e2989619dmr909695eaf.2.1756486945260; Fri, 29 Aug 2025
+ 10:02:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 32/33] arm_mpam: Add kunit test for bitmap reset
-To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: shameerali.kolothum.thodi@huawei.com,
- D Scott Phillips OS <scott@os.amperecomputing.com>,
- carl@os.amperecomputing.com, lcherian@marvell.com,
- bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
- baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
- Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
- dfustini@baylibre.com, amitsinght@marvell.com,
- David Hildenbrand <david@redhat.com>, Rex Nie <rex.nie@jaguarmicro.com>,
- Dave Martin <dave.martin@arm.com>, Koba Ko <kobak@nvidia.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, fenghuay@nvidia.com,
- baisheng.gao@unisoc.com, Jonathan Cameron <jonathan.cameron@huawei.com>,
- Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
- Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>
-References: <20250822153048.2287-1-james.morse@arm.com>
- <20250822153048.2287-33-james.morse@arm.com>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <20250822153048.2287-33-james.morse@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250829112614.1872244-1-kaushlendra.kumar@intel.com>
+In-Reply-To: <20250829112614.1872244-1-kaushlendra.kumar@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 29 Aug 2025 19:02:13 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hxj84qq-riRobM-_z=BQRTWGsQ8EDLeqJrvZdkazEeDg@mail.gmail.com>
+X-Gm-Features: Ac12FXwn0F9lO3JbVscHYnV3zA_PmL_0_rwqUnRgO0nMCylkYe1f_lsw7uT4ta0
+Message-ID: <CAJZ5v0hxj84qq-riRobM-_z=BQRTWGsQ8EDLeqJrvZdkazEeDg@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: acpidump: fix return values in ap_is_valid_checksum()
+To: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Cc: rafael@kernel.org, robert.moore@intel.com, saket.dumbre@intel.com, 
+	lenb@kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi James,
+On Fri, Aug 29, 2025 at 1:27=E2=80=AFPM Kaushlendra Kumar
+<kaushlendra.kumar@intel.com> wrote:
+>
+> The function ap_is_valid_checksum() has a boolean name suggesting it
+> should return TRUE/FALSE, but incorrectly returns AE_OK on success and
+> has no explicit return on failure, leading to undefined behavior.
+>
+> Fix by returning proper values:
+> - FALSE when checksum validation fails
+> - TRUE when checksum validation succeeds
+>
+> Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-On 8/22/25 16:30, James Morse wrote:
-> The bitmap reset code has been a source of bugs. Add a unit test.
-> 
-> This currently has to be built in, as the rest of the driver is
-> builtin.
-> 
-> Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: James Morse <james.morse@arm.com>
+Please submit ACPICA changes to the upstream ACPICA project on GitHub.
+
+They are not going to be applied directly to the Linux kernel code
+unless they are based on existing upstream ACPICA commits.
+
 > ---
->  drivers/resctrl/Kconfig             | 13 ++++++
->  drivers/resctrl/mpam_devices.c      |  4 ++
->  drivers/resctrl/test_mpam_devices.c | 68 +++++++++++++++++++++++++++++
->  3 files changed, 85 insertions(+)
->  create mode 100644 drivers/resctrl/test_mpam_devices.c
-> 
-> diff --git a/drivers/resctrl/Kconfig b/drivers/resctrl/Kconfig
-> index dff7b87280ab..f5e0609975e4 100644
-> --- a/drivers/resctrl/Kconfig
-> +++ b/drivers/resctrl/Kconfig
-> @@ -4,8 +4,21 @@ config ARM64_MPAM_DRIVER
->  	bool "MPAM driver for System IP, e,g. caches and memory controllers"
->  	depends on ARM64_MPAM && EXPERT
->  
-> +menu "ARM64 MPAM driver options"
-> +
->  config ARM64_MPAM_DRIVER_DEBUG
->  	bool "Enable debug messages from the MPAM driver."
->  	depends on ARM64_MPAM_DRIVER
->  	help
->  	  Say yes here to enable debug messages from the MPAM driver.
-> +
-> +config MPAM_KUNIT_TEST
-> +	bool "KUnit tests for MPAM driver " if !KUNIT_ALL_TESTS
-> +	depends on KUNIT=y
-It depends on ARM64_MPAM_DRIVER as well.
-
-> +	default KUNIT_ALL_TESTS
-> +	help
-> +	  Enable this option to run tests in the MPAM driver.
-> +
-> +	  If unsure, say N.
-> +
-> +endmenu
-> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-> index 65c30ebfe001..4cf5aae88c53 100644
-> --- a/drivers/resctrl/mpam_devices.c
-> +++ b/drivers/resctrl/mpam_devices.c
-> @@ -2903,3 +2903,7 @@ static int __init mpam_msc_driver_init(void)
+>  tools/power/acpi/tools/acpidump/apdump.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/tools/power/acpi/tools/acpidump/apdump.c b/tools/power/acpi/=
+tools/acpidump/apdump.c
+> index bf30143efbdc..7a6223aa703c 100644
+> --- a/tools/power/acpi/tools/acpidump/apdump.c
+> +++ b/tools/power/acpi/tools/acpidump/apdump.c
+> @@ -86,9 +86,10 @@ u8 ap_is_valid_checksum(struct acpi_table_header *tabl=
+e)
+>         if (ACPI_FAILURE(status)) {
+>                 fprintf(stderr, "%4.4s: Warning: wrong checksum in table\=
+n",
+>                         table->signature);
+> +               return (FALSE);
+>         }
+>
+> -       return (AE_OK);
+> +       return (TRUE);
 >  }
->  /* Must occur after arm64_mpam_register_cpus() from arch_initcall() */
->  subsys_initcall(mpam_msc_driver_init);
-> +
-> +#ifdef CONFIG_MPAM_KUNIT_TEST
-> +#include "test_mpam_devices.c"
-> +#endif
-> diff --git a/drivers/resctrl/test_mpam_devices.c b/drivers/resctrl/test_mpam_devices.c
-> new file mode 100644
-> index 000000000000..8e9d6c88171c
-> --- /dev/null
-> +++ b/drivers/resctrl/test_mpam_devices.c
-> @@ -0,0 +1,68 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +// Copyright (C) 2024 Arm Ltd.
-> +/* This file is intended to be included into mpam_devices.c */
-> +
-> +#include <kunit/test.h>
-> +
-> +static void test_mpam_reset_msc_bitmap(struct kunit *test)
-> +{
-> +	char *buf = kunit_kzalloc(test, SZ_16K, GFP_KERNEL);
-> +	struct mpam_msc fake_msc;
-> +	u32 *test_result;
-> +
-> +	if (!buf)
-> +		return;
-> +
-> +	fake_msc.mapped_hwpage = buf;
-> +	fake_msc.mapped_hwpage_sz = SZ_16K;
-> +	cpumask_copy(&fake_msc.accessibility, cpu_possible_mask);
-> +
-> +	mutex_init(&fake_msc.part_sel_lock);
-> +	mutex_lock(&fake_msc.part_sel_lock);
-> +
-> +	test_result = (u32 *)(buf + MPAMCFG_CPBM);
-> +
-> +	mpam_reset_msc_bitmap(&fake_msc, MPAMCFG_CPBM, 0);
-> +	KUNIT_EXPECT_EQ(test, test_result[0], 0);
-> +	KUNIT_EXPECT_EQ(test, test_result[1], 0);
-> +	test_result[0] = 0;
-> +	test_result[1] = 0;
-> +
-> +	mpam_reset_msc_bitmap(&fake_msc, MPAMCFG_CPBM, 1);
-> +	KUNIT_EXPECT_EQ(test, test_result[0], 1);
-> +	KUNIT_EXPECT_EQ(test, test_result[1], 0);
-> +	test_result[0] = 0;
-> +	test_result[1] = 0;
-> +
-> +	mpam_reset_msc_bitmap(&fake_msc, MPAMCFG_CPBM, 16);
-> +	KUNIT_EXPECT_EQ(test, test_result[0], 0xffff);
-> +	KUNIT_EXPECT_EQ(test, test_result[1], 0);
-> +	test_result[0] = 0;
-> +	test_result[1] = 0;
-> +
-> +	mpam_reset_msc_bitmap(&fake_msc, MPAMCFG_CPBM, 32);
-> +	KUNIT_EXPECT_EQ(test, test_result[0], 0xffffffff);
-> +	KUNIT_EXPECT_EQ(test, test_result[1], 0);
-> +	test_result[0] = 0;
-> +	test_result[1] = 0;
-> +
-> +	mpam_reset_msc_bitmap(&fake_msc, MPAMCFG_CPBM, 33);
-> +	KUNIT_EXPECT_EQ(test, test_result[0], 0xffffffff);
-> +	KUNIT_EXPECT_EQ(test, test_result[1], 1);
-> +	test_result[0] = 0;
-> +	test_result[1] = 0;
-> +
-> +	mutex_unlock(&fake_msc.part_sel_lock);
-> +}
-> +
-> +static struct kunit_case mpam_devices_test_cases[] = {
-> +	KUNIT_CASE(test_mpam_reset_msc_bitmap),
-> +	{}
-> +};
-> +
-> +static struct kunit_suite mpam_devices_test_suite = {
-> +	.name = "mpam_devices_test_suite",
-> +	.test_cases = mpam_devices_test_cases,
-> +};
-> +
-> +kunit_test_suites(&mpam_devices_test_suite);
-
-Thanks,
-
-Ben
-
+>
+>  /***********************************************************************=
+*******
+> --
+> 2.34.1
+>
 
