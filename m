@@ -1,124 +1,215 @@
-Return-Path: <linux-acpi+bounces-16187-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16188-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 703E6B3BE8F
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 16:52:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16DACB3BEFE
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 17:15:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3CE3188E18B
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 14:53:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAFC9563329
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Aug 2025 15:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD17A31AF25;
-	Fri, 29 Aug 2025 14:52:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tehsvk-net.20230601.gappssmtp.com header.i=@tehsvk-net.20230601.gappssmtp.com header.b="dFNtocKr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48CA322A25;
+	Fri, 29 Aug 2025 15:15:37 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5445829E110
-	for <linux-acpi@vger.kernel.org>; Fri, 29 Aug 2025 14:52:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775A713C8EA;
+	Fri, 29 Aug 2025 15:15:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756479165; cv=none; b=hPRBvoK3sbUBE29+O/p+wBM2qqtkuuWZ5r9tELeAqJUAiJKUKSONuqPmkLttD3BRGPFRcUjE/+ck+uV6cTjMGyAiUoPqJ4VqvNkK6MZ3sF0s7Ucc9o6B19NOcWBzLX7ZIwFYbSAsNxodBdidsK4LzlZnqxM//Pa0YAkkvwehO/M=
+	t=1756480537; cv=none; b=kNWvj9ewXx7Sz81Fg/vFr20J93TqmhoLPgKbUflCQQKaFFJtpNaRmr/Ii9Kua9EbOT3OJEQF0hCoypzy0JHZcI59CP8vBxxTsbKmIaXlSGTSYDW2eyX3tmBlZIJtQuyvs/mGYve9RTjxbcfXiisv1S8VCQT3vUuNJt0Vsk7Mgo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756479165; c=relaxed/simple;
-	bh=pbxV2Mavk1lMiJMhfJQeb8/mI1z3zntxdHr6u3BjEJc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oBl7Xh/IOjupSlRh/CL3WHPDTsXdHH1vfK5rUQh4FUnzBKu7bpxHVXRFCRAV1mzOn+qOrr/mkpfydg5Ms4lq+OH/BqILkMkxgpTi+GIPPDKj8S4AVyq4WmcNZ6qxonKsrf+JDVg79s30YO6d+0IlOrX0C0z/bvgGs0cRAbzi97E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tehsvk.net; spf=pass smtp.mailfrom=tehsvk.net; dkim=pass (2048-bit key) header.d=tehsvk-net.20230601.gappssmtp.com header.i=@tehsvk-net.20230601.gappssmtp.com header.b=dFNtocKr; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tehsvk.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tehsvk.net
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-affc2eb83c5so4230166b.2
-        for <linux-acpi@vger.kernel.org>; Fri, 29 Aug 2025 07:52:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tehsvk-net.20230601.gappssmtp.com; s=20230601; t=1756479161; x=1757083961; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YAO3ZMwu5xYp39Ji5NepqL908pahfUuulyMV8nWLF2E=;
-        b=dFNtocKrkD3b+LGnUGpnGZvrJTpss7N+lbXWOj1VqHekrlXyzQDKnGfUF4Vz5lJrkv
-         vqw76HOol/9bHRkaQo5Z3WssRHDrm7OfS/sW77SELzbVYssvdm/yIV1u0V7NYVPebfLw
-         a59ksIh7nUZ22AB7ObWu7gwJ19+jWuOxpbkmF37TG2FDKRHH2N5cLa2/FZ8PuYcBAgUV
-         jEX4EMtADb2zykg4KJgIbpLv+oglX50et45vizX6q2PfFbL9A0qiWZ4RPle1Qbt/S/B/
-         RIB9uVfO3kofmkJV5Y5WDzkyjCgBeSet9pdb5q6Y92Ol7IAUlGmcmpahYmcjYnhzacN+
-         Ea7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756479161; x=1757083961;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YAO3ZMwu5xYp39Ji5NepqL908pahfUuulyMV8nWLF2E=;
-        b=xJarqPCahaRzxMKEKF2OGE1Z7g8mWKQIM0bQc29RQMOPJmefttZ9FK8ZPRFmaw+qnG
-         6w3tzQxPGW7DgRUt0L/Pvoa0wZrylnZAu8NsL52b+j7Tbw3VFj1oxVn1E/jbfng4MUGd
-         7WyuHkz9dbZO4mMkqIfGIy6OIa3Kdm8IeF+LzYn/1iKI7e1OwKE+nCFburelFLCB4bmP
-         OS0hSArl/N/M9bDNf+9xD8vhX1kXnQvvNmzKanmSHXeu89UAws2m3zg42OexhhCD2Af1
-         wf8NbmtAQ5D+X1RoftYwupsoOnW4msLurkUeh2jl+evm6JFt3fhBXZ88WiM4r03N7H0d
-         aN5Q==
-X-Gm-Message-State: AOJu0Yw5gL1oMk7Arqy7scR3P5PZxhrljEfE/xORZBw3gDvpgtl6Ftfh
-	Iw8zLLV6EV8lS9Hu6UJA+KoXu3P+hpZ9Y1VAxo1LvuN6NcuOgXAx6/OScNwLnMtnjzGQ+dEpWys
-	TgiVllv1n3g==
-X-Gm-Gg: ASbGnctPtYLvY6SuyPKPZ9XvTiLQ89PSDeIVBR9wulTk3emFHWOb1cX19zM4otbEX7n
-	ymHaayuWeec8DBMUyWeL0xovrQsTyq1w/f5Bu6X7X2+W7RXuUJqvL4PpXltFuJAnyB+XfQMNX9i
-	6axaGhkvh4XqulkyfnlACGOAcCoMXbRqgtAK70FVNVuDKHPxmCcI7pDRMOCCxzfzMZEoPzISm63
-	RgYKMlrZcBvQXL+3sGSV9syGJawA+2iXsXSl+th9nweUvSz6Xch+wLs+ez6YHAH+vwfAuKmOtqO
-	/iw4UtVJLjhMbAaC5gCHxxU/ksFGuVkhvcpaYYDax0iHwzuiosb2tcZvOaqOgGdJ8d+zljstvsW
-	Z37r0gPodvLsfRdY/ULX9mLIBlREyOKu/xUkmBqEPX+j/Q12O9uVd2ko=
-X-Google-Smtp-Source: AGHT+IGI4LwarnpKpqmefv3ZKJsmqOze2BLYKHXw9ym9VMS7r/n+3DilKdheD3uR9kM26iVbykZhtA==
-X-Received: by 2002:a17:907:86a5:b0:afe:bbeb:1f56 with SMTP id a640c23a62f3a-afebbeb24ffmr1019354666b.36.1756479161358;
-        Fri, 29 Aug 2025 07:52:41 -0700 (PDT)
-Received: from nas-i.. (ip-213-124-217-71.ip.prioritytelecom.net. [213.124.217.71])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afefca0a960sm212407766b.37.2025.08.29.07.52.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 07:52:40 -0700 (PDT)
-From: Sam van Kampen <sam@tehsvk.net>
-To: linux-acpi@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Sam van Kampen <sam@tehsvk.net>
-Subject: [PATCH] ACPI: resource: Skip IRQ override on ASUS Vivobook Pro N6506CU
-Date: Fri, 29 Aug 2025 14:52:22 +0000
-Message-ID: <20250829145221.2294784-2-sam@tehsvk.net>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1756480537; c=relaxed/simple;
+	bh=RBMTZHKptvch3m8YqeUfxwDzOYjcvLk/FtWe8AqKNOM=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=m/WSB7ICFtnvOeKhN8WTjOIXiKg/r3UoHzvbrCliE1yiBLKSyRhQ47mJR0l7M3PoRis4D28X0Wu/EB3ZmPEsjaakYY5uexWhTQVUVMw7eV644tKXgUaBJatImWZ8IR46pSDeX3U581y2cVnpdYo7WaC2XxLSNKup83sgh6cPOr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cD1x26RZZz6GDtm;
+	Fri, 29 Aug 2025 23:13:10 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 82DC514011A;
+	Fri, 29 Aug 2025 23:15:31 +0800 (CST)
+Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 29 Aug
+ 2025 17:15:30 +0200
+Date: Fri, 29 Aug 2025 16:15:29 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Dave Jiang <dave.jiang@intel.com>
+CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <gregkh@linuxfoundation.org>,
+	<rafael@kernel.org>, <dakr@kernel.org>, <dave@stgolabs.net>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <dan.j.williams@intel.com>,
+	<marc.herbert@linux.intel.com>, <akpm@linux-foundation.org>,
+	<david@redhat.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v2 3/4] cxl, acpi/hmat: Update CXL access coordinates
+ directly instead of through HMAT
+Message-ID: <20250829161529.0000220a@huawei.com>
+In-Reply-To: <20250820194704.4130565-4-dave.jiang@intel.com>
+References: <20250820194704.4130565-1-dave.jiang@intel.com>
+	<20250820194704.4130565-4-dave.jiang@intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Just like the other Vivobooks here, the N6506CU has its keyboard IRQ
-described as ActiveLow in the DSDT, which the kernel overrides to
-EdgeHigh, causing the internal keyboard not to work.
+On Wed, 20 Aug 2025 12:47:03 -0700
+Dave Jiang <dave.jiang@intel.com> wrote:
 
-Add the N6506CU to the irq1_level_low_skip_override[] quirk table to fix
-this.
+> The current implementation of CXL memory hotplug notifier gets called
+> before the HMAT memory hotplug notifier. The CXL driver calculates the
+> access coordinates (bandwidth and latency values) for the CXL end to
+> end path (i.e. CPU to endpoint). When the CXL region is onlined, the CXL
+> memory hotplug notifier writes the access coordinates to the HMAT target
+> structs. Then the HMAT memory hotplug notifier is called and it creates
+> the access coordinates for the node sysfs attributes.
+> 
+> During testing on an Intel platform, it was found that although the
+> newly calculated coordinates were pushed to sysfs, the sysfs attributes for
+> the access coordinates showed up with the wrong initiator. The system has
+> 4 nodes (0, 1, 2, 3) where node 0 and 1 are CPU nodes and node 2 and 3 are
+> CXL nodes. The expectation is that node 2 would show up as a target to node
+> 0:
+> /sys/devices/system/node/node2/access0/initiators/node0
+> 
+> However it was observed that node 2 showed up as a target under node 1:
+> /sys/devices/system/node/node2/access0/initiators/node1
+> 
+> The original intent of the 'ext_updated' flag in HMAT handling code was to
+> stop HMAT memory hotplug callback from clobbering the access coordinates
+> after CXL has injected its calculated coordinates and replaced the generic
+> target access coordinates provided by the HMAT table in the HMAT target
+> structs. However the flag is hacky at best and blocks the updates from
+> other CXL regions that are onlined in the same node later on. Remove the
+> 'ext_updated' flag usage and just update the access coordinates for the
+> nodes directly without touching HMAT target data.
+> 
+> The hotplug memory callback ordering is changed. Instead of changing CXL,
+> move HMAT back so there's room for the levels rather than have CXL share
+> the same level as SLAB_CALLBACK_PRI. The change will resulting in the CXL
+> callback to be executed after the HMAT callback.
+> 
+> With the change, the CXL hotplug memory notifier runs after the HMAT
+> callback. The HMAT callback will create the node sysfs attributes for
+> access coordinates. The CXL callback will write the access coordinates to
+> the now created node sysfs attributes directly and will not pollute the
+> HMAT target values.
+> 
+> Fixes: 067353a46d8c ("cxl/region: Add memory hotplug notifier for cxl region")
+> Cc: stable@vger.kernel.org
+> Tested-by: Marc Herbert <marc.herbert@linux.intel.com>
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> ---
+> v2:
+> - Add description to what was observed for the issue. (Dan)
+> - Use the correct Fixes tag. (Dan)
+> - Add Cc to stable. (Dan)
+> - Add support to only update on first region appearance. (Jonathan)
 
-Signed-off-by: Sam van Kampen <sam@tehsvk.net>
----
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+The implementation of this seems like overkill. See later, but in short
+should be able to use a nodemask_t
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index b1ab192d7a08..ddedb6956a0d 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -510,6 +510,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "N6506M"),
- 		},
- 	},
-+	{
-+		/* Asus Vivobook Pro N6506CU* */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "N6506CU"),
-+		},
-+	},
- 	{
- 		/* LG Electronics 17U70P */
- 		.matches = {
--- 
-2.43.0
+> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+> index 71cc42d05248..371873fc43eb 100644
+> --- a/drivers/cxl/core/region.c
+> +++ b/drivers/cxl/core/region.c
+> @@ -9,6 +9,7 @@
+>  #include <linux/uuid.h>
+>  #include <linux/sort.h>
+>  #include <linux/idr.h>
+> +#include <linux/xarray.h>
+>  #include <linux/memory-tiers.h>
+>  #include <cxlmem.h>
+>  #include <cxl.h>
+> @@ -30,6 +31,9 @@
+>   * 3. Decoder targets
+>   */
+>  
+> +/* xarray that stores the reference count per node for regions */
+
+Reference count seems an over the top description.
+I think it's just a flag that says if this happened already or not.
+The term reference count would kind of suggest it would count regions
+present.
+
+So perhaps a comment along the lines of
+
+/* xarray that stores if a region has previously been seen in a node */
+and rename to node_region_seen_xa.
+
+However, can we just use a bitmap sized to MAX_NUMNODES which is 
+a nodemask_t which gives us the helpers nodemask.h
+
+
+
+> +static DEFINE_XARRAY(node_regions_xa);
+> +
+>  static struct cxl_region *to_cxl_region(struct device *dev);
+>  
+>  #define __ACCESS_ATTR_RO(_level, _name) {				\
+> @@ -2442,14 +2446,8 @@ static bool cxl_region_update_coordinates(struct cxl_region *cxlr, int nid)
+>  
+>  	for (int i = 0; i < ACCESS_COORDINATE_MAX; i++) {
+>  		if (cxlr->coord[i].read_bandwidth) {
+> -			rc = 0;
+> -			if (cxl_need_node_perf_attrs_update(nid))
+> -				node_set_perf_attrs(nid, &cxlr->coord[i], i);
+> -			else
+> -				rc = cxl_update_hmat_access_coordinates(nid, cxlr, i);
+> -
+> -			if (rc == 0)
+> -				cset++;
+> +			node_update_perf_attrs(nid, &cxlr->coord[i], i);
+> +			cset++;
+>  		}
+>  	}
+>  
+> @@ -2475,6 +2473,7 @@ static int cxl_region_perf_attrs_callback(struct notifier_block *nb,
+>  	struct node_notify *nn = arg;
+>  	int nid = nn->nid;
+>  	int region_nid;
+> +	int rc;
+>  
+>  	if (action != NODE_ADDED_FIRST_MEMORY)
+>  		return NOTIFY_DONE;
+> @@ -2487,6 +2486,11 @@ static int cxl_region_perf_attrs_callback(struct notifier_block *nb,
+>  	if (nid != region_nid)
+>  		return NOTIFY_DONE;
+>  
+> +	/* No action needed if there's existing entry */
+> +	rc = xa_insert(&node_regions_xa, nid, NULL, GFP_KERNEL);
+
+So this is using the NULL entry quirk of xa_insert() where
+a reserved entry is put in place so next time we match. 
+
+> +	if (rc < 0)
+> +		return NOTIFY_DONE;
+> +
+>  	if (!cxl_region_update_coordinates(cxlr, nid))
+>  		return NOTIFY_DONE;
+>  
+> @@ -3638,6 +3642,7 @@ int cxl_region_init(void)
+>  
+>  void cxl_region_exit(void)
+>  {
+> +	xa_destroy(&node_regions_xa);
+>  	cxl_driver_unregister(&cxl_region_driver);
+>  }
+
 
 
