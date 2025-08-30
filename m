@@ -1,70 +1,70 @@
-Return-Path: <linux-acpi+bounces-16212-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16213-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45B4B3C847
-	for <lists+linux-acpi@lfdr.de>; Sat, 30 Aug 2025 07:36:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DEBCB3C850
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Aug 2025 07:37:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFEA51C8005E
-	for <lists+linux-acpi@lfdr.de>; Sat, 30 Aug 2025 05:36:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 247C17BD8B3
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Aug 2025 05:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B6B2BDC1B;
-	Sat, 30 Aug 2025 05:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1412C21F9;
+	Sat, 30 Aug 2025 05:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QtHDm8Nx"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JQD9o7gX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D798288C13
-	for <linux-acpi@vger.kernel.org>; Sat, 30 Aug 2025 05:34:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD5829BD92
+	for <linux-acpi@vger.kernel.org>; Sat, 30 Aug 2025 05:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756532074; cv=none; b=ZOM5eDfESPVGMetC9qNJKNXEaFyzaeCuM/00e8+hyHNLYJJeIifXsJFFYPVerg1F0UJheMz44cpv+Qs+V2nZ8wL6SLNRCxUD0/vwdKK6fVMeeMaamj95XZE2lUxSTRky7ifLaz8UlepF7i6kWS4b72Oe/vS0xIMAirFD/LGLB5M=
+	t=1756532077; cv=none; b=fgDnWAvEaL3v+vXVZ/xCy9bA91daTvhc74wv3G6P7Sn67YXsGhrQ355dsC1jhnkIqK/JaVy4201hGDdgWBwA/1MvbBGNE3LQKFdWjfgifEtP9BTfcMgxTCKFJEFxzBFoDuCQtFSuzxWt04qZLBPptSlzHnIChElYprTloVCX4j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756532074; c=relaxed/simple;
-	bh=WeyAMMzLWYrZ1HG1ditJpkumwo7ZPG/kpSkpToknfn8=;
+	s=arc-20240116; t=1756532077; c=relaxed/simple;
+	bh=uO/ODjE/zYZVgbm1CU9iXym5pNf0yiWRr0Jb7Ejew9o=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=i2Kgpt9BfyF4of0lfOECDxly+z+mHlkyOOsnZAqo+yNxz1/e2akjtNqRD3opeL6DpEEg4cFhAnGNvSfQcvZKZAshuC5sVJZwc7sDctIKMaQrKLf1FyeGeB/X+bWGF54YCRYyCnzfILo77DhRnH50Jc2Rx5ZNGUHoV3+/7+XLfdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--srosek.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QtHDm8Nx; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=OEepORzkp/F282+M4vMxh2RtblstyjwRLU3TWFpJZfTAncYYDv9VZeh7uvfic2wad8PpSjf1wrgd/DIrE9UEdu+b2tldNRn8RyZ4uB7NBF/q68UU9NinA65/qcYTi0DuMg6cHCSOTRxoN77y12bFz9rExPEhuXeIaG8B7k8R8EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--srosek.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JQD9o7gX; arc=none smtp.client-ip=209.85.208.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--srosek.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3cceb92ea73so1556270f8f.0
-        for <linux-acpi@vger.kernel.org>; Fri, 29 Aug 2025 22:34:32 -0700 (PDT)
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-61d2adb3258so142128a12.0
+        for <linux-acpi@vger.kernel.org>; Fri, 29 Aug 2025 22:34:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756532071; x=1757136871; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1756532073; x=1757136873; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=53oYVzVPYcV4OUV7zinEsToKunRqJxZFVC5fXAK1M5o=;
-        b=QtHDm8NxqNHOMCtJxXi13BW+u+p0+Jpl6uivD+uNCOQ9jNzDFmfM+wo4+tWSwzb87f
-         zIY5VgSwKjS9GxOfiYK2gjg1t0FGg50ZEWcVB9zL0XaZcs81rOAZPZ8iZzQA+2Yeucxb
-         zWwWcbfwI7klmMIYuoZaJBXwXGG/iWVVNRnrIam923LD4T0pdzEdIuOdzrf2Dm2L76us
-         olQuqHwWZgZAhTDK5g+RpgtizHOFd+zDxk4h6tO+mVX9DfvpjCs1t4GxMDJ4Na9etUhs
-         dDGXi88kleOEZ1W6QOnG7maLseIxXxKuUIpOSpsns0MBW2JDHFIXGxPnJ+ikEcGJbL/i
-         berw==
+        bh=yg7CRJ0dQKyS1GOrInJ1XjZDl9JOndiYGx9QvzOWypY=;
+        b=JQD9o7gXpMWrnz1CQE2zJMTvayxDEvs9QKNoFxY7eUCLXYZL0IyhoW611ZEqdHn3SF
+         Y8rq10tI56GNavGlaeFPPwwhto6qbhaPrwV6BvRhKw6xrpxELaY4i/6z1/u0lb8IlSwo
+         FdYfk2QqJHUh2xuOFxocqNc5wEalPaDWx/KmPXXN4aSLb5U3DYRxidrJoOTYtCDdu6rV
+         hTz7Lo09Ag7ueRrXEL3qHdTrfFGbi2V4P26aBq6jIh1qbEArNtAGsUhSjkAKmIGGvgFT
+         cMtdlgaDMI9nZ/dGyaTKgXXYE7BEgIwVuefenjLfVwiqoEBgoOp52Woc0fzZdC22xi+F
+         58Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756532071; x=1757136871;
+        d=1e100.net; s=20230601; t=1756532073; x=1757136873;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=53oYVzVPYcV4OUV7zinEsToKunRqJxZFVC5fXAK1M5o=;
-        b=NFROnvMmlJVUtOQv8PPp9Qf1OnO6WOYRh0LPiozv9VToMBe/QOAOjBt3nBdZkXicgl
-         TJxymoYNPrm3Ch+un0zxnhZK9cJvBDX5Ef69yQJ4o2kmhiyn/yuWO6XHx8UT2Q8QRek9
-         m4MbcT7q719tkMe8P1Y8BYy2hEypxZF4BOMA7jwHtg6C2TfMUA+qSJ/XIL0lmSzSTmJn
-         7cgclcsUCJN9dWkySKt/zLcTSMCjoDbiJqOizLawFI2oA9mUq5xzYBxga8xbmgW9tHh0
-         zGKS67PD01UyisrFI/neP+hWFZfTtu3MRTM4UlzN9zFe1ed2QpakPp3Kdw+SA7966Jm6
-         M2lg==
-X-Forwarded-Encrypted: i=1; AJvYcCVf3G6BAWztVZ5hBc5FTX5UpUezoOh5GZk4o1pHOJPPtYPmF5J+p/t0+OwEyhvF3SfNhzWpCQF1CDW6@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxpc3P9r3+7qJ70W+5z0DmHJaQwpXHRpX+u97eKxc9itTzz3XcW
-	pxqZP+CBe37mxsEBzq0RKk+aRyHsIW69DOwwvYM3BfFeLVIFzHZwNr4n4BwdHffpXIN1PTZyiOz
-	T00dxpw==
-X-Google-Smtp-Source: AGHT+IGavoR2KkplakvccW6xah6LvadtZMg8uiE4krf/YWshpmzVW6Bl00F5Z1tTeaucke/5WP8sSANpwLI=
-X-Received: from wmbiw15.prod.google.com ([2002:a05:600c:54cf:b0:45b:7bf4:a956])
- (user=srosek job=prod-delivery.src-stubby-dispatcher) by 2002:a5d:64ec:0:b0:3ce:c602:58b4
- with SMTP id ffacd0b85a97d-3d1e06b02camr483474f8f.54.1756532071368; Fri, 29
- Aug 2025 22:34:31 -0700 (PDT)
-Date: Sat, 30 Aug 2025 05:34:01 +0000
+        bh=yg7CRJ0dQKyS1GOrInJ1XjZDl9JOndiYGx9QvzOWypY=;
+        b=j+MehR+TI67WXwQ7qHcPVKmHdNVTojGEg/6BmKyFLGmermnnhuzkeIWAXk/EwUsRxk
+         jVnSmms/IxMScl4Dvoobn7ekwiitqqpud2fF2le/Pj6SYuD/8ZYSpn7jOPcVc2dnQANX
+         MPnPHjW4YWz6kPnpECKMeMiYrdI5E1QMfqnmK4s5oFgCtRg+shUBxIxCoRAHkot4VDRC
+         kPDbL111tygibMYqsyrTs9KgUvXz1f4ecUriLQDKSZmhY65dLxSIJsthURuehcbbXoVO
+         w21vbmPCNb/MN/8YY6fnEMYUrccTQNMWlmmliKCAleG4ZrA/o1e7ACtr1Wy3CAzDtHSs
+         2XWA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+gVR9Yes6kyCahg5COxt+3cmUUX4dmy1XqYiJ/ONrM1uJl84LnlBJpurEdNNzcHEWB/hY4Eq02KEt@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7UwiwvlCVs6SjM5xHSlDeKjlEcOpimWVQZr/wq7/ZhRdkKwKb
+	c6p7AxU0mvvrcQHDrIKexLunWFtlY3tTP1hJmmApDlQajA3m8yW6qYsICqsD3TTMCgaThL2s4kL
+	qUU1F+Q==
+X-Google-Smtp-Source: AGHT+IEt/4Q9x3GXVaT8543rG9eCaojjztEKwpl3WFkiLwBvUvkuJUh+sjRu8HQmFq7S5jcqpBu8z9GpTn8=
+X-Received: from edeg15.prod.google.com ([2002:a05:6402:564f:b0:61a:56c3:d3d2])
+ (user=srosek job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:27ca:b0:61c:5a8c:9a4e
+ with SMTP id 4fb4d7f45d1cf-61d2699752fmr748665a12.4.1756532072715; Fri, 29
+ Aug 2025 22:34:32 -0700 (PDT)
+Date: Sat, 30 Aug 2025 05:34:02 +0000
 In-Reply-To: <20250830053404.763995-1-srosek@google.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -74,8 +74,8 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250830053404.763995-1-srosek@google.com>
 X-Mailer: git-send-email 2.51.0.318.gd7df087d1a-goog
-Message-ID: <20250830053404.763995-10-srosek@google.com>
-Subject: [PATCH v1 09/12] ACPI: DPTF: Move PCH FIVR device IDs to header
+Message-ID: <20250830053404.763995-11-srosek@google.com>
+Subject: [PATCH v1 10/12] ACPI: DPTF: Remove not supported INT340X IDs
 From: Slawomir Rosek <srosek@google.com>
 To: "Rafael J . Wysocki" <rafael@kernel.org>, Alex Hung <alexhung@gmail.com>, 
 	Hans de Goede <hansg@kernel.org>, Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, 
@@ -88,81 +88,32 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Zhang Rui <rui.zhang@intel.
 	Slawomir Rosek <srosek@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-The ACPI PCH FIVR device IDs are shared between the DPTF core
-and PCH FIVR driver, thus they are moved to the common header.
+Remove not supported ACPI INT340X device IDs from scan handler.
 
+Fixes: 3230bbfce8a9 ("ACPI: introduce ACPI int340x thermal scan handler")
+Fixes: 9cf45756a4b9 ("ACPI: DPTF: Support for Wildcat Lake")
 Signed-off-by: Slawomir Rosek <srosek@google.com>
 ---
- drivers/acpi/dptf/dptf_pch_fivr.c   | 8 ++------
- drivers/acpi/dptf/int340x_thermal.c | 7 +------
- drivers/acpi/int340x_thermal.h      | 8 ++++++++
- 3 files changed, 11 insertions(+), 12 deletions(-)
+ drivers/acpi/dptf/int340x_thermal.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/acpi/dptf/dptf_pch_fivr.c b/drivers/acpi/dptf/dptf_pch_fivr.c
-index 952216c67d58..cb81636a5d63 100644
---- a/drivers/acpi/dptf/dptf_pch_fivr.c
-+++ b/drivers/acpi/dptf/dptf_pch_fivr.c
-@@ -8,6 +8,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
-+#include "../int340x_thermal.h"
- 
- struct pch_fivr_resp {
- 	u64 status;
-@@ -147,12 +148,7 @@ static void pch_fivr_remove(struct platform_device *pdev)
- }
- 
- static const struct acpi_device_id pch_fivr_device_ids[] = {
--	{"INTC1045", 0},
--	{"INTC1049", 0},
--	{"INTC1064", 0},
--	{"INTC106B", 0},
--	{"INTC10A3", 0},
--	{"INTC10D7", 0},
-+	ACPI_PCH_FIVR_DEVICE_IDS,
- 	{"", 0},
- };
- MODULE_DEVICE_TABLE(acpi, pch_fivr_device_ids);
 diff --git a/drivers/acpi/dptf/int340x_thermal.c b/drivers/acpi/dptf/int340x_thermal.c
-index 43afb6141b98..26522ddfcbaa 100644
+index 26522ddfcbaa..7d1308b1f513 100644
 --- a/drivers/acpi/dptf/int340x_thermal.c
 +++ b/drivers/acpi/dptf/int340x_thermal.c
-@@ -20,16 +20,11 @@ static const struct acpi_device_id int340x_thermal_device_ids[] = {
- 	ACPI_INT3404_DEVICE_IDS,
+@@ -21,12 +21,6 @@ static const struct acpi_device_id int340x_thermal_device_ids[] = {
  	ACPI_INT3406_DEVICE_IDS,
  	ACPI_INT3407_DEVICE_IDS,
-+	ACPI_PCH_FIVR_DEVICE_IDS,
- 	{"INT3408"},
- 	{"INT3409"},
- 	{"INT340A"},
- 	{"INT340B"},
--	{"INTC1045"},
--	{"INTC1049"},
--	{"INTC1064"},
--	{"INTC106B"},
--	{"INTC10A3"},
--	{"INTC10D7"},
- 	{"INTC10FF"},
- 	{"INTC1102"},
+ 	ACPI_PCH_FIVR_DEVICE_IDS,
+-	{"INT3408"},
+-	{"INT3409"},
+-	{"INT340A"},
+-	{"INT340B"},
+-	{"INTC10FF"},
+-	{"INTC1102"},
  	{""},
-diff --git a/drivers/acpi/int340x_thermal.h b/drivers/acpi/int340x_thermal.h
-index 8a3d2a9b218a..41e4ca2bc6e2 100644
---- a/drivers/acpi/int340x_thermal.h
-+++ b/drivers/acpi/int340x_thermal.h
-@@ -65,4 +65,12 @@
- 	{"INTC1100"},	\
- 	{"INTC1101"}
+ };
  
-+#define ACPI_PCH_FIVR_DEVICE_IDS	\
-+	{"INTC1045"},	\
-+	{"INTC1049"},	\
-+	{"INTC1064"},	\
-+	{"INTC106B"},	\
-+	{"INTC10A3"},	\
-+	{"INTC10D7"}
-+
- #endif
 -- 
 2.51.0.318.gd7df087d1a-goog
 
