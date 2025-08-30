@@ -1,69 +1,69 @@
-Return-Path: <linux-acpi+bounces-16202-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16203-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A58FB3C789
-	for <lists+linux-acpi@lfdr.de>; Sat, 30 Aug 2025 05:02:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F1DB3C823
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Aug 2025 07:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C1EA1C804EA
-	for <lists+linux-acpi@lfdr.de>; Sat, 30 Aug 2025 03:02:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFE1C58354F
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Aug 2025 05:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78DF25485A;
-	Sat, 30 Aug 2025 03:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159B420C004;
+	Sat, 30 Aug 2025 05:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YrKYrwnL"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xwv93U+K"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308AD246774
-	for <linux-acpi@vger.kernel.org>; Sat, 30 Aug 2025 03:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4984646447
+	for <linux-acpi@vger.kernel.org>; Sat, 30 Aug 2025 05:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756522951; cv=none; b=Kmurj5F0WP6AKp8lfUYm/fhyEl23OuZiJh93ZxfnAjMu67fFrLsJq2MDp8akiMKkXU1tmlGCA9gNL8stVyfbU21FxMuugITLtQPYx0CA6Nah7Ut2P1K3ORAL0sl39I6Uli7ZCOdf27Ljviy8X2ZkwNBepgTNgq8agw4GPfkWy7s=
+	t=1756532065; cv=none; b=skrJuFhHRWfRua9i1h3E0SZ09ZoALQnOnTFCps/5FV9h1rd5EvAZBlRpu+/UQB5/Jy+FyCBS10ahmWa+/hm9W88mUZwM0l8aqCzvfczLwYPlAbYN+6GCudCxHa972xu1eI7GcP7gqT3ol0NPU2JG8ZtNCsdk0gxI9Xvsx8tDpEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756522951; c=relaxed/simple;
-	bh=6zr42pHjg3OpSQ/sPk0BGRH60ITzGAG23tjZ44RvbEg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Bm5y03zcHtdB0FSEIJupMOGx1Su5jJwRuUa0spa/vROjg1N5emY9p8veDhLCiHup1stsWgaSUD6fWg7YN1k2ibhCCTXptalLSWLi3YFD46wLKAFJVnas6txOPrZ7ngRMO1JnweegAgxocuSpkyVM1jVrhamGR7uRG/lI9ENpxd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jiaqiyan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YrKYrwnL; arc=none smtp.client-ip=209.85.210.201
+	s=arc-20240116; t=1756532065; c=relaxed/simple;
+	bh=iGIdCJ04hc/rwVRFCfvh1JYYJkWYteHOW2SUCYh222w=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=m5s+quLer7ee887Z6gFdMWozsCOBn1kFevkp15T+Ipu9NkDhWTST1HvCgGD7hd0E1Y8TYR5B1l1HJxaqyEdPqSJ1eVhiU/JXvMuy1UzhGza6hy/Zh8fxHaOb4uB+le/BMV6T0ABh4j6YS+Uk1EPYwVu16OO5o24P5oxvXBtoC9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--srosek.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xwv93U+K; arc=none smtp.client-ip=209.85.208.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jiaqiyan.bounces.google.com
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7720cb56ee3so4468232b3a.1
-        for <linux-acpi@vger.kernel.org>; Fri, 29 Aug 2025 20:02:29 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--srosek.bounces.google.com
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-61c69c2872cso2483872a12.3
+        for <linux-acpi@vger.kernel.org>; Fri, 29 Aug 2025 22:34:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756522949; x=1757127749; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1756532062; x=1757136862; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=osREpVin4Y/mpmkRw1fC7OWCaK3AWMsIQyO6EJyT6ZI=;
-        b=YrKYrwnLfZSBZSpFjxJo7PJVdDxEDkUOybz/hSpX1YcIE2xUtdf4AeiIgHKF9CuO6l
-         HVYLNxMYL/sP6A9TE8P40kw1M20+tDLUWNX9pdgVgeTrorryABBnSqXZHJspOI2LjKr2
-         VGfJlUy7ng1B2KhgqAyvW4U+mz3rKkgRR/Sri0yZBHU8D0y3wjIHc0Bzq5qwsZhH3/jE
-         w91q0GMwsydLmQm0uUwwoS3c7iBeRNiLyi/8Lydxppojic/12Mc8YmZn5Iz1h97zYvfV
-         GhR/K3ucDf3WPvYi+nM8YLlRwsvgX8QvN+HmDl1Lqeowit23r5rW0ECcglr3y6Cf8VMI
-         aWtA==
+        bh=1fz0Wj5viu7XO3A8F0LCzyRbaDXNCECb8AHr1HvtkF8=;
+        b=xwv93U+K84n1LuR6+glzFZQjnWkjr4rTVaAJd/Gl25kC75d0xJdfzxHF0XJtf1j0ri
+         7xpnauUCjIRrr21SzZjqHnD2i5ctcyOCQxStIc5BrBR7ZCXlVaefk3u4bZkuphYI9pMe
+         caIy5P5ufx38JD7LWe92TlBiEOhTBi1QB46Jcx0MuEPYXc+FA0umAj6P0ESncwFnYtTX
+         krvtz0bQMoCCf4w83igLqWcXwASIFbhwcpvU0N+ZgNwDFrSZR72tfxPTTNyaiPLq5XPA
+         2kGBWu3ROIALqsanECdwct92U9X3xqdP39vHKoKJxjn2ZqfYDaP2tfl8prMVhQsfxjsf
+         OS4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756522949; x=1757127749;
+        d=1e100.net; s=20230601; t=1756532062; x=1757136862;
         h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=osREpVin4Y/mpmkRw1fC7OWCaK3AWMsIQyO6EJyT6ZI=;
-        b=pA2ufJtN6Zy5RHySO/z7u5YDNzRPbYBn82LeGGDe5IzKGUr+2s8LC+lOfBOsdHsfvf
-         hwqzFrwwN8WXF/FZ00fSmpC4IeKhGJuwRMWvY4gYrD0Hm7zOA3Sa0Q43QeY3j6zUZwOW
-         Me+w7XsjFwM80aLqieiUT9/Y3E3KU39FnJd5Ophx1fGfTo+KMSNY2JVjnpbsU3kiT52K
-         jjbwZr6OYJzQwJVS8Neq8ZKiqBoYisq4YghiY04srG9DcdSn8dPvqM7Yg04ImMZmfFKg
-         xoB0e0h1BwoTRx76mYJydqgRsawHMCwNtGK7NRLIYbtQ8pd7YkMgN/AbFC5n+KnSb2y4
-         xkcg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUeYldBupmgkVThVqs10hzys8q0aW5nd3nsiUe7zR/sX5nanPihO2i69tboYGwohjLSa3v82dQJ11Y@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBfS1IfpyQWzDsd6oogUlWx+n8s4QJhzf0UZ/NP7HQdZ9XoMVR
-	1B3e52QcgYnw7xLdduHHRFtucaPcRUKJqnHrAA2UXS557HfwBhx9C6srg1kVdUgAilY2do6aBaQ
-	zvDDX7g564rh3og==
-X-Google-Smtp-Source: AGHT+IGX5cXdB+M3jm6/ruARhMtqvA/JI6+JYqlEuKbtgMUa/fCn/5NVUhdpDm9OSn8XJZG3sXF8vZxeGpuHaA==
-X-Received: from pfll14.prod.google.com ([2002:a05:6a00:158e:b0:772:29b7:66ce])
- (user=jiaqiyan job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:9283:b0:772:270f:58ab with SMTP id d2e1a72fcca58-7723e33853dmr1031378b3a.15.1756522949350;
- Fri, 29 Aug 2025 20:02:29 -0700 (PDT)
-Date: Sat, 30 Aug 2025 03:02:26 +0000
+        bh=1fz0Wj5viu7XO3A8F0LCzyRbaDXNCECb8AHr1HvtkF8=;
+        b=p4yGZL9U9AHHNN9JWGOd8IvJ5RITO2OpyUpHWnt31eZneo4iY8yfulsBHCny55r5g+
+         2c8geSjDKC+m7hMuzBa/pzVG9RCWCvBbZ7UgfCfNETm2n/OGR8ENCcTHgHtsZo4fThmI
+         4N9AUuSEDktXH2AceiNvjIgTFPS9EhI2VOrZLYfR58MpcrTH4VwyEjuVWQaIhtGdYLxo
+         5TgQxdLP0mttHshURBVEFLYe8K1HXu05eFlulpbaCpJFVTAZTqB6dGlYROw/JTAbEYMM
+         st2BJnhBetK3o81pClq22KOeDr2NWTSJjvJpQST8N2jNHcjhGMYYHwv9VU2Uhs2HcjPu
+         h/OA==
+X-Forwarded-Encrypted: i=1; AJvYcCWYYWrKEv9oyBX6vG/tcNAYmfLzG/NAPhFB6UhmzXcIyIPTfivJSg3szb1Z033/GNDM3YkWJ7ni2Nun@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNRSY96YaVmdcNSZwuLWWMN6gYpF+6n/LYde42ALUli4DUMzZN
+	KSoYDGbhNP4KhHNCKugIOxSaPO4jOqipTkX0/Y+GDg2B+QfdjH4spL/4RPGNDOZs8tjOr1inkCY
+	X+ZWToQ==
+X-Google-Smtp-Source: AGHT+IH7/2iuI7gomqx/Ms4EDMM9L3zD9vGRqiS5T/muUAhfgeOtaNhn89G1Rd7KQjm4wDksXrUzfhrB69o=
+X-Received: from edf21.prod.google.com ([2002:a05:6402:21d5:b0:61c:986a:6ca6])
+ (user=srosek job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:23d4:b0:618:528b:7f9b
+ with SMTP id 4fb4d7f45d1cf-61d26ebc064mr744264a12.31.1756532061658; Fri, 29
+ Aug 2025 22:34:21 -0700 (PDT)
+Date: Sat, 30 Aug 2025 05:33:52 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -71,142 +71,84 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.51.0.318.gd7df087d1a-goog
-Message-ID: <20250830030226.918555-1-jiaqiyan@google.com>
-Subject: [PATCH v2] ACPI: APEI: EINJ: Allow all types of addresses except MMIO
-From: Jiaqi Yan <jiaqiyan@google.com>
-To: tony.luck@intel.com, rafael@kernel.org
-Cc: dan.j.williams@intel.com, bp@alien8.de, guohanjun@huawei.com, 
-	mchehab@kernel.org, xueshuai@linux.alibaba.com, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jiaqi Yan <jiaqiyan@google.com>
+Message-ID: <20250830053404.763995-1-srosek@google.com>
+Subject: [PATCH v1 00/12] ACPI: DPTF: Move INT340X enumeration from DPTF core
+ to thermal drivers
+From: Slawomir Rosek <srosek@google.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>, Alex Hung <alexhung@gmail.com>, 
+	Hans de Goede <hansg@kernel.org>, Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, 
+	AceLan Kao <acelan.kao@canonical.com>, Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Zhang Rui <rui.zhang@intel.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Tomasz Nowicki <tnowicki@google.com>, 
+	Stanislaw Kardach <skardach@google.com>, Michal Krawczyk <mikrawczyk@google.com>, 
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org, 
+	Slawomir Rosek <srosek@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-EINJ driver today only allows injection request to go through for two
-kinds of IORESOURCE_MEM: IORES_DESC_PERSISTENT_MEMORY and
-IORES_DESC_SOFT_RESERVED. This check prevents user of EINJ to test
-memory corrupted in many interesting areas:
+The Intel Dynamic Platform and Thermal Framework (DPTF) relies on
+the INT340X ACPI device objects. The temperature information and
+cooling ability are exposed to the userspace via those objects.
 
-- Legacy persistent memory
-- Memory claimed to be used by ACPI tables or NV storage
-- Kernel crash memory and others
+Since kernel v3.17 the ACPI bus scan handler is introduced to prevent
+enumeration of INT340X ACPI device objects on the platform bus unless
+related thermal drivers are enabled. However, using the IS_ENABLED()
+macro in the ACPI scan handler forces the kernel to be recompiled
+when thermal drivers are enabled or disabled, which is a significant
+limitation of its modularity. The IS_ENABLED() macro is particularly
+problematic for the Android Generic Kernel Image (GKI) project which
+uses unified core kernel while SoC/board support is moved to loadable
+vendor modules.
 
-There is need to test how kernel behaves when something consumes memory
-errors in these memory regions. For example, if certain ACPI table is
-corrupted, does kernel crash gracefully to prevent "silent data
-corruption". For another example, legacy persistent memory, when managed
-by Device DAX, does support recovering from Machine Check Exception
-raised by memory failure, hence worth to be tested.
+This patch set moves enumeration of INT340X ACPI device objects on
+the platform bus from DPTF core to thermal drivers. It starts with
+some code cleanup and reorganization to eventually remove IS_ENABLED()
+macro from the ACPI bus scan handler. Brief list of changes is listed
+below:
 
-However, attempt to inject memory error via EINJ to legacy persistent
-memory or ACPI owned memory fails with -EINVAL.
+1) Remove SOC DTS thermal driver case from the ACPI scan handler
+   since its dependency on INT340X driver is unrelated to DPTF
+2) Move all INT340X ACPI device ids to the common header and update
+   the DPTF core and thermal drivers accordingly
+3) Move dynamic enumeration of ACPI device objects on the platform bus
+   from the intel-hid and intel-vbtn drivers to the ACPI platform core
+4) Move enumeration of INT340X ACPI device objects on the platform bus
+   from DPTF core to thermal drivers using ACPI platform core methods
 
-Allow EINJ to inject at address except it is MMIO. Leave it to the BIOS
-or firmware to decide what is a legitimate injection target.
 
-In addition to the test done in [1], on a machine having the following
-iomem resources:
+Slawomir Rosek (12):
+  ACPI: DPTF: Ignore SoC DTS thermal while scanning
+  ACPI: DPTF: Move INT3400 device IDs to header
+  ACPI: DPTF: Move INT3401 device IDs to header
+  ACPI: DPTF: Move INT3402 device IDs to header
+  ACPI: DPTF: Move INT3403 device IDs to header
+  ACPI: DPTF: Move INT3404 device IDs to header
+  ACPI: DPTF: Move INT3406 device IDs to header
+  ACPI: DPTF: Move INT3407 device IDs to header
+  ACPI: DPTF: Move PCH FIVR device IDs to header
+  ACPI: DPTF: Remove not supported INT340X IDs
+  ACPI: platform: Add macro for acpi platform driver
+  ACPI: DPTF: Move INT340X enumeration to modules
 
-    ...
-    01000000-08ffffff : Crash kernel
-    768f0098-768f00a7 : APEI EINJ
-    ...
-  768f4000-77323fff : ACPI Non-volatile Storage
-  77324000-777fefff : ACPI Tables
-  777ff000-777fffff : System RAM
-  77800000-7fffffff : Reserved
-  80000000-8fffffff : PCI MMCONFIG 0000 [bus 00-ff]
-  90040000-957fffff : PCI Bus 0000:00
-  ...
-  300000000-3ffffffff : Persistent Memory (legacy)
-  ...
+ drivers/acpi/acpi_platform.c                  | 27 +++++++
+ drivers/acpi/dptf/dptf_pch_fivr.c             | 10 +--
+ drivers/acpi/dptf/dptf_power.c                | 20 +----
+ drivers/acpi/dptf/int340x_thermal.c           | 76 ++++---------------
+ drivers/acpi/fan.h                            | 10 +--
+ drivers/acpi/fan_core.c                       |  2 +-
+ drivers/acpi/int340x_thermal.h                | 76 +++++++++++++++++++
+ drivers/platform/x86/intel/hid.c              | 41 +---------
+ drivers/platform/x86/intel/vbtn.c             | 30 +-------
+ drivers/thermal/intel/Kconfig                 |  1 +
+ .../intel/int340x_thermal/int3400_thermal.c   | 12 +--
+ .../intel/int340x_thermal/int3401_thermal.c   |  5 +-
+ .../intel/int340x_thermal/int3402_thermal.c   |  5 +-
+ .../intel/int340x_thermal/int3403_thermal.c   | 12 +--
+ .../intel/int340x_thermal/int3406_thermal.c   |  5 +-
+ include/linux/platform_device.h               | 17 +++++
+ 16 files changed, 161 insertions(+), 188 deletions(-)
+ create mode 100644 drivers/acpi/int340x_thermal.h
 
-I commented __einj_error_inject during the test and just tested when
-injecting a memory error at each start address shown above:
-- 0x80000000 and 0x90040000 both failed with EINVAL
-- request passed through for all other addresses
-
-Changelog
-
-v1 [1] -> v2:
-- In addition to allow IORES_DESC_PERSISTENT_MEMORY_LEGACY, open the
-  door wider and only exclude MMIO per suggestion from Tony [2]
-- Rebased to commit 11e7861d680c ("Merge tag 'for-linus' of git://git.kernel.org/pub/scm/virt/kvm/kvm")
-
-[1] https://lore.kernel.org/linux-acpi/20250825223348.3780279-1-jiaqiyan@google.com
-[2] https://lore.kernel.org/linux-acpi/SJ1PR11MB60835824926BEE57F094DE6FFC39A@SJ1PR11MB6083.namprd11.prod.outlook.com
-
-Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
----
- drivers/acpi/apei/einj-core.c | 50 +++++++++++++++++++++++++++++------
- 1 file changed, 42 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
-index 2561b045acc7b..904930409fdb2 100644
---- a/drivers/acpi/apei/einj-core.c
-+++ b/drivers/acpi/apei/einj-core.c
-@@ -656,6 +656,44 @@ static int __einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
- 	return rc;
- }
- 
-+/* Allow almost all types of address except MMIO. */
-+static bool is_allowed_range(u64 base_addr, u64 size)
-+{
-+	int i;
-+	/*
-+	 * MMIO region is usually claimed with IORESOURCE_MEM + IORES_DESC_NONE.
-+	 * However, IORES_DESC_NONE is treated like a wildcard when we check if
-+	 * region intersects with known resource. So do an allow list check for
-+	 * IORES_DESCs that definitely or most likely not MMIO.
-+	 */
-+	int non_mmio_desc[] = {
-+		IORES_DESC_CRASH_KERNEL,
-+		IORES_DESC_ACPI_TABLES,
-+		IORES_DESC_ACPI_NV_STORAGE,
-+		IORES_DESC_PERSISTENT_MEMORY,
-+		IORES_DESC_PERSISTENT_MEMORY_LEGACY,
-+		/* Treat IORES_DESC_DEVICE_PRIVATE_MEMORY as MMIO. */
-+		IORES_DESC_RESERVED,
-+		IORES_DESC_SOFT_RESERVED,
-+		IORES_DESC_CXL,
-+	};
-+
-+	if (region_intersects(base_addr, size, IORESOURCE_SYSTEM_RAM, IORES_DESC_NONE)
-+			      == REGION_INTERSECTS)
-+		return true;
-+
-+	for (i = 0; i < ARRAY_SIZE(non_mmio_desc); ++i) {
-+		if (region_intersects(base_addr, size, IORESOURCE_MEM, non_mmio_desc[i])
-+				      == REGION_INTERSECTS)
-+			return true;
-+	}
-+
-+	if (arch_is_platform_page(base_addr))
-+		return true;
-+
-+	return false;
-+}
-+
- /* Inject the specified hardware error */
- int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2, u64 param3,
- 		      u64 param4)
-@@ -707,14 +745,10 @@ int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2, u64 param3,
- 	base_addr = param1 & param2;
- 	size = ~param2 + 1;
- 
--	if (((param2 & PAGE_MASK) != PAGE_MASK) ||
--	    ((region_intersects(base_addr, size, IORESOURCE_SYSTEM_RAM, IORES_DESC_NONE)
--				!= REGION_INTERSECTS) &&
--	     (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DESC_PERSISTENT_MEMORY)
--				!= REGION_INTERSECTS) &&
--	     (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DESC_SOFT_RESERVED)
--				!= REGION_INTERSECTS) &&
--	     !arch_is_platform_page(base_addr)))
-+	if ((param2 & PAGE_MASK) != PAGE_MASK)
-+		return -EINVAL;
-+
-+	if (!is_allowed_range(base_addr, size))
- 		return -EINVAL;
- 
- 	if (is_zero_pfn(base_addr >> PAGE_SHIFT))
 -- 
 2.51.0.318.gd7df087d1a-goog
 
