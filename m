@@ -1,58 +1,58 @@
-Return-Path: <linux-acpi+bounces-16239-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16240-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE57EB3DD63
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 11:00:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2B9B3DD6C
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 11:01:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94F063BDFA4
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 09:00:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E3747ACD6D
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 08:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177913043B2;
-	Mon,  1 Sep 2025 08:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E818304BA4;
+	Mon,  1 Sep 2025 08:58:52 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA02303CA3;
-	Mon,  1 Sep 2025 08:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B657E3043BE;
+	Mon,  1 Sep 2025 08:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756717129; cv=none; b=RdRqER8b05ySl4wa/wWjscMlbzjjL8TnJQLlIPYRpqLluLLz/o5oDOnO/vJg7zZz6wIIFjrYAzii/pT0S+VZAYzSHLhiEkvEAbWaulihKOMrvVVQgM2YDRi3xY+OsFc+0ya3A4DfKQXK3TVi2yVFHe/oc1rkPrt54RTeV8zR57Y=
+	t=1756717132; cv=none; b=IRJmy+6q0zyZSFrRYkgxW12hgFF+9kPArRZlvCrIbjTCprzG/TZgVTdt9Czld32kZRbysRaghywQPwJIeihWFwJZfHwt1g4gGeSpgPQtvOoX6GsPSRMjVTkC+h75J/3AWiPJ7gTFdE5Em2LuAES/CqLYOgIwDCP6h1AJNkFinCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756717129; c=relaxed/simple;
-	bh=dhRBsLKCue9ObsMIGwVkWRLFYlImG5IC33OnzpcGm8o=;
+	s=arc-20240116; t=1756717132; c=relaxed/simple;
+	bh=F02wtNB+VGs3bpNZI8pCdS0Babn7eRvQHvbb7L0Vy/0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=J5XuDeGk9RDcb7xMAA8tCjgbisCv3BjgjN9z1YRhtSD40byKcl2h3OJQp+l7e1MGA70bTIhgu5aVmn4mCidDEo4SliqnL4ACBHN9b6PhktQ6p9Hcey2zA+lWl1h6vTtUfoQkBU62ZnTTjMuwpqPGttJfhlT5xqpzI6z8tvV3QuQ=
+	 MIME-Version; b=A/We4HFntOW1jA0k/P1huj8bAsUxjclVNlcpZt7KKWa9WQT0/tjd4Wv1GSgPEjOWs430bk2dkakJASNwoLmfAEIw8GqD8kZPzSLSHy7GaYdqpuNZwb7caqwD7wgOoRgFaRtAhfo1cPfA/2Db7nkrxITpgrDz7n+CpBS7MC6gKag=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: dab7a34e871111f0b29709d653e92f7d-20250901
+X-UUID: dd0b02c6871111f0b29709d653e92f7d-20250901
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:bed9fbe2-11d3-4407-afe8-1156de4cb1de,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:6493067,CLOUDID:b623ff232d1ac7c6941a48d46afe61b6,BulkI
+X-CID-O-INFO: VERSION:1.1.45,REQID:46c283cc-b5bb-46ec-a1f7-907896491998,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:d27fee2e8a6b06d9cbfaef5d3190c03b,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:-3
 	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
 	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: dab7a34e871111f0b29709d653e92f7d-20250901
+X-UUID: dd0b02c6871111f0b29709d653e92f7d-20250901
 Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
 	(envelope-from <zhangzihuan@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 480119038; Mon, 01 Sep 2025 16:58:40 +0800
+	with ESMTP id 793860202; Mon, 01 Sep 2025 16:58:44 +0800
 Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id CD393E008FA8;
-	Mon,  1 Sep 2025 16:58:39 +0800 (CST)
-X-ns-mid: postfix-68B5603F-551072746
+	by mail.kylinos.cn (NSMail) with SMTP id 86233E008FA5;
+	Mon,  1 Sep 2025 16:58:43 +0800 (CST)
+X-ns-mid: postfix-68B56043-381034747
 Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 0422BE008FAC;
-	Mon,  1 Sep 2025 16:58:35 +0800 (CST)
+	by mail.kylinos.cn (NSMail) with ESMTPA id BDA8EE008FA7;
+	Mon,  1 Sep 2025 16:58:39 +0800 (CST)
 From: Zihuan Zhang <zhangzihuan@kylinos.cn>
 To: "Rafael J . wysocki" <rafael@kernel.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
@@ -101,9 +101,9 @@ Cc: Ben Horgan <ben.horgan@arm.com>,
 	linux-omap@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v3 09/12] powercap: dtpm_cpu: Use scope-based cleanup helper
-Date: Mon,  1 Sep 2025 16:57:45 +0800
-Message-Id: <20250901085748.36795-10-zhangzihuan@kylinos.cn>
+Subject: [PATCH v3 10/12] thermal: imx: Use scope-based cleanup helper
+Date: Mon,  1 Sep 2025 16:57:46 +0800
+Message-Id: <20250901085748.36795-11-zhangzihuan@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
 References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
@@ -123,92 +123,62 @@ No functional change intended.
 
 Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 ---
- drivers/powercap/dtpm_cpu.c | 26 +++++++-------------------
- 1 file changed, 7 insertions(+), 19 deletions(-)
+ drivers/thermal/imx_thermal.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
-index 99390ec1481f..5e18438782f8 100644
---- a/drivers/powercap/dtpm_cpu.c
-+++ b/drivers/powercap/dtpm_cpu.c
-@@ -144,19 +144,15 @@ static int update_pd_power_uw(struct dtpm *dtpm)
- static void pd_release(struct dtpm *dtpm)
+diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.=
+c
+index 38c993d1bcb3..8d5fd5ca39da 100644
+--- a/drivers/thermal/imx_thermal.c
++++ b/drivers/thermal/imx_thermal.c
+@@ -201,7 +201,6 @@ static struct thermal_soc_data thermal_imx7d_data =3D=
  {
- 	struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
+=20
+ struct imx_thermal_data {
+ 	struct device *dev;
 -	struct cpufreq_policy *policy;
+ 	struct thermal_zone_device *tz;
+ 	struct thermal_cooling_device *cdev;
+ 	struct regmap *tempmon;
+@@ -541,22 +540,20 @@ MODULE_DEVICE_TABLE(of, of_imx_thermal_match);
+ static int imx_thermal_register_legacy_cooling(struct imx_thermal_data *=
+data)
+ {
+ 	struct device_node *np;
 +	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
-u_get(dtpm_cpu->cpu);
+u_get(0);
+ 	int ret =3D 0;
 =20
- 	if (freq_qos_request_active(&dtpm_cpu->qos_req))
- 		freq_qos_remove_request(&dtpm_cpu->qos_req);
+-	data->policy =3D cpufreq_cpu_get(0);
+-	if (!data->policy) {
++	if (!policy) {
+ 		pr_debug("%s: CPUFreq policy not found\n", __func__);
+ 		return -EPROBE_DEFER;
+ 	}
 =20
--	policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
--	if (policy) {
-+	if (policy)
- 		for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
- 			per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL;
+-	np =3D of_get_cpu_node(data->policy->cpu, NULL);
++	np =3D of_get_cpu_node(policy->cpu, NULL);
 =20
--		cpufreq_cpu_put(policy);
--	}
--
- 	kfree(dtpm_cpu);
+ 	if (!np || !of_property_present(np, "#cooling-cells")) {
+ 		data->cdev =3D cpufreq_cooling_register(data->policy);
+-		if (IS_ERR(data->cdev)) {
++		if (IS_ERR(data->cdev))
+ 			ret =3D PTR_ERR(data->cdev);
+-			cpufreq_cpu_put(data->policy);
+-		}
+ 	}
+=20
+ 	of_node_put(np);
+@@ -567,7 +564,6 @@ static int imx_thermal_register_legacy_cooling(struct=
+ imx_thermal_data *data)
+ static void imx_thermal_unregister_legacy_cooling(struct imx_thermal_dat=
+a *data)
+ {
+ 	cpufreq_cooling_unregister(data->cdev);
+-	cpufreq_cpu_put(data->policy);
  }
 =20
-@@ -192,7 +188,7 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
- static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
- {
- 	struct dtpm_cpu *dtpm_cpu;
--	struct cpufreq_policy *policy;
-+	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
-u_get(cpu);
- 	struct em_perf_state *table;
- 	struct em_perf_domain *pd;
- 	char name[CPUFREQ_NAME_LEN];
-@@ -202,21 +198,16 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *p=
-arent)
- 	if (dtpm_cpu)
- 		return 0;
-=20
--	policy =3D cpufreq_cpu_get(cpu);
- 	if (!policy)
- 		return 0;
-=20
- 	pd =3D em_cpu_get(cpu);
--	if (!pd || em_is_artificial(pd)) {
--		ret =3D -EINVAL;
--		goto release_policy;
--	}
-+	if (!pd || em_is_artificial(pd))
-+		return -EINVAL;
-=20
- 	dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
--	if (!dtpm_cpu) {
--		ret =3D -ENOMEM;
--		goto release_policy;
--	}
-+	if (!dtpm_cpu)
-+		return -ENOMEM;
-=20
- 	dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
- 	dtpm_cpu->cpu =3D cpu;
-@@ -239,7 +230,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
-ent)
- 	if (ret < 0)
- 		goto out_dtpm_unregister;
-=20
--	cpufreq_cpu_put(policy);
- 	return 0;
-=20
- out_dtpm_unregister:
-@@ -251,8 +241,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
-ent)
- 		per_cpu(dtpm_per_cpu, cpu) =3D NULL;
- 	kfree(dtpm_cpu);
-=20
--release_policy:
--	cpufreq_cpu_put(policy);
- 	return ret;
- }
-=20
+ #else
 --=20
 2.25.1
 
