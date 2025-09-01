@@ -1,180 +1,99 @@
-Return-Path: <linux-acpi+bounces-16242-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16243-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CAC4B3DD7A
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 11:02:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54BCEB3DD91
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 11:04:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 809101A80372
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 09:02:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 094171A80849
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 09:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B183009CA;
-	Mon,  1 Sep 2025 08:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B87030276A;
+	Mon,  1 Sep 2025 09:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H1pb/YGX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C343002DC;
-	Mon,  1 Sep 2025 08:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF34D30146E;
+	Mon,  1 Sep 2025 09:04:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756717153; cv=none; b=W7ACWeXGCjk1Vv+2xRpZCmUXteXTuf7xN8Tv/7eWJ8TgvdEG1BB3V3yJ0ZZqL5RRDce6YHrFc3IYqH1YvgQikZCD80RdjYd4Zd7ssh9Qoyes9JlzWZjfrWxndpOyY1d65Nvr9ApC654ZD00zp9oBBloH5XHxcdqJg4hjIZG8sSc=
+	t=1756717457; cv=none; b=JdVBLiUcYgKvufiIYNXcT81lXhh30IgtrB3ZLms2XTy9pKSM0OC3VU4/6f5uJqV78JRhH/TRUMIy/sBNX59XmFPaWKjF1nbgS4sw1BGlANeSsNKcX5HGqlPnc4tCXqLynlnL6ukU1lg8nQ0cczBO1U4N7QkqwiMd8E+wV7ePg0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756717153; c=relaxed/simple;
-	bh=4tj3hkSdGBHU2nCv4WncFZkMvmh6Z1BDT7S6gxT4ks0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mxA8AlW/SpI8yYB8+UVet4rd3W+0C5s2wPRXRTApBHxvzkwqBq05I75nmyswhm4W3HkaBI0cJCZ5leczyB58Bu9OpopGJtbz4PRg8XF1iSxd07pPo18L8uXcj8IZ/xn9zlarj/QSlyygGCTlb4Os2YGyC6DO2qwFWkf0i0cLRR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: e86bfae4871111f0b29709d653e92f7d-20250901
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:9856c3cb-6274-461f-bd60-bd9e3453544a,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:6493067,CLOUDID:1f38d007408be91faa64e7344a36a8e5,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:-3
-	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
-	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: e86bfae4871111f0b29709d653e92f7d-20250901
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1266094301; Mon, 01 Sep 2025 16:59:03 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id B89CBE008FA7;
-	Mon,  1 Sep 2025 16:59:02 +0800 (CST)
-X-ns-mid: postfix-68B56055-952872770
-Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id C0DDDE008FA8;
-	Mon,  1 Sep 2025 16:58:52 +0800 (CST)
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-To: "Rafael J . wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Eduardo Valentin <edubezval@gmail.com>,
-	Keerthy <j-keerthy@ti.com>
-Cc: Ben Horgan <ben.horgan@arm.com>,
-	zhenglifeng <zhenglifeng1@huawei.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Len Brown <lenb@kernel.org>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Beata Michalska <beata.michalska@arm.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pavel Machek <pavel@kernel.org>,
-	Sumit Gupta <sumitg@nvidia.com>,
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	linux-pm@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	intel-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v3 12/12] PM: EM: Use scope-based cleanup helper
-Date: Mon,  1 Sep 2025 16:57:48 +0800
-Message-Id: <20250901085748.36795-13-zhangzihuan@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
-References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
+	s=arc-20240116; t=1756717457; c=relaxed/simple;
+	bh=hoPwDEUVNjFvKPgr4nDs6U8M+KKVFQQSzWDP+GtJxMQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PjHk29sDQms3QlHk/MzGDCewJLcFdb7L3u02dHLdFZgqCcqCozgPbbFfSdTZRbUizMxUqp71e/SwlULQ0uMBSMkYX/6h1/9m5bpaw1T8Q0kFkJ5fLval61B+dlR58aZnFrJaK8+MtzXJXhMtitlQSbw7xlSzPHFUOUAjeCcerQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H1pb/YGX; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756717456; x=1788253456;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hoPwDEUVNjFvKPgr4nDs6U8M+KKVFQQSzWDP+GtJxMQ=;
+  b=H1pb/YGXjS4J4eBB4xioD8BY70DusvMBLm4R2b3NRxq4eYNaJeohll2H
+   KqHd6ew+KzJ1ge7bRhoo6ajFnZu6SfDILY0/OGL/2q/t1d4HM7JUQsHHS
+   IgbZdpGhfongvBzplh2EjUYx6kCJmy7eXxFJLqy2LbEfAwsEEVA2ihVJA
+   Jo05To6gegddJxvFd8QCNGml/r+lEzODMYO/BzhgIsyiJaFbtqX05js67
+   LRIwcJDc/jaE0e0oAolhiwmNlrsH+sbDInzowgm6g0+YdcxEZu0JNzyVY
+   TKxuebGWaxflpFvtp72ZgVABUUl+OKJpn4qufwt6uIx9ekmfD2/Q1tyBh
+   g==;
+X-CSE-ConnectionGUID: dm6NPY8cR5aflnYMIEG86g==
+X-CSE-MsgGUID: 9idTNztJR3ayuajP2B+kwQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11539"; a="62613046"
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="62613046"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 02:04:15 -0700
+X-CSE-ConnectionGUID: i7u0poHqRTKPrl9hIWrF2w==
+X-CSE-MsgGUID: aEMnrN8xRqyolytZZUIu9w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="201897708"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 02:04:13 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1ut0SQ-0000000AMqp-1kPB;
+	Mon, 01 Sep 2025 12:04:10 +0300
+Date: Mon, 1 Sep 2025 12:04:10 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Antheas Kapenekakis <lkml@antheas.dev>
+Cc: linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mika Westerberg <westeri@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH v1] gpiolib: acpi: Ignore touchpad wakeup on GPD G1619-05
+Message-ID: <aLVhijm0pXWItwAt@smile.fi.intel.com>
+References: <20250827175842.3697418-1-lkml@antheas.dev>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250827175842.3697418-1-lkml@antheas.dev>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-annotation for policy references. This reduces the risk of reference
-counting mistakes and aligns the code with the latest kernel style.
+On Wed, Aug 27, 2025 at 07:58:42PM +0200, Antheas Kapenekakis wrote:
+> Same issue as G1619-04 in commit 805c74eac8cb ("gpiolib: acpi: Ignore
+> touchpad wakeup on GPD G1619-04"), Strix Point lineup uses 05.
 
-No functional change intended.
+Pushed to my review and testing queue, thanks!
 
-Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
----
- kernel/power/energy_model.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+-- 
+With Best Regards,
+Andy Shevchenko
 
-diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
-index ea7995a25780..852d48039ce2 100644
---- a/kernel/power/energy_model.c
-+++ b/kernel/power/energy_model.c
-@@ -451,7 +451,7 @@ static void
- em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_state =
-*table)
- {
- 	struct em_perf_domain *pd =3D dev->em_pd;
--	struct cpufreq_policy *policy;
-+	struct cpufreq_policy *policy __free(put_cpufreq_policy);
- 	int found =3D 0;
- 	int i, cpu;
-=20
-@@ -479,8 +479,6 @@ em_cpufreq_update_efficiencies(struct device *dev, st=
-ruct em_perf_state *table)
- 			found++;
- 	}
-=20
--	cpufreq_cpu_put(policy);
--
- 	if (!found)
- 		return;
-=20
-@@ -787,21 +785,20 @@ static void em_check_capacity_update(void)
-=20
- 	/* Check if CPUs capacity has changed than update EM */
- 	for_each_possible_cpu(cpu) {
--		struct cpufreq_policy *policy;
-+		struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
-+			cpufreq_cpu_get(cpu);
- 		struct em_perf_domain *pd;
- 		struct device *dev;
-=20
- 		if (cpumask_test_cpu(cpu, cpu_done_mask))
- 			continue;
-=20
--		policy =3D cpufreq_cpu_get(cpu);
- 		if (!policy) {
- 			pr_debug("Accessing cpu%d policy failed\n", cpu);
- 			schedule_delayed_work(&em_update_work,
- 					      msecs_to_jiffies(1000));
- 			break;
- 		}
--		cpufreq_cpu_put(policy);
-=20
- 		dev =3D get_cpu_device(cpu);
- 		pd =3D em_pd_get(dev);
---=20
-2.25.1
 
 
