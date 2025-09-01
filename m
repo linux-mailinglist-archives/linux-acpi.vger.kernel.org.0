@@ -1,147 +1,117 @@
-Return-Path: <linux-acpi+bounces-16261-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16262-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6A8B3ED02
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 19:08:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BCB1B3ED80
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 19:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87A857B11FD
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 17:06:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA71F48837F
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 17:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83989320A19;
-	Mon,  1 Sep 2025 17:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD3A2EC0A4;
+	Mon,  1 Sep 2025 17:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Ul8GqDOm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q1imVZbH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B155D31B131;
-	Mon,  1 Sep 2025 17:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D80627145F;
+	Mon,  1 Sep 2025 17:48:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756746488; cv=none; b=LRZq4ltICfdE1BVJ0nkI5TgtB0G2gwHOcz3Y4wPrml5G93BDZcYbJznu5BbgHgWw9Ht0L0wMn08Y1RPK4uRn/i+xjjeyV852NVR8pozBCRbEJOJgdrjwbCS7+yVjr/oh6W9qZ5PD4ZA+mFiZWFyDZNeXAkCKvyUUzI7XUn/mfB0=
+	t=1756748899; cv=none; b=M3JJkCoO9gSccqjfR+//cyka+p9Hh58ABE+Czvh7odYoa9qReCTtE6yFVVawZ0TKOJwxXYEE8i+tdee8lUyzvCrLMC6dXNvFd7h44KtHMwi4GGsu+LJqtVu3zBK2iXqCGDtlHIHwRfqsJtr0zTAd4KwHLlaqtcATfgRaDuRUVn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756746488; c=relaxed/simple;
-	bh=05Hdr82iF1YbIXKusbymYUz7cecOqRa7CtYfnzMwAoI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hc1jQnVBxP3MJYrcR8AtGQVUvQbbayD/68AeQ2zZhWAX6BdXaIkUyoNENs9fjBDQDnTmXyvPF85tS/fBEKP42UPgkV0s6yvCaEkyY9kmT6W8qwNBP5FbYbGIYIS21jy7rWFcNJSu9zYV75BvREuMXgJRZl30/SRFvgWaFPt2lwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Ul8GqDOm; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3D0AE40E01AC;
-	Mon,  1 Sep 2025 17:08:04 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 2hKTeMwDrfZW; Mon,  1 Sep 2025 17:08:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1756746480; bh=76b814HQAo2YQibVwpnqtCh1BEw+zBblQWabG+FEBkA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ul8GqDOmQk2KMx4yZ1AR3byMLjTnDUVGW/cZ1lF3L6Lid/sdMpWN7BLFYuuTi1a3o
-	 jA8lmg8xGHWVYhEmSwvdmhtsqt29lY7+PCMn7egm3odAVCGGX5UDC4OqrQAB3LrX6C
-	 0rSCt+9KlyWHzxmrJ2eRGsnlT23gwUInlP7BsqxmivcdWyHiCxi07fnN9/EVUhbkHK
-	 86rKoX1NUjhxSsJR6sIoV57JEmAlITzHCERbdLFXsx/WwulNcFUjl+rKLxqGVrZ75L
-	 dAPSCGbUgKXJcziId+fshXDjFaD/7nwuoEQkQz7djdun2RVZI079TcUT+IJaE6dSZo
-	 73+Il+EQB6DTn/x3tOIDMI1IUkVkVJ81VUy5Ki5bbvzuqt1LIrl5ic0owckhdLZplk
-	 QOZ2Lo2R7IblW/nh+qhcY/UxlrsRELaZ7E7n5AolDqGPRNz1Cw3KYGr55WthOx6ZOJ
-	 n+8kTgVArVknA96tWQvLw2eqpKVcZJfutHfS+/VqHEzggttpT+ZeTp/mE1NL0e7L+v
-	 qbGvFGAnG/i6SvkiOSzC/D0LaRst4L3rGbFcEdWP9+xeQM39+YUp1OKqu3xTOrOz7v
-	 6EfZZp6V7SAcRrewN2P0DH+sTAttSH2B6eVk1xr/pwPDwPcABaeXoWEr3faPUD+/ZE
-	 EAkZJIKZTBVSOHXcGXBmEVyc=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id E7EC940E01A3;
-	Mon,  1 Sep 2025 17:07:49 +0000 (UTC)
-Date: Mon, 1 Sep 2025 19:07:41 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Yazen Ghannam <yazen.ghannam@amd.com>
-Cc: x86@kernel.org, Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-	Smita.KoralahalliChannabasappa@amd.com,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v5 07/20] x86/mce: Reorder __mcheck_cpu_init_generic()
- call
-Message-ID: <20250901170741.GCaLXS3bUdUPksnMs8@fat_crate.local>
-References: <20250825-wip-mca-updates-v5-0-865768a2eef8@amd.com>
- <20250825-wip-mca-updates-v5-7-865768a2eef8@amd.com>
+	s=arc-20240116; t=1756748899; c=relaxed/simple;
+	bh=SFO9B6Z1ifmG17PyufZegYEBKGIDqVkjQU7YPnZLOjE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qZmH0Co03mLstIXXRQFKW0Is/+jX722b9ExV8gu1zpT9Ody5/KEzXq2pdlBRphgEo//34QrHmhSf6QVALh+cXHctYPmhl934IMiTloxhUDYhDPOR20hjOmolk2fWRNbU5W6vYPSxAVlrrNuJSrnYi6ho+SZthq2cSsu1wVlCjHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q1imVZbH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FD0C4CEF0;
+	Mon,  1 Sep 2025 17:48:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756748899;
+	bh=SFO9B6Z1ifmG17PyufZegYEBKGIDqVkjQU7YPnZLOjE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=q1imVZbHXa0/MjYp6cFnMXV4sJXE1rv/V01TizRB58U7P5j5DF5WzyGprTuDMBlz3
+	 BsBuvEg6xzHnEhU3+SApe3detCOaoti8W/MypysNjlOC6lwtSBg1/+NPkHssHCxPF6
+	 lxt1QRd0IrAmNsELBJzMzcmq2kSXNaNhSaBy7CWbDEWrF/9/pn/Pd8SLTsHXFAnkEQ
+	 7rV1HfnxG34M2Uws4OfW3lWAR0GIj9e/IkRwmJr9bCvVIHYPZtL5WY/uVIDyh5Rt+S
+	 CBYPxU5e8rooLX8W2zBoeZX9xZxpS+VIzuCcoTqF9PgaTtmLzPmFcm9Cppj+9izZA5
+	 XgUWnU5tlbVCA==
+Message-ID: <9ed3743b-4f86-42d3-94e0-8a720526dce4@kernel.org>
+Date: Mon, 1 Sep 2025 19:48:14 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250825-wip-mca-updates-v5-7-865768a2eef8@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] device property: Add scoped fwnode child node
+ iterators
+To: =?UTF-8?Q?Jean-Fran=C3=A7ois_Lessard?= <jefflessard3@gmail.com>
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org
+References: <20250901163648.82034-1-jefflessard3@gmail.com>
+ <20250901163648.82034-2-jefflessard3@gmail.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250901163648.82034-2-jefflessard3@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 25, 2025 at 05:33:04PM +0000, Yazen Ghannam wrote:
-> Move __mcheck_cpu_init_generic() after __mcheck_cpu_init_prepare_banks()
-> so that MCA is enabled after the first MCA polling event.
+On 9/1/25 6:36 PM, Jean-François Lessard wrote:
+> Add scoped versions of fwnode child node iterators that automatically
+> handle reference counting cleanup using the __free() attribute:
 > 
-> This brings the MCA init flow closer to what is described in the x86 docs.
+> - fwnode_for_each_child_node_scoped()
+> - fwnode_for_each_named_child_node_scoped()
+> - fwnode_for_each_available_child_node_scoped()
 > 
-> The AMD PPRs say
->   "The operating system must initialize the MCA_CONFIG registers prior
->   to initialization of the MCA_CTL registers.
+> These macros follow the same pattern as existing scoped iterators in the
+> kernel, ensuring fwnode references are automatically released when the
+> iterator variable goes out of scope. This prevents resource leaks and
+> eliminates the need for manual cleanup in error paths.
 > 
->   The MCA_CTL registers must be initialized prior to enabling the error
->   reporting banks in MCG_CTL".
+> The implementation mirrors the non-scoped variants but uses
+> __free(fwnode_handle) for automatic resource management, providing a
+> safer and more convenient interface for drivers iterating over firmware
+> node children.
 > 
-> However, the Intel SDM "Machine-Check Initialization Pseudocode" says
-> MCG_CTL first then MCi_CTL.
-> 
-> But both agree that CR4.MCE should be set last.
-> 
-> Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-> ---
-> 
-> Notes:
->     Link:
->     https://lore.kernel.org/r/52a37afe-c41b-4f20-bbdc-bddc3ae26260@suse.com
->     
->     v4->v5:
->     * New in v5.
-> 
->  arch/x86/kernel/cpu/mce/core.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-> index 0326fbb83adc..9cbf9e8c8060 100644
-> --- a/arch/x86/kernel/cpu/mce/core.c
-> +++ b/arch/x86/kernel/cpu/mce/core.c
-> @@ -2272,9 +2272,9 @@ void mcheck_cpu_init(struct cpuinfo_x86 *c)
->  
->  	mca_cfg.initialized = 1;
->  
-> -	__mcheck_cpu_init_generic();
->  	__mcheck_cpu_init_vendor(c);
->  	__mcheck_cpu_init_prepare_banks();
-> +	__mcheck_cpu_init_generic();
+> Signed-off-by: Jean-François Lessard <jefflessard3@gmail.com>
 
-With that flow we have now:
+Thanks for adding a user and splitting it up (Andy was a bit faster than me :).
 
-	1. MCA_CTL
-	2. CR4.MCE
-	3. MCG_CTL
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index 82f0cb3ab..279c244db 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -176,6 +176,20 @@ struct fwnode_handle *fwnode_get_next_available_child_node(
+>   	for (child = fwnode_get_next_available_child_node(fwnode, NULL); child;\
+>   	     child = fwnode_get_next_available_child_node(fwnode, child))
+>   
+> +#define fwnode_for_each_child_node_scoped(fwnode, child)		\
+> +	for (struct fwnode_handle *child __free(fwnode_handle) =	\
+> +		fwnode_get_next_child_node(fwnode, NULL);		\
+> +	     child; child = fwnode_get_next_child_node(fwnode, child))
+> +
+> +#define fwnode_for_each_named_child_node_scoped(fwnode, child, name)	\
+> +	fwnode_for_each_child_node_scoped(fwnode, child)		\
+> +		for_each_if(fwnode_name_eq(child, name))
 
-So this is nothing like in the commit message above and the MC*_CTL flow is
-not what the SDM suggests and CR4.MCE is not last.
+IIRC, your first patch mentioned that your driver series would only use
+fwnode_for_each_available_child_node_scoped().
 
-So what's the point even here?
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+And this series adds a user for fwnode_for_each_child_node_scoped(); do you also 
+have a user for fwnode_for_each_named_child_node_scoped()?
 
