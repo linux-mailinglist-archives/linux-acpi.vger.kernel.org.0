@@ -1,44 +1,43 @@
-Return-Path: <linux-acpi+bounces-16247-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16248-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4083CB3E12E
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 13:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9681B3E162
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 13:21:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F07DD3B350F
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 11:12:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FE223AE9AB
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 11:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4CA311589;
-	Mon,  1 Sep 2025 11:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6AC311C35;
+	Mon,  1 Sep 2025 11:21:23 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B1A30EF90;
-	Mon,  1 Sep 2025 11:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99EA3595D;
+	Mon,  1 Sep 2025 11:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756725012; cv=none; b=CyliKsrcuXgl044GdKuCer39lD9YjlAMmtVZu32Fh5Da6fivuTx29X//E9TqPN/DNqZpUpbRWXQ2nYJ6NYmy0XAOn031Sh6ZAK+lo/SdQL8LtqXhYF79oXM74XmSZVnk6w2AdAGEahLkOjVt3MOyTHxG3m2HbDxpthox4FtL0RU=
+	t=1756725683; cv=none; b=ctbXQ5aTGDjixj3moSodWBUHnCQ7U8y7CXT073MincdMq0K2Yxl1NCINs4ocbIUf8vOoJ8MNRkqzgacKSv2dVTdFAY7D++tcUn2eLK+NBhPXT8A0m0FyFH0YkyCd2z2KJcULLubHAsqC/UVljYvK/xNNzKXtn8Ro72GeOabBt+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756725012; c=relaxed/simple;
-	bh=SLPlGtYkhtJMyhgfQbDcReZPIm5jPnZRyWUTo+SsDMA=;
+	s=arc-20240116; t=1756725683; c=relaxed/simple;
+	bh=jGdAz412GkPYDNDBzOot9YLlz5jht+cdFHwZ45LUr14=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lxqzta9HxVZ963tj27up8oFTubWAlu7MaoJQvTS6lMnJNM69/Zd2fngVsxFbIn5an2VXJ823mfthIwwsz5B6emY7SZm4rZXRPDe4obcQ7Fh0XnlKMwsXR+PTlbvTujgwGKsOaqd51pnE+uSQ7iD6xoaD3Jg/61AMeH5iro01FCs=
+	 Content-Type:Content-Disposition:In-Reply-To; b=lsBcoQh0b0bZCtEnykBsf0ogFjZkXKbvqym+J3CoWUAU7/wTjjdlIjmNCE5YJ5d+HE4XQftb55eVsGMqNPIAXPWkhc/1HJI2DTppLmeK9PenPmQnbW0AaxxHMwEb3OXry9nn+q/9UIZNy51lVS4wS+AX0ugmnstWuG0cW63CSyk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DAC511A00;
-	Mon,  1 Sep 2025 04:10:00 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5D8F01A00;
+	Mon,  1 Sep 2025 04:21:12 -0700 (PDT)
 Received: from e133380.arm.com (e133380.arm.com [10.1.197.68])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B7673F6A8;
-	Mon,  1 Sep 2025 04:10:03 -0700 (PDT)
-Date: Mon, 1 Sep 2025 12:09:47 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2198E3F6A8;
+	Mon,  1 Sep 2025 04:21:14 -0700 (PDT)
+Date: Mon, 1 Sep 2025 12:21:12 +0100
 From: Dave Martin <Dave.Martin@arm.com>
 To: James Morse <james.morse@arm.com>
 Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-	shameerali.kolothum.thodi@huawei.com,
 	D Scott Phillips OS <scott@os.amperecomputing.com>,
 	carl@os.amperecomputing.com, lcherian@marvell.com,
 	bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
@@ -60,12 +59,12 @@ Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>, Ben Horgan <ben.horgan@arm.com>
-Subject: Re: [PATCH 12/33] arm_mpam: Add the class and component structures
- for ris firmware described
-Message-ID: <aLV++1PELhKBeKR7@e133380.arm.com>
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH 10/33] arm_mpam: Add probe/remove for mpam msc driver and
+ kbuild boiler plate
+Message-ID: <aLWBqNMKoTl9VDIS@e133380.arm.com>
 References: <20250822153048.2287-1-james.morse@arm.com>
- <20250822153048.2287-13-james.morse@arm.com>
+ <20250822153048.2287-11-james.morse@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -74,241 +73,524 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250822153048.2287-13-james.morse@arm.com>
+In-Reply-To: <20250822153048.2287-11-james.morse@arm.com>
 
-Hi,
+Hi James,
 
-> Subject: arm_mpam: Add the class and component structures for ris firmware described
-
-Mangled subject line?
-
-
-There is a fair intersection between the commit message and what the
-patch does, but they don't quite seem to match up.
-
-Some key issues like locking / object lifecycle management
-and DT parsing (a bit of which, it appears, lives here too) are not
-mentioned at all.
-
-In lieu of a complete rewrite, it might be best to discard the
-explanation of the various object types.  The comment in the code
-speaks for itself, and looks clearer.
-
-[...]
-
-On Fri, Aug 22, 2025 at 03:29:53PM +0000, James Morse wrote:
-> An MSC is a container of resources, each identified by their RIS index.
-> Some RIS are described by firmware to provide their position in the system.
-> Others are discovered when the driver probes the hardware.
+On Fri, Aug 22, 2025 at 03:29:51PM +0000, James Morse wrote:
+> Probing MPAM is convoluted. MSCs that are integrated with a CPU may
+> only be accessible from those CPUs, and they may not be online.
+> Touching the hardware early is pointless as MPAM can't be used until
+> the system-wide common values for num_partid and num_pmg have been
+> discovered.
 > 
-> To configure a resource it needs to be found by its class, e.g. 'L2'.
-> There are two kinds of grouping, a class is a set of components, which
-> are visible to user-space as there are likely to be multiple instances
-> of the L2 cache. (e.g. one per cluster or package)
+> Start with driver probe/remove and mapping the MSC.
 > 
-> struct mpam_components are a set of struct mpam_vmsc. A vMSC groups the
-> RIS in an MSC that control the same logical piece of hardware. (e.g. L2).
-> This is to allow hardware implementations where two controls are presented
-> as different RIS. Re-combining these RIS allows their feature bits to
-> be or-ed. This structure is not visible outside mpam_devices.c
-> 
-> struct mpam_vmsc are then a set of struct mpam_msc_ris, which are not
-> visible as each L2 cache may be composed of individual slices which need
-> to be configured the same as the hardware is not able to distribute the
-> configuration.
-> 
-> Add support for creating and destroying these structures.
-> A gfp is passed as the structures may need creating when a new RIS entry
-> is discovered when probing the MSC.
-> 
-> CC: Ben Horgan <ben.horgan@arm.com>
+> CC: Carl Worth <carl@os.amperecomputing.com>
 > Signed-off-by: James Morse <james.morse@arm.com>
 > ---
 > Changes since RFC:
->  * removed a pr_err() debug message that crept in.
+>  * Check for status=broken DT devices.
+>  * Moved all the files around.
+>  * Made Kconfig symbols depend on EXPERT
 > ---
->  drivers/resctrl/mpam_devices.c  | 488 +++++++++++++++++++++++++++++++-
->  drivers/resctrl/mpam_internal.h |  91 ++++++
->  include/linux/arm_mpam.h        |   8 +-
->  3 files changed, 574 insertions(+), 13 deletions(-)
-> 
+
+[...]
+
+> diff --git a/drivers/resctrl/Kconfig b/drivers/resctrl/Kconfig
+> new file mode 100644
+> index 000000000000..dff7b87280ab
+> --- /dev/null
+> +++ b/drivers/resctrl/Kconfig
+> @@ -0,0 +1,11 @@
+> +# Confusingly, this is everything but the CPU bits of MPAM. CPU here means
+> +# CPU resources, not containers or cgroups etc.
+
+Drop confusing comment?
+
+CPUs are not mentioned other than in the comment -- I think the
+descriptions are sufficiently self-explanatory that they don't read
+onto CPUs.
+
+> +config ARM64_MPAM_DRIVER
+> +	bool "MPAM driver for System IP, e,g. caches and memory controllers"
+> +	depends on ARM64_MPAM && EXPERT
+> +
+> +config ARM64_MPAM_DRIVER_DEBUG
+> +	bool "Enable debug messages from the MPAM driver."
+
+Nit: spurious full stop.
+
+(i.e., people don't add one in these one-line descriptions.
+They are title-like and self-delimiting, even when the text is a valid
+sentence.)
+
+> +	depends on ARM64_MPAM_DRIVER
+> +	help
+> +	  Say yes here to enable debug messages from the MPAM driver.
+> diff --git a/drivers/resctrl/Makefile b/drivers/resctrl/Makefile
+> new file mode 100644
+> index 000000000000..92b48fa20108
+> --- /dev/null
+> +++ b/drivers/resctrl/Makefile
+> @@ -0,0 +1,4 @@
+> +obj-$(CONFIG_ARM64_MPAM_DRIVER)			+= mpam.o
+> +mpam-y						+= mpam_devices.o
+> +
+> +cflags-$(CONFIG_ARM64_MPAM_DRIVER_DEBUG)	+= -DDEBUG
 > diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-> index 71a1fb1a9c75..5baf2a8786fb 100644
-> --- a/drivers/resctrl/mpam_devices.c
+> new file mode 100644
+> index 000000000000..a0d9a699a6e7
+> --- /dev/null
 > +++ b/drivers/resctrl/mpam_devices.c
-> @@ -20,7 +20,6 @@
-
-[...]
-
-> @@ -35,11 +34,483 @@
->  static DEFINE_MUTEX(mpam_list_lock);
->  static LIST_HEAD(mpam_all_msc);
->  
-> -static struct srcu_struct mpam_srcu;
-> +struct srcu_struct mpam_srcu;
-
-Why expose this here?  This patch makes no use of the exposed symbol.
-
->  
->  /* MPAM isn't available until all the MSC have been probed. */
->  static u32 mpam_num_msc;
->  
+> @@ -0,0 +1,336 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// Copyright (C) 2025 Arm Ltd.
+> +
+> +#define pr_fmt(fmt) "%s:%s: " fmt, KBUILD_MODNAME, __func__
+> +
+> +#include <linux/acpi.h>
+> +#include <linux/arm_mpam.h>
+> +#include <linux/cacheinfo.h>
+> +#include <linux/cpu.h>
+> +#include <linux/cpumask.h>
+> +#include <linux/device.h>
+> +#include <linux/errno.h>
+> +#include <linux/gfp.h>
+> +#include <linux/list.h>
+> +#include <linux/lockdep.h>
+> +#include <linux/mutex.h>
+> +#include <linux/of.h>
+> +#include <linux/of_platform.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/printk.h>
+> +#include <linux/slab.h>
+> +#include <linux/spinlock.h>
+> +#include <linux/srcu.h>
+> +#include <linux/types.h>
+> +
+> +#include <acpi/pcc.h>
+> +
+> +#include "mpam_internal.h"
+> +
 > +/*
-> + * An MSC is a physical container for controls and monitors, each identified by
-> + * their RIS index. These share a base-address, interrupts and some MMIO
-> + * registers. A vMSC is a virtual container for RIS in an MSC that control or
-> + * monitor the same thing. Members of a vMSC are all RIS in the same MSC, but
-> + * not all RIS in an MSC share a vMSC.
-> + * Components are a group of vMSC that control or monitor the same thing but
-> + * are from different MSC, so have different base-address, interrupts etc.
-> + * Classes are the set components of the same type.
-> + *
-> + * The features of a vMSC is the union of the RIS it contains.
-> + * The features of a Class and Component are the common subset of the vMSC
-> + * they contain.
-> + *
-> + * e.g. The system cache may have bandwidth controls on multiple interfaces,
-> + * for regulating traffic from devices independently of traffic from CPUs.
-> + * If these are two RIS in one MSC, they will be treated as controlling
-> + * different things, and will not share a vMSC/component/class.
-> + *
-> + * e.g. The L2 may have one MSC and two RIS, one for cache-controls another
-> + * for bandwidth. These two RIS are members of the same vMSC.
-> + *
-> + * e.g. The set of RIS that make up the L2 are grouped as a component. These
-> + * are sometimes termed slices. They should be configured the same, as if there
-> + * were only one.
-> + *
-> + * e.g. The SoC probably has more than one L2, each attached to a distinct set
-> + * of CPUs. All the L2 components are grouped as a class.
-> + *
-> + * When creating an MSC, struct mpam_msc is added to the all mpam_all_msc list,
-> + * then linked via struct mpam_ris to a vmsc, component and class.
-> + * The same MSC may exist under different class->component->vmsc paths, but the
-> + * RIS index will be unique.
+> + * mpam_list_lock protects the SRCU lists when writing. Once the
+> + * mpam_enabled key is enabled these lists are read-only,
+> + * unless the error interrupt disables the driver.
 > + */
-
-This description of the structures and how they relate to each other
-seems OK (bearing in mind that I am already familiar with this stuff --
-I can't speak for other people).
-
-> +LIST_HEAD(mpam_classes);
+> +static DEFINE_MUTEX(mpam_list_lock);
+> +static LIST_HEAD(mpam_all_msc);
 > +
-> +/* List of all objects that can be free()d after synchronise_srcu() */
-> +static LLIST_HEAD(mpam_garbage);
+> +static struct srcu_struct mpam_srcu;
 > +
-> +#define init_garbage(x)	init_llist_node(&(x)->garbage.llist)
+> +/* MPAM isn't available until all the MSC have been probed. */
 
-[...]
+Comment doesn't really explain the variable.
 
-> +#define add_to_garbage(x)				\
-> +do {							\
-> +	__typeof__(x) _x = x;				\
+Maybe something like "Number of MSCs that need to be probed for MPAM
+to be usable" ?
 
-Nit:
+> +static u32 mpam_num_msc;
 
-= (x)
+Any particular reason this is u32 and not unsigned int?
 
-(for the paranoid)
+How are accesses to this protected against data races?
 
-> +	(_x)->garbage.to_free = (_x);			\
+If there are supposed to be locks to protect globals in the MPAM driver,
+is it worth wrapping them in access functions with a lockdep assert?
+Otherwise, it feels rather easy to get this wrong -- I think I've found
+at least one bug (see mpam_msc_drv_probe().)
 
-_x->garbage.to_free = _x;
-
-(_x is an identifier, not a macro argument.  It can't get re-parsed as
-something else -- assuming that there is not a #define for _x, but then
-all bets would be off anyway.)
-
-> +	llist_add(&(_x)->garbage.llist, &mpam_garbage);	\
-
-&_x->...
-
-
-[...]
-
-> +static void mpam_ris_destroy(struct mpam_msc_ris *ris)
+> +
+> +static void mpam_discovery_complete(void)
 > +{
-> +	struct mpam_vmsc *vmsc = ris->vmsc;
-> +	struct mpam_msc *msc = vmsc->msc;
-> +	struct platform_device *pdev = msc->pdev;
-> +	struct mpam_component *comp = vmsc->comp;
-> +	struct mpam_class *class = comp->class;
+> +	pr_err("Discovered all MSC\n");
+> +}
+
+As others have commented, if this is non-functional code that gets
+removed later on, it's probably best to drop this up-front?
+
+
+[...]
+
+> +static int mpam_dt_parse_resource(struct mpam_msc *msc, struct device_node *np,
+> +				  u32 ris_idx)
+> +{
+> +	int err = 0;
+> +	u32 level = 0;
+> +	unsigned long cache_id;
+> +	struct device_node *cache;
 > +
-> +	lockdep_assert_held(&mpam_list_lock);
+> +	do {
+> +		if (of_device_is_compatible(np, "arm,mpam-cache")) {
+> +			cache = of_parse_phandle(np, "arm,mpam-device", 0);
+> +			if (!cache) {
+> +				pr_err("Failed to read phandle\n");
+> +				break;
+> +			}
+> +		} else if (of_device_is_compatible(np->parent, "cache")) {
+> +			cache = of_node_get(np->parent);
+> +		} else {
+> +			/* For now, only caches are supported */
+> +			cache = NULL;
+> +			break;
+> +		}
 > +
-> +	cpumask_andnot(&comp->affinity, &comp->affinity, &ris->affinity);
-> +	cpumask_andnot(&class->affinity, &class->affinity, &ris->affinity);
-
-This is not the inverse of the cpumask_or()s in mpam_ris_create_locked(),
-unless the the ris associated with each class and each component have
-strictly disjoint affinity masks.  Is that checked anywhere, or should
-it be impossible by construction?
-
-
-But, thinking about it:
-
-I wonder why we ever really need to do the teardown.  If we get an
-error interrupt then we can just go into a sulk, spam dmesg a bit, put
-the hardware into the most vanilla state that we can, and refuse to
-manipulate it further.  But this only happens in the case of a software
-or hardware *bug* (or, in a future world where we might implement
-virtualisation, an uncontainable MPAM error triggered by a guest -- for
-which tearing down the host MPAM would be an overreaction).
-
-Trying to cleanly tear the MPAM driver down after such an error seems a
-bit futile.
-
-The MPAM resctrl glue could eventually be made into a module (though
-not needed from day 1) -- which would allow for unloading resctrlfs if
-that is eventually module-ised.  I think this wouldn't require the MPAM
-devices backend to be torn down at any point, though (?)
-
-
-If we can simplify or eliminate the teardown, does it simplify the
-locking at all?  The garbage collection logic can also be dispensed
-with if there is never any garbage.
-
-Since MSCs etc. never disappear from the hardware, it feels like it
-ought not to be necessary ever to remove items from any of these lists
-except when trying to do a teardown (?)
-
-(Putting the hardware into a quiecent state is not the same thing as
-tearing down the data structures -- we do want to quiesce MPAM when
-shutting down the kernel, as least for the kexec scenario.)
-
-> +	clear_bit(ris->ris_idx, msc->ris_idxs);
-> +	list_del_rcu(&ris->vmsc_list);
-> +	list_del_rcu(&ris->msc_list);
-> +	add_to_garbage(ris);
-> +	ris->garbage.pdev = pdev;
+> +		err = of_property_read_u32(cache, "cache-level", &level);
+> +		if (err) {
+> +			pr_err("Failed to read cache-level\n");
+> +			break;
+> +		}
 > +
-> +	if (list_empty(&vmsc->ris))
-> +		mpam_vmsc_destroy(vmsc);
+> +		cache_id = cache_of_calculate_id(cache);
+> +		if (cache_id == ~0UL) {
+
+The type of cache_id may change if the return type of
+cache_of_calculate_id() changes (see comments on patch 1).
+
+Possible #define for the exceptional value.
+
+> +			err = -ENOENT;
+> +			break;
+
+The lack of a diagnostic here is inconsistent with the level of
+diagnostics in the rest of the loop.
+
+> +		}
+> +
+> +		err = mpam_ris_create(msc, ris_idx, MPAM_CLASS_CACHE, level,
+> +				      cache_id);
+> +	} while (0);
+
+Abuse of do ... while () here?
+
+There is no loop.  The breaks are stealth "goto"s to this statement:
+
+> +	of_node_put(cache);
+
+(It works either way, but maybe gotos to an explicit label would be
+more readable, as well as avoiding an unnecessary level of indentation.)
+
+> +
+> +	return err;
 > +}
 
 [...]
 
-> +static int mpam_ris_create_locked(struct mpam_msc *msc, u8 ris_idx,
-> +				  enum mpam_class_types type, u8 class_id,
-> +				  int component_id, gfp_t gfp)
+> +/*
+> + * An MSC can control traffic from a set of CPUs, but may only be accessible
+> + * from a (hopefully wider) set of CPUs. The common reason for this is power
+> + * management. If all the CPUs in a cluster are in PSCI:CPU_SUSPEND, the
+> + * the corresponding cache may also be powered off. By making accesses from
+
+Nit: the the
+
+> + * one of those CPUs, we ensure this isn't the case.
+> + */
+> +static int update_msc_accessibility(struct mpam_msc *msc)
+> +{
+> +	struct device_node *parent;
+> +	u32 affinity_id;
+> +	int err;
+> +
+> +	if (!acpi_disabled) {
+> +		err = device_property_read_u32(&msc->pdev->dev, "cpu_affinity",
+> +					       &affinity_id);
+> +		if (err)
+> +			cpumask_copy(&msc->accessibility, cpu_possible_mask);
+> +		else
+> +			acpi_pptt_get_cpus_from_container(affinity_id,
+> +							  &msc->accessibility);
+> +
+> +		return 0;
+> +	}
+> +
+> +	/* This depends on the path to of_node */
+> +	parent = of_get_parent(msc->pdev->dev.of_node);
+> +	if (parent == of_root) {
+> +		cpumask_copy(&msc->accessibility, cpu_possible_mask);
+> +		err = 0;
+> +	} else {
+> +		err = -EINVAL;
+> +		pr_err("Cannot determine accessibility of MSC: %s\n",
+> +		       dev_name(&msc->pdev->dev));
+> +	}
+> +	of_node_put(parent);
+> +
+> +	return err;
+> +}
+> +
+> +static int fw_num_msc;
+
+Does this need to be protected against data races?
+
+If individual mpam_msc_drv_probe() calls may execute on different CPUs
+from mpam_msc_driver_init(), then seem to be potential races here.
+
+> +
+> +static void mpam_pcc_rx_callback(struct mbox_client *cl, void *msg)
+> +{
+> +	/* TODO: wake up tasks blocked on this MSC's PCC channel */
+
+So, is this broken in this commit?
+
+(If the series does not get broken up or applied piecemail, that's not
+such a concern, though.)
+
+> +}
+> +
+> +static void mpam_msc_drv_remove(struct platform_device *pdev)
+> +{
+
+The MPAM driver cannot currently be built as a module.
+
+Is it possible to exercise the driver remove paths, today?
+
+> +	struct mpam_msc *msc = platform_get_drvdata(pdev);
+> +
+> +	if (!msc)
+> +		return;
+> +
+> +	mutex_lock(&mpam_list_lock);
+> +	mpam_num_msc--;
+> +	platform_set_drvdata(pdev, NULL);
+> +	list_del_rcu(&msc->glbl_list);
+> +	synchronize_srcu(&mpam_srcu);
+> +	devm_kfree(&pdev->dev, msc);
+> +	mutex_unlock(&mpam_list_lock);
+> +}
+> +
+> +static int mpam_msc_drv_probe(struct platform_device *pdev)
 > +{
 > +	int err;
-> +	struct mpam_vmsc *vmsc;
-> +	struct mpam_msc_ris *ris;
-> +	struct mpam_class *class;
-> +	struct mpam_component *comp;
+> +	struct mpam_msc *msc;
+> +	struct resource *msc_res;
+> +	void *plat_data = pdev->dev.platform_data;
 > +
-> +	lockdep_assert_held(&mpam_list_lock);
+> +	mutex_lock(&mpam_list_lock);
+> +	do {
+> +		msc = devm_kzalloc(&pdev->dev, sizeof(*msc), GFP_KERNEL);
+> +		if (!msc) {
+> +			err = -ENOMEM;
+> +			break;
+> +		}
 > +
-> +	if (test_and_set_bit(ris_idx, msc->ris_idxs))
-> +		return -EBUSY;
+> +		mutex_init(&msc->probe_lock);
+> +		mutex_init(&msc->part_sel_lock);
+> +		mutex_init(&msc->outer_mon_sel_lock);
+> +		raw_spin_lock_init(&msc->inner_mon_sel_lock);
+> +		msc->id = mpam_num_msc++;
+> +		msc->pdev = pdev;
+> +		INIT_LIST_HEAD_RCU(&msc->glbl_list);
+> +		INIT_LIST_HEAD_RCU(&msc->ris);
+> +
+> +		err = update_msc_accessibility(msc);
+> +		if (err)
+> +			break;
+> +		if (cpumask_empty(&msc->accessibility)) {
+> +			pr_err_once("msc:%u is not accessible from any CPU!",
+> +				    msc->id);
+> +			err = -EINVAL;
+> +			break;
+> +		}
+> +
+> +		if (device_property_read_u32(&pdev->dev, "pcc-channel",
+> +					     &msc->pcc_subspace_id))
+> +			msc->iface = MPAM_IFACE_MMIO;
+> +		else
+> +			msc->iface = MPAM_IFACE_PCC;
+> +
+> +		if (msc->iface == MPAM_IFACE_MMIO) {
+> +			void __iomem *io;
+> +
+> +			io = devm_platform_get_and_ioremap_resource(pdev, 0,
+> +								    &msc_res);
+> +			if (IS_ERR(io)) {
+> +				pr_err("Failed to map MSC base address\n");
+> +				err = PTR_ERR(io);
+> +				break;
+> +			}
+> +			msc->mapped_hwpage_sz = msc_res->end - msc_res->start;
+> +			msc->mapped_hwpage = io;
+> +		} else if (msc->iface == MPAM_IFACE_PCC) {
+> +			msc->pcc_cl.dev = &pdev->dev;
+> +			msc->pcc_cl.rx_callback = mpam_pcc_rx_callback;
+> +			msc->pcc_cl.tx_block = false;
+> +			msc->pcc_cl.tx_tout = 1000; /* 1s */
+> +			msc->pcc_cl.knows_txdone = false;
+> +
+> +			msc->pcc_chan = pcc_mbox_request_channel(&msc->pcc_cl,
+> +								 msc->pcc_subspace_id);
+> +			if (IS_ERR(msc->pcc_chan)) {
+> +				pr_err("Failed to request MSC PCC channel\n");
+> +				err = PTR_ERR(msc->pcc_chan);
+> +				break;
+> +			}
+> +		}
 
-Is it impossible by construction to get in here with an out-of-range
-ris_idx?
+Should the lock be held across initialisation of the msc fields?
 
-To avoid the callers (i.e., ACPI) needing to understand the internal
-limitations of this code, maybe it is worth having a check here (even
-if technically redundant).
+list_add_rcu() might imply sufficient barriers to ensure that the
+initialisations are visible to other threads that obtain the msc
+pointer by iterating over mpam_all_msc.
+
+It's probably cleaner to hold the lock explicitly, though.
+
+What other ways of obtaining the msc pointer exist?
+
+
+> +
+> +		list_add_rcu(&msc->glbl_list, &mpam_all_msc);
+> +		platform_set_drvdata(pdev, msc);
+> +	} while (0);
+> +	mutex_unlock(&mpam_list_lock);
+> +
+> +	if (!err) {
+> +		/* Create RIS entries described by firmware */
+> +		if (!acpi_disabled)
+> +			err = acpi_mpam_parse_resources(msc, plat_data);
+> +		else
+> +			err = mpam_dt_parse_resources(msc, plat_data);
+> +	}
+> +
+> +	if (!err && fw_num_msc == mpam_num_msc)
+
+Unlocked read of mpam_num_msc?
+
+> +		mpam_discovery_complete();
+> +
+> +	if (err && msc)
+> +		mpam_msc_drv_remove(pdev);
+> +
+> +	return err;
+> +}
+> +
+> +static const struct of_device_id mpam_of_match[] = {
+> +	{ .compatible = "arm,mpam-msc", },
+> +	{},
+> +};
+> +MODULE_DEVICE_TABLE(of, mpam_of_match);
+> +
+> +static struct platform_driver mpam_msc_driver = {
+> +	.driver = {
+> +		.name = "mpam_msc",
+> +		.of_match_table = of_match_ptr(mpam_of_match),
+> +	},
+> +	.probe = mpam_msc_drv_probe,
+> +	.remove = mpam_msc_drv_remove,
+> +};
+> +
+> +/*
+> + * MSC that are hidden under caches are not created as platform devices
+> + * as there is no cache driver. Caches are also special-cased in
+> + * update_msc_accessibility().
+> + */
+
+Can you elaborate?  I don't understand quite what this is doing.
+
+> +static void mpam_dt_create_foundling_msc(void)
+> +{
+> +	int err;
+> +	struct device_node *cache;
+> +
+> +	for_each_compatible_node(cache, NULL, "cache") {
+> +		err = of_platform_populate(cache, mpam_of_match, NULL, NULL);
+> +		if (err)
+> +			pr_err("Failed to create MSC devices under caches\n");
+> +	}
+> +}
+
+[...]
+
+> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
+> new file mode 100644
+> index 000000000000..07e0f240eaca
+> --- /dev/null
+> +++ b/drivers/resctrl/mpam_internal.h
+> @@ -0,0 +1,62 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +// Copyright (C) 2024 Arm Ltd.
+> +
+> +#ifndef MPAM_INTERNAL_H
+> +#define MPAM_INTERNAL_H
+> +
+> +#include <linux/arm_mpam.h>
+> +#include <linux/cpumask.h>
+> +#include <linux/io.h>
+> +#include <linux/mailbox_client.h>
+> +#include <linux/mutex.h>
+> +#include <linux/resctrl.h>
+> +#include <linux/sizes.h>
+> +
+> +struct mpam_msc {
+> +	/* member of mpam_all_msc */
+> +	struct list_head        glbl_list;
+
+It is worth making these names less mismatched?
+
+> +
+> +	int			id;
+> +	struct platform_device *pdev;
+> +
+> +	/* Not modified after mpam_is_enabled() becomes true */
+> +	enum mpam_msc_iface	iface;
+> +	u32			pcc_subspace_id;
+> +	struct mbox_client	pcc_cl;
+> +	struct pcc_mbox_chan	*pcc_chan;
+> +	u32			nrdy_usec;
+> +	cpumask_t		accessibility;
+> +
+> +	/*
+> +	 * probe_lock is only take during discovery. After discovery these
+> +	 * properties become read-only and the lists are protected by SRCU.
+> +	 */
+> +	struct mutex		probe_lock;
+
+Can we have more clarify about the locking strategy, including details
+of which things each lock is supposed to apply to and when, and how (if
+at all) the locks are intended to nest?
+
+(Similarly for the global locks.)
+
+> +	unsigned long		ris_idxs[128 / BITS_PER_LONG];
+> +	u32			ris_max;
+
+nrdy_usec, ris_idxs and ris_max appear unused in this patch (though I
+suppose they get initialised by virtue of kzalloc()).  Is this
+intentional?
+
+> +
+> +	/* mpam_msc_ris of this component */
+> +	struct list_head	ris;
+> +
+> +	/*
+> +	 * part_sel_lock protects access to the MSC hardware registers that are
+> +	 * affected by MPAMCFG_PART_SEL. (including the ID registers that vary
+> +	 * by RIS).
+> +	 * If needed, take msc->lock first.
+> +	 */
+
+What's msc->lock ?
+
+> +	struct mutex		part_sel_lock;
+> +
+> +	/*
+> +	 * mon_sel_lock protects access to the MSC hardware registers that are
+> +	 * affeted by MPAMCFG_MON_SEL.
+> +	 * If needed, take msc->lock first.
+> +	 */
+
+Same here.
+
+> +	struct mutex		outer_mon_sel_lock;
+> +	raw_spinlock_t		inner_mon_sel_lock;
+> +	unsigned long		inner_mon_sel_flags;
+> +
+> +	void __iomem		*mapped_hwpage;
+> +	size_t			mapped_hwpage_sz;
+> +};
+> +
+> +#endif /* MPAM_INTERNAL_H */
 
 [...]
 
