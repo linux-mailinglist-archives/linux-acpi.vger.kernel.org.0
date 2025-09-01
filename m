@@ -1,180 +1,136 @@
-Return-Path: <linux-acpi+bounces-16263-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16264-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F42B3EDAD
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 20:16:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1081B3EE3C
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 21:01:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13A0A7AB53E
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 18:15:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2592B2C0C90
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 19:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5920B239E63;
-	Mon,  1 Sep 2025 18:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529652EF653;
+	Mon,  1 Sep 2025 19:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aBO5+pPf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GYASmNv7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA59E63CB;
-	Mon,  1 Sep 2025 18:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B8F255F5C;
+	Mon,  1 Sep 2025 19:00:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756750600; cv=none; b=JsNZCwEUAhDgXkUK5trl8rA3kh3X1ifqQTOE5lclp1cv0ZcoAzpOA5MJJn3/RvDu3QNhAIj7vyssestUjnWNZqNQP1aCGTlehuIXbe5gBWH48lsk7nCfgcYIoqQ6QTXi1A7xWshEH9S2RRd1h6edGKIJKZjdcvoCEWnAgLMy9FM=
+	t=1756753251; cv=none; b=h/BYHUuMdu/1+hUjk2tvs+3pzXpfE8AgVF8YVeZLv8vrSIWGtnUnLvc+UiLpDAyClVrXBiYnGjafy9gtI/Y4ElVJ+qOFWxHwLgopnz0u6D+5JhkE5i+MKVVEvHHhNo8z2CHNBJnb+n46YTkQjMd2Q8fZubtZRku9tJT34ksG2YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756750600; c=relaxed/simple;
-	bh=xQZpqgGuo1rqV4Rdfm5jlL2ns9b1cQQiaRQ5UVvEFWU=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=gPPJcuIX1nncXIkN/j9Jev8vqOwHroMYaOFRVQWBRD0E2E883F50VSCKJLMGdtkD+3lB5NVK2SkmkaJJygF0Qq07jvZwCbcN9ky7oMo0ihWHfV9j7mjFlMFsCJzGJw95D2KeKhXwX3z29Mphz+lT+PxzkqiaSW7I8M0iJQfsGrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aBO5+pPf; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7f7edf7621dso390226685a.0;
-        Mon, 01 Sep 2025 11:16:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756750597; x=1757355397; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Xn9IC3BS1kDv/1fQ9xQj+9fzHBMt4uG+26oEBt3SZB8=;
-        b=aBO5+pPfaeU4idRlavni/gekyCvUmDQjBNi1Bc4DWECa9SjpRM89IUYgqOvU3Dl2Zf
-         /nG/kwvFt+PJN+1ZQGNM6T6i0aaKlXgSuLbsIbjED997C7pm9PPqC4vzz/9g0Pt/X0DW
-         n3Yyrcg0SaFAJg45PSHY3RxmGUq88hANyuVJU/Iq44z39XDKTRVLXAEij2iEN7n2UjVl
-         dR+vEAqALwDNEibKRU/ZZxLLgxJmMkOMXNp2kGxOpFBJR+xfcPec4wWrVbY1KL0EuNb7
-         7Dmre/+0uhk3zXqdQLxOfAPqxu8kBNxLXjn4aQ5UvQJSukhNl1tnSwZA3yYquZR9F3rx
-         KugQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756750597; x=1757355397;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Xn9IC3BS1kDv/1fQ9xQj+9fzHBMt4uG+26oEBt3SZB8=;
-        b=DEjfhyJAt/EnC2i/QES80QcJbC9QJwprcYZReW4U9bk59c6M4UqZECRZoiwowtXpPK
-         e23S1iU/8o6RGpU5RW35iZ5DkYCY/LdGilaMIgtDRQztcWNFKmdOKJEv07PUjO0DcB0p
-         qbiuQQkCKcAyTUfeJ279MBie/qMs/O09KyXarc3LV/yVjMV8uCiYv5eM2+x7QDIopmQ7
-         qr+LlEZOPrZcTdRcMjgyYEsyQZVUDDkYaXeoP0LwiTVeCBTINjDlrBcSYPkFa/8TTCVm
-         pYbzldpBLi/kdJrBlmR0sG25vJ0OXJPMpoEplRpIW13CsEWloSoAnxG1vXv3giLtTVNu
-         N5/g==
-X-Forwarded-Encrypted: i=1; AJvYcCVknRX7C64PvfKLeaYgz6YowhS8+ORureEtUjp431WcvHpZgAG8rHO2jahcN4P7vSC7UfbAPwhLl76xnT0U@vger.kernel.org, AJvYcCXPPvyoSu9iuVQO3DZLW/b4tqpr0MpTJ6/XDWyBAKDAGL/TlOy3qXZk52A4UgrRgEHJSXuJnQv/1Vs7@vger.kernel.org, AJvYcCXUnVnOLaQZkVr7VqBS+bN53yUWYFiTwXQBYJ/EJ9eq9/ey83H+nHAlSU3R1R8JlzGdvGelQP3PyIDj@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8ug0pFMNd0Hi07l8c0QEPqpMZyoKHRofFNgKsptI6uWg/i0v7
-	GhLbExlJT1Ragv0Cx0pKF8Lmz6K7Xji82JGRDjfNzprC6lrMMbDUjlvA
-X-Gm-Gg: ASbGncv5vSv5oMJwe1X7R/GgkuhK1wlG+Par0T+637TqIR9vCwnAOG0oSv3p+3HYU6e
-	oFrin+0FyuvifOwi6VhPR7eHX55yFkaaXxSSh/8SDTib+KaOZ8fdXdfDff4G0mIIkjC0Mj202DY
-	3lcnJ9Mp2ZM7CSW6mjN9uA7HD/OHCQ4QmI9llJxfwGrzNpq4MLe/FQxWCvHv58S5zh3jR8soPMz
-	aLW0UyeUo6ukvDA5nQQW7e0/KD5PkcobQe7q2bFhb84UzQt6vEescg7GGBRTUxAQIgwtbZOaavS
-	uEbVF7eQJz4rgZCyuC63bAzs7TQKCTDto5Mr+CSEgHWNKWeBpPfDnKZemo6/l9Sj5XObp13APec
-	qmsQIAJtpE8LYxPi/Avk5L+uP9t2MVSZS32ed3ra7P+EZG+uvkq9yLWV+HYSs0Rt7/6GaTUzxjj
-	UZdn/NpQ==
-X-Google-Smtp-Source: AGHT+IE0DbBpIx9sh6AjpohVLRgfreif5ibZfumHkE7neAos5oRj2ppwaaA/l71seKMtWeE5VqjcXw==
-X-Received: by 2002:a05:620a:170e:b0:801:2d1a:ab1b with SMTP id af79cd13be357-8012d1aad5emr772775285a.22.1756750597301;
-        Mon, 01 Sep 2025 11:16:37 -0700 (PDT)
-Received: from ehlo.thunderbird.net (modemcable197.17-162-184.mc.videotron.ca. [184.162.17.197])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7fc14478510sm688381785a.35.2025.09.01.11.16.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 11:16:36 -0700 (PDT)
-Date: Mon, 01 Sep 2025 14:16:35 -0400
-From: =?ISO-8859-1?Q?Jean-Fran=E7ois_Lessard?= <jefflessard3@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>
-CC: Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, linux-i2c@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3_1/2=5D_device_property=3A_A?=
- =?US-ASCII?Q?dd_scoped_fwnode_child_node_iterators?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <9ed3743b-4f86-42d3-94e0-8a720526dce4@kernel.org>
-References: <20250901163648.82034-1-jefflessard3@gmail.com> <20250901163648.82034-2-jefflessard3@gmail.com> <9ed3743b-4f86-42d3-94e0-8a720526dce4@kernel.org>
-Message-ID: <85D46ECF-B4A6-4C78-A4DD-0785FE58B2A3@gmail.com>
+	s=arc-20240116; t=1756753251; c=relaxed/simple;
+	bh=ZYcVa6pfew9PsKaI1xeXZkcLuBBn9KyqN+Fvtm6NigE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iFOOTYDnXgOC3966cGc2DkIhkfdJ+8LprM+XgCkbWk5GpumjL43k1smtJ7JehSbwvyhjvs/EKiz+C/5HPqY6G+7EnEDMvbCDYoY9WlWRBg30Qk6SaKmEMYwAkSNs0stfLT35qp1TZLe3L1RTCzhnLJwIXjY4Hzz7SwgKgGJmTAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GYASmNv7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB1EC4CEFD;
+	Mon,  1 Sep 2025 19:00:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756753250;
+	bh=ZYcVa6pfew9PsKaI1xeXZkcLuBBn9KyqN+Fvtm6NigE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GYASmNv7BXhIajZZoRvb4roQdeLOHe6DZu39BcO1fk3XdoM5eh0VcfQtL0m3quuCc
+	 VfY4RDvrJWzYdoloiXZ/XMOyb4IB/7MMqZ3ghTJuyJZRW1PUgkkBbgY8P8JDOArlJq
+	 cXkUAIQvYhsH8rYA6x3c30QbChvUVyxG/UaEM3AIgw10wa8gAYZQ0yaXhuW019nYPq
+	 QZo68hY25IpTFJm1aTzpcT3Qlgk+Q6Li0ieGq05XQ4rps9rWq76W2uTFb/2Qgrh7rb
+	 g9ntoHeNuOJYgLM88vGuTC8GhWhQK0luo8wjjwGvatzvam+tBPCx3FDu8zAaztdpgb
+	 0yOsZCtsOz68A==
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-74526ca7a46so1594431a34.2;
+        Mon, 01 Sep 2025 12:00:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUJowj0XZxUqRWTJdUfNeM3puIr6LUHU01MMotlg4y9+zSyx5byRhwwYkVo7twG43M1y6GZoz+3qHdPlAw=@vger.kernel.org, AJvYcCVOFva7j06wBRntkPIloSY6XSBaMB0Un11iIEWqUVva9RJl82Yu4Qz4B3jWTr31ijlc+A/XROI522A=@vger.kernel.org, AJvYcCWCUAWptoHsmgVcUI+ZqQ6vs7MW47UfJISdoZIVOmg+Om+roCV7TLJCbKfwUOBhp+j208Uy/0RCllDy@vger.kernel.org, AJvYcCWpKVhUjRh39OfgOoJdVGA3UOhl6vjj7h5kalO2Q8nrDWY7FcDWEq3JcdBVnqe2HQAIgc7ZlX2g7pZM@vger.kernel.org, AJvYcCXZRWh8KyF7fuN6waQwvuLqacb3XfoEYCyrPfvsRxkoXvjhtMT/K8DM9FjQFemkxvkwJlb+A5VKcuhuZNvb@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5yb8uKr3+52nG1hhZH8qxRcrVMsjcQ2N3H6vFazznrilGlOEw
+	gszJQcSWLxdbHZobI/VqJg56yHDkv7iH/kZTj4p1G1YqWGF6FE5PSn1oXbFo4+ARwdN8CkCluUn
+	HcVsYgPkpVErTNqqIZmoCB+42jzVEtcc=
+X-Google-Smtp-Source: AGHT+IF5SaCmHwNGeJ545FabBGFRvWTGFT8zu6kM/v3+zLeQSnjYj3JgLDBA/Na6A5xsnHIoN5OKyg7BUGvdwPDyFD4=
+X-Received: by 2002:a05:6830:6aa3:b0:745:46d6:e73f with SMTP id
+ 46e09a7af769-74569d764bamr4473355a34.1.1756753249708; Mon, 01 Sep 2025
+ 12:00:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20250823200121.1320197-1-sumitg@nvidia.com> <20250823200121.1320197-2-sumitg@nvidia.com>
+ <CAJZ5v0jXq48petXAcf1prb5iuHbh3i8XREJBscs88xs5RY_j=A@mail.gmail.com> <694a85ad-8b55-42e9-91fe-06d40fe8facd@nvidia.com>
+In-Reply-To: <694a85ad-8b55-42e9-91fe-06d40fe8facd@nvidia.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 1 Sep 2025 21:00:38 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0ipt=zDDORjuHzuerfLryZO5NE1RpPfnADeWEqi6kyv6Q@mail.gmail.com>
+X-Gm-Features: Ac12FXyb-_bL-3aCu5Q9p5j1OqNhu9RwBJNUi80YwR1oSvxk_jkaXysXbT37dzA
+Message-ID: <CAJZ5v0ipt=zDDORjuHzuerfLryZO5NE1RpPfnADeWEqi6kyv6Q@mail.gmail.com>
+Subject: Re: [PATCH v2 1/7] ACPI: CPPC: add perf control read API and clarify naming
+To: Sumit Gupta <sumitg@nvidia.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, viresh.kumar@linaro.org, lenb@kernel.org, 
+	robert.moore@intel.com, corbet@lwn.net, pierre.gondois@arm.com, 
+	zhenglifeng1@huawei.com, ray.huang@amd.com, gautham.shenoy@amd.com, 
+	mario.limonciello@amd.com, perry.yuan@amd.com, linux-pm@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org, 
+	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, treding@nvidia.com, jonathanh@nvidia.com, 
+	vsethi@nvidia.com, ksitaraman@nvidia.com, sanjayc@nvidia.com, 
+	bbasu@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Le 1 septembre 2025 13 h 48 min 14 s HAE, Danilo Krummrich <dakr@kernel=2Eo=
-rg> a =C3=A9crit=C2=A0:
->On 9/1/25 6:36 PM, Jean-Fran=C3=A7ois Lessard wrote:
->> Add scoped versions of fwnode child node iterators that automatically
->> handle reference counting cleanup using the __free() attribute:
->>=20
->> - fwnode_for_each_child_node_scoped()
->> - fwnode_for_each_named_child_node_scoped()
->> - fwnode_for_each_available_child_node_scoped()
->>=20
->> These macros follow the same pattern as existing scoped iterators in th=
-e
->> kernel, ensuring fwnode references are automatically released when the
->> iterator variable goes out of scope=2E This prevents resource leaks and
->> eliminates the need for manual cleanup in error paths=2E
->>=20
->> The implementation mirrors the non-scoped variants but uses
->> __free(fwnode_handle) for automatic resource management, providing a
->> safer and more convenient interface for drivers iterating over firmware
->> node children=2E
->>=20
->> Signed-off-by: Jean-Fran=C3=A7ois Lessard <jefflessard3@gmail=2Ecom>
+On Mon, Sep 1, 2025 at 3:46=E2=80=AFPM Sumit Gupta <sumitg@nvidia.com> wrot=
+e:
 >
->Thanks for adding a user and splitting it up (Andy was a bit faster than =
-me :)=2E
 >
-
-Very welcome! Thanks for reviewing=2E
-
->> diff --git a/include/linux/property=2Eh b/include/linux/property=2Eh
->> index 82f0cb3ab=2E=2E279c244db 100644
->> --- a/include/linux/property=2Eh
->> +++ b/include/linux/property=2Eh
->> @@ -176,6 +176,20 @@ struct fwnode_handle *fwnode_get_next_available_ch=
-ild_node(
->>   	for (child =3D fwnode_get_next_available_child_node(fwnode, NULL); c=
-hild;\
->>   	     child =3D fwnode_get_next_available_child_node(fwnode, child))
->>   +#define fwnode_for_each_child_node_scoped(fwnode, child)		\
->> +	for (struct fwnode_handle *child __free(fwnode_handle) =3D	\
->> +		fwnode_get_next_child_node(fwnode, NULL);		\
->> +	     child; child =3D fwnode_get_next_child_node(fwnode, child))
->> +
->> +#define fwnode_for_each_named_child_node_scoped(fwnode, child, name)	\
->> +	fwnode_for_each_child_node_scoped(fwnode, child)		\
->> +		for_each_if(fwnode_name_eq(child, name))
+> On 26/08/25 00:03, Rafael J. Wysocki wrote:
+> > External email: Use caution opening links or attachments
+> >
+> >
+> > On Sat, Aug 23, 2025 at 10:02=E2=80=AFPM Sumit Gupta <sumitg@nvidia.com=
+> wrote:
+> >> Add cppc_get_perf_ctrls() to read performance control register values.
+> >> Rename existing APIs for clarity as:
+> >> - To distinguish between:
+> >>    - Feedback counters (fb_ctrs): Read-only performance monitoring dat=
+a.
+> >>    - Performance controls (perf_ctrls): Read-write config registers.
+> >> - cppc_set_epp_perf() updates both EPP and Autonomous Selection.
+> >>
+> >> API's renamed:
+> >> - cppc_set_perf() to cppc_set_perf_ctrls().
+> >> - cppc_get_perf_ctrs() to cppc_get_perf_fb_ctrs().
+> >> - cppc_get_perf_ctrs_sample() to cppc_get_perf_fb_ctrs_sample().
+> >> - cppc_set_epp_perf() to cppc_set_epp_and_autosel().
+> >> Remove redundant energy_perf field from 'struct cppc_perf_caps' since
+> >> the same information is available in 'struct cppc_perf_ctrls' which is
+> >> actively used.
+> >>
+> >> All existing callers are updated to maintain compatibility.
+> >
+> > First, this is too much in one patch IMV and second, I honestly don't
+> > see a reason for the renames above.
+> >
+> > This generally makes tracking the code changes history harder.
+> >
+> > Thanks!
 >
->IIRC, your first patch mentioned that your driver series would only use
->fwnode_for_each_available_child_node_scoped()=2E
+> Did the renaming for clarity and better readability.
+> If we don't want to do that then i can drop the renaming and keep other
+> changes.
 
-You are correct=2E Next version of TM16XX driver patch series will use
-fwnode_for_each_available_child_node_scoped()
+Please do.
 
+> Also, split this patch into two as below:
+>          Patch1: Add cppc_get_perf() API.
 >
->And this series adds a user for fwnode_for_each_child_node_scoped(); do y=
-ou also have a user for fwnode_for_each_named_child_node_scoped()?
+>          Patch2:
+>            - Update both EPP and Autonomous Selection in
+> cppc_set_epp_perf().
+>            - Remove redundant energy_perf field from 'struct
+> cppc_perf_caps'.
 
-No, I haven't found an existing user that requires the scoped version=2E T=
-he only
-usage I found of the non-scoped fwnode_for_each_named_child_node() is in=
-=20
-drivers/base/property=2Ec in fwnode_get_named_child_node_count(), which do=
-esn't
-need to put the fwnode=2E
+Sounds reasonable to me.
 
-I included it for consistency since the header defines all three non-scope=
-d
-variants, but I understand the "no dead code" policy concern=2E
-
-Would you prefer I drop the fwnode_for_each_named_child_node_scoped()=20
-variant and submit a v4 with only the two variants that have real users?
-
-Regards,
-
-Jean-Fran=C3=A7ois Lessard
-
+Thanks!
 
