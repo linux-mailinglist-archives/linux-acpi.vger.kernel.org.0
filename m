@@ -1,135 +1,103 @@
-Return-Path: <linux-acpi+bounces-16259-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16260-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1FAB3EC4C
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 18:37:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD63B3EC6F
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 18:41:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79F9048009B
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 16:37:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CB46161AEE
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 16:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11042320A0F;
-	Mon,  1 Sep 2025 16:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6596A2EC097;
+	Mon,  1 Sep 2025 16:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HWBepS+g"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="BfPbhryw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FBA30F540;
-	Mon,  1 Sep 2025 16:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85141C5D7D;
+	Mon,  1 Sep 2025 16:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756744615; cv=none; b=QeOUielV5RJ4I08J6JrHXVOmSlxiMQzD8fueB3dFekTRqL8A7H7r51FQMLb+Zwu2f09delDDmg8s5FZhaOutUX9i/HL4NOTnoZcGZIc6NNMdsCYuc9bakMqnx+gM7xOYC0cG/k2mR0Prtj3vwcm8rmohN0NL5VE4RJvrUuKBmIU=
+	t=1756744912; cv=none; b=KDQXcytCOMlOKjDyF+9wJD0ecarxSfZSL0etTlDYs6vtR5Yd8YNcCf8OzSsM/sxXw+eS50QJtse8AwFXAUnxbIAh8kvtBrVcEP87JVdWOqhG2yIXDYZGWRPpuPNu39OYDMUMXK+lH8pqPob8FiUzNgyO0yiPiIeQF0duOwvwKWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756744615; c=relaxed/simple;
-	bh=rpdWU0Y+HpvWfPb7kLxSsyEOrhd6J8mzlok0N0JGp0E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VkQQq8Dfd4mbEVxHtmf2+r8Z732IB3RIPWF9qaJePTRDQez+jGOby+r5k8pJql8UExWhKS6ymUCuhX7JbAfttbpUerqfiwytqQmrSwRNxQW2+HIMzJRTFRubDWCb9D4PU2ZqKqHFOmTJr4Pzju/EX5Jr1cTB/o+5B3gE94XtWYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HWBepS+g; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7f901afc2fbso368957985a.0;
-        Mon, 01 Sep 2025 09:36:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756744612; x=1757349412; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rOiCkmF9N5LECqor0q7iHAbxr8Qh+oAsx+T89PFjoPA=;
-        b=HWBepS+gRcPD3Jls3xHjQHVEE51wVAz0X3Y246uKPrbEwNNbbLkKB29xyO+7RxYM3p
-         1C0W9z0Gc5/tHSKKvC8cbIk/Rj3A5SELDXmGouSSUxSxxC60yqgAzFYXdtO9cXjqS3kk
-         kOAsrOpvcA9icuGLj/LAJUmaHdFMFwupUP/jtW9aDuX9XomyjoS/JIGAgi6NUY5B+hlH
-         F+oHdZswbIBmCYyGa4rHs0PChC2XTRB7+mRZh6Rl5dtbfOXHpXZ2g+qrEXTi5L0uScUk
-         MIhs3moLpDKg6es3kZynzySUGwSfm5ZuZxaEs5JJUAtY4UuJsq05WZONSGSDxmavWa4s
-         F64A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756744612; x=1757349412;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rOiCkmF9N5LECqor0q7iHAbxr8Qh+oAsx+T89PFjoPA=;
-        b=JV5PYG1sGCqAIOhy4vqbnbo6Ef3LiedagRecufuBHIU9fMI7xLZPMf8EPsuSW/3cFx
-         19eSJOe6MyoZz7bKZ7+1c2txKpXycSrvp0B6lmscAaKs7cgYc6h28lLgO1jeDRJH0H48
-         xM82UJRlWA5gVbVdwc7XwRxyf/kwEjFHQxvaMDLbePNn7Q5xCCUOYRZJrYQPlTeLB0v5
-         VjyL/Ims90bgmg4DP9YLPr51BjmeJtcAKHKBwksxB21v7Ply2Av1JJQCY4Q6e6/CWJvj
-         efM0aGzyx+U/QoNyPHuRWUedfNJ6SA8rczA4bfysRYhJpeoQo1Acci2IanWYXx2nY3RJ
-         XmwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUPGCWHe3OI3FdanqbqmQHAZkrZopDLu1VQw7hxzfj0jmQQKBX+AJITUBurT3+hQEC0/A7GYwXTMNl1@vger.kernel.org, AJvYcCUWZUC1FToCGYU7hZIq/klQukZZEnQmKOh2vXsf2l7yyOzKKQQSVqo07KqvjKFSElDNyJqzlYlIOi4laPeR@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsNZoeGboLgSIyniQAt5rXPh8Q7pbiSw6nfBnq/D8+Du3Sn77P
-	nhwXDAJvjnBYkryy2zHBJOGXD8g7twFHgBcDGxFdX9rPqtuiZWEmJmNpunkP2Z8C
-X-Gm-Gg: ASbGnct5DRhBj1milD+wpmK5uPgtU9+rhdG2k6LR2okBn9X5xv6Qdv0HYeUelbq/16w
-	/dIy0+9pYGcSTAXg/iqi4LhX82BI3U4iKcaGxGdygTSbO0et9kUpLqFXpY4XgWnpxmu6oGF//MT
-	ohcZJ0LM8LYC6Xv96Fb7vySvOA3SXedb5Pd0nvhBuE9Vc9KUCbnjUvwPZO/pSwJY4D6aippfhIB
-	a3Bl1HXwBHeBEK1PYsdI5aQD+rWobt6KazMXQ+LeFF3xOLrGUFh2oW1G6L9jc+BtjnEHhPut2DN
-	H21J2wKcg8Mmhf/sTQnTn+imWMR1zTEGBGL7fZlMzrCuQ4rP9tP5UMqhSrs9n9OEW6agkwyfT/C
-	sWnqqow3AqJaQvNRNSfp8ogawDZVw60zTPIlX1GP5R3Pncxwfyr8UMmYyy7GtTM4IguBRZrBBS0
-	CEYv4=
-X-Google-Smtp-Source: AGHT+IGDGC3z573zGrSVFG9fkTdEDkxBT9CzwsK0yzkNtG1aUWzv50ulRj2+jnctgOq9XmmzeOb/rw==
-X-Received: by 2002:a05:620a:4515:b0:805:ca22:7d66 with SMTP id af79cd13be357-805ca31c4damr152071085a.37.1756744612072;
-        Mon, 01 Sep 2025 09:36:52 -0700 (PDT)
-Received: from localhost (modemcable197.17-162-184.mc.videotron.ca. [184.162.17.197])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7fc0ecbaf36sm684887585a.25.2025.09.01.09.36.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 09:36:51 -0700 (PDT)
-From: =?UTF-8?q?Jean-Fran=C3=A7ois=20Lessard?= <jefflessard3@gmail.com>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	s=arc-20240116; t=1756744912; c=relaxed/simple;
+	bh=p8/7WEVkTduEKJGch8LKpul9HTK4oWe3sq0Pkl5v9eE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DgriHBSuY1MO3z+gD/dh1YizLuE/8o5dvUjF6YRKeeEbtaV7a8YqvigOtiflvZQTi9nFUwOT2MVh5DvWwq9om8eOJKhTjubzlBTKk4qwTdgmfBsSumycFSXzYKnBeuuHY4Dmpqhkc1BPes8Ax4DNBtqDglwxvhyVKKghVTwuzL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=BfPbhryw; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 61CC440E0174;
+	Mon,  1 Sep 2025 16:41:45 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Vyyl7ZB28m6j; Mon,  1 Sep 2025 16:41:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1756744902; bh=dMIQAtkoujJNauIq7vZnF7gyvWuiGZt+R4XWw++n8pE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BfPbhrywXwL+wj80Nwab8pTNgiwWQd0rnCXaQ+QAsXGhudGtVVz9cnJ8SbqzOhjhY
+	 FuP7YmyA5q0JQnRemYTDB972HNo0/xcrKiq6Tvp4wHWrIrbxpyWy6qyywS2XdmTKKo
+	 BwOqMEH4qdbHylgUaqsbCpA/nxU6+mIvgiy1j9Cl+4GVneJDu6vrOUfwFlq/yhSJhu
+	 8m469C7qqN6Tndm9qHns92wX6AKC7wp6BW+m/TckeXG3AHqaYagf3UhpzaSIbSwjFI
+	 Y7nBVBj5GnBKV+/cqV6hNvGcP+eB3bfQj5xju4Mabs9vmoLGRl0PeQp+UzCULQ+mXE
+	 basHp3FYdnlCji6o+zYHBXExTm6w31Tuizp49qN+SXsUynQoUMk8/C6GGBQqbk05G8
+	 b3EDtFn6wSD8Cca3GKK3+pdonSE6dpXH/i7f3u82AayJwYo93wsY0ZgUdoV3PDiMdg
+	 M8f0DpOxCr5bE32lYecVPczcm2FgeIduIlmEgVauY3kbdcTxYpGvq9Yok42i9QjGCn
+	 s83YLbTR6aWlA/ipyfbB2L95r6Pc1HmtmF3ptYJRU9lNyrLyLEft5MWKE6zRpwHz9Z
+	 INu/UMYiOpcQwBhPL03haMTJs8imQ4ZDX1VzMtRCEENOiFztPLYOZf/x698fVX1BWQ
+	 uH/fR9P7XMcfIdjMmC5gpllI=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id E729C40E01A3;
+	Mon,  1 Sep 2025 16:41:31 +0000 (UTC)
+Date: Mon, 1 Sep 2025 18:41:26 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Yazen Ghannam <yazen.ghannam@amd.com>, x86@kernel.org,
+	Tony Luck <tony.luck@intel.com>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH v3 2/2] i2c: core: Use fwnode_for_each_child_node_scoped()
-Date: Mon,  1 Sep 2025 12:36:45 -0400
-Message-ID: <20250901163648.82034-3-jefflessard3@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250901163648.82034-1-jefflessard3@gmail.com>
-References: <20250901163648.82034-1-jefflessard3@gmail.com>
+	linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
+	Smita.KoralahalliChannabasappa@amd.com,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v5 04/20] x86/mce/amd: Put list_head in threshold_bank
+Message-ID: <20250901164126.GGaLXMtqhTlUcFyf13@fat_crate.local>
+References: <20250825-wip-mca-updates-v5-0-865768a2eef8@amd.com>
+ <20250825-wip-mca-updates-v5-4-865768a2eef8@amd.com>
+ <49d90a98-f3fb-4df2-837f-53b109cfcd6d@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <49d90a98-f3fb-4df2-837f-53b109cfcd6d@suse.com>
 
-Replace the manual __free(fwnode_handle) iterator declaration with the
-new scoped iterator macro for cleaner, less error-prone code.
+On Mon, Sep 01, 2025 at 06:41:12PM +0300, Nikolay Borisov wrote:
+> Will you integrate it (Boris) at merge time or should I send a patch now (or later) ?
 
-This eliminates the need for explicit iterator variable declaration with
-the cleanup attribute, making the code more consistent with other scoped
-iterator usage patterns in the kernel.
+No, a separate patch ontop pls with the rationale what this cleanup is
+bringing, show asm and so on.
 
-Signed-off-by: Jean-François Lessard <jefflessard3@gmail.com>
----
- drivers/i2c/i2c-core-slave.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Also, there's this_cpu_read() and this_cpu_read_stable() - see comment above
+the x86_this_cpu* so which ones are the best and why.
 
-diff --git a/drivers/i2c/i2c-core-slave.c b/drivers/i2c/i2c-core-slave.c
-index 7ee6b992b..02ca55c22 100644
---- a/drivers/i2c/i2c-core-slave.c
-+++ b/drivers/i2c/i2c-core-slave.c
-@@ -112,10 +112,9 @@ bool i2c_detect_slave_mode(struct device *dev)
- 	struct fwnode_handle *fwnode = dev_fwnode(dev);
- 
- 	if (is_of_node(fwnode)) {
--		struct fwnode_handle *child __free(fwnode_handle) = NULL;
- 		u32 reg;
- 
--		fwnode_for_each_child_node(fwnode, child) {
-+		fwnode_for_each_child_node_scoped(fwnode, child) {
- 			fwnode_property_read_u32(child, "reg", &reg);
- 			if (reg & I2C_OWN_SLAVE_ADDRESS)
- 				return true;
+Thx.
+
 -- 
-2.43.0
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
