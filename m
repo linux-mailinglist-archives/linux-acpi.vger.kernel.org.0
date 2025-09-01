@@ -1,58 +1,58 @@
-Return-Path: <linux-acpi+bounces-16235-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16236-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B755B3DD4A
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 10:59:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3847CB3DD52
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 11:00:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E593117E262
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 08:59:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EDE5188AC60
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Sep 2025 09:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90CB02FF17B;
-	Mon,  1 Sep 2025 08:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2553C3019A9;
+	Mon,  1 Sep 2025 08:58:38 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCBC2FF15F;
-	Mon,  1 Sep 2025 08:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F492FF15D;
+	Mon,  1 Sep 2025 08:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756717117; cv=none; b=TulNGYtJmPQ4JW5sKE/VjaYlLXiDbbiDWZYwmlbC/By0BYHvsz2DOFL5SXisBPTrNWu8lIG/yzDIqoYL86Ce3JgBvLGnD1RH1kCwybtzZjBHQQ/oEw9pSND1VJ1xG8GwfdqO0k1EjvzxGsbW7g64t3js3PF+YnRZAi9Trf/xoJQ=
+	t=1756717118; cv=none; b=ldP4wpKI4IQ/ZPykYwvI/W9TjshJmBdRp0tVD5Hrja4x4x3eTVIyGIADk1+QGeczFbd4DOPf1BvQhcq/dN28+kR6tc9MWa+okAQtxtjyKytvZ4K4ZdBUUXoQrJ7IfR2Uf9DqHdaNgjDkXb8LihZfykYF35TYkNgLERBK2PnyKks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756717117; c=relaxed/simple;
-	bh=25xihmgNFYPtSP4uZbH8/sjypxcxoQ7omwmmQUSgg98=;
+	s=arc-20240116; t=1756717118; c=relaxed/simple;
+	bh=6PsNSJA12rQtQ1XvZDJQx6WZz6bBmX6iNEjUN6S7Ojw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IJfrYgKbDVGhnXyJm5T3z7y4pQKn3gMQsQOjXDgmsAZF2sW7OtDBn06W9K7BoCHRYndon7tIfOXFoS6SpeUNUAs96zU21D6n4p8B2c2W/pm5yGIwE66Ws5Zk4YPAx8bKMznVWjFtI4++rAwepGtIZJBiU/LgC+cf2wF/TgwfsSk=
+	 MIME-Version; b=dE2nQM2DFmjRotSKdmJcy9w578qDELfgzhaDPKNcS9nR/Q2R50lnw01HpHEtqpwzOvFDDFqDDb6BRnuzuFw1grS/zNsv21abQtnqa9f/9dvm/1qwHV+ipx6DUgxIPJDoXm6pBsH9qbw9uOcS3rRiq44d7UnPHL5XRE96hfLNnaA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: d3d01002871111f0b29709d653e92f7d-20250901
+X-UUID: d409ed04871111f0b29709d653e92f7d-20250901
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:91218b6e-7623-4861-8c97-36b43e2f0e7e,IP:0,U
-	RL:0,TC:0,Content:38,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:38
-X-CID-META: VersionHash:6493067,CLOUDID:f0135f5c24c77514b6cdf0eea2f8050c,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:4|50,EDM:-3
+X-CID-O-INFO: VERSION:1.1.45,REQID:d8480e87-b59a-47eb-81a8-7af7c0827343,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:76fb4ce374fb73e2a140740899724919,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:-3
 	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
 	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: d3d01002871111f0b29709d653e92f7d-20250901
+X-UUID: d409ed04871111f0b29709d653e92f7d-20250901
 Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
 	(envelope-from <zhangzihuan@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 1713458472; Mon, 01 Sep 2025 16:58:28 +0800
+	with ESMTP id 1893902058; Mon, 01 Sep 2025 16:58:29 +0800
 Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 092DCE008FA7;
+	by mail.kylinos.cn (NSMail) with SMTP id 6330EE008FA8;
 	Mon,  1 Sep 2025 16:58:28 +0800 (CST)
-X-ns-mid: postfix-68B5602E-667223740
+X-ns-mid: postfix-68B56034-203598742
 Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 03A5FE008FAA;
-	Mon,  1 Sep 2025 16:58:18 +0800 (CST)
+	by mail.kylinos.cn (NSMail) with ESMTPA id 99AA3E008FAB;
+	Mon,  1 Sep 2025 16:58:24 +0800 (CST)
 From: Zihuan Zhang <zhangzihuan@kylinos.cn>
 To: "Rafael J . wysocki" <rafael@kernel.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
@@ -101,9 +101,9 @@ Cc: Ben Horgan <ben.horgan@arm.com>,
 	linux-omap@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v3 05/12] cpufreq: powernv: Use scope-based cleanup helper
-Date: Mon,  1 Sep 2025 16:57:41 +0800
-Message-Id: <20250901085748.36795-6-zhangzihuan@kylinos.cn>
+Subject: [PATCH v3 06/12] PM / devfreq: Use scope-based cleanup helper
+Date: Mon,  1 Sep 2025 16:57:42 +0800
+Message-Id: <20250901085748.36795-7-zhangzihuan@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
 References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
@@ -123,61 +123,120 @@ No functional change intended.
 
 Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 ---
- drivers/cpufreq/powernv-cpufreq.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/devfreq/governor_passive.c | 25 +++++++++----------------
+ 1 file changed, 9 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-=
-cpufreq.c
-index 7d9a5f656de8..811fdbf398fa 100644
---- a/drivers/cpufreq/powernv-cpufreq.c
-+++ b/drivers/cpufreq/powernv-cpufreq.c
-@@ -892,15 +892,15 @@ static int powernv_cpufreq_reboot_notifier(struct n=
-otifier_block *nb,
- 				unsigned long action, void *unused)
- {
- 	int cpu;
--	struct cpufreq_policy *cpu_policy;
-=20
- 	rebooting =3D true;
- 	for_each_online_cpu(cpu) {
--		cpu_policy =3D cpufreq_cpu_get(cpu);
-+		struct cpufreq_policy *cpu_policy __free(put_cpufreq_policy) =3D
-+			cpufreq_cpu_get(cpu);
-+
- 		if (!cpu_policy)
- 			continue;
- 		powernv_cpufreq_target_index(cpu_policy, get_nominal_index());
--		cpufreq_cpu_put(cpu_policy);
- 	}
-=20
- 	return NOTIFY_DONE;
-@@ -913,7 +913,6 @@ static struct notifier_block powernv_cpufreq_reboot_n=
-b =3D {
- static void powernv_cpufreq_work_fn(struct work_struct *work)
- {
- 	struct chip *chip =3D container_of(work, struct chip, throttle);
+diff --git a/drivers/devfreq/governor_passive.c b/drivers/devfreq/governo=
+r_passive.c
+index 953cf9a1e9f7..a035cf44bdb8 100644
+--- a/drivers/devfreq/governor_passive.c
++++ b/drivers/devfreq/governor_passive.c
+@@ -80,24 +80,23 @@ static int get_target_freq_with_cpufreq(struct devfre=
+q *devfreq,
+ 	struct devfreq_passive_data *p_data =3D
+ 				(struct devfreq_passive_data *)devfreq->data;
+ 	struct devfreq_cpu_data *parent_cpu_data;
 -	struct cpufreq_policy *policy;
- 	unsigned int cpu;
- 	cpumask_t mask;
+ 	unsigned long cpu, cpu_cur, cpu_min, cpu_max, cpu_percent;
+ 	unsigned long dev_min, dev_max;
+ 	unsigned long freq =3D 0;
+ 	int ret =3D 0;
 =20
-@@ -928,14 +927,14 @@ static void powernv_cpufreq_work_fn(struct work_str=
-uct *work)
- 	chip->restore =3D false;
- 	for_each_cpu(cpu, &mask) {
- 		int index;
+ 	for_each_online_cpu(cpu) {
+-		policy =3D cpufreq_cpu_get(cpu);
 +		struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
 +			cpufreq_cpu_get(cpu);
-=20
--		policy =3D cpufreq_cpu_get(cpu);
- 		if (!policy)
++
+ 		if (!policy) {
+ 			ret =3D -EINVAL;
  			continue;
- 		index =3D cpufreq_table_find_index_c(policy, policy->cur, false);
- 		powernv_cpufreq_target_index(policy, index);
- 		cpumask_andnot(&mask, &mask, policy->cpus);
+ 		}
+=20
+ 		parent_cpu_data =3D get_parent_cpu_data(p_data, policy);
+-		if (!parent_cpu_data) {
+-			cpufreq_cpu_put(policy);
++		if (!parent_cpu_data)
+ 			continue;
+-		}
+=20
+ 		/* Get target freq via required opps */
+ 		cpu_cur =3D parent_cpu_data->cur_freq * HZ_PER_KHZ;
+@@ -106,7 +105,6 @@ static int get_target_freq_with_cpufreq(struct devfre=
+q *devfreq,
+ 					devfreq->opp_table, &cpu_cur);
+ 		if (freq) {
+ 			*target_freq =3D max(freq, *target_freq);
+-			cpufreq_cpu_put(policy);
+ 			continue;
+ 		}
+=20
+@@ -121,7 +119,6 @@ static int get_target_freq_with_cpufreq(struct devfre=
+q *devfreq,
+ 		freq =3D dev_min + mult_frac(dev_max - dev_min, cpu_percent, 100);
+=20
+ 		*target_freq =3D max(freq, *target_freq);
 -		cpufreq_cpu_put(policy);
  	}
- out:
- 	cpus_read_unlock();
+=20
+ 	return ret;
+@@ -256,7 +253,6 @@ static int cpufreq_passive_register_notifier(struct d=
+evfreq *devfreq)
+ 	struct device *dev =3D devfreq->dev.parent;
+ 	struct opp_table *opp_table =3D NULL;
+ 	struct devfreq_cpu_data *parent_cpu_data;
+-	struct cpufreq_policy *policy;
+ 	struct device *cpu_dev;
+ 	unsigned int cpu;
+ 	int ret;
+@@ -273,23 +269,23 @@ static int cpufreq_passive_register_notifier(struct=
+ devfreq *devfreq)
+ 	}
+=20
+ 	for_each_possible_cpu(cpu) {
+-		policy =3D cpufreq_cpu_get(cpu);
++		struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
++			cpufreq_cpu_get(cpu);
++
+ 		if (!policy) {
+ 			ret =3D -EPROBE_DEFER;
+ 			goto err;
+ 		}
+=20
+ 		parent_cpu_data =3D get_parent_cpu_data(p_data, policy);
+-		if (parent_cpu_data) {
+-			cpufreq_cpu_put(policy);
++		if (parent_cpu_data)
+ 			continue;
+-		}
+=20
+ 		parent_cpu_data =3D kzalloc(sizeof(*parent_cpu_data),
+ 						GFP_KERNEL);
+ 		if (!parent_cpu_data) {
+ 			ret =3D -ENOMEM;
+-			goto err_put_policy;
++			goto err;
+ 		}
+=20
+ 		cpu_dev =3D get_cpu_device(cpu);
+@@ -314,7 +310,6 @@ static int cpufreq_passive_register_notifier(struct d=
+evfreq *devfreq)
+ 		parent_cpu_data->max_freq =3D policy->cpuinfo.max_freq;
+=20
+ 		list_add_tail(&parent_cpu_data->node, &p_data->cpu_data_list);
+-		cpufreq_cpu_put(policy);
+ 	}
+=20
+ 	mutex_lock(&devfreq->lock);
+@@ -327,8 +322,6 @@ static int cpufreq_passive_register_notifier(struct d=
+evfreq *devfreq)
+=20
+ err_free_cpu_data:
+ 	kfree(parent_cpu_data);
+-err_put_policy:
+-	cpufreq_cpu_put(policy);
+ err:
+=20
+ 	return ret;
 --=20
 2.25.1
 
