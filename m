@@ -1,103 +1,193 @@
-Return-Path: <linux-acpi+bounces-16285-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16286-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2208B40A8B
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 18:27:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E15B40B33
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 18:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD4DD16209A
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 16:27:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C31203AAC57
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 16:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBD9322743;
-	Tue,  2 Sep 2025 16:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DEA33A010;
+	Tue,  2 Sep 2025 16:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="XO5gu2rh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DUWXTRxV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F768189BB6;
-	Tue,  2 Sep 2025 16:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5F1314B9A;
+	Tue,  2 Sep 2025 16:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756830435; cv=none; b=PHe25BjCZiiOwFdybmVtVS3dqTK50vgBS5Sq7/8dR1dACb33y9TiR0peWwydZUtEPUHSG6NcnimtdUTVGPwYTHdNHsLLOsGOiIaRuMdgLj4+w0Q0iWlyWjVemciRQvB1q8yqZXsxAHxul1mfJNaX3K9y6tibAAFWmR37yU9hpUk=
+	t=1756832076; cv=none; b=nPY53T2ZYi2ODHuRUTH7K2xcz/zBqEOcKjrhdrXwa2H7dzPqsaZoGyTyn7U6lbxL2EGI1B/T4kuzwYDqLY1EGfU7eMAfSAIf5xHfY+K30llhpjm6z3IgkDnsdRAepg0A9WQBS0MH1oDN9zSHATwMStbf84z9AhYu/v/5aMmQrII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756830435; c=relaxed/simple;
-	bh=K7Pny9lIg5eQlX20OS6fIAodLEVac6g7hW8/fJ1MfOk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CZEhkMbctQjQCYEYRmjSKAdckZp+zyCJNwv8GzVZ4Gro5om864VnjgdI14QcP9MhCo8bBgJLLo6g8nhKEsd8Ym3DHqK3M46/ofWyQq197QArReYGgas3Ge8M2f1jYVUuMxNC+koHnz40luFZltCs2KUESrAeBq8+RPJgunnZDCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=XO5gu2rh; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7F20B40E01B3;
-	Tue,  2 Sep 2025 16:27:11 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id pHUka_Y3i4FE; Tue,  2 Sep 2025 16:27:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1756830428; bh=F1Gxu5EpDot20ULZ+6IHr7LSES6y4Y3XB8335XIjm/Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XO5gu2rhzWY8gtS1KUb8gfnvcM19XLUsN3WEJBjcGuWWtdwFTTw7C5TGWoka1MRpt
-	 Gv7/aKC5aHG+bvYSHWBfxAVCkTtn9OAlno9PkXe/BWDbFAZ16LL6qVUkCkkZz8kNIq
-	 rdEW+FdCDUC14BgF4dmpJv1Hzj7PWGn0Hogg4LVO2Vlm7/olMkVK42x8G2uYc8QEYf
-	 p1NIWdhdePIccz0WGrp5lIxI52t2vIJ85C5oczZGx2L9YgyI/bhKutPYWxAyc0OWwn
-	 Zg6J/gL8vo+N2v3mlEYe57q9HGfMIULSNuwghNbo53rnqZ51wxO2g8KhsbHVzYrhOs
-	 Lr+anRn2oKWvxNHMZ7elo4fzwZBjxxznA0DYHDFbf1WDALtdLysH6vo+0/4baAlVbJ
-	 Aa9aozfQQLP2KqN1pUw09N5emRFCzu7sr+Pn3rYMlFcttq2N0FU+8rr5NGyJ+1SajM
-	 Lyl9TVn+1Q+1nPYvuhEHelie/uT03rwxQwfI9QA7c/QnY3vKtN9IVWaXMGzjMTC8D8
-	 M76rW4JD4ZSsiC7hX8pqCtIL4bT20kBgrKZ+NLbojOQrSS2TIi+lQW5FW6oKgpvD4A
-	 AjPJIRiLBArcspSzVDeSP3AQ+1pbbJVfstMBgl0+eEfThvfXEc3N/epWjYSpsVzdSP
-	 DkfUhWOhnvng128gc7b5VHL8=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 1387240E01B0;
-	Tue,  2 Sep 2025 16:26:58 +0000 (UTC)
-Date: Tue, 2 Sep 2025 18:26:57 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Yazen Ghannam <yazen.ghannam@amd.com>
-Cc: x86@kernel.org, Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-	Smita.KoralahalliChannabasappa@amd.com,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v5 07/20] x86/mce: Reorder __mcheck_cpu_init_generic()
- call
-Message-ID: <20250902162657.GFaLca0ebBdk9j1DHO@fat_crate.local>
-References: <20250825-wip-mca-updates-v5-0-865768a2eef8@amd.com>
- <20250825-wip-mca-updates-v5-7-865768a2eef8@amd.com>
- <20250901170741.GCaLXS3bUdUPksnMs8@fat_crate.local>
- <20250902133015.GA18483@yaz-khff2.amd.com>
+	s=arc-20240116; t=1756832076; c=relaxed/simple;
+	bh=guzP02KmT9+LPpIUdkrPHuphKMqdYx1IWJMSk1qSlnU=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=NQsiLvh6QsPEvTA2GU9lvpjRCE+1oCnQO93pEwofUsvKvvh9XMeNHuI251aI2W01xMZySN7y6GCC3WA7rvjFT/glJ9fYm0u3zAyn7wKA1HsYdTAzSSVRetOMPTSdjOKSpxliVs7ur7U0c8CiDgq89eaqP+fCa6PmNN4GJrL5TcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DUWXTRxV; arc=none smtp.client-ip=209.85.219.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-7209bd264f0so760036d6.1;
+        Tue, 02 Sep 2025 09:54:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756832074; x=1757436874; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=EnjBvFOmyr3GnC7myEsg56KC3/4DgBJKDXj/Ea4iER8=;
+        b=DUWXTRxVYj3rHI8C/AMGU8vFY5BWspAeb5VNK7Op98OKB3CoWa/T4lVTeEWVhkvj1r
+         NHLE/Bntjyupzfe0ARrzJq8+yq76H2vWCCwSEJnhX8U5kgAsyvdtfbYXKWS/JdMjKt/p
+         4THIAt1va8YeT7A9hi4RrlZwJ8r09DLiVzusUSf4/HTKrM5a6xjYUG1ZDGu5BAOrolBb
+         HtRvC0u69aT/7o4WH6Ka5kxtrXaNVll+8dE9lP8HBoZvQaOxoG9Qfab2E5COFlNBP3m5
+         oISTAY6G/Rjflc90ks4xQcOgMcM4il5wbuxbqJefTRuI/dnbmBLHnqtPK2TN03i+j785
+         ZO4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756832074; x=1757436874;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EnjBvFOmyr3GnC7myEsg56KC3/4DgBJKDXj/Ea4iER8=;
+        b=Jy8hFsu1Q1NPhUyES06XLzZbs9Cih5+bhFgmN5wOy2FXkYzz7xIlOIrhUs/6x3bm73
+         LgmCeJpp5TsqtRHCEPJNNt/G5P8Ol//ozM0kBB+bHZs34auQIeLE1kCQoRRZdQGb7ZeO
+         Duv7g6FhnK1ktTAdMCYvXYda8eIJDHut3JtlZWCQi4EYbJkvHvC4m6az1t9OD9BvLjiy
+         fuuSM9k/hCnDJ9peKF+JiIHqsXbdMOpIaKLtnUYKKDwWU6D+t7WtxtDx35de8alqDM8t
+         h8lJSO5WfzgcZbYOVpcWW3pp+uFG2is3tdPnkriN5TD0YmTnozV44Xh5Wi0A1Rw36y3e
+         RIDw==
+X-Forwarded-Encrypted: i=1; AJvYcCUb4Jg0eTnkA7CKfAHllXTSk0SW+gUZ3xus2eBzbehwwU2rC44wKtFvkL+PJaK6zNMl/qhyldRtS2xoB+x7@vger.kernel.org, AJvYcCUfZmvfkY1nVCKA09sIU47l849tx+o+N2tCwBhaNRTlaQ9+JEMrejaNJvRBbYdbiG4Q12FP54It9GKP@vger.kernel.org, AJvYcCVMj8hQ8OUfJjDmg6PfjN/TiMouX8L4KJvH7Z83DTCFaht+LPWjh5rdTHwXuam8S/IcyYYuRUH9TPht@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzxg/IpHppY5l5O7grKr4pZdbtMnAYzQsxydYq3opvWX2kZDKqH
+	SY+29+PCGzINXF9hUz1XeW3ry9O5rV91HYP8+JWmNLX1bVS0VpceEFy7iQysXvr4
+X-Gm-Gg: ASbGncsJz0vEs7PWgwW+MOTJdbCAnE/EuWfhw3pwz/QPblJ7kRQwlJ9i6rPXCx0R02i
+	4QMaClqtyLVc016A5UQpLncOKJ1WvZXPS/yf47EYChd+xPXgfj7Xn090jBonBrTEwWlDGxDLi9X
+	Bh9fV+adKgAAS0qr8cXkvl7m3U0rifHA59uRPc4ExVzK03ybMWva9j1ToRX7nDYe/WOEhQdWw9S
+	4FG9SYRhaCfywxvhFVTQ/3U7UdxtHRQTRK7PpRvb6zq0tHElz/niB4PyjB1YnRnNCzpH/qvH8Fo
+	uXl9Hlyj/sDMdqwuzBzIOEUfZvdeBhdw0chx4gMLzj0gzNZ6DqjAyX6zOsv044PwDU0OEXTpJvL
+	z2DXfUYHQ8PWg04f9STb1Lrrrc4SmRCfC6XJ20pEjK1F0yOJo9yj1vw45A+NoqpxRicsorHPK/K
+	eBFCxNLc5YAkAHeIDj
+X-Google-Smtp-Source: AGHT+IH55B2aKx3wQTamTWxHTlb0gd/ma4su7Ftwp1+lPNXFKFcPxuK7jT9nE2oxNM6Ls0cVwortyg==
+X-Received: by 2002:ad4:54c5:0:b0:71b:b093:c6f9 with SMTP id 6a1803df08f44-71bb093e022mr58679796d6.6.1756832073674;
+        Tue, 02 Sep 2025 09:54:33 -0700 (PDT)
+Received: from ehlo.thunderbird.net (modemcable197.17-162-184.mc.videotron.ca. [184.162.17.197])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-720b59b067bsm14243176d6.59.2025.09.02.09.54.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Sep 2025 09:54:33 -0700 (PDT)
+Date: Tue, 02 Sep 2025 12:54:30 -0400
+From: =?ISO-8859-1?Q?Jean-Fran=E7ois_Lessard?= <jefflessard3@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Danilo Krummrich <dakr@kernel.org>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, linux-i2c@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3_1/2=5D_device_property=3A_A?=
+ =?US-ASCII?Q?dd_scoped_fwnode_child_node_iterators?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <2025090203-epiphany-antsy-bf45@gregkh>
+References: <20250901163648.82034-1-jefflessard3@gmail.com> <20250901163648.82034-2-jefflessard3@gmail.com> <9ed3743b-4f86-42d3-94e0-8a720526dce4@kernel.org> <85D46ECF-B4A6-4C78-A4DD-0785FE58B2A3@gmail.com> <2025090203-epiphany-antsy-bf45@gregkh>
+Message-ID: <90211F66-7E6D-4C37-8452-EE88B1F94F53@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250902133015.GA18483@yaz-khff2.amd.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 02, 2025 at 09:30:15AM -0400, Yazen Ghannam wrote:
-> Moving CR4.MCE last should be okay, but deciding when to do MCG_CTL
-> needs some more thought. Maybe we can have an early call for Intel and
-> a late call for AMD?
+Le 2 septembre 2025 00 h 50 min 08 s HAE, Greg Kroah-Hartman <gregkh@linuxf=
+oundation=2Eorg> a =C3=A9crit=C2=A0:
+>On Mon, Sep 01, 2025 at 02:16:35PM -0400, Jean-Fran=C3=A7ois Lessard wrot=
+e:
+>> Le 1 septembre 2025 13 h 48 min 14 s HAE, Danilo Krummrich <dakr@kernel=
+=2Eorg> a =C3=A9crit=C2=A0:
+>> >On 9/1/25 6:36 PM, Jean-Fran=C3=A7ois Lessard wrote:
+>> >> Add scoped versions of fwnode child node iterators that automaticall=
+y
+>> >> handle reference counting cleanup using the __free() attribute:
+>> >>=20
+>> >> - fwnode_for_each_child_node_scoped()
+>> >> - fwnode_for_each_named_child_node_scoped()
+>> >> - fwnode_for_each_available_child_node_scoped()
+>> >>=20
+>> >> These macros follow the same pattern as existing scoped iterators in=
+ the
+>> >> kernel, ensuring fwnode references are automatically released when t=
+he
+>> >> iterator variable goes out of scope=2E This prevents resource leaks =
+and
+>> >> eliminates the need for manual cleanup in error paths=2E
+>> >>=20
+>> >> The implementation mirrors the non-scoped variants but uses
+>> >> __free(fwnode_handle) for automatic resource management, providing a
+>> >> safer and more convenient interface for drivers iterating over firmw=
+are
+>> >> node children=2E
+>> >>=20
+>> >> Signed-off-by: Jean-Fran=C3=A7ois Lessard <jefflessard3@gmail=2Ecom>
+>> >
+>> >Thanks for adding a user and splitting it up (Andy was a bit faster th=
+an me :)=2E
+>> >
+>>=20
+>> Very welcome! Thanks for reviewing=2E
+>>=20
+>> >> diff --git a/include/linux/property=2Eh b/include/linux/property=2Eh
+>> >> index 82f0cb3ab=2E=2E279c244db 100644
+>> >> --- a/include/linux/property=2Eh
+>> >> +++ b/include/linux/property=2Eh
+>> >> @@ -176,6 +176,20 @@ struct fwnode_handle *fwnode_get_next_available=
+_child_node(
+>> >>   	for (child =3D fwnode_get_next_available_child_node(fwnode, NULL)=
+; child;\
+>> >>   	     child =3D fwnode_get_next_available_child_node(fwnode, child=
+))
+>> >>   +#define fwnode_for_each_child_node_scoped(fwnode, child)		\
+>> >> +	for (struct fwnode_handle *child __free(fwnode_handle) =3D	\
+>> >> +		fwnode_get_next_child_node(fwnode, NULL);		\
+>> >> +	     child; child =3D fwnode_get_next_child_node(fwnode, child))
+>> >> +
+>> >> +#define fwnode_for_each_named_child_node_scoped(fwnode, child, name=
+)	\
+>> >> +	fwnode_for_each_child_node_scoped(fwnode, child)		\
+>> >> +		for_each_if(fwnode_name_eq(child, name))
+>> >
+>> >IIRC, your first patch mentioned that your driver series would only us=
+e
+>> >fwnode_for_each_available_child_node_scoped()=2E
+>>=20
+>> You are correct=2E Next version of TM16XX driver patch series will use
+>> fwnode_for_each_available_child_node_scoped()
+>>=20
+>> >
+>> >And this series adds a user for fwnode_for_each_child_node_scoped(); d=
+o you also have a user for fwnode_for_each_named_child_node_scoped()?
+>>=20
+>> No, I haven't found an existing user that requires the scoped version=
+=2E The only
+>> usage I found of the non-scoped fwnode_for_each_named_child_node() is i=
+n=20
+>> drivers/base/property=2Ec in fwnode_get_named_child_node_count(), which=
+ doesn't
+>> need to put the fwnode=2E
+>>=20
+>> I included it for consistency since the header defines all three non-sc=
+oped
+>> variants, but I understand the "no dead code" policy concern=2E
+>>=20
+>> Would you prefer I drop the fwnode_for_each_named_child_node_scoped()=
+=20
+>> variant and submit a v4 with only the two variants that have real users=
+?
+>
+>Yes please=2E
 
-I'd say move only the CR4 write and leave everything else as-is. It has worked
-fine until now. Unless someone comes hands-a-waving that we need to fix it all
-of a sudden...
+Understood=2E I will do so=2E
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
