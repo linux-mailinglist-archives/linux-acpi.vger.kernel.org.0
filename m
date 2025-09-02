@@ -1,48 +1,48 @@
-Return-Path: <linux-acpi+bounces-16282-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16283-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9682B409E9
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 17:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E268B409FB
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 17:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1EDC7ADCC7
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 15:56:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70C527B464B
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 15:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E408232ED3C;
-	Tue,  2 Sep 2025 15:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0540E32ED5D;
+	Tue,  2 Sep 2025 15:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QCpm0nFA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q/fJnIUe"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0BA32779E;
-	Tue,  2 Sep 2025 15:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E6632A825;
+	Tue,  2 Sep 2025 15:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756828655; cv=none; b=fzteJQ1ZF8DwHUO9qnuqMbpkIGwJwELvuQKgJsu5ynrboPaYPBlSBHam+Ip1MkbiUYRQYSsEfTcFMur2jcwes4qRzXN7iT0bSYQul2xJpN+bNDQNoJFB/jx7FzQal6oZs+BMBgXPJZvi140g2DA/HGKrwCoiiUkePbj4lhw7YXU=
+	t=1756828705; cv=none; b=ND2hA/HYF1eWzKIz9lT63yRAaC4ElkfE9AZYUUcZ8pwoF2cEbAufda52ICRTauYJ+WLLeRwdHf0q1YHX9gUJ2GzZ1ElYlo+6gwTdXCdE5UR7BB4GzThEprw4lklSkC7q9raeCUI+eY4DDv7GkeFq/4pBanxEB0y5ZnKNdcfpSqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756828655; c=relaxed/simple;
-	bh=oulaMx6/URE69aku7O02WZT2LJyGeZwWW9oibZaXKh0=;
+	s=arc-20240116; t=1756828705; c=relaxed/simple;
+	bh=p9LX1J8OB47eGZSBufCQ0NCMRaLyzY7dyM6OvdV2fn4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zvtr+hnPa7gX0qTPIceTHPsCYpjnvCRl72rlm/jkeVVVs1g5mf/Pk/TtDjiaPYHLKs7ZmKmGusSRqM2a+Li35gay3aP+JGlQ6Bbbm4ju0xNEhUw5MOwPKfRxIS45RDZx6iK2i4uKkulx1gWwvM9/1OloiOj5agpCYewuE2J3Voc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QCpm0nFA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E22BC4CEED;
-	Tue,  2 Sep 2025 15:57:24 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=hhJeQb5y3Ngruw/UIMKw0PSgeKBqXTzOs+qnXAPnvEqhODX446clcjkmhi/Eo27PsDU4CkAFrbFgeTiyTjx5hiR0IGsAsT3jNwmvTHCVJBxamIoTtB2Yu8RbBKA8I3Vz4w5HUx63havGLToQldGscKKfCcpMU7x6Sfi8xYF9/qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q/fJnIUe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0060C4CEED;
+	Tue,  2 Sep 2025 15:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756828655;
-	bh=oulaMx6/URE69aku7O02WZT2LJyGeZwWW9oibZaXKh0=;
+	s=k20201202; t=1756828704;
+	bh=p9LX1J8OB47eGZSBufCQ0NCMRaLyzY7dyM6OvdV2fn4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QCpm0nFA8OqlHw6hwDFdaR8n/MIxwCN7Hw7zPhbdV6ZnbaNRJrTDjnrK/f5OwvFCT
-	 o2fFMEgMXc3hP3ka9oJ7VgzD2MqmAi8WWtVmOCSMhGhwTDsFB7YAP1VlwEjrGxPkR0
-	 gRA0UvBQ+XMzjFv4lfHerXM5WYN0Xcsgf4uKQK1to/OuErcmrpqCNytqX9WsdTyt2y
-	 E2Ih4GmHi+UWU7owB15MuvtFfe9iwZ7xNSwYUYaZV+VTyXJMz+j0QAk9slfWfssatR
-	 FJ8iDpnwplN1DbuphLguGPmAm8UCYCJHsvu++drLD1gX65CO+pRhvzSpsCyP9a83Ef
-	 jjWNnJzVIkRRg==
-Message-ID: <b38e64cc-4971-4e71-931c-820453aa91a7@kernel.org>
-Date: Tue, 2 Sep 2025 17:57:22 +0200
+	b=Q/fJnIUePrEmtB3jGxs5sXxTiOpjkneVTfCS8aGXxrge+I7eRhoUp/VrWKw0Hp5Av
+	 7/yMMMoDY3uf4zbOr1qrCvQbUQdfF0rxH+L8odYDJGkEzL497fxrw04Ay5tgx5lKow
+	 2mJtK9hw1iTs3p7Nqm8rh+7jqov/ffrQu48zZ3jqGVJUgN/tlYOWCZu/pxnHyUHt8q
+	 rx60Oi0rBmJckMYvBhCX09gIsGWqa1rEdd40SEyfV5zBcUmJAcbkXfU6nC8L3Bn5Xx
+	 kKZSJDcxk0NBwX11+/u16ApogOs6MSqP278oWv9WSTWa3EtFMXF37agP5A/MeoJdgW
+	 fh/6kw64NW2Lw==
+Message-ID: <ff165a2e-cd63-462f-b2ea-cb27cb514ef9@kernel.org>
+Date: Tue, 2 Sep 2025 17:58:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -50,7 +50,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 12/12] PM: EM: Use scope-based cleanup helper
+Subject: Re: [PATCH v3 04/12] cpufreq: longhaul: Use scope-based cleanup
+ helper
 To: Zihuan Zhang <zhangzihuan@kylinos.cn>,
  "Rafael J . wysocki" <rafael@kernel.org>,
  Viresh Kumar <viresh.kumar@linaro.org>,
@@ -82,7 +83,7 @@ Cc: Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
  intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
  imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
- <20250901085748.36795-13-zhangzihuan@kylinos.cn>
+ <20250901085748.36795-5-zhangzihuan@kylinos.cn>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -128,40 +129,27 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250901085748.36795-13-zhangzihuan@kylinos.cn>
+In-Reply-To: <20250901085748.36795-5-zhangzihuan@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 01/09/2025 10:57, Zihuan Zhang wrote:
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> ---
->  kernel/power/energy_model.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
-> index ea7995a25780..852d48039ce2 100644
-> --- a/kernel/power/energy_model.c
-> +++ b/kernel/power/energy_model.c
-> @@ -451,7 +451,7 @@ static void
->  em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_state *table)
+>  static void __exit longhaul_exit(void)
 >  {
->  	struct em_perf_domain *pd = dev->em_pd;
-> -	struct cpufreq_policy *policy;
-> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+> -	struct cpufreq_policy *policy = cpufreq_cpu_get(0);
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(0);
+>  	int i;
+>  
+>  	for (i = 0; i < numscales; i++) {
+> @@ -968,7 +968,6 @@ static void __exit longhaul_exit(void)
+>  		}
+>  	}
+>  
+> -	cpufreq_cpu_put(policy);
 
-You are not improving the source code here. This is not how to use
-__free() and you clearly do not understand the source code.
+You are not improving any code here.
 
-What's more, you did not use standard tools which would tell you this is
-buggy and wrong.
 
-Don't introduce cleanup.h if you do not understand how it works.
 Best regards,
 Krzysztof
 
