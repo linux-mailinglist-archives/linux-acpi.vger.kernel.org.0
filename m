@@ -1,108 +1,147 @@
-Return-Path: <linux-acpi+bounces-16271-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16272-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6326B3FAF2
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 11:45:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31A6BB3FC8D
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 12:33:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 956CF172DEE
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 09:45:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5F7B4E3574
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 10:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C0D2EC093;
-	Tue,  2 Sep 2025 09:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YJIP64kK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678BA2EACE9;
+	Tue,  2 Sep 2025 10:33:10 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4388F26E161;
-	Tue,  2 Sep 2025 09:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FFC2ED148;
+	Tue,  2 Sep 2025 10:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756806300; cv=none; b=g0fIMc1MjEU3UVSWAZRRtZ+nKMiphnvK9WubEMgYK2SHI8uy3mpXuKCkgIJpTQVfBiSZa1Oip7uZhebFEMkX2UG/b1sgktjUgNdlTOrVPTixv8szbbBdD3PT5kaGMZPTkaasXUq85kncymneGP2WJyW/QOMJb7oQCLRw2SNv6Vg=
+	t=1756809190; cv=none; b=dfHHfdQ3hoh3LSRxxLZKZ4TWVjDDWJJ/aiH3H2HN+lKJaCvk2CsXrrgMZuDzn/Rp2h67h888fIhX2PhVmEcIgkpzu5TFpnK+h43UrT0zfze0rD8M64oiMWEo2VsP/5TAhfeD2860XOREhbod1BbZGNfggNNEQYJqYZJj4uFNh5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756806300; c=relaxed/simple;
-	bh=W3FhchwMGrBfGEBPQg497OJio42fh4lj/DiZs9ubwL4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WCBhUF9u2R+0zzL8UAkVADN2dUy2XNJ3jPEYgLAnAOUnZ9mmK1BRbLYbyP/8zk68oUiwiafl/1MwWDh+Zh4292mpHvW40W6tfWI5IMDqsXoSOeJZI0oTG5rvEhL+GrQ7XNoA2VM4FZPxatmTrgwMEKwHR68+g9aWrLx/02A8Z3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YJIP64kK; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756806298; x=1788342298;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=W3FhchwMGrBfGEBPQg497OJio42fh4lj/DiZs9ubwL4=;
-  b=YJIP64kKq41lDg57J4fxeAEEVYhknke5hV3Ih/aedFJBVNFNowQ2UzsB
-   3+LwYACMTm8/HjwSyhXzNQwN/m9PpxON/hQR6qOhgAUfHQV1JZRpYXko2
-   WP2sPZsUk0IuKeUNjbP6wFWZ2Kjxm8qbgmw9ajByGfVwYBATF9G4uzwCA
-   4FIHPs6EQ3YVivlF0Uc+ZuFfpkIqyJIkOunHDKpwf9SkkpBhDfZqWcnPl
-   Gpken8oZnN/51OaMISLsHlE2D2kSqQPN2IExX4lp4+jeCad8UiyOfAN3N
-   iEKUmAI0fzXtbM7Rd99ExdF4PN9qQepS1fCve8uhxjiELqe0eYrGaQnS3
-   w==;
-X-CSE-ConnectionGUID: Go8HfspfR/WbpXSOwPl61A==
-X-CSE-MsgGUID: U+4cDd33Q4uie7RaCzAJaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62901143"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="62901143"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 02:44:58 -0700
-X-CSE-ConnectionGUID: 2dLfsjlCQwOF6IwFbzr5PQ==
-X-CSE-MsgGUID: iEVQHMTuSB+kEOHecW3R1A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="171594293"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 02:44:55 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1utNZM-0000000AerL-1nLN;
-	Tue, 02 Sep 2025 12:44:52 +0300
-Date: Tue, 2 Sep 2025 12:44:52 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: =?iso-8859-1?Q?Jean-Fran=E7ois?= Lessard <jefflessard3@gmail.com>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] i2c: core: Use fwnode_for_each_child_node_scoped()
-Message-ID: <aLa8lGxHvCd6nreg@smile.fi.intel.com>
-References: <20250901163648.82034-1-jefflessard3@gmail.com>
- <20250901163648.82034-3-jefflessard3@gmail.com>
+	s=arc-20240116; t=1756809190; c=relaxed/simple;
+	bh=L8JaUs3SOhVHk302t291gHlKh5NKD5qAHGAnGijZbM4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=azXb57iSNxQajeST1qYtisZ3/3TIw215OeN1HolMp7qM+G+mSjXWrOn9KWpf9/zQgxVXA2aUUD+dybgk03VeZ3k10jX6TqJDHSyB035OI7r4p2BXiuXbPAmkIxBXMxzIX0lIcjqbpZQHnpSPAueAD857K1tLQps5KoDiBSRPnv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 3107081c87e811f0b29709d653e92f7d-20250902
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:3fbf43f8-ebc9-4b27-884e-79c619713230,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:7ac0a2afc203774c376dc034898cbd81,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 3107081c87e811f0b29709d653e92f7d-20250902
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1546738643; Tue, 02 Sep 2025 18:32:57 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id A718FE008FA3;
+	Tue,  2 Sep 2025 18:32:56 +0800 (CST)
+X-ns-mid: postfix-68B6C7D8-5510786
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 589C2E008FA2;
+	Tue,  2 Sep 2025 18:32:48 +0800 (CST)
+Message-ID: <29890791-4ddf-49c7-a4f2-0ac83e6d53c6@kylinos.cn>
+Date: Tue, 2 Sep 2025 18:32:47 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250901163648.82034-3-jefflessard3@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 03/12] cpufreq: intel_pstate: Use scope-based cleanup
+ helper
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
+ <20250901085748.36795-4-zhangzihuan@kylinos.cn>
+ <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 01, 2025 at 12:36:45PM -0400, Jean-François Lessard wrote:
-> Replace the manual __free(fwnode_handle) iterator declaration with the
-> new scoped iterator macro for cleaner, less error-prone code.
-> 
-> This eliminates the need for explicit iterator variable declaration with
-> the cleanup attribute, making the code more consistent with other scoped
-> iterator usage patterns in the kernel.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+=E5=9C=A8 2025/9/1 23:17, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> On Mon, Sep 1, 2025 at 10:58=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylin=
+os.cn> wrote:
+>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+>> annotation for policy references. This reduces the risk of reference
+>> counting mistakes and aligns the code with the latest kernel style.
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+>> ---
+>>   drivers/cpufreq/intel_pstate.c | 8 +++-----
+>>   1 file changed, 3 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_ps=
+tate.c
+>> index f366d35c5840..4abc1ef2d2b0 100644
+>> --- a/drivers/cpufreq/intel_pstate.c
+>> +++ b/drivers/cpufreq/intel_pstate.c
+>> @@ -1502,9 +1502,8 @@ static void __intel_pstate_update_max_freq(struc=
+t cpufreq_policy *policy,
+>>
+>>   static bool intel_pstate_update_max_freq(struct cpudata *cpudata)
+>>   {
+>> -       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D c=
+pufreq_cpu_get(cpudata->cpu);
+>>
+>> -       policy =3D cpufreq_cpu_get(cpudata->cpu);
+>>          if (!policy)
+>>                  return false;
+> The structure of the code is intentional here and there's no reason to
+> change it.
 
--- 
-With Best Regards,
-Andy Shevchenko
 
+Got it. Thanks for clarifying.
+
+So for this case the current structure is intentional -
+
+should I also avoid similar changes in other drivers?
 
 
