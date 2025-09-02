@@ -1,118 +1,117 @@
-Return-Path: <linux-acpi+bounces-16266-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16267-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872DBB3F4F3
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 08:04:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD03B3F7E8
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 10:14:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EF5517FDF8
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 06:04:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98E811B210E5
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 08:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B1E284885;
-	Tue,  2 Sep 2025 06:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082022E92BA;
+	Tue,  2 Sep 2025 08:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vo2q37RK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VWXv6+7J"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2F7E573;
-	Tue,  2 Sep 2025 06:04:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E292E6100;
+	Tue,  2 Sep 2025 08:10:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756793094; cv=fail; b=A3ci7W7Xgi9dVxOZesL0p1/X63W/9oWd+iyvoIzQ0M7tb6aM0NlBWARWclzlNLjUcUwquBRsfazbm5X4u6/Uiu1KIqdCjbgzWyCK2ynx2/jiEMZHFaubFxSi/s7hDj1yqxutdnMzOhSPRByELRLSeZMYSB8goXR0Lc2ALK0tGNw=
+	t=1756800660; cv=fail; b=fgdXe7IQPmP4Qeq37YscnINU8pX7Xa/m1crEIZLJHfpcNNi19mugsRnQ1Mwj+V4Mo51tKMOeuDboXHbrzLZ0vsb7COzeGQxin0B1lTBLa+I+L7mHLFAkOZpbt1/8IxBlspOJKhGalQdmUedutSdv5hERfz/7IkiHMck7iNpkf/4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756793094; c=relaxed/simple;
-	bh=3LmWeYNXr2bYg2SjivJtd2cDVDbj5XaUczhOKSNKvp8=;
+	s=arc-20240116; t=1756800660; c=relaxed/simple;
+	bh=S/4M+jTZ7acTRxExpd19yzx6sbI/LcfWSVffJhNCXc0=;
 	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=NTHLZlxhjkqhJwjqG2BAjKHqRb5f42QGdZH0Hdwhh1C37mYK1zD8XEbjNs13P5apih3hpGI8AgTY7dEz2+pk9sjh3bhTJambxHTOVrdf0izf0qk3snCP4EnET8BXhrmwMmP7Zab8Ja4/grvA7uVQj+REch6P8MHi8cB9mxe6Pkc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vo2q37RK; arc=fail smtp.client-ip=192.198.163.18
+	 Content-Type:MIME-Version; b=ACuA+7XWBuhb885RpQ+aDs4UsMH7oGIKDGcYrtxRXcWtld1rGk6+YVywEUM+I0I2fmLr35RMQ9zdt/eXLSIh6MmqdTs1cpyhYo1QNpLyrjxI+jrffXKsnY+WysuH/A9S9ulgmH4rj4cyP4rW2CLlsYk+hqEwWaVphdcsM5qaMOE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VWXv6+7J; arc=fail smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756793093; x=1788329093;
+  t=1756800659; x=1788336659;
   h=message-id:date:subject:to:cc:references:from:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=3LmWeYNXr2bYg2SjivJtd2cDVDbj5XaUczhOKSNKvp8=;
-  b=Vo2q37RKAekWZiVS/WefBL5ksgKxMWZHrX7KDYdPT5U0hlJI5FhEEtjM
-   hcCXCQ4CGfs1RCkrnTFCimG6VhSR6AABeXmE0l1SQRpcr7TG8CLWuzj3d
-   LsjTcvk/0OWO0iywXfpJCclUC4GKkoA/Gr6eke9tLtR/Lh+qn7709VIcb
-   j9YOJPJ1wQVGNdd7vf8JmsuVne+lJp7x1Co+X1gi88uBWTrkaI2WtwBOQ
-   71Zl5QlCPB6hRHfmbQ+B2g7kbz3UgjutAeBMh/RvmxBjSoNLDMY5wu+gC
-   EUijdiB4MbOQoyqUvRZ3K47sd6xpqHu201v1dlT056CXYW2rsoqSjgMgs
-   g==;
-X-CSE-ConnectionGUID: bjj6vUjuT5SJlm4ie3Jy2A==
-X-CSE-MsgGUID: KJ295sIqSkOIz+pPiLzlYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11540"; a="58252863"
+  bh=S/4M+jTZ7acTRxExpd19yzx6sbI/LcfWSVffJhNCXc0=;
+  b=VWXv6+7JrL/fkJbTyZNYF2Lq43R8oiQE/kWdOQ2Os+8HHR6WQjurXstx
+   6ykMHJorahh+H4qxEKmBDX3NY3EkaUZBBvh8xF7AeOf+zKBpKCu8Hc6Xx
+   gnU/O86BaLG7gnpx/1mdZoJ8mybxoOrdyggNsa0b9q01hS+BTXxMAPGmV
+   TNPQ7zBQIocaZPGUDGAiRX+nGr/AFiM4VjmMDPvJRBm/27oq5SESN4e3j
+   Gkug54ec6XTO/z4o1DhqHZQDdhOiKbLWuFYlVaLYPqdTzUAvSaf44Zzun
+   bG6oepiQG+iI51S4tHckxdvB9TFZ7awQtqG//Fjn4tZXfV0xmWJEMmO+u
+   Q==;
+X-CSE-ConnectionGUID: 7EuVLy+cSXmq3bD8BFetIQ==
+X-CSE-MsgGUID: hTHsqmtmR+u9kHOzTOC+mA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11540"; a="61700340"
 X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="58252863"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 23:04:51 -0700
-X-CSE-ConnectionGUID: ca5AliOhRCaZPVeE6OLRpQ==
-X-CSE-MsgGUID: 7gwfEJ6IRj66F/X/ikOaww==
+   d="scan'208";a="61700340"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 01:10:55 -0700
+X-CSE-ConnectionGUID: jR2DcXH1TQG5FAcfUsYlUw==
+X-CSE-MsgGUID: /Og5jNxiTRmt2FUcD2/qJQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="170447844"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 23:04:49 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+   d="scan'208";a="176532541"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 01:10:54 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 1 Sep 2025 23:04:48 -0700
+ 15.2.2562.17; Tue, 2 Sep 2025 01:10:53 -0700
 Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Mon, 1 Sep 2025 23:04:48 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (40.107.94.43) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ 15.2.2562.17 via Frontend Transport; Tue, 2 Sep 2025 01:10:53 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (40.107.220.58)
+ by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 1 Sep 2025 23:04:48 -0700
+ 15.2.2562.17; Tue, 2 Sep 2025 01:10:49 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=i1iEku4B+zHMvDCYW/HJLHb2kRr/Bq90d/n9p6IqdsOn5oJNBwsv5TJ9uSF48MKUADiFK37+NMD80P0FIhx6r7K9sdqtokpTZ9edBzSig8p+Yd+ILdxrG8PzQ/2Vl/t8rF5guh6fVkHtWNzOSeav07OMqfdHgq8hznOslhOyEWU+bypw2ZrlSI83QCDTYe3tfBOApMJNo5k8O4Ydwaca299bWOMdsLD2tD+LK1NKrtQLFvu4MNTHXuujz5Et2M5Pusa0gSe1qRTcqQJzYIjZ6SbX6bIUf58QoTy32qQxlUqKyorTApfK7OKMW3ineHcULWnUPmdHUwk8kAwWiRBr6g==
+ b=u+bEoiP1ueN2u4APRLIQr6WajSENKz5g1y3K+JZvkB3ibBygxAkLYOq7OcO6cVaGMti3ZPEoVnLW2i3KNC1b6O7AM/0UJ4jURsND8UW42kDErVEMhxHCe/ytkAAmcaPKeu+TbUyqs3ujETD/6uuRqFxOrYcJUeAIKpXUnn4+WYp7mnGvFI7e58OWlIJ08YieRDjTL0fO8rtGrnvOAr9SJnG8C/AXMvwaNtmwa1lhTFM2ow4dTL8S8X43chfw1DLZns9ZPWl/QwpXs7PqWNlhjbpShA6QrK1//wABsLcgb1znKF/VM6TTjKvom2vdXtz54Ej2ZUI95xlTa51qzXnD7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q5VuO5bHxN08OWlC4VsWru7bR9M9ucbAKbyvfJvQ/20=;
- b=YnpLlo3i834ZMJAfGD+JkxZStHkrSDc5pdwt5/r1X7IaEVZvIL1ua6BiJWNO7svmvpP5s4iN1lpKdicXlGm2CvDIkex41T0y1EmV1Q+gq6fm9P8uGi3Np0SnykpBEcQa4EtG44KctzXXgNG0UZ72DrUjFIaJxhvyAVwUAZ23JZLFaLVYhrWcYzT+Dzh+19PG9xL7sY9K1mCZxWEQ0oN/kdQSi1wdviE/qo1uKvcynWxGxEvoiugpYmnkhAMASgE41lBTBDLFHgn73Yn+gfr+tQtu3VJt39Sk1CisBZHAQ1lgQa47goqoGFUof9yPqQg5YewvJgRBCTXaCoUSSezGQw==
+ bh=XoN71rHXB4JGrY8IaMrRD8NL8BUbew4N7ppY0RFDGh8=;
+ b=LV1G100IeTv4GZud4YrH+9I8Q6PTSHTsbBihj71x4Adib4OGdvIVXgYmcf7eNvhBIKqe95/Gx5BaWNCmvaiOeAsUyCxmpJV1UN4G2endy+1nSkBsWnN1gAh2lUjW12+KocBkMTmGAr7WR5r2MSJsIwKEzeQT38bMpxnG2iEwDwfL8Gb/PAtYkzMfkxIRQZ2vQkqeRd36nKDEbq2phnUXIHxKDTi88n1ZkIZF+xbFj6wgVwloG737x7J9StMm1X0CElgX68vHTyfxfH0O7Xfj+YdhtWi6Fds8cwLySkO7HaocN4Qt8JHG/oLaD1Vp39uMCHtN5Kia1caqxy9miN/JOQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from BN9PR11MB5530.namprd11.prod.outlook.com (2603:10b6:408:103::8)
- by LV8PR11MB8770.namprd11.prod.outlook.com (2603:10b6:408:202::19) with
+ by IA0PR11MB7308.namprd11.prod.outlook.com (2603:10b6:208:436::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.21; Tue, 2 Sep
- 2025 06:04:45 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Tue, 2 Sep
+ 2025 08:10:48 +0000
 Received: from BN9PR11MB5530.namprd11.prod.outlook.com
  ([fe80::13bd:eb49:2046:32a9]) by BN9PR11MB5530.namprd11.prod.outlook.com
  ([fe80::13bd:eb49:2046:32a9%7]) with mapi id 15.20.9073.021; Tue, 2 Sep 2025
- 06:04:45 +0000
-Message-ID: <7c8b72f8-b07e-4c18-9aa9-d971caefbbb2@intel.com>
-Date: Tue, 2 Sep 2025 11:34:36 +0530
+ 08:10:48 +0000
+Message-ID: <a8cd620b-a3bd-4350-b2bd-741bfb0e8a96@intel.com>
+Date: Tue, 2 Sep 2025 13:40:38 +0530
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v4 01/11] PCI/ACPI: Add D3cold Aux Power Limit_DSM method
-To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	<intel-xe@lists.freedesktop.org>, <linux-acpi@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>
-CC: <anshuman.gupta@intel.com>, <rafael@kernel.org>, <lenb@kernel.org>,
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <intel-xe@lists.freedesktop.org>, <linux-acpi@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>, <anshuman.gupta@intel.com>, <lenb@kernel.org>,
 	<bhelgaas@google.com>, <ilpo.jarvinen@linux.intel.com>,
 	<lucas.demarchi@intel.com>, <rodrigo.vivi@intel.com>,
 	<varun.gupta@intel.com>, <ville.syrjala@linux.intel.com>,
 	<uma.shankar@intel.com>
 References: <20250529111654.3140766-1-badal.nilawar@intel.com>
  <20250529111654.3140766-2-badal.nilawar@intel.com>
- <1c5ddf3c-5184-45aa-878a-48df2c5d6aed@linux.intel.com>
+ <CAJZ5v0h7BENMDCOHVD6ZdF7o1OwE=RAOzkC0+r+G=-3qpjfn0Q@mail.gmail.com>
 Content-Language: en-US
 From: "Nilawar, Badal" <badal.nilawar@intel.com>
-In-Reply-To: <1c5ddf3c-5184-45aa-878a-48df2c5d6aed@linux.intel.com>
+In-Reply-To: <CAJZ5v0h7BENMDCOHVD6ZdF7o1OwE=RAOzkC0+r+G=-3qpjfn0Q@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0116.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:11d::18) To BN9PR11MB5530.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA0PR01CA0054.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ac::6) To BN9PR11MB5530.namprd11.prod.outlook.com
  (2603:10b6:408:103::8)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -121,100 +120,98 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR11MB5530:EE_|LV8PR11MB8770:EE_
-X-MS-Office365-Filtering-Correlation-Id: f81297a8-a560-49d5-ee5d-08dde9e69dba
+X-MS-TrafficTypeDiagnostic: BN9PR11MB5530:EE_|IA0PR11MB7308:EE_
+X-MS-Office365-Filtering-Correlation-Id: fec5babf-506e-4a42-8c89-08dde9f83920
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Rit1MGVtSi9YcEJpWkNNRlhnYjZSM1NZM0hLN0dFck1IMksrZ2E3U2VkOEkx?=
- =?utf-8?B?RnplWGJnd2x5amRUNXJVQ2l3RlN1ZDR4Nm5xRlNqRVp4YUhGU3BlK3B1MGxM?=
- =?utf-8?B?aGpKTFplRXNsMkcyL0hHQU93d3JpZytxYXQzYWRFVHY3RURtTFI0MHFwbEZ5?=
- =?utf-8?B?VmY0TC90RllzTGNkWjd4WnFHVHk1Um1Pa3plWjdoSEpNZkttTzl2STZqYTZq?=
- =?utf-8?B?Qy9kRXNpSWlxakE4eVBUeFBJbVJvZWNkRFBhR1Z4a3QwRFBhTjJ4WlprZGpR?=
- =?utf-8?B?Ylh2V1pZM2pRYUtsYTI2amZCZGNuRmN4cVVCOHpON3cxZWpXWjBPYmhLSThj?=
- =?utf-8?B?SGtaalFKcFJoYlp4eUpnQ2RPM2ZIeHhxNEZoVnF6a0RHbzVUZTRqNS92M3hF?=
- =?utf-8?B?dzBMZ0M3QjdsVHlBK1hRS3Noc1B0RzExVU9TRXF3UzI4UGtuUGJRSjgvQ3Bh?=
- =?utf-8?B?YzQwQ1lsR25XdmQyM1JlaW5nSjlOejdGa0ViV1QwbUNHbXp6ZzNTdWpNb1Zt?=
- =?utf-8?B?VXIwdmN2K3RZanM1UGxRZmR3dFVKcFN5bDF1RThIUll5bjNibXlxVmdFeVI4?=
- =?utf-8?B?QnZSSFNnN3gycTBwL09VZk5PSmVEYlFkNnc4Sng2V2hBeHYyVVhxTllEZnNq?=
- =?utf-8?B?eW5HV29LVWttUXlNZTVuSUlTMHJxalp6eFBYTGs4NVZJYTlSeXBiWUtBdXJp?=
- =?utf-8?B?MXZRK3V0bmtVZVhSRTFqM3dQdmdxblhrR1NRNEJBQURxRXdhRFk4NWpERlht?=
- =?utf-8?B?Z3B0ZDhJRjRPT0hSZnpGTm81aTlXalB4VTQ3WkhaNjRWTkJOb0xZWjBPUXlP?=
- =?utf-8?B?c05xL3psRUlabmNadGxmcEwxYktCZG02QnNWNEc4THN3R21hbUI2M3JFMUps?=
- =?utf-8?B?MktsVGJjbzBoWTA5cEVJQlB4akF3QUtkWTdydG8vRmlmcW1nRkFDbFV4NVJn?=
- =?utf-8?B?cURESDZwMGF1eGdLNld3RzNHbXlraWtWQ3lDTy9TWmhWZGpnNHB2aHpuZktV?=
- =?utf-8?B?dTRKRUloSUFTZy9jSDVzQThNR2NvbUV0OXNROTM3UWVRVzNZNVg4QVg1VjQy?=
- =?utf-8?B?VXE1Y1Q2a0dPdGtTMnJJZ1UvcWZFcktmNUxxT251eVhRdFlvVFROc09vRXBC?=
- =?utf-8?B?bG1RKzdLRjhwRkUwME8zTXJ3akVzRitjQ0IvYWFZVFc0RnEyemI3cU4wdnBk?=
- =?utf-8?B?Y2E2eW01ZmNoQUgrWEd2NE1va0dCL25BWk5FZEtnVkhQc0NEMzhETGpIZWdr?=
- =?utf-8?B?emRrb3lIa1l3SHR5RjQ3czh1Qk54L2Q4aU1YNmlIa1RHU3NUKzhmNjh4YW5l?=
- =?utf-8?B?Qmo5dkg1SzhTTGlKaC9rQ2FuN2REeXZ1RW94NWRiR0lqTXBlOHZNcHVTWDd4?=
- =?utf-8?B?L3hYVFhvakdaOUhIVjVDT3Q0YWFzbG1qUHB5c3BmMVlMWjRuWndaWkdPR1hN?=
- =?utf-8?B?cjBSNlNaYlFpblB1UjExd2R5YVppa08zTU1aekpGeDlBM2NyMG52SXhMUktN?=
- =?utf-8?B?ZlBrS2g0elZQRWloT01KUGJkNi9QeGUxeU1pNmxVNTZkVzhqRzQxZFErOVBP?=
- =?utf-8?B?MUVzcGRQa2FHWWRvWWVzWXFXVHhNdyt6SFNTdVh3bkVDRCtWeDVNVTNXLzdq?=
- =?utf-8?B?QU8vTWNiTG5COFBubE1NWXhNT25vUC9UUVN2Wmc2Q0duQ0dFMUhaYVkvYjRh?=
- =?utf-8?B?UFk1RkNjeEZydkgzT0tnNmRGZFN4MEo1WjBvUlBnN0ExbDZ3NXpsV2tpVnpK?=
- =?utf-8?B?NFhyMGltb1h6M2JRTlBsZEtyYWNsWm1VVy9QNThWMDZZQ3VoVDdJc0NURUg3?=
- =?utf-8?B?MW0rWlBMNDZINFRNS2RrWlJSOFBmeDZGeFQrbzJZdUhMWXNTQm1kMVZWaGMr?=
- =?utf-8?B?MnV4OEhzcjN0d1lnSk1BVnM1cXpEclhwejJKZi9CZExuODNRblFwVkdHZVVI?=
- =?utf-8?Q?8iq0Yf0qSJM=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5530.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?cjVjdUx5RjRXMTV2Mml4THh2M3JERThXS0dMSlVUMHh3ZUlVWTRWVU1DM1pT?=
+ =?utf-8?B?UmJXdXBaak96U3JGdkx6SUlpYlFhazdwL2tHZVF1a2ttLzZmQUdDZFJ4bEdS?=
+ =?utf-8?B?bWxrTWpKU1F5VzhFdkcrd3cwVHpPMmt4bm5FamQ3cTZLTXhBMjBMUVoxbkx5?=
+ =?utf-8?B?dXZZVlQ0alc5WkFSUk9WL043V2thWXc1c3pUSWR6bjcxZVpKampIblpQQXRv?=
+ =?utf-8?B?eEdBR09Rcjh2SkI4bzByTlVvNGdQdlpaUzZVWDRvVXk5ejFOS2RrMlVMbE9q?=
+ =?utf-8?B?OVcrRDgyY0I1RDQ3d1pUNWlFa3JlTEkyZk9YWkRrN1pCMDFMQUpZam1zYlJI?=
+ =?utf-8?B?eGNNUzUvTUNlM0ZaazlmalhUTVoxLzZaNmlXZzdqSzhwL1RxdlEyalEydHZr?=
+ =?utf-8?B?V0gwNGdIWGdtSWpWMlR3L2RFaFRFK0ZoZWVLbEtEY25UYUJpdktIZU5Ta1dH?=
+ =?utf-8?B?REtFc3NSY2R1U1pETjIvMUFYU1ViWENPSEh6WjdudEFIbm02VUp2cENTVTdj?=
+ =?utf-8?B?dUxrWDk0K3l2N1NROTZwVC9tM3ZSb0lRa3pmTjE0RFBaWXo4YWtvbFBsYUxY?=
+ =?utf-8?B?UU84eU5mSXpCdUF1Y2NIenlXYWh3RDBsTS85VjZ4azJGN2NGejcxY1VmbXY1?=
+ =?utf-8?B?MWdaeTIvdFZ6bHVSZUJxb3ZEU3k2SnJ1aDk2UGtvTU9XQVptQzhJaURCUzh1?=
+ =?utf-8?B?bUhFdllGdUFQTlZ6Z0pYVmEwak96eVdHNFFUZ2RNcHEzL3Y4ZjlrNmZPQWt1?=
+ =?utf-8?B?UEJwTzdtTWRlUFVMa3RaSkxQUkZtWTlKVW5XRi9tNWJ2enNWWGcxNlpwUS9w?=
+ =?utf-8?B?T3pzbkE0a0JXR1YrSlp4M2ZqVm9ZZ1cxbjRMQ2FXY1pBN1RlR3FKVWNYQ3FZ?=
+ =?utf-8?B?OHF6eWlBbDlZb3dYYldYQnVvRVRYczFUYjFCK0FiY3ZTbFNYeEpqV3hndG8v?=
+ =?utf-8?B?SWN5aHBtVWRqTVFzT2FJWnNOQTFRdWorRm1sOTdzM2loQS9hODFDdzh2YnRt?=
+ =?utf-8?B?RGxTcG55a3VOY1lmUzNOK1Bwang4dnVVVWFsMmpTUVNEaHd2aHZGMFdQalcx?=
+ =?utf-8?B?TE13VHhHNjh0YlB0ajh1eE1zdFRlL2pQbHJ3UFdQbGhXUTlqVkxjRzAveUxC?=
+ =?utf-8?B?ZURSNzR1S3pSTWh3WndFZUVGeVlteW5zT3JlLzRrV20zZUlBeStMSmswbVE2?=
+ =?utf-8?B?SXZ1RWp3b1FkZDNIQjVYdUlQcUR4aGN2MzdEUEJGQXJkMlF5UHd5TE9sR2dp?=
+ =?utf-8?B?eWxPK21xNUh3cWc1MW9UWnBYTkJ1dFV3NkhuZmJOdzJqU3l6OUkwN2JLb0Qx?=
+ =?utf-8?B?QWplMzNVZ212VDE5NzRqekRTOFFqdTkxYVcreHI5YWhMNTFpdFZOS0JFdEdG?=
+ =?utf-8?B?SyttZ1RYdUtGMU03U0Y4bGEzUTJjekdvQm43RFEycFlIeTJWSlF3T3FSaE00?=
+ =?utf-8?B?MU9nSnVSY1p2a0hQZHNKay8rcWJwK1hJU3lZSzQrUHpCN2VEekl2bmszSUg5?=
+ =?utf-8?B?WXlCZm9GUGZXZFQ3M0liY2tLZzhLZGV3QnpXRVpaUEhCL1EwcjJ5Z0U1bkRP?=
+ =?utf-8?B?SkJtMzR5aTVKazBFTDQ3dWpkZ1BSYk1CWlZMbTdkcFNjZUtEVkVHVFpUcXNk?=
+ =?utf-8?B?SU0vWStXZGxraXczOXVPelA2WWVKL0s5aFhKREFqaFkrTzBlNlRFeFN5Zldy?=
+ =?utf-8?B?bVA2ZXlWWGNsV3dkZlhrMkNnZnRHTHRWTWQ1QStleXIvcVp6ZDR6MmdmenBR?=
+ =?utf-8?B?ZW42Nk0raG8zUUdoQVl1YzU0cmV6QkZKV1VmYzEwZkFwU1dyUkFsMGUraUQv?=
+ =?utf-8?B?b1FyN2J2VlE4R242NjdWZTBmbUdRY2ZtUmVTblp2RTlGM2k3R2dPOGh6V1lV?=
+ =?utf-8?B?dHIzTzRucnExdjRSMDRBSmRCTXo2azA5cDJYZmtIQlN3Szc5SVc2bkVEbGZl?=
+ =?utf-8?Q?kaJN0qKi5n4=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5530.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VkVxVy9ZZXlXTVRjZjd2VDd1OG5TcHpaZzFRT2dMOENRYmNVcFR6bkZVTGti?=
- =?utf-8?B?cGliRlN6dEpYVDJMMHRKTEVBbnZqbnZMd0dESlFTTTUxVGdHVy81VWtMR29C?=
- =?utf-8?B?VC9mOG1XRllUUnRWRno4c1doZ2hiWVYwTlRENkFJVERmc2dvNzNGRndaVVlv?=
- =?utf-8?B?ZTU2Q0x4ek16bzJsZUJISU9vNXJ0K1R6bE5RS0k4OXhSWHFuYy9STUordk00?=
- =?utf-8?B?Mk9qUGZuTzJlQldPTFpDc3BQdGlWK0VpeEIyTGdsU2NCSWIxaXRBbktmaG9x?=
- =?utf-8?B?Mjc3VSs3NjdkZWpyQmNneEdycnM4WmlrbzlGa0FzenhjYVhKM01iTW42bENk?=
- =?utf-8?B?cHlpY21MZnZCTU1RVVZIbGluTG0wcU42Njd4UHZvZEliQTZONmhsbGtRaVFs?=
- =?utf-8?B?YTROUG5kTE9LVVdxTHdkWDFuYVdBQWVXN3dvSkZBNEZnazlvWExmM0l3eWhK?=
- =?utf-8?B?YWVTejVOOVlYNHpMRXFQWXU1cUJFOW5UTjEwdlNvbmNDbU9za3lmVXNYeGhn?=
- =?utf-8?B?ZWpNQ2JQMHZxNnZRdTh0YTRpMzBvb05mdUJSRnp1d2hKZHVTOTdaZC9uc0FQ?=
- =?utf-8?B?MVBpSGZFNDM2UHdjREEvYVljUmpzSjY5YUQ0L0ZXU1VvWWNCMUZYQW0zVmNE?=
- =?utf-8?B?YlpURUw4bHJLQVROY0Vad2lGdjlMNGZpaGFNYnpqaFVMQzVhOFVmdHp0cUxM?=
- =?utf-8?B?bm5neS9OL0dMZzZNaDNrRDlVTkg2NnNZQThpY01xeVBIRmp6Zk1TQnM3NEdp?=
- =?utf-8?B?K2tZa2svUUoyRkNJYkxYeFFUWlgyMnpGcWNvbXp1M0NpZUlkbG03NUZIZE0y?=
- =?utf-8?B?R1RoLzRDQThseUlONTBEWGoya20xdFgxYSt6OTM1UzEvdVdpYUhhV2tOOVZG?=
- =?utf-8?B?cUp4Zk9qdlU1UXRmbGJGbzNpZ0Rad0EyMHBhUmhWc3dXT21WZ01jWnArTGwz?=
- =?utf-8?B?UUw4cnFCRG1zTDVMT0dwY2tFcThycjIvVEhRY2tTeWpnUmVGekJ3d2FjUzJa?=
- =?utf-8?B?c0FGcFZjV1AvRnBkU3hnMGU3cEtrdUp2NXhLS3B4emNwWStHSEs4dlFDTkxk?=
- =?utf-8?B?YldkS09oZW9tdmEyaW4yTnVITkNXZFFoS3RLQVByUDdILzJvTlB3Y1BiRmIz?=
- =?utf-8?B?UkZJL1hyMVA0NFZiZm9VSHJFU0V1ZXJBTyt0ZENCVWYydk5nZzdpSE9mL2tV?=
- =?utf-8?B?T3MxZzJzYkJhdWZnUldCVDFUUmJlNE00eEovODFhNWxCN2UxZ3Z0RkJuNXN6?=
- =?utf-8?B?anBteFdOV3dqOGcvSTErYnJDNFovYkdtL2F1UmlUc0F6UFFLSzlvVEt6RGJB?=
- =?utf-8?B?alUzQjNHQzN5Z25RaFMwd3kyMTlqZVk3WEx2Z0VnS3lqaDRoV1RBajh0UlB3?=
- =?utf-8?B?UzNONUppQ1dFV1VhalZudldGZlA4Y2ZSbGtjbXpTRmhCU0h6U1pXRjZBRWtN?=
- =?utf-8?B?SVhCZFhTQ0JwaXRidm1BeXZDRGNzd0JoY1VVYm16VlBPdm5xZi9YK0k5OXZL?=
- =?utf-8?B?Qml0d3lGcDhSczlKYzVIR1MzeStibHFDdnBDQVFwWXRRanJLUFhGeHlpYTFX?=
- =?utf-8?B?eTMya3ZZS21EV1lMK1VxTWpCWElFb3p1eThZNy8vOHpjZHh3TFB3MlVGdEl5?=
- =?utf-8?B?cUtyRkhWRW1rajF1dE1sOWdQR2VGU2tjbkFWMTZIallzYW5Hck94U2NKdjdt?=
- =?utf-8?B?bXJUblh2UDV3c01nTFpYc3ozbWhzQ25pTkJlaDVnQ1dTUjAwdE5WRnBMSVBo?=
- =?utf-8?B?MW5FK3FHVjN2L1Z5WGwraG12UklUZlMrR3paMjB0Ym1jVTlHSE5xWTg0QmJW?=
- =?utf-8?B?ME1FcmNUQWt4dEdGQ2ptclkxd2ZHczh1N0UyYkFvSE1pZmkxR3lpMENiR096?=
- =?utf-8?B?bitVMXZOOEtVandMS1hOV29hanFtV2RSbnBPbkV5Y2VmZEhzY0VtTVpWT3dq?=
- =?utf-8?B?QUVxaDMzbEsrc3dUSG9tZ1BIdmVSN0NVSXp2YlJhYjBEU1pldGw4VjUrTWg5?=
- =?utf-8?B?ZUIrMk5ld1U1V2ZNdnNnVVE2VDhsUlZPZVR0SGp4TXUzWDVUWEFnRUZyTndK?=
- =?utf-8?B?WVFwNVlkMjU4OGdUUlJTVEhqUm96d2pybmZObVNYWFFVdlJ3Y3kvOFprelhj?=
- =?utf-8?B?QjVLWE03aE9WcjFlUjRHOVBqMkVqdERFMVZTTzFqdk1GREg4VnVMc1JmTFRx?=
- =?utf-8?B?bmc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: f81297a8-a560-49d5-ee5d-08dde9e69dba
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RDBOaGZSODd2cTVTaTZKWDdWcU1LdFlPM3p3dTd6VnMwK0hvUk1Wc21JOTNk?=
+ =?utf-8?B?VTRLUVphTDY3STloOEZKNDFma2tWdzNxTVhJR2dmd0p6UVN2SjRGZUpoUkdL?=
+ =?utf-8?B?SXlndUxzM2M0VUNGSXZZaTVtZ2ZGVDY0UHNaVnpoUmFEQVRMc3NESWJRZXVG?=
+ =?utf-8?B?TjFPQXc0TGRYeFhpR2NXeE9pRG14RThLbW90QWpaNE9NWTRsdlNlRFl5Ly9q?=
+ =?utf-8?B?ZXhHd3pPWnFGNHNvdkdiU2h4bXNwMUlqMTJucVZ4cHlyK2hkUE42dHZKclor?=
+ =?utf-8?B?WXR5N3dRRWtLdEF3Wi8zRDlYRXZxU1B1eU1acTd4WHVrRmkwTWFNR2RNWXNE?=
+ =?utf-8?B?dXV2cVREOU9XR2UxNENtN29HdXljSkJ3bUY2ZHFuSm9SeFQ0VlFvNWI2UG9F?=
+ =?utf-8?B?VEU1RU5WYmFpR3NnSWJ3NTk2NGVmVVVIUGJ0YVpnUkttVVQ3cTBoczZvMms4?=
+ =?utf-8?B?WTF0cldMK2hJUGNsYlRNRUZYajFXSjdIM3hoTSt2cWgreWlyWkk5SklFTzdU?=
+ =?utf-8?B?bktPQmVkVk9EMjZQb2o0bWxLN1Jidk02TmQrb0UyNFRzVHBmMytFSGdJOVJa?=
+ =?utf-8?B?RkYzQVgzR0I2U0RlVWM3bDFYQmN5djNTR1lmR1g5Ky9ibjNUaTlqVXU0UlA2?=
+ =?utf-8?B?NlhaSmkxVDVMQkdPeXhLRTVuS1czRGk2eFJ0bThXNmZoY2VyMVNnOFFtU2Ro?=
+ =?utf-8?B?eTdRQTBxdTVnalArMDhBRHUrSnRPeURXTlBnNUFiUWNJNTM5RjNQTnNuV09i?=
+ =?utf-8?B?VFE1VEwvcFBjMHc3UnR1L2VyUFFoc3o0VUFZNDdaN3RmYzAyZGpZcHVtMUZ3?=
+ =?utf-8?B?V0RpR3BtMW1Ca0pYYnI3Y0xwcDkwUFJhNmEzMWFqcHJmbWM0QWh2b2dmTlVy?=
+ =?utf-8?B?NThIVTJNT1AxMXgrTCs5azNNVGJraHBvU0ZGWkR0cFhmSmhkQW1DQkNOZUt1?=
+ =?utf-8?B?U2tuOHZQVHdPVmJBQkY3c1lpTnc0N0ZDK2xuU1hKYkFscmM2TlNmeTEwNC81?=
+ =?utf-8?B?cThpZTBnb08wN0VMbnVIQVBoRG0xVTd4TmlJdGZqWnIvTWIycU9jcWZDOVhG?=
+ =?utf-8?B?QWVsNzJQZkk5UUViOXJoamVpcG1DT09iL2FCejJjYitBWlBVbEU2YVZvOUNY?=
+ =?utf-8?B?YXVoOFJneHJ4a2FOZTJjYTN6cmZTYmRyY29MUW9yeERyVVNpazY2a29kb01I?=
+ =?utf-8?B?N1E3WUxCb1pCY2tsK2EvaXJkcnN5T0dnUndQaTNVc2kvbHlwOFQyeDdycnVp?=
+ =?utf-8?B?SkozQnE3UnJZNkh6VWtEZWx0Z09Bak5hb1Rjd09USGlNYXE5TFZUNC9wcEdq?=
+ =?utf-8?B?RnNLY2hXVkwvYXd6VXlMVnN2ckp4S0JBNVpVNHFFeUR0WlBEc0VWUnB3a1NJ?=
+ =?utf-8?B?dEhaQkwxcmdzYVFiM29vc0FCUXJDL3ZqbllCY2loQ1dtYnhkM0EwR2lVZndF?=
+ =?utf-8?B?SU5PU1h1VUFkc09uUmJCeHZianZDUEZzVldPa3EvNGwxU3I5OE5zWjlrWCtS?=
+ =?utf-8?B?V0VqcmJXVjV3YWpmVWw4cTJaTGU5NmJ2V05RSjJjS2EyQ2dRT2E5WUFaU2xO?=
+ =?utf-8?B?VG9wUFc5aG5sNlVmeHF4aDdCR3lkOE5hUmoxNU1ZMXZRNlJKaEcrZkJESGxz?=
+ =?utf-8?B?aUd4WWs0K2ROeEwxNDFnUERnaVRWZng0NW0rdExIYVVvWjVaNGF5djhXOU5E?=
+ =?utf-8?B?MnI5MHBZNzFBSk9kWCtTWEI2ejN2eGl6RmJiT1J4QUEwRUtvNkhDK2VMMGM0?=
+ =?utf-8?B?TmR6VWxJcEUzVVZzSk0vUnpQODU0dWJzbGJnYlZpbjdNdTlOSk1SY3FYa2Q3?=
+ =?utf-8?B?VjlEa0xtN1FzVU9SMHA0ZVpHODJScEdjRlhGTlRiZ1JNMTUwYU82MG9DbmhD?=
+ =?utf-8?B?ZEZDWEpyL0lzWXlXay9EZnk3UXM5YXUxNUh1SCt3dVZmV1cxekxwekdWRzBV?=
+ =?utf-8?B?TXhuWStxc2t3NXRTU3ZENXplQlloS29MQk5PVUoxR0hxejRtSytRcElpQlcy?=
+ =?utf-8?B?OEpPOTg1SnZNclB6VVZJZTN6V0lHRURtdXJoTGR6ZThiQmRMVm9RY1U1UmxQ?=
+ =?utf-8?B?ZjREMnFvN3U1SXBLQjhUT0dOZWQ0YjErOTNOd0tySnJkb1RjR2hJcmM2L2o4?=
+ =?utf-8?B?Mm1TdGdZbEFOR0llQ0NEMFNJRjZkZkxsUU03dkFOd09RNmp0UGNNWVJsNjB6?=
+ =?utf-8?B?TXc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: fec5babf-506e-4a42-8c89-08dde9f83920
 X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5530.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 06:04:45.7828
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 08:10:47.9555
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O58ZkRXQoF6x+n4IPr2lz+QeMM9I97oPYAPUdiIpbI7r8VhQgsrzr0z6dsvogX4FslAVkJa3kRNNLW25GE9wxg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR11MB8770
+X-MS-Exchange-CrossTenant-UserPrincipalName: lZtl39g5N5osAFlOBKnMpOOSjvNtrW0/Bd72NGxhwxNkIO11zo3qWPqYTrsY3Vvm3C16P1Y9VResdSwZpqBWZQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7308
 X-OriginatorOrg: intel.com
 
-Apologies for the delay in response.
 
-On 30-05-2025 03:06, Sathyanarayanan Kuppuswamy wrote:
->
-> On 5/29/25 4:16 AM, Badal Nilawar wrote:
+On 02-07-2025 16:38, Rafael J. Wysocki wrote:
+> On Thu, May 29, 2025 at 1:14 PM Badal Nilawar <badal.nilawar@intel.com> wrote:
 >> From: Anshuman Gupta <anshuman.gupta@intel.com>
 >>
 >> Implement _DSM method 0Ah according to PCI firmware specifications,
@@ -231,181 +228,177 @@ On 30-05-2025 03:06, Sathyanarayanan Kuppuswamy wrote:
 >> Non-Bridge Endpoint Function 0 driver to call_DSM method 0Ah.
 >>
 >> Signed-off-by: Varun Gupta <varun.gupta@intel.com>
+> What's this S-o-b for?
+>
 >> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
->
-> If it is Co-developed by above people, you need to add Co-developed-by 
-> tag followed
-> by Signed-off-by tag.
-
-Sure I will add Co-developed by.
-
->
 >> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 >> ---
 >> V2(Bjorn/Rafael):
->>    - Call acpi_dsm_check() to find method 0Ah supported
->>    - Return retry interval to caller
+>>    - Call acpi_dsm_check() to find method 0Ah supported
+>>    - Return retry interval to caller
 >> V3(Kuppuswamy)
->>    - Add NULL check for retry interval
+>>    - Add NULL check for retry interval
 >> ---
->>   drivers/pci/pci-acpi.c   | 87 ++++++++++++++++++++++++++++++++++++++++
->>   include/linux/pci-acpi.h |  8 ++++
->>   2 files changed, 95 insertions(+)
+>>   drivers/pci/pci-acpi.c   | 87 ++++++++++++++++++++++++++++++++++++++++
+>>   include/linux/pci-acpi.h |  8 ++++
+>>   2 files changed, 95 insertions(+)
 >>
 >> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
 >> index af370628e583..87f30910a5f1 100644
 >> --- a/drivers/pci/pci-acpi.c
 >> +++ b/drivers/pci/pci-acpi.c
->> @@ -1421,6 +1421,93 @@ static void pci_acpi_optimize_delay(struct 
->> pci_dev *pdev,
->>       ACPI_FREE(obj);
->>   }
->>   +/**
->> + * pci_acpi_request_d3cold_aux_power - Request aux power while 
->> device is in D3Cold
+>> @@ -1421,6 +1421,93 @@ static void pci_acpi_optimize_delay(struct pci_dev *pdev,
+>>          ACPI_FREE(obj);
+>>   }
+>>
+>> +/**
+>> + * pci_acpi_request_d3cold_aux_power - Request aux power while device is in D3Cold
 >> + * @dev: PCI device instance
 >> + * @requested_power: Requested auxiliary power in milliwatts
->> + * @retry_interval: Retry interval returned by platform to retry 
->> auxiliary
->> + *                  power request
+>> + * @retry_interval: Retry interval returned by platform to retry auxiliary
+>> + *                  power request
 >> + *
->> + * This function sends a request to the host BIOS via root port ACPI 
->> _DSM Function 0Ah
->> + * for the auxiliary power needed by the PCI device when it is in 
->> D3Cold.
->> + * It checks and evaluates the _DSM (Device Specific Method) to 
->> request the auxiliary
+>> + * This function sends a request to the host BIOS via root port ACPI _DSM Function 0Ah
+>> + * for the auxiliary power needed by the PCI device when it is in D3Cold.
+>> + * It checks and evaluates the _DSM (Device Specific Method) to request the auxiliary
 >> + * power and handles the response accordingly.
 >> + *
 >> + * This function shall be only called by 1st non-bridge Endpoint driver
->> + * on Function 0. For a Multi-Function Device, the driver for 
->> Function 0 is
+>> + * on Function 0. For a Multi-Function Device, the driver for Function 0 is
 >> + * required to report an aggregate power requirement covering all
 >> + * functions contained within the device.
 >> + *
 >> + * Return: Returns 0 on success and errno on failure.
 >> + */
->> +int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 
->> requested_power,
->> +                      u32 *retry_interval)
+>> +int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
+>> +                                     u32 *retry_interval)
 >> +{
->> +    union acpi_object in_obj = {
->> +        .integer.type = ACPI_TYPE_INTEGER,
->> +        .integer.value = requested_power,
->> +    };
+>> +       union acpi_object in_obj = {
+>> +               .integer.type = ACPI_TYPE_INTEGER,
+>> +               .integer.value = requested_power,
+>> +       };
 >> +
->> +    union acpi_object *out_obj;
->> +    acpi_handle handle;
->> +    int result, ret = -EINVAL;
+>> +       union acpi_object *out_obj;
+>> +       acpi_handle handle;
+>> +       int result, ret = -EINVAL;
 >> +
->> +    if (!dev || !retry_interval)
->> +        return -EINVAL;
+>> +       if (!dev || !retry_interval)
+>> +               return -EINVAL;
 >> +
->> +    handle = ACPI_HANDLE(&dev->dev);
->> +    if (!handle)
->> +        return -EINVAL;
+>> +       handle = ACPI_HANDLE(&dev->dev);
+>> +       if (!handle)
+>> +               return -EINVAL;
 >> +
->> +    if (!acpi_check_dsm(handle, &pci_acpi_dsm_guid, 4, 1 << 
->> DSM_PCI_D3COLD_AUX_POWER_LIMIT)) {
->> +        pci_dbg(dev, "ACPI _DSM 0%Xh not supported\n", 
->> DSM_PCI_D3COLD_AUX_POWER_LIMIT);
->> +        return -ENODEV;
->> +    }
+>> +       if (!acpi_check_dsm(handle, &pci_acpi_dsm_guid, 4, 1 << DSM_PCI_D3COLD_AUX_POWER_LIMIT)) {
+>> +               pci_dbg(dev, "ACPI _DSM 0%Xh not supported\n", DSM_PCI_D3COLD_AUX_POWER_LIMIT);
+>> +               return -ENODEV;
+>> +       }
 >> +
->> +    out_obj = acpi_evaluate_dsm_typed(handle, &pci_acpi_dsm_guid, 4,
->> +                      DSM_PCI_D3COLD_AUX_POWER_LIMIT,
->> +                      &in_obj, ACPI_TYPE_INTEGER);
->> +    if (!out_obj)
->> +        return -EINVAL;
+>> +       out_obj = acpi_evaluate_dsm_typed(handle, &pci_acpi_dsm_guid, 4,
+>> +                                         DSM_PCI_D3COLD_AUX_POWER_LIMIT,
+>> +                                         &in_obj, ACPI_TYPE_INTEGER);
+>> +       if (!out_obj)
+>> +               return -EINVAL;
 >> +
->> +    result = out_obj->integer.value;
->> +    if (retry_interval)
->
-> Since you already do NULL check at the top, you don't need above check.
+>> +       result = out_obj->integer.value;
+>> +       if (retry_interval)
+>> +               *retry_interval = 0;
+>> +
+>> +       switch (result) {
+>> +       case 0x0:
+> It would be better to use an enum for the possible return values.
 
-Sure, I will fix it.
+Sure I will use enum, something like
+
+typedef enum {
+     AUX_PWR_REQ_DENIED               = 0x0,
+     AUX_PWR_REQ_GRANTED              = 0x1,
+     AUX_PWR_REQ_NO_MAIN_PWR_REMOVAL  = 0x2
+} AUX_PWR_REQ_STATUS;
 
 >
->> +        *retry_interval = 0;
->> +
->> +    switch (result) {
->> +    case 0x0:
->> +        pci_dbg(dev, "D3cold Aux Power %u mW request denied\n",
->> +            requested_power);
->> +        break;
->> +    case 0x1:
->> +        pci_info(dev, "D3cold Aux Power request granted: %u mW\n",
->> +             requested_power);
->> +        ret = 0;
->> +        break;
->> +    case 0x2:
->> +        pci_info(dev, "D3cold Aux Power: Main power won't be 
->> removed\n");
->> +        ret = -EBUSY;
->> +        break;
->> +    default:
->> +        if (result >= 0x11 && result <= 0x1F) {
->> +            if (retry_interval) {
->
-> Same as above.
+>> +               pci_dbg(dev, "D3cold Aux Power %u mW request denied\n",
+>> +                       requested_power);
+>> +               break;
+>> +       case 0x1:
+>> +               pci_info(dev, "D3cold Aux Power request granted: %u mW\n",
+>> +                        requested_power);
+>> +               ret = 0;
+>> +               break;
+>> +       case 0x2:
+>> +               pci_info(dev, "D3cold Aux Power: Main power won't be removed\n");
+>> +               ret = -EBUSY;
+>> +               break;
+>> +       default:
+>> +               if (result >= 0x11 && result <= 0x1F) {
+> if (!(result & ~0x1F))
 
-Ok
+This will pick result = 0x10 as well, that's why checking the range 0x11 
+- 0x1F.
+
+> I think, and it would be better to use a symbol for this mask (and below too).
+I will add an enum for the retry interval range — something like 
+AUX_PWR_REQ_RETRY_INT_MIN and AUX_PWR_REQ_RETRY_INT_MAX for 0x11 and 0x1F.
+
+>
+>> +                       if (retry_interval) {
+> This has been checked already and is guaranteed to be nonzero at this point.
+
+Sure.
 
 Thanks,
 Badal
 
 >
->> +                *retry_interval = result & 0xF;
->> +                pci_warn(dev, "D3cold Aux Power request needs retry 
->> interval: %u seconds\n",
->> +                     *retry_interval);
->> +                ret = -EAGAIN;
->> +            }
->> +        } else {
->> +            pci_err(dev, "D3cold Aux Power: Reserved or unsupported 
->> response: 0x%x\n",
->> +                result);
->> +        }
->> +        break;
->> +    }
+>> +                               *retry_interval = result & 0xF;
+>> +                               pci_warn(dev, "D3cold Aux Power request needs retry interval: %u seconds\n",
+>> +                                        *retry_interval);
+>> +                               ret = -EAGAIN;
+>> +                       }
+>> +               } else {
+>> +                       pci_err(dev, "D3cold Aux Power: Reserved or unsupported response: 0x%x\n",
+>> +                               result);
+>> +               }
+>> +               break;
+>> +       }
 >> +
->> +    ACPI_FREE(out_obj);
->> +    return ret;
+>> +       ACPI_FREE(out_obj);
+>> +       return ret;
 >> +}
 >> +EXPORT_SYMBOL_GPL(pci_acpi_request_d3cold_aux_power);
 >> +
->>   static void pci_acpi_set_external_facing(struct pci_dev *dev)
->>   {
->>       u8 val;
+>>   static void pci_acpi_set_external_facing(struct pci_dev *dev)
+>>   {
+>>          u8 val;
 >> diff --git a/include/linux/pci-acpi.h b/include/linux/pci-acpi.h
 >> index 078225b514d4..6079306ad754 100644
 >> --- a/include/linux/pci-acpi.h
 >> +++ b/include/linux/pci-acpi.h
 >> @@ -121,6 +121,7 @@ extern const guid_t pci_acpi_dsm_guid;
->>   #define DSM_PCI_DEVICE_NAME            0x07
->>   #define DSM_PCI_POWER_ON_RESET_DELAY        0x08
->>   #define DSM_PCI_DEVICE_READINESS_DURATIONS    0x09
->> +#define DSM_PCI_D3COLD_AUX_POWER_LIMIT        0x0A
->>     #ifdef CONFIG_PCIE_EDR
->>   void pci_acpi_add_edr_notifier(struct pci_dev *pdev);
->> @@ -132,10 +133,17 @@ static inline void 
->> pci_acpi_remove_edr_notifier(struct pci_dev *pdev) { }
->>     int pci_acpi_set_companion_lookup_hook(struct acpi_device 
->> *(*func)(struct pci_dev *));
->>   void pci_acpi_clear_companion_lookup_hook(void);
->> +int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 
->> requested_power,
->> +                      u32 *retry_interval);
->>     #else    /* CONFIG_ACPI */
->>   static inline void acpi_pci_add_bus(struct pci_bus *bus) { }
->>   static inline void acpi_pci_remove_bus(struct pci_bus *bus) { }
->> +static inline int pci_acpi_request_d3cold_aux_power(struct pci_dev 
->> *dev, u32 requested_power,
->> +                            u32 *retry_interval)
+>>   #define DSM_PCI_DEVICE_NAME                    0x07
+>>   #define DSM_PCI_POWER_ON_RESET_DELAY           0x08
+>>   #define DSM_PCI_DEVICE_READINESS_DURATIONS     0x09
+>> +#define DSM_PCI_D3COLD_AUX_POWER_LIMIT         0x0A
+>>
+>>   #ifdef CONFIG_PCIE_EDR
+>>   void pci_acpi_add_edr_notifier(struct pci_dev *pdev);
+>> @@ -132,10 +133,17 @@ static inline void pci_acpi_remove_edr_notifier(struct pci_dev *pdev) { }
+>>
+>>   int pci_acpi_set_companion_lookup_hook(struct acpi_device *(*func)(struct pci_dev *));
+>>   void pci_acpi_clear_companion_lookup_hook(void);
+>> +int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
+>> +                                     u32 *retry_interval);
+>>
+>>   #else  /* CONFIG_ACPI */
+>>   static inline void acpi_pci_add_bus(struct pci_bus *bus) { }
+>>   static inline void acpi_pci_remove_bus(struct pci_bus *bus) { }
+>> +static inline int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
+>> +                                                   u32 *retry_interval)
 >> +{
->> +    return -EOPNOTSUPP;
+>> +       return -EOPNOTSUPP;
 >> +}
->>   #endif    /* CONFIG_ACPI */
->>     #endif    /* _PCI_ACPI_H_ */
->
+>>   #endif /* CONFIG_ACPI */
+>>
+>>   #endif /* _PCI_ACPI_H_ */
+>> --
 
