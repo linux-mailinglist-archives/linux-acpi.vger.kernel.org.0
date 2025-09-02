@@ -1,48 +1,65 @@
-Return-Path: <linux-acpi+bounces-16300-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16301-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C77B40E17
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 21:48:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9825B410A2
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 01:16:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96CA21B654E8
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 19:48:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A81D3561CE1
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 23:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D61135084D;
-	Tue,  2 Sep 2025 19:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4111E9905;
+	Tue,  2 Sep 2025 23:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DM21A8Eq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jx5HmeMM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF707342CA5;
-	Tue,  2 Sep 2025 19:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A10F23B0;
+	Tue,  2 Sep 2025 23:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756842492; cv=none; b=Olsc74HPWy+DX5SN8LupJf2Q7R8rRdynvWw1+PLH1WBfNWgSdctu8bFj+bj8iczBtqIFcc2N3f4oTAS5Xbi4tQdPMHjtQc+j1W8nEp7X8ghXS0XkIAyYWeOU9qEn5gopogbzWDlXT2aG7x4ZlBZxGXJSRGra7R1cYHKQPnT94Vs=
+	t=1756854999; cv=none; b=HNz946c2b4r/kS254h5QN127SDri4WSADisVTeI/2a7KSAaEDuEn64IRbt3XMkToXGS/pNMh+haTYJjnfe6i5BvdSu4Yl+hCiCoKPE7/gDfpVZdHqpWRHb+AMGBnbr7DNXyZVABT/aCgp17mrxn05eD2MZ9YZUfFc/hqR7I3x8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756842492; c=relaxed/simple;
-	bh=zpo0LfmwxyVWeY+SLgON3XGbp12XD/VDfJvwqrln8kM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r+nN7DWDvnN2gbtC3FFibE5ZJ/dYy1ar2EV8fNpQQj2+Rjr5TTeC/IgFMbHjx2zx9qkU1kPpx8gAWyx120Yer1g3bpntjldcC0hJ/pmX0T9rJzYBlSqWGT16K46eHU9El07+ZKFZ2TRxNBGaL6eazVQzUMIFLFcxaqQ+Ej23IuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DM21A8Eq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353B0C4CEED;
-	Tue,  2 Sep 2025 19:48:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756842491;
-	bh=zpo0LfmwxyVWeY+SLgON3XGbp12XD/VDfJvwqrln8kM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DM21A8EqyRTJsduYnMXLa+1Ki4G/laXH+KbDq2ncmjw/z/tUhbquM8fsLgzuW/HU1
-	 wwJOYjmlhl0Qc3nW8LFcex/d02WMKEAqwR8tmwu/U5/kqp0P0hLDRuqluFsAmUnZ6K
-	 /Ghw87c20Tqm9I0mOCgXJu77E/wQnrrm0O4GXwREwm2+eHQVAABDkBukPKgxNFz+g2
-	 QVqANSUeq1WgJ8kKWKSd0cNbpfWUKTUmLQBcaADA33N1AcB0PbnAz5zRCPPk9Jr8tl
-	 LP4u5TKMjU2DJHD1rjMLYGO3eQ0v2GHvA1C5exEp3L9UF6HrVkXJwecMcGnvsc6WO0
-	 1muNtpfiBlSng==
-Message-ID: <64a744bd-0f62-498b-8886-a5338fd8410c@kernel.org>
-Date: Tue, 2 Sep 2025 14:48:06 -0500
+	s=arc-20240116; t=1756854999; c=relaxed/simple;
+	bh=rKZ0Nh3RqLt7tI4TxWi0XsS1AUOFKimTgfg+6MXiFRk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=rasbgZoRGbDLajD+Y/9n2ZGRqiujN+tbLtDe0iYKsMQES/A3n0ETyP6MyqYs2tB7S2smpsVxqjYrkVsKiQyNuLf5MEfp4hkx2aqyY8Su1682f8jO3o6gT2O5igQ0wRQYtQIebl9CyqfMvDtuuBLw0ngVk1mObfoejjGfiiBdZro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jx5HmeMM; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756854997; x=1788390997;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=rKZ0Nh3RqLt7tI4TxWi0XsS1AUOFKimTgfg+6MXiFRk=;
+  b=jx5HmeMMyM4IpPDDHYZ8oGFTbNjw4RIWIA7GAsF/bBn76rqtGOHE35+g
+   6B707NRELTtIGyRT/+KM1mWRbiG5JUFD002XJgoRSqjKAUBPRFdDZjdaB
+   DLEYZhmZjjRWM9RXQeyo4pKJwBvW3pLGNqN9j1Y8bRvuzhVtXzz8fuPJ7
+   GcTv+n1eBhRkrau5Y2SCH8Qa99UH0JPGVMSWRXFWEykSXUHlA4DBTLxfm
+   REIa5NlFsbHY9rdKYr4y2IawFaFMtablUGkLJ7mSEGkabv4mB7GV0PjBt
+   /LHSUyzls1wpo8XCnnlMfn5zWtj8MT70pYDQMr0aJ4gZSKIusGqG7dZqd
+   g==;
+X-CSE-ConnectionGUID: A07RvFEkRISgXVJTBsr1BQ==
+X-CSE-MsgGUID: FMftboe/SvKaJlkpm01EFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59069949"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="59069949"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 16:16:36 -0700
+X-CSE-ConnectionGUID: /TDJio1bRD65DbAqOEH9gQ==
+X-CSE-MsgGUID: QFHtOfN1RP26sXgES81hZg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
+   d="scan'208";a="176712943"
+Received: from anmitta2-mobl4.gar.corp.intel.com (HELO [10.247.118.76]) ([10.247.118.76])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 16:16:28 -0700
+Message-ID: <8212254f-2c2b-4a48-8238-eacabc5645f4@intel.com>
+Date: Tue, 2 Sep 2025 16:16:23 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -50,421 +67,77 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 7/7] cpufreq: CPPC: add autonomous mode boot parameter
- support
-To: Sumit Gupta <sumitg@nvidia.com>, rafael@kernel.org,
- viresh.kumar@linaro.org, lenb@kernel.org, robert.moore@intel.com,
- corbet@lwn.net, pierre.gondois@arm.com, zhenglifeng1@huawei.com,
- ray.huang@amd.com, gautham.shenoy@amd.com, perry.yuan@amd.com,
- linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-doc@vger.kernel.org, acpica-devel@lists.linux.dev,
+Subject: Re: [PATCH v3 0/4] cxl, acpi/hmat, node: Update CXL access
+ coordinates to node directly
+From: Dave Jiang <dave.jiang@intel.com>
+To: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Cc: linux-tegra@vger.kernel.org, treding@nvidia.com, jonathanh@nvidia.com,
- vsethi@nvidia.com, ksitaraman@nvidia.com, sanjayc@nvidia.com,
- bbasu@nvidia.com
-References: <20250823200121.1320197-1-sumitg@nvidia.com>
- <20250823200121.1320197-8-sumitg@nvidia.com>
- <507095d6-512a-4561-bc90-12a34a43302a@amd.com>
- <30b46202-d377-4455-9551-5874e1e9f104@nvidia.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
+ dave@stgolabs.net, jonathan.cameron@huawei.com, alison.schofield@intel.com,
+ vishal.l.verma@intel.com, ira.weiny@intel.com, dan.j.williams@intel.com,
+ marc.herbert@linux.intel.com, akpm@linux-foundation.org, david@redhat.com
+References: <20250829222907.1290912-1-dave.jiang@intel.com>
 Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <30b46202-d377-4455-9551-5874e1e9f104@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-On 9/1/2025 8:37 AM, Sumit Gupta wrote:
-> 
-> On 26/08/25 00:10, Mario Limonciello wrote:
->> External email: Use caution opening links or attachments
->>
->>
->> On 8/23/2025 3:01 PM, Sumit Gupta wrote:
->>> Add kernel boot parameter 'cppc_cpufreq.auto_sel_mode' to enable CPPC
->>> autonomous performance selection at system startup. When autonomous mode
->>> is enabled, the hardware automatically adjusts CPU performance based on
->>> workload demands using Energy Performance Preference (EPP) hints from
->>> the OS.
->>>
->>> This parameter allows to configure the autonomous mode on all CPUs
->>> without requiring runtime sysfs manipulation if the 'auto_sel' register
->>> is present.
->>>
->>> When auto_sel_mode=1:
->>> - All CPUs are configured for autonomous operation during driver init
->>> - EPP is set to performance preference (0x0) by default
->>> - Min/max performance bounds use defaults
->>> - CPU frequency scaling is handled by hardware rather than OS
->>>
->>> Also ensure that when autonomous mode is active, the set_target callback
->>> returns early since hardware controls frequency scaling directly.
->>>
->>> Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
->>> ---
->>>   .../admin-guide/kernel-parameters.txt         |  12 ++
->>>   drivers/cpufreq/cppc_cpufreq.c                | 171 ++++++++++++++++--
->>>   2 files changed, 168 insertions(+), 15 deletions(-)
->>>
->>> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/ 
->>> Documentation/admin-guide/kernel-parameters.txt
->>> index 86f395f2933b..ea58deb88c36 100644
->>> --- a/Documentation/admin-guide/kernel-parameters.txt
->>> +++ b/Documentation/admin-guide/kernel-parameters.txt
->>> @@ -911,6 +911,18 @@
->>>                       Format:
->>> <first_slot>,<last_slot>,<port>,<enum_bit>[,<debug>]
->>>
->>> +     cppc_cpufreq.auto_sel_mode=
->>> +                     [CPU_FREQ] Autonomous Performance Level Selection.
->>> +                     When Autonomous selection is enabled, then the 
->>> hardware is
->>> +                     allowed to autonomously select the CPU frequency.
->>> +                     In Autonomous mode, Energy Performance 
->>> Preference(EPP)
->>> +                     provides input to the hardware to favour 
->>> performance (0x0)
->>> +                     or energy efficiency (0xff).
->>> +                     Format: <bool>
->>> +                     Default: disabled.
->>> +                     0: force disabled
->>> +                     1: force enabled
->>
->> I don't think you can actually force enable.  If the hardware doesn't
->> support it, setting 1 won't do anything.
->>
->> IoW really setting 1 is "enable if supported".
->>
-> 
-> Yes, will change in v3.
-> 
-> 
->>> +
->>>       cpuidle.off=1   [CPU_IDLE]
->>>                       disable the cpuidle sub-system
->>>
->>> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/ 
->>> cppc_cpufreq.c
->>> index 5e1bbb5f67b8..bbf654c56ff9 100644
->>> --- a/drivers/cpufreq/cppc_cpufreq.c
->>> +++ b/drivers/cpufreq/cppc_cpufreq.c
->>> @@ -27,6 +27,8 @@
->>>   #include <acpi/cppc_acpi.h>
->>>
->>>   static struct cpufreq_driver cppc_cpufreq_driver;
->>> +/* Autonomous Selection */
->>> +static bool auto_sel_mode;
->>>
->>>   #ifdef CONFIG_ACPI_CPPC_CPUFREQ_FIE
->>>   static enum {
->>> @@ -272,6 +274,14 @@ static int cppc_cpufreq_set_target(struct 
->>> cpufreq_policy *policy,
->>>       freqs.old = policy->cur;
->>>       freqs.new = target_freq;
->>>
->>> +     /*
->>> +      * In autonomous mode, hardware handles frequency scaling directly
->>> +      * based on workload demands and EPP hints, so OS frequency 
->>> requests
->>> +      * are not needed.
->>> +      */
->>> +     if (cpu_data->perf_caps.auto_sel)
->>> +             return ret;
->>> +
->>>       cpufreq_freq_transition_begin(policy, &freqs);
->>>       ret = cppc_set_perf_ctrls(cpu, &cpu_data->perf_ctrls);
->>>       cpufreq_freq_transition_end(policy, &freqs, ret != 0);
->>> @@ -555,6 +565,12 @@ static struct cppc_cpudata 
->>> *cppc_cpufreq_get_cpu_data(unsigned int cpu)
->>>               goto free_mask;
->>>       }
->>>
->>> +     ret = cppc_get_perf_ctrls(cpu, &cpu_data->perf_ctrls);
->>> +     if (ret) {
->>> +             pr_debug("Err reading CPU%d perf ctrls: ret:%d\n", cpu, 
->>> ret);
->>> +             goto free_mask;
->>> +     }
->>> +
->>>       return cpu_data;
->>>
->>>   free_mask:
->>> @@ -642,6 +658,79 @@ static int cppc_cpufreq_set_max_perf(struct 
->>> cpufreq_policy *policy, u64 val,
->>>       return (ret == -EOPNOTSUPP) ? 0 : ret;
->>>   }
->>>
->>> +static int cppc_cpufreq_update_autosel_epp(struct cpufreq_policy 
->>> *policy, int auto_sel, u32 epp)
->>> +{
->>> +     struct cppc_cpudata *cpu_data = policy->driver_data;
->>> +     unsigned int cpu = policy->cpu;
->>> +     int ret;
->>> +
->>> +     pr_debug("cpu%d: curr epp:%u, curr mode:%u, new epp:%u, new 
->>> mode:%d\n", cpu,
->>> +              cpu_data->perf_ctrls.energy_perf, cpu_data- 
->>> >perf_caps.auto_sel, epp, auto_sel);
->>> +
->>> +     mutex_lock(&cppc_cpufreq_update_autosel_config_lock);
->>
->> As I noticed below a case you missed the mutex unlock, this feels like a
->> good candidate for
->>
->> guard(mutex)();
->>
-> 
-> I will check about 'guard(mutex)()' and change accordingly in v3.
-> 
->>> +
->>> +     ret = cppc_set_epp(cpu, epp);
->>> +     if (ret) {
->>> +             pr_warn("failed to set energy_perf for cpu:%d (%d)\n", 
->>> cpu, ret);
->>> +             goto out;
->>> +     }
->>> +     cpu_data->perf_ctrls.energy_perf = epp;
->>> +
->>> +     ret = cppc_set_auto_sel(cpu, auto_sel);
->>> +     if (ret) {
->>> +             pr_warn("failed to set auto_sel for cpu:%d (%d)\n", 
->>> cpu, ret);
->>> +             return ret;
->>
->> Looks like a case that you didn't unlock the mutex.
-> 
-> ACK.
-> 
->>
->>> +     }
->>> +     cpu_data->perf_caps.auto_sel = auto_sel;
->>> +
->>> +out:
->>> + mutex_unlock(&cppc_cpufreq_update_autosel_config_lock);
->>> +     return ret;
->>> +}
->>> +
->>> +static int cppc_cpufreq_update_autosel_mperf_ctrls(struct 
->>> cpufreq_policy *policy, u32 min_p,
->>> +                                                u32 max_p, bool 
->>> update_reg, bool update_policy)
->>> +{
->>> +     struct cppc_cpudata *cpu_data = policy->driver_data;
->>> +     unsigned int cpu = policy->cpu;
->>> +     int ret;
->>> +
->>> +     pr_debug("cpu%d: curr max_perf:%u, curr min_perf:%u, new 
->>> max_perf:%u, new min_perf:%u\n",
->>> +              cpu, cpu_data->perf_ctrls.max_perf, cpu_data- 
->>> >perf_ctrls.min_perf, max_p, min_p);
->>> +
->>> +     ret = cppc_cpufreq_set_min_perf(policy, min_p, update_reg, 
->>> update_policy);
->>> +     if (ret) {
->>> +             pr_debug("failed to set min_perf for cpu:%d (%d)\n", 
->>> cpu, ret);
->>> +             return ret;
->>> +     }
->>> +
->>> +     ret = cppc_cpufreq_set_max_perf(policy, max_p, update_reg, 
->>> update_policy);
->>> +     if (ret) {
->>> +             pr_debug("failed to set max_perf for cpu:%d (%d)\n", 
->>> cpu, ret);
->>> +             return ret;
->>> +     }
->>> +
->>> +     return ret;
->>> +}
->>> +
->>> +static int cppc_cpufreq_update_autosel_configs(struct cpufreq_policy 
->>> *policy, int auto_sel,
->>> +                                            u32 epp, u32 min_perf, 
->>> u32 max_perf,
->>> +                                            bool update_reg, bool 
->>> update_policy)
->>> +{
->>> +     int ret;
->>> +
->>> +     ret = cppc_cpufreq_update_autosel_mperf_ctrls(policy, min_perf, 
->>> max_perf,
->>> +                                                   update_reg, 
->>> update_policy);
->>> +     if (ret)
->>> +             return ret;
->>> +
->>> +     ret = cppc_cpufreq_update_autosel_epp(policy, auto_sel, epp);
->>> +     if (ret)
->>> +             return ret;
->>> +
->>> +     return 0;
->>> +}
->>> +
->>>   static int cppc_cpufreq_cpu_init(struct cpufreq_policy *policy)
->>>   {
->>>       unsigned int cpu = policy->cpu;
->>> @@ -710,11 +799,28 @@ static int cppc_cpufreq_cpu_init(struct 
->>> cpufreq_policy *policy)
->>>       policy->cur = cppc_perf_to_khz(caps, caps->highest_perf);
->>>       cpu_data->perf_ctrls.desired_perf = caps->highest_perf;
->>>
->>> -     ret = cppc_set_perf_ctrls(cpu, &cpu_data->perf_ctrls);
->>> -     if (ret) {
->>> -             pr_debug("Err setting perf value:%d on CPU:%d. ret:%d\n",
->>> -                      caps->highest_perf, cpu, ret);
->>> -             goto out;
->>> +     if (cpu_data->perf_caps.auto_sel) {
->>> +             ret = cppc_set_enable(cpu, true);
->>> +             if (ret) {
->>> +                     pr_err("Failed to enable CPPC on cpu%d (%d)\n", 
->>> cpu, ret);
->>> +                     goto out;
->>> +             }
->>> +
->>> +             ret = cppc_cpufreq_update_autosel_configs(policy, true,
->>> + CPPC_EPP_PERFORMANCE_PREF,
->>> + caps->lowest_nonlinear_perf,
->>> + caps->nominal_perf, true, false);
->>> +             if (ret) {
->>> +                     pr_debug("Failed to update autosel configs on 
->>> CPU%d(%d)\n", cpu, ret);
->>> +                     goto out;
->>> +             }
->>> +     } else {
->>> +             ret = cppc_set_perf_ctrls(cpu, &cpu_data->perf_ctrls);
->>> +             if (ret) {
->>> +                     pr_debug("Err setting perf value:%d on CPU:%d. 
->>> ret:%d\n",
->>> +                              caps->highest_perf, cpu, ret);
->>> +                     goto out;
->>> +             }
->>>       }
->>>
->>>       cppc_cpufreq_cpu_fie_init(policy);
->>> @@ -736,6 +842,13 @@ static void cppc_cpufreq_cpu_exit(struct 
->>> cpufreq_policy *policy)
->>>
->>>       cpu_data->perf_ctrls.desired_perf = caps->lowest_perf;
->>>
->>> +     if (cpu_data->perf_caps.auto_sel) {
->>> +             ret = cppc_cpufreq_update_autosel_epp(policy, false,
->>> + CPPC_EPP_ENERGY_EFFICIENCY_PREF);
->>> +             if (ret)
->>> +                     return;
->>> +     }
->>> +
->>>       ret = cppc_set_perf_ctrls(cpu, &cpu_data->perf_ctrls);
->>>       if (ret)
->>>               pr_debug("Err setting perf value:%d on CPU:%d. ret:%d\n",
->>> @@ -920,17 +1033,10 @@ static ssize_t store_auto_select(struct 
->>> cpufreq_policy *policy,
->>>        * On enabling auto_select: set min/max_perf register and 
->>> update policy.
->>>        * On disabling auto_select: update only policy.
->>>        */
->>> -     ret = cppc_cpufreq_set_min_perf(policy, min_perf, update_reg, 
->>> true);
->>> -     if (ret) {
->>> -             pr_warn("failed to %s update min policy for cpu:%d 
->>> (%d)\n",
->>> -                     val > 0 ? "set min_perf and" : "", cpu, ret);
->>> -             return ret;
->>> -     }
->>> -
->>> -     ret = cppc_cpufreq_set_max_perf(policy, max_perf, update_reg, 
->>> true);
->>> +     ret = cppc_cpufreq_update_autosel_mperf_ctrls(policy, min_perf, 
->>> max_perf, update_reg, true);
->>>       if (ret) {
->>> -             pr_warn("failed to %s update max policy for cpu:%d 
->>> (%d)\n",
->>> -                     val > 0 ? "set max_perf and" : "", cpu, ret);
->>> +             pr_warn("failed to %s update policy for cpu:%d (%d)\n",
->>> +                     val > 0 ? "set min/max_perf and" : "", cpu, ret);
->>>               return ret;
->>>       }
->>>
->>> @@ -1139,13 +1245,44 @@ static struct cpufreq_driver 
->>> cppc_cpufreq_driver = {
->>>       .name = "cppc_cpufreq",
->>>   };
->>>
->>> +static void cppc_cpufreq_set_epp_autosel_allcpus(bool auto_sel, u64 
->>> epp)
->>> +{
->>> +     int cpu, ret;
->>> +
->>> +     for_each_present_cpu(cpu) {
->>> +             ret = cppc_set_epp(cpu, epp);
->>> +             if (ret)
->>> +                     pr_debug("failed to set energy_perf for cpu:%d 
->>> (%d)\n", cpu, ret);
->>> +
->>> +             ret = cppc_set_auto_sel(cpu, auto_sel);
->>> +             if (ret)
->>> +                     pr_debug("failed to set auto_sel for cpu:%d 
->>> (%d)\n", cpu, ret);
->>> +     }
->>> +}
->>> +
->>>   static int __init cppc_cpufreq_init(void)
->>>   {
->>> +     bool auto_sel;
->>>       int ret;
->>>
->>>       if (!acpi_cpc_valid())
->>>               return -ENODEV;
->>>
->>> +     if (auto_sel_mode) {
->>> +             /*
->>> +              * Check if autonomous selection is supported by 
->>> testing CPU 0.
->>> +              * If supported, enable autonomous mode on all CPUs.
->>> +              */
->>> +             ret = cppc_get_auto_sel(0, &auto_sel);
->>> +             if (!ret) {
->>> +                     pr_info("Enabling autonomous mode on all CPUs\n");
->>> +                     cppc_cpufreq_set_epp_autosel_allcpus(true, 
->>> CPPC_EPP_PERFORMANCE_PREF);
->>> +             } else {
->>> +                     pr_warn("Autonomous selection not supported, 
->>> disabling auto_sel_mode\n");
->>> +                     auto_sel_mode = false;
->>> +             }
->>> +     }
->>> +
->>>       cppc_freq_invariance_init();
->>>       populate_efficiency_class();
->>>
->>> @@ -1160,8 +1297,12 @@ static void __exit cppc_cpufreq_exit(void)
->>>   {
->>>       cpufreq_unregister_driver(&cppc_cpufreq_driver);
->>>       cppc_freq_invariance_exit();
->>> +     auto_sel_mode = 0;
->>>   }
->>>
->>> +module_param(auto_sel_mode, bool, 0000);
->>> +MODULE_PARM_DESC(auto_sel_mode, "Enable Autonomous Performance Level 
->>> Selection");
->>
->> Why default to disabled?  As a precaution?  We enable EPP by default in
->> the *-pstate drivers if the hardware supports it, I would think it makes
->> sense here too.
->>
-> 
-> Kept disabled by default both as precaution and to enable it based on 
-> preference.
-> Someone may want to try different config values during bringup, 
-> verification etc.
-
-I personally don't think that bringup software should dictate the steady 
-state decision.  Bringup can trivially have a custom kernel command line 
-that disables it.
-
-Otherwise this means that the "worries of stability" translate into a 
-custom kernel command line option on all production hardware.
-
-So I feel once you're happy with it on a variety of hardware you should 
-consider a patch for enabling it by default at some point.
+In-Reply-To: <20250829222907.1290912-1-dave.jiang@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
+
+On 8/29/25 3:29 PM, Dave Jiang wrote:
+> I plan to take this series through the CXL tree when all the necessary tags
+> are received.
+> 
+> Rafael, please ack patches 3/4 and 4/4 if you are happy with the changes.
+> 
+> Thank you!
+
+Rafael said Dan's review tag is sufficient.
+
+Applied to cxl/next
+02f6c6a3654911e286ae04e5dfd5deb0f39559b1
+
+> 
+> v3:
+> - Fix grammar in comment. (DavidH)
+> - Use nodemask instead of xarray. (Jonathan)
+> 
+> v2:
+> - Use clearer comment from DavidH for 1/4. (DavidH)
+> - Fix comment in 2/4. (DavidH)
+> - Streamline code in 2/4. (DavidH)
+> - Add description to observed issue. (Dan)
+> - Add correct Fixes tag. (Dan)
+> - Add cc to stable for fix patch. (Dan)
+> - Add mechansim to only update on first region for the node. (Jonathan)
+> 
+> The series aim to clean up the current CXL memory region hotplug notifier by
+> removing the update path through HMAT and updating the node access coordinates
+> directly. With the existing implementation, the CXL memory hotplug notifier
+> gets called first. It updates the HMAT target access coordinates. And then
+> the HMAT notifier gets called and create the node sysfs attribs. The new
+> implemenation flips the callback ordering and directly updates the sysfs
+> attribs already created in the node and leaves HMAT data structures alone.
+> 
+> Dave Jiang (4):
+>   mm/memory_hotplug: Update comment for hotplug memory callback
+>     priorities
+>   drivers/base/node: Add a helper function node_update_perf_attrs()
+>   cxl, acpi/hmat: Update CXL access coordinates directly instead of
+>     through HMAT
+>   acpi/hmat: Remove now unused hmat_update_target_coordinates()
+> 
+>  drivers/acpi/numa/hmat.c  | 34 ----------------------------------
+>  drivers/base/node.c       | 38 ++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/core/cdat.c   | 11 -----------
+>  drivers/cxl/core/core.h   |  3 ---
+>  drivers/cxl/core/region.c | 20 ++++++++++++--------
+>  include/linux/acpi.h      | 12 ------------
+>  include/linux/memory.h    |  6 +++---
+>  include/linux/node.h      |  8 ++++++++
+>  8 files changed, 61 insertions(+), 71 deletions(-)
+> 
+> 
+> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
 
 
