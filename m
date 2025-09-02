@@ -1,125 +1,150 @@
-Return-Path: <linux-acpi+bounces-16274-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16275-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 202C5B3FE88
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 13:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F3AB3FEAF
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 13:55:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B055C18974E7
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 11:52:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2A9F188B3AF
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 11:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585FF30C604;
-	Tue,  2 Sep 2025 11:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E142FABEB;
+	Tue,  2 Sep 2025 11:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PhqCetge"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HPfsH/6Z"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6EF30BF54;
-	Tue,  2 Sep 2025 11:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361112FA0ED;
+	Tue,  2 Sep 2025 11:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756813574; cv=none; b=DU2+80UvdxFvatvRSR2N5V9uh61Ix2L1mLl/J3DGJoGkW4x8WnpoB24pfE54wZrcaE1GK9y+V0e447CIDEC44ef8UwRCzBfm+7jikBlzFPFTWfR+EgP1sFhJlzSe7b7AIkiLa4Q0VmKkOV+skum6ePasF9rDyl4PSuVJcKt3TMs=
+	t=1756813666; cv=none; b=Vz7oGV6vUnV9q/XcFhVWvclnBqFJrNKDUL1SS9FamAC7YGJ1msjEBg8gRYfRNiRDuE3q3FUWbHeN28zNME2URZOQARYCJ9dO15hhmnBxn8M/FC+FUx5CsXHFMERBpK5oRCt4THtUambykTfLprgRci52P8vjJzTOHNeHXazOkw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756813574; c=relaxed/simple;
-	bh=b2dzqMeUqWyWDJ6+jIt81dE/5kfkNj+Ptj+goWcMI5g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gqrtzJ2EE/Nm76dTOlNyJ0dgvGF2D0Fge5RRk6xB9q8e9bNFEdpHcPKfDs1nMGWkrE5yLwT5M58QyWWj8Ia0N2zr1i9gPBj+ZnecFCOUYLH5/oZcRA+H265mtzaXyaadJ6p1Syul+OThuw+Saz6m0tu8ERwrfd1A4BeI4eucoe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PhqCetge; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3d3ff4a4d6fso1755320f8f.0;
-        Tue, 02 Sep 2025 04:46:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756813571; x=1757418371; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CSpYSwOXNofPRqPJb67ltbn5EWSPohwy2KpciLMYW2U=;
-        b=PhqCetgeu5/GhoulrjaoWQKojVqhqwf1iLzpsvWlHtbuoWkW8VbXpZvViUqW0XQsqh
-         qYXKWefxzXUFQj2H3iYLZQaholMdmRS4r97lDvzBm0XrTICYT3b0wviSG2EYjJt3UN4v
-         hE4cyzoMXkEoHTCVNJ16DnVO3K4aBcZonDbBQ5hx+j2+4sAxwN8XOBNik+Qpm0AoBeg2
-         ml4HzKNf8jumpehf/eP9q45T7rn+ALk8AbnGP65Uh0ceQCyOjaiWWokikvbv6RYhYdtr
-         CgcXJhKUdqGFx9r4YZ5sgzuvSYSOpltY9r7K8kzg65X+nODWzdIIGYETO2qHVuX/hHYd
-         5+IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756813571; x=1757418371;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CSpYSwOXNofPRqPJb67ltbn5EWSPohwy2KpciLMYW2U=;
-        b=YxnIiYh9nj1mw+KezEzbePvJSCF4S2BdUz6heENIYgEF+GThxvq3w1/xEO+GhMFd8F
-         IiliATyGQLyN9rY8YkkULRyGz/HiHTaNmYzCvO3YSIlcdP85oqFZIL/DPC2K6fCAB+0/
-         Mss0SkoEAUEnTNSM9kzBnnvyN06gUR0bTtHTs4Jg3u2C9QKNX+iTJfLojd+dQWIqgFqB
-         ErNZcCPsql/BPQ5UTawBGzhw7iERLaZ1iDndAHfseoN6kGwDo421XcUX/ybtwilkDxS7
-         EhpCKjXj2bwDs7idt8NNjIkp8Cv65Av6sJWooYNOnq4tppnOPPFQ1W1nr3Vyqd3I6kY4
-         R6xg==
-X-Forwarded-Encrypted: i=1; AJvYcCXSPnu7gumHnzSVDEYyOZCaWDfYx/vrBLyEouBsbzdThdu50egbbXfis1BwZQpIa/AatdpXFQs1wl3R@vger.kernel.org, AJvYcCXuB0vzc9c2Uk1xmPGxbkAbTQEkev6qV8i2gnSzwPkLLVTTERtkTjQ1v0QECTrj/R8s33n7s+EB0U7J82OT@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw12q0JNvBxqkj4QjgQyk3Qa9freXLtWMjHb+E+vbdkxoS1rigX
-	pdKFQNc9bgTC/aGKDPOOkFRR9MuizAzmrm0+YRdvTtt0qxKkgH6WSJFK
-X-Gm-Gg: ASbGncummxJi+gSwzIew2D/px+zLvXS6OWbpaKQ38fQpQYLXlcRnrBeCDgWtqy+Kww3
-	KGiKjJCVpLL9JbvjMXn4GAjK8052RZu0u6xTeWpVJ6dH1Leqju0UbrSDXp6AxfvxSMWqjnU0enO
-	1aw8pslLVLCeJMcqTrDIh43Gd2TcGJeUDrJkxgdDKULP69W/yXvonl8gNtYWw7AmopLoDrq2xET
-	9lhnGaDrRPPVNJoqOusfSb+VBc7orMJZJXbMPdwbat9nSGt5ERe/rND2J48ry98epHWrKimchd7
-	X2Y9Y4SUAPZh3MxPs+TKghMTkilyu397Vd7lANW+30U6Gfy0HjBaZovMeZ7nifIJcI1KQ05nKaG
-	3AYLSC783mOe2mb/QBxzQ
-X-Google-Smtp-Source: AGHT+IFSx1ZLxuVxr4IHYwG/kkbItLSnigBFcwtrJLVgNw4wTdNNofAu9Ao+jN20uMosvQnfKfZH2g==
-X-Received: by 2002:a05:6000:4202:b0:3cb:285f:8d9c with SMTP id ffacd0b85a97d-3d1dea8e31amr8673398f8f.48.1756813570540;
-        Tue, 02 Sep 2025 04:46:10 -0700 (PDT)
-Received: from localhost ([87.254.0.133])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3cf8a64fce8sm19086547f8f.34.2025.09.02.04.46.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 04:46:04 -0700 (PDT)
-From: Colin Ian King <colin.i.king@gmail.com>
-To: Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Jia He <justin.he@arm.com>,
-	nvdimm@lists.linux.dev,
-	linux-acpi@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ACPI: NFIT: Fix incorrect ndr_desc being reportedin dev_err message
-Date: Tue,  2 Sep 2025 12:45:18 +0100
-Message-ID: <20250902114518.2625680-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1756813666; c=relaxed/simple;
+	bh=gAWv/p7BEF+KhNFGeotQ/1FrGNmecWyX1X5tGPHcCbM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DUVymcAmNrmoSwQ0sxNi5UCk7K0Av9KqLQlO4IuHMACbdP+xfK/gR6RGhuv1TcIhDOWYXWoogC/8X3ZOYLA5ruoWt5WferrdOSX++IlBClivx3VQ4uJd7+mr/8YBuPN9BN1XF2nuEqlFnsisjFqiyRah7NIVcljrw92o/o2rGto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HPfsH/6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89A4C4CEFB;
+	Tue,  2 Sep 2025 11:47:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756813665;
+	bh=gAWv/p7BEF+KhNFGeotQ/1FrGNmecWyX1X5tGPHcCbM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=HPfsH/6ZQcNOGF26sYaQeEFwmNMIdemb3Sta1S24MP4Zqrzhp4xCYmME5rlpIalRH
+	 wypS78addLryNXm+pxr8ZGRJ6CcNSwygSiD1yVSMsso71z9NbVxptxqSwM6eYw/hYg
+	 E0n3a2RupUKViIi/xlJEoNXhZ7BEfE1ktdGaf5/LFZ2Ez9stJf6othwGdlk629boGF
+	 /qfOkz7gPd4OTUDCeTkBwoG5jhFrt7JDvzdGAjA8tfRoviw73ahpeW1eDDr4LJyfaL
+	 kf0/YFTRyn96EDkuB2SQEiQU90yOjmPyWIIFwn87EXpdsYgRoiI9E5Ci5ZKOtauLQA
+	 Z0F2061pPrGmQ==
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-74382048b8cso3236488a34.3;
+        Tue, 02 Sep 2025 04:47:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUVyZzEvDrpJiYpGPI18U++0rHWEWScfMbN+8RsmUNgReancPWdbpTviAo4PG0Yu53eShXJnkTrBOjPj659@vger.kernel.org, AJvYcCUx1L6stu8U7sZnJp72GOudNHstfwvOjUOQk855W1Uu6IzLyqVzgdL/ajHiLKPF/ruufMYSHpszEwg=@vger.kernel.org, AJvYcCWp/HlUVkWFej94prIo50z3kdd9jANokP5ZRNMo0bmok0m7ZISSXOOnmhlZ+PQ/E23KBSESreU4SjUsrg==@vger.kernel.org, AJvYcCWrK1n3rH1E6Cw0pywubB8/FWao+M0dXPSvp5W349D6enXAACrc0ojv8yK7hiu31Re7bGtaC3y8S2w2@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtA9p452iUBSYwF/IzrtQfQy8BBTDGS20i+GvQd9Iu5RCJry85
+	mrrOLcJIQkmgHR6usm06eqcMXoCLSZ+Aba2as7zkA8nUYgQ8iwlQDPpqdUORHr6H6eQqBZC7ytA
+	BNCmoenoubEmtvfE7KGxY+m3v0Dvenaw=
+X-Google-Smtp-Source: AGHT+IECJJHjGAnU1NUr4ozcxCWnRFCL9WRpq+BEhjBinEbwysmqVcNyjx+zeZUwmYMUKeDdT6dFc6CYWYPr3CoZ3wk=
+X-Received: by 2002:a05:6830:3746:b0:743:8af2:1b0e with SMTP id
+ 46e09a7af769-74569e90f29mr6034860a34.19.1756813664724; Tue, 02 Sep 2025
+ 04:47:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
+ <20250901085748.36795-4-zhangzihuan@kylinos.cn> <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
+ <29890791-4ddf-49c7-a4f2-0ac83e6d53c6@kylinos.cn>
+In-Reply-To: <29890791-4ddf-49c7-a4f2-0ac83e6d53c6@kylinos.cn>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 2 Sep 2025 13:47:33 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jvOKeLRkjWoKR5eVKZ-hib7c8D-VOBvtCvs1+HGfPUiQ@mail.gmail.com>
+X-Gm-Features: Ac12FXxFwO1d3JYj5phS50T_U2DONG2wuxBfs8rK_GU-NaLU6wYAD3eFplzuixw
+Message-ID: <CAJZ5v0jvOKeLRkjWoKR5eVKZ-hib7c8D-VOBvtCvs1+HGfPUiQ@mail.gmail.com>
+Subject: Re: [PATCH v3 03/12] cpufreq: intel_pstate: Use scope-based cleanup helper
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
+	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
+	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
+	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-There appears to be a cut-n-paste error with the incorrect field
-ndr_desc->numa_node being reported for the target node. Fix this by
-using ndr_desc->target_node instead.
+On Tue, Sep 2, 2025 at 12:33=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.c=
+n> wrote:
+>
+>
+> =E5=9C=A8 2025/9/1 23:17, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> > On Mon, Sep 1, 2025 at 10:58=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylin=
+os.cn> wrote:
+> >> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> >> annotation for policy references. This reduces the risk of reference
+> >> counting mistakes and aligns the code with the latest kernel style.
+> >>
+> >> No functional change intended.
+> >>
+> >> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> >> ---
+> >>   drivers/cpufreq/intel_pstate.c | 8 +++-----
+> >>   1 file changed, 3 insertions(+), 5 deletions(-)
+> >>
+> >> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_ps=
+tate.c
+> >> index f366d35c5840..4abc1ef2d2b0 100644
+> >> --- a/drivers/cpufreq/intel_pstate.c
+> >> +++ b/drivers/cpufreq/intel_pstate.c
+> >> @@ -1502,9 +1502,8 @@ static void __intel_pstate_update_max_freq(struc=
+t cpufreq_policy *policy,
+> >>
+> >>   static bool intel_pstate_update_max_freq(struct cpudata *cpudata)
+> >>   {
+> >> -       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+> >> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D c=
+pufreq_cpu_get(cpudata->cpu);
+> >>
+> >> -       policy =3D cpufreq_cpu_get(cpudata->cpu);
+> >>          if (!policy)
+> >>                  return false;
+> > The structure of the code is intentional here and there's no reason to
+> > change it.
+>
+>
+> Got it. Thanks for clarifying.
+>
+> So for this case the current structure is intentional -
 
-Fixes: f060db99374e ("ACPI: NFIT: Use fallback node id when numa info in NFIT table is incorrect")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/acpi/nfit/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Note that I'm talking about this particular change only.  The other
+change in the $subject patch is fine.
 
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index ae035b93da08..3eb56b77cb6d 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -2637,7 +2637,7 @@ static int acpi_nfit_register_region(struct acpi_nfit_desc *acpi_desc,
- 	if (ndr_desc->target_node == NUMA_NO_NODE) {
- 		ndr_desc->target_node = phys_to_target_node(spa->address);
- 		dev_info(acpi_desc->dev, "changing target node from %d to %d for nfit region [%pa-%pa]",
--			NUMA_NO_NODE, ndr_desc->numa_node, &res.start, &res.end);
-+			NUMA_NO_NODE, ndr_desc->target_node, &res.start, &res.end);
- 	}
- 
- 	/*
--- 
-2.51.0
+> should I also avoid similar changes in other drivers?
 
+That depends on who maintains them, which is why I wanted you to split
+the patch into smaller changes in the first place.
+
+My personal view is that code formatting changes, which effectively is
+what this particular one is, are pointless unless they make the code
+much easier to follow.
 
