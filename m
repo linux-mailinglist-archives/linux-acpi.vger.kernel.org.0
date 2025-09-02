@@ -1,120 +1,125 @@
-Return-Path: <linux-acpi+bounces-16273-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16274-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CE3B3FD70
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 13:11:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 202C5B3FE88
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 13:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FA213B6D19
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 11:11:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B055C18974E7
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 11:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AB82F619D;
-	Tue,  2 Sep 2025 11:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585FF30C604;
+	Tue,  2 Sep 2025 11:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Ou41VjJ1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PhqCetge"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D66A279DA6;
-	Tue,  2 Sep 2025 11:11:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6EF30BF54;
+	Tue,  2 Sep 2025 11:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756811485; cv=none; b=qknGan+H5mrmmq7wgUcB+X4/WRISZna9fQJskTFpDFJ6SMXgwvboIec/z2HnUsMx3KNHAapSk9zExATFhxVjPVNcqLF8lG2HjmKu6EcRjMSBNJPFZxvt8V/NXQcRisTjd+XVKqeZtu76rz3Ou/hnKUjmWvjLXlmSPDisP+Y6GaY=
+	t=1756813574; cv=none; b=DU2+80UvdxFvatvRSR2N5V9uh61Ix2L1mLl/J3DGJoGkW4x8WnpoB24pfE54wZrcaE1GK9y+V0e447CIDEC44ef8UwRCzBfm+7jikBlzFPFTWfR+EgP1sFhJlzSe7b7AIkiLa4Q0VmKkOV+skum6ePasF9rDyl4PSuVJcKt3TMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756811485; c=relaxed/simple;
-	bh=TPu07su/3VM8SEQywPtrJmzbAe46oS3S7G2DqM/0ij4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YZZeTiHiUO1/bXzV0ktbbo/w1Mw8olj70Xdqi6z/6B1MBzSru4jnGoy5PwH+Cbsx7+l/mvC6VJfAw8PAJ1QhujzuU/59TMsQiY1sC/r3ik3H+MIGLxu0FR+QDkqtqwRbgdJQlx2jvMoJEeekRxqxMtGnxpC2FRTs0yIg+ig3m2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Ou41VjJ1; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3FC9740E01BB;
-	Tue,  2 Sep 2025 11:11:13 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Qojvh_XrsXSa; Tue,  2 Sep 2025 11:11:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1756811469; bh=3/V00Uv1i06CI763yI6IFspJgpQRVik3r9LvA1Qhk1s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ou41VjJ1pEl2Rm4wtfZMIZYfoi5TlT5hWkur+pkn6c2KPQqGOF8qSMJdz4xzm1FG2
-	 ll78ml4LmNN+3vrsTQgeaFbeWaeblCexmZYghE36aM0mtZmtdGFWcmO3xoI7uT/rEt
-	 2IUpizJpMwmnb8jcNaSuNZTpyWH51PjMi9bOl4H7b9RwRXEKjjBikCiYmHlrhva1CR
-	 eVGMuv2P1Gt7xteaIU/oFhBDW7FPTLwUIAxBrsEML4BRqUV1o3OfLas8IKelHwVvlc
-	 GUFXBFHf49DNV4uwRRu2FImuisQ1wlij+1hja7VoUzwdmWKOG28DOkNNwEEqHD/4G/
-	 /SbQqkdPJTCt0GtucHu7Y9ksO6svLs4dMX1lTnEPtGkT5BeS2hQAVNlzUKf6INV4Fc
-	 927vOayqP+AHrdcsFwkUFujf76du8hXijH8bbY+PgKRJnM4APKtZ84B/CEI3ErzUyU
-	 zg5+uYkjV2XwFX7DvVxhOCF/uM4+Jb0XrMvLSc+BbehpGoYDUjkoQkqNalXTq3clle
-	 5r0vUTiJI67kyOsXS6tBzowDtmlO7B0/gJGNuYyjoLixslw3ucVcE46cAt8JPCEFC0
-	 eTSl18U/mHd2xp9b6g8uNunOzcGO1qrXBlIbgFYsmJSuJt3a1Hs21WIH58ZUUTAimE
-	 z2jGucoGtQX5XomVtWn+Mbx4=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 5CE0E40E01B3;
-	Tue,  2 Sep 2025 11:10:59 +0000 (UTC)
-Date: Tue, 2 Sep 2025 13:10:52 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Yazen Ghannam <yazen.ghannam@amd.com>
-Cc: x86@kernel.org, Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-	Smita.KoralahalliChannabasappa@amd.com,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v5 13/20] x86/mce: Unify AMD THR handler with MCA Polling
-Message-ID: <20250902111052.GDaLbQvA2A0b8Ii26k@fat_crate.local>
-References: <20250825-wip-mca-updates-v5-0-865768a2eef8@amd.com>
- <20250825-wip-mca-updates-v5-13-865768a2eef8@amd.com>
+	s=arc-20240116; t=1756813574; c=relaxed/simple;
+	bh=b2dzqMeUqWyWDJ6+jIt81dE/5kfkNj+Ptj+goWcMI5g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gqrtzJ2EE/Nm76dTOlNyJ0dgvGF2D0Fge5RRk6xB9q8e9bNFEdpHcPKfDs1nMGWkrE5yLwT5M58QyWWj8Ia0N2zr1i9gPBj+ZnecFCOUYLH5/oZcRA+H265mtzaXyaadJ6p1Syul+OThuw+Saz6m0tu8ERwrfd1A4BeI4eucoe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PhqCetge; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3d3ff4a4d6fso1755320f8f.0;
+        Tue, 02 Sep 2025 04:46:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756813571; x=1757418371; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CSpYSwOXNofPRqPJb67ltbn5EWSPohwy2KpciLMYW2U=;
+        b=PhqCetgeu5/GhoulrjaoWQKojVqhqwf1iLzpsvWlHtbuoWkW8VbXpZvViUqW0XQsqh
+         qYXKWefxzXUFQj2H3iYLZQaholMdmRS4r97lDvzBm0XrTICYT3b0wviSG2EYjJt3UN4v
+         hE4cyzoMXkEoHTCVNJ16DnVO3K4aBcZonDbBQ5hx+j2+4sAxwN8XOBNik+Qpm0AoBeg2
+         ml4HzKNf8jumpehf/eP9q45T7rn+ALk8AbnGP65Uh0ceQCyOjaiWWokikvbv6RYhYdtr
+         CgcXJhKUdqGFx9r4YZ5sgzuvSYSOpltY9r7K8kzg65X+nODWzdIIGYETO2qHVuX/hHYd
+         5+IQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756813571; x=1757418371;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CSpYSwOXNofPRqPJb67ltbn5EWSPohwy2KpciLMYW2U=;
+        b=YxnIiYh9nj1mw+KezEzbePvJSCF4S2BdUz6heENIYgEF+GThxvq3w1/xEO+GhMFd8F
+         IiliATyGQLyN9rY8YkkULRyGz/HiHTaNmYzCvO3YSIlcdP85oqFZIL/DPC2K6fCAB+0/
+         Mss0SkoEAUEnTNSM9kzBnnvyN06gUR0bTtHTs4Jg3u2C9QKNX+iTJfLojd+dQWIqgFqB
+         ErNZcCPsql/BPQ5UTawBGzhw7iERLaZ1iDndAHfseoN6kGwDo421XcUX/ybtwilkDxS7
+         EhpCKjXj2bwDs7idt8NNjIkp8Cv65Av6sJWooYNOnq4tppnOPPFQ1W1nr3Vyqd3I6kY4
+         R6xg==
+X-Forwarded-Encrypted: i=1; AJvYcCXSPnu7gumHnzSVDEYyOZCaWDfYx/vrBLyEouBsbzdThdu50egbbXfis1BwZQpIa/AatdpXFQs1wl3R@vger.kernel.org, AJvYcCXuB0vzc9c2Uk1xmPGxbkAbTQEkev6qV8i2gnSzwPkLLVTTERtkTjQ1v0QECTrj/R8s33n7s+EB0U7J82OT@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw12q0JNvBxqkj4QjgQyk3Qa9freXLtWMjHb+E+vbdkxoS1rigX
+	pdKFQNc9bgTC/aGKDPOOkFRR9MuizAzmrm0+YRdvTtt0qxKkgH6WSJFK
+X-Gm-Gg: ASbGncummxJi+gSwzIew2D/px+zLvXS6OWbpaKQ38fQpQYLXlcRnrBeCDgWtqy+Kww3
+	KGiKjJCVpLL9JbvjMXn4GAjK8052RZu0u6xTeWpVJ6dH1Leqju0UbrSDXp6AxfvxSMWqjnU0enO
+	1aw8pslLVLCeJMcqTrDIh43Gd2TcGJeUDrJkxgdDKULP69W/yXvonl8gNtYWw7AmopLoDrq2xET
+	9lhnGaDrRPPVNJoqOusfSb+VBc7orMJZJXbMPdwbat9nSGt5ERe/rND2J48ry98epHWrKimchd7
+	X2Y9Y4SUAPZh3MxPs+TKghMTkilyu397Vd7lANW+30U6Gfy0HjBaZovMeZ7nifIJcI1KQ05nKaG
+	3AYLSC783mOe2mb/QBxzQ
+X-Google-Smtp-Source: AGHT+IFSx1ZLxuVxr4IHYwG/kkbItLSnigBFcwtrJLVgNw4wTdNNofAu9Ao+jN20uMosvQnfKfZH2g==
+X-Received: by 2002:a05:6000:4202:b0:3cb:285f:8d9c with SMTP id ffacd0b85a97d-3d1dea8e31amr8673398f8f.48.1756813570540;
+        Tue, 02 Sep 2025 04:46:10 -0700 (PDT)
+Received: from localhost ([87.254.0.133])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3cf8a64fce8sm19086547f8f.34.2025.09.02.04.46.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Sep 2025 04:46:04 -0700 (PDT)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Jia He <justin.he@arm.com>,
+	nvdimm@lists.linux.dev,
+	linux-acpi@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] ACPI: NFIT: Fix incorrect ndr_desc being reportedin dev_err message
+Date: Tue,  2 Sep 2025 12:45:18 +0100
+Message-ID: <20250902114518.2625680-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250825-wip-mca-updates-v5-13-865768a2eef8@amd.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 25, 2025 at 05:33:10PM +0000, Yazen Ghannam wrote:
-> +/*
-> + * Threshold interrupt handler will service THRESHOLD_APIC_VECTOR. The interrupt
-> + * goes off when error_count reaches threshold_limit.
-> + */
-> +static void amd_threshold_interrupt(void)
-> +{
-> +	machine_check_poll(MCP_TIMESTAMP, &this_cpu_ptr(&mce_amd_data)->thr_intr_banks);
->  }
+There appears to be a cut-n-paste error with the incorrect field
+ndr_desc->numa_node being reported for the target node. Fix this by
+using ndr_desc->target_node instead.
 
-So the thresholding interrupt will fire.
+Fixes: f060db99374e ("ACPI: NFIT: Use fallback node id when numa info in NFIT table is incorrect")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/acpi/nfit/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-It'll call machine_check_poll().
-
-That thing will do something and eventually call back into amd.c again:
-
-                if (mce_flags.amd_threshold)
-                        amd_reset_thr_limit(i);
-
-Why the back'n'forth?
-
-Why not:
-
-static void amd_threshold_interrupt(void)
-{
-	machine_check_poll(MCP_TIMESTAMP, &this_cpu_ptr(&mce_amd_data)->thr_intr_banks);
-	amd_reset_thr_limit();
-}
-
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index ae035b93da08..3eb56b77cb6d 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -2637,7 +2637,7 @@ static int acpi_nfit_register_region(struct acpi_nfit_desc *acpi_desc,
+ 	if (ndr_desc->target_node == NUMA_NO_NODE) {
+ 		ndr_desc->target_node = phys_to_target_node(spa->address);
+ 		dev_info(acpi_desc->dev, "changing target node from %d to %d for nfit region [%pa-%pa]",
+-			NUMA_NO_NODE, ndr_desc->numa_node, &res.start, &res.end);
++			NUMA_NO_NODE, ndr_desc->target_node, &res.start, &res.end);
+ 	}
+ 
+ 	/*
 -- 
-Regards/Gruss,
-    Boris.
+2.51.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
