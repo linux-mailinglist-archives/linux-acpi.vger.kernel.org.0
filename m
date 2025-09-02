@@ -1,150 +1,210 @@
-Return-Path: <linux-acpi+bounces-16275-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16276-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F3AB3FEAF
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 13:55:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE747B3FFE7
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 14:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2A9F188B3AF
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 11:55:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 354755445E6
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 12:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E142FABEB;
-	Tue,  2 Sep 2025 11:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05737303C87;
+	Tue,  2 Sep 2025 12:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HPfsH/6Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oiuGxnBk"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361112FA0ED;
-	Tue,  2 Sep 2025 11:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B15288C20;
+	Tue,  2 Sep 2025 12:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756813666; cv=none; b=Vz7oGV6vUnV9q/XcFhVWvclnBqFJrNKDUL1SS9FamAC7YGJ1msjEBg8gRYfRNiRDuE3q3FUWbHeN28zNME2URZOQARYCJ9dO15hhmnBxn8M/FC+FUx5CsXHFMERBpK5oRCt4THtUambykTfLprgRci52P8vjJzTOHNeHXazOkw4=
+	t=1756814916; cv=none; b=b1T0z+Us6GcRJTa7ag4esSOT/cOJD28rOBPXBUDl8DZDBHO/2pa4lTcfTlLwHTXEmjx4n0p0GhXf+wPqpWPolqBI62w7fYwUrjrLQJpgcdut39H3FilV4/870TbAr4WVgsGQL43uirwD3nNVyr4aT6QAZXu0LFHJ37fTs6zhD8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756813666; c=relaxed/simple;
-	bh=gAWv/p7BEF+KhNFGeotQ/1FrGNmecWyX1X5tGPHcCbM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DUVymcAmNrmoSwQ0sxNi5UCk7K0Av9KqLQlO4IuHMACbdP+xfK/gR6RGhuv1TcIhDOWYXWoogC/8X3ZOYLA5ruoWt5WferrdOSX++IlBClivx3VQ4uJd7+mr/8YBuPN9BN1XF2nuEqlFnsisjFqiyRah7NIVcljrw92o/o2rGto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HPfsH/6Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89A4C4CEFB;
-	Tue,  2 Sep 2025 11:47:45 +0000 (UTC)
+	s=arc-20240116; t=1756814916; c=relaxed/simple;
+	bh=ZPf10cXY2km1B/FVleWiffi1jphCqVPdfHT9UPrkwwo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JpweuvdkdgLuvPf8YvvyUpqpajwpchEn8+P+Ut5asTwDVOY1Tdi0d0wW3+nNbk58kCbazKhrG1EjQL3DtjF64ufvu6ahoqQ0/77t3Tfm4yGnE7NqiSeEzxpFroCX0DzhDqU+wihYlkzZnI8fK12eB5fOkA8B9unRH2FDMnRt3nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oiuGxnBk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B238C4CEED;
+	Tue,  2 Sep 2025 12:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756813665;
-	bh=gAWv/p7BEF+KhNFGeotQ/1FrGNmecWyX1X5tGPHcCbM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=HPfsH/6ZQcNOGF26sYaQeEFwmNMIdemb3Sta1S24MP4Zqrzhp4xCYmME5rlpIalRH
-	 wypS78addLryNXm+pxr8ZGRJ6CcNSwygSiD1yVSMsso71z9NbVxptxqSwM6eYw/hYg
-	 E0n3a2RupUKViIi/xlJEoNXhZ7BEfE1ktdGaf5/LFZ2Ez9stJf6othwGdlk629boGF
-	 /qfOkz7gPd4OTUDCeTkBwoG5jhFrt7JDvzdGAjA8tfRoviw73ahpeW1eDDr4LJyfaL
-	 kf0/YFTRyn96EDkuB2SQEiQU90yOjmPyWIIFwn87EXpdsYgRoiI9E5Ci5ZKOtauLQA
-	 Z0F2061pPrGmQ==
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-74382048b8cso3236488a34.3;
-        Tue, 02 Sep 2025 04:47:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUVyZzEvDrpJiYpGPI18U++0rHWEWScfMbN+8RsmUNgReancPWdbpTviAo4PG0Yu53eShXJnkTrBOjPj659@vger.kernel.org, AJvYcCUx1L6stu8U7sZnJp72GOudNHstfwvOjUOQk855W1Uu6IzLyqVzgdL/ajHiLKPF/ruufMYSHpszEwg=@vger.kernel.org, AJvYcCWp/HlUVkWFej94prIo50z3kdd9jANokP5ZRNMo0bmok0m7ZISSXOOnmhlZ+PQ/E23KBSESreU4SjUsrg==@vger.kernel.org, AJvYcCWrK1n3rH1E6Cw0pywubB8/FWao+M0dXPSvp5W349D6enXAACrc0ojv8yK7hiu31Re7bGtaC3y8S2w2@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtA9p452iUBSYwF/IzrtQfQy8BBTDGS20i+GvQd9Iu5RCJry85
-	mrrOLcJIQkmgHR6usm06eqcMXoCLSZ+Aba2as7zkA8nUYgQ8iwlQDPpqdUORHr6H6eQqBZC7ytA
-	BNCmoenoubEmtvfE7KGxY+m3v0Dvenaw=
-X-Google-Smtp-Source: AGHT+IECJJHjGAnU1NUr4ozcxCWnRFCL9WRpq+BEhjBinEbwysmqVcNyjx+zeZUwmYMUKeDdT6dFc6CYWYPr3CoZ3wk=
-X-Received: by 2002:a05:6830:3746:b0:743:8af2:1b0e with SMTP id
- 46e09a7af769-74569e90f29mr6034860a34.19.1756813664724; Tue, 02 Sep 2025
- 04:47:44 -0700 (PDT)
+	s=k20201202; t=1756814916;
+	bh=ZPf10cXY2km1B/FVleWiffi1jphCqVPdfHT9UPrkwwo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=oiuGxnBk/8quYXPsfzqBm7ce0j/ZCGpRAyoCPjWmIPvVWTkDxk9Fc88foovL2DSlm
+	 ZnHsFZ/ZZH/m3lfYUJ9V4Fmtgi6QmfaInaEtFFtbRYWBJ8OtVB4FCTCuaeZTGyTTcO
+	 f8vxmer0gi1hUohvgWQPO6/kZwnpyi65XNLj2axScHn3K2OQLEesu+h9umUYgwvnNj
+	 pXVDavGkq19mn3SqhXufvOouCB2kAgJ6Ach+eMGW4qPgU1A0tTJRzwmnOI0bygkuGZ
+	 hLs8Ci+33AtMLwB0Yp6/FWkDYpnbyt/hHb1fVnUeq6PPMveHaC190aEAjYWZaV8sN6
+	 Avi1h+ec0TDBQ==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: "Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Amit Chaudhari <amitchaudhari@mac.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	westeri@kernel.org,
+	andriy.shevchenko@linux.intel.com,
+	brgl@bgdev.pl,
+	linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.16] gpiolib: acpi: Add quirk for ASUS ProArt PX13
+Date: Tue,  2 Sep 2025 08:08:12 -0400
+Message-ID: <20250902120833.1342615-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
- <20250901085748.36795-4-zhangzihuan@kylinos.cn> <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
- <29890791-4ddf-49c7-a4f2-0ac83e6d53c6@kylinos.cn>
-In-Reply-To: <29890791-4ddf-49c7-a4f2-0ac83e6d53c6@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 2 Sep 2025 13:47:33 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jvOKeLRkjWoKR5eVKZ-hib7c8D-VOBvtCvs1+HGfPUiQ@mail.gmail.com>
-X-Gm-Features: Ac12FXxFwO1d3JYj5phS50T_U2DONG2wuxBfs8rK_GU-NaLU6wYAD3eFplzuixw
-Message-ID: <CAJZ5v0jvOKeLRkjWoKR5eVKZ-hib7c8D-VOBvtCvs1+HGfPUiQ@mail.gmail.com>
-Subject: Re: [PATCH v3 03/12] cpufreq: intel_pstate: Use scope-based cleanup helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.16.4
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 2, 2025 at 12:33=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.c=
-n> wrote:
->
->
-> =E5=9C=A8 2025/9/1 23:17, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> > On Mon, Sep 1, 2025 at 10:58=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylin=
-os.cn> wrote:
-> >> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> >> annotation for policy references. This reduces the risk of reference
-> >> counting mistakes and aligns the code with the latest kernel style.
-> >>
-> >> No functional change intended.
-> >>
-> >> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> >> ---
-> >>   drivers/cpufreq/intel_pstate.c | 8 +++-----
-> >>   1 file changed, 3 insertions(+), 5 deletions(-)
-> >>
-> >> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_ps=
-tate.c
-> >> index f366d35c5840..4abc1ef2d2b0 100644
-> >> --- a/drivers/cpufreq/intel_pstate.c
-> >> +++ b/drivers/cpufreq/intel_pstate.c
-> >> @@ -1502,9 +1502,8 @@ static void __intel_pstate_update_max_freq(struc=
-t cpufreq_policy *policy,
-> >>
-> >>   static bool intel_pstate_update_max_freq(struct cpudata *cpudata)
-> >>   {
-> >> -       struct cpufreq_policy *policy __free(put_cpufreq_policy);
-> >> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D c=
-pufreq_cpu_get(cpudata->cpu);
-> >>
-> >> -       policy =3D cpufreq_cpu_get(cpudata->cpu);
-> >>          if (!policy)
-> >>                  return false;
-> > The structure of the code is intentional here and there's no reason to
-> > change it.
->
->
-> Got it. Thanks for clarifying.
->
-> So for this case the current structure is intentional -
+From: "Mario Limonciello (AMD)" <superm1@kernel.org>
 
-Note that I'm talking about this particular change only.  The other
-change in the $subject patch is fine.
+[ Upstream commit 23800ad1265f10c2bc6f42154ce4d20e59f2900e ]
 
-> should I also avoid similar changes in other drivers?
+The ASUS ProArt PX13 has a spurious wakeup event from the touchpad
+a few moments after entering hardware sleep.  This can be avoided
+by preventing the touchpad from being a wake source.
 
-That depends on who maintains them, which is why I wanted you to split
-the patch into smaller changes in the first place.
+Add to the wakeup ignore list.
 
-My personal view is that code formatting changes, which effectively is
-what this particular one is, are pointless unless they make the code
-much easier to follow.
+Reported-by: Amit Chaudhari <amitchaudhari@mac.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4482
+Tested-by: Amit Chaudhari <amitchaudhari@mac.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/20250814183430.3887973-1-superm1@kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+Based on my comprehensive analysis of this commit and the context, here
+is my assessment:
+
+**Backport Status: YES**
+
+## Extensive Analysis:
+
+### 1. **Nature of the Fix**
+This commit fixes a real hardware bug - spurious wakeup events from the
+touchpad on the ASUS ProArt PX13 laptop. The code change adds a DMI-
+based quirk entry to the `gpiolib_acpi_quirks` table in
+`/home/sasha/linux/drivers/gpio/gpiolib-acpi-quirks.c:350-359`, which
+instructs the GPIO subsystem to ignore wake events from the specific
+touchpad GPIO pin (`ASCP1A00:00@8`).
+
+### 2. **符合稳定内核规则 (Meets Stable Kernel Rules)**
+According to `/home/sasha/linux/Documentation/process/stable-kernel-
+rules.rst`:
+- **Fixes a real bug**: Yes - spurious wakeups are a real hardware issue
+  that impacts users' ability to use sleep/suspend effectively (lines
+  18-19 of rules)
+- **Obviously correct and tested**: Yes - the fix is straightforward
+  (adding a quirk entry), has been tested by the reporter (Amit
+  Chaudhari), and reviewed by Mika Westerberg
+- **Size constraint**: The patch is only ~20 lines with context, well
+  under the 100-line limit
+- **Already in mainline**: Yes - commit
+  23800ad1265f10c2bc6f42154ce4d20e59f2900e
+
+### 3. **Historical Precedent**
+Multiple similar commits for spurious wakeup quirks have been backported
+to stable:
+- Commit `805c74eac8cb3` (GPD G1619-04 touchpad wakeup) - explicitly
+  marked with `Cc: stable@vger.kernel.org`
+- Commit `782eea0c89f7d` (Clevo NL5xNU) - marked with `Cc:
+  stable@vger.kernel.org`
+- Commit `a69982c37cd05` (Clevo NH5xAx) - marked with `Cc:
+  <stable@vger.kernel.org> # v6.1+`
+
+### 4. **Code Structure Analysis**
+The change follows the exact same pattern as other quirk entries in the
+file:
+```c
+.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+    .ignore_wake = "ASCP1A00:00@8",
+},
+```
+This is a data-only addition to an existing quirk table - no logic
+changes, no new code paths, minimal regression risk.
+
+### 5. **User Impact**
+The bug causes spurious wakeups "a few moments after entering hardware
+sleep", which:
+- Prevents proper system suspend/sleep functionality
+- Drains battery life on laptops
+- Disrupts user workflow
+- Is a clear hardware-specific issue that cannot be worked around by
+  users
+
+### 6. **Risk Assessment**
+- **Extremely low risk**: The change only affects systems that match the
+  specific DMI strings (ASUSTeK COMPUTER INC. + ProArt PX13)
+- **No impact on other systems**: DMI matching ensures this quirk only
+  applies to the affected hardware
+- **Well-established mechanism**: The ignore_wake infrastructure is
+  mature and widely used
+
+### 7. **Backporting Considerations**
+While this specific commit wasn't explicitly marked with `Cc: stable`,
+it follows the exact same pattern as commits that were. The commit has
+already been picked up by Sasha Levin's stable tree (as shown in the `[
+Upstream commit ]` tag in the local repository), suggesting the stable
+maintainers recognize its importance.
+
+The fix is self-contained, requires no prerequisites, and can be cleanly
+applied to any kernel version that has the `gpiolib-acpi-quirks.c` file
+structure (introduced in commit `92dc572852ddc`).
+
+### Conclusion
+This is a textbook example of a stable-appropriate fix: it addresses a
+specific hardware bug affecting real users, uses a well-established
+quirk mechanism, has zero impact on unaffected systems, and follows the
+exact pattern of previously backported fixes for identical issues on
+different hardware.
+
+ drivers/gpio/gpiolib-acpi-quirks.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi-quirks.c
+index c13545dce3492..bfb04e67c4bc8 100644
+--- a/drivers/gpio/gpiolib-acpi-quirks.c
++++ b/drivers/gpio/gpiolib-acpi-quirks.c
+@@ -344,6 +344,20 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
+ 			.ignore_interrupt = "AMDI0030:00@8",
+ 		},
+ 	},
++	{
++		/*
++		 * Spurious wakeups from TP_ATTN# pin
++		 * Found in BIOS 5.35
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/4482
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_FAMILY, "ProArt PX13"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "ASCP1A00:00@8",
++		},
++	},
+ 	{} /* Terminating entry */
+ };
+ 
+-- 
+2.50.1
+
 
