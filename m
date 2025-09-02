@@ -1,204 +1,122 @@
-Return-Path: <linux-acpi+bounces-16279-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16280-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D7A8B404CD
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 15:46:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14262B408DF
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 17:25:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 231CF1B65060
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 13:42:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D94D2544AC5
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 15:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB4433CEBF;
-	Tue,  2 Sep 2025 13:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="CEnfDRkv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF40731DDB7;
+	Tue,  2 Sep 2025 15:24:59 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2061.outbound.protection.outlook.com [40.107.237.61])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024B833CEB1;
-	Tue,  2 Sep 2025 13:37:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820244; cv=fail; b=MWMrJyk6MkrD/af9WT0r0CyzhVJ7EZ7ABpPcPHheVje85iyQ95aJOZFrSQhW9OqxtyigQWPrQQUjx8PQU3I6hkUkSVAO5a5IC3WdMl2/GgdpcNB2kZoV+MZ2ElB8hix7tVV2pM+6DkofFv0V2N5jqtHC0NiwT39aKvtzHSBFHaI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820244; c=relaxed/simple;
-	bh=iBheGswDiH+2oKSX7zFNpISh+JXQ8jNAmlZHw8tJyms=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qD+YjBooPwRvPn8F7zQp3xJKEBVLfP44eaO3v/dNSH+OFhnVEOcwGLc3rY/KGMS3v5NJrYHqD8eTkWAOn5A+FjGvTq0l/KB6NJDZS1WYDo1t7k/ZWn5AS3NReIFlTqhEtpuPo9pmW7hKhUWTx3mWEPybGNNI+jjJdsgHZ/5mc/o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=CEnfDRkv; arc=fail smtp.client-ip=40.107.237.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SwIzdh/Dc6YTZLbHJXCIVCROzrczxroFe/AEfhsrnbRFm6peggC4/fpCCfL9nLg8LfROQZ9YRqTee7PXhWfNBpilbSr9g/FjKzaV9vTIgp09aal1pSEqIqNxeJDzRqNji73XPvWFneQtuAZBmkTix5dmPVv1ekS0nS6bqD1E1rlVn/Jdk2dgdGfvKBE1x3tjlcUWeiYNNVEddJC3TrpbB9bGqC8emaS8CMna0C7tX0xuY2rBcUpoqdO8+m9kBnAZ6i2jQM2zIJ22rNm6Ic/ipr9PmM43xPzjnN/vOqnAVNBEvFUbR+pAsZTzmUxW+GEFWG48lUAxTExBlEA1YshYqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=csxxnR/bWcbUB74lys09IHo53uexc0mnepHLsVzZUt0=;
- b=pYiKMr87GlqEUYr9PauSswYDOJdqeuYyC5RbwenzfJ/qYcTIt+YudGtoYRJO27hxafHU1F4Jga4Y9wRy6raugukyajLCeAFkwzNRkJDP0m35vA53j7nA3fBW6567TVknLFTZGUF7dk3Onrf8kSh0LM9jEHMMjxNTSynathZ8AfzSYr6wPrNYwzAf2VdOW1zza7aFmtxcWrrwMY0JsCudEiioCkuqg0UxOXjBm6Hc9JmO5tDgo2TOfMQewkT02QwK1EMBBqwZWpfGhn2AMNdk+A7FAx0V3KUsm42588j87THwybwEsFA8JPoc5e9MYqC1xc8vpUIRPzRAwuulvdLLSQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=csxxnR/bWcbUB74lys09IHo53uexc0mnepHLsVzZUt0=;
- b=CEnfDRkvdNMyP1Y64Z7Us2+keW97fTcIKUNNCXEMwDBLiU5j6XsN1RjM9z9LXYltsfJ+CeuZPkWgAQ7J4q5nq94Bk0DoWj/9R1od60qiWl0Fx1Zs3nwUB6XaSkiJkssXfhltoI1watiIhP5byLm2gnuznnkvKRXTmAodiHT15XE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB6373.namprd12.prod.outlook.com (2603:10b6:8:a4::7) by
- MW4PR12MB7333.namprd12.prod.outlook.com (2603:10b6:303:21b::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.16; Tue, 2 Sep
- 2025 13:37:18 +0000
-Received: from DM4PR12MB6373.namprd12.prod.outlook.com
- ([fe80::12f7:eff:380b:589f]) by DM4PR12MB6373.namprd12.prod.outlook.com
- ([fe80::12f7:eff:380b:589f%4]) with mapi id 15.20.9073.026; Tue, 2 Sep 2025
- 13:37:17 +0000
-Date: Tue, 2 Sep 2025 09:37:13 -0400
-From: Yazen Ghannam <yazen.ghannam@amd.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: x86@kernel.org, Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-	Smita.KoralahalliChannabasappa@amd.com,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v5 13/20] x86/mce: Unify AMD THR handler with MCA Polling
-Message-ID: <20250902133712.GB18483@yaz-khff2.amd.com>
-References: <20250825-wip-mca-updates-v5-0-865768a2eef8@amd.com>
- <20250825-wip-mca-updates-v5-13-865768a2eef8@amd.com>
- <20250902111052.GDaLbQvA2A0b8Ii26k@fat_crate.local>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250902111052.GDaLbQvA2A0b8Ii26k@fat_crate.local>
-X-ClientProxiedBy: BN0PR04CA0134.namprd04.prod.outlook.com
- (2603:10b6:408:ed::19) To DM4PR12MB6373.namprd12.prod.outlook.com
- (2603:10b6:8:a4::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C01623D7C4;
+	Tue,  2 Sep 2025 15:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756826699; cv=none; b=T2Qi7AV+7sH5y1cNKs0hHd4uGKFm68qTdwuk80r5gjfGu9rJyvPt2xsoSvdkkt+SwNje2dFd2zQqW8qkKUtg7QxAQaHBunYpcYc8XajDFxBWj312NruzUPphShjGeYSG0avZa1Di/d6XqgGHSwzFSvcjTq0K0sBbh94c0NP0G1I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756826699; c=relaxed/simple;
+	bh=08WLGYvIs6DHBHZWmf9vElYib+z/jFkZCljxRkJotHw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bv3JVIXpQi2eDbNqKgfZe6FJFj7TPfx0UQsys2zQyxsnmlXob0NPzO8lFuf9qAta6+yFZOGFvzALtofoRA3oMo+IurM//oFeffQnih6mks2aajywc0y28mSQjn/iFsgA0BLGHcTwh0G71x621a4nbN56v0QpeS2RG5hLDodcoLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cGTxt08Cmz6M4ZQ;
+	Tue,  2 Sep 2025 23:22:26 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id E5D40140136;
+	Tue,  2 Sep 2025 23:24:52 +0800 (CST)
+Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 2 Sep
+ 2025 17:24:52 +0200
+Date: Tue, 2 Sep 2025 16:24:50 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Dave Jiang <dave.jiang@intel.com>
+CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <gregkh@linuxfoundation.org>,
+	<rafael@kernel.org>, <dakr@kernel.org>, <dave@stgolabs.net>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <dan.j.williams@intel.com>,
+	<marc.herbert@linux.intel.com>, <akpm@linux-foundation.org>,
+	<david@redhat.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v3 3/4] cxl, acpi/hmat: Update CXL access coordinates
+ directly instead of through HMAT
+Message-ID: <20250902162450.00002684@huawei.com>
+In-Reply-To: <20250829222907.1290912-4-dave.jiang@intel.com>
+References: <20250829222907.1290912-1-dave.jiang@intel.com>
+	<20250829222907.1290912-4-dave.jiang@intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6373:EE_|MW4PR12MB7333:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c1aca9a-987d-440b-7b18-08ddea25d5ad
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?eOWihuEeKMGmPOfUOF6miM/jbYTIqZfLnnGg1zOwlaFwlHeHEqgiSQepgMUJ?=
- =?us-ascii?Q?Gylv0ds+K9cFJ+QThE+NJiH7ACrpoLYVb43fX0AgdAeZ/eFBXjQPrJXX37XW?=
- =?us-ascii?Q?AtB+oc4cLD5hRZDvipZyPkSfXT0LwFepa0sK8u2DvyyCVmVzDbrcZbvCxSCK?=
- =?us-ascii?Q?FTP9I+PH2e65VyLQbUvJmOq3VuaDf1//hrdg9+VpNa/jRIjERY58th+hJAJW?=
- =?us-ascii?Q?fEQAPZulWRthotzMmEDjvjLhpcPw+8J2+ZVgNg3mLHfKA4asOgpXSjXGJcpn?=
- =?us-ascii?Q?Le1U57fqL4YTovTAyhCYHMsuw3+38hDLwp/kz+mQ/Id/W2pFO91iZoopdl9y?=
- =?us-ascii?Q?BivWCTt4ufdmaTQEAORZJnOBfhfS2fU9nS3YeO+wDTwEVqrJeDQrHs+ES7d4?=
- =?us-ascii?Q?QUuJnTIh1hQr8nSxZjwNctHOrY8Y5WMnk1IuEL19PnAFm0mYkz6sMHyKNm09?=
- =?us-ascii?Q?E/uMtiLAk2faAU89GPiRzDeaFT9OcmfzADaiEPnl9mhDgoXJpD2onqibqW1Y?=
- =?us-ascii?Q?uaQskbdelINwaWmcwoGQqpP/72aCCeqxoIPK9KaSRkkcpxOKLe10wMOXcK7k?=
- =?us-ascii?Q?wjiP2mpYP2iGefpKdRHz91JivcypLbB7VNHoxvGbHRQUksfI8xhH4OnJHV+o?=
- =?us-ascii?Q?Rdm5jVZ16ReJ7K6VVNdLGgH+M6iK5+iaPfvMy4NSe7HOXjHHtH5aEwGt1Qiu?=
- =?us-ascii?Q?2m6VA/e344VxUDf0fnR8DT6G4dpi5p0OhnSxb2jMZ/frJcB2kCzyJyrN74ne?=
- =?us-ascii?Q?fG31/2+In9ArvwLJONsjlQalXjoiIfHmpYaKn3JdnQWuePn/B5T6VxXSkm+9?=
- =?us-ascii?Q?gSX3kWxWNpX/bwGzDHAF6MhyztAChAzX+d1GEwgwzfqF8pEBGFb22GR9DlzD?=
- =?us-ascii?Q?KFJ5UlC8gmiRbBb6G6HuYnrqLypxEPawPMQwfTjNowTnDDzps9PyvBnTCEh8?=
- =?us-ascii?Q?nNU0XKDjjxgiGimijt4YFk+MiqFj2IMMf0gC9qEhf7xwn4d3nN+4cDlW06il?=
- =?us-ascii?Q?469+MiBpP2ZeGSRoBfjd+iq19Hc8llkGjI2Im58o8D4Lryv1MwWKV3KGVUTg?=
- =?us-ascii?Q?VQWROYIlhjdgIZoB/vRdaxatb0DujXmTvVrSr+fmsljkBi/9+iiRnDdwL8sO?=
- =?us-ascii?Q?/OYlj/4GVB7pjJDJ9m2w7XzJpSn8O1VmsVmumBu+uFrdKZzo8d4ZoYvIknUq?=
- =?us-ascii?Q?0xY8Hd7FeGMQW/5GKqOz9PiuNlA9L97d+DMycOcxxfMqydAK9fUTjWaB1Q4x?=
- =?us-ascii?Q?b+YN/9u6FbVy2xxXQHSbBqTRhVCBK3JVuh5ShpwMyH9K2e8rZHgCGfi1zGR0?=
- =?us-ascii?Q?fvEjGTt845KkTc7oPljCDv6thW/PDO+MMJeBLWx9u10cX05rBORRNXRcuq3w?=
- =?us-ascii?Q?16TDHMHsew/VpWwRmFUBOIlzlWTyBF9IbV9elA4SKVnVBJWLdQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6373.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Fz76JfI8Wy3UhKrimfPrWJM0KQDmvRe2vqLt07qDpj37K+nPJOp3G92ktW9R?=
- =?us-ascii?Q?Ok2OC07Bwav1wWgSmODW8dI2KTEEpJfjdbZj4ywi91QC9BaVQ6J1uBOrEZNN?=
- =?us-ascii?Q?bNt2o5deLTr+5IqrZYPm+hzB75sNOicbkTO0++Y8pZrjtEOgHLFI3KAs/Rln?=
- =?us-ascii?Q?PIiVjtIb8KIwTH9tihRSpU2NcQSPfM+KspbWcBuiD3d/AQdO4CPXDkCfOQTh?=
- =?us-ascii?Q?8qELbFkyxIBGrfbvaRzPI8DmTXDA1bajr3POAO0pTdSH8wVGqXqIQRbSbMRi?=
- =?us-ascii?Q?fy/w7vHG3oAjl1RrQSwmaZ0N7RanhiCnIYTucvvm6FYrP89ljBMWD6OdEbCc?=
- =?us-ascii?Q?aqe9q8d1MFigGdk+wTOf6IZLEr2hB2L9yoyhPkT3Rfl2HP0HPCmhlcrqHfaL?=
- =?us-ascii?Q?pE0vjGRbTZ0qK/SG7RyDB+tMSs2iBU8O7FlFGLE+Oe/JIvhEMX68liR97KbZ?=
- =?us-ascii?Q?gS2O7ZQsx0alCTuOrIUzKpf+uldCilZ2nVETVg34UP3SSnTNoSFKBl69S+dO?=
- =?us-ascii?Q?QqfJxHLvaUSqkMt75rbjGP6ubfiSfpZyDx8tGEjYG62tCeyTA0VgA6MEBgcg?=
- =?us-ascii?Q?rwhoEUhu9L0gIOI0R4LeFEJsJ7X9YTPn67s4+RhIg4Ri1Opayfn2MsnBwb8L?=
- =?us-ascii?Q?NEE4pBW20yEPYeUZ3kxTvm/HOo2hjvKvTxTsllvm7aheoe/PEPol6/tWw22I?=
- =?us-ascii?Q?FU4NSiFrQseyp3aQGUWVIeeZNodgq+qWV326nF4KG1wDSTCYg+8k6T/RWZqw?=
- =?us-ascii?Q?atGCW917/zlESe/oM3cC5QEA9aLj+5b4B8F6H937lO4fYtyzLCGZv2mZkeJH?=
- =?us-ascii?Q?W7c5QynRwlg4kx0gODMmCb9XvG5kc3RIWCNDRO6woLbLThna0YA1SY5bk4AS?=
- =?us-ascii?Q?bJBDpTG28mg2SP6L5urXIaOEWItucjzNff3ZqOw2jaGc03TygfUJGUUwxuZf?=
- =?us-ascii?Q?BihRY1zowGb9DTfMmRsxYqCNyDLg1nOhOAKS5/JOJOIRUqJtCFfs3derQQgo?=
- =?us-ascii?Q?GD8rhf6JxSk+zhGR4qR8vSNcKiQeqYny2IYqfeJ9w0vLgAzhmlkUnIy2HYUM?=
- =?us-ascii?Q?AMjjbT9sF9EEJ/jRqC4il1V8iPjo3Mkpws39EFz6GQPqV6njt85PUce9f4rT?=
- =?us-ascii?Q?HJh2hyOhxB33S8hqKT3fnD+CzzoxciBjTDKO7ZQ8UiraqnPr4TMuqMEDxBWH?=
- =?us-ascii?Q?LICi7DNty3TiPzBN2wChPEgeo4HZOzJvI/IgWimVNg2mnOE4vIE2kGqqRNWI?=
- =?us-ascii?Q?pbbwAmB2L5M9VnIJw3PiwfJNQ3Q21xbv/lvsn0+EIp6N7d8pXrKuZstoFYYG?=
- =?us-ascii?Q?lpU8VzRPmyZ+x5Vtv2q32jWT1mNYeYjKKxPfxQh7zwFPQoGNt6XVd74jhn1U?=
- =?us-ascii?Q?VEbR1aMWxBBOm0GSeptw1DdWMxbd2BIzud86GpaSAX+Nap+deHGAcOpiUTU2?=
- =?us-ascii?Q?xjc7/T+spQIEABv7exMdGisuxWkRggYpWurNWcso/VIMeU4aPXV5tq5HhJ/8?=
- =?us-ascii?Q?xeerDRV74YNnKY+eQ7/VZiAy6T+ufLej6ZS++b2J5W8C/Es1rr5GZJvGn3et?=
- =?us-ascii?Q?4i/6ToBvpLH50r3fAHQ+W0A8SrcopgE+LTkqP7Q8?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c1aca9a-987d-440b-7b18-08ddea25d5ad
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6373.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 13:37:17.8623
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OnvtJbgtW1dSKPB2dv7flgnrjVAs8mhhu+z8QlT/XThoMkeyXhWAVeUUz2KKnwBuI5JvcRVFgHsMw7+1O5wWIg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7333
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Tue, Sep 02, 2025 at 01:10:52PM +0200, Borislav Petkov wrote:
-> On Mon, Aug 25, 2025 at 05:33:10PM +0000, Yazen Ghannam wrote:
-> > +/*
-> > + * Threshold interrupt handler will service THRESHOLD_APIC_VECTOR. The interrupt
-> > + * goes off when error_count reaches threshold_limit.
-> > + */
-> > +static void amd_threshold_interrupt(void)
-> > +{
-> > +	machine_check_poll(MCP_TIMESTAMP, &this_cpu_ptr(&mce_amd_data)->thr_intr_banks);
-> >  }
+On Fri, 29 Aug 2025 15:29:06 -0700
+Dave Jiang <dave.jiang@intel.com> wrote:
+
+> The current implementation of CXL memory hotplug notifier gets called
+> before the HMAT memory hotplug notifier. The CXL driver calculates the
+> access coordinates (bandwidth and latency values) for the CXL end to
+> end path (i.e. CPU to endpoint). When the CXL region is onlined, the CXL
+> memory hotplug notifier writes the access coordinates to the HMAT target
+> structs. Then the HMAT memory hotplug notifier is called and it creates
+> the access coordinates for the node sysfs attributes.
 > 
-> So the thresholding interrupt will fire.
+> During testing on an Intel platform, it was found that although the
+> newly calculated coordinates were pushed to sysfs, the sysfs attributes for
+> the access coordinates showed up with the wrong initiator. The system has
+> 4 nodes (0, 1, 2, 3) where node 0 and 1 are CPU nodes and node 2 and 3 are
+> CXL nodes. The expectation is that node 2 would show up as a target to node
+> 0:
+> /sys/devices/system/node/node2/access0/initiators/node0
 > 
-> It'll call machine_check_poll().
+> However it was observed that node 2 showed up as a target under node 1:
+> /sys/devices/system/node/node2/access0/initiators/node1
 > 
-> That thing will do something and eventually call back into amd.c again:
+> The original intent of the 'ext_updated' flag in HMAT handling code was to
+> stop HMAT memory hotplug callback from clobbering the access coordinates
+> after CXL has injected its calculated coordinates and replaced the generic
+> target access coordinates provided by the HMAT table in the HMAT target
+> structs. However the flag is hacky at best and blocks the updates from
+> other CXL regions that are onlined in the same node later on. Remove the
+> 'ext_updated' flag usage and just update the access coordinates for the
+> nodes directly without touching HMAT target data.
 > 
->                 if (mce_flags.amd_threshold)
->                         amd_reset_thr_limit(i);
-
-This resets only a bank with a valid error.
-
-Also, it resets the limit *before* clearing MCi_STATUS which should be
-the last step.
-
+> The hotplug memory callback ordering is changed. Instead of changing CXL,
+> move HMAT back so there's room for the levels rather than have CXL share
+> the same level as SLAB_CALLBACK_PRI. The change will resulting in the CXL
+> callback to be executed after the HMAT callback.
 > 
-> Why the back'n'forth?
+> With the change, the CXL hotplug memory notifier runs after the HMAT
+> callback. The HMAT callback will create the node sysfs attributes for
+> access coordinates. The CXL callback will write the access coordinates to
+> the now created node sysfs attributes directly and will not pollute the
+> HMAT target values.
 > 
-> Why not:
+> A nodemask is introduced to keep track if a node has been updated and
+> prevents further updates.
 > 
-> static void amd_threshold_interrupt(void)
-> {
-> 	machine_check_poll(MCP_TIMESTAMP, &this_cpu_ptr(&mce_amd_data)->thr_intr_banks);
-> 	amd_reset_thr_limit();
+> Fixes: 067353a46d8c ("cxl/region: Add memory hotplug notifier for cxl region")
+> Cc: stable@vger.kernel.org
+> Tested-by: Marc Herbert <marc.herbert@linux.intel.com>
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 
-This means we'd need to do another loop through the banks. Their
-MCi_STATUS registers would be cleared. So they could log another error
-before the limit is reset.
-
-Overall, the goal is to loop through the banks one time and log/reset
-banks as we go through them.
-
-Thanks,
-Yazen
-
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
