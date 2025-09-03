@@ -1,91 +1,95 @@
-Return-Path: <linux-acpi+bounces-16342-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16343-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 245C8B427B1
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 19:14:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A47B427DD
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 19:22:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9FEF5E3BE0
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 17:14:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 543AA5652A1
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 17:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FBD31A56C;
-	Wed,  3 Sep 2025 17:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582DC309DD8;
+	Wed,  3 Sep 2025 17:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Ont3MVVU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cky2BVTe"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F7630DED9
-	for <linux-acpi@vger.kernel.org>; Wed,  3 Sep 2025 17:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0E229DB99;
+	Wed,  3 Sep 2025 17:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756919645; cv=none; b=GHmiarOA1CeNgxV/OUzbZDRYqqWj1Pqawh3XBpgnC3VoA9slyDf6MXRNoUZZcWnpjnsFIyhePr7sU9Y+C9IwVucqjutOfS/cfK1TIcH6HETBYxMDz2Jz/ffcmJ7amV/ZLv9Lkpyf6FjyuZl0TOIXE/qRNj4swWKaI057jnRMlE0=
+	t=1756920154; cv=none; b=kr/CYAfrWdP8XJcO3KXBOw/aX79vRdftfarkae6S6pb96acXW6rZJ3O/9etUC1Qc0v1zpqRNlOckPAh9fFaGqyb5d0NCoswxmJllMoSE6kZlzcdYFqRlu77SUGovixkEoLj5ttaPF2nRTFBodMU8ccs2eboaexDTGhRUMFu9vX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756919645; c=relaxed/simple;
-	bh=cj3CyxRS2XK1WHoYNM9POX30bm2iqsoA3IJN4yEICYk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HefbN7REI6iGTwW4TxDp541O3EPzVawU2MEFs0zUMAuwlo00aIKtnNfr7tgd7XtMSNDnGO6gD9QgY35x3nAkQhEpVKlXlbF20uTUUWPnGKaoyo4am+/5HxMOnbw1t973gfqLAwdDWU4pEslw0pQ3ZfyPq+f6h8KM303UR6lZLzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Ont3MVVU; arc=none smtp.client-ip=188.165.51.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1756919633; x=1757178833;
-	bh=cj3CyxRS2XK1WHoYNM9POX30bm2iqsoA3IJN4yEICYk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Ont3MVVUqVq0a0lJ2OzQEw1M9JZcuNuqyuqZLm6qcgcS7uVBWVXJZfRAJLZEuScZK
-	 KjVjb0ouj4F0rLe7NDvAV7gIrJrwQeev2QzynQH5LTCPQBReKTD/Wf/mSxxoWTWggc
-	 H/bfN7EIauNlmpilEoy+xPN4dDWg4EYBseJK6on+cjuQNVCcpftQeSeliFaIMVHn/E
-	 ET7c8cSxsmB4SZFJpcywQRyEpm3HaV/ONzNXAIJwcuaYHBEUqqBEYe9dOWVfLdVe93
-	 3SHSnwf2PsT556dn2mOCbeEqInMQORaLe6KLUoJ5+03j0YKtb6pVpeweqYs9GGdIb3
-	 AT1V1+46gL0UA==
-Date: Wed, 03 Sep 2025 17:13:50 +0000
-To: Mario Limonciello <superm1@kernel.org>
-From: aprilgrimoire <aprilgrimoire@proton.me>
-Cc: "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: Re: [BUG] MECHREVO Yilong15Pro GM5HG7A: lid switch causing unwanted s2idle wakeups
-Message-ID: <MawTZCnf5jVqp47YcxRrH21nl0rN8O78_my4TxiZ3tFoNxuP568eHxnEH5-VIMa6DtNbHdXytnpRgVyay-UydMK5tbYe4-TG8e2BYEky5hc=@proton.me>
-In-Reply-To: <06f0c531-2cb6-4a1a-a716-406b4f5f9676@kernel.org>
-References: <6ww4uu6Gl4F5n6VY5dl1ufASfKzs4DhMxAN8BuqUpCoqU3PQukVSVSBCl_lKIzkQ-S8kt1acPd58eyolhkWN32lMLFj4ViI0Tdu2jwhnYZ8=@proton.me> <06f0c531-2cb6-4a1a-a716-406b4f5f9676@kernel.org>
-Feedback-ID: 151975985:user:proton
-X-Pm-Message-ID: ef2023fdd6a00a3ccd5ee11fdf542811fb984d5d
+	s=arc-20240116; t=1756920154; c=relaxed/simple;
+	bh=38qRBcVLemJuIO3Zcx8DVpVL1QoFDMKDswFRU8GkwHs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=WhlBYIYhrFzAcafaniueA1lEr7+oLe+GEL3qJLJ+DgBLrKJUkKRbFpIWZvrJOHdz/f5e+XZwovNChddLiZQymyAoZiNODOcLMb9ki5GUmLVB0hj+EFIxqHiODD6U+0Gcu32ToH8osxegkGOFwZWoXlr6oRND605pAaZIlaFhfPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cky2BVTe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C9FC4CEE7;
+	Wed,  3 Sep 2025 17:22:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756920153;
+	bh=38qRBcVLemJuIO3Zcx8DVpVL1QoFDMKDswFRU8GkwHs=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=Cky2BVTe8KD9vzLnUdMoMsD0y6FBMaEFOv9TN8sIYqX8BGaUBMpcUERzgyOidn3kN
+	 HMul+OwyW8dXvDH0OBNIC+sOp6h1yg2VnO8Mc8DIT+Myl2bAcSz8Q59hEhuAu8pSbs
+	 mfkqD0D2QTViQaVnvI47lCOryEM9JCjusn7w3gp5n9BQ2O5p7OIZboZkym4XaFOvPq
+	 UgcXa3woQKwVYZkkVKNLuenq8kX0Ylkc7BXfhbG23pBo5ZxKlHC/kVaQHNgrNNfBRa
+	 5BJpoSTp4eUNTlzRZRWNL3Bvz43M/4Ma4uW0akVd8JRUtgszdDpyn9YyibAgTbiNtt
+	 7NybjNz9KNfhQ==
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 03 Sep 2025 19:22:29 +0200
+Message-Id: <DCJC7Q9MZEM3.34FU7BXXZ7UGF@kernel.org>
+Subject: Re: [PATCH v4 1/2] device property: Add scoped fwnode child node
+ iterators
+Cc: =?utf-8?q?Jean-Fran=C3=A7ois_Lessard?= <jefflessard3@gmail.com>,
+ "Wolfram Sang" <wsa+renesas@sang-engineering.com>, "Andy Shevchenko"
+ <andriy.shevchenko@linux.intel.com>, "Daniel Scally" <djrscally@gmail.com>,
+ "Heikki Krogerus" <heikki.krogerus@linux.intel.com>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Javier Carrasco" <javier.carrasco.cruz@gmail.com>,
+ <linux-i2c@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-acpi@vger.kernel.org>
+To: "Sakari Ailus" <sakari.ailus@linux.intel.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250902190443.3252-1-jefflessard3@gmail.com>
+ <20250902190443.3252-2-jefflessard3@gmail.com>
+ <aLhAKJBUNQVH1Vmf@kekkonen.localdomain>
+In-Reply-To: <aLhAKJBUNQVH1Vmf@kekkonen.localdomain>
 
+(Cc: Javier)
 
-> Hi,
->=20
-> Can you please reproduce the issue using 'amd-s2idle' from
-> https://pypi.org/project/amd-debug-tools/ ?
->=20
-> Basically install the wheel, run 'amd-s2idle test'. When prompted how
-> long, set it for ~20 seconds. Then wait for the LED to flash and close
-> the lid and it should wake up and generate a report.
->=20
-> This will capture a lot of artifacts about the problem in the report and
-> we can go from there on next steps. Ideally if you can put the report
-> on a new issue here and tag me (@superm1):
-> https://gitlab.freedesktop.org/drm/amd/-/issues
-> We can iterate back and forth on it to come up with the best solution.
->=20
-> Thanks,
+On Wed Sep 3, 2025 at 3:18 PM CEST, Sakari Ailus wrote:
+> Do we really need the available variant?
+>
+> Please see
+> <URL:https://lore.kernel.org/linux-acpi/Zwj12J5bTNUEnxA0@kekkonen.localdo=
+main/>.
+>
+> I'll post a patch to remove fwnode_get_next_available_child_node(), too.
 
-Hi! Here's the output:
+Either I'm missing something substantial or the link does indeed not provid=
+e an
+obvious justification of why you want to send a patch to remove
+fwnode_get_next_available_child_node().
 
-https://paste.gentoo.zip/mpV8dQcl
+Do you mean to say that all fwnode backends always return true for
+device_is_available() and hence the fwnode API should not make this distinc=
+tion?
 
-I disabled the patched dsdt since with it amd-s2idle would think ASPM Polic=
-y is set to power-saving and refuse to run.
-
-It's late here and I'll probably return tomorrow. Thanks!
+I.e. are you referring to the fact that of_fwnode_get_next_child_node() alw=
+ays
+calls of_get_next_available_child() and swnode has no device_is_available()
+callback and hence is always available? What about ACPI?
 
