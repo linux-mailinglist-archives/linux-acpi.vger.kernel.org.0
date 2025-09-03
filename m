@@ -1,81 +1,54 @@
-Return-Path: <linux-acpi+bounces-16336-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16337-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C43CFB425B6
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 17:39:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD3EB426C4
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 18:23:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69B32205F10
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 15:39:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25B071895583
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 16:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D8D283FD5;
-	Wed,  3 Sep 2025 15:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E852C11D5;
+	Wed,  3 Sep 2025 16:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="V0fsfZg9"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Jqzcv09N"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mail-10696.protonmail.ch (mail-10696.protonmail.ch [79.135.106.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E898527FD78;
-	Wed,  3 Sep 2025 15:39:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9DD27146B
+	for <linux-acpi@vger.kernel.org>; Wed,  3 Sep 2025 16:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756913997; cv=none; b=rz2NXSxp+yKowf1ksjzQNOsJSnEBfrpDQVijVrfWNaiGTr8FzJ3lhTUDq16H21nXPCH7+eKQmXxQGE+eqwuBC/j5YQT6YJR2+g86zS/ULC2Q16231h0Nuc50q4VyzGkqSsQGdla8e1LJP+DOI/rHgGsab48oQEAJEOBuOOqCGi0=
+	t=1756916611; cv=none; b=sG0td0p3/zF2ZUkx4RC1WcdON7RBCZAjB2Mo9KJ9JwdiBAE+JjfDObQ+z5cWcDBJLKW/ix+n3+DmuT2mFd9jwx0pJyEyWxNW4mkbUMWaoMUEbWjJoZ/UKdP/7jVdk0cYF/d529YCn9MjEVF0P8MVWwH7ebfRdUJx80DZSBtsJz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756913997; c=relaxed/simple;
-	bh=yEra3lMBgmntkeYUtl49sYAEYjq84wZRgNOZiqJ9768=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UvxnmS+yh7QJVwx0k3WURSr7Pvt44pon3oZ+0MfBoof5sDDkbTQPPNIhgbQdMoDvfi2KU2wpIG9ORgxGMRMK/hkwhgRqIFAvtQ4Ph1VgR7yQeiHIld3cRAU4gWAn5sKMOk45lUNQjPY0vNt2EqhM/z5IgDgsClhlRlljL1gW92I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=V0fsfZg9; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 776F940E016E;
-	Wed,  3 Sep 2025 15:39:36 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id IFeAcDB9JgAz; Wed,  3 Sep 2025 15:39:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1756913972; bh=gZt5S953FuMmLNd9xFknMXERSFx/tD6LVwgV8tqL03A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V0fsfZg9Rq1IOx868l07KxQeyuox7KJK6b3pVNfQHznEIsGmw2Qp9CstZMV4bc34G
-	 5PvMuKPidFkWXp+2ZApGgZHKfaTzjmYswHBSRMDzS44Q2QBa+CJi6n+EdB8cfFZIws
-	 ov+u03D6WoD5drG4GjKuhnHeks6Xrj18gStgMXV+E76Y7j2E1k2ww18qeF+K/gJThX
-	 zH3SzcMvfcEwPQNElPzMnUYK1+DPmTejy/+I78THP22ZJgTq0yLrT9AaBhQqFiWkQC
-	 oUe+CLSVwEV620vpJTUuyJMd6ZySIQgVkhHeiqN+Lm2GK9xLJdNmtPjqCsqW3xyu9l
-	 lI7uX5lCPBEi7TRyBCa/DFePnBCEEHh+Mv4dvM4jLKK0TEFPK1WdW7Jsx/P8KflY2u
-	 9M1NtnQguansyJZ0AZh8MKHk5rz+4u5jPt+i37BfB4oLxCJcETsotrXeSzt3ZvIaRP
-	 /UHaSKvlNFIVaftxJEGZQHbxm/rrwtwfN3AeuBUZZNgLjwylVEmxEXWt6Fx0BtfC/R
-	 kC66Pe2hb7Jxbvkczp/A6xLnNv9rbz5wQCP8CzG/ffalkBgQixmp81UZKhzBHDsi+v
-	 nA/HtfxYKXzpyogiCA+6QYoRu1oG0fvzo6kxHwL4l7b+c7PgbqbzF1oikW28p+kJJn
-	 5faB4IUAVCH47Q/9cavJF++U=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 6282440E00DE;
-	Wed,  3 Sep 2025 15:39:22 +0000 (UTC)
-Date: Wed, 3 Sep 2025 17:39:16 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Yazen Ghannam <yazen.ghannam@amd.com>
-Cc: x86@kernel.org, Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-	Smita.KoralahalliChannabasappa@amd.com,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v5 15/20] x86/mce/amd: Enable interrupt vectors once
- per-CPU on SMCA systems
-Message-ID: <20250903153916.GCaLhhJHHK7oY-PTqz@fat_crate.local>
-References: <20250825-wip-mca-updates-v5-0-865768a2eef8@amd.com>
- <20250825-wip-mca-updates-v5-15-865768a2eef8@amd.com>
- <20250903100317.GHaLgSZTPMDHrKbO7Q@fat_crate.local>
- <20250903140022.GA835@yaz-khff2.amd.com>
+	s=arc-20240116; t=1756916611; c=relaxed/simple;
+	bh=ImTdk45fEohuEmL0fTKBT+vvbto6WFa2InFnhG0G+MA=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=u1EBw5sgQ1qVUeRPvdblW7mvBOJ7KXRPUPRJaE49+TMUDEWiv+Ze8tC7PPCYmADJcwXbzRFfw2ytxU4XE+4fUb4RMz4o4Mfc2KyXvukCsuRPqCi/CsJSR56+6sWBggr1iT7sp0eWKCoG19C9In9KVllsgr53WWHdNrh4/9jFtDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Jqzcv09N; arc=none smtp.client-ip=79.135.106.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1756916599; x=1757175799;
+	bh=+ORUhx+zeVXnXE7+aCzen2Up5Y/VFjmxmSaXieTvP1Q=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=Jqzcv09NnHP2W7WMJX5xh2S2uvEDF+9Sp8bKgdQ0ebTPhxHlru+hZMMhCNcPk9HBY
+	 FraJ5casOZkfpodAsHrmoBaUX8OlhQBjzZMjXAM2hAiPENxbgsI5nUBQMbLMgZ1+4J
+	 a3VekuOAEX2dWMDqa1TwC90EeJUG7rpFugT+W03JM6J7oEVLTG/6oeimN62fqEfyI2
+	 vPOO++OsjQui0DW4WyVYJzLdK7XUe/x9sS/o5BHMpjhT+TaN38o1mFrFHL3FEvcqjp
+	 bLKi0ZcVbGWdne2BVoSYIfshrEkmExQEXuyIfSbK9MRacs8Jx1W830ZBUFPd4fcey9
+	 T3WLgI/l0HNSA==
+Date: Wed, 03 Sep 2025 16:23:12 +0000
+To: "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+From: aprilgrimoire <aprilgrimoire@proton.me>
+Cc: "mario.limonciello@amd.com" <mario.limonciello@amd.com>
+Subject: [BUG] MECHREVO Yilong15Pro GM5HG7A: lid switch causing unwanted s2idle wakeups
+Message-ID: <6ww4uu6Gl4F5n6VY5dl1ufASfKzs4DhMxAN8BuqUpCoqU3PQukVSVSBCl_lKIzkQ-S8kt1acPd58eyolhkWN32lMLFj4ViI0Tdu2jwhnYZ8=@proton.me>
+Feedback-ID: 151975985:user:proton
+X-Pm-Message-ID: acb382bdbb0c6be637933d3b0930c7d1f98c9157
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -83,58 +56,71 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250903140022.GA835@yaz-khff2.amd.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 03, 2025 at 10:00:22AM -0400, Yazen Ghannam wrote:
-> But any reason to use u32? Why not u8? Alignment or something?
+Hi!
+Opening or closing the lid causes my laptop Yilong15Pro GM5HG7A to wake up =
+from s2idle, similar to the symptom described in
 
-Struct padding:
+https://community.frame.work/t/tracking-waking-from-sleep-when-plugged-in-a=
+md-k-ubuntu-22-04/44168
 
-$ pahole --header elf64_hdr vmlinux
+This issue for Framework 13 has been fixed in
 
-...
+https://lore.kernel.org/platform-driver-x86/20231212045006.97581-5-mario.li=
+monciello@amd.com/
 
-struct mce_amd_cpu_data {
-        mce_banks_t                thr_intr_banks;       /*     0     8 */
-        mce_banks_t                dfr_intr_banks;       /*     8     8 */
-        u8                         thr_intr_en:1;        /*    16: 0  1 */
-        u8                         dfr_intr_en:1;        /*    16: 1  1 */
-        u8                         __resv:6;             /*    16: 2  1 */
- 
-        /* size: 24, cachelines: 1, members: 5 */
-        /* padding: 7 */
-	^^^^^^^^^^^
+For me specifically, two interrupts appear on such unwanted wakeups: IRQ1 a=
+nd IRQ7. IRQ1 is the lid switch, with DRIVER=3D=3Dbutton. IRQ7 has SUBSYSTE=
+M=3D=3Dserio and DRIVER=3D=3Damd_gpio. I tried some workarounds and got to =
+disable IRQ1, but IRQ7 doesn't support disabling and the issue persists.
 
-        /* last cacheline: 24 bytes */
-};
+I did some modifications to the kernel code:
 
-vs
+----- drivers/platform/x86/amd/pmc/pmc.c
 
-struct mce_amd_cpu_data {
-        mce_banks_t                thr_intr_banks;       /*     0     8 */
-        mce_banks_t                dfr_intr_banks;       /*     8     8 */
-        u32                        thr_intr_en:1;        /*    16: 0  4 */
-        u32                        dfr_intr_en:1;        /*    16: 1  4 */
-        u32                        __resv:30;            /*    16: 2  4 */
- 
-        /* size: 24, cachelines: 1, members: 5 */
-        /* padding: 4 */
-	^^^^^^^^^^
+static int amd_pmc_wa_irq1(struct amd_pmc_dev *pdev)
+{
+        ...
+        if (device_may_wakeup(d)) {
+                dev_info_once(d, "Disabling IRQ1 wakeup source to avoid pla=
+tform firmware bug\n");
+                disable_irq_wake(1);
+                dev_warn(d, "Also disabling IRQ7!!! This is bad practice!!!=
+ Remove after testing IMMEDIATELY!!!");
+                disable_irq_wake(7);
+                device_set_wakeup_enable(d, false);
+        }
+        ...
+}
 
-        /* last cacheline: 24 bytes */
-};
+----- drivers/platform/x86/amd/pmc/pmc-quirks.c
+        ...
+        {
+                .ident =3D "MECHREVO Yilong15Pro Series GM5HG7A",
+                .driver_data =3D &quirk_spurious_8042,
+                .matches =3D {
+                        DMI_MATCH(DMI_SYS_VENDOR, "MECHREVO"),
+                        DMI_MATCH(DMI_PRODUCT_NAME, "Yilong15Pro Series GM5=
+HG7A"),
+                        /* Not matching BIOS version: MECHREVO doesn't supp=
+ort Linux officially, so no expectation of them fixing the bios. */
+                }
+        },
+        ...
 
-The end result is the same unless your do __packed.
+But IRC7 cannot be disabled:
 
-But you might as well use the u32 in the distant case you need more flags
-- you never know with our RAS folks.
+(base) =E2=9E=9C  ~ echo disabled | sudo tee /sys/kernel/irq/7/wakeup
+Password:
+tee: /sys/kernel/irq/7/wakeup: Permission denied
 
-:-P
+In dsdt.dsl, I also nuked some code about the lid state and changed all Sha=
+redAndWake to Shared, however it didn't work either.
 
--- 
-Regards/Gruss,
-    Boris.
+Mechrevo officially only supports Windows, and this lid issue doesn't appea=
+r on Windows. Does this indicate this issue can be workaround in the driver=
+ level? What can be done next?
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks!
 
