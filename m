@@ -1,58 +1,58 @@
-Return-Path: <linux-acpi+bounces-16320-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16322-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8179B42108
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 15:20:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50ED8B42132
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 15:22:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C9223AF2F6
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 13:20:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B0C5567BFB
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 13:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8732C2FFDCE;
-	Wed,  3 Sep 2025 13:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456C62FF67E;
+	Wed,  3 Sep 2025 13:18:38 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717A12FF64B;
-	Wed,  3 Sep 2025 13:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7223307481;
+	Wed,  3 Sep 2025 13:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756905514; cv=none; b=dDE4RGYZH3R288ktMIIKE2NicLHgJBnkWzsbeHh+ipMiY2QrfYuZjV7ixq6kAarF1PCwZmL5nFuhhX6DHuyOZ744moCoQFC8G/eft6g4oCibpTWnwdCs9ftYdLXMfx/23TlsV6jTI/Yns/UAKwtjj2II8E8cY6ZVztKAQtWnukU=
+	t=1756905518; cv=none; b=ZH6cV8trFxtqhCuNR8RDFTgzLCgD9qzgOKgFenuzELsh5x2LhFs0dVXxeumELLt/d4yoB2MgouFyt8Fdr4c9UN+FR3lDyqOnn9pX6yqTVLXnfPXoZvia6xWue89bwWOQhcA3g50+t3597Q0T+2WgopASlMbnsu1Pox/7hmcWTN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756905514; c=relaxed/simple;
-	bh=SOEaaZpmJn7sGF2g0MQZ6wZ+Z37bA8pyb8CmHglSgm0=;
+	s=arc-20240116; t=1756905518; c=relaxed/simple;
+	bh=mMkykB+5FeWYu30WtxVsDKEqZr9ON+7axCeJ12PaHQg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=obpB/GlqlsksIDJ+YvmXKk/jPYi/GydZrmKW8OJ2MS82UcMrKX+P5vx+BPuwgljzaCRRHQ2MkaNGoGmKKt0msLSkfg68dSfX9lN2I/sF0tYTBte8lKDiPZWnP/dTkrzpgXMGodAQKct7MGYhKctdO2XNLJ8ls86Q6dmcf8QFtJc=
+	 MIME-Version; b=BFlSpYLZaIHHynMZgIg1eMmA+cmACZM1gQX5rl4WUqLfXsS42KqoXcW6cyK443ISguB19q3WB4gLw/4uy2CBU9R2CtR+8k1F0wsToqOobp5xQkTpk2YCYnIeFFgn6whs7/UrOt+QyqqjJGjc4413JFr9FVcOh7ako6j3isFbMN8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 7923175488c811f0b29709d653e92f7d-20250903
+X-UUID: 7bf29db088c811f0b29709d653e92f7d-20250903
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:404860c2-a1e1-4a57-af4d-479ddd31998b,IP:0,U
+X-CID-O-INFO: VERSION:1.1.45,REQID:47b9b184-7915-4981-84d2-da5939ebd09f,IP:0,U
 	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
 	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:8ae0b0763886d87a9cf94141ec49b745,BulkI
+X-CID-META: VersionHash:6493067,CLOUDID:4de4532331db31d4079350c98637262e,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:-3
 	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
 	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 7923175488c811f0b29709d653e92f7d-20250903
+X-UUID: 7bf29db088c811f0b29709d653e92f7d-20250903
 Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
 	(envelope-from <zhangzihuan@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 1572167497; Wed, 03 Sep 2025 21:18:25 +0800
+	with ESMTP id 251707506; Wed, 03 Sep 2025 21:18:30 +0800
 Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 328D9E008FA2;
-	Wed,  3 Sep 2025 21:18:25 +0800 (CST)
-X-ns-mid: postfix-68B84021-1150110
+	by mail.kylinos.cn (NSMail) with SMTP id 09D93E008FA2;
+	Wed,  3 Sep 2025 21:18:29 +0800 (CST)
+X-ns-mid: postfix-68B84024-80687311
 Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 717CBE008FA3;
-	Wed,  3 Sep 2025 21:18:21 +0800 (CST)
+	by mail.kylinos.cn (NSMail) with ESMTPA id 3F46FE008FA3;
+	Wed,  3 Sep 2025 21:18:25 +0800 (CST)
 From: Zihuan Zhang <zhangzihuan@kylinos.cn>
 To: "Rafael J . wysocki" <rafael@kernel.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
@@ -101,9 +101,9 @@ Cc: Ben Horgan <ben.horgan@arm.com>,
 	linux-omap@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v4 08/10] thermal: imx: Use scope-based cleanup helper
-Date: Wed,  3 Sep 2025 21:17:31 +0800
-Message-Id: <20250903131733.57637-9-zhangzihuan@kylinos.cn>
+Subject: [PATCH v4 09/10] thermal/drivers/ti-soc-thermal: Use scope-based cleanup helper
+Date: Wed,  3 Sep 2025 21:17:32 +0800
+Message-Id: <20250903131733.57637-10-zhangzihuan@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
 References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
@@ -123,31 +123,36 @@ No functional change intended.
 
 Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 ---
- drivers/thermal/imx_thermal.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/thermal/imx_thermal.c b/drivers/thermal/imx_thermal.=
-c
-index 38c993d1bcb3..cd1d9d419275 100644
---- a/drivers/thermal/imx_thermal.c
-+++ b/drivers/thermal/imx_thermal.c
-@@ -201,7 +201,6 @@ static struct thermal_soc_data thermal_imx7d_data =3D=
- {
+diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers=
+/thermal/ti-soc-thermal/ti-thermal-common.c
+index 0cf0826b805a..37d06468913a 100644
+--- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
++++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+@@ -27,7 +27,6 @@
 =20
- struct imx_thermal_data {
- 	struct device *dev;
+ /* common data structures */
+ struct ti_thermal_data {
 -	struct cpufreq_policy *policy;
- 	struct thermal_zone_device *tz;
- 	struct thermal_cooling_device *cdev;
- 	struct regmap *tempmon;
-@@ -541,22 +540,20 @@ MODULE_DEVICE_TABLE(of, of_imx_thermal_match);
- static int imx_thermal_register_legacy_cooling(struct imx_thermal_data *=
-data)
+ 	struct thermal_zone_device *ti_thermal;
+ 	struct thermal_zone_device *pcb_tz;
+ 	struct thermal_cooling_device *cool_dev;
+@@ -218,6 +217,7 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap=
+ *bgp, int id)
  {
- 	struct device_node *np;
+ 	struct ti_thermal_data *data;
+ 	struct device_node *np =3D bgp->dev->of_node;
 +	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
 u_get(0);
- 	int ret =3D 0;
+=20
+ 	/*
+ 	 * We are assuming here that if one deploys the zone
+@@ -234,19 +234,17 @@ int ti_thermal_register_cpu_cooling(struct ti_bandg=
+ap *bgp, int id)
+ 	if (!data)
+ 		return -EINVAL;
 =20
 -	data->policy =3D cpufreq_cpu_get(0);
 -	if (!data->policy) {
@@ -156,30 +161,31 @@ u_get(0);
  		return -EPROBE_DEFER;
  	}
 =20
--	np =3D of_get_cpu_node(data->policy->cpu, NULL);
-+	np =3D of_get_cpu_node(policy->cpu, NULL);
+ 	/* Register cooling device */
+-	data->cool_dev =3D cpufreq_cooling_register(data->policy);
++	data->cool_dev =3D cpufreq_cooling_register(policy);
+ 	if (IS_ERR(data->cool_dev)) {
+ 		int ret =3D PTR_ERR(data->cool_dev);
+ 		dev_err(bgp->dev, "Failed to register cpu cooling device %d\n",
+ 			ret);
+-		cpufreq_cpu_put(data->policy);
 =20
- 	if (!np || !of_property_present(np, "#cooling-cells")) {
--		data->cdev =3D cpufreq_cooling_register(data->policy);
--		if (IS_ERR(data->cdev)) {
-+		data->cdev =3D cpufreq_cooling_register(policy);
-+		if (IS_ERR(data->cdev))
- 			ret =3D PTR_ERR(data->cdev);
--			cpufreq_cpu_put(data->policy);
--		}
+ 		return ret;
  	}
+@@ -261,11 +259,8 @@ int ti_thermal_unregister_cpu_cooling(struct ti_band=
+gap *bgp, int id)
 =20
- 	of_node_put(np);
-@@ -567,7 +564,6 @@ static int imx_thermal_register_legacy_cooling(struct=
- imx_thermal_data *data)
- static void imx_thermal_unregister_legacy_cooling(struct imx_thermal_dat=
-a *data)
- {
- 	cpufreq_cooling_unregister(data->cdev);
--	cpufreq_cpu_put(data->policy);
+ 	data =3D ti_bandgap_get_sensor_data(bgp, id);
+=20
+-	if (!IS_ERR_OR_NULL(data)) {
++	if (!IS_ERR_OR_NULL(data))
+ 		cpufreq_cooling_unregister(data->cool_dev);
+-		if (data->policy)
+-			cpufreq_cpu_put(data->policy);
+-	}
+=20
+ 	return 0;
  }
-=20
- #else
 --=20
 2.25.1
 
