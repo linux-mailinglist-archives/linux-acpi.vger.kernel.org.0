@@ -1,71 +1,70 @@
-Return-Path: <linux-acpi+bounces-16311-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16312-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164CDB41CB2
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 13:07:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFEFEB41D3B
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 13:43:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9236B1BA6788
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 11:08:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5DA16801A6
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 11:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144AD2F5331;
-	Wed,  3 Sep 2025 11:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CD82FB63C;
+	Wed,  3 Sep 2025 11:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fqEv+pAy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZpjrJSUQ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90112F3C0A;
-	Wed,  3 Sep 2025 11:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85732C178E;
+	Wed,  3 Sep 2025 11:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756897662; cv=none; b=qt6n6ydyS628wpeLf01+ZN4iBhgajl7yt8838ebPoKJml4bknlh8sTvYo1bV1gFq1lBPNt+XMvGLt29GAV0hjMrrNwEWirWpSoYgBBirfNJ3ojEkDllyLL2I3whDpOECFXFDbwKO17IGZY/VLVvv+R3kbSxIugw+mxmbStZEycU=
+	t=1756899811; cv=none; b=g6MvAxaCQWMutv1kHOlar6rZf7EBsFHXrm5e6sCxWr7QteToLUGVT4v5PfZxYfgyTE6a1VK2mcms95GFs9tVNRGkLXsGIWDfBJZl+yHsvMQ5wKAsjHqQsB6Fx9SNVfzgXeT1j6Kjq8sImuNc93d6JvjrIbPE3kLa8J00vKlMy6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756897662; c=relaxed/simple;
-	bh=I5jJC5YsqDheZourzIns4HynVHdhk9fmj1JJIPP/qj8=;
+	s=arc-20240116; t=1756899811; c=relaxed/simple;
+	bh=vKQkkEhiJ1pWIqj+5+l0nwZXdLd03e23W2MiNNRAENI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jGN/cYquAmqyTAD9c8ZfHnzCHSv1bTzdJGwdjzUGbRtjCKHBLPsVsTionnEn3q+nDz8AttTMqiw7Um4JtNz8T2ho8CkQKFY6g0lK5/d4j5BApGEMw4MRUtHXMczzsqKNMsqX3zqSLTfHw61xouLGWEr8bMusKl1TVX53sGP7ktI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fqEv+pAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C2DBC116C6;
-	Wed,  3 Sep 2025 11:07:41 +0000 (UTC)
+	 To:Cc:Content-Type; b=La3q3jRIuIMf9xvlEYXYDekNcLTUfbNq2eFsVTnfcQ9R9bXcV7tzQCeiVAX5H16dTsDmrNxe20BWaKNStytQ/nGgwxUeyF9ici8OYymGYrMYbR46kCeLfK1eAfr0P9aXnr0J/WgHRhU3/Kfnmp8I+mqB6cuHMlPu97OLsNTkln8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZpjrJSUQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E255C4CEFC;
+	Wed,  3 Sep 2025 11:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756897661;
-	bh=I5jJC5YsqDheZourzIns4HynVHdhk9fmj1JJIPP/qj8=;
+	s=k20201202; t=1756899811;
+	bh=vKQkkEhiJ1pWIqj+5+l0nwZXdLd03e23W2MiNNRAENI=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=fqEv+pAyAzyDrwpa5ycGv/vldrUVHpTuiDwGvEU2O6hGAiipiQXkldusw4kvuf6Ta
-	 cyV691K7HV2CSSp8RoFgEXQf84IwuC16kmYKwmqprM4hACuabw/Z49bNoigh1mbEVi
-	 lfVSk0I2yERql792+nQOshGycv64BeF9PB3eQ5nWjt+fGlrVe/cR9xNBoxCPamJrks
-	 yVsq4p2oAGuZ5xkOC8mK0WErUxsBMrB2HOYx2elO7r0rSGI9RKr76w6rqsVHTkCBqv
-	 Yq7iI8uXw1FkSRxTENbSKEf2moleyaF/1d2WgigF4GfkMeRbER5SxoiWsyCxL1V2R/
-	 ofS+YYpOUUEJQ==
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7459de59821so150469a34.1;
-        Wed, 03 Sep 2025 04:07:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUj0Y0dprgvS1emlIgqMZ0jXlQ3NB50ScXDFT+itF84+5qh8XTsS285gghVwJNgYAOsotjfyqvwQg4=@vger.kernel.org, AJvYcCUsaCZz+5zJEX4snl0XQ/Yz4A9gakD1q22bJ5VhlA57wBixgbDaaApVWIqxhQ/c9FpaSsSAGu6woqCq@vger.kernel.org, AJvYcCWqMz0BlqVcSkdKRbWhKrTwLsjvaqoJyKTMGdNMDsAp3vlCUVARfECjIG7Zgb7iUu0Al+9LiJBKwlnSlg==@vger.kernel.org, AJvYcCX83Y8guLBHNoz+nd6cRrTd6UbYj8xh43YIGn28VV3XzXmVqAzu6XBJGh+852zXCbkrkSiYJWmDalKV2S/y@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjUywI4fMtmPe6+nodFf7V5y8l7pu5UFHJHRj3sLewdR19hlgm
-	A/q+sI7GYcCVKacQoUood/Gd9De6kvtFM8A6qZamw9dcLswTlNbnciaGpfVyg9fi80WGcyAHrDH
-	vzZF1TKWMxjlq/9xXqgYdnGne6RccIog=
-X-Google-Smtp-Source: AGHT+IFm2i7E3heNFR05VvLVwsYMlRgIplk+0JGJpDoA3hxcK7mnkmts5Dorpw2CJryu3vWJY1lQqzZJZSMnb+GSebY=
-X-Received: by 2002:a05:6830:2642:b0:745:508c:455c with SMTP id
- 46e09a7af769-74569dc34b9mr7242918a34.8.1756897660735; Wed, 03 Sep 2025
- 04:07:40 -0700 (PDT)
+	b=ZpjrJSUQT1mjo/GMosxVE9BlKGzz1qGPGvR96j4+cgvYWF0u5LAVlwLWXP3ABf9xh
+	 emKGoXYpzikhccqTWnXBUrcQPaehl9+DjtD8mRrCZAUG0qMfiELP4YWuYF1/F3FhRs
+	 aW14nUDCO+/AYANfE36disnrS+dbIk61uVm2aK4DwbZr4D6ZklHcUzH8AB5VT4ETkI
+	 oemvw0KIyTt5h9EWGtcRYHX1XymPMBJ5M8rR/7taIhWazv9RCHjo2E6MQK1ZSFsIft
+	 KMXYcw8DilfLBcBV9GtUI2eD4qkQH6J3a3mK4SaX7Nes6EUJ273H+CqQgGGZuh4kFd
+	 y6ffvET3JkSjQ==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-61e334007dbso1481080eaf.0;
+        Wed, 03 Sep 2025 04:43:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUwvme+Cl2Of/GPNFGfBWeldeni0Ho+HqTzWfM7sK3d+EyfDNZV1kwOCzHOGc5qekfXtd156iVZvKo=@vger.kernel.org, AJvYcCX3o0eOscC7e1Z++/CM0MTTF8PyuH8H4n8mBd2Fn9PWuZe0P52i5zB+saTxTqPFCwqIL+G7664TuEv3@vger.kernel.org, AJvYcCXYv7Wk69UNWBeHoXryolRSW3jwobLFlPpmIyCpJiYE3e7Ogl8Fl1qHox0ijyOwhhMgTeTt+Nq3PhVQ2u8p@vger.kernel.org, AJvYcCXgokYL2tcGj4ZmPVQ+TL+VmvaHYP76h+Jdoydzf9SeIVmk3f4yicheFYxc7dJp/YnyYN4lKgo37BTGjw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDfXuiKxHHIz27p/n/rdIuFjKQkETzm2KQRf8xfuqjnIWnUK1R
+	b0ZZFXuBAbEFpWqHrH651oC+f/Zxv2QkkgdAM7hY5tdFUS2cKfaIrM1qr8PQIk39ow/wRe7P8p5
+	/hk7Y178fIaPpII7Ukw2lPd85gfnuBiw=
+X-Google-Smtp-Source: AGHT+IFudXZ/fyz4UQ3WH+8GjEXukDIGbLh/LZigzEMBTf0gXA3YZsKNByr0Anw/wDvM05EPCnSrOq7ywW0PFfzffo4=
+X-Received: by 2002:a05:6820:1694:b0:619:7d9b:3f0b with SMTP id
+ 006d021491bc7-61e33740f82mr7219508eaf.5.1756899810069; Wed, 03 Sep 2025
+ 04:43:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250901085748.36795-1-zhangzihuan@kylinos.cn> <20250901085748.36795-3-zhangzihuan@kylinos.cn>
-In-Reply-To: <20250901085748.36795-3-zhangzihuan@kylinos.cn>
+References: <20250901085748.36795-1-zhangzihuan@kylinos.cn> <20250901085748.36795-10-zhangzihuan@kylinos.cn>
+In-Reply-To: <20250901085748.36795-10-zhangzihuan@kylinos.cn>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 3 Sep 2025 13:07:27 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jxHQ3fBk_fSwg7QYsePvUyh=FDteyO+8F8oGfUwX2E9A@mail.gmail.com>
-X-Gm-Features: Ac12FXxXhqpwDXjodHxvBBGUiHE126LWfl3UmWuK-7WK82DNR_r2zpKQkeauJig
-Message-ID: <CAJZ5v0jxHQ3fBk_fSwg7QYsePvUyh=FDteyO+8F8oGfUwX2E9A@mail.gmail.com>
-Subject: Re: [PATCH v3 02/12] ACPI: processor: thermal: Use scope-based
- cleanup helper
+Date: Wed, 3 Sep 2025 13:43:17 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gwpefQt8VJ3XUyFy7u7rFhvPT=sXqG-1gHobw=1NgJpw@mail.gmail.com>
+X-Gm-Features: Ac12FXwdhTUIKZ7oynz9F8Wzgqo7R3jPRBfEv1CLslQcvLPWz0YXuuodu9R2gpg
+Message-ID: <CAJZ5v0gwpefQt8VJ3XUyFy7u7rFhvPT=sXqG-1gHobw=1NgJpw@mail.gmail.com>
+Subject: Re: [PATCH v3 09/12] powercap: dtpm_cpu: Use scope-based cleanup helper
 To: Zihuan Zhang <zhangzihuan@kylinos.cn>
 Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
 	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
@@ -103,84 +102,97 @@ n> wrote:
 >
 > Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 > ---
->  drivers/acpi/processor_thermal.c | 18 ++++++------------
->  1 file changed, 6 insertions(+), 12 deletions(-)
+>  drivers/powercap/dtpm_cpu.c | 26 +++++++-------------------
+>  1 file changed, 7 insertions(+), 19 deletions(-)
 >
-> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_th=
-ermal.c
-> index 1219adb11ab9..3c8b57df9619 100644
-> --- a/drivers/acpi/processor_thermal.c
-> +++ b/drivers/acpi/processor_thermal.c
-> @@ -62,19 +62,14 @@ static int phys_package_first_cpu(int cpu)
->         return 0;
+> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
+> index 99390ec1481f..5e18438782f8 100644
+> --- a/drivers/powercap/dtpm_cpu.c
+> +++ b/drivers/powercap/dtpm_cpu.c
+> @@ -144,19 +144,15 @@ static int update_pd_power_uw(struct dtpm *dtpm)
+>  static void pd_release(struct dtpm *dtpm)
+>  {
+>         struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
+> -       struct cpufreq_policy *policy;
+> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
+req_cpu_get(dtpm_cpu->cpu);
+>
+>         if (freq_qos_request_active(&dtpm_cpu->qos_req))
+>                 freq_qos_remove_request(&dtpm_cpu->qos_req);
+>
+> -       policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
+
+Since policy is not needed earlier, you may as well declare it here.
+
+> -       if (policy) {
+> +       if (policy)
+>                 for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
+>                         per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL;
+>
+> -               cpufreq_cpu_put(policy);
+> -       }
+> -
+>         kfree(dtpm_cpu);
 >  }
 >
-> -static int cpu_has_cpufreq(unsigned int cpu)
-> +static bool cpu_has_cpufreq(unsigned int cpu)
+> @@ -192,7 +188,7 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
+>  static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
 >  {
+>         struct dtpm_cpu *dtpm_cpu;
 > -       struct cpufreq_policy *policy;
 > +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
 req_cpu_get(cpu);
->
->         if (!acpi_processor_cpufreq_init)
+>         struct em_perf_state *table;
+>         struct em_perf_domain *pd;
+>         char name[CPUFREQ_NAME_LEN];
+> @@ -202,21 +198,16 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *p=
+arent)
+>         if (dtpm_cpu)
 >                 return 0;
 >
 > -       policy =3D cpufreq_cpu_get(cpu);
-> -       if (policy) {
-> -               cpufreq_cpu_put(policy);
-> -               return 1;
+
+Ditto.
+
+>         if (!policy)
+>                 return 0;
+>
+>         pd =3D em_cpu_get(cpu);
+> -       if (!pd || em_is_artificial(pd)) {
+> -               ret =3D -EINVAL;
+> -               goto release_policy;
 > -       }
-> -       return 0;
-> +       return !!policy;
+> +       if (!pd || em_is_artificial(pd))
+> +               return -EINVAL;
+>
+>         dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
+> -       if (!dtpm_cpu) {
+> -               ret =3D -ENOMEM;
+> -               goto release_policy;
+> -       }
+> +       if (!dtpm_cpu)
+> +               return -ENOMEM;
+>
+>         dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
+>         dtpm_cpu->cpu =3D cpu;
+> @@ -239,7 +230,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
+ent)
+>         if (ret < 0)
+>                 goto out_dtpm_unregister;
+>
+> -       cpufreq_cpu_put(policy);
+>         return 0;
+>
+>  out_dtpm_unregister:
+> @@ -251,8 +241,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
+ent)
+>                 per_cpu(dtpm_per_cpu, cpu) =3D NULL;
+>         kfree(dtpm_cpu);
+>
+> -release_policy:
+> -       cpufreq_cpu_put(policy);
+>         return ret;
 >  }
 >
->  static int cpufreq_get_max_state(unsigned int cpu)
-> @@ -95,7 +90,6 @@ static int cpufreq_get_cur_state(unsigned int cpu)
->
->  static int cpufreq_set_cur_state(unsigned int cpu, int state)
->  {
-> -       struct cpufreq_policy *policy;
->         struct acpi_processor *pr;
->         unsigned long max_freq;
->         int i, ret;
-> @@ -111,6 +105,9 @@ static int cpufreq_set_cur_state(unsigned int cpu, in=
-t state)
->          * frequency.
->          */
->         for_each_online_cpu(i) {
-
-I would still prefer the code below to be moved to a separate function
-that would be called in each step of the for_each_online_cpu() loop.
-
-> +               struct cpufreq_policy *policy __free(put_cpufreq_policy) =
-=3D
-> +                       cpufreq_cpu_get(i);
-> +
->                 if (topology_physical_package_id(i) !=3D
->                     topology_physical_package_id(cpu))
->                         continue;
-> @@ -120,15 +117,12 @@ static int cpufreq_set_cur_state(unsigned int cpu, =
-int state)
->                 if (unlikely(!freq_qos_request_active(&pr->thermal_req)))
->                         continue;
->
-> -               policy =3D cpufreq_cpu_get(i);
->                 if (!policy)
->                         return -EINVAL;
->
->                 max_freq =3D (policy->cpuinfo.max_freq *
->                             (100 - reduction_step(i) * cpufreq_thermal_re=
-duction_pctg)) / 100;
->
-> -               cpufreq_cpu_put(policy);
-> -
->                 ret =3D freq_qos_update_request(&pr->thermal_req, max_fre=
-q);
->                 if (ret < 0) {
->                         pr_warn("Failed to update thermal freq constraint=
-: CPU%d (%d)\n",
 > --
-> 2.25.1
->
->
 
