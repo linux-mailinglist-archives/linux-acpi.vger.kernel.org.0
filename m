@@ -1,103 +1,189 @@
-Return-Path: <linux-acpi+bounces-16339-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16340-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1451B426D8
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 18:25:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 163AFB42727
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 18:44:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76E4A169D95
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 16:25:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E58D1BC2ACF
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 16:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BCDD2D0636;
-	Wed,  3 Sep 2025 16:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93EDD307AE9;
+	Wed,  3 Sep 2025 16:44:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EiuUavT9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7412D060D;
-	Wed,  3 Sep 2025 16:25:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA868303C88;
+	Wed,  3 Sep 2025 16:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756916756; cv=none; b=ijfYj36QRPWyZ3trnHEuLaYy6IZoIp4HCuObQQVeD24o4WbzsB2vHWtwh2Vejb+BwzT/tpHfeKMDj/eKqjqNKmhxgkLsR7qDRZH/DYuTeNh/qx7U2rsg5cElUyEEOFFHyynNw5LOk4pEs/h0oQCRm1CCbdcPk+Drzo4O5cK9Rco=
+	t=1756917842; cv=none; b=BCgPG6yr4j1WzG8A5bG2D+Ljm8++rrR3HxdiN6S38F2jGAamm7FVGjN16S4wbKhVngFhaQGeOe6dAHxmJMZ1Y+L3xkOpe2WVz+EDVDFxMTKkMrETimdtpOqM5NekSDieZPuD6vbNnwgNLQoJImfUtP5oOx1oRzVAgE2TrWlyfL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756916756; c=relaxed/simple;
-	bh=WxOhRzpdwSLHGxEMD/Hq6XP5EashyFQMzoSMcPTo0ZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dMnzNQvQIapyzuC8uOo5Xgjl6wKCv9WE9iGWeZgWfL3cS9L08Y0w+YazhfAhhzxpKsMS8ti2BHEw0+q+1Vqgpm2O63JwpOk9SwJDw2SBnr0I2AHRe401w5N0OhE5RGc0u31SpKFHHA+Pxkk2ng5Fe3YzQ9k6lvrJn0TvQ6VmiEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F67C4CEE7;
-	Wed,  3 Sep 2025 16:25:51 +0000 (UTC)
-Date: Wed, 3 Sep 2025 17:25:48 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: james.morse@arm.com, linux-cxl@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org,
-	Will Deacon <will@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Yicong Yang <yangyicong@huawei.com>, linuxarm@huawei.com,
-	Yushan Wang <wangyushan12@huawei.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH v3 5/8] arm64: Select GENERIC_CPU_CACHE_MAINTENANCE and
- ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
-Message-ID: <aLhsDCcMcqhXM0x6@arm.com>
-References: <20250820102950.175065-1-Jonathan.Cameron@huawei.com>
- <20250820102950.175065-6-Jonathan.Cameron@huawei.com>
+	s=arc-20240116; t=1756917842; c=relaxed/simple;
+	bh=ZEpEo0HqQ+7TROEllZ65s3PKRSyeUgAHYsJL0nuS9SQ=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=gxtS7tSWp04zQcqVgjf4wCJKeKqAcvzArD+xTL8UqwjTMfPvYdyv7N+Cv9EVOmXLeuLpEkXdB2zncVIfMj3UG/jZEus6UacMk23jxCKrvy8tie5rKt5ticlOTTcTzsMP0hs/59dK1RCDQJkgiEDO5Z5trXD80oQiIG3yXu+qbSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EiuUavT9; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-805a1931a15so14294585a.1;
+        Wed, 03 Sep 2025 09:44:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756917840; x=1757522640; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=CPFA+L4AzTHvY63w8wb2OR/q6TIxMx2RwJU0a3Nq7Dc=;
+        b=EiuUavT96aY0+s1zso1+uYSRj0dXoHkIJPDeUZKbQgvY18/qX+C078D8U03UKctNWV
+         GY9PuQpSbf114o2XKTNbPLRk4nVNH2+hbdWRA/lkK3OA4d1iXqMPyLdxXVg8kWhvUyJ2
+         pAbYTqLXtgjYuvvlilQYkTEPbl1/4hzT2sYY/RHdE9mwYE7+IgwUZwENoeoX10aQDxS/
+         VDagvTlPDrsc4noLqfaUM8B1OYOkdeowWkjvG+BN7+g4yILJPytmST2CwNofSH9WNPSz
+         2q58KJ8R6j/+VL/ed4tOwGIKzMlU/7Wnx89Sth+56ZpTAtjrvAHRw/ieeLajGIVa/31P
+         /KEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756917840; x=1757522640;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CPFA+L4AzTHvY63w8wb2OR/q6TIxMx2RwJU0a3Nq7Dc=;
+        b=YosXo3+wFOAhDSh6cF6XiHSkiCUFVgVdjbFL4JB6LiMpZpQ/xfpncKGuVwBk864Kg1
+         6sspPY9bZ6lshOPJJug5KDn9i/ub9alN0f2kqjfbSsYrSJmSREzfx15dmN9puPO52Mw6
+         WvjdG0aknWr4D+QeWlxYpLLLQgtjnkDHJvB2r94Tlc+7HTktVlDvKCRE9x2nurjXqAIw
+         GOa2P4FZUvcisP6ox9Q/bp2OqD3rcCSrnowrwKUSoPoXwQaSBFDyUG6SYvVoqqMpD0dX
+         eeN6na+B53MduyCqeGhiuhHOzA4RQLO/ioxi+E0dVzepNrUOfG9lEUecENCscAsqrOMS
+         WT0g==
+X-Forwarded-Encrypted: i=1; AJvYcCW8eTUh0Ms1Q+5RWcHYYVwa1cQaepE3ZT3R4xpPtZf57nKiQBLf9r4tVCQw7AcKdSVZaEi2i6/LpcX7@vger.kernel.org, AJvYcCWWfYg8ow97tjtwBPkYuoDTnoTGj8zQQXsRzxCSU4JlxjF3ouCs9NA935N9Bxu7sOrtnS6fqK3bF3BPP3Lm@vger.kernel.org, AJvYcCXUulx1XfvAxpY6E2mF1Dm3YuyJFd7/xNRswSecZgzG7/77hIovH0UQUzgmfMmtQV63xILrBEpWrQNC@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzw0IO0exV5+ZxWrznX8jNj2/5aXWKu1otBfkotGulQhJl2So/R
+	TH8KqkgBDpPHSuRRCQi/MrGBNaHpCnS4Djwjq8AsuYBILLTv4fHf4l2i/fccFzcX
+X-Gm-Gg: ASbGncszcrnX80Una1W10lJJwQGg9unUHHA8GGd18Iz2FDxgTo3F3gpVCWLWBDTRT3S
+	Ce9MZhgQZezg091C94JrBGHJYBmacm/5h4Zbjv5xXOdDf5BO2k3Co2km/bVHRO3WGO0uXNbkw08
+	xX79M78yS9WyBoILojTQY89tEp0wWA8yYcdNoTV4NxUnnky9MIjKAyiNILUO5m+uA7IZevtFFeA
+	sQm/3uNimYipOFb+qHHpSgfq3IL0bacJPaHl9Plm20IdutGzLzPGQi/uwcJIEwixx18kYRdEsji
+	/7ZVmyIOH59OZZSzbTiuJ7wMcAPp4495INg6kElnqNhPrC5cXiZaiY/4VBA7dz+5Swve2zkbps/
+	jIAT4F5zNbMCWXjvpjUOOS216nE5LPytyZ/ItlMCtsE8arr1cP7Wduuq0Ibl5GDULnhVCgvUHxn
+	E70Tus9Q==
+X-Google-Smtp-Source: AGHT+IHckZcXoO7/1/111Zg60YwNmiw3Ew6cMklTHyBH+w/ECAe0Nt0q8YEQ6Zs+U9xpoUMuXP9NBg==
+X-Received: by 2002:a05:620a:a514:b0:7ff:f2ea:d378 with SMTP id af79cd13be357-7fff2ead728mr1498046285a.55.1756917839586;
+        Wed, 03 Sep 2025 09:43:59 -0700 (PDT)
+Received: from ehlo.thunderbird.net (modemcable197.17-162-184.mc.videotron.ca. [184.162.17.197])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-80aa6e497a7sm133468985a.17.2025.09.03.09.43.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Sep 2025 09:43:59 -0700 (PDT)
+Date: Wed, 03 Sep 2025 12:43:56 -0400
+From: =?ISO-8859-1?Q?Jean-Fran=E7ois_Lessard?= <jefflessard3@gmail.com>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+CC: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v4_1/2=5D_device_property=3A_A?=
+ =?US-ASCII?Q?dd_scoped_fwnode_child_node_iterators?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <aLhAKJBUNQVH1Vmf@kekkonen.localdomain>
+References: <20250902190443.3252-1-jefflessard3@gmail.com> <20250902190443.3252-2-jefflessard3@gmail.com> <aLhAKJBUNQVH1Vmf@kekkonen.localdomain>
+Message-ID: <C883B982-5984-4714-B322-BB8205B47D6E@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250820102950.175065-6-Jonathan.Cameron@huawei.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 20, 2025 at 11:29:47AM +0100, Jonathan Cameron wrote:
-> Ensure the hooks that the generic cache maintenance framework uses are
-> available on ARM64 by selecting ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION.
-> 
-> The generic CPU cache maintenance framework provides a way to register
-> drivers for devices implementing the underlying support for
-> cpu_cache_has_invalidate_memregion().
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  arch/arm64/Kconfig | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index e9bbfacc35a6..15bf429b3f59 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -21,6 +21,7 @@ config ARM64
->  	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
->  	select ARCH_HAS_CACHE_LINE_SIZE
->  	select ARCH_HAS_CC_PLATFORM
-> +	select ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+Hi Sakari,
 
-We could drop this if GENERIC_CPU_CACHE_MAINTENANCE selects it.
+Le 3 septembre 2025 09 h 18 min 32 s HAE, Sakari Ailus <sakari=2Eailus@lin=
+ux=2Eintel=2Ecom> a =C3=A9crit=C2=A0:
+>Hi Jean-Fran=C3=A7ois,
+>
+>On Tue, Sep 02, 2025 at 03:04:39PM -0400, Jean-Fran=C3=A7ois Lessard wrot=
+e:
+>> Add scoped versions of fwnode child node iterators that automatically
+>> handle reference counting cleanup using the __free() attribute:
+>>=20
+>> - fwnode_for_each_child_node_scoped()
+>> - fwnode_for_each_available_child_node_scoped()
+>>=20
+>> These macros follow the same pattern as existing scoped iterators in th=
+e
+>> kernel, ensuring fwnode references are automatically released when the
+>> iterator variable goes out of scope=2E This prevents resource leaks and
+>> eliminates the need for manual cleanup in error paths=2E
+>>=20
+>> The implementation mirrors the non-scoped variants but uses
+>> __free(fwnode_handle) for automatic resource management, providing a
+>> safer and more convenient interface for drivers iterating over firmware
+>> node children=2E
+>>=20
+>> Signed-off-by: Jean-Fran=C3=A7ois Lessard <jefflessard3@gmail=2Ecom>
+>> ---
+>>=20
+>> Notes:
+>>     checkpatch reports false positives that are intentionally ignored:
+>>     MACRO_ARG_REUSE, MACRO_ARG_PRECEDENCE
+>>     This is a standard iterator pattern following kernel conventions=2E
+>>=20
+>>  include/linux/property=2Eh | 10 ++++++++++
+>>  1 file changed, 10 insertions(+)
+>>=20
+>> diff --git a/include/linux/property=2Eh b/include/linux/property=2Eh
+>> index 82f0cb3ab=2E=2E862e20813 100644
+>> --- a/include/linux/property=2Eh
+>> +++ b/include/linux/property=2Eh
+>> @@ -176,6 +176,16 @@ struct fwnode_handle *fwnode_get_next_available_ch=
+ild_node(
+>>  	for (child =3D fwnode_get_next_available_child_node(fwnode, NULL); ch=
+ild;\
+>>  	     child =3D fwnode_get_next_available_child_node(fwnode, child))
+>> =20
+>> +#define fwnode_for_each_child_node_scoped(fwnode, child)		\
+>> +	for (struct fwnode_handle *child __free(fwnode_handle) =3D	\
+>> +		fwnode_get_next_child_node(fwnode, NULL);		\
+>> +	     child; child =3D fwnode_get_next_child_node(fwnode, child))
+>> +
+>> +#define fwnode_for_each_available_child_node_scoped(fwnode, child)	\
+>> +	for (struct fwnode_handle *child __free(fwnode_handle) =3D	\
+>> +		fwnode_get_next_available_child_node(fwnode, NULL);	\
+>> +	     child; child =3D fwnode_get_next_available_child_node(fwnode, ch=
+ild))
+>> +
+>
+>Do we really need the available variant?
+>
+>Please see
+><URL:https://lore=2Ekernel=2Eorg/linux-acpi/Zwj12J5bTNUEnxA0@kekkonen=2El=
+ocaldomain/>=2E
+>
+>I'll post a patch to remove fwnode_get_next_available_child_node(), too=
+=2E
+>
 
->  	select ARCH_HAS_CURRENT_STACK_POINTER
->  	select ARCH_HAS_DEBUG_VIRTUAL
->  	select ARCH_HAS_DEBUG_VM_PGTABLE
-> @@ -146,6 +147,7 @@ config ARM64
->  	select GENERIC_ARCH_TOPOLOGY
->  	select GENERIC_CLOCKEVENTS_BROADCAST
->  	select GENERIC_CPU_AUTOPROBE
-> +	select GENERIC_CPU_CACHE_MAINTENANCE
+Thanks for the link to the discussion=2E
 
-Either way:
+I see you're planning to remove fwnode_get_next_available_child_node()=20
+entirely=2E In that context, adding a scoped version doesn't make sense=2E
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+For my driver use case, I can handle the status checking manually if=20
+the _available_ variant is being deprecated=2E
+
+Should I drop the _available_ variant and submit v5 with only=20
+fwnode_for_each_child_node_scoped()?
+
+>>  struct fwnode_handle *device_get_next_child_node(const struct device *=
+dev,
+>>  						 struct fwnode_handle *child);
+>> =20
+>
+
 
