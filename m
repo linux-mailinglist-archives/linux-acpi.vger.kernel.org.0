@@ -1,65 +1,60 @@
-Return-Path: <linux-acpi+bounces-16301-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16302-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9825B410A2
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 01:16:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7427FB41179
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 02:51:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A81D3561CE1
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Sep 2025 23:16:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29C79480405
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 00:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4111E9905;
-	Tue,  2 Sep 2025 23:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jx5HmeMM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C41B1547E7;
+	Wed,  3 Sep 2025 00:51:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A10F23B0;
-	Tue,  2 Sep 2025 23:16:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB6013D8A4;
+	Wed,  3 Sep 2025 00:51:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756854999; cv=none; b=HNz946c2b4r/kS254h5QN127SDri4WSADisVTeI/2a7KSAaEDuEn64IRbt3XMkToXGS/pNMh+haTYJjnfe6i5BvdSu4Yl+hCiCoKPE7/gDfpVZdHqpWRHb+AMGBnbr7DNXyZVABT/aCgp17mrxn05eD2MZ9YZUfFc/hqR7I3x8c=
+	t=1756860688; cv=none; b=RR2iNL1MoatBeFcuVhoQy8nIudinRkk+8d5DeYOxU/tIFnf0hYNNWaK1Q/hsrEBKN6QGR0PV39wZDF+194N/A7DxfVwZ2KVowmnfajrCH0fkNq4e+iUZhLggT1BUdv98g9T/jUvgfj4+Y8gVLBrffwqvrzv8UkWoeQJKohevP+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756854999; c=relaxed/simple;
-	bh=rKZ0Nh3RqLt7tI4TxWi0XsS1AUOFKimTgfg+6MXiFRk=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=rasbgZoRGbDLajD+Y/9n2ZGRqiujN+tbLtDe0iYKsMQES/A3n0ETyP6MyqYs2tB7S2smpsVxqjYrkVsKiQyNuLf5MEfp4hkx2aqyY8Su1682f8jO3o6gT2O5igQ0wRQYtQIebl9CyqfMvDtuuBLw0ngVk1mObfoejjGfiiBdZro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jx5HmeMM; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756854997; x=1788390997;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=rKZ0Nh3RqLt7tI4TxWi0XsS1AUOFKimTgfg+6MXiFRk=;
-  b=jx5HmeMMyM4IpPDDHYZ8oGFTbNjw4RIWIA7GAsF/bBn76rqtGOHE35+g
-   6B707NRELTtIGyRT/+KM1mWRbiG5JUFD002XJgoRSqjKAUBPRFdDZjdaB
-   DLEYZhmZjjRWM9RXQeyo4pKJwBvW3pLGNqN9j1Y8bRvuzhVtXzz8fuPJ7
-   GcTv+n1eBhRkrau5Y2SCH8Qa99UH0JPGVMSWRXFWEykSXUHlA4DBTLxfm
-   REIa5NlFsbHY9rdKYr4y2IawFaFMtablUGkLJ7mSEGkabv4mB7GV0PjBt
-   /LHSUyzls1wpo8XCnnlMfn5zWtj8MT70pYDQMr0aJ4gZSKIusGqG7dZqd
-   g==;
-X-CSE-ConnectionGUID: A07RvFEkRISgXVJTBsr1BQ==
-X-CSE-MsgGUID: FMftboe/SvKaJlkpm01EFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59069949"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="59069949"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 16:16:36 -0700
-X-CSE-ConnectionGUID: /TDJio1bRD65DbAqOEH9gQ==
-X-CSE-MsgGUID: QFHtOfN1RP26sXgES81hZg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,233,1751266800"; 
-   d="scan'208";a="176712943"
-Received: from anmitta2-mobl4.gar.corp.intel.com (HELO [10.247.118.76]) ([10.247.118.76])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 16:16:28 -0700
-Message-ID: <8212254f-2c2b-4a48-8238-eacabc5645f4@intel.com>
-Date: Tue, 2 Sep 2025 16:16:23 -0700
+	s=arc-20240116; t=1756860688; c=relaxed/simple;
+	bh=SWn2YoMWlNMEPB8MPyZq3aGVAkzLGIwvqZCBCqopq50=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GW6RtB6MlDJ9htREGdIJgqvhIKFRdlP424Nz5dBiuPYhaBEZmJfR0hD0WFiASDpejpJabmN7qAcI+eQlad9fZZegB7B+xOSkZC7gHJIwNB5iwKaEro4v6DOtPFsb+Spc1QRyq5rBLuaoCMPvCHpDDdbrnwUG6mi1UB/NXf26Otg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 1864b9c6886011f0b29709d653e92f7d-20250903
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:149e317a-1aff-43d6-90c9-1a5d04dd57b0,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:461f970947de3929c2a541614ce8e229,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 1864b9c6886011f0b29709d653e92f7d-20250903
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1164660955; Wed, 03 Sep 2025 08:51:15 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 22D4BE008FA3;
+	Wed,  3 Sep 2025 08:51:15 +0800 (CST)
+X-ns-mid: postfix-68B79102-9412696
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 28EDFE008FA2;
+	Wed,  3 Sep 2025 08:51:07 +0800 (CST)
+Message-ID: <40706b1f-e23c-417b-b3e1-2dc839828588@kylinos.cn>
+Date: Wed, 3 Sep 2025 08:51:06 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,77 +62,103 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] cxl, acpi/hmat, node: Update CXL access
- coordinates to node directly
-From: Dave Jiang <dave.jiang@intel.com>
-To: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
- dave@stgolabs.net, jonathan.cameron@huawei.com, alison.schofield@intel.com,
- vishal.l.verma@intel.com, ira.weiny@intel.com, dan.j.williams@intel.com,
- marc.herbert@linux.intel.com, akpm@linux-foundation.org, david@redhat.com
-References: <20250829222907.1290912-1-dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <20250829222907.1290912-1-dave.jiang@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3 03/12] cpufreq: intel_pstate: Use scope-based cleanup
+ helper
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
+ <20250901085748.36795-4-zhangzihuan@kylinos.cn>
+ <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
+ <29890791-4ddf-49c7-a4f2-0ac83e6d53c6@kylinos.cn>
+ <CAJZ5v0jvOKeLRkjWoKR5eVKZ-hib7c8D-VOBvtCvs1+HGfPUiQ@mail.gmail.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <CAJZ5v0jvOKeLRkjWoKR5eVKZ-hib7c8D-VOBvtCvs1+HGfPUiQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
 
+=E5=9C=A8 2025/9/2 19:47, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> On Tue, Sep 2, 2025 at 12:33=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylin=
+os.cn> wrote:
+>>
+>> =E5=9C=A8 2025/9/1 23:17, Rafael J. Wysocki =E5=86=99=E9=81=93:
+>>> On Mon, Sep 1, 2025 at 10:58=E2=80=AFAM Zihuan Zhang <zhangzihuan@kyl=
+inos.cn> wrote:
+>>>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+>>>> annotation for policy references. This reduces the risk of reference
+>>>> counting mistakes and aligns the code with the latest kernel style.
+>>>>
+>>>> No functional change intended.
+>>>>
+>>>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+>>>> ---
+>>>>    drivers/cpufreq/intel_pstate.c | 8 +++-----
+>>>>    1 file changed, 3 insertions(+), 5 deletions(-)
+>>>>
+>>>> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_=
+pstate.c
+>>>> index f366d35c5840..4abc1ef2d2b0 100644
+>>>> --- a/drivers/cpufreq/intel_pstate.c
+>>>> +++ b/drivers/cpufreq/intel_pstate.c
+>>>> @@ -1502,9 +1502,8 @@ static void __intel_pstate_update_max_freq(str=
+uct cpufreq_policy *policy,
+>>>>
+>>>>    static bool intel_pstate_update_max_freq(struct cpudata *cpudata)
+>>>>    {
+>>>> -       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>>>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D=
+ cpufreq_cpu_get(cpudata->cpu);
+>>>>
+>>>> -       policy =3D cpufreq_cpu_get(cpudata->cpu);
+>>>>           if (!policy)
+>>>>                   return false;
+>>> The structure of the code is intentional here and there's no reason t=
+o
+>>> change it.
+>>
+>> Got it. Thanks for clarifying.
+>>
+>> So for this case the current structure is intentional -
+> Note that I'm talking about this particular change only.  The other
+> change in the $subject patch is fine.
+>
+>> should I also avoid similar changes in other drivers?
+> That depends on who maintains them, which is why I wanted you to split
+> the patch into smaller changes in the first place.
+>
+> My personal view is that code formatting changes, which effectively is
+> what this particular one is, are pointless unless they make the code
+> much easier to follow.
 
-On 8/29/25 3:29 PM, Dave Jiang wrote:
-> I plan to take this series through the CXL tree when all the necessary tags
-> are received.
-> 
-> Rafael, please ack patches 3/4 and 4/4 if you are happy with the changes.
-> 
-> Thank you!
 
-Rafael said Dan's review tag is sufficient.
-
-Applied to cxl/next
-02f6c6a3654911e286ae04e5dfd5deb0f39559b1
-
-> 
-> v3:
-> - Fix grammar in comment. (DavidH)
-> - Use nodemask instead of xarray. (Jonathan)
-> 
-> v2:
-> - Use clearer comment from DavidH for 1/4. (DavidH)
-> - Fix comment in 2/4. (DavidH)
-> - Streamline code in 2/4. (DavidH)
-> - Add description to observed issue. (Dan)
-> - Add correct Fixes tag. (Dan)
-> - Add cc to stable for fix patch. (Dan)
-> - Add mechansim to only update on first region for the node. (Jonathan)
-> 
-> The series aim to clean up the current CXL memory region hotplug notifier by
-> removing the update path through HMAT and updating the node access coordinates
-> directly. With the existing implementation, the CXL memory hotplug notifier
-> gets called first. It updates the HMAT target access coordinates. And then
-> the HMAT notifier gets called and create the node sysfs attribs. The new
-> implemenation flips the callback ordering and directly updates the sysfs
-> attribs already created in the node and leaves HMAT data structures alone.
-> 
-> Dave Jiang (4):
->   mm/memory_hotplug: Update comment for hotplug memory callback
->     priorities
->   drivers/base/node: Add a helper function node_update_perf_attrs()
->   cxl, acpi/hmat: Update CXL access coordinates directly instead of
->     through HMAT
->   acpi/hmat: Remove now unused hmat_update_target_coordinates()
-> 
->  drivers/acpi/numa/hmat.c  | 34 ----------------------------------
->  drivers/base/node.c       | 38 ++++++++++++++++++++++++++++++++++++++
->  drivers/cxl/core/cdat.c   | 11 -----------
->  drivers/cxl/core/core.h   |  3 ---
->  drivers/cxl/core/region.c | 20 ++++++++++++--------
->  include/linux/acpi.h      | 12 ------------
->  include/linux/memory.h    |  6 +++---
->  include/linux/node.h      |  8 ++++++++
->  8 files changed, 61 insertions(+), 71 deletions(-)
-> 
-> 
-> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+UnderStood, Thanks!
 
 
