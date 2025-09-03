@@ -1,179 +1,116 @@
-Return-Path: <linux-acpi+bounces-16307-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16308-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A344B41AFE
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 12:03:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DEAEB41BDB
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 12:30:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17FCE7A7E87
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 10:02:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 481E43A54D2
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 10:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145F32D7DE1;
-	Wed,  3 Sep 2025 10:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75BCC2EA14D;
+	Wed,  3 Sep 2025 10:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="FRF2St+1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f7eCDwJN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271D82E8886;
-	Wed,  3 Sep 2025 10:03:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69142E9EB8;
+	Wed,  3 Sep 2025 10:29:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756893822; cv=none; b=QJIi41cSlPE2RbcTDszDkpRTop+pN4GU0ynIAtYtTAT4uvN+MrH0uqagjHqhj5yzPl6hQkwEFSPCdiUPDfWx0NqHFxlaU4YvrHVyldcQF5YCYu90ofgUnR91qCKV7qyQ8FsDYtf4TimX6j96LFWFT1w0F0QlUyzre7kC/OB+AZM=
+	t=1756895399; cv=none; b=HJNGbVdYFZj3aMIELMZlgWS/zGojxf8B+Um78qat/OHt1iqBFugxU1IgDuwPBxCnzoFNUsvTQi/IITsG7+4D8KKknZQ//Pg6a2172bSPFO6+nqPAJZoJWDjdsKEU1n71T3z+i3Espf6qNYi2I3rkiPiufhoKIRSqlivZrKsLwvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756893822; c=relaxed/simple;
-	bh=0uWuXTsNAYjzbqYoQzNVvj7RBiv6ohyxenQTCDwv/kc=;
+	s=arc-20240116; t=1756895399; c=relaxed/simple;
+	bh=9ChJERbF28V62YULxJTUijcjwER+YGRa4ul/JAPdBug=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oqvwq1gQ6mGaY0iwJ4HmS4ypKYYdOE5gFMnuEgRfW34g0Lvi8JQtL4HxStoKyeUAIu4RNgUVsKRBPuGIQDnRVGqqws3fhGcxC7fN6l2/yVuKkAvd05hyYu+9hoWWTMPbdH1RJvrrDJs/07m11kbZ7+PH1PitjiJYh0MqIU8ELck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=FRF2St+1; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B99A840E01B0;
-	Wed,  3 Sep 2025 10:03:36 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id mbvvz1Ld2akV; Wed,  3 Sep 2025 10:03:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1756893812; bh=RhD68Pvtck0QIldCXY3sNMzubu+4+wpcGgj7x1SSY6Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FRF2St+1Zqs0y6yDHoEZU3szMqOaQ7fXb0VttHKT/GovMV2HK9XWUTZ3Zzvf5vm+2
-	 /wDdLcstHvYlZlzZhCwoNXKFGHXS9knz2ue//fF12RUDhJQVcdQFiXy70CWV/8W8vQ
-	 UTIjnMcoXRwfs0HoLMzZBcJEYbkhdsZadVXls9rmmQ0it91J44SpuFRuokSqUUEFW4
-	 cvqg7TKZmOnietsqQy7xD2EZLzWeHqFIUo9IuXoODxDETLjhTUyame29Uv8Ghv+QJn
-	 ckgzyzJHJJqymgj2XPOiDdBTqOzonvXXvZcPxXSnXOmSPI1ZPf4xLrxLa2MXFwYbgC
-	 /33pcDa8QMZfuoEUAK5NxoKrUqMbxrDQvLvjsrjLM4yvkeXBbfPQ3ssn5ydzO4tFWQ
-	 UvvR/zORIbANdnManoB4WmFTIR01GUdm86J1T2SLGgLPp6RtZn2gLDiUdHfkPYMEHt
-	 bbJofFjN+X+0lqxFLL6zou3TDGr38sMexNGQOkveoHbRu8zdqT/vr5vJdRzv9xY2XR
-	 8idP7++/TGx2pM8ENjO9AvlwoxTw6chTHoBNPdbdn5pzF2L7s8CM2tNMmyFZ6ugbNI
-	 tPewkDibdSJ/Glaz0y3a0BMGbFKz8N9vHMo0W9x9xhrhiQOeOGrwB03LdXBNvKSfUk
-	 7PXrbXVOvsJlLDNRt9I4NCUM=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 8667C40E01AC;
-	Wed,  3 Sep 2025 10:03:22 +0000 (UTC)
-Date: Wed, 3 Sep 2025 12:03:17 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Yazen Ghannam <yazen.ghannam@amd.com>
-Cc: x86@kernel.org, Tony Luck <tony.luck@intel.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y5DqdVKHkfsFH6NG3Tqe5TvMv0kHCt7NaUC8u6vKLwoYo/O8UToNHzcFDhAD7kDpi448c4cFzPPD/rnTqA+P+nx0P/hgwSb4zS6N+4JXhT8WqqRcri2vONWxTQgATN5mP8m0QHCaFlP1rDFugR5dQMO2StV70BrKh4t5Qhr5sZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f7eCDwJN; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756895398; x=1788431398;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=9ChJERbF28V62YULxJTUijcjwER+YGRa4ul/JAPdBug=;
+  b=f7eCDwJNINczRSOJbSDtejE8HIl5JyRZNBO9YIW1lDj0RU/AKr0tjeYl
+   o69nrjZylgE+zmdn1T27iUNOnxAweL7Z2uKy0N0Prt8rKqWWEgmCOr/A7
+   o9usdklT6t7v8FiFSQbetTaUTgr1g6uqXAC+KCs/Z5inQGJiNTEOmXhgR
+   3HL2uYdojrEXrwHNnFTIpbCAqtOqQM9qqq5yW3FrF8lt8zVrKBq5RWRMq
+   KVtalt8uLWUVTR5yFawK0wM9o9/p2JAuMdeGSW9KzFSsFFIRamyB+LXBn
+   i6Oaeq4RcswIW3MapG6HXSmCTgaPjz7C3QmSi5WcqKnIYLSlFAgi5ICd5
+   w==;
+X-CSE-ConnectionGUID: gP2H2uVdSUGJ0Qz3+zDl/A==
+X-CSE-MsgGUID: 9F9eOb4eSBy7pXP5mh2Neg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="81789240"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="81789240"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 03:29:57 -0700
+X-CSE-ConnectionGUID: 98hTFI56SnCjvurjbaAATQ==
+X-CSE-MsgGUID: 8u/XXmfRTBqszrgcQw5jZw==
+X-ExtLoop1: 1
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 03:29:55 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1utkkS-0000000AxMd-11zh;
+	Wed, 03 Sep 2025 13:29:52 +0300
+Date: Wed, 3 Sep 2025 13:29:52 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: =?iso-8859-1?Q?Jean-Fran=E7ois?= Lessard <jefflessard3@gmail.com>
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
-	Smita.KoralahalliChannabasappa@amd.com,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v5 15/20] x86/mce/amd: Enable interrupt vectors once
- per-CPU on SMCA systems
-Message-ID: <20250903100317.GHaLgSZTPMDHrKbO7Q@fat_crate.local>
-References: <20250825-wip-mca-updates-v5-0-865768a2eef8@amd.com>
- <20250825-wip-mca-updates-v5-15-865768a2eef8@amd.com>
+	Danilo Krummrich <dakr@kernel.org>, linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] device property: Add scoped fwnode child node
+ iterators
+Message-ID: <aLgYoLa6LHEQIdbC@smile.fi.intel.com>
+References: <20250902190443.3252-1-jefflessard3@gmail.com>
+ <20250902190443.3252-2-jefflessard3@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250825-wip-mca-updates-v5-15-865768a2eef8@amd.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250902190443.3252-2-jefflessard3@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Aug 25, 2025 at 05:33:12PM +0000, Yazen Ghannam wrote:
-> Scalable MCA systems have a per-CPU register that gives the APIC LVT
-> offset for the thresholding and deferred error interrupts.
+On Tue, Sep 02, 2025 at 03:04:39PM -0400, Jean-François Lessard wrote:
+> Add scoped versions of fwnode child node iterators that automatically
+> handle reference counting cleanup using the __free() attribute:
 > 
-> Currently, this register is read once to set up the deferred error
-> interrupt and then read again for each thresholding block. Furthermore,
-> the APIC LVT registers are configured each time, but they only need to
-> be configured once per-CPU.
+> - fwnode_for_each_child_node_scoped()
+> - fwnode_for_each_available_child_node_scoped()
 > 
-> Move the APIC LVT setup to the early part of CPU init, so that the
-> registers are set up once. Also, this ensures that the kernel is ready
-> to service the interrupts before the individual error sources (each MCA
-> bank) are enabled.
+> These macros follow the same pattern as existing scoped iterators in the
+> kernel, ensuring fwnode references are automatically released when the
+> iterator variable goes out of scope. This prevents resource leaks and
+> eliminates the need for manual cleanup in error paths.
 > 
-> Apply this change only to SMCA systems to avoid breaking any legacy
-> behavior. The deferred error interrupt is technically advertised by the
-> SUCCOR feature. However, this was first made available on SMCA systems.
-> Therefore, only set up the deferred error interrupt on SMCA systems and
-> simplify the code.
-> 
-> Guidance from hardware designers is that the LVT offsets provided from
-> the platform should be used. The kernel should not try to enforce
-> specific values. However, the kernel should check that an LVT offset is
-> not reused for multiple sources.
-> 
-> Therefore, remove the extra checking and value enforcement from the MCE
-> code. The "reuse/conflict" case is already handled in
-> setup_APIC_eilvt().
-> 
-> Tested-by: Tony Luck <tony.luck@intel.com>
-> Reviewed-by: Tony Luck <tony.luck@intel.com>
-> Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+> The implementation mirrors the non-scoped variants but uses
+> __free(fwnode_handle) for automatic resource management, providing a
+> safer and more convenient interface for drivers iterating over firmware
+> node children.
 
-Some touchups ontop:
-
-diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index c05d9c6f07d1..5722806ccaa5 100644
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -54,8 +54,10 @@ static bool thresholding_irq_en;
- struct mce_amd_cpu_data {
- 	mce_banks_t     thr_intr_banks;
- 	mce_banks_t     dfr_intr_banks;
--	bool		thr_intr_en;
--	bool		dfr_intr_en;
-+
-+	u32		thr_intr_en: 1,
-+			dfr_intr_en: 1,
-+			__resv: 30;
- };
- 
- static DEFINE_PER_CPU_READ_MOSTLY(struct mce_amd_cpu_data, mce_amd_data);
-@@ -508,9 +510,8 @@ static u32 get_block_address(u32 current_addr, u32 low, u32 high,
- 	return addr;
- }
- 
--static int
--prepare_threshold_block(unsigned int bank, unsigned int block, u32 addr,
--			int offset, u32 misc_high)
-+static int prepare_threshold_block(unsigned int bank, unsigned int block, u32 addr,
-+				   int offset, u32 misc_high)
- {
- 	unsigned int cpu = smp_processor_id();
- 	struct threshold_block b;
-@@ -652,11 +653,11 @@ static void smca_enable_interrupt_vectors(void)
- 
- 	offset = (mca_intr_cfg & SMCA_THR_LVT_OFF) >> 12;
- 	if (!setup_APIC_eilvt(offset, THRESHOLD_APIC_VECTOR, APIC_EILVT_MSG_FIX, 0))
--		data->thr_intr_en = true;
-+		data->thr_intr_en = 1;
- 
- 	offset = (mca_intr_cfg & MASK_DEF_LVTOFF) >> 4;
- 	if (!setup_APIC_eilvt(offset, DEFERRED_ERROR_VECTOR, APIC_EILVT_MSG_FIX, 0))
--		data->dfr_intr_en = true;
-+		data->dfr_intr_en = 1;
- }
- 
- /* cpu init entry point, called from mce.c with preempt off */
-@@ -669,6 +670,7 @@ void mce_amd_feature_init(struct cpuinfo_x86 *c)
- 	amd_apply_cpu_quirks(c);
- 
- 	mce_flags.amd_threshold	 = 1;
-+
- 	smca_enable_interrupt_vectors();
- 
- 	for (bank = 0; bank < this_cpu_read(mce_num_banks); ++bank) {
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
 -- 
-Regards/Gruss,
-    Boris.
+With Best Regards,
+Andy Shevchenko
 
-https://people.kernel.org/tglx/notes-about-netiquette
+
 
