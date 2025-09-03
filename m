@@ -1,205 +1,221 @@
-Return-Path: <linux-acpi+bounces-16331-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16332-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408D3B42255
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 15:45:36 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B0FB422D3
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 16:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C9753A57FA
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 13:45:30 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CDAD44E4BDD
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Sep 2025 14:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487022FB61A;
-	Wed,  3 Sep 2025 13:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF182C21E1;
+	Wed,  3 Sep 2025 14:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EtV1vxk9"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zSub5RE5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2045.outbound.protection.outlook.com [40.107.93.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1D872618;
-	Wed,  3 Sep 2025 13:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756907130; cv=none; b=dXU1Uq/RGcUSaPC/RSE4b/uNd/YgKjV40lv/5nd50GHCGF4ursOkLw2dYR10JmGH9ELS/9aQoFVQVxOvkmL2QF/SVbUIfWBLNtZDuQB9MFZnf3abunhLyrRL1BDaw1B05Fzji+2CVyhgkQFmo8zyjB79QHKVKiLBmCtfbdyLUy8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756907130; c=relaxed/simple;
-	bh=6Bp49XvIiL/gpcZUSJHbjfPDkjkxFuVv8aVM1mwkppM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ncAJg4mfq0B75xF6ONlw6yYpPHFicpTUwi5+8AUqGNztUzbLLIzi1c6+pYc2XDCwNG3X0DghGma7SFpKdj6GOemgMfd5eHGxcyDfhXyXk010qvfe1FeBHi/i4I3GIW78b1XGex6QSNEYjF5dW31UpT47ByoCVuLH3vml7iO4g4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EtV1vxk9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88B2C4CEFE;
-	Wed,  3 Sep 2025 13:45:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756907129;
-	bh=6Bp49XvIiL/gpcZUSJHbjfPDkjkxFuVv8aVM1mwkppM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=EtV1vxk9Knh7vuhM8x4HkCnMMQg77LBHWAZjfHt0hykdAtk0J7zkljpn1dRo8ALRy
-	 nJBjQbGoGlt335lc6Yejbwt37hjTv6p8SfDTunaRiW2oQzHQJq0rlhZtQ1LRmN6+mL
-	 IGnwxZAwUAyqQhCdqcZjg6unlXq+oHZaIHgAwNaLEtGxgemHO0ZOaXw9RabH2oRHjO
-	 1NAsUX1pvy8xvLLbjRFOhcQ7OcGTcv3rYRTxHcZtSDX9/AS365g+6AYkmZe7Gug6n+
-	 egQHkiSWI1KySu6kre/fm/A9KyjZ9fyn2Wecsk4AkYcdc4XAKirge13OlUIx7BdFSr
-	 JLHu0DYRXsxWw==
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-74382048b8cso4085416a34.3;
-        Wed, 03 Sep 2025 06:45:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU7mEeVQ8ID3EM2uvimvABgR5DEJPM8H2+TKiJl624j3/toRsNvUWGtgSHTmfrEsc3D4ft0bkMecAA=@vger.kernel.org, AJvYcCUNH1JaNwu50mHa7UCnsmuTy/zwyQtfKvQh2I1RkQ94Jqbbl/jBzs2vfLAlQIJwoZ7kocx47mh2YvQFqg==@vger.kernel.org, AJvYcCUPKgNgUxsgKTXeiA/XKh7oZDWbwHcmPo+SG5IzKakbFRGBWWIoWr901e58It41NatomCCR2VLKheVF@vger.kernel.org, AJvYcCUnpH0fe9ODPV8mftWp7RgSL+qnQYEayKq0cQPQ5YvYAo7DuPgOfYfmXbzi4lPGzLax1XCIxSB8kJaGy2mX@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3oF7TQS+N82BAXvSkGK32/PGxbanOKNRFcyl1bUiqAbtcZGOv
-	NUKvPIQhUkoKV9Nxv+hwgUhqhlWxn0ELbNxREK0AZlm6k5CdbzjFI3ht69oecG8dfMTjK8q+dTk
-	jgFRnJidB0YPLW1krR0ceZDDLKDM0FOI=
-X-Google-Smtp-Source: AGHT+IFj7tJ0lfFEWygwFa+BeDrtHlIidd3MSLvzw4pQoHyU3fN8psDlEaELWcEJ9+cmnisQYq8U5lt0bInRpr2lJAs=
-X-Received: by 2002:a05:6830:6682:b0:745:9ba6:d32c with SMTP id
- 46e09a7af769-7459ba6d61bmr1062886a34.2.1756907128976; Wed, 03 Sep 2025
- 06:45:28 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB692D9EDF;
+	Wed,  3 Sep 2025 14:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756908032; cv=fail; b=UlHDHfCT2RtgGRYd+UYuXodeOBUy0QkjRg/AwOWxy7kCwXfG0Lax9Hc27W0tA89mWtxtNf0T5EExCvEirTyb/f2+JRQmgPXd9l8gfHEe5G3yuyup2yXjOqn6gS81OSseYmKM8G4p0g1ml1Megh+0t6OcXIMCfJFdEE3UvkBArsk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756908032; c=relaxed/simple;
+	bh=ALHDo3hf5yn0xOCJhGyQiJdqj5xGvhjYLsu3iMtxL80=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ZIMJYpx3kBrR18eQ0acNCAMh0yWQa1CCEb9JFJ3UBlJx1DOmuDjMV4yHsyUYc1ON3yr0ZlObqd9/jSB1cldD1/ZjDJpcuW4GvVosnSIy6Lzn/yvcJeiz6oNooaWombPJzaqUcWJZ+eil+1fGsaCRqh/27wWeoe/PC++84GhPwVc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zSub5RE5; arc=fail smtp.client-ip=40.107.93.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TwgdqKHDvI2+5eocEdT8X/2Tx7HYfwNP5V5cD5E6dYZIMNMSJ8Qn4Cc1TUlbi2oZxvy4WBuy1M9Wep6uSp1jvFfRj4+b07lQ5T5o026hVwhdGnrmQR0Y6wKiisrAV0Zsswg2rEmFm09m5V2aWQjwCG1uF33fu4UHeYK4NMJ+qoGCqrAxxdHG0vE4l80enKZAUpOAAPTg0NuEHqprc9xyL224hoL/gWCibSLNdTTf3ZBnOEmi3OxrTWwyUi7KiAtQ8aIHhJz/CFIFveO98ZdDMn1XY4MSvkNx52rSgp8jjwrbJJEOYmz3o+z+qYG0KAB1PECJaWQlaHq4i+0x0DPJ7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wYFVCVys9WWx42nx3hxg57ya/S0Hitg+2BlLes0Fsio=;
+ b=mR0WIdrDR9daq+RHRGr07u5iR5hvdWZFYNwbuhsbkMbfCadAgaghbhB3GVjspO1jtZ9TZAjGJQCpstcmQH7s8zitffz7hyEEAeN9xNaB0ySo1jLYPmkrQ6olzbsja7JfQomT2j6eKUW7R6qiurRpwF2gSIgVXW8D/+Ccan7C7i2IPPqvVv0vCH8CctBMvb06EQONVbIEA2eOyRhh/kwgNBoOyxxFUCr/YndeOMqzVs0MU9aaxG1P+HLOHxp6YDUXHxHHzMzb0bHmyb9d/nO1wDD/kyfEGn4ZEw9bnNIxMpaV7djvAdNtV4D7gB8d9z7dqydgcTDpRtfjT0exzFZTjw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wYFVCVys9WWx42nx3hxg57ya/S0Hitg+2BlLes0Fsio=;
+ b=zSub5RE54kzKzKQSHP7nWHHhANkfLmMRBxSjDmsCqQ7onsFosvizhBCWdAv5BEiTXSd+/dBFX9rpU6NiFy4IUQNwfpIe6quz3mXpuJ++QiqsyLyzL3xQerv34luUmfS2H/O15oEihiJiyoT8IckNQWgTZ2QymzQWgRBNjpvkSJQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CY5PR12MB6369.namprd12.prod.outlook.com (2603:10b6:930:21::10)
+ by MW3PR12MB4378.namprd12.prod.outlook.com (2603:10b6:303:52::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Wed, 3 Sep
+ 2025 14:00:28 +0000
+Received: from CY5PR12MB6369.namprd12.prod.outlook.com
+ ([fe80::d4c1:1fcc:3bff:eea6]) by CY5PR12MB6369.namprd12.prod.outlook.com
+ ([fe80::d4c1:1fcc:3bff:eea6%4]) with mapi id 15.20.9094.016; Wed, 3 Sep 2025
+ 14:00:27 +0000
+Date: Wed, 3 Sep 2025 10:00:22 -0400
+From: Yazen Ghannam <yazen.ghannam@amd.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org, Tony Luck <tony.luck@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
+	Smita.KoralahalliChannabasappa@amd.com,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Nikolay Borisov <nik.borisov@suse.com>, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v5 15/20] x86/mce/amd: Enable interrupt vectors once
+ per-CPU on SMCA systems
+Message-ID: <20250903140022.GA835@yaz-khff2.amd.com>
+References: <20250825-wip-mca-updates-v5-0-865768a2eef8@amd.com>
+ <20250825-wip-mca-updates-v5-15-865768a2eef8@amd.com>
+ <20250903100317.GHaLgSZTPMDHrKbO7Q@fat_crate.local>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250903100317.GHaLgSZTPMDHrKbO7Q@fat_crate.local>
+X-ClientProxiedBy: BL0PR05CA0024.namprd05.prod.outlook.com
+ (2603:10b6:208:91::34) To CY5PR12MB6369.namprd12.prod.outlook.com
+ (2603:10b6:930:21::10)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250903131733.57637-1-zhangzihuan@kylinos.cn> <20250903131733.57637-8-zhangzihuan@kylinos.cn>
-In-Reply-To: <20250903131733.57637-8-zhangzihuan@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 3 Sep 2025 15:45:17 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
-X-Gm-Features: Ac12FXwBQmIxy8zPXuaWqJJ1Bp0qaxbUEME_ozpvMpdmoYPanY06xkhRVAoy8ys
-Message-ID: <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
-Subject: Re: [PATCH v4 07/10] powercap: dtpm_cpu: Use scope-based cleanup helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR12MB6369:EE_|MW3PR12MB4378:EE_
+X-MS-Office365-Filtering-Correlation-Id: 03bf86c0-81cf-4e30-4074-08ddeaf23c86
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?nGziZnsUgJaqM7NIsYbGUzTmAaEDkU7K0ROnYPARFN/zsqboT0AdjaBJpGN3?=
+ =?us-ascii?Q?g4LQLx1AyyC8Fpmpj0hGxO/g8y48lxHSjsQ5kFvZMpVWBdYAyWRCZlddPuwW?=
+ =?us-ascii?Q?SdkkxzkdRUrKxWwNvx84BpvfXdbQO75z+Nz0Cmo7hskBNHgkNnAJaxbIJqmS?=
+ =?us-ascii?Q?CwehqY7+UrOJ52j2KgpDnulB+mzUpiKW6fUQvZUdw2yiLdyXIZ0qBoDBH6nY?=
+ =?us-ascii?Q?n3NwBxdJECSjT1Zcwya6ie3p85DIqu57k2P1RUZo4u55NxZzHJaqwlP5Etj2?=
+ =?us-ascii?Q?HfyYUsHpFINd8FDHVsoKYfO2i8rOOUU2Yp1yJztj5zn57PWdUAZhQM0N3C5o?=
+ =?us-ascii?Q?skil+6H7dcIWrHH9C7qeMYM8RKzsWlOBAppabUtvKDN76ZFIUj/JZ2OKew+2?=
+ =?us-ascii?Q?+sqHBBezt2p4Qg1IXYPqs6H7ef5eWbwmfdGCW76wVv2KVtie18NpMPu8QFAC?=
+ =?us-ascii?Q?xWTF7BYpHE6FzPQE8xhX3kRJf/7ti2M9/bkKWDs7CKnVxUldEaClZubiP7l9?=
+ =?us-ascii?Q?5TqfypaXwCM+pA+O+540Kf2A6AlLGi4ZKEXhpCasIOd211FFy9SgFTuQxuDk?=
+ =?us-ascii?Q?KmBBoxj2BlkvN4PtBw0IEhndFE9rY4VTU8FA8cxZvxea5a0KAitQM0VwYzMa?=
+ =?us-ascii?Q?nrcv49mvCUSc6K0P9aqc0ezDZpzOpk9f/efPo9zLCwSh9g6NNCr78ZtcVd1C?=
+ =?us-ascii?Q?XQCR2BPeochRR7fyuzMVwtZ9TmHX8giCYVWa2SbrcHnKvneUFrbvr7X/NFW4?=
+ =?us-ascii?Q?Ph++IxQueD/VsBjzsM4sO6wjAcOa7tuA65p8Qt8qT2Mg1JhQw5DlO5b6a9CE?=
+ =?us-ascii?Q?lmMFBGyOKT8ajz9qSCsMlAKeqOFGlgovxtoqlr1kYqg1+kbZuCd0hBQGbDo2?=
+ =?us-ascii?Q?Bfny73WZRpH3Y8y8krAzmNFI/EteX4wYSIPvtZgPbtl8lwVs7IAyiMWfd2Kx?=
+ =?us-ascii?Q?DO+l7zdlikxhj6BHwGiLOv8gF6NDuYYQuuJOLpv+sk7OoBMF+xdhhfH+QeNf?=
+ =?us-ascii?Q?jtTLLLB8NY6tmMnUpsVF/Hse4/BgTiP4ICUBaNY9eWX/Ci/I3XNK6ue4kiqB?=
+ =?us-ascii?Q?mxBzsyBwT5kAFGxn946lfGRNuW0ypdz5iO/oxq8cxSHFyWaQi3sTwljRcead?=
+ =?us-ascii?Q?TGyUYJK9lK4NZL07HmeWO3F6oQCROMaxJL7QDtZh9XRFsCesoyoRci8VLJL5?=
+ =?us-ascii?Q?vXYF+3Ni7agYHLi/4vUQhPB7SUNwSd/phaWwzvlbYv/V9f9CxH4bsXQakVjn?=
+ =?us-ascii?Q?3jOTGb2GEEi9scMI+z7h1UPJ2xN38TFFE14vYPAURqE4Ebx9Syywa6AZTssQ?=
+ =?us-ascii?Q?eVQ20Hc2TczRc/gCOlv4zr8amF223GUn7hk4YiNohhQTkJboarFJBSXimth1?=
+ =?us-ascii?Q?sELTH66hSuT7cSTv2xKzYqwDh+7fDkwP9NizV9rasxyKryi45NldYdq+Gr01?=
+ =?us-ascii?Q?Lss4RSOAslY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6369.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?cuMW3J0ZPWlAZUVw8/kLlSkG991Z7qgZ4V9PmBEbYnq4iqd7GZD2aJEYM9XY?=
+ =?us-ascii?Q?iicJrwcqXXoH0h1kmTWJ2YW/ezuoqsGxQWPTzYAS26uO5cLGb9uf8eQZhPwp?=
+ =?us-ascii?Q?tLgp2ius4g9RjkH07bGbHI7OJPC8TRmN7zFi2HVZHrH1r+f7rJbaO1Cy+Z2n?=
+ =?us-ascii?Q?pgF3o9T0saAyYGoN8vfLly8tTq6v0UWTni85+5uRA3qWogQgkd58S+sF5w0h?=
+ =?us-ascii?Q?5jGl9hJtLZDhXhmea47Iq7BwW50A2A8aLCDwEVsPL4g+To+O2KeAmLPn/yoM?=
+ =?us-ascii?Q?mWGQDmruvHJAq1Yw3gOD84KdsiiR8X8nRIlmFMMRCFWnH1ryrfdcbM4GIAYD?=
+ =?us-ascii?Q?7C/wykGiKfG2en6nmxZjul2ENatPBX/cf0BKqcMVkMSqnt6ryBU0g5gxE2pL?=
+ =?us-ascii?Q?cDPTVtLQLWbfG7as9lq0Ucc/mSmpFlMeB+vwfJdxMFeynm+QwT+jpKJ8xWKV?=
+ =?us-ascii?Q?BBNNtFlU0E97IyIliXu+Dg6bgsqRJxbfIedILjVSTROR2LcDlvVqD3QqdeVe?=
+ =?us-ascii?Q?F99kiolM1wYT3/NcFmIvXBA10RhisO6leD4iHFnIinwLnTT45ls6u9P8yLSZ?=
+ =?us-ascii?Q?N1+KhF+MUjV4H3LVsG+5DgKduG+lj/iW1j0Dq0SjnwrPm/rBhBDTZ0b9rFGf?=
+ =?us-ascii?Q?cv+T3xQpgcTrczoHbRTxNuMjA4ZawqsBpq6QEWrbXeF6EmhVaWBNqbarBuad?=
+ =?us-ascii?Q?ZjuqcytYkkmC1LXKvugBD0NDfy/EkKtg9c7BMPx8WoF97oO1CDvjbkb3JT1/?=
+ =?us-ascii?Q?Vuaqa7W6OgPvq1vBRZH8i5016yQjE7NAdUwv21ZZxxYmYy+t7kRSmZJvXWgo?=
+ =?us-ascii?Q?pHPx5L2/PNRakREs7ffvJKlDqJp2BL8WV95ujOzNjkG9KIRLnNzGfDqb9RAF?=
+ =?us-ascii?Q?rAyXcOxc3DOjnRhpLpTNzcBXEtjlcf1PdhAekpmMDrOUq2md7rus0rw1aJcs?=
+ =?us-ascii?Q?mPnIhudUyk47ddkN8axXNgYDIs3ML/D/bBIFKPnIPMWBqg0cN33umh0Rcmkm?=
+ =?us-ascii?Q?u5VLCO96Rm0Ra0Y5OzKMg6sW+iL7TBUmx2CU0HdwqMm8JiLz8vVzQ7R6poqA?=
+ =?us-ascii?Q?C4N+w7MRJqdQ80YkvvRh0DOWU/xznD5s6AecpiselHxaG6n6OPUGm/ngf9+K?=
+ =?us-ascii?Q?UXprOMUb+pJDG4/J2C7PclYu4vedDBhweO07+9tDbRYHiEsJhN05Ld6W1sUJ?=
+ =?us-ascii?Q?SL4tHiFcOWETXbhMbFuUtjrafYMe3HtYdDNYFlCXrbvwddZN4liihLEChubH?=
+ =?us-ascii?Q?Yd8sSVe782iBrPzJtSTRZPMXncTXuEpEOuVjbUv7hsXHrA9vxGlw8JsG8kZ/?=
+ =?us-ascii?Q?TqwN6u+9TOHLjnZzImrMLQzH9R6hI5frQ8jPiEcx4hqCjuJfMF6Q7pWEA0Gm?=
+ =?us-ascii?Q?Q4/GJOCyVcF0qcrCr4AqWINQ6rG3Y/S70FpEbHdtCg/1r4rI5yT9wYDQjQQN?=
+ =?us-ascii?Q?mCqp9n0/HGeYoDA3bcYyut6qZwfUERZqw3o5UYDtQ6qOmO0VXs23J/HNh07I?=
+ =?us-ascii?Q?NHCj3aKwv8jPmYICQUoyfuMmEb1HNrpqJsJc7Db+pQ8RWKzaC3/ZecO0LqFd?=
+ =?us-ascii?Q?a6NXFIcvqi92b3BplKnqwFBu4u1BnZLxTtPfTY4Q?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 03bf86c0-81cf-4e30-4074-08ddeaf23c86
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6369.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 14:00:27.8452
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: evqca6rO1DZo4LPKMuPCY00/tgA8c5M32sa98kLFBKZ7qN1mzj8kJga0Ag8xhZGwQaAIoXOaPjXKe1lV/Y8AGg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4378
 
-On Wed, Sep 3, 2025 at 3:18=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.cn=
-> wrote:
->
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
->
-> No functional change intended.
->
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> ---
->  drivers/powercap/dtpm_cpu.c | 30 +++++++++++-------------------
->  1 file changed, 11 insertions(+), 19 deletions(-)
->
-> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
-> index 99390ec1481f..f76594185fa2 100644
-> --- a/drivers/powercap/dtpm_cpu.c
-> +++ b/drivers/powercap/dtpm_cpu.c
-> @@ -144,19 +144,17 @@ static int update_pd_power_uw(struct dtpm *dtpm)
->  static void pd_release(struct dtpm *dtpm)
->  {
->         struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
-> -       struct cpufreq_policy *policy;
->
->         if (freq_qos_request_active(&dtpm_cpu->qos_req))
->                 freq_qos_remove_request(&dtpm_cpu->qos_req);
->
-> -       policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
-> -       if (policy) {
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
-> +               cpufreq_cpu_get(dtpm_cpu->cpu);
+On Wed, Sep 03, 2025 at 12:03:17PM +0200, Borislav Petkov wrote:
+> On Mon, Aug 25, 2025 at 05:33:12PM +0000, Yazen Ghannam wrote:
+> > Scalable MCA systems have a per-CPU register that gives the APIC LVT
+> > offset for the thresholding and deferred error interrupts.
+> > 
+> > Currently, this register is read once to set up the deferred error
+> > interrupt and then read again for each thresholding block. Furthermore,
+> > the APIC LVT registers are configured each time, but they only need to
+> > be configured once per-CPU.
+> > 
+> > Move the APIC LVT setup to the early part of CPU init, so that the
+> > registers are set up once. Also, this ensures that the kernel is ready
+> > to service the interrupts before the individual error sources (each MCA
+> > bank) are enabled.
+> > 
+> > Apply this change only to SMCA systems to avoid breaking any legacy
+> > behavior. The deferred error interrupt is technically advertised by the
+> > SUCCOR feature. However, this was first made available on SMCA systems.
+> > Therefore, only set up the deferred error interrupt on SMCA systems and
+> > simplify the code.
+> > 
+> > Guidance from hardware designers is that the LVT offsets provided from
+> > the platform should be used. The kernel should not try to enforce
+> > specific values. However, the kernel should check that an LVT offset is
+> > not reused for multiple sources.
+> > 
+> > Therefore, remove the extra checking and value enforcement from the MCE
+> > code. The "reuse/conflict" case is already handled in
+> > setup_APIC_eilvt().
+> > 
+> > Tested-by: Tony Luck <tony.luck@intel.com>
+> > Reviewed-by: Tony Luck <tony.luck@intel.com>
+> > Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+> 
+> Some touchups ontop:
+> 
+> diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
+> index c05d9c6f07d1..5722806ccaa5 100644
+> --- a/arch/x86/kernel/cpu/mce/amd.c
+> +++ b/arch/x86/kernel/cpu/mce/amd.c
+> @@ -54,8 +54,10 @@ static bool thresholding_irq_en;
+>  struct mce_amd_cpu_data {
+>  	mce_banks_t     thr_intr_banks;
+>  	mce_banks_t     dfr_intr_banks;
+> -	bool		thr_intr_en;
+> -	bool		dfr_intr_en;
 > +
-> +       if (policy)
->                 for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
->                         per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL;
->
-> -               cpufreq_cpu_put(policy);
-> -       }
-> -
->         kfree(dtpm_cpu);
->  }
->
-> @@ -192,7 +190,6 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
->  static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
->  {
->         struct dtpm_cpu *dtpm_cpu;
-> -       struct cpufreq_policy *policy;
->         struct em_perf_state *table;
->         struct em_perf_domain *pd;
->         char name[CPUFREQ_NAME_LEN];
-> @@ -202,21 +199,19 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *p=
-arent)
->         if (dtpm_cpu)
->                 return 0;
->
-> -       policy =3D cpufreq_cpu_get(cpu);
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
-> +               cpufreq_cpu_get(cpu);
-> +
->         if (!policy)
->                 return 0;
->
->         pd =3D em_cpu_get(cpu);
-> -       if (!pd || em_is_artificial(pd)) {
-> -               ret =3D -EINVAL;
-> -               goto release_policy;
-> -       }
-> +       if (!pd || em_is_artificial(pd))
-> +               return -EINVAL;
->
->         dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
-> -       if (!dtpm_cpu) {
-> -               ret =3D -ENOMEM;
-> -               goto release_policy;
-> -       }
-> +       if (!dtpm_cpu)
-> +               return -ENOMEM;
->
->         dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
->         dtpm_cpu->cpu =3D cpu;
-> @@ -239,7 +234,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
-ent)
->         if (ret < 0)
->                 goto out_dtpm_unregister;
+> +	u32		thr_intr_en: 1,
+> +			dfr_intr_en: 1,
+> +			__resv: 30;
+>  };
 
-So this change kind of goes against another recommendation given in cleanup=
-.h:
+Thanks, I'll include these.
 
- * Lastly, given that the benefit of cleanup helpers is removal of
- * "goto", and that the "goto" statement can jump between scopes, the
- * expectation is that usage of "goto" and cleanup helpers is never
- * mixed in the same function. I.e. for a given routine, convert all
- * resources that need a "goto" cleanup to scope-based cleanup, or
- * convert none of them.
+But any reason to use u32? Why not u8? Alignment or something?
 
->
-> -       cpufreq_cpu_put(policy);
->         return 0;
->
->  out_dtpm_unregister:
-> @@ -251,8 +245,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
-ent)
->                 per_cpu(dtpm_per_cpu, cpu) =3D NULL;
->         kfree(dtpm_cpu);
->
-> -release_policy:
-> -       cpufreq_cpu_put(policy);
->         return ret;
->  }
->
-> --
+The u32 is double the two bools that it replaces.
+
+Thanks,
+Yazen
 
