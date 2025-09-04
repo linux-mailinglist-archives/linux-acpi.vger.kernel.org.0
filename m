@@ -1,192 +1,249 @@
-Return-Path: <linux-acpi+bounces-16380-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16381-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72F4B445AB
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 20:44:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3178BB445C0
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 20:48:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6534C1C28054
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 18:44:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F44C1CC153E
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 18:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0B83126DB;
-	Thu,  4 Sep 2025 18:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE90C2550CC;
+	Thu,  4 Sep 2025 18:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DPLjZeXT"
+	dkim=pass (2048-bit key) header.d=stgolabs.net header.i=@stgolabs.net header.b="HFHnCdaI"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from iguana.tulip.relay.mailchannels.net (iguana.tulip.relay.mailchannels.net [23.83.218.253])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305231EE7B9;
-	Thu,  4 Sep 2025 18:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757011469; cv=none; b=b0hVNzpJjQocIFIqKpd3ic8BONzSqFKxIAdk9mB1tKTUAg00PuCyWNGZ3oxvHmElM6KEJDZSZJuQqCGzAksNACuBV2FKCyhnSWNTYnKSwQGeUUKxCWh/oKUJ4M/yG3LZ57WVlte/dX1c5LUreSS2INBliW4CL2UC62xz1//cL5o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757011469; c=relaxed/simple;
-	bh=Nb/tN4WW/IDy9CTurmI7eX3/R7O/GHtYggrocLPhBLA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=mAq2XyrH/aZx4IsW11aCmDJ8+nYQf5MVA5A91kjbkyv8cfFXnQSQmik5TgofIIvu4pOCSpknTDFw14ujd71LHEYtwEvtsYsW982bkYUsrxNNwq1m9srjNwEGscZyN/dVpO+4gGA0YnGAoakoQVBUFZ0hhKPzyXWn4heUH9Fhuxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DPLjZeXT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8AF5C4CEF0;
-	Thu,  4 Sep 2025 18:44:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757011469;
-	bh=Nb/tN4WW/IDy9CTurmI7eX3/R7O/GHtYggrocLPhBLA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=DPLjZeXTe13aBSUlVLGBHZXeoXwUbxey2FMdo5B6r7GO8gz6Zdu8+o4rBlMgtKaRp
-	 MHdNHcAbsgbrYTJz6IjI0vnSIm8wvDQPgmyJPCOFOAUNvjI9HVZegSz6fFry3JmH09
-	 753u9YfjfpIUxutX8vCPll9jF99NmZYSoxUntFXFQEJtJx4gR1QFxFLdQkFcC3vtKp
-	 7XSv5/1ed1nnoszb2FLut7yu9e/z4OB5GyoX2AcJDRXGGlCGbiynt/C6X7nWmACM8U
-	 zb4COM90tDdm/fxTeakClaflRRTrpST04qVeRbGkpPCSXlF9DBGdJkYpqn/CNRdCwp
-	 bMsfBhHaK4OsQ==
-Date: Thu, 4 Sep 2025 13:44:27 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Badal Nilawar <badal.nilawar@intel.com>
-Cc: intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, anshuman.gupta@intel.com,
-	rafael@kernel.org, lenb@kernel.org, bhelgaas@google.com,
-	ilpo.jarvinen@linux.intel.com, lucas.demarchi@intel.com,
-	rodrigo.vivi@intel.com, varun.gupta@intel.com,
-	ville.syrjala@linux.intel.com, uma.shankar@intel.com
-Subject: Re: [PATCH v4 03/11] PCI/ACPI: Add PERST# Assertion Delay _DSM method
-Message-ID: <20250904184427.GA1271351@bhelgaas>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B775E2505A5;
+	Thu,  4 Sep 2025 18:48:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.253
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757011699; cv=pass; b=VhyfTGwCALwG3yYsG1maP/iT64xLb5hg7nXjI/zW6wCatJfVc/fnwowTM65nrM9eFAakkXOZuvWr8xUqp0vHYwUXP7s2pIMwGvITZ/HvJdmLlAhMF2q66xPBlbJM/WjvoQ8PoNnFdMrwwbcyHX9ExtgCbejxEyL1Nlaiaycw7mY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757011699; c=relaxed/simple;
+	bh=zVBoUBDk6LNpa2rPxcMF/px2EY2Tk2CJDQheuO7cQvY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KNcymR44bqRQU/tjgqfGBYgLKz9F3UVC16fDcfOzIV0/mra7KIH+kH2qvBMMzBHCFXEF6+DF/cJaNTReTRIu9cVHmVWG1CQV3DB0FtOjBAX2evUMA6BvB7McxYFyAo13yuvY7Cke28BDtPNqhVfsIG6nVBdDrbhzbKpNIRGTlII=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stgolabs.net; spf=pass smtp.mailfrom=stgolabs.net; dkim=pass (2048-bit key) header.d=stgolabs.net header.i=@stgolabs.net header.b=HFHnCdaI; arc=pass smtp.client-ip=23.83.218.253
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stgolabs.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 47F7C783F7E;
+	Thu,  4 Sep 2025 18:48:11 +0000 (UTC)
+Received: from pdx1-sub0-mail-a216.dreamhost.com (100-102-90-158.trex-nlb.outbound.svc.cluster.local [100.102.90.158])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id BA59878263F;
+	Thu,  4 Sep 2025 18:48:10 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1757011690; a=rsa-sha256;
+	cv=none;
+	b=mwot+RoSt5WFH1Z2E8QaaT4REcB/hB9DIJHg530BkZMCMJF+RZGYEys8KAvoppkdN9PMOv
+	QQx+kMSNIM5Cd6eVwcj3Axbv2CSJaNbGTZb0SlbJqnsAgmrKcAfsrUkDEvLRqNpEB6MUcx
+	dS8HaPneswOSvrCziy0Za04PQT+AMGjof8KHoMTAgjk2kAPlWBjoWX2b6Cvq5aQ8HMqeTZ
+	viQnLSHJKGQnsoRrJ50XMdBiioZlhNmJpWZGF8DGwe+FRcvoANL/DBUBreBvBjtk6+iP1b
+	65gvLwUoVz3E1ooUwfBqNT3OgpAv2VFpUaDnWyC40LnUDi7k1b9UCFYLuEcBCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1757011690;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
+	bh=JHwOvcWkt+mIE9FpPBs3qDJ2IlTxHvz63kAx8Lygg0I=;
+	b=vfftwxu6mISPizFvw+ys4XbngjJCTPXvUKEv+LydfvRS+75gvN9tgyOfivTFd78eAgLt79
+	QIlzjtyiCXQDrO7pubGfG1KlH6doj19EsMGV/F1nL/+Azl9ETCFD7YVjI0hDr6V9PZwxpx
+	LcCh9HstHGIVsaRKrJYHB/n7w76BssV6gZSycY1aoUyrLPxoRUyknhU0QFSGqjR41uWaxF
+	c1WLacWo4SLeQjL7vHtq49sBvsAlcOiSrC98FZGpRb1nTamcFUExKmZuarN1aBsKtH/jO8
+	m6audvB7KBAQU0FDcecXzCERkQgLDwOezrZS2O0ulcPvixY36OvKvdBvYvBkOg==
+ARC-Authentication-Results: i=1;
+	rspamd-8b9589799-n4rjh;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Abiding-Robust: 1681329f306e1448_1757011691083_2189893994
+X-MC-Loop-Signature: 1757011691083:16660094
+X-MC-Ingress-Time: 1757011691082
+Received: from pdx1-sub0-mail-a216.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.102.90.158 (trex/7.1.3);
+	Thu, 04 Sep 2025 18:48:11 +0000
+Received: from offworld.lan (syn-076-167-199-067.res.spectrum.com [76.167.199.67])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dave@stgolabs.net)
+	by pdx1-sub0-mail-a216.dreamhost.com (Postfix) with ESMTPSA id 4cHpQK6ZVjz6h;
+	Thu,  4 Sep 2025 11:48:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+	s=dreamhost; t=1757011690;
+	bh=JHwOvcWkt+mIE9FpPBs3qDJ2IlTxHvz63kAx8Lygg0I=;
+	h=From:To:Cc:Subject:Date:Content-Transfer-Encoding;
+	b=HFHnCdaIzZmtUjZjuUTA1pQ1JK0Wa0SWQ7VtvQkO73MSCUr0C4Z/dyQhKFmITdVV1
+	 xykVe4xWV92q7qbdMfdjK8sBIHDDEHALiVzyVYCvMc3KoR6jvPCMbCoQpBwFxbJ+6Z
+	 vCBB+D+Lj1SUTvii5qLGk9i4ax8bahChbqcucNV0zN81d5/3JBX02Qd7Wl46b+vQqU
+	 Y9vzGvXPMUwoY9wR+CwfkXgWnB1ATyV90NeNr70BO9sRPtgcV/9MgRbC4TuMou5+9d
+	 ZbSism92LpVhgaZ+qW5x4Risc2aI87L3pqcIFMpbGVIItN4CAQ9BmWJx2HwQfLSFM1
+	 eP8JFOR8OZcHw==
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: rafael.j.wysocki@intel.com,
+	dave.jiang@intel.com
+Cc: dan.j.williams@intel.com,
+	jonathan.cameron@huawei.com,
+	alejandro.lucero-palau@amd.com,
+	ira.weiny@intel.com,
+	alison.schofield@intel.com,
+	a.manzanares@samsung.com,
+	linux-acpi@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Davidlohr Bueso <dave@stgolabs.net>
+Subject: [PATCH] acpi, tables: Rename coherency CFMW restrictions
+Date: Thu,  4 Sep 2025 11:48:01 -0700
+Message-Id: <20250904184801.47498-1-dave@stgolabs.net>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250529111654.3140766-4-badal.nilawar@intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 29, 2025 at 04:46:46PM +0530, Badal Nilawar wrote:
-> From: Anshuman Gupta <anshuman.gupta@intel.com>
-> 
-> Implement _DSM Method 0Bh as per PCI firmware specs
-> section 4.6.11 Rev 3.3.
+ACPICA commit 710745713ad3a2543dbfb70e84764f31f0e46bdc
 
-Update citation as for the other _DSM function.
+This has been renamed in more recent CXL specs, as
+type3 (memory expanders) can also use HDM-DB for
+device coherent memory.
 
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
-> ---
->  drivers/pci/pci-acpi.c   | 57 ++++++++++++++++++++++++++++++++++++++++
->  include/linux/pci-acpi.h |  8 +++++-
->  2 files changed, 64 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index d33efba4ca94..88044491feaa 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -1531,6 +1531,63 @@ int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
->  }
->  EXPORT_SYMBOL_GPL(pci_acpi_request_d3cold_aux_power);
->  
-> +/**
-> + * pci_acpi_add_perst_assertion_delay - Request PERST# delay via ACPI DSM
-> + * @dev: PCI device instance
-> + * @delay_us: Requested delay_us
-> + *
-> + * This function sends a request to the host BIOS via ACPI _DSM to grant the
-> + * required PERST# delay for the specified PCI device. It evaluates the _DSM
-> + * to request the PERST# delay and handles the response accordingly.
+Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+---
+ drivers/cxl/acpi.c           |  4 ++--
+ include/acpi/actbl1.h        |  4 ++--
+ tools/testing/cxl/test/cxl.c | 18 +++++++++---------
+ 3 files changed, 13 insertions(+), 13 deletions(-)
 
-Reword in imperative mood.
+diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
+index 26c494704437..2cf75b553f26 100644
+--- a/drivers/cxl/acpi.c
++++ b/drivers/cxl/acpi.c
+@@ -128,9 +128,9 @@ static unsigned long cfmws_to_decoder_flags(int restrictions)
+ {
+ 	unsigned long flags = CXL_DECODER_F_ENABLE;
+ 
+-	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE2)
++	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_DEVMEM)
+ 		flags |= CXL_DECODER_F_TYPE2;
+-	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE3)
++	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_HOSTONLYMEM)
+ 		flags |= CXL_DECODER_F_TYPE3;
+ 	if (restrictions & ACPI_CEDT_CFMWS_RESTRICT_VOLATILE)
+ 		flags |= CXL_DECODER_F_RAM;
+diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+index 99fd1588ff38..eb787dfbd2fa 100644
+--- a/include/acpi/actbl1.h
++++ b/include/acpi/actbl1.h
+@@ -560,8 +560,8 @@ struct acpi_cedt_cfmws_target_element {
+ 
+ /* Values for Restrictions field above */
+ 
+-#define ACPI_CEDT_CFMWS_RESTRICT_TYPE2      (1)
+-#define ACPI_CEDT_CFMWS_RESTRICT_TYPE3      (1<<1)
++#define ACPI_CEDT_CFMWS_RESTRICT_DEVMEM      (1)
++#define ACPI_CEDT_CFMWS_RESTRICT_HOSTONLYMEM (1<<1)
+ #define ACPI_CEDT_CFMWS_RESTRICT_VOLATILE   (1<<2)
+ #define ACPI_CEDT_CFMWS_RESTRICT_PMEM       (1<<3)
+ #define ACPI_CEDT_CFMWS_RESTRICT_FIXED      (1<<4)
+diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
+index 6a25cca5636f..ba50338f8ada 100644
+--- a/tools/testing/cxl/test/cxl.c
++++ b/tools/testing/cxl/test/cxl.c
+@@ -210,7 +210,7 @@ static struct {
+ 			},
+ 			.interleave_ways = 0,
+ 			.granularity = 4,
+-			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_TYPE3 |
++			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_HOSTONLYMEM |
+ 					ACPI_CEDT_CFMWS_RESTRICT_VOLATILE,
+ 			.qtg_id = FAKE_QTG_ID,
+ 			.window_size = SZ_256M * 4UL,
+@@ -225,7 +225,7 @@ static struct {
+ 			},
+ 			.interleave_ways = 1,
+ 			.granularity = 4,
+-			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_TYPE3 |
++			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_HOSTONLYMEM |
+ 					ACPI_CEDT_CFMWS_RESTRICT_VOLATILE,
+ 			.qtg_id = FAKE_QTG_ID,
+ 			.window_size = SZ_256M * 8UL,
+@@ -240,7 +240,7 @@ static struct {
+ 			},
+ 			.interleave_ways = 0,
+ 			.granularity = 4,
+-			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_TYPE3 |
++			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_HOSTONLYMEM |
+ 					ACPI_CEDT_CFMWS_RESTRICT_PMEM,
+ 			.qtg_id = FAKE_QTG_ID,
+ 			.window_size = SZ_256M * 4UL,
+@@ -255,7 +255,7 @@ static struct {
+ 			},
+ 			.interleave_ways = 1,
+ 			.granularity = 4,
+-			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_TYPE3 |
++			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_HOSTONLYMEM |
+ 					ACPI_CEDT_CFMWS_RESTRICT_PMEM,
+ 			.qtg_id = FAKE_QTG_ID,
+ 			.window_size = SZ_256M * 8UL,
+@@ -270,7 +270,7 @@ static struct {
+ 			},
+ 			.interleave_ways = 0,
+ 			.granularity = 4,
+-			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_TYPE3 |
++			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_HOSTONLYMEM |
+ 					ACPI_CEDT_CFMWS_RESTRICT_PMEM,
+ 			.qtg_id = FAKE_QTG_ID,
+ 			.window_size = SZ_256M * 4UL,
+@@ -285,7 +285,7 @@ static struct {
+ 			},
+ 			.interleave_ways = 0,
+ 			.granularity = 4,
+-			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_TYPE3 |
++			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_HOSTONLYMEM |
+ 					ACPI_CEDT_CFMWS_RESTRICT_VOLATILE,
+ 			.qtg_id = FAKE_QTG_ID,
+ 			.window_size = SZ_256M,
+@@ -302,7 +302,7 @@ static struct {
+ 			.interleave_arithmetic = ACPI_CEDT_CFMWS_ARITHMETIC_XOR,
+ 			.interleave_ways = 0,
+ 			.granularity = 4,
+-			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_TYPE3 |
++			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_HOSTONLYMEM |
+ 					ACPI_CEDT_CFMWS_RESTRICT_PMEM,
+ 			.qtg_id = FAKE_QTG_ID,
+ 			.window_size = SZ_256M * 8UL,
+@@ -318,7 +318,7 @@ static struct {
+ 			.interleave_arithmetic = ACPI_CEDT_CFMWS_ARITHMETIC_XOR,
+ 			.interleave_ways = 1,
+ 			.granularity = 0,
+-			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_TYPE3 |
++			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_HOSTONLYMEM |
+ 					ACPI_CEDT_CFMWS_RESTRICT_PMEM,
+ 			.qtg_id = FAKE_QTG_ID,
+ 			.window_size = SZ_256M * 8UL,
+@@ -334,7 +334,7 @@ static struct {
+ 			.interleave_arithmetic = ACPI_CEDT_CFMWS_ARITHMETIC_XOR,
+ 			.interleave_ways = 8,
+ 			.granularity = 1,
+-			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_TYPE3 |
++			.restrictions = ACPI_CEDT_CFMWS_RESTRICT_HOSTONLYMEM |
+ 					ACPI_CEDT_CFMWS_RESTRICT_PMEM,
+ 			.qtg_id = FAKE_QTG_ID,
+ 			.window_size = SZ_512M * 6UL,
+-- 
+2.39.5
 
-Like pci_acpi_request_d3cold_aux_power(), I think the driver should
-call this with its device, not the Root Port.
-
-> + * Return: returns 0 on success and errno on failure.
-> + */
-> +int pci_acpi_add_perst_assertion_delay(struct pci_dev *dev, u32 delay_us)
-> +{
-> +	union acpi_object in_obj = {
-> +		.integer.type = ACPI_TYPE_INTEGER,
-> +		.integer.value = delay_us,
-> +	};
-> +
-> +	union acpi_object *out_obj;
-> +	acpi_handle handle;
-> +	int result, ret = -EINVAL;
-> +
-> +	if (!dev)
-> +		return -EINVAL;
-> +
-> +	handle = ACPI_HANDLE(&dev->dev);
-> +	if (!handle)
-> +		return -EINVAL;
-> +
-> +	if (!acpi_check_dsm(handle, &pci_acpi_dsm_guid, 4, 1 << DSM_PCI_PERST_ASSERTION_DELAY)) {
-> +		pci_dbg(dev, "ACPI _DSM 0%Xh not supported\n", DSM_PCI_PERST_ASSERTION_DELAY);
-> +		return -ENODEV;
-> +	}
-> +
-> +	out_obj = acpi_evaluate_dsm_typed(handle, &pci_acpi_dsm_guid, 4,
-> +					  DSM_PCI_PERST_ASSERTION_DELAY,
-> +					  &in_obj, ACPI_TYPE_INTEGER);
-> +	if (!out_obj)
-> +		return -EINVAL;
-> +
-> +	result = out_obj->integer.value;
-> +
-> +	if (result == delay_us) {
-> +		pci_info(dev, "PERST# Assertion Delay set to %u microseconds\n", delay_us);
-> +		ret = 0;
-> +	} else if (result == 0) {
-> +		pci_warn(dev, "PERST# Assertion Delay request failed, no previous valid request\n");
-> +	} else {
-> +		pci_warn(dev, "PERST# Assertion Delay request failed, Previous valid delay: %u microseconds\n",
-> +			 result);
-> +	}
-> +
-> +	ACPI_FREE(out_obj);
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(pci_acpi_add_perst_assertion_delay);
-> +
->  static void pci_acpi_set_external_facing(struct pci_dev *dev)
->  {
->  	u8 val;
-> diff --git a/include/linux/pci-acpi.h b/include/linux/pci-acpi.h
-> index 6079306ad754..e53d4893cf56 100644
-> --- a/include/linux/pci-acpi.h
-> +++ b/include/linux/pci-acpi.h
-> @@ -122,6 +122,7 @@ extern const guid_t pci_acpi_dsm_guid;
->  #define DSM_PCI_POWER_ON_RESET_DELAY		0x08
->  #define DSM_PCI_DEVICE_READINESS_DURATIONS	0x09
->  #define DSM_PCI_D3COLD_AUX_POWER_LIMIT		0x0A
-> +#define DSM_PCI_PERST_ASSERTION_DELAY		0x0B
->  
->  #ifdef CONFIG_PCIE_EDR
->  void pci_acpi_add_edr_notifier(struct pci_dev *pdev);
-> @@ -135,7 +136,7 @@ int pci_acpi_set_companion_lookup_hook(struct acpi_device *(*func)(struct pci_de
->  void pci_acpi_clear_companion_lookup_hook(void);
->  int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
->  				      u32 *retry_interval);
-> -
-> +int pci_acpi_add_perst_assertion_delay(struct pci_dev *dev, u32 delay_us);
->  #else	/* CONFIG_ACPI */
->  static inline void acpi_pci_add_bus(struct pci_bus *bus) { }
->  static inline void acpi_pci_remove_bus(struct pci_bus *bus) { }
-> @@ -144,6 +145,11 @@ static inline int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 req
->  {
->  	return -EOPNOTSUPP;
->  }
-> +
-> +static inline int pci_acpi_add_perst_assertion_delay(struct pci_dev *dev, u32 delay_us)
-
-Wrap to fit in 80 columns like the rest of the file.
-
-> +{
-> +	return -EOPNOTSUPP;
-> +}
->  #endif	/* CONFIG_ACPI */
->  
->  #endif	/* _PCI_ACPI_H_ */
-> -- 
-> 2.34.1
-> 
 
