@@ -1,111 +1,217 @@
-Return-Path: <linux-acpi+bounces-16361-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16362-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 404DCB43BD7
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 14:39:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A74DDB43CD9
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 15:17:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2A9BA0070D
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 12:39:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E2DD1C238A4
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 13:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C002F0C6E;
-	Thu,  4 Sep 2025 12:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DA4272E51;
+	Thu,  4 Sep 2025 13:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QqM8jGv4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rSeeYMQC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6CE2ED17B;
-	Thu,  4 Sep 2025 12:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823361C1AAA;
+	Thu,  4 Sep 2025 13:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756989551; cv=none; b=pRnZSAx0pTXDDoEECKraaoLHsz9+r/nYfTvZX0M3yzO83lv71nD39U7YRiYDXukbOfMO74qrWnhr/frWrWDS6HQoDcO7dcZVI09ZVcG+3j98KPnsaXORHdn6v9DZRcSV7WxUH9vE/fxgUKZ3crRL5jDTeEwGYoT9iXDLjMjah8A=
+	t=1756991858; cv=none; b=GQVCYyNj4/awWFsTiIoyJfiuvNyL7Qc/AhlQ7pXVr4+SOFPNdVbQ5Jcksm+XZFs/KqDI+2t2KMAuyxMIbiFHHx6z3mzz+PSnD0ItPw2U4FDMtjXwjz6GJ/4zy/O8HHM70c8hWnGfhb5RZUk2kUMDHkvCNk5BUYYwId5fyQhwnjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756989551; c=relaxed/simple;
-	bh=PYaalYxcH+Y9o2jdHw45itdsSulRZEoCVkROLCxQ6JI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EqjEv9pmS4BmxNla3s6nfHA97INQL9V9PzWiV2SDi1omI9h7RNUUe4rxval/UA+cPlaNSi20gjwsEGEQZq/32i8akojIawvTuMnhjykWqiYU6n0iC+vZyHWRGn+RB7usk9z8vw9Uco7/MzhzcdCws47A06/FtR1QxzCpjEJTJ8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QqM8jGv4; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756989550; x=1788525550;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PYaalYxcH+Y9o2jdHw45itdsSulRZEoCVkROLCxQ6JI=;
-  b=QqM8jGv4OsAdHYhiS1etY98GJJ5LybCfFu9yQNYSuUiKoQDmTtuQ+eXh
-   7sTvzYFQHlujn5wqjGCmVGRkpf5nxn5Y42arJh4dYDYYO2YKgIT478/Kq
-   MUvoSeC7If67MQzYYDipTDrzf01EQIhqz1Ab+Mx8xpYWjRFMmPZVSKyeW
-   uR6Fv8dTBOwUtghoBr/ZKRebqNlYMVboMHL9wYssRBo+0gugAksIcMupW
-   ZZv4FY3EPB5BuvVb9Qnz7ZY9laFc1Y0xh6LtYlZdfRNx3M0ZSPjQKhmZf
-   6BiWJb5nZwLkZo2/e8o8YUruMzNme8+MXWBl+RvzLbc0040WpcRMVIiR/
-   Q==;
-X-CSE-ConnectionGUID: tssEjimATeqE8PxvBlQDyg==
-X-CSE-MsgGUID: fDfSJ7IUQQG14tNEMyzacw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="76928237"
-X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
-   d="scan'208";a="76928237"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 05:39:09 -0700
-X-CSE-ConnectionGUID: q7Y6c87xQzS+ui/Bn19TKA==
-X-CSE-MsgGUID: QQzJ7foXQgyDfAdrLNFQaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
-   d="scan'208";a="171825503"
-Received: from agladkov-desk.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.92])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 05:39:06 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 9DC8A11F8F6;
-	Thu, 04 Sep 2025 15:39:03 +0300 (EEST)
-Date: Thu, 4 Sep 2025 15:39:03 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: =?iso-8859-1?Q?Jean-Fran=E7ois?= Lessard <jefflessard3@gmail.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] device property: Add scoped fwnode child node
- iterators
-Message-ID: <aLmIZ1qHWBjpiNjH@kekkonen.localdomain>
-References: <20250902190443.3252-1-jefflessard3@gmail.com>
- <20250902190443.3252-2-jefflessard3@gmail.com>
- <aLhAKJBUNQVH1Vmf@kekkonen.localdomain>
- <DCJC7Q9MZEM3.34FU7BXXZ7UGF@kernel.org>
- <aLkqE9c9w9m4Axsp@kekkonen.localdomain>
- <DCJTOIQ4Q0Z5.Q2UE5AQU1X35@kernel.org>
- <aLlDJETaWTjiSP0L@kekkonen.localdomain>
- <DCJVYUINZ7KM.7RCV9P9KHTVM@kernel.org>
- <aLl-ABtFi2R9Wc1a@kekkonen.localdomain>
+	s=arc-20240116; t=1756991858; c=relaxed/simple;
+	bh=J37h8zaAlmHnvnALjyhUgHlYpkvFqaV8s8bqNB0XjFQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UMbjhuMhaMMuRyxNuNrATaJFQRGcySWC6azi+O8eE7CnNZiYoAnUwsN6T+Z//OgPeZgsgZZuymlLYKlc1PXpbj22zvAYsY1GR6f/qvQchpnVdvelN54OLUexh5/tRiKUYjFpWZ5Z9jTmUi80wlf1seIzxdED+DPuvEsxvqI4AUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rSeeYMQC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A4EC113D0;
+	Thu,  4 Sep 2025 13:17:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756991858;
+	bh=J37h8zaAlmHnvnALjyhUgHlYpkvFqaV8s8bqNB0XjFQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=rSeeYMQC35U85BwNUUpTccZq+hmNBZVbOybxyuurDfaGkCAOruDMl/BJ+6V3r+u6h
+	 58CWTnMu+bkN110RdLUvsucq93Jc3d5+kS4frgCgo3FVx3GWK1mqvcgH10uQaLNdrC
+	 SjzoQa4PZZYmq/Cxf5GId4h0wwWgehrTcd3/KL9uaLs131Bk/JxcPE98Jb6fe/jKYz
+	 z9ZzUD2u+kcZHrqVDT3DoVuv24+ayotdgqIP+Ft/7HhGElCcWzJX7QOvWcqV7tq8AE
+	 Dyj7Rt7r/bwUN6zrO9NKAoaO0vQbLGPtbHKeSIOKcrHhUaGW45oySjjKxi6/1oZJq4
+	 26vW+iK8JHIJQ==
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-74382048b8cso694965a34.3;
+        Thu, 04 Sep 2025 06:17:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUyNtr/4aJdyhytaK1Vm3P7NTTrCm4FkihQDdxcRjI7QIqwuFm856bDIb+aXTg3U/auaqZBL4snWJsz@vger.kernel.org, AJvYcCVBTfLz6W1afH+IsCZDhs/lyAOpCN2pnhlESQO9cOiR7PWmUhU6VwKJagQIxaYKSJWxPQ22q+ioKEE=@vger.kernel.org, AJvYcCVNG4KhjHY/kwv1dhs/46Pss98DXzhP7RhTWkRbh3X/3dxZit6ACKADJUjI0v8YjFCcFVLpcwwWmfpKiA==@vger.kernel.org, AJvYcCWI+z+OpfeGTfScCyvXsNCebwjyjIg5ZnNfIxah9MZ/jma+0Pp6ikaD74JflPMKI8css+d9VtE89UMdRzYn@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvJvpwyxGuV+F8otscqaMZh3d/WzksYSbbDnXvxZCOUcp2bfyj
+	rtV8MNO47haC+7dQMQu5St9fVDW4o7qok4gOPInJS0ELON4ep2rVltqj3qIjq8m+/J2HY98OF+f
+	6lEN1Rm5bSFI3JeezQ8urQTGNLZKEU7o=
+X-Google-Smtp-Source: AGHT+IEjDfW+3hJPUPYu26F2xz+pxJ+KiqPGjYP79H7T0/I1zIoWql1eDpgpdg2oH+VBSzMp/G1t2kU5l5bZBE+Bi2g=
+X-Received: by 2002:a05:6830:4901:b0:73e:8c8b:749 with SMTP id
+ 46e09a7af769-74569c6739fmr14127345a34.0.1756991857138; Thu, 04 Sep 2025
+ 06:17:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLl-ABtFi2R9Wc1a@kekkonen.localdomain>
+References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
+ <20250903131733.57637-8-zhangzihuan@kylinos.cn> <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
+ <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
+In-Reply-To: <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 4 Sep 2025 15:17:26 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0g__9g_dfA3=4GVi351f4CKBegKkW9nU81j+Qu=2Hfg1Q@mail.gmail.com>
+X-Gm-Features: Ac12FXwmEGaidQr8PE8Gnv5hzk4SwGXFsXwEgV1BR4I0F2oh9v2_Dsc7pRXgYnA
+Message-ID: <CAJZ5v0g__9g_dfA3=4GVi351f4CKBegKkW9nU81j+Qu=2Hfg1Q@mail.gmail.com>
+Subject: Re: [PATCH v4 07/10] powercap: dtpm_cpu: Use scope-based cleanup helper
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
+	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
+	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
+	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 04, 2025 at 02:54:40PM +0300, Sakari Ailus wrote:
-> I noticed there's also no availability check for the OF graph nodes. That's
-> likely an accidental omission.
+On Thu, Sep 4, 2025 at 12:38=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.c=
+n> wrote:
+>
+>
+> =E5=9C=A8 2025/9/3 21:45, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> > On Wed, Sep 3, 2025 at 3:18=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylino=
+s.cn> wrote:
+> >> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> >> annotation for policy references. This reduces the risk of reference
+> >> counting mistakes and aligns the code with the latest kernel style.
+> >>
+> >> No functional change intended.
+> >>
+> >> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> >> ---
+> >>   drivers/powercap/dtpm_cpu.c | 30 +++++++++++-------------------
+> >>   1 file changed, 11 insertions(+), 19 deletions(-)
+> >>
+> >> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
+> >> index 99390ec1481f..f76594185fa2 100644
+> >> --- a/drivers/powercap/dtpm_cpu.c
+> >> +++ b/drivers/powercap/dtpm_cpu.c
+> >> @@ -144,19 +144,17 @@ static int update_pd_power_uw(struct dtpm *dtpm)
+> >>   static void pd_release(struct dtpm *dtpm)
+> >>   {
+> >>          struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
+> >> -       struct cpufreq_policy *policy;
+> >>
+> >>          if (freq_qos_request_active(&dtpm_cpu->qos_req))
+> >>                  freq_qos_remove_request(&dtpm_cpu->qos_req);
+> >>
+> >> -       policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
+> >> -       if (policy) {
+> >> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
+> >> +               cpufreq_cpu_get(dtpm_cpu->cpu);
+> >> +
+> >> +       if (policy)
+> >>                  for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
+> >>                          per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL=
+;
+> >>
+> >> -               cpufreq_cpu_put(policy);
+> >> -       }
+> >> -
+> >>          kfree(dtpm_cpu);
+> >>   }
+> >>
+> >> @@ -192,7 +190,6 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
+> >>   static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
+> >>   {
+> >>          struct dtpm_cpu *dtpm_cpu;
+> >> -       struct cpufreq_policy *policy;
+> >>          struct em_perf_state *table;
+> >>          struct em_perf_domain *pd;
+> >>          char name[CPUFREQ_NAME_LEN];
+> >> @@ -202,21 +199,19 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm=
+ *parent)
+> >>          if (dtpm_cpu)
+> >>                  return 0;
+> >>
+> >> -       policy =3D cpufreq_cpu_get(cpu);
+> >> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
+> >> +               cpufreq_cpu_get(cpu);
+> >> +
+> >>          if (!policy)
+> >>                  return 0;
+> >>
+> >>          pd =3D em_cpu_get(cpu);
+> >> -       if (!pd || em_is_artificial(pd)) {
+> >> -               ret =3D -EINVAL;
+> >> -               goto release_policy;
+> >> -       }
+> >> +       if (!pd || em_is_artificial(pd))
+> >> +               return -EINVAL;
+> >>
+> >>          dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
+> >> -       if (!dtpm_cpu) {
+> >> -               ret =3D -ENOMEM;
+> >> -               goto release_policy;
+> >> -       }
+> >> +       if (!dtpm_cpu)
+> >> +               return -ENOMEM;
+> >>
+> >>          dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
+> >>          dtpm_cpu->cpu =3D cpu;
+> >> @@ -239,7 +234,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *=
+parent)
+> >>          if (ret < 0)
+> >>                  goto out_dtpm_unregister;
+> > So this change kind of goes against another recommendation given in cle=
+anup.h:
+> >
+> >   * Lastly, given that the benefit of cleanup helpers is removal of
+> >   * "goto", and that the "goto" statement can jump between scopes, the
+> >   * expectation is that usage of "goto" and cleanup helpers is never
+> >   * mixed in the same function. I.e. for a given routine, convert all
+> >   * resources that need a "goto" cleanup to scope-based cleanup, or
+> >   * convert none of them.
+>
+>
+> Should I replace all the memory allocation cleanups here with `__free`?
+> That would allow us to drop all the `goto`s, but since this function has
+> quite a few of them, I=E2=80=99m concerned it might introduce new issues.=
+ What=E2=80=99s
+> your recommendation?
 
-After doing some further research, this seems to be correct. In OF, the
-status is defined for device nodes only. A child node could be a device
-whereas graph endpoints are not device nodes, so the lack of a check there
-is reasonable.
+Frankly, don't use __free() in this code at all, at least for the time bein=
+g.
 
--- 
-Sakari Ailus
+There is a problem with dropping the reference to policy at the end of
+__dtpm_cpu_setup() because that policy may be subsequently indirectly
+used in set_pd_power_limit() which calls
+freq_qos_update_request(&dtpm_cpu->qos_req, freq) and
+dtpm_cpu->qos_req->qos is policy->constraints, so using it will cause
+policy->constraints to be dereferenced in freq_qos_apply() which will
+crash and burn if the policy goes away in the meantime.  So AFAICS
+__dtpm_cpu_setup() shouldn't call cpufreq_cpu_put() at all and the
+policy should be released in pd_release() without acquiring a new
+reference to it.
+
+You may as well try to fix this if you have free cycles.
 
