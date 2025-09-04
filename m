@@ -1,157 +1,152 @@
-Return-Path: <linux-acpi+bounces-16349-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16350-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D34B4346B
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 09:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E301B434C1
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 09:56:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B27A83A8815
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 07:43:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BC2B5E8066
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 07:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8968829E11D;
-	Thu,  4 Sep 2025 07:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K/LkFyzu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E062BE020;
+	Thu,  4 Sep 2025 07:56:27 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBB629DB6A;
-	Thu,  4 Sep 2025 07:43:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690012BD5A8;
+	Thu,  4 Sep 2025 07:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756971821; cv=none; b=Unds5MjXWrjGpg1RccKUYilF/JEES+2vvRXRhArV0ttz00c6nvd50KuTX7ptzqYlSZHWoNP7FBBj5RPaqTiDsuJQINconihFbX4MKGZ8VaUm0bs8+UtOzVjOWLp5ZsJ5YkQ3daeeW26sihzhBF5WIj+vgCRb+0vmvzP78RD2Hqs=
+	t=1756972587; cv=none; b=owlVwysG7bJmhzeKzw/VIGhXAtvz8oWcYmboS185jqZym+mGaA4Kur5GZWZ7+PVU3M8HRwnJoOm1/LPv8pvTFRqqjygAgv6T/CZ68g7l/qPbur3z7kITgbjeKOqaqOb15VYP6MpfSrxHGMmiyCDbC1YaZke3U6bHPRtaNkQRKjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756971821; c=relaxed/simple;
-	bh=MQUy/5kwPhxwrpneE0J7WzbNFUSZsEuhXb7b/wWwcsw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pn4LHvZ+rWtwNRCOweHsw0Mw93oMEKHmfhhX+rHY0nH0I2nxUbqjeFsl6A0K3XfcVzWGMXQJloWhW3AHE+AdlogE3MnK9BbVWPsKEFfUGXpcnv9HrZkH1PGyTD3hQrrgO793KfAHE8wTJoSWvAn5h+Ue/PCrIUTDzUSku8jllu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K/LkFyzu; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756971820; x=1788507820;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MQUy/5kwPhxwrpneE0J7WzbNFUSZsEuhXb7b/wWwcsw=;
-  b=K/LkFyzu0VYB1yxBQPgeUyPoDUzLvxWTbcEZUufjQGmtYbF/EUTdk3yY
-   VtYTltl5JRvNxMqX2H9aIz9NICjfMdKsMQExv4WGhblROM1LEEGZ7z/Bp
-   cCP0WVSvMyqqV0fd7cJGkQJmaj9aYMGwEHYdjnTUmbJwpBkxehIFFF6Iy
-   G6VpQmcS0e9jRrBH1o/fQWPRn+sUgLSlzhjMpMGZ1nmQ/rWetj/Slkwsl
-   3+w3VQXHOw34bvDymzRuHMNab4j0Ynfx2/X7xBO3zIXar9jEXqOSkrEHQ
-   9RAIL+/IpSdvxkn94CP+XroaJe7dZWtibW670bEfTugilFq4mWSyv6XHR
-   A==;
-X-CSE-ConnectionGUID: l1v1xOCGRT69T5Eo/JwZxA==
-X-CSE-MsgGUID: wf7H9QcpTVi4EJY7dbWjOw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="59447611"
-X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; 
-   d="scan'208";a="59447611"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 00:43:38 -0700
-X-CSE-ConnectionGUID: MDqRiLCcRImrFS4/8bEl2A==
-X-CSE-MsgGUID: I62CBDfrR0KfoqwB1KiLEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,237,1751266800"; 
-   d="scan'208";a="171073969"
-Received: from agladkov-desk.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.92])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 00:43:36 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id D38CB11FCC7;
-	Thu, 04 Sep 2025 10:43:32 +0300 (EEST)
-Date: Thu, 4 Sep 2025 10:43:32 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: =?iso-8859-1?Q?Jean-Fran=E7ois?= Lessard <jefflessard3@gmail.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] device property: Add scoped fwnode child node
- iterators
-Message-ID: <aLlDJETaWTjiSP0L@kekkonen.localdomain>
-References: <20250902190443.3252-1-jefflessard3@gmail.com>
- <20250902190443.3252-2-jefflessard3@gmail.com>
- <aLhAKJBUNQVH1Vmf@kekkonen.localdomain>
- <DCJC7Q9MZEM3.34FU7BXXZ7UGF@kernel.org>
- <aLkqE9c9w9m4Axsp@kekkonen.localdomain>
- <DCJTOIQ4Q0Z5.Q2UE5AQU1X35@kernel.org>
+	s=arc-20240116; t=1756972587; c=relaxed/simple;
+	bh=GaKqKcDmjQ2YUuqcfuwK1LTdkvkluTY6+fFYlkYG4CA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CcGCDVOHSxGQCtjjjQLleAHmH5n0mfCafEYUTVbFbYroSPBTT7iNd5Fd7iL7InouiktonBYceIK69Hek8sOLlgeyoaJCHkHGp050x5KpKW15HSgag8HSjGsHo4xrBTArwRMDBEQ2Oq88EG/as8KNWgG8N7lPJej47duS8va4CL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: a2cd01a4896411f0b29709d653e92f7d-20250904
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:b7ccec76-f4fe-45e8-bab3-dc73c52616ae,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:0d8ddf5d75b8f48b58bb293ff09316f9,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: a2cd01a4896411f0b29709d653e92f7d-20250904
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 582611713; Thu, 04 Sep 2025 15:56:16 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 86A2BE008FA5;
+	Thu,  4 Sep 2025 15:56:16 +0800 (CST)
+X-ns-mid: postfix-68B94620-384750805
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 1766FE008FA2;
+	Thu,  4 Sep 2025 15:56:08 +0800 (CST)
+Message-ID: <861a6077-a7da-4899-b971-a003d6e2290e@kylinos.cn>
+Date: Thu, 4 Sep 2025 15:56:08 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DCJTOIQ4Q0Z5.Q2UE5AQU1X35@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 10/10] PM: EM: Use scope-based cleanup helper
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
+ <20250903131733.57637-11-zhangzihuan@kylinos.cn>
+ <34b5e01e-2f4a-4d57-93ca-ab4549681b17@kernel.org>
+ <CAJZ5v0hisM6vfdNXaY7qCGtcMb1FENGxiBb=E=tkqDbRyjs=bA@mail.gmail.com>
+ <037855bf-c878-4794-b145-266a36302fc3@kernel.org>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <037855bf-c878-4794-b145-266a36302fc3@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-Hi Danilo,
 
-On Thu, Sep 04, 2025 at 09:03:44AM +0200, Danilo Krummrich wrote:
-> On Thu Sep 4, 2025 at 7:56 AM CEST, Sakari Ailus wrote:
-> > Hi Danilo,
-> >
-> > On Wed, Sep 03, 2025 at 07:22:29PM +0200, Danilo Krummrich wrote:
-> >> (Cc: Javier)
-> >> 
-> >> On Wed Sep 3, 2025 at 3:18 PM CEST, Sakari Ailus wrote:
-> >> > Do we really need the available variant?
-> >> >
-> >> > Please see
-> >> > <URL:https://lore.kernel.org/linux-acpi/Zwj12J5bTNUEnxA0@kekkonen.localdomain/>.
-> >> >
-> >> > I'll post a patch to remove fwnode_get_next_available_child_node(), too.
-> >> 
-> >> Either I'm missing something substantial or the link does indeed not provide an
-> >> obvious justification of why you want to send a patch to remove
-> >> fwnode_get_next_available_child_node().
-> >> 
-> >> Do you mean to say that all fwnode backends always return true for
-> >> device_is_available() and hence the fwnode API should not make this distinction?
-> >> 
-> >> I.e. are you referring to the fact that of_fwnode_get_next_child_node() always
-> >> calls of_get_next_available_child() and swnode has no device_is_available()
-> >> callback and hence is always available? What about ACPI?
-> >
-> > On ACPI there's no such concept on ACPI data nodes so all data nodes are
-> > considered to be available. So effectively the fwnode_*available*() is
-> > always the same as the variant without _available().
-> 
-> What about acpi_fwnode_device_is_available()? Is it guaranteed to always
-> evaluate to true?
+=E5=9C=A8 2025/9/3 21:43, Krzysztof Kozlowski =E5=86=99=E9=81=93:
+> On 03/09/2025 15:41, Rafael J. Wysocki wrote:
+>>>>   em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_=
+state *table)
+>>>>   {
+>>>>        struct em_perf_domain *pd =3D dev->em_pd;
+>>>> -     struct cpufreq_policy *policy;
+>>>> +     struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D N=
+ULL;
+>>> This is not really correct coding style. Please read how to use
+>>> cleanup.h expressed in that header. You should have here proper
+>>> constructor or this should be moved. Or this should not be __free()..=
+.
+>> I gather that this is what you mean (quoted verbatim from cleanup.h)
+>>
+>>   * Given that the "__free(...) =3D NULL" pattern for variables define=
+d at
+>>   * the top of the function poses this potential interdependency probl=
+em
+>>   * the recommendation is to always define and assign variables in one
+>>   * statement and not group variable definitions at the top of the
+>>   * function when __free() is used.
+>>
+>> and thanks for pointing this out!
+>
+> ... and the only exception would be if there is no single constructor,
+> but multiple (in if() block). That's not the case here, I think.
+>
+> Best regards,
+> Krzysztof
 
-acpi_fwnode_device_is_available() is different as it works on ACPI device
-nodes having availability information.
 
-> 
-> If so, to you plan to remove device_is_available() from struct
-> fwnode_operations and fixup all users of fwnode_get_next_available_child_node()
-> and fwnode_for_each_available_child_node() as well?
+Sorry, I didn=E2=80=99t fully understand this earlier. In v3 I split the
+definition and assignment mainly because the CPU value was obtained
+later, so I thought I couldn=E2=80=99t initialize it in one go at the top=
+ of
+the function. Honestly, it was also for =E2=80=9Cprettier=E2=80=9D style.
 
-The device_is_available() callback needs to stay; it has valid uses
-elsewhere.
+After looking at the code Rafael just committed, I realized I can
+simply define and assign the variable later in one line, without
+needing to separate them. I=E2=80=99ll fix this in the next version.
 
-Technically it is possible that fwnode_*child_node() functions could return
-device nodes that aren't available, but it is unlikely any caller would
-want to enumerate device nodes this way. Even so, I think it'd be the best
-to add an explicit availability check on ACPI side as well so only
-available nodes would be returned.
+Thanks for pointing it out!
 
-The fact that none of the drivers using the two available variants acting
-on child nodes had ACPI ID table suggests that the use of the variants was
-motivated solely to use a function named similarly to the OF version.
 
--- 
-Kind regards,
-
-Sakari Ailus
 
