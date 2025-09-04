@@ -1,158 +1,193 @@
-Return-Path: <linux-acpi+bounces-16357-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16358-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B934B43950
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 12:55:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEB2BB43AD1
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 13:55:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 709F37AC924
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 10:54:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD96718992C2
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 11:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E470B2F9C2C;
-	Thu,  4 Sep 2025 10:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B92A2F1FF4;
+	Thu,  4 Sep 2025 11:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QHD9Wfe9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hen1FQZt"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDA02F6182;
-	Thu,  4 Sep 2025 10:55:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75C32EF662;
+	Thu,  4 Sep 2025 11:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756983335; cv=none; b=Dy0AAFU22+MB0zSP1RQl7y22zrGQyyVfHoDA8cKAuMxKoYcAO3ETsWhosrY8K/bVilQ/T82hPtdjeO9o/F8e9+k9j6V2hrsXSljyftaARA4WiVHT69YXDlrXgKXlHmD5HFd2SrYkxKjVpXpikK7VMRS34IAVePxOPjQKVMFqLs4=
+	t=1756986889; cv=none; b=uW1aPrViwyWas1CZuhgFtJXWr5vhJy3p4ydIZ5kpQo5r5qrcpqFYn9i27+951OjPkii0Idww3awlxY26qzlNCh5ZokrIAaV1alZZrrhGs7bR3evgsqFVKSMJCWdcyxa7tZwuMdXMXDHpqIRbZO7eVn/9ZnuxHChMZRYsnUoCjDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756983335; c=relaxed/simple;
-	bh=IsvPPeqV8POyoYunxkhkVNbHZma0NTrLqcfEJ8H1vOg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=be1fxuFiD54fqN74FXHx3tGk5fyN5y0gOA7jjrcfbDB5GiZKekOE3jh1KK6iqqiANrUB/V2w3mS9wCl9T6lkHRQZIuT5JglqbIzZFMSYQSTMXKVImtbp5KkoIpbdK8kUD5/ZGN0QzgbrdAGLKRCn3QSYErj0XZRHk5hDo7ZDR/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QHD9Wfe9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EBC1C4CEF0;
-	Thu,  4 Sep 2025 10:55:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756983335;
-	bh=IsvPPeqV8POyoYunxkhkVNbHZma0NTrLqcfEJ8H1vOg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QHD9Wfe9pl81KaKyYx3q2f/4xdKdSE4GTZg14n1v3R0PxBM2ZlnaHOp2M9mEmpnQ5
-	 nUlqo58kaXVT5TT+pkv8cdyMVTGaoBvtxf38tWncUX2yB0f3CxtRqy561mgeJRWNQo
-	 Zhv/Z1n+OkYOqJfBS08e434/Ym6augQuxit6SOa8DpY9qyOg6llKU1Rh607HpYBBA2
-	 L7AwBCP5Q+3XlTax5HRY96wjwpovkEbeP+5SnEeWTzW84jrlXkStyQ4pBCLZHIU+w6
-	 JNDzKYYrJgjrAbpK3rgqdSGP9hdCr746owEOPUcBO2xvQnEcg93ncOsWSJTeG3AvsC
-	 pUyvVC5JHBs5w==
-Message-ID: <818b7848-1b34-49dc-87bd-0438a82f2ebf@kernel.org>
-Date: Thu, 4 Sep 2025 12:55:23 +0200
+	s=arc-20240116; t=1756986889; c=relaxed/simple;
+	bh=l3py9YPTKRQS/cZmg2aexCRlRPz1o0wbHx14pbR+PH8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M708JemgBnINpRSGn9zBA/V14kI9gt0ZKRll8fl0UNX2LklxIIUt7z4UpgwWuSIMveMzgT3Tvz0KNXZDC08Fuli+p+/OVANs0zSVAejWIiVNzBMsrybvCWMb4/Ss9jSqdByGAqzrxMFQc3DsdQXKN96gQvRgh9vPohicuk0/ONg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hen1FQZt; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756986888; x=1788522888;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=l3py9YPTKRQS/cZmg2aexCRlRPz1o0wbHx14pbR+PH8=;
+  b=hen1FQZtkOHnx6WTLi4u49c7wD5suRxPvCKYNOXVKRU22ogj32Xdu88u
+   ekDgrHpvg05w3+AuMmlb1zEXd52ChUNfVC5Tstph8gQXLRRReazJWGKFO
+   rWlTzdPybcHjfF0174LN12ivpMfyZPZ6SIhemIfw88cMFc7jPPO9t7RvS
+   zYPcrmfSDQ2T5agEcTqHESIDwCiTSY1BB2bfDimEFdCIAt5+VbSeh+sSj
+   vjmK9NtCoYizdpN7g8JEChRzDNZw0ZLvEVLWP45OxHzTC7ro2kLgxwj4M
+   hTKmpcUT41sm74bvM0jZJoEnGklImZ5lJ3ryfQ+QP4hY8G3o2utYLXSsn
+   w==;
+X-CSE-ConnectionGUID: glavPp48Q56UfkdDtuh5fA==
+X-CSE-MsgGUID: BepvPCJHRFWcPkGl6npaKQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="81911343"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="81911343"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 04:54:47 -0700
+X-CSE-ConnectionGUID: lWKhMKd/Q+GdvO1bRC1qXg==
+X-CSE-MsgGUID: hGDdvKm7Q4+we7IUuRSHyg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
+   d="scan'208";a="175989015"
+Received: from agladkov-desk.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.92])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 04:54:43 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id DB5101201E5;
+	Thu, 04 Sep 2025 14:54:40 +0300 (EEST)
+Date: Thu, 4 Sep 2025 14:54:40 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: =?iso-8859-1?Q?Jean-Fran=E7ois?= Lessard <jefflessard3@gmail.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] device property: Add scoped fwnode child node
+ iterators
+Message-ID: <aLl-ABtFi2R9Wc1a@kekkonen.localdomain>
+References: <20250902190443.3252-1-jefflessard3@gmail.com>
+ <20250902190443.3252-2-jefflessard3@gmail.com>
+ <aLhAKJBUNQVH1Vmf@kekkonen.localdomain>
+ <DCJC7Q9MZEM3.34FU7BXXZ7UGF@kernel.org>
+ <aLkqE9c9w9m4Axsp@kekkonen.localdomain>
+ <DCJTOIQ4Q0Z5.Q2UE5AQU1X35@kernel.org>
+ <aLlDJETaWTjiSP0L@kekkonen.localdomain>
+ <DCJVYUINZ7KM.7RCV9P9KHTVM@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/10] powercap: dtpm_cpu: Use scope-based cleanup
- helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>,
- "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Alim Akhtar
- <alim.akhtar@samsung.com>, Thierry Reding <thierry.reding@gmail.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
- Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
- Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
- <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
- Sumit Gupta <sumitg@nvidia.com>,
- Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
- linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
- <20250903131733.57637-8-zhangzihuan@kylinos.cn>
- <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
- <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DCJVYUINZ7KM.7RCV9P9KHTVM@kernel.org>
 
-On 04/09/2025 12:37, Zihuan Zhang wrote:
->>   * Lastly, given that the benefit of cleanup helpers is removal of
->>   * "goto", and that the "goto" statement can jump between scopes, the
->>   * expectation is that usage of "goto" and cleanup helpers is never
->>   * mixed in the same function. I.e. for a given routine, convert all
->>   * resources that need a "goto" cleanup to scope-based cleanup, or
->>   * convert none of them.
+Hi Danilo,
+
+On Thu, Sep 04, 2025 at 10:51:15AM +0200, Danilo Krummrich wrote:
+> On Thu Sep 4, 2025 at 9:43 AM CEST, Sakari Ailus wrote:
+> > Hi Danilo,
+> >
+> > On Thu, Sep 04, 2025 at 09:03:44AM +0200, Danilo Krummrich wrote:
+> >> On Thu Sep 4, 2025 at 7:56 AM CEST, Sakari Ailus wrote:
+> >> > Hi Danilo,
+> >> >
+> >> > On Wed, Sep 03, 2025 at 07:22:29PM +0200, Danilo Krummrich wrote:
+> >> >> (Cc: Javier)
+> >> >> 
+> >> >> On Wed Sep 3, 2025 at 3:18 PM CEST, Sakari Ailus wrote:
+> >> >> > Do we really need the available variant?
+> >> >> >
+> >> >> > Please see
+> >> >> > <URL:https://lore.kernel.org/linux-acpi/Zwj12J5bTNUEnxA0@kekkonen.localdomain/>.
+> >> >> >
+> >> >> > I'll post a patch to remove fwnode_get_next_available_child_node(), too.
+> >> >> 
+> >> >> Either I'm missing something substantial or the link does indeed not provide an
+> >> >> obvious justification of why you want to send a patch to remove
+> >> >> fwnode_get_next_available_child_node().
+> >> >> 
+> >> >> Do you mean to say that all fwnode backends always return true for
+> >> >> device_is_available() and hence the fwnode API should not make this distinction?
+> >> >> 
+> >> >> I.e. are you referring to the fact that of_fwnode_get_next_child_node() always
+> >> >> calls of_get_next_available_child() and swnode has no device_is_available()
+> >> >> callback and hence is always available? What about ACPI?
+> >> >
+> >> > On ACPI there's no such concept on ACPI data nodes so all data nodes are
+> >> > considered to be available. So effectively the fwnode_*available*() is
+> >> > always the same as the variant without _available().
+> >> 
+> >> What about acpi_fwnode_device_is_available()? Is it guaranteed to always
+> >> evaluate to true?
+> >
+> > acpi_fwnode_device_is_available() is different as it works on ACPI device
+> > nodes having availability information.
 > 
+> Well, it works on both data and device nodes, so considering data nodes only
+> isn't enough, no?
 > 
-> Should I replace all the memory allocation cleanups here with `__free`?
-> That would allow us to drop all the `goto`s, but since this function has
-> quite a few of them, I’m concerned it might introduce new issues. What’s
-> your recommendation?
+> So, we can't just say fwnode_get_next_available_child_node() and
+> fwnode_get_next_child_node() can be used interchangeably.
+> 
+> >> If so, to you plan to remove device_is_available() from struct
+> >> fwnode_operations and fixup all users of fwnode_get_next_available_child_node()
+> >> and fwnode_for_each_available_child_node() as well?
+> >
+> > The device_is_available() callback needs to stay; it has valid uses
+> > elsewhere.
+> >
+> > Technically it is possible that fwnode_*child_node() functions could return
+> > device nodes that aren't available, but it is unlikely any caller would
+> > want to enumerate device nodes this way. Even so, I think it'd be the best
+> > to add an explicit availability check on ACPI side as well so only
+> > available nodes would be returned.
+> 
+> Fair enough, but that's an entirely different rationale than the one you gave
+> above. I.e. "all iterators should only ever provide available ones" vs. the
+> "they're all available anyways" argument above.
+> 
+> (Quote: "So effectively the fwnode_*available*() is always the same as the
+>  variant without _available().")
 
-If you keep asking this, I have doubts you really know how to use
-cleanup.h. Don't blindly convert code to cleanup.h. It's very odd syntax
-and it is not even welcomed everywhere.
+This was perhaps a simplification. The word "effectively" is crucial here.
 
-Best regards,
-Krzysztof
+> 
+> I see quite some drivers using fwnode_for_each_child_node() without any
+> availability check. However, they may just rely on implementation details, such
+> as knowing it's an OF node or ACPI data node, etc.
+> 
+> So, before you remove fwnode_get_next_available_child_node(), do you plan to
+> change the semantics of the get_next_child_node() callback accordingly,
+> including adding the availability check on the ACPI side?
+> 
+> How do we ensure there are no existing drivers relying on iterating also
+> unavailble nodes? Above you say it's unlikely anyone actually wants this, but
+> are we sure?
+
+If you're concerned of the use on ACPI platforms, none of the drivers using
+the two available variants list any ACPI IDs, signifying they're not used
+on ACPI systems -- I don't think they ever have been.
+
+I noticed there's also no availability check for the OF graph nodes. That's
+likely an accidental omission.
+
+-- 
+Kind regards,
+
+Sakari Ailus
 
