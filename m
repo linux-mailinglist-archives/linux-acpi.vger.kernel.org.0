@@ -1,124 +1,245 @@
-Return-Path: <linux-acpi+bounces-16370-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16371-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90823B44440
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 19:25:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30651B4444B
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 19:28:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 566B01CC12B8
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 17:26:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAB4C3B7705
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 17:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6680292938;
-	Thu,  4 Sep 2025 17:25:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oWEYquBJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2063090FE;
+	Thu,  4 Sep 2025 17:28:24 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9294DEEAB
-	for <linux-acpi@vger.kernel.org>; Thu,  4 Sep 2025 17:25:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9001E1FBEBE;
+	Thu,  4 Sep 2025 17:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757006753; cv=none; b=jDYNSfvjaSrOqyh7c3rGcnJNX5frv4EZfeex+9B8LMiBNdvaNwFhhmjqDMLtlv+uakhaq5QxIFPwtCu+cKYI56Xb1/1WTtYR5ihlKMJa/6YS7V3UER8G2l8xnyicrFfcTojSVoXFbMcbsHZFB2PjPizhGMnhDmXPS3VGjtVUCbY=
+	t=1757006904; cv=none; b=Z6/r1HmoZIOecYabxQZPqcfbS/8GW/YUPBIBcjLQUSTfTLvrOtFrIhURc9ZsYSo7ZBi0tOJglzxWODIb9YvFS+ZCryX1/iZv16LefLG0EnCcE2pD0hyjkoairsPlzro5C6K3VGnF9gZVgMwexg7ssPFa57j9lc0P4836wW8tnzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757006753; c=relaxed/simple;
-	bh=uWbBIU4w3aLjzzZXHzzipzpYkmsV2qF93OFDrZU6U1k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l3lEZd3CeRUHk7u5igkxNEd5Xop9OwNu0FGahjGpGGyzpY9JtQnk0L2W95p8iqarvBReD0WB0qlPck+L3kcrBo+VtcvAZo/SermpX4iDrex+2N5dIpBiAHuF2wX1HInp0RMO3Om6rUpDwwLO8Y9IM3uPjybUGnrT5I7vf1FoPYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oWEYquBJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD20C4CEF0;
-	Thu,  4 Sep 2025 17:25:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757006753;
-	bh=uWbBIU4w3aLjzzZXHzzipzpYkmsV2qF93OFDrZU6U1k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oWEYquBJUUyxun9aoT8Xkk8GrFE84DTB7ULwGOwIkaN8Gd8yLTnmdMH2GnwXVvkLj
-	 f5wEGhspBaXR++6faQCybvpWSNhJT5fDiNjYJMefAeJ/ouUHFfFTU9jBsRm6R/p/Nt
-	 iryuEKioWEuS8rBewYZfxSNYooci3kZraESh1bWSmhRNfnsvaQ9YANTMpyiigPAyC7
-	 JrlxXM9vsN4uKsIbWrzEX619YL1fZlvYJr3FGNH0nubG4xdGOWEGvi4rjw8bJeB9r2
-	 faaGdNRVjbs8MMa7/jNPZJLLNPWOdFiFqJO0Z6xBX9OnVxrzFazfm267zWOQKLhVqv
-	 JxjFbt9al15Zw==
-Date: Thu, 4 Sep 2025 20:25:43 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Tony Luck <tony.luck@intel.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, surenb@google.com,
-	"Anderson, Russ" <russ.anderson@hpe.com>, osalvador@suse.de,
-	nao.horiguchi@gmail.com, mhocko@suse.com,
-	lorenzo.stoakes@oracle.com, linmiaohe@huawei.com,
-	liam.howlett@oracle.com, jiaqiyan@google.com, jane.chu@oracle.com,
-	david@redhat.com, bp@alien8.de, "Meyer, Kyle" <kyle.meyer@hpe.com>,
-	akpm@linux-foundation.org, linux-mm@kvack.org, vbabka@suse.cz,
-	linux-acpi@vger.kernel.org, Shawn Fan <shawn.fan@intel.com>
-Subject: Re: [PATCH] ACPI: APEI: GHES: Don't offline huge pages just because
- BIOS asked
-Message-ID: <aLnLlyrfNjY-hMuU@kernel.org>
-References: <20250904155720.22149-1-tony.luck@intel.com>
+	s=arc-20240116; t=1757006904; c=relaxed/simple;
+	bh=HN14euKfkVhQmT8KiwBCsp/m8jVFK/gjhj67dT4V8Dc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RL1oSuTMY0Jb2ymeMWgLxsI/p4HsEpdQk/opvumq1BnJWckfd+2aSbStei2Qz8mcZJ6nO32Mm9zcHuJzCXrCjFhgdN4AEPQiuR19TWuJ7adE+upyX7YHjUgD1oIXEj22nn668yIDvonyDWj+PTXfKgEdK2phVcjtK+iEGtXtalk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F2651596;
+	Thu,  4 Sep 2025 10:28:12 -0700 (PDT)
+Received: from [10.1.196.42] (eglon.cambridge.arm.com [10.1.196.42])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 14AF53F6A8;
+	Thu,  4 Sep 2025 10:28:15 -0700 (PDT)
+Message-ID: <978cf822-4d7c-4301-bbc4-752f184c93d6@arm.com>
+Date: Thu, 4 Sep 2025 18:28:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250904155720.22149-1-tony.luck@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/33] arm64: kconfig: Add Kconfig entry for MPAM
+To: Dave Martin <Dave.Martin@arm.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+ shameerali.kolothum.thodi@huawei.com,
+ D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Rex Nie <rex.nie@jaguarmicro.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>
+References: <20250822153048.2287-1-james.morse@arm.com>
+ <20250822153048.2287-8-james.morse@arm.com>
+ <aK7llvNbXZKWhtoo@e133380.arm.com>
+Content-Language: en-GB
+From: James Morse <james.morse@arm.com>
+In-Reply-To: <aK7llvNbXZKWhtoo@e133380.arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 04, 2025 at 08:57:20AM -0700, Tony Luck wrote:
-> BIOS can supply a GHES error record that reports that the corrected
-> error threshold has been exceeded. Linux will attempt to soft offline
-> the page in response.
-> 
-> But "exceeded threshold" has many interpretations. Some BIOS versions
-> accumulate error counts per-rank, and then report threshold exceeded
-> when the number of errors crosses a threshold for the rank. Taking
-> a page offline in this case is unlikely to solve any problems. But
-> losing a 4KB page will have little impact on the overall system.
-> 
-> On the other hand, taking a huge page offline will have significant
-> impact (and still not solve any problems).
-> 
-> Check if the GHES record refers to a huge page. Skip the offline
-> process if the page is huge.
-> 
-> Reported-by: Shawn Fan <shawn.fan@intel.com>
-> Signed-off-by: Tony Luck <tony.luck@intel.com>
-> ---
->  drivers/acpi/apei/ghes.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index a0d54993edb3..bacfebdd4969 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -540,8 +540,16 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->  
->  	/* iff following two events can be handled properly by now */
->  	if (sec_sev == GHES_SEV_CORRECTED &&
-> -	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
-> +	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED)) {
-> +		unsigned long pfn = PHYS_PFN(mem_err->physical_addr);
-> +		struct page *page = pfn_to_page(pfn);
-> +		struct folio *folio = page_folio(page);
+Hi Dave,
 
-There's pfn_folio(), saves a line :)
+On 27/08/2025 12:01, Dave Martin wrote:
+> <super-pedantic mode enabled>
 
-> +
-> +		if (folio_test_hugetlb(folio))
-> +			return false;
-> +
->  		flags = MF_SOFT_OFFLINE;
-> +	}
->  	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
->  		flags = sync ? MF_ACTION_REQUIRED : 0;
->  
-> -- 
-> 2.51.0
+Uh oh!
+
+> (Since this likely be people's go-to patch for understanding what MPAM
+> is, it is probably worth going the extra mile.)
 > 
+> On Fri, Aug 22, 2025 at 03:29:48PM +0000, James Morse wrote:
+>> The bulk of the MPAM driver lives outside the arch code because it
+>> largely manages MMIO devices that generate interrupts. The driver
+>> needs a Kconfig symbol to enable it, as MPAM is only found on arm64
+> 
+> Prefer -> "[...] to enable it. As MPAM is only [...]"
+> 
+>> platforms, that is where the Kconfig option makes the most sense.
+> 
+> It could be clearer what "where" refers to, here.
 
--- 
-Sincerely yours,
-Mike.
+Sure,
+
+
+> Maybe reword from ", that is [...]" -> ", the arm64 tree is the most
+> natural home for the Kconfig option."
+> 
+> (Or something like that.)
+
+Sure,
+
+
+>> This Kconfig option will later be used by the arch code to enable
+>> or disable the MPAM context-switch code, and registering the CPUs
+> 
+> Nit: "registering" -> "to register"
+> 
+>> properties with the MPAM driver.
+> 
+> Nit: "CPUs properties" -> "properties of CPUs" ?
+> 
+> (Maybe there was just a missed apostrophe, but it may be more readable
+> here if written out longhand.)
+
+Done, it just takes one person to think its clearer!
+
+
+>> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+>> index e9bbfacc35a6..658e47fc0c5a 100644
+>> --- a/arch/arm64/Kconfig
+>> +++ b/arch/arm64/Kconfig
+>> @@ -2060,6 +2060,23 @@ config ARM64_TLB_RANGE
+>>  	  ARMv8.4-TLBI provides TLBI invalidation instruction that apply to a
+>>  	  range of input addresses.
+>>  
+>> +config ARM64_MPAM
+>> +	bool "Enable support for MPAM"
+>> +	help
+> 
+> <pedantic mode on>
+> 
+>> +	  Memory Partitioning and Monitoring is an optional extension
+>> +	  that allows the CPUs to mark load and store transactions with
+> 
+> Nit: "memory transactions" ?
+
+Sure,
+
+> (I'm wondering whether there are some transactions such as atomic
+> exchanges that are not neatly characterised as "load" or "store".
+> Possibly MPAM labels some transactions that really are neither.)
+
+Equally instruction fetch and possibly even CMOs get these labels.
+I wanted something other than 'transactions' so it wasn't confused with
+transactional memory - and traffic seemed to vauge.
+
+I don't think anyone expects a formal definition in the Kconfig text...
+
+
+>> +	  labels for partition-id and performance-monitoring-group.
+> 
+> Nit: the hyphenation suggests that these are known terms (in this
+> specific, hyphenated, form) with specific definitions somewhere.
+> I don't think that this is the case?  At least, I have not seen the
+> terms presented in this way anywhere else.
+> 
+> Also, the partition ID is itself a label, so "label for partition-id"
+> is a tautology.
+> 
+> How about:
+> 
+> --8<--
+> 
+> 	  Memory System Resource Partitioning and Monitoring (MPAM) is an
+> 	  optional extension to the Arm architecture that allows each
+> 	  transaction issued to the memory system to be labelled with a
+> 	  Partition identifier (PARTID) and Performance Monitoring Group
+> 	  identifier (PMG).
+> 
+> -->8--
+
+Done,
+
+
+> (Yes, that really seems to be what MPAM stands for in the published
+> specs.  That's quite a mounthful, and news to me...  I can't say I paid
+> much attention to the document titles beyond "MPAM"!)
+> 
+>> +	  System components, such as the caches, can use the partition-id
+>> +	  to apply a performance policy. MPAM monitors can use the
+> 
+> What is a "performance policy"?
+
+A bunch of controls, the value of which reflect some kind of policy.
+
+
+> The MPAM specs talk about resource controls; it's probably best to
+> stick to the same terminology.
+> 
+>> +	  partition-id and performance-monitoring-group to measure the
+>> +	  cache occupancy or data throughput.
+> 
+> So, how about something like:
+> 
+> --8<--
+> 
+> 	  Memory system components, such as the caches, can be configured with
+> 	  policies to control how much of various physical resources (such as
+> 	  memory bandwidth or cache memory) the transactions labelled with each
+> 	  PARTID can consume.  Depending on the capabilities of the hardware,
+> 	  the PARTID and PMG can also be used as filtering criteria to measure
+> 	  the memory system resource consumption of different parts of a
+> 	  workload.
+> 
+> -->8--
+
+Done,
+
+
+> (Where "Memory system components" is used in a generic sense and so not
+> capitalised.)
+
+(I can't wait for the Memory System Component on the Memory Side Cache!)
+
+
+>> +
+>> +	  Use of this extension requires CPU support, support in the
+>> +	  memory system components (MSC), and a description from firmware
+> 
+> But here, we are explicitly using an architectural term now, so
+> 
+> 	"Memory System Components" (MSC)
+> 
+> makes sense.
+> 
+>> +	  of where the MSC are in the address space.
+> 
+> Prefer "MSCs" ?  (Not everyone agrees about whether TLAs are
+> pluralisable but it is easier on the reader if "are" has an obviously
+> plural noun to bind to.)
+
+Sure,
+
+
+Thanks,
+
+James
 
