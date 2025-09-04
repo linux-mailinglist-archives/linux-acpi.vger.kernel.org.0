@@ -1,225 +1,125 @@
-Return-Path: <linux-acpi+bounces-16356-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16355-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8B1B438F1
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 12:38:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7464B438ED
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 12:38:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D72F5882FD
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 10:38:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8555716C074
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Sep 2025 10:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5162FABFE;
-	Thu,  4 Sep 2025 10:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C6012F83CD;
+	Thu,  4 Sep 2025 10:38:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X4cUqCzI"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A65E2ECD14;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D29A2EC0A5;
 	Thu,  4 Sep 2025 10:38:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756982296; cv=none; b=QsPF9tYokEemUGTPPTwZFxKKur8Y8Wn7LoQ3+bKj4X2Hl+S8dFgjGLo2sFQ4VLOBiQdkGBzdfOX/4lzxE66dkft8L5GizMWE6iwtsp5Ysn+fE8agCZZzR8Js8lOVBPy8m4PUs7Vk0zHtZCUXCz772fAnBqF+MHjfZeGIu8pn1nA=
+	t=1756982293; cv=none; b=NCi82z11a0qBZA5Wo51NkpFQB4/zJrL47EznQqdX7IyUUpb6Y/VtVI0X8j9WuHVfPVt5gdCL6MRZy7pmU+x2MoJtvRXNAfjP3IXXCJ61M3d36DyCOTaA0PZFwasEM00Qkkibp1OCNds252pFy70FXEa3txosDflquc+89rUo20o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756982296; c=relaxed/simple;
-	bh=ix2eo8p54Z5LDsEgINjDis0MKy5IFDdJCHvTNdJdftw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oWxiF3YjJLfjNDPg0S9OFrNcYi0VTlQ/4FVLIviXr1a5yWS4+08Uv3wnPI0YRnacZMpm7FCueOah4TcXQcOyJNBNc9Dk8nFw+6V8H1UEGRAH14KB7zb9XDvtxAcbRQ3CWpszTSkiMN5zrEBAzZ82JR2T+Kqo8jm2nfxBZifch/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 3d5fbc1e897b11f0b29709d653e92f7d-20250904
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:300f2fa7-17a5-4d38-96a3-11fd4189ac0a,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:8818228a5c537eaf9504e99b0c50a8d8,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
-	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 3d5fbc1e897b11f0b29709d653e92f7d-20250904
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1160067433; Thu, 04 Sep 2025 18:38:05 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 93A19E008FA5;
-	Thu,  4 Sep 2025 18:38:04 +0800 (CST)
-X-ns-mid: postfix-68B96C0C-3265371312
-Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 0174FE008FA2;
-	Thu,  4 Sep 2025 18:37:54 +0800 (CST)
-Message-ID: <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
-Date: Thu, 4 Sep 2025 18:37:54 +0800
+	s=arc-20240116; t=1756982293; c=relaxed/simple;
+	bh=hbR0wEYWqKtbDdPg7UhqpitNbfCEpvynd8wZStnxc/w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gNpamZtqdxsAGgzetItiAv100aQdcNoTz0GdacgnfXKk0zEH1D7UNopIJPlFsnhQY+goEGCknT85cYvRrmX/WYKkjXP3sK5LdrVn3FmUkqMeq9ipVXsEmuSHYbTmRoKd4gensT3+4ZWYZcv08Y2/EuliIMZRr47scz6g68YFPlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X4cUqCzI; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756982292; x=1788518292;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hbR0wEYWqKtbDdPg7UhqpitNbfCEpvynd8wZStnxc/w=;
+  b=X4cUqCzIOxtb3mRvF5xQTzLPxUtRdBsWO6p9kjCKcdOdHVNUFiis/zCU
+   xdt8qWbImmsYSJi50/nKBdLpxi28L4/BoSSMIsTnQUH6lPo6sYSomKSjh
+   Bhf0NCG0W84Kr+dvU+kmc3xD0UOBsw03VDw9vz2R3CxzVoX+YgP5TCYK7
+   /Zo4EzIM+yjJivVonUzczfiYExc1a4eV8FsPTAAZMSzY7H13iWXwf9LVj
+   U1+dvY1lOOS4MKHvrKzFBKU4hTA+dFhRPaPd4MZDYsqqXDG7m7LNhKnOd
+   h7mH6ZFJNgJ3HeYTf2LYl414mqlnc2b4pyjbAZ+h4t6hCa1XuZHmFgTdF
+   A==;
+X-CSE-ConnectionGUID: 5B2SuVqxRwuBzyZbKkqVJQ==
+X-CSE-MsgGUID: f8OI8b9MTCeWfxsDFnn8zA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="76918202"
+X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
+   d="scan'208";a="76918202"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 03:38:11 -0700
+X-CSE-ConnectionGUID: Uy3ajEFrSwqANOQewh/dNg==
+X-CSE-MsgGUID: H5emK1dER1OBz9xVq4Wz8A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
+   d="scan'208";a="209039630"
+Received: from agladkov-desk.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.92])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 03:38:07 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 011FE11FCCF;
+	Thu, 04 Sep 2025 13:38:05 +0300 (EEST)
+Date: Thu, 4 Sep 2025 13:38:05 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	=?iso-8859-1?Q?Jean-Fran=E7ois?= Lessard <jefflessard3@gmail.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>, linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] device property: Add scoped fwnode child node
+ iterators
+Message-ID: <aLlsDZrark6u7Eq7@kekkonen.localdomain>
+References: <20250902190443.3252-1-jefflessard3@gmail.com>
+ <aLgY1z-MvQbDBx2_@smile.fi.intel.com>
+ <aLlgpUlHp7t8P4dQ@shikoro>
+ <aLljGIcjAjQhC2uS@smile.fi.intel.com>
+ <DCJXQ4CUQ88U.ZEEGKWZRCGL6@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/10] powercap: dtpm_cpu: Use scope-based cleanup
- helper
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
- <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
- Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
- Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
- <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
- Sumit Gupta <sumitg@nvidia.com>,
- Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
- linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
- <20250903131733.57637-8-zhangzihuan@kylinos.cn>
- <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DCJXQ4CUQ88U.ZEEGKWZRCGL6@kernel.org>
 
+Hi Danilo, others,
 
-=E5=9C=A8 2025/9/3 21:45, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> On Wed, Sep 3, 2025 at 3:18=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylino=
-s.cn> wrote:
->> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
->> annotation for policy references. This reduces the risk of reference
->> counting mistakes and aligns the code with the latest kernel style.
->>
->> No functional change intended.
->>
->> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
->> ---
->>   drivers/powercap/dtpm_cpu.c | 30 +++++++++++-------------------
->>   1 file changed, 11 insertions(+), 19 deletions(-)
->>
->> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
->> index 99390ec1481f..f76594185fa2 100644
->> --- a/drivers/powercap/dtpm_cpu.c
->> +++ b/drivers/powercap/dtpm_cpu.c
->> @@ -144,19 +144,17 @@ static int update_pd_power_uw(struct dtpm *dtpm)
->>   static void pd_release(struct dtpm *dtpm)
->>   {
->>          struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
->> -       struct cpufreq_policy *policy;
->>
->>          if (freq_qos_request_active(&dtpm_cpu->qos_req))
->>                  freq_qos_remove_request(&dtpm_cpu->qos_req);
->>
->> -       policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
->> -       if (policy) {
->> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
->> +               cpufreq_cpu_get(dtpm_cpu->cpu);
->> +
->> +       if (policy)
->>                  for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
->>                          per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL=
-;
->>
->> -               cpufreq_cpu_put(policy);
->> -       }
->> -
->>          kfree(dtpm_cpu);
->>   }
->>
->> @@ -192,7 +190,6 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
->>   static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
->>   {
->>          struct dtpm_cpu *dtpm_cpu;
->> -       struct cpufreq_policy *policy;
->>          struct em_perf_state *table;
->>          struct em_perf_domain *pd;
->>          char name[CPUFREQ_NAME_LEN];
->> @@ -202,21 +199,19 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm=
- *parent)
->>          if (dtpm_cpu)
->>                  return 0;
->>
->> -       policy =3D cpufreq_cpu_get(cpu);
->> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
->> +               cpufreq_cpu_get(cpu);
->> +
->>          if (!policy)
->>                  return 0;
->>
->>          pd =3D em_cpu_get(cpu);
->> -       if (!pd || em_is_artificial(pd)) {
->> -               ret =3D -EINVAL;
->> -               goto release_policy;
->> -       }
->> +       if (!pd || em_is_artificial(pd))
->> +               return -EINVAL;
->>
->>          dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
->> -       if (!dtpm_cpu) {
->> -               ret =3D -ENOMEM;
->> -               goto release_policy;
->> -       }
->> +       if (!dtpm_cpu)
->> +               return -ENOMEM;
->>
->>          dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
->>          dtpm_cpu->cpu =3D cpu;
->> @@ -239,7 +234,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *=
-parent)
->>          if (ret < 0)
->>                  goto out_dtpm_unregister;
-> So this change kind of goes against another recommendation given in cle=
-anup.h:
->
->   * Lastly, given that the benefit of cleanup helpers is removal of
->   * "goto", and that the "goto" statement can jump between scopes, the
->   * expectation is that usage of "goto" and cleanup helpers is never
->   * mixed in the same function. I.e. for a given routine, convert all
->   * resources that need a "goto" cleanup to scope-based cleanup, or
->   * convert none of them.
+On Thu, Sep 04, 2025 at 12:13:53PM +0200, Danilo Krummrich wrote:
+> On Thu Sep 4, 2025 at 11:59 AM CEST, Andy Shevchenko wrote:
+> > On Thu, Sep 04, 2025 at 11:49:25AM +0200, Wolfram Sang wrote:
+> >> 
+> >> > It might be good to have an immutable branch for me from i2c core.
+> >> > Wolfram, can you provide a such if no objections?
+> >> 
+> >> Sure thing, I can do that. But there is still discussion on patch 1, so
+> >> I will wait for an outcome there.
+> >
+> > But it seems that the discussion can be implemented in a followup?
+> 
+> If Sakari attempts the rework, and we can prove this doesn't regress existing
+> users, removing fwnode_for_each_available_child_node_scoped() in the context
+> of the rework again should be trivial.
 
+It would perhaps be trivial but in this case I really wouldn't add it in
+the first place: it's unused. Either way, feel free to add:
 
-Should I replace all the memory allocation cleanups here with `__free`?
-That would allow us to drop all the `goto`s, but since this function has
-quite a few of them, I=E2=80=99m concerned it might introduce new issues.=
- What=E2=80=99s
-your recommendation?
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-Thanks!
+> 
+> Given that, I don't see a reason to stall people working with the existing
+> semantics of the API in the meantime.
 
->> -       cpufreq_cpu_put(policy);
->>          return 0;
->>
->>   out_dtpm_unregister:
->> @@ -251,8 +245,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *=
-parent)
->>                  per_cpu(dtpm_per_cpu, cpu) =3D NULL;
->>          kfree(dtpm_cpu);
->>
->> -release_policy:
->> -       cpufreq_cpu_put(policy);
->>          return ret;
->>   }
->>
->> --
+-- 
+Regards,
+
+Sakari Ailus
 
