@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-16425-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16426-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0589EB46298
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 20:48:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF07B462ED
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 20:57:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B026CA61ACB
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 18:48:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66ED2BA13B0
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 18:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A580278779;
-	Fri,  5 Sep 2025 18:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7C7279912;
+	Fri,  5 Sep 2025 18:49:19 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A484277017;
-	Fri,  5 Sep 2025 18:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041CC25A343;
+	Fri,  5 Sep 2025 18:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757098122; cv=none; b=KXWGcs4MNJrLK0xRfzOnDND9/I+ocfQ88gUHeUII8Sx8YjDPYjKfRwd7lILcu8fbf1THNZ7GZFAfADGOHLKAF6GpwhOqls+R2EKwocMVAkSQYJa5M7DNdfDqT19yE1QmKGx8F4Gc7STU0aAh2MWfIn8UzHFUuyFHvvIlHkI1ils=
+	t=1757098159; cv=none; b=ej6zG9sSP8Q0ILE8bXVMIwzl/DYDcjX2fvmp9xo+mg2HCxY4NLYPUeciMG7rHmtjxQqKWF26aIbKfYpIi0QE/i6q3I/ogPbtSxBSPCUi+BQw3IDI17Q06e+P1PILgBsqgNd+oc0tnrON9ToTbkltKPMammdtEr3K6J1+MHXbIcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757098122; c=relaxed/simple;
-	bh=7UqTyz8zP8i8yfRiTBv/BTxviF7lQMms4rKZ92n/Ydc=;
+	s=arc-20240116; t=1757098159; c=relaxed/simple;
+	bh=uVVjYy4LXPDttbkCjYxdRX08KrZ8tDWcmNAWFIUOCSI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Tvs1WT3iUbf8cItcHbFEMQ+KdbP9H0vTsNqgBxjvSmFCZ+6UckiBsdvEJmQM5xmgKdM/g7AwTdDznbaXV2+cSo515xyE+AQyGOgG1mNdui5jP+0wfMTYAhPx5FE9UldiYQ95NNYOsu4tcQ3oqcuHptHzowxhjNtG3lWRs3q4tmI=
+	 In-Reply-To:Content-Type; b=H3nCPGPcYr3CcYkuteOB+0Zzpdq/X1VVwjreby3qgTGOzGyWEx0tFpNAgfMLLotNw7mN0iZIEvmBN6Q1ZtRASisulArrtASGo38qAQJuZCbOfdP81D83aSqfPvj2ZEiKUBWvxMDAY833KJed/kt/X/m8dHcP5fVGeO46f4IoTpI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 17137152B;
-	Fri,  5 Sep 2025 11:48:31 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B94FF152B;
+	Fri,  5 Sep 2025 11:49:08 -0700 (PDT)
 Received: from [10.1.197.69] (unknown [10.1.197.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3C6113F63F;
-	Fri,  5 Sep 2025 11:48:33 -0700 (PDT)
-Message-ID: <c129a5ca-066b-4a78-a1fe-be474b592022@arm.com>
-Date: Fri, 5 Sep 2025 19:48:25 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CA9A23F63F;
+	Fri,  5 Sep 2025 11:49:10 -0700 (PDT)
+Message-ID: <6a050b35-1b4d-4ea1-aa40-974aafa89b52@arm.com>
+Date: Fri, 5 Sep 2025 19:49:08 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -69,16 +69,16 @@ Cc: shameerali.kolothum.thodi@huawei.com,
  Danilo Krummrich <dakr@kernel.org>
 References: <20250822153048.2287-1-james.morse@arm.com>
  <20250822153048.2287-11-james.morse@arm.com>
- <120b4049-a28d-40ad-9def-c901e12c7a68@arm.com>
+ <e5b2fa8d-c77e-49ac-a328-1363e472cc42@arm.com>
 Content-Language: en-GB
 From: James Morse <james.morse@arm.com>
-In-Reply-To: <120b4049-a28d-40ad-9def-c901e12c7a68@arm.com>
+In-Reply-To: <e5b2fa8d-c77e-49ac-a328-1363e472cc42@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Ben,
 
-On 27/08/2025 14:03, Ben Horgan wrote:
+On 01/09/2025 10:11, Ben Horgan wrote:
 > On 8/22/25 16:29, James Morse wrote:
 >> Probing MPAM is convoluted. MSCs that are integrated with a CPU may
 >> only be accessible from those CPUs, and they may not be online.
@@ -87,176 +87,6 @@ On 27/08/2025 14:03, Ben Horgan wrote:
 >> discovered.
 >>
 >> Start with driver probe/remove and mapping the MSC.
-
->> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
->> new file mode 100644
->> index 000000000000..a0d9a699a6e7
->> --- /dev/null
->> +++ b/drivers/resctrl/mpam_devices.c
->> @@ -0,0 +1,336 @@
-
->> +static int mpam_dt_parse_resource(struct mpam_msc *msc, struct device_node *np,
->> +				  u32 ris_idx)
->> +{
->> +	int err = 0;
->> +	u32 level = 0;
->> +	unsigned long cache_id;
->> +	struct device_node *cache;
->> +
->> +	do {
->> +		if (of_device_is_compatible(np, "arm,mpam-cache")) {
->> +			cache = of_parse_phandle(np, "arm,mpam-device", 0);
->> +			if (!cache) {
->> +				pr_err("Failed to read phandle\n");
->> +				break;
->> +			}
-> This looks like this allows "arm,mpam-cache" and "arm,mpam-device" to be
-> used on an msc node when there are no ris children. This usage could be
-> reasonable but doesn't match the schema in the previous patch. Should
-> this usage be rejected or the schema extended?
-
-The DT/ACPI stuff is only going to describe the things that make sense at a high level,
-e.g. the controls for the L3. There may be other controls for stuff that doesn't make
-sense in the hardware - these get discovered, grouped as 'unknown' and left alone.
-
-Another angle on this is where there is an MSC that the OS will never make use of, but
-needs to know about to find the system wide minimum value. (there is a comment about
-this in the ACPI spec...)
-
-I don't think its a problem if the magic dt-binding machinery is overly restrictive, that
-is about validating DTB files...
-
-
->> +		} else if (of_device_is_compatible(np->parent, "cache")) {
->> +			cache = of_node_get(np->parent);
->> +		} else {
->> +			/* For now, only caches are supported */
->> +			cache = NULL;
->> +			break;
->> +		}
->> +
->> +		err = of_property_read_u32(cache, "cache-level", &level);
->> +		if (err) {
->> +			pr_err("Failed to read cache-level\n");
->> +			break;
->> +		}
->> +
->> +		cache_id = cache_of_calculate_id(cache);
->> +		if (cache_id == ~0UL) {
->> +			err = -ENOENT;
->> +			break;
->> +		}
->> +
->> +		err = mpam_ris_create(msc, ris_idx, MPAM_CLASS_CACHE, level,
->> +				      cache_id);
->> +	} while (0);
->> +	of_node_put(cache);
->> +
->> +	return err;
->> +}
-
->> +static int mpam_msc_drv_probe(struct platform_device *pdev)
->> +{
->> +	int err;
->> +	struct mpam_msc *msc;
->> +	struct resource *msc_res;
->> +	void *plat_data = pdev->dev.platform_data;
->> +
->> +	mutex_lock(&mpam_list_lock);
->> +	do {
->> +		msc = devm_kzalloc(&pdev->dev, sizeof(*msc), GFP_KERNEL);
->> +		if (!msc) {
->> +			err = -ENOMEM;
->> +			break;
->> +		}
->> +
->> +		mutex_init(&msc->probe_lock);
->> +		mutex_init(&msc->part_sel_lock);
->> +		mutex_init(&msc->outer_mon_sel_lock);
->> +		raw_spin_lock_init(&msc->inner_mon_sel_lock);
->> +		msc->id = mpam_num_msc++;
->> +		msc->pdev = pdev;
->> +		INIT_LIST_HEAD_RCU(&msc->glbl_list);
->> +		INIT_LIST_HEAD_RCU(&msc->ris);
->> +
->> +		err = update_msc_accessibility(msc);
->> +		if (err)
->> +			break;
->> +		if (cpumask_empty(&msc->accessibility)) {
->> +			pr_err_once("msc:%u is not accessible from any CPU!",
->> +				    msc->id);
->> +			err = -EINVAL;
->> +			break;
->> +		}
->> +
->> +		if (device_property_read_u32(&pdev->dev, "pcc-channel",
->> +					     &msc->pcc_subspace_id))
->> +			msc->iface = MPAM_IFACE_MMIO;
->> +		else
->> +			msc->iface = MPAM_IFACE_PCC;
->> +
->> +		if (msc->iface == MPAM_IFACE_MMIO) {
->> +			void __iomem *io;
->> +
->> +			io = devm_platform_get_and_ioremap_resource(pdev, 0,
->> +								    &msc_res);
->> +			if (IS_ERR(io)) {
->> +				pr_err("Failed to map MSC base address\n");
->> +				err = PTR_ERR(io);
->> +				break;
->> +			}
->> +			msc->mapped_hwpage_sz = msc_res->end - msc_res->start;
->> +			msc->mapped_hwpage = io;
->> +		} else if (msc->iface == MPAM_IFACE_PCC) {
->> +			msc->pcc_cl.dev = &pdev->dev;
->> +			msc->pcc_cl.rx_callback = mpam_pcc_rx_callback;
->> +			msc->pcc_cl.tx_block = false;
->> +			msc->pcc_cl.tx_tout = 1000; /* 1s */
->> +			msc->pcc_cl.knows_txdone = false;
->> +
->> +			msc->pcc_chan = pcc_mbox_request_channel(&msc->pcc_cl,
->> +								 msc->pcc_subspace_id);
->> +			if (IS_ERR(msc->pcc_chan)) {
->> +				pr_err("Failed to request MSC PCC channel\n");
->> +				err = PTR_ERR(msc->pcc_chan);
->> +				break;
->> +			}
-> I don't see pcc support added in this series. Should we fail the probe
-> if this interface is specified?
-
-I've got patches from Andre P to support it on DT - but the platforms that need it keeping
-popping in and out of existence. I'll pull these bits out - they were intended to check
-the ACPI table wasn't totally rotten...
-
-
-> (If keeping, there is a missing pcc_mbox_free_channel() on the error path.)
-
-When pcc_mbox_request_channel() fails? It already called mbox_free_channel() itself.
-
-
->> +		}
->> +
->> +		list_add_rcu(&msc->glbl_list, &mpam_all_msc);
->> +		platform_set_drvdata(pdev, msc);
->> +	} while (0);
->> +	mutex_unlock(&mpam_list_lock);
->> +
->> +	if (!err) {
->> +		/* Create RIS entries described by firmware */
->> +		if (!acpi_disabled)
->> +			err = acpi_mpam_parse_resources(msc, plat_data);
->> +		else
->> +			err = mpam_dt_parse_resources(msc, plat_data);
->> +	}
->> +
->> +	if (!err && fw_num_msc == mpam_num_msc)
->> +		mpam_discovery_complete();
->> +
->> +	if (err && msc)
->> +		mpam_msc_drv_remove(pdev);
->> +
->> +	return err;
->> +}
 
 >> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
 >> new file mode 100644
@@ -282,14 +112,20 @@ When pcc_mbox_request_channel() fails? It already called mbox_free_channel() its
 >> +
 >> +	/*
 >> +	 * probe_lock is only take during discovery. After discovery these
-> nit: s/take/taken/
-
-Fixed,
-
 >> +	 * properties become read-only and the lists are protected by SRCU.
 >> +	 */
 >> +	struct mutex		probe_lock;
 >> +	unsigned long		ris_idxs[128 / BITS_PER_LONG];
+
+> Why is this sized this way? RIS_MAX is 4 bits and so there are at most
+> 16 RIS per msc.
+
+Hmmm, lost in time - I agree with the 16 reasoning. Fixed.
+(It's likely due to RES0 space above the field - but that has been filled in with other
+ stuff since then. RIS was added as a 'backward compatible feature' - I was wary of them
+ extending it)
+
+
 >> +	u32			ris_max;
 >> +
 >> +	/* mpam_msc_ris of this component */
@@ -306,10 +142,6 @@ Fixed,
 >> +	/*
 >> +	 * mon_sel_lock protects access to the MSC hardware registers that are
 >> +	 * affeted by MPAMCFG_MON_SEL.
-> nit: s/affeted/affected/
-Fixed,
-
-
 >> +	 * If needed, take msc->lock first.
 >> +	 */
 >> +	struct mutex		outer_mon_sel_lock;
