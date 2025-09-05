@@ -1,58 +1,58 @@
-Return-Path: <linux-acpi+bounces-16411-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16412-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A0ADB458E3
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 15:26:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 452F5B458E5
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 15:27:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED1771CC24EA
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 13:26:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 394611C84A86
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 13:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21B5353343;
-	Fri,  5 Sep 2025 13:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E9F3568EA;
+	Fri,  5 Sep 2025 13:25:09 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C820353344;
-	Fri,  5 Sep 2025 13:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F2D35337A;
+	Fri,  5 Sep 2025 13:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757078705; cv=none; b=kt+k/yJqU2YXzYMDGeJSh/esKBBaVku79fHZcbyFtg/vbCXucbFexCXrgj/xeBhB6InRO1vUBxsE/81LCEtnV31Y7rMmz0LO+HbAKrnpCYk9H1BYEtF4lzy0V8bEuIUPYz28GPdPxORR6O3kK4EG+CKADsxaNkYmktL0MmxSf6M=
+	t=1757078709; cv=none; b=EhWpgQXD4V1z+dtypBpchHSRWb3RM0xQzKQDnO6mtb/YYy2JE8wa9v/JzwbUiex1l2O0ixEAg3jq8dQ3wW0bnimCTYdG1MmB+aiQgOAGwTMkgy1PjUq8p5xbcrn+/Ah7ldEzG3+BZiNsgE/ZbqsPQ0+MXcbnfpNo8XOx77TI83o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757078705; c=relaxed/simple;
-	bh=6gVVnC1YkH8ZoWy5/0k7WKJEKCXa4X/6uXXQ9d6a62Y=;
+	s=arc-20240116; t=1757078709; c=relaxed/simple;
+	bh=vpnK+wgxPDyyGBiNRyOVaIAlcPF3ONZ70dk/Vdt+kro=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jhnoMOt6UMduNKXC/OZQpFVn8yDmPkW10sEucQQ2E2qHw0jkoS411eI7YHMtuJt5JaX/UDKKniM3po12IoK5EjkEWPn/Zooz4bGAMm1ILVp2W2dJ3lBDL7uK5ymV3akbi7E2EWcxXmeJVhrH1CmnKWnyzoesBgtmMZGQX/O3GTs=
+	 MIME-Version; b=rody1JRDeRk/msd/i2NYZIr/PMFj21jCY4VB4ZexsxDKt4SvtViJqNi5xDmflG6Qd5ZE1lnfIioA/XN1AWUXYQJwUBwO+rh79HB+yn4EwfF/o+b2Z4LceMVTaIcERqN7stvOw1SkWlAf6Ltbsi3ZW1nRDakq61IFL6Ve2iZkYQs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: b687c5d88a5b11f0b29709d653e92f7d-20250905
+X-UUID: b8db92f68a5b11f0b29709d653e92f7d-20250905
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:2f63b8d2-1ead-4757-b66c-86b8c1049e1d,IP:0,U
+X-CID-O-INFO: VERSION:1.1.45,REQID:646670e5-e5c7-40b1-b28a-3ee5e8c5af3a,IP:0,U
 	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
 	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:3fcc3bb2746cc7389702de1a6e732580,BulkI
+X-CID-META: VersionHash:6493067,CLOUDID:f6a8c23197cabdb3bff5558c69d77a16,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:-3
 	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
 	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: b687c5d88a5b11f0b29709d653e92f7d-20250905
+X-UUID: b8db92f68a5b11f0b29709d653e92f7d-20250905
 Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
 	(envelope-from <zhangzihuan@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 2010186639; Fri, 05 Sep 2025 21:24:55 +0800
+	with ESMTP id 530252194; Fri, 05 Sep 2025 21:24:59 +0800
 Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 6372FE008FA3;
-	Fri,  5 Sep 2025 21:24:55 +0800 (CST)
-X-ns-mid: postfix-68BAE4A7-2095376
+	by mail.kylinos.cn (NSMail) with SMTP id 4D67FE008FA3;
+	Fri,  5 Sep 2025 21:24:59 +0800 (CST)
+X-ns-mid: postfix-68BAE4AB-1181537
 Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 7B73DE008FA4;
-	Fri,  5 Sep 2025 21:24:51 +0800 (CST)
+	by mail.kylinos.cn (NSMail) with ESMTPA id 70239E008FA7;
+	Fri,  5 Sep 2025 21:24:55 +0800 (CST)
 From: Zihuan Zhang <zhangzihuan@kylinos.cn>
 To: "Rafael J . wysocki" <rafael@kernel.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
@@ -102,9 +102,9 @@ Cc: Ben Horgan <ben.horgan@arm.com>,
 	linux-omap@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v5 5/6] drm/i915: Use scope-based cleanup helper
-Date: Fri,  5 Sep 2025 21:24:12 +0800
-Message-Id: <20250905132413.1376220-6-zhangzihuan@kylinos.cn>
+Subject: [PATCH v5 6/6] PM: EM: Use scope-based cleanup helper
+Date: Fri,  5 Sep 2025 21:24:13 +0800
+Message-Id: <20250905132413.1376220-7-zhangzihuan@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250905132413.1376220-1-zhangzihuan@kylinos.cn>
 References: <20250905132413.1376220-1-zhangzihuan@kylinos.cn>
@@ -123,33 +123,68 @@ counting mistakes and aligns the code with the latest kernel style.
 No functional change intended.
 
 Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 ---
- drivers/gpu/drm/i915/gt/intel_llc.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ kernel/power/energy_model.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_llc.c b/drivers/gpu/drm/i915/g=
-t/intel_llc.c
-index 1d19c073ba2e..f15e4c0fa54b 100644
---- a/drivers/gpu/drm/i915/gt/intel_llc.c
-+++ b/drivers/gpu/drm/i915/gt/intel_llc.c
-@@ -29,13 +29,11 @@ static struct intel_gt *llc_to_gt(struct intel_llc *l=
-lc)
-=20
- static unsigned int cpu_max_MHz(void)
+diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
+index ea7995a25780..5ec63b3e7d85 100644
+--- a/kernel/power/energy_model.c
++++ b/kernel/power/energy_model.c
+@@ -451,7 +451,6 @@ static void
+ em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_state =
+*table)
  {
+ 	struct em_perf_domain *pd =3D dev->em_pd;
 -	struct cpufreq_policy *policy;
-+	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
-u_get(0);
- 	unsigned int max_khz;
+ 	int found =3D 0;
+ 	int i, cpu;
 =20
--	policy =3D cpufreq_cpu_get(0);
- 	if (policy) {
- 		max_khz =3D policy->cpuinfo.max_freq;
+@@ -465,7 +464,7 @@ em_cpufreq_update_efficiencies(struct device *dev, st=
+ruct em_perf_state *table)
+ 		return;
+ 	}
+=20
+-	policy =3D cpufreq_cpu_get(cpu);
++	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
+u_get(cpu);
+ 	if (!policy) {
+ 		dev_warn(dev, "EM: Access to CPUFreq policy failed\n");
+ 		return;
+@@ -479,8 +478,6 @@ em_cpufreq_update_efficiencies(struct device *dev, st=
+ruct em_perf_state *table)
+ 			found++;
+ 	}
+=20
+-	cpufreq_cpu_put(policy);
+-
+ 	if (!found)
+ 		return;
+=20
+@@ -787,21 +784,19 @@ static void em_check_capacity_update(void)
+=20
+ 	/* Check if CPUs capacity has changed than update EM */
+ 	for_each_possible_cpu(cpu) {
+-		struct cpufreq_policy *policy;
+ 		struct em_perf_domain *pd;
+ 		struct device *dev;
+=20
+ 		if (cpumask_test_cpu(cpu, cpu_done_mask))
+ 			continue;
+=20
+-		policy =3D cpufreq_cpu_get(cpu);
++		struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_c=
+pu_get(cpu);
+ 		if (!policy) {
+ 			pr_debug("Accessing cpu%d policy failed\n", cpu);
+ 			schedule_delayed_work(&em_update_work,
+ 					      msecs_to_jiffies(1000));
+ 			break;
+ 		}
 -		cpufreq_cpu_put(policy);
- 	} else {
- 		/*
- 		 * Default to measured freq if none found, PCU will ensure we
+=20
+ 		dev =3D get_cpu_device(cpu);
+ 		pd =3D em_pd_get(dev);
 --=20
 2.25.1
 
