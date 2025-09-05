@@ -1,264 +1,156 @@
-Return-Path: <linux-acpi+bounces-16385-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16386-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49734B44CB3
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 06:28:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 093FDB44DED
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 08:27:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04836164F4C
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 04:28:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEB055411BE
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 06:27:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04A022FE0F;
-	Fri,  5 Sep 2025 04:28:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="NPBCCFo3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA22290DBB;
+	Fri,  5 Sep 2025 06:27:16 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from esa8.hc1455-7.c3s2.iphmx.com (esa8.hc1455-7.c3s2.iphmx.com [139.138.61.253])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725F31E2834;
-	Fri,  5 Sep 2025 04:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.61.253
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1788F163;
+	Fri,  5 Sep 2025 06:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757046496; cv=none; b=fc0Gt6LoUB9VGwZ7czA9ArW+yiQ1vTThDxK92+44cl/6G5qk7vUN8Wjzc4pcoPztsnXWjttSiqT5u+FkSZ2CX/6mHMFPbLY+fPaL2cZ2MMcJnY71pL5xMbb/3IWHU3NfccBgbQ55kFbO4FZRDmfNCVKKlpd+ZvnxHVFmhKFAHj4=
+	t=1757053636; cv=none; b=KiBQqVCACYHR1l3hkncRAKOpUzC4tBzIEdSIpry7I5RZoq9Um5AEFgzgTz0on+oSVA68J6gS3nxSvxVjAKP0759XmNVRn7Q0JAGgskpxGSJsYcHresHZx1WWLK8MC32axJax0Ms9eSuAngsfY8LbGETbzNX2hx12GcBUhpv+uAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757046496; c=relaxed/simple;
-	bh=xalTBGUaJut6FZ6AT7b/pJ5ppOEk0X/YlTA6n0kDWQs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Yd3XikwbyVJCmvOC6B4qGi2jdlqvriedgDg1RRdTPGLvz3KV4qhOwkBtwxYpJodlT99e2hpkoPZPHDYqopmAPAy1PpgnA95MIdCU644URWMCOCjCYWwbRHXWaZd5vmybGVzASAGaQa4SaZLNEsjns1CoS99yFFwK2hUgiTI+biw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aa.jp.fujitsu.com; spf=pass smtp.mailfrom=aa.jp.fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=NPBCCFo3; arc=none smtp.client-ip=139.138.61.253
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aa.jp.fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aa.jp.fujitsu.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1757046493; x=1788582493;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=xalTBGUaJut6FZ6AT7b/pJ5ppOEk0X/YlTA6n0kDWQs=;
-  b=NPBCCFo3ILw26FOq3WnfvUaIhcoXK/tARJSfL+QOya5pb6l77MnIMWr7
-   VU1e6I49iJEs7Tc6oPiGnl50rnZ+0GA4XzwDknlan2ZjzSx7ZKoC1XpAK
-   N9l1pVgLdeF2jH2h9LOx5QxT2zDHTR+juZ9aTMExSRY/PCq1kah1kXDsh
-   Rg5Wj7CEPyhLK9x25Ah3kQAreC15PTxQ0q7ANCBHcJQGg4BarldF9OEY2
-   GDDSaEyR0tPzRNlZnutJRfoIjQ054UqyzjH947CMyfiac00uW2UCRd6/R
-   8JQHcl3ePdH6BKQIWkcBGJMeS7wGnLFrlnELPdAHPt5LFanYnEK8ElXNs
-   A==;
-X-CSE-ConnectionGUID: txFBpfDkR2KW/jIj9XHjoQ==
-X-CSE-MsgGUID: 45hTOyv5QECXwmiFFLXLyQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11543"; a="199787678"
-X-IronPort-AV: E=Sophos;i="6.18,240,1751209200"; 
-   d="scan'208";a="199787678"
-Received: from unknown (HELO az2nlsmgr2.o.css.fujitsu.com) ([20.61.8.234])
-  by esa8.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2025 13:28:04 +0900
-Received: from az2nlsmgm4.fujitsu.com (unknown [10.150.26.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgr2.o.css.fujitsu.com (Postfix) with ESMTPS id 3820A185C;
-	Fri,  5 Sep 2025 04:28:05 +0000 (UTC)
-Received: from az2nlsmom3.fujitsu.com (az2nlsmom3.o.css.fujitsu.com [10.150.26.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm4.fujitsu.com (Postfix) with ESMTPS id DF0BD1000271;
-	Fri,  5 Sep 2025 04:28:04 +0000 (UTC)
-Received: from sm-arm-grace07.ssoft.mng.com (sm-x86-stp01.soft.fujitsu.com [10.124.178.20])
-	by az2nlsmom3.fujitsu.com (Postfix) with ESMTP id 139881013115;
-	Fri,  5 Sep 2025 04:27:59 +0000 (UTC)
-From: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
-Cc: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Subject: [PATCH v3] ACPI: AGDI: Add interrupt signaling mode support
-Date: Fri,  5 Sep 2025 13:27:45 +0900
-Message-ID: <20250905042751.945616-1-fj1078ii@aa.jp.fujitsu.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1757053636; c=relaxed/simple;
+	bh=7w1Yet6hnKBxdNwWochFne/nzXMHR8jZPRWb11jtOME=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=NReXcAgzmn2VXaNDU/Wbc5gRUzX5Iu7OWftUflBVii24AZoeOulVIoJF+Wew3rk8Mmxn90k7BU1nVsdyIiH2KCI6pYw4vzf8Mqn/TWUFruHkr+EsUvkhYcmB06D//K7SCUkPLz95pGHf6bnRloKasZCDsUP2tbkFUTmTJz0p38w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4cJ5qg6Ck4zPtNb;
+	Fri,  5 Sep 2025 14:22:39 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0509818049F;
+	Fri,  5 Sep 2025 14:27:10 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 5 Sep 2025 14:27:02 +0800
+Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
+ (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 5 Sep
+ 2025 14:27:02 +0800
+Message-ID: <6b384169-9ad5-4689-8533-f6196d39cf4b@huawei.com>
+Date: Fri, 5 Sep 2025 14:27:01 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: processor: Fix function defined but not used
+ warning
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linuxarm@huawei.com>,
+	<jonathan.cameron@huawei.com>, <zhanjie9@hisilicon.com>,
+	<zhenglifeng1@huawei.com>, <yubowen8@huawei.com>
+References: <20250904121131.2610989-1-lihuisong@huawei.com>
+ <CAJZ5v0jewY9X5rTQmgsgbpjzy=2bzMPTSV60g9kMkXOcKcS_Ng@mail.gmail.com>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <CAJZ5v0jewY9X5rTQmgsgbpjzy=2bzMPTSV60g9kMkXOcKcS_Ng@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-AGDI has two types of signaling modes: SDEI and interrupt.
-Currently, the AGDI driver only supports SDEI.
-Therefore, add support for interrupt signaling mode
-The interrupt vector is retrieved from the AGDI table, and call panic
-function when an interrupt occurs.
 
-Signed-off-by: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
----
-I keep normal IRQ code when NMI cannot be used.
-If there is any concern, please let me know.
-
-v2->v3
- - Fix bug in the return value of agdi_probe function.
- - Remove unnecessary curly braces in the agdi_remove function.
-
-v2: https://lore.kernel.org/all/20250829101154.2377800-1-fj1078ii@aa.jp.fujitsu.com/
-v1->v2
- - Remove acpica update since there is no need to update define value
-   for this patch.
----
- drivers/acpi/arm64/agdi.c | 95 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 88 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
-index e0df3daa4abf..2313a46f01cd 100644
---- a/drivers/acpi/arm64/agdi.c
-+++ b/drivers/acpi/arm64/agdi.c
-@@ -16,7 +16,11 @@
- #include "init.h"
- 
- struct agdi_data {
-+	unsigned char flags;
- 	int sdei_event;
-+	unsigned int gsiv;
-+	bool use_nmi;
-+	int irq;
- };
- 
- static int agdi_sdei_handler(u32 sdei_event, struct pt_regs *regs, void *arg)
-@@ -48,6 +52,55 @@ static int agdi_sdei_probe(struct platform_device *pdev,
- 	return 0;
- }
- 
-+static irqreturn_t agdi_interrupt_handler_nmi(int irq, void *dev_id)
-+{
-+	nmi_panic(NULL, "Arm Generic Diagnostic Dump and Reset NMI Interrupt event issued\n");
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t agdi_interrupt_handler_irq(int irq, void *dev_id)
-+{
-+	panic("Arm Generic Diagnostic Dump and Reset Interrupt event issued\n");
-+	return IRQ_HANDLED;
-+}
-+
-+static int agdi_interrupt_probe(struct platform_device *pdev,
-+				struct agdi_data *adata)
-+{
-+	unsigned long irq_flags;
-+	int ret;
-+	int irq;
-+
-+	irq = acpi_register_gsi(NULL, adata->gsiv, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_HIGH);
-+	if (irq < 0) {
-+		dev_err(&pdev->dev, "cannot register GSI#%d (%d)\n", adata->gsiv, irq);
-+		return irq;
-+	}
-+
-+	irq_flags = IRQF_PERCPU | IRQF_NOBALANCING | IRQF_NO_AUTOEN |
-+		    IRQF_NO_THREAD;
-+	/* try NMI first */
-+	ret = request_nmi(irq, &agdi_interrupt_handler_nmi, irq_flags,
-+			  "agdi_interrupt_nmi", NULL);
-+	if (ret) {
-+		ret = request_irq(irq, &agdi_interrupt_handler_irq,
-+				  irq_flags, "agdi_interrupt_irq", NULL);
-+		if (ret) {
-+			dev_err(&pdev->dev, "cannot register IRQ %d\n", ret);
-+			acpi_unregister_gsi(adata->gsiv);
-+			return ret;
-+		}
-+		enable_irq(irq);
-+		adata->irq = irq;
-+	} else {
-+		enable_nmi(irq);
-+		adata->irq = irq;
-+		adata->use_nmi = true;
-+	}
-+
-+	return 0;
-+}
-+
- static int agdi_probe(struct platform_device *pdev)
- {
- 	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
-@@ -55,12 +108,15 @@ static int agdi_probe(struct platform_device *pdev)
- 	if (!adata)
- 		return -EINVAL;
- 
--	return agdi_sdei_probe(pdev, adata);
-+	if (adata->flags & ACPI_AGDI_SIGNALING_MODE)
-+		return agdi_interrupt_probe(pdev, adata);
-+	else
-+		return agdi_sdei_probe(pdev, adata);
- }
- 
--static void agdi_remove(struct platform_device *pdev)
-+static void agdi_sdei_remove(struct platform_device *pdev,
-+			     struct agdi_data *adata)
- {
--	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
- 	int err, i;
- 
- 	err = sdei_event_disable(adata->sdei_event);
-@@ -83,6 +139,29 @@ static void agdi_remove(struct platform_device *pdev)
- 			adata->sdei_event, ERR_PTR(err));
- }
- 
-+static void agdi_interrupt_remove(struct platform_device *pdev,
-+				  struct agdi_data *adata)
-+{
-+	if (adata->irq != -1) {
-+		if (adata->use_nmi)
-+			free_nmi(adata->irq, NULL);
-+		else
-+			free_irq(adata->irq, NULL);
-+
-+		acpi_unregister_gsi(adata->gsiv);
-+	}
-+}
-+
-+static void agdi_remove(struct platform_device *pdev)
-+{
-+	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
-+
-+	if (adata->flags & ACPI_AGDI_SIGNALING_MODE)
-+		agdi_interrupt_remove(pdev, adata);
-+	else
-+		agdi_sdei_remove(pdev, adata);
-+}
-+
- static struct platform_driver agdi_driver = {
- 	.driver = {
- 		.name = "agdi",
-@@ -94,7 +173,7 @@ static struct platform_driver agdi_driver = {
- void __init acpi_agdi_init(void)
- {
- 	struct acpi_table_agdi *agdi_table;
--	struct agdi_data pdata;
-+	struct agdi_data pdata = {0};
- 	struct platform_device *pdev;
- 	acpi_status status;
- 
-@@ -104,11 +183,13 @@ void __init acpi_agdi_init(void)
- 		return;
- 
- 	if (agdi_table->flags & ACPI_AGDI_SIGNALING_MODE) {
--		pr_warn("Interrupt signaling is not supported");
--		goto err_put_table;
-+		pdata.gsiv = agdi_table->gsiv;
-+	} else {
-+		pdata.sdei_event = agdi_table->sdei_event;
- 	}
- 
--	pdata.sdei_event = agdi_table->sdei_event;
-+	pdata.irq = -1;
-+	pdata.flags = agdi_table->flags;
- 
- 	pdev = platform_device_register_data(NULL, "agdi", 0, &pdata, sizeof(pdata));
- 	if (IS_ERR(pdev))
--- 
-2.43.0
-
+在 2025/9/4 23:23, Rafael J. Wysocki 写道:
+> On Thu, Sep 4, 2025 at 2:11 PM Huisong Li <lihuisong@huawei.com> wrote:
+>> If CONFIG_ACPI_PROCESSOR=n and CONFIG_ACPI_PROCESSOR_IDLE=n, we may
+>> encounter some compling warnings as the following link said.
+>> So remove these empty function definition because they are just used
+>> in processor_driver.c and if CONFIG_ACPI_PROCESSOR is selected and
+>> CONFIG_ACPI_PROCESSOR_IDLE also be selected automatically.
+>>
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Closes: https://lore.kernel.org/oe-kbuild-all/202508300519.tZQHY6HA-lkp@intel.com/
+>>
+>> Signed-off-by: Huisong Li <lihuisong@huawei.com>
+>> ---
+>>   include/acpi/processor.h | 34 +++-------------------------------
+>>   1 file changed, 3 insertions(+), 31 deletions(-)
+>>
+>> diff --git a/include/acpi/processor.h b/include/acpi/processor.h
+>> index 360b673f05e5..a4e1081fd0da 100644
+>> --- a/include/acpi/processor.h
+>> +++ b/include/acpi/processor.h
+>> @@ -417,40 +417,17 @@ static inline void acpi_processor_throttling_init(void) {}
+>>   #endif /* CONFIG_ACPI_CPU_FREQ_PSS */
+>>
+>>   /* in processor_idle.c */
+>> -extern struct cpuidle_driver acpi_idle_driver;
+>>   #ifdef CONFIG_ACPI_PROCESSOR_IDLE
+>> +extern struct cpuidle_driver acpi_idle_driver;
+> Are the changes above related to the warning?  If not, maybe move them
+> to a separate patch?
+Ok, will do it in a separate patch.
+>
+>>   int acpi_processor_power_init(struct acpi_processor *pr);
+>>   int acpi_processor_power_exit(struct acpi_processor *pr);
+>>   int acpi_processor_power_state_has_changed(struct acpi_processor *pr);
+>>   int acpi_processor_hotplug(struct acpi_processor *pr);
+>>   void acpi_processor_register_idle_driver(void);
+>>   void acpi_processor_unregister_idle_driver(void);
+>> -#else
+>> -static inline int acpi_processor_power_init(struct acpi_processor *pr)
+>> -{
+>> -       return -ENODEV;
+>> -}
+>> -
+>> -static inline int acpi_processor_power_exit(struct acpi_processor *pr)
+>> -{
+>> -       return -ENODEV;
+>> -}
+>> -
+>> -static inline int acpi_processor_power_state_has_changed(struct acpi_processor *pr)
+>> -{
+>> -       return -ENODEV;
+>> -}
+>>
+>> -static inline int acpi_processor_hotplug(struct acpi_processor *pr)
+>> -{
+>> -       return -ENODEV;
+>> -}
+>> -static inline void acpi_processor_register_idle_driver(void)
+>> -{
+>> -}
+>> -static inline void acpi_processor_unregister_idle_driver(void)
+>> -{
+>> -}
+>> +extern int acpi_processor_ffh_lpi_probe(unsigned int cpu);
+>> +extern int acpi_processor_ffh_lpi_enter(struct acpi_lpi_state *lpi);
+> Please remove the "extern" from these declarations.
+Ack
+>
+>>   #endif /* CONFIG_ACPI_PROCESSOR_IDLE */
+>>
+>>   /* in processor_thermal.c */
+>> @@ -473,11 +450,6 @@ static inline void acpi_thermal_cpufreq_exit(struct cpufreq_policy *policy)
+>>   }
+>>   #endif /* CONFIG_CPU_FREQ */
+>>
+>> -#ifdef CONFIG_ACPI_PROCESSOR_IDLE
+>> -extern int acpi_processor_ffh_lpi_probe(unsigned int cpu);
+>> -extern int acpi_processor_ffh_lpi_enter(struct acpi_lpi_state *lpi);
+>> -#endif
+>> -
+>>   void acpi_processor_init_invariance_cppc(void);
+>>
+>>   #endif
+>> --
 
