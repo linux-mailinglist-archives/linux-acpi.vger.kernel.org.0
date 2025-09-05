@@ -1,156 +1,147 @@
-Return-Path: <linux-acpi+bounces-16386-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16387-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 093FDB44DED
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 08:27:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BAFB44E78
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 08:58:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEB055411BE
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 06:27:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A0E27BD8BD
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 06:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA22290DBB;
-	Fri,  5 Sep 2025 06:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 348492D6E67;
+	Fri,  5 Sep 2025 06:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="3H9p/Vkv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1788F163;
-	Fri,  5 Sep 2025 06:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0932D6621;
+	Fri,  5 Sep 2025 06:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757053636; cv=none; b=KiBQqVCACYHR1l3hkncRAKOpUzC4tBzIEdSIpry7I5RZoq9Um5AEFgzgTz0on+oSVA68J6gS3nxSvxVjAKP0759XmNVRn7Q0JAGgskpxGSJsYcHresHZx1WWLK8MC32axJax0Ms9eSuAngsfY8LbGETbzNX2hx12GcBUhpv+uAg=
+	t=1757055493; cv=none; b=rTkJ7TjZ11YXvU0JodKxIyc2MPio7qxy+ajZnzg2BsZI6F5xl1LJgBDuqJc6y0joWmTAdzkDZm8JQeK/elVlwwjKqiEgBeR4MG7/bM0OmFRpeqjiRURq9/8CttMd1STpWTdHeXrEvBWt7Km4Y236D00V6f2G181B2/jTWgLEBl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757053636; c=relaxed/simple;
-	bh=7w1Yet6hnKBxdNwWochFne/nzXMHR8jZPRWb11jtOME=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=NReXcAgzmn2VXaNDU/Wbc5gRUzX5Iu7OWftUflBVii24AZoeOulVIoJF+Wew3rk8Mmxn90k7BU1nVsdyIiH2KCI6pYw4vzf8Mqn/TWUFruHkr+EsUvkhYcmB06D//K7SCUkPLz95pGHf6bnRloKasZCDsUP2tbkFUTmTJz0p38w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4cJ5qg6Ck4zPtNb;
-	Fri,  5 Sep 2025 14:22:39 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0509818049F;
-	Fri,  5 Sep 2025 14:27:10 +0800 (CST)
-Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 5 Sep 2025 14:27:02 +0800
-Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
- (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 5 Sep
- 2025 14:27:02 +0800
-Message-ID: <6b384169-9ad5-4689-8533-f6196d39cf4b@huawei.com>
-Date: Fri, 5 Sep 2025 14:27:01 +0800
+	s=arc-20240116; t=1757055493; c=relaxed/simple;
+	bh=I8cJdRZLYnQVhLR73dUpNQAg/MBu80rPjyvsIURqpfU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AnSohHP2ZT+KI5S76i6J3k8Uzrg+AvZ8uUPyMgw6XxyOVFxMYdGtk2mEEzN+oVE/cViB65W9WKgyBwecjMi509SHZ4o27h+ALqRIicPxYmC2C9m7TJnv6FNFMhiYgV3fzscyINnDnYd0RxYTgKl5Zu6XnvUO2nhaqisVq/U8JLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=3H9p/Vkv; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=UMhp8J72yITKfzOtPi4DB3UD3FJrfEyrpQ4ZI8FSlps=; b=3H9p/Vkvxt4XbLhqCSP9aF+To1
+	PztEyON86OQi9PDNd1ceEUJxtwdxP8kfhfwhJsFQCpc05baWPVxWZGjg7opX2gYK2WIvJOe9zaGxI
+	t1GjVNq312NK5FM6wxYvOK7xHeRcBlZ7DvQNdzrNE74gtjS6ycrbgz9Gz3oDC2fnJm/+BYHCrYZqe
+	z3F+cmE+jwq5XWgZ+duo5Zpgb84hlUrrT5p8vOy3tqh9xZzhopHfUHuZpO6PnjBzxRCn0X20BnYgc
+	3sDAk1C2TxIs6tj7Oexhrej49YHa7H2oqGuA9FmUUbjg3rqCJrtaGj5ZEtOjhNwA5eJUszaVWNk4z
+	U2CnHU+A==;
+Date: Fri, 5 Sep 2025 08:57:26 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar
+ <viresh.kumar@linaro.org>, Catalin Marinas <catalin.marinas@arm.com>, Will
+ Deacon <will@kernel.org>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Srinivas Pandruvada
+ <srinivas.pandruvada@linux.intel.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park
+ <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, Jani
+ Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi
+ <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, David
+ Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Daniel Lezcano
+ <daniel.lezcano@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn
+ Guo <shawnguo@kernel.org>, Eduardo Valentin <edubezval@gmail.com>, Keerthy
+ <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, zhenglifeng
+ <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, Len Brown
+ <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, Pengutronix Kernel
+ Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>,
+ Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit
+ Gupta <sumitg@nvidia.com>, Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang
+ <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 09/10] thermal/drivers/ti-soc-thermal: Use
+ scope-based cleanup helper
+Message-ID: <20250905085726.2bc6fcb4@akair>
+In-Reply-To: <20250903131733.57637-10-zhangzihuan@kylinos.cn>
+References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
+	<20250903131733.57637-10-zhangzihuan@kylinos.cn>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: processor: Fix function defined but not used
- warning
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linuxarm@huawei.com>,
-	<jonathan.cameron@huawei.com>, <zhanjie9@hisilicon.com>,
-	<zhenglifeng1@huawei.com>, <yubowen8@huawei.com>
-References: <20250904121131.2610989-1-lihuisong@huawei.com>
- <CAJZ5v0jewY9X5rTQmgsgbpjzy=2bzMPTSV60g9kMkXOcKcS_Ng@mail.gmail.com>
-From: "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <CAJZ5v0jewY9X5rTQmgsgbpjzy=2bzMPTSV60g9kMkXOcKcS_Ng@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemn100009.china.huawei.com (7.202.194.112)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+Am Wed,  3 Sep 2025 21:17:32 +0800
+schrieb Zihuan Zhang <zhangzihuan@kylinos.cn>:
 
-在 2025/9/4 23:23, Rafael J. Wysocki 写道:
-> On Thu, Sep 4, 2025 at 2:11 PM Huisong Li <lihuisong@huawei.com> wrote:
->> If CONFIG_ACPI_PROCESSOR=n and CONFIG_ACPI_PROCESSOR_IDLE=n, we may
->> encounter some compling warnings as the following link said.
->> So remove these empty function definition because they are just used
->> in processor_driver.c and if CONFIG_ACPI_PROCESSOR is selected and
->> CONFIG_ACPI_PROCESSOR_IDLE also be selected automatically.
->>
->> Reported-by: kernel test robot <lkp@intel.com>
->> Closes: https://lore.kernel.org/oe-kbuild-all/202508300519.tZQHY6HA-lkp@intel.com/
->>
->> Signed-off-by: Huisong Li <lihuisong@huawei.com>
->> ---
->>   include/acpi/processor.h | 34 +++-------------------------------
->>   1 file changed, 3 insertions(+), 31 deletions(-)
->>
->> diff --git a/include/acpi/processor.h b/include/acpi/processor.h
->> index 360b673f05e5..a4e1081fd0da 100644
->> --- a/include/acpi/processor.h
->> +++ b/include/acpi/processor.h
->> @@ -417,40 +417,17 @@ static inline void acpi_processor_throttling_init(void) {}
->>   #endif /* CONFIG_ACPI_CPU_FREQ_PSS */
->>
->>   /* in processor_idle.c */
->> -extern struct cpuidle_driver acpi_idle_driver;
->>   #ifdef CONFIG_ACPI_PROCESSOR_IDLE
->> +extern struct cpuidle_driver acpi_idle_driver;
-> Are the changes above related to the warning?  If not, maybe move them
-> to a separate patch?
-Ok, will do it in a separate patch.
->
->>   int acpi_processor_power_init(struct acpi_processor *pr);
->>   int acpi_processor_power_exit(struct acpi_processor *pr);
->>   int acpi_processor_power_state_has_changed(struct acpi_processor *pr);
->>   int acpi_processor_hotplug(struct acpi_processor *pr);
->>   void acpi_processor_register_idle_driver(void);
->>   void acpi_processor_unregister_idle_driver(void);
->> -#else
->> -static inline int acpi_processor_power_init(struct acpi_processor *pr)
->> -{
->> -       return -ENODEV;
->> -}
->> -
->> -static inline int acpi_processor_power_exit(struct acpi_processor *pr)
->> -{
->> -       return -ENODEV;
->> -}
->> -
->> -static inline int acpi_processor_power_state_has_changed(struct acpi_processor *pr)
->> -{
->> -       return -ENODEV;
->> -}
->>
->> -static inline int acpi_processor_hotplug(struct acpi_processor *pr)
->> -{
->> -       return -ENODEV;
->> -}
->> -static inline void acpi_processor_register_idle_driver(void)
->> -{
->> -}
->> -static inline void acpi_processor_unregister_idle_driver(void)
->> -{
->> -}
->> +extern int acpi_processor_ffh_lpi_probe(unsigned int cpu);
->> +extern int acpi_processor_ffh_lpi_enter(struct acpi_lpi_state *lpi);
-> Please remove the "extern" from these declarations.
-Ack
->
->>   #endif /* CONFIG_ACPI_PROCESSOR_IDLE */
->>
->>   /* in processor_thermal.c */
->> @@ -473,11 +450,6 @@ static inline void acpi_thermal_cpufreq_exit(struct cpufreq_policy *policy)
->>   }
->>   #endif /* CONFIG_CPU_FREQ */
->>
->> -#ifdef CONFIG_ACPI_PROCESSOR_IDLE
->> -extern int acpi_processor_ffh_lpi_probe(unsigned int cpu);
->> -extern int acpi_processor_ffh_lpi_enter(struct acpi_lpi_state *lpi);
->> -#endif
->> -
->>   void acpi_processor_init_invariance_cppc(void);
->>
->>   #endif
->> --
+> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> annotation for policy references. This reduces the risk of reference
+> counting mistakes and aligns the code with the latest kernel style.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 13 ++++---------
+>  1 file changed, 4 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> index 0cf0826b805a..37d06468913a 100644
+> --- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> +++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> @@ -27,7 +27,6 @@
+>  
+>  /* common data structures */
+>  struct ti_thermal_data {
+> -	struct cpufreq_policy *policy;
+>  	struct thermal_zone_device *ti_thermal;
+>  	struct thermal_zone_device *pcb_tz;
+>  	struct thermal_cooling_device *cool_dev;
+> @@ -218,6 +217,7 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap *bgp, int id)
+>  {
+>  	struct ti_thermal_data *data;
+>  	struct device_node *np = bgp->dev->of_node;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(0);
+>  
+this looks as it changes the lifecycle from the device lifetime to just
+this function...
+
+>  	/*
+>  	 * We are assuming here that if one deploys the zone
+> @@ -234,19 +234,17 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap *bgp, int id)
+>  	if (!data)
+>  		return -EINVAL;
+>  
+> -	data->policy = cpufreq_cpu_get(0);
+> -	if (!data->policy) {
+> +	if (!policy) {
+>  		pr_debug("%s: CPUFreq policy not found\n", __func__);
+>  		return -EPROBE_DEFER;
+>  	}
+>  
+>  	/* Register cooling device */
+> -	data->cool_dev = cpufreq_cooling_register(data->policy);
+> +	data->cool_dev = cpufreq_cooling_register(policy);
+
+and it is passed on to something living beyond this function. I see no
+_get(policy) in cpufreq_cooling_register().
+Am I missing something?
+
+Regards,
+Andreas
 
