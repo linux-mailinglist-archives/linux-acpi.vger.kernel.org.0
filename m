@@ -1,48 +1,60 @@
-Return-Path: <linux-acpi+bounces-16388-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16389-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA247B44E91
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 09:02:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 414D0B4502D
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 09:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9700A3AFB59
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 07:02:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5510B1C25350
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Sep 2025 07:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0AA2286D70;
-	Fri,  5 Sep 2025 07:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TtM6XFxq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0271D26F47D;
+	Fri,  5 Sep 2025 07:45:11 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946EA32F76C;
-	Fri,  5 Sep 2025 07:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A401D271447;
+	Fri,  5 Sep 2025 07:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757055742; cv=none; b=RzGaFS4xg7fHKskNhyOGD+GC0+Fhqd88zDfZFJlckkO1Ibs5ht3Xr20Klql85hCej3fae+89CsuZSFZyjWqsGHpwjKLnzuawz1eMP/1XWJXA0Ex+Y3FnCPsV3nUx0eA/b3PUiuBFZi87RNgQpeBC2zeKmH+HZekaPdrZo1kIq58=
+	t=1757058310; cv=none; b=Enjhs5Xa9nyEjzLcLbNwkhhJ8D1a3b6IP/zXzQAESVY+s5StrcbEzR5EvRnNBzFJ4nm8yPyFW1wy++Do5Pa8KM2w2YgPN9hUhsTcHNM1CnfZ+LoENZOepZ1iYwk3x+Ju3w2oxuMzOA81i9SEZ797aVx42GyXifyoNHixccQNTJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757055742; c=relaxed/simple;
-	bh=fTBkavZ91ssgIY3s9ptez3AviwpoecTcBhXYPHGbbbM=;
+	s=arc-20240116; t=1757058310; c=relaxed/simple;
+	bh=3XX5fgVfIt8H/eWkB6Y8cCGVwctszDhoX3FKONvJFag=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OA2LDr9nRdZidpSNzG9LBO7EDpCPuujglxELKuXFzoDRB6r2mfbS2n7OjAWWKLbUh0Rwqa7VSlv1sVVRXJ4zqIsRyyCly+ii5Q76LQgn6vSpoklnBU3j9D0FHCxpgV22NIbWAtzOua1DCXZElGai0oMKx+nb3HlCFMpRcmypC00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TtM6XFxq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61182C4CEF1;
-	Fri,  5 Sep 2025 07:02:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757055741;
-	bh=fTBkavZ91ssgIY3s9ptez3AviwpoecTcBhXYPHGbbbM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TtM6XFxqtN3QeBsuHZlpZfezN9qmURrZfJfI5CCDT5eGvBRGhyX9PdD9MGup8yjnn
-	 0p9KCIiNdorRgLjz3L3MYT1Z5S78sCbEjPaYAd5TxYTGTYxlzNpe7dyP6ctX6eXSTt
-	 wmEFEgieMnkUhnyQscTQ323sCBTvrUj+AFt1Az5eyDJQY3Y7/v1/1MNoRdo0djg0Cg
-	 BGN7Js2b+GPfHh7BDZdtkTHST45y2B/DgwyGbWoz80F94Z0WMwrnI3fpho1XctpIDt
-	 7jr1TSxMsWIG+Ru4C3Lhao5f3LzrMHUw1awATjvXu0RsNrOievNIEjJhefvmsZ/tIM
-	 btioibLovSD7A==
-Message-ID: <a04f3aa8-e7e3-4d20-bc86-5496c7abe272@kernel.org>
-Date: Fri, 5 Sep 2025 09:02:09 +0200
+	 In-Reply-To:Content-Type; b=ENe2t41mVhsggzYGDLPjJqQljKagpa0evt0+UzWW1vQxpcgdCb+71L1TMdNTihN2oMgq/n4ltsMd5a2/Xbpv9lOLWuEVi2QmOBo904Vquz+gmVSCGLmVasgUhss8nFJUjirUvamwRxAiIozwqNNPPxLPovztU/Do1dGQiI3nIPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 397b25d28a2c11f0b29709d653e92f7d-20250905
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:f87db68f-3c30-403e-8904-d7166b6f16d2,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:07aa7fe718078e46c5eacd4bb0c408a3,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 397b25d28a2c11f0b29709d653e92f7d-20250905
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 541260558; Fri, 05 Sep 2025 15:44:59 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 29A5AE008FA4;
+	Fri,  5 Sep 2025 15:44:59 +0800 (CST)
+X-ns-mid: postfix-68BA94FA-497226507
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 27E5DE008FA3;
+	Fri,  5 Sep 2025 15:44:40 +0800 (CST)
+Message-ID: <11bcb7cb-2169-479f-9247-a48e48e9c54e@kylinos.cn>
+Date: Fri, 5 Sep 2025 15:44:39 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -50,12 +62,10 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 09/10] thermal/drivers/ti-soc-thermal: Use scope-based
- cleanup helper
-To: Andreas Kemnade <andreas@kemnade.info>,
- Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
+Subject: Re: [PATCH v4 07/10] powercap: dtpm_cpu: Use scope-based cleanup
+ helper
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
  Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
@@ -84,120 +94,142 @@ Cc: "Rafael J . wysocki" <rafael@kernel.org>,
  intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
  imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
- <20250903131733.57637-10-zhangzihuan@kylinos.cn>
- <20250905085726.2bc6fcb4@akair>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250905085726.2bc6fcb4@akair>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20250903131733.57637-8-zhangzihuan@kylinos.cn>
+ <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
+ <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
+ <CAJZ5v0g__9g_dfA3=4GVi351f4CKBegKkW9nU81j+Qu=2Hfg1Q@mail.gmail.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <CAJZ5v0g__9g_dfA3=4GVi351f4CKBegKkW9nU81j+Qu=2Hfg1Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-On 05/09/2025 08:57, Andreas Kemnade wrote:
-> Am Wed,  3 Sep 2025 21:17:32 +0800
-> schrieb Zihuan Zhang <zhangzihuan@kylinos.cn>:
-> 
->> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
->> annotation for policy references. This reduces the risk of reference
->> counting mistakes and aligns the code with the latest kernel style.
+
+=E5=9C=A8 2025/9/4 21:17, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> On Thu, Sep 4, 2025 at 12:38=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylin=
+os.cn> wrote:
 >>
->> No functional change intended.
+>> =E5=9C=A8 2025/9/3 21:45, Rafael J. Wysocki =E5=86=99=E9=81=93:
+>>> On Wed, Sep 3, 2025 at 3:18=E2=80=AFPM Zihuan Zhang <zhangzihuan@kyli=
+nos.cn> wrote:
+>>>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+>>>> annotation for policy references. This reduces the risk of reference
+>>>> counting mistakes and aligns the code with the latest kernel style.
+>>>>
+>>>> No functional change intended.
+>>>>
+>>>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+>>>> ---
+>>>>    drivers/powercap/dtpm_cpu.c | 30 +++++++++++-------------------
+>>>>    1 file changed, 11 insertions(+), 19 deletions(-)
+>>>>
+>>>> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu=
+.c
+>>>> index 99390ec1481f..f76594185fa2 100644
+>>>> --- a/drivers/powercap/dtpm_cpu.c
+>>>> +++ b/drivers/powercap/dtpm_cpu.c
+>>>> @@ -144,19 +144,17 @@ static int update_pd_power_uw(struct dtpm *dtp=
+m)
+>>>>    static void pd_release(struct dtpm *dtpm)
+>>>>    {
+>>>>           struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
+>>>> -       struct cpufreq_policy *policy;
+>>>>
+>>>>           if (freq_qos_request_active(&dtpm_cpu->qos_req))
+>>>>                   freq_qos_remove_request(&dtpm_cpu->qos_req);
+>>>>
+>>>> -       policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
+>>>> -       if (policy) {
+>>>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
+>>>> +               cpufreq_cpu_get(dtpm_cpu->cpu);
+>>>> +
+>>>> +       if (policy)
+>>>>                   for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
+>>>>                           per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D N=
+ULL;
+>>>>
+>>>> -               cpufreq_cpu_put(policy);
+>>>> -       }
+>>>> -
+>>>>           kfree(dtpm_cpu);
+>>>>    }
+>>>>
+>>>> @@ -192,7 +190,6 @@ static int cpuhp_dtpm_cpu_online(unsigned int cp=
+u)
+>>>>    static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
+>>>>    {
+>>>>           struct dtpm_cpu *dtpm_cpu;
+>>>> -       struct cpufreq_policy *policy;
+>>>>           struct em_perf_state *table;
+>>>>           struct em_perf_domain *pd;
+>>>>           char name[CPUFREQ_NAME_LEN];
+>>>> @@ -202,21 +199,19 @@ static int __dtpm_cpu_setup(int cpu, struct dt=
+pm *parent)
+>>>>           if (dtpm_cpu)
+>>>>                   return 0;
+>>>>
+>>>> -       policy =3D cpufreq_cpu_get(cpu);
+>>>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
+>>>> +               cpufreq_cpu_get(cpu);
+>>>> +
+>>>>           if (!policy)
+>>>>                   return 0;
+>>>>
+>>>>           pd =3D em_cpu_get(cpu);
+>>>> -       if (!pd || em_is_artificial(pd)) {
+>>>> -               ret =3D -EINVAL;
+>>>> -               goto release_policy;
+>>>> -       }
+>>>> +       if (!pd || em_is_artificial(pd))
+>>>> +               return -EINVAL;
+>>>>
+>>>>           dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
+>>>> -       if (!dtpm_cpu) {
+>>>> -               ret =3D -ENOMEM;
+>>>> -               goto release_policy;
+>>>> -       }
+>>>> +       if (!dtpm_cpu)
+>>>> +               return -ENOMEM;
+>>>>
+>>>>           dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
+>>>>           dtpm_cpu->cpu =3D cpu;
+>>>> @@ -239,7 +234,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm=
+ *parent)
+>>>>           if (ret < 0)
+>>>>                   goto out_dtpm_unregister;
+>>> So this change kind of goes against another recommendation given in c=
+leanup.h:
+>>>
+>>>    * Lastly, given that the benefit of cleanup helpers is removal of
+>>>    * "goto", and that the "goto" statement can jump between scopes, t=
+he
+>>>    * expectation is that usage of "goto" and cleanup helpers is never
+>>>    * mixed in the same function. I.e. for a given routine, convert al=
+l
+>>>    * resources that need a "goto" cleanup to scope-based cleanup, or
+>>>    * convert none of them.
 >>
->> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
->> ---
->>  drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 13 ++++---------
->>  1 file changed, 4 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
->> index 0cf0826b805a..37d06468913a 100644
->> --- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
->> +++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
->> @@ -27,7 +27,6 @@
->>  
->>  /* common data structures */
->>  struct ti_thermal_data {
->> -	struct cpufreq_policy *policy;
->>  	struct thermal_zone_device *ti_thermal;
->>  	struct thermal_zone_device *pcb_tz;
->>  	struct thermal_cooling_device *cool_dev;
->> @@ -218,6 +217,7 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap *bgp, int id)
->>  {
->>  	struct ti_thermal_data *data;
->>  	struct device_node *np = bgp->dev->of_node;
->> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(0);
->>  
-> this looks as it changes the lifecycle from the device lifetime to just
-> this function...
-> 
->>  	/*
->>  	 * We are assuming here that if one deploys the zone
->> @@ -234,19 +234,17 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap *bgp, int id)
->>  	if (!data)
->>  		return -EINVAL;
->>  
->> -	data->policy = cpufreq_cpu_get(0);
->> -	if (!data->policy) {
->> +	if (!policy) {
->>  		pr_debug("%s: CPUFreq policy not found\n", __func__);
->>  		return -EPROBE_DEFER;
->>  	}
->>  
->>  	/* Register cooling device */
->> -	data->cool_dev = cpufreq_cooling_register(data->policy);
->> +	data->cool_dev = cpufreq_cooling_register(policy);
-> 
-> and it is passed on to something living beyond this function. I see no
-> _get(policy) in cpufreq_cooling_register().
-> Am I missing something?
-Yeah, " No functional change intended." is clearly incorrect.
+>> Should I replace all the memory allocation cleanups here with `__free`=
+?
+>> That would allow us to drop all the `goto`s, but since this function h=
+as
+>> quite a few of them, I=E2=80=99m concerned it might introduce new issu=
+es. What=E2=80=99s
+>> your recommendation?
+> Frankly, don't use __free() in this code at all, at least for the time =
+being.
+>
+> There is a problem with dropping the reference to policy at the end of
+> __dtpm_cpu_setup() because that policy may be subsequently indirectly
+> used in set_pd_power_limit() which calls
+> freq_qos_update_request(&dtpm_cpu->qos_req, freq) and
+> dtpm_cpu->qos_req->qos is policy->constraints, so using it will cause
+> policy->constraints to be dereferenced in freq_qos_apply() which will
+> crash and burn if the policy goes away in the meantime.  So AFAICS
+> __dtpm_cpu_setup() shouldn't call cpufreq_cpu_put() at all and the
+> policy should be released in pd_release() without acquiring a new
+> reference to it.
+>
 
-I already commented on this series that it is very bad and author should
-does not understand how cleanup.h works, and here is another example.
+Thanks a lot for the detailed explanation!
 
-IMO, entire patchset should be dropped.
-
-Best regards,
-Krzysztof
 
