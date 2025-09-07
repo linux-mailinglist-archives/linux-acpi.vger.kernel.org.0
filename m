@@ -1,171 +1,196 @@
-Return-Path: <linux-acpi+bounces-16442-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16443-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C677B478D2
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Sep 2025 05:52:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27315B4794D
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Sep 2025 09:08:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F07E01B241DA
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Sep 2025 03:52:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC1B41B21053
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Sep 2025 07:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00461B0437;
-	Sun,  7 Sep 2025 03:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8601E7C27;
+	Sun,  7 Sep 2025 07:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="aRcc4k/0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YGAgS8Dg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71B0315D3D;
-	Sun,  7 Sep 2025 03:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300AA2AE84;
+	Sun,  7 Sep 2025 07:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757217129; cv=none; b=K84juzqGrIIIWHdDgta+M9809bRWHP2CyrdDkOZ02QQ3JQaLZ+CCJ0SYbcs7tt0AquQCAzXHo1jEC+6eq0UXovyN5070G8kRGsPZfMZbMqArWaoRtBdFHJv1q0LL9njQXD6+wsMP+gCC6uYFKtbKWvUfOg8GxwXvWSsqpJKwbHE=
+	t=1757228909; cv=none; b=N3MbIqYl/hOqNzn/o5BHd8p1VGVEzzk0Ia0idv8lRegJJHUZmG2ajFA6WqWxOe2Z2zH/e21mho0gWYon4DFOzwSkb5cWdfSpw0BgYWCiyoeZZ4/uuI+UeIa6jYj03QRtDgFDa/8pNTzpy6Ogz6ISf47HBrnuomnS/AlCAh69gnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757217129; c=relaxed/simple;
-	bh=Tl8YpPtuRNIadTCPhU/fMyQ53LFlCEAX9RW7s4o69cc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fA8FDaKQqGmFE3P6MOk77MhGUF/uyIOi4u/nzrD2jZCUnyp+w6FjFdNYHGCuU2EeaNLvYCONCXF3nKu/VRpIRMnK11uBL9BLodMNU8EAPXNk933iFn1754sNG9zuV/xT6tHXHqBHFsM+bbdRAQxX0zzhiCdRZsHHsjtRHK6WHi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=aRcc4k/0; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=V/
-	xQFFWxTDo1tog0Es80vL2GMWcHu/THTjRpMN4btPM=; b=aRcc4k/0htN3TFWm4G
-	/1YmU+8zMkbO8X2qmJyje6EtP94KHMJxE2DaHZGON88oXAvwMlOHQnNCGRz9ktDV
-	oTosxPe6QIaE/Hpj17Xu2vqhrpvXeESEVsRb2/R1w7TEaXeFi9nagtjnlXxTk38g
-	KFY4pY8mHGakCo4hdWm9wKlWo=
-Received: from MS-CMFLBWVCLQRG.localdomain (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgD3_z1cAb1oHz8iCA--.51324S2;
-	Sun, 07 Sep 2025 11:51:57 +0800 (CST)
-From: GuangFei Luo <luogf2025@163.com>
-To: "Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	luogf2025@163.com
-Subject: [PATCH] ACPI: battery: prevent sysfs_add_battery re-entry on rapid events
-Date: Sun,  7 Sep 2025 11:51:54 +0800
-Message-ID: <20250907035154.223983-1-luogf2025@163.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1757228909; c=relaxed/simple;
+	bh=BJjF7VDQQPI+Jufb+uiSemKybYIlgQjoRVG/ISASK1I=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=I5ivQUAydvkr85TcKtPLcjLrx9x1+467zcaVJDpLDj2GBxfxtGQhblBUgCW8BJM3rW7Fe5MNBKd8ZxgH+aVRkkNq9h0yPSBELawr6grtoXi61/wuUe61kFWDx4tqWx1yM30SXIjbN5zxypUM+ZMV7FUIgFLWBejUvSDv8FGaaAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YGAgS8Dg; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757228907; x=1788764907;
+  h=date:from:to:cc:subject:message-id;
+  bh=BJjF7VDQQPI+Jufb+uiSemKybYIlgQjoRVG/ISASK1I=;
+  b=YGAgS8Dg+STLctDsjs6qFK0dG6LgkUXzU+lxuckhbw/N5nOLEOQZzQp/
+   +LYo7LYzQsY8bqrcBkH9GKVpDfHs9sPY8ihxCGHP7KHHDnO/z1E92dfO+
+   qVVLKt1//qnrzXdAZ1R6ct6Cd4YWN/Sg8zAsdEQVoyc+cXK1zvQo/7U7U
+   5ipN34dHZx9xezJj3NVZvYtf+AAd4+b4EJHQSn7VwmghZvESVdjxKHZiE
+   cWAbWxmRgrdHOYEv75i1hQlB0SedO5GUClLTuJEgzogUJ30EACJGOP5m/
+   JyiadR1Rj7cC8ig8DqVZOTyI8Rjb57zjwukDPwwZl+zi0jK1dnbMgnfMD
+   Q==;
+X-CSE-ConnectionGUID: H2uTn/6+RMCgbOapJMhGHg==
+X-CSE-MsgGUID: ybI42J6PSw28QB18BpVTdA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11545"; a="59590398"
+X-IronPort-AV: E=Sophos;i="6.18,245,1751266800"; 
+   d="scan'208";a="59590398"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2025 00:08:27 -0700
+X-CSE-ConnectionGUID: cvAWKRu3QB2hkxMvCK6FQQ==
+X-CSE-MsgGUID: 5RAO9g5aQSiv3FFiTYe1NQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,245,1751266800"; 
+   d="scan'208";a="172433175"
+Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 07 Sep 2025 00:08:25 -0700
+Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uv9Vf-00026F-0R;
+	Sun, 07 Sep 2025 07:08:23 +0000
+Date: Sun, 07 Sep 2025 15:07:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ db476aeee1c76dfcb4fceceaa301685b30c84849
+Message-ID: <202509071533.NVvgm8Og-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PygvCgD3_z1cAb1oHz8iCA--.51324S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3AF43ur1kWw4fWF43uF18Grg_yoW7Grykpa
-	1rKayUKrW8JF4kJwsI9F4UKFyxuFs0qF9rWr95Jrn2kasrCw1DAryxZFyUX3W7GrykZ3yx
-	ZFn5t3Wrtw1xWw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U918QUUUUU=
-X-CM-SenderInfo: poxrwwisqskqqrwthudrp/xtbBXxDBmWi88ZrvpAAAsj
 
-When removing and reinserting the laptop battery, ACPI can trigger
-two notifications in quick succession:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: db476aeee1c76dfcb4fceceaa301685b30c84849  Merge branch 'acpi-processor' into bleeding-edge
 
-  - ACPI_BATTERY_NOTIFY_STATUS (0x80)
-  - ACPI_BATTERY_NOTIFY_INFO   (0x81)
+elapsed time: 2044m
 
-Both notifications call acpi_battery_update(). Because the events
-happen very close in time, sysfs_add_battery() can be re-entered
-before battery->bat is set, causing a duplicate sysfs entry error.
+configs tested: 103
+configs skipped: 4
 
-This patch ensures that sysfs_add_battery() is not re-entered
-when battery->bat is already non-NULL, preventing the duplicate
-sysfs creation and stabilizing battery hotplug handling.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-[  476.117945] sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
-[  476.118896] CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
-[  476.118903] Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
-[  476.118906] Workqueue: kacpi_notify acpi_os_execute_deferred
-[  476.118917] Call Trace:
-[  476.118922]  <TASK>
-[  476.118929]  dump_stack_lvl+0x5d/0x80
-[  476.118938]  sysfs_warn_dup.cold+0x17/0x23
-[  476.118943]  sysfs_create_dir_ns+0xce/0xe0
-[  476.118952]  kobject_add_internal+0xba/0x250
-[  476.118959]  kobject_add+0x96/0xc0
-[  476.118964]  ? get_device_parent+0xde/0x1e0
-[  476.118970]  device_add+0xe2/0x870
-[  476.118975]  __power_supply_register.part.0+0x20f/0x3f0
-[  476.118981]  ? wake_up_q+0x4e/0x90
-[  476.118990]  sysfs_add_battery+0xa4/0x1d0 [battery]
-[  476.118998]  acpi_battery_update+0x19e/0x290 [battery]
-[  476.119002]  acpi_battery_notify+0x50/0x120 [battery]
-[  476.119006]  acpi_ev_notify_dispatch+0x49/0x70
-[  476.119012]  acpi_os_execute_deferred+0x1a/0x30
-[  476.119015]  process_one_work+0x177/0x330
-[  476.119022]  worker_thread+0x251/0x390
-[  476.119026]  ? __pfx_worker_thread+0x10/0x10
-[  476.119030]  kthread+0xd2/0x100
-[  476.119033]  ? __pfx_kthread+0x10/0x10
-[  476.119035]  ret_from_fork+0x34/0x50
-[  476.119040]  ? __pfx_kthread+0x10/0x10
-[  476.119042]  ret_from_fork_asm+0x1a/0x30
-[  476.119049]  </TASK>
-[  476.142552] kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
-[  476.415022] ata1.00: unexpected _GTF length (8)
-[  476.428076] sd 0:0:0:0: [sda] Starting disk
-[  476.835035] ata1.00: unexpected _GTF length (8)
-[  476.839720] ata1.00: configured for UDMA/133
-[  491.328831] sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
-[  491.329720] CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
-[  491.329727] Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
-[  491.329731] Workqueue: kacpi_notify acpi_os_execute_deferred
-[  491.329741] Call Trace:
-[  491.329745]  <TASK>
-[  491.329751]  dump_stack_lvl+0x5d/0x80
-[  491.329758]  sysfs_warn_dup.cold+0x17/0x23
-[  491.329762]  sysfs_create_dir_ns+0xce/0xe0
-[  491.329770]  kobject_add_internal+0xba/0x250
-[  491.329775]  kobject_add+0x96/0xc0
-[  491.329779]  ? get_device_parent+0xde/0x1e0
-[  491.329784]  device_add+0xe2/0x870
-[  491.329790]  __power_supply_register.part.0+0x20f/0x3f0
-[  491.329797]  sysfs_add_battery+0xa4/0x1d0 [battery]
-[  491.329805]  acpi_battery_update+0x19e/0x290 [battery]
-[  491.329809]  acpi_battery_notify+0x50/0x120 [battery]
-[  491.329812]  acpi_ev_notify_dispatch+0x49/0x70
-[  491.329817]  acpi_os_execute_deferred+0x1a/0x30
-[  491.329820]  process_one_work+0x177/0x330
-[  491.329826]  worker_thread+0x251/0x390
-[  491.329830]  ? __pfx_worker_thread+0x10/0x10
-[  491.329833]  kthread+0xd2/0x100
-[  491.329836]  ? __pfx_kthread+0x10/0x10
-[  491.329838]  ret_from_fork+0x34/0x50
-[  491.329842]  ? __pfx_kthread+0x10/0x10
-[  491.329844]  ret_from_fork_asm+0x1a/0x30
-[  491.329850]  </TASK>
-[  491.329855] kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+alpha                               defconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                                 defconfig    gcc-15.1.0
+arc                   randconfig-001-20250906    gcc-14.3.0
+arc                   randconfig-002-20250906    gcc-10.5.0
+arm                               allnoconfig    clang-22
+arm                          gemini_defconfig    clang-20
+arm                            hisi_defconfig    gcc-15.1.0
+arm                   randconfig-001-20250906    clang-22
+arm                   randconfig-002-20250906    clang-22
+arm                   randconfig-003-20250906    gcc-13.4.0
+arm                   randconfig-004-20250906    gcc-10.5.0
+arm                           sama5_defconfig    gcc-15.1.0
+arm                    vt8500_v6_v7_defconfig    gcc-15.1.0
+arm64                             allnoconfig    gcc-15.1.0
+arm64                 randconfig-001-20250906    gcc-8.5.0
+arm64                 randconfig-002-20250906    gcc-12.5.0
+arm64                 randconfig-003-20250906    clang-22
+arm64                 randconfig-004-20250906    gcc-9.5.0
+csky                              allnoconfig    gcc-15.1.0
+csky                  randconfig-001-20250906    gcc-15.1.0
+csky                  randconfig-002-20250906    gcc-15.1.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-22
+hexagon                          allyesconfig    clang-22
+hexagon               randconfig-001-20250906    clang-20
+hexagon               randconfig-002-20250906    clang-22
+i386                             allmodconfig    gcc-13
+i386                              allnoconfig    gcc-13
+i386                             allyesconfig    gcc-13
+i386        buildonly-randconfig-001-20250906    clang-20
+i386        buildonly-randconfig-002-20250906    gcc-11
+i386        buildonly-randconfig-003-20250906    gcc-13
+i386        buildonly-randconfig-004-20250906    gcc-13
+i386        buildonly-randconfig-005-20250906    clang-20
+i386        buildonly-randconfig-006-20250906    clang-20
+i386                                defconfig    clang-20
+loongarch                        alldefconfig    clang-20
+loongarch                         allnoconfig    clang-22
+loongarch             randconfig-001-20250906    clang-22
+loongarch             randconfig-002-20250906    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20250906    gcc-11.5.0
+nios2                 randconfig-002-20250906    gcc-11.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                randconfig-001-20250906    gcc-11.5.0
+parisc                randconfig-002-20250906    gcc-8.5.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                       eiger_defconfig    clang-22
+powerpc               randconfig-001-20250906    gcc-14.3.0
+powerpc               randconfig-002-20250906    clang-20
+powerpc               randconfig-003-20250906    clang-22
+powerpc64             randconfig-001-20250906    gcc-13.4.0
+powerpc64             randconfig-002-20250906    gcc-10.5.0
+powerpc64             randconfig-003-20250906    clang-22
+riscv                             allnoconfig    gcc-15.1.0
+riscv                 randconfig-001-20250906    gcc-13.4.0
+riscv                 randconfig-002-20250906    gcc-8.5.0
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.1.0
+s390                  randconfig-001-20250906    gcc-10.5.0
+s390                  randconfig-002-20250906    clang-22
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                            migor_defconfig    gcc-15.1.0
+sh                    randconfig-001-20250906    gcc-15.1.0
+sh                    randconfig-002-20250906    gcc-12.5.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                 randconfig-001-20250906    gcc-8.5.0
+sparc                 randconfig-002-20250906    gcc-13.4.0
+sparc64               randconfig-001-20250906    clang-22
+sparc64               randconfig-002-20250906    gcc-14.3.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-13
+um                    randconfig-001-20250906    gcc-12
+um                    randconfig-002-20250906    clang-22
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250906    clang-20
+x86_64      buildonly-randconfig-002-20250906    gcc-13
+x86_64      buildonly-randconfig-003-20250906    gcc-13
+x86_64      buildonly-randconfig-004-20250906    clang-20
+x86_64      buildonly-randconfig-005-20250906    gcc-13
+x86_64      buildonly-randconfig-006-20250906    gcc-13
+x86_64                              defconfig    gcc-11
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20250906    gcc-12.5.0
+xtensa                randconfig-002-20250906    gcc-10.5.0
 
-Fixes: 508df92d1f8d ("ACPI: battery: register power_supply subdevice only when battery is present")
-Signed-off-by: GuangFei Luo <luogf2025@163.com>
-Cc: stable@vger.kernel.org
----
- drivers/acpi/battery.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 6905b56bf3e4..3801fd34c969 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -1026,11 +1026,13 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
- 		return result;
- 	acpi_battery_quirks(battery);
- 
-+	mutex_lock(&battery->sysfs_lock);
- 	if (!battery->bat) {
- 		result = sysfs_add_battery(battery);
- 		if (result)
- 			return result;
- 	}
-+	mutex_unlock(&battery->sysfs_lock);
- 
- 	/*
- 	 * Wakeup the system if battery is critical low
--- 
-2.43.0
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
