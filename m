@@ -1,42 +1,42 @@
-Return-Path: <linux-acpi+bounces-16441-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16442-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E26B2B478CB
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Sep 2025 05:39:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C677B478D2
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Sep 2025 05:52:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3409D18868AE
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Sep 2025 03:40:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F07E01B241DA
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Sep 2025 03:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487B71A0BFD;
-	Sun,  7 Sep 2025 03:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00461B0437;
+	Sun,  7 Sep 2025 03:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="DFUq5Dng"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="aRcc4k/0"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA91C14A0B5;
-	Sun,  7 Sep 2025 03:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71B0315D3D;
+	Sun,  7 Sep 2025 03:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757216387; cv=none; b=fu6Yk5tVNypjgu1LIi/WvGWCMePLxxjdXCC33puRrUfAStUZQnC90FrXxUP9uRjZ0forbNO5C2CCLRRHGK7agrSr2WptYbKMyBP6vWF6GxmKISmIHZ3jKSEJEWXSZd2CetFoalb4u+P2ab6Bv/8t4Bq9+K61nAMeuGA4P9hfDHo=
+	t=1757217129; cv=none; b=K84juzqGrIIIWHdDgta+M9809bRWHP2CyrdDkOZ02QQ3JQaLZ+CCJ0SYbcs7tt0AquQCAzXHo1jEC+6eq0UXovyN5070G8kRGsPZfMZbMqArWaoRtBdFHJv1q0LL9njQXD6+wsMP+gCC6uYFKtbKWvUfOg8GxwXvWSsqpJKwbHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757216387; c=relaxed/simple;
-	bh=FtjgBkxlqi7pcdUqJq/lM2rJ3zdR6XfU4qGM0BZmf7w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sN3NY8/TXIhCwaBCUhSVFThTjbseE+OD2AmIXTxlDs24ObKTsvn3K79zPfNpumicTN1KJjLpD/+69+86SAwz3MNc1cunzBr2jFB7MciJJDJV64ikJUMKaewzBZXeVBY8GhJjzWh7bjc6MGdDMKRx4Uhbq1SxOmnCCqvHcTsJjHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=DFUq5Dng; arc=none smtp.client-ip=220.197.31.5
+	s=arc-20240116; t=1757217129; c=relaxed/simple;
+	bh=Tl8YpPtuRNIadTCPhU/fMyQ53LFlCEAX9RW7s4o69cc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fA8FDaKQqGmFE3P6MOk77MhGUF/uyIOi4u/nzrD2jZCUnyp+w6FjFdNYHGCuU2EeaNLvYCONCXF3nKu/VRpIRMnK11uBL9BLodMNU8EAPXNk933iFn1754sNG9zuV/xT6tHXHqBHFsM+bbdRAQxX0zzhiCdRZsHHsjtRHK6WHi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=aRcc4k/0; arc=none smtp.client-ip=220.197.31.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=UA
-	/GHr2DPUYc0ydI7Q4Kl3YbzgHpnAu+yoZiXnVHT0k=; b=DFUq5DngCFnUp1PapN
-	fXJsAVzMNH0ctGzjNANn4955bi7RUCapsUOoVSlhJZhF1/7ri0fTl77v2+JvlX41
-	nbiWkAknmYEwAXHbq4JziXsqzbKNwcXgAVOJNsjP4XCnn1CJuhZINGY3EQtUWEAJ
-	F8kU1dCJXmyS5QYfn2P3Rn/Ic=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=V/
+	xQFFWxTDo1tog0Es80vL2GMWcHu/THTjRpMN4btPM=; b=aRcc4k/0htN3TFWm4G
+	/1YmU+8zMkbO8X2qmJyje6EtP94KHMJxE2DaHZGON88oXAvwMlOHQnNCGRz9ktDV
+	oTosxPe6QIaE/Hpj17Xu2vqhrpvXeESEVsRb2/R1w7TEaXeFi9nagtjnlXxTk38g
+	KFY4pY8mHGakCo4hdWm9wKlWo=
 Received: from MS-CMFLBWVCLQRG.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDXBiVu_rxoeI9OHA--.48406S2;
-	Sun, 07 Sep 2025 11:39:28 +0800 (CST)
+	by gzsmtp4 (Coremail) with SMTP id PygvCgD3_z1cAb1oHz8iCA--.51324S2;
+	Sun, 07 Sep 2025 11:51:57 +0800 (CST)
 From: GuangFei Luo <luogf2025@163.com>
 To: "Rafael J . Wysocki" <rafael@kernel.org>
 Cc: Len Brown <lenb@kernel.org>,
@@ -45,8 +45,8 @@ Cc: Len Brown <lenb@kernel.org>,
 	stable@vger.kernel.org,
 	luogf2025@163.com
 Subject: [PATCH] ACPI: battery: prevent sysfs_add_battery re-entry on rapid events
-Date: Sun,  7 Sep 2025 11:39:24 +0800
-Message-ID: <20250907033925.223849-1-luogf2025@163.com>
+Date: Sun,  7 Sep 2025 11:51:54 +0800
+Message-ID: <20250907035154.223983-1-luogf2025@163.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -55,12 +55,12 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXBiVu_rxoeI9OHA--.48406S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZr1xWrykKF1xuw4UGr4xtFb_yoW7Gr17pa
-	1rKa1UKrW8JF4kJwsI9F4UKFyxWFs0qF9rWr95Jrn2kasrGw1DAryxZFyUXF17GrykZ3yx
+X-CM-TRANSID:PygvCgD3_z1cAb1oHz8iCA--.51324S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3AF43ur1kWw4fWF43uF18Grg_yoW7Grykpa
+	1rKayUKrW8JF4kJwsI9F4UKFyxuFs0qF9rWr95Jrn2kasrCw1DAryxZFyUX3W7GrykZ3yx
 	ZFn5t3Wrtw1xWw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U9eOAUUUUU=
-X-CM-SenderInfo: poxrwwisqskqqrwthudrp/1tbizQa8mWi27eJixwAFsf
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U918QUUUUU=
+X-CM-SenderInfo: poxrwwisqskqqrwthudrp/xtbBXxDBmWi88ZrvpAAAsj
 
 When removing and reinserting the laptop battery, ACPI can trigger
 two notifications in quick succession:
@@ -142,6 +142,7 @@ sysfs creation and stabilizing battery hotplug handling.
 
 Fixes: 508df92d1f8d ("ACPI: battery: register power_supply subdevice only when battery is present")
 Signed-off-by: GuangFei Luo <luogf2025@163.com>
+Cc: stable@vger.kernel.org
 ---
  drivers/acpi/battery.c | 2 ++
  1 file changed, 2 insertions(+)
