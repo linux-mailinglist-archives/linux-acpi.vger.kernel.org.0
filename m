@@ -1,228 +1,170 @@
-Return-Path: <linux-acpi+bounces-16440-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16441-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8585B471B8
-	for <lists+linux-acpi@lfdr.de>; Sat,  6 Sep 2025 17:03:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E26B2B478CB
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Sep 2025 05:39:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A76FA583635
-	for <lists+linux-acpi@lfdr.de>; Sat,  6 Sep 2025 15:03:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3409D18868AE
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Sep 2025 03:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5CD1F1306;
-	Sat,  6 Sep 2025 15:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487B71A0BFD;
+	Sun,  7 Sep 2025 03:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="dbF8kgxy"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="DFUq5Dng"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2067.outbound.protection.outlook.com [40.107.93.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CBF315D35;
-	Sat,  6 Sep 2025 15:03:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757171009; cv=fail; b=hTvlMUUEthV47R8Y1BkeRv3YEOk11GZy+ra1414s9uQEBvxJ8FmiHDO9J4ajYRk1ceb5ugdpohPGcK7PTE1DSaI0lhjTlZb1gCUGLgkysTYIoUpYfzUZgo1Gj2cOU3R8iaIoqcI/wr8c8sSS0VN331Fd4ENeebtG7LUdsWRnyb8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757171009; c=relaxed/simple;
-	bh=iImvuTMXLA3k1EvK9tTJ6dMkywkegKgHif+pejqWxOc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EHylC/2ErnhMl+dzfAtIK6loGZ/mrYPkuPW+0xD0opCFEJ3PjWGtSSmiVumyft00fK83D6Z0DDsmqfjkrnthbPtfi5ZxHPFkShHAAOh4BHxECU8hpbZzmVgB9/LABun0AQiX/dqcnB3yyTKrQN94IKECgodkpUaSS1SZeQUJHNQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=dbF8kgxy; arc=fail smtp.client-ip=40.107.93.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SYkMtCgxegEMcCyx8u4u8HZnU4Z7hClZgYY6sXpCyAS5YwwE0MEGCfGbf5FBCgbpyWBeDB5XAYTMPqe7cz/azoUkQr1zIRyWjs16QioL05JzP0dVA4xmmJ7WJGy64aM6e8ay8A7CkLUK57O+JW2WZBFOVr83cBGrUkUGWsf4bMVhvq3wL8bwUQBM7kMCyfgwLMvJuEBiA8LjZwtLeY1BTK0DwT/9hMItzyvpTV4GpsYHSeXRl2+EwEFvhWlIa8Y8SlqPGthZNerowc0F3ZLVW4CBKtg3H0VRzXD4n/Mfv/YdhRHKEmmbbL8eEyR3Vj48qbiu9WyC+ifEHSGPQAkMxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=laCtqat2fdRv4KDFVxLu1nv/qjv+K+TccQI7pxA/Lk8=;
- b=UInGDLyOmEO3s0LiK//w4uzQy6NH2IL/xRq5K4KNyd+J1CmHQCL7hjkEjbRxpo4oHZqrV7n0V545sMAgge9+7GbQWTa+RxrapkfWIjRAyVoGoJbSqTls68ND9Xx9EyK1iMPGsZOBs4YSMT/76h7NiGXJTAsqeeX74jF1jFwUAKcWmF0XLzFqTT0U2vudLlUcSF0ThVE34ycYYRDFPlOZfV1Bj1/iNYDuq1+WY+oVzPWdUxLqQ6ripUH7p/kBCHAK2ApFAR/r+XsXdAJ8zsTZ6UGePnL4foQ/47ol8FmKoRhc5QmIyfnEiu+9dTrx+w2+4P73Gf/H/4xq97FUrv8fdg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=laCtqat2fdRv4KDFVxLu1nv/qjv+K+TccQI7pxA/Lk8=;
- b=dbF8kgxyXYXEhEJooyNEjbC13nSWDcWFeWyDXj3atT5NdiI5+gP2aKeZiuoHOPkL6om17Z4qFk5oeZRCfpAmKXWiKg6EW+xrpNcA54ZFFTrLtrZMkcl3jW+JbwwXSZ2+ZpVNpVkzkuFcwJqEweaEPOndKNqMU9eRFWDDY/sUY6M=
-Received: from BY3PR03CA0011.namprd03.prod.outlook.com (2603:10b6:a03:39a::16)
- by CH1PR12MB9645.namprd12.prod.outlook.com (2603:10b6:610:2af::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.18; Sat, 6 Sep
- 2025 15:03:21 +0000
-Received: from CO1PEPF000044EF.namprd05.prod.outlook.com
- (2603:10b6:a03:39a:cafe::25) by BY3PR03CA0011.outlook.office365.com
- (2603:10b6:a03:39a::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9094.18 via Frontend Transport; Sat,
- 6 Sep 2025 15:03:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000044EF.mail.protection.outlook.com (10.167.241.69) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9094.14 via Frontend Transport; Sat, 6 Sep 2025 15:03:20 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sat, 6 Sep
- 2025 10:03:19 -0500
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB05.amd.com
- (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sat, 6 Sep
- 2025 10:03:17 -0500
-Received: from xhdshubhraj40.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Sat, 6 Sep 2025 10:03:13 -0500
-From: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
-To: <linux-edac@vger.kernel.org>
-CC: <git@amd.com>, <shubhrajyoti.datta@gmail.com>, Rafael Wysocki
-	<rafael@kernel.org>, Tony Luck <tony.luck@intel.com>, Borislav Petkov
-	<bp@alien8.de>, Hanjun Guo <guohanjun@huawei.com>, Mauro Carvalho Chehab
-	<mchehab@kernel.org>, Shuai Xue <xueshuai@linux.alibaba.com>, Len Brown
-	<lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH] APEI: GHES: Replace log_non_standard_event with direct tracepoint call
-Date: Sat, 6 Sep 2025 20:33:07 +0530
-Message-ID: <20250906150307.13921-1-shubhrajyoti.datta@amd.com>
-X-Mailer: git-send-email 2.17.1
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA91C14A0B5;
+	Sun,  7 Sep 2025 03:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757216387; cv=none; b=fu6Yk5tVNypjgu1LIi/WvGWCMePLxxjdXCC33puRrUfAStUZQnC90FrXxUP9uRjZ0forbNO5C2CCLRRHGK7agrSr2WptYbKMyBP6vWF6GxmKISmIHZ3jKSEJEWXSZd2CetFoalb4u+P2ab6Bv/8t4Bq9+K61nAMeuGA4P9hfDHo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757216387; c=relaxed/simple;
+	bh=FtjgBkxlqi7pcdUqJq/lM2rJ3zdR6XfU4qGM0BZmf7w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sN3NY8/TXIhCwaBCUhSVFThTjbseE+OD2AmIXTxlDs24ObKTsvn3K79zPfNpumicTN1KJjLpD/+69+86SAwz3MNc1cunzBr2jFB7MciJJDJV64ikJUMKaewzBZXeVBY8GhJjzWh7bjc6MGdDMKRx4Uhbq1SxOmnCCqvHcTsJjHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=DFUq5Dng; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=UA
+	/GHr2DPUYc0ydI7Q4Kl3YbzgHpnAu+yoZiXnVHT0k=; b=DFUq5DngCFnUp1PapN
+	fXJsAVzMNH0ctGzjNANn4955bi7RUCapsUOoVSlhJZhF1/7ri0fTl77v2+JvlX41
+	nbiWkAknmYEwAXHbq4JziXsqzbKNwcXgAVOJNsjP4XCnn1CJuhZINGY3EQtUWEAJ
+	F8kU1dCJXmyS5QYfn2P3Rn/Ic=
+Received: from MS-CMFLBWVCLQRG.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDXBiVu_rxoeI9OHA--.48406S2;
+	Sun, 07 Sep 2025 11:39:28 +0800 (CST)
+From: GuangFei Luo <luogf2025@163.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	luogf2025@163.com
+Subject: [PATCH] ACPI: battery: prevent sysfs_add_battery re-entry on rapid events
+Date: Sun,  7 Sep 2025 11:39:24 +0800
+Message-ID: <20250907033925.223849-1-luogf2025@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB05.amd.com: shubhrajyoti.datta@amd.com does not
- designate permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000044EF:EE_|CH1PR12MB9645:EE_
-X-MS-Office365-Filtering-Correlation-Id: 949ff642-68a7-4670-242b-08dded5684c6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|376014|7416014|82310400026|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?J7Dd7U3H2vzXUWQyIBj0KiYu9azHrEYC04aeXz7r6Dv0FFv4TUfvW1o0WNIP?=
- =?us-ascii?Q?1L1fBO40t0NuJYb++CIusBE1IpeuUaxnKaVsZZILTHJYaGxgeQQi4Z7shgLb?=
- =?us-ascii?Q?Spra45Z19DrmTDRM7cbV6pZaMIIHGO4SyYtDydFjlvlsHuMQm/29eiGTB0Xc?=
- =?us-ascii?Q?K4ixiA0Qnk0klF0b3kwl2pXorDLiJbkw75dPw1FoWol83OIb6xSRhtOQbx8s?=
- =?us-ascii?Q?aG3JSyZqROYi7ijs/4ufkr4KY235Vnph++Hk4LwVD+YLUf5TcGNRPDXm8u7u?=
- =?us-ascii?Q?edQpLkr0HWDKEJuxiCfyYRuU+pZ/U5UQ+FgyzbyyJTmWI+TlYAgTSFk9aVHd?=
- =?us-ascii?Q?xQJTX/1lokUR8yoI3D6+kN5/MMAgNHZZ5mmetxSirwF1YBfvRsAV7+EwfAR9?=
- =?us-ascii?Q?MwAZzbFhLWYo2D6DnhiwZABpc9XICdtv5b80olhMz3BAGGmT50Y3E0cFSN8d?=
- =?us-ascii?Q?oAF8jIAHYqQBVhse7ElsVCE6OupEeE5DVRnbXFB2hI+sbjuHjY29udv2J5qR?=
- =?us-ascii?Q?N/hfl/Oj0yx9ubmMyUwievRNZQ/Yr+mH2xpbRlhQ3vlRITrodfar3GxkLNqa?=
- =?us-ascii?Q?XU1axaOdUjDLVlxujQTU6S5Uw3wc4Y+w1G4+BcRu4/oLT9DzsXO7nrmiIEN0?=
- =?us-ascii?Q?dy+3KvTYQVvh5hb40PkprBz4GeJMzmTTeQD8eS7oQHpC8G9jGRNM1/Hf+E7K?=
- =?us-ascii?Q?Xo8NJ6PT3yaPs7eLKiITQIrVTY4xhvY5jisjk1mEU7u7haSXSPwurqHUL10z?=
- =?us-ascii?Q?urcBmfte7dQol0SZ140VINZGE1zagd5vZjcDiAL8bE+5asoKqNR+k4mlvlDa?=
- =?us-ascii?Q?o/SmcHcZ9tlaU6AAmixJqE7KhSLlCsNZVuGiEqVxnQH2reWFVoAl3gVAHezO?=
- =?us-ascii?Q?0UnrNbcqCi1nUK9LToczVC7O6O3EtruMz0kF6EobcbGgGAG2S8QjDYUoOx+Z?=
- =?us-ascii?Q?4onAQoC3SxWnYmiKHQ4S8RDs9XYkIfe1JJn4neZgAjmF/m6c8VZujjBtYyYW?=
- =?us-ascii?Q?Y9Rvp5OWd99uahDOwI1zH0ATsDhOyr1NWZLaOTgZRz0ntziS/mZevWgkjx9d?=
- =?us-ascii?Q?G7Lt6X0+6Oo1UpThsX3MYJbE+OZiC7J3khu8LqsFQN3SrdTJXmrzA1K5cGa8?=
- =?us-ascii?Q?dprvcO0InuW+empGXPGW8NOXEYl5XAr1im2xMiFY8pzeehu+wqSbAb3eY+e1?=
- =?us-ascii?Q?/ESqIEV0E56i9pzAQk30sjt2MWO6tX9UEqtjjdjDeDvcwVMDxY6Vrkg/nWEl?=
- =?us-ascii?Q?QOE2YTZkSPMDtGj7CmEOXAFS8fyENk9xt44slCP56FVhDY4e382/guGaDi7H?=
- =?us-ascii?Q?acRAQPLqwFLbH3RKu3LHICYI4Mz62kDDJNcis5bpnDaMjgNeHZH95bTv70qK?=
- =?us-ascii?Q?Un/bw+PCB34J8j3z4UUjC5/E6WzitBNTsJbmn0bN8rF3fehrFwihS9wKKCtw?=
- =?us-ascii?Q?jiAnwlYa0M8eEYvB8G1b1de28xgvENboX7OQUmJlJiO1lLV1MCGl5exxBEOj?=
- =?us-ascii?Q?RYOtM0YI4wv1h4H1+Te9ltX47oroW9EQ3SfiACRfSUCuiRgOdpzJ7vWdvw?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(7416014)(82310400026)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2025 15:03:20.5675
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 949ff642-68a7-4670-242b-08dded5684c6
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000044EF.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9645
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDXBiVu_rxoeI9OHA--.48406S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZr1xWrykKF1xuw4UGr4xtFb_yoW7Gr17pa
+	1rKa1UKrW8JF4kJwsI9F4UKFyxWFs0qF9rWr95Jrn2kasrGw1DAryxZFyUXF17GrykZ3yx
+	ZFn5t3Wrtw1xWw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U9eOAUUUUU=
+X-CM-SenderInfo: poxrwwisqskqqrwthudrp/1tbizQa8mWi27eJixwAFsf
 
-Simplify non-standard RAS event logging by replacing
-log_non_standard_event() with a direct call to trace_non_standard_event()
-in the GHES error handler. Remove the redundant wrapper from the RAS
-subsystem to reduce indirection.
+When removing and reinserting the laptop battery, ACPI can trigger
+two notifications in quick succession:
 
-Suggested-by: Borislav Petkov  <bp@alien8.de>
-Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
+  - ACPI_BATTERY_NOTIFY_STATUS (0x80)
+  - ACPI_BATTERY_NOTIFY_INFO   (0x81)
+
+Both notifications call acpi_battery_update(). Because the events
+happen very close in time, sysfs_add_battery() can be re-entered
+before battery->bat is set, causing a duplicate sysfs entry error.
+
+This patch ensures that sysfs_add_battery() is not re-entered
+when battery->bat is already non-NULL, preventing the duplicate
+sysfs creation and stabilizing battery hotplug handling.
+
+[  476.117945] sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
+[  476.118896] CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
+[  476.118903] Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
+[  476.118906] Workqueue: kacpi_notify acpi_os_execute_deferred
+[  476.118917] Call Trace:
+[  476.118922]  <TASK>
+[  476.118929]  dump_stack_lvl+0x5d/0x80
+[  476.118938]  sysfs_warn_dup.cold+0x17/0x23
+[  476.118943]  sysfs_create_dir_ns+0xce/0xe0
+[  476.118952]  kobject_add_internal+0xba/0x250
+[  476.118959]  kobject_add+0x96/0xc0
+[  476.118964]  ? get_device_parent+0xde/0x1e0
+[  476.118970]  device_add+0xe2/0x870
+[  476.118975]  __power_supply_register.part.0+0x20f/0x3f0
+[  476.118981]  ? wake_up_q+0x4e/0x90
+[  476.118990]  sysfs_add_battery+0xa4/0x1d0 [battery]
+[  476.118998]  acpi_battery_update+0x19e/0x290 [battery]
+[  476.119002]  acpi_battery_notify+0x50/0x120 [battery]
+[  476.119006]  acpi_ev_notify_dispatch+0x49/0x70
+[  476.119012]  acpi_os_execute_deferred+0x1a/0x30
+[  476.119015]  process_one_work+0x177/0x330
+[  476.119022]  worker_thread+0x251/0x390
+[  476.119026]  ? __pfx_worker_thread+0x10/0x10
+[  476.119030]  kthread+0xd2/0x100
+[  476.119033]  ? __pfx_kthread+0x10/0x10
+[  476.119035]  ret_from_fork+0x34/0x50
+[  476.119040]  ? __pfx_kthread+0x10/0x10
+[  476.119042]  ret_from_fork_asm+0x1a/0x30
+[  476.119049]  </TASK>
+[  476.142552] kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
+[  476.415022] ata1.00: unexpected _GTF length (8)
+[  476.428076] sd 0:0:0:0: [sda] Starting disk
+[  476.835035] ata1.00: unexpected _GTF length (8)
+[  476.839720] ata1.00: configured for UDMA/133
+[  491.328831] sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
+[  491.329720] CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
+[  491.329727] Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
+[  491.329731] Workqueue: kacpi_notify acpi_os_execute_deferred
+[  491.329741] Call Trace:
+[  491.329745]  <TASK>
+[  491.329751]  dump_stack_lvl+0x5d/0x80
+[  491.329758]  sysfs_warn_dup.cold+0x17/0x23
+[  491.329762]  sysfs_create_dir_ns+0xce/0xe0
+[  491.329770]  kobject_add_internal+0xba/0x250
+[  491.329775]  kobject_add+0x96/0xc0
+[  491.329779]  ? get_device_parent+0xde/0x1e0
+[  491.329784]  device_add+0xe2/0x870
+[  491.329790]  __power_supply_register.part.0+0x20f/0x3f0
+[  491.329797]  sysfs_add_battery+0xa4/0x1d0 [battery]
+[  491.329805]  acpi_battery_update+0x19e/0x290 [battery]
+[  491.329809]  acpi_battery_notify+0x50/0x120 [battery]
+[  491.329812]  acpi_ev_notify_dispatch+0x49/0x70
+[  491.329817]  acpi_os_execute_deferred+0x1a/0x30
+[  491.329820]  process_one_work+0x177/0x330
+[  491.329826]  worker_thread+0x251/0x390
+[  491.329830]  ? __pfx_worker_thread+0x10/0x10
+[  491.329833]  kthread+0xd2/0x100
+[  491.329836]  ? __pfx_kthread+0x10/0x10
+[  491.329838]  ret_from_fork+0x34/0x50
+[  491.329842]  ? __pfx_kthread+0x10/0x10
+[  491.329844]  ret_from_fork_asm+0x1a/0x30
+[  491.329850]  </TASK>
+[  491.329855] kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
+
+Fixes: 508df92d1f8d ("ACPI: battery: register power_supply subdevice only when battery is present")
+Signed-off-by: GuangFei Luo <luogf2025@163.com>
 ---
-discurssion link
-https://lore.kernel.org/all/20250901151658.GBaLW46ibJuf4kGgnl@fat_crate.local/
+ drivers/acpi/battery.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
- drivers/acpi/apei/ghes.c | 7 ++++---
- drivers/ras/ras.c        | 7 -------
- include/linux/ras.h      | 8 --------
- 3 files changed, 4 insertions(+), 18 deletions(-)
-
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index a0d54993edb3..43896a476fd7 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -921,9 +921,10 @@ static void ghes_do_proc(struct ghes *ghes,
- 			void *err = acpi_hest_get_payload(gdata);
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 6905b56bf3e4..3801fd34c969 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -1026,11 +1026,13 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
+ 		return result;
+ 	acpi_battery_quirks(battery);
  
- 			ghes_defer_non_standard_event(gdata, sev);
--			log_non_standard_event(sec_type, fru_id, fru_text,
--					       sec_sev, err,
--					       gdata->error_data_length);
-+			if (IS_ENABLED(CONFIG_RAS))
-+				trace_non_standard_event(sec_type, fru_id, fru_text,
-+							 sec_sev, err,
-+							 gdata->error_data_length);
- 		}
++	mutex_lock(&battery->sysfs_lock);
+ 	if (!battery->bat) {
+ 		result = sysfs_add_battery(battery);
+ 		if (result)
+ 			return result;
  	}
++	mutex_unlock(&battery->sysfs_lock);
  
-diff --git a/drivers/ras/ras.c b/drivers/ras/ras.c
-index a6e4792a1b2e..d51c546c2606 100644
---- a/drivers/ras/ras.c
-+++ b/drivers/ras/ras.c
-@@ -45,13 +45,6 @@ EXPORT_SYMBOL_GPL(amd_convert_umc_mca_addr_to_sys_addr);
- #define TRACE_INCLUDE_PATH ../../include/ras
- #include <ras/ras_event.h>
- 
--void log_non_standard_event(const guid_t *sec_type, const guid_t *fru_id,
--			    const char *fru_text, const u8 sev, const u8 *err,
--			    const u32 len)
--{
--	trace_non_standard_event(sec_type, fru_id, fru_text, sev, err, len);
--}
--
- void log_arm_hw_error(struct cper_sec_proc_arm *err)
- {
- 	trace_arm_event(err);
-diff --git a/include/linux/ras.h b/include/linux/ras.h
-index a64182bc72ad..4bd3ef7ca6d8 100644
---- a/include/linux/ras.h
-+++ b/include/linux/ras.h
-@@ -21,18 +21,10 @@ int __init parse_cec_param(char *str);
- #endif
- 
- #ifdef CONFIG_RAS
--void log_non_standard_event(const guid_t *sec_type,
--			    const guid_t *fru_id, const char *fru_text,
--			    const u8 sev, const u8 *err, const u32 len);
- void log_arm_hw_error(struct cper_sec_proc_arm *err);
- 
- #else
- static inline void
--log_non_standard_event(const guid_t *sec_type,
--		       const guid_t *fru_id, const char *fru_text,
--		       const u8 sev, const u8 *err, const u32 len)
--{ return; }
--static inline void
- log_arm_hw_error(struct cper_sec_proc_arm *err) { return; }
- #endif
- 
+ 	/*
+ 	 * Wakeup the system if battery is critical low
 -- 
-2.17.1
+2.43.0
 
 
