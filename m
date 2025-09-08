@@ -1,51 +1,51 @@
-Return-Path: <linux-acpi+bounces-16474-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16476-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03CFEB49554
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 18:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E74A8B49556
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 18:32:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC1E3188CE71
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 16:32:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43DB91890381
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 16:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965B630F939;
-	Mon,  8 Sep 2025 16:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D8D30F94C;
+	Mon,  8 Sep 2025 16:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+jhPL21"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fXVqCQ1J"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB7C30F928;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11C830F943;
 	Mon,  8 Sep 2025 16:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757349108; cv=none; b=qyI9qVkJ84UK2l4mwGH3njnljTATRlG9Pmi8AZI3uFeozMG6UoV29uAMaamWDbWaLOUHn+Hp1rAP7UemzJSfDMXRqF1pq9bTx5BmF6ugn5kD0AkA4PhTL29TTmDlckBzyEyxIFbVBgI+BKWry0uEBMpjeiyC1jN3MlHEPh0EH1w=
+	t=1757349108; cv=none; b=JAVeX2oKtucM1kOzku09tq5021jCONvThUq8hrE4qjp5sjeHrK70VcLOHhCc2pLkwFAjB4HPWoHWt4xqN//omePnLZKLX4dYlmb0lTiOByKwtyvgfi4piTKGitpRDU0wTDnZrbD1OqWQXS1FZdVE0yu/8hsVjqWbFJOlySeLPOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757349108; c=relaxed/simple;
-	bh=2U6Z8RxH98hnMaQV8REDzyDMoE+2Jx+42xIbx271+3s=;
+	bh=sGD9P1+N4V37A0aIJ2eK7vIsS8B9pkkhrv0UN3imJB0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dKoJvl7Tb2H0fAxxI/l/qIBsySdaIKT9fQ6Q52NTyxRU6zv1yU8OH/oUmV03xBJ91fKSZjEdw9417NsckYmyG811O933iPfgn7qr0xPd9GcRhLuVq1LxZfKkZ6igo258CGogHjHzxYdkPvH4d9DnDTiQ8zgJ1+KXNdy7cricvws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+jhPL21; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B838C4CEF5;
+	 MIME-Version; b=aORTbp4OLeIEtD/XOF3mPzTCIuDgjbrbrzIjLX+PAFTwvY1NaOs1eWt+iWrxMsRuSeZVS1gQYBdtA18DcBlecYnOaNvbaiSKZ3W2OPu4fwZpoOOFNH2JLnwDavuGhTWKVGla4lIaLjOolsDn1hB+BA+yb/PLwNAx3ZuXHw/DE9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fXVqCQ1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737FFC4CEF9;
 	Mon,  8 Sep 2025 16:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1757349108;
-	bh=2U6Z8RxH98hnMaQV8REDzyDMoE+2Jx+42xIbx271+3s=;
+	bh=sGD9P1+N4V37A0aIJ2eK7vIsS8B9pkkhrv0UN3imJB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+jhPL21Otg8MBgyvrxFvetugXwyghDpLo2xSflV+SYtLXx+bXDQP1AgTsTzdVhG3
-	 bAGkUgZx64V1d0qTs8i5cXtW82Y1GsNs3JXCR2dLJhrbQPVtPdMJtsFSsxF/1mZZK7
-	 MNQKQRcjtDDir026fV1AIYu+XU0Mi76FSuKrZ6xtYKa8fCUZALY18ssyyVLzIhPUNP
-	 rH5jP0EWdLL0RGCzlaCNDUy67EEudP571YDJ7laPS4p4mw8bMJw89uByrzny13qzDG
-	 T3I3+6RKZF/bIwEmecVWNfoBj5vA+gEW5tQGZhk6yVFjTJL3EuuwzwflAwZvNCDAb0
-	 C9YcHpVaHAPKw==
+	b=fXVqCQ1Jd/RLa8F2YRUK+xt2yn1De/nXFfvsfopMCm81ElEXjPFMo6Sm3fwz1DaAu
+	 MaL22A9DwFOYImVF5+aveYxYx7SAgGm9CfgPxo2K/QHWJIqb5mYLaIFUsMREcuUSJX
+	 ai5YhvLzY+xklsspr4o/Gr/Ct+L/3WUb/5ku6DgGJ/9NAtdmqBBivYa94I/q6EBp6N
+	 uhhACdHoPgZBaOpRNJ7TjyY+BL6NMt5mhL4k5w4qWXWvTtmjDYd7Hh9fMiMIfwipBd
+	 xXHrpzA4I1V0TvRX9sucdd3MsogG6DRKjCeZ9bAVSuQmzYX3NbzG5d02VOo6/Mt5D+
+	 U93Tcv2DHuOUA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1uvemQ-00000004NTm-0Bsz;
+	id 1uvemQ-00000004NTm-1IZA;
 	Mon, 08 Sep 2025 16:31:46 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: linux-kernel@vger.kernel.org,
@@ -62,9 +62,9 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Janne Grunau <j@jannau.net>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	James Clark <james.clark@linaro.org>
-Subject: [PATCH 02/25] ACPI: irq: Add IRQ affinity reporting interface
-Date: Mon,  8 Sep 2025 17:31:04 +0100
-Message-Id: <20250908163127.2462948-3-maz@kernel.org>
+Subject: [PATCH 03/25] of/irq: Add IRQ affinity reporting interface
+Date: Mon,  8 Sep 2025 17:31:05 +0100
+Message-Id: <20250908163127.2462948-4-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250908163127.2462948-1-maz@kernel.org>
 References: <20250908163127.2462948-1-maz@kernel.org>
@@ -80,67 +80,71 @@ X-SA-Exim-Rcpt-To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradea
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Plug the irq_populate_fwspec_info() helper into the ACPI layer
-to offer an IRQ affinity reporting function. This is currently
-only supported for the CONFIG_ACPI_GENERIC_GSI configurations,
-but could later be extended to legacy architectures if necessary.
+Plug the irq_populate_fwspec_info() helper into the OF layer
+to offer an IRQ affinity reporting function.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- drivers/acpi/irq.c   | 15 +++++++++++++++
- include/linux/acpi.h |  7 +++++++
- 2 files changed, 22 insertions(+)
+ drivers/of/irq.c       | 20 ++++++++++++++++++++
+ include/linux/of_irq.h |  7 +++++++
+ 2 files changed, 27 insertions(+)
 
-diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
-index 76a856c32c4d0..22f93fe23ddce 100644
---- a/drivers/acpi/irq.c
-+++ b/drivers/acpi/irq.c
-@@ -300,6 +300,21 @@ int acpi_irq_get(acpi_handle handle, unsigned int index, struct resource *res)
+diff --git a/drivers/of/irq.c b/drivers/of/irq.c
+index 74aaea61de13c..cb264f44bd6d8 100644
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -479,6 +479,26 @@ int of_irq_get(struct device_node *dev, int index)
  }
- EXPORT_SYMBOL_GPL(acpi_irq_get);
+ EXPORT_SYMBOL_GPL(of_irq_get);
  
-+const struct cpumask *acpi_irq_get_affinity(acpi_handle handle,
-+					    unsigned int index)
++const struct cpumask *of_irq_get_affinity(struct device_node *dev, int index)
 +{
++	int rc;
++	struct of_phandle_args oirq;
 +	struct irq_fwspec_info info;
-+	unsigned long flags;
 +
-+	if (!acpi_irq_parse_one(handle, index, &info.fwspec, &flags)) {
-+		if (!irq_populate_fwspec_info(&info) &&
-+		    info.flags & IRQ_FWSPEC_INFO_AFFINITY_VALID)
-+			return info.affinity;
-+	}
++	rc = of_irq_parse_one(dev, index, &oirq);
++	if (rc)
++		return NULL;
++
++	of_phandle_args_to_fwspec(oirq.np, oirq.args, oirq.args_count,
++				  &info.fwspec);
++
++	if (!irq_populate_fwspec_info(&info) &&
++	    info.flags & IRQ_FWSPEC_INFO_AFFINITY_VALID)
++		return info.affinity;
 +
 +	return NULL;
 +}
 +
  /**
-  * acpi_set_irq_model - Setup the GSI irqdomain information
-  * @model: the value assigned to acpi_irq_model
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 1c5bb1e887cd1..c506ae4bacc86 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1509,12 +1509,19 @@ static inline int acpi_parse_spcr(bool enable_earlycon, bool enable_console)
- 
- #if IS_ENABLED(CONFIG_ACPI_GENERIC_GSI)
- int acpi_irq_get(acpi_handle handle, unsigned int index, struct resource *res);
-+const struct cpumask *acpi_irq_get_affinity(acpi_handle handle,
-+					    unsigned int index);
- #else
- static inline
- int acpi_irq_get(acpi_handle handle, unsigned int index, struct resource *res)
+  * of_irq_get_byname - Decode a node's IRQ and return it as a Linux IRQ number
+  * @dev: pointer to device tree node
+diff --git a/include/linux/of_irq.h b/include/linux/of_irq.h
+index a480063c9cb19..721cbdbc292df 100644
+--- a/include/linux/of_irq.h
++++ b/include/linux/of_irq.h
+@@ -43,6 +43,8 @@ extern int of_irq_parse_one(struct device_node *device, int index,
+ 			  struct of_phandle_args *out_irq);
+ extern int of_irq_count(struct device_node *dev);
+ extern int of_irq_get(struct device_node *dev, int index);
++extern const struct cpumask *of_irq_get_affinity(struct device_node *dev,
++						      int index);
+ extern int of_irq_get_byname(struct device_node *dev, const char *name);
+ extern int of_irq_to_resource_table(struct device_node *dev,
+ 		struct resource *res, int nr_irqs);
+@@ -77,6 +79,11 @@ static inline int of_irq_get_byname(struct device_node *dev, const char *name)
  {
- 	return -EINVAL;
+ 	return 0;
  }
-+static inline const struct cpumask *acpi_irq_get_affinity(acpi_handle handle,
-+							  unsigned int index)
++static inline const struct cpumask *of_irq_get_affinity(struct device_node *dev,
++							int index)
 +{
 +	return NULL;
 +}
- #endif
- 
- #ifdef CONFIG_ACPI_LPIT
+ static inline int of_irq_to_resource_table(struct device_node *dev,
+ 					   struct resource *res, int nr_irqs)
+ {
 -- 
 2.39.2
 
