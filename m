@@ -1,354 +1,292 @@
-Return-Path: <linux-acpi+bounces-16506-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16508-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD19B4993E
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 21:02:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36277B49A8A
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 22:00:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BC28340F3A
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 19:02:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E56E53BA5B7
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 20:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E83D223DF1;
-	Mon,  8 Sep 2025 19:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3572D7D35;
+	Mon,  8 Sep 2025 20:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="EBX2tSaY"
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="GN8GDlNl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2091.outbound.protection.outlook.com [40.107.102.91])
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D99D1E8324;
-	Mon,  8 Sep 2025 19:02:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.91
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757358149; cv=fail; b=CNCixOA9cmDI2ctPc8i1dPTXXH0+kH3vHktV8RkzEtavIZ45G356U3mtsaSOGmprSULCKRlA7lMBxD6nHbtKudrPCEAC/p9LcJy6nFxwdBuO/KJ/Yk9VlezhPuFugeUj6XzGLolu8cmC3SbPgwh40XQjNIo5KnOe6frKWBpFmJw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757358149; c=relaxed/simple;
-	bh=il3yRWaaMLkma096ybQ+IdhQDv9SSoQkzI+5zGXN2QM=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 Content-Type:MIME-Version; b=sCkdOOXvmojLfKpszSEygW5Zj1FYCJLDVN0Sp+JRTh2kp6m4T3GUvQlDdEO2wbbI2A1d+SMmopCdRYOtpEEReYV4vspSErWP4zimC1Fnw7aYWqq1rSdn8OM9NT1kq5UBMxWomIVbBn1tWPiOP+PSo5uHDnj6hm6tDAvCS3jJJOo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=EBX2tSaY; arc=fail smtp.client-ip=40.107.102.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j4/ofjrTz5oMlkHwbL324p7F63iWI6yYaRZZyQYye6PpUbkVqoakcPsxpBTeSI4PRGxh94fROqLUspwyGha5CLuum2r07NXl3NJAb9vFgYgX31/lgBPGf1VKZkn8vU3h1E8wdjaF/EC3ncSd2fjdQycU2l9J7R8IhPzu4MlOKFr45ClzxnJ1c6JtFG6r1sX1lhvcspUWHkkeAS/4r4B5P4xIpC6YGX3lRDU9KixHzHhXs7oN0aozuvZUvcnM3NeCnioaTMTQDdJ7fOXjtpoDYDPIfr7/oQV6VpvUObiY45OprUt4Ceas7VePbW1wgL4W+JOlbcAZSuI1BDVhSxUiYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ga45bVBwLtNGnKnrfOPHz6QXHzqzDQzZ44jW8CUPPHA=;
- b=fxxi1JvBv2VKlbF5ETgtUe4su4Zgj+pj9wFl3hMu9rMVuBZGscIPimx7jXUULVRJsteI6w2nEBtzedylJFhoMMi35nPUUZ+QpgRn6eQ9mrLvvEIz5eRcK/A6zuwDCZcKBimDiLIn1rWvavLTFYZ/QbaR2dsvJ07x2N5Ss1ncpcZVHwcJp5olQMFLw+/Adr64HVdmKsoP7/WU7KqUkNaU+F+b6sRx60f4GLrOFw+IW/R694VOGrdX/Gr+g07w7rNA0QjrTfhGM3sfQvZXitpFiBl9z34n5d3crB8Z4BKrPMbQvs/qyVFx7CgBjUXx8/vpQrE3ikCNK73r4oWUdYg7bA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=os.amperecomputing.com; dkim=pass
- header.d=os.amperecomputing.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ga45bVBwLtNGnKnrfOPHz6QXHzqzDQzZ44jW8CUPPHA=;
- b=EBX2tSaYTUBWR4TkEnqKHQcG7Jn85/jDwQpRx5jYq1IO1fDBcISFT0aocYW7ylL1hJ9/BuvWgQytOldkTdsEdvwd7+0jFnZhrliEXqLDRQY5gvN7AKzzIkkcAhsLVWyN5B1uVuXIh5xZanMYdP+yUAwDBCXkI0/lKyfV8bwREo8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
-Received: from PH0PR01MB6231.prod.exchangelabs.com (2603:10b6:510:d::11) by
- DS2PR01MB9207.prod.exchangelabs.com (2603:10b6:8:27c::19) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9073.33; Mon, 8 Sep 2025 19:02:22 +0000
-Received: from PH0PR01MB6231.prod.exchangelabs.com
- ([fe80::4a0b:cded:6fc6:1e9f]) by PH0PR01MB6231.prod.exchangelabs.com
- ([fe80::4a0b:cded:6fc6:1e9f%5]) with mapi id 15.20.9094.021; Mon, 8 Sep 2025
- 19:02:19 +0000
-Date: Mon, 8 Sep 2025 12:02:14 -0700 (PDT)
-From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-To: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
-cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-    Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-    "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-    linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-    linux-kernel@vger.kernel.org, 
-    Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Subject: Re: [PATCH v3] ACPI: AGDI: Add interrupt signaling mode support
-In-Reply-To: <20250905042751.945616-1-fj1078ii@aa.jp.fujitsu.com>
-Message-ID: <bd45c06a-77cc-2ab3-122e-41dee1aee0ac@os.amperecomputing.com>
-References: <20250905042751.945616-1-fj1078ii@aa.jp.fujitsu.com>
-Content-Type: text/plain; format=flowed; charset=US-ASCII
-X-ClientProxiedBy: MW4PR04CA0243.namprd04.prod.outlook.com
- (2603:10b6:303:88::8) To PH0PR01MB6231.prod.exchangelabs.com
- (2603:10b6:510:d::11)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006DF2D6407
+	for <linux-acpi@vger.kernel.org>; Mon,  8 Sep 2025 20:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.143.35
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757361626; cv=none; b=k66G3MZzV6aa6bGSAvlG06SGPXuUk3/eVzdIXt8ye1kQZRQChkhcv7rPcvDcr0zZGlBjGiGDyqHc1MY8l7JTmKBElLCVoqaAOJVvvpxxFynTkIZJgu2HyNsefB55fWlDLbOXem1AD5XvRaSjvuuiPZOBUp/a9HFwE1v2R/SOaiw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757361626; c=relaxed/simple;
+	bh=HbCu2jL5HruCBM3HpB7LbClkYM+jptIZUYXUXKNbbUI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ijPXLN3ICrytB/Sz4d4bh//VgvUhwlXUHIuppB99Rr96ukGBaSYf3iHHp11ecIxOho65+OJ+JWxq5ZfBhiRaYjd7gXWQH5O/HMjgwKHqJI+b+rKXefThilBQP3Ujb9/wC8Wxo1RMNUpVcgBB0P73qQybzFJupUTtFYbzfhx0lNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=GN8GDlNl; arc=none smtp.client-ip=148.163.143.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
+Received: from pps.filterd (m0150244.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 588I2wxm007907;
+	Mon, 8 Sep 2025 19:14:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps0720; bh=zO
+	ecQmwq+DoDshGPB4oxxE5lmlvV6iB0dGFX8T5PHy8=; b=GN8GDlNlNhYylpGGye
+	zge9N2XOMeb58LuWTEOnE6aF2ravmwwyDyJ6Ur/pwbn4EK+r711pmj1EN0Rq748d
+	K8TYpryqrL5pOUtU+MhP4FWTkZikd0tDxnup5kXyE1nxRlG6cX0uwLU3RED8keqE
+	CM6+wcIPdA0F0829UmveTqQwO0SmQlFnLhbJPdTLSYpsEdNsHpIDFpbLv36mfS5s
+	gpVOUqMeZvrXOQgrekWrmbyQEdPOXdcShFzbaRg1KquQI/SAuRVW7fDpPxSjPsFs
+	nTdD8brbC+TC0djjT/dvpiLyttWABdvmGN9cQ5ZVA2kXO8kPNqNbNQJ+JuTNuvAp
+	hlMg==
+Received: from p1lg14881.it.hpe.com ([16.230.97.202])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 491x8qmesh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Sep 2025 19:14:58 +0000 (GMT)
+Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14881.it.hpe.com (Postfix) with ESMTPS id E274B805E2F;
+	Mon,  8 Sep 2025 19:14:46 +0000 (UTC)
+Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.36])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id 5A013802FD4;
+	Mon,  8 Sep 2025 19:14:44 +0000 (UTC)
+Date: Mon, 8 Sep 2025 14:14:42 -0500
+From: Kyle Meyer <kyle.meyer@hpe.com>
+To: Jiaqi Yan <jiaqiyan@google.com>
+Cc: jane.chu@oracle.com, "Luck, Tony" <tony.luck@intel.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, surenb@google.com,
+        "Anderson, Russ" <russ.anderson@hpe.com>, rppt@kernel.org,
+        osalvador@suse.de, nao.horiguchi@gmail.com, mhocko@suse.com,
+        lorenzo.stoakes@oracle.com, linmiaohe@huawei.com, david@redhat.com,
+        bp@alien8.de, akpm@linux-foundation.org, linux-mm@kvack.org,
+        vbabka@suse.cz, linux-acpi@vger.kernel.org,
+        Shawn Fan <shawn.fan@intel.com>
+Subject: Re: PATCH v3 ACPI: APEI: GHES: Don't offline huge pages just because
+ BIOS asked
+Message-ID: <aL8rIgSImDh7Nj7E@hpe.com>
+References: <20250904155720.22149-1-tony.luck@intel.com>
+ <brfqzhbipg35twgv22vnnotbv3t3grwh2dxugvtbgqduuhsvst@f7exibz7i7tk>
+ <aLsHh70jI6BGHjaN@agluck-desk3>
+ <bwu744g3qzbzylxvfgt7v4tnf2k2eosqbkg7alm6u5roa7j3bn@gmut2l5227kw>
+ <aLspJ5Tpqp4qRDk2@agluck-desk3>
+ <cf05bc8e-fc79-49e4-a90a-47e661b4ae69@oracle.com>
+ <CACw3F538k+dshTs1_rxbpYoRdFyX3tLYzfaWj-_d7Lq5Dd2Jsg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR01MB6231:EE_|DS2PR01MB9207:EE_
-X-MS-Office365-Filtering-Correlation-Id: ed0a8c2b-e457-498f-21a0-08ddef0a3c26
-X-MS-Exchange-AtpMessageProperties: SA
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?vOViIqNuvwtW2XXSjUSQoN7SRmspT3H1KKLtKVQfo8s1T6FxLEE6M5nUIE/M?=
- =?us-ascii?Q?IddbuNV0v3X10EKUK4QiahcEfc7+poDZvAg2HsSsiXh6W8PDZ9c0Uz75XIMy?=
- =?us-ascii?Q?CzrOuj2f7gjJrPWMTaj/xfg5ZWfmsZUIsz3vfi+qEBdMlpiiJO0+vCxKoScJ?=
- =?us-ascii?Q?KrVTdDsfMrlRb1Gh2UA0v4TKp66LhS4zJR0iv42CkLcQezD6ZlYNYWqPWO1Q?=
- =?us-ascii?Q?+ufXdLLQG9+zdaQB/Th0QUhIdBwPARKgFbVC3H+G91MsBYcHATia4VnNIbXM?=
- =?us-ascii?Q?xJ/0f9zWUvoceJoVXV5aXxPvdAMDNyJsgy6bbc4IYaZVV5V7s/zNAaRs35gu?=
- =?us-ascii?Q?+xgFqDzQDwCF3dbhsu4oi0mCV7VHwgSSAatBZLIpuLn/j3oCtH48bpyD8iE6?=
- =?us-ascii?Q?8smqMtROLi7JhJ7yoWkYeUXY3B3oI2KiwYA1393djspt7yfYBEDoi3t0qfuk?=
- =?us-ascii?Q?Un5RtSu6bnhPnNpfHXb8gNui4e7jtfgFA9jb2xxmrpTHtvEjBdOze6Pq1Dit?=
- =?us-ascii?Q?guJS9pYhQ05b5Lzn6hkdlKCxuU40EfpfPk0PwO8+pcELwjK2aixxxn1FSxq3?=
- =?us-ascii?Q?CPJtXvKaW88NI3XuK78HlEGuvh/E0CqUgsZLz/4HeHU1GYyUUHOgjNa+wOUU?=
- =?us-ascii?Q?EVGsi/4C9Y9sV9FBgQsTqVEru9wTx7ysU5KBfmPz8VWRhhzUdZdNSy/HJvCs?=
- =?us-ascii?Q?JU/YpZatdP71YIUKM8bRCIhuSvgkBUG/oPP4lRRN3Hw0gLrggFw8xRwIVFOx?=
- =?us-ascii?Q?qrk0W8w9+GWjs6aSctjsGuRQpwbIV6BOKYORLVdg4yeTu1lEHVTwOQ/+cx7F?=
- =?us-ascii?Q?1y5iqP93hDtDT+n6nc2zNdSvpnQzo7dNSLirtstDTLrhhTtAzBr/4CkgOfm6?=
- =?us-ascii?Q?dBJMa77gbClT0JZ9BbbeXuFpA9LoDE4lg4iohbnqH4HW3M+a/Uas8S5wemLo?=
- =?us-ascii?Q?mTVFczfAY6J4MiiIsKRW1aCN8y9W3anjSba5gOcqOrUKOVTeEcdRkeU0bTsq?=
- =?us-ascii?Q?ZTIre3jXU8siGNSRFEcVu7D5QxXFGl8oL6jOjsdipk0A/mmrJqdXBVaqefHw?=
- =?us-ascii?Q?jE0tZ742oZYzTlSg7af801Yqn2RkH8h1fLf7haHUcgl5QsG/lNMJdc73bkLi?=
- =?us-ascii?Q?kF8gM3XtP6BVDtn6YXOuFIyYfCxHmwV6GRhw9LneWe2VTV3Hf0xwmbwMMV1N?=
- =?us-ascii?Q?LwfDzf3V+DXgh7uPYE6zNSldYED8BAFZfw4O3UQcqUgFADubnqdevcFFMzPA?=
- =?us-ascii?Q?E/ZS8c+O4ow3Z45AgnFE4CMNE5e8404CVVve5gj2jWQ5TGd6B93NLgppiMxp?=
- =?us-ascii?Q?nv5JLLgqQqSR1aHyBD5+aw25866hQCrudKc62l+JspZy+9lTL4hzEcn1EeH3?=
- =?us-ascii?Q?JIPGx8eZGFaHgfT8onASnPnlkLpItsqldUYrIwHiz9hnsirh+Cdh+LKEoQ/F?=
- =?us-ascii?Q?UkSJL0DzyB2B1TpVr6SzlyOq1uhyPEFFE+YKDTXnme+w7PCTzpTmRT/VfnBn?=
- =?us-ascii?Q?yaqPZHJRaD298eQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR01MB6231.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(7053199007)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?dfWT4KFUFQnefXeQ0BULODacQdxlzAJDCRHyjPJ1WMirh0SXDovTs9FqyXtW?=
- =?us-ascii?Q?Ex4anW+/a4b79UIZtFwK/Bjh6dpb/foy13WheOZWhrL1j/NdpdlN+LCuiIi2?=
- =?us-ascii?Q?rbijNWRLxbgOHSDYMgxd1a/vJLVcFSgDz5JDBBQBmWYxMzPnmibK4/SaokOv?=
- =?us-ascii?Q?GY04T5DH+mrBgRRWCH147xnzl1/RuKPY1dHqIo8SPpgWDnT42CTPHqEIHNZk?=
- =?us-ascii?Q?UAAkgNRbCDZnIOiGD0cZ0WlX6wasTe8t2Oe4ICXbi4ANDH1JhBUJOfBEMlwf?=
- =?us-ascii?Q?O1jPzOBTL53/Gob7WiN0FtsTWiMrAjYpngdkURC8IZDOwSV5PYb6g4xBcy7Q?=
- =?us-ascii?Q?6uBK0GMFvrSxWsE8n4nFzr032Sb3+bOBACNN9rxZHi3uf0rlN2AhDMYmPcwi?=
- =?us-ascii?Q?oZITfVSoJlJQjoVAfrD+Eo6HXOJoHiKSIDmDrvXe/cr9LWYcPORYM1ho8ciz?=
- =?us-ascii?Q?PFeK4S7UBaHaK1mWl+0g0HQJkv36XXosSDmqWH86/B8OSBa+r2PVrJbTLybO?=
- =?us-ascii?Q?6aVzsr0x9MHAHyg7k78jk8MZYY2eTiUKzvAGND0t2bVcRa5nZGR2qWXC3HXB?=
- =?us-ascii?Q?VyFcixJ3QXMO6IY/zstpPNRVWJTWYAGBQHdcErrIZM36eYCnr6JS8yVRoZ1G?=
- =?us-ascii?Q?aOsb3SlY4KM6wHs0aaTxaWmF2hKKZ6zR7/gkyFsVGtpV/bJ9r407Obfj+vkq?=
- =?us-ascii?Q?LbI8sQhuZIQThZCXTKp6XCNNr1072Oo4R0ebjQAMmzuxAHASeBW3EqzGL/du?=
- =?us-ascii?Q?xjoi9eLHoKP9bjU1bAJhf4Xxsl0yCXSrbROW/bkZEI4ooxex/YcXb/Yhf4H9?=
- =?us-ascii?Q?0C/Dqc1NeFNCxZXe7+l9AH2GSuD50OU1rziB8YUWmJ9fqpNbOJ0DVxXp42ah?=
- =?us-ascii?Q?QoKdcr9NkAbkuh+x8G6H+bLzCl93v5QZGLaAwxcP6NmzxDbuYe8jFgstqdsU?=
- =?us-ascii?Q?QyWckh3r42g9eBdACEYzzVRMnjkaISBD574ByzhHklA6eQCX4hm1bQPMoS89?=
- =?us-ascii?Q?ee9tUTQK28fk6U387wPvxJ6483yQc+I3+EB5I+QG/XbXzsSDQelhFPIUk/aW?=
- =?us-ascii?Q?/Ce+4W5tSQwf2zbQRHN1cX79KEvozP7KbTaRdZqcwu+Q1cG68+5+x9MycxiF?=
- =?us-ascii?Q?EjXSQ1gytfgBatlsZeeuaQzCU5OrHOsUnGosa8SVAtLaNAYWyDV4g4FwGrWr?=
- =?us-ascii?Q?GcPu86E1MkYhEg3sXErSdxlKsza209jWwwEwxcyQgdHA38/pJVcdxTAn2nIo?=
- =?us-ascii?Q?W7J8qZEcBFFczmkPEJPn5yUm8VkpkVRJL6C3ftMyqjd5eF0XHK20QCWlQ0xm?=
- =?us-ascii?Q?HmqV/NUreCyKUDyMaGyeeTZorcVZ3t1ELUM9+GFvJHW08jzjqtZ3MKOD7nTW?=
- =?us-ascii?Q?YVBoZET/ziiod4WIfEVZKHm0QWSI9VXi6jlGdokxdfRP8qly5qmwMgyZsgSW?=
- =?us-ascii?Q?8xiegzu9Ac3SE1k6wYqwxCszPvW4BCHWfvXsDDxjA8qJ/RAAKJ2kFkVFWr7V?=
- =?us-ascii?Q?TkFkf7xnKYQ7marFdTpuBkAydrHrz2TLhiBf0g4055iZT+dQFEcpU13mu+QW?=
- =?us-ascii?Q?Oza0qT2q//TgHeNNcXTO+ZfoE/FuhHFEkZQx7z5W+r8Kcw632fa7x7kIBMxm?=
- =?us-ascii?Q?rwSe356vFOCsxbbZLd+tUiA=3D?=
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ed0a8c2b-e457-498f-21a0-08ddef0a3c26
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR01MB6231.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 19:02:19.5871
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UYMgZxD5DnYV79WPkfj7/RpVfzpUT0It6MLBw8gJpMxVlJtP2S/PnhOYhh+OQf/DtQsq677RtlZOH9NG3Ej23dWX87qPy2w7oZtCmD/zZzIlO4Sh/OGpSB1gScYOIb0h
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR01MB9207
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACw3F538k+dshTs1_rxbpYoRdFyX3tLYzfaWj-_d7Lq5Dd2Jsg@mail.gmail.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDExNCBTYWx0ZWRfX9h5ZGXmPvvws
+ MWHA6QxpDtNHnKvEtXivLGKwkMt9sAgdbyGgyNgBGJFNHHCbg/Lw5MJUk62fyxjcr2nFtVi9i+T
+ jMSU+eaw831+iNBrs8usa1MzW8TQApJw7s5EncaIXAckxxQRQfOcL0H8z1h+K7JKP1OIxqOhnwA
+ JR+fM8n/lX1vrQrnn2LYRLTfMjnovNSRaQm8A7uW9SlBKUdPfUF0pJeq2wprLnIHogmldjyCvLq
+ iYEZj2QMYBj5A9vH7k8PETzimn9yZ2aOjOI1yNw6c/DFD6EqL9qAU0bPI99NU4i3BENBNxPBRim
+ ckmCS9yROHZbuDWyIFe+VjvCuKm/lJ8JwUP06gmtg9elwOZmhHggV0MKdcNsFPIco2uHpZ0x44z
+ R3bDwrOC
+X-Proofpoint-ORIG-GUID: lzDVQmIxlZm2_XmX0P6I_MbY6uRwcZUk
+X-Proofpoint-GUID: lzDVQmIxlZm2_XmX0P6I_MbY6uRwcZUk
+X-Authority-Analysis: v=2.4 cv=J52q7BnS c=1 sm=1 tr=0 ts=68bf2b32 cx=c_pps
+ a=FAnPgvRYq/vnBSvlTDCQOQ==:117 a=FAnPgvRYq/vnBSvlTDCQOQ==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8
+ a=yPCof4ZbAAAA:8 a=QyXUC8HyAAAA:8 a=168LhWg8FaowOX8s28cA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-08_06,2025-09-08_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 phishscore=0 adultscore=0 suspectscore=0 clxscore=1011
+ malwarescore=0 spamscore=0 bulkscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509080114
 
+On Fri, Sep 05, 2025 at 12:59:00PM -0700, Jiaqi Yan wrote:
+> On Fri, Sep 5, 2025 at 12:39 PM <jane.chu@oracle.com> wrote:
+> >
+> >
+> > On 9/5/2025 11:17 AM, Luck, Tony wrote:
+> > > BIOS can supply a GHES error record that reports that the corrected
+> > > error threshold has been exceeded. Linux will attempt to soft offline
+> > > the page in response.
+> > >
+> > > But "exceeded threshold" has many interpretations. Some BIOS versions
+> > > accumulate error counts per-rank, and then report threshold exceeded
+> > > when the number of errors crosses a threshold for the rank. Taking
+> > > a page offline in this case is unlikely to solve any problems. But
+> > > losing a 4KB page will have little impact on the overall system.
+> 
+> Hi Tony,
+> 
+> This is exactly the problem I encountered [1], and I agree with Jane
+> that disabling soft offline via /proc/sys/vm/enable_soft_offline
+> should work for your case.
+> 
+> [1] https://lore.kernel.org/all/20240628205958.2845610-3-jiaqiyan@google.com/T/#me8ff6bc901037e853d61d85d96aa3642cbd93b86 
 
-Hi Kazuhiro,
+If that doesn't work for your case, I just want to mention that hugepages might
+still be soft offlined with that check in ghes_handle_memory_failure().
 
-On Fri, 5 Sep 2025, Kazuhiro Abe wrote:
-> AGDI has two types of signaling modes: SDEI and interrupt.
-> Currently, the AGDI driver only supports SDEI.
-> Therefore, add support for interrupt signaling mode
-> The interrupt vector is retrieved from the AGDI table, and call panic
-> function when an interrupt occurs.
->
-> Signed-off-by: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
+> > >
+> > > On the other hand, taking a huge page offline will have significant
+> > > impact (and still not solve any problems).
+> > >
+> > > Check if the GHES record refers to a huge page. Skip the offline
+> > > process if the page is huge.
 
+AFAICT, we're still notifying the MCE decoder chain and CEC will soft offline
+the hugepage once the "action threshold" is reached.
 
-Looks good to me.
+This could be moved to soft_offline_page(). That would prevent other sources
+(/sys/devices/system/memory/soft_offline_page, CEC, etc.) from being able to
+soft offline hugepages, not just GHES.
 
-Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+> > > Reported-by: Shawn Fan <shawn.fan@intel.com>
+> > > Signed-off-by: Tony Luck <tony.luck@intel.com>
+> > > ---
+> > >
+> > > Change since v2:
+> > >
+> > > Me: Add sanity check on the address (pfn) that BIOS provided. It might
+> > > be in some reserved area that doesn't have a "struct page" which would
+> > > likely result in an OOPs if fed to pfn_folio().
+> > >
+> > > The original code relied on sanity check of the pfn received from the
+> > > BIOS when this eventually feeds into memory_failure(). That used to
+> > > result in:
+> > >       pr_err("%#lx: memory outside kernel control\n", pfn);
+> > > which won't happen with this change, since memory_failure is not
+> > > called. Was that a useful message? A Google search mostly shows
+> > > references to the code. There are few instances of people reporting
+> > > they saw this message.
+> > >
+> > >
+> > >   drivers/acpi/apei/ghes.c | 13 +++++++++++--
+> > >   1 file changed, 11 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> > > index a0d54993edb3..c2fc1196438c 100644
+> > > --- a/drivers/acpi/apei/ghes.c
+> > > +++ b/drivers/acpi/apei/ghes.c
+> > > @@ -540,8 +540,17 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+> > >
+> > >       /* iff following two events can be handled properly by now */
+> > >       if (sec_sev == GHES_SEV_CORRECTED &&
+> > > -         (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
+> > > -             flags = MF_SOFT_OFFLINE;
+> > > +         (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED)) {
+> > > +             unsigned long pfn = PHYS_PFN(mem_err->physical_addr);
+> > > +
+> > > +             if (pfn_valid(pfn)) {
+> > > +                     struct folio *folio = pfn_folio(pfn);
+> > > +
+> > > +                     /* Only try to offline non-huge pages */
+> > > +                     if (!folio_test_hugetlb(folio))
+> > > +                             flags = MF_SOFT_OFFLINE;
+> > > +             }
+> > > +     }
+> > >       if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
+> > >               flags = sync ? MF_ACTION_REQUIRED : 0;
+> > >
+> >
+> > So the issue is the result of inaccurate MCA record about per rank CE
+> > threshold being crossed. If OS offline the indicted page, it might be
+> > signaled to offline another 4K page in the same rank upon access.
+> >
+> > Both MCA and offline-op are performance hitter, and as argued by this
+> > patch, offline doesn't help except loosing a already corrected page.
+> >
+> > Here we choose to bypass hugetlb page simply because it's huge.  Is it
+> > possible to argue that because the page is huge, it's less likely to get
+> > another MCA on another page from the same rank?
+> >
+> > A while back this patch
+> > 56374430c5dfc mm/memory-failure: userspace controls soft-offlining pages
+> > has provided userspace control over whether to soft offline, could it be
+> > a more preferable option?
 
+Optionally, a 3rd setting could be added to /proc/sys/vm/enable_soft_offline:
 
-Hanjun & Sudeep, what's your thought on enabling the use of regular
-interrupts here? I do agree the spec talks about non-maskable ones and
-to my understanding that's what the idea was indeed.
+0: Soft offline is disabled.
+1: Soft offline is enabled for normal pages (skip hugepages).
+2: Soft offline is enabled for normal pages and hugepages.
 
-Cheers, Ilkka
+Maybe something like...
 
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index fc30ca4804bf..efa535d405a8 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -64,11 +64,17 @@
+ #include "internal.h"
+ #include "ras/ras_event.h"
+ 
++enum soft_offline {
++	SOFT_OFFLINE_DISABLED = 0,
++	SOFT_OFFLINE_ENABLED_SKIP_HUGEPAGES,
++	SOFT_OFFLINE_ENABLED
++};
++
+ static int sysctl_memory_failure_early_kill __read_mostly;
+ 
+ static int sysctl_memory_failure_recovery __read_mostly = 1;
+ 
+-static int sysctl_enable_soft_offline __read_mostly = 1;
++static int sysctl_enable_soft_offline __read_mostly = SOFT_OFFLINE_SKIP_HUGEPAGES;
+ 
+ atomic_long_t num_poisoned_pages __read_mostly = ATOMIC_LONG_INIT(0);
+ 
+@@ -150,7 +156,7 @@ static const struct ctl_table memory_failure_table[] = {
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec_minmax,
+ 		.extra1		= SYSCTL_ZERO,
+-		.extra2		= SYSCTL_ONE,
++		.extra2		= SYSCTL_TWO,
+ 	}
+ };
+ 
+@@ -2799,12 +2805,20 @@ int soft_offline_page(unsigned long pfn, int flags)
+ 		return -EIO;
+ 	}
+ 
+-	if (!sysctl_enable_soft_offline) {
+-		pr_info_once("disabled by /proc/sys/vm/enable_soft_offline\n");
++	if (sysctl_enable_soft_offline == SOFT_OFFLINE_DISABLED) {
++		pr_info("disabled by /proc/sys/vm/enable_soft_offline\n");
+ 		put_ref_page(pfn, flags);
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	if (sysctl_enable_soft_offline == SOFT_OFFLINE_ENABLED_SKIP_HUGEPAGES) {
++		if (folio_test_hugetlb(pfn_folio(pfn))) {
++			pr_info("disabled by /proc/sys/vm/enable_soft_offline\n");
++			put_ref_page(pfn, flags);
++			return -EOPNOTSUPP;
++		}
++	}
++
+ 	mutex_lock(&mf_mutex);
+ 
+ 	if (PageHWPoison(page)) {
 
-> ---
-> I keep normal IRQ code when NMI cannot be used.
-> If there is any concern, please let me know.
->
-> v2->v3
-> - Fix bug in the return value of agdi_probe function.
-> - Remove unnecessary curly braces in the agdi_remove function.
->
-> v2: https://lore.kernel.org/all/20250829101154.2377800-1-fj1078ii@aa.jp.fujitsu.com/
-> v1->v2
-> - Remove acpica update since there is no need to update define value
->   for this patch.
-> ---
-> drivers/acpi/arm64/agdi.c | 95 ++++++++++++++++++++++++++++++++++++---
-> 1 file changed, 88 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
-> index e0df3daa4abf..2313a46f01cd 100644
-> --- a/drivers/acpi/arm64/agdi.c
-> +++ b/drivers/acpi/arm64/agdi.c
-> @@ -16,7 +16,11 @@
-> #include "init.h"
->
-> struct agdi_data {
-> +	unsigned char flags;
-> 	int sdei_event;
-> +	unsigned int gsiv;
-> +	bool use_nmi;
-> +	int irq;
-> };
->
-> static int agdi_sdei_handler(u32 sdei_event, struct pt_regs *regs, void *arg)
-> @@ -48,6 +52,55 @@ static int agdi_sdei_probe(struct platform_device *pdev,
-> 	return 0;
-> }
->
-> +static irqreturn_t agdi_interrupt_handler_nmi(int irq, void *dev_id)
-> +{
-> +	nmi_panic(NULL, "Arm Generic Diagnostic Dump and Reset NMI Interrupt event issued\n");
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static irqreturn_t agdi_interrupt_handler_irq(int irq, void *dev_id)
-> +{
-> +	panic("Arm Generic Diagnostic Dump and Reset Interrupt event issued\n");
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int agdi_interrupt_probe(struct platform_device *pdev,
-> +				struct agdi_data *adata)
-> +{
-> +	unsigned long irq_flags;
-> +	int ret;
-> +	int irq;
-> +
-> +	irq = acpi_register_gsi(NULL, adata->gsiv, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_HIGH);
-> +	if (irq < 0) {
-> +		dev_err(&pdev->dev, "cannot register GSI#%d (%d)\n", adata->gsiv, irq);
-> +		return irq;
-> +	}
-> +
-> +	irq_flags = IRQF_PERCPU | IRQF_NOBALANCING | IRQF_NO_AUTOEN |
-> +		    IRQF_NO_THREAD;
-> +	/* try NMI first */
-> +	ret = request_nmi(irq, &agdi_interrupt_handler_nmi, irq_flags,
-> +			  "agdi_interrupt_nmi", NULL);
-> +	if (ret) {
-> +		ret = request_irq(irq, &agdi_interrupt_handler_irq,
-> +				  irq_flags, "agdi_interrupt_irq", NULL);
-> +		if (ret) {
-> +			dev_err(&pdev->dev, "cannot register IRQ %d\n", ret);
-> +			acpi_unregister_gsi(adata->gsiv);
-> +			return ret;
-> +		}
-> +		enable_irq(irq);
-> +		adata->irq = irq;
-> +	} else {
-> +		enable_nmi(irq);
-> +		adata->irq = irq;
-> +		adata->use_nmi = true;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> static int agdi_probe(struct platform_device *pdev)
-> {
-> 	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
-> @@ -55,12 +108,15 @@ static int agdi_probe(struct platform_device *pdev)
-> 	if (!adata)
-> 		return -EINVAL;
->
-> -	return agdi_sdei_probe(pdev, adata);
-> +	if (adata->flags & ACPI_AGDI_SIGNALING_MODE)
-> +		return agdi_interrupt_probe(pdev, adata);
-> +	else
-> +		return agdi_sdei_probe(pdev, adata);
-> }
->
-> -static void agdi_remove(struct platform_device *pdev)
-> +static void agdi_sdei_remove(struct platform_device *pdev,
-> +			     struct agdi_data *adata)
-> {
-> -	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
-> 	int err, i;
->
-> 	err = sdei_event_disable(adata->sdei_event);
-> @@ -83,6 +139,29 @@ static void agdi_remove(struct platform_device *pdev)
-> 			adata->sdei_event, ERR_PTR(err));
-> }
->
-> +static void agdi_interrupt_remove(struct platform_device *pdev,
-> +				  struct agdi_data *adata)
-> +{
-> +	if (adata->irq != -1) {
-> +		if (adata->use_nmi)
-> +			free_nmi(adata->irq, NULL);
-> +		else
-> +			free_irq(adata->irq, NULL);
-> +
-> +		acpi_unregister_gsi(adata->gsiv);
-> +	}
-> +}
-> +
-> +static void agdi_remove(struct platform_device *pdev)
-> +{
-> +	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
-> +
-> +	if (adata->flags & ACPI_AGDI_SIGNALING_MODE)
-> +		agdi_interrupt_remove(pdev, adata);
-> +	else
-> +		agdi_sdei_remove(pdev, adata);
-> +}
-> +
-> static struct platform_driver agdi_driver = {
-> 	.driver = {
-> 		.name = "agdi",
-> @@ -94,7 +173,7 @@ static struct platform_driver agdi_driver = {
-> void __init acpi_agdi_init(void)
-> {
-> 	struct acpi_table_agdi *agdi_table;
-> -	struct agdi_data pdata;
-> +	struct agdi_data pdata = {0};
-> 	struct platform_device *pdev;
-> 	acpi_status status;
->
-> @@ -104,11 +183,13 @@ void __init acpi_agdi_init(void)
-> 		return;
->
-> 	if (agdi_table->flags & ACPI_AGDI_SIGNALING_MODE) {
-> -		pr_warn("Interrupt signaling is not supported");
-> -		goto err_put_table;
-> +		pdata.gsiv = agdi_table->gsiv;
-> +	} else {
-> +		pdata.sdei_event = agdi_table->sdei_event;
-> 	}
->
-> -	pdata.sdei_event = agdi_table->sdei_event;
-> +	pdata.irq = -1;
-> +	pdata.flags = agdi_table->flags;
->
-> 	pdev = platform_device_register_data(NULL, "agdi", 0, &pdata, sizeof(pdata));
-> 	if (IS_ERR(pdev))
-> -- 
-> 2.43.0
->
->
+> > I don't know, the patch itself is fine, it's the issue that it has
+> > exposed that is more concerning.
+
+Thanks,
+Kyle Meyer
 
