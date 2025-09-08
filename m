@@ -1,163 +1,188 @@
-Return-Path: <linux-acpi+bounces-16499-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16500-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D97B496D8
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 19:20:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CEDB49777
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 19:44:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44D21163D17
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 17:20:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71E7E2044AD
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 17:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F73731280C;
-	Mon,  8 Sep 2025 17:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CFC313292;
+	Mon,  8 Sep 2025 17:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a29NeqFS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uQ55R3nr"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37616215F4A;
-	Mon,  8 Sep 2025 17:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6315E3126DB;
+	Mon,  8 Sep 2025 17:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757352028; cv=none; b=KKk30V/10tUdI1luXwxJmmEBTveHOlVkATV0CwNbxaNqDAgoReiM/7/2aLnlTz+Ikj395QyqJf9C1UfopuUtOQm8GQ5YGXX4ubbNJTFz1BMU0+CphxzemUzz5yY49F3qZoyqNxOkIeefvsAVY34NovHJGPQtkiJBS8WE/U/G8F4=
+	t=1757353454; cv=none; b=lvklgHmzEKdbiDy6+Vo3j+0wQuDV4bpZ21BBqmpQeQliF1uVO6UAVjEp3PPE02cgn/xCYMuEr2V4HGV7wP6Uir74M5gkQdmPPvW88HqAP260NAG1lBu9oQGbyaGNPjWosUIyJjV+8GkCFyPuL/fczMIGsYrRpbiP4kqvr/1WGm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757352028; c=relaxed/simple;
-	bh=WG6cG0RC7lf6sWYUt9oDwjKz1esgUSQzcQgi7vvimIU=;
+	s=arc-20240116; t=1757353454; c=relaxed/simple;
+	bh=pxv4SKGaeo+/iwpYsHET1lGXi6vy1Me0WnNKi9ZjTC0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OiZPjdHXTaVlhCgSNvdiRy6xDZkqydY7/RObD3+CNa3fP4u6d601CA5Ll4cpZu+8qlAlwHJ7IEm75MiSrmhCtJ93OZIH7dklqsEFs0iD8dVdOeIrBmNLcfB/YrI8C2nVRy5l1j69BaGVKAK3rJYh//enA/vIgpg+pEGqPfcIKKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a29NeqFS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF679C4CEF1;
-	Mon,  8 Sep 2025 17:20:27 +0000 (UTC)
+	 To:Cc:Content-Type; b=Fok9FDCzNApE1oxbP8P5dWdOo1nrPyek8+69u2uUWk8yrlRzbqFhxkGMvR61HE6IbDWOnW/4+A3kyf1wEu+iurd7XfKo5lqvSP7N2q0u6c1zCxNm51TVVF1rd48h01HUOl0ovL5I67zhbiz/pH5I+1ekjG9o6J0kQRNqd+VjS9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uQ55R3nr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA3DC4CEF7;
+	Mon,  8 Sep 2025 17:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757352027;
-	bh=WG6cG0RC7lf6sWYUt9oDwjKz1esgUSQzcQgi7vvimIU=;
+	s=k20201202; t=1757353454;
+	bh=pxv4SKGaeo+/iwpYsHET1lGXi6vy1Me0WnNKi9ZjTC0=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=a29NeqFSGpEF+96xbTO1WNJwcaERIetmb81Xgnn4IU83YBoLk8Rutt4IWOwFALEE0
-	 Alo/yrF5Txar4LbjfsLU96+5JIOUdLTBbOWWhj863dRSEotYftRw8791NUViEN37uH
-	 7vL5SDt8lxvdJgFnXs8yyk5LmDGIhAqer9EnM8XSTbl9he/b2vz7jBdIztMdZ26zOW
-	 j7J5aPbexf2saw4lZKNoquB5ePSISpTgK86xUvgoCV98gqE2ZZaswqTjzpouutGG+Z
-	 JZZF8UXIBG4kOyYZQKC8Xcwpe9a9BxIFcAWHPiQ0O9LXBnyQ3FExVITht/Di+oXYzE
-	 U7DGVsfPwYeGA==
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-74526ca7d64so3982335a34.2;
-        Mon, 08 Sep 2025 10:20:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX2bTPPTYpaS8NCi/XsLcDbxS38D26LN9AKlNc6bC1HosjmhM5hW23kvnTeOeOilLYxcREZ/x5sBbny@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzuxh4bBgBgEAsxRjIaoLlXC62MyvVC8ZyOArB8/OnHbmsq2PwH
-	L2yM2qMh7kkV520OH5ZcUNX3mlYRrvSes7fK4V4vX6K0nRab80t87gNBduGUB4Hu9zbyei+AxAU
-	/YbyhB/I+DrlSg7wrfAwQgKDLxBR+lQA=
-X-Google-Smtp-Source: AGHT+IGXpy+OU2UasaskUg2nePmnXAYN4fXokbNZNAf4Iw8rD1AI0zGefB9ESZkm15LcjA+jXp80pFZFT6EmdeISh+o=
-X-Received: by 2002:a05:6808:181a:b0:43a:2e17:3ba8 with SMTP id
- 5614622812f47-43b2988c314mr4081572b6e.0.1757352027077; Mon, 08 Sep 2025
- 10:20:27 -0700 (PDT)
+	b=uQ55R3nryISj4fR5HBA0VoKRZaL0v3af3ouPwi2RYm+lkfp+cjWrR+LX97PQ39TS1
+	 clH9A7/msCwa+hxqIXvZap62ixLxWNUKGlyOeLuJV8znNAyQIIIlIRl7QdF9UFedNx
+	 /zzbC62VRoizSlgV9RXiMFblpCIyIdzz5InicZSgkGQa5gJNSmQ9JPTCCTrMF1450E
+	 WqwqOE5QYrbszoHVL/c8r7aVLjzlTVX8pWSgdStRA2xntbvfP1x7rQyr+rD6fhFc0o
+	 J+VT7dY5asCWkyo9eFP04FfqRkHLvlAbHP3e4Euy0HrUB7bOv1NGBWr90PGQZVedzN
+	 8WpYZnTJv15ew==
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-74382041c9eso3397308a34.3;
+        Mon, 08 Sep 2025 10:44:13 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVTzMXfwZV7W7QjX49RgBPyEtUHWQ/Afl1TFtsmS0SDRrT8is+2bKwk7+uYA0Qm8Km4ZQgRsGK8bqgr@vger.kernel.org, AJvYcCVVdZtXbbZc+vTyINgy9vVso/OMrjsbW3uJ/TDwTWXbj+nedaHYJgmCjZeF8e/lFUTpzO1brucDMKUkxA==@vger.kernel.org, AJvYcCWlZkHAbw/3w6ZTt6FpgHqRKGAZ3Xq4khlQ0JTLCt5zZMV3G+23JZN92259/DQ1s4DavyN07osFe2SIXxu9@vger.kernel.org, AJvYcCXGmbVEpE2WHozBPjHvmZS38qKWa26g9ZDKmzSxzMkB/n+hVpSoFcQ/cfGfKfU9bPqHbdrc16z95VI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwINSDgX5oF4M8Bk7prIfTTlmthf/wg1rmEgZBA/ciVMAwHs5/R
+	T4QPcLIRwRDXMmtdDEe2Pd6RBCxXIggtO9AnCHg4D6VzaKr9d3XI/4PMvgQKUoWlJz1Su6g5x0D
+	0SFqS3H79Y3KZO8wY3q4qwRqkPRYkJJU=
+X-Google-Smtp-Source: AGHT+IEmLNooDlmw6mUZRYEbyTwg6KsbFI0N3/Ra3KC+hBAS5x57Hk+ruqmJHv0ou2jqI/XILrzNZEQVMGT+C7Z3Oeg=
+X-Received: by 2002:a05:6808:198f:b0:439:b82f:ce with SMTP id
+ 5614622812f47-43b29b4d9d1mr3597972b6e.31.1757353453065; Mon, 08 Sep 2025
+ 10:44:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250908163127.2462948-1-maz@kernel.org> <20250908163127.2462948-3-maz@kernel.org>
-In-Reply-To: <20250908163127.2462948-3-maz@kernel.org>
+References: <20250905132413.1376220-1-zhangzihuan@kylinos.cn>
+ <20250905132413.1376220-3-zhangzihuan@kylinos.cn> <CAJZ5v0iTdgM5BBi2ysiJxfA2c=MQ0fjLsEvVct9stxomvEe=4Q@mail.gmail.com>
+ <6683fb5a-64f4-433e-a22b-153b01dfa572@kylinos.cn>
+In-Reply-To: <6683fb5a-64f4-433e-a22b-153b01dfa572@kylinos.cn>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 8 Sep 2025 19:20:15 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hSJ6yMnfZgYDSZRqL_KMLc6f4kcY06dWGSPCFYjdcbfg@mail.gmail.com>
-X-Gm-Features: Ac12FXwlVf4kn-tU9YEBjTnrid6i7WBV3fExLJM7cADt4nyooosqwvUywi8aWZo
-Message-ID: <CAJZ5v0hSJ6yMnfZgYDSZRqL_KMLc6f4kcY06dWGSPCFYjdcbfg@mail.gmail.com>
-Subject: Re: [PATCH 02/25] ACPI: irq: Add IRQ affinity reporting interface
-To: Marc Zyngier <maz@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-acpi@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
-	Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, James Clark <james.clark@linaro.org>
+Date: Mon, 8 Sep 2025 19:44:01 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0h9pYXi4Op4zAA+Q7QZz5gkJg+83eKUCqM-YKh76CVLKg@mail.gmail.com>
+X-Gm-Features: Ac12FXxUqqlT9sudI62ao99U1pS-dgaUtp-l-yYYj3dQjoUJWeYTt-vc3mF_8T8
+Message-ID: <CAJZ5v0h9pYXi4Op4zAA+Q7QZz5gkJg+83eKUCqM-YKh76CVLKg@mail.gmail.com>
+Subject: Re: [PATCH v5 2/6] ACPI: processor: thermal: Use scope-based cleanup helper
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Jonathan Cameron <jonathan.cameron@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
+	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
+	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
+	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 8, 2025 at 6:31=E2=80=AFPM Marc Zyngier <maz@kernel.org> wrote:
+On Mon, Sep 8, 2025 at 11:16=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylinos.c=
+n> wrote:
 >
-> Plug the irq_populate_fwspec_info() helper into the ACPI layer
-> to offer an IRQ affinity reporting function. This is currently
-> only supported for the CONFIG_ACPI_GENERIC_GSI configurations,
-> but could later be extended to legacy architectures if necessary.
 >
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> ---
->  drivers/acpi/irq.c   | 15 +++++++++++++++
->  include/linux/acpi.h |  7 +++++++
->  2 files changed, 22 insertions(+)
+> =E5=9C=A8 2025/9/6 04:17, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> > On Fri, Sep 5, 2025 at 3:24=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylino=
+s.cn> wrote:
+> >> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> >> annotation for policy references. This reduces the risk of reference
+> >> counting mistakes and aligns the code with the latest kernel style.
+> >>
+> >> No functional change intended.
+> >>
+> >> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> >> ---
+> >>   drivers/acpi/processor_thermal.c | 52 +++++++++++++++++-------------=
+--
+> >>   1 file changed, 27 insertions(+), 25 deletions(-)
+> >>
+> >> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor=
+_thermal.c
+> >> index 1219adb11ab9..460713d1414a 100644
+> >> --- a/drivers/acpi/processor_thermal.c
+> >> +++ b/drivers/acpi/processor_thermal.c
+> >> @@ -62,19 +62,14 @@ static int phys_package_first_cpu(int cpu)
+> >>          return 0;
+> >>   }
+> >>
+> >> -static int cpu_has_cpufreq(unsigned int cpu)
+> >> +static bool cpu_has_cpufreq(unsigned int cpu)
+> >>   {
+> >> -       struct cpufreq_policy *policy;
+> >> -
+> >>          if (!acpi_processor_cpufreq_init)
+> >>                  return 0;
+> >>
+> >> -       policy =3D cpufreq_cpu_get(cpu);
+> >> -       if (policy) {
+> >> -               cpufreq_cpu_put(policy);
+> >> -               return 1;
+> >> -       }
+> >> -       return 0;
+> >> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D c=
+pufreq_cpu_get(cpu);
+> >> +
+> >> +       return policy !=3D NULL;
+> >>   }
+> >>
+> >>   static int cpufreq_get_max_state(unsigned int cpu)
+> > The changes above are fine and can be sent as a separate patch.
+> >
+> >> @@ -93,12 +88,31 @@ static int cpufreq_get_cur_state(unsigned int cpu)
+> >>          return reduction_step(cpu);
+> >>   }
+> >>
+> >> +static bool cpufreq_update_thermal_limit(unsigned int cpu, struct acp=
+i_processor *pr)
+> >> +{
+> >> +       unsigned long max_freq;
+> >> +       int ret;
+> >> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D c=
+pufreq_cpu_get(cpu);
+> >> +
+> >> +       if (!policy)
+> >> +               return false;
+> >> +
+> >> +       max_freq =3D (policy->cpuinfo.max_freq *
+> >> +               (100 - reduction_step(cpu) * cpufreq_thermal_reduction=
+_pctg)) / 100;
+> >> +
+> >> +       ret =3D freq_qos_update_request(&pr->thermal_req, max_freq);
+> >> +       if (ret < 0) {
+> >> +               pr_warn("Failed to update thermal freq constraint: CPU=
+%d (%d)\n",
+> >> +         pr->id, ret);
+> >> +       }
+> > But this silently fixes a bug in the original code which needs to be
+> > documented with a Fixes: tag (and it would be better to fix the bug
+> > separately before the using the __free()-based cleanup TBH) and
+> > introduces some whitespace breakage.
 >
-> diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
-> index 76a856c32c4d0..22f93fe23ddce 100644
-> --- a/drivers/acpi/irq.c
-> +++ b/drivers/acpi/irq.c
-> @@ -300,6 +300,21 @@ int acpi_irq_get(acpi_handle handle, unsigned int in=
-dex, struct resource *res)
->  }
->  EXPORT_SYMBOL_GPL(acpi_irq_get);
+> Thanks!
 >
-> +const struct cpumask *acpi_irq_get_affinity(acpi_handle handle,
-> +                                           unsigned int index)
-> +{
-> +       struct irq_fwspec_info info;
-> +       unsigned long flags;
-> +
-> +       if (!acpi_irq_parse_one(handle, index, &info.fwspec, &flags)) {
-> +               if (!irq_populate_fwspec_info(&info) &&
-> +                   info.flags & IRQ_FWSPEC_INFO_AFFINITY_VALID)
-> +                       return info.affinity;
-> +       }
+>   I=E2=80=99ll follow your advice and handle the Fixes tag and whitespace=
+ issues.
 
-I would prefer fewer logical negations to be used in this, for instance:
+Actually, no need to resend.
 
-if (acpi_irq_parse_one(handle, index, &info.fwspec, &flags))
-      return NULL;
-
-if (irq_populate_fwspec_info(&info))
-       return NULL;
-
-if (info.flags & IRQ_FWSPEC_INFO_AFFINITY_VALID)
-       return info.affinity;
-
-return NULL;
-
-> +
-> +       return NULL;
-> +}
-> +
->  /**
->   * acpi_set_irq_model - Setup the GSI irqdomain information
->   * @model: the value assigned to acpi_irq_model
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 1c5bb1e887cd1..c506ae4bacc86 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -1509,12 +1509,19 @@ static inline int acpi_parse_spcr(bool enable_ear=
-lycon, bool enable_console)
->
->  #if IS_ENABLED(CONFIG_ACPI_GENERIC_GSI)
->  int acpi_irq_get(acpi_handle handle, unsigned int index, struct resource=
- *res);
-> +const struct cpumask *acpi_irq_get_affinity(acpi_handle handle,
-> +                                           unsigned int index);
->  #else
->  static inline
->  int acpi_irq_get(acpi_handle handle, unsigned int index, struct resource=
- *res)
->  {
->         return -EINVAL;
->  }
-> +static inline const struct cpumask *acpi_irq_get_affinity(acpi_handle ha=
-ndle,
-> +                                                         unsigned int in=
-dex)
-> +{
-> +       return NULL;
-> +}
->  #endif
->
->  #ifdef CONFIG_ACPI_LPIT
-> --
+The current code is correct as it registers and unregisters the freq
+QoS request from cpufreq policy notifiers, so the policy is guaranteed
+to be there when cpufreq_set_cur_state() runs.
 
