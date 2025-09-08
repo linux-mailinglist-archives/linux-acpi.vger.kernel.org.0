@@ -1,364 +1,151 @@
-Return-Path: <linux-acpi+bounces-16449-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16450-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A1BB489BC
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 12:14:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D2AB48A87
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 12:48:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93F213429BE
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 10:14:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E5191B25749
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 10:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C5B2F8BE8;
-	Mon,  8 Sep 2025 10:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E347B1F4191;
+	Mon,  8 Sep 2025 10:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="TUbpeHYS"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DZaET39O"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271582F83C3;
-	Mon,  8 Sep 2025 10:13:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F72A2F879
+	for <linux-acpi@vger.kernel.org>; Mon,  8 Sep 2025 10:48:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757326438; cv=none; b=bpIEmRA0j7qFSq71BQH8FA0Zi5uQ7Y7lU8tf+t5IjmiP/58t1wy07r7sIQcvcwwM+AERzlcpucYDzbrZAUQSVyUa6/jQ4MAnGW2V4d/1pPEWRzpvGpGr7R7o6FwkcdcyvulFztiK1PA+CS1tmUfTdZn1DPYY0b1bWm0JV4QPp6s=
+	t=1757328501; cv=none; b=uqb/8G+omG3qwlvAimkecAWIZzSSnQ3hzvaeLRpwNzNnE/wLluSCLNCGdyNPRkHmNUT45OQdjJPksPDv31cLV0pwwNticMlyMl/6fpwgeL6m9uT5UL68atC6QmWlL2G807lXiE6H3oF648M4YVIc65oFAULXpsFSllmGjREtmMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757326438; c=relaxed/simple;
-	bh=Gb1ubu2ZH+sJL4BUrJTTK5x/BmpDb5gljBQqUFz29r8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B1+iTDM11zinqoOtZYxEBfupKhbdubvwPZyNYadEB8DG4bK+FzmSvQQcEZV71JUfzkw6ZjYrpYspNEqg2SVx+/tow7UhcKD/t3u5RAebDLnFf1RoVV5sSm7nMLV4jykvw8Pyez3NDKyrWBQhTi0XYlS1z9xl1DDSX1zGIBG2jaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=TUbpeHYS; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (230.215-178-91.adsl-dyn.isp.belgacom.be [91.178.215.230])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id B7E6099F;
-	Mon,  8 Sep 2025 12:12:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1757326361;
-	bh=Gb1ubu2ZH+sJL4BUrJTTK5x/BmpDb5gljBQqUFz29r8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TUbpeHYSJTUxSChj3hDuZ8T+PW7d/Cx9u823Es8r2kEohxUaJVJyOkqKx0hFHUb00
-	 sk8CkznjcI8JK9SafLTjEmiJ89Vc7s95Zw5ogJiuDcqDVq68i2KVt3Boy3aJujYxYr
-	 0CcBDvhCCejQBq4E6M9VPNkc3vHELe+GcgD6eX1c=
-Date: Mon, 8 Sep 2025 12:13:32 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 10/12] media: uvcvideo: Add get_* functions to
- uvc_entity
-Message-ID: <20250908101332.GB26062@pendragon.ideasonboard.com>
-References: <20250605-uvc-orientation-v2-0-5710f9d030aa@chromium.org>
- <20250605-uvc-orientation-v2-10-5710f9d030aa@chromium.org>
- <20250629181246.GE6260@pendragon.ideasonboard.com>
- <CANiDSCsu0RT4dcGyBJRutP=9HTe+niUoohxTZE=qJ8O_9ez=+A@mail.gmail.com>
- <20250714142926.GI8243@pendragon.ideasonboard.com>
- <CANiDSCvFe23xmrJ0-qbWWa6+vKGb+QdDFV8VSLkmWdAnfsFtzw@mail.gmail.com>
- <20250715193505.GB19299@pendragon.ideasonboard.com>
- <CANiDSCtvt6qnROQ0_-0iG5hqkU_uHZABujZPN7xuh7pUASSGyw@mail.gmail.com>
- <CANiDSCsNjBEWR5HA9bhFNnXB7Cazj7o0wBnn53gzpoBBcYFkFw@mail.gmail.com>
+	s=arc-20240116; t=1757328501; c=relaxed/simple;
+	bh=aooWlxs61oe5XmAvG5mEG9jZb11jz6KzCxSNS1Hzn4k=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=OMDx0BlTPgXrY+f2CR0HPtJDnkApTYyrRg55Stfp7xXYgp3S7ysEP/k9yx6C3RE5ivsr3eQr9V2VOZDLbckk458aUqXivuA8EndqvKMnqFyCfVeBh0Kyv1I609HM7ksaPnLIx3rciIsP8iURpUOrfWijd1/fkPp8O2HtURN47Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DZaET39O; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45dcff2f313so25224575e9.0
+        for <linux-acpi@vger.kernel.org>; Mon, 08 Sep 2025 03:48:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757328498; x=1757933298; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:cc:to:from:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vHs01z7oM1ANWId4X0P4WXVaPJBWZpLLCmKiOd/Ff+A=;
+        b=DZaET39ON3QQRCLbqo3HcytUB1zoTavH3MAq41xiZRj4PWLwqk06hD2ecjQQpOneo5
+         h4zIR1IcQBMhssnq7xl6gyLf40YwIOE3aa4uCMiI9Ge7ze+FAiVKkteHB9vOULiH0VFC
+         fVBTHZAofKFfe3tLfzwyedNLE4MLjpvJI6yR5RS5j/MncaBAc08iCYxKYLANFj4UAm1e
+         idVewv0Pw4gVJBYtojNrR1vpBBYfuPlvspE0i5/MXQwLzuMZMZmHDQkvm+z2Th5EDix8
+         PpplO5WuVSDBcSdXILz7FW4tJjQ/l9rY0i+qXlg3fYZB6aSrkf1NuVB3n8UFpvoiT4bj
+         0gjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757328498; x=1757933298;
+        h=content-transfer-encoding:subject:cc:to:from:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=vHs01z7oM1ANWId4X0P4WXVaPJBWZpLLCmKiOd/Ff+A=;
+        b=fvWrozDvkoDFBinNICuDUUUaRKjTe1+H06CleDywFhmc//xiCJhTD79cKQBbH+ULxO
+         r/cET7/J7L6GMcOJ2tYntnyyfHwnghi/pTk6bkJrR9Hwf6sQsjz/ig9ockVJCDOIkn0j
+         0jUfrzyzSZ9sIL2Dnk4DNhJxFENExBXK9guBjxx/92i5Pizy93d9c4+osMesCeFLNUyy
+         PUt9kwGqe0htxUXD9GTb2n3AlsrAnaen3ResV1NGP9hEnkZaQxEW5V6TlVlSVLPtbiXT
+         fKcC8Ie9X86sc/6PkyMxf9M01SEREFLYAdYspCIAeXwsmbK3eOc/tAOtYEFyB03Y/z14
+         yNpA==
+X-Forwarded-Encrypted: i=1; AJvYcCX9NVWArkCt0kHiRiJWI988TzYfmlnJwkfgWEEHlMANIYBqoAM1yBxUdX3aYWwbFd86/2PBY8pl9VLy@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5HS9ZICB2qRSGn4wJFiWeGJCHRJ5YN+zorzw6KHh01yGPr+ER
+	lKXpvtjk9LQDLFuQ7da9WgalzvWaIDL/r1h8HfUkhXvvkSDbqWgc36PuZegUcWIsKk4=
+X-Gm-Gg: ASbGncuEEYwcIqW2WthCTzRD+jqUdauITkmq7FquhKQUapvQqqMWOJ1peARJn1/3A3M
+	XSd/bX2SZGhvk8nTTPh40Mdh660oYV64Lhratkn+4pYLg2VfgqJI8D0XvkhhzhovVyf2p/WKTj6
+	kWB0vJP4xkSk43eLg91HnvEG0yf+TjkGurEk90LaObGxaoh+qX9O9+nAxrNsXQMvfLs/oyrl8BW
+	AxOmCS7EKK8W0LeoM1oLT6t+HL+PpxCNXIZQCewK5hR0UQXJ1AXiACHUnFS5ompEFoqsTBOYQ96
+	zCSyiKmAgTMDoy3k4R6LfH/h6yO1iZw3iRdWldBXwiEp3vQJ6oFUmXO2uVn/KSFztYE1QxqqMK/
+	sATkfa5+9jkfFXZea2vngxo6kuBz+S4Ow/WWuz5cJWc7KVcfCo9mA2FRihkWvmMBsKtzfd4DsXz
+	azI7xqM3ve6IlU
+X-Google-Smtp-Source: AGHT+IHPhOXQXGFj/kIOadcgTuaRxf22+4yFciHzJcYi4juLw9HJQxPZ/k92mxlesnF3xP6w9bAziw==
+X-Received: by 2002:a05:600c:1d24:b0:456:fdd:6030 with SMTP id 5b1f17b1804b1-45dea83f76bmr8038565e9.19.1757328498296;
+        Mon, 08 Sep 2025 03:48:18 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:9b6a:7b16:fb30:a294? ([2a05:6e02:1041:c10:9b6a:7b16:fb30:a294])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-45dd6891d23sm140785655e9.4.2025.09.08.03.48.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Sep 2025 03:48:17 -0700 (PDT)
+Message-ID: <2af92349-2c84-4f1c-b035-946c3996cd9f@linaro.org>
+Date: Mon, 8 Sep 2025 12:48:16 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CANiDSCsNjBEWR5HA9bhFNnXB7Cazj7o0wBnn53gzpoBBcYFkFw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux PM mailing list <linux-pm@vger.kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Lukasz Luba <Lukasz.Luba@arm.com>, Saravana Kannan <saravanak@google.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Deepti Jaggi
+ <quic_djaggi@quicinc.com>, Prasad Sodagudi <psodagud@quicinc.com>,
+ Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>,
+ Tudor Ambarus <tudor.ambarus@linaro.org>,
+ Srinivas Kandagatla <srini@kernel.org>, Amit Kucheria <amitk@kernel.org>,
+ Abel Vesa <abel.vesa@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
+ Steven Rostedt <rostedt@goodmis.org>
+Subject: [CfP] LPC 2025: Power Management and Thermal Control Micro-Conference
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-A question for Hans Verkuil below.
 
-On Thu, Aug 07, 2025 at 09:35:14AM +0200, Ricardo Ribalda wrote:
-> On Wed, 16 Jul 2025 at 12:32, Ricardo Ribalda wrote:
-> > On Tue, 15 Jul 2025 at 21:35, Laurent Pinchart wrote:
-> > > On Mon, Jul 14, 2025 at 05:46:40PM +0200, Ricardo Ribalda wrote:
-> > > > On Mon, 14 Jul 2025 at 16:30, Laurent Pinchart wrote:
-> > > > > On Tue, Jul 01, 2025 at 01:13:10PM +0200, Ricardo Ribalda wrote:
-> > > > > > On Sun, 29 Jun 2025 at 20:13, Laurent Pinchart wrote:
-> > > > > > > On Thu, Jun 05, 2025 at 05:53:03PM +0000, Ricardo Ribalda wrote:
-> > > > > > > > Virtual entities need to provide more values than get_cur and get_cur
-> > > > > > >
-> > > > > > > I think you meant "get_info and get_cur".
-> > > > > > >
-> > > > > > > > for their controls. Add support for get_def, get_min, get_max and
-> > > > > > > > get_res.
-> > > > > > >
-> > > > > > > Do they ? The UVC specification defines controls that don't list
-> > > > > > > GET_DEF, GET_MIN, GET_MAX and GET_RES as mandatory requests. Can't we do
-> > > > > > > the same for the software controls ? This patch is meant to support the
-> > > > > > > UVC_SWENTITY_ORIENTATION and UVC_SWENTITY_ROTATION control in the next
-> > > > > > > patch, and those are read-only controls. Aren't GET_INFO and GET_CUR
-> > > > > > > enough ?
-> > > > > >
-> > > > > > V4L2_CID_CAMERA_ROTATION has the type UVC_CTRL_DATA_TYPE_UNSIGNED,
-> > > > > > that time requires get_min and get_max.
-> > > > >
-> > > > > Where does that requirement come from ? Is it because how the
-> > > > > corresponding V4L2 type (V4L2_CTRL_TYPE_INTEGER) is handled in
-> > > > > uvc_ctrl_clamp() ? uvc_ctrl_clamp() is only called when setting a
-> > > > > control, from uvc_ctrl_set(), and V4L2_CID_CAMERA_ROTATION should be
-> > > > > read-only.
-> > > >
-> > > > It its for VIDIOC_QUERY_EXT_CTRL
-> > > >
-> > > > uvc_query_v4l2_ctrl -> __uvc_query_v4l2_ctrl -> __uvc_queryctrl_boundaries
-> > > >
-> > > > We need to list the min, max, def and step for every control. They are
-> > > > fetched with uvc_ctrl_populate_cache()
-> > >
-> > > Ah, I see, thanks.
-> > >
-> > > For GET_RES, I think we can leave it unimplemented.
-> > > __uvc_queryctrl_boundaries() will set v4l2_ctrl->step = 0 which seems to
-> > > be the right behaviour for a read-only control whose value never
-> > > changes.
-> >
-> > That will break v4l2-compatiblity. Step needs to be != 0
-> > https://git.linuxtv.org/v4l-utils.git/tree/utils/v4l2-compliance/v4l2-test-controls.cpp#n77
-> >
-> > Control ioctls (Input 0):
-> >                 fail: v4l2-test-controls.cpp(77): step == 0
-> >                 fail: v4l2-test-controls.cpp(201): invalid control 009a0923
+Hi everyone,
 
-Is that an issue in v4l2-compliance ? For integer controls,
-https://docs.kernel.org/userspace-api/media/v4l/vidioc-queryctrl.html#c.V4L.v4l2_ctrl_type
-documents the step value as "any". For a read-only control whose value
-is constant, do we want to enforce a non-zero value ? If so we should
-update the specification.
+A Power Management and Thermal Control session will be held during this
+year’s LPC, as has been the case for the past few years, and it is now
+open for topic submissions.
 
-Hans, what's your opinion ?
+The Power Management and Thermal Control microconference covers all
+things related to saving energy and managing heat. Among other topics,
+we care about thermal control infrastructure, CPU and device
+power-management mechanisms, energy models, and power capping. In
+particular, we are interested in improving and extending thermal control
+support in the Linux kernel and in utilizing the energy-saving features
+of modern hardware.
 
-In any case, if GET_RES isn't implemented, we could update
-__uvc_queryctrl_boundaries() to set step to 1 instead of 0. That would
-fix v4l2-compliance for real controls that don't implement GET_RES.
+The overall goal is to facilitate cross-framework and cross-platform
+discussions that help improve energy awareness and thermal control in
+Linux.
 
-> > > As for the minimum and maximum, they are currently set to 0 if the
-> > > corresponding operations are not supported. I wonder if we should set
-> > > them to the current value instead for read-only controls (as in controls
-> > > whose flags report support for GET_CUR only)..
-> >
-> > I am not sure that I like that approach IMO the code looks worse...
-> > but if you prefer that, we can go that way
-> 
-> I am almost ready to send a new version.
-> 
-> What approach do you prefer?
+This year some big topics have been identified, for more details, please 
+refer to:
 
-I particularly like the change in __uvc_queryctrl_boundaries(). That
-could probably be done without the rest of the changes though, as
-ctrl->uvc_data is already allocated with kzalloc().
+  https://lpc.events/event/19/contributions/2003/
 
-I also like the fact that the driver can rely on the min/max values to
-always be populated in the control data. This could be useful for real
-read-only UVC controls.
+If you have a topic connected to the big ones identified above or a new 
+one to propose for this session, please go to:
 
-Thinking a bit more about this, for read-only controls whose value never
-changes, min, max and step are meaningless. V4L2 requires their value to
-be set, that's a decision we made in the V4L2 API, but I think a model
-where min, max and step would be undefined (or 0) wouldn't be worse. So
-maybe it makes sense to handle this in __uvc_queryctrl_boundaries(),
-which is where the adaptation between UVC and V4L2 is handled, instead
-of storing CUR in the ctrl->uvc_data DEF/MIN/MAX in
-uvc_ctrl_populate_cache() ? I think the code could look cleaner.
+  https://lpc.events/login/?next=/event/19/abstracts/%23submit-abstract
 
-> > diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-u> > index ec472e111248..47224437018b 100644
-> > --- a/drivers/media/usb/uvc/uvc_ctrl.c
-> > +++ b/drivers/media/usb/uvc/uvc_ctrl.c
-> > @@ -35,6 +35,8 @@
-> >  /* ------------------------------------------------------------------------
-> >   * Controls
-> >   */
-> > +static int __uvc_ctrl_load_cur(struct uvc_video_chain *chain,
-> > +                              struct uvc_control *ctrl);
+and select "Power Management and Thermal Control MC" in the Track field.
 
-I think you can move the function up instead of adding a forward
-declaration.
+Please note that topics should not be about work that has already been 
+completed, as is the case for LPC in general.
 
-> >
-> >  static const struct uvc_control_info uvc_ctrls[] = {
-> >         {
-> > @@ -1272,6 +1274,13 @@ static int uvc_ctrl_populate_cache(struct uvc_video_chain *chain,
-> >                                         uvc_ctrl_data(ctrl, UVC_CTRL_DATA_DEF));
-> >                 if (ret < 0)
-> >                         return ret;
-> > +       } else if (!(ctrl->info.flags & UVC_CTRL_FLAG_SET_CUR)) {
+The deadline for submissions is October 15.
 
-A comment (probably at the top of the function) to explain the fallback
-would be useful.
+Thank you!
 
-> > +               ret = __uvc_ctrl_load_cur(chain, ctrl);
-> > +               if (!ret) {
-> > +                       memcpy(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_DEF),
-> > +                              uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
-> > +                              ctrl->info.size);
-> > +               }
-> >         }
-> >
-> >         if (ctrl->info.flags & UVC_CTRL_FLAG_GET_MIN) {
-> > @@ -1279,14 +1288,31 @@ static int uvc_ctrl_populate_cache(struct uvc_video_chain *chain,
-> >                                         uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MIN));
-> >                 if (ret < 0)
-> >                         return ret;
-> > +       } else if (!(ctrl->info.flags & UVC_CTRL_FLAG_SET_CUR)) {
-> > +               ret = __uvc_ctrl_load_cur(chain, ctrl);
-> > +               if (!ret) {
-> > +                       memcpy(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MIN),
-> > +                              uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
-> > +                              ctrl->info.size);
-> > +               }
-> >         }
-> > +
-> >         if (ctrl->info.flags & UVC_CTRL_FLAG_GET_MAX) {
-> >                 ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_MAX,
-> >                                         uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MAX));
-> >                 if (ret < 0)
-> >                         return ret;
-> > +       } else if (!(ctrl->info.flags & UVC_CTRL_FLAG_SET_CUR)) {
-> > +               ret = __uvc_ctrl_load_cur(chain, ctrl);
-> > +               if (!ret) {
-> > +                       memcpy(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MAX),
-> > +                              uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
-> > +                              ctrl->info.size);
-> > +               }
-> >         }
-> > +
-> >         if (ctrl->info.flags & UVC_CTRL_FLAG_GET_RES) {
-> > +               u8 *res;
-> >                 ret = uvc_ctrl_query_entity(chain->dev, ctrl, UVC_GET_RES,
-> >                                         uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES));
-> >                 if (ret < 0) {
-> > @@ -1304,7 +1330,13 @@ static int uvc_ctrl_populate_cache(struct uvc_video_chain *chain,
-> >                                       "an XU control. Enabling workaround.\n");
-> >                         memset(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES), 0,
-> >                                ctrl->info.size);
-> > +                       res = uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES);
-> > +                       *res = 1
-> >                 }
-> > +       } else {
-> > +               memset(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES), 0, ctrl->info.size);
-> > +               res = uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES);
-> > +               *res = 1;
-> >         }
-> >
-> >         ctrl->cached = 1;
-> > @@ -1541,11 +1573,8 @@ static int __uvc_queryctrl_boundaries(struct uvc_video_chain *chain,
-> >                         return ret;
-> >         }
-> >
-> > -       if (ctrl->info.flags & UVC_CTRL_FLAG_GET_DEF)
-> >                 v4l2_ctrl->default_value = uvc_mapping_get_s32(mapping,
-> >                                 UVC_GET_DEF, uvc_ctrl_data(ctrl, UVC_CTRL_DATA_DEF));
-
-You forgot to reduce the indentation here.
-
-> > -       else
-> > -               v4l2_ctrl->default_value = 0;
-> >
-> >         switch (mapping->v4l2_type) {
-> >         case V4L2_CTRL_TYPE_MENU:
-> > @@ -1576,23 +1605,14 @@ static int __uvc_queryctrl_boundaries(struct uvc_video_chain *chain,
-> >                 break;
-> >         }
-> >
-> > -       if (ctrl->info.flags & UVC_CTRL_FLAG_GET_MIN)
-> > -               v4l2_ctrl->minimum = uvc_mapping_get_s32(mapping, UVC_GET_MIN,
-> > -                               uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MIN));
-> > -       else
-> > -               v4l2_ctrl->minimum = 0;
-> > +       v4l2_ctrl->minimum = uvc_mapping_get_s32(mapping, UVC_GET_MIN,
-> > +                                       uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MIN));
-> >
-> > -       if (ctrl->info.flags & UVC_CTRL_FLAG_GET_MAX)
-> > -               v4l2_ctrl->maximum = uvc_mapping_get_s32(mapping, UVC_GET_MAX,
-> > -                               uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MAX));
-> > -       else
-> > -               v4l2_ctrl->maximum = 0;
-> > +       v4l2_ctrl->maximum = uvc_mapping_get_s32(mapping, UVC_GET_MAX,
-> > +                                       uvc_ctrl_data(ctrl, UVC_CTRL_DATA_MAX));
-> >
-> > -       if (ctrl->info.flags & UVC_CTRL_FLAG_GET_RES)
-> > -               v4l2_ctrl->step = uvc_mapping_get_s32(mapping, UVC_GET_RES,
-> > -                               uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES));
-> > -       else
-> > -               v4l2_ctrl->step = 0;
-> > +       v4l2_ctrl->step = uvc_mapping_get_s32(mapping, UVC_GET_RES,
-> > +                                       uvc_ctrl_data(ctrl, UVC_CTRL_DATA_RES));
-> >
-> >         return 0;
-> >  }
-> >
-> > > > > > We can create a new type UVC_CTRL_DATA_TYPE_UNSIGNED_READ_ONLY that
-> > > > > > fakes min, max and res, but I think that it is cleaner this approach.
-> > > > > >
-> > > > > > > > This is a preparation patch.
-> > > > > > > >
-> > > > > > > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > > > > > > > ---
-> > > > > > > >  drivers/media/usb/uvc/uvc_ctrl.c | 12 ++++++++++++
-> > > > > > > >  drivers/media/usb/uvc/uvcvideo.h |  8 ++++++++
-> > > > > > > >  2 files changed, 20 insertions(+)
-> > > > > > > >
-> > > > > > > > diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-> > > > > > > > index 21ec7b978bc7aca21db7cb8fd5d135d876f3330c..59be62ae24a4219fa9d7aacf2ae7382c95362178 100644
-> > > > > > > > --- a/drivers/media/usb/uvc/uvc_ctrl.c
-> > > > > > > > +++ b/drivers/media/usb/uvc/uvc_ctrl.c
-> > > > > > > > @@ -596,6 +596,18 @@ static int uvc_ctrl_query_entity(struct uvc_device *dev,
-> > > > > > > >       if (query == UVC_GET_CUR && ctrl->entity->get_cur)
-> > > > > > > >               return ctrl->entity->get_cur(dev, ctrl->entity,
-> > > > > > > >                                            ctrl->info.selector, data, len);
-> > > > > > > > +     if (query == UVC_GET_DEF && ctrl->entity->get_def)
-> > > > > > > > +             return ctrl->entity->get_def(dev, ctrl->entity,
-> > > > > > > > +                                          ctrl->info.selector, data, len);
-> > > > > > > > +     if (query == UVC_GET_MIN && ctrl->entity->get_min)
-> > > > > > > > +             return ctrl->entity->get_min(dev, ctrl->entity,
-> > > > > > > > +                                          ctrl->info.selector, data, len);
-> > > > > > > > +     if (query == UVC_GET_MAX && ctrl->entity->get_max)
-> > > > > > > > +             return ctrl->entity->get_max(dev, ctrl->entity,
-> > > > > > > > +                                          ctrl->info.selector, data, len);
-> > > > > > > > +     if (query == UVC_GET_RES && ctrl->entity->get_res)
-> > > > > > > > +             return ctrl->entity->get_res(dev, ctrl->entity,
-> > > > > > > > +                                          ctrl->info.selector, data, len);
-> > > > > > > >       if (query == UVC_GET_INFO && ctrl->entity->get_info)
-> > > > > > > >               return ctrl->entity->get_info(dev, ctrl->entity,
-> > > > > > > >                                             ctrl->info.selector, data);
-> > > > > > > > diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-> > > > > > > > index a931750bdea25b9062dcc7644bf5f2ed89c1cb4c..d6da8ed3ad4cf3377df49923e051fe04d83d2e38 100644
-> > > > > > > > --- a/drivers/media/usb/uvc/uvcvideo.h
-> > > > > > > > +++ b/drivers/media/usb/uvc/uvcvideo.h
-> > > > > > > > @@ -261,6 +261,14 @@ struct uvc_entity {
-> > > > > > > >                       u8 cs, u8 *caps);
-> > > > > > > >       int (*get_cur)(struct uvc_device *dev, struct uvc_entity *entity,
-> > > > > > > >                      u8 cs, void *data, u16 size);
-> > > > > > > > +     int (*get_def)(struct uvc_device *dev, struct uvc_entity *entity,
-> > > > > > > > +                    u8 cs, void *data, u16 size);
-> > > > > > > > +     int (*get_min)(struct uvc_device *dev, struct uvc_entity *entity,
-> > > > > > > > +                    u8 cs, void *data, u16 size);
-> > > > > > > > +     int (*get_max)(struct uvc_device *dev, struct uvc_entity *entity,
-> > > > > > > > +                    u8 cs, void *data, u16 size);
-> > > > > > > > +     int (*get_res)(struct uvc_device *dev, struct uvc_entity *entity,
-> > > > > > > > +                    u8 cs, void *data, u16 size);
-> > > > > > > >
-> > > > > > > >       unsigned int ncontrols;
-> > > > > > > >       struct uvc_control *controls;
 
 -- 
-Regards,
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-Laurent Pinchart
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
+
 
