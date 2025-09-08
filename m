@@ -1,80 +1,40 @@
-Return-Path: <linux-acpi+bounces-16450-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16451-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00D2AB48A87
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 12:48:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E26CAB48A99
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 12:54:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E5191B25749
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 10:48:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D14911B24DA2
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Sep 2025 10:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E347B1F4191;
-	Mon,  8 Sep 2025 10:48:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DZaET39O"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1CF222594;
+	Mon,  8 Sep 2025 10:54:37 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F72A2F879
-	for <linux-acpi@vger.kernel.org>; Mon,  8 Sep 2025 10:48:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2732C189;
+	Mon,  8 Sep 2025 10:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757328501; cv=none; b=uqb/8G+omG3qwlvAimkecAWIZzSSnQ3hzvaeLRpwNzNnE/wLluSCLNCGdyNPRkHmNUT45OQdjJPksPDv31cLV0pwwNticMlyMl/6fpwgeL6m9uT5UL68atC6QmWlL2G807lXiE6H3oF648M4YVIc65oFAULXpsFSllmGjREtmMg=
+	t=1757328877; cv=none; b=RAqG5f0RvAj84UVY08tmCmHaALC31LRsw/lePca2yl7c988PW4fBEXEGn6TnZqnK/7c03cfNO2LNnrK0tPOiteAtjgHMJCspr/yjkp+03NCl8dLAN69BFbNiNbXDt7zPc9wNcGYdd89ri9a8sJd5nsvTc7gR8uoP3CAkNHD/ny0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757328501; c=relaxed/simple;
-	bh=aooWlxs61oe5XmAvG5mEG9jZb11jz6KzCxSNS1Hzn4k=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=OMDx0BlTPgXrY+f2CR0HPtJDnkApTYyrRg55Stfp7xXYgp3S7ysEP/k9yx6C3RE5ivsr3eQr9V2VOZDLbckk458aUqXivuA8EndqvKMnqFyCfVeBh0Kyv1I609HM7ksaPnLIx3rciIsP8iURpUOrfWijd1/fkPp8O2HtURN47Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DZaET39O; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45dcff2f313so25224575e9.0
-        for <linux-acpi@vger.kernel.org>; Mon, 08 Sep 2025 03:48:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757328498; x=1757933298; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:cc:to:from:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vHs01z7oM1ANWId4X0P4WXVaPJBWZpLLCmKiOd/Ff+A=;
-        b=DZaET39ON3QQRCLbqo3HcytUB1zoTavH3MAq41xiZRj4PWLwqk06hD2ecjQQpOneo5
-         h4zIR1IcQBMhssnq7xl6gyLf40YwIOE3aa4uCMiI9Ge7ze+FAiVKkteHB9vOULiH0VFC
-         fVBTHZAofKFfe3tLfzwyedNLE4MLjpvJI6yR5RS5j/MncaBAc08iCYxKYLANFj4UAm1e
-         idVewv0Pw4gVJBYtojNrR1vpBBYfuPlvspE0i5/MXQwLzuMZMZmHDQkvm+z2Th5EDix8
-         PpplO5WuVSDBcSdXILz7FW4tJjQ/l9rY0i+qXlg3fYZB6aSrkf1NuVB3n8UFpvoiT4bj
-         0gjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757328498; x=1757933298;
-        h=content-transfer-encoding:subject:cc:to:from:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vHs01z7oM1ANWId4X0P4WXVaPJBWZpLLCmKiOd/Ff+A=;
-        b=fvWrozDvkoDFBinNICuDUUUaRKjTe1+H06CleDywFhmc//xiCJhTD79cKQBbH+ULxO
-         r/cET7/J7L6GMcOJ2tYntnyyfHwnghi/pTk6bkJrR9Hwf6sQsjz/ig9ockVJCDOIkn0j
-         0jUfrzyzSZ9sIL2Dnk4DNhJxFENExBXK9guBjxx/92i5Pizy93d9c4+osMesCeFLNUyy
-         PUt9kwGqe0htxUXD9GTb2n3AlsrAnaen3ResV1NGP9hEnkZaQxEW5V6TlVlSVLPtbiXT
-         fKcC8Ie9X86sc/6PkyMxf9M01SEREFLYAdYspCIAeXwsmbK3eOc/tAOtYEFyB03Y/z14
-         yNpA==
-X-Forwarded-Encrypted: i=1; AJvYcCX9NVWArkCt0kHiRiJWI988TzYfmlnJwkfgWEEHlMANIYBqoAM1yBxUdX3aYWwbFd86/2PBY8pl9VLy@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5HS9ZICB2qRSGn4wJFiWeGJCHRJ5YN+zorzw6KHh01yGPr+ER
-	lKXpvtjk9LQDLFuQ7da9WgalzvWaIDL/r1h8HfUkhXvvkSDbqWgc36PuZegUcWIsKk4=
-X-Gm-Gg: ASbGncuEEYwcIqW2WthCTzRD+jqUdauITkmq7FquhKQUapvQqqMWOJ1peARJn1/3A3M
-	XSd/bX2SZGhvk8nTTPh40Mdh660oYV64Lhratkn+4pYLg2VfgqJI8D0XvkhhzhovVyf2p/WKTj6
-	kWB0vJP4xkSk43eLg91HnvEG0yf+TjkGurEk90LaObGxaoh+qX9O9+nAxrNsXQMvfLs/oyrl8BW
-	AxOmCS7EKK8W0LeoM1oLT6t+HL+PpxCNXIZQCewK5hR0UQXJ1AXiACHUnFS5ompEFoqsTBOYQ96
-	zCSyiKmAgTMDoy3k4R6LfH/h6yO1iZw3iRdWldBXwiEp3vQJ6oFUmXO2uVn/KSFztYE1QxqqMK/
-	sATkfa5+9jkfFXZea2vngxo6kuBz+S4Ow/WWuz5cJWc7KVcfCo9mA2FRihkWvmMBsKtzfd4DsXz
-	azI7xqM3ve6IlU
-X-Google-Smtp-Source: AGHT+IHPhOXQXGFj/kIOadcgTuaRxf22+4yFciHzJcYi4juLw9HJQxPZ/k92mxlesnF3xP6w9bAziw==
-X-Received: by 2002:a05:600c:1d24:b0:456:fdd:6030 with SMTP id 5b1f17b1804b1-45dea83f76bmr8038565e9.19.1757328498296;
-        Mon, 08 Sep 2025 03:48:18 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:9b6a:7b16:fb30:a294? ([2a05:6e02:1041:c10:9b6a:7b16:fb30:a294])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-45dd6891d23sm140785655e9.4.2025.09.08.03.48.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Sep 2025 03:48:17 -0700 (PDT)
-Message-ID: <2af92349-2c84-4f1c-b035-946c3996cd9f@linaro.org>
-Date: Mon, 8 Sep 2025 12:48:16 +0200
+	s=arc-20240116; t=1757328877; c=relaxed/simple;
+	bh=sswkcXn8iJNBrz/gwNjG0PE3+x+V4y0KhneX0Mur+Cg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ok3MQYRuZAWtyZcZztJKC8SE6ztfMN/DMjKhasczEhkYN++IdFukGTl3BAymSCjdQ3E57c/YWFHBcHGt2DVmPap/ySREx9qmAG72qZ6k8DJr65jvZge84Sc+NyRZjW0EpMb1ECt0Lxd9U7mRVqmsuCdDLLpnxsPJ/bnBqMqYxBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1CD781692;
+	Mon,  8 Sep 2025 03:54:26 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 44D6F3F63F;
+	Mon,  8 Sep 2025 03:54:29 -0700 (PDT)
+Message-ID: <19ca6019-de69-4c5d-bf06-2e04a254f286@arm.com>
+Date: Mon, 8 Sep 2025 11:54:27 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -82,70 +42,177 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/33] arm_mpam: Add probe/remove for mpam msc driver and
+ kbuild boiler plate
+To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+ devicetree@vger.kernel.org
+Cc: shameerali.kolothum.thodi@huawei.com,
+ D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Rex Nie <rex.nie@jaguarmicro.com>,
+ Dave Martin <dave.martin@arm.com>, Koba Ko <kobak@nvidia.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, fenghuay@nvidia.com,
+ baisheng.gao@unisoc.com, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>
+References: <20250822153048.2287-1-james.morse@arm.com>
+ <20250822153048.2287-11-james.morse@arm.com>
+ <120b4049-a28d-40ad-9def-c901e12c7a68@arm.com>
+ <c129a5ca-066b-4a78-a1fe-be474b592022@arm.com>
+From: Ben Horgan <ben.horgan@arm.com>
 Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux PM mailing list <linux-pm@vger.kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Lukasz Luba <Lukasz.Luba@arm.com>, Saravana Kannan <saravanak@google.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Ulf Hansson <ulf.hansson@linaro.org>, Deepti Jaggi
- <quic_djaggi@quicinc.com>, Prasad Sodagudi <psodagud@quicinc.com>,
- Manaf Meethalavalappu Pallikunhi <quic_manafm@quicinc.com>,
- Tudor Ambarus <tudor.ambarus@linaro.org>,
- Srinivas Kandagatla <srini@kernel.org>, Amit Kucheria <amitk@kernel.org>,
- Abel Vesa <abel.vesa@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
- Steven Rostedt <rostedt@goodmis.org>
-Subject: [CfP] LPC 2025: Power Management and Thermal Control Micro-Conference
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <c129a5ca-066b-4a78-a1fe-be474b592022@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Hi James,
+
+On 9/5/25 19:48, James Morse wrote:
+> Hi Ben,
+> 
+> On 27/08/2025 14:03, Ben Horgan wrote:
+>> On 8/22/25 16:29, James Morse wrote:
+>>> Probing MPAM is convoluted. MSCs that are integrated with a CPU may
+>>> only be accessible from those CPUs, and they may not be online.
+>>> Touching the hardware early is pointless as MPAM can't be used until
+>>> the system-wide common values for num_partid and num_pmg have been
+>>> discovered.
+>>>
+>>> Start with driver probe/remove and mapping the MSC.
+> 
+>>> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+>>> new file mode 100644
+>>> index 000000000000..a0d9a699a6e7
+>>> --- /dev/null
+>>> +++ b/drivers/resctrl/mpam_devices.c
+>>> @@ -0,0 +1,336 @@
+> 
+>>> +static int mpam_dt_parse_resource(struct mpam_msc *msc, struct device_node *np,
+>>> +				  u32 ris_idx)
+>>> +{
+>>> +	int err = 0;
+>>> +	u32 level = 0;
+>>> +	unsigned long cache_id;
+>>> +	struct device_node *cache;
+>>> +
+>>> +	do {
+>>> +		if (of_device_is_compatible(np, "arm,mpam-cache")) {
+>>> +			cache = of_parse_phandle(np, "arm,mpam-device", 0);
+>>> +			if (!cache) {
+>>> +				pr_err("Failed to read phandle\n");
+>>> +				break;
+>>> +			}
+>> This looks like this allows "arm,mpam-cache" and "arm,mpam-device" to be
+>> used on an msc node when there are no ris children. This usage could be
+>> reasonable but doesn't match the schema in the previous patch. Should
+>> this usage be rejected or the schema extended?
+> 
+> The DT/ACPI stuff is only going to describe the things that make sense at a high level,
+> e.g. the controls for the L3. There may be other controls for stuff that doesn't make
+> sense in the hardware - these get discovered, grouped as 'unknown' and left alone.
+> 
+> Another angle on this is where there is an MSC that the OS will never make use of, but
+> needs to know about to find the system wide minimum value. (there is a comment about
+> this in the ACPI spec...)
+> 
+> I don't think its a problem if the magic dt-binding machinery is overly restrictive, that
+> is about validating DTB files...
+
+I agree with your points. However, I was rather thinking that the code
+allows more ways to describe the same thing than the schema does. In
+that, you could write something like:
 
 
-Hi everyone,
+msc@80000 {
+        compatible = "foo,a-standalone-msc";
+        reg = <0x80000 0x1000>;
 
-A Power Management and Thermal Control session will be held during this
-year’s LPC, as has been the case for the past few years, and it is now
-open for topic submissions.
+	...
+        msc@10000 {
+            compatible = "arm,mpam-msc arm,mpam-cache";
+            arm,mpam-device = <&mem>;
+            ...
+         }
+}
 
-The Power Management and Thermal Control microconference covers all
-things related to saving energy and managing heat. Among other topics,
-we care about thermal control infrastructure, CPU and device
-power-management mechanisms, energy models, and power capping. In
-particular, we are interested in improving and extending thermal control
-support in the Linux kernel and in utilizing the energy-saving features
-of modern hardware.
+Although, now I've written this out, it doesn't seem sensible to worry
+about this. Using ris compatibles on an msc, as in my example, is
+clearly an error.
 
-The overall goal is to facilitate cross-framework and cross-platform
-discussions that help improve energy awareness and thermal control in
-Linux.
+> 
+>
+[snip]
+>>> +		} else if (msc->iface == MPAM_IFACE_PCC) {
+>>> +			msc->pcc_cl.dev = &pdev->dev;
+>>> +			msc->pcc_cl.rx_callback = mpam_pcc_rx_callback;
+>>> +			msc->pcc_cl.tx_block = false;
+>>> +			msc->pcc_cl.tx_tout = 1000; /* 1s */
+>>> +			msc->pcc_cl.knows_txdone = false;
+>>> +
+>>> +			msc->pcc_chan = pcc_mbox_request_channel(&msc->pcc_cl,
+>>> +								 msc->pcc_subspace_id);
+>>> +			if (IS_ERR(msc->pcc_chan)) {
+>>> +				pr_err("Failed to request MSC PCC channel\n");
+>>> +				err = PTR_ERR(msc->pcc_chan);
+>>> +				break;
+>>> +			}
+>> I don't see pcc support added in this series. Should we fail the probe
+>> if this interface is specified?
+> 
+> I've got patches from Andre P to support it on DT - but the platforms that need it keeping
+> popping in and out of existence. I'll pull these bits out - they were intended to check
+> the ACPI table wasn't totally rotten...
+> 
+> 
+>> (If keeping, there is a missing pcc_mbox_free_channel() on the error path.)
+> 
+> When pcc_mbox_request_channel() fails? It already called mbox_free_channel() itself.
+Apologies, this was relating to if the *_parse_resources() call below
+failed.
 
-This year some big topics have been identified, for more details, please 
-refer to:
+> 
+> 
+>>> +		}
+>>> +
+>>> +		list_add_rcu(&msc->glbl_list, &mpam_all_msc);
+>>> +		platform_set_drvdata(pdev, msc);
+>>> +	} while (0);
+>>> +	mutex_unlock(&mpam_list_lock);
+>>> +
+>>> +	if (!err) {
+>>> +		/* Create RIS entries described by firmware */
+>>> +		if (!acpi_disabled)
+>>> +			err = acpi_mpam_parse_resources(msc, plat_data);
+>>> +		else
+>>> +			err = mpam_dt_parse_resources(msc, plat_data);
+>>> +	}
+>>> +
+>>> +	if (!err && fw_num_msc == mpam_num_msc)
+>>> +		mpam_discovery_complete();
+>>> +
+>>> +	if (err && msc)
+>>> +		mpam_msc_drv_remove(pdev);
+>>> +
+>>> +	return err;
+>>> +}
+[snip]>
+> Thanks,
+> 
+> James
+Thanks,
 
-  https://lpc.events/event/19/contributions/2003/
-
-If you have a topic connected to the big ones identified above or a new 
-one to propose for this session, please go to:
-
-  https://lpc.events/login/?next=/event/19/abstracts/%23submit-abstract
-
-and select "Power Management and Thermal Control MC" in the Track field.
-
-Please note that topics should not be about work that has already been 
-completed, as is the case for LPC in general.
-
-The deadline for submissions is October 15.
-
-Thank you!
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Ben
 
 
