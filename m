@@ -1,275 +1,392 @@
-Return-Path: <linux-acpi+bounces-16541-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16542-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824F6B50272
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 18:24:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0880B5038A
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 18:59:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CEFC3BF356
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 16:24:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 212231C66E19
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 16:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73B53451BF;
-	Tue,  9 Sep 2025 16:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="k2K0vEYa"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F74635AAA8;
+	Tue,  9 Sep 2025 16:56:58 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2089.outbound.protection.outlook.com [40.107.220.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1192625D209;
-	Tue,  9 Sep 2025 16:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757435091; cv=fail; b=f1R+cMTtzf15HGwru0iw1iV1QUQqwo3BBF20oZpXrpi2Y5gU43NY3Hd5c29HO5WbwM+OO70tFf7Xsc3E6Jrnrm4tn6E9ZbqQZzhMyqVA56zDThfJ5exQIB9/C6qFjsERV/GSGxivCGh1w5FnWD5G1VAQVu5hHoNU84kskr/OMX4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757435091; c=relaxed/simple;
-	bh=KyB3MIiAaVlnNClDnS2Srum2r8JFHEwxrA5XKKuLpHw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sIyJv13DNeX/J9sz9UqqYArETO/z2xw5c5Wx85eclztKnJCJs9BwuACaX8dOQSIPNcjHX5jN5ehlO3Z1fDtyTaYcIeHz2at4Ymu+ekHcrbqJMoy3E23q/59LHgGtPGAESK20254Eq8KmlneXDlXEM26Wp+5/eIhW07SWBDPuCnA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=k2K0vEYa; arc=fail smtp.client-ip=40.107.220.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=INq1TOudiZ1cZfRn93iFYydK6q9sw5M5eycpohprXO6qXUagiXii7w0GzDtW66blC0FpPE9VFLr3EpueQyAT2OWKkRjRrDenfVp7DkyIT/HSGBGM8YcaXYYOwzwYzsnWt1zu0K487Ot9PwtjdDbhzOei2R23Z96+Utf+EeiLWvjKTmJC/9Cf10P0xtkY98dpFb2AnF/Y34iep+boYKX+8yJ2pxQpWoY0sXzISkLHt6GiBGrcSxTYZTSbgoVwwUmOqRcXXMyImPazT++KKoXOacMEmEsInXVhYW7nfFKfcaESYw2YFaMmR5tXmNg7wrqTBwU7j8dSsYCIleN+Qzqfzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E2xxbcb68LaceO53kIsqpcw/8YOexoQzd7ii5rDhQk8=;
- b=vVLjWTe0J2NL8TgPwn00hN9AUpWdqfE1UNLSjQ/7ETXq9Coazz1jx2omJGgKbACehdGM5QSCwO3wwY3TvL1zAirUJptCg0ImPJ4yXG8UytueKkI7ea0yS9TyjO8OfJ/prIj44dqBtxCu3A0M8ll6wQKCU4fEHVDVj4A/vO7spXnEkdPHm3q0Up8ngbdMCft3pz2utos5MBffCjd2fAOm0lHhvvlllsbp307uQIkCeBVtTHYtK3QwkaTq8HdFtKMhdx0gDG77PWp0AbRqKUfAkkyUWoFkVfkuX/d6y7QI8bTZySLsUVbQbkUS7aBPRwXIhJWJfdRcR+AXZAlbNbWvCA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E2xxbcb68LaceO53kIsqpcw/8YOexoQzd7ii5rDhQk8=;
- b=k2K0vEYaWSpULEB2wTfIaA8HGSQlDaqxV4ZiS3l/0o+qbZbr/KcyS/Gja9gCbM7yHzfdajTVyK/avBMWjN+XgWxIxaMWhGFEwr+9/9gp1JdBB6xlFiCj+g/AkA7vJT8ogmOZn823XnViVkCQF23KNHlTRrySa+F6BuvCip4/qPM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB6373.namprd12.prod.outlook.com (2603:10b6:8:a4::7) by
- CY8PR12MB7196.namprd12.prod.outlook.com (2603:10b6:930:58::12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9094.22; Tue, 9 Sep 2025 16:24:45 +0000
-Received: from DM4PR12MB6373.namprd12.prod.outlook.com
- ([fe80::12f7:eff:380b:589f]) by DM4PR12MB6373.namprd12.prod.outlook.com
- ([fe80::12f7:eff:380b:589f%4]) with mapi id 15.20.9094.021; Tue, 9 Sep 2025
- 16:24:45 +0000
-Date: Tue, 9 Sep 2025 12:24:34 -0400
-From: Yazen Ghannam <yazen.ghannam@amd.com>
-To: shiju.jose@huawei.com
-Cc: rafael@kernel.org, bp@alien8.de, akpm@linux-foundation.org,
-	rppt@kernel.org, dferguson@amperecomputing.com,
-	linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, tony.luck@intel.com,
-	lenb@kernel.org, leo.duran@amd.com, mchehab@kernel.org,
-	jonathan.cameron@huawei.com, linuxarm@huawei.com,
-	rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
-	dave.hansen@linux.intel.com, naoya.horiguchi@nec.com,
-	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
-	gthelen@google.com, wschwartz@amperecomputing.com,
-	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
-	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
-	wanghuiqiang@huawei.com
-Subject: Re: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
-Message-ID: <20250909162434.GB11602@yaz-khff2.amd.com>
-References: <20250902173043.1796-1-shiju.jose@huawei.com>
- <20250902173043.1796-2-shiju.jose@huawei.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250902173043.1796-2-shiju.jose@huawei.com>
-X-ClientProxiedBy: QB1P288CA0033.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:c00:2d::46) To DM4PR12MB6373.namprd12.prod.outlook.com
- (2603:10b6:8:a4::7)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580D235A296;
+	Tue,  9 Sep 2025 16:56:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757437018; cv=none; b=Ry60g5yW9RHEojfWXhEfjJfKiyLD8ljG/Y/ykq5BY8XwzZ8DqjGgS4c1bC32seGAJCwlaUXLeTvkJI14WOzmgyI3lveLDygBgGT4paOgHe5mYYnUf6L41jvDv+Qeplc4msCwEwLr0bMLnJmJ0QPAOL/3pRdm6zOssu9V8ggM5bY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757437018; c=relaxed/simple;
+	bh=fuZ8S+nV8+7N9fsS4myg8Dcekewy5Laev8LV05+bx1I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bt/lHsT/e9I5gwEZWU6mB6et/QQY6gEfExVtdhZL0eQHWdNTVXc+7rPaOW0UXq76XrutgTu5ZKSugt1pzs5PMBLovIQzEUC6o5+vDz9uWqXcmbbyx4fbJthuWFoniOzxtuMKXdliOW/xkRwJKFL8oW5wuX83XPkCIelGJWBTYG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BAF2A15A1;
+	Tue,  9 Sep 2025 09:56:46 -0700 (PDT)
+Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 022863F694;
+	Tue,  9 Sep 2025 09:56:48 -0700 (PDT)
+Message-ID: <99a4577f-3d64-4466-a958-864f763bf895@arm.com>
+Date: Tue, 9 Sep 2025 17:56:47 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6373:EE_|CY8PR12MB7196:EE_
-X-MS-Office365-Filtering-Correlation-Id: 31184d20-a5b5-4cbf-21af-08ddefbd6360
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?1cnp2JeflL3vlIrZUv2yp9gr2NUk9zeVcuxUO/N7k50SYMtDx31HxB5ll8iB?=
- =?us-ascii?Q?HA1HpBFmG8l/QGb10QJRs1AnTPdLxH17+EtLyp6IKLOl6jTrJyvR1RFNIsCS?=
- =?us-ascii?Q?Yjyrd0IBJDWHE4qmsYb0SgVocCM2whWPjUrCZb31QDgrxF1Cn0xXzFMLvHrc?=
- =?us-ascii?Q?2w1wq7FaAI7B2lFoXR40m49qjkpV8rZ28DOhSYeQtJ3SCSh6k8/HXpC/knP1?=
- =?us-ascii?Q?bWyEEmigAWwFpOJHNl9cdWgcnmTf2KkyCzrgNJWAm1DT5aTJA8V3n8S2gx2c?=
- =?us-ascii?Q?qdrbWEwhIr0rWp4GoWJV34uDBwS3NTnIy7FStLYYI75B8aZJJwhl7z9BRmSL?=
- =?us-ascii?Q?DBr2sE6cxca3RIUgsbmQmcX9/Q7Tp145SfxDP6kyCVGInkF7GQptAqDc34YQ?=
- =?us-ascii?Q?y34MQXKxewVrOpHJMvZKYYiP/c8Q74IvCYfH/PXrqOkuIooJ+zLVHkpJvsrw?=
- =?us-ascii?Q?vU1pyt3WySb7SlxsoLm8eknwQHPbRZXZ4jHmn93TrOKG0KIIsyKphTReh98d?=
- =?us-ascii?Q?u/mVjHPWz+ufPBM4f/HpH2kiNhox2t5RVmgmTN6tYonW6tQed+KjT6xlT2bX?=
- =?us-ascii?Q?pp3FEPidq7CCJaoOn5/xv1/fPMUJWj7zDl2HHZJ75Op+dtrjl35e+11CGnMx?=
- =?us-ascii?Q?sYNspmhG6oTZrNYV/MUvd/cvDp6j0D/DHO+k0/fYZrB/qMnZN6FW+WsWMkJr?=
- =?us-ascii?Q?wDcs+KMS1LDjgvEfSdcX8aptkcDgYhcBHjGcYcnmJbQC2/jCegCcddYbEqUh?=
- =?us-ascii?Q?J6CAHGlAUPQ8WcI/S/NlFwixXTMvzgcpJ7BgldedaZDQGW4JYn5jJT9UVIy8?=
- =?us-ascii?Q?SSIvLhuVHh8wwSJ7j9rx1MxkeWhRBHd8vTM75DfRXnGhIvj3ylRmbM8yQHkP?=
- =?us-ascii?Q?F0MB1Hj325vaPXMEopkiXxn2iH7kgK9mK0WIK0mpjnqN/557tEUP9Zjy6v3U?=
- =?us-ascii?Q?QKKtW8+lyszxYM0L2BdMitL67VMMbACG+/aKxzutUQkUrh3szPhsaroBoH+h?=
- =?us-ascii?Q?eZQfp/PCRrvQgqKLyYLYJLPnYHuE/U6OhC9efS7x04QQ7LcW76LCcyjkpsx4?=
- =?us-ascii?Q?ZUBUuDYH889FMQoZcR5nN9EVZwGl0JZ7vXOgyJ/gGXuPe+GCsSfmEZ6kWANm?=
- =?us-ascii?Q?VdF8oIik2zXkes85gI7bB00GhPPRM6zJ84mPvcrDkJmw12HIQAVfFlNj4Ucb?=
- =?us-ascii?Q?h4pqO4LzbbiQwNmrsX+en3LqHk391+1MZb1jKx+BMaIxn4z5oQxNi3D7zFiH?=
- =?us-ascii?Q?T57vezaAYjYxAX+XQ4YMjxLBqqZvKuv9oOWK4Td882SgEuxkFEKkV/f6NiHy?=
- =?us-ascii?Q?+APxpXBSkVAkmWIIe40q/3aZhE8h5tSvgGlW1ZWoMjoV0AYGZZPzlmceWhVB?=
- =?us-ascii?Q?vEFiCo252fDNgPbbkPSD8gwhUABL+d3YTyuylrmCctv7VOaL5uyYXNiog0sY?=
- =?us-ascii?Q?fmDWLGeqESE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6373.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Scuj4S+dGTy/qIV7ldRTLVmSmyjMkAKoG6zcvnHKOOb6IGF6jJEkiwoY9JDv?=
- =?us-ascii?Q?taho7J0wGDsjysci9/7ZihvKgDS+7iqJnkUNJk6GS5TZVTdY6TfBTbMag+ye?=
- =?us-ascii?Q?ShxS5oOjvAuHQ1smDYufpZGPo8uTLqDgxbb6vioEHGm3XWtaESLokFtH55Us?=
- =?us-ascii?Q?/TtuLXcssBgOpGoAnHaI3WM7meL+p8Lj01+bj65viifjUuLU161fzsln6VxB?=
- =?us-ascii?Q?trufsQ+gSfqsU9/cKYYDpCwfSbVZe3LYGNzoZkR6sr7PPVFr942Q6coGX38c?=
- =?us-ascii?Q?ROmksQlBUj5OHJqliZXwI3zqLKsWE5bLSn/UE6cgIVQ+1L9pnBLUn/aw2QpX?=
- =?us-ascii?Q?VWsLB5HpcW0+k2DzCNSBU5As2uiNZUcpW1LmpmCTObvPm3q7zEnWQyJJMmce?=
- =?us-ascii?Q?oOs8EYyOHLLcnhHsZw+Z0BzO7QWfI9lyJRKuGIMzQUGERw2rcFc7ISku1ubQ?=
- =?us-ascii?Q?Ctum8A2KxZxBman5lztaqj7qM2oWtPRYDfqSGGjLzoxW8KliJJ1c52/A4Rd6?=
- =?us-ascii?Q?H2olnS7IOOeBXs07sPipJe5liqWgAaPn99cmbdZloEfdvg1eWA/X9u49U0v1?=
- =?us-ascii?Q?lWFbWhTKLUPAGbK33cbt7WaRlIhGcF9nHX9H2Ysy/42Zxmgj5wjLR73O13B/?=
- =?us-ascii?Q?olR1xsa+YeZCNVlo6n7oKyEagbAcyIEEWjrFO+pdGW35MGmu7OAhpVIyMV+V?=
- =?us-ascii?Q?WfQAw9Xwk9pe5TaiihiH0yjMA96/WWqQOoKy+4znrBXMXSEoNbhuJZ8Dibdc?=
- =?us-ascii?Q?hQsCWloYUIAzX8/SQRNWDyiKRfFBbP1h1McMdUWSlE+HHqNwE7Mee60KAfey?=
- =?us-ascii?Q?pCJ7wvsE2KJtuOslSJl1kxXqkp5IbdhnFERRmx4dgwunvoZAxQwghWARxyCO?=
- =?us-ascii?Q?r8yEuI+wlifxdvC8LY+GVljCIo/kpkSchVPSnINhz+Z7jReOfcMJExsiTfhY?=
- =?us-ascii?Q?3L0D5omTRIKkunE/Z8wmdkG36KZJmFOMehNtVic2GscGXUZ7PDYr66Vr1pkK?=
- =?us-ascii?Q?n0P9h+l1lHe99yVB91HG1mFgbq8+3wocNojXe4FCr75QxrehW7Ivh9zkhIpW?=
- =?us-ascii?Q?AcVOkw8IM+z2gXin8FvgH2XyLzSDqy5Gx9kyOrKp/R9fCDmiunWxvSEFS0yI?=
- =?us-ascii?Q?zbC5rjUJcm74SJpyJU+y2jut7ouX1wny2U2pcDQYQ0OAtzcZ0VDjhOvb2/64?=
- =?us-ascii?Q?JqpuD8LgJQVPZJu2OXcl5Yw5plErCb/WqOimQPa+2W8lWM9ZdaPEQYoDiZB+?=
- =?us-ascii?Q?rit94ghkkvxlF9M/5+FuswoyQaXnQJjWGwZE+lSF7I+1tkWtTcE00TzmemwX?=
- =?us-ascii?Q?ThYgmULLVXTtsmcBTKoj2QTcl2Im65FVMWhQ/4GzU+wcTh9EHiWBfaZK5aIa?=
- =?us-ascii?Q?8BxqPLUZjsEnAyj8tc1/zQgXhBm//GjG+Xdw8Am9BOyOlnI4G4okb+olk4Kh?=
- =?us-ascii?Q?g5z9nE1cBVzZPn39R/gr/VhCI+627iV4XTDa0g5cqkx8ubf1ESomjDqv9Hyp?=
- =?us-ascii?Q?/4gB8MbvTASks85QIePJeqt6019nuQnfclSFVBsrS8dEhsYbbLHdv0+rS501?=
- =?us-ascii?Q?ICunF7ojldFglEYDAR5CekaBVOTYfz/IZv+3sezt?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 31184d20-a5b5-4cbf-21af-08ddefbd6360
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6373.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2025 16:24:45.4793
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DChgSvNs802DRRLET4aJ6oAecXfzjQ5bmXQjfYHMDh4NLq4AFm9hPsZUZIp3Mat5T9JTUjTnAHcUY9IaU5APeQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7196
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/33] arm_mpam: Add cpuhp callbacks to probe MSC hardware
+To: Dave Martin <Dave.Martin@arm.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+ D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Rex Nie <rex.nie@jaguarmicro.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Lecopzer Chen <lecopzerc@nvidia.com>
+References: <20250822153048.2287-1-james.morse@arm.com>
+ <20250822153048.2287-15-james.morse@arm.com>
+ <aLsSZWUlbrEzbx6O@e133380.arm.com>
+Content-Language: en-GB
+From: James Morse <james.morse@arm.com>
+In-Reply-To: <aLsSZWUlbrEzbx6O@e133380.arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 02, 2025 at 06:30:39PM +0100, shiju.jose@huawei.com wrote:
-> From: Shiju Jose <shiju.jose@huawei.com>
+Hi Dave,
 
-[...]
+On 05/09/2025 17:40, Dave Martin wrote:
+> On Fri, Aug 22, 2025 at 03:29:55PM +0000, James Morse wrote:
+>> Because an MSC can only by accessed from the CPUs in its cpu-affinity
+>> set we need to be running on one of those CPUs to probe the MSC
+>> hardware.
+>>
+>> Do this work in the cpuhp callback. Probing the hardware will only
+>> happen before MPAM is enabled, walk all the MSCs and probe those we can
+>> reach that haven't already been probed.
+> 
+> It may be worth mentioning that the low-level MSC register accessors
+> are added by this patch.
 
-> +static int ras2_add_aux_device(char *name, int channel, u32 pxm_inst)
-> +{
-> +	unsigned long start_pfn, size_pfn;
-> +	struct ras2_mem_ctx *ras2_ctx;
-> +	int id, rc;
+Sure,
 
-'rc' is uninitialized, and LLVM gives a warning.
 
-The issue is the "goto ctx_free" paths return 'rc' before it is set.
+>> Later once MPAM is enabled, this cpuhp callback will be replaced by
+>> one that avoids the global list.
+> 
+> I misread this is as meaning "later in the patch series" and got
+> confused.
+> 
+> Perhaps, something like the following? (though this got a bit verbose)
+> 
+> --8<--
+> 
+> Once all MSCs reported by the firmware have been probed from a CPU in
+> their respective cpu-affinity set, the probe-time cpuhp callbacks are
+> replaced.  The replacement callbacks will ultimately need to handle
+> save/restore of the runtime MSC state across power transitions, but for
+> now there is nothing to do in them: so do nothing.
+> 
+> -->8--
 
-> +
-> +	ras2_ctx = kzalloc(sizeof(*ras2_ctx), GFP_KERNEL);
-> +	if (!ras2_ctx)
-> +		return -ENOMEM;
-> +
-> +	ras2_ctx->sys_comp_nid = pxm_to_node(pxm_inst);
-> +	/*
-> +	 * Retrieve the lowest contiguous physical memory address range within
-> +	 * the NUMA node.
-> +	 */
-> +	start_pfn = node_start_pfn(ras2_ctx->sys_comp_nid);
-> +	size_pfn = node_spanned_pages(ras2_ctx->sys_comp_nid);
-> +	if (!size_pfn) {
-> +		pr_debug("Failed to find phy addr range for NUMA node(%u)\n",
-> +			 pxm_inst);
-> +		goto ctx_free;
-> +	}
-> +	ras2_ctx->mem_base_addr = __pfn_to_phys(start_pfn);
-> +	ras2_ctx->mem_size = __pfn_to_phys(size_pfn);
-> +
-> +	rc = ras2_register_pcc_channel(ras2_ctx, channel);
-> +	if (rc < 0) {
-> +		pr_debug("Failed to register pcc channel rc=%d\n", rc);
-> +		goto ctx_free;
-> +	}
-> +
-> +	id = ida_alloc(&ras2_ida, GFP_KERNEL);
-> +	if (id < 0) {
-> +		rc = id;
-> +		goto ctx_free;
-> +	}
-> +
-> +	ras2_ctx->adev.id		= id;
-> +	ras2_ctx->adev.name		= RAS2_MEM_DEV_ID_NAME;
-> +	ras2_ctx->adev.dev.release	= ras2_release;
-> +	ras2_ctx->adev.dev.parent	= ras2_ctx->dev;
-> +
-> +	rc = auxiliary_device_init(&ras2_ctx->adev);
-> +	if (rc)
-> +		goto ida_free;
-> +
-> +	rc = auxiliary_device_add(&ras2_ctx->adev);
-> +	if (rc) {
-> +		auxiliary_device_uninit(&ras2_ctx->adev);
-> +		return rc;
-> +	}
-> +
-> +	return 0;
-> +
-> +ida_free:
-> +	ida_free(&ras2_ida, id);
-> +ctx_free:
-> +	kfree(ras2_ctx);
-> +
-> +	return rc;
-> +}
-> +
-> +static int acpi_ras2_parse(struct acpi_table_ras2 *ras2_tab)
-> +{
-> +	struct acpi_ras2_pcc_desc *pcc_desc_list;
-> +	int rc;
-> +	u16 i;
-> +
-> +	if (ras2_tab->header.length < sizeof(*ras2_tab)) {
-> +		pr_warn(FW_WARN "ACPI RAS2 table present but broken (too short #1)\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (!ras2_tab->num_pcc_descs) {
-> +		pr_warn(FW_WARN "No PCC descs in ACPI RAS2 table\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	pcc_desc_list = (struct acpi_ras2_pcc_desc *)(ras2_tab + 1);
-> +	for (i = 0; i < ras2_tab->num_pcc_descs; i++, pcc_desc_list++) {
-> +		if (pcc_desc_list->feature_type != RAS2_FEAT_TYPE_MEMORY)
-> +			continue;
-> +
-> +		rc = ras2_add_aux_device(RAS2_MEM_DEV_ID_NAME,
-> +					 pcc_desc_list->channel_id,
-> +					 pcc_desc_list->instance);
-> +		if (rc)
-> +			pr_warn("Failed to add RAS2 auxiliary device rc=%d\n", rc);
-> +	}
-> +
-> +	return 0;
+Done.
 
-Should this return 'rc' from above? Or is the 'warning' case not a total
-failure?
+>> Enabling a static key will also take the cpuhp lock, so can't be done
+> 
+> What static key?
+
+The one that enables the architectures context-switch code. That was added by an
+earlier patch, but got moved later to reduce the number of trees that this series touches.
+(also, there is no point having the context switch code if you can't have different values
+until the resctrl code shows up.)
+
+This is trying to describe why mpam_enable() is scheduled, instead of just being called in
+cpuhp context. (again - to reduce the churn caused by changing that later).
+
+I'll rephrase it as:
+| The architecture's context switch code will be enabled by a static-key, this can be set
+| by mpam_enable(), but must be done from process context, not a cpuhp callback because
+| both take the cpuhp lock.
+| Whenever a new MSC has been probed, the mpam_enable() work is scheduled to test if all
+| the MSCs have been probed.
+
+
+
+> None in this patch that I can see.
+> 
+>> from the cpuhp callback. Whenever a new MSC has been probed schedule
+>> work to test if all the MSCs have now been probed.
+
+
+>> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+> 
+> [...]
+> 
+>> @@ -511,9 +539,84 @@ int mpam_ris_create(struct mpam_msc *msc, u8 ris_idx,
+> 
+> [...]
+> 
+>> +static int mpam_cpu_online(unsigned int cpu)
+>>  {
+>> -	pr_err("Discovered all MSC\n");
+> 
+> I guess this disappears later?
+> 
+> If we print anything, it feels like it should be in the
+> mpam_enable_once() path, otherwise it looks like dmesg is going to get
+> spammed on every hotplug.  I might have missed something, here.
+
+Yes - there is a print that happens on the mpam_enable_once() path that shows the number
+of PARTID/PMG discovered. That "Discovered all MSC" message was so that probing had this
+shape from the very beginning - it is unfortunately not as simple as probing a stand-alone
+driver.
+
+
+
+>> +	return 0;
+>> +}
+>> +
+>> +/* Before mpam is enabled, try to probe new MSC */
+>> +static int mpam_discovery_cpu_online(unsigned int cpu)
+>> +{
+>> +	int err = 0;
+>> +	struct mpam_msc *msc;
+>> +	bool new_device_probed = false;
+>> +
+>> +	mutex_lock(&mpam_list_lock);
+
+> I take it nothing breaks if we sleep here?
+
+From memory, callbacks registered at CPUHP_AP_ONLINE_DYN are allowed to sleep. There is
+some point in the state machine where you can't. I can't find where this comes from right
+now...
+e.g. resctrl does this in x86's resctrl_arch_online_cpu() and friends.
+
+
+> Pending cpuhp callbacks for this CPU look to be blocked while we sleep,
+> at the very least.
+> Since this only happens during the probing phase, maybe that's not such
+> a big deal.
+
+
+> Is it likely that some late CPUs might be left offline indefinitely?
+
+Offlined and never come back is certainly something that can happen.
+
+
+> If so, we might end up doing futile work here forever.
+
+It may never probe all the MSC? Yes, that can certainly happen.
+But the work only happens when CPUs come online, which is already a major serialising
+event. There is no cost to run in this 'not done yet' state forever. It's not retrying on
+a timer or something like that.
+
+
+>> +	list_for_each_entry(msc, &mpam_all_msc, glbl_list) {
+>> +		if (!cpumask_test_cpu(cpu, &msc->accessibility))
+>> +			continue;
+>> +
+>> +		mutex_lock(&msc->probe_lock);
+>> +		if (!msc->probed)
+>> +			err = mpam_msc_hw_probe(msc);
+>> +		mutex_unlock(&msc->probe_lock);
+>> +
+>> +		if (!err)
+>> +			new_device_probed = true;
+>> +		else
+>> +			break; // mpam_broken
+
+> What's the effect of returning a non-zero value to the CPU hotplug
+> callback dispatcher here?
+
+I think the dynamically allocated ones can fail without any ill effects, it'll print a
+message but nothing else will happen. In this case the callbacks are synchronous with the
+attempt to register them, so it propagates the error back there.
+
+
+> Do we want to tear anything down if MPAM is unusable?
+
+It will keep trying, whereas it could pack up shop completely.
+
+Looks like that '// mpam_broken' is where I intended to schedule the work, but the code
+doesn't exist this early in the series. I'll pull bits of that earlier.
+
+
+>> +	}
+>> +	mutex_unlock(&mpam_list_lock);
+>> +
+>> +	if (new_device_probed && !err)
+>> +		schedule_work(&mpam_enable_work);
+>> +
+>> +	return err;
+>> +}
+>> +
+>> +static int mpam_cpu_offline(unsigned int cpu)
+>> +{
+>> +	return 0;
+>> +}
+>> +
+>> +static void mpam_register_cpuhp_callbacks(int (*online)(unsigned int online),
+>> +					  int (*offline)(unsigned int offline))
+>> +{
+>> +	mutex_lock(&mpam_cpuhp_state_lock);
+>> +	if (mpam_cpuhp_state) {
+>> +		cpuhp_remove_state(mpam_cpuhp_state);
+>> +		mpam_cpuhp_state = 0;
+>> +	}
+>> +
+>> +	mpam_cpuhp_state = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "mpam:online",
+>> +					     online, offline);
+>> +	if (mpam_cpuhp_state <= 0) {
+>> +		pr_err("Failed to register cpuhp callbacks");
+
+> Should an error code be returned to the caller if this fails?
+
+It can fail asynchronously - so any error handling for this is only solves part of the
+problem, a failure here means at least one of the callbacks ran and returned an error.
+If we schedule the disable call in the callback then that will take care of tearing the
+whole thing down.
+The cpuhp callbacks don't get registered until all the driver has found all the MSC that
+firmware described, so there is no race with driver:probing an MSC after the disable call
+got scheduled which tears the whole thing down.
+
+
+>> +		mpam_cpuhp_state = 0;
+>> +	}
+>> +	mutex_unlock(&mpam_cpuhp_state_lock);
+>>  }
+>>  
+>>  static int mpam_dt_count_msc(void)
+>> @@ -772,7 +875,7 @@ static int mpam_msc_drv_probe(struct platform_device *pdev)
+>>  	}
+>>  
+>>  	if (!err && fw_num_msc == mpam_num_msc)
+>> -		mpam_discovery_complete();
+>> +		mpam_register_cpuhp_callbacks(&mpam_discovery_cpu_online, NULL);
+> 
+> Abandon probing the MSC if this fails?
+
+Any error returned here is most likely to be from mpam_discovery_cpu_online(), but that
+can also happen asynchronously. Scheduling mpam_disable() is a better approach as it
+covers the asynchronous case too.
+
+
+> (However, the next phase of probing hangs off CPU hotplug, so it just
+> won't happen if the callbacks can't be registered -- but it looks like
+> MPAM may be left in a half-probed state.  I'm not entirely convinced
+> that this matters if the MPAM driver is not unloadable anyway...)
+
+I'm not at all worried about failing to register the cpuhp callbacks. The space needed for
+that is pre-allocated, if there isn't enough space, you get a splat from the cpuhp core -
+and the callbacks never run. No additional/unnecessary work happens - sure the memory
+didn't get free'd, but the WARN() from cpuhp_reserve_state() should be enough to debug this.
+
+
+> Nit: redundant &
+> 
+> (You don't have it in the similar call in mpam_enable_once().)
+
+Done,
+
+
+>>  	if (err && msc)
+>>  		mpam_msc_drv_remove(pdev);
+>> @@ -795,6 +898,41 @@ static struct platform_driver mpam_msc_driver = {
+>>  	.remove = mpam_msc_drv_remove,
+>>  };
+>>  
+>> +static void mpam_enable_once(void)
+>> +{
+>> +	mpam_register_cpuhp_callbacks(mpam_cpu_online, mpam_cpu_offline);
+> 
+> Should it be fatal if this fails?
+
+As above. Once case doesn't matter - and any handling here is incomplete.
+
+
+>> +
+>> +	pr_info("MPAM enabled\n");
+>> +}
+>> +
+>> +/*
+>> + * Enable mpam once all devices have been probed.
+>> + * Scheduled by mpam_discovery_cpu_online() once all devices have been created.
+>> + * Also scheduled when new devices are probed when new CPUs come online.
+>> + */
+>> +void mpam_enable(struct work_struct *work)
+>> +{
+>> +	static atomic_t once;
+> 
+> Nit: possibly unnecessary atomic_t?  This is slow-path code, and we
+> already have to take mpam_list_lock.  Harmless, though.
+
+mpam_enable_once() can't be called under the lock because of the ordering with cpuhp. This
+just ended up being cleaner. Too much is stuffed under that lock already!
+
+
+>> +	struct mpam_msc *msc;
+>> +	bool all_devices_probed = true;
+>> +
+>> +	/* Have we probed all the hw devices? */
+>> +	mutex_lock(&mpam_list_lock);
+>> +	list_for_each_entry(msc, &mpam_all_msc, glbl_list) {
+>> +		mutex_lock(&msc->probe_lock);
+>> +		if (!msc->probed)
+>> +			all_devices_probed = false;
+>> +		mutex_unlock(&msc->probe_lock);
+>> +
+>> +		if (!all_devices_probed)
+>> +			break;
+> 
+> WARN()?
+
+Expected condition...
+
+
+> We counted the MSCs in via the mpam_discovery_cpu_online(), so I think
+> we shouldn't get in here if some failed to probe?
+
+No we didn't!
+We counted them in mpam_msc_drv_probe() before registering the cpuhp callbacks.
+The cpuhp callbacks run asynchronously, each one schedules mpam_enable() iff it probed a
+new device. mpam_enable() then has to check if all the devices had been probed.
+
+This is done so that mpam_discovery_cpu_online() only has to take the msc->probe_lock for
+MSC that it can access - instead of all of them. That was to avoid having something that
+serialises CPUs coming online ... but mpam_discovery_cpu_online() is taking the list_lock
+due to an incomplete switch to SRCU. I'll fix that.
+
+
+>> +	}
+>> +	mutex_unlock(&mpam_list_lock);
+>> +
+>> +	if (all_devices_probed && !atomic_fetch_inc(&once))
+>> +		mpam_enable_once();
+>> +}
+
 
 Thanks,
-Yazen
+
+James
 
