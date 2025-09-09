@@ -1,80 +1,146 @@
-Return-Path: <linux-acpi+bounces-16536-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16537-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7EB0B4FEF2
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 16:12:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3C6B4FF42
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 16:23:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E6237BB007
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 14:05:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E47957B70D2
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 14:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42896274FFD;
-	Tue,  9 Sep 2025 14:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76ED63451D9;
+	Tue,  9 Sep 2025 14:23:34 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17EE2367BA;
-	Tue,  9 Sep 2025 14:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD423451B4;
+	Tue,  9 Sep 2025 14:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757426809; cv=none; b=i8MQi9RC1WIlDZ4ZWkSa/vN0VaBWpLMtFc2PGQW1xRdEjbNoBMLgo3gQa0h9A7kuG94HNgKT5fLvbtiWYqzW9TZzobaj3yuvMGVh+cG0uxVwwQ5kk4bjgz9+Ub5KJbAlsQKHXUpt2YiaRQ86xm+N0Kfa2O/sMOGxcz+QliPEKds=
+	t=1757427814; cv=none; b=f/LCvqsIagk2A/17h/vNQzHtoTQ3pNtZc/FBsabCNtots9k00KIKfPOvkcgbgFWgGzP6Gjfi0DngUeX7B4WcQDohvPAUkp60v095+tNC4TexrdE4KG+QtucDD+sTXm7yXYDRfXv2O+0kK8ge/+c1jlinB9RvBTgBU9mZiBlz8ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757426809; c=relaxed/simple;
-	bh=kK4qlT+CRQW6c+NgMgSfzghLPuENtOVYb49g7rHPttk=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=owgwq67cn12saG+mAfkSYnGztqyMewDA4EsdFKoFfeO86LkMamBGdHfaewsy2qt+oBvSgYSQQTwUs9kHB7YGko57GonhsZzS6BgEPPGEFK6Lo04qaxb5KyIWqm5JW16Nt2bFJZvB6/XCL6NFXlrSVRvRfgYIqLLa+rfjWPC/Abs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cLlrR56TQz6L538;
-	Tue,  9 Sep 2025 22:02:31 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 281D9140278;
-	Tue,  9 Sep 2025 22:06:39 +0800 (CST)
-Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 9 Sep
- 2025 16:06:38 +0200
-Date: Tue, 9 Sep 2025 15:06:36 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Davidlohr Bueso <dave@stgolabs.net>
-CC: <rafael.j.wysocki@intel.com>, <dave.jiang@intel.com>,
-	<dan.j.williams@intel.com>, <alejandro.lucero-palau@amd.com>,
-	<ira.weiny@intel.com>, <alison.schofield@intel.com>,
-	<a.manzanares@samsung.com>, <linux-acpi@vger.kernel.org>,
-	<linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Rafael J .
- Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v2] cxl/acpi: Rename CFMW coherency restrictions
-Message-ID: <20250909150636.000036b3@huawei.com>
-In-Reply-To: <20250908160034.86471-1-dave@stgolabs.net>
-References: <20250908160034.86471-1-dave@stgolabs.net>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1757427814; c=relaxed/simple;
+	bh=lfKJwavK2NEanN+cL6edfbgdRn0pD99g6SQzNtIfe2U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eWdj9EdP0x6SHGKe6vxtn+7t1kB/GSGyNBJQu1KRsa9vrK3too8rUN5OZBZ0ARNvF7wTHcSW4GuYqbc7q0FhFW4KPaJTuqiEGVMeqHG0LLw2z6KWgn7A+5zQIxYmmTK6A8nmsO9PonsM9azmGq/8liy+TaTl6oAxLXTxA2uukMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 906B91424;
+	Tue,  9 Sep 2025 07:23:23 -0700 (PDT)
+Received: from e133380.arm.com (e133380.arm.com [10.1.197.68])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2519D3F66E;
+	Tue,  9 Sep 2025 07:23:26 -0700 (PDT)
+Date: Tue, 9 Sep 2025 15:23:23 +0100
+From: Dave Martin <Dave.Martin@arm.com>
+To: James Morse <james.morse@arm.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+	D Scott Phillips OS <scott@os.amperecomputing.com>,
+	carl@os.amperecomputing.com, lcherian@marvell.com,
+	bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+	baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+	Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+	dfustini@baylibre.com, amitsinght@marvell.com,
+	David Hildenbrand <david@redhat.com>,
+	Rex Nie <rex.nie@jaguarmicro.com>, Koba Ko <kobak@nvidia.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>, fenghuay@nvidia.com,
+	baisheng.gao@unisoc.com,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+	Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Lecopzer Chen <lecopzerc@nvidia.com>
+Subject: Re: [PATCH 14/33] arm_mpam: Add cpuhp callbacks to probe MSC hardware
+Message-ID: <aMA4Wz2j0Ozv0BNZ@e133380.arm.com>
+References: <20250822153048.2287-1-james.morse@arm.com>
+ <20250822153048.2287-15-james.morse@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250822153048.2287-15-james.morse@arm.com>
 
-On Mon,  8 Sep 2025 09:00:34 -0700
-Davidlohr Bueso <dave@stgolabs.net> wrote:
+Hi James,
 
-> ACPICA commit 710745713ad3a2543dbfb70e84764f31f0e46bdc
+While I'm here:
+
+On Fri, Aug 22, 2025 at 03:29:55PM +0000, James Morse wrote:
+> Because an MSC can only by accessed from the CPUs in its cpu-affinity
+> set we need to be running on one of those CPUs to probe the MSC
+> hardware.
 > 
-> This has been renamed in more recent CXL specs, as
-> type3 (memory expanders) can also use HDM-DB for
-> device coherent memory.
+> Do this work in the cpuhp callback. Probing the hardware will only
+> happen before MPAM is enabled, walk all the MSCs and probe those we can
+> reach that haven't already been probed.
 > 
-> Link: https://github.com/acpica/acpica/commit/710745713ad3a2543dbfb70e84764f31f0e46bdc
-> Acked-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-> Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Later once MPAM is enabled, this cpuhp callback will be replaced by
+> one that avoids the global list.
+> 
+> Enabling a static key will also take the cpuhp lock, so can't be done
+> from the cpuhp callback. Whenever a new MSC has been probed schedule
+> work to test if all the MSCs have now been probed.
+> 
+> CC: Lecopzer Chen <lecopzerc@nvidia.com>
+> Signed-off-by: James Morse <james.morse@arm.com>
+> ---
+>  drivers/resctrl/mpam_devices.c  | 144 +++++++++++++++++++++++++++++++-
+>  drivers/resctrl/mpam_internal.h |   8 +-
+>  2 files changed, 147 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+> index 5baf2a8786fb..9d6516f98acf 100644
+> --- a/drivers/resctrl/mpam_devices.c
+> +++ b/drivers/resctrl/mpam_devices.c
+
+[...]
+
+> @@ -511,9 +539,84 @@ int mpam_ris_create(struct mpam_msc *msc, u8 ris_idx,
+>  	return err;
+>  }
+>  
+> -static void mpam_discovery_complete(void)
+> +static int mpam_msc_hw_probe(struct mpam_msc *msc)
+> +{
+> +	u64 idr;
+> +	int err;
+
+Redundant variable which gets removed again in the next patch?
+ 
+> +
+> +	lockdep_assert_held(&msc->probe_lock);
+> +
+> +	mutex_lock(&msc->part_sel_lock);
+> +	idr = mpam_read_partsel_reg(msc, AIDR);
+> +	if ((idr & MPAMF_AIDR_ARCH_MAJOR_REV) != MPAM_ARCHITECTURE_V1) {
+> +		pr_err_once("%s does not match MPAM architecture v1.x\n",
+> +			    dev_name(&msc->pdev->dev));
+> +		err = -EIO;
+> +	} else {
+> +		msc->probed = true;
+> +		err = 0;
+> +	}
+> +	mutex_unlock(&msc->part_sel_lock);
+> +
+> +	return err;
+> +}
+
+[...]
+
+Cheers
+---Dave
 
