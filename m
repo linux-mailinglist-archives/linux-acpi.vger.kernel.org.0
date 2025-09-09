@@ -1,96 +1,151 @@
-Return-Path: <linux-acpi+bounces-16526-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16527-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D6DB4A8CB
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 11:52:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D8F4B4A957
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 12:07:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA04F1BC5F7A
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 09:50:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7D63363FF0
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 10:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB34331283E;
-	Tue,  9 Sep 2025 09:45:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ncEC6C4M";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0yAilcN6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572CB2F3C30;
+	Tue,  9 Sep 2025 10:07:11 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6700330FC08;
-	Tue,  9 Sep 2025 09:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709D82D46BC;
+	Tue,  9 Sep 2025 10:07:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757411140; cv=none; b=jhSKICIpNpVzqSJM2gcoA1itPDg6C0UybdKSK7ct9WN0+4iFhUPOK2VLFIpSEW94hd4+ispe7XJIXKjca45ZeWRSHKVrEYAS+bgcLFBkQL9lAYlWAfPgQdFhEE70LQLlxoqf4WLovzHBb6XNsnvfi9DwayIGGWgoGY7/HQ69+QA=
+	t=1757412431; cv=none; b=L/ZqVJP1LV/GHub81gvfd3jRSleVAaI0MvVwLm3ziZjbEdeS4MowajtFKPjGUZpEyCCZJb2aJdZM4iPWUJbHgr/eryw6Jck/o8Q0vxENom6pRILYW43cuNyW+BYlO61f57fuGrjkhcFlZDhmJTRq+4hAJZkCEgTqbWKObQjOmDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757411140; c=relaxed/simple;
-	bh=AJ6bobPKNuxc2pD/YZQNi4iuDg8twlzwv/v9QN7VAQg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=n4IiQn3VLZwM1kBB2AYzCyk2jJnA5bfTsYxZi2WfAATobpesQuIA+SxcRoyyZVNGxNKxoMWcz4NPtWp5HYzNt3rOgTW9puL+++sJIoe9PIecisxuOu5tiLyHMz9f5tphPXQa0HJlnRUmML1O8WZXgtUcUabPkLJG1vuYkocC8SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ncEC6C4M; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0yAilcN6; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1757411137;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T9rMoXP/QSewckjQCrhDlmtmRGislqHzoJn2eC5EdZQ=;
-	b=ncEC6C4M7MYGcs0VyDvSLd33omVS67MIT3m5ZkKIo+MO101yrk6yRna3TBb4mCzLhjLCWm
-	2oKicf0VKU5XHVm0LHC8a7XRLBnNIX9yWeWf5PiPiY794tW+ScUevbOL9MJzf+9r8bIvSP
-	AgKHe2lNIZU5tHY9/4LZnefGCpKVw3OsyKZSJEixnOFfKFhQ/u8xWN02fA+lZDC7DyfqWi
-	PDRVfbP0sEsWqBPzG8FcaTsoC1dwJBH7PZKh5Ozer5E3R/ijX5uCwR8B4TNIuABPVKafyf
-	AwdAb/pf17NRiUhDFsg3h0LpAo2/ldpSeM6fciDHlrFEs80i1wKu2l+VF26JDw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1757411137;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T9rMoXP/QSewckjQCrhDlmtmRGislqHzoJn2eC5EdZQ=;
-	b=0yAilcN6MbUxoWFzSDsuXfOFuwbjv7OcDJek+tCR08gD6uzz3zYNDYYGl5rZOfbXFmVr/Y
-	LSHj9f2fNlkvNvCw==
-To: Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>,
- Saravana Kannan <saravanak@google.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Sven Peter <sven@kernel.org>, Janne Grunau
- <j@jannau.net>, Suzuki K Poulose <suzuki.poulose@arm.com>, James Clark
- <james.clark@linaro.org>
-Subject: Re: [PATCH 14/25] genirq: Update request_percpu_nmi() to take an
- affinity
-In-Reply-To: <20250908163127.2462948-15-maz@kernel.org>
-References: <20250908163127.2462948-1-maz@kernel.org>
- <20250908163127.2462948-15-maz@kernel.org>
-Date: Tue, 09 Sep 2025 11:45:36 +0200
-Message-ID: <877by8vu0v.ffs@tglx>
+	s=arc-20240116; t=1757412431; c=relaxed/simple;
+	bh=/KbbwvQvwoDDtcfJnQaWn3NiqCRJWQONsBAd5RtWH88=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WM7pl55cwm8HwDomgt/uHJ3xZiDJZzxDsPIj/l/C3TRd9/l+cgOI4GlwUkF90M9ltgCZ3ljvecLfxNkaNv38zd8ep5hikESsGI4zR9qKuLKndkNbO2m3sTjvS1H89q7knhhsjS1hVGp/++rBQnlIDXQ8phW3AopzjtN+7PRNQUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E4797113E;
+	Tue,  9 Sep 2025 03:06:58 -0700 (PDT)
+Received: from e133380.arm.com (e133380.arm.com [10.1.197.68])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 36B533F66E;
+	Tue,  9 Sep 2025 03:07:01 -0700 (PDT)
+Date: Tue, 9 Sep 2025 11:06:52 +0100
+From: Dave Martin <Dave.Martin@arm.com>
+To: James Morse <james.morse@arm.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
+	D Scott Phillips OS <scott@os.amperecomputing.com>,
+	carl@os.amperecomputing.com, lcherian@marvell.com,
+	bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+	baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+	Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+	dfustini@baylibre.com, amitsinght@marvell.com,
+	David Hildenbrand <david@redhat.com>,
+	Rex Nie <rex.nie@jaguarmicro.com>, Koba Ko <kobak@nvidia.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>, fenghuay@nvidia.com,
+	baisheng.gao@unisoc.com,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+	Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH 04/33] ACPI / PPTT: Stop acpi_count_levels() expecting
+ callers to clear levels
+Message-ID: <aL/8PIcebYGoB/g6@e133380.arm.com>
+References: <20250822153048.2287-1-james.morse@arm.com>
+ <20250822153048.2287-5-james.morse@arm.com>
+ <aK7iyf/6iVOuVhTr@e133380.arm.com>
+ <1914b7f0-10e6-4cf4-ad53-5ae03c69964d@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1914b7f0-10e6-4cf4-ad53-5ae03c69964d@arm.com>
 
-On Mon, Sep 08 2025 at 17:31, Marc Zyngier wrote:
-> @@ -2564,13 +2566,14 @@ int request_percpu_nmi(unsigned int irq, irq_handler_t handler,
->  	    !irq_supports_nmi(desc))
->  		return -EINVAL;
->  
-> -	/* The line cannot already be NMI */
-> -	if (irq_is_nmi(desc))
-> +	/* The line cannot be NMI already if the new request covers all CPUs */
-> +	if (irq_is_nmi(desc) &&
-> +	    (!affinity || cpumask_equal(affinity, cpu_possible_mask)))
->  		return -EINVAL;
+Hi James,
 
-This check looks odd. What makes sure that the affinities do not
-overlap?
+On Thu, Aug 28, 2025 at 04:57:15PM +0100, James Morse wrote:
+> Hi Dave,
+> 
+> On 27/08/2025 11:49, Dave Martin wrote:
+> > On Fri, Aug 22, 2025 at 03:29:45PM +0000, James Morse wrote:
+> >> acpi_count_levels() passes the number of levels back via a pointer argument.
+> >> It also passes this to acpi_find_cache_level() as the starting_level, and
+> >> preserves this value as it walks up the cpu_node tree counting the levels.
+> >>
+> >> This means the caller must initialise 'levels' due to acpi_count_levels()
+> >> internals. The only caller acpi_get_cache_info() happens to have already
+> >> initialised levels to zero, which acpi_count_levels() depends on to get the
+> >> correct result.
+> >>
+> >> Two results are passed back from acpi_count_levels(), unlike split_levels,
+> >> levels is not optional.
+> >>
+> >> Split these two results up. The mandatory 'levels' is always returned,
+> >> which hides the internal details from the caller, and avoids having
+> >> duplicated initialisation in all callers. split_levels remains an
+> >> optional argument passed back.
+> > 
+> > Nit: I found all this a bit hard to follow.
+> > 
+> > This seems to boil down to:
+> > 
+> > --8<--
+> > 
+> > In acpi_count_levels(), the initial value of *levels passed by the
+> > caller is really an implementation detail of acpi_count_levels(), so it
+> > is unreasonable to expect the callers of this function to know what to
+> > pass in for this parameter.  The only sensible initial value is 0,
+> > which is what the only upstream caller (acpi_get_cache_info()) passes.
+> > 
+> > Use a local variable for the starting cache level in acpi_count_levels(),
+> > and pass the result back to the caller via the function return value.
+> > 
+> > Gid rid of the levels parameter, which has no remaining purpose.
+> > 
+> > Fix acpi_get_cache_info() to match.
+> > 
+> > -->8--
+> 
+> I've taken this instead,
 
-Thanks,
+OK
 
-        tglx
+[...]
+
+> >> @@ -731,7 +735,7 @@ int acpi_get_cache_info(unsigned int cpu, unsigned int *levels,
+> >>  	if (!cpu_node)
+> >>  		return -ENOENT;
+> >>  
+> >> -	acpi_count_levels(table, cpu_node, levels, split_levels);
+> >> +	*levels = acpi_count_levels(table, cpu_node, split_levels);
+> >>  
+> >>  	pr_debug("Cache Setup: last_level=%d split_levels=%d\n",
+> >>  		 *levels, split_levels ? *split_levels : -1);
+> > 
+> > Otherwise, looks reasonable to me.
+> > 
+> > (But see my comments on the next patches re whether we really need this.)
+> 
+> It was enough fun to debug that I'd like to save anyone else the trouble!
+
+Fair enough.
+
+Cheers
+---Dave
 
