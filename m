@@ -1,39 +1,39 @@
-Return-Path: <linux-acpi+bounces-16527-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16528-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D8F4B4A957
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 12:07:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F3FB4AA2D
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 12:18:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7D63363FF0
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 10:07:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6665618877C3
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Sep 2025 10:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572CB2F3C30;
-	Tue,  9 Sep 2025 10:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2822C31CA59;
+	Tue,  9 Sep 2025 10:14:32 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709D82D46BC;
-	Tue,  9 Sep 2025 10:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716BA31A573;
+	Tue,  9 Sep 2025 10:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757412431; cv=none; b=L/ZqVJP1LV/GHub81gvfd3jRSleVAaI0MvVwLm3ziZjbEdeS4MowajtFKPjGUZpEyCCZJb2aJdZM4iPWUJbHgr/eryw6Jck/o8Q0vxENom6pRILYW43cuNyW+BYlO61f57fuGrjkhcFlZDhmJTRq+4hAJZkCEgTqbWKObQjOmDc=
+	t=1757412872; cv=none; b=TQttMfR0rY9FBjEXKvThbbHODQScO1A+d5PHWr0153tRYBjS6z1jQYFD9rv/vzZz7OpV5jX38w2Y9GCMFF5KjH4dN88gm7ZLGqOPeQffS3OeTqxX7rxy8M7p5O9EOfPST6XCmgEDs5EIYiv/ZXL06UfzjV48X+c6/ND1JE7GG7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757412431; c=relaxed/simple;
-	bh=/KbbwvQvwoDDtcfJnQaWn3NiqCRJWQONsBAd5RtWH88=;
+	s=arc-20240116; t=1757412872; c=relaxed/simple;
+	bh=ym80XdqDh0Lyk6nkO25aoerkSsuVfLPsaJi31FE8O70=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WM7pl55cwm8HwDomgt/uHJ3xZiDJZzxDsPIj/l/C3TRd9/l+cgOI4GlwUkF90M9ltgCZ3ljvecLfxNkaNv38zd8ep5hikESsGI4zR9qKuLKndkNbO2m3sTjvS1H89q7knhhsjS1hVGp/++rBQnlIDXQ8phW3AopzjtN+7PRNQUs=
+	 Content-Type:Content-Disposition:In-Reply-To; b=W5SAFiHxoJbeURjU75th6b7ZrGXbwtO7Ju6sE/PpkU5p13LeC5/2pkI86zCA2ReSd7xAAo/qyAMtDVGWlaUUInQy1eBFmM5Jk7Zkr3LHnfE2N75udE+5t7Ym6TtevqQqQlxa/6BTL8LJ899P7xjbupobAUlaflCnT7T2j8RoBog=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E4797113E;
-	Tue,  9 Sep 2025 03:06:58 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5BEA6113E;
+	Tue,  9 Sep 2025 03:14:21 -0700 (PDT)
 Received: from e133380.arm.com (e133380.arm.com [10.1.197.68])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 36B533F66E;
-	Tue,  9 Sep 2025 03:07:01 -0700 (PDT)
-Date: Tue, 9 Sep 2025 11:06:52 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 013613F66E;
+	Tue,  9 Sep 2025 03:14:23 -0700 (PDT)
+Date: Tue, 9 Sep 2025 11:14:20 +0100
 From: Dave Martin <Dave.Martin@arm.com>
 To: James Morse <james.morse@arm.com>
 Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -60,13 +60,13 @@ Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	Will Deacon <will@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH 04/33] ACPI / PPTT: Stop acpi_count_levels() expecting
- callers to clear levels
-Message-ID: <aL/8PIcebYGoB/g6@e133380.arm.com>
+Subject: Re: [PATCH 06/33] ACPI / PPTT: Add a helper to fill a cpumask from a
+ cache_id
+Message-ID: <aL/9/KSH35ou8Mgj@e133380.arm.com>
 References: <20250822153048.2287-1-james.morse@arm.com>
- <20250822153048.2287-5-james.morse@arm.com>
- <aK7iyf/6iVOuVhTr@e133380.arm.com>
- <1914b7f0-10e6-4cf4-ad53-5ae03c69964d@arm.com>
+ <20250822153048.2287-7-james.morse@arm.com>
+ <aK7ju2caTjqf1+VN@e133380.arm.com>
+ <2e4c3c00-b248-421e-8ff1-d24b7b03be1a@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -75,76 +75,106 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1914b7f0-10e6-4cf4-ad53-5ae03c69964d@arm.com>
+In-Reply-To: <2e4c3c00-b248-421e-8ff1-d24b7b03be1a@arm.com>
 
-Hi James,
+Hi,
 
-On Thu, Aug 28, 2025 at 04:57:15PM +0100, James Morse wrote:
+On Thu, Aug 28, 2025 at 04:58:16PM +0100, James Morse wrote:
 > Hi Dave,
 > 
-> On 27/08/2025 11:49, Dave Martin wrote:
-> > On Fri, Aug 22, 2025 at 03:29:45PM +0000, James Morse wrote:
-> >> acpi_count_levels() passes the number of levels back via a pointer argument.
-> >> It also passes this to acpi_find_cache_level() as the starting_level, and
-> >> preserves this value as it walks up the cpu_node tree counting the levels.
+> On 27/08/2025 11:53, Dave Martin wrote:
+> > On Fri, Aug 22, 2025 at 03:29:47PM +0000, James Morse wrote:
+> >> MPAM identifies CPUs by the cache_id in the PPTT cache structure.
 > >>
-> >> This means the caller must initialise 'levels' due to acpi_count_levels()
-> >> internals. The only caller acpi_get_cache_info() happens to have already
-> >> initialised levels to zero, which acpi_count_levels() depends on to get the
-> >> correct result.
-> >>
-> >> Two results are passed back from acpi_count_levels(), unlike split_levels,
-> >> levels is not optional.
-> >>
-> >> Split these two results up. The mandatory 'levels' is always returned,
-> >> which hides the internal details from the caller, and avoids having
-> >> duplicated initialisation in all callers. split_levels remains an
-> >> optional argument passed back.
+> >> The driver needs to know which CPUs are associated with the cache,
+> >> the CPUs may not all be online, so cacheinfo does not have the
+> >> information.
 > > 
-> > Nit: I found all this a bit hard to follow.
+> > Nit: cacheinfo lacking the information is not a consequence of the
+> > driver needing it.
 > > 
-> > This seems to boil down to:
+> > Maybe split the sentence:
 > > 
-> > --8<--
-> > 
-> > In acpi_count_levels(), the initial value of *levels passed by the
-> > caller is really an implementation detail of acpi_count_levels(), so it
-> > is unreasonable to expect the callers of this function to know what to
-> > pass in for this parameter.  The only sensible initial value is 0,
-> > which is what the only upstream caller (acpi_get_cache_info()) passes.
-> > 
-> > Use a local variable for the starting cache level in acpi_count_levels(),
-> > and pass the result back to the caller via the function return value.
-> > 
-> > Gid rid of the levels parameter, which has no remaining purpose.
-> > 
-> > Fix acpi_get_cache_info() to match.
-> > 
-> > -->8--
+> > -> "[...] associated with the cache. The CPUs may not [...]"
 > 
-> I've taken this instead,
+> Sure,
 
 OK
 
+> >> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> >> index 660457644a5b..cb93a9a7f9b6 100644
+> >> --- a/drivers/acpi/pptt.c
+> >> +++ b/drivers/acpi/pptt.c
+> >> @@ -971,3 +971,65 @@ int find_acpi_cache_level_from_id(u32 cache_id)
+
 [...]
 
-> >> @@ -731,7 +735,7 @@ int acpi_get_cache_info(unsigned int cpu, unsigned int *levels,
-> >>  	if (!cpu_node)
-> >>  		return -ENOENT;
-> >>  
-> >> -	acpi_count_levels(table, cpu_node, levels, split_levels);
-> >> +	*levels = acpi_count_levels(table, cpu_node, split_levels);
-> >>  
-> >>  	pr_debug("Cache Setup: last_level=%d split_levels=%d\n",
-> >>  		 *levels, split_levels ? *split_levels : -1);
-> > 
-> > Otherwise, looks reasonable to me.
-> > 
-> > (But see my comments on the next patches re whether we really need this.)
-> 
-> It was enough fun to debug that I'd like to save anyone else the trouble!
+> >> + * acpi_pptt_get_cpumask_from_cache_id() - Get the cpus associated with the
+> >> + *					   specified cache
+> >> + * @cache_id: The id field of the unified cache
+> >> + * @cpus: Where to build the cpumask
+> >> + *
+> >> + * Determine which CPUs are below this cache in the PPTT. This allows the property
+> >> + * to be found even if the CPUs are offline.
+> >> + *
+> >> + * The PPTT table must be rev 3 or later,
+> >> + *
+> >> + * Return: -ENOENT if the PPTT doesn't exist, or the cache cannot be found.
+> >> + * Otherwise returns 0 and sets the cpus in the provided cpumask.
+> >> + */
+> >> +int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus)
+> >> +{
 
-Fair enough.
+[...]
+
+> >> +	/*
+> >> +	 * If we found the cache first, we'd still need to walk from each cpu.
+> >> +	 */
+> >> +	for_each_possible_cpu(cpu) {
+
+[...]
+
+> > Again, it feels like we are repeating the same walk multiple times to
+> > determine how deep the table is (on which point the table is self-
+> > describing anyway), and then again to derive some static property, and
+> > then we are then doing all of that work multiple times to derive
+> > different static properties, etc.
+> > 
+> > Can we not just walk over the tables once and stash the derived
+> > properties somewhere?
+> 
+> That is possible - but its a more invasive change to the PPTT parsing code.
+> Before the introduction of the leaf flag, the search for a processor also included a
+> search to check if the discovered node was a leaf.
+> 
+> I think this is trading time - walking over the table multiple times, against the memory
+> you'd need to de-serialise the tree to find the necessary properties quickly. I think the
+> reason Jeremy L went this way was because there may never be another request into this
+> code, so being ready with a quick answer was a waste of memory.
+> 
+> MPAM doesn't change this - all these things are done up front during driver probing, and
+> the values are cached by the driver.
+
+I guess that's true.
+
+> > I'm still getting my head around this parsing code, so I'm not saying
+> > that the approach is incorrect here -- just wondering whether there is
+> > a way to make it simpler.
+> 
+> It's walked at boot, and on cpu-hotplug. Neither are particularly performance critical.
+
+Do we do this only for unknown late secondaries (e.g., that haven't
+previously come online?)  I haven't gone to track this down but, if not,
+this cuts across the assertion that "there may never be another request
+into this code".
+
+cpu hotlug is slow in practice, but gratuitous cost on this path should
+still be avoided where feasible.
+
+> I agree that as platforms get bigger, there will be a tipping point ... I don't think
+> anyone has complained yet!
+
+Ack -- when in ACPI, do as the ACPI folks do, I guess.
 
 Cheers
 ---Dave
