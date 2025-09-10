@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-16558-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16559-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C4DB511FC
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 11:01:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9740B51230
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 11:12:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD4C9160EA7
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 09:01:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1C204461DB
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 09:12:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792493126A6;
-	Wed, 10 Sep 2025 09:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8349C3126CF;
+	Wed, 10 Sep 2025 09:12:05 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA2730C351;
-	Wed, 10 Sep 2025 09:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BFD311598;
+	Wed, 10 Sep 2025 09:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757494870; cv=none; b=PX9vK0EwJt7Um2g0F/gSFy3WukUT7nKjdjNl87lan2YwMbJmV5MFpqenYzAQ6UQu3VT8taioP3aAVWv5kh1dtwHQuRvoTptXSybec0MPPWaEplYcmIXI5JymfLbArXIEFUESOHrGobxEjDe7wyH9PWVxqF5JU90qUtBSDwzIZzs=
+	t=1757495525; cv=none; b=G3DicZa920FZrEDae0Tj4Ue1ouTwSbtyk+BFWiwapc3ly6+AwAtJj+QrM0DxxtdKKlTmUMzDtnQJy8IJmK7ydB/Hw8VEkLoFK9iuY7/x6NulgcjQKa5ovc48vNX5/ADuXTgBDWMyayzMFKUObx+PHcEs3jREyWKMsWrV9r6QTNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757494870; c=relaxed/simple;
-	bh=1ejmRaKPPiRElvXHDKAuk+uu/4bmfOebIKtynk7aOV8=;
+	s=arc-20240116; t=1757495525; c=relaxed/simple;
+	bh=FfWGhA/4Am6wij7lc3o9EAzKNpebFH9XKwto/6jXpdI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CtF44i0KY9c5jGCskv/kYL7/P8+aJBnz3J9UCgPDbxP56Wz/FCrWFpuDKvpiMfm6ZLeRCROjrFKsiX/v4Q0AY+NZRn8F7kSu+J1eqjdjZ6qECWFZl5ElXytBcDpMCkOBCM2wUPZ/BRJRjNcfWNg32pfzhMOv+hbZzqNSO2HzrlA=
+	 In-Reply-To:Content-Type; b=txWLIWtWndf7a9oVNZQ09N99NKxx5J3ylGREHUEFrwcbmtJ7lUZEMK0DEgxNr/oD6FWm0tqBU887s0+ICn32ofKKMfP5/mNz9CYcb6yNFDvKtoeccjYCVN6NQylSGe/eaY5JqAgOOVz5ohFJTsrgb4XkoxYpacPNw/vaEvlwaM4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4D26316F8;
-	Wed, 10 Sep 2025 02:00:58 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CBAA516F8;
+	Wed, 10 Sep 2025 02:11:53 -0700 (PDT)
 Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8718D3F63F;
-	Wed, 10 Sep 2025 02:01:01 -0700 (PDT)
-Message-ID: <e8d05e0f-044f-485d-8630-1c4ec48b8032@arm.com>
-Date: Wed, 10 Sep 2025 10:01:00 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F28353F63F;
+	Wed, 10 Sep 2025 02:11:56 -0700 (PDT)
+Message-ID: <cefaff01-5e74-44b1-96aa-bb0c490f1ce3@arm.com>
+Date: Wed, 10 Sep 2025 10:11:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,8 +42,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 15/33] arm_mpam: Probe MSCs to find the supported
- partid/pmg values
+Subject: Re: [PATCH 17/33] arm_mpam: Probe the hardware features resctrl
+ supports
 To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
  devicetree@vger.kernel.org
@@ -68,70 +68,89 @@ Cc: shameerali.kolothum.thodi@huawei.com,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Danilo Krummrich <dakr@kernel.org>
 References: <20250822153048.2287-1-james.morse@arm.com>
- <20250822153048.2287-16-james.morse@arm.com>
- <507919cd-a6d0-42b7-8721-d35f232edfa5@arm.com>
- <cbc2a9e2-4919-4ade-9d1b-afd0464f43bf@arm.com>
+ <20250822153048.2287-18-james.morse@arm.com>
+ <17f4507c-c244-42ee-bea0-57ed22e0a05f@arm.com>
+ <9c65c518-b4a2-4ac0-bf5d-9bdb8741dcf6@arm.com>
 From: Ben Horgan <ben.horgan@arm.com>
 Content-Language: en-US
-In-Reply-To: <cbc2a9e2-4919-4ade-9d1b-afd0464f43bf@arm.com>
+In-Reply-To: <9c65c518-b4a2-4ac0-bf5d-9bdb8741dcf6@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi James,
 
-On 9/9/25 17:56, James Morse wrote:
+On 9/9/25 17:57, James Morse wrote:
 > Hi Ben,
 > 
-> On 28/08/2025 14:12, Ben Horgan wrote:
+> On 28/08/2025 14:44, Ben Horgan wrote:
 >> On 8/22/25 16:29, James Morse wrote:
->>> CPUs can generate traffic with a range of PARTID and PMG values,
->>> but each MSC may have its own maximum size for these fields.
->>> Before MPAM can be used, the driver needs to probe each RIS on
->>> each MSC, to find the system-wide smallest value that can be used.
->>>
->>> While doing this, RIS entries that firmware didn't describe are create
->>> under MPAM_CLASS_UNKNOWN.
->>>
->>> While we're here, implement the mpam_register_requestor() call
->>> for the arch code to register the CPU limits. Future callers of this
->>> will tell us about the SMMU and ITS.
+>>> Expand the probing support with the control and monitor types
+>>> we can use with resctrl.
 > 
 >>> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
->>> index 9d6516f98acf..012e09e80300 100644
+>>> index 012e09e80300..290a04f8654f 100644
 >>> --- a/drivers/resctrl/mpam_devices.c
 >>> +++ b/drivers/resctrl/mpam_devices.c
->>> @@ -106,6 +116,74 @@ static inline u32 _mpam_read_partsel_reg(struct mpam_msc *msc, u16 reg)
+>>> @@ -102,7 +102,7 @@ static LLIST_HEAD(mpam_garbage);
+>>>  
+>>>  static u32 __mpam_read_reg(struct mpam_msc *msc, u16 reg)
+>>>  {
+>>> -	WARN_ON_ONCE(reg > msc->mapped_hwpage_sz);
+>>> +	WARN_ON_ONCE(reg + sizeof(u32) > msc->mapped_hwpage_sz);
 > 
->>> +int mpam_register_requestor(u16 partid_max, u8 pmg_max)
->>> +{
->>> +	int err = 0;
->>> +
->>> +	lockdep_assert_irqs_enabled();
->>> +
->>> +	spin_lock(&partid_max_lock);
->>> +	if (!partid_max_init) {
->>> +		mpam_partid_max = partid_max;
->>> +		mpam_pmg_max = pmg_max;
->>> +		partid_max_init = true;
->>> +	} else if (!partid_max_published) {
->>> +		mpam_partid_max = min(mpam_partid_max, partid_max);
->>> +		mpam_pmg_max = min(mpam_pmg_max, pmg_max);
+>> Update in the patch that introduced this line.
 > 
->> Do we really need to reduce these maximum here? If, say, we add an SMMU
->> requester which supports fewer partids than the cpus don't we want to be
->> able to carry on using those partids from the cpus. In this case the
->> SMMU requestor can, without risk of error interrupts, just use all the
->> partids it supports.
+> Yeah - this got ripped out.
+> Now that the size is in the ACPI table, I should never need to debug it being wrong!
+> (and the resulting translation fault will be enough to say something is wrong)
 > 
-> How would it do that?
 > 
-> We're probably going to expose that SMMU, or the devices behind it, via resctrl. You can
-> create 10 control groups in resctrl - but can't assign the SMMU/devices to the last two
-> because it doesn't actually support that many...
+>>> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
+>>> index c6f087f9fa7d..9f6cd4a68cce 100644
+>>> --- a/drivers/resctrl/mpam_internal.h
+>>> +++ b/drivers/resctrl/mpam_internal.h
+>>> @@ -136,6 +136,56 @@ static inline void mpam_mon_sel_lock_held(struct mpam_msc *msc)
+> 
+>>> +/* Bits for mpam_features_t */
+>>> +enum mpam_device_features {
+>>> +	mpam_feat_ccap_part = 0,
+>>> +	mpam_feat_cpor_part,
+>>> +	mpam_feat_mbw_part,
+>>> +	mpam_feat_mbw_min,
+>>> +	mpam_feat_mbw_max,
+>>> +	mpam_feat_mbw_prop,
+>>> +	mpam_feat_msmon,
+>>> +	mpam_feat_msmon_csu,
+>>> +	mpam_feat_msmon_csu_capture,
+>>> +	mpam_feat_msmon_csu_hw_nrdy,
+>>> +	mpam_feat_msmon_mbwu,
+>>> +	mpam_feat_msmon_mbwu_capture,
+>>> +	mpam_feat_msmon_mbwu_rwbw,
+>>> +	mpam_feat_msmon_mbwu_hw_nrdy,
+>>> +	mpam_feat_msmon_capt,
+>>> +	MPAM_FEATURE_LAST,
+> 
+>> This isn't all the features or just the features supported by resctrl.
+>> Just add them all in this patch?
+> 
+> I'm having trouble parsing this ...
+> 
+> I needed somewhere to split the features up, as there are rather a lot. Those that resctrl
+> supports seemed like the logical spot.
 
+I don't think resctrl doesn't support ccap, mpam_feat_ccap_part.
+Possibly the point is that this is split into more detailed features
+later but that's not clear from this patch or commit message.
 
-Ok. If that's how it's going to be exposed to the user then it make sense.
-
+> 
+> 
+>>> +};
+>>> +static_assert(BITS_PER_TYPE(mpam_features_t) >= MPAM_FEATURE_LAST);
+>>> +#define MPAM_ALL_FEATURES      ((1 << MPAM_FEATURE_LAST) - 1)
+> 
+>> Unused?
+> 
+> Fixed, thanks!
 > 
 > 
 > Thanks,
