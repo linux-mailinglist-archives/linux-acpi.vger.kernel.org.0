@@ -1,38 +1,38 @@
-Return-Path: <linux-acpi+bounces-16642-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16643-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A99F9B522DE
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 22:50:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53693B522E9
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 22:51:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF7687A4E0D
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 20:48:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BAB2A80504
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 20:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C238F2F3632;
-	Wed, 10 Sep 2025 20:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A922FF167;
+	Wed, 10 Sep 2025 20:45:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D37341AA9;
-	Wed, 10 Sep 2025 20:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9032F3431FD;
+	Wed, 10 Sep 2025 20:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757537123; cv=none; b=uzD3wSpUcGDLP6erd4ISbTFY1211mzgBU1lVHl+0Yo7KYiHQfqn+kLx5iIT3YRKW0XVh1DCI3A8ANRQDG6qY4Oo5iK17kCh9PcIpF+7HgAdS6z66xBffutN9+olPUcd57k44aulCABiL2mfLYj2fzAxjPbZnLdNh50MqGfpe5T0=
+	t=1757537128; cv=none; b=fHr7N2pQVz/Jc4Pi5tDNHqxkPSDuth49/dQUsVikceB8eOINGjaeLWLPXeSEWbeeCda9GP83JovUQs2WPfz7j43nqakXljh+rdQqBZv2NKuomJpchk6xbU77nQJJkdW+2b+a018NQcbeSgvB4RXbCONOa90+Jyw3xxzwBOQqPeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757537123; c=relaxed/simple;
-	bh=NYxyUURKHS7//bwml/NqGTPmVOVzvVFJiIDjuvOd/Ng=;
+	s=arc-20240116; t=1757537128; c=relaxed/simple;
+	bh=gsT0NWtXQpW/FfAfzYUCCHhshRNXgLIz3ZHWDoWC2zQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ELUmllRnuFxuuiMO3h9B4ATkxyv+RjxmBPTNjPgVHLWrZ8VU5VqoZzck0dmhpKv2UTP3IRiJcaQRkYCT7GjRA1eZmLfYsEQDmXmFkpGGG6llyDk5SdgQQWA9boo5M2DOBcjwJvEhWQ+XoROZGt1yl5Rchps+ur6CjbmPDgn3B5U=
+	 MIME-Version; b=ba/YMm8b6Gti1/9ldR4D0/p+uX9Ocatn+XOz0joxvr7U5/IrQOPlHsVarwuw/68Pa3R12lTZdXm55QOVvB2rHkLDWBTz8XKGh3VygBh4QskcB7DW9EkA4yEmT7xkSsfKFaeTw04BslwZSd3DOYg632s/r5jEP8owtU45d6s0SRM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E2ECB1EDB;
-	Wed, 10 Sep 2025 13:45:12 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E16AD244B;
+	Wed, 10 Sep 2025 13:45:17 -0700 (PDT)
 Received: from merodach.members.linode.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7869D3F63F;
-	Wed, 10 Sep 2025 13:45:16 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 97F1D3F63F;
+	Wed, 10 Sep 2025 13:45:21 -0700 (PDT)
 From: James Morse <james.morse@arm.com>
 To: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -66,11 +66,10 @@ Cc: James Morse <james.morse@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Ben Horgan <ben.horgan@arm.com>
-Subject: [PATCH v2 22/29] arm_mpam: Add helpers to allocate monitors
-Date: Wed, 10 Sep 2025 20:43:02 +0000
-Message-Id: <20250910204309.20751-23-james.morse@arm.com>
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v2 23/29] arm_mpam: Add mpam_msmon_read() to read monitor value
+Date: Wed, 10 Sep 2025 20:43:03 +0000
+Message-Id: <20250910204309.20751-24-james.morse@arm.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20250910204309.20751-1-james.morse@arm.com>
 References: <20250910204309.20751-1-james.morse@arm.com>
@@ -82,84 +81,301 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-MPAM's MSC support a number of monitors, each of which supports
-bandwidth counters, or cache-storage-utilisation counters. To use
-a counter, a monitor needs to be configured. Add helpers to allocate
-and free CSU or MBWU monitors.
+Reading a monitor involves configuring what you want to monitor, and
+reading the value. Components made up of multiple MSC may need values
+from each MSC. MSCs may take time to configure, returning 'not ready'.
+The maximum 'not ready' time should have been provided by firmware.
 
+Add mpam_msmon_read() to hide all this. If (one of) the MSC returns
+not ready, then wait the full timeout value before trying again.
+
+CC: Shanker Donthineni <sdonthineni@nvidia.com>
 Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Ben Horgan <ben.horgan@arm.com>
 ---
- drivers/resctrl/mpam_devices.c  |  2 ++
- drivers/resctrl/mpam_internal.h | 35 +++++++++++++++++++++++++++++++++
- 2 files changed, 37 insertions(+)
+Changes since v1:
+ * Added XCL support.
+ * Merged FLT/CTL constants.
+ * a spelling mistake in a comment.
+ * moved structrues around.
+---
+ drivers/resctrl/mpam_devices.c  | 226 ++++++++++++++++++++++++++++++++
+ drivers/resctrl/mpam_internal.h |  19 +++
+ 2 files changed, 245 insertions(+)
 
 diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-index f536ebbcf94e..cf190f896de1 100644
+index cf190f896de1..1543c33c5d6a 100644
 --- a/drivers/resctrl/mpam_devices.c
 +++ b/drivers/resctrl/mpam_devices.c
-@@ -340,6 +340,8 @@ mpam_class_alloc(u8 level_idx, enum mpam_class_types type)
- 	class->level = level_idx;
- 	class->type = type;
- 	INIT_LIST_HEAD_RCU(&class->classes_list);
-+	ida_init(&class->ida_csu_mon);
-+	ida_init(&class->ida_mbwu_mon);
+@@ -898,6 +898,232 @@ static int mpam_msc_hw_probe(struct mpam_msc *msc)
+ 	return 0;
+ }
  
- 	list_add_rcu(&class->classes_list, &mpam_classes);
- 
++struct mon_read {
++	struct mpam_msc_ris		*ris;
++	struct mon_cfg			*ctx;
++	enum mpam_device_features	type;
++	u64				*val;
++	int				err;
++};
++
++static void gen_msmon_ctl_flt_vals(struct mon_read *m, u32 *ctl_val,
++				   u32 *flt_val)
++{
++	struct mon_cfg *ctx = m->ctx;
++
++	/*
++	 * For CSU counters its implementation-defined what happens when not
++	 * filtering by partid.
++	 */
++	*ctl_val |= MSMON_CFG_x_CTL_MATCH_PARTID;
++
++	*flt_val = FIELD_PREP(MSMON_CFG_x_FLT_PARTID, ctx->partid);
++	if (m->ctx->match_pmg) {
++		*ctl_val |= MSMON_CFG_x_CTL_MATCH_PMG;
++		*flt_val |= FIELD_PREP(MSMON_CFG_x_FLT_PMG, ctx->pmg);
++	}
++
++	switch (m->type) {
++	case mpam_feat_msmon_csu:
++		*ctl_val = MSMON_CFG_CSU_CTL_TYPE_CSU;
++
++		if (mpam_has_feature(mpam_feat_msmon_csu_xcl, &m->ris->props))
++			*flt_val |= FIELD_PREP(MSMON_CFG_CSU_FLT_XCL,
++					       ctx->csu_exclude_clean);
++
++		break;
++	case mpam_feat_msmon_mbwu:
++		*ctl_val = MSMON_CFG_MBWU_CTL_TYPE_MBWU;
++
++		if (mpam_has_feature(mpam_feat_msmon_mbwu_rwbw, &m->ris->props))
++			*flt_val |= FIELD_PREP(MSMON_CFG_MBWU_FLT_RWBW, ctx->opts);
++
++		break;
++	default:
++		return;
++	}
++}
++
++static void read_msmon_ctl_flt_vals(struct mon_read *m, u32 *ctl_val,
++				    u32 *flt_val)
++{
++	struct mpam_msc *msc = m->ris->vmsc->msc;
++
++	switch (m->type) {
++	case mpam_feat_msmon_csu:
++		*ctl_val = mpam_read_monsel_reg(msc, CFG_CSU_CTL);
++		*flt_val = mpam_read_monsel_reg(msc, CFG_CSU_FLT);
++		break;
++	case mpam_feat_msmon_mbwu:
++		*ctl_val = mpam_read_monsel_reg(msc, CFG_MBWU_CTL);
++		*flt_val = mpam_read_monsel_reg(msc, CFG_MBWU_FLT);
++		break;
++	default:
++		return;
++	}
++}
++
++/* Remove values set by the hardware to prevent apparent mismatches. */
++static void clean_msmon_ctl_val(u32 *cur_ctl)
++{
++	*cur_ctl &= ~MSMON_CFG_x_CTL_OFLOW_STATUS;
++}
++
++static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
++				     u32 flt_val)
++{
++	struct mpam_msc *msc = m->ris->vmsc->msc;
++
++	/*
++	 * Write the ctl_val with the enable bit cleared, reset the counter,
++	 * then enable counter.
++	 */
++	switch (m->type) {
++	case mpam_feat_msmon_csu:
++		mpam_write_monsel_reg(msc, CFG_CSU_FLT, flt_val);
++		mpam_write_monsel_reg(msc, CFG_CSU_CTL, ctl_val);
++		mpam_write_monsel_reg(msc, CSU, 0);
++		mpam_write_monsel_reg(msc, CFG_CSU_CTL, ctl_val | MSMON_CFG_x_CTL_EN);
++		break;
++	case mpam_feat_msmon_mbwu:
++		mpam_write_monsel_reg(msc, CFG_MBWU_FLT, flt_val);
++		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val);
++		mpam_write_monsel_reg(msc, MBWU, 0);
++		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val | MSMON_CFG_x_CTL_EN);
++		break;
++	default:
++		return;
++	}
++}
++
++/* Call with MSC lock held */
++static void __ris_msmon_read(void *arg)
++{
++	u64 now;
++	bool nrdy = false;
++	struct mon_read *m = arg;
++	struct mon_cfg *ctx = m->ctx;
++	struct mpam_msc_ris *ris = m->ris;
++	struct mpam_props *rprops = &ris->props;
++	struct mpam_msc *msc = m->ris->vmsc->msc;
++	u32 mon_sel, ctl_val, flt_val, cur_ctl, cur_flt;
++
++	if (!mpam_mon_sel_lock(msc)) {
++		m->err = -EIO;
++		return;
++	}
++	mon_sel = FIELD_PREP(MSMON_CFG_MON_SEL_MON_SEL, ctx->mon) |
++		  FIELD_PREP(MSMON_CFG_MON_SEL_RIS, ris->ris_idx);
++	mpam_write_monsel_reg(msc, CFG_MON_SEL, mon_sel);
++
++	/*
++	 * Read the existing configuration to avoid re-writing the same values.
++	 * This saves waiting for 'nrdy' on subsequent reads.
++	 */
++	read_msmon_ctl_flt_vals(m, &cur_ctl, &cur_flt);
++	clean_msmon_ctl_val(&cur_ctl);
++	gen_msmon_ctl_flt_vals(m, &ctl_val, &flt_val);
++	if (cur_flt != flt_val || cur_ctl != (ctl_val | MSMON_CFG_x_CTL_EN))
++		write_msmon_ctl_flt_vals(m, ctl_val, flt_val);
++
++	switch (m->type) {
++	case mpam_feat_msmon_csu:
++		now = mpam_read_monsel_reg(msc, CSU);
++		if (mpam_has_feature(mpam_feat_msmon_csu_hw_nrdy, rprops))
++			nrdy = now & MSMON___NRDY;
++		break;
++	case mpam_feat_msmon_mbwu:
++		now = mpam_read_monsel_reg(msc, MBWU);
++		if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops))
++			nrdy = now & MSMON___NRDY;
++		break;
++	default:
++		m->err = -EINVAL;
++		break;
++	}
++	mpam_mon_sel_unlock(msc);
++
++	if (nrdy) {
++		m->err = -EBUSY;
++		return;
++	}
++
++	now = FIELD_GET(MSMON___VALUE, now);
++	*m->val += now;
++}
++
++static int _msmon_read(struct mpam_component *comp, struct mon_read *arg)
++{
++	int err, idx;
++	struct mpam_msc *msc;
++	struct mpam_vmsc *vmsc;
++	struct mpam_msc_ris *ris;
++
++	idx = srcu_read_lock(&mpam_srcu);
++	list_for_each_entry_rcu(vmsc, &comp->vmsc, comp_list) {
++		msc = vmsc->msc;
++
++		list_for_each_entry_rcu(ris, &vmsc->ris, vmsc_list) {
++			arg->ris = ris;
++
++			err = smp_call_function_any(&msc->accessibility,
++						    __ris_msmon_read, arg,
++						    true);
++			if (!err && arg->err)
++				err = arg->err;
++			if (err)
++				break;
++		}
++		if (err)
++			break;
++	}
++	srcu_read_unlock(&mpam_srcu, idx);
++
++	return err;
++}
++
++int mpam_msmon_read(struct mpam_component *comp, struct mon_cfg *ctx,
++		    enum mpam_device_features type, u64 *val)
++{
++	int err;
++	struct mon_read arg;
++	u64 wait_jiffies = 0;
++	struct mpam_props *cprops = &comp->class->props;
++
++	might_sleep();
++
++	if (!mpam_is_enabled())
++		return -EIO;
++
++	if (!mpam_has_feature(type, cprops))
++		return -EOPNOTSUPP;
++
++	memset(&arg, 0, sizeof(arg));
++	arg.ctx = ctx;
++	arg.type = type;
++	arg.val = val;
++	*val = 0;
++
++	err = _msmon_read(comp, &arg);
++	if (err == -EBUSY && comp->class->nrdy_usec)
++		wait_jiffies = usecs_to_jiffies(comp->class->nrdy_usec);
++
++	while (wait_jiffies)
++		wait_jiffies = schedule_timeout_uninterruptible(wait_jiffies);
++
++	if (err == -EBUSY) {
++		memset(&arg, 0, sizeof(arg));
++		arg.ctx = ctx;
++		arg.type = type;
++		arg.val = val;
++		*val = 0;
++
++		err = _msmon_read(comp, &arg);
++	}
++
++	return err;
++}
++
+ static void mpam_reset_msc_bitmap(struct mpam_msc *msc, u16 reg, u16 wd)
+ {
+ 	u32 num_words, msb;
 diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
-index 326ba9114d70..81c4c2bfea3d 100644
+index 81c4c2bfea3d..bb01e7dbde40 100644
 --- a/drivers/resctrl/mpam_internal.h
 +++ b/drivers/resctrl/mpam_internal.h
-@@ -210,6 +210,9 @@ struct mpam_class {
- 	/* member of mpam_classes */
- 	struct list_head	classes_list;
+@@ -196,6 +196,22 @@ static inline void mpam_clear_feature(enum mpam_device_features feat,
+ 	*supported &= ~(1 << feat);
+ }
  
-+	struct ida		ida_csu_mon;
-+	struct ida		ida_mbwu_mon;
++/* The values for MSMON_CFG_MBWU_FLT.RWBW */
++enum mon_filter_options {
++	COUNT_BOTH	= 0,
++	COUNT_WRITE	= 1,
++	COUNT_READ	= 2,
++};
 +
- 	struct mpam_garbage	garbage;
- };
++struct mon_cfg {
++	u16                     mon;
++	u8                      pmg;
++	bool                    match_pmg;
++	bool			csu_exclude_clean;
++	u32                     partid;
++	enum mon_filter_options opts;
++};
++
+ struct mpam_class {
+ 	/* mpam_components in this class */
+ 	struct list_head	components;
+@@ -343,6 +359,9 @@ void mpam_disable(struct work_struct *work);
+ int mpam_apply_config(struct mpam_component *comp, u16 partid,
+ 		      struct mpam_config *cfg);
  
-@@ -288,6 +291,38 @@ struct mpam_msc_ris {
- 	struct mpam_garbage	garbage;
- };
++int mpam_msmon_read(struct mpam_component *comp, struct mon_cfg *ctx,
++		    enum mpam_device_features, u64 *val);
++
+ int mpam_get_cpumask_from_cache_id(unsigned long cache_id, u32 cache_level,
+ 				   cpumask_t *affinity);
  
-+static inline int mpam_alloc_csu_mon(struct mpam_class *class)
-+{
-+	struct mpam_props *cprops = &class->props;
-+
-+	if (!mpam_has_feature(mpam_feat_msmon_csu, cprops))
-+		return -EOPNOTSUPP;
-+
-+	return ida_alloc_range(&class->ida_csu_mon, 0, cprops->num_csu_mon - 1,
-+			       GFP_KERNEL);
-+}
-+
-+static inline void mpam_free_csu_mon(struct mpam_class *class, int csu_mon)
-+{
-+	ida_free(&class->ida_csu_mon, csu_mon);
-+}
-+
-+static inline int mpam_alloc_mbwu_mon(struct mpam_class *class)
-+{
-+	struct mpam_props *cprops = &class->props;
-+
-+	if (!mpam_has_feature(mpam_feat_msmon_mbwu, cprops))
-+		return -EOPNOTSUPP;
-+
-+	return ida_alloc_range(&class->ida_mbwu_mon, 0,
-+			       cprops->num_mbwu_mon - 1, GFP_KERNEL);
-+}
-+
-+static inline void mpam_free_mbwu_mon(struct mpam_class *class, int mbwu_mon)
-+{
-+	ida_free(&class->ida_mbwu_mon, mbwu_mon);
-+}
-+
- /* List of all classes - protected by srcu*/
- extern struct srcu_struct mpam_srcu;
- extern struct list_head mpam_classes;
 -- 
 2.39.5
 
