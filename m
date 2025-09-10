@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-16606-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16607-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B1EDB520FC
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 21:30:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B92B520FB
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 21:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B41F73BA738
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 19:30:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCB20583932
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 19:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE21A2C2368;
-	Wed, 10 Sep 2025 19:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C69255F31;
+	Wed, 10 Sep 2025 19:30:20 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366B32D7388;
-	Wed, 10 Sep 2025 19:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F24EE266B41;
+	Wed, 10 Sep 2025 19:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757532604; cv=none; b=mYI59aex2BQEAzuyaXBSjizRv4P3i99eZq1Dawkhny9L5Z8lAu/OElngpDJUohWLZ5ix4gM2G7Jr2CReky1YUvkwO5pLwz00CWd1hKRej8jad2sF2biNI1QKNqODyS6H4/Gx/WsxZeafIpUa98wCEG+RoJA44pMIp0VUrO8OFVU=
+	t=1757532620; cv=none; b=UPXMgdsnZdaOy06Nnq7UblNbOnvHgwKmpa9REXtIqhJ3ll12yNpuAGIidSia+HwiJyBkA3cVp6Xgb0lKeRy68Bn2/Nn67w30HziBS9XFrUca4401GGtHIir502sAD0ylni1SgeN3m71qcdF1Ax2xFbMk+QR4rgMpp4bOZPtMJ4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757532604; c=relaxed/simple;
-	bh=pvB6YpQY4F00RmftQ3o+YYCEuDs8rw5qNnt5cx71ONo=;
+	s=arc-20240116; t=1757532620; c=relaxed/simple;
+	bh=Uqi1go0GTbFQXSvP3sPTw/841KpccjtRPjidoyTbWjI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m1sg4agaGXzJgcuFeNaqdWXR93uTKoMZeMhaCfPc3RQ+KsLRuzrnSODc1K/p6SU3hhaeX9glTfyW/Cy5GrkQ72Ig7qj00+mO8HtdlG2kka7nWQLWqrANhPxzxgE2t21/gUhRup+SWOj2R0KCsMczklkNlFUc3rgdYy7v18Y2IGM=
+	 In-Reply-To:Content-Type; b=sam/tTi1RUlc8Qc2WDQjLQbn0+MaL0ydCvP6GpMGnSN+Zjmr8FzpPFsZK6zkIUt9Tpl6l2bDwPP7mHid1E8x6tzt0Euqoq3Ble2j+YV705pewWiIkc698yE7o362DgHgMxuoNFaj/bOdLBKd/ZdrjAmUs2ihhIxZpizNYLltRt4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3D42016F8;
-	Wed, 10 Sep 2025 12:29:54 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 38D2C328D;
+	Wed, 10 Sep 2025 12:30:10 -0700 (PDT)
 Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7893B3F694;
-	Wed, 10 Sep 2025 12:29:56 -0700 (PDT)
-Message-ID: <c169aec6-54d1-4ac5-886c-306dad7f6040@arm.com>
-Date: Wed, 10 Sep 2025 20:29:56 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 554513F694;
+	Wed, 10 Sep 2025 12:30:07 -0700 (PDT)
+Message-ID: <1ac89055-12ab-4aa0-a34f-1523ac579b8e@arm.com>
+Date: Wed, 10 Sep 2025 20:30:05 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,8 +42,7 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 24/33] arm_mpam: Allow configuration to be applied and
- restored during cpu online
+Subject: Re: [PATCH 25/33] arm_mpam: Probe and reset the rest of the features
 To: Ben Horgan <ben.horgan@arm.com>, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
  devicetree@vger.kernel.org
@@ -66,126 +65,57 @@ Cc: shameerali.kolothum.thodi@huawei.com,
  <conor+dt@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
  Will Deacon <will@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>
+ Danilo Krummrich <dakr@kernel.org>, Zeng Heng <zengheng4@huawei.com>
 References: <20250822153048.2287-1-james.morse@arm.com>
- <20250822153048.2287-25-james.morse@arm.com>
- <1996dbf6-df9f-4785-9111-5ba52e789285@arm.com>
+ <20250822153048.2287-26-james.morse@arm.com>
+ <13767875-3744-47f3-98ec-a808c0c22f21@arm.com>
 Content-Language: en-GB
 From: James Morse <james.morse@arm.com>
-In-Reply-To: <1996dbf6-df9f-4785-9111-5ba52e789285@arm.com>
+In-Reply-To: <13767875-3744-47f3-98ec-a808c0c22f21@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Ben,
 
-On 28/08/2025 17:13, Ben Horgan wrote:
+On 28/08/2025 11:11, Ben Horgan wrote:
 > On 8/22/25 16:30, James Morse wrote:
->> When CPUs come online the original configuration should be restored.
->> Once the maximum partid is known, allocate an configuration array for
->> each component, and reprogram each RIS configuration from this.
+>> MPAM supports more features than are going to be exposed to resctrl.
+>> For partid other than 0, the reset values of these controls isn't
+>> known.
 >>
->> The MPAM spec describes how multiple controls can interact. To prevent
->> this happening by accident, always reset controls that don't have a
->> valid configuration. This allows the same helper to be used for
->> configuration and reset.
-
-> What in particular are you worried about here?
-
-'other' controls being left in an unknown state - meaning the one you did set, is useless.
-
-In a sane world, the thing writing the controls would write all the supported registers.
-In practice, resctrl only knows about bitmaps. The glue code could provide all the other
-values, but I figured it was better for the driver to do it. I'm sure they'll add other
-control types, and it would be a nuisance to update multiple callers if there is ever more
-than one.
-
-Another angle down here is mismatched components/devices mean a control type could be
-hidden if its not available everywhere - so the caller may not be aware of all the
-controls it was supposed to provide.
-
-
-> It does seem a bit
-> wasteful that to update a single control in a ris all the controls in
-> that ris are updated.
-
-I don't think anyone would ever build something that supports all these. One is most
-likely, pushing to three for platforms that support CPOR and CMIN/MAX. By the time you've
-taken the IPI to access a cache MSC, the cost of an additional register access is negligible.
-
-
-> This is needed for reset and restore but do we
-> really want if we are just changing one control, e.g. the cache portion
-> bitmap.
-
-The original config has been blown away by this point, but we do have the bitmap of what
-changed. I guess this is an emergent effect of __write_config() originating from the reset
-helper, and the 'empty config' being used to reset devices.
-
-I'd like to keep it as a single function that actually touches these registers.
-I'll change to generate a 'maximal' config instead of empty for reset - which pulls the
-policy on those values out, and drops the '0 for reset'.
-
-huh ... that is what the ALL_FEATURES macro you pointed out was for ...
-I suspect it was the bitmaps that are larger than a u32 that made this hard.
-
-
+>> Discover the rest of the features so they can be reset to avoid any
+>> side effects when resctrl is in use.
+>>
+>> PARTID narrowing allows MSC/RIS to support less configuration space than
+>> is usable. If this feature is found on a class of device we are likely
+>> to use, then reduce the partid_max to make it usable. This allows us
+>> to map a PARTID to itself.
 
 >> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
->> index b424af666b1e..8f6df2406c22 100644
+>> index 8f6df2406c22..aedd743d6827 100644
 >> --- a/drivers/resctrl/mpam_devices.c
 >> +++ b/drivers/resctrl/mpam_devices.c
 
->> @@ -1960,6 +2094,79 @@ void mpam_enable(struct work_struct *work)
->>  		mpam_enable_once();
->>  }
+>> @@ -964,6 +1054,29 @@ static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
 >>  
->> +struct mpam_write_config_arg {
->> +	struct mpam_msc_ris *ris;
->> +	struct mpam_component *comp;
->> +	u16 partid;
->> +};
+>>  	if (mpam_has_feature(mpam_feat_mbw_prop, rprops))
+>>  		mpam_write_partsel_reg(msc, MBW_PROP, bwa_fract);
 >> +
->> +static int __write_config(void *arg)
->> +{
->> +	struct mpam_write_config_arg *c = arg;
+>> +	if (mpam_has_feature(mpam_feat_cmax_cmax, rprops))
+>> +		mpam_write_partsel_reg(msc, CMAX, cmax);
 >> +
->> +	mpam_reprogram_ris_partid(c->ris, c->partid, &c->comp->cfg[c->partid]);
->> +
->> +	return 0;
->> +}
->> +
->> +#define maybe_update_config(cfg, feature, newcfg, member, changes) do { \
->> +	if (mpam_has_feature(feature, newcfg) &&			\
->> +	    (newcfg)->member != (cfg)->member) {			\
->> +		(cfg)->member = (newcfg)->member;			\
->> +		cfg->features |= (1 << feature);			\
->> +									\
->> +		(changes) |= (1 << feature);				\
->> +	}								\
->> +} while (0)
->> +
->> +static mpam_features_t mpam_update_config(struct mpam_config *cfg,
->> +					  const struct mpam_config *newcfg)
->> +{
->> +	mpam_features_t changes = 0;
->> +
->> +	maybe_update_config(cfg, mpam_feat_cpor_part, newcfg, cpbm, changes);
->> +	maybe_update_config(cfg, mpam_feat_mbw_part, newcfg, mbw_pbm, changes);
->> +	maybe_update_config(cfg, mpam_feat_mbw_max, newcfg, mbw_max, changes);
->> +
->> +	return changes;
->> +}
->> +
->> +/* TODO: split into write_config/sync_config */
->> +/* TODO: add config_dirty bitmap to drive sync_config */
+>> +	if (mpam_has_feature(mpam_feat_cmax_cmin, rprops))
+>> +		mpam_write_partsel_reg(msc, CMIN, 0);
 
-> Any changes to come for these TODO comments?
+> Missing reset for cmax_cassoc. I wonder if it makes sense to have
+> separate enums for partitioning features, which require reset, and the rest.
 
-No time. The dirty bitmap was to help with the problem you highlighted above. Separating
-into write/sync was to make it easier to support the firmware-backed thing, which can be
-a problem for another day.
+Fixed. They all need resetting because the architecture doesn't guarantee the state of
+controls out of reset for PARTID other than zero. (or - when the MSC are reset).
 
-I'll drop these.
+I think those two lists would just be those that are reset to zero, as opposed to some
+other value. Given the register names have to be listed here, I don't think its any worse
+to have the hand-picked reset value.
 
 
 Thanks,
