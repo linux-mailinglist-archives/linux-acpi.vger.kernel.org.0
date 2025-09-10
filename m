@@ -1,81 +1,82 @@
-Return-Path: <linux-acpi+bounces-16585-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16586-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E0EB51B2D
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 17:15:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 739C0B51B7F
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 17:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDEBB3A9856
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 15:10:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 396FB16140B
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 15:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923DF30F544;
-	Wed, 10 Sep 2025 15:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984D831C567;
+	Wed, 10 Sep 2025 15:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="TAHkeLtu"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="UlCTclhX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8676528C2CE
-	for <linux-acpi@vger.kernel.org>; Wed, 10 Sep 2025 15:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B25311944
+	for <linux-acpi@vger.kernel.org>; Wed, 10 Sep 2025 15:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757516998; cv=none; b=I7KQ7pW5Q0H8a7QiZLC3lBZoH0h113G4R2qo4eLNYQ8nRiXh0jqjmBYxW9qmVpYZgJkQNUbJN+FIv7AX00CkGBkMnKAYUMtgn8RfSBkw45syglfXcnC3F1gZT7q2sUwZsAjPORXeTJHzFTrcYMLyQE7gsnKzq/wperx9EwzKfnI=
+	t=1757517746; cv=none; b=eaLbvOP1zwxiPKR44+PFQdMpkRmvXHrHg6Inr445bGWGySdSDOERayd7S4Y409ECR9SGHpBiAfI7xYqDPAoSdZeG3R5D7YBip2NncU4WDQyz22pPEsc7z7nUdACN4Lju3HCR+/dDuHbxKnqTqWcQ2py5O5qZ51k8AbI4m2+7S10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757516998; c=relaxed/simple;
-	bh=nnB0i08/2aLtDWQLVR1K4St1ZSbXCZK4wpSnFXfLt3o=;
+	s=arc-20240116; t=1757517746; c=relaxed/simple;
+	bh=lLWfzen6uM2hFlERHK9rDtfJhTMmwaVbEcunW4cxdpc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DU3VuGinMSmFJlfsDqBNnUoyBHNxnZAwJJoFlkvzEX2mgAw1CFMWiN29DxUoyqOGsTGY5bDYXxQTAUZbZvtMVrP3ScKohspGQSSAgQYHv5lzxTQZrkE3L+cWk/OPFfmoL3OqJGGL3zC+nRrcpRg1gcNiDyY91azb9c9UOqf+qBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=TAHkeLtu; arc=none smtp.client-ip=209.85.221.52
+	 In-Reply-To:Content-Type; b=l1aAgjrbn+UTyDxqlYKfKVvJAYAhRVoIccLXxccCBe4s2ILSlaWkC0Ivo5b5Vln1jDTEV7shGGKa8MIDpiTegy9dKYnlAnjiquhm3Kara2BBci7f9Fyf0ZJCSzYSwDN8nENoxflvYjfurOuc3lDUP47nhbO7V05EkIY1FuzMlB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=UlCTclhX; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3e537dc30c7so5381772f8f.3
-        for <linux-acpi@vger.kernel.org>; Wed, 10 Sep 2025 08:09:56 -0700 (PDT)
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3dea538b826so5832202f8f.2
+        for <linux-acpi@vger.kernel.org>; Wed, 10 Sep 2025 08:22:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1757516995; x=1758121795; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1757517743; x=1758122543; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=40oSAn91xNyPOWvZAyVrrTXG59NLLE8QyWWIn9bLBM0=;
-        b=TAHkeLtuhUxmEPkEheCnenYGgrwcyftgQ9Runton8SdVim0JB4mKt9UBDnpm2MdVsn
-         LhtEmjfmsjcMZX+itabTxknzgaPjiddsIJYLTvPl6UN/KURGKvkbQENW0n6IYw/1trP3
-         JNYInWsL217QrSSfggYA35d+7h99+S10gGLIgkCHMuQyP18sIlvLTo8Nyn8YTswWSgmR
-         C5R0Qd929yFLF24USMmGw0pdANI4EkYnpjWgLj7nDgHonljdpeJWPsq4XEoSiBvIC3dm
-         pPp4xpKYA8fUtWmwYqbhXAXvs1ZkBAs3JW6pVjyoywVNdJwEB2a2BkFIC01ZCjQS8ve1
-         Tabg==
+        bh=kVn5qvi+EQ4miZEc1V5J3/t7DCygziEcYhq/1So6cXk=;
+        b=UlCTclhXEy333jv+7DY8gUvdr7yo0wIE9boGsgkEYAFpjpTqGM6NVFGQuMAH0T1azD
+         bAboTOKihon2juLV+Z2bPnToDNknAEq9vxp1b10ik8w3Uwl5OCJ6WwUK6BV7UN7JE5PH
+         9uo9dXF78+8YStv5m9MAkqlJoDT7Jdp5omREXzGG1eL0cSt4ydz5aJBBmYnwymDV5z2W
+         UYbn+B0Qe6afE/d30qOYj/AIVd6PGxLpC3zWDHVFqTdUJIKWl39WMm6aCahsEj0Sbtbf
+         z+GEFdfLJZy7o5RwUezY/wrZTIqyIZZgB+oJUs8XoubFwTFyeJvLgDGYKqX9YZSGcWId
+         aZ/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757516995; x=1758121795;
+        d=1e100.net; s=20230601; t=1757517743; x=1758122543;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=40oSAn91xNyPOWvZAyVrrTXG59NLLE8QyWWIn9bLBM0=;
-        b=JTvwnzvlNRfZi29/m8A7HcfaWRd14zwAMuc6fzi7/cl6xVcVRrE3VRYWhDTmmtjQ5A
-         v4CT3g2/altd6haFm8PUYRNFvGi+VCRtPBQCicFQB4QDAJf4eE3MU3Who3p+BC/ekN4v
-         GkrnOY8hmCJCP16iXtUSJavteeLUYvhYC+PhGnC4sODFBxV0WLWOd1FG5c1TL3qrrSJ4
-         z38/CmpycuPsBRJt4IGpnu+9+tmFxGlz+Duz+msNzomsYKDP9BNyU34MeumBF7SONx+B
-         7YtNDBa8SJFOSfdXquTuBTx/gcvYQ/1sUErf0jn71/BCoh/+1NLU0heo4vEonMd7Lm9U
-         8vBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU19wfE/2WzPatwocQHrgNU7OFHPHbcSdpWbIpS+lSU0CEpG7/bDVMkgiwpIAHlRhR3Y+VV8o+LweGI@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZ+lrqJTH2JA9JZ/QbM1i2orlV9a0K31WqSW5BexP6Z4NW+FVa
-	AMnxFrA+Dvs39qUemw3KkqizKMFdMn1RsFJT5fJuPF5l9OWdKO+UFMo3xw9VGMab24I=
-X-Gm-Gg: ASbGnct4oS93/ohOdy0LCRqM3BSw81nkTIbXFz+vG8u2R069Rs++RkGJBLD5Y2sUVac
-	y1j3XgfklqGSvSBSfEOWoBXg+z3ctrslMLb1V/8w7HqJx6Wbf+jb0hr52z8t24c5k3fh7w3JFft
-	gCzJAljDaiz1dxe36Q4Y5NHhy5DWgCtarboEsMLkw55JEvSMKoAkhbWrfyyGgCIyNxCSVelcbj+
-	aJvschdQoWmml/baNl9k86zZURJR6GCaW5haAMosnMTDjQjiIKtDpNpr4k998WW1tEWNVCV4NVp
-	AD5C5/vYcd/VuyIpFRxFKeitAeDsVReBEvPfnn+Ik+Bc8DnuduEy0eNwufYoIKZgZxLvTzJB2ar
-	B3e55MJ38dvxhAW7QXIFTZSpwg+k0AFwKqTbMBFuly9AGlGV1SzuCBbzi
-X-Google-Smtp-Source: AGHT+IHDQqL6LkITSs858nblEdXJH/mpIf3Hn/ijPZZArZrA79uc5rdl7YUfoZeEVFfH35KSrip1IQ==
-X-Received: by 2002:adf:eb02:0:b0:3e7:4ede:d8a1 with SMTP id ffacd0b85a97d-3e74eded8c3mr6607816f8f.48.1757516994848;
-        Wed, 10 Sep 2025 08:09:54 -0700 (PDT)
+        bh=kVn5qvi+EQ4miZEc1V5J3/t7DCygziEcYhq/1So6cXk=;
+        b=n1FbdtD5WQDKCDC7qeIZnV6NwFP0VyxOAhizIhyF0AvciQ2XId/GIkEBvOQtuU8DpL
+         tuQeupyLuhhu8pXpZNPKQLXa+Ibi/UbsdcstGg6lOCU9XV6l0E6xZ3PPlGxSOuAn/Fl2
+         8aHG5FFbJ240PkXoQTE6R0uZpg+S2boCbjFYda95tMeb+cc71XQQtTsKh0a7PiIt7uVr
+         Hv9eGHJ5P26gOVWv1idog0zZx2QPVS9o1XrnHRSURIwS/c3B4ntY0qzMEM3EAEjiGm1o
+         vzl6LJuMdLHJSnhTNMFaXGelhb17iaPaRiKGNoZmio4M+5K7a+EgEyWKXR9f+pkaZ/pR
+         D/2w==
+X-Forwarded-Encrypted: i=1; AJvYcCVrdCdILSpvNYIF9vzzUSYuSjbH64SlNNWMF5VNvzIltaFV9Yhx6uv380kk+QlhDuU7YwAoivCvjWLs@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyf6qiT4IUR1aiKayzcNbhP2fCog7cXLegxitJ/QqI5X8wgEfr7
+	gbSj3iuxk9b83pp7LTDmnUIcVqCGy4lppx7ek0ovlp9335O8d991JzaQPK0iDbJZZl9Q1QQfO0Q
+	Cg8rE
+X-Gm-Gg: ASbGncsUJ3OdU28Lza3CFPwKAFHNM40pr1tw3OVZU+yNSSVhzW3ET69PVLoprULxhjR
+	fLpuCG9Hf+wWYqQpnwE2eb4av1pBX/wNWwQRvJLGrzbaEYDZOc93vMOGypJSukm454IhwB7yX1Q
+	PdosuFKDzJpkohtSb6IaLUyXZJV5zl0/CbVXvq/1ilrX0zXxciIh4kUQmFJKmepdY7J4bq3qNVz
+	mAOMs7uREIgMD/4bjiX7vhEVR+KpX1jyHIaDny7ynLGGjSOAOAgbj3zp8kh1OvHeQTOglJ1FaUQ
+	fqTMEo/Ur4a5X28xcQHIyekuFqs1FZhJQGsKchaDzeBdvI1UomAhfHPXTbCaIDOK0KOGU5RagdV
+	I1Vu8H3bklSOjNmjXNJ1eToRv7GURYrmvOY6VgaoEoU9Y3msRvPGEjpQODitzzpAEhQE=
+X-Google-Smtp-Source: AGHT+IE/8wph2kz3bIbRx4/AeV456AfOXpfFA7Jm9nOBSvU/86K2GyIBZVHWyi1ESzO5NTuh6EwNuQ==
+X-Received: by 2002:a05:6000:310d:b0:3e5:a68:bdc5 with SMTP id ffacd0b85a97d-3e63736c735mr14047737f8f.13.1757517742726;
+        Wed, 10 Sep 2025 08:22:22 -0700 (PDT)
 Received: from [10.20.0.214] (ivokam.ddns.nbis.net. [109.121.139.111])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45df81cbce6sm33818155e9.5.2025.09.10.08.09.53
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e75223f5d7sm7136215f8f.53.2025.09.10.08.22.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Sep 2025 08:09:54 -0700 (PDT)
-Message-ID: <687845b2-39be-4096-bfd2-ebd27fcbd9ca@suse.com>
-Date: Wed, 10 Sep 2025 18:09:51 +0300
+        Wed, 10 Sep 2025 08:22:22 -0700 (PDT)
+Message-ID: <e46b51af-2c18-4e8c-9843-661b12c5df5e@suse.com>
+Date: Wed, 10 Sep 2025 18:22:09 +0300
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -83,15 +84,14 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 06/15] x86/mce: Move machine_check_poll() status checks
- to helper functions
+Subject: Re: [PATCH v6 07/15] x86/mce: Add clear_bank() helper
 To: Yazen Ghannam <yazen.ghannam@amd.com>, x86@kernel.org,
  Tony Luck <tony.luck@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
  Smita.KoralahalliChannabasappa@amd.com, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
  linux-acpi@vger.kernel.org
 References: <20250908-wip-mca-updates-v6-0-eef5d6c74b9c@amd.com>
- <20250908-wip-mca-updates-v6-6-eef5d6c74b9c@amd.com>
+ <20250908-wip-mca-updates-v6-7-eef5d6c74b9c@amd.com>
 From: Nikolay Borisov <nik.borisov@suse.com>
 Content-Language: en-US
 Autocrypt: addr=nik.borisov@suse.com; keydata=
@@ -137,25 +137,22 @@ Autocrypt: addr=nik.borisov@suse.com; keydata=
  JDjakbdjBoYDWVoaPbp5KAQ2VQRiR54lir/inyqGX+dwzPX/F4OHfB5RTiAFLJliCxniKFsM
  d8eHe88jWjm6/ilx4IlLl9/MdVUGjLpBi18X7ejLz3U2quYD8DBAGzCjy49wJ4Di4qQjblb2
  pTXoEyM2L6E604NbDu0VDvHg7EXh1WwmijEu28c/hEB6DwtzslLpBSsJV0s1/jE=
-In-Reply-To: <20250908-wip-mca-updates-v6-6-eef5d6c74b9c@amd.com>
+In-Reply-To: <20250908-wip-mca-updates-v6-7-eef5d6c74b9c@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
 On 8.09.25 г. 18:40 ч., Yazen Ghannam wrote:
-> There are a number of generic and vendor-specific status checks in
-> machine_check_poll(). These are used to determine if an error should be
-> skipped.
+> Add a helper at the end of the MCA polling function to collect vendor
+> and/or feature actions.
 > 
-> Move these into helper functions. Future vendor-specific checks will be
-> added to the helpers.
+> Start with a basic skeleton for now. Actions for AMD thresholding and
+> deferred errors will be added later.
 > 
-> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-> Tested-by: Tony Luck <tony.luck@intel.com>
-> Reviewed-by: Tony Luck <tony.luck@intel.com>
 > Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 
 
 Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+
 
