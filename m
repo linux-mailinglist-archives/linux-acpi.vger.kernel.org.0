@@ -1,160 +1,163 @@
-Return-Path: <linux-acpi+bounces-16555-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16556-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A66B51136
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 10:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CC2B51198
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 10:39:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 920141C817DB
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 08:28:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5C321896175
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 08:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9258230EF8B;
-	Wed, 10 Sep 2025 08:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VGs4blp2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3483101B4;
+	Wed, 10 Sep 2025 08:39:03 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6716A30CDA1;
-	Wed, 10 Sep 2025 08:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6CD30F550;
+	Wed, 10 Sep 2025 08:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757492887; cv=none; b=EAr6xHlo3F7L/ThlneXv4hC8763BafK//MjjG/DkDZWtTYCKE/sEIKB0VoIbuE5yyNc+qYfzzqCONXESBa2xDRd827SPKeF5CM8+QypWF83S8LG2gr8jjrM53TydnhLBazWyrYjkEyZ2ydyg65eZS5odTvYnWMoh547Yta4Nl9g=
+	t=1757493543; cv=none; b=bbVMTrRj1krntTJhBisL6jVK2EvSODJ+SM9F7KzcRT1K0kWhh89B1yVHoJ46hmdWiykbCBTMjDw9o2c4yMFqYNCUkedBv2h7sU4N35J+otmQWS/b6xqJHbprqmItxEG1WMzgShrGP7bPjgBelQkR0q577PHPIliDJaf4FFntR6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757492887; c=relaxed/simple;
-	bh=E35FXdvXarB6Ep6s0kvPworSUWLLMvPxnL261c+f2cA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BN7Lc4Yub6KzFAEfBmU//mCj+RWqFJ0rmjdtkjSFEktESMzx95cgPTHY+02t1gsrYa21efRLwj3niWrFu9B/D/BFpI6LTaVeiaB5Wrsw7Dlw62GONkxc/UHcOaHPas85PB2ODh43ItKQtp91RGcukBuAHKE8cmWDMZxXMs+0NTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VGs4blp2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D065AC4CEF0;
-	Wed, 10 Sep 2025 08:28:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757492886;
-	bh=E35FXdvXarB6Ep6s0kvPworSUWLLMvPxnL261c+f2cA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VGs4blp2aBu69qQ0rtyjPL/vT8Af9zts4zjLQV7i3YqVnQ4HK6l18E5B6VJafI9gn
-	 ysomlTdVJg4P6FE2ylhzShmNXQWrKSkeiJlNrNICfY3EEz+s0bOulYMFchvTf9TfEa
-	 VvLAj0O/CRbL/F0xV8TJhUWJlZUpGDRPo7tDHFlIb/PKsIQ/RfGbNJPGRv1mEa2XVR
-	 OO9CEUWtrBahWwR1xJPfHy3SsZhgYWaMvL2HgJQYa2BNgUnZkHzIgNV9Y2rvxR70Wv
-	 eOKA1E7GQ6rWx7fJ39oszlkGDeSZl0PdQyqWVkDbx1eNgWWr2MFGoIh6lFlkv9HtDp
-	 Bahw/p0ZO4M/Q==
-Received: from [185.219.108.64] (helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1uwGBQ-00000004xbP-0d9l;
-	Wed, 10 Sep 2025 08:28:04 +0000
-Date: Wed, 10 Sep 2025 09:28:03 +0100
-Message-ID: <86ecsed84s.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-acpi@vger.kernel.org
-Cc: 	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sven Peter <sven@kernel.org>,
-	Janne Grunau <j@jannau.net>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	James Clark <james.clark@linaro.org>
-Subject: Re: [PATCH 15/25] genirq: Allow per-cpu interrupt sharing for non-overlapping affinities
-In-Reply-To: <20250908163127.2462948-16-maz@kernel.org>
-References: <20250908163127.2462948-1-maz@kernel.org>
-	<20250908163127.2462948-16-maz@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1757493543; c=relaxed/simple;
+	bh=1unVb9A7rLJncC482sVIjlZ8IfluMpc4MVJgVqD0JVE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=PE4tsfcry0+g4aE7eM9Nby2mj2DeQEu3ZD/1YVK6hEv5Z3UmRhBr45JMdyWQ/P0aurIKjU2wDApanGM0ih+ULPyb98NP38k8+RE4gtiNfJLJX1G1MBtqiCYObX3L8eqK6zymxKQR9LBud5/GKRx+Tx8XmocSSbe3YdtiWtttXaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cMDbC6vdSz6GD5p;
+	Wed, 10 Sep 2025 16:37:43 +0800 (CST)
+Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
+	by mail.maildlp.com (Postfix) with ESMTPS id E95FB14033C;
+	Wed, 10 Sep 2025 16:38:55 +0800 (CST)
+Received: from frapeml500007.china.huawei.com (7.182.85.172) by
+ frapeml500005.china.huawei.com (7.182.85.13) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 10 Sep 2025 10:38:55 +0200
+Received: from frapeml500007.china.huawei.com ([7.182.85.172]) by
+ frapeml500007.china.huawei.com ([7.182.85.172]) with mapi id 15.01.2507.039;
+ Wed, 10 Sep 2025 10:38:55 +0200
+From: Shiju Jose <shiju.jose@huawei.com>
+To: Yazen Ghannam <yazen.ghannam@amd.com>
+CC: "rafael@kernel.org" <rafael@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "rppt@kernel.org"
+	<rppt@kernel.org>, "dferguson@amperecomputing.com"
+	<dferguson@amperecomputing.com>, "linux-edac@vger.kernel.org"
+	<linux-edac@vger.kernel.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>, "lenb@kernel.org"
+	<lenb@kernel.org>, "leo.duran@amd.com" <leo.duran@amd.com>,
+	"mchehab@kernel.org" <mchehab@kernel.org>, Jonathan Cameron
+	<jonathan.cameron@huawei.com>, Linuxarm <linuxarm@huawei.com>,
+	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
+	<jiaqiyan@google.com>, "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com"
+	<james.morse@arm.com>, "jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, "erdemaktas@google.com"
+	<erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>, "gthelen@google.com"
+	<gthelen@google.com>, "wschwartz@amperecomputing.com"
+	<wschwartz@amperecomputing.com>, "wbs@os.amperecomputing.com"
+	<wbs@os.amperecomputing.com>, "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: RE: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
+Thread-Topic: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
+Thread-Index: AQHcHC9WuMPoKRXbY02Oy+WxUZ/jerSK8o4AgAEvHbA=
+Date: Wed, 10 Sep 2025 08:38:55 +0000
+Message-ID: <81f32641fbc5448c8da1918ddc5d6965@huawei.com>
+References: <20250902173043.1796-1-shiju.jose@huawei.com>
+ <20250902173043.1796-2-shiju.jose@huawei.com>
+ <20250909162434.GB11602@yaz-khff2.amd.com>
+In-Reply-To: <20250909162434.GB11602@yaz-khff2.amd.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: tglx@linutronix.de, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, mark.rutland@arm.com, will@kernel.org, rafael@kernel.org, robh@kernel.org, saravanak@google.com, gregkh@linuxfoundation.org, sven@kernel.org, j@jannau.net, suzuki.poulose@arm.com, james.clark@linaro.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
 
-On Mon, 08 Sep 2025 17:31:17 +0100,
-Marc Zyngier <maz@kernel.org> wrote:
-> 
-> Interrupt sharing for percpu-devid interrupts is forbidden, and
-> for good reasons. These are interrupts generated *from* a CPU and
-> handled by itself (timer, for example). Nobody in their right mind
-> would put two devices on the same pin (and if they have, they get to
-> keep the pieces...).
-> 
-> But this also prevents more benign cases, where devices are connected
-> to groups of CPUs, and for which the affinities are not overlapping.
-> Effectively, the only thing they share is the interrupt number, and
-> nothing else.
-> 
-> Let's tweak the definition of IRQF_SHARED applied to percpu_devid
-> interrupts to allow this particular case. This results in extra
-> validation at the point of the interrupt being setup and freed,
-> as well as a tiny bit of extra complexity for interrupts at handling
-> time (to pick the correct irqaction).
-> 
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> ---
->  kernel/irq/chip.c   |  8 ++++--
->  kernel/irq/manage.c | 67 +++++++++++++++++++++++++++++++++++++--------
->  2 files changed, 61 insertions(+), 14 deletions(-)
-> 
-> diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
-> index 0d0276378c707..af90dd440d5ee 100644
-> --- a/kernel/irq/chip.c
-> +++ b/kernel/irq/chip.c
-> @@ -897,8 +897,9 @@ void handle_percpu_irq(struct irq_desc *desc)
->  void handle_percpu_devid_irq(struct irq_desc *desc)
->  {
->  	struct irq_chip *chip = irq_desc_get_chip(desc);
-> -	struct irqaction *action = desc->action;
->  	unsigned int irq = irq_desc_get_irq(desc);
-> +	unsigned int cpu = smp_processor_id();
-> +	struct irqaction *action;
->  	irqreturn_t res;
->  
->  	/*
-> @@ -910,12 +911,15 @@ void handle_percpu_devid_irq(struct irq_desc *desc)
->  	if (chip->irq_ack)
->  		chip->irq_ack(&desc->irq_data);
->  
-> +	for (action = desc->action; action; action = action->next)
-> +		if (cpumask_test_cpu(cpu, action->affinity))
-> +			break;
-> +
->  	if (likely(action)) {
->  		trace_irq_handler_entry(irq, action);
->  		res = action->handler(irq, raw_cpu_ptr(action->percpu_dev_id));
->  		trace_irq_handler_exit(irq, action, res);
->  	} else {
-> -		unsigned int cpu = smp_processor_id();
->  		bool enabled = cpumask_test_cpu(cpu, desc->percpu_enabled);
->  
->  		if (enabled)
+>-----Original Message-----
+>From: Yazen Ghannam <yazen.ghannam@amd.com>
+>Sent: 09 September 2025 17:25
+>To: Shiju Jose <shiju.jose@huawei.com>
+>Cc: rafael@kernel.org; bp@alien8.de; akpm@linux-foundation.org;
+>rppt@kernel.org; dferguson@amperecomputing.com; linux-
+>edac@vger.kernel.org; linux-acpi@vger.kernel.org; linux-mm@kvack.org; linu=
+x-
+>doc@vger.kernel.org; tony.luck@intel.com; lenb@kernel.org;
+>leo.duran@amd.com; mchehab@kernel.org; Jonathan Cameron
+><jonathan.cameron@huawei.com>; Linuxarm <linuxarm@huawei.com>;
+>rientjes@google.com; jiaqiyan@google.com; Jon.Grimm@amd.com;
+>dave.hansen@linux.intel.com; naoya.horiguchi@nec.com;
+>james.morse@arm.com; jthoughton@google.com; somasundaram.a@hpe.com;
+>erdemaktas@google.com; pgonda@google.com; duenwen@google.com;
+>gthelen@google.com; wschwartz@amperecomputing.com;
+>wbs@os.amperecomputing.com; nifan.cxl@gmail.com; tanxiaofei
+><tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>; Roberto
+>Sassu <roberto.sassu@huawei.com>; kangkang.shen@futurewei.com;
+>wanghuiqiang <wanghuiqiang@huawei.com>
+>Subject: Re: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
+>
+>On Tue, Sep 02, 2025 at 06:30:39PM +0100, shiju.jose@huawei.com wrote:
+>> From: Shiju Jose <shiju.jose@huawei.com>
+>
+>[...]
+>
+>> +static int ras2_add_aux_device(char *name, int channel, u32 pxm_inst)
+>> +{
+>> +	unsigned long start_pfn, size_pfn;
+>> +	struct ras2_mem_ctx *ras2_ctx;
+>> +	int id, rc;
+>
+>'rc' is uninitialized, and LLVM gives a warning.
+>
+>The issue is the "goto ctx_free" paths return 'rc' before it is set.
 
-As Will points out off the list, the above lacks the a similar
-handling for percpu_devid NMIs, leading to NMIs that are only handled
-on the first affinity group.
+Thanks Yazen. I missed setting rc with the error code in the failure case o=
+f the
+newly added code. I will fix in the next version.
 
-It's easy enough to move the above to common code and share it with
-handle_percpu_devid_fasteoi_nmi(), but at this point there is hardly
-any difference with handle_percpu_devid_irq().
-
-Any objection to simply killing the NMI version?
+>
+>> +
+>> +	ras2_ctx =3D kzalloc(sizeof(*ras2_ctx), GFP_KERNEL);
+>> +	if (!ras2_ctx)
+>> +		return -ENOMEM;
+>> +
+>> +	ras2_ctx->sys_comp_nid =3D pxm_to_node(pxm_inst);
+>> +	/*
+>> +	 * Retrieve the lowest contiguous physical memory address range within
+>> +	 * the NUMA node.
+>> +	 */
+>> +	start_pfn =3D node_start_pfn(ras2_ctx->sys_comp_nid);
+>> +	size_pfn =3D node_spanned_pages(ras2_ctx->sys_comp_nid);
+>> +	if (!size_pfn) {
+>> +		pr_debug("Failed to find phy addr range for NUMA node(%u)\n",
+>> +			 pxm_inst);
+>> +		goto ctx_free;
+>> +	}
+>> +	ras2_ctx->mem_base_addr =3D __pfn_to_phys(start_pfn);
+>> +	ras2_ctx->mem_size =3D __pfn_to_phys(size_pfn);
+>> +
+[...]
+>
+>Thanks,
+>Yazen
 
 Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+Shiju
 
