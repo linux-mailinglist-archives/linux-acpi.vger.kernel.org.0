@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-16615-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16616-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A29B52114
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 21:32:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99531B52119
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 21:32:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AFF258529A
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 19:32:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68F915E07FB
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 19:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAE62D7DF2;
-	Wed, 10 Sep 2025 19:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22472D9EC5;
+	Wed, 10 Sep 2025 19:31:44 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136C4255F31;
-	Wed, 10 Sep 2025 19:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610311DDDD;
+	Wed, 10 Sep 2025 19:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757532696; cv=none; b=ejT5g8mM44p5tbHZZxkac9HGody/AU7X0N1xHl6IkGS5P3fNRPC5HPsHN/HIvR8Prz1E7Uih/yaWQ5kgt5JiAx268eZ0EKzqska9ZDsGxp6oTq7TcPOzjReMIAE3hP4aAgt0afHHfyWi4hUTEIchyOhXAqPOZXWRJsEQg0TiSPQ=
+	t=1757532704; cv=none; b=oQsBKmbsv004ngKjnTr0mjIxmiwOLOO/I3za2tbqXm0vhSaNiARCpduOR55pYBagAKY/fkZJYPprHAnd5pDRQA+4Yqh2GXWVEl2PzyXddjx1vAegT4AnXOiaV4wh9Eeg/2i/9AjHyoPB9liYoU884sx6LxN1FYrJEPKZJLEsj84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757532696; c=relaxed/simple;
-	bh=t9+KzpP17zR6XzK8fB7liPW7aOhA650yUwTnlo9f+Wg=;
+	s=arc-20240116; t=1757532704; c=relaxed/simple;
+	bh=6nFK+xWRE9P7vEfcABcJDKH+rN4hj44XEnw9aRXo140=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z7kc6RK+DB11hH3QdE7d3l1TSUYjvVHArhAPTRZN79H43VDURJLXlyxO29StD2+eCP2PPE0VqQvWsiI5s8VhNYa9N+oFIlpxBlvUaoFP0YkvR4Ka/o3xHV+h0q774J/Tq5+X8DLYcLkQNOj9yVtn5NzcHjHZSM/93QFg93auB58=
+	 In-Reply-To:Content-Type; b=YpQEFWq0mH92unQOJ3UM+DC0jRLcqsjp3X+7Lz4P1LWpyeKdwhnNpeX80YBGA6PcYdV0zd4iqvHo1nVQGbCEbYFXofOy3/APv8HrtwpmfLxwZZk+u/g+oT3bYxHvaFzUZnK1ulFj9FmkyUA7VrW6ogBIcHz9Bzr7lIz7+lDZEs8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 310FD3165;
-	Wed, 10 Sep 2025 12:31:26 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 74A1D328E;
+	Wed, 10 Sep 2025 12:31:34 -0700 (PDT)
 Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7C6363F694;
-	Wed, 10 Sep 2025 12:31:28 -0700 (PDT)
-Message-ID: <25e99137-54ee-434d-8777-a771798e9da1@arm.com>
-Date: Wed, 10 Sep 2025 20:31:28 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 113163F694;
+	Wed, 10 Sep 2025 12:31:36 -0700 (PDT)
+Message-ID: <db4cdf45-4ba6-4b2e-a9a2-25c9bde81b71@arm.com>
+Date: Wed, 10 Sep 2025 20:31:36 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,8 +42,7 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/33] arm_mpam: Add support for memory controller MSC on
- DT platforms
+Subject: Re: [PATCH 13/33] arm_mpam: Add MPAM MSC register layout definitions
 To: "Shaopeng Tan (Fujitsu)" <tan.shaopeng@fujitsu.com>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
  "linux-arm-kernel@lists.infradead.org"
@@ -77,82 +76,37 @@ Cc: "shameerali.kolothum.thodi@huawei.com"
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Danilo Krummrich <dakr@kernel.org>
 References: <20250822153048.2287-1-james.morse@arm.com>
- <20250822153048.2287-46-james.morse@arm.com>
- <OSZPR01MB8798A7AA3C2D11E2D38381BA8B0FA@OSZPR01MB8798.jpnprd01.prod.outlook.com>
+ <20250822153048.2287-14-james.morse@arm.com>
+ <OSZPR01MB879842246E3C0640BF60276D8B0FA@OSZPR01MB8798.jpnprd01.prod.outlook.com>
 Content-Language: en-GB
 From: James Morse <james.morse@arm.com>
-In-Reply-To: <OSZPR01MB8798A7AA3C2D11E2D38381BA8B0FA@OSZPR01MB8798.jpnprd01.prod.outlook.com>
+In-Reply-To: <OSZPR01MB879842246E3C0640BF60276D8B0FA@OSZPR01MB8798.jpnprd01.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Shaopeng,
 
-On 09/09/2025 08:11, Shaopeng Tan (Fujitsu) wrote:
->> From: Shanker Donthineni <sdonthineni@nvidia.com>
+On 09/09/2025 12:36, Shaopeng Tan (Fujitsu) wrote:
+>> Memory Partitioning and Monitoring (MPAM) has memory mapped devices
+>> (MSCs) with an identity/configuration page.
 >>
->> The device-tree binding has two examples for MSC associated with memory
->> controllers. Add the support to discover the component_id from the device-tree
->> and create 'memory' RIS.
+>> Add the definitions for these registers as offset within the page(s).
 
->> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
->> index a0d9a699a6e7..71a1fb1a9c75 100644
->> --- a/drivers/resctrl/mpam_devices.c
->> +++ b/drivers/resctrl/mpam_devices.c
->> @@ -62,41 +62,63 @@ static int mpam_dt_parse_resource(struct mpam_msc
->> *msc, struct device_node *np,
->>  				  u32 ris_idx)
->>  {
->>  	int err = 0;
->> -	u32 level = 0;
->> -	unsigned long cache_id;
->> -	struct device_node *cache;
->> +	u32 class_id = 0, component_id = 0;
->> +	struct device_node *cache = NULL, *memory = NULL;
->> +	enum mpam_class_types type = MPAM_CLASS_UNKNOWN;
->>
->>  	do {
->> +		/* What kind of MSC is this? */
->>  		if (of_device_is_compatible(np, "arm,mpam-cache")) {
->>  			cache = of_parse_phandle(np, "arm,mpam-device",
->> 0);
->>  			if (!cache) {
->>  				pr_err("Failed to read phandle\n");
->>  				break;
->>  			}
->> +			type = MPAM_CLASS_CACHE;
->>  		} else if (of_device_is_compatible(np->parent, "cache")) {
->>  			cache = of_node_get(np->parent);
->> +			type = MPAM_CLASS_CACHE;
->> +		} else if (of_device_is_compatible(np, "arm,mpam-memory"))
->> {
->> +			memory = of_parse_phandle(np, "arm,mpam-device",
->> 0);
->> +			if (!memory) {
->> +				pr_err("Failed to read phandle\n");
->> +				break;
->> +			}
->> +			type = MPAM_CLASS_MEMORY;
->> +		} else if (of_device_is_compatible(np,
->> "arm,mpam-memory-controller-msc")) {
->> +			memory = of_node_get(np->parent);
->> +			type = MPAM_CLASS_MEMORY;
->>  		} else {
->> -			/* For now, only caches are supported */
->> -			cache = NULL;
->> +			/*
->> +			 * For now, only caches and memory controllers are
->> +			 * supported.
->> +			 */
->>  			break;
->>  		}
+>> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
+>> index d49bb884b433..6e0982a1a9ac 100644
+>> --- a/drivers/resctrl/mpam_internal.h
+>> +++ b/drivers/resctrl/mpam_internal.h
+>> @@ -150,4 +150,270 @@ extern struct list_head mpam_classes;  int
 
-> There is no need "{}" here.
+>> +#define MSMON_CFG_MBWU_CTL_TYPE_MBWU
+>> 	0x42
+>> +#define MSMON_CFG_CSU_CTL_TYPE_CSU			0
+> 
+> +#define MSMON_CFG_CSU_CTL_TYPE_CSU			0x43?
 
-Sure, but its more than one line, and all the previous parts of this else-if tree have
-them. Keeping this here make it much easier to read.
-
-
-Thanks,
+Yes, that looks like the line got truncated.
+This would have caused the counter type to be mismatched and reprogrammed each time.
+Thanks for spotting it!
 
 James
 
