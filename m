@@ -1,186 +1,238 @@
-Return-Path: <linux-acpi+bounces-16581-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16582-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE839B51952
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 16:28:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D92B51968
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 16:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19C2E5E07C4
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 14:28:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1B597BC827
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 14:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E0D326D73;
-	Wed, 10 Sep 2025 14:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D304832A814;
+	Wed, 10 Sep 2025 14:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="huwaecfn"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Dabi62DS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B51921ABD7;
-	Wed, 10 Sep 2025 14:27:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738E02877F7
+	for <linux-acpi@vger.kernel.org>; Wed, 10 Sep 2025 14:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757514457; cv=none; b=MWZ6HhaIzx9QluyqpiQ6H1Db7+oC2HvAip3PaUVSvTkhN14USwrAc//L9bgkdoWQEN86pC7IM5SnAB4MKJ/JFblPMSURO2XorhlwmwBPWPfA2UBrBDIZY/lZGh+H5NibNeLBFQWbb8FObHngIX01ixoY4N/3Z89vvbDoxvO7qQI=
+	t=1757514535; cv=none; b=QLEPOz/4XKZ3C6j4icR/3GEANrsOZBZbdW31lko1BfzdfQYEgolIcZBdLL8Gt+pydSrEAIsSuQ8e6eTN/YpvGzYEQdHoYj1jq+mH+9d45nie7pRYuK47To/Fw8M/vUzd5IhA1+7hbRg0RSBagqxMDPD+G60KS3uo5++ewBJognw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757514457; c=relaxed/simple;
-	bh=F+54nyJoOaeW+YO7b5fh/pn2Rb9lPRUq7jAkB4/h54U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EsM5hUNh/8maRdcHR/20KBuqxXSOiaHhYkisYdrRtHB1lYz5yMqF5PtmnRySsZDu4TFHoghw2tibX15BrQHdS9vVVlcKBqoErJZ7+bHyUYDXm8GMCIt26JzBxBTQa1gVJ8+sTBUt/CImfaFDO+EiaDrsFj0GGPKj4hGHNYxxZTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=huwaecfn; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=gk
-	aLOONp2OfwA99Mnop3EmvMXcoEsDECzL1MSv7/DgI=; b=huwaecfnZ1MLoojV4c
-	UC/hfX4oC3UyxonBZewJjVc8EeGCEdpN6QdVKVIGn7qKebkbf9upDjvk8Y2dQlUl
-	wIZ7NE8Np+IrDYzG+/gSwojUD20Er7M2mdswyKh3B8CWK1EjEiWjUS5f2snkvzYn
-	/QVbG8HUIJbqs/LbdIZSHFya4=
-Received: from MS-CMFLBWVCLQRG.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD3XxuyisFoZggUAQ--.49759S2;
-	Wed, 10 Sep 2025 22:27:00 +0800 (CST)
-From: GuangFei Luo <luogf2025@163.com>
-To: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	luogf2025@163.com,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH v2] ACPI: battery: prevent sysfs_add_battery re-entry on rapid events
-Date: Wed, 10 Sep 2025 22:26:53 +0800
-Message-ID: <20250910142653.313360-1-luogf2025@163.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1757514535; c=relaxed/simple;
+	bh=igV99EFzjMxCzaEKSmi2QrhFzFyAA6DsgJyTrvzNqfE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uNEqmPtm3k8FecrUVMzZVFRsinLAuWJ+Fnon9FeltiiHKmv8+f0JPaYaZ12SBOJuRKbb7T1z/iZ1JM+aS+PGcT9mLqJkSTirEuCYiBiku+XOOaxzPQxBtMcPIJFH7wrlWBNnD56tTZMOdwpyktMqb0G9iHGMn4GPOi+covYiVgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Dabi62DS; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-45b9c35bc0aso60655995e9.2
+        for <linux-acpi@vger.kernel.org>; Wed, 10 Sep 2025 07:28:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1757514532; x=1758119332; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=dI+sh0uxlW6i9FKCK9xyQWvVSATlEgD+3cesKXaSpxg=;
+        b=Dabi62DSyjABQTfu5cke7iRTQb86k6eabLsq8iAq9fncemacKo2Zu51JC6mRITVV7y
+         RXOOXOmT0Dh7xYCZUF9yOMQOkGehgIG9go58tFFgYRRlfHOJGioRgrOItCRJkLb4tXgL
+         oZpIyhNynkKMLh24p2IiAwMGTKM6l5wD9jWrcx3jEneJrTFJwq070/Cm9VOfmcFv0CF5
+         v+ndVEd5dN+lK5rSd3e+u3fdAHFM03rb+T3d8r0bmxWzAhqgDDvRe0biZsWQ1LydaVrf
+         Zojd9Fv8mUDk+UjTo6m9MTmtX9rqQXvSMFwH4Pz+YDWIXkbTgHb28stgHomlZ7m/CGrM
+         pEtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757514532; x=1758119332;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dI+sh0uxlW6i9FKCK9xyQWvVSATlEgD+3cesKXaSpxg=;
+        b=q6TE57dJckyuAIoXWHLSgwTxB15Yj4KZGMg+OjX3KAs4K9KTBPFz4tdezzDzglC662
+         7KoidzPjz1a32JDW9yH2uL33nWqlYXWc4vXGuIj5WS1OaLNewCzNTCiWIZdYNmdmDRDv
+         7OBOj5UPi28+NOZZbgukFJh9zOLqki63icRTy0yvywAl5CxRYSRxHXs2pHxIQa0sXplw
+         ajS96f3lNq0g/2JxLHDqpHOYIJrGNrWf1RMcGcoPJdun5ByAYj96UKWIFab25yQmmcEH
+         b0o87wh59kbVisKQaL7l1iiiJeRSqxakk27DL+9GIW8nRQv3ycMXw1S8wrBHd5wxB6XC
+         ztbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX/Hp5MCex1TOiX9eZcrJk3iF3Ua6hhX55pLwO3MK8NyYbjx769U+TcnvtyUf0UaEgP5tGj8Pz4qS/g@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUKOWYQT/dFG0npd5GqXTrkdpLupZchvmUhBeTjFHHWnBmDsMi
+	oKWvPqoo4PTeY6fE0ypIM1l1sBMokQVGq3Qz6tjvx1/vJsiUwkmm0qu7MrwEWAQsHFA=
+X-Gm-Gg: ASbGncvyDZIqWHlRtn7Dv+M/UK7Nei0dklV6p815hkcxPG9DjRyFdloHw7qN/WA6Ij2
+	z3kSdulDpMOA6W/tyuZf8EtRHfKxTTVJxZQKu2kJI4WNcHutrR8JAJgrhdg8QHSBDryL1FFCfdv
+	4Yk3WE5buc0lkxMaRwI59OiyvlHQnRQ92p4UUpoMRryvYYp16h1i5Nu8Pv2uvT6RYSF4MJmMq9X
+	1sNHNCOw4CDY4OuQlIHdFnN5pfW/Cu1xTYWVrlAPVnz9SdlYwnzPkpsGVVLqipJ58RY2H/+o8ls
+	JUdf6wZeA/zogs7K4yPzJH+Y8mEaOB1M6lzUlCDbyZuAWRvthoAUTxDO98Bd8PQT8dREcgYcCBh
+	O3Yu6KVfHnQk4pIKpUaWFzrOaJwtkWWt0dDCQPu5NpQMF2uDKwGeuv76X
+X-Google-Smtp-Source: AGHT+IF1NgZuIvS3US+cPt/8imY0P83mqf1dizqnse4ruJPSBf8I7KUULXAxl7t6gNZN9w6I8llmHg==
+X-Received: by 2002:a05:600c:4fcd:b0:45b:8822:d6c4 with SMTP id 5b1f17b1804b1-45dddee600dmr160334225e9.33.1757514531506;
+        Wed, 10 Sep 2025 07:28:51 -0700 (PDT)
+Received: from [10.20.0.214] (ivokam.ddns.nbis.net. [109.121.139.111])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7521c9a65sm7537632f8f.17.2025.09.10.07.28.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Sep 2025 07:28:51 -0700 (PDT)
+Message-ID: <861a0703-2adc-4e8c-86e5-c22192759e80@suse.com>
+Date: Wed, 10 Sep 2025 17:28:43 +0300
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 02/15] x86/mce: Define BSP-only init
+To: Yazen Ghannam <yazen.ghannam@amd.com>
+Cc: x86@kernel.org, Tony Luck <tony.luck@intel.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-edac@vger.kernel.org, Smita.KoralahalliChannabasappa@amd.com,
+ Qiuxu Zhuo <qiuxu.zhuo@intel.com>, linux-acpi@vger.kernel.org
+References: <20250908-wip-mca-updates-v6-0-eef5d6c74b9c@amd.com>
+ <20250908-wip-mca-updates-v6-2-eef5d6c74b9c@amd.com>
+ <98d80660-7140-43a2-b17c-07a0884996f8@suse.com>
+ <20250910135323.GC11602@yaz-khff2.amd.com>
+Content-Language: en-US
+From: Nikolay Borisov <nik.borisov@suse.com>
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20250910135323.GC11602@yaz-khff2.amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3XxuyisFoZggUAQ--.49759S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3AF43ur1kWw4fWF43uF18Grg_yoW7Cr1xpa
-	yrKa1UKrW8GF4kJwsF9F1jgFyxWan0qF9rWr95Jrn2kasruw1DAryxZFyUXFsrGrykZ3y8
-	ZF1kt3Wrtw1xWw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U2Q6AUUUUU=
-X-CM-SenderInfo: poxrwwisqskqqrwthudrp/1tbizRrEmWjBgQHokwAAsY
 
-v2:
- - Fix missing mutex_unlock in acpi_battery_update()
-   (Reported-by: kernel test robot)
 
-When removing and reinserting the laptop battery, ACPI can trigger
-two notifications in quick succession:
 
-  - ACPI_BATTERY_NOTIFY_STATUS (0x80)
-  - ACPI_BATTERY_NOTIFY_INFO   (0x81)
+On 10.09.25 г. 16:53 ч., Yazen Ghannam wrote:
+> On Wed, Sep 10, 2025 at 02:47:16PM +0300, Nikolay Borisov wrote:
+>>
+>>
+>> On 9/8/25 18:40, Yazen Ghannam wrote:
+>>> Currently, MCA initialization is executed identically on each CPU as
+>>> they are brought online. However, a number of MCA initialization tasks
+>>> only need to be done once.
+>>>
+>>> Define a function to collect all 'global' init tasks and call this from
+>>> the BSP only. Start with CPU features.
+>>>
+>>> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+>>> Tested-by: Tony Luck <tony.luck@intel.com>
+>>> Reviewed-by: Tony Luck <tony.luck@intel.com>
+>>> Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+>>
+>> <snip>
+>>
+>>> @@ -2240,6 +2233,27 @@ DEFINE_IDTENTRY_RAW(exc_machine_check)
+>>>    }
+>>>    #endif
+>>> +void mca_bsp_init(struct cpuinfo_x86 *c)
+>>> +{
+>>> +	u64 cap;
+>>> +
+>>> +	if (!mce_available(c))
+>>> +		return;
+>>> +
+>>> +	mce_flags.overflow_recov = cpu_feature_enabled(X86_FEATURE_OVERFLOW_RECOV);
+>>> +	mce_flags.succor	 = cpu_feature_enabled(X86_FEATURE_SUCCOR);
+>>> +	mce_flags.smca		 = cpu_feature_enabled(X86_FEATURE_SMCA);
+>>> +
+>>> +	rdmsrq(MSR_IA32_MCG_CAP, cap);
+>>> +
+>>> +	/* Use accurate RIP reporting if available. */
+>>> +	if ((cap & MCG_EXT_P) && MCG_EXT_CNT(cap) >= 9)
+>>> +		mca_cfg.rip_msr = MSR_IA32_MCG_EIP;
+>>> +
+>>> +	if (cap & MCG_SER_P)
+>>> +		mca_cfg.ser = 1;
+>>> +}
+>>> +
+>>
+>>
+>> LGTM
+>>
+>> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+> 
+> Thanks Nikokay for the reviews.
+> 
+>>
+>> nit: One question though for those CPUs which consist of P+E cores, is it
+>> mandated that both types of cores will have identical MCE architecture, I
+>> assume the x86 world will be a lot more unified than Arm's big.LITTLE ?
+>>
+> 
+> I think technically no, they won't be mandated to be identical. We already
+> have per-CPU feature bits, registers, etc. And in Scalable MCA there are
+> also per-bank config bits.
+> 
+> However, this doesn't mean we will have different MCE features between
+> CPUs in a system just yet. The architects do try to make things flexible
+> and scalable just in case there is a need in the future.
+> 
+> We can code to the architectures and be *mostly* future-proof. But it's
+> not guaranteed to be without bugs. And it's not guaranteed that every
+> possible case will be used.
+> 
+> Do you have any concerns or see any issues with the code today in this
+> area? Maybe you're thinking we should have per-CPU config for feature
+> bits? If so, I agree but we don't have a real need today AFAIK.
 
-Both notifications call acpi_battery_update(). Because the events
-happen very close in time, sysfs_add_battery() can be re-entered
-before battery->bat is set, causing a duplicate sysfs entry error.
+Yes, for example in your current code you assume that whatever the value 
+of MSR_IA32_MCG_CAP w.r.t MCG_EXT_P or MCG_SER_P it will be identical 
+for all CPUs. That might be fine, but what if, in the future, we end up 
+with machines where MCG_CAP will have different values for different 
+CPU's/cores.
 
-This patch ensures that sysfs_add_battery() is not re-entered
-when battery->bat is already non-NULL, preventing the duplicate
-sysfs creation and stabilizing battery hotplug handling.
+Or that in a system we can end up with cpu's which have different 
+X86_FEATURE_SMCA value.
 
-[  476.117945] sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
-[  476.118896] CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
-[  476.118903] Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
-[  476.118906] Workqueue: kacpi_notify acpi_os_execute_deferred
-[  476.118917] Call Trace:
-[  476.118922]  <TASK>
-[  476.118929]  dump_stack_lvl+0x5d/0x80
-[  476.118938]  sysfs_warn_dup.cold+0x17/0x23
-[  476.118943]  sysfs_create_dir_ns+0xce/0xe0
-[  476.118952]  kobject_add_internal+0xba/0x250
-[  476.118959]  kobject_add+0x96/0xc0
-[  476.118964]  ? get_device_parent+0xde/0x1e0
-[  476.118970]  device_add+0xe2/0x870
-[  476.118975]  __power_supply_register.part.0+0x20f/0x3f0
-[  476.118981]  ? wake_up_q+0x4e/0x90
-[  476.118990]  sysfs_add_battery+0xa4/0x1d0 [battery]
-[  476.118998]  acpi_battery_update+0x19e/0x290 [battery]
-[  476.119002]  acpi_battery_notify+0x50/0x120 [battery]
-[  476.119006]  acpi_ev_notify_dispatch+0x49/0x70
-[  476.119012]  acpi_os_execute_deferred+0x1a/0x30
-[  476.119015]  process_one_work+0x177/0x330
-[  476.119022]  worker_thread+0x251/0x390
-[  476.119026]  ? __pfx_worker_thread+0x10/0x10
-[  476.119030]  kthread+0xd2/0x100
-[  476.119033]  ? __pfx_kthread+0x10/0x10
-[  476.119035]  ret_from_fork+0x34/0x50
-[  476.119040]  ? __pfx_kthread+0x10/0x10
-[  476.119042]  ret_from_fork_asm+0x1a/0x30
-[  476.119049]  </TASK>
-[  476.142552] kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
-[  476.415022] ata1.00: unexpected _GTF length (8)
-[  476.428076] sd 0:0:0:0: [sda] Starting disk
-[  476.835035] ata1.00: unexpected _GTF length (8)
-[  476.839720] ata1.00: configured for UDMA/133
-[  491.328831] sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
-[  491.329720] CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
-[  491.329727] Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
-[  491.329731] Workqueue: kacpi_notify acpi_os_execute_deferred
-[  491.329741] Call Trace:
-[  491.329745]  <TASK>
-[  491.329751]  dump_stack_lvl+0x5d/0x80
-[  491.329758]  sysfs_warn_dup.cold+0x17/0x23
-[  491.329762]  sysfs_create_dir_ns+0xce/0xe0
-[  491.329770]  kobject_add_internal+0xba/0x250
-[  491.329775]  kobject_add+0x96/0xc0
-[  491.329779]  ? get_device_parent+0xde/0x1e0
-[  491.329784]  device_add+0xe2/0x870
-[  491.329790]  __power_supply_register.part.0+0x20f/0x3f0
-[  491.329797]  sysfs_add_battery+0xa4/0x1d0 [battery]
-[  491.329805]  acpi_battery_update+0x19e/0x290 [battery]
-[  491.329809]  acpi_battery_notify+0x50/0x120 [battery]
-[  491.329812]  acpi_ev_notify_dispatch+0x49/0x70
-[  491.329817]  acpi_os_execute_deferred+0x1a/0x30
-[  491.329820]  process_one_work+0x177/0x330
-[  491.329826]  worker_thread+0x251/0x390
-[  491.329830]  ? __pfx_worker_thread+0x10/0x10
-[  491.329833]  kthread+0xd2/0x100
-[  491.329836]  ? __pfx_kthread+0x10/0x10
-[  491.329838]  ret_from_fork+0x34/0x50
-[  491.329842]  ? __pfx_kthread+0x10/0x10
-[  491.329844]  ret_from_fork_asm+0x1a/0x30
-[  491.329850]  </TASK>
-[  491.329855] kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
+OTOH, you are right that when the time comes we can worry about this 
+since there can possibly be infinite number of possible scenarios.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202509101620.yI0HZ5gT-lkp@intel.com/
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202509101620.yI0HZ5gT-lkp@intel.com/
-Fixes: 508df92d1f8d ("ACPI: battery: register power_supply subdevice only when battery is present")
-Signed-off-by: GuangFei Luo <luogf2025@163.com>
-Cc: stable@vger.kernel.org
----
- drivers/acpi/battery.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 6905b56bf3e4..649185f7a3b1 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -1026,11 +1026,15 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
- 		return result;
- 	acpi_battery_quirks(battery);
- 
-+	mutex_lock(&battery->sysfs_lock);
- 	if (!battery->bat) {
- 		result = sysfs_add_battery(battery);
--		if (result)
-+		if (result) {
-+			mutex_unlock(&battery->sysfs_lock);
- 			return result;
-+		}
- 	}
-+	mutex_unlock(&battery->sysfs_lock);
- 
- 	/*
- 	 * Wakeup the system if battery is critical low
--- 
-2.43.0
+> 
+> Maybe others can comment too.
+> 
+> Thanks,
+> Yazen
 
 
