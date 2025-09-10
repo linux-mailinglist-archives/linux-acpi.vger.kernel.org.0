@@ -1,44 +1,44 @@
-Return-Path: <linux-acpi+bounces-16562-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16564-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E473B51291
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 11:34:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6318B51293
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 11:34:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4EA01C27AC5
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 09:34:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D11A46579D
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 09:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269463148B4;
-	Wed, 10 Sep 2025 09:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB21313E15;
+	Wed, 10 Sep 2025 09:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="PgcvKRnv"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="r9njdxEu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747CB3128A4;
-	Wed, 10 Sep 2025 09:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F381E3128A4;
+	Wed, 10 Sep 2025 09:34:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757496846; cv=none; b=pphwZZ7IOCjOL5Lmc5LXKlPD/0u2KzRJC1m/xU0+IKErfqi0vjq05Z2vIvBpiE449B2pgppOWmFfThKKtHe5IYXTLZTY3wuvdBSn2YQi6ZSvwikot2vr0rudRfsncHB+cRaObg61TqVrSz6fBCj7bwhvPn98522QzM/+y7kH8f0=
+	t=1757496859; cv=none; b=Zb8wCJTQ4sR0yDtEMGTQKVPC+rG50F8hLgDMveRft33TDPeo+Lz46onJE8x4bKUEtrDWQ9opGKxJbHzaMSwOJw2m7slDXSVkYL4VE3ZPBf/E33JN7MQ9fkCTKs/PTwSLVEDk2JjSldcQH1angnDz9mzlDrrsTP7nlf16TVgN3n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757496846; c=relaxed/simple;
-	bh=jp6L8c0EHB1gymGU5flE9AdnVKMkvLGb58m6qWm61n4=;
+	s=arc-20240116; t=1757496859; c=relaxed/simple;
+	bh=G2oIlx5+3F0uTA2qs+8gy1BOtO3oFBeT4X0nl6deiXY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=S8cw/6gZJ+o76i0TbEbr9e69FsIiCoGwbevLQYN3yaepm/9jmMLrhIxxADCYWvEKTqDQ6CVWzvOkgGFfemKv90/1cZX8U78WCxlUd2QI0cQLW2Pkp0X1a+XxQxisSmVkDhXSBMxufDR9nSk+g4Icqilyi7qassndW/rHkc+2nz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=PgcvKRnv; arc=none smtp.client-ip=115.124.30.113
+	 MIME-Version; b=Xjh4fS48pwegJgLRvunFDNrHOIDB62vgHEy2B1/hDiPj1g88A29hBgK3kfVQG0ZUs74e9O9/NUJNt2sw4SkdpxYY+rcsAQhsmwfF8d6o3BPVowuYDGbV/rbKgz7Upn+sWzu4rLDsq0bE0toetiwWqzwZrLAHfKaPXVEggPiP5JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=r9njdxEu; arc=none smtp.client-ip=115.124.30.97
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1757496841; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=H6tZbk8xd14arH4x+y5nLcp4ATXMokGEomrYYieeMvA=;
-	b=PgcvKRnv7G0jJod/J1p6ua68GW2fdQHDao40/aPR1UNAPS5YTnmF49hU6krqCh0CcbhQkGZ7m7eCSgmXHIPE1dHi6iT9skEfXEEa61J4XUq2kte7UD28IiqXwWhw4j3gXCt3ce/HXl+PagimR4TK8/ph/jNNMkXG+Oa3q3Ev9Zo=
-Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WnhhBon_1757496838 cluster:ay36)
+	t=1757496845; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=Pr8EoGstQtjK3lXgH2CmjXH5Mo22c8CU5zRjW49QuUo=;
+	b=r9njdxEuxYheWutRTgpNbkUXDTARsCF0u2IV7NsJDJhXdwCo3VSidLssZw3GI7pMlpnivDWtQAUfjqLbc/iBAqqMqlBZ0qxJf9GKUPC/p8KHP30AXg3R+kM44TOCrRVOFZ9FdkBNjl8IvezwT6Yv0TD2p6EDFuMtXuedm2CPRGI=
+Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WnhhBqV_1757496843 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 10 Sep 2025 17:34:00 +0800
+          Wed, 10 Sep 2025 17:34:05 +0800
 From: Ruidong Tian <tianruidong@linux.alibaba.com>
 To: xueshuai@linux.alibaba.com,
 	palmer@dabbelt.com,
@@ -51,9 +51,9 @@ Cc: james.morse@arm.com,
 	cleger@rivosinc.com,
 	hchauhan@ventanamicro.com,
 	tianruidong@linux.alibaba.com
-Subject: [RFC PATCH 2/5] riscv: Define arch_apei_get_mem_attribute for RISC-V
-Date: Wed, 10 Sep 2025 17:33:44 +0800
-Message-Id: <20250910093347.75822-3-tianruidong@linux.alibaba.com>
+Subject: [RFC PATCH 3/5] acpi: Introduce SSE and HEE in HEST notification types
+Date: Wed, 10 Sep 2025 17:33:45 +0800
+Message-Id: <20250910093347.75822-4-tianruidong@linux.alibaba.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20250910093347.75822-1-tianruidong@linux.alibaba.com>
 References: <20250910093347.75822-1-tianruidong@linux.alibaba.com>
@@ -65,48 +65,30 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Himanshu Chauhan <hchauhan@ventanamicro.com>
+Introduce atwo new HEST notification type for RISC-V Hardware
+Error Exception and SSE. The GHES entry's notification structure
+contains the notification to be used for a given error source.
 
-ghes_map function uses arch_apei_get_mem_attribute to get the
-protection bits for a given physical address. These protection
-bits are then used to map the physical address.
-
-Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
+Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
 ---
- arch/riscv/include/asm/acpi.h | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ include/acpi/actbl1.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.h
-index 6e13695120bc..0c599452ef48 100644
---- a/arch/riscv/include/asm/acpi.h
-+++ b/arch/riscv/include/asm/acpi.h
-@@ -27,6 +27,26 @@ extern int acpi_disabled;
- extern int acpi_noirq;
- extern int acpi_pci_disabled;
+diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+index 99fd1588ff38..0f04ef10f510 100644
+--- a/include/acpi/actbl1.h
++++ b/include/acpi/actbl1.h
+@@ -1534,7 +1534,9 @@ enum acpi_hest_notify_types {
+ 	ACPI_HEST_NOTIFY_SEI = 9,	/* ACPI 6.1 */
+ 	ACPI_HEST_NOTIFY_GSIV = 10,	/* ACPI 6.1 */
+ 	ACPI_HEST_NOTIFY_SOFTWARE_DELEGATED = 11,	/* ACPI 6.2 */
+-	ACPI_HEST_NOTIFY_RESERVED = 12	/* 12 and greater are reserved */
++	ACPI_HEST_NOTIFY_SSE = 12, /* RISCV SSE */
++	ACPI_HEST_NOTIFY_HEE = 13, /* RISCV Hardware Error Exception */
++	ACPI_HEST_NOTIFY_RESERVED = 14	/* 14 and greater are reserved */
+ };
  
-+#ifdef	CONFIG_ACPI_APEI
-+/*
-+ * acpi_disable_cmcff is used in drivers/acpi/apei/hest.c for disabling
-+ * IA-32 Architecture Corrected Machine Check (CMC) Firmware-First mode
-+ * with a kernel command line parameter "acpi=nocmcoff". But we don't
-+ * have this IA-32 specific feature on ARM64, this definition is only
-+ * for compatibility.
-+ */
-+#define acpi_disable_cmcff 1
-+static inline pgprot_t arch_apei_get_mem_attribute(phys_addr_t addr)
-+{
-+	/*
-+	 * Until we have a way to look for EFI memory attributes.
-+	 */
-+	return PAGE_KERNEL;
-+}
-+#else /* CONFIG_ACPI_APEI */
-+#define acpi_disable_cmcff 0
-+#endif /* !CONFIG_ACPI_APEI */
-+
- static inline void disable_acpi(void)
- {
- 	acpi_disabled = 1;
+ /* Values for config_write_enable bitfield above */
 -- 
 2.43.7
 
