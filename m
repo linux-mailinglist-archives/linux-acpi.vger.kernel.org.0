@@ -1,81 +1,81 @@
-Return-Path: <linux-acpi+bounces-16571-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16572-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9676B51605
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 13:43:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C9FB5160F
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 13:47:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDB021C83EC6
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 11:43:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8C5118997AD
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 11:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC7E30E85A;
-	Wed, 10 Sep 2025 11:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8892853F1;
+	Wed, 10 Sep 2025 11:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Xc7loY9h"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="bjc9Jpz0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD04430BF60
-	for <linux-acpi@vger.kernel.org>; Wed, 10 Sep 2025 11:43:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AE427E7EB
+	for <linux-acpi@vger.kernel.org>; Wed, 10 Sep 2025 11:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757504585; cv=none; b=eFhaOeLKHJcbmhfGgaOh4HvJIFmTIngFa26aJUNmTp1ucw0cXng7+t4QCfLPXm8NgS5OP2xuGj45smqS6h08Qz1TVWWy5RelTjpe0yczS5AcNkZT9Ak5i8b5ABTJulPqDAl0jio0D7J75y5MxC0dpmwVo4n1Tun8u8qTZYdrHl0=
+	t=1757504841; cv=none; b=e+PInMR35bywvR+FEQao4VBGagbRw5DZ9QxLkx13ZyY9dn/zPgEmQ3G8CRBIa+SCnapoAqzn+55YJlDT/IdJ+smPOxOXb0dWJHy58yeGcQfoF+V27kjYbyng3Qx1MBY4/NmD5FNmQ1bfCpj0c798HaCXBML8veQHlrOwPu4Vxdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757504585; c=relaxed/simple;
-	bh=7erkqQUfFDNDoqNZM+Y5sZuMbqsM7zA0sqkOQSUJo/s=;
+	s=arc-20240116; t=1757504841; c=relaxed/simple;
+	bh=lbVleNB36fG112XJp199lcPL6rD2vaZRqT8hFjobxP0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mfTUVrX3/k+dTakxUc+t7kMF2d3STNBRHIOCA0NpoRjC4Q3M3EwDgML6k9zWnXUewpYmNCyf7oT15klSj0U8b7ZxnSxfsw3nNDEAcQzZFV4OZeaEBAQ3okZYxASt5Y8eZr6CM4H4IwSeepzobdgCQUdnV5/OCpznkNsGd+cRq9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Xc7loY9h; arc=none smtp.client-ip=209.85.128.52
+	 In-Reply-To:Content-Type; b=lGKIvvK2OzwVuOWb+pxDPz+uEgfrgoV3rDlwFyjh7Ae/U7sxrjnUBuM+W3O1YtwXjt+cPImh4dD9BpJsrhbJoI9vmshvFQC/R65bY3WQI5k0ySrLUcnkJ/UB+UDtCldnGIfjGB4xOs0yvI6nrKByQuh/MaD6I9V+oFMnrJnOUfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=bjc9Jpz0; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45cb6428c46so63425665e9.1
-        for <linux-acpi@vger.kernel.org>; Wed, 10 Sep 2025 04:43:03 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3df2f4aedc7so3816174f8f.2
+        for <linux-acpi@vger.kernel.org>; Wed, 10 Sep 2025 04:47:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1757504582; x=1758109382; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1757504838; x=1758109638; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=s1jk+7UWt3/KQ4Hq0cRl7QtdnfvZdalm5MXw8hOhqCM=;
-        b=Xc7loY9hkTzOWrK6R0EXfYoWqNR3zbvVOH5bZtKphLhv2RuH8/s0hge4QjCB4sXh9o
-         JSEO4R6s5C2bDWTEFd8RVAuuef81Cn4+dh/42JGmYFRWaA8BvI0Gvttx2qv6obJ5Qpl9
-         M+6QijJtoEjA+74I7A5MnwO6Ap6n0MEgqfsb7co/6XDPvzPLyQ+5bUM5Tfr8edOUiMuc
-         fr0ZpvtOoCMHVFbuaRag3nuE1PiYQzrwkI9BP+H3w83JtGUVaTHrAQdXsD5cI633rZTp
-         cblUjoagDx/xEgQRUv8BKMBjmdl9Cjj/0AMqVcDNX1zIZZKpJ5X/pBxat6hK1YK714vy
-         r0jg==
+        bh=4b8l9UODp/FeCRZCFvzP4dsffoCBp+wjbwx4BoMSIwg=;
+        b=bjc9Jpz0wsqoK1Q/e7o0LX2Zg06F2GnUSUuhk+iOYeh+a+N2xsZ4zALT+klTsofDM5
+         PivKeCDnbQbVPHZwTBDJq3YwET226q86w4rhHNlzXl+PyC7pB1xAvV1IJBSw8I6GEzAp
+         DyU6J9VBdUZOtyWyReKFoyvCGGlwecOlTyc6Tfhi9/zs4RAxYoc9bd6jEwdJo8X04mjk
+         soFKpxUYL8HiyZ05ObwARaNvv7gBvzVDeHG5aJh9wPcWMUce8WAvaL/07XIhiqzZDcjF
+         h7lfltqaq/frL+Xlivl9YN7dpbHcTxyU7niLhI5h28Vz/B9rdvj0ASLNWXasbnhgXFSf
+         0hJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757504582; x=1758109382;
+        d=1e100.net; s=20230601; t=1757504838; x=1758109638;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=s1jk+7UWt3/KQ4Hq0cRl7QtdnfvZdalm5MXw8hOhqCM=;
-        b=ej4pANHa/cejKyUKVzJddVSxOVZLVYbfzF8T5xEkChb+F+tNHaxTqziwN/wjltK4yx
-         OYsH7DPZPBLXKdty0GSJOr9gjkebJvLzrmEwXNQo/cfwWEhKCkf+6TFH2XTQ6/qJrqBe
-         UyGPUNWUXZ2kmykdrr45SriJvWWCkPUfX/A5vm5rTm1ad2drxDCdo9I2aGBh9Cq1BqhK
-         OUd3PZKINlAV+wjLp9VbMJ00fFDZLC4y2UUGnm/qDeSDlcNz+U27ieChO5opBAxDcYdc
-         j5T2LzxtKf9EhfcaxznELWNPTBX1ZOlBDtXZp1eRhFNywZPa+mQ3FL8WIyrRoOzH3oTu
-         VaLw==
-X-Forwarded-Encrypted: i=1; AJvYcCXLnZH/l2MhfxQcOHayMr1q875EF2r8/Iw5WNxNaw5F51kWqmCKA5YF5WO6JWiKsforjNApLhACt32/@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGrs9oEaddT25JMf5hd/WyT/qiLLDRD6Znfo5i/SFvFAj3mi4m
-	+LE5L0FIcsLKFTnaFJtAsW4/CP30Q+H/pSPRJRa5Mzo/jhc9d/rRZM+Qj5zebz9TfLo=
-X-Gm-Gg: ASbGnctC3+70KXOIYSzYpFjbiMBcJd0IzWcYaGQi6+ngaUZdWZOwczNuYQlUDaRACFF
-	P3LZV8PW7r7cAZsPLbUhKL19FysBosGNyBmbYxa4eMg495cns46z6/pIRbl57e89sXtzqQ1aYBQ
-	ngAEJH/BWcqiIE87gVHZbPQyR4hC1d3JpAuZCdU5JbGrnekuJNk5mguUvRQt16tY4EJ8MESEnp1
-	3oh7JdzHdt5tyBi6fpKokhG393yCkIIqh5Kwk22A+ZGZEACRNpnTclp7qmJzRXu6pUESVa6RQgM
-	fZ+SkufZRaLUDzuWnvxnFWzy03VD/jGskEV9RuUIUy3/g1/XmFC4YhB/33NAf3H8Qfa8/+NomaK
-	zOhTSvcVF2QPHrJHi+77rVwEzJ/RCrTz8KK6V
-X-Google-Smtp-Source: AGHT+IH+j6qH3oc+eCgDA7i2ctQtgPa5otWLi0iezAGvsKTsTpCgidwk76vRbR+9ypAywYrH/lDE0g==
-X-Received: by 2002:a05:6000:2481:b0:3d9:dbe6:e613 with SMTP id ffacd0b85a97d-3e6427d8186mr13664025f8f.15.1757504582013;
-        Wed, 10 Sep 2025 04:43:02 -0700 (PDT)
+        bh=4b8l9UODp/FeCRZCFvzP4dsffoCBp+wjbwx4BoMSIwg=;
+        b=cbtnsavDQTncmzIYL8dlvi2+Gt0f3dndiSOsjoTuSLVfaLyTRcguXj/kIi6kP6aTMJ
+         Kx+pHh7eBdns4PvcPgjjkHGRDj3UZXQFozvG67lKqCBHZmqX6XzzW7tgC/9cegB2wTmR
+         ofOUKv2XjUmD1G9WQntMfHNBDs1McrsSvMLAgyowLjsTbsu3dN8vj4evxuxey9o/Z1oq
+         59RQe7DqvCXV2aEqJPpb0cTFHuPWZJ0vPjGS1KeQq7KWjxz6bsKr3cjqeJJ5Y9qqIC5J
+         FUdd1jsiUsYAN/AIoTxrOu7xDQ8ylNGlntYVYD/MRz9Dtaw9QWwH3ZtHNukYBHTe3QGP
+         XgAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWHXZBjRnONI+PCBUvUSKWhzcUBkiuFGaDP03+/6IdiqHIZfiKrLeX4oRyGj9XMisAlqA3c1v9wKI0n@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPUtzhlkXJXOe7FGjRWUU2Gk1BG4+16gHcA1EDzosa/Hr7+soF
+	g5nhbygZNt4SzO8YLpeNWD4mFCrbXGGDWm9Pm4JqdCtAOCmQJJMZKG7/QGZknCJWccw=
+X-Gm-Gg: ASbGnctLypytrTN7HACF54YK4YfGJxJIsIHeQdn1ig+ke4zYITENR5tXG01bNN5d3k5
+	+3DJxXlupbIqbPG59hAUkrEyaqxuGTbzkZKMpKQWjK6jHyxRH1Tmcedq7Vjt6CqRUZ+X/10SYCa
+	CiosBbgslR9tRMQY8CBuNVOLCKSxvPfEHQ8L8EWiHi38NYig1/wrY1SifP0azBZjSPL/8ThW14r
+	p3DJdaL0Ld+ThxpLuGKZ/BvO1z7PltusIS7FMk0rYmq9IO48LddPvEO3w1B68XlUCj+QYJW8pL6
+	QWKLRaWq9PJfqGKUCYLlvlxSTeSN68QwWUDVMixFys8SYU59A5HRP5EIUlDxvcGhjAd8nH9go1j
+	oG/AWGo6UBAp4vq+5AYuuujceu5R+ig281zNt
+X-Google-Smtp-Source: AGHT+IHzDMf/jaVov1RUOe73ZJkbRYR7qCbsg0/lCE8ZJG90MzF2ZKZezbrOeFUqcZDoFKM+jB3U0w==
+X-Received: by 2002:a05:6000:25c8:b0:3e2:6d96:b4b4 with SMTP id ffacd0b85a97d-3e643555864mr10937053f8f.41.1757504838050;
+        Wed, 10 Sep 2025 04:47:18 -0700 (PDT)
 Received: from [192.168.0.20] ([212.21.159.60])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7521bff6esm6411006f8f.13.2025.09.10.04.43.01
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e752238832sm6381943f8f.31.2025.09.10.04.47.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Sep 2025 04:43:01 -0700 (PDT)
-Message-ID: <96b2a8c2-3619-4f9c-8760-aa396e63e472@suse.com>
-Date: Wed, 10 Sep 2025 14:43:00 +0300
+        Wed, 10 Sep 2025 04:47:17 -0700 (PDT)
+Message-ID: <98d80660-7140-43a2-b17c-07a0884996f8@suse.com>
+Date: Wed, 10 Sep 2025 14:47:16 +0300
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -83,14 +83,14 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/15] x86/mce: Set CR4.MCE last during init
+Subject: Re: [PATCH v6 02/15] x86/mce: Define BSP-only init
 To: Yazen Ghannam <yazen.ghannam@amd.com>, x86@kernel.org,
  Tony Luck <tony.luck@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
  Smita.KoralahalliChannabasappa@amd.com, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
  linux-acpi@vger.kernel.org
 References: <20250908-wip-mca-updates-v6-0-eef5d6c74b9c@amd.com>
- <20250908-wip-mca-updates-v6-1-eef5d6c74b9c@amd.com>
+ <20250908-wip-mca-updates-v6-2-eef5d6c74b9c@amd.com>
 From: Nikolay Borisov <nik.borisov@suse.com>
 Content-Language: en-US
 Autocrypt: addr=nik.borisov@suse.com; keydata=
@@ -136,43 +136,66 @@ Autocrypt: addr=nik.borisov@suse.com; keydata=
  JDjakbdjBoYDWVoaPbp5KAQ2VQRiR54lir/inyqGX+dwzPX/F4OHfB5RTiAFLJliCxniKFsM
  d8eHe88jWjm6/ilx4IlLl9/MdVUGjLpBi18X7ejLz3U2quYD8DBAGzCjy49wJ4Di4qQjblb2
  pTXoEyM2L6E604NbDu0VDvHg7EXh1WwmijEu28c/hEB6DwtzslLpBSsJV0s1/jE=
-In-Reply-To: <20250908-wip-mca-updates-v6-1-eef5d6c74b9c@amd.com>
+In-Reply-To: <20250908-wip-mca-updates-v6-2-eef5d6c74b9c@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
 On 9/8/25 18:40, Yazen Ghannam wrote:
-> Set the CR4.MCE bit as the last step during init. This brings the MCA
-> init flow closer to what is described in the x86 docs.
+> Currently, MCA initialization is executed identically on each CPU as
+> they are brought online. However, a number of MCA initialization tasks
+> only need to be done once.
 > 
-> x86 docs:
-> 	AMD		Intel
-> 			MCG_CTL
-> 	MCA_CONFIG	MCG_EXT_CTL
-> 	MCi_CTL		MCi_CTL
-> 	MCG_CTL
-> 	CR4.MCE		CR4.MCE
+> Define a function to collect all 'global' init tasks and call this from
+> the BSP only. Start with CPU features.
 > 
-> Current Linux:
-> 	AMD		Intel
-> 	CR4.MCE		CR4.MCE
-> 	MCG_CTL		MCG_CTL
-> 	MCA_CONFIG	MCG_EXT_CTL
-> 	MCi_CTL		MCi_CTL
-> 
-> Updated Linux:
-> 	AMD		Intel
-> 	MCG_CTL		MCG_CTL
-> 	MCA_CONFIG	MCG_EXT_CTL
-> 	MCi_CTL		MCi_CTL
-> 	CR4.MCE		CR4.MCE
-> 
-> The new init flow will match Intel's docs, but there will still be a
-> mismatch for AMD regarding MCG_CTL. However, there is no known issue
-> with this ordering, so leave it for now.
-> 
-> Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com> 
+> Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+> Tested-by: Tony Luck <tony.luck@intel.com>
+> Reviewed-by: Tony Luck <tony.luck@intel.com>
+> Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+
+<snip>
+
+> @@ -2240,6 +2233,27 @@ DEFINE_IDTENTRY_RAW(exc_machine_check)
+>   }
+>   #endif
+>   
+> +void mca_bsp_init(struct cpuinfo_x86 *c)
+> +{
+> +	u64 cap;
+> +
+> +	if (!mce_available(c))
+> +		return;
+> +
+> +	mce_flags.overflow_recov = cpu_feature_enabled(X86_FEATURE_OVERFLOW_RECOV);
+> +	mce_flags.succor	 = cpu_feature_enabled(X86_FEATURE_SUCCOR);
+> +	mce_flags.smca		 = cpu_feature_enabled(X86_FEATURE_SMCA);
+> +
+> +	rdmsrq(MSR_IA32_MCG_CAP, cap);
+> +
+> +	/* Use accurate RIP reporting if available. */
+> +	if ((cap & MCG_EXT_P) && MCG_EXT_CNT(cap) >= 9)
+> +		mca_cfg.rip_msr = MSR_IA32_MCG_EIP;
+> +
+> +	if (cap & MCG_SER_P)
+> +		mca_cfg.ser = 1;
+> +}
+> +
+
+
+LGTM
 
 Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+
+nit: One question though for those CPUs which consist of P+E cores, is 
+it mandated that both types of cores will have identical MCE 
+architecture, I assume the x86 world will be a lot more unified than 
+Arm's big.LITTLE ?
+
+>   /*
+>    * Called for each booted CPU to set up machine checks.
+>    * Must be called with preempt off:
+> 
+
 
