@@ -1,169 +1,119 @@
-Return-Path: <linux-acpi+bounces-16566-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16568-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A1FDB512A8
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 11:37:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7634AB51306
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 11:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C4441892BAB
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 09:37:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FFC81C81860
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 09:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465063128A4;
-	Wed, 10 Sep 2025 09:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C713164A8;
+	Wed, 10 Sep 2025 09:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LrFC/fE/"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="yLv3faF7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1003A285CAF;
-	Wed, 10 Sep 2025 09:37:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F5D315789;
+	Wed, 10 Sep 2025 09:45:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757497034; cv=none; b=PNFY0hCVDnORwLBd33VA+ct3KDB/Kjf/uW5k/tBs1MTd+uWDwC0Opf3qXco2i80xpe8x9Y0+y5DK7TmA51Hgrs3LN7l+q3kKY6wexomVp9PxgeGwgazj38gPOpWhafjYH6O5iswmywFFR59/3UYVIwEMZKiNjI7kp7+Og9OfoFY=
+	t=1757497511; cv=none; b=q74yRxQgCaw+RnHA2eg/7jZUqVoTW/giypWsWSxlj17v3ERtT5qTg+JgbturBN1fixLW5tuX64pWxP8egp/86ObArMnWDy1sLrWzN89ozBBF5+K51wL1T2yS2hB+Qe0M1gOyxaAi6Ub/lm+9HZ5pYJ9O2m9kgnGV0bBIKi8tCSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757497034; c=relaxed/simple;
-	bh=28Z83TYU1HcXY9gGFlYZe5FSkvWNJL9vWbrzyGS+5pM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=doJN3gpdvbbUb//4eIH52v2gf2qkcsjNQXMn4kcz4uAZmehq45rgNzMGVYCBCqynlNbE+z4g5WgBqnbAN/eA8uQtfJ/l2py+xWiBxKdMLTrvE6AU83Ycy1wfdTGvqnp3FM3NljqTKEXkBV1FNu3lAi3BwAErFaaiwubLqcMmiH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LrFC/fE/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8B1C4CEF8;
-	Wed, 10 Sep 2025 09:37:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757497033;
-	bh=28Z83TYU1HcXY9gGFlYZe5FSkvWNJL9vWbrzyGS+5pM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LrFC/fE/oDv/+Dn6Np09etM9Npqz03ErTqdlyl7GKVA9kDhwpcpp4HvrUmXaxz6Lo
-	 PKnUha90vZwmj5z5nri8qBNVmZnEnuIEgLcKVUsy2EU7IHPyot8jgZRE3o2p2R6ujq
-	 wE1hGalT7vT8CI2atXShbN0g5NOIOz2S39qEtH5pvXqLSg6bY7SOvY33Q8bR8s0mSa
-	 umY/oqnMyLkWte8iHy9yhhP30C3FDhBGtjZjiPWDfPALd9LJ9diSrYxZPnyZbwMe5i
-	 SnowW6qqWGUwd34SGJReguDbIKG5SBEkYaR80Xp9JLIdXMPGRNa+AfwpUhyFq2kpeF
-	 /tOMZGmjuVLDw==
-Message-ID: <12816b79-c9b0-43d1-9b99-a1e7c7d73571@kernel.org>
-Date: Wed, 10 Sep 2025 11:37:10 +0200
+	s=arc-20240116; t=1757497511; c=relaxed/simple;
+	bh=UxDHk+nyHGn6znzf9nre7X54TYbPp1T3sedDzWOhoZM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uefd/U0OtzkgjAY2zTAUhdlSztAadJaqJtWaWFbUg9Is16VjvONCO+Lx1FScWyGlJIYjJbqxSvsghFUqZvdbhhNQltjcSppv6nmVgj1QiQlep45usxMbnpbSciX2nNmYl9odt3h8hrBp4BzcRlouYoBbuQrKwkdZIjks19Y3iYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=yLv3faF7; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1757497506; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=NDjRMqnwvSDtCzogc+S2Va17N1AuCGT5lTb/FjGa+Hk=;
+	b=yLv3faF7ZoiQR1Sy3HsUKNqvsG/jIzA2Ujc8uyd7ZxJh8ZJwDMyKaj1x7kwhPrZbrXInxF43h4XSNFimCfIqZvj1uSs+kxPAmJziF+id97lec8Exdjee69i2oSZwR7dNUm2ECiGfc2RG/PL1x9o9Vc2YwY+bAXVjs/Ha18817mA=
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WnhXu7j_1757497190 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 10 Sep 2025 17:39:52 +0800
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	robert.moore@intel.com
+Cc: andrew@kernel.org,
+	bfaccini@nvidia.com,
+	eahariha@linux.microsoft.com,
+	dan.j.williams@intel.com,
+	thorsten.blum@linux.dev,
+	gourry@gourry.net,
+	xueshuai@linux.alibaba.com,
+	nunodasneves@linux.microsoft.com,
+	wangyuquan1236@phytium.com.cn,
+	Jonathan.Cameron@huawei.com,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	acpica-devel@lists.linux.dev
+Subject: [PATCH] acpi,srat: Fix incorrect device handle check for Generic Initiator
+Date: Wed, 10 Sep 2025 17:39:49 +0800
+Message-Id: <20250910093949.5793-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ACPI: video: Fix missing backlight node creation on
- Zhaoxin platforms
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>,
- "Rafael J . wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>, Mario Limonciello
- <mario.limonciello@amd.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250910074711.1511753-1-zhangzihuan@kylinos.cn>
-From: Hans de Goede <hansg@kernel.org>
-Content-Language: en-US, nl
-In-Reply-To: <20250910074711.1511753-1-zhangzihuan@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Zihuan,
+The Generic Initiator Affinity Structure in SRAT table uses device
+handle type field to indicate the device type. According to ACPI
+specification, the device handle type value of 1 represents PCI device,
+not 0.
 
-On 10-Sep-25 9:47 AM, Zihuan Zhang wrote:
-> Some recent Lenovo and Inspur machines with Zhaoxin CPUs fail to create
-> /sys/class/backlight/acpi_video0 on v6.6 kernels, while the same hardware
-> works correctly on v5.4.
-> 
-> Our analysis shows that the current implementation assumes the presence of a
-> GPU. The backlight registration is only triggered if a GPU is detected, but on
-> these platforms the backlight is handled purely by the EC without any GPU.
-> As a result, the detection path does not create the expected backlight node.
-> 
-> To fix this, move the following logic:
-> 
-> /* Use ACPI video if available, except when native should be preferred. */
-> if ((video_caps & ACPI_VIDEO_BACKLIGHT) &&
->     !(native_available && prefer_native_over_acpi_video()))
->         return acpi_backlight_video;
-> 
-> above the if (auto_detect) *auto_detect = true; statement.
-> 
-> This ensures that the ACPI video backlight node is created even when no GPU is
-> present, restoring the correct behavior observed on older kernels.
-> 
-> Fixes: 78dfc9d1d1ab ("ACPI: video: Add auto_detect arg to __acpi_video_get_backlight_type()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Fix this by defining explicit macros for device handle types and using
+the correct check for PCI devices:
 
-Thank you for your patch.
+- ACPI_SRAT_ACPI_DEVICE_HANDLE (0): ACPI device handle
+- ACPI_SRAT_PCI_DEVICE_HANDLE (1): PCI device handle
 
-> ---
->  drivers/acpi/video_detect.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-> index d507d5e08435..c1bb22b57f56 100644
-> --- a/drivers/acpi/video_detect.c
-> +++ b/drivers/acpi/video_detect.c
-> @@ -1011,6 +1011,11 @@ enum acpi_backlight_type __acpi_video_get_backlight_type(bool native, bool *auto
->  	if (acpi_backlight_dmi != acpi_backlight_undef)
->  		return acpi_backlight_dmi;
->  
-> +	/* Use ACPI video if available, except when native should be preferred. */
-> +	if ((video_caps & ACPI_VIDEO_BACKLIGHT) &&
-> +	     !(native_available && prefer_native_over_acpi_video()))
-> +		return acpi_backlight_video;
-> +
->  	if (auto_detect)
->  		*auto_detect = true;
->  
-> @@ -1024,11 +1029,6 @@ enum acpi_backlight_type __acpi_video_get_backlight_type(bool native, bool *auto
->  	if (dell_uart_present)
->  		return acpi_backlight_dell_uart;
->  
-> -	/* Use ACPI video if available, except when native should be preferred. */
-> -	if ((video_caps & ACPI_VIDEO_BACKLIGHT) &&
-> -	     !(native_available && prefer_native_over_acpi_video()))
-> -		return acpi_backlight_video;
-> -
->  	/* Use native if available */
->  	if (native_available)
->  		return acpi_backlight_native;
+Fixes: 894c26a1c274 ("ACPI: Support Generic Initiator only domains")
+Reported-by: Wu Zongyong <wuzongyong@linux.alibaba.com>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+---
+ drivers/acpi/numa/srat.c | 2 +-
+ include/acpi/actbl3.h    | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-There is a very specific ordering, as the comment in the function says:
-
-        /*
-         * The below heuristics / detection steps are in order of descending
-         * presedence. The commandline takes presedence over anything else.
-         */
-
-You cannot just move one fo the detect steps like this, this will break
-many many other systems.
-
-NACK for this patch, sorry.
-
-We will need to figure out some other way to fix your issue.
-
-For starters I do not understand how this patch helps.
-
-You are moving the:
-
-	/* Use ACPI video if available, except when native should be preferred. */
-	if ((video_caps & ACPI_VIDEO_BACKLIGHT) &&
-	     !(native_available && prefer_native_over_acpi_video()))
-		return acpi_backlight_video;
-
-Above the nvidia_wmi_ec_present, apple_gmux_present and dell_uart_present
-checks, but I would expect all of these to be false on Lenovo and Inspur
-machines with Zhaoxin CPUs ?  So this patch should not make a difference.
-
-Please double check that this patch fixes things for you.
-
-And if it does really fix things then please add printk()
-calls printing the value of nvidia_wmi_ec_present, apple_gmux_present 
-and dell_uart_present these should all be false, but maybe we get
-a false-positive and one of them is set to true ?
-
-Regards,
-
-Hans
-
+diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+index 53816dfab645..de71b370a275 100644
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -237,7 +237,7 @@ acpi_table_print_srat_entry(struct acpi_subtable_header *header)
+ 		struct acpi_srat_generic_affinity *p =
+ 			(struct acpi_srat_generic_affinity *)header;
+ 
+-		if (p->device_handle_type == 0) {
++		if (p->device_handle_type == ACPI_SRAT_PCI_DEVICE_HANDLE) {
+ 			/*
+ 			 * For pci devices this may be the only place they
+ 			 * are assigned a proximity domain
+diff --git a/include/acpi/actbl3.h b/include/acpi/actbl3.h
+index 79d3aa5a4bad..c8488614429c 100644
+--- a/include/acpi/actbl3.h
++++ b/include/acpi/actbl3.h
+@@ -284,6 +284,9 @@ struct acpi_srat_gic_its_affinity {
+  * 6: ACPI_SRAT_TYPE_GENERIC_PORT_AFFINITY
+  */
+ 
++#define ACPI_SRAT_APCI_DEVICE_HANDLE	(0)
++#define ACPI_SRAT_PCI_DEVICE_HANDLE	(1)
++
+ #define ACPI_SRAT_DEVICE_HANDLE_SIZE	16
+ 
+ struct acpi_srat_generic_affinity {
+-- 
+2.39.3
 
 
