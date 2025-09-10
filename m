@@ -1,146 +1,160 @@
-Return-Path: <linux-acpi+bounces-16554-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16555-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1685DB50FF4
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 09:47:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A66B51136
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 10:28:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 409A21C26C52
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 07:48:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 920141C817DB
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 08:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D1230DEA6;
-	Wed, 10 Sep 2025 07:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9258230EF8B;
+	Wed, 10 Sep 2025 08:28:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VGs4blp2"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD66530DD3D;
-	Wed, 10 Sep 2025 07:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6716A30CDA1;
+	Wed, 10 Sep 2025 08:28:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757490446; cv=none; b=uisTGJNjyq3iA7FjhZbgdisNt539jJ/sVZ4wLLir5ruCDngA9mnOigwpJVmOoa6TINrDcVG+gTZF/fnB+lgmO5L1xEpUv5E55D+wWGrpUg3sXkbT2RpesFKz7bS1RjwHWggzY7L1a6T22tkQ3gigDjqAKdcgvJzXoMy9iEqmlJc=
+	t=1757492887; cv=none; b=EAr6xHlo3F7L/ThlneXv4hC8763BafK//MjjG/DkDZWtTYCKE/sEIKB0VoIbuE5yyNc+qYfzzqCONXESBa2xDRd827SPKeF5CM8+QypWF83S8LG2gr8jjrM53TydnhLBazWyrYjkEyZ2ydyg65eZS5odTvYnWMoh547Yta4Nl9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757490446; c=relaxed/simple;
-	bh=HrkZ7QmyC0ko9xZZhLgcxejf/rH/pOxKsUUUy4ZqFIQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SnzygRbgIQb31/oHwMfmKNryLiyumHLAZAkzG6XjeTuFGXU5Ujw10wL/noKXeZ5+SjGnZj1IC+73XgyFkMLCU1TjuL7rShlugF/2cK4K3C5gdNL78+hBhUff7ZR9lI9Kfxs1ddmbf6vrX8232HIPo8qhXto+FJnFBh7M5Gp+6Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 5ec13dee8e1a11f0b29709d653e92f7d-20250910
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:b0f74bbd-84c0-49b8-8258-c438c2ef876d,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:6493067,CLOUDID:e94c29525daa99a61a755ff701b91a0a,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|850,TC:nil,Content:0|50,EDM:-3,IP:ni
-	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 5ec13dee8e1a11f0b29709d653e92f7d-20250910
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 162616005; Wed, 10 Sep 2025 15:47:15 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id A3DBDE009008;
-	Wed, 10 Sep 2025 15:47:15 +0800 (CST)
-X-ns-mid: postfix-68C12D03-4921011059
-Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 40575E009007;
-	Wed, 10 Sep 2025 15:47:14 +0800 (CST)
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-To: "Rafael J . wysocki" <rafael@kernel.org>,
-	Hans de Goede <hansg@kernel.org>
-Cc: Len Brown <lenb@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Zihuan Zhang <zhangzihuan@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v1] ACPI: video: Fix missing backlight node creation on Zhaoxin platforms
-Date: Wed, 10 Sep 2025 15:47:11 +0800
-Message-Id: <20250910074711.1511753-1-zhangzihuan@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1757492887; c=relaxed/simple;
+	bh=E35FXdvXarB6Ep6s0kvPworSUWLLMvPxnL261c+f2cA=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BN7Lc4Yub6KzFAEfBmU//mCj+RWqFJ0rmjdtkjSFEktESMzx95cgPTHY+02t1gsrYa21efRLwj3niWrFu9B/D/BFpI6LTaVeiaB5Wrsw7Dlw62GONkxc/UHcOaHPas85PB2ODh43ItKQtp91RGcukBuAHKE8cmWDMZxXMs+0NTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VGs4blp2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D065AC4CEF0;
+	Wed, 10 Sep 2025 08:28:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757492886;
+	bh=E35FXdvXarB6Ep6s0kvPworSUWLLMvPxnL261c+f2cA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=VGs4blp2aBu69qQ0rtyjPL/vT8Af9zts4zjLQV7i3YqVnQ4HK6l18E5B6VJafI9gn
+	 ysomlTdVJg4P6FE2ylhzShmNXQWrKSkeiJlNrNICfY3EEz+s0bOulYMFchvTf9TfEa
+	 VvLAj0O/CRbL/F0xV8TJhUWJlZUpGDRPo7tDHFlIb/PKsIQ/RfGbNJPGRv1mEa2XVR
+	 OO9CEUWtrBahWwR1xJPfHy3SsZhgYWaMvL2HgJQYa2BNgUnZkHzIgNV9Y2rvxR70Wv
+	 eOKA1E7GQ6rWx7fJ39oszlkGDeSZl0PdQyqWVkDbx1eNgWWr2MFGoIh6lFlkv9HtDp
+	 Bahw/p0ZO4M/Q==
+Received: from [185.219.108.64] (helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1uwGBQ-00000004xbP-0d9l;
+	Wed, 10 Sep 2025 08:28:04 +0000
+Date: Wed, 10 Sep 2025 09:28:03 +0100
+Message-ID: <86ecsed84s.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org
+Cc: 	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	James Clark <james.clark@linaro.org>
+Subject: Re: [PATCH 15/25] genirq: Allow per-cpu interrupt sharing for non-overlapping affinities
+In-Reply-To: <20250908163127.2462948-16-maz@kernel.org>
+References: <20250908163127.2462948-1-maz@kernel.org>
+	<20250908163127.2462948-16-maz@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: tglx@linutronix.de, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, mark.rutland@arm.com, will@kernel.org, rafael@kernel.org, robh@kernel.org, saravanak@google.com, gregkh@linuxfoundation.org, sven@kernel.org, j@jannau.net, suzuki.poulose@arm.com, james.clark@linaro.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Some recent Lenovo and Inspur machines with Zhaoxin CPUs fail to create
-/sys/class/backlight/acpi_video0 on v6.6 kernels, while the same hardware
-works correctly on v5.4.
+On Mon, 08 Sep 2025 17:31:17 +0100,
+Marc Zyngier <maz@kernel.org> wrote:
+> 
+> Interrupt sharing for percpu-devid interrupts is forbidden, and
+> for good reasons. These are interrupts generated *from* a CPU and
+> handled by itself (timer, for example). Nobody in their right mind
+> would put two devices on the same pin (and if they have, they get to
+> keep the pieces...).
+> 
+> But this also prevents more benign cases, where devices are connected
+> to groups of CPUs, and for which the affinities are not overlapping.
+> Effectively, the only thing they share is the interrupt number, and
+> nothing else.
+> 
+> Let's tweak the definition of IRQF_SHARED applied to percpu_devid
+> interrupts to allow this particular case. This results in extra
+> validation at the point of the interrupt being setup and freed,
+> as well as a tiny bit of extra complexity for interrupts at handling
+> time (to pick the correct irqaction).
+> 
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> ---
+>  kernel/irq/chip.c   |  8 ++++--
+>  kernel/irq/manage.c | 67 +++++++++++++++++++++++++++++++++++++--------
+>  2 files changed, 61 insertions(+), 14 deletions(-)
+> 
+> diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
+> index 0d0276378c707..af90dd440d5ee 100644
+> --- a/kernel/irq/chip.c
+> +++ b/kernel/irq/chip.c
+> @@ -897,8 +897,9 @@ void handle_percpu_irq(struct irq_desc *desc)
+>  void handle_percpu_devid_irq(struct irq_desc *desc)
+>  {
+>  	struct irq_chip *chip = irq_desc_get_chip(desc);
+> -	struct irqaction *action = desc->action;
+>  	unsigned int irq = irq_desc_get_irq(desc);
+> +	unsigned int cpu = smp_processor_id();
+> +	struct irqaction *action;
+>  	irqreturn_t res;
+>  
+>  	/*
+> @@ -910,12 +911,15 @@ void handle_percpu_devid_irq(struct irq_desc *desc)
+>  	if (chip->irq_ack)
+>  		chip->irq_ack(&desc->irq_data);
+>  
+> +	for (action = desc->action; action; action = action->next)
+> +		if (cpumask_test_cpu(cpu, action->affinity))
+> +			break;
+> +
+>  	if (likely(action)) {
+>  		trace_irq_handler_entry(irq, action);
+>  		res = action->handler(irq, raw_cpu_ptr(action->percpu_dev_id));
+>  		trace_irq_handler_exit(irq, action, res);
+>  	} else {
+> -		unsigned int cpu = smp_processor_id();
+>  		bool enabled = cpumask_test_cpu(cpu, desc->percpu_enabled);
+>  
+>  		if (enabled)
 
-Our analysis shows that the current implementation assumes the presence o=
-f a
-GPU. The backlight registration is only triggered if a GPU is detected, b=
-ut on
-these platforms the backlight is handled purely by the EC without any GPU=
-.
-As a result, the detection path does not create the expected backlight no=
-de.
+As Will points out off the list, the above lacks the a similar
+handling for percpu_devid NMIs, leading to NMIs that are only handled
+on the first affinity group.
 
-To fix this, move the following logic:
+It's easy enough to move the above to common code and share it with
+handle_percpu_devid_fasteoi_nmi(), but at this point there is hardly
+any difference with handle_percpu_devid_irq().
 
-/* Use ACPI video if available, except when native should be preferred. *=
-/
-if ((video_caps & ACPI_VIDEO_BACKLIGHT) &&
-    !(native_available && prefer_native_over_acpi_video()))
-        return acpi_backlight_video;
+Any objection to simply killing the NMI version?
 
-above the if (auto_detect) *auto_detect =3D true; statement.
+Thanks,
 
-This ensures that the ACPI video backlight node is created even when no G=
-PU is
-present, restoring the correct behavior observed on older kernels.
+	M.
 
-Fixes: 78dfc9d1d1ab ("ACPI: video: Add auto_detect arg to __acpi_video_ge=
-t_backlight_type()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
----
- drivers/acpi/video_detect.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index d507d5e08435..c1bb22b57f56 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -1011,6 +1011,11 @@ enum acpi_backlight_type __acpi_video_get_backligh=
-t_type(bool native, bool *auto
- 	if (acpi_backlight_dmi !=3D acpi_backlight_undef)
- 		return acpi_backlight_dmi;
-=20
-+	/* Use ACPI video if available, except when native should be preferred.=
- */
-+	if ((video_caps & ACPI_VIDEO_BACKLIGHT) &&
-+	     !(native_available && prefer_native_over_acpi_video()))
-+		return acpi_backlight_video;
-+
- 	if (auto_detect)
- 		*auto_detect =3D true;
-=20
-@@ -1024,11 +1029,6 @@ enum acpi_backlight_type __acpi_video_get_backligh=
-t_type(bool native, bool *auto
- 	if (dell_uart_present)
- 		return acpi_backlight_dell_uart;
-=20
--	/* Use ACPI video if available, except when native should be preferred.=
- */
--	if ((video_caps & ACPI_VIDEO_BACKLIGHT) &&
--	     !(native_available && prefer_native_over_acpi_video()))
--		return acpi_backlight_video;
--
- 	/* Use native if available */
- 	if (native_available)
- 		return acpi_backlight_native;
---=20
-2.25.1
-
+-- 
+Without deviation from the norm, progress is not possible.
 
