@@ -1,188 +1,124 @@
-Return-Path: <linux-acpi+bounces-16575-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16576-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE62BB51670
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 14:02:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D7A6B5174F
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 14:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3B5D7ACD94
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 12:01:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99799545B88
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 12:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BAB31B83D;
-	Wed, 10 Sep 2025 12:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADACC31CA59;
+	Wed, 10 Sep 2025 12:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rsexfsst"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="QAt47TRh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E14331B835
-	for <linux-acpi@vger.kernel.org>; Wed, 10 Sep 2025 12:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742E631B115
+	for <linux-acpi@vger.kernel.org>; Wed, 10 Sep 2025 12:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757505700; cv=none; b=TwWNb9Wdb2OBbBUJlkY/cHaafXSr3O3QTnvRj/678l3YVUpY4i+j5A56vIL0hePNE9QB66EZla3+vhGgg0OX5WTCksXC/zYhBKKFf2Lehkwl6q359M4ao4JUQwAQ0PFgWB+iEjaxD+ysmAbViZavQPz0L6F1zCbsLrAJGDTBL/M=
+	t=1757508815; cv=none; b=LfUvy7uy6RDai1Teb6Bn48rJdlmftsj7s6fT9B2X+IHO2Qxv79ODDVOHfQa7jguoT3tEjsrqZWvFDcGh/LKT8qL3DulTcPcbaVKcFZuYU+4L6JasuSfPm0K+CgRMCHQMYzPlgukMIIDiWgxga8eHfASwMkD8aRmH/mDbtKQQXM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757505700; c=relaxed/simple;
-	bh=q7q78drzXiKAUcp4TX10uJS3Ui+QbaBZIzkWxDYUaSI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lOfUZxm2gm4lTH9ZrqS7kftxfLh8tKQzZWJLAI1piZ7WMr1M0JvSSagPoCn1JMR/WzMK4gii6LSLoCw4jQwRm9jSQ5SrxwofuApKiin4e47MJH30HHUzG6/QdhmStZERSA2n2Xic933nFkt9f4iC7dXBIrqjZx2qSdB3bC6XalQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rsexfsst; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57C8C4CEF0
-	for <linux-acpi@vger.kernel.org>; Wed, 10 Sep 2025 12:01:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757505699;
-	bh=q7q78drzXiKAUcp4TX10uJS3Ui+QbaBZIzkWxDYUaSI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Rsexfsstohf0LMB4rNxHdL+d0SOwTlwX9w0Es+1u7a3oXFNrLU55nmw/psGdM2PG4
-	 UyHapTdzCO17xBpUQrTgz9OYLsCIZ1mZOiIo1YVlrKRv3BNedCM95H0Cq0mCF+6Jeb
-	 o8TzpQ6pEBR2YQcgvTIdv2ei3FMVyITT4MvBhciY0dbbNOBy5rsuKHdwJwDt0e2mDR
-	 wrRbbIA4wx2rD36KXhQ0nWB+Y3MSzb/lhaecJwULKD1YJdzzGbgoI7NTKWY0yzhtmj
-	 yA/llQl8Oaxb91hYZqY+pdOF5o7wHcue43/Vb1YgotVCzP5ulnHCc9yc0ODiAHi8wi
-	 06DvBZ4yNftNA==
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-746d5474a53so2264723a34.2
-        for <linux-acpi@vger.kernel.org>; Wed, 10 Sep 2025 05:01:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVrYS/hDc/4vXhtKEFrTCYnUYgJcOpjbtaquNvFjDbaiMMwS4SyP3z3X6QqmZtmseNqfer0tIFNhBGd@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzw0Xii9l2bmTWP3eXMO2gy3ag8BT/kTpkKmqDcJE9ILZ/3lqD+
-	w5VQDb0BBAeEUT1z3tOmwAIi0adaZ/0WFQXMJ430ZPIJRkSeEEaVZt0pLl1+VZxuRaIMuPyYX1y
-	bmgsUOEM9ta/bxknNl8drrIB5gmzQ4P0=
-X-Google-Smtp-Source: AGHT+IFrO/ARxn2+pn+H/jgdGSskG+5HqHzwzQA7Fcamf///NbmjsRp1nadipREjIcejf7Yv7LCCEAJMMm+0x5m/zs4=
-X-Received: by 2002:a05:6830:370a:b0:73e:7f48:e6bc with SMTP id
- 46e09a7af769-74c6f023596mr7471623a34.2.1757505694328; Wed, 10 Sep 2025
- 05:01:34 -0700 (PDT)
+	s=arc-20240116; t=1757508815; c=relaxed/simple;
+	bh=UCknWCVKZ/v28NkgB+CnV++ugotQy6Cu4r2M0VTiT24=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TrkIpg4JdHuc64ug1YYmFEsGkNUupFzpIVMNbooDuSvcm0LBrKn/m4nWFCawc2XjOUyU5YlWTnxKsBtdmaP25GhKdT7aGrZVlCQk1h53ZJUXFUz1F7hZma8FJfjdr8u0va0OYTRl6awIEoAi9eD3wX72lU3nE+mMAMuqNmQ/QVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=QAt47TRh; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=UCkn
+	WCVKZ/v28NkgB+CnV++ugotQy6Cu4r2M0VTiT24=; b=QAt47TRhN3q8wccblduw
+	n86xSls32C5RENplgQEYnzXQqDO9hEithliKipWt7cwGHaeinFKQAgNEQFGGi9i6
+	OLqbWoF+5t2O26xyZ/sdEp4xEiR+/KEYRGyjfwO9WaX4g05Of3RwD7VB6fcmbIzO
+	RatUdpQhzmWc+puyrw0i9I8q5V6/LxuUzlzkn+bJCHdTimSZQj2GxImyqXHWIKIO
+	nuxvRJd/5qxMCmuZRQbH+xaXTf9Biu5tsWVkEny9twgVK2XQ+vMcBpQP3w3Sfrw6
+	2bzu5PKkCI/huHKGkrUJRSXKgr41VcZyyFpa1EGnNmgJHImjrPonRIAMBzktLYV3
+	dQ==
+Received: (qmail 608083 invoked from network); 10 Sep 2025 14:53:25 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 10 Sep 2025 14:53:25 +0200
+X-UD-Smtp-Session: l3s3148p1@P04L6HE+PkFtKPOV
+Date: Wed, 10 Sep 2025 14:53:25 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: =?utf-8?Q?Jean-Fran=C3=A7ois?= Lessard <jefflessard3@gmail.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] device property: Add scoped fwnode child node
+ iterators
+Message-ID: <aMF0xW9rBrSK--Cl@shikoro>
+References: <20250902190443.3252-1-jefflessard3@gmail.com>
+ <aLgY1z-MvQbDBx2_@smile.fi.intel.com>
+ <aLlgpUlHp7t8P4dQ@shikoro>
+ <aLljGIcjAjQhC2uS@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250904155720.22149-1-tony.luck@intel.com> <brfqzhbipg35twgv22vnnotbv3t3grwh2dxugvtbgqduuhsvst@f7exibz7i7tk>
- <aLsHh70jI6BGHjaN@agluck-desk3> <bwu744g3qzbzylxvfgt7v4tnf2k2eosqbkg7alm6u5roa7j3bn@gmut2l5227kw>
- <aLspJ5Tpqp4qRDk2@agluck-desk3> <cf05bc8e-fc79-49e4-a90a-47e661b4ae69@oracle.com>
- <CACw3F538k+dshTs1_rxbpYoRdFyX3tLYzfaWj-_d7Lq5Dd2Jsg@mail.gmail.com>
- <aL8rIgSImDh7Nj7E@hpe.com> <aL82BsIJht3HIIS3@agluck-desk3>
-In-Reply-To: <aL82BsIJht3HIIS3@agluck-desk3>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 10 Sep 2025 14:01:23 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hihNmnnB2x9q2JobGQJirmj0Q5oHFmKfOsqesjGvD4-A@mail.gmail.com>
-X-Gm-Features: Ac12FXzERbz1mwe0hhW3ABLRaK1GOuCwiKZgFxzAjarjVxa6UFAJjjTQrUg5u8o
-Message-ID: <CAJZ5v0hihNmnnB2x9q2JobGQJirmj0Q5oHFmKfOsqesjGvD4-A@mail.gmail.com>
-Subject: Re: PATCH v3 ACPI: APEI: GHES: Don't offline huge pages just because
- BIOS asked
-To: "Luck, Tony" <tony.luck@intel.com>
-Cc: Kyle Meyer <kyle.meyer@hpe.com>, Jiaqi Yan <jiaqiyan@google.com>, jane.chu@oracle.com, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, surenb@google.com, 
-	"Anderson, Russ" <russ.anderson@hpe.com>, rppt@kernel.org, osalvador@suse.de, 
-	nao.horiguchi@gmail.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, 
-	linmiaohe@huawei.com, david@redhat.com, bp@alien8.de, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, vbabka@suse.cz, 
-	linux-acpi@vger.kernel.org, Shawn Fan <shawn.fan@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="TWXpdjkKt5uEsI6e"
+Content-Disposition: inline
+In-Reply-To: <aLljGIcjAjQhC2uS@smile.fi.intel.com>
+
+
+--TWXpdjkKt5uEsI6e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Tony,
+On Thu, Sep 04, 2025 at 12:59:52PM +0300, Andy Shevchenko wrote:
+> On Thu, Sep 04, 2025 at 11:49:25AM +0200, Wolfram Sang wrote:
+> >=20
+> > > It might be good to have an immutable branch for me from i2c core.
+> > > Wolfram, can you provide a such if no objections?
+> >=20
+> > Sure thing, I can do that. But there is still discussion on patch 1, so
+> > I will wait for an outcome there.
+>=20
+> But it seems that the discussion can be implemented in a followup?
+> I think we are not in hurry anyway, so let see if it settles down soon.
 
-On Mon, Sep 8, 2025 at 10:01=E2=80=AFPM Luck, Tony <tony.luck@intel.com> wr=
-ote:
->
-> On Mon, Sep 08, 2025 at 02:14:42PM -0500, Kyle Meyer wrote:
-> > Optionally, a 3rd setting could be added to /proc/sys/vm/enable_soft_of=
-fline:
-> >
-> > 0: Soft offline is disabled.
-> > 1: Soft offline is enabled for normal pages (skip hugepages).
-> > 2: Soft offline is enabled for normal pages and hugepages.
->
-> Seems like a solid plan.
->
-> Needs an update to Documentation/admin-guide/sysctl/vm.rst
-> to match the new functionality and describe the reason that
-> users might want to avoid taking huge pages offline.
->
-> Also this line in existing text:
->
-> - On ARM, the request to soft offline pages from GHES driver.
->
-> should read:
->
-> - On ARM and X86, the request to soft offline pages from GHES driver.
->
-> >
-> > Maybe something like...
-> >
-> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> > index fc30ca4804bf..efa535d405a8 100644
-> > --- a/mm/memory-failure.c
-> > +++ b/mm/memory-failure.c
-> > @@ -64,11 +64,17 @@
-> >  #include "internal.h"
-> >  #include "ras/ras_event.h"
-> >
-> > +enum soft_offline {
-> > +     SOFT_OFFLINE_DISABLED =3D 0,
-> > +     SOFT_OFFLINE_ENABLED_SKIP_HUGEPAGES,
-> > +     SOFT_OFFLINE_ENABLED
-> > +};
-> > +
-> >  static int sysctl_memory_failure_early_kill __read_mostly;
-> >
-> >  static int sysctl_memory_failure_recovery __read_mostly =3D 1;
-> > -static int sysctl_enable_soft_offline __read_mostly =3D 1;
-> > +static int sysctl_enable_soft_offline __read_mostly =3D SOFT_OFFLINE_S=
-KIP_HUGEPAGES;
->
-> This is changing the default behavior (which allowed offline
-> of huge pages). I'm in favor of the change. But you should call it
-> out explicitly in the commit message when you write up a patch.
->
-> >
-> >  atomic_long_t num_poisoned_pages __read_mostly =3D ATOMIC_LONG_INIT(0)=
-;
-> >
-> > @@ -150,7 +156,7 @@ static const struct ctl_table memory_failure_table[=
-] =3D {
-> >               .mode           =3D 0644,
-> >               .proc_handler   =3D proc_dointvec_minmax,
-> >               .extra1         =3D SYSCTL_ZERO,
-> > -             .extra2         =3D SYSCTL_ONE,
-> > +             .extra2         =3D SYSCTL_TWO,
-> >       }
-> >  };
-> >
-> > @@ -2799,12 +2805,20 @@ int soft_offline_page(unsigned long pfn, int fl=
-ags)
-> >               return -EIO;
-> >       }
-> >
-> > -     if (!sysctl_enable_soft_offline) {
-> > -             pr_info_once("disabled by /proc/sys/vm/enable_soft_offlin=
-e\n");
-> > +     if (sysctl_enable_soft_offline =3D=3D SOFT_OFFLINE_DISABLED) {
-> > +             pr_info("disabled by /proc/sys/vm/enable_soft_offline\n")=
-;
-> >               put_ref_page(pfn, flags);
-> >               return -EOPNOTSUPP;
-> >       }
-> >
-> > +     if (sysctl_enable_soft_offline =3D=3D SOFT_OFFLINE_ENABLED_SKIP_H=
-UGEPAGES) {
-> > +             if (folio_test_hugetlb(pfn_folio(pfn))) {
-> > +                     pr_info("disabled by /proc/sys/vm/enable_soft_off=
-line\n");
-> > +                     put_ref_page(pfn, flags);
-> > +                     return -EOPNOTSUPP;
-> > +             }
-> > +     }
-> > +
-> >       mutex_lock(&mf_mutex);
-> >
-> >       if (PageHWPoison(page)) {
-> >
-> > > > I don't know, the patch itself is fine, it's the issue that it has
-> > > > exposed that is more concerning.
+I pushed out an immutable branch now:
 
-Is the $subject patch still relevant?
+git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/immutable/s=
+coped_fwnode_child
 
-I gather from the conversation following it that it isn't.
+Please have a look if I got the tags correct. Once confirmed, I will
+merge it into i2c/for-mergewindow and Andy can pull it as well.
+
+
+--TWXpdjkKt5uEsI6e
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmjBdL0ACgkQFA3kzBSg
+KbZjcxAAg8zr8VLGHvhvSHTBfPPt0Z3gRKZ8db4YqhOu9SgnVC+wY50FBxx/qLCi
+6BXDQO6cMcfAqaWYT9/mE0M8JNMG5JakPRq+nWK4N/qlbhtUYje4GIs0df0BCRUY
+vNW5eoXN4kEi5kTt+LLZyRmzFs1RQMCqyZYTAHhs2FUBJz4V6M6qIBLc+Rl7TG/o
+5GfSRrzwLBa0mbqdldA56zBgI/KeZzQWXV4s5Hivaci6kwJtPwE6ANS1ymWGnrXq
+le7D6X582rqLRmZWHPsJNpGmUJVrKCf4MnDoqqS3AcCACMcJ4OnY+fqAaTfi71i6
+ugo+KtkYEt9fLnHkiaM750mgk6Z6pB3Ujco/b3wC/Q77MdJZaHgEvb1vvk/pwaLY
+UNDkVte50L8XXlCUAGDwc0tBpE/CxdKEg57OUEbGbNg0czCdKaF79KzMk9KOrXbv
+WJJPOpBIjR5oTEyGtctpXbMc3wm6TJiA50/bJjklQA42PSiyJpyh8QCMpyKZjHDW
+G0z+lojwab17OIK8z1nIsqq8jNG3kGSaoGv/xL8MBTXdKbS/qmBKqMnKcvWTK/LH
+qsfUOAHuRpI4IJEuKSk0zb8SvzGC1/uwf/M2D7j/+YqwYnVg3UnV7y/zn4LOkIgJ
+9Ifs/fucj/uI6SSADtYiS/WxbzUTo6GFSGE3bMvIwsyTZWTzCqg=
+=kzqx
+-----END PGP SIGNATURE-----
+
+--TWXpdjkKt5uEsI6e--
 
