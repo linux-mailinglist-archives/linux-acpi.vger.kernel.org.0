@@ -1,164 +1,178 @@
-Return-Path: <linux-acpi+bounces-16559-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16561-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9740B51230
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 11:12:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F2F9B51295
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 11:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1C204461DB
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 09:12:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 028227B4AD4
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Sep 2025 09:32:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8349C3126CF;
-	Wed, 10 Sep 2025 09:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEA3313E18;
+	Wed, 10 Sep 2025 09:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="i10WYDv7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BFD311598;
-	Wed, 10 Sep 2025 09:12:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41027312807;
+	Wed, 10 Sep 2025 09:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757495525; cv=none; b=G3DicZa920FZrEDae0Tj4Ue1ouTwSbtyk+BFWiwapc3ly6+AwAtJj+QrM0DxxtdKKlTmUMzDtnQJy8IJmK7ydB/Hw8VEkLoFK9iuY7/x6NulgcjQKa5ovc48vNX5/ADuXTgBDWMyayzMFKUObx+PHcEs3jREyWKMsWrV9r6QTNE=
+	t=1757496844; cv=none; b=bJZHxYbQKInhAMkzroEAb1Dqui4naVS39JkAK7kVcxy6WnuUU23sV+14Cb0QgMz9OQ68ILBlNFAoI+IEX7yiJns7Knsz9Q2DGi2Ypg86yEcnsEyp5EivhJNw8BsAJdbMqBQSTsfNEHwrucAOTwWZGTM6MzOZJirlYM1oexsLJR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757495525; c=relaxed/simple;
-	bh=FfWGhA/4Am6wij7lc3o9EAzKNpebFH9XKwto/6jXpdI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=txWLIWtWndf7a9oVNZQ09N99NKxx5J3ylGREHUEFrwcbmtJ7lUZEMK0DEgxNr/oD6FWm0tqBU887s0+ICn32ofKKMfP5/mNz9CYcb6yNFDvKtoeccjYCVN6NQylSGe/eaY5JqAgOOVz5ohFJTsrgb4XkoxYpacPNw/vaEvlwaM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CBAA516F8;
-	Wed, 10 Sep 2025 02:11:53 -0700 (PDT)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F28353F63F;
-	Wed, 10 Sep 2025 02:11:56 -0700 (PDT)
-Message-ID: <cefaff01-5e74-44b1-96aa-bb0c490f1ce3@arm.com>
-Date: Wed, 10 Sep 2025 10:11:55 +0100
+	s=arc-20240116; t=1757496844; c=relaxed/simple;
+	bh=Cj4I9JJrSQKu7kDeTHshNLcQrlZ2TEFNJRQmrPSoc00=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=OpbWYXQk4I1ISDdu2l6S9s4heH20QGT5OQJk6SjhZeA50hr39gmsESOUN2OTE9bH5/ccTddZnLxYJl6pn3+mteVoSDLQqNRivjtrzURlbpgnYmtON2VIAh8zK4wq38DyRnyHS49TDy0gtOp98m7Q36gpkGZe/J8bDrnz/T2ZSeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=i10WYDv7; arc=none smtp.client-ip=115.124.30.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1757496833; h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
+	bh=kUn2anvFDF2qqR807aTGWlj36Qp+tfcJksS6Q6qbn5w=;
+	b=i10WYDv7wFS8ypa8W+sVUlo1Ue1rsfI4Rk/DU3D/Mky8aUMgXRv2prz1H4uGBecdqgXlKX5TLWaJ5UKZos4KuvvoXoBAVRuv9p6K2FPMUQ3QRSRtzpvmM16EW6hA62WNQZ753c3wuDOFGHsBBhenZt/J8rgZ8rEuC+Q0JJ58vPo=
+Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0WnhgSX4_1757496830 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 10 Sep 2025 17:33:52 +0800
+From: Ruidong Tian <tianruidong@linux.alibaba.com>
+To: xueshuai@linux.alibaba.com,
+	palmer@dabbelt.com,
+	paul.walmsley@sifive.com,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: james.morse@arm.com,
+	tony.luck@intel.com,
+	cleger@rivosinc.com,
+	hchauhan@ventanamicro.com,
+	tianruidong@linux.alibaba.com
+Subject: [RFC PATCH 0/5] riscv: Handle synchronous hardware error exception
+Date: Wed, 10 Sep 2025 17:33:42 +0800
+Message-Id: <20250910093347.75822-1-tianruidong@linux.alibaba.com>
+X-Mailer: git-send-email 2.33.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/33] arm_mpam: Probe the hardware features resctrl
- supports
-To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: shameerali.kolothum.thodi@huawei.com,
- D Scott Phillips OS <scott@os.amperecomputing.com>,
- carl@os.amperecomputing.com, lcherian@marvell.com,
- bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
- baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
- Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
- dfustini@baylibre.com, amitsinght@marvell.com,
- David Hildenbrand <david@redhat.com>, Rex Nie <rex.nie@jaguarmicro.com>,
- Dave Martin <dave.martin@arm.com>, Koba Ko <kobak@nvidia.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, fenghuay@nvidia.com,
- baisheng.gao@unisoc.com, Jonathan Cameron <jonathan.cameron@huawei.com>,
- Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
- Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>
-References: <20250822153048.2287-1-james.morse@arm.com>
- <20250822153048.2287-18-james.morse@arm.com>
- <17f4507c-c244-42ee-bea0-57ed22e0a05f@arm.com>
- <9c65c518-b4a2-4ac0-bf5d-9bdb8741dcf6@arm.com>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <9c65c518-b4a2-4ac0-bf5d-9bdb8741dcf6@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi James,
+Hi all,
+This patch series introduces support for handling synchronous hardware errors 
+on RISC-V, laying the groundwork for more robust kernel-mode error recovery.
 
-On 9/9/25 17:57, James Morse wrote:
-> Hi Ben,
-> 
-> On 28/08/2025 14:44, Ben Horgan wrote:
->> On 8/22/25 16:29, James Morse wrote:
->>> Expand the probing support with the control and monitor types
->>> we can use with resctrl.
-> 
->>> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
->>> index 012e09e80300..290a04f8654f 100644
->>> --- a/drivers/resctrl/mpam_devices.c
->>> +++ b/drivers/resctrl/mpam_devices.c
->>> @@ -102,7 +102,7 @@ static LLIST_HEAD(mpam_garbage);
->>>  
->>>  static u32 __mpam_read_reg(struct mpam_msc *msc, u16 reg)
->>>  {
->>> -	WARN_ON_ONCE(reg > msc->mapped_hwpage_sz);
->>> +	WARN_ON_ONCE(reg + sizeof(u32) > msc->mapped_hwpage_sz);
-> 
->> Update in the patch that introduced this line.
-> 
-> Yeah - this got ripped out.
-> Now that the size is in the ACPI table, I should never need to debug it being wrong!
-> (and the resulting translation fault will be enough to say something is wrong)
-> 
-> 
->>> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
->>> index c6f087f9fa7d..9f6cd4a68cce 100644
->>> --- a/drivers/resctrl/mpam_internal.h
->>> +++ b/drivers/resctrl/mpam_internal.h
->>> @@ -136,6 +136,56 @@ static inline void mpam_mon_sel_lock_held(struct mpam_msc *msc)
-> 
->>> +/* Bits for mpam_features_t */
->>> +enum mpam_device_features {
->>> +	mpam_feat_ccap_part = 0,
->>> +	mpam_feat_cpor_part,
->>> +	mpam_feat_mbw_part,
->>> +	mpam_feat_mbw_min,
->>> +	mpam_feat_mbw_max,
->>> +	mpam_feat_mbw_prop,
->>> +	mpam_feat_msmon,
->>> +	mpam_feat_msmon_csu,
->>> +	mpam_feat_msmon_csu_capture,
->>> +	mpam_feat_msmon_csu_hw_nrdy,
->>> +	mpam_feat_msmon_mbwu,
->>> +	mpam_feat_msmon_mbwu_capture,
->>> +	mpam_feat_msmon_mbwu_rwbw,
->>> +	mpam_feat_msmon_mbwu_hw_nrdy,
->>> +	mpam_feat_msmon_capt,
->>> +	MPAM_FEATURE_LAST,
-> 
->> This isn't all the features or just the features supported by resctrl.
->> Just add them all in this patch?
-> 
-> I'm having trouble parsing this ...
-> 
-> I needed somewhere to split the features up, as there are rather a lot. Those that resctrl
-> supports seemed like the logical spot.
+1. Background
+Hardware error reporting mechanisms typically fall into two categories: 
+asynchronous and synchronous.
 
-I don't think resctrl doesn't support ccap, mpam_feat_ccap_part.
-Possibly the point is that this is split into more detailed features
-later but that's not clear from this patch or commit message.
+- Asynchronous errors (e.g., memory scrubbing errors) repoted by a asynchronous
+exceptions or a interrupt, are usually handled by GHES subsystems. For instance,
+ARM uses SDEI, and a similar SSE specification is being proposed for RISC-V.
+- Synchronous errors (e.g., reading poisoned data) cause the processor core to 
+take a precise exception. This is known as a Synchronous External Abort (SEA)
+on ARM, a Machine Check Exception (MCE) on x86, and is designated as trap with
+mcause 19 on RISC-V.
 
-> 
-> 
->>> +};
->>> +static_assert(BITS_PER_TYPE(mpam_features_t) >= MPAM_FEATURE_LAST);
->>> +#define MPAM_ALL_FEATURES      ((1 << MPAM_FEATURE_LAST) - 1)
-> 
->> Unused?
-> 
-> Fixed, thanks!
-> 
-> 
-> Thanks,
-> 
-> James
+Discussions within the RVI PRS TG have already led to proposals[0] to UEFI for 
+standardizing two notification methods, SSE and Hardware Error Exception, 
+on RISC-V. 
+This series focuses on implementing Hardware Error Exception notification to
+handle synchronous errors. Himanshu Chauhan has already started working on SSE[1].
 
-Thanks,
+2. Motivation
+While a synchronous hardware errors occurring in kernel context (e.g., during 
+get_user, put_user, CoW, etc.). The kernel requires a fixup mechanism (via
+extable) to recover from such errors and prevent a system panic. However, the 
+APEI/GHES subsystem, being asynchronous, cannot directly leverage the synchronous
+extable fixup path.
 
-Ben
+By handling the synchronous exception directly, we enable the use of this fixup
+mechanism, allowing the kernel to gracefully recover from hardware errors
+encountered during kernel execution. This brings RISC-V's error handling
+capabilities closer to the robustness found on ARM[2] and x86[3].
+
+3. What This Patch Series Does
+This initial series lays the foundational infrastructure. It primarily:
+- Introduces a new exception handler for synchronous hardware errors (mcause=19).
+- Establishes the core exception path, which is a prerequisite for kernel
+  context error recovery.
+
+Please note that this version does not yet implement the full kernel fixup logic
+for recovery. That functionality is planned for the next formal version.
+
+Some adaptations for GHES are included, based on the work from Himanshu Chauhan[1]
+
+4. Future Plans
+- Implement full kernel fixup support to handle and recover from errors in 
+  some kernel context[2].
+- Add support for handling "double trap" scenarios.
+
+5. Testing Methodology
+
+test program: ras-tools: https://kernel.googlesource.com/pub/scm/linux/kernel/git/aegl/ras-tools/
+qemu: https://github.com/winterddd/qemu
+offcial opensbi and edk2:
+
+- Run qemu:
+qemu-system-riscv64 -M virt,pflash0=pflash0,pflash1=pflash1,acpi=on,aia=aplic-imsic 
+ -cpu max -m 64G -smp 64 -device virtio-gpu-pci -full-screen -device qemu-xhci 
+ -device usb-kbd -device virtio-rng-pci 
+ -blockdev node-name=pflash0,driver=file,read-only=on,filename=RISCV_VIRT_CODE.fd 
+ -blockdev node-name=pflash1,driver=file,filename=RISCV_VIRT_VARS.fd 
+ -bios fw_dynamic.bin -device virtio-net-device,netdev=net0 
+ -netdev user,id=net0,hostfwd=tcp::2223-:22 
+ -kernel Image -initrd rootfs
+ -append "rdinit=/sbin/init earlycon verbose debug strict_devmem=0 nokaslr" 
+ -monitor telnet:127.0.0.1:5557,server,nowait -nographic
+
+- Run ras-tools:
+./einj_mem_uc -j -k single &
+$ 0: single   vaddr = 0x7fff86ff4400 paddr = 107d11b400
+
+- Inject poison
+telnet localhost 5557
+poison_enable on
+poison_add 0x107d11b400
+
+- Read poison
+echo trigger > ./trigger_start
+$ triggering ...
+$ signal 7 code 3 addr 0x7fff86ff4400
+
+[0]: https://lists.riscv.org/g/tech-prs/topic/risc_v_ras_related_ecrs/113685653 
+[1]: https://patchew.org/linux/20250227123628.2931490-1-hchauhan@ventanamicro.com/
+[2]: https://lore.kernel.org/lkml/20241209024257.3618492-1-tongtiangen@huawei.com/
+[3]: https://github.com/torvalds/linux/blob/9dd1835ecda5b96ac88c166f4a87386f3e727bd9/arch/x86/kernel/cpu/mce/core.c#L1514
+
+Himanshu Chauhan (2):
+  riscv: Define ioremap_cache for RISC-V
+  riscv: Define arch_apei_get_mem_attribute for RISC-V
+
+Ruidong Tian (3):
+  acpi: Introduce SSE and HEE in HEST notification types
+  riscv: Introduce HEST HEE notification handlers for APEI
+  riscv: Add Hardware Error Exception trap handler
+
+ arch/riscv/Kconfig              |  1 +
+ arch/riscv/include/asm/acpi.h   | 22 +++++++++++++
+ arch/riscv/include/asm/fixmap.h |  6 ++++
+ arch/riscv/include/asm/io.h     |  3 ++
+ arch/riscv/kernel/acpi.c        | 55 +++++++++++++++++++++++++++++++
+ arch/riscv/kernel/entry.S       |  4 +++
+ arch/riscv/kernel/traps.c       | 19 +++++++++++
+ drivers/acpi/apei/Kconfig       | 12 +++++++
+ drivers/acpi/apei/ghes.c        | 58 +++++++++++++++++++++++++++++++++
+ include/acpi/actbl1.h           |  4 ++-
+ include/acpi/ghes.h             |  6 ++++
+ 11 files changed, 189 insertions(+), 1 deletion(-)
+
+-- 
+2.43.7
 
 
