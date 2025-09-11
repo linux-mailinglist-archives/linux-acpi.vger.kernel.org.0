@@ -1,170 +1,199 @@
-Return-Path: <linux-acpi+bounces-16653-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16654-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A01CFB52A63
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 09:46:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40135B52C20
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 10:46:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52976171E40
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 07:46:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58786A04925
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 08:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE18C285C82;
-	Thu, 11 Sep 2025 07:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96682DF12C;
+	Thu, 11 Sep 2025 08:46:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BLp/+df+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5232B672;
-	Thu, 11 Sep 2025 07:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2122822578A
+	for <linux-acpi@vger.kernel.org>; Thu, 11 Sep 2025 08:46:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757576761; cv=none; b=SUyk5nEDKyvElT8BVCSWjEBCn7V8CCputAi4qYyBcZB0fbMwxMuFnzhgcXggsLJsOcUgDZ9cHRosIWqGfdP0T9vLkJ0kvPbuXo0yUAsCgbkOWCHlSV8iqXt+jvrO+YDy+Z1kS4Mw3ELxk1Jpfjq4CJl0JAzcfJLSYWWdagLTuvo=
+	t=1757580378; cv=none; b=JB+s7hERwX+jXaiYI5j/PAWFibXb7FBXbczvxTavQibQbXOV4IBLDKq7UClAU1HUIKLlaQquf0U5ZhlgLy6s+GYM6HL4auuPsGfxtGEob+EuxzAnycdqnYr4UfQcYN/cm+aenBxtxJvQ47Gh+LBrC3dd9sBfLaiOKyrh2omSICY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757576761; c=relaxed/simple;
-	bh=vkIGQbHkugE0tGswCHkXzir8pJjgyHbVzjLHSc/Y/U8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C6IiXEZtpSs82/9yJ8jVex6xVii9S16JaRmA2MtFnR60p2J/rJ30tDtJEUl/sRk3WyFrw7C8VzFiwIUYmYKCmCTX97FgxtGpMRZomVxbVjHaJqOMV3tVDGyN9eUGBwJTzEOzyVkqUzBMmcojiHrTp5+ux/8mdCjTmmIth4fnCHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 534404b48ee311f0b29709d653e92f7d-20250911
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:c5962ed0-bfaf-437b-91dc-b5969a4463ea,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:c29d9a1ff7d9b3695e5edbfa991638e4,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|817|850,TC:nil,Content:-
-	10|-8|-5|50,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,CO
-	L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 1,FCT|NGT
-X-CID-BAS: 1,FCT|NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 534404b48ee311f0b29709d653e92f7d-20250911
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 149988089; Thu, 11 Sep 2025 15:45:45 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 2870BE009008;
-	Thu, 11 Sep 2025 15:45:45 +0800 (CST)
-X-ns-mid: postfix-68C27E29-117221580
-Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 29335E009007;
-	Thu, 11 Sep 2025 15:45:44 +0800 (CST)
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-To: hansg@kernel.org
-Cc: lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	mario.limonciello@amd.com,
-	rafael@kernel.org,
-	stable@vger.kernel.org,
-	zhangzihuan@kylinos.cn
-Subject: Re: [PATCH v1] ACPI: video: Fix missing backlight node creation on
-Date: Thu, 11 Sep 2025 15:45:43 +0800
-Message-Id: <20250911074543.106620-1-zhangzihuan@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <de4b5ec6-1e42-44b8-b5d3-5a452d7401ef@kernel.org>
-References: <de4b5ec6-1e42-44b8-b5d3-5a452d7401ef@kernel.org>
+	s=arc-20240116; t=1757580378; c=relaxed/simple;
+	bh=K1OfSduqwQRBsTKKg1BvFgKfn1PGIxJFKzG2KTEy5K8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JX6oT2oHY9CfDN6JouKK1ZNGFGS+JYKIPCKHNm6Fg7ydGc2ZjMBE3cAScL3gyO+/x9SxeOiL5VWxV9Zc37w6zvSN2XYpmr7BHfO71SOXgjLWVKq0xnkTstbJzflnKoygJAEA2pb2Ed7MvksGNtyB2UDRILlaPrIFAd0nSF+4RcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BLp/+df+; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757580376;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ssCjsQRosnIsyQi6TRiWy/gOOQy1TqZDzUkPJYAbPso=;
+	b=BLp/+df+XMNhpL1kC6Dd5wlnl6OXGgPiJkbz1vZBu1XJt+YxuQlpr+ILMI676gKoPRK6cd
+	AS5tG/UdLp4pgHbRZkEyWmSeRpg0AWJ3iozkWQcSDfieuu1uvus2tY2l5R9Q9OeIa+hcYG
+	ugJB5R+qoK0QOQU0qj4n2fIeWfpEtuM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-59-BwWIgYsuOCO50Z_d7S_QfQ-1; Thu, 11 Sep 2025 04:46:14 -0400
+X-MC-Unique: BwWIgYsuOCO50Z_d7S_QfQ-1
+X-Mimecast-MFC-AGG-ID: BwWIgYsuOCO50Z_d7S_QfQ_1757580373
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45e05ff0b36so956225e9.0
+        for <linux-acpi@vger.kernel.org>; Thu, 11 Sep 2025 01:46:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757580373; x=1758185173;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ssCjsQRosnIsyQi6TRiWy/gOOQy1TqZDzUkPJYAbPso=;
+        b=PzSgxHrQF/cyHpZQp1sOi0y0Uh8JS4WjUY2zz+wz0tDsB5aXXvVG1Zv3+bZRkH74cA
+         vCBr7bvkf99J/sgdp4Ym/SdukeRqDceiLg+xBzP4x6OaJL7P+sA7c4xUaRQeaWh8wqQE
+         QvlsSpnIvkCHDcVeF1QN08O+oGOR7TjIvVIMGEEcU2kohKsLaQXWhfjfgvvJfq+vSoTr
+         46hwcuzwtJyCMyq5HY//KmltmSRqGjLh1Emajguiut03/cdH+W0tscB18ZYue4bWzYCf
+         HO08ogNtUCFyLlVVmHlO66+1LjxTEQJdpyvOCivg7Z1WkhAUtP1I+muC6LPsqhEovY48
+         zvVg==
+X-Forwarded-Encrypted: i=1; AJvYcCW7gmreZGhxxS91Ild60/ClH15JaEydZ4UKtlKatcek5egm3qlEId6QtqUd9HhOVVMs2MyXJUqCvD+f@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywujf00KkckFbgfGYRjf2Df3aaaQGKkkR2pD2WIN7aO7e9oeMKf
+	hd1Rfm/pTwjCVZD7q5cIV67x4mBhR+JcZzv88EkogoXmcRO1NxA1i3pk8BIubFomh2zLoOReKGv
+	PxRkRuT6B9/667+MRIvI5B0+qxxtJmfdgCpJQN4KFIzP/5kb78tMemTACLlOb7/Q=
+X-Gm-Gg: ASbGncvyNviD98yY3t04EpIDieK1k1QkNh0A12l30QyhaGLnwM9zaYtcvfSHwT1SfhB
+	vbKn6RlwLq7C32wFy3vMQrgjEMcBheF0o1fVEyojhgMai+WaET5/aJFMqiCqNzPZ/NUK5ag5/4i
+	0n1NTwywGULQ0pOJbU3HJJ0pdSAMjiqMCge8TCm+HtTrbHHNjmwC+kLcJ5T8dimQYMJWZT2nKct
+	d7KjcqOVKLzWfgaPRXSInghUvgbekG91yg5UEInuUSKdz6tzBsInMtQa0WpFCxFDuZr4YPKuShZ
+	iYlBJw2rU/4Apyv5RPiZyTCGxzifPwusUsSKDDbB1OSc42NSL2yETh0Vc336pITnHH4utYctcwG
+	B787djvUu39c+GdCX0KsIc2mX5erSFEyeALC+eGAKVOblTYTKbSuMaRR5N9cHgyKY6BU=
+X-Received: by 2002:a05:600c:46c8:b0:458:b8b0:6338 with SMTP id 5b1f17b1804b1-45dfd5c473bmr26815915e9.6.1757580373269;
+        Thu, 11 Sep 2025 01:46:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFEKWKwxqu2qOEyBEgAUAxpXzm9G4HcETc4FviAdPqhEnNC1NKGJCc3NQuXVk0LzZ/0UgZIzQ==
+X-Received: by 2002:a05:600c:46c8:b0:458:b8b0:6338 with SMTP id 5b1f17b1804b1-45dfd5c473bmr26815495e9.6.1757580372845;
+        Thu, 11 Sep 2025 01:46:12 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f42:b000:db8b:7655:f60f:812b? (p200300d82f42b000db8b7655f60f812b.dip0.t-ipconnect.de. [2003:d8:2f42:b000:db8b:7655:f60f:812b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e760786ceasm1624111f8f.16.2025.09.11.01.46.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Sep 2025 01:46:12 -0700 (PDT)
+Message-ID: <749511a8-7c57-4f97-9e49-8ebe8befe9aa@redhat.com>
+Date: Thu, 11 Sep 2025 10:46:10 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/memory-failure: Disable soft offline for HugeTLB pages
+ by default
+To: Kyle Meyer <kyle.meyer@hpe.com>, akpm@linux-foundation.org,
+ corbet@lwn.net, linmiaohe@huawei.com, shuah@kernel.org, tony.luck@intel.com
+Cc: Liam.Howlett@oracle.com, bp@alien8.de, hannes@cmpxchg.org, jack@suse.cz,
+ jane.chu@oracle.com, jiaqiyan@google.com, joel.granados@kernel.org,
+ laoar.shao@gmail.com, lorenzo.stoakes@oracle.com, mclapinski@google.com,
+ mhocko@suse.com, nao.horiguchi@gmail.com, osalvador@suse.de,
+ rafael.j.wysocki@intel.com, rppt@kernel.org, russ.anderson@hpe.com,
+ shawn.fan@intel.com, surenb@google.com, vbabka@suse.cz,
+ linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+References: <aMGkAI3zKlVsO0S2@hpe.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aMGkAI3zKlVsO0S2@hpe.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
->  Oh wait, now I understand the trick is that you now return
->  acpi_backlight_video without setting *auto_detect =3D true.
-> =20
->  Which in turn causes this code in drivers/acpi/acpi_video.c:
-> =20
->          /*
->           * If backlight-type auto-detection is used then a native back=
-light may
->           * show up later and this may change the result from video to =
-native.
->           * Therefor normally the userspace visible /sys/class/backligh=
-t device
->           * gets registered separately by the GPU driver calling
->           * acpi_video_register_backlight() when an internal panel is d=
-etected.
->           * Register the backlight now when not using auto-detection, s=
-o that
->           * when the kernel cmdline or DMI-quirks are used the backligh=
-t will
->           * get registered even if acpi_video_register_backlight() is n=
-ot called.
->           */
->          acpi_video_run_bcl_for_osi(video);
->          if (__acpi_video_get_backlight_type(false, &auto_detect) =3D=3D=
- acpi_backlight_video &&
->              !auto_detect)
->                  acpi_video_bus_register_backlight(video);
-> =20
->  To immediately register the backlight rather then waiting for the nati=
-ve
->  GPU driver to call acpi_video_register_backlight() after the native GP=
-U
->  driver has completed probing for native GPU backlight control which is
->  often preferred.
-> =20
->  So as you say the issue is that you have no native GPU driver calling
->  acpi_video_register_backlight().
+On 10.09.25 18:15, Kyle Meyer wrote:
+> Soft offlining a HugeTLB page reduces the available HugeTLB page pool.
+> Since HugeTLB pages are preallocated, reducing the available HugeTLB
+> page pool can cause allocation failures.
+> 
+> /proc/sys/vm/enable_soft_offline provides a sysctl interface to
+> disable/enable soft offline:
+> 
+> 0 - Soft offline is disabled.
+> 1 - Soft offline is enabled.
+> 
+> The current sysctl interface does not distinguish between HugeTLB pages
+> and other page types.
+> 
+> Disable soft offline for HugeTLB pages by default (1) and extend the
+> sysctl interface to preserve existing behavior (2):
+> 
+> 0 - Soft offline is disabled.
+> 1 - Soft offline is enabled (excluding HugeTLB pages).
+> 2 - Soft offline is enabled (including HugeTLB pages).
+> 
+> Update documentation for the sysctl interface, reference the sysctl
+> interface in the sysfs ABI documentation, and update HugeTLB soft
+> offline selftests.
 
-I'm very happy that you got it.
+I'm sure you spotted that the documentation for 
+"/sys/devices/system/memory/soft_offline_pag" resides under "testing".
 
-> First of all I assume that there is some sort of builtin GPU on these
-> Lenovo and Inspur machines with Zhaoxin CPUs. Even if the GPU driver
-> is not in the mainline kernel then I assume there is some out of tree
-> driver. Can that driver not call acpi_video_register_backlight() ?
+If your read about MADV_SOFT_OFFLINE in the man page it clearly says:
 
-We are currently working with Zhaoxin on this matter, and we expect to ha=
-ve some results in a few days.
-I will keep you updated once we have progress.
+"This feature is intended for testing of memory error-handling code; it 
+is available  only if the kernel was configured with CONFIG_MEMORY_FAILURE."
 
-> If this is not possible then we will need to add some quirk based
-> on CPUID matching e.g. something like this:
->=20
-> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-> index d507d5e08435..24dd79ec1b72 100644
-> --- a/drivers/acpi/video_detect.c
-> +++ b/drivers/acpi/video_detect.c
-> @@ -1011,6 +1011,18 @@ enum acpi_backlight_type __acpi_video_get_backli=
-ght_type(bool native, bool *auto
->  	if (acpi_backlight_dmi !=3D acpi_backlight_undef)
->  		return acpi_backlight_dmi;
-> =20
-> +	/*
-> +	 * ATM Zhaoxin CPU systems have no native GPU driver, instead ACPI vi=
-deo
-> +	 * should be used to control the backlight. The lack of a GPU driver
-> +	 * means that acpi_video_register_backlight() will never get called
-> +	 * causing things to not work.
-> +	 * This special case for these systems returns acpi_backlight_video
-> +	 * without setting auto_detect =3D true, causing acpi_video.c to
-> +	 * immediately register the backlight, working around this issue.
-> +	 */
-> +	if ((video_caps & ACPI_VIDEO_BACKLIGHT) && cpu_is_zhaoxin())
-> +		return acpi_backlight_video;
-> +
->  	if (auto_detect)
->  		*auto_detect =3D true;
-> =20
->=20
-> Note you will need to provide a cpu_is_zhaoxin() helper for this.
+So I'm sorry to say: I miss why we should add all this complexity to 
+make a feature used for testing soft-offlining work differently for 
+hugetlb folios -- with a testing interface.
 
-Thanks a lot for your patch and for looking into this issue.
+-- 
+Cheers
 
-At the moment, we are still confirming with Zhaoxin whether this behavior=
- is consistent across all their platforms,
-so we are not sure if the special handling should always apply.
-
-Also, on kernel 5.4 these machines seem to work fine without requiring a =
-native GPU driver, while on 6.6+ the backlight node is missing.=20
-Could you please clarify what design change or intention caused this beha=
-vioral difference between 5.4 and newer kernels?
+David / dhildenb
 
 
