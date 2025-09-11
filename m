@@ -1,55 +1,81 @@
-Return-Path: <linux-acpi+bounces-16689-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16690-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E9A9B53953
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 18:32:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4283B539D0
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 19:01:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFD293A2593
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 16:32:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72359161856
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 17:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF27E322536;
-	Thu, 11 Sep 2025 16:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC21631AF0E;
+	Thu, 11 Sep 2025 17:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="HhPoqF0l"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Sp/YRrM/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370DB329F05;
-	Thu, 11 Sep 2025 16:31:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C161E501C
+	for <linux-acpi@vger.kernel.org>; Thu, 11 Sep 2025 17:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757608317; cv=none; b=CLQyVef4BgT7zCwbI/n/aQv2Y8mLbE8PtZVKCPvQjZZ1AXhzgziHJBqpppCDA1fUsVkSD1DdlQM4w1hBiWIHXhuGoDyiGnYd5Qy0ZiY6SA3P7y3EeN2LJ6Yqi/CAsCL568e9lE9rev2FUtMWnaAn7EDiXXAPqZHHiCgLe9CXb5M=
+	t=1757610083; cv=none; b=n/LvHylKoyvhFlTRmhtMR6n3MhKEY+vP7jwn6mBl2OBn2sfi2E/2azRYo1DynG4SMZY++GaOy1vhNxt3IJZ53HICy8y/ZDd3k5EMIL7kPfSMS14TFvCW5DdgXpCu33r9LGUxLKbwSM/v3eMwh0TwSmiVEeP/+ntfiN7aiuqC1G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757608317; c=relaxed/simple;
-	bh=kJMKOcM64Wbxh2cL0OAks+/FwxmS44I1i+3WVc+xfo8=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=Gji241pMg65iz5GYnX/mNogWn2pNZc/zK3JxK1DSi5R+/o47ADI1nhiVdos9HoAfAc435ecQTpKNikYm2bW5hjuGMxTP/smBTm4rrtJVq2j4jkKihIwp2x8A7bTlLU4N/Nhlokic6zxpitqhXURIXuDrtmnhh7ftmgXqe34m6gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=HhPoqF0l; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1757608267; x=1758213067; i=markus.elfring@web.de;
-	bh=Dz8R7dtejEqkQKX6bHmLWbcVWZv/E+BPhgwcdwOzGTI=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=HhPoqF0lk4fiVCKrEWCaNv3U0y4e647ts5mDYudJJ2IBzuFVWF7N7nHxTXxYBayU
-	 xRsu2fuA2o9CGMhw7WzsujmrE6BiVDq4mKXtKuhcioHsxrgOanjaNhh/Mr5DCL0sn
-	 07Dfye62XU7tYFFu69gBdt7yec6EbFF1eDwwb+BtWALHm14tlT9YsQ7IsKNfld6PT
-	 EFhe0d7ji8XAv1a8L2SldO6RfsAch3NIEra71gUx28TNHuT4ZMHv1G+uiOmXUun2d
-	 hgO5Z2Dms1mnFuLA9fKxPsimu+DkV6mfAk+kh/tGM7HclHvhCGSls4FlGN2B/XnIe
-	 Agvyh4cH7xqqzL6iNQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.92.247]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MUU68-1unqEU3geW-00IHKV; Thu, 11
- Sep 2025 18:31:07 +0200
-Message-ID: <5a80cb91-6095-4f44-b576-53badc4575f5@web.de>
-Date: Thu, 11 Sep 2025 18:30:57 +0200
+	s=arc-20240116; t=1757610083; c=relaxed/simple;
+	bh=gVSxVqSCDq0YtaIw+KB6d437wvZCu0xUFkD4L8LCKrs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y1WKjjuro6p4S8cY2p0bc4cd1MR6xxnTWiQ40/bvBdiidtZMP+N9MdYT6dRHqytXYzwm70BT8+njpaG7IykK+O4gwLeZLaF21GybKJKSNzgPF7GG/rPwkpxzROI97uiZtGZRsjz6i8l6hzTcg/F8x5GCQi3w2grFF44bt8K+4yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Sp/YRrM/; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45deccb2c1eso7565525e9.1
+        for <linux-acpi@vger.kernel.org>; Thu, 11 Sep 2025 10:01:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1757610079; x=1758214879; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=01u7NqNId6dlrMx1BxA4hAG06Z7Pre1ggKG23uhNj48=;
+        b=Sp/YRrM/1UqmztQMCy4R8n/G9j8xjjuq2T9dEYKapzNqjZ/Y5xs1DECUKISc9Dfg6x
+         qxJNNM+y8GMk9ckuPehq3jN6+GueOrzwNQplmI53OwSJ72uaJ9EorCN5shH5OW9szzuj
+         w5ToWDxxrVaDiN7uwWoZ0M3+ohUpXbEE2Ha4ys5H7D/RVpVRjfZjTJ+LO3/0a3qvsOvx
+         x/EhiqAEO8NHp3M7eaxOSOdv0e0a59niDJYFTc0mY8G8TSCxezbk+NiYHdDu0dnMim0J
+         lzJbvYy/oJ5tjsSXZ6rQerZ5kdqsjNJWWMFpPZ1ljO1fU7ViVxOcLjo5tlKo5LkZJauT
+         AfKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757610079; x=1758214879;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=01u7NqNId6dlrMx1BxA4hAG06Z7Pre1ggKG23uhNj48=;
+        b=LzWxE+Lx3agXSk/OAHF0W2fico/9WxuDFarsSNIel6vXZ4UV5/9bgTdMpDWFhRVHDJ
+         3UB7j5tZbtWU27Hto5tmrVyLhfTPcvMhnHXXT9LkMwyhdBFvHbNv7u7UF4a715q1Jqda
+         Z5eIZL3Efl45SZG70Wl8s0Ib6MLUaURlUQ2mHsKA6KR22B+6BUicq9wqleThdcLRZuim
+         FsQZTM6b4QaKzrroOMj83t+95nxc5CnQnDx5ElbglkS0HyVL8MKzc7ekq4CBvaqX/nH9
+         LgjeuTf6F/C0MfhRsRtdfYjz7urLdBYRlLLamLDpc4eFjMtSgZCPjYXk8ERuNAZvfTsq
+         1aSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX4zvKwYAx2ql4LLCAhYGtJ6EwQwWpMZA0oZxv5/2sT7/ZYMWoQXw0DYH/G1zMdZFPxy4NUdJDT2JG9@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0Q0YOryQ/zsi368cMPCPZOAYQdzDNoLtgF0UjGxe8eeRNHOlA
+	eymmLWgmhikXrCQy/9yCWM81lNiYOx+fhOGdrTvCVRSs1R+SeBE0pjCQq9i7uTJ112Q=
+X-Gm-Gg: ASbGnct0bjM3SShp5Xk7l2vgM5qcaxbVKZM0Su/qEpvRoiLIHyYS9DUm67tfSt3LNAU
+	A32MyI1+DgXzxFjxG7bmJVbM1vyRvs3HFrwAoIewsJFegWvdx2IM6zakzWz6y1UQQt4QjIp/YXM
+	/z+qdR7iMRFB/6WoxguiM+QNrfYCHBgdoOPSz0okG1vlnl1841ggcSFU+mYytHKkfAth0zd00du
+	G2s/gWfkqTFgkVxZ737XRZ2lXBnDcp/qaXmZIwi8khc3Bg9RP99akvkN0JQedrA3LRdZe7T+d5F
+	oMudbNfR6HYdBVJKaLxbnsuXZZ/y72i0HFV4Vz14g01wfWXEzATYbmw/QC5qGYo5M4xlcxvweL7
+	tJpH2Jy/7vnOnK/nqGuvPdM/8V62nfDvWZJhS
+X-Google-Smtp-Source: AGHT+IH/Pk5uPTAhHY4LoaceFxcx/IkHYdnyisfdHIQ6V8prgqn4yWMmzIvuKttH/oGmg8vryV4/bA==
+X-Received: by 2002:a05:600c:4685:b0:458:a559:a693 with SMTP id 5b1f17b1804b1-45f211f88abmr1670575e9.18.1757610078478;
+        Thu, 11 Sep 2025 10:01:18 -0700 (PDT)
+Received: from [192.168.0.20] ([212.21.159.60])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e0156c64bsm33140945e9.2.2025.09.11.10.01.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Sep 2025 10:01:18 -0700 (PDT)
+Message-ID: <64314c7a-5212-4bf0-8181-8bbada0e81b5@suse.com>
+Date: Thu, 11 Sep 2025 20:01:17 +0300
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -57,129 +83,241 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Amit Singh Tomar <amitsinght@marvell.com>,
- Baisheng Gao <baisheng.gao@unisoc.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Ben Horgan
- <ben.horgan@arm.com>, Carl Worth <carl@os.amperecomputing.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- D Scott Phillips <scott@os.amperecomputing.com>,
- Danilo Krummrich <dakr@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
- David Hildenbrand <david@redhat.com>, Drew Fustini <dfustini@baylibre.com>,
- Fenghua Yu <fenghuay@nvidia.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Hanjun Guo <guohanjun@huawei.com>, Jamie Iles <quic_jiles@quicinc.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, Koba Ko <kobak@nvidia.com>,
- Len Brown <lenb@kernel.org>, Linu Cherian <lcherian@marvell.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Peter Newman <peternewman@google.com>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Rob Herring <robh@kernel.org>,
- Rohit Mathew <rohit.mathew@arm.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Shaopeng Tan
- <tan.shaopeng@fujitsu.com>, Wang ShaoBo <bobo.shaobowang@huawei.com>,
- Will Deacon <will@kernel.org>, Xin Hao <xhao@linux.alibaba.com>
-References: <20250910204309.20751-9-james.morse@arm.com>
-Subject: Re: [PATCH v2 08/29] arm_mpam: Add the class and component structures
- for firmware described ris
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250910204309.20751-9-james.morse@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:aXo+jzHYTT7qDJctek+y3Ta/pop7BCbIYZ9toJqeO0SvaQ3Lhvh
- pY+hU0t3B7Gzx/G43YaOOz0zHj0IFIK9AGktiapQhGBXUsyIY6WN+AEPmOE8t2kxHZj1w0M
- o6N9KwDHUFG2YSe8IRHOl2mOey/UNXt6xsXMeSf9RhapdzTjSrdJhl7QiYVKU+5AhXzgCNm
- 9Xc/9dE3S/Ui2/SS7Qsow==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:b4fPkTA0T3M=;JLLaSxtMBxjJufgrQb08zEQUw6g
- MZYqxXtbJ1Cz1TvLYWF7TYnkUp0sCb6inwB6b3ADa3HS31wyTVQWy8xfJ2NxkM9HbWSomJq/p
- r7T4F6g33s/SkDxNAbuNFJii08CZJ/yatLQeuF/Vzp3BAqIneIVhWbO2VKDgcrYZovm1C1fIj
- CH18FF6deY0UnmCNuf6toUKW3prumkEk/pgdtejC1clOyuhlJ1bddL2K8Bn26fIPQRsdGUYMM
- 6qc1tBNdYcuMtnUaqNyhox7H7MgEWwDEALNe588fW7fTdYdAYS4EZ7V7II7k14Yy+FjDBFx67
- 2Zf0dPzBWIQrVJTwUYnV7n00Qqle/ZoD+MhRZTd+65PYLof78X9840ImRH2EhSotmh1JB1k7R
- 4E766/suoQ+3j7mY5fiPTXpmiUkIJVAZmIGceDY/RnimEn/26lp5XG4boFHQEeXccstx5M6TF
- GchsC7+GnU79lFVuQml7Qa6gwCz++sOnJk2v98RRzMmWu6eB+eOrBeDtHEf41s8u4kPGIUAB+
- 69wMVoG4NSIqmp8Okbl4LmvLT2M8oPLeQhBgJxx3TBGY/Z7P3/qj1a2g7F3gob4X2vO4VMszR
- 4FpxqAYRqkSBvJ7pmt+kNI3O7LvC4m9tZo2X2VLTYhiDMtZIgMR5z0Wrhotyffi3XaW0KRvtO
- oQNjhincR9s6DE7osoRQycdMy1mtgiY5JN9I0g8J4bo+b1jG5HdjAFgaGdC2Hr2+ltlZIDHJt
- rQYaUpDyviTJCtqQ4eVaAl9X/3EQRxigpQu6RFN7RfIFN27i3BXnSteCiyuMjyqFaar+qAbrI
- 17RXyL1Rc5lLG1ppR6DM1XfC2Rgxd2bbfa7+3FWNdgYLEEkMWBFdZk6xmZ0+n5UF/iVqKI2Sp
- Jv1+toRz6mMTq8GmmLnUUAFQkus0SeAErEpm8cXPTR35gOnSdJzwrjBQ2iPxht2gXSLTyD4z0
- MKrXdLmmeYjhf7I9P7KkInGGklAQL6dbWLR0Ml7NNVjoYUxcXx2vzEZegI18WhSVxwNn+oI0U
- yT20Pqok0Xfs1tLBzLWeXUe7diw0vVcDRX+KGY9OX3YHDXNkG8s77FaieIa3VzfEVRIeIkoE7
- CrFNMqufP5ugpIo/Avpw5Y4RvTFgzpsjrXyw1vfTLZEkGIqjNiD9o8rPfZocOTz+eFe9MPPSI
- 0j0RO03kzhTabdMsPg/oUughmoGnxjMOAO0nbBMW5EXbxTeqWO5jN2IErqB/AySoc13r5LAnk
- j+hHOJaqQ0Rjv/LxPYAdqvKnfXUb03aKowpCzncHxUz30d7ccGmrimyb56CKSgJbpaSpuZe2G
- vjr7QsmFrbySvZYcErrO0ZHgO0/yG+E66xAN2+jRwP0nxgxfciOHTSTv+DBkt5sRXlbEMVU36
- BnY51ROdJcjpVO480vif62CY2AGWmr8qi3/eieQOr0S9gv2silemdGmtySicRJG+l8QgQz24E
- /XGof0p1xkktdaMBMC8oPRKSw2jPs42jOVH83JU8p872FEpiOzt4OA9lgcMn1Etj/S6yJMMW2
- TAsxJHT1taNNVdO9Z26si8mtvmteGzbGV48UPQTVe92cfuiT3F6hSuIqLlKYLghCjJUW7yW1q
- qGyD4vMjEPTet9bXnN8vrfBNQQ+McRA50kNJlNTtBrkHxfozCQ4B0bDHo/zITNqthCGK4SH0M
- mVXjVVEvSRSpdy7bgt8aoQrGL22F490M46Z8TgaLnaMyBzaP2ExFxsixBe/vYXCyy/ISCJx51
- 5p5Ru1Xm4PId4EEf0uC8yQhsA4dvW15I5iQTlze15ab2ZnPYkRKJejcVd1RKaBv3Xr5/sizax
- oKFMiQv8oR8k/mZxVFcDwng2EsU4XU4KbSDDLUUdxUnMXlysjpC3VfGwBClqZ0b0/GTGMos1P
- XwsG3uJJfpoGl012XPzKDLRJyvy28aVQ5YYTCmW7Z0iSSSt1gpj85k2ykP/zOZn8F8M0CfBKd
- S05gbJOHS3HQcHTSyHU5zQCW5I9G7GKCWHc7sthrU9jcWy+BI2F0rA4Wylh0TUoCjLXKejnV9
- V9MS6+wQ52gcjqU7t3Pedr7IwoZiayprWpnXRzhDd00SbDw/g10i88i7fN9F/k1jev7/mST5s
- 73FZoFjBBjLNtYJw2awHUSrQHdlnE28osUsGF+uI/pgczOOQnOFQTeL6prqVYdbm0zVOxkM2p
- OrT22FAk0UNU+V/sOBs+OcSk/zuFFTFIKIuPIjaIAUFaB1Nt51P6QVT8kYGtocL2RU0uf0ioY
- ZqLG0pPdHT0gxxIgyz1lk4MeLNse5bkU0dqk9yhipoIoG4kaOUHPSjpokrLf9FKdmChp9b43T
- RdQaIiWnLORUFbkEYj8dwOqisiS2/yYILlWtMsFxNXIAgutT5Cjk/wN3mT1w1CPQmK7eVhVXF
- HB88sOHlWQwOfzBngzQ+agRjuh1wA9HHbmzv50W0nu7NrVyFWB93KdqIZestd6CND9XPTwevq
- f1QDpyFUuSw8Y4GTu2EWYZX2SnPaTVyAJITCWezLbzJg4L54XZBK6U1czbtebsAibIaG2BcnK
- 8uB92iIII5m1QsXHNqXQ/nDPyJtZA4mnHY/x79g4CZkgxwp1DdHTIKoFhHzkBRwrVv57FsJst
- UHXSlcYqKefciIs/MFDITqyydHMqg5iGu6MWX+Men7Mf+on0cbGe9o8CsED7PAgEnQnp6aXRN
- K7jrIs8klAP53TCR8etg9gO3yossPPq8Uq+EAeWwM3eqU12304xzFTnCykluOORR1yefSCiON
- LVaDkcDlYG/F1Z5ylZKnPuF0UuIDQsefJRT0eFv0uJosgVqi4IJRN1bGVHx31edrw6XPwbYUd
- FoRQaCWNt4H9Ks9serThhXmH+7qXCSUbgLlY/48COeEbdNlMwe89+zvJI0mwGFHctpGe9RPMW
- 9165hbE561ktUUgNBGcTSgzGM3d1kgNNlC9ZbGUYaa8uIRWZJVmZR5gWXODYHwKDh+dvQ/tox
- 8ianMemeiRMZho1uPpZraSqoQg7l7OJUVo9dFkUh8Tmznkc2Mcj35nldWGEIj2t92TB2KVgo+
- D5XRDcIFcimU+yHov848Gzcf6U72WonODA2B9U0fZZY+HSxut5/TDysqeDE7dVG/lntU1an4H
- ODmt9qpSmm7xBzbrbCCG2nrbJXlt1cJTXjOlBz4bjgzLqsmZMUWGRkIwZJ+dVoeAOtwjGZWiv
- +9C/idGuCCHXQTf5zGhO0bcuP6cvmkzq5Umdgr6ubeTHx9Z2fMRR/cA8HoCa5K6KWD5eQv0md
- 7f0ygoWwWgWeSS7vF+x0AkxkUM+eedOC7xjDAZambnoywRG+j9IoftI6wiikFgT+lJX0kip5s
- Wxwap45QPYycHvnLeX3zm1RMawn6HyXEeWjiiRQp1A0ImcnZ4B/2gOIgIf0XLNUtwGqyllsqy
- +M9EdCQBSTEnBo4IOrRMv1GrXoLJZPoVDyhVCUsf/+fYObFjZuzmJQF61khxWdbzmWCckTy/k
- PKKTiKRCdTxiVJkdnCvGGxas74PdPRxugGBGatesDwSLeZjxCY0EN/jHIejJMQPpTisp2pTxV
- md1uVwSbxGeatnFRWtdP3hQjNekI/Bco8EbQww04EfhgcsUYAagqSnFYYfuk7mq7TcxCc93/W
- +Os49u7aiUSrp+gUOjmIEnGK4/+E9D8u5Yf3Kdle1TFafGEkNt9w3V4GUvaXX0nYku61GnSK5
- Crczd57EW5KntrDRtoDf5VcjS1V9M0TNjO5q7jXVdnaKWDH8ZLSvG65eJZi5S5odi4JU6fECJ
- V+Bu0w87dUYLGKJ1dRG6ew1BXr+uQW4ONfxg5yP8BGjp9bLfHybI9uwMHBq7eSNQLuyztoUBm
- a57UvHindfDvZd/svJsJZbAWwp1TJ9bC3pdELKg13ZQw0TLROwqnIIO4NnWQ6t+6mdrQHhO7a
- wB+trOqghKwg9wc+5U3H1ch4DlNVwFB6YaTIXrikid7fZePR+zHb2Ad/U97XHnB2fT6UBmLp9
- uEAALOGeWF9c+fQhCA4kdyvYOkWbeuH9BLnzwboJKSRtkyTTkrF5Us+0TdQYu0Pg1qf6o7D3v
- hnWFo+Ec4b+v7bPSAtYJNtxopVljSGBuKOCwJ3J46fdjJ+au+BWwLXBGklgQfPFZ6vjT+Sv11
- rzigDZcVmxkh0jkplj3rDbO6YzcV9M4wtit4ydFyOt93XU9xM174K8bsFbAY+AldPlBrZphoG
- gWraRe0an9MB4xFTuw747xBCiiwdUZRwLoUevEx9B2LtrqYJYMFumGexCykO0fff1ZOujxuuN
- 9vkk+sohxeoaTiIvY4vzii6YmIiXAgQuFg0uijNYZAjel3UESlz5VYNjEWp7L8m0ZrE4HgnME
- PIIptfi3iIvZw7hJWuNu7ZvUChSGhdQJUrU1dW9KuJOIVcAdGbCJLrXe9iDR7bY6fnWSY1gHu
- I4ofcIOTyDWAbQR0GHoNpkBecpODh6OYlQ2c9M9BnjHxKPKMrDAqj522hPgYR/jZrlxFZSLS9
- DCJolIoblEfB6LTWpJ2bLqUOu9GzPDHrUYYTqnkiryI0AbVzVii8+b30LWKBFON/CoVq/fz1U
- g1xFykUO3pV41nQU8LLvYCqpfrOs+aYCRs7MEalF7YwLZGvBvvS9C3DnZKQz5ayoO9aoD3Y0B
- FvTfNJhrUnkbpDhmzLL+BVEVyZWD+wtmyBR4x
+Subject: Re: [PATCH v6 15/15] x86/mce: Save and use APEI corrected threshold
+ limit
+To: Yazen Ghannam <yazen.ghannam@amd.com>, x86@kernel.org,
+ Tony Luck <tony.luck@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
+ Smita.KoralahalliChannabasappa@amd.com, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+ linux-acpi@vger.kernel.org
+References: <20250908-wip-mca-updates-v6-0-eef5d6c74b9c@amd.com>
+ <20250908-wip-mca-updates-v6-15-eef5d6c74b9c@amd.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20250908-wip-mca-updates-v6-15-eef5d6c74b9c@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-=E2=80=A6
-> +++ b/drivers/resctrl/mpam_devices.c
-=E2=80=A6
-> > +int mpam_ris_create(struct mpam_msc *msc, u8 ris_idx,
-> +		    enum mpam_class_types type, u8 class_id, int component_id)
-> +{
-> +	int err;
+
+
+On 9/8/25 18:40, Yazen Ghannam wrote:
+> The MCA threshold limit generally is not something that needs to change
+> during runtime. It is common for a system administrator to decide on a
+> policy for their managed systems.
+> 
+> If MCA thresholding is OS-managed, then the threshold limit must be set
+> at every boot. However, many systems allow the user to set a value in
+> their BIOS. And this is reported through an APEI HEST entry even if
+> thresholding is not in FW-First mode.
+> 
+> Use this value, if available, to set the OS-managed threshold limit.
+> Users can still override it through sysfs if desired for testing or
+> debug.
+> 
+> APEI is parsed after MCE is initialized. So reset the thresholding
+> blocks later to pick up the threshold limit.
+> 
+> Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+> ---
+> 
+> Notes:
+>      Link:
+>      https://lore.kernel.org/r/20250825-wip-mca-updates-v5-20-865768a2eef8@amd.com
+>      
+>      v5->v6:
+>      * No change.
+>      
+>      v4->v5:
+>      * No change.
+>      
+>      v3->v4:
+>      * New in v4.
+> 
+>   arch/x86/include/asm/mce.h          |  6 ++++++
+>   arch/x86/kernel/acpi/apei.c         |  2 ++
+>   arch/x86/kernel/cpu/mce/amd.c       | 18 ++++++++++++++++--
+>   arch/x86/kernel/cpu/mce/internal.h  |  2 ++
+>   arch/x86/kernel/cpu/mce/threshold.c | 13 +++++++++++++
+>   5 files changed, 39 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
+> index 7d6588195d56..1cfbfff0be3f 100644
+> --- a/arch/x86/include/asm/mce.h
+> +++ b/arch/x86/include/asm/mce.h
+> @@ -308,6 +308,12 @@ DECLARE_PER_CPU(struct mce, injectm);
+>   /* Disable CMCI/polling for MCA bank claimed by firmware */
+>   extern void mce_disable_bank(int bank);
+>   
+> +#ifdef CONFIG_X86_MCE_THRESHOLD
+> +void mce_save_apei_thr_limit(u32 thr_limit);
+> +#else
+> +static inline void mce_save_apei_thr_limit(u32 thr_limit) { }
+> +#endif /* CONFIG_X86_MCE_THRESHOLD */
 > +
-> +	mutex_lock(&mpam_list_lock);
-> +	err =3D mpam_ris_create_locked(msc, ris_idx, type, class_id,
-> +				     component_id);
-> +	mutex_unlock(&mpam_list_lock);
-=E2=80=A6
+>   /*
+>    * Exception handler
+>    */
+> diff --git a/arch/x86/kernel/acpi/apei.c b/arch/x86/kernel/acpi/apei.c
+> index 0916f00a992e..e21419e686eb 100644
+> --- a/arch/x86/kernel/acpi/apei.c
+> +++ b/arch/x86/kernel/acpi/apei.c
+> @@ -19,6 +19,8 @@ int arch_apei_enable_cmcff(struct acpi_hest_header *hest_hdr, void *data)
+>   	if (!cmc->enabled)
+>   		return 0;
+>   
+> +	mce_save_apei_thr_limit(cmc->notify.error_threshold_value);
+> +
+>   	/*
+>   	 * We expect HEST to provide a list of MC banks that report errors
+>   	 * in firmware first mode. Otherwise, return non-zero value to
+> diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
+> index b895559e80ad..9b746080351f 100644
+> --- a/arch/x86/kernel/cpu/mce/amd.c
+> +++ b/arch/x86/kernel/cpu/mce/amd.c
+> @@ -489,6 +489,18 @@ static void threshold_restart_bank(unsigned int bank, bool intr_en)
+>   	}
+>   }
+>   
+> +/* Try to use the threshold limit reported through APEI. */
+> +static u16 get_thr_limit(void)
+> +{
+> +	u32 thr_limit = mce_get_apei_thr_limit();
+> +
+> +	/* Fallback to old default if APEI limit is not available. */
+> +	if (!thr_limit)
+> +		return THRESHOLD_MAX;
+> +
+> +	return min(thr_limit, THRESHOLD_MAX);
+> +}
+> +
+>   static void mce_threshold_block_init(struct threshold_block *b, int offset)
+>   {
+>   	struct thresh_restart tr = {
+> @@ -497,7 +509,7 @@ static void mce_threshold_block_init(struct threshold_block *b, int offset)
+>   		.lvt_off		= offset,
+>   	};
+>   
+> -	b->threshold_limit		= THRESHOLD_MAX;
+> +	b->threshold_limit		= get_thr_limit();
+>   	threshold_restart_block(&tr);
+>   };
+>   
+> @@ -1071,7 +1083,7 @@ static int allocate_threshold_blocks(unsigned int cpu, struct threshold_bank *tb
+>   	b->address		= address;
+>   	b->interrupt_enable	= 0;
+>   	b->interrupt_capable	= lvt_interrupt_supported(bank, high);
+> -	b->threshold_limit	= THRESHOLD_MAX;
+> +	b->threshold_limit	= get_thr_limit();
+>   
+>   	if (b->interrupt_capable) {
+>   		default_attrs[2] = &interrupt_enable.attr;
+> @@ -1082,6 +1094,8 @@ static int allocate_threshold_blocks(unsigned int cpu, struct threshold_bank *tb
+>   
+>   	list_add(&b->miscj, &tb->miscj);
+>   
+> +	mce_threshold_block_init(b, (high & MASK_LVTOFF_HI) >> 20);
 
-Under which circumstances would you become interested to apply a statement
-like =E2=80=9Cguard(mutex)(&mpam_list_lock);=E2=80=9D?
-https://elixir.bootlin.com/linux/v6.17-rc5/source/include/linux/mutex.h#L2=
-28
+Why is this necessary? Shouldn't this patch consist of mainly 
+s/THRESHOLD_MAX/get_thr_limit();
 
-Regards,
-Markus
+
+In allocate_threshold_block have already properly set threshold_limit. 
+So this change really ensures threshold_restart_block is being called 
+for the given block being initialized. Ignoring the changed threshold 
+limit logic, why is this extra call necessary now and wasn't before?
+
+
+> +
+>   	err = kobject_init_and_add(&b->kobj, &threshold_ktype, tb->kobj, get_name(cpu, bank, b));
+>   	if (err)
+>   		goto out_free;
+> diff --git a/arch/x86/kernel/cpu/mce/internal.h b/arch/x86/kernel/cpu/mce/internal.h
+> index 9920ee5fb34c..a31cf984619c 100644
+> --- a/arch/x86/kernel/cpu/mce/internal.h
+> +++ b/arch/x86/kernel/cpu/mce/internal.h
+> @@ -67,6 +67,7 @@ void mce_track_storm(struct mce *mce);
+>   void mce_inherit_storm(unsigned int bank);
+>   bool mce_get_storm_mode(void);
+>   void mce_set_storm_mode(bool storm);
+> +u32  mce_get_apei_thr_limit(void);
+>   #else
+>   static inline void cmci_storm_begin(unsigned int bank) {}
+>   static inline void cmci_storm_end(unsigned int bank) {}
+> @@ -74,6 +75,7 @@ static inline void mce_track_storm(struct mce *mce) {}
+>   static inline void mce_inherit_storm(unsigned int bank) {}
+>   static inline bool mce_get_storm_mode(void) { return false; }
+>   static inline void mce_set_storm_mode(bool storm) {}
+> +static inline u32  mce_get_apei_thr_limit(void) { return 0; }
+>   #endif
+>   
+>   /*
+> diff --git a/arch/x86/kernel/cpu/mce/threshold.c b/arch/x86/kernel/cpu/mce/threshold.c
+> index 45144598ec74..d00d5bf9959d 100644
+> --- a/arch/x86/kernel/cpu/mce/threshold.c
+> +++ b/arch/x86/kernel/cpu/mce/threshold.c
+> @@ -13,6 +13,19 @@
+>   
+>   #include "internal.h"
+>   
+> +static u32 mce_apei_thr_limit;
+> +
+> +void mce_save_apei_thr_limit(u32 thr_limit)
+> +{
+> +	mce_apei_thr_limit = thr_limit;
+> +	pr_info("HEST: Corrected error threshold limit = %u\n", thr_limit);
+> +}
+> +
+> +u32 mce_get_apei_thr_limit(void)
+> +{
+> +	return mce_apei_thr_limit;
+> +}
+> +
+>   static void default_threshold_interrupt(void)
+>   {
+>   	pr_err("Unexpected threshold interrupt at vector %x\n",
+> 
+
 
