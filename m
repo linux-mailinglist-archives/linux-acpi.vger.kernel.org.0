@@ -1,81 +1,81 @@
-Return-Path: <linux-acpi+bounces-16674-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16675-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84FD2B53607
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 16:44:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C717CB5363B
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 16:49:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BECC6163B46
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 14:43:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77C763A3A2D
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 14:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0349F341651;
-	Thu, 11 Sep 2025 14:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5954833769B;
+	Thu, 11 Sep 2025 14:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="IJrjlpFx"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="MxdO0f+q"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95AB2E888A
-	for <linux-acpi@vger.kernel.org>; Thu, 11 Sep 2025 14:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5925A31AF1A
+	for <linux-acpi@vger.kernel.org>; Thu, 11 Sep 2025 14:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757601794; cv=none; b=hbZ2AwjyfbyzsEHuJ85em6581Fw/ql/+xK8zXsJp+HKxq8dvCyIwDgh0ql37ZEMj5NjCd2Q8QWOxGccjbrE3I9Lq4jXQ2eLQqt5Im4/tP7MUYcfdGGVZVm9P1tMVI/f+2hqSQoJttZ9pWrZLYGyJ9Ahdf7VKUck3sa5hdX+4HfU=
+	t=1757602169; cv=none; b=nNFBuHgaro0h9QguY3/HSHyrOdhqPjE4grlFf8f1YzqgDQ57qQ1cauzfew0THttR3InpZoaX0CyJckwMMSHqdy1Xg2qNbx2Tl9E35RObdDtFoBkTJzbYNc5yiZerS5HCjC92yYMttYyj0AXMDTJV6VyPMLAMilLdtsnIf6lVyHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757601794; c=relaxed/simple;
-	bh=V6FD0d3JgbZXKHC+xUSTnDcPYnDX6VNwyniSodQFA3M=;
+	s=arc-20240116; t=1757602169; c=relaxed/simple;
+	bh=nZNJNdLhUX4eZQi5WdK6un19/X+qzc4I91sCsvrOkwg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U5oI1ocjwfA8iuERyHZlEvHddvUZj/RxmI1bI7S6u/j0nXZDfA5+cAfy8HpzlO+qoIyy7megZZjuOVYU1zeH1JyeLwUfUhc4TnZat1AauJwM1s7B7r6T6DO7QGExqjJ6Ue6X8B50fZeByMMUsi71h4+i4zv8llNBhk/LUc5N+kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=IJrjlpFx; arc=none smtp.client-ip=209.85.221.53
+	 In-Reply-To:Content-Type; b=ODluMUzWTpx34Uob0mVpAJnsrwrFLuO+7kpw/brkqJCaMtC22pEqw9nzEez2arwdZpvWjJqEI81hmOVteQJEDRSIXHZyDsSlPt4+RHebLjCD6uUs6FAe1gvVpzdIP2cJLSLuaZ0QBxBRNb3vdLlpq2YN6D8I/OBnT/xak70O1ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=MxdO0f+q; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3df35a67434so594261f8f.3
-        for <linux-acpi@vger.kernel.org>; Thu, 11 Sep 2025 07:43:12 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b046f6fb230so161794966b.1
+        for <linux-acpi@vger.kernel.org>; Thu, 11 Sep 2025 07:49:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1757601791; x=1758206591; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1757602165; x=1758206965; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=nL/0YN+s3DP2N6NxTAsYAkeIEs7a8heXoKnclmsN4gg=;
-        b=IJrjlpFxYt2+GHGiWozBj+4rTCQdLjp55QlaVqhsUeLS4s+0MrZ3LTQ6V0rmGSlofP
-         zgocB073IQrdWJ5wQe2+t9ZVyV4UKGxI+sYlOhf1ctkXx/3+excOTf7cKweJFcESNCCT
-         njwEMKE2lE2A/n7UjVwjTpA2jMs2fWOWL20p9yLbcd2u/LRJG4qUJuRwM8kquwjbi/GT
-         S2B5GqA0JqbGHIycVQtpAoMktJ07bd2dH0J5GTXdw/xpl+6SgHWj2rIuqZadoIgoLTCa
-         ym5uyUS7Ex+HAGhjcflcqen2rxuBOyuufstxDGdnd4/NEcjDLpQjGRLdmZKisHPKA4Gr
-         Y5Kw==
+        bh=MEz2+cml5j+5MjPboSsybw9IPJE7JLDZt4tZ1qBoVoo=;
+        b=MxdO0f+q+9bwjrBvh4IZAK5NVxbyhcYa8am4qmq25+9FlsGj+IO418SAwNKSeK7KNI
+         QUWbZdRpWLdYPlMRijzvLUzSyr5QYzCgmCBZtmB+dQXHvNTfHGBKKuvhNIws32ZHCGws
+         F2c/jihpHTvnffnMAchnvdxQo7PJUtOV+BPmqz+AL6ShT47jnyIceWTHFtLRw1xr8GJ8
+         lnkXCYCQw0+r+0/uWF9AiN+VW5tJRoun82KNPJYl4+3WSqOOlGrwfdxQzxt7tkagMdds
+         +CnBKeHygCHiUZWQthQLLVakgt6s4PwGJC3yX1aM9uAdPwg5jqC97bmaaKBxAeXVLftc
+         uIQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757601791; x=1758206591;
+        d=1e100.net; s=20230601; t=1757602165; x=1758206965;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=nL/0YN+s3DP2N6NxTAsYAkeIEs7a8heXoKnclmsN4gg=;
-        b=iozSevp1irnQt1GaeO9QAUcdloOgYcnDojH6+AA74Io4IwpafMS+I7agvrYSEck0AP
-         vVmvTSL03HRJCMiWy9EfTIIiMq2WNpzkDTR7LxgeEmNu55YPMNAFaeDtB5RlvrW6WPMQ
-         x6HzhTlrsPBAEj/YvojntiWz9og44AWwDZYkmiVzoiVyvN7L0UOxjbWxKu34a9Ly/kx6
-         sLx8NfCU0XyoVhDoO/j+0qmxpkXXR3XMEIN4lLrkGCLNQXHPEcvPMp7MVnlSje4GNn6y
-         NdsE+Pw1OjotOaT8/rk5oWTF8vRw3jhv15Dxc5Bkc9br7mjdsyVHSUks3RhYe2iqb2eP
-         Sepg==
-X-Forwarded-Encrypted: i=1; AJvYcCVaaGHCR4rTnd5prK1oR2K1MyXIHKcszINfqglTHDLIT2Da8rYyPB5cSrDGK7NLz/0NLGY4DGIWklCI@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2ddYOT6/cRAdenuQITtoE5JiqTAmzTy3+sFpd0yqwR2xc6Tiy
-	req/PZDb/JGMmBnaHqPlc3d9EfEdYkoJE1BB7/TfaN7QmOe2zmASgPF3rdS/e1sZfbU=
-X-Gm-Gg: ASbGncshNBP0AFW893yAOcOMFZdlm0zAqyE0M1phE7qNOqLd6ilaTrLlzCytYPbyfN0
-	Z+FgH+U7RHX+PFrZPC/roEklZvqsW9O9iNHgXAEi9NOEVDlmsK4IXANx9ZKeA4a6qklCllH9SAs
-	DYP2/9LuMsfP77BBMfWJ+FM2WTu2WxpEI4xUWqzkjJx+b9aB5em/zZ1aYDVM04f3NShkVG9F3Qi
-	1n3laSgmkLlVUFwe1mrPYK1r3Qrt04+SBd2MHMgs35nf7EmA0yBH0G+1QFNBlQGHmcL+GDXXR77
-	9rqWWfJu3d910NGAHCmkJj+6yvC1ssh0P5Et08IKylr1u3bdQYQm8wiA+B+FDmqpEjYtJAjopDn
-	pZ3rm3diTx/mXE4RO1AlLPDNJglDTiIhcx2MxjS3OrMPfDw==
-X-Google-Smtp-Source: AGHT+IFzH+V8s0sYRpmkvChDZV6cgGCwMXzJuS0qZEWWciIhM/GLC66m7Zo+tfDPNhyBgLig/B9WtQ==
-X-Received: by 2002:a05:6000:430c:b0:3e7:632a:f3fe with SMTP id ffacd0b85a97d-3e7632af44bmr1679160f8f.61.1757601791055;
-        Thu, 11 Sep 2025 07:43:11 -0700 (PDT)
+        bh=MEz2+cml5j+5MjPboSsybw9IPJE7JLDZt4tZ1qBoVoo=;
+        b=QjfIfnH/dYJJVjTTXd9wKuqhj2DN+sAS8Pm+GXGLmnFL0uNShAuNeONnHNh6Eusfe2
+         7KzGKjp6XOwSTJodSARHcZQLIISvef6kdwp18RckFApTs4xQOtzOSeLy8IHwEzaljZY2
+         ehPfCKuG2Rs/LsGcLsf814behjAzRaj6lHBbJppEhnjdEOn2ygPnpbZ9WnuPmGOUAUFb
+         RZ6WqkaCamedi2utD9+0trZr8V3sUgH6cM8EcNYJTlq4hE74vXr2dmA+dGkKdqz11fsr
+         4N0HRU2q+b8H9xx5ywh0uNw55N+//gBaTCy/j1NsyaDmq13sZocI89ZmtbhnM0HyploM
+         /NNA==
+X-Forwarded-Encrypted: i=1; AJvYcCVdD3tX/8acfAvffGcBmPmodpHEA7Chg+DgsYgemBYpX1JMdOmLRi0DdekMZe7XdFrjlnmze6fgl+nj@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqfRG31WUVI2W0mSUD3BJBuf4OwzjmaBIvEA3cQ2z8gVSqwv2E
+	+CRfHfUqJHdZIMUFxDiRUOpUGLEvVFTBDxOIp7GWh+K6OGBspi2uYG7sFUZNGgVSBnI=
+X-Gm-Gg: ASbGncs+CSnybmd2FEM0ND4LxBDKs2CCg92kWFN8zlQTCxYBIqR+SaL9FY4emPi2xMs
+	SVHw5dB7CV+m21QemiXwnPkj04Uwp742kUsaPUz9RQP92Ar9lYW9Nb5h9VTrbEUJI1l4B2biYkr
+	Vmim4sz8ZS67J6dK52ccfZNFs35dJizVSpDinmhCdH9o/eEtRi6kG0p60efPM5MHl2lIo/yWef3
+	7jJB7O2L5tZwHpUYgK2r8fEZHP/xxRuLgDwkEE6EjiLi2H3S3zhzukLUnu08k7OvrIlVKWaoKUE
+	9Dp/z5ZqTWsBeHt0LejFW61CE1pfuQhRSFZK/EWHW2WUyDBTaVc1AjjdUWGp0adq7baNZ6Mc+6N
+	ZibXctQb/IRj6APQxOFFVWkuhGqavD2E6if2U17+OgI5spw==
+X-Google-Smtp-Source: AGHT+IHPb3IjrEimQsyumFROs4NKhrkNJv561MRSVOi7204nznH7JQ1izwhU2UokmRl99dhwlmX1kg==
+X-Received: by 2002:a17:907:e2e6:b0:b04:3b97:f972 with SMTP id a640c23a62f3a-b07a629c5famr421639466b.3.1757602165514;
+        Thu, 11 Sep 2025 07:49:25 -0700 (PDT)
 Received: from [10.20.0.214] (ivokam.ddns.nbis.net. [109.121.139.111])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7607d7affsm2876729f8f.48.2025.09.11.07.42.50
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07b32dd57csm143221066b.52.2025.09.11.07.49.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Sep 2025 07:43:10 -0700 (PDT)
-Message-ID: <e85965a9-3aa5-4368-95bc-c46ab18a25fa@suse.com>
-Date: Thu, 11 Sep 2025 17:42:39 +0300
+        Thu, 11 Sep 2025 07:49:25 -0700 (PDT)
+Message-ID: <6ac1df31-0e2e-440e-9753-16f3a29dbc9d@suse.com>
+Date: Thu, 11 Sep 2025 17:49:21 +0300
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -83,14 +83,15 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 12/15] x86/mce/amd: Remove redundant reset_block()
+Subject: Re: [PATCH v6 13/15] x86/mce/amd: Define threshold restart function
+ for banks
 To: Yazen Ghannam <yazen.ghannam@amd.com>, x86@kernel.org,
  Tony Luck <tony.luck@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
  Smita.KoralahalliChannabasappa@amd.com, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
  linux-acpi@vger.kernel.org
 References: <20250908-wip-mca-updates-v6-0-eef5d6c74b9c@amd.com>
- <20250908-wip-mca-updates-v6-12-eef5d6c74b9c@amd.com>
+ <20250908-wip-mca-updates-v6-13-eef5d6c74b9c@amd.com>
 From: Nikolay Borisov <nik.borisov@suse.com>
 Content-Language: en-US
 Autocrypt: addr=nik.borisov@suse.com; keydata=
@@ -136,100 +137,20 @@ Autocrypt: addr=nik.borisov@suse.com; keydata=
  JDjakbdjBoYDWVoaPbp5KAQ2VQRiR54lir/inyqGX+dwzPX/F4OHfB5RTiAFLJliCxniKFsM
  d8eHe88jWjm6/ilx4IlLl9/MdVUGjLpBi18X7ejLz3U2quYD8DBAGzCjy49wJ4Di4qQjblb2
  pTXoEyM2L6E604NbDu0VDvHg7EXh1WwmijEu28c/hEB6DwtzslLpBSsJV0s1/jE=
-In-Reply-To: <20250908-wip-mca-updates-v6-12-eef5d6c74b9c@amd.com>
+In-Reply-To: <20250908-wip-mca-updates-v6-13-eef5d6c74b9c@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
 On 8.09.25 г. 18:40 ч., Yazen Ghannam wrote:
-> Many of the checks in reset_block() are done again in the block reset
-> function. So drop the redundant checks.
+> Prepare for CMCI storm support by moving the common bank/block
+> iterator code to a helper function.
+> 
+> Include a parameter to switch the interrupt enable. This will be used by
+> the CMCI storm handling function.
 > 
 > Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 
-
-> ---
-> 
-> Notes:
->      Link:
->      https://lore.kernel.org/r/20250825-wip-mca-updates-v5-17-865768a2eef8@amd.com
->      
->      v5->v6:
->      * No change.
->      
->      v4->v5:
->      * No change.
->      
->      v3->v4:
->      * New in v4.
-> 
->   arch/x86/kernel/cpu/mce/amd.c | 28 +++++++---------------------
->   1 file changed, 7 insertions(+), 21 deletions(-)
-> 
-> diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-> index 34268940c88a..9ca4079ff342 100644
-> --- a/arch/x86/kernel/cpu/mce/amd.c
-> +++ b/arch/x86/kernel/cpu/mce/amd.c
-> @@ -812,29 +812,11 @@ static void amd_deferred_error_interrupt(void)
->   	machine_check_poll(MCP_TIMESTAMP, &this_cpu_ptr(&mce_amd_data)->dfr_intr_banks);
->   }
->   
-> -static void reset_block(struct threshold_block *block)
-> -{
-> -	struct thresh_restart tr;
-> -	u32 low = 0, high = 0;
-> -
-> -	if (!block)
-> -		return;
-> -
-> -	if (rdmsr_safe(block->address, &low, &high))
-> -		return;
-
-
-This is being replaced by rdmsr, I guess it's safe because the fact we 
-are processing a block which has been on the bank list means it's 
-unlikely the rdmsr will fault.
-
-
-> -
-> -	if (!(high & MASK_OVERFLOW_HI))
-> -		return;
-
-nit: However, now, if mask overflow is not set a write to the msr will 
-be performed, with the effect that IntType is going to be cleared (hi &= 
-~MASK_INT_TYPE_HI; in threshold_restart_block), and MASK_COUNT_EN_HI 
-will be set, that's different than the existing code, albeit it might be 
-ok.
-> -
-> -	memset(&tr, 0, sizeof(tr));
-> -	tr.b = block;
-> -	threshold_restart_block(&tr);
-> -}
-> -
->   static void amd_reset_thr_limit(unsigned int bank)
->   {
->   	struct threshold_bank **bp = this_cpu_read(threshold_banks);
->   	struct threshold_block *block, *tmp;
-> +	struct thresh_restart tr;
->   
->   	/*
->   	 * Validate that the threshold bank has been initialized already. The
-> @@ -844,8 +826,12 @@ static void amd_reset_thr_limit(unsigned int bank)
->   	if (!bp || !bp[bank])
->   		return;
->   
-> -	list_for_each_entry_safe(block, tmp, &bp[bank]->miscj, miscj)
-> -		reset_block(block);
-> +	memset(&tr, 0, sizeof(tr));
-> +
-> +	list_for_each_entry_safe(block, tmp, &bp[bank]->miscj, miscj) {
-> +		tr.b = block;
-> +		threshold_restart_block(&tr);
-> +	}
->   }
->   
->   /*
-> 
-
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
 
