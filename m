@@ -1,45 +1,45 @@
-Return-Path: <linux-acpi+bounces-16669-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16670-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC180B53367
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 15:17:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F0DB533DF
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 15:36:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05FC2189A980
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 13:18:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B685A3B3589
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 13:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918AC2E7192;
-	Thu, 11 Sep 2025 13:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB722EAD09;
+	Thu, 11 Sep 2025 13:35:52 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA812E401;
-	Thu, 11 Sep 2025 13:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558613148C6;
+	Thu, 11 Sep 2025 13:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757596655; cv=none; b=RViiBCN7/gMeKdKJncqWFzpnLjJH01gZRJ/gO8AKDDLtLVUdIcjf+BrPGnBADC55UTr3SqxVn4HyXWUmEQRWnXf4zdZn2g8UnEHz3/oC0I/G0t2+atRTmb9JaOkHmXt5bJ2KTi3fIqyhcb+jKOeF0SSQTMHjfXicfiLHpMGQYxQ=
+	t=1757597752; cv=none; b=SjOtRcbxfDQNNLv/Jb9IGURgHWYuU+oH80U/d6PLnXfRxIIiM6WEWegVE204khsc4uqQDIw2UQFu/KT/leKc00P8kM2K2n65A3Pq8Xl4tiDPigZImxkGrvtmZYjkFv0dYjdDTnGVpE4Siqsuv0/NTLu4AsRFckSRk7tBQkZiuPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757596655; c=relaxed/simple;
-	bh=aChratn3kUYwhc1D0/Tg+Tsi3gBpq6/EXv4vATNlq4E=;
+	s=arc-20240116; t=1757597752; c=relaxed/simple;
+	bh=Ku53AhMY+g8DdiGLtHpgmIJzjHq/TSruMTq0cafZ+Y0=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MEwunLZQIZyUvYplvfWhioRkluBj4BxHN18BlDjn9+raFCeaBsFVrsmPEN5DJKMJJpY7/4ygU29efjDZGrjvrjfs5yN47RbTqNeFsfiynXEicloL2CNLbdm2TCrzl7iHn1+JC7dNRLUsnt2SGq69Y4VZXqgpMVogdIPP6ZQTHtw=
+	 MIME-Version:Content-Type; b=RwcnNCU45hkTErlB513a2gyLIBKgDxKWbHC8HrH2k75qchGK0gxhZb3p9K4c/fo+tiSwbhqhxCJh0d/h7mzSVpWYORkhP5f7Jwm6GCLK/qdl5qQahpLRn+/qe4BjBirpUV1iJRlXRemFXAGUJatynxN+BOq85JIWENBskc2rE/w=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cMyk56VP2z6L59H;
-	Thu, 11 Sep 2025 21:16:13 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cMz3n2YGqz67CtB;
+	Thu, 11 Sep 2025 21:31:33 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 41687140373;
-	Thu, 11 Sep 2025 21:17:29 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 03A151400D3;
+	Thu, 11 Sep 2025 21:35:47 +0800 (CST)
 Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 11 Sep
- 2025 15:17:28 +0200
-Date: Thu, 11 Sep 2025 14:17:26 +0100
+ 2025 15:35:45 +0200
+Date: Thu, 11 Sep 2025 14:35:44 +0100
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: James Morse <james.morse@arm.com>
 CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
@@ -58,11 +58,12 @@ CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<sudeep.holla@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, "Will
  Deacon" <will@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v2 06/29] ACPI / MPAM: Parse the MPAM table
-Message-ID: <20250911141726.00002f0c@huawei.com>
-In-Reply-To: <20250910204309.20751-7-james.morse@arm.com>
+Subject: Re: [PATCH v2 07/29] arm_mpam: Add probe/remove for mpam msc driver
+ and kbuild boiler plate
+Message-ID: <20250911143544.000026aa@huawei.com>
+In-Reply-To: <20250910204309.20751-8-james.morse@arm.com>
 References: <20250910204309.20751-1-james.morse@arm.com>
-	<20250910204309.20751-7-james.morse@arm.com>
+	<20250910204309.20751-8-james.morse@arm.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -72,358 +73,339 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
  frapeml500008.china.huawei.com (7.182.85.71)
 
-On Wed, 10 Sep 2025 20:42:46 +0000
+On Wed, 10 Sep 2025 20:42:47 +0000
 James Morse <james.morse@arm.com> wrote:
 
-> Add code to parse the arm64 specific MPAM table, looking up the cache
-> level from the PPTT and feeding the end result into the MPAM driver.
+> Probing MPAM is convoluted. MSCs that are integrated with a CPU may
+> only be accessible from those CPUs, and they may not be online.
+> Touching the hardware early is pointless as MPAM can't be used until
+> the system-wide common values for num_partid and num_pmg have been
+> discovered.
 > 
-> For now the MPAM hook mpam_ris_create() is stubbed out, but will update
-> the MPAM driver with optional discovered data.
+> Start with driver probe/remove and mapping the MSC.
 > 
 > CC: Carl Worth <carl@os.amperecomputing.com>
-> Link: https://developer.arm.com/documentation/den0065/3-0bet/?lang=en
 > Signed-off-by: James Morse <james.morse@arm.com>
-> 
+
 Hi James,
 
-A few comments inline.  Note I've more or less completely forgotten
-what was discussed in RFC 1 so I might well be repeating stuff that
-you replied to then.  Always a problem for me with big complex patch sets!
+Various comments inline.  You can ignore the do/while(0)
+one but I'll probably forget and send more grumpy comments about it ;)
 
 Jonathan
+> ---
+> Changes since v1:
+>  * Avoid selecting driver on other architectrues.
+>  * Removed PCC support stub.
+>  * Use for_each_available_child_of_node_scoped() and of_property_read_reg()
+>  * Clarified a comment.
+>  * Stopped using mpam_num_msc as an id,a and made it atomic.
+>  * Size of -1 returned from cache_of_calculate_id()
+>  * Renamed some struct members.
+>  * Made a bunch of pr_err() dev_err_ocne().
+>  * Used more cleanup magic.
+>  * Inlined a print message.
+>  * Fixed error propagation from mpam_dt_parse_resources().
+>  * Moved cache accessibility checks earlier.
+> 
+> Changes since RFC:
+>  * Check for status=broken DT devices.
+>  * Moved all the files around.
+>  * Made Kconfig symbols depend on EXPERT
+> ---
+>  arch/arm64/Kconfig              |   1 +
+>  drivers/Kconfig                 |   2 +
+>  drivers/Makefile                |   1 +
+>  drivers/resctrl/Kconfig         |  14 +++
+>  drivers/resctrl/Makefile        |   4 +
+>  drivers/resctrl/mpam_devices.c  | 180 ++++++++++++++++++++++++++++++++
+>  drivers/resctrl/mpam_internal.h |  65 ++++++++++++
+>  7 files changed, 267 insertions(+)
+>  create mode 100644 drivers/resctrl/Kconfig
+>  create mode 100644 drivers/resctrl/Makefile
+>  create mode 100644 drivers/resctrl/mpam_devices.c
+>  create mode 100644 drivers/resctrl/mpam_internal.h
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 6487c511bdc6..93e563e1cce4 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -2062,6 +2062,7 @@ config ARM64_TLB_RANGE
+>  
+>  config ARM64_MPAM
+>  	bool "Enable support for MPAM"
+> +	select ARM64_MPAM_DRIVER if EXPERT
 
-> diff --git a/drivers/acpi/arm64/mpam.c b/drivers/acpi/arm64/mpam.c
+To me that wants a comment as it's unusual.
+
+>  	select ACPI_MPAM if ACPI
+>  	help
+>  	  Memory System Resource Partitioning and Monitoring (MPAM) is an
+
+> diff --git a/drivers/resctrl/Kconfig b/drivers/resctrl/Kconfig
 > new file mode 100644
-> index 000000000000..fd9cfa143676
+> index 000000000000..c30532a3a3a4
 > --- /dev/null
-> +++ b/drivers/acpi/arm64/mpam.c
-
-
-> +static int acpi_mpam_parse_resource(struct mpam_msc *msc,
-> +				    struct acpi_mpam_resource_node *res)
-> +{
-> +	int level, nid;
-> +	u32 cache_id;
+> +++ b/drivers/resctrl/Kconfig
+> @@ -0,0 +1,14 @@
+> +menuconfig ARM64_MPAM_DRIVER
+> +	bool "MPAM driver"
+> +	depends on ARM64 && ARM64_MPAM && EXPERT
+> +	help
+> +	  MPAM driver for System IP, e,g. caches and memory controllers.
 > +
-> +	switch (res->locator_type) {
-> +	case ACPI_MPAM_LOCATION_TYPE_PROCESSOR_CACHE:
-> +		cache_id = res->locator.cache_locator.cache_reference;
-> +		level = find_acpi_cache_level_from_id(cache_id);
-> +		if (level <= 0) {
-> +			pr_err_once("Bad level (%u) for cache with id %u\n", level, cache_id);
-> +			return -EINVAL;
-> +		}
-> +		return mpam_ris_create(msc, res->ris_index, MPAM_CLASS_CACHE,
-> +				       level, cache_id);
-> +	case ACPI_MPAM_LOCATION_TYPE_MEMORY:
-> +		nid = pxm_to_node(res->locator.memory_locator.proximity_domain);
-> +		if (nid == NUMA_NO_NODE)
-> +			nid = 0;
-> +		return mpam_ris_create(msc, res->ris_index, MPAM_CLASS_MEMORY,
-> +				       255, nid);
-> +	default:
-> +		/* These get discovered later and treated as unknown */
+> +if ARM64_MPAM_DRIVER
+> +config ARM64_MPAM_DRIVER_DEBUG
+> +	bool "Enable debug messages from the MPAM driver"
+> +	depends on ARM64_MPAM_DRIVER
 
-are treated?
+The depends on should make the if unnecessary.
 
+> +	help
+> +	  Say yes here to enable debug messages from the MPAM driver.
+> +
+> +endif
 
-> +		return 0;
-> +	}
-> +}
+> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+> new file mode 100644
+> index 000000000000..efc4738e3b4d
+> --- /dev/null
+> +++ b/drivers/resctrl/mpam_devices.c
+> @@ -0,0 +1,180 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// Copyright (C) 2025 Arm Ltd.
+> +
+> +#define pr_fmt(fmt) "%s:%s: " fmt, KBUILD_MODNAME, __func__
+> +
+> +#include <linux/acpi.h>
+> +#include <linux/arm_mpam.h>
+> +#include <linux/cacheinfo.h>
+> +#include <linux/cpu.h>
+> +#include <linux/cpumask.h>
+> +#include <linux/device.h>
+> +#include <linux/errno.h>
+> +#include <linux/gfp.h>
+> +#include <linux/list.h>
+> +#include <linux/lockdep.h>
+> +#include <linux/mutex.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/printk.h>
+> +#include <linux/slab.h>
+> +#include <linux/spinlock.h>
+> +#include <linux/srcu.h>
+> +#include <linux/types.h>
 
-> +static bool __init parse_msc_pm_link(struct acpi_mpam_msc_node *tbl_msc,
-> +				     struct platform_device *pdev,
-> +				     u32 *acpi_id)
+> +/*
+> + * An MSC can control traffic from a set of CPUs, but may only be accessible
+> + * from a (hopefully wider) set of CPUs. The common reason for this is power
+> + * management. If all the CPUs in a cluster are in PSCI:CPU_SUSPEND, the
+> + * corresponding cache may also be powered off. By making accesses from
+> + * one of those CPUs, we ensure this isn't the case.
+> + */
+> +static int update_msc_accessibility(struct mpam_msc *msc)
 > +{
-> +	char hid[sizeof(tbl_msc->hardware_id_linked_device) + 1];
-> +	bool acpi_id_valid = false;
-> +	struct acpi_device *buddy;
-> +	char uid[11];
+> +	u32 affinity_id;
 > +	int err;
 > +
-> +	memset(&hid, 0, sizeof(hid));
+> +	err = device_property_read_u32(&msc->pdev->dev, "cpu_affinity",
+> +				       &affinity_id);
+> +	if (err)
+> +		cpumask_copy(&msc->accessibility, cpu_possible_mask);
+> +	else
+> +		acpi_pptt_get_cpus_from_container(affinity_id,
+> +						  &msc->accessibility);
+> +
+> +	return 0;
+> +
+> +	return err;
 
- = {}; above and skip the memset.
+Curious. I'd do a build test after each patch before v3. A couple of
+places would have failed or given helpful warnings so far.
 
-> +	memcpy(hid, &tbl_msc->hardware_id_linked_device,
-> +	       sizeof(tbl_msc->hardware_id_linked_device));
-> +
-> +	if (!strcmp(hid, ACPI_PROCESSOR_CONTAINER_HID)) {
-> +		*acpi_id = tbl_msc->instance_id_linked_device;
-> +		acpi_id_valid = true;
-> +	}
-> +
-> +	err = snprintf(uid, sizeof(uid), "%u",
-> +		       tbl_msc->instance_id_linked_device);
-> +	if (err >= sizeof(uid)) {
-> +		pr_debug("Failed to convert uid of device for power management.");
-> +		return acpi_id_valid;
-> +	}
-> +
-> +	buddy = acpi_dev_get_first_match_dev(hid, uid, -1);
-> +	if (buddy)
-> +		device_link_add(&pdev->dev, &buddy->dev, DL_FLAG_STATELESS);
-> +
-> +	return acpi_id_valid;
 > +}
 
 > +
-> +static int __init acpi_mpam_parse(void)
+> +static int mpam_msc_drv_probe(struct platform_device *pdev)
 > +{
-> +	struct acpi_table_header *table __free(acpi_table) = acpi_get_table_ret(ACPI_SIG_MPAM, 0);
-> +	char *table_end, *table_offset = (char *)(table + 1);
-> +	struct property_entry props[4]; /* needs a sentinel */
-Perhaps move this and res into the loop and use = {};
-
-> +	struct acpi_mpam_msc_node *tbl_msc;
-> +	int next_res, next_prop, err = 0;
-> +	struct acpi_device *companion;
-> +	struct platform_device *pdev;
-> +	enum mpam_msc_iface iface;
-> +	struct resource res[3];
-
-Add a comment here or a check later on why this is large enough.
-
-> +	char uid[16];
-> +	u32 acpi_id;
+> +	int err;
+> +	struct mpam_msc *msc;
+> +	struct resource *msc_res;
+> +	struct device *dev = &pdev->dev;
+> +	void *plat_data = pdev->dev.platform_data;
 > +
-> +	if (acpi_disabled || !system_supports_mpam() || IS_ERR(table))
-> +		return 0;
-> +
-> +	if (table->revision < 1)
-> +		return 0;
-> +
-> +	table_end = (char *)table + table->length;
-> +
-> +	while (table_offset < table_end) {
-> +		tbl_msc = (struct acpi_mpam_msc_node *)table_offset;
-> +		table_offset += tbl_msc->length;
-> +
-> +		if (table_offset > table_end) {
-> +			pr_debug("MSC entry overlaps end of ACPI table\n");
-> +			break;
+> +	mutex_lock(&mpam_list_lock);
+> +	do {
 
-That this isn't considered an error is a bit subtle and made me wonder
-if there was a use of uninitialized pdev (there isn't because err == 0)
-Why not return here?
+I might well have moaned about this before, but I really dislike a do while(0)
+if it doesn't fit on my screen (and my eyesight is poor so that's not this
+many lines).  To me a non trivial case of this is almost always a place
+where a '_do' function would have made it more readable. 
 
-> +		}
-> +
-> +		/*
-> +		 * If any of the reserved fields are set, make no attempt to
-> +		 * parse the MSC structure. This MSC will still be counted,
-> +		 * meaning the MPAM driver can't probe against all MSC, and
-> +		 * will never be enabled. There is no way to enable it safely,
-> +		 * because we cannot determine safe system-wide partid and pmg
-> +		 * ranges in this situation.
-> +		 */
+I'm also not a fan of scoped_guard() plus breaks because it feels like
+it is dependent on an implementation detail but maybe it's clearer than this.
 
-This is decidedly paranoid. I'd normally expect the architecture to be based
-on assumption that is fine for old software to ignore new fields.  ACPI itself
-has fairly firm rules on this (though it goes wrong sometimes :)
-I'm guessing there is something out there that made this necessary though so
-keep it if you actually need it.
 
-> +		if (tbl_msc->reserved || tbl_msc->reserved1 || tbl_msc->reserved2) {
-> +			pr_err_once("Unrecognised MSC, MPAM not usable\n");
-> +			pr_debug("MSC.%u: reserved field set\n", tbl_msc->identifier);
-> +			continue;
-> +		}
-> +
-> +		if (!tbl_msc->mmio_size) {
-> +			pr_debug("MSC.%u: marked as disabled\n", tbl_msc->identifier);
-> +			continue;
-> +		}
-> +
-> +		if (decode_interface_type(tbl_msc, &iface)) {
-> +			pr_debug("MSC.%u: unknown interface type\n", tbl_msc->identifier);
-> +			continue;
-> +		}
-> +
-> +		next_res = 0;
-> +		next_prop = 0;
-> +		memset(res, 0, sizeof(res));
-> +		memset(props, 0, sizeof(props));
-> +
-> +		pdev = platform_device_alloc("mpam_msc", tbl_msc->identifier);
-
-https://lore.kernel.org/all/20241009124120.1124-13-shiju.jose@huawei.com/
-was a proposal to add a DEFINE_FREE() to clean these up.  Might be worth a revisit.
-Then Greg was against the use it was put to and asking for an example of where
-it helped.  Maybe this is that example.
-
-If you do want to do that, I'd factor out a bunch of the stuff here as a helper
-so we can have the clean ownership pass of a return_ptr().  
-Similar to what Shiju did here (this is the usecase for platform device that
-Greg didn't like).
-https://lore.kernel.org/all/20241009124120.1124-14-shiju.jose@huawei.com/
-
-Even without that I think factoring some of this out and hence being able to
-do returns on errors and put the if (err) into the loop would be a nice
-improvement to readability.
-
-> +		if (!pdev) {
+> +		msc = devm_kzalloc(&pdev->dev, sizeof(*msc), GFP_KERNEL);
+> +		if (!msc) {
 > +			err = -ENOMEM;
 > +			break;
 > +		}
 > +
-> +		if (tbl_msc->length < sizeof(*tbl_msc)) {
+> +		mutex_init(&msc->probe_lock);
+> +		mutex_init(&msc->part_sel_lock);
+> +		mutex_init(&msc->outer_mon_sel_lock);
+> +		raw_spin_lock_init(&msc->inner_mon_sel_lock);
+> +		msc->id = pdev->id;
+> +		msc->pdev = pdev;
+> +		INIT_LIST_HEAD_RCU(&msc->all_msc_list);
+> +		INIT_LIST_HEAD_RCU(&msc->ris);
+> +
+> +		err = update_msc_accessibility(msc);
+> +		if (err)
+> +			break;
+> +		if (cpumask_empty(&msc->accessibility)) {
+> +			dev_err_once(dev, "MSC is not accessible from any CPU!");
 > +			err = -EINVAL;
 > +			break;
 > +		}
 > +
-> +		/* Some power management is described in the namespace: */
-> +		err = snprintf(uid, sizeof(uid), "%u", tbl_msc->identifier);
-> +		if (err > 0 && err < sizeof(uid)) {
-> +			companion = acpi_dev_get_first_match_dev("ARMHAA5C", uid, -1);
-> +			if (companion)
-> +				ACPI_COMPANION_SET(&pdev->dev, companion);
-> +			else
-> +				pr_debug("MSC.%u: missing namespace entry\n", tbl_msc->identifier);
+> +		if (device_property_read_u32(&pdev->dev, "pcc-channel",
+> +					     &msc->pcc_subspace_id))
+> +			msc->iface = MPAM_IFACE_MMIO;
+> +		else
+> +			msc->iface = MPAM_IFACE_PCC;
+> +
+> +		if (msc->iface == MPAM_IFACE_MMIO) {
+> +			void __iomem *io;
+> +
+> +			io = devm_platform_get_and_ioremap_resource(pdev, 0,
+> +								    &msc_res);
+> +			if (IS_ERR(io)) {
+> +				dev_err_once(dev, "Failed to map MSC base address\n");
+> +				err = PTR_ERR(io);
+> +				break;
+> +			}
+> +			msc->mapped_hwpage_sz = msc_res->end - msc_res->start;
+> +			msc->mapped_hwpage = io;
 > +		}
 > +
-> +		if (iface == MPAM_IFACE_MMIO) {
-> +			res[next_res++] = DEFINE_RES_MEM_NAMED(tbl_msc->base_address,
-> +							       tbl_msc->mmio_size,
-> +							       "MPAM:MSC");
-> +		} else if (iface == MPAM_IFACE_PCC) {
-> +			props[next_prop++] = PROPERTY_ENTRY_U32("pcc-channel",
-> +								tbl_msc->base_address);
-> +			next_prop++;
-
-Why the double increment? Needs a comment if that is right thing to do.
-
-> +		}
+> +		list_add_rcu(&msc->all_msc_list, &mpam_all_msc);
+> +		platform_set_drvdata(pdev, msc);
+> +	} while (0);
+> +	mutex_unlock(&mpam_list_lock);
 > +
-> +		acpi_mpam_parse_irqs(pdev, tbl_msc, res, &next_res);
-> +		err = platform_device_add_resources(pdev, res, next_res);
-> +		if (err)
-> +			break;
-> +
-> +		props[next_prop++] = PROPERTY_ENTRY_U32("arm,not-ready-us",
-> +							tbl_msc->max_nrdy_usec);
-> +
-> +		/*
-> +		 * The MSC's CPU affinity is described via its linked power
-> +		 * management device, but only if it points at a Processor or
-> +		 * Processor Container.
-> +		 */
-> +		if (parse_msc_pm_link(tbl_msc, pdev, &acpi_id)) {
-> +			props[next_prop++] = PROPERTY_ENTRY_U32("cpu_affinity",
-> +								acpi_id);
-> +		}
-> +
-> +		err = device_create_managed_software_node(&pdev->dev, props,
-> +							  NULL);
-> +		if (err)
-> +			break;
-> +
-> +		/* Come back later if you want the RIS too */
-> +		err = platform_device_add_data(pdev, tbl_msc, tbl_msc->length);
-> +		if (err)
-> +			break;
-> +
-> +		err = platform_device_add(pdev);
-> +		if (err)
-> +			break;
+> +	if (!err) {
+> +		/* Create RIS entries described by firmware */
+> +		err = acpi_mpam_parse_resources(msc, plat_data);
 > +	}
 > +
-> +	if (err)
-> +		platform_device_put(pdev);
+> +	if (err && msc)
+> +		mpam_msc_drv_remove(pdev);
+
+Is it worth bothering to remove?  We failed probe anyway if we got here
+and it's not expected to happen on real systems so I'd just leave it around
+so that you can exit early above.
+
+I'm also not following why the msc check is relevant if you do want to do
+this. Can only get here without msc if the allocation failed. Why would
+we leave the driver loaded in only that case?
+
+> +
+> +	if (!err && atomic_add_return(1, &mpam_num_msc) == fw_num_msc)
+> +		pr_info("Discovered all MSC\n");
 > +
 > +	return err;
 > +}
+
+> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
+> new file mode 100644
+> index 000000000000..7c63d590fc98
+> --- /dev/null
+> +++ b/drivers/resctrl/mpam_internal.h
+> @@ -0,0 +1,65 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +// Copyright (C) 2025 Arm Ltd.
 > +
-> +int acpi_mpam_count_msc(void)
-> +{
-> +	struct acpi_table_header *table __free(acpi_table) = acpi_get_table_ret(ACPI_SIG_MPAM, 0);
-> +	char *table_end, *table_offset = (char *)(table + 1);
-> +	struct acpi_mpam_msc_node *tbl_msc;
-> +	int count = 0;
+> +#ifndef MPAM_INTERNAL_H
+> +#define MPAM_INTERNAL_H
 > +
-> +	if (IS_ERR(table))
-> +		return 0;
+> +#include <linux/arm_mpam.h>
+> +#include <linux/cpumask.h>
+> +#include <linux/io.h>
+> +#include <linux/mailbox_client.h>
+> +#include <linux/mutex.h>
+
+spinlock.h
+
+> +#include <linux/resctrl.h>
+
+Not spotting anything rsctl yet.  So maybe this belongs later.
+
+> +#include <linux/sizes.h>
 > +
-> +	if (table->revision < 1)
-> +		return 0;
+> +struct mpam_msc {
+> +	/* member of mpam_all_msc */
+> +	struct list_head        all_msc_list;
 > +
-> +	table_end = (char *)table + table->length;
-Trivial so feel free to ignore.
-Perhaps should aim for consistency.  Whilst I prefer pointers for this stuff
-PPTT did use unsigned longs.
+> +	int			id;
+
+I'd follow (approx) include what you use principles to make later header
+shuffling easier. So a forward def for this.
+
+> +	struct platform_device *pdev;
+> +
+> +	/* Not modified after mpam_is_enabled() becomes true */
+> +	enum mpam_msc_iface	iface;
+> +	u32			pcc_subspace_id;
+> +	struct mbox_client	pcc_cl;
+> +	struct pcc_mbox_chan	*pcc_chan;
+
+Forward def or include acpi/pcc.h
+
+> +	u32			nrdy_usec;
+> +	cpumask_t		accessibility;
+> +
+> +	/*
+> +	 * probe_lock is only taken during discovery. After discovery these
+> +	 * properties become read-only and the lists are protected by SRCU.
+> +	 */
+> +	struct mutex		probe_lock;
+> +	unsigned long		ris_idxs;
+> +	u32			ris_max;
+> +
+> +	/* mpam_msc_ris of this component */
+> +	struct list_head	ris;
+> +
+> +	/*
+> +	 * part_sel_lock protects access to the MSC hardware registers that are
+> +	 * affected by MPAMCFG_PART_SEL. (including the ID registers that vary
+> +	 * by RIS).
+> +	 * If needed, take msc->probe_lock first.
+> +	 */
+> +	struct mutex		part_sel_lock;
+> +
+> +	/*
+> +	 * mon_sel_lock protects access to the MSC hardware registers that are
+> +	 * affected by MPAMCFG_MON_SEL.
+> +	 * If needed, take msc->probe_lock first.
+> +	 */
+> +	struct mutex		outer_mon_sel_lock;
+> +	raw_spinlock_t		inner_mon_sel_lock;
+> +	unsigned long		inner_mon_sel_flags;
+> +
+> +	void __iomem		*mapped_hwpage;
+> +	size_t			mapped_hwpage_sz;
+> +};
+> +
+> +int mpam_get_cpumask_from_cache_id(unsigned long cache_id, u32 cache_level,
+> +				   cpumask_t *affinity);
+
+Where is this?
 
 > +
-> +	while (table_offset < table_end) {
-> +		tbl_msc = (struct acpi_mpam_msc_node *)table_offset;
-> +		if (!tbl_msc->mmio_size)
-> +			continue;
-> +
-> +		if (tbl_msc->length < sizeof(*tbl_msc))
-> +			return -EINVAL;
-> +		if (tbl_msc->length > table_end - table_offset)
-> +			return -EINVAL;
-> +		table_offset += tbl_msc->length;
-> +
-> +		count++;
-> +	}
-> +
-> +	return count;
-> +}
-> +
-
-Could reorder to put acpi_mpam_parse and this use of it together?
-
-> +/*
-> + * Call after ACPI devices have been created, which happens behind acpi_scan_init()
-> + * called from subsys_initcall(). PCC requires the mailbox driver, which is
-> + * initialised from postcore_initcall().
-> + */
-> +subsys_initcall_sync(acpi_mpam_parse);
-
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index c5fd92cda487..af449964426b 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -8,6 +8,7 @@
->  #ifndef _LINUX_ACPI_H
->  #define _LINUX_ACPI_H
->  
-> +#include <linux/cleanup.h>
->  #include <linux/errno.h>
->  #include <linux/ioport.h>	/* for struct resource */
->  #include <linux/resource_ext.h>
-> @@ -221,6 +222,17 @@ void acpi_reserve_initial_tables (void);
->  void acpi_table_init_complete (void);
->  int acpi_table_init (void);
->  
-> +static inline struct acpi_table_header *acpi_get_table_ret(char *signature, u32 instance)
-> +{
-> +	struct acpi_table_header *table;
-> +	int status = acpi_get_table(signature, instance, &table);
-> +
-> +	if (ACPI_FAILURE(status))
-> +		return ERR_PTR(-ENOENT);
-> +	return table;
-> +}
-> +DEFINE_FREE(acpi_table, struct acpi_table_header *, if (!IS_ERR(_T)) acpi_put_table(_T))
-
-I'd use if (!IS_ERR_OR_NULL(_T)) not because it is functionally necessary but
-because it will let the compiler optimize this out if it can tell that in a given
-path _T is NULL (I think it was Peter Z who pointed this out in a similar interface
-a while back).
-
-
-I'd like an opinion from Rafael on this in general.
-
-
-
-> +
->  int acpi_table_parse(char *id, acpi_tbl_table_handler handler);
->  int __init_or_acpilib acpi_table_parse_entries(char *id,
->  		unsigned long table_size, int entry_id,
+> +#endif /* MPAM_INTERNAL_H */
 
 
