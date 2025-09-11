@@ -1,101 +1,113 @@
-Return-Path: <linux-acpi+bounces-16671-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16672-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8EAEB534DF
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 16:08:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A630B534F3
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 16:13:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 923BE17E6EA
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 14:08:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 547C2AA2A38
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 14:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F732337688;
-	Thu, 11 Sep 2025 14:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFFC337682;
+	Thu, 11 Sep 2025 14:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hWuBeIMm"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01375335BC7;
-	Thu, 11 Sep 2025 14:08:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7513375CF;
+	Thu, 11 Sep 2025 14:13:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757599700; cv=none; b=liyXDwQYEA2TBaCWsEuZ9xIEXUwL8MxFmuKS1J7NWrshI8QuT5c7rRexYkAKxyA4mIDeXHsMICacCwFSsHvRS66PyXKCyl+xceaXYC7XoiY9oDE6mQ8u/ps+zoqlyFurMwUPwwFGQaEtD18ryMBqurKz3lkokJOFbquac+8Fric=
+	t=1757600005; cv=none; b=dZmRJopPY+aQRNO/QrlPxkv+fv9a3SELzjz/m++dP0pkVWQSjbZifG0kJjNP4j0GyEt+nIu1luHGY2Cw3E9GOEo7hZ/TPACJ0v1XlvhWTlRyJXgJucCgPDtp9El/NmsUa9Qsz8OQideuod6vz9dWhKnyQ2RfNFgUd5lfsxWkABk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757599700; c=relaxed/simple;
-	bh=TnUX06U7B/fv5RZhLcLY7HLNhXc+VW4LhpdQZZmbIVU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k7/ugdool2wibr+7SpOZf8i6nRZ68jkX6eQkESuDs5zIl5hrJav9Pu4t4HuffuK9rbQ0OoMygPNU3NwwAwbrGtGYcXHRJ0hIx0bS3gDUQf6FgaTfWDdoRE4loCfaIUVaa1heFkCg7/JO23M2v16JfcKOcGLf4nFHthsJtA3ZRBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6CC69153B;
-	Thu, 11 Sep 2025 07:08:03 -0700 (PDT)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7E1863F694;
-	Thu, 11 Sep 2025 07:08:06 -0700 (PDT)
-Message-ID: <8b502a2a-36f0-4234-84a0-e1d00b95ba56@arm.com>
-Date: Thu, 11 Sep 2025 15:08:05 +0100
+	s=arc-20240116; t=1757600005; c=relaxed/simple;
+	bh=CHLQC8UNFWx/L02U/6dzT5ziaf7nOpGIRoDp4xoRfbE=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bGUsVCaihfcaf+t3RDciF0U6J6pJV+wbohhGLqujUj0TRQBQB2cMR2sQxLOzWNc8Arjx5WKMPCWJPAlfb6fsweAGNv3T+my31RozAlXAHUwP38+UakyyRl3mb1lgklE/dNqe7srVed5oNCpRonGGoVzRigpDUkwVVVBAv8gffyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hWuBeIMm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57306C4CEF0;
+	Thu, 11 Sep 2025 14:13:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757600004;
+	bh=CHLQC8UNFWx/L02U/6dzT5ziaf7nOpGIRoDp4xoRfbE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=hWuBeIMm3esoMaBijLO33dqTzWLpqs9LRS4ho6OVCRrj2rczlDPhMf8NtbWzDu8b8
+	 UE+3MrwY/yX2C4KzLOeEN+xA1IC8u3PvPeZC7RCK0YRlHylNQ1kXyfaXvu31RtVkB+
+	 rrA20zfzSh3H5XGG5VIdhPQNwLu7h8MF5tkX7ivIY5Lw6YVEa3bptnknnAN3fpr8d1
+	 yOpelE6rV+rjQkcKyxmYUxxw+r94vfbvQMTtv2C7r4BE4CgcIeoDsOzbqd3roZGca9
+	 1DibgW2dG42gpCnPtfK/PqEmdt2yM4Fz6PyVfxolnuRmzZ3PtZ5uGpvfWFd7adXk4Q
+	 2Nu5AuYdXbgJw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1uwi37-00000005NmT-3OkK;
+	Thu, 11 Sep 2025 14:13:21 +0000
+Date: Thu, 11 Sep 2025 15:13:21 +0100
+Message-ID: <86a531cc1q.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau
+ <j@jannau.net>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	James Clark
+ <james.clark@linaro.org>
+Subject: Re: [PATCH 01/25] irqdomain: Add firmware info reporting interface
+In-Reply-To: <87ikhsvvau.ffs@tglx>
+References: <20250908163127.2462948-1-maz@kernel.org>
+	<20250908163127.2462948-2-maz@kernel.org>
+	<87ikhsvvau.ffs@tglx>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/29] ACPI / PPTT: Stop acpi_count_levels() expecting
- callers to clear levels
-To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
-Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
- carl@os.amperecomputing.com, lcherian@marvell.com,
- bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
- baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
- Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
- dfustini@baylibre.com, amitsinght@marvell.com,
- David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
- Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- fenghuay@nvidia.com, baisheng.gao@unisoc.com,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
- <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
- Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>
-References: <20250910204309.20751-1-james.morse@arm.com>
- <20250910204309.20751-3-james.morse@arm.com>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <20250910204309.20751-3-james.morse@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: tglx@linutronix.de, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, mark.rutland@arm.com, will@kernel.org, rafael@kernel.org, robh@kernel.org, saravanak@google.com, gregkh@linuxfoundation.org, sven@kernel.org, j@jannau.net, suzuki.poulose@arm.com, james.clark@linaro.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hi James,
-
-On 9/10/25 21:42, James Morse wrote:
-> In acpi_count_levels(), the initial value of *levels passed by the
-> caller is really an implementation detail of acpi_count_levels(), so it
-> is unreasonable to expect the callers of this function to know what to
-> pass in for this parameter.  The only sensible initial value is 0,
-> which is what the only upstream caller (acpi_get_cache_info()) passes.
+On Tue, 09 Sep 2025 10:18:01 +0100,
+Thomas Gleixner <tglx@linutronix.de> wrote:
 > 
-> Use a local variable for the starting cache level in acpi_count_levels(),
-> and pass the result back to the caller via the function return value.
+> On Mon, Sep 08 2025 at 17:31, Marc Zyngier wrote:
+
+[...]
+
+> > @@ -69,6 +90,8 @@ void of_phandle_args_to_fwspec(struct device_node *np, const u32 *args,
+> >   * @translate:	Given @fwspec, decode the hardware irq number (@out_hwirq) and
+> >   *		linux irq type value (@out_type). This is a generalised @xlate
+> >   *		(over struct irq_fwspec) and is preferred if provided.
+> > + * @get_info: Given @info, report additional firmware-provided information.
+> > + *            Optional.
 > 
-> Gid rid of the levels parameter, which has no remaining purpose.
+> get_info() is pretty generic. Can we have some more descriptive name for
+> that? Also please keep the tabular formatting of the doc intact.
 
-Nit: s/Gid/Get/
+Would get_fwspec_info() be descriptive enough?
 
-> 
-> Fix acpi_get_cache_info() to match.
-> 
-> Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Signed-off-by: James Morse <james.morse@arm.com>
-> Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> ---
-Thanks,
+	M.
 
-Ben
-
+-- 
+Without deviation from the norm, progress is not possible.
 
