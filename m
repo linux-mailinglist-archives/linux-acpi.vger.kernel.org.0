@@ -1,342 +1,235 @@
-Return-Path: <linux-acpi+bounces-16673-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16674-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D26B53529
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 16:22:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FD2B53607
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 16:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D07A7A51A1
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 14:21:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BECC6163B46
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 14:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A023225A24;
-	Thu, 11 Sep 2025 14:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0349F341651;
+	Thu, 11 Sep 2025 14:43:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="IJrjlpFx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6040B2367A0;
-	Thu, 11 Sep 2025 14:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95AB2E888A
+	for <linux-acpi@vger.kernel.org>; Thu, 11 Sep 2025 14:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757600572; cv=none; b=rUJYO5iJ6Za0QVL9YzI9NAoR1PgctebRFK//IipbKGeBXynRO3PEtkUAlMrO3sFd9h3gjB/QkZl1J6BywGZPy7QS4yeoU6LzzGN6x6Sec+cAXl2ITnGRM0cZWtmkXPQH+QWRSYbdf7oszC0PKPPRe4Hk/QGBY4lW2ju1AYmW7KQ=
+	t=1757601794; cv=none; b=hbZ2AwjyfbyzsEHuJ85em6581Fw/ql/+xK8zXsJp+HKxq8dvCyIwDgh0ql37ZEMj5NjCd2Q8QWOxGccjbrE3I9Lq4jXQ2eLQqt5Im4/tP7MUYcfdGGVZVm9P1tMVI/f+2hqSQoJttZ9pWrZLYGyJ9Ahdf7VKUck3sa5hdX+4HfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757600572; c=relaxed/simple;
-	bh=mijEeafRmhWE496Glh2QhH7og8eglLX5doEvUy4vZZo=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l06XghBjoKO2ukk/qwRX3Oa0UeODgY97Xe6fYDCHzgl8X3tcKU7/OMwbg/7eyTuHODQlGq15sVzFuitKY7IPyEFqRkj6RNtnkp/gnhD58W7WWnRbguZhZcspIL6LQm+9I3EJ1ueP1VQpaQlr9gBuKe9lq9V8sr0PJYDavY19Ve8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cN07p3l0xz6LD8G;
-	Thu, 11 Sep 2025 22:20:06 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7BCCE1402FE;
-	Thu, 11 Sep 2025 22:22:46 +0800 (CST)
-Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 11 Sep
- 2025 16:22:45 +0200
-Date: Thu, 11 Sep 2025 15:22:44 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: James Morse <james.morse@arm.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-acpi@vger.kernel.org>, D Scott Phillips OS
-	<scott@os.amperecomputing.com>, <carl@os.amperecomputing.com>,
-	<lcherian@marvell.com>, <bobo.shaobowang@huawei.com>,
-	<tan.shaopeng@fujitsu.com>, <baolin.wang@linux.alibaba.com>, Jamie Iles
-	<quic_jiles@quicinc.com>, Xin Hao <xhao@linux.alibaba.com>,
-	<peternewman@google.com>, <dfustini@baylibre.com>, <amitsinght@marvell.com>,
-	David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>, Koba
- Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
-	<fenghuay@nvidia.com>, <baisheng.gao@unisoc.com>, Rob Herring
-	<robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>, "Rafael Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, Lorenzo Pieralisi
-	<lpieralisi@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla
-	<sudeep.holla@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, "Will
- Deacon" <will@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>, Ben Horgan <ben.horgan@arm.com>
-Subject: Re: [PATCH v2 08/29] arm_mpam: Add the class and component
- structures for firmware described ris
-Message-ID: <20250911152244.000047db@huawei.com>
-In-Reply-To: <20250910204309.20751-9-james.morse@arm.com>
-References: <20250910204309.20751-1-james.morse@arm.com>
-	<20250910204309.20751-9-james.morse@arm.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1757601794; c=relaxed/simple;
+	bh=V6FD0d3JgbZXKHC+xUSTnDcPYnDX6VNwyniSodQFA3M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U5oI1ocjwfA8iuERyHZlEvHddvUZj/RxmI1bI7S6u/j0nXZDfA5+cAfy8HpzlO+qoIyy7megZZjuOVYU1zeH1JyeLwUfUhc4TnZat1AauJwM1s7B7r6T6DO7QGExqjJ6Ue6X8B50fZeByMMUsi71h4+i4zv8llNBhk/LUc5N+kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=IJrjlpFx; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3df35a67434so594261f8f.3
+        for <linux-acpi@vger.kernel.org>; Thu, 11 Sep 2025 07:43:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1757601791; x=1758206591; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=nL/0YN+s3DP2N6NxTAsYAkeIEs7a8heXoKnclmsN4gg=;
+        b=IJrjlpFxYt2+GHGiWozBj+4rTCQdLjp55QlaVqhsUeLS4s+0MrZ3LTQ6V0rmGSlofP
+         zgocB073IQrdWJ5wQe2+t9ZVyV4UKGxI+sYlOhf1ctkXx/3+excOTf7cKweJFcESNCCT
+         njwEMKE2lE2A/n7UjVwjTpA2jMs2fWOWL20p9yLbcd2u/LRJG4qUJuRwM8kquwjbi/GT
+         S2B5GqA0JqbGHIycVQtpAoMktJ07bd2dH0J5GTXdw/xpl+6SgHWj2rIuqZadoIgoLTCa
+         ym5uyUS7Ex+HAGhjcflcqen2rxuBOyuufstxDGdnd4/NEcjDLpQjGRLdmZKisHPKA4Gr
+         Y5Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757601791; x=1758206591;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nL/0YN+s3DP2N6NxTAsYAkeIEs7a8heXoKnclmsN4gg=;
+        b=iozSevp1irnQt1GaeO9QAUcdloOgYcnDojH6+AA74Io4IwpafMS+I7agvrYSEck0AP
+         vVmvTSL03HRJCMiWy9EfTIIiMq2WNpzkDTR7LxgeEmNu55YPMNAFaeDtB5RlvrW6WPMQ
+         x6HzhTlrsPBAEj/YvojntiWz9og44AWwDZYkmiVzoiVyvN7L0UOxjbWxKu34a9Ly/kx6
+         sLx8NfCU0XyoVhDoO/j+0qmxpkXXR3XMEIN4lLrkGCLNQXHPEcvPMp7MVnlSje4GNn6y
+         NdsE+Pw1OjotOaT8/rk5oWTF8vRw3jhv15Dxc5Bkc9br7mjdsyVHSUks3RhYe2iqb2eP
+         Sepg==
+X-Forwarded-Encrypted: i=1; AJvYcCVaaGHCR4rTnd5prK1oR2K1MyXIHKcszINfqglTHDLIT2Da8rYyPB5cSrDGK7NLz/0NLGY4DGIWklCI@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2ddYOT6/cRAdenuQITtoE5JiqTAmzTy3+sFpd0yqwR2xc6Tiy
+	req/PZDb/JGMmBnaHqPlc3d9EfEdYkoJE1BB7/TfaN7QmOe2zmASgPF3rdS/e1sZfbU=
+X-Gm-Gg: ASbGncshNBP0AFW893yAOcOMFZdlm0zAqyE0M1phE7qNOqLd6ilaTrLlzCytYPbyfN0
+	Z+FgH+U7RHX+PFrZPC/roEklZvqsW9O9iNHgXAEi9NOEVDlmsK4IXANx9ZKeA4a6qklCllH9SAs
+	DYP2/9LuMsfP77BBMfWJ+FM2WTu2WxpEI4xUWqzkjJx+b9aB5em/zZ1aYDVM04f3NShkVG9F3Qi
+	1n3laSgmkLlVUFwe1mrPYK1r3Qrt04+SBd2MHMgs35nf7EmA0yBH0G+1QFNBlQGHmcL+GDXXR77
+	9rqWWfJu3d910NGAHCmkJj+6yvC1ssh0P5Et08IKylr1u3bdQYQm8wiA+B+FDmqpEjYtJAjopDn
+	pZ3rm3diTx/mXE4RO1AlLPDNJglDTiIhcx2MxjS3OrMPfDw==
+X-Google-Smtp-Source: AGHT+IFzH+V8s0sYRpmkvChDZV6cgGCwMXzJuS0qZEWWciIhM/GLC66m7Zo+tfDPNhyBgLig/B9WtQ==
+X-Received: by 2002:a05:6000:430c:b0:3e7:632a:f3fe with SMTP id ffacd0b85a97d-3e7632af44bmr1679160f8f.61.1757601791055;
+        Thu, 11 Sep 2025 07:43:11 -0700 (PDT)
+Received: from [10.20.0.214] (ivokam.ddns.nbis.net. [109.121.139.111])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7607d7affsm2876729f8f.48.2025.09.11.07.42.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Sep 2025 07:43:10 -0700 (PDT)
+Message-ID: <e85965a9-3aa5-4368-95bc-c46ab18a25fa@suse.com>
+Date: Thu, 11 Sep 2025 17:42:39 +0300
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
- frapeml500008.china.huawei.com (7.182.85.71)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 12/15] x86/mce/amd: Remove redundant reset_block()
+To: Yazen Ghannam <yazen.ghannam@amd.com>, x86@kernel.org,
+ Tony Luck <tony.luck@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
+ Smita.KoralahalliChannabasappa@amd.com, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+ linux-acpi@vger.kernel.org
+References: <20250908-wip-mca-updates-v6-0-eef5d6c74b9c@amd.com>
+ <20250908-wip-mca-updates-v6-12-eef5d6c74b9c@amd.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20250908-wip-mca-updates-v6-12-eef5d6c74b9c@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, 10 Sep 2025 20:42:48 +0000
-James Morse <james.morse@arm.com> wrote:
 
-> An MSC is a container of resources, each identified by their RIS index.
-> Some RIS are described by firmware to provide their position in the system.
-> Others are discovered when the driver probes the hardware.
+
+On 8.09.25 г. 18:40 ч., Yazen Ghannam wrote:
+> Many of the checks in reset_block() are done again in the block reset
+> function. So drop the redundant checks.
 > 
-> To configure a resource it needs to be found by its class, e.g. 'L2'.
-> There are two kinds of grouping, a class is a set of components, which
-> are visible to user-space as there are likely to be multiple instances
-> of the L2 cache. (e.g. one per cluster or package)
-> 
-> Add support for creating and destroying structures to allow a hierarchy
-> of resources to be created.
-> 
-> CC: Ben Horgan <ben.horgan@arm.com>
-> Signed-off-by: James Morse <james.morse@arm.com>
-
-Various minor things inline.
-
-Biggest is I think maybe just moving to explicit reference counts
-rather than using the empty list for that might end up easier to
-read. Mostly because everyone knows what a kref_put() is about.
-
-Obviously a bit pointless in practice, but I prefer not to think too
-hard.
+> Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 
 
 > ---
-> Changes since v1:
->  * Fixed a comp/vmsc typo.
->  * Removed duplicate description from the commit message.
->  * Moved parenthesis in the add_to_garbage() macro.
->  * Check for out of range ris_idx when creating ris.
->  * Removed GFP as probe_lock is no longer a spin lock.
->  * Removed alloc flag as ended up searching the lists itself.
->  * Added a comment about affinity masks not overlapping.
 > 
-> Changes since RFC:
->  * removed a pr_err() debug message that crept in.
-> ---
->  drivers/resctrl/mpam_devices.c  | 406 +++++++++++++++++++++++++++++++-
->  drivers/resctrl/mpam_internal.h |  90 +++++++
->  include/linux/arm_mpam.h        |   8 +-
->  3 files changed, 493 insertions(+), 11 deletions(-)
+> Notes:
+>      Link:
+>      https://lore.kernel.org/r/20250825-wip-mca-updates-v5-17-865768a2eef8@amd.com
+>      
+>      v5->v6:
+>      * No change.
+>      
+>      v4->v5:
+>      * No change.
+>      
+>      v3->v4:
+>      * New in v4.
 > 
-> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-> index efc4738e3b4d..c7f4981b3545 100644
-> --- a/drivers/resctrl/mpam_devices.c
-> +++ b/drivers/resctrl/mpam_devices.c
-> @@ -18,7 +18,6 @@
->  #include <linux/printk.h>
->  #include <linux/slab.h>
->  #include <linux/spinlock.h>
-> -#include <linux/srcu.h>
+>   arch/x86/kernel/cpu/mce/amd.c | 28 +++++++---------------------
+>   1 file changed, 7 insertions(+), 21 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
+> index 34268940c88a..9ca4079ff342 100644
+> --- a/arch/x86/kernel/cpu/mce/amd.c
+> +++ b/arch/x86/kernel/cpu/mce/amd.c
+> @@ -812,29 +812,11 @@ static void amd_deferred_error_interrupt(void)
+>   	machine_check_poll(MCP_TIMESTAMP, &this_cpu_ptr(&mce_amd_data)->dfr_intr_banks);
+>   }
+>   
+> -static void reset_block(struct threshold_block *block)
+> -{
+> -	struct thresh_restart tr;
+> -	u32 low = 0, high = 0;
+> -
+> -	if (!block)
+> -		return;
+> -
+> -	if (rdmsr_safe(block->address, &low, &high))
+> -		return;
 
-Why does this include no longer make sense?
+
+This is being replaced by rdmsr, I guess it's safe because the fact we 
+are processing a block which has been on the bank list means it's 
+unlikely the rdmsr will fault.
 
 
->  #include <linux/types.h>
->  
->  #include "mpam_internal.h"
-> @@ -31,7 +30,7 @@
->  static DEFINE_MUTEX(mpam_list_lock);
->  static LIST_HEAD(mpam_all_msc);
->  
-> -static struct srcu_struct mpam_srcu;
-> +struct srcu_struct mpam_srcu;
+> -
+> -	if (!(high & MASK_OVERFLOW_HI))
+> -		return;
 
-...
-
-> +/* List of all objects that can be free()d after synchronise_srcu() */
-> +static LLIST_HEAD(mpam_garbage);
+nit: However, now, if mask overflow is not set a write to the msr will 
+be performed, with the effect that IntType is going to be cleared (hi &= 
+~MASK_INT_TYPE_HI; in threshold_restart_block), and MASK_COUNT_EN_HI 
+will be set, that's different than the existing code, albeit it might be 
+ok.
+> -
+> -	memset(&tr, 0, sizeof(tr));
+> -	tr.b = block;
+> -	threshold_restart_block(&tr);
+> -}
+> -
+>   static void amd_reset_thr_limit(unsigned int bank)
+>   {
+>   	struct threshold_bank **bp = this_cpu_read(threshold_banks);
+>   	struct threshold_block *block, *tmp;
+> +	struct thresh_restart tr;
+>   
+>   	/*
+>   	 * Validate that the threshold bank has been initialized already. The
+> @@ -844,8 +826,12 @@ static void amd_reset_thr_limit(unsigned int bank)
+>   	if (!bp || !bp[bank])
+>   		return;
+>   
+> -	list_for_each_entry_safe(block, tmp, &bp[bank]->miscj, miscj)
+> -		reset_block(block);
+> +	memset(&tr, 0, sizeof(tr));
 > +
-> +#define init_garbage(x)	init_llist_node(&(x)->garbage.llist)
-
-Whilst this obviously works, I'd rather pass garbage to init_garbage
-instead of the containing structure (where type varies)
-
-> +
-> +static struct mpam_vmsc *
-> +mpam_vmsc_alloc(struct mpam_component *comp, struct mpam_msc *msc)
-> +{
-> +	struct mpam_vmsc *vmsc;
-> +
-> +	lockdep_assert_held(&mpam_list_lock);
-> +
-> +	vmsc = kzalloc(sizeof(*vmsc), GFP_KERNEL);
-> +	if (!vmsc)
-> +		return ERR_PTR(-ENOMEM);
-> +	init_garbage(vmsc);
-> +
-> +	INIT_LIST_HEAD_RCU(&vmsc->ris);
-> +	INIT_LIST_HEAD_RCU(&vmsc->comp_list);
-> +	vmsc->comp = comp;
-> +	vmsc->msc = msc;
-> +
-> +	list_add_rcu(&vmsc->comp_list, &comp->vmsc);
-> +
-> +	return vmsc;
-> +}
-
-> +static struct mpam_component *
-> +mpam_component_get(struct mpam_class *class, int id)
-> +{
-> +	struct mpam_component *comp;
-> +
-> +	lockdep_assert_held(&mpam_list_lock);
-> +
-> +	list_for_each_entry(comp, &class->components, class_list) {
-> +		if (comp->comp_id == id)
-> +			return comp;
+> +	list_for_each_entry_safe(block, tmp, &bp[bank]->miscj, miscj) {
+> +		tr.b = block;
+> +		threshold_restart_block(&tr);
 > +	}
-> +
-> +	return mpam_component_alloc(class, id);
-> +}
-
-> +static struct mpam_class *
-> +mpam_class_get(u8 level_idx, enum mpam_class_types type)
-> +{
-> +	bool found = false;
-> +	struct mpam_class *class;
-> +
-> +	lockdep_assert_held(&mpam_list_lock);
-> +
-> +	list_for_each_entry(class, &mpam_classes, classes_list) {
-> +		if (class->type == type && class->level == level_idx) {
-> +			found = true;
-> +			break;
-> +		}
-> +	}
-> +
-> +	if (found)
-> +		return class;
-
-Maybe this gets more complex later, but if it doesn't, just return class where you set
-found above.  Matches with pattern used in mpam_component_get() above.
-
-
-> +
-> +	return mpam_class_alloc(level_idx, type);
-> +}
-
-
-> +static void mpam_ris_destroy(struct mpam_msc_ris *ris)
-> +{
-> +	struct mpam_vmsc *vmsc = ris->vmsc;
-> +	struct mpam_msc *msc = vmsc->msc;
-> +	struct platform_device *pdev = msc->pdev;
-> +	struct mpam_component *comp = vmsc->comp;
-> +	struct mpam_class *class = comp->class;
-> +
-> +	lockdep_assert_held(&mpam_list_lock);
-> +
-> +	/*
-> +	 * It is assumed affinities don't overlap. If they do the class becomes
-> +	 * unusable immediately.
-> +	 */
-> +	cpumask_andnot(&comp->affinity, &comp->affinity, &ris->affinity);
-> +	cpumask_andnot(&class->affinity, &class->affinity, &ris->affinity);
-> +	clear_bit(ris->ris_idx, &msc->ris_idxs);
-> +	list_del_rcu(&ris->vmsc_list);
-> +	list_del_rcu(&ris->msc_list);
-> +	add_to_garbage(ris);
-> +	ris->garbage.pdev = pdev;
-> +
-> +	if (list_empty(&vmsc->ris))
-
-See below. I think it is worth using an explicit reference count even
-though that will only reach zero when the list is empty.
-
-> +		mpam_vmsc_destroy(vmsc);
-> +}
-
-
-> +static int mpam_ris_create_locked(struct mpam_msc *msc, u8 ris_idx,
-> +				  enum mpam_class_types type, u8 class_id,
-> +				  int component_id)
-> +{
-> +	int err;
-> +	struct mpam_vmsc *vmsc;
-> +	struct mpam_msc_ris *ris;
-> +	struct mpam_class *class;
-> +	struct mpam_component *comp;
-> +
-> +	lockdep_assert_held(&mpam_list_lock);
-> +
-> +	if (ris_idx > MPAM_MSC_MAX_NUM_RIS)
-> +		return -EINVAL;
-> +
-> +	if (test_and_set_bit(ris_idx, &msc->ris_idxs))
-> +		return -EBUSY;
-> +
-> +	ris = devm_kzalloc(&msc->pdev->dev, sizeof(*ris), GFP_KERNEL);
-> +	if (!ris)
-> +		return -ENOMEM;
-> +	init_garbage(ris);
-> +
-> +	class = mpam_class_get(class_id, type);
-> +	if (IS_ERR(class))
-> +		return PTR_ERR(class);
-> +
-> +	comp = mpam_component_get(class, component_id);
-> +	if (IS_ERR(comp)) {
-> +		if (list_empty(&class->components))
-> +			mpam_class_destroy(class);
-
-Maybe just reference count the classes with a kref and do a put here?
-
-> +		return PTR_ERR(comp);
-> +	}
-> +
-> +	vmsc = mpam_vmsc_get(comp, msc);
-> +	if (IS_ERR(vmsc)) {
-> +		if (list_empty(&comp->vmsc))
-> +			mpam_comp_destroy(comp);
-Similar to classes I wonder if simple reference counting is cleaner.
-> +		return PTR_ERR(vmsc);
-> +	}
-> +
-> +	err = mpam_ris_get_affinity(msc, &ris->affinity, type, class, comp);
-> +	if (err) {
-> +		if (list_empty(&vmsc->ris))
-
-and here as well.
-
-> +			mpam_vmsc_destroy(vmsc);
-> +		return err;
-> +	}
-> +
-> +	ris->ris_idx = ris_idx;
-> +	INIT_LIST_HEAD_RCU(&ris->vmsc_list);
-> +	ris->vmsc = vmsc;
-> +
-> +	cpumask_or(&comp->affinity, &comp->affinity, &ris->affinity);
-> +	cpumask_or(&class->affinity, &class->affinity, &ris->affinity);
-> +	list_add_rcu(&ris->vmsc_list, &vmsc->ris);
-> +
-> +	return 0;
-> +}
-
->  /*
->   * An MSC can control traffic from a set of CPUs, but may only be accessible
->   * from a (hopefully wider) set of CPUs. The common reason for this is power
-> @@ -74,10 +469,10 @@ static void mpam_msc_drv_remove(struct platform_device *pdev)
->  		return;
->  
->  	mutex_lock(&mpam_list_lock);
-> -	platform_set_drvdata(pdev, NULL);
-> -	list_del_rcu(&msc->all_msc_list);
-> -	synchronize_srcu(&mpam_srcu);
-> +	mpam_msc_destroy(msc);
-
-I'd suggest introducing mpam_msc_destroy() in the earlier patch. Doesn't make a huge
-difference but 2 out of 3 things removed here would be untouched if you do that.
-
->  	mutex_unlock(&mpam_list_lock);
-> +
-> +	mpam_free_garbage();
->  }
-
-
+>   }
+>   
+>   /*
+> 
 
 
