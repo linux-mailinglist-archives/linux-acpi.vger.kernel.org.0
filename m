@@ -1,163 +1,252 @@
-Return-Path: <linux-acpi+bounces-16658-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16659-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 365D5B52EB8
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 12:39:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E14A3B52ED9
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 12:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E73C516795A
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 10:38:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC92DA00FB1
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 10:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FCB30DD15;
-	Thu, 11 Sep 2025 10:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FI4IStw+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448F630F554;
+	Thu, 11 Sep 2025 10:43:46 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032102E7BAD;
-	Thu, 11 Sep 2025 10:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E7130F54E;
+	Thu, 11 Sep 2025 10:43:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757587136; cv=none; b=lnXv6d803k0ljaHMi7af4km2127wCqgvfZPu1sfg3jQ1BOZ7F2mQLWglvY0/VmX5ZrM1bqULmA9KGLkTJ3DyEAvR0R/N8TQQj/MeAnYLBmntUaAPmAuxduD1QoKUmdJGsl9hqw11ibJjXB8j0goGjDLc8zZp5Bk/zyydL5nGyqA=
+	t=1757587426; cv=none; b=EZwwlGlOvUNo8wNMrr9ExeeTWz22bIwFuVF37Kv7GdLgeZnuY2Zw8Sq+tfEwYYPcjp7V23uo/rC41zJXYlduLQEQ/Exe/tVrsfP8uR0jVGqA9p80Gnx9KrILtaCtcu4ZiNOmcpsPSgZvV/m7Aa98X1U0IYBKr3GdmXd8KfPGuR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757587136; c=relaxed/simple;
-	bh=CxQe3bX/MQqLYiit7yd0xARE4Y3X2J6l2HzXxwQDNqU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sss2Hg+uWCY5GYZKtRtCocsgWa16mHL9NQLnuT/EBCpbau8qFstIs58ADzt3NyNMXTcGZr+SPHjlxUwFZ2iPMLplNwQ+U/n5N+VTv4zTcz8JhD90PKmUnoopfn3JS14Qst0EB5HUxN0ZQ1cg4g8cUnIv2i/IebC9jW1IkeUQWYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FI4IStw+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4D7C4CEF1;
-	Thu, 11 Sep 2025 10:38:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757587135;
-	bh=CxQe3bX/MQqLYiit7yd0xARE4Y3X2J6l2HzXxwQDNqU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FI4IStw+oqeL2m9Z2FcATjKpiFh6btP6e6+DFXG7rkp4aXj/+yFIjc8RlM95tljKf
-	 bqei/Q+AWWcqg/UPAT4fHc8zVQLXOsMcc/YZpL3/nQRd5ug287ZjJvPC/HjADCyVVW
-	 opEN6U3VKv4AwI/qJWMcg4N8CMJxhrYS/u9UaKk4zN9wN8kDKj9f3aE56Mw24IDpZf
-	 E87e+pH5uw/DkD3qJdqKeNXkUWvFqqBS4NHLAc5B6gHz9ltCLHj4yIb8cxvp3SlZWA
-	 +O5NrKwI6zmnwPYdOFLkhHHqHrWVpUkXMQt6Q8oroyg0EtDcuIyUA5ibbT9YkoxpRo
-	 jbXctAdHrFuGA==
-Message-ID: <ae7b139f-dc25-413d-bfc3-3be187ab3a73@kernel.org>
-Date: Thu, 11 Sep 2025 12:38:52 +0200
+	s=arc-20240116; t=1757587426; c=relaxed/simple;
+	bh=4cjYNEq/0tkKAtFt1DgMEOaNIksXO5aYo797muokHU8=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mksG5JozSiR32p+g8Ft7eLQ26D/RJYAIw8m17ebWyfJlXPxtjK4tvN88Ic9GA4rrHK5lcB04zLB2McQNckjIoy0vqn57/DIhb7FMRAmlXMr3yZzSH1f1ld/klznKOisen5sUb+agnjhY9R4nSi4VWO2b8MOT7mQfE1HhkI/pcrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cMvJc3Dk8z6L56v;
+	Thu, 11 Sep 2025 18:42:24 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7BFCE1400D3;
+	Thu, 11 Sep 2025 18:43:39 +0800 (CST)
+Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 11 Sep
+ 2025 12:43:38 +0200
+Date: Thu, 11 Sep 2025 11:43:37 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: James Morse <james.morse@arm.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-acpi@vger.kernel.org>, D Scott Phillips OS
+	<scott@os.amperecomputing.com>, <carl@os.amperecomputing.com>,
+	<lcherian@marvell.com>, <bobo.shaobowang@huawei.com>,
+	<tan.shaopeng@fujitsu.com>, <baolin.wang@linux.alibaba.com>, Jamie Iles
+	<quic_jiles@quicinc.com>, Xin Hao <xhao@linux.alibaba.com>,
+	<peternewman@google.com>, <dfustini@baylibre.com>, <amitsinght@marvell.com>,
+	David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>, Koba
+ Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+	<fenghuay@nvidia.com>, <baisheng.gao@unisoc.com>, Rob Herring
+	<robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>, "Rafael Wysocki"
+	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, Lorenzo Pieralisi
+	<lpieralisi@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla
+	<sudeep.holla@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, "Will
+ Deacon" <will@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH v2 01/29] ACPI / PPTT: Add a helper to fill a cpumask
+ from a processor container
+Message-ID: <20250911114337.0000487e@huawei.com>
+In-Reply-To: <20250910204309.20751-2-james.morse@arm.com>
+References: <20250910204309.20751-1-james.morse@arm.com>
+	<20250910204309.20751-2-james.morse@arm.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ACPI: video: Fix missing backlight node creation on
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: lenb@kernel.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, mario.limonciello@amd.com, rafael@kernel.org,
- stable@vger.kernel.org
-References: <de4b5ec6-1e42-44b8-b5d3-5a452d7401ef@kernel.org>
- <20250911074543.106620-1-zhangzihuan@kylinos.cn>
-From: Hans de Goede <hansg@kernel.org>
-Content-Language: en-US, nl
-In-Reply-To: <20250911074543.106620-1-zhangzihuan@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Hi Zihuan,
+On Wed, 10 Sep 2025 20:42:41 +0000
+James Morse <james.morse@arm.com> wrote:
 
-On 11-Sep-25 9:45 AM,  Zhang wrote:
-
-...
-
->>  So as you say the issue is that you have no native GPU driver calling
->>  acpi_video_register_backlight().
+> The ACPI MPAM table uses the UID of a processor container specified in
+> the PPTT to indicate the subset of CPUs and cache topology that can
+> access each MPAM System Component (MSC).
 > 
-> I'm very happy that you got it.
+> This information is not directly useful to the kernel. The equivalent
+> cpumask is needed instead.
 > 
->> First of all I assume that there is some sort of builtin GPU on these
->> Lenovo and Inspur machines with Zhaoxin CPUs. Even if the GPU driver
->> is not in the mainline kernel then I assume there is some out of tree
->> driver. Can that driver not call acpi_video_register_backlight() ?
+> Add a helper to find the processor container by its id, then walk
+> the possible CPUs to fill a cpumask with the CPUs that have this
+> processor container as a parent.
 > 
-> We are currently working with Zhaoxin on this matter, and we expect to have some results in a few days.
-> I will keep you updated once we have progress.
+> CC: Dave Martin <dave.martin@arm.com>
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+> Signed-off-by: James Morse <james.morse@arm.com>
 
-Ok.
+Hi James,
 
-...
+Sorry I missed v1.  Busy few weeks.
 
-> Thanks a lot for your patch and for looking into this issue.
+I think one resource leak plus a few suggested changes that
+I'm not that bothered about.
 
-You're welcome.
+Jonathan
 
-> At the moment, we are still confirming with Zhaoxin whether this behavior is consistent across all their platforms,
-> so we are not sure if the special handling should always apply.
+
+> ---
+> Changes since v1:
+>  * Replaced commit message with wording from Dave.
+>  * Fixed a stray plural.
+>  * Moved further down in the file to make use of get_pptt() helper.
+>  * Added a break to exit the loop early.
 > 
-> Also, on kernel 5.4 these machines seem to work fine without requiring a native GPU driver, while on 6.6+ the backlight node is missing. 
-> Could you please clarify what design change or intention caused this behavioral difference between 5.4 and newer kernels?
+> Changes since RFC:
+>  * Removed leaf_flag local variable from acpi_pptt_get_cpus_from_container()
+> 
+> Changes since RFC:
+>  * Dropped has_leaf_flag dodging of acpi_pptt_leaf_node()
+>  * Added missing : in kernel-doc
+>  * Made helper return void as this never actually returns an error.
+> ---
+>  drivers/acpi/pptt.c  | 83 ++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/acpi.h |  3 ++
+>  2 files changed, 86 insertions(+)
+> 
+> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> index 54676e3d82dd..1728545d90b2 100644
+> --- a/drivers/acpi/pptt.c
+> +++ b/drivers/acpi/pptt.c
+> @@ -817,3 +817,86 @@ int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
+>  	return find_acpi_cpu_topology_tag(cpu, PPTT_ABORT_PACKAGE,
+>  					  ACPI_PPTT_ACPI_IDENTICAL);
+>  }
 
-The main problem is that on x86 laptops there are too much different
-ways to control the backlight:
+> +/**
+> + * acpi_pptt_get_cpus_from_container() - Populate a cpumask with all CPUs in a
+> + *                                       processor container
+> + * @acpi_cpu_id:	The UID of the processor container.
+> + * @cpus:		The resulting CPU mask.
+> + *
+> + * Find the specified Processor Container, and fill @cpus with all the cpus
+> + * below it.
+> + *
+> + * Not all 'Processor' entries in the PPTT are either a CPU or a Processor
+> + * Container, they may exist purely to describe a Private resource. CPUs
+> + * have to be leaves, so a Processor Container is a non-leaf that has the
+> + * 'ACPI Processor ID valid' flag set.
+> + *
+> + * Return: 0 for a complete walk, or an error if the mask is incomplete.
+> + */
+> +void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus)
+> +{
+> +	struct acpi_pptt_processor *cpu_node;
+> +	struct acpi_table_header *table_hdr;
+> +	struct acpi_subtable_header *entry;
+> +	unsigned long table_end;
+> +	u32 proc_sz;
+> +
+> +	cpumask_clear(cpus);
+> +
+> +	table_hdr = acpi_get_pptt();
 
-enum acpi_backlight_type {
-        acpi_backlight_undef = -1,
-        acpi_backlight_none = 0,
-        acpi_backlight_video,
-        acpi_backlight_vendor,
-        acpi_backlight_native,
-        acpi_backlight_nvidia_wmi_ec,
-        acpi_backlight_apple_gmux,
-        acpi_backlight_dell_uart,
-};
+This calls acpi_get_table() so you need to put it again or every call
+to this leaks a reference count.  I messed around with DEFINE_FREE() for this
+but it doesn't fit that well as the underlying call doesn't return the table.
+This one does though so you could do a pptt specific one.  
 
-With video, vendor and native all 3 being quite normal to have
-around on a single laptop.
-
-A long time ago the kernel just used to register all
-backlight handlers for which there seemed to be support,
-so "ls /sys/class/backlight" would e.g. output:
-
-acpi_video0
-intel_backlight
-dell_laptop
-
-And then userspace would pick one to use, typically
-checking for different backlight types (raw/platform/firmware)
-in descending order of preference and picking the first
-backlight interface matching the highest preference type.
-
-But even though multiple types may be advertised by
-the firmware, they do not necessarily actually work.
-
-So the simple userspace pick based on preferred type
-solution did not work on all laptop models and
-drivers/acpi/video_detect.c starting growing heuristics
-+ quirks to let the kernel pick one and hide the others.
-
-At first for acpi_video# backlights they would get
-registered and then later if a native backlight
-(e.g. intel_backlight) showed up and the heuristics /
-quirks set that should be preferred then the
-acpi_video# backlight would be unregistered again.
-
-But this is racy (and ugly) and caused issues for userspace
-trying to open the already unregistered backlight.
-
-So the code was changed to delay registering the
-acpi_video backlights till after the GPU driver has
-loaded so that it is known if native backlight
-control is supported or not.
-
-Long story short: The design goal is to only
-register 1 backlight handler, so that userspace
-does not has to guess and to only register this
-once and not do a register + unregister dance
-of a potentially unwanted acpi_video backlight.
-
-Regards,
-
-Hans
+Or just acpi_put_table(table_hdr); at exit path from this function.
 
 
+> +	if (!table_hdr)
+> +		return;
+> +
+> +	table_end = (unsigned long)table_hdr + table_hdr->length;
+> +	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+> +			     sizeof(struct acpi_table_pptt));
+Hmm. Not related to this patch but I have no idea why acpi_get_pptt()
+doesn't return a struct acpi_table_pptt as if it did this would be a simple
++ 1 and not require those who only sometimes deal with ACPI code to go
+check what that macro actually does!
+
+
+> +	proc_sz = sizeof(struct acpi_pptt_processor);
+Maybe sizeof (*cpu_node) is more helpful to reader.
+Also shorter so you could do
+	while ((unsigned long)entry + sizeof(*cpu_node) <= table_end)
+
+> +	while ((unsigned long)entry + proc_sz <= table_end) {
+> +		cpu_node = (struct acpi_pptt_processor *)entry;
+
+For me, assigning this before checking the type is inelegant.
+but the nesting does get deep without it so I guess this is ok maybe, though
+I wonder if better reorganized to combine a different bunch of conditions.
+I think this is functionally identival.
+
+		if (entry->type == ACPI_PTT_TYPE_PROCESSOR) {
+			struct acpi_pptt_processor *cpu_node = 
+				(struct acpi_pptt_processor *)entry;
+			if ((cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_ID_VALID) &&
+			    (!acpi_pptt_leaf_node(table_hdr, cpu_node) &&
+			    (cpu_node->acpi_processor_id == acpi_cpu_id)) {
+				acpi_pptt_get_child_cpus(table_hdr, cpu_node, cpus);
+				break;
+		
+			}
+		}
+		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
+				     entry->length);
+
+More generally I wonder if it is worth adding a for_each_acpi_pptt_entry() macro.
+There is some precedence in drivers acpi such as for_each_nhlt_endpoint()
+
+That's probably material for another day though unless you think it brings
+enough benefits to do it here.
+
+
+> +		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
+> +		    cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_ID_VALID) {
+> +			if (!acpi_pptt_leaf_node(table_hdr, cpu_node)) {
+> +				if (cpu_node->acpi_processor_id == acpi_cpu_id) {
+> +					acpi_pptt_get_child_cpus(table_hdr, cpu_node, cpus);
+> +					break;
+> +				}
+> +			}
+> +		}
+> +		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
+> +				     entry->length);
+> +	}
+> +}
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 1c5bb1e887cd..f97a9ff678cc 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -1541,6 +1541,7 @@ int find_acpi_cpu_topology(unsigned int cpu, int level);
+>  int find_acpi_cpu_topology_cluster(unsigned int cpu);
+>  int find_acpi_cpu_topology_package(unsigned int cpu);
+>  int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
+> +void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus);
+>  #else
+>  static inline int acpi_pptt_cpu_is_thread(unsigned int cpu)
+>  {
+> @@ -1562,6 +1563,8 @@ static inline int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
+>  {
+>  	return -EINVAL;
+>  }
+> +static inline void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id,
+> +						     cpumask_t *cpus) { }
+>  #endif
+>  
+>  void acpi_arch_init(void);
 
 
