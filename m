@@ -1,211 +1,176 @@
-Return-Path: <linux-acpi+bounces-16692-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16693-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9762B53C4B
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 21:31:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FCFB53D5F
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 22:57:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95C6B56882D
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 19:31:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D37585A126D
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Sep 2025 20:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEA524BBE4;
-	Thu, 11 Sep 2025 19:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871242D8797;
+	Thu, 11 Sep 2025 20:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c8PzK9ct"
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="cSQfZyXH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF3B2DC765;
-	Thu, 11 Sep 2025 19:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993DF27A454;
+	Thu, 11 Sep 2025 20:57:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.147.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757619068; cv=none; b=Ggc643Zy0I7KnO3DT51B6pJnGUtmqipnP2AOyTKXvK9sMyDVCI77DcqPY4xDHmBR6cX3EKKeLhSp2sKqbQaX6cubbWDfYRmHuzyR3kfTbcl6GaM6iLhRuNp68dYQj1hyL2hVyB6Ypgv+LamC5im337v9+x8vGn5QV/MXP3xvdcA=
+	t=1757624262; cv=none; b=qTC8KQlYOcz/J69+d4CQrRIXvdpZMqqFmTZVFk78xGIlNEvpvUi/c9tNBLG853xy+CO9uND3PcAIMhiDe/ncgFeAL9CXQWqNoj59lQV6E/i8jLS6V8hJmvK5kb8OYswbzaxZM6qjvHYnDsj0LrpmMOwdNs1U4wn2Z4oNefIBesk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757619068; c=relaxed/simple;
-	bh=yX5TSOknKtfjZJ2t2ZbP7iUWUUSBQvZMQuGGi2eajPQ=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=ncI6hsz3frbpsNVmbhJ0gpJPcThRIE1LHpNKXg8k+PUqLbmSUGVixgeD2JkESCEqA0sdyzROggNNTUnB0Ynk9CLp1G7VrPyMdo6jmEY1C31E1RuWxaP8LgTq4fE+qzbqN0zbPJ1xQ2/FcQy0AIockqCIoEzJRkxhaDOf4kLYE8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c8PzK9ct; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757619067; x=1789155067;
-  h=date:from:to:cc:subject:message-id;
-  bh=yX5TSOknKtfjZJ2t2ZbP7iUWUUSBQvZMQuGGi2eajPQ=;
-  b=c8PzK9ctOPGdd9AzAs2npa5WbNs7V63KtXi0gMn6vQp6l2QDrEqhErG+
-   3Cs5l2cP1kQfbv10Cfm7vXEJkC6Cg62FKgJVjw17foViFccdn8DUP93O/
-   qpvR5v0WuNmIf6Thmsw7Hmcf3xF4uKhzKF8yM/h+gT42Z4F6oGjxkWdwB
-   MTyZbwA6MTUhjCDBYJJEDsVlI9mGKClPYE0cgtFdQWlbIw5q9DD5WDG9o
-   73v4e5zjIyPF0RWqKAQ+BSz3YqELF5Hi11T9gbpCxP7ssBs4keZlp0xKe
-   X6K+tZcpr82DtTRwcYnWQ24A7mCQ0CqSuBDeWJK+sxnvrp5gjJqP11g9C
-   g==;
-X-CSE-ConnectionGUID: y/WfNU6eQ6KaQF4nMIw7Xw==
-X-CSE-MsgGUID: I/xebYnMRVinJQNeiUj4FA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59907317"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="59907317"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 12:31:07 -0700
-X-CSE-ConnectionGUID: GwMVY2nLS+atpQ3uI1DzpA==
-X-CSE-MsgGUID: COWNDf2oSN6DoQzIEpGQHw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,257,1751266800"; 
-   d="scan'208";a="210929702"
-Received: from lkp-server02.sh.intel.com (HELO eb5fdfb2a9b7) ([10.239.97.151])
-  by orviesa001.jf.intel.com with ESMTP; 11 Sep 2025 12:31:06 -0700
-Received: from kbuild by eb5fdfb2a9b7 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uwn0T-0000ak-1v;
-	Thu, 11 Sep 2025 19:30:59 +0000
-Date: Fri, 12 Sep 2025 03:29:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:fixes] BUILD SUCCESS
- a5099d5e8b13e7a790ce2f4228074c76fee98ef6
-Message-ID: <202509120332.CiMO6bIf-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1757624262; c=relaxed/simple;
+	bh=bSsPa9XEyW8z/su++j6tQWWmZoPbZWL/uldiO/VimDE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ld77nKsQP3eIAmXFVSo6G/iAwE7765ERfIFlrABO4kAB/uWn+jV5GMnQhyOse6JFYL8KXl62RSiwheuS35anfJ5yLP0ezlKOsyA1BZndOO+4c01kDgHC3rHCp3a35AIQG66SIvHKLN5fpka0HHFmlVMNVAwN2q7vT/41xen2nd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=cSQfZyXH; arc=none smtp.client-ip=148.163.147.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
+Received: from pps.filterd (m0150241.ppops.net [127.0.0.1])
+	by mx0a-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58BFINgC007212;
+	Thu, 11 Sep 2025 20:56:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pps0720; bh=J0ID9F64YdLXnEJhVLSOMHkdqi
+	2X6q7O8dZhA/oVjxI=; b=cSQfZyXHw97+qAk5GLrVBgwewFdz885Cteb9qF6kZC
+	cl0B/IlTfIYZlYVAQL80a6ViC3RMb7LwXyVxWpyeUQW2ZjFRH89J7JwZPy7swLK8
+	bfJdi8MluU5znLPe19N6KRAHsTlRVjl9hc2fwjmchGWfXeicxabPj8CO4JJ95aRV
+	D+zFfqrdQw7/J2i1jmRyxhcTzHsKKP8MGvlaz9Bm3J2WYbe576VycumLp3m3y7wL
+	cmgGV0a94bE4YbFXaAsE3e48TESw/6B8qRdJ7MM59bacGyVJ3D/ggJqoVo67Ocpm
+	Hq8fo4AFsLG/i0MW3vGgTuCEWf3aENH+ykwjbcc2Wq1Q==
+Received: from p1lg14879.it.hpe.com ([16.230.97.200])
+	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 493p9xfpef-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Sep 2025 20:56:34 +0000 (GMT)
+Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 206FD132D3;
+	Thu, 11 Sep 2025 20:56:32 +0000 (UTC)
+Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTPS id 708208118D1;
+	Thu, 11 Sep 2025 20:56:28 +0000 (UTC)
+Date: Thu, 11 Sep 2025 15:56:26 -0500
+From: Kyle Meyer <kyle.meyer@hpe.com>
+To: "Luck, Tony" <tony.luck@intel.com>
+Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+        corbet@lwn.net, linmiaohe@huawei.com, shuah@kernel.org,
+        Liam.Howlett@oracle.com, bp@alien8.de, hannes@cmpxchg.org,
+        jack@suse.cz, jane.chu@oracle.com, jiaqiyan@google.com,
+        joel.granados@kernel.org, laoar.shao@gmail.com,
+        lorenzo.stoakes@oracle.com, mclapinski@google.com, mhocko@suse.com,
+        nao.horiguchi@gmail.com, osalvador@suse.de, rafael.j.wysocki@intel.com,
+        rppt@kernel.org, russ.anderson@hpe.com, shawn.fan@intel.com,
+        surenb@google.com, vbabka@suse.cz, linux-acpi@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/memory-failure: Disable soft offline for HugeTLB
+ pages by default
+Message-ID: <aMM3elPmG1MdUNrJ@hpe.com>
+References: <aMGkAI3zKlVsO0S2@hpe.com>
+ <749511a8-7c57-4f97-9e49-8ebe8befe9aa@redhat.com>
+ <aMMNVA9EXXHYvmKH@agluck-desk3>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aMMNVA9EXXHYvmKH@agluck-desk3>
+X-Proofpoint-ORIG-GUID: Ethw6hHnLfczx3VAEZBXc-08gscPDyGN
+X-Proofpoint-GUID: Ethw6hHnLfczx3VAEZBXc-08gscPDyGN
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTExMDAyNiBTYWx0ZWRfXyI2+SdrKv+fr
+ J09MeyCR3Ioip+tv+DaUAAlfVfIk22LrAWmlkzH/QV5q4UAWPgfHNFOl4+ub//1Adee37pHPb4b
+ 764zMHo5pXXt1CcHaobNJvfMfwFmUUV/nH/D82/1aTPO6jutWA9MvX8an2UNfGrfTzL9DSk8XRW
+ WdZT5V1erw/xxDMTunGIMHe9T2MS+FKEBZCOwsxI4yn8gC3OcGhueHg0cu+lqePY9/N+YX888Hk
+ 3sUbWytd+nDRfz/JfHwjdEa8Usy/cqfyazlCUsltcgMUe3O7HboftW1ebSfQdBIJZ49UPQ+CDK2
+ gt4/eks53CHvrIBOELJSndItTN1QUeIx7bgqpZ1GHhLx5QsJwOy/K+Q1x9blJwm1hm8x2x3EJNQ
+ nmqPYiXa
+X-Authority-Analysis: v=2.4 cv=Ke/SsRYD c=1 sm=1 tr=0 ts=68c33782 cx=c_pps
+ a=5jkVtQsCUlC8zk5UhkBgHg==:117 a=5jkVtQsCUlC8zk5UhkBgHg==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=e0XSXhz86abGffj2R7MA:9
+ a=CjuIK1q_8ugA:10
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-11_03,2025-09-11_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 priorityscore=1501 malwarescore=0 adultscore=0 clxscore=1015
+ phishscore=0 bulkscore=0 impostorscore=0 spamscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2509110026
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git fixes
-branch HEAD: a5099d5e8b13e7a790ce2f4228074c76fee98ef6  Merge branch 'pm-sleep-fixes' into fixes
+On Thu, Sep 11, 2025 at 10:56:36AM -0700, Luck, Tony wrote:
+> On Thu, Sep 11, 2025 at 10:46:10AM +0200, David Hildenbrand wrote:
+> > On 10.09.25 18:15, Kyle Meyer wrote:
+> > > Soft offlining a HugeTLB page reduces the available HugeTLB page pool.
+> > > Since HugeTLB pages are preallocated, reducing the available HugeTLB
+> > > page pool can cause allocation failures.
+> > > 
+> > > /proc/sys/vm/enable_soft_offline provides a sysctl interface to
+> > > disable/enable soft offline:
+> > > 
+> > > 0 - Soft offline is disabled.
+> > > 1 - Soft offline is enabled.
+> > > 
+> > > The current sysctl interface does not distinguish between HugeTLB pages
+> > > and other page types.
+> > > 
+> > > Disable soft offline for HugeTLB pages by default (1) and extend the
+> > > sysctl interface to preserve existing behavior (2):
+> > > 
+> > > 0 - Soft offline is disabled.
+> > > 1 - Soft offline is enabled (excluding HugeTLB pages).
+> > > 2 - Soft offline is enabled (including HugeTLB pages).
+> > > 
+> > > Update documentation for the sysctl interface, reference the sysctl
+> > > interface in the sysfs ABI documentation, and update HugeTLB soft
+> > > offline selftests.
+> > 
+> > I'm sure you spotted that the documentation for
+> > "/sys/devices/system/memory/soft_offline_pag" resides under "testing".
+> 
+> But that is only one of several places in the kernel that
+> feed into the page offline code.
+> 
+> This patch was motivated by the GHES path where BIOS indicates
+> a corrected error threshold was exceeded. There's also the
+> drivers/ras/cec.c path where Linux does it's own threshold
+> counting.
+> > 
+> > If your read about MADV_SOFT_OFFLINE in the man page it clearly says:
+> > 
+> > "This feature is intended for testing of memory error-handling code; it is
+> > available  only if the kernel was configured with CONFIG_MEMORY_FAILURE."
+> 
+> Agreed that this all depends on CONFIG_MEMORY_FAILURE ... so if any
+> part of the flow is compiled in when that is "=n" then some
+> changes are needed to fix that.
+> 
+> > 
+> > So I'm sorry to say: I miss why we should add all this complexity to make a
+> > feature used for testing soft-offlining work differently for hugetlb folios
+> > -- with a testing interface.
 
-elapsed time: 1459m
+I would also like to note that the current sysctl interface already affects
+testing interfaces. Please see the following commit:
 
-configs tested: 118
-configs skipped: 3
+56374430c5dfc ("mm/memory-failure: userspace controls soft-offlining pages")
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The sysctl interface should probably be mentioned in
+sysfs-memory-page-offline with or without this patch.
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                   randconfig-001-20250911    gcc-8.5.0
-arc                   randconfig-002-20250911    gcc-12.5.0
-arm                              allmodconfig    gcc-15.1.0
-arm                               allnoconfig    clang-22
-arm                              allyesconfig    gcc-15.1.0
-arm                           imxrt_defconfig    clang-22
-arm                          ixp4xx_defconfig    gcc-15.1.0
-arm                   randconfig-001-20250911    clang-22
-arm                   randconfig-002-20250911    gcc-14.3.0
-arm                   randconfig-003-20250911    clang-22
-arm                   randconfig-004-20250911    clang-16
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.1.0
-arm64                 randconfig-001-20250911    gcc-13.4.0
-arm64                 randconfig-002-20250911    gcc-8.5.0
-arm64                 randconfig-003-20250911    gcc-8.5.0
-arm64                 randconfig-004-20250911    clang-22
-csky                              allnoconfig    gcc-15.1.0
-csky                  randconfig-001-20250911    gcc-15.1.0
-csky                  randconfig-002-20250911    gcc-13.4.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-22
-hexagon                          allyesconfig    clang-22
-hexagon               randconfig-001-20250911    clang-20
-hexagon               randconfig-002-20250911    clang-22
-i386                             alldefconfig    gcc-14
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386        buildonly-randconfig-001-20250911    clang-20
-i386        buildonly-randconfig-001-20250912    gcc-13
-i386        buildonly-randconfig-002-20250911    clang-20
-i386        buildonly-randconfig-002-20250912    gcc-13
-i386        buildonly-randconfig-003-20250911    clang-20
-i386        buildonly-randconfig-003-20250912    gcc-13
-i386        buildonly-randconfig-004-20250911    clang-20
-i386        buildonly-randconfig-004-20250912    gcc-13
-i386        buildonly-randconfig-005-20250911    clang-20
-i386        buildonly-randconfig-005-20250912    gcc-13
-i386        buildonly-randconfig-006-20250911    clang-20
-i386        buildonly-randconfig-006-20250912    gcc-13
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-22
-loongarch             randconfig-001-20250911    gcc-15.1.0
-loongarch             randconfig-002-20250911    gcc-15.1.0
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20250911    gcc-11.5.0
-nios2                 randconfig-002-20250911    gcc-8.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20250911    gcc-8.5.0
-parisc                randconfig-002-20250911    gcc-8.5.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    clang-22
-powerpc               randconfig-001-20250911    gcc-8.5.0
-powerpc               randconfig-002-20250911    gcc-15.1.0
-powerpc               randconfig-003-20250911    gcc-8.5.0
-powerpc64             randconfig-001-20250911    clang-22
-powerpc64             randconfig-002-20250911    gcc-11.5.0
-powerpc64             randconfig-003-20250911    gcc-8.5.0
-riscv                            allmodconfig    clang-22
-riscv                             allnoconfig    gcc-15.1.0
-riscv                 randconfig-001-20250911    clang-20
-riscv                 randconfig-002-20250911    clang-22
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.1.0
-s390                  randconfig-001-20250911    gcc-11.5.0
-s390                  randconfig-002-20250911    clang-16
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                    randconfig-001-20250911    gcc-9.5.0
-sh                    randconfig-002-20250911    gcc-15.1.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20250911    gcc-15.1.0
-sparc                 randconfig-002-20250911    gcc-15.1.0
-sparc64               randconfig-001-20250911    gcc-8.5.0
-sparc64               randconfig-002-20250911    clang-20
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    gcc-14
-um                    randconfig-001-20250911    clang-22
-um                    randconfig-002-20250911    gcc-14
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250911    gcc-14
-x86_64      buildonly-randconfig-002-20250911    gcc-14
-x86_64      buildonly-randconfig-003-20250911    clang-20
-x86_64      buildonly-randconfig-004-20250911    clang-20
-x86_64      buildonly-randconfig-005-20250911    clang-20
-x86_64      buildonly-randconfig-006-20250911    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20250911    gcc-12.5.0
-xtensa                randconfig-002-20250911    gcc-8.5.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Kyle Meyer
 
