@@ -1,53 +1,53 @@
-Return-Path: <linux-acpi+bounces-16776-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16775-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED5A5B5576A
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 22:09:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8959EB55779
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 22:12:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAEBD1769F3
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 20:09:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8AA9B64732
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 20:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF450343D7C;
-	Fri, 12 Sep 2025 20:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B94E342CA3;
+	Fri, 12 Sep 2025 20:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MOjhl88T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q+7eBA3e"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FB1343208;
-	Fri, 12 Sep 2025 20:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AB9342C98;
+	Fri, 12 Sep 2025 20:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757707616; cv=none; b=fhUa4RRO2cMXmIE+1W8aCN92G7+3OGwmWz1gutIZelcL11tB1kvb/acUJE1LQiE1gZFMFTUm3LiQH8A51PW+hOLO9z98xDlM7Ue/euSVT/zao68dXCyb8k1lKB1rm7KmdfbEwQ+WgH2ps/Qr16YwGL1tHmcEgqaF41ZnsR0gQkA=
+	t=1757707613; cv=none; b=lB7j9AblA/u3+cvtdawwGfoo5gdjqH9d+ENoxXakmU2yl98bl66wydcAes332LcO8OhcWGQFP7Rj0HHN9vVOvRFwTztuOGWEeaG2MZycPlwIfdC4vJ6HIYmUjQJDOQofg94PTYYxHgPG+bAykOAmE12fv0seGU1xNHxW7P3HeuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757707616; c=relaxed/simple;
-	bh=pmUixoYqwoTGOsZN5cx+CeQbnHRaxAm1Gp9WvnXVmwc=;
+	s=arc-20240116; t=1757707613; c=relaxed/simple;
+	bh=lsb6zY3uqh4YuxeLz8ERC12aFRzr+uNUEtg0qry4Tko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kNscvBXY7kdArsH9fuF14QXQNbEx/krZHUcfEbexjfLF/8Tx9f7R6NhuvQTUtfCM3u5RKE0aL5oWdsRRpLdfXhxxORL3l0Znjhe2TRQ7b4D1nPImNxsQ5uWz+IgHMJ2EHmmBNv9U7VaBkonRIS0wqSna7yimezXD8cvw8Q6ER9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MOjhl88T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96534C4CEF8;
-	Fri, 12 Sep 2025 20:06:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EfctWWkysl7MSWo7UlIPbT6iR/yusEpq0OQQEHdUGw6HX0cR9JIfR/y0y9fPyv5Z7ES/Yk32+6oGx73HxruMqq1nLNsVGQEmJ3cUJdUZkdU9Wod/4C9W8cgYcIq8RlfNLSM6IPrwmWyybEubaX0rbkhAJ5o2JCknzufRKhyKvQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q+7eBA3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 671ABC4CEF9;
+	Fri, 12 Sep 2025 20:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757707616;
-	bh=pmUixoYqwoTGOsZN5cx+CeQbnHRaxAm1Gp9WvnXVmwc=;
+	s=k20201202; t=1757707613;
+	bh=lsb6zY3uqh4YuxeLz8ERC12aFRzr+uNUEtg0qry4Tko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MOjhl88Twv30XAVt2AQbSKLZKGJnoG/p3KVSaKozkkMEnY3rHZXi0bmYOgTual0Ne
-	 8ZjdWJcAFfiMTDp4xjQlbFFkNCy02U2CPUULKvdSm0oefFb+zFUSFEiqjie2JOIbhb
-	 4A41a/atFKoJlpyGkmd7eD+fk7vUSEkyGUNZUGp/21dUgSikWUtcbi9boDPA0KzE7E
-	 ub4zO1yTXvuuvcr3eyst32O+sNX4gM4dSZAZvSNmjInqCjZxWtOInOC6FNABQhYF4D
-	 9bUS3KDo1CeUQcO5H+jc1B2UaMrrLb25nz4e1RmsSiQuhlhdVxOJJfJW+Do1otQiKa
-	 gjHThEohE2tfQ==
+	b=q+7eBA3eLwtHr3sRdZjgPjzEJUGEsr4eTOaSMdtlnnH4AwRDztwJX2EZF43OdCLBN
+	 m5LKVads98BriBOV/5or3uR7yuewufhV8TWds0Dl+b32zr+6odEHVVzbPPfW/yPW3d
+	 KuraRlwWBI4hyhoKx6u3+VL3S4ATKGesNrN2BVW6K9hp4cVDYst++S/CfCGfNuwcFU
+	 ya0iahSdIhiAv55RWzDS5mMNGDuaDmvU6qGEkj4iIOihMQcREoSUW6tAo3xDqZE3Bg
+	 yKKm5WfbvERQTgR4MXWxzCH0rAnKLfS7p75aY1ag6RRx5dXWYarakNRWd8i7csuxON
+	 65SSpJAe4gXzA==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>,
  "Dumbre, Saket" <saket.dumbre@intel.com>
-Subject: [PATCH v1 04/16] ACPICA: Allow to skip Global Lock initialization
-Date: Fri, 12 Sep 2025 21:54:53 +0200
-Message-ID: <1843108.VLH7GnMWUR@rafael.j.wysocki>
+Subject: [PATCH v1 05/16] ACPICA: Apply ACPI_NONSTRING
+Date: Fri, 12 Sep 2025 21:55:35 +0200
+Message-ID: <2042286.usQuhbGJ8B@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <2021361.PYKUYFuaPT@rafael.j.wysocki>
 References: <2021361.PYKUYFuaPT@rafael.j.wysocki>
@@ -60,55 +60,58 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Ahmed Salem <x0rw3ll@gmail.com>
 
-Introduce acpi_gbl_use_global_lock, which allows to skip the Global Lock
-initialization. This is useful for systems without Global Lock (such as
-loong_arch), so as to avoid error messages during boot phase:
+Add ACPI_NONSTRING for destination char arrays without a terminating NUL
+character.
 
- ACPI Error: Could not enable global_lock event (20240827/evxfevnt-182)
- ACPI Error: No response from Global Lock hardware, disabling lock (20240827/evglock-59)
+This is a follow-up to commit 2b82118845e0 ("ACPICA: Apply ACPI_NONSTRING")
+where a few more destination arrays were missed.
 
-Link: https://github.com/acpica/acpica/commit/463cb0fe
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://github.com/acpica/acpica/commit/f359e5ed
+Fixes: 2b82118845e0 ("ACPICA: Apply ACPI_NONSTRING")
+Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/acpica/evglock.c | 4 ++++
- include/acpi/acpixf.h         | 6 ++++++
- 2 files changed, 10 insertions(+)
+ include/acpi/actbl.h                                     | 2 +-
+ tools/power/acpi/os_specific/service_layers/oslinuxtbl.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/acpica/evglock.c b/drivers/acpi/acpica/evglock.c
-index fa3e0d00d1ca..df2a4ab0e0da 100644
---- a/drivers/acpi/acpica/evglock.c
-+++ b/drivers/acpi/acpica/evglock.c
-@@ -42,6 +42,10 @@ acpi_status acpi_ev_init_global_lock_handler(void)
- 		return_ACPI_STATUS(AE_OK);
- 	}
+diff --git a/include/acpi/actbl.h b/include/acpi/actbl.h
+index 243097a3da63..8a67d4ea6e3f 100644
+--- a/include/acpi/actbl.h
++++ b/include/acpi/actbl.h
+@@ -73,7 +73,7 @@ struct acpi_table_header {
+ 	char oem_id[ACPI_OEM_ID_SIZE] ACPI_NONSTRING;	/* ASCII OEM identification */
+ 	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE] ACPI_NONSTRING;	/* ASCII OEM table identification */
+ 	u32 oem_revision;	/* OEM revision number */
+-	char asl_compiler_id[ACPI_NAMESEG_SIZE];	/* ASCII ASL compiler vendor ID */
++	char asl_compiler_id[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;	/* ASCII ASL compiler vendor ID */
+ 	u32 asl_compiler_revision;	/* ASL compiler version */
+ };
  
-+	if (!acpi_gbl_use_global_lock) {
-+		return_ACPI_STATUS(AE_OK);
-+	}
-+
- 	/* Attempt installation of the global lock handler */
+diff --git a/tools/power/acpi/os_specific/service_layers/oslinuxtbl.c b/tools/power/acpi/os_specific/service_layers/oslinuxtbl.c
+index 9741e7503591..de93067a5da3 100644
+--- a/tools/power/acpi/os_specific/service_layers/oslinuxtbl.c
++++ b/tools/power/acpi/os_specific/service_layers/oslinuxtbl.c
+@@ -995,7 +995,7 @@ static acpi_status osl_list_customized_tables(char *directory)
+ {
+ 	void *table_dir;
+ 	u32 instance;
+-	char temp_name[ACPI_NAMESEG_SIZE];
++	char temp_name[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;
+ 	char *filename;
+ 	acpi_status status = AE_OK;
  
- 	status = acpi_install_fixed_event_handler(ACPI_EVENT_GLOBAL,
-diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
-index b49396aa4058..97c25ae8a36e 100644
---- a/include/acpi/acpixf.h
-+++ b/include/acpi/acpixf.h
-@@ -213,6 +213,12 @@ ACPI_INIT_GLOBAL(u8, acpi_gbl_osi_data, 0);
-  */
- ACPI_INIT_GLOBAL(u8, acpi_gbl_reduced_hardware, FALSE);
- 
-+/*
-+ * ACPI Global Lock is mainly used for systems with SMM, so no-SMM systems
-+ * (such as loong_arch) may not have and not use Global Lock.
-+ */
-+ACPI_INIT_GLOBAL(u8, acpi_gbl_use_global_lock, TRUE);
-+
- /*
-  * Maximum timeout for While() loop iterations before forced method abort.
-  * This mechanism is intended to prevent infinite loops during interpreter
+@@ -1312,7 +1312,7 @@ osl_get_customized_table(char *pathname,
+ {
+ 	void *table_dir;
+ 	u32 current_instance = 0;
+-	char temp_name[ACPI_NAMESEG_SIZE];
++	char temp_name[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;
+ 	char table_filename[PATH_MAX];
+ 	char *filename;
+ 	acpi_status status;
 -- 
 2.51.0
 
