@@ -1,55 +1,88 @@
-Return-Path: <linux-acpi+bounces-16698-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16699-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 363ABB543FC
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 09:34:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6462DB54437
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 09:53:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B27687A807D
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 07:33:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2CF57B9401
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 07:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7632C21F6;
-	Fri, 12 Sep 2025 07:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5780D2D3ECD;
+	Fri, 12 Sep 2025 07:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="XVgCvI9W"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BHyaC5TP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8C425F96D;
-	Fri, 12 Sep 2025 07:34:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171772D375F
+	for <linux-acpi@vger.kernel.org>; Fri, 12 Sep 2025 07:53:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757662487; cv=none; b=hKkqPXdcQwXy8/ORRcxyexmedoa87WWlj8MpZbjGETmb+04FKFd6tnTnzGnzP/IGhpcR/cPCXT12vrqL/IR99QtLP2JSHC4n5NczK7rXZ+Lry73BiiG0NC5pMeakStaP7uhXWVWA4HFO9OiEDEpUsVslBnX87WeQTpoesrpzFdY=
+	t=1757663593; cv=none; b=RmM2yKcfX2T0vFSfPUR2lNxwWLN/shxnw5yMicekbqiTg17hTUYqH2W1VEuN7B/ZyDDUDiPrcR1GOeCAjetFdTP1khTrmXNO0mXpP3wkG3/Lh4aqFU3lWxf992sL2zzqwvWnpKmfHKFFKMV0+Pw+K0DPmr8fJeFWuptLLzeXIiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757662487; c=relaxed/simple;
-	bh=BEYoB3XdJvkU8n8LcEWV2oTAdVLiA1j459GZpHGv4FM=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=r4vYxk5c5UYvZNM2bI3dl5GRIV+bMuQZ+fJxbPfmg97Eu0Rg7lFya/7TfWJPjMrPgLaVPaesgbuy4R17s2hiw3mOMoxIgrlRrfF/iiVoYNXf4RE2xl8HEgC7LdK0i3Utt74+tmqRQs5QSlLrU7RBcW1C6stW/tVoDl3W5SHzH1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=XVgCvI9W; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1757662438; x=1758267238; i=markus.elfring@web.de;
-	bh=MscxGB98VFXuPCr9hE7EAg+kk5OTN4rOo+anFsMbFV4=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=XVgCvI9WUvBgHJqmgpANa9paASrfxvqaTaOFuoM3VL1IBR6Jz8y2D8mHR4N2uzDa
-	 pR1yBYLgE3XStEv/vYg2HANlwDyuHkYB6H9289Wbm/AUxHHGdt+gTk9Ub2ZAu1kVI
-	 Ov7ZqTgBUKCr0olwc+p+SPdzglD7IwY9qMcK+aHJ870wOkHyIXh2XParY9JkUYOAd
-	 w4xHrLUqR4LbYGOARObz1hp86ujjLfnOgyRdR/C3zKFiI/NTaXcWYZ/okILYWZcsc
-	 MPjGDNGjIJu3pY3F65LPTijmWrMIulzVtOS0g/bcvInIy/zITNkwTOsp23hNiMfin
-	 oQYOvNxLf/Usmcy6/Q==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.92.219]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1M7Nmo-1v4fvt38Gq-005DkR; Fri, 12
- Sep 2025 09:33:57 +0200
-Message-ID: <323c362f-9cdb-47f1-834a-b3ee4bb04c32@web.de>
-Date: Fri, 12 Sep 2025 09:33:50 +0200
+	s=arc-20240116; t=1757663593; c=relaxed/simple;
+	bh=DHF/SpXJs31eHtthTDeMe/efWHqXWnIwvBwhuvFJIug=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=maHNlmVAd3byf96hJ0dzE3T5FhFthuq3bO22DvR9rPAOYRNxKwkDYfA2tis+ZLZQhVcekQE8t1cdUPaA2hTjtmjKJo3eeQCSrsZQUZR0LuZ9peWsT+Dz4T1ES4mZKT+A8Pp3LwIRJ+NyI2FPqRHoKVz7wt+q9BBH5htD0Mna5BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BHyaC5TP; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757663589;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=p22hl1mxPQvYXz93krcBnYpXobl8Fk3Ezh7wV4Ywahc=;
+	b=BHyaC5TPFtaV21ckgjlM2y/Sj3gbYFHa4gv0/sslD1kF1YED7MgTMfb1knPmauBM0BMB3S
+	5Ckuh2bvE+juvOd5rfr8kCjsvS0wihJ6FY1stpBamsuW9iVoh1An0ubFg4HBHOlw8Htpyz
+	egntSWlxvPMlR9bgmtfCPFP7yZYfwmY=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-442-jgKp0xocOLq0qlADYFEdTg-1; Fri, 12 Sep 2025 03:53:06 -0400
+X-MC-Unique: jgKp0xocOLq0qlADYFEdTg-1
+X-Mimecast-MFC-AGG-ID: jgKp0xocOLq0qlADYFEdTg_1757663585
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3e68a54dac2so705114f8f.1
+        for <linux-acpi@vger.kernel.org>; Fri, 12 Sep 2025 00:53:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757663585; x=1758268385;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=p22hl1mxPQvYXz93krcBnYpXobl8Fk3Ezh7wV4Ywahc=;
+        b=XC+dNpSr6chmHJG8ZnEEso1pTlIoEyL8zd7/JpNu5fa2nJ5BVwMuyMYonEWiWnpn1o
+         bdnEwhWmKkXGbed9JQB1xwTit+4l2BUGleGZoZ4x/RUIKlqJ8JexM56xpNC0sbgdOtRQ
+         EcxONPSJnFHTuHTByOv3gtVtVFVoeTEN6z0yCWzSro42gKKsuIvH5/SFLMGlplXz+SWp
+         TBHuu2QahVP2IvzpYuhou8IPPsB0dHwptqaKfAyjQEpSmIMp0eJL31QT+C6+2xam3q7R
+         i4TyyLwOk1rp6rbqsaMpc2qjXci7bhyE222cYWT7vwcKc9PObtVXeZxp5knJfAggtgNH
+         WAdw==
+X-Forwarded-Encrypted: i=1; AJvYcCVJY3as3K42J0R9QYMPFr2niL713eSUEtmml13GaAUELQmuX87jjrVI+fCwowuW68JA64KbLwxepb82@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6zPx4ZyJiawfe7r+Mm52H/7gCFPmtQln5DkIx9YYAFb+wbQ1i
+	rWFJIA0RsSpZWL4pcUFr+63sJw2IxWKdLnFNffpouV4n0O5FkxLKowC4k9TuCc90R5+sR0cw+Sv
+	5x+crs+Xl9icTlJfwI2vsSmy2uPRyMrken2B4VJvk/0WaZpGeLVC1AYF7U9/Yf5U=
+X-Gm-Gg: ASbGncu7P0ia7jQnaGir6KHc1GwzwMuN2dWf5T5H+S0xiR5yJPV+CMysUdadQ9mWSKe
+	VvGA7loHf7BYeoiH90RvFDo76zAVERmG2D324tZ+kMpPL6uc/ImwspZih1TdkDcUltzmPscVNUd
+	PBdc3xJtD7FvkhAsiYJMNBoJ3dG3nqL31eT4SyLYiI27MZo5PI6MOee4fg6NA+R17k5ryHBjiiI
+	Sj2vO8qT+xyAFahAp4HoPG0tLrHEglppP+7/YbktIKVUWhS597AKAVD1f9H6BLjafrTG91dZaYb
+	y879C3WX1k8jDDSa3oFifQser3vOnQAxqjVhxovEMIghCBRstCpcUGjwZEt9or1QsXAcc20o1k8
+	gTXvys1Mst2aBWHGudJ/KbZRNu5OTPY4zWQaSaZ86vd6tXSOZ70bh8OLRF9wHDp64rZQ=
+X-Received: by 2002:a05:6000:2003:b0:3de:e787:5d8c with SMTP id ffacd0b85a97d-3e75e1071bdmr5309940f8f.13.1757663584814;
+        Fri, 12 Sep 2025 00:53:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFq7C4qTXd+XsofeMwanjE1i08XNy6UqslUe+yjaLRudd1Ww9k5jR9x6r0SjXc+XP9zCsAuvg==
+X-Received: by 2002:a05:6000:2003:b0:3de:e787:5d8c with SMTP id ffacd0b85a97d-3e75e1071bdmr5309885f8f.13.1757663584264;
+        Fri, 12 Sep 2025 00:53:04 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f20:da00:b70a:d502:3b51:1f2d? (p200300d82f20da00b70ad5023b511f2d.dip0.t-ipconnect.de. [2003:d8:2f20:da00:b70a:d502:3b51:1f2d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e774a3fb5bsm805305f8f.58.2025.09.12.00.53.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Sep 2025 00:53:03 -0700 (PDT)
+Message-ID: <a0e586dc-dce6-41a2-9607-f2f64b752df1@redhat.com>
+Date: Fri, 12 Sep 2025 09:53:02 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -57,125 +90,161 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: James Morse <james.morse@arm.com>, linux-acpi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Amit Singh Tomar <amitsinght@marvell.com>,
- Baisheng Gao <baisheng.gao@unisoc.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Ben Horgan
- <ben.horgan@arm.com>, Carl Worth <carl@os.amperecomputing.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- D Scott Phillips <scott@os.amperecomputing.com>,
- Danilo Krummrich <dakr@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
- David Hildenbrand <david@redhat.com>, Drew Fustini <dfustini@baylibre.com>,
- Fenghua Yu <fenghuay@nvidia.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Hanjun Guo <guohanjun@huawei.com>, Jamie Iles <quic_jiles@quicinc.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, Koba Ko <kobak@nvidia.com>,
- Len Brown <lenb@kernel.org>, Linu Cherian <lcherian@marvell.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Peter Newman <peternewman@google.com>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Rob Herring <robh@kernel.org>,
- Rohit Mathew <rohit.mathew@arm.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>,
- Shaopeng Tan <tan.shaopeng@fujitsu.com>, Sudeep Holla
- <sudeep.holla@arm.com>, Wang ShaoBo <bobo.shaobowang@huawei.com>,
- Will Deacon <will@kernel.org>, Xin Hao <xhao@linux.alibaba.com>
-References: <20250910204309.20751-10-james.morse@arm.com>
-Subject: Re: [PATCH v2 09/29] arm_mpam: Add MPAM MSC register layout
- definitions
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250910204309.20751-10-james.morse@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:5ZzuGnnBIl96e5qkVvluimVHXwMQ3UGMOOz+NEg7m8xWaBk8rQK
- T1+ehFgrgACSD1OAdvRnLcOyl0orXb44idS5/psmS0ptDfe1kuebhPzxqBJoVW/EL4YRk53
- TOdp16qPXKMaSme41m9X5RXN1Ifovs4gkLm8S/emgt13jnlAGSynJbZyjuaLCDlcFvsQP/M
- 8Jx/EKbZQt9wiXcpZvbqg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:YUhwx+D9k+E=;7cxxjEtKjiHhr9gDsjsoNm93k7L
- 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
- NWmSlpfmHhqgUKSM=
+Subject: Re: [PATCH] mm/memory-failure: Disable soft offline for HugeTLB pages
+ by default
+To: "Luck, Tony" <tony.luck@intel.com>
+Cc: Kyle Meyer <kyle.meyer@hpe.com>, akpm@linux-foundation.org,
+ corbet@lwn.net, linmiaohe@huawei.com, shuah@kernel.org,
+ Liam.Howlett@oracle.com, bp@alien8.de, hannes@cmpxchg.org, jack@suse.cz,
+ jane.chu@oracle.com, jiaqiyan@google.com, joel.granados@kernel.org,
+ laoar.shao@gmail.com, lorenzo.stoakes@oracle.com, mclapinski@google.com,
+ mhocko@suse.com, nao.horiguchi@gmail.com, osalvador@suse.de,
+ rafael.j.wysocki@intel.com, rppt@kernel.org, russ.anderson@hpe.com,
+ shawn.fan@intel.com, surenb@google.com, vbabka@suse.cz,
+ linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+References: <aMGkAI3zKlVsO0S2@hpe.com>
+ <749511a8-7c57-4f97-9e49-8ebe8befe9aa@redhat.com>
+ <aMMNVA9EXXHYvmKH@agluck-desk3>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aMMNVA9EXXHYvmKH@agluck-desk3>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-=E2=80=A6
-> +++ b/drivers/resctrl/mpam_internal.h
-> @@ -152,4 +152,271 @@ extern struct list_head mpam_classes;
-=E2=80=A6
-> +/* Error conditions in accessing memory mapped registers */
-> +#define MPAM_ERRCODE_NONE			0
-> +#define MPAM_ERRCODE_PARTID_SEL_RANGE		1
-=E2=80=A6
-> +#define MPAM_ERRCODE_UNEXPECTED_INTERNAL	7
-=E2=80=A6
+On 11.09.25 19:56, Luck, Tony wrote:
+> On Thu, Sep 11, 2025 at 10:46:10AM +0200, David Hildenbrand wrote:
+>> On 10.09.25 18:15, Kyle Meyer wrote:
+>>> Soft offlining a HugeTLB page reduces the available HugeTLB page pool.
+>>> Since HugeTLB pages are preallocated, reducing the available HugeTLB
+>>> page pool can cause allocation failures.
+>>>
+>>> /proc/sys/vm/enable_soft_offline provides a sysctl interface to
+>>> disable/enable soft offline:
+>>>
+>>> 0 - Soft offline is disabled.
+>>> 1 - Soft offline is enabled.
+>>>
+>>> The current sysctl interface does not distinguish between HugeTLB pages
+>>> and other page types.
+>>>
+>>> Disable soft offline for HugeTLB pages by default (1) and extend the
+>>> sysctl interface to preserve existing behavior (2):
+>>>
+>>> 0 - Soft offline is disabled.
+>>> 1 - Soft offline is enabled (excluding HugeTLB pages).
+>>> 2 - Soft offline is enabled (including HugeTLB pages).
+>>>
+>>> Update documentation for the sysctl interface, reference the sysctl
+>>> interface in the sysfs ABI documentation, and update HugeTLB soft
+>>> offline selftests.
+>>
+>> I'm sure you spotted that the documentation for
+>> "/sys/devices/system/memory/soft_offline_pag" resides under "testing".
+> 
+> But that is only one of several places in the kernel that
+> feed into the page offline code.
 
-How do you think about to use an enumeration for such a value collection?
-(Is there a need to extend implementation details in similar ways
-at further source code places?)
+Right, I can see one more call to soft_offline_page() from 
+arch/parisc/kernel/pdt.c.
 
-Regards,
-Markus
+And there is memory_failure_work_func() that I missed.
+
+So agreed that this goes beyond testing.
+
+It caught my attention because you ended up modifying documentation 
+residing in Documentation/ABI/testing/sysfs-memory-page-offline.
+
+Reading 56374430c5dfc that Kyle pointed out is gets clearer.
+
+So the patch motivation/idea makes sense to me.
+
+
+I'll note two things:
+
+(1) The interface design is not really extensible. Imagine if we want to 
+exclude yet another page type.
+
+Can we maybe add a second interface that defines a filter for types?
+
+Alternatively, you could use all the remaining flags as such a filter.
+
+0 - Soft offline is completely disabled.
+1 - Soft offline is enabled except for manually disabled types.
+
+Filter
+
+2 - disable hugetlb.
+
+So value 3 would give you "enable all except hugetlb" etc.
+
+We could add in the future
+
+4 - disable guest_memfd (just some random example)
+
+
+Then you
+
+2) Changing the semantics of the value "1"
+
+IIUC, you are changing the semantics of value "1". It used to mean 
+"SOFT_OFFLINE_ENABLED" now it is "SOFT_OFFLINE_ENABLED_SKIP_HUGETLB", 
+which is a change in behavior.
+
+If that is the case, I don't think that's okay.
+
+
+2) I am not sure about changing the default. That should be an admin/
+    distro decision.
+
+-- 
+Cheers
+
+David / dhildenb
+
 
