@@ -1,224 +1,404 @@
-Return-Path: <linux-acpi+bounces-16749-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16750-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4815B55425
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 17:50:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E1BB55431
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 17:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2A9D3A7180
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 15:50:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 234FB1C25900
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 15:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A174263F38;
-	Fri, 12 Sep 2025 15:50:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="W/3Jch3J"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF164302755;
+	Fri, 12 Sep 2025 15:55:24 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD6C242D9E;
-	Fri, 12 Sep 2025 15:49:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CF5266560;
+	Fri, 12 Sep 2025 15:55:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757692204; cv=none; b=SHlcu202c0PWD4Wti3M/1s6rN7ImQUd5x+JCtI3VV7058csNxPy1sTSHm/abvynnKkxeD6uwzPsiTAGzRKvIhGhQIhEOlpXOWEXC9Hn+GtKZrHR8hC3WwWc3WY6Ig+J/DW9b05IaarecMG6aje8wSVgWLuJe6cj4+Q3airk0gC8=
+	t=1757692524; cv=none; b=oz6rblZWT+n2PKigy7i9INVZukJ2zL2QAD+26sRSTr7aMLYmRYDsaVjdF/oEs5PqEBfLFKwcRUvaJoAciaPA42B2Kjhzd7G6ynusGTBvSv9saHx+YVitLGAjf810PdLxHQ/qhPsCZpdcgvpPlEedDwlzcyUBrtf2/6qwhGtbCYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757692204; c=relaxed/simple;
-	bh=z9uAsmfBj6dmWMvQluLmhw+61bpPP3h84ryhGAbd5YY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kdFyg9Nh7Hn/5kBXvqM7QeTd78iOpnKuYvPSCJjYep1K339++p4m0vIU/zjVQUOITTXmHKtx9gPMZVmINEjjrOWiFQ2D7HclQ5kfvT35WfJeQgVbPafsS3vXNWXjRhc2VLJqmYyFUxR6ZKMaUrRuj2XmiNwAO6+QP9yAuQce2Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=W/3Jch3J; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=tw
-	rGnHUvuVYfW9J7DplxEo87ueOxsYlfI2VeXdeJMww=; b=W/3Jch3JYVmIkOpU3V
-	KIn2B0jnWW7YNGa23Fcx8o6ATasKr9hUBLDEnpEXRfgemU3B42GD4Mup+PjIk0Tu
-	cya4+5C2EGQBD592Nb18ykdcvWCQYoqn3z1vh9QAPtH8c956fAvfqqhp4BxY5xA7
-	vYErGxp71RrQUK08gOheB/BQY=
-Received: from MS-CMFLBWVCLQRG.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD3_4XsQMRo42sVAw--.1965S2;
-	Fri, 12 Sep 2025 23:49:01 +0800 (CST)
-From: GuangFei Luo <luogf2025@163.com>
-To: "Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Sebastian Reichel <sre@kernel.org>,
-	linux-pm@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	luogf2025@163.com,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH v3] ACPI: battery: prevent sysfs_add_battery re-entry on rapid events
-Date: Fri, 12 Sep 2025 23:48:59 +0800
-Message-ID: <20250912154859.692750-1-luogf2025@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250910142653.313360-1-luogf2025@163.com>
-References: <20250910142653.313360-1-luogf2025@163.com>
+	s=arc-20240116; t=1757692524; c=relaxed/simple;
+	bh=5q8RUlkeA6pyHgeVhdpx3JeIpyv4wzgt8AxLFO5mZng=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lNZTaSGFvWCDsL+/38BAYc3JzPblm4laO4seqo4QQQnbJSOduO2OCCJWWrtLXs1hrPcWb2N/0sqIoQH4rrRJH3KviMF6hHiAawyy14C2IOneDMEsdhsL+N5eI9JdO6Blt90hSpd1W+n8oogYPWEzB9J/1FsikgpFLwWcyfVw9MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9F0591515;
+	Fri, 12 Sep 2025 08:55:13 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6CEAE3F66E;
+	Fri, 12 Sep 2025 08:55:17 -0700 (PDT)
+Message-ID: <53eddf53-a610-4420-9021-658fdf31aebe@arm.com>
+Date: Fri, 12 Sep 2025 16:55:16 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3_4XsQMRo42sVAw--.1965S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Gw1DAr4rtF1xAw1Uury7Awb_yoWxWF13pa
-	1rCayUtrW8JF48JwsF9F4jgFy5Wan0qF9rWr95Grn2ka9rur1DAryIqFyUXF47GrykC3yx
-	ZFn5t3Z5tw1xWw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U8OzfUUUUU=
-X-CM-SenderInfo: poxrwwisqskqqrwthudrp/1tbiPQHGmWjENKIE-gABsi
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 24/29] arm_mpam: Track bandwidth counter state for
+ overflow and power management
+To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
+Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>
+References: <20250910204309.20751-1-james.morse@arm.com>
+ <20250910204309.20751-25-james.morse@arm.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <20250910204309.20751-25-james.morse@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-v3:
-  - Modified the earlier approach: since sysfs_add_battery() is invoked
-    from multiple places, the most reliable way is to add the lock inside
-    the function itself.
-  - sysfs_remove_battery() had a similar race issue in the past, which was
-    fixed by adding a lock as well. Reference:
-    https://lore.kernel.org/all/9c921c22a7f33397a6774d7fa076db9b6a0fd669
-	.1312318300.git.len.brown@intel.com/
+Hi James,
 
-v2:
- - Fix missing mutex_unlock in acpi_battery_update()
-   (Reported-by: kernel test robot)
+On 9/10/25 21:43, James Morse wrote:
+> Bandwidth counters need to run continuously to correctly reflect the
+> bandwidth.
+> 
+> The value read may be lower than the previous value read in the case
+> of overflow and when the hardware is reset due to CPU hotplug.
+> 
+> Add struct mbwu_state to track the bandwidth counter to allow overflow
+> and power management to be handled.
+> 
+> Signed-off-by: James Morse <james.morse@arm.com>
+> ---
+> Changes since v1:
+>  * Fixed lock/unlock typo.
+> ---
+>  drivers/resctrl/mpam_devices.c  | 154 +++++++++++++++++++++++++++++++-
+>  drivers/resctrl/mpam_internal.h |  23 +++++
+>  2 files changed, 175 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+> index 1543c33c5d6a..eeb62ed94520 100644
+> --- a/drivers/resctrl/mpam_devices.c
+> +++ b/drivers/resctrl/mpam_devices.c
+> @@ -918,6 +918,7 @@ static void gen_msmon_ctl_flt_vals(struct mon_read *m, u32 *ctl_val,
+>  	*ctl_val |= MSMON_CFG_x_CTL_MATCH_PARTID;
+>  
+>  	*flt_val = FIELD_PREP(MSMON_CFG_x_FLT_PARTID, ctx->partid);
+> +
+>  	if (m->ctx->match_pmg) {
+>  		*ctl_val |= MSMON_CFG_x_CTL_MATCH_PMG;
+>  		*flt_val |= FIELD_PREP(MSMON_CFG_x_FLT_PMG, ctx->pmg);
+> @@ -972,6 +973,7 @@ static void clean_msmon_ctl_val(u32 *cur_ctl)
+>  static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
+>  				     u32 flt_val)
+>  {
+> +	struct msmon_mbwu_state *mbwu_state;
+>  	struct mpam_msc *msc = m->ris->vmsc->msc;
+>  
+>  	/*
+> @@ -990,20 +992,32 @@ static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
+>  		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val);
+>  		mpam_write_monsel_reg(msc, MBWU, 0);
+>  		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val | MSMON_CFG_x_CTL_EN);
+> +
+> +		mbwu_state = &m->ris->mbwu_state[m->ctx->mon];
+> +		if (mbwu_state)
+> +			mbwu_state->prev_val = 0;
 
-v1:
-When removing and reinserting the laptop battery, ACPI can trigger
-two notifications in quick succession:
+What's the if condition doing here?
 
-  - ACPI_BATTERY_NOTIFY_STATUS (0x80)
-  - ACPI_BATTERY_NOTIFY_INFO   (0x81)
+The below could make more sense but I don't think you can get here if
+the allocation fails.
 
-Both notifications call acpi_battery_update(). Because the events
-happen very close in time, sysfs_add_battery() can be re-entered
-before battery->bat is set, causing a duplicate sysfs entry error.
+if (m->ris->mbwu_state)
 
-This patch ensures that sysfs_add_battery() is not re-entered
-when battery->bat is already non-NULL, preventing the duplicate
-sysfs creation and stabilizing battery hotplug handling.
+> +
+>  		break;
+>  	default:
+>  		return;
+>  	}
+>  }
+>  
+> +static u64 mpam_msmon_overflow_val(struct mpam_msc_ris *ris)
+> +{
+> +	/* TODO: scaling, and long counters */
+> +	return GENMASK_ULL(30, 0);
+> +}
+> +
+>  /* Call with MSC lock held */
+>  static void __ris_msmon_read(void *arg)
+>  {
+> -	u64 now;
+>  	bool nrdy = false;
+>  	struct mon_read *m = arg;
+> +	u64 now, overflow_val = 0;
+>  	struct mon_cfg *ctx = m->ctx;
+>  	struct mpam_msc_ris *ris = m->ris;
+> +	struct msmon_mbwu_state *mbwu_state;
+>  	struct mpam_props *rprops = &ris->props;
+>  	struct mpam_msc *msc = m->ris->vmsc->msc;
+>  	u32 mon_sel, ctl_val, flt_val, cur_ctl, cur_flt;
+> @@ -1031,11 +1045,30 @@ static void __ris_msmon_read(void *arg)
+>  		now = mpam_read_monsel_reg(msc, CSU);
+>  		if (mpam_has_feature(mpam_feat_msmon_csu_hw_nrdy, rprops))
+>  			nrdy = now & MSMON___NRDY;
+> +		now = FIELD_GET(MSMON___VALUE, now);
+>  		break;
+>  	case mpam_feat_msmon_mbwu:
+>  		now = mpam_read_monsel_reg(msc, MBWU);
+>  		if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops))
+>  			nrdy = now & MSMON___NRDY;
+> +		now = FIELD_GET(MSMON___VALUE, now);
+> +
+> +		if (nrdy)
+> +			break;
+> +
+> +		mbwu_state = &ris->mbwu_state[ctx->mon];
+> +		if (!mbwu_state)
+> +			break;
+> +
+> +		/* Add any pre-overflow value to the mbwu_state->val */
+> +		if (mbwu_state->prev_val > now)
+> +			overflow_val = mpam_msmon_overflow_val(ris) - mbwu_state->prev_val;
+> +
+> +		mbwu_state->prev_val = now;
+> +		mbwu_state->correction += overflow_val;
+> +
+> +		/* Include bandwidth consumed before the last hardware reset */
+> +		now += mbwu_state->correction;
+>  		break;
+>  	default:
+>  		m->err = -EINVAL;
+> @@ -1048,7 +1081,6 @@ static void __ris_msmon_read(void *arg)
+>  		return;
+>  	}
+>  
+> -	now = FIELD_GET(MSMON___VALUE, now);
+>  	*m->val += now;
+>  }
+>  
+> @@ -1261,6 +1293,67 @@ static int mpam_reprogram_ris(void *_arg)
+>  	return 0;
+>  }
+>  
+> +/* Call with MSC lock held */
+> +static int mpam_restore_mbwu_state(void *_ris)
+> +{
+> +	int i;
+> +	struct mon_read mwbu_arg;
+> +	struct mpam_msc_ris *ris = _ris;
+> +
+> +	for (i = 0; i < ris->props.num_mbwu_mon; i++) {
+> +		if (ris->mbwu_state[i].enabled) {
+> +			mwbu_arg.ris = ris;
+> +			mwbu_arg.ctx = &ris->mbwu_state[i].cfg;
+> +			mwbu_arg.type = mpam_feat_msmon_mbwu;
+> +
+> +			__ris_msmon_read(&mwbu_arg);
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/* Call with MSC lock and held */
+> +static int mpam_save_mbwu_state(void *arg)
+> +{
+> +	int i;
+> +	u64 val;
+> +	struct mon_cfg *cfg;
+> +	u32 cur_flt, cur_ctl, mon_sel;
+> +	struct mpam_msc_ris *ris = arg;
+> +	struct msmon_mbwu_state *mbwu_state;
+> +	struct mpam_msc *msc = ris->vmsc->msc;
+> +
+> +	for (i = 0; i < ris->props.num_mbwu_mon; i++) {
+> +		mbwu_state = &ris->mbwu_state[i];
+> +		cfg = &mbwu_state->cfg;
+> +
+> +		if (WARN_ON_ONCE(!mpam_mon_sel_lock(msc)))
+> +			return -EIO;
+> +
+> +		mon_sel = FIELD_PREP(MSMON_CFG_MON_SEL_MON_SEL, i) |
+> +			  FIELD_PREP(MSMON_CFG_MON_SEL_RIS, ris->ris_idx);
+> +		mpam_write_monsel_reg(msc, CFG_MON_SEL, mon_sel);
+> +
+> +		cur_flt = mpam_read_monsel_reg(msc, CFG_MBWU_FLT);
+> +		cur_ctl = mpam_read_monsel_reg(msc, CFG_MBWU_CTL);
+> +		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, 0);
+> +
+> +		val = mpam_read_monsel_reg(msc, MBWU);
+> +		mpam_write_monsel_reg(msc, MBWU, 0);
+> +
+> +		cfg->mon = i;
+> +		cfg->pmg = FIELD_GET(MSMON_CFG_x_FLT_PMG, cur_flt);
+> +		cfg->match_pmg = FIELD_GET(MSMON_CFG_x_CTL_MATCH_PMG, cur_ctl);
+> +		cfg->partid = FIELD_GET(MSMON_CFG_x_FLT_PARTID, cur_flt);
+> +		mbwu_state->correction += val;
+> +		mbwu_state->enabled = FIELD_GET(MSMON_CFG_x_CTL_EN, cur_ctl);
+> +		mpam_mon_sel_unlock(msc);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static void mpam_init_reset_cfg(struct mpam_config *reset_cfg)
+>  {
+>  	memset(reset_cfg, 0, sizeof(*reset_cfg));
+> @@ -1335,6 +1428,9 @@ static void mpam_reset_msc(struct mpam_msc *msc, bool online)
+>  		 * for non-zero partid may be lost while the CPUs are offline.
+>  		 */
+>  		ris->in_reset_state = online;
+> +
+> +		if (mpam_is_enabled() && !online)
+> +			mpam_touch_msc(msc, &mpam_save_mbwu_state, ris);
+>  	}
+>  }
+>  
+> @@ -1369,6 +1465,9 @@ static void mpam_reprogram_msc(struct mpam_msc *msc)
+>  			mpam_reprogram_ris_partid(ris, partid, cfg);
+>  		}
+>  		ris->in_reset_state = reset;
+> +
+> +		if (mpam_has_feature(mpam_feat_msmon_mbwu, &ris->props))
+> +			mpam_touch_msc(msc, &mpam_restore_mbwu_state, ris);
+>  	}
+>  }
+>  
+> @@ -2091,11 +2190,33 @@ static void mpam_unregister_irqs(void)
+>  
+>  static void __destroy_component_cfg(struct mpam_component *comp)
+>  {
+> +	struct mpam_msc *msc;
+> +	struct mpam_vmsc *vmsc;
+> +	struct mpam_msc_ris *ris;
+> +
+> +	lockdep_assert_held(&mpam_list_lock);
+> +
+>  	add_to_garbage(comp->cfg);
+> +	list_for_each_entry(vmsc, &comp->vmsc, comp_list) {
+> +		msc = vmsc->msc;
+> +
+> +		if (mpam_mon_sel_lock(msc)) {
+> +			list_for_each_entry(ris, &vmsc->ris, vmsc_list)
+> +				add_to_garbage(ris->mbwu_state);
+> +			mpam_mon_sel_unlock(msc);
+> +		}
+> +	}
+>  }
+>  
+>  static int __allocate_component_cfg(struct mpam_component *comp)
+>  {
+> +	int err = 0;
+> +	struct mpam_msc *msc;
+> +	struct mpam_vmsc *vmsc;
+> +	struct mpam_msc_ris *ris;
+> +	struct msmon_mbwu_state *mbwu_state;
+> +
+> +	lockdep_assert_held(&mpam_list_lock);
+>  	mpam_assert_partid_sizes_fixed();
+>  
+>  	if (comp->cfg)
+> @@ -2106,6 +2227,35 @@ static int __allocate_component_cfg(struct mpam_component *comp)
+>  		return -ENOMEM;
+>  	init_garbage(comp->cfg);
+>  
+> +	list_for_each_entry(vmsc, &comp->vmsc, comp_list) {
+> +		if (!vmsc->props.num_mbwu_mon)
+> +			continue;
+> +
+> +		msc = vmsc->msc;
+> +		list_for_each_entry(ris, &vmsc->ris, vmsc_list) {
+> +			if (!ris->props.num_mbwu_mon)
+> +				continue;
+> +
+> +			mbwu_state = kcalloc(ris->props.num_mbwu_mon,
+> +					     sizeof(*ris->mbwu_state),
+> +					     GFP_KERNEL);
+> +			if (!mbwu_state) {
+> +				__destroy_component_cfg(comp);
+> +				err = -ENOMEM;
+> +				break;
+> +			}
+> +
+> +			if (mpam_mon_sel_lock(msc)) {
+> +				init_garbage(mbwu_state);
+> +				ris->mbwu_state = mbwu_state;
+> +				mpam_mon_sel_unlock(msc);
+> +			}
 
-[  476.117945] sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
-[  476.118896] CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
-[  476.118903] Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
-[  476.118906] Workqueue: kacpi_notify acpi_os_execute_deferred
-[  476.118917] Call Trace:
-[  476.118922]  <TASK>
-[  476.118929]  dump_stack_lvl+0x5d/0x80
-[  476.118938]  sysfs_warn_dup.cold+0x17/0x23
-[  476.118943]  sysfs_create_dir_ns+0xce/0xe0
-[  476.118952]  kobject_add_internal+0xba/0x250
-[  476.118959]  kobject_add+0x96/0xc0
-[  476.118964]  ? get_device_parent+0xde/0x1e0
-[  476.118970]  device_add+0xe2/0x870
-[  476.118975]  __power_supply_register.part.0+0x20f/0x3f0
-[  476.118981]  ? wake_up_q+0x4e/0x90
-[  476.118990]  sysfs_add_battery+0xa4/0x1d0 [battery]
-[  476.118998]  acpi_battery_update+0x19e/0x290 [battery]
-[  476.119002]  acpi_battery_notify+0x50/0x120 [battery]
-[  476.119006]  acpi_ev_notify_dispatch+0x49/0x70
-[  476.119012]  acpi_os_execute_deferred+0x1a/0x30
-[  476.119015]  process_one_work+0x177/0x330
-[  476.119022]  worker_thread+0x251/0x390
-[  476.119026]  ? __pfx_worker_thread+0x10/0x10
-[  476.119030]  kthread+0xd2/0x100
-[  476.119033]  ? __pfx_kthread+0x10/0x10
-[  476.119035]  ret_from_fork+0x34/0x50
-[  476.119040]  ? __pfx_kthread+0x10/0x10
-[  476.119042]  ret_from_fork_asm+0x1a/0x30
-[  476.119049]  </TASK>
-[  476.142552] kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
-[  476.415022] ata1.00: unexpected _GTF length (8)
-[  476.428076] sd 0:0:0:0: [sda] Starting disk
-[  476.835035] ata1.00: unexpected _GTF length (8)
-[  476.839720] ata1.00: configured for UDMA/133
-[  491.328831] sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
-[  491.329720] CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
-[  491.329727] Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
-[  491.329731] Workqueue: kacpi_notify acpi_os_execute_deferred
-[  491.329741] Call Trace:
-[  491.329745]  <TASK>
-[  491.329751]  dump_stack_lvl+0x5d/0x80
-[  491.329758]  sysfs_warn_dup.cold+0x17/0x23
-[  491.329762]  sysfs_create_dir_ns+0xce/0xe0
-[  491.329770]  kobject_add_internal+0xba/0x250
-[  491.329775]  kobject_add+0x96/0xc0
-[  491.329779]  ? get_device_parent+0xde/0x1e0
-[  491.329784]  device_add+0xe2/0x870
-[  491.329790]  __power_supply_register.part.0+0x20f/0x3f0
-[  491.329797]  sysfs_add_battery+0xa4/0x1d0 [battery]
-[  491.329805]  acpi_battery_update+0x19e/0x290 [battery]
-[  491.329809]  acpi_battery_notify+0x50/0x120 [battery]
-[  491.329812]  acpi_ev_notify_dispatch+0x49/0x70
-[  491.329817]  acpi_os_execute_deferred+0x1a/0x30
-[  491.329820]  process_one_work+0x177/0x330
-[  491.329826]  worker_thread+0x251/0x390
-[  491.329830]  ? __pfx_worker_thread+0x10/0x10
-[  491.329833]  kthread+0xd2/0x100
-[  491.329836]  ? __pfx_kthread+0x10/0x10
-[  491.329838]  ret_from_fork+0x34/0x50
-[  491.329842]  ? __pfx_kthread+0x10/0x10
-[  491.329844]  ret_from_fork_asm+0x1a/0x30
-[  491.329850]  </TASK>
-[  491.329855] kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
+The if statement is confusing now that mpam_mon_sel_lock()
+unconditionally returns true.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202509101620.yI0HZ5gT-lkp@intel.com/
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202509101620.yI0HZ5gT-lkp@intel.com/
-Fixes: 508df92d1f8d ("ACPI: battery: register power_supply subdevice only when battery is present")
-Signed-off-by: GuangFei Luo <luogf2025@163.com>
-Cc: stable@vger.kernel.org
----
- drivers/acpi/battery.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+> +		}
+> +
+> +		if (err)
+> +			break;
+> +	}
+> +
+>  	return 0;
+>  }
+>  
+> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
+> index bb01e7dbde40..725c2aefa8a2 100644
+> --- a/drivers/resctrl/mpam_internal.h
+> +++ b/drivers/resctrl/mpam_internal.h
+> @@ -212,6 +212,26 @@ struct mon_cfg {
+>  	enum mon_filter_options opts;
+>  };
+>  
+> +/*
+> + * Changes to enabled and cfg are protected by the msc->lock.
+> + * Changes to prev_val and correction are protected by the msc's mon_sel_lock.
+> + */
+> +struct msmon_mbwu_state {
+> +	bool		enabled;
+> +	struct mon_cfg	cfg;
+> +
+> +	/* The value last read from the hardware. Used to detect overflow. */
+> +	u64		prev_val;
+> +
+> +	/*
+> +	 * The value to add to the new reading to account for power management,
+> +	 * and shifts to trigger the overflow interrupt.
+> +	 */
+> +	u64		correction;
+> +
+> +	struct mpam_garbage	garbage;
+> +};
+> +
+>  struct mpam_class {
+>  	/* mpam_components in this class */
+>  	struct list_head	components;
+> @@ -304,6 +324,9 @@ struct mpam_msc_ris {
+>  	/* parent: */
+>  	struct mpam_vmsc	*vmsc;
+>  
+> +	/* msmon mbwu configuration is preserved over reset */
+> +	struct msmon_mbwu_state	*mbwu_state;
+> +
+>  	struct mpam_garbage	garbage;
+>  };
+>  
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 6905b56bf3e4..f6d4a8b39a9c 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -850,6 +850,12 @@ static void __exit battery_hook_exit(void)
- 
- static int sysfs_add_battery(struct acpi_battery *battery)
- {
-+	mutex_lock(&battery->sysfs_lock);
-+	if (battery->bat) {
-+		mutex_unlock(&battery->sysfs_lock);
-+		return 0;
-+	}
-+
- 	struct power_supply_config psy_cfg = {
- 		.drv_data = battery,
- 		.attr_grp = acpi_battery_groups,
-@@ -896,9 +902,11 @@ static int sysfs_add_battery(struct acpi_battery *battery)
- 		int result = PTR_ERR(battery->bat);
- 
- 		battery->bat = NULL;
-+		mutex_unlock(&battery->sysfs_lock);
- 		return result;
- 	}
- 	battery_hook_add_battery(battery);
-+	mutex_unlock(&battery->sysfs_lock);
- 	return 0;
- }
- 
-@@ -1026,11 +1034,9 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
- 		return result;
- 	acpi_battery_quirks(battery);
- 
--	if (!battery->bat) {
--		result = sysfs_add_battery(battery);
--		if (result)
--			return result;
--	}
-+	result = sysfs_add_battery(battery);
-+	if (result)
-+		return result;
- 
- 	/*
- 	 * Wakeup the system if battery is critical low
--- 
-2.43.0
+Thanks,
+
+Ben
 
 
