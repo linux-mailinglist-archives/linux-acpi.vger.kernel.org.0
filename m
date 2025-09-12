@@ -1,109 +1,120 @@
-Return-Path: <linux-acpi+bounces-16709-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16710-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7ECBB549F3
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 12:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22000B54A1A
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 12:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E52917598E
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 10:35:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7A6C16A39D
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 10:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E96F2EB5B0;
-	Fri, 12 Sep 2025 10:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8BD2E173F;
+	Fri, 12 Sep 2025 10:42:12 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31AD4A41;
-	Fri, 12 Sep 2025 10:35:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB3E2472B5;
+	Fri, 12 Sep 2025 10:42:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757673357; cv=none; b=nYUy7HofStAaUOVI0Y1+T3L9dMc3q5E9xd/g160c38rP5p4UvyGB0KSEh+Tmqxr0e0bvLpv1WBmaxCD4PPfJIie+DJ1Jx/3JNX4l5FmzkN1NWX/n/fsSKCH55ZUzHMdgxFgj74MLNKaSSi83lk6hSDyxYrGzWXMft+yQz8qxo6k=
+	t=1757673732; cv=none; b=nNYqd8hQZTALljxqnVDlWJPhwp/svQWmqyQy8EN5lyjpTQN2hb8oIEJj51zbwF3+j22awQsOrm4cLSBRvdfdvYE04E855t5s+wAWK2VkdeDu1zbC8S698YxMJRAGxKVRBJCObiL6yiXnwr/dnKpI5Eh9B12PjY2QUYa1DVhB9aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757673357; c=relaxed/simple;
-	bh=8isM4pnEl1DTTq0/TamOYHRx+JNwrYDasXNQxd2lPO0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=K1nd4NiEN6c7+P9VNEzoMI39MQXvPdQzlDWULQkOwyDV5U95HYcAVyanHy7BB9p3nFbed2BA+retjvDnYx6gIl4pLVIhbWkw9LHyntMZcq4l3galHNW1bBBjIkhY58cxiQSux9a/OTy50R1KO3KC0OI2wJ8cYY6SmpGN0H9ufIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 3a2640328fc411f0b29709d653e92f7d-20250912
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:239f42ab-7810-4b7b-af4f-1f1d5c2920a3,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:0cc55e3327b48de50b7d63ac00146cdd,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|817|850,TC:nil,Content:-
-	10|-8|-5|50,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,CO
-	L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 1,FCT|NGT
-X-CID-BAS: 1,FCT|NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 3a2640328fc411f0b29709d653e92f7d-20250912
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 949768031; Fri, 12 Sep 2025 18:35:40 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id CD10CE009008;
-	Fri, 12 Sep 2025 18:35:39 +0800 (CST)
-X-ns-mid: postfix-68C3F77B-7006584
-Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 20C2EE009008;
-	Fri, 12 Sep 2025 18:35:39 +0800 (CST)
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-To: hansg@kernel.org
-Cc: lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	mario.limonciello@amd.com,
-	rafael@kernel.org,
-	stable@vger.kernel.org,
-	zhangzihuan@kylinos.cn
-Subject: Re: [PATCH v1] ACPI: video: Fix missing backlight node creation on
-Date: Fri, 12 Sep 2025 18:35:38 +0800
-Message-Id: <20250912103538.3657242-1-zhangzihuan@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <17cc74d6-2e49-4370-ae37-39cddfe67d7d@kernel.org>
-References: <17cc74d6-2e49-4370-ae37-39cddfe67d7d@kernel.org>
+	s=arc-20240116; t=1757673732; c=relaxed/simple;
+	bh=otd6QxpT8qFQVUNAzfILUI02V9sOlrSc4wYVCCapfTg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D8FMeeYnYrmwEn6qfRUFXrTnlbhTQF47mc+7jOVzksTyYBdqZcAVUatN4eFz76q3XOxE1vlggchF8UAKa4diYqvOH76OCUdYt643UHW5s+wBJzGwQT/Zj18WtPoiBadRR9GXcq/ukNvmfr7I2mIe0oNdjLSerkfRDTSPInJue1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 437FA1515;
+	Fri, 12 Sep 2025 03:42:02 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 505263F66E;
+	Fri, 12 Sep 2025 03:42:05 -0700 (PDT)
+Message-ID: <13347819-c83d-446b-856e-d7fd8ec742ea@arm.com>
+Date: Fri, 12 Sep 2025 11:42:03 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 10/29] arm_mpam: Add cpuhp callbacks to probe MSC
+ hardware
+To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
+Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Lecopzer Chen <lecopzerc@nvidia.com>
+References: <20250910204309.20751-1-james.morse@arm.com>
+ <20250910204309.20751-11-james.morse@arm.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <20250910204309.20751-11-james.morse@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> 1. There must be a GPU driver for these laptops somewhere?
-> Even if out of tree using a laptop without a GPU these days
-> just does not give a good user experience. So fix the GPU
-> driver to call acpi_video_register_backlight().
->=20
-> Note acpi_video_register_backlight() is deliberately exported
-> without requiring the consuming out of tree kernel module to
-> be GPL to allow this.
->=20
-> Other options would be:
->=20
-> 2. Add some special heuristics for Zhaoxin CPUs,
-> the kernel already has a CPUID match mechanism for
-> things like this. This could potentially be combined
-> with a DMI system-vendor check to only do this special
-> case handling on e.g. Lenovo and Inspur laptops.
->=20
-> 3. Instead of adding the CPU-id based special case
-> just outright use DMI quirks. In this case lets try
-> to use substring matches to cover multiple models
-> with a single entry so as to not grow the quirk
-> table too much.
+Hi James,
 
+On 9/10/25 21:42, James Morse wrote:
+> Because an MSC can only by accessed from the CPUs in its cpu-affinity
+> set we need to be running on one of those CPUs to probe the MSC
+> hardware.
+> 
+> Do this work in the cpuhp callback. Probing the hardware will only
+> happen before MPAM is enabled, walk all the MSCs and probe those we can
+> reach that haven't already been probed as each CPU's online call is made.
+> 
+> This adds the low-level MSC register accessors.
+> 
+> Once all MSCs reported by the firmware have been probed from a CPU in
+> their respective cpu-affinity set, the probe-time cpuhp callbacks are
+> replaced.  The replacement callbacks will ultimately need to handle
+> save/restore of the runtime MSC state across power transitions, but for
+> now there is nothing to do in them: so do nothing.
+> 
+> The architecture's context switch code will be enabled by a static-key,
+> this can be set by mpam_enable(), but must be done from process context,
+> not a cpuhp callback because both take the cpuhp lock.
+> Whenever a new MSC has been probed, the mpam_enable() work is scheduled
+> to test if all the MSCs have been probed. If probing fails, mpam_disable()
+> is scheduled to unregister the cpuhp callbacks and free memory.
+> 
+> CC: Lecopzer Chen <lecopzerc@nvidia.com>
+> Signed-off-by: James Morse <james.morse@arm.com>
+> ---
+> Changes since v1:
+>  * Removed register bounds check. If the firmware tables are wrong the
+>    resulting translation fault should be enough to debug this.
+>  * Removed '&' in front of a function pointer.
+>  * Pulled mpam_disable() into this patch.
+>  * Disable mpam when probing fails to avoid extra work on broken platforms.
+>  * Added mpam_disbale_reason as there are now two non-debug reasons for this
+>    to happen.
 
-Got it, thanks!
+Looks good to me.
 
-In fact, we have tried a few approaches (cmdline option, CPU-ID based qui=
-rk, and DMI quirk),
-and all of them work.=20
-I will sync this information with Zhaoxin to see which way they prefer.
+Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+
+Thanks,
+
+Ben
+
 
