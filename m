@@ -1,109 +1,107 @@
-Return-Path: <linux-acpi+bounces-16790-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16792-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CB3EB55870
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 23:35:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 456C8B5590B
+	for <lists+linux-acpi@lfdr.de>; Sat, 13 Sep 2025 00:19:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B0403BA4E0
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 21:35:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC5793A3DDD
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 22:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17ACC273D6D;
-	Fri, 12 Sep 2025 21:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDBF26C3BC;
+	Fri, 12 Sep 2025 22:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jWe9RqWB";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SvD9/c5F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O5mKPOrd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF6E267B7F;
-	Fri, 12 Sep 2025 21:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C7424A046;
+	Fri, 12 Sep 2025 22:19:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757712937; cv=none; b=iV6/JBFraBka6YGUwoyxQqQwHduqIuc8MbMapeQvRub8pMeWdlDsG1EXOV6FkrYNDpwUn+Ldxr7fW7fWc0TO8iy+JV61KBCt/n0mSI0JmUsMdCsyb1dioWe6HZlK3FnIWo2VlUV+fLB5rmlhk9x/QRlYARG/Zoxa/D4rJxOQc+Y=
+	t=1757715544; cv=none; b=k2QH3v4E0HnBAN2mux07r7QC+8YxJN9PFHL5xF3ZZ8o4c1sktShkq7ySkwJPhcunqss/bXfCGE8xa/ZkU4ouN7rGwDoGR96ZZZkQ4A3RtpULBeXOlzyeB7d51sFKSKbwdANZEo5tqBtBwodPeUC6/Bbqh02oiPam8gpnq8WVNC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757712937; c=relaxed/simple;
-	bh=CIP37YYCjqcGC81JDTnNjx/KUhlRzVtxclTIGTx+YTo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nVfeFbk7PSsHyeyIuozI52WKALLd2/Hdma2R531BGm68QY07bY4IeQfRC6MZcv6zTza8R5t+DMsgP05zF6ZGqzAmo2/bbHs7VexIRCLKJj11WFtgdw+u8YNkKifH4li4pdlfvoCbsMXxlkGc68VNIkJmCzlQ3if1oKdO/cMSdwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jWe9RqWB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SvD9/c5F; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 12 Sep 2025 23:35:31 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1757712933;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XJywZl8jo9kem9suoU7q3HumG7Ll6JwsETfmVlTVNX4=;
-	b=jWe9RqWBVO4W/EhdvStaqwGY4HbFraEYNAbKVdoTZG4L/evb0hNioTSf3W8UIqJWxAM/pg
-	0nRLrRp2Jl8fzgXh73Z2JWVwCS4HPuWVqDXGPcMap3CDnX1oDjHXQzbJfIpawNUV3x2wlo
-	pBRqB8n45nDvf5OrrFGVgsIFWNYt4SS3z7w+m2piEf04fbHUrHCkpmIQm3JXkaKz1MxpFA
-	Y0frJ/M8Tv84Bt0FGNS6W2GrrhxJgUUUJmS+rn7MY7WHSTStay7MlHKhtvHlrqOwGP5sbO
-	god4lNKfQhS79hxwetBbeCp85u42rOpQFXRS3AOsDqBZeuZoZmE0Ahdd63kH0A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1757712933;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XJywZl8jo9kem9suoU7q3HumG7Ll6JwsETfmVlTVNX4=;
-	b=SvD9/c5Fsvauk3tSHRJzFwKmpJQF2S2HYRa09AMsBAhpYOQ2vs26PVNIXCzA7P6J/6ngyo
-	cSHMkxFnTiAkpbCA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Waiman Long <llong@redhat.com>
-Cc: pengdonglin <dolinux.peng@gmail.com>, tj@kernel.org,
-	tony.luck@intel.com, jani.nikula@linux.intel.com,
-	ap420073@gmail.com, jv@jvosburgh.net, freude@linux.ibm.com,
-	bcrl@kvack.org, trondmy@kernel.org, kees@kernel.org,
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	linux-nfs@vger.kernel.org, linux-aio@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org, linux-acpi@vger.kernel.org,
-	linux-s390@vger.kernel.org, cgroups@vger.kernel.org,
-	pengdonglin <pengdonglin@xiaomi.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH] rcu: Remove redundant rcu_read_lock/unlock() in
- spin_lock critical sections
-Message-ID: <20250912213531.7-YeRBeD@linutronix.de>
-References: <20250912065050.460718-1-dolinux.peng@gmail.com>
- <6831b9fe-402f-40a6-84e6-b723dd006b90@redhat.com>
+	s=arc-20240116; t=1757715544; c=relaxed/simple;
+	bh=RbPveMq+wUujHCh2U8cE2C1bMP4tSmoOr+Umu0UNfzg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kysSSbmSy3tYA2ohhB6UZIcFYCz5tq1XlAohZdeX8eBhNk2U48vNfUUQZHUp6Yy/dDnoDjS6QFrJ7htrusoviPJEgKhG2yj10OYvCY0lj5ORnvl8sly68mwN7fhhmF0tEeJRo1yv7+29kn/dQGiKW3cNAJmrYWFRtoyqdAp4Ank=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O5mKPOrd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D98C4CEF1;
+	Fri, 12 Sep 2025 22:19:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757715543;
+	bh=RbPveMq+wUujHCh2U8cE2C1bMP4tSmoOr+Umu0UNfzg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=O5mKPOrdXEOjALlLBJVr1vGQJXJcItEeixGlI+9dJg5I5QMN4C3sf5rHXczNa9wut
+	 sZ/cezKIxekFgigOl8KyZ7KrkrqSJI3v3RehxpcjGqxRkJMPKB4CLWIu3Py+FGtqmp
+	 tjFg/n9Orbh0F309UZHzWj0hnQaI7zYQKMO16o7iDf08PaugvitDBfBtWzp9TgnUvs
+	 DbzS67V41iaiCsb+f0Uow0younCcOwgJyGG62eGHul9mNQ4ji6kXGx05VNgIYJ+i5r
+	 g+/Z2i9QXmuuZYDLlLnifn48G8ft/7glnyxC2ooYXbsdwMyT9Ko/mqTtGaScbQDyUN
+	 2MLFazUJ2BRxw==
+From: Hans de Goede <hansg@kernel.org>
+To: Mika Westerberg <westeri@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Linus Walleij <linus.walleij@linaro.org>
+Cc: Hans de Goede <hansg@kernel.org>,
+	linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [6.17 REGRESSION FIX] gpiolib: acpi: Fix using random stack memory during GPIO lookups
+Date: Sat, 13 Sep 2025 00:18:59 +0200
+Message-ID: <20250912221859.368173-1-hansg@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <6831b9fe-402f-40a6-84e6-b723dd006b90@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-On 2025-09-12 17:13:09 [-0400], Waiman Long wrote:
-> On 9/12/25 2:50 AM, pengdonglin wrote:
-> > From: pengdonglin <pengdonglin@xiaomi.com>
-> > 
-> > When CONFIG_PREEMPT_RT is disabled, spin_lock*() operations implicitly
-> > disable preemption, which provides RCU read-side protection. When
-> > CONFIG_PREEMPT_RT is enabled, spin_lock*() implementations internally
-> > manage RCU read-side critical sections.
-> 
-> I have some doubt about your claim that disabling preemption provides RCU
-> read-side protection. It is true for some flavors but probably not all. I do
-> know that disabling interrupt will provide RCU read-side protection. So for
-> spin_lock_irq*() calls, that is valid. I am not sure about spin_lock_bh(),
-> maybe it applies there too. we need some RCU people to confirm.
+Before commit 8b4f52ef7a41 ("gpiolib: acpi: Deduplicate some code in
+__acpi_find_gpio()") and the follow-up fix commit 7c010d463372 ("gpiolib:
+acpi: Make sure we fill struct acpi_gpio_info"). The struct acpi_gpio_info
+used during lookups was part of struct acpi_gpio_lookup which gets
+memset() to 0 before use.
 
-The claim is valid since Paul merged the three flavours we had. Before
-that preempt_disable() (and disabling irqs) would match
-rcu_read_lock_sched(). rcu_read_lock() and rcu_read_lock_bh() were
-different in terms of grace period and clean up.
-So _now_ we could remove it if it makes things easier.
+And then after a successful lookup, acpi_gpio_resource_lookup() would
+copy the content of the zeroed acpi_gpio_lookup.info to the on
+stack struct acpi_gpio_info in __acpi_find_gpio(), overwriting any
+uninitialized memory contents there.
 
-> Cheers,
-> Longman
+But now instead a pointer to the on stack struct acpi_gpio_info in
+__acpi_find_gpio() is passed around, but that struct is never
+initialized.
 
-Sebastian
+This passing around of the uninitialized struct breaks index based
+lookups of GpioInt GPIOs because info->quirks now contains some random
+on stack data which may contain ACPI_GPIO_QUIRK_ONLY_GPIOIO.
+
+Initialize the on stack struct acpi_gpio_info to 0 to fix this.
+
+Fixes: 8b4f52ef7a41 ("gpiolib: acpi: Deduplicate some code in __acpi_find_gpio()")
+Fixes: 7c010d463372 ("gpiolib: acpi: Make sure we fill struct acpi_gpio_info")
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+---
+ drivers/gpio/gpiolib-acpi-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
+index 12b24a717e43..1cc5d0702ee1 100644
+--- a/drivers/gpio/gpiolib-acpi-core.c
++++ b/drivers/gpio/gpiolib-acpi-core.c
+@@ -942,7 +942,7 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
+ {
+ 	struct acpi_device *adev = to_acpi_device_node(fwnode);
+ 	bool can_fallback = acpi_can_fallback_to_crs(adev, con_id);
+-	struct acpi_gpio_info info;
++	struct acpi_gpio_info info = { };
+ 	struct gpio_desc *desc;
+ 
+ 	desc = __acpi_find_gpio(fwnode, con_id, idx, can_fallback, &info);
+-- 
+2.51.0
+
 
