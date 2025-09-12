@@ -1,138 +1,109 @@
-Return-Path: <linux-acpi+bounces-16747-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16748-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52DEAB553BA
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 17:34:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F415BB5540B
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 17:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C56EAC3277
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 15:34:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B67DD5A1F33
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 15:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC1C3128AF;
-	Fri, 12 Sep 2025 15:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F2723AB8B;
+	Fri, 12 Sep 2025 15:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="Xo/rFNoS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEB03115BE;
-	Fri, 12 Sep 2025 15:33:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA3921D3F5;
+	Fri, 12 Sep 2025 15:47:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757691235; cv=none; b=bX+l/Qw324G2UGR2ND2BRkLqpcpm2Z1yMo6QMuvx/S2T3uAz/QY9ShANhGFMv/TrI7yzT7TEU5BUei+/vFR7q7jji2AKpezdtUF4qm/hbn3/2WIHF+F2kb/8VZaNbroy1VPIfJVA79fKsIVs89g9toOe3XGJ2r99XmJFkWSr2d4=
+	t=1757692066; cv=none; b=TRPHUM+zTzYDKizoYxANr71etlRsO7xPHm+CFNFrheGRdRsck8DaV9jw15HnfKeSoKaCDvgnM1b0LryaeQQ311pkH2xFRO7z2tMqpPoQI8vHdNB2/jkuPxMQ6Lna0kUzuWI8sTkD+sUC4TXBCFiOKB6ILYdZ1QgrzIKPRReFVw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757691235; c=relaxed/simple;
-	bh=Yf6gphKjYSoORScCnkQ+lf2y5m/zepnTYR1+L9G6++M=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CMO1l/KlkAV0M0KHRAJkFd/uhpg+TwD10YTFiLsQ7801OrmvQ3KCKxJh9SCEotyOmHw61LY0eQSNsLtXuPhQaRwqm/EIQRZ9RInjJYlvZTQSRUkUGZI3NE3BkFKbzCxh/C6vT5mLw/mGd+YY4E9TIkSyv+hgQntGTUR1HwxtacE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cNdhv418Cz6D8cf;
-	Fri, 12 Sep 2025 23:32:31 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0A3861402EA;
-	Fri, 12 Sep 2025 23:33:50 +0800 (CST)
-Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 12 Sep
- 2025 17:33:49 +0200
-Date: Fri, 12 Sep 2025 16:33:48 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Ben Cheatham <Benjamin.Cheatham@amd.com>
-CC: <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH 12/16] PCI: PCIe portdrv: Add cxl_isolation sysfs
- attributes
-Message-ID: <20250912163348.00004d1b@huawei.com>
-In-Reply-To: <20250730214718.10679-13-Benjamin.Cheatham@amd.com>
-References: <20250730214718.10679-1-Benjamin.Cheatham@amd.com>
-	<20250730214718.10679-13-Benjamin.Cheatham@amd.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1757692066; c=relaxed/simple;
+	bh=jPe1pdv9rph8uVbl98SfuP23RiP7V6VDtBfkTK5lkSI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dyzRiXmdLYElX605lsoHSHt7wT0Z2g8K1DZfQSd4HJqzx38dMyAeRFyYMFFVM1lRR0M1mAtVjb14pYmyyfcJUU0h902/yiKuG2FP0fRTbk7XprXGUA+RNK/M0HLmEd9cGgUpYfvOLOCruHv9DsYl+2WvMELn2L1FqcPKF53Rs6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=Xo/rFNoS; arc=none smtp.client-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from LAPTOP-N070L597.localdomain (unknown [58.241.16.34])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 22a15e980;
+	Fri, 12 Sep 2025 23:47:39 +0800 (GMT+08:00)
+From: Zilin Guan <zilin@seu.edu.cn>
+To: rafael@kernel.org
+Cc: robert.moore@intel.com,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	Zilin Guan <zilin@seu.edu.cn>
+Subject: [PATCH] acpi: replace ACPI_FREE with acpi_ut_delete_object_desc
+Date: Fri, 12 Sep 2025 15:47:35 +0000
+Message-Id: <20250912154735.158537-1-zilin@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a993e9c5da603a1kunmf7421b2a2a66ff
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCGU4fVklDT09KGk8YS0weHVYeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZS1VLVUtVS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=Xo/rFNoS1dz+c0yx+HedhqhhqKgS6VOs02EpGJlZ+ROoYv3jt7JF0MFeEBwRqFvpp11mzAIkZZLDxwUOpXYrhRiw50Jd+FuLdoEc2zPJPv6pXoBkOpLLkYcX8GLEagXU/Y8JaNKHoB/+jsESq0aDeDCcpuSree6Z4H178pAaWPo=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=b9yWIDSto645FMwYolwTKJoPgHsiJq2d08oXP46kQO4=;
+	h=date:mime-version:subject:message-id:from;
 
-On Wed, 30 Jul 2025 16:47:14 -0500
-Ben Cheatham <Benjamin.Cheatham@amd.com> wrote:
+acpi_ut_create_internal_object may allocate memory from a slab cache
+via kmem_cache_zalloc, but the code currently frees it with ACPI_FREE,
+which calls kfree. This mismatch prevents the object from being
+released properly and may lead to memory leaks or other issues.
 
-> Add sysfs attributes to enable/disable CXL isolation and transaction
-> timeout. The intended use for these attributes is to disable isolation
-> and/or timeout as part of device maintenance or hotplug.
-> 
-> The attributes are added under a new "cxl_isolation" group on the PCIe
-> Root Port device.
-> 
-> Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
-Comments below apply in quite a few of these functions, I just
-picked one example to talk about.
+Fix this by replacing ACPI_FREE with acpi_ut_delete_object_desc, which
+matches the allocation method used for internal objects.
 
-Thanks,
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+---
+ drivers/acpi/acpica/nsxfname.c | 2 +-
+ drivers/acpi/acpica/utobject.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Jonathan
-
-> diff --git a/drivers/pci/pcie/cxl_isolation.c b/drivers/pci/pcie/cxl_isolation.c
-> index 5a56a327b599..9d2ad14810e8 100644
-> --- a/drivers/pci/pcie/cxl_isolation.c
-> +++ b/drivers/pci/pcie/cxl_isolation.c
-
-
-
-> +static ssize_t timeout_ctrl_show(struct device *dev,
-> +				 struct device_attribute *attr, char *buf)
-> +{
-> +	struct pci_dev *pdev = to_pci_dev(dev);
-> +	struct cxl_port *port;
-> +	u32 ctrl;
-> +
-> +	struct cxl_dport **dport __free(kfree) =
-> +		kzalloc(sizeof(*dport), GFP_KERNEL);
-> +	if (!dport)
-> +		return -ENOMEM;
-> +
-> +	port = cxl_find_pcie_rp(pdev, dport);
-	struct cxl_port *port __free(put_cxl_port) = cxl_find_pcie_rp();
-
-Same for other cases above.
-
-
-> +	if (!port || !(*dport))
-
-leaks device reference if port is set and dport isn't.
-
-> +		return -ENODEV;
-> +
-> +	if (!(*dport)->regs.isolation)
-leaks device reference.
-> +		return -ENXIO;
-> +
-> +	ctrl = readl((*dport)->regs.isolation + CXL_ISOLATION_CTRL_OFFSET);
-> +	put_device(&port->dev);
-
-and no need to do this by hand.
-
-> +
-> +	return sysfs_emit(buf, "%lu\n",
-> +			  FIELD_GET(CXL_ISOLATION_CTRL_MEM_TIME_ENABLE, ctrl));
-> +}
-> +DEVICE_ATTR_RW(timeout_ctrl);
-> +
-> +static struct attribute *isolation_attrs[] = {
-> +	&dev_attr_timeout_ctrl.attr,
-> +	&dev_attr_isolation_ctrl.attr,
-> +	NULL,
-My favorite trivial comment :) No need for that trailing comma.
-> +};
-
-
+diff --git a/drivers/acpi/acpica/nsxfname.c b/drivers/acpi/acpica/nsxfname.c
+index 1db831545ec8..b6895a48ae68 100644
+--- a/drivers/acpi/acpica/nsxfname.c
++++ b/drivers/acpi/acpica/nsxfname.c
+@@ -601,7 +601,7 @@ acpi_status acpi_install_method(u8 *buffer)
+ error_exit:
+ 
+ 	ACPI_FREE(aml_buffer);
+-	ACPI_FREE(method_obj);
++	acpi_ut_delete_object_desc(method_obj);
+ 	return (status);
+ }
+ ACPI_EXPORT_SYMBOL(acpi_install_method)
+diff --git a/drivers/acpi/acpica/utobject.c b/drivers/acpi/acpica/utobject.c
+index 272e46208263..8362204b57b5 100644
+--- a/drivers/acpi/acpica/utobject.c
++++ b/drivers/acpi/acpica/utobject.c
+@@ -148,7 +148,7 @@ union acpi_operand_object *acpi_ut_create_package_object(u32 count)
+ 	package_elements = ACPI_ALLOCATE_ZEROED(((acpi_size)count +
+ 						 1) * sizeof(void *));
+ 	if (!package_elements) {
+-		ACPI_FREE(package_desc);
++		acpi_ut_delete_object_desc(package_desc);
+ 		return_PTR(NULL);
+ 	}
+ 
+-- 
+2.34.1
 
 
