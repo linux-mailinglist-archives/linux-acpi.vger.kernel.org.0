@@ -1,151 +1,433 @@
-Return-Path: <linux-acpi+bounces-16734-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16735-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C99B5509D
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 16:14:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46180B551F7
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 16:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8DB07C8579
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 14:14:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F5F1A03717
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 14:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FAF30FC24;
-	Fri, 12 Sep 2025 14:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="W250Hofs"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7FC30EF65;
+	Fri, 12 Sep 2025 14:40:52 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A802F4A;
-	Fri, 12 Sep 2025 14:12:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061F53101BF;
+	Fri, 12 Sep 2025 14:40:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757686373; cv=none; b=dUi9nGUiuiVg0UsAE0QF0rYBi+wD5aOdKbDo+3Mb7JHw7s24Is6wbHQOCpvo2NakkIC4bYoIv/BRzQlxF+a6wgglbMnu/d0CEtfzcABfTKB4VFcyLYtUUA9uaByNrauecHWKm8xBNLLrZPSz4UC5CgpUTc4kdewkMJizo15PQnE=
+	t=1757688052; cv=none; b=WdIAQ/vTwAnKNiyf7/z5v4RE2NmmJ2OoPs4k/5Ej5Z8qMWgwAMg7WQz5M3yrXqhvAtDbJwfubaB5V+/D4/QXtk/VdNJEQfz0H5S3ZnX5PsDD+meWhSJ7DnNjft6mx5RjNralQFiVuLG15MC5aEmwAAPfe1iY6ioiETV9eVjhnU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757686373; c=relaxed/simple;
-	bh=T8cKU7GX1nkbL2NcsD+XuaY1d1XDFVWZOQimj/0jD0c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UeWexej/U3EsToHVTDkRQkahdREz/pCnN6MrchPqfiO7tIrpPmRNgSjgDvUS+0GkZJ4cZghAhOvwBZomNj3HXC5jIL78JIIflytXXFUusZcj3vixv9I2Ke4ZDP+Uh2iZCLJEDsMCEnX7o382/W1rg33TSZDAvngLZJTn6MxOSEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=W250Hofs; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D0F8B40E015C;
-	Fri, 12 Sep 2025 14:12:41 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ctliiuI1qv13; Fri, 12 Sep 2025 14:12:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1757686358; bh=tkZAXzfE56Ye+65KcJu3D+78RmJwSGKf5LKjnICPk0A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W250Hofs3CAu2xKR7YwCa+iuLV0a0Hass4IjlijRdWxTDhiQQrX5MMxcjFX/Muc19
-	 L1D9c9Lb04ZjcZf2KbXFQiyCtAZkXdrAvGqG3NsN38YXvViWfFhq3P0qTKJhMAoDtQ
-	 6UGaVchmykQilTK2/QSbuXaV+EiXymkTV0TZvEiQmPcJ9I0YHSQejDJXCwfIbEj6Vm
-	 G82J1yDYKg8aVzqOuciVXFDjtRzsZBjG214DEdiy5w4HRkaQgpbr9bqur9Dn4iIy+G
-	 kUEKLKzCNYgwDfBobGKajNUoiHCg1W0aYCKRpRyJgrKkrptRO3UAkR+8VAi2i/X4dd
-	 OJiTh87FPlwX5ZYud/PEw6fK/bMAFObYM9H8+6ZA0bJgAWhCCE7E2K5ZeCBch71PJ7
-	 ec3fzVkjxAt1hg8ejNy+olL5CCuC7iTcNROQynBJNScdIV1SUCJWANA9rP0ZqSoeV0
-	 fQ4ChX9Ohn7lYM7tj7Csy7+36rXAEKPCnTft1D/juHMPjpnN3GuSelzM6eN2ldRDPQ
-	 10q3tNaz2HGvwBOzQHWUWiiR7DrqZPQL7a9bJUMlBSqtM/i2yS/ATc4iyOplB8BAiX
-	 cGCC0JD2nAMdgH2VtFBFe971EdKWqTPbJYopr/QR5spgvae29gJxJ+ZXY3XQCRzdvH
-	 Hd5DDtPIhAX+N27TiOyX93NY=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id C653340E0140;
-	Fri, 12 Sep 2025 14:12:01 +0000 (UTC)
-Date: Fri, 12 Sep 2025 16:11:55 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Shiju Jose <shiju.jose@huawei.com>
-Cc: "rafael@kernel.org" <rafael@kernel.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"rppt@kernel.org" <rppt@kernel.org>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"mchehab@kernel.org" <mchehab@kernel.org>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
-	"erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>,
-	"gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>,
-	"Zengtao (B)" <prime.zeng@hisilicon.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
-	wanghuiqiang <wanghuiqiang@huawei.com>
-Subject: Re: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
-Message-ID: <20250912141155.GAaMQqK4vS8zHd1z4_@fat_crate.local>
-References: <20250902173043.1796-1-shiju.jose@huawei.com>
- <20250902173043.1796-2-shiju.jose@huawei.com>
- <20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local>
- <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
+	s=arc-20240116; t=1757688052; c=relaxed/simple;
+	bh=I4eox496C7TyAM2nK02Fq1X3ENvtNmXcNg9fnjHEYvg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gsO2uIUcLudGvcovMWjpfcTa47tbuJvUh54/7TLLmMDXEEy+nCFkKHOq8qUAf850Tpna0nnSPYOl0vAs8tm6QQ7Ykqp3iPRp1h1EbMJtUYtaQH9VDddXPqU6cFi/f/X3mjEOVOGZ3I+4RQVodreAyob7GUz5is/U+vuKWIKHyBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E357716A3;
+	Fri, 12 Sep 2025 07:40:39 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D6CDF3F66E;
+	Fri, 12 Sep 2025 07:40:42 -0700 (PDT)
+Message-ID: <487a736c-27c8-427c-97d5-31fd2d97e919@arm.com>
+Date: Fri, 12 Sep 2025 15:40:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 18/29] arm_mpam: Register and enable IRQs
+To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
+Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>
+References: <20250910204309.20751-1-james.morse@arm.com>
+ <20250910204309.20751-19-james.morse@arm.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <20250910204309.20751-19-james.morse@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 12, 2025 at 12:04:57PM +0000, Shiju Jose wrote:
-> >Why is this requirement here?
-> The physical memory address range retrieved here for the NUMA domain is used in the subsequent
-> patch  [PATCH v12 2/2] ras: mem: Add memory ACPI RAS2 driver,
-> 1. to set Requested Address Range(INPUT) field of Table 5.87: Parameter Block Structure for PATROL_SCRUB
-> when send GET_PATROL_PARAMETERS command to the firmware, to get scrub parameters, running status,
-> current scrub rate etc.
-> 2. for the validity check of the user requested memory address range to scrub. 
+Hi James,
 
-Again, why does it have to be *lowest* and *contiguous*?
+On 9/10/25 21:42, James Morse wrote:
+> Register and enable error IRQs. All the MPAM error interrupts indicate a
+> software bug, e.g. out of range partid. If the error interrupt is ever
+> signalled, attempt to disable MPAM.
+> 
+> Only the irq handler accesses the ESR register, so no locking is needed.
+> The work to disable MPAM after an error needs to happen at process
+> context as it takes mutex. It also unregisters the interrupts, meaning
+> it can't be done from the threaded part of a threaded interrupt.
+> Instead, mpam_disable() gets scheduled.
+> 
+> Enabling the IRQs in the MSC may involve cross calling to a CPU that
+> can access the MSC.
+> 
+> Once the IRQ is requested, the mpam_disable() path can be called
+> asynchronously, which will walk structures sized by max_partid. Ensure
+> this size is fixed before the interrupt is requested.
+> 
+> CC: Rohit Mathew <rohit.mathew@arm.com>
+> Tested-by: Rohit Mathew <rohit.mathew@arm.com>
+> Signed-off-by: James Morse <james.morse@arm.com>
+> ---
+> Changes since v1:
+>  * Made mpam_unregister_irqs() safe to race with itself.
+>  * Removed threaded interrupts.
+>  * Schedule mpam_disable() from cpuhp callback in the case of an error.
+>  * Added mpam_disable_reason.
+>  * Use alloc_percpu()
+> 
+> Changes since RFC:
+>  * Use guard marco when walking srcu list.
+>  * Use INTEN macro for enabling interrupts.
+>  * Move partid_max_published up earlier in mpam_enable_once().
+> ---
+>  drivers/resctrl/mpam_devices.c  | 277 +++++++++++++++++++++++++++++++-
+>  drivers/resctrl/mpam_internal.h |  10 ++
+>  2 files changed, 284 insertions(+), 3 deletions(-)
+> 
 
-Your answer doesn't explain that.
+>  
+> +static int __setup_ppi(struct mpam_msc *msc)
+> +{
+> +	int cpu;
+> +	struct device *dev = &msc->pdev->dev;
+> +
+> +	msc->error_dev_id = alloc_percpu(struct mpam_msc *);
+> +	if (!msc->error_dev_id)
+> +		return -ENOMEM;
+> +
+> +	for_each_cpu(cpu, &msc->accessibility) {
+> +		struct mpam_msc *empty = *per_cpu_ptr(msc->error_dev_id, cpu);
+> +
+> +		if (empty) {
 
-> Also intended to expose this supported memory address range to the
-> userspace via EDAC scrub control interface, though it is not present now.
+I'm confused about how this if conditioned can be satisfied. Isn't the
+alloc clearing msc->error_dev_id for each cpu and then it's only getting
+set for each cpu later in the iteration.
 
-Why? To tie ourselves with even more user ABI?!
+> +			dev_err_once(dev, "MSC shares PPI with %s!\n",
+> +				     dev_name(&empty->pdev->dev));
+> +			return -EBUSY;
+> +		}
+> +		*per_cpu_ptr(msc->error_dev_id, cpu) = msc;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int mpam_msc_setup_error_irq(struct mpam_msc *msc)
+> +{
+> +	int irq;
+> +
+> +	irq = platform_get_irq_byname_optional(msc->pdev, "error");
+> +	if (irq <= 0)
+> +		return 0;
+> +
+> +	/* Allocate and initialise the percpu device pointer for PPI */
+> +	if (irq_is_percpu(irq))
+> +		return __setup_ppi(msc);
+> +
+> +	/* sanity check: shared interrupts can be routed anywhere? */
+> +	if (!cpumask_equal(&msc->accessibility, cpu_possible_mask)) {
+> +		pr_err_once("msc:%u is a private resource with a shared error interrupt",
+> +			    msc->id);
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  /*
+>   * An MSC can control traffic from a set of CPUs, but may only be accessible
+>   * from a (hopefully wider) set of CPUs. The common reason for this is power
+> @@ -1060,6 +1143,10 @@ static int mpam_msc_drv_probe(struct platform_device *pdev)
+>  			break;
+>  		}
+>  
+> +		err = mpam_msc_setup_error_irq(msc);
+> +		if (err)
+> +			break;
+> +
+>  		if (device_property_read_u32(&pdev->dev, "pcc-channel",
+>  					     &msc->pcc_subspace_id))
+>  			msc->iface = MPAM_IFACE_MMIO;
+> @@ -1318,11 +1405,172 @@ static void mpam_enable_merge_features(struct list_head *all_classes_list)
+>  	}
+>  }
+>  
+> +static char *mpam_errcode_names[16] = {
+> +	[0] = "No error",
+> +	[1] = "PARTID_SEL_Range",
+> +	[2] = "Req_PARTID_Range",
+> +	[3] = "MSMONCFG_ID_RANGE",
+> +	[4] = "Req_PMG_Range",
+> +	[5] = "Monitor_Range",
+> +	[6] = "intPARTID_Range",
+> +	[7] = "Unexpected_INTERNAL",
+> +	[8] = "Undefined_RIS_PART_SEL",
+> +	[9] = "RIS_No_Control",
+> +	[10] = "Undefined_RIS_MON_SEL",
+> +	[11] = "RIS_No_Monitor",
+> +	[12 ... 15] = "Reserved"
+> +};
+> +
+> +static int mpam_enable_msc_ecr(void *_msc)
+> +{
+> +	struct mpam_msc *msc = _msc;
+> +
+> +	__mpam_write_reg(msc, MPAMF_ECR, MPAMF_ECR_INTEN);
+> +
+> +	return 0;
+> +}
+> +
+> +/* This can run in mpam_disable(), and the interrupt handler on the same CPU */
+> +static int mpam_disable_msc_ecr(void *_msc)
+> +{
+> +	struct mpam_msc *msc = _msc;
+> +
+> +	__mpam_write_reg(msc, MPAMF_ECR, 0);
+> +
+> +	return 0;
+> +}
+> +
+> +static irqreturn_t __mpam_irq_handler(int irq, struct mpam_msc *msc)
+> +{
+> +	u64 reg;
+> +	u16 partid;
+> +	u8 errcode, pmg, ris;
+> +
+> +	if (WARN_ON_ONCE(!msc) ||
+> +	    WARN_ON_ONCE(!cpumask_test_cpu(smp_processor_id(),
+> +					   &msc->accessibility)))
+> +		return IRQ_NONE;
+> +
+> +	reg = mpam_msc_read_esr(msc);
+> +
+> +	errcode = FIELD_GET(MPAMF_ESR_ERRCODE, reg);
+> +	if (!errcode)
+> +		return IRQ_NONE;
+> +
+> +	/* Clear level triggered irq */
+> +	mpam_msc_zero_esr(msc);
+> +
+> +	partid = FIELD_GET(MPAMF_ESR_PARTID_MON, reg);
+> +	pmg = FIELD_GET(MPAMF_ESR_PMG, reg);
+> +	ris = FIELD_GET(MPAMF_ESR_RIS, reg);
+> +
+> +	pr_err_ratelimited("error irq from msc:%u '%s', partid:%u, pmg: %u, ris: %u\n",
+> +			   msc->id, mpam_errcode_names[errcode], partid, pmg,
+> +			   ris);
+> +
+> +	/* Disable this interrupt. */
+> +	mpam_disable_msc_ecr(msc);
+> +
+> +	/*
+> +	 * Schedule the teardown work. Don't use a threaded IRQ as we can't
+> +	 * unregister the interrupt from the threaded part of the handler.
+> +	 */
+> +	mpam_disable_reason = "hardware error interrupt";
+> +	schedule_work(&mpam_broken_work);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static irqreturn_t mpam_ppi_handler(int irq, void *dev_id)
+> +{
+> +	struct mpam_msc *msc = *(struct mpam_msc **)dev_id;
+> +
+> +	return __mpam_irq_handler(irq, msc);
+> +}
+> +
+> +static irqreturn_t mpam_spi_handler(int irq, void *dev_id)
+> +{
+> +	struct mpam_msc *msc = dev_id;
+> +
+> +	return __mpam_irq_handler(irq, msc);
+> +}
+> +
+> +static int mpam_register_irqs(void)
+> +{
+> +	int err, irq;
+> +	struct mpam_msc *msc;
+> +
+> +	lockdep_assert_cpus_held();
+> +
+> +	guard(srcu)(&mpam_srcu);
+> +	list_for_each_entry_srcu(msc, &mpam_all_msc, all_msc_list,
+> +				 srcu_read_lock_held(&mpam_srcu)) {
+> +		irq = platform_get_irq_byname_optional(msc->pdev, "error");
+> +		if (irq <= 0)
+> +			continue;
+> +
+> +		/* The MPAM spec says the interrupt can be SPI, PPI or LPI */
+> +		/* We anticipate sharing the interrupt with other MSCs */
+> +		if (irq_is_percpu(irq)) {
+> +			err = request_percpu_irq(irq, &mpam_ppi_handler,
+> +						 "mpam:msc:error",
+> +						 msc->error_dev_id);
+> +			if (err)
+> +				return err;
+> +
+> +			msc->reenable_error_ppi = irq;
+> +			smp_call_function_many(&msc->accessibility,
+> +					       &_enable_percpu_irq, &irq,
+> +					       true);
+> +		} else {
+> +			err = devm_request_irq(&msc->pdev->dev,irq,
+> +					       &mpam_spi_handler, IRQF_SHARED,
+> +					       "mpam:msc:error", msc);
+> +			if (err)
+> +				return err;
+> +		}
+> +
+> +		set_bit(MPAM_ERROR_IRQ_REQUESTED, &msc->error_irq_flags);
+> +		mpam_touch_msc(msc, mpam_enable_msc_ecr, msc);
+> +		set_bit(MPAM_ERROR_IRQ_HW_ENABLED, &msc->error_irq_flags);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void mpam_unregister_irqs(void)
+> +{
+> +	int irq, idx;
+> +	struct mpam_msc *msc;
+> +
+> +	cpus_read_lock();
+> +	/* take the lock as free_irq() can sleep */
+> +	idx = srcu_read_lock(&mpam_srcu);
+> +	list_for_each_entry_srcu(msc, &mpam_all_msc, all_msc_list,
+> +				 srcu_read_lock_held(&mpam_srcu)) {
+> +		irq = platform_get_irq_byname_optional(msc->pdev, "error");
+> +		if (irq <= 0)
+> +			continue;
+> +
+> +		if (test_and_clear_bit(MPAM_ERROR_IRQ_HW_ENABLED, &msc->error_irq_flags))
+> +			mpam_touch_msc(msc, mpam_disable_msc_ecr, msc);
+> +
+> +		if (test_and_clear_bit(MPAM_ERROR_IRQ_REQUESTED, &msc->error_irq_flags)) {
+> +			if (irq_is_percpu(irq)) {
+> +				msc->reenable_error_ppi = 0;
+> +				free_percpu_irq(irq, msc->error_dev_id);
+> +			} else {
+> +				devm_free_irq(&msc->pdev->dev, irq, msc);
+> +			}
+> +		}
+> +	}
+> +	srcu_read_unlock(&mpam_srcu, idx);
+> +	cpus_read_unlock();
+> +}
+> +
+>  static void mpam_enable_once(void)
+>  {
+> -	mutex_lock(&mpam_list_lock);
+> -	mpam_enable_merge_features(&mpam_classes);
+> -	mutex_unlock(&mpam_list_lock);
+> +	int err;
+>  
+>  	/*
+>  	 * Once the cpuhp callbacks have been changed, mpam_partid_max can no
+> @@ -1332,6 +1580,27 @@ static void mpam_enable_once(void)
+>  	partid_max_published = true;
+>  	spin_unlock(&partid_max_lock);
+>  
+> +	/*
+> +	 * If all the MSC have been probed, enabling the IRQs happens next.
+> +	 * That involves cross-calling to a CPU that can reach the MSC, and
+> +	 * the locks must be taken in this order:
+> +	 */
+> +	cpus_read_lock();
+> +	mutex_lock(&mpam_list_lock);
+> +	mpam_enable_merge_features(&mpam_classes);
+> +
+> +	err = mpam_register_irqs();
+> +	if (err)
+> +		pr_warn("Failed to register irqs: %d\n", err);
+> +
+> +	mutex_unlock(&mpam_list_lock);
+> +	cpus_read_unlock();
+> +
+> +	if (err) {
+> +		schedule_work(&mpam_broken_work);
+> +		return;
+> +	}
+> +
+>  	mpam_register_cpuhp_callbacks(mpam_cpu_online, mpam_cpu_offline);
+>  
+>  	printk(KERN_INFO "MPAM enabled with %u PARTIDs and %u PMGs\n",
+> @@ -1397,6 +1666,8 @@ void mpam_disable(struct work_struct *ignored)
+>  	}
+>  	mutex_unlock(&mpam_cpuhp_state_lock);
+>  
+> +	mpam_unregister_irqs();
+> +
+>  	idx = srcu_read_lock(&mpam_srcu);
+>  	list_for_each_entry_srcu(class, &mpam_classes, classes_list,
+>  				 srcu_read_lock_held(&mpam_srcu))
+> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
+> index 6e047fbd3512..f04a9ef189cf 100644
+> --- a/drivers/resctrl/mpam_internal.h
+> +++ b/drivers/resctrl/mpam_internal.h
+> @@ -32,6 +32,10 @@ struct mpam_garbage {
+>  	struct platform_device	*pdev;
+>  };
+>  
+> +/* Bit positions for error_irq_flags */
+> +#define	MPAM_ERROR_IRQ_REQUESTED  0
+> +#define	MPAM_ERROR_IRQ_HW_ENABLED 1
+> +
+>  struct mpam_msc {
+>  	/* member of mpam_all_msc */
+>  	struct list_head        all_msc_list;
+> @@ -46,6 +50,11 @@ struct mpam_msc {
+>  	struct pcc_mbox_chan	*pcc_chan;
+>  	u32			nrdy_usec;
+>  	cpumask_t		accessibility;
+> +	bool			has_extd_esr;
+> +
+> +	int				reenable_error_ppi;
+> +	struct mpam_msc * __percpu	*error_dev_id;
+> +
+>  	atomic_t		online_refs;
+>  
+>  	/*
+> @@ -54,6 +63,7 @@ struct mpam_msc {
+>  	 */
+>  	struct mutex		probe_lock;
+>  	bool			probed;
+> +	unsigned long		error_irq_flags;
+>  	u16			partid_max;
+>  	u8			pmg_max;
+>  	unsigned long		ris_idxs;
 
-There better be a good reason and not a better design for what this is trying
-to do.
 
-> >What happens with the aux devices you created successfully here? Unwind?
-> Please see the previous discussions on this were about allowing the successfully created
-> auxiliary devices to exist.
-> https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
+Thanks,
 
-There's no discussion here. And nothing answers the question "why" this is ok
-to do this way.
+Ben
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
