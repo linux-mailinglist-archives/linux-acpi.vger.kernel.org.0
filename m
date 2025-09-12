@@ -1,107 +1,127 @@
-Return-Path: <linux-acpi+bounces-16792-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16793-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 456C8B5590B
-	for <lists+linux-acpi@lfdr.de>; Sat, 13 Sep 2025 00:19:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3649FB5592A
+	for <lists+linux-acpi@lfdr.de>; Sat, 13 Sep 2025 00:28:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC5793A3DDD
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 22:19:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85EBE7ACB36
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 22:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDBF26C3BC;
-	Fri, 12 Sep 2025 22:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB77277CA5;
+	Fri, 12 Sep 2025 22:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O5mKPOrd"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="Xm+3mahz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C7424A046;
-	Fri, 12 Sep 2025 22:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1142526D4DD
+	for <linux-acpi@vger.kernel.org>; Fri, 12 Sep 2025 22:28:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757715544; cv=none; b=k2QH3v4E0HnBAN2mux07r7QC+8YxJN9PFHL5xF3ZZ8o4c1sktShkq7ySkwJPhcunqss/bXfCGE8xa/ZkU4ouN7rGwDoGR96ZZZkQ4A3RtpULBeXOlzyeB7d51sFKSKbwdANZEo5tqBtBwodPeUC6/Bbqh02oiPam8gpnq8WVNC8=
+	t=1757716107; cv=none; b=st4wvdmHeqAGgjlqNSFmfsojx7SE9tYmLiAUgM5O9Inih2ubaHuEPHmNsSy9NTkUak5NJeF6HX5YVDc5nQ66Uu5b+AG90LWEF5gxzadCqkmsv+Tuj5D21oEhQ2YOunD4zUAqM5VUI8bAtI63cezdTiUubJGwS2j2nkGoqgMmWxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757715544; c=relaxed/simple;
-	bh=RbPveMq+wUujHCh2U8cE2C1bMP4tSmoOr+Umu0UNfzg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kysSSbmSy3tYA2ohhB6UZIcFYCz5tq1XlAohZdeX8eBhNk2U48vNfUUQZHUp6Yy/dDnoDjS6QFrJ7htrusoviPJEgKhG2yj10OYvCY0lj5ORnvl8sly68mwN7fhhmF0tEeJRo1yv7+29kn/dQGiKW3cNAJmrYWFRtoyqdAp4Ank=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O5mKPOrd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D98C4CEF1;
-	Fri, 12 Sep 2025 22:19:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757715543;
-	bh=RbPveMq+wUujHCh2U8cE2C1bMP4tSmoOr+Umu0UNfzg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=O5mKPOrdXEOjALlLBJVr1vGQJXJcItEeixGlI+9dJg5I5QMN4C3sf5rHXczNa9wut
-	 sZ/cezKIxekFgigOl8KyZ7KrkrqSJI3v3RehxpcjGqxRkJMPKB4CLWIu3Py+FGtqmp
-	 tjFg/n9Orbh0F309UZHzWj0hnQaI7zYQKMO16o7iDf08PaugvitDBfBtWzp9TgnUvs
-	 DbzS67V41iaiCsb+f0Uow0younCcOwgJyGG62eGHul9mNQ4ji6kXGx05VNgIYJ+i5r
-	 g+/Z2i9QXmuuZYDLlLnifn48G8ft/7glnyxC2ooYXbsdwMyT9Ko/mqTtGaScbQDyUN
-	 2MLFazUJ2BRxw==
-From: Hans de Goede <hansg@kernel.org>
-To: Mika Westerberg <westeri@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Linus Walleij <linus.walleij@linaro.org>
-Cc: Hans de Goede <hansg@kernel.org>,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [6.17 REGRESSION FIX] gpiolib: acpi: Fix using random stack memory during GPIO lookups
-Date: Sat, 13 Sep 2025 00:18:59 +0200
-Message-ID: <20250912221859.368173-1-hansg@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1757716107; c=relaxed/simple;
+	bh=e6mzgxhiG8kK8Y1Gmfux4Bc513Ya67T9ITtiJe4Ehs0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eKruMd5oyKydVHM4INSOTHkDN5ykPbkQC4HZLZD6GjaqWWnbqHkne8UMK0PUU4VqDtsD/bsBnVGLabitN45sRPaTPcmFkiglmdQ8QRT/Y4UJ1PTvgv2w0pawVzr/pFC18NKj8GzbR3IZKKx/G3fjOCo2Sf8X3zFEM2NYAKTt5aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=Xm+3mahz; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=e6mz
+	gxhiG8kK8Y1Gmfux4Bc513Ya67T9ITtiJe4Ehs0=; b=Xm+3mahzWOOxiVVIAga+
+	iSHfGVRqvJ5PFCGLaL/GzUjX4YNb/hPFuCvnTGNl0HAzseT3fxq608VUQlaaTqct
+	b21GFfV8Ea6MzDTHNNNQUJg/QZaOotINmZHSrFAdd1BNxqFatFklS+1N9Ho9+FDJ
+	+ZtHsX6GPNPO4SUmj8PEl/u+02gQb3a8GGbXsDGQc0ZieTKmFBFhZ52rDM5+Mxcv
+	60kivSuurKFEu1qkK6+nXimSBJ3KWgMDIMHiK2aNHbJr5fok49a8dljDiqbTRjBn
+	Q/y7ceiHzl1FeKhkdQovn69mZ3McAOecvIldHVzAyJm/qfuulrt+slQKkXfwc7tA
+	0Q==
+Received: (qmail 1504370 invoked from network); 13 Sep 2025 00:28:23 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 13 Sep 2025 00:28:23 +0200
+X-UD-Smtp-Session: l3s3148p1@UR/rK6I+npcgAQnoAHJ8AC93OVDMgFWg
+Date: Sat, 13 Sep 2025 00:28:22 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: =?utf-8?Q?Jean-Fran=C3=A7ois?= Lessard <jefflessard3@gmail.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] device property: Add scoped fwnode child node
+ iterators
+Message-ID: <aMSehiADcCEpfJUa@shikoro>
+References: <20250902190443.3252-1-jefflessard3@gmail.com>
+ <aLgY1z-MvQbDBx2_@smile.fi.intel.com>
+ <aLlgpUlHp7t8P4dQ@shikoro>
+ <aLljGIcjAjQhC2uS@smile.fi.intel.com>
+ <aMF0xW9rBrSK--Cl@shikoro>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="QSvRZOkrwrDINmRa"
+Content-Disposition: inline
+In-Reply-To: <aMF0xW9rBrSK--Cl@shikoro>
 
-Before commit 8b4f52ef7a41 ("gpiolib: acpi: Deduplicate some code in
-__acpi_find_gpio()") and the follow-up fix commit 7c010d463372 ("gpiolib:
-acpi: Make sure we fill struct acpi_gpio_info"). The struct acpi_gpio_info
-used during lookups was part of struct acpi_gpio_lookup which gets
-memset() to 0 before use.
 
-And then after a successful lookup, acpi_gpio_resource_lookup() would
-copy the content of the zeroed acpi_gpio_lookup.info to the on
-stack struct acpi_gpio_info in __acpi_find_gpio(), overwriting any
-uninitialized memory contents there.
+--QSvRZOkrwrDINmRa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-But now instead a pointer to the on stack struct acpi_gpio_info in
-__acpi_find_gpio() is passed around, but that struct is never
-initialized.
+Andi,
 
-This passing around of the uninitialized struct breaks index based
-lookups of GpioInt GPIOs because info->quirks now contains some random
-on stack data which may contain ACPI_GPIO_QUIRK_ONLY_GPIOIO.
+> > > > It might be good to have an immutable branch for me from i2c core.
+> > > > Wolfram, can you provide a such if no objections?
+> > >=20
+> > > Sure thing, I can do that. But there is still discussion on patch 1, =
+so
+> > > I will wait for an outcome there.
+> >=20
+> > But it seems that the discussion can be implemented in a followup?
+> > I think we are not in hurry anyway, so let see if it settles down soon.
+>=20
+> I pushed out an immutable branch now:
+>=20
+> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/immutable=
+/scoped_fwnode_child
+>=20
+> Please have a look if I got the tags correct. Once confirmed, I will
+> merge it into i2c/for-mergewindow and Andy can pull it as well.
 
-Initialize the on stack struct acpi_gpio_info to 0 to fix this.
+Andy, did you pull this immutable branch already?
 
-Fixes: 8b4f52ef7a41 ("gpiolib: acpi: Deduplicate some code in __acpi_find_gpio()")
-Fixes: 7c010d463372 ("gpiolib: acpi: Make sure we fill struct acpi_gpio_info")
-Signed-off-by: Hans de Goede <hansg@kernel.org>
----
- drivers/gpio/gpiolib-acpi-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
-index 12b24a717e43..1cc5d0702ee1 100644
---- a/drivers/gpio/gpiolib-acpi-core.c
-+++ b/drivers/gpio/gpiolib-acpi-core.c
-@@ -942,7 +942,7 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
- {
- 	struct acpi_device *adev = to_acpi_device_node(fwnode);
- 	bool can_fallback = acpi_can_fallback_to_crs(adev, con_id);
--	struct acpi_gpio_info info;
-+	struct acpi_gpio_info info = { };
- 	struct gpio_desc *desc;
- 
- 	desc = __acpi_find_gpio(fwnode, con_id, idx, can_fallback, &info);
--- 
-2.51.0
+--QSvRZOkrwrDINmRa
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmjEnoYACgkQFA3kzBSg
+Kbb9Og//ZzoS9CwadDc/npU9PDNiW9zqCCQ0/ib6AkExeYbcn84OVIPDIBvWrJgN
+od9fKs7x0Uxe1RRrxRQzqnk8LEdktydGxj0kA53M95QfBKzYFQHhVSeltDQdVvEq
+zIeaz1Hwsu4OdPqDHxOZ1eTB5I1LNcIVMPV19zb9qCdu7dcOwD3/ApFKZfmiJAb/
+ZOR9yfuLQXsvzfOj1HJFG38l5SXjRkjh0RPqMWYEXhTv1Tw2Vx6mI5fuIuI2/q0L
+SrsfTZGeLlNEmxPJZpCUspA7wgXc6Q4O7Y+RNkPT9MY8nKTtsgRBopCBHzi9OvRo
+JiOYhLIGdL7bNTSx/In9k9fCvDm/hFxRn4s8beWjSocNyaVyHLAEf1i5lQtz8r8l
+/gZgeeupR1iAEigDzhzodNoLmU5LXNZ62Z0PIq7cGQ4hXDq+Ekp2vkEZtE6GrdcO
+HcJtlLDcO+iDJZmohNm9tJ3uBibt7Qg0pajdGTDQ+J4ZosXmoCD5xmD8qVWy8mzw
+YPG8EC4A0l4LMlPGS20K4uLyeGx+tVovPf3VPMAdF5E78A1YeWss93FsNV2XGivl
+ZWJc4kQ+jXriQREkIGzvCsvyRupFBSedhZ3t1Gq2JE6nNgpA/5G/dwnmXhzkng6w
+D1WG2+UZ086rV5p/8ZbPKHoWZ1fZ3dyswq1VmkgJLZXK0q5xqes=
+=fqwy
+-----END PGP SIGNATURE-----
+
+--QSvRZOkrwrDINmRa--
 
