@@ -1,55 +1,53 @@
-Return-Path: <linux-acpi+bounces-16769-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16768-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461ADB5575E
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 22:07:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BEFB5575B
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 22:07:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FA6AAA216D
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 20:07:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D01F7AA1E3E
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 20:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CB232ED2D;
-	Fri, 12 Sep 2025 20:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088EC31DD81;
+	Fri, 12 Sep 2025 20:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M08/yRHq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rxu2b2hM"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB492C0282;
-	Fri, 12 Sep 2025 20:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52302BE037;
+	Fri, 12 Sep 2025 20:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757707594; cv=none; b=dzEp8gPEbZZSrtJRcVIE+6p7cGCveLy2Fy6lKBPi3CSSFVHNWRrh9efBo98Q99MMx6ydebtr8JwX0JiRU9zaPUgZC9ee6LFhW5lLk2uoz1RT2BcJZk38ojAykDJadOyFS+R5Rtx9rsC5nhg6W+M1Cu9E1s3wez4zzmkho3ho9Ms=
+	t=1757707591; cv=none; b=cNpdZUlHm5gK6r+99bzDzqZaGoCw4yX3FPhVZyTkEKDUJBUK1LDXRjpTPfIF1ljGYgfSkrnr+yDRHvjymzYQduDzV9c+Um0klod8AZyZNy/NSFPmzetnck/mnp4ecRV5Km0kmVkSNJEx5c5Oy2r2dXB06/Hg2BizJqvbCPe8yD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757707594; c=relaxed/simple;
-	bh=clRxbIUzBNOG9ow7tQFYMU4AjUWvjX9qQ+s9wM8+IxE=;
+	s=arc-20240116; t=1757707591; c=relaxed/simple;
+	bh=4qfHyfQbLYIFkgMw3OTcrEKwDy8kS2doyl0jsKPHOjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ltsRqnTQA1Jjcy1lnbM7RiPCXTc+MGk3Vohv2ztHTizaGr7p1WyTVTyDM+BqpAwQejViFxobEaR5ft74ty6ssQcJS9QtL2EIV+2/7R4YqjnsJeJNhYMDzW3s/4U2NFMuYBlY3FVfzvT7UIhfPVHUmtRGI3Q2fz8TN3QA5DCcAEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M08/yRHq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D532C4CEF4;
-	Fri, 12 Sep 2025 20:06:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tb1MwiWfHqtXQCr27BgawUiZzpzAup08V3UJtSWChdncdher/NAh+PHBNE79p9tm8RWstZZIhKDbeGJebXP23brBbDtINPFCOQCYaNAxRRrOhrKUuw43nvoyUNL2fDmtcltFIaxuN6d7Jp+6VzAG1dIEWinysd3yzBc8huVSFP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rxu2b2hM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8873FC4CEF4;
+	Fri, 12 Sep 2025 20:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757707594;
-	bh=clRxbIUzBNOG9ow7tQFYMU4AjUWvjX9qQ+s9wM8+IxE=;
+	s=k20201202; t=1757707591;
+	bh=4qfHyfQbLYIFkgMw3OTcrEKwDy8kS2doyl0jsKPHOjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M08/yRHqc3bvHRCACEU0+OVfQ86W3tNiyhbYU17/xokK5lTjwBcr2pJQMkgbR+zXl
-	 kBB3UbqAIBQ6tPOy7cOOgCfnzRiIeWCdycPUDMrcobm7Fh0iaGkHB+OYff7mq7c05B
-	 ge2cE/3M0FVM3AwA1Xh62OkEapIwH9kAE9BKvnQE27OWvys2vKm4fhEmP9h162jfs0
-	 PPy9y7og3v3lMgZvFpkd5R53Ff1FnZO5dPrHcPVAKn+ZY7mIHBKR40+ohaLbthNYvO
-	 YE2k2fBplqGrUyb+GaCmfl9zj1O7OnzoaEYYCGODp7SyHxKSj6KiK1eaEjqwqDeHCW
-	 QtkLdHpyqWF4Q==
+	b=Rxu2b2hMYPe0GGPkNYz+nGULL8IT/LSl57TiMW8vG63AcSCglk52sBDA6sXiqRjlQ
+	 v+Icq7Z2OvuaW7PXVGYMUzhJGss9NZZ6hallFriYb3K/e05Pfu6N6AyX8MGjQ6qEJF
+	 1vQYzGqqREIzUAODsQIixzgYRSAePbEuEVk2IFER38x0MbLOprWCDxlbYcamEspxbD
+	 +kIddVb5TG7f4tBIV0GNg6uNRgkZxpDjbnhC4NDMIZrMCUenuXeM/mSz+Ksp5pKqV7
+	 /WcK2oxwNJhCOwNW/yofjNV+S39bn+TEDfI5MlWkZ8p278gHfU6M7FeFI4YyxXWhU3
+	 yYcZ1YqY8/gvg==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>,
  "Dumbre, Saket" <saket.dumbre@intel.com>
-Subject:
- [PATCH v1 11/16] ACPICA: Print error messages for too few or too many
- arguments
-Date: Fri, 12 Sep 2025 22:01:52 +0200
-Message-ID: <2255091.Icojqenx9y@rafael.j.wysocki>
+Subject: [PATCH v1 12/16] ACPICA: Update version to 20250807
+Date: Fri, 12 Sep 2025 22:02:32 +0200
+Message-ID: <2528460.jE0xQCEvom@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <2021361.PYKUYFuaPT@rafael.j.wysocki>
 References: <2021361.PYKUYFuaPT@rafael.j.wysocki>
@@ -64,72 +62,26 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Saket Dumbre <saket.dumbre@intel.com>
 
-Fix Issue #1027 by displaying error messages when there are too few or
-too many arguments in the caller vs the definition of an ASL/AML method.
-
-Link: https://github.com/acpica/acpica/commit/cbc243e4
-Reported-by: Peter Williams <peter@newton.cx>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Hans de Goede <hansg@kernel.org>
+Link: https://github.com/acpica/acpica/commit/0845a773
 Signed-off-by: Saket Dumbre <saket.dumbre@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/acpica/dsmethod.c | 11 +++++++++--
- include/acpi/acexcep.h         | 10 ++++++++--
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ include/acpi/acpixf.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
-index b2f756b7078d..45ec32e81903 100644
---- a/drivers/acpi/acpica/dsmethod.c
-+++ b/drivers/acpi/acpica/dsmethod.c
-@@ -483,10 +483,17 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
- 	}
+diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
+index 97c25ae8a36e..e65a2afe9250 100644
+--- a/include/acpi/acpixf.h
++++ b/include/acpi/acpixf.h
+@@ -12,7 +12,7 @@
  
- 	if (this_walk_state->num_operands < obj_desc->method.param_count) {
--		ACPI_ERROR((AE_INFO, "Missing argument for method [%4.4s]",
-+		ACPI_ERROR((AE_INFO, "Missing argument(s) for method [%4.4s]",
- 			    acpi_ut_get_node_name(method_node)));
+ /* Current ACPICA subsystem version in YYYYMMDD format */
  
--		return_ACPI_STATUS(AE_AML_UNINITIALIZED_ARG);
-+		return_ACPI_STATUS(AE_AML_TOO_FEW_ARGUMENTS);
-+	}
-+
-+	else if (this_walk_state->num_operands > obj_desc->method.param_count) {
-+		ACPI_ERROR((AE_INFO, "Too many arguments for method [%4.4s]",
-+			    acpi_ut_get_node_name(method_node)));
-+
-+		return_ACPI_STATUS(AE_AML_TOO_MANY_ARGUMENTS);
- 	}
+-#define ACPI_CA_VERSION                 0x20250404
++#define ACPI_CA_VERSION                 0x20250807
  
- 	/* Init for new method, possibly wait on method mutex */
-diff --git a/include/acpi/acexcep.h b/include/acpi/acexcep.h
-index 53c98f5fe3c3..a2db36d18419 100644
---- a/include/acpi/acexcep.h
-+++ b/include/acpi/acexcep.h
-@@ -173,8 +173,10 @@ struct acpi_exception_info {
- #define AE_AML_TARGET_TYPE              EXCEP_AML (0x0023)
- #define AE_AML_PROTOCOL                 EXCEP_AML (0x0024)
- #define AE_AML_BUFFER_LENGTH            EXCEP_AML (0x0025)
-+#define AE_AML_TOO_FEW_ARGUMENTS        EXCEP_AML (0x0026)
-+#define AE_AML_TOO_MANY_ARGUMENTS       EXCEP_AML (0x0027)
- 
--#define AE_CODE_AML_MAX                 0x0025
-+#define AE_CODE_AML_MAX                 0x0027
- 
- /*
-  * Internal exceptions used for control
-@@ -353,7 +355,11 @@ static const struct acpi_exception_info acpi_gbl_exception_names_aml[] = {
- 		  "A target operand of an incorrect type was encountered"),
- 	EXCEP_TXT("AE_AML_PROTOCOL", "Violation of a fixed ACPI protocol"),
- 	EXCEP_TXT("AE_AML_BUFFER_LENGTH",
--		  "The length of the buffer is invalid/incorrect")
-+		  "The length of the buffer is invalid/incorrect"),
-+	EXCEP_TXT("AE_AML_TOO_FEW_ARGUMENTS",
-+		  "There are fewer than expected method arguments"),
-+	EXCEP_TXT("AE_AML_TOO_MANY_ARGUMENTS",
-+		  "There are too many arguments for this method")
- };
- 
- static const struct acpi_exception_info acpi_gbl_exception_names_ctrl[] = {
+ #include <acpi/acconfig.h>
+ #include <acpi/actypes.h>
 -- 
 2.51.0
 
