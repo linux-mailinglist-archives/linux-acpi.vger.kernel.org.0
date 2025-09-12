@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-16710-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16711-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22000B54A1A
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 12:42:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59006B54AB7
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 13:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7A6C16A39D
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 10:42:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 784701CC8302
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 11:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8BD2E173F;
-	Fri, 12 Sep 2025 10:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AB72FF15E;
+	Fri, 12 Sep 2025 11:11:12 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB3E2472B5;
-	Fri, 12 Sep 2025 10:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54F32E9EC4;
+	Fri, 12 Sep 2025 11:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757673732; cv=none; b=nNYqd8hQZTALljxqnVDlWJPhwp/svQWmqyQy8EN5lyjpTQN2hb8oIEJj51zbwF3+j22awQsOrm4cLSBRvdfdvYE04E855t5s+wAWK2VkdeDu1zbC8S698YxMJRAGxKVRBJCObiL6yiXnwr/dnKpI5Eh9B12PjY2QUYa1DVhB9aE=
+	t=1757675472; cv=none; b=FSJdPCZPq0SQjn9AykWsYCk9GUD/yfXCu1gvHRIucVsgfMAMdoYpTM2K71/gKSSbH7e+QP51AUy/eF1PWIwgQNW7v2t6kc8uplbf3rIP0ZWt9XsoEibpTG7T9DKwa/iS61Ixw6z4Nl7X8jmgMXOLM/hL5sbcc11OAq1dRuoQaNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757673732; c=relaxed/simple;
-	bh=otd6QxpT8qFQVUNAzfILUI02V9sOlrSc4wYVCCapfTg=;
+	s=arc-20240116; t=1757675472; c=relaxed/simple;
+	bh=WPg1MX5YdeajSnOVG3EHSck6rVJjOHR1MxH29ORiRNg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D8FMeeYnYrmwEn6qfRUFXrTnlbhTQF47mc+7jOVzksTyYBdqZcAVUatN4eFz76q3XOxE1vlggchF8UAKa4diYqvOH76OCUdYt643UHW5s+wBJzGwQT/Zj18WtPoiBadRR9GXcq/ukNvmfr7I2mIe0oNdjLSerkfRDTSPInJue1A=
+	 In-Reply-To:Content-Type; b=BeFdcd5WGpgd9u2Wbn9u8uk5++Fx2SOXiRrWbpoTqWXh1cTba919im8dsT/gvNxFt04dgApLL2LWfD0twQ64mJurbYxJdOV66lxhMTm8BbDTOvfDq0xM/GttjhTxqYZjT+7F+9xpI47I4rOtCzST19OqmzDkoX6PP8g8rrsSk4k=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 437FA1515;
-	Fri, 12 Sep 2025 03:42:02 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A04BE1515;
+	Fri, 12 Sep 2025 04:11:01 -0700 (PDT)
 Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 505263F66E;
-	Fri, 12 Sep 2025 03:42:05 -0700 (PDT)
-Message-ID: <13347819-c83d-446b-856e-d7fd8ec742ea@arm.com>
-Date: Fri, 12 Sep 2025 11:42:03 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D0A353F63F;
+	Fri, 12 Sep 2025 04:11:04 -0700 (PDT)
+Message-ID: <0382ea8a-8f15-4983-8659-0471f9090012@arm.com>
+Date: Fri, 12 Sep 2025 12:11:03 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,8 +42,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/29] arm_mpam: Add cpuhp callbacks to probe MSC
- hardware
+Subject: Re: [PATCH v2 11/29] arm_mpam: Probe hardware to find the supported
+ partid/pmg values
 To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
 Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
@@ -62,54 +62,46 @@ Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>, Lecopzer Chen <lecopzerc@nvidia.com>
+ Danilo Krummrich <dakr@kernel.org>
 References: <20250910204309.20751-1-james.morse@arm.com>
- <20250910204309.20751-11-james.morse@arm.com>
+ <20250910204309.20751-12-james.morse@arm.com>
 From: Ben Horgan <ben.horgan@arm.com>
 Content-Language: en-US
-In-Reply-To: <20250910204309.20751-11-james.morse@arm.com>
+In-Reply-To: <20250910204309.20751-12-james.morse@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi James,
 
 On 9/10/25 21:42, James Morse wrote:
-> Because an MSC can only by accessed from the CPUs in its cpu-affinity
-> set we need to be running on one of those CPUs to probe the MSC
-> hardware.
+> CPUs can generate traffic with a range of PARTID and PMG values,
+> but each MSC may also have its own maximum size for these fields.
+> Before MPAM can be used, the driver needs to probe each RIS on
+> each MSC, to find the system-wide smallest value that can be used.
+> The limits from requestors (e.g. CPUs) also need taking into account.
 > 
-> Do this work in the cpuhp callback. Probing the hardware will only
-> happen before MPAM is enabled, walk all the MSCs and probe those we can
-> reach that haven't already been probed as each CPU's online call is made.
+> While doing this, RIS entries that firmware didn't describe are created
+> under MPAM_CLASS_UNKNOWN.
 > 
-> This adds the low-level MSC register accessors.
+> While we're here, implement the mpam_register_requestor() call
+> for the arch code to register the CPU limits. Future callers of this
+> will tell us about the SMMU and ITS.
 > 
-> Once all MSCs reported by the firmware have been probed from a CPU in
-> their respective cpu-affinity set, the probe-time cpuhp callbacks are
-> replaced.  The replacement callbacks will ultimately need to handle
-> save/restore of the runtime MSC state across power transitions, but for
-> now there is nothing to do in them: so do nothing.
-> 
-> The architecture's context switch code will be enabled by a static-key,
-> this can be set by mpam_enable(), but must be done from process context,
-> not a cpuhp callback because both take the cpuhp lock.
-> Whenever a new MSC has been probed, the mpam_enable() work is scheduled
-> to test if all the MSCs have been probed. If probing fails, mpam_disable()
-> is scheduled to unregister the cpuhp callbacks and free memory.
-> 
-> CC: Lecopzer Chen <lecopzerc@nvidia.com>
 > Signed-off-by: James Morse <james.morse@arm.com>
 > ---
 > Changes since v1:
->  * Removed register bounds check. If the firmware tables are wrong the
->    resulting translation fault should be enough to debug this.
->  * Removed '&' in front of a function pointer.
->  * Pulled mpam_disable() into this patch.
->  * Disable mpam when probing fails to avoid extra work on broken platforms.
->  * Added mpam_disbale_reason as there are now two non-debug reasons for this
->    to happen.
+>  * Change to lock ordering now that the list-lock mutex isn't held from
+>    the cpuhp call.
+>  * Removed irq-unmaksed assert in requestor register.
+>  * Changed captialisation in print message.
+> ---
+>  drivers/resctrl/mpam_devices.c  | 150 +++++++++++++++++++++++++++++++-
+>  drivers/resctrl/mpam_internal.h |   6 ++
+>  include/linux/arm_mpam.h        |  14 +++
+>  3 files changed, 169 insertions(+), 1 deletion(-)
 
-Looks good to me.
+Looks good to me. I think Jonathan's comment on getting rid of the local
+variable, 'found', is worthwhile.
 
 Reviewed-by: Ben Horgan <ben.horgan@arm.com>
 
