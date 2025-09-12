@@ -1,101 +1,230 @@
-Return-Path: <linux-acpi+bounces-16736-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16737-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 658F9B55204
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 16:43:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 258EEB55227
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 16:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B8FA14E07AD
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 14:43:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6701617CBA0
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 14:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604F5309DDF;
-	Fri, 12 Sep 2025 14:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33A51311C03;
+	Fri, 12 Sep 2025 14:46:38 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76DF30E0D1;
-	Fri, 12 Sep 2025 14:43:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CDC30F929;
+	Fri, 12 Sep 2025 14:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757688187; cv=none; b=FqvcMew+IfCDz1Crbcq26rhVJcrr8cXk8hIO12Gjr2fT9EIqlOe4c7XUn9Pm2RbbeuBmtaibJDvvi0ejygzLQEkvW2fvRQSNvOPQbaSI5H2QbdfefJZkPSvL81UC5wM8Edt1B2QasLR/LB1AptkKOr9hxLE0qokp+20kh8mQbII=
+	t=1757688398; cv=none; b=LLb2ItO0pBMYTEZrT93Az9G41ucV70ZOM9vCxfpCrc5ZsyHJ/TWSXGy2OeXMkys4FXv7XW9l9YE7COMzTji6t9C4SgvBBnfJjHRQTwMNHHQYiUf6LySEC4Gdsj4AeJKn4v2dA33NU4uD8sfgrswNFH44uHkwYdeNbnHR5AH+Cxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757688187; c=relaxed/simple;
-	bh=vrIPv5i/CQ8Y+l31lRrsdhIHOYFa4QZouWNok4yLK9w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XszW3IQYECFqCavnEI6gxIWBBfcaLT1ErACEf1akVD97Wiz+/IF8mCOUgYG2KaN+i3iIQme8sDeQWQuycEFhJyBLcteWNvMaO0UxaqNI3oogx02urVyjC00iNTDqo9PcPaSdYU88SgTRMxYU+g1DKa3vz34UiU5Uh9CRvZ0lGZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E8C4816A3;
-	Fri, 12 Sep 2025 07:42:56 -0700 (PDT)
-Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9163F3F66E;
-	Fri, 12 Sep 2025 07:43:00 -0700 (PDT)
-Message-ID: <7b72615a-a1a5-4945-9199-d30b7caee70b@arm.com>
-Date: Fri, 12 Sep 2025 15:42:59 +0100
+	s=arc-20240116; t=1757688398; c=relaxed/simple;
+	bh=qpos8UYcYHeDsSyXUrLuKLKgAQxmNb6sTZWED5/xCu4=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hK0kPa5qYoMgDPb9xwvX6rrOmjZ17xpaKW50TJSgeRsXuEEsCGjbIlFJs2aRxkpom/hgd3Ns48ipcbHUTwI9kkfcWdvuWzpHEvz3SOFyBm2E1+u7l/aKP56uTW+RLe7emuzObb45L60T3chFIVYXoh9pjV1LMZEtNzW6mSVXGbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cNcfK2103z6D8bZ;
+	Fri, 12 Sep 2025 22:45:13 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id A187F1401F4;
+	Fri, 12 Sep 2025 22:46:31 +0800 (CST)
+Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 12 Sep
+ 2025 16:46:31 +0200
+Date: Fri, 12 Sep 2025 15:46:29 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Ben Cheatham <Benjamin.Cheatham@amd.com>
+CC: <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH 01/16] cxl/regs: Add cxl_unmap_component_regs()
+Message-ID: <20250912154629.00007db4@huawei.com>
+In-Reply-To: <20250730214718.10679-2-Benjamin.Cheatham@amd.com>
+References: <20250730214718.10679-1-Benjamin.Cheatham@amd.com>
+	<20250730214718.10679-2-Benjamin.Cheatham@amd.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 19/29] arm_mpam: Use a static key to indicate when mpam
- is enabled
-To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
-Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
- carl@os.amperecomputing.com, lcherian@marvell.com,
- bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
- baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
- Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
- dfustini@baylibre.com, amitsinght@marvell.com,
- David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
- Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- fenghuay@nvidia.com, baisheng.gao@unisoc.com,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
- <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
- Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>
-References: <20250910204309.20751-1-james.morse@arm.com>
- <20250910204309.20751-20-james.morse@arm.com>
-From: Ben Horgan <ben.horgan@arm.com>
-Content-Language: en-US
-In-Reply-To: <20250910204309.20751-20-james.morse@arm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Hi James,
+On Wed, 30 Jul 2025 16:47:03 -0500
+Ben Cheatham <Benjamin.Cheatham@amd.com> wrote:
 
-On 9/10/25 21:42, James Morse wrote:
-> Once all the MSC have been probed, the system wide usable number of
-> PARTID is known and the configuration arrays can be allocated.
+Hi Ben,
+
+Whilst I know there has been some discussion of whether it is appropriate
+to enable this functionality without a full use case and definite confirmation
+someone is going to use it, I'm loath to leave completely unread code
+on list.  (you talk about this in the cover letter).
+
+> In order to allocate the MSI/-X interrupt for CXL error isolation the
+> PCIe portdrv driver needs to map the MMIO-space isolation capability
+> register that contains the interrupt vector. The CXL core already
+> provides a function to map registers in this space:
+> cxl_map_component_regs(). The mappings given this function are managed
+
+given to, or returned by?
+
+> by devres. If the isolation registers are left mapped by the PCIe
+> portdrv driver, the CXL driver will run into a devres conflict when it
+> goes to map the same registers during probe.
 > 
-> After this point, checking all the MSC have been probed is pointless,
-> and the cpuhp callbacks should restore the configuration, instead of
-> just resetting the MSC.
+> Add cxl_unmap_component_regs() to be called from the PCIe portdrv
+> driver. This function will unwind the devres allocations done by
+> cxl_map_component_regs(), which will allow the PCIe portdrv driver to
+> map the isolation capability register without conflicts.
 > 
-> Add a static key to enable this behaviour. This will also allow MPAM
-> to be disabled in repsonse to an error, and the architecture code to
-> enable/disable the context switch of the MPAM system registers.
+> Factor out the register mapping retrieval code in
+> cxl_map_component_regs() to be reused by cxl_map/unmap_component_regs().
 > 
-> Signed-off-by: James Morse <james.morse@arm.com>
+> Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
 > ---
->  drivers/resctrl/mpam_devices.c  | 12 ++++++++++++
->  drivers/resctrl/mpam_internal.h |  8 ++++++++
->  2 files changed, 20 insertions(+)
+>  drivers/cxl/core/regs.c | 77 +++++++++++++++++++++++++++++++----------
+>  drivers/cxl/cxl.h       |  3 ++
+>  2 files changed, 62 insertions(+), 18 deletions(-)
 > 
+> diff --git a/drivers/cxl/core/regs.c b/drivers/cxl/core/regs.c
+> index b8e767a9571c..da8e668a3b70 100644
+> --- a/drivers/cxl/core/regs.c
+> +++ b/drivers/cxl/core/regs.c
+> @@ -201,40 +201,81 @@ void __iomem *devm_cxl_iomap_block(struct device *dev, resource_size_t addr,
+>  }
+>  EXPORT_SYMBOL_NS_GPL(devm_cxl_iomap_block, "CXL");
+>  
+> -int cxl_map_component_regs(const struct cxl_register_map *map,
+> +struct mapinfo {
+> +	const struct cxl_reg_map *rmap;
+> +	void __iomem **addr;
+> +};
+> +
+> +static int cxl_get_mapinfo(const struct cxl_register_map *map,
+>  			   struct cxl_component_regs *regs,
+> -			   unsigned long map_mask)
+> +			   unsigned long map_mask, struct mapinfo *info)
+>  {
+> -	struct device *host = map->host;
+> -	struct mapinfo {
+> -		const struct cxl_reg_map *rmap;
+> -		void __iomem **addr;
+> -	} mapinfo[] = {
+> +	struct mapinfo mapinfo[] = {
+>  		{ &map->component_map.hdm_decoder, &regs->hdm_decoder },
+>  		{ &map->component_map.ras, &regs->ras },
+>  	};
+>  	int i;
+>  
+>  	for (i = 0; i < ARRAY_SIZE(mapinfo); i++) {
+> -		struct mapinfo *mi = &mapinfo[i];
 
-Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+Whilst the usefulness of this local variable is reduced I think
+it is still justified and keeping it will reduce the churn
+here somewhat.
 
-Thanks,
+> -		resource_size_t addr;
+> -		resource_size_t length;
+> -
+> -		if (!mi->rmap->valid)
+> +		if (!mapinfo[i].rmap->valid)
+>  			continue;
+> -		if (!test_bit(mi->rmap->id, &map_mask))
+> +		if (!test_bit(mapinfo[i].rmap->id, &map_mask))
+>  			continue;
+> -		addr = map->resource + mi->rmap->offset;
+> -		length = mi->rmap->size;
+> -		*(mi->addr) = devm_cxl_iomap_block(host, addr, length);
+> -		if (!*(mi->addr))
+> -			return -ENOMEM;
+> +
+> +		*info = mapinfo[i];
+> +		return 0;
 
-Ben
+I'm struggling to see how this logic works.  We now only find the first
+entry in mapinfo that is valid? The new cxl_map_component_regs()
+doesn't seem to include a loop either so it's not that we enter here
+multiple times.
+
+
+I think this only works if only one bit is set in map_mask?
+It is always called like that, but the function doesn't check it and
+if we are going to always call it with BIT(X) then pass X in instead
+that making it inherently only deal with a one hot bitmap.
+
+
+>  	}
+>  
+> +	return -ENXIO;
+> +}
+> +
+> +int cxl_map_component_regs(const struct cxl_register_map *map,
+> +			   struct cxl_component_regs *regs,
+> +			   unsigned long map_mask)
+
+Similarly I'd make this the bit position not the bitmap with
+1 bit set.
+
+> +{
+> +	struct device *host = map->host;
+> +	resource_size_t addr, length;
+> +	struct mapinfo mi;
+> +	int rc;
+> +
+> +	rc = cxl_get_mapinfo(map, regs, map_mask, &mi);
+> +	if (rc)
+> +		return rc;
+> +
+> +	addr = map->resource + mi.rmap->offset;
+> +	length = mi.rmap->size;
+> +	*mi.addr = devm_cxl_iomap_block(host, addr, length);
+> +	if (!(*mi.addr))
+> +		return -ENOMEM;
+> +
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_NS_GPL(cxl_map_component_regs, "CXL");
+>  
+> +int cxl_unmap_component_regs(const struct cxl_register_map *map,
+> +			     struct cxl_component_regs *regs,
+> +			     unsigned long map_mask)
+And this one.
+
+> +{
+> +	struct device *host = map->host;
+> +	resource_size_t addr, length;
+> +	struct mapinfo mi;
+> +	int rc;
+> +
+> +	rc = cxl_get_mapinfo(map, regs, map_mask, &mi);
+> +	if (rc)
+> +		return rc;
+> +
+> +	if (!(*mi.addr))
+> +		return 0;
+> +
+> +	addr = map->resource + mi.rmap->offset;
+> +	length = mi.rmap->size;
+> +
+> +	devm_iounmap(host, *mi.addr);
+> +	devm_release_mem_region(host, addr, length);
+
+Add a little helper for devm_cxl_iounmap_block()
+So that it clearly pairs with what happens in devm_cxl_iomap_block()
+
+
+> +	return 0;
+> +}
 
 
