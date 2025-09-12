@@ -1,173 +1,151 @@
-Return-Path: <linux-acpi+bounces-16733-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16734-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7CDFB5503D
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 16:03:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59C99B5509D
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 16:14:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C925189A97A
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 14:03:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8DB07C8579
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 14:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC98F2C11E6;
-	Fri, 12 Sep 2025 14:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FAF30FC24;
+	Fri, 12 Sep 2025 14:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n1Q8ddkK"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="W250Hofs"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AE926FDB6
-	for <linux-acpi@vger.kernel.org>; Fri, 12 Sep 2025 14:03:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A802F4A;
+	Fri, 12 Sep 2025 14:12:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757685790; cv=none; b=h5it2DtPQI7l9mt647LAUtROnQWT3SPiNFr9u2EFXPdELNxCUkj0GWZL3PGdp+OlPh1v3MBWktpIjCdHaek9y4FKFXkovAOVUTPibUlTogMVNKLgaNl6PBg51JeCKZcN4RpdyG7SrLu1+i9EY5zYaodXAay3zuB/mKznNoqKrlY=
+	t=1757686373; cv=none; b=dUi9nGUiuiVg0UsAE0QF0rYBi+wD5aOdKbDo+3Mb7JHw7s24Is6wbHQOCpvo2NakkIC4bYoIv/BRzQlxF+a6wgglbMnu/d0CEtfzcABfTKB4VFcyLYtUUA9uaByNrauecHWKm8xBNLLrZPSz4UC5CgpUTc4kdewkMJizo15PQnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757685790; c=relaxed/simple;
-	bh=P6j52c1ZBID9nSzuMUN4OsHR4CI2OCt0NbRs7SSigUY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eVMuqOyRupfMVNgFnNM4RLyCpF50h3LPzw/zZdxB+++z5G1CDfoSEugevu1xlO+jt1xz80eT+dh5/jwUennXxr23Ny9Xpsa3igfHjrahlpRroh4JVwQUMB3gcGVSm3BGtVuRagUdXs5SxDBHO9Eu2/yuDGN/6c8qHGzVRC4YEC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n1Q8ddkK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C6DC4CEF1
-	for <linux-acpi@vger.kernel.org>; Fri, 12 Sep 2025 14:03:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757685790;
-	bh=P6j52c1ZBID9nSzuMUN4OsHR4CI2OCt0NbRs7SSigUY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=n1Q8ddkKGw+dh/3W9+Abb6EQMna0gOjdCFY8WTNm2BFWky5TtzdBvWHYy0aMNUUGs
-	 SsRWbu8mzs0M8xSM9v+iT4bHK2ifbN20A91E6bIcbTanRKfA0hOaJZuLrI8aNFk1Oa
-	 5dVxgQCebFJMDA5/KbJF5dN3yRMduV2lh/FV42RwoVj8YRZkQN2zkiHwb6nZhecifB
-	 fQWVQbjqxHTCCWL/EsUopMllLZyulJZIqhEoIHflgxh1sqh333j4+kS+iQN2XjHIL7
-	 iSK4AFRMb74jsGwkoqfLjmyGDDo4+XOw6b4XR7jzP2VJIeyLi6YFbCkuFPLRzJSIUz
-	 cGHDUhJ9tpWFQ==
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-746d7c469a8so1750489a34.3
-        for <linux-acpi@vger.kernel.org>; Fri, 12 Sep 2025 07:03:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUfiFj4PNLsbvlQ0mF79f/XHnNB6RKL1RQrZH7p7aiTCNP7TL4MUrQN4vBBvK4cClTNj6W20qpJ6vzM@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTsdAWHiVzIODQ8qomxahvbsTY5c77Y8fglibguzseckGXbWxE
-	f88o8KK9SR8v7C3pX0PdoxKfbsZ1HlQqETkz9vNpuTlAs5AVWKWlrn4hkreA05L8QJClw5T2VA+
-	xvZksSIqS9xQkm5buB9Pdyu3MSfVapVA=
-X-Google-Smtp-Source: AGHT+IGhBy1gpmzVXCHhAB87qYksRZOt/cHDn7hmpgZGeeYQzrGTyprkXl4IqCCdm6dUgWcM9326p9pUbWRwlMnbBF8=
-X-Received: by 2002:a05:6830:699b:b0:745:5653:15d4 with SMTP id
- 46e09a7af769-753550e2c1dmr1524988a34.22.1757685789582; Fri, 12 Sep 2025
- 07:03:09 -0700 (PDT)
+	s=arc-20240116; t=1757686373; c=relaxed/simple;
+	bh=T8cKU7GX1nkbL2NcsD+XuaY1d1XDFVWZOQimj/0jD0c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UeWexej/U3EsToHVTDkRQkahdREz/pCnN6MrchPqfiO7tIrpPmRNgSjgDvUS+0GkZJ4cZghAhOvwBZomNj3HXC5jIL78JIIflytXXFUusZcj3vixv9I2Ke4ZDP+Uh2iZCLJEDsMCEnX7o382/W1rg33TSZDAvngLZJTn6MxOSEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=W250Hofs; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D0F8B40E015C;
+	Fri, 12 Sep 2025 14:12:41 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id ctliiuI1qv13; Fri, 12 Sep 2025 14:12:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1757686358; bh=tkZAXzfE56Ye+65KcJu3D+78RmJwSGKf5LKjnICPk0A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W250Hofs3CAu2xKR7YwCa+iuLV0a0Hass4IjlijRdWxTDhiQQrX5MMxcjFX/Muc19
+	 L1D9c9Lb04ZjcZf2KbXFQiyCtAZkXdrAvGqG3NsN38YXvViWfFhq3P0qTKJhMAoDtQ
+	 6UGaVchmykQilTK2/QSbuXaV+EiXymkTV0TZvEiQmPcJ9I0YHSQejDJXCwfIbEj6Vm
+	 G82J1yDYKg8aVzqOuciVXFDjtRzsZBjG214DEdiy5w4HRkaQgpbr9bqur9Dn4iIy+G
+	 kUEKLKzCNYgwDfBobGKajNUoiHCg1W0aYCKRpRyJgrKkrptRO3UAkR+8VAi2i/X4dd
+	 OJiTh87FPlwX5ZYud/PEw6fK/bMAFObYM9H8+6ZA0bJgAWhCCE7E2K5ZeCBch71PJ7
+	 ec3fzVkjxAt1hg8ejNy+olL5CCuC7iTcNROQynBJNScdIV1SUCJWANA9rP0ZqSoeV0
+	 fQ4ChX9Ohn7lYM7tj7Csy7+36rXAEKPCnTft1D/juHMPjpnN3GuSelzM6eN2ldRDPQ
+	 10q3tNaz2HGvwBOzQHWUWiiR7DrqZPQL7a9bJUMlBSqtM/i2yS/ATc4iyOplB8BAiX
+	 cGCC0JD2nAMdgH2VtFBFe971EdKWqTPbJYopr/QR5spgvae29gJxJ+ZXY3XQCRzdvH
+	 Hd5DDtPIhAX+N27TiOyX93NY=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id C653340E0140;
+	Fri, 12 Sep 2025 14:12:01 +0000 (UTC)
+Date: Fri, 12 Sep 2025 16:11:55 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Shiju Jose <shiju.jose@huawei.com>
+Cc: "rafael@kernel.org" <rafael@kernel.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: Re: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
+Message-ID: <20250912141155.GAaMQqK4vS8zHd1z4_@fat_crate.local>
+References: <20250902173043.1796-1-shiju.jose@huawei.com>
+ <20250902173043.1796-2-shiju.jose@huawei.com>
+ <20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local>
+ <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250912122514.2303-1-cp0613@linux.alibaba.com>
-In-Reply-To: <20250912122514.2303-1-cp0613@linux.alibaba.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 12 Sep 2025 16:02:58 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0j1xJ04dWZWKaM_jxZ9aKfZWg40kvxS4s+meWitasRJng@mail.gmail.com>
-X-Gm-Features: Ac12FXxe51JvThurYq7qgUlL7CMkQrsbXiNHC29_jlLEdpWm8TKb3U462SEUkAs
-Message-ID: <CAJZ5v0j1xJ04dWZWKaM_jxZ9aKfZWg40kvxS4s+meWitasRJng@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPI: SPCR: Support Precise Baud Rate filed
-To: cp0613@linux.alibaba.com
-Cc: rafael@kernel.org, lenb@kernel.org, guoren@kernel.org, 
-	jeeheng.sia@starfivetech.com, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
 
-On Fri, Sep 12, 2025 at 2:25=E2=80=AFPM <cp0613@linux.alibaba.com> wrote:
->
-> From: Chen Pei <cp0613@linux.alibaba.com>
->
-> The Microsoft Serial Port Console Redirection (SPCR) specification
-> revision 1.09 comprises additional field: Precise Baud Rate [1].
->
-> It is used to describe non-traditional baud rates (such as those
-> used by high-speed UARTs).
->
-> It contains a specific non-zero baud rate which overrides the value
-> of the Configured Baud Rate field. If this field is zero or not
-> present, Configured Baud Rate is used.
->
-> Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/serports=
-/serial-port-console-redirection-table # 1
->
-> Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
-> ---
->  drivers/acpi/spcr.c | 54 ++++++++++++++++++++++++++-------------------
->  1 file changed, 31 insertions(+), 23 deletions(-)
->
-> diff --git a/drivers/acpi/spcr.c b/drivers/acpi/spcr.c
-> index cd36a97b0ea2..a97b02ee5538 100644
-> --- a/drivers/acpi/spcr.c
-> +++ b/drivers/acpi/spcr.c
-> @@ -146,29 +146,37 @@ int __init acpi_parse_spcr(bool enable_earlycon, bo=
-ol enable_console)
->                 goto done;
->         }
->
-> -       switch (table->baud_rate) {
-> -       case 0:
-> -               /*
-> -                * SPCR 1.04 defines 0 as a preconfigured state of UART.
-> -                * Assume firmware or bootloader configures console corre=
-ctly.
-> -                */
-> -               baud_rate =3D 0;
-> -               break;
-> -       case 3:
-> -               baud_rate =3D 9600;
-> -               break;
-> -       case 4:
-> -               baud_rate =3D 19200;
-> -               break;
-> -       case 6:
-> -               baud_rate =3D 57600;
-> -               break;
-> -       case 7:
-> -               baud_rate =3D 115200;
-> -               break;
-> -       default:
-> -               err =3D -ENOENT;
-> -               goto done;
-> +       /*
-> +        * SPCR 1.09 defines Precise Baud Rate Filed contains a specific
-> +        * non-zero baud rate which overrides the value of the Configured
-> +        * Baud Rate field. If this field is zero or not present, Configu=
-red
-> +        * Baud Rate is used.
-> +        */
-> +       if (table->precise_baudrate)
-> +               baud_rate =3D table->precise_baudrate;
-> +       else switch (table->baud_rate) {
+On Fri, Sep 12, 2025 at 12:04:57PM +0000, Shiju Jose wrote:
+> >Why is this requirement here?
+> The physical memory address range retrieved here for the NUMA domain is used in the subsequent
+> patch  [PATCH v12 2/2] ras: mem: Add memory ACPI RAS2 driver,
+> 1. to set Requested Address Range(INPUT) field of Table 5.87: Parameter Block Structure for PATROL_SCRUB
+> when send GET_PATROL_PARAMETERS command to the firmware, to get scrub parameters, running status,
+> current scrub rate etc.
+> 2. for the validity check of the user requested memory address range to scrub. 
 
-Please do not change the indentation below.
+Again, why does it have to be *lowest* and *contiguous*?
 
-> +               case 0:
-> +                       /*
-> +                        * SPCR 1.04 defines 0 as a preconfigured state o=
-f UART.
-> +                        * Assume firmware or bootloader configures conso=
-le correctly.
-> +                        */
-> +                       baud_rate =3D 0;
-> +                       break;
-> +               case 3:
-> +                       baud_rate =3D 9600;
-> +                       break;
-> +               case 4:
-> +                       baud_rate =3D 19200;
-> +                       break;
-> +               case 6:
-> +                       baud_rate =3D 57600;
-> +                       break;
-> +               case 7:
-> +                       baud_rate =3D 115200;
-> +                       break;
-> +               default:
-> +                       err =3D -ENOENT;
-> +                       goto done;
->         }
->
->         /*
-> --
-> 2.49.0
->
+Your answer doesn't explain that.
+
+> Also intended to expose this supported memory address range to the
+> userspace via EDAC scrub control interface, though it is not present now.
+
+Why? To tie ourselves with even more user ABI?!
+
+There better be a good reason and not a better design for what this is trying
+to do.
+
+> >What happens with the aux devices you created successfully here? Unwind?
+> Please see the previous discussions on this were about allowing the successfully created
+> auxiliary devices to exist.
+> https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
+
+There's no discussion here. And nothing answers the question "why" this is ok
+to do this way.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
