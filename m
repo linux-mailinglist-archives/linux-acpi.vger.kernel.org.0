@@ -1,209 +1,146 @@
-Return-Path: <linux-acpi+bounces-16797-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16798-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D29B559A7
-	for <lists+linux-acpi@lfdr.de>; Sat, 13 Sep 2025 00:46:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F34B55ABD
+	for <lists+linux-acpi@lfdr.de>; Sat, 13 Sep 2025 02:33:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1F965A280B
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Sep 2025 22:46:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64B751C820DF
+	for <lists+linux-acpi@lfdr.de>; Sat, 13 Sep 2025 00:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C0125F7A9;
-	Fri, 12 Sep 2025 22:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13FC3E47B;
+	Sat, 13 Sep 2025 00:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zohomail.com header.i=safinaskar@zohomail.com header.b="acIupnwF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y8ABFCOY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from sender4-pp-o95.zoho.com (sender4-pp-o95.zoho.com [136.143.188.95])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B5E18871F;
-	Fri, 12 Sep 2025 22:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.95
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757717188; cv=pass; b=CdHkWitXfBUSOYM8w8LeScDyL81bxpzV/DbNGR01ecUv6tSN8iZ9ihUvd/vnBlF7WOMYvEJX4Y8N1qDBOf03WHAbW9ni4hfhmbFadCeFeGO0jp/K+/WdCOpXj4puUL5Oy4Wmkrlyx+rLUdClhNZ9Z/Uv1GgHbQdOXR9mBFvAWzU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757717188; c=relaxed/simple;
-	bh=guye89JU8c6lU3xOKktnL/Suo1HlmTbQCY9h2iBDVkw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lxzx0IabSO5yvxP6/QXwcUmvLEkQFogYWLhenJGKLBzvSqnQIVJ11blDGIy4vNWh+Gn63GqE0Wd11rwN3S7Kbvg8AAX7hXJaFoYlNBXs6ORmqudh42KVQYzssCf0BL/vhFIq8QUpd/I0nX/eWjfwmcOERZ+r7P92kTokPf+2cK0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=safinaskar@zohomail.com header.b=acIupnwF; arc=pass smtp.client-ip=136.143.188.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
-ARC-Seal: i=1; a=rsa-sha256; t=1757716883; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=cYmkTWVTcQlLmLr5V8p1CrwhziHK5jWEHqN1/x0dbbnP4N6eqwJhNpFD+YvvcG1JcA1pILR0lg+/Ny7uiewAqWrYp0xgwBVqCid/qUwxU2pBACMW8E+qi9+gH5uFDpaMNSKBUmBcqwPg32DVp6NEprKLCwOzLldRlExaYRgKRTw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1757716883; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=q9iQK8EdIF6RRP4HkX18/uU6rY0egPm6PmmgTdmDikE=; 
-	b=Ju1dqMVIkIYpU5LdsWBIf/CGwDsN0K99qbvJhITUG43b4iO5ReBci570gSrCvJZpIaavRZGeh519zGwQ3xzl9eLPP7B/6fd5qSQvFqfvp30skE+0PjF0wF1ZPM088gDBmx9lu1/Hmu9iiGaXsgt143EyXlTcYz1mO0b4E8ZkWow=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=zohomail.com;
-	spf=pass  smtp.mailfrom=safinaskar@zohomail.com;
-	dmarc=pass header.from=<safinaskar@zohomail.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757716883;
-	s=zm2022; d=zohomail.com; i=safinaskar@zohomail.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID:Message-Id:Reply-To;
-	bh=q9iQK8EdIF6RRP4HkX18/uU6rY0egPm6PmmgTdmDikE=;
-	b=acIupnwFZvyRH5FokPCft4nvGFUMr39pqEpKs0NtNZVw5kg9Xyn8fLnVwVnsMrYi
-	icAGCn5xQY/D8nPVu8I73mfObC5kAiAiUgDDUOK0dT7tuN6mPBE7LpoJ79v5Pcf1s+2
-	+A3prhgVdkGFxaNK2Z8tJ6RB7TjqHAI2HFOwbXVs=
-Received: by mx.zohomail.com with SMTPS id 1757716881894668.1339002049043;
-	Fri, 12 Sep 2025 15:41:21 -0700 (PDT)
-From: Askar Safin <safinaskar@zohomail.com>
-To: linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Aleksa Sarai <cyphar@cyphar.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Julian Stecklina <julian.stecklina@cyberus-technology.de>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Art Nikpal <email2tema@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eric Curtin <ecurtin@redhat.com>,
-	Alexander Graf <graf@amazon.com>,
-	Rob Landley <rob@landley.net>,
-	Lennart Poettering <mzxreary@0pointer.de>,
-	linux-arch@vger.kernel.org,
-	linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	x86@kernel.org,
-	Ingo Molnar <mingo@redhat.com>,
-	linux-block@vger.kernel.org,
-	initramfs@vger.kernel.org,
-	linux-api@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	"Theodore Y . Ts'o" <tytso@mit.edu>,
-	linux-acpi@vger.kernel.org,
-	Michal Simek <monstr@monstr.eu>,
-	devicetree@vger.kernel.org,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	patches@lists.linux.dev,
-	stable+noautosel@kernel.org
-Subject: [PATCH 03/62] init: sh, sparc, x86: remove unused constants RAMDISK_PROMPT_FLAG and RAMDISK_LOAD_FLAG
-Date: Fri, 12 Sep 2025 22:38:38 +0000
-Message-ID: <20250912223937.3735076-4-safinaskar@zohomail.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250912223937.3735076-1-safinaskar@zohomail.com>
-References: <20250912223937.3735076-1-safinaskar@zohomail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACFA2629C
+	for <linux-acpi@vger.kernel.org>; Sat, 13 Sep 2025 00:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757723619; cv=none; b=itDaXzGzWM+0iy2aQgaI4M1jk/AMduUbHx46+jBBnTw5EL8yotT3kwNeHA8oaoFLsSAHBOc2Uj7hDiwXjV2CmXZudjjghasx2dnKWSrl5PcFH1F203tvE86Y1Eh9AWYzP8K6YjJuKbsxgWYvhZEmUM25YuLbYG43w41R16PpXPA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757723619; c=relaxed/simple;
+	bh=6ixjMQGo+mF9rxxhZunX9VzR5bs0JXrtOuI72NkTM98=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=pK1cJ/5JfVQRg6pbM4YgfdSB2/rtDgBcZUARPx3JUQvcVQWYy2RVHeRURf/ENkckfH3KTjp/Kn/4cqaeGkRSvfSQ20bWw2LfjZcDGsjQdqlujIktjT4uBuUXSSDl89t5gtCoWnIEwP43xAC/FknPm8ez0QDHr2G8B5qQnfcYZ6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y8ABFCOY; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757723617;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ncBfGy8EE17qYCVshxa8cc5ygoQQollWUOgPghVnN+8=;
+	b=Y8ABFCOYGvmtliMGHQf+AXFx8kh07GGSmtGIbQ78d+T2Lcis3vOb2XAhVxtev7SyJURlCS
+	JfZw1CRRwO8rpbKf/bLP1H/8GNRtYJrpfmGJ4oNvQVtlo3sjz4JAEvUki/mKIGVDR9jLDO
+	rJeVuhvLxEyxyR/fniR/S8i1vfy6Lys=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-166-njC91N2DNimAQsYe2hF2sQ-1; Fri, 12 Sep 2025 20:33:34 -0400
+X-MC-Unique: njC91N2DNimAQsYe2hF2sQ-1
+X-Mimecast-MFC-AGG-ID: njC91N2DNimAQsYe2hF2sQ_1757723614
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4b60d5eca3aso62934651cf.0
+        for <linux-acpi@vger.kernel.org>; Fri, 12 Sep 2025 17:33:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757723614; x=1758328414;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ncBfGy8EE17qYCVshxa8cc5ygoQQollWUOgPghVnN+8=;
+        b=hhR85JUh3D1H49lndM0XHnn1s3sTYqacwpsXkcl+WT7n+Q0M2k0OUiNu3gQqaaHRdx
+         LjPUMR6cbaApvpDJ9BBfwyXpOXFCMRlq4zLmdtUz+ZrkFMSZMRDJKg0HGC1UXopU1fBd
+         JeborYeFiPhBLVeutgNMIV1NEy88WTmjPB/oNbx0gB/DubjEVsR4wZYPqUrPLb9mHDXA
+         oCuhAcre5+MxxOZ+BMD1I7p5Upyv7MGiZC9Ex5ewlp8rpZv0n8viXaxFVuE8VvgvC6J2
+         Kp3OsthP3P7/59c++sNn7P6o37OgjDVX3DfPWW3uea5gx3MD5B7GNkwTkAG2KilCPLRf
+         xS5g==
+X-Forwarded-Encrypted: i=1; AJvYcCUK2VVpgBjGKQdXUE/GEdwwoqWX2WdVvU9ene61uXNEuU/7urNvwu8j8WhH7puBBwcUnASR1rS/uCnL@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfnHZ5Ac+pdoDuvwRUY1gyMle1FRupzNPlhO7IXsQK59a4ISr9
+	MzazLQbdY9MW6wdIp5ACShDm49LFVHDThOEd5aCkFxKtHUNfy/8o7DIAecca1ulvVwiT4PKiY6J
+	Mkh856hfviW+9co+EfsIPRh+wUvMJ5VVbgaT5qlYudEiI8R5huDuCM0+tW/QYs7k=
+X-Gm-Gg: ASbGnctdF9eWdImdeZ7kP/n5fPuAmRY1NsJ4Xg8ELlGvGa0d8l6bM4npMM7CglEcw7s
+	ykKIclQU3mgq6bFz9s8FF0OvP9ByM0kz/Ss/Cow1F9c+NLSiesokXtfya9NBm3h/wOO+fLjv6tc
+	8V8YzobwvQKKR5MAwPZOASY/PHo7yN53cFHBLr60c4f0Iv6AQi/qg5k5dQet51vh59cH3j7PFKP
+	oE1nE9xnSigsm5qha+o8qc6KdTsefde0K4PTx5PrDFf4j4FLgSE/cHFg4sRlLuPItoOYya5nOBw
+	T3xK9Fk9YuGkACCZT8yXsR3voSCBZgH1rh/G8mLJpopfoONr94hIy6E+myzYWI+2AOO2NAgKq+K
+	OD5oKXUiveg==
+X-Received: by 2002:a05:622a:1a05:b0:4b6:2f52:5342 with SMTP id d75a77b69052e-4b77d1ab3a1mr68076331cf.79.1757723614311;
+        Fri, 12 Sep 2025 17:33:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGRq8wbBNQnbSCZtG/tvewoa9dvMcBJkb7MXthP0yviRVZ6G/ctSPGgxUCMnelFEMNwo4BLAw==
+X-Received: by 2002:a05:622a:1a05:b0:4b6:2f52:5342 with SMTP id d75a77b69052e-4b77d1ab3a1mr68076091cf.79.1757723613947;
+        Fri, 12 Sep 2025 17:33:33 -0700 (PDT)
+Received: from ?IPV6:2601:188:c180:4250:ecbe:130d:668d:951d? ([2601:188:c180:4250:ecbe:130d:668d:951d])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b639b99de1sm31462791cf.8.2025.09.12.17.33.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Sep 2025 17:33:33 -0700 (PDT)
+From: Waiman Long <llong@redhat.com>
+X-Google-Original-From: Waiman Long <longman@redhat.com>
+Message-ID: <9d06c0d5-e20c-4069-adca-68a2c4cf6f4f@redhat.com>
+Date: Fri, 12 Sep 2025 20:33:31 -0400
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Feedback-ID: rr080112274be46f51a3e6d7b65453b8c4000084fba7464352cc4dc9cd50377fd7f09b0684ed62a16f1e6eeb:zu08011227aebba3291345918c920d3b3a00008f86ff3411911b832b8b206255ff0b95bb9fe1592be8b5327b:rf0801122cd997ff081c6a0f543772417b00002b369a2b05bf7efffc2b9c1c1140566e0d80ce0978fa409c151951bada9a:ZohoMail
-X-ZohoMailClient: External
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rcu: Remove redundant rcu_read_lock/unlock() in spin_lock
+ critical sections
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Waiman Long <llong@redhat.com>
+Cc: pengdonglin <dolinux.peng@gmail.com>, tj@kernel.org, tony.luck@intel.com,
+ jani.nikula@linux.intel.com, ap420073@gmail.com, jv@jvosburgh.net,
+ freude@linux.ibm.com, bcrl@kvack.org, trondmy@kernel.org, kees@kernel.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ linux-nfs@vger.kernel.org, linux-aio@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ netdev@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ linux-acpi@vger.kernel.org, linux-s390@vger.kernel.org,
+ cgroups@vger.kernel.org, pengdonglin <pengdonglin@xiaomi.com>,
+ "Paul E . McKenney" <paulmck@kernel.org>
+References: <20250912065050.460718-1-dolinux.peng@gmail.com>
+ <6831b9fe-402f-40a6-84e6-b723dd006b90@redhat.com>
+ <20250912213531.7-YeRBeD@linutronix.de>
+Content-Language: en-US
+In-Reply-To: <20250912213531.7-YeRBeD@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-They were used for initrd before c8376994c86.
+On 9/12/25 5:35 PM, Sebastian Andrzej Siewior wrote:
+> On 2025-09-12 17:13:09 [-0400], Waiman Long wrote:
+>> On 9/12/25 2:50 AM, pengdonglin wrote:
+>>> From: pengdonglin <pengdonglin@xiaomi.com>
+>>>
+>>> When CONFIG_PREEMPT_RT is disabled, spin_lock*() operations implicitly
+>>> disable preemption, which provides RCU read-side protection. When
+>>> CONFIG_PREEMPT_RT is enabled, spin_lock*() implementations internally
+>>> manage RCU read-side critical sections.
+>> I have some doubt about your claim that disabling preemption provides RCU
+>> read-side protection. It is true for some flavors but probably not all. I do
+>> know that disabling interrupt will provide RCU read-side protection. So for
+>> spin_lock_irq*() calls, that is valid. I am not sure about spin_lock_bh(),
+>> maybe it applies there too. we need some RCU people to confirm.
+> The claim is valid since Paul merged the three flavours we had. Before
+> that preempt_disable() (and disabling irqs) would match
+> rcu_read_lock_sched(). rcu_read_lock() and rcu_read_lock_bh() were
+> different in terms of grace period and clean up.
+> So _now_ we could remove it if it makes things easier.
 
-c8376994c86c made them unused and forgot to remove them
+Thanks for the clarification.
 
-Fixes: c8376994c86c ("initrd: remove support for multiple floppies")
-Cc: <stable+noautosel@kernel.org> # because changes uapi headers
-Signed-off-by: Askar Safin <safinaskar@zohomail.com>
----
- arch/sh/kernel/setup.c                | 2 --
- arch/sparc/kernel/setup_32.c          | 2 --
- arch/sparc/kernel/setup_64.c          | 2 --
- arch/x86/include/uapi/asm/bootparam.h | 2 --
- arch/x86/kernel/setup.c               | 2 --
- 5 files changed, 10 deletions(-)
+In this case, I think the patch description should mention the commit 
+that unify the 3 RCU flavors to make sure that this patch won't be 
+accidentally backport'ed to an older kernel without the necessary 
+prerequisite commit(s).
 
-diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
-index 039a51291002..d66f098e9e9f 100644
---- a/arch/sh/kernel/setup.c
-+++ b/arch/sh/kernel/setup.c
-@@ -71,8 +71,6 @@ EXPORT_SYMBOL(sh_mv);
- extern int root_mountflags;
- 
- #define RAMDISK_IMAGE_START_MASK	0x07FF
--#define RAMDISK_PROMPT_FLAG		0x8000
--#define RAMDISK_LOAD_FLAG		0x4000
- 
- static char __initdata command_line[COMMAND_LINE_SIZE] = { 0, };
- 
-diff --git a/arch/sparc/kernel/setup_32.c b/arch/sparc/kernel/setup_32.c
-index 704375c061e7..eb60be31127f 100644
---- a/arch/sparc/kernel/setup_32.c
-+++ b/arch/sparc/kernel/setup_32.c
-@@ -172,8 +172,6 @@ extern unsigned short root_flags;
- extern unsigned short root_dev;
- extern unsigned short ram_flags;
- #define RAMDISK_IMAGE_START_MASK	0x07FF
--#define RAMDISK_PROMPT_FLAG		0x8000
--#define RAMDISK_LOAD_FLAG		0x4000
- 
- extern int root_mountflags;
- 
-diff --git a/arch/sparc/kernel/setup_64.c b/arch/sparc/kernel/setup_64.c
-index 63615f5c99b4..f728f1b00aca 100644
---- a/arch/sparc/kernel/setup_64.c
-+++ b/arch/sparc/kernel/setup_64.c
-@@ -145,8 +145,6 @@ extern unsigned short root_flags;
- extern unsigned short root_dev;
- extern unsigned short ram_flags;
- #define RAMDISK_IMAGE_START_MASK	0x07FF
--#define RAMDISK_PROMPT_FLAG		0x8000
--#define RAMDISK_LOAD_FLAG		0x4000
- 
- extern int root_mountflags;
- 
-diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
-index dafbf581c515..f53dd3f319ba 100644
---- a/arch/x86/include/uapi/asm/bootparam.h
-+++ b/arch/x86/include/uapi/asm/bootparam.h
-@@ -6,8 +6,6 @@
- 
- /* ram_size flags */
- #define RAMDISK_IMAGE_START_MASK	0x07FF
--#define RAMDISK_PROMPT_FLAG		0x8000
--#define RAMDISK_LOAD_FLAG		0x4000
- 
- /* loadflags */
- #define LOADED_HIGH	(1<<0)
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 1b2edd07a3e1..6409e766fb17 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -223,8 +223,6 @@ extern int root_mountflags;
- unsigned long saved_video_mode;
- 
- #define RAMDISK_IMAGE_START_MASK	0x07FF
--#define RAMDISK_PROMPT_FLAG		0x8000
--#define RAMDISK_LOAD_FLAG		0x4000
- 
- static char __initdata command_line[COMMAND_LINE_SIZE];
- #ifdef CONFIG_CMDLINE_BOOL
--- 
-2.47.2
+Cheers,
+Longman
 
 
