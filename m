@@ -1,181 +1,156 @@
-Return-Path: <linux-acpi+bounces-16836-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16805-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94588B55D8D
-	for <lists+linux-acpi@lfdr.de>; Sat, 13 Sep 2025 03:19:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A018B55B3D
+	for <lists+linux-acpi@lfdr.de>; Sat, 13 Sep 2025 02:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C43BAE2F09
-	for <lists+linux-acpi@lfdr.de>; Sat, 13 Sep 2025 01:19:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FCBF566BF7
+	for <lists+linux-acpi@lfdr.de>; Sat, 13 Sep 2025 00:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5021C6FE8;
-	Sat, 13 Sep 2025 01:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF10C51C5A;
+	Sat, 13 Sep 2025 00:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JdasfyAT"
+	dkim=pass (2048-bit key) header.d=wbinvd.org header.i=@wbinvd.org header.b="KhjvS34z"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46EC19B5B1
-	for <linux-acpi@vger.kernel.org>; Sat, 13 Sep 2025 01:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45AC32EB10
+	for <linux-acpi@vger.kernel.org>; Sat, 13 Sep 2025 00:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757726375; cv=none; b=GIWyHVYfKbZ0N8MJB6Ps+csGQwZ87GyImymG8F0pWi8UEJsxJOHZWSfxnHscdO/we2GbyRT/5kpq65POO7lhHh9PDJgb3JsFZWtOVHxzWTcTSP2I73NEOCMA07BCNI4ZyfhGpUfkac0yqdgPkYZ9FjyPGl/hbKKpMm54/TSWn5c=
+	t=1757724376; cv=none; b=owP0zXk6/Z4GVkp8vB+8gpKkn2QlAwDyiaQFBy6i3NY3NLmW93swl9aFq7r6iRGQCL7L0Iy0tgyePVNc0QVTWupfmRzpNMvR1GrMFZt+bIdxsg7MPT3DJ0tRDM1hzQtKM/rWsGGpU/GHENI06Iyvl2OKygnusy2Ib82Q229gWDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757726375; c=relaxed/simple;
-	bh=0dZBfgRsarIoSXxUVt0yhSx8VT0ilXZcRzH3UEVxVxY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E68ljv0wItd3NHhW7Yf2NO4FPE/SbGYwvOcSiXkiuVprey53+ZUUSdwkt+LT2tne/zTPQdfIHOVm6l3wVEn2mDLYAYd4j6mnniDM4z+Ihkgebe1TeqAGRUx//h0u5GKJeo8Utzypumq27RyWr6TxJ8CbpI+h/VK/Pp5tZaHKhqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JdasfyAT; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-62ed3e929d1so3259166a12.3
-        for <linux-acpi@vger.kernel.org>; Fri, 12 Sep 2025 18:19:31 -0700 (PDT)
+	s=arc-20240116; t=1757724376; c=relaxed/simple;
+	bh=akUfeAAylR4EGyDlpaAVA7KbTqLrX6ucdpKbIQvNUvc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FtWj4m0gtgvXIXoVcLGbSTc1tjikzBgkWwLwCeJSBXBdMKC989/iRqGt4R1xtHHquqeAcsloVN912pFxBsZgRJnHyf99OfPqWSJWJMh/lbka28vfZMBAb5L7GF+Y50h66Sc/Gj7hgPipgnZV+1HKr7YsuhJOcJRtMKJHrWipKYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wbinvd.org; spf=pass smtp.mailfrom=wbinvd.org; dkim=pass (2048-bit key) header.d=wbinvd.org header.i=@wbinvd.org header.b=KhjvS34z; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wbinvd.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wbinvd.org
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7723f0924a3so3170523b3a.2
+        for <linux-acpi@vger.kernel.org>; Fri, 12 Sep 2025 17:46:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757726370; x=1758331170; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=01GQX+A5wcxVOfa45EtHUSgPI4YB4B2sFvA+zw7J76I=;
-        b=JdasfyATZKgVuDGioUqz8M95vHmUjDA0X+pQzxpf/9WU/t+U6Kr5Hnn8A/pwyQbEEj
-         tG9d5C4koMLr9jbbHvOg3kmOIpnqmXdSH9FzLhmDOw7FKaw9Ew5j+I2E2DqtaAF0kBLZ
-         78wviOrJLl+vWbv0yCaEb7FNWVwdYcrEt3ieIj7Euu12bhdJuyE+iXc5Pb1FYjgjb8hF
-         cX5p4CCG19iBqFwJotgYe++od9U/7qY0/+Gz7PK70bhGuzPjXacGCU6LuDPtHZleKndu
-         uaVp9WGOG3lboi/Y241AWiDrohHR47mki0UFwavjwS1g6Qe4yDpW5hurcQZvXGxBtRDc
-         ssdA==
+        d=wbinvd.org; s=wbinvd; t=1757724374; x=1758329174; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=y1rAyo0wYKz4qhM+kpJJzKO3IkA7FwTREfOLXkFqC+k=;
+        b=KhjvS34zI+GcCf64gWCiWFseNfwQXvcmSoc0EGu1w6jMug1/YOSgom7Ilmb5XsvCFe
+         9UEv2KLhlLpiqdFJXtlx1uaAbfStSdJgsbjmO55F3jJhHf0GZOBXAelmymvZKDaOauVd
+         DnicSisYcFeVlx2336UNEsJ1TAqU1FGBQksH9TqJh3W+ShEOLRjHXRmw0NOgJ9Mz8XkA
+         psy+yCvrod50D71r5gm4welJtCD5kgenard8rcDNj4a2EMI43IZKv0GD8QFnzO3iA7NQ
+         b08RQ8CjkURYGcyci+0If0Ww5xiDj9wTdgiUE0xyDamGJCGp0g9JoNuANnCUBBQdaBJ1
+         aLRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757726370; x=1758331170;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=01GQX+A5wcxVOfa45EtHUSgPI4YB4B2sFvA+zw7J76I=;
-        b=UhiCUyxcdRJKW/g14boqEgsZkwlzPKTx28xDMKflnAVbj14EfAvasqWOCSQ77yPBjw
-         KCk5MQk4Z01bp6m74qF0u//hx/dTzS2ZZFq3O++4Vzj6TescGK8qdfVorbUCcUF/a+50
-         v+IdPAwG3x5rmBEVfcaCsx1s2OEOhoYO/tPcs6KUQhgwymcT0kWP4EjpIm1XBUQpqTuX
-         hmJoyHpOqtcAhAUBo5KWvPxniJB4BmtIxdwg/pnF/Svz07zAZzGScwPvpYG9K+DIUxKm
-         MNnfN8TCYwn6yrufho5UFfgJyyEEee1GnS0Q3d+fGYzi9sxIh6HY/W7qY+ka7mpTbJKD
-         tTEg==
-X-Forwarded-Encrypted: i=1; AJvYcCWoq+TKPRBFp3zxaC7HmzGuYUOnicTyb99Wejs2n1k7cyO68SWFaIns3kWYRzLAUb/CLSxNipdhopbr@vger.kernel.org
-X-Gm-Message-State: AOJu0YytlwoSiXAt3dyxO84c/pu22vpNnoLEUJZ0HHgUYslRbNtlQVtF
-	jXU+NOw2Yuv/zzifuMM26AJAc9BlVAkkKO0WzZWuafWozDBqPiXSl+Tt
-X-Gm-Gg: ASbGncvCKiVyO9NZkYBIiOOU+/Wyfx5ob6DwzfoFr00mvXavW5dlhxBxvw2pXU8wrPH
-	JFhwgEBpTGwNBnHFcNief0Cr8qZCyoKfbw1LUmNahuD1hk1hyqeCg7hLHGqcK+giPzT9RbqjvuH
-	V1KOKTGWGn+G3E+WBs74EzMmHquH59Cz+/yCCk8YApwxLJUFILYgkpFZdRnXUkEMdAfnGtaehL3
-	mqoGIo/MJKTlJJOhUQqVHxlowEC1bnU+mR/mNwZA5h4fGshBAl5vsfSgw7Q2b3ve/ZuEUMZMvy3
-	F0yJ98vQbwuo0zzEqe6G48EBBwKeRIhgMwvksNPeXiXyhh9gTEk5c32efId3fmLDRvrhJgbxUIy
-	SRwgZcnAguT7C6it7UoqGdC1lZe42vA==
-X-Google-Smtp-Source: AGHT+IEzeVwYKpSq5hVwsza+AqQmwMGGceGxnApLyMFPwDCsoulMW4PoMJQ37ACnH/5BZ1euJLookQ==
-X-Received: by 2002:a17:906:2493:b0:b04:9822:1ab4 with SMTP id a640c23a62f3a-b07c35fb2e4mr458597866b.27.1757726369974;
-        Fri, 12 Sep 2025 18:19:29 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b07b32dd5bfsm465661666b.63.2025.09.12.18.19.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Sep 2025 18:19:29 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: linux-fsdevel@vger.kernel.org,
+        d=1e100.net; s=20230601; t=1757724374; x=1758329174;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=y1rAyo0wYKz4qhM+kpJJzKO3IkA7FwTREfOLXkFqC+k=;
+        b=kdGGE+9dw3L5Yz1oz4RaKXlgvwuFumD6oM6bkB6wdYvHLEa4jCbDGQ09QbJqhbecSL
+         5Zmp8hrWfvub5YydV47yUFS0oG3tdnORypkqD+LFZcMLMGk9i7ZXBtzD350tBuUoIKNw
+         CjPmzMVbrYUdn8beg+Vs1iJJpNDMe15+lAl+xTmJ655fLiL9YICevZ4T9I6Ift56FbtE
+         wbdVWZ0RXpJ2fTFeuu53B2mvkvXx/0mxEH7ymMhkpdzjHKI8FYB6xtDNdBBUhTJ4T+o/
+         9/7xkAy9QycM/uiCTDkI6BePLT7OMs0kDwep2zR9iTUYexn1Gd+H0sB358dZ6LvMnaoE
+         rjQw==
+X-Forwarded-Encrypted: i=1; AJvYcCXOAvzrzjYmSNHMEPYLeWPdOhDb36Fs3FhY8JZ1eeadrjPYUwot7j8gXbtisNWn2rc9BCb5TydOtCJZ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzei9Xk/Lg4hQPkEDwdRWbknlMr6jhDUEwN3wep7xYOdI2uCjY/
+	gBJXZwuOo25g27IGaQ3f7QjZ/cPWbRGbT5sodSQkmckpBN3s8wKpPWFrb84V2uL/ih0=
+X-Gm-Gg: ASbGncva2YdSWL9Vpm+nGSsrI+Zs34xx/j6J/CpmFISfTaWQ5SLnkcxgnYIN3V6gt98
+	/s97X+PhCzmEaq0RW8XKx7cM66ShNPUzbIvxIAIG8RBOQgQi8usRSw28L7AizZVzTEofQo4NGvQ
+	n2Ib1kr4qNSFHoJJ/jO2XXzYdyRp/oxziyH8zytVLSsEwGqF+oXXdcMz52PcFuUmTN1VE/6jHvM
+	x8tA4b65SqBlLuHL4yCPb7YbABR2qrfYyiYdsgYHyBL6HEqxcxJTkuO/Y27tjQRENkCUL8zb4DB
+	dV77jWTUXLZKw70bHV5cGyP3KSXvvcjlnFIFmyHDIkurT+c65FKSjJCzH49DpAKrfx+QJApeCEq
+	TqjccI4ZlOzCotilPb6/QiAUT
+X-Google-Smtp-Source: AGHT+IHMBcbueSicxR/8Vx8AuBr3VH7T7SswkJLlw1PiFiO49urRgXzVoKF+OSucjZhbIyJT/Kwvwg==
+X-Received: by 2002:a05:6a20:1590:b0:246:3a6:3e5e with SMTP id adf61e73a8af0-2602cd19bc3mr6462974637.54.1757724374277;
+        Fri, 12 Sep 2025 17:46:14 -0700 (PDT)
+Received: from mozart.vkv.me ([192.184.167.117])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7760793be6csm6786234b3a.14.2025.09.12.17.46.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Sep 2025 17:46:13 -0700 (PDT)
+Date: Fri, 12 Sep 2025 17:46:11 -0700
+From: Calvin Owens <calvin@wbinvd.org>
+To: =?utf-8?Q?S=C3=A9bastien?= Szymanski <sebastien.szymanski@armadeus.com>
+Cc: Mika Westerberg <westeri@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Aleksa Sarai <cyphar@cyphar.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Julian Stecklina <julian.stecklina@cyberus-technology.de>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Art Nikpal <email2tema@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eric Curtin <ecurtin@redhat.com>,
-	Alexander Graf <graf@amazon.com>,
-	Rob Landley <rob@landley.net>,
-	Lennart Poettering <mzxreary@0pointer.de>,
-	linux-arch@vger.kernel.org,
-	linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	x86@kernel.org,
-	Ingo Molnar <mingo@redhat.com>,
-	linux-block@vger.kernel.org,
-	initramfs@vger.kernel.org,
-	linux-api@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	"Theodore Y . Ts'o" <tytso@mit.edu>,
-	linux-acpi@vger.kernel.org,
-	Michal Simek <monstr@monstr.eu>,
-	devicetree@vger.kernel.org,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	patches@lists.linux.dev
-Subject: [PATCH RESEND 36/62] init: make mount_root static
-Date: Sat, 13 Sep 2025 00:38:15 +0000
-Message-ID: <20250913003842.41944-37-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250913003842.41944-1-safinaskar@gmail.com>
-References: <20250913003842.41944-1-safinaskar@gmail.com>
+Subject: Re: [PATCH] gpiolib: acpi: initialize acpi_gpio_info struct
+Message-ID: <aMS-09x_YTV75r0n@mozart.vkv.me>
+References: <20250912-gpiolib-acpi-fix-v1-1-1a41acbffadf@armadeus.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250912-gpiolib-acpi-fix-v1-1-1a41acbffadf@armadeus.com>
 
-This is cleanup after initrd removal
+On Friday 09/12 at 22:18 +0200, Sébastien Szymanski wrote:
+> Since commit 7c010d463372 ("gpiolib: acpi: Make sure we fill struct
+> acpi_gpio_info"), uninitialized acpi_gpio_info struct are passed to
+> __acpi_find_gpio() and later in the call stack info->quirks is used in
+> acpi_populate_gpio_lookup. This breaks the i2c_hid_cpi driver:
+> 
+> [   58.122916] i2c_hid_acpi i2c-UNIW0001:00: HID over i2c has not been provided an Int IRQ
+> [   58.123097] i2c_hid_acpi i2c-UNIW0001:00: probe with driver i2c_hid_acpi failed with error -22
+> 
+> Fix this by initializing the acpi_gpio_info pass to __acpi_find_gpio()
+> 
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220388
+> Fixes: 7c010d463372 ("gpiolib: acpi: Make sure we fill struct acpi_gpio_info")
+> Signed-off-by: Sébastien Szymanski <sebastien.szymanski@armadeus.com>
 
-Signed-off-by: Askar Safin <safinaskar@gmail.com>
----
- init/do_mounts.c | 2 +-
- init/do_mounts.h | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+Thanks Sébastien. This fixes the touchpad on my XPS 9340.
 
-diff --git a/init/do_mounts.c b/init/do_mounts.c
-index c722351c991f..7ec5ee5a5c19 100644
---- a/init/do_mounts.c
-+++ b/init/do_mounts.c
-@@ -381,7 +381,7 @@ static inline void mount_block_root(char *root_device_name)
- }
- #endif /* CONFIG_BLOCK */
- 
--void __init mount_root(char *root_device_name)
-+static void __init mount_root(char *root_device_name)
- {
- 	switch (ROOT_DEV) {
- 	case Root_NFS:
-diff --git a/init/do_mounts.h b/init/do_mounts.h
-index f291c30f7407..90422fb07c02 100644
---- a/init/do_mounts.h
-+++ b/init/do_mounts.h
-@@ -12,7 +12,6 @@
- #include <linux/task_work.h>
- #include <linux/file.h>
- 
--void  mount_root(char *root_device_name);
- extern int root_mountflags;
- 
- /* Ensure that async file closing finished to prevent spurious errors. */
--- 
-2.47.2
+If you want it:
 
+Tested-By: Calvin Owens <calvin@wbinvd.org>
+
+> ---
+>  drivers/gpio/gpiolib-acpi-core.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
+> index 12b24a717e43f17621c054bfc4e9c2e287236d8c..d11bcaf1ae88421e5e5a11a2ba94983f437c413a 100644
+> --- a/drivers/gpio/gpiolib-acpi-core.c
+> +++ b/drivers/gpio/gpiolib-acpi-core.c
+> @@ -942,7 +942,7 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
+>  {
+>  	struct acpi_device *adev = to_acpi_device_node(fwnode);
+>  	bool can_fallback = acpi_can_fallback_to_crs(adev, con_id);
+> -	struct acpi_gpio_info info;
+> +	struct acpi_gpio_info info = {};
+>  	struct gpio_desc *desc;
+>  
+>  	desc = __acpi_find_gpio(fwnode, con_id, idx, can_fallback, &info);
+> @@ -992,7 +992,7 @@ int acpi_dev_gpio_irq_wake_get_by(struct acpi_device *adev, const char *con_id,
+>  	int ret;
+>  
+>  	for (i = 0, idx = 0; idx <= index; i++) {
+> -		struct acpi_gpio_info info;
+> +		struct acpi_gpio_info info = {};
+>  		struct gpio_desc *desc;
+>  
+>  		/* Ignore -EPROBE_DEFER, it only matters if idx matches */
+> 
+> ---
+> base-commit: 76eeb9b8de9880ca38696b2fb56ac45ac0a25c6c
+> change-id: 20250912-gpiolib-acpi-fix-7ee492ebd5e8
+> 
+> Best regards,
+> -- 
+> Sébastien Szymanski <sebastien.szymanski@armadeus.com>
+> 
 
