@@ -1,207 +1,167 @@
-Return-Path: <linux-acpi+bounces-16935-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16926-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E30BB57A83
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 14:22:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA51B578FE
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 13:50:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C467A480FB0
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 12:21:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4F1E188CEC6
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 11:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67763093CF;
-	Mon, 15 Sep 2025 12:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672473002D8;
+	Mon, 15 Sep 2025 11:50:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DeKduYF2"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03DFD3093AC;
-	Mon, 15 Sep 2025 12:20:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E6229D28F;
+	Mon, 15 Sep 2025 11:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757938861; cv=none; b=vB3rdn+awI1pBClqOBhgZidcDP3ocjiG86wplnYkisDJ6iJpN+rkth9+5NYwfoue4yaV99oHPNvpfHqb+kwGL32wpHoKWgpDvrUxZt+tei879olwyDN1ITxr+SJB9yMC4tvV585BHJ4iZClYBQcsUeo51ulzveuC1CIYoIIDMg0=
+	t=1757937000; cv=none; b=gezhM1b7BuVmXMXB6Op9k24t9RapNoWPmIBtSGJmndvUKBBhSqdbHECwMjrCLS1JAoemMCvS83+NH185WGtXE/V+PcK4RN6D9mpOwsOKzq1qjPLUMesZTt9bj1gENZ6gGHZjCj2h4Bq4d3xIA+kzsgjsv93DMASY4VAUS7xqMdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757938861; c=relaxed/simple;
-	bh=iQfR1UIEK7KKvBelOy8h1mJ+5KzBrfhDdN1CVyeOG/k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qSjIiJfrvFZ2isch8skgeBBwk4cTQeH/e0usn9ZhmArvGo0hCuw4GfPspGtzqE7OEZQChqX7YhVHHzOSwzzEFS5ilOw56oKw/IIdlnl04uPozyhTmvADVKhppwHKRxR+xAVIZn1xIibEvqqsLB/Fjq+r3hRqya26Hkby3iLhpW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cQNbF5mghz9t06;
-	Mon, 15 Sep 2025 13:48:41 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id lGkOMbzCsqbk; Mon, 15 Sep 2025 13:48:41 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cQNbD4NF4z9t02;
-	Mon, 15 Sep 2025 13:48:40 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 63D1F8B766;
-	Mon, 15 Sep 2025 13:48:40 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id OqxzzIPrAedJ; Mon, 15 Sep 2025 13:48:40 +0200 (CEST)
-Received: from [10.25.207.160] (unknown [10.25.207.160])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id B11BF8B763;
-	Mon, 15 Sep 2025 13:48:39 +0200 (CEST)
-Message-ID: <2757ca88-5841-4024-932e-637130ac6b0b@csgroup.eu>
-Date: Mon, 15 Sep 2025 13:48:39 +0200
+	s=arc-20240116; t=1757937000; c=relaxed/simple;
+	bh=BbKiR4x9sna8ZoHwC/t2IjvvdHFKRovS0mw90zmgzTk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GgRdBMBEJy7zpKrscujr1MzVMdi6xdprJyrtEnQc0RlJo1aQUiC6K03CK78O3qg9NbvzsM23P9H9Bucq1WB2pdPt92474VNBtN/m66iPUz6lpzZ8ZWdoTtyKAp4rwHpsnnL32HuYrxhWmX8gEHNQnHzbMI5EPAnqA5r6Yx2UV1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DeKduYF2; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757936999; x=1789472999;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BbKiR4x9sna8ZoHwC/t2IjvvdHFKRovS0mw90zmgzTk=;
+  b=DeKduYF2B7FI2hyN5Oc+XGXTR41ikpH6okjaghWEi+ib44ta+CNoMUpX
+   R5k6qcaygsfC5jpWBRLmghW00X362qdli+ofyScG0yNgzZ3ZWoy1/hV9m
+   eCYI+WMKHvK26ggEhgdvOC0lPxfu03IWChFuR0bEZ7ihgibiaefURcvUL
+   zBQQJvesehSWGKqv31RgH6g+MSRKigRE46rxTi1cv9zWt/QdVBz0K0kdN
+   FNLKDmRvKvW1uiOooYGGvX1P0hV3r5l4UgIOhOjeTOzjdxgM1SdCKAnbF
+   6SWImYQzccEsATmWcoJ++/ouXj5AS+f9+4Ct+45J+ev24+/MmJcw+UhC+
+   g==;
+X-CSE-ConnectionGUID: tcYbhRG4Rm6Qg0C8fHRIWg==
+X-CSE-MsgGUID: dCLmx/jVSo+5DUgC5BuKMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11553"; a="59413743"
+X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; 
+   d="scan'208";a="59413743"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 04:49:58 -0700
+X-CSE-ConnectionGUID: 9jRVP6DcTGGPJLpmvwWILw==
+X-CSE-MsgGUID: lIbEmjunS9G0Ap25zSwHGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; 
+   d="scan'208";a="174434116"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.30])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 04:49:56 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 58CE611FCCF;
+	Mon, 15 Sep 2025 14:49:53 +0300 (EEST)
+Date: Mon, 15 Sep 2025 14:49:53 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 3/4] ACPI: property: Do not pass NULL handles to
+ acpi_attach_data()
+Message-ID: <aMf9YRHA8jRgMPAr@kekkonen.localdomain>
+References: <5046661.31r3eYUQgx@rafael.j.wysocki>
+ <3014880.e9J7NaK4W3@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND 16/62] brd: remove "ramdisk_size" command line
- parameter
-To: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
- Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>,
- Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>,
- Aleksa Sarai <cyphar@cyphar.com>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Julian Stecklina <julian.stecklina@cyberus-technology.de>,
- Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>,
- Alexander Graf <graf@amazon.com>, Rob Landley <rob@landley.net>,
- Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-um@lists.infradead.org, x86@kernel.org,
- Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org,
- initramfs@vger.kernel.org, linux-api@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-efi@vger.kernel.org,
- linux-ext4@vger.kernel.org, "Theodore Y . Ts'o" <tytso@mit.edu>,
- linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
- devicetree@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
- Kees Cook <kees@kernel.org>, Thorsten Blum <thorsten.blum@linux.dev>,
- Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
-References: <20250913003842.41944-1-safinaskar@gmail.com>
- <20250913003842.41944-17-safinaskar@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250913003842.41944-17-safinaskar@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3014880.e9J7NaK4W3@rafael.j.wysocki>
 
+Hi Rafael,
 
-
-Le 13/09/2025 à 02:37, Askar Safin a écrit :
-> [Vous ne recevez pas souvent de courriers de safinaskar@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+On Fri, Sep 12, 2025 at 09:42:55PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> It was used mostly for initrd. It could be used only if
-> brd is built-in. Use "brd.rd_size" instead
-
-For me it would make more sense to remove ramdisk_start and ramdisk_size 
-at the same time.
-
-
+> In certain circumstances, the ACPI handle of a data-only node may be
+> NULL, in which case it does not make sense to attempt to attach that
+> node to an ACPI namespace object, so update the code to avoid attempts
+> to do so.
 > 
-> Signed-off-by: Askar Safin <safinaskar@gmail.com>
+> This prevents confusing and unuseful error messages from being printed.
+> 
+> Also document the fact that the ACPI handle of a data-only node may be
+> NULL, and when that happens, in a code comment.
+> 
+> In addition, make acpi_add_nondev_subnodes() print a diagnostic message
+> for each data-only node with an unknown ACPI namespace scope.
+> 
+> Fixes: 1d52f10917a7 ("ACPI: property: Tie data nodes to acpi handles")
+> Cc: 6.0+ <stable@vger.kernel.org> # 6.0+
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > ---
->   .../admin-guide/kernel-parameters.txt         |  3 ---
->   Documentation/arch/m68k/kernel-options.rst    | 20 ++-----------------
->   arch/arm/configs/s3c6400_defconfig            |  2 +-
->   drivers/block/brd.c                           | 10 ----------
->   4 files changed, 3 insertions(+), 32 deletions(-)
+>  drivers/acpi/property.c |   12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index ad52e3d26014..e862a7b1d2ec 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -5279,9 +5279,6 @@
->          raid=           [HW,RAID]
->                          See Documentation/admin-guide/md.rst.
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -124,6 +124,10 @@ static bool acpi_nondev_subnode_extract(
+>  		result = true;
+>  
+>  	if (result) {
+> +		/*
+> +		 * This will be NULL if the desc package is embedded in an outer
+> +		 * _DSD-equivalent package and its scope cannot be determined.
+> +		 */
+
+I think indeed this happens in particular when when references to
+non-device nodes; there's no handle because when you get is basically a
+dynamically allocated copy of a node.
+
+>  		dn->handle = handle;
+>  		dn->data.pointer = desc;
+>  		list_add_tail(&dn->sibling, list);
+> @@ -245,6 +249,8 @@ static bool acpi_add_nondev_subnodes(acp
+>  			 * strings because there is no way to build full
+>  			 * pathnames out of them.
+>  			 */
+> +			acpi_handle_info(scope, "Unknown namespace scope of node %s\n",
+> +					 link->package.elements[0].string.pointer);
+>  			desc = &link->package.elements[1];
+>  			result = acpi_nondev_subnode_extract(desc, NULL, link,
+>  							     list, parent);
+> @@ -408,6 +414,9 @@ static void acpi_untie_nondev_subnodes(s
+>  	struct acpi_data_node *dn;
+>  
+>  	list_for_each_entry(dn, &data->subnodes, sibling) {
+> +		if (!dn->handle)
+> +			continue;
+> +
+>  		acpi_detach_data(dn->handle, acpi_nondev_subnode_tag);
+>  
+>  		acpi_untie_nondev_subnodes(&dn->data);
+> @@ -422,6 +431,9 @@ static bool acpi_tie_nondev_subnodes(str
+>  		acpi_status status;
+>  		bool ret;
+>  
+> +		if (!dn->handle)
+> +			continue;
+> +
+>  		status = acpi_attach_data(dn->handle, acpi_nondev_subnode_tag, dn);
+>  		if (ACPI_FAILURE(status) && status != AE_ALREADY_EXISTS) {
+>  			acpi_handle_err(dn->handle, "Can't tag data node\n");
 > 
-> -       ramdisk_size=   [RAM] Sizes of RAM disks in kilobytes
-> -                       See Documentation/admin-guide/blockdev/ramdisk.rst.
-> -
->          random.trust_cpu=off
->                          [KNL,EARLY] Disable trusting the use of the CPU's
->                          random number generator (if available) to
-> diff --git a/Documentation/arch/m68k/kernel-options.rst b/Documentation/arch/m68k/kernel-options.rst
-> index 2008a20b4329..f6469ebeb2c7 100644
-> --- a/Documentation/arch/m68k/kernel-options.rst
-> +++ b/Documentation/arch/m68k/kernel-options.rst
-> @@ -215,27 +215,11 @@ Devices possible for Atari:
->              seconds.
-> 
-> 
-> -2.6) ramdisk_size=
-> -------------------
-> -
-> -:Syntax: ramdisk_size=<size>
-> -
-> -This option instructs the kernel to set up a ramdisk of the given
-> -size in KBytes. Do not use this option if the ramdisk contents are
-> -passed by bootstrap! In this case, the size is selected automatically
-> -and should not be overwritten.
-> -
-> -The only application is for root filesystems on floppy disks, that
-> -should be loaded into memory. To do that, select the corresponding
-> -size of the disk as ramdisk size, and set the root device to the disk
-> -drive (with "root=").
-> -
-> -
-> -2.7) swap=
-> +2.5) swap=
-> 
->     I can't find any sign of this option in 2.2.6.
-> 
-> -2.8) buff=
-> +2.6) buff=
->   -----------
-> 
->     I can't find any sign of this option in 2.2.6.
-> diff --git a/arch/arm/configs/s3c6400_defconfig b/arch/arm/configs/s3c6400_defconfig
-> index a37e6ac40825..23635d5b9322 100644
-> --- a/arch/arm/configs/s3c6400_defconfig
-> +++ b/arch/arm/configs/s3c6400_defconfig
-> @@ -4,7 +4,7 @@ CONFIG_ARCH_MULTI_V6=y
->   # CONFIG_ARCH_MULTI_V7 is not set
->   CONFIG_ARCH_S3C64XX=y
->   CONFIG_MACH_WLF_CRAGG_6410=y
-> -CONFIG_CMDLINE="console=ttySAC0,115200 root=/dev/ram init=/linuxrc initrd=0x51000000,6M ramdisk_size=6144"
-> +CONFIG_CMDLINE="console=ttySAC0,115200 root=/dev/ram init=/linuxrc initrd=0x51000000,6M"
->   CONFIG_VFP=y
->   CONFIG_MODULES=y
->   CONFIG_MODULE_UNLOAD=y
-> diff --git a/drivers/block/brd.c b/drivers/block/brd.c
-> index 72f02d2b8a99..05c4325904d2 100644
-> --- a/drivers/block/brd.c
-> +++ b/drivers/block/brd.c
-> @@ -222,16 +222,6 @@ MODULE_LICENSE("GPL");
->   MODULE_ALIAS_BLOCKDEV_MAJOR(RAMDISK_MAJOR);
->   MODULE_ALIAS("rd");
-> 
-> -#ifndef MODULE
-> -/* Legacy boot options - nonmodular */
-> -static int __init ramdisk_size(char *str)
-> -{
-> -       rd_size = simple_strtol(str, NULL, 0);
-> -       return 1;
-> -}
-> -__setup("ramdisk_size=", ramdisk_size);
-> -#endif
-> -
->   /*
->    * The device scheme is derived from loop.c. Keep them in synch where possible
->    * (should share code eventually).
-> --
-> 2.47.2
 > 
 > 
 
+-- 
+Kind regards,
+
+Sakari Ailus
 
