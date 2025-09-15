@@ -1,158 +1,221 @@
-Return-Path: <linux-acpi+bounces-16919-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16920-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15AFAB573E9
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 11:01:25 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1318EB5748D
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 11:19:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D549317F7C5
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 09:01:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CB93E4E19A3
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 09:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16A12F998A;
-	Mon, 15 Sep 2025 08:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 599892F49FD;
+	Mon, 15 Sep 2025 09:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZRFfemI"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="y6rhBH2y";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="SJvrSjvI";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dMec5VwZ";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="NOo6WaFM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53AE2F90D6;
-	Mon, 15 Sep 2025 08:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8B82F39D7
+	for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 09:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757926639; cv=none; b=GoU3Sv3F7DDBU/xvzLTx1wiZQ2F3O6w0RWj64i/vNkQENyf9Vcdcep6COqL0l94oG66o3Zwd7VfB46jqjaPFXoZXi8SEb4HgSFVjfCvRVQckhs48bVGUxiRWZFx8Qkm0lYXtnQhV/4MFrwEfAc/y+yYWTbDH2WfQM0Nwfk3jtxE=
+	t=1757927983; cv=none; b=nZCRthtOEncwJtyBKquLcBiF9m5ecHVE24ZE4jrpeSWorOFlJPwzJEsr9edp5hJmo1pFvPQqZuXYYlzny1w7aVjMfRgHmh3BxuQyOZbhn2EBwMSDJidLysf3SwdMjX5Dll2SDGIWL1Af42fexLQDpkZkMF737LdG0zS6YjaEFfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757926639; c=relaxed/simple;
-	bh=kzh4j/H3RZDe7ZkyacsAHuKMIz0DQecjQ2j642GjAyI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LPt2RO2A/f5KmtPA/v7K46mdYt7wC71MD1N9HzUVMy64j9hMkAPs3jwt19G/Pd0oQHoeMQJxEsavT9nTKdrfDH2jCd+xT7DMau8cgYvOlNSzZXg+/xBLsGj5lXxRqh7+6n9DJiZEgK+yAG3gFTwJDI/XWGTFDcQObFgcZ7Zxgc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZRFfemI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8313DC4CEFA;
-	Mon, 15 Sep 2025 08:57:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757926639;
-	bh=kzh4j/H3RZDe7ZkyacsAHuKMIz0DQecjQ2j642GjAyI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EZRFfemIR5d70YvHXUxHp3+8Vxolt0dIQTzuIr4clY0Q98Rqrh23wn43RwVLJvkJB
-	 31nzSVBxTqHyxXad5F1a9BG3tauYuL7SQjzZg3qIobMrtk5X8Ytw2SQbglnTUK2Y6f
-	 0BI7tVuwilMo3hzV5dGBRu3ne+fxeU7EPtaAWMBdhkH1esQ695ZiQEdAtXG+xV1+g7
-	 7MVNI1LFCLbqH8YghRl2VSpeUH+DNS+av3XDH4HhstMDKoMV+v1xp/+N1MrIrlLiPy
-	 v3OisHFj/WdWvDNn/8IQuuOaRRaRlDeV1VdtL02DB3OCTcFmYZZSLwxEdSuZwlNyQA
-	 JttL69Zgls4nA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1uy51R-00000006IHP-2wOa;
-	Mon, 15 Sep 2025 08:57:17 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-acpi@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sven Peter <sven@kernel.org>,
-	Janne Grunau <j@jannau.net>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	James Clark <james.clark@linaro.org>
-Subject: [PATCH v2 25/25] perf: arm_pmu: Kill last use of per-CPU cpu_armpmu pointer
-Date: Mon, 15 Sep 2025 09:57:02 +0100
-Message-Id: <20250915085702.519996-26-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250915085702.519996-1-maz@kernel.org>
-References: <20250915085702.519996-1-maz@kernel.org>
+	s=arc-20240116; t=1757927983; c=relaxed/simple;
+	bh=XA6mXkBIPFgan+x1bf5BLCjXCwYPhLpEO9xTsEBGW0c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VdX37Q3ZLabHtvJkqwHKxPennFdebnp6JiF3QzmscKNuLKQu1B4aRzsLRlsR8nGoi1lPpvuNlxTit7fR5JtSRqGPTtmKh8MZ4HSEYttytvSq8WAmhfkFzXDKuMm58PzT/N8/1CJi2pQjDZipHcSvUbztKFL2pVQUe0euoSysQbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=y6rhBH2y; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=SJvrSjvI; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dMec5VwZ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=NOo6WaFM; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EA1BB33712;
+	Mon, 15 Sep 2025 09:19:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757927979; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PhWypHhs76OUhW0wRhEmCSwbci4KHZ6s4gw5WflTcZE=;
+	b=y6rhBH2yIHqcEhWvW3OK/M1MGL07yB+6JMwC6X/CknVE5ua038lWDkVtBxXcMW2YiW0/gB
+	rSMv7hNa/JVKJWM7hARJEEPpYWbHOSmUMRbz8f4sVhqeny14kYvL5lcca9exMU9JyNeq6n
+	Pyq6WFF1sN1B85usXfvLUNO8krTzzDE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757927979;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PhWypHhs76OUhW0wRhEmCSwbci4KHZ6s4gw5WflTcZE=;
+	b=SJvrSjvI7wBdkhoQj3MZ4ZBU7tX1b1mGqMmsm9Le3rr8bw1HFENqVr83A7BDG7tAfD/H3I
+	rh7jnWIRJSAAW1Cg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1757927978; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PhWypHhs76OUhW0wRhEmCSwbci4KHZ6s4gw5WflTcZE=;
+	b=dMec5VwZSk27WNcuKLsJWYANLg5lWjboI6lQZXChre5tGBQy9LfQiob4gACGMYnIEyj7wt
+	of5w1OHw8GaX5rzloEDHnRzUEa9We+whyL+vVkIgzkYI4qkYUE0EW8OsHCuSl7kqKZApPI
+	R62vbkO0euBFSVizbuH5OjHtbfjlT3s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1757927978;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PhWypHhs76OUhW0wRhEmCSwbci4KHZ6s4gw5WflTcZE=;
+	b=NOo6WaFMZo/gSs0Cn6FVxnoIe/rbPumE4+eUSjak33WwfmR1YoYCMva3UzVfmUFBWfq4S4
+	cDjh2ACDImG9O8DA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D5CE31398D;
+	Mon, 15 Sep 2025 09:19:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id FQ3QMyrax2hoeQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 15 Sep 2025 09:19:38 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 74FF7A0A2B; Mon, 15 Sep 2025 11:19:38 +0200 (CEST)
+Date: Mon, 15 Sep 2025 11:19:38 +0200
+From: Jan Kara <jack@suse.cz>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>, 
+	Andy Shevchenko <andy.shevchenko@gmail.com>, Aleksa Sarai <cyphar@cyphar.com>, 
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, Julian Stecklina <julian.stecklina@cyberus-technology.de>, 
+	Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>, 
+	Alexander Graf <graf@amazon.com>, Rob Landley <rob@landley.net>, 
+	Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-um@lists.infradead.org, 
+	x86@kernel.org, Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org, 
+	initramfs@vger.kernel.org, linux-api@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, "Theodore Y . Ts'o" <tytso@mit.edu>, 
+	linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>, devicetree@vger.kernel.org, 
+	Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Thorsten Blum <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
+Subject: Re: [PATCH RESEND 13/62] ext2: remove ext2_image_size and associated
+ code
+Message-ID: <5xr5efvf4dhy43fchbvfsxspzgde5bxezhszdgqcya4eqrocgy@lqqkaq5wok6a>
+References: <20250913003842.41944-1-safinaskar@gmail.com>
+ <20250913003842.41944-14-safinaskar@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, tglx@linutronix.de, mark.rutland@arm.com, will@kernel.org, rafael@kernel.org, robh@kernel.org, saravanak@google.com, gregkh@linuxfoundation.org, sven@kernel.org, j@jannau.net, suzuki.poulose@arm.com, james.clark@linaro.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250913003842.41944-14-safinaskar@gmail.com>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[3];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linux-foundation.org,linuxfoundation.org,kernel.org,zeniv.linux.org.uk,suse.cz,lst.de,kernel.dk,gmail.com,cyphar.com,linutronix.de,cyberus-technology.de,linux.alibaba.com,redhat.com,amazon.com,landley.net,0pointer.de,lists.infradead.org,lists.linux.dev,lists.linux-m68k.org,lists.ozlabs.org,mit.edu,monstr.eu,linux.dev,linux.ibm.com];
+	R_RATELIMIT(0.00)[to_ip_from(RLbyy5b47ky7xssyr143sji8pp)];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[55];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -2.30
 
-Having removed the use of the cpu_armpmu per-CPU variable from the
-interrupt handling, the only user left is the BRBE scheduler hook.
+On Sat 13-09-25 00:37:52, Askar Safin wrote:
+> It is not used anymore
+> 
+> Signed-off-by: Askar Safin <safinaskar@gmail.com>
 
-It is easy to drop the use of this variable by following the pointer
-to the generic PMU structure, and get the arm_pmu structure from there.
+Looks good.
 
-Perform the conversion and kill cpu_armpmu altogether.
+Acked-by: Jan Kara <jack@suse.cz>
 
-Suggested-by: Will Deacon <will@kernel.org>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
----
- drivers/perf/arm_pmu.c       | 5 -----
- drivers/perf/arm_pmuv3.c     | 2 +-
- include/linux/perf/arm_pmu.h | 2 --
- 3 files changed, 1 insertion(+), 8 deletions(-)
+								Honza
 
-diff --git a/drivers/perf/arm_pmu.c b/drivers/perf/arm_pmu.c
-index 23814707cf771..7171d8e0d27a5 100644
---- a/drivers/perf/arm_pmu.c
-+++ b/drivers/perf/arm_pmu.c
-@@ -104,7 +104,6 @@ static const struct pmu_irq_ops percpu_pmunmi_ops = {
- 	.free_pmuirq = armpmu_free_percpu_pmunmi
- };
- 
--DEFINE_PER_CPU(struct arm_pmu *, cpu_armpmu);
- static DEFINE_PER_CPU(int, cpu_irq);
- static DEFINE_PER_CPU(const struct pmu_irq_ops *, cpu_irq_ops);
- 
-@@ -726,8 +725,6 @@ static int arm_perf_starting_cpu(unsigned int cpu, struct hlist_node *node)
- 	if (pmu->reset)
- 		pmu->reset(pmu);
- 
--	per_cpu(cpu_armpmu, cpu) = pmu;
--
- 	irq = armpmu_get_cpu_irq(pmu, cpu);
- 	if (irq)
- 		per_cpu(cpu_irq_ops, cpu)->enable_pmuirq(irq);
-@@ -747,8 +744,6 @@ static int arm_perf_teardown_cpu(unsigned int cpu, struct hlist_node *node)
- 	if (irq)
- 		per_cpu(cpu_irq_ops, cpu)->disable_pmuirq(irq);
- 
--	per_cpu(cpu_armpmu, cpu) = NULL;
--
- 	return 0;
- }
- 
-diff --git a/drivers/perf/arm_pmuv3.c b/drivers/perf/arm_pmuv3.c
-index f6d7bab5d555c..2dee2d928aaef 100644
---- a/drivers/perf/arm_pmuv3.c
-+++ b/drivers/perf/arm_pmuv3.c
-@@ -1039,7 +1039,7 @@ static int armv8pmu_user_event_idx(struct perf_event *event)
- static void armv8pmu_sched_task(struct perf_event_pmu_context *pmu_ctx,
- 				struct task_struct *task, bool sched_in)
- {
--	struct arm_pmu *armpmu = *this_cpu_ptr(&cpu_armpmu);
-+	struct arm_pmu *armpmu = to_arm_pmu(pmu_ctx->pmu);
- 	struct pmu_hw_events *hw_events = this_cpu_ptr(armpmu->hw_events);
- 
- 	if (!hw_events->branch_users)
-diff --git a/include/linux/perf/arm_pmu.h b/include/linux/perf/arm_pmu.h
-index 6690bd77aa4ee..bab26a7d79f4c 100644
---- a/include/linux/perf/arm_pmu.h
-+++ b/include/linux/perf/arm_pmu.h
-@@ -132,8 +132,6 @@ struct arm_pmu {
- 
- #define to_arm_pmu(p) (container_of(p, struct arm_pmu, pmu))
- 
--DECLARE_PER_CPU(struct arm_pmu *, cpu_armpmu);
--
- u64 armpmu_event_update(struct perf_event *event);
- 
- int armpmu_event_set_period(struct perf_event *event);
+> ---
+>  fs/ext2/ext2.h          |  9 ---------
+>  include/linux/ext2_fs.h | 13 -------------
+>  2 files changed, 22 deletions(-)
+> 
+> diff --git a/fs/ext2/ext2.h b/fs/ext2/ext2.h
+> index cf97b76e9fd3..d623a14040d9 100644
+> --- a/fs/ext2/ext2.h
+> +++ b/fs/ext2/ext2.h
+> @@ -608,15 +608,6 @@ struct ext2_dir_entry_2 {
+>  					 ~EXT2_DIR_ROUND)
+>  #define EXT2_MAX_REC_LEN		((1<<16)-1)
+>  
+> -static inline void verify_offsets(void)
+> -{
+> -#define A(x,y) BUILD_BUG_ON(x != offsetof(struct ext2_super_block, y));
+> -	A(EXT2_SB_MAGIC_OFFSET, s_magic);
+> -	A(EXT2_SB_BLOCKS_OFFSET, s_blocks_count);
+> -	A(EXT2_SB_BSIZE_OFFSET, s_log_block_size);
+> -#undef A
+> -}
+> -
+>  /*
+>   * ext2 mount options
+>   */
+> diff --git a/include/linux/ext2_fs.h b/include/linux/ext2_fs.h
+> index 1fef88569037..e5ebe6cdf06c 100644
+> --- a/include/linux/ext2_fs.h
+> +++ b/include/linux/ext2_fs.h
+> @@ -27,17 +27,4 @@
+>   */
+>  #define EXT2_LINK_MAX		32000
+>  
+> -#define EXT2_SB_MAGIC_OFFSET	0x38
+> -#define EXT2_SB_BLOCKS_OFFSET	0x04
+> -#define EXT2_SB_BSIZE_OFFSET	0x18
+> -
+> -static inline u64 ext2_image_size(void *ext2_sb)
+> -{
+> -	__u8 *p = ext2_sb;
+> -	if (*(__le16 *)(p + EXT2_SB_MAGIC_OFFSET) != cpu_to_le16(EXT2_SUPER_MAGIC))
+> -		return 0;
+> -	return (u64)le32_to_cpup((__le32 *)(p + EXT2_SB_BLOCKS_OFFSET)) <<
+> -		le32_to_cpup((__le32 *)(p + EXT2_SB_BSIZE_OFFSET));
+> -}
+> -
+>  #endif	/* _LINUX_EXT2_FS_H */
+> -- 
+> 2.47.2
+> 
 -- 
-2.39.2
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
