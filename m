@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-16961-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16960-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B41CB584A3
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 20:31:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66855B584A0
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 20:30:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94DF63B3FED
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 18:31:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 342811A26227
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 18:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04D531B83B;
-	Mon, 15 Sep 2025 18:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1239B30E0F2;
+	Mon, 15 Sep 2025 18:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rxh4jE7y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H//rDNaR"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D6128033C;
-	Mon, 15 Sep 2025 18:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06B83054C4;
+	Mon, 15 Sep 2025 18:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757961025; cv=none; b=NGymBDYDXSIGQvhK3hsks+AOY0+3KXeLXaSsihggUJznn/TD5Ie0k2l5kuAja5HnPRBAK90u1pM6cUX1z8mr2czzocKfRCURT3AgGXCoJpfLeUuL0l9RtlLj3S//JEa7C+83DaTD5yS7vsT+Dj+vl+1dVrxKJoFl0Q+LVSH1lCU=
+	t=1757961022; cv=none; b=uCFSOd1EAgIdtWgXytgSPihFTQbIfBVAIgpXZoNi2CsLaw6mE3/nv02A1zMdeT1qm5Bn1eRZowq0GQoqK9YsCHHDOTw9Qj4LHM4PV7Ru7pp1NRlBimv4Kx6OjXBR+lfqt5CG/KkILOmR75BL8wGHSHVGUJ6ey4S3fX7GSGMbC6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757961025; c=relaxed/simple;
-	bh=y+J9yIOdBWychfvrYQpWWRtMiBBLRZp6apu6S5jI3YE=;
+	s=arc-20240116; t=1757961022; c=relaxed/simple;
+	bh=8N3cQ4n2bZIaOKRMbUA71lc2if/SkIVxW6VuaBEM5Eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=doAyZsOnNur3rep4AaD4f7JOpPMOKLRylVY7nz/TJ2F8Dly8lrfENOQFcJvsnk5FeHrpGhFteYdw0RIPDCBxV+pJApFdO6Ra7u+z7Kx/KWYb61kzls8eGMjocLYHg5rkuA5EtZxLamk5XAmceSauFMBuGoRDhe/Nqc1ldEH13y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rxh4jE7y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0582BC4CEFA;
-	Mon, 15 Sep 2025 18:30:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kG7C//XUQICuO5vtdpr5lKZkjGMdMnAg7aLOgkVAfMZEZQ5gsbz0pFTnSUgqOqaNGVITBzlOZaogkgqPNbgTyzY3wsuxZrVBBg+LnQz6Fk4ogY4cFZjHZUvTj9DnH9/59Lbh9SnK5JgnDu5b52ed02Th74uMmFn5qfd8IheN7VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H//rDNaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0766AC4CEF7;
+	Mon, 15 Sep 2025 18:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757961025;
-	bh=y+J9yIOdBWychfvrYQpWWRtMiBBLRZp6apu6S5jI3YE=;
+	s=k20201202; t=1757961021;
+	bh=8N3cQ4n2bZIaOKRMbUA71lc2if/SkIVxW6VuaBEM5Eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rxh4jE7ybHNuusMqkkI9/Ow085aiB64jGd0daMmqsMyouYxg8QgWzz+zbHmvwBECy
-	 DvuTuroanREvRZ68b9CWLgyidAcofvIgEPFL32Appmvvc9iQl73gmFgSDs737u3yU1
-	 PY5oJ42Rj1XJ7yukK61iZYf9XEQLrS5e1/vgxk7AuSl8jsGgg22wG4HY3qy6fYCW9T
-	 K7sj5hUMhXLiVOB0yJgaMQR15XFPsGcre4neVn9EyECtupWwr0l0uWDHPlFtLf/a1u
-	 UcXdze7cZIOKJNFcnbF2z7REYkQ9U+CT6SScAOTS2+y4s6jsANthb1lJReryHZdWGA
-	 6EEiKNonlD1ag==
+	b=H//rDNaRaI7fB69JkWn9qn4OdN3Xf9zzc5cO2AZ2rA2FcsS8+SGBFyCGiCHctiAbO
+	 fm91QAQCfeloIA1tn6KJW0Qvwk2yBNWD/bNDoInVjkCud7ooowZY63rIw1FIubqL9Z
+	 N2kACJ2/yfXzKUtpSXn9P+TYV91NuW42ubGv+9Rirn8/FUT1WZ+AuiCITtW6A2y0fy
+	 AGAtLtVB2ODrXh1QARv7kO/G5lTQOLnM5EOSNdeber0hwu3s0AO5pegj1eJvF15Kca
+	 wAO2cG5TbnsD1GroLvYbk0U+UZcuXiO43zSqqwYKELMXmgx3dq/FgzTWKK98zeJkRb
+	 vZxHlqmzSr2+Q==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>,
@@ -48,9 +48,10 @@ Cc: LKML <linux-kernel@vger.kernel.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Sakari Ailus <sakari.ailus@linux.intel.com>
 Subject:
- [PATCH v2 1/5] ACPI: property: Fix buffer properties extraction for subnodes
-Date: Mon, 15 Sep 2025 20:21:33 +0200
-Message-ID: <5011694.GXAFRqVoOG@rafael.j.wysocki>
+ [PATCH v2 2/5] ACPI: property: Disregard references in data-only subnode
+ lists
+Date: Mon, 15 Sep 2025 20:23:28 +0200
+Message-ID: <2237009.irdbgypaU6@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <5922318.DvuYhMxLoT@rafael.j.wysocki>
 References: <5922318.DvuYhMxLoT@rafael.j.wysocki>
@@ -65,90 +66,131 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-The ACPI handle passed to acpi_extract_properties() as the first
-argument represents the ACPI namespace scope in which to look for
-objects returning buffers associated with buffer properties.
+Data-only subnode links following the ACPI data subnode GUID in a _DSD
+package are expected to point to named objects returning _DSD-equivalent
+packages.  If a reference to such an object is used in the target field
+of any of those links, that object will be evaluated in place (as a
+named object) and its return data will be embedded in the outer _DSD
+package.
 
-For _DSD objects located immediately under ACPI devices, this handle is
-the same as the handle of the device object holding the _DSD, but for
-data-only subnodes it is not so.
+For this reason, it is not expected to see a subnode link with the
+target field containing a local reference (that would mean pointing
+to a device or another object that cannot be evaluated in place and
+therefore cannot return a _DSD-equivalent package).
 
-First of all, data-only subnodes are represented by objects that
-cannot hold other objects in their scopes (like control methods).
-Therefore a data-only subnode handle cannot be used for completing
-relative pathname segments, so the current code in
-in acpi_nondev_subnode_extract() passing a data-only subnode handle
-to acpi_extract_properties() is invalid.
+Accordingly, simplify the code parsing data-only subnode links to
+simply print a message when it encounters a local reference in the
+target field of one of those links.
 
-Moreover, a data-only subnode of device A may be represented by an
-object located in the scope of device B (which kind of makes sense,
-for instance, if A is a B's child).  In that case, the scope in
-question would be the one of device B.  In other words, the scope
-mentioned above is the same as the scope used for subnode object
-lookup in acpi_nondev_subnode_extract().
+Moreover, since acpi_nondev_subnode_data_ok() would only have one
+caller after the change above, fold it into that caller.
 
-Accordingly, rearrange that function to use the same scope for the
-extraction of properties and subnode object lookup.
-
-Fixes: 103e10c69c61 ("ACPI: property: Add support for parsing buffer property UUID")
-Cc: 6.0+ <stable@vger.kernel.org> # 6.0+
+Link: https://lore.kernel.org/linux-acpi/CAJZ5v0jVeSrDO6hrZhKgRZrH=FpGD4vNUjFD8hV9WwN9TLHjzQ@mail.gmail.com/
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
 
-v1 -> v2: No changes
+v1 -> v2: New patch
 
 ---
- drivers/acpi/property.c |   30 +++++++++++-------------------
- 1 file changed, 11 insertions(+), 19 deletions(-)
+ drivers/acpi/property.c |   51 ++++++++++++++++++++----------------------------
+ 1 file changed, 22 insertions(+), 29 deletions(-)
 
 --- a/drivers/acpi/property.c
 +++ b/drivers/acpi/property.c
-@@ -83,6 +83,7 @@ static bool acpi_nondev_subnode_extract(
- 					struct fwnode_handle *parent)
- {
- 	struct acpi_data_node *dn;
-+	acpi_handle scope = NULL;
- 	bool result;
+@@ -124,32 +124,12 @@ static bool acpi_nondev_subnode_extract(
+ 	return false;
+ }
  
- 	if (acpi_graph_ignore_port(handle))
-@@ -98,27 +99,18 @@ static bool acpi_nondev_subnode_extract(
- 	INIT_LIST_HEAD(&dn->data.properties);
- 	INIT_LIST_HEAD(&dn->data.subnodes);
- 
--	result = acpi_extract_properties(handle, desc, &dn->data);
-+	/*
-+	 * The scope for the completion of relative pathname segments and
-+	 * subnode object lookup is the one of the namespace node (device)
-+	 * containing the object that has returned the package.  That is, it's
-+	 * the scope of that object's parent device.
-+	 */
-+	if (handle)
-+		acpi_get_parent(handle, &scope);
- 
--	if (handle) {
--		acpi_handle scope;
--		acpi_status status;
+-static bool acpi_nondev_subnode_data_ok(acpi_handle handle,
+-					const union acpi_object *link,
+-					struct list_head *list,
+-					struct fwnode_handle *parent)
+-{
+-	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
+-	acpi_status status;
 -
--		/*
--		 * The scope for the subnode object lookup is the one of the
--		 * namespace node (device) containing the object that has
--		 * returned the package.  That is, it's the scope of that
--		 * object's parent.
--		 */
--		status = acpi_get_parent(handle, &scope);
--		if (ACPI_SUCCESS(status)
--		    && acpi_enumerate_nondev_subnodes(scope, desc, &dn->data,
--						      &dn->fwnode))
--			result = true;
--	} else if (acpi_enumerate_nondev_subnodes(NULL, desc, &dn->data,
--						  &dn->fwnode)) {
-+	result = acpi_extract_properties(scope, desc, &dn->data);
-+	if (acpi_enumerate_nondev_subnodes(scope, desc, &dn->data, &dn->fwnode))
- 		result = true;
--	}
+-	status = acpi_evaluate_object_typed(handle, NULL, NULL, &buf,
+-					    ACPI_TYPE_PACKAGE);
+-	if (ACPI_FAILURE(status))
+-		return false;
+-
+-	if (acpi_nondev_subnode_extract(buf.pointer, handle, link, list,
+-					parent))
+-		return true;
+-
+-	ACPI_FREE(buf.pointer);
+-	return false;
+-}
+-
+ static bool acpi_nondev_subnode_ok(acpi_handle scope,
+ 				   const union acpi_object *link,
+ 				   struct list_head *list,
+ 				   struct fwnode_handle *parent)
+ {
++	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER };
+ 	acpi_handle handle;
+ 	acpi_status status;
  
- 	if (result) {
- 		dn->handle = handle;
+@@ -161,7 +141,17 @@ static bool acpi_nondev_subnode_ok(acpi_
+ 	if (ACPI_FAILURE(status))
+ 		return false;
+ 
+-	return acpi_nondev_subnode_data_ok(handle, link, list, parent);
++	status = acpi_evaluate_object_typed(handle, NULL, NULL, &buf,
++					    ACPI_TYPE_PACKAGE);
++	if (ACPI_FAILURE(status))
++		return false;
++
++	if (acpi_nondev_subnode_extract(buf.pointer, handle, link, list,
++					parent))
++		return true;
++
++	ACPI_FREE(buf.pointer);
++	return false;
+ }
+ 
+ static bool acpi_add_nondev_subnodes(acpi_handle scope,
+@@ -174,7 +164,6 @@ static bool acpi_add_nondev_subnodes(acp
+ 
+ 	for (i = 0; i < links->package.count; i++) {
+ 		union acpi_object *link, *desc;
+-		acpi_handle handle;
+ 		bool result;
+ 
+ 		link = &links->package.elements[i];
+@@ -186,22 +175,26 @@ static bool acpi_add_nondev_subnodes(acp
+ 		if (link->package.elements[0].type != ACPI_TYPE_STRING)
+ 			continue;
+ 
+-		/* The second one may be a string, a reference or a package. */
++		/* The second one may be a string or a package. */
+ 		switch (link->package.elements[1].type) {
+ 		case ACPI_TYPE_STRING:
+ 			result = acpi_nondev_subnode_ok(scope, link, list,
+ 							 parent);
+ 			break;
+-		case ACPI_TYPE_LOCAL_REFERENCE:
+-			handle = link->package.elements[1].reference.handle;
+-			result = acpi_nondev_subnode_data_ok(handle, link, list,
+-							     parent);
+-			break;
+ 		case ACPI_TYPE_PACKAGE:
+ 			desc = &link->package.elements[1];
+ 			result = acpi_nondev_subnode_extract(desc, NULL, link,
+ 							     list, parent);
+ 			break;
++		case ACPI_TYPE_LOCAL_REFERENCE:
++			/*
++			 * It is not expected to see any local references in
++			 * the links package because referencing a named object
++			 * should cause it to be evaluated in place.
++			 */
++			acpi_handle_info(scope, "subnode %s: Unexpected reference\n",
++					 link->package.elements[0].string.pointer);
++			fallthrough;
+ 		default:
+ 			result = false;
+ 			break;
 
 
 
