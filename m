@@ -1,225 +1,283 @@
-Return-Path: <linux-acpi+bounces-16971-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16972-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD6DB5864F
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 23:04:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33606B58685
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 23:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A9FC1B23A37
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 21:04:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A3DB201D4C
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 21:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDDC296BD6;
-	Mon, 15 Sep 2025 21:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E72299A96;
+	Mon, 15 Sep 2025 21:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="iQJ71ifb"
+	dkim=pass (2048-bit key) header.d=landley.net header.i=@landley.net header.b="hn99im0l"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from frog.ash.relay.mailchannels.net (frog.ash.relay.mailchannels.net [23.83.222.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697F31DB95E;
-	Mon, 15 Sep 2025 21:04:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757970253; cv=none; b=LGwFVJmy5TqCKtvw3Ze5URVr7QmNiQjAIoUd57rofhDA6SxxPsBdgAV58uxLfYkkvOjR6X5Jhz6daDl5gXjZQEcJL46Ww6BIG0RUQM1HvNuZNzfg92NXPL2EvgoMavq/DR21zjp4ndqyHYss1brDZBZJqZdJnTHHhI3KVJxKyaY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757970253; c=relaxed/simple;
-	bh=cPxQqVp9NB7+C2jtQAyim/EI5IgCyeegSRnpsTJAh1w=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pmt5wMgCJkevfeDhGysoGZYu6Y4764TEIJ5su5fJgKZiJmwSaD5WwoDYKIkzDhHPCycGbOt/b4Y1joc/PqR/9DXYBCYC6kf4B0ayqGvRM8CGGln4duweKS4ycttBX+EEYboSnw5CsSmpbNPB29ZzllgALzkUSc92PeE8C+5yJqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=iQJ71ifb; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1757970230; x=1758575030; i=spasswolf@web.de;
-	bh=kZ/QnddwJ3G5bCa0E3/7gX/mRlE7wni2QW0w/IQXG48=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=iQJ71ifbF62RJO6RpZzX3PjeLdFpAXxljoyQMuXnpURAm9fjqwlKviqzg4sSin6e
-	 G91xnzhhOwDw9bKmQkpws2JKB/eX6E2M/44A8XuKvXlRNb66yHx4t5afTzCCC1+jB
-	 bXTZ/CabHUNoEfc+APmmueVzuoyTuwCH/zz1o9Ia8AYQT0DKLuCK4EXfw/zx/eNxZ
-	 fuw90BO2emCI5k4p6+ONsVuQru5gdCGrimIq6gotYvkkCk61S2aMYLnclnr7y5alc
-	 EfY4olbG5r3/nYV70INmsn0ncskqMzqiwfnAx5KJHUJFfeL0B09mvZUTtWjWey6Zv
-	 POt6lcb9PtsY0U2SKQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.0.101] ([95.223.134.88]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MMY1N-1uiVrW2mdb-00HvOZ; Mon, 15
- Sep 2025 23:03:49 +0200
-Message-ID: <45d4081d93bbd50e1a23a112e3caca86ce979217.camel@web.de>
-Subject: Re: spurious mce Hardware Error messages in next-20250912
-From: Bert Karwatzki <spasswolf@web.de>
-To: Yazen Ghannam <yazen.ghannam@amd.com>
-Cc: Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, 
-	linux-kernel@vger.kernel.org, linux-next@vger.kernel.org, 
-	linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org, 
-	rafael@kernel.org, qiuxu.zhuo@intel.com, nik.borisov@suse.com, 
-	Smita.KoralahalliChannabasappa@amd.com, spasswolf@web.de
-Date: Mon, 15 Sep 2025 23:03:45 +0200
-In-Reply-To: <20250915175531.GB869676@yaz-khff2.amd.com>
-References: <20250915010010.3547-1-spasswolf@web.de>
-			 <20250915175531.GB869676@yaz-khff2.amd.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.56.1-1 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559662D052;
+	Mon, 15 Sep 2025 21:16:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.222.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757971009; cv=pass; b=b/khlKAqJLhdlvZaKPcymaT45GVyAdNFYIxiFikF8y0CLsZlofDOuFi1u6Fi10JA6ROeFPjiXazQoIDcZ0QA+8LkOVAi7dNOsPyJqezk3gsqSWba5gL8RwA0bepLHwqDbGZkZCiP/V3Rn69J/Utya03BiWyz0eEYzF27smsQk+w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757971009; c=relaxed/simple;
+	bh=XM3XKQ5jJB/NRmfxGIRymJW83Dn38opP9h7KE9Mh1Fk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ETMs+Y2Y75aVyqsIFn8yoIGQD0xN1GAzyuVX+3HIXDjCO55/4UaaR8kcSJCj7Jt5y2iLDuSMccxSjgObl6QZgivn6gPtsWERLaemrHN7xX+L9/Mc3745lBjEnmon79FRj4agASAo7+7WxEDy/X3YUqgKcUXlTSvEJzTiWwHKU24=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net; spf=pass smtp.mailfrom=landley.net; dkim=pass (2048-bit key) header.d=landley.net header.i=@landley.net header.b=hn99im0l; arc=pass smtp.client-ip=23.83.222.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=landley.net
+X-Sender-Id: dreamhost|x-authsender|rob@landley.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 968258E2BE4;
+	Mon, 15 Sep 2025 21:05:20 +0000 (UTC)
+Received: from pdx1-sub0-mail-a312.dreamhost.com (trex-blue-3.trex.outbound.svc.cluster.local [100.106.207.148])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 7F7018E2C1F;
+	Mon, 15 Sep 2025 21:05:19 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1757970320; a=rsa-sha256;
+	cv=none;
+	b=FvgXqYHopx4Eg97mRKI8YTgJvrM5uX3hCyA3PstNG3tElSt5C8Mkh16K26ulc4hSsVKTwm
+	jS2iRuOvoFtVg23iLmldnlytqHxYeolaJsyfj8H9DSakx31ClyoFyXVp7iwZ2teQvFuGpD
+	7saB7Wb4g9tAoqQmvsAu+UkcIlhVWTJzOhYRfUz/BaC08DNcuaaQQ9As8b8ykz1bHx7Qk4
+	TBDIHtaaxH15dWAfQpWNrqJJMfgLr/Vh4+3miXzPpdfAMtZz9JhTu8o8DhIj9xhKVHKRwa
+	bwWqLubQ4kcKxK/2hf/oaDh9DMbl/qSfr7Eus3yNXxVfu+spuLPfBiaIS0ertg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1757970320;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=uCpj1HrCG/lIFPmsjCJyYsttI0Vr58GFZK2WKDkB6bM=;
+	b=TrnkHhqm0Tp2Y/WSmzMAHR5Hhj24mtPtbQYmBJGsRakDWzg0mrJuBQoW9Qkjf7BGvzNNiH
+	2H1V/J8m98raC3dPissEKtvzgOQ/Hk71uVhQ6kj9WsCG0K4v6raNCVOsjB2cVm10SC7pnX
+	WxSZlPhsLyt7jNTRP69EAqO62VJJbdbVWYt/YK0l1PbM6GNyoiMvREWQ3rw4KysPytNuVO
+	2/ZnkG/pktV9GKqEbQ9+gUEw2tbIV0YT43iSdJj78GsI/5MaQ7x6n5ojdu79KkG9JBYmK8
+	GwXKzdwJN0Mu44sDWX8K+r6sdW0U/yb7L1RpJBIrkhHihenS55Fk4oEdNruPqA==
+ARC-Authentication-Results: i=1;
+	rspamd-76d5d85dd7-gchpr;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=rob@landley.net
+X-Sender-Id: dreamhost|x-authsender|rob@landley.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|rob@landley.net
+X-MailChannels-Auth-Id: dreamhost
+X-Shade-Trouble: 5607b4e4499028f3_1757970320441_1498479094
+X-MC-Loop-Signature: 1757970320441:4276322646
+X-MC-Ingress-Time: 1757970320441
+Received: from pdx1-sub0-mail-a312.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.106.207.148 (trex/7.1.3);
+	Mon, 15 Sep 2025 21:05:20 +0000
+Received: from [192.168.88.7] (unknown [209.81.127.98])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: rob@landley.net)
+	by pdx1-sub0-mail-a312.dreamhost.com (Postfix) with ESMTPSA id 4cQcxR2ZPnzFr;
+	Mon, 15 Sep 2025 14:05:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=landley.net;
+	s=dreamhost; t=1757970319;
+	bh=uCpj1HrCG/lIFPmsjCJyYsttI0Vr58GFZK2WKDkB6bM=;
+	h=Date:Subject:To:Cc:From:Content-Type:Content-Transfer-Encoding;
+	b=hn99im0llKSPW8E4jU23jnYGHjKkBB42PZKG9Y5nexC8X6GV18Ye+xjEO0dI68API
+	 P0iIc1uUspgFQAEvTZJLAiGacD/gPQaqYVm1QWE0N/6QokQnP06W1bW8XwSoYhszK+
+	 lhn3ZJav0Djh8uCO1T1JTFZ2nxRyoQNIwSBLc+tBT4L5AJvvFnEk/puQX4fjV81Sze
+	 CQbiCBjHhliP+rleng7xNOeK8VpGNGP6Px4E+lL1g37CD4cYE8Qe9KRdlQRN3asHoO
+	 TI/V5yxrsCSuRB+QTSU/G3DsOoX+FIakqvSZS3fVzb5U3KSBT5DjgaaVyyrqpLaA73
+	 VR4ur/x6Wjb7g==
+Message-ID: <8f595eec-e85e-4c1f-acb0-5069a01c1012@landley.net>
+Date: Mon, 15 Sep 2025 16:05:14 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:cLHkzsNenk9dwrOY5xrh7+pcTjnj6qBH4Uo1ImUvHqdShoxYvXo
- U70jCp9yBmqRqv8kGNHVTbFDazBdFCy9lbSuAI0GshSWsAbrb0+T/gbXL7ubkLeAkc3kdpT
- prNHdcjOOTKob3vXyGteP9eYK8i2Anj1UfyYzcYld9sMwtAJ3BNG21UVKn3Fc5dtPqBcgjp
- LmLypFAqk6eUg4im7YAuw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:yXUxORMAkCI=;3VhTjTyac82BCEN84nYBAgChqxO
- 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
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND 17/62] doc: modernize
+ Documentation/filesystems/ramfs-rootfs-initramfs.rst
+To: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>,
+ Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Aleksa Sarai <cyphar@cyphar.com>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Julian Stecklina <julian.stecklina@cyberus-technology.de>,
+ Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>,
+ Alexander Graf <graf@amazon.com>, Lennart Poettering <mzxreary@0pointer.de>,
+ linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-um@lists.infradead.org, x86@kernel.org, Ingo Molnar
+ <mingo@redhat.com>, linux-block@vger.kernel.org, initramfs@vger.kernel.org,
+ linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org,
+ "Theodore Y . Ts'o" <tytso@mit.edu>, linux-acpi@vger.kernel.org,
+ Michal Simek <monstr@monstr.eu>, devicetree@vger.kernel.org,
+ Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>,
+ Thorsten Blum <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>,
+ patches@lists.linux.dev
+References: <20250913003842.41944-1-safinaskar@gmail.com>
+ <20250913003842.41944-18-safinaskar@gmail.com>
+Content-Language: en-US
+From: Rob Landley <rob@landley.net>
+In-Reply-To: <20250913003842.41944-18-safinaskar@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Am Montag, dem 15.09.2025 um 13:55 -0400 schrieb Yazen Ghannam:
->=20
->=20
-> You can change this interval by writing to this file:
-> /sys/devices/system/machinecheck/machinecheck0/check_interval
->=20
-> Do the messages follow that setting? IOW, if you set it to '10', do you
-> see error messages every 10 seconds?
+On 9/12/25 19:37, Askar Safin wrote:
+> Update it to reflect initrd removal.
+> 
+> Also I specified that error reports should
+> go to linux-doc@vger.kernel.org , because
+> Rob Landley said that he keeps getting
+> reports about this document and is unable
+> to fix them
 
-Yes, if I set this to 10 I see these message every 10 seconds.
+Do you think emailing a list I could forward stuff to will improve matters?
 
-> >=20
-> > As these messages do not appear in v6.17-rc5 I bisected the issue=20
-> > (from v6.17-rc5 to next-20250912) and found this as the first bad comm=
-it:
-> >=20
-> > cf6f155e848b ("x86/mce: Unify AMD DFR handler with MCA Polling")
->=20
-> Could you try another recent linux-next build without the MCA updates?
->=20
-> It looks like 'next-20250911' doesn't include the commit above.
-> >=20
+I find the community an elaborate bureaucracy unresponsive to hobbyists. 
+Documentation/process/submitting-patches.rst being a 934 line document 
+with a bibliography, plus a 24 step checklist not counting the a) b) c) 
+subsections are just symptoms. The real problem is following those is 
+not sufficient to navigate said bureaucracy.
 
-Somehow I cannot find next-20250911 in my linux-next git:
+>   What is ramfs?
+>   --------------
+>   
+> @@ -101,9 +103,9 @@ archive is extracted into it, the kernel will fall through to the older code
+>   to locate and mount a root partition, then exec some variant of /sbin/init
+>   out of that.
+>   
+> -All this differs from the old initrd in several ways:
+> +All this differs from the old initrd (removed in 2025) in several ways:
 
-$ git checkout next-202509(TAB TAB)
-next-20250901   next-20250902   next-20250905   next-20250908   next-20250=
-912  =20
+Why keep the section when you removed the old mechanism? You took away 
+their choices, you don't need to sell them on it.
 
-I'm currently re-cloning linux-next.
+(Unless you're trying to sell them on using a current linux kernel 
+rather than 2.6 or bsd or qnx or something. But if they _do_ remove 32 
+bit support, or stick a rust dependency in the base build, I suspect 
+that ship has sailed...)
 
+> -  - The old initrd was always a separate file, while the initramfs archive is
+> +  - The old initrd was always a separate file, while the initramfs archive can be
+>       linked into the linux kernel image.  (The directory ``linux-*/usr`` is
+>       devoted to generating this archive during the build.)
+>   
+> @@ -137,7 +139,7 @@ Populating initramfs:
+>   
+>   The 2.6 kernel build process always creates a gzipped cpio format initramfs
+>   archive and links it into the resulting kernel binary.  By default, this
+> -archive is empty (consuming 134 bytes on x86).
+> +archive is nearly empty (consuming 134 bytes on x86).
 
-> > Are these error messages a new error that was not reported previously =
-or
-> > are these error messages a sign that the new code erroneously reports =
-errors?
-> >=20
->=20
-> It could be that the recent code updates broke something. Or there may
-> be other kernel changes causing new, spurious errors.
->=20
-> We could also be picking up errors from the hardware that were
-> previously ignored. I'll ask our hardware folks if this is a case we
-> should address.
+Those two lines you just touched contradict each other.
 
-Perhaps these are errors which were not reported previously, when I check =
-the
-L3 cache error count I get this (these error_counts seem to be persistent =
-across
-reboots and also do not increase when I get an mce error message):
+For historical reference, commit c33df4eaaf41 in 2007 added a second 
+codepath to special case NOT having an initramfs, for some reason. 
+That's how static linked cpio in the kernel image and external initrd= 
+loaded cpio from the bootloader wound up having different behavior.
 
-root@lisa:~# cat /sys/devices/system/machinecheck/machinecheck0/l3_cache_0=
-/l3_cache_0/error_count
-0
-root@lisa:~# cat /sys/devices/system/machinecheck/machinecheck0/l3_cache_1=
-/l3_cache_1/error_count
-0
-root@lisa:~# cat /sys/devices/system/machinecheck/machinecheck0/l3_cache_2=
-/l3_cache_2/error_count
-9
-root@lisa:~# cat /sys/devices/system/machinecheck/machinecheck0/l3_cache_3=
-/l3_cache_3/error_count
-0
-root@lisa:~# cat /sys/devices/system/machinecheck/machinecheck0/l3_cache_4=
-/l3_cache_4/error_count
-72
-root@lisa:~# cat /sys/devices/system/machinecheck/machinecheck0/l3_cache_5=
-/l3_cache_5/error_count
-0
-root@lisa:~# cat /sys/devices/system/machinecheck/machinecheck0/l3_cache_6=
-/l3_cache_6/error_count
-3165
-root@lisa:~# cat /sys/devices/system/machinecheck/machinecheck0/l3_cache_7=
-/l3_cache_7/error_count
-72
+The init/noinitramfs.c file does init/mkdir("/dev") and 
+init_mknod("/dev/console") because calling the syscall_blah() functions 
+directly was considered icky so they created gratuitous wrappers to do 
+it for you instead, because that's cleaner somehow. (Presumably the same 
+logic as C++ having get and set methods that perform a simple assignment 
+and return a value. Because YOU can't be trusted to touch MY code.)
 
-Bert Karwatzki
+Note that ONLY init/noinitramfs.c creates /dev/console. You'd THINK the 
+logical thing to do would be to detect failure of the filp_open() in 
+console_on_rootfs() and do the mkdir/mknod there and retry (since that's 
+__init code too), but no...
 
+My VERY vague recollection from back in the dark ages is if you didn't 
+specify any INITRAMFS_SOURCE in kconfig then gen_init_cpio got called 
+with no arguments and spit out a "usage" section that got interpreted as 
+scripts/gen_initramfs_list.sh output, back when the plumbing ignored 
+lines it didn't understand but there was an "example: a simple 
+initramfs" section in the usage with "dir /dev" and "nod /dev/console" 
+lines that created a cpio archive with /dev/console in it which would 
+get statically linked in as a "default", and code reached out and used 
+this because it was there without understanding WHY it was there. So it 
+initially worked by coincidence, and rather than make it explicit they 
+went "two codepaths, half the testing!" and thus...
+
+Anyway, that's why the 130+ byte archive was there. It wasn't actually 
+empty, even when initramfs was disabled.
+
+One of the "cleanups that didn't actually fix it" was 
+https://github.com/mpe/linux-fullhistory/commit/2bd3a997befc if you want 
+to dig into the history yourself. I wrote my docs in 2005 and that was 
+2010 so "somewhere in there"...
+
+> -If the kernel has initrd support enabled, an external cpio.gz archive can also
+> -be passed into a 2.6 kernel in place of an initrd.  In this case, the kernel
+> -will autodetect the type (initramfs, not initrd) and extract the external cpio
+> +If the kernel has CONFIG_BLK_DEV_INITRD enabled, an external cpio.gz archive can also
+
+You renamed that symbol, then even you use the old name here.
+
+> +be passed into a 2.6 kernel.  In this case, the kernel will extract the external cpio
+>   archive into rootfs before trying to run /init.
+>   
+> -This has the memory efficiency advantages of initramfs (no ramdisk block
+> -device) but the separate packaging of initrd (which is nice if you have
+> +This is nice if you have
+>   non-GPL code you'd like to run from initramfs, without conflating it with
+> -the GPL licensed Linux kernel binary).
+> +the GPL licensed Linux kernel binary.
+
+IANAL: Whether or not this qualifies as "mere aggregation" had yet to go 
+to court last I heard.
+
+Which is basically why 
+https://hackmd.io/@starnight/Load_Firmware_Files_Later_in_Linux_Kernel 
+was so screwed up in the first place: the logical thing to do would be 
+put the firmware in a static initramfs and have the module 
+initialization happen after initramfs was populated... BUT LICENSING! We 
+must have a much more complicated implementation because license. I 
+believe I suggested passing said initramfs in via the initrd mechanism 
+so it remains a separate file until boot time, and was ignored. *shrug* 
+The usual...
+
+>   It can also be used to supplement the kernel's built-in initramfs image.  The
+>   files in the external archive will overwrite any conflicting files in
+> @@ -278,7 +278,7 @@ User Mode Linux, like so::
+>     EOF
+>     gcc -static hello.c -o init
+>     echo init | cpio -o -H newc | gzip > test.cpio.gz
+> -  # Testing external initramfs using the initrd loading mechanism.
+> +  # Testing external initramfs.
+
+Does grub not still call it "initrd"?
+
+>     qemu -kernel /boot/vmlinuz -initrd test.cpio.gz /dev/zero
+
+A) they added -hda so you don't have to give it a dummy /dev/zero anymore.
+
+B) there's no longer a "qemu" defaulting to the current architecture, 
+you have to explicitly specify qemu-system-blah unless you create the 
+symlink yourself by hand. This was considered an "improvement" by IBM 
+bureaucrats. (Not a regression, a "feature". Oh well...)
+
+C) to be honest I'd just point people at mkroot for examples these days, 
+but I'm biased. (It smells like me.)
+
+Rob
 
