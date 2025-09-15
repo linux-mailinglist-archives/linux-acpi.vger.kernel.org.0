@@ -1,135 +1,243 @@
-Return-Path: <linux-acpi+bounces-16963-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16964-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C12BB5853C
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 21:23:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18BCCB5854E
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 21:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B215A18877C5
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 19:23:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C06E6207500
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 19:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5698927BF80;
-	Mon, 15 Sep 2025 19:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF1721771B;
+	Mon, 15 Sep 2025 19:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFngsrHz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gAkFmryh"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A3F279DD8
-	for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 19:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A654D1D618E
+	for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 19:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757964180; cv=none; b=Z5zaEILgABdSvVbkEnJgLBixDNGPBSsUBq/mZyrkqYNQhN5MLH3drqh+ePTfmfYUuYdA6H1PdmpDEQLOWJsoo7tXyjrNAIbbothRvwtXn9r7XG/wxMA9Vz9DLtKKmKe2J7OinGO2T8bUZz9d34cdb9lh4w8CxMQcDnOeKmz+ut8=
+	t=1757964835; cv=none; b=mbCDkIHzqiy3z0qLs9xNTzYIwLipE+fHPFH/3//42ABmsMAzANn2xAeDBwKg/XJpjhRMbkLbOpmOIelnQlac8kFHfAKSY86FBjL58iLHp856y4zb98bHeZgIA/vIY+3e8FyVzZrub7HsAS7dJ2kmlOP/2ql8b8w6ANMHidRw+Ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757964180; c=relaxed/simple;
-	bh=CfOeBT2uJ2vDN95+a+RmRu4aSC8CMvZMjYlqYp4sVOY=;
+	s=arc-20240116; t=1757964835; c=relaxed/simple;
+	bh=bHRNR6Si9KkH2i6HyBG3sLnqM7QaA4pwDc0GRfKNCBs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pdygujZDQ3c1TWMRckS4LkwCHhVYwcfrCuXwN6EGdLroVm8mRU28TFGIK3rYHvvE2VNzEIjwnB+SGHYcClJRcuj5Ihjqv8lr/9+l5RRWx4oX5v1VkWWixw43J/BmYwvR8fnftK81qrVD7HDZ8BQafswmz70Xi9ewxRzUoWnhvyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFngsrHz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3036C4CEFD
-	for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 19:22:59 +0000 (UTC)
+	 To:Cc:Content-Type; b=X3eMxDJgCkMw+SIFIdCp3+XJ/C7mf47L4TWk0xCY/jm5ug+97oQYIMgToclzhgKmrzxN8DR2BjqQqaUTfY7a/d7ZsG5vVkCNs3i8tCYN29DbzqrfHruYRH+/UMfnVzUGlkuZ/qOXpulpFhgNd5+/b1TvHMhpA3+dhMhP+PBpPi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gAkFmryh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E65CC4CEFC
+	for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 19:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757964179;
-	bh=CfOeBT2uJ2vDN95+a+RmRu4aSC8CMvZMjYlqYp4sVOY=;
+	s=k20201202; t=1757964835;
+	bh=bHRNR6Si9KkH2i6HyBG3sLnqM7QaA4pwDc0GRfKNCBs=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=OFngsrHzH/PyNLbA+/QDpBBcVM+Mxkl+zPrWRu/0vVT3ZTAonZOSzybEUvIIOoAOa
-	 uYPD5uH6E8f8zAwOJosdvnoWMdl8sf4vMNrj9Rlwp/Hwl9Xw2P7Dt4hNvChyHkvZ29
-	 DnN8udvxJ1DauJGb82hSgLNdKwIO5L+xOicRkSIs9PwIovb9ajHiTXIt+ji1GhGPBw
-	 X/HX9IMPgs/ZXDJPEYDKOSVEol+srWJwLYgRO5FbyH/2gdQeA5z3j3KV9gR7LDAZLI
-	 NR6SOTGTuiy2iVKMTYeF2vv8k4xW5//qN6BfMXJMMhmu4++og13H3Fo8VKlUJr3Bd4
-	 AzsmGBjsfxIbQ==
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-757fda06b0cso942560a34.0
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 12:22:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVLRKS5J5MBBKbSlLKdaAeWl7WjlNMJXbPtkpMHUKpEAt/GHHzuGKzX5dI2eOLgIdGnSkmyxIAzUPoH@vger.kernel.org
-X-Gm-Message-State: AOJu0YzB1jIoGeZfu/6veAvZs3e1HtWOuZaobrmguYas9Tr4uEQjNx/y
-	wugev1YNt9uHXGtb87MvmhVIgEHf5q7MJCeyx/jcSkoYD+rnkZEn6FE1fzil3t3/CMJssVBsiPR
-	SrXqV+OjdmEu7MRj/22dsnikraeLUwLk=
-X-Google-Smtp-Source: AGHT+IE5BuGSJtCD/JKhN8NFKfVoK4ypWod4N5mMxx+YQOBBrCJ3vGoqP0mQmab3oRzwZOv86Bu7xsPKazqJmeI3Y7U=
-X-Received: by 2002:a05:6830:2908:b0:746:3226:c68f with SMTP id
- 46e09a7af769-75352994eedmr7283951a34.4.1757964179124; Mon, 15 Sep 2025
- 12:22:59 -0700 (PDT)
+	b=gAkFmryhDtGnEGfBS/Iojo7VsdNZNEiLHZhMqQBNHbcwU7C91PkAKOP/lcgrLlW9S
+	 CnH1dDbTfdlUlZSfGCSu4pM8+1uoP4nRomGPa40WuhLSuWA6kGPEQ3j5aMtj8T53gW
+	 iAmUe2Tr7nOU1D7GKKjPCC6MKuPNhINIsO0KFuRrjDPig0uZ4RQmNYHYEVsEoAbDzk
+	 6jG1ICMj4PQ7QpHOiTMXhto8xwjMX78wrjAsf9g3Jz8SYpMsCa+MmEA6qcM9HttR3U
+	 UiJo1tUhLc8oH7x5AAK2M5bep8tSofkWUITZlwbp5y4mrkU1NAUiRVb1/UhhF78ez9
+	 Z9bnb3uXRjR1g==
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-62189987b47so1879918eaf.1
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 12:33:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWZ1fuN9pFw8rJoPqtKKj7rSW/qzcIHV+RdYR1c2NecXXGGKRGpad1S5UFe6pjXmH2duJEWE8djWLu/@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVy/klT8XPHbjhDsFwPRPNCHjpp4u0n6utNirTII6xHMkw3H6+
+	n1mEuW5FHscUbFK4CCXxzmvQ0QT9mPM9FPUJXxCX+FsektUble9ETtNiQfUJ5UpD/157KvZSPTA
+	QQVSlhe709httXxUQy5lrqwSgCdLtiSQ=
+X-Google-Smtp-Source: AGHT+IFt0QX/DZNL+mFbjfONvR4fJq+mrWUIlKJnqaVa6n0S7fGi6dwDHjXutXDyNK9g28F/49/zVWZmAC6itATpams=
+X-Received: by 2002:a05:6820:162a:b0:621:ce3b:b648 with SMTP id
+ 006d021491bc7-621ce3bbb6cmr4252352eaf.4.1757964834587; Mon, 15 Sep 2025
+ 12:33:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250903224913.242928-2-thorsten.blum@linux.dev> <7c0ea575-7682-4601-8922-49684d929374@linux.alibaba.com>
-In-Reply-To: <7c0ea575-7682-4601-8922-49684d929374@linux.alibaba.com>
+References: <20250910044531.264043-1-jiaqiyan@google.com> <88893809-ed13-dbb9-2446-8fd680f57693@huawei.com>
+In-Reply-To: <88893809-ed13-dbb9-2446-8fd680f57693@huawei.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 15 Sep 2025 21:22:48 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gNP4=S5B-=LGgUMo6vQoxd4VW=nPYyPHP_ZzqRWaU8GA@mail.gmail.com>
-X-Gm-Features: AS18NWC7Zoxe_g3bqZf9rXMEBvfqiRhns9aI1KuLaUuO11R6QBMX4GGHOXH9nPA
-Message-ID: <CAJZ5v0gNP4=S5B-=LGgUMo6vQoxd4VW=nPYyPHP_ZzqRWaU8GA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: APEI: Remove redundant assignments in erst_dbg_{ioctl|write}()
-To: Shuai Xue <xueshuai@linux.alibaba.com>, Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, Hanjun Guo <guohanjun@huawei.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Len Brown <lenb@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+Date: Mon, 15 Sep 2025 21:33:43 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0g_f3Ut_8nf1NM5nJb3OSS83ccS65sT=DZOu0LWuCWZ1Q@mail.gmail.com>
+X-Gm-Features: AS18NWAtIax3pu9gkklTbd3hply-pFX4azyM_X7JPxc8ebVAI3tNa1WrLEgQp_4
+Message-ID: <CAJZ5v0g_f3Ut_8nf1NM5nJb3OSS83ccS65sT=DZOu0LWuCWZ1Q@mail.gmail.com>
+Subject: Re: [PATCH v3] ACPI: APEI: EINJ: Allow more types of addresses except MMIO
+To: Hanjun Guo <guohanjun@huawei.com>, Jiaqi Yan <jiaqiyan@google.com>
+Cc: tony.luck@intel.com, rafael@kernel.org, dan.j.williams@intel.com, 
+	bp@alien8.de, mchehab@kernel.org, xueshuai@linux.alibaba.com, 
 	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 5, 2025 at 3:19=E2=80=AFAM Shuai Xue <xueshuai@linux.alibaba.co=
-m> wrote:
+On Wed, Sep 10, 2025 at 4:57=E2=80=AFPM Hanjun Guo <guohanjun@huawei.com> w=
+rote:
 >
->
->
-> =E5=9C=A8 2025/9/4 06:49, Thorsten Blum =E5=86=99=E9=81=93:
-> > Use the result of copy_from_user() directly instead of assigning it to
-> > the local variable 'rc' and then overwriting it in erst_dbg_write() or
-> > immediately returning from erst_dbg_ioctl().
+> On 2025/9/10 12:45, Jiaqi Yan wrote:
+> > EINJ driver today only allows injection request to go through for two
+> > kinds of IORESOURCE_MEM: IORES_DESC_PERSISTENT_MEMORY and
+> > IORES_DESC_SOFT_RESERVED. This check prevents user of EINJ to test
+> > memory corrupted in many interesting areas:
 > >
-> > Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> > - Legacy persistent memory
+> > - Memory claimed to be used by ACPI tables or NV storage
+> > - Kernel crash memory and others
+> >
+> > There is need to test how kernel behaves when something consumes memory
+> > errors in these memory regions. For example, if certain ACPI table is
+> > corrupted, does kernel crash gracefully to prevent "silent data
+> > corruption". For another example, legacy persistent memory, when manage=
+d
+> > by Device DAX, does support recovering from Machine Check Exception
+> > raised by memory failure, hence worth to be tested.
+> >
+> > However, attempt to inject memory error via EINJ to legacy persistent
+> > memory or ACPI owned memory fails with -EINVAL.
+> >
+> > Allow EINJ to inject at address except it is MMIO. Leave it to the BIOS
+> > or firmware to decide what is a legitimate injection target.
+> >
+> > In addition to the test done in [1], on a machine having the following
+> > iomem resources:
+> >
+> >      ...
+> >      01000000-08ffffff : Crash kernel
+> >      768f0098-768f00a7 : APEI EINJ
+> >      ...
+> >    768f4000-77323fff : ACPI Non-volatile Storage
+> >    77324000-777fefff : ACPI Tables
+> >    777ff000-777fffff : System RAM
+> >    77800000-7fffffff : Reserved
+> >    80000000-8fffffff : PCI MMCONFIG 0000 [bus 00-ff]
+> >    90040000-957fffff : PCI Bus 0000:00
+> >    ...
+> >    300000000-3ffffffff : Persistent Memory (legacy)
+> >    ...
+> >
+> > I commented __einj_error_inject during the test and just tested when
+> > injecting a memory error at each start address shown above:
+> > - 0x80000000 and 0x90040000 both failed with EINVAL
+> > - request passed through for all other addresses
+> >
+> > Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
 > > ---
-> >   drivers/acpi/apei/erst-dbg.c | 8 +++-----
-> >   1 file changed, 3 insertions(+), 5 deletions(-)
 > >
-> > diff --git a/drivers/acpi/apei/erst-dbg.c b/drivers/acpi/apei/erst-dbg.=
-c
-> > index 246076341e8c..ff0e8bf8e97a 100644
-> > --- a/drivers/acpi/apei/erst-dbg.c
-> > +++ b/drivers/acpi/apei/erst-dbg.c
-> > @@ -60,9 +60,8 @@ static long erst_dbg_ioctl(struct file *f, unsigned i=
-nt cmd, unsigned long arg)
+> > Changelog
 > >
-> >       switch (cmd) {
-> >       case APEI_ERST_CLEAR_RECORD:
-> > -             rc =3D copy_from_user(&record_id, (void __user *)arg,
-> > -                                 sizeof(record_id));
-> > -             if (rc)
-> > +             if (copy_from_user(&record_id, (void __user *)arg,
-> > +                                sizeof(record_id)))
-> >                       return -EFAULT;
-> >               return erst_clear(record_id);
-> >       case APEI_ERST_GET_RECORD_COUNT:
-> > @@ -175,8 +174,7 @@ static ssize_t erst_dbg_write(struct file *filp, co=
-nst char __user *ubuf,
-> >               erst_dbg_buf =3D p;
-> >               erst_dbg_buf_len =3D usize;
-> >       }
-> > -     rc =3D copy_from_user(erst_dbg_buf, ubuf, usize);
-> > -     if (rc) {
-> > +     if (copy_from_user(erst_dbg_buf, ubuf, usize)) {
-> >               rc =3D -EFAULT;
-> >               goto out;
-> >       }
+> > v2 [2] -> v3:
+> > - Remove unnecessary IORES_DESC_CXL per comment from Hanjun [3].
+> > - Minor update to code comment.
+> >
+> > v1 [1] -> v2:
+> > - In addition to allow IORES_DESC_PERSISTENT_MEMORY_LEGACY, open the
+> >    door wider and only exclude MMIO per suggestion from Tony [4].
+> > - Rebased to commit 11e7861d680c ("Merge tag 'for-linus' of git://git.k=
+ernel.org/pub/scm/virt/kvm/kvm").
+> >
+> > [1] https://lore.kernel.org/linux-acpi/20250825223348.3780279-1-jiaqiya=
+n@google.com
+> > [2] https://lore.kernel.org/linux-acpi/20250830030226.918555-1-jiaqiyan=
+@google.com
+> > [3] https://lore.kernel.org/linux-acpi/bc8ad4b8-c000-0298-efd1-4a332c4c=
+7820@huawei.com
+> > [4] https://lore.kernel.org/linux-acpi/SJ1PR11MB60835824926BEE57F094DE6=
+FFC39A@SJ1PR11MB6083.namprd11.prod.outlook.com
+> >
+> > drivers/acpi/apei/einj-core.c | 51 ++++++++++++++++++++++++++++-------
+> >   1 file changed, 42 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-cor=
+e.c
+> > index 2561b045acc7b..3c87953dbd197 100644
+> > --- a/drivers/acpi/apei/einj-core.c
+> > +++ b/drivers/acpi/apei/einj-core.c
+> > @@ -656,6 +656,43 @@ static int __einj_error_inject(u32 type, u32 flags=
+, u64 param1, u64 param2,
+> >       return rc;
+> >   }
+> >
+> > +/* Allow almost all types of address except MMIO. */
+> > +static bool is_allowed_range(u64 base_addr, u64 size)
+> > +{
+> > +     int i;
+> > +     /*
+> > +      * MMIO region is usually claimed with IORESOURCE_MEM + IORES_DES=
+C_NONE.
+> > +      * However, IORES_DESC_NONE is treated like a wildcard when we ch=
+eck if
+> > +      * region intersects with known resource. So do an allow list che=
+ck for
+> > +      * IORES_DESCs that definitely or most likely not MMIO.
+> > +      */
+> > +     int non_mmio_desc[] =3D {
+> > +             IORES_DESC_CRASH_KERNEL,
+> > +             IORES_DESC_ACPI_TABLES,
+> > +             IORES_DESC_ACPI_NV_STORAGE,
+> > +             IORES_DESC_PERSISTENT_MEMORY,
+> > +             IORES_DESC_PERSISTENT_MEMORY_LEGACY,
+> > +             /* Treat IORES_DESC_DEVICE_PRIVATE_MEMORY as MMIO. */
+> > +             IORES_DESC_RESERVED,
+> > +             IORES_DESC_SOFT_RESERVED,
+> > +     };
+> > +
+> > +     if (region_intersects(base_addr, size, IORESOURCE_SYSTEM_RAM, IOR=
+ES_DESC_NONE)
+> > +                           =3D=3D REGION_INTERSECTS)
+> > +             return true;
+> > +
+> > +     for (i =3D 0; i < ARRAY_SIZE(non_mmio_desc); ++i) {
+> > +             if (region_intersects(base_addr, size, IORESOURCE_MEM, no=
+n_mmio_desc[i])
+> > +                                   =3D=3D REGION_INTERSECTS)
+> > +                     return true;
+> > +     }
+> > +
+> > +     if (arch_is_platform_page(base_addr))
+> > +             return true;
+> > +
+> > +     return false;
+> > +}
+> > +
+> >   /* Inject the specified hardware error */
+> >   int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2, u6=
+4 param3,
+> >                     u64 param4)
+> > @@ -702,19 +739,15 @@ int einj_error_inject(u32 type, u32 flags, u64 pa=
+ram1, u64 param2, u64 param3,
+> >        * Disallow crazy address masks that give BIOS leeway to pick
+> >        * injection address almost anywhere. Insist on page or
+> >        * better granularity and that target address is normal RAM or
+> > -      * NVDIMM.
+> > +      * as long as is not MMIO.
 >
-> Hi Thorsten,
-> Thanks for the patch.
+> Thanks for updating this as well.
 >
-> The changes look good to me.
+> >        */
+> >       base_addr =3D param1 & param2;
+> >       size =3D ~param2 + 1;
+> >
+> > -     if (((param2 & PAGE_MASK) !=3D PAGE_MASK) ||
+> > -         ((region_intersects(base_addr, size, IORESOURCE_SYSTEM_RAM, I=
+ORES_DESC_NONE)
+> > -                             !=3D REGION_INTERSECTS) &&
+> > -          (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DE=
+SC_PERSISTENT_MEMORY)
+> > -                             !=3D REGION_INTERSECTS) &&
+> > -          (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_DE=
+SC_SOFT_RESERVED)
+> > -                             !=3D REGION_INTERSECTS) &&
+> > -          !arch_is_platform_page(base_addr)))
+> > +     if ((param2 & PAGE_MASK) !=3D PAGE_MASK)
+> > +             return -EINVAL;
+> > +
+> > +     if (!is_allowed_range(base_addr, size))
+> >               return -EINVAL;
+> >
+> >       if (is_zero_pfn(base_addr >> PAGE_SHIFT))
 >
-> Since this is a code cleanup with no functional changes, could you
-> please mention "no functional change" or similar wording in the commit
-> message to make it clear?
+> Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
 
-Added.
-
-> With that addressed:
-> Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
-
-And patch applied as 6.18 material, thanks!
+Applied as 6.18 material, thanks!
 
