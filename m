@@ -1,174 +1,101 @@
-Return-Path: <linux-acpi+bounces-16941-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16942-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DDFB57C1A
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 14:57:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FCF1B57D5B
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 15:34:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB61D1887737
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 12:58:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B38A23A3463
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 13:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8275B30C37E;
-	Mon, 15 Sep 2025 12:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A867315D2D;
+	Mon, 15 Sep 2025 13:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PWTasVeA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BJGZ1vBQ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E79630C374
-	for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 12:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4792313291;
+	Mon, 15 Sep 2025 13:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757941064; cv=none; b=N7wvTEVyqbVxCrjLzZR7h5sO3B2FhOG/ArrJ1pldh3hYCe9a6Fv23HWK/X/e20kE189ygnRK95Q8/CDp1k4rpmlpxlrAWZytXREk9GYBd8VDh+/2bS0SBvVKwOzF9cubMlMOKSLnGoTjnk7xYO9DR7DvBifgriB0G9fM3bjM6Yc=
+	t=1757943281; cv=none; b=kCNzxLouwtx8lvaGWcXqci7Kn71XRx8w2dQ1fLwM/DXh9iDxqXvsXYeJzPj1jHfIAOL1phX7A68L3FGvGSWP/IUQitJJj9IHvy0j4zvMk3lcnQ7/HaWG6iSgFATOW47d7fA+U7rAqv4BkNgwQjonsa6i6PW1cD8xwOtR+R2krKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757941064; c=relaxed/simple;
-	bh=ulKSlbeY89urU1NmlWnfV3YU5EPXs0DX1UXGa+Q3K/4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eDQVBnYVIpz6k0yI0VloqsKhtp+wcJ0AOo6BC4wS73rAfYo9d24p+1tFf75bdEgZI6klGkRRkemVYlLQ8ZayRFyYJafPSJYwUnUHds2xCGpgmloddV77agD2ddIr0/uC4b2JCGYlLqJlwMLPs7kt4Q+nmbtSO5BEy+JC/1UfVLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PWTasVeA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9228C4CEF7
-	for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 12:57:43 +0000 (UTC)
+	s=arc-20240116; t=1757943281; c=relaxed/simple;
+	bh=G1pxbFOuDJsJnBF0m+5CY6Xwwfubv5cFdvznrZJvWPg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OkfHiPj1UpfBq8XCfhhzzHPDGr9xBeZaX7wPEA1SOYykFR7UBSgp0wkVo2BBFYed+ECtfAmcx/kTpNpTTEqv2oNAs8tIPopgbduz/YzdO6pwjGTIbD7wplQT9aK9SN6DdzWj0CGvL9zj8ggJjuwp+n3TVsqYQZHImRxsTB3LVsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BJGZ1vBQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06662C4CEF5;
+	Mon, 15 Sep 2025 13:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757941063;
-	bh=ulKSlbeY89urU1NmlWnfV3YU5EPXs0DX1UXGa+Q3K/4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=PWTasVeAwjIJpvCr4aq+9o8kk72ibHJdBhz14LuBZV9TMtDX0XIJuL9gs9bI8GSRc
-	 eentuAy2E9jzun7pkw0W8vtSSE9rsqnSvCntDpJ2PbCOqroRmSkEIs3Umvvh9Z/+Dt
-	 KJQQQw71bPOioZBxnvdaNMyDwc2pKE/CfSmtlOA1hZREZMwVQQds+sSWxSaWKe1rfM
-	 8BgShY36KaF4XCh9quBcJ2Ejs3T9YoEAJ+PYBxDcoA233qKVzzPypx7VtuGULU58Lm
-	 7rkLWmuUDW7hEHXHW9WVF+vpLMthy4VgLONe1fys9C0yhg9X+suHVhwk211gQRsFIq
-	 6BFpG5qD4r41Q==
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-750b77699b4so3360616a34.2
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 05:57:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUHM84wsJKYHF/Xe1LMBUXMVaMXrMzTp7WNXBvrXEBPgtdI2ba0nVqLERRrHRFCEobUqbqYGR/C/FH/@vger.kernel.org
-X-Gm-Message-State: AOJu0YwilLeB+ENXTeP4ajou5/zNNIOtjnXPgQ2crkxdDweGtIfS8Q3b
-	dpThnZA9x8XduzzzyfIl5DbFB2+Yfx2exDAu/nq5f+4heni2nil9AwZrF+BfwsrRPsK6TAKtKwH
-	kWWFubBONOlz0oGkfsj9YDPkQQC6DhF4=
-X-Google-Smtp-Source: AGHT+IH7eC7ap1vbLWJ7LIJn9DDB9jGF1thqKBpffYH7okiwBW8idpEX+LHY5pmbjHOwMv51qdMfNTswXtyjOv0I/eo=
-X-Received: by 2002:a05:6808:1b28:b0:43b:7a77:6b8 with SMTP id
- 5614622812f47-43b8da333f0mr5451545b6e.47.1757941063218; Mon, 15 Sep 2025
- 05:57:43 -0700 (PDT)
+	s=k20201202; t=1757943280;
+	bh=G1pxbFOuDJsJnBF0m+5CY6Xwwfubv5cFdvznrZJvWPg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BJGZ1vBQTvO1OLFpsKgtQvIkjtAVvJey56ZqhZxYzVB3EDoeucwA9j3Ikra0r96a5
+	 jQw9/XHjAdC85R6jORBqXH6OkpLRRmI0UaRxSBMlJTyGu8sObrPf6EYsRHYnpzWABK
+	 4guOhpliPb5aYSSJ1cikDCiA9fl38O9CJLfhWdf/1FUDPbaUHhsgjd/BUigP/DwSAR
+	 ZgzXa5kZ1LN2Vwu2d8y8wxYWU6XMdt47ld5N4t1CFweo+0HtUX4GHSNgmsq7QjI/jF
+	 wghZzlNvaq7LpEjMzkOqler37Pf0I1gD2UiJKUJFEipxphTk6d9TTXloxjbYPhi7oP
+	 Dxi908vsrFrMg==
+Date: Mon, 15 Sep 2025 15:34:26 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, 
+	Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
+	Aleksa Sarai <cyphar@cyphar.com>, 
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, Julian Stecklina <julian.stecklina@cyberus-technology.de>, 
+	Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>, 
+	Alexander Graf <graf@amazon.com>, Rob Landley <rob@landley.net>, 
+	Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-um@lists.infradead.org, 
+	x86@kernel.org, Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org, 
+	initramfs@vger.kernel.org, linux-api@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, "Theodore Y . Ts'o" <tytso@mit.edu>, 
+	linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>, devicetree@vger.kernel.org, 
+	Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Thorsten Blum <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
+Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
+Message-ID: <20250915-modebranche-marken-fc832a25e05d@brauner>
+References: <20250913003842.41944-1-safinaskar@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5046661.31r3eYUQgx@rafael.j.wysocki> <3014880.e9J7NaK4W3@rafael.j.wysocki>
- <aMf9YRHA8jRgMPAr@kekkonen.localdomain>
-In-Reply-To: <aMf9YRHA8jRgMPAr@kekkonen.localdomain>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 15 Sep 2025 14:57:31 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hPjWHwSSc9cTdC76RypWGPUYrkqw+W3Vb52uy_UJpk9A@mail.gmail.com>
-X-Gm-Features: Ac12FXzO3bE6mspFRW59O99bQ_5MIBbj6Q82vloHhMMUd9RwBdaCC0UsMUE0CUE
-Message-ID: <CAJZ5v0hPjWHwSSc9cTdC76RypWGPUYrkqw+W3Vb52uy_UJpk9A@mail.gmail.com>
-Subject: Re: [PATCH v1 3/4] ACPI: property: Do not pass NULL handles to acpi_attach_data()
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250913003842.41944-1-safinaskar@gmail.com>
 
-Hi Sakari,
+On Sat, Sep 13, 2025 at 12:37:39AM +0000, Askar Safin wrote:
+> Intro
+> ====
+> This patchset removes classic initrd (initial RAM disk) support,
+> which was deprecated in 2020.
 
-On Mon, Sep 15, 2025 at 1:50=E2=80=AFPM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> Hi Rafael,
->
-> On Fri, Sep 12, 2025 at 09:42:55PM +0200, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > In certain circumstances, the ACPI handle of a data-only node may be
-> > NULL, in which case it does not make sense to attempt to attach that
-> > node to an ACPI namespace object, so update the code to avoid attempts
-> > to do so.
-> >
-> > This prevents confusing and unuseful error messages from being printed.
-> >
-> > Also document the fact that the ACPI handle of a data-only node may be
-> > NULL, and when that happens, in a code comment.
-> >
-> > In addition, make acpi_add_nondev_subnodes() print a diagnostic message
-> > for each data-only node with an unknown ACPI namespace scope.
-> >
-> > Fixes: 1d52f10917a7 ("ACPI: property: Tie data nodes to acpi handles")
-> > Cc: 6.0+ <stable@vger.kernel.org> # 6.0+
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >  drivers/acpi/property.c |   12 ++++++++++++
-> >  1 file changed, 12 insertions(+)
-> >
-> > --- a/drivers/acpi/property.c
-> > +++ b/drivers/acpi/property.c
-> > @@ -124,6 +124,10 @@ static bool acpi_nondev_subnode_extract(
-> >               result =3D true;
-> >
-> >       if (result) {
-> > +             /*
-> > +              * This will be NULL if the desc package is embedded in a=
-n outer
-> > +              * _DSD-equivalent package and its scope cannot be determ=
-ined.
-> > +              */
->
-> I think indeed this happens in particular when when references to
-> non-device nodes; there's no handle because when you get is basically a
-> dynamically allocated copy of a node.
+This is a good idea but the patchset does a bit too much and it's pretty
+convoluted and mixes cleanups with the removal of initrd support and so
+it's not that great to review let alone merge especially considering
+that a revert might be needed.
 
-I know for a fact that this happens, that's why I'm adding the comment here=
-.
+Split it up into multiple patch series. Send a first series that
+focusses only on removing the generic infrastructure keeping it as
+contained as possible. Only do non-generic cleanups that are absolutely
+essential for the removal. Then the cleanups can go in separate series
+later.
 
-> >               dn->handle =3D handle;
-> >               dn->data.pointer =3D desc;
-> >               list_add_tail(&dn->sibling, list);
-> > @@ -245,6 +249,8 @@ static bool acpi_add_nondev_subnodes(acp
-> >                        * strings because there is no way to build full
-> >                        * pathnames out of them.
-> >                        */
-> > +                     acpi_handle_info(scope, "Unknown namespace scope =
-of node %s\n",
-> > +                                      link->package.elements[0].string=
-.pointer);
-> >                       desc =3D &link->package.elements[1];
-> >                       result =3D acpi_nondev_subnode_extract(desc, NULL=
-, link,
-> >                                                            list, parent=
-);
-> > @@ -408,6 +414,9 @@ static void acpi_untie_nondev_subnodes(s
-> >       struct acpi_data_node *dn;
-> >
-> >       list_for_each_entry(dn, &data->subnodes, sibling) {
-> > +             if (!dn->handle)
-> > +                     continue;
-> > +
-> >               acpi_detach_data(dn->handle, acpi_nondev_subnode_tag);
-> >
-> >               acpi_untie_nondev_subnodes(&dn->data);
-> > @@ -422,6 +431,9 @@ static bool acpi_tie_nondev_subnodes(str
-> >               acpi_status status;
-> >               bool ret;
-> >
-> > +             if (!dn->handle)
-> > +                     continue;
-> > +
-> >               status =3D acpi_attach_data(dn->handle, acpi_nondev_subno=
-de_tag, dn);
-> >               if (ACPI_FAILURE(status) && status !=3D AE_ALREADY_EXISTS=
-) {
-> >                       acpi_handle_err(dn->handle, "Can't tag data node\=
-n");
-> >
-> >
-> >
->
-> --
-> Kind regards,
->
-> Sakari Ailus
+As usual I'm happy to try to shed old code but I wouldn't be too
+optimistic that we'll get away with this and if so it needs to be
+surgical.
 
