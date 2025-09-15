@@ -1,251 +1,283 @@
-Return-Path: <linux-acpi+bounces-16938-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16939-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D55B57B08
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 14:30:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E3FB57B2F
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 14:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDCC13B0C79
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 12:30:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20AED188336D
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 12:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2533A3081DC;
-	Mon, 15 Sep 2025 12:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC5A53081A3;
+	Mon, 15 Sep 2025 12:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+ob66qH"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="j6ABT3xB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010047.outbound.protection.outlook.com [52.101.193.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD09305947
-	for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 12:27:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757939249; cv=none; b=WMeMdovdp8R3zw5GxdXSgQOm9ZeJ13G468PIZ5prcGD0twp8hGB9mh7jaHn5TY8KyUI3f2kAUEeo4EvWzGsqoS/5PZmVhVTNFPAlowKcwed0Df1cYu0RvD53gS6gdDB19IGdsQsGTAjHAVvfGoVSznp5DKTtLjzkvat3A8lJpCQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757939249; c=relaxed/simple;
-	bh=RKSFfbGcm2+n1SCMDWQaq5ACjOkXSXR1Jz63OUPhNfM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BDmOKD80ggfMXukJdnVivP2ErEsngajZNWQdNW5XDAXfhdQA7k6eCpj08imqCRSWWLXi33RVD7suqMfj1LIXUOjQAxN9b1EFbVl7BkKAA6LEMWWTJa32434BL50UFy/zg0kBUAwvPdbpOPG8i/jG28VQ8cjtlnKYnYVwyxTi5vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+ob66qH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F56C4CEF7
-	for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 12:27:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757939248;
-	bh=RKSFfbGcm2+n1SCMDWQaq5ACjOkXSXR1Jz63OUPhNfM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=A+ob66qH4G+RiPsMouyZ5yVLpNRcaWRSfrN0JHItby5Nx32HQJKVMFpufp8bCiN+H
-	 HHWXz7ykSBwsYzci3WA3D2vnJeyAubXAAKGu74fU3vwg1kVgii7Wg7exCp1btpRVuF
-	 qFeOyZ53c8MrI3fv6Swli6tpfZ+wpRt7OZOOGInyRp2syDGQjHOfhBiMhu48yA2A+C
-	 zZVUbxYc7kZDYWneUG0xHsHWKHyrVQzAwke74zv3sR0bibZVP2zval6r9QBwFs0pON
-	 gjW5ML/Kq1xcLaxGvH9GZs4UK8/KAGj5R+1ZH5h4LvPWbSkBfw7Mwhmq3jP/O2/LQS
-	 JQS317YVnozEA==
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-746d3b0f7e5so3622323a34.2
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 05:27:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVckmeV5u0TWYoDv/AnjKxb7Q9mMifrZ8BEyNvpZhTbZElHZBSIYqfwyZx5sHR2tpDnstyHeso8dmVl@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSA5G1OYchsmpWxM0BgUy/E48ENNUV4oib/l3y2r0Taa1z3ZL8
-	wsro9MkSHbU/OsVejfFAcwO2pG4LqZ5Ors+myz84smqFmDGB+xXDvoqsXvobZ0o1XQGTFdLRNzz
-	xQt2J8dVcSohFgpJvH4AsIEODxfRh3GE=
-X-Google-Smtp-Source: AGHT+IE6ypWT+o/QQu9xqx/WP436dtT20oqRYRBRCgFJc4RydutPS+oW2mY6jvB84KZ0v4Ij//flGQtF3v2+iHlI8tI=
-X-Received: by 2002:a05:6830:82e6:b0:745:4b08:eea9 with SMTP id
- 46e09a7af769-753552da33dmr8165646a34.30.1757939247951; Mon, 15 Sep 2025
- 05:27:27 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B2D302CA4;
+	Mon, 15 Sep 2025 12:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757939725; cv=fail; b=iThlJRficAXw2FaLEKFUiPtmCmKtmrpcLDUzuLI1Jtj3iXSkCtitv68BWq30xKj4yehlXXBiyLJSMwvmw4ZKq43v3+lPBd09gx/NeG5JKN8OwRwGOEHQFUMcw3rJhNgyxZ7YPYalAk/WIOEoCcKdsmqWDmz1cXsymvGLuktdlTI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757939725; c=relaxed/simple;
+	bh=mRyvjBN0VQXetX8UHOPdc/l8fQL4GIKNfTvf41Qvq7g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=W8SuFAipulZxOKzIRKQUuYTjRJGKB+Rn/DueezTl91Mf9f0gtToEwD3cAtqDolxyqvuyzaxuE5ur8XTzT8WLv8HQi7u8OD2wQi7IJxBihM4nLSRW1er3ywuqc1iUe5OlvLVUArYiSCkTYzxVjx2bbcmtOH8xR72mn+9cjYx7szY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=j6ABT3xB; arc=fail smtp.client-ip=52.101.193.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AYY/OuchPJXSJ2CTP80xoV/axVMnv3m1d9wmYd1/T+AooPrVsv/251Acp98ede+j+9/N6XW+dtgUF2AGiTKGqWRLS1afgA7Ksp5WI1xV2Hmsae+r0jHZqhl+OBC6Yscl1EcUdityG5XSSqiVA22kphp+HMrjkIRCkRqejFYtmoq5jj2BAmIobcTV0AblwQK3hJoNqLv8Gq0l5HXJe4e2nP8ZpWRakqKckk6kRP0duPBTSRZ111QCwUPHAFN0tVkVeuD7N+aSQyPYNSKxGflRxAf968Q6gkN3LPiZ82qGwYHWFK/qUP8DOQB01Bg7MAUyV/EELp2PUrLWty8iQxHafQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=klqifleBECQUdCDdn7Emy4+VfUUVcqIR/du2xfFhkYs=;
+ b=trSJeVEHPXv208gr5INwLw7mgz3mVG1jCxTVT9fW+r8DPNiFoXyjUCAs79/00ErNIhyGYUpHJhUrxe7Liy0pncS2Xc9g5gWF5KDweTXVT2mFhTJg1uSSMaleRYzBu55NkNm+/yV5JjH5huEPpeXvVZEGPrgM5UMTox719lre3hGovbdfDoIvZ7dM3ZGTJ+iSmI10rfzaVIxvpmcddLEWogO47k0NAFBSjzZDUgjXl6ZhlZvkhKZ2r13uHIkMr/QRPYV2EOPKr17Om2GwLn7peEZZIdb7s1/sZcy8kRltWgJwrhUQqgIX5V4IwYJNCIJK6Py/Tm0BVvnZ41mqBczQ8w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=klqifleBECQUdCDdn7Emy4+VfUUVcqIR/du2xfFhkYs=;
+ b=j6ABT3xByWSP6qwb7p3/3fif5TU84jolq/vhH7m0hIKjTsaHiW7DEFx+xQ8tke1Jbpb+55maMjcXPz8IJDSRxtwv3jR83yckzzPeMRU48V/vzNrui+YgMleQG2WsjOb1PuS5NkdKt8+y7hPR58iDwDnw3dtf7dZiHvH1Gnu9SOSv3nbWgAi3b9e2zvxoyNvm1A03Ne5IJqp9nJBd1CnSS8p5ksU2xNdNXUR7Ae9pV1ftw41Yc8n8PmkVGXRgyItBiddxyzel5nSCs0mUa6DmUR7TAxW8ZkhDfGqUFTt1BpXz+nIg9t8TvKz7R8D/hVcGIfWZupQzikl/b5R0zZy8DQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
+ by PH7PR12MB6660.namprd12.prod.outlook.com (2603:10b6:510:212::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.21; Mon, 15 Sep
+ 2025 12:35:17 +0000
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9115.020; Mon, 15 Sep 2025
+ 12:35:17 +0000
+Date: Mon, 15 Sep 2025 09:35:15 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: "Tian, Kevin" <kevin.tian@intel.com>
+Cc: Nicolin Chen <nicolinc@nvidia.com>, "joro@8bytes.org" <joro@8bytes.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	"suravee.suthikulpanit@amd.com" <suravee.suthikulpanit@amd.com>,
+	"will@kernel.org" <will@kernel.org>,
+	"robin.murphy@arm.com" <robin.murphy@arm.com>,
+	"sven@kernel.org" <sven@kernel.org>, "j@jannau.net" <j@jannau.net>,
+	"alyssa@rosenzweig.io" <alyssa@rosenzweig.io>,
+	"neal@gompa.dev" <neal@gompa.dev>,
+	"robin.clark@oss.qualcomm.com" <robin.clark@oss.qualcomm.com>,
+	"m.szyprowski@samsung.com" <m.szyprowski@samsung.com>,
+	"krzk@kernel.org" <krzk@kernel.org>,
+	"alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
+	"dwmw2@infradead.org" <dwmw2@infradead.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"yong.wu@mediatek.com" <yong.wu@mediatek.com>,
+	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
+	"angelogioacchino.delregno@collabora.com" <angelogioacchino.delregno@collabora.com>,
+	"tjeznach@rivosinc.com" <tjeznach@rivosinc.com>,
+	"paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
+	"palmer@dabbelt.com" <palmer@dabbelt.com>,
+	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
+	"alex@ghiti.fr" <alex@ghiti.fr>,
+	"heiko@sntech.de" <heiko@sntech.de>,
+	"schnelle@linux.ibm.com" <schnelle@linux.ibm.com>,
+	"mjrosato@linux.ibm.com" <mjrosato@linux.ibm.com>,
+	"gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>,
+	"orsonzhai@gmail.com" <orsonzhai@gmail.com>,
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
+	"zhang.lyra@gmail.com" <zhang.lyra@gmail.com>,
+	"wens@csie.org" <wens@csie.org>,
+	"jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>,
+	"samuel@sholland.org" <samuel@sholland.org>,
+	"jean-philippe@linaro.org" <jean-philippe@linaro.org>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"Liu, Yi L" <yi.l.liu@intel.com>,
+	"cwabbott0@gmail.com" <cwabbott0@gmail.com>,
+	"quic_pbrahma@quicinc.com" <quic_pbrahma@quicinc.com>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"asahi@lists.linux.dev" <asahi@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-arm-msm@vger.kernel.org" <linux-arm-msm@vger.kernel.org>,
+	"linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>,
+	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+	"linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+	"linux-sunxi@lists.linux.dev" <linux-sunxi@lists.linux.dev>,
+	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"patches@lists.linux.dev" <patches@lists.linux.dev>,
+	"Sethi, Vikram" <vsethi@nvidia.com>,
+	"helgaas@kernel.org" <helgaas@kernel.org>,
+	"etzhao1900@gmail.com" <etzhao1900@gmail.com>
+Subject: Re: [PATCH v4 1/7] iommu/arm-smmu-v3: Add release_domain to attach
+ prior to release_dev()
+Message-ID: <20250915123515.GE1024672@nvidia.com>
+References: <cover.1756682135.git.nicolinc@nvidia.com>
+ <c6bc114e438779129a891408af7d997bf6c28b5b.1756682135.git.nicolinc@nvidia.com>
+ <BL1PR11MB5271767F92289C1D1207D8188C08A@BL1PR11MB5271.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BL1PR11MB5271767F92289C1D1207D8188C08A@BL1PR11MB5271.namprd11.prod.outlook.com>
+X-ClientProxiedBy: BLAPR03CA0060.namprd03.prod.outlook.com
+ (2603:10b6:208:32d::35) To PH7PR12MB5757.namprd12.prod.outlook.com
+ (2603:10b6:510:1d0::13)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5046661.31r3eYUQgx@rafael.j.wysocki> <2243680.irdbgypaU6@rafael.j.wysocki>
- <aMf5ZNW9t_6tfsjy@kekkonen.localdomain>
-In-Reply-To: <aMf5ZNW9t_6tfsjy@kekkonen.localdomain>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 15 Sep 2025 14:27:16 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0ivX3s=pChGZ_+zeUswJgMPDH2Wi_cGeATyh+M9Tb0LYw@mail.gmail.com>
-X-Gm-Features: Ac12FXx8LSrrunyBiiNznOMNT6WX1PRcGZM1xU20-IJwBea6kXIXAWmzsDfB5iA
-Message-ID: <CAJZ5v0ivX3s=pChGZ_+zeUswJgMPDH2Wi_cGeATyh+M9Tb0LYw@mail.gmail.com>
-Subject: Re: [PATCH v1 2/4] ACPI: property: Add code comments explaining what
- is going on
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|PH7PR12MB6660:EE_
+X-MS-Office365-Filtering-Correlation-Id: 54ae7865-3ecf-4acf-1a0d-08ddf45453aa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?wIo7fnoZItfogrWaHjNp2GIyUSiu0Cka5c8NEISfZeg2Wtb1ilEvhZHuieob?=
+ =?us-ascii?Q?XPTboQpMILa3ho8Y9a0qzNwJpFM/8MLJtjEL4gNIX8SsrgumlreyUR1jONam?=
+ =?us-ascii?Q?RXgS/0cQSowfJLwzFMHrZRqxwuXRraLkkj7AP51qBuGSzIuQYnVnLEgcQNbe?=
+ =?us-ascii?Q?pwz+pzY6lEC0uuvFSrY+ly8S9Y3Rd6l/Y84uy76MLp2XyJhFYiYr8mUU55Ni?=
+ =?us-ascii?Q?9LTDbsyeS5I17fbu0fnfhRdmi6YkcukM+NbcwYKlYu8L6xkyALHH9y2sk/4E?=
+ =?us-ascii?Q?ioIG9ATyG1v+x6pdFkF9Jffuz6JEIp26Vv5GXpI/HbAKR8vR4Ysmrta2KPc0?=
+ =?us-ascii?Q?Mid2pErBYYta/ZfLXSbArU3mDISuqCBtRfBsfBklCRbh/zDDJ/36L5UacM9R?=
+ =?us-ascii?Q?Dyvh5ZAIFxB8g8ehkrcj3FJ7wXSWH/AmAjEwDQQp+6N+826vpF/DfqsdUkhN?=
+ =?us-ascii?Q?groUf2SlfzYVKvMcOlFhzOT5jswnCW1d9KNM9Q8Tj2HXqPWwA1fiy2fu2hk4?=
+ =?us-ascii?Q?XnXFn8t8461Dtp4U4n01Vg16yEsbMIt4+HNbeqhuo3BYrYef99MAWR8cyw6m?=
+ =?us-ascii?Q?Njv2fEGUuaKlnb9vO0f/NqeRrWO0/5DrEQduIi+4ei5nWCLPc6T5NtmtK7+I?=
+ =?us-ascii?Q?bH7BaV9bv6qIb3LKoOEUByejTwODK4qQ2dp2ghUhQyS2uq79em0cM/shzZLZ?=
+ =?us-ascii?Q?/HG2KoWyqpzy2VdgbIgBUduI7mFCaquikN86gQAf//kMEd6m8KBqVM0AWPY6?=
+ =?us-ascii?Q?qKdn+bVxBSccnzcblDAaTxkjzwyWizGrRNG2+oYYoROVpozfjDuabVwrAzyX?=
+ =?us-ascii?Q?V1yPUs7POx4RA88Zo9NM6lZDGTdKHAHpNgGRJSCQj7nbBvN26r9wnF/OkVWv?=
+ =?us-ascii?Q?Bc1X/sX5dQU8tuWHQzvo/cEa7m3+i4GubXyF9lp4GLffSTjQ2EWF/TXv0rXZ?=
+ =?us-ascii?Q?kU8E24hatP8UskrFFg3/cfvXxGzVifkUEI+wv4Ppa/ZE5Cf/3sM5Ie8ffa9N?=
+ =?us-ascii?Q?wnd1f3OaOU/ZByWJVmDkVUs+2WIFXwmmtKYtr9ugIM8WZBFOZxY+ELGWsXPh?=
+ =?us-ascii?Q?Ee0BIM1ui7rt6FeNDEyW6X3LOSBfB4PQaFAfjFVx2CCxPxBhXANiZa/m/5/c?=
+ =?us-ascii?Q?D8I86+zz8Xw6FzS3mlp0/WQdUU36IwyxJGs4pHOSewUls5Dx5Q5x92t8j7Ix?=
+ =?us-ascii?Q?WPeCGxQyXdN0KEETb0+wXvNlmIrqqanZgP5pDE0ai/jtHTUldHLnnlz2fyHM?=
+ =?us-ascii?Q?O2opC6hU2kpDMilQp7WBdfLksZiPtgHyzDO+O8mKKvfAWtfJlUXEi0eNuk3w?=
+ =?us-ascii?Q?9cBlfZBiBzykg2DcKNc/vW6KqRKAmZCBWM6JPM9FiKC6TZ7eQE3O396BYw2C?=
+ =?us-ascii?Q?ZotklMpcFN5z6ZTGgZzXZJPRWnVOM1ncVm+N4AOKpySrmLAmFJRKjimK1GYs?=
+ =?us-ascii?Q?N9MmALdmdl4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?1ekRfxFbavvkLPSAreurQzKDp1Wt7p9PGgNmmAlPq5gZVSplLawFesccSh0C?=
+ =?us-ascii?Q?d20Fl5dMxJfJkHbw+goEuQO+GOutWCSG69fddGEnjQbhKH4W2KXxE+Oeub2C?=
+ =?us-ascii?Q?gcOH6JCvevduRIepVJy1Qs8gUNMUIgIB9aqDqkh6uzoNI5gVAhXi7vE0OwYe?=
+ =?us-ascii?Q?v7bAUuooMazYKo3OsqHFV8xLn5XvOX2iFdv/V6u63zof7yLcOwPfi5N3KkBq?=
+ =?us-ascii?Q?yXzUsZcOe8AN5NdIqff+bgv/zlYFMy2hDz4OqEScDaLvUS3X8LJKo/wNlYRv?=
+ =?us-ascii?Q?SlgYoJ978lqubDaqVimKBJ+oPf1srHpa8ckU5dmOaqKETBRHRUJ4xwQO+hoX?=
+ =?us-ascii?Q?RO+ByhXT3O/CiUVCeSwWqrUtfcGVZ/qRVm08D1Dts7ootG45W2ZsP5TKIK4n?=
+ =?us-ascii?Q?ZojUhZm7MJh4PeUe6ndKzyhu6l11zw2XHxoWKLa5HYe4vSu7KLAmKq4oeNZP?=
+ =?us-ascii?Q?0fFwqvq1jtnsfEFPyDyor/uOwceEPzi4cvX/As6bavfuKy9+exNIpQG1Pjub?=
+ =?us-ascii?Q?8a4sUoiF1i1ZIfiP4RCDpiA3kWGDvGWN1OxoXIfbvsoS62mzNs/LHwf5Lbsy?=
+ =?us-ascii?Q?Pp+qxvghJdkHpIZUR0fwoByrJClMRsisWFq/zA441vxOFHE4s4nUQsJh2r1/?=
+ =?us-ascii?Q?aozDozYzBpUmjf7QD2SggfprIEvfjFgMDrAfWAOtTS4hQZDPr0JNRU4elyTR?=
+ =?us-ascii?Q?fflQowuEk7/IyTWJP11wjy1x2t5+26LVZNeMUEEeDipTdZXB7E7kWtzasQuk?=
+ =?us-ascii?Q?tUiSxWE0phCbf+xHnnykRSFe7cKHCAcODwoBTi/Zh4232P9/KAOLPgbmnza9?=
+ =?us-ascii?Q?gV4cVFuGQ8zfwqCMJ9RXssplzckXPT5rmS3HaJI8vZ1CZDjD4k/T6jbch26M?=
+ =?us-ascii?Q?Xz1uUoZGGNvr5I405ltNBTIy2jeV2AwpSfTP82scZ1g7DC8y1gpmp4V/yv1Q?=
+ =?us-ascii?Q?++u++7/KsVAPzif0c7YN1oTbXT3AdfdT3Mr0rhSG7iUg11bsaXZbJ/I1y2Jp?=
+ =?us-ascii?Q?jK4L4rvB8qS6R7D2E4iFWjFGU3os7bWhW6HGPi10tagJhVh5ucofC0jlisUe?=
+ =?us-ascii?Q?VNQHMr0e4hPkBufrzGv/1ZmJhdmEJgCPKEH4IMz6miWi/Yw+fcmtOxLS5eo1?=
+ =?us-ascii?Q?kT6JW9H6INwZA7KuJ40vazRRMvbbb2Vvu63Vq2Y+RGK8ZrNyJF1yIZrEj3ra?=
+ =?us-ascii?Q?24+TIlSlY2BtEpInhtFjxKJCKabDxCHnSPZTQ1ZnerUZ2TlPGIGLVOL20n4j?=
+ =?us-ascii?Q?ysgqHTVz+MSumM9rmYfinvthC6P8bK8UXg/Rpjq4BKu1V8sJPYZ3QruUk8aG?=
+ =?us-ascii?Q?HGw8qTRAD9EcZysOnU9o9AlJPO6WB0IhBASJijGEIzHJieXRfCGXtWWoqqwW?=
+ =?us-ascii?Q?hNhP7c68hCl9iR2CB+Sx8dLXwrJWboKNk/thFy4Vhq5uZ5Gfp05taP78rXvG?=
+ =?us-ascii?Q?wp0YZDaM3Wfnz9/uL+CXk2OYNcxs59VtKteFTvnfRvrri+nKeNflvFtAcMs3?=
+ =?us-ascii?Q?AT+sYS0ceW3YtfpanaHj376yxzhG8BP/k6eIiEfsbq1LJxyhl9Upoq/y3wfi?=
+ =?us-ascii?Q?z2gO91KVfWy4fpeetZ0=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 54ae7865-3ecf-4acf-1a0d-08ddf45453aa
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2025 12:35:17.7026
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jcGCWApM/RV7KXsd84AZB1/pvXMIkooDcYjSudZW4ZszAhLNoDLAng9NYtHb5W/e
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6660
 
-Hi Sakari,
+On Fri, Sep 12, 2025 at 09:33:06AM +0000, Tian, Kevin wrote:
+> > From: Nicolin Chen <nicolinc@nvidia.com>
+> > Sent: Monday, September 1, 2025 7:32 AM
+> > 
+> > +static int arm_smmu_attach_dev_release(struct iommu_domain *domain,
+> > +				       struct device *dev)
+> > +{
+> > +	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
+> > +
+> > +	WARN_ON(master->iopf_refcount);
 
-On Mon, Sep 15, 2025 at 1:32=E2=80=AFPM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> Hi Rafael,
->
-> On Fri, Sep 12, 2025 at 09:40:58PM +0200, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > In some places in the ACPI device properties handling code, it is
-> > unclear why the code is what it is.  Some assumptions are not documente=
-d
-> > and some pieces of code are based on experience that is not mentioned
-> > anywhere.
-> >
-> > Add code comments explaining these things.
-> >
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >  drivers/acpi/property.c |   51 +++++++++++++++++++++++++++++++++++++++=
-+++++++--
-> >  1 file changed, 49 insertions(+), 2 deletions(-)
-> >
-> > --- a/drivers/acpi/property.c
-> > +++ b/drivers/acpi/property.c
-> > @@ -108,7 +108,18 @@ static bool acpi_nondev_subnode_extract(
-> >       if (handle)
-> >               acpi_get_parent(handle, &scope);
-> >
-> > +     /*
-> > +      * Extract properties from the _DSD-equivalent package pointed to=
- by
-> > +      * desc and use scope (if not NULL) for the completion of relativ=
-e
-> > +      * pathname segments.
-> > +      *
-> > +      * The extracted properties will be held in the new data node dn.
-> > +      */
-> >       result =3D acpi_extract_properties(scope, desc, &dn->data);
-> > +     /*
-> > +      * Look for subnodes in the _DSD-equivalent package pointed to by=
- desc
-> > +      * and create child nodes of dn if there are any.
-> > +      */
-> >       if (acpi_enumerate_nondev_subnodes(scope, desc, &dn->data, &dn->f=
-wnode))
-> >               result =3D true;
-> >
-> > @@ -153,6 +164,12 @@ static bool acpi_nondev_subnode_ok(acpi_
-> >       acpi_handle handle;
-> >       acpi_status status;
-> >
-> > +     /*
-> > +      * If the scope is unknown, the _DSD-equivalent package being par=
-sed
-> > +      * was embedded in an outer _DSD-equivalent package as a result o=
-f
-> > +      * direct evaluation of an object pointed to by a reference.  In =
-that
-> > +      * case, using a pathname as the target object pointer is invalid=
-.
-> > +      */
-> >       if (!scope)
-> >               return false;
-> >
-> > @@ -172,6 +189,10 @@ static bool acpi_add_nondev_subnodes(acp
-> >       bool ret =3D false;
-> >       int i;
-> >
-> > +     /*
-> > +      * Every element in the links package is expected to represent a =
-link
-> > +      * to a non-device node in a tree containing device-specific data=
-.
-> > +      */
-> >       for (i =3D 0; i < links->package.count; i++) {
-> >               union acpi_object *link, *desc;
-> >               acpi_handle handle;
-> > @@ -182,22 +203,48 @@ static bool acpi_add_nondev_subnodes(acp
-> >               if (link->package.count !=3D 2)
-> >                       continue;
-> >
-> > -             /* The first one must be a string. */
-> > +             /* The first one (the key) must be a string. */
-> >               if (link->package.elements[0].type !=3D ACPI_TYPE_STRING)
-> >                       continue;
-> >
-> > -             /* The second one may be a string, a reference or a packa=
-ge. */
-> > +             /*
-> > +              * The second one (the target) may be a string, a referen=
-ce or
-> > +              * a package.
-> > +              */
-> >               switch (link->package.elements[1].type) {
-> >               case ACPI_TYPE_STRING:
-> > +                     /*
-> > +                      * The string is expected to be a full pathname o=
-r a
-> > +                      * pathname segment relative to the given scope. =
- That
-> > +                      * pathname is expected to point to an object ret=
-urning
-> > +                      * a package that contains _DSD-equivalent inform=
-ation.
-> > +                      */
-> >                       result =3D acpi_nondev_subnode_ok(scope, link, li=
-st,
-> >                                                        parent);
-> >                       break;
-> >               case ACPI_TYPE_LOCAL_REFERENCE:
->
-> I think you get ACPI_TYPE_LOCAL_REFERENCE only when you evaluate a
-> reference to a device object.
+This doesn't look right anymore..
 
-If it is so, the code below is just dead because the target here is
-expected to be a named object (not a device), in which case it would
-just be better to delete this code.
+Now that iopf is managed automatically it technically doesn't go to
+zero until the attaches below:
 
-Is this what you mean?
+> > +
+> > +	/* Put the STE back to what arm_smmu_init_strtab() sets */
+> > +	if (dev->iommu->require_direct)
+> > +
+> > 	arm_smmu_attach_dev_identity(&arm_smmu_identity_domain,
+> > dev);
+> > +	else
+> > +
+> > 	arm_smmu_attach_dev_blocked(&arm_smmu_blocked_domain,
+> > dev);
 
-> > +                     /*
-> > +                      * The reference is expected to point to an objec=
-t
-> > +                      * returning a package that contains _DSD-equival=
-ent
-> > +                      * information.
-> > +                      */
-> >                       handle =3D link->package.elements[1].reference.ha=
-ndle;
-> >                       result =3D acpi_nondev_subnode_data_ok(handle, li=
-nk, list,
-> >                                                            parent);
-> >                       break;
-> >               case ACPI_TYPE_PACKAGE:
->
-> And similarly, the result of an evaluation here is a package when a
-> reference points to a name object (i.e. a data node).
+And I'd argue the attaches internally should have the assertion. If no
+pasids and blocked/identity the iopf == 0.
 
-Well, I'm not sure how this remark is related to the new comment below.
+> it's a bit confusing that a BLOCKED domain type could turn to the
+> identity mode, though this movement doesn't change the original
+> behavior.
 
-Do you mean that this always happens when a reference is used in ASL
-to point to the target here?
+That isn't what is happening here..
 
-But the comment would still be valid in that case, wouldn't it?
+If dev->iommu->require_direct is set we prevent attaching BLOCKING
+domains entirely:
 
-> > +                     /*
-> > +                      * This happens when the target package is embedd=
-ed
-> > +                      * within the links package as a result of direct
-> > +                      * evaluation of an object pointed to by a refere=
-nce.
-> > +                      *
-> > +                      * The target package is expected to contain _DSD=
--
-> > +                      * equivalent information, but the scope in which=
- it
-> > +                      * is located in the original AML is unknown.  Th=
-us
-> > +                      * it cannot contain pathname segments represente=
-d as
-> > +                      * strings because there is no way to build full
-> > +                      * pathnames out of them.
-> > +                      */
-> >                       desc =3D &link->package.elements[1];
-> >                       result =3D acpi_nondev_subnode_extract(desc, NULL=
-, link,
-> >                                                            list, parent=
-);
-> >
->
-> --
+	if (dev->iommu->require_direct &&
+	    (new_domain->type == IOMMU_DOMAIN_BLOCKED ||
+	     new_domain == group->blocking_domain)) {
+		dev_warn(dev,
+			 "Firmware has requested this device have a 1:1 IOMMU mapping, rejecting configuring the device without a 1:1 mapping. Contact your platform vendor.\n");
+		return -EINVAL;
+	}
+
+So in most sane cases the above will never convert BLOCKING to
+IDENTITY. What it is doing is preserving the RMRs...
+
+Also, I don't think this should be in the smmu driver, every driver
+should have this same logic, it is part of the definition of RMR
+Let's put it in the core code:
+
+	if (!dev->iommu->attach_deferred && ops->release_domain) {
+		struct iommu_domain *release_domain = ops->release_domain;
+
+		/*
+		 * If the device requires direct mappings then it should not 
+		 * be parked on a BLOCKED domain during release as that would
+		 * break the direct mappings.
+		 */
+		if (dev->iommu->require_direct && ops->identity_domain &&
+		    release_domain == ops->blocked_domain)
+			release_domain = ops->identity_domain;
+
+		release_domain->ops->attach_dev(release_domain, dev);
+	}
+
+Jason
 
