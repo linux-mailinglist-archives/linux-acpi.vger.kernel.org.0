@@ -1,147 +1,184 @@
-Return-Path: <linux-acpi+bounces-16969-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16970-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63ABBB58624
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 22:43:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2422B58625
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 22:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 894AB7AC6AA
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 20:41:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7619A48697B
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 20:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A5B29DB8F;
-	Mon, 15 Sep 2025 20:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F078529D288;
+	Mon, 15 Sep 2025 20:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LAaymJYX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Oq0qEIQy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32C81DE4EF
-	for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 20:43:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F89E1DE4EF;
+	Mon, 15 Sep 2025 20:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757969005; cv=none; b=uJhInacFJ2+iDcgEg4koJGFsh1SAtk94gVaHAjLOqh7phtYfw9OI4uFVhJFTOffUk9jydPqjEDgYWWsBPJYPYHz5SoVNCuWbT0YSWcvrPQHV/DoH9eCpGber1ljrEPCd9xOxfQgFP5wKIF+IKUeyIZycGUgOwK1RK6xQtofCnxM=
+	t=1757969030; cv=none; b=bj5f1YEAb0OnmT8VoNaBLuRKWvbGS/tRyNT8etVRP4nyD4UDWwYVsapwCiG0YGUZ91WQpNivAv43bcdW9viDEyB0yFKUPge4PADMs+GtRn6IghQQALm2h2LTJiVGWj54c0JcpLvFesw7pPSVnkUs1+QzFqlBC+9w3TgzNqfGMWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757969005; c=relaxed/simple;
-	bh=7oKU06A7dwB39qlDptweTTRyRjpoKBf3sQ+syLVsEfQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=na2HLH7PNy36rfZE2IZvr36fe1RmAeiVR4HFMWTkF7QdceMIKuCREQQ2vMiZFsvtXK/tpCflf1fo/JyVwbUu6bgE/BbpDCrWYvBO97KH+olFqnYyKbJIWIkpMiGgaPdM/1T2Ibq5uHnZseLEnvGR27NecSbxhHCm2AK3Ox7gTYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LAaymJYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23215C4CEF1;
-	Mon, 15 Sep 2025 20:43:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757969004;
-	bh=7oKU06A7dwB39qlDptweTTRyRjpoKBf3sQ+syLVsEfQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LAaymJYXM0AYezhRBEqoKN5yLG8PNjvo9nhxqvdpzgcDD5ZSZdIwpOo/Ia2s+bVLg
-	 4PHwsou1yHUTJB6K8veUL7djqvQlcKQY+7tcmXJZlVias75JhltSPc8CxQBuq/ZiOD
-	 R5jSfq7fNBb6XlCzIOv6oK3wMmjPeS5KUx6jFWWQEIk0gXshlVSzoXcTx9JC5TZb9+
-	 odfXbjFOeoXay2pA8oVporzh+qJNfXU2YJILdH1o6x5dxiqeWW5gf24vkk14NT10B7
-	 BjUFXI2SmQGa5bAr2bNOuJ+uMV7voc8qjYIoAsUX9+06ggvWqEe6YpGqvau0Ffq8fp
-	 hDNERsoVklEnA==
-From: "Mario Limonciello (AMD)" <superm1@kernel.org>
-To: "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-	linux-acpi@vger.kernel.org
-Cc: "Mario Limonciello (AMD)" <superm1@kernel.org>
-Subject: [PATCH 2/2] ACPI: processor: Add support for ACPI C4 state
-Date: Mon, 15 Sep 2025 15:43:17 -0500
-Message-ID: <20250915204318.696058-3-superm1@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250915204318.696058-1-superm1@kernel.org>
-References: <20250915204318.696058-1-superm1@kernel.org>
+	s=arc-20240116; t=1757969030; c=relaxed/simple;
+	bh=695R1vYPpuNbJl9CF6lG6ZpeSbRULXA1ysOWwkZk+Zc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=STC6TwbWo37mG2sWNR9d2skCFdubPMlcciNi46P2pTY9h6CE1uUEiGNf17v/tpLqAy9+77khU500tDOVd9ZVZYxGpCWEfMWavq56xk7NZOwxFK8XdB7H/IOKCYmRvry0Pq3jBjQWpMm+4m9d/yy0BZXOGULsEgU0KtVZDlc5VGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Oq0qEIQy; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757969030; x=1789505030;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=695R1vYPpuNbJl9CF6lG6ZpeSbRULXA1ysOWwkZk+Zc=;
+  b=Oq0qEIQyUYzbdMIXEflb3QEc7Zc5NLungdVX7qmr8eyysJnAISpKsdKu
+   4U5+SYkrjVxvVmjPbpx6nh/v956m0mVq7HNXJyrmaWuZPDWoJeHiKkrGt
+   wajRdwvyDmaLQVGDoBIf8kz26ex9Q/Pol9ocFOYOqbQ9STzfKvKg0jC0W
+   xhfwyC5OdrrU+gxPRG0I+KUJw3ntvaY1sKMOZQVQXeF9GpJ0MYjtlhmDn
+   L7b0fLIfIeznewfxuo66pZalgeVN+kqORjvuuCq4TTGGo34whNxDS7M71
+   peEJmoLE02365MB6jLM8d8vvzXMwvvInfa2g7KeIxbu4ACxjm7qB0cvvI
+   g==;
+X-CSE-ConnectionGUID: jbpGcfHOQkmEhFK7cuZSeQ==
+X-CSE-MsgGUID: Lw4m9LMwTXChQVFb4JrlaA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="59933382"
+X-IronPort-AV: E=Sophos;i="6.18,267,1751266800"; 
+   d="scan'208";a="59933382"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 13:43:49 -0700
+X-CSE-ConnectionGUID: 2ASxq904TqqAYH4tClBQlQ==
+X-CSE-MsgGUID: 4l9LuPNtQdesDyif1WLEwQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,267,1751266800"; 
+   d="scan'208";a="179898705"
+Received: from sschumil-mobl2.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.113])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 13:43:47 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 645A911F785;
+	Mon, 15 Sep 2025 23:43:44 +0300 (EEST)
+Date: Mon, 15 Sep 2025 23:43:44 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 3/4] ACPI: property: Do not pass NULL handles to
+ acpi_attach_data()
+Message-ID: <aMh6gJtQcRgqgYd6@kekkonen.localdomain>
+References: <5046661.31r3eYUQgx@rafael.j.wysocki>
+ <3014880.e9J7NaK4W3@rafael.j.wysocki>
+ <aMf9YRHA8jRgMPAr@kekkonen.localdomain>
+ <CAJZ5v0hPjWHwSSc9cTdC76RypWGPUYrkqw+W3Vb52uy_UJpk9A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0hPjWHwSSc9cTdC76RypWGPUYrkqw+W3Vb52uy_UJpk9A@mail.gmail.com>
 
-The _CST object described in the ACPI specification [1] allows processors
-to support any arbitrary number of power states that are described by
-a package describing the register used, the type of C-state, latency
-and the power consumption.
+Hi Rafael,
 
-Currently the Linux kernel supports up to ACPI C3, and if a system
-supports any further states they are ignored.  This causes problems on
-some AMD hardware which can support up to ACPI C4.
+On Mon, Sep 15, 2025 at 02:57:31PM +0200, Rafael J. Wysocki wrote:
+> Hi Sakari,
+> 
+> On Mon, Sep 15, 2025 at 1:50 PM Sakari Ailus
+> <sakari.ailus@linux.intel.com> wrote:
+> >
+> > Hi Rafael,
+> >
+> > On Fri, Sep 12, 2025 at 09:42:55PM +0200, Rafael J. Wysocki wrote:
+> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > >
+> > > In certain circumstances, the ACPI handle of a data-only node may be
+> > > NULL, in which case it does not make sense to attempt to attach that
+> > > node to an ACPI namespace object, so update the code to avoid attempts
+> > > to do so.
+> > >
+> > > This prevents confusing and unuseful error messages from being printed.
+> > >
+> > > Also document the fact that the ACPI handle of a data-only node may be
+> > > NULL, and when that happens, in a code comment.
+> > >
+> > > In addition, make acpi_add_nondev_subnodes() print a diagnostic message
+> > > for each data-only node with an unknown ACPI namespace scope.
+> > >
+> > > Fixes: 1d52f10917a7 ("ACPI: property: Tie data nodes to acpi handles")
+> > > Cc: 6.0+ <stable@vger.kernel.org> # 6.0+
+> > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > > ---
+> > >  drivers/acpi/property.c |   12 ++++++++++++
+> > >  1 file changed, 12 insertions(+)
+> > >
+> > > --- a/drivers/acpi/property.c
+> > > +++ b/drivers/acpi/property.c
+> > > @@ -124,6 +124,10 @@ static bool acpi_nondev_subnode_extract(
+> > >               result = true;
+> > >
+> > >       if (result) {
+> > > +             /*
+> > > +              * This will be NULL if the desc package is embedded in an outer
+> > > +              * _DSD-equivalent package and its scope cannot be determined.
+> > > +              */
+> >
+> > I think indeed this happens in particular when when references to
+> > non-device nodes; there's no handle because when you get is basically a
+> > dynamically allocated copy of a node.
+> 
+> I know for a fact that this happens, that's why I'm adding the comment here.
 
-AMD systems that support up to C3 will enter CPUOFF and VDDOFF
-when entering C3. Systems that support up to C4 will enter CPUOFF
-when going to C3 and will enter VDDOFF when entering into C4.
+I wanted to say it could be helpful to have this written in the comment.
 
-The existing semantics for bus mastering around C3 are also valid for C4,
-so instead of hardcoding to C3, map then >= C3. In the case of s2idle
-detect the deepest C-state supported and enter the deepest.
+> 
+> > >               dn->handle = handle;
+> > >               dn->data.pointer = desc;
+> > >               list_add_tail(&dn->sibling, list);
+> > > @@ -245,6 +249,8 @@ static bool acpi_add_nondev_subnodes(acp
+> > >                        * strings because there is no way to build full
+> > >                        * pathnames out of them.
+> > >                        */
+> > > +                     acpi_handle_info(scope, "Unknown namespace scope of node %s\n",
+> > > +                                      link->package.elements[0].string.pointer);
+> > >                       desc = &link->package.elements[1];
+> > >                       result = acpi_nondev_subnode_extract(desc, NULL, link,
+> > >                                                            list, parent);
+> > > @@ -408,6 +414,9 @@ static void acpi_untie_nondev_subnodes(s
+> > >       struct acpi_data_node *dn;
+> > >
+> > >       list_for_each_entry(dn, &data->subnodes, sibling) {
+> > > +             if (!dn->handle)
+> > > +                     continue;
+> > > +
+> > >               acpi_detach_data(dn->handle, acpi_nondev_subnode_tag);
+> > >
+> > >               acpi_untie_nondev_subnodes(&dn->data);
+> > > @@ -422,6 +431,9 @@ static bool acpi_tie_nondev_subnodes(str
+> > >               acpi_status status;
+> > >               bool ret;
+> > >
+> > > +             if (!dn->handle)
+> > > +                     continue;
+> > > +
+> > >               status = acpi_attach_data(dn->handle, acpi_nondev_subnode_tag, dn);
+> > >               if (ACPI_FAILURE(status) && status != AE_ALREADY_EXISTS) {
+> > >                       acpi_handle_err(dn->handle, "Can't tag data node\n");
+> > >
+> > >
+> > >
+> >
 
-Link: https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/08_Processor_Configuration_and_Control/declaring-processors.html?#cst-c-states [1]
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
----
- drivers/acpi/processor_idle.c | 10 +++++++---
- include/acpi/actypes.h        |  5 +++--
- 2 files changed, 10 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 5dacf41d7cc0a..537b0119535ea 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -444,6 +444,10 @@ static int acpi_processor_power_verify(struct acpi_processor *pr)
- 		case ACPI_STATE_C3:
- 			acpi_processor_power_verify_c3(pr, cx);
- 			break;
-+		case ACPI_STATE_C4:
-+			if (!cx->latency || !cx->address)
-+				break;
-+			cx->valid = 1;
- 		}
- 		if (!cx->valid)
- 			continue;
-@@ -685,7 +689,7 @@ static int __cpuidle acpi_idle_enter(struct cpuidle_device *dev,
- 		return -EINVAL;
- 
- 	if (cx->type != ACPI_STATE_C1) {
--		if (cx->type == ACPI_STATE_C3 && pr->flags.bm_check)
-+		if (cx->type >= ACPI_STATE_C3 && pr->flags.bm_check)
- 			return acpi_idle_enter_bm(drv, pr, cx, index);
- 
- 		/* C2 to C1 demotion. */
-@@ -708,7 +712,7 @@ static int __cpuidle acpi_idle_enter_s2idle(struct cpuidle_device *dev,
- {
- 	struct acpi_processor_cx *cx = per_cpu(acpi_cstate[index], dev->cpu);
- 
--	if (cx->type == ACPI_STATE_C3) {
-+	if (cx->index == drv->state_count - 1) {
- 		struct acpi_processor *pr = __this_cpu_read(processors);
- 
- 		if (unlikely(!pr))
-@@ -754,7 +758,7 @@ static int acpi_processor_setup_cpuidle_cx(struct acpi_processor *pr,
- 		if (lapic_timer_needs_broadcast(pr, cx))
- 			state->flags |= CPUIDLE_FLAG_TIMER_STOP;
- 
--		if (cx->type == ACPI_STATE_C3) {
-+		if (cx->type >= ACPI_STATE_C3) {
- 			state->flags |= CPUIDLE_FLAG_TLB_FLUSHED;
- 			if (pr->flags.bm_check)
- 				state->flags |= CPUIDLE_FLAG_RCU_IDLE;
-diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
-index 8fe893d776dde..6c9f472af482c 100644
---- a/include/acpi/actypes.h
-+++ b/include/acpi/actypes.h
-@@ -600,8 +600,9 @@ typedef u64 acpi_integer;
- #define ACPI_STATE_C1                   (u8) 1
- #define ACPI_STATE_C2                   (u8) 2
- #define ACPI_STATE_C3                   (u8) 3
--#define ACPI_C_STATES_MAX               ACPI_STATE_C3
--#define ACPI_C_STATE_COUNT              4
-+#define ACPI_STATE_C4                   (u8) 4
-+#define ACPI_C_STATES_MAX               ACPI_STATE_C4
-+#define ACPI_C_STATE_COUNT              5
- 
- /*
-  * Sleep type invalid value
 -- 
-2.43.0
+Kind regards,
 
+Sakari Ailus
 
