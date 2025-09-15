@@ -1,125 +1,88 @@
-Return-Path: <linux-acpi+bounces-16945-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16946-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07093B57F46
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 16:41:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F34BB58007
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 17:10:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD820174305
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 14:41:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A2EE4817D4
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 15:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A25532A3F9;
-	Mon, 15 Sep 2025 14:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D0934166E;
+	Mon, 15 Sep 2025 15:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kJqEilup";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="u+YNkMxE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YriVx8Bk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0CC627461;
-	Mon, 15 Sep 2025 14:40:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57EE15D1;
+	Mon, 15 Sep 2025 15:07:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757947257; cv=none; b=o893vUd9mG6COsQA2Z7Fd2JfzT28j/C+IMllAxh72F+t0ozY+f3mQ7VgjDIMBNKiH+DSUGBM2sr7IRX9dkdZQAGNKPCCRa91e4Xxb4gcY0TNTjsgzEr2sy4yNlAg2DBO4rrXJZ93mumpMXoixPU3StwnRtP9WyDvBJ1tDdXZZKU=
+	t=1757948872; cv=none; b=X1pqh5pfOLzVz1Hfiw3UH++WT5TkkGUp+NrRR/mWYu4D7fD3DouNaPjFMOl40GRgaGGh0wdtAvFsNY/3bqNE/VBthEolWxlNjfGFGBWCVj9NyjWYcmMWoh+1TDg6hGYhN4vYr3UEI6BrKSogZg+K7pjEMGnUrkzNBvVymH/NZWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757947257; c=relaxed/simple;
-	bh=x67mCxmqkj9+e9pzvDN8Tta0qPHWFpvcCgabamG1AWc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M1YuLDuFYnYMhKhOW8vvPXidTn8COjP8bDvsfMC+QEtemcSZ0Cpr0juo862/4ivYAUuliSMHrUp/eOXoV05rwK+8lWnM6CF5/DpSaNl+B3B/h2h5wjc5z8Edo02Ty9tOkUaRDpKyteObeYuWE8zUZmOT6ZvE0N0Qrbg07b/AxAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kJqEilup; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=u+YNkMxE; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 15 Sep 2025 16:40:52 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1757947254;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lni+I3buozORHBU99Fb6S2L5ArlJnPvanU1k2nG+bqs=;
-	b=kJqEilupnjshBEyflsSxaQ1cYXo1HmvwEGZxE5Hry+3tMhFnVh3frgVMySXIVU3YA7sr/P
-	ZmzsU0E7Km8Wp9l5bZDkkyDgnPFZnbLtBPRK/3LI31uDYiDIGpPjLv9wsR2eeUTNRRAX//
-	dmNhtGH6hrZaFy0o25aqc/JiLREHt/y5ZcTdXzlyLdSjRzpWF1ajC/tWXeGrJKOz1r4JdJ
-	O+HZHd0cB6caRbdRPYpFuFCDeIfE27yuCYcWeSk2ELWrhiOAF7HeL/2G+EZODCQqXklj6A
-	WbRdcD38CnfevP/TM/aX4fpES3ouPOth51eerceMkkYhcApyFTE2c/6EC96NyA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1757947254;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lni+I3buozORHBU99Fb6S2L5ArlJnPvanU1k2nG+bqs=;
-	b=u+YNkMxEXUeLN4I2gvc5y9anOucA/bETagP+D7VWVq55ed12wCZJ5YaxLNDq/vrnZRM5c4
-	1K1FhWVW76s3WjAg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: pengdonglin <dolinux.peng@gmail.com>
-Cc: tj@kernel.org, tony.luck@intel.com, jani.nikula@linux.intel.com,
-	ap420073@gmail.com, jv@jvosburgh.net, freude@linux.ibm.com,
-	bcrl@kvack.org, trondmy@kernel.org, longman@redhat.com,
-	kees@kernel.org, linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, linux-nfs@vger.kernel.org,
-	linux-aio@kvack.org, linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org, linux-acpi@vger.kernel.org,
-	linux-s390@vger.kernel.org, cgroups@vger.kernel.org,
-	Hillf Danton <hdanton@sina.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	pengdonglin <pengdonglin@xiaomi.com>
-Subject: Re: [PATCH v2] rcu: Remove redundant rcu_read_lock/unlock() in
- spin_lock critical sections
-Message-ID: <20250915144052.VHYlgilw@linutronix.de>
-References: <20250915134729.1801557-1-dolinux.peng@gmail.com>
+	s=arc-20240116; t=1757948872; c=relaxed/simple;
+	bh=E9O/m/wb8v3DqC+2hZK4UMJAS0IXQ7UazYZ1ZtSz/GU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B+CL2BKf7gwyTZwtMeQUdvMlCpB80VqTXWHnBdw5xBsl4u5AQxXmh7FBBpKk2LjDVcLqHL9LfLnEuXQBLH1Eaaf8D0slwJYgtNaMw/gNzNpKm55oUipJPr/35wEYhELcV2sQHscKaAsD/Fd+DZ17jMefKWsmil3bJmNMfksYmr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YriVx8Bk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D0DC4CEF1;
+	Mon, 15 Sep 2025 15:07:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757948872;
+	bh=E9O/m/wb8v3DqC+2hZK4UMJAS0IXQ7UazYZ1ZtSz/GU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YriVx8BkL92SCf1o3zVzYqSUmzRGjNQWh+8g6xKOM8qW+1F9nhjaGkHFQ7yqz0PpT
+	 61Kli187nqXARGqCf2/cZb9d2COs7tXT4ZEQyQAd9m4tUbK/VPo7oejrPVc0dgKzqH
+	 VC7OkLyQOuX/aeItsQu9R/rdMPOLOK8wiHsnIEcTPnZORPRT0IslCwW1QCWOvRX0SF
+	 wurXxEuY44C83mgyqGPF9HaTrw+JUB9FBqcXfmODxkx0dLzE7UDs85I0lju2m/WEeT
+	 oY9Oe7qH2fbpbGRhzSlS9SYrXMClAU38lrV3/M5OVVyV26LEk85D92lrfnveDwLasr
+	 bWPzDV3NZyThA==
+Message-ID: <523bd663-4c38-480e-a923-d53c923eea1a@kernel.org>
+Date: Mon, 15 Sep 2025 17:07:47 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250915134729.1801557-1-dolinux.peng@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/25] irqchip/apple-aic: Add FW info retrieval support
+To: Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>, Mark Rutland
+ <mark.rutland@arm.com>, Will Deacon <will@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>,
+ Saravana Kannan <saravanak@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Janne Grunau
+ <j@jannau.net>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ James Clark <james.clark@linaro.org>
+References: <20250915085702.519996-1-maz@kernel.org>
+ <20250915085702.519996-7-maz@kernel.org>
+Content-Language: en-US
+From: Sven Peter <sven@kernel.org>
+In-Reply-To: <20250915085702.519996-7-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 2025-09-15 21:47:29 [+0800], pengdonglin wrote:
-> From: pengdonglin <pengdonglin@xiaomi.com>
+On 15.09.25 10:56, Marc Zyngier wrote:
+> Plug the new .get_info() callback into the Apple AIC driver,
+> using some of the existing FIQ affinity handling infrastructure.
 > 
-> Per Documentation/RCU/rcu_dereference.rst [1], since Linux 4.20's RCU
-> consolidation [2][3], RCU read-side critical sections include:
->   - Explicit rcu_read_lock()
->   - BH/interrupt/preemption-disabling regions
->   - Spinlock critical sections (including CONFIG_PREEMPT_RT kernels [4])
-> 
-> Thus, explicit rcu_read_lock()/unlock() calls within spin_lock*() regions are redundant.
-> This patch removes them, simplifying locking semantics while preserving RCU protection.
-> 
-> [1] https://elixir.bootlin.com/linux/v6.17-rc5/source/Documentation/RCU/rcu_dereference.rst#L407
-> [2] https://lore.kernel.org/lkml/20180829222021.GA29944@linux.vnet.ibm.com/
-> [3] https://lwn.net/Articles/777036/
-> [4] https://lore.kernel.org/lkml/6435833a-bdcb-4114-b29d-28b7f436d47d@paulmck-laptop/
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> ---
 
-What about something like this:
-
-  Since commit a8bb74acd8efe ("rcu: Consolidate RCU-sched update-side
-  function definitions") there is no difference between rcu_read_lock(),
-  rcu_read_lock_bh() and rcu_read_lock_sched() in terms of RCU read
-  section and the relevant grace period. That means that spin_lock(),
-  which implies rcu_read_lock_sched(), also implies rcu_read_lock().
-
-  There is no need no explicitly start a RCU read section if one has
-  already been started implicitly by spin_lock().
-
-  Simplify the code and remove the inner rcu_read_lock() invocation.
+Acked-by: Sven Peter <sven@kernel.org>
 
 
-The description above should make it clear what:
-- the intention is
-- the proposed solution to it and why it is correct.
 
-You can't send a patch like this. You need to split it at the very least
-by subsystem. The networking bits need to follow to follow for instance
-   Documentation/process/maintainer-netdev.rst
+Best,
 
-and so on.
 
-Sebastian
+Sven
+
+
 
