@@ -1,122 +1,135 @@
-Return-Path: <linux-acpi+bounces-16957-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16963-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60CA6B5849A
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 20:30:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C12BB5853C
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 21:23:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D63A7B14CB
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 18:28:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B215A18877C5
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 19:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FEF82FE042;
-	Mon, 15 Sep 2025 18:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5698927BF80;
+	Mon, 15 Sep 2025 19:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MNgtsZkR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFngsrHz"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567EC2C375E;
-	Mon, 15 Sep 2025 18:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A3F279DD8
+	for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 19:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757961009; cv=none; b=KKn+HICWU1v4hekq8BrmufMohKMXZ4aGQ5Kxe0nBI9YidTff6Sd9uW/MwQC7cexdMNrVy4vcLkKFmg1KCpnHWErREwlMrKe2ZxVsQ8a/6K8SUEV8yx6AItCW2lzdmtvrbeN38wAsiZ/4dqEJrW55iM3kYXXZeLvD7UDZp0S2Ufo=
+	t=1757964180; cv=none; b=Z5zaEILgABdSvVbkEnJgLBixDNGPBSsUBq/mZyrkqYNQhN5MLH3drqh+ePTfmfYUuYdA6H1PdmpDEQLOWJsoo7tXyjrNAIbbothRvwtXn9r7XG/wxMA9Vz9DLtKKmKe2J7OinGO2T8bUZz9d34cdb9lh4w8CxMQcDnOeKmz+ut8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757961009; c=relaxed/simple;
-	bh=XXx0fvR/iZHwG9J8k92ip4f2K/TpzlOCmmuuBLvoaqE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z5377XOG/7z+lie16ZcTO3FTvY8RX1H5Clymev1wdV/5s2SXk93cM9bGc+vmWr3/KF810tnzOhLlzPVlidMxO9+dUcC7wRIXFzW08uBU+NGv1DyX+VhuxFRL/ssms4nuHfGFu+asYk+eWT4yAALcQy8jOKUx+3/qkfsYKgtcpBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MNgtsZkR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C742C4CEF1;
-	Mon, 15 Sep 2025 18:30:07 +0000 (UTC)
+	s=arc-20240116; t=1757964180; c=relaxed/simple;
+	bh=CfOeBT2uJ2vDN95+a+RmRu4aSC8CMvZMjYlqYp4sVOY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pdygujZDQ3c1TWMRckS4LkwCHhVYwcfrCuXwN6EGdLroVm8mRU28TFGIK3rYHvvE2VNzEIjwnB+SGHYcClJRcuj5Ihjqv8lr/9+l5RRWx4oX5v1VkWWixw43J/BmYwvR8fnftK81qrVD7HDZ8BQafswmz70Xi9ewxRzUoWnhvyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFngsrHz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3036C4CEFD
+	for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 19:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757961009;
-	bh=XXx0fvR/iZHwG9J8k92ip4f2K/TpzlOCmmuuBLvoaqE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MNgtsZkRVBQOsl2JMT7S7TyfhqkWyDnflUtnX7s61AByzRnz6l9FGT8Xyu+2rKN40
-	 90acA3qG7Rbe3Ly0msjMNVC8Iznhu0qgmD/bQYssm3lT9kLQg3Ic8g8bqZbY+ve8Fd
-	 GAQc/e3/ZR1VpdP4RsbYn6nBAjHWRKOat146YGfo0caYBpkZIjn50AnqklgC02X4yR
-	 liUlzzdQ0JCjJO65fRaUMBVbIZMf5xwPB5PXMKtsca98Ddn7FP1Rt4f6T1xwZhl6QA
-	 UD73LFYoIl6WjtkdrmZgR3hvp4h9IdTa9BBZ/vppHyDS92YBqrtU0qsfeVxJL7mLU7
-	 r7ckC0CukNM8g==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject:
- [PATCH v2 5/5] ACPI: property: Adjust failure handling in
- acpi_nondev_subnode_extract()
-Date: Mon, 15 Sep 2025 20:29:50 +0200
-Message-ID: <2322469.iZASKD2KPV@rafael.j.wysocki>
-Organization: Linux Kernel Development
-In-Reply-To: <5922318.DvuYhMxLoT@rafael.j.wysocki>
-References: <5922318.DvuYhMxLoT@rafael.j.wysocki>
+	s=k20201202; t=1757964179;
+	bh=CfOeBT2uJ2vDN95+a+RmRu4aSC8CMvZMjYlqYp4sVOY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=OFngsrHzH/PyNLbA+/QDpBBcVM+Mxkl+zPrWRu/0vVT3ZTAonZOSzybEUvIIOoAOa
+	 uYPD5uH6E8f8zAwOJosdvnoWMdl8sf4vMNrj9Rlwp/Hwl9Xw2P7Dt4hNvChyHkvZ29
+	 DnN8udvxJ1DauJGb82hSgLNdKwIO5L+xOicRkSIs9PwIovb9ajHiTXIt+ji1GhGPBw
+	 X/HX9IMPgs/ZXDJPEYDKOSVEol+srWJwLYgRO5FbyH/2gdQeA5z3j3KV9gR7LDAZLI
+	 NR6SOTGTuiy2iVKMTYeF2vv8k4xW5//qN6BfMXJMMhmu4++og13H3Fo8VKlUJr3Bd4
+	 AzsmGBjsfxIbQ==
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-757fda06b0cso942560a34.0
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 12:22:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVLRKS5J5MBBKbSlLKdaAeWl7WjlNMJXbPtkpMHUKpEAt/GHHzuGKzX5dI2eOLgIdGnSkmyxIAzUPoH@vger.kernel.org
+X-Gm-Message-State: AOJu0YzB1jIoGeZfu/6veAvZs3e1HtWOuZaobrmguYas9Tr4uEQjNx/y
+	wugev1YNt9uHXGtb87MvmhVIgEHf5q7MJCeyx/jcSkoYD+rnkZEn6FE1fzil3t3/CMJssVBsiPR
+	SrXqV+OjdmEu7MRj/22dsnikraeLUwLk=
+X-Google-Smtp-Source: AGHT+IE5BuGSJtCD/JKhN8NFKfVoK4ypWod4N5mMxx+YQOBBrCJ3vGoqP0mQmab3oRzwZOv86Bu7xsPKazqJmeI3Y7U=
+X-Received: by 2002:a05:6830:2908:b0:746:3226:c68f with SMTP id
+ 46e09a7af769-75352994eedmr7283951a34.4.1757964179124; Mon, 15 Sep 2025
+ 12:22:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+References: <20250903224913.242928-2-thorsten.blum@linux.dev> <7c0ea575-7682-4601-8922-49684d929374@linux.alibaba.com>
+In-Reply-To: <7c0ea575-7682-4601-8922-49684d929374@linux.alibaba.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 15 Sep 2025 21:22:48 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gNP4=S5B-=LGgUMo6vQoxd4VW=nPYyPHP_ZzqRWaU8GA@mail.gmail.com>
+X-Gm-Features: AS18NWC7Zoxe_g3bqZf9rXMEBvfqiRhns9aI1KuLaUuO11R6QBMX4GGHOXH9nPA
+Message-ID: <CAJZ5v0gNP4=S5B-=LGgUMo6vQoxd4VW=nPYyPHP_ZzqRWaU8GA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: APEI: Remove redundant assignments in erst_dbg_{ioctl|write}()
+To: Shuai Xue <xueshuai@linux.alibaba.com>, Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, Hanjun Guo <guohanjun@huawei.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Len Brown <lenb@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Fri, Sep 5, 2025 at 3:19=E2=80=AFAM Shuai Xue <xueshuai@linux.alibaba.co=
+m> wrote:
+>
+>
+>
+> =E5=9C=A8 2025/9/4 06:49, Thorsten Blum =E5=86=99=E9=81=93:
+> > Use the result of copy_from_user() directly instead of assigning it to
+> > the local variable 'rc' and then overwriting it in erst_dbg_write() or
+> > immediately returning from erst_dbg_ioctl().
+> >
+> > Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> > ---
+> >   drivers/acpi/apei/erst-dbg.c | 8 +++-----
+> >   1 file changed, 3 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/drivers/acpi/apei/erst-dbg.c b/drivers/acpi/apei/erst-dbg.=
+c
+> > index 246076341e8c..ff0e8bf8e97a 100644
+> > --- a/drivers/acpi/apei/erst-dbg.c
+> > +++ b/drivers/acpi/apei/erst-dbg.c
+> > @@ -60,9 +60,8 @@ static long erst_dbg_ioctl(struct file *f, unsigned i=
+nt cmd, unsigned long arg)
+> >
+> >       switch (cmd) {
+> >       case APEI_ERST_CLEAR_RECORD:
+> > -             rc =3D copy_from_user(&record_id, (void __user *)arg,
+> > -                                 sizeof(record_id));
+> > -             if (rc)
+> > +             if (copy_from_user(&record_id, (void __user *)arg,
+> > +                                sizeof(record_id)))
+> >                       return -EFAULT;
+> >               return erst_clear(record_id);
+> >       case APEI_ERST_GET_RECORD_COUNT:
+> > @@ -175,8 +174,7 @@ static ssize_t erst_dbg_write(struct file *filp, co=
+nst char __user *ubuf,
+> >               erst_dbg_buf =3D p;
+> >               erst_dbg_buf_len =3D usize;
+> >       }
+> > -     rc =3D copy_from_user(erst_dbg_buf, ubuf, usize);
+> > -     if (rc) {
+> > +     if (copy_from_user(erst_dbg_buf, ubuf, usize)) {
+> >               rc =3D -EFAULT;
+> >               goto out;
+> >       }
+>
+> Hi Thorsten,
+> Thanks for the patch.
+>
+> The changes look good to me.
+>
+> Since this is a code cleanup with no functional changes, could you
+> please mention "no functional change" or similar wording in the commit
+> message to make it clear?
 
-Make acpi_nondev_subnode_extract() follow the usual code flow pattern
-in which failure is handled at the point where it is detected.
+Added.
 
-No intentional functional impact.
+> With that addressed:
+> Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
-
-v1 -> v2: Previously [4/4], no changes
-
----
- drivers/acpi/property.c |   25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
-
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -123,20 +123,21 @@ static bool acpi_nondev_subnode_extract(
- 	if (acpi_enumerate_nondev_subnodes(scope, desc, &dn->data, &dn->fwnode))
- 		result = true;
- 
--	if (result) {
--		/*
--		 * This will be NULL if the desc package is embedded in an outer
--		 * _DSD-equivalent package and its scope cannot be determined.
--		 */
--		dn->handle = handle;
--		dn->data.pointer = desc;
--		list_add_tail(&dn->sibling, list);
--		return true;
-+	if (!result) {
-+		kfree(dn);
-+		acpi_handle_debug(handle, "Invalid properties/subnodes data, skipping\n");
-+		return false;
- 	}
- 
--	kfree(dn);
--	acpi_handle_debug(handle, "Invalid properties/subnodes data, skipping\n");
--	return false;
-+	/*
-+	 * This will be NULL if the desc package is embedded in an outer
-+	 * _DSD-equivalent package and its scope cannot be determined.
-+	 */
-+	dn->handle = handle;
-+	dn->data.pointer = desc;
-+	list_add_tail(&dn->sibling, list);
-+
-+	return true;
- }
- 
- static bool acpi_nondev_subnode_ok(acpi_handle scope,
-
-
-
+And patch applied as 6.18 material, thanks!
 
