@@ -1,51 +1,51 @@
-Return-Path: <linux-acpi+bounces-16918-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16919-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC9FB573E6
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 11:01:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15AFAB573E9
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 11:01:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28A607AC178
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 08:59:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D549317F7C5
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 09:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF4D2F8BDA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16A12F998A;
 	Mon, 15 Sep 2025 08:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KFvgN8Kz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZRFfemI"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5314E2F83D6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53AE2F90D6;
 	Mon, 15 Sep 2025 08:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757926639; cv=none; b=YoaLNPdzLnBuaNuRo1X0kTKLJI5DLY91qWd68GXFB00j3zU2lTFtZoOrp/yO/07ODWtCxckLWvyLr0dux/a8Q6R4iGok5hINEhZWovyQ0zsgb7eLJ8aahbnhD0zwycdejgxoMWzqDEvqEpVTjFedFEBuAUo9LT5x7qNXsHPSo2c=
+	t=1757926639; cv=none; b=GoU3Sv3F7DDBU/xvzLTx1wiZQ2F3O6w0RWj64i/vNkQENyf9Vcdcep6COqL0l94oG66o3Zwd7VfB46jqjaPFXoZXi8SEb4HgSFVjfCvRVQckhs48bVGUxiRWZFx8Qkm0lYXtnQhV/4MFrwEfAc/y+yYWTbDH2WfQM0Nwfk3jtxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757926639; c=relaxed/simple;
-	bh=KvIlOqxzhmHWGaaeC2n7SGz/r3v3wz0YFXzklQ5EErE=;
+	bh=kzh4j/H3RZDe7ZkyacsAHuKMIz0DQecjQ2j642GjAyI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=drxfNkfXqX4ssqKP2hkR1GYbSJWijQkITwyUttmt6iUw7C5H7tkZApVPFNSl3EPc2qyLhpGCYNsQFucanmXXpczuZfz69JAcUMa5z0qtxlZnfzDDszxYU+3q3qyMER0G/FQ0XtmWAn/SuY1ZBU1/TY8fadiGbz79TEPsbdnfZX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KFvgN8Kz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D5EC4CEFC;
+	 MIME-Version; b=LPt2RO2A/f5KmtPA/v7K46mdYt7wC71MD1N9HzUVMy64j9hMkAPs3jwt19G/Pd0oQHoeMQJxEsavT9nTKdrfDH2jCd+xT7DMau8cgYvOlNSzZXg+/xBLsGj5lXxRqh7+6n9DJiZEgK+yAG3gFTwJDI/XWGTFDcQObFgcZ7Zxgc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZRFfemI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8313DC4CEFA;
 	Mon, 15 Sep 2025 08:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1757926639;
-	bh=KvIlOqxzhmHWGaaeC2n7SGz/r3v3wz0YFXzklQ5EErE=;
+	bh=kzh4j/H3RZDe7ZkyacsAHuKMIz0DQecjQ2j642GjAyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KFvgN8KzHTmB5mmIOkZNYVQ2CZ6RHtTLkV03SfDetznJerYGBdl+c1BzWx11lhdKr
-	 33NXiTJhMP7tdQ01SX3MeFIpGYAyo0kkK9XS9aOYLVm3DgZAJ/x5xb6eNLn8DNhqpD
-	 UfTV6QLamah5bn32DKeDhET6/BRzgBgj5dSqT4Hpsm4zPT5iQwO042fTz5Wmh3sRoD
-	 bP+IHF9b+cFAhQ7YPMRQzxCzz7Q2sixHU0BJENnRPbIOx+h2WsMg+TId7Lbjx4Qvw5
-	 bg9CblwrYTrSxYLR4DDWQ1Bg8x3jBb5P3Ty/z5ASSJATCjW3srz65LpbX/mPArTWp9
-	 svp/lxsgl3YDg==
+	b=EZRFfemIR5d70YvHXUxHp3+8Vxolt0dIQTzuIr4clY0Q98Rqrh23wn43RwVLJvkJB
+	 31nzSVBxTqHyxXad5F1a9BG3tauYuL7SQjzZg3qIobMrtk5X8Ytw2SQbglnTUK2Y6f
+	 0BI7tVuwilMo3hzV5dGBRu3ne+fxeU7EPtaAWMBdhkH1esQ695ZiQEdAtXG+xV1+g7
+	 7MVNI1LFCLbqH8YghRl2VSpeUH+DNS+av3XDH4HhstMDKoMV+v1xp/+N1MrIrlLiPy
+	 v3OisHFj/WdWvDNn/8IQuuOaRRaRlDeV1VdtL02DB3OCTcFmYZZSLwxEdSuZwlNyQA
+	 JttL69Zgls4nA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1uy51R-00000006IHP-1szD;
+	id 1uy51R-00000006IHP-2wOa;
 	Mon, 15 Sep 2025 08:57:17 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: linux-kernel@vger.kernel.org,
@@ -62,9 +62,9 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Janne Grunau <j@jannau.net>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	James Clark <james.clark@linaro.org>
-Subject: [PATCH v2 24/25] genirq: Kill irq_{g,s}et_percpu_devid_partition()
-Date: Mon, 15 Sep 2025 09:57:01 +0100
-Message-Id: <20250915085702.519996-25-maz@kernel.org>
+Subject: [PATCH v2 25/25] perf: arm_pmu: Kill last use of per-CPU cpu_armpmu pointer
+Date: Mon, 15 Sep 2025 09:57:02 +0100
+Message-Id: <20250915085702.519996-26-maz@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250915085702.519996-1-maz@kernel.org>
 References: <20250915085702.519996-1-maz@kernel.org>
@@ -80,89 +80,78 @@ X-SA-Exim-Rcpt-To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradea
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-These two helpers do not have any user anymore, and can be removed,
-together with the affinity field kept in the irqdesc structure.
+Having removed the use of the cpu_armpmu per-CPU variable from the
+interrupt handling, the only user left is the BRBE scheduler hook.
 
+It is easy to drop the use of this variable by following the pointer
+to the generic PMU structure, and get the arm_pmu structure from there.
+
+Perform the conversion and kill cpu_armpmu altogether.
+
+Suggested-by: Will Deacon <will@kernel.org>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- include/linux/irq.h     |  4 ----
- include/linux/irqdesc.h |  1 -
- kernel/irq/irqdesc.c    | 24 +-----------------------
- 3 files changed, 1 insertion(+), 28 deletions(-)
+ drivers/perf/arm_pmu.c       | 5 -----
+ drivers/perf/arm_pmuv3.c     | 2 +-
+ include/linux/perf/arm_pmu.h | 2 --
+ 3 files changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index 1381f9d1f5c9d..4cac9bc33aa34 100644
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -716,10 +716,6 @@ static inline void irq_set_chip_and_handler(unsigned int irq,
- }
+diff --git a/drivers/perf/arm_pmu.c b/drivers/perf/arm_pmu.c
+index 23814707cf771..7171d8e0d27a5 100644
+--- a/drivers/perf/arm_pmu.c
++++ b/drivers/perf/arm_pmu.c
+@@ -104,7 +104,6 @@ static const struct pmu_irq_ops percpu_pmunmi_ops = {
+ 	.free_pmuirq = armpmu_free_percpu_pmunmi
+ };
  
- extern int irq_set_percpu_devid(unsigned int irq);
--extern int irq_set_percpu_devid_partition(unsigned int irq,
--					  const struct cpumask *affinity);
--extern int irq_get_percpu_devid_partition(unsigned int irq,
--					  struct cpumask *affinity);
+-DEFINE_PER_CPU(struct arm_pmu *, cpu_armpmu);
+ static DEFINE_PER_CPU(int, cpu_irq);
+ static DEFINE_PER_CPU(const struct pmu_irq_ops *, cpu_irq_ops);
  
- extern void
- __irq_set_handler(unsigned int irq, irq_flow_handler_t handle, int is_chained,
-diff --git a/include/linux/irqdesc.h b/include/linux/irqdesc.h
-index fd091c35d5721..37e0b5b5600a4 100644
---- a/include/linux/irqdesc.h
-+++ b/include/linux/irqdesc.h
-@@ -82,7 +82,6 @@ struct irq_desc {
- 	int			threads_handled_last;
- 	raw_spinlock_t		lock;
- 	struct cpumask		*percpu_enabled;
--	const struct cpumask	*percpu_affinity;
- #ifdef CONFIG_SMP
- 	const struct cpumask	*affinity_hint;
- 	struct irq_affinity_notify *affinity_notify;
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index b64c57b44c203..79df6e3bc3958 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -886,8 +886,7 @@ void __irq_put_desc_unlock(struct irq_desc *desc, unsigned long flags, bool bus)
- 		chip_bus_sync_unlock(desc);
- }
+@@ -726,8 +725,6 @@ static int arm_perf_starting_cpu(unsigned int cpu, struct hlist_node *node)
+ 	if (pmu->reset)
+ 		pmu->reset(pmu);
  
--int irq_set_percpu_devid_partition(unsigned int irq,
--				   const struct cpumask *affinity)
-+int irq_set_percpu_devid(unsigned int irq)
- {
- 	struct irq_desc *desc = irq_to_desc(irq);
- 
-@@ -899,31 +898,10 @@ int irq_set_percpu_devid_partition(unsigned int irq,
- 	if (!desc->percpu_enabled)
- 		return -ENOMEM;
- 
--	desc->percpu_affinity = affinity ? : cpu_possible_mask;
+-	per_cpu(cpu_armpmu, cpu) = pmu;
 -
- 	irq_set_percpu_devid_flags(irq);
+ 	irq = armpmu_get_cpu_irq(pmu, cpu);
+ 	if (irq)
+ 		per_cpu(cpu_irq_ops, cpu)->enable_pmuirq(irq);
+@@ -747,8 +744,6 @@ static int arm_perf_teardown_cpu(unsigned int cpu, struct hlist_node *node)
+ 	if (irq)
+ 		per_cpu(cpu_irq_ops, cpu)->disable_pmuirq(irq);
+ 
+-	per_cpu(cpu_armpmu, cpu) = NULL;
+-
  	return 0;
  }
  
--int irq_set_percpu_devid(unsigned int irq)
--{
--	return irq_set_percpu_devid_partition(irq, NULL);
--}
--
--int irq_get_percpu_devid_partition(unsigned int irq, struct cpumask *affinity)
--{
--	struct irq_desc *desc = irq_to_desc(irq);
--
--	if (!desc || !desc->percpu_enabled)
--		return -EINVAL;
--
--	if (affinity)
--		cpumask_copy(affinity, desc->percpu_affinity);
--
--	return 0;
--}
--EXPORT_SYMBOL_GPL(irq_get_percpu_devid_partition);
--
- void kstat_incr_irq_this_cpu(unsigned int irq)
+diff --git a/drivers/perf/arm_pmuv3.c b/drivers/perf/arm_pmuv3.c
+index f6d7bab5d555c..2dee2d928aaef 100644
+--- a/drivers/perf/arm_pmuv3.c
++++ b/drivers/perf/arm_pmuv3.c
+@@ -1039,7 +1039,7 @@ static int armv8pmu_user_event_idx(struct perf_event *event)
+ static void armv8pmu_sched_task(struct perf_event_pmu_context *pmu_ctx,
+ 				struct task_struct *task, bool sched_in)
  {
- 	kstat_incr_irqs_this_cpu(irq_to_desc(irq));
+-	struct arm_pmu *armpmu = *this_cpu_ptr(&cpu_armpmu);
++	struct arm_pmu *armpmu = to_arm_pmu(pmu_ctx->pmu);
+ 	struct pmu_hw_events *hw_events = this_cpu_ptr(armpmu->hw_events);
+ 
+ 	if (!hw_events->branch_users)
+diff --git a/include/linux/perf/arm_pmu.h b/include/linux/perf/arm_pmu.h
+index 6690bd77aa4ee..bab26a7d79f4c 100644
+--- a/include/linux/perf/arm_pmu.h
++++ b/include/linux/perf/arm_pmu.h
+@@ -132,8 +132,6 @@ struct arm_pmu {
+ 
+ #define to_arm_pmu(p) (container_of(p, struct arm_pmu, pmu))
+ 
+-DECLARE_PER_CPU(struct arm_pmu *, cpu_armpmu);
+-
+ u64 armpmu_event_update(struct perf_event *event);
+ 
+ int armpmu_event_set_period(struct perf_event *event);
 -- 
 2.39.2
 
