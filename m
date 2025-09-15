@@ -1,193 +1,212 @@
-Return-Path: <linux-acpi+bounces-16929-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16925-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F33D5B57937
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 13:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB25B57888
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 13:37:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 101C7447C7D
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 11:51:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E2A93B2601
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 11:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257733043B8;
-	Mon, 15 Sep 2025 11:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C342FF661;
+	Mon, 15 Sep 2025 11:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QOubP34f"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00737303C85;
-	Mon, 15 Sep 2025 11:50:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86720304BAB;
+	Mon, 15 Sep 2025 11:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757937043; cv=none; b=aa8dUsVkyLk8h3wVPjjk5cooFKC4Fe9p4DxP32g6azDk/HUHVc/gJORUTF3q+RKzD4Mp4v6TAuA1aYKLiFGQzpft0IVS1xQnvwzyPTfW/o7fRuvLSRZnCeDDv0mm24cJRpoOMkE6PxU3ZKW3GCsvjsuULOvr0n6xTP1JPcyfR7w=
+	t=1757935979; cv=none; b=OttWRK1IF/lG6TqWW1dxl2U6KnnE4+fEaxy3MaOvZL0eqgLhd7RuxYv3zilCnWCAPrbbvBk3ZCPXFA5KXUXswkMSkCRcmDdnhcz/OCejQnwbnonPuLMLa/01BrRkHnyunHRS35Y6VRkC4UiEeyFqlN1VKL8mGaXuF8ItfJ9gfZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757937043; c=relaxed/simple;
-	bh=slLaPaXqm4+66dpacFCrcqHE+39qtJjBzOocuF1xi6c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tMkXIyr8U+cvwfYT1x2g5NFoBTKDeKwWWa4Roj6ofZxvi7nYxWjWcIRkCwOIazM0h6qjU1wkmdbpdkBVf7fZNN1kfC0QisjXmAUTRYpD++DvZJjIGsg7QFVYiwnXttH0YWdDDl3b05z92HnI+MJmx5XKrh2TctCxpctd+DlvJrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cQMxX3w10z9sxn;
-	Mon, 15 Sep 2025 13:19:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id lsQzt4OAL5QC; Mon, 15 Sep 2025 13:19:28 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cQMxW2nkYz9sxl;
-	Mon, 15 Sep 2025 13:19:27 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 27EFC8B766;
-	Mon, 15 Sep 2025 13:19:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id niL9xnZy0o5E; Mon, 15 Sep 2025 13:19:27 +0200 (CEST)
-Received: from [10.25.207.160] (unknown [10.25.207.160])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6E3148B763;
-	Mon, 15 Sep 2025 13:19:26 +0200 (CEST)
-Message-ID: <c52c2589-9d7b-4ac7-a61f-68fa9ba18308@csgroup.eu>
-Date: Mon, 15 Sep 2025 13:19:26 +0200
+	s=arc-20240116; t=1757935979; c=relaxed/simple;
+	bh=8oYNqrrAlQEHTxjixTYfzlFOUreIiPXKTs7mp++pE0U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bFbP7vNfM+8X4LNHPvtN0KPehA1/RX9W8pkbrYq0ajBOT4l3xyfjJm3exlvtTpv9XTC4nuVx7EQ8ZsA7tR/Etbusc5s0rmjpfGwF2bkg0FebX4DM0do7qq6IZo0Jwx0JNPo7LLixeXRl89zjH1PdO3GFxU3iAKhBTMJmcYtOTPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QOubP34f; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757935978; x=1789471978;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8oYNqrrAlQEHTxjixTYfzlFOUreIiPXKTs7mp++pE0U=;
+  b=QOubP34fjeg/V+vVNQaNDNf/CV6tCzYNJcmF6LkgDflNnLuVhluvPkRH
+   eKKDAZE0z4kdwHgKllZm1A/m45DaWVg/EyschTAUB6QSXiPY8tEIQbJIO
+   8EG5f3w7XNEAVXW7KocheY9XFBbkL0lXAH2zQzKNe7KhUgEvou/rWRKtK
+   1Y0kQrgXGbq8uDIKP4UQNqb57b63GpadR8N7kOV3oP1xjC8okrGUKU/iv
+   TZABjswTf3PsFhjEKL2c22EudUBvSfcsYMOpJNGLOuCnuzvs3w1sHwbvU
+   uQ1I0kapi1FyYhYYbwAHmC2AQgM2DRQH2tw+XERSl+vkFEPa4o/p17mvp
+   g==;
+X-CSE-ConnectionGUID: FZGZljEYQ/KHZ1hJ7buxvw==
+X-CSE-MsgGUID: oyOD4ecZSb6VRxvN7TYNDw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11553"; a="59882595"
+X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; 
+   d="scan'208";a="59882595"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 04:32:57 -0700
+X-CSE-ConnectionGUID: CxmrLDUGRdmlr666bRvVTg==
+X-CSE-MsgGUID: eFIsTmacTnCX0JgmduWKgw==
+X-ExtLoop1: 1
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.30])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 04:32:55 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 2F4DE11FCCF;
+	Mon, 15 Sep 2025 14:32:52 +0300 (EEST)
+Date: Mon, 15 Sep 2025 14:32:52 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 2/4] ACPI: property: Add code comments explaining what
+ is going on
+Message-ID: <aMf5ZNW9t_6tfsjy@kekkonen.localdomain>
+References: <5046661.31r3eYUQgx@rafael.j.wysocki>
+ <2243680.irdbgypaU6@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND 03/62] init: sh, sparc, x86: remove unused
- constants RAMDISK_PROMPT_FLAG and RAMDISK_LOAD_FLAG
-To: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
- Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>,
- Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>,
- Aleksa Sarai <cyphar@cyphar.com>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Julian Stecklina <julian.stecklina@cyberus-technology.de>,
- Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>,
- Alexander Graf <graf@amazon.com>, Rob Landley <rob@landley.net>,
- Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-um@lists.infradead.org, x86@kernel.org,
- Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org,
- initramfs@vger.kernel.org, linux-api@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-efi@vger.kernel.org,
- linux-ext4@vger.kernel.org, "Theodore Y . Ts'o" <tytso@mit.edu>,
- linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
- devicetree@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
- Kees Cook <kees@kernel.org>, Thorsten Blum <thorsten.blum@linux.dev>,
- Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev,
- stable+noautosel@kernel.org
-References: <20250913003842.41944-1-safinaskar@gmail.com>
- <20250913003842.41944-4-safinaskar@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250913003842.41944-4-safinaskar@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2243680.irdbgypaU6@rafael.j.wysocki>
 
+Hi Rafael,
 
-
-Le 13/09/2025 à 02:37, Askar Safin a écrit :
-> [Vous ne recevez pas souvent de courriers de safinaskar@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+On Fri, Sep 12, 2025 at 09:40:58PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> They were used for initrd before c8376994c86.
+> In some places in the ACPI device properties handling code, it is
+> unclear why the code is what it is.  Some assumptions are not documented
+> and some pieces of code are based on experience that is not mentioned
+> anywhere.
 > 
-> c8376994c86c made them unused and forgot to remove them
+> Add code comments explaining these things.
 > 
-> Fixes: c8376994c86c ("initrd: remove support for multiple floppies")
-> Cc: <stable+noautosel@kernel.org> # because changes uapi headers
-> Signed-off-by: Askar Safin <safinaskar@gmail.com>
-
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > ---
->   arch/sh/kernel/setup.c                | 2 --
->   arch/sparc/kernel/setup_32.c          | 2 --
->   arch/sparc/kernel/setup_64.c          | 2 --
->   arch/x86/include/uapi/asm/bootparam.h | 2 --
->   arch/x86/kernel/setup.c               | 2 --
->   5 files changed, 10 deletions(-)
+>  drivers/acpi/property.c |   51 ++++++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 49 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
-> index 039a51291002..d66f098e9e9f 100644
-> --- a/arch/sh/kernel/setup.c
-> +++ b/arch/sh/kernel/setup.c
-> @@ -71,8 +71,6 @@ EXPORT_SYMBOL(sh_mv);
->   extern int root_mountflags;
-> 
->   #define RAMDISK_IMAGE_START_MASK       0x07FF
-> -#define RAMDISK_PROMPT_FLAG            0x8000
-> -#define RAMDISK_LOAD_FLAG              0x4000
-> 
->   static char __initdata command_line[COMMAND_LINE_SIZE] = { 0, };
-> 
-> diff --git a/arch/sparc/kernel/setup_32.c b/arch/sparc/kernel/setup_32.c
-> index 704375c061e7..eb60be31127f 100644
-> --- a/arch/sparc/kernel/setup_32.c
-> +++ b/arch/sparc/kernel/setup_32.c
-> @@ -172,8 +172,6 @@ extern unsigned short root_flags;
->   extern unsigned short root_dev;
->   extern unsigned short ram_flags;
->   #define RAMDISK_IMAGE_START_MASK       0x07FF
-> -#define RAMDISK_PROMPT_FLAG            0x8000
-> -#define RAMDISK_LOAD_FLAG              0x4000
-> 
->   extern int root_mountflags;
-> 
-> diff --git a/arch/sparc/kernel/setup_64.c b/arch/sparc/kernel/setup_64.c
-> index 63615f5c99b4..f728f1b00aca 100644
-> --- a/arch/sparc/kernel/setup_64.c
-> +++ b/arch/sparc/kernel/setup_64.c
-> @@ -145,8 +145,6 @@ extern unsigned short root_flags;
->   extern unsigned short root_dev;
->   extern unsigned short ram_flags;
->   #define RAMDISK_IMAGE_START_MASK       0x07FF
-> -#define RAMDISK_PROMPT_FLAG            0x8000
-> -#define RAMDISK_LOAD_FLAG              0x4000
-> 
->   extern int root_mountflags;
-> 
-> diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
-> index dafbf581c515..f53dd3f319ba 100644
-> --- a/arch/x86/include/uapi/asm/bootparam.h
-> +++ b/arch/x86/include/uapi/asm/bootparam.h
-> @@ -6,8 +6,6 @@
-> 
->   /* ram_size flags */
->   #define RAMDISK_IMAGE_START_MASK       0x07FF
-> -#define RAMDISK_PROMPT_FLAG            0x8000
-> -#define RAMDISK_LOAD_FLAG              0x4000
-> 
->   /* loadflags */
->   #define LOADED_HIGH    (1<<0)
-> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-> index 1b2edd07a3e1..6409e766fb17 100644
-> --- a/arch/x86/kernel/setup.c
-> +++ b/arch/x86/kernel/setup.c
-> @@ -223,8 +223,6 @@ extern int root_mountflags;
->   unsigned long saved_video_mode;
-> 
->   #define RAMDISK_IMAGE_START_MASK       0x07FF
-> -#define RAMDISK_PROMPT_FLAG            0x8000
-> -#define RAMDISK_LOAD_FLAG              0x4000
-> 
->   static char __initdata command_line[COMMAND_LINE_SIZE];
->   #ifdef CONFIG_CMDLINE_BOOL
-> --
-> 2.47.2
-> 
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -108,7 +108,18 @@ static bool acpi_nondev_subnode_extract(
+>  	if (handle)
+>  		acpi_get_parent(handle, &scope);
+>  
+> +	/*
+> +	 * Extract properties from the _DSD-equivalent package pointed to by
+> +	 * desc and use scope (if not NULL) for the completion of relative
+> +	 * pathname segments.
+> +	 *
+> +	 * The extracted properties will be held in the new data node dn.
+> +	 */
+>  	result = acpi_extract_properties(scope, desc, &dn->data);
+> +	/*
+> +	 * Look for subnodes in the _DSD-equivalent package pointed to by desc
+> +	 * and create child nodes of dn if there are any.
+> +	 */
+>  	if (acpi_enumerate_nondev_subnodes(scope, desc, &dn->data, &dn->fwnode))
+>  		result = true;
+>  
+> @@ -153,6 +164,12 @@ static bool acpi_nondev_subnode_ok(acpi_
+>  	acpi_handle handle;
+>  	acpi_status status;
+>  
+> +	/*
+> +	 * If the scope is unknown, the _DSD-equivalent package being parsed
+> +	 * was embedded in an outer _DSD-equivalent package as a result of
+> +	 * direct evaluation of an object pointed to by a reference.  In that
+> +	 * case, using a pathname as the target object pointer is invalid.
+> +	 */
+>  	if (!scope)
+>  		return false;
+>  
+> @@ -172,6 +189,10 @@ static bool acpi_add_nondev_subnodes(acp
+>  	bool ret = false;
+>  	int i;
+>  
+> +	/*
+> +	 * Every element in the links package is expected to represent a link
+> +	 * to a non-device node in a tree containing device-specific data.
+> +	 */
+>  	for (i = 0; i < links->package.count; i++) {
+>  		union acpi_object *link, *desc;
+>  		acpi_handle handle;
+> @@ -182,22 +203,48 @@ static bool acpi_add_nondev_subnodes(acp
+>  		if (link->package.count != 2)
+>  			continue;
+>  
+> -		/* The first one must be a string. */
+> +		/* The first one (the key) must be a string. */
+>  		if (link->package.elements[0].type != ACPI_TYPE_STRING)
+>  			continue;
+>  
+> -		/* The second one may be a string, a reference or a package. */
+> +		/*
+> +		 * The second one (the target) may be a string, a reference or
+> +		 * a package.
+> +		 */
+>  		switch (link->package.elements[1].type) {
+>  		case ACPI_TYPE_STRING:
+> +			/*
+> +			 * The string is expected to be a full pathname or a
+> +			 * pathname segment relative to the given scope.  That
+> +			 * pathname is expected to point to an object returning
+> +			 * a package that contains _DSD-equivalent information.
+> +			 */
+>  			result = acpi_nondev_subnode_ok(scope, link, list,
+>  							 parent);
+>  			break;
+>  		case ACPI_TYPE_LOCAL_REFERENCE:
+
+I think you get ACPI_TYPE_LOCAL_REFERENCE only when you evaluate a
+reference to a device object.
+
+> +			/*
+> +			 * The reference is expected to point to an object
+> +			 * returning a package that contains _DSD-equivalent
+> +			 * information.
+> +			 */
+>  			handle = link->package.elements[1].reference.handle;
+>  			result = acpi_nondev_subnode_data_ok(handle, link, list,
+>  							     parent);
+>  			break;
+>  		case ACPI_TYPE_PACKAGE:
+
+And similarly, the result of an evaluation here is a package when a
+reference points to a name object (i.e. a data node).
+
+> +			/*
+> +			 * This happens when the target package is embedded
+> +			 * within the links package as a result of direct
+> +			 * evaluation of an object pointed to by a reference.
+> +			 *
+> +			 * The target package is expected to contain _DSD-
+> +			 * equivalent information, but the scope in which it
+> +			 * is located in the original AML is unknown.  Thus
+> +			 * it cannot contain pathname segments represented as
+> +			 * strings because there is no way to build full
+> +			 * pathnames out of them.
+> +			 */
+>  			desc = &link->package.elements[1];
+>  			result = acpi_nondev_subnode_extract(desc, NULL, link,
+>  							     list, parent);
 > 
 
+-- 
+Kind regards,
+
+Sakari Ailus
 
