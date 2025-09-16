@@ -1,105 +1,121 @@
-Return-Path: <linux-acpi+bounces-16980-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16981-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36CC7B58C29
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 05:09:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1B8B58C41
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 05:16:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBD951BC454A
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 03:09:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B31ED2A59B2
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 03:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6857A246799;
-	Tue, 16 Sep 2025 03:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787182397AA;
+	Tue, 16 Sep 2025 03:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bBxS8q66"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="qLiL7R0f"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF09F38DDB;
-	Tue, 16 Sep 2025 03:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA4F2EAE3;
+	Tue, 16 Sep 2025 03:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757992145; cv=none; b=WA2g4hKhi8FJxBnR+HLPnFq1p89CC8OcTKGM9XQBFxyaJrW8PAIgaMgaGcEVlJPgr8mEt9RxJWq4Tq4Au6QsKmVjBLTnfXgv6stvc/6Cvvv8LxKOfVk4og4S9TRa7UugJ0qX1SQR8XdS5tpnouSdqGSG+rWXpCAdoVIROMLZwgU=
+	t=1757992580; cv=none; b=HKbZVdnGZYt74KU/+S1WeRav/3f3zIA+066BqXdbmnCxA68BhqbYT1TWvYhITI123y6iA2sm1XJdrz+0LImHDoNzvsVSBzvX6R3+SvSY9DBXF8k1kGjRtU4iqacLQi3Upew6ODppTKVGJ5KmLxMhaSTNi4aPIfKf5UypUCF2/vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757992145; c=relaxed/simple;
-	bh=clS/RriAH6/uzgbxBAN8eXzKr1t8+yo2uadqdbTxw+Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KB3eGyhxwCbq+5Ki7pt2ptUepUu1YXigfVHskFBo/vQYvXrYvkG7sLNYiQ2+EncvNjRoYzkP9yy5sEsDhcUgi3UYKxelpcgDIprZUTC4o3twu+NmB/XfNC3J9OZvX25rj8UvpAWdHkRzO/l8RmYqh5OJCRFRhHPF23eAFNNRvMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bBxS8q66; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD31C4CEF1;
-	Tue, 16 Sep 2025 03:09:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757992144;
-	bh=clS/RriAH6/uzgbxBAN8eXzKr1t8+yo2uadqdbTxw+Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bBxS8q66YdKGXiHFPJJ3//BAWLCIYoh1qbHxHfe2QgUS7fzvi8AFYBbIitGKJPiDy
-	 J0h5xdTTy4wuRH1ymZPr5e0f/C36eUMrkOUag+lWBj8YkZln2Sd8hzT0pfkU01q17O
-	 RT8NuwYenprY6H9Bdb8qKRjkND6VpsGEt1Rf1iUB6mNa5MQsHkHWoiFIr0vmJLaUBy
-	 +Mg6Bb5Jrp6AOX9r3GJRBHhtRWiiY7tieeEbNFvl6251o5yIBpkK00NoObReShSwrw
-	 BlICrcV2YfDygf6hS1MD81NdPJlMqltFalaDERfXuFBjtYfsWMd22V+qS8nHm3+ffq
-	 gVOH5pLBuuEEw==
-Date: Mon, 15 Sep 2025 22:09:03 -0500
-From: Rob Herring <robh@kernel.org>
-To: Askar Safin <safinaskar@gmail.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Aleksa Sarai <cyphar@cyphar.com>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
-	Julian Stecklina <julian.stecklina@cyberus-technology.de>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Art Nikpal <email2tema@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eric Curtin <ecurtin@redhat.com>, Alexander Graf <graf@amazon.com>,
-	Rob Landley <rob@landley.net>,
-	Lennart Poettering <mzxreary@0pointer.de>,
-	linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
-	linux-block@vger.kernel.org, initramfs@vger.kernel.org,
-	linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org,
-	"Theodore Y . Ts'o" <tytso@mit.edu>, linux-acpi@vger.kernel.org,
-	Michal Simek <monstr@monstr.eu>, devicetree@vger.kernel.org,
-	Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
-Subject: Re: [PATCH RESEND 28/62] init: alpha, arc, arm, arm64, csky, m68k,
- microblaze, mips, nios2, openrisc, parisc, powerpc, s390, sh, sparc, um,
- x86, xtensa: rename initrd_{start,end} to
- virt_external_initramfs_{start,end}
-Message-ID: <20250916030903.GA3598798-robh@kernel.org>
-References: <20250913003842.41944-1-safinaskar@gmail.com>
- <20250913003842.41944-29-safinaskar@gmail.com>
+	s=arc-20240116; t=1757992580; c=relaxed/simple;
+	bh=KQgIDFeYj6BfahlWkfqkbzH/E4fZL8fqkKbPwk5VHm8=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=lpC+tvoQzVAlavu/i+HH80J7euY37ed0YbzA0Qssfk06absh7rmHfELK9DlvxlOpYXVYLE2N/jnDJPnunmngZamT3XHAsV6SGxATH6X2lHVuKmD34/DHf+xHODcHTKYMDAnIPzKXIV/83OHD6S4KR2nbDaqzJ7QWd4YgO/dEiO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=qLiL7R0f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8A2C4CEF0;
+	Tue, 16 Sep 2025 03:16:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757992579;
+	bh=KQgIDFeYj6BfahlWkfqkbzH/E4fZL8fqkKbPwk5VHm8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=qLiL7R0fKERFaeUDekpvnT0bCQ6X1MJ36FqoZwhuZrNzvtGm9MkQu9m08+MI4WZwM
+	 TzBCMurJMdOsYoEgNdNN3ZGQpUPubYUYOjWvvM/9imNNEYhG6BNYZqtqjDxf7V2NNc
+	 F/gly7u3moLwHxdh8lc10HKrP88+9PrO3jsPjU6s=
+Date: Mon, 15 Sep 2025 20:16:18 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kyle Meyer <kyle.meyer@hpe.com>
+Cc: corbet@lwn.net, david@redhat.com, linmiaohe@huawei.com,
+ shuah@kernel.org, tony.luck@intel.com, jane.chu@oracle.com,
+ jiaqiyan@google.com, Liam.Howlett@oracle.com, bp@alien8.de,
+ hannes@cmpxchg.org, jack@suse.cz, joel.granados@kernel.org,
+ laoar.shao@gmail.com, lorenzo.stoakes@oracle.com, mclapinski@google.com,
+ mhocko@suse.com, nao.horiguchi@gmail.com, osalvador@suse.de,
+ rafael.j.wysocki@intel.com, rppt@kernel.org, russ.anderson@hpe.com,
+ shawn.fan@intel.com, surenb@google.com, vbabka@suse.cz,
+ linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline
+ for HugeTLB pages
+Message-Id: <20250915201618.7d9d294a6b22e0f71540884b@linux-foundation.org>
+In-Reply-To: <aMiu_Uku6Y5ZbuhM@hpe.com>
+References: <aMiu_Uku6Y5ZbuhM@hpe.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250913003842.41944-29-safinaskar@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, Sep 13, 2025 at 12:38:07AM +0000, Askar Safin wrote:
-> Rename initrd_start to virt_external_initramfs_start and
-> initrd_end to virt_external_initramfs_end.
+On Mon, 15 Sep 2025 19:27:41 -0500 Kyle Meyer <kyle.meyer@hpe.com> wrote:
 
-There's not really any point in listing every arch in the subject.
+> Soft offlining a HugeTLB page reduces the HugeTLB page pool.
+> 
+> Commit 56374430c5dfc ("mm/memory-failure: userspace controls soft-offlining pages")
+> introduced the following sysctl interface to control soft offline:
+> 
+> /proc/sys/vm/enable_soft_offline
+> 
+> The interface does not distinguish between page types:
+> 
+>     0 - Soft offline is disabled
+>     1 - Soft offline is enabled
+> 
+> Convert enable_soft_offline to a bitmask and support disabling soft
+> offline for HugeTLB pages:
+> 
+> Bits:
+> 
+>     0 - Enable soft offline
+>     1 - Disable soft offline for HugeTLB pages
+> 
+> Supported values:
+> 
+>     0 - Soft offline is disabled
+>     1 - Soft offline is enabled
+>     3 - Soft offline is enabled (disabled for HugeTLB pages)
+> 
+> Existing behavior is preserved.
 
-Rob
+um, why?  What benefit does this patch provide to our users? 
+Use-cases, before-and-after scenarios, etc?
+
+> Update documentation and HugeTLB soft offline self tests.
+> 
+> Reported-by: Shawn Fan <shawn.fan@intel.com>
+
+Interesting.  What did Shawn report? (Closes:!).
+
+> Suggested-by: Tony Luck <tony.luck@intel.com>
+> Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
+>
+> ...
+>
+>  .../ABI/testing/sysfs-memory-page-offline     |  3 ++
+>  Documentation/admin-guide/sysctl/vm.rst       | 28 ++++++++++++++++---
+>  mm/memory-failure.c                           | 17 +++++++++--
+>  .../selftests/mm/hugetlb-soft-offline.c       | 19 ++++++++++---
+>  4 files changed, 56 insertions(+), 11 deletions(-)
+
+I'll add it because testing, but please do explain why I added it?
 
