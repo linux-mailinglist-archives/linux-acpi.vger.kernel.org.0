@@ -1,195 +1,173 @@
-Return-Path: <linux-acpi+bounces-17014-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17015-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0B9B594D0
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 13:10:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7656B59512
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 13:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB0163B48AA
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 11:10:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47DE31BC747C
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 11:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2EC72C0F8C;
-	Tue, 16 Sep 2025 11:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1E82BF3CA;
+	Tue, 16 Sep 2025 11:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EIFc/3q/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KIKp7cKT"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE0829DB61
-	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 11:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E9328CF42
+	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 11:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758021042; cv=none; b=a2/IYCmcI4mvxvV59aWNuSvkrgtRrbMliTvdrzeiy7xM09G7FZndQ2MHNeHIyQGPeYXP9ie7UPidlpEBMbZwty71mbbKXrrErWT4FpMsMw796U8/cu1XgWEIIgO/pCpYk5qos7EYCbLA0fHax5ctTgP9M+Hyjc6dniFjrfEyBpk=
+	t=1758021855; cv=none; b=uSI129XX55DnkqsH4jbCbb4fd5HUPcTeklNjmE4OKD19t9yjgFecKSpHgtbNuOrzCpaquFa7Fs+Y+kN+ICNspZoRcHa3STRV5tLf0UUiKdj8zNYoFfQCeou+gFnU4Em3fqtIasIeAxvkWWpGO46Sz6ONwtkob9uuYw1zAd2bP+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758021042; c=relaxed/simple;
-	bh=/OCeromXmEqYI/Es1TTYHVwWJW+VqClogHhSj6EuVbo=;
+	s=arc-20240116; t=1758021855; c=relaxed/simple;
+	bh=ri6AVRKXyTKBgCwmHI/SW4DVsnfpryJDU41ilbjXu4A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Qci7z7w7ariUUZe7pDqBwqUNzphJZuGFX5B/VMtz7+8L0Ruijro/hgL0tZeUGVPZLohCtfD/pdie9jNOQq6W85ii//0ocYFZ56zKbHMlHlDo9UEJH5acoeV9Pu0Z2wE6+YhejKV600jc0R8sSElisuBJYf2Ghswl6TB/lkYJL10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EIFc/3q/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C079C4CEEB
-	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 11:10:42 +0000 (UTC)
+	 To:Cc:Content-Type; b=VWjUBlxaeFUh2SAZnKYBx/1kerYdlcre45P+uJJAgvARt3CmgJCJGYiQJtszR7btCpKSEE6u6qbl2fFyTZCTCVBYkOO5AMtorTsfBVtePU9ecqAJED8x9HG3H9zP2kKVBTNeCsDxMAuuUR1JOSMvoMegVTfgYSnmPa2lT3CIKsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KIKp7cKT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9CDC4CEF0
+	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 11:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758021042;
-	bh=/OCeromXmEqYI/Es1TTYHVwWJW+VqClogHhSj6EuVbo=;
+	s=k20201202; t=1758021854;
+	bh=ri6AVRKXyTKBgCwmHI/SW4DVsnfpryJDU41ilbjXu4A=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=EIFc/3q/Xi4FtSEOW05i4pvkm+RqOTZEohTNEHnAqQ8AtG2lw8HsgEj1ZuHVxRllg
-	 Z1JVgs1LDCVBf9Xfd2xhZ3TuXqF7RMIU+QbVSFQuupp0q/ZCK4tba9Wo73fenOFHeQ
-	 2cofCyHDkaH+bllEzZwMXxZC6bv49iJM7s3mbKwC6cG/rfA3ZI1WG+ryBP5W6MBCZt
-	 sdwauQj3Og8814RfpdhZo+B+FEUDXtBuYnZ9khBdsNE/0bG/8GsTEMxPukqFHJ4i7i
-	 qckvoLqvcFrr4s26KU1o2W5a0v5YHDYdNS6UmaFtqWYPvcugn1zVhqc+aiajIRedFN
-	 yF/Be6hmDbBow==
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-74be52f5447so2064709a34.1
-        for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 04:10:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVsFeHF+U6v4y7rlU4I6oEo+AETt/svKoDz0M+ukG/J5axQ9izxPiSusyhqG+pb/ZitOx/EoSjJVw2J@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyxe6AwTNFWiTq/8pSIDTYkQJbEpzmqe/bJlok8P399gqQhtCh8
-	CCOsXu/v0cGVxFI+veQv/e/FJQHtK/OSNsUcbGgudwBmcf7JkLW5fh5Ku1VlS8UJzNRYCcd+bhd
-	ry7A+aq7AIgycIiSFsQsKEAk8mTg8+JE=
-X-Google-Smtp-Source: AGHT+IF0VYEPlBFhsdIdEZMghX7ixkZneNnJF8NCdV6rSXVrCq7PwIvhipfFXbQg7I2krb3I+RkZQsMB+/MfadhjHZI=
-X-Received: by 2002:a05:6808:80a7:b0:43d:1ffb:1b08 with SMTP id
- 5614622812f47-43d1ffb3372mr4051710b6e.18.1758021041539; Tue, 16 Sep 2025
- 04:10:41 -0700 (PDT)
+	b=KIKp7cKTNu+C7bqB59oli4SG0muh6v73HVG6FS7dwrFtfFPCOwykxL6w2EMc18XH1
+	 T3+1+weZ4mwzgTFri6SF8zn/F+OND1wm7xXJq5+jwb0TZGAgp3Zv1pbodCnR7UgK2I
+	 iNd6Xhyqk28rf7GyKUy5lmpbLRWZm1O0HLO1GfmTiCqIjEEkf8x2npilwV/5re8fNF
+	 ljrszUgUNLvZy5i9u9PkyyVjCbFAjeoPvKubOTi6QjCS44XcatYoCatkfReGh/8MdP
+	 7IsFDernnusRGcCMgZ68S9Xj8iZ6fIQR0v+i3L7lDr1KI34XiUh6MnN0UUA3kKsafA
+	 h8Z6Uy2GA1/mA==
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-6234b7bdf3dso637766eaf.0
+        for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 04:24:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWwjVi1YbjLBBqyXnK9qU1CK1LGYkjZ1GKfGqnQL6CYI2PJ2pChrbvjb1CSnWaC+2j+pUCP8I16QUus@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPnt43N/61khNc5J0YvKXdTK/vVe6rdJ0kNQVtBwMtqR3NiSqe
+	+M8QBCijTUpxtpImXXQxGSIjJ8JWhbAsofWjo7oE4Xe0thlNSRdSN9KlyKbNwbtGOvuL0Wyx7kJ
+	g5faBFtbELvBQphggJ3bfEHIc8joUD4s=
+X-Google-Smtp-Source: AGHT+IF1t6zEKkRBl06Nw5QW5hjVAyjkmaJDelIaS5kyId5hNLkCVS1AY4hIFc6WhMqubozU+x0DTfa8tO91qWrE8o4=
+X-Received: by 2002:a05:6820:618:b0:621:aadc:8d28 with SMTP id
+ 006d021491bc7-621bed8ff65mr6961935eaf.4.1758021853902; Tue, 16 Sep 2025
+ 04:24:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5046661.31r3eYUQgx@rafael.j.wysocki> <2243680.irdbgypaU6@rafael.j.wysocki>
- <aMf5ZNW9t_6tfsjy@kekkonen.localdomain> <CAJZ5v0ivX3s=pChGZ_+zeUswJgMPDH2Wi_cGeATyh+M9Tb0LYw@mail.gmail.com>
- <aMh0sRizzRFTtp6z@kekkonen.localdomain>
-In-Reply-To: <aMh0sRizzRFTtp6z@kekkonen.localdomain>
+References: <20250915204318.696058-1-superm1@kernel.org> <20250915204318.696058-3-superm1@kernel.org>
+In-Reply-To: <20250915204318.696058-3-superm1@kernel.org>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 16 Sep 2025 13:10:29 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gGcyWfgUxj-ayTj0QXaDa9eayWP7ANfumzGqAU61-vAA@mail.gmail.com>
-X-Gm-Features: AS18NWB1MYk_hERbWYACORkIAOwhllsLln5G0yGDyxhkCNVSOoOfBu6FbFMFn6g
-Message-ID: <CAJZ5v0gGcyWfgUxj-ayTj0QXaDa9eayWP7ANfumzGqAU61-vAA@mail.gmail.com>
-Subject: Re: [PATCH v1 2/4] ACPI: property: Add code comments explaining what
- is going on
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date: Tue, 16 Sep 2025 13:24:02 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0haE_XDZa8r+Dy_jrtGhqqgwDZVJMnpapA7xdESycWWrQ@mail.gmail.com>
+X-Gm-Features: AS18NWBtbQNDUTtPjjj_MK_lIwISjmKDtgatKOIxtoWR-vTtivac9kYkKyQzgXw
+Message-ID: <CAJZ5v0haE_XDZa8r+Dy_jrtGhqqgwDZVJMnpapA7xdESycWWrQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ACPI: processor: Add support for ACPI C4 state
+To: "Mario Limonciello (AMD)" <superm1@kernel.org>
+Cc: "Rafael J . Wysocki" <rjw@rjwysocki.net>, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Sakari,
-
-On Mon, Sep 15, 2025 at 10:19=E2=80=AFPM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
+On Mon, Sep 15, 2025 at 10:43=E2=80=AFPM Mario Limonciello (AMD)
+<superm1@kernel.org> wrote:
 >
-> Hi Rafael,
+> The _CST object described in the ACPI specification [1] allows processors
+> to support any arbitrary number of power states that are described by
+> a package describing the register used, the type of C-state, latency
+> and the power consumption.
 >
-> On Mon, Sep 15, 2025 at 02:27:16PM +0200, Rafael J. Wysocki wrote:
-> > Hi Sakari,
-> >
-> > On Mon, Sep 15, 2025 at 1:32=E2=80=AFPM Sakari Ailus
-> > <sakari.ailus@linux.intel.com> wrote:
-> > >
-> > > Hi Rafael,
-> > >
-> > > On Fri, Sep 12, 2025 at 09:40:58PM +0200, Rafael J. Wysocki wrote:
-> > > > +                     /*
-> > > > +                      * The reference is expected to point to an o=
-bject
-> > > > +                      * returning a package that contains _DSD-equ=
-ivalent
-> > > > +                      * information.
-> > > > +                      */
-> > > >                       handle =3D link->package.elements[1].referenc=
-e.handle;
-> > > >                       result =3D acpi_nondev_subnode_data_ok(handle=
-, link, list,
-> > > >                                                            parent);
-> > > >                       break;
-> > > >               case ACPI_TYPE_PACKAGE:
-> > >
-> > > And similarly, the result of an evaluation here is a package when a
-> > > reference points to a name object (i.e. a data node).
-> >
-> > Well, I'm not sure how this remark is related to the new comment below.
-> >
-> > Do you mean that this always happens when a reference is used in ASL
-> > to point to the target here?
+> Currently the Linux kernel supports up to ACPI C3, and if a system
+> supports any further states they are ignored.  This causes problems on
+> some AMD hardware which can support up to ACPI C4.
 >
-> As long as the target is a non-device object (or name or method object at
-> least), which is required by DSD-guide for (non-string-)referenced object=
-s.
+> AMD systems that support up to C3 will enter CPUOFF and VDDOFF
+> when entering C3. Systems that support up to C4 will enter CPUOFF
+> when going to C3 and will enter VDDOFF when entering into C4.
 >
-> >
-> > But the comment would still be valid in that case, wouldn't it?
+> The existing semantics for bus mastering around C3 are also valid for C4,
+> so instead of hardcoding to C3, map then >=3D C3. In the case of s2idle
+> detect the deepest C-state supported and enter the deepest.
 >
-> After re-reading the first paragraph, I agree.
+> Link: https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/08_Processor_Configur=
+ation_and_Control/declaring-processors.html?#cst-c-states [1]
+> Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+> ---
+>  drivers/acpi/processor_idle.c | 10 +++++++---
+>  include/acpi/actypes.h        |  5 +++--
+>  2 files changed, 10 insertions(+), 5 deletions(-)
 >
-> >
-> > > > +                     /*
-> > > > +                      * This happens when the target package is em=
-bedded
-> > > > +                      * within the links package as a result of di=
-rect
-> > > > +                      * evaluation of an object pointed to by a re=
-ference.
-> > > > +                      *
-> > > > +                      * The target package is expected to contain =
-_DSD-
-> > > > +                      * equivalent information, but the scope in w=
-hich it
-> > > > +                      * is located in the original AML is unknown.=
-  Thus
-> > > > +                      * it cannot contain pathname segments repres=
-ented as
-> > > > +                      * strings because there is no way to build f=
-ull
-> > > > +                      * pathnames out of them.
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.=
+c
+> index 5dacf41d7cc0a..537b0119535ea 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -444,6 +444,10 @@ static int acpi_processor_power_verify(struct acpi_p=
+rocessor *pr)
+>                 case ACPI_STATE_C3:
+>                         acpi_processor_power_verify_c3(pr, cx);
+>                         break;
+> +               case ACPI_STATE_C4:
+> +                       if (!cx->latency || !cx->address)
+> +                               break;
+> +                       cx->valid =3D 1;
+>                 }
+>                 if (!cx->valid)
+>                         continue;
+> @@ -685,7 +689,7 @@ static int __cpuidle acpi_idle_enter(struct cpuidle_d=
+evice *dev,
+>                 return -EINVAL;
 >
-> Is the "original AML" relevant? Aren't we just interested in how the
-> evaluation result was reached instead of what was its actual path?
-
-So long as the node in question is not referred to via a namepath from
-a different place (for instance, a reference property in a different
-node), we don't.  However, if there is such a reference to it
-somewhere, we need to know that this is the target node of that
-reference.
-
-> We won't know the latter in any case. What would you think of:
+>         if (cx->type !=3D ACPI_STATE_C1) {
+> -               if (cx->type =3D=3D ACPI_STATE_C3 && pr->flags.bm_check)
+> +               if (cx->type >=3D ACPI_STATE_C3 && pr->flags.bm_check)
+>                         return acpi_idle_enter_bm(drv, pr, cx, index);
 >
->                         /*
->                          * Evaluating a reference results in a package ob=
-ject
->                          * (required by DSD guide) allocated on the fly. =
-The
->                          * actual target object of the reference isn't
->                          * available.
->                          */
+>                 /* C2 to C1 demotion. */
+> @@ -708,7 +712,7 @@ static int __cpuidle acpi_idle_enter_s2idle(struct cp=
+uidle_device *dev,
+>  {
+>         struct acpi_processor_cx *cx =3D per_cpu(acpi_cstate[index], dev-=
+>cpu);
+>
+> -       if (cx->type =3D=3D ACPI_STATE_C3) {
+> +       if (cx->index =3D=3D drv->state_count - 1) {
+>                 struct acpi_processor *pr =3D __this_cpu_read(processors)=
+;
+>
+>                 if (unlikely(!pr))
+> @@ -754,7 +758,7 @@ static int acpi_processor_setup_cpuidle_cx(struct acp=
+i_processor *pr,
+>                 if (lapic_timer_needs_broadcast(pr, cx))
+>                         state->flags |=3D CPUIDLE_FLAG_TIMER_STOP;
+>
+> -               if (cx->type =3D=3D ACPI_STATE_C3) {
+> +               if (cx->type >=3D ACPI_STATE_C3) {
+>                         state->flags |=3D CPUIDLE_FLAG_TLB_FLUSHED;
+>                         if (pr->flags.bm_check)
+>                                 state->flags |=3D CPUIDLE_FLAG_RCU_IDLE;
+> diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
+> index 8fe893d776dde..6c9f472af482c 100644
+> --- a/include/acpi/actypes.h
+> +++ b/include/acpi/actypes.h
+> @@ -600,8 +600,9 @@ typedef u64 acpi_integer;
+>  #define ACPI_STATE_C1                   (u8) 1
+>  #define ACPI_STATE_C2                   (u8) 2
+>  #define ACPI_STATE_C3                   (u8) 3
+> -#define ACPI_C_STATES_MAX               ACPI_STATE_C3
+> -#define ACPI_C_STATE_COUNT              4
+> +#define ACPI_STATE_C4                   (u8) 4
+> +#define ACPI_C_STATES_MAX               ACPI_STATE_C4
+> +#define ACPI_C_STATE_COUNT              5
 
-The target object actually is available, but the path to it isn't
-known at this point.
+Don't you need to update ACPICA accordingly?
 
 >
-> I guess nothing prevents having further string references within the
-> object?
-
-The _DSD guide forbids that and they would only work if they were full
-namepaths (because of the unknown scope).
-
-Anyway, I think that the comment is as good as it gets in its current form.
-
-> I think it'd be best to deprecate direct references in the DSD guide.
-
-That I agree with, but the code needs to be retained for compatibility
-with the installed base.
-
-> > > > +                      */
-> > > >                       desc =3D &link->package.elements[1];
-> > > >                       result =3D acpi_nondev_subnode_extract(desc, =
-NULL, link,
-> > > >                                                            list, pa=
-rent);
-> > > >
-> > >
->
+>  /*
+>   * Sleep type invalid value
 > --
+
+The current point in the cycle is kind of unsuitable for changes like
+this.  I'd prefer to revisit it after 6.18-rc1.
 
