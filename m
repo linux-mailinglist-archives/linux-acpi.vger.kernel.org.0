@@ -1,135 +1,130 @@
-Return-Path: <linux-acpi+bounces-17010-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17011-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7ACAB59228
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 11:27:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07F9DB5927F
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 11:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAF0C527006
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 09:26:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39FC47B044E
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 09:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088212BDC02;
-	Tue, 16 Sep 2025 09:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CD029E109;
+	Tue, 16 Sep 2025 09:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y9GWTVhI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NROLxOU4"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7651D29BDBF
-	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 09:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3965286435
+	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 09:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758014753; cv=none; b=ejAyhicHvBPGGBBYcbLswKR1U24biPMaAo4E5Z/JHTeB0nS1vOE/mHyh+uQboEdlDPLozKwxuqPL9I3VC6ahiERW8zuCYPPEMMDhLt0lEzlyZ6pA6UCJgUmg5z73tIZvJfcON4RA5PDpa/4w8sGQGJ/aNr1+Lk7k4HtNDsQiXig=
+	t=1758015728; cv=none; b=aa05B5gSq6g9cyc9k+3Y5UwvdgEWjpN0RMKO4SYnsNF4x4L6MGDzNaUTjmutj01ohGrzjkMiPu6KmvDRRHVIbGcM7/gtII4bsgtUYUNDFYOijPKsJCQAc2yBwjnPqXX6bQ95DOgpeuYu+pfemi2gLM9LFe3fN0yQTiHvCq0Gvxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758014753; c=relaxed/simple;
-	bh=prkrcgQgpwPbi8Cfds13n7nM9MiR8JPZLk8prSDLM2M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ES3nldB5g1YgxVQW6SECzFvmrqn2pqkAna88fsnOjIfyhiozQhbhdpXiZKYkTbkR4/0p2gbDOHVwKcc9Ahzk06yIfaRKhVgMM+m5vPTEK36lfClZiSI0JUoLAjnnydkh0QglMwaVyLg8hi9pJT/zj/n9N3dMyXzrGY+CM86P84Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y9GWTVhI; arc=none smtp.client-ip=209.85.214.178
+	s=arc-20240116; t=1758015728; c=relaxed/simple;
+	bh=wtSv0L6/GwqZZywYhmXmG694rGZXr5C/8JsbMi/MtQ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Amh+JZSk01eviVpiwum+rIGYQvJjT96NTW/brKRu1HUgwARKUQzlegcaNhg4J2XPTaHGOr+UiuEDytwGcbnoVcVuqH5Ig+/U54ytI6r8CRq7ouHfCoY+XDwhDQUEhEak/DutNBP+7pLw7CeFsmmhcoQlJQuoW1ChKg707b980nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NROLxOU4; arc=none smtp.client-ip=209.85.208.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2630354dd1aso6258275ad.0
-        for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 02:25:52 -0700 (PDT)
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-336ce4a8bfcso40715321fa.0
+        for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 02:42:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758014752; x=1758619552; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=prkrcgQgpwPbi8Cfds13n7nM9MiR8JPZLk8prSDLM2M=;
-        b=Y9GWTVhIJtRrGpeL0bZclzvTItu83iRH38oBrb2EcNhXc3csSEaIHLjxntN6vPRekG
-         U+fX+zMMyWvq4fU1tXc9j2glULsCsD3HDQtSdJDyCms7FAzij16kiCbq4ZFH4GfX1o2O
-         60bm9gvWo1/H68oAAxP9Bh2C3rYz1lxFDBZZr5Llaxr51bh/syGn3RGUDU4Wubvi7ara
-         /L0GnCtskb8YvQYVF0Cb8mRK/F3O+YZqvZLAJowHKwv2kqeo8uPRcyKtqEPj2z3PGkaP
-         rt4IM+0Zu60Px0mIEQ9DMA72XYDEi5sZQhNM4KrzJelebhotOVNfMemzPC3+X9ehK8+e
-         a/6A==
+        d=gmail.com; s=20230601; t=1758015724; x=1758620524; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=haBjQsvE5vE3ZaF/RXUldLy+CB1Z0cpROeB+NEV/yO0=;
+        b=NROLxOU4z9V4kypeFZVw3XwLvlvgr7633NM1a03un3CtR4lJaMlWQe4MQ9UCfQlvEb
+         6ob7dt32cZ4IpbAOwNI4qTzia9lGJazUfcNRQp/OvPUSDu7sGMuWeYcpArVUzIW4p20/
+         gKtwWEXsjbsLeP+PHDVCpBxenDK1C/PGey1OlckTGwKYRad5H3S3uYuXCz0vu8CDIW7T
+         egPW/KGCxW3n6bStOzn36fCBk211k/YGoekXP8VanV1j1gkifMzn/eUrtagsp5xDC43J
+         /jMULwG82ttCurMTfCNleWqTU5QOCkSM5vljU7z/8VsgANXljSZs6vhM5Asl795xTzI1
+         suEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758014752; x=1758619552;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=prkrcgQgpwPbi8Cfds13n7nM9MiR8JPZLk8prSDLM2M=;
-        b=ejocRNbBVCToSpqq6lwTak7JbSZdNCyVxTqJrrNB5cxFi7fURRZecYn7xWiQP35p+Z
-         bvzHriqijlRW7tuHbQKfum110Cal1EkBcUAYH3d3n/+NpnpzPzOohLEzCF0YhLyTVei0
-         fMC/2jfAF6W/11WtJzkxU4fXdjncOGrb00cThqCZBm2Y9Dar5lWeNZ/Oq2Cn9XUdP6zQ
-         ZrOYiVlm/lxmMB647K/6BXLWGSMkBbUQciIsfb83LdEhxo6vtbjqBAJuu4Q8dcdJvAH7
-         dQXd8R8/3ddG/n4P+CW9vVTaPW9lX6zJS5nc7U3aUrY3yWvG6qSuWrfRcMed3moBDaBB
-         iuJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUYY2NS75vbOISD7UFUiAnMxNr0b+NcAqKZrQlhoHPtrfnWt01ldnm646ye69KBmvFpVvoEp+A73Kjw@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHNKPoTnFryna7Ds/Y+jKhdDUFyIwoci88tQDFR11wol4BI7Zu
-	fGV4cI0BWhbTzzRiZXcEo4Obmv1drLQQ4jHtQ/ekUSXDEzJtQ6s7coKNJ6iSOjpQ5IcQGsFLp1a
-	D0yXGEe0LR3+NdlmbhM+OmQR86ZwFF8dhvfZuCRA1zw==
-X-Gm-Gg: ASbGncumOUF5LTEQsMONZycuNXzrVs7AFwB4Vd+gqkgLlnYt8gfjpYr7t5+r0T9CMqe
-	d49nKCt2m6eGDwZe1If62CqUGz2Dfvl8uOujaYtjv10knpA3P13MH/jBwkpN0kEsmBhzA+K2Aib
-	sLfWFqjYTaDxWZblqb4jyPnbPw9jDkGLRqlM8gEHnouMcC/1Rs4gOawnmkHBPqnEfvojMwL3/As
-	Hjt92rnzo7JVrcb4yYCkYpVZYFQiT+QxgUA67gPdsOe1FXQMNmy/mbZSKEooMDziwn45VTHAAAq
-	xhuraJvLnwm2hhv0bYuaASy4ug==
-X-Google-Smtp-Source: AGHT+IFwc6Y1OseNifdIO5J0qDFbM+aOcV8Z7xSmon/0tVZxaKw/+AP4a1wI7bqiW8muI5j5MuELqcXm9FvbGpAicyA=
-X-Received: by 2002:a17:902:e5c8:b0:264:9287:3fc3 with SMTP id
- d9443c01a7336-2649287431dmr60170295ad.2.1758014751666; Tue, 16 Sep 2025
- 02:25:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758015724; x=1758620524;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=haBjQsvE5vE3ZaF/RXUldLy+CB1Z0cpROeB+NEV/yO0=;
+        b=EIMPGgZjK8OS1tca9UYHeUnkOdBZPpi5/v7NwhDCCPqkWwONzByINHYx5vE+Xz+FHq
+         bciKCXyjAXXJqRz2imgChcvUXW1o129iLlWQpn+Fhz1Zq0NJCN6NntcLaDRpqe/Jui//
+         Apx8zYPjCltjJ1rcov/l+fbblOyDRKlX0ZpLv578o7iGe+d8OcJ35z8fNvfvdkicsSYm
+         Es7PWBu3ZTN4rgr/ztkaRT9RwjyF0pg7tIyI5RrXeUPuDI5q3pzIeP3q0sAm9555hPnu
+         NrA27WPH32g65W+QJOCdihF2k3VQnG++CJjtBP4NxlH3I+pBrltTie++Wj8GNId8HvHg
+         jHgw==
+X-Forwarded-Encrypted: i=1; AJvYcCXAMaWslmeVf+OE0DnF8eYpt/oUDCUeelNNb/EjYx9S6GaBNGOwBqwreZuLUtDFfNnWInVzLxKz8XIy@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLrEA548bUVLUudTI1aGo3oDoJxonWm7J0awN4pZ+C36AQLTw1
+	M3xaIChZ2Q9he6iVJ8CzJAH7vp58LbZ1nEMlnv8Dpp3Gi51VFtMY3KWn
+X-Gm-Gg: ASbGnct4kge92IfsTh3Y0db4/5cVnguGegGO7vYwwjvqgOcq3moo8AJkL5yhYcpQJ5q
+	rWB+ndL8q6EYLSztbo+920PDqM5cb1fCPDMfC+3T6JU1Og5GMZgtXsoLR2T9Jd68gby1nhk36gi
+	2KvhdxhpokboRp1bK0zcGCSi5slPHtsBxsFGBmFlih/h9Z6F7TwgYOmYW/I28eZ3zDrPK+GKVZR
+	7MUWmHtV8WH+XjFHHDFRAXZlYVSiYeiVaCRPTlSQmjQAQqoG7DQ5eRMgnkBKk7u6hfoU5PqsY3l
+	jhkyjawVaKF9BHMppONWQSYoUWX0VKamKMCo47NBr1iP5cvJtTuUb4tXhBQImfLqwZNddnzzzEK
+	DwnDqvQzGhWYv1/zFJXmcrIb/KK1Ip8SzXTnPuhX/wSarl7k=
+X-Google-Smtp-Source: AGHT+IGHsAz1XUgqjX9cBNXDDceT4RSYaRrx53ol9Kht+YGnRRfTcQN5imeqv3DeXohNMYqhdx9Bfg==
+X-Received: by 2002:a2e:a00e:0:20b0:34a:7575:36db with SMTP id 38308e7fff4ca-351401fd0f5mr48965051fa.33.1758015723646;
+        Tue, 16 Sep 2025 02:42:03 -0700 (PDT)
+Received: from home.paul.comp (paulfertser.info. [2001:470:26:54b:226:9eff:fe70:80c2])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-34f15a5835asm32481881fa.4.2025.09.16.02.42.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Sep 2025 02:42:02 -0700 (PDT)
+Received: from home.paul.comp (home.paul.comp [IPv6:0:0:0:0:0:0:0:1])
+	by home.paul.comp (8.15.2/8.15.2/Debian-22+deb11u3) with ESMTP id 58G9fwKw021585;
+	Tue, 16 Sep 2025 12:41:59 +0300
+Received: (from paul@localhost)
+	by home.paul.comp (8.15.2/8.15.2/Submit) id 58G9fts1021584;
+	Tue, 16 Sep 2025 12:41:55 +0300
+Date: Tue, 16 Sep 2025 12:41:55 +0300
+From: Paul Fertser <fercerpav@gmail.com>
+To: pengdonglin <dolinux.peng@gmail.com>
+Cc: tj@kernel.org, tony.luck@intel.com, jani.nikula@linux.intel.com,
+        ap420073@gmail.com, jv@jvosburgh.net, freude@linux.ibm.com,
+        bcrl@kvack.org, trondmy@kernel.org, longman@redhat.com,
+        kees@kernel.org, bigeasy@linutronix.de, hdanton@sina.com,
+        paulmck@kernel.org, linux-kernel@vger.kernel.org,
+        linux-rt-devel@lists.linux.dev, linux-nfs@vger.kernel.org,
+        linux-aio@kvack.org, linux-fsdevel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, linux-wireless@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-s390@vger.kernel.org,
+        cgroups@vger.kernel.org, Samuel Mendoza-Jonas <sam@mendozajonas.com>,
+        pengdonglin <pengdonglin@xiaomi.com>
+Subject: Re: [PATCH v3 11/14] net: ncsi: Remove redundant
+ rcu_read_lock/unlock() in spin_lock
+Message-ID: <aMkw4zTLRJqpVGCm@home.paul.comp>
+References: <20250916044735.2316171-1-dolinux.peng@gmail.com>
+ <20250916044735.2316171-12-dolinux.peng@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250813-core-cstr-fanout-1-v3-0-545c14bc44ff@gmail.com>
-In-Reply-To: <20250813-core-cstr-fanout-1-v3-0-545c14bc44ff@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 16 Sep 2025 11:25:39 +0200
-X-Gm-Features: AS18NWCYvwyg0oQ7WKMGNn77retnSNUsfiN0nCmq9Ts2BvgM8ip_kHMckevDcv8
-Message-ID: <CANiq72kq4RWNO1pJtJuG8jBpARq5ft6pcn8dHuUWJx=nosweyQ@mail.gmail.com>
-Subject: Re: [PATCH v3 00/11] rust: use `core::ffi::CStr` method names
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Leon Romanovsky <leon@kernel.org>, Breno Leitao <leitao@debian.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Rae Moar <rmoar@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
-	Jocelyn Falempe <jfalempe@redhat.com>, Javier Martinez Canillas <javierm@redhat.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Len Brown <lenb@kernel.org>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250916044735.2316171-12-dolinux.peng@gmail.com>
 
-On Wed, Aug 13, 2025 at 5:42=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
->
-> This is series 2b/5 of the migration to `core::ffi::CStr`[0].
-> 20250704-core-cstr-prepare-v1-0-a91524037783@gmail.com.
->
-> This series depends on the prior series[0] and is intended to go through
-> the rust tree to reduce the number of release cycles required to
-> complete the work.
->
-> Subsystem maintainers: I would appreciate your `Acked-by`s so that this
-> can be taken through Miguel's tree (where the other series must go).
->
-> [0] https://lore.kernel.org/all/20250704-core-cstr-prepare-v1-0-a91524037=
-783@gmail.com/
->
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Hello pengdonglin,
 
-Applied to `rust-next` -- thanks everyone!
+Thank you for the patch, looks reasonable and justified.
 
-If any maintainer has a problem with this, please shout.
+On Tue, Sep 16, 2025 at 12:47:32PM +0800, pengdonglin wrote:
+> From: pengdonglin <pengdonglin@xiaomi.com>
+> 
+> Since commit a8bb74acd8efe ("rcu: Consolidate RCU-sched update-side function definitions")
+> there is no difference between rcu_read_lock(), rcu_read_lock_bh() and
+> rcu_read_lock_sched() in terms of RCU read section and the relevant grace
+> period. That means that spin_lock(), which implies rcu_read_lock_sched(),
+> also implies rcu_read_lock().
+> 
+> There is no need no explicitly start a RCU read section if one has already
+> been started implicitly by spin_lock().
+> 
+> Simplify the code and remove the inner rcu_read_lock() invocation.
 
-Cheers,
-Miguel
+Reviewed-by: Paul Fertser <fercerpav@gmail.com>
 
