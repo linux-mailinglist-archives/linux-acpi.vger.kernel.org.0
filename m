@@ -1,78 +1,78 @@
-Return-Path: <linux-acpi+bounces-16994-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16995-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1A43B58D79
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 06:55:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A309B58D82
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 06:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87C9E3225B9
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 04:55:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC74C322613
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 04:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D1C27A12D;
-	Tue, 16 Sep 2025 04:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52422F066C;
+	Tue, 16 Sep 2025 04:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WEJwboRo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VRPVEEEM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04ECD2ECD28
-	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 04:49:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896C227E040
+	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 04:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757998177; cv=none; b=qZ6l3sBUOq0kyKzA8pRbmP74kQaw7bnV4bTte0ZdV9roIGEBk02/A59ql0dakd6o8r0H6EwFf4MJ3lJdd3GxUA2WfegtqesAfWVIVsu34R0n2ZZeKj0qiTCrQTwCTmF27tdjaSNxYisHt1SA3IQ0WRhKOtNgbpoI5TCpP4DllBU=
+	t=1757998183; cv=none; b=iAICOM2UVWus1hy1X5SUdMcYmeX8SuYUl1DTBUa1JRdGSCYGCettD35KnnEaycdaRc+p/WwbZHx+tJpn2w4LG5HR6jWeaPF/pW+gVjBQgnTb6Zl8LuvKRwz7rXfSLpIVZ91jQYQ7QD5sg7riJa/oeQTWy7+LS+Hl3bERdYI8tfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757998177; c=relaxed/simple;
-	bh=dy9spvLipBJ0oxpRy6D3U8JeqM1cA+2DUbEARoiEIho=;
+	s=arc-20240116; t=1757998183; c=relaxed/simple;
+	bh=xZie7XPvdT38eYIBnvXACDOKlp4uDfFQ6p8xkwCAypA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rXd9KQ6yVxNQPOZs9OBHXISEemHeFpgK5W4Ka8MM4CAIL+lW9r/eatNds5Uv1M7LwpU1DsiNLxcvTzRSv0CZsyKNYLV1QOPI8zdh/xNCsK9nKPypzDcY9Jhct3M5FTU9sGR6XnZaAENFtscOZZ6MOTFpRFxg1Is8hff7HJVhLww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WEJwboRo; arc=none smtp.client-ip=209.85.214.180
+	 MIME-Version; b=PHuMJjxWK9ny695BvM9PdEtj+Hsp6uOiGsH9NS8IZxcgBOr0UhsO4H2xqHhwnO+DwvuLr/d5lefIlO0t3wzfHg4MnTm8Kz/i1dFrePqkFZsCnn4BiTVii+afYa6YJgWJtmOosMnkrN/tPLg8jaWjeJHZO2PDCmxn011oBSk6OBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VRPVEEEM; arc=none smtp.client-ip=209.85.215.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-261682fdfceso22360515ad.1
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 21:49:34 -0700 (PDT)
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b52047b3f19so3504791a12.2
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 21:49:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757998174; x=1758602974; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1757998181; x=1758602981; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kee/jWM05xMj5MjToYK8a9EUY/mguZ7xPQQnB3cJ53E=;
-        b=WEJwboRoA+7Q/dtbpjLY1iSOzyDv2c7nLD5tzESh/xoo13VNtR/TuEemvpBow5vvEn
-         H7ry4eNsUi4IQV8DjKDpbV4r0L5NEiNdbzxgZ9uF1g6TLnrD4vmU5xiiUDdvRUp82yHX
-         5XmgyQKs33tjnmDUjMrqxpFjpFB6RPqKiIYNPBfImWxQHKjvIJQIuhSjg3OwcMtI6Sfo
-         i4HnREvhWsFyA7lO140ZMwL9JUpp5QX2ZSunJSuv006RmJnQTtQVVYSSc8waQPaTuRg6
-         2dO06Xyt+iuxUmp3SRacsW6eS/lXTsOf7kwLF/UWzELlusoGLpEM/leXstF1sKj4podi
-         n90w==
+        bh=6Tcedso9pzLAwLQitmBj+2+6wC4HZyTUiqHFeMdiOi8=;
+        b=VRPVEEEMyPFp1/apdgsdGcdVZa8RyIEDb4oi+MRkYBM99QFUqx8qesncXE5xPiXr4k
+         5EmQzzVM6ROAy9MD5JQWOsyeqzNpcJOOfhDFpvyiLSBzgAVmSV4PpvkG7J3oLLXh3T2t
+         aSGMxXUkZ/sTwLMVvwCxtrd/98Mzai0cB56bcT2QDXO9wehrl8U9zH9CWY9ycecU5qrW
+         lgZghkMXBNPhiPB0dDJ7sUurWKQUnVaHBn61VqMU8sFvJRgf6DYXbUA1UPvggaPVkZ2/
+         wEyAhf8NXX+w9nILAVNf9HZ/dItwjE6ImKe5EZYWjDrUvt9j68hAE0JwgxYdvG9auYLy
+         KGJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757998174; x=1758602974;
+        d=1e100.net; s=20230601; t=1757998181; x=1758602981;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kee/jWM05xMj5MjToYK8a9EUY/mguZ7xPQQnB3cJ53E=;
-        b=ZNRfRML37zUK5QwvXgEQyzdJTxZsfZ9K+KYL0iE83IHPowHPVBhTbVHDiPOiT9mPQe
-         eJqXZQqzOS6NHgvfYcX+sRroTbor9KSz1KqAIyBvX4am+Ix9umi+BOL7Vo0g/mttQ+Rh
-         UwUhk89WC+TP6/IJNSbFD3oycofygtegvV9pzo9v2mPbIE3hSy/jscCRcqF646q8V5Je
-         pzZLYud0h2bK4R2JJs0Px78N007tRo7V6g5g2vVuKdIRJTuohc3NMwT/pjtVRg2VF6/D
-         KK0RDEtGxC6lwEuvYOOwBetwh9Jfu74wLpebZmNf+CqrwG/C6R6uJeV7GBjg6h4JPGFN
-         lpAw==
-X-Forwarded-Encrypted: i=1; AJvYcCUIsPEqXVB1fq74SUxxvtUQW+pNe9aCIml7nV51aSeF1lASsLqducaKYUmWpZc7Dcx8UUGvUnCuEHBU@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6ODj/gDkxuqptolrb64QD9oa9FyOOTwce9k4M6/y/AK9D8Vmr
-	3vnfxv4AJicXSbZ87QR1e1ONeQtJsRPU9/U/kF5I+jcoduqueS5yKCQ/
-X-Gm-Gg: ASbGnctsbkrma0otKK/FVzfKvPvX/nMBpkT91JE6+R58/4bixCl60zoc7vk3PzgRfEu
-	dttwppib7Cnj/iw0DHDthrlffFtulrk53D7gYu9Nbr69UvvZD3ZglGZFjls4Y4v6RhdrYNr5dz+
-	Y29UnNtr4GldrDLG7ghvvMG+YM7m3F4vmbzKEKuLDfJju5bedyFNJ3xJ6aWXrtlxpKK45ixWGSg
-	YUdKqMr2buJnureCN+jxk4PQSvPmeJyHzaDKfahMzLt7H1UpYaPhQqJmqtFL4qRNhS2LGouzpja
-	DUv086KKlPkz8Q7PM6kfxXiuREk/x9jRnha6eSq/WRj2xujdAak6OSfuQf17XBfEjnGOtNAIpoh
-	bnUtRnk1QyOBqV3XVIYkQVn0z5NGql+0TXLEViSY=
-X-Google-Smtp-Source: AGHT+IHQsp/jp2h5qh/u2y0fwJLYw3kUJFgybrRxf3n883LnUrw88kxlxQMidQOFwo4KtZaOVgbKQg==
-X-Received: by 2002:a17:902:cecc:b0:267:a1d5:7372 with SMTP id d9443c01a7336-267d151fba1mr14211985ad.4.1757998173983;
-        Mon, 15 Sep 2025 21:49:33 -0700 (PDT)
+        bh=6Tcedso9pzLAwLQitmBj+2+6wC4HZyTUiqHFeMdiOi8=;
+        b=cdOF+hoa9YwgJPstHkscl6zf1Q3drsUbjM13kDRcK6tP68dvFhaiMauqsG95BNGaj0
+         KQmldkDB/MuRRFxkinPGNgppRnFjIp3frKN+OhwcbMKcO4hJqrAvtdfHGdOJ8ONXCkAE
+         XWCgMtf2MEvcT5wyLLwBzf3TiRZ/gneD6kqjBVBjWy/t+QlaVnCEZnG/oTs8Y9HslI5P
+         cLVzDaRp7RydtcqNR3GRzzhAxp5qSk/TlZ8UUcYBEl41zRtU6G75FDL98VyLI8vDOvfY
+         mGg25zIuWjkd/o1mt+tyRCyXnEnRCssdksWiIu3L8ezsD0oFGuSZts648FjcpgWo9+UR
+         1Acg==
+X-Forwarded-Encrypted: i=1; AJvYcCW7FYkWKjE6DjBbCeXIPlW03zTW4oGd45C0OSrX9GRdA03a6ApFpt1YKPy5AYyTHGQ+Q8/mF+dVpiqr@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2c/CelRD66G8iBX7bSnXoOwvfDDr6y1TvysjZCxRiplxUCB25
+	nPrYaqMz0s9Rc16r2zdpQ71gryMKd9PkeCOqlB9YPPNOE0s2/wW7jshf
+X-Gm-Gg: ASbGncuAeiavsOJ0m5538Z2srD7O/MG5mi9sCI5C0ntQ4K898jV4MnbuqLkrSgtPKpH
+	YpLrsdvoiGQyGWAl/K0pH4fYoFYYTPJZXwp2qoY2dLHfPblQ/QLFbbL3YiMqrDFxYbQa+Ii8bme
+	51Y7L5M7YyHbky4j8oYvz/grV/tfMO2CNsf+5+iOgCRPto1cNNlqdiab5/QoYIHrf5fcMShT/7L
+	Us7+JwyOg99zvE7E36L4L3uktoAWy6Irk99hy/Dog3Kc45hLGDnl2kb4m2wxNtPB4kv5+zoO7+X
+	W43r14gzMogs97+kj6pJzmJk4FnL2NUP6tivKfQfQP+gAyvYGL9cQ8KzOwD6jRWx9oBAXuaG9rn
+	Yh2IMRmInbwd0VgFWeHCFZ5D19RXckYftaXihF7k=
+X-Google-Smtp-Source: AGHT+IEk/DXYOCMhugqpymqTGh+KMlTQeAIuikssxOXlHLYZS5SBPJrXDrKkOxyomJ+DECodEM8EoQ==
+X-Received: by 2002:a17:902:c40d:b0:251:a3b3:1580 with SMTP id d9443c01a7336-25d24cac4eemr191581215ad.6.1757998180587;
+        Mon, 15 Sep 2025 21:49:40 -0700 (PDT)
 Received: from pengdl-pc.mioffice.cn ([43.224.245.249])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25ef09c77f8sm104600605ad.15.2025.09.15.21.49.27
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25ef09c77f8sm104600605ad.15.2025.09.15.21.49.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 21:49:33 -0700 (PDT)
+        Mon, 15 Sep 2025 21:49:40 -0700 (PDT)
 From: pengdonglin <dolinux.peng@gmail.com>
 To: tj@kernel.org,
 	tony.luck@intel.com,
@@ -100,14 +100,12 @@ Cc: bigeasy@linutronix.de,
 	linux-s390@vger.kernel.org,
 	cgroups@vger.kernel.org,
 	pengdonglin <dolinux.peng@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	pengdonglin <pengdonglin@xiaomi.com>
-Subject: [PATCH v3 12/14] net: amt: Remove redundant rcu_read_lock/unlock() in spin_lock
-Date: Tue, 16 Sep 2025 12:47:33 +0800
-Message-Id: <20250916044735.2316171-13-dolinux.peng@gmail.com>
+Subject: [PATCH v3 13/14] net: bonding: Remove redundant rcu_read_lock/unlock() in spin_lock
+Date: Tue, 16 Sep 2025 12:47:34 +0800
+Message-Id: <20250916044735.2316171-14-dolinux.peng@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250916044735.2316171-1-dolinux.peng@gmail.com>
 References: <20250916044735.2316171-1-dolinux.peng@gmail.com>
@@ -132,77 +130,35 @@ been started implicitly by spin_lock().
 
 Simplify the code and remove the inner rcu_read_lock() invocation.
 
-Cc: Taehee Yoo <ap420073@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+Cc: Paolo Abeni <pabeni@redhat.com>
 Cc: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: pengdonglin <pengdonglin@xiaomi.com>
 Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
 ---
- drivers/net/amt.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/net/bonding/bond_3ad.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-index ed86537b2f61..aaed9fbc7526 100644
---- a/drivers/net/amt.c
-+++ b/drivers/net/amt.c
-@@ -295,7 +295,6 @@ static void amt_source_work(struct work_struct *work)
- 
- 	tunnel = gnode->tunnel_list;
- 	spin_lock_bh(&tunnel->lock);
+diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
+index 4edc8e6b6b64..c53ea73f103a 100644
+--- a/drivers/net/bonding/bond_3ad.c
++++ b/drivers/net/bonding/bond_3ad.c
+@@ -2485,7 +2485,6 @@ void bond_3ad_state_machine_handler(struct work_struct *work)
+ 	 * concurrently due to incoming LACPDU as well.
+ 	 */
+ 	spin_lock_bh(&bond->mode_lock);
 -	rcu_read_lock();
- 	if (gnode->filter_mode == MCAST_INCLUDE) {
- 		amt_destroy_source(snode);
- 		if (!gnode->nr_sources)
-@@ -306,7 +305,6 @@ static void amt_source_work(struct work_struct *work)
- 		 */
- 		snode->status = AMT_SOURCE_STATUS_D_FWD;
+ 
+ 	/* check if there are any slaves */
+ 	if (!bond_has_slaves(bond))
+@@ -2537,7 +2536,6 @@ void bond_3ad_state_machine_handler(struct work_struct *work)
+ 			break;
+ 		}
  	}
 -	rcu_read_unlock();
- 	spin_unlock_bh(&tunnel->lock);
- }
+ 	spin_unlock_bh(&bond->mode_lock);
  
-@@ -426,7 +424,6 @@ static void amt_group_work(struct work_struct *work)
- 		goto out;
- 	}
- 
--	rcu_read_lock();
- 	for (i = 0; i < buckets; i++) {
- 		hlist_for_each_entry_safe(snode, t,
- 					  &gnode->sources[i], node) {
-@@ -443,7 +440,6 @@ static void amt_group_work(struct work_struct *work)
- 		amt_del_group(amt, gnode);
- 	else
- 		gnode->filter_mode = MCAST_INCLUDE;
--	rcu_read_unlock();
- 	spin_unlock_bh(&tunnel->lock);
- out:
- 	dev_put(amt->dev);
-@@ -1327,11 +1323,9 @@ static void amt_clear_groups(struct amt_tunnel_list *tunnel)
- 	int i;
- 
- 	spin_lock_bh(&tunnel->lock);
--	rcu_read_lock();
- 	for (i = 0; i < amt->hash_buckets; i++)
- 		hlist_for_each_entry_safe(gnode, t, &tunnel->groups[i], node)
- 			amt_del_group(amt, gnode);
--	rcu_read_unlock();
- 	spin_unlock_bh(&tunnel->lock);
- }
- 
-@@ -1343,11 +1337,9 @@ static void amt_tunnel_expire(struct work_struct *work)
- 	struct amt_dev *amt = tunnel->amt;
- 
- 	spin_lock_bh(&amt->lock);
--	rcu_read_lock();
- 	list_del_rcu(&tunnel->list);
- 	amt->nr_tunnels--;
- 	amt_clear_groups(tunnel);
--	rcu_read_unlock();
- 	spin_unlock_bh(&amt->lock);
- 	kfree_rcu(tunnel, rcu);
- }
+ 	if (update_slave_arr)
 -- 
 2.34.1
 
