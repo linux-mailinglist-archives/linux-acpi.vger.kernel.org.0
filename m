@@ -1,54 +1,54 @@
-Return-Path: <linux-acpi+bounces-17025-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17026-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4525B59CBA
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 18:00:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E8ADB59CBF
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 18:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A59AB3A48CD
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 16:00:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D1AA17E0EF
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 16:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D9937426B;
-	Tue, 16 Sep 2025 15:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAB51E633C;
+	Tue, 16 Sep 2025 16:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bl1tovBv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JF93v5NA"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F386837289B;
-	Tue, 16 Sep 2025 15:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12745126C02;
+	Tue, 16 Sep 2025 16:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758038399; cv=none; b=jPYoi5TX3ReAAasIp/4ITjROb/730NvrXwB4g7s7xU+FBS0F+9JvndwKjbxXE0sE3d6UebdPpGk2oAcisUU1SnxX0Psqf4Na+EQI75aBW1/Ls1qyVq5Y95Z+XGRB2ry8EtMA7Ab1illPvm7+9FIism5zR2EaZtNHivwsF0biXZ8=
+	t=1758038451; cv=none; b=NqFqr1kF8dNM4M7I3BrD5eVlW8RSc2ONv3suY+Mbr5nv0+daWQ9gLO9E+LxfbUKSpBqu063IzLzCWOIC0OkrM6FAKeO5Xan4zCgzc3rLkzqigSzqloA1JeBXTYcbaQWHNCJagrSoIts3N00V1aEGvOzn6q81vLhEkSTquhtpoBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758038399; c=relaxed/simple;
-	bh=wr2tJyYlkR5y7T+xXW7Ilz7m2i0rIvhhJ50qSX15f1Q=;
+	s=arc-20240116; t=1758038451; c=relaxed/simple;
+	bh=HMPTLgr233HLTCdKhCopfRE55dgfVIBSIEdZyziNLKA=;
 	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K7uq5oxNkzM18mjAUTIBN1BckLA+YoMLI8R14v90Qj9YCRUFtPVZHRBavjYXTLIvqLrTwdHBfqEoMqja6ZnAWPFZp6S3Q69qRqLZ8MlKr5F/Br4lDswD8NDbDx/7nIny1SvxVdgsyc7SL7LgyXyHwii9pSV15bDDoicTVnT8VkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bl1tovBv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF72C4CEEB;
-	Tue, 16 Sep 2025 15:59:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bvDUIudy9Mq6X2pbogmKoDtkv8SLfrpZSiZliu0QQ+DYlR9RrZPlAM5BIdGIit5BxZrrlUalVpR2npxf9GOzSjleYm1yxO42LgaJqjxklUXubEucsAHjLeiqvFoYId5YpZ6+u9xDuoyly4XvY8VAX4czgiP0fhC7NrO4DGxu9/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JF93v5NA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F699C4CEEB;
+	Tue, 16 Sep 2025 16:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758038398;
-	bh=wr2tJyYlkR5y7T+xXW7Ilz7m2i0rIvhhJ50qSX15f1Q=;
+	s=k20201202; t=1758038450;
+	bh=HMPTLgr233HLTCdKhCopfRE55dgfVIBSIEdZyziNLKA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Bl1tovBv/A1b3dWFDjYnUvsI3AMmg0L1t0r51/nrQVCCpwzstVSwREiaJ4NPAT6Ij
-	 aCBROW6QSv6LBn/reHoTPN07KUpdK1eTLIX1wbpAxJYlGxs2pdSJs9uPzlT27yR/F0
-	 lBvNpc5z0rM1q2xJQXNF90n5FXiFyf+fD9WCG6pt/LIv83ILa87/6PAqEvUBKRvImp
-	 XYotFnLUUO/ranSYvN1o+U1QaMsgBiJqBVe+ATLpyWuOhemojZjcL8fZa+HGdg/FdH
-	 niss8SL/WuTI5EyOj3/xJqEozCvblDppJwo9/ktBg9K8cD0DaWAQ8KW3UpBs26pJar
-	 KmQU/zzJcmdVw==
+	b=JF93v5NA60LOG+PgpudZNJuSz0LE5SKMq9WONOWpdNgGgMULwHA/hD7WOCgQ6JiBE
+	 UpNSaB+1M7drHO6EyDcVW6vI/BrBEWM7c+HPdRgCwSs8OYJFEfLAbF/xiZpePwBpUU
+	 qvulcDKdS9utjgPAJO/A+pxn8THi5lxMqq3RUNDaUdO/VAaIRm0bbl8N5OnyK8fzHa
+	 p+PfZNUXyuVIU9sTuxk7CWoG4vUr8092gOjcKfXK+l1zXc8IvgW4p8CVTM44XCmtIR
+	 vWibHJT7JQ/p2bDvFsGyfXaXPpiNhhhaPagYGl8haxnzpB7eG1fg90LqKddfc5XfmA
+	 ZwCPIyPRFUFRw==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1uyY5z-00000006mKg-36KG;
-	Tue, 16 Sep 2025 15:59:55 +0000
-Date: Tue, 16 Sep 2025 16:59:55 +0100
-Message-ID: <86tt121j7o.wl-maz@kernel.org>
+	id 1uyY6q-00000006mMO-1LSP;
+	Tue, 16 Sep 2025 16:00:48 +0000
+Date: Tue, 16 Sep 2025 17:00:47 +0100
+Message-ID: <86segm1j68.wl-maz@kernel.org>
 From: Marc Zyngier <maz@kernel.org>
 To: Jonathan Cameron <jonathan.cameron@huawei.com>
 Cc: <linux-kernel@vger.kernel.org>,
@@ -71,11 +71,11 @@ Cc: <linux-kernel@vger.kernel.org>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	James Clark
 	<james.clark@linaro.org>
-Subject: Re: [PATCH v2 05/25] irqchip/gic-v3: Add FW info retrieval support
-In-Reply-To: <20250916163413.000062f0@huawei.com>
+Subject: Re: [PATCH v2 01/25] irqdomain: Add firmware info reporting interface
+In-Reply-To: <20250916161438.00007ba0@huawei.com>
 References: <20250915085702.519996-1-maz@kernel.org>
-	<20250915085702.519996-6-maz@kernel.org>
-	<20250916163413.000062f0@huawei.com>
+	<20250915085702.519996-2-maz@kernel.org>
+	<20250916161438.00007ba0@huawei.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
  (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -91,80 +91,48 @@ X-SA-Exim-Rcpt-To: jonathan.cameron@huawei.com, linux-kernel@vger.kernel.org, li
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, 16 Sep 2025 16:34:13 +0100,
+On Tue, 16 Sep 2025 16:14:38 +0100,
 Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
 > 
-> On Mon, 15 Sep 2025 09:56:42 +0100
+> On Mon, 15 Sep 2025 09:56:38 +0100
 > Marc Zyngier <maz@kernel.org> wrote:
 > 
-> > Plug the new .get_info() callback into the GICv3 core driver,
-> > using some of the existing PPI affinity handling infrastructure.
+> > Allow an irqdomain callback to report firmware-provided information
+> > that is otherwise not available in a generic way. This is reported
+> > using a new data structure (struct irq_fwspec_info).
+> > 
+> > This callback is optional and the only information that can be
+> > reported currently is the affinity of an interrupt. However, the
+> > containing structure is designed to be extensible, allowing other
+> > potentially relevant information to be reported in the future.
 > > 
 > > Signed-off-by: Marc Zyngier <maz@kernel.org>
 > Hi Marc,
 > 
-> Yet another trivial comment. It's one of those days it seems :)
-
-No worries, your trivial comments are far more interesting than some
-of the emails I'm otherwise getting.. ;-)
-
-> 
 > > ---
-> >  drivers/irqchip/irq-gic-v3.c | 53 ++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 53 insertions(+)
+> >  include/linux/irqdomain.h | 28 ++++++++++++++++++++++++++++
+> >  kernel/irq/irqdomain.c    | 32 +++++++++++++++++++++++++++-----
+> >  2 files changed, 55 insertions(+), 5 deletions(-)
 > > 
-> > diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-> > index dbeb85677b08c..71c278ddd1e39 100644
-> > --- a/drivers/irqchip/irq-gic-v3.c
-> > +++ b/drivers/irqchip/irq-gic-v3.c
-> > @@ -69,6 +69,8 @@ struct gic_chip_data {
-> >  	bool			has_rss;
-> >  	unsigned int		ppi_nr;
-> >  	struct partition_desc	**ppi_descs;
-> > +	struct partition_affinity *parts;
-> > +	unsigned int		nr_parts;
+> > diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+> > index 4a86e6b915dd6..34993bf8293c4 100644
+> > --- a/include/linux/irqdomain.h
+> > +++ b/include/linux/irqdomain.h
+> > @@ -44,6 +44,24 @@ struct irq_fwspec {
+> >  	u32			param[IRQ_DOMAIN_IRQ_SPEC_PARAMS];
 > >  };
 > >  
-> >  #define T241_CHIPS_MAX		4
-> > @@ -1796,11 +1798,58 @@ static int gic_irq_domain_select(struct irq_domain *d,
-> >  	return d == partition_get_domain(gic_data.ppi_descs[ppi_idx]);
-> >  }
-> >  
-> > +static int gic_irq_get_fwspec_info(struct irq_fwspec *fwspec, struct irq_fwspec_info *info)
-> > +{
-> > +	const struct cpumask *mask = NULL;
-> > +
-> > +	info->flags = 0;
-> > +	info->affinity = NULL;
-> > +
-> > +	/* ACPI is not capable of describing PPI affinity -- yet */
-> > +	if (!is_of_node(fwspec->fwnode))
-> > +		return 0;
-> > +
-> > +	/* If the specifier provides an affinity, use it */
-> > +	if (fwspec->param_count == 4 && fwspec->param[3]) {
-> > +		struct fwnode_handle *fw;
-> > +
-> > +		switch (fwspec->param[0]) {
-> > +		case 1:			/* PPI */
-> > +		case 3:			/* EPPI */
-> > +			break;
-> > +		default:
-> > +			return 0;
-> > +		}
-> > +
-> > +		fw = of_node_to_fwnode(of_find_node_by_phandle(fwspec->param[3]));
+> > +/**
+> > + * struct irq_fwspec_info - firmware provided IRQ information structure
+> > + *
+> > + * @fwspec:		Firmware-specific interrupt specifier
 > 
-> of_node_to_fwnode() has a note that says it'll be removed in the merge window.
-> It was enough of an oddity I wondered why it existed.
+> Not aligning with what is in the structure that I can see.
 
-Cargo culted, obviously. And yet another sign that I've been sitting
-on these patches for way too long...
+Ah crap, I missed that one. I'll stash another fix for the next
+version.
 
-> Of course it did say it would be removed in the previous merge window and wasn't...
-> Probably want of_fwnode_handle()
-
-Thanks for the hint, I'll add that to v3.
+Thanks,
 
 	M.
 
