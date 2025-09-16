@@ -1,164 +1,189 @@
-Return-Path: <linux-acpi+bounces-16996-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16997-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BBB1B58D8D
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 06:56:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F369B58EE6
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 09:15:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A58C5322B34
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 04:56:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 055713A1A50
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 07:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BF62F1FF3;
-	Tue, 16 Sep 2025 04:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E0327E043;
+	Tue, 16 Sep 2025 07:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JL+Xia8W"
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="gzCEr1zr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94C02F1FC4
-	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 04:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74AC26AD9;
+	Tue, 16 Sep 2025 07:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.143.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757998190; cv=none; b=btbR1CAbO1kCjr17i5Q00E3qN2XaJ8JIpOJMbprfEaVSQ6ypz5qGJFtlmLcWkTAbjjTdI83BBAHdnwm/+J6Z4PUp4qXI/vWvJxPzVYSypPBQ1NbuBfQ9R5IiMFXFXOZR49f9UQEC09prsaTbq4u2pGLsZMjiYUjG9S30Aj1ynP8=
+	t=1758006946; cv=none; b=nZusybGN31zZ7+agmpYPOb5f46arEyLj3WEiJNwIkaH3zLFpOUp06guHY+HKC6W2eZJnIxZy+ot0NMXJla58XbQXb169RhSQ06667UhgSw+qsL/yssc36cApwvNt+CoBkJTeILsPgkGB0TedS+XNo15/xl9/tLd6yYReEB8t7XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757998190; c=relaxed/simple;
-	bh=slyVnZPzDDOXEcpF4QZOR3I7YB3yd3f7Gxtzb+FU87Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GgBA8tfsbPyJu+OFl77283+dFoEmNxRA6/CxBwN1VEXb60i4kx4Su6wFAcZoZBY5yfxD6q1lotuYaYnbto+3/wiSNsK5pGoX7Wc1jTOXUY+G8G3Up23RER98nntYtImbfjq8drphQO5QFYlUZ+FkvMde/6tswxiRdlowXM8XBhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JL+Xia8W; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-25d44908648so47050505ad.0
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 21:49:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757998187; x=1758602987; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OlYXyo2uZuFo7JhGyy9UUCXJlKeDR2CbpPIjqr5RgpE=;
-        b=JL+Xia8W4uyroTDLgoFXQGcvga86g7+1VEKz2roIDSxQwxKuGGI1kJw0E5mRvO2QSO
-         m/1WcvkXEpAacTm9jy5S7c5V4Dczrr3meBJOyddNip27HVCCCOgthvtb5FLtkxbvF41s
-         iGlUzzPGymDg3T5amMQJm6PDCBR7n+L0ahtyEay0NJYWIu7m2vFg6tr2ajT32yaanfBd
-         xDtJu+c4X/3CeTjTCyDCOh+jJ9IMVyUrOd4EWhGGuGTa3TWSp3+no8CtHQqAuwI3rWWA
-         BuIdQSsCM/Xgm1YsJeGbAazZkNWV/RcrZ3PBFtpntXLtYH4Vrd8FCoda8o0sXcMxI94o
-         +OOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757998187; x=1758602987;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OlYXyo2uZuFo7JhGyy9UUCXJlKeDR2CbpPIjqr5RgpE=;
-        b=aDvmoDaEndmhJAvqdxJEwAlj69TMVoniMQURWT8bC2nmhas7kYrFg/mXOgsyl8GYRn
-         FTsPLXAL8nQH+C9dQudKXncGVZsg2EBH47Na51StB/ukeAzN1FKIp12M6IhOBCZDMGPz
-         GE9ScpHljqgadWy/0O5pDD8MEmNN2Bnwu3RKe9IFw6/3+qadiYyNzqMpVnaxiWMcrn8+
-         wxYYsj6/xbNoBIDbXU1vhnakfyJoxcwqNbYQJT0HNFw4EwM4pOzdE2bY1VPu2ojhQXun
-         88j3BKftkbeLeTtFSNEbNVitg+4SLooyD5ACItdf6BARDD/cPrRG2zKCKEtC132R0oDd
-         SJGw==
-X-Forwarded-Encrypted: i=1; AJvYcCWDDtAXDmb0/pxWskba+K+CU1/v6+Y9pPNXPCOQKUcWUskKV0Km8I+hMZmuhOaT6lFS805IyaKDvuLQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVHGGGdA/caetbTSMURTspAqNNV9i1Jfq2o94C3TlWIqbtvaTg
-	iXuAe2q5BgSk8GIALxAc0CeWpGwE7+pG5z2f0zgLkuQbs662Y5DRGS/PFvCrFygs4AU=
-X-Gm-Gg: ASbGncuGWofd7PYV+Jb8+7MXH68vyDllEVA1t3GOCeqpNeWLO231jKepu47NWRXrJ+y
-	1ZwDtB/QURPB2iK5DtnT6c2352/1UcPCTtWc40Ki6vfAKVQ/vhMTzLnh85ILX9P58NdbAAcW4z3
-	OAcX5ZZgvuPGKq6TXfISn/85X6l/4+ToA8XHxfOPuLhC+1vtE3CgxQ4FsE69jsjifHIZshvuyR8
-	x2RIAwUvAm0Fj8v/3JanIuuErujvnmK13BmQCCBgSw8133/lBuTXonZbd97x639ivC9DR8g/C6R
-	g/2rKURBRRuRl2Om9JojrKhXsoNjVMHqB5lDx6N7fDQpbvOVxCCF81rZ+3agvE1lqPYNf9nOd/m
-	sz4Vty3zpAG3QTrkaclMXrI1k1pnCfhNrjdM6GDwXRHI4TJs6mQ==
-X-Google-Smtp-Source: AGHT+IFV4zbzh4iycIfH4WDU92suC0bCanMglT0Ogl2GwpwL8kM68NHrYSygkh1AIkIcAzvJhqwslA==
-X-Received: by 2002:a17:903:2f4f:b0:24c:99bd:52bb with SMTP id d9443c01a7336-25d267641camr179941415ad.30.1757998187203;
-        Mon, 15 Sep 2025 21:49:47 -0700 (PDT)
-Received: from pengdl-pc.mioffice.cn ([43.224.245.249])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25ef09c77f8sm104600605ad.15.2025.09.15.21.49.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 21:49:46 -0700 (PDT)
-From: pengdonglin <dolinux.peng@gmail.com>
-To: tj@kernel.org,
-	tony.luck@intel.com,
-	jani.nikula@linux.intel.com,
-	ap420073@gmail.com,
-	jv@jvosburgh.net,
-	freude@linux.ibm.com,
-	bcrl@kvack.org,
-	trondmy@kernel.org,
-	longman@redhat.com,
-	kees@kernel.org
-Cc: bigeasy@linutronix.de,
-	hdanton@sina.com,
-	paulmck@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	linux-nfs@vger.kernel.org,
-	linux-aio@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	netdev@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org,
-	linux-wireless@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	pengdonglin <dolinux.peng@gmail.com>,
-	"Toke" <toke@toke.dk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	pengdonglin <pengdonglin@xiaomi.com>
-Subject: [PATCH v3 14/14] wifi: ath9k: Remove redundant rcu_read_lock/unlock() in spin_lock
-Date: Tue, 16 Sep 2025 12:47:35 +0800
-Message-Id: <20250916044735.2316171-15-dolinux.peng@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250916044735.2316171-1-dolinux.peng@gmail.com>
-References: <20250916044735.2316171-1-dolinux.peng@gmail.com>
+	s=arc-20240116; t=1758006946; c=relaxed/simple;
+	bh=9TGFGRFrsZuPEdOczwxH9h20pygBGQx5NQAOCly1tfs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NXa7sQR7q0oYN+smAxwqkEcGfsVbt7h3EyT44iOZ1Z/CqpVkc6fajwVRScT4TkTzwkczcNps4YPtU0CBdtjhmlQFNO77/0TBfP99f6D1R3kno9U7OunGAj8EeDNwBWEhfW7Ck/1Hhr21JjTnU3cEAQYfyfDOw2SV2hJeiyD9Bgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=gzCEr1zr; arc=none smtp.client-ip=148.163.143.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
+Received: from pps.filterd (m0134423.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58G6r2OR028366;
+	Tue, 16 Sep 2025 07:14:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pps0720; bh=bXxgqdEdSOzYOwQL2w5UISvG0T
+	Gek76RcB1QClzkCaE=; b=gzCEr1zrEMw5QI4COvPhj9vnEAdw8clFMy0uUvpy+T
+	LDc8ZLjsAVUmtceIeVN+zJo/fqj4P8qMCObtEcq9YhowTfiSiziEGx2oonZEDsEO
+	gp/TqzMa/Q4Z3eqG1Vrm3zfKL7cb1vAQ0hL+AYUTnpwZ0Q6SSdvR/t8CrE2n84yo
+	1wFUKjP4OcHjs5RBXHKZSd7vTk8xIbFfM/BAgvR9SBs2u6rywcKllWP0rNSbKAm0
+	ELnhL6N6mDA/1fRZ4Q/8sgcQYCzDj3sLIvQ9QHZtYRmq0Wvg0tqNpoK7bRJIsCl1
+	uzFc6PajWs9xu5ZGsgUO7VdFWbCCMuQNs+cnP1vkIPLQ==
+Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 49730x84ps-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Sep 2025 07:14:28 +0000 (GMT)
+Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id 0FD0B130D0;
+	Tue, 16 Sep 2025 07:14:27 +0000 (UTC)
+Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id 9B2B980898D;
+	Tue, 16 Sep 2025 07:14:21 +0000 (UTC)
+Date: Tue, 16 Sep 2025 02:14:17 -0500
+From: Kyle Meyer <kyle.meyer@hpe.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: corbet@lwn.net, david@redhat.com, linmiaohe@huawei.com, shuah@kernel.org,
+        tony.luck@intel.com, jane.chu@oracle.com, jiaqiyan@google.com,
+        Liam.Howlett@oracle.com, bp@alien8.de, hannes@cmpxchg.org,
+        jack@suse.cz, joel.granados@kernel.org, laoar.shao@gmail.com,
+        lorenzo.stoakes@oracle.com, mclapinski@google.com, mhocko@suse.com,
+        nao.horiguchi@gmail.com, osalvador@suse.de, rafael.j.wysocki@intel.com,
+        rppt@kernel.org, russ.anderson@hpe.com, shawn.fan@intel.com,
+        surenb@google.com, vbabka@suse.cz, linux-acpi@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline for
+ HugeTLB pages
+Message-ID: <aMkOCmGBhZKhKPrI@hpe.com>
+References: <aMiu_Uku6Y5ZbuhM@hpe.com>
+ <20250915201618.7d9d294a6b22e0f71540884b@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250915201618.7d9d294a6b22e0f71540884b@linux-foundation.org>
+X-Authority-Analysis: v=2.4 cv=KaTSsRYD c=1 sm=1 tr=0 ts=68c90e54 cx=c_pps
+ a=5jkVtQsCUlC8zk5UhkBgHg==:117 a=5jkVtQsCUlC8zk5UhkBgHg==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=MvuuwTCpAAAA:8 a=QyXUC8HyAAAA:8
+ a=_fVqCaFjEFPFEyr0NywA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: aDOt515-H__Hl3R9V07wPh5jXDwBK7cM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDA2NSBTYWx0ZWRfXxAY3BPV9SJA6
+ yOok/WQpFEjJYGXprFhNvjR/MSlEPJF8gQD+4iCExdPx/MUr0x833mkvOuHKlTeKIBoAjRLyExx
+ T1D3ZDzlDFNSXfVciL1ZS43a5lWeWLSl+Qm5BBGhojcd3MR3tK4dnjyM1r+8nfdur5U22Z1nWnp
+ BOqPtmAezj/CPAQTwQOht+sjD82CQtE5HH8kUuszEVLtcQuoNZwYgjGbEZRSx7ud5T+cs9Ajrlo
+ Zdr3sFE7xNwfT0kvHltnSQk86vhd+J9mFAIfo4GXZKolTeRqPTORud7OzdD9Ryn2qLB7uc5993r
+ egpIJ+gjBaKykyay/cEipeEu8sl4ZXGHcWsvQBz4WPsQmGWyLsNUcS7ntdTgf3z+JbhL/mpeyzc
+ Et4+cJQw
+X-Proofpoint-ORIG-GUID: aDOt515-H__Hl3R9V07wPh5jXDwBK7cM
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-16_02,2025-09-12_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 phishscore=0 impostorscore=0 clxscore=1015
+ spamscore=0 adultscore=0 suspectscore=0 malwarescore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2509160065
 
-From: pengdonglin <pengdonglin@xiaomi.com>
+On Mon, Sep 15, 2025 at 08:16:18PM -0700, Andrew Morton wrote:
+> On Mon, 15 Sep 2025 19:27:41 -0500 Kyle Meyer <kyle.meyer@hpe.com> wrote:
+> 
+> > Soft offlining a HugeTLB page reduces the HugeTLB page pool.
+> > 
+> > Commit 56374430c5dfc ("mm/memory-failure: userspace controls soft-offlining pages")
+> > introduced the following sysctl interface to control soft offline:
+> > 
+> > /proc/sys/vm/enable_soft_offline
+> > 
+> > The interface does not distinguish between page types:
+> > 
+> >     0 - Soft offline is disabled
+> >     1 - Soft offline is enabled
+> > 
+> > Convert enable_soft_offline to a bitmask and support disabling soft
+> > offline for HugeTLB pages:
+> > 
+> > Bits:
+> > 
+> >     0 - Enable soft offline
+> >     1 - Disable soft offline for HugeTLB pages
+> > 
+> > Supported values:
+> > 
+> >     0 - Soft offline is disabled
+> >     1 - Soft offline is enabled
+> >     3 - Soft offline is enabled (disabled for HugeTLB pages)
+> > 
+> > Existing behavior is preserved.
+> 
+> um, why?  What benefit does this patch provide to our users? 
+> Use-cases, before-and-after scenarios, etc?
 
-Since commit a8bb74acd8efe ("rcu: Consolidate RCU-sched update-side function definitions")
-there is no difference between rcu_read_lock(), rcu_read_lock_bh() and
-rcu_read_lock_sched() in terms of RCU read section and the relevant grace
-period. That means that spin_lock(), which implies rcu_read_lock_sched(),
-also implies rcu_read_lock().
+Thank you for the feedback.
 
-There is no need no explicitly start a RCU read section if one has already
-been started implicitly by spin_lock().
+Some BIOS suppress ("cloak") corrected memory errors until a threshold
+is reached. Once that threshold is reached, BIOS reports a CPER with the
+"error threshold exceeded" bit set via GHES and the corresponding page is
+soft offlined.
 
-Simplify the code and remove the inner rcu_read_lock() invocation.
+BIOS does not know the page type of the corresponding page. If the
+corresponding page happens to be a HugeTLB page, it will be dissolved,
+permanently reducing the HugeTLB page pool. This can be problematic for
+workloads that depend on a fixed number of HugeTLB pages.
 
-Cc: "Toke" <toke@toke.dk>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: pengdonglin <pengdonglin@xiaomi.com>
-Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
----
- drivers/net/wireless/ath/ath9k/xmit.c | 2 --
- 1 file changed, 2 deletions(-)
+Currently, soft offline must be disabled to prevent HugeTLB pages from
+being soft offlined.
 
-diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
-index 0ac9212e42f7..4a0f465aa2fe 100644
---- a/drivers/net/wireless/ath/ath9k/xmit.c
-+++ b/drivers/net/wireless/ath/ath9k/xmit.c
-@@ -1993,7 +1993,6 @@ void ath_txq_schedule(struct ath_softc *sc, struct ath_txq *txq)
- 
- 	ieee80211_txq_schedule_start(hw, txq->mac80211_qnum);
- 	spin_lock_bh(&sc->chan_lock);
--	rcu_read_lock();
- 
- 	if (sc->cur_chan->stopped)
- 		goto out;
-@@ -2011,7 +2010,6 @@ void ath_txq_schedule(struct ath_softc *sc, struct ath_txq *txq)
- 	}
- 
- out:
--	rcu_read_unlock();
- 	spin_unlock_bh(&sc->chan_lock);
- 	ieee80211_txq_schedule_end(hw, txq->mac80211_qnum);
- }
--- 
-2.34.1
+This patch provides a middle ground. Soft offline can be disabled for
+HugeTLB pages while remaining enabled for non-HugeTLB pages, preserving
+the benefits of soft offline without the risk of BIOS soft offlining
+HugeTLB pages.
 
+> > Update documentation and HugeTLB soft offline self tests.
+> > 
+> > Reported-by: Shawn Fan <shawn.fan@intel.com>
+> 
+> Interesting.  What did Shawn report? (Closes:!).
+
+Tony or Shawn, could you please point me to the original report? Thanks!
+
+> > Suggested-by: Tony Luck <tony.luck@intel.com>
+> > Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
+> >
+> > ...
+> >
+> >  .../ABI/testing/sysfs-memory-page-offline     |  3 ++
+> >  Documentation/admin-guide/sysctl/vm.rst       | 28 ++++++++++++++++---
+> >  mm/memory-failure.c                           | 17 +++++++++--
+> >  .../selftests/mm/hugetlb-soft-offline.c       | 19 ++++++++++---
+> >  4 files changed, 56 insertions(+), 11 deletions(-)
+> 
+> I'll add it because testing, but please do explain why I added it?
+
+Thanks,
+Kyle Meyer
 
