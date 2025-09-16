@@ -1,83 +1,118 @@
-Return-Path: <linux-acpi+bounces-17042-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17043-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A179BB59D3D
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 18:17:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BC1B59D4B
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 18:19:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3E583AB490
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 16:13:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 928407AE599
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 16:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27976235362;
-	Tue, 16 Sep 2025 16:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD041306D4B;
+	Tue, 16 Sep 2025 16:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PbuP21Yd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF7D328586;
-	Tue, 16 Sep 2025 16:13:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB0F29E0E6;
+	Tue, 16 Sep 2025 16:18:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758039186; cv=none; b=Uqx8t7YyHTVcVFYWy4S/A8DZCl16/OBfSog+FOpX3oYOKWHvt8cvJuzF7C/jvaRBO8QtdjE7bTbPLf/WZA2luqzw4gihTpW9ckkI42ruAgBRvOhM9nZpip4Z14Sz5rLW06PDbePEfZ226K2WPvi+SeAWvC49u9+zN48IZHeMZ2g=
+	t=1758039511; cv=none; b=PCGG3c/6aYJaJG/RCUlMFgXC6DLwxTTziDuH/tZBwXvuFfIjX/GMiLqFlSRLK7ju51tNy5AQQdz/oh5y20u2wBi1o/1TBM874t1WYXVuNdOp9xCwRnwOALGDX8nMdbxKXdKTDns/DsVnzbyZtZQM1I9C08gLKzEmQyy7PMtk6VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758039186; c=relaxed/simple;
-	bh=/FFuZ+jwoUlxNcXEMJw+BzPghSyuSxR5lk48pQ33lp4=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RuYma8XAvXG4M69P9Y2SIFO+JWtpYIboR05kEk+qnqmUTLUOdwjhYVxDB2n6GIfNXaiNBs2INfNP++udEZ7YmLQGcZ0FXF70Pa6lGqUEmJG8+vzEruQUQ34j24M5Wc4wlQGhmDSteX/L9CPKGMu2izrkPT+k5U+S9gnGafQNtkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cR6LY5b0Tz6K9Hp;
-	Wed, 17 Sep 2025 00:10:13 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1C65D1402F1;
-	Wed, 17 Sep 2025 00:13:01 +0800 (CST)
-Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 16 Sep
- 2025 18:13:00 +0200
-Date: Tue, 16 Sep 2025 17:12:59 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Marc Zyngier <maz@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-acpi@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "Mark
- Rutland" <mark.rutland@arm.com>, Will Deacon <will@kernel.org>, "Rafael J.
- Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>, "Saravana
- Kannan" <saravanak@google.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Sven Peter <sven@kernel.org>, Janne Grunau
-	<j@jannau.net>, Suzuki K Poulose <suzuki.poulose@arm.com>, James Clark
-	<james.clark@linaro.org>
-Subject: Re: [PATCH v2 13/25] genirq: Factor-in percpu irqaction creation
-Message-ID: <20250916171259.000070d2@huawei.com>
-In-Reply-To: <20250915085702.519996-14-maz@kernel.org>
-References: <20250915085702.519996-1-maz@kernel.org>
-	<20250915085702.519996-14-maz@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1758039511; c=relaxed/simple;
+	bh=Cq5NfNk7JiXVwVexvjijFakx0T6Ct2rgVmnxiY60eOU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YKCLSqDdkihoEX2cZqpkba53TfVRf9A25p0gf+Siz47OqzAR2MsEzD/1dVZQDubgLnAc2UnGnOQtKlIXC8xMs/99iXxGBNvRo50vUw+ga7MRta6eVe0sQjBpKs3/fvEsv5u+YcZeNXdOR0JQxKRwi7zcGWqHafrjyZcp0MhBHfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PbuP21Yd; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758039510; x=1789575510;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Cq5NfNk7JiXVwVexvjijFakx0T6Ct2rgVmnxiY60eOU=;
+  b=PbuP21Yd7Pg6gKbKywFpWQN7aNcYGmSLaDXUwwI6VEj9vlo18O0xJTIE
+   kMpZji7g/aM2b5A1vZLazRVucGUpnHJonVvfGJAxreo/bd/YuXdMoTixP
+   +DfdGE5bDZSzgElz+juePWE8V+ACRbcoSROPEmSVxtvGV2k7sYxnxZh8M
+   ynM6HGMBv2Ybtd8/NWxvRWGt/bXj9FytmRNyCnorZW+i38U5Ga+i5ffhh
+   zGOioqkskxfs5rUvEr7lQ5ZgE1ANzLZiNW3AOhSVWdtP8ZcPwM8KSjpM3
+   TDSRtWi6te1RZCCQ0ctNLMAu0cwmS3LxMLMxi9Fx/vDhM95b+HEjU+e1Q
+   Q==;
+X-CSE-ConnectionGUID: X20m+nvCQBiU8WMYJIuwSQ==
+X-CSE-MsgGUID: 21ZsCP5WSIqVEY8iEDZIGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="59548069"
+X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; 
+   d="scan'208";a="59548069"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 09:18:28 -0700
+X-CSE-ConnectionGUID: RhJnTf2vS9W+6zd2tP7TRw==
+X-CSE-MsgGUID: yqJP5UYSTtq71NA4WlcsGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; 
+   d="scan'208";a="174095797"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.177])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 09:18:25 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id D6D95121EFF;
+	Tue, 16 Sep 2025 19:18:22 +0300 (EEST)
+Date: Tue, 16 Sep 2025 19:18:22 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: =?iso-8859-1?Q?Jean-Fran=E7ois?= Lessard <jefflessard3@gmail.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] device property: Add scoped fwnode child node
+ iterators
+Message-ID: <aMmNzpvVPH04hsIL@kekkonen.localdomain>
+References: <20250902190443.3252-1-jefflessard3@gmail.com>
+ <20250902190443.3252-2-jefflessard3@gmail.com>
+ <aLhAKJBUNQVH1Vmf@kekkonen.localdomain>
+ <DCJC7Q9MZEM3.34FU7BXXZ7UGF@kernel.org>
+ <aLkqE9c9w9m4Axsp@kekkonen.localdomain>
+ <DCJTOIQ4Q0Z5.Q2UE5AQU1X35@kernel.org>
+ <aLlDJETaWTjiSP0L@kekkonen.localdomain>
+ <DCJVYUINZ7KM.7RCV9P9KHTVM@kernel.org>
+ <aLl-ABtFi2R9Wc1a@kekkonen.localdomain>
+ <DCK5E8KIEV7M.25EFO2EE7JS9V@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DCK5E8KIEV7M.25EFO2EE7JS9V@kernel.org>
 
-On Mon, 15 Sep 2025 09:56:50 +0100
-Marc Zyngier <maz@kernel.org> wrote:
+Hi Danilo,
 
-> Move the code creating a per-cpu irqaction into its own helper, so that
-> future changes to this code can be kept localised.
+On Thu, Sep 04, 2025 at 06:14:31PM +0200, Danilo Krummrich wrote:
+> On Thu Sep 4, 2025 at 1:54 PM CEST, Sakari Ailus wrote:
+> > If you're concerned of the use on ACPI platforms, none of the drivers using
+> > the two available variants list any ACPI IDs, signifying they're not used
+> > on ACPI systems -- I don't think they ever have been.
 > 
-> At the same time, fix the documentation which appears to say the wrong
-> thing when it comes to interrupts being automatically enabled
-> (percpu_devid interrupts never are).
-> 
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Great -- sounds reasonable then.
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+I opted to add availability check on the ACPI side as well so that DT and
+ACPI are aligned in not returning unavailable child devices.
+
+-- 
+Regards,
+
+Sakari Ailus
 
