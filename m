@@ -1,112 +1,135 @@
-Return-Path: <linux-acpi+bounces-17009-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17010-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D75B591CB
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 11:11:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7ACAB59228
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 11:27:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F8581898773
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 09:11:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAF0C527006
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 09:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34919286433;
-	Tue, 16 Sep 2025 09:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088212BDC02;
+	Tue, 16 Sep 2025 09:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="iz/MheB0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y9GWTVhI"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9346E42A96;
-	Tue, 16 Sep 2025 09:11:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7651D29BDBF
+	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 09:25:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758013884; cv=none; b=YWsVw0wQ7VZSJPC25LyVdOQBZRgzJ3VIdQcfWb6u7q7sfGt8YL4l3GY4zQSJnoU+xVZowX2Dszsq/M4YNTWeeDEpztTI1KTAwlbENFNVE9KJejIkH1FF4mSVvshTBJ1meCQFcFCt0S7XHN8HIGT8qMY0tZFxxCBw1hSQObH0MzM=
+	t=1758014753; cv=none; b=ejAyhicHvBPGGBBYcbLswKR1U24biPMaAo4E5Z/JHTeB0nS1vOE/mHyh+uQboEdlDPLozKwxuqPL9I3VC6ahiERW8zuCYPPEMMDhLt0lEzlyZ6pA6UCJgUmg5z73tIZvJfcON4RA5PDpa/4w8sGQGJ/aNr1+Lk7k4HtNDsQiXig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758013884; c=relaxed/simple;
-	bh=KkPyIIbyd5SJjuqod3wdkU2p2Zh9ZN9dF3Jz2Jnh14w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u8DHlipMiDFscAi/24gnf8YCdcw+Yxl9upZ5uEvIqwMy6WzwHYwKIubcTiSKG4ZQnx1RQEAHGX9Rf/6oVwENXs0idvyBszbzXiiKQWQ2XEhwAO+TGfH0xrKXtrqL+kB48GdsujsbVmGwTGB3cr9cc+8ODBlWpq3Y+SPu4A37zmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=iz/MheB0; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0C2B140E01A2;
-	Tue, 16 Sep 2025 09:11:19 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id zIaqC3HLNQ9L; Tue, 16 Sep 2025 09:11:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1758013875; bh=QWJBpCxYGdhhSeLXQ8ldzOPuqWrT3lCtih2UBg+SiEk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iz/MheB0csedEfyBEa+OtYeLXTZ7jC4FHJuGUmtU2JErkakOF7ixRTLPrEoJS+p/n
-	 xTlQ8aKSJq7KILBNxkqFBq8NJji1w1/bFT3QxymiSf0elE/d66qF8lIygWpkqGlGvo
-	 OXlmKiWVSJCT6l0hJ8UwOumlj5sJswW4bR02xwc7fs8vyrEJ1ioKP/UskPkkHvAYM9
-	 wW1iKwLy/SlpKT3iOxOEqfha92efzeXPlv4NnX/ynB0ch71JmNtwckRNtdmxwungLY
-	 jmIVmFxGjjHaDf6At9Gtjpc45liuNSGHi5o75oceefknuZ592q0OMyT1kj9R8usDBz
-	 8UPs36thYuH+e8CP9rrfalwM16vO8keyJEOEpX5B6k98qVPyTdqBgOJw2H9tIT5WW5
-	 9rOZ7By/GZGzjSTQkzH8ld8rpM0OMBjaqpnLEV7OBy19C2hZODmVegHAtu90uTy7Ad
-	 Q+YT0r8ro74zafqKQO0DS5hN29j8NFBorZK3wM3RLbJlqItYa0ttNTohhlF3lkMPG2
-	 kgO1ipRIuo3Q3eLxrHANpYo+1dDPtMMgu63DLTNwNFuxKa7NljXqKYpK/wr7SMtfOk
-	 Fil5HoP1/jLI+FH/gfJatDlhp1aib5eSb/++iP649C7fDzcq98fj0ke2Y5iFA7YLLn
-	 F5aP2LL/SJTR+erhbN7NZom8=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 5589940E01AC;
-	Tue, 16 Sep 2025 09:11:03 +0000 (UTC)
-Date: Tue, 16 Sep 2025 11:10:55 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Bert Karwatzki <spasswolf@web.de>,
-	Yazen Ghannam <yazen.ghannam@amd.com>
-Cc: Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org,
-	linux-next@vger.kernel.org, linux-edac@vger.kernel.org,
-	linux-acpi@vger.kernel.org, x86@kernel.org, rafael@kernel.org,
-	qiuxu.zhuo@intel.com, nik.borisov@suse.com,
-	Smita.KoralahalliChannabasappa@amd.com
-Subject: Re: spurious mce Hardware Error messages in next-20250912
-Message-ID: <20250916091055.GAaMkpn72GrFnsueCF@fat_crate.local>
-References: <20250915010010.3547-1-spasswolf@web.de>
- <20250915175531.GB869676@yaz-khff2.amd.com>
- <45d4081d93bbd50e1a23a112e3caca86ce979217.camel@web.de>
- <426097525d5f9e88a3f7e96ce93f24ca27459f90.camel@web.de>
+	s=arc-20240116; t=1758014753; c=relaxed/simple;
+	bh=prkrcgQgpwPbi8Cfds13n7nM9MiR8JPZLk8prSDLM2M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ES3nldB5g1YgxVQW6SECzFvmrqn2pqkAna88fsnOjIfyhiozQhbhdpXiZKYkTbkR4/0p2gbDOHVwKcc9Ahzk06yIfaRKhVgMM+m5vPTEK36lfClZiSI0JUoLAjnnydkh0QglMwaVyLg8hi9pJT/zj/n9N3dMyXzrGY+CM86P84Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y9GWTVhI; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2630354dd1aso6258275ad.0
+        for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 02:25:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758014752; x=1758619552; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=prkrcgQgpwPbi8Cfds13n7nM9MiR8JPZLk8prSDLM2M=;
+        b=Y9GWTVhIJtRrGpeL0bZclzvTItu83iRH38oBrb2EcNhXc3csSEaIHLjxntN6vPRekG
+         U+fX+zMMyWvq4fU1tXc9j2glULsCsD3HDQtSdJDyCms7FAzij16kiCbq4ZFH4GfX1o2O
+         60bm9gvWo1/H68oAAxP9Bh2C3rYz1lxFDBZZr5Llaxr51bh/syGn3RGUDU4Wubvi7ara
+         /L0GnCtskb8YvQYVF0Cb8mRK/F3O+YZqvZLAJowHKwv2kqeo8uPRcyKtqEPj2z3PGkaP
+         rt4IM+0Zu60Px0mIEQ9DMA72XYDEi5sZQhNM4KrzJelebhotOVNfMemzPC3+X9ehK8+e
+         a/6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758014752; x=1758619552;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=prkrcgQgpwPbi8Cfds13n7nM9MiR8JPZLk8prSDLM2M=;
+        b=ejocRNbBVCToSpqq6lwTak7JbSZdNCyVxTqJrrNB5cxFi7fURRZecYn7xWiQP35p+Z
+         bvzHriqijlRW7tuHbQKfum110Cal1EkBcUAYH3d3n/+NpnpzPzOohLEzCF0YhLyTVei0
+         fMC/2jfAF6W/11WtJzkxU4fXdjncOGrb00cThqCZBm2Y9Dar5lWeNZ/Oq2Cn9XUdP6zQ
+         ZrOYiVlm/lxmMB647K/6BXLWGSMkBbUQciIsfb83LdEhxo6vtbjqBAJuu4Q8dcdJvAH7
+         dQXd8R8/3ddG/n4P+CW9vVTaPW9lX6zJS5nc7U3aUrY3yWvG6qSuWrfRcMed3moBDaBB
+         iuJA==
+X-Forwarded-Encrypted: i=1; AJvYcCUYY2NS75vbOISD7UFUiAnMxNr0b+NcAqKZrQlhoHPtrfnWt01ldnm646ye69KBmvFpVvoEp+A73Kjw@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHNKPoTnFryna7Ds/Y+jKhdDUFyIwoci88tQDFR11wol4BI7Zu
+	fGV4cI0BWhbTzzRiZXcEo4Obmv1drLQQ4jHtQ/ekUSXDEzJtQ6s7coKNJ6iSOjpQ5IcQGsFLp1a
+	D0yXGEe0LR3+NdlmbhM+OmQR86ZwFF8dhvfZuCRA1zw==
+X-Gm-Gg: ASbGncumOUF5LTEQsMONZycuNXzrVs7AFwB4Vd+gqkgLlnYt8gfjpYr7t5+r0T9CMqe
+	d49nKCt2m6eGDwZe1If62CqUGz2Dfvl8uOujaYtjv10knpA3P13MH/jBwkpN0kEsmBhzA+K2Aib
+	sLfWFqjYTaDxWZblqb4jyPnbPw9jDkGLRqlM8gEHnouMcC/1Rs4gOawnmkHBPqnEfvojMwL3/As
+	Hjt92rnzo7JVrcb4yYCkYpVZYFQiT+QxgUA67gPdsOe1FXQMNmy/mbZSKEooMDziwn45VTHAAAq
+	xhuraJvLnwm2hhv0bYuaASy4ug==
+X-Google-Smtp-Source: AGHT+IFwc6Y1OseNifdIO5J0qDFbM+aOcV8Z7xSmon/0tVZxaKw/+AP4a1wI7bqiW8muI5j5MuELqcXm9FvbGpAicyA=
+X-Received: by 2002:a17:902:e5c8:b0:264:9287:3fc3 with SMTP id
+ d9443c01a7336-2649287431dmr60170295ad.2.1758014751666; Tue, 16 Sep 2025
+ 02:25:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <426097525d5f9e88a3f7e96ce93f24ca27459f90.camel@web.de>
+References: <20250813-core-cstr-fanout-1-v3-0-545c14bc44ff@gmail.com>
+In-Reply-To: <20250813-core-cstr-fanout-1-v3-0-545c14bc44ff@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 16 Sep 2025 11:25:39 +0200
+X-Gm-Features: AS18NWCYvwyg0oQ7WKMGNn77retnSNUsfiN0nCmq9Ts2BvgM8ip_kHMckevDcv8
+Message-ID: <CANiq72kq4RWNO1pJtJuG8jBpARq5ft6pcn8dHuUWJx=nosweyQ@mail.gmail.com>
+Subject: Re: [PATCH v3 00/11] rust: use `core::ffi::CStr` method names
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Leon Romanovsky <leon@kernel.org>, Breno Leitao <leitao@debian.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
+	Jocelyn Falempe <jfalempe@redhat.com>, Javier Martinez Canillas <javierm@redhat.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Len Brown <lenb@kernel.org>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 15, 2025 at 11:43:26PM +0200, Bert Karwatzki wrote:
-> After re-cloning linux-next I tested next-20250911 and I get no mce error messages
-> even if I set the check_interval to 10.
+On Wed, Aug 13, 2025 at 5:42=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
+>
+> This is series 2b/5 of the migration to `core::ffi::CStr`[0].
+> 20250704-core-cstr-prepare-v1-0-a91524037783@gmail.com.
+>
+> This series depends on the prior series[0] and is intended to go through
+> the rust tree to reduce the number of release cycles required to
+> complete the work.
+>
+> Subsystem maintainers: I would appreciate your `Acked-by`s so that this
+> can be taken through Miguel's tree (where the other series must go).
+>
+> [0] https://lore.kernel.org/all/20250704-core-cstr-prepare-v1-0-a91524037=
+783@gmail.com/
+>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Yazen, I've zapped everything from the handler unification onwards:
+Applied to `rust-next` -- thanks everyone!
 
-28e82d6f03b0 x86/mce: Save and use APEI corrected threshold limit
-c8f4cea38959 x86/mce: Handle AMD threshold interrupt storms
-5a92e88ffc49 x86/mce/amd: Define threshold restart function for banks
-922300abd79d x86/mce/amd: Remove redundant reset_block()
-9b92e18973ce x86/mce/amd: Support SMCA corrected error interrupt
-fe02d3d00b06 x86/mce/amd: Enable interrupt vectors once per-CPU on SMCA systems
-cf6f155e848b x86/mce: Unify AMD DFR handler with MCA Polling
-53b3be0e79ef x86/mce: Unify AMD THR handler with MCA Polling
+If any maintainer has a problem with this, please shout.
 
-until this is properly sorted out, now this close to the merge window.
-
-Thanks, Bert, for reporting!
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Cheers,
+Miguel
 
