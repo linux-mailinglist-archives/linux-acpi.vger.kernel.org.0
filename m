@@ -1,69 +1,69 @@
-Return-Path: <linux-acpi+bounces-17029-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17034-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 524E1B59CCD
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 18:04:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3211B59CD9
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 18:04:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91AC11B27CE9
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 16:03:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EAD6487AA1
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 16:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD082848A3;
-	Tue, 16 Sep 2025 16:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737BB374294;
+	Tue, 16 Sep 2025 16:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JBhd0EBZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bvIn6YOB"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE5F2BF001
-	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 16:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABBE37427A
+	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 16:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758038501; cv=none; b=JO4amuYK58rB4eOyVRA8xo2nWl6c5FH738XWgxMyReesj91YH9laoLUFxeAhti6ves0dEMDLfyjZqzhPnkFryjWc5+qwS5ejpnqTf8iLexFcxmPuhPtl08HKO//urRGqzdCNcducUhSN/kJuwErVZTvGXUT2sR8POORAo60N/N0=
+	t=1758038504; cv=none; b=c19mjR4O4Afkiwr+1tBkUBg7LRC3bwwqz9jMoVXj3G70U0Du87ymYWkNl0XyZsPiV7kx2qNrcNsAMRFdgMEMMLeu6ONmJlrmuxl0diZQx/AGy5P91UI0d/6gVxE0hsz1BuQOnJF2VF4pL57cfqRGMtKW0y/PaG7kYQcOU3Pijh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758038501; c=relaxed/simple;
-	bh=JG4rsFos70kSJAlELojkpuYY4KctBqvDce779223KhQ=;
+	s=arc-20240116; t=1758038504; c=relaxed/simple;
+	bh=/eCProyFWYCYOJOTfw4H2B0E1zLjy8me1P2s2AigyG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+z4RYaJ1GFPj14jhdZ4lUNBmB7b+GgSicScq7L7LNbcvldH2PXf6lkJjWiYzaDexiVsY0j4hSjMFKzD2LNJT3MabfNAnYvySPtRrYA93KZYf0kd+6AcgJUX1WUESK0cqNztn1bz490c9McyjYoKGQoOPRLE+6ivs+N4OCNws1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JBhd0EBZ; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=b/6hU0OIkMa18uOYkpGe/ARIh0Fs8qDIkcXZNHOtAW5YI+SZ4ygg2gI4anpxfMalEer5kKTo3vdIY8thVLT8Uo+vn36mt+i6roQrXV+itVTFCiX3ScOLSn4ULu8ZWr+z33edftWSL+CCYVe4fm1iIzeqnW0n3GBT6/iouWC2qq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bvIn6YOB; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758038499; x=1789574499;
+  t=1758038503; x=1789574503;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=JG4rsFos70kSJAlELojkpuYY4KctBqvDce779223KhQ=;
-  b=JBhd0EBZissHPoguifxug5IGAs62aDe34pfzbMv6izJwxgg1KgE11K6t
-   GGVw5qP4D4MhjOOZUsVHrzQbU6Cqw8tOaEAnjR3Ooy+ZoILwKC3z7gqia
-   z0/ZEnkpNpxdnRxrvKKAuhqNmYlAoNpVRxUJuOtQN/Rh6nKCimCI4GkWR
-   IoKPpW9UU1i0+8oYoxThnO4rjCxg549GebYAvKeLLD1qa/FJzPVa0qKDD
-   cTveHL3IPz0IiGBQJSN/kYbElGV2eRTHU+uVAcnuPFQV2eplwDOWFotTX
-   aR3yH6/7N2FRoqyhB5r2cSHbV/MhBKezK9jTxCvQ4hPJ9PKV1kY/EemWt
+  bh=/eCProyFWYCYOJOTfw4H2B0E1zLjy8me1P2s2AigyG4=;
+  b=bvIn6YOBTXDomhDxKTP7mguGWef5oei3bipUQDkRF6tRnMbwQC2vS+5Z
+   tt0CGwj+QIiwKCgFvc3oUvCnjLLhgoK/u5yuBdf4VhqigicEeX/RnEZBg
+   fs4PsUlaN2sN3UYZLjaveTQ7kumyHAa8jE0rfYzrlDnlkWBdGDoKoEijr
+   uqgWm23ZeMwmTCB+LmsB8wA52fs1RPv1aPF7HDw5AiRmrOXjzN8yOX5wJ
+   4lYyarx2gPW1jMak0N7we+VnwryL3IKPwBcVFut1HvXHKzFU8oyNanuKl
+   Bn82UwNSMUM50g1dYaA4yWs6DKddqzCNmM8+HytAAum8zm3wX0qfwJTeV
    w==;
-X-CSE-ConnectionGUID: yMd49T1CRZC+1skr8MQgXw==
-X-CSE-MsgGUID: 0cpFLsvZTIm0pFIL7Zf9DQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="71422922"
+X-CSE-ConnectionGUID: uTErA43+S3GF7OxyHGRjyg==
+X-CSE-MsgGUID: 1u9EsRDbS2+YLE85KoKh+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="71422974"
 X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; 
-   d="scan'208";a="71422922"
+   d="scan'208";a="71422974"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 09:01:36 -0700
-X-CSE-ConnectionGUID: lUDVKGVyTSSe2ZSwSWJMEA==
-X-CSE-MsgGUID: DZFj2qiXThW8wMvd+6d8lg==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 09:01:41 -0700
+X-CSE-ConnectionGUID: W8vcNUk9RTO4fJmws8Vt0w==
+X-CSE-MsgGUID: NyAsh8h+RzGEfiecdYuZRQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; 
-   d="scan'208";a="174091514"
+   d="scan'208";a="174091539"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.177])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 09:01:33 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 09:01:38 -0700
 Received: from punajuuri.localdomain (unknown [192.168.240.130])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 6A420121F03;
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 6E2F9121F04;
 	Tue, 16 Sep 2025 19:01:30 +0300 (EEST)
 Received: from sailus by punajuuri.localdomain with local (Exim 4.98.2)
 	(envelope-from <sakari.ailus@linux.intel.com>)
-	id 1uyY7W-0000000Gazp-1dbv;
+	id 1uyY7W-0000000Gazt-1i1f;
 	Tue, 16 Sep 2025 19:01:30 +0300
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
@@ -74,9 +74,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Daniel Scally <djrscally@gmail.com>,
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 04/14] property: Drop DEVICE_DISABLED flag in fwnode_graph_get_endpoint_by_id()
-Date: Tue, 16 Sep 2025 19:01:19 +0300
-Message-ID: <20250916160129.3955410-5-sakari.ailus@linux.intel.com>
+Subject: [PATCH 05/14] property: Drop DEVICE_DISABLED flag in fwnode_graph_get_endpoint_count()
+Date: Tue, 16 Sep 2025 19:01:20 +0300
+Message-ID: <20250916160129.3955410-6-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250916160129.3955410-1-sakari.ailus@linux.intel.com>
 References: <20250916160129.3955410-1-sakari.ailus@linux.intel.com>
@@ -88,44 +88,68 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-No caller uses FWNODE_GRAPH_DEVICE_DISABLED flag when calling
-fwnode_graph_get_endpoint_by_id(). Drop support for the flag entirely and
-remove it from the documentation.
+FWNODE_GRAPH_DEVICE_DISABLED flag isn't used anywhere, drop the flag and
+support for it in fwnode_graph_get_endpoint_count().
 
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 ---
- drivers/base/property.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/base/property.c  | 10 ++--------
+ include/linux/property.h |  8 +-------
+ 2 files changed, 3 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/base/property.c b/drivers/base/property.c
-index f626d5bbe806..b48ef81ae43e 100644
+index b48ef81ae43e..2e0ff0232b27 100644
 --- a/drivers/base/property.c
 +++ b/drivers/base/property.c
-@@ -1241,9 +1241,6 @@ static bool fwnode_graph_remote_available(struct fwnode_handle *ep)
-  * If FWNODE_GRAPH_ENDPOINT_NEXT is passed in @flags and the specified endpoint
-  * has not been found, look for the closest endpoint ID greater than the
-  * specified one and return the endpoint that corresponds to it, if present.
+@@ -1291,21 +1291,15 @@ EXPORT_SYMBOL_GPL(fwnode_graph_get_endpoint_by_id);
+ /**
+  * fwnode_graph_get_endpoint_count - Count endpoints on a device node
+  * @fwnode: The node related to a device
+- * @flags: fwnode lookup flags
+  * Count endpoints in a device node.
 - *
-- * Does not return endpoints that belong to disabled devices or endpoints that
-- * are unconnected, unless FWNODE_GRAPH_DEVICE_DISABLED is passed in @flags.
+- * If FWNODE_GRAPH_DEVICE_DISABLED flag is specified, also unconnected endpoints
+- * and endpoints connected to disabled devices are counted.
   */
- struct fwnode_handle *
- fwnode_graph_get_endpoint_by_id(const struct fwnode_handle *fwnode,
-@@ -1252,13 +1249,12 @@ fwnode_graph_get_endpoint_by_id(const struct fwnode_handle *fwnode,
- 	struct fwnode_handle *ep, *best_ep = NULL;
- 	unsigned int best_ep_id = 0;
- 	bool endpoint_next = flags & FWNODE_GRAPH_ENDPOINT_NEXT;
--	bool enabled_only = !(flags & FWNODE_GRAPH_DEVICE_DISABLED);
+-unsigned int fwnode_graph_get_endpoint_count(const struct fwnode_handle *fwnode,
+-					     unsigned long flags)
++unsigned int fwnode_graph_get_endpoint_count(const struct fwnode_handle *fwnode)
+ {
+ 	struct fwnode_handle *ep;
+ 	unsigned int count = 0;
  
  	fwnode_graph_for_each_endpoint(fwnode, ep) {
- 		struct fwnode_endpoint fwnode_ep = { 0 };
- 		int ret;
+-		if (flags & FWNODE_GRAPH_DEVICE_DISABLED ||
+-		    fwnode_graph_remote_available(ep))
++		if (fwnode_graph_remote_available(ep))
+ 			count++;
+ 	}
  
--		if (enabled_only && !fwnode_graph_remote_available(ep))
-+		if (!fwnode_graph_remote_available(ep))
- 			continue;
+diff --git a/include/linux/property.h b/include/linux/property.h
+index d1e80b3c9918..8b8bbbe6b5b7 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -503,19 +503,13 @@ static inline bool fwnode_graph_is_endpoint(const struct fwnode_handle *fwnode)
+  * @FWNODE_GRAPH_ENDPOINT_NEXT: In the case of no exact match, look for the
+  *				closest endpoint ID greater than the specified
+  *				one.
+- * @FWNODE_GRAPH_DEVICE_DISABLED: That the device to which the remote
+- *				  endpoint of the given endpoint belongs to,
+- *				  may be disabled, or that the endpoint is not
+- *				  connected.
+  */
+ #define FWNODE_GRAPH_ENDPOINT_NEXT	BIT(0)
+-#define FWNODE_GRAPH_DEVICE_DISABLED	BIT(1)
  
- 		ret = fwnode_graph_parse_endpoint(ep, &fwnode_ep);
+ struct fwnode_handle *
+ fwnode_graph_get_endpoint_by_id(const struct fwnode_handle *fwnode,
+ 				u32 port, u32 endpoint, unsigned long flags);
+-unsigned int fwnode_graph_get_endpoint_count(const struct fwnode_handle *fwnode,
+-					     unsigned long flags);
++unsigned int fwnode_graph_get_endpoint_count(const struct fwnode_handle *fwnode);
+ 
+ #define fwnode_graph_for_each_endpoint(fwnode, child)				\
+ 	for (child = fwnode_graph_get_next_endpoint(fwnode, NULL); child;	\
 -- 
 2.47.3
 
