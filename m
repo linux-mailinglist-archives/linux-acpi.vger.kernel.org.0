@@ -1,157 +1,118 @@
-Return-Path: <linux-acpi+bounces-16978-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16979-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB0CB58B8F
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 03:55:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5894FB58C1C
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 04:59:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74A801BC0F5F
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 01:56:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD2A132154B
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 02:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC0022DFBA;
-	Tue, 16 Sep 2025 01:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L7jrtFBe"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A4A724DCE5;
+	Tue, 16 Sep 2025 02:58:51 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26743222566
-	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 01:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4774D22128B;
+	Tue, 16 Sep 2025 02:58:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757987741; cv=none; b=VivXjHLV/jEalzbh08mLF0bRpxhEpmXRIDZmY09fJcRpmq+pZkeO+qe3ZQOafunEqNOWxVYuYY5S0CeiOoSOzqnzIBuCyLynHBJGZseJsJDO0TS70mHB9BgniSxpJWybi7NtBO3GUzivYRwVInFsYxJXyO7k5cNwFcvzvy4merw=
+	t=1757991531; cv=none; b=AzzQ8FnVcwYFnDveKJ/wpRKkuOZyStJb3KLozjHo46w9eHdzBiNzR/YT7xn72qJ1LPvf7RlbD2BAs2m9T70uoB4sXQoKHFS7YeBWTPca91I+YXyT3xrpXww4R/l1qjluEmW+7iXHQJNkzGEJI1Ova/fq3anVocuhnxV3QHWfryA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757987741; c=relaxed/simple;
-	bh=jep2u5VNTk538PUR4KP/b48BjYybUEbcPCBXSSZj1Jc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F0ly1KPgSuDkY1EwhB0jU7hiGsC6xspckYp2JsGo/hQUJ6c2PV0YTEdvFEO37snap3W4s4LKiM6B6DdGf7VGVrOyz/eyW7x+shXGtCVtzwm6cBiWTV1yLUJw3RWSKQ5QsTnhimPwQ6kf9zC3Y+UulX7EAdT2iWVhBqgcOAT1wM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L7jrtFBe; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b07ba1c3df4so732100666b.3
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 18:55:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757987737; x=1758592537; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3JiJuCf5fDbcsVFqie8KviQvSHh9fw4OMPm4D25E3/I=;
-        b=L7jrtFBeKsXLrJDFDYYmH2CyVHVGaP7NniIcPoVRTVVLg7SFE9957XIvhw3x8MgICw
-         CDpPEd/EvkXVp9dPXf1Gt53xcIN4DTYeAO3uejVWSujOZM9uyd36wYS6GMlsLZdT6UnW
-         7HYKpyB74OKpRCums2wzPDgp4aCBWP+hhOmTDPahklmaFkFJaDxaUqwpTMnEWIL4wYhJ
-         k8ZieHGQYUcarek1roI9rrQRmip+Wz/0Zk9V5+eJJVC+HOOwSnB/dSpO77nC8RzFxzfd
-         F72+Hx13bHOcSLWvv/YOj3CYWyDS3b7dhzjLh+XgHPDoLwdjeuc9OBclZHONhptg+yB/
-         j4nA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757987737; x=1758592537;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3JiJuCf5fDbcsVFqie8KviQvSHh9fw4OMPm4D25E3/I=;
-        b=e4UjXHzNjzothIzABuvBXkX1mBWHGMgwrMpyGbnKvMjrsQqXccpYGOn5mhRnVAPsUK
-         80TwBi9hH5dhkwQmPw0b0x8HV6TYNNfL+LfykF5yQoRq8fXJAsBPZ6+pz1WBTg+vQH1/
-         JOwmOXHuCDIQbs6YlhuO5hhbfWhUvJDVaK3txsCG8tn8UOmJ9ExCEvXAVtzg6NnpX0qj
-         C/ok/zDcZsaSDwScK/OrAR0dFYpM+ygrnSpU/jIC64qUA+6dBOMOqRGeP0TbN/2o1cZM
-         Ub+pl6YY8OeuVzGy8rL/QCJMwaQgeIq8H0UaqInobhd3emq9Fx59PFd8eWcXjfeUJuyL
-         oyrA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1WhVa/9uHf/oMzZTBtdAPgdOn9aDQxwJlJmIBk5kacRQzBKDVj3nXjbR5cSZHbaYeG4cPRhc+c7xR@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWCshI3Dnp93i+Su5sNGRWR5RT0Ixj+Wj5DoOiruaXHR0dbVCl
-	ZihvCTdB5kgWdrx8JPkpvThBDCIbz4Xr7rZapT/BJXllWnHWSoRrJKaHjP86uYAl6RvNVmAru7x
-	6xsnkzLiylFV3F86M+fAqiJv8OzAgBRg=
-X-Gm-Gg: ASbGncsw6kpAY3PHRS5atT+CossrO50L7Nzf7RChnZncpN3z1trlFO0jFUpUpoz4gCo
-	ZANsk41A8Gr6TRYUTaSvgM+Pyzl0xal8EtDBQn0MXH43GCDvX+1JtWEGE15hrTOHMcNmfadF6Hk
-	LGSCYcU18553JoImHnd3mMDJUuYgt7JaCZMqvtlXM96iVS0Y8eOpw4r4MfsXp4zRzdN/wpkRSYL
-	eDP6Xl8
-X-Google-Smtp-Source: AGHT+IHJugXW7PgqM4C561Es6pZ+yMEeghRxxr249HgOnA0uY3PnwVnYPJp7RZWq/M8Ro+g8NAKFEnS73k9uc/Q2N9g=
-X-Received: by 2002:a17:907:969e:b0:b04:6c19:ed8d with SMTP id
- a640c23a62f3a-b07c35bdfa1mr1378153066b.26.1757987737286; Mon, 15 Sep 2025
- 18:55:37 -0700 (PDT)
+	s=arc-20240116; t=1757991531; c=relaxed/simple;
+	bh=sg8s9gAeM92da5rvOBWf7Yz/aCr8ASn+gAuFWTHxS/Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=bPtkW62NVA2vDjqrr7RaEt45MZdquxDXkFEecZuiB6ntrCUkzDsyeI3AuoGtRTHdehispoDA98ER9/hCKpaNMKKhyM3XfOYJEmvFxevM04so4rk1uAaKrybOYfcwzakXPVuFOasIQkuvmNOgdg1CvkBn3RxESGJrK6v06/Dtoos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4cQmgw23fpzddML;
+	Tue, 16 Sep 2025 10:54:04 +0800 (CST)
+Received: from kwepemr500004.china.huawei.com (unknown [7.202.195.141])
+	by mail.maildlp.com (Postfix) with ESMTPS id 503551401F4;
+	Tue, 16 Sep 2025 10:58:39 +0800 (CST)
+Received: from [10.67.121.58] (10.67.121.58) by kwepemr500004.china.huawei.com
+ (7.202.195.141) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 16 Sep
+ 2025 10:58:38 +0800
+Message-ID: <60f9cafb-2199-4c7b-ba97-7529d0ef5bf8@hisilicon.com>
+Date: Tue, 16 Sep 2025 10:58:37 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250915134729.1801557-1-dolinux.peng@gmail.com> <20250915144052.VHYlgilw@linutronix.de>
-In-Reply-To: <20250915144052.VHYlgilw@linutronix.de>
-From: Donglin Peng <dolinux.peng@gmail.com>
-Date: Tue, 16 Sep 2025 09:55:25 +0800
-X-Gm-Features: AS18NWAOIt4gv03twwvlmnUbxI3Di3y_xFKnQycCNlJ75R-ks7_KB2ty8Keq5J8
-Message-ID: <CAErzpmsW7=3RmLZxByxVD+vD=FV0YDF6POHVZZce784r7jMQyg@mail.gmail.com>
-Subject: Re: [PATCH v2] rcu: Remove redundant rcu_read_lock/unlock() in
- spin_lock critical sections
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: tj@kernel.org, tony.luck@intel.com, jani.nikula@linux.intel.com, 
-	ap420073@gmail.com, jv@jvosburgh.net, freude@linux.ibm.com, bcrl@kvack.org, 
-	trondmy@kernel.org, longman@redhat.com, kees@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
-	linux-nfs@vger.kernel.org, linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, netdev@vger.kernel.org, 
-	intel-gfx@lists.freedesktop.org, linux-acpi@vger.kernel.org, 
-	linux-s390@vger.kernel.org, cgroups@vger.kernel.org, 
-	Hillf Danton <hdanton@sina.com>, "Paul E . McKenney" <paulmck@kernel.org>, 
-	pengdonglin <pengdonglin@xiaomi.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] cpufreq: CPPC: Rework FIE warning prints and
+ cppc_scale_freq_tick()
+To: <viresh.kumar@linaro.org>, <rafael@kernel.org>, <ionela.voinescu@arm.com>,
+	<beata.michalska@arm.com>, <zhenglifeng1@huawei.com>
+CC: <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
+	<jonathan.cameron@huawei.com>, Jie Zhan <zhanjie9@hisilicon.com>
+References: <20250828110212.2108653-1-zhanjie9@hisilicon.com>
+Content-Language: en-US
+From: Jie Zhan <zhanjie9@hisilicon.com>
+In-Reply-To: <20250828110212.2108653-1-zhanjie9@hisilicon.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemr500004.china.huawei.com (7.202.195.141)
 
-On Mon, Sep 15, 2025 at 10:40=E2=80=AFPM Sebastian Andrzej Siewior
-<bigeasy@linutronix.de> wrote:
->
-> On 2025-09-15 21:47:29 [+0800], pengdonglin wrote:
-> > From: pengdonglin <pengdonglin@xiaomi.com>
-> >
-> > Per Documentation/RCU/rcu_dereference.rst [1], since Linux 4.20's RCU
-> > consolidation [2][3], RCU read-side critical sections include:
-> >   - Explicit rcu_read_lock()
-> >   - BH/interrupt/preemption-disabling regions
-> >   - Spinlock critical sections (including CONFIG_PREEMPT_RT kernels [4]=
-)
-> >
-> > Thus, explicit rcu_read_lock()/unlock() calls within spin_lock*() regio=
-ns are redundant.
-> > This patch removes them, simplifying locking semantics while preserving=
- RCU protection.
-> >
-> > [1] https://elixir.bootlin.com/linux/v6.17-rc5/source/Documentation/RCU=
-/rcu_dereference.rst#L407
-> > [2] https://lore.kernel.org/lkml/20180829222021.GA29944@linux.vnet.ibm.=
-com/
-> > [3] https://lwn.net/Articles/777036/
-> > [4] https://lore.kernel.org/lkml/6435833a-bdcb-4114-b29d-28b7f436d47d@p=
-aulmck-laptop/
->
-> What about something like this:
->
->   Since commit a8bb74acd8efe ("rcu: Consolidate RCU-sched update-side
->   function definitions") there is no difference between rcu_read_lock(),
->   rcu_read_lock_bh() and rcu_read_lock_sched() in terms of RCU read
->   section and the relevant grace period. That means that spin_lock(),
->   which implies rcu_read_lock_sched(), also implies rcu_read_lock().
->
->   There is no need no explicitly start a RCU read section if one has
->   already been started implicitly by spin_lock().
->
->   Simplify the code and remove the inner rcu_read_lock() invocation.
->
->
-> The description above should make it clear what:
-> - the intention is
-> - the proposed solution to it and why it is correct.
+A kindly ping on this.
+Some feedback would be nice if anyone is not on holiday ;)
 
-Thanks, that's much clearer. I'll use this commit message in v3.
+Jie
 
->
-> You can't send a patch like this. You need to split it at the very least
-> by subsystem. The networking bits need to follow to follow for instance
->    Documentation/process/maintainer-netdev.rst
-
-Thanks, I will split this into a series for v3.
-
->
-> and so on.
->
-> Sebastian
+On 8/28/2025 7:02 PM, Jie Zhan wrote:
+> Reading performance feedback counters on offline or low-power idle CPUs may
+> return 0, which is interpreted as -EFAULT.
+> 
+> This leads to two issues related to the CPPC FIE:
+> 
+> 1. When booting a subset of CPUs in policy->related_cpus (some CPUs under
+> the cpufreq policy is offline), there are warnings of "failed to read perf
+> counters for cpu" during the CPPC FIE initialization.
+> 
+> 2. On our platform with the CPC regs in System Memory and a power-down idle
+> state enabled, if the CPPC FIE is registered successfully, there are
+> repeated warnings of "failed to read perf counters" because
+> cppc_scale_freq_workfn() is trying to access the counters of remote CPUs
+> that enters the idle state.
+> 
+> To solve the above issues:
+> 
+> Patch 1 removes the warning when the CPPC FIE initialization fails to read
+> counters on offline CPUs and changes the log leve to debug.  This can be
+> applied separately.
+> 
+> Patch 2 moves the update of FIE arch_freq_scale into ticks for non-PCC regs
+> and maintains the existing mechanism for PCC regs, such that reading
+> counters would be triggered on the local CPU only.  This inherently solves
+> the issue in [1].  We have tested this on Kunpeng SoCs with the CPC regs
+> both in System Memory and FFH.  More tests on other platforms are welcome
+> though.
+> [1] https://lore.kernel.org/linux-pm/20250730032312.167062-3-yubowen8@huawei.com/
+> 
+> Changelog:
+> 
+> v2:
+> - Update the cover letter and the commit log based on v1 discussion
+> - Update FIE arch_freq_scale in ticks for non-PCC regs
+> 
+> v1:
+> https://lore.kernel.org/linux-pm/20250730032312.167062-1-yubowen8@huawei.com/
+> 
+> Jie Zhan (2):
+>   cpufreq: CPPC: Don't warn if FIE init fails to read counters
+>   cpufreq: CPPC: Update FIE arch_freq_scale in ticks for non-PCC regs
+> 
+>  drivers/cpufreq/cppc_cpufreq.c | 64 +++++++++++++++++++++-------------
+>  1 file changed, 39 insertions(+), 25 deletions(-)
+> 
 
