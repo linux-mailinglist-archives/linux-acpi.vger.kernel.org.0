@@ -1,118 +1,170 @@
-Return-Path: <linux-acpi+bounces-17043-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17044-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24BC1B59D4B
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 18:19:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F1CB59D6D
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 18:22:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 928407AE599
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 16:17:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 213603A49AB
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 16:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD041306D4B;
-	Tue, 16 Sep 2025 16:18:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PbuP21Yd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF5331FEE2;
+	Tue, 16 Sep 2025 16:19:51 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB0F29E0E6;
-	Tue, 16 Sep 2025 16:18:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2D127B347;
+	Tue, 16 Sep 2025 16:19:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758039511; cv=none; b=PCGG3c/6aYJaJG/RCUlMFgXC6DLwxTTziDuH/tZBwXvuFfIjX/GMiLqFlSRLK7ju51tNy5AQQdz/oh5y20u2wBi1o/1TBM874t1WYXVuNdOp9xCwRnwOALGDX8nMdbxKXdKTDns/DsVnzbyZtZQM1I9C08gLKzEmQyy7PMtk6VY=
+	t=1758039591; cv=none; b=Sc4K7OVTR7aGEWFTK/Hlptrcu4LBmPkHm8FlE9XtyWC36uoE6SC6zSuZLoPFb3R5Att7Ubk/bEK/ERJDHS1G2so16M/gEDsRQhx5PsrkrKtqFWyCq3iIxDozFZR73ew+1+Lynd/9hKGE7xY68f5a6DjCUgZtfi9O1W0aJ7TOdSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758039511; c=relaxed/simple;
-	bh=Cq5NfNk7JiXVwVexvjijFakx0T6Ct2rgVmnxiY60eOU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YKCLSqDdkihoEX2cZqpkba53TfVRf9A25p0gf+Siz47OqzAR2MsEzD/1dVZQDubgLnAc2UnGnOQtKlIXC8xMs/99iXxGBNvRo50vUw+ga7MRta6eVe0sQjBpKs3/fvEsv5u+YcZeNXdOR0JQxKRwi7zcGWqHafrjyZcp0MhBHfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PbuP21Yd; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758039510; x=1789575510;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Cq5NfNk7JiXVwVexvjijFakx0T6Ct2rgVmnxiY60eOU=;
-  b=PbuP21Yd7Pg6gKbKywFpWQN7aNcYGmSLaDXUwwI6VEj9vlo18O0xJTIE
-   kMpZji7g/aM2b5A1vZLazRVucGUpnHJonVvfGJAxreo/bd/YuXdMoTixP
-   +DfdGE5bDZSzgElz+juePWE8V+ACRbcoSROPEmSVxtvGV2k7sYxnxZh8M
-   ynM6HGMBv2Ybtd8/NWxvRWGt/bXj9FytmRNyCnorZW+i38U5Ga+i5ffhh
-   zGOioqkskxfs5rUvEr7lQ5ZgE1ANzLZiNW3AOhSVWdtP8ZcPwM8KSjpM3
-   TDSRtWi6te1RZCCQ0ctNLMAu0cwmS3LxMLMxi9Fx/vDhM95b+HEjU+e1Q
-   Q==;
-X-CSE-ConnectionGUID: X20m+nvCQBiU8WMYJIuwSQ==
-X-CSE-MsgGUID: 21ZsCP5WSIqVEY8iEDZIGg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="59548069"
-X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; 
-   d="scan'208";a="59548069"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 09:18:28 -0700
-X-CSE-ConnectionGUID: RhJnTf2vS9W+6zd2tP7TRw==
-X-CSE-MsgGUID: yqJP5UYSTtq71NA4WlcsGA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; 
-   d="scan'208";a="174095797"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.177])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 09:18:25 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id D6D95121EFF;
-	Tue, 16 Sep 2025 19:18:22 +0300 (EEST)
-Date: Tue, 16 Sep 2025 19:18:22 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: =?iso-8859-1?Q?Jean-Fran=E7ois?= Lessard <jefflessard3@gmail.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] device property: Add scoped fwnode child node
- iterators
-Message-ID: <aMmNzpvVPH04hsIL@kekkonen.localdomain>
-References: <20250902190443.3252-1-jefflessard3@gmail.com>
- <20250902190443.3252-2-jefflessard3@gmail.com>
- <aLhAKJBUNQVH1Vmf@kekkonen.localdomain>
- <DCJC7Q9MZEM3.34FU7BXXZ7UGF@kernel.org>
- <aLkqE9c9w9m4Axsp@kekkonen.localdomain>
- <DCJTOIQ4Q0Z5.Q2UE5AQU1X35@kernel.org>
- <aLlDJETaWTjiSP0L@kekkonen.localdomain>
- <DCJVYUINZ7KM.7RCV9P9KHTVM@kernel.org>
- <aLl-ABtFi2R9Wc1a@kekkonen.localdomain>
- <DCK5E8KIEV7M.25EFO2EE7JS9V@kernel.org>
+	s=arc-20240116; t=1758039591; c=relaxed/simple;
+	bh=bJcQW5p9EO0GU8UiAUBpNbVfPaMHH18JNPsKxz+LU8g=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=H70l80lqTrvk9Jlgn+4SdV58JP2K5FbFzyLeiMiHypM8gGLYMFOY+Wd6iQTzRG+uvKhPkjwhnLedXLL+4dDLGLVO5szw9WIu5RdLPL21Q3N/NnYmOuO/2UtxJrjiMF+p+CERQRA87YwErx2uveZZ20faWy8j2vLLuIJwV3WM/qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cR6VL2XSNz6K9LN;
+	Wed, 17 Sep 2025 00:16:58 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id A9AFB1402F1;
+	Wed, 17 Sep 2025 00:19:45 +0800 (CST)
+Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 16 Sep
+ 2025 18:19:44 +0200
+Date: Tue, 16 Sep 2025 17:19:43 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Marc Zyngier <maz@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-acpi@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "Mark
+ Rutland" <mark.rutland@arm.com>, Will Deacon <will@kernel.org>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>, "Saravana
+ Kannan" <saravanak@google.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Sven Peter <sven@kernel.org>, Janne Grunau
+	<j@jannau.net>, Suzuki K Poulose <suzuki.poulose@arm.com>, James Clark
+	<james.clark@linaro.org>
+Subject: Re: [PATCH v2 15/25] genirq: Update request_percpu_nmi() to take an
+ affinity
+Message-ID: <20250916171943.000032d6@huawei.com>
+In-Reply-To: <20250915085702.519996-16-maz@kernel.org>
+References: <20250915085702.519996-1-maz@kernel.org>
+	<20250915085702.519996-16-maz@kernel.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DCK5E8KIEV7M.25EFO2EE7JS9V@kernel.org>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Hi Danilo,
+On Mon, 15 Sep 2025 09:56:52 +0100
+Marc Zyngier <maz@kernel.org> wrote:
 
-On Thu, Sep 04, 2025 at 06:14:31PM +0200, Danilo Krummrich wrote:
-> On Thu Sep 4, 2025 at 1:54 PM CEST, Sakari Ailus wrote:
-> > If you're concerned of the use on ACPI platforms, none of the drivers using
-> > the two available variants list any ACPI IDs, signifying they're not used
-> > on ACPI systems -- I don't think they ever have been.
+> Continue spreading the notion of affinity to the percpu interrupt
+> request code by updating the call sites that use request_percpu_nmi()
+> (all two of them) to take an affinity pointer. This pointer is
+> firmly NULL for now.
 > 
-> Great -- sounds reasonable then.
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+A few fussy reviewer comments inline.
 
-I opted to add availability check on the ACPI side as well so that DT and
-ACPI are aligned in not returning unavailable child devices.
+> ---
+>  arch/arm64/kernel/smp.c   |  2 +-
+>  drivers/perf/arm_pmu.c    |  4 +++-
+>  include/linux/interrupt.h |  4 ++--
+>  kernel/irq/manage.c       | 11 +++++++----
+>  4 files changed, 13 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+> index 68cea3a4a35ca..6fb838eee2e7d 100644
+> --- a/arch/arm64/kernel/smp.c
+> +++ b/arch/arm64/kernel/smp.c
+> @@ -1094,7 +1094,7 @@ static void ipi_setup_sgi(int ipi)
+>  	irq = ipi_irq_base + ipi;
+>  
+>  	if (ipi_should_be_nmi(ipi)) {
+> -		err = request_percpu_nmi(irq, ipi_handler, "IPI", &irq_stat);
+> +		err = request_percpu_nmi(irq, ipi_handler, "IPI", NULL, &irq_stat);
+>  		WARN(err, "Could not request IRQ %d as NMI, err=%d\n", irq, err);
+>  	} else {
+>  		err = request_percpu_irq(irq, ipi_handler, "IPI", &irq_stat);
+> diff --git a/drivers/perf/arm_pmu.c b/drivers/perf/arm_pmu.c
+> index 5c310e803dd78..de9eca2290a97 100644
+> --- a/drivers/perf/arm_pmu.c
+> +++ b/drivers/perf/arm_pmu.c
+> @@ -659,7 +659,9 @@ int armpmu_request_irq(int irq, int cpu)
+>  			irq_ops = &pmunmi_ops;
+>  		}
+>  	} else if (armpmu_count_irq_users(irq) == 0) {
+> -		err = request_percpu_nmi(irq, handler, "arm-pmu", &cpu_armpmu);
+> +		err = request_percpu_nmi(irq, handler, "arm-pmu",
+> +					 NULL,
 
--- 
-Regards,
+I was assuming this odd formatting was to help reduce churn in a later patch, but nope
+this whole block get replaced in patch 18.  So might as well move NULL up a line
+an have a cleaner intermediate state.
 
-Sakari Ailus
+> +					 &cpu_armpmu);
+>  
+>  		/* If cannot get an NMI, get a normal interrupt */
+>  		if (err) {
+> diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+> index 52147d5f432b3..2134e7c08c169 100644
+> --- a/include/linux/interrupt.h
+> +++ b/include/linux/interrupt.h
+> @@ -197,8 +197,8 @@ request_percpu_irq(unsigned int irq, irq_handler_t handler,
+>  }
+>  
+>  extern int __must_check
+> -request_percpu_nmi(unsigned int irq, irq_handler_t handler,
+> -		   const char *devname, void __percpu *dev);
+> +request_percpu_nmi(unsigned int irq, irq_handler_t handler, const char *devname,
+Odd inconsistency in parameter naming devname/name
+
+Perhaps worth tidying that up whilst here. I only noticed because of the
+wrap comment below.
+
+
+> +		   const struct cpumask *affinity, void __percpu *dev_id);
+>  
+>  extern const void *free_irq(unsigned int, void *);
+>  extern void free_percpu_irq(unsigned int, void __percpu *);
+> diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+> index 5f4c651677436..49c237aca2a70 100644
+> --- a/kernel/irq/manage.c
+> +++ b/kernel/irq/manage.c
+> @@ -2527,6 +2527,7 @@ EXPORT_SYMBOL_GPL(__request_percpu_irq);
+>   * @irq:	Interrupt line to allocate
+>   * @handler:	Function to be called when the IRQ occurs.
+>   * @name:	An ascii name for the claiming device
+> + * @affinity:	A cpumask describing the target CPUs for this interrupt
+>   * @dev_id:	A percpu cookie passed back to the handler function
+>   *
+>   * This call allocates interrupt resources for a per CPU NMI. Per CPU NMIs
+> @@ -2544,7 +2545,8 @@ EXPORT_SYMBOL_GPL(__request_percpu_irq);
+>   * will fail returning a negative value.
+>   */
+>  int request_percpu_nmi(unsigned int irq, irq_handler_t handler,
+> -		       const char *name, void __percpu *dev_id)
+> +		       const char *name,
+> +		       const struct cpumask *affinity, void __percpu *dev_id)
+
+This seems like an odd wrap and I can't immediately see it making more sense
+in later patches.
+
+>  {
+
+>  
+
 
