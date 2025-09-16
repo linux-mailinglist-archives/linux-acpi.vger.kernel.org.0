@@ -1,270 +1,371 @@
-Return-Path: <linux-acpi+bounces-16974-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16975-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 437D9B586FD
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 23:54:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7AFB5896F
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 02:30:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 577801B251F0
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Sep 2025 21:55:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14C987A86FC
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 00:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D76C2BD02A;
-	Mon, 15 Sep 2025 21:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BEB21F1513;
+	Tue, 16 Sep 2025 00:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ylzSx3pS"
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="VXTHCz8W"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5092BF3DB
-	for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 21:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D221A8F84;
+	Tue, 16 Sep 2025 00:29:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.143.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757973289; cv=none; b=p0LV/t+ZkPiqcoQzzxvZcYKCxErKV5WoCBTz7zVIxvWdmQEnkT/LixVss7j1vA0KTwTXxI94aAJXj9jhxwUKyGtz+ew5xtZkVDxLU/84RaM1ychm2saRew7VlCtAMOLJHqJ3IYgg1PbwCSRGt5TAfCHfXD49G6NY3WdSo+6o1sk=
+	t=1757982552; cv=none; b=Kvi9EGoDzPaZd+UrrMG+N9nX07wp8RDFHeYh7I5X8FT15j8f6fdKcQmpU0ep/lVHh44L9K5/YTdbV7dobSluxyc/6rmyB5ATaiPFgfgnZH3gqjXJzn200fL3LYB6GDMTdAHBg4kRbP3CzU87DltYCP85JEBIviPORDpkXgGY0WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757973289; c=relaxed/simple;
-	bh=G3/k8zFJyvwTRkMJvmzdV4kSvaLSv1YaCkh9pjD9KnU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=unnSilq5xCdfsFl7maqFyXtWCGXjtAs55z2aH+Gde7LI9qz2rgWcYSogLR+ELZqHxjm9GNMFiwgztmFyIbA/ktu8FRcMLqhvUBtMyfv5E6A4LEQWb1/lNeZAfmIJSQnq6QL06NFopJRGZ4q5Vp5tEv/Q2rmM1f8QC6dY3s4yNYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ylzSx3pS; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45f2d21cbabso5445e9.1
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 14:54:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757973285; x=1758578085; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YHvvCOOuofVjO/68RHGLJQvjCcfErnPvJ89hOwciG5g=;
-        b=ylzSx3pSYsn42eDBSnZLMqU5Y5E9g6sfITjN/8/xO/zKKp1Ss4/yLwMq2gOa7MQ8F6
-         sbV2mYRJaOUztwlp+FW2rIlUMxwANxvwzkWoxQgwuu0K7/EB9WUCwZbTaHaLbchLV+Dn
-         E5Vl/FjoAr8YKtEKJ73TBlEBNF64MV5X1nkOaQmDjGevvzxSg905896J5bBMOMRzWHvx
-         dKG49BRcuciO1W7aWg1XI3gsmWq6DGeRhTa3+exuPusbFgWZCnxqbLJlPhiDraDPSxK6
-         ZYH8T8DWL7rN+HB1yRDRiB2uk51bibojAeiVrlO9X4izTgCO+mrlTMPhsDwfdlel8fYc
-         z/cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757973285; x=1758578085;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YHvvCOOuofVjO/68RHGLJQvjCcfErnPvJ89hOwciG5g=;
-        b=Dl0UtK7Gi7vZtCJDysseCN/+w9UxunLUHdy868TvarymU5nQU1lYcZ7CVqd8Cmht0R
-         g4A9/mnykpW8B/FiNISOV/aZP8lkjF8WqNBnYsNsRPj+q9LE8iXrAp8yg3nfxUFuCpkz
-         Egyj2DJS/3zzzOkr5ymxm57cDNttLxHWIGC9vUBBnJYtYPjVRp0H/Zutsz91FhHuTozC
-         0yLMOn9p0BTCEiKh4rbRmW/zKLnMEXYNIsHVDmuRE3Ocsc+oEqmq4oKD5DOaqd7m/V+w
-         F6v1GInwy3qygU2Q0faTPHVVG8ABYSRzkDQETp8VjdP0mkLGoBfMFSlRhHZoHF72duaA
-         7Ofg==
-X-Forwarded-Encrypted: i=1; AJvYcCXEJfeE7IpVIkB3dqJkwGUcUelV7v8dYt2BMOREw6DoKwdHqLoNoqd0e3xGitEkXDZmyN3aFeB0vdxY@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnBBd9Ye04rm3dMWpjp7I0U3BlikWLmsr6gJsQAGrr+4zA1E9r
-	NeNCv2FRTrKhFF5FFEb4wZ4LA20qdqnjILP4RbkO9yZasdUofB3y/LiVLFo2oUwCpPOCg8D1gOV
-	8HlVzO8PQGauKthykJjpTfdWUv/FLq1b6MLiVlnDMMCHEABi0EwQ8RHEJ
-X-Gm-Gg: ASbGnctRfcTPQ6XNF+fPPQxxN1UUhjnvqqmDVgxyf9+uC9bghIx3hUF9UzUmKLbU1Np
-	zIiOal5UuvdswR+6ZPTl+V+ayvULNzHmA2hJmBU2HazzPQaVLugS/YBX/DIPJiAPN/r11Sro74R
-	8I6p2A2FHWjcQA7HQDBAG+qfzpBOr4lBk/1aukFeT9HC2omhi77GvTe6e9bfLuDeIFm6Gwgz3P5
-	ZWDenqRudyp3fz6AYja+mpNgsa0YBzKjzF2Qy7DZ7PWaT1OoQ6ChF0=
-X-Google-Smtp-Source: AGHT+IGgF8erkndeXtDHUhr2zcrIUM8ResXlh7Bz4HomPF7yCVlDTJkQURdkJEh09salFbWDGoRHkWMVVF8B7dR8AWU=
-X-Received: by 2002:a05:600c:1d89:b0:45f:2e6d:ca01 with SMTP id
- 5b1f17b1804b1-45f320b652dmr526125e9.4.1757973285340; Mon, 15 Sep 2025
- 14:54:45 -0700 (PDT)
+	s=arc-20240116; t=1757982552; c=relaxed/simple;
+	bh=uGPSHlcs+/HsyKkPTQ7SfNiYqC5w9smzuiUGL0taLVE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=JB5NylP2m5z/LfGmkSpkuq9Uek4hWnG/CxyQbpZ2JeugUnCA6TC8NZalUEBdVIfiDnnbg+LwI62ITI2No+Hzkaq60qNnq7uhuSxUfsGwBrdkMUYKYC4EK/lygxj1dPnbHi7+tQwW+1jYmS9ZAYE4uE8SHHon950b93Hk3yotKks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=VXTHCz8W; arc=none smtp.client-ip=148.163.143.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
+Received: from pps.filterd (m0150245.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58FMWfWo005974;
+	Tue, 16 Sep 2025 00:28:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-type:date:from:message-id:mime-version:subject:to; s=
+	pps0720; bh=JeQNhzfrN0EKJc5m3B6rgoGZeoNOz02TDwWp+7qV6n4=; b=VXTH
+	Cz8Wndbr56Z/+TNwqIADM/dW+6vJ9hchmFdGX7n+LBohfMru93AoZ4zEpFgz+7NO
+	zUjqy0N7qwPpFQX/iwiZwAIyuvLg4oU+3hmJrTH3EM3FQBGhjNABNLC4PNg2yuG1
+	KxIKeNQTb6gKhE+cifdUqCDNVkSpOK4oENebK0mphC9ghfUXx2yNMO7sgDXCWUZA
+	C6EKvHCkRImdVUo+wMpNvRdsfr5el7OfAo9SKl+OIFhbpJ65AGIkZ8zouKwCXPh0
+	PQ04gEVtmSDcWFGLNQbQsgO7WUVaRqHSpyDteL+QvTcbt0w9Sqktzza6fwNR5gWf
+	L7yk63l0re0e09FTAg==
+Received: from p1lg14878.it.hpe.com (p1lg14878.it.hpe.com [16.230.97.204])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4951tv0d87-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Sep 2025 00:28:12 +0000 (GMT)
+Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14878.it.hpe.com (Postfix) with ESMTPS id D3CC6130D6;
+	Tue, 16 Sep 2025 00:28:08 +0000 (UTC)
+Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.36])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTPS id 917DA80FDF1;
+	Tue, 16 Sep 2025 00:27:53 +0000 (UTC)
+Date: Mon, 15 Sep 2025 19:27:41 -0500
+From: Kyle Meyer <kyle.meyer@hpe.com>
+To: akpm@linux-foundation.org, corbet@lwn.net, david@redhat.com,
+        linmiaohe@huawei.com, shuah@kernel.org, tony.luck@intel.com,
+        jane.chu@oracle.com, jiaqiyan@google.com
+Cc: Liam.Howlett@oracle.com, bp@alien8.de, hannes@cmpxchg.org, jack@suse.cz,
+        joel.granados@kernel.org, kyle.meyer@hpe.com, laoar.shao@gmail.com,
+        lorenzo.stoakes@oracle.com, mclapinski@google.com, mhocko@suse.com,
+        nao.horiguchi@gmail.com, osalvador@suse.de, rafael.j.wysocki@intel.com,
+        rppt@kernel.org, russ.anderson@hpe.com, shawn.fan@intel.com,
+        surenb@google.com, vbabka@suse.cz, linux-acpi@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH v2] mm/memory-failure: Support disabling soft offline for
+ HugeTLB pages
+Message-ID: <aMiu_Uku6Y5ZbuhM@hpe.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250910044531.264043-1-jiaqiyan@google.com> <88893809-ed13-dbb9-2446-8fd680f57693@huawei.com>
- <CAJZ5v0g_f3Ut_8nf1NM5nJb3OSS83ccS65sT=DZOu0LWuCWZ1Q@mail.gmail.com>
-In-Reply-To: <CAJZ5v0g_f3Ut_8nf1NM5nJb3OSS83ccS65sT=DZOu0LWuCWZ1Q@mail.gmail.com>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Mon, 15 Sep 2025 14:54:33 -0700
-X-Gm-Features: AS18NWCdNBEuqmPpmxPwl50_DW0k8xUy7qHt0rAzSKB6QaxQrlurGRR4GNa8Zcw
-Message-ID: <CACw3F52BxoT8KsnMPnuSti2cOWWV=V=WPRZ4Z3biZ-X=6HMCww@mail.gmail.com>
-Subject: Re: [PATCH v3] ACPI: APEI: EINJ: Allow more types of addresses except MMIO
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Hanjun Guo <guohanjun@huawei.com>
-Cc: tony.luck@intel.com, dan.j.williams@intel.com, bp@alien8.de, 
-	mchehab@kernel.org, xueshuai@linux.alibaba.com, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Authority-Analysis: v=2.4 cv=A4ZsP7WG c=1 sm=1 tr=0 ts=68c8af1c cx=c_pps
+ a=UObrlqRbTUrrdMEdGJ+KZA==:117 a=UObrlqRbTUrrdMEdGJ+KZA==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8
+ a=MvuuwTCpAAAA:8 a=OTHRfgTbXkvfc_ALrMIA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: bHHao-PP1aUuVyGxBvtgR0XoZ4QQJ_X2
+X-Proofpoint-ORIG-GUID: bHHao-PP1aUuVyGxBvtgR0XoZ4QQJ_X2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTEzMDA0MCBTYWx0ZWRfX+CKGST4nKMub
+ YRJ2fPK6XENK2tsNJk6ATlsHUqmDBGgBm1qFaniRG5lR0YYS/upvUud9ElAsZ5VRtoaZ+14/I/H
+ TFm5O0CJgZnN6NjzgHoemXIDpqP7nTBmoHOfxVdNHDd82DmQiRKbuJs++/qrENrSSjYGGAfUVIC
+ rq4EUgc6obc8u5hvD+QvxSbDE9IVROn+9TJfYMUain3PO23GbAQ++YoBYmeKIbYQcnmrHVcQOx2
+ fWGVTFtu0HmkAYjcgHYSRx5WLtVS2F1uYKXXeaEhu7WSgu3Cc4n1WzGO1b5pdqgIEj1TKDKqU5C
+ ZcDF6Ldys1UDiCMf45egb293pBycFm0AyqTvRnA8vtOF1IIbn1Q95VluQiDmXtX7OgKq/2klCit
+ TFY065/l
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-15_09,2025-09-12_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 malwarescore=0 suspectscore=0 impostorscore=0
+ bulkscore=0 adultscore=0 phishscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509130040
 
-On Mon, Sep 15, 2025 at 12:33=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.o=
-rg> wrote:
->
-> On Wed, Sep 10, 2025 at 4:57=E2=80=AFPM Hanjun Guo <guohanjun@huawei.com>=
- wrote:
-> >
-> > On 2025/9/10 12:45, Jiaqi Yan wrote:
-> > > EINJ driver today only allows injection request to go through for two
-> > > kinds of IORESOURCE_MEM: IORES_DESC_PERSISTENT_MEMORY and
-> > > IORES_DESC_SOFT_RESERVED. This check prevents user of EINJ to test
-> > > memory corrupted in many interesting areas:
-> > >
-> > > - Legacy persistent memory
-> > > - Memory claimed to be used by ACPI tables or NV storage
-> > > - Kernel crash memory and others
-> > >
-> > > There is need to test how kernel behaves when something consumes memo=
-ry
-> > > errors in these memory regions. For example, if certain ACPI table is
-> > > corrupted, does kernel crash gracefully to prevent "silent data
-> > > corruption". For another example, legacy persistent memory, when mana=
-ged
-> > > by Device DAX, does support recovering from Machine Check Exception
-> > > raised by memory failure, hence worth to be tested.
-> > >
-> > > However, attempt to inject memory error via EINJ to legacy persistent
-> > > memory or ACPI owned memory fails with -EINVAL.
-> > >
-> > > Allow EINJ to inject at address except it is MMIO. Leave it to the BI=
-OS
-> > > or firmware to decide what is a legitimate injection target.
-> > >
-> > > In addition to the test done in [1], on a machine having the followin=
-g
-> > > iomem resources:
-> > >
-> > >      ...
-> > >      01000000-08ffffff : Crash kernel
-> > >      768f0098-768f00a7 : APEI EINJ
-> > >      ...
-> > >    768f4000-77323fff : ACPI Non-volatile Storage
-> > >    77324000-777fefff : ACPI Tables
-> > >    777ff000-777fffff : System RAM
-> > >    77800000-7fffffff : Reserved
-> > >    80000000-8fffffff : PCI MMCONFIG 0000 [bus 00-ff]
-> > >    90040000-957fffff : PCI Bus 0000:00
-> > >    ...
-> > >    300000000-3ffffffff : Persistent Memory (legacy)
-> > >    ...
-> > >
-> > > I commented __einj_error_inject during the test and just tested when
-> > > injecting a memory error at each start address shown above:
-> > > - 0x80000000 and 0x90040000 both failed with EINVAL
-> > > - request passed through for all other addresses
-> > >
-> > > Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
-> > > ---
-> > >
-> > > Changelog
-> > >
-> > > v2 [2] -> v3:
-> > > - Remove unnecessary IORES_DESC_CXL per comment from Hanjun [3].
-> > > - Minor update to code comment.
-> > >
-> > > v1 [1] -> v2:
-> > > - In addition to allow IORES_DESC_PERSISTENT_MEMORY_LEGACY, open the
-> > >    door wider and only exclude MMIO per suggestion from Tony [4].
-> > > - Rebased to commit 11e7861d680c ("Merge tag 'for-linus' of git://git=
-.kernel.org/pub/scm/virt/kvm/kvm").
-> > >
-> > > [1] https://lore.kernel.org/linux-acpi/20250825223348.3780279-1-jiaqi=
-yan@google.com
-> > > [2] https://lore.kernel.org/linux-acpi/20250830030226.918555-1-jiaqiy=
-an@google.com
-> > > [3] https://lore.kernel.org/linux-acpi/bc8ad4b8-c000-0298-efd1-4a332c=
-4c7820@huawei.com
-> > > [4] https://lore.kernel.org/linux-acpi/SJ1PR11MB60835824926BEE57F094D=
-E6FFC39A@SJ1PR11MB6083.namprd11.prod.outlook.com
-> > >
-> > > drivers/acpi/apei/einj-core.c | 51 ++++++++++++++++++++++++++++------=
--
-> > >   1 file changed, 42 insertions(+), 9 deletions(-)
-> > >
-> > > diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-c=
-ore.c
-> > > index 2561b045acc7b..3c87953dbd197 100644
-> > > --- a/drivers/acpi/apei/einj-core.c
-> > > +++ b/drivers/acpi/apei/einj-core.c
-> > > @@ -656,6 +656,43 @@ static int __einj_error_inject(u32 type, u32 fla=
-gs, u64 param1, u64 param2,
-> > >       return rc;
-> > >   }
-> > >
-> > > +/* Allow almost all types of address except MMIO. */
-> > > +static bool is_allowed_range(u64 base_addr, u64 size)
-> > > +{
-> > > +     int i;
-> > > +     /*
-> > > +      * MMIO region is usually claimed with IORESOURCE_MEM + IORES_D=
-ESC_NONE.
-> > > +      * However, IORES_DESC_NONE is treated like a wildcard when we =
-check if
-> > > +      * region intersects with known resource. So do an allow list c=
-heck for
-> > > +      * IORES_DESCs that definitely or most likely not MMIO.
-> > > +      */
-> > > +     int non_mmio_desc[] =3D {
-> > > +             IORES_DESC_CRASH_KERNEL,
-> > > +             IORES_DESC_ACPI_TABLES,
-> > > +             IORES_DESC_ACPI_NV_STORAGE,
-> > > +             IORES_DESC_PERSISTENT_MEMORY,
-> > > +             IORES_DESC_PERSISTENT_MEMORY_LEGACY,
-> > > +             /* Treat IORES_DESC_DEVICE_PRIVATE_MEMORY as MMIO. */
-> > > +             IORES_DESC_RESERVED,
-> > > +             IORES_DESC_SOFT_RESERVED,
-> > > +     };
-> > > +
-> > > +     if (region_intersects(base_addr, size, IORESOURCE_SYSTEM_RAM, I=
-ORES_DESC_NONE)
-> > > +                           =3D=3D REGION_INTERSECTS)
-> > > +             return true;
-> > > +
-> > > +     for (i =3D 0; i < ARRAY_SIZE(non_mmio_desc); ++i) {
-> > > +             if (region_intersects(base_addr, size, IORESOURCE_MEM, =
-non_mmio_desc[i])
-> > > +                                   =3D=3D REGION_INTERSECTS)
-> > > +                     return true;
-> > > +     }
-> > > +
-> > > +     if (arch_is_platform_page(base_addr))
-> > > +             return true;
-> > > +
-> > > +     return false;
-> > > +}
-> > > +
-> > >   /* Inject the specified hardware error */
-> > >   int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2, =
-u64 param3,
-> > >                     u64 param4)
-> > > @@ -702,19 +739,15 @@ int einj_error_inject(u32 type, u32 flags, u64 =
-param1, u64 param2, u64 param3,
-> > >        * Disallow crazy address masks that give BIOS leeway to pick
-> > >        * injection address almost anywhere. Insist on page or
-> > >        * better granularity and that target address is normal RAM or
-> > > -      * NVDIMM.
-> > > +      * as long as is not MMIO.
-> >
-> > Thanks for updating this as well.
-> >
-> > >        */
-> > >       base_addr =3D param1 & param2;
-> > >       size =3D ~param2 + 1;
-> > >
-> > > -     if (((param2 & PAGE_MASK) !=3D PAGE_MASK) ||
-> > > -         ((region_intersects(base_addr, size, IORESOURCE_SYSTEM_RAM,=
- IORES_DESC_NONE)
-> > > -                             !=3D REGION_INTERSECTS) &&
-> > > -          (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_=
-DESC_PERSISTENT_MEMORY)
-> > > -                             !=3D REGION_INTERSECTS) &&
-> > > -          (region_intersects(base_addr, size, IORESOURCE_MEM, IORES_=
-DESC_SOFT_RESERVED)
-> > > -                             !=3D REGION_INTERSECTS) &&
-> > > -          !arch_is_platform_page(base_addr)))
-> > > +     if ((param2 & PAGE_MASK) !=3D PAGE_MASK)
-> > > +             return -EINVAL;
-> > > +
-> > > +     if (!is_allowed_range(base_addr, size))
-> > >               return -EINVAL;
-> > >
-> > >       if (is_zero_pfn(base_addr >> PAGE_SHIFT))
-> >
-> > Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
->
-> Applied as 6.18 material, thanks!
+Soft offlining a HugeTLB page reduces the HugeTLB page pool.
 
-Thank you both, Hanjun and Rafael!
+Commit 56374430c5dfc ("mm/memory-failure: userspace controls soft-offlining pages")
+introduced the following sysctl interface to control soft offline:
+
+/proc/sys/vm/enable_soft_offline
+
+The interface does not distinguish between page types:
+
+    0 - Soft offline is disabled
+    1 - Soft offline is enabled
+
+Convert enable_soft_offline to a bitmask and support disabling soft
+offline for HugeTLB pages:
+
+Bits:
+
+    0 - Enable soft offline
+    1 - Disable soft offline for HugeTLB pages
+
+Supported values:
+
+    0 - Soft offline is disabled
+    1 - Soft offline is enabled
+    3 - Soft offline is enabled (disabled for HugeTLB pages)
+
+Existing behavior is preserved.
+
+Update documentation and HugeTLB soft offline self tests.
+
+Reported-by: Shawn Fan <shawn.fan@intel.com>
+Suggested-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
+---
+
+Tony's patch:
+* https://lore.kernel.org/all/20250904155720.22149-1-tony.luck@intel.com
+
+v1:
+* https://lore.kernel.org/all/aMGkAI3zKlVsO0S2@hpe.com
+
+v1 -> v2:
+* Make the interface extensible, as suggested by David.
+* Preserve existing behavior, as suggested by Jiaqi and David.
+
+Why clear errno in self tests?
+
+madvise() does not set errno when it's successful and errno is set by madvise()
+during test_soft_offline_common(3) causing test_soft_offline_common(1) to fail:
+
+# Test soft-offline when enabled_soft_offline=1
+# Hugepagesize is 1048576kB
+# enable_soft_offline => 1
+# Before MADV_SOFT_OFFLINE nr_hugepages=7
+# Allocated 0x80000000 bytes of hugetlb pages
+# MADV_SOFT_OFFLINE 0x7fd600000000 ret=0, errno=95
+# MADV_SOFT_OFFLINE should ret 0
+# After MADV_SOFT_OFFLINE nr_hugepages=6
+not ok 2 Test soft-offline when enabled_soft_offline=1
+
+---
+ .../ABI/testing/sysfs-memory-page-offline     |  3 ++
+ Documentation/admin-guide/sysctl/vm.rst       | 28 ++++++++++++++++---
+ mm/memory-failure.c                           | 17 +++++++++--
+ .../selftests/mm/hugetlb-soft-offline.c       | 19 ++++++++++---
+ 4 files changed, 56 insertions(+), 11 deletions(-)
+
+diff --git a/Documentation/ABI/testing/sysfs-memory-page-offline b/Documentation/ABI/testing/sysfs-memory-page-offline
+index 00f4e35f916f..d3f05ed6605e 100644
+--- a/Documentation/ABI/testing/sysfs-memory-page-offline
++++ b/Documentation/ABI/testing/sysfs-memory-page-offline
+@@ -20,6 +20,9 @@ Description:
+ 		number, or a error when the offlining failed.  Reading
+ 		the file is not allowed.
+ 
++		Soft-offline can be controlled via sysctl, see:
++		Documentation/admin-guide/sysctl/vm.rst
++
+ What:		/sys/devices/system/memory/hard_offline_page
+ Date:		Sep 2009
+ KernelVersion:	2.6.33
+diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+index 4d71211fdad8..ace73480eb9d 100644
+--- a/Documentation/admin-guide/sysctl/vm.rst
++++ b/Documentation/admin-guide/sysctl/vm.rst
+@@ -309,19 +309,39 @@ physical memory) vs performance / capacity implications in transparent and
+ HugeTLB cases.
+ 
+ For all architectures, enable_soft_offline controls whether to soft offline
+-memory pages.  When set to 1, kernel attempts to soft offline the pages
+-whenever it thinks needed.  When set to 0, kernel returns EOPNOTSUPP to
+-the request to soft offline the pages.  Its default value is 1.
++memory pages.
++
++enable_soft_offline is a bitmask:
++
++Bits::
++
++	0 - Enable soft offline
++	1 - Disable soft offline for HugeTLB pages
++
++Supported values::
++
++	0 - Soft offline is disabled
++	1 - Soft offline is enabled
++	3 - Soft offline is enabled (disabled for HugeTLB pages)
++
++The default value is 1.
++
++If soft offline is disabled for the requested page type, EOPNOTSUPP is returned.
+ 
+ It is worth mentioning that after setting enable_soft_offline to 0, the
+ following requests to soft offline pages will not be performed:
+ 
++- Request to soft offline from sysfs (soft_offline_page).
++
+ - Request to soft offline pages from RAS Correctable Errors Collector.
+ 
+-- On ARM, the request to soft offline pages from GHES driver.
++- On ARM and X86, the request to soft offline pages from GHES driver.
+ 
+ - On PARISC, the request to soft offline pages from Page Deallocation Table.
+ 
++Note:
++	Soft offlining a HugeTLB page reduces the HugeTLB page pool.
++
+ extfrag_threshold
+ =================
+ 
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index fc30ca4804bf..0ad9ae11d9e8 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -64,11 +64,14 @@
+ #include "internal.h"
+ #include "ras/ras_event.h"
+ 
++#define SOFT_OFFLINE_ENABLED		BIT(0)
++#define SOFT_OFFLINE_SKIP_HUGETLB	BIT(1)
++
+ static int sysctl_memory_failure_early_kill __read_mostly;
+ 
+ static int sysctl_memory_failure_recovery __read_mostly = 1;
+ 
+-static int sysctl_enable_soft_offline __read_mostly = 1;
++static int sysctl_enable_soft_offline __read_mostly = SOFT_OFFLINE_ENABLED;
+ 
+ atomic_long_t num_poisoned_pages __read_mostly = ATOMIC_LONG_INIT(0);
+ 
+@@ -150,7 +153,7 @@ static const struct ctl_table memory_failure_table[] = {
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec_minmax,
+ 		.extra1		= SYSCTL_ZERO,
+-		.extra2		= SYSCTL_ONE,
++		.extra2		= SYSCTL_THREE,
+ 	}
+ };
+ 
+@@ -2799,12 +2802,20 @@ int soft_offline_page(unsigned long pfn, int flags)
+ 		return -EIO;
+ 	}
+ 
+-	if (!sysctl_enable_soft_offline) {
++	if (!(sysctl_enable_soft_offline & SOFT_OFFLINE_ENABLED)) {
+ 		pr_info_once("disabled by /proc/sys/vm/enable_soft_offline\n");
+ 		put_ref_page(pfn, flags);
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	if (sysctl_enable_soft_offline & SOFT_OFFLINE_SKIP_HUGETLB) {
++		if (folio_test_hugetlb(pfn_folio(pfn))) {
++			pr_info_once("disabled for HugeTLB pages by /proc/sys/vm/enable_soft_offline\n");
++			put_ref_page(pfn, flags);
++			return -EOPNOTSUPP;
++		}
++	}
++
+ 	mutex_lock(&mf_mutex);
+ 
+ 	if (PageHWPoison(page)) {
+diff --git a/tools/testing/selftests/mm/hugetlb-soft-offline.c b/tools/testing/selftests/mm/hugetlb-soft-offline.c
+index f086f0e04756..b87c8778cadf 100644
+--- a/tools/testing/selftests/mm/hugetlb-soft-offline.c
++++ b/tools/testing/selftests/mm/hugetlb-soft-offline.c
+@@ -5,6 +5,8 @@
+  *   offlining failed with EOPNOTSUPP.
+  * - if enable_soft_offline = 1, a hugepage should be dissolved and
+  *   nr_hugepages/free_hugepages should be reduced by 1.
++ * - if enable_soft_offline = 3, hugepages should stay intact and soft
++ *   offlining failed with EOPNOTSUPP.
+  *
+  * Before running, make sure more than 2 hugepages of default_hugepagesz
+  * are allocated. For example, if /proc/meminfo/Hugepagesize is 2048kB:
+@@ -32,6 +34,9 @@
+ 
+ #define EPREFIX " !!! "
+ 
++#define SOFT_OFFLINE_ENABLED		(1 << 0)
++#define SOFT_OFFLINE_SKIP_HUGETLB	(1 << 1)
++
+ static int do_soft_offline(int fd, size_t len, int expect_errno)
+ {
+ 	char *filemap = NULL;
+@@ -56,6 +61,7 @@ static int do_soft_offline(int fd, size_t len, int expect_errno)
+ 	ksft_print_msg("Allocated %#lx bytes of hugetlb pages\n", len);
+ 
+ 	hwp_addr = filemap + len / 2;
++	errno = 0;
+ 	ret = madvise(hwp_addr, pagesize, MADV_SOFT_OFFLINE);
+ 	ksft_print_msg("MADV_SOFT_OFFLINE %p ret=%d, errno=%d\n",
+ 		       hwp_addr, ret, errno);
+@@ -83,7 +89,7 @@ static int set_enable_soft_offline(int value)
+ 	char cmd[256] = {0};
+ 	FILE *cmdfile = NULL;
+ 
+-	if (value != 0 && value != 1)
++	if (value < 0 || value > 3)
+ 		return -EINVAL;
+ 
+ 	sprintf(cmd, "echo %d > /proc/sys/vm/enable_soft_offline", value);
+@@ -155,13 +161,17 @@ static int create_hugetlbfs_file(struct statfs *file_stat)
+ static void test_soft_offline_common(int enable_soft_offline)
+ {
+ 	int fd;
+-	int expect_errno = enable_soft_offline ? 0 : EOPNOTSUPP;
++	int expect_errno = 0;
+ 	struct statfs file_stat;
+ 	unsigned long hugepagesize_kb = 0;
+ 	unsigned long nr_hugepages_before = 0;
+ 	unsigned long nr_hugepages_after = 0;
+ 	int ret;
+ 
++	if (!(enable_soft_offline & SOFT_OFFLINE_ENABLED) ||
++	     (enable_soft_offline & SOFT_OFFLINE_SKIP_HUGETLB))
++		expect_errno = EOPNOTSUPP;
++
+ 	ksft_print_msg("Test soft-offline when enabled_soft_offline=%d\n",
+ 		       enable_soft_offline);
+ 
+@@ -198,7 +208,7 @@ static void test_soft_offline_common(int enable_soft_offline)
+ 	// No need for the hugetlbfs file from now on.
+ 	close(fd);
+ 
+-	if (enable_soft_offline) {
++	if (expect_errno == 0) {
+ 		if (nr_hugepages_before != nr_hugepages_after + 1) {
+ 			ksft_test_result_fail("MADV_SOFT_OFFLINE should reduced 1 hugepage\n");
+ 			return;
+@@ -219,8 +229,9 @@ static void test_soft_offline_common(int enable_soft_offline)
+ int main(int argc, char **argv)
+ {
+ 	ksft_print_header();
+-	ksft_set_plan(2);
++	ksft_set_plan(3);
+ 
++	test_soft_offline_common(3);
+ 	test_soft_offline_common(1);
+ 	test_soft_offline_common(0);
+ 
+-- 
+2.51.0
+
 
