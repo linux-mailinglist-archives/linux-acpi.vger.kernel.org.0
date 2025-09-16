@@ -1,78 +1,78 @@
-Return-Path: <linux-acpi+bounces-16990-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16991-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B911B58D60
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 06:54:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AA80B58D68
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 06:54:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8615C1BC683F
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 04:53:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C30731BC5CFE
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 04:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD2C2E7F13;
-	Tue, 16 Sep 2025 04:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFAE82EA483;
+	Tue, 16 Sep 2025 04:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K4Xjumc0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KoJa0Qc3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A692E7BA0
-	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 04:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE892EA154
+	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 04:49:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757998150; cv=none; b=ksjcCf7VNr6rKs5b9C4AWcxxKYttB+Z5JMmefqjqjgGPn4Y58fRml1pjDDXTL+kVmlnMLMNtss/znxikvhBs/igKHG+nIzlJape5dKS0J06TVCKGM2/UMG5AxCFiFJVKEXdVrDuRn6oXANTF9yW+T8M9IPx8klpZ6FBzLFWX1GE=
+	t=1757998156; cv=none; b=WQDWd9XK2uZqR+SEJScCLIaFmAUB4FiJ/J5Lpv+sCrwWZZ4TMlLqsasZDXmWXxHdysZGgh2WirYP83/aPgqGkin5HlNidXqFhnpGF+b1Sk4JapnIoiIgM5RonvUPoVedjf3l9SBiHTydk0mAs/YQVjrmL48MIP3/amjrARFG+c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757998150; c=relaxed/simple;
-	bh=A1DaGpRAAYNdE/JnkBcpbGGz1TWyQSRA1+c5fRETaCo=;
+	s=arc-20240116; t=1757998156; c=relaxed/simple;
+	bh=7sG+E8vq4OG/BfLJfXnS6N7EfrLQmjqnuIf5XUjAWWw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Z2mWvMni9phuqD23cmDtaKLfeTNH1bH1XPFEfT7P1FE9aEEP6uPBI6lGIZtp2/ZxB1Ghshom0Z4oe+wlPHGTulv9m8YmsdW9S4GdQke2S50Oe5oATTn09JRU+NC9VAZGwjzIymb04d/BjDtl4G1oM+CQtUIGmbHh1dzNyFNI2Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K4Xjumc0; arc=none smtp.client-ip=209.85.215.175
+	 MIME-Version; b=S6YafJFMutxg26eKE6E+pZWrHBXoxDhzUkm/qhOGtndeUGds3wtiJBsCjeD/m1poUkf8HYTx2GBsb+/El3UQQvQzzH6RCeLGDbGfyuBu4SJANTq29bEM+PpwyTy8KuWm8dAJ+bK8Z6tG8zVACFyOX7CYjrVILSTRqharHYMnwZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KoJa0Qc3; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b54b0434101so3147128a12.2
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 21:49:07 -0700 (PDT)
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2639bffd354so16112965ad.2
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Sep 2025 21:49:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757998147; x=1758602947; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1757998154; x=1758602954; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Gp+N7RFYdL+M8U5Aod5ZJl4PoDAFL89oD30EaW4MsNY=;
-        b=K4Xjumc0nBcco5KyK7TayYg1GVB3J8fMW7YfmCjhgTTUc/fPIDKia1bI2dpOo4Dlpx
-         o0oYiCFoIl/qnLukCt0JaKCTycIs9+9f38sOAgldyz8tQIGpDGM4I5xSF1yz9foe5Y+0
-         2p4TuTz/xI8E76jU6e6NUTzqr4tF4KFkj0cyt03nQJvtbqEvTMv5/6XrYgnXmNQLeb+O
-         sDFNMQP/6B3RWiK8Q1KWu4oWPdcxqbwd7gQ0AyvjLj19qMjmrrjdeeVtI4h+aCXWk442
-         XnCfLw3QPsQeRmrhv0yiLaCyo05omJolYFv4x6BgsEMJUeoyH1rHSkFxKz1mCDro3W3Y
-         TL4g==
+        bh=zNMpbtPTFBPk6JIOba7CD2qKlqPbw337arz8FniHJF8=;
+        b=KoJa0Qc3lt8G1CQ5AbwOj3qvb9bu5qliDuEc4sfIPbr1BRCVYR3Bx/XN92R2rWqFFv
+         nHGpulI2lx/uODqzl/0u0h/6Rd9sByZfpl3GezXb8FqkGEAdnsFhVtRYZkSK5GIUv0/U
+         88Lv5WhrrzMFy50Fxe3cVARMTRYHZ/bppdUMJGJiCZEz6603dKLXzj7HX0yNRqQMWyyo
+         JfK/UKwhrbZ4VNufXLGhr1uiC09OVkI4kemP0MSwbP+Qk2WkAhoNM2BA+QwLdUISw40+
+         6iGnCmDltYbiDd7B2YnOenE3yDZDTJGhVOPaXTN2KCrPIOiSFy+O9HlA808tUeXmw29z
+         3WIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757998147; x=1758602947;
+        d=1e100.net; s=20230601; t=1757998154; x=1758602954;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Gp+N7RFYdL+M8U5Aod5ZJl4PoDAFL89oD30EaW4MsNY=;
-        b=naFKS9NHLy2d7kpAjhqFAcTbtGWeUroqMeJ4+KUQd0QS58UcAqiyqJtY7lGmXBUpLW
-         pALWNekGv8G7hGE/3tkPLm6AintXdGflaa4jGenC8U7RIwV3EmNi34w/GvwqwVEmCi/u
-         j2Gi8HzmFlWJMhyBZCpa0ktAiQRPFSzBLZEBG34Xlst5GSPX0HMOt4nWmnzBB01p6vm9
-         X338Q0d4D0ZMXrSIcBb5DFi/L85QtHJTNFD2u4eQOZgU2sUhjsGSW/KyYXbmtvFoj/AS
-         wDBRzj09DGu4Mmq6pnmIFLZ9AEpMVJ1CVxowJqvdZxv6LPcEL91UEzoMlZcUGFBu6HJw
-         cYMg==
-X-Forwarded-Encrypted: i=1; AJvYcCVemyJ9+QVNM0T2SGm5f//fHaynceeJPoVpyXWDWX6KyKtGJ/gUG5rZEi9MYFMBWgrLdl55SpCsP3RF@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy54g37JMJIyAJ4vc2shzH02Lj6NBCrwXYLNOpKQDb+CgcHe7Lx
-	lc+I3iGA/Po8cgY3VrQ2fupOR9EFZYu7y3Cbbk72jy6ZDKquLZJJBrZ3
-X-Gm-Gg: ASbGncsDACotOSSfJvXGfY8bT+mNh0FWdzGnyi9VLAHp5otJdJzoqIaw9rp1i9DqIiq
-	+ahkkEFTUv5e4dl79Plxp0USkQbMiceFMT56NBkzOEtFpjn5UxrMSd8PIxEQeHRz8LmNYSZwVvF
-	PRqqYUVQ8w0DNmY7TVigeTnvQfN1zLezGvPSJVh9DpYUt83wuzLQH03jo2CZK1iKyUBnlyF7vKb
-	nSwGqiR/38+e5SF+asx6hl5+STD2IhdeiLQ4bPFqqq889uAN3r2CGml9zwuY+JSTGYhfuRcy/vQ
-	iWCScmsGYRgQztzggNS1LR4yBZdX9HLDM4p31jPLuTaouFfQb50vVOtG4X8VgspTewuPP8/FGOv
-	FwRvbftdZrWd3maeYzM6KBMu9re35hYsZhyiROBQ=
-X-Google-Smtp-Source: AGHT+IFqD7sgMgos1nHHN1tffY5PC8RBagTW/SlAHYpHIH6iPNz9WSa7pJxkI6T7wvTsG+plknRS6A==
-X-Received: by 2002:a17:902:f70e:b0:266:120a:29c7 with SMTP id d9443c01a7336-266120a3078mr75581275ad.6.1757998147150;
-        Mon, 15 Sep 2025 21:49:07 -0700 (PDT)
+        bh=zNMpbtPTFBPk6JIOba7CD2qKlqPbw337arz8FniHJF8=;
+        b=k9wu8bp3xbkrP+9TfZopgu3LVF/EC8VRDg9r8TI6bH9C21tvRiK9oNrEnWzWDJpD/t
+         a2WEpZIevln/NWTkt867WmGQms0WvbXzKWaeN43WBICWQipbfHxXKZo3Ts8U84FTmF9y
+         Qt4HZiX7UHeEUt6FR4iuqqcsmn+SqqGJUTrnJ9Jv5f/e1C3fJxwraIcRJe8hGsgk6lPT
+         GwrihJDzLkEkOnSzOjEi3g4STp+c7nFUY/DsJQ1VjHvnfyIbjp/AiOhrtLQgfoy6WykE
+         YoRlbx68BjskRdlNCgC2z6Earc7Oi6Hc+GmB1D2IW3KwnIi0mFzEyEjycs0ppltew8kP
+         HKvA==
+X-Forwarded-Encrypted: i=1; AJvYcCV32AUuP7j9IlpbX6SJWrxi+02DX1rlzWyqC4/9NOTBjsA5EhxVDVtfWY2niPZotJmXJKla1e4RxWfU@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvBOXd7LiYJogXt2xC+LPBm5NviGQB/eq80N+Yz+0PrpKeYeny
+	K/7ofVv1wUlyk6KKdXY+BiCyl5r7fDvsiPNML7GifpWA7QWS8ZZBnR+x
+X-Gm-Gg: ASbGncsuZyQxbSBSXo1f93J0CQuSbIOQRAyyp+jo/zejH5DPc0G3FQ9FAW9vWRMmTYC
+	f+VWs6415YFPqbrneNY5lMCBa9Z/brSqSIw/zYNre8iDIwJ1gs4x8GvMTd7yKVxlUriXNfISruQ
+	yrCWGAPyDJrTK5ryKcXEUHvvqnjSRkkSWujxC4+ZoQR+8KF4hMT5+Y7drDW9+cPgDkDoYGULbYg
+	mvbHG9F3JnhvQ3ci41498hECU3xG6R7hhQGiDcDDa7Gql+LTA8WpJS62WjfICynPxNNCkFSpA74
+	gkB81aC/d5CItTegNqTbBxdDXpyV6uMmJkfh10+1M5g3evgyYOg9TsBXXJbuh2UWaQ0UAidUwh1
+	XNRpTM3RbDpsOz8P+seuRd25UVglmq3fZOvLrQwY=
+X-Google-Smtp-Source: AGHT+IESqtMzjXYDIyoiu7v1JuOroH/dzFervHo7F64ECeuOEjCMVsn8AAVx3YpgubRO047K2xnTHQ==
+X-Received: by 2002:a17:903:3c2c:b0:24b:2b07:5fa5 with SMTP id d9443c01a7336-25d26663dcamr182035635ad.29.1757998153712;
+        Mon, 15 Sep 2025 21:49:13 -0700 (PDT)
 Received: from pengdl-pc.mioffice.cn ([43.224.245.249])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25ef09c77f8sm104600605ad.15.2025.09.15.21.49.00
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25ef09c77f8sm104600605ad.15.2025.09.15.21.49.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 21:49:06 -0700 (PDT)
+        Mon, 15 Sep 2025 21:49:13 -0700 (PDT)
 From: pengdonglin <dolinux.peng@gmail.com>
 To: tj@kernel.org,
 	tony.luck@intel.com,
@@ -102,9 +102,9 @@ Cc: bigeasy@linutronix.de,
 	pengdonglin <dolinux.peng@gmail.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	pengdonglin <pengdonglin@xiaomi.com>
-Subject: [PATCH v3 08/14] cgroup: Remove redundant rcu_read_lock/unlock() in spin_lock
-Date: Tue, 16 Sep 2025 12:47:29 +0800
-Message-Id: <20250916044735.2316171-9-dolinux.peng@gmail.com>
+Subject: [PATCH v3 09/14] cgroup/cpuset: Remove redundant rcu_read_lock/unlock() in spin_lock
+Date: Tue, 16 Sep 2025 12:47:30 +0800
+Message-Id: <20250916044735.2316171-10-dolinux.peng@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250916044735.2316171-1-dolinux.peng@gmail.com>
 References: <20250916044735.2316171-1-dolinux.peng@gmail.com>
@@ -129,71 +129,56 @@ been started implicitly by spin_lock().
 
 Simplify the code and remove the inner rcu_read_lock() invocation.
 
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
 Cc: Waiman Long <longman@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Waiman Long <longman@redhat.com>
 Signed-off-by: pengdonglin <pengdonglin@xiaomi.com>
 Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
 ---
- kernel/cgroup/cgroup.c | 2 --
- kernel/cgroup/debug.c  | 4 ----
- 2 files changed, 6 deletions(-)
+ kernel/cgroup/cpuset.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 312c6a8b55bb..db9e00a559df 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -2944,14 +2944,12 @@ int cgroup_attach_task(struct cgroup *dst_cgrp, struct task_struct *leader,
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 27adb04df675..9b7e8e8e9411 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -4073,7 +4073,6 @@ void cpuset_cpus_allowed(struct task_struct *tsk, struct cpumask *pmask)
+ 	struct cpuset *cs;
  
- 	/* look up all src csets */
- 	spin_lock_irq(&css_set_lock);
+ 	spin_lock_irqsave(&callback_lock, flags);
 -	rcu_read_lock();
- 	task = leader;
- 	do {
- 		cgroup_migrate_add_src(task_css_set(task), dst_cgrp, &mgctx);
- 		if (!threadgroup)
- 			break;
- 	} while_each_thread(leader, task);
--	rcu_read_unlock();
- 	spin_unlock_irq(&css_set_lock);
  
- 	/* prepare dst csets and commit */
-diff --git a/kernel/cgroup/debug.c b/kernel/cgroup/debug.c
-index 80aa3f027ac3..81ea38dd6f9d 100644
---- a/kernel/cgroup/debug.c
-+++ b/kernel/cgroup/debug.c
-@@ -49,7 +49,6 @@ static int current_css_set_read(struct seq_file *seq, void *v)
- 		return -ENODEV;
- 
- 	spin_lock_irq(&css_set_lock);
--	rcu_read_lock();
- 	cset = task_css_set(current);
- 	refcnt = refcount_read(&cset->refcount);
- 	seq_printf(seq, "css_set %pK %d", cset, refcnt);
-@@ -67,7 +66,6 @@ static int current_css_set_read(struct seq_file *seq, void *v)
- 		seq_printf(seq, "%2d: %-4s\t- %p[%d]\n", ss->id, ss->name,
- 			  css, css->id);
+ 	cs = task_cs(tsk);
+ 	if (cs != &top_cpuset)
+@@ -4095,7 +4094,6 @@ void cpuset_cpus_allowed(struct task_struct *tsk, struct cpumask *pmask)
+ 			cpumask_copy(pmask, possible_mask);
  	}
--	rcu_read_unlock();
- 	spin_unlock_irq(&css_set_lock);
- 	cgroup_kn_unlock(of->kn);
- 	return 0;
-@@ -95,7 +93,6 @@ static int current_css_set_cg_links_read(struct seq_file *seq, void *v)
- 		return -ENOMEM;
  
- 	spin_lock_irq(&css_set_lock);
--	rcu_read_lock();
- 	cset = task_css_set(current);
- 	list_for_each_entry(link, &cset->cgrp_links, cgrp_link) {
- 		struct cgroup *c = link->cgrp;
-@@ -104,7 +101,6 @@ static int current_css_set_cg_links_read(struct seq_file *seq, void *v)
- 		seq_printf(seq, "Root %d group %s\n",
- 			   c->root->hierarchy_id, name_buf);
- 	}
 -	rcu_read_unlock();
- 	spin_unlock_irq(&css_set_lock);
- 	kfree(name_buf);
- 	return 0;
+ 	spin_unlock_irqrestore(&callback_lock, flags);
+ }
+ 
+@@ -4168,9 +4166,7 @@ nodemask_t cpuset_mems_allowed(struct task_struct *tsk)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&callback_lock, flags);
+-	rcu_read_lock();
+ 	guarantee_online_mems(task_cs(tsk), &mask);
+-	rcu_read_unlock();
+ 	spin_unlock_irqrestore(&callback_lock, flags);
+ 
+ 	return mask;
+@@ -4265,10 +4261,8 @@ bool cpuset_current_node_allowed(int node, gfp_t gfp_mask)
+ 	/* Not hardwall and node outside mems_allowed: scan up cpusets */
+ 	spin_lock_irqsave(&callback_lock, flags);
+ 
+-	rcu_read_lock();
+ 	cs = nearest_hardwall_ancestor(task_cs(current));
+ 	allowed = node_isset(node, cs->mems_allowed);
+-	rcu_read_unlock();
+ 
+ 	spin_unlock_irqrestore(&callback_lock, flags);
+ 	return allowed;
 -- 
 2.34.1
 
