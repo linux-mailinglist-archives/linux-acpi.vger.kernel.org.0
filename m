@@ -1,113 +1,119 @@
-Return-Path: <linux-acpi+bounces-17019-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17020-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D8BB59923
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 16:16:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D29DB59BBC
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 17:14:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E7B11882882
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 14:11:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53F6C7A639F
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 15:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3551131326B;
-	Tue, 16 Sep 2025 14:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SE+O7cxD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4222230DD31;
+	Tue, 16 Sep 2025 15:14:47 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1093E30C616
-	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 14:10:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6D920DD42;
+	Tue, 16 Sep 2025 15:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758031839; cv=none; b=lnal4nP5b+VKEYTlbfawIMHaSlT8cYkaNH0VgHSFW8VI+ZRTU64GTWk/QMJhaqMdFBS953k9d6o94uCm00CmoNpEEGfbiOYUsjmKjQDpGG5PTwrOoHm1sWR7cIeT9jTN0mExNl25Jyge3viFHNAbqw0euxPnXFjm6Y7h2DhvcbU=
+	t=1758035687; cv=none; b=P2YHezqoSl14Vc2wEjEXoTg5TZWGvL/bIwXDqy8etCwkvHThnMj7QuQ02cQ5Z75B1PQiS6/CrdBoWgmnTjeagjw72xO6AN1cTJHzJ5iiPX44S34o8P4ao6+cyyiggVwIAfy4Lc6VQICs3PA07K1MUA6gEyjO4jbMXcHq7Zgazzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758031839; c=relaxed/simple;
-	bh=hCIF8Ni27sWB5MOZDUMOfE/fvmsjz8qbIc6FotWXnxY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bh+zNzYLooX71u7wf4D54EbIgUmN7JVdbDZxGLD341j9UHNCw5jKzSgUxMRFucgOJuVKr6skAtA8Ei6jQEWGLNHRZzz+hejM+S/YjgwOdGUCcraPEZ5Q6Lg8lSAJkMfXdGVBsVOCtwQ++/oJuixmIPYs9bKAN13nR4Gr+GdpmbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SE+O7cxD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B978DC4CEF0
-	for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 14:10:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758031838;
-	bh=hCIF8Ni27sWB5MOZDUMOfE/fvmsjz8qbIc6FotWXnxY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SE+O7cxDEeE9EgJkPFgOgI/3ZVRY425Cq5eCucqBzbGGcRFmHAE3biMBG9U2QVPHQ
-	 W+bzj+kKc9zLGTThiyHEudH9wpuyh43AJuIvU6uwPB8WoO09jFGMEh6G8Gu7dkXOXO
-	 nytb1ZVrTleXStutuvYPPNF5cyLGU/GLTwzNSSOOe3lLYtKXVr6IlkB0esLMTKOkiQ
-	 /GAdFP593GtX9bu+2jtmjdJRg+l/LvRS7CAvhpvpBFBvy/6pBtEdxs/WdlBdjuPFKN
-	 GsV7i28wD4lY243rvlgVC4ydBXQMmQyp4WDSvVQXNsSd8uVzXEgHt88DNZKWACQcSq
-	 vpql+dAQauf+Q==
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-751415c488cso4784835a34.1
-        for <linux-acpi@vger.kernel.org>; Tue, 16 Sep 2025 07:10:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWdUvz8BvXg1Nqf8DVzgWT2UIHejMc6CYWoYefuxuUdufbzx6aqSB7DUEViW8QMhqWvs+mRCqLByBwT@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/dgeGJ+vkOjhzkLZ9TtyY7+3eOaUff2eAQGesV9GySkIoaoiQ
-	ngukPzps5LbYj30otOZfYzLPNPbtcOcKTEFHcWTkxV1nWOjfyCAAQtzlPFUH316Gaxn6kkSgeY5
-	B68zBBfz+dTNLFmSlc3vBRcx8IUpLBd4=
-X-Google-Smtp-Source: AGHT+IHACtZwuhHIk/mW4cBWIIjEOiXq5pqvLUVG9TYbM9mtcWpVOX1u6bq2A+d/yR/MP+E8EUqyoEmmJqoh1gnEss0=
-X-Received: by 2002:a05:6830:2a14:b0:758:85e2:9a00 with SMTP id
- 46e09a7af769-75885e29d65mr4731228a34.17.1758031838083; Tue, 16 Sep 2025
- 07:10:38 -0700 (PDT)
+	s=arc-20240116; t=1758035687; c=relaxed/simple;
+	bh=20RBLfRYEQ3Ms+slM0SmtO9IunpLQPQy9nACa/Usmtw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pQxoy0dnLH+tioHanz67OBo93IKv+K4tsBdCZzO95yZWGHEpusSQTDKKDI7cOaeOrqtLBLx/sbhuGbI0MjpzZz8uSWmwjvAr/N7i6kxI5QZ9JZN6wnCtjiris4IVQLA9a4K/4VIYb4GN44duQVqi7SwgDvu9DeH1jdEw6yAszvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cR51H4rn2z6K6F8;
+	Tue, 16 Sep 2025 23:10:11 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id E3CB31402F5;
+	Tue, 16 Sep 2025 23:14:40 +0800 (CST)
+Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 16 Sep
+ 2025 17:14:40 +0200
+Date: Tue, 16 Sep 2025 16:14:38 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Marc Zyngier <maz@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-acpi@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "Mark
+ Rutland" <mark.rutland@arm.com>, Will Deacon <will@kernel.org>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>, "Saravana
+ Kannan" <saravanak@google.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Sven Peter <sven@kernel.org>, Janne Grunau
+	<j@jannau.net>, Suzuki K Poulose <suzuki.poulose@arm.com>, James Clark
+	<james.clark@linaro.org>
+Subject: Re: [PATCH v2 01/25] irqdomain: Add firmware info reporting
+ interface
+Message-ID: <20250916161438.00007ba0@huawei.com>
+In-Reply-To: <20250915085702.519996-2-maz@kernel.org>
+References: <20250915085702.519996-1-maz@kernel.org>
+	<20250915085702.519996-2-maz@kernel.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5922318.DvuYhMxLoT@rafael.j.wysocki> <aMlvpfVbEP9JOULX@kekkonen.localdomain>
-In-Reply-To: <aMlvpfVbEP9JOULX@kekkonen.localdomain>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 16 Sep 2025 16:10:27 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gc0XBmL5ChzyzUs=UGjpbS7WAVpxR5dSbsje895DzLGQ@mail.gmail.com>
-X-Gm-Features: AS18NWD1oFdI3bsUnLT_GN6C_O9Rpekp5SNgxCAUvIqMn1SU7Bkhgg43MYvvdc4
-Message-ID: <CAJZ5v0gc0XBmL5ChzyzUs=UGjpbS7WAVpxR5dSbsje895DzLGQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] ACPI: property: Two fixes, more documentation and
- a cleanup
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Hi Sakari,
+On Mon, 15 Sep 2025 09:56:38 +0100
+Marc Zyngier <maz@kernel.org> wrote:
 
-On Tue, Sep 16, 2025 at 4:09=E2=80=AFPM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> Hi Rafael,
->
-> On Mon, Sep 15, 2025 at 08:20:03PM +0200, Rafael J. Wysocki wrote:
-> > Hi All,
-> >
-> > This is an update of
-> >
-> > https://lore.kernel.org/linux-acpi/5046661.31r3eYUQgx@rafael.j.wysocki/
-> >
-> > A user report regarding "ACPI: \: Can't tag data node" error messages i=
-n dmesg
-> > made me look at the ACPI property code and I've found a couple of issue=
-s in
-> > it.
-> >
-> > Also, it took me some time to figure out why the code was doing what it=
- was
-> > doing, so I decided to add some comments explaining it.
-> >
-> > Finally, there's always something that can be cleaned up in every piece=
- of
-> > kernel code.
-> >
-> > Hence, this series.
->
-> For the set:
->
-> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Tested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Allow an irqdomain callback to report firmware-provided information
+> that is otherwise not available in a generic way. This is reported
+> using a new data structure (struct irq_fwspec_info).
+> 
+> This callback is optional and the only information that can be
+> reported currently is the affinity of an interrupt. However, the
+> containing structure is designed to be extensible, allowing other
+> potentially relevant information to be reported in the future.
+> 
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+Hi Marc,
 
-Thank you!
+> ---
+>  include/linux/irqdomain.h | 28 ++++++++++++++++++++++++++++
+>  kernel/irq/irqdomain.c    | 32 +++++++++++++++++++++++++++-----
+>  2 files changed, 55 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+> index 4a86e6b915dd6..34993bf8293c4 100644
+> --- a/include/linux/irqdomain.h
+> +++ b/include/linux/irqdomain.h
+> @@ -44,6 +44,24 @@ struct irq_fwspec {
+>  	u32			param[IRQ_DOMAIN_IRQ_SPEC_PARAMS];
+>  };
+>  
+> +/**
+> + * struct irq_fwspec_info - firmware provided IRQ information structure
+> + *
+> + * @fwspec:		Firmware-specific interrupt specifier
+
+Not aligning with what is in the structure that I can see.
+
+> + * @cpumask:		Affinity mask for this interrupt
+> + * @flags:		Information validity flags
+> + *
+> + * This structure reports firmware-specific information about an
+> + * interrupt. The only significant information is the affinity of a
+> + * per-CPU interrupt, but this is designed to be extended as required.
+> + */
+> +struct irq_fwspec_info {
+> +	unsigned long		flags;
+> +	const struct cpumask	*affinity;
+> +};
+
+
 
