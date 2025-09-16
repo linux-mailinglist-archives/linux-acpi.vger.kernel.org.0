@@ -1,118 +1,105 @@
-Return-Path: <linux-acpi+bounces-16979-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-16980-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5894FB58C1C
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 04:59:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36CC7B58C29
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 05:09:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD2A132154B
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 02:59:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBD951BC454A
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Sep 2025 03:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A4A724DCE5;
-	Tue, 16 Sep 2025 02:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6857A246799;
+	Tue, 16 Sep 2025 03:09:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bBxS8q66"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4774D22128B;
-	Tue, 16 Sep 2025 02:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF09F38DDB;
+	Tue, 16 Sep 2025 03:09:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757991531; cv=none; b=AzzQ8FnVcwYFnDveKJ/wpRKkuOZyStJb3KLozjHo46w9eHdzBiNzR/YT7xn72qJ1LPvf7RlbD2BAs2m9T70uoB4sXQoKHFS7YeBWTPca91I+YXyT3xrpXww4R/l1qjluEmW+7iXHQJNkzGEJI1Ova/fq3anVocuhnxV3QHWfryA=
+	t=1757992145; cv=none; b=WA2g4hKhi8FJxBnR+HLPnFq1p89CC8OcTKGM9XQBFxyaJrW8PAIgaMgaGcEVlJPgr8mEt9RxJWq4Tq4Au6QsKmVjBLTnfXgv6stvc/6Cvvv8LxKOfVk4og4S9TRa7UugJ0qX1SQR8XdS5tpnouSdqGSG+rWXpCAdoVIROMLZwgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757991531; c=relaxed/simple;
-	bh=sg8s9gAeM92da5rvOBWf7Yz/aCr8ASn+gAuFWTHxS/Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=bPtkW62NVA2vDjqrr7RaEt45MZdquxDXkFEecZuiB6ntrCUkzDsyeI3AuoGtRTHdehispoDA98ER9/hCKpaNMKKhyM3XfOYJEmvFxevM04so4rk1uAaKrybOYfcwzakXPVuFOasIQkuvmNOgdg1CvkBn3RxESGJrK6v06/Dtoos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4cQmgw23fpzddML;
-	Tue, 16 Sep 2025 10:54:04 +0800 (CST)
-Received: from kwepemr500004.china.huawei.com (unknown [7.202.195.141])
-	by mail.maildlp.com (Postfix) with ESMTPS id 503551401F4;
-	Tue, 16 Sep 2025 10:58:39 +0800 (CST)
-Received: from [10.67.121.58] (10.67.121.58) by kwepemr500004.china.huawei.com
- (7.202.195.141) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 16 Sep
- 2025 10:58:38 +0800
-Message-ID: <60f9cafb-2199-4c7b-ba97-7529d0ef5bf8@hisilicon.com>
-Date: Tue, 16 Sep 2025 10:58:37 +0800
+	s=arc-20240116; t=1757992145; c=relaxed/simple;
+	bh=clS/RriAH6/uzgbxBAN8eXzKr1t8+yo2uadqdbTxw+Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KB3eGyhxwCbq+5Ki7pt2ptUepUu1YXigfVHskFBo/vQYvXrYvkG7sLNYiQ2+EncvNjRoYzkP9yy5sEsDhcUgi3UYKxelpcgDIprZUTC4o3twu+NmB/XfNC3J9OZvX25rj8UvpAWdHkRzO/l8RmYqh5OJCRFRhHPF23eAFNNRvMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bBxS8q66; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD31C4CEF1;
+	Tue, 16 Sep 2025 03:09:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757992144;
+	bh=clS/RriAH6/uzgbxBAN8eXzKr1t8+yo2uadqdbTxw+Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bBxS8q66YdKGXiHFPJJ3//BAWLCIYoh1qbHxHfe2QgUS7fzvi8AFYBbIitGKJPiDy
+	 J0h5xdTTy4wuRH1ymZPr5e0f/C36eUMrkOUag+lWBj8YkZln2Sd8hzT0pfkU01q17O
+	 RT8NuwYenprY6H9Bdb8qKRjkND6VpsGEt1Rf1iUB6mNa5MQsHkHWoiFIr0vmJLaUBy
+	 +Mg6Bb5Jrp6AOX9r3GJRBHhtRWiiY7tieeEbNFvl6251o5yIBpkK00NoObReShSwrw
+	 BlICrcV2YfDygf6hS1MD81NdPJlMqltFalaDERfXuFBjtYfsWMd22V+qS8nHm3+ffq
+	 gVOH5pLBuuEEw==
+Date: Mon, 15 Sep 2025 22:09:03 -0500
+From: Rob Herring <robh@kernel.org>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Aleksa Sarai <cyphar@cyphar.com>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+	Julian Stecklina <julian.stecklina@cyberus-technology.de>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Art Nikpal <email2tema@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eric Curtin <ecurtin@redhat.com>, Alexander Graf <graf@amazon.com>,
+	Rob Landley <rob@landley.net>,
+	Lennart Poettering <mzxreary@0pointer.de>,
+	linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+	x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
+	linux-block@vger.kernel.org, initramfs@vger.kernel.org,
+	linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org,
+	"Theodore Y . Ts'o" <tytso@mit.edu>, linux-acpi@vger.kernel.org,
+	Michal Simek <monstr@monstr.eu>, devicetree@vger.kernel.org,
+	Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
+Subject: Re: [PATCH RESEND 28/62] init: alpha, arc, arm, arm64, csky, m68k,
+ microblaze, mips, nios2, openrisc, parisc, powerpc, s390, sh, sparc, um,
+ x86, xtensa: rename initrd_{start,end} to
+ virt_external_initramfs_{start,end}
+Message-ID: <20250916030903.GA3598798-robh@kernel.org>
+References: <20250913003842.41944-1-safinaskar@gmail.com>
+ <20250913003842.41944-29-safinaskar@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] cpufreq: CPPC: Rework FIE warning prints and
- cppc_scale_freq_tick()
-To: <viresh.kumar@linaro.org>, <rafael@kernel.org>, <ionela.voinescu@arm.com>,
-	<beata.michalska@arm.com>, <zhenglifeng1@huawei.com>
-CC: <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
-	<jonathan.cameron@huawei.com>, Jie Zhan <zhanjie9@hisilicon.com>
-References: <20250828110212.2108653-1-zhanjie9@hisilicon.com>
-Content-Language: en-US
-From: Jie Zhan <zhanjie9@hisilicon.com>
-In-Reply-To: <20250828110212.2108653-1-zhanjie9@hisilicon.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemr500004.china.huawei.com (7.202.195.141)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250913003842.41944-29-safinaskar@gmail.com>
 
-A kindly ping on this.
-Some feedback would be nice if anyone is not on holiday ;)
+On Sat, Sep 13, 2025 at 12:38:07AM +0000, Askar Safin wrote:
+> Rename initrd_start to virt_external_initramfs_start and
+> initrd_end to virt_external_initramfs_end.
 
-Jie
+There's not really any point in listing every arch in the subject.
 
-On 8/28/2025 7:02 PM, Jie Zhan wrote:
-> Reading performance feedback counters on offline or low-power idle CPUs may
-> return 0, which is interpreted as -EFAULT.
-> 
-> This leads to two issues related to the CPPC FIE:
-> 
-> 1. When booting a subset of CPUs in policy->related_cpus (some CPUs under
-> the cpufreq policy is offline), there are warnings of "failed to read perf
-> counters for cpu" during the CPPC FIE initialization.
-> 
-> 2. On our platform with the CPC regs in System Memory and a power-down idle
-> state enabled, if the CPPC FIE is registered successfully, there are
-> repeated warnings of "failed to read perf counters" because
-> cppc_scale_freq_workfn() is trying to access the counters of remote CPUs
-> that enters the idle state.
-> 
-> To solve the above issues:
-> 
-> Patch 1 removes the warning when the CPPC FIE initialization fails to read
-> counters on offline CPUs and changes the log leve to debug.  This can be
-> applied separately.
-> 
-> Patch 2 moves the update of FIE arch_freq_scale into ticks for non-PCC regs
-> and maintains the existing mechanism for PCC regs, such that reading
-> counters would be triggered on the local CPU only.  This inherently solves
-> the issue in [1].  We have tested this on Kunpeng SoCs with the CPC regs
-> both in System Memory and FFH.  More tests on other platforms are welcome
-> though.
-> [1] https://lore.kernel.org/linux-pm/20250730032312.167062-3-yubowen8@huawei.com/
-> 
-> Changelog:
-> 
-> v2:
-> - Update the cover letter and the commit log based on v1 discussion
-> - Update FIE arch_freq_scale in ticks for non-PCC regs
-> 
-> v1:
-> https://lore.kernel.org/linux-pm/20250730032312.167062-1-yubowen8@huawei.com/
-> 
-> Jie Zhan (2):
->   cpufreq: CPPC: Don't warn if FIE init fails to read counters
->   cpufreq: CPPC: Update FIE arch_freq_scale in ticks for non-PCC regs
-> 
->  drivers/cpufreq/cppc_cpufreq.c | 64 +++++++++++++++++++++-------------
->  1 file changed, 39 insertions(+), 25 deletions(-)
-> 
+Rob
 
