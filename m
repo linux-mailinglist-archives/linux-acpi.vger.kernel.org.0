@@ -1,143 +1,172 @@
-Return-Path: <linux-acpi+bounces-17084-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17085-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF2DB81462
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Sep 2025 20:00:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAFA7B81640
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Sep 2025 20:52:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 976F61C80C2F
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Sep 2025 18:01:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B3F517C46E
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Sep 2025 18:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 217973002CD;
-	Wed, 17 Sep 2025 18:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731712FFDFC;
+	Wed, 17 Sep 2025 18:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b="g1LtUuBN"
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="jWFOpMYJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83602FF64D
-	for <linux-acpi@vger.kernel.org>; Wed, 17 Sep 2025 18:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AF61E1C22;
+	Wed, 17 Sep 2025 18:52:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.147.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758132049; cv=none; b=qSwEpUQRVXapZr1cal9dElgZwVDhTYFv3NbQhuGzk1YX9f9CfNSkO6kknhlCWw6AhoFk/R2ZH3oljaPEjyKZgE/C/Pjt+9it2bNpMMFCxVuMcXrU0rnJBP/fE6u8+Bx1VhN4+Iy0YCInxXjrNNJQWO9W0/tTq8wKTSMiowtwadM=
+	t=1758135174; cv=none; b=X6FsjheJbwrZIrkS6PMdCG0maP6ZqgVRbj0x/MMwmibzSNFX57mjkp3lfUsw/t3wJsace99RJFQmqBOE0oyV1oawV3bN3U/F9MuFK8Gk7tYk3yQgsTldR6YaXgLCSiRueeq5PqigIkCuONdsNM/vIMEpX3n7Exa9Ua5QN1N/U+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758132049; c=relaxed/simple;
-	bh=DLDcGQ3mu3T/MPVKq0NF9V2I5Jn6ILZwFaw9KVQfhOo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SEpLowpb9c2WeJrgZZOOtpRLXKLMYE+WRJ6LCbzqb4b8CdAnchR4i0x0HOgLb5B1V+cSQQ7rGxb4GWB/vlxxUPU84whDGQ4BnZBCobTe0tP0FmJQKIXJN8MQIwRbtuodMy0/NsPqveo5UW40MjMxEdzf9QCxhLY/dDUD3z5ZiHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net; spf=pass smtp.mailfrom=amacapital.net; dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b=g1LtUuBN; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amacapital.net
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-578a8bd4bd2so83244e87.1
-        for <linux-acpi@vger.kernel.org>; Wed, 17 Sep 2025 11:00:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20230601.gappssmtp.com; s=20230601; t=1758132044; x=1758736844; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0Pv4dFUExNQfPloEDat7jfEF9BkjeLOy7zrinjdnc80=;
-        b=g1LtUuBN2lj4qvyQzWAdLKTewMPpvB0BMgAm3EhYmOSEcT379TNMgVSmJk7DCmgjc/
-         T0eHokwlFMY3Yd+mXYCz+ekytPn0ndF69T0GJJIC1YMQr15FXnETUToESn8hAOjjN4TJ
-         wc+dE3joK8Hj6X0qrUlvmHpmCBRx7/hVESh3NV1/RSPbebawN77L/JxPYbAY8rno5NPR
-         h45BlMuQrVS79kOiLhszZHO32mHd/xwXNvhKNiRJJPEEOxGanxAq7D4RvCoxMPnsrP0o
-         gtEy+UX8pbw1CA/Tbhp0++SKDmI4SgqYBJ/2EKyXEOwvuyrgRQgYTYLI+VQny1h7rWhV
-         /NkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758132044; x=1758736844;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0Pv4dFUExNQfPloEDat7jfEF9BkjeLOy7zrinjdnc80=;
-        b=vjcOAgBiL6UcqN83E/4WCkBJyKEwbAbCrTtmf4ieL493hvobM1rQAGbvNBImnMq4ZR
-         +kAyQOs+bNy9bqRnycqmFqSnO9VPF8dpaHqusapd/mSqiGu+sdWR4gy1xGm0DxDJ5+Vb
-         a3E/IwJRHnZOsBQ3kvleUjAXOMa0+npG25gs6lvO8Xu6SEzQfkhrvyGJA0y23wrIzBO5
-         wflWfKlFahOZRJezUXqP0uevKYlAE/bgiUCdrub+h8CAVxIZDgMj80g/zhiHZ0lh7z5d
-         eEe6cR7YKcDEXJzIzNRE+PfdP3Qah0IoqYGH5ivnUIrtxqxeAhAuHywHE82TCg4OCfKb
-         hWHg==
-X-Forwarded-Encrypted: i=1; AJvYcCVzOcFfBkSqHpIDGB1t/texXVkm36RiBJhFPD+OPcb6cGRCT8a2r1y5g27ATxPPHN7HydCrVkRYoVA7@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0PygxRmIf5sgzWsTfbS63iaLLwz4ac7k09kbb7teSfjtq0NWk
-	9KI+Sm2DZgUvi2otbUduF3yvu3Va70zGpCAWLpEHdHtgVOTH8Ps3KV5fol0M/njncx6PGGYN9sS
-	eaH6u0G+99x62fTCvLgHk65oGtnydMx/HLN2vJsH7
-X-Gm-Gg: ASbGncuJUH1o6E2cmDNVn+67I/7XhCYVHr3ZrfOUnDpLQS3G/bM9IqqxSMZq85j/w2B
-	SBuNaMqvFZtHtviLVnyOC+essXRKGXAy+cPdmX6DgsTP1BzqgbEWY/ppmLh6Ia7desuP0psZ3TU
-	bTeGGjfTPTkVckpIGTHaKXq2WD5T22nY/F6eykBFZ7uH5crjhlgvttAof17npztfCAR8rCJvoSN
-	2gWMQ==
-X-Google-Smtp-Source: AGHT+IGI+xF2OSgRbI6+fabXiqu9Xwuf5bxWYwnja/rNGOUuSmNzhH42MNUAKuR34Ox7ov8nmiujA9clDhMS84oRbmU=
-X-Received: by 2002:ac2:4e09:0:b0:576:d217:3f2f with SMTP id
- 2adb3069b0e04-57796b5e819mr1028160e87.3.1758132043747; Wed, 17 Sep 2025
- 11:00:43 -0700 (PDT)
+	s=arc-20240116; t=1758135174; c=relaxed/simple;
+	bh=DXr83c8H68AmyRHJYwElnxjbw+hVHN4OMw8EgrecAh8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LM3zl2eDeCkNFJ/sF2RbqalvlTGa8QsdaJwgZC1BFPGQBiwGFtMkGxxSO9zAGVNgRwvaObJSsyIUZPmpp84gn6iY35aQEIaYGqFI6mUI52QqncaiDXhlyzTFOQpG0xTpEqDYaZYUf2VSVxp06llpe9h+0r2EXoX3OqBj0sE2qEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=jWFOpMYJ; arc=none smtp.client-ip=148.163.147.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
+Received: from pps.filterd (m0134421.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58HEqJIo000856;
+	Wed, 17 Sep 2025 18:51:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pps0720; bh=7LK4ZWeL13dQx21QB7xV/bkzeQ
+	Zco1h+3vZiyoJhjtY=; b=jWFOpMYJRJhXejKedoiFYdR2KftHonRBNBFdijPrKN
+	Fm6jZCWSlpA0hrAKcIwQmZnEJQzA8SyrO8nzcsWr/W3MtBBR9XFjohkWD37IFii3
+	JOBP27v4iTL3ylCoEl6DMsY8SGw18ikcfEEUjJaZ49Z3Po/5VtlstD0H81GgOkUH
+	Mc8ozVMyq51PmpKxinbS145Q9c/ynFbkBSK56swemZER5/2ROeg7+uYO8syOIJbk
+	+gHkNTK6mJMj8o6MLk8WZ/fmXoAFzq2cgp6P/vlRspwK/KuenQd5UKFhbvTMxmOA
+	KxlwQbdFAEqnQTFtZkkOcXrNdJIwNv7DgI85CSuqZBWA==
+Received: from p1lg14881.it.hpe.com (p1lg14881.it.hpe.com [16.230.97.202])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 497y4fstv4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 17 Sep 2025 18:51:41 +0000 (GMT)
+Received: from p1lg14885.dc01.its.hpecorp.net (unknown [10.119.18.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14881.it.hpe.com (Postfix) with ESMTPS id 800CA805E3B;
+	Wed, 17 Sep 2025 18:51:28 +0000 (UTC)
+Received: from HPE-5CG20646DK.localdomain (unknown [16.231.227.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by p1lg14885.dc01.its.hpecorp.net (Postfix) with ESMTPS id D65EB801FF9;
+	Wed, 17 Sep 2025 18:51:24 +0000 (UTC)
+Date: Wed, 17 Sep 2025 13:51:19 -0500
+From: Kyle Meyer <kyle.meyer@hpe.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>, akpm@linux-foundation.org,
+        corbet@lwn.net, linmiaohe@huawei.com, shuah@kernel.org,
+        tony.luck@intel.com, jane.chu@oracle.com, jiaqiyan@google.com,
+        Liam.Howlett@oracle.com, bp@alien8.de, hannes@cmpxchg.org,
+        jack@suse.cz, joel.granados@kernel.org, laoar.shao@gmail.com,
+        lorenzo.stoakes@oracle.com, mclapinski@google.com, mhocko@suse.com,
+        nao.horiguchi@gmail.com, osalvador@suse.de, rafael.j.wysocki@intel.com,
+        rppt@kernel.org, russ.anderson@hpe.com, shawn.fan@intel.com,
+        surenb@google.com, vbabka@suse.cz, linux-acpi@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline for
+ HugeTLB pages
+Message-ID: <aMsDJ3EU1zVJ00cX@hpe.com>
+References: <aMiu_Uku6Y5ZbuhM@hpe.com>
+ <a99eb11f-a7ac-48a3-a671-c5f0f6b5b491@arm.com>
+ <8c3188da-7078-4099-973a-1d0d74db2720@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250912223937.3735076-1-safinaskar@zohomail.com> <0342fbda-9901-4293-afa7-ba6085eb1688@landley.net>
-In-Reply-To: <0342fbda-9901-4293-afa7-ba6085eb1688@landley.net>
-From: Andy Lutomirski <luto@amacapital.net>
-Date: Wed, 17 Sep 2025 11:00:32 -0700
-X-Gm-Features: AS18NWAGwakGZ9zjxjq7MnfN8O7ZgOJb6fmKIJ0JIML7P3j0NnlDZ27eNb5S7Es
-Message-ID: <CALCETrXHxOkHoS+0zhvc4cfpZqJ0wpfQUDnXW-A-qyQkqur-DQ@mail.gmail.com>
-Subject: Re: [PATCH 00/62] initrd: remove classic initrd support
-To: Rob Landley <rob@landley.net>
-Cc: Askar Safin <safinaskar@zohomail.com>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, 
-	Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
-	Aleksa Sarai <cyphar@cyphar.com>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
-	Julian Stecklina <julian.stecklina@cyberus-technology.de>, 
-	Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>, 
-	Alexander Graf <graf@amazon.com>, Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, x86@kernel.org, 
-	Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org, initramfs@vger.kernel.org, 
-	linux-api@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	"Theodore Y . Ts'o" <tytso@mit.edu>, linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>, 
-	devicetree@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Thorsten Blum <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8c3188da-7078-4099-973a-1d0d74db2720@redhat.com>
+X-Authority-Analysis: v=2.4 cv=I8JlRMgg c=1 sm=1 tr=0 ts=68cb033d cx=c_pps
+ a=FAnPgvRYq/vnBSvlTDCQOQ==:117 a=FAnPgvRYq/vnBSvlTDCQOQ==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=43ExOtPKq08pkoLMMGwA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: gURhVSCbrA3Jh1Kv2mx01oxTFQRbHNwi
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE3MDE0NCBTYWx0ZWRfXxREiFP4uvNdQ
+ luYfTSm6FT7NARVcxFXF5eDPm6eWrw/vSSRhnFbUJTExtryAN8OyHivFKXVp2DXjrrEYU81oEkk
+ 5q7sNERRo1G3rslZr4Hvu4wDXgMksi6DVcUcVEn1Jm9XGgnxUFqk4p3CoD+bPhwsqZxS1xcAYQ4
+ Dp/MxMo4WwcXxCillnvMoPyyXCZGxG2pYV2uLdQA80IN1g6J0xJv+4+vtUBA7j1ETAufUhRib/2
+ 8R96kyTjXUhkY4eVynbRMr6M6ioQUcTk6f1tu73K5enqoM9wo/kkJYCNXloyiZa6gVd09xfpiQj
+ uw8dvRGHNHlVTTSTUbjgc81C5t05O2spqBZr0hBznEYUw99l5wMGpVhU7QIqJqSMM3aXF7Mq7U8
+ dd9rufKu
+X-Proofpoint-ORIG-GUID: gURhVSCbrA3Jh1Kv2mx01oxTFQRbHNwi
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-17_01,2025-09-17_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 phishscore=0 spamscore=0 bulkscore=0 clxscore=1011
+ impostorscore=0 malwarescore=0 adultscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509170144
 
-On Mon, Sep 15, 2025 at 10:09=E2=80=AFAM Rob Landley <rob@landley.net> wrot=
-e:
+On Wed, Sep 17, 2025 at 09:02:55AM +0200, David Hildenbrand wrote:
+> 
+> > > +
+> > > +	0 - Enable soft offline
+> > > +	1 - Disable soft offline for HugeTLB pages
+> > > +
+> > > +Supported values::
+> > > +
+> > > +	0 - Soft offline is disabled
+> > > +	1 - Soft offline is enabled
+> > > +	3 - Soft offline is enabled (disabled for HugeTLB pages)
+> > 
+> > This looks very adhoc even though existing behavior is preserved.
+> > 
+> > - Are HugeTLB pages the only page types to be considered ?
+> > - How the remaining bits here are going to be used later ?
+> > 
+> 
+> What I proposed (that could be better documented here) is that all other
+> bits except the first one will be a disable mask when bit 0 is set.
+> 
+> 2 - ... but yet disabled for hugetlb
+> 4 - ... but yet disabled for $WHATEVER
+> 8 - ... but yet disabled for $WHATEVERELSE
+> 
+> > Also without a bit-wise usage roadmap, is not changing a procfs
+> > interface (ABI) bit problematic ?
+> 
+> For now we failed setting it to values that are neither 0 or 1, IIUC
+> set_enable_soft_offline() correctly?
 
-> While you're at it, could you fix static/builtin initramfs so PID 1 has
-> a valid stdin/stdout/stderr?
->
-> A static initramfs won't create /dev/console if the embedded initramfs
-> image doesn't contain it, which a non-root build can't mknod, so the
-> kernel plumbing won't see it dev in the directory we point it at unless
-> we build with root access.
+Yes, -EINVAL will be returned.
 
-I have no current insight as to whether there's a kernel issue here,
-but why are you trying to put actual device nodes in an actual
-filesystem as part of a build process?  It's extremely straightforward
-to emit devices nodes in cpio format, and IMO it's far *more*
-straightforward to do that than to make a whole directory, try to get
-all the modes right, and cpio it up.
+> So there should not be any problem, or which scenario do you have in mind?
 
-I wrote an absolutely trivial tool for this several years ago:
+Here's an alternative approach.
 
-https://github.com/amluto/virtme/blob/master/virtme/cpiowriter.py
+Do not modify the existing sysctl parameter:
 
-it would be barely more complicated to strip the trailer off an cpio
-file from some other source, add some device nodes, and stick the
-trailer back on.  But it's also really, really, really easy to emit an
-entire, functioning cpio-formatted initramfs from plain user code with
-no filesystem manipulation at all.  This also makes that portion of
-the build reproducible, which is worth quite a bit IMO.
+/proc/sys/vm/enable_soft_offline
 
---Andy
+0 - Soft offline is disabled
+1 - Soft offline is enabled
+
+Instead, introduce a new sysctl parameter:
+
+/proc/sys/vm/enable_soft_offline_hugetlb
+
+0 - Soft offline is disabled for HugeTLB pages
+1 - Soft offline is enabled for HugeTLB pages
+
+and note in documentation that this setting only takes effect if
+enable_soft_offline is enabled.
+
+Anshuman (and David), would you prefer this?
+
+Thanks,
+Kyle Meyer
 
