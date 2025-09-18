@@ -1,193 +1,1428 @@
-Return-Path: <linux-acpi+bounces-17122-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17123-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63EAFB871E3
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Sep 2025 23:25:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D45C6B87337
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Sep 2025 00:08:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 784011886EF0
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Sep 2025 21:25:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58BE4580DC7
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Sep 2025 22:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D5E62F28EC;
-	Thu, 18 Sep 2025 21:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576692FDC47;
+	Thu, 18 Sep 2025 22:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iTSjj3sT"
+	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="A1/8S/uD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC7E2E0905;
-	Thu, 18 Sep 2025 21:25:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3022FB627;
+	Thu, 18 Sep 2025 22:07:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758230706; cv=none; b=OLpAVtRDqhivkdT4ingo0nbEvWTL7qfASH+k3FBQ7oKG2rCq2A1tpakEpJ+0VE9cf4rphG3QSqvzXCbDNY6eACWjQqe/9oxgbKQ2Tcw8qkxjp8uJauZWXx0brcgKh2S0wIRvcJb9OmUD1PRxZJtUIsKGCTU9O9WsWx5EUi0LU0o=
+	t=1758233276; cv=none; b=cOgDnpyZKYvX/1m3ZZlykYjYF4lHkyuuSn3m7YVN0vJlhN4Y9sEQ6YvxfJbAXQRQD/TCpZNVS2Cw9Aj8alFlpVJ0GUKR9Gq3IUh7bH3gxkrBcVAyVJdA7uojGhOeM7UsWvsG/XDkwyjDhI6Ar05PWd2szaZSbhDANRtFFbVuTPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758230706; c=relaxed/simple;
-	bh=uDWPrIRB0BZ6/hBSTOSpH6ZUTabeq0J+pelBRMLP/XU=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=l2SdOmIw/W/bhGYgsiaHsi7I8LZxqtqD8dalM0OhZ82OjEhYoe7TXzbuKiTCWcnIQqRNTUI41YvTDqtNqOETP1fzJUGZXRDZtF88WkloUc5NukIfU3pizoFC1r/BmH+RYLXtmn222h/dk696OSZIN5L1Th8gS6biYZnej4n6zqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iTSjj3sT; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758230704; x=1789766704;
-  h=date:from:to:cc:subject:message-id;
-  bh=uDWPrIRB0BZ6/hBSTOSpH6ZUTabeq0J+pelBRMLP/XU=;
-  b=iTSjj3sT4GqFrCqEYnVIW95zKWtDYKdalf7ffWJVi5KCOmDv/FIRK2yL
-   W3tRzyrmetMyM9SNxv+mOEBQHtc0OxUYhdTJYyT3cNmj0D020Mn8UWT4E
-   YqRSkwH3febQio1zbzTXBLoXWBJ65sb9UtSPQ2AuNoMEPxKWK2F76o12m
-   ZPMqb4hD12Qvgd142ervtQuWfmWBp432tMurH/8NHgsPrQtLVbCn0QmPm
-   0k2de2lZ4iSgD5CRUblMXoqq7/gwPJvtdVSXi9sP9T59Ccz72kJvQZDwi
-   K60PGLXjCYO3Ta3jC7oscDr+KDwtZwGfo+KmaCQlkuVMMsfdY0RG36+cy
-   w==;
-X-CSE-ConnectionGUID: G56zFcaKS6C/JYnWrlG8uA==
-X-CSE-MsgGUID: Zkno/CldQtipMlxbWrQzQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64379723"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="64379723"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 14:25:03 -0700
-X-CSE-ConnectionGUID: BFlQ3YeYQJyA+wjTjLOybg==
-X-CSE-MsgGUID: kmT3HXReQ8iULoU/UcXRuA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,276,1751266800"; 
-   d="scan'208";a="179658718"
-Received: from lkp-server01.sh.intel.com (HELO 84a20bd60769) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 18 Sep 2025 14:25:01 -0700
-Received: from kbuild by 84a20bd60769 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uzM7e-0003jH-32;
-	Thu, 18 Sep 2025 21:24:58 +0000
-Date: Fri, 19 Sep 2025 05:24:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 91ba4736fb2c9614b250ae532c133546a2cc717c
-Message-ID: <202509190506.uYSA8ShY-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1758233276; c=relaxed/simple;
+	bh=IoM+aiN6cOw5asHe/X6NaM6W5uV49eWeBoH/NTPBSGs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=BvBBJOlbKebjTU4YhroO69OvPvd2x9TEb0IYRBJ0XTXOBqefc3I5KhJ8wfdkVaOmQ6DvZWasj7e/M5jDuW+GDsZU2PMFkpXN7TDjZFizljm9uJEkbyl+ZRSNanvrpRRA0kgBO2+XpwOtgNE6o2Rc2XKwl6iA82O2WMZJE4gNPsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=A1/8S/uD; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1758233237; x=1758838037; i=spasswolf@web.de;
+	bh=RUcszwawFb0YkCcZwEybkdTTjWZ2WvWRNUU2GtEGGaM=;
+	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=A1/8S/uDujNLwGfbQtuyW3K4yTKj8PNWLXtfLWgqn6fyYJRUfyM63wLb7kFr6SWW
+	 7EmLCobRF6Od4bMlr2fnRVtl2dzSC7YMxGmBqr1HdhBwk6aD89Bq4QP4UKHHN8jS6
+	 +Gwd4DIPUDIeLFd5C+UzW/nyPBHL++UTWp8Dl+ge7LT0njs7XE7Kq4At8G97/Rj6D
+	 DOZw7pBwX0ksjicgEGOImjhuKLfaqZ89KtugueVUudhoriCC1IY0YTouwCFrsF8jS
+	 Ummkh4yCu7VoqVY5kIQ0k+TziXhDXPtQv+1PsAZpT0rTN39gY4bwUI787ju5x8zAK
+	 5Fsub54nSJ6tMR/5pA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.0.101] ([95.223.134.88]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1M9qhD-1v2xoO1KeT-00As8o; Fri, 19
+ Sep 2025 00:07:17 +0200
+Message-ID: <67c7de1011ea7b8863051889ee2a41512fb0e044.camel@web.de>
+Subject: Re: spurious mce Hardware Error messages in next-20250912
+From: Bert Karwatzki <spasswolf@web.de>
+To: Yazen Ghannam <yazen.ghannam@amd.com>, Nikolay Borisov
+	 <nik.borisov@suse.com>
+Cc: Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, 
+	linux-kernel@vger.kernel.org, linux-next@vger.kernel.org, 
+	linux-edac@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org, 
+	rafael@kernel.org, qiuxu.zhuo@intel.com,
+ Smita.KoralahalliChannabasappa@amd.com, 	spasswolf@web.de
+Date: Fri, 19 Sep 2025 00:07:15 +0200
+In-Reply-To: <20250918210005.GA2150610@yaz-khff2.amd.com>
+References: <45d4081d93bbd50e1a23a112e3caca86ce979217.camel@web.de>
+	 <426097525d5f9e88a3f7e96ce93f24ca27459f90.camel@web.de>
+	 <20250916091055.GAaMkpn72GrFnsueCF@fat_crate.local>
+	 <20250916140744.GA1054485@yaz-khff2.amd.com>
+	 <9488e4bf935aa1e50179019419dfee93d306ded9.camel@web.de>
+	 <be9e2759c1c474364e78ef291c33bc0506942669.camel@web.de>
+	 <20250917144148.GA1313380@yaz-khff2.amd.com>
+	 <6e1eda7dd55f6fa30405edf7b0f75695cf55b237.camel@web.de>
+	 <20250917192652.GA1610597@yaz-khff2.amd.com>
+	 <5ba955fe-2b96-429e-b2e8-5e1bf19d8e8e@suse.com>
+	 <20250918210005.GA2150610@yaz-khff2.amd.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.56.1-1 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:UjyxrpRfY3gI+hvZNv94hxUU+XcycA6oviTV3LDugBDi93WyUz7
+ 6TqY9Zc/+Bp5dZDMFLqGHFPHf3eBAFpfDUgnjVMhafE1JsbbT8eH5me798la1+9iUtPOaD+
+ 7TXgmJIN7VDwwIOGVbKaycTfsxS6ldeaoz5ZkELP/Equ4NiFkkRPsFNTzo7kk/qaoPEkH8d
+ y5GtuEvlneHaubxijWfpQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:xT7Q0iNMxOo=;AX2/GxwYNfvJCmdg9PBN8szv8QC
+ GJLKxwepFIPPSBIg+f9pwfReMnPD+EU7++IMSIYoy5ceMg/ejZjvmNX2MNkysrirQTxCPx49n
+ MqRrio3OXy8GySpFj9oIwG80fihW3rIBuxa7ncTPKmOdk2cEpP/SYxf/p0O51/AEM1RJ5XUYF
+ 1nrHdTlIUte5grJagSfrDKq2esq1HgYhIdPh2N0v+XZcyYpvQYjAQAcTYHzZRyVgVMlvCFsKb
+ QQOgY0Xn3ClTstO5etFKLqYO+E7RTUirQY0ZRGMJC30wic14iaTAzc1loI9wwAE3yrKEVQXQL
+ rsZsQag9BTRouiQ0GJRWGku9uKx1CLf8KXZ71RhCjmTE+Nr4eSoxo9RvBUQvbgHH7pmSYuggd
+ qPOKmu25xbc3C1JwZPTN3GOuDOVOzN6nc1x/rz0KAK+4lNwOMt+Icu9w7xLoyhtsFL4qC5mqK
+ O6mLDH8Mry4e+OPjFaRrzQYzUcQe7kxaKd3wj6UFsfury8jyjjGxhRPk/VYyup6SD2NECk9c7
+ 7Gz6On9FiqGl7nJL+VNWFNb/RBDmo4+T5WdrG3tQ7dAD+ca/QUdp5+Vv11oe9CxcC6cswRl1I
+ MvnVFckDdFGw4V3HNioSafmSnQShtS0x/rzhXMdN7gjS3bbtTATCTBLkhVJPebVjZ0I4Ly98X
+ azotzPSWnEtuwu45yrNhdc3NZlc1YRLcKB9YaKg9ghkmk69ym9/nc0dVrPEOMPb++gQ6NMnc1
+ C94fUvVJHTEr+9Oy8nZbG+V08+OkDDn/P84b1vXwl36oeV/7rW4+AnzQrPey5qi8eFcitOMjb
+ 6kkSXLgh6r1QLF+1Kl+Yb74Q6v3p7IEJqNRmekX55Cv2OnMfEXnO/PQhEEqx8pwaE0tqoynjI
+ aBwzV8CzxORUirImR6T9R9VUfn5xdqe+z5lZBYecZ89qQ+bJzlRii7Ra0ovzWzRp5WUt0+ECb
+ C8kdLFAK5JiWJf3mxhiCEzKJY1mApeO5oQmu3xXqI0vktiXJWeM/ZrfvGMdLFmMRI8HSDxhg+
+ Ym77cAgmw3Ocb7vqhmoVaQfAUj3KONgiXEZn+7xBot6mSBzcnzJn/kINwqBkx4WSsqR7SO8e7
+ R1+20eVEIl42Zm27EmgQLDgxctT/4R1ofNUGsAH4BJmKDlP+wXZvlw+0HM0cS/bcMxf8HarKq
+ MKv1XlhrF2AkDpQDtaJmA7yk8sIZlJK8w364p6oWdfR+mgPDVmlw1rq2QqisQmDq9RrKLKu9/
+ l2/Dmr80T02COueMmQ1HsK4icvi4iRvymYETDWoAm0lO664SvnYV6R/6Ahtm1Hi3XFawTiPtw
+ Emof/s/TqGuXrTi0p+4Xy11sEK784j05jUbKVNbc1PqNW4uxH3h7h4B7V+S5mnrnVQjGMP6h7
+ grudlvRGCQmum3IwMIvxtoyyG0an7WnLGGrj7N4O5g6vvRmo79J3yHvUh0Ni5Mul7leV46Njf
+ HVB2vCtL+3WqbVYKa4zMVq3bAZmexL3ovEmyEVCr20WvnPSmJ7Ih20xEudUm+5t3k79RqJFVZ
+ sfTXRDGaYlWYgrfeiLK0MqQXtxQhrJ2ecvMumXsKJEJHibp2viLNX0dGSHy2yL8wM/8Buv+sS
+ 6X+Ee6T+GOMvsIp+t+rNAo4PmxugA8j6+JI8bz2Ix9QJPVgvilBTva3QZQJbCBih+flNW8hS1
+ E1olHGERba0MnmjTvSJoa7lbkCv1JzLct6NLczJ6HRE9yLM3/eJgMQtPLar1/ncViLALXisff
+ JYrzNARhyIfa+a3tYjxwDDpggt/Ymqpar11USukDdvAi9x6a+ROyNLy+s05SnkDrE0c3NOXFo
+ NLOsgQEe/82LwfIcMS2pmb0i4BYTA8fLSuPY4wpDcA4aZ8Y+SPRFuKfiSOevKjobkDoFGtB7s
+ JCou0gvcdJnsDB4dx11E3I+P3jCF9mpWdTCfVXTHPP4khsjRvyNPFbrtRfbENbB5tagOuPkwv
+ 5BkucTZRCtTSznteqH3+r7Ul4o2SfZYxZ+yhyHtPogaS9uGIXjoNn2oZYt0u8xuCUPeC+6HW7
+ +XxQNcdxJTJH0IXiTMlARPWF8bTFaQk75vcS6NJx3cnCGmKx9cX6lKBncdXDEneI85ffIgqwL
+ +2l2lN2lqtTopTp1mzSxAsVnMfy0y2opKE1bG7I0GbmQ5pwBwztBO5iX0hqvMqC04RK+MsA+O
+ JLwMLmFFPC5lpZ9FdT0THYOIVIN7+83seg9J2ocYBkriGXFzBWF4zm/ZpJHWQuPCgoM0PAWRm
+ 1T6U7o05BVQDA6Ei+3Dr2KTBl0ZoQfq7U9wHm5DNntgq1wdpG8m3o6Pn8Jc7zqgmZ2QSK3teZ
+ 0QQl9dmLl1AKEJeDvzgjD69TPDgXSLbV7dQDMCtHpsqQMU8rJ3C9vS1Q5aduFFvBlcMuwFbcD
+ qlhi3cg+B4XgesKjjmajtdIIEIaVE5nvEuyGypRR3xOd5gDqz2o5/woZUnbV0E88lzvn7gdQ6
+ vLJtLmiA5Hg8oLWPeY6T8DOAsDjL/4MiTmC71Ub/zT8+0joQ0qQTKBFcjiUM5fefN3bAJkD2M
+ JcGvIccECkhTQHgVeFTnTWiqf14Q3JDXoRz2h9S6lgB2KMSRottFKSKza7ODuhxN4Des87/ei
+ KUVyFpwjQKVKjFR2VoZqLgIezOvqUnwO1hN+xu3IGUKs/5XF6XBzJ8t9qpjB2Kza8nGjUUGqj
+ 56GdP8O//3z9qg3PHkd0IYpfzHKo4+okcWN3CIIWURa3JXrjPbX3uZSYSm2jL0b2fooXyQxZ7
+ 6fbWrZZ0S6fGNQ6ztDVqt7VuC7ZZcnOw0mDVzyVduUTu++jcqmgidKM41TRP7BMVuWZUCOFhQ
+ QsHilw6g1EIOyixYmUxXVFme+1KWcMFfeM/Dz5MacT8x9YihJW0IxW/ge8LWRSby00ZjwBtKo
+ O1CsHBqwYwlX+mA0p4Td5rJOxtSzumGN7rDcZ7Rxh8Oj9a8WrjBu1F+6PAkFGnPCauSeD3HqS
+ oNrr4SW/Ht0JisEJwmZXvyvZJFND43yp434zirAIrYEQigWqbHbxfexPLLHjhFugCKtm76Ilm
+ fQK1yb0yJXaAIodmnvoP3n9D/nDKDVOK1sGVCMQOp/1BrvSC5IWCiD96jXdYBWjwIp13l711a
+ kXJfLPGdEENr8fu0x0BkgPb4Qcvx1bXKrSq4cqWWr7DfMTjbPWxvhMxtB4jQLDSQkG4GNhDBT
+ kgAVx3sDn0qmmkpSYmgtv8euXAuX4VOUMCaId/s+Snj5PmqJbfeNQIYzh3ApaIkYEioPMwHqH
+ SRQaaPw+16I/lbaABzTiyQUQkM+ARqSI39RuETxxLbUj2gvcTwEfJRpKlyZ5wbRU9XkXaOnqN
+ jP6pWdSp67YyKcF4xJrlIkH/qfQlYW58knjgnCLqmUV4IMhvmpMd+lMXgjh2WiBwS1BlhyJ8H
+ 0ngi3dBzzW2rgDMAE0DZEVaJnrccBuDElbdXZKnDSvpUt7SpWp6bU9V1chi9mzzqwTbdpg/Cx
+ pIe4CkijHXWdvZjdln4h/q8hmjwY6HNi0j1hcvPRaYJT3/IV+/JIebIZkYCxxesTfBga2mw64
+ Nb7t1JX6Fs0LTYrFtYj26LosI39zTZyppsGfaM7HJ5loEI9tFGsEhG3+S5fGAa8t0bEBbYdfu
+ 8FBr/KXnWfxpiptRRsGersA7zRqXDsqS478vXS5QutTiPIViUwC94xc0wDH/VKvcarnoWWanS
+ mM56MgK7dCe8oPlxuVV4yMpEsO+Gc/k0FfNDgndw4CFlT05ZVcRJ3Q2NTdpSSK2/kU1Brff7l
+ 7kO3ZaWBH9VpDJL/l3sH1yh4NsmRLGueSicknX4rIcDSGJsknvDOhmi6y2CccBx2hoM8BuBS+
+ nHFaectww8myTlBiOKiVgdDMob86cWfmqMAvw7gcUjHHXBW67sBBMevQwfWekoECUosl8jA+M
+ uvwEWf34Hr6Axy5zd6BwFUNO8vsI9Hal6YrZRKwnrnw4gw9at2QSVlzVVXkpcAIWpt43z64jy
+ Cw4KYaybOzjGpEtLBiKb9L0phsq6JjbHPmPznQR9us/qW0hPyFsL+nO/l9KTkWo6Rv3k2t486
+ XYIF6Hf8Oc+ZWS0NkA9i/sGeRGcy19pS/O/o3g2n0yIn55Fzzy5hVZE4wXpwXVUVn5JSe52Sm
+ cgCXC4lkh4lSRF2T0SYaQgfdfx80tvQfVg6ChcLAX8C//35KtRPYk6dRS7W9IJhaLk8uQMCyQ
+ swjSZa2SHovl8aSSj8gHvH6Nth0R+jHnCvJcDdGjQTvFuN5L1/jI1vI6twgyXD0+0BF00x6v9
+ I5Rs+guzRbkpbY4VymIzVquwx752wI9zyAFWRecTHLGGIhtuG5ztmSSzCkrsPm4VFAmmMzfeZ
+ fQbYz+x4U7JgnP2cOuXb0aCJ/TL2KbYzL+4ekqVjq8lGxBmFmH5vOhi6Wr6tx2A56p1gEtPp3
+ 2FGTSV66UEAkJ3LNwhqHhJ73sPlTZqzP+iUVvGLKJX7RsQQGJ+K4x+IdTSomln8MVTvCIGmPM
+ dvybR3noF4jC5ehFuxEFdqGGMUGtoKanWmnpcELRLH4b5DQ+8gh4WJlJR4ETFY5o+HXpwP2I5
+ /kFhaWy18pC7iF+28lmpyPquzuYEahDFKUG8TrLlNLygXAZ7AMfM2dzw9WSvBFtxbZxHRIuCD
+ Z3X3or2DaGzolqUReA8PPrNVFBmRAGieSp2pAzUYhCgXObN388ZixZBXP8ylp//1JyAzvZifS
+ Tp26wovIYl0UkmY98yCYyfBpNLqdGATJYURjXOh0RNRYQ2J3owShdOosqdo4R9Lh7/cALHF16
+ f5hRhvUJ1oC9dCcovR8oRfQ+dBajGQyT9TvUBVfEOHRJ5DeGtHf3xPIKWDfgb0=
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 91ba4736fb2c9614b250ae532c133546a2cc717c  Merge branch 'acpi-processor' into bleeding-edge
+Am Donnerstag, dem 18.09.2025 um 17:00 -0400 schrieb Yazen Ghannam:
+> On Thu, Sep 18, 2025 at 01:20:58PM +0300, Nikolay Borisov wrote:
+> >=20
+> >=20
+> > On 9/17/25 22:26, Yazen Ghannam wrote:
+> > <snip>
+> >=20
+> >=20
+> > > Right, so it seems we have bogus data logged in these registers. And
+> > > this is unrelated to the recent patches.
+> > >=20
+> > > We have some combination of bits set in MCA_DESTAT registers. The
+> > > deferred error interrupt hasn't fired (at least from the latest
+> > > example).
+> > >=20
+> > > There does seem to be some combination of bits that are always set a=
+nd
+> > > others flip between examples.
+> > >=20
+> > > I'll highlight this to our hardware folks. But I don't think there's
+> > > much we can do other than filter these out somehow.
+> > >=20
+> > > I can add two checks to the patch to make it more like the current
+> > > behavior.
+> > >=20
+> > > 1) Check for 'Deferred' status bit when logging from the MCA_DESTAT.
+> > > This was in the debug patch I shared.
+> >=20
+> > According to AMD APM 9.3.3.4:
+> >=20
+> > "If the error being logged is a deferred error, then the error will be
+> > logged to MCA_DESTAT."
+> >=20
+> > So this means that when Valid is set in DESTAT then the error MUST BE
+> > deferred. I.e I think it's in valid to have valid && !deferred in DEST=
+AT, no
+> > ?
+>=20
+> Yes, correct. That is why this issue is perplexing.
+>=20
+> >=20
+> > Additionally nowhere in the APM is ti mentioned what's the default val=
+ue of
+> > MCA_CONFIG.LogDeferredEn so as it stands you are now working with the
+> > assumption that it's 1 and DESTAT is always a redundant copy of STATUS=
+.
+> >=20
+>=20
+> The value is determined by the platform. The Linux code is structured so
+> the data is gathered from any possible source. That's why there are a
+> few checks to determine which register to look at.
+>=20
+> > Btw looking at the output that Bert has provided it seems that indeed
+> > MCA_CONFIG.LogDeferredEn is 0 by default:
+>=20
+> Banks 9 to 14 seem to have bogus values. And this seems to be the cause
+> of our mishandling here.
+>=20
+> You can see the difference compared to the other banks. Banks 7 and 8
+> are good comparisons as they are of the same "type" (L3 cache).
+>=20
+> >=20
+> > "
+> > LogDeferredEn=E2=80=94Bit 34. Enable logging of deferred errors in MCA=
+_STATUS. 0=3DLog
+> > deferred errors only in MCA_DESTAT and MCA_DEADDR. 1=3DLog deferred er=
+rors in
+> > MCA_STATUS and MCA_ADDR in addition to MCA_DESTAT and MCA_DEADDR. This=
+ bit
+> > does not affect logging of deferred errors in MCA_SYND or MCA_MISCx.
+> > "
+> >=20
+> >=20
+> > I think the polling code is slightly broken now for AMD. The order of
+> > operation per poll cycle should be:
+> >=20
+> > 1. Check MCA_STATUS -> report if there is anything, clear it the bank
+> > 2. (In the same cycle) -> Check DEFERRED and report if there is anythi=
+ng,
+> > clear the deferred.
+> >=20
+>=20
+> It is unlikely to have two independent errors in MCA_STATUS and
+> MCA_DESTAT due to how errors can be overwritten by more severe errors.
+> By default, our reference platform implementation has
+> MCA_CONFIG[LogDeferredInMcaStat] enabled. So a deferred error in
+> MCA_STATUS will only be overwritten by an uncorrectable (#MC) error. In
+> this case, MCA_STATUS will be cleared by the #MC handler. And so
+> MCA_DESTAT acts as a backup.
+>=20
+> But you're right there is a gap here that we can try to fill if a
+> platform ever changes this config bit.
+>=20
+>=20
+>=20
+> For the current issue, it does seem that the registers contain junk
+> values. And we are only now seeing this with the recent rework.
+>=20
+> Bert, can you please provide two more register dumps from the script?
+>=20
+> Our hardware team is interested to see if the values remain consistent
+> or change between reads.
+>=20
+> Thanks,
+> Yazen
 
-elapsed time: 1456m
+Dump from linux next-20250912 (with the debugging patch) right after boot:
 
-configs tested: 100
-configs skipped: 3
+# bash rdmsr.sh
+Bank 0
+CTL:	0x0000000000ffffff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000027000001fd
+IPID:	0x001000b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Bank 1
+CTL:	0x000000000007ffff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000023000001f9
+IPID:	0x000100b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                   randconfig-001-20250918    gcc-8.5.0
-arc                   randconfig-002-20250918    gcc-8.5.0
-arm                               allnoconfig    clang-22
-arm                   randconfig-001-20250918    clang-22
-arm                   randconfig-002-20250918    gcc-8.5.0
-arm                   randconfig-003-20250918    clang-22
-arm                   randconfig-004-20250918    gcc-11.5.0
-arm64                             allnoconfig    gcc-15.1.0
-arm64                 randconfig-001-20250918    clang-22
-arm64                 randconfig-002-20250918    gcc-11.5.0
-arm64                 randconfig-003-20250918    clang-22
-arm64                 randconfig-004-20250918    clang-22
-csky                              allnoconfig    gcc-15.1.0
-csky                  randconfig-001-20250918    gcc-15.1.0
-csky                  randconfig-002-20250918    gcc-15.1.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-22
-hexagon                          allyesconfig    clang-22
-hexagon               randconfig-001-20250918    clang-22
-hexagon               randconfig-002-20250918    clang-22
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20250918    clang-20
-i386        buildonly-randconfig-002-20250918    gcc-14
-i386        buildonly-randconfig-003-20250918    gcc-14
-i386        buildonly-randconfig-004-20250918    clang-20
-i386        buildonly-randconfig-005-20250918    gcc-14
-i386        buildonly-randconfig-006-20250918    clang-20
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-22
-loongarch             randconfig-001-20250918    clang-18
-loongarch             randconfig-002-20250918    clang-18
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20250918    gcc-10.5.0
-nios2                 randconfig-002-20250918    gcc-8.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20250918    gcc-12.5.0
-parisc                randconfig-002-20250918    gcc-8.5.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc               randconfig-001-20250918    gcc-9.5.0
-powerpc               randconfig-002-20250918    clang-17
-powerpc               randconfig-003-20250918    clang-19
-powerpc64             randconfig-001-20250918    gcc-8.5.0
-powerpc64             randconfig-002-20250918    gcc-14.3.0
-powerpc64             randconfig-003-20250918    clang-22
-riscv                             allnoconfig    gcc-15.1.0
-riscv                 randconfig-001-20250918    clang-22
-riscv                 randconfig-002-20250918    gcc-9.5.0
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.1.0
-s390                  randconfig-001-20250918    gcc-11.5.0
-s390                  randconfig-002-20250918    gcc-8.5.0
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                    randconfig-001-20250918    gcc-15.1.0
-sh                    randconfig-002-20250918    gcc-10.5.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20250918    gcc-11.5.0
-sparc                 randconfig-002-20250918    gcc-15.1.0
-sparc64               randconfig-001-20250918    clang-20
-sparc64               randconfig-002-20250918    gcc-8.5.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    gcc-14
-um                    randconfig-001-20250918    clang-22
-um                    randconfig-002-20250918    clang-18
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250918    clang-20
-x86_64      buildonly-randconfig-002-20250918    clang-20
-x86_64      buildonly-randconfig-003-20250918    clang-20
-x86_64      buildonly-randconfig-004-20250918    clang-20
-x86_64      buildonly-randconfig-005-20250918    clang-20
-x86_64      buildonly-randconfig-006-20250918    clang-20
-x86_64                              defconfig    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20250918    gcc-8.5.0
-xtensa                randconfig-002-20250918    gcc-8.5.0
+Bank 2
+CTL:	0x000000000000000f
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000025000001ff
+IPID:	0x000200b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Bank 3
+CTL:	0x00000000000003ff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000023000001f9
+IPID:	0x000300b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 4
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0000000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 5
+CTL:	0x0000000000003fff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000023000001f9
+IPID:	0x000500b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 6
+CTL:	0x000000000000007f
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000023000001f9
+IPID:	0x000600b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 7
+CTL:	0x00000000000000ff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000025000001ff
+IPID:	0x000700b020350000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 8
+CTL:	0x00000000000000ff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000025000001ff
+IPID:	0x000700b020350100
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 9
+CTL:	0x000000000000000c
+STATUS:	0x054358400005d2b0
+ADDR:	0x0000000000000000
+MISC0:	0x0010000900000000
+CONFIG:	0x00000000000001ff
+IPID:	0x000750b00005d2b0
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0050000018a0000c
+DEADDR:	0x054358400005d2b0
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 10
+CTL:	0x0000000000000000
+STATUS:	0x0050000018a0000c
+ADDR:	0x054358400005d2b0
+MISC0:	0x0010000000000000
+CONFIG:	0x00000029000001ff
+IPID:	0x000700b018a0000c
+SYND:	0x000158400005d2b0
+RESV:	0x0000000000000000
+DESTAT:	0x0001803100070600
+DEADDR:	0x0050000018a0000c
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 11
+CTL:	0x0000000000000000
+STATUS:	0x0000000300070600
+ADDR:	0x4f83058100208912
+MISC0:	0x0010004800000000
+CONFIG:	0x00000000000001ff
+IPID:	0x000700b040000000
+SYND:	0x0000000000000042
+RESV:	0x0000000000000000
+DESTAT:	0x8424aa4800a9413b
+DEADDR:	0x004bc0e000000020
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 12
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x00000000000001ff
+IPID:	0x000700b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0a50000c00000000
+DEADDR:	0x0020891200000003
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 13
+CTL:	0x0000000000000048
+STATUS:	0x0000000000300000
+ADDR:	0x00000000001ace4b
+MISC0:	0x00100c5d00000000
+CONFIG:	0x0000001500000006
+IPID:	0x000700b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 14
+CTL:	0x00000000000000ff
+STATUS:	0x000000030a50000c
+ADDR:	0x4f83058100208912
+MISC0:	0x0010004800000000
+CONFIG:	0x00000000000001ff
+IPID:	0x000700b040000000
+SYND:	0x0000000000000042
+RESV:	0x0000000000000000
+DESTAT:	0x8724aa0800000000
+DEADDR:	0x00125cd400000020
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 15
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 16
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 17
+CTL:	0x000000000000003f
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000001000000
+CONFIG:	0x000000270000007d
+IPID:	0x0000009600050f00
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0xd01a000001000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 18
+CTL:	0x000000000000003f
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000001000000
+CONFIG:	0x000000270000007d
+IPID:	0x0000009600150f00
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0xd01a000001000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 19
+CTL:	0x0000000000003fff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x000000250000007f
+IPID:	0x0002002e00000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 20
+CTL:	0x0000000000003fff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x000000250000007f
+IPID:	0x0002002e00000001
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 21
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 22
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 23
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 24
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 25
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 26
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 27
+CTL:	0x000000000000001f
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x000000270000007d
+IPID:	0x0001002e0000000b
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 28
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0000000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 29
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0000000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 30
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0000000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 31
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0000000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+
+This is the dump after the first debug message
+[  333.337523] [      C0] mce: DEBUG: CPU0 Bank:11 Status:0x8724aa08000000=
+00
+[  333.337532] [      C0] mce: DEBUG: CPU0 Bank:14 Status:0x8724a988000000=
+00
+appeared in dmesg:
+
+Bank 0
+CTL:	0x0000000000ffffff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000027000001fd
+IPID:	0x001000b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 1
+CTL:	0x000000000007ffff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000023000001f9
+IPID:	0x000100b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 2
+CTL:	0x000000000000000f
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000025000001ff
+IPID:	0x000200b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 3
+CTL:	0x00000000000003ff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000023000001f9
+IPID:	0x000300b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 4
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0000000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 5
+CTL:	0x0000000000003fff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000023000001f9
+IPID:	0x000500b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 6
+CTL:	0x000000000000007f
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000023000001f9
+IPID:	0x000600b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 7
+CTL:	0x00000000000000ff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000025000001ff
+IPID:	0x000700b020350000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 8
+CTL:	0x00000000000000ff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x00000025000001ff
+IPID:	0x000700b020350100
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 9
+CTL:	0x000000000000000c
+STATUS:	0x054358400005d2b0
+ADDR:	0x0000000000000000
+MISC0:	0x0010000900000000
+CONFIG:	0x00000000000001ff
+IPID:	0x000750b00005d2b0
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0050000018a0000c
+DEADDR:	0x054358400005d2b0
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 10
+CTL:	0x0000000000000000
+STATUS:	0x0050000018a0000c
+ADDR:	0x054358400005d2b0
+MISC0:	0x0010000000000000
+CONFIG:	0x00000029000001ff
+IPID:	0x000700b018a0000c
+SYND:	0x000158400005d2b0
+RESV:	0x0000000000000000
+DESTAT:	0x0001803100070600
+DEADDR:	0x0050000018a0000c
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 11
+CTL:	0x0000000000000000
+STATUS:	0x0000000300070600
+ADDR:	0x4f83058100208912
+MISC0:	0x0010004800000000
+CONFIG:	0x00000000000001ff
+IPID:	0x000700b040000000
+SYND:	0x0000000000000042
+RESV:	0x0000000000000000
+DESTAT:	0x8700aa0800000000
+DEADDR:	0x00e2a01a00000020
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 12
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x00000000000001ff
+IPID:	0x000700b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0a50000c00000000
+DEADDR:	0x0020891200000003
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 13
+CTL:	0x0000000000000048
+STATUS:	0x0000000000302400
+ADDR:	0x0000000000647dac
+MISC0:	0x00100c5d00000000
+CONFIG:	0x0000001500000006
+IPID:	0x000700b000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 14
+CTL:	0x00000000000000ff
+STATUS:	0x000000030a50000c
+ADDR:	0x4f83058100208912
+MISC0:	0x0010004800000000
+CONFIG:	0x00000000000001ff
+IPID:	0x000700b040000000
+SYND:	0x0000000000000042
+RESV:	0x0000000000000000
+DESTAT:	0x8724aa0800000000
+DEADDR:	0x0036510100000020
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 15
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 16
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 17
+CTL:	0x000000000000003f
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000001000000
+CONFIG:	0x000000270000007d
+IPID:	0x0000009600050f00
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0xd01a000001000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 18
+CTL:	0x000000000000003f
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000001000000
+CONFIG:	0x000000270000007d
+IPID:	0x0000009600150f00
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0xd01a000001000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 19
+CTL:	0x0000000000003fff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x000000250000007f
+IPID:	0x0002002e00000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 20
+CTL:	0x0000000000003fff
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x000000250000007f
+IPID:	0x0002002e00000001
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 21
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 22
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 23
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 24
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 25
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 26
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0010000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 27
+CTL:	0x000000000000001f
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0xd01a000000000000
+CONFIG:	0x000000270000007d
+IPID:	0x0001002e0000000b
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0010000000000000
+MISC2:	0x0010000000000000
+MISC3:	0x0010000000000000
+MISC4:	0x0010000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 28
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0000000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 29
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0000000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 30
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0000000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+Bank 31
+CTL:	0x0000000000000000
+STATUS:	0x0000000000000000
+ADDR:	0x0000000000000000
+MISC0:	0x0000000000000000
+CONFIG:	0x0000000000000000
+IPID:	0x0000000000000000
+SYND:	0x0000000000000000
+RESV:	0x0000000000000000
+DESTAT:	0x0000000000000000
+DEADDR:	0x0000000000000000
+MISC1:	0x0000000000000000
+MISC2:	0x0000000000000000
+MISC3:	0x0000000000000000
+MISC4:	0x0000000000000000
+SYND1:	0x0000000000000000
+SYND2:	0x0000000000000000
+
+
+Bert Karwatzki
 
