@@ -1,299 +1,175 @@
-Return-Path: <linux-acpi+bounces-17107-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17108-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D10B85BD6
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Sep 2025 17:46:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F082B85C8D
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Sep 2025 17:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 644C14844C2
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Sep 2025 15:44:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 079397C1FEF
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Sep 2025 15:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C99430F942;
-	Thu, 18 Sep 2025 15:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A67831328D;
+	Thu, 18 Sep 2025 15:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mBYB+u2C"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G+XB7tk1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7D430C0FE
-	for <linux-acpi@vger.kernel.org>; Thu, 18 Sep 2025 15:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C50E312806
+	for <linux-acpi@vger.kernel.org>; Thu, 18 Sep 2025 15:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758210246; cv=none; b=g6yDo0fzvpMILJHL2gFjPHAiRK2UtDzpkHndB6hivfhU97IErnzfEl67rYUXl4/Q+QEW2xceirFjfsVaYwmE4JbfJA+jzfV+rRD+w3oKKLuuv2/6uoqBou9aGdsK9bDWviREj9Lz/SrW0sody9m1kQSx/iYmsAUekTTO1P8CtPY=
+	t=1758210524; cv=none; b=frkvZDq1IJBqHnoOdoxGSkSMln3ljVTecr0AUszdmnjXzp/jAg7ddf4GXC8Z5E6ZsPUIeKHEONfiNPp6h78+cmufYRn8BsCYjYDpkhzoVcoEHp038rp3aba6V9lJ3KtrGiOFdyd8+RgvD1QRe+a+kjneY9wIxU6FB8SWeOxdkgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758210246; c=relaxed/simple;
-	bh=kq9o/eEagt0/pAqdQUTz3RfdvhcUZHUhzvQ+PwKXcHM=;
+	s=arc-20240116; t=1758210524; c=relaxed/simple;
+	bh=bCfTUdZSKE/5xKZe/8DKJsQNVTMwQpu6YamEXF4M22g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=es4mAIMZIldh6Hkhz3DQc+uTptrumqyO6+R6A0wwjcnS2ymBusGPeXIwW1bJI1dcHTCrh0vesNyRCRCK4Cs1LYIgvPVENzdM7hsiozZq9w2KUHwemd0KnvyDiFwLoD9eqHYxEDl5l41WnBL5I2DDDD7UxuvyOm0jZbWXe8tp9PM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mBYB+u2C; arc=none smtp.client-ip=209.85.128.51
+	 To:Cc:Content-Type; b=fSZDt2B4ajm83EIlcgw4+bECauDv7FTPEPsPOdu/GunL7sYyu5AaVE/PFy1sRS8REwJ6mIWhOnHgv1JiUUh08vS3lor75ulwHKj2iHlPGZhTrG2X+AGM3flNOjUtaSZARabdPO3GkioDGar7obAQBUyOYKNXCVwSYSkHX0u4j0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G+XB7tk1; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45f28aba94cso87885e9.0
-        for <linux-acpi@vger.kernel.org>; Thu, 18 Sep 2025 08:44:04 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45f30011eceso77865e9.1
+        for <linux-acpi@vger.kernel.org>; Thu, 18 Sep 2025 08:48:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758210243; x=1758815043; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1758210521; x=1758815321; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=o+D+JfJ/Jq0/jdAS21NjzfpdXlFqTr3y01BMsRdUEi8=;
-        b=mBYB+u2CBF3gHFyTFHvnxkdTPscGLlKbIQB4JQDzlq+t12DMwNPjuvKQCWpbqNrrOd
-         CT5ukpAQDEQ5CEZBtdsrfMx5Qzad2j845MVmiRvNNlGFhA06ceYWBqYxWJNxrh5lpFz+
-         NPurbCTsL3W1D6SL6MZ04+7zjSiWoIEFUJTtsPxXzX6GljI6nQREwvV95B1yOyo2cOiA
-         zed6haUY1z2PR+7x5qslfzuihWPqJsstofv426MVIVxS9wGUWJGTBzbbWqv0MmBe1J0H
-         lp/4lF94ysuUpG51bCOcXzHcGPVXM7qyyHLAwbT0fzLMcBoSlMImTRPd6/HWEdTVa/kA
-         w1Ew==
+        bh=0rx16FrktF4Q4jtrgrrHA5a6Ai0Ce3s0txUm84e73Hw=;
+        b=G+XB7tk1ftPiL5CvwfE+NVRrWzxdK9U1rm/GGn+dCaITmvXAb/GSfWHgk5VGBnfuwI
+         uwXrTDjolpMwb/z450MNxhnz1lmckI6e85q0Oa3UjR2CVfdum8UW3xLMBBkMtc/2WrH/
+         xGZBm39hL2VaT/Wb8O2uKBGFX2iykjJ3StNSY+DVOI2fjRQoQG5SXFgnDa97FzMDUGls
+         R2TVCAAo6GkKI1/omstMzH5h5aFYorEfxO7GvpB1sGU/6gLeazib+xpk7oIiqzTeSoTy
+         9JAY9vfhxJWtl3gK6lSYJiHJfDMgUL3jteXObWGtLY22te8stW4JgfT360cSaVrtpqHH
+         p1Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758210243; x=1758815043;
+        d=1e100.net; s=20230601; t=1758210521; x=1758815321;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=o+D+JfJ/Jq0/jdAS21NjzfpdXlFqTr3y01BMsRdUEi8=;
-        b=vn5B2Hl5GC2jcc3hcfn5m7u4SfwYesOS89rQZBbefJtCnu+tZ8J0fA4vhG3fW8qkFe
-         pK71LdiGfL6tYtdI8iHi/50bc0bwm53ImTlEbojPLImz3wWyCXrg6Leq64JGPgyUPalF
-         mcBZkysBJvwUHjZ+yRVHGXPynxRebOKBZyQ26TcoF0fFS27ZDZpDEmhAZeQvMB9mFq2q
-         K7jd+LphBJ0fTp1S5lYoxukEP5D+P0fhIu8PAGLPJ+M/TPrVrlywcvRwahw6A0zANdA4
-         nk5EaYwjw/Zsh6GRXMFPy0GdwW3RuBe5uLfS2Fpqv8+ymytLmBqNcdZeK2oaR46RvB6f
-         9u8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUFuTQ2qAymLSAjVOrp8IpWsXUvvGbSVaKSn6kYS6jzuR3jY7cu56g0OuSbstVIWOx5ijgTHchyfi18@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/jhjcOTCdVTJ7FucddtqJ1Fq3L/liUW2xvkSnBGqSYBJrZfJy
-	bWu8qh+vnW9lN/OBEjaJEkormmy9B2mUpb5bybam4iRanwTsOeMFCHmd1Mk/jsVJmHro5LCuylh
-	joGAVoplZkksFrQHSXVRUZG8SqNpJQlfSn+joHwyU
-X-Gm-Gg: ASbGncscwek6sMhC2vFfJVSwYvQbrykcs9Z+Y4D+uBLsdLa+1tl0erlWGmEGDreWE+O
-	+sSpOzY92eh+G/Mb2r/nrS1VwigFsHRvyq1xUv1NBVhQJHGayeM6yvpm7q0okFml3Un50hFT9b2
-	6Y/2IV3ixI0WBaUHL2fqzzrnQ3Qc+UEyV9L4jSlxIgBiz4lV6xPYp9v86PG3uoomJ3AP0dAXAoY
-	b889hJtrtbw/3TJgD/Pe+wCdDuGC95sx/r2QN2HBqnTOnFVUzW0u/aJftTo/JsH0A==
-X-Google-Smtp-Source: AGHT+IGKDPhFW7QY2ThA23Eiqh7Jb4gB3IAedet7C/hbJyJis0arTM7d/07UQoRXJ2ALik0wfBJpwlDyK2X2eoThyyw=
-X-Received: by 2002:a05:600c:621a:b0:453:672b:5b64 with SMTP id
- 5b1f17b1804b1-4616dbbbb8fmr4089715e9.2.1758210242387; Thu, 18 Sep 2025
- 08:44:02 -0700 (PDT)
+        bh=0rx16FrktF4Q4jtrgrrHA5a6Ai0Ce3s0txUm84e73Hw=;
+        b=WT4eyQa2uQ+P9CLNp8NAwKx/GjFF/2Rc/mgExAsPVd9f/T2wdPdNCh91xwm3kgVelg
+         UhDM2K7uRVjnbqTw2mJZkrejFApnbII0vBJ8qpeuWv3aZDEwHuKMDT5Vf+6b9TpDVM4s
+         kB4o04il18zY5S5Bhx8xmkNsamqEduQE1qZlFcfSUln43IFh6hy6m1M/MC9dTQKo5sGe
+         plgOUnrAPxRLA1KbzqEhcWxMqA4YUsOqv8YCN3sEg9Ir4yI8AzRdf4frvbre5rMlHE+7
+         DGbAVqgfB7XJzJQehrUYzbzLfoE58v+MLzCtdunyBj1jJPjbUIJdFOn+bIRaVuLaxlVj
+         2G2g==
+X-Forwarded-Encrypted: i=1; AJvYcCXuGOxkphOVDbKbiSy7rncHwY5MG/zB5K8Vkat3yv8Lj6kj5D1mBOL21ga31AmNprjHJWimfHteWB0s@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/ir9KEnb5wvMUd3l2MIqgvOXnOE1kVXviGuf/W1dpSNZVFKhZ
+	qj/c3JvYh7WRnZwYCdWAUa7i7pWR1scdU991uRHECMn9Gy1znoIuRpdyZYOOLd2bLS9UcOYsjT4
+	J05vKFF7/JpbDYcCNFmgfIbRCN24Ycglk4uPJ8b7H
+X-Gm-Gg: ASbGncsxbRjn2ltDg0zvKME6gCIYbjh/6FOGk1B8CvygIqIu7gpdj7gUQez7JB6Rea7
+	Z638VPRfh9KS27dMPNdmYi9fO41kbxokHXfTO+QKGlUH70BwvTx6wLnsw7GQYOKGcileXed9aCi
+	ho/HI0r8NO/6/RQ5riJvkc8R8gGgLvSlXXssOHtGY0eFxOOvO2bhi5Q/sbrPAGE67cYSzhoJt4I
+	onng3BvhCCIOEyzWC87DyBhv40qLt/lPKV8/8ePkLISWAhLEbBsNrVvJWHvaqNsLw==
+X-Google-Smtp-Source: AGHT+IEn14QDHuxEiqb1VXaCf6P34UADIYCw+R0AK6s/lF2DWM9aPjYC73nNm/t1rUXn6RFFu321KBvFpJntXFLW+cw=
+X-Received: by 2002:a05:600c:8a09:10b0:45f:2940:d194 with SMTP id
+ 5b1f17b1804b1-4614faff8e6mr2807655e9.2.1758210520602; Thu, 18 Sep 2025
+ 08:48:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250904155720.22149-1-tony.luck@intel.com> <brfqzhbipg35twgv22vnnotbv3t3grwh2dxugvtbgqduuhsvst@f7exibz7i7tk>
- <aLsHh70jI6BGHjaN@agluck-desk3> <bwu744g3qzbzylxvfgt7v4tnf2k2eosqbkg7alm6u5roa7j3bn@gmut2l5227kw>
- <aLspJ5Tpqp4qRDk2@agluck-desk3> <cf05bc8e-fc79-49e4-a90a-47e661b4ae69@oracle.com>
- <CACw3F538k+dshTs1_rxbpYoRdFyX3tLYzfaWj-_d7Lq5Dd2Jsg@mail.gmail.com>
- <aL8rIgSImDh7Nj7E@hpe.com> <7d3cc42c-f1ef-4f28-985e-3a5e4011c585@linux.alibaba.com>
-In-Reply-To: <7d3cc42c-f1ef-4f28-985e-3a5e4011c585@linux.alibaba.com>
+References: <aMiu_Uku6Y5ZbuhM@hpe.com> <20250915201618.7d9d294a6b22e0f71540884b@linux-foundation.org>
+ <aMkOCmGBhZKhKPrI@hpe.com> <SJ1PR11MB60831F028E2FEB6B5A3390D9FC14A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <aMmlhPghbpnlCZ09@hpe.com> <SJ1PR11MB60833884799B6AA2BC18ECE7FC14A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <LV4PR11MB9513A6EFA88B082E554CB8D6EB17A@LV4PR11MB9513.namprd11.prod.outlook.com>
+ <aMsE9XjWKEYTIQyV@hpe.com> <1211fd9a-93e6-4ebe-a80d-083601138b70@linux.alibaba.com>
+In-Reply-To: <1211fd9a-93e6-4ebe-a80d-083601138b70@linux.alibaba.com>
 From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Thu, 18 Sep 2025 08:43:51 -0700
-X-Gm-Features: AS18NWBE_Rh3aqLAP0Y0-SJP8rZCEq2FVPADSEjBbJ_MtsZw23_iRMOUp4qz4C8
-Message-ID: <CACw3F50hU3BCP=A++Dx_V=U8PKvsTvTa1=krULxfQdeK2kVBrw@mail.gmail.com>
-Subject: Re: PATCH v3 ACPI: APEI: GHES: Don't offline huge pages just because
- BIOS asked
+Date: Thu, 18 Sep 2025 08:48:29 -0700
+X-Gm-Features: AS18NWCH3-wHHtOkOjDEZ08ReQ721l4iWXSb56ihFpAN8Dh9hynFjggen97xtxQ
+Message-ID: <CACw3F53=9+rSdUt7yqTz=GineyRxJf1FBgXQ4omYvFkwFDqZQA@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline for
+ HugeTLB pages
 To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: Kyle Meyer <kyle.meyer@hpe.com>, jane.chu@oracle.com, 
-	"Luck, Tony" <tony.luck@intel.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, surenb@google.com, 
-	"Anderson, Russ" <russ.anderson@hpe.com>, rppt@kernel.org, osalvador@suse.de, 
-	nao.horiguchi@gmail.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, 
-	linmiaohe@huawei.com, david@redhat.com, bp@alien8.de, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, vbabka@suse.cz, 
-	linux-acpi@vger.kernel.org, Shawn Fan <shawn.fan@intel.com>
+Cc: Kyle Meyer <kyle.meyer@hpe.com>, "Fan, Shawn" <shawn.fan@intel.com>, 
+	"Luck, Tony" <tony.luck@intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"corbet@lwn.net" <corbet@lwn.net>, "david@redhat.com" <david@redhat.com>, 
+	"linmiaohe@huawei.com" <linmiaohe@huawei.com>, "shuah@kernel.org" <shuah@kernel.org>, 
+	"jane.chu@oracle.com" <jane.chu@oracle.com>, "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, 
+	"bp@alien8.de" <bp@alien8.de>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, "jack@suse.cz" <jack@suse.cz>, 
+	"joel.granados@kernel.org" <joel.granados@kernel.org>, "laoar.shao@gmail.com" <laoar.shao@gmail.com>, 
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, 
+	"mclapinski@google.com" <mclapinski@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
+	"nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>, "osalvador@suse.de" <osalvador@suse.de>, 
+	"Wysocki, Rafael J" <rafael.j.wysocki@intel.com>, "rppt@kernel.org" <rppt@kernel.org>, 
+	"Anderson, Russ" <russ.anderson@hpe.com>, "surenb@google.com" <surenb@google.com>, 
+	"vbabka@suse.cz" <vbabka@suse.cz>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 17, 2025 at 8:39=E2=80=AFPM Shuai Xue <xueshuai@linux.alibaba.c=
+On Thu, Sep 18, 2025 at 1:34=E2=80=AFAM Shuai Xue <xueshuai@linux.alibaba.c=
 om> wrote:
 >
 >
 >
-> =E5=9C=A8 2025/9/9 03:14, Kyle Meyer =E5=86=99=E9=81=93:> On Fri, Sep 05,=
- 2025 at 12:59:00PM -0700, Jiaqi Yan wrote:
->  >> On Fri, Sep 5, 2025 at 12:39=E2=80=AFPM <jane.chu@oracle.com> wrote:
->  >>>
->  >>>
->  >>> On 9/5/2025 11:17 AM, Luck, Tony wrote:
->  >>>> BIOS can supply a GHES error record that reports that the corrected
->  >>>> error threshold has been exceeded. Linux will attempt to soft offli=
-ne
->  >>>> the page in response.
->  >>>>
->  >>>> But "exceeded threshold" has many interpretations. Some BIOS versio=
-ns
->  >>>> accumulate error counts per-rank, and then report threshold exceede=
-d
->  >>>> when the number of errors crosses a threshold for the rank. Taking
->  >>>> a page offline in this case is unlikely to solve any problems. But
->  >>>> losing a 4KB page will have little impact on the overall system.
+> =E5=9C=A8 2025/9/18 02:59, Kyle Meyer =E5=86=99=E9=81=93:
+> > On Wed, Sep 17, 2025 at 06:35:14AM +0000, Fan, Shawn wrote:
+> >>>> My original patch for this just skipped the GHES->offline process
+> >>>> for huge pages. But I wasn't aware of the sysctl control. That provi=
+des
+> >>>> a better solution.
+> >>>
+> >>> Tony, does that mean you're OK with using the existing sysctl interfa=
+ce? If
+> >>> so, I'll just send a separate patch to update the sysfs-memory-page-o=
+ffline
+> >>> documentation and drop the rest.
+> >>
+> >> Kyle,
+> >>
+> >> It depends on which camp the external customer that reported this
+> >> falls into:
+> >>
+> >> 1) "I'm OK disabling all soft offline requests".
+> >>
+> >> or the:
+> >>
+> >> 2) "I'd like 4K pages to still go offline if the BIOS asks, just not a=
+ny huge pages".
+> >>
+> >> Shawn: Can you please find out?
+> >>
+> >>
+> >> -> Prefer the 2nd option,  "4K pages still go offline if the BIOS asks=
+, just not any huge pages."
+> >
+> > OK, thank you.
+> >
+> > Does that mean they want to avoid offlining transparent huge pages as w=
+ell?
+> >
+> > Thanks,
+> > Kyle Meyer
 >
-> Hi, Tony,
 >
-> Thank you for your detailed explanation. I believe this is exactly the pr=
-oblem
-> we're encountering in our production environment.
+> Hi, Shawn,
 >
-> As you mentioned, memory access is typically interleaved between channels=
-. When
-> the per-rank threshold is exceeded, soft-offlining the last accessed addr=
-ess
-> seems unreasonable - regardless of whether it's a 4KB page or a huge page=
-. The
-> error accumulation happens at the rank level, but the action is taken on =
-a
-> specific page that happened to trigger the threshold, which doesn't addre=
-ss the
-> underlying issue.
->
-> I'm curious about the intended use case for the CPER_SEC_ERROR_THRESHOLD_=
-EXCEEDED
-> flag. What scenario was Intel BIOS expecting the OS to handle when this f=
-lag is set?
-> Is there a specific interpretation of "threshold exceeded" that would mak=
-e
-> page-level offline action meaningful? If not, how about disabling soft of=
-fline from
-> GHES and leave that to userspace tools like rasdaemon (mcelog) ?
+> As memory access is typically interleaved between channels. When the
+> per-rank threshold is exceeded, soft-offlining the last accessed address
+> seems unreasonable - regardless of whether it's a 4KB page or a huge
+> page. The error accumulation happens at the rank level, but the action
+> is taken on a specific page that happened to trigger the threshold,
+> which doesn't address the underlying issue.
 
-The existing /proc/sys/vm/enable_soft_offline can already entirely
-disable soft offline. GHES may still ask for soft offline to
-memory-failure.c, but soft_offline_page will discard the ask as long
-as userspace sets 0 to /proc/sys/vm/enable_soft_offline.
-
->
->  >>
->  >> Hi Tony,
->  >>
->  >> This is exactly the problem I encountered [1], and I agree with Jane
->  >> that disabling soft offline via /proc/sys/vm/enable_soft_offline
->  >> should work for your case.
->  >>
->  >> [1] https://lore.kernel.org/all/20240628205958.2845610-3-jiaqiyan@goo=
-gle.com/T/#me8ff6bc901037e853d61d85d96aa3642cbd93b86
->  >
->  > If that doesn't work for your case, I just want to mention that hugepa=
-ges might
->  > still be soft offlined with that check in ghes_handle_memory_failure()=
-.
->  >
->  >>>>
->  >>>> On the other hand, taking a huge page offline will have significant
->  >>>> impact (and still not solve any problems).
->  >>>>
->  >>>> Check if the GHES record refers to a huge page. Skip the offline
->  >>>> process if the page is huge.
->  >
->  > AFAICT, we're still notifying the MCE decoder chain and CEC will soft =
-offline
->  > the hugepage once the "action threshold" is reached.
->  >
->  > This could be moved to soft_offline_page(). That would prevent other s=
-ources
->  > (/sys/devices/system/memory/soft_offline_page, CEC, etc.) from being a=
-ble to
->  > soft offline hugepages, not just GHES.
->  >
->  >>>> Reported-by: Shawn Fan <shawn.fan@intel.com>
->  >>>> Signed-off-by: Tony Luck <tony.luck@intel.com>
->  >>>> ---
->  >>>>
->  >>>> Change since v2:
->  >>>>
->  >>>> Me: Add sanity check on the address (pfn) that BIOS provided. It mi=
-ght
->  >>>> be in some reserved area that doesn't have a "struct page" which wo=
-uld
->  >>>> likely result in an OOPs if fed to pfn_folio().
->  >>>>
->  >>>> The original code relied on sanity check of the pfn received from t=
-he
->  >>>> BIOS when this eventually feeds into memory_failure(). That used to
->  >>>> result in:
->  >>>>        pr_err("%#lx: memory outside kernel control\n", pfn);
->  >>>> which won't happen with this change, since memory_failure is not
->  >>>> called. Was that a useful message? A Google search mostly shows
->  >>>> references to the code. There are few instances of people reporting
->  >>>> they saw this message.
->  >>>>
->  >>>>
->  >>>>    drivers/acpi/apei/ghes.c | 13 +++++++++++--
->  >>>>    1 file changed, 11 insertions(+), 2 deletions(-)
->  >>>>
->  >>>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->  >>>> index a0d54993edb3..c2fc1196438c 100644
->  >>>> --- a/drivers/acpi/apei/ghes.c
->  >>>> +++ b/drivers/acpi/apei/ghes.c
->  >>>> @@ -540,8 +540,17 @@ static bool ghes_handle_memory_failure(struct =
-acpi_hest_generic_data *gdata,
->  >>>>
->  >>>>        /* iff following two events can be handled properly by now *=
-/
->  >>>>        if (sec_sev =3D=3D GHES_SEV_CORRECTED &&
->  >>>> -         (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
->  >>>> -             flags =3D MF_SOFT_OFFLINE;
->  >>>> +         (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED)) {
->  >>>> +             unsigned long pfn =3D PHYS_PFN(mem_err->physical_addr=
-);
->  >>>> +
->  >>>> +             if (pfn_valid(pfn)) {
->  >>>> +                     struct folio *folio =3D pfn_folio(pfn);
->  >>>> +
->  >>>> +                     /* Only try to offline non-huge pages */
->  >>>> +                     if (!folio_test_hugetlb(folio))
->  >>>> +                             flags =3D MF_SOFT_OFFLINE;
->  >>>> +             }
->  >>>> +     }
->  >>>>        if (sev =3D=3D GHES_SEV_RECOVERABLE && sec_sev =3D=3D GHES_S=
-EV_RECOVERABLE)
->  >>>>                flags =3D sync ? MF_ACTION_REQUIRED : 0;
->  >>>>
->  >>>
->  >>> So the issue is the result of inaccurate MCA record about per rank C=
-E
->  >>> threshold being crossed. If OS offline the indicted page, it might b=
-e
->  >>> signaled to offline another 4K page in the same rank upon access.
->  >>>
->  >>> Both MCA and offline-op are performance hitter, and as argued by thi=
-s
->  >>> patch, offline doesn't help except loosing a already corrected page.
->  >>>
->  >>> Here we choose to bypass hugetlb page simply because it's huge.  Is =
-it
->  >>> possible to argue that because the page is huge, it's less likely to=
- get
->  >>> another MCA on another page from the same rank?
->  >>>
->  >>> A while back this patch
->  >>> 56374430c5dfc mm/memory-failure: userspace controls soft-offlining p=
-ages
->  >>> has provided userspace control over whether to soft offline, could i=
-t be
->  >>> a more preferable option?
->  >
->  > Optionally, a 3rd setting could be added to /proc/sys/vm/enable_soft_o=
-ffline:
->  >
->  > 0: Soft offline is disabled.
->  > 1: Soft offline is enabled for normal pages (skip hugepages).
->  > 2: Soft offline is enabled for normal pages and hugepages.
->  >
->
-> I prefer having soft-offline fully controlled by userspace, especially
-> for DPDK-style applications. These applications use hugepage mappings and=
- maintain
-> their own VA-to-PA mappings. When the kernel migrates a hugepage to a new=
- physical
-> page during soft-offline, DPDK continues accessing the old physical addre=
-ss,
-> leading to data corruption or access errors.
-
-Just curious, does the DPDK applications pin (pin_user_pages) the
-VA-to-PA mappings? If so I would expect both soft offline and hard
-offline will fail and become no-op.
+Does it mean the soft offline action taken by the kernel is almost
+useless from hw's PoV? Or, the current signals/info about the
+corrected errors kernel get from firmware are insufficient to make the
+kernel do anything meaningful?
 
 >
-> For such use cases, the application needs to be aware of and handle memor=
-y errors
-> itself. The kernel performing automatic page migration breaks the assumpt=
-ions these
-> applications make about stable physical addresses.
+> I prefer the first option that disabling all soft offline requests from
+> GHES driver.
+>
 > Thanks.
 > Shuai
 
