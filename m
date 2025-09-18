@@ -1,48 +1,46 @@
-Return-Path: <linux-acpi+bounces-17101-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17102-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FCB3B83539
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Sep 2025 09:34:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 158CCB83891
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Sep 2025 10:35:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA32E1C24C46
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Sep 2025 07:34:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8499D2A51D7
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Sep 2025 08:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFCC2E5B04;
-	Thu, 18 Sep 2025 07:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B392FB0B9;
+	Thu, 18 Sep 2025 08:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r51iA/mc"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="NAzFNn9G"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DB32D5C7A;
-	Thu, 18 Sep 2025 07:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550D52F8BD2;
+	Thu, 18 Sep 2025 08:34:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758180835; cv=none; b=di6uFn9Oo+NAzozaB/HK/qZ9S4ME8q/gU2j+hEDYChC6kQpSAQlyiQUnom/Zo/IL1QMPq5SLnR3rDJy0fkIKrpUf6ZjU/XYtv6bAJNdbw54f5LIE7ZG5bA/+iLH3CUSHLMYeI+xBLAY8xfPzJngomGoUrLO09kmSkpPJ/ZOOsS4=
+	t=1758184453; cv=none; b=DMaf32GSbO27flT/3acj9/8l8S7lyQqX1IKtBqjw6urljvK/vwUyazqk+oDp57oGorVkpj1S96B4FxP4Hqzn1ncaM1tN6hBSNtMIxSy0OqULWZ+2/o8aswMBetHZzxQa9f5bXl/5Byy4ytG3TabXPoMJ884xflXcu+6Rh5QCevA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758180835; c=relaxed/simple;
-	bh=zoF2TshriM3ZS0e8AelFve/OPI4XACW7RUZD7luL5+g=;
+	s=arc-20240116; t=1758184453; c=relaxed/simple;
+	bh=YUyJj+AOLpQZ16qQcLa96qh1A9RBn/gEjHPtLkjTIFY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=is6SAZAzyp1dNKkqDROU97B8H71BLHhE5IADgdgtvMUExgh4cQPjJhRTM6jXqO5S8oAv2TuEe8GURCjE4jalNbZX+c3Ea4DOWogwXfne9yUUZ2B3nzMIGK+TtgPZTyu1eCzLoaEYVwO/Q2Hhie60UJq15W/Fv16vlH1yoHKsi3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r51iA/mc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29A5C4CEE7;
-	Thu, 18 Sep 2025 07:33:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758180835;
-	bh=zoF2TshriM3ZS0e8AelFve/OPI4XACW7RUZD7luL5+g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=r51iA/mcdivvaemgqGMjjV2SmWFHkPwVzpmTtRhePCYe26CLPkKGj3HcX4F5JlKV5
-	 qDm5FACFLobIj3q/8ZcsJhYH99HHQ2SpNctsDXPmfvb80yT1XQLuRxVamq8E412s87
-	 lcUYjd9mb/ro0e6mBUMkIWaMzD9CE7FP1SvtOxmIRhsA4V2ACK4aU44Acb9lmwsnFR
-	 n+QWEXS83Vc8ouvf4je+z/BjXvAHD3EKyRVfYmLPOC6vVnqj2nOox1LNDJtGUsAmQ3
-	 zUKLEIhI0wi2p39tocUMmwELSXL7ogLHXCZChiia8MneNYC7Tot/4qbEKKmAnJ9KpL
-	 6i9OblXcdmSKw==
-Message-ID: <0b214249-958c-4e14-a4d8-512f1d90dff4@kernel.org>
-Date: Thu, 18 Sep 2025 09:33:51 +0200
+	 In-Reply-To:Content-Type; b=Z4OPLVDun7BBava3Zt5BBY7Wen4P8yWiaQqvkwU98a/C2zH6wAwRe5eQGIb9noMi0L7OPr3di5aPXdhrHjcwKYFfPqEwIfCzB3mlQCdk9MVokHTGHiDY+2biRC2RofMQ8+8Zj0iIo9CkCFxg2w8Evot+z8DvIPIUPhF9j1eVRFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=NAzFNn9G; arc=none smtp.client-ip=115.124.30.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1758184447; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=iHPyCqwaIE53kfvtOqEjL6h4xRme2WCE41tGRMbg4OA=;
+	b=NAzFNn9GOVJAkfAMVdrcB07/dc9Ms6BXy74/eleljuE18J5xeCe+MSNCWI7mIBMNSKnAqNLzjwLm6kSAz8lYe1mcIwN/wPqqqWp2scY/NlMqRt6OvyP2fdTyiQYDDC+xHtbgB7ivv075GdoONkKJHKPWItxHsyJUsKpC8Jrumlc=
+Received: from 30.246.178.33(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WoFHDqY_1758184444 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 18 Sep 2025 16:34:05 +0800
+Message-ID: <1211fd9a-93e6-4ebe-a80d-083601138b70@linux.alibaba.com>
+Date: Thu, 18 Sep 2025 16:34:03 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -50,62 +48,96 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ACPI: video: Fix missing backlight node creation on
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: lenb@kernel.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, mario.limonciello@amd.com, rafael@kernel.org,
- stable@vger.kernel.org
-References: <17cc74d6-2e49-4370-ae37-39cddfe67d7d@kernel.org>
- <20250912103538.3657242-1-zhangzihuan@kylinos.cn>
- <f6afc998-f11e-4aac-a190-fbadb97e2d0c@kylinos.cn>
-From: Hans de Goede <hansg@kernel.org>
-Content-Language: en-US, nl
-In-Reply-To: <f6afc998-f11e-4aac-a190-fbadb97e2d0c@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline for
+ HugeTLB pages
+To: Kyle Meyer <kyle.meyer@hpe.com>, "Fan, Shawn" <shawn.fan@intel.com>
+Cc: "Luck, Tony" <tony.luck@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, "corbet@lwn.net"
+ <corbet@lwn.net>, "david@redhat.com" <david@redhat.com>,
+ "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
+ "shuah@kernel.org" <shuah@kernel.org>,
+ "jane.chu@oracle.com" <jane.chu@oracle.com>,
+ "jiaqiyan@google.com" <jiaqiyan@google.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+ "bp@alien8.de" <bp@alien8.de>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+ "jack@suse.cz" <jack@suse.cz>,
+ "joel.granados@kernel.org" <joel.granados@kernel.org>,
+ "laoar.shao@gmail.com" <laoar.shao@gmail.com>,
+ "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+ "mclapinski@google.com" <mclapinski@google.com>,
+ "mhocko@suse.com" <mhocko@suse.com>,
+ "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
+ "osalvador@suse.de" <osalvador@suse.de>,
+ "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
+ "rppt@kernel.org" <rppt@kernel.org>, "Anderson, Russ"
+ <russ.anderson@hpe.com>, "surenb@google.com" <surenb@google.com>,
+ "vbabka@suse.cz" <vbabka@suse.cz>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>
+References: <aMiu_Uku6Y5ZbuhM@hpe.com>
+ <20250915201618.7d9d294a6b22e0f71540884b@linux-foundation.org>
+ <aMkOCmGBhZKhKPrI@hpe.com>
+ <SJ1PR11MB60831F028E2FEB6B5A3390D9FC14A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <aMmlhPghbpnlCZ09@hpe.com>
+ <SJ1PR11MB60833884799B6AA2BC18ECE7FC14A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <LV4PR11MB9513A6EFA88B082E554CB8D6EB17A@LV4PR11MB9513.namprd11.prod.outlook.com>
+ <aMsE9XjWKEYTIQyV@hpe.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <aMsE9XjWKEYTIQyV@hpe.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi Zihuan,
 
-On 18-Sep-25 2:36 AM, Zihuan Zhang wrote:
-> 
-> 在 2025/9/12 18:35, Zihuan Zhang 写道:
->>> 1. There must be a GPU driver for these laptops somewhere?
->>> Even if out of tree using a laptop without a GPU these days
->>> just does not give a good user experience. So fix the GPU
->>> driver to call acpi_video_register_backlight().
+
+在 2025/9/18 02:59, Kyle Meyer 写道:
+> On Wed, Sep 17, 2025 at 06:35:14AM +0000, Fan, Shawn wrote:
+>>>> My original patch for this just skipped the GHES->offline process
+>>>> for huge pages. But I wasn't aware of the sysctl control. That provides
+>>>> a better solution.
 >>>
->>> Note acpi_video_register_backlight() is deliberately exported
->>> without requiring the consuming out of tree kernel module to
->>> be GPL to allow this.
->>>
->>> Other options would be:
->>>
->>> 2. Add some special heuristics for Zhaoxin CPUs,
->>> the kernel already has a CPUID match mechanism for
->>> things like this. This could potentially be combined
->>> with a DMI system-vendor check to only do this special
->>> case handling on e.g. Lenovo and Inspur laptops.
->>>
->>> 3. Instead of adding the CPU-id based special case
->>> just outright use DMI quirks. In this case lets try
->>> to use substring matches to cover multiple models
->>> with a single entry so as to not grow the quirk
->>> table too much.
+>>> Tony, does that mean you're OK with using the existing sysctl interface? If
+>>> so, I'll just send a separate patch to update the sysfs-memory-page-offline
+>>> documentation and drop the rest.
 >>
->> Got it, thanks!
+>> Kyle,
 >>
->> In fact, we have tried a few approaches (cmdline option, CPU-ID based quirk, and DMI quirk),
->> and all of them work.
->> I will sync this information with Zhaoxin to see which way they prefer.
+>> It depends on which camp the external customer that reported this
+>> falls into:
+>>
+>> 1) "I'm OK disabling all soft offline requests".
+>>
+>> or the:
+>>
+>> 2) "I'd like 4K pages to still go offline if the BIOS asks, just not any huge pages".
+>>
+>> Shawn: Can you please find out?
+>>
+>>
+>> -> Prefer the 2nd option,  "4K pages still go offline if the BIOS asks, just not any huge pages."
 > 
-> Zhaoxin has confirmed that they will handle this through their own GPU driver.
-
-That is good to hear, thank you for the update.
-
-Regards,
-
-Hans
-
+> OK, thank you.
+> 
+> Does that mean they want to avoid offlining transparent huge pages as well?
+> 
+> Thanks,
+> Kyle Meyer
 
 
+Hi, Shawn,
+
+As memory access is typically interleaved between channels. When the
+per-rank threshold is exceeded, soft-offlining the last accessed address
+seems unreasonable - regardless of whether it's a 4KB page or a huge
+page. The error accumulation happens at the rank level, but the action
+is taken on a specific page that happened to trigger the threshold,
+which doesn't address the underlying issue.
+
+I prefer the first option that disabling all soft offline requests from
+GHES driver.
+
+Thanks.
+Shuai
 
