@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-17139-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17140-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883C6B8A841
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Sep 2025 18:11:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF76B8A84A
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Sep 2025 18:11:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 230A97BC660
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Sep 2025 16:09:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 395455861EF
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Sep 2025 16:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DB731FED6;
-	Fri, 19 Sep 2025 16:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEB431E0ED;
+	Fri, 19 Sep 2025 16:11:08 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038E331E106;
-	Fri, 19 Sep 2025 16:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96EE31DDA4;
+	Fri, 19 Sep 2025 16:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758298262; cv=none; b=dv+3WdOKdBQ/+KNSqF1puiLsQQEgGOpl4D2mcf+5kaF7XTIgWyiwat99ohYqc5Hs03h7uaGCVChRa84HPt0tPykUY9uLLFQxPqkzMHRqL4AKMtHt9QvUYbNqFh7jI0Mv8bylLDUoKSoLWhuKi+JH2CkxAxxfXDci0mCcXhj2/Qg=
+	t=1758298268; cv=none; b=Rt82toR/ekKnVkwXd8ElEjb0OLGiLiXMSWw2o6IIxW62+Io7BE3hmW9qY7EYSEIVUitc8aO5ZU9oplb0GZIW7RsPXGetcBWYiz5UxfNAyJIrfIF3Y5cN2hqBX0Cl8cKM8GldNPh+sBazWBAGvNhdKBnqJ8xbLy/SPQlHNHdPG68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758298262; c=relaxed/simple;
-	bh=12dFWOYQJvNBA8U3//hBM7/+vrpffnMZyXOT4juKh+Q=;
+	s=arc-20240116; t=1758298268; c=relaxed/simple;
+	bh=ldrrKQvGttJzr+6AlPlEkwsAbBzrUGjgSum6lf1cfbs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h9chcO0OELdLoTIMV/NIqImGcxS5+BpGWCiD1ApBVc+IJ5Eg2iFfDt1YHwIzfK28Q9xnIbtSny+uj9JqV9/VDlPS4ROreotVC1cTKA2j8ZR2UZ0NAjfIgizgveuUwRgPLfRqTK3wkmA/DsruMl4uhD09FJ52RlckTu7C8L3U13w=
+	 In-Reply-To:Content-Type; b=ZAku6E2vW8p5irAoIhQC5JksgJqEsDDqv7fzXqPpVAW+P9Au3RFhsNCY9mHRNi95evttXss8SfmALDVXY83HjLaFWYnfK7alQJc3DDGTX+r3jmrhkksnz0GN0Bo99bjFQGIuBxScN4Q1k6Qf0QcCwI/mwPCnaVS5KcJb6PcmxDk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2527C1C01;
-	Fri, 19 Sep 2025 09:10:52 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C261F1D14;
+	Fri, 19 Sep 2025 09:10:57 -0700 (PDT)
 Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0508C3F66E;
-	Fri, 19 Sep 2025 09:10:54 -0700 (PDT)
-Message-ID: <63203733-d997-4805-9412-1daa71d786fe@arm.com>
-Date: Fri, 19 Sep 2025 17:10:53 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B1E143F66E;
+	Fri, 19 Sep 2025 09:11:00 -0700 (PDT)
+Message-ID: <7fe33c0b-affb-4e30-a3fd-24e4c2013654@arm.com>
+Date: Fri, 19 Sep 2025 17:10:57 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,8 +42,9 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/29] ACPI / PPTT: Find cache level by cache-id
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v2 04/29] ACPI / PPTT: Add a helper to fill a cpumask from
+ a cache_id
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
 Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-acpi@vger.kernel.org,
  D Scott Phillips OS <scott@os.amperecomputing.com>,
@@ -54,81 +55,88 @@ Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  dfustini@baylibre.com, amitsinght@marvell.com,
  David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
  Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- fenghuay@nvidia.com, baisheng.gao@unisoc.com,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
- <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
- Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com, Rob Herring <robh@kernel.org>,
+ Rohit Mathew <rohit.mathew@arm.com>, Rafael Wysocki <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
  Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Danilo Krummrich <dakr@kernel.org>
 References: <20250910204309.20751-1-james.morse@arm.com>
- <20250910204309.20751-4-james.morse@arm.com> <aMLqUCRHebgh8HqQ@lpieralisi>
+ <20250910204309.20751-5-james.morse@arm.com>
+ <20250911120614.00001e92@huawei.com>
 Content-Language: en-GB
 From: James Morse <james.morse@arm.com>
-In-Reply-To: <aMLqUCRHebgh8HqQ@lpieralisi>
+In-Reply-To: <20250911120614.00001e92@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Lorenzo,
+Hi Jonathan,
 
-On 11/09/2025 16:27, Lorenzo Pieralisi wrote:
-> On Wed, Sep 10, 2025 at 08:42:43PM +0000, James Morse wrote:
->> The MPAM table identifies caches by id. The MPAM driver also wants to know
->> the cache level to determine if the platform is of the shape that can be
->> managed via resctrl. Cacheinfo has this information, but only for CPUs that
->> are online.
+On 11/09/2025 12:06, Jonathan Cameron wrote:
+> On Wed, 10 Sep 2025 20:42:44 +0000
+> James Morse <james.morse@arm.com> wrote:
+> 
+>> MPAM identifies CPUs by the cache_id in the PPTT cache structure.
 >>
->> Waiting for all CPUs to come online is a problem for platforms where
->> CPUs are brought online late by user-space.
+>> The driver needs to know which CPUs are associated with the cache.
+>> The CPUs may not all be online, so cacheinfo does not have the
+>> information.
 >>
->> Add a helper that walks every possible cache, until it finds the one
->> identified by cache-id, then return the level.
+>> Add a helper to pull this information out of the PPTT.
+
+> Why for this case does it makes sense to not just use acpi_get_pptt()?
+> 
+> Also you don't introduce the acpi_get_table_reg() helper until patch 6.
+
+I missed fixing this one up. That's done now.
+
 
 >> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
->> index 7af7d62597df..c5f2a51d280b 100644
+>> index c5f2a51d280b..c379a9952b00 100644
 >> --- a/drivers/acpi/pptt.c
 >> +++ b/drivers/acpi/pptt.c
->> @@ -904,3 +904,65 @@ void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus)
->>  				     entry->length);
->>  	}
+>> @@ -966,3 +966,62 @@ int find_acpi_cache_level_from_id(u32 cache_id)
+>>  
+>>  	return -ENOENT;
 >>  }
 >> +
->> +/*
->> + * find_acpi_cache_level_from_id() - Get the level of the specified cache
+>> +/**
+>> + * acpi_pptt_get_cpumask_from_cache_id() - Get the cpus associated with the
+>> + *					   specified cache
 >> + * @cache_id: The id field of the unified cache
+> 
+> Similar comment to previous patch. If we are going to make this unified only
+> can we reflect that in the function name.  I worry this will get reused
+> and that restriction will surprise.
+
+I agree - the unified restriction turns out only to be of interest to archaeologists.
+I've ripped it out.
+
+
+
+>> + * @cpus: Where to build the cpumask
 >> + *
->> + * Determine the level relative to any CPU for the unified cache identified by
->> + * cache_id. This allows the property to be found even if the CPUs are offline.
->> + *
->> + * The returned level can be used to group unified caches that are peers.
+>> + * Determine which CPUs are below this cache in the PPTT. This allows the property
+>> + * to be found even if the CPUs are offline.
 >> + *
 >> + * The PPTT table must be rev 3 or later,
-> 
-> * The PPTT table must be rev 3 or later.
-
-Fixed,
-
-
 >> + *
->> + * If one CPUs L2 is shared with another as L3, this function will return
->> + * an unpredictable value.
->> + *
->> + * Return: -ENOENT if the PPTT doesn't exist, the revision isn't supported or
->> + * the cache cannot be found.
->> + * Otherwise returns a value which represents the level of the specified cache.
+>> + * Return: -ENOENT if the PPTT doesn't exist, or the cache cannot be found.
+>> + * Otherwise returns 0 and sets the cpus in the provided cpumask.
 >> + */
->> +int find_acpi_cache_level_from_id(u32 cache_id)
+>> +int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus)
 >> +{
 >> +	u32 acpi_cpu_id;
 >> +	int level, cpu, num_levels;
 >> +	struct acpi_pptt_cache *cache;
->> +	struct acpi_table_header *table;
 >> +	struct acpi_pptt_cache_v1 *cache_v1;
 >> +	struct acpi_pptt_processor *cpu_node;
+>> +	struct acpi_table_header *table __free(acpi_table) = acpi_get_table_ret(ACPI_SIG_PPTT, 0);
 >> +
->> +	table = acpi_get_pptt();
->> +	if (!table)
+>> +	cpumask_clear(cpus);
+>> +
+>> +	if (IS_ERR(table))
 >> +		return -ENOENT;
 >> +
 >> +	if (table->revision < 3)
@@ -137,14 +145,11 @@ Fixed,
 >> +	for_each_possible_cpu(cpu) {
 >> +		acpi_cpu_id = get_acpi_id_for_cpu(cpu);
 >> +		cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
->> +		if (!cpu_node)
->> +			return -ENOENT;
-> 
-> Same comment as in another patch - don't think you want to stop parsing
-> here.
+>> +		if (WARN_ON_ONCE(!cpu_node))
+>> +			continue;
 
-Yes - this is me throwing my hands up in the air at a nonsense firmware table.
-'continue' would be a try harder approach.
+I'm not sure why this one is a WARN_ON_ONCE() and the other isn't - both mean the PPTT
+table is missing CPUs, but this looks like leftover debug. I'll drop it.
 
 
 >> +		num_levels = acpi_count_levels(table, cpu_node, NULL);
@@ -160,38 +165,22 @@ Yes - this is me throwing my hands up in the air at a nonsense firmware table.
 >> +			cache_v1 = ACPI_ADD_PTR(struct acpi_pptt_cache_v1,
 >> +						cache,
 >> +						sizeof(struct acpi_pptt_cache));
+> 
+> sizeof(*cache) makes more sense to me.
+
+Yup, I've done that in the previous one It's not otherwise done in this file - lets see if
+someone cares strongly the other way.
+
+
 >> +
 >> +			if (cache->flags & ACPI_PPTT_CACHE_ID_VALID &&
 >> +			    cache_v1->cache_id == cache_id)
->> +				return level;
+>> +				cpumask_set_cpu(cpu, cpus);
 >> +		}
 >> +	}
 >> +
->> +	return -ENOENT;
+>> +	return 0;
 >> +}
->> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
->> index f97a9ff678cc..5bdca5546697 100644
->> --- a/include/linux/acpi.h
->> +++ b/include/linux/acpi.h
->> @@ -1565,6 +1566,10 @@ static inline int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
->>  }
->>  static inline void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id,
->>  						     cpumask_t *cpus) { }
->> +static inline int find_acpi_cache_level_from_id(u32 cache_id)
->> +{
->> +	return -EINVAL;
-
-> return -ENOENT;
-
-Yes, same bug as before. Fixed.
-
-
-> Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-
-Thanks - I think the change to ignoring unified caches and searching all types is
-substantive enough that I won't pick this up because of the changes for v3...
-
-
 
 Thanks,
 
