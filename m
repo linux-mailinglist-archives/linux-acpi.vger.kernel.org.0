@@ -1,127 +1,147 @@
-Return-Path: <linux-acpi+bounces-17130-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17131-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EFFB8812D
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Sep 2025 09:00:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5EBFB89183
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Sep 2025 12:40:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7EA43A4397
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Sep 2025 07:00:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 803C4173B0F
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Sep 2025 10:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7C02BE7B5;
-	Fri, 19 Sep 2025 07:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C003081A0;
+	Fri, 19 Sep 2025 10:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PqI6tNjO"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="gzcDo2n5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8C02BEC3A
-	for <linux-acpi@vger.kernel.org>; Fri, 19 Sep 2025 07:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C476E2FE062;
+	Fri, 19 Sep 2025 10:40:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758265209; cv=none; b=mUXA5nhs8ve1Gy44MQ409omI2LdHmq4fkZno+dewubTwoaMmfolc/1TZA0jqjsJ6POtcyeSa198EBP/IcmlyLMehBIesKjNkg5Jg9wMDVLOq5usfm11rtbbGwPYGbHixOgvNEpjCkhCy1Tv3hxLkRdbhlAskPEU47wUVhm0FN+M=
+	t=1758278445; cv=none; b=svJ4ZCSKRtLBgS4HQ1eyMocNPnKgZup/HvC1xxNKt96e4k4AH4f1LGt+0saAlPT5H8x4ZV/fgWDuYXmCOby7k8sowHUefKerhCkOAoFU+Witpm3I+KYYgthr48S3kChxM1pP9U3n6pcYwNozy6iIFGV2YbDHCFZMtL/XxLm5Nhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758265209; c=relaxed/simple;
-	bh=uAk+KA/2arGgRYi6RKljz+pNp4Iu/ABT1xGE3Hki/kM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uiGhHum/3TtzmTmb6tF1rkmtcJLPpwQcfieQQSMJ9eEWDRB8lR4nOXGsDVXs4mxVTmptOGsdinjSW4M7x/BgxliIyhWVAXBgy7vz+2r7r0fzzNlGxbyoy5xLeoBDPENWBm9HqpqJdZ+3vGYb+VLc0GS/+k7ed3Kj/WZjsapk1w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PqI6tNjO; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-77615d6af4fso2589843b3a.3
-        for <linux-acpi@vger.kernel.org>; Fri, 19 Sep 2025 00:00:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758265201; x=1758870001; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vqB+YMZcuLYAs8+OHarhQxNJf94rd8pAU5DBCBmw7lU=;
-        b=PqI6tNjOWce3MJsbjzGtyDHkksJ0/LkABbBStkw/InSXyyhJo64aF3FiZjAZmBv2Av
-         j2j9ThiMZg/HmpDZJiHqJURSblgvgaAonZz8uUWGjRP0r99XCLY6y/gQfHGsIXuER3WU
-         9w+CSbJ5bYB48lHdQ3VlmSIUsKZs609zeQuDvDQHk3fCcHwhSte5cXtFg+U1d1/p/wGm
-         77qxX4jMZVAmplZA7EDdQBo+f4cDpgNfc+MvRquUl1dvbHa5VkArHg6h8yHg7XUOxUP6
-         +aWqH4VjoDyUSqqqjB0iiGukmm9+ie8I9+uOu1EH5MTAVdij5EMe8ki3GzJQO8SBk30e
-         DWzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758265201; x=1758870001;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vqB+YMZcuLYAs8+OHarhQxNJf94rd8pAU5DBCBmw7lU=;
-        b=K7iMLyEtIakQalAtC7q6VINyAPx75qO/FTHvYLtNXjqGlEOuMxkoTa5v1/QKf6XR9K
-         MvzHgtIJmd62JpdhRnSkiha3IKRay+NVlTwyUrNhvu1baUDxFuI3Ljnp828ranm35RQe
-         wsC76oYlpFcAPYeWccTavR78GiDY5zxqqHNbNJHQ0/NTkWi5g8PWnTM4eP8y2M21M8eQ
-         duiMQF+8DoXnbSg21qCaXFA0MJ5ze1brmu+QBRSmHuywYo6s4jKebgzzlewEmBRK1Gri
-         U/P4SAOxEJM6imiCLZgZa+laW9vbOZCGwYP5rBZewxIIe3P72d4U8Ulc01Xyyd8LSO4I
-         J1VA==
-X-Forwarded-Encrypted: i=1; AJvYcCVGWuERGL0/lThESZ4M2S0QK1TnCKK5VXqS0ZZH4f25U7Rim9MURpttcoMmnyXOhbtzLPJxSQ1dsznG@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNQ7FugD/ly2UWL+FgiFYbOHMs4+mQGhtOORxavOuA0FIz7H1+
-	CNomHvdVJhl7auZkRPyijBXfNYIGAJvrrnPFThA4nuOXGzk1xn6IAo7v
-X-Gm-Gg: ASbGncsB6V16GlKRw3152rxSyHyf3+wpFUln5pCnazHEUz3iZOAmrfi+t0cMMKVC/XH
-	0NCnLHAy0nYe55UEW5rnRwZBJuUI+KZ8p682vzWVLKL9qg/BhrdWRylFFZeFOOcjUA8woWEAimg
-	Dz/2EWa+afdm+/n7q8Zjq3EGozXEQLtsmYzNm6L49VwaRlI3lwz5sJEIP09VPJKO2SBIVdeq64u
-	GBNp1w4/Z0Z/ZuPtURPXPpPCEhfo0/ef8bOPsM+W2P6qEj1yxNCvlsByeLQfzBp01is4ndYwg/N
-	dIf8z5pskDwGjnjs8m44g0JxMMSdfVlQs7eVGmK9bFnF6kp+b1IVovBONirRRMKJF6U68/ouU97
-	NVznv3Wl2A3qMuX++I6dGC/euUQ==
-X-Google-Smtp-Source: AGHT+IGRyWOudoRi9Tem9txO7j0k6xxGJSz/N2dM0RUuqwAkPE1QePAX965M+SCjwpij//u2J7rKzg==
-X-Received: by 2002:a05:6a00:4b55:b0:776:1a2a:6baf with SMTP id d2e1a72fcca58-77e4f19fe23mr2906611b3a.32.1758265200897;
-        Fri, 19 Sep 2025 00:00:00 -0700 (PDT)
-Received: from archlinux ([103.105.227.34])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77e87fb4698sm782455b3a.96.2025.09.18.23.59.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Sep 2025 23:59:59 -0700 (PDT)
-From: Harishankar <harishankarpp7@gmail.com>
-To: rafael@kernel.org
-Cc: lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	harishankarpp7@gmail.com
-Subject: [PATCH] ACPI: property: fix spacing around colon in pointer macros
-Date: Fri, 19 Sep 2025 12:29:51 +0530
-Message-ID: <20250919065951.156362-1-harishankarpp7@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1758278445; c=relaxed/simple;
+	bh=mGjdhf7kkAqN/3UQNbblDRLoDVCgqpkaOt73COZp/6g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gNL4qoylvSWTOGTReybv65fqls7T1je4GWqWsKFS5PgOJqFiAK4SJ//ElEsAIdvmh4mTV9tvbeehjIWSUDEGutz8j3X5I5HfctDyPjhfnd9B3RUtdO/F8BwDFL++36H2sAiJcjY/WNZv+F5X94ODSWwkhRH7JB6029+pt70aNRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=gzcDo2n5; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0A94340E019E;
+	Fri, 19 Sep 2025 10:40:36 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id II-tU-70Mx6R; Fri, 19 Sep 2025 10:40:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1758278432; bh=2Pk7UDyluMT9wTT16Dwfk065aUtC7WyLyoHzQain/Ig=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gzcDo2n5keM9vsYXKO5vELkDMk154mpEC9fwEXKYTPBqo12ub+t+dtWgqxtJzqeAz
+	 sSawPLMiU6BwbGmynYvs+TPRT1V2milcv9J5xqMlHoLYVfmZV9skrjGtBlMcObRNNc
+	 ppFkz+NUzya3Z6fT+2h4xKanjnxx4ajygLbLudqZY51QPCwVervOKuO+3yAxUNTC3i
+	 ZuEttHaJgURnpeEVy07nR1no0CoRrA76aHdiqO+3RWKWmu0dS7mJbkxdfpliKUlMjT
+	 6K9xIVDqN/LOwQuJ4jMzMAOYOm/E1TUoc3TayD5EF8LnyUdjGEjGTHUYrlfT9KdAf8
+	 xdHQX2DX0C/4av21DVQFZKDDDIWCIGr8hihz7ahrIdz6WWYe9mCFKEcTkjCO3y43Wv
+	 vIcx/a7XUDj2tVm+U8GCGHoMQ2KbsLRrMa5SaElf6EY3FQiV1kP9STmkupLULXEe1K
+	 6fBWHu4cP21+yeGNxd2fq4qNwawpUc6t3HIOBu08HDXceFu9J3uaGI+Ybet62mvVP/
+	 K999BVKFyTfNX08suL8A2Bl4NsJIkB7N/+x0Nj2245661f3QJOIUKFAFUerga9UiMT
+	 PZjcAAP6K4eupHsLO0MkHB4HCC4TzT2zdWIKH/QLMp6cV0SofOiGeDJtuLVdw84NJ5
+	 ZM1W3hL/NFSlwjFPr104jH40=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 84FAE40E019F;
+	Fri, 19 Sep 2025 10:39:56 +0000 (UTC)
+Date: Fri, 19 Sep 2025 12:39:50 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Shiju Jose <shiju.jose@huawei.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	Linuxarm <linuxarm@huawei.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: Re: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
+Message-ID: <20250919103950.GCaM0y9r6R6b5jfx8z@fat_crate.local>
+References: <20250902173043.1796-1-shiju.jose@huawei.com>
+ <20250902173043.1796-2-shiju.jose@huawei.com>
+ <20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local>
+ <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
+ <20250912141155.GAaMQqK4vS8zHd1z4_@fat_crate.local>
+ <9433067c142b45d583eb96587b929878@huawei.com>
+ <20250917162253.GCaMrgXYXq2T4hFI0w@fat_crate.local>
+ <20250917183608.000038c4@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250917183608.000038c4@huawei.com>
 
-Fix coding style issues reported by checkpatch.pl in
-drivers/acpi/property.c. The colons following pointer
-types in macros were missing the required surrounding
-spaces.
+On Wed, Sep 17, 2025 at 06:36:08PM +0100, Jonathan Cameron wrote:
+> This 'first contiguous range' is an attempt to DTRT in a corner
+> case that is real but where there is not an obvious right thing due to spec limitations.
 
-This change makes the code consistent with the Linux
-kernel coding style guidelines.
+Thanks for taking the time to expand. The gist of this needs to be in a commit
+message for future reference.
 
-Signed-off-by: Harishankar <harishankarpp7@gmail.com>
----
- drivers/acpi/property.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+HOWEVER, I'm still not clear *why* we're jumping through hoops which we
+probably set up ourselves without even knowing why... at least it looks like
+this from where I'm standing.
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 436019d96..8905a8b34 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -1108,10 +1108,10 @@ static int acpi_data_prop_read_single(const struct acpi_device_data *data,
- 				break;					\
- 			}						\
- 			if (__items[i].integer.value > _Generic(__val,	\
--								u8 *: U8_MAX, \
--								u16 *: U16_MAX, \
--								u32 *: U32_MAX, \
--								u64 *: U64_MAX)) { \
-+								u8  * : U8_MAX, \
-+								u16 * : U16_MAX, \
-+								u32 * : U32_MAX, \
-+								u64 * : U64_MAX)) { \
- 				ret = -EOVERFLOW;			\
- 				break;					\
- 			}						\
+So why not start a scrub on the whole system? Why do we care?
+
+Scrub is "cheap" in the sense that it runs in the background and is the lowest
+priority and everything else overrides it.
+
+So why design an interface only when there's a need to design one and do the
+simplest thing now, for starters? Gather some experience and then imrpove it
+by actually designing an interface...
+
+Thx.
+
 -- 
-2.51.0
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
