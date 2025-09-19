@@ -1,123 +1,147 @@
-Return-Path: <linux-acpi+bounces-17133-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17134-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE8F2B8937C
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Sep 2025 13:17:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DF8EB8A43B
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Sep 2025 17:25:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A40051C84D4E
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Sep 2025 11:18:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BF7B17EF8F
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Sep 2025 15:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A9F309DCC;
-	Fri, 19 Sep 2025 11:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2664A318141;
+	Fri, 19 Sep 2025 15:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lWcfFmck"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="xbo3W1UF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4E32D7DDE
-	for <linux-acpi@vger.kernel.org>; Fri, 19 Sep 2025 11:17:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ADF318151
+	for <linux-acpi@vger.kernel.org>; Fri, 19 Sep 2025 15:25:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758280660; cv=none; b=R5VROQiriV977PE34bu+IYegg6+NVYahkclP2B9lpBzSiIOXM1cEz1uJOjc5QIh+W1a0M9J4MqtEZG9z/XT+UryZfZvmlN7ohOSsgWl6SBmYrOhzN/hjxAyD/rkPLR3gcQRM1tFKTQNAGQIKDTSMoh5mjiMNJrpZJRxcG23klew=
+	t=1758295506; cv=none; b=WlezKCnpVJHsVpw/8vkhSmMNJxdWOWFp7RHO990W1boRDbrVYhypojTRO9QXNv/qPVgwrQC7VIPb182ftJ1wLQDFQR8QWtpbAtrtcymKh1ybWNipZkDg3/nh467mUt/TQ4AAQFWVRTVjoObFxuo0NhrnuHyeyWTrNcL+D4ztZ0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758280660; c=relaxed/simple;
-	bh=Vaud0O8IF+cM6zsU7m0GAhHij4l8NSs29t6OEhwoN6E=;
+	s=arc-20240116; t=1758295506; c=relaxed/simple;
+	bh=tIBWHHOOKfm2qL1G0oNEg1lQ/EY8RTTkm2B9w+25Bvk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LXTGqirtZAPg3UVCDYi2AQ35BndyJ3ya97pKx1z4Gxrejl75/bDpy8XOAabboD4GiNJwnsFeOl6sC/sYYDNasvioxd3NaSwGAeAzbpc6xqL7fHpoV7gQSlJVDUl78PxAYqLNe/qtr5cGWnFVyOT1uUdIVSYVlHcBZyGC1kQiDq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lWcfFmck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5896C4CEFC
-	for <linux-acpi@vger.kernel.org>; Fri, 19 Sep 2025 11:17:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758280659;
-	bh=Vaud0O8IF+cM6zsU7m0GAhHij4l8NSs29t6OEhwoN6E=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lWcfFmckr790LqTCMGYE+AL1AIF/8SqGJsge1klImtZm4DwB+eUUy6ey2bJaUGpSH
-	 9HzDpUIy+MGtaSOwnIv+abNw0TIlujl4HnX/W47Wt2xyJT0quTLGDLNubTmwhskfAw
-	 3WowSFJb9oJcWFu6QKSO66tz1HuTxQ2pN+xV6vWEREmXb7wsop7XsiFRt1n3kEprC7
-	 xzYQGx/qpWbxM51DdtfWiq21cUhNcmQxSW4GFpbsWWWBSNqxG69vZEV4Tej/U66caY
-	 SRHIVk7jjEgKAPH5QzX9447/eUrDujAMrw6U7vo8W5OVW9XnET9ULILO1uEDBRGQmD
-	 kPr7Nr6clgpQQ==
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-74526ca7a46so774312a34.2
-        for <linux-acpi@vger.kernel.org>; Fri, 19 Sep 2025 04:17:39 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwZ2y347Ml8iiC83hK0riPrgmpqtv89BV/jVIS17Py1vCk4vJfn
-	mAYZZNNqjTOe8/yTvzOWmC0x7IIVHGiHTLLjokQWXNF1og08dJ9D2X1qIqmR57M1GtRimXwaojS
-	VRPxVsDOvFjRB4eWCmJ2kWd5RmelxxOk=
-X-Google-Smtp-Source: AGHT+IFHub8sAhDtx00+bZA9mzQXjdt2cEFV/Pwup6zDiM5Pg/pEUPft9nLsR2ahNSrGmpZztuhjghOoJorynxxbYWQ=
-X-Received: by 2002:a05:6808:4f11:b0:43d:1fcc:1f95 with SMTP id
- 5614622812f47-43d6c1afb0cmr1227513b6e.17.1758280659033; Fri, 19 Sep 2025
- 04:17:39 -0700 (PDT)
+	 To:Cc:Content-Type; b=TLjiJLJuoHOndvuLIs2yo8Sea5MU5iKRPsLLNu5XcDFdhZMoZ4/iSx44O/s/F9JHssQDbme8GKWu+FK5CA4c/24jL4XL9bU3Eb/elCPwAH0jCbyv1/HYFZRhV19Lf6tck8feXqYdISgI6K+3Jpns0QnRF+A3XPb53N/UgI4QBkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=xbo3W1UF; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5725e554ec1so1848249e87.3
+        for <linux-acpi@vger.kernel.org>; Fri, 19 Sep 2025 08:25:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1758295500; x=1758900300; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=EztjVQ+y07YMfegmHOd0VyK62XkODMWu0LdNE29WAS0=;
+        b=xbo3W1UFpKFkZ1p3cmir9bHExoubmn+zN65uKZIOYM/VNr4k3So7pYfDI6mX/D9Xs7
+         tKrFxrKGsa1OUV4/BaJm81tBW61J4ZGYYxqxZFHL+2WJXFRTEp/mhXDIaLf+cQRcgUXe
+         AYqPNZvLbxLN1AyYo7ig5n8eVxO+iPi1huE+4hW6lV7MZkf7YHIdjHXfXdto2VLmATJZ
+         knqRg3MYiebrHRGL5TV4krfrv3EaVDwqo3YKPYYlEuRSeFOsywbR4G16hcwfzRVUvkmK
+         +8rrea1TuR59LvTS19HlGLqGt+kLHJ+F5+322OVOV6/84SIcgYqHnsi5cc3ulWFd4ja5
+         pnpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758295500; x=1758900300;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EztjVQ+y07YMfegmHOd0VyK62XkODMWu0LdNE29WAS0=;
+        b=Wt5+9ub106Jf9guAQsMth72xAUalba7Wgwi/M5vprqMOqko4Zj+i9KB6uW8wJqHn3a
+         SD5m6bQlwgyxyqeqjMPKgD+WBeTaVLRHEa2znRZWHg6/ZF6O+ZKHKKtUk6iF19JFXrBq
+         xhF8Q7Ebq6PVXr+1o6jyCp3mmnbdT53t7kmX4yZTtcFxi81ZWMNHztAjz75GoYgu/LBR
+         VqqGM8PI4dBlO143U2/oxoQXMNcRWbshgykCHn12XH5/45rk0Xo0kmVThw2xHL8s87iI
+         eWsz1QSWQ20G77jV0bhFSr5REPhRfdO2xRxtomE5Jl2G3cjPkN1/5ImVoJvB4P/sdFRW
+         twlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU1/tFGW40xOt/vfxr5PXSWeP8S6N5G5HpB9oMYm9LcUnUUPc/BvKhcWT0sYpcASW9hsNsIgFYqoe8K@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6N5yBNEKoZGdY6CNXNWZcsjd7sgO+zYhdtYyUZqmmr96WfLFg
+	pMSM4uJQIsUOVvcEzUdu69JXc1OuJlYsPqn8jfWDbsGrzz6Tu793sI/dUMlRmM3zp7hy6pHV81h
+	cmqPDF9c1goqCRHWwbyk5LZsjf/nvoxnEutjMPFltCQ==
+X-Gm-Gg: ASbGncuvSCblZ8pUroqmGKqMubBAQbIDtOLVyz4nZAo6z3jcro3bQxq6vTjY+l6Chgj
+	qpG8QNMdQKNmEdjs60eERk/nfyPa/Qj5lZyNUPImUOfyqHFaHe10B5qb3HgCznyTT6N/h+ZJ738
+	dXSK9VSG1BKgFxzjNxF4PFpDgwUinc9oHOjafc+ZtHxTCLx1YhasSFOcWQLIJKhSxykuln6HJoS
+	D8la/QQ43kkBDM=
+X-Google-Smtp-Source: AGHT+IHin4gQus9SrkFEog2pTedfunr2Ers950l0f82oxrEtfjemfexmsAorW/Dsqdjvay/GpFMt6pfW/hwC+qBHF14=
+X-Received: by 2002:a05:6512:2c0b:b0:571:b70b:7dbf with SMTP id
+ 2adb3069b0e04-579e2507c81mr1455897e87.17.1758295499599; Fri, 19 Sep 2025
+ 08:24:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <5926523.DvuYhMxLoT@rafael.j.wysocki> <5044465.31r3eYUQgx@rafael.j.wysocki>
-In-Reply-To: <5044465.31r3eYUQgx@rafael.j.wysocki>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 19 Sep 2025 13:17:28 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gXHedm9WwwMuTN7vYyf5fNB6yOGLp_-GxSoZAEhSx5aw@mail.gmail.com>
-X-Gm-Features: AS18NWBm-VmRoWBy_7-K7-h195TkFeNXXbDtndqHGxwT6hO2srJMeO9xZMiNJqw
-Message-ID: <CAJZ5v0gXHedm9WwwMuTN7vYyf5fNB6yOGLp_-GxSoZAEhSx5aw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] ACPI: processor: Update cpuidle driver check in __acpi_processor_start()
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Linux ACPI <linux-acpi@vger.kernel.org>, Huisong Li <lihuisong@huawei.com>, 
-	LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
-	Mario Limonciello <mario.limonciello@amd.com>, 
-	"Shenoy, Gautham Ranjal" <gautham.shenoy@amd.com>
+References: <20250918152830.438554-1-nschichan@freebox.fr> <20250918195806.6337-1-safinaskar@gmail.com>
+In-Reply-To: <20250918195806.6337-1-safinaskar@gmail.com>
+From: Nicolas Schichan <nschichan@freebox.fr>
+Date: Fri, 19 Sep 2025 17:24:48 +0200
+X-Gm-Features: AS18NWBwMqIXE_dMXDlT0ngUIReSbekPPTszWv5gIfg03bAEg3Id33JL3Yqjedw
+Message-ID: <CAHNNwZAzecVcJXZmycX063-=p-M5jVkfStfgYVKJruOFo7y9zg@mail.gmail.com>
+Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
+To: Askar Safin <safinaskar@gmail.com>
+Cc: akpm@linux-foundation.org, andy.shevchenko@gmail.com, axboe@kernel.dk, 
+	brauner@kernel.org, cyphar@cyphar.com, devicetree@vger.kernel.org, 
+	ecurtin@redhat.com, email2tema@gmail.com, graf@amazon.com, 
+	gregkh@linuxfoundation.org, hca@linux.ibm.com, hch@lst.de, 
+	hsiangkao@linux.alibaba.com, initramfs@vger.kernel.org, jack@suse.cz, 
+	julian.stecklina@cyberus-technology.de, kees@kernel.org, 
+	linux-acpi@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
+	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, mcgrof@kernel.org, 
+	mingo@redhat.com, monstr@monstr.eu, mzxreary@0pointer.de, 
+	patches@lists.linux.dev, rob@landley.net, sparclinux@vger.kernel.org, 
+	thomas.weissschuh@linutronix.de, thorsten.blum@linux.dev, 
+	torvalds@linux-foundation.org, tytso@mit.edu, viro@zeniv.linux.org.uk, 
+	x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 18, 2025 at 11:10=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.o=
-rg> wrote:
->
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
-> Commit 7a8c994cbb2d ("ACPI: processor: idle: Optimize ACPI idle
-> driver registration") moved the ACPI idle driver registration to
-> acpi_processor_driver_init() and acpi_processor_power_init() does
-> not register an idle driver any more, so the cpuidle driver check
-> in __acpi_processor_start() needs to be updated to avoid calling
-> acpi_processor_power_init() without a cpuidle driver (in which
-> case the registration of the cpuidle device in that function
-> would fail anyway).
+Hello,
 
-It's worse, it won't just fail, it'll lead to a NULL pointer
-dereference in __cpuidle_register_device().
+> > When booting with root=/dev/ram0 in the kernel commandline,
+> > handle_initrd() where the deprecation message resides is never called,
+> > which is rather unfortunate (init/do_mounts_initrd.c):
 
-I'll update the changelog while applying the patch.
+> Yes, this is unfortunate.
+>
+> I personally still think that initrd should be removed.
 
+Considering that the deprecation message didn't get displayed in some
+configurations, maybe it's a bit early at the very least.
 
-> Fixes: 7a8c994cbb2d ("ACPI: processor: idle: Optimize ACPI idle driver re=
-gistration")
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
->
-> Commit 7a8c994cbb2d is only in linux-next at this point.
->
-> ---
->  drivers/acpi/processor_driver.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> --- a/drivers/acpi/processor_driver.c
-> +++ b/drivers/acpi/processor_driver.c
-> @@ -166,7 +166,7 @@ static int __acpi_processor_start(struct
->         if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
->                 dev_dbg(&device->dev, "CPPC data invalid or not present\n=
-");
->
-> -       if (!cpuidle_get_driver() || cpuidle_get_driver() =3D=3D &acpi_id=
-le_driver)
-> +       if (cpuidle_get_driver() =3D=3D &acpi_idle_driver)
->                 acpi_processor_power_init(pr);
->
->         acpi_pss_perf_init(pr);
->
->
->
->
+> I suggest using workaround I described in cover letter.
+
+I'm not too keen on having an initramfs just to loop-mount
+/sys/firmware/initrd, after all current kernels are able to handle the
+use case just fine.
+
+It looks like there is a lot of code calling into specific filesystems
+so that the initrd code can guess the size of the file system before
+copying into /dev/ram0, and I believe this is what causes the main
+gripe against initrd today. What is wrong with just copying
+/initrd.image using its actual size into /dev/ram0 instead of guessing
+it with the help of filesystem specific code ?
+
+> Also, for unknown reasons I didn't get your letter in my inbox.
+> (Not even in spam folder.) I ocasionally found it on lore.kernel.org .
+
+Sorry about that, When I used git-send-email yesterday to reply, the
+SMTP server I used wasn't authenticated to google, so all gmail
+recipients were dropped. Hopefully this work better today.
+
+Regards,
+
+-- 
+Nicolas Schichan
 
