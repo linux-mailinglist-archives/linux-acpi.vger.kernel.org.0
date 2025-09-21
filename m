@@ -1,226 +1,134 @@
-Return-Path: <linux-acpi+bounces-17154-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17155-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2D3CB8D8F3
-	for <lists+linux-acpi@lfdr.de>; Sun, 21 Sep 2025 11:57:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC51B8D9F7
+	for <lists+linux-acpi@lfdr.de>; Sun, 21 Sep 2025 13:25:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7CF944199D
-	for <lists+linux-acpi@lfdr.de>; Sun, 21 Sep 2025 09:57:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B5A217B1BB
+	for <lists+linux-acpi@lfdr.de>; Sun, 21 Sep 2025 11:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DA1255248;
-	Sun, 21 Sep 2025 09:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cRTp+QIb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E75425A35D;
+	Sun, 21 Sep 2025 11:25:29 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC31C34BA52;
-	Sun, 21 Sep 2025 09:57:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F73C34BA36;
+	Sun, 21 Sep 2025 11:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758448652; cv=none; b=p8taJy73c97WhLDUdruOVM2Xisgc5c//PHYdfK3z2RdepvMvgBy7tQMfmsAxgplwyNFTfCCTAq75yVucS9aV9CuTmgZErvSz1Be/eJJyYvrXw56rtLrIwl15eSrEtpHYeGmB9tMg+r/JXmIZvUSVeT63HL07DMLfXrCZE3LBgPw=
+	t=1758453929; cv=none; b=XgP4smUo2Mqzo3F+lM78hc3V8F9+euFfYFC+HYFBsdVu9bu6qjKRjYAfsmwdZdHZqvCEbzckfrqDQUYoojOjjzGi1vrxt+k3WuMnzT53AtKE79t9ouL5q8j+NCVjBvp8uS5Yz+FdNlYL/w4+MAP9g4itkMUldM7l/pWKnUGQ4gE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758448652; c=relaxed/simple;
-	bh=HbGmJg649hlHR5pTr3GuS+SBSz7g89U+FtfnhEaxebY=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=XUrY7JVYzehbahpT4fwQGZ3KWkZu9wME3kjWz28cDFtrin53JgUIrT9UKobZH6L7W98SE3EtEhhZFduGt+2A4QxFbZZ1BqURsCpNar7/cTkdzK82hQ7dinVufukLELtxbKOKiaGYCBEBAh7u1qUgUpTd90lMsDyEfpJ/5Ax74OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cRTp+QIb; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758448651; x=1789984651;
-  h=date:from:to:cc:subject:message-id;
-  bh=HbGmJg649hlHR5pTr3GuS+SBSz7g89U+FtfnhEaxebY=;
-  b=cRTp+QIb9BT6vMEXfiPy/EmpY0EW1qBDHjx/t4P6nNr5BDaxTaLF9qlH
-   mp2ZsJ3T7GJSMvukVCLFOSTEzn4Qe8BwWsGmAWayquDqCDN07L9auon1p
-   m5WLtdvR2pJ1Ao+6hAWHDQHEJPuys5wpYUQ9Nlp/12gTAYDVOm8HVJhlM
-   dLxMKHagZf+Pa44LHmKTRkjrm7kjHHfo0trb3/5LNiGWLQ2+w80Iph6gh
-   /Lu3QfVQrdNyhTG6EMteuh44Tl4Fiv/nvsyqEFEJMdyXngi6X5/k9NH/q
-   R2NYai9STXg6DltLvJcp8D44PsBe/oLFJZY5tT+fWhsn/naoVIhFGMhB5
-   A==;
-X-CSE-ConnectionGUID: J4n67CM/R12Y2zY4hSYyvA==
-X-CSE-MsgGUID: 0+FoNkCMTAaepnDURTOzTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11559"; a="48315866"
-X-IronPort-AV: E=Sophos;i="6.18,283,1751266800"; 
-   d="scan'208";a="48315866"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2025 02:57:30 -0700
-X-CSE-ConnectionGUID: RW9ftY5jSj2xICvNieogBA==
-X-CSE-MsgGUID: lEQ5DnhxTYCSOr5wt1X0uQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,283,1751266800"; 
-   d="scan'208";a="175793478"
-Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
-  by orviesa009.jf.intel.com with ESMTP; 21 Sep 2025 02:57:29 -0700
-Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v0Gow-0000dh-2S;
-	Sun, 21 Sep 2025 09:57:26 +0000
-Date: Sun, 21 Sep 2025 17:56:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- d88d08faafe83a5fd03e7e56d1ac299a5eadbd53
-Message-ID: <202509211744.Aq01hoYE-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1758453929; c=relaxed/simple;
+	bh=YlrmXyjeO7GcRsXhqWeRYbpRf9DLv5IX+7MRr6Xm76s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Cd+8/eHPHlgvTtORZ5xf2O6QkQDVqt4EFHy5dyZP+BgZpZotXjPFYmFQYTlp/pk3y9FIajCNeYc/7vDPoRqKH87R3GknWM13t1QzAU8RjDGBmapyWyWym6Ak18SPGiV7VqjdhUmiF9o3B+PAUe6/Peqc0xHoCt2H5qxn396eIYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 311F21516;
+	Sun, 21 Sep 2025 04:25:18 -0700 (PDT)
+Received: from [10.163.39.139] (unknown [10.163.39.139])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D5DF23F673;
+	Sun, 21 Sep 2025 04:25:17 -0700 (PDT)
+Message-ID: <49731a4e-d00f-4f84-aaac-87405d6eadbf@arm.com>
+Date: Sun, 21 Sep 2025 16:55:14 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/memory-failure: Support disabling soft offline for
+ HugeTLB pages
+To: David Hildenbrand <david@redhat.com>, Kyle Meyer <kyle.meyer@hpe.com>
+Cc: akpm@linux-foundation.org, corbet@lwn.net, linmiaohe@huawei.com,
+ shuah@kernel.org, tony.luck@intel.com, jane.chu@oracle.com,
+ jiaqiyan@google.com, Liam.Howlett@oracle.com, bp@alien8.de,
+ hannes@cmpxchg.org, jack@suse.cz, joel.granados@kernel.org,
+ laoar.shao@gmail.com, lorenzo.stoakes@oracle.com, mclapinski@google.com,
+ mhocko@suse.com, nao.horiguchi@gmail.com, osalvador@suse.de,
+ rafael.j.wysocki@intel.com, rppt@kernel.org, russ.anderson@hpe.com,
+ shawn.fan@intel.com, surenb@google.com, vbabka@suse.cz,
+ linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+References: <aMiu_Uku6Y5ZbuhM@hpe.com>
+ <a99eb11f-a7ac-48a3-a671-c5f0f6b5b491@arm.com>
+ <8c3188da-7078-4099-973a-1d0d74db2720@redhat.com> <aMsDJ3EU1zVJ00cX@hpe.com>
+ <cd71fac2-bb9d-4e84-a074-2b695654e655@redhat.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <cd71fac2-bb9d-4e84-a074-2b695654e655@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: d88d08faafe83a5fd03e7e56d1ac299a5eadbd53  Merge branch 'pm-cpuidle' into bleeding-edge
 
-elapsed time: 1357m
 
-configs tested: 133
-configs skipped: 5
+On 18/09/25 12:35 AM, David Hildenbrand wrote:
+> On 17.09.25 20:51, Kyle Meyer wrote:
+>> On Wed, Sep 17, 2025 at 09:02:55AM +0200, David Hildenbrand wrote:
+>>>
+>>>>> +
+>>>>> +    0 - Enable soft offline
+>>>>> +    1 - Disable soft offline for HugeTLB pages
+>>>>> +
+>>>>> +Supported values::
+>>>>> +
+>>>>> +    0 - Soft offline is disabled
+>>>>> +    1 - Soft offline is enabled
+>>>>> +    3 - Soft offline is enabled (disabled for HugeTLB pages)
+>>>>
+>>>> This looks very adhoc even though existing behavior is preserved.
+>>>>
+>>>> - Are HugeTLB pages the only page types to be considered ?
+>>>> - How the remaining bits here are going to be used later ?
+>>>>
+>>>
+>>> What I proposed (that could be better documented here) is that all other
+>>> bits except the first one will be a disable mask when bit 0 is set.
+>>>
+>>> 2 - ... but yet disabled for hugetlb
+>>> 4 - ... but yet disabled for $WHATEVER
+>>> 8 - ... but yet disabled for $WHATEVERELSE
+>>>
+>>>> Also without a bit-wise usage roadmap, is not changing a procfs
+>>>> interface (ABI) bit problematic ?
+>>>
+>>> For now we failed setting it to values that are neither 0 or 1, IIUC
+>>> set_enable_soft_offline() correctly?
+>>
+>> Yes, -EINVAL will be returned.
+>>
+>>> So there should not be any problem, or which scenario do you have in mind?
+>>
+>> Here's an alternative approach.
+>>
+>> Do not modify the existing sysctl parameter:
+>>
+>> /proc/sys/vm/enable_soft_offline
+>>
+>> 0 - Soft offline is disabled
+>> 1 - Soft offline is enabled
+>>
+>> Instead, introduce a new sysctl parameter:
+>>
+>> /proc/sys/vm/enable_soft_offline_hugetlb
+>>
+>> 0 - Soft offline is disabled for HugeTLB pages
+>> 1 - Soft offline is enabled for HugeTLB pages
+>>
+>> and note in documentation that this setting only takes effect if
+>> enable_soft_offline is enabled.
+>>
+>> Anshuman (and David), would you prefer this?
+> 
+> Hmm, at least I don't particularly like that. For each new exception we would create a new file, and the file has weird semantics such that it has no meaning when enable_soft_offline=0.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-alpha                               defconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                                 defconfig    gcc-15.1.0
-arc                   randconfig-001-20250920    gcc-9.5.0
-arc                   randconfig-002-20250920    gcc-9.5.0
-arm                              allmodconfig    gcc-15.1.0
-arm                               allnoconfig    clang-22
-arm                              allyesconfig    gcc-15.1.0
-arm                                 defconfig    clang-22
-arm                   randconfig-001-20250920    gcc-12.5.0
-arm                   randconfig-002-20250920    clang-22
-arm                   randconfig-003-20250920    clang-22
-arm                   randconfig-004-20250920    clang-22
-arm                        spear6xx_defconfig    clang-22
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.1.0
-arm64                               defconfig    gcc-15.1.0
-arm64                 randconfig-001-20250920    clang-20
-arm64                 randconfig-002-20250920    clang-22
-arm64                 randconfig-003-20250920    clang-18
-arm64                 randconfig-004-20250920    clang-22
-csky                              allnoconfig    gcc-15.1.0
-csky                                defconfig    gcc-15.1.0
-csky                  randconfig-001-20250920    gcc-10.5.0
-csky                  randconfig-002-20250920    gcc-15.1.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-22
-hexagon                          allyesconfig    clang-22
-hexagon                             defconfig    clang-22
-hexagon               randconfig-001-20250920    clang-22
-hexagon               randconfig-002-20250920    clang-22
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20250920    clang-20
-i386        buildonly-randconfig-002-20250920    clang-20
-i386        buildonly-randconfig-003-20250920    clang-20
-i386        buildonly-randconfig-004-20250920    gcc-13
-i386        buildonly-randconfig-005-20250920    clang-20
-i386        buildonly-randconfig-006-20250920    clang-20
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-22
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20250920    clang-22
-loongarch             randconfig-002-20250920    gcc-12.5.0
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-m68k                                defconfig    gcc-15.1.0
-m68k                           virt_defconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-mips                        omega2p_defconfig    clang-22
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20250920    gcc-9.5.0
-nios2                 randconfig-002-20250920    gcc-11.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20250920    gcc-8.5.0
-parisc                randconfig-002-20250920    gcc-11.5.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    clang-22
-powerpc                      katmai_defconfig    clang-22
-powerpc               randconfig-001-20250920    clang-17
-powerpc               randconfig-002-20250920    clang-22
-powerpc               randconfig-003-20250920    clang-22
-powerpc64             randconfig-001-20250920    clang-16
-powerpc64             randconfig-002-20250920    gcc-10.5.0
-powerpc64             randconfig-003-20250920    gcc-10.5.0
-riscv                            allmodconfig    clang-22
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-22
-riscv                 randconfig-001-20250920    clang-22
-riscv                 randconfig-002-20250920    clang-22
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    clang-22
-s390                  randconfig-001-20250920    clang-20
-s390                  randconfig-002-20250920    gcc-8.5.0
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                    randconfig-001-20250920    gcc-14.3.0
-sh                    randconfig-002-20250920    gcc-12.5.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20250920    gcc-8.5.0
-sparc                 randconfig-002-20250920    gcc-14.3.0
-sparc64                             defconfig    clang-20
-sparc64               randconfig-001-20250920    gcc-8.5.0
-sparc64               randconfig-002-20250920    gcc-8.5.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    gcc-14
-um                                  defconfig    clang-22
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20250920    clang-22
-um                    randconfig-002-20250920    clang-22
-um                           x86_64_defconfig    clang-22
-x86_64                           alldefconfig    gcc-14
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250920    clang-20
-x86_64      buildonly-randconfig-002-20250920    clang-20
-x86_64      buildonly-randconfig-003-20250920    clang-20
-x86_64      buildonly-randconfig-004-20250920    clang-20
-x86_64      buildonly-randconfig-005-20250920    gcc-14
-x86_64      buildonly-randconfig-006-20250920    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20250920    gcc-8.5.0
-xtensa                randconfig-002-20250920    gcc-8.5.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Agree with David here. Adding a new procfs file for a particular page
+type's soft offline disable scenario does not really make sense. This
+will extend the ABI unnecessarily without adding much benefit.
 
