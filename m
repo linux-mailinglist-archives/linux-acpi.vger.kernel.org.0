@@ -1,174 +1,132 @@
-Return-Path: <linux-acpi+bounces-17161-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17162-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC639B8E2ED
-	for <lists+linux-acpi@lfdr.de>; Sun, 21 Sep 2025 20:09:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD9CB8E37B
+	for <lists+linux-acpi@lfdr.de>; Sun, 21 Sep 2025 20:46:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 648273BFB11
-	for <lists+linux-acpi@lfdr.de>; Sun, 21 Sep 2025 18:09:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40AF57A5C89
+	for <lists+linux-acpi@lfdr.de>; Sun, 21 Sep 2025 18:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717B1274B2F;
-	Sun, 21 Sep 2025 18:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C6D26F2B8;
+	Sun, 21 Sep 2025 18:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LggHvpcg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A0RTRwAM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A42254B19;
-	Sun, 21 Sep 2025 18:09:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD9B20ADD6
+	for <linux-acpi@vger.kernel.org>; Sun, 21 Sep 2025 18:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758478141; cv=none; b=mkWHkGp6Fq4lDIoCCW/et+22gRMNNQ1qP3N1kzIdlrWE7jFU4ITOTNWdNywbPM7iYQ1PAI9HyZOAMzdQIjDyRPaInbcalS79mKjT4P+xdoUfTMXomgL0k7F0SnCyehNQudfqOs1zWBYu674DnXUadBbj80RSshJfFX1phQQWcUI=
+	t=1758480365; cv=none; b=N5S4qdFhCMmvWxETSBfQANZ9R7Ax7R9qAjEYzS6qFLbzgZkkXdPg4c22zSHlOdEqGgDl1byMpPAwQjYAwQq9P7KxyXHWlvgFrQNYi97W1oGMnbxygwBRH5xUyl2RXZY2RBxHwYpjHDpTQYnS2lP40GgFcdyq7xE/PbfDRlGoXWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758478141; c=relaxed/simple;
-	bh=Jc+3ss1RntgdCTHA/Sh2ehd4H0pak4TUfCRpOkLWagk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kG6xDpMTYzJH5+fmZmNC7Y1Q9+8fwMiWqcyLfGhiQU2s+YhVXSJEE5MagVF3SJZbQ54LIr0getkwCAjJmF8QUqJQ8O5BvdO/Ewx5r1l9kzgF0qZ7fg+kagC+iGCzp80ZJbAmF22gtIBkr9SI58putyfPPQIvwrbCj6xzI0KTCZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LggHvpcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B5CC4CEE7;
-	Sun, 21 Sep 2025 18:08:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758478140;
-	bh=Jc+3ss1RntgdCTHA/Sh2ehd4H0pak4TUfCRpOkLWagk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LggHvpcghfvzN3XrFEmJV7wTSZU/PwXfG948FhXMMH5CPA6j/9hQQfAo9+5ZuyKDb
-	 7p+516wvAB3CxXldBCKCGguY3hU6QamJIy4DJ9iLmDwtefraLRJUFM7ekFZ71tVeTl
-	 Mlz0/SYyp942GVQOA8HFn0zr17Yn+aOZID4VVaQvBfvdyDBgZ8aqtV6IAw8tf6Vkg/
-	 UE3i0XlBmxwpNJ2k7qSWLccW0/wselLVU6m8++cjvUPh1E9FRkqxQNfn0/FGFoOwN7
-	 piJrHoyIBqYI2iNOT/YYItKWdS3O68EUSZW+767qpUjPVLGMUs1r+o7amY6v8W22Sl
-	 eth7u11CJyPRw==
-Message-ID: <6d9e13e9-1e93-4e39-bfd1-56e4d25c007f@kernel.org>
-Date: Sun, 21 Sep 2025 13:08:58 -0500
+	s=arc-20240116; t=1758480365; c=relaxed/simple;
+	bh=s2zLXFL3oZyxxRnuK7m4mTTTzjy81wEwkm7YmZJ3hOk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DAlQJluj7pza5C2tLbr9z8Bp95Pxv4YwTReIgBBoNRJIz2fNh1afM17xFIDisTXcW8QscS/Xga1k83cayZ+pSm183uw9MTXbfBy0w6Od8XWtHpnFTuZXxibj8CXF6mpSiyeJlOvmC0nCyW0IWDZuU3KdYvRFLfQURYOxQ7gQSrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A0RTRwAM; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b04770a25f2so601674866b.2
+        for <linux-acpi@vger.kernel.org>; Sun, 21 Sep 2025 11:46:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758480362; x=1759085162; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LvrG/fYnobVZfYkaIXOslWuOpvRasf4JDL3N8DCdcQs=;
+        b=A0RTRwAMtYjsbE2dh7F6aSybVsW2KDNOhzynNZVg7etLOYUqySgmbrQZVG4eb0xaL5
+         /qFhlaMbRr+KGh81qyqjyVqlifaAYUMO8Ouee8z/N3qfSVUtl7swhKLPIWg17jeoRsaD
+         8OMAaAdCnVgWF4ktevl7OkCgDgvqGqc2XLFXC+YVdngZniD0V7Rakmtu2g/aMMy5FHko
+         4wd7hxgW8FRyPtm4ysC5KJGw2e6BVF2q12lSeNTSTnW0bAaV9yi7/5JkLInKyBV/EFvj
+         VDU7qOFgT1FDSxUyDHFSvLSmkEQ32nSH7vtfY/grpDdyT22TBAZqdPNilFNEVgLQtSWR
+         gezw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758480362; x=1759085162;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LvrG/fYnobVZfYkaIXOslWuOpvRasf4JDL3N8DCdcQs=;
+        b=PbaoMp8raTodLiLb/HtY2617ZM8aAQWBSNQ+D4lFfxcDBJG6NHlqv9MAUTW9fQ+TaE
+         ctEc19z6LLvoyX9+tMpIjuaiQyRvB4b7BpJrGjmyUatJk05gVqpQiP3TEkhcmgQ5aF8S
+         BOIucKMBRKdfTakwqqjP0o040eXtA/Q1F++/LWLMyG5kMfkfiaUyhTXYCL2xiL7wTtFP
+         opIoJWQBebkyJMzJhTVV+LIhCbBU1VwtRy+aicM+hXlBk5eZe88FxS0/FJiNp0AUAMYO
+         Iieffz9bcuhRlwoBmRPVJT3SBorIDe/wcF3oPaeqjNSa2mboY1p6YtFyaNA6P5JUJXEA
+         hZTA==
+X-Forwarded-Encrypted: i=1; AJvYcCU460KEx4voto8r4G+G2zWuHenAGfKXYJI/rlJBiq4b6uX//ohtfn5zhA05L7QqnzbXw8zklL0QQqcQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdEgiIh3TpHs/LLTU0+iIUr1/MWRBFuqUCZ0ED62qXWE7x/wF+
+	Hj4Lu6os6wiZl2SGSgDf/6DS0zP1pKFiauH7FLh5qyhufbRs7FtY9tWS5lMU3ubKkJ32m3sHd+u
+	65sWw7KDLVclBuMr1M+Ww2SZG89WO21M=
+X-Gm-Gg: ASbGncsSzwF9B7ufIDROzkPvY2vP5n3g/Rz4gYM779DJRr16mkRsDSrOK7GYIJi+AW4
+	5FDgOpkWYwW8aBcOBk750+v9Zyf8jeuX10+OICuHBOTq3dNBU02M4q7o65N5PXLWH6Y07kih/jq
+	MtLzJvhJcLuphZsU1T3zPsnq6DeBD3S4lUAvien1WA3+RXad/E+IZEQj968Rv3xUxyTSG1sJTUm
+	V4bKbA=
+X-Google-Smtp-Source: AGHT+IGGGllbTI7KeHuphlLDGQpJRt14pyAekhjmR1hgEzwbGY/f9vj/49nWttbUlxCKKlMAxXhz85pHtx1Lj09NDyY=
+X-Received: by 2002:a17:907:1c8e:b0:b04:39af:bee9 with SMTP id
+ a640c23a62f3a-b24e116b821mr976879266b.0.1758480361850; Sun, 21 Sep 2025
+ 11:46:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.17 REGRESSION FIX] gpiolib: acpi: Make set debounce
- errors non fatal
-To: Hans de Goede <hansg@kernel.org>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Andy Shevchenko <andy@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
- Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250920201200.20611-1-hansg@kernel.org>
-Content-Language: en-US
-From: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
-In-Reply-To: <20250920201200.20611-1-hansg@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250920200955.20403-1-hansg@kernel.org> <w7twypwesy4t5qkcupjqyqzcdh2soahqpa35rqeajzh2syhtra@6trjploaie6g>
+ <d8e90507-49d1-4afa-a71a-ceacf5f89f82@kernel.org>
+In-Reply-To: <d8e90507-49d1-4afa-a71a-ceacf5f89f82@kernel.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sun, 21 Sep 2025 21:45:24 +0300
+X-Gm-Features: AS18NWBhNqYELqho0RrBHNg2hMISYyhFwTOMutrnHFC2Ze-Ijp3oRQDj_P3ofHU
+Message-ID: <CAHp75Vdt6Fpt5JHzKFGLDGjeEV9io+D37FfbWWYMX6B4gc76+A@mail.gmail.com>
+Subject: Re: [PATCH v2] gpiolib: Extend software-node support to support
+ secondary software-nodes
+To: Hans de Goede <hansg@kernel.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, Andy Shevchenko <andy@kernel.org>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Sun, Sep 21, 2025 at 4:00=E2=80=AFPM Hans de Goede <hansg@kernel.org> wr=
+ote:
+> On 20-Sep-25 11:27 PM, Dmitry Torokhov wrote:
+> > On Sat, Sep 20, 2025 at 10:09:55PM +0200, Hans de Goede wrote:
+
+...
+
+> > Bikeshedding for later. Maybe do it like this in case we can have more
+> > than 2 nodes at some point?
+> >
+> >         do {
+> >               desc =3D gpiod_find_by_fwnode(fwnode, consumer, con_id, i=
+dx, flags, lookupflags);
+> >               if (!gpiod_not_found(desc))
+> >                       return desc;
+> >
+> >               fwnode =3D fwnode->secondary;
+> >       } while (!IS_ERR_OR_NULL(fwnode));
+> >
+> >       return ERR_PTR(-ENOENT);
+>
+> At a minimum this would need to a regular while () {} loop then,
+> the initial fwnode may also be NULL and we don't want to deref that.
+>
+> Andy did mention turning the fwnode-s into a regular linked-list
+> in the future, but I think that would be using <linux/list.h> then,
+> replacing the secondary pointer with a list head ?
+
+Dropping secondary in the struct fwnode_handle and use struct
+list_head somewhere else, e.g., struct device.
+
+> >> +}
 
 
-
-On 9/20/2025 3:12 PM, Hans de Goede wrote:
-> Commit 16c07342b542 ("gpiolib: acpi: Program debounce when finding GPIO")
-> adds a gpio_set_debounce_timeout() call to acpi_find_gpio() and makes
-> acpi_find_gpio() fail if this fails.
-> 
-> But gpio_set_debounce_timeout() failing is a somewhat normal occurrence,
-> since not all debounce values are supported on all GPIO/pinctrl chips.
-> 
-> Making this an error for example break getting the card-detect GPIO for
-> the micro-sd slot found on many Bay Trail tablets, breaking support for
-> the micro-sd slot on these tablets.
-> 
-> acpi_request_own_gpiod() already treats gpio_set_debounce_timeout()
-> failures as non-fatal, just warning about them.
-> 
-> Add a acpi_gpio_set_debounce_timeout() helper which wraps
-> gpio_set_debounce_timeout() and warns on failures and replace both existing
-> gpio_set_debounce_timeout() calls with the helper.
-> 
-> Since the helper only warns on failures this fixes the card-detect issue.
-> 
-> Fixes: 16c07342b542 ("gpiolib: acpi: Program debounce when finding GPIO")
-> Cc: stable@vger.kernel.org
-> Cc: Mario Limonciello <superm1@kernel.org>
-> Signed-off-by: Hans de Goede <hansg@kernel.org>
-
-Looks pretty much identical now to what I sent in my v3 and that Andy 
-had requested we change to make it fatal [1].
-
-Where is this bad GPIO value coming from?  It's in the GpioInt() 
-declaration?  If so, should the driver actually be supporting this?
-
-https://lore.kernel.org/linux-gpio/20250811164356.613840-1-superm1@kernel.org/ 
-[1]
-
-> ---
->   drivers/gpio/gpiolib-acpi-core.c | 27 +++++++++++++++------------
->   1 file changed, 15 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
-> index 284e762d92c4..67c4c38afb86 100644
-> --- a/drivers/gpio/gpiolib-acpi-core.c
-> +++ b/drivers/gpio/gpiolib-acpi-core.c
-> @@ -291,6 +291,19 @@ acpi_gpio_to_gpiod_flags(const struct acpi_resource_gpio *agpio, int polarity)
->   	return GPIOD_ASIS;
->   }
->   
-> +static void acpi_gpio_set_debounce_timeout(struct gpio_desc *desc,
-> +					   unsigned int acpi_debounce)
-> +{
-> +	int ret;
-> +
-> +	/* ACPI uses hundredths of milliseconds units */
-> +	acpi_debounce *= 10;
-> +	ret = gpio_set_debounce_timeout(desc, acpi_debounce);
-> +	if (ret)
-> +		gpiod_warn(desc, "Failed to set debounce-timeout %u: %d\n",
-> +			   acpi_debounce, ret);
-> +}
-> +
->   static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
->   						struct acpi_resource_gpio *agpio,
->   						unsigned int index,
-> @@ -300,18 +313,12 @@ static struct gpio_desc *acpi_request_own_gpiod(struct gpio_chip *chip,
->   	enum gpiod_flags flags = acpi_gpio_to_gpiod_flags(agpio, polarity);
->   	unsigned int pin = agpio->pin_table[index];
->   	struct gpio_desc *desc;
-> -	int ret;
->   
->   	desc = gpiochip_request_own_desc(chip, pin, label, polarity, flags);
->   	if (IS_ERR(desc))
->   		return desc;
->   
-> -	/* ACPI uses hundredths of milliseconds units */
-> -	ret = gpio_set_debounce_timeout(desc, agpio->debounce_timeout * 10);
-> -	if (ret)
-> -		dev_warn(chip->parent,
-> -			 "Failed to set debounce-timeout for pin 0x%04X, err %d\n",
-> -			 pin, ret);
-> +	acpi_gpio_set_debounce_timeout(desc, agpio->debounce_timeout);
->   
->   	return desc;
->   }
-> @@ -944,7 +951,6 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
->   	bool can_fallback = acpi_can_fallback_to_crs(adev, con_id);
->   	struct acpi_gpio_info info = {};
->   	struct gpio_desc *desc;
-> -	int ret;
->   
->   	desc = __acpi_find_gpio(fwnode, con_id, idx, can_fallback, &info);
->   	if (IS_ERR(desc))
-> @@ -959,10 +965,7 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
->   	acpi_gpio_update_gpiod_flags(dflags, &info);
->   	acpi_gpio_update_gpiod_lookup_flags(lookupflags, &info);
->   
-> -	/* ACPI uses hundredths of milliseconds units */
-> -	ret = gpio_set_debounce_timeout(desc, info.debounce * 10);
-> -	if (ret)
-> -		return ERR_PTR(ret);
-> +	acpi_gpio_set_debounce_timeout(desc, info.debounce);
->   
->   	return desc;
->   }
-
+--=20
+With Best Regards,
+Andy Shevchenko
 
