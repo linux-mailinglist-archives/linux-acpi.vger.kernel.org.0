@@ -1,52 +1,52 @@
-Return-Path: <linux-acpi+bounces-17182-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17184-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B93B8F83C
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 10:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E58B8F848
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 10:30:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEC187A7D5F
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 08:27:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9215F7A94D5
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 08:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036C13002D0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7C9301013;
 	Mon, 22 Sep 2025 08:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cvKPJ6yo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jhi07IMm"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0262FFFAD;
-	Mon, 22 Sep 2025 08:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65415301003;
+	Mon, 22 Sep 2025 08:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758529726; cv=none; b=slisCeuVvBtlK+wCdo9YJHtlUOEKvXZfaMVsqtgkeXDbc0KRQ74mhs7AgbtQk8PYtmFU8Ed+aJcIkmgixaGPpt1GtclldD/xYHYRwMB/vEKNGhOacvo6pT0GjNpYEfIP/YOM2mK6wr8edXo5NWUXveJ6yEA2azwvJCJUpcVLgEo=
+	t=1758529727; cv=none; b=dw/BXBiZMVoMfQFVLSsHLSbiFpWX8KibTKDMeWVE0pvxuLUYk924SZh1CmhkFmJKzpr3slc61A0PeoR3pMJSTHBsAFtWSYzwLk57l5o42GLbRiZ/sK2SwmvFrEKGnXOoH/dZ2j35Wb9HFWQA/bnP6b0AAariPru2Gw+qTBCsbcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758529726; c=relaxed/simple;
-	bh=9bnWd8U5uJVzMhF0VNM4Fq8zW1CPc18xcTGjzBTs9K4=;
+	s=arc-20240116; t=1758529727; c=relaxed/simple;
+	bh=bFjNQVe7yAr4nDhmaXS6B/2dp3OJbQN2q7Bx3OxCIIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tKMyIHIv92uwEwurhdRxUdcj18mdMv5uFQPYl1sb62Ro5LopPa/4DeEvpm7X0RbJzKQ7wrt17k4T7im+rH3oyy/VJ0LCXEIRBGCkjxhROY7yYlpw1PyoPeTYH8jHhQBBP0PLvuGnYnsGkWHVhhfE/RULBpMVZhUk2/1uJmuObhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cvKPJ6yo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAF7C4CEF0;
+	 MIME-Version; b=moNelhN2xwo62UQwFhNw36gfOoBKRJr0mIOG50J+PrMRRxxHg5Ylt5pkMRLOGiJABsulTj3jCGNmjj8IlTe6nKbok5iZJ9Fs3T8swbTxIlxJoeDiTpvKKBUZR4kHUp4MfYaywXDRqpveRPUUmpERDST8/AQjYYgDhwSznvzLguY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jhi07IMm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1FDC116D0;
 	Mon, 22 Sep 2025 08:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758529726;
-	bh=9bnWd8U5uJVzMhF0VNM4Fq8zW1CPc18xcTGjzBTs9K4=;
+	s=k20201202; t=1758529727;
+	bh=bFjNQVe7yAr4nDhmaXS6B/2dp3OJbQN2q7Bx3OxCIIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cvKPJ6yo3XE1zMlVxa0zyYCqCRg+QyaZH0AgS89N4mvhinGfez7MvNY3GdyBIvqFz
-	 j7557PGEljG/RT7LHlH7yw3XJZPLJPr4g07iA2W+R0UqUCdoUy25GutLkf5nKbgUww
-	 HTq/AeacIAttwMjQgJN1q5RFHQhkl/RPKDznfmC4sKTQp+cpIzj51iWcPgB4IOVLE7
-	 QdsObwNmNbNaK/zIn4DKYLieKNmctRb0YUP3A8gg0Q16cPzQwMVl76CBMFkDV+xipn
-	 jdZCh6FLxc21zw338WxdkfD5x5zNO4d6eCoJuzXhoA9OzrlEeEZ5OFkhtEVHOSRT/4
-	 3D1c3epO0VbtQ==
+	b=jhi07IMmjK+aV+1jhePCBY3I8PVlfEpzAH3hdonlgM88poHI7HhaXuQYQvfoka/Sz
+	 Sw2dwr47p9M5qlyZZZLdZVkV5vn8GYWsNYCwimaFvxjYWopium3MbU/T4dJ9mNjOIi
+	 yK25fJWwuop69M7kG8C7UMFqmB1wU++02dl15QGjKo02A/GBNzLyaXb984D9Y3npD1
+	 JpSOYeRBplyh+b/8DWsW3TmNiTRtk1cND4aBd2ghUKgsHyQZerOMPzza5ZQHVeRoyh
+	 qRQjvnmx5sHayyOTn/S8PadEXY8seNHAJ6H70HHrbdZIVkm5svpPw0K7wHvzLrfkm9
+	 5LIyJSuZPgyXg==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1v0bue-00000008Kds-3Zg8;
-	Mon, 22 Sep 2025 08:28:44 +0000
+	id 1v0buf-00000008Kds-0ZY1;
+	Mon, 22 Sep 2025 08:28:45 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -63,9 +63,9 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	James Clark <james.clark@linaro.org>,
 	Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: [PATCH v3 11/26] genirq: Kill handle_percpu_devid_fasteoi_nmi()
-Date: Mon, 22 Sep 2025 09:28:18 +0100
-Message-ID: <20250922082833.2038905-12-maz@kernel.org>
+Subject: [PATCH v3 12/26] genirq: Merge irqaction::{dev_id,percpu_dev_id}
+Date: Mon, 22 Sep 2025 09:28:19 +0100
+Message-ID: <20250922082833.2038905-13-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250922082833.2038905-1-maz@kernel.org>
 References: <20250922082833.2038905-1-maz@kernel.org>
@@ -81,64 +81,41 @@ X-SA-Exim-Rcpt-To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradea
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-There is no in-tree user of this flow handler anymore, so simply
-remove it.
+When irqaction::percpu_dev_id was introduced, it was hoped that it
+could be part of an anonymous union with dev_id, as the two fields
+are mutually exclusive.
 
-Suggested-by: Will Deacon <will@kernel.org>
+However, toolchains used at the time were often showing terrible
+support for anonymous unions, breaking the build on a number of
+architectures. It was therefore decided to keep the two fields separate
+and address this down the line.
+
+14 years later, the compiler dark age is over, and there is universal
+support for anonymous unions. Let's get a whole pointer back that can
+immediately be spent on something else.
+
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- include/linux/irq.h |  1 -
- kernel/irq/chip.c   | 25 -------------------------
- 2 files changed, 26 deletions(-)
+ include/linux/interrupt.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index 1d6b606a81efe..1381f9d1f5c9d 100644
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -655,7 +655,6 @@ extern void handle_bad_irq(struct irq_desc *desc);
- extern void handle_nested_irq(unsigned int irq);
- 
- extern void handle_fasteoi_nmi(struct irq_desc *desc);
--extern void handle_percpu_devid_fasteoi_nmi(struct irq_desc *desc);
- 
- extern int irq_chip_compose_msi_msg(struct irq_data *data, struct msi_msg *msg);
- extern int irq_chip_pm_get(struct irq_data *data);
-diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
-index 0d0276378c707..d1c9e357f64d2 100644
---- a/kernel/irq/chip.c
-+++ b/kernel/irq/chip.c
-@@ -929,31 +929,6 @@ void handle_percpu_devid_irq(struct irq_desc *desc)
- 		chip->irq_eoi(&desc->irq_data);
- }
- 
--/**
-- * handle_percpu_devid_fasteoi_nmi - Per CPU local NMI handler with per cpu
-- *				     dev ids
-- * @desc:	the interrupt description structure for this irq
-- *
-- * Similar to handle_fasteoi_nmi, but handling the dev_id cookie
-- * as a percpu pointer.
-- */
--void handle_percpu_devid_fasteoi_nmi(struct irq_desc *desc)
--{
--	struct irq_chip *chip = irq_desc_get_chip(desc);
--	struct irqaction *action = desc->action;
--	unsigned int irq = irq_desc_get_irq(desc);
--	irqreturn_t res;
--
--	__kstat_incr_irqs_this_cpu(desc);
--
--	trace_irq_handler_entry(irq, action);
--	res = action->handler(irq, raw_cpu_ptr(action->percpu_dev_id));
--	trace_irq_handler_exit(irq, action, res);
--
--	if (chip->irq_eoi)
--		chip->irq_eoi(&desc->irq_data);
--}
--
- static void
- __irq_do_set_handler(struct irq_desc *desc, irq_flow_handler_t handle,
- 		     int is_chained, const char *name)
+diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+index 51b6484c04934..0ec1a71ab4e84 100644
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -121,8 +121,10 @@ typedef irqreturn_t (*irq_handler_t)(int, void *);
+  */
+ struct irqaction {
+ 	irq_handler_t		handler;
+-	void			*dev_id;
+-	void __percpu		*percpu_dev_id;
++	union {
++		void		*dev_id;
++		void __percpu	*percpu_dev_id;
++	};
+ 	struct irqaction	*next;
+ 	irq_handler_t		thread_fn;
+ 	struct task_struct	*thread;
 -- 
 2.47.3
 
