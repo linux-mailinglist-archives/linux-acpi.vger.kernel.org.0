@@ -1,106 +1,189 @@
-Return-Path: <linux-acpi+bounces-17171-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17175-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89FEEB8F656
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 10:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BAD7B8F80F
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 10:28:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 352913A5B2C
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 08:03:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21A163A4C52
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 08:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033E2261B71;
-	Mon, 22 Sep 2025 08:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073482FDC5C;
+	Mon, 22 Sep 2025 08:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QjTtRuvG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oDU7b41W"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE96219A7D
-	for <linux-acpi@vger.kernel.org>; Mon, 22 Sep 2025 08:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04F42FDC27;
+	Mon, 22 Sep 2025 08:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758528218; cv=none; b=YO+yDzC43YxYyDld7Ao08I5VqoJ67127fZMKVgs7WcVDEEZoOpYUJsMkqszWcHw0NUXt10IB11hNTE2DidysIb7K4N5SyKV8ScqoLdcruXDHthRFzLjaPTK1rPR9ISIvqgiH5R+/KLKZOtQDzkbC2CfDgy+kKbzzlfHVVPW0kfw=
+	t=1758529724; cv=none; b=LEvlAQMQr9p5D+eamN4H8+jX10zvWejywEIUlsnL0vw+vfKGLmCleKM+zxBOUaUVK9Sn51/sR+qwI7DUwdx1hs4EyZZa6cGjLMnL3QStFzb3Cufs3R7X14HE4ZuYIL8zjm09Q/x1PPIIZbMW8VgrX2AXFlTa+AAXN8vqSEQiEVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758528218; c=relaxed/simple;
-	bh=NRSIzWoIRujQLA9etY6a6nHx0k+mhGmF3AGfbifPezw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LuSDYZ2fow+3LWlq3VFcy7h0MMI8dE3LyjVDzT1g3jQGArQ8tD+Ns8PM7sj0k8gnIACZkTeiLyB6VfrOHZy+dUEra5+RGks+cNcQ4+aI9NWCXRGQooF0nfsr40mQs+uVppgHUU4CCe4mkwRdqAD3sQO6CXS2na6XxcISYcSgBEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QjTtRuvG; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758528217; x=1790064217;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NRSIzWoIRujQLA9etY6a6nHx0k+mhGmF3AGfbifPezw=;
-  b=QjTtRuvGeCO84aBvtQUQQZhPookJJ91KTC9svZ3/kTKjtR/Dk5opR4Ie
-   rpw8B285r8K4gc2OPmJrLW9oPLV36BtPT71PqetZnIbITDgnZvuG3d1Fc
-   pkdxo3VJgfPND6nstSvZh0JoLndHj2EFUcgqhbOpB+cGLhWnWm4WvULtP
-   v2SKfYV9LbACHCyEb4EACq0wc7DjxQJ8rQtSLtmx8OvIJbbj/Mw1qyw2O
-   5NlaSP4d5lItHFdfblYQe7sHLQwZT6vyCy1YLJLZYjjPzpaAxok9Qs6iD
-   M/EnF6TN9oKbxbyVI3pTWEzWV0hVlcS4NqFKhPhTaKLZL0QFG/BqsWuCk
-   A==;
-X-CSE-ConnectionGUID: cAh41B5hR4C2pCiv+V43CA==
-X-CSE-MsgGUID: OlTkNYUzRV6WJKLmMtzidw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64589070"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="64589070"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 01:03:36 -0700
-X-CSE-ConnectionGUID: 3GaIie4QTWK1V0PHv+ojKQ==
-X-CSE-MsgGUID: DiPyNWeqRy67Rjaqsu80Hg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; 
-   d="scan'208";a="175688924"
-Received: from smile.fi.intel.com ([10.237.72.51])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 01:03:34 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1v0bWG-000000054Cw-02hC;
-	Mon, 22 Sep 2025 11:03:32 +0300
-Date: Mon, 22 Sep 2025 11:03:31 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: linux-acpi@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH 06/14] property: Document that fwnode API returns
- available nodes
-Message-ID: <aNEC02ZRdwVcA6mr@smile.fi.intel.com>
-References: <20250916160129.3955410-1-sakari.ailus@linux.intel.com>
- <20250916160129.3955410-7-sakari.ailus@linux.intel.com>
+	s=arc-20240116; t=1758529724; c=relaxed/simple;
+	bh=NXls5rbHqxDLi0/3KiCGchnqWOEFMs5iQ5o5i5E3JZ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hcZFv4u4X8t+inC+AjqV0iT/aOpMVuVSWisFXPGBc9Gsby7BSEscfHnM2EQbsajNYdLoy1g15DBcVGmIi+0knbqvYjg2oT2290harS9R/7thvQr6SULRTn0dAtDOd7rom4CF4llgpSkNsXDQw8n3sVcsfHGxNBDr0bUNoQKMVZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oDU7b41W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523E7C116C6;
+	Mon, 22 Sep 2025 08:28:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758529724;
+	bh=NXls5rbHqxDLi0/3KiCGchnqWOEFMs5iQ5o5i5E3JZ0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=oDU7b41Wz7w32jihd3t9/LYaa0cDmaIj1mVdp43n+Gsc7i/IEb57IXE5iSL60+qSz
+	 GT/FXgIlUBZCcARV7J7bC2eddJwGAnRV7/nTiTNFFhC/z9PSlt3VXxGa/3Hxc9jWGg
+	 zrGlkNI+MpGNuOmByfa4txFbPZXYeDS8etIDwQnSBaazTzaa84B2wRy0D28smGtpg4
+	 xwRJX9FDlkK1XEjtbbeoQOVtCKIb5ZvEAHRjT94mtWAAaw9Tkx3YsfgnB5oxrMvQ8Q
+	 DjXOjYQxWRpfGjTTzjLuyH/ZDAFjkY3IVxl8woP9oH6tqGjdjUEncGmEoAn1xQHc2G
+	 ggbumsA/W7kdg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1v0bub-00000008Kds-2Vyj;
+	Mon, 22 Sep 2025 08:28:41 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>
+Subject: [PATCH v3 00/26] genirq: Add support for percpu_devid IRQ affinity
+Date: Mon, 22 Sep 2025 09:28:07 +0100
+Message-ID: <20250922082833.2038905-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250916160129.3955410-7-sakari.ailus@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, tglx@linutronix.de, mark.rutland@arm.com, will@kernel.org, rafael@kernel.org, robh@kernel.org, saravanak@google.com, gregkh@linuxfoundation.org, sven@kernel.org, j@jannau.net, suzuki.poulose@arm.com, james.clark@linaro.org, jonathan.cameron@huawei.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, Sep 16, 2025 at 07:01:21PM +0300, Sakari Ailus wrote:
-> The fwnode API has historically provided two functions to iterate over a
-> fwnode's child nodes, fwnode_get_next_child_node() and
-> fwnode_get_next_available_child_node() whereas all of the fwnode API has
-> always worked on available nodes, apart unavailable ACPI child device
-> nodes could have been returned by fwnode_get_next_child_node().
-> 
-> Now that the availability check has been added to ACPI side as well,
-> document that the functions in the fwnode API return available nodes.
+This is the third version of this series, originally posted at [1],
+which aims at allowing percpu_devid interrupt requests on the basis of
+an affinity mask. See the original submission for the details of why
+this is a desirable outcome.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From v2, we have some tidying up, thanks to Jonathan's review -- see
+changelog for details.
+
+FWIW, I've pushed a branch at [3].
+
+* From v2 [2]:
+
+  - Turned of_node_to_fwnode() usage to of_fwnode_handle() (Jonathan)
+
+  - Added a patch to finally kill of_node_to_fwnode()
+
+  - Tidied-up documentation, comments and formatting (Jonathan)
+
+  - Collected ABs and Rbs, with thanks (Jonathan, Suzuki, Sven)
+
+* From v1 [1]:
+
+  - Fixed NMI handling by getting rid of the NMI-specific flow
+    handler, which was pretty useless anyway (Will)
+
+  - As a result, killed a metric buttload worth of GICv3 code
+
+  - Moved irq_fwspec out of irq_fwspec_info, and passed it as a
+    parameter to irq_get_fwspec_info(), renamed from irq_get_info(),
+    and applied some generous sanitisation of the structure (Thomas)
+
+  - Dropped the rather useless fwspec validity flag (Thomas)
+
+  - Rejigged the PMU per-CPU handling to better deal with the DT/ACPI
+    differences, and drop some now useless patches (Will)
+
+  - Plenty of cosmetic rework (Raphael, Thomas)
+
+[1] https://lore.kernel.org/r/20250908163127.2462948-1-maz@kernel.org
+[2] https://lore.kernel.org/r/20250915085702.519996-1-maz@kernel.org
+[3] git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms.git irq/ppi-affinity
+
+Marc Zyngier (25):
+  irqdomain: Add firmware info reporting interface
+  ACPI: irq: Add IRQ affinity reporting interface
+  of/irq: Add IRQ affinity reporting interface
+  platform: Add firmware-agnostic irq and affinity retrieval interface
+  irqchip/gic-v3: Add FW info retrieval support
+  irqchip/apple-aic: Add FW info retrieval support
+  coresight: trbe: Convert to new IRQ affinity retrieval API
+  perf: arm_pmu: Convert to new IRQ affinity retrieval API
+  perf: arm_spe_pmu: Convert to new IRQ affinity retrieval API
+  irqchip/gic-v3: Switch high priority PPIs over to
+    handle_percpu_devid_irq()
+  genirq: Kill handle_percpu_devid_fasteoi_nmi()
+  genirq: Merge irqaction::{dev_id,percpu_dev_id}
+  genirq: Factor-in percpu irqaction creation
+  genirq: Add affinity to percpu_devid interrupt requests
+  genirq: Update request_percpu_nmi() to take an affinity
+  genirq: Allow per-cpu interrupt sharing for non-overlapping affinities
+  genirq: Add request_percpu_irq_affinity() helper
+  perf: arm_spe_pmu: Request specific affinities for percpu IRQ
+  coresight: trbe: Request specific affinities for percpu IRQ
+  irqchip/gic-v3: Drop support for custom PPI partitions
+  irqchip/apple-aic: Drop support for custom PMU irq partitions
+  irqchip: Kill irq-partition-percpu
+  genirq: Kill irq_{g,s}et_percpu_devid_partition()
+  irqdomain: Kill of_node_to_fwnode() helper
+  perf: arm_pmu: Kill last use of per-CPU cpu_armpmu pointer
+
+Will Deacon (1):
+  perf: arm_pmu: Request specific affinities for percpu NMI/IRQ
+
+ arch/arm64/kernel/smp.c                      |   2 +-
+ drivers/acpi/irq.c                           |  19 ++
+ drivers/base/platform.c                      |  60 ++++-
+ drivers/hwtracing/coresight/coresight-trbe.c |   9 +-
+ drivers/irqchip/Kconfig                      |   4 -
+ drivers/irqchip/Makefile                     |   1 -
+ drivers/irqchip/irq-apple-aic.c              |  56 +++--
+ drivers/irqchip/irq-gic-v3.c                 | 224 +++++------------
+ drivers/irqchip/irq-partition-percpu.c       | 241 -------------------
+ drivers/of/irq.c                             |  20 ++
+ drivers/perf/arm_pmu.c                       |  49 ++--
+ drivers/perf/arm_pmu_acpi.c                  |   2 +-
+ drivers/perf/arm_pmu_platform.c              |  20 +-
+ drivers/perf/arm_pmuv3.c                     |   2 +-
+ drivers/perf/arm_spe_pmu.c                   |  13 +-
+ include/linux/acpi.h                         |   7 +
+ include/linux/interrupt.h                    |  24 +-
+ include/linux/irq.h                          |   5 -
+ include/linux/irqchip/irq-partition-percpu.h |  53 ----
+ include/linux/irqdesc.h                      |   1 -
+ include/linux/irqdomain.h                    |  33 ++-
+ include/linux/of_irq.h                       |   7 +
+ include/linux/perf/arm_pmu.h                 |   6 +-
+ include/linux/platform_device.h              |   2 +
+ kernel/irq/chip.c                            |  35 +--
+ kernel/irq/irqdesc.c                         |  24 +-
+ kernel/irq/irqdomain.c                       |  32 ++-
+ kernel/irq/manage.c                          | 125 +++++++---
+ 28 files changed, 420 insertions(+), 656 deletions(-)
+ delete mode 100644 drivers/irqchip/irq-partition-percpu.c
+ delete mode 100644 include/linux/irqchip/irq-partition-percpu.h
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.47.3
 
 
