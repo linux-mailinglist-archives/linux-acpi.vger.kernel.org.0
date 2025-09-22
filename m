@@ -1,165 +1,118 @@
-Return-Path: <linux-acpi+bounces-17201-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17202-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7356DB91B69
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 16:29:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A898B9234E
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 18:21:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A554B424EA6
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 14:29:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BF6F189AFE3
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 16:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05395244679;
-	Mon, 22 Sep 2025 14:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFA93112BD;
+	Mon, 22 Sep 2025 16:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="T5tm19TQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZxPE1Wk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5974226863
-	for <linux-acpi@vger.kernel.org>; Mon, 22 Sep 2025 14:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82257215198;
+	Mon, 22 Sep 2025 16:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758551351; cv=none; b=ZfDXuPJuyZhKZWsSxUolSS5kehf9FWF/sk2uS8ApAHplIZsTCMv+tvMwfo3rP4XipuTPlkTJiCegKAL8S1JDMExTBN+uqhQIhJHdZYP3KmyS+WjD+oNI2QOyQcFSWQIWsQJGorNKw8mtgOLmM4WNgIOEbWIBvSAYlKLmeeYpZPE=
+	t=1758558084; cv=none; b=pCEMoRlaC111BQkQneJiJKn8ZYsgw3xZ5/h//9HCNzzyedvaHIFwalCRsKwimZJ2NE+UYBfU5wX/ca33RaQRILZgGm0NkgjoOL+angZoxiCF11auYoM9UwtYmgyMbXeHMCMkpZ4qrGfO5ll3J0ISmthM76mcFSQ61uL+35NXFEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758551351; c=relaxed/simple;
-	bh=zds9c11i5EPuC+LW5E2qVk5slu7nHVv1cCYASY1uK64=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KdX7rbLzNZUYZVkNiKvbh7EIMQ2Ae1/+NqHc28lzmTEViFXEGrErJOHzyKMflki4kqkZ/2C/tIdqgUktsmMrSHDXmimI9wN3xFnMBa7zz+9EeSiqr/3HO0b5kReBUcIJM0nzGqI9YKHBTS2frk54CyR59znzGUuJgh+tH5V4eDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=T5tm19TQ; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-57f0aa38aadso892734e87.2
-        for <linux-acpi@vger.kernel.org>; Mon, 22 Sep 2025 07:29:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1758551345; x=1759156145; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zds9c11i5EPuC+LW5E2qVk5slu7nHVv1cCYASY1uK64=;
-        b=T5tm19TQZikqjHqoMR54+Q7+U/JgAbrwxCDjAEr+j4BV3oKJ1vYACVblsq/0dgQB3O
-         xzcE44eyHkSt3+1/LwS8iG05NDQybwpGXmErJGsX7qf1JoHnxQE/QJKsAyQCq5BZ8yUL
-         fZfsv/oGGtZ7K0RaFe8fFXZtm3jS4C5jkLwGskUTTKy01oseY4elZgmJ1wcia/Nwx29N
-         /akdQTqyJ1yRSFcBAOKV1BSGnn1RLnJEPHIfsiagl3HTh7OEmakPzgo3DZkunVSmL2Xx
-         hH2z75SXfyBjFg0mXpIzvJjI6rXfLJCfOxCsk/r78caU8Q500JO1XsPO5Zy2dD22Jb+z
-         2rDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758551345; x=1759156145;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zds9c11i5EPuC+LW5E2qVk5slu7nHVv1cCYASY1uK64=;
-        b=fhqoHICTd86g1S8N5TC7RzIBvxKpC9WoQiSl6YcE/K4Q1QuokD/euZcc/gq1Hhlz3I
-         26AyAQI0CXhuuixLCCylcg7A/gPRS7Am1n3uspldb+HPBVa0wlI1Qj5CURQtnboIa5D3
-         sCnfRqBUWDqcXHaX8AU/h91kLoUcJMcBDlzezbrAsUBcBEbX5wUZdm8dQJ62JgbOfb4H
-         NLY9dSnU7InF3oJcN5zxKpZGH5kE3dUW0xgACRhUSzrf0TAno+tb22bIWSjDUIBL+rs6
-         EgEOAsQoHAeE9HRmlRhoRpxkvncB4f6aBfMXSEjXK5s+Qa2ba8xfvbzqk2kyZQZw/lvO
-         QZAg==
-X-Forwarded-Encrypted: i=1; AJvYcCUytSdJQFq0VsnNIGO8NkkFuPFswzlBmqTMwke2vwc5wZB1qyyPoGxotBpeRegGkAltnkYsAGv1aeSz@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTEdmwYp3EjXa4/YP6a+JvhcjhaAQzqpVuLCuAJ2j+dmfRMavs
-	C2hfHMXm1pkHaDScnU775b2ncJD9dMgYIIfvSaUAEdszX5F1HDcEKBcMQq8XHsIMKX833PSz/Dw
-	sJktkjmXMDtsgSVrEnERlDgd7+HuSBmn+TWflSnIt7A==
-X-Gm-Gg: ASbGncscOCfdFkV/2cqoIZGjF62je9GnxmtZuxDLjVg26dbaNnoeMt31/y3dN7VBCyh
-	sHYI1dNPLO0u6aQdrkJYg2o1s+0ekBWvrSAeueozyE+kaiHopUpmgp9dfyXB2RvI+dcq56u7brj
-	4x/ayRYlG673zk4HBACnQnyoPVq29AAu7zH7fOObkluLkr/ZGxQdgS3TkqQ4NNr2x/BDNHJvLa2
-	6TFMqNmgkBqjBM=
-X-Google-Smtp-Source: AGHT+IF9Kx0YHTgWZximr8IphichwJGTQ/wmiFKfxBKU7xEPIwY53K1eZ5EsUZqb+vcW1xAllqgOcQU2VEEacURTmEE=
-X-Received: by 2002:a05:6512:4389:b0:57b:478b:d8a6 with SMTP id
- 2adb3069b0e04-57b478be162mr3313173e87.35.1758551344116; Mon, 22 Sep 2025
- 07:29:04 -0700 (PDT)
+	s=arc-20240116; t=1758558084; c=relaxed/simple;
+	bh=gREPxZQCm8A4g2apBZdO6hgrydmqp7znNzVB64FbT14=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W/oG9IMnv1OAR8pem2wp91jWF0p/TO64zaAnzNvevxmV9hm6Cmnvk7Dv1oevrgIXrcrh98Y1IUC3dcsAS3xY3w9dI08A2HXpUnlbf868MEmlqsLrJ99pHNjUWpSh1aGHZ/jZ4D1tTqqs2S7Njkw9gFMerkLVpbHetTqtJHKw94I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZxPE1Wk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5C5C4CEF0;
+	Mon, 22 Sep 2025 16:21:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758558084;
+	bh=gREPxZQCm8A4g2apBZdO6hgrydmqp7znNzVB64FbT14=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SZxPE1WkL1YRpJqsmRmhqPtQuk7L1fgzquTrDzQdl3KeYUN/yM4fKi8lH63OQ1Wyh
+	 na4x7Nu2LQXwPvzkGOkweNS+oSY77TyYmmC5WzQHa2OV36GlMMshEtcNgycrV2oJx/
+	 qGxRiCbrPkH60XCxixK8OfFtJUukpCtChMIrxnuss1qEIw4sIpJBDbqbil+vgsoJxF
+	 NCZJuUkpGXuSwNumUmW2WtAoFZl7GZV3RZCafo3QGYvTnXxEXq4y+AZFs2YtXINqAZ
+	 SrHVkhvnKWI06Qb3Oy3iIzZOK9J88T2h7wm8hQCCEc9gFOHzJU4qB5oWWdnJ3YIqU7
+	 W7ITZLeZghBfA==
+Message-ID: <79d7c45c-ccc9-411f-b9a8-47c02818f64c@kernel.org>
+Date: Mon, 22 Sep 2025 11:21:22 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250918152830.438554-1-nschichan@freebox.fr> <20250918195806.6337-1-safinaskar@gmail.com>
- <CAHNNwZAzecVcJXZmycX063-=p-M5jVkfStfgYVKJruOFo7y9zg@mail.gmail.com> <CAPnZJGDwETQVVURezSRxZB8ZAwBETQ5fwbXyeMpfDLuLW4rVdg@mail.gmail.com>
-In-Reply-To: <CAPnZJGDwETQVVURezSRxZB8ZAwBETQ5fwbXyeMpfDLuLW4rVdg@mail.gmail.com>
-From: Nicolas Schichan <nschichan@freebox.fr>
-Date: Mon, 22 Sep 2025 16:28:52 +0200
-X-Gm-Features: AS18NWBjmNA3KBj8cPrgwDAVm5OX9a5odWP7LbRlHvhoE96nP3yo2_PGoZ1JbG8
-Message-ID: <CAHNNwZC7gC7zaZGiSBhobSAb4m2O1BuoZ4r=SQBF-tCQyuAPvw@mail.gmail.com>
-Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
-To: Askar Safin <safinaskar@gmail.com>
-Cc: akpm@linux-foundation.org, andy.shevchenko@gmail.com, axboe@kernel.dk, 
-	brauner@kernel.org, cyphar@cyphar.com, devicetree@vger.kernel.org, 
-	ecurtin@redhat.com, email2tema@gmail.com, graf@amazon.com, 
-	gregkh@linuxfoundation.org, hca@linux.ibm.com, hch@lst.de, 
-	hsiangkao@linux.alibaba.com, initramfs@vger.kernel.org, jack@suse.cz, 
-	julian.stecklina@cyberus-technology.de, kees@kernel.org, 
-	linux-acpi@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
-	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, mcgrof@kernel.org, 
-	mingo@redhat.com, monstr@monstr.eu, mzxreary@0pointer.de, 
-	patches@lists.linux.dev, rob@landley.net, sparclinux@vger.kernel.org, 
-	thomas.weissschuh@linutronix.de, thorsten.blum@linux.dev, 
-	torvalds@linux-foundation.org, tytso@mit.edu, viro@zeniv.linux.org.uk, 
-	x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.17 REGRESSION FIX] gpiolib: acpi: Make set debounce
+ errors non fatal
+To: Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Hans de Goede <hansg@kernel.org>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Andy Shevchenko <andy@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org,
+ linux-acpi@vger.kernel.org, stable@vger.kernel.org
+References: <20250920201200.20611-1-hansg@kernel.org>
+ <6d9e13e9-1e93-4e39-bfd1-56e4d25c007f@kernel.org>
+ <CAHp75Vf-MMcVGDt5xAMB94N866jZROQPKpvu5dZ-nCEPA9j-pg@mail.gmail.com>
+ <f40ab4a5-1b17-4022-9539-37e470b7a175@kernel.org>
+ <CAHp75VfaRcQOLjrd_pVK4XYPRN_4yM=acyVsOKThV3oMw1fB0g@mail.gmail.com>
+Content-Language: en-US
+From: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
+In-Reply-To: <CAHp75VfaRcQOLjrd_pVK4XYPRN_4yM=acyVsOKThV3oMw1fB0g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-[resending to the lists and Cc, sorry I initially replied only to Askar]
 
-On Sat, Sep 20, 2025 at 5:55=E2=80=AFAM Askar Safin <safinaskar@gmail.com> =
-wrote:
-> On Fri, Sep 19, 2025 at 6:25=E2=80=AFPM Nicolas Schichan <nschichan@freeb=
-ox.fr> wrote:
-> > Considering that the deprecation message didn't get displayed in some
-> > configurations, maybe it's a bit early at the very least.
->
-> I changed my opinion.
-> Breaking users, who did not see a deprecation message at all,
-> is unfair.
-> I will send a patchset soon, which will remove initrd codepath,
-> which currently contains deprecation notice. And I will put
-> deprecation notice to
-> other codepath.
 
-Thanks
+On 9/21/2025 3:25 PM, Andy Shevchenko wrote:
+> On Sun, Sep 21, 2025 at 11:11 PM Hans de Goede <hansg@kernel.org> wrote:
+>> On 21-Sep-25 9:03 PM, Andy Shevchenko wrote:
+>>> On Sun, Sep 21, 2025 at 9:09 PM Mario Limonciello (AMD) (kernel.org)
+>>> <superm1@kernel.org> wrote:
+>>>> On 9/20/2025 3:12 PM, Hans de Goede wrote:
+> 
+> ...
+> 
+>>>> Looks pretty much identical now to what I sent in my v3 and that Andy
+>>>> had requested we change to make it fatal [1].
+>>>>
+>>>> Where is this bad GPIO value coming from?  It's in the GpioInt()
+>>>> declaration?  If so, should the driver actually be supporting this?
+>>>
+>>> Since it's in acpi_find_gpio() it's about any GPIO resource type.
+>>> Sorry, it seems I missed this fact. I was under the impression that v4
+>>> was done only for the GpioInt() case. With this being said, the
+>>> GpioIo() should not be fatal (it's already proven by cases in the wild
+>>> that sometimes given values there are unsupported by HW), but
+>>> GpioInt() in my opinion needs a justification to become non-fatal.
+>>
+>> GpioInt() debounce setting not succeeding already is non fatal in
+>> the acpi_request_own_gpiod() case, which is used for ACPI events
+>> (_AEI resources) and that exact use-case is why it was made non-fatal,
+>> so no this is not only about GpioIo() resources. See commit
+>> cef0d022f553 ("gpiolib: acpi: Make set-debounce-timeout failures non
+>> fatal")
+>>
+>> IOW we need set debounce failures to be non-fatal for both the GpioIo
+>> and GpioInt cases and this fix is correct as is.
+> 
+> Okay, since it doesn't change the state of affairs with for
+> acpi_dev_gpio_irq_wake_get_by(), it's fair enough to get it as is.
+> Mario, do you agree with Hans' explanations?
+> 
 
-> Then in September 2026 I will fully remove initrd.
+Yeah it's fine as is, no concerns.
 
-Is there a way to find some kind of middle ground here ?
+>> It is very likely too late to fix this *regression* for 6.17.0, please
+>> queue this up for merging ASAP so that we can get a fix added to 6.17.1
+> 
+> 
 
-I'm lead to believe that the main issue with the current code is that
-it needs to parse the superblocks of the ramdisk image in order to get
-the amount to data to copy into /dev/ram0.
-
-It looks like it is partly because of the ramdisk_start=3D kernel
-command line parameter which looks to be a remnant of the time it was
-possible to boot on floppy disk on x86.
-
-This kernel command line allows to look for a rootfs image at an
-offset into the initrd data.
-
-If we assume now that the rootfs image data starts at the beginning of
-the initrd image and is the only part of the initrd image this would
-indeed remove a lot of complexity.
-
-Maybe it would be possible to remove the identify_ramdisk_image()
-function and just copy the actual size of /initrd.image into
-/dev/ram0. This would allow any file system to be used in an initrd
-image (no just romfs, cramfs, minixfs, ext2fs and squashfs), and this
-would simplify the code in init/do_mounts_rd.c greatly, with just the
-function rd_load_image() and nr_blocks() remaining in this file.
-
-I can send a patch for that but first I need to sort out my SMTP
-issues from the other day.
-
-Regards,
-
---=20
-Nicolas Schichan
 
