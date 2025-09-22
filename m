@@ -1,148 +1,117 @@
-Return-Path: <linux-acpi+bounces-17210-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17211-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCBDB9290E
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 20:12:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB2DB929F9
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 20:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4105441A10
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 18:12:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 269882A6DB6
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 18:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1458315D25;
-	Mon, 22 Sep 2025 18:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0194F31A551;
+	Mon, 22 Sep 2025 18:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="vNHj76tu";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="GBI4bsvx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="moLJzsOW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211762DEA8E
-	for <linux-acpi@vger.kernel.org>; Mon, 22 Sep 2025 18:12:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F5E31A54B;
+	Mon, 22 Sep 2025 18:43:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758564724; cv=none; b=m+eiPJARq+fN8oPoZg5wleqh1rC9bBrjH3W/y6u9vXM/cek3huA/R/mZDzzwMp99BGFS5ZfV4Ix+s2yZZTngJHgq0r6scYG5rOB6ti+yV2jZ4NCiTd/mGrJbk1u6YfDWBCf2u7NUrAHU1DoAWT/UctkKHDybeIiuG5uMb/EGmeI=
+	t=1758566625; cv=none; b=jf4JJqhwqG2vbSm8DV62xuxRkMKmI/Oixqkg60ru5QfK0OrO+NFPN1Rjdl82cKu/m89H7LY+muLUS36awSwFGJ8RFYY1hqXnrQLapVbGBG24sBAJzYdHOAMB6OkHzGIxDAdYIUodev1EmFmTBz2QLvwmQ+8Wve6uApd++I60j40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758564724; c=relaxed/simple;
-	bh=AXVidVfETcBYZMdiw7fDesx2tgMg7ob81W9EbTEum2M=;
-	h=MIME-Version:Date:From:To:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=oHx6fFY5nHGbMElB3MThtgPnslgJsfJluLAS2KrPSQLTqxO0L8voF01iscJNwJn/8QUb35rnzu8ohslniszmRbITrS4IqSvrb1yvqD+kO1gLp9xiP0A9phKpO45FO4LetIIYZx6Ly8teUymmT6qBswLcjcj3M/orBe683hLOp7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=vNHj76tu; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=GBI4bsvx; arc=none smtp.client-ip=202.12.124.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 23F227A01AC;
-	Mon, 22 Sep 2025 14:12:00 -0400 (EDT)
-Received: from phl-imap-08 ([10.202.2.84])
-  by phl-compute-12.internal (MEProxy); Mon, 22 Sep 2025 14:12:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1758564719;
-	 x=1758651119; bh=WQmKzpFSKupzYnHgpRR5yUmEVyZ2XjxWVVWteSmtpPI=; b=
-	vNHj76tuAgE3mcOKlMe3NS7P/CkrZsu6KP45qTinG3tdF3zmJfHUajP1bgCwy/oV
-	n8uYoOwiQWlMKvIKzw+QL7ewxVNmAc+IPtwhzJweAutqxjuYxmWaZgijj5FcTBEo
-	zwwOxVBsVKG20w3cvrEjUsJ0SblJqguEkXAhvDxDS63QxY4DyBihG5poW0Bmr5X4
-	ObjTJMtnu9ui70+9FeshPGIZ5iI6wvec2tgjSG04MqXLQak4ITL1YLJvrAjSxmNz
-	zNV8QljgrqOumjJr8eFjC2xB4i3GY55xhfLOGGxmRBOVGEGhWM4Vv1tXp6yQEjKi
-	aeZ33vebp5Fi4DXJI5JU6A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:content-transfer-encoding:content-type
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1758564719; x=1758651119; bh=W
-	QmKzpFSKupzYnHgpRR5yUmEVyZ2XjxWVVWteSmtpPI=; b=GBI4bsvxFNpgJNTJx
-	8mG12yI4UlhW0axBKtKi7mmN2D+SfI3qP1ckCigkSNCf3kdB7W5uz5U5rUILSaRW
-	gvOxlZu1yY46Zy6L2AIRnELwb3QiilObaJapgyfls1pYSktmwEqyGYmzlya3sdg6
-	ErLvzux6t9+eLtFIomOMxRKNfVweFVFdfwg/Ge+oFvQLCHv18Ib+wyNlBRSEtjgd
-	dJQDwXQee6y3Sb+Y9FLwROLEyF2RRnxfz1N1MQpux/E5L571YkIjBBZ2VATsE+JO
-	JtPvEEaz9kD67oBMc1HumcML5wNnk44nhPzjV7xB6ub3fPIyT4hpLU8ghSWP4nPY
-	yj+Dg==
-X-ME-Sender: <xms:b5HRaOVVxet1rduCKPXPom3aJqBPU3-l-aG9-4INPHFYsnI23ODOlA>
-    <xme:b5HRaFYk3E6Rhuk_4PAWjK8mUR3jWAtTtcOK3ghw_GnmS32tZRjfq9FHIwRJ2YVSz
-    h6_-JS2Xqk8spue2ZwFHy4TVfXX0E9d2IbQKq-PMsYVqM_Ofc-Cjf9n>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdehkeehgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhepofggfffhvffkjghfufgtgfesthejredtre
-    dttdenucfhrhhomhepfdforghrkhcurfgvrghrshhonhdfuceomhhpvggrrhhsohhnqdhl
-    vghnohhvohesshhquhgvsggsrdgtrgeqnecuggftrfgrthhtvghrnhepgedthedvieegud
-    eutedvfeeitdejkeeluddvfeekgeeuffdugefhjeeiteevleeinecuffhomhgrihhnpehk
-    vghrnhgvlhdrohhrghdpghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomhepmhhpvggrrhhsohhnqdhlvghnohhvohesshhq
-    uhgvsggsrdgtrgdpnhgspghrtghpthhtohepvddpmhhouggvpehsmhhtphhouhhtpdhrtg
-    hpthhtohepmhgrihhlsegurghvihguqdgsrghuvghrrdhnvghtpdhrtghpthhtoheplhhi
-    nhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:b5HRaFAA1S4Wp30vZMCIc4670WBrg5DIrYtSLhd1eQL-NP5u3G_ofg>
-    <xmx:b5HRaBdLkyBprRAI2MCBr0wDUbKlRIjB0JaA7MWqoGDX5E1xKE8XdA>
-    <xmx:b5HRaIIgKEnDbhdem5HwYkPPr03A8K7OajRjv9AIVr1qX6Ass1Y1iQ>
-    <xmx:b5HRaMeOuoSOz4KQiNvJMhnITlJKJBXFxZ_iEIrzTXVsdTwypdxQcg>
-    <xmx:b5HRaLU_sSdGPvLgAcT8NopKEhKzalkP_spfYnnjHqUVRQqFYAvCeRmw>
-Feedback-ID: ibe194615:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 88AA12CE0072; Mon, 22 Sep 2025 14:11:59 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1758566625; c=relaxed/simple;
+	bh=hvo9whrU6Oe08PtPIH2oc+mLj8QJ5uC8qV5k/Mjiz8w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p425KY44qa1CAqLwSPABh/KKwj+TqRIANWbS+xzan9UvvpWZ85lONBVFqJM9Nh65rEGQwSehthm7B2Jf1E+i2wKY52Tm1hKUcN8YXiXc7xI9HizzmnyDMjHcs6WnRwv67vgHqlx2VxmcUf/2rb6zoi/V/ABHgxEeLqqTyEVDGcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=moLJzsOW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36008C4CEF0;
+	Mon, 22 Sep 2025 18:43:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758566625;
+	bh=hvo9whrU6Oe08PtPIH2oc+mLj8QJ5uC8qV5k/Mjiz8w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=moLJzsOWRr8vIRDkJ7j/azsOpKAfKWNvEmKAUaHVLd7rSG4XJkgFU+s6whwI3sjel
+	 C9EE1spuHM2yOLUdoeDgTiYO31INGIEJ2KxMDy03bWzdW/uaFjsqcrY2jX2CWwFRCr
+	 Uu1hf/Eds2tAnx3oKLrD1gdAeBQDS547Y0R2Ad9XBkH8FsEvoMQMww3PNS/Jk8/5eR
+	 JnTEMkAZYldEur7UyQZ8VQrXgpzUa1kcRJXyR7RkTa/MNJTkgfDgMvmMjKl/1ezkft
+	 EY2PO84e/1HbUE5Nm4qjJYR+JCJQHteKSHlg2j2jRIlkhMNgv2PZgJr15oyT/ToCgi
+	 TQfnps53dLxXw==
+Message-ID: <24bf4cd9-c992-463a-a17d-0a828c16f8f0@kernel.org>
+Date: Mon, 22 Sep 2025 20:43:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: Ac9xkh2THd6w
-Date: Mon, 22 Sep 2025 14:11:39 -0400
-From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
-To: "David Bauer" <mail@david-bauer.net>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Message-Id: <443087de-fa85-4604-8d92-a577e1048159@app.fastmail.com>
-In-Reply-To: <34b11aca-0bbc-460d-815b-82f173974a0a@david-bauer.net>
-References: <20240831003610.89970-1-mail@david-bauer.net>
- <84ec8f08-bc7b-490b-a6f3-0f41ca99dbc0@app.fastmail.com>
- <34b11aca-0bbc-460d-815b-82f173974a0a@david-bauer.net>
-Subject: Re: [PATCH] ACPI: EC: add quirk for Lenovo X13 G4 (AMD)
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 22/26] irqchip/apple-aic: Drop support for custom PMU
+ irq partitions
+To: Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>, Mark Rutland
+ <mark.rutland@arm.com>, Will Deacon <will@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>,
+ Saravana Kannan <saravanak@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Janne Grunau
+ <j@jannau.net>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ James Clark <james.clark@linaro.org>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>
+References: <20250922082833.2038905-1-maz@kernel.org>
+ <20250922082833.2038905-23-maz@kernel.org>
+Content-Language: en-US
+From: Sven Peter <sven@kernel.org>
+In-Reply-To: <20250922082833.2038905-23-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi David,
+On 22.09.25 10:28, Marc Zyngier wrote:
+> Similarly to what has been done for GICv3, drop the irq partitioning
+> support from the AIC driver, effectively merging the two per-cpu
+> interrupts for the PMU.
+> 
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> ---
 
-Interesting - I thought we'd caught the impacted platforms, but it's possible that generation was missing.
+Reviewed-by: Sven Peter <sven@kernel.org>
 
-I had an internal ticket open for suspend issue on that platform (LO-3142) and that notes that you need to update to BIOS 55W. Can you confirm which BIOS you're on just to rule out hitting that issue
 
-Mark
+>   drivers/irqchip/irq-apple-aic.c | 28 +++++++---------------------
+>   1 file changed, 7 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/irqchip/irq-apple-aic.c b/drivers/irqchip/irq-apple-aic.c
+> index cb8b6f40ce8d3..6305d25b9e77b 100644
+> --- a/drivers/irqchip/irq-apple-aic.c
+> +++ b/drivers/irqchip/irq-apple-aic.c
+> @@ -578,16 +578,9 @@ static void __exception_irq_entry aic_handle_fiq(struct pt_regs *regs)
+>   	}
+>   
+>   	if ((read_sysreg_s(SYS_IMP_APL_PMCR0_EL1) & (PMCR0_IMODE | PMCR0_IACT)) ==
+> -			(FIELD_PREP(PMCR0_IMODE, PMCR0_IMODE_FIQ) | PMCR0_IACT)) {
+> -		int irq;
+> -		if (cpumask_test_cpu(smp_processor_id(),
+> -				     &aic_irqc->fiq_aff[AIC_CPU_PMU_P]->aff))
+> -			irq = AIC_CPU_PMU_P;
+> -		else
+> -			irq = AIC_CPU_PMU_E;
+> +			(FIELD_PREP(PMCR0_IMODE, PMCR0_IMODE_FIQ) | PMCR0_IACT))
+>   		generic_handle_domain_irq(aic_irqc->hw_domain,
+> -					  AIC_FIQ_HWIRQ(irq));
+> -	}
+> +					  AIC_FIQ_HWIRQ(AIC_CPU_PMU_P));
 
-On Sun, Sep 21, 2025, at 5:01 AM, David Bauer wrote:
-> Hey Mark,
->
-> On 8/31/24 02:53, Mark Pearson wrote:
->> I believe you've hit the issue that is being tracked in https://bugzilla.kernel.org/show_bug.cgi?id=219196
->> 
->> We're working with Qualcomm to get that addressed. It impacts systems with the Qualcomm Wifi chip that uses the ath11k driver. I haven't specifically reproduced it on the X13 G4 - but we've seen it on three other platforms and it sounds exactly the same.
->
-> I have seen patches [1] have been applied and gave 6.17 a spin.
->
-> First of all, the product number for my X13 G4 (21J3) was missing. I've 
-> added it myself to
-> the list of platforms requiring the PM quirk, however I'm still seeing 
-> wakeups on AC power
-> state changed while sleeping.
->
-> Does the patch retain sleep functionality on other platforms?
-> I'd love to help getting this fix, in the meantime i resort to 
-> acpi.ec_no_wakeup=1
-> which fixes these wakeups.
->
-> [1] 
-> https://github.com/torvalds/linux/commit/ce8669a27016354dfa8bf3c954255cb9f3583bae
->
-> Best
-> David
->
->> 
->> You can confirm by using a 6.9 kernel and it should work correctly. If it doesn't, please let me know and we can investigate further.
->> This is a Linux certified platform and I'd rather get issues fixed correctly than have to quirk them in the kernel and potentially impact other functionality.
->> 
->> Thanks
->> Mark
+Probably one of the most confusing diffs for a change that's actually 
+fairly simple that the diff algorithm generated! I was only able to tell 
+what's going on by looking at the file after applying this.
+
+
+
+
+
+Sven
 
