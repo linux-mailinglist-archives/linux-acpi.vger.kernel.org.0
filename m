@@ -1,96 +1,98 @@
-Return-Path: <linux-acpi+bounces-17168-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17169-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F17B8EAF8
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 03:23:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1EFB8F369
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 09:04:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3A063BF6E7
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 01:23:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A5877A30CC
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Sep 2025 07:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3091990A7;
-	Mon, 22 Sep 2025 01:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4305A274B2F;
+	Mon, 22 Sep 2025 07:04:01 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF4A15A85A;
-	Mon, 22 Sep 2025 01:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD2B22FE10;
+	Mon, 22 Sep 2025 07:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758504155; cv=none; b=D9G0JS7wpLowM1bOZZpRInfGl6/ZUfDJ7hYPfVdLP+09k2bvHpoDDM8VTMLGxwW02UC66/1nl5QB99FWv9dvU6J2qZVeTXAAKRUMqtdMlySTTWPBqJM3Mda3kxs9oVew+B0QlZAEfPYDVu/V4sY8a8LpVRppcThjJTMFRWlL+gI=
+	t=1758524641; cv=none; b=sv+n3Fo/JzvrmbzX5QuzFdcB1CcXiXpiMa8zaUmKTYqF7FosakCK/yn1O0Xn+UYRk1vfm+D2bui6UT1CaxKdd1mq6PB5dnl9DpzF7MphNz5rk01PaDhLBdx8+O5wTArLT2BNCgBoSFeRrgeMJukuGGLpyjKBV6QaJrSLjbYnKzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758504155; c=relaxed/simple;
-	bh=XAamMMfkpbHGtCHKsLwo4FwJ/UlHpAaxwSrAHRb/jdQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=UeSRvCVpltZAgkwJk7S7ypwbwMxTTJYITO5Ej9ut8FlD5RKlIAfiZPGR4z0EwTi6teDtvalKysOHV2CcbvQypzaatjLDrdow2zwCB34G8LAe5s9Cgzm7CR4jbJeozlhUUUapE98AXxO1addOt1GYuZKSaRK4NhIUcJdXYb0+wf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.188
+	s=arc-20240116; t=1758524641; c=relaxed/simple;
+	bh=GVMcixn4Xnfxg8E8X+Mh+Js9zSpyO84U3D7bkW0FsX0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nffL4Q2YjSsBYLoTTpPaTz/m+xFM5BCCppBt+KuSwk4CYz1bLiZ4zBA9bpgUMf222TAWpBfZ/aDODZxyaEWncKsj+99OHJB8SumO/qnYAQBjpAH5DtXQ4c/rqO64d83VhWuFjehDJtAs1bsVOvgr/ZIblGTofDBiazs2Onrsdcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.190
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4cVQG23VpRzQkKs;
-	Mon, 22 Sep 2025 09:17:46 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id B2A76140123;
-	Mon, 22 Sep 2025 09:22:24 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4cVYsN5Kyvz2RW8k;
+	Mon, 22 Sep 2025 15:00:24 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id F1D131800B2;
+	Mon, 22 Sep 2025 15:03:55 +0800 (CST)
 Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 22 Sep 2025 09:22:24 +0800
-Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
- (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 22 Sep
- 2025 09:22:23 +0800
-Message-ID: <be080550-9480-4040-adc2-c438d7d407f4@huawei.com>
-Date: Mon, 22 Sep 2025 09:22:22 +0800
+ 15.2.1544.11; Mon, 22 Sep 2025 15:03:55 +0800
+Received: from localhost.localdomain (10.50.165.33) by
+ kwepemn100009.china.huawei.com (7.202.194.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 22 Sep 2025 15:03:55 +0800
+From: Huisong Li <lihuisong@huawei.com>
+To: <rafael@kernel.org>, <lenb@kernel.org>
+CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
+	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>, <yubowen8@huawei.com>,
+	<lihuisong@huawei.com>
+Subject: [PATCH v4 0/1] ACPI: processor: Fix function declaration of processor_idle.c
+Date: Mon, 22 Sep 2025 15:03:53 +0800
+Message-ID: <20250922070354.485296-1-lihuisong@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] ACPI: processor: Do not expose the global
- acpi_idle_driver variable
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linuxarm@huawei.com>,
-	<jonathan.cameron@huawei.com>, <zhanjie9@hisilicon.com>,
-	<zhenglifeng1@huawei.com>, <yubowen8@huawei.com>
-References: <20250911112408.1668431-1-lihuisong@huawei.com>
- <20250911112408.1668431-4-lihuisong@huawei.com>
- <CAJZ5v0hb19Xy8dOP4itU-F5F7OjDXBVNGYiwoxAVc_yGuUv=Aw@mail.gmail.com>
- <1e55d104-9746-4b37-8663-12714cc00026@huawei.com>
- <CAJZ5v0hAYpBWTpfJV6ZVX0tLiZZ-S5ABxpmqckxYcPyMyZrJfA@mail.gmail.com>
-From: "lihuisong (C)" <lihuisong@huawei.com>
-In-Reply-To: <CAJZ5v0hAYpBWTpfJV6ZVX0tLiZZ-S5ABxpmqckxYcPyMyZrJfA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  kwepemn100009.china.huawei.com (7.202.194.112)
 
+This serises is aimed to fix the function declaration of processor_idle.c.
+And the modification idea of this series is from the link[1].
+Except for this patch, all other patches in this series have been merged.
 
-在 2025/9/19 5:22, Rafael J. Wysocki 写道:
-> On Thu, Sep 18, 2025 at 2:23 PM lihuisong (C) <lihuisong@huawei.com> wrote:
->>
->> 在 2025/9/18 4:01, Rafael J. Wysocki 写道:
->>> On Thu, Sep 11, 2025 at 1:24 PM Huisong Li <lihuisong@huawei.com> wrote:
->>>> Currently, processor_driver just use the global acpi_idle_driver variable
->>>> to check if the cpuidle driver is acpi_idle_driver. Actually, there is no
->>>> need to expose this global variable defined in processor_idle.c to outside.
->>>> So move the related logical to acpi_processor_power_init() and do not
->>>> expose it.
->>> And it can also be made static, can't it?
->> ok, will do it in next version. Thanks.
-> You may as well rebase it on top of this one:
->
-> https://lore.kernel.org/linux-acpi/5044465.31r3eYUQgx@rafael.j.wysocki/
+[1] https://lore.kernel.org/oe-kbuild-all/202508300519.tZQHY6HA-lkp@intel.com/
 
-Ok, will will fix it based your patch.
+---
+ Changelog
+  v4:
+   - remove other patches merged.
+   - add static for global variable as Rafael suggested.
 
-Thank you for the reminder.
+  v3:
+   - remove the merged patch which fixed the warning in link[1]
+   - add a separate patch to handle the "extern struct
+     cpuidle_driver acpi_idle_driver" in processor.h.
+     https://patchwork.kernel.org/project/linux-acpi/cover/20250728070612.1260859-1-lihuisong@huawei.com/
+  v2:
+   - split patch v1
+     https://patchwork.kernel.org/project/linux-acpi/cover/20250905081900.663869-1-lihuisong@huawei.com/
 
->
+Huisong Li (1):
+  ACPI: processor: Do not expose the global acpi_idle_driver variable
+
+ drivers/acpi/processor_driver.c |  3 +--
+ drivers/acpi/processor_idle.c   | 12 +++++++++++-
+ include/acpi/processor.h        |  1 -
+ 3 files changed, 12 insertions(+), 4 deletions(-)
+
+-- 
+2.33.0
+
 
