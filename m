@@ -1,138 +1,102 @@
-Return-Path: <linux-acpi+bounces-17218-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17219-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA939B9419C
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Sep 2025 05:24:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83393B94777
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Sep 2025 07:45:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E0F417F3A0
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Sep 2025 03:24:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 551D2178A9C
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Sep 2025 05:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0871254B19;
-	Tue, 23 Sep 2025 03:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DB030F7F7;
+	Tue, 23 Sep 2025 05:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SJsd3mIb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA1D2CCC0;
-	Tue, 23 Sep 2025 03:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C31A30EF84
+	for <linux-acpi@vger.kernel.org>; Tue, 23 Sep 2025 05:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758597891; cv=none; b=M2Y+baptPRLGglM+QE+K5JO7hW7fGBFyc6ZnnPiahUmRLaaKDmOFGDbMqYoVA0B3HIfNhusKx0mzECjrKsEixr07Mm5KAs78HUcViG5fcEIWro3dTshpJNGzTM5xOg3/P8Add7D++AGIkKbRPCtzmfrkzz53qjsaN20KK9QLuEk=
+	t=1758606228; cv=none; b=bcEiYjOT0RV977IZ3BmoJEMsWAXQ72Q7MMK9w20KreX4Skes/f/Z658W4CdV8sahr8YNynwoVT+FwwC9bepLynuLtjM8a6WRiC5tWtYI3oYdxcFPQHf2tHALpvfDCXqgNVVTsDgI3Yj3Lcv/KO1zMrN9sZqQbVDJN5SeGDAbamQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758597891; c=relaxed/simple;
-	bh=46HhC5SLtwVI4XN+e8y+TLbM02Oo6hsorwteXb2ItHE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t7XoIFRpfRWkhw6LYuk2OA48szUdqWLSilAp/jN0VurqGXWA/V1PkRTf5fqgOisBB3nV+ii8E9rE+7lJU3yf9fUihrIl+W5crz7cz/t0HQd+7rnxDvheKxJ80ULCRGLzrTyDTg+Zqk3jeRFkMmYSxugm32M60AUIEIVK63w5vl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cW4y1506Fz24htD;
-	Tue, 23 Sep 2025 11:21:13 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8B5001402C3;
-	Tue, 23 Sep 2025 11:24:45 +0800 (CST)
-Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 23 Sep 2025 11:24:30 +0800
-Received: from localhost.localdomain (10.50.165.33) by
- kwepemn100009.china.huawei.com (7.202.194.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 23 Sep 2025 11:24:29 +0800
-From: Huisong Li <lihuisong@huawei.com>
-To: <rafael@kernel.org>, <lenb@kernel.org>
-CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
-	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>, <yubowen8@huawei.com>,
-	<lihuisong@huawei.com>
-Subject: [PATCH v5 1/1] ACPI: processor: Do not expose the global acpi_idle_driver variable
-Date: Tue, 23 Sep 2025 11:24:28 +0800
-Message-ID: <20250923032428.2656329-2-lihuisong@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20250923032428.2656329-1-lihuisong@huawei.com>
-References: <20250923032428.2656329-1-lihuisong@huawei.com>
+	s=arc-20240116; t=1758606228; c=relaxed/simple;
+	bh=q4dqYEoDEdhAavVi8Cqa993KVwZCS3psbAUq/Ruamcs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bOWg9hYq5myvUbX1/MRKeTmC/8j7nby43rwIM48TXK1jpQ5W75TTv4lpgvlPLIWseoIKeKAa9JMOTFuFJb/nWRJhW5T5zatVKwEQ9GAUnG4QRNQNDqT71vkIQixRq1KZdVGXZL+DE6cQC+czGJIcolenoVYA+qW1BpxMUOQ02zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SJsd3mIb; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758606227; x=1790142227;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=q4dqYEoDEdhAavVi8Cqa993KVwZCS3psbAUq/Ruamcs=;
+  b=SJsd3mIb4My+exgcuQ9aUDsx4SfRuhyXW5ow6O37H3RUvDptqDqyjGtB
+   FE/CWW4bxT+QrZkzGDlDRSgGgmU06DnOGw7scj0kjYMvwcfuTVzKFFJ3v
+   iGBLXnqKiQP6c3dOsr63EtCrvIOBq9q0iQIxsQFK7/KGARnAgSSSjdfhl
+   DoZL2JOxN3DvvuLhLidlp6FMTxZ7WEQ2hki78DK/p3ph1xbupI2e0kR9E
+   882ftwhZvAW8sAKA/bBILtKAIE8R9d9fNaPbydBNtcNjsO9FMuCC/AzrN
+   dYDvhnQV7tmw9djHG24LomMktoS/EebLfcmMRaWVizi6M9AJm2DHRV1sb
+   Q==;
+X-CSE-ConnectionGUID: uILJHCA2Tciy8r+nT1Ysew==
+X-CSE-MsgGUID: y3EX6MFvSmi0gqFzUbmWrQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64682463"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="64682463"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 22:43:46 -0700
+X-CSE-ConnectionGUID: YfOwWWFrTLeeab1ocJJ+kw==
+X-CSE-MsgGUID: p7p+WIoDSXykCffcYwuGvg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,287,1751266800"; 
+   d="scan'208";a="213835837"
+Received: from smile.fi.intel.com ([10.237.72.51])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 22:43:43 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1v0voT-00000005Ns5-0gzC;
+	Tue, 23 Sep 2025 08:43:41 +0300
+Date: Tue, 23 Sep 2025 08:43:40 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: linux-acpi@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH 07/14] driver core: Use fwnode_for_each_child_node()
+ instead
+Message-ID: <aNIzjHAGbHiAXgOC@smile.fi.intel.com>
+References: <20250916160129.3955410-1-sakari.ailus@linux.intel.com>
+ <20250916160129.3955410-8-sakari.ailus@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemn100009.china.huawei.com (7.202.194.112)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250916160129.3955410-8-sakari.ailus@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Currently, processor_driver just use the global acpi_idle_driver variable
-to check if the cpuidle driver is acpi_idle_driver. Actually, there is no
-need to expose this global variable defined in processor_idle.c to outside.
-So move the related check to acpi_processor_power_init() and limit the
-global variable to a static one.
+On Tue, Sep 16, 2025 at 07:01:22PM +0300, Sakari Ailus wrote:
+> fwnode_for_each_child_node() is now the same as
+> fwnode_for_each_available_child_node() on all backends (OF, ACPI and
+> swnode). In order to remove the available variants, switch the uses to
+> non-available variants.
 
-Signed-off-by: Huisong Li <lihuisong@huawei.com>
----
- drivers/acpi/processor_driver.c | 3 +--
- drivers/acpi/processor_idle.c   | 9 ++++++++-
- include/acpi/processor.h        | 1 -
- 3 files changed, 9 insertions(+), 4 deletions(-)
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
-index de17c1412678..5d824435b26b 100644
---- a/drivers/acpi/processor_driver.c
-+++ b/drivers/acpi/processor_driver.c
-@@ -166,8 +166,7 @@ static int __acpi_processor_start(struct acpi_device *device)
- 	if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
- 		dev_dbg(&device->dev, "CPPC data invalid or not present\n");
- 
--	if (cpuidle_get_driver() == &acpi_idle_driver)
--		acpi_processor_power_init(pr);
-+	acpi_processor_power_init(pr);
- 
- 	acpi_pss_perf_init(pr);
- 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 698d14c19587..935ff2aa6f3a 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -51,7 +51,7 @@ module_param(latency_factor, uint, 0644);
- 
- static DEFINE_PER_CPU(struct cpuidle_device *, acpi_cpuidle_device);
- 
--struct cpuidle_driver acpi_idle_driver = {
-+static struct cpuidle_driver acpi_idle_driver = {
- 	.name =		"acpi_idle",
- 	.owner =	THIS_MODULE,
- };
-@@ -1404,6 +1404,13 @@ void acpi_processor_power_init(struct acpi_processor *pr)
- {
- 	struct cpuidle_device *dev;
- 
-+	/*
-+	 * The code below only works if the current cpuidle driver is
-+	 * acpi_idle_driver.
-+	 */
-+	if (cpuidle_get_driver() != &acpi_idle_driver)
-+		return;
-+
- 	if (disabled_by_idle_boot_param())
- 		return;
- 
-diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-index 24fdaa3c2899..7146a8e9e9c2 100644
---- a/include/acpi/processor.h
-+++ b/include/acpi/processor.h
-@@ -417,7 +417,6 @@ static inline void acpi_processor_throttling_init(void) {}
- #endif	/* CONFIG_ACPI_CPU_FREQ_PSS */
- 
- /* in processor_idle.c */
--extern struct cpuidle_driver acpi_idle_driver;
- #ifdef CONFIG_ACPI_PROCESSOR_IDLE
- void acpi_processor_power_init(struct acpi_processor *pr);
- void acpi_processor_power_exit(struct acpi_processor *pr);
 -- 
-2.33.0
+With Best Regards,
+Andy Shevchenko
+
 
 
