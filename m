@@ -1,112 +1,74 @@
-Return-Path: <linux-acpi+bounces-17225-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17226-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C1EB95653
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Sep 2025 12:09:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0102B959B2
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Sep 2025 13:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B71F3B124D
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Sep 2025 10:09:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2809544622A
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Sep 2025 11:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D71630C618;
-	Tue, 23 Sep 2025 10:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="seW6Yj2N"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D3B32144A;
+	Tue, 23 Sep 2025 11:17:33 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335AA126C1E;
-	Tue, 23 Sep 2025 10:09:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2034321290;
+	Tue, 23 Sep 2025 11:17:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758622189; cv=none; b=d8QTuHGOmCzz7E+0NauDuTTU3v1FyeJ1WiqNgvtO8hCmXi+5L/Xi5zOxmAU1iddvaSugQ0SYjVx+a8+MrPrgTjm5xALxCu569DjmiDVKsP1IMPB+mg+mNt1CUWzS+jVDbpqWu3G3vpJLJZ7dMza8w1Bu3d40FixwY6P87gjwumM=
+	t=1758626253; cv=none; b=e++Cynyx1rmRWI0Skq1ja2zEongw49IE07xvvFmYL0jRwA5mC7QXzpQ5uT3fr59QJM7W2jayQImIHxqnOvGF5ENSSFKmf+b/Fa/qN8DDCSvJ044MKCWmaHkSaAk1mK3tPFnzfAEAAFDuUVerkJo4br7iAGDkG88v3Oc2rBamxes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758622189; c=relaxed/simple;
-	bh=iClNAKhq0Hy6XG3bFhlh4pWil/qWmpukallRfQVeiP4=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g3syRK4dJbl1iRT9ni0sv7VAqKIMCF8s0iW5AypLw3jv6r37loqrhcQzmk7F2IoZE8l+/zpTpkmIkD2y6dJHoZW1+mtet775S1wOHdSNm/lsT2yc0JjX+44huXcBt18XHFBXnsyZrYlwZUNNSIl60pCfzaaFioprvJYKbfYGDCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=seW6Yj2N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D7CC4CEF5;
-	Tue, 23 Sep 2025 10:09:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758622188;
-	bh=iClNAKhq0Hy6XG3bFhlh4pWil/qWmpukallRfQVeiP4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=seW6Yj2N6SQNetratlsVrPz2AdV07pSrpnUTDWLUV+puOcNVFnjFbStpUbp+J85pF
-	 qzltXioomJAJthuXgOkfKc/Wg1la6OvfMNbVWHHsvXGDFTUBPV/9Nczegz7JYBIj/m
-	 +Ysrh47XW30bnMAGt4XV5XuYMyx1JGp8TSjlWWckeiSN6Q2eFjk4pFryLn0PUNV2s4
-	 9ldio4OAqgJjTuF4rOicYhKESqSmWiEWLCTHvzRBY6lU3lT1V8Xm5CqOKPy3sXtngz
-	 xqCjwjUcEmQEC4WWYGSsmmNnfu5DeYkB1Ya2vslfDx4kaU0FCqZkqTp5GS2RN5fepu
-	 blaUbbKS3vLGQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1v0zxy-00000008gSr-0JgH;
-	Tue, 23 Sep 2025 10:09:46 +0000
-Date: Tue, 23 Sep 2025 11:09:45 +0100
-Message-ID: <86cy7h1nva.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Will Deacon <will@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-acpi@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sven Peter <sven@kernel.org>,
-	Janne Grunau <j@jannau.net>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: Re: [PATCH v3 00/26] genirq: Add support for percpu_devid IRQ affinity
-In-Reply-To: <aNJvsJOZHD87WTx4@willie-the-truck>
-References: <20250922082833.2038905-1-maz@kernel.org>
-	<aNJvsJOZHD87WTx4@willie-the-truck>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1758626253; c=relaxed/simple;
+	bh=ceh1tWVSLZfLNc2Nygj2F1jFgZ011ILHPflx2Pn+gDo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pD24EoKLEHJYeczTxWRAf3CY/dKCxija/9CXASFWdp6NUE9NSnhxH1XnJ9+6EN1NQIGiAeTCSxCh0/IGcTi6I4uS8EWM4ObkdxOyUo4bU/7Fuivl/VfSvnjIAUh4xwt7pv7+4/Pvgn20qnskLRV3tYXb3IGIHoKFXrOyNx41nlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B8576497;
+	Tue, 23 Sep 2025 04:17:22 -0700 (PDT)
+Received: from [10.57.6.128] (unknown [10.57.6.128])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 59E223F66E;
+	Tue, 23 Sep 2025 04:17:28 -0700 (PDT)
+Message-ID: <0339c5cc-20e7-4bfd-829f-6fc91f2c1669@arm.com>
+Date: Tue, 23 Sep 2025 12:17:26 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: will@kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, tglx@linutronix.de, mark.rutland@arm.com, rafael@kernel.org, robh@kernel.org, saravanak@google.com, gregkh@linuxfoundation.org, sven@kernel.org, j@jannau.net, suzuki.poulose@arm.com, james.clark@linaro.org, jonathan.cameron@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/26] coresight: trbe: Convert to new IRQ affinity
+ retrieval API
+Content-Language: en-GB
+To: Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>, Mark Rutland
+ <mark.rutland@arm.com>, Will Deacon <will@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>,
+ Saravana Kannan <saravanak@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sven Peter
+ <sven@kernel.org>, Janne Grunau <j@jannau.net>,
+ James Clark <james.clark@linaro.org>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>
+References: <20250922082833.2038905-1-maz@kernel.org>
+ <20250922082833.2038905-8-maz@kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20250922082833.2038905-8-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 23 Sep 2025 11:00:16 +0100,
-Will Deacon <will@kernel.org> wrote:
+On 22/09/2025 09:28, Marc Zyngier wrote:
+> Now that the relevant interrupt controllers are equipped with
+> a callback returning the affinity of per-CPU interrupts, switch
+> the TRBE driver over to this new method.
 > 
-> Hi Marc,
-> 
-> On Mon, Sep 22, 2025 at 09:28:07AM +0100, Marc Zyngier wrote:
-> > This is the third version of this series, originally posted at [1],
-> > which aims at allowing percpu_devid interrupt requests on the basis of
-> > an affinity mask. See the original submission for the details of why
-> > this is a desirable outcome.
-> 
-> FWIW, I backported this to 6.12 and tested it on a DT-based Android
-> device with heterogeneous PMUs and pNMI enabled. Perf appears to work
-> correctly, the pNMIs are configured as expected and the affinities
-> all look good to me.
-> 
-> Tested-by: Will Deacon <will@kernel.org>
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
 
-Awesome, thanks a lot for that and for the help getting this thing up
-and running!
+Acked-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
 
