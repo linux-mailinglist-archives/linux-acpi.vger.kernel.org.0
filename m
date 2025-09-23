@@ -1,222 +1,239 @@
-Return-Path: <linux-acpi+bounces-17240-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17241-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F40B97694
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Sep 2025 21:49:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D445B97BEA
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Sep 2025 00:40:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 378CA3B29B4
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Sep 2025 19:48:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD10919C0FF0
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Sep 2025 22:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553AB269AEE;
-	Tue, 23 Sep 2025 19:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044E43115A0;
+	Tue, 23 Sep 2025 22:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="H5eg180s"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="oBW6V6+E"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012034.outbound.protection.outlook.com [52.101.48.34])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86831C8606;
-	Tue, 23 Sep 2025 19:46:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758656815; cv=fail; b=NyJBWfo3vzbLwicxvDBwYwNUh9mEwVR5mAb1s9Xfm1VuAkgeDHmq5zitsyjiMagNb2xnnzGHF8kDmGyLLtNTK4QV9FdrCGwXYL2pobH2atn+MKJWxV00lr9tX1j5esz4xlQ5h9mQZ70TT/szi9y8HmqzPdyYj8Xhroxmk+e6pRM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758656815; c=relaxed/simple;
-	bh=BCtdpLxjeJVVrII52JA02m3Pum8c6f0V258AhvSkXXQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sQPGz92VWMQxrplpMwfNDY3Hex3rOmLzNcJMyaYOopmywlSfLm237Oxo+fZbkU46j/AQMN6/WkT14At5Z8e+u30GGE1bihmdk8uEgGzYx7lsYvdZZOBVtlIMI70zj2kn4PJhWPlVwzO91YJT7kFkn8bwoss5SzydBXSL0dt+hoc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=H5eg180s; arc=fail smtp.client-ip=52.101.48.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NtuxDuPubg7gO3Kl5ocPx6mQsz98rIEJQjiiMjPiHJs+Q1XUC2N0Snu8LEXYv+kL6nJeIqTv9HL5aCuALPFvjZ3lLgZZyHLSTKh34VXGaIXTBi8m3fpLVL2KBo6OAoF6DoMcTlPkAn6TEbEOPeKYCdgFPn+vhc8kqReqIQERe60zxlc0cbC/mMKknfN8xKesALOP+20u17OCvpQHmjviIgz0JHysbBZH54LJbje6r84j5aPTnjMkBtwhiWX7cM0MygKuCpDKhY3VLDxp9EysB6UtYtC0H+oD8NoVN7bgsF6cGz5hwd2RGNzklaYdWbk0wfj7hYDG4nRAfvPNhy+hBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S7h+DRYrN5vlUCUlN2ZJ3jJKXucy42GT5edfhZVtl18=;
- b=DdHITg292wqW/JFxg4VlGJlCQAq8aKqreZNLxu8dDtHF224Me2BIuR44xulQPOalZR8UQ21tmuCaTCsAChsmDK65I9yWt9vR9zr30ckZzo9qW9P/XFpC01QftCRA+o+NCYLSoNOKIXRc6TJNHP6TorDu73uw+TNQRN4xfNtUdmlBVBTiF3TOg4iKfFWUTMrJtofabOAJiiKub8zAxfLLqe0f/OWWf3Cvx/zHPHXV0Y40zhknuGNPy2sXz/58OhtGGpN94LYKPmFNA628BaDHd1wm0A3kF+jBSdAA5jSP6Nzp9EofgPrjWYS1FAgLjfmOtBNAC4xKcgzsgiPDnclH2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=csie.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S7h+DRYrN5vlUCUlN2ZJ3jJKXucy42GT5edfhZVtl18=;
- b=H5eg180sxWwwJstcj30lO1LCeO7/scCZJ2YjosXIg+/yKYK4F6v/VwxIJxeCd8NFLafXoxONxXFRB4LP8v7ydGkTpkx+VMtnb6ZMdgAIjRdxnP2keMKfzuwXtH5oz1DKFrdoxoVoK3WzzGUHTOn1V0fjkaDYfxaS2YTmQBNYkYDFD4JRNrE2nZxhZiemA70ZD9EGt6qZrZrchszy5Gfe78VdgqQ+KrXCZ0n0yQX4Z2KQnniH3yDAk+MMZQuftzfXGWK7jQ6Lpr4/yaOVFfz/RKHcwFcWf074Tc8LHmiSjvmpfAdOdUQuBxe2WEyKr76anij17Nv/WN0Fg+izFqitlQ==
-Received: from SA9PR13CA0142.namprd13.prod.outlook.com (2603:10b6:806:27::27)
- by DM4PR12MB6542.namprd12.prod.outlook.com (2603:10b6:8:89::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9160.9; Tue, 23 Sep 2025 19:46:49 +0000
-Received: from SA2PEPF000015C8.namprd03.prod.outlook.com
- (2603:10b6:806:27:cafe::7e) by SA9PR13CA0142.outlook.office365.com
- (2603:10b6:806:27::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.19 via Frontend Transport; Tue,
- 23 Sep 2025 19:46:49 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- SA2PEPF000015C8.mail.protection.outlook.com (10.167.241.198) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9137.12 via Frontend Transport; Tue, 23 Sep 2025 19:46:48 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 23 Sep
- 2025 12:46:38 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Tue, 23 Sep 2025 12:46:38 -0700
-Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Tue, 23 Sep 2025 12:46:35 -0700
-Date: Tue, 23 Sep 2025 12:46:34 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: "Tian, Kevin" <kevin.tian@intel.com>, "joro@8bytes.org" <joro@8bytes.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>, "suravee.suthikulpanit@amd.com"
-	<suravee.suthikulpanit@amd.com>, "will@kernel.org" <will@kernel.org>,
-	"robin.murphy@arm.com" <robin.murphy@arm.com>, "sven@kernel.org"
-	<sven@kernel.org>, "j@jannau.net" <j@jannau.net>, "alyssa@rosenzweig.io"
-	<alyssa@rosenzweig.io>, "neal@gompa.dev" <neal@gompa.dev>,
-	"robin.clark@oss.qualcomm.com" <robin.clark@oss.qualcomm.com>,
-	"m.szyprowski@samsung.com" <m.szyprowski@samsung.com>, "krzk@kernel.org"
-	<krzk@kernel.org>, "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
-	"dwmw2@infradead.org" <dwmw2@infradead.org>, "baolu.lu@linux.intel.com"
-	<baolu.lu@linux.intel.com>, "yong.wu@mediatek.com" <yong.wu@mediatek.com>,
-	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
-	"angelogioacchino.delregno@collabora.com"
-	<angelogioacchino.delregno@collabora.com>, "tjeznach@rivosinc.com"
-	<tjeznach@rivosinc.com>, "paul.walmsley@sifive.com"
-	<paul.walmsley@sifive.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>,
-	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, "alex@ghiti.fr"
-	<alex@ghiti.fr>, "heiko@sntech.de" <heiko@sntech.de>,
-	"schnelle@linux.ibm.com" <schnelle@linux.ibm.com>, "mjrosato@linux.ibm.com"
-	<mjrosato@linux.ibm.com>, "gerald.schaefer@linux.ibm.com"
-	<gerald.schaefer@linux.ibm.com>, "orsonzhai@gmail.com" <orsonzhai@gmail.com>,
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
-	"zhang.lyra@gmail.com" <zhang.lyra@gmail.com>, "wens@csie.org"
-	<wens@csie.org>, "jernej.skrabec@gmail.com" <jernej.skrabec@gmail.com>,
-	"samuel@sholland.org" <samuel@sholland.org>, "jean-philippe@linaro.org"
-	<jean-philippe@linaro.org>, "rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>, "Liu, Yi L" <yi.l.liu@intel.com>,
-	"cwabbott0@gmail.com" <cwabbott0@gmail.com>, "quic_pbrahma@quicinc.com"
-	<quic_pbrahma@quicinc.com>, "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"asahi@lists.linux.dev" <asahi@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-arm-msm@vger.kernel.org"
-	<linux-arm-msm@vger.kernel.org>, "linux-samsung-soc@vger.kernel.org"
-	<linux-samsung-soc@vger.kernel.org>, "linux-mediatek@lists.infradead.org"
-	<linux-mediatek@lists.infradead.org>, "linux-riscv@lists.infradead.org"
-	<linux-riscv@lists.infradead.org>, "linux-rockchip@lists.infradead.org"
-	<linux-rockchip@lists.infradead.org>, "linux-s390@vger.kernel.org"
-	<linux-s390@vger.kernel.org>, "linux-sunxi@lists.linux.dev"
-	<linux-sunxi@lists.linux.dev>, "linux-tegra@vger.kernel.org"
-	<linux-tegra@vger.kernel.org>, "virtualization@lists.linux.dev"
-	<virtualization@lists.linux.dev>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>, "patches@lists.linux.dev"
-	<patches@lists.linux.dev>, "Sethi, Vikram" <vsethi@nvidia.com>,
-	"helgaas@kernel.org" <helgaas@kernel.org>, "etzhao1900@gmail.com"
-	<etzhao1900@gmail.com>
-Subject: Re: [PATCH v4 1/7] iommu/arm-smmu-v3: Add release_domain to attach
- prior to release_dev()
-Message-ID: <aNL5Gizi5krZN1KG@Asurada-Nvidia>
-References: <cover.1756682135.git.nicolinc@nvidia.com>
- <c6bc114e438779129a891408af7d997bf6c28b5b.1756682135.git.nicolinc@nvidia.com>
- <BL1PR11MB5271767F92289C1D1207D8188C08A@BL1PR11MB5271.namprd11.prod.outlook.com>
- <20250915123515.GE1024672@nvidia.com>
- <aM3dlQH0rk74w2CH@Asurada-Nvidia>
- <20250923172229.GD2608121@nvidia.com>
- <aNLa21vMlP6kgatx@Asurada-Nvidia>
- <20250923174453.GF2608121@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14E230FC1C;
+	Tue, 23 Sep 2025 22:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758667133; cv=none; b=ktFvNiGGlXWSJ0c0WG+ejP8NR0DAqQbZSQE31cKrver3Oh4uWBg2V5NDr7VQ9UsWOL2wW7yfq06SsIUWYtVJr+rzRFQc2uDmD4Dyw4FHNYoQjGXKO0l1tL3XxNjXNwZZi9FqoyCs9yUU92WaZdLa9WbvI21M6WOJzLpufyxe+w0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758667133; c=relaxed/simple;
+	bh=3ClJm3GGCbKnrDe8xlc0T1sj5TO27qNztLWoK747IkM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oe0ByCs9vvKA+e+Ks8dWhosEk2MwWek6wS2gCDP0Q1wLcTUOwyxC/gJuiW3ZAi7etRRwlXS5Iu9JS15BQB4O7Dl3MuCpWPkYvcjI3biJ4WDLHlxNRLlzJyooeMKNlGDKnma0gM3+5yNe5HOdH90sXkQ/9dllPK/srzMP3XeZepo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=oBW6V6+E; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version:
+	Content-Type; bh=TTWQOmGgkRlfr3lkdxz0rDPCmCvx7LmjjYcHdx7zUf0=;
+	b=oBW6V6+EYRbKWu59T12hc+AVpLa7QEzPlltRgEnLXAgqo5aWHe52DicBIkfqit
+	hkWKq7tMqmPIxKc8r5ZSVBl4tNBW6pmXZ/Za3YizyGEikvdwMfZmAnvgkY+PYA+u
+	g6/EFJVjBJLWinDp42qxFSxj21fK2pofDUd7sNUtRK77g=
+Received: from MS-CMFLBWVCLQRG.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wDH2yRoIdNo2NsLDg--.8619S2;
+	Wed, 24 Sep 2025 06:38:33 +0800 (CST)
+From: GuangFei Luo <luogf2025@163.com>
+To: rafael@kernel.org
+Cc: dan.carpenter@linaro.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	luogf2025@163.com
+Subject: Re:[PATCH v6] ACPI: battery: prevent sysfs_add_battery re-entry on rapid events
+Date: Wed, 24 Sep 2025 06:38:29 +0800
+Message-ID: <20250923223831.1308685-1-luogf2025@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <5944379.DvuYhMxLoT@rafael.j.wysocki>
+References: <5944379.DvuYhMxLoT@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250923174453.GF2608121@nvidia.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF000015C8:EE_|DM4PR12MB6542:EE_
-X-MS-Office365-Filtering-Correlation-Id: d720f4e3-88f3-4300-9458-08ddfad9ef76
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|82310400026|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?edl+yiTwNSBMr7hTEbrTFuV6y17GA9J9hdAI04O96+FGTQSZ0040pRj2w+FF?=
- =?us-ascii?Q?ybnHXU/WSi4DUhm7bUv0PP/qxzdeDBDMsFSBgIfAV7jYZsuhoje8I5KhRWl5?=
- =?us-ascii?Q?CjlxT9yyjStltgbHRZ3WaOBoVsFY5SmKGH12OBmDXMsszhfIqNy5GTWxXwT8?=
- =?us-ascii?Q?ZoYY0jNqa6JlDZvN+yPPdVQz40A9eeG/EFS6YDbLx33Pet58iK/BF2llPcMl?=
- =?us-ascii?Q?nQJeU6Vee72c3W+nq7EMQRcUBTGuksX5q+N9UoHQz43Cbr6JZYfwhRMyDbQw?=
- =?us-ascii?Q?pe1Cer/K6Ky4/wd8QONRYJleJUbDEbXFrMNcuutUYjiOOpBHmVCEmv1HvPvT?=
- =?us-ascii?Q?YKaiGvcz1BJk1G/gc1gKxfGhctpxABPUiZeT0ftkq83VlNCam2Ax0Y6QOcFH?=
- =?us-ascii?Q?xFmigxen4X6hwxesV3b4QYNaauoWf/bvlAvX7fMpxmRDJHi790qmpXNx6RqZ?=
- =?us-ascii?Q?WgIpHrg7u+Cv/MrQ1al4ByjOQke2cHNaG9JAaFS7ToOAYmMK0M7TEBRkKALB?=
- =?us-ascii?Q?Y+P+fCHFkfUdLQaCk+FXOSNG5qWyR9sogbaiTX+ilk7KsFbsDvTiZ1sUfOTn?=
- =?us-ascii?Q?NoVsd5Nxrk9Wsiv8V1xir1oy+m6SAx3fswKUupmpUIoHNxgD5chvURk0Z9ko?=
- =?us-ascii?Q?4tQ/OdEPfGs6Avk1tYSC3L6SsmS0fMUfYvB9uv8uhDFhDOcZh7UU24pLfQi6?=
- =?us-ascii?Q?PZxEyPib4LE6d+LdaaF8RB6UleaKiFzQZbuztdCFno9bPV0WEEgdmCeJsWnx?=
- =?us-ascii?Q?WbGCNrPBi42JvlhNzVOOjVy8VW+lXpg7iCUGfSWbhil+OiUPHjLewFRbR/sE?=
- =?us-ascii?Q?J1NZ0CKFzLFgDIf3Ik2G/NJcB/HM8TbCmblq14lSEbhjsEuCaHn+mt0WuIR/?=
- =?us-ascii?Q?iToGwQ5bwH15g0oy4K8FSfp6IsMhD72BLMCIKVO9LRgvTB/JNnI3KvktREkr?=
- =?us-ascii?Q?3eGo860ERfL00ni5Fake0B0BqrLxFPgF6pxJtttzLFg3cQyFPfAkzPZNHfNx?=
- =?us-ascii?Q?cgQAgDnFa2szD4RdxytIU/SU+lB2RqIbiQZEz9+7PyyEd0OuwmW3k0Hdjyev?=
- =?us-ascii?Q?TKbQQa/NDs83INNDMPbqYGQKx+fQHLrx2L57rjoo4kjzQSEBuIKFwujZ+rgv?=
- =?us-ascii?Q?NsbmshaRKWC2dtQUpghyQtHHfi/pmXXswcoTqtbDgf4KWvcGy9MYSU3mE6Il?=
- =?us-ascii?Q?eR3eQkvxhlg2gMpmsX7e5kCNvhyZ1zmfXLrtOgNaS3AmX2BQ52HqkJEir09o?=
- =?us-ascii?Q?i7nrJPmIYU5wR3FtNzjq00snHwJbbE5YY5DELIfDcM9NmdfkKcfhmtl/QUva?=
- =?us-ascii?Q?9xUrp/lMCutu/R6csGWHqvu6B36gPtA9hNcWKGBV4kAFZ5HOY+ryhkgEmUHO?=
- =?us-ascii?Q?1eHyF3NxqupusvD6q2pyBapZZHgldTolhF1Ys0H2dVzpCLA3xmo2mZnwkRb4?=
- =?us-ascii?Q?a1NJCSW8EFaTHWHvR0fp7BIWXJTp8mLcJIaxEkLeOYq2P8pOOxqzOOqEnLng?=
- =?us-ascii?Q?EE2HHrIGh81w5uNymKruT3+dw7+e37RqC/sv?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2025 19:46:48.7849
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d720f4e3-88f3-4300-9458-08ddfad9ef76
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF000015C8.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6542
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDH2yRoIdNo2NsLDg--.8619S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3JF1xKrWrGryDuryUKF1kuFg_yoW7Xr45pa
+	yUCFWYkr4UJ3WUXw12qr4Yvry3Z3yFyrWjgr9rury0k34DWF1xJr15tF9rZrZxKryFka1r
+	ZF4xX3W5Zw17ZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziDPEfUUUUU=
+X-CM-SenderInfo: poxrwwisqskqqrwthudrp/1tbiPQ-RmWjTEazrCAAAsf
 
-On Tue, Sep 23, 2025 at 02:44:53PM -0300, Jason Gunthorpe wrote:
-> On Tue, Sep 23, 2025 at 10:37:31AM -0700, Nicolin Chen wrote:
-> > On Tue, Sep 23, 2025 at 02:22:29PM -0300, Jason Gunthorpe wrote:
-> > > On Fri, Sep 19, 2025 at 03:47:49PM -0700, Nicolin Chen wrote:
-> > > > +/* Same as arm_smmu_blocked_ops but less set_dev_pasid */
-> > > > +static const struct iommu_domain_ops arm_smmu_release_ops = {
-> > > > +	.attach_dev = arm_smmu_attach_dev_blocked,
-> > > > +};
-> > > 
-> > > don't worry about set_dev_pasid for the release domain, it is never
-> > > called anyhow.
-> > > 
-> > > The intention is to just use identity or blocked domains as is.
+> On Tuesday, September 23, 2025 7:12:03 PM CEST Rafael J. Wysocki wrote:
+> > On Tue, Sep 23, 2025 at 6:14 PM GuangFei Luo <luogf2025@163.com> wrote:
+> > >
+> > > The functions battery_hook_add_battery(), battery_hook_remove_battery(),
+> > > and sysfs_remove_battery() already acquire locks, so their internal
+> > > accesses are safe.
 > > 
-> > Ah, I see AMD separate release_domain from blocked_domain..
+> > In fact, there are two locks in use, battery->sysfs_lock and
+> > hook_mutex.  The latter is used for managing hooks and the former is
+> > only used by sysfs_remove_battery(), so it only prevents that function
+> > from racing with another instance of itself.
+> > 
+> > I would suggest using battery->sysfs_lock for protecting battery->bat
+> > in general.
+> > 
+> > > acpi_battery_refresh() does check battery->bat, but its child
+> > > functions (sysfs_add_battery() and sysfs_remove_battery()) already
+> > > handle locking.
+> > 
+> > What locking?  Before the $subject patch, sysfs_add_battery() doesn't
+> > do any locking at all AFAICS.
+> > 
+> > > In acpi_battery_notify(), battery->bat has no lock. However, the
+> > > check of battery->bat is at the very end of the function. During
+> > > earlier calls, battery->bat has already been protected by locks, so
+> > > re-entry will not cause issues.
+> > 
+> > All of the battery->bat checks and the code depending on them need to
+> > go under the same lock.  I'd use battery->sysfs_lock for this as
+> > already mentioned above.
 > 
-> Send a patch for AMD since you found it?
+> So my (untested) version of this fix is appended.
+> 
+> Note that it explicitly prevents acpi_battery_notify() from racing with
+> addition/removal, PM notifications, and resume.
+> 
+> ---
+>  drivers/acpi/battery.c |   36 +++++++++++++++++++++++-------------
+>  1 file changed, 23 insertions(+), 13 deletions(-)
+> 
+> --- a/drivers/acpi/battery.c
+> +++ b/drivers/acpi/battery.c
+> @@ -92,7 +92,7 @@ enum {
+>  
+>  struct acpi_battery {
+>  	struct mutex lock;
+> -	struct mutex sysfs_lock;
+> +	struct mutex update_lock;
+>  	struct power_supply *bat;
+>  	struct power_supply_desc bat_desc;
+>  	struct acpi_device *device;
+> @@ -904,15 +904,12 @@ static int sysfs_add_battery(struct acpi
+>  
+>  static void sysfs_remove_battery(struct acpi_battery *battery)
+>  {
+> -	mutex_lock(&battery->sysfs_lock);
+> -	if (!battery->bat) {
+> -		mutex_unlock(&battery->sysfs_lock);
+> +	if (!battery->bat)
+>  		return;
+> -	}
+> +
+>  	battery_hook_remove_battery(battery);
+>  	power_supply_unregister(battery->bat);
+>  	battery->bat = NULL;
+> -	mutex_unlock(&battery->sysfs_lock);
+>  }
+>  
+>  static void find_battery(const struct dmi_header *dm, void *private)
+> @@ -1072,6 +1069,9 @@ static void acpi_battery_notify(acpi_han
+>  
+>  	if (!battery)
+>  		return;
+> +
+> +	guard(mutex)(&battery->update_lock);
+> +
+>  	old = battery->bat;
+>  	/*
+>  	 * On Acer Aspire V5-573G notifications are sometimes triggered too
+> @@ -1094,21 +1094,22 @@ static void acpi_battery_notify(acpi_han
+>  }
+>  
+>  static int battery_notify(struct notifier_block *nb,
+> -			       unsigned long mode, void *_unused)
+> +			  unsigned long mode, void *_unused)
+>  {
+>  	struct acpi_battery *battery = container_of(nb, struct acpi_battery,
+>  						    pm_nb);
+> -	int result;
+>  
+> -	switch (mode) {
+> -	case PM_POST_HIBERNATION:
+> -	case PM_POST_SUSPEND:
+> +	if (mode == PM_POST_SUSPEND || mode == PM_POST_HIBERNATION) {
+> +		guard(mutex)(&battery->update_lock);
+> +
+>  		if (!acpi_battery_present(battery))
+>  			return 0;
+>  
+>  		if (battery->bat) {
+>  			acpi_battery_refresh(battery);
+>  		} else {
+> +			int result;
+> +
+>  			result = acpi_battery_get_info(battery);
+>  			if (result)
+>  				return result;
+> @@ -1120,7 +1121,6 @@ static int battery_notify(struct notifie
+>  
+>  		acpi_battery_init_alarm(battery);
+>  		acpi_battery_get_state(battery);
+> -		break;
+>  	}
+>  
+>  	return 0;
+> @@ -1198,6 +1198,8 @@ static int acpi_battery_update_retry(str
+>  {
+>  	int retry, ret;
+>  
+> +	guard(mutex)(&battery->update_lock);
+> +
+>  	for (retry = 5; retry; retry--) {
+>  		ret = acpi_battery_update(battery, false);
+>  		if (!ret)
+> @@ -1230,7 +1232,7 @@ static int acpi_battery_add(struct acpi_
+>  	if (result)
+>  		return result;
+>  
+> -	result = devm_mutex_init(&device->dev, &battery->sysfs_lock);
+> +	result = devm_mutex_init(&device->dev, &battery->update_lock);
+>  	if (result)
+>  		return result;
+>  
+> @@ -1262,6 +1264,8 @@ fail_pm:
+>  	device_init_wakeup(&device->dev, 0);
+>  	unregister_pm_notifier(&battery->pm_nb);
+>  fail:
+> +	guard(mutex)(&battery->update_lock);
+> +
+>  	sysfs_remove_battery(battery);
+>  
+>  	return result;
+> @@ -1281,6 +1285,9 @@ static void acpi_battery_remove(struct a
+>  
+>  	device_init_wakeup(&device->dev, 0);
+>  	unregister_pm_notifier(&battery->pm_nb);
+> +
+> +	guard(mutex)(&battery->update_lock);
+> +
+>  	sysfs_remove_battery(battery);
+>  }
+>  
+> @@ -1297,6 +1304,9 @@ static int acpi_battery_resume(struct de
+>  		return -EINVAL;
+>  
+>  	battery->update_time = 0;
+> +
+> +	guard(mutex)(&battery->update_lock);
+> +
+>  	acpi_battery_update(battery, true);
+>  	return 0;
+>  }
 
-Yea, sure.
+Thanks for the detailed explanation and the updated version of the fix.
 
-Nicolin
+I will test your suggested changes on my platform.  
+After verification, I will send a v7 based on your suggestion.
+
 
