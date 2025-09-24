@@ -1,194 +1,186 @@
-Return-Path: <linux-acpi+bounces-17287-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17289-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF60AB9BA9A
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Sep 2025 21:19:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4CC4B9BB29
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Sep 2025 21:26:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A3B6426BDE
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Sep 2025 19:19:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50CC44C0DE3
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Sep 2025 19:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF6C2620D2;
-	Wed, 24 Sep 2025 19:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB173306B0C;
+	Wed, 24 Sep 2025 19:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lk+db/bL"
+	dkim=pass (2048-bit key) header.d=landley.net header.i=@landley.net header.b="qP7ktGKp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011053.outbound.protection.outlook.com [40.93.194.53])
+Received: from eastern.birch.relay.mailchannels.net (eastern.birch.relay.mailchannels.net [23.83.209.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88392594BD;
-	Wed, 24 Sep 2025 19:18:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C3A1C8603;
+	Wed, 24 Sep 2025 19:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.209.55
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758741541; cv=fail; b=e0SPRVaQqUh0+L1DVdPsHb50662hFNWkKEb4L0vxZtY3csSWIh47StRiEpM5Z5Z0KYP+5ZSpwa+8DRmaQb+ggTlXnEHscbKF4hfWiLkPVGZQelLMzCb2IUeaQOJORJoHJy/xxl+Mk6DZ+c/A96T2shfiPE0wklj8smL1yBLvROc=
+	t=1758741976; cv=pass; b=QqwhKov7zOBNob91ZIKleb+x94NIUDCPaN7BZF9uLkBt4kE5xramulnCLAdSdiW0cyVJnFkfObRmVW+2NaPKT+aaJFXgTmWdiNSNwH4hOtb3uGsMVl8mDk1BpbbJvDdvvabhxDwk1NimvAx+JyJdqdQVC0c7wjU8JPNz/YyGJ6c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758741541; c=relaxed/simple;
-	bh=yZfyw3n+mBkzqu+xn7uTgzhM5cFEpb3B43KpWTGLipw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ofh3dY7XfgcQi+jgoVxln2t0KNIlbauquUQKLDABsbmDW33VMUJX6Atojb+ywvwoUPzuy8XgcEFBZzbNfOjwfBQ+Zqpm0D3jZR1pBWg81S5bI2eKYLAJosbZ+4D3JeIMraqRPeybd5acV9JJV/jp+xV6ibZiPtZ02lfxpOL8uZ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lk+db/bL; arc=fail smtp.client-ip=40.93.194.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HFXIG7KcQZvwT9GX4t4wFzNHoCGkDJo7NfcOB9Gb1cxCx9NyRpu8+YFm9cDVZoelu/k+SM9Xp1Ro7hqJgLreEkMGTcIltjJtH9/h9KALfuAlsuSMetCmzX25xAa2NmBZZuSadb4w9gEmcB3aI8juRRoewq50Un6x65Pstyn7I5KPIdKO+tl115BCzRGoJmm6Z2/gqjo3p868hqmDhzXcFiZ2hdjUfb6lPRM0/TLYoVb4n8JAKrugZkqFhL8d1QnFjRbmD+009ycKsMhjHBTriKqZ+2KvNzC5cjx7bLx672RHuDEpWXjSfS91I+qZSoUZlAmtLl/DPNDKbcq9tmUhIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gXNzY6XHZfn/5ZTzycSEtYX2YjcDoXsQIMwssN7E92s=;
- b=KDnQ0BkyJxaSM5IcFi/ifoQXSnff46+ZZfn88iwkbLvRasx5wtpvBdLb8+FWzKXi26+ZKhjumy7MPxFY8Hykn7ArqycyetxCiPomNZ5XLtSiJxG6muQzevqj3vCqWi/SbGDuyLbOb28gdk/uUf95Vz4pniQd6Igs/qlmB9Aqc78b6dvaIM1kg6WsoUon4IWmjmD0C2JHYFwYBRwJpbLG9TlCIj6gzvsIdmTHxHKg9Ze+OsLobGLXwkZByZM14oW6UK9+9Zquh5rj4Cs1EPzInr1kVfJ72dAgQAf6PlDGQPqNc+W5TL46PgzNHAmfef7a7YTTf56mV+pa861lZS14Rw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=csie.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gXNzY6XHZfn/5ZTzycSEtYX2YjcDoXsQIMwssN7E92s=;
- b=lk+db/bLq1f0SifuPXuFUQ+zGjgjutqjhqiHVlbBm4HkFu+1jDQqJKwRNOSEl+8bdkndHfd7hihCbCCM05zyZVXtD0xbg4BC4SpQL9Fi4EtWqAFO7+Pck2nC/L5XWhyZr13UHt2jKLhpkx2kkiqS4cXRWizbg0//57dB32Yn7PfY9LURqeoP+54pkHit//uSUEcNKVBUY8ZqFPkUtxorcHuo+gK9/nlSm5CoYU5KS0HV0/2gvVas2uPufL3SpB/IiIeRcCYhn1a8e0cKvE71c+nUHSzSS9cNGf1rKndYvkJo6yCfzO7JavPm7BSqQNyrYVHSeGcrlkgskM1BMt0F2A==
-Received: from CH2PR12CA0006.namprd12.prod.outlook.com (2603:10b6:610:57::16)
- by LV5PR12MB9778.namprd12.prod.outlook.com (2603:10b6:408:300::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.20; Wed, 24 Sep
- 2025 19:18:57 +0000
-Received: from DS3PEPF0000C37F.namprd04.prod.outlook.com
- (2603:10b6:610:57:cafe::b1) by CH2PR12CA0006.outlook.office365.com
- (2603:10b6:610:57::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.21 via Frontend Transport; Wed,
- 24 Sep 2025 19:18:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- DS3PEPF0000C37F.mail.protection.outlook.com (10.167.23.9) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9160.9 via Frontend Transport; Wed, 24 Sep 2025 19:18:56 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 24 Sep
- 2025 12:18:47 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Wed, 24 Sep 2025 12:18:46 -0700
-Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Wed, 24 Sep 2025 12:18:44 -0700
-Date: Wed, 24 Sep 2025 12:18:43 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: <joro@8bytes.org>, <bhelgaas@google.com>, <suravee.suthikulpanit@amd.com>,
-	<will@kernel.org>, <robin.murphy@arm.com>, <sven@kernel.org>, <j@jannau.net>,
-	<alyssa@rosenzweig.io>, <neal@gompa.dev>, <robin.clark@oss.qualcomm.com>,
-	<m.szyprowski@samsung.com>, <krzk@kernel.org>, <alim.akhtar@samsung.com>,
-	<dwmw2@infradead.org>, <baolu.lu@linux.intel.com>, <kevin.tian@intel.com>,
-	<yong.wu@mediatek.com>, <matthias.bgg@gmail.com>,
-	<angelogioacchino.delregno@collabora.com>, <tjeznach@rivosinc.com>,
-	<paul.walmsley@sifive.com>, <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>,
-	<alex@ghiti.fr>, <heiko@sntech.de>, <schnelle@linux.ibm.com>,
-	<mjrosato@linux.ibm.com>, <gerald.schaefer@linux.ibm.com>,
-	<orsonzhai@gmail.com>, <baolin.wang@linux.alibaba.com>,
-	<zhang.lyra@gmail.com>, <wens@csie.org>, <jernej.skrabec@gmail.com>,
-	<samuel@sholland.org>, <jean-philippe@linaro.org>, <rafael@kernel.org>,
-	<lenb@kernel.org>, <yi.l.liu@intel.com>, <cwabbott0@gmail.com>,
-	<quic_pbrahma@quicinc.com>, <iommu@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <asahi@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>,
-	<linux-samsung-soc@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	<linux-riscv@lists.infradead.org>, <linux-rockchip@lists.infradead.org>,
-	<linux-s390@vger.kernel.org>, <linux-sunxi@lists.linux.dev>,
-	<linux-tegra@vger.kernel.org>, <virtualization@lists.linux.dev>,
-	<linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-	<patches@lists.linux.dev>, <vsethi@nvidia.com>, <helgaas@kernel.org>,
-	<etzhao1900@gmail.com>
-Subject: Re: [PATCH v4 4/7] iommu: Pass in old domain to attach_dev callback
- functions
-Message-ID: <aNREE5qMJRU+0+Bw@Asurada-Nvidia>
-References: <cover.1756682135.git.nicolinc@nvidia.com>
- <19570f350d15528e13447168b7dcd95795afdbf3.1756682135.git.nicolinc@nvidia.com>
- <20250924184346.GI2617119@nvidia.com>
+	s=arc-20240116; t=1758741976; c=relaxed/simple;
+	bh=BHsTkzdWZajDNDK+ioNil3t9QVIX4IumG9TxYgK95/0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EkBWl7S0eZencH7xz9rP5NLYMH3a5x6ctyim2l14bTBbgE/n98yRgcXErmafAn+2jL6RCklgG7CtUkdaWspVo86kuwH0b/6PF+vk44y7fFgu6xQD8K1CGTzLHKUHHPcFcwC6B6nwx4gqzzmoyiOG4U4cGPQxxGZydr1sO2adL+E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net; spf=pass smtp.mailfrom=landley.net; dkim=pass (2048-bit key) header.d=landley.net header.i=@landley.net header.b=qP7ktGKp; arc=pass smtp.client-ip=23.83.209.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=landley.net
+X-Sender-Id: dreamhost|x-authsender|rob@landley.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id D68F56C2CDF;
+	Wed, 24 Sep 2025 19:20:52 +0000 (UTC)
+Received: from pdx1-sub0-mail-a233.dreamhost.com (trex-blue-5.trex.outbound.svc.cluster.local [100.108.153.55])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 4D82F6C092A;
+	Wed, 24 Sep 2025 19:20:51 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1758741652; a=rsa-sha256;
+	cv=none;
+	b=FIelBRpKbw4XRCXREIY6GrcomZxyh5mPLsvXc2d6FGp/peq6EwuUT5C41+2LA0F+ggX9yV
+	8sDI+KYqBxmckQrPVNV7rWra63fWqq+o5yLlx5MZRnuTdHQZEQgAmgblFxuGyjaNVrHFDk
+	wPn+M2/WQfSpmZ0IkQEEN3MHnMtbF5yhytJwedRo1ogyg8SQR/ZRrsw9DI3lHGj/2mLKAm
+	dj8jGFwnS4OjNKQjH2R6mDLZ7tlU8MommvaAha7o+UWIylY5K2nv2k5iepHunaoM660neK
+	8apwlyJbofcRsA4DvFw4pkrtRAv7P9DWllpqqR+qR+EGkoSllD3i7IkmAH8Mog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1758741652;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2+5k4o1pMixQXt5VsjL/MYZwcVCEyggOqRD9o8b/qSc=;
+	b=ChRw8wSjyogd2do/v/H6TxZGH/WsiQerw/hid5S8KViit0lwA1gMH0+6UMTmJNQMMIezrz
+	gsCOkeBMJedUyPmRdN0+x/Ibzn4kOtJ+sG57y0ioHbgMKfWThGzPdrmcr4dMMVSyyUw2rk
+	dVBBOmfhJTtYNtYRTDWhwp+mpqmWhEqvL9C8FrlKqiY59ItiMJEd3l6YkcBc//9Lzk6+Fh
+	mvjXUWAyzYxp+VnxExIXavdSHQcTxa/FAQIzz9fgRHT07mtFGrsyWRfq7ZmdI4pGoAxOfN
+	0MoQjrfyn0a4j6aLMBwkDQq4B0YTsphgd54S7yxIuOYwH85l63FNfS25ErSZgQ==
+ARC-Authentication-Results: i=1;
+	rspamd-55b8bfbc7f-nnn52;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=rob@landley.net
+X-Sender-Id: dreamhost|x-authsender|rob@landley.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|rob@landley.net
+X-MailChannels-Auth-Id: dreamhost
+X-Callous-Spill: 350181bf214e86d3_1758741652308_3044232165
+X-MC-Loop-Signature: 1758741652308:255498347
+X-MC-Ingress-Time: 1758741652308
+Received: from pdx1-sub0-mail-a233.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.108.153.55 (trex/7.1.3);
+	Wed, 24 Sep 2025 19:20:52 +0000
+Received: from [192.168.88.7] (unknown [209.81.127.98])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: rob@landley.net)
+	by pdx1-sub0-mail-a233.dreamhost.com (Postfix) with ESMTPSA id 4cX6Bm0dnXzJl;
+	Wed, 24 Sep 2025 12:20:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=landley.net;
+	s=dreamhost; t=1758741651;
+	bh=2+5k4o1pMixQXt5VsjL/MYZwcVCEyggOqRD9o8b/qSc=;
+	h=Date:Subject:To:Cc:From:Content-Type:Content-Transfer-Encoding;
+	b=qP7ktGKps9suFLn+SvwXNJfmXIq5m7DqxjIn++FPW06rQGLdyFrasnCUUBtJnzZ2L
+	 032Pr1ux0M59Obr3XwUHOtHtLFaEBxNmmkXxqPxYnCt1Q6ZqoWdAD9Q0W04+4gmjQl
+	 ds3vnt+/qY5ti8rpHJ46bodAbnhitDUyLxlQ0tRxKsiwmL7TThWSclVniorsogf6MJ
+	 gohNW1AXGJyGgriupkN0gkhVYK+ork7/6bPtZBHhvaB43HB07jP863XLDHcc31YH0+
+	 wfQhtcquMUPSEA+sEb7jFLcwMpbQdjW0Rd1EFegx855pG/OiLXxmVQR1JAWLIYES88
+	 kVFfZokS8hZqg==
+Message-ID: <de56cabd-05a9-4528-8150-9ad97209640e@landley.net>
+Date: Wed, 24 Sep 2025 14:20:47 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250924184346.GI2617119@nvidia.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF0000C37F:EE_|LV5PR12MB9778:EE_
-X-MS-Office365-Filtering-Correlation-Id: ea0ff33c-82bc-4f39-19cf-08ddfb9f350a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|7416014|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?cBcblxgwdefty0+60CAsDexb2LWIuUGGs0+Yy5DkDXjR4BUO44FR/6HKpIKO?=
- =?us-ascii?Q?tdnp3sb9LM8uZHZUbPzqhOmJmrKOwPiZCQY6CuXP1rC23o2MMDInzbVByHbr?=
- =?us-ascii?Q?yH1oIEFFPsIun7Us/3MMYvtkTTbQymsB2+wdzG0k3nR9m+IncBPAwKs9sWik?=
- =?us-ascii?Q?CAIe4ks0/LOuwdG+7gVZRmv/9cZ1iqRly02LTfjNtaBMEKH5hCUgfpn+nxfJ?=
- =?us-ascii?Q?3p30Xz+XrSSx/u1icZ0e9L0Qq/Oe0eE9yEM7Wva/6ommIGFEsUdvpZVpM9cY?=
- =?us-ascii?Q?I5R8eg4bgVkRPRaGvkzUgsI2bLS0xqK7LySXirszLbbxTrIhsKVw/DLmCgDT?=
- =?us-ascii?Q?JMLViVBhvUDk7iwn9oSglYJNyr4adrDClCpeobfg6QoKWRtnqlZnnhs1aQFR?=
- =?us-ascii?Q?FEzvCG/IIp9s1mYqsFumCevpUjX62zObZ0AWfLoGzZN4YANv2EIwb6abYRG3?=
- =?us-ascii?Q?m8sEMAtTb2t9mbQaALvTfGU9oF9YDB8aTEBqcqw8zJUbo59zMMrw6dt1H49S?=
- =?us-ascii?Q?CHITGOg3hMPk3HukIGRC222AUhws0rE8jRscGocO/k3Qnp7eO7ZGrwDYNV5a?=
- =?us-ascii?Q?N2t+fdDrlWVD2yG2oSKkVcoag21QH+qTR5PzynQVq+yf6wys3aYGO3w6P0IJ?=
- =?us-ascii?Q?RG3U6+eBswCLuA58GAMB5oJVMC4QCy5DqIOfs3IZiSPql/fruopHmxqQXLCA?=
- =?us-ascii?Q?4qRNjMU4vl8K/wEFIykH0cwNwyM+4hbWk1Ymi4o/4m5+yr58CyqqbKZcjlye?=
- =?us-ascii?Q?Gg2bPK5+DP/kOw/SXbOq04GpmnmhGHvIDHhV/4kPP09vZIGBO8vgTDD2gPKE?=
- =?us-ascii?Q?x7TKwPXfsBtw4Th5eZpUj0CdfPsBTGqeaUKZrUbwq1rOJg1V0ropL8XHs0iu?=
- =?us-ascii?Q?N6fiTEo4htBXkAicXqtl9lxY9YY/0plvbOg4uODOF647EYWB1oKHJHKrG3Sq?=
- =?us-ascii?Q?31xXjMgbXfoJ1PXDAMe5/brF2XU66q+1tFn+phQxH3/B88CyC1M37vtyYEt5?=
- =?us-ascii?Q?HjxE6yD3rxyuKuYNRtgU1son+QRNk++x+kWN+rcQG7819p6lckdX5EEQVHY7?=
- =?us-ascii?Q?ajTICTjw7FgbeSnU1f92uyvcfbTG916BoUkFREaucvA6hN0ClXHMkock70G0?=
- =?us-ascii?Q?6Z8b+6U+GXp8Q7YTJD43yJq0G8m0gSITjbfN5d0/y5ORLD2OTfaIhtPTrJME?=
- =?us-ascii?Q?dbqDpRO16+4+gla4Tjr1xm455k+UhIJsYNkJcbT7jS9dT34tJWszd2gpJdSn?=
- =?us-ascii?Q?zedMJX6pCVH+HZqsd/38bIA89gY+jFG1MzO8JuVm/I/CgKFr2np3yvwivc/l?=
- =?us-ascii?Q?ND4yChwwsjuMgKLbhjgZAjkwiUc0IAET6/iHjlvLvA4rQniKn689LRh0RrD+?=
- =?us-ascii?Q?ZLYvlSEspBwAVIx2dpXa9MPS81C0VVjh2ZG0dEtGEHMM8t8ppQ93OGH3n4bB?=
- =?us-ascii?Q?Rul/s13vpajYIrpY/pmxAkcRWfVN3FKf4Fh3MfgI7V3XFqVu0ufUzEQVp7RT?=
- =?us-ascii?Q?qqWvWRMYCKiButfEjzP2C4O3EQz9/+zNQ72l?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(7416014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2025 19:18:56.3711
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea0ff33c-82bc-4f39-19cf-08ddfb9f350a
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS3PEPF0000C37F.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV5PR12MB9778
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
+To: Alexander Patrakov <patrakov@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Linus Torvalds
+ <torvalds@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>,
+ Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Aleksa Sarai <cyphar@cyphar.com>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Julian Stecklina <julian.stecklina@cyberus-technology.de>,
+ Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>,
+ Alexander Graf <graf@amazon.com>, Lennart Poettering <mzxreary@0pointer.de>,
+ linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-um@lists.infradead.org, x86@kernel.org, Ingo Molnar
+ <mingo@redhat.com>, linux-block@vger.kernel.org, initramfs@vger.kernel.org,
+ linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org,
+ "Theodore Y . Ts'o" <tytso@mit.edu>, linux-acpi@vger.kernel.org,
+ Michal Simek <monstr@monstr.eu>, devicetree@vger.kernel.org,
+ Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>,
+ Thorsten Blum <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>,
+ patches@lists.linux.dev
+References: <20250913003842.41944-1-safinaskar@gmail.com>
+ <ffbf1a04-047d-4787-ac1e-f5362e1ca600@csgroup.eu>
+ <CAN_LGv3Opj9RW0atfXODy-Epn++5mt_DLEi-ewxR9Me5x46Bkg@mail.gmail.com>
+Content-Language: en-US
+From: Rob Landley <rob@landley.net>
+In-Reply-To: <CAN_LGv3Opj9RW0atfXODy-Epn++5mt_DLEi-ewxR9Me5x46Bkg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 24, 2025 at 03:43:46PM -0300, Jason Gunthorpe wrote:
-> I've split things like this into more patches before, but this
-> actually isn't too bad, so I wouldn't push for it.
+On 9/24/25 11:17, Alexander Patrakov wrote:
+>> Therefore is it really initrd you are removing or just some corner case
+>> ? If it is really initrd, then how does QEMU still work with that
+>> -initrd parameter ?
+> 
+> The QEMU -initrd parameter is a misnomer. It can be used to pass an
+> initrd or an initramfs, and the kernel automatically figures out what
+> it is.
 
-Thanks. I will keep the flow in mind.
+It's not a misnomer, initrams has always been able to make use of the 
+existing initrd loading mechanism to read images externally supplied by 
+the bootloader. It's what grub calls it too. I documented it in the 
+"External initramfs images" section of 
+https://kernel.org/doc/Documentation/filesystems/ramfs-rootfs-initramfs.txt 
+back in 2005. The mechanism itself is 30 years old 
+(Documentation/initrd.txt was written by Werner Almsberger in linux 
+1.3.73 from March 7, 1996, ala 
+https://github.com/mpe/linux-fullhistory/commit/afc106342783 ).
 
-For working more on the new test attach op, I'd probably keep it
-as-is.
+Since initrd contents could always be in a bunch of different 
+autodetected formats (and optionally compressed just like the kernel), 
+initramfs just hooked in to the staircase and said "if the format is 
+cpio, call this function to handle it". The patch series proposes 
+removing all the other formats, but not otherwise changing the existing 
+external image loader mechanism. (Personally I think removing the 
+architecture-specific hacks but leaving the generic support under init/ 
+would probably have made more sense as a first step.)
 
-> A series version would be:
->  - add a new op 'attach_dev2' or whatever
->  - Convert all drivers that just change the signature
->  - Convert drivers that have a trivial iommu_get_domain_for_dev()
->  - N patches to convert more complex drivers one by one
->  - Remove old op attach_dev
+The bootloader hands off an initrd image, initramfs is the boot-time 
+cpio extraction plumbing that's _init tagged and gets freed, and rootfs 
+is the persistent mounted instance of ramfs or tmpfs that's always there 
+and is analogous to the init task (PID 1) except for the mount tree. 
+(And is often overmounted so it's not visible, but it's still there. And 
+is NOT SPECIAL: overmounts aren't a new concept, nor is hiding them in 
+things like "df".)
 
-Does this mean that drivers would live with the 'attach_dev2' op
-renamed from 'attach_dev'? Or the last could rename it back?
+There's a REASON my documentation file was called 
+ramfs-rootfs-initramfs.txt: the naming's always been a bit... layered. 
+(And yes, I have always spelled initmpfs with only one t.)
 
-Nicolin
+Rob
 
