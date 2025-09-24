@@ -1,179 +1,251 @@
-Return-Path: <linux-acpi+bounces-17278-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17279-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0368B997E9
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Sep 2025 12:52:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4887AB9A2CD
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Sep 2025 16:11:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A589019C4475
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Sep 2025 10:52:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEB714A71B9
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Sep 2025 14:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB4214E2F2;
-	Wed, 24 Sep 2025 10:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E553054F8;
+	Wed, 24 Sep 2025 14:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dG8VUQLE"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="XWsIeH5m"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A23120A5EB
-	for <linux-acpi@vger.kernel.org>; Wed, 24 Sep 2025 10:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D783054EB;
+	Wed, 24 Sep 2025 14:11:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758711146; cv=none; b=ogw/NUyQhRqFLEnG7QiR22K8K6Qqmw9mRhYTdwtYw8x7YgUDsd9fgWgHkt5IoNIxsH8R2hbXbYA+3tqfNJXdU8KDfIcApNwDAfzpUliDt7qDYGgCYogPIv3XmQ9dsL/F0UEJ8sDFu1r1WmnbFAMW+8oGq/hVKrAuDjhvH93R6aI=
+	t=1758723083; cv=none; b=M6LOz5bxJGBfX57dblzXNWXH7XdyIG+eBl8P0PrxGupjxUB62Wh/l8F2UyhaOlEgzITdXocvBojLoCvwxLBRVVxQGkOLiSAq0Vw3kUYdW2y2kBJkmjAaDQtx9iZ50b6hbp9oNH+2pU+wTzDbCiKFEEX95S+NQgfDQhiyoHDOJNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758711146; c=relaxed/simple;
-	bh=xCDPc5y7d7WCp3lQou1gJLzgPsjIpA8s9dbP+kcvNIg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eP2PwyZXXr5GbBr1Gdle0p+DC6amqz80bhsZHrN2l8w7D1kqPHHuvwW23o8/4RV8nAO7mk73hCd/GvJlJOtLvuuSjp/fzAX1rKzt0rl6aYLQu0hPI/Ht3LZRjxMB5TfwcJZjSmimkWvrUcU+8wXJBFsefDmI5mHgDUwq4Cv/gow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dG8VUQLE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1782FC19424
-	for <linux-acpi@vger.kernel.org>; Wed, 24 Sep 2025 10:52:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758711146;
-	bh=xCDPc5y7d7WCp3lQou1gJLzgPsjIpA8s9dbP+kcvNIg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=dG8VUQLEQO6rumXUWPyuJMbAWM35Bj7FP4hq3VC6xyhrgmfldUcvL3iGQJbeF6q7l
-	 9xFhsmEJ3RUeZyCOnMIofh4uneMMaAIRZjh9gO30VdH73LsYfmVCYujLqm/C0p7t5G
-	 NjSWwgRC/7BEliaM1n5JKfEPzDHaHwpMIYpz6Jy5AaIUyWb3f5540+I1OjGVpi0+eF
-	 LntdgaY81sDWTrir4C5kEe6qPIHYy33EzYCtlGC0sBTtVqOENfYREQpK1CTRHcgbhj
-	 4obidwdHgVuT1qQqDyHPWG2VHg4F6yALwIKdb2ay4gGBkpmVTSISzAV5d5s9SwOF9E
-	 LxKMTw1mtDcPA==
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-35c80c1dc3fso65801fac.3
-        for <linux-acpi@vger.kernel.org>; Wed, 24 Sep 2025 03:52:26 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yy5Yi4M6G5z0q0gYlGQC5HZ/juAySTITg+QFDjZo7rXhn8Dlf+O
-	SpJ2Vr+TcIY686U1JQHn32qxGfUY8Pz2Y8kPjKzAulVZktLnuckIrw2/eyopI1XsjM3gC7mB8FD
-	KimhNw4p96m+ECUjN2UFIVZ3p7jEjIAo=
-X-Google-Smtp-Source: AGHT+IGEgSAb7PwthMT480H5j0SYdHpLlRhlrtZ+iuewQGA9Jkcl/bfStgYc/Gc6s4+VwKbrFzCE17TX9oVZJW6wMhs=
-X-Received: by 2002:a05:6871:758a:b0:314:b6a6:6894 with SMTP id
- 586e51a60fabf-34c835413d5mr3060169fac.40.1758711145254; Wed, 24 Sep 2025
- 03:52:25 -0700 (PDT)
+	s=arc-20240116; t=1758723083; c=relaxed/simple;
+	bh=SBJbzI+a5EDCmQJVqd66UPCcUKx8PMbrUQzAs3ufUz4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WkmZbE9OHMSAm5XJ1b7xZL0CHIH1QzubqU9XNcfwdv/9dbUgf3EgC3cRU4gXJTfNKQiH4ACyQVgeU9ZTCKtDOLzRe236vODykodxYOQqd03m0kuDW1r0OPWsXaKeUYb41iX1jywaHAT2xBJamU9nEwERnUKUQk5KgXVyuayX/lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=XWsIeH5m; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version:
+	Content-Type; bh=WqpeQ5qAYFhnm6GasJioV7bqqdYfgWz6OOnhDlY+7+U=;
+	b=XWsIeH5mq6Jnb2vVB5KXB7Lfm5A55xzGPNbED0L+TR5yyAm53MwbfXK5CnJOf5
+	NwcYMTTosJu4YEy+ghe9nDfwpTjL5IJAMd6ZUvO0q7KH/TWIAQYVPVDAc7J+NPib
+	5yVRwJLzG3MWPRLucN9oLCCyIM7IvKOLTAtmviSqgINHM=
+Received: from MS-CMFLBWVCLQRG.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wB3u8rm+9NoN1RcDg--.14964S2;
+	Wed, 24 Sep 2025 22:10:47 +0800 (CST)
+From: GuangFei Luo <luogf2025@163.com>
+To: rafael@kernel.org
+Cc: dan.carpenter@linaro.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	luogf2025@163.com
+Subject: Re:[PATCH v6] ACPI: battery: prevent sysfs_add_battery re-entry on rapid events
+Date: Wed, 24 Sep 2025 22:10:45 +0800
+Message-ID: <20250924141047.1477743-1-luogf2025@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAJZ5v0htRTTj1QEEmhxBDxYA8oXkg_KP5YrfwyngELDY+Ns1EQ@mail.gmail.com>
+References: <CAJZ5v0htRTTj1QEEmhxBDxYA8oXkg_KP5YrfwyngELDY+Ns1EQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250924074602.266292-1-sakari.ailus@linux.intel.com>
-In-Reply-To: <20250924074602.266292-1-sakari.ailus@linux.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 24 Sep 2025 12:52:12 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hSy9zQd6cP9B4QPSZi-6ughmkW=VoEBV-0MbUr2xcaAQ@mail.gmail.com>
-X-Gm-Features: AS18NWB0nF3M_Qh13bpf9jNMtOHP6GaQKliTE12EO3NKN8SlzbsSaUYuu04ZXT8
-Message-ID: <CAJZ5v0hSy9zQd6cP9B4QPSZi-6ughmkW=VoEBV-0MbUr2xcaAQ@mail.gmail.com>
-Subject: Re: [PATCH v2 00/16] Align availability checks on fwnode child node enumeration
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-input@vger.kernel.org, linux-leds@vger.kernel.org, 
-	linux-media@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-spi@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Javier Carrasco <javier.carrasco@wolfvision.net>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Lee Jones <lee@kernel.org>, 
-	Pavel Machek <pavel@kernel.org>, Matthias Fend <matthias.fend@emfend.at>, 
-	Chanwoo Choi <cw00.choi@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Paul Elder <paul.elder@ideasonboard.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, UNGLinuxDriver@microchip.com, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Mark Brown <broonie@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wB3u8rm+9NoN1RcDg--.14964S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxuFWrGF4fCF4xGr1UKFW8Crg_yoW7tr48pa
+	yUCFWYkF4UJF1UXw12qr1YvryYy3yrtryUWr9rGFy0k34q9F1xJr1UtFnrurZ8Cr4IkF48
+	ZF4xXa13Zr13ArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zirb15UUUUU=
+X-CM-SenderInfo: poxrwwisqskqqrwthudrp/1tbiPQ-SmWjT9ip7EAAAs1
 
-Hi Sakari,
+> On Wed, Sep 24, 2025 at 12:38 AM GuangFei Luo <luogf2025@163.com> wrote:
+> >
+> > > On Tuesday, September 23, 2025 7:12:03 PM CEST Rafael J. Wysocki wrote:
+> > > > On Tue, Sep 23, 2025 at 6:14 PM GuangFei Luo <luogf2025@163.com> wrote:
+> > > > >
+> > > > > The functions battery_hook_add_battery(), battery_hook_remove_battery(),
+> > > > > and sysfs_remove_battery() already acquire locks, so their internal
+> > > > > accesses are safe.
+> > > >
+> > > > In fact, there are two locks in use, battery->sysfs_lock and
+> > > > hook_mutex.  The latter is used for managing hooks and the former is
+> > > > only used by sysfs_remove_battery(), so it only prevents that function
+> > > > from racing with another instance of itself.
+> > > >
+> > > > I would suggest using battery->sysfs_lock for protecting battery->bat
+> > > > in general.
+> > > >
+> > > > > acpi_battery_refresh() does check battery->bat, but its child
+> > > > > functions (sysfs_add_battery() and sysfs_remove_battery()) already
+> > > > > handle locking.
+> > > >
+> > > > What locking?  Before the $subject patch, sysfs_add_battery() doesn't
+> > > > do any locking at all AFAICS.
+> > > >
+> > > > > In acpi_battery_notify(), battery->bat has no lock. However, the
+> > > > > check of battery->bat is at the very end of the function. During
+> > > > > earlier calls, battery->bat has already been protected by locks, so
+> > > > > re-entry will not cause issues.
+> > > >
+> > > > All of the battery->bat checks and the code depending on them need to
+> > > > go under the same lock.  I'd use battery->sysfs_lock for this as
+> > > > already mentioned above.
+> > >
+> > > So my (untested) version of this fix is appended.
+> > >
+> > > Note that it explicitly prevents acpi_battery_notify() from racing with
+> > > addition/removal, PM notifications, and resume.
+> > >
+> > > ---
+> > >  drivers/acpi/battery.c |   36 +++++++++++++++++++++++-------------
+> > >  1 file changed, 23 insertions(+), 13 deletions(-)
+> > >
+> > > --- a/drivers/acpi/battery.c
+> > > +++ b/drivers/acpi/battery.c
+> > > @@ -92,7 +92,7 @@ enum {
+> > >
+> > >  struct acpi_battery {
+> > >       struct mutex lock;
+> > > -     struct mutex sysfs_lock;
+> > > +     struct mutex update_lock;
+> > >       struct power_supply *bat;
+> > >       struct power_supply_desc bat_desc;
+> > >       struct acpi_device *device;
+> > > @@ -904,15 +904,12 @@ static int sysfs_add_battery(struct acpi
+> > >
+> > >  static void sysfs_remove_battery(struct acpi_battery *battery)
+> > >  {
+> > > -     mutex_lock(&battery->sysfs_lock);
+> > > -     if (!battery->bat) {
+> > > -             mutex_unlock(&battery->sysfs_lock);
+> > > +     if (!battery->bat)
+> > >               return;
+> > > -     }
+> > > +
+> > >       battery_hook_remove_battery(battery);
+> > >       power_supply_unregister(battery->bat);
+> > >       battery->bat = NULL;
+> > > -     mutex_unlock(&battery->sysfs_lock);
+> > >  }
+> > >
+> > >  static void find_battery(const struct dmi_header *dm, void *private)
+> > > @@ -1072,6 +1069,9 @@ static void acpi_battery_notify(acpi_han
+> > >
+> > >       if (!battery)
+> > >               return;
+> > > +
+> > > +     guard(mutex)(&battery->update_lock);
+> > > +
+> > >       old = battery->bat;
+> > >       /*
+> > >        * On Acer Aspire V5-573G notifications are sometimes triggered too
+> > > @@ -1094,21 +1094,22 @@ static void acpi_battery_notify(acpi_han
+> > >  }
+> > >
+> > >  static int battery_notify(struct notifier_block *nb,
+> > > -                            unsigned long mode, void *_unused)
+> > > +                       unsigned long mode, void *_unused)
+> > >  {
+> > >       struct acpi_battery *battery = container_of(nb, struct acpi_battery,
+> > >                                                   pm_nb);
+> > > -     int result;
+> > >
+> > > -     switch (mode) {
+> > > -     case PM_POST_HIBERNATION:
+> > > -     case PM_POST_SUSPEND:
+> > > +     if (mode == PM_POST_SUSPEND || mode == PM_POST_HIBERNATION) {
+> > > +             guard(mutex)(&battery->update_lock);
+> > > +
+> > >               if (!acpi_battery_present(battery))
+> > >                       return 0;
+> > >
+> > >               if (battery->bat) {
+> > >                       acpi_battery_refresh(battery);
+> > >               } else {
+> > > +                     int result;
+> > > +
+> > >                       result = acpi_battery_get_info(battery);
+> > >                       if (result)
+> > >                               return result;
+> > > @@ -1120,7 +1121,6 @@ static int battery_notify(struct notifie
+> > >
+> > >               acpi_battery_init_alarm(battery);
+> > >               acpi_battery_get_state(battery);
+> > > -             break;
+> > >       }
+> > >
+> > >       return 0;
+> > > @@ -1198,6 +1198,8 @@ static int acpi_battery_update_retry(str
+> > >  {
+> > >       int retry, ret;
+> > >
+> > > +     guard(mutex)(&battery->update_lock);
+> > > +
+> > >       for (retry = 5; retry; retry--) {
+> > >               ret = acpi_battery_update(battery, false);
+> > >               if (!ret)
+> > > @@ -1230,7 +1232,7 @@ static int acpi_battery_add(struct acpi_
+> > >       if (result)
+> > >               return result;
+> > >
+> > > -     result = devm_mutex_init(&device->dev, &battery->sysfs_lock);
+> > > +     result = devm_mutex_init(&device->dev, &battery->update_lock);
+> > >       if (result)
+> > >               return result;
+> > >
+> > > @@ -1262,6 +1264,8 @@ fail_pm:
+> > >       device_init_wakeup(&device->dev, 0);
+> > >       unregister_pm_notifier(&battery->pm_nb);
+> > >  fail:
+> > > +     guard(mutex)(&battery->update_lock);
+> > > +
+> > >       sysfs_remove_battery(battery);
+> > >
+> > >       return result;
+> > > @@ -1281,6 +1285,9 @@ static void acpi_battery_remove(struct a
+> > >
+> > >       device_init_wakeup(&device->dev, 0);
+> > >       unregister_pm_notifier(&battery->pm_nb);
+> > > +
+> > > +     guard(mutex)(&battery->update_lock);
+> > > +
+> > >       sysfs_remove_battery(battery);
+> > >  }
+> > >
+> > > @@ -1297,6 +1304,9 @@ static int acpi_battery_resume(struct de
+> > >               return -EINVAL;
+> > >
+> > >       battery->update_time = 0;
+> > > +
+> > > +     guard(mutex)(&battery->update_lock);
+> > > +
+> > >       acpi_battery_update(battery, true);
+> > >       return 0;
+> > >  }
+> >
+> > Thanks for the detailed explanation and the updated version of the fix.
+> >
+> > I will test your suggested changes on my platform.
+> > After verification, I will send a v7 based on your suggestion.
+> 
+> Please just verify and I'll add a changelog and subject to the patch
+> and submit it.
+> 
+> Thanks!
 
-On Wed, Sep 24, 2025 at 9:46=E2=80=AFAM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
->
-> Hello everyone,
->
-> Historically the fwnode property API has enumerated only available device
-> nodes on OF whereas on ACPI, also nodes that haven't been present in the
-> system have been provided. Both OF and ACPI have similar concepts of node
-> availbility, on OF it's the "status" property present on device nodes and
-> on ACPI the _STA object evaluates to device present, enabled and
-> functional bits, of which the present and functional bits are currently
-> being used to determine whether to enumerate a device.
->
-> Two additional functions, fwnode_get_next_available_child_node() and
-> fwnode_for_each_available_child_node(), have been provided to enumerate
-> the available nodes only on ACPI, whereas on OF the implementation has
-> been the same on the non-available variants. The motivation for providing
-> these has very likely been to provide fwnode variants of the similarly
-> named functions but the difference isn't justifiable from API consistency
-> viewpoint.
->
-> This set switches the users away from the "available" fwnode API function=
-s
-> and later on removes them, aligning the functionality on all fwnode
-> backends.
->
-> since v1:
->
-> - Move patch "ACPI: property: Make acpi_get_next_subnode() static" as
->   first.
->
-> - Add missing parentheses and kernel-doc Return: section in
->   acpi_get_next_present_subnode() documentation and move the Return
->   section: of fwnode_graph_get_endpoint_by_id() to the end of the
->   documentation section (new patch for the latter).
->
-> - Use device_get_next_child_node() instead of fwnode_get_next_child_node(=
-)
->   in flash LED driver drivers.
->
-> - Rework iterating port nodes in acpi_graph_get_next_endpoint() as
->   suggested by Andy (new patch).
+I have tested your updated patch on my laptop with battery hot-plug scenarios.
+Everything looks normal and I did not observe any issues.
 
-I think that you really have four series here, or rather two series, a
-collection of patches depending on them, and a follow-up cleanup.
+Thanks!
 
-> Sakari Ailus (16):
->   ACPI: property: Make acpi_get_next_subnode() static
->   ACPI: property: Use ACPI functions in acpi_graph_get_next_endpoint()
->     only
->   ACPI: property: Rework acpi_graph_get_next_endpoint()
->   ACPI: property: Return present device nodes only on fwnode interface
-
-So the above is one series, focused on ACPI property changes.
-
-They can go in via ACPI as soon as everyone is happy with them.  I
-think I can push them for 6.18 if that helps to process the other
-patches.
-
->   property: Move Return: section of fwnode_graph_get_endpoint_by_id()
->     down
->   property: Drop DEVICE_DISABLED flag in
->     fwnode_graph_get_endpoint_by_id()
->   property: Drop DEVICE_DISABLED flag in
->     fwnode_graph_get_endpoint_count()
-
-The above patches are another series that doesn't depend on the first
-one AFAICS and can go in via driver core.
-
->   property: Document that fwnode API returns available nodes
->   driver core: Use fwnode_for_each_child_node() instead
->   net: lan966x: Use fwnode_for_each_child_node() instead
->   Input: touch-overlay - Use fwnode_for_each_child_node() instead
->   media: thp7312: Use fwnode_for_each_child_node() instead
->   leds: Use fwnode_for_each_child_node() instead
->   leds: Use fwnode_get_next_child_node() instead
-
-The above can go in via respective subsystem trees when the ACPI
-property series gets in (I'm not sure if/how they depend on the second
-series).
-
-And the following one is a follow-up cleanup getting rid of code that
-would be redundant going forward.
-
->   property: Drop functions operating on "available" child nodes
->   spi: cadence: Remove explicit device node availability check
-
-Does the spi change depend on the previous patch?
 
