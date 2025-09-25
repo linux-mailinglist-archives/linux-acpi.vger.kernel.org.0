@@ -1,94 +1,110 @@
-Return-Path: <linux-acpi+bounces-17303-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17304-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB17B9EC50
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 12:45:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B3DB9ED40
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 12:55:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76E9C7BBC27
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 10:42:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F2C97AB40C
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 10:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4062EFDBD;
-	Thu, 25 Sep 2025 10:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864622F5461;
+	Thu, 25 Sep 2025 10:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="vmfLlyw5"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="g/WnpFmT"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7577C2EA159;
-	Thu, 25 Sep 2025 10:40:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A642F9D96
+	for <linux-acpi@vger.kernel.org>; Thu, 25 Sep 2025 10:54:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758796820; cv=none; b=idgO0Undvv+zMLET5rnulQKSJADp2rzxVQ1LGRH7PJksL8EYd9xn2rnQ96yjLT2lO9qj1EgfMhs/da0BBrzv7z+qGHN43poKuCc7baumAscVJA2hGEsYnzaIRT3dNjTwugRed4BCyJb8JxaQGSH/u4fhquRwyfHpxcfnhoK0zSI=
+	t=1758797670; cv=none; b=IpLkGwCAzIpEPtaTwPqnAamUFt4IOq8nDjzciM2t9yoPZdp6xvy61iz4lwah5sT7ukra0wFYX2p7hnnSp5fggsb1Rd5JRIMA0k8y+i1fFJHC4JMBOcgLEHV3T6HTO3WSIhf1WfbhYK2lKEP7u+199TuMl0DlGY53qgvWrzh+DOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758796820; c=relaxed/simple;
-	bh=GJlcEOVBYWhi8mcXRsDpHS6MLH4rtPMp1tm5JWxnzNw=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=k/Bw3/+pK+xBco6NELltZj/L/mDTA1QuZMwLaeLFB7hl0S8h3mtFLy/8gF1/3oapQwjw9Tw3oC89iilJMUJZ/pf7RKkjeSmbwnmBJbS8Ccbrz8CV2AGbJMw+U/BV+QdftL39tyQZ2pagowcUud+fxKJtiAOh1An2shP5A8v0WJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=fail (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=vmfLlyw5 reason="signature verification failed"; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from neptunite.rasen.tech (unknown [IPv6:2404:7a81:160:2100:d0b0:c301:99de:3de])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 5F02C1129;
-	Thu, 25 Sep 2025 12:38:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1758796731;
-	bh=GJlcEOVBYWhi8mcXRsDpHS6MLH4rtPMp1tm5JWxnzNw=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=vmfLlyw5cfAlTmCTTXK3oU9TUODg60prrMWKYKUO6GcZfa/fxr/PoT4aIda4cAhdt
-	 SSGDrPEmSPhJsS3S7+t84IG3Bs9O2u/YNcGO7ZzV3UB83Lr6M5MshP5LUaiNv6Uw9M
-	 6WcdWXNyafca7QOlxdo2tsiX3+XX0kaXA8PTz1WA=
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1758797670; c=relaxed/simple;
+	bh=ppkpFu7LN0UmEwlbZ2LjmG3X3CuagEiDP1aYMiHSU0w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=He9wcVHHVF0bTrpuj6Qwo96KzZiFr/EWIYAVm7TtW6HiPROZ8rsC5wYq4Khw5dpjTUy+W89zrDu1ms+I+sDULmOM8GW+dnft9CycX5VbEUJZBXpuil81U+BMyQcI6m9/jMbPoXolHxV6+N7e9VTGDLAe6Iis+uKueLpAT9XZk7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=g/WnpFmT; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=ppkp
+	Fu7LN0UmEwlbZ2LjmG3X3CuagEiDP1aYMiHSU0w=; b=g/WnpFmTS27BXVSZdc9S
+	dSmUno7FamUCex+xNe/x+9+XXr1c3kLhTeqVKqfZEW4hxesla1a5ilTFtIEANWkZ
+	f5xZnhVUcKH8Zubl3YrZwv2LbEq+FltpGAsmknncZZWCNWhcdlhu+QWxoM0Jth71
+	MwTFImDxE1vcV5TOSez+Zai+mTs7Yl0/aqcgtIKF7VwG7RSjmsSBlA8Ewodu+7Rs
+	kignesNuPNjojOpCJL/WyLvDPIfOuHoig7gNYvqc1uAHOwuckPoe+My9l416F+Pd
+	mOXtWKBAmQj035BzrhfbCqz6ZEjI+mALUzSnY8DqDP1FmV9xpszCh9s2l84JsBTh
+	7A==
+Received: (qmail 1835891 invoked from network); 25 Sep 2025 12:54:21 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 25 Sep 2025 12:54:21 +0200
+X-UD-Smtp-Session: l3s3148p1@hxXX/Z0/UrggAwDPXwQHAL/S9V79e5yL
+Date: Thu, 25 Sep 2025 12:54:21 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: =?utf-8?Q?Jean-Fran=C3=A7ois?= Lessard <jefflessard3@gmail.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] device property: Add scoped fwnode child node
+ iterators
+Message-ID: <aNUfXftqGmX8skbp@shikoro>
+References: <20250902190443.3252-1-jefflessard3@gmail.com>
+ <aLgY1z-MvQbDBx2_@smile.fi.intel.com>
+ <aLlgpUlHp7t8P4dQ@shikoro>
+ <aLljGIcjAjQhC2uS@smile.fi.intel.com>
+ <aMF0xW9rBrSK--Cl@shikoro>
+ <aMSehiADcCEpfJUa@shikoro>
+ <aMexwC-nB2IQEr8C@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20250924074602.266292-13-sakari.ailus@linux.intel.com>
-References: <20250924074602.266292-1-sakari.ailus@linux.intel.com> <20250924074602.266292-13-sakari.ailus@linux.intel.com>
-Subject: Re: [PATCH v2 12/16] media: thp7312: Use fwnode_for_each_child_node() instead
-From: Paul Elder <paul.elder@ideasonboard.com>
-Cc: linux-kernel@vger.kernel.org, linux-input@vger.kernel.org, linux-leds@vger.kernel.org, linux-media@vger.kernel.org, netdev@vger.kernel.org, linux-spi@vger.kernel.org, Rafael J. Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, Javier Carrasco <javier.carrasco@wolfvision.net>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Matthias Fend <matthias.fend@emfend.at>, Chanwoo Choi <cw00.choi@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, Horatiu Vultur <horatiu.vultur@microchip.com>, UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>, David S. Miller <davem@davemloft.net>, Eric Dum
- azet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Mark Brown <broonie@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, linux-acpi@vger.kernel.org
-Date: Thu, 25 Sep 2025 19:40:08 +0900
-Message-ID: <175879680823.2756121.480253963605736427@neptunite.rasen.tech>
-User-Agent: alot/0.0.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="WWFfwp8c3QS64Ifd"
+Content-Disposition: inline
+In-Reply-To: <aMexwC-nB2IQEr8C@smile.fi.intel.com>
 
-Quoting Sakari Ailus (2025-09-24 16:45:58)
-> fwnode_for_each_child_node() is now the same as
-> fwnode_for_each_available_child_node() on all backends (OF, ACPI and
-> swnode). In order to remove the available variants, switch the uses to
-> non-available variants.
->=20
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-Reviewed-by: Paul Elder <paul.elder@ideasonboard.com>
+--WWFfwp8c3QS64Ifd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> ---
->  drivers/media/i2c/thp7312.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/media/i2c/thp7312.c b/drivers/media/i2c/thp7312.c
-> index 775cfba188d8..86208a47f472 100644
-> --- a/drivers/media/i2c/thp7312.c
-> +++ b/drivers/media/i2c/thp7312.c
-> @@ -2064,7 +2064,7 @@ static int thp7312_parse_dt(struct thp7312_device *=
-thp7312)
->                 return -EINVAL;
->         }
-> =20
-> -       fwnode_for_each_available_child_node(sensors, node) {
-> +       fwnode_for_each_child_node(sensors, node) {
->                 if (fwnode_name_eq(node, "sensor")) {
->                         if (!thp7312_sensor_parse_dt(thp7312, node))
->                                 num_sensors++;
-> --=20
-> 2.47.3
->
+
+Since there are no further comments, I pull this into my branch now? I
+was waiting for feedback, but I'll take it as 'no news, good news'
+
+
+--WWFfwp8c3QS64Ifd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmjVH10ACgkQFA3kzBSg
+KbbHFQ/9E1eiGuQcw81QqjiJvd9fXSz6aXssKtBrBYeTD6d8Iteoxon+/Q+OVHyM
+iocbvOx8DibmfDtjVKa7Pkv+UIgFWTbbGgrwx6GtSVqcghGSVw8Ykw2CishGlVx8
+e8NNX0RSzhVIl9NMubFcNilYuIen0moQ4ffCYsTqKgZgGWk6YqksJfTYQ7Gn79sx
+0TxdLWz75HohA5thzOcBfIVH3qwf9jCJHPSmQYW2uYIkdNRhab3Wskc3aEqozpUp
+ZAlqFAO1wiSgTkyA7p/LFjWzpLdYPQvOn2M4uy/trMjptgHr6Jbrz1EK+ZQaXm7p
+nM0wSIoV+f/3r7Qbd+r3KD2ZJZrQxrT1K6kSIDnk4UL/j1ijJkh7rS23udptFCs2
+6/mmBBqQHlpFuvVn1+Dv6XCg3sf0e8RlCYPubf6a4ZgGltx7QqaSnYaW4nRdeHzo
++RNqbzT8oiNtslqr8XgefdIZLaK+BFg+1vxjvRuEHlc8bWsGUAqY/MMkY6Vgdhnn
+aJytXDjUZgaHsHno4WCPA/AHlt8xHlnoPio/HhI7+DbISk6h0tmwIuAFaLNN1i2t
+YebLRkCH0QDLa3mEDy65EHqiHo12XK/VCRacMjfd+o4cA/dq9KjbClOk1o5q2Llp
+KqhzSsdWlimX1Y7wI7gO4Kj/oCkrjyBBYIrLv8vPNQQ0B9U5hIg=
+=KSlp
+-----END PGP SIGNATURE-----
+
+--WWFfwp8c3QS64Ifd--
 
