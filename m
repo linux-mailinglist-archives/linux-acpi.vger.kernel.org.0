@@ -1,110 +1,100 @@
-Return-Path: <linux-acpi+bounces-17304-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17305-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0B3DB9ED40
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 12:55:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 500D3B9F62A
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 14:58:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F2C97AB40C
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 10:53:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F268169E9B
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 12:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864622F5461;
-	Thu, 25 Sep 2025 10:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55551DB958;
+	Thu, 25 Sep 2025 12:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="g/WnpFmT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qVlprIrC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A642F9D96
-	for <linux-acpi@vger.kernel.org>; Thu, 25 Sep 2025 10:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D4210A1E
+	for <linux-acpi@vger.kernel.org>; Thu, 25 Sep 2025 12:58:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758797670; cv=none; b=IpLkGwCAzIpEPtaTwPqnAamUFt4IOq8nDjzciM2t9yoPZdp6xvy61iz4lwah5sT7ukra0wFYX2p7hnnSp5fggsb1Rd5JRIMA0k8y+i1fFJHC4JMBOcgLEHV3T6HTO3WSIhf1WfbhYK2lKEP7u+199TuMl0DlGY53qgvWrzh+DOg=
+	t=1758805122; cv=none; b=QlNCR2DEsZP1XIgrZzM/Ab0WKF2Q+ZtbpMiAwsXxLKi5GKXYPc63j7OZXQlnHh6kVUZ+u0hHe0CFt7njzy1Vh3h33ZW+tCqgdnGMP/1Zhiz81OlQGpGwlpa16qCoYULNiuV903PeONKptPT3Enq5xVUIf+LtPdPlhpLeA36N58c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758797670; c=relaxed/simple;
-	bh=ppkpFu7LN0UmEwlbZ2LjmG3X3CuagEiDP1aYMiHSU0w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=He9wcVHHVF0bTrpuj6Qwo96KzZiFr/EWIYAVm7TtW6HiPROZ8rsC5wYq4Khw5dpjTUy+W89zrDu1ms+I+sDULmOM8GW+dnft9CycX5VbEUJZBXpuil81U+BMyQcI6m9/jMbPoXolHxV6+N7e9VTGDLAe6Iis+uKueLpAT9XZk7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=g/WnpFmT; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=ppkp
-	Fu7LN0UmEwlbZ2LjmG3X3CuagEiDP1aYMiHSU0w=; b=g/WnpFmTS27BXVSZdc9S
-	dSmUno7FamUCex+xNe/x+9+XXr1c3kLhTeqVKqfZEW4hxesla1a5ilTFtIEANWkZ
-	f5xZnhVUcKH8Zubl3YrZwv2LbEq+FltpGAsmknncZZWCNWhcdlhu+QWxoM0Jth71
-	MwTFImDxE1vcV5TOSez+Zai+mTs7Yl0/aqcgtIKF7VwG7RSjmsSBlA8Ewodu+7Rs
-	kignesNuPNjojOpCJL/WyLvDPIfOuHoig7gNYvqc1uAHOwuckPoe+My9l416F+Pd
-	mOXtWKBAmQj035BzrhfbCqz6ZEjI+mALUzSnY8DqDP1FmV9xpszCh9s2l84JsBTh
-	7A==
-Received: (qmail 1835891 invoked from network); 25 Sep 2025 12:54:21 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 25 Sep 2025 12:54:21 +0200
-X-UD-Smtp-Session: l3s3148p1@hxXX/Z0/UrggAwDPXwQHAL/S9V79e5yL
-Date: Thu, 25 Sep 2025 12:54:21 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: =?utf-8?Q?Jean-Fran=C3=A7ois?= Lessard <jefflessard3@gmail.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4 0/2] device property: Add scoped fwnode child node
- iterators
-Message-ID: <aNUfXftqGmX8skbp@shikoro>
-References: <20250902190443.3252-1-jefflessard3@gmail.com>
- <aLgY1z-MvQbDBx2_@smile.fi.intel.com>
- <aLlgpUlHp7t8P4dQ@shikoro>
- <aLljGIcjAjQhC2uS@smile.fi.intel.com>
- <aMF0xW9rBrSK--Cl@shikoro>
- <aMSehiADcCEpfJUa@shikoro>
- <aMexwC-nB2IQEr8C@smile.fi.intel.com>
+	s=arc-20240116; t=1758805122; c=relaxed/simple;
+	bh=RjYUCOtNAbvvco8vthWVp82cdv9eEy+4Psafoq84FY0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YxvtHx+DnvWQAsg6xpIdCqF8/UIiOoBUvZl6NshC7O1V30/GJsKvC4CnJnIMVVrk15g6THppAF11VLcR1tEf2kh7Zou1wliHm/qwGaPLZwuxm18nZTf2JjYEYUcGHu4tQKspD1UJKqb3nYi8C1MnUIdkmuOAQjlwEtfTveBqInQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qVlprIrC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38AE1C4AF09
+	for <linux-acpi@vger.kernel.org>; Thu, 25 Sep 2025 12:58:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758805122;
+	bh=RjYUCOtNAbvvco8vthWVp82cdv9eEy+4Psafoq84FY0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=qVlprIrC7+BK2+O3WiAbWUSIO/Wzkv0WDPRF7LNDK2sKscexjwoVJEIYmfAzYVXgW
+	 aCSPYV6StlRFMXvdsrHpxMBcsY8GXha2EcBo8JIQt9KPkwKf/BJgowuczBrS4D6AuI
+	 ad1fx7qB07iECH+WDsFqqhs6iL8p2A/62CNoVsqinnth3V51+9pg89N1ufw3o0d+8k
+	 Dd8sPLlERv7Pd3Hv0R4vDL/y79wFfWnSU68GTEjf7KvvHV0DwIaKyVQ7xk1lUm9XVh
+	 Go89OlhUWnvqNiyI1MQJeazhiLtXw+V9zJinxoToa+psGt8McomejzBZ/T4fVptovc
+	 auDyy80YsNzLw==
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-30cceb749d7so340307fac.2
+        for <linux-acpi@vger.kernel.org>; Thu, 25 Sep 2025 05:58:42 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXQKzwP/lpvH3FaYEOt87ChF3Q2ozocJQsGq6lmambBZlljr673yenDBtSacacrOSh9TKwgfiGryk0k@vger.kernel.org
+X-Gm-Message-State: AOJu0YybS2UYDcsnyAF52A/m/HypRa/cGSopyNZqjrijTYy052gKYYhv
+	lPzp243aFJUvQoWqDhW3DNKilsGOcuXCl2eOWN0vcuV/e/90zlr+RWQFss27+5ppzxoMMAMjX1e
+	r2B6Bbe5XBqOyN0xcgfTE+jiEPPKmSbc=
+X-Google-Smtp-Source: AGHT+IEsxnkbDv6VaxPRzOho5nGSBZ0rmXl4oLsr98I7SW3ixSbV7GBzYnRPlz5VE+V0N8TvSAzt2cAgUqwUNw6hV9I=
+X-Received: by 2002:a05:6870:f691:b0:30b:b045:18df with SMTP id
+ 586e51a60fabf-35ee98c5f0amr1765468fac.35.1758805121527; Thu, 25 Sep 2025
+ 05:58:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="WWFfwp8c3QS64Ifd"
-Content-Disposition: inline
-In-Reply-To: <aMexwC-nB2IQEr8C@smile.fi.intel.com>
+References: <PH7PR11MB6882D35FD948900136B1C632AA1FA@PH7PR11MB6882.namprd11.prod.outlook.com>
+In-Reply-To: <PH7PR11MB6882D35FD948900136B1C632AA1FA@PH7PR11MB6882.namprd11.prod.outlook.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 25 Sep 2025 14:58:30 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0h1Tz4OBCinWCaXQ2uije_pjpd-wexCNXwDaNrvZTCfsQ@mail.gmail.com>
+X-Gm-Features: AS18NWDO_k8CpWJ5CM6cGde_V4Pa7pValf-onENnAfTNckZ8V1EqmZobbam8Bec
+Message-ID: <CAJZ5v0h1Tz4OBCinWCaXQ2uije_pjpd-wexCNXwDaNrvZTCfsQ@mail.gmail.com>
+Subject: Re: Linux APIs for parsing ACPI tables
+To: "Autee, Priya V" <priya.v.autee@intel.com>
+Cc: "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>, 
+	"Herdrich, Andrew J" <andrew.j.herdrich@intel.com>, 
+	ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Cc: linux-acpi
 
---WWFfwp8c3QS64Ifd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi,
 
+On Thu, Sep 25, 2025 at 5:50=E2=80=AFAM Autee, Priya V <priya.v.autee@intel=
+.com> wrote:
+>
+> Hi Rafael,
+>
+> We are looking for ACPI Parsing APIs. Could you please let me know if you=
+ are able to share the pointers for the same?
+>
+> Our objective is to look at existing ACPI Parsing user-space APIs and use=
+ it for stitching various ACPI objects like HMAT/SRAT etc. to gather memory=
+ characteristics (latency and bandwidth per memory range).
 
-Since there are no further comments, I pull this into my branch now? I
-was waiting for feedback, but I'll take it as 'no news, good news'
+I gather that you are talking about ACPI tables that don't contain
+definition blocks (ie. no AML).
 
+The specific parsing algorithm for each table depends on how exactly
+the given table is defined in the ACPI specification.
 
---WWFfwp8c3QS64Ifd
-Content-Type: application/pgp-signature; name="signature.asc"
+The tables mentioned above are processed by the code in drivers/acpi/numa/
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmjVH10ACgkQFA3kzBSg
-KbbHFQ/9E1eiGuQcw81QqjiJvd9fXSz6aXssKtBrBYeTD6d8Iteoxon+/Q+OVHyM
-iocbvOx8DibmfDtjVKa7Pkv+UIgFWTbbGgrwx6GtSVqcghGSVw8Ykw2CishGlVx8
-e8NNX0RSzhVIl9NMubFcNilYuIen0moQ4ffCYsTqKgZgGWk6YqksJfTYQ7Gn79sx
-0TxdLWz75HohA5thzOcBfIVH3qwf9jCJHPSmQYW2uYIkdNRhab3Wskc3aEqozpUp
-ZAlqFAO1wiSgTkyA7p/LFjWzpLdYPQvOn2M4uy/trMjptgHr6Jbrz1EK+ZQaXm7p
-nM0wSIoV+f/3r7Qbd+r3KD2ZJZrQxrT1K6kSIDnk4UL/j1ijJkh7rS23udptFCs2
-6/mmBBqQHlpFuvVn1+Dv6XCg3sf0e8RlCYPubf6a4ZgGltx7QqaSnYaW4nRdeHzo
-+RNqbzT8oiNtslqr8XgefdIZLaK+BFg+1vxjvRuEHlc8bWsGUAqY/MMkY6Vgdhnn
-aJytXDjUZgaHsHno4WCPA/AHlt8xHlnoPio/HhI7+DbISk6h0tmwIuAFaLNN1i2t
-YebLRkCH0QDLa3mEDy65EHqiHo12XK/VCRacMjfd+o4cA/dq9KjbClOk1o5q2Llp
-KqhzSsdWlimX1Y7wI7gO4Kj/oCkrjyBBYIrLv8vPNQQ0B9U5hIg=
-=KSlp
------END PGP SIGNATURE-----
-
---WWFfwp8c3QS64Ifd--
+Thanks!
 
