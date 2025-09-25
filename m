@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-17308-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17307-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C653BA06E2
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 17:48:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFBABBA06D3
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 17:48:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B2124C06A0
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 15:48:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9886E4A568A
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 15:48:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34CA30499D;
-	Thu, 25 Sep 2025 15:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A972FFFBE;
+	Thu, 25 Sep 2025 15:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GmnUukSv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tYG6YoVr"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DB73043C8;
-	Thu, 25 Sep 2025 15:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44231234973;
+	Thu, 25 Sep 2025 15:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758815287; cv=none; b=PBiblx1dEdr8SUZtWsZfRtbd72CRCBy7974CIUzpRYKCCXeEpXU5xOMN4jxIBSxxqSLQMkNmbYBwbiwjbvacQdI/UBqDjJKyuuazPSiDeuHT14K7sa01ZOW8Q5t3uyvSq89SFmj0yQEnbP8npVXlVtddlVk+o6fEAXWcdnMkRbY=
+	t=1758815283; cv=none; b=bfpR51njg6u0Z1ymFWyNVQ6WGbZ2dqhJC/uQXh87i01YQxqXlyUgPt6oMliBcVpYo8+x4y9UiyMDd+qGLPq3doz6D+/lvd0xD1C7a8u3IxPU7rpkN0H1VULQUTuRuxRpULzk9F8osVl54b/M/Mn/qQW4srEPlcQcjKEXHiX0NXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758815287; c=relaxed/simple;
-	bh=IjHqcP+tfTKbtRDj+etlmWk5c8fXs0oldILjBTpHqn0=;
+	s=arc-20240116; t=1758815283; c=relaxed/simple;
+	bh=wOTmxGtsrYB00Xp5bvu1cK9MEesyYzBVRKQiLZrnjHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=idbz/5NDDTaOYktyZcoR1RSt/mOInRD9J3sUJ0d0iYBo22X8n3RqJTCdhKJy3xStmUKNkFos6WgTZa5sBxKb6+TOLQZf337F4RjokiRZXdVQ5XkIaOnvbNh7HlkhFaUiuc5fCoAiDNeLMe9r5hDIuB2JgYCkq8pJbABuRr+jl0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GmnUukSv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B19C4CEF5;
-	Thu, 25 Sep 2025 15:48:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eVaJXXYoXxSErXNMEAJILS6xkz7ZSa9emIPMzkhHs2bYAcmsfXUTW7mfbBTLzQAkXWHbSxkFzZaBJvFsjr4V+B+EKFDN9IwsGASLJeZtPAUpgwuOqzJ8CRI3Yns6eZ0LdSv61zhUsZThELfNniZkmzkVesoNXxEjqI5yycQMPhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tYG6YoVr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E78CC4CEF0;
+	Thu, 25 Sep 2025 15:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758815287;
-	bh=IjHqcP+tfTKbtRDj+etlmWk5c8fXs0oldILjBTpHqn0=;
+	s=k20201202; t=1758815281;
+	bh=wOTmxGtsrYB00Xp5bvu1cK9MEesyYzBVRKQiLZrnjHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GmnUukSvnxM5e5X/6mrcfpWCnesEheSf7qb5OqG4Na8njDhwm9MyI7+Woe7zlZy4G
-	 Phd88cmY6rD/NANadylXCuuX1kkYp1dB+UjhMjnAhDIObkAK773+qpSrTWb83tu4BH
-	 u6M07ldiU9hc6ulkVltwLM8nsp5fS1gVNfy71LNXU0bQ2JlnyLT9xeJBVs3n5vrIVn
-	 3Kf0GJ1fk3rdG08hC7ezs/O/pc/BoYk2EzFdLiiZxR0I5lIlOoAuLCy1Wvo54VDUW2
-	 pQWLdbL09krjhpT7RrD/Jmd1+jCtsnx4oZ6iWH1aOHmYpN0u+VamcZlWdsmlN2fKGw
-	 ABN59Rr5B2GFA==
+	b=tYG6YoVrAPVV9YhwxVY2jNwS95/9QPjXF2DtoB0yh04iQAkHtDdc58D/SngLNhBV/
+	 4kzm6EiYRX1ObHBWY+fmGtwNz2KEsIjzDWmZSIZaMHpbPltDDQjXJETCom+jSOBsKL
+	 ogHzr3o+X1u0bVNVu2Kq83+nO9wGZrmu5tVN5X9wfHDnVs6NsY50oL+rup5W+z0MKa
+	 jineUIkhTTundrxOa9fO2M2tObs9dO08UOJLaxOrfcxBqhX/k/rPbhJN0CY3ZYbcbw
+	 3eJptOfgOwuq55tENbrCkkimeTpjOpwIJP562O52rOygB/yzrQRjWzmcSeMkbNoLX1
+	 WxWVa6gDa4rBQ==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Linux PM <linux-pm@vger.kernel.org>
 Cc: Shawn Guo <shawnguo@kernel.org>, Qais Yousef <qyousef@layalina.io>,
@@ -49,10 +49,9 @@ Cc: Shawn Guo <shawnguo@kernel.org>, Qais Yousef <qyousef@layalina.io>,
  Pierre Gondois <pierre.gondois@arm.com>,
  Mario Limonciello <mario.limonciello@amd.com>,
  Linux ACPI <linux-acpi@vger.kernel.org>
-Subject:
- [PATCH v1 3/4] ACPI: CPPC: Replace CPUFREQ_ETERNAL with CPPC-specific symbol
-Date: Thu, 25 Sep 2025 17:46:27 +0200
-Message-ID: <3925838.kQq0lBPeGt@rafael.j.wysocki>
+Subject: [PATCH v1 4/4] cpufreq: Drop unused symbol CPUFREQ_ETERNAL
+Date: Thu, 25 Sep 2025 17:47:27 +0200
+Message-ID: <9533136.CDJkKcVGEf@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <8605612.T7Z3S40VBb@rafael.j.wysocki>
 References: <8605612.T7Z3S40VBb@rafael.j.wysocki>
@@ -62,98 +61,118 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="UTF-8"
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+=46rom: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Instead of using CPUFREQ_ETERNAL for signaling error conditions in
-cppc_get_transition_latency(), introduce CPPC_NO_DATA specifically
-for this purpose and update all of the callers of this function to
-use it.
+Drop CPUFREQ_ETERNAL that has no users any more along with all
+references to it in the documentation.
+
+No functional impact.
 
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/cppc_acpi.c       |    6 +++---
- drivers/cpufreq/amd-pstate.c   |    4 ++--
- drivers/cpufreq/cppc_cpufreq.c |    2 +-
- include/acpi/cppc_acpi.h       |    4 +++-
- include/linux/cpufreq.h        |    3 ---
- 5 files changed, 9 insertions(+), 10 deletions(-)
+=2D--
+ Documentation/admin-guide/pm/cpufreq.rst                  |    4 ----
+ Documentation/cpu-freq/cpu-drivers.rst                    |    3 +--
+ Documentation/translations/zh_CN/cpu-freq/cpu-drivers.rst |    3 +--
+ Documentation/translations/zh_TW/cpu-freq/cpu-drivers.rst |    3 +--
+ include/linux/cpufreq.h                                   |    5 -----
+ 5 files changed, 3 insertions(+), 15 deletions(-)
 
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -1897,16 +1897,16 @@ unsigned int cppc_get_transition_latency
- 
- 	cpc_desc = per_cpu(cpc_desc_ptr, cpu_num);
- 	if (!cpc_desc)
--		return CPUFREQ_ETERNAL;
-+		return CPPC_NO_DATA;
- 
- 	desired_reg = &cpc_desc->cpc_regs[DESIRED_PERF];
- 	if (CPC_IN_SYSTEM_MEMORY(desired_reg) || CPC_IN_SYSTEM_IO(desired_reg))
- 		return 0;
- 	else if (!CPC_IN_PCC(desired_reg))
--		return CPUFREQ_ETERNAL;
-+		return CPPC_NO_DATA;
- 
- 	if (pcc_ss_id < 0)
--		return CPUFREQ_ETERNAL;
-+		return CPPC_NO_DATA;
- 
- 	pcc_ss_data = pcc_data[pcc_ss_id];
- 	if (pcc_ss_data->pcc_mpar)
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -875,7 +875,7 @@ static u32 amd_pstate_get_transition_del
- 	u32 transition_delay_ns;
- 
- 	transition_delay_ns = cppc_get_transition_latency(cpu);
--	if (transition_delay_ns == CPUFREQ_ETERNAL) {
-+	if (transition_delay_ns == CPPC_NO_DATA) {
- 		if (cpu_feature_enabled(X86_FEATURE_AMD_FAST_CPPC))
- 			return AMD_PSTATE_FAST_CPPC_TRANSITION_DELAY;
- 		else
-@@ -894,7 +894,7 @@ static u32 amd_pstate_get_transition_lat
- 	u32 transition_latency;
- 
- 	transition_latency = cppc_get_transition_latency(cpu);
--	if (transition_latency  == CPUFREQ_ETERNAL)
-+	if (transition_latency  == CPPC_NO_DATA)
- 		return AMD_PSTATE_TRANSITION_LATENCY;
- 
- 	return transition_latency;
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -312,7 +312,7 @@ static unsigned int get_transition_laten
- {
- 	unsigned int transition_latency_ns = cppc_get_transition_latency(cpu);
- 
--	if (transition_latency_ns == CPUFREQ_ETERNAL)
-+	if (transition_latency_ns == CPPC_NO_DATA)
- 		return CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS / NSEC_PER_USEC;
- 
- 	return transition_latency_ns / NSEC_PER_USEC;
---- a/include/acpi/cppc_acpi.h
-+++ b/include/acpi/cppc_acpi.h
-@@ -41,6 +41,8 @@
- 
- #define CPPC_ENERGY_PERF_MAX	(0xFF)
- 
-+#define CPPC_NO_DATA	(unsigned int)(-1)
-+
- /* Each register has the folowing format. */
- struct cpc_reg {
- 	u8 descriptor;
-@@ -218,7 +220,7 @@ static inline bool cppc_allow_fast_switc
- }
- static inline unsigned int cppc_get_transition_latency(int cpu)
- {
--	return CPUFREQ_ETERNAL;
-+	return CPPC_NO_DATA;
- }
- static inline bool cpc_ffh_supported(void)
- {
+=2D-- a/Documentation/admin-guide/pm/cpufreq.rst
++++ b/Documentation/admin-guide/pm/cpufreq.rst
+@@ -274,10 +274,6 @@ are the following:
+ 	The time it takes to switch the CPUs belonging to this policy from one
+ 	P-state to another, in nanoseconds.
+=20
+=2D	If unknown or if known to be so high that the scaling driver does not
+=2D	work with the `ondemand`_ governor, -1 (:c:macro:`CPUFREQ_ETERNAL`)
+=2D	will be returned by reads from this attribute.
+=2D
+ ``related_cpus``
+ 	List of all (online and offline) CPUs belonging to this policy.
+=20
+=2D-- a/Documentation/cpu-freq/cpu-drivers.rst
++++ b/Documentation/cpu-freq/cpu-drivers.rst
+@@ -109,8 +109,7 @@ Then, the driver must fill in the follow
+ +-----------------------------------+-------------------------------------=
+=2D+
+ |policy->cpuinfo.transition_latency | the time it takes on this CPU to	   |
+ |				    | switch between two frequencies in	   |
+=2D|				    | nanoseconds (if appropriate, else	   |
+=2D|				    | specify CPUFREQ_ETERNAL)		   |
++|				    | nanoseconds                          |
+ +-----------------------------------+-------------------------------------=
+=2D+
+ |policy->cur			    | The current operating frequency of   |
+ |				    | this CPU (if appropriate)		   |
+=2D-- a/Documentation/translations/zh_CN/cpu-freq/cpu-drivers.rst
++++ b/Documentation/translations/zh_CN/cpu-freq/cpu-drivers.rst
+@@ -112,8 +112,7 @@ CPUfreq=E6=A0=B8=E5=BF=83=E5=B1=82=E6=B3=A8=E5=86=8C=E4=
+=B8=80=E4=B8=AAcpufreq_driv
+ |                                   |                                     =
+ |
+ +-----------------------------------+-------------------------------------=
+=2D+
+ |policy->cpuinfo.transition_latency | CPU=E5=9C=A8=E4=B8=A4=E4=B8=AA=E9=A2=
+=91=E7=8E=87=E4=B9=8B=E9=97=B4=E5=88=87=E6=8D=A2=E6=89=80=E9=9C=80=E7=9A=84=
+=E6=97=B6=E9=97=B4=EF=BC=8C=E4=BB=A5  |
+=2D|                                   | =E7=BA=B3=E7=A7=92=E4=B8=BA=E5=8D=
+=95=E4=BD=8D=EF=BC=88=E5=A6=82=E4=B8=8D=E9=80=82=E7=94=A8=EF=BC=8C=E8=AE=BE=
+=E5=AE=9A=E4=B8=BA         |
+=2D|                                   | CPUFREQ_ETERNAL=EF=BC=89          =
+          |
++|                                   | =E7=BA=B3=E7=A7=92=E4=B8=BA=E5=8D=95=
+=E4=BD=8D                    |
+ |                                   |                                     =
+ |
+ +-----------------------------------+-------------------------------------=
+=2D+
+ |policy->cur                        | =E8=AF=A5CPU=E5=BD=93=E5=89=8D=E7=9A=
+=84=E5=B7=A5=E4=BD=9C=E9=A2=91=E7=8E=87(=E5=A6=82=E9=80=82=E7=94=A8)       =
+   |
+=2D-- a/Documentation/translations/zh_TW/cpu-freq/cpu-drivers.rst
++++ b/Documentation/translations/zh_TW/cpu-freq/cpu-drivers.rst
+@@ -112,8 +112,7 @@ CPUfreq=E6=A0=B8=E5=BF=83=E5=B1=A4=E8=A8=BB=E5=86=8A=E4=
+=B8=80=E5=80=8Bcpufreq_driv
+ |                                   |                                     =
+ |
+ +-----------------------------------+-------------------------------------=
+=2D+
+ |policy->cpuinfo.transition_latency | CPU=E5=9C=A8=E5=85=A9=E5=80=8B=E9=A0=
+=BB=E7=8E=87=E4=B9=8B=E9=96=93=E5=88=87=E6=8F=9B=E6=89=80=E9=9C=80=E7=9A=84=
+=E6=99=82=E9=96=93=EF=BC=8C=E4=BB=A5  |
+=2D|                                   | =E7=B4=8D=E7=A7=92=E7=88=B2=E5=96=
+=AE=E4=BD=8D=EF=BC=88=E5=A6=82=E4=B8=8D=E9=81=A9=E7=94=A8=EF=BC=8C=E8=A8=AD=
+=E5=AE=9A=E7=88=B2         |
+=2D|                                   | CPUFREQ_ETERNAL=EF=BC=89          =
+          |
++|                                   | =E7=B4=8D=E7=A7=92=E7=88=B2=E5=96=AE=
+=E4=BD=8D                    |
+ |                                   |                                     =
+ |
+ +-----------------------------------+-------------------------------------=
+=2D+
+ |policy->cur                        | =E8=A9=B2CPU=E7=95=B6=E5=89=8D=E7=9A=
+=84=E5=B7=A5=E4=BD=9C=E9=A0=BB=E7=8E=87(=E5=A6=82=E9=81=A9=E7=94=A8)       =
+   |
+=2D-- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -26,13 +26,8 @@
+  *********************************************************************/
+ /*
+  * Frequency values here are CPU kHz
+=2D *
+=2D * Maximum transition latency is in nanoseconds - if it's unknown,
+=2D * CPUFREQ_ETERNAL shall be used.
+  */
+=20
+=2D#define CPUFREQ_ETERNAL			(-1)
+=2D
+ #define CPUFREQ_DEFAULT_TANSITION_LATENCY_NS	NSEC_PER_MSEC
+=20
+ #define CPUFREQ_NAME_LEN		16
 
 
 
