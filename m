@@ -1,93 +1,123 @@
-Return-Path: <linux-acpi+bounces-17319-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17320-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2FDDBA123E
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 21:17:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7832FBA165A
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 22:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 559781B26777
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 19:17:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBA64560EA0
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Sep 2025 20:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0FC31B829;
-	Thu, 25 Sep 2025 19:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4110F31FEDA;
+	Thu, 25 Sep 2025 20:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nqpV0y+P"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="je2Z0oNd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3A51DA23;
-	Thu, 25 Sep 2025 19:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1EB32038B
+	for <linux-acpi@vger.kernel.org>; Thu, 25 Sep 2025 20:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758827798; cv=none; b=b59oLQlCiFVITb5nUPZGU1yPAYmfuwLvGAq1sgs1uEl4nk1kfdg94FcYz+3+4Aa25tvSfbY1yyA1Tp5+CdyPZMoRHZwJtrlzni1OVCraISMvJERd3Cs/jq85z5zuufusR4zYu1XbiEdQ1kgdyPm18tozwnhqGNimkf4tUccuwh0=
+	t=1758832995; cv=none; b=IwmWn1HbyNcxt7tMPqYWp68Q3KLKKSg+q1r/t7xO0FpEn14d1PeP+ISeu5AFU4Jb/Xdoko62WFyUvqHnOpOSnO6TNsrH4uLR/WZr73dGeWv6WIRAvJ2dur/uZL6BOnUdomLACSnb4VD3qrxXiFiFOZ7TPr7JzugmDual8l+1O9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758827798; c=relaxed/simple;
-	bh=r+K4st9QKZHdJzM3ip/Ne+u4Np4HMFMIRhcr81fP8so=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=jfdfTS8KX0o1+VJq1DvEjPSKCBRgIFlvIP1/4HLNgdpz4b99A4s3ze4U+5oGDG+Bn0G9dnVNHC5Q26qnw/6m4EsejziDTIFndyk3hah7BNCtUy6LReaKEKfxHrfQLMuwS+oLaewBdxThmj2BI8D1Rpqjq1TRTiZcqNOIpgQ4OyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nqpV0y+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A58C4CEF0;
-	Thu, 25 Sep 2025 19:16:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758827798;
-	bh=r+K4st9QKZHdJzM3ip/Ne+u4Np4HMFMIRhcr81fP8so=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=nqpV0y+PTJTfgqdWWcsTAfEiafK7DaHqrLI+QZ3oGfNOW4pCVcPjUoKEFj9SO1Cag
-	 N9TT2qPZfY00NsO+HY0v4Hr/PjHiy8XvWqo2+22lQEqS/XWEUbqCN+l4NIXST0+EdW
-	 Cu3T0/ZfwyVaiWdLMlA2nKbjm/T04l20eqCKsc+/51/+R0a+yBarX9HoMw6VKhqe/H
-	 yi5dEHLbP9TSB1QvIXEVpOeRAmCwjHd4iTGBDSybSMqOuOvevcmQyOeYm1N7E7CD19
-	 VzORlV9PXCAlhQjFl4GHpE/hayaU2Q31x0Aj1PVQWyzHKjxO80gJ5W9VOs0FlOdgBS
-	 /FpFui7izU9Ig==
-Date: Thu, 25 Sep 2025 13:16:30 -0600 (MDT)
-From: Paul Walmsley <pjw@kernel.org>
-To: Anup Patel <apatel@ventanamicro.com>
-cc: Paul Walmsley <pjw@kernel.org>, 
-    Michael Turquette <mturquette@baylibre.com>, 
-    Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
-    Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-    Conor Dooley <conor+dt@kernel.org>, Jassi Brar <jassisinghbrar@gmail.com>, 
-    Thomas Gleixner <tglx@linutronix.de>, 
-    "Rafael J . Wysocki" <rafael@kernel.org>, 
-    Mika Westerberg <mika.westerberg@linux.intel.com>, 
-    Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-    Linus Walleij <linus.walleij@linaro.org>, 
-    Bartosz Golaszewski <brgl@bgdev.pl>, 
-    =?ISO-8859-15?Q?Uwe_Kleine-K=F6nig?= <ukleinek@kernel.org>, 
-    devicetree@vger.kernel.org, Andrew Jones <ajones@ventanamicro.com>, 
-    Alexandre Ghiti <alex@ghiti.fr>, Atish Patra <atish.patra@linux.dev>, 
-    Leyfoon Tan <leyfoon.tan@starfivetech.com>, 
-    Anup Patel <anup@brainfault.org>, linux-kernel@vger.kernel.org, 
-    Samuel Holland <samuel.holland@sifive.com>, linux-acpi@vger.kernel.org, 
-    Palmer Dabbelt <palmer@dabbelt.com>, 
-    Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, 
-    Len Brown <lenb@kernel.org>, linux-clk@vger.kernel.org, 
-    Rahul Pathak <rpathak@ventanamicro.com>
-Subject: Re: [PATCH v10 07/24] mailbox: Add RISC-V SBI message proxy (MPXY)
- based mailbox driver
-In-Reply-To: <CAK9=C2Vr4rgj8wfT+Ogow1H-7Lu=6XdWA2Qe++6523P76pMZzQ@mail.gmail.com>
-Message-ID: <703b00fa-d02c-1eaf-e4de-ea66da5b8002@kernel.org>
-References: <20250818040920.272664-1-apatel@ventanamicro.com> <20250818040920.272664-8-apatel@ventanamicro.com> <405a78ce-de03-382b-cab9-bb086e28505b@kernel.org> <CAK9=C2Vr4rgj8wfT+Ogow1H-7Lu=6XdWA2Qe++6523P76pMZzQ@mail.gmail.com>
+	s=arc-20240116; t=1758832995; c=relaxed/simple;
+	bh=6kzCNLWrTiaARmvq6cXw0KJ0o1JY1CfEjLnXP8Z+X/Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sFezX8cqHqj/xRoMK849BfRljFG/zjatn/mforCYwwcX4QhhBKOXTGMfMFh3o+Oq5vebk2tBfKs7FusXju1YuKqGEm9KcbxaSFobM/E6ao/rOkM9cbPfGz+0BHMBoV6bai9esw6WqNNlTUpXY+2M44ZjQlc8hVBy0tgbEl/MZO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=je2Z0oNd; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=6kzC
+	NLWrTiaARmvq6cXw0KJ0o1JY1CfEjLnXP8Z+X/Q=; b=je2Z0oNda9Png2txLUoj
+	84l2Xy231FnxnFcw66V1sOz4CDD/bU+3NINiHOQbtHV8hhiqufGiv2eUHH/DZJ1U
+	T8Sn3joij9jFEj/AYATRPVMn/muF5WWyXUDRAsERsL/SUnL3zjGLJe31Q6XiuwBR
+	dAUvwlTA7JOK1Vuh7WHBY0cqqzuuNh+6y74pL/CQskM0jb+/8RM+Zatl77fW9KxQ
+	fI2ALyNx8UhZUeATRnGrfy/XxQKVm5XmIW463rOWI8hbrj7R41+bgNOHV7CF1SDV
+	sylNkfqV6t22tq77JQO0CBB5A32+QkvhQvoRSuyG67MQ7I/6YkqbDZ8Qnlqv5MM8
+	HA==
+Received: (qmail 2011159 invoked from network); 25 Sep 2025 22:43:05 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 25 Sep 2025 22:43:05 +0200
+X-UD-Smtp-Session: l3s3148p1@70BRN6Y/EMQujntx
+Date: Thu, 25 Sep 2025 22:43:05 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: =?utf-8?Q?Jean-Fran=C3=A7ois?= Lessard <jefflessard3@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] device property: Add scoped fwnode child node
+ iterators
+Message-ID: <aNWpWdLJUJP-cdoq@shikoro>
+References: <20250902190443.3252-1-jefflessard3@gmail.com>
+ <20250902190443.3252-2-jefflessard3@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-
-On Thu, 25 Sep 2025, Anup Patel wrote:
-
-> The usage of channel_ids array is limited only to this function
-> (mpxy_mbox_populate_channels()) hence we are using scoped
-> kcalloc() so that channel_ids will be automatically freed when
-> mpxy_mbox_populate_channels() returns.
-> (Refer, "__free(kfree)" attribute in the channel_idsm declaration)
-
-Thanks, I missed that part.  Looks fine the way you posted it.
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="T8qQ6vtOyRWjrwS0"
+Content-Disposition: inline
+In-Reply-To: <20250902190443.3252-2-jefflessard3@gmail.com>
 
 
-- Paul
+--T8qQ6vtOyRWjrwS0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Sep 02, 2025 at 03:04:39PM -0400, Jean-Fran=C3=A7ois Lessard wrote:
+> Add scoped versions of fwnode child node iterators that automatically
+> handle reference counting cleanup using the __free() attribute:
+>=20
+> - fwnode_for_each_child_node_scoped()
+> - fwnode_for_each_available_child_node_scoped()
+>=20
+> These macros follow the same pattern as existing scoped iterators in the
+> kernel, ensuring fwnode references are automatically released when the
+> iterator variable goes out of scope. This prevents resource leaks and
+> eliminates the need for manual cleanup in error paths.
+>=20
+> The implementation mirrors the non-scoped variants but uses
+> __free(fwnode_handle) for automatic resource management, providing a
+> safer and more convenient interface for drivers iterating over firmware
+> node children.
+>=20
+> Signed-off-by: Jean-Fran=C3=A7ois Lessard <jefflessard3@gmail.com>
+
+Applied to for-next, thanks!
+
+
+--T8qQ6vtOyRWjrwS0
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmjVqVgACgkQFA3kzBSg
+KbZ5mA//Vz14Pm+0ARFbDsM9JA7qGcL29lagsv35Er73S43+flNvWEbPXQjItE1I
+6QQFFD2hXtdmz8CgoUUkgy9Akisemr0FTvRy5koLo47rsO40dQNe9zEKB7DdH5tE
+2QxR9VQQa3FZL1qggHQRpJrRxjZ+TfJ6fgrzXHuUhi/HvjjatCd23fvqDWNZJUdi
+ockc/MiR4sspxbyvw9vLrBXkbbTOvUp6NlqyAyU1lYE8oAtMjoiRiK96qGH2iMme
+2KiSKbMqcknQoclXb5K0B+UE1bdxn5Bdfw4SuyjjmVbdBJNYPI5EIlZ+8/EmgT2i
+Jm6pGQ9h+RmEvXbzZcRrDSojmVVZyp+qjpDJTyzGVZ2wS74m+gAGbnO3wmTc229H
+bCAQPujXS2eJ1CePqfIUyykrumEwkhnUqKB8558XugRt4urm28KDCFRyH4yuf+rx
+r270CYriVBzzGbbx9FeAWYctPygGzNkrIuY/XyPJYxkVfNohduqd9RriLS+QHk6t
+p2TJh54VrWXIvrgoRB6QN5/hk2rPCjetabl826fAkIUmAtzmbBkX0/eWE0GchXzW
+X+HyGHgEzkhy/ExxPASMQxw+ROgtfCW3TJ3lgCXZKIJ/RWNOkcIO5S24Lz5S2SPU
+4PSesrGJDhZMNJBmzzlpgzkQWIpq3ec0LjgqoT/wqfNO4K8/4l8=
+=DYRm
+-----END PGP SIGNATURE-----
+
+--T8qQ6vtOyRWjrwS0--
 
