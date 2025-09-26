@@ -1,200 +1,333 @@
-Return-Path: <linux-acpi+bounces-17361-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17362-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22450BA4B79
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Sep 2025 18:55:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84EFABA4C94
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Sep 2025 19:52:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D34423BD9E0
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Sep 2025 16:55:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B25261BC6899
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Sep 2025 17:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0F23081A6;
-	Fri, 26 Sep 2025 16:55:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CNv6s0I1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB54430BF7E;
+	Fri, 26 Sep 2025 17:52:37 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B917C1D86DC;
-	Fri, 26 Sep 2025 16:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434091DE4FB;
+	Fri, 26 Sep 2025 17:52:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758905739; cv=none; b=hu2SRGCwICcxu7lk9j1P2J8/lx5m2b8koqF/kt8W2NTxkm3pkRJhaLoulxegUtuiy+yCNCeb63pmUhj+iTGxfHFqA1vrKDHT4HddZnArR6i63gj9Vvu0UkxnlMCJ6j4nmjPWX94VVzFGcgqwoIoSXjUKHalDq5uEfLTJn7vCAEo=
+	t=1758909157; cv=none; b=a05hIYYiLJVkeg1UuNx1s8AP4wFK7XJGKAXBYuuGGmlRmiHU6gmKTCTBw494buACPuzij2oTxoYWEPRIOT8/BTTRS2gZMMI5FK/GpQzQB7pR1FiK+/Y3XB/SeEeSSbnalFpEyHQ7vJdy3mz/jwkm9CxCWilOK+EEWbrK8+jnyes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758905739; c=relaxed/simple;
-	bh=pI9degLf/+q59D0fv8fpQNooxIH3uWVgpJc8N6uXbW8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Po7lprEah+KxXlbgw9nM1mXcz8PMPfo+4us3M7B2cY9YKS/asZsZBkZa1qz/RbMJ3nemydxOLLmhTlIlh8qfNS9g+KFUlgdaMzn8/mPd2V4nmjMrO3vrTYSb7jAC9rhisO6O1kxa/gMulD5CkglEZvUsT2G25dChWxYGztrWbnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CNv6s0I1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC4FC4CEF4;
-	Fri, 26 Sep 2025 16:55:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758905739;
-	bh=pI9degLf/+q59D0fv8fpQNooxIH3uWVgpJc8N6uXbW8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CNv6s0I15gC3nUFJYvTIXlSI1AxJD9q0u/28WFjydG4s3aEbNDQM3K3dEAdRr8Qla
-	 PGTHbo6NItVKL1HdEqHUpcH0AX5RTvpjlQupbL2ZqDH1NiMdE+fh2d+9FSmAl0ZZmb
-	 AHX7OKP3LK0R3zxOZBgNVoeso3oOI93r0/q/4mjd+wZK/74VLJHj4oYA/VOhmzqrqC
-	 cDUbjat38PeRVT0f5K/x+DemPmO3DWfckHjIFMoZvG9LsOYPlXb8pb2ez9so2nc+B0
-	 PYoPqFpKOQddrXrRA8wlElbjRTHoCZ4MS/Pzh7EfSjgZQyG4VkyQTHRp+RRLhdg45t
-	 iB4QM4Gva7RMQ==
-Date: Fri, 26 Sep 2025 17:55:32 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Hans de Goede <hansg@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
-	Hans Verkuil <hverkuil@kernel.org>, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev
-Subject: Re: [PATCH v3 07/12] dt-bindings: media: Add usb-camera-module
-Message-ID: <20250926-mute-boil-e75839753526@spud>
-References: <20250926-uvc-orientation-v3-0-6dc2fa5b4220@chromium.org>
- <20250926-uvc-orientation-v3-7-6dc2fa5b4220@chromium.org>
+	s=arc-20240116; t=1758909157; c=relaxed/simple;
+	bh=EW2i5iK9uF2nMA6QDzUH4ZvJ09rg4Su4lfR/BJ8wMA4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HwOVl3XLdYoSgf7tJfgJspVervYF0KfWxo7TOOznOOp2PpmVMHM511Wm+Vpe1AP8QobkYV0dITNth5S7J1Qk3z9iH9U50B8Kwvk76J/kmwoGw7gh2TGbeuYtvoZ7hZBYT0jvGclvGRb8R91N4mWklYR7twRdJVw4ko89udsWp78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 21127168F;
+	Fri, 26 Sep 2025 10:52:26 -0700 (PDT)
+Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 223233F5A1;
+	Fri, 26 Sep 2025 10:52:28 -0700 (PDT)
+Message-ID: <9ad4ae7a-2151-4d60-8303-87f38d7695d8@arm.com>
+Date: Fri, 26 Sep 2025 18:52:27 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="dvlxf+F9Nk0RUTPP"
-Content-Disposition: inline
-In-Reply-To: <20250926-uvc-orientation-v3-7-6dc2fa5b4220@chromium.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 08/29] arm_mpam: Add the class and component structures
+ for firmware described ris
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-acpi@vger.kernel.org,
+ D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com, Rob Herring <robh@kernel.org>,
+ Rohit Mathew <rohit.mathew@arm.com>, Rafael Wysocki <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Ben Horgan <ben.horgan@arm.com>
+References: <20250910204309.20751-1-james.morse@arm.com>
+ <20250910204309.20751-9-james.morse@arm.com>
+ <20250911152244.000047db@huawei.com>
+Content-Language: en-GB
+From: James Morse <james.morse@arm.com>
+In-Reply-To: <20250911152244.000047db@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Hi Jonathan,
+
+On 11/09/2025 15:22, Jonathan Cameron wrote:
+> On Wed, 10 Sep 2025 20:42:48 +0000
+> James Morse <james.morse@arm.com> wrote:
+> 
+>> An MSC is a container of resources, each identified by their RIS index.
+>> Some RIS are described by firmware to provide their position in the system.
+>> Others are discovered when the driver probes the hardware.
+>>
+>> To configure a resource it needs to be found by its class, e.g. 'L2'.
+>> There are two kinds of grouping, a class is a set of components, which
+>> are visible to user-space as there are likely to be multiple instances
+>> of the L2 cache. (e.g. one per cluster or package)
+>>
+>> Add support for creating and destroying structures to allow a hierarchy
+>> of resources to be created.
+
+> Various minor things inline.
+> 
+> Biggest is I think maybe just moving to explicit reference counts
+> rather than using the empty list for that might end up easier to
+> read. Mostly because everyone knows what a kref_put() is about.
+> 
+> Obviously a bit pointless in practice, but I prefer not to think too
+> hard.
+
+I've spent a while playing with this - its the wrong shape for what is going on here.
+
+This builds that tree structure during driver probing. (and adds 'unknown' entries to it
+when poking the hardware). But by the time mpam_enable() is called - its basically
+read-only. After that point the only 'write' that will happen is the error interrupt which
+just free's everything. The deferred free from SRCU makes that safe.
+(some of this will be clearer when I add the block comment about the 'phases' the driver
+ goes through that Dave asked for)
+
+Making it 'reference counted' instead is pointless because callers would be get/put-ing
+references - but the structure is basically read-only, and not going to go away while the
+SRCU reference is held.
+One of the things reference counting breaks is the devm_kzalloc() usage - as an error from
+the driver probe function will free all of those regions, regardless of what the reference
+count says.
+
+I'll look to rename the existing 'get' functions so folk don't immediatly think of get/put!
+
+('find' doesn't really cut it as it does the allocation if it doesn't 'find' anything)
 
 
---dvlxf+F9Nk0RUTPP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+>> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+>> index efc4738e3b4d..c7f4981b3545 100644
+>> --- a/drivers/resctrl/mpam_devices.c
+>> +++ b/drivers/resctrl/mpam_devices.c
+>> @@ -18,7 +18,6 @@
+>>  #include <linux/printk.h>
+>>  #include <linux/slab.h>
+>>  #include <linux/spinlock.h>
+>> -#include <linux/srcu.h>
+> 
+> Why does this include no longer make sense?
 
-On Fri, Sep 26, 2025 at 01:11:31PM +0000, Ricardo Ribalda wrote:
-> For fixed cameras modules the OS needs to know where they are mounted.
-> This information is used to determine if images need to be rotated or
-> not.
->=20
-> ACPI has a property for this purpose, which is parsed by
-> acpi_get_physical_device_location():
-> https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/06_Device_Configuration/Dev=
-ice_Configuration.html#pld-physical-location-of-device
->=20
-> In DT we have similar properties for video-interface-devices called
-> orientation and rotation:
-> Documentation/devicetree/bindings/media/video-interface-devices.yaml
->=20
-> Add a new schema that combines usb/usb-device.yaml and
-> media/video-interface-devices.yaml
->=20
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> ---
->  .../bindings/media/usb-camera-module.yaml          | 46 ++++++++++++++++=
-++++++
->  MAINTAINERS                                        |  1 +
->  2 files changed, 47 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/media/usb-camera-module.ya=
-ml b/Documentation/devicetree/bindings/media/usb-camera-module.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..e4ad6f557b9151751522e49b7=
-2ae6584deb0c7ba
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/media/usb-camera-module.yaml
-> @@ -0,0 +1,46 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/media/usb-camera-module.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: USB Camera Module
-> +
-> +maintainers:
-> +  - Ricardo Ribalda <ribalda@chromium.org>
-> +
-> +description: |
-> +  This schema allows for annotating auxiliary information for fixed came=
-ra
-> +  modules. This information enables the system to determine if incoming =
-frames
-> +  require rotation, mirroring, or other transformations. It also describ=
-es the
-> +  module's relationship with other hardware elements, such as flash LEDs=
- or
-> +  Voice Coil Motors (VCMs).
-> +
-> +allOf:
-> +  - $ref: /schemas/usb/usb-device.yaml#
-> +  - $ref: /schemas/media/video-interface-devices.yaml#
-> +
-> +properties:
-> +  reg:
-> +    maxItems: 1
-> +
+It gets moved to mpam_internal.h because of the srcu_struct declaration that is needed for
+callers in the resctrl code to walk the classes list.
 
-What actually causes this schema to be applied? Did I miss it getting
-included somewhere?
+I can add it to the mpam_internal.h header from the beginning.
 
-> +required:
-> +  - reg
-> +
-> +additionalProperties: true
-> +
-> +examples:
-> +  - |
-> +    usb@11270000 {
-> +        reg =3D <0x11270000 0x1000>;
-> +        interrupts =3D <0x0 0x4e 0x0>;
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        device@1 {
-> +            compatible =3D "usb123,4567";
-> +            reg =3D <2>;
-> +            orientation =3D <0>;
-> +            rotation =3D <90>;
-> +        };
-> +    };
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index ee8cb2db483f6a5e96b62b6f2edd05b1427b69f5..1503502a3aed2625e8ff48845=
-6ccd7305cc74ba7 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -26258,6 +26258,7 @@ L:	linux-media@vger.kernel.org
->  S:	Maintained
->  W:	http://www.ideasonboard.org/uvc/
->  T:	git git://linuxtv.org/media.git
-> +F:	Documentation/devicetree/bindings/media/usb-camera-module.yaml
->  F:	Documentation/userspace-api/media/drivers/uvcvideo.rst
->  F:	Documentation/userspace-api/media/v4l/metafmt-uvc-msxu-1-5.rst
->  F:	Documentation/userspace-api/media/v4l/metafmt-uvc.rst
->=20
-> --=20
-> 2.51.0.536.g15c5d4f767-goog
->=20
 
---dvlxf+F9Nk0RUTPP
-Content-Type: application/pgp-signature; name="signature.asc"
+>> @@ -31,7 +30,7 @@
+>>  static DEFINE_MUTEX(mpam_list_lock);
+>>  static LIST_HEAD(mpam_all_msc);
+>>  
+>> -static struct srcu_struct mpam_srcu;
+>> +struct srcu_struct mpam_srcu;
+> 
+> ...
+> 
+>> +/* List of all objects that can be free()d after synchronise_srcu() */
+>> +static LLIST_HEAD(mpam_garbage);
+>> +
+>> +#define init_garbage(x)	init_llist_node(&(x)->garbage.llist)
+> 
+> Whilst this obviously works, I'd rather pass garbage to init_garbage
+> instead of the containing structure (where type varies)
 
------BEGIN PGP SIGNATURE-----
+Sure,
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaNbFhAAKCRB4tDGHoIJi
-0qhdAP49nO2mKsosLHwnekS7EGEufeFAyOly/K0/a5m74rcMVwEAvbMFbwdFzaSM
-DgN8a+gmLLJ+4P89rQ8cIJR4oV+IpwI=
-=/Hob
------END PGP SIGNATURE-----
 
---dvlxf+F9Nk0RUTPP--
+>> +static struct mpam_component *
+>> +mpam_component_get(struct mpam_class *class, int id)
+>> +{
+>> +	struct mpam_component *comp;
+>> +
+>> +	lockdep_assert_held(&mpam_list_lock);
+>> +
+>> +	list_for_each_entry(comp, &class->components, class_list) {
+>> +		if (comp->comp_id == id)
+>> +			return comp;
+>> +	}
+>> +
+>> +	return mpam_component_alloc(class, id);
+>> +}
+> 
+>> +static struct mpam_class *
+>> +mpam_class_get(u8 level_idx, enum mpam_class_types type)
+>> +{
+>> +	bool found = false;
+>> +	struct mpam_class *class;
+>> +
+>> +	lockdep_assert_held(&mpam_list_lock);
+>> +
+>> +	list_for_each_entry(class, &mpam_classes, classes_list) {
+>> +		if (class->type == type && class->level == level_idx) {
+>> +			found = true;
+>> +			break;
+>> +		}
+>> +	}
+>> +
+>> +	if (found)
+>> +		return class;
+> 
+> Maybe this gets more complex later, but if it doesn't, just return class where you set
+> found above.  Matches with pattern used in mpam_component_get() above.
+
+Yup, this is a relic of more complex locking.
+
+
+>> +
+>> +	return mpam_class_alloc(level_idx, type);
+>> +}
+> 
+> 
+>> +static void mpam_ris_destroy(struct mpam_msc_ris *ris)
+>> +{
+>> +	struct mpam_vmsc *vmsc = ris->vmsc;
+>> +	struct mpam_msc *msc = vmsc->msc;
+>> +	struct platform_device *pdev = msc->pdev;
+>> +	struct mpam_component *comp = vmsc->comp;
+>> +	struct mpam_class *class = comp->class;
+>> +
+>> +	lockdep_assert_held(&mpam_list_lock);
+>> +
+>> +	/*
+>> +	 * It is assumed affinities don't overlap. If they do the class becomes
+>> +	 * unusable immediately.
+>> +	 */
+>> +	cpumask_andnot(&comp->affinity, &comp->affinity, &ris->affinity);
+>> +	cpumask_andnot(&class->affinity, &class->affinity, &ris->affinity);
+>> +	clear_bit(ris->ris_idx, &msc->ris_idxs);
+>> +	list_del_rcu(&ris->vmsc_list);
+>> +	list_del_rcu(&ris->msc_list);
+>> +	add_to_garbage(ris);
+>> +	ris->garbage.pdev = pdev;
+>> +
+>> +	if (list_empty(&vmsc->ris))
+
+> See below. I think it is worth using an explicit reference count even
+> though that will only reach zero when the list is empty.
+
+By the time eveything is probed, its an almost entirely read-only structure. The only
+writer will free absolutely everything. Changing this to structure-by-structure reference
+counting will cause busy-work for readers, who are already protected by SRCU.
+
+
+>> +		mpam_vmsc_destroy(vmsc);
+>> +}
+> 
+> 
+>> +static int mpam_ris_create_locked(struct mpam_msc *msc, u8 ris_idx,
+>> +				  enum mpam_class_types type, u8 class_id,
+>> +				  int component_id)
+>> +{
+>> +	int err;
+>> +	struct mpam_vmsc *vmsc;
+>> +	struct mpam_msc_ris *ris;
+>> +	struct mpam_class *class;
+>> +	struct mpam_component *comp;
+>> +
+>> +	lockdep_assert_held(&mpam_list_lock);
+>> +
+>> +	if (ris_idx > MPAM_MSC_MAX_NUM_RIS)
+>> +		return -EINVAL;
+>> +
+>> +	if (test_and_set_bit(ris_idx, &msc->ris_idxs))
+>> +		return -EBUSY;
+>> +
+>> +	ris = devm_kzalloc(&msc->pdev->dev, sizeof(*ris), GFP_KERNEL);
+>> +	if (!ris)
+>> +		return -ENOMEM;
+>> +	init_garbage(ris);
+>> +
+>> +	class = mpam_class_get(class_id, type);
+>> +	if (IS_ERR(class))
+>> +		return PTR_ERR(class);
+>> +
+>> +	comp = mpam_component_get(class, component_id);
+>> +	if (IS_ERR(comp)) {
+>> +		if (list_empty(&class->components))
+>> +			mpam_class_destroy(class);
+> 
+> Maybe just reference count the classes with a kref and do a put here?
+> 
+>> +		return PTR_ERR(comp);
+>> +	}
+>> +
+>> +	vmsc = mpam_vmsc_get(comp, msc);
+>> +	if (IS_ERR(vmsc)) {
+>> +		if (list_empty(&comp->vmsc))
+>> +			mpam_comp_destroy(comp);
+
+> Similar to classes I wonder if simple reference counting is cleaner.
+
+(I spent a few days on it - its prettier, but more work for things like the resctrl code
+ to get/put references when SRCU already has the write side covered)
+
+
+>> +		return PTR_ERR(vmsc);
+>> +	}
+>> +
+>> +	err = mpam_ris_get_affinity(msc, &ris->affinity, type, class, comp);
+>> +	if (err) {
+>> +		if (list_empty(&vmsc->ris))
+> 
+> and here as well.
+> 
+>> +			mpam_vmsc_destroy(vmsc);
+>> +		return err;
+>> +	}
+>> +
+>> +	ris->ris_idx = ris_idx;
+>> +	INIT_LIST_HEAD_RCU(&ris->vmsc_list);
+>> +	ris->vmsc = vmsc;
+>> +
+>> +	cpumask_or(&comp->affinity, &comp->affinity, &ris->affinity);
+>> +	cpumask_or(&class->affinity, &class->affinity, &ris->affinity);
+>> +	list_add_rcu(&ris->vmsc_list, &vmsc->ris);
+>> +
+>> +	return 0;
+>> +}
+> 
+>>  /*
+>>   * An MSC can control traffic from a set of CPUs, but may only be accessible
+>>   * from a (hopefully wider) set of CPUs. The common reason for this is power
+>> @@ -74,10 +469,10 @@ static void mpam_msc_drv_remove(struct platform_device *pdev)
+>>  		return;
+>>  
+>>  	mutex_lock(&mpam_list_lock);
+>> -	platform_set_drvdata(pdev, NULL);
+>> -	list_del_rcu(&msc->all_msc_list);
+>> -	synchronize_srcu(&mpam_srcu);
+>> +	mpam_msc_destroy(msc);
+> 
+> I'd suggest introducing mpam_msc_destroy() in the earlier patch. Doesn't make a huge
+> difference but 2 out of 3 things removed here would be untouched if you do that.
+
+Sure. This is remnant of a patch from Carl that moved all this around.
+
+
+Thanks,
+
+James
 
