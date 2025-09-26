@@ -1,145 +1,140 @@
-Return-Path: <linux-acpi+bounces-17329-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17330-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A40BBA283D
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Sep 2025 08:18:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F79BA2A40
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Sep 2025 09:10:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DDC27B940B
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Sep 2025 06:16:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AD2B32634A
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Sep 2025 07:10:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88431DC1AB;
-	Fri, 26 Sep 2025 06:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD0B286435;
+	Fri, 26 Sep 2025 07:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WM7o08Oj"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="afqjk0LF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A63182D0;
-	Fri, 26 Sep 2025 06:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB192848A8
+	for <linux-acpi@vger.kernel.org>; Fri, 26 Sep 2025 07:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758867512; cv=none; b=jHgXK7/KI3rPARmMdUmNIaJnMA9xovGpDyDrULzo33al1m4RoHDXmIxl8dyXUlexLaBigdzh2LxlKHmu6jTmVvIQtsGbzjBMOT2GC1uJBcMnV8gOjjbb17YIiebXTGWasc7mWDlD2d6fYPGj2gxrO7+XIOPQvyd+mzPTxg2YmTQ=
+	t=1758870624; cv=none; b=Zo8cclP/TCv6OenI+m/p/3K1MuEHow06cGNMczvts7fxCKMc5Y8f5vyYO1l+M9mQkEh7LIwXSO32VD7RvsVZcaz6Gk9Jahn561JnDCgF7uFNyVlXYu6noy1y/LFRsDv074WbU7qh0nE6QYUN4Av2rdzrHDuPhB19zSPO3f8tU8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758867512; c=relaxed/simple;
-	bh=8201WXrup8XvpSExFpkFq4mNS0iyckww5/D1SWX0+Ug=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FfCtr6JAxYEE55lwbgi5xHHoI3sHtB3SC5osLcXMZRZ/YeeSiy2aLtfNa9v1r9VHaHFx6XpzfNCFU2VsEsx0yfKj8lk1knRDC8JcmpBuCz4TO2bUcVhgPtcZ65H+wElaSyuMTPZAq2ulB+Dlf3of9pGIb83Om80cE0+x6SxAa/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WM7o08Oj; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758867511; x=1790403511;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8201WXrup8XvpSExFpkFq4mNS0iyckww5/D1SWX0+Ug=;
-  b=WM7o08OjWPq5669NpRLl8jaXL6nCl8BCnEC8mVEYS/qaSipEtyVikiaI
-   rTWyRshNcaLHnheG0qRZgwzSDeeBU3/UmSH2ec4usm6g+6OzHe3pp4pjW
-   DoOC0Mp26O3DMPOGnr0Q+MHbI5KpSkUscFzJxHemh8zhDC3QkPeR27wIF
-   W9iAEPQ6zmNQjHWX9EkIGVmPk7WcABpMezMxafQmgT9v02PL6TLUjXDW6
-   x5muwZgLMcXETAnN2FWEwxrfvo8V7cVl5oZIVSMNlh3oOseoJlKuacA6Z
-   HBCKcD3Dhvc9HPwupqnRBEIXsQmthOKqT0wF+WYzUZvDWZVKO3NydjDaV
-   A==;
-X-CSE-ConnectionGUID: SPaslcM1S9iWqbS0FAmycw==
-X-CSE-MsgGUID: IgjUj0y1R1yGtdOKnr9wSQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="65007907"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="65007907"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 23:18:30 -0700
-X-CSE-ConnectionGUID: 3mfFTnffTbWRoLvJM5M84w==
-X-CSE-MsgGUID: GifP7tIrSOKWwAhQm1LJog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="177094129"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.214])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 23:18:22 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id B3D341201B4;
-	Fri, 26 Sep 2025 09:18:18 +0300 (EEST)
-Date: Fri, 26 Sep 2025 09:18:18 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
-	linux-media@vger.kernel.org, netdev@vger.kernel.org,
-	linux-spi@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Javier Carrasco <javier.carrasco@wolfvision.net>,
-	Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
-	Matthias Fend <matthias.fend@emfend.at>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Paul Elder <paul.elder@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 02/16] ACPI: property: Use ACPI functions in
- acpi_graph_get_next_endpoint() only
-Message-ID: <aNYwKkYW__0hRIQV@kekkonen.localdomain>
-References: <20250924074602.266292-1-sakari.ailus@linux.intel.com>
- <20250924074602.266292-3-sakari.ailus@linux.intel.com>
- <iqfarpvf72l7qbhfinopjb27qvfm7wg77d4yhuy5qyubcwtcd2@exmcuvgqr353>
+	s=arc-20240116; t=1758870624; c=relaxed/simple;
+	bh=D+j2midnj5XhlRaG/sZPBMFQQa8uf6pQf07CI3bna/Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gYgYJJZUSmzoNXgHmhUJeZicu3Re36bluE6n2BdXmxbmHrMu6njD6okxVsuA6rna+vqNDT9zT4fR9MtOoRtJWU6AeY8rWi5VBjR+byZPHIG5og60doA/+jzHsh+p5bz+imhLnbGFjrpMaiQvel4xFGAuaOk1q/HFoEmYxqInQs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=afqjk0LF; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-32ec291a325so1464848a91.1
+        for <linux-acpi@vger.kernel.org>; Fri, 26 Sep 2025 00:10:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1758870622; x=1759475422; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s13NkV03DI482hdQXj9L0MMsFVndYTlMMN96sJroDYc=;
+        b=afqjk0LFuqW2u2tagwb8PMvH6vfmx049Te5b3zYl1o1PmgXKGVuFsON706/KS1vJku
+         Dvj3nHRn7XTy9zpYAEDV26u3Kqs3LqRNMQfB/UzfuWi8IwJnhcH6w5gcQprf66sbKeyh
+         Tn36u0u+d88RCZeVvIfWpciGPZowORerV3IMv3Bfz9h5fN3Wmb8g/uUJpVkDORb90ziv
+         dkktWvKcfmiH10uIuTSyTVMj7MaMlMcsDttJK4alTo+jiW7+CxNi8ivMF1nKGZ6uq6xM
+         ktP27ZyknShfpx/aHC6lwR43am9BoYtUetPBRxnUlXTICUzG9Frs7sfBbJagBIhRpqC5
+         N7cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758870622; x=1759475422;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=s13NkV03DI482hdQXj9L0MMsFVndYTlMMN96sJroDYc=;
+        b=qvbkDuXcmqg83le/vbJrmx48zCHeAvJICw6J2k3JptQlSaeqNUoYXjfdhHR59fdbjR
+         /HYZv6B7XnyF1bkoL/RtT1A4njTVCBrUjxaMVm0dxmdwAKBVlkTNi3qwcMoj2HtbeXSG
+         ARVmWcPWGCiOv3qACexp5zKU9u3JodimbR6Z9ZYLAFis55hRKKNmX6xfO11pMhUb1iX3
+         7FQsZD/Y50uPEYnaTNuKBfiFvQ4GS0P1TY877tgbJbmlMAml0585sr0qsh5vKYYIU5oB
+         ZHYp00hYESwaf+OccakuvHp9jhmPjZe+rEP3/LLI1lQtuWnbD5ppuc7g4pvGwjx5OO4E
+         /sHw==
+X-Forwarded-Encrypted: i=1; AJvYcCV89tZqirHEOXYPZ0tomrSQETXwqiWhxPaHkcEwIy+KXfh69vxdDoxLcmREA3nDTAz176uJGSzpxgsx@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8Sh+iJ9riKMD96T0SkNAZW2Y9X4O3vu8tIc2TLuks4lKv1Nmq
+	UwpLldQv4JbgBMFspdaR1+cGAmymjWKhpq3LjBaJvEMFavL5QkoRQkQ5YPapqYQE8FMhC35lKi3
+	K1T6/rCL6RxTiZzWRPYOop5Q0WHL06YrGx77RiZH5ng==
+X-Gm-Gg: ASbGnctTwkn3SmS5cdzwABHh1iGAAzp/Z4aTqhRbiI6LhMphQ9cD9O7vMMP/vMef8Ai
+	Oy3Nbja1yY0egxE2XijmJ11TblG0kagj/v165DR6IpVtujaxFTk4/Tw5XrECL+/zAr7jGK0Wxqf
+	A1cB7S6iMsLNP4tUJEymdqFpeVneXxWqjypGTZIpDvnoQ+9k9ZxElXee6Y5W3oSPP5WtdH12fcj
+	s1gujmWeILNU9FsIQvVeXraRC3+yT2y2rgXOkC6N3DHUygFhlTaY3o2LojQU2o2HbmSq8NxT7Ed
+	jIImQ2XkV3uU3LKFjoYK7DDzlkZ5TOvVMxbgqusBMYGp9a1Ck9CwCH/vxizC2NVKxKPslDtE/Rp
+	aqlAtpFtwdNo=
+X-Google-Smtp-Source: AGHT+IHdhWdKIldo725yaRcV2e2TLmZiar6ZsNJtmau9dPpPlg1CcGz3EfIZ8rNp7OmbymTgF9AsP6YdfPARBysWd9Y=
+X-Received: by 2002:a17:90b:4b84:b0:32e:528c:60ee with SMTP id
+ 98e67ed59e1d1-3342a2c9fdemr6991714a91.24.1758870621944; Fri, 26 Sep 2025
+ 00:10:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <iqfarpvf72l7qbhfinopjb27qvfm7wg77d4yhuy5qyubcwtcd2@exmcuvgqr353>
+References: <20250818040920.272664-1-apatel@ventanamicro.com>
+ <20250818040920.272664-11-apatel@ventanamicro.com> <823e11f3-ba2b-f0ec-8bb9-0785c89e8234@kernel.org>
+In-Reply-To: <823e11f3-ba2b-f0ec-8bb9-0785c89e8234@kernel.org>
+From: Rahul Pathak <rpathak@ventanamicro.com>
+Date: Fri, 26 Sep 2025 12:39:45 +0530
+X-Gm-Features: AS18NWApnm5B16UUErYVg9jHjWgczHP7q0_6OfFV3wst3Z5Hkpf8DICkPiw9CaE
+Message-ID: <CA+Oz1=aXDTvC+qnL5zA-Lhcy1X=okbHCYtfDMzQ=7k6GufCJHw@mail.gmail.com>
+Subject: Re: [PATCH v10 10/24] clk: Add clock driver for the RISC-V RPMI clock
+ service group
+To: Paul Walmsley <pjw@kernel.org>
+Cc: Anup Patel <apatel@ventanamicro.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jassi Brar <jassisinghbrar@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	devicetree@vger.kernel.org, Andrew Jones <ajones@ventanamicro.com>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Atish Patra <atish.patra@linux.dev>, 
+	Leyfoon Tan <leyfoon.tan@starfivetech.com>, Anup Patel <anup@brainfault.org>, 
+	linux-kernel@vger.kernel.org, Samuel Holland <samuel.holland@sifive.com>, 
+	linux-acpi@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org, 
+	Len Brown <lenb@kernel.org>, linux-clk@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Dmitry,
+On Fri, Sep 26, 2025 at 7:37=E2=80=AFAM Paul Walmsley <pjw@kernel.org> wrot=
+e:
+>
+> a few minor comments:
+>
+> > +
+> > +#define rpmi_clkrate_u64(__hi, __lo) (((u64)(__hi) << 32) | (u32)(__lo=
+))
+>
+> I'd prefer to see code like this implemented as static inline functions,
+> rather than macros.
+>
+> > +static int rpmi_clk_get_attrs(u32 clkid, struct rpmi_clk *rpmi_clk)
+> > +{
+>
+> [ ... ]
+> > +
+> > +     format =3D le32_to_cpu(resp->flags) & 3U;
+>
+> And similarly, it's best to pull these kinds of magic numbers up into
+> appropriately-named macros, to help reviewers understand your intention.
+>
+> Since we're pretty close to the merge window opening, and the changes are
+> minor, I've gone ahead and just made these two changes in the patch, and
+> queued it for v6.18 (hopefully).  But maybe you can keep them in mind for
+> next time.
+>
 
-On Wed, Sep 24, 2025 at 11:32:56AM -0700, Dmitry Torokhov wrote:
-> Hi Sakari,
-> 
-> On Wed, Sep 24, 2025 at 10:45:48AM +0300, Sakari Ailus wrote:
-> > Calling fwnode_get_next_child_node() in ACPI implementation of the fwnode
-> > property API is somewhat problematic as the latter is used in the
-> 
-> How exactly is this problematic?
+Hi Paul, sure, thanks for handling this.
 
-In general, the fwnode property API is implemented by the (currently three)
-backends so the backend calling fwnode property API to call itself without
-knowing what exactly gets called may end up in an infinite recursion.
-Keeping ACPI implementation separate from the fwnode property frontend
-avoids even needing to think about this.
-
-> 
-> > impelementation of the former. Instead of using
-> > fwnode_get_next_child_node() in acpi_graph_get_next_endpoint(), call
-> > acpi_get_next_subnode() directly instead.
-> 
-> I think we are moving into the world of mixed fwnode types with software
-> nodes/secondary fwnodes, so I do not think this is a step in right
-> direction.
-
-This is not how it works. If you have an ACPI node, it's and ACPI node, not
-a software node or an OF node. A software node would be attached as
-fwnode->secondary, it's not the same ACPI (device or data) node.
-
--- 
-Regards,
-
-Sakari Ailus
+Thanks
+Rahul
 
