@@ -1,184 +1,120 @@
-Return-Path: <linux-acpi+bounces-17336-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17341-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19213BA35A9
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Sep 2025 12:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85118BA360F
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Sep 2025 12:38:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8F8F3B2AD2
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Sep 2025 10:32:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 458A53A6678
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Sep 2025 10:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB112EFD93;
-	Fri, 26 Sep 2025 10:32:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l3wxb2tk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E3727A47F;
+	Fri, 26 Sep 2025 10:38:38 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4F621D3CA;
-	Fri, 26 Sep 2025 10:32:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48CBB2F2913;
+	Fri, 26 Sep 2025 10:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758882730; cv=none; b=MV8tgl9wbrOanbygT9LOyV1dagHoZnQ1lJuQ7+M87fDuKY0qWjbgBPVG/CgM2jqi3cbCeb/fsK88Uovw+OfI10cPODvGnQV3oVi0w7XLwzFuw5uJ6WorQteT3dXz1PTXhfjInXvK/T1dkzx+SQEbtWL07HJlA46lAEVwzwAZRPc=
+	t=1758883118; cv=none; b=NqxJHXJbbWTapEFGA39mPMPL84q3X6nhGN1rHU7NHVy3UME7oORdtDeoKgmAKEhRpHPC/b7fovP2HnTtB/CzS2oBzNLXVqRVcQgxsRWBicgZn6XuStk3AijrthiN5lw7g0fLUaYAohRXShF77KDsq4BAuPmnMK3LBDlokFOWR6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758882730; c=relaxed/simple;
-	bh=zQ7iVOebrADHg1ETUTT0wq0YKxEAlyaSm+7dipeK7GM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B5joB7ltoTwVlW3cFU0BOk25v1OypkcZRzqLr1eacAiIEbRsv8qWU5PWn/zDuljU0Exg8cwkIGj17Gp3uOtaKmYzKT9ZgP3Rgq7gJsrLM8eQvq3/VYXk3tPhf36RTAdjNzxvf3bswcHT6zE5K4MLjgoey+0KLCLdrmqXe9yJugw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l3wxb2tk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE341C4CEF4;
-	Fri, 26 Sep 2025 10:32:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758882730;
-	bh=zQ7iVOebrADHg1ETUTT0wq0YKxEAlyaSm+7dipeK7GM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3wxb2tkEfrM3P24jZ7njaJrVdECP0LXrDU3m389Dx47Css5/SXsWQI6ccf9Ld/MT
-	 dtae7bHC5FWn4wce/iAB8pMSLEqggMgQxnU1LOQR2lJmjPTAp2Tl2WJvT2WR1bR8oa
-	 HLzqSiO0OdSUEOoMOnehxmm6MouWZDICN+pj/XlpRZvypHAyXOOrT99K+pPG5IlP72
-	 y565N8+BbpH1O0WiQ+ALSuyYWHpWeDN+aWZwEOZqLLYyYA9VodM2vUebueKdlxapO7
-	 UoxQPO7cTDktEr8hMfZrkDSRQCiEBSIBAxAcTY2NcMggtlyy3yFfZFhhj2iqpVF9Op
-	 aa3N/qx18WB7g==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Linux PM <linux-pm@vger.kernel.org>
-Cc: Shawn Guo <shawnguo@kernel.org>, Qais Yousef <qyousef@layalina.io>,
- LKML <linux-kernel@vger.kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
- Pierre Gondois <pierre.gondois@arm.com>,
- Mario Limonciello <mario.limonciello@amd.com>,
- Linux ACPI <linux-acpi@vger.kernel.org>, Jie Zhan <zhanjie9@hisilicon.com>
-Subject: [PATCH v3 4/4] cpufreq: Drop unused symbol CPUFREQ_ETERNAL
-Date: Fri, 26 Sep 2025 12:31:47 +0200
-Message-ID: <3679164.iIbC2pHGDl@rafael.j.wysocki>
-Organization: Linux Kernel Development
-In-Reply-To: <5069803.31r3eYUQgx@rafael.j.wysocki>
-References: <5069803.31r3eYUQgx@rafael.j.wysocki>
+	s=arc-20240116; t=1758883118; c=relaxed/simple;
+	bh=YDS4s5RkJHdkLKbCqClrPdikIVhL3WpPUyoR1o2gSvo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lm+E6GF7HzKXxdTv0YHmKmR//6+AFYAvvxjGubc4Bok0ZqeuCFYMddQtO8pzyJTNVZpR1iuLcYIdn+0NND/I1g9dM0iRT+23s89qC+DiR3GKH1s3bvsmbw2r5Ixre03gYO8ApjsoCO42ZuGvOFUwb99dCPs1tpKCahuknTe+Dpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3C746168F;
+	Fri, 26 Sep 2025 03:38:27 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F14293F5A1;
+	Fri, 26 Sep 2025 03:38:32 -0700 (PDT)
+Date: Fri, 26 Sep 2025 11:38:30 +0100
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-acpi@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>
+Subject: Re: [PATCH v3 00/26] genirq: Add support for percpu_devid IRQ
+ affinity
+Message-ID: <aNZtJoFrOv8dHlkV@raptor>
+References: <20250922082833.2038905-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250922082833.2038905-1-maz@kernel.org>
 
-=46rom: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi,
 
-Drop CPUFREQ_ETERNAL that has no users any more along with all
-references to it in the documentation.
+Tested this on a rockpro64 - 4xA53 + 2xA72.
 
-No functional impact.
+On kernel v6.17-rc5, using perf to profile iperf3 for 10 seconds, the top
+overhead symbol was _raw_spinlock_irq_restore() and the PMU wasn't using NMIs
+(checked by printing has_nmi after armpmu_request_irq()).
 
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Reviewed-by: Jie Zhan <zhanjie9@hisilicon.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-=2D--
+With this series, same test, *irq_restore() overhead dropped to about 1% on the
+little core, below 1% on the big core, and the PMU was using NMIs.
 
-v1 -> v3: Add tags from Mario Limonciello and Jie Zhan
+Thanks,
+Alex
 
-=2D--
- Documentation/admin-guide/pm/cpufreq.rst                  |    4 ----
- Documentation/cpu-freq/cpu-drivers.rst                    |    3 +--
- Documentation/translations/zh_CN/cpu-freq/cpu-drivers.rst |    3 +--
- Documentation/translations/zh_TW/cpu-freq/cpu-drivers.rst |    3 +--
- include/linux/cpufreq.h                                   |    5 -----
- 5 files changed, 3 insertions(+), 15 deletions(-)
-
-=2D-- a/Documentation/admin-guide/pm/cpufreq.rst
-+++ b/Documentation/admin-guide/pm/cpufreq.rst
-@@ -274,10 +274,6 @@ are the following:
- 	The time it takes to switch the CPUs belonging to this policy from one
- 	P-state to another, in nanoseconds.
-=20
-=2D	If unknown or if known to be so high that the scaling driver does not
-=2D	work with the `ondemand`_ governor, -1 (:c:macro:`CPUFREQ_ETERNAL`)
-=2D	will be returned by reads from this attribute.
-=2D
- ``related_cpus``
- 	List of all (online and offline) CPUs belonging to this policy.
-=20
-=2D-- a/Documentation/cpu-freq/cpu-drivers.rst
-+++ b/Documentation/cpu-freq/cpu-drivers.rst
-@@ -109,8 +109,7 @@ Then, the driver must fill in the follow
- +-----------------------------------+-------------------------------------=
-=2D+
- |policy->cpuinfo.transition_latency | the time it takes on this CPU to	   |
- |				    | switch between two frequencies in	   |
-=2D|				    | nanoseconds (if appropriate, else	   |
-=2D|				    | specify CPUFREQ_ETERNAL)		   |
-+|				    | nanoseconds                          |
- +-----------------------------------+-------------------------------------=
-=2D+
- |policy->cur			    | The current operating frequency of   |
- |				    | this CPU (if appropriate)		   |
-=2D-- a/Documentation/translations/zh_CN/cpu-freq/cpu-drivers.rst
-+++ b/Documentation/translations/zh_CN/cpu-freq/cpu-drivers.rst
-@@ -112,8 +112,7 @@ CPUfreq=E6=A0=B8=E5=BF=83=E5=B1=82=E6=B3=A8=E5=86=8C=E4=
-=B8=80=E4=B8=AAcpufreq_driv
- |                                   |                                     =
- |
- +-----------------------------------+-------------------------------------=
-=2D+
- |policy->cpuinfo.transition_latency | CPU=E5=9C=A8=E4=B8=A4=E4=B8=AA=E9=A2=
-=91=E7=8E=87=E4=B9=8B=E9=97=B4=E5=88=87=E6=8D=A2=E6=89=80=E9=9C=80=E7=9A=84=
-=E6=97=B6=E9=97=B4=EF=BC=8C=E4=BB=A5  |
-=2D|                                   | =E7=BA=B3=E7=A7=92=E4=B8=BA=E5=8D=
-=95=E4=BD=8D=EF=BC=88=E5=A6=82=E4=B8=8D=E9=80=82=E7=94=A8=EF=BC=8C=E8=AE=BE=
-=E5=AE=9A=E4=B8=BA         |
-=2D|                                   | CPUFREQ_ETERNAL=EF=BC=89          =
-          |
-+|                                   | =E7=BA=B3=E7=A7=92=E4=B8=BA=E5=8D=95=
-=E4=BD=8D                    |
- |                                   |                                     =
- |
- +-----------------------------------+-------------------------------------=
-=2D+
- |policy->cur                        | =E8=AF=A5CPU=E5=BD=93=E5=89=8D=E7=9A=
-=84=E5=B7=A5=E4=BD=9C=E9=A2=91=E7=8E=87(=E5=A6=82=E9=80=82=E7=94=A8)       =
-   |
-=2D-- a/Documentation/translations/zh_TW/cpu-freq/cpu-drivers.rst
-+++ b/Documentation/translations/zh_TW/cpu-freq/cpu-drivers.rst
-@@ -112,8 +112,7 @@ CPUfreq=E6=A0=B8=E5=BF=83=E5=B1=A4=E8=A8=BB=E5=86=8A=E4=
-=B8=80=E5=80=8Bcpufreq_driv
- |                                   |                                     =
- |
- +-----------------------------------+-------------------------------------=
-=2D+
- |policy->cpuinfo.transition_latency | CPU=E5=9C=A8=E5=85=A9=E5=80=8B=E9=A0=
-=BB=E7=8E=87=E4=B9=8B=E9=96=93=E5=88=87=E6=8F=9B=E6=89=80=E9=9C=80=E7=9A=84=
-=E6=99=82=E9=96=93=EF=BC=8C=E4=BB=A5  |
-=2D|                                   | =E7=B4=8D=E7=A7=92=E7=88=B2=E5=96=
-=AE=E4=BD=8D=EF=BC=88=E5=A6=82=E4=B8=8D=E9=81=A9=E7=94=A8=EF=BC=8C=E8=A8=AD=
-=E5=AE=9A=E7=88=B2         |
-=2D|                                   | CPUFREQ_ETERNAL=EF=BC=89          =
-          |
-+|                                   | =E7=B4=8D=E7=A7=92=E7=88=B2=E5=96=AE=
-=E4=BD=8D                    |
- |                                   |                                     =
- |
- +-----------------------------------+-------------------------------------=
-=2D+
- |policy->cur                        | =E8=A9=B2CPU=E7=95=B6=E5=89=8D=E7=9A=
-=84=E5=B7=A5=E4=BD=9C=E9=A0=BB=E7=8E=87(=E5=A6=82=E9=81=A9=E7=94=A8)       =
-   |
-=2D-- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -26,13 +26,8 @@
-  *********************************************************************/
- /*
-  * Frequency values here are CPU kHz
-=2D *
-=2D * Maximum transition latency is in nanoseconds - if it's unknown,
-=2D * CPUFREQ_ETERNAL shall be used.
-  */
-=20
-=2D#define CPUFREQ_ETERNAL			(-1)
-=2D
- #define CPUFREQ_DEFAULT_TANSITION_LATENCY_NS	NSEC_PER_MSEC
-=20
- #define CPUFREQ_NAME_LEN		16
-
-
-
+On Mon, Sep 22, 2025 at 09:28:07AM +0100, Marc Zyngier wrote:
+> This is the third version of this series, originally posted at [1],
+> which aims at allowing percpu_devid interrupt requests on the basis of
+> an affinity mask. See the original submission for the details of why
+> this is a desirable outcome.
+> 
+> From v2, we have some tidying up, thanks to Jonathan's review -- see
+> changelog for details.
+> 
+> FWIW, I've pushed a branch at [3].
+> 
+> * From v2 [2]:
+> 
+>   - Turned of_node_to_fwnode() usage to of_fwnode_handle() (Jonathan)
+> 
+>   - Added a patch to finally kill of_node_to_fwnode()
+> 
+>   - Tidied-up documentation, comments and formatting (Jonathan)
+> 
+>   - Collected ABs and Rbs, with thanks (Jonathan, Suzuki, Sven)
+> 
+> * From v1 [1]:
+> 
+>   - Fixed NMI handling by getting rid of the NMI-specific flow
+>     handler, which was pretty useless anyway (Will)
+> 
+>   - As a result, killed a metric buttload worth of GICv3 code
+> 
+>   - Moved irq_fwspec out of irq_fwspec_info, and passed it as a
+>     parameter to irq_get_fwspec_info(), renamed from irq_get_info(),
+>     and applied some generous sanitisation of the structure (Thomas)
+> 
+>   - Dropped the rather useless fwspec validity flag (Thomas)
+> 
+>   - Rejigged the PMU per-CPU handling to better deal with the DT/ACPI
+>     differences, and drop some now useless patches (Will)
+> 
+>   - Plenty of cosmetic rework (Raphael, Thomas)
+> 
+> [1] https://lore.kernel.org/r/20250908163127.2462948-1-maz@kernel.org
+> [2] https://lore.kernel.org/r/20250915085702.519996-1-maz@kernel.org
+> [3] git://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms.git irq/ppi-affinity
 
