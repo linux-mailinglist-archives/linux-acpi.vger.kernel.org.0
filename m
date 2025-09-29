@@ -1,53 +1,54 @@
-Return-Path: <linux-acpi+bounces-17419-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17420-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA45BA9C12
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 17:04:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF77DBAA1CC
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 19:14:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90B0D1C0B81
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 15:04:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7310D7A2270
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 17:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3205030507B;
-	Mon, 29 Sep 2025 15:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47615303A0C;
+	Mon, 29 Sep 2025 17:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KMtQQ9ko"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cIWQ5XK+"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F102126F2BD;
-	Mon, 29 Sep 2025 15:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A2EE555;
+	Mon, 29 Sep 2025 17:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759158270; cv=none; b=aXTVIwSTcNQr8/gA1gmld+AH810yKki5HY+pFgpp+6PfsLesMYx4q3Ryo08Xl12PV7f60pmx1c54sAofVppTs6nyXRoaRdcicjMugy5k+BfkMAZ+j4uJoi/kPRy4803fl+wlDhVMr0mLp0HCgkNdMfvUUMZqOigEX4Xn7e43qlk=
+	t=1759166049; cv=none; b=Nlz4oYpmgMmwgx2Y3kEl49418BSk8XumrFZRA996KBjz5FF1d3XsPe+VU77Wsnafafda2us8KqvTiz7LUbtyDwXvmW4MmPk+ipDyQiHBZvbi4UTRrUQBKltOGGfJot3qjQ4Li6btUoHEH/twqW6MRmVpP0WXizZAIWfOY31kXUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759158270; c=relaxed/simple;
-	bh=WgLOirqnRuyUHkGKrX+OqYLUKjAVPYcz7Hc+OWcmhyk=;
+	s=arc-20240116; t=1759166049; c=relaxed/simple;
+	bh=/d3YDoclVIlotjgBNpaaRR/z5leUIlKIPL2Fbh02IS0=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=dSnERQhl+3lcYhu4vKHDiwUaO4adOrogAL/GmMKLTPMKrjrga6FVVcXzuPqSSW+ySz4OR37+AtfYZYMYJryvvY576Y0dYoL+VI2z+UD3bdkka3f+yAyaiIvUJKEgY2Oxem+i8kwa+vWNgP6mrXKaBYtqMNVCMYA1RAsquONicrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KMtQQ9ko; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256D7C4CEF4;
-	Mon, 29 Sep 2025 15:04:28 +0000 (UTC)
+	 Content-Disposition:In-Reply-To; b=N9iAR6Yxk8z+qjD1Iwuo33CTslaQ6IQHeltMGYemjWMydppTBa6//yZaD3HywGbmkaoWIITBLxGHstdGx63lEzOqQoHrxIS+e/bl/if/mL3XGRffEQ8mE7Xjx2g6kx41REy1j3YnhaC0th4hv0w7Och9j4oDtFmQWAAM/LTnR5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cIWQ5XK+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E5ABC4CEF4;
+	Mon, 29 Sep 2025 17:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759158268;
-	bh=WgLOirqnRuyUHkGKrX+OqYLUKjAVPYcz7Hc+OWcmhyk=;
+	s=k20201202; t=1759166048;
+	bh=/d3YDoclVIlotjgBNpaaRR/z5leUIlKIPL2Fbh02IS0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=KMtQQ9koq4ya3jXNewcZz5hHqHUlZALafDT20H6VyPac1kR2ipc//bs4dPKZGiRCX
-	 KoNdkcsuIexHTiM3gQdRiCgb+lIBYkz6Ig45lbRtZaYSittcKniqf9vyTS6MOPuB8F
-	 UhklAWkuTyrAYh2t7ms2vle4v5Tqrwh03w6n7W4tjAVrUb3t5DAdfK4S8fkWiLprnE
-	 YSQgrc+1+uVgNggUAfOK/wP7s5Nc0wA+pnJyM/9JcAbydcaLWkUQmDiwKnzvq8gZCP
-	 Tc/XK68gyK4SUVZN+v2rwgO5ejI2P/H/dPdA12/kfRepjqsqOH7jOmH39uXXh2qRy/
-	 od3BcG4ITAEAw==
-Date: Mon, 29 Sep 2025 10:04:25 -0500
+	b=cIWQ5XK+sJVQ4JPDDmMvNFShMRkkjBzGA+dZGLnibe9k69UGY5dB+dbuJppS9xMDV
+	 DKQKoCj8NfywFTn+1tu1Z1aYOFLqPLJ2lt6tzBq+A7/IifvxTWse4/+x5UQxemJnZW
+	 xi3c3pPcJX5j8zvVJlbuabWOKKN9QsSABeP672iD2FnA50rhfRZxDaxRm3Wzv/mgZ7
+	 qGdJKfqpj0CQorjULZk48n2GAUSGN/6jaYzOmzMMB8Q9yFqD/y+goyBvpWY77AY3cs
+	 PgNbGKFImlE2juCHY7HckaQZQfhODu/xWVgylrPj3HNLYCGBZgF8ghRALH7nqWkRji
+	 FxbwEM3gHJM0Q==
+Date: Mon, 29 Sep 2025 12:14:06 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Chris Li <chrisl@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+To: Chris Li <chrisl@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
 	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
 	linux-acpi@vger.kernel.org, David Matlack <dmatlack@google.com>,
 	Pasha Tatashin <tatashin@google.com>,
@@ -57,123 +58,99 @@ Cc: Chris Li <chrisl@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
 	Parav Pandit <parav@nvidia.com>, William Tu <witu@nvidia.com>,
 	Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
 	Leon Romanovsky <leon@kernel.org>
-Subject: Re: [PATCH v2 00/10] LUO: PCI subsystem (phase I)
-Message-ID: <20250929150425.GA111624@bhelgaas>
+Subject: Re: [PATCH v2 09/10] PCI/LUO: Avoid write to bus master at boot
+Message-ID: <20250929171406.GA116545@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+CK2bAbB8YsheCwLi0ztY5LLWMyQ6He3sbYru697Ogq5+hR+Q@mail.gmail.com>
+In-Reply-To: <20250916-luo-pci-v2-9-c494053c3c08@kernel.org>
 
-On Sat, Sep 27, 2025 at 02:05:38PM -0400, Pasha Tatashin wrote:
-> Hi Bjorn,
+On Tue, Sep 16, 2025 at 12:45:17AM -0700, Chris Li wrote:
+> If the liveupdate flag has LU_BUSMASTER or LU_BUSMASTER_BRIDGE, the
+> device is participating in the liveupdate preserving bus master bit in the
+> PCI config space command register.
 > 
-> My latest submission is the following:
-> https://lore.kernel.org/all/20250807014442.3829950-1-pasha.tatashin@soleen.com/
+> Avoid writing to the PCI command register for the bus master bit during
+> boot up.
 > 
-> And github repo is in cover letter:
+> Signed-off-by: Chris Li <chrisl@kernel.org>
+> ---
+>  drivers/pci/liveupdate.c | 6 ++++++
+>  drivers/pci/pci.c        | 7 +++++--
+>  2 files changed, 11 insertions(+), 2 deletions(-)
 > 
-> https://github.com/googleprodkernel/linux-liveupdate/tree/luo/v3
+> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+> index 1b12fc0649f479c6f45ffb26e6e3754f41054ea8..a09a166b6ee271b96bce763716c3b62b24f3edbb 100644
+> --- a/drivers/pci/liveupdate.c
+> +++ b/drivers/pci/liveupdate.c
+> @@ -377,6 +377,12 @@ static void pci_dev_do_restore(struct pci_dev *dev, struct pci_dev_ser *s)
+>  	pci_info(dev, "liveupdate restore flags %x driver: %s data: [%llx]\n",
+>  		 s->flags, s->driver_name, s->driver_data);
+>  	list_move_tail(&dev->dev.lu.lu_next, &probe_devices);
+> +	if (s->flags & (LU_BUSMASTER | LU_BUSMASTER_BRIDGE)) {
+> +		u16 pci_command;
+> +
+> +		pci_read_config_word(dev, PCI_COMMAND, &pci_command);
+> +		WARN_ON(!(pci_command & PCI_COMMAND_MASTER));
+> +	}
+>  }
+>  
+>  void pci_liveupdate_restore(struct pci_dev *dev)
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index 9e42090fb108920995ebe34bd2535a0e23fef7fd..2339ac1bd57616a78d2105ba3a4fc72bbf49973e 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -2248,7 +2248,8 @@ static void do_pci_disable_device(struct pci_dev *dev)
+>  	pci_read_config_word(dev, PCI_COMMAND, &pci_command);
+>  	if (pci_command & PCI_COMMAND_MASTER) {
+>  		pci_command &= ~PCI_COMMAND_MASTER;
+> -		pci_write_config_word(dev, PCI_COMMAND, pci_command);
+> +		if (!(dev->dev.lu.flags & (LU_BUSMASTER | LU_BUSMASTER_BRIDGE)))
+> +			pci_write_config_word(dev, PCI_COMMAND, pci_command);
+
+I think changing the semantics of interfaces like this is a problem
+because callers rely on the existing semantics, and it's hard to
+reason about how this change would affect them.  How would you update
+the kernel-doc to reflect this change?
+
+do_pci_disable_device() is used in the PM suspend, freeze, and
+poweroff paths.  I suppose those paths are allowed even when devices
+have been marked with LU_BUSMASTER/LU_BUSMASTER_BRIDGE?  And I assume
+you probably would want the existing semantics there?
+
+I.e., if a device has been marked with LU_BUSMASTER, you want to keep
+its bus mastering enabled across a liveupdate kexec.  But if we
+suspend before doing the kexec, I assume we would still want to clear
+bus mastering on suspend and restore bus mastering on resume?
+
+The other path that uses do_pci_disable_device() is
+pci_disable_device(), which is primarily used in driver .remove()
+methods.  You have to modify drivers to support liveupdate anyway, so
+if we call driver .remove() methods during a liveupdate kexec, I think
+you should change the .remove() method so it only calls
+pci_disable_device() when you want bus mastering disabled.
+
+>  	}
+>  
+>  	pcibios_disable_device(dev);
+> @@ -4276,7 +4277,9 @@ static void __pci_set_master(struct pci_dev *dev, bool enable)
+>  	if (cmd != old_cmd) {
+>  		pci_dbg(dev, "%s bus mastering\n",
+>  			enable ? "enabling" : "disabling");
+> -		pci_write_config_word(dev, PCI_COMMAND, cmd);
+> +
+> +		if (!(dev->dev.lu.flags & (LU_BUSMASTER | LU_BUSMASTER_BRIDGE)))
+> +			pci_write_config_word(dev, PCI_COMMAND, cmd);
+>  	}
+>  	dev->is_busmaster = enable;
+>  }
 > 
-> It applies cleanly against the mainline without the first three
-> patches, as they were already merged.
-
-Not sure what I'm missing.  I've tried various things but none apply
-cleanly:
-
-  $ git remote add luo https://github.com/googleprodkernel/linux-liveupdate.git
-  $ git fetch luo
-  From https://github.com/googleprodkernel/linux-liveupdate
-   * [new branch]                hack_pci_pf_stub_demo -> luo/hack_pci_pf_stub_demo
-   * [new branch]                iommu/rfc-v1          -> luo/iommu/rfc-v1
-   * [new branch]                kho/v5                -> luo/kho/v5
-   * [new branch]                kho/v6                -> luo/kho/v6
-   * [new branch]                kho/v7                -> luo/kho/v7
-   * [new branch]                kho/v8                -> luo/kho/v8
-   * [new branch]                lucx/v1               -> luo/lucx/v1
-   * [new branch]                luo/kho-v8            -> luo/luo/kho-v8
-   * [new branch]                luo/memfd-v0.1        -> luo/luo/memfd-v0.1
-   * [new branch]                luo/rfc-v1            -> luo/luo/rfc-v1
-   * [new branch]                luo/rfc-v2            -> luo/luo/rfc-v2
-   * [new branch]                luo/v1                -> luo/luo/v1
-   * [new branch]                luo/v2                -> luo/luo/v2
-   * [new branch]                luo/v3                -> luo/luo/v3
-   * [new branch]                luo/v4                -> luo/luo/v4
-   * [new branch]                master                -> luo/master
-
-  $ b4 am -om/ https://lore.kernel.org/r/20250916-luo-pci-v2-0-c494053c3c08@kernel.org
-  Grabbing thread from lore.kernel.org/all/20250916-luo-pci-v2-0-c494053c3c08@kernel.org/t.mbox.gz
-  Analyzing 13 messages in the thread
-  Looking for additional code-review trailers on lore.kernel.org
-  Checking attestation on all messages, may take a moment...
-  ---
-    ✓ [PATCH v2 1/10] PCI/LUO: Register with Liveupdate Orchestrator
-    ✓ [PATCH v2 2/10] PCI/LUO: Create requested liveupdate device list
-    ✓ [PATCH v2 3/10] PCI/LUO: Forward prepare()/freeze()/cancel() callbacks to driver
-    ✓ [PATCH v2 4/10] PCI/LUO: Restore state at PCI enumeration
-    ✓ [PATCH v2 5/10] PCI/LUO: Forward finish callbacks to drivers
-    ✓ [PATCH v2 6/10] PCI/LUO: Save and restore driver name
-    ✓ [PATCH v2 7/10] PCI/LUO: Add liveupdate to pcieport driver
-    ✓ [PATCH v2 8/10] PCI/LUO: Add pci_liveupdate_get_driver_data()
-    ✓ [PATCH v2 9/10] PCI/LUO: Avoid write to bus master at boot
-    ✓ [PATCH v2 10/10] PCI: pci-lu-stub: Add a stub driver for Live Update testing
-    ---
-    ✓ Signed: DKIM/kernel.org
-  ---
-  Total patches: 10
-  ---
-  Cover: m/v2_20250916_chrisl_luo_pci_subsystem_phase_i.cover
-   Link: https://lore.kernel.org/r/20250916-luo-pci-v2-0-c494053c3c08@kernel.org
-   Base: base-commit 9ab803064e3d1be9673d2829785a69fd0578b24e not known, ignoring
-   Base: not specified
-	 git am m/v2_20250916_chrisl_luo_pci_subsystem_phase_i.mbx
-
-  $ git checkout -b wip/2509-chris-luo-pci-v2 luo/luo/rfc-v2; git am m/v2_20250916_chrisl_luo_pci_subsystem_phase_i.mbx
-  Updating files: 100% (21294/21294), done.
-  branch 'wip/2509-chris-luo-pci-v2' set up to track 'luo/luo/rfc-v2'.
-  Switched to a new branch 'wip/2509-chris-luo-pci-v2'
-  Applying: PCI/LUO: Register with Liveupdate Orchestrator
-  Applying: PCI/LUO: Create requested liveupdate device list
-  Applying: PCI/LUO: Forward prepare()/freeze()/cancel() callbacks to driver
-  Applying: PCI/LUO: Restore state at PCI enumeration
-  Applying: PCI/LUO: Forward finish callbacks to drivers
-  Applying: PCI/LUO: Save and restore driver name
-  error: patch failed: drivers/pci/probe.c:2714
-  error: drivers/pci/probe.c: patch does not apply
-  Patch failed at 0006 PCI/LUO: Save and restore driver name
-  hint: Use 'git am --show-current-patch=diff' to see the failed patch
-  When you have resolved this problem, run "git am --continue".
-  If you prefer to skip this patch, run "git am --skip" instead.
-  To restore the original branch and stop patching, run "git am --abort".
-
-  $ git checkout -b wip/2509-chris-luo-pci-v2 luo/luo/v2; git am m/v2_20250916_chrisl_luo_pci_subsystem_phase_i.mbx
-  Updating files: 100% (12217/12217), done.
-  branch 'wip/2509-chris-luo-pci-v2' set up to track 'luo/luo/v2'.
-  Switched to a new branch 'wip/2509-chris-luo-pci-v2'
-  Applying: PCI/LUO: Register with Liveupdate Orchestrator
-  error: patch failed: MAINTAINERS:14014
-  error: MAINTAINERS: patch does not apply
-  Patch failed at 0001 PCI/LUO: Register with Liveupdate Orchestrator
-  hint: Use 'git am --show-current-patch=diff' to see the failed patch
-  When you have resolved this problem, run "git am --continue".
-  If you prefer to skip this patch, run "git am --skip" instead.
-  To restore the original branch and stop patching, run "git am --abort".
-
-  $ git checkout -b wip/2509-chris-luo-pci-v2 luo/luo/v3; git am m/v2_20250916_chrisl_luo_pci_subsystem_phase_i.mbx
-  branch 'wip/2509-chris-luo-pci-v2' set up to track 'luo/luo/v3'.
-  Switched to a new branch 'wip/2509-chris-luo-pci-v2'
-  Applying: PCI/LUO: Register with Liveupdate Orchestrator
-  error: patch failed: MAINTAINERS:14014
-  error: MAINTAINERS: patch does not apply
-  Patch failed at 0001 PCI/LUO: Register with Liveupdate Orchestrator
-  hint: Use 'git am --show-current-patch=diff' to see the failed patch
-  When you have resolved this problem, run "git am --continue".
-  If you prefer to skip this patch, run "git am --skip" instead.
-  To restore the original branch and stop patching, run "git am --abort".
-
+> -- 
+> 2.51.0.384.g4c02a37b29-goog
+> 
 
