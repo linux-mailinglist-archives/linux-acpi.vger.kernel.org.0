@@ -1,105 +1,104 @@
-Return-Path: <linux-acpi+bounces-17394-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17404-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86192BA8A80
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 11:36:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B0A0BA8BD3
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 11:49:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4047A16F550
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 09:36:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC6467B8EF8
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 09:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BAA02868AD;
-	Mon, 29 Sep 2025 09:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62352D3A93;
+	Mon, 29 Sep 2025 09:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="g1tlegCa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C3F2356B9;
-	Mon, 29 Sep 2025 09:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477BC2D24BE;
+	Mon, 29 Sep 2025 09:38:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759138569; cv=none; b=q4uGXvKCCbC3mb0JrXB5HX+IdkuWFZBudFKjd1BQVwOD7cxSnbxcrP65iA4B9Tr+V6Vla9fTHcne0zVCwEdKYVhqpcXWCRtd6Y/IqCKeT6xv7fMrbpsGOSFmqe7aUT8hoAuOUNv+A+uQu7RwrPgcaOZS+temgIzru2LFRbSw5F4=
+	t=1759138696; cv=none; b=uq0saSaHoEGQDEZ/Ykg345NFnrlL2TQw4+xX1PCyTc/mAmk5X7leejNLPmIn1RL1tYypnm6zqXPtLDmzMUZn0UlKLGXJ7N+NgthP5P8xSAbuT2wb6lDQwPfY+rzDo69/GwLVEBUb7fBJbLz1hcSkYz4oqcIH3uXfip4d4O9xeSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759138569; c=relaxed/simple;
-	bh=m75fy5agr4nOm6ZswHP3z9cSx6nGu66GnnEkQoJbIQ4=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i/bx7sjMzRO951nQ8WPwxPTludGED1+SGnsfB4GQ6hyOjSfr1vSoefp0+aU8ZMjAyf03a8H6hNBmOZ0agiljxHrRZqgWO3Lb202V7L/MFnY9tWfcYM8i77qgwNikeaPXzfByQnS3KFkYpteQWH1SM45/vrsMfvHRhSl8IixiJ24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cZwxJ3JLrz6L550;
-	Mon, 29 Sep 2025 17:33:56 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 82E111402F5;
-	Mon, 29 Sep 2025 17:36:03 +0800 (CST)
-Received: from localhost (10.47.64.220) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 29 Sep
- 2025 10:36:01 +0100
-Date: Mon, 29 Sep 2025 10:35:58 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
+	s=arc-20240116; t=1759138696; c=relaxed/simple;
+	bh=Yaf6dNuFt5lIq8e39M5WY9B2WGYRI32WGU0Xc5rRTsk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QM9d1jm83qzmozkMEbuTxbcDJg4VQrq5SNlkhJWhkyjawYq2hTgMXf3nf2NrJ3PU+tadKM3HM56XDhTy94iteHDpKfTh3c1obnbjtOnnTjk8Tx8bFHzKqsENVJxcMvRgegZOxp1GvZZPcASfA9Z8ALbNtWevyORcx5n8aEuW/hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=g1tlegCa; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+Received: from canpmsgout10.his.huawei.com (unknown [172.19.92.130])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4cZx1806pKztTtH;
+	Mon, 29 Sep 2025 17:37:16 +0800 (CST)
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=usl1A5YQGbBV7KNyPDhS2T7EliJ0GyMwWERUQPE/Rhs=;
+	b=g1tlegCafxivMZbNC2fqKQeLcRs5YY31AP+r+Ewh+SzcRwlWSpW1Ws5IZNNxoIfoeLRv9lKjM
+	Lzamjy0iHAXA/CKkWgaeJnmWh5yZNpdsDP9fWg+SLu6Id7t/yifnnkuudHIc2cQgx3Q3nO8+K6I
+	0+es69FMna640AlHvUaJ3HQ=
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4cZx1p2Lghz1K9j8;
+	Mon, 29 Sep 2025 17:37:50 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 241A51800CF;
+	Mon, 29 Sep 2025 17:38:00 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 29 Sep 2025 17:37:55 +0800
+Received: from localhost.localdomain (10.50.165.33) by
+ kwepemn100009.china.huawei.com (7.202.194.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 29 Sep 2025 17:37:54 +0800
+From: Huisong Li <lihuisong@huawei.com>
+To: <rafael@kernel.org>, <lenb@kernel.org>
 CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-input@vger.kernel.org>, <linux-leds@vger.kernel.org>,
-	<linux-media@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-spi@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Len
- Brown" <lenb@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>, Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Javier Carrasco
-	<javier.carrasco@wolfvision.net>, Dmitry Torokhov
-	<dmitry.torokhov@gmail.com>, Lee Jones <lee@kernel.org>, Pavel Machek
-	<pavel@kernel.org>, Matthias Fend <matthias.fend@emfend.at>, Chanwoo Choi
-	<cw00.choi@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>, "Laurent
- Pinchart" <laurent.pinchart@ideasonboard.com>, Paul Elder
-	<paul.elder@ideasonboard.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	<UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Mark Brown
-	<broonie@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
-	<mingo@kernel.org>
-Subject: Re: [PATCH v2 04/16] ACPI: property: Return present device nodes
- only on fwnode interface
-Message-ID: <20250929103558.000033bf@huawei.com>
-In-Reply-To: <20250924074602.266292-5-sakari.ailus@linux.intel.com>
-References: <20250924074602.266292-1-sakari.ailus@linux.intel.com>
-	<20250924074602.266292-5-sakari.ailus@linux.intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	<Sudeep.Holla@arm.com>, <linuxarm@huawei.com>, <jonathan.cameron@huawei.com>,
+	<zhanjie9@hisilicon.com>, <zhenglifeng1@huawei.com>, <yubowen8@huawei.com>,
+	<lihuisong@huawei.com>
+Subject: [PATCH v1 0/9] ACPI: processor: idle: enhance and cleancode for cpuidle state
+Date: Mon, 29 Sep 2025 17:37:45 +0800
+Message-ID: <20250929093754.3998136-1-lihuisong@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-On Wed, 24 Sep 2025 10:45:50 +0300
-Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
+This series is aimed to enhance the verification to the validity of
+_LPI object and LPI state. And do some cleancodes.
 
-> fwnode_graph_get_next_subnode() may return fwnode backed by ACPI device
-> nodes and there has been no check these devices are present in the system,
-> unlike there has been on fwnode OF backend. In order to provide consistent
-> behaviour towards callers, add a check for device presence by introducing
-> a new function acpi_get_next_present_subnode(), used as the
-> get_next_child_node() fwnode operation that also checks device node
-> presence.
-> 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Huisong Li (9):
+  ACPI: processor: idle: raise up log level when evaluate LPI failed
+  ACPI: processor: idle: Return failure if entry method is not buffer or
+    integer type
+  ACPI: processor: idle: Return failure when get lpi_state->arch_flags
+    failed
+  ACPI: processor: idle: Move the initialization of state->flags to
+    acpi_processor_setup_cstates
+  ACPI: processor: idle: Add the verification of processor FFH LPI state
+  ACPI: processor: idle: Do not change power states if get power info
+    failed
+  ACPI: processor: idle: Remove died codes about the verification of
+    cstate count
+  ACPI: processor: idle: Redefine setup idle functions to void
+  ACPI: processor: idle: Redefine acpi_processor_setup_cpuidle_dev to
+    void
 
-I think this is fine because of the bit in the ACPI spec that says all
-bits are set if _STA is missing.   It seems much less likely we'll see
-problems with hardware disappearing because _STA is there but says
-the device isn't present.
+ drivers/acpi/processor_idle.c | 102 ++++++++++++++++++----------------
+ 1 file changed, 53 insertions(+), 49 deletions(-)
 
-Always a regression risk though :(
+-- 
+2.33.0
 
-With the formatting changes Laurent asked for
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
