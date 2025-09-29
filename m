@@ -1,54 +1,55 @@
-Return-Path: <linux-acpi+bounces-17417-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17418-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 069EEBA9B90
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 16:55:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8868DBA9B99
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 16:57:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 086F57A075F
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 14:54:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB2161891F1D
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 14:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384FB302170;
-	Mon, 29 Sep 2025 14:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215DD302CB7;
+	Mon, 29 Sep 2025 14:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rjmu8Pva"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TyfRsIAf"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1403F2D29C7
-	for <linux-acpi@vger.kernel.org>; Mon, 29 Sep 2025 14:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DD5302170
+	for <linux-acpi@vger.kernel.org>; Mon, 29 Sep 2025 14:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759157751; cv=none; b=QCfCi7bTeohRze1HAPuxrrEaA+Q47p3kq2tlX20qmd22NUi94KXt3gMaO5u5zgxf9woeQmrC6g/GR6yKwb2O5w8PBBi87U0B2SlNtgipbRF+BQjRtfUDRXEwvcmWr0uYbxh0aymqwPirW5+flyBjitKbGzH5QfL1yTFgcp4Pqo8=
+	t=1759157858; cv=none; b=T/IGwecJlxyPf+sfza8nIN5V4ZWfnn4P34+X+NwuNW/SpbMRW2HqaTj3qfQfX6CbCCbuA/5fBWBFmMur06x8iiLbYTQ2evcf3ubzewQMKq7+7x4U11gU1ZhpK+tSPJI3Q4jqg1p9sszvmw39Z9zLCWSgly+pIirZseyQKND5XNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759157751; c=relaxed/simple;
-	bh=ByiLIA/1BpsN+4oI1klTJ50EdnFmMrpnhMiAAQcIuEI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ll+xcJOuZ7l8U8HkSLIbwlKD5inptdMDDLIEg6Onz1rHY2zKbegNwTArjDmxL40pDBBXP1+Rllw+Lf9ge0sCL6jembf3adhYDrv6hi/y8MGfDOS/dtlbQ/rciLjlLNiNTIYIyUZvxrraDtJgCPwFMsrri6/4Ce3Fef94I4ztBFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rjmu8Pva; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A0BC4CEF4
-	for <linux-acpi@vger.kernel.org>; Mon, 29 Sep 2025 14:55:50 +0000 (UTC)
+	s=arc-20240116; t=1759157858; c=relaxed/simple;
+	bh=JJhxQiedYInT20UrAtPJukF4RB4xd6RqlKV3pbgn5Hs=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=D4PhZKlXBDUuCafDxNNVxp0P9RXiiC0QPBarXiNe3EoflgqlGzlefnsJaTdvQZ8ij5QfbXwaOqvzKDPhEC6StnRK6P1Sh0CyjmPpANftUamd6/bSOWJukrQCFSkCyICdzMgld9My9YBKR3QrQ5F+r5GyFOhcSpkuQyC3VLWgyug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TyfRsIAf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB12C4CEF7
+	for <linux-acpi@vger.kernel.org>; Mon, 29 Sep 2025 14:57:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759157750;
-	bh=ByiLIA/1BpsN+4oI1klTJ50EdnFmMrpnhMiAAQcIuEI=;
+	s=k20201202; t=1759157857;
+	bh=JJhxQiedYInT20UrAtPJukF4RB4xd6RqlKV3pbgn5Hs=;
 	h=From:Date:Subject:To:Cc:From;
-	b=Rjmu8PvaTJCb+F5zzvDLquxtSjX9vV3hwWINtn1EHzAPKgDT9GLMwTRTVY7428wAG
-	 92Njk1IBNvjUOP4BMDKg3GHb5K4I9w7LRg0xI9/DCva+7YtYVp1XhyyYhEy5IPimt8
-	 Nfhf9Vn86osa3Qtx9R48g5wZNr6NVAby607TnkXZWrdhLpA8HUiZKiUhR1oiCrHhAv
-	 Oh/MTB1D2RM1/ZepEb0oVnLX3mi/VWM2tpqySDMOXKaY7ZNoEVXYsw4bhkRSnQhto5
-	 t6OXbUuMuSTkkrE7cuVIk0UzXyVVNH1nxGFxtXCYSjYEMGWsOY3tNbdG29FyOD12jP
-	 mgjDHw5bHrETw==
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-64442ff55c2so376926eaf.2
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Sep 2025 07:55:50 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxGic3J6djqcr1yuDwqoBiwwfBcf82A9L1UWakKUmscvoE2vpHL
-	d8Z1K+a4yyUb6+nkyfve/2fmYok9/JUm7TBgS3dkMrTnFTUQsn2TLbHeKb4nC2Z90nX2snGntpq
-	2rUI0bZmWjBSvBBT5/oref297qRus+ds=
-X-Google-Smtp-Source: AGHT+IFLFOvOwI0iXTVHLm3hRLSSeJftd0ftyyZTUARpJLjOX4Yq1UVFyJUd6tzh+bW6J+bbrV2dKRp7tzZS2wCfTOk=
-X-Received: by 2002:a05:6870:d372:b0:358:ecec:b2 with SMTP id
- 586e51a60fabf-35ebdfa1e2dmr8544763fac.7.1759157750186; Mon, 29 Sep 2025
- 07:55:50 -0700 (PDT)
+	b=TyfRsIAfcUUzyMNIApiO69WB4TNhS6c96vV6xOW92WvpOZOs1w5UOHgeNKIjqk3JW
+	 lZ+hJOQpuR6zqNTA8FCNjJk1UhN2W3otT+c68yy06Qdadb3DKR9hdf5y7IhakeHhIW
+	 JsbFdnTptcyaN67wbfzoffjrad+Hn+7nTAMGMPFb3EKybxt3vZbsStbsYVDsupkKQ2
+	 Ptmx8Gx0GtKX46rn4Ifk5f5WS9RWsKkVJvMaIbAJfkjfABcuej7A4QZ/bWuCRzQSUB
+	 R7O+gwYz7Kdn7XFhSx7jGaZN28bhiXy/vE/i6M3Y3vgEBWot8RpWRXqxnGYKBvgmQz
+	 +Mko0Cf6MieaA==
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-30cce892b7dso2892750fac.1
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Sep 2025 07:57:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXJdYlku3xvx9grm13yQbbOgbNAKHj0ZPjoQXovvjqrE6WbploWhtqw4WgpiPuE18okMUVIun1+eiOr@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxyvuje//LiRjau/xym8D+qFcrlW4GfpMBAqIymk0tJQ3NUHpPu
+	f88exMv40Z36Yh2p2mdT7tSS1zRY9HMBBIF9bCtol2LVt+RVJ5eIkxESS6O7+lAnVYoXNfy8Wct
+	QzA1kYD8CZghm7GrM4IGh7Qnf/aCH3jo=
+X-Google-Smtp-Source: AGHT+IFBCHOoiww/1oXN+bc9K6V6QMm+c1RxDOVHlQ/gfL7ms+95mOmbmciPTMkEx5haaQt4QDWm366l3DMmlhOYMhs=
+X-Received: by 2002:a05:6870:a79f:b0:2ff:a27f:9c67 with SMTP id
+ 586e51a60fabf-35ee91f95f8mr8877983fac.30.1759157856882; Mon, 29 Sep 2025
+ 07:57:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -56,14 +57,15 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 29 Sep 2025 16:55:39 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jcXB0jGz_50Fr5Qj=p9esKE9565Y7_+qQjer-DpnOn4Q@mail.gmail.com>
-X-Gm-Features: AS18NWBjnrjPXQ0eRcc2fN3M6d4soYPx1inFnZnhRNOGREOG2bJRvV6A0mo2EUU
-Message-ID: <CAJZ5v0jcXB0jGz_50Fr5Qj=p9esKE9565Y7_+qQjer-DpnOn4Q@mail.gmail.com>
-Subject: [GIT PULL] ACPI support updates for v6.18-rc1
+Date: Mon, 29 Sep 2025 16:57:26 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0joS1VAnZ=hKtf2cx51XGNeMkqnJwq1GX-W58k_FQy39A@mail.gmail.com>
+X-Gm-Features: AS18NWCOnimc8tkP0qAX9BLmQa1vEDXjdbE3Ov5ZzKGesQ6fhI98m1ODcBNYhUo
+Message-ID: <CAJZ5v0joS1VAnZ=hKtf2cx51XGNeMkqnJwq1GX-W58k_FQy39A@mail.gmail.com>
+Subject: [GIT PULL] Thermal control updates for v6.18-rc1
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Linux PM <linux-pm@vger.kernel.org>, 
+	ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 
 Hi Linus,
@@ -71,279 +73,197 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.18-rc1
+ thermal-6.18-rc1
 
-with top-most commit c87072064bd482930a021e88c11f438e780d36de
+with top-most commit 2085f0f4697234a0f59ed718d0e72f38688210e0
 
- Merge branches 'acpi-apei', 'acpi-misc' and 'pnp'
+ Merge tag 'thermal-v6.18-rc1-2' of
+ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux
 
-on top of commit 07e27ad16399afcd693be20211b0dfae63e0615f
+on top of commit b320789d6883cc00ac78ce83bccbfe7ed58afcf0
 
- Linux 6.17-rc7
+ Linux 6.17-rc4
 
-to receive ACPI updates for 6.18-rc1.
+to receive thermal control updates for 6.18-rc1.
 
-These include an ACPICA update (upstream revision 20250807 with a few
-fixes on top), fixes and cleanups of the ACPI processor driver, fixes
-and cleanups of the ACPI properties management code, one more ACPI IRQ
-resource management quirk, one more ACPI backlight quirk, an ACPI
-device enumeration quirk related to _DEP, a power resource quirk
-related to WWAN modem for HP EliteBook 855 G7, ACPI SPCR table parser
-extensions, an ACPI APEI EINJ driver update allowing it to handle
-more address types, and several assorted cleanups of ACPI drivers and
-PNP code.
+These are mostly thermal driver updates, including new thermal drivers
+for Renesas RZ/G3S and Renesas RZ/G3E SoCs, a new power slider platform
+feature support in the Intel int340x thermal driver, a new Tegra114-
+specific SOCTHERM driver and more.
+
+There is also a Step-wise thermal governor update allowing it to start
+reducing cooling somewhat earlier if the temperature of the given
+thermal zone is falling down and a thermal testing code cleanup.
 
 Specifics:
 
- - Add SoundWire File Table (SWFT) signature to ACPICA (Maciej Strozek)
+ - Add new thermal driver for the Renesas RZ/G3S SoC (Claudiu Beznea)
 
- - Rearrange local variable definition involving #ifdef in ACPICA to
-   avoid using uninitialized variables (Zhe Qiao)
+ - Add new thermal driver for the Renesas RZ/G3E SoC (John Madieu)
 
- - Allow ACPICA to skip Global Lock initialization (Huacai Chen)
+ - Add support for new platform power slider feature to the Intel
+   int340x driver (Srinivas Pandruvada).
 
- - Apply ACPI_NONSTRING in more places in ACPICA and fix two regressions
-   related to incorrect ACPI_NONSTRING usage (Ahmed Salem)
+ - Add new Tegra114-specific SOCTHERM driver and document Tegra114
+   SOCTHERM Thermal Management System in DT bindings (Svyatoslav Ryhel)
 
- - Fix printing CDAT table header when disassembling CDAT AML (Ahmed
-   Salem)
+ - Add temperature sensor channel to thermal-generic-adc (Svyatoslav
+   Ryhel)
 
- - Use acpi_ds_clear_operands() in acpi_ds_call_control_method() in
-   ACPICA (Hans de Goede)
+ - Add support for per-SoC default trim values to the Renesas rcar_gen3
+   thermal driver, use it for adding R-Car V4H default trim values, fix
+   a comment typo in that driver and document Gen4 support in its
+   Kconfig entry (Marek Vasut)
 
- - Update dsmethod.c in ACPICA to address unused variable warning (Saket
-   Dumbre)
+ - Fix mapping SoCs to generic Gen4 entry in the Renesas rcar_gen3
+   thermal driver (Wolfram Sang)
 
- - Print error messages in ACPICA for too few or too many control method
-   arguments (Saket Dumbre)
+ - Document the TSU unit in the r9a08g045-tsu and r9a09g047-tsu DT
+   bindings (Claudiu Beznea, John Madieu)
 
- - Update ACPICA version to 20250807 (Saket Dumbre)
+ - Make LMH select QCOM_SCM and add missing IRQ includes to the
+   qcom/lmh thermal driver (Dmitry Baryshkov)
 
- - Fix largest possible resource descriptor index in ACPICA (Dmitry
-   Antipov)
+ - Fix incorrect error message in the qcom/lmh thermal driver (Sumeet
+   Pawnikar)
 
- - Add Back-Invalidate restriction to CXL Window for CEDT in ACPICA
-   (Davidlohr Bueso).
+ - Add QCS615 compatible to tsens thermal DT bindings (Gaurav Kohli)
 
- - Add the package type to acceptable Arg3 types for _DSM in ACPICA
-   because ACPI_TYPE_ANY does not cover it (Saket Dumbre)
+ - Document the Glymur temperature sensor in qcom-tsens thermal DT
+   bindings (Manaf Meethalavalappu Pallikunhi)
 
- - Fix return values in ap_is_valid_checksum() in the acpidump utility
-   in ACPICA (Kaushlendra Kumar)
+ - Make k3_j72xx_bandgap thermal driver register the thermal sensor
+   with hwmon (Michael Walle)
 
- - Add Intel CVS ACPI HIDs to acpi_ignore_dep_ids[] so it is not
-   regarded as real dependency (Hans de Goede)
+ - Tighten GRF requirements in the rockchip thermal DT bindings,
+   silence a GRF warning in the rockchip thermal driver and unify
+   struct rockchip_tsadc_chip format in it (Sebastian Reichel)
 
- - Use ACPI_FREE() for freeing an ACPI object in description_show() in
-   the ACPI sysfs-related code (Kaushlendra Kumar)
+ - Update the Step-wise thermal governor to allow it to reduce the
+   cooling level earlier if thermal zone temperature is dropping
+   and clean it up (Rafael Wysocki)
 
- - Fix memory leak in the ACPI processor idle driver registration error
-   code path and optimize ACPI idle driver registration (Huisong Li,
-   Rafael Wysocki)
+ - Clean up the thermal testing code (Rafael Wysocki)
 
- - Add module import namespace to the ACPI processor idle driver (Rafael
-   Wysocki)
-
- - Eliminate static variable flat_state_cnt from the ACPI processor idle
-   driver (Rafael Wysocki)
-
- - Release cpufreq policy references using __free() in the ACPI
-   processor thermal driver (Zihuan Zhang)
-
- - Remove unused empty stubs of some functions and rearrange function
-   declarations in a header file in the ACPI processor driver (Huisong
-   Li)
-
- - Redefine two functions as void in the ACPI processor driver (Rafael
-   Wysocki)
-
- - Stop exposing global variable acpi_idle_driver in the ACPI processor
-   driver (Huisong Li)
-
- - Fix ACPI buffer properties extraction for data-only subnodes
-   represented as _DSD-equivalent packages (Rafael Wysocki)
-
- - Fix handling of ACPI data-only subnodes represented as _DSD-equivalent
-   packages in the case when they are embedded in larger _DSD-equivalent
-   packages and clean up acpi_nondev_subnode_extract() (Rafael Wysocki)
-
- - Skip ACPI IRQ override on ASUS Vivobook Pro N6506CU (Sam van Kampen)
-
- - Add power resource init function and use it for introducing an HP
-   EliteBook 855 G7 WWAN modem power resource quirk (Maciej Szmigiero)
-
- - Add support for DBG2 RISC-V SBI port subtype and Precise Baud Rate
-   field to the ACPI SPCR table parser (Chen Pei)
-
- - Eliminate a dummy local variable from the ACPI thermal driver (Rafael
-   Wysocki)
-
- - Fold two simple functions into their only caller in the ACPI fan
-   driver (Rafael Wysocki)
-
- - Force native backlight on Lenovo 82K8 in the ACPI backlight (video)
-   driver (Mario Limonciello)
-
- - Add missing sysfs_remove_group() for ACPI_TAD_RT (Daniel Tang)
-
- - Skip PRM handlers with NULL handler_address or NULL VA in the ACPI
-   PRM driver (Shang song)
-
- - Remove redundant assignments in erst_dbg_{ioctl|write}() in the ACPI
-   APEI driver (Thorsten Blum)
-
- - Allow the ACPI APEI EINJ to handle more types of addresses than just
-   MMIO (Jiaqi Yan)
-
- - Use str_low_high() helper in two places in the ACPI code (Chelsy
-   Ratnawat)
-
- - Use str_plural() to simplify the PNP code (Xichao Zhao)
-
- - Fix signedness issues in read/write helpers in the ACPI AML debugger
-   interface (Amir Mohammad)
+ - Assorted cleanups of thermal drivers (Jiapeng Chong, Salah Triki,
+   Osama Abdelkader)
 
 Thanks!
 
 
 ---------------
 
-Ahmed Salem (4):
-      ACPICA: Apply ACPI_NONSTRING
-      ACPICA: iASL: Fix printing CDAT table header
-      ACPICA: acpidump: drop ACPI_NONSTRING attribute from file_name
-      ACPICA: Debugger: drop ACPI_NONSTRING attribute from name_seg
+Claudiu Beznea (2):
+      dt-bindings: thermal: r9a08g045-tsu: Document the TSU unit
+      thermal/drivers/renesas/rzg3s: Add thermal driver for the
+Renesas RZ/G3S SoC
 
-Amir Mohammad Jahangirzad (1):
-      ACPI: debug: fix signedness issues in read/write helpers
+Dmitry Baryshkov (2):
+      thermal/drivers/qcom: Make LMH select QCOM_SCM
+      thermal/drivers/qcom/lmh: Add missing IRQ includes
 
-Chelsy Ratnawat (1):
-      ACPI: Use str_low_high() helper in two places
+Gaurav Kohli (1):
+      dt-bindings: thermal: tsens: Add QCS615 compatible
 
-Chen Pei (2):
-      ACPI: SPCR: Add support for DBG2 RISC-V SBI port subtype
-      ACPI: SPCR: Support Precise Baud Rate field
+Jiapeng Chong (1):
+      thermal/drivers/mediatek/lvts_thermal: Remove unneeded semicolon
 
-Daniel Tang (1):
-      ACPI: TAD: Add missing sysfs_remove_group() for ACPI_TAD_RT
+John Madieu (3):
+      dt-bindings: thermal: r9a09g047-tsu: Document the TSU unit
+      thermal/drivers/renesas/rzg3e: Add thermal driver for the
+Renesas RZ/G3E SoC
+      thermal/drivers/renesas/rzg3e: Fix add thermal driver for the
+Renesas RZ/G3E SoC
 
-Davidlohr Bueso (1):
-      ACPICA: CEDT: Add Back-Invalidate restriction to CXL Window
+Manaf Meethalavalappu Pallikunhi (1):
+      dt-bindings: thermal: qcom-tsens: Document the Glymur temperature Sensor
 
-Dmitry Antipov (1):
-      ACPICA: Fix largest possible resource descriptor index
+Marek Vasut (4):
+      thermal/drivers/rcar_gen3: Add support for per-SoC default trim values
+      thermal/drivers/rcar_gen3: Add support for R-Car V4H default trim values
+      thermal/drivers/rcar_gen3: Fix comment typo
+      thermal/drivers/rcar_gen3: Document Gen4 support in Kconfig entry
 
-Hans de Goede (2):
-      ACPI: scan: Add Intel CVS ACPI HIDs to acpi_ignore_dep_ids[]
-      ACPICA: dispatcher: Use acpi_ds_clear_operands() in
-acpi_ds_call_control_method()
+Michael Walle (1):
+      thermal/drivers/k3_j72xx_bandgap: Register sensors with hwmon
 
-Huacai Chen (1):
-      ACPICA: Allow to skip Global Lock initialization
+Osama Abdelkader (1):
+      thermal: hwmon: replace deprecated strcpy() with strscpy()
 
-Huisong Li (6):
-      ACPI: processor: idle: Fix memory leak when register cpuidle device failed
-      ACPI: processor: idle: Optimize ACPI idle driver registration
-      ACPI: processor: idle: Fix function defined but not used warning
-      ACPI: processor: Remove unused empty stubs of some functions
-      ACPI: processor: idle: Rearrange declarations in header file
-      ACPI: processor: Do not expose global variable acpi_idle_driver
+Rafael J. Wysocki (4):
+      thermal: gov_step_wise: Clean up local variable initialization
+      thermal: gov_step_wise: Clarify cooling logic description comment
+      thermal: gov_step_wise: Allow cooling level to be reduced earlier
+      thermal: testing: Rearrange variable declarations involving __free()
 
-Jiaqi Yan (1):
-      ACPI: APEI: EINJ: Allow more types of addresses except MMIO
+Salah Triki (1):
+      thermal: intel: int340x: Remove redundant acpi_has_method() call
 
-Kaushlendra Kumar (2):
-      ACPI: sysfs: Use ACPI_FREE() for freeing an ACPI object
-      ACPICA: acpidump: fix return values in ap_is_valid_checksum()
+Sebastian Reichel (3):
+      thermal/drivers/rockchip: Unify struct rockchip_tsadc_chip format
+      thermal/drivers/rockchip: Shut up GRF warning
+      dt-bindings: thermal: rockchip: Tighten grf requirements
 
-Maciej S. Szmigiero (2):
-      ACPI: PM: Add power resource init function
-      ACPI: PM: Add HP EliteBook 855 G7 WWAN modem power resource quirk
+Srinivas Pandruvada (6):
+      thermal: intel: int340x: Add support for power slider
+      thermal: intel: int340x: Enable power slider interface for Panther Lake
+      thermal: intel: int340x: Add module parameter for balanced Slider
+      thermal: intel: int340x: Add module parameter to change slider offset
+      thermal: intel: selftests: workload_hint: Mask unsupported types
+      thermal: intel: int340x: Power Slider: Validate slider_balance range
 
-Maciej Strozek (1):
-      ACPICA: Add SoundWire File Table (SWFT) signature
+Sumeet Pawnikar (1):
+      drivers/thermal/qcom/lmh: Fix incorrect error message
 
-Mario Limonciello (AMD) (1):
-      ACPI: video: force native for Lenovo 82K8
+Svyatoslav Ryhel (5):
+      dt-bindings: thermal: Document Tegra114 SOCTHERM Thermal Management System
+      thermal/drivers/tegra/soctherm-fuse: Prepare calibration for
+Tegra114 support
+      dt-bindings: thermal: add Tegra114 soctherm header
+      thermal/drivers/tegra: Add Tegra114 specific SOCTHERM driver
+      thermal/drivers/thermal-generic-adc: Add temperature sensor channel
 
-Rafael J. Wysocki (11):
-      ACPI: processor: idle: Add module import namespace
-      ACPI: processor: idle: Eliminate static variable flat_state_cnt
-      ACPI: thermal: Get rid of a dummy local variable
-      ACPI: fan: Fold two simple functions into their only caller
-      ACPI: property: Fix buffer properties extraction for subnodes
-      ACPI: property: Disregard references in data-only subnode lists
-      ACPI: property: Add code comments explaining what is going on
-      ACPI: property: Do not pass NULL handles to acpi_attach_data()
-      ACPI: property: Adjust failure handling in acpi_nondev_subnode_extract()
-      ACPI: processor: Update cpuidle driver check in __acpi_processor_start()
-      ACPI: processor: idle: Redefine two functions as void
-
-Saket Dumbre (4):
-      ACPICA: Update dsmethod.c to get rid of unused variable warning
-      ACPICA: Print error messages for too few or too many arguments
-      ACPICA: Update version to 20250807
-      ACPICA: ACPI_TYPE_ANY does not include the package type
-
-Sam van Kampen (1):
-      ACPI: resource: Skip IRQ override on ASUS Vivobook Pro N6506CU
-
-Shang song (Lenovo) (1):
-      ACPI: PRM: Skip handlers with NULL handler_address or NULL VA
-
-Thorsten Blum (1):
-      ACPI: APEI: Remove redundant assignments in erst_dbg_{ioctl|write}()
-
-Xichao Zhao (1):
-      PNP: isapnp: use str_plural() to simplify the code
-
-Zhe Qiao (3):
-      ACPICA: Modify variable definition position
-      ACPICA: Remove redundant "#ifdef" definitions
-      ACPICA: Change the compilation conditions
-
-Zihuan Zhang (1):
-      ACPI: processor: thermal: Release policy references using __free()
+Wolfram Sang (1):
+      thermal/drivers/rcar_gen3: Fix mapping SoCs to generic Gen4 entry
 
 ---------------
 
- drivers/acpi/acpi_dbg.c                            |  26 ++--
- drivers/acpi/acpi_processor.c                      |   4 +-
- drivers/acpi/acpi_tad.c                            |   3 +
- drivers/acpi/acpica/acdebug.h                      |   2 +-
- drivers/acpi/acpica/aclocal.h                      |   2 +-
- drivers/acpi/acpica/acpredef.h                     |   3 +-
- drivers/acpi/acpica/dsmethod.c                     |  21 ++-
- drivers/acpi/acpica/evglock.c                      |   4 +
- drivers/acpi/acpica/psopinfo.c                     |   4 +-
- drivers/acpi/acpica/tbprint.c                      |   8 ++
- drivers/acpi/apei/einj-core.c                      |  51 +++++--
- drivers/acpi/apei/erst-dbg.c                       |   8 +-
- drivers/acpi/device_sysfs.c                        |   2 +-
- drivers/acpi/fan_core.c                            |  18 +--
- drivers/acpi/internal.h                            |   1 +
- drivers/acpi/pci_irq.c                             |   3 +-
- drivers/acpi/power.c                               |  90 +++++++++++-
- drivers/acpi/prmt.c                                |  19 ++-
- drivers/acpi/processor_driver.c                    |   6 +-
- drivers/acpi/processor_idle.c                      | 139 +++++++++++--------
- drivers/acpi/processor_thermal.c                   |  52 +++----
- drivers/acpi/property.c                            | 152 +++++++++++++--------
- drivers/acpi/resource.c                            |  10 +-
- drivers/acpi/scan.c                                |   3 +
- drivers/acpi/spcr.c                                |  13 +-
- drivers/acpi/tables.c                              |   2 +-
- drivers/acpi/thermal.c                             |   8 +-
- drivers/acpi/video_detect.c                        |   8 ++
- drivers/pnp/isapnp/core.c                          |   3 +-
- include/acpi/acexcep.h                             |  10 +-
- include/acpi/acpixf.h                              |   8 +-
- include/acpi/actbl.h                               |   2 +-
- include/acpi/actbl1.h                              |   1 +
- include/acpi/actbl2.h                              |  21 +++
- include/acpi/processor.h                           |  34 +----
- .../acpi/os_specific/service_layers/oslinuxtbl.c   |   4 +-
- tools/power/acpi/tools/acpidump/apdump.c           |   3 +-
- tools/power/acpi/tools/acpidump/apfiles.c          |   2 +-
- 38 files changed, 498 insertions(+), 252 deletions(-)
+ .../bindings/thermal/nvidia,tegra124-soctherm.yaml |   2 +
+ .../devicetree/bindings/thermal/qcom-tsens.yaml    |   2 +
+ .../bindings/thermal/renesas,r9a08g045-tsu.yaml    |  93 ++++
+ .../bindings/thermal/renesas,r9a09g047-tsu.yaml    |  87 ++++
+ .../bindings/thermal/rockchip-thermal.yaml         |  15 +
+ MAINTAINERS                                        |  14 +
+ drivers/thermal/gov_step_wise.c                    |  25 +-
+ drivers/thermal/intel/int340x_thermal/Kconfig      |   1 +
+ drivers/thermal/intel/int340x_thermal/Makefile     |   1 +
+ .../intel/int340x_thermal/acpi_thermal_rel.c       |   3 -
+ .../int340x_thermal/processor_thermal_device.c     |  20 +
+ .../int340x_thermal/processor_thermal_device.h     |   6 +
+ .../int340x_thermal/processor_thermal_device_pci.c |   3 +-
+ .../int340x_thermal/processor_thermal_soc_slider.c | 284 +++++++++++
+ drivers/thermal/k3_j72xx_bandgap.c                 |   4 +
+ drivers/thermal/mediatek/lvts_thermal.c            |   2 +-
+ drivers/thermal/qcom/Kconfig                       |   3 +-
+ drivers/thermal/qcom/lmh.c                         |   4 +-
+ drivers/thermal/renesas/Kconfig                    |  21 +-
+ drivers/thermal/renesas/Makefile                   |   3 +
+ drivers/thermal/renesas/rcar_gen3_thermal.c        |  63 ++-
+ drivers/thermal/renesas/rzg3e_thermal.c            | 547 +++++++++++++++++++++
+ drivers/thermal/renesas/rzg3s_thermal.c            | 272 ++++++++++
+ drivers/thermal/rockchip_thermal.c                 |  50 +-
+ drivers/thermal/tegra/Makefile                     |   1 +
+ drivers/thermal/tegra/soctherm-fuse.c              |  18 +-
+ drivers/thermal/tegra/soctherm.c                   |  13 +
+ drivers/thermal/tegra/soctherm.h                   |  11 +-
+ drivers/thermal/tegra/tegra114-soctherm.c          | 209 ++++++++
+ drivers/thermal/tegra/tegra124-soctherm.c          |   4 +
+ drivers/thermal/tegra/tegra132-soctherm.c          |   4 +
+ drivers/thermal/tegra/tegra210-soctherm.c          |   4 +
+ drivers/thermal/testing/zone.c                     |  31 +-
+ drivers/thermal/thermal-generic-adc.c              |  55 ++-
+ drivers/thermal/thermal_hwmon.c                    |   2 +-
+ include/dt-bindings/thermal/tegra114-soctherm.h    |  19 +
+ .../intel/workload_hint/workload_hint_test.c       |   2 +
+ 37 files changed, 1804 insertions(+), 94 deletions(-)
 
