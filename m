@@ -1,261 +1,264 @@
-Return-Path: <linux-acpi+bounces-17387-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17388-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43622BA83FC
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 09:32:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAB99BA865E
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 10:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80B7A188A759
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 07:32:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 577EE17039C
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 08:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A64923D7DD;
-	Mon, 29 Sep 2025 07:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CBD1F582C;
+	Mon, 29 Sep 2025 08:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="q2+4rhez";
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="nSxetPwL"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="IpXqMdPh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from esa1.fujitsucc.c3s2.iphmx.com (esa1.fujitsucc.c3s2.iphmx.com [68.232.152.245])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31E82110E;
-	Mon, 29 Sep 2025 07:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=68.232.152.245
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759131149; cv=fail; b=Y/nMvK+LQzOsdb0bM6jqdRA3gpcG8r+V2dz3UJPL5yRROPz0xOBf5XZLdrLKPi6OGQ5a+hd0x2+bcjkjhNr6uSWBt10hJFQ0o1BrE682Letz8LBINV5CpxusXKDvYxT49knHOn4sy0cIo2PXYxe/ee6yliDDazvQacd+pGdznNk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759131149; c=relaxed/simple;
-	bh=KvrnTgPL70JqxKGdjgRQNX5sGwKWxl+uQqk020g4dQE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=D35x0a/xvYrrZHHXG2CjIYkNcWqFow4scmlEcdVf2JURraZMe7HhZarqy17+qenJr1tZKTXHwpjEcN8XcZGy9PYONXGseosQxK6n5fshYbXPExebqhifTzg6QRNAlcfSq+dN9PCCLbKuTBzRIt2DdOH8+5zF/ZqqXHM/O4KOis4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=q2+4rhez; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=nSxetPwL; arc=fail smtp.client-ip=68.232.152.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
-  t=1759131147; x=1790667147;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=KvrnTgPL70JqxKGdjgRQNX5sGwKWxl+uQqk020g4dQE=;
-  b=q2+4rhezHmIh79m3pK/md/f7v4Fya8fqatIcJ1+2tNwkgy/6sOqePYxb
-   QHZfWaIJbpzyhwcwrE3m8FiOJOLx76k6sltOz21TnD5SBwoTmKmr224gX
-   wEHPjXDAYrqnDJyjAgzZBCYT4FTKNjQL8uBdNjjOzBEOJOBUGsgjaTgZY
-   L/J/WPu8ZzAAwPeSff/tLhPURGhuY5Ul+HkXhRyUr0x1fXftX1tVCbgoV
-   8qtnMSQVWfE5L8lto0wFqK3fXjR6pjmh+iag6lmOW1FfPQgFfK04dKLQF
-   SWNJtmUvpGKkfl5264ctih+YO7R/U/VsYxQXCxk/xwaw88E4vynESjhfx
-   Q==;
-X-CSE-ConnectionGUID: FsC2hcpeTA2xRWr5krgn1g==
-X-CSE-MsgGUID: 3TU7ldiYTqqDOVpfyeUrRg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11567"; a="80142810"
-X-IronPort-AV: E=Sophos;i="6.18,301,1751209200"; 
-   d="scan'208";a="80142810"
-Received: from mail-japaneastazon11011025.outbound.protection.outlook.com (HELO TYVP286CU001.outbound.protection.outlook.com) ([52.101.125.25])
-  by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2025 16:32:16 +0900
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TjJ18F1ZP+1OY6UTnptDS09XPi4412rJb5de6okmpW+np9i3jOHaHvKsbMhfQvuTTKwAQ9JRP7yZTkrICuDKbG3OiDwgmZEEGtJolfrmdMiPIc68jrJBTMf8sG2Cjv/rb8cmqkCrP8kvzPLgrByY4cRliwR0Ekq538jjgDeEzp1nuXLFxkrp5xx5Mdn0v8e1Penw+ZZ0tk3RlS5aSEVvMWSSQlptm9Jz7UTx+yXtHnGIBzji8Co8PnpS+s8h5t8Uixtq/fpvcWICYZwxw3GYtu8OjTeu5Zbaj10ZX91dqNb4N7297CDyVbHScGIYb+BrJVkLx31b/qANuEF2YjvCKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KvrnTgPL70JqxKGdjgRQNX5sGwKWxl+uQqk020g4dQE=;
- b=YEqtOLW8EIltPy/36qBugo7pFOntj+kPGTP+wTRF81tBgpgJyDAnIkQdC2ghKnSREExavbgxsk0CNWj6AfYmzU9Mb2rs4uEBGsXAsK+sKEexPIRLu/BSu3YgEUWtEnaeGvxDNNsn8xqoDeZ64qK3FGcMlCFIEIfznvhPsS6hwiudvCosknm/NBza/E+TJY1W4oMq2ELK5E7d9PVg3Ph10f2vGCc2/KoTgOjT91UYjMwSbZ2dr1UPwX86TM955PhjVgRkuVU94l3dtPdDpXELwUBJeiUjlmgkSERL0TuNxdhTAxWELSuleud3Y3td0/Es07H9PPFKp37gDR66ZAUmCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
- dkim=pass header.d=fujitsu.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fujitsu.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KvrnTgPL70JqxKGdjgRQNX5sGwKWxl+uQqk020g4dQE=;
- b=nSxetPwLUKrWEj39KoRASWUTxReHDf/QU0J7xRHFaNOv0SXCXrJ+Q+q4IPHMaQO08tUP0X/wjH3dmFwEd+nGCuhlYmT+2XNovDYZ0ixjMPVPWQIXhDczqzsjzUAlf9zwrTby7h1nbqjHDl4DCB/3seq+e4RlAF6BiyIDsd0DF6Nn/YpKx6m2uUJttmP2mFEpVb8P53Dq3cYkNhaqInVMYzgf6yyJOcm3UxOiAmv2Kv3f2ZxOA3dXelj6wZ093e9q1kO7M4lhLPi1TcGaBwswGKOJE89q8mtItYCDpgPnq3DjIBqWepgc5OMA70nETJdren89DCpJugJNun/uCWsQBQ==
-Received: from TY3PR01MB9983.jpnprd01.prod.outlook.com (2603:1096:400:1dc::6)
- by TYWPR01MB9695.jpnprd01.prod.outlook.com (2603:1096:400:225::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.10; Mon, 29 Sep
- 2025 07:32:12 +0000
-Received: from TY3PR01MB9983.jpnprd01.prod.outlook.com
- ([fe80::f8a:4f35:cc76:bdc1]) by TY3PR01MB9983.jpnprd01.prod.outlook.com
- ([fe80::f8a:4f35:cc76:bdc1%6]) with mapi id 15.20.9160.011; Mon, 29 Sep 2025
- 07:32:12 +0000
-From: "Kazuhiro Abe (Fujitsu)" <fj1078ii@fujitsu.com>
-To: 'Hanjun Guo' <guohanjun@huawei.com>, 'Ilkka Koskinen'
-	<ilkka@os.amperecomputing.com>, 'Sudeep Holla' <sudeep.holla@arm.com>
-CC: 'Lorenzo Pieralisi' <lpieralisi@kernel.org>, "'Rafael J. Wysocki'"
-	<rafael@kernel.org>, 'Len Brown' <lenb@kernel.org>,
-	"'linux-acpi@vger.kernel.org'" <linux-acpi@vger.kernel.org>,
-	"'linux-arm-kernel@lists.infradead.org'"
-	<linux-arm-kernel@lists.infradead.org>, "'linux-kernel@vger.kernel.org'"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v3] ACPI: AGDI: Add interrupt signaling mode support
-Thread-Topic: [PATCH v3] ACPI: AGDI: Add interrupt signaling mode support
-Thread-Index: AQHcHh171tqf09K4SkK1ciG0VLTs/LSJqfEAgAPpfaCADGlN8IAMe3yAgANvbvA=
-Date: Mon, 29 Sep 2025 07:32:12 +0000
-Message-ID:
- <TY3PR01MB9983E784E31A612B9BA23255D51BA@TY3PR01MB9983.jpnprd01.prod.outlook.com>
-References: <20250905042751.945616-1-fj1078ii@aa.jp.fujitsu.com>
- <bd45c06a-77cc-2ab3-122e-41dee1aee0ac@os.amperecomputing.com>
- <TY3PR01MB99836C3D57503E70C8B8C9E9D509A@TY3PR01MB9983.jpnprd01.prod.outlook.com>
- <TY3PR01MB9983025D434CAA2CDF83656BD511A@TY3PR01MB9983.jpnprd01.prod.outlook.com>
- <3bbdc50e-a55c-96ed-a8db-6bbce1760ee4@huawei.com>
-In-Reply-To: <3bbdc50e-a55c-96ed-a8db-6bbce1760ee4@huawei.com>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- =?utf-8?B?TVNJUF9MYWJlbF8xZTkyZWY3My0wYWQxLTQwYzUtYWQ1NS00NmRlMzM5Njgw?=
- =?utf-8?B?MmZfQWN0aW9uSWQ9OTY0MDc2ZjctZmJjNi00NmUwLWJlNjItZDcyMmY3MThj?=
- =?utf-8?B?NDg1O01TSVBfTGFiZWxfMWU5MmVmNzMtMGFkMS00MGM1LWFkNTUtNDZkZTMz?=
- =?utf-8?B?OTY4MDJmX0NvbnRlbnRCaXRzPTA7TVNJUF9MYWJlbF8xZTkyZWY3My0wYWQx?=
- =?utf-8?B?LTQwYzUtYWQ1NS00NmRlMzM5NjgwMmZfRW5hYmxlZD10cnVlO01TSVBfTGFi?=
- =?utf-8?B?ZWxfMWU5MmVmNzMtMGFkMS00MGM1LWFkNTUtNDZkZTMzOTY4MDJmX01ldGhv?=
- =?utf-8?B?ZD1Qcml2aWxlZ2VkO01TSVBfTGFiZWxfMWU5MmVmNzMtMGFkMS00MGM1LWFk?=
- =?utf-8?B?NTUtNDZkZTMzOTY4MDJmX05hbWU9RlVKSVRTVS1QVUJMSUPigIs7TVNJUF9M?=
- =?utf-8?B?YWJlbF8xZTkyZWY3My0wYWQxLTQwYzUtYWQ1NS00NmRlMzM5NjgwMmZfU2V0?=
- =?utf-8?B?RGF0ZT0yMDI1LTA5LTI5VDA3OjIzOjM2WjtNU0lQX0xhYmVsXzFlOTJlZjcz?=
- =?utf-8?B?LTBhZDEtNDBjNS1hZDU1LTQ2ZGUzMzk2ODAyZl9TaXRlSWQ9YTE5ZjEyMWQt?=
- =?utf-8?B?ODFlMS00ODU4LWE5ZDgtNzM2ZTI2N2ZkNGM3O01TSVBfTGFiZWxfMWU5MmVm?=
- =?utf-8?B?NzMtMGFkMS00MGM1LWFkNTUtNDZkZTMzOTY4MDJmX1RhZz0xMCwgMCwgMSwg?=
- =?utf-8?Q?1;?=
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=fujitsu.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TY3PR01MB9983:EE_|TYWPR01MB9695:EE_
-x-ms-office365-filtering-correlation-id: 25a078fc-fb95-4a03-a30f-08ddff2a4e7f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|1580799027|38070700021;
-x-microsoft-antispam-message-info:
- =?utf-8?B?ejFJRTFxQVlEbDRWQlJNOUsyZEhsYlZHQ3o3aG9OQS9OR1FyY1FzOGFWVTFQ?=
- =?utf-8?B?VnU3a2RoY3NPZ2VLb1d3OFNSb0wzYlRhRlRLcTc1YzJGYzljVU45NlNmSnRY?=
- =?utf-8?B?QzJ3YlRMNGhKdWl6RU92V211VEwwY0E3MVNlaVdzS1JhaWxLemJoUC9YZllF?=
- =?utf-8?B?cTdtanR0OGZ4OTE1YUxPVHpub2QwTXcyVUZOdDkzd29Iakx6OHh5N05nTzY5?=
- =?utf-8?B?dnNyVTRPbUUvOVdaaUJoOHZPd2Vsenk1ZEExVHFzckdHdWJOL0Z5ekZMcFJr?=
- =?utf-8?B?ZmFVTUMrVlBLd05YdHl2TWp1MUhBVnZYQkJ5a204c0tkcDNnVXlCQmxUTkJV?=
- =?utf-8?B?V3lRMkIvNjJtS2RFRXN0SkRvMW5GaHdGS0hyM2ttSm41SFk4WW9LK0lFV3Rn?=
- =?utf-8?B?QXlKbjJuU3RWRlk5Qlp2RCtpQit5eXBJaXUwZjVvaWsvLzl4cTB2UUVKaGUr?=
- =?utf-8?B?MVpIVlpyRUtOeHl1ZmFZWUtuVy90Z1ZKVEwySkJoZ2dQUi8vcWdqb25jSXFF?=
- =?utf-8?B?WXRZTmhmbXA5MVYxSXBtVExZUmpXNkRCejk5TVplQlVUSEhxcldGamhWdHNS?=
- =?utf-8?B?S3pPUlk2MTAxbGpkWXk1eERHVlZiWk1wWmpIWk1SenJIazk4NVlLTnd1TS80?=
- =?utf-8?B?ZXBSRXhFQXc4c3Y5bXlSWU42M29XVWxYMzdoRDcweVdSOU9nNjBhQ3BSV1dK?=
- =?utf-8?B?UEtKQjJkSmxjcGdNOCtQZGZSUXVzVVNyd0djY1ZxTjdlcVZDeFlaK1Q3U1ZU?=
- =?utf-8?B?cG4zUUVsNGNoVmZGU3IyOE8wY1pobE80MUdmMzZlcmxCSjI3MWM2bmk0Ulhq?=
- =?utf-8?B?aU5KOXF2ZjdQNWFQU0o3ckZ2ZWM2RVpxOTVSdWFOa2R5RVVuV2tKbGU1aTUv?=
- =?utf-8?B?QWxBaWV6b2N3N1RWNEh3bmdNdm5LT1l1OGduT3ZlakJRNzBnZ3FlbUFuSkN4?=
- =?utf-8?B?dlE4UEZTY2IvK1c4ZFhrUFBKQ3l4S2VNMEEzSTRPbnJOdjJLaTgrNGRDemQr?=
- =?utf-8?B?a3FVQmFML3B2T28rN04xRmhyQlJqaXVGRnYzT2gzb3Jwc3ZocU5BM3h3MFRN?=
- =?utf-8?B?N09ZVWZORm5MWFRuZkdIRWFUS2ZNYWtxZExwSU5HVklYd01vVjhSLzcxWmVP?=
- =?utf-8?B?NWd4RG40cmdiN2dsS2dLODlCMTF6MDk0aVZuRm5sQkVzdWJjZEhmdmtRS296?=
- =?utf-8?B?bmx6RGpIOVVtNzl1L3lwV1Zab3JObTZ1RGVvbEl1UTNYQ21oaGU5L0x2NEIy?=
- =?utf-8?B?MWdZeXhPbHZjZVJRQXhTNHVaMmN2ZXFOaDU3ZE1hQkZMTDNHNUdEU2NHeGVm?=
- =?utf-8?B?aUY4VXJGcUlrbTA1YWdNK3JXampHd2lmSDVzTjlRYXRqQUxUdHZyY2pIejdE?=
- =?utf-8?B?cHdjT2RGTWQ5R1pDaGpVTGlubWdndStZM3RJV1ZWenJ3MmRrdjNsb0lJWmZY?=
- =?utf-8?B?TExyVTVaemVCSnVJdVNnSFV3MzhCM2tDd29kd2J6MGtlaStTZmgyQU1jZFEy?=
- =?utf-8?B?M0l0TXJCOEtmN2VOUDlwWFlPd2wycFVMajJGc3Nlclk5VHpzYUtzNkRRditj?=
- =?utf-8?B?bzE3d3c0UG4yK2c1TmZtdXZxUHRobXhQTWtmM2M1UFpjb045OU85V2VmbjRv?=
- =?utf-8?B?Yzk3dlJ6OWVTbG5VOWcxYUlyVElIeFF6RHVHUzRJbWdnalZoZVR3Z3pWdXVu?=
- =?utf-8?B?T0FIUGxHM3RoTjlaZEZOM3VMWEZhcHJHaE04WjVCb09obUdLbTFrdUVZSThr?=
- =?utf-8?B?UWhMRFgvcll0ZnpVVWFvR0x6azFBeDFFYVc4YnJGM0JIREhuR1pvV25FUlRq?=
- =?utf-8?B?Y0tndExVaGhMdGxqejNJL2xNd09PSEFiZVYyUHBWSExIbThJbGgvNWFmaEJZ?=
- =?utf-8?B?di9BRGZCT0Z0c1dYOWtYM0RiMFRvY0h0a0J3WGhlTEY4T2IyZVdPbWhBSks0?=
- =?utf-8?B?TE5YdldOZ21zUGsrbCsxN28rQ3pxRzBnRXg0U094aXd5ZFJScE0zYXFHWUx5?=
- =?utf-8?B?djltRnZKK3BoemRQSCtOYUNuQVAzU1FTSU9CeGpjN0lxNktEZXpJMXdtdlds?=
- =?utf-8?B?L2hRSHpYTnRaaGJsdWZQc2p2bytQUjhBSVF3eEo4L1VxMUdpZ2dRaE1yQUho?=
- =?utf-8?Q?TqwQ=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:ja;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB9983.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(1580799027)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?eVNzUUdCYUE0VE9qcWJyRXVWanh0a2RpdlB4d2JBWkRuTWJpZnVJTTRqZ3Rn?=
- =?utf-8?B?L3ozUXNKOVIwWmsvZDVIcjJNWjM5aEtzV3ZHdTMwZUx3aDRUMUN4cVlYMFBt?=
- =?utf-8?B?SmVRQ2FhZkptQStXQWovQjQvbHlkRnpXbjd0WW5KVmRxYzRxeXYwQWhzSjNN?=
- =?utf-8?B?c1cxeTBadGIzTTkzNTdnSGx5bXE0Rkp3b0oySGRtOVFZeWdvRTY4dDlYYzV6?=
- =?utf-8?B?V25NazR1MlV3MnN2eE9BY3FHNDJudlVTZ0k0Ymp1RDJpdHgzblBUVUEzVkUz?=
- =?utf-8?B?WllIYjQ5UU1yRE0wUUtSWFVsdm4rZkdKbHM2YU9qN0NkNnZMb05tdVAvVnZy?=
- =?utf-8?B?bWpzVy91ODIvdGJTVWJ4V3hzYjdmZjBhQ2JReURuOUV2a1BQeUNudVBHZHVG?=
- =?utf-8?B?T20zc09Rbzg2Q2hwUXFBV1dHdWYwQ1VvdXVydnp3ajhwZy9OdCtOZU95emxh?=
- =?utf-8?B?R3lydmxlRjhiT3dGeHZhSmtMdU9OckwrWUgxR3VLMDJMRnAyYzNVMlNkL045?=
- =?utf-8?B?U2U0dkZTVWxWRmJHTzRPRjJWcnBpa2FsR2lIbFpLM3N1SUVTRHZBMkNNa1N5?=
- =?utf-8?B?U0dReFpxQTNocVBJZWNwK1hFTDdNRXpWc3ViYXRUQmkvQzlDM292bDh0RkNw?=
- =?utf-8?B?ck1qbm1KWm8vSTg3aUFHd0xnMnlIMkgybGI4OVJST04weTFuWURhS0xLZTcw?=
- =?utf-8?B?REF0c21wK3FmcHVldWpSalcyVW43RHZMOExMeERpTy9ralRWMVNiRThZSU5B?=
- =?utf-8?B?Qjgrd1cxelF6cjQ3b2J3alk1VzBIa2pTb3R3bXhpS3Z1NC9wdUQ1SkxZUGhr?=
- =?utf-8?B?R29Fa1NiNDNhaVBYWVR0akFHalJ4d1lJVzJRWG0vL25wVHN5L2lRRS9QQkZL?=
- =?utf-8?B?K1h5ZzR0N0V3RlFEZThCbFljU1RBZWR4eHUzdzVhMVVxaXpWVXhhMG5hYUYz?=
- =?utf-8?B?YnptRURtRnZ5OEp4Zm5BOGtPZ1lmOEE5L2VXaS9paXhwU3pkL3lyY3Vaa0xy?=
- =?utf-8?B?bWZ3UVhiNW1lRHpBYjVJMG9FaURuU1M2RlNWaVY1RzNIbUJuY3k4Nzk2ZGxo?=
- =?utf-8?B?bHlPczJFbkFXSWpCeDhGOFZYTUtUNFhhZ1pmZjJaM2RQRHNadExkZCtjRTBL?=
- =?utf-8?B?Ty85WVJoK2diNmhTdmdwRVVISG16QzIvTXNPb0FQcTNIQmd4WE5Vem54S2Nq?=
- =?utf-8?B?cmRXa2hDZW9vVGc5QVlGQS96aXlOWU1rWEp5Wmg1NmdPZkFmL2JnaHA1K2V6?=
- =?utf-8?B?UXRmWVdHU25Ia2JldjVERk5Cb1RYMG9MNkpyMkIzNVdSOGFzZFV6VWRQdFJx?=
- =?utf-8?B?dFdxY3RyTnJwQVhScVdiZE1Wc3lxcHNvRXdaZElxTFV1ditFOHVhM3Iya2xm?=
- =?utf-8?B?TW14QXg4SXhVWTQyK24wanhCaDB2K3I3WjV3V1A1d0NEaXdNNXo3aUczeGhC?=
- =?utf-8?B?djhsNys0WmNIenczTUZEK0h5ZTZ3Wnd1Yk1Pb1VycUluTDdnTUphdHpvMm5I?=
- =?utf-8?B?enZzeVBkdUtlVms5WWFwR2FQeEw0bkQ4TFpBN2psMUJqbmVQTkMxWWpENTJW?=
- =?utf-8?B?UHZoM2NYM3ZpQ3ZHaFJXejExTHFZejhBSy9EK2c3a3FBdW1HWkJGeUxFeDBi?=
- =?utf-8?B?Z2xhaEIzQ2tUcW0veWcxemdlbm1ldkpkOHVXWS9CelZWcXl3ZHY5bXdHTUNu?=
- =?utf-8?B?UEJ3VFZhWXhiRXAvYzA1cnNGalJPQUVINVhYaHdmQk55TDJPbkRIbVNkczhQ?=
- =?utf-8?B?VW5iUExNK2hMREQvM3N4K2U5dDA4cEtpRzI0U0NidzlKWTRCZm56Mno1RUND?=
- =?utf-8?B?RDE2OUNZeW9FdjZuS3kvc3dRbGNtRExnaFgyeHBJbW0yUE1EcDVSTVR4bElB?=
- =?utf-8?B?OUdtVHNqWEowS2hQNE5xSzhOVnFVREx0bFQwZFVFc1p2ZzNFOEt1MllDeWhY?=
- =?utf-8?B?R3IxK3Z6UlZOaUVCcXhnUE1LTG1ZYmdmQzJnSWI2ZHkzOXR2QmN2bVJkeGVv?=
- =?utf-8?B?d0cvMUVsWmRFSlNmMGFRS2NLWUpIT2RyMEEyWkw5eWpwUjlUU3VsS3ZGUnVn?=
- =?utf-8?B?c01ncXdyanU2ajJIcjJvTGZqeXA0MnoyVzdhZytDdjRFNHJNZHJDRlIzTGxO?=
- =?utf-8?B?OWh0cXdZNzNBT1NWTWNRRU03dkNTS0JFOWFBeXF3R25EVzdLZHNtMCt4Nlk0?=
- =?utf-8?B?VVE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735571F130B
+	for <linux-acpi@vger.kernel.org>; Mon, 29 Sep 2025 08:30:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759134653; cv=none; b=VWLOs7QbtAXLoaoBrTxujyFmUO1GrwZIjJQJEZHNjSUDaIdv47fucxtpNqARxW8vYYN0kWPVYWdBupTOZlHDH9PLTJ8tmBhsS8iyXvSqI1Cuao+8nu5lBz3wV5zr1vNtiA6mnxabAGMhPZPRJ/vIuIvVbDsDon4PmtI1PGDOCbg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759134653; c=relaxed/simple;
+	bh=1yWrEi955nPPvBu1m9KwQaY5HyLcEXUxbZckZNeDmWE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GKOfVQpACF2/q6nhAMdqIq9ObcHtSmH1DT5/V7MzeymDiDSXfC/4ymNV5oFOi3ym1Wl9a4vb5xmIvCAA3SNClossuQP8kLGuMTGV52MH1bLjANKCzu59c9kAWhgxThBsapA+Ta3QZSnz5zU6My8xFSGmIjidjHtwVOztbd1e39E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=IpXqMdPh; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-57d93a4b5e5so5024150e87.3
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Sep 2025 01:30:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1759134649; x=1759739449; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=UJONDUXJa/G+AY4kgKaGSYPSvsqZ+MAfDWA2lmXRRpc=;
+        b=IpXqMdPho9g6CT24o5ZwTclNZciefBRbPeuJYlYGsGM0zMrolwEGdMMBNpkIeY5Cmr
+         jiL14FFLtOZbSrums49rO0jTa5tovzbezmPVQPFsRlnzI286KopVySdyDXjcug/HpTV5
+         YQ2iFwnqyGDI6FsogC4476jbaBgshaY1vrc8Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759134649; x=1759739449;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UJONDUXJa/G+AY4kgKaGSYPSvsqZ+MAfDWA2lmXRRpc=;
+        b=nnwRp1kjjF5ZJIlirgZQeI86d8LuN49wsDEYfVFFw953GIDfOd1nNYKJbLlLZLcE7t
+         yQJDc8HWjdgOOkytTqEDBDt1ZqM4fBu4UZYkaQliDgM6PKh56VO0BRtGsomTLZX0hinS
+         o/4FFzduNHtoqWj5+gyaW2hDLs8wuJ5U0Z9z4AGLGTERKtchzml9Fjl147rQdWjHTxvM
+         OB8JEWLofUDFwX1qCE3NI/ApkpEqtaerfPh6t82xEbPkRWyLrwfeFkxam3+ARifr1JM5
+         YLaogs1+YNUB4Gr3g4IQOZ+y5s2EL5j2bkPsWJTVtGYO6py92VBvb0kli9YkkRz2z8X6
+         islQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXVafyRtNevoUrKq1tOX1xvlGgzubdU3ohu5n1b3RLNId8A+ZtqBaok35DaG88RM3RQszfAL/x+0zOj@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2Kp9vTxj+xA4NislJLW0C3h05i9QL4SHTz7WDtiGyZlvctRln
+	lCNad5dZe+N0JQYOElbfxtU9cnse5LCJnS4uA+hCANZHrxBJjuArhNM+ym16Hhv3kqvxPrZYc4L
+	DcJQ=
+X-Gm-Gg: ASbGnct3x3pGCAbMBgYRgQhneoIuevw8myq6uBofPiCk1JF+LiojGhZjHBqLr0M1U95
+	LS7rs2dVhscVtcRT/Rpwzn4WDPyyMk8oLMSZnYiK1CAEad/YNtt+71Mo5wgKJfg02KTiwoqotpk
+	n0AcuZey/iFDE9LBDRLAMk8rl7kQsIc/RLn4v9Qrst/54F/UKaAWexiTEOXLC0pdopNgC8XWoB+
+	IWWK56IZJQLioJQ7t4iLNviUFRp7X7BVgdEk+eygBthkLT6tWGk6P3bFmPIJCC1w67NEXuf+9c5
+	0a2hTDOxL4RtsaLSE7Azx/WMK/0JwyHNRj1ZBGi7OY7MzZQj5H8xsTz/UO5SJEjUfDTmlh1KKCH
+	vx0f5AWdhoBihQk5wYLokYMr7QtocTTdx53TsHUdE9bNuRtOhdVDmsO3pRXm+
+X-Google-Smtp-Source: AGHT+IEBCfVHNUTUIcprqzAmRgov3ymWoV+6wbPsq+UU+TH8gABbq6rYK9ZVhhdhAd7+rhiQuA36UA==
+X-Received: by 2002:a05:651c:1989:b0:36c:ebb0:821c with SMTP id 38308e7fff4ca-36f7d2c5070mr58712111fa.7.1759134649437;
+        Mon, 29 Sep 2025 01:30:49 -0700 (PDT)
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com. [209.85.167.52])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-36fb0eb4a90sm26128811fa.0.2025.09.29.01.30.48
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Sep 2025 01:30:48 -0700 (PDT)
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-57b35e176dbso5484619e87.1
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Sep 2025 01:30:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWrnNm43481o0Pm62us+AS1rOorbENduu25wScSOaS2F0M4P/oYShsb3otZm4mEzwahnGPpYp2XUt20@vger.kernel.org
+X-Received: by 2002:a05:6512:1102:b0:57c:2474:3740 with SMTP id
+ 2adb3069b0e04-582d3f76e30mr4820322e87.46.1759134647732; Mon, 29 Sep 2025
+ 01:30:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	Qi6uDByQ2Rt5RmfDul+wb2w2mYqP5Sl02QdpPB4WXNVRxS6EwRq/u1KqRhy9hJzRR6Xxh4jwu6R/QuIw0yaUJ8Jtiu5R5CJcbJQel7R8oXR5nqTZtxNBti9FjdO+aSoknJ2p75tOVed7D5IDIVvkfJfVbHDlP51sgXzTGFOBMHvj2Gf9d+usoMJN7+gMffSYZk5kD2jYkL7cmKfk9vNE1ogcpju/UcNsknuvHglydtFJ8X/+g6QXuaOSaSlZnvnWbcmiIyYWliGerFIChsWZxtS9TqzacjpfB/ez2u1nGUyqPYL3YCuS77oDX2Qusu6mcpkmIjdAhANXfjG25f3Wu950FUETV5WJH98Izai0Qp7ik6i5RTdVj9J2LRMwr9r3kUXLUFL/n7AbedLDt90TfInkCyvX7MKBNxGO6VPrpsbSv/6oE/gte0bC136eSf7gxyVQKsvW5Kt7QqbunI0neiRePx3NSeU5h0pvjVLCXJz38ZdYiGP820vsv51rvjR4/F6Ng9HHiHnvQRQ/KFgcfwWMSddu+L0UNAUoDPjib6j+/r6YPPkXvc8Tc7EGn3maA6A+v6sqW19rdq8kjUBrFOqYXH0cniav/gv27ypa6O5PqtQixKfUZicj898SdpcL
-X-OriginatorOrg: fujitsu.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TY3PR01MB9983.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25a078fc-fb95-4a03-a30f-08ddff2a4e7f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Sep 2025 07:32:12.7093
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: och8bvonpT5Pwt/E56bcLaaLqKpeKFXUV0u+xEEEyQw+y4Xq2CLWqk1R9C89QlNhwrANZDFruXkres0f4HDzaShFi4itkLa3ZPq042hYdAg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWPR01MB9695
+References: <20250926-uvc-orientation-v3-0-6dc2fa5b4220@chromium.org>
+ <20250926-uvc-orientation-v3-7-6dc2fa5b4220@chromium.org> <20250926-mute-boil-e75839753526@spud>
+In-Reply-To: <20250926-mute-boil-e75839753526@spud>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Mon, 29 Sep 2025 10:30:35 +0200
+X-Gmail-Original-Message-ID: <CANiDSCuddqjeDr80xKsZZP7CXu9qB5qqYPoZujNYLcVjK0kKkg@mail.gmail.com>
+X-Gm-Features: AS18NWDuABHOrlsFlY-rDCN1sMikoapkz5ecsd4Y1lKthbQuEsgF6GxQRq0htYQ
+Message-ID: <CANiDSCuddqjeDr80xKsZZP7CXu9qB5qqYPoZujNYLcVjK0kKkg@mail.gmail.com>
+Subject: Re: [PATCH v3 07/12] dt-bindings: media: Add usb-camera-module
+To: Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>
+Cc: Hans de Goede <hansg@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, Hans Verkuil <hverkuil@kernel.org>, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-usb@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	acpica-devel@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-SGkgSGFuanVuLA0KDQo+ID4gSGkgSGFuanVuICYgU3VkZWVwDQo+ID4NCj4gPj4gSGkgSWxra2EN
-Cj4gPj4NCj4gPj4+IEhpIEthenVoaXJvLA0KPiA+Pj4NCj4gPj4+IE9uIEZyaSwgNSBTZXAgMjAy
-NSwgS2F6dWhpcm8gQWJlIHdyb3RlOg0KPiA+Pj4+IEFHREkgaGFzIHR3byB0eXBlcyBvZiBzaWdu
-YWxpbmcgbW9kZXM6IFNERUkgYW5kIGludGVycnVwdC4NCj4gPj4+PiBDdXJyZW50bHksIHRoZSBB
-R0RJIGRyaXZlciBvbmx5IHN1cHBvcnRzIFNERUkuDQo+ID4+Pj4gVGhlcmVmb3JlLCBhZGQgc3Vw
-cG9ydCBmb3IgaW50ZXJydXB0IHNpZ25hbGluZyBtb2RlIFRoZSBpbnRlcnJ1cHQNCj4gPj4+PiB2
-ZWN0b3IgaXMgcmV0cmlldmVkIGZyb20gdGhlIEFHREkgdGFibGUsIGFuZCBjYWxsIHBhbmljIGZ1
-bmN0aW9uDQo+ID4+Pj4gd2hlbiBhbiBpbnRlcnJ1cHQgb2NjdXJzLg0KPiA+Pj4+DQo+ID4+Pj4g
-U2lnbmVkLW9mZi1ieTogS2F6dWhpcm8gQWJlIDxmajEwNzhpaUBhYS5qcC5mdWppdHN1LmNvbT4N
-Cj4gPj4+DQo+ID4+Pg0KPiA+Pj4gTG9va3MgZ29vZCB0byBtZS4NCj4gPj4+DQo+ID4+PiBSZXZp
-ZXdlZC1ieTogSWxra2EgS29za2luZW4gPGlsa2thQG9zLmFtcGVyZWNvbXB1dGluZy5jb20+DQo+
-ID4+Pg0KPiA+Pg0KPiA+PiBUaGFua3MgZm9yIHlvdXIgcmV2aWV3Lg0KPiA+Pg0KPiA+PiBCZXN0
-IFJlZ2FyZHMsDQo+ID4+IEthenVoaXJvIEFiZQ0KPiA+Pg0KPiA+Pj4NCj4gPj4+IEhhbmp1biAm
-IFN1ZGVlcCwgd2hhdCdzIHlvdXIgdGhvdWdodCBvbiBlbmFibGluZyB0aGUgdXNlIG9mIHJlZ3Vs
-YXINCj4gPj4+IGludGVycnVwdHMgaGVyZT8gSSBkbyBhZ3JlZSB0aGUgc3BlYyB0YWxrcyBhYm91
-dCBub24tbWFza2FibGUgb25lcw0KPiA+Pj4gYW5kIHRvIG15IHVuZGVyc3RhbmRpbmcgdGhhdCdz
-IHdoYXQgdGhlIGlkZWEgd2FzIGluZGVlZC4NCj4gPg0KPiA+IERvIHlvdSBoYXZlIGFueSB0aG91
-Z2h0cyBvbiB0aGlzIG1hdHRlcj8NCj4gDQo+IEZvciB0aGUgcmVhbCB1c2UgY2FzZSwgaWYgdGhl
-IHN5c3RlbSBpcyBpbiBmYWlsdXJlIHN0YXRlLCBmb3IgZXhhbXBsZSwgdGhlIHN5c3RlbSBpcw0K
-PiBwYW5pYywgdGhlIENQVSB3aWxsIG5vdCBoYW5kbGUgcmVndWxhciBpbnRlcnJ1cHRzLCBzbyB3
-aGF0J3MgdGhlIHVzZSBjYXNlIGRvIHlvdQ0KPiBoYXZlIHRvIHVzZSByZWd1bGFyIGludGVycnVw
-dD8NCg0KVGhpcyBkcml2ZXIgaXMgZGVzaWduZWQgdG8gb3BlcmF0ZSB3aXRoIE5NSSBlbmFibGVk
-Lg0KDQpIb3dldmVyLCBvbiBjdXJyZW50IEFSTTY0IHBsYXRmb3JtcywgTk1JIGZ1bmN0aW9uYWxp
-dHkgbWF5IG5vdCBiZSBhY3RpdmUgdW5sZXNzDQoicHNldWRvIE5NSSIgaXMgZXhwbGljaXRseSBz
-cGVjaWZpZWQgdmlhIGEga2VybmVsIGNvbW1hbmQtbGluZSBwYXJhbWV0ZXIuDQpJbiBzdWNoIHNj
-ZW5hcmlvcywgd2UndmUgaW5jbHVkZWQgcmVndWxhciBpbnRlcnJ1cHQgaGFuZGxpbmcgYXMgYSBs
-YXN0IHJlc29ydCwNCmFudGljaXBhdGluZyByYXJlIGNhc2VzIHdoZXJlIHNvbWUgY29yZXMgbWln
-aHQgc3RpbGwgYmUgYWJsZSB0byByZWNlaXZlIHJlZ3VsYXINCmludGVycnVwdHMgZXZlbiBpZiBv
-dGhlciBjb3JlcyBhcmUgdW5yZXNwb25zaXZlLg0KDQpUbyByZWl0ZXJhdGUsIHRoZSB1bmRlcmx5
-aW5nIGFzc3VtcHRpb24gaXMgdGhhdCBOTUkobm93IHBzZXVkbyBOTUkpIGlzIGVuYWJsZWQgZm9y
-IHVzZS4NCg0KDQpCZXN0IFJlZ2FyZHMsDQpLYXp1aGlybyBBYmUNCg0KPiANCj4gVGhhbmtzDQo+
-IEhhbmp1bg0K
+Hi Conor
+
+On Fri, 26 Sept 2025 at 18:55, Conor Dooley <conor@kernel.org> wrote:
+>
+> On Fri, Sep 26, 2025 at 01:11:31PM +0000, Ricardo Ribalda wrote:
+> > For fixed cameras modules the OS needs to know where they are mounted.
+> > This information is used to determine if images need to be rotated or
+> > not.
+> >
+> > ACPI has a property for this purpose, which is parsed by
+> > acpi_get_physical_device_location():
+> > https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/06_Device_Configuration/Device_Configuration.html#pld-physical-location-of-device
+> >
+> > In DT we have similar properties for video-interface-devices called
+> > orientation and rotation:
+> > Documentation/devicetree/bindings/media/video-interface-devices.yaml
+> >
+> > Add a new schema that combines usb/usb-device.yaml and
+> > media/video-interface-devices.yaml
+> >
+> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > ---
+> >  .../bindings/media/usb-camera-module.yaml          | 46 ++++++++++++++++++++++
+> >  MAINTAINERS                                        |  1 +
+> >  2 files changed, 47 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/media/usb-camera-module.yaml b/Documentation/devicetree/bindings/media/usb-camera-module.yaml
+> > new file mode 100644
+> > index 0000000000000000000000000000000000000000..e4ad6f557b9151751522e49b72ae6584deb0c7ba
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/media/usb-camera-module.yaml
+> > @@ -0,0 +1,46 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/media/usb-camera-module.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: USB Camera Module
+> > +
+> > +maintainers:
+> > +  - Ricardo Ribalda <ribalda@chromium.org>
+> > +
+> > +description: |
+> > +  This schema allows for annotating auxiliary information for fixed camera
+> > +  modules. This information enables the system to determine if incoming frames
+> > +  require rotation, mirroring, or other transformations. It also describes the
+> > +  module's relationship with other hardware elements, such as flash LEDs or
+> > +  Voice Coil Motors (VCMs).
+> > +
+> > +allOf:
+> > +  - $ref: /schemas/usb/usb-device.yaml#
+> > +  - $ref: /schemas/media/video-interface-devices.yaml#
+> > +
+> > +properties:
+> > +  reg:
+> > +    maxItems: 1
+> > +
+>
+> What actually causes this schema to be applied? Did I miss it getting
+> included somewhere?
+
+I guess your question is why I have not defined the compatible field?
+
+I tried this change[1] with no luck:
+/usr/local/google/home/ribalda/work/linux/Documentation/devicetree/bindings/media/uvc-camera.example.dtb:
+device@1 (uvc-camera): compatible: ['uvc-camera'] does not contain
+items matching the given schema
+
+I think it failed, because If we add these allOfs as Rob proposed
+https://lore.kernel.org/all/20250625185608.GA2010256-robh@kernel.org/:
+```
+allOf:
+  - $ref: /schemas/usb/usb-device.yaml#
+  - $ref: /schemas/media/video-interface-devices.yaml#
+```
+We cannot (or I do not know how to) have a different compatible than
+the one from usb-device.yaml
+
+
+Any suggestion on how to do this properly will be highly appreciated :)
+
+Thanks!
+
+
+
+[1]
+
+@@ -21,10 +21,14 @@ allOf:
+   - $ref: /schemas/media/video-interface-devices.yaml#
+
+ properties:
++  compatible:
++    const: uvc-camera
++
+   reg:
+     maxItems: 1
+
+ required:
++  - compatible
+   - reg
+
+ additionalProperties: true
+@@ -38,8 +42,8 @@ examples:
+         #size-cells = <0>;
+
+         device@1 {
+-            compatible = "usb123,4567";
++           compatible = "uvc-camera";
+             reg = <2>;
+             orientation = <0>;
+             rotation = <90>;
+         };
+
+>
+> > +required:
+> > +  - reg
+> > +
+> > +additionalProperties: true
+> > +
+> > +examples:
+> > +  - |
+> > +    usb@11270000 {
+> > +        reg = <0x11270000 0x1000>;
+> > +        interrupts = <0x0 0x4e 0x0>;
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        device@1 {
+> > +            compatible = "usb123,4567";
+> > +            reg = <2>;
+> > +            orientation = <0>;
+> > +            rotation = <90>;
+> > +        };
+> > +    };
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index ee8cb2db483f6a5e96b62b6f2edd05b1427b69f5..1503502a3aed2625e8ff488456ccd7305cc74ba7 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -26258,6 +26258,7 @@ L:    linux-media@vger.kernel.org
+> >  S:   Maintained
+> >  W:   http://www.ideasonboard.org/uvc/
+> >  T:   git git://linuxtv.org/media.git
+> > +F:   Documentation/devicetree/bindings/media/usb-camera-module.yaml
+> >  F:   Documentation/userspace-api/media/drivers/uvcvideo.rst
+> >  F:   Documentation/userspace-api/media/v4l/metafmt-uvc-msxu-1-5.rst
+> >  F:   Documentation/userspace-api/media/v4l/metafmt-uvc.rst
+> >
+> > --
+> > 2.51.0.536.g15c5d4f767-goog
+> >
+
+
+
+--
+Ricardo Ribalda
 
