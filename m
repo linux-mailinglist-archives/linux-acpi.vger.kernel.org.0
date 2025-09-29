@@ -1,96 +1,260 @@
-Return-Path: <linux-acpi+bounces-17391-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17392-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29CABBA889C
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 11:12:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C53BBA88E1
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 11:14:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94263189BAF7
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 09:12:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 996EA3B1968
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 09:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0667F280A56;
-	Mon, 29 Sep 2025 09:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4564D283FCB;
+	Mon, 29 Sep 2025 09:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Hq4pd3FL";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="b25DWtEA";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="hMG0X5o7";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ZWV8cEdM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5A834BA41;
-	Mon, 29 Sep 2025 09:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6B2283FC9
+	for <linux-acpi@vger.kernel.org>; Mon, 29 Sep 2025 09:13:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759137125; cv=none; b=cDRoc/LdALRi+9KoAWJo0lxIylP7Y6oixzKL6TPnED5hL0m9nUWf04L3foEDZwq4e1nzO1QtXJuyhxqgt3Mhbd9583H+VCWw3yM2aSe5Vsfqzv/XViXzPl2+GOla3zVIa845mx9CX9HjLN/DHIKsv/gQv+6rsRVljJr+V4khWcg=
+	t=1759137226; cv=none; b=IkIvqkNAQvrdvS2KqYQnMYfkmK7Y2IQErnBy0bZgPgp6Q9192ctfyjKtUeKczHcKx9zburUaGix2RLFnsitWwfVafh6hk2tfshe/Vznq+OkRq8wPes1QTzQOUw1Gdbvv0BWQpT4vFjHYouj9l6KeVk76j+bJkykXtoy/vOU6yAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759137125; c=relaxed/simple;
-	bh=pzjgHw1TRVEzQipbuD6sdMwfcVRo6nvQqjOx0CUKQzM=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L2S+Jrz7G1xVhaiWTxbSnvrnrhQt91rgordP0Cb91zO8+kkunzhoyirDDyyjC1nGRAmbaoh7JirOVfaFJZHoAcg41VaV0uy2OsqffagpYUoiedK3geI+PXkopezR5vheu/Dy/OirdPcKR80HscHQGt3GqMihiLAY7zPaLoSAUHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cZwNS5dd8z6M4jd;
-	Mon, 29 Sep 2025 17:08:56 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id E05CE1402F5;
-	Mon, 29 Sep 2025 17:12:01 +0800 (CST)
-Received: from localhost (10.47.64.220) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 29 Sep
- 2025 10:12:00 +0100
-Date: Mon, 29 Sep 2025 10:11:58 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-input@vger.kernel.org>, <linux-leds@vger.kernel.org>,
-	<linux-media@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-spi@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Len
- Brown" <lenb@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>, Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Javier Carrasco
-	<javier.carrasco@wolfvision.net>, Dmitry Torokhov
-	<dmitry.torokhov@gmail.com>, Lee Jones <lee@kernel.org>, Pavel Machek
-	<pavel@kernel.org>, Matthias Fend <matthias.fend@emfend.at>, Chanwoo Choi
-	<cw00.choi@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>, "Laurent
- Pinchart" <laurent.pinchart@ideasonboard.com>, Paul Elder
-	<paul.elder@ideasonboard.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	<UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Mark Brown
-	<broonie@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
-	<mingo@kernel.org>
-Subject: Re: [PATCH v2 02/16] ACPI: property: Use ACPI functions in
- acpi_graph_get_next_endpoint() only
-Message-ID: <20250929101158.00000709@huawei.com>
-In-Reply-To: <20250924074602.266292-3-sakari.ailus@linux.intel.com>
-References: <20250924074602.266292-1-sakari.ailus@linux.intel.com>
-	<20250924074602.266292-3-sakari.ailus@linux.intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1759137226; c=relaxed/simple;
+	bh=jtJHKeg4V3hrJtslZs+qvCCY9ECaZmET93hB+vqILeg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=guWj08s9oDxaai9BQpI4QQWkrVI8FaIb0IbWYzbHmBlqv+XcEyMaRSiz/BC9ejkf71OdlC07tfvttdzR/n/Y1rLkDmkyGeAphSc4pqalDTfHWznWbC1tKzzXMkW9hh8uTstxta0Lk8vJke/+kDCbo6Np16ZHIHz9snt0ush+6Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Hq4pd3FL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=b25DWtEA; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=hMG0X5o7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZWV8cEdM; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A184628A42;
+	Mon, 29 Sep 2025 09:13:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759137220; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=krawKFrMK6CfXJGZRbum6m0whh/VNnnKuCLw/mlg22U=;
+	b=Hq4pd3FLlIHlpsq/WIWIpKTQIK1u5uVC206WcP0fQUSFrI19DANzMPCVUP75KY+hBZcL0Q
+	dtdVgf8LzRHS+mLGqBHxvAYy4l40BsAWLIlpobyu01j8D02b0I98f1+p5dw6q44ptuX62H
+	m9Zo3mhg2ZXRKipx4DYunUuhbPd04E4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759137220;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=krawKFrMK6CfXJGZRbum6m0whh/VNnnKuCLw/mlg22U=;
+	b=b25DWtEAGkPFc4sT9issDmqy/BMl9Qbnlh5ruisp0J1gFMCT/qNvoATff8AwO5EUhSceEL
+	kSBiQsu7tqSUuVAA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hMG0X5o7;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ZWV8cEdM
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759137219; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=krawKFrMK6CfXJGZRbum6m0whh/VNnnKuCLw/mlg22U=;
+	b=hMG0X5o7qx5uLzOvtPU6oAOR/sM1jQy2B6QsQik0JJGzKLSrpedSDbKzqP6/qSgL4E6z5c
+	PYEIwt7LMqEi6gairxqjXKFRdyD4dFJYTy2ovOneowKDznaaZr9VZ4B/+OwUlRFxMrvTSI
+	pzIsg61tXM/wB+hrp8gOffgcwit1QxI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759137219;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=krawKFrMK6CfXJGZRbum6m0whh/VNnnKuCLw/mlg22U=;
+	b=ZWV8cEdMR8rl5mD9g70Zqdfp6Osb2Z+ASfy/UIiBlSB9+DmXXVL0n2mnz3VGfUEWe6Zu2m
+	Fw46i1nCG69w1gBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CB9D413782;
+	Mon, 29 Sep 2025 09:13:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id q2iJILJN2mgkQwAAD6G6ig
+	(envelope-from <ddiss@suse.de>); Mon, 29 Sep 2025 09:13:22 +0000
+Date: Mon, 29 Sep 2025 19:13:16 +1000
+From: David Disseldorp <ddiss@suse.de>
+To: nschichan@freebox.fr
+Cc: akpm@linux-foundation.org, andy.shevchenko@gmail.com, axboe@kernel.dk,
+ brauner@kernel.org, cyphar@cyphar.com, devicetree@vger.kernel.org,
+ ecurtin@redhat.com, email2tema@gmail.com, graf@amazon.com,
+ gregkh@linuxfoundation.org, hca@linux.ibm.com, hch@lst.de,
+ hsiangkao@linux.alibaba.com, initramfs@vger.kernel.org, jack@suse.cz,
+ julian.stecklina@cyberus-technology.de, kees@kernel.org,
+ linux-acpi@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+ linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+ mcgrof@kernel.org, mingo@redhat.com, monstr@monstr.eu,
+ mzxreary@0pointer.de, patches@lists.linux.dev, rob@landley.net,
+ safinaskar@gmail.com, sparclinux@vger.kernel.org,
+ thomas.weissschuh@linutronix.de, thorsten.blum@linux.dev,
+ torvalds@linux-foundation.org, tytso@mit.edu, viro@zeniv.linux.org.uk,
+ x86@kernel.org
+Subject: Re: [PATCH-RFC] init: simplify initrd code (was Re: [PATCH RESEND
+ 00/62] initrd: remove classic initrd support).
+Message-ID: <20250929171652.50b7a959.ddiss@suse.de>
+In-Reply-To: <20250925131055.3933381-1-nschichan@freebox.fr>
+References: <CAHNNwZC7gC7zaZGiSBhobSAb4m2O1BuoZ4r=SQBF-tCQyuAPvw@mail.gmail.com>
+	<20250925131055.3933381-1-nschichan@freebox.fr>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: A184628A42
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-2.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linux-foundation.org,gmail.com,kernel.dk,kernel.org,cyphar.com,vger.kernel.org,redhat.com,amazon.com,linuxfoundation.org,linux.ibm.com,lst.de,linux.alibaba.com,suse.cz,cyberus-technology.de,lists.infradead.org,lists.linux-m68k.org,lists.ozlabs.org,lists.linux.dev,monstr.eu,0pointer.de,landley.net,linutronix.de,linux.dev,mit.edu,zeniv.linux.org.uk];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	R_RATELIMIT(0.00)[to_ip_from(RL4bphh9snz1w7feaus4qmzef6)];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_DN_NONE(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[56];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid]
+X-Spam-Score: -2.01
 
-On Wed, 24 Sep 2025 10:45:48 +0300
-Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
+Hi Nicolas,
 
-> Calling fwnode_get_next_child_node() in ACPI implementation of the fwnode
-> property API is somewhat problematic as the latter is used in the
-> impelementation of the former. Instead of using
-> fwnode_get_next_child_node() in acpi_graph_get_next_endpoint(), call
-> acpi_get_next_subnode() directly instead.
+On Thu, 25 Sep 2025 15:10:56 +0200, nschichan@freebox.fr wrote:
+
+> From: Nicolas Schichan <nschichan@freebox.fr>
 > 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Makes sense to me on simply basis of making reasoning about it a little simpler.
+> - drop prompt_ramdisk and ramdisk_start kernel parameters
+> - drop compression support
+> - drop image autodetection, the whole /initrd.image content is now
+>   copied into /dev/ram0
+> - remove rd_load_disk() which doesn't seem to be used anywhere.
+> 
+> There is now no more limitation on the type of initrd filesystem that
+> can be loaded since the code trying to guess the initrd filesystem
+> size is gone (the whole /initrd.image file is used).
+> 
+> A few global variables in do_mounts_rd.c are now put as local
+> variables in rd_load_image() since they do not need to be visible
+> outside this function.
+> ---
+> 
+> Hello,
+> 
+> Hopefully my email config is now better and reaches gmail users
+> correctly.
+> 
+> The patch below could probably split in a few patches, but I think
+> this simplify the code greatly without removing the functionality we
+> depend on (and this allows now to use EROFS initrd images).
+> 
+> Coupled with keeping the function populate_initrd_image() in
+> init/initramfs.c, this will keep what we need from the initrd code.
+> 
+> This removes support of loading bzip/gz/xz/... compressed images as
+> well, not sure if many user depend on this feature anymore.
+> 
+> No signoff because I'm only seeking comments about those changes right
+> now.
+> 
+>  init/do_mounts.h    |   2 -
+>  init/do_mounts_rd.c | 243 +-------------------------------------------
+>  2 files changed, 4 insertions(+), 241 deletions(-)
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+This seems like a reasonable improvement to me. FWIW, one alternative
+approach to clean up the FS specific code here was proposed by Al:
+https://lore.kernel.org/all/20250321020826.GB2023217@ZenIV/
+
+...
+> diff --git a/init/do_mounts_rd.c b/init/do_mounts_rd.c
+> index ac021ae6e6fa..5a69ff43f5ee 100644
+> --- a/init/do_mounts_rd.c
+> +++ b/init/do_mounts_rd.c
+> @@ -14,173 +14,9 @@
+>  
+>  #include <linux/decompress/generic.h>
+>  
+> -static struct file *in_file, *out_file;
+> -static loff_t in_pos, out_pos;
+> -
+> -static int __init prompt_ramdisk(char *str)
+> -{
+> -	pr_warn("ignoring the deprecated prompt_ramdisk= option\n");
+> -	return 1;
+> -}
+> -__setup("prompt_ramdisk=", prompt_ramdisk);
+> -
+> -int __initdata rd_image_start;		/* starting block # of image */
+> -
+> -static int __init ramdisk_start_setup(char *str)
+> -{
+> -	rd_image_start = simple_strtol(str,NULL,0);
+> -	return 1;
+> -}
+> -__setup("ramdisk_start=", ramdisk_start_setup);
+
+There are a couple of other places that mention these parameters, which
+should also be cleaned up.
+
+...
+>  static unsigned long nr_blocks(struct file *file)
+>  {
+> -	struct inode *inode = file->f_mapping->host;
+> -
+> -	if (!S_ISBLK(inode->i_mode))
+> -		return 0;
+> -	return i_size_read(inode) >> 10;
+> +	return i_size_read(file->f_mapping->host) >> 10;
+
+This should be >> BLOCK_SIZE_BITS, and dropped as a wrapper function
+IMO.
 
