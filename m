@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-17423-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17424-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606DEBAA353
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 19:44:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59ACFBAA359
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 19:45:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2198F3C57C0
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 17:44:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4B167A1F01
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 17:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC30B22157E;
-	Mon, 29 Sep 2025 17:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9666220F34;
+	Mon, 29 Sep 2025 17:44:44 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C83220F2C;
-	Mon, 29 Sep 2025 17:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FFB220687;
+	Mon, 29 Sep 2025 17:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759167875; cv=none; b=qwUKW5NWBa/Co1s2T9hl4FVsXN3bABCkryDsukcUX2JRXvQ2SkrgwVESawB9chdTqc/h81ZQpMovtocpB8/KAa0Zt8flFf1eyL4wKh3Okkrqwu+H1xdLTaRBbVHfSPubahkJvYn11zToiJx1weYJC4KmoolUvK3zs5FHCcvr7wQ=
+	t=1759167884; cv=none; b=SNOn3ns6fVXP7Khh3PrQbpE2aQFTzwUDUcwOkTehoFlJ9B2JbXkbj3aJHXuTAjZPQfr2hV6AnJJdBP2PvB0OVLGMUnapbiA3Qa+u4bWvj7cdwQfeN0KJUeJ7tlEUR1o+8mLzHLavOTuwX/vS/n2vHjC14qvY7LEXfHSaON+sszE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759167875; c=relaxed/simple;
-	bh=bd7QHrtsx8kCGIVX1wp5kMD747210eQWt5uNgI8KWeA=;
+	s=arc-20240116; t=1759167884; c=relaxed/simple;
+	bh=rtc9wYYiql/zxa6Fl+MwsGqtAZBHcTXLvHbZteu4+jE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pAFHyjEXF1USqrkPIyfOiC9nqFkjWtoUowwqlI3Y+gwRdETlIXxgIHlAz8VqczBo3+eFtU6Xdcxu40lb5Vc8s0KWQCVCFGLkM4dhpuOfTEg8nhblgV41uxQ3l1mTd7ZSdfT8ELrrou0fdnbMYczqAio8WxFNGUMzN+4Mnb+fYZI=
+	 In-Reply-To:Content-Type; b=HylyiBv67YMCS0Iu4nOAwYxzt2ieZxs3Gwc8pY9cER6ZSaM8/joX7n6HmG4WF5lBxhhy698eWgHoLLZMSCuYnW3Yb6IRkUACThV3a2cqOIiL/WqKjGoQJIsS8ERPGM2Y+pv5sN4+cw5wdWGJ5KE+bhUtL8HQr/jKlQn93JQtFQ8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0C286150C;
-	Mon, 29 Sep 2025 10:44:23 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0F47C150C;
+	Mon, 29 Sep 2025 10:44:34 -0700 (PDT)
 Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F2F473F59E;
-	Mon, 29 Sep 2025 10:44:25 -0700 (PDT)
-Message-ID: <31c1cea8-8265-4d86-b9a7-d8f8955405bf@arm.com>
-Date: Mon, 29 Sep 2025 18:44:25 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B1C543F59E;
+	Mon, 29 Sep 2025 10:44:36 -0700 (PDT)
+Message-ID: <628b42e2-6605-4f19-8ee8-e1c8707a6f96@arm.com>
+Date: Mon, 29 Sep 2025 18:44:35 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,8 +42,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/29] arm_mpam: Add cpuhp callbacks to probe MSC
- hardware
+Subject: Re: [PATCH v2 11/29] arm_mpam: Probe hardware to find the supported
+ partid/pmg values
 To: Jonathan Cameron <jonathan.cameron@huawei.com>
 Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-acpi@vger.kernel.org,
@@ -61,126 +61,145 @@ Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>, Lecopzer Chen <lecopzerc@nvidia.com>
+ Danilo Krummrich <dakr@kernel.org>
 References: <20250910204309.20751-1-james.morse@arm.com>
- <20250910204309.20751-11-james.morse@arm.com>
- <20250911160737.0000492f@huawei.com>
+ <20250910204309.20751-12-james.morse@arm.com>
+ <20250911161850.00005667@huawei.com>
 Content-Language: en-GB
 From: James Morse <james.morse@arm.com>
-In-Reply-To: <20250911160737.0000492f@huawei.com>
+In-Reply-To: <20250911161850.00005667@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Jonathan,
-
-On 11/09/2025 16:07, Jonathan Cameron wrote:
-> On Wed, 10 Sep 2025 20:42:50 +0000
+On 11/09/2025 16:18, Jonathan Cameron wrote:
+> On Wed, 10 Sep 2025 20:42:51 +0000
 > James Morse <james.morse@arm.com> wrote:
 > 
->> Because an MSC can only by accessed from the CPUs in its cpu-affinity
->> set we need to be running on one of those CPUs to probe the MSC
->> hardware.
+>> CPUs can generate traffic with a range of PARTID and PMG values,
+>> but each MSC may also have its own maximum size for these fields.
+>> Before MPAM can be used, the driver needs to probe each RIS on
+>> each MSC, to find the system-wide smallest value that can be used.
+>> The limits from requestors (e.g. CPUs) also need taking into account.
 >>
->> Do this work in the cpuhp callback. Probing the hardware will only
->> happen before MPAM is enabled, walk all the MSCs and probe those we can
->> reach that haven't already been probed as each CPU's online call is made.
+>> While doing this, RIS entries that firmware didn't describe are created
+>> under MPAM_CLASS_UNKNOWN.
 >>
->> This adds the low-level MSC register accessors.
+>> While we're here, implement the mpam_register_requestor() call
+>> for the arch code to register the CPU limits. Future callers of this
+>> will tell us about the SMMU and ITS.
 >>
->> Once all MSCs reported by the firmware have been probed from a CPU in
->> their respective cpu-affinity set, the probe-time cpuhp callbacks are
->> replaced.  The replacement callbacks will ultimately need to handle
->> save/restore of the runtime MSC state across power transitions, but for
->> now there is nothing to do in them: so do nothing.
->>
->> The architecture's context switch code will be enabled by a static-key,
->> this can be set by mpam_enable(), but must be done from process context,
->> not a cpuhp callback because both take the cpuhp lock.
->> Whenever a new MSC has been probed, the mpam_enable() work is scheduled
->> to test if all the MSCs have been probed. If probing fails, mpam_disable()
->> is scheduled to unregister the cpuhp callbacks and free memory.
+>> Signed-off-by: James Morse <james.morse@arm.com>
 
-> Trivial suggestion inline. Either way
+> Trivial stuff inline.
 > Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
 Thanks!
 
 
->> +/* Before mpam is enabled, try to probe new MSC */
->> +static int mpam_discovery_cpu_online(unsigned int cpu)
+>>  drivers/resctrl/mpam_devices.c  | 150 +++++++++++++++++++++++++++++++-
+>>  drivers/resctrl/mpam_internal.h |   6 ++
+>>  include/linux/arm_mpam.h        |  14 +++
+>>  3 files changed, 169 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+>> index c265376d936b..24dc81c15ec8 100644
+>> --- a/drivers/resctrl/mpam_devices.c
+>> +++ b/drivers/resctrl/mpam_devices.c
+> 
+> 
+>> +int mpam_register_requestor(u16 partid_max, u8 pmg_max)
 >> +{
 >> +	int err = 0;
->> +	struct mpam_msc *msc;
->> +	bool new_device_probed = false;
 >> +
->> +	guard(srcu)(&mpam_srcu);
->> +	list_for_each_entry_srcu(msc, &mpam_all_msc, all_msc_list,
->> +				 srcu_read_lock_held(&mpam_srcu)) {
->> +		if (!cpumask_test_cpu(cpu, &msc->accessibility))
->> +			continue;
->> +
->> +		mutex_lock(&msc->probe_lock);
->> +		if (!msc->probed)
->> +			err = mpam_msc_hw_probe(msc);
->> +		mutex_unlock(&msc->probe_lock);
->> +
->> +		if (!err)
->> +			new_device_probed = true;
->> +		else
->> +			break;
+>> +	spin_lock(&partid_max_lock);
 
-> Unless this going to get more complex why not
-> 
-> 		if (err)
-> 			break;
-> 
-> 		new_device_probed = true;
+> guard() perhaps so you can return early in the error pat and avoid
+> need for local variable err.
 
-Sure - its been both simpler and more complex in the past!
+Negh ... okay. I dislike the guard thing as its never clear when the lock is unlocked.
+I'm not a fan of spooky action at a distance!
 
 
+>> +	if (!partid_max_init) {
+>> +		mpam_partid_max = partid_max;
+>> +		mpam_pmg_max = pmg_max;
+>> +		partid_max_init = true;
+>> +	} else if (!partid_max_published) {
+>> +		mpam_partid_max = min(mpam_partid_max, partid_max);
+>> +		mpam_pmg_max = min(mpam_pmg_max, pmg_max);
+>> +	} else {
+>> +		/* New requestors can't lower the values */
+>> +		if (partid_max < mpam_partid_max || pmg_max < mpam_pmg_max)
+>> +			err = -EBUSY;
 >> +	}
->> +
->> +	if (new_device_probed && !err)
->> +		schedule_work(&mpam_enable_work);
->> +	if (err) {
->> +		mpam_disable_reason = "error during probing";
->> +		schedule_work(&mpam_broken_work);
->> +	}
+>> +	spin_unlock(&partid_max_lock);
 >> +
 >> +	return err;
 >> +}
+>> +EXPORT_SYMBOL(mpam_register_requestor);
 > 
->> +static void mpam_enable_once(void)
+>> @@ -470,9 +547,37 @@ int mpam_ris_create(struct mpam_msc *msc, u8 ris_idx,
+>> +static struct mpam_msc_ris *mpam_get_or_create_ris(struct mpam_msc *msc,
+>> +						   u8 ris_idx)
 >> +{
->> +	mpam_register_cpuhp_callbacks(mpam_cpu_online, mpam_cpu_offline);
+>> +	int err;
+>> +	struct mpam_msc_ris *ris, *found = ERR_PTR(-ENOENT);
 >> +
->> +	pr_info("MPAM enabled\n");
+>> +	lockdep_assert_held(&mpam_list_lock);
+>> +
+>> +	if (!test_bit(ris_idx, &msc->ris_idxs)) {
+>> +		err = mpam_ris_create_locked(msc, ris_idx, MPAM_CLASS_UNKNOWN,
+>> +					     0, 0);
+>> +		if (err)
+>> +			return ERR_PTR(err);
+>> +	}
+>> +
+>> +	list_for_each_entry(ris, &msc->ris, msc_list) {
+>> +		if (ris->ris_idx == ris_idx) {
+>> +			found = ris;
+> I'd return ris;
+> 
+> Then can do return ERR_PTR(-ENOENT) below and not bother with found.
+> 
+> Ignore if this gets more complex later.
 
-> Feels too noisy given it should be easy enough to tell. pr_dbg() perhaps.
-
-I was aiming for the driver to only print one thing - once all the hardware has been
-probed. Once the driver is assembled, this prints the number of PARTID/PMG that were
-discovered as the system wide limits.
-
-The reason to print something is that if you see this message, but don't have resctrl
-appear in /proc/filesystems - its never going to appear because the resctrl glue code
-couldn't find anything it could use. As this isn't an error, so nothing gets printed in
-this case.
-This is the most common complaint I get - "our platform doesn't look like a Xeon - why
-doesn't resctrl work with it?"
-
-It also matters for other requesters, like the SMMU. If they probe after this point, they
-can't reduce the PARTID/PMG range - and may get an error and have their MPAM abilities
-disabled. Having an entry in the boot log makes this easier to debug.
+Thank - this is another relic of more complex locking...
+Fixed as you suggested.
 
 
-The alternative would be to keep track of what the driver is up to, and expose that
-through debugfs - but information that only exists for debug purposes is likely to be
-wrong. It also doesn't help work out what order different drivers tried to probe in.
+>> +			break;
+>> +		}
+>> +	}
+>> +
+>> +	return found;
+>> +}
+> 
+>> @@ -675,9 +813,18 @@ static struct platform_driver mpam_msc_driver = {
+>>  
+>>  static void mpam_enable_once(void)
+>>  {
+>> +	/*
+>> +	 * Once the cpuhp callbacks have been changed, mpam_partid_max can no
+>> +	 * longer change.
+>> +	 */
+>> +	spin_lock(&partid_max_lock);
+>> +	partid_max_published = true;
+>> +	spin_unlock(&partid_max_lock);
+>> +
+>>  	mpam_register_cpuhp_callbacks(mpam_cpu_online, mpam_cpu_offline);
+>>  
+>> -	pr_info("MPAM enabled\n");
+>> +	printk(KERN_INFO "MPAM enabled with %u PARTIDs and %u PMGs\n",
+>> +	       mpam_partid_max + 1, mpam_pmg_max + 1);
+
+> Not sure why pr_info before and printk now.  
+
+That looks like a conflict gone wrong!
+Fixed.
 
 
 Thanks,
 
 James
+
 
