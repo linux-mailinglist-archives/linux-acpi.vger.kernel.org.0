@@ -1,156 +1,104 @@
-Return-Path: <linux-acpi+bounces-17420-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17421-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF77DBAA1CC
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 19:14:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E43BBAA344
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 19:44:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7310D7A2270
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 17:12:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00160171B26
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 17:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47615303A0C;
-	Mon, 29 Sep 2025 17:14:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cIWQ5XK+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C58A220687;
+	Mon, 29 Sep 2025 17:44:20 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A2EE555;
-	Mon, 29 Sep 2025 17:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D9421D590;
+	Mon, 29 Sep 2025 17:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759166049; cv=none; b=Nlz4oYpmgMmwgx2Y3kEl49418BSk8XumrFZRA996KBjz5FF1d3XsPe+VU77Wsnafafda2us8KqvTiz7LUbtyDwXvmW4MmPk+ipDyQiHBZvbi4UTRrUQBKltOGGfJot3qjQ4Li6btUoHEH/twqW6MRmVpP0WXizZAIWfOY31kXUY=
+	t=1759167859; cv=none; b=iv0VdfMd9/E8gBXofRINsJ7ttfnnfLg3uGPUGcBRxcgRxKWPcmbFy/Fbr33sbZwOuyP77mPe4XV6fWU7lpK2tBF9rrRYYNTU58IROdxW10iVDa1aRIIK1yCm25q0BUGy7+bXta5yEpeI/yV23QrjX7rNoSGQ4XCJ09PPXAa44L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759166049; c=relaxed/simple;
-	bh=/d3YDoclVIlotjgBNpaaRR/z5leUIlKIPL2Fbh02IS0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=N9iAR6Yxk8z+qjD1Iwuo33CTslaQ6IQHeltMGYemjWMydppTBa6//yZaD3HywGbmkaoWIITBLxGHstdGx63lEzOqQoHrxIS+e/bl/if/mL3XGRffEQ8mE7Xjx2g6kx41REy1j3YnhaC0th4hv0w7Och9j4oDtFmQWAAM/LTnR5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cIWQ5XK+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E5ABC4CEF4;
-	Mon, 29 Sep 2025 17:14:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759166048;
-	bh=/d3YDoclVIlotjgBNpaaRR/z5leUIlKIPL2Fbh02IS0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=cIWQ5XK+sJVQ4JPDDmMvNFShMRkkjBzGA+dZGLnibe9k69UGY5dB+dbuJppS9xMDV
-	 DKQKoCj8NfywFTn+1tu1Z1aYOFLqPLJ2lt6tzBq+A7/IifvxTWse4/+x5UQxemJnZW
-	 xi3c3pPcJX5j8zvVJlbuabWOKKN9QsSABeP672iD2FnA50rhfRZxDaxRm3Wzv/mgZ7
-	 qGdJKfqpj0CQorjULZk48n2GAUSGN/6jaYzOmzMMB8Q9yFqD/y+goyBvpWY77AY3cs
-	 PgNbGKFImlE2juCHY7HckaQZQfhODu/xWVgylrPj3HNLYCGBZgF8ghRALH7nqWkRji
-	 FxbwEM3gHJM0Q==
-Date: Mon, 29 Sep 2025 12:14:06 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Chris Li <chrisl@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, David Matlack <dmatlack@google.com>,
-	Pasha Tatashin <tatashin@google.com>,
-	Jason Miu <jasonmiu@google.com>, Vipin Sharma <vipinsh@google.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>, William Tu <witu@nvidia.com>,
-	Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: Re: [PATCH v2 09/10] PCI/LUO: Avoid write to bus master at boot
-Message-ID: <20250929171406.GA116545@bhelgaas>
+	s=arc-20240116; t=1759167859; c=relaxed/simple;
+	bh=bfnQHr4jjAQW2+QnzwBqmT5DGW43MFHG/lQ8Y5Mvbrs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A6oQq94EVdgXAd0j032uARY6KFdpnBvrxBcREsGiobh/87kJkGmPwJFG1IBs16n/D1yYwLQ4sLz3X6KZuliYjWpRJxxQ1zBBS6ftX7AA7HTZ1NjD/BxyuVygMXsrCWvXu/b+Gk8lhhuqxlPLsbhfSDdZmP8d0D00mRfmhQCMbSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 52EC9150C;
+	Mon, 29 Sep 2025 10:44:08 -0700 (PDT)
+Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0D5963F59E;
+	Mon, 29 Sep 2025 10:44:10 -0700 (PDT)
+Message-ID: <4d037a74-966c-497d-a9b7-6cdffdf31020@arm.com>
+Date: Mon, 29 Sep 2025 18:44:09 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250916-luo-pci-v2-9-c494053c3c08@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 07/29] arm_mpam: Add probe/remove for mpam msc driver
+ and kbuild boiler plate
+To: Ben Horgan <ben.horgan@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
+Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>
+References: <20250910204309.20751-1-james.morse@arm.com>
+ <20250910204309.20751-8-james.morse@arm.com>
+ <d9f6bfa6-4d58-4467-aa97-4e46f88e919e@arm.com>
+Content-Language: en-GB
+From: James Morse <james.morse@arm.com>
+In-Reply-To: <d9f6bfa6-4d58-4467-aa97-4e46f88e919e@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 16, 2025 at 12:45:17AM -0700, Chris Li wrote:
-> If the liveupdate flag has LU_BUSMASTER or LU_BUSMASTER_BRIDGE, the
-> device is participating in the liveupdate preserving bus master bit in the
-> PCI config space command register.
+Hi Ben,
+
+On 17/09/2025 12:03, Ben Horgan wrote:
+> On 9/10/25 21:42, James Morse wrote:
+>> Probing MPAM is convoluted. MSCs that are integrated with a CPU may
+>> only be accessible from those CPUs, and they may not be online.
+>> Touching the hardware early is pointless as MPAM can't be used until
+>> the system-wide common values for num_partid and num_pmg have been
+>> discovered.
+>>
+>> Start with driver probe/remove and mapping the MSC.
+
+>> diff --git a/drivers/resctrl/Makefile b/drivers/resctrl/Makefile
+>> new file mode 100644
+>> index 000000000000..92b48fa20108
+>> --- /dev/null
+>> +++ b/drivers/resctrl/Makefile
+>> @@ -0,0 +1,4 @@
+>> +obj-$(CONFIG_ARM64_MPAM_DRIVER)			+= mpam.o
+>> +mpam-y						+= mpam_devices.o
+>> +
+>> +cflags-$(CONFIG_ARM64_MPAM_DRIVER_DEBUG)	+= -DDEBUG
 > 
-> Avoid writing to the PCI command register for the bus master bit during
-> boot up.
-> 
-> Signed-off-by: Chris Li <chrisl@kernel.org>
-> ---
->  drivers/pci/liveupdate.c | 6 ++++++
->  drivers/pci/pci.c        | 7 +++++--
->  2 files changed, 11 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> index 1b12fc0649f479c6f45ffb26e6e3754f41054ea8..a09a166b6ee271b96bce763716c3b62b24f3edbb 100644
-> --- a/drivers/pci/liveupdate.c
-> +++ b/drivers/pci/liveupdate.c
-> @@ -377,6 +377,12 @@ static void pci_dev_do_restore(struct pci_dev *dev, struct pci_dev_ser *s)
->  	pci_info(dev, "liveupdate restore flags %x driver: %s data: [%llx]\n",
->  		 s->flags, s->driver_name, s->driver_data);
->  	list_move_tail(&dev->dev.lu.lu_next, &probe_devices);
-> +	if (s->flags & (LU_BUSMASTER | LU_BUSMASTER_BRIDGE)) {
-> +		u16 pci_command;
-> +
-> +		pci_read_config_word(dev, PCI_COMMAND, &pci_command);
-> +		WARN_ON(!(pci_command & PCI_COMMAND_MASTER));
-> +	}
->  }
->  
->  void pci_liveupdate_restore(struct pci_dev *dev)
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 9e42090fb108920995ebe34bd2535a0e23fef7fd..2339ac1bd57616a78d2105ba3a4fc72bbf49973e 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -2248,7 +2248,8 @@ static void do_pci_disable_device(struct pci_dev *dev)
->  	pci_read_config_word(dev, PCI_COMMAND, &pci_command);
->  	if (pci_command & PCI_COMMAND_MASTER) {
->  		pci_command &= ~PCI_COMMAND_MASTER;
-> -		pci_write_config_word(dev, PCI_COMMAND, pci_command);
-> +		if (!(dev->dev.lu.flags & (LU_BUSMASTER | LU_BUSMASTER_BRIDGE)))
-> +			pci_write_config_word(dev, PCI_COMMAND, pci_command);
+> s/cflags/ccflags/
 
-I think changing the semantics of interfaces like this is a problem
-because callers rely on the existing semantics, and it's hard to
-reason about how this change would affect them.  How would you update
-the kernel-doc to reflect this change?
 
-do_pci_disable_device() is used in the PM suspend, freeze, and
-poweroff paths.  I suppose those paths are allowed even when devices
-have been marked with LU_BUSMASTER/LU_BUSMASTER_BRIDGE?  And I assume
-you probably would want the existing semantics there?
+Fixed, thanks,
 
-I.e., if a device has been marked with LU_BUSMASTER, you want to keep
-its bus mastering enabled across a liveupdate kexec.  But if we
-suspend before doing the kexec, I assume we would still want to clear
-bus mastering on suspend and restore bus mastering on resume?
-
-The other path that uses do_pci_disable_device() is
-pci_disable_device(), which is primarily used in driver .remove()
-methods.  You have to modify drivers to support liveupdate anyway, so
-if we call driver .remove() methods during a liveupdate kexec, I think
-you should change the .remove() method so it only calls
-pci_disable_device() when you want bus mastering disabled.
-
->  	}
->  
->  	pcibios_disable_device(dev);
-> @@ -4276,7 +4277,9 @@ static void __pci_set_master(struct pci_dev *dev, bool enable)
->  	if (cmd != old_cmd) {
->  		pci_dbg(dev, "%s bus mastering\n",
->  			enable ? "enabling" : "disabling");
-> -		pci_write_config_word(dev, PCI_COMMAND, cmd);
-> +
-> +		if (!(dev->dev.lu.flags & (LU_BUSMASTER | LU_BUSMASTER_BRIDGE)))
-> +			pci_write_config_word(dev, PCI_COMMAND, cmd);
->  	}
->  	dev->is_busmaster = enable;
->  }
-> 
-> -- 
-> 2.51.0.384.g4c02a37b29-goog
-> 
+James
 
