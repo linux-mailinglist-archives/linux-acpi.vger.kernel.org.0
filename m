@@ -1,264 +1,133 @@
-Return-Path: <linux-acpi+bounces-17388-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17389-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB99BA865E
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 10:30:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93FC3BA8830
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 11:04:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 577EE17039C
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 08:30:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AE3A1896BDA
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Sep 2025 09:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CBD1F582C;
-	Mon, 29 Sep 2025 08:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9732723C506;
+	Mon, 29 Sep 2025 09:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="IpXqMdPh"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="hFqxCdsE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735571F130B
-	for <linux-acpi@vger.kernel.org>; Mon, 29 Sep 2025 08:30:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA6C208994;
+	Mon, 29 Sep 2025 09:04:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759134653; cv=none; b=VWLOs7QbtAXLoaoBrTxujyFmUO1GrwZIjJQJEZHNjSUDaIdv47fucxtpNqARxW8vYYN0kWPVYWdBupTOZlHDH9PLTJ8tmBhsS8iyXvSqI1Cuao+8nu5lBz3wV5zr1vNtiA6mnxabAGMhPZPRJ/vIuIvVbDsDon4PmtI1PGDOCbg=
+	t=1759136650; cv=none; b=a64SGGfNQzdTkVfJl8RJOmfP8HfeMpCwcXOrECjXWmkBXUzmMHY6KPLxxA8O8lexShNR0ckeVv7tPZb+w452Mxpn5C82+nQrxxSTVqhvB7EkG5I+8OjvutD3A4v3+4g4lIqeRvtjJK9d/A+JV8/CK/T1zhQbiVN+1vm2V2mnVy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759134653; c=relaxed/simple;
-	bh=1yWrEi955nPPvBu1m9KwQaY5HyLcEXUxbZckZNeDmWE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GKOfVQpACF2/q6nhAMdqIq9ObcHtSmH1DT5/V7MzeymDiDSXfC/4ymNV5oFOi3ym1Wl9a4vb5xmIvCAA3SNClossuQP8kLGuMTGV52MH1bLjANKCzu59c9kAWhgxThBsapA+Ta3QZSnz5zU6My8xFSGmIjidjHtwVOztbd1e39E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=IpXqMdPh; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-57d93a4b5e5so5024150e87.3
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Sep 2025 01:30:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1759134649; x=1759739449; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=UJONDUXJa/G+AY4kgKaGSYPSvsqZ+MAfDWA2lmXRRpc=;
-        b=IpXqMdPho9g6CT24o5ZwTclNZciefBRbPeuJYlYGsGM0zMrolwEGdMMBNpkIeY5Cmr
-         jiL14FFLtOZbSrums49rO0jTa5tovzbezmPVQPFsRlnzI286KopVySdyDXjcug/HpTV5
-         YQ2iFwnqyGDI6FsogC4476jbaBgshaY1vrc8Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759134649; x=1759739449;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UJONDUXJa/G+AY4kgKaGSYPSvsqZ+MAfDWA2lmXRRpc=;
-        b=nnwRp1kjjF5ZJIlirgZQeI86d8LuN49wsDEYfVFFw953GIDfOd1nNYKJbLlLZLcE7t
-         yQJDc8HWjdgOOkytTqEDBDt1ZqM4fBu4UZYkaQliDgM6PKh56VO0BRtGsomTLZX0hinS
-         o/4FFzduNHtoqWj5+gyaW2hDLs8wuJ5U0Z9z4AGLGTERKtchzml9Fjl147rQdWjHTxvM
-         OB8JEWLofUDFwX1qCE3NI/ApkpEqtaerfPh6t82xEbPkRWyLrwfeFkxam3+ARifr1JM5
-         YLaogs1+YNUB4Gr3g4IQOZ+y5s2EL5j2bkPsWJTVtGYO6py92VBvb0kli9YkkRz2z8X6
-         islQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXVafyRtNevoUrKq1tOX1xvlGgzubdU3ohu5n1b3RLNId8A+ZtqBaok35DaG88RM3RQszfAL/x+0zOj@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2Kp9vTxj+xA4NislJLW0C3h05i9QL4SHTz7WDtiGyZlvctRln
-	lCNad5dZe+N0JQYOElbfxtU9cnse5LCJnS4uA+hCANZHrxBJjuArhNM+ym16Hhv3kqvxPrZYc4L
-	DcJQ=
-X-Gm-Gg: ASbGnct3x3pGCAbMBgYRgQhneoIuevw8myq6uBofPiCk1JF+LiojGhZjHBqLr0M1U95
-	LS7rs2dVhscVtcRT/Rpwzn4WDPyyMk8oLMSZnYiK1CAEad/YNtt+71Mo5wgKJfg02KTiwoqotpk
-	n0AcuZey/iFDE9LBDRLAMk8rl7kQsIc/RLn4v9Qrst/54F/UKaAWexiTEOXLC0pdopNgC8XWoB+
-	IWWK56IZJQLioJQ7t4iLNviUFRp7X7BVgdEk+eygBthkLT6tWGk6P3bFmPIJCC1w67NEXuf+9c5
-	0a2hTDOxL4RtsaLSE7Azx/WMK/0JwyHNRj1ZBGi7OY7MzZQj5H8xsTz/UO5SJEjUfDTmlh1KKCH
-	vx0f5AWdhoBihQk5wYLokYMr7QtocTTdx53TsHUdE9bNuRtOhdVDmsO3pRXm+
-X-Google-Smtp-Source: AGHT+IEBCfVHNUTUIcprqzAmRgov3ymWoV+6wbPsq+UU+TH8gABbq6rYK9ZVhhdhAd7+rhiQuA36UA==
-X-Received: by 2002:a05:651c:1989:b0:36c:ebb0:821c with SMTP id 38308e7fff4ca-36f7d2c5070mr58712111fa.7.1759134649437;
-        Mon, 29 Sep 2025 01:30:49 -0700 (PDT)
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com. [209.85.167.52])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-36fb0eb4a90sm26128811fa.0.2025.09.29.01.30.48
-        for <linux-acpi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Sep 2025 01:30:48 -0700 (PDT)
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-57b35e176dbso5484619e87.1
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Sep 2025 01:30:48 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWrnNm43481o0Pm62us+AS1rOorbENduu25wScSOaS2F0M4P/oYShsb3otZm4mEzwahnGPpYp2XUt20@vger.kernel.org
-X-Received: by 2002:a05:6512:1102:b0:57c:2474:3740 with SMTP id
- 2adb3069b0e04-582d3f76e30mr4820322e87.46.1759134647732; Mon, 29 Sep 2025
- 01:30:47 -0700 (PDT)
+	s=arc-20240116; t=1759136650; c=relaxed/simple;
+	bh=Pvnrp3hxvsLyvMPzdpgX1QHFoUDsSYJDUnUwTU+Kr5M=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=kXJMVm6UjLnPoD9440oIejUJsA2m9c7yQE8KR0Q3ZODzIham8t24YDGE0nDTL/4FGCAxoyPCDyQCVmy1/eVFIhseMTADuiuO2JapjJZybYLpY6a4ZMyaGc7rxz84jx6l/hbiYv8QalOA2gVDh6uosFYSzm8LfQaOoGGGV1nhogM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=hFqxCdsE; arc=none smtp.client-ip=113.46.200.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=/HWtjlVeP9SWCpKiQq9t3W3n3XGxDg3Htcl9KL67snA=;
+	b=hFqxCdsEfRxs/FrcxYa4h9sSffmskYQpWXOj8ApJEsUTmk86LI/ialmiYmGTL18eGQy99luT8
+	HPrNDS9CmOr9U4HVet1tsGDllEIEsbFAzhgec5mvR1c9ZPsZq/WHYoPiwSJPKu6LkEZ2rkGzM7y
+	67jd7anWvZ9AjtvIkNfDHQM=
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4cZwGv3b0Yz12LGD;
+	Mon, 29 Sep 2025 17:04:07 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3C615180488;
+	Mon, 29 Sep 2025 17:03:59 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 29 Sep 2025 17:03:58 +0800
+Subject: Re: [PATCH v3] ACPI: AGDI: Add interrupt signaling mode support
+To: "Kazuhiro Abe (Fujitsu)" <fj1078ii@fujitsu.com>, 'Ilkka Koskinen'
+	<ilkka@os.amperecomputing.com>, 'Sudeep Holla' <sudeep.holla@arm.com>
+CC: 'Lorenzo Pieralisi' <lpieralisi@kernel.org>, "'Rafael J. Wysocki'"
+	<rafael@kernel.org>, 'Len Brown' <lenb@kernel.org>,
+	"'linux-acpi@vger.kernel.org'" <linux-acpi@vger.kernel.org>,
+	"'linux-arm-kernel@lists.infradead.org'"
+	<linux-arm-kernel@lists.infradead.org>, "'linux-kernel@vger.kernel.org'"
+	<linux-kernel@vger.kernel.org>
+References: <20250905042751.945616-1-fj1078ii@aa.jp.fujitsu.com>
+ <bd45c06a-77cc-2ab3-122e-41dee1aee0ac@os.amperecomputing.com>
+ <TY3PR01MB99836C3D57503E70C8B8C9E9D509A@TY3PR01MB9983.jpnprd01.prod.outlook.com>
+ <TY3PR01MB9983025D434CAA2CDF83656BD511A@TY3PR01MB9983.jpnprd01.prod.outlook.com>
+ <3bbdc50e-a55c-96ed-a8db-6bbce1760ee4@huawei.com>
+ <TY3PR01MB9983E784E31A612B9BA23255D51BA@TY3PR01MB9983.jpnprd01.prod.outlook.com>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <b8ab020f-8298-cadd-70ee-9325c32b968f@huawei.com>
+Date: Mon, 29 Sep 2025 17:03:57 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250926-uvc-orientation-v3-0-6dc2fa5b4220@chromium.org>
- <20250926-uvc-orientation-v3-7-6dc2fa5b4220@chromium.org> <20250926-mute-boil-e75839753526@spud>
-In-Reply-To: <20250926-mute-boil-e75839753526@spud>
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 29 Sep 2025 10:30:35 +0200
-X-Gmail-Original-Message-ID: <CANiDSCuddqjeDr80xKsZZP7CXu9qB5qqYPoZujNYLcVjK0kKkg@mail.gmail.com>
-X-Gm-Features: AS18NWDuABHOrlsFlY-rDCN1sMikoapkz5ecsd4Y1lKthbQuEsgF6GxQRq0htYQ
-Message-ID: <CANiDSCuddqjeDr80xKsZZP7CXu9qB5qqYPoZujNYLcVjK0kKkg@mail.gmail.com>
-Subject: Re: [PATCH v3 07/12] dt-bindings: media: Add usb-camera-module
-To: Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>
-Cc: Hans de Goede <hansg@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, Hans Verkuil <hverkuil@kernel.org>, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-usb@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <TY3PR01MB9983E784E31A612B9BA23255D51BA@TY3PR01MB9983.jpnprd01.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-Hi Conor
+On 2025/9/29 15:32, Kazuhiro Abe (Fujitsu) wrote:
+> Hi Hanjun,
+> 
+>>> Hi Hanjun & Sudeep
+>>>
+>>>> Hi Ilkka
+>>>>
+>>>>> Hi Kazuhiro,
+>>>>>
+>>>>> On Fri, 5 Sep 2025, Kazuhiro Abe wrote:
+>>>>>> AGDI has two types of signaling modes: SDEI and interrupt.
+>>>>>> Currently, the AGDI driver only supports SDEI.
+>>>>>> Therefore, add support for interrupt signaling mode The interrupt
+>>>>>> vector is retrieved from the AGDI table, and call panic function
+>>>>>> when an interrupt occurs.
+>>>>>>
+>>>>>> Signed-off-by: Kazuhiro Abe<fj1078ii@aa.jp.fujitsu.com>
+>>>>>
+>>>>> Looks good to me.
+>>>>>
+>>>>> Reviewed-by: Ilkka Koskinen<ilkka@os.amperecomputing.com>
+>>>>>
+>>>> Thanks for your review.
+>>>>
+>>>> Best Regards,
+>>>> Kazuhiro Abe
+>>>>
+>>>>> Hanjun & Sudeep, what's your thought on enabling the use of regular
+>>>>> interrupts here? I do agree the spec talks about non-maskable ones
+>>>>> and to my understanding that's what the idea was indeed.
+>>> Do you have any thoughts on this matter?
+>> For the real use case, if the system is in failure state, for example, the system is
+>> panic, the CPU will not handle regular interrupts, so what's the use case do you
+>> have to use regular interrupt?
+> This driver is designed to operate with NMI enabled.
+> 
+> However, on current ARM64 platforms, NMI functionality may not be active unless
+> "pseudo NMI" is explicitly specified via a kernel command-line parameter.
+> In such scenarios, we've included regular interrupt handling as a last resort,
+> anticipating rare cases where some cores might still be able to receive regular
+> interrupts even if other cores are unresponsive.
+> 
+> To reiterate, the underlying assumption is that NMI(now pseudo NMI) is enabled for use.
 
-On Fri, 26 Sept 2025 at 18:55, Conor Dooley <conor@kernel.org> wrote:
->
-> On Fri, Sep 26, 2025 at 01:11:31PM +0000, Ricardo Ribalda wrote:
-> > For fixed cameras modules the OS needs to know where they are mounted.
-> > This information is used to determine if images need to be rotated or
-> > not.
-> >
-> > ACPI has a property for this purpose, which is parsed by
-> > acpi_get_physical_device_location():
-> > https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/06_Device_Configuration/Device_Configuration.html#pld-physical-location-of-device
-> >
-> > In DT we have similar properties for video-interface-devices called
-> > orientation and rotation:
-> > Documentation/devicetree/bindings/media/video-interface-devices.yaml
-> >
-> > Add a new schema that combines usb/usb-device.yaml and
-> > media/video-interface-devices.yaml
-> >
-> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > ---
-> >  .../bindings/media/usb-camera-module.yaml          | 46 ++++++++++++++++++++++
-> >  MAINTAINERS                                        |  1 +
-> >  2 files changed, 47 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/media/usb-camera-module.yaml b/Documentation/devicetree/bindings/media/usb-camera-module.yaml
-> > new file mode 100644
-> > index 0000000000000000000000000000000000000000..e4ad6f557b9151751522e49b72ae6584deb0c7ba
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/media/usb-camera-module.yaml
-> > @@ -0,0 +1,46 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/media/usb-camera-module.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: USB Camera Module
-> > +
-> > +maintainers:
-> > +  - Ricardo Ribalda <ribalda@chromium.org>
-> > +
-> > +description: |
-> > +  This schema allows for annotating auxiliary information for fixed camera
-> > +  modules. This information enables the system to determine if incoming frames
-> > +  require rotation, mirroring, or other transformations. It also describes the
-> > +  module's relationship with other hardware elements, such as flash LEDs or
-> > +  Voice Coil Motors (VCMs).
-> > +
-> > +allOf:
-> > +  - $ref: /schemas/usb/usb-device.yaml#
-> > +  - $ref: /schemas/media/video-interface-devices.yaml#
-> > +
-> > +properties:
-> > +  reg:
-> > +    maxItems: 1
-> > +
->
-> What actually causes this schema to be applied? Did I miss it getting
-> included somewhere?
+OK. Please send a new version, I will ack it
+if you address my comments.
 
-I guess your question is why I have not defined the compatible field?
-
-I tried this change[1] with no luck:
-/usr/local/google/home/ribalda/work/linux/Documentation/devicetree/bindings/media/uvc-camera.example.dtb:
-device@1 (uvc-camera): compatible: ['uvc-camera'] does not contain
-items matching the given schema
-
-I think it failed, because If we add these allOfs as Rob proposed
-https://lore.kernel.org/all/20250625185608.GA2010256-robh@kernel.org/:
-```
-allOf:
-  - $ref: /schemas/usb/usb-device.yaml#
-  - $ref: /schemas/media/video-interface-devices.yaml#
-```
-We cannot (or I do not know how to) have a different compatible than
-the one from usb-device.yaml
-
-
-Any suggestion on how to do this properly will be highly appreciated :)
-
-Thanks!
-
-
-
-[1]
-
-@@ -21,10 +21,14 @@ allOf:
-   - $ref: /schemas/media/video-interface-devices.yaml#
-
- properties:
-+  compatible:
-+    const: uvc-camera
-+
-   reg:
-     maxItems: 1
-
- required:
-+  - compatible
-   - reg
-
- additionalProperties: true
-@@ -38,8 +42,8 @@ examples:
-         #size-cells = <0>;
-
-         device@1 {
--            compatible = "usb123,4567";
-+           compatible = "uvc-camera";
-             reg = <2>;
-             orientation = <0>;
-             rotation = <90>;
-         };
-
->
-> > +required:
-> > +  - reg
-> > +
-> > +additionalProperties: true
-> > +
-> > +examples:
-> > +  - |
-> > +    usb@11270000 {
-> > +        reg = <0x11270000 0x1000>;
-> > +        interrupts = <0x0 0x4e 0x0>;
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        device@1 {
-> > +            compatible = "usb123,4567";
-> > +            reg = <2>;
-> > +            orientation = <0>;
-> > +            rotation = <90>;
-> > +        };
-> > +    };
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index ee8cb2db483f6a5e96b62b6f2edd05b1427b69f5..1503502a3aed2625e8ff488456ccd7305cc74ba7 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -26258,6 +26258,7 @@ L:    linux-media@vger.kernel.org
-> >  S:   Maintained
-> >  W:   http://www.ideasonboard.org/uvc/
-> >  T:   git git://linuxtv.org/media.git
-> > +F:   Documentation/devicetree/bindings/media/usb-camera-module.yaml
-> >  F:   Documentation/userspace-api/media/drivers/uvcvideo.rst
-> >  F:   Documentation/userspace-api/media/v4l/metafmt-uvc-msxu-1-5.rst
-> >  F:   Documentation/userspace-api/media/v4l/metafmt-uvc.rst
-> >
-> > --
-> > 2.51.0.536.g15c5d4f767-goog
-> >
-
-
-
---
-Ricardo Ribalda
+Thanks
+Hanjun
 
