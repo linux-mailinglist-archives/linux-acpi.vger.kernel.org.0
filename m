@@ -1,241 +1,456 @@
-Return-Path: <linux-acpi+bounces-17439-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17440-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1095BAB17D
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Sep 2025 04:53:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC5CBABA30
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Sep 2025 08:11:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 561F33C339B
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Sep 2025 02:53:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4853B1C2BD7
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Sep 2025 06:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4E021D3D9;
-	Tue, 30 Sep 2025 02:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756A825A2A7;
+	Tue, 30 Sep 2025 06:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="s2JBOWKp";
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="rM60Sdj5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZeKnPmI+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from esa20.fujitsucc.c3s2.iphmx.com (esa20.fujitsucc.c3s2.iphmx.com [216.71.158.65])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6B01EA7CC;
-	Tue, 30 Sep 2025 02:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=216.71.158.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413C7211290;
+	Tue, 30 Sep 2025 06:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759200778; cv=fail; b=WMsEpwlAh5rVCb0F8rizWQLKWhfivEF1x+/r7tCfYSJuhCTuU6fkRMa1p0DiGhiV30UXuqMpYUpD3vvwR8pOEqbpZVZ85ejPkBNy76gQjK3Ier9cAOqwj8KxxcPagab6rQfGNSQHoHBYAZbgU1xEyXgqbasDjhNjvmlsPu5LG8k=
+	t=1759212704; cv=fail; b=dYUNITC6VczCNEHMky1vxKjOgfLutlB69N0IMMnU/Yl4r8FLEZ7KTH0mAXe095bO9mXxHgQpJJoPgyC519fivJckiCoDIl+rleWoS167Y4ZhjcAeborzuDTeNM51jD5PgBRXBeKe64Irw40yHX9q1M3TA7gIVrv0gGzrX3Zhv3o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759200778; c=relaxed/simple;
-	bh=zRQkAQnSgpfmgfN0B3dbu8FfZWGDAy7m5bmxAx5vycE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=QGZCol9cSUzfKDFpbQ74g7Dl3B5uoIitgrRdcaQO/A5fbDZPhREGi4BRmmyL3xwPbfT4vF94vJs4/3bofJ9JG+/3HeI4rLi1J6j8OIgDSgs+0kWjgwnNDPJxIPMeigmKvS4fsSfRafkX2X+9NETGm9nA510qfeqJ/E1yNMFvLm4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=s2JBOWKp; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=rM60Sdj5; arc=fail smtp.client-ip=216.71.158.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
-  t=1759200777; x=1790736777;
-  h=from:to:cc:subject:date:message-id:references:
+	s=arc-20240116; t=1759212704; c=relaxed/simple;
+	bh=vjEmujGouTtzjdRWtWZC2KQZm2cqFKqI36ns5O4H98o=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=GbjrlbSDVZwiaOOtIHCA5+ws+pVA+1xvQKH3Oz9LuHHBIG4paIVbTWsjKuY4RrwFqyfw/KG5uyUD7NVaXD/Yr3zJRnPoZCRDF1Z+9+LofguXn7bZGBUTp5F8urmCmkmw1qGEV21dL31TxlRj83TkVUkSWHb/QC8oLD04xO63Dns=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZeKnPmI+; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759212702; x=1790748702;
+  h=message-id:date:subject:to:cc:references:from:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=zRQkAQnSgpfmgfN0B3dbu8FfZWGDAy7m5bmxAx5vycE=;
-  b=s2JBOWKpQRs95QIDn3qK1M9RBquSCrjQuwYnkLUi2h04QcWln0DuDxO6
-   QquDNqWDwK/wcjoYfsNtxMw5mwwClaRuxm/9HBiVaB0ZE5P/wPjnhX7KB
-   0C5ttbHN6GP9F+GbuV6OJ0DATOmPUt17K9cR45pj+T0n1DgQxt99GEK0o
-   a0jy9Q4ULV6qzhzEZ6a6ob3kOb+6RoO5y69/+3I2OYpVM4LN4hqXVqkvo
-   rui8GvSMRxvMKdImgNjK/bSXU1/TCM+HLPxsch0AD+KeH52eBmfW5tCPb
-   u/l475z9uTvGy/y8L0Re7vf4uSoXpjcmkOm03oDXtTR/ypTip+/CuONfI
-   A==;
-X-CSE-ConnectionGUID: zXjX1hCZTxWVok/ZiQKRMQ==
-X-CSE-MsgGUID: Tq+Gxo/6RQ2C04Wiv8U9Ww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="169276850"
-X-IronPort-AV: E=Sophos;i="6.18,303,1751209200"; 
-   d="scan'208";a="169276850"
-Received: from mail-japaneastazon11011068.outbound.protection.outlook.com (HELO TYVP286CU001.outbound.protection.outlook.com) ([52.101.125.68])
-  by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 11:51:38 +0900
+  bh=vjEmujGouTtzjdRWtWZC2KQZm2cqFKqI36ns5O4H98o=;
+  b=ZeKnPmI+ISucfm9gq2i6H7CbRZ14lAV1toiXt7GkfQPzoeTRycu3+hxT
+   /EZf3hxXXsItLzKChKyHgHsW6BirunnWQCGGLDvQf5Ij4whK0qxZ/srv/
+   ZshUmxB0OwOOY+PkQ6HJOd5BgdZ1Yxy0Nijw0rqmiA9KvPz2morVH7PDz
+   poX1EYyLNGQkpB9tz7W1cnk6/ZEcyJo1SvDGQqlW+i+E1Ieqwp7Cekv+O
+   FgYrmxXl0L3lkarybJx81PxEabZSFMVeuvurOffyjmQvjmKLy4eEyy1iP
+   F4iOGHNQKmnvA3K43oRSRYeo2T8Lgw8rMAmpA1L7f5m+HZDzw8KKvQRyv
+   Q==;
+X-CSE-ConnectionGUID: 9gb0v0G6QJaJrRN4y52spg==
+X-CSE-MsgGUID: whcMnfvtQ6ShKnugdb+FXA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="49022593"
+X-IronPort-AV: E=Sophos;i="6.18,303,1751266800"; 
+   d="scan'208";a="49022593"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2025 23:11:41 -0700
+X-CSE-ConnectionGUID: V4XAiSHkSPywe9c7BHyHWw==
+X-CSE-MsgGUID: KSWQYjMiT/KHSUtr4WJ7oQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,303,1751266800"; 
+   d="scan'208";a="183617831"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2025 23:11:40 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Mon, 29 Sep 2025 23:11:40 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Mon, 29 Sep 2025 23:11:40 -0700
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.39) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Mon, 29 Sep 2025 23:11:39 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oOWBp0PUSf2jD1bpdmqcMpQG8RkXY17D7s0N94hoZ5mPdG+rL0ie4TTQKDgRSI1et0+A+YJZuMh/uAggC0dZxnTaPkruTh4EaKL1ycw3FEgJ8/AZrshUvxj58Y+3c+/EZtr4hWLSIaBo4EDiljkrPji+AyFEkpFjPXYt6NVT31fZSOSIZ8VAwe4tExrzJM7T4JtYZiLVV9nPmcEzSmhe7O7ruqih5mkNFPmZNW3E4LRilTmNfsBlUQKUqjgjs+jGEmmU1NY6W+zGPRZm/4qigfHhYqSvMZcMy1nHyoBgtXHhJbdbP3A2/JqDbrBfMHqotYXJYIC4Yi/Lhh6jAtZaug==
+ b=yIRVTEk+5zmGRhzJrpYdD5fM6kuwW3wU12JkfmeBCYJiPuw9tFjQqCVtpS+JVcic7DdDf44Cb/4yWjRmN1IhFhwgaSw36cUb3moz8yCMFyvm70kMCWpF9vw945bohZixxaCD/vOH2BZjx6v5kzT1Tknrv3+gnr/V9p9g56cn2waLOmo7KuFabn3qhLRDDWpC6+8pru/KqQWYxXFJ4smJwufByWCBTSAkFmfHPJGyWYmr1xLvh4FH4CW+NWWUeSiMEl3/f+fsMdE1YCrYIsgefYT6vxCmH/pfxzlowsi1Og1ftrlOoIS5ltb6Y66ThDqAes6vcUR3S1X3G3a62+V3uQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zRQkAQnSgpfmgfN0B3dbu8FfZWGDAy7m5bmxAx5vycE=;
- b=i9yaU4vSu3GAKui8zzizaUYtivXd7qjX1cgcsSkO78FZBMJ7kqMyP/kvMeAp1slfp5wpHfKE00180lmKhVtArKNlI6QTwcp72lh3mToxZmdYyh6p86I7N7KVvVg/LYpP0NclSzIAZTSyHnIzZzMINF9OfrgSIMBqGcpRh6IHvLn4kH+jP0E/jfYMIc7+0EHnWhFUi+rU3aJM75ZrdHAmudcOI5l7BVkh+JF6NBF20XejEsnkZYfsBT7mULit11XUZCoBTl3ephF9ZPWJt0NWiDWoL757FDxq090jsMwLPkLt4N9igfuwtPWsUUIPK7MKD3hoXlPEGeq9txbfP90ReQ==
+ bh=MdZ7zEZYqRLwdHCOzjat6xzb6jIl2qwQ6MZoyEuKRmM=;
+ b=hd8477jYoK8RghGp1ASCfucIJmklG/dUK59/05H2JvLN1PSBW01nxsKg3vGKHUfFbmbZ0065LBZQYgLeO/PYj+n8xGA2pPcaz7Ef35twrGMUIiTHKrsHUu/QGA7y7jscuJwXkRkB2m+I1mWyCypE0wlicBHWFQ23ylinkVJ3yKtw28nvDR3pwatabBJIHbvEb60Llya6yPKUarmIy42p5XFCA6ZjqZbcWxyl5yfNOrHof+ss9VSCYr+XGDAeMD9xc4J8MZIQogP6p7rfG08dTLFF3bjSdXJlyIsipygGnRDL3DqbOHm/xQfhSO403HKecCuOS1J3c5Kqo9AGNBRYGQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
- dkim=pass header.d=fujitsu.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fujitsu.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zRQkAQnSgpfmgfN0B3dbu8FfZWGDAy7m5bmxAx5vycE=;
- b=rM60Sdj5/d+b1gEQudYWSpeORRjbPo7fM/tXA6l66TF42Nwia5g+lSYNOd8W/MGXBZTojLmldpDNYG5PVNDiBuabsxxFaoCw8eMSpFHQG0xEhSYF9JOoiJ9sn3LCfvQMW6qN2LOLzknFeJZ32squWpvneQ4oGaKIBz4ex65wgahnHCtWBZkjdC2V5W+oZ+k4iJXXTMxWatRl+OIK5GFqExopaXfOOmEOXZWUKaL9cSI4B4jLti4K9+SzdwB39LSVhT1Se6u1gH3rLAEBK+GkEbrezwA8r0i4qJ0NAWnYROuUTqJ2B1b80HLo/xd/vZ2z689dwiCzuzxiAl4GvE7TsA==
-Received: from OSZPR01MB8798.jpnprd01.prod.outlook.com (2603:1096:604:15f::6)
- by OSCPR01MB13519.jpnprd01.prod.outlook.com (2603:1096:604:32e::13) with
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BN9PR11MB5530.namprd11.prod.outlook.com (2603:10b6:408:103::8)
+ by DM3PPFE50071912.namprd11.prod.outlook.com (2603:10b6:f:fc00::f57) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.17; Tue, 30 Sep
- 2025 02:51:34 +0000
-Received: from OSZPR01MB8798.jpnprd01.prod.outlook.com
- ([fe80::4344:1f7b:e34d:c672]) by OSZPR01MB8798.jpnprd01.prod.outlook.com
- ([fe80::4344:1f7b:e34d:c672%5]) with mapi id 15.20.9160.015; Tue, 30 Sep 2025
- 02:51:34 +0000
-From: "Shaopeng Tan (Fujitsu)" <tan.shaopeng@fujitsu.com>
-To: 'James Morse' <james.morse@arm.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>
-CC: D Scott Phillips OS <scott@os.amperecomputing.com>,
-	"carl@os.amperecomputing.com" <carl@os.amperecomputing.com>,
-	"lcherian@marvell.com" <lcherian@marvell.com>, "bobo.shaobowang@huawei.com"
-	<bobo.shaobowang@huawei.com>, "baolin.wang@linux.alibaba.com"
-	<baolin.wang@linux.alibaba.com>, Jamie Iles <quic_jiles@quicinc.com>, Xin Hao
-	<xhao@linux.alibaba.com>, "peternewman@google.com" <peternewman@google.com>,
-	"dfustini@baylibre.com" <dfustini@baylibre.com>, "amitsinght@marvell.com"
-	<amitsinght@marvell.com>, David Hildenbrand <david@redhat.com>, Dave Martin
-	<dave.martin@arm.com>, Koba Ko <kobak@nvidia.com>, Shanker Donthineni
-	<sdonthineni@nvidia.com>, "fenghuay@nvidia.com" <fenghuay@nvidia.com>,
-	"baisheng.gao@unisoc.com" <baisheng.gao@unisoc.com>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>, Rob Herring <robh@kernel.org>, Rohit Mathew
-	<rohit.mathew@arm.com>, Rafael Wysocki <rafael@kernel.org>, Len Brown
-	<lenb@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
-	<guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, Rohit
- Mathew <Rohit.Mathew@arm.com>
-Subject: RE: [PATCH v2 15/29] arm_mpam: Reset MSC controls from cpu hp
- callbacks
-Thread-Topic: [PATCH v2 15/29] arm_mpam: Reset MSC controls from cpu hp
- callbacks
-Thread-Index: AQHcIpPEqyLBgsVICUymIMwyozSg2LSrJL0g
-Date: Tue, 30 Sep 2025 02:51:34 +0000
-Message-ID:
- <OSZPR01MB8798CC570B0B9483109C58CE8B1AA@OSZPR01MB8798.jpnprd01.prod.outlook.com>
-References: <20250910204309.20751-1-james.morse@arm.com>
- <20250910204309.20751-16-james.morse@arm.com>
-In-Reply-To: <20250910204309.20751-16-james.morse@arm.com>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_ActionId=32fd4da4-6a70-41c8-88bf-0778d2c13ea7;MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_ContentBits=0;MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_Enabled=true;MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_Method=Standard;MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_Name=FUJITSU-RESTRICTED?;MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_SetDate=2025-09-30T02:50:14Z;MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_SiteId=a19f121d-81e1-4858-a9d8-736e267fd4c7;MSIP_Label_a7295cc1-d279-42ac-ab4d-3b0f4fece050_Tag=10,
- 3, 0, 1;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=fujitsu.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: OSZPR01MB8798:EE_|OSCPR01MB13519:EE_
-x-ms-office365-filtering-correlation-id: fdc9e458-3800-4754-55e5-08ddffcc4468
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|7416014|376014|1580799027|38070700021;
-x-microsoft-antispam-message-info:
- =?iso-2022-jp?B?Vm1BUkNBWE41dHZXU0xRS3VlTTZDK3VtOU1aWFhIdHZGTmJZdDNkdk5i?=
- =?iso-2022-jp?B?RU8ydm5hM3BYRDgwRnJXUzc0Ri9WK0xCR0I4UGRRa0c1MmZtQStrbFQz?=
- =?iso-2022-jp?B?TklzdFVKYXR5eXA4bWdlT2ErSk84OGVPbk10VXpkeXMvdkJFOC8va3pM?=
- =?iso-2022-jp?B?MzFORjk3TFZ5bk5TYlNHZWlaUGh0R2lKbVIrUmVXY0ZiY1JNenFHOFkz?=
- =?iso-2022-jp?B?VzBuMkNkR3FSR3FtU0tBYytEd1JmcDhITHA0VWQzMHZ1S3kyemEwTFV2?=
- =?iso-2022-jp?B?dkM1T05FWS9UUlgzWHB2UmRVOWE1Ty9ZY3VHOWo3K1NLSklvbVAwTVFE?=
- =?iso-2022-jp?B?NEhTZlp4d0lLNEc4UVArMFNPdE1uL0ZrcEw4eEovSEZ3ZUZhZ3lRd0dI?=
- =?iso-2022-jp?B?TE1EWVZiSnpFZW1NNGtLa3VkNFZxQWR6ejVNTkhQZ2RSNzI0Z0ZKemMr?=
- =?iso-2022-jp?B?M3llcHJnUmhjVk9EUkZjVFVLRUZPN2svajF3NlVJbTcxYUZzU0x3cXAr?=
- =?iso-2022-jp?B?eitMUTF1VFZGcmpTRFdkZGdiRDZUT3dUNXhQSG1HWnllUWJWRjRJMVBK?=
- =?iso-2022-jp?B?dHl1ODNxK3ZTZ0I0MEMzTDZ5Zm1tRkhIQWs3ZWlmcjBRNFZ5MHdsQ2xV?=
- =?iso-2022-jp?B?MXpwZzE2c1phRnd1aHhqRjAza3hhUkZia09mSlVXdGExU2xUWXpWekc3?=
- =?iso-2022-jp?B?ZnNac0VLZVNYZSs0bjVZUkJadjROZzNmQkZDb2RNRE1DRy9HVUZQWDdJ?=
- =?iso-2022-jp?B?M1RFeWFSczB3NVhqUGJSVEp4b01VdXVmL281NWgxK0g0Y1NXYmZITEpm?=
- =?iso-2022-jp?B?NkozdUdxVVpEQlBMNzNZT3JqM1RrTmVCYk9rdHB5MmtCUnlFdHVmWHVw?=
- =?iso-2022-jp?B?WUxrQThrU011VSsxZU1SMGtmMTJvQ2pjY2Nvajg5d2lwYzZaQ0xLR3Vj?=
- =?iso-2022-jp?B?YlVkTEI1RTRuSWZJOE1QV2NnKzU3VTk4eno3ckRPMFVnL05Nb1hxbEFX?=
- =?iso-2022-jp?B?NUx4cXJQRDY1RXo0T0JTbGpsWDhKTC85NDdyR0pvOVhnMmdRb2FMSE1Z?=
- =?iso-2022-jp?B?ZmczZ01ZMUtNeUFXajVNc1hHdjBsSWlldndjbDhiakdjbFgvb3BwZS9p?=
- =?iso-2022-jp?B?bnV2MVJ1TW11L3MzV01yd2NLSW9sOXBxL25YNGREbzVqc3Z5YUloVkRX?=
- =?iso-2022-jp?B?UDBHZXJ2RzBZYnMraEkvdXg4VUkzZDNYcUgvbmh6SVU4ajRMRGgzcGxZ?=
- =?iso-2022-jp?B?UXFiYzNmakZ1enhKNENBaXkyZlE1cld6bndlNWZ4UWpTOVJzK21PU2tt?=
- =?iso-2022-jp?B?MUlyNk91MS9VMDJkVVlHMUpaaDFlbzMxSGo5Ujk4MnduS2RRcFNRQzZx?=
- =?iso-2022-jp?B?Z0xPRzdIcXp5enlqbHMxelRLS2ozaFBJSE1rNWRwTy9YSy81b1o2SFFZ?=
- =?iso-2022-jp?B?SWpZUXBJRG0wdlVkOVoxcWZHTmVTclNZQTBtWXZVY1YwMnBuWkFQMzVE?=
- =?iso-2022-jp?B?V2ZXNlJveWwzUGJzT1NkUzZLN21tUDJJdWVyYWtCT0J2VU5ua25jejB3?=
- =?iso-2022-jp?B?Tjd4emdPWko3VHdlbk1yNzZFSGZsUTBrWGp0UlJhM1l0alBiNE5iT1NR?=
- =?iso-2022-jp?B?OWRhSExnWWtBU2tpSFlVS0VtOGYzOVZ1bTJZZDJDQW1xRG5QbkFEUU1Y?=
- =?iso-2022-jp?B?RnJsK0Zjak9sZElxY0lHcXJWUHpvTEo1THVvRFNVTG02THpvWi9abXg0?=
- =?iso-2022-jp?B?SkRZM051Q3pqMm15ZmMzM1FyN1RuQTFUY2laWU1HdHhwYTZPMTFQbWhM?=
- =?iso-2022-jp?B?alMxemVZaUtoeEV2VldxZTNHTzI4WUZ4VWpGVmFpVWkzTXQxVjVnR3lI?=
- =?iso-2022-jp?B?T2x1akxacXVKa28vVmlHbzN0SERsOWdhcXZLbHhBSUVPMDJ0V08zOUM2?=
- =?iso-2022-jp?B?VVJublRiZExQZHhES2J0eVV5ZTNkSzhOWi9NYTE0a1JoSjZFeVpab2sx?=
- =?iso-2022-jp?B?RGZMdWZyaURDaG4vZXc1RkYxei9IYVNzSTVLbHZXU1pacXRtL3p1UUJz?=
- =?iso-2022-jp?B?dEV4cnFTVkRTUmgzVGFIZEVwcWd6OXhPWkh4K0pHQjk5Z0tGeXpnMGZt?=
- =?iso-2022-jp?B?blREMG1SUVBFTlY0SE90ZkJ1Rlg1bnNsNzdHeWVqajI3azUyVG42bG9T?=
- =?iso-2022-jp?B?Q1VJN29aRFdaZThaWWVRQjhpTmd3M0xFZ2ludEdLYlE5c2RYeVFMK1Zm?=
- =?iso-2022-jp?B?TWU4Zz09?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:ja;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSZPR01MB8798.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(1580799027)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-2022-jp?B?L3BXMmZiLzVIcVhPUXFERlRCVHM0MFhmRkJnMmhRV1o2eGtXaW1GUWw1?=
- =?iso-2022-jp?B?UGpHZWtmOHdNZU1Va1F3SW4vTDBJTTB3MWJqYTQxUklYVjZjU2hnK0xF?=
- =?iso-2022-jp?B?UkZTTEh6OGEySmo3MlJudWJ3ZUREaUx3cUNGZERwcXljb0txZUFWZTAw?=
- =?iso-2022-jp?B?QndBak1HNFZoenVUMTUvcEhrSHVoaFBnME1hQkNibmcxU3BhTlBYSEpl?=
- =?iso-2022-jp?B?QXFvV2tLbVdKQW1WMUZFZ214QUZvMk9INU45N1ZRMzAyMDg1cFY4ang3?=
- =?iso-2022-jp?B?TXJLUS9sTXpQRk80WW16VGZYTWtBMTJVNTFvdDROcWFPRFQ1dnRoZ25T?=
- =?iso-2022-jp?B?b05PbzNrZUtWQjV2THREQ0JlVHY0bUsyTFRaTDdYZ2NYYk03aWhLU2Vx?=
- =?iso-2022-jp?B?d29EeTVmc1AwSVd2a0pUeExQMXNvR3NJckhIWFBPREhxc2VlNUJOU0NS?=
- =?iso-2022-jp?B?d2pmcHJkVWs2TUMvMi9Tbkc5dkprc1djLys5RnpJdHhkdmJLWVNBcHVw?=
- =?iso-2022-jp?B?bEJRblJzV2E1ZmxLK2NGMUNXK3BPL2xBZkgxa1FwTC9vbWNROVowUUNw?=
- =?iso-2022-jp?B?Y0I1NmcyWU0vUkkwM042NXhBakpKbGVMZmMrK3NUWW9mb2xUbDVGTGl3?=
- =?iso-2022-jp?B?RnpPOHcyL0RPaUwxcVBKb0V5NWFxWXVlallGcWFoU2pLSmNBZ3c3THR6?=
- =?iso-2022-jp?B?TU5pdEpYOE8xd3hyMXpkejRuMTJEZEh0cUFKSGFNdzl3NXBKZ0tNMFdt?=
- =?iso-2022-jp?B?MTZGR0tTZHMxakpQcDBpRFIvd013UWYxRFhkY1Rtc2tIajdBaThsbmJK?=
- =?iso-2022-jp?B?b29Xd2NQVW9Dd2tVNHJwTURMTGRtcFptZUxKV25LbWp5c2UvQzk1VXE1?=
- =?iso-2022-jp?B?ZmdpNzA1N2RicmJ0NzZ4Y0duV1JBeEtQMEFMZ3A2VHlCSld6eWlkT0oz?=
- =?iso-2022-jp?B?VzA4c0xrV3RMc05RUkMxcUhKamNBcFpyak84bFluRHlCdlhZT2Qza0VZ?=
- =?iso-2022-jp?B?Wk9TODRodnBXYXJZU21PRkpocktQTUdJdW90THVMMEMrWGxtcjNHcERV?=
- =?iso-2022-jp?B?SG0wTTFkYnQ3ZlovWTQzT0JOazFiRFV5SVpac2xzdk0vMG1wQ0R1OEFP?=
- =?iso-2022-jp?B?RXpMZCs1Qm1uc0Q3RW5mczZ6VC9YS2RLZXdrSXNNRnQ3ck1Mb29IZ2M1?=
- =?iso-2022-jp?B?WUdkeUVyR2tleWZOOUJIVm54eTlnTVArZnFacmdraG5rMndjYTlyZHNP?=
- =?iso-2022-jp?B?R3RrcGNUeVcxKzByc2dMQVVUbmVzYVFLcFBvdXJxUHBBdDBrdTI0dUxz?=
- =?iso-2022-jp?B?WnlKSjZVYmkvRHR2emloZUw2R0hkYzNXS1BUU01KSDgxNmsycVllSVFk?=
- =?iso-2022-jp?B?QXNDYzV3eVovbGhiM2dLOTM4Z2kxbG01SGR5WmVKN0pIQlVPbDBUSXds?=
- =?iso-2022-jp?B?OXI5YVZvQTlOeFBXM21URlBwRkxEWkdJbmpaQk5La2JwbUp0UjBKZGps?=
- =?iso-2022-jp?B?dndVRVVkb2R3L21FaEFBd0RYckQxRzFPbi9mSnBtMElkTENJaEkwUkJr?=
- =?iso-2022-jp?B?K1JnUVlnSUVsc2x3WWQrQ2piK01RYXhnTVJ3Wkw0QTNoQ0dxMTdzSXRH?=
- =?iso-2022-jp?B?ZGttNHB4UisvQWczK0tOZ1JxWVkvWkEzUE1WdnFzRHVvNUR1MDRtcDNZ?=
- =?iso-2022-jp?B?c09UTHEwNTNGWVV4STVMZlBVbGFLYU5MajFQRnZuNTJJc2krSnY1bjZ5?=
- =?iso-2022-jp?B?Wk03bkpXTUQyNHhnSGluYURobThyZVBYU3cwcCtGQnJZcFNQK3VjaFRG?=
- =?iso-2022-jp?B?OWNnS2VtdnlLUUdlRXkwVGU5OHdwcUtvNEdQaW9KYTFDVytHWUEzZElu?=
- =?iso-2022-jp?B?VTRkbnk5cGZVSFE3a0NGenBrL05pVGxvVTZ4MHJTSjM1TmJTTjVOa1NM?=
- =?iso-2022-jp?B?b3hoN2dJUGhRL2xDVzB2azBCUllCSFgzbUk5TjZyL0RVcGU0eXp6cXht?=
- =?iso-2022-jp?B?dVZOOUt1dW83dFFWeFhBR3hwTUttTXZXc1NhL0MvYVZqQ1FLbGlCY05T?=
- =?iso-2022-jp?B?bXNBcmZBL25lVEFvQlR4QlFYbG9HQU5OL2NWY0NZOGtOQkp0ZXJzUXc1?=
- =?iso-2022-jp?B?L3JRMGlDNDAyaDNGYnJ4eXEvNE9MZyttblV5dEVuSHNzVnplR0Q3VkZN?=
- =?iso-2022-jp?B?c0hpdTlDc2FHMkx0T2hnUW1PT2NCOWdpZ3lqRmNqWjlSckVJVVFiMFRE?=
- =?iso-2022-jp?B?UlF6VEV2TllYRlhQVkFWQWNES1dQckwyUE5ObFBibk9jemNNTlliZzhT?=
- =?iso-2022-jp?B?M1YzK2V1Qmh5cS9hdjg4TllHUFZYTThSS2c9PQ==?=
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.18; Tue, 30 Sep
+ 2025 06:11:35 +0000
+Received: from BN9PR11MB5530.namprd11.prod.outlook.com
+ ([fe80::13bd:eb49:2046:32a9]) by BN9PR11MB5530.namprd11.prod.outlook.com
+ ([fe80::13bd:eb49:2046:32a9%4]) with mapi id 15.20.9160.015; Tue, 30 Sep 2025
+ 06:11:35 +0000
+Message-ID: <c29496e7-a2a2-40bf-a39f-0a8b2608f939@intel.com>
+Date: Tue, 30 Sep 2025 11:41:25 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/11] PCI/ACPI: Add D3cold Aux Power Limit_DSM method
+To: Bjorn Helgaas <helgaas@kernel.org>
+CC: <intel-xe@lists.freedesktop.org>, <linux-acpi@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>, <anshuman.gupta@intel.com>, <rafael@kernel.org>,
+	<lenb@kernel.org>, <bhelgaas@google.com>, <ilpo.jarvinen@linux.intel.com>,
+	<lucas.demarchi@intel.com>, <rodrigo.vivi@intel.com>,
+	<varun.gupta@intel.com>, <ville.syrjala@linux.intel.com>,
+	<uma.shankar@intel.com>
+References: <20250904183046.GA1267851@bhelgaas>
+Content-Language: en-US
+From: "Nilawar, Badal" <badal.nilawar@intel.com>
+In-Reply-To: <20250904183046.GA1267851@bhelgaas>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0044.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:81::17) To BN9PR11MB5530.namprd11.prod.outlook.com
+ (2603:10b6:408:103::8)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	iVOtv8wE0M8bJFMKQSxRnwK0MgU63XTYSvbAclxKTeyUKVz+0aXYi2Z+/QHaxj0vJ9kf1/xTm8gTjHgkk03YkV+rh8pKSPfH7MQVYrNhd4sqaeP+yw6TwgSHqx3chSFJw0BNOgyTXwQYu5Mt4LKjGanclX7LJ8Y49ErvA6BVdkTYNuqpND1GrbuBBzPZ8xWmsLE5Mzp6etHumMiLW1FlxIJoE6FGCZS0KLt677bKiGiD+Zj38LxuLSlO2I7mVjFZmLZerxhRxeeTdIW8C8CbOAlBvtBuj/dliHUxjcX+flLV3kAPhaiK/6SMuJGXraW9zVgsiN/uB7d7yfDE3bt7O2sU0Wg42lqxL1rHF76O7mQAhuf7V/m05ZuddHcCCpv7bL12zBzs5558e8lSRbKSUz0hzBuY7bVTWYBPpoG5eH59oxEn4FZdtOOMgY9AAqICY/zAIOjokd5Nr8YZ785V2sVvNMk8FjSEGAah2afHiXOdxjLS1fjr9dQNewNp5cgKYsEjrxy7HtSpGG5Y4dvK1zTEZ8gODamTPEQ40QE4Ccgs1MGnzQTduifY9St/hk3312WjJqBJ/63oWSgmY4n8BQ2dXm6e6qRJL8Ry796+gimqtlANgiHGsF8Rm0CdV+Kv
-X-OriginatorOrg: fujitsu.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR11MB5530:EE_|DM3PPFE50071912:EE_
+X-MS-Office365-Filtering-Correlation-Id: a99d00bc-0aef-4376-0bb3-08ddffe835a9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?VzhodE9tWWQ5SE1LKy85ZzFMTlNiblJLMUdaZlVZWEswQnJMYmFkTDFkWkZn?=
+ =?utf-8?B?R20yUjUvWUMwd1RHV1hyUHRYbUdlblVocE9rV0lCUFVhMkxyVVRoWk41cjRR?=
+ =?utf-8?B?TkhlL3U1cEJKV3FzYUVqS2UvbXZyY2VLZWNOOVNQMGhMVUUrVHcyNmlqdG1j?=
+ =?utf-8?B?VTFtMlNUZDkyanFob3lvMVNTOTBzVDJtWGN3TVRjZGdsblJTSThjUDB0RG5S?=
+ =?utf-8?B?eTZPM1VaYjFCMnZJVGtIMFlUSW5wNEJSak1MWjVCM0NQMkxwVHVzMWRJRytq?=
+ =?utf-8?B?Z2EwL3pCdVJ2ckxFanVrUnhZb3g2M2RFMFZDai9GWFRQRTJYZUFWdGkzd1o2?=
+ =?utf-8?B?clFFMGNwRU55bitvSStSQjZsL2NDa3JrTjUzNmVRSzBDeUp5a0ppYXlQdWhX?=
+ =?utf-8?B?SDhOQjcvTGJCV2Qzb1dQeTFBSnNicXdFbGp6Q0twbFFZeDhRM1RMdzdjZ05x?=
+ =?utf-8?B?WmRpZkh3bHRIM2ZDYUxCejJ6ZFI1cWNxdEUwRGp4Q3pKcGtLTUhQemFCRzNT?=
+ =?utf-8?B?OE9hVmE0UlFKQmRac1Q5SGJaTW16ZUVlNE4wMzcrOE1iYjltNzk0WHZQaCtG?=
+ =?utf-8?B?dzhRU1daT3M5MEhsUlVWMkVwNGxIQ0E4TmN4dDhLdW1GcVRMUk9ML0RkeHpx?=
+ =?utf-8?B?L2E1ZUZQRkRlaGp5Unk2VklxWmVrRFRGUHN3V0JPd3pzei9za1RTTUdDUWw3?=
+ =?utf-8?B?UEszbXM0dHp6cEdVTGxlVjJnM0JOMThUUXhUR2JvdE5UTzJxZElYYkM5T01h?=
+ =?utf-8?B?ZG5CWXZpQUpKbDA5Ymd1bUVsSWczSE8xK2lBdVBZSXNGQ0tMSEVTVE9TV1dm?=
+ =?utf-8?B?MjZ6blc1K243VjFaNjZ4QUJ4aUZsUFdlckZHVm5CcHcvT21yQ1ZkRHlHMjFR?=
+ =?utf-8?B?bGlWMHk1NG9lUW5aRTVMZXpHT01aOEhjdEVxaStEMHpmWFZkN1l4ZlhYNm9T?=
+ =?utf-8?B?bStHR2pVL1o2TEIzZVl6NUQ3cnJMb3Y4aFpYakVjaEJNaXE2bHladWp6eGFG?=
+ =?utf-8?B?cXo1VmV2aVJhMWNpYVlFMGN0YW51bi9RQmIvVXJ6YzVDVUwzTTdObi9uUE1Z?=
+ =?utf-8?B?bEZnRnBkL2lUTVFsT1BvTnpwR3htcDg4NHNsR1U3enM0eXJja29HMHF2Z280?=
+ =?utf-8?B?bjlGSHVJbE11TlVpcG5xdXlwSjVlRzkybXQ5QWVIektITVJnWEFuVVRvRU95?=
+ =?utf-8?B?cEtSSy95cEhZbkFRdno5YXc0MlNtM2hITjkzQU9kT1FGajJLU0dMOFFSdFpL?=
+ =?utf-8?B?NS95dTAwejN3TVU4eVBKczduV1FyR3BPV1ozVGhLTDNKck5zeE4wZDg4eWli?=
+ =?utf-8?B?M2VjT0hzSUtZckFzQncxOUlHaTlyRjY1Tm4xQndtRzNCRUgyd0Z4dnM0MDlT?=
+ =?utf-8?B?RkErR0JlWUQzclVhWE5Zd2JOYTZhVzNtM2djNHp0NHJvdkNmMi80SEF2Wnpq?=
+ =?utf-8?B?TkxxNU5sa0tLMmNsQmoxUnJ3VnZ6QjJ1eHpDNHd2dU5kY20rTjdzZ2Ftd3lR?=
+ =?utf-8?B?WmFjM0JLT3FHaEJ5RS9SWFVLbHpCSUJqdlQycEsrQnp0TEozbEtvL1ZONkhD?=
+ =?utf-8?B?WGVQTGxzbVlSYi8wbmZIdzZFNDg0R1ZyOXVSZVNLZCszR25yem92ZTdDcnFv?=
+ =?utf-8?B?YU83UXI3T3FodU8zOTBjQlFCYzE1Mk1HU1h1ZXJBV29wL1lCQzU5eUVad0lW?=
+ =?utf-8?B?NXRWVHByWktDTzhkbXlrMGxXdUc1MmNaNWlxOGJXVHM1aldvb0hPL21HL3JX?=
+ =?utf-8?B?Wlhkcmt5bEtTUWNwOCsyM0JhNm4vTHg5blBYdk4yaTdkVERLRnh3ME5BZXZX?=
+ =?utf-8?B?SDgvTUtocDNkT0lTdHhsVGpBcVEyMDZmWW82UVVObS9VQlE5cG9JOWNyeDE0?=
+ =?utf-8?B?dW02Q1VIdXJhRmxkODRIZzM5a255bEM2ZUtGU0RVV1FFOVhINFU1OTl3VUh5?=
+ =?utf-8?Q?mgNk763rHzolmntm7idyGBmaJ5LRII1O?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5530.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dG1IWjZBRWtBRlpVbjd3R2pTeStyZjl1bTlXRlZTcGZLVFBLZWlzaXo1S0pI?=
+ =?utf-8?B?N2pka0YzYmRaZ0Jqak5Mb083Y2ovZ3cwYXRIZEhPcVZGek10RU50ejlvZlpS?=
+ =?utf-8?B?RmczY0p4OXI3NDBiT044NnNYdlJOcDdEbk1nV2tHczUyVVowOWhGRDZVWEFR?=
+ =?utf-8?B?NDZaM0VGTTBXdE8rRm9LZEg4T3REZEdrbG5jeU9YU0ZpQ2xBNi90OUFKb2NQ?=
+ =?utf-8?B?UWs0OHNJZ2ZROWU0K1UzYnZFSDBsbE13WGNoQ2l1Z0NKQmR4UzFGZVJWWW04?=
+ =?utf-8?B?Mko0bWRQWkVnQllqV2NCV2dIZ0dkdE1EZyttV1NEdDVIbDNzOHkxZS9VZ0Nn?=
+ =?utf-8?B?ai9TamVEL284ZWFtK2V1RysxWkJQMXR6Qkd4cU9EeHhzb0cxa0QzYmlZWWRm?=
+ =?utf-8?B?MDhpQVVlNUhGQVRmNmxoZ3J5d242UnNCWWIxNUdOTHBwbHkzNytub0hQdEk1?=
+ =?utf-8?B?YTNQZ0EwU0czQUxZZTRVTHNaS1RuclBpK056aC9YdVowU1RDRlNvbUttTXVU?=
+ =?utf-8?B?M1hWamFRYmZTOEYrSWJrU1Z1c3BCYTVEVzZ1RHVUNmxTRm5reTNQVlNjZ0lh?=
+ =?utf-8?B?amNFVkowOWFtNnpITWs3TGhGcGVTQWZESUVSZHZZRnhxcmdhL2hKZk5NdUds?=
+ =?utf-8?B?V0E5WHRtNFNoektLYTBSSVA5dk5DNVBkL09FZk12SnE5MWlMR25YVkh2dHMz?=
+ =?utf-8?B?VWRiR21EY3pLeG5IVTlhODJTaUNKdXNBL0dwOUNXN0dPWUp3a3RpY0U3QUsx?=
+ =?utf-8?B?eFAzSGJxaVlSVnJ4eXFMNTZTb1owVzd5MnJCdUZqUjhJT2QzYUd2Q0FnUEts?=
+ =?utf-8?B?aXRzKy9Oem9vZDZSL2Myd3QvQzVLMk9yQ2tWYUpNTHhXbEFmU3FmOUowK2lw?=
+ =?utf-8?B?VnN1M25RVS9vSTNFTlZlOCt5aGRvSFpsQ1JDQ2toT2wrRm5LaXN2UjJISGZD?=
+ =?utf-8?B?VEQxRTJpR0l6OHNBeFRTZVZ3emJvcG15dEpsaDl1YmlxZWt5WUZWRzhVWEha?=
+ =?utf-8?B?bDlpUnhWYy8xaUpEWGJUeUVGKzB2SmRCanhJV3gyZ3RpcjR0dHBsTDhBVkMy?=
+ =?utf-8?B?cnhvdVNocXJaUFQ5KzFmMTllRWFwbjZmdHlhS1YzZlY0WWxkbCt1bElVYzd3?=
+ =?utf-8?B?MW9tNldzTDJJR0hMUG9QTzFNbGNTVTMrSkJ1MjFpallYcXNVck9WeWV1NTE4?=
+ =?utf-8?B?TVhoOGhGa3ltMXUzdmxaejNlUk5ZYWtXeGtqZ1Y4Um85Q01HQmU3ZWRoenVI?=
+ =?utf-8?B?clhIN3R2em5mS3BaUlQ3T2FFT2VWY3h2Y0FzSDNDMCs5NG1RaFRTUlBVdXFE?=
+ =?utf-8?B?RmkyQzJPTU5DbFlGSWVidzBxV3FiUk4wUHFsWjRISmM3SnVpZ1pTdDBNcFc4?=
+ =?utf-8?B?dXlJaXlwRU14bk1qV210WHdwbHRqWU5Wd29CQ2hZdEk2UjRaSk5ETnhMVmc1?=
+ =?utf-8?B?UzhPU2dRMWkyWWFMbzU3Yk03SktYbmxyMmlJRlVIZEsyUm9PQU16OXpjV3FM?=
+ =?utf-8?B?L1h2NlBtSDk0MExCQzhqdWM1UEZoNHYwWE9NRWtOaURXOXJJU0tzUkQ2Risy?=
+ =?utf-8?B?d3NKTE9hKzIvQkI0YjhZd3lLbzMzSXRlcG0yUlBBUndYem1ldWdUcTdZMjZZ?=
+ =?utf-8?B?cWxyTWxUTllST1JuYUNWYUhUUTNHMUxBSEh2VU52NkVpQjBjbk9WYnpuYm50?=
+ =?utf-8?B?ZTh4bmtPZ1R5Z1VKQURkcHBwcFV3R3M2K2g2NXIvNTVtMjBHM1pZdXRGejVn?=
+ =?utf-8?B?ZXpkQzFxVCttd1RadnArZ3BmUkZFeGJtaVY2bkFhVm1oQUNsdG5OaEJESXcz?=
+ =?utf-8?B?cyt5c0JlMXhJdkF0RjZVc0lpS0hmeVFjMDMwT1dBVkRFSWxBbzZIQmJmTGlM?=
+ =?utf-8?B?dHhmbjUwQkFkWERzQlpwbVJyNjVrMmtJdmc2dGtZTnJoYlRPTVdyd2JQOWpR?=
+ =?utf-8?B?ZW5aYkc3bXdyclpyQXRYL0tyVFEwTVQzeFVwOEtoWldBdGpNOG5DNmxCNSt1?=
+ =?utf-8?B?eC91aHF5blh3QjJaaUFsbUxvanJiZmdjQmN3MDhoWGRMOGxNRHF1bjZxS3dK?=
+ =?utf-8?B?S1kyMEcxNUkwd1VaRVpJdmg0YXFaWjlEeWQ2NE1CL0FDcy9Tb081S1FyZFpI?=
+ =?utf-8?B?bXFCUTJIUGZwUjdIbUhyU3FBSCtqUVBUVGtKSmlCbE15N2k1N1lnWk00a250?=
+ =?utf-8?B?Wnc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a99d00bc-0aef-4376-0bb3-08ddffe835a9
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5530.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: OSZPR01MB8798.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fdc9e458-3800-4754-55e5-08ddffcc4468
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Sep 2025 02:51:34.2227
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2025 06:11:35.8174
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: RPh5FxxlvjcTFCAFRsF6aIO3d+vrHbsHePJYAX0ythPlcKLgQKuMoxIGNgwvEW8YmNAlBC+fFaDFsccqmBi42Od471sSuYJ+4+8V2Z21DdM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSCPR01MB13519
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ocglrSuc4+vYxatPRXGYRfqNBhpRZWDRcwIA5X9JtDGWjVxSj31nidO11HD8JiuJmM5dXDzStKOr1XkTs376vA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPFE50071912
+X-OriginatorOrg: intel.com
 
-Hello James,
 
-There is a space in "cpu hp" in the title.
+On 05-09-2025 00:00, Bjorn Helgaas wrote:
+> On Thu, May 29, 2025 at 04:46:44PM +0530, Badal Nilawar wrote:
+>> From: Anshuman Gupta <anshuman.gupta@intel.com>
+>>
+>> Implement _DSM method 0Ah according to PCI firmware specifications,
+>> section 4.6.10 Rev 3.3., to request auxilary power needed for the
+>> device when in D3Cold.
+> Cite as "PCI Firmware r3.3, sec 4.6.10"
+Ok.
+>> Note that this implementation assumes only a single device below the
+>> Downstream Port will request for Aux Power Limit under a given
+>> Root Port because it does not track and aggregate requests
+>> from all child devices below the Downstream Port as required
+>> by Section 4.6.10 Rev 3.3.
+> Wrap to fill 75 columns.  Update citation as above.
+Ok.
+>
+>> One possible mitigation would be only allowing only first PCIe
+>> Non-Bridge Endpoint Function 0 driver to call_DSM method 0Ah.
+> I don't quite understand how this mitigation would address the lack of
+> aggregation or how the mitigation could be enforced.  Maybe just drop
+> this?
+Ok. In patch 2 this is being mitigated by allowing one request per root 
+port.
+>
+> s/call_DSM/call _DSM/
+Ok
+>
+>> Signed-off-by: Varun Gupta <varun.gupta@intel.com>
+>> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
+>> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+>> ---
+>> V2(Bjorn/Rafael):
+>>    - Call acpi_dsm_check() to find method 0Ah supported
+>>    - Return retry interval to caller
+>> V3(Kuppuswamy)
+>>    - Add NULL check for retry interval
+>> ---
+>>   drivers/pci/pci-acpi.c   | 87 ++++++++++++++++++++++++++++++++++++++++
+>>   include/linux/pci-acpi.h |  8 ++++
+>>   2 files changed, 95 insertions(+)
+>>
+>> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+>> index af370628e583..87f30910a5f1 100644
+>> --- a/drivers/pci/pci-acpi.c
+>> +++ b/drivers/pci/pci-acpi.c
+>> @@ -1421,6 +1421,93 @@ static void pci_acpi_optimize_delay(struct pci_dev *pdev,
+>>   	ACPI_FREE(obj);
+>>   }
+>>   
+>> +/**
+>> + * pci_acpi_request_d3cold_aux_power - Request aux power while device is in D3Cold
+>> + * @dev: PCI device instance
+>> + * @requested_power: Requested auxiliary power in milliwatts
+>> + * @retry_interval: Retry interval returned by platform to retry auxiliary
+>> + *                  power request
+>> + *
+>> + * This function sends a request to the host BIOS via root port ACPI _DSM Function 0Ah
+>> + * for the auxiliary power needed by the PCI device when it is in D3Cold.
+>> + * It checks and evaluates the _DSM (Device Specific Method) to request the auxiliary
+>> + * power and handles the response accordingly.
+> s/This functions sends a request/Request auxiliary power .../ (imperative mood)
+> s/the host BIOS/platform firmware/ (non-x86 firmware may not be BIOS)
+> s/D3Cold/D3cold/ (twice) to match other usage
+> s/root port/Root Port/ to match spec usage
+> s/It checks and evaluates the/Evaluate the/
+> s/and handles/and handle/
+Ok
+>
+> It's not quite clear from this description, but the code assumes this
+> is called for a Root Port.  I don't think that's quite the right
+> approach because the spec only says this _DSM function is implemented
+> in the scope of a Downstream Port.  That *could* be a Root Port, but
+> it doesn't have to be; it could be a Switch Downstream Port.
+Agree, I will rephrase with "Root Port/Switch Downstream Port"
+>
+> The caller shouldn't have to traverse up the tree, checking whether
+> this _DSM function is implemented at each level.  So I think the
+> driver should call this with *its* device, and
+> pci_acpi_request_d3cold_aux_power() should walk up the tree looking
+> for this _DSM function.
+Agree, will handle this.
+>
+>> + * This function shall be only called by 1st non-bridge Endpoint driver
+>> + * on Function 0. For a Multi-Function Device, the driver for Function 0 is
+>> + * required to report an aggregate power requirement covering all
+>> + * functions contained within the device.
+> This last paragraph covers two separate issues:
+>
+>    1) Sec 4.6.10 requires driver for function 0 to aggregate power
+>       requirements for all functions in a multi-function device.  We
+>       can't enforce that the driver, e.g., xe, does this, but it seems
+>       like this is a hint that we should only evaluate this _DSM for
+>       function 0 of a multi-function device.  So it seems like we
+>       should return an error if called for a function other than 0.
+Fine, I will return error for function other than 0.
+>
+>    2) The "Location" part of sec 4.6.10 has a separate restriction
+>       that system software, i.e., the PCI core, should aggregate
+>       requests from child devices, which we don't do so far.
+>
+>       If drivers call pci_acpi_request_d3cold_aux_power() for their
+>       devices (not the Root Port), there might be a way to do this
+>       aggregation by tracking the sum of all requests at the Downstream
+>       Port where we find this _DSM function implemented.  But I don't
+>       know whether it's worth trying to implement this now because it
+>       seems complicated.
+Aggregation is complicated and not required for current use case.
+>
+> I don't know what "1st non-bridge Endpoint driver" means.  How does a
+> driver writer know whether the driver qualifies?  Maybe just keep the
+> part about this only being supported for function 0 and note that we
+> don't support the aggregation across multiple devices?
+Ok.
+>
+> Wrap this all to fit in 80 columns like the rest of the file.
+Now it is allowed to fit in 100 columns but I will fit it in 80 columns 
+to maintain consistency with rest of the file.
+>
+>> + * Return: Returns 0 on success and errno on failure.
+>> + */
+>> +int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
+>> +				      u32 *retry_interval)
+> Name the parameter "requested_power_mw" or even just "requested_mw" so
+> we know the units.  Also in header file.
+Ok
+>
+>> +{
+>> +	union acpi_object in_obj = {
+>> +		.integer.type = ACPI_TYPE_INTEGER,
+>> +		.integer.value = requested_power,
+>> +	};
+>> +
+>> +	union acpi_object *out_obj;
+>> +	acpi_handle handle;
+>> +	int result, ret = -EINVAL;
+>> +
+>> +	if (!dev || !retry_interval)
+>> +		return -EINVAL;
+> I think it's reasonable to allow retry_interval to be NULL if the
+> caller doesn't want to bother with retries.
+Ok
+>
+>> +	handle = ACPI_HANDLE(&dev->dev);
+>> +	if (!handle)
+>> +		return -EINVAL;
+>> +
+>> +	if (!acpi_check_dsm(handle, &pci_acpi_dsm_guid, 4, 1 << DSM_PCI_D3COLD_AUX_POWER_LIMIT)) {
+>> +		pci_dbg(dev, "ACPI _DSM 0%Xh not supported\n", DSM_PCI_D3COLD_AUX_POWER_LIMIT);
+>> +		return -ENODEV;
+>> +	}
+>> +
+>> +	out_obj = acpi_evaluate_dsm_typed(handle, &pci_acpi_dsm_guid, 4,
+>> +					  DSM_PCI_D3COLD_AUX_POWER_LIMIT,
+>> +					  &in_obj, ACPI_TYPE_INTEGER);
+>> +	if (!out_obj)
+>> +		return -EINVAL;
+>> +
+>> +	result = out_obj->integer.value;
+>> +	if (retry_interval)
+>> +		*retry_interval = 0;
+>> +
+>> +	switch (result) {
+>> +	case 0x0:
+>> +		pci_dbg(dev, "D3cold Aux Power %u mW request denied\n",
+>> +			requested_power);
+>> +		break;
+>> +	case 0x1:
+>> +		pci_info(dev, "D3cold Aux Power request granted: %u mW\n",
+>> +			 requested_power);
+>> +		ret = 0;
+>> +		break;
+>> +	case 0x2:
+>> +		pci_info(dev, "D3cold Aux Power: Main power won't be removed\n");
+>> +		ret = -EBUSY;
+>> +		break;
+>> +	default:
+>> +		if (result >= 0x11 && result <= 0x1F) {
+>> +			if (retry_interval) {
+>> +				*retry_interval = result & 0xF;
+>> +				pci_warn(dev, "D3cold Aux Power request needs retry interval: %u seconds\n",
+>> +					 *retry_interval);
+> Seems like pci_info() to me; the user can't do anything about this,
+> nothing is really wrong, and the message shouldn't prompt a bug
+> report.
+Ok.
+>
+>> +				ret = -EAGAIN;
+>> +			}
+>> +		} else {
+>> +			pci_err(dev, "D3cold Aux Power: Reserved or unsupported response: 0x%x\n",
+>> +				result);
+>> +		}
+>> +		break;
+>> +	}
+>> +
+>> +	ACPI_FREE(out_obj);
+>> +	return ret;
+>> +}
+>> +EXPORT_SYMBOL_GPL(pci_acpi_request_d3cold_aux_power);
+>> +
+>>   static void pci_acpi_set_external_facing(struct pci_dev *dev)
+>>   {
+>>   	u8 val;
+>> diff --git a/include/linux/pci-acpi.h b/include/linux/pci-acpi.h
+>> index 078225b514d4..6079306ad754 100644
+>> --- a/include/linux/pci-acpi.h
+>> +++ b/include/linux/pci-acpi.h
+>> @@ -121,6 +121,7 @@ extern const guid_t pci_acpi_dsm_guid;
+>>   #define DSM_PCI_DEVICE_NAME			0x07
+>>   #define DSM_PCI_POWER_ON_RESET_DELAY		0x08
+>>   #define DSM_PCI_DEVICE_READINESS_DURATIONS	0x09
+>> +#define DSM_PCI_D3COLD_AUX_POWER_LIMIT		0x0A
+>>   
+>>   #ifdef CONFIG_PCIE_EDR
+>>   void pci_acpi_add_edr_notifier(struct pci_dev *pdev);
+>> @@ -132,10 +133,17 @@ static inline void pci_acpi_remove_edr_notifier(struct pci_dev *pdev) { }
+>>   
+>>   int pci_acpi_set_companion_lookup_hook(struct acpi_device *(*func)(struct pci_dev *));
+>>   void pci_acpi_clear_companion_lookup_hook(void);
+>> +int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
+>> +				      u32 *retry_interval);
+>>   
+>>   #else	/* CONFIG_ACPI */
+>>   static inline void acpi_pci_add_bus(struct pci_bus *bus) { }
+>>   static inline void acpi_pci_remove_bus(struct pci_bus *bus) { }
+>> +static inline int pci_acpi_request_d3cold_aux_power(struct pci_dev *dev, u32 requested_power,
+>> +						    u32 *retry_interval)
+> Wrap this to fit in 80 columns like the rest of the file.
 
-Best reagrards,
-Shaopeng TAN
+Ok.
 
+Thanks,
+Badal
+
+>
+>> +{
+>> +	return -EOPNOTSUPP;
+>> +}
+>>   #endif	/* CONFIG_ACPI */
+>>   
+>>   #endif	/* _PCI_ACPI_H_ */
+>> -- 
+>> 2.34.1
+>>
 
