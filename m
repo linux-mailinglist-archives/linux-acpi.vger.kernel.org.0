@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-17459-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17460-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF841BAE221
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Sep 2025 19:06:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD20BAE227
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Sep 2025 19:07:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2F5519200EA
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Sep 2025 17:07:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D6FF3C4327
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Sep 2025 17:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA8823D7EA;
-	Tue, 30 Sep 2025 17:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5F230B52A;
+	Tue, 30 Sep 2025 17:06:51 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9FD30B532;
-	Tue, 30 Sep 2025 17:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724EE30B50A;
+	Tue, 30 Sep 2025 17:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759252005; cv=none; b=fporKATdSkxMhiRlt1PQUBI2Oydh0VB1xQsB+TEbeBZO3kQpht6uU5a8dXRF9GErhA5YFulWW7bh8vYNG30o/WQMKhwiIYyMSMWWZS7ATbWgFNaOzUKQ6/oDy1xZtjA//sUIG44AUyC42H4qM0TzD5xJee9trMrX2w7dSI84ha8=
+	t=1759252011; cv=none; b=oYM2MiZqXN1s82RWFvbLdXp1mR/qkR/dPtohLn5wAZgknv6Eb3BtiRP9afLerJfJTfdkrHJZLR83r9U1g7lCv2QQ8FDfIChnkcyDhx+H/BofAxDc6BOwB9G29ar5lDOX7fxzk90y3CkeL+2nCwRfeEmOo+V4bVtONkAlTqrmh+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759252005; c=relaxed/simple;
-	bh=NBMaELzfZ7zcj1yTXywU1ROp7HmEQS/Qzo69z0Xz8Rs=;
+	s=arc-20240116; t=1759252011; c=relaxed/simple;
+	bh=SFznz0JiL0nczxwM1nMt9/UtD3k3rWFHVz532gREW8U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=An/oXVszN7hxKCrKG5RFACNRfG37OliKq6MT/u6g2rdbZUys/EnGe4DqyydVYpm2aP/uoXHtkl5Xs8QO3aPPZF7SJECZGIMpeRgula0gpcYoQOPRvifYg6Yg6KcrL5/kwpVs/ljgOWzi5SSI19oxjeD0U7bKXpUfGWVlFgWrG80=
+	 In-Reply-To:Content-Type; b=YjLS+3kK0TUKzybMBKUuQMivau52u+U4ht++JWjFXRB6zt+a7YiMdw/nFURkx9gwls0fcYrjU30tm8VwC39Q8oW2vHhhDoUbUTw9QWb/pxsDTGGBtSY1FUsE++iKk7T/5QaRdjNEmGKn9b1FeOPtd+gRofce2WYyhIJOYtXlk7A=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6083225E0;
-	Tue, 30 Sep 2025 10:06:35 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D72BF267F;
+	Tue, 30 Sep 2025 10:06:40 -0700 (PDT)
 Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7E65A3F59E;
-	Tue, 30 Sep 2025 10:06:37 -0700 (PDT)
-Message-ID: <b4b8e0a6-e0ef-4995-b4e4-bcf2367555cd@arm.com>
-Date: Tue, 30 Sep 2025 18:06:26 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D00833F59E;
+	Tue, 30 Sep 2025 10:06:43 -0700 (PDT)
+Message-ID: <137ca3de-2572-4edf-b10c-67b690f84128@arm.com>
+Date: Tue, 30 Sep 2025 18:06:29 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -44,9 +44,10 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 15/29] arm_mpam: Reset MSC controls from cpu hp
  callbacks
-To: Ben Horgan <ben.horgan@arm.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
-Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-acpi@vger.kernel.org,
+ D Scott Phillips OS <scott@os.amperecomputing.com>,
  carl@os.amperecomputing.com, lcherian@marvell.com,
  bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
  baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
@@ -54,64 +55,67 @@ Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  dfustini@baylibre.com, amitsinght@marvell.com,
  David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
  Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- fenghuay@nvidia.com, baisheng.gao@unisoc.com,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
- <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
- Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com, Rob Herring <robh@kernel.org>,
+ Rohit Mathew <rohit.mathew@arm.com>, Rafael Wysocki <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Danilo Krummrich <dakr@kernel.org>
 References: <20250910204309.20751-1-james.morse@arm.com>
  <20250910204309.20751-16-james.morse@arm.com>
- <abb9b4bb-18d8-4de7-a216-3c18769f61cb@arm.com>
- <52b6bd30-55af-4916-89c0-f87446689fbe@arm.com>
+ <20250912125535.0000151c@huawei.com>
 Content-Language: en-GB
 From: James Morse <james.morse@arm.com>
-In-Reply-To: <52b6bd30-55af-4916-89c0-f87446689fbe@arm.com>
+In-Reply-To: <20250912125535.0000151c@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Ben,
+Hi Jonathan,
 
-On 12/09/2025 15:52, Ben Horgan wrote:
-> On 9/12/25 12:25, Ben Horgan wrote:
->> Hi James,
->>
->> On 9/10/25 21:42, James Morse wrote:
->>> When a CPU comes online, it may bring a newly accessible MSC with
->>> it. Only the default partid has its value reset by hardware, and
->>> even then the MSC might not have been reset since its config was
->>> previously dirtyied. e.g. Kexec.
->>>
->>> Any in-use partid must have its configuration restored, or reset.
->>> In-use partids may be held in caches and evicted later.
->>>
->>> MSC are also reset when CPUs are taken offline to cover cases where
->>> firmware doesn't reset the MSC over reboot using UEFI, or kexec
->>> where there is no firmware involvement.
->>>
->>> If the configuration for a RIS has not been touched since it was
->>> brought online, it does not need resetting again.
->>>
->>> To reset, write the maximum values for all discovered controls.
-
->>> +static void mpam_reset_msc(struct mpam_msc *msc, bool online)
->>> +{
->>> +	struct mpam_msc_ris *ris;
->>> +
->>> +	mpam_assert_srcu_read_lock_held();
->>
->> Unneeded? Checked in list_for_each_entry_srcu().> +
+On 12/09/2025 12:55, Jonathan Cameron wrote:
+> On Wed, 10 Sep 2025 20:42:55 +0000
+> James Morse <james.morse@arm.com> wrote:
 > 
-> If you do get rid of this then that leaves one use of the helper,
-> mpam_assert_srcu_read_lock_held(), and so the helper could go.
+>> When a CPU comes online, it may bring a newly accessible MSC with
+>> it. Only the default partid has its value reset by hardware, and
+>> even then the MSC might not have been reset since its config was
+>> previously dirtyied. e.g. Kexec.
+>>
+>> Any in-use partid must have its configuration restored, or reset.
+>> In-use partids may be held in caches and evicted later.
+>>
+>> MSC are also reset when CPUs are taken offline to cover cases where
+>> firmware doesn't reset the MSC over reboot using UEFI, or kexec
+>> where there is no firmware involvement.
+>>
+>> If the configuration for a RIS has not been touched since it was
+>> brought online, it does not need resetting again.
+>>
+>> To reset, write the maximum values for all discovered controls.
 
-By the end of the series, yes. But there are transiently a few more until then - they get
-removed and replaced with comments when those functions get called by IPI as lockdep
-expects the lock to be held by current, which isn't true if you IPI'd.
-I'll drop the helper.
+> Just one trivial passing comment from me.
+
+>> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+>> index cd8e95fa5fd6..0353313cf284 100644
+>> --- a/drivers/resctrl/mpam_devices.c
+>> +++ b/drivers/resctrl/mpam_devices.c
+>> @@ -818,6 +921,20 @@ static int mpam_discovery_cpu_online(unsigned int cpu)
+>>  
+>>  static int mpam_cpu_offline(unsigned int cpu)
+>>  {
+>> +	int idx;
+>> +	struct mpam_msc *msc;
+>> +
+>> +	idx = srcu_read_lock(&mpam_srcu);
+
+> Might be worth using
+> guard(srcu)(&mpam_srcu);
+> here but only real advantage it bring is in hiding the local idx variable
+> away.  
+
+Sure. I did that in a few other places, it looks like I either missed this, or thought it
+got more complicated later...
 
 
 Thanks,
