@@ -1,56 +1,56 @@
-Return-Path: <linux-acpi+bounces-17462-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17463-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA21CBAEC8B
-	for <lists+linux-acpi@lfdr.de>; Wed, 01 Oct 2025 01:39:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 057BCBAECB4
+	for <lists+linux-acpi@lfdr.de>; Wed, 01 Oct 2025 01:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EF663A6F2B
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Sep 2025 23:39:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B7297ADF7C
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Sep 2025 23:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C862D130C;
-	Tue, 30 Sep 2025 23:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643BB2D1936;
+	Tue, 30 Sep 2025 23:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XjskzdO5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GSbsHI+w"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA522868A7
-	for <linux-acpi@vger.kernel.org>; Tue, 30 Sep 2025 23:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBE92D1913
+	for <linux-acpi@vger.kernel.org>; Tue, 30 Sep 2025 23:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759275542; cv=none; b=aYWD4XKRLQmyaDOJj8cyxqBlyGxrm+ud1SrEZnFeTGa/OO+Lzt4CwixFD9HXuWMtJNLSQPJM6ZmSfE3C6Z9Fd2lvQ5QXTjqqyoGxmPziLn19MJZ8Y2HCQg3U8ZWivISHZ9X9syWgFmYq33BJz8/Q6DThvOX+ojaUiPo86fhEIcU=
+	t=1759275717; cv=none; b=gd2X+W8487jfzW3vDpkLaP8SbDdzrs+764QD61glySy/SdRrZQsgevN3Q2VLAfxntzJvdeEvh906S009GCCkw7+PYN/a//3pvL9jEQMnKjC6FV4DASDyW0YdCpEQZnwjBNbLW28tWjqxufNN2yiqXrv+IFFZne21YYPTK50BWCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759275542; c=relaxed/simple;
-	bh=uoEaags9cvj4V9dXTIwpOjvo5TRbqVrRX+MjXZnzWmw=;
+	s=arc-20240116; t=1759275717; c=relaxed/simple;
+	bh=ou8zqcPR7U4f86dX0hDK17PGEqR25IhF/uTAk3Ga9Is=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eNVP5NBGHlchJjL+cvP8LcpatBA0TX97vJfI7ynVDMxS/w7ppl9tQihe3ILel5B61r5HtidvXsLUA4J0zko44NfXadvbNeEraTpo+ejCODD5MtPs45L3SsM4xIOBLfXyD98MJvsY5JYpejPZVXnf+jr9of9/UxOWdqDW+xaqEqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XjskzdO5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8168C113D0
-	for <linux-acpi@vger.kernel.org>; Tue, 30 Sep 2025 23:39:01 +0000 (UTC)
+	 To:Cc:Content-Type; b=dRV28+KjGHFyQ0Bi9DAjXj6fxhB4/Kad/Kwx8WGH1+PUW51AnKy+6IzY3SMUhN0u91c8OQ138JcBLW3p9GrIhqKhKPFPym30k5NPHgux0FxlZ0MTNjQ6wABDDrNpWEUXtcb0VugRWYV5vZrnxuJfUG7Lv7N05RKWJDt773xcM6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GSbsHI+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFABEC113D0
+	for <linux-acpi@vger.kernel.org>; Tue, 30 Sep 2025 23:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759275541;
-	bh=uoEaags9cvj4V9dXTIwpOjvo5TRbqVrRX+MjXZnzWmw=;
+	s=k20201202; t=1759275716;
+	bh=ou8zqcPR7U4f86dX0hDK17PGEqR25IhF/uTAk3Ga9Is=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=XjskzdO5FIQs09P/8GO4YdSng14aydEQXbtnlGa4NNtyUV86apmOiWriznd3NHJvX
-	 VvgeTdQWiZplRgkVQ9oHM7Uix9EcGOM2FbSkdqqe0x66m9zhHHEjQZZl71vKphgkAi
-	 ncRL2Gak5FoiymGuVUS4GT+IAZdVrg/yx+pMA4iCOxXIMesX5CWKu1nkCNoBu4PHQX
-	 uqiisBRGq56FWDaxVFTjW9daKmAgbqDn4uCCrh4kwGKswQsPpEW0N5CQY6ctullncA
-	 USwtvCOH1sSp6uzzfb9FkreY47iT4PB2ddVd/GvX/BP4X64OhGC1xo7U6ElTOCElgb
-	 Da7qdG5R5DOiA==
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-46e3bcf272aso26495e9.0
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Sep 2025 16:39:01 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUMZSTrAlmoHmT5aSQuJF2yjpU2I8lfjvUDuYiKoSWKSkDaGcmixPz8nHMdkr8IKL29oh8roGuzOUXH@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhN5InlqXvzxPvnpSEADgfOL955kFJLmjJkncDryuEgkCxYJzE
-	RS/0NS0wOLtvdviMqfNnpB+zASLCldX6m/Dfj9uStR5MSA0JnmzXbkvq6w0dsRMLk+FVWDUGELd
-	3H/TSQa8/JQKlJ11K3tEjkHb0RDyJttEFob7mNAB1
-X-Google-Smtp-Source: AGHT+IGW2/qdhioiWERpaECvrg9VQsaWlrzDEBJ3gDhsR0VtryFnP36E7HLr3RLdANnbgkm+pmRQW55NN3zTH4k4qSk=
-X-Received: by 2002:a05:600c:a10b:b0:453:672b:5b64 with SMTP id
- 5b1f17b1804b1-46e61b8a883mr619555e9.2.1759275540420; Tue, 30 Sep 2025
- 16:39:00 -0700 (PDT)
+	b=GSbsHI+wZr83ZAR/Y34kVjxLMA9vohcAKZIbQ6P00EKhal6S7NAmu4FJ2iFEPKts0
+	 3Qtdr6bBijcC8kcPSZxP4EZo4TyvZrBIIHiNVYuM8OteoOo8goYotexG/P/6CmLWsV
+	 HAdJZGWaQHuSr0MxcdfEu8WZHHknCESqTwnwlRTd0TYqgPENGRa1TuxeBq55AP7wEH
+	 e30qMuaKRQy0S7KXnHQgUyAwhFxuG18jgBHJfr2A5M+Bf2uH4j/XAf843gCSlykr7S
+	 qHOA2PQ/vLRXk9V6ge5Q0AlrpJN2XwevhiPhvuS3yczHbfUITyNupVMtEVOUXHe7+j
+	 MSTmWYOeAtoiw==
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-46e2b7eee0dso11485e9.1
+        for <linux-acpi@vger.kernel.org>; Tue, 30 Sep 2025 16:41:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX66GR1Y8cOAPamOQqrhPbHO1PNxfbV8Uo/kcxHxLsmD3qIW6Nm/53ZtH2RLQtNfOny0Yx0JEygjwIR@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw79M8oM3S3kZYENLwD0vmaYUL4ZDooWI2IwvLmK9CmZB3IQpbZ
+	KuzztyQLajiwbrWxS1cgEexptKqvkUo83+8I17+Okz6PrBFqdbR8YV9lgzYME1CuUbHVFuQUfV+
+	Gbr+MeNQu/wZ0bLi0WBa6+NU0JxNLHTLi16+sOpS4
+X-Google-Smtp-Source: AGHT+IHmIOQHJd86DZ4BzMyUX1T3L8l+LnN+ww//qAg6d+wkwbceHhSERLMH66FgHpSRc9v38ZwtMo6hKcUWcN0a0xE=
+X-Received: by 2002:a05:600c:a40a:b0:45f:2949:7aa9 with SMTP id
+ 5b1f17b1804b1-46e61bde4c4mr662715e9.6.1759275715534; Tue, 30 Sep 2025
+ 16:41:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -58,13 +58,13 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250916-luo-pci-v2-0-c494053c3c08@kernel.org>
- <20250916-luo-pci-v2-1-c494053c3c08@kernel.org> <2025093014-qualify-scoop-c406@gregkh>
-In-Reply-To: <2025093014-qualify-scoop-c406@gregkh>
+ <20250916-luo-pci-v2-1-c494053c3c08@kernel.org> <2025093018-snugly-twisty-91b1@gregkh>
+In-Reply-To: <2025093018-snugly-twisty-91b1@gregkh>
 From: Chris Li <chrisl@kernel.org>
-Date: Tue, 30 Sep 2025 16:38:48 -0700
-X-Gmail-Original-Message-ID: <CAF8kJuMXJ+JE=mJCNyz6ETNQ5evMh15VKo2wFreuZ=6Jz0aGWg@mail.gmail.com>
-X-Gm-Features: AS18NWAUSgFUxtTB2q7O9k-Pi7VfFzzfrFZp7BtTF7h7cgw0DwnfuCv6HX1IMTE
-Message-ID: <CAF8kJuMXJ+JE=mJCNyz6ETNQ5evMh15VKo2wFreuZ=6Jz0aGWg@mail.gmail.com>
+Date: Tue, 30 Sep 2025 16:41:43 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuNLtqcMtKa0v_UVtw3Zd2o+1d0j+kM5+UOfJA_52PNSiQ@mail.gmail.com>
+X-Gm-Features: AS18NWBb2I2szZCT5I-rvN0Zf16cBHJfCErKNR81663S2r6pIKbltxfL16vpcxI
+Message-ID: <CAF8kJuNLtqcMtKa0v_UVtw3Zd2o+1d0j+kM5+UOfJA_52PNSiQ@mail.gmail.com>
 Subject: Re: [PATCH v2 01/10] PCI/LUO: Register with Liveupdate Orchestrator
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Bjorn Helgaas <bhelgaas@google.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
@@ -149,65 +149,18 @@ e56176fb3cdde4c91 100644
 > > +static int pci_liveupdate_prepare(void *arg, u64 *data)
 > > +{
 > > +     pr_info("prepare data[%llx]\n", *data);
-> > +     return 0;
-> > +}
-> > +
-> > +static int pci_liveupdate_freeze(void *arg, u64 *data)
-> > +{
-> > +     pr_info("freeze data[%llx]\n", *data);
-> > +     return 0;
-> > +}
-> > +
-> > +static void pci_liveupdate_cancel(void *arg, u64 data)
-> > +{
-> > +     pr_info("cancel data[%llx]\n", data);
-> > +}
-> > +
-> > +static void pci_liveupdate_finish(void *arg, u64 data)
-> > +{
-> > +     pr_info("finish data[%llx]\n", data);
-> > +}
-> > +
-> > +struct liveupdate_subsystem pci_liveupdate_ops =3D {
-> > +     .prepare =3D pci_liveupdate_prepare,
-> > +     .freeze =3D pci_liveupdate_freeze,
-> > +     .cancel =3D pci_liveupdate_cancel,
-> > +     .finish =3D pci_liveupdate_finish,
-> > +     .name =3D PCI_SUBSYSTEM_NAME,
-> > +};
-> > +
-> > +static int __init pci_liveupdate_init(void)
-> > +{
-> > +     int ret;
-> > +
-> > +     ret =3D liveupdate_register_subsystem(&pci_liveupdate_ops);
-> > +     if (ret && liveupdate_state_updated())
-> > +             panic("PCI liveupdate: Register subsystem failed: %d", re=
-t);
-> > +     WARN(ret, "PCI liveupdate: Register subsystem failed %d", ret);
 >
-> But this didn't fail.
->
-> And you just crashed the box if panic-on-warn is enabled, so if some
-> test infrastructure builds this first patch, boom.
+> You do know that's a security bug, right?
 
-Sorry that the second WARN should be removed. That is something during
-the rebase conflict resolution somehow slipped through the crack.
+Right, it is useful during debugging and inspecting the preserved data.
 
-I will remove the second WARN() there.
-
-Thanks for catching it.
+My bad and will remove the raw pointer.
 
 >
-> {sigh}
->
-> If you are going to do a "dummy" driver, please make it at least work
-> and not do anything bad.
+> Please don't do this, even in "debug" code, as it can escape into the
+> wild...
 
-I did test it with a real machine and real PCI device, but I did not
-have the panic-on-warn.
-
-Again my bad. Sorry about that.
+Fully agree. Thanks for catching it.
 
 Chris
 
