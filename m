@@ -1,150 +1,135 @@
-Return-Path: <linux-acpi+bounces-17470-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17473-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFEC6BB0073
-	for <lists+linux-acpi@lfdr.de>; Wed, 01 Oct 2025 12:38:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22969BB00B2
+	for <lists+linux-acpi@lfdr.de>; Wed, 01 Oct 2025 12:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D2FE1896E7A
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 Oct 2025 10:38:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C904C4A0F0B
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Oct 2025 10:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66872BEFE4;
-	Wed,  1 Oct 2025 10:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9382C08D0;
+	Wed,  1 Oct 2025 10:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=layalina-io.20230601.gappssmtp.com header.i=@layalina-io.20230601.gappssmtp.com header.b="y+Qrg6t2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Na/AvAzy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E16024A051
-	for <linux-acpi@vger.kernel.org>; Wed,  1 Oct 2025 10:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722612C0269;
+	Wed,  1 Oct 2025 10:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759315101; cv=none; b=Eq/xo3vCBZ2qsbov/dxLCrSzXQacZdNZ/c7gPbD1KgJ6PalhKgLT+Rh5doqy7GrldWBlTf+CxyzBXcZmyIs+zCBoAB7SNkHbScjXfd/m1tvfaPrb8zVXBU+WnPbZQ51t9NnxPXIZvK3DehixPg/Dgh5cTjPXMpeHS2zhfMwDjTI=
+	t=1759315411; cv=none; b=hL7Y1RhESWvvlJXxP/KIeKyfWE1rzVVXdSduIrsTS7rgNSEQ2tVD2M5KlQPx84Of0C/sXsP9Wjwu/topANhO8s9lDsbx/GIbmIyxtVpRajx248hVMHVcKSu65+ROoe/sNgMRJ3268MBwrwXX/kzMFYhwNu8qGfRZvaIiwnGtItE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759315101; c=relaxed/simple;
-	bh=6WpRzUY1xB9VvC/VEjbYbB5z3j3GxfQ6hBgggjbZ6EA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GXA1yRepmFP2C68eEjyi1gsxA/1tzJfIMRlACrAt9L1WleJ0NNY2q/Jq8TmjOaITANTicOV1TPaq8XCTdkBLnJcvHLYZ0K2c+I7fXEjOeTAE9T4imfITZbbdZCsbpZPHEWYILs1JltRehVZntVQ1yr8Ryhc94GvJhUZyQVw0Xts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=layalina.io; spf=pass smtp.mailfrom=layalina.io; dkim=pass (2048-bit key) header.d=layalina-io.20230601.gappssmtp.com header.i=@layalina-io.20230601.gappssmtp.com header.b=y+Qrg6t2; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=layalina.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=layalina.io
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-414f48bd5a7so4759527f8f.2
-        for <linux-acpi@vger.kernel.org>; Wed, 01 Oct 2025 03:38:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=layalina-io.20230601.gappssmtp.com; s=20230601; t=1759315097; x=1759919897; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4mF0RoLdx3iYd2wCJGbdBLKsyAovYaRReQN2weBYtMg=;
-        b=y+Qrg6t2+x2XATp4qoY42IpRtEEqTMo+ykgdzwd5GUoPd95dWiV0NKZVydDwFCv5TT
-         5EOiYYiElupqnYTbg6ahOFnzxnRnpRmyVQhpkIWiJkoI0XJhvBOZha9MoPxLBmEUAQih
-         7OiC5JbiOch7qdXoOnM7o5KH/2vwFlbgnkUxlw0JCOkxpNjvfjSfrfsijG33waVj9rp3
-         EgaXwCD6ivCBUpb3vb7ZrEuU4G4Ru5ovUfhZB/46618+I+TUP6BeITd5QuIeod+CqLG+
-         f9HUHKzdome3ICyoaRlY59BztYhqNTuYCTW/d/swcoDc+wS3iLXDv3smiC/9tMSLOFLe
-         p4Uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759315097; x=1759919897;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4mF0RoLdx3iYd2wCJGbdBLKsyAovYaRReQN2weBYtMg=;
-        b=YULjoJrvx4AmTVX5HURAX20wuAZyiDDotBxqtVa/9NRyuqf+ESLMQv7DDMwYBCYVXF
-         mPwDZkkfDbB7HejeCwtMDjx6Sb5m+yNRY0UtJbcsv5JEq6QjhR74Z0Gyyok48OReew//
-         mOhHqFBRhESKSegmLGxvE2pIff14EKjxrRH1bH6ZyX4MZ0vg47IdPQDU5Q1FvCUPoHI3
-         8oLd+D40/4xnl+WoBbE8fs3xfM+Ctr4qL7OR9I1OTC+xNf82bNd4vnnV+ZUPgO7QvYvi
-         g9IJ+70mUoDTwZZLK3z9inwOvi7oEZRRRbouzys7RE5VUIN8e61OPn9S8Sxe0QaD4nA0
-         ycUw==
-X-Forwarded-Encrypted: i=1; AJvYcCXHtc8uXIJaWcop8fRWpA1co3FcoNtSJm09HGAI6UaPYr6A3jr+q2duuMui916zpXOXB44dXm0vJ/bZ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFztiXcDVNyvsWTek2/b6voQCR6PfzpvcdW4JUzOFq7FgQ7W3/
-	A6QEeTwl6jPW88obpRSgnfzjjwSxLuy/jUg5x+5ttdT27hchDEd+E2Dj9Q+5hacPRcI=
-X-Gm-Gg: ASbGnctZUFK6Ro9vfl/QeLapBC4zaeQ6Z0t98440RDaSfl92Wl/d/x57mbsfgZg9oZE
-	eUgy1XA+XxmtksehV/ypuKqlA3VjupetYJKahDqF1lnL0rLfrgTFijpewwN3q0AoGn9mZ8Vr44p
-	aYvnRpMtu2OX7MS1PnTrQFDLPW43q439x25VJpYYFQruEl8Uw+HM8YcZFv2Nb1Yk5ObDnLJ0n2j
-	jhSb8mRxiddZcq6D57x45i0blSrWwqHBFfHDaBRG1vSTGzfH5Z8GLEwO0b/aa4usOYO0GOQVIIb
-	gC119DRDEVo2wGn5z7d6ur/k8VlUMxgA1mCmug3O3dOV3w+JN77DOq71CIrkPymwmW1JXWUZW+R
-	YzHx39zOkRUsor81q79Gjz/TkOyQjPpPKrHp3peX9Rkr5bPby0szZ3B2Im8IKkqTT0XatNOC3Z4
-	8MfYdJArLrZMz6PZ/j2l1sPNdcAWU=
-X-Google-Smtp-Source: AGHT+IEaer9MYyjKdjU2yY0Pc7X/yiVBoIWcheLdIRRZJC17ULlWTNZ7OJDYC5pxYdi3TVVVua5g6A==
-X-Received: by 2002:a05:6000:2086:b0:410:3a4f:1298 with SMTP id ffacd0b85a97d-425577f3522mr2447321f8f.15.1759315097237;
-        Wed, 01 Oct 2025 03:38:17 -0700 (PDT)
-Received: from airbuntu (host86-146-64-97.range86-146.btcentralplus.com. [86.146.64.97])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc7e2c6b3sm28297378f8f.54.2025.10.01.03.38.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Oct 2025 03:38:16 -0700 (PDT)
-Date: Wed, 1 Oct 2025 11:38:15 +0100
-From: Qais Yousef <qyousef@layalina.io>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Linux PM <linux-pm@vger.kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Linux ACPI <linux-acpi@vger.kernel.org>,
-	Jie Zhan <zhanjie9@hisilicon.com>, rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Subject: Re: [PATCH v3 1/4] cpufreq: Make drivers using CPUFREQ_ETERNAL
- specify transition latency
-Message-ID: <20251001103815.a57cc3wyasyhmrmt@airbuntu>
-References: <5069803.31r3eYUQgx@rafael.j.wysocki>
- <2264949.irdbgypaU6@rafael.j.wysocki>
+	s=arc-20240116; t=1759315411; c=relaxed/simple;
+	bh=pjc0ltiFlsJ+gTtE2O50XCnYwZNXXpBhCmtux4LT//I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S5PSvQjSLCwXRHGVIgXKwc1NLTrgvUx6GNaehMY7hwW7WtWvOBa0p8R+p0JJZAlHWiLJ0Vg4l1LqlReQ9OkToE6wfigtEdJzOoyXnBEGSlvUYITkeNs08h5ofA0kHOVnbf4jaxdjUHSv6NExwhSnN852AtycHiPTUPoO1HE7g+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Na/AvAzy; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759315409; x=1790851409;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=pjc0ltiFlsJ+gTtE2O50XCnYwZNXXpBhCmtux4LT//I=;
+  b=Na/AvAzyRyYYEdW/L4fmtwQ7tByg0u8T4jzulVcO8f1zOcGmpLbNo/Gf
+   3/UsChfjZVQ41DWrXnML4p1H6Yx4ew9RtRwUhj1VArPl2PWNnpyWZI47v
+   RVkq+duTO9uzH8BRUZiarz/R+kVPgrCsxnw/noJJr1b+mI+8NGwvFih3T
+   B/+7n1AWii8lr6D81BGkjSPHqDG/BT0ZsjMo5tjv9IOOypRMo5gZm0lSW
+   JawIMG+QAL2ZCcsI/7yBGBZF9ZwQ/AZlKE1VYuM2F/OFFafs+G98f0EO9
+   1dWmM9+L1FGe/Wel+2VR0qDpf0FO5hZJnFqBsf6OeIFNrbeVGUV81kppq
+   w==;
+X-CSE-ConnectionGUID: sq6o5oxgTYKZqt8bq/fVQA==
+X-CSE-MsgGUID: IAIylTUMQ7acSZ9DMBdmCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61293956"
+X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; 
+   d="scan'208";a="61293956"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 03:43:26 -0700
+X-CSE-ConnectionGUID: 75zEa4eMS3Ckjz2ZYlVGuA==
+X-CSE-MsgGUID: DuiZQoVlSdO9D6kYxW0e1A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; 
+   d="scan'208";a="178357470"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.14])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 03:43:24 -0700
+Received: from punajuuri.localdomain (unknown [192.168.240.130])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 922C311F8D0;
+	Wed, 01 Oct 2025 13:43:20 +0300 (EEST)
+Received: from sailus by punajuuri.localdomain with local (Exim 4.98.2)
+	(envelope-from <sakari.ailus@linux.intel.com>)
+	id 1v3uIq-00000005L6Y-2DFh;
+	Wed, 01 Oct 2025 13:43:20 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: linux-acpi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 0/3] ACPI property cleanups
+Date: Wed,  1 Oct 2025 13:43:17 +0300
+Message-ID: <20251001104320.1272752-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2264949.irdbgypaU6@rafael.j.wysocki>
+Content-Transfer-Encoding: 8bit
 
-On 09/26/25 12:12, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Commit a755d0e2d41b ("cpufreq: Honour transition_latency over
-> transition_delay_us") caused platforms where cpuinfo.transition_latency
-> is CPUFREQ_ETERNAL to get a very large transition latency whereas
-> previously it had been capped at 10 ms (and later at 2 ms).
-> 
-> This led to a user-observable regression between 6.6 and 6.12 as
-> described by Shawn:
-> 
-> "The dbs sampling_rate was 10000 us on 6.6 and suddently becomes
->  6442450 us (4294967295 / 1000 * 1.5) on 6.12 for these platforms
->  because the default transition delay was dropped [...].
-> 
->  It slows down dbs governor's reacting to CPU loading change
->  dramatically.  Also, as transition_delay_us is used by schedutil
->  governor as rate_limit_us, it shows a negative impact on device
->  idle power consumption, because the device gets slightly less time
->  in the lowest OPP."
-> 
-> Evidently, the expectation of the drivers using CPUFREQ_ETERNAL as
-> cpuinfo.transition_latency was that it would be capped by the core,
-> but they may as well return a default transition latency value instead
-> of CPUFREQ_ETERNAL and the core need not do anything with it.
-> 
-> Accordingly, introduce CPUFREQ_DEFAULT_TRANSITION_LATENCY_NS and make
-> all of the drivers in question use it instead of CPUFREQ_ETERNAL.  Also
-> update the related Rust binding.
-> 
-> Fixes: a755d0e2d41b ("cpufreq: Honour transition_latency over transition_delay_us")
-> Closes: https://lore.kernel.org/linux-pm/20250922125929.453444-1-shawnguo2@yeah.net/
-> Reported-by: Shawn Guo <shawnguo@kernel.org>
-> Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-> Reviewed-by: Jie Zhan <zhanjie9@hisilicon.com>
-> Cc: 6.6+ <stable@vger.kernel.org> # 6.6+
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hello everyone,
 
-The whole series LGTM. I think this is clearer now without the CPUFREQ_ETERNAL.
+This is a small set of ACPI property cleanups.
 
-Reviewed-by: Qais Yousef <qyousef@layalina.io>
+The previous set including with the tree-wide changes can be found here
+<URL:https://lore.kernel.org/linux-acpi/CAJZ5v0gQ9vnT+Z8zryEausp-2xX7HocoBgwmiptxg7BGiU9C8g@mail.gmail.com/T/#t>.
 
+No functional change intended.
 
-Cheers
+since tree-wide set v2
+<20250924074602.266292-1-sakari.ailus@linux.intel.com>, WRT. this patch:
 
---
-Qais Yousef
+- Don't use kernel-doc functions to document static functions in .c files.
+
+- Use more robust algorithm for enumerating sub-nodes (thanks to Laurent).
+
+since v1 <20250916160129.3955410-1-sakari.ailus@linux.intel.com> (entire
+tree-wide set):
+
+- Move patch "ACPI: property: Make acpi_get_next_subnode() static" as
+  first.
+
+- Add missing parentheses and kernel-doc Return: section in
+  acpi_get_next_present_subnode() documentation and move the Return
+  section: of fwnode_graph_get_endpoint_by_id() to the end of the
+  documentation section (new patch for the latter).
+
+- Use device_get_next_child_node() instead of fwnode_get_next_child_node()
+  in flash LED driver drivers.
+
+- Rework iterating port nodes in acpi_graph_get_next_endpoint() as
+  suggested by Andy (new patch).
+
+Sakari Ailus (3):
+  ACPI: property: Make acpi_get_next_subnode() static
+  ACPI: property: Use ACPI functions in acpi_graph_get_next_endpoint()
+    only
+  ACPI: property: Rework acpi_graph_get_next_endpoint()
+
+ drivers/acpi/property.c | 26 +++++++++++++++-----------
+ include/linux/acpi.h    | 10 ----------
+ 2 files changed, 15 insertions(+), 21 deletions(-)
+
+-- 
+2.47.3
+
 
