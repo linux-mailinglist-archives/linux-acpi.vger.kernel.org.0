@@ -1,192 +1,234 @@
-Return-Path: <linux-acpi+bounces-17487-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17488-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 342DEBB19B0
-	for <lists+linux-acpi@lfdr.de>; Wed, 01 Oct 2025 21:33:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5508DBB1BE8
+	for <lists+linux-acpi@lfdr.de>; Wed, 01 Oct 2025 23:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D59E02A7A1A
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 Oct 2025 19:33:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0895D4C3EC4
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 Oct 2025 21:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2A724EF76;
-	Wed,  1 Oct 2025 19:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B343101C5;
+	Wed,  1 Oct 2025 21:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C8anHiVL"
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b="i0Zb6ZN0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9626B1DF97C
-	for <linux-acpi@vger.kernel.org>; Wed,  1 Oct 2025 19:33:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2108130FC16
+	for <linux-acpi@vger.kernel.org>; Wed,  1 Oct 2025 21:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759347203; cv=none; b=aMfAdvKO5ZSbe9HwZ3BfJfxOWeP75o2Jt1bZ2/suZRYGuYtq/8/oM+8PUeJLmwdc9rHh4yaTPTGqlYfQtt6IX+G0Sm8pgaPKn7GgVczCiqO619VHxNJmBUFeY5eRw4a6+9ObMVpIztgirlY3zcNiQ7n4AX5oMHXzLn78+w7X2ws=
+	t=1759352640; cv=none; b=ot3W7da79g5uQ5zTKSKNgRd71m/dDekXlUbXfgwqY3cu6Mbb0Hnj05ZXmKYGWslXsKDWfijvBuow08rxI8I7gbYtY/K0+hVF+VMYC5TcN2kCeRiAqsqmuMvfkVt7w1/wVPCPI0jFOX3HzsB2llki5TSDSTl0/DD18UHPL/EHreY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759347203; c=relaxed/simple;
-	bh=pcmTjHEZBX8fcLEcUvi2ZcYt2991FZW3Fd5xDq5NUoY=;
+	s=arc-20240116; t=1759352640; c=relaxed/simple;
+	bh=4105Z/5hGdN1tVTRN0xK8sG6WEId1RBapbjPdK8pf2g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kJtNf+Gnod6Fza9m3xNWAEOgKiKF1e2Ih+sIqYKKqiAfX8VEx34fc28w8whDM1iGAwVhX4rXJnOkRqlRQNDGBNG8OP0KtCuJ7UMCrFoqbyQtGqof5+KYAIomdUpSOXNMYurov7D2d2UUi7pRW6lImSwVuBOnxEpzK+TSCwchgaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C8anHiVL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C67C4CEF1
-	for <linux-acpi@vger.kernel.org>; Wed,  1 Oct 2025 19:33:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759347203;
-	bh=pcmTjHEZBX8fcLEcUvi2ZcYt2991FZW3Fd5xDq5NUoY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=C8anHiVLG+bRcxEBlsWnJMQ6on2YkXCWleaKNxnRg2t9zssUgk5gIVI+x7KkPiUX6
-	 A9l4Q4UNfa0+ecPvUhYliAzZnJCF+eTUHkLTeugKdLd9VDidDHpJNQGI7ZwX9qQAD5
-	 es02EqJy+6nz7Ik7VScOZ8/BuUD9i/2iWMYwAQq342iAujI5lm0oA8hH8p1HcRFSHc
-	 8FJxeQ4iCI89TmVt4jLxgzSytF/hhRnH2uydTeeqd4gEqr9GdCuz2y4WOet9zaXPIH
-	 KDwctwPBV3ApKfE4tpmVK3yzXkN/J144Rv2MQVNINf5Qrj5xtykjstP4oSn5h1HECU
-	 2lQ8mpPYxgRrQ==
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-621b965a114so102059eaf.1
-        for <linux-acpi@vger.kernel.org>; Wed, 01 Oct 2025 12:33:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVM18qen2PuF3SVJXRuoa4RcWzfSCim2sWF2IgzfT5zGdbPQjd/fVB68Nz6Qrr7bQyDRlvF8uinnCBI@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBf053aMwWTdlKdGZx7uBKU69dYJ6DjAy1H/pii1UVU5yJ2gEV
-	Np9sRnErv9XbjwU5xj5JLEdvAITpl3nTVrvIifpW7Qa8m32CW9vxVE7Vs5nyvdwoxYQur7Dq1AQ
-	TtQbDs3QnYSvEZmPUb+NADKUGHYfnsXo=
-X-Google-Smtp-Source: AGHT+IGTZl9glwlZZ3zZMBlAPNdxo6duyuaFSx2GsTebbU3ia5HEgvSrVWBKJYE/hyGDJFSUuJ46DxT9ykDzZXiMBu4=
-X-Received: by 2002:a05:6820:2385:b0:63f:61c3:7e7f with SMTP id
- 006d021491bc7-64bc0a2da77mr2168217eaf.8.1759347202443; Wed, 01 Oct 2025
- 12:33:22 -0700 (PDT)
+	 To:Cc:Content-Type; b=aaynfPswdaF5My3rsyCnhpZ5WQ1bSwpQVhu56Fa4Bi6XULpJYwDKzwa4Nj4miZ/igs5j5Ze6a0nIfqyofxSnQaBH1j06+Zma5Dlq0NS9VmjwygMYHYNTZM0wgNN07uaAf1iNXJg7rYnV1Istkv97wLOlrEPnz6LqOKQA4ulMe/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com; spf=pass smtp.mailfrom=soleen.com; dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b=i0Zb6ZN0; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4d7b4b3c06dso2180001cf.1
+        for <linux-acpi@vger.kernel.org>; Wed, 01 Oct 2025 14:03:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1759352637; x=1759957437; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/8R4ckxlGGkZLYacM+hUbGwqr1ufUw/TwOnVgoT0mKE=;
+        b=i0Zb6ZN0f4+0hfEOhumLvgMXrurfvrSLqLDyiUYRJsh/eGZTjivfVr+fSg6X5l6k5z
+         Ah5ET9XvAoOwUNAZ8SzSDke9lkma397b9ytpkmfTSgoKjAWiMfw8iU3dAMSHUk3LiDOe
+         975s+ITiZZkHFpvnFyFR2aTIjxPI++YMKSHP1rlLrJ5rE8svRrf4pj4glgYcL8KzJjab
+         /m6SZgQaDQcTWj/cvNDpm23pXZTwGXW5ZB9/EjpM/tdqQCMZdQhok+XMhnkljnmbDfW2
+         FBpGwk5RdA7mEIRm6NQbzxdDDQN8SCw2SqPlupOfIoF1pLIdbuMYBjwb3Ex3qHm1//8D
+         w9Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759352637; x=1759957437;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/8R4ckxlGGkZLYacM+hUbGwqr1ufUw/TwOnVgoT0mKE=;
+        b=jJESQVgu9JeyrOMNTYGoeA8uYXkkn9g9h/S4zFQXhIwztMpPDIJKl5nc5bxIox6Qj9
+         p5cjxpQ1y6qQV+EfVRuNuFhBULWqTnt37pKRPiHtb+L6uZNR7Rpw//kxWa6JAApgftAW
+         t/hlIKC+mKN1QduNdBTHEmppgLKirNa9LTAcKYqIBeqFJZfV7OQJDYle547eNO7JBysO
+         zdOIIBy3W+F1B7yDmUK7P5+s9BdT2bd0CodGuy2revb/dOwHniizj41CzVS0DmCVE9mE
+         Cu9+zTpjwkVqzxgTkjqtPg14sdl/4VnxYLSJvsPdksprj1Uxw0g1XSJ5D4m2MmGeyqE1
+         +MsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU7yKCbb+0Jl+0fsmE5XkAVLxF4KX90qKo5S1h8iUKDuCnb5vE2RTGkcGjdiaiEw2oY4NHE5/nl7DDH@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/prpaWrsj1CrUvPdPwJ5bo4X44fUGcEgtVZK/X7VSVzCbxaIE
+	HYnEIl9k3IN9KRPva9y8WfmnqBd2mv/WIFFktbBAaw8r9PF8YPYnLL1JGWYI7aKe2hgACbABFbO
+	jvsPgqvli4oZDMbU6moTXiwTPWgaHeSmf4JJrp8rotw==
+X-Gm-Gg: ASbGnctrKBsoUPT6GWpSb7cpzJ/peZs46mJIW1MAlMmkeNuVAxOT7S0+L6rWEX9bFdj
+	R9os9D8M93CWX/9DuI4OtFl0/oGnYeR8P/if87Y/fDrwJBFWCzb0TkryDQR7aZQEm4Ikky0npA8
+	7WeFCjXjjCk8J1YQZoR9zzlKkMlbtEbm6MAU2A7g6igulF53vTLs2g2QosAvJFLssEydFcFJ4kh
+	ozsUoXIZKi2sVpFN3CbVRYLZe8l
+X-Google-Smtp-Source: AGHT+IHaT8f3IGH0wGTAIKWNGc+wQvt8RfNaa66LDPUvvqcvMX2b9yoXuqRxIA4IpTokJk4759Ot+dBCeq72YxFQH1A=
+X-Received: by 2002:a05:622a:8c:b0:4d9:5ce:374a with SMTP id
+ d75a77b69052e-4e41de71c93mr65042911cf.53.1759352636890; Wed, 01 Oct 2025
+ 14:03:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250917120719.2390847-1-srosek@google.com> <20250917120719.2390847-2-srosek@google.com>
- <CAF3aWvHStokULYuGj9rZ4v9dESTxWYtzrx5H6FDP1kdjzfbjYw@mail.gmail.com>
-In-Reply-To: <CAF3aWvHStokULYuGj9rZ4v9dESTxWYtzrx5H6FDP1kdjzfbjYw@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 1 Oct 2025 21:33:11 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hCZ0FqS7ehm_Y21=q73CcOxYmYz0z-JRk2t_96HQ+TZQ@mail.gmail.com>
-X-Gm-Features: AS18NWB19ZO7VwJor5b_v9eillelUaEMgA6qNT5UWj3HIaGiJdQctMKxgUN3BnE
-Message-ID: <CAJZ5v0hCZ0FqS7ehm_Y21=q73CcOxYmYz0z-JRk2t_96HQ+TZQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/6] ACPI: DPTF: Ignore SoC DTS thermal while scanning
-To: =?UTF-8?Q?S=C5=82awomir_Rosek?= <srosek@google.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
-	AceLan Kao <acelan.kao@canonical.com>, Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, 
-	Hans de Goede <hansg@kernel.org>, Alex Hung <alexhung@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Zhang Rui <rui.zhang@intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Tomasz Nowicki <tnowicki@google.com>, 
-	Stanislaw Kardach <skardach@google.com>, Michal Krawczyk <mikrawczyk@google.com>, 
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org
+References: <20250916-luo-pci-v2-0-c494053c3c08@kernel.org>
+ <20250916-luo-pci-v2-6-c494053c3c08@kernel.org> <20250929175704.GK2695987@ziepe.ca>
+ <CAF8kJuNfCG08FU=BmLtoh6+Z4V5vPHOMew9NMyCWQxJ=2MLfxg@mail.gmail.com>
+ <CA+CK2bBFZn7EGOJakvQs3SX3i-b_YiTLf5_RhW_B4pLjm2WBuw@mail.gmail.com>
+ <2025093030-shrewdly-defiant-1f3e@gregkh> <CA+CK2bDH=7H58kbwDM1zQ37uN_k61H_Fu8np1TjuG_uEVfT1oA@mail.gmail.com>
+ <2025093052-resupply-unmixable-e9bb@gregkh> <CA+CK2bCBFZDsaEywbfCzDJrH3oXyMmSffV-x7bOs8qC7NT7nAg@mail.gmail.com>
+ <2025100147-scrubbed-untold-fc55@gregkh>
+In-Reply-To: <2025100147-scrubbed-untold-fc55@gregkh>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Wed, 1 Oct 2025 17:03:19 -0400
+X-Gm-Features: AS18NWCXBo3N9-wt7szYuAOizDJQam1vtml22whdpVU-nHHawPcXDZeIceT_zwo
+Message-ID: <CA+CK2bA0acjg-CEKufERu_ov4up3E4XTkJ6kbEDCny0iASrFVQ@mail.gmail.com>
+Subject: Re: [PATCH v2 06/10] PCI/LUO: Save and restore driver name
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Chris Li <chrisl@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Bjorn Helgaas <bhelgaas@google.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, David Matlack <dmatlack@google.com>, 
+	Pasha Tatashin <tatashin@google.com>, Jason Miu <jasonmiu@google.com>, 
+	Vipin Sharma <vipinsh@google.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Mike Rapoport <rppt@kernel.org>, Leon Romanovsky <leon@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hi Greg,
 
-Sorry for the delay.
-
-On Tue, Sep 23, 2025 at 2:16=E2=80=AFPM S=C5=82awomir Rosek <srosek@google.=
-com> wrote:
+On Wed, Oct 1, 2025 at 1:06=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Hi Rafael
+> On Tue, Sep 30, 2025 at 11:56:58AM -0400, Pasha Tatashin wrote:
+> > > > A driver that preserves state across a reboot already has an implic=
+it
+> > > > contract with its future self about that data's format. The GUID
+> > > > simply makes that contract explicit and machine-checkable. It does =
+not
+> > > > have to be GUID, but nevertheless there has to be a specific contra=
+ct.
+> > >
+> > > So how are you going to "version" these GUID?  I see you use "schema =
+Vx"
+> >
+> > Driver developer who changes a driver to support live-update.
 >
-> On Wed, Sep 17, 2025 at 2:07=E2=80=AFPM Slawomir Rosek <srosek@google.com=
-> wrote:
+> I do not understand this response, sorry.
+
+Sorry for the confusion, I misunderstood your question. I thought you
+were asking who would add a new field to a driver. My answer was that
+it would be the developer who is adding support for the Live Update
+feature to that specific driver.
+I now realize you were asking about how the GUID would be versioned.
+Using a GUID was just one of several ideas. My main point is that we
+need some form of versioned compatibility identifier, whether it's a
+string or a number. This would allow the system to verify that the new
+driver can understand the preserved data for this device from the
+previous kernel before it binds to the device.
+
+> > > above, but how is that really going to work in the end?  Lots of data
+> > > structures change underneath the base driver that it knows nothing
+> > > about, not to mention basic things like compiler flags and the like
+> > > (think about how we have changed things for spectre issues over the
+> > > years...)
 > >
-> > The Intel SoC DTS thermal driver on Baytrail platform uses IRQ 86 for
-> > critical overheating notification. The IRQ 86 is described in the _CRS
-> > control method of INT3401 device, thus Intel SoC DTS thermal driver
-> > requires INT3401 device to be enumerated.
-> >
-> > Since dependency on INT3401 device is unrelated to DPTF the IS_ENABLE()
-> > macro is removed from ACPI DPTF INT340X scan handler, instead Kconfig
-> > is updated to ensure proper enumeration of INT3401 device.
-> >
-> > Fixes: 014d9d5d0cc1 ("ACPI/int340x_thermal: enumerate INT3401 for Intel=
- SoC DTS thermal driver")
-> > Signed-off-by: Slawomir Rosek <srosek@google.com>
-> > ---
-> >  drivers/acpi/dptf/int340x_thermal.c | 7 +------
-> >  drivers/thermal/intel/Kconfig       | 1 +
-> >  2 files changed, 2 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/drivers/acpi/dptf/int340x_thermal.c b/drivers/acpi/dptf/in=
-t340x_thermal.c
-> > index a222df059a16..947fe50c2ef6 100644
-> > --- a/drivers/acpi/dptf/int340x_thermal.c
-> > +++ b/drivers/acpi/dptf/int340x_thermal.c
-> > @@ -11,10 +11,9 @@
-> >
-> >  #include "../internal.h"
-> >
-> > -#define INT3401_DEVICE 0X01
-> >  static const struct acpi_device_id int340x_thermal_device_ids[] =3D {
-> >         {"INT3400"},
-> > -       {"INT3401", INT3401_DEVICE},
-> > +       {"INT3401"},
-> >         {"INT3402"},
-> >         {"INT3403"},
-> >         {"INT3404"},
-> > @@ -76,10 +75,6 @@ static int int340x_thermal_handler_attach(struct acp=
-i_device *adev,
-> >  {
-> >         if (IS_ENABLED(CONFIG_INT340X_THERMAL))
-> >                 acpi_create_platform_device(adev, NULL);
-> > -       /* Intel SoC DTS thermal driver needs INT3401 to set IRQ descri=
-ptor */
-> > -       else if (IS_ENABLED(CONFIG_INTEL_SOC_DTS_THERMAL) &&
-> > -                id->driver_data =3D=3D INT3401_DEVICE)
-> > -               acpi_create_platform_device(adev, NULL);
-> >         return 1;
-> >  }
-> >
-> > diff --git a/drivers/thermal/intel/Kconfig b/drivers/thermal/intel/Kcon=
-fig
-> > index e0268fac7093..47950859b790 100644
-> > --- a/drivers/thermal/intel/Kconfig
-> > +++ b/drivers/thermal/intel/Kconfig
-> > @@ -45,6 +45,7 @@ config INTEL_SOC_DTS_IOSF_CORE
-> >  config INTEL_SOC_DTS_THERMAL
-> >         tristate "Intel SoCs DTS thermal driver"
-> >         depends on X86 && PCI && ACPI
-> > +       select INT340X_THERMAL
+> > We are working on versioning protocol, the GUID I am suggesting is not
+> > to protect "struct" coherency, but just to identify which driver to
+> > bind to which device compatability.
 >
-> This selection does not meet INT340X_THERMAL requirements so
-> kernel tests are failing for randomly generated i386 config
-> https://lore.kernel.org/all/202509181359.fLTuROj6-lkp@intel.com/
-> I am considering two options:
+> So you have a new way of matching drivers to devices?  That's odd.
+
+Correct. For a device that persists across a live update, the driver
+matching logic in the new kernel would need to be altered
+
+Unless, the device can stay unbound into initramfs, as Jason suggested
+earlier in the thread. But, still probing would need to be altered to
+keep the device unbound.
+
+> > > And when can you delete an old "schema"?  This feels like you are
+> > > forcing future developers to maintain things "for forever"...
+> >
+> > This won't be an issue because of how live update support is planned.
+> > The support model will be phased and limited:
+> >
+> > Initially, and for a while there will be no stability guarantees
+> > between different kernel versions.
+> > Eventually, we will support specific, narrow upgrade paths (e.g.,
+> > minor-to-minor, or stable-A to stable-A+1).
+> > Downgrades and arbitrary version jumps ("any-to-any") will not be
+> > supported upstream. Since we only ever need to handle a well-defined
+> > forward path, the code for old, irrelevant schemas can always be
+> > removed. There is no "forever".
 >
-> 1) Align SoC DTS thermal driver dependencies to match INT340X.
-> Currently X86_64 and NET are missing. This is quite simple fix
-> but after that enabling a SoC DTS thermal won't be possible
-> for i386. From the other hand the driver requires ATOM Silvermont
-> https://elixir.bootlin.com/linux/v6.17-rc7/source/drivers/thermal/intel/i=
-ntel_soc_dts_thermal.c#L39
-> which is a 64bit architecture, so I am not sure if support
-> for i386 is really required.
+> This is kernel code, it is always "forever", sorry.
 
-I wouldn't worry about this.  I'd just make SoC DTS thermal explicitly
-depend on X86_64.
+I'm sorry, but I don't quite understand what you mean. There is no
+stable internal kernel API; the upstream tree is constantly evolving
+with features being added, improved, and removed.
 
-> 2) Don't select INT340X driver (the original patch does not)
-> and use acpi_walk_namespace to enumerate INT3401 on the platform
-> bus just before intel_soc_dts_iosf_init is called
-> https://elixir.bootlin.com/linux/v6.17-rc7/source/drivers/thermal/intel/i=
-ntel_soc_dts_thermal.c#L54
+> If you want "minor to minor" update, how is that going to work given
+> that you do not add changes only to "minor" releases (that being the
+> 6.12.y the "y" number).
 
-I'm not a big fan of using acpi_walk_namespace() for such things.
+You are correct. Initially, our plan is to allow live updates to break
+between any kernel version. However, it is my hope that we will
+eventually stabilize this process and only allow breakages between,
+for example, versions 6.n and 6.n+2, and eventually from one stable
+release to stable+2. This would create a well-defined window for
+safely removing deprecated data formats and the code that handles them
+from the kernel.
 
-Those namespace walks usually end up being quite expensive.
+> Remember, Linux does not use "semantic versioning" as its release
+> numbering is older than that scheme.  It just does "this version is
+> newer than that version" and that's it.  You can't really take anything
+> else from the number.
 
-> The code would be cleaned up later with next version of patch 5/6
-> and direct call to acpi_walk_namespace would be replaced with
-> dedicated function exported by acpi platform core. Eventually,
-> after the the last patch, there would be two drivers enumerating
-> INT3401 which shouldn't be an issue since the acpi_walk_namespace
-> uses global mutex while traversing the acpi device tree
+Understood. If that's the case, we could use stable releases as the
+basis for defining when a live update can break. It would take longer
+to achieve, but it is a possibility. These are the kinds of questions
+that will be discussed at the LPC Liveupdate MC. If you are attending
+LPC, I encourage you to join the discussion, as your thoughts on how
+we can frame long-term live update support would be very valuable.
 
-Well, this doesn't sound really straightforward.
+> And if this isn't for "upstream" at all, then why have it?  We can't add
+> new features and support it if we can't actually use it and it's only
+> for out-of-tree vendor kernels.
 
-> Please let me know your comment so I can prepare the next version.
+Our goal is to have full support in the upstream kernel. Downstream
+users will then need to adapt live updates to their specific needs.
+For example, if a live update from version A to version C is broken, a
+downstream user would either have to update incrementally from A to B
+and then to C, or they would have to internally fix whatever is
+causing the breakage before performing the live update.
 
-I'd go for option 1).
+> And how will you document properly a "well defined forward path"?  That
+> should be done first, before you have any code here that we are
+> reviewing.
 
-Thanks!
+Currently, and for the near future, live updates will only be
+supported within the same kernel version.
+
+> Please do that, get people to agree on the idea and how it will work
+> before asking us to review code.
+
+This is an industry-wide effort. We have engineers from Amazon,
+Google, Microsoft, Nvidia, and other companies meeting bi-weekly to
+discuss Live Update support, and sending and landing patches upstream.
+We are also organizing an LPC Live Update Micro Conference where the
+versioning strategy will be a topic.
+
+For now, we have agreed that the live update can break between and
+kernel versions or with any commit while the feature is under active
+development. This approach allows us the flexibility to build the core
+functionality while we collaboratively define the long-term versioning
+and stability model.
+
+Thank you,
+Pasha
 
