@@ -1,70 +1,70 @@
-Return-Path: <linux-acpi+bounces-17505-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17506-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D18F4BB3C67
-	for <lists+linux-acpi@lfdr.de>; Thu, 02 Oct 2025 13:35:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4D4FBB3C70
+	for <lists+linux-acpi@lfdr.de>; Thu, 02 Oct 2025 13:35:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DA7619C84A7
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Oct 2025 11:35:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7094D3A3B46
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Oct 2025 11:35:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3897C3112B8;
-	Thu,  2 Oct 2025 11:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E86311599;
+	Thu,  2 Oct 2025 11:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2K1FyOdl"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yl9o4QIS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF9030FF02
-	for <linux-acpi@vger.kernel.org>; Thu,  2 Oct 2025 11:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856403081D0
+	for <linux-acpi@vger.kernel.org>; Thu,  2 Oct 2025 11:34:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759404856; cv=none; b=lmG5YV5WJMcf615RR3hlAxQIQUZ/3LtC7x6YMJQ1P29hYIWgv3r63KjYno8aMHq2nV6EeT09HhY6gbIyXZwwQVvEmBeBV1LTP4Qp2tDF/M1Sla7uC9f2pLAV16zur7cqrM9jwFfyw+mSzRzRyEcusQ0EO3OgHBCuPxu2TJdIxMA=
+	t=1759404857; cv=none; b=s8YanCqOzK+prazui5rVqO3++EulnpcpeYoO/7x9ramikCHsp8NoaG3P5aMmaNXG7qMIvwaShOVEcBJnKBuvauoSFrWM43OsA6xkFD+QSlkpjH8kM2badmczVkZu/pDyQR42OpvBzm6xagP1guPj67NI42xBeXvqKt/gJQSXQUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759404856; c=relaxed/simple;
-	bh=jGzuARMYnBvr8zehQalwEPWJlbunoDDp9WM0aTu/GGg=;
+	s=arc-20240116; t=1759404857; c=relaxed/simple;
+	bh=4OP6QBdFKr1574GZhyc2cb1Lv+GX8ez8QVbJWQWOSGk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZP7NgqTHNA4eulZMczbu43Ca6t4bcPZN9M+1qQLyJidCFIvIGPSkBSiD7MG6RvGErSx2bt4COAnR4K0wI6yTlWr4mZ5erA/PG82vopEHmsKPZuiz5jRDMCsFGE9e524a+OSyWJ2DggVvG0aCfycrqDVMZimzSmLB4Wk8FlLjaEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--srosek.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2K1FyOdl; arc=none smtp.client-ip=209.85.208.73
+	 To:Cc:Content-Type; b=d7J5T1RlVt2NY+6Gk517IoOlZfaNArdPCzM5lwZk+AZWzCcUzPQxAhF7OHxK3XOzo3wGrxdx0nLClxS/LJFe0oPyQpaE/Xd5OQLcml3RVAseHiecxOW7/D/JhgNRtNvDUHUwJWbxz21Wi4uh/xeJNLvu/yCwae1ceha1xG5BCuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--srosek.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yl9o4QIS; arc=none smtp.client-ip=209.85.208.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--srosek.bounces.google.com
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-637e3a27ddfso906118a12.1
-        for <linux-acpi@vger.kernel.org>; Thu, 02 Oct 2025 04:34:13 -0700 (PDT)
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-634c01ca90fso1160140a12.1
+        for <linux-acpi@vger.kernel.org>; Thu, 02 Oct 2025 04:34:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759404852; x=1760009652; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1759404854; x=1760009654; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z336Gm+cXT/UC4w0tslyQ8BibQkKtAXFk7vuVFzlfeA=;
-        b=2K1FyOdlo3UIrximlpqg2XmXJQRzmYOWpD/OWzCyUWyTJFxJVp1OLslekisNKc5tXk
-         zTMUBYMad/YIL5I76baRdwLYqFePRYLcNYu7p4JftUTZIBUZQtSgXuly1vAfTe345wvL
-         kgi2eSbDKGMeW6ZZ2Vl8unvLfuQMcI+lcEbVr72acLCdpKMABUfqgzyNNmXZn3Ji95Sv
-         8YPCtuObD0ltufuqlAChcOMP0I/nCWFKGC85PSU8oud8hqQFqh/xY3B3yuYPZeVULd2K
-         EOthOqiCaSd27WT1BRWfrJ6lv4pguyMAOwW1NfWcxHDd0TQWlX1b+1rJx6HpPeXzzU9u
-         esYQ==
+        bh=kgpUJcZIT53UUziBi2oBrvyEh4rGfYabLqvWzsqp90A=;
+        b=yl9o4QISp/HuDiOBl78uizac9ONNsWBTwjSk7NgXErl4BxfQtpffv2wI5ED6LimNq3
+         z0X0q86LNIKfevGBCGt7SFDuC16e3cZLAtE+5GaMd/v3zNMsyCW8u6NKaf+LdCbu5L+b
+         4b44NeULuk2NrIXQ91iltZaVY6OOu43wvq2h51yFjetvU02ScTDEGf2e8etZFoXj3r6T
+         Xolj7ywxVMmJ7wOS8lB5uXuZTGhSQr8OcXG2i8jz9niRHHC42ygPfBW51IAObukXKfRe
+         Hnc/rPpjaGrwWNQlCnlgGSfq+wly/kJMmJgen3FPvQ6bzO9y0dl1AoQd+ZY3cSCKZfwm
+         mfkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759404852; x=1760009652;
+        d=1e100.net; s=20230601; t=1759404854; x=1760009654;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z336Gm+cXT/UC4w0tslyQ8BibQkKtAXFk7vuVFzlfeA=;
-        b=gEdx9Q20jkDId7XYHR5RAorIvHzG3rf3F2egEC1TtvMKSiK0822djvSU9hn/9IC9r2
-         2kKk/OzaTEbTq0+saCg/riu3OJxUAQtCOyfL9bEMpYzvDbdc+1L2gYYKBAAEQVv2xaC8
-         GFmZDWo4bmDeMRsMzysMRVc3EEJY5Bp/pJqrMjJZFviQcxpBM7PdcCAz0BCr3Na+kIHF
-         TTUEnJwcmCEKzPNoDaiRwhwUXpz0mAkPN5e9DZ4XsiN6zfBIwA6Gt3b5mITR0C46o5YB
-         qUqxlIzisikk3YkB6UUAuwbxfj61iBu9corotye4EOfmS++nDxrd32zXmdfRxVn4Qhcw
-         E8nA==
-X-Forwarded-Encrypted: i=1; AJvYcCUTWOiV6IWSYbLvx4qYRzO50lqP7OKliUeVwie+ngmnjl3+j9T7RcBDioDlJkjkKNEJp5UxUYHvTbXW@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxp8aJShqy1xFL4gABDLxWDJsjqcVAS2eQOwI0ztgYYcFU/qfQK
-	h4UUGVGY5WLfXSf92QnUWE+c1Uq12XgMeeH9GlT+GNrCDRikeNa4bN7Umfiapp/AV9ZrpMY2jC7
-	NCQ+EBQ==
-X-Google-Smtp-Source: AGHT+IFAVHO3UURkms4Px09NV4CiDY2z3xTeYtmA76T6c6XpkpIyxX6hgNSwOsfI7DB7ygO5B6MwLch1EDU=
-X-Received: from edyb2.prod.google.com ([2002:aa7:df82:0:b0:634:5269:e012])
- (user=srosek job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:354f:b0:634:b651:48b9
- with SMTP id 4fb4d7f45d1cf-63678bce60amr7133335a12.4.1759404852085; Thu, 02
- Oct 2025 04:34:12 -0700 (PDT)
-Date: Thu,  2 Oct 2025 11:34:03 +0000
+        bh=kgpUJcZIT53UUziBi2oBrvyEh4rGfYabLqvWzsqp90A=;
+        b=hGiMFHfqAM/svFSNeNcwk4UYw5nFxhPIJ2LxDu/pbV6rzI2iwthe1VEbEwN06tXYyB
+         vQY6gy0S4lF2UZCuHDmJ9wVW5Ouvrb34cLVXQpAlEvjRKn+sW5eLeAzuubhj3h8Nzv3g
+         6+DUqQSGPRbVkQs7idbpWzylIVoJ8Xp6Smdclcsjk+4jNdctIaOMcb2OL4haqIIqjxcu
+         b1AouaG1NR6tU/E2ciWfGPrVZbd1+IHhe9a2Uy0plakrZ6X4cjcmCF9lnBu1LaAPdfsY
+         5AsT+21JKqYfu2QVrzeXMGaQ2Fzq3A6RiFVP8suaukWMQ7AjB+FHDG0Bi+JPe4IoNmRU
+         d4lQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUb+N4yRk3pSA9d72qHfamtrfWq/06JSGa3Vy8GgFg090o717/Hd7Pn92F7Jl/vz1TVdb8oQ2edglBa@vger.kernel.org
+X-Gm-Message-State: AOJu0YywaGmjWD5G6XxeflrR5OGqRv1bzUWuncKDkoXTfFK/Wnwa8fjr
+	dMQO/X3HOL/9EN+MS3npDu63gUSymNJ1VnsIXRtPv2KJVHqB2QATxX9CSAVQ1019iC58fqkiz+e
+	fb5HxWA==
+X-Google-Smtp-Source: AGHT+IEViJurBgSj1HUwewxJ2lufwYxLh7QiIceZMFqK3KJHnZaS1MP+gTNpl0gquADVo4qzM8B94yHCRDA=
+X-Received: from edqm3.prod.google.com ([2002:aa7:c483:0:b0:636:4ff7:efe])
+ (user=srosek job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:909:b0:637:ec7d:4d6c
+ with SMTP id 4fb4d7f45d1cf-637ec7d4f8cmr859439a12.11.1759404853757; Thu, 02
+ Oct 2025 04:34:13 -0700 (PDT)
+Date: Thu,  2 Oct 2025 11:34:04 +0000
 In-Reply-To: <20251002113404.3117429-1-srosek@google.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -74,8 +74,8 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251002113404.3117429-1-srosek@google.com>
 X-Mailer: git-send-email 2.51.0.618.g983fd99d29-goog
-Message-ID: <20251002113404.3117429-6-srosek@google.com>
-Subject: [PATCH v3 5/6] ACPI: platform: Add macro for acpi platform driver
+Message-ID: <20251002113404.3117429-7-srosek@google.com>
+Subject: [PATCH v3 6/6] ACPI: DPTF: Move INT340X enumeration to modules
 From: Slawomir Rosek <srosek@google.com>
 To: "Rafael J . Wysocki" <rafael@kernel.org>, Alex Hung <alexhung@gmail.com>, 
 	Hans de Goede <hansg@kernel.org>, Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, 
@@ -88,172 +88,144 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Zhang Rui <rui.zhang@intel.
 	Slawomir Rosek <srosek@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Introduce module_acpi_platform_driver() macro to simplify dynamic
-enumeration of ACPI device objects on the platform bus by loadable
-modules. Move common code from the intel-hid and intel-vbtn drivers
-to the ACPI platform core.
+Move enumeration of INT340X ACPI device objects on the platform bus
+from DPTF core to thermal drivers using ACPI platform core methods
 
 Signed-off-by: Slawomir Rosek <srosek@google.com>
 ---
- drivers/acpi/acpi_platform.c      | 27 +++++++++++++++++++++++++
- drivers/platform/x86/intel/hid.c  | 33 +++----------------------------
- drivers/platform/x86/intel/vbtn.c | 30 +---------------------------
- include/linux/platform_device.h   | 17 ++++++++++++++++
- 4 files changed, 48 insertions(+), 59 deletions(-)
+ drivers/acpi/dptf/dptf_pch_fivr.c                       | 2 +-
+ drivers/acpi/dptf/dptf_power.c                          | 2 +-
+ drivers/acpi/dptf/int340x_thermal.c                     | 7 +++++--
+ drivers/acpi/fan_core.c                                 | 2 +-
+ drivers/thermal/intel/int340x_thermal/int3400_thermal.c | 2 +-
+ drivers/thermal/intel/int340x_thermal/int3401_thermal.c | 2 +-
+ drivers/thermal/intel/int340x_thermal/int3402_thermal.c | 2 +-
+ drivers/thermal/intel/int340x_thermal/int3403_thermal.c | 2 +-
+ drivers/thermal/intel/int340x_thermal/int3406_thermal.c | 2 +-
+ 9 files changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
-index 48d15dd785f6..adf32ffa6be6 100644
---- a/drivers/acpi/acpi_platform.c
-+++ b/drivers/acpi/acpi_platform.c
-@@ -190,6 +190,33 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
- }
- EXPORT_SYMBOL_GPL(acpi_create_platform_device);
- 
-+static acpi_status
-+__acpi_platform_driver_register_cb(acpi_handle handle, u32 lvl,
-+				void *context, void **rv)
-+{
-+	const struct acpi_device_id *ids = context;
-+	struct acpi_device *dev = acpi_fetch_acpi_dev(handle);
-+
-+	if (dev && acpi_match_device_ids(dev, ids) == 0)
-+		if (!IS_ERR_OR_NULL(acpi_create_platform_device(dev, NULL))) {
-+			dev_info(&dev->dev,
-+				 "created platform device\n");
-+		}
-+
-+	return AE_OK;
-+}
-+
-+int __acpi_platform_driver_register(struct platform_driver *drv,
-+				struct module *owner)
-+{
-+	acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT, ACPI_UINT32_MAX,
-+			    __acpi_platform_driver_register_cb, NULL,
-+			    (void *)drv->driver.acpi_match_table, NULL);
-+
-+	return __platform_driver_register(drv, owner);
-+}
-+EXPORT_SYMBOL_GPL(__acpi_platform_driver_register);
-+
- void __init acpi_platform_init(void)
- {
- 	acpi_reconfig_notifier_register(&acpi_platform_notifier);
-diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
-index f25a427cccda..37f990686446 100644
---- a/drivers/platform/x86/intel/hid.c
-+++ b/drivers/platform/x86/intel/hid.c
-@@ -775,34 +775,7 @@ static struct platform_driver intel_hid_pl_driver = {
-  *
-  * As a workaround until the ACPI core figures out how to handle
-  * this corner case, manually ask the ACPI platform device code to
-- * claim the ACPI node.
-+ * claim the ACPI node by using module_acpi_platform_driver()
-+ * instead of the regular module_platform_driver().
-  */
--static acpi_status __init
--check_acpi_dev(acpi_handle handle, u32 lvl, void *context, void **rv)
--{
--	const struct acpi_device_id *ids = context;
--	struct acpi_device *dev = acpi_fetch_acpi_dev(handle);
--
--	if (dev && acpi_match_device_ids(dev, ids) == 0)
--		if (!IS_ERR_OR_NULL(acpi_create_platform_device(dev, NULL)))
--			dev_info(&dev->dev,
--				 "intel-hid: created platform device\n");
--
--	return AE_OK;
--}
--
--static int __init intel_hid_init(void)
--{
--	acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
--			    ACPI_UINT32_MAX, check_acpi_dev, NULL,
--			    (void *)intel_hid_ids, NULL);
--
--	return platform_driver_register(&intel_hid_pl_driver);
--}
--module_init(intel_hid_init);
--
--static void __exit intel_hid_exit(void)
--{
--	platform_driver_unregister(&intel_hid_pl_driver);
--}
--module_exit(intel_hid_exit);
-+module_acpi_platform_driver(intel_hid_pl_driver);
-diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
-index 232cd12e3c9f..42932479de35 100644
---- a/drivers/platform/x86/intel/vbtn.c
-+++ b/drivers/platform/x86/intel/vbtn.c
-@@ -390,32 +390,4 @@ static struct platform_driver intel_vbtn_pl_driver = {
- 	.remove = intel_vbtn_remove,
+diff --git a/drivers/acpi/dptf/dptf_pch_fivr.c b/drivers/acpi/dptf/dptf_pch_fivr.c
+index cb81636a5d63..f3cd52c89e8d 100644
+--- a/drivers/acpi/dptf/dptf_pch_fivr.c
++++ b/drivers/acpi/dptf/dptf_pch_fivr.c
+@@ -162,7 +162,7 @@ static struct platform_driver pch_fivr_driver = {
+ 	},
  };
  
--static acpi_status __init
--check_acpi_dev(acpi_handle handle, u32 lvl, void *context, void **rv)
--{
--	const struct acpi_device_id *ids = context;
--	struct acpi_device *dev = acpi_fetch_acpi_dev(handle);
--
--	if (dev && acpi_match_device_ids(dev, ids) == 0)
--		if (!IS_ERR_OR_NULL(acpi_create_platform_device(dev, NULL)))
--			dev_info(&dev->dev,
--				 "intel-vbtn: created platform device\n");
--
--	return AE_OK;
--}
--
--static int __init intel_vbtn_init(void)
--{
--	acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
--			    ACPI_UINT32_MAX, check_acpi_dev, NULL,
--			    (void *)intel_vbtn_ids, NULL);
--
--	return platform_driver_register(&intel_vbtn_pl_driver);
--}
--module_init(intel_vbtn_init);
--
--static void __exit intel_vbtn_exit(void)
--{
--	platform_driver_unregister(&intel_vbtn_pl_driver);
--}
--module_exit(intel_vbtn_exit);
-+module_acpi_platform_driver(intel_vbtn_pl_driver);
-diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
-index 074754c23d33..3b70b054d8a5 100644
---- a/include/linux/platform_device.h
-+++ b/include/linux/platform_device.h
-@@ -264,6 +264,14 @@ extern int __platform_driver_register(struct platform_driver *,
- 					struct module *);
- extern void platform_driver_unregister(struct platform_driver *);
+-module_platform_driver(pch_fivr_driver);
++module_acpi_platform_driver(pch_fivr_driver);
  
-+/*
-+ * use a macro to avoid include chaining to get THIS_MODULE
-+ */
-+#define acpi_platform_driver_register(drv) \
-+	__acpi_platform_driver_register(drv, THIS_MODULE)
-+extern int __acpi_platform_driver_register(struct platform_driver *,
-+					struct module *);
-+
- /* non-hotpluggable platform devices may use this so that probe() and
-  * its support may live in __init sections, conserving runtime memory.
-  */
-@@ -292,6 +300,15 @@ static inline void platform_set_drvdata(struct platform_device *pdev,
- 	module_driver(__platform_driver, platform_driver_register, \
- 			platform_driver_unregister)
+ MODULE_AUTHOR("Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>");
+ MODULE_LICENSE("GPL v2");
+diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_power.c
+index d7c59f016083..b85e876b2e85 100644
+--- a/drivers/acpi/dptf/dptf_power.c
++++ b/drivers/acpi/dptf/dptf_power.c
+@@ -239,7 +239,7 @@ static struct platform_driver dptf_power_driver = {
+ 	},
+ };
  
-+/* module_acpi_platform_driver() - Helper macro for drivers that don't do
-+ * anything special in module init/exit.  This eliminates a lot of
-+ * boilerplate.  Each module may only use this macro once, and
-+ * calling it replaces module_init() and module_exit()
-+ */
-+#define module_acpi_platform_driver(__platform_driver) \
-+	module_driver(__platform_driver, acpi_platform_driver_register, \
-+			platform_driver_unregister)
-+
- /* builtin_platform_driver() - Helper macro for builtin drivers that
-  * don't do anything special in driver init.  This eliminates some
-  * boilerplate.  Each driver may only use this macro once, and
+-module_platform_driver(dptf_power_driver);
++module_acpi_platform_driver(dptf_power_driver);
+ 
+ MODULE_AUTHOR("Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>");
+ MODULE_LICENSE("GPL v2");
+diff --git a/drivers/acpi/dptf/int340x_thermal.c b/drivers/acpi/dptf/int340x_thermal.c
+index 7d1308b1f513..b2be3a8df9ac 100644
+--- a/drivers/acpi/dptf/int340x_thermal.c
++++ b/drivers/acpi/dptf/int340x_thermal.c
+@@ -27,8 +27,11 @@ static const struct acpi_device_id int340x_thermal_device_ids[] = {
+ static int int340x_thermal_handler_attach(struct acpi_device *adev,
+ 					const struct acpi_device_id *id)
+ {
+-	if (IS_ENABLED(CONFIG_INT340X_THERMAL))
+-		acpi_create_platform_device(adev, NULL);
++	/*
++	 * Do not attach INT340X devices until platform drivers are loaded.
++	 * Enumeration of INT340X ACPI device objects on the platform bus
++	 * should be done by thermal drivers.
++	 */
+ 	return 1;
+ }
+ 
+diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
+index 04ff608f2ff0..61681ff24477 100644
+--- a/drivers/acpi/fan_core.c
++++ b/drivers/acpi/fan_core.c
+@@ -463,7 +463,7 @@ static struct platform_driver acpi_fan_driver = {
+ 	},
+ };
+ 
+-module_platform_driver(acpi_fan_driver);
++module_acpi_platform_driver(acpi_fan_driver);
+ 
+ MODULE_AUTHOR("Paul Diefenbaugh");
+ MODULE_DESCRIPTION("ACPI Fan Driver");
+diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+index 6311125c3ebd..0005961328fc 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+@@ -699,7 +699,7 @@ static struct platform_driver int3400_thermal_driver = {
+ 		   },
+ };
+ 
+-module_platform_driver(int3400_thermal_driver);
++module_acpi_platform_driver(int3400_thermal_driver);
+ 
+ MODULE_DESCRIPTION("INT3400 Thermal driver");
+ MODULE_AUTHOR("Zhang Rui <rui.zhang@intel.com>");
+diff --git a/drivers/thermal/intel/int340x_thermal/int3401_thermal.c b/drivers/thermal/intel/int340x_thermal/int3401_thermal.c
+index e0603f218d2e..d496f8b171e0 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3401_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3401_thermal.c
+@@ -69,7 +69,7 @@ static struct platform_driver int3401_driver = {
+ 	},
+ };
+ 
+-module_platform_driver(int3401_driver);
++module_acpi_platform_driver(int3401_driver);
+ 
+ MODULE_AUTHOR("Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>");
+ MODULE_DESCRIPTION("Processor Thermal Reporting Device Driver");
+diff --git a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
+index 213d4535f2c1..d06c06fadce5 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3402_thermal.c
+@@ -100,7 +100,7 @@ static struct platform_driver int3402_thermal_driver = {
+ 		   },
+ };
+ 
+-module_platform_driver(int3402_thermal_driver);
++module_acpi_platform_driver(int3402_thermal_driver);
+ 
+ MODULE_DESCRIPTION("INT3402 Thermal driver");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/thermal/intel/int340x_thermal/int3403_thermal.c b/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
+index d246c69d4872..33735515b47d 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
+@@ -284,7 +284,7 @@ static struct platform_driver int3403_driver = {
+ 	},
+ };
+ 
+-module_platform_driver(int3403_driver);
++module_acpi_platform_driver(int3403_driver);
+ 
+ MODULE_AUTHOR("Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>");
+ MODULE_LICENSE("GPL v2");
+diff --git a/drivers/thermal/intel/int340x_thermal/int3406_thermal.c b/drivers/thermal/intel/int340x_thermal/int3406_thermal.c
+index d05ca8bc4061..03cc026cdffb 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3406_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3406_thermal.c
+@@ -203,7 +203,7 @@ static struct platform_driver int3406_thermal_driver = {
+ 		   },
+ };
+ 
+-module_platform_driver(int3406_thermal_driver);
++module_acpi_platform_driver(int3406_thermal_driver);
+ 
+ MODULE_DESCRIPTION("INT3406 Thermal driver");
+ MODULE_LICENSE("GPL v2");
 -- 
 2.51.0.618.g983fd99d29-goog
 
