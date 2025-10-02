@@ -1,65 +1,67 @@
-Return-Path: <linux-acpi+bounces-17496-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17497-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 542D3BB27A9
-	for <lists+linux-acpi@lfdr.de>; Thu, 02 Oct 2025 06:31:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5CFABB27F7
+	for <lists+linux-acpi@lfdr.de>; Thu, 02 Oct 2025 07:03:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81A7D3BB0A6
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Oct 2025 04:31:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61540422AD6
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Oct 2025 05:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E6D1FCCF8;
-	Thu,  2 Oct 2025 04:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76AE42056;
+	Thu,  2 Oct 2025 05:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UkpSo1Dv"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="OLULUWzu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012049.outbound.protection.outlook.com [52.101.43.49])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011020.outbound.protection.outlook.com [40.107.208.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CEE28E0F;
-	Thu,  2 Oct 2025 04:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F7A288AD;
+	Thu,  2 Oct 2025 05:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.20
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759379458; cv=fail; b=ZNPk4TAtWne3rS73oIioujVtL/dHDBHudNAx35XN7beClFZlLAXT+bciFcsP4MXimX4bwTQlGbXOIh25XoPp0NDDUMB+Jmil8FLKoSvOTWhIT0X2zFvoid1QpbwzFszyvqpkdXZgRefIUe7G/DyE17v9/gF8kBqlWqu6tuziIXo=
+	t=1759381422; cv=fail; b=pkB8DevGceTG+hNtPx6bRIyQmw8mMMgx4f2ANQ9tGHD/aGX0Pe//YRwiJyh/8BdsBsK2OE4zfbGvxb81lvYZ00HnGDHJN8j9tN0oAImTd88NGxhRfZv8JNGOPpmsPXELrNcvUpqOpztS7hLcPXNNJl9l67drmq+hktloyHi1GI0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759379458; c=relaxed/simple;
-	bh=1W9JtObHfsmLdfRkBhah2rK7j4nHvPfCRWHU0zzyGxQ=;
+	s=arc-20240116; t=1759381422; c=relaxed/simple;
+	bh=VhyOp9Tr4DEDeGQCv0Zwwmkzyo6e111zPLl7tr2y/Gg=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=RQeVQhU+HUgzkwnpnSgGU7D0rWnoNx4wqLCE/8xO+av8tuJtKkUPmDhn3pF7NbBMC4stb4x0Y4YY0NnY9zHDWOvANtdxNRslayUcEOfU43yb+ua3LvYo75/Y9qEMsEiOnaY+GaJP3duG8G2YQjJWxO1YF7UnzrarrSnPdkvABOw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UkpSo1Dv; arc=fail smtp.client-ip=52.101.43.49
+	 Content-Type:MIME-Version; b=FQiZ41m+Zvn/UZOv/FzRQACnmb0e0pPFlPPE24hunm9eyGgfQPaw4LwIPLwRNNwcJgf9ffbTYInezvHRUpcehBOpS8uuxMOQGSw/A3o3/4OSFEGIx1G+BC/wip5QNRjscU9RGwoPZ1ZkxD7vSyThoYvODK0IDIe6io421It/TFQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=OLULUWzu; arc=fail smtp.client-ip=40.107.208.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hYNfEKkwYkqEKXsIUCedB8+tfgEGrTJc9/wemgq8R15KP/6UIKn6a0E5PJO6BNt6Mzy4U26QhLA4fsuvSNE/00Cf+8RF3aG85tQnT6CuyVYfrG6aLzGpq9ItvoGDcavhLydtO503mhUW9mheF414yospiv1kg8voerzj7sBhiRoab1OLnu7L5b2yB6dvIcbVbctegD1KD7oG4MiV316TSmgLo//7UxJWClzNRpsxWaJ/6EPCzfhW8oSF1IF+Lsmv7XfK3WLqwGM+JPyto9AfjkDyZxOCp/eGkunU8+bu6USitUCaDJbxw4SRlr+CANrpgQtcLaEk3C2AWsMTmvmJdg==
+ b=WRKDQasi82/I1gN243lAgFR714jBd9KChS5g5kPmINyrv+5U0+Bfe6ht+e9UmM7e6fzrKmr8x4N1gG6EvxmGaxUXEKiL5Hh0S0ENDbwc4XelUz4uWA3WljY5hc+K4Z8QFptLf9ziAFSkYT8DfiKbLhriLn+w4WqN3p7aYWMcIC7Lwk22OcjCyAKu8hP5m/+GRSeeZWpn+mrxyNtIc3+6P9jZBIHOkTejYXg8oxUhX4/ffa1QBvLLlV74tF/3hPdEvSkezzKnl0qXmdvzeiWj1z22Q5qLAnKlnX1AHKxn2y34xMlI58u7ascZQYk4kb6hXPrkH28qiX1KeMtbI0SVQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IzYNChO+i3pZbzDFTLsUFdXtaY5mZIXMJZLZF1/CgHw=;
- b=ReCRcGKrD+p5SeSE4TUMPMDVUGIDJjU7X3egyczcBOjUulq9LuHsOoB8Ef8dDJMd81Kqwk28QppMd+AR88N5gqyVddomCgAdfpcctfsyKEofOTzmPHDbBQ671paPR/35lQJR63B0m5HtnfmS8iij6ySnluOjKH8IfuhFbj59sOhFCSTKRz1xJHamJGBv9LT5YTR8AmkMFiG8qr4Rtd6P3MxjMPvw7oletnEulTEeqmBAJS91qVIBJPuXSuJFlu8THRhus1wg9r6J2gnQ2eARRgx9BacS9zTCOdrS7+9FGILJzrJ8RPYlx4s2fFs76/HX7B0ysT+Np3TD2q5TueTTIg==
+ bh=nMkCyBdk9PECzXs6gZ/N17zKh5eFT65rtzdmnIWS5N8=;
+ b=wVAN/S3YRRIFwkWWYWyJnC5Dxs2ZTGjfqlUZcpgswVwyJeJXjKp1hm9Xf5zH2+n+9fM1i3T+vHuKV1GYE9PczNJH2SGnJW9atZtPErU8GPwp9zW0XMDJ9up24CGNL0s7tMjyrLQ1TB8Pah1rm1MAT+gCsvlym8Uqq6J5NK2dy17VGJ/kbG3SZpgyJ1N9r97Xvdux1tym4CGNw9ysoKl6Fi4aNIdKscKaBa0TUvgqNeeFnvqh5oCbMT7HDvbR8bdqmSwVqaLyLwgTwViw5KPZ/5XNf9H3PMbSGNlpBcRK7dOwYAeX9fR8cFy5e7yOI/qm8QiYJCrOTcvGsyma0o9ioA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IzYNChO+i3pZbzDFTLsUFdXtaY5mZIXMJZLZF1/CgHw=;
- b=UkpSo1DvF8Hdh7dZQ2YDqT/3rTRoNnuTurZ7E0lcbrkfM4SwV7Fm4zNa6eFdAaUzJYzBK/+RmUUy11kRfDZ3zd5PmJ2jKD9BUtD5vr9I+DbdWGLu5Xa+iGqMO4BJjMQWk7GO7BYCFuIfjQ+79Bz+mfCRwJVb8I0WmRdi2weOYsBjYKzXN1V7P276M29vt1rolntslS/dgSOtoWdnI8WiW+6z+EKNrXqwLpUXM9lwoHdNF2gKfOLzAKyo04gGb4GgvqEghnP7uxzHK5qILgnCYHTveLvJKTYG5qWjjsxsIQ8kkNZqZJVgMnxkpXEnzkBpGAfKAGnaPcVyZckUeoKe6Q==
+ bh=nMkCyBdk9PECzXs6gZ/N17zKh5eFT65rtzdmnIWS5N8=;
+ b=OLULUWzuXbc3Nb8Y02/Ld4ZZ4cbFha+dc/wIrjfkUY5Q22yWHepn5T0BIOP4bhbQHkhr5T6D6H/F25cGvG/fpAE1z5RyZyK/0JGFcF3Bx2HLYqshHNVYO/lLR+g9XV4/wF82jhfjgA4U0QMoFfQA8hF7oeG7y7VH7YKKEMvJWAcRukqT8U5h4P1Q3S3tRrrBY8crzhB52EyTc0qLmnDKqWJgIYNKn3Lj64CWUJEMyWbSB/B3UbjyJbIo3O4L8A3ja6ABlbJFc1NRTOsMbeY9lkJfGEfJKifrP7kkU8EAFYHp48U+DyUPMYW87oZgTgGR1FQVSKJ5plearbJV3HRZ3A==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DM6PR12MB2667.namprd12.prod.outlook.com (2603:10b6:5:42::28) by
- SA1PR12MB5614.namprd12.prod.outlook.com (2603:10b6:806:228::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9160.18; Thu, 2 Oct 2025 04:30:49 +0000
+ MN2PR12MB4221.namprd12.prod.outlook.com (2603:10b6:208:1d2::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.18; Thu, 2 Oct
+ 2025 05:03:36 +0000
 Received: from DM6PR12MB2667.namprd12.prod.outlook.com
  ([fe80::bd88:b883:813d:54a2]) by DM6PR12MB2667.namprd12.prod.outlook.com
  ([fe80::bd88:b883:813d:54a2%6]) with mapi id 15.20.9160.008; Thu, 2 Oct 2025
- 04:30:48 +0000
-Message-ID: <5607ff12-1445-433a-b9f7-fffe20076be3@nvidia.com>
-Date: Wed, 1 Oct 2025 21:30:46 -0700
+ 05:03:36 +0000
+Message-ID: <094cc278-d488-4d22-a1f4-73616f4b99d5@nvidia.com>
+Date: Wed, 1 Oct 2025 22:03:34 -0700
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/29] ACPI / PPTT: Find cache level by cache-id
+Subject: Re: [PATCH v2 04/29] ACPI / PPTT: Add a helper to fill a cpumask from
+ a cache_id
 To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
 Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
@@ -79,14 +81,14 @@ Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Danilo Krummrich <dakr@kernel.org>
 References: <20250910204309.20751-1-james.morse@arm.com>
- <20250910204309.20751-4-james.morse@arm.com>
+ <20250910204309.20751-5-james.morse@arm.com>
 Content-Language: en-US
 From: Fenghua Yu <fenghuay@nvidia.com>
-In-Reply-To: <20250910204309.20751-4-james.morse@arm.com>
+In-Reply-To: <20250910204309.20751-5-james.morse@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR02CA0048.namprd02.prod.outlook.com
- (2603:10b6:a03:54::25) To DM6PR12MB2667.namprd12.prod.outlook.com
+X-ClientProxiedBy: BYAPR04CA0031.namprd04.prod.outlook.com
+ (2603:10b6:a03:40::44) To DM6PR12MB2667.namprd12.prod.outlook.com
  (2603:10b6:5:42::28)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -95,177 +97,162 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB2667:EE_|SA1PR12MB5614:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0f0f9336-00ff-42fa-a759-08de016c763b
+X-MS-TrafficTypeDiagnostic: DM6PR12MB2667:EE_|MN2PR12MB4221:EE_
+X-MS-Office365-Filtering-Correlation-Id: b268bdc3-a68b-4772-1958-08de01710b28
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007;
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VFMyMVgxVEcwZnRrZC9aaW9jamptVTA3dGhMRzBXcGY0V01MR3luMDNydytY?=
- =?utf-8?B?bUlRWHZYZ1liY3pqMHh0dzAvcUZTOVd4ZjRkQkRZWHM2aS9ORWhYSkhXb0Q5?=
- =?utf-8?B?dW5lc1Z2NjlXVDlqVTdBaDVwYTRaYXEzQmxidzQrUmx3clRqeWpRZmF0Rmcx?=
- =?utf-8?B?Q0k3VGduMW5OeUc4TGxScVZEeE82aDJrbmViZE5FVWtmMG5oOHVBVGpmR2RF?=
- =?utf-8?B?WlQzR1MvYUhSL0pwMUlDWnowNGZaUkV4TXVNSnduV1BDL29idytTOEVDajRo?=
- =?utf-8?B?RnNHZXRDS1JSaVVZeEhOMjZUdy9wZnhkVFlxaW5SblV2ZXhDdnJLYWdiWkI5?=
- =?utf-8?B?UzdKa3lzSlgrMnczM2RpL0ZHVGNwOExTQUE5aVhUbHJjNGZjQU5acHUxMHFX?=
- =?utf-8?B?bXNKL0UzcEhnWDZyaXo1RVVDcDQ1V3VLL3ZZSktuOE1jaFQyZytZcGVVQm5q?=
- =?utf-8?B?b1hlNWtYeHFpcS9LNU1SMmRkSGZwWnVJTk1pRGNkODJEU1ZPQzNJMXBRZjcr?=
- =?utf-8?B?Y2RwQ2c1SG9Wd25JMlNXWkZqNXZLNks1U1B5SDdqakVhRm1JNG9VeTlUUU8x?=
- =?utf-8?B?VUZoMVQzaVVMdGNnU0FQUi9DYlF4TkxudmhLUDd2bzk5UFJodTk2WkNueE1j?=
- =?utf-8?B?V1NyMW1ZdGgxelpJUm92V3RvN1BKMjMydWRid1lFQ2svTnM0QzU1WGZFWkFQ?=
- =?utf-8?B?bWhiemV5R2NPN1c0YkZpUjZKVkp4UXhLdVU2VHBvTWFPK2ZLbk82Rko0bE40?=
- =?utf-8?B?a2tTU1VvVjBMV09zY2YyMlRmUXVmN09JbDBocXdCM3I0bE94MlZuUFUvRGZR?=
- =?utf-8?B?SGsvSmFWZms3d0Mwblh2ellrT2U0R0o3SzV5djJOcVhsZXg1TlhsQitFUnAv?=
- =?utf-8?B?NUNRcXhvMnFqZ0Rub2I1bFYwUTQ0aG9SN0lUR0Qra2R6UTVNWFQ0UjdUMXZu?=
- =?utf-8?B?aklJMDBOSHZWSXA5WGNIT2d3cG5aaW12K1Z0b2Y1S3ZJZUM5TEJnNEVoM0M3?=
- =?utf-8?B?L1ZtR2UzTHR0alFvMjFDZTdKZXdrR2ZpN2FQOTR4V1ZyZ3F5R2sxZjM0NWlt?=
- =?utf-8?B?U3pmV0RyOUMzb293SDhQNGVqZ0VpdnNyaC9ldHhxQU4wVUV5QkRBQ3NhUnht?=
- =?utf-8?B?UENYUktQS0tBTG9qQ3JoUytEb0tvcUtVNnB0TytrN2x5UUNsbWsxSHNNZGlF?=
- =?utf-8?B?bzBEaktiRVliQ0c1ZzVQUEt0TUYvUGpxVzRRVHExanlRdFhtMm4zZFFyYzlS?=
- =?utf-8?B?RHRtUFVWRU5wUVMyUENweE01aEoyMlZJdStyZENKV1JvTjFaZzRPZkNHbjVz?=
- =?utf-8?B?ZEN4THYyMk5IRGJqTXFFU2oyQzhCclpKL01CUm1selJ1a1dKc25IS2ZSMTRM?=
- =?utf-8?B?ZkttelhWVkZCc0pMYkhZRkc2RlBLSk4rNW95dkt2SmZhRVkrczBBZjRvTEhG?=
- =?utf-8?B?ZkRwT3dGdU00cC93dDdGeW5JRWtUOFdnTnJKU3RSRFNVYUdXYURLUVUzWnRs?=
- =?utf-8?B?YzlyNmRZYmU5b0poaVNzcmZON1dDQ0wrc2tTL1NJRG45UE1qdENnb2lYaGlJ?=
- =?utf-8?B?bjJrRVV5dkNCekpRMnZkMVFJdDZQYmQwRzRHNFFYNGZ5YUcxY29zb1dhL3Mz?=
- =?utf-8?B?d0NaTU5aSCtqRjJQbGFObkE2bTVSc2RXRDN4L2NxQkpHVGxKOTFndTdCU1JB?=
- =?utf-8?B?L0FMcWRNak1NWHJDYUJSMmNyYTJLY3ROUGxERm9jTDNjVmlHbHZReTFCSXd4?=
- =?utf-8?B?a2ZGbVZ0MW9uMzVEZno1Z284aVQyL2J3amdadTEwanF5S25zT1lmb0g5UStM?=
- =?utf-8?B?WkY4S0NneXpMMmpuWlU4b25lN0lNWnVlWGwwUHVrZU9aZ1pxNFR1V3NIT1pQ?=
- =?utf-8?B?SHJnQ212eDRWd1lITWp6dTBLV2hhV08xa2JmcEpFS0tnelFtaHdQSlUrSm9F?=
- =?utf-8?Q?Qdsmky7Dy2X1fxM2shR5KKfwuKwVTaol?=
+	=?utf-8?B?aEhiaENYU1dUOWNPZVdudHhwTE1XVkZsZVlrNlgveFkzZ0dKVzYwdXRybno0?=
+ =?utf-8?B?OUU3ckI1SFNWWFZvWlFRUXRGYXUzNFdvQ2JaUUMwdDNUNnZBalZNa2NsWXNa?=
+ =?utf-8?B?RGFMQ3IrS0k5SkRmRm8xUmJWcFlQVkFlL2U3RENPeG0zVWsycmxxeTE3YXNN?=
+ =?utf-8?B?ZXA4VGoyamozUDY5Si80bzBHd3g3Q2xLRktwMlV0VzZxSmZhUm5kV2FVSjdn?=
+ =?utf-8?B?V0p3TzZ0b1piMnAzOEMvQlhWQnAwQ1o5Q3lnYVZFNElmVSs5SytlYnNuQXFE?=
+ =?utf-8?B?S3pmc3l5U3paYldCSHVIRDBkTCtBVjFYMUNzMkFrT29ZV0h3ZnlVVUtvTFhm?=
+ =?utf-8?B?d2xqMDJOaXkvV2U0NjdJbEtMMnl2eTdCNlRVMUQzZjhYVGhhN0pXb0J4Y3FF?=
+ =?utf-8?B?WXVPek0vSnBUbkVGN2o4MG9OZStSS1NvbXNuVjN3MDgzNzlrMUFhOWtxejg2?=
+ =?utf-8?B?b3ZwZzdkNko2QWN2eW0yR0p2V1BtZ1pBVS9LMEY4UVV4b1oxNHhVREMzckRI?=
+ =?utf-8?B?bHN0ZFdUa3d3bUFQWWtyUDdzTXVORnd5TjZMcGVSbDFVYjlON3lCZDUvcUk4?=
+ =?utf-8?B?Kys2MXVpUVV2ZGJPcGZTYWxZa3ZQVUVidGk1aFhhN3R4ODBPTEx1elRzL2RV?=
+ =?utf-8?B?YkFQenY1STZ3MnpjYWk4SzZjRlkrZUJFcjJmUld2MVVoVmpmR0lXNlFNZ1h5?=
+ =?utf-8?B?aUJyV1IyWEhpbTRXZ2ViQTdvK3ZlcDY0S0ZEYUYwV202RXg2OWRwN3ZVY1hX?=
+ =?utf-8?B?R2IwSWlrOVNqNzlaTzdFZndTZWc3TElkQ25qeW9iSVAwcjN4b2NuM2J0SHZC?=
+ =?utf-8?B?dThhOG9qQlJpc2hac0FpYnpYS3lWM3BIQUxpU1V1WDhLVHFNQjdPSlI2a2lS?=
+ =?utf-8?B?akkrcGd2TzFkdVJWeGEraTBUMTB4dXVYdzJwOW55VWkwZnFEaFNSdlkrdEtI?=
+ =?utf-8?B?ZXhLKzZ0SWJKaE5ka0tkelRJMmNEbVRXaGVRd0tVT3pya3krSE05YldKdmhk?=
+ =?utf-8?B?RUhwNkliUEJaMDZMMmtyRWNMdzFqR2IrcGVDS2hoUEdBSVVDYTg3ejdqWkhJ?=
+ =?utf-8?B?TU44SnM3TXJzQnB1NXJnZkp4ZHZ2TTlFZExaLzdZNmJvTitnSHpqYXU5Z01k?=
+ =?utf-8?B?amhmNDJWK2hQbnBGN1dITlFDS2s2M2NEais4SjE1Tk9LV2RDRmoybzdVWHN0?=
+ =?utf-8?B?ODBHUng1dFlTbEk0U2k4eCsxcTk2MHdCakw2UnVkZXMxcUVWK3B3dzlldmtw?=
+ =?utf-8?B?NmNFV0NtUlVsLzFwTnFOOXVrbUxDcCtOMkp5YVRQZ1FYNUtrOFd0WW1MZGFI?=
+ =?utf-8?B?SWpaNDRQQnRNNEx0Z1RiejZiWjdWcmNRc01mb2hMYWxUQ3JBcFh2QXorWWNx?=
+ =?utf-8?B?d3Y1S1BNZGhqTi9OMmVybXBNTnFvVFBqSmNsR1dPZkdwK1djMHV1aVJMckt1?=
+ =?utf-8?B?ME5ENUVsZnJmWFpRT2lmSEtvb3orUkZSSVNDcEd3bDlJSmtMV0gyWm9KT0Vi?=
+ =?utf-8?B?VWdzSVphMjV2RktLMU0rNVkvNk1nRXVYc1M4WTNob2FJTTNXV0xOeGJ1Wmp3?=
+ =?utf-8?B?SEJ3UEY1QUhTdjRpdnVISW1tWUIzR01PMnNlSmttTVcydVo2RVFjWTlac2R1?=
+ =?utf-8?B?cnByZUZzemdTVUZlaldmWGdhYWt0Ui9WV2x0djFXc2ViUXhmRGdraGx5VmFl?=
+ =?utf-8?B?bmRRTTAzVU55WnRod0w2YnE5ZHhRZE5RRXBwNTEzMWtMQ2duMUNXTEpPMk9n?=
+ =?utf-8?B?UkdoZlpRQmp4OHdSa0wyRkxRNjRyU09CYWV4bkhpMVBYVHZNWEpGbkdibmJP?=
+ =?utf-8?B?YjZVaTVaejQ3UkdGQzNqNVhKZTNVZGVpTVpDOHV0NXkxWC9UbFlwRmRIQllr?=
+ =?utf-8?B?dGJnTmM1OWJYZWxjV1dITmg0QTVxL1FUWE1JTmpmNWRqUkVmOVVWdllpZk5T?=
+ =?utf-8?Q?/x716rTvUV1vUoyXge7PPWvVpLf4ZLlX?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2667.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2667.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RjdBUk1WaTVMUW1EZUVyQ2hKMExPZmdIR0JwaXZhMUQ2MG5aQjgweGZRWEgx?=
- =?utf-8?B?Wk5zOTNxdy9GM3NQVkpTeTl3c21jU21YVGdMNkl2V1NDU0dHQUl4MjNJL2Fh?=
- =?utf-8?B?MmUyOU1NR3RqdERld2M3a204ZENXK2dEUklTU2F2c2NHcWFZVzUzd3NMUmpz?=
- =?utf-8?B?ZnVQdEJaM1NBaC9mN3A2OEpaZEQwenZ0RURDNm9DU2wzSFhjcnkvcDBjaU05?=
- =?utf-8?B?bktPcXl5V0tRS29wZldKcWdOYzRKL081VmM5T3dXN3FBbm9ndklkWmkvQkpK?=
- =?utf-8?B?RXdTUTJHUUhLMjBDZVlDdTBDY2JabjQxdFlCbHhGa3NhOVdSajV2b2RBSHhk?=
- =?utf-8?B?Z2gyaVRnYjRxdHdjVy9Qb0tFY01lK2JQUTJmb2V3ZUM1ZERzOUVaSGVzaUpX?=
- =?utf-8?B?eU1GV1llTWFTTlNLTjdSRXhSTkxBenFQU2JwV3FkT0UyZVpUMnZiMXR2L2M0?=
- =?utf-8?B?OGZ3aWhJNGVoN2FyRTdmelhuQ0lDYlpVcmFvZm5PVEY0SEsvRDFwYzdKY0xS?=
- =?utf-8?B?ZGtlZ2JnaFdVUFBhazRzOWszYmR6NnhwMnBrRW9QYVNNQmNQV05UT0ZBcUo0?=
- =?utf-8?B?UmR4bWExUW1MMlRDd3IvSGVRa3RXemVRMktzV1hvMlM4KzRPZW9CLzZycTlD?=
- =?utf-8?B?bCtpSUcrY08wRjN2NEtKeWd3NWtCaWk0dFdKT0JVcG9heUFWcTZORXpSMDN5?=
- =?utf-8?B?QWdRRUUybmJuTm1xdnFwOVFQL2RvS204U2RJNDROdnpBRmtRWklTeVdDc1dZ?=
- =?utf-8?B?eGJoV24yb25UTWtCc0FtZUl3cFkrdnBvZURYdEhxQlZKRytxaGpNN2VTd09M?=
- =?utf-8?B?M0FKa254ZTgrY0lZNS8rUTJWU2pOdCtHZ2lLR3ZHUzRiLytNeHI2U1kvM0lN?=
- =?utf-8?B?RkdRNTFQZXZxdHhXcU93YkJxTDJjRVhCbVlqN204YitOVVQyWWlBRDdHamlh?=
- =?utf-8?B?RFoxWFU1Njl3NmErRU5RKzQ4aHA4eVdZZ0dYaS81SUtKelU2Q3VlT1JMZTg5?=
- =?utf-8?B?VGhXRmJqZW1Ib0JSL3VhQXkrdXZUR2hrb3pONUVESG56cTY1U0hpb1Y3eVBO?=
- =?utf-8?B?VjFVK0ZWQWVZMC9tMGN5TnhEYUR2dDI4WGVaR00weUJXcjFWYStTUDdWdFMz?=
- =?utf-8?B?bG82OTdmRHhOYzRTOG5kS2VEem1URC85cStHS0hOTnFkeEdyUFpOOWhsUlhu?=
- =?utf-8?B?STY1US9jdStVRWlBU2xIZVp5N2F3Z0M2OW9qVE4rdVhKMElseHU3ZnZoMjRG?=
- =?utf-8?B?NnFVNHE5SzhvbnFLTFIzMGYxMzkwVkxKWUdReEpqUWYrQXRqaFBPemlvWjNQ?=
- =?utf-8?B?Z1htNCt6Mzh5cExxU1BMMmVJZGUxYzFLdU9xZ2d6RzQ0M3BzQWpLcElEOVdJ?=
- =?utf-8?B?YUp6eTlTM1ZZSWs3M0J1SEozcHZWeW1tM2NDVVZZcE9YU1M5RUtzQVl5MTN0?=
- =?utf-8?B?ZkRxOU92TzhZTjRDZ1FvZVY4QXY0RjM2Zkd4SjNnck9Da1BOSmhsT040K25P?=
- =?utf-8?B?YlE5SmpGVEN3alh0a210MDQvc3k0aDE4UUU5S0ZuQTJwMy9Gb09BazBRcksr?=
- =?utf-8?B?VWJYWDAvb21BM2Y0VUZwbjZMbElvMkVVc1NSL0x1TFZCd1picTFEblRCY0kv?=
- =?utf-8?B?bVRVUldUK01CU2R3NjJ2R0lWeHh6N3lzandDMjd2WHF6d1JyZ0JwbGJUZEE5?=
- =?utf-8?B?V09qeXhHSExWZHNraEZJay9pazR1UU9lQU4ySlZ1WGFVMVhCZ1FRUHFqOVVw?=
- =?utf-8?B?SGc4L2tFOGU2dzErUlB5TXJMSlJSemJVaSsyb0RjcHB3QkhDRWFTZUN4LzE5?=
- =?utf-8?B?N0ZkTWxveisrcTBxTTZycHBMUW42YUlLNmFPaUlITGVPSVB6UldFbDhsTGVB?=
- =?utf-8?B?STAzTGFnYk5iSjJxT1JxaDNrdzZWSlVvR3E2S2lON3Z6czNZSXphS0I3MTFB?=
- =?utf-8?B?ckVmOTVtWEwwMy9yR3Bnb0NZOG9mSU9XeXFOcE1SN2dpT3dWWFdPV0ZHSGE5?=
- =?utf-8?B?Y1NRN0FMZ3dRVVIrbkJNbWpwendGc0RHcTNDTkVIQkFPSnZ5WUwyYS92dFN0?=
- =?utf-8?B?R1NCY1RjUmR2Rm4rUVlJZ0xER1RRb1lsWVhFaWpaM29IaTd4RlU4bzA3RFVy?=
- =?utf-8?Q?HaVcOIkOE/go97S/z7FfGv52j?=
+	=?utf-8?B?S2V4ZUwxTklNaEVyTzFXVlN4YUlZRzlJaThiL2Q4clRwU3dHMmdLb1M0RzNx?=
+ =?utf-8?B?OXUyejZGdDVVR3I0TkRid1RFZVN3RGhnVUZiVVhSOTI0WG9vVkFxM3ZRN05v?=
+ =?utf-8?B?SFl5SldpSHNNQzA4blB4QmJZRldqbXIyYjVDT0I2R3l6NEhZZkJaOFZZTlJE?=
+ =?utf-8?B?SVFkMkh4N00wZzZHQTdxMGN0c3hveWdOQ3h2UXd6cTJKbDlIeWRueUNNVVVr?=
+ =?utf-8?B?aG5sMHpmVDN1bWRJc3VNbmo2N2ZJSHl2UVN2bkszWDNaekVTMFQ3czZIVXBJ?=
+ =?utf-8?B?S3NiZlY1YkgyUmRUcHp5OVpkVTdqYkxHWGVUMVJZYldKU2JlUHhQTk1VSDRa?=
+ =?utf-8?B?aEgrc2FNbHo4ZnhiWWNJck9IMCt6Nmg5SUFDQnNNS3V4N0E0YzdjN2lHakFw?=
+ =?utf-8?B?bHdoUzlNR2ptUGhuVmxqVTg1ckJ4TGZGUWw4WE1EVkFTODRjVmhnbGF5Q1Az?=
+ =?utf-8?B?MzE1eHJCKzBZSytHTDFBY1owaHR0VmQzMUc0VlpBVzJKZkJGMzFYajBTaUhS?=
+ =?utf-8?B?SzFyR3BZR1cxOVNtSVhFZnZ5WGhvYmZBaUxOYlF4cm9MU3JsVnpyYW1UMlNG?=
+ =?utf-8?B?ejBGVjNUMXRZdStFalNoaDBpRitFUkhWNENRUnRjUUlSb3RXb05qR05PbUpY?=
+ =?utf-8?B?MTYwcEp5Z1d0ZVRwMi9KQ1FpTVQ4YUx2a3FWK2ZZdGxjekdUekQ4ay9OU21H?=
+ =?utf-8?B?OWZjd0dQdWZ6MlRyMUF0ZkFxVWFreHJTOFRId1JZNllvVDQ4bGJxSzVwcEoz?=
+ =?utf-8?B?OHZUcnUwbE5SMGtENUI3MGowZWFKNXJGbmJHUDFYWGhmMHVFY1kyZG15Q2xv?=
+ =?utf-8?B?WHhJV05jSmZrZlUrRnRiU0VkY0xVaXJpLytQSEFUM1QxUGNsdWZTakVPek9Y?=
+ =?utf-8?B?SGpOUFVqZCswaVVEM09VVXNjUngvQ3N4bHpGd09NTHFwYVR0TGMvN3UyNFVx?=
+ =?utf-8?B?Sno5T3lRNFhzb3BPdmNIL2lrM0VJTkg4bFFFc3dJclRGVS82WmRqMlNQTEJp?=
+ =?utf-8?B?TUg1ZXlKOXp3ODZKQ3U1QWh6OVNJRmJiV21hWng0T3ZMUzkxbm1SRS9sQ0hF?=
+ =?utf-8?B?K25Uc1BDUDUycWtLcEZ5YlQ5djliWjlEK1QzeUFNNHZxUnNtaWlYVlAxKzhQ?=
+ =?utf-8?B?OFlodE01MUo3aklSb0RYWlBIYUxXdTY5VmhuSWlIWTVzdlBRaUozZUNYQ0xz?=
+ =?utf-8?B?WEZFbnlwbDducWJ3Y2ZFRnJKOVZ3cWNqRGd6TGRMNTV2dVlMblZjU2p5dXNp?=
+ =?utf-8?B?b3dUNlNUQmNHb2xuVmtaZlc3NFVoR2NPYzNnNmtrczYwbCtoWXlrMTA4Y2Y0?=
+ =?utf-8?B?MVU0OFE2eGxMR0R2M3d3WFJWSlFmUXh5ZEtoK3d6U2xGV0Q2RWN1dmdzaGJW?=
+ =?utf-8?B?SnVHaG53K2twM3VQOHFVakQvcVVGNXQ3bXNPVHNkeWdHdDRsUTNRb2tPQUk4?=
+ =?utf-8?B?VWZXUHNtTnJOMkFjT3IrRDNGSnBYcVNlVVR0U0pIbm5LYk41SkZERkJmcjM1?=
+ =?utf-8?B?M245MXNvM2ErcTgzdmhjYUl3S05FTmJZM2lYUHBSSkVobkRKN21CMWloWmo5?=
+ =?utf-8?B?eXhHajgzUEx5QXpVeVFYclhJbGxwM05RcFo1cHR3WGwyeERGUFRZQ1JQVFU1?=
+ =?utf-8?B?VUdDdWR3aHdaL1ZNNFhwdjZYM3lpQ2pDSXNubVlCVjNQdDV1QVZQRjNUUk5B?=
+ =?utf-8?B?TDFjR1hib1l4dnFiSm1lMGFnM0I5L3hyS2Frb0pBZUQwaXAxYWIzWFhIL3Ft?=
+ =?utf-8?B?MW10bnBVK0g0MkxOaXpyYjlHOW5jSVlEdFdsM0xUWWxUUkRGR2NnTVNlbEp2?=
+ =?utf-8?B?bjhaRkdNdkt1RDBSNThZWkQ5Y2VTM09rQmdvQWZPWjVYWkQwRkhmVkN4M3Jq?=
+ =?utf-8?B?YXlSOCtqbDhMUjV5VzlzK2dvby9QejYzWS8wTWJ4ejVoZ280eHFKN3JRRkZZ?=
+ =?utf-8?B?RFhqaSswSW8wZGs4NE1NaTBvTTZqVjNqUXVOMlpkTzNvUWlUZ1dFVCtVZi9R?=
+ =?utf-8?B?emZoZGpZczQvb0hqMDVRTk9oVFk3M1pQQ1VqdXZISURrbEVFbnNLcVJXTG9K?=
+ =?utf-8?B?TUJXZzMxQXBlQnA5bytoWEZpekxUc1VCSlN1MEZHRWZhMFRtN2ZJME9pYVBV?=
+ =?utf-8?Q?O9pZMIRq+BOa8BSblGPVkrVbT?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0f0f9336-00ff-42fa-a759-08de016c763b
+X-MS-Exchange-CrossTenant-Network-Message-Id: b268bdc3-a68b-4772-1958-08de01710b28
 X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2667.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2025 04:30:48.7461
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2025 05:03:36.5016
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Rs8W+VO0eK+0NI0tmXqKA359Sq8kss7MSEUf7UKdVhRA3bz/2sItSDprgjNbRo6PUKDfRovX8VecA2W8pBhkuQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5614
+X-MS-Exchange-CrossTenant-UserPrincipalName: yHv3oWRvOuEZ8uacbWC6MhUH94SEObX7JiMalMvf0uutwc+rQFalGlmXfcipiFuoB04EDkzv0sdRztDK/r0nTQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4221
 
+Hi, James,
 
 On 9/10/25 13:42, James Morse wrote:
-> The MPAM table identifies caches by id. The MPAM driver also wants to know
-> the cache level to determine if the platform is of the shape that can be
-> managed via resctrl. Cacheinfo has this information, but only for CPUs that
-> are online.
+> MPAM identifies CPUs by the cache_id in the PPTT cache structure.
 >
-> Waiting for all CPUs to come online is a problem for platforms where
-> CPUs are brought online late by user-space.
+> The driver needs to know which CPUs are associated with the cache.
+> The CPUs may not all be online, so cacheinfo does not have the
+> information.
 >
-> Add a helper that walks every possible cache, until it finds the one
-> identified by cache-id, then return the level.
+> Add a helper to pull this information out of the PPTT.
 >
+> CC: Rohit Mathew <Rohit.Mathew@arm.com>
 > Signed-off-by: James Morse <james.morse@arm.com>
-
-Other than minor comment issues as follows,
-
-Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
-
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 > ---
 > Changes since v1:
->   * Droppeed the cleanup based table freeing, use acpi_get_pptt() instead.
->   * Removed a confusing comment.
->   * Clarified the kernel doc.
+>   * Added punctuation to the commit message.
+>   * Removed a comment about an alternative implementaion.
+>   * Made the loop continue with a warning if a CPU is missing from the PPTT.
 >
 > Changes since RFC:
 >   * acpi_count_levels() now returns a value.
 >   * Converted the table-get stuff to use Jonathan's cleanup helper.
 >   * Dropped Sudeep's Review tag due to the cleanup change.
 > ---
->   drivers/acpi/pptt.c  | 62 ++++++++++++++++++++++++++++++++++++++++++++
->   include/linux/acpi.h |  5 ++++
->   2 files changed, 67 insertions(+)
+>   drivers/acpi/pptt.c  | 59 ++++++++++++++++++++++++++++++++++++++++++++
+>   include/linux/acpi.h |  6 +++++
+>   2 files changed, 65 insertions(+)
 >
 > diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> index 7af7d62597df..c5f2a51d280b 100644
+> index c5f2a51d280b..c379a9952b00 100644
 > --- a/drivers/acpi/pptt.c
 > +++ b/drivers/acpi/pptt.c
-> @@ -904,3 +904,65 @@ void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus)
->   				     entry->length);
->   	}
+> @@ -966,3 +966,62 @@ int find_acpi_cache_level_from_id(u32 cache_id)
+>   
+>   	return -ENOENT;
 >   }
 > +
-> +/*
-> + * find_acpi_cache_level_from_id() - Get the level of the specified cache
+> +/**
+> + * acpi_pptt_get_cpumask_from_cache_id() - Get the cpus associated with the
+> + *					   specified cache
 > + * @cache_id: The id field of the unified cache
+> + * @cpus: Where to build the cpumask
 > + *
-> + * Determine the level relative to any CPU for the unified cache identified by
-> + * cache_id. This allows the property to be found even if the CPUs are offline.
-> + *
-> + * The returned level can be used to group unified caches that are peers.
+> + * Determine which CPUs are below this cache in the PPTT. This allows the property
+> + * to be found even if the CPUs are offline.
 > + *
 > + * The PPTT table must be rev 3 or later,
-s/,/./
 > + *
-> + * If one CPUs L2 is shared with another as L3, this function will return
-
-This comment is not clear. Maybe it's better to say:
-
-+ * If one CPU's L2 is shared with another CPU as L3, this function will 
-return
-
-> + * an unpredictable value.
-> + *
-> + * Return: -ENOENT if the PPTT doesn't exist, the revision isn't supported or
-> + * the cache cannot be found.
-> + * Otherwise returns a value which represents the level of the specified cache.
+> + * Return: -ENOENT if the PPTT doesn't exist, or the cache cannot be found.
+> + * Otherwise returns 0 and sets the cpus in the provided cpumask.
 > + */
-> +int find_acpi_cache_level_from_id(u32 cache_id)
+> +int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus)
 > +{
 > +	u32 acpi_cpu_id;
 > +	int level, cpu, num_levels;
 > +	struct acpi_pptt_cache *cache;
-> +	struct acpi_table_header *table;
 > +	struct acpi_pptt_cache_v1 *cache_v1;
 > +	struct acpi_pptt_processor *cpu_node;
+> +	struct acpi_table_header *table __free(acpi_table) = acpi_get_table_ret(ACPI_SIG_PPTT, 0);
 > +
-> +	table = acpi_get_pptt();
-> +	if (!table)
+> +	cpumask_clear(cpus);
+> +
+> +	if (IS_ERR(table))
 > +		return -ENOENT;
 > +
 > +	if (table->revision < 3)
@@ -274,8 +261,8 @@ return
 > +	for_each_possible_cpu(cpu) {
 > +		acpi_cpu_id = get_acpi_id_for_cpu(cpu);
 > +		cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
-> +		if (!cpu_node)
-> +			return -ENOENT;
+> +		if (WARN_ON_ONCE(!cpu_node))
+> +			continue;
 > +		num_levels = acpi_count_levels(table, cpu_node, NULL);
 > +
 > +		/* Start at 1 for L1 */
@@ -292,31 +279,71 @@ return
 > +
 > +			if (cache->flags & ACPI_PPTT_CACHE_ID_VALID &&
 > +			    cache_v1->cache_id == cache_id)
-> +				return level;
+> +				cpumask_set_cpu(cpu, cpus);
+
+This function is almost identical to find_acpi_cache_level_from_id() 
+defined in patch #3.
+
+To reduce code size and complexity, it's better to define a common 
+helper to server both of the two functions.
+
+e.g. define a helper acpi_pptt_get_level_cpumask_from_cache_id(u32 
+cache_id, int *lvl, cpu_mask_t *cpus)
+
+This helper has the same code body to traverse the cache levels for all 
+CPUs as find_acpi_cache_level_from_id() and 
+acpi_pptt_get_cpumask_from_cache_id(). The major difference is here:
+
++			if (cache->flags & ACPI_PPTT_CACHE_ID_VALID &&
++			    cache_v1->cache_id == cache_id) {
++				if (cpus)
++					cpumask_set_cpu(cpu, cpus);
++				if ((level) {
++					*lvl = level;
++					return 0;
++				}
+
+Then simplify the two callers as follows:
+int find_acpi_cache_level_from_id(u32 cache_id)
+{
+	int level;
+	int err = acpi_pptt_get_level_cpumask_from_cache_id(cache_id, &level, NULL);
+	if (err)
+		return err;
+
+	return level;
+}
+
+int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus)
+{
+	return acpi_pptt_get_level_cpumask_from_cache_id(cache_id, NULL, cpus);
+}
+
 > +		}
 > +	}
 > +
-> +	return -ENOENT;
+> +	return 0;
 > +}
 > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index f97a9ff678cc..5bdca5546697 100644
+> index 5bdca5546697..c5fd92cda487 100644
 > --- a/include/linux/acpi.h
 > +++ b/include/linux/acpi.h
-> @@ -1542,6 +1542,7 @@ int find_acpi_cpu_topology_cluster(unsigned int cpu);
->   int find_acpi_cpu_topology_package(unsigned int cpu);
+> @@ -1543,6 +1543,7 @@ int find_acpi_cpu_topology_package(unsigned int cpu);
 >   int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
 >   void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus);
-> +int find_acpi_cache_level_from_id(u32 cache_id);
+>   int find_acpi_cache_level_from_id(u32 cache_id);
+> +int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus);
 >   #else
 >   static inline int acpi_pptt_cpu_is_thread(unsigned int cpu)
 >   {
-> @@ -1565,6 +1566,10 @@ static inline int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
+> @@ -1570,6 +1571,11 @@ static inline int find_acpi_cache_level_from_id(u32 cache_id)
+>   {
+>   	return -EINVAL;
 >   }
->   static inline void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id,
->   						     cpumask_t *cpus) { }
-> +static inline int find_acpi_cache_level_from_id(u32 cache_id)
+> +static inline int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id,
+> +						      cpumask_t *cpus)
 > +{
-> +	return -EINVAL;
+> +	return -ENOENT;
 > +}
 >   #endif
 >   
