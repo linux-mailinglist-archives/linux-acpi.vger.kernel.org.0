@@ -1,155 +1,124 @@
-Return-Path: <linux-acpi+bounces-17507-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17508-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8BB0BB404D
-	for <lists+linux-acpi@lfdr.de>; Thu, 02 Oct 2025 15:23:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D58BB4C9E
+	for <lists+linux-acpi@lfdr.de>; Thu, 02 Oct 2025 20:03:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4265619C6C59
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Oct 2025 13:23:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33BBC323C43
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Oct 2025 18:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D577A31158E;
-	Thu,  2 Oct 2025 13:23:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="XZY67Qp3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81A9277029;
+	Thu,  2 Oct 2025 18:02:26 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2050C310647
-	for <linux-acpi@vger.kernel.org>; Thu,  2 Oct 2025 13:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B19F275AE4;
+	Thu,  2 Oct 2025 18:02:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759411399; cv=none; b=a0QRi4Au7wfDKXo648UHl0NmK9xNtcYWz9dSrc3c5nedFxOb4NUEbixIuAofO+Su7E3vbEL+248JCc46OPl6fh0TJrm6TIUZOq1d0DATgbLTMLyr97g77LdVBbFM4LVjPc1grWrD4qSpKLYnDt8U+eZ9aqRg89KewXYwQaMWvrs=
+	t=1759428146; cv=none; b=q4h0ynemZMT9hc076y7Drky4zGoydi3AemVwsBq8CzDmFnJD+1eruj+RiL1NlmKlenbNtkgt4/UZvenFJiN4o/OgOG4HyB9WjDQUVZ3mbR7qXfe6BQWWpxAoYXwEohxggxnIk9exz+b6l5VODKQVU2KgeyFilwN6QEv01OqYY+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759411399; c=relaxed/simple;
-	bh=HETRcCbMmNgVH/z/E5wCLlvsrFvBjVnNgE7L6BCZIUc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EYntITWuIdLT79qfvyH4VOuBBZXMzlrpLV8tBo0HIXwPkcingR+sAhOhBmlRwvcs7X4CiYIDNnwv4sqBpDffzZx80Yc9ITZFXmLdDOPe20wnRWF4RyRWBlaPZegRoQEEN/TRFaJKxdBU9uH7W1/DMbhwoJ8AZcQNRLhn0p/iQKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=XZY67Qp3; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4e2d2d764a3so7985911cf.1
-        for <linux-acpi@vger.kernel.org>; Thu, 02 Oct 2025 06:23:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1759411397; x=1760016197; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DRZ9nDiiIaS8xNUTdtdvnajCW2L7i3IBIHHPxUnqqqI=;
-        b=XZY67Qp3qLsbSvGasfVOIi/zLA2I1JNofnsy65ZBKRMtPKf/0jlkhE6JZn7gADN5vH
-         sxh1vOdG6AXW1OyMI0BGUQUGLrd85olubeFU91l/qJCW+lSu/iI1ZeBUovm2vhZEqSec
-         FlvLMwjKcshmQGYQKN5vwhj0JZdLtH2mcAek+3BPPPJsFoOE9xjQneuyTKtItcJP7C+a
-         8+zq8chSmNGeJqBCPTNhEVUVUl5S18ESXf5eNMtvzt+QjvkoeS3m+d2eFc4PzE0PkvI9
-         EBm5nwCk4LEvnqMHDHsuCJIjIVW46SQ/RFvCDDeQJzRgJnVllf3Q3u4OvqLzpvhRBP76
-         RsfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759411397; x=1760016197;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DRZ9nDiiIaS8xNUTdtdvnajCW2L7i3IBIHHPxUnqqqI=;
-        b=C3qA3BqoLsc8DNP5Ko1keBZIyXKoUrCvYn0ZBFkguxhM8rYgVpMafBAaiokB5BiXd+
-         MMutNeMLEiDVWSS33zxlzz9M2wgTjRYBpr86X/bojDRqHWxBl1kamgWrzs7dwgiPZ6F2
-         zjH2FKuGXeLN486TWnT59i0HL8lhQao1ON+ynlhxl8ZV5QZptT8RpNADzPhoc9btFesS
-         eCf+vPZf2yYVth6sScqL6C8j+Yop6/4Cjzlc82gw8xotZfZAEyclV4mpWIBUEqwAjtOb
-         EN42OnG2P9kyHvJmu/X/kuXtDNo9UeeILDfuSICK2ygi4xBhPy3zsSOpgUAqZOAmtgoQ
-         JFbg==
-X-Forwarded-Encrypted: i=1; AJvYcCVd9M19gaTulRHy1LRQkVjwQHNaBdmauyo1Rcl3JlNA//VfBl7HSoP+9ypHAplg8mkMlXF9vuZJjFto@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5d0qGvL0TnKBLg9zsTgoSxGJcEahGOZWhyht3vH05pIL8aHmJ
-	7YQIJL4s1APQavNRh3RQOHInbpE3RhQhNTRj5H8FRV1daHqsKYT3ME9cHi5Mo5cirt0=
-X-Gm-Gg: ASbGncsiaz/n7xjYq7T4QseiB+tyaw/1FgTv5l8mrh1ey2RH1ZHs8PZgSDgjp6nImTf
-	FskjIBv2sM7G1/WVmPdgpIcNKwheQ/yOHu4BGMjQyy+u7QPkI6beagrJmmp5U84RAJDt3ymU0zv
-	9+6Ab9DRi5t1mmE/IsBjUi5Bh6ZjGqhrFenkzt6j1sbRyyXdWqixQqCagzVDzamZSEsdSbUicYe
-	RZsujuoj5QaAv6CMMHOOONQmF5ITCLa802/PB3HNRLP5VrH8i8V1CenfuEW1B8NqHgxxiJLx9EU
-	JnS9qdekzAJCIUI7yD9fi7yPNqOd1ZPeE0f3fII/vf+U0nN6d4YbK+vAVBMA0Z9gdBkz0y/RGRb
-	s6awd/eA5PgesJZbNgxet
-X-Google-Smtp-Source: AGHT+IH2rObuT1XqtiQfOTMeENIHe7Dgk6JaeeB2+vpuv7lVOnL0btICGqEnALLQMUXWxv2WByPvfg==
-X-Received: by 2002:a05:6214:19ee:b0:7a9:32e8:56f4 with SMTP id 6a1803df08f44-873a5d1e6a6mr93793016d6.44.1759411396820;
-        Thu, 02 Oct 2025 06:23:16 -0700 (PDT)
-Received: from ziepe.ca ([130.41.10.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-878bb4465cesm18648026d6.17.2025.10.02.06.23.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Oct 2025 06:23:16 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1v4JH9-0000000Di2M-1I6m;
-	Thu, 02 Oct 2025 10:23:15 -0300
-Date: Thu, 2 Oct 2025 10:23:15 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Chris Li <chrisl@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, David Matlack <dmatlack@google.com>,
-	Pasha Tatashin <tatashin@google.com>,
-	Jason Miu <jasonmiu@google.com>, Vipin Sharma <vipinsh@google.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>, William Tu <witu@nvidia.com>,
-	Mike Rapoport <rppt@kernel.org>, Leon Romanovsky <leon@kernel.org>
-Subject: Re: [PATCH v2 06/10] PCI/LUO: Save and restore driver name
-Message-ID: <20251002132315.GC3195829@ziepe.ca>
-References: <20250929175704.GK2695987@ziepe.ca>
- <CAF8kJuNfCG08FU=BmLtoh6+Z4V5vPHOMew9NMyCWQxJ=2MLfxg@mail.gmail.com>
- <CA+CK2bBFZn7EGOJakvQs3SX3i-b_YiTLf5_RhW_B4pLjm2WBuw@mail.gmail.com>
- <2025093030-shrewdly-defiant-1f3e@gregkh>
- <CA+CK2bDH=7H58kbwDM1zQ37uN_k61H_Fu8np1TjuG_uEVfT1oA@mail.gmail.com>
- <2025093052-resupply-unmixable-e9bb@gregkh>
- <CA+CK2bCBFZDsaEywbfCzDJrH3oXyMmSffV-x7bOs8qC7NT7nAg@mail.gmail.com>
- <2025100147-scrubbed-untold-fc55@gregkh>
- <CA+CK2bA0acjg-CEKufERu_ov4up3E4XTkJ6kbEDCny0iASrFVQ@mail.gmail.com>
- <2025100225-abridge-shifty-3d50@gregkh>
+	s=arc-20240116; t=1759428146; c=relaxed/simple;
+	bh=d9JMwz3pZXPH7YSUzmEm3uXPoHX5XC/PPW4BNzQqJCk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f92e+9Anw8T03m9xynA3Py5vyVGEl3ucyl2jnKlmXNMnOuUgzOvwO/eSJiYVkj9Py0A18ZvjXW17F+/TJ8wHuk0SIygr3cOyNeecH23crse4KK4dgKEvw6Nx7tlSO6YOXDVQL4/3jaeIf1WyN0moN7efO5YzFCJtmJYLWZHAuT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 006BE1FCD;
+	Thu,  2 Oct 2025 11:02:16 -0700 (PDT)
+Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EF10D3F66E;
+	Thu,  2 Oct 2025 11:02:18 -0700 (PDT)
+Message-ID: <2c5c6e2a-e0ea-4786-ba6e-2c536a53a68b@arm.com>
+Date: Thu, 2 Oct 2025 19:02:05 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025100225-abridge-shifty-3d50@gregkh>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 17/29] arm_mpam: Extend reset logic to allow devices to
+ be reset any time
+To: Ben Horgan <ben.horgan@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
+Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>
+References: <20250910204309.20751-1-james.morse@arm.com>
+ <20250910204309.20751-18-james.morse@arm.com>
+ <9fa1b584-130b-45b0-9dba-8e046e643bf0@arm.com>
+Content-Language: en-GB
+From: James Morse <james.morse@arm.com>
+In-Reply-To: <9fa1b584-130b-45b0-9dba-8e046e643bf0@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 02, 2025 at 08:09:11AM +0200, Greg Kroah-Hartman wrote:
-> > However, it is my hope that we will
-> > eventually stabilize this process and only allow breakages between,
-> > for example, versions 6.n and 6.n+2, and eventually from one stable
-> > release to stable+2. This would create a well-defined window for
-> > safely removing deprecated data formats and the code that handles them
-> > from the kernel.
-> 
-> How are you going to define this?  We can not break old users when they
-> upgrade, and so you are going to have to support this "upgrade path" for
-> forever.
+Hi Ben,
 
-I think the realistic proposal for LUO/kexec version compatability is
-more like eBPF. Expressly saying it is not ABI, not stable, but here
-are a bunch of tools and it is still useful.
+On 12/09/2025 12:42, Ben Horgan wrote:
+> On 9/10/25 21:42, James Morse wrote:
+>> cpuhp callbacks aren't the only time the MSC configuration may need to
+>> be reset. Resctrl has an API call to reset a class.
+>> If an MPAM error interrupt arrives it indicates the driver has
+>> misprogrammed an MSC. The safest thing to do is reset all the MSCs
+>> and disable MPAM.
+>>
+>> Add a helper to reset RIS via their class. Call this from mpam_disable(),
+>> which can be scheduled from the error interrupt handler.
+>> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+>> index e7faf453b5d7..a9d3c4b09976 100644
+>> --- a/drivers/resctrl/mpam_devices.c
+>> +++ b/drivers/resctrl/mpam_devices.c
+>> @@ -842,8 +842,6 @@ static int mpam_reset_ris(void *arg)
+>>  	u16 partid, partid_max;
+>>  	struct mpam_msc_ris *ris = arg;
+>>
+>> -	mpam_assert_srcu_read_lock_held();
+>> -
+>
+> Remove where it is introduced. There is already one in
+> mpam_reset_ris_partid() at that time.
 
-> Just keeping a device "alive" while rebooting into the same exact kernel
-> image seems odd to me given that this is almost never what people
-> actually do.
+Mmmm, this should really have been replaced with a comment.
 
-This feature has a lot of development to go. Right now the baseline
-for upstream is no ABI promise. You can live update between any two
-kernel versions that don't change the LUO kexec ABI. In practice that
-will be a lot of version pairs.
+I prefer each function to have an assert like this as documentation. In this case, a new
+caller may miss the lock, but always hit the 'in_reset_state' case during testing, and be
+caught out when a call to mpam_reset_ris_partid() occurs. Having documentation comments
+that can also bark at you when you ignore them is really handy!
 
-The downstreams are going to take this raw capability and choose
-specific downstream version pairs, patch in support for certain ABI
-versions that they need, and test.
+It's removed in this  patch  because calling it via mpam_touch_msc() puts it behind an
+call to schedule, and lockdep expects 'current' to be the one holding the lock.
 
-When things mature and the project is more complete then the kernel
-community may have a discussion about what upstream version pairs
-should be supported by the community.
+I'll add the comment. Looks like it just got dropped when mpam_touch_msc() stopped using
+an IPI...
 
-I don't think this would be as broad as every combination of linux
-versions ever, but ideas like sequential pairs of stable
-releases, sequential pairs of main release and so on are worth
-exploring.
 
-Jason
+>>  	if (ris->in_reset_state)
+>>  		return 0;
+>
+> Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+
+Thanks!
+
+
+James
 
