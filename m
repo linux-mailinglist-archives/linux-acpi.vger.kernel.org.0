@@ -1,79 +1,81 @@
-Return-Path: <linux-acpi+bounces-17501-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17500-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA94BB3C34
-	for <lists+linux-acpi@lfdr.de>; Thu, 02 Oct 2025 13:34:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 982DDBB3C2B
+	for <lists+linux-acpi@lfdr.de>; Thu, 02 Oct 2025 13:34:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3D7A7A7E22
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Oct 2025 11:32:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5579F16A2C8
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Oct 2025 11:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D20830FC26;
-	Thu,  2 Oct 2025 11:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D912430F934;
+	Thu,  2 Oct 2025 11:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E3cP9siH"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hLlJpLf1"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2875D21B9C1
-	for <linux-acpi@vger.kernel.org>; Thu,  2 Oct 2025 11:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B0026A0A7
+	for <linux-acpi@vger.kernel.org>; Thu,  2 Oct 2025 11:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759404851; cv=none; b=YI7ZPVh7E80iQHWlXq6YP89P11IIsPf0+5m7T3gfFU37j0uh9hWs7xp1AVf3DbRCO0/XIC1YNhelcSrBTb+UkKQSYTo+Dq88C5vkuWIu0FGlo0F+F2BiuI48rMAoWTtbhdyX0FVjKWE0AavXnk8OZhmXjdlrnM2psX2FCLZSoIA=
+	t=1759404850; cv=none; b=ZjAEaoiNJ/Qmc4oIIUPoGa1AEcDUPbHjB3iTPNFRcnOrpa6MYn66bHZFYPTcrzrbi5I9vN0rgC7Tkeorh7Rn0hHenILub6Y4RDVW3DcQ7kRp/AMR1bkPSAKfJychZPqpsks1ZVERMcSpeAlA+0HoSRyj03YGAH6WM1jlUEOHQgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759404851; c=relaxed/simple;
-	bh=hQuybsL5mq6JNC3mjDtwdLC45MTOFDleuadVzyS5ZHw=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=CnoRLNA7FAkZ9mWE2R5YSHTzV3Tsv4TItiQRb5brQuZZ+Kyb5L2vPwLNQL6LswJiu9xhhIVTk3+AWJxln/zhKHBaXUJshQC7r7DzGsbqAOTwRjMsNrzeErcXjT2N7I+71Qr+8D41K6Nq409qtgU0D/8a4WEyC9gygUGcMK+Vrw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--srosek.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E3cP9siH; arc=none smtp.client-ip=209.85.208.74
+	s=arc-20240116; t=1759404850; c=relaxed/simple;
+	bh=OSzoS5rtTLi/B+hMV5Q0JgIBDtwwSwS8cCrabNTJlVo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=UnfoK1rAS/gL75JzXM0buzElYa5X6ehjdDfsHkgcKhqAV/t2aPu6X8dxGBftWghKs7LWSzPYvr39b+pamfbyO5qpUFn/icLmg4allZtSYgkpo75qfcDH1LbLNZ6X9bjp4WR8g8ooWiY4iol3M4EH9G6LdG5Ds7rnswn11CYX0io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--srosek.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hLlJpLf1; arc=none smtp.client-ip=209.85.208.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--srosek.bounces.google.com
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6344e493258so1124649a12.2
-        for <linux-acpi@vger.kernel.org>; Thu, 02 Oct 2025 04:34:07 -0700 (PDT)
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6232f49fc79so912113a12.2
+        for <linux-acpi@vger.kernel.org>; Thu, 02 Oct 2025 04:34:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759404846; x=1760009646; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=KM5eQ6T8UyFEHWSzgjJ3Hgygo6yv0GW78oI1iwkhY6M=;
-        b=E3cP9siHAs+q/VrZ0XuWMswGGeO+X4D15mmnh2u2FZ7Foo9LvBUnZ73ENlwMRZ4zVV
-         waaquAMRqqK7JkK+zEZD7GN2/WthSxFrPrXTKLwEmem7iIHHrd4QRuKSaMBBj2ZvY78r
-         A/zKTHY5hlWCxu2GeCNCe57mBQ53B/OFVU2wNqTZJHTV2Zc/897XOjAq+2RAtPOuIn3G
-         OYtQSlbRoLjTf+dlelli7eh/hMW7SoDQ/3+BOaXqEewVrs7D9ekbgrmwhPYdjrETPNF5
-         LSD3WCCmqN//ePwupsmH/kcdTP7iT73F3fnCM2KY0yZFQSC3FagQBQlqooha/ONbxfA5
-         HULw==
+        d=google.com; s=20230601; t=1759404847; x=1760009647; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kt82+dwcyqqy/z3wY/WnDR+0tOJqjHYe0Y3q58yXyz0=;
+        b=hLlJpLf1LBpyxi1QHdOwLXUB0LjIP5F3rOJbd4A+jwmBoL1PdHLmRBg0BYOmbykquh
+         uGDNak7CUUS1dToS5LW3PU+iNWM+twOgH7ITW6xH/AgD3qmgph8H5Gfz+WEK8dHcsECc
+         YHElEXWihUiBuPeeZQNm8CfkYMvQMzHL4bSWp6wMWMSI1Y3FgfSSQuiIRlyGFQ6lwARA
+         2v4CnCkFuDAnls5n7ehtNmB0x6XRmi+k0zHRcaWRh0ushvU6fbHdCTOLllSbbEYI3QlO
+         JF9tURnRyghVZefw6o97C4EWewyAEoQr7JphNoS5x2mohNwwdUsmx68k150O+gOenYnS
+         c8kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759404846; x=1760009646;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KM5eQ6T8UyFEHWSzgjJ3Hgygo6yv0GW78oI1iwkhY6M=;
-        b=D0Juo4auYb9xr5tOqOTLHypkndjXLdaLkxQ+ILwjyFdghVbivhAwOugogecfP9nwOx
-         qU2SCcrFeHMav9xmp/gi5SWiw+ayzSS61ZgC7gtMx1DfRynuwzIwjNulhGJfH+ihRpIb
-         0G40Qj+RJ4HfLQ/S1DJhWcBvGK8AVg9KkJA/TPJ8Xa5do5FR03+LXvD5OW42ZuBgdbAa
-         irad1WM5E75kU1YcdubqXzRTt+kOEO98SyMB0HqxfjYCj8FtCmKAScqdnh8RiyWdF/aJ
-         fkMlcCrljSwiCidrkGCqhjVi482o9Ho6x57VdQ5hqTHvjHqwifcnCn3RLWfOXOTzwU0d
-         ONEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUdaA6nDQ4g1pMbHAEJlwMUGy6kzmIAuhpWRUfbwUeRzRX39XaMj+XiQBUnSTMjSoRScakUmyLVe2eK@vger.kernel.org
-X-Gm-Message-State: AOJu0YxB3FC9lco1I5oIBqNmx6EpjKvMvJaHn0qEIIbP/XgeLTYijz4C
-	lBberGbcGpcPSJO7dzrfMScFfebO30w7e01jIMg1+3oEdNFUv/ihrhJ3ZJtx8/bK6SjFn/tDnff
-	pLYxUCg==
-X-Google-Smtp-Source: AGHT+IEmDFbvw6FyLQa1/XdlQWAwHZ5+qO0v5z1jGtaFkTjZBilCrTEGtxSBz1xgfUUU2N6aLbcU0hulMzo=
-X-Received: from educ18.prod.google.com ([2002:a05:6402:1012:b0:637:ef5d:b120])
- (user=srosek job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:42c2:b0:637:ec59:3169
- with SMTP id 4fb4d7f45d1cf-637ec5936d1mr1180990a12.14.1759404846433; Thu, 02
- Oct 2025 04:34:06 -0700 (PDT)
-Date: Thu,  2 Oct 2025 11:33:58 +0000
+        d=1e100.net; s=20230601; t=1759404847; x=1760009647;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kt82+dwcyqqy/z3wY/WnDR+0tOJqjHYe0Y3q58yXyz0=;
+        b=NzI+c4WFmpHXaS9aA41jnRUS0ULcMOblRC1L3k0CseiSs6bLZM+rvnd5lEtzIZd1Vl
+         +IyEU9qAs+O3wttYLf+GdzARjQlLw1B03z/PemE0YThqJndNQwbxgM2IrgeGW3IzXqQB
+         YHC6lEbxGi7H2hKlB2cC7k54/CYqSh5ZbH3gl32oxUGlehGKK5+lBna/4O9I0C3HvTW6
+         wY9nA/yRrvVErXF2GccEeUP01/imV1QrEipw8PxofHWoDPq22Yo0y2zsM7K1H+OSzUSf
+         T4CjRqILtbB8WEdSZMHewuqQk3MPlE38NOtcz1FTyOuXLy+JWoIp/53xQjckfVqMhbah
+         A2Bg==
+X-Forwarded-Encrypted: i=1; AJvYcCUuH0F9xVZ/p74qcqFCEmL8ZhncXCSGFAxfqONqkjgp2ff+dNuLlXCyzwXV0BWMnQB9R/hiUHIBo+dA@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqCk/somxF2wW/AsK77slsK1E+3xlMAATr8ioLlZkB2on+StpN
+	Nz8rOUaJ47HPYwLKW/s5LGJbF53NIXhplj/zvPm4yzLW2iHBmvUyx/8QF/lGPY3TqfLAOVyzVwi
+	1P6jZHQ==
+X-Google-Smtp-Source: AGHT+IE+4068072UB8enIKGqreBK+V8kMqDIEgu9uXCRHP5CJrH3i0Dac1P6YuynTCl4M7Vi7LVvL4CfTWc=
+X-Received: from edsf20.prod.google.com ([2002:aa7:d854:0:b0:62f:c143:5d77])
+ (user=srosek job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:c60c:0:b0:634:bc7b:440e
+ with SMTP id 4fb4d7f45d1cf-63678c9f531mr6099293a12.36.1759404847361; Thu, 02
+ Oct 2025 04:34:07 -0700 (PDT)
+Date: Thu,  2 Oct 2025 11:33:59 +0000
+In-Reply-To: <20251002113404.3117429-1-srosek@google.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20251002113404.3117429-1-srosek@google.com>
 X-Mailer: git-send-email 2.51.0.618.g983fd99d29-goog
-Message-ID: <20251002113404.3117429-1-srosek@google.com>
-Subject: [PATCH v3 0/6] ACPI: DPTF: Move INT340X enumeration from DPTF core to
- thermal drivers
+Message-ID: <20251002113404.3117429-2-srosek@google.com>
+Subject: [PATCH v3 1/6] ACPI: DPTF: Ignore SoC DTS thermal while scanning
 From: Slawomir Rosek <srosek@google.com>
 To: "Rafael J . Wysocki" <rafael@kernel.org>, Alex Hung <alexhung@gmail.com>, 
 	Hans de Goede <hansg@kernel.org>, Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, 
@@ -86,67 +88,63 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Zhang Rui <rui.zhang@intel.
 	Slawomir Rosek <srosek@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-The Intel Dynamic Platform and Thermal Framework (DPTF) relies on
-the INT340X ACPI device objects. The temperature information and
-cooling ability are exposed to the userspace via those objects.
+The Intel SoC DTS thermal driver on Baytrail platform uses IRQ 86 for
+critical overheating notification. The IRQ 86 is described in the _CRS
+control method of INT3401 device, thus Intel SoC DTS thermal driver
+requires INT3401 device to be enumerated.
 
-Since kernel v3.17 the ACPI bus scan handler is introduced to prevent
-enumeration of INT340X ACPI device objects on the platform bus unless
-related thermal drivers are enabled. However, using the IS_ENABLED()
-macro in the ACPI scan handler forces the kernel to be recompiled
-when thermal drivers are enabled or disabled, which is a significant
-limitation of its modularity. The IS_ENABLED() macro is particularly
-problematic for the Android Generic Kernel Image (GKI) project which
-uses unified core kernel while SoC/board support is moved to loadable
-vendor modules.
+Since dependency on INT3401 device is unrelated to DPTF the IS_ENABLE()
+macro is removed from ACPI DPTF INT340X scan handler, instead Kconfig
+is updated to ensure proper enumeration of INT3401 device.
 
-This patch set moves enumeration of INT340X ACPI device objects on
-the platform bus from DPTF core to thermal drivers. It starts with
-some code cleanup and reorganization to eventually remove IS_ENABLED()
-macro from the ACPI bus scan handler. Brief list of changes is listed
-below:
+Fixes: 014d9d5d0cc1 ("ACPI/int340x_thermal: enumerate INT3401 for Intel SoC DTS thermal driver")
+Signed-off-by: Slawomir Rosek <srosek@google.com>
+---
+ drivers/acpi/dptf/int340x_thermal.c | 7 +------
+ drivers/thermal/intel/Kconfig       | 3 ++-
+ 2 files changed, 3 insertions(+), 7 deletions(-)
 
-1) Remove SOC DTS thermal driver case from the ACPI scan handler
-   since its dependency on INT340X driver is unrelated to DPTF
-2) Move all INT340X ACPI device ids to the common header and update
-   the DPTF core and thermal drivers accordingly
-3) Move dynamic enumeration of ACPI device objects on the platform bus
-   from the intel-hid and intel-vbtn drivers to the ACPI platform core
-4) Move enumeration of INT340X ACPI device objects on the platform bus
-   from DPTF core to thermal drivers using ACPI platform core methods
-
-Link to v1: https://lore.kernel.org/all/20250830053404.763995-1-srosek@google.com/
-Link to v2: https://lore.kernel.org/all/20250917120719.2390847-1-srosek@google.com/
-
-In v3 the SoC DTS thermal explicitly depends on X86_64.
-
-Slawomir Rosek (6):
-  ACPI: DPTF: Ignore SoC DTS thermal while scanning
-  ACPI: DPTF: Move INT340X device IDs to header
-  ACPI: DPTF: Move PCH FIVR device IDs to header
-  ACPI: DPTF: Remove not supported INT340X IDs
-  ACPI: platform: Add macro for acpi platform driver
-  ACPI: DPTF: Move INT340X enumeration to modules
-
- drivers/acpi/acpi_platform.c                  | 27 +++++++
- drivers/acpi/dptf/dptf_pch_fivr.c             | 10 +--
- drivers/acpi/dptf/dptf_power.c                | 20 +----
- drivers/acpi/dptf/int340x_thermal.c           | 76 ++++---------------
- drivers/acpi/fan.h                            | 10 +--
- drivers/acpi/fan_core.c                       |  2 +-
- drivers/acpi/int340x_thermal.h                | 76 +++++++++++++++++++
- drivers/platform/x86/intel/hid.c              | 33 +-------
- drivers/platform/x86/intel/vbtn.c             | 30 +-------
- drivers/thermal/intel/Kconfig                 |  3 +-
- .../intel/int340x_thermal/int3400_thermal.c   | 12 +--
- .../intel/int340x_thermal/int3401_thermal.c   |  5 +-
- .../intel/int340x_thermal/int3402_thermal.c   |  5 +-
- .../intel/int340x_thermal/int3403_thermal.c   | 12 +--
- .../intel/int340x_thermal/int3406_thermal.c   |  5 +-
- include/linux/platform_device.h               | 17 +++++
- 16 files changed, 164 insertions(+), 179 deletions(-)
- create mode 100644 drivers/acpi/int340x_thermal.h
-
+diff --git a/drivers/acpi/dptf/int340x_thermal.c b/drivers/acpi/dptf/int340x_thermal.c
+index a222df059a16..947fe50c2ef6 100644
+--- a/drivers/acpi/dptf/int340x_thermal.c
++++ b/drivers/acpi/dptf/int340x_thermal.c
+@@ -11,10 +11,9 @@
+ 
+ #include "../internal.h"
+ 
+-#define INT3401_DEVICE 0X01
+ static const struct acpi_device_id int340x_thermal_device_ids[] = {
+ 	{"INT3400"},
+-	{"INT3401", INT3401_DEVICE},
++	{"INT3401"},
+ 	{"INT3402"},
+ 	{"INT3403"},
+ 	{"INT3404"},
+@@ -76,10 +75,6 @@ static int int340x_thermal_handler_attach(struct acpi_device *adev,
+ {
+ 	if (IS_ENABLED(CONFIG_INT340X_THERMAL))
+ 		acpi_create_platform_device(adev, NULL);
+-	/* Intel SoC DTS thermal driver needs INT3401 to set IRQ descriptor */
+-	else if (IS_ENABLED(CONFIG_INTEL_SOC_DTS_THERMAL) &&
+-		 id->driver_data == INT3401_DEVICE)
+-		acpi_create_platform_device(adev, NULL);
+ 	return 1;
+ }
+ 
+diff --git a/drivers/thermal/intel/Kconfig b/drivers/thermal/intel/Kconfig
+index e0268fac7093..f9e275538e29 100644
+--- a/drivers/thermal/intel/Kconfig
++++ b/drivers/thermal/intel/Kconfig
+@@ -44,7 +44,8 @@ config INTEL_SOC_DTS_IOSF_CORE
+ 
+ config INTEL_SOC_DTS_THERMAL
+ 	tristate "Intel SoCs DTS thermal driver"
+-	depends on X86 && PCI && ACPI
++	depends on X86_64 && PCI && ACPI
++	select INT340X_THERMAL
+ 	select INTEL_SOC_DTS_IOSF_CORE
+ 	help
+ 	  Enable this to register Intel SoCs (e.g. Bay Trail) platform digital
 -- 
 2.51.0.618.g983fd99d29-goog
 
