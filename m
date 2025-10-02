@@ -1,74 +1,75 @@
-Return-Path: <linux-acpi+bounces-17519-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17520-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B5FBB585E
-	for <lists+linux-acpi@lfdr.de>; Fri, 03 Oct 2025 00:05:41 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EED4ABB58B0
+	for <lists+linux-acpi@lfdr.de>; Fri, 03 Oct 2025 00:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 514483A9B24
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 Oct 2025 22:05:40 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3826A342375
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 Oct 2025 22:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70DD231858;
-	Thu,  2 Oct 2025 22:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB5E26B0AE;
+	Thu,  2 Oct 2025 22:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a+U7mH14"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZcNcVw2b"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C553D3B3
-	for <linux-acpi@vger.kernel.org>; Thu,  2 Oct 2025 22:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CFD19C556
+	for <linux-acpi@vger.kernel.org>; Thu,  2 Oct 2025 22:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759442737; cv=none; b=aH4+cMj/NXCqfE9w+FPkswri829DsomvOETJ658FVfrJDdYzm4J5qSXKrMGrQDVhqbgKI35vp7xOL2r11FmVJ7H8z0xGF+TBsrAPmi4/HpmYfP2LP4msj/+u/GIT9ft3YPVtFZmZZQ1GLkNU5pGixmbAdqyFLkXBaNaoCM9OoVs=
+	t=1759444236; cv=none; b=gu9qyWGB22JijijULLlQgghTNZxC89heSFPfUDJuXZOOtKGA9ujZW2SzmaXpAa/PdaECEuTBlWcrFwY43mZnQxRwc4UG2mB5j6MoL87Z36IqgYZ/rb6S+GVK+QrxZZciC5kmdQI4P1I+mkXY63hy3FZtVC320hKXTU3TcYmmsyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759442737; c=relaxed/simple;
-	bh=1i2PGHOBlzesOlKb0KunNSlwKXJ8YEtYzNgdw1lIPCY=;
+	s=arc-20240116; t=1759444236; c=relaxed/simple;
+	bh=mclwb4BLPmCejXVZg2cR82rxkFBq0yH1/DlDBXyjY74=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZqM2Bm8hj8i4gpkoOM2CMTqT6g+4DCnAH5697B8nx4EjFNEhInmT6aPzwgp7f+DW4Gr+UHE6TsLObB8vTMax9gyLUnrwk9gZYoOe4hSilv7U2JRx0l3gHPiVdw1O7065E/WkfgnqASmPZkH/DB5WwhO62QeGNYfiYc580g7ZNNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a+U7mH14; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D0CC4CEFD
-	for <linux-acpi@vger.kernel.org>; Thu,  2 Oct 2025 22:05:37 +0000 (UTC)
+	 To:Cc:Content-Type; b=gtFb9jh+7kcS2bQ8y7qRARJtt+tJJNhnwIeVy2qBeo1XPj3d/jvlrFkXs3mfPjfRUixw2UDgZO0wnjUSC9XVZaGrHvDO7ClQWO/Loj93Fh7K99drJAPNomH3osRTudLEKOTE8gexjHx+SYuw9xdVhK7JI4JIpBtVNDq8jO2/M7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZcNcVw2b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC06C4CEFD
+	for <linux-acpi@vger.kernel.org>; Thu,  2 Oct 2025 22:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759442737;
-	bh=1i2PGHOBlzesOlKb0KunNSlwKXJ8YEtYzNgdw1lIPCY=;
+	s=k20201202; t=1759444235;
+	bh=mclwb4BLPmCejXVZg2cR82rxkFBq0yH1/DlDBXyjY74=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=a+U7mH14xtrkWaLGuLJBcwokOwfhjfRuSNt8H4dzjf/V7Y98PWGlbBj4U2vO2Dx0W
-	 3i0NdOTdKNsEOY4VofKLwULGP3CbtYfj8qYVzRhOYFKGnd9hrG+bScaAg+U0eQ3vb0
-	 x1JueHZ3scb99v7GouDKRqZsNZIDuUa4VGsW+qz5j+eOKjeTtMVm+bg/YvsWoruG9v
-	 +vOnmSgG5EIgk34K4v/5Idli9PRTGxZ9fKKrY+KR6GkPVNGo8WJhN/Mtw+ZnoGoU2H
-	 PzQCDrlrRn+wnlhuNi752niHMPhQbSy3mAsKVXbCstQA0QA05Mxlqf3U3vmomXH5Q/
-	 IiRrcgF050Qxw==
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-63497c2a27dso2084190d50.1
-        for <linux-acpi@vger.kernel.org>; Thu, 02 Oct 2025 15:05:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWcNNAgqVdHU0WAtC84cvb6NPtxezlEloOOWzvEPD8u1G6ZXqGYg61K7LbxBRpM5DrvL0GgpVAlP5Rd@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtjBMJnzUbWbB55VKLV0JS9EbnyIUJ+wU7ygmiJ92c4S9z+nGD
-	Cso8QbVADliBiIFnidlvsgN4Ksbi9W0Djwa+p/UGCR/58qtaXqvuvgNI2t2uLd+tuezllUxCkjx
-	tIPEF3kUsp8k/OJeYh5rVqyWZGrVi9rJ2TtRlxetSKw==
-X-Google-Smtp-Source: AGHT+IEGz/E3gvgWQWJBpGvhYdizHBoqpgoHXPFVlDxboUphdex83hV8i8e33+KTknFYTQAzUSqc94p8KlQRHxX9MpY=
-X-Received: by 2002:a05:690e:1042:b0:635:4ed0:5767 with SMTP id
- 956f58d0204a3-63b9a0eb8e5mr564620d50.53.1759442736413; Thu, 02 Oct 2025
- 15:05:36 -0700 (PDT)
+	b=ZcNcVw2bBfizYT3syecFR74oq8jg0ZM0QoFIkNJhekVil48dSD9CJOrHTQe+UXGZS
+	 XyukVruIMo55D3gW2VGpMca6347oLdOIOjpmN3RQA1CLvzAsQr0+k7fC2pWFFrYPEq
+	 UuCZMqIzlhEQQ0xJKxIRb169HgxbNTyyQL3Pfh9A9Yt3qnrl+Gx7K9jJBM8qV41RDN
+	 gwGPbRa6KOAZkTxnk8APDEz2mGcnQPLs9PrBzjkUi76E847gXDUr+GbHfZ7Bpwy9IC
+	 PkcHdQRyg6bMRVadQFk4/LxaRJmADo0csj8EdYKzT1R3jlLyQ7yBh5ErbDM6qvphxF
+	 Xo1ypXm6IGgaw==
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-71d60528734so18240717b3.2
+        for <linux-acpi@vger.kernel.org>; Thu, 02 Oct 2025 15:30:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXAmkbb9iEYdx1l6EBvPNkSwfOouXh/zF3jHdimRKf3ivK2pFEvROKx7osOYSRHNz+ZJSmk/I01lims@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxfn8xy/UPoM8Hjy47mktB4NaQaCoNNpCEYMMAMQdbHYkVrsgaB
+	3IZbVsl9RkdvzqeetJXiHGc9ObxM0ifP8/62MVTA3boh9ri4lIs1MqPS6IRPX7YEVPqFGxi1dYw
+	vycibqqcB2s3DibvS1nhwZvAHsIiJAdwkcHmMUUeUFA==
+X-Google-Smtp-Source: AGHT+IER8jPAUzVQN0o6Ky1MS7KVMc0a4lSY1AA2ChRrKcHMDDcDaZNsOD3pjWILpiKV4YkdhpOWKKWWlyCIVXeH7GA=
+X-Received: by 2002:a05:690e:2513:20b0:5f4:55cb:80d4 with SMTP id
+ 956f58d0204a3-63b9a074d1emr857849d50.17.1759444235020; Thu, 02 Oct 2025
+ 15:30:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250916-luo-pci-v2-0-c494053c3c08@kernel.org>
- <20250916-luo-pci-v2-6-c494053c3c08@kernel.org> <20250929175704.GK2695987@ziepe.ca>
- <CAF8kJuNfCG08FU=BmLtoh6+Z4V5vPHOMew9NMyCWQxJ=2MLfxg@mail.gmail.com>
+References: <20250916-luo-pci-v2-6-c494053c3c08@kernel.org>
+ <20250929175704.GK2695987@ziepe.ca> <CAF8kJuNfCG08FU=BmLtoh6+Z4V5vPHOMew9NMyCWQxJ=2MLfxg@mail.gmail.com>
  <CA+CK2bBFZn7EGOJakvQs3SX3i-b_YiTLf5_RhW_B4pLjm2WBuw@mail.gmail.com>
- <2025093030-shrewdly-defiant-1f3e@gregkh> <CACePvbXrbR=A43UveqPrBmQHAfvjuJGtw9XyUQvpYe941KwzuA@mail.gmail.com>
- <2025100142-slick-deserving-4aed@gregkh>
-In-Reply-To: <2025100142-slick-deserving-4aed@gregkh>
+ <2025093030-shrewdly-defiant-1f3e@gregkh> <CA+CK2bDH=7H58kbwDM1zQ37uN_k61H_Fu8np1TjuG_uEVfT1oA@mail.gmail.com>
+ <2025093052-resupply-unmixable-e9bb@gregkh> <CA+CK2bCBFZDsaEywbfCzDJrH3oXyMmSffV-x7bOs8qC7NT7nAg@mail.gmail.com>
+ <2025100147-scrubbed-untold-fc55@gregkh> <CA+CK2bA0acjg-CEKufERu_ov4up3E4XTkJ6kbEDCny0iASrFVQ@mail.gmail.com>
+ <2025100225-abridge-shifty-3d50@gregkh>
+In-Reply-To: <2025100225-abridge-shifty-3d50@gregkh>
 From: Chris Li <chrisl@kernel.org>
-Date: Thu, 2 Oct 2025 15:05:25 -0700
-X-Gmail-Original-Message-ID: <CACePvbVCXGn-c3dVZfLTq+GbcFfjWchN0OwEHDNs_-EV6TJfyg@mail.gmail.com>
-X-Gm-Features: AS18NWDQhcK4fgqdE0eBM-UDvfpXtCItsSWyIznJ_2678Y5nqftnJrabxisTIzg
-Message-ID: <CACePvbVCXGn-c3dVZfLTq+GbcFfjWchN0OwEHDNs_-EV6TJfyg@mail.gmail.com>
+Date: Thu, 2 Oct 2025 15:30:24 -0700
+X-Gmail-Original-Message-ID: <CACePvbWw9G=y_cycWFMXxRbmuAE8yFCM0Z3y=Ojw30ENDkDL-g@mail.gmail.com>
+X-Gm-Features: AS18NWBKklIiW19M0HLe-eu5UU3jj0bpgI_sv1S6en5UzgvXxCD0FefovaS2CF8
+Message-ID: <CACePvbWw9G=y_cycWFMXxRbmuAE8yFCM0Z3y=Ojw30ENDkDL-g@mail.gmail.com>
 Subject: Re: [PATCH v2 06/10] PCI/LUO: Save and restore driver name
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
@@ -83,102 +84,40 @@ Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Jason Gunthorpe <jgg@ziepe.ca>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 30, 2025 at 10:13=E2=80=AFPM Greg Kroah-Hartman
+On Wed, Oct 1, 2025 at 11:09=E2=80=AFPM Greg Kroah-Hartman
 <gregkh@linuxfoundation.org> wrote:
-> >
-> > for example, the pci has this sysfs control api:
-> >
-> > "/sys/bus/pci/devices/0000:04:00.0/driver_override" which takes the
-> > *driver name* as data to override what driver is allowed to bind to
-> > this device.
-> > Does this driver_override consider it as using the driver name as part
-> > of the abi? If not, why?
->
-> Because the bind/unbind/override was created as a debug facility for
-> doing kernel development and then people have turned it into a "let's
-> operate our massive cloud systems with this fragile feature".
+> Just keeping a device "alive" while rebooting into the same exact kernel
+> image seems odd to me given that this is almost never what people
+> actually do.  They update their kernel with the weekly stable release to
+> get the new bugfixes (remember we fix 13 CVEs a day), and away you go.
+> You are saying that this workload would not actually be supported, so
+> why do you want live update at all?  Who needs this?
 
-Frankly, I did not know that it was a debug API or should be treated like o=
-ne.
+I saw Pasha reply to a lot of your questions. I can take a stab on who
+needs it. Others feel free to add/correct me. The major cloud vendor
+(you know who is the usual suspect) providing GPU to the VM will want
+it. The usage case is that the VM is controlled by the customer. The
+cloud provider has a contract on how many maintenance downtimes to the
+VM. Let's say X second maintenance downtime per year. When upgrading
+the host kernel, typically the VM can be migrated to another host
+without much interruption, so it does not take much from the down time
+budget. However when you have a GPU attached to the VM, the GPU is
+running some ML jobs, there is no good way to migrate that GPU context
+to another machine. Instead, we can do a liveupdate from the host
+kernel. During the liveupdate, the old kernel saves the liveupdate
+state. VM is paused to memory while the GPU as a PCI device is kept on
+running.  ML jobs are still up.  The kernel liveupdate kexec to the
+new kernel version. Restore and reconstruct the software side of the
+device state. VM re-attached to the file descriptor to get the
+previous context. In the end the VM can resume running with the new
+kernel while the GPU keeps running the ML job. From the VM point of
+view, there are Y seconds the VM does not respond during the kexec.
+The GPU did not lose the context and VM did not reboot. The benefit is
+that Y second is much smaller than the time to reboot the VM  and
+restart the GPU ML jobs. So that Y can fit into the X second
+maintenance downtime per year in the service contract.
 
-Let's say we want to make it right for now and future, any
-suggestion/guide line for the new API?
-
-
-> We have never said that driver names will remain the same across
-> releases, and they have changed over time.  Device ids have also moved
-
-That is fine. The LUO PCI just says that at the old kernel that does
-the liveupdate from, that is the driver name "foo1" in the old kernel
-A1. The new kernel A2 that gets boot will know about the old kernel
-A1, at least in the typical data center. There will be a test live
-update A1 to A2. Validation before officially rolling out the
-liveupdate kernel. The new kernel A2 can know that, oh, on this old
-kernel, A1, this driver "foo2" used to call "foo1" in A1.  Then it can
-let the PCI core bind to the "foo2" for that device instead. Later
-when A2 liveupdate to A3, A3 can drop the knowledge of the "foo1" if
-we are sure the A1 kernel is no longer supported.
-
-> from one driver to another as well, making the "control" of the device
-> seem to have changed names.
-
-The name can be changed, just the new kernel needs to know about the
-change and handle it. Extra complexity but not impossible.
-
->
-> > What live update wants is to make that driver_override persistent over
-> > kexec. It does not introduce the "driver_override" API. That is
-> > pre-existing conditions. The PCI liveupdate just wants to use it.
->
-> That does not mean that this is the correct api to use at all.  Again,
-> this was a debugging aid, to help with users who wanted to add a device
-> id to a driver without having to rebuild it.  Don't make it something
-> that it was never intended to be.
->
-> Why not just make a new api as you are doing something new here?  That
-> way you get to define it to work exactly the way you need?
-
-Sure, I can invent a new API. I am just a bit afraid to introduce a
-new API and carry the burden of supporting it forever.
-
-Another idea is that we don't remember the driver's name. The kernel
-just enforces that, if the device is liveupdate, no auto probe at all.
-Then push the responsibility to the user space to load the driver and
-manually bind the device to the right driver. The user space will
-still need to know what is the previous driver name or some way to
-identify the right driver for this liveupdate process. Somebody will
-need to know something like a driver name and pass that to the new
-kernel to restore it. But not the kernel.
-
-It will have a drawback on extra latency of the black out window, now
-after PCI scans the PCI bus, a user space program will be run to bind
-and probe the driver.
-
->
-> > I want to get some basic understanding before adventure into the more
-> > complex solutions.
->
-> You mean "real" solutions :)
-
-I mean the more upstream accepted solutions.
-
-> It's not my requirement to say "here is C", but rather I am saying "B is
-> not going to scale over time as GUIDs are a pain to manage".
-
-I can agree to that.
-
-> > Do you have any other suggestion how to prevent the live update PCI
-> > device bind to a different driver after kexec? I am happy to work on
-> > the direction you point out and turn that into a patch for the
-> > discussion purpose.
->
-> Why prevent it?  Why not just have a special api just for drivers that
-> want to use this new feature?
-
-The typical GPU will bind to the VFIO driver when the VM is using it.
-If we don't prevent auto probe, the PCI device will auto probe to the
-native driver on the next kexec. Naturally, the native driver will
-have no day to decode the data saved from the previous vfio driver.
+Hope that explanation makes sense to you.
 
 Chris
 
