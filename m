@@ -1,138 +1,128 @@
-Return-Path: <linux-acpi+bounces-17559-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17560-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A9BBB696A
-	for <lists+linux-acpi@lfdr.de>; Fri, 03 Oct 2025 14:06:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82312BB6A5D
+	for <lists+linux-acpi@lfdr.de>; Fri, 03 Oct 2025 14:28:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 96E514EA62F
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Oct 2025 12:06:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C1F619C6A15
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Oct 2025 12:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E83C2ECD2E;
-	Fri,  3 Oct 2025 12:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555242ED842;
+	Fri,  3 Oct 2025 12:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="PWEaVRm2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJrORMrM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCEC2EC572
-	for <linux-acpi@vger.kernel.org>; Fri,  3 Oct 2025 12:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209C62EC08B;
+	Fri,  3 Oct 2025 12:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759493203; cv=none; b=E1Enn0L6deDKM06PTUkn7mIKoWa3a1+6lFOwK1S38BEF2umomx1Gkwk2zJDZxjI2kpTOjOAf0MGj6gtvrNACFQN3N5om9g4rdgT0/zrHHcYwKMKjxu84fOMAo3Mts2NeBN4hMXBbyWGRBWLTUwqG9ZGj1ZYHb+c3/pBksJWKdxc=
+	t=1759494415; cv=none; b=GTcjSfNwoVwjImymFbGVKYdHnEvqj6VK1eYnIu6eL8X2JnXUrq4njKvBSISyjIdRnrMZpC3klsZd0JQq4ziz/p7NQt7NYr7sZQ9rPS3T1gxAX0ogbY3mYPgDZuZdGUrtLaRO+S0B3Y0xmZlwA4emfkiIWoPyWhVm8j9xUsIRaJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759493203; c=relaxed/simple;
-	bh=wSgcHRu4XVhLC13BBYF4OctryqDLWNhWswI6B3UGTCo=;
+	s=arc-20240116; t=1759494415; c=relaxed/simple;
+	bh=E50tYDM8gx3UL88zFxIT0tdZnck8P/wORg9Z1QAH7NU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sLdo0TD1i79Gw/Sh7/qIqhydUjNq8I8NWVeDYgiu5YqBYwbvWbeegx7AZHiQbVtcdY3DYxYl5qyC6+hCHEPANZ2KlkzbPSxdY5NHsn6Q57gjJ0PtsBQEDkeW3ZcdibDk/4tszJveVtsXC2/nbX1lgF7eoJ1nOT46CDBiVq22jyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=PWEaVRm2; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-858183680b4so275479485a.2
-        for <linux-acpi@vger.kernel.org>; Fri, 03 Oct 2025 05:06:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1759493200; x=1760098000; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wSgcHRu4XVhLC13BBYF4OctryqDLWNhWswI6B3UGTCo=;
-        b=PWEaVRm2l/bqBXatSPjD0pVs0Lid924vLnwvssIt2Zif2dfLuy9ykZyOesckpUe+U8
-         nls4oiBmHl/E9KM4DbsLX7WUIXNvEUeJWMOPhbHSYyJ0uAz05mpbRhMVADuTufzowJDY
-         5L/92m2ll2xQ+etp0PMZanea26e7dwrefolf9z00ILWbS7d6eKRO5bgppaJNPoKDOaao
-         PiCLn2i/aEBHzjIISbFm4Ca77zuhzaBj4YamnJw5QqOLTeqEKW2KvK4hb7c58nLE2Z5b
-         sv19Zp2E1QR/yX2+ckin0kVdUh1mRXUGvbRPrQNWeJBG/hzV31iR3SRTlKiQ3nq8IcSj
-         XSWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759493200; x=1760098000;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wSgcHRu4XVhLC13BBYF4OctryqDLWNhWswI6B3UGTCo=;
-        b=O0/nYYYJ4NM61v0f0C+yQAoWljUnBfx7SYE3xdaDYqy+vFIWUUDu/j5jRgTO41p9Ph
-         bGxYsnybweBt0UOpndSyAUKyLPkPsPhdmKEqLsJBe9gCFa5QmA1s9RhKou3NVBfUo0rK
-         Ft7ildKQ/hqPHbEHFElQkQgYzI3u5vxOTDyDMG1AUdwhDX5y2ND42VtJYzgZSVs+143Y
-         XaYKDfaKxdiVIaYc8/9fiK6B8DNEYOwZu6qtUCn5s9HxwKDEeSc3a9G8OKWCtVtcqAZO
-         jt4zPJObRLEwrtWFoNWizazShxpZQi296Ssd0V39INF28SrV6zYySs3jO0BktdebDCct
-         YQaA==
-X-Forwarded-Encrypted: i=1; AJvYcCVr4U+GQTvYoio4czyYCSOx6/0p/p2FrTHhH0+88R47L/RBe0ZYm3Z4hSwsHxREWwxsIp5KtuvbFa3z@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjiBucJG7acf/eSYG+Dh+0eQiw7iIC+0RtR4FxV3ehnVorfulJ
-	/vVrD0RPrYDqm/AvZI5OirYwWnGydRQNYFE8mpiuimb4WZel469p0JZ2fzp4a/mocZc=
-X-Gm-Gg: ASbGnct5zTO7mE9Pbp3YjupnbfzhcUycjpt2Po3+m9wFxIFBlRsL5Fe6fk0+ShCkT1r
-	guCWmvGVtygRPjCzRLR/YGOHdhyoIJNhdQY5mn/D5izTYwUz16wUEZC5dt6lvrTR/aomwj2rVpw
-	EYsOuIP0jNmb6iAJDtxssB3J9XF4onF+2BltiIP3CcoDI9qRsuASHPXPT8E4bpxkNU9hVfjscVl
-	5ZHpOYefnBIj3YHgfTTVNo4auOr6FVP7Oqilx/wiOHZo+MHWOgwXuftWHxkJ9q5rqhFWucugM8T
-	HROGjUtbo7zTWqBeJTpX3ww4ET9krAwEVPiBU3NQtwl5zE+7trIBZyVcZ2CMI9ZgVsYo1JuSrLZ
-	Rl9s/X31Oxu8AukfoDN67FyOEKmHJd0a8Aqbby6sCqKLXsFAyxBthVE+J5KVTN6aI8AqzPjGgbD
-	WClzpNTPuAoyNn/n2wTeXK1xApxN3kl7DWVu0IDg==
-X-Google-Smtp-Source: AGHT+IESD9NWxfSord5jCIA31803QVCClkT5xpnqBbd7V15YYn81ihEL+4lu2i2UsZSEnmpQdxOuRg==
-X-Received: by 2002:a05:620a:2893:b0:85b:be19:653 with SMTP id af79cd13be357-87a39a943c0mr330432485a.84.1759493200373;
-        Fri, 03 Oct 2025 05:06:40 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-87772836c1csm407328385a.28.2025.10.03.05.06.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Oct 2025 05:06:39 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1v4eYY-0000000E4oO-3XXT;
-	Fri, 03 Oct 2025 09:06:38 -0300
-Date: Fri, 3 Oct 2025 09:06:38 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
+	 Content-Type:Content-Disposition:In-Reply-To; b=KGbwCeqeH6FJip9IebWO++ieyOK4oaqYVNhv2Z8jljjB0cJygHV5Hs8XDXziseVZeC6wUgvzZsztNWJEM6INWjTnx3QTIQXqUfb90N576QextNmPVsOnMwrB20lu0/ZYWG6kwjexvkx4mL7z/sacCgyDs1UWBEHvJSOYluyhukQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YJrORMrM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD10C4CEF5;
+	Fri,  3 Oct 2025 12:26:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1759494414;
+	bh=E50tYDM8gx3UL88zFxIT0tdZnck8P/wORg9Z1QAH7NU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YJrORMrMKsahcSf+ABvPJxYuR649yPV6EPT6kk/nl5ydKl+Dq/9x6kmRRIruXWl8V
+	 K+wEm8s52EL6acpxIiMyfD7ge4JfCd1Ueqo6eECnk2sAqxOQ+N6cmQL0gQDS8QOm+E
+	 Hix9M8xQdZnnqFgUo6LmEH5rpAs2703I2/LQrBSM=
+Date: Fri, 3 Oct 2025 14:26:51 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Chris Li <chrisl@kernel.org>
-Cc: David Matlack <dmatlack@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
 	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, Pasha Tatashin <tatashin@google.com>,
+	linux-acpi@vger.kernel.org, David Matlack <dmatlack@google.com>,
+	Pasha Tatashin <tatashin@google.com>,
 	Jason Miu <jasonmiu@google.com>, Vipin Sharma <vipinsh@google.com>,
 	Saeed Mahameed <saeedm@nvidia.com>,
 	Adithya Jayachandran <ajayachandra@nvidia.com>,
 	Parav Pandit <parav@nvidia.com>, William Tu <witu@nvidia.com>,
-	Mike Rapoport <rppt@kernel.org>, Leon Romanovsky <leon@kernel.org>
+	Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>
 Subject: Re: [PATCH v2 03/10] PCI/LUO: Forward prepare()/freeze()/cancel()
  callbacks to driver
-Message-ID: <20251003120638.GM3195829@ziepe.ca>
+Message-ID: <2025100317-backroom-upside-c788@gregkh>
 References: <20250916-luo-pci-v2-0-c494053c3c08@kernel.org>
  <20250916-luo-pci-v2-3-c494053c3c08@kernel.org>
- <20250929174831.GJ2695987@ziepe.ca>
- <CAF8kJuNZPYxf2LYTPYVzho_NM-Rtp8i+pP3bFTwkM_h3v=LwbQ@mail.gmail.com>
- <20250930163837.GQ2695987@ziepe.ca>
- <aN7KUNGoHrFHzagu@google.com>
- <CACePvbX6GfThDnwLdOUsdQ_54eqF3Ff=4hrGhDJ0Ba00-Q1qBw@mail.gmail.com>
- <CALzav=cKoG4QLp6YtqMLc9S_qP6v9SpEt5XVOmJN8WVYLxRmRw@mail.gmail.com>
- <20251002232153.GK3195829@ziepe.ca>
- <CACePvbXdzx5rfS1qKkFYtL-yizQiht_evge-jWo0F2ruobgkZA@mail.gmail.com>
+ <2025093044-icky-treat-e1c3@gregkh>
+ <CACePvbUr42mj0kbcaw4cgKnd7v1f8z8Jhq4+_QN7Z5Nvicd1cw@mail.gmail.com>
+ <2025100323-sneer-perennial-55e1@gregkh>
+ <CAF8kJuNPFbSJezynwXWpMx0ihV32YvAgdfygj7bx1nhxtmB8-w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CACePvbXdzx5rfS1qKkFYtL-yizQiht_evge-jWo0F2ruobgkZA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAF8kJuNPFbSJezynwXWpMx0ihV32YvAgdfygj7bx1nhxtmB8-w@mail.gmail.com>
 
-On Thu, Oct 02, 2025 at 10:24:59PM -0700, Chris Li wrote:
+On Fri, Oct 03, 2025 at 12:26:01AM -0700, Chris Li wrote:
+> On Thu, Oct 2, 2025 at 11:19 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Thu, Oct 02, 2025 at 01:38:56PM -0700, Chris Li wrote:
+> > > On Tue, Sep 30, 2025 at 8:30 AM Greg Kroah-Hartman
+> > > <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > On Tue, Sep 16, 2025 at 12:45:11AM -0700, Chris Li wrote:
+> > > > >  include/linux/dev_liveupdate.h |  23 +++++
+> > > > >  include/linux/device/driver.h  |   6 ++
+> > > >
+> > > > Driver core changes under the guise of only PCI changes?  Please no.
+> > >
+> > > There is a reason why I use the device struct rather than the pci_dev
+> > > struct even though liveupdate currently only works with PCI devices.
+> > > It comes down to the fact that the pci_bus and pci_host_bridge are not
+> > > pci_dev struct. We need something that is common across all those
+> > > three types of PCI related struct I care about(pci_dev, pci_bus,
+> > > pci_host_bridge). The device struct is just common around those. I can
+> > > move the dev_liveupdate struct into pci_bus, pci_host_bridge and
+> > > pci_dev independently. That will be more contained inside PCI, not
+> > > touching the device struct. The patch would be bigger because the data
+> > > structure is spread into different structs. Do you have a preference
+> > > which way to go?
+> >
+> > If you only are caring about one single driver, don't mess with a
+> > subsystem or the driver core, just change the driver.  My objection here
+> 
+> It is more than just one driver, we have vfio-pci, idpf, pci-pf-stub
+> and possible nvme driver.
 
-> As David pointed out in the other email, the PCI also supports other
-> non vfio PCI devices which do not have the FD and FD related sessions.
-> That is the original intent for the LUO PCI subsystem.
+Why is nvme considered a "GPU" that needs context saved?
 
-This doesn't make sense. We don't know how to solve this problem yet,
-but I'm pretty confident we will need to inject a FD and session into
-these drivers too.
+> The change needs to happen in the PCI enumeration and probing as well,
+> that is outside of the driver code.
 
-> away once we have the vfio-pci as the real user. Actually getting the
-> pci-pf-stub driver working would be a smaller and reasonable step to
-> justify the PF support in LUO PCI.
+So all just PCI drivers?  Then keep this in PCI-only please, and don't
+touch the driver core.
 
-In this contex pci-pf-stub is useless, just use vfio-pci as the SRIOV
-stub. I wouldn't invest in it. Especially since it creates more
-complexity because we don't have an obvious way to get the session FD.
+> > was that you were claiming it was a PCI change, yet it was actually only
+> > touching the driver core which means that all devices in the systems for
+> 
+> In theory all the devices can be liveupdate preserved. But now we only
+> support PCI.
 
-Jason
+Then for now, only focus on PCI.
+
+thanks,
+
+greg k-h
 
