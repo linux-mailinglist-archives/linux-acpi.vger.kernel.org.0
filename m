@@ -1,132 +1,141 @@
-Return-Path: <linux-acpi+bounces-17557-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17558-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C00BABB6812
-	for <lists+linux-acpi@lfdr.de>; Fri, 03 Oct 2025 12:58:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5AB3BB695A
+	for <lists+linux-acpi@lfdr.de>; Fri, 03 Oct 2025 14:04:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 33A314EB83F
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Oct 2025 10:58:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61ABD421666
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Oct 2025 12:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB222EB5B9;
-	Fri,  3 Oct 2025 10:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269222ECD22;
+	Fri,  3 Oct 2025 12:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KJi/pg50"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="i2AX0r50"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4891D280CFA
-	for <linux-acpi@vger.kernel.org>; Fri,  3 Oct 2025 10:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804492EC572
+	for <linux-acpi@vger.kernel.org>; Fri,  3 Oct 2025 12:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759489092; cv=none; b=Rtm8IjGTJ1ouBkMNJ2r4p27F4T/OjbFkBaVHNW1kh89l3TzANyLWVU0GuqPV6Y/uUYCcNVZ9VSPPQXoHlVY3oT91g81ToQXUbcpeZ7PubzAB4ip70HQ2bShDrbontajyx5Ygy45o8DM5ordunQryaYXU6GLmbZummicGjD/rFDQ=
+	t=1759493044; cv=none; b=iQm7MgpnI+yzHMqvqZgXFLfOQXCoQkplcFMkO9lsU0qYlsQkXPZ9eavJ22wXo1yIFzwn7WGha+OaQFawh+FMrNuyXwE860pmw2+EZaDz29gz4yTNfa2BI+DvuPyScz1W6ioM/rAIc4yor9fln2JL9G6b4GldtQHcGjUP2yrLuQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759489092; c=relaxed/simple;
-	bh=2ZqSL/hQ5eW3fKXgUIyGRehc4fvd7MUY+Vv/AhmJaO8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sDRO+sFZr/0d4u1c2e/O0cejeR5XNVM4YGxMWIm5MMSd98XxkwvQnOz7+OEOEpfX6zVzXPLUcZKrLSW7mx54Y76+13o20JAINtNNEBGfFIXWyZ/r9yrfD7r+nkBQz3sVXG19/Hb4mcAp9sEyTnJmacoXjaYEDn9rlFkFxiPu3z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KJi/pg50; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9471C4CEFA
-	for <linux-acpi@vger.kernel.org>; Fri,  3 Oct 2025 10:58:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759489091;
-	bh=2ZqSL/hQ5eW3fKXgUIyGRehc4fvd7MUY+Vv/AhmJaO8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KJi/pg50e48oh1csKYm/caMjXMRLy/fjdDhP3yo1N4+BVHj6aCw3ENTxp4GcEUhSQ
-	 0fmLoI3cOZevawjGmCX0SNtfBuEixGocNGg83bE/eRW8t0SFvh/D58/hVNF6ZFyOBj
-	 m07ufrLemeIPxS8dlBleQwK8z32IsRvUGKd9DSEt5nwkJZyLmfqocz2HObGo0MJHDw
-	 x81q66yxycyhCibsnssj+dzV8yrxpCJ5GgAG9qG4bWqvM3pTAMZ+ZJf/xTBCKVIOOi
-	 kCJSjO3OKAPB3JHjHnT07e0Xx2nUxcKdD3m92lkFkY7qnBSCNiZaKaUq9pXJSZYrV2
-	 AJZc7N7BMe9yQ==
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b6271ea39f4so824599a12.3
-        for <linux-acpi@vger.kernel.org>; Fri, 03 Oct 2025 03:58:11 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWjQyPkR08OXraE5ATliYBUiIX18pgvwst7XRj3VuieC7KFBch2RYzGLTrDN5MDG/ZVndFNeR1K+/As@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMeA5dIDRM21YMq60P+wzoADO8hRMEdoKGSh9asz747bB1uz9+
-	mXcFoKn/2NrYd7WvmrdourzgTQHFe7e++EJyPL1ELMGbP5GQIb3AgckFj1u8K9RsPUIUhrUJyiF
-	ORClVqtofKh534sNCVMsSnrJUlw0RD/M=
-X-Google-Smtp-Source: AGHT+IFmG/T5ydYBpXYGsbRhmiBriNStHppU1Rq6jY26Qw5eYEj6G6asV9iuaLQXuosKy981XLb98+jPtPYn9o/019g=
-X-Received: by 2002:a17:903:2f4c:b0:270:4964:ad82 with SMTP id
- d9443c01a7336-28e9a6292bfmr33684635ad.38.1759489091372; Fri, 03 Oct 2025
- 03:58:11 -0700 (PDT)
+	s=arc-20240116; t=1759493044; c=relaxed/simple;
+	bh=yCCP5s9lTzTlxvPaMrvl2U2nWczarzv5lVR64JUY0XQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aZ5Rj3yb2HcJW+uWQXBS97HvGGqwLdIxZDNna5ENyUFD1R2CeJiUqErXgYHBJoQosSDkP0ZR0JkgasqJrKRxAeuSY9rR3mEOsW8FVh3BM+8H/M6bKdUb+Kb4C8QGV/FgdEU1Wi1dNmSbbEj/wMADUzHHUDbyhycXLUe92q0UYbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=i2AX0r50; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-85c66a8a462so306050685a.0
+        for <linux-acpi@vger.kernel.org>; Fri, 03 Oct 2025 05:04:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1759493041; x=1760097841; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=vyK6EDMdZhWcTtV/wan5DW3m1OGhyAdsB4+u9LiW5EY=;
+        b=i2AX0r50q/9oVJ8tX94qI3pxl3kAvtWezIgySUen8HnwtgwH2n8nNzHoF70arI3bjK
+         QOFS7UAE4JjG3DId8KUUv+VY0n1bcVufOr1TD/bIsykp59nDi3avWz6fVJyTMM8YCr1v
+         PbVSrlu5VCZNp4sNea3ngiykrROoc2HUhNVNWTS8AiHG+HcPsoUuswI0JBOL2IhaZnxd
+         5ZAmCaBQecYpJyHS7LSFD6IZMdX/aiyebqFacWlV8FsyswOP2ICCrPxZgsfBJFIA2mKE
+         QY5Yy8jKo0NZUjzsFfmJs3yNIrMDticvDxS6Q2xz6s+EDYwQ2esBw+cohQCip7xUg82a
+         fb9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759493041; x=1760097841;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vyK6EDMdZhWcTtV/wan5DW3m1OGhyAdsB4+u9LiW5EY=;
+        b=gStE/s0o+B3DE2zCu2O35TKiEYWLfyXx5tiB5tIkMs+gzuyMk93jh51tQYfzRnbW9o
+         gWbmS358D3savLo+L+bT7cfrK9XEoBQi/UvBJm4Mm10lQPQTQ5NxCqKqHgDMrh9VMBbk
+         OSohUkxHAaOupszIdUSm0n/PF84nGQcm841N8pu9n6Vf26G4bF4hUaTcmf1Ad9n7rD4n
+         pEhEGAWRReGUfgzqD6f58re+xkx7xRYYy5LXyTTyiFghszQGb+83HL3OQ2KIbl33i0+H
+         ptdp0iipTuD5BDPUyPHtuBxs7aGJar25tmyDYPxAKZZoDMZSxp62B39nJcuovin3/WAZ
+         ICWw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/lbZEfrSvJV7dAs6UALql4WEXl14SO/7kN8pvv0jf3QFzv/j5hYX5zq7fZ7eeYAORRtstp8l3XFcy@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4K20pWcQFwwVx6vN8LR5flDXsnZj9y3ZVt5NdFYH5ooiF0KB3
+	xQqVldmEXX32CmyFtH5X8/8k8vJyxZJrwazKS7xfzzFm6YULi0psJ9Nf9m3LsGyrzK4=
+X-Gm-Gg: ASbGnct+1S0I+XcTqtbnhiWTulJxoi9SEfedBoYE7DqNoJE9MOAmbKwejcWD5w2MDCy
+	/RVztvR39EKVNA30rvclvSgXRgcb5qu76h/Y8SU6otRy6A4i/TA12Ad2oVqgE5OMFDBdEfplfxq
+	kPDSNZdzPIzUySVX5aGkXu2wxvxKFiMNSYjPP2eOG7YRU29ftdvS+105stFsbPpoQtaY34n9sdh
+	E6kPjQYZV4ERd55tcMU5G1yZWuR8C2bpGa5thipadE8r/ImmMHqElayVA/PkwBq9MUuHlLQO3cv
+	AGaBgJn/d32tACKCt2vox0g5J0JepnRkAuFYT2sOtSinQdri2XTa9ZTdFicuuQ1fvpz7xM2Tdxb
+	6E0VOCKWyiPevt1Qk8rYC1/B79vcLldXUVApQSUVK/B0sICHW16InEfjG7lD5O0cwTk+AOn/8XJ
+	R8EKdMWc8lJetmj/6q
+X-Google-Smtp-Source: AGHT+IG9u6J/XxiDHAEh0uQ+ECKUfFxeEFaK0PE7MiU6DsChuKmxi8Y6PiMSOlaUnZoft+5pp0GGAA==
+X-Received: by 2002:a05:620a:4101:b0:870:6891:9c1c with SMTP id af79cd13be357-87a37ea1664mr359649085a.35.1759493041309;
+        Fri, 03 Oct 2025 05:04:01 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e55cadcecdsm39906701cf.23.2025.10.03.05.03.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Oct 2025 05:03:59 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1v4eVy-0000000E4mn-3rSP;
+	Fri, 03 Oct 2025 09:03:58 -0300
+Date: Fri, 3 Oct 2025 09:03:58 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: David Matlack <dmatlack@google.com>
+Cc: Chris Li <chrisl@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org, Pasha Tatashin <tatashin@google.com>,
+	Jason Miu <jasonmiu@google.com>, Vipin Sharma <vipinsh@google.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>, William Tu <witu@nvidia.com>,
+	Mike Rapoport <rppt@kernel.org>, Leon Romanovsky <leon@kernel.org>
+Subject: Re: [PATCH v2 03/10] PCI/LUO: Forward prepare()/freeze()/cancel()
+ callbacks to driver
+Message-ID: <20251003120358.GL3195829@ziepe.ca>
+References: <20250916-luo-pci-v2-0-c494053c3c08@kernel.org>
+ <20250916-luo-pci-v2-3-c494053c3c08@kernel.org>
+ <20250929174831.GJ2695987@ziepe.ca>
+ <CAF8kJuNZPYxf2LYTPYVzho_NM-Rtp8i+pP3bFTwkM_h3v=LwbQ@mail.gmail.com>
+ <20250930163837.GQ2695987@ziepe.ca>
+ <aN7KUNGoHrFHzagu@google.com>
+ <CACePvbX6GfThDnwLdOUsdQ_54eqF3Ff=4hrGhDJ0Ba00-Q1qBw@mail.gmail.com>
+ <CALzav=cKoG4QLp6YtqMLc9S_qP6v9SpEt5XVOmJN8WVYLxRmRw@mail.gmail.com>
+ <20251002232153.GK3195829@ziepe.ca>
+ <CALzav=cYBmn_t1w2jHicSbnX57whJYD9Cu84KJekL0n2gZxfmw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251002215759.1836706-1-markus.probst@posteo.de>
- <CAMRc=Me3VLbmRksbrHmOdw8NxN7sxXjeuNFb9=6DzE=uLn0oAA@mail.gmail.com>
- <7f4057f25594ac3b50993a739af76b7b1430ee6a.camel@posteo.de> <CAMRc=McioBjF3WCBu0ezzuL+JJTiEpF2fz1YpbToRpijpHfAEg@mail.gmail.com>
-In-Reply-To: <CAMRc=McioBjF3WCBu0ezzuL+JJTiEpF2fz1YpbToRpijpHfAEg@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Date: Fri, 3 Oct 2025 19:57:59 +0900
-X-Gmail-Original-Message-ID: <CAJKOXPcRTcSY7qdPXn15CmzHFJ1mCPxRhBeMzrDyD8u0nyinBg@mail.gmail.com>
-X-Gm-Features: AS18NWBENGrqk9nuqV8exR9BvVwySmyz1AmxSfdqnVkR6eI3H8eOi6dQsRufivc
-Message-ID: <CAJKOXPcRTcSY7qdPXn15CmzHFJ1mCPxRhBeMzrDyD8u0nyinBg@mail.gmail.com>
-Subject: Re: [PATCH] gpio: of: make it possible to reference gpios probed in
- acpi in device tree
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Markus Probst <markus.probst@posteo.de>, Linus Walleij <linus.walleij@linaro.org>, 
-	Mika Westerberg <westeri@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALzav=cYBmn_t1w2jHicSbnX57whJYD9Cu84KJekL0n2gZxfmw@mail.gmail.com>
 
-On Fri, 3 Oct 2025 at 17:51, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
->
-> On Fri, Oct 3, 2025 at 10:40=E2=80=AFAM Markus Probst <markus.probst@post=
-eo.de> wrote:
+On Thu, Oct 02, 2025 at 04:42:17PM -0700, David Matlack wrote:
+> On Thu, Oct 2, 2025 at 4:21 PM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+> > On Thu, Oct 02, 2025 at 02:31:08PM -0700, David Matlack wrote:
+> > > And we don't care about PF drivers until we get to
+> > > supporting SR-IOV. So the driver callbacks all seem unnecessary at
+> > > this point.
 > >
-> > On Fri, 2025-10-03 at 10:03 +0200, Bartosz Golaszewski wrote:
-> > > On Thu, Oct 2, 2025 at 11:58=E2=80=AFPM Markus Probst
-> > > <markus.probst@posteo.de> wrote:
-> > > >
-> > > > sometimes it is necessary to use both acpi and device tree to
-> > > > declare
-> > >
-> > > This is a rather controversial change so "sometimes" is not
-> > > convincing
-> > > me. I would like to see a user of this added in upstream to consider
-> > > it.
-> > >
-> > > > devices. Not every gpio device driver which has an acpi_match_table
-> > > > has
-> > > > an of_match table (e.g. amd-pinctrl). Furthermore gpio is an device
-> > > > which
-> > >
-> > > What is the use-case here because I'm unable to wrap my head around
-> > > it? Referencing devices described in ACPI from DT? How would the
-> > > associated DT source look like?
-> > In my specific usecase for the Synology DS923+, there are gpios for
-> > powering the usb vbus on (powered down by default), also for powering
-> > on sata disks. An example for a regulator defined in DT using a gpio in
-> > ACPI (in this case controlling the power of on of the usb ports):
-> >
-> >         gpio: gpio-controller@fed81500 {
-> >                 acpi-path =3D "\\_SB_.GPIO";
-> >                 #gpio-cells =3D <2>;
-> >         };
-> >
-> >         vbus1_regulator: fixedregulator@0 {
-> >                 compatible =3D "regulator-fixed";
-> >                 regulator-name =3D "vbus1_regulator";
-> >                 regulator-min-microvolt =3D <5000000>;
-> >                 regulator-max-microvolt =3D <5000000>;
-> >                 gpio =3D <&gpio 0x2a 0x01>;
-> >         };
-> >
-> > - Markus Probst
-> > >
->
-> Krzysztof: Could you please look at this and chime in? Does this make any=
- sense?
->
+> > I guess we will see, but I'm hoping we can get quite far using
+> > vfio-pci as the SRIOV PF driver and don't need to try to get a big PF
+> > in-kernel driver entangled in this.
+> 
+> So far we have had to support vfio-pci, pci-pf-stub, and idpf as PF
+> drivers, and nvme looks like it's coming soon :(
 
+How much effort did you put into moving them to vfio though? Hack Hack
+in the kernel is easy, but upstreaming may be very hard :\
 
-In a week (Gmail on mobile absolutely ducks), after I'll dig out from
-the emails. Feel free to ping again, in case I forget.
+Shutting down enough of the PF kernel driver to safely kexec is almost
+the same as unbinding it completely.
+
+Jason
 
