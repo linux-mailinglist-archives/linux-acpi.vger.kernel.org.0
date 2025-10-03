@@ -1,53 +1,53 @@
-Return-Path: <linux-acpi+bounces-17561-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17562-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8374DBB6E2D
-	for <lists+linux-acpi@lfdr.de>; Fri, 03 Oct 2025 15:12:32 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F5FBB7135
+	for <lists+linux-acpi@lfdr.de>; Fri, 03 Oct 2025 15:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD9EC3C11BB
-	for <lists+linux-acpi@lfdr.de>; Fri,  3 Oct 2025 13:06:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DDAAD4EBD94
+	for <lists+linux-acpi@lfdr.de>; Fri,  3 Oct 2025 13:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88482F0699;
-	Fri,  3 Oct 2025 13:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D621C1ADB;
+	Fri,  3 Oct 2025 13:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="YsSE2Exr"
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="V1a9W3Kq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7322F0683
-	for <linux-acpi@vger.kernel.org>; Fri,  3 Oct 2025 13:04:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8705B19D8BC
+	for <linux-acpi@vger.kernel.org>; Fri,  3 Oct 2025 13:50:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759496668; cv=none; b=EJTTirUIZLolgGdX4PARLcQfu0B47CC+LpyRsZrYNATP3DwgngYDgfm3cElKLcfEW5c6jFxpbS//+EN75rgogQu/7YCQ5rWiIwmXMcZWTP+popK4NGOosfmwubPR8v0ooSnWwcbVw+URPweuJW/X+G3cWDcQ5Zko5pFYeqPdGPY=
+	t=1759499415; cv=none; b=Pmm2fAOJJ5rtmuJqjAqpFk1YPbphptaY1ccJxTFkZ6LTBM6/dyzk2w9Hh4vOQQ4AA9cdgPNtYgXVWYzJkfe+WdJD7XjMnDR3LqGfn+mXx+IVhdF7Iox8qVwC0/G4eRNCnJvZ5zAPTBH88ZZGf+R2k5byc0LO1QDamQ7SgCvTjTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759496668; c=relaxed/simple;
-	bh=R9Ko5YheYgkX1T3asj0QWuq0VGOsgv/y3KP/vU9YcRo=;
+	s=arc-20240116; t=1759499415; c=relaxed/simple;
+	bh=IdPaIxuvXzCjiT5O4QS/FuBQEf27YGAOPTiLs85FZJg=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bXkLP3Y9DCwFAtBtOmC7I8wm4yNA479KaLrnLo8ItNG2d+dFFg5949xHBPt1u0fNaeBVWkFtkUrP8hgBAzaDpmfRtng5Np3co0DxMJgd1mB0FgsH8yq2RTgRW5z3dB7cUgTX+mbaFrz2OPMGCQ1lCBWEit1CvguwE4Z8xfWKUAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=YsSE2Exr; arc=none smtp.client-ip=185.67.36.65
+	 Content-Type:MIME-Version; b=NuS0wGekisj5hCtNb50E49mqkkq/4oMziTCsJUD3BukWVyk/g8DbVaAKKHp6XCFFEPT9qU7Xy+IcrNPZoRaAD4GJD5HFKskYiQm8HAy6Q7aj1fz335Wjc0u4iOad/1ZXUB3IIJl+tm2OwOuY4xAINv990NeYiT8EN3YOAnmcQL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=V1a9W3Kq; arc=none smtp.client-ip=185.67.36.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id A1042240027
-	for <linux-acpi@vger.kernel.org>; Fri,  3 Oct 2025 15:04:24 +0200 (CEST)
+	by mout02.posteo.de (Postfix) with ESMTPS id D340E240103
+	for <linux-acpi@vger.kernel.org>; Fri,  3 Oct 2025 15:50:11 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1759496664; bh=R9Ko5YheYgkX1T3asj0QWuq0VGOsgv/y3KP/vU9YcRo=;
+	t=1759499411; bh=IdPaIxuvXzCjiT5O4QS/FuBQEf27YGAOPTiLs85FZJg=;
 	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version:Autocrypt:OpenPGP:From;
-	b=YsSE2Exr7SF9H6FGfYId6049NxgWBSbjQKd1zF4fBSiTncDr8UMqvA6Og4TQ4LyB8
-	 3oyGusIvX7mFqlDtazSMkE+NoIv97zd3zZTqc3H3tqzQYHWIdhaArOcdkz0joqqzP7
-	 kyEY/VfprEHZ5TQywZiec2VbN4pCY5j0uuL4Qbduw2Nb/5Jl35efOd6PKGHTD+lbCF
-	 Z5AIdowbDXjbEVQXEF4kbhJgdbnc24LAwsQsATQxhtIbp4d+FwUNMo7dk/CohpVrRP
-	 tuThrM6cPdgtv7hy/mYGxbmLF3K9DAchCbm/kGYkS1z3sbNv2kCRibrVAnoCjxDF6m
-	 +vQ3JqJi+g23Q==
+	b=V1a9W3KqvBpKJ0NlHdOACna7/WOPF+WIL2U3EjlZjASwgGXnF4MUeqt9yJUiAJPtM
+	 SQUUahrJf4ZLQSah6Zdg6NHnlzaeKh80cPih1xeGTpOHl05r/uibzmjrwySxB48+P1
+	 jddnWP3mpU52+JzK466KFDEssyrNQmAHDhwSQiuqjL2Cd2ZXRaQGT22CQPihIzQImY
+	 JTo5AMih07Uhy8aKuQcHUIVRgjKmiENdkvG3nhU8wWYt226K/Dze6smVS2GYfvLcu0
+	 Ada+YRXmalJAjRiYLxFTwWmYDIgdh7a9QYJk88ZNCplxVzvlWH1LAdkCuUDYWjna5f
+	 QdKKYsTOfVn+A==
 Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4cdTQH3cZlz6twB;
-	Fri,  3 Oct 2025 15:04:23 +0200 (CEST)
-Message-ID: <9ce6b851fa87c6295450c0b0aef7b302ed057f69.camel@posteo.de>
+	by submission (posteo.de) with ESMTPSA id 4cdVR71PHCz6tx5;
+	Fri,  3 Oct 2025 15:50:10 +0200 (CEST)
+Message-ID: <bacdb2817bfb2b7aa7285c9cf2b2be8f7f64c62c.camel@posteo.de>
 Subject: Re: [PATCH] gpio: of: make it possible to reference gpios probed in
  acpi in device tree
 From: Markus Probst <markus.probst@posteo.de>
@@ -56,12 +56,13 @@ Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
 	 <brgl@bgdev.pl>, Mika Westerberg <westeri@kernel.org>, Andy Shevchenko
 	 <andriy.shevchenko@linux.intel.com>, linux-gpio@vger.kernel.org, 
 	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 03 Oct 2025 13:04:24 +0000
-In-Reply-To: <20251003090550.GC2912318@black.igk.intel.com>
+Date: Fri, 03 Oct 2025 13:50:11 +0000
+In-Reply-To: <9ce6b851fa87c6295450c0b0aef7b302ed057f69.camel@posteo.de>
 References: <20251002215759.1836706-1-markus.probst@posteo.de>
-	 <20251003045431.GA2912318@black.igk.intel.com>
-	 <940aad63e18a1415983a9b8f5e206f26a84c0299.camel@posteo.de>
-	 <20251003090550.GC2912318@black.igk.intel.com>
+		 <20251003045431.GA2912318@black.igk.intel.com>
+		 <940aad63e18a1415983a9b8f5e206f26a84c0299.camel@posteo.de>
+		 <20251003090550.GC2912318@black.igk.intel.com>
+	 <9ce6b851fa87c6295450c0b0aef7b302ed057f69.camel@posteo.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -113,71 +114,83 @@ Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
   aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
 OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Fri, 2025-10-03 at 11:05 +0200, Mika Westerberg wrote:
-> On Fri, Oct 03, 2025 at 08:44:12AM +0000, Markus Probst wrote:
-> > On Fri, 2025-10-03 at 06:54 +0200, Mika Westerberg wrote:
-> > > Hi,
-> > >=20
-> > > On Thu, Oct 02, 2025 at 09:58:05PM +0000, Markus Probst wrote:
-> > > > sometimes it is necessary to use both acpi and device tree to
-> > > > declare
-> > > > devices. Not every gpio device driver which has an
-> > > > acpi_match_table
-> > > > has
-> > > > an of_match table (e.g. amd-pinctrl). Furthermore gpio is an
-> > > > device
-> > > > which
-> > > > can't be easily disabled in acpi and then redeclared in device
-> > > > tree, as
-> > > > it often gets used by other devices declared in acpi (e.g. via
-> > > > GpioInt or
-> > > > GpioIo). Thus a disable of acpi and migration to device tree is
-> > > > not
-> > > > always
-> > > > possible or very time consuming, while acpi by itself is very
-> > > > limited and
-> > > > not always sufficient. This won't affect most configurations,
-> > > > as
-> > > > most of
-> > > > the time either CONFIG_ACPI or CONFIG_OF gets enabled, not
-> > > > both.
-> > >=20
-> > > Can you provide a real example where this kind of mixup can
-> > > happen?
-> > In my specific usecase for the Synology DS923+, there are gpios for
-> > powering the usb vbus on (powered down by default), also for
-> > powering
-> > on sata disks. (defining a fixed-regulator for the usb vbus for
-> > example)
+On Fri, 2025-10-03 at 15:04 +0200, Markus Probst wrote:
+> On Fri, 2025-10-03 at 11:05 +0200, Mika Westerberg wrote:
+> > On Fri, Oct 03, 2025 at 08:44:12AM +0000, Markus Probst wrote:
+> > > On Fri, 2025-10-03 at 06:54 +0200, Mika Westerberg wrote:
+> > > > Hi,
+> > > >=20
+> > > > On Thu, Oct 02, 2025 at 09:58:05PM +0000, Markus Probst wrote:
+> > > > > sometimes it is necessary to use both acpi and device tree to
+> > > > > declare
+> > > > > devices. Not every gpio device driver which has an
+> > > > > acpi_match_table
+> > > > > has
+> > > > > an of_match table (e.g. amd-pinctrl). Furthermore gpio is an
+> > > > > device
+> > > > > which
+> > > > > can't be easily disabled in acpi and then redeclared in
+> > > > > device
+> > > > > tree, as
+> > > > > it often gets used by other devices declared in acpi (e.g.
+> > > > > via
+> > > > > GpioInt or
+> > > > > GpioIo). Thus a disable of acpi and migration to device tree
+> > > > > is
+> > > > > not
+> > > > > always
+> > > > > possible or very time consuming, while acpi by itself is very
+> > > > > limited and
+> > > > > not always sufficient. This won't affect most configurations,
+> > > > > as
+> > > > > most of
+> > > > > the time either CONFIG_ACPI or CONFIG_OF gets enabled, not
+> > > > > both.
+> > > >=20
+> > > > Can you provide a real example where this kind of mixup can
+> > > > happen?
+> > > In my specific usecase for the Synology DS923+, there are gpios
+> > > for
+> > > powering the usb vbus on (powered down by default), also for
+> > > powering
+> > > on sata disks. (defining a fixed-regulator for the usb vbus for
+> > > example)
+> >=20
+> > Okay regulators are Power Resources in ACPI.
+> I did look into it and using a ssdt overlay sounds like a better idea
+> than using a devicetree, but there is another problem with it. I
+> cannot
+> define a PowerResource that uses a gpio to control it (or at least
+> haven't found any docs on it). The gpio controller uses AMDI0030 and
+> is
+> handled by the linux kernel driver (not acpi). An ACPI method can't
+> talk to the driver to set it.
+Okay, there is actually a way, using the gpio operation regions added
+in 473ed7be0da041275d57ab0bde1c21a6f23e637f.
+If this works, it would make this patch obsolete (for me), assuming
+there is not another issue with it.
 >=20
-> Okay regulators are Power Resources in ACPI.
-I did look into it and using a ssdt overlay sounds like a better idea
-than using a devicetree, but there is another problem with it. I cannot
-define a PowerResource that uses a gpio to control it (or at least
-haven't found any docs on it). The gpio controller uses AMDI0030 and is
-handled by the linux kernel driver (not acpi). An ACPI method can't
-talk to the driver to set it.
-
-Maybe there is a way to expose a kernel function to acpi instead?
-
-- Markus Probst
+> Maybe there is a way to expose a kernel function to acpi instead?
 >=20
-> > > The
-> > > ACPI ID PRP0001 specifically was added to allow using DT bindings
-> > > in
-> > > ACPI
-> > > based systems.
-> > Hmm, would requiring patching of the acpi tables. Not sure if it
-> > would
-> > work with the fixed-regulator though, as it uses dev->of_node
-> > instead
-> > of dev->fwnode. I will try to see if I can make it work this way.
->=20
-> I think you can do this by using SSDT overlays instead of patching
-> the
-> tables:
->=20
-> https://docs.kernel.org/admin-guide/acpi/ssdt-overlays.html
->=20
-> There is configfs interface too.
+> - Markus Probst
+> >=20
+> > > > The
+> > > > ACPI ID PRP0001 specifically was added to allow using DT
+> > > > bindings
+> > > > in
+> > > > ACPI
+> > > > based systems.
+> > > Hmm, would requiring patching of the acpi tables. Not sure if it
+> > > would
+> > > work with the fixed-regulator though, as it uses dev->of_node
+> > > instead
+> > > of dev->fwnode. I will try to see if I can make it work this way.
+> >=20
+> > I think you can do this by using SSDT overlays instead of patching
+> > the
+> > tables:
+> >=20
+> > https://docs.kernel.org/admin-guide/acpi/ssdt-overlays.html
+> >=20
+> > There is configfs interface too.
 
