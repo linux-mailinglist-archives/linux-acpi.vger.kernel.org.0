@@ -1,131 +1,105 @@
-Return-Path: <linux-acpi+bounces-17631-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17632-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 939E3BBE92E
-	for <lists+linux-acpi@lfdr.de>; Mon, 06 Oct 2025 18:01:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5308ABBE9B5
+	for <lists+linux-acpi@lfdr.de>; Mon, 06 Oct 2025 18:14:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 18946349EA5
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Oct 2025 16:01:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C0963BF2B9
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Oct 2025 16:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE41C27A91D;
-	Mon,  6 Oct 2025 16:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8B12D8789;
+	Mon,  6 Oct 2025 16:14:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YkIHguyW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5672834BA37;
-	Mon,  6 Oct 2025 16:00:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7786F2D7DF6
+	for <linux-acpi@vger.kernel.org>; Mon,  6 Oct 2025 16:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759766457; cv=none; b=GBC2HEFeFA3cDrLEnA9HE+8r7wvVvzH0eGUk9XzYrOPLITdCrPu56USn+h+7RCrOWTgRDjNwx7b8j+92EX472dsJLNXL3j11hPV9PAsiYvfc58ZGs0r9LsBb5emlVALIjRhACEjsY9aoS8i0ItnlHpc7ZVlBPE60MA+fhrZpkrQ=
+	t=1759767273; cv=none; b=ZqIFtbU3xeB588e7a2yaXkbAHuPog6jtbjGVvYteeGX6+0f42SJuCNwd3T/TZfhhMEgktU+0XY4SKqxGrT6Zw08TyG7IGp2fyE29g3zsvRU6b6sQphJ2PrFVujrTx9AygI9K3KfFVkk4VqKFShsQzzhfr+Kb9W0+UVq6sEQRCEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759766457; c=relaxed/simple;
-	bh=MdYKCQfYRR7YTGxzbHK4Rhuvd0IXNb6NkVSB/PXXHa4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qpuTxk8EhJ8KR0IXSSWWecFw7/wl6eoYfIJKfhlOOAVKSkpd3Q9rgflKSvtRHu9aJJxaMyCW3CijDOQ5dM9//jC8wiopsqnjq5eyfe3b6GYxwfwp8T7XVCQWT9NpW/DDkQXVSjj0SqrB2PekNB24tD8X9DbfsnsCCj1ERQ22AXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CDEA11516;
-	Mon,  6 Oct 2025 09:00:47 -0700 (PDT)
-Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BDB993F738;
-	Mon,  6 Oct 2025 09:00:50 -0700 (PDT)
-Message-ID: <ca0d63a6-0325-4a1d-8b80-6bdc41034fa8@arm.com>
-Date: Mon, 6 Oct 2025 17:00:49 +0100
+	s=arc-20240116; t=1759767273; c=relaxed/simple;
+	bh=RJo5A81v6RnAIQbnSEGiBdOBuydwB3xWDtIBqPstUVQ=;
+	h=Content-Type:From:To:Subject:Message-ID:Date:MIME-Version; b=QDEZIIFyzutLXkCXAK+PgZwg9R+YqM24q0vcJyo/mZD5eRbHTstiy63VflnHFlWFYtKWnYMaa87KMa0JvUGSArG0j2owGz+AZ3y42mZwMvC0sOVMGiP9gTnevylFZvnrKjK7P91juNagmMdTylk1z83te94dVRvHcs+xXjomIis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YkIHguyW; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-33226dc4fc9so5174986a91.1
+        for <linux-acpi@vger.kernel.org>; Mon, 06 Oct 2025 09:14:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759767271; x=1760372071; darn=vger.kernel.org;
+        h=mime-version:date:content-transfer-encoding:message-id:subject
+         :reply-to:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RJo5A81v6RnAIQbnSEGiBdOBuydwB3xWDtIBqPstUVQ=;
+        b=YkIHguyWnofMFuK7Zy0BMXnjYYOFxorYSDR+bxeD5uelfRAciKqYy9xXfKtz5NjlKZ
+         0NmEUXfE+Es4Dp2Ssxpg8tjN6u78z+fgz3c8Mh5UTzWEVpNR0aD5bkFUgy4d7jxp6Ml3
+         bPMLX+O5MOeRSfTtQcEVv6PzvFK5ZxemG7qDx9KRPWACev7QkaZAMTqpFAxH6urlmDU2
+         eASOo1wdO+WCrKfpJ8rPUR0HMCoQrLf32Ms90zHxJdABDIdne8kHbjmvyWpH8rLCzBWM
+         nqEqg3FtsT7SMfI37384FIjZvvSKfvQvGx1yVrr+nn0zaa1GdY9xp3gkm7zKHbpJ0CZY
+         8Mrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759767271; x=1760372071;
+        h=mime-version:date:content-transfer-encoding:message-id:subject
+         :reply-to:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RJo5A81v6RnAIQbnSEGiBdOBuydwB3xWDtIBqPstUVQ=;
+        b=Aym7On+4Zo+JEWmVH57MYA3VwCC1g3YAp8oKul3iq4MMQLTrbrymdCn/srpdYjzgep
+         AoljuMRjmeW9qqz0FxdNr2+MDEGjb4wjMbDTqsqtwV9tAtU1YgTcqjHAC0IZlXY2SGAB
+         uzThjVBKN+q2cYdCe+IDR1/AUe+OMdgmOMoDVpSK3xw9D+fL1Q5M9Led19RaGpfCT9n6
+         14AD6BxaZOn8SX92CNbOl+tKD7f3SniVDMOsnZd79s7p+QtiUvhO4cS9/ka/okDWbVFP
+         HFJqOkwq1yiJtGIyg+KJ+PMgjZANiaPgW2XqohzamWY182mKnU6lnUBzPPRuv+RJiX39
+         oOFQ==
+X-Gm-Message-State: AOJu0YzLb+Yx17sTyQkBaGi0I152KPCcm8Az1wvKSf8HB4XZ3yXbpAnZ
+	/DJv+ZgymujcpfvdIJo0slVZ8Pq+iRkbF74fxwU1FXzfxwm1Qq73aSixlTJAouEQ
+X-Gm-Gg: ASbGncufX0vFrNIimkec7s958OaVyGXu7TqC5fsMePrBJAYtoOebDqYQsJZgZCTnlYj
+	XCkWuF/ulbCq0LHUUkQnpZ8z87qAR06P93z6N1pe1mXPhsECcI8r5d/HQJahp4QUvQOj8l6qt4B
+	q/NgbtJ2LwCADie6XfoTnHhOcz1AZ2PY/1XW3hAigC78FIcoMq3D3kHLtqKN9Yc8L8q7EX2mv0x
+	A3v3Cu9r8TmF0zX0uc/Z6ynQTI2hZ+wCxQt0CFeja89cy067jB3Df9yOpISU52srACKzExjN9tP
+	8wzVWcdREhnTj4bU+1ZMsAZhVWBoloS8wmBBK3fXlzzqHgETZXkTDF8dQeMljKoy9EajyJDh8sB
+	rzswTshNGwUvUYp3AFa4zLTY5f6j1cILLYsqdDkeNMKGU4B7uODNedQ5h1zjgWmPQlg==
+X-Google-Smtp-Source: AGHT+IFezVzjOiG+s43KL+BUoeSpnCHhneZlMMNKlwDic3HZeRVTGvHn0H+vOyBd9ALPjjknf3Knaw==
+X-Received: by 2002:a17:90b:1a91:b0:332:3515:3049 with SMTP id 98e67ed59e1d1-339c2716dc7mr17335853a91.4.1759767271120;
+        Mon, 06 Oct 2025 09:14:31 -0700 (PDT)
+Received: from [127.0.0.1] ([154.80.22.164])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-339c4924c47sm11308472a91.0.2025.10.06.09.14.26
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Oct 2025 09:14:30 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+From: Leonel Harvey <leonelharveyces@gmail.com>
+To: linux-acpi@vger.kernel.org
+Reply-To: chrismorgance@gmail.com
+Subject: Project Estimating
+Message-ID: <2575bf2f-f841-fd7b-9cf7-35ee9e7584c3@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 06 Oct 2025 16:14:25 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 23/29] arm_mpam: Add mpam_msmon_read() to read monitor
- value
-To: Ben Horgan <ben.horgan@arm.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
-Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
- carl@os.amperecomputing.com, lcherian@marvell.com,
- bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
- baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
- Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
- dfustini@baylibre.com, amitsinght@marvell.com,
- David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
- Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- fenghuay@nvidia.com, baisheng.gao@unisoc.com,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
- <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
- Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>
-References: <20250910204309.20751-1-james.morse@arm.com>
- <20250910204309.20751-24-james.morse@arm.com>
- <1344b395-66aa-4714-b1fc-9c970c0fd0bf@arm.com>
- <842edca0-11c7-43ac-ba4b-ab40678034e2@arm.com>
-Content-Language: en-GB
-From: James Morse <james.morse@arm.com>
-In-Reply-To: <842edca0-11c7-43ac-ba4b-ab40678034e2@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-Hi Ben,
+Hi,
 
-On 12/09/2025 16:08, Ben Horgan wrote:
-> On 9/11/25 16:46, Ben Horgan wrote:
->> On 9/10/25 21:43, James Morse wrote:
->>> Reading a monitor involves configuring what you want to monitor, and
->>> reading the value. Components made up of multiple MSC may need values
->>> from each MSC. MSCs may take time to configure, returning 'not ready'.
->>> The maximum 'not ready' time should have been provided by firmware.
->>>
->>> Add mpam_msmon_read() to hide all this. If (one of) the MSC returns
->>> not ready, then wait the full timeout value before trying again.
+Looking for reliable and accurate construction cost estimates for your=
+ next project?
 
->>> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
->>> index cf190f896de1..1543c33c5d6a 100644
->>> --- a/drivers/resctrl/mpam_devices.c
->>> +++ b/drivers/resctrl/mpam_devices.c
->>> +
->>> +static void gen_msmon_ctl_flt_vals(struct mon_read *m, u32 *ctl_val,
->>> +				   u32 *flt_val)
->>> +{
->>> +	struct mon_cfg *ctx = m->ctx;
->>> +
->>> +	/*
->>> +	 * For CSU counters its implementation-defined what happens when not
->>> +	 * filtering by partid.
->>> +	 */
->>> +	*ctl_val |= MSMON_CFG_x_CTL_MATCH_PARTID;
->>> +
->>> +	*flt_val = FIELD_PREP(MSMON_CFG_x_FLT_PARTID, ctx->partid);
->>> +	if (m->ctx->match_pmg) {
->>> +		*ctl_val |= MSMON_CFG_x_CTL_MATCH_PMG;
->>> +		*flt_val |= FIELD_PREP(MSMON_CFG_x_FLT_PMG, ctx->pmg);
->>> +	}
->>> +
->>> +	switch (m->type) {
->>> +	case mpam_feat_msmon_csu:
->>> +		*ctl_val = MSMON_CFG_CSU_CTL_TYPE_CSU;
->>> +
->>> +		if (mpam_has_feature(mpam_feat_msmon_csu_xcl, &m->ris->props))
->>> +			*flt_val |= FIELD_PREP(MSMON_CFG_CSU_FLT_XCL,
->>> +					       ctx->csu_exclude_clean);
->>> +
->>> +		break;
->>> +	case mpam_feat_msmon_mbwu:
->>> +		*ctl_val = MSMON_CFG_MBWU_CTL_TYPE_MBWU;
-> 
-> As you mentioned offline, this zeroes the other bits in *ctl_val.
+We provide detailed estimates using the latest software and=
+ techniques, tailored to your specific project goals, scope, and =
+requirements.
 
-Yes - a bug introduced during a late night, I've fixed this up.
+Contact us today for consultation and pricing information. =
+Thanks.
 
-
-Thanks,
-
-James
+Regards,
+Leonel Harvey
+Estimation Department
+City Estimating, LLC
 
