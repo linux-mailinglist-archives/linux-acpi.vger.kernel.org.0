@@ -1,94 +1,108 @@
-Return-Path: <linux-acpi+bounces-17626-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17627-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B8C3BBE7A9
-	for <lists+linux-acpi@lfdr.de>; Mon, 06 Oct 2025 17:23:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E76BBE7BB
+	for <lists+linux-acpi@lfdr.de>; Mon, 06 Oct 2025 17:25:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E61B189A000
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 Oct 2025 15:23:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 266A13AA3A0
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 Oct 2025 15:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA0F283FF4;
-	Mon,  6 Oct 2025 15:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1267B2D73B3;
+	Mon,  6 Oct 2025 15:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZc2CMBK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CB72D73B8
-	for <linux-acpi@vger.kernel.org>; Mon,  6 Oct 2025 15:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55052D59EF;
+	Mon,  6 Oct 2025 15:25:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759764190; cv=none; b=Bzgnxbt1FAHCKFTW8KiYevf8dXrJqEphdc0XO5TgkvEkY2GPTYN/nEIlr+01zEEqGXfB1h/MabWu0lb4COZU3Z6s5taWGmUNNNAEuPeYcTXfYhD6PGgW8YKY5OglRPSTYMI0kGthLWP+xeZXxySDD/sGXVnlWy8yrDdK4BZXumw=
+	t=1759764340; cv=none; b=gv2osxSOnTSB+6prvc5Xp/zCM8OzyfkLCYL5ZnitncQUBBHB/39knbRrPC3igO0n9Le94KdKwZK5LYT/SlwAvXBFktM+mpvgfMwbgdRh93tTxZkf85TK+UFiQoUk2cyDeHlUDf+X+wa+5eSlaIvyQm6kuubjDeL3kvnBVKpJm8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759764190; c=relaxed/simple;
-	bh=o6LXLvftUbEXcgRVaZ6UqpByLA5VNA0IRFWP9Gmon/s=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Wq+9NSDwawyvtWTmFE3U/CKpGtTpnOXX1BSLERHm3elGhOdw2nG5+xdOjSlmzwEDXVIUlWlDELJtShfSdcgXfC3W8rbfZbKukt+NFz5NPD7xETIBXT+grqxOfgYPJnMRFXz2t26jS6++4Wd9g+uBMKIs+pMgJTlFVk7V5n4vJMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1v5n36-0000KU-I8; Mon, 06 Oct 2025 17:22:52 +0200
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1v5n35-002FkG-2n;
-	Mon, 06 Oct 2025 17:22:51 +0200
-Received: from pza by lupine with local (Exim 4.98.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1v5n30-00000000CIE-3E0J;
-	Mon, 06 Oct 2025 17:22:46 +0200
-Message-ID: <a4ae16066ace14e283d11f4d7e59b423f737eb02.camel@pengutronix.de>
-Subject: Re: [PATCH 8/9] reset: gpio: convert the driver to using the
- auxiliary bus
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij	
- <linus.walleij@linaro.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>,  Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus	
- <sakari.ailus@linux.intel.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki"	 <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Krzysztof Kozlowski	 <krzk@kernel.org>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, Bartosz Golaszewski
- <bartosz.golaszewski@linaro.org>
-Date: Mon, 06 Oct 2025 17:22:46 +0200
-In-Reply-To: <20251006-reset-gpios-swnodes-v1-8-6d3325b9af42@linaro.org>
-References: <20251006-reset-gpios-swnodes-v1-0-6d3325b9af42@linaro.org>
-	 <20251006-reset-gpios-swnodes-v1-8-6d3325b9af42@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1-1 
+	s=arc-20240116; t=1759764340; c=relaxed/simple;
+	bh=A6Y1wPP5SCrw4QxZScmaUQJS82g3EOT647s+IMarmWY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BDAkDoZrK8+1NipDGKzaAYIb14TvwoHw398cabytOgpTUP+SnR3ISTu20pTq63pfiZgNg1Ai4BUIcTV2gAVk96vtVJ0BgHvwoqQ/8c0r4nissmSfcb8Tp31zcPEZtfSjsdtspDZDu2yN5kds6sHCfJ5eGEGaMphphlkJb+yPnkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZc2CMBK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7345CC4CEF5;
+	Mon,  6 Oct 2025 15:25:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759764339;
+	bh=A6Y1wPP5SCrw4QxZScmaUQJS82g3EOT647s+IMarmWY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VZc2CMBKC+N4CsHhoOd9DoArBEDdasSf6PF61F3CoVAmkgx2q9EIqd7EkPi/cZ+az
+	 3q7w9KlC+YeP7Ho2MVKmEQT4+KrxiRpqxW8T/4NqdCQZi69xIb/JbRCJf1gZ/cVRmG
+	 +RqrLiedr/kbaInZ0Jgz90mQrifTerDbnFLbGqA0NOJBgvUMxf/Cqlz+qtIFIcrtIe
+	 jMr3QXUQBocL0JUYJj5ye0vyHviIkBGqPBTmvlxnS9XpbXvK4YsiSzuV6szyDv+a1q
+	 XpO1t1+U5eH8ZIgjlArZZWBnvMK765uK09eF4D2tJE3fWGTyN382Iuw/WNZOfS7pnX
+	 Nn11/rrKXSI4g==
+Message-ID: <c9c79871-7fe0-49c0-8d90-bc467d2a641d@kernel.org>
+Date: Mon, 6 Oct 2025 10:25:37 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] AMD ATL PRM Updates
+To: Yazen Ghannam <yazen.ghannam@amd.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-edac@vger.kernel.org, Avadhut Naik <avadhut.naik@amd.com>,
+ John Allen <john.allen@amd.com>
+References: <20251006-wip-atl-prm-v1-0-4a62967fb2b0@amd.com>
+Content-Language: en-US
+From: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
+In-Reply-To: <20251006-wip-atl-prm-v1-0-4a62967fb2b0@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mo, 2025-10-06 at 15:00 +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->=20
-> As the reset-gpio devices are purely virtual and never instantiated from
-> real firmware nodes, let's convert the driver to using the - more
-> fitting - auxiliary bus.
->=20
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Thank you,
 
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+On 10/6/2025 10:10 AM, Yazen Ghannam wrote:
+> Hi all,
+> 
+> This set updates the AMD Address Translation Library to default to using
+> PRM handlers.
+> 
+> Patch 1 adds a small helper function in the ACPI PRMT code.
+> 
+> Patch 2 adds the new ATL functionality.
+> 
+> Patch 3 does minor miscellaneous cleanup.
+> 
+> Please note there is a minor conflict with this set from Avadhut:
+> https://lore.kernel.org/r/20250915212244.886668-1-avadhut.naik@amd.com
+> 
+> Thanks,
+> Yazen
+> 
+> ---
+> Yazen Ghannam (3):
+>        ACPI: PRM: Add acpi_prm_handler_available()
+>        RAS/AMD/ATL: Require PRM support for future systems
+>        RAS/AMD/ATL: Return error codes from helper functions
+> 
+>   drivers/acpi/prmt.c            |  6 ++++++
+>   drivers/ras/amd/atl/core.c     |  7 +++++--
+>   drivers/ras/amd/atl/internal.h | 10 +++++++++-
+>   drivers/ras/amd/atl/prm.c      | 10 ++++++++++
+>   drivers/ras/amd/atl/system.c   | 19 +++++++++++--------
+>   drivers/ras/amd/atl/umc.c      |  2 +-
+>   include/linux/prmt.h           |  2 ++
+>   7 files changed, 44 insertions(+), 12 deletions(-)
+> ---
+> base-commit: fd94619c43360eb44d28bd3ef326a4f85c600a07
+> change-id: 20251006-wip-atl-prm-c5f8b5b71211
+> 
 
-regards
-Philipp
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+
 
