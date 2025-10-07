@@ -1,127 +1,79 @@
-Return-Path: <linux-acpi+bounces-17645-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17646-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 362B3BC137E
-	for <lists+linux-acpi@lfdr.de>; Tue, 07 Oct 2025 13:32:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB889BC2683
+	for <lists+linux-acpi@lfdr.de>; Tue, 07 Oct 2025 20:38:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B60C1894003
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Oct 2025 11:32:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09A6F402BA3
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Oct 2025 18:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED46223DFB;
-	Tue,  7 Oct 2025 11:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFA22E92D9;
+	Tue,  7 Oct 2025 18:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="in8sbfq3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zb7utcrZ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0061D54FE
-	for <linux-acpi@vger.kernel.org>; Tue,  7 Oct 2025 11:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F1E2147E5;
+	Tue,  7 Oct 2025 18:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759836737; cv=none; b=ElTP4j9JayXPmKqNyHn7pYB2K99qsK5KSPxg6zUCYaLxCLZW1YqtLQh8mGIAPPF1b+mUUBXxOp+P6AhotwcpwupCF9+uzu8MWL2pASsFjkKfz3qFp9XPlBDOGYhx9m//q8EdFOR5PAs8Erp715bFExJ4P6Uzb+2g0I56c1JcqZ4=
+	t=1759862319; cv=none; b=VUu30piQdIabnKfXz9CsDHiwNyftxZFTux5pa8OoI/fAf0lKhtk5r8mwQiRUniuEBJ1TpoNrDHB8AAUGu4BJCcbIQmsD2bOmrOMWn+BAOAyWRRehkCmBeyQjEizmNrf5i4k7H6vqTWk2eqp2Nl11ztAOTwES3mR+5SX+/eytiSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759836737; c=relaxed/simple;
-	bh=K2SLCERJg8GATRL03Frwnf95lX+xUj/t+ur2Sjhkbkg=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=L2PEh/OusWbRU2X28HxUbUv363gYcqqyi02mrRE0vKDKhiqlaGtZ1W0rw85DM2sUZJOvNJm3fHGFkUroNVGDV+Sgyjn4QyKJUrV9J/V40QJ3mlNeZv+ucXyECYYP9dzN5vjD7ubPe3LeDJu1KuO9mZqJqSMGZnV9Equ+w/h6qZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=in8sbfq3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2EBC4AF09
-	for <linux-acpi@vger.kernel.org>; Tue,  7 Oct 2025 11:32:16 +0000 (UTC)
+	s=arc-20240116; t=1759862319; c=relaxed/simple;
+	bh=ETKpspy7sBhlQEqNsSQZTK6Oj9lxcBPpH914aocG1vA=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=BXl+dk9kAViapAwUmevAs2tvaYKbqwp2hOC9WRQPG+CGjrazMXBgCg5sVMRUsmOzB9LcYXpvqRAnTTF7RrU/puyxTOWD5X+jmfFMiFo1SWHwIHv0XnVITnf6b2Ag65SM9sSJW5xhy9K8MzJMNJlpET/climq7hfdxMzNLtME0hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zb7utcrZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16BDC4CEF1;
+	Tue,  7 Oct 2025 18:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759836736;
-	bh=K2SLCERJg8GATRL03Frwnf95lX+xUj/t+ur2Sjhkbkg=;
-	h=From:Date:Subject:To:Cc:From;
-	b=in8sbfq3NgkuPT15ONH9uKN/ThZHjPiyAC7Uli3QjqYeNSJMEzSO9EPoj47LHn8y6
-	 KyZheDnaTXPXMkgOLvNNtPNzerzP8lXFj/o7bnJ2wwfLSzN0qnzHlN0M4EUXdi5otH
-	 Ph+HTs9tjGr9dE9HG3Q0T3D8hXSqyc8rixGM7AftXhi7siKJ2ptNhNFmo5l9L/EA3a
-	 ReKMMQZ2TagRut+CSCbbw1J/OcUZr23lsUBYxIne1C/IpEfS+Es/th6OgdozeYlIhH
-	 5OL4ehcQlb6qJSbm82AXsVB8Yc6bNXq3qCJZxn3TG00HlkQK0vSQU0qMbbqKOef1ci
-	 SXHz5BkseLDyg==
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-43f64a5014aso3146128b6e.1
-        for <linux-acpi@vger.kernel.org>; Tue, 07 Oct 2025 04:32:16 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yx8Wf8y9qEGb3UXxaS2GJMbr/LDRAT4wRqMtFIJBJVV7uvkxV0Z
-	FM9BqfM9NW2QwI/6vRHhb4RP05A2swKJcLC/o1ks1MqOC/wLH3n3bv8y1T9EHpHXTJrhlm4BqHV
-	sWtfkUoFPYqx7d/bMpEbOTk0cyNE4adE=
-X-Google-Smtp-Source: AGHT+IEXfQbSOAk2h/cZkQqJyZZCOIDMY2QXaQX4f5p5CvC466b9POcQG0v+QahF1fEkfQDoN0s+eX8ym/qatiQ4w9w=
-X-Received: by 2002:a05:6808:144b:b0:43f:6f82:e16f with SMTP id
- 5614622812f47-43fc178f8bamr8548033b6e.12.1759836736225; Tue, 07 Oct 2025
- 04:32:16 -0700 (PDT)
+	s=k20201202; t=1759862318;
+	bh=ETKpspy7sBhlQEqNsSQZTK6Oj9lxcBPpH914aocG1vA=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=Zb7utcrZ87kgXF9Eqw+KOzRN5pxriDj5AB9O7XyHh/JFO249vnVfADhE7VkdFZ583
+	 SiIs+Qkhh8eFfo98ypWDRqYHZOVT+wQMOY2OgMTQyn/aqNc3MOTOR9hM5bLIzSmJxp
+	 +zIGO30zCtnyipdmSS5TU489gEt8ttFCWMrQ6mOvoTquQmcdlpOZfUU0fWRtKYnxZQ
+	 CFRH+qisdKVox6eWrd7YBcITgq9cwx89GdszSSVHzFIAkG+ubMfguuAKFbo090JcVR
+	 M44zZiiFSDnLDxDn9g8PZZ1e3H1JEm6Ju9co1+h+rOYYQcGu/k6ikbpIpUB32CWfbk
+	 wD/U4DI/96Oig==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 342CF39FEB72;
+	Tue,  7 Oct 2025 18:38:29 +0000 (UTC)
+Subject: Re: [GIT PULL] More power management updates for v6.18-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0i7H832neTnZtHwHBD0gwQSJ_8Tyxc49K2NoO5n4=1eKQ@mail.gmail.com>
+References: <CAJZ5v0i7H832neTnZtHwHBD0gwQSJ_8Tyxc49K2NoO5n4=1eKQ@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-pm.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0i7H832neTnZtHwHBD0gwQSJ_8Tyxc49K2NoO5n4=1eKQ@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-6.18-rc1-2
+X-PR-Tracked-Commit-Id: 53d4d315d4f7f17882ef11db49b06ca6b0be8ff7
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: abdf766d149c51fb256118f73be947d7a82f702e
+Message-Id: <175986230781.2733874.5256895340042638660.pr-tracker-bot@kernel.org>
+Date: Tue, 07 Oct 2025 18:38:27 +0000
+To: =?UTF-8?Q?Rafa=C5=82_Wysocki?= <rjwysocki@gmail.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Linux PM <linux-pm@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 7 Oct 2025 13:32:03 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gb7Rvd_nOd5Z2r95WsenmWb-YZOSLW804+Nif0o+mZJA@mail.gmail.com>
-X-Gm-Features: AS18NWDeJ8lC0jPNWuHr6YiSuK8oeCnM7YWSWNSelq2FFOjpj_2GKDMfKyghaH4
-Message-ID: <CAJZ5v0gb7Rvd_nOd5Z2r95WsenmWb-YZOSLW804+Nif0o+mZJA@mail.gmail.com>
-Subject: [GIT PULL] More ACPI support updates for v6.18-rc1
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 
-Hi Linus,
+The pull request you sent on Tue, 7 Oct 2025 13:30:06 +0200:
 
-Please pull from the tag
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git pm-6.18-rc1-2
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.18-rc1-2
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/abdf766d149c51fb256118f73be947d7a82f702e
 
-with top-most commit dd68fd72e516d57e7f2e502113c9345a3bc277db
+Thank you!
 
- Merge branches 'acpi-x86', 'acpi-battery', 'acpi-apei' and 'acpi-property'
-
-on top of commit 679a16399af08088a83e1d30e01c31832f055ae7
-
- Merge tag 'acpi-6.18-rc1' of
-git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-
-to receive more ACPI support updates for 6.18-rc1.
-
-These fix a driver bug, clean up two pieces of code and improve the
-fwnode API consistency:
-
- - Add missing synchronization between interface updates in the ACPI
-   battery driver (Rafael Wysocki)
-
- - Remove open coded check for cpu_feature_enabled() from
-   acpi_processor_power_init_bm_check() (Mario Limonciello)
-
- - Remove redundant rcu_read_lock/unlock() under spinlock from
-   ghes_notify_hed() in the ACPI APEI support code (pengdonglin)
-
- - Make the .get_next_child_node() callback in the ACPI fwnode backend
-   skip ACPI devices that are not present for consistency with the
-   analogous callback in the OF fwnode backend (Sakari Ailus)
-
-Thanks!
-
-
----------------
-
-Mario Limonciello (AMD) (1):
-      x86/acpi/cstate: Remove open coded check for cpu_feature_enabled()
-
-Rafael J. Wysocki (1):
-      ACPI: battery: Add synchronization between interface updates
-
-Sakari Ailus (1):
-      ACPI: property: Return present device nodes only on fwnode interface
-
-pengdonglin (1):
-      ACPI: APEI: Remove redundant rcu_read_lock/unlock() under spinlock
-
----------------
-
- arch/x86/kernel/acpi/cstate.c |  2 +-
- drivers/acpi/apei/ghes.c      |  2 --
- drivers/acpi/battery.c        | 43 +++++++++++++++++++++++++++++--------------
- drivers/acpi/property.c       | 24 +++++++++++++++++++++++-
- 4 files changed, 53 insertions(+), 18 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
