@@ -1,171 +1,191 @@
-Return-Path: <linux-acpi+bounces-17649-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17650-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39013BC2F48
-	for <lists+linux-acpi@lfdr.de>; Wed, 08 Oct 2025 01:32:29 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D904BC2F89
+	for <lists+linux-acpi@lfdr.de>; Wed, 08 Oct 2025 01:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBAEB3B29F6
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Oct 2025 23:32:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 66A674E3840
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Oct 2025 23:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2E023F42D;
-	Tue,  7 Oct 2025 23:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53A925A2A2;
+	Tue,  7 Oct 2025 23:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QMIq3V9x"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="XK2TCWx5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC9A1D5CDE
-	for <linux-acpi@vger.kernel.org>; Tue,  7 Oct 2025 23:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD7A189B80;
+	Tue,  7 Oct 2025 23:41:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759879944; cv=none; b=EndoCotFUnPvt+irhWwEEMqSABqa/HiaxSanfc+bc99SB42HRWUI8tAzMA/XA7+1RdF817/aB+Ez878U/mUPyrDLofFDWM+5FWGZLm8IJopwHOd/bP+goyozniLIYNP6gIaslC49KPhOtsn92Lu5jvEmRtLId0astFMHjxdNPoo=
+	t=1759880521; cv=none; b=nkk1CTwiEPIEaf45A4K/FarK9LHQZySkFI8YmI+4y39GCirGtGtmfOPer5yixDL0QwXBB+ssYRb24pHsZiUzSfBj1XXFZYh7B2RCjgsjXP5+vB1r6lvwdYS4k+dnqgaQPV0AZSw6huLne6YhxSMIVl/07CxpI17jBzjXjCLag8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759879944; c=relaxed/simple;
-	bh=bLQg2aOLe4NVfyI9GDwWK3IkQGghonCZb+jkOy5wtN8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pkOCppZh+EXuFnfp6cJjbhMiTnb+J7a9EXFLjLH4GesOGVS7Po7CRV2Ipkr+8hR8iRlJZ2s57mkAAvn+Jzw0lR+R2SmfEszspFf5aLqo3UJ51eIQ4onraeVVrNyyYVX4BkLHQHPN/aAn27kbBTt7PoRBgtwywDMiQ/Lf3stwnZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QMIq3V9x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5ABC2BC87
-	for <linux-acpi@vger.kernel.org>; Tue,  7 Oct 2025 23:32:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759879944;
-	bh=bLQg2aOLe4NVfyI9GDwWK3IkQGghonCZb+jkOy5wtN8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QMIq3V9xMPAPAnRodoA5rD0kwJH5acy3F7RNlaI/pyvazed67N1qxHBRz9QDtyP57
-	 Nv76zlMb9BLd1w93JxuLiwqN/vRsCUP3cn7J/msEScOzcSb0G8Hb8Zegyl1Km1fulE
-	 gqqYzSimKUncyCyyFFRg30d/pJaTLKJr2rLdwWCwlI4Wingewy9nmNHllFQ995/jBZ
-	 1nYMBTH35aQus+qiOiaO3iNnSwgpf1qZ8SH+nkKJvg68UEM8gPL7UyLCd1ctqrWH+q
-	 EmvN69Br12+ZxsTLs0jOzcBvnCu+zQze1abwESF3twE+eiRqdPEQvE8d8+yKix+eCa
-	 UKyQWvUeLYKhw==
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-71d6051aeafso73396847b3.2
-        for <linux-acpi@vger.kernel.org>; Tue, 07 Oct 2025 16:32:24 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUH/42XUpg3Adh+/ys6pApxPS7F2S4ZMcdDSqmOV/tu00FvtuBB8YqJuDT9a5+myjBdrVegDD1nmE9Z@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzY5YbLVA2+8hqVH0+W9VraFPRdMD6jqgfNwoQUH+NmezNBZ45
-	fHhW9P+sfgpM0HPsQtY3wMa89gJqqcnKdMBqHzLB5ljUT1dM33mvgOY9cTPHFa222wSyvizq0ae
-	ozbpztie0s3ez23GUYxz0eTi9HB723V2WwhM8YoXiBg==
-X-Google-Smtp-Source: AGHT+IF8Dg6uqR2RW1utm2WOx5D5ACNj4AR/alcGrKcg6aUAQ3ncvoBeR28wcJP7W/rj5XjZFGhFIuGm57r2c0sfe90=
-X-Received: by 2002:a53:d607:0:b0:634:e9b2:eedc with SMTP id
- 956f58d0204a3-63ccb8f1f80mr1223835d50.38.1759879943623; Tue, 07 Oct 2025
- 16:32:23 -0700 (PDT)
+	s=arc-20240116; t=1759880521; c=relaxed/simple;
+	bh=qHe/ybm8eOSN8pdCnXvghde6o5cfP+zFF6gwiwuEGzk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JiXdawzvU/bz0e3hdJb9sgFdD9cEX83cQDt0hmn+7eRoIgkPGOslgWG7s1hUDbp8SyHsWq9bwcTuY3ymTOBl8a5IanWMLoeveBCCj3WM+xl9oJA2+1pEO+FDzHS9TksgEmZi1oEgG7DBbJXkiwFJTiZBU6nhkQ+Naf0DWesRygA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=XK2TCWx5; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1759880516; x=1760485316; i=w_armin@gmx.de;
+	bh=KsiNFzuS5joNiJf9B6Ji3rZJuEOjSGwAfMiaRgnWbGk=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=XK2TCWx5UovTmYXSv9o3RTUJJ29UuilFxR/KGAsN0KtHLeud5mo7176ldiZdCirn
+	 VZG+SocFTXyfqDrVfCPilOkGnLWD3PNafJMCS7xmjePjnbNjAxKZb73GBBPc+dAMe
+	 ZRM9aPBEksnONK9XImtZ112GMGTgZzjZ7/+V1yiciDOxb2OnPh1LjYkq3sS8rQ6c/
+	 J5XoxInn4ufKSb2GIw69iK63Ng51q8QqhnszfXQ94yUTVcuGyfwfWWOENAGxWorm0
+	 43h5nqtd74wWIxSd1LAcEjFkkqmfM1Z36M/oBg4Qxyq7y/zIxmp7BEwCZa0PDx8hQ
+	 3GAISRIkE30UCnvriw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from mx-amd-b650.fritz.box ([93.202.247.91]) by mail.gmx.net
+ (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1MGQjH-1v2gpN2JX3-00CJKQ; Wed, 08 Oct 2025 01:41:56 +0200
+From: Armin Wolf <W_Armin@gmx.de>
+To: rafael@kernel.org,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/6] ACPI fan _DSM support
+Date: Wed,  8 Oct 2025 01:41:43 +0200
+Message-Id: <20251007234149.2769-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+CK2bAbB8YsheCwLi0ztY5LLWMyQ6He3sbYru697Ogq5+hR+Q@mail.gmail.com>
- <20250929150425.GA111624@bhelgaas> <CACePvbV+D6nu=gqjavv+hve4tcD+6WxQjC0O9TbNxLCeBhi5nQ@mail.gmail.com>
-In-Reply-To: <CACePvbV+D6nu=gqjavv+hve4tcD+6WxQjC0O9TbNxLCeBhi5nQ@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 7 Oct 2025 16:32:12 -0700
-X-Gmail-Original-Message-ID: <CACePvbUJ6mxgCNVy_0PdMP+-98D0Un8peRhsR45mbr9czfMkEA@mail.gmail.com>
-X-Gm-Features: AS18NWDPalaS8O9DIQeC528cFS4jviFQWlDaGfaaeKicXkkFCNGwkwVkJLeplN4
-Message-ID: <CACePvbUJ6mxgCNVy_0PdMP+-98D0Un8peRhsR45mbr9czfMkEA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/10] LUO: PCI subsystem (phase I)
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Pasha Tatashin <tatashin@google.com>, 
-	Jason Miu <jasonmiu@google.com>, Vipin Sharma <vipinsh@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Parav Pandit <parav@nvidia.com>, William Tu <witu@nvidia.com>, Mike Rapoport <rppt@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, skhawaja@google.com
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:B6sF6lVUB3DVzPV0pt/TSjjiw7mRD6qxzlkalgni3/bMBqhdTfX
+ QoRaEfAU3cqD1KrTlfx/k6b0G8OuFKqpbxD3nhyLZyyNzJnvc0EIR2JDWOr8pN18VuA14vH
+ mfeR0NaFbAyFmUHxdqu+KscNEi4SwUX0JHvILIYtoao+ZoBlT5U7esQYvePl2g/ZbLKiubq
+ Mgj9Jb2BbeUkD5qxDQMeQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:XEp4FTFZvzc=;MUSyYtxcFvnIKVO8NRgdBj2rd00
+ 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
 
-Thanks to one that provides good feedback on the PCI series.
+Microsoft has designed a _DSM interface for the ACPI fan device [1]
+that allows the OS to set fan speed trip points. The ACPI firmware
+will notify the ACPI fan device when said trip points are triggered.
 
-I just want to give an update on the state of the LUO PCI series,
-based on the feedback I received. The LUO PCI series should be called
-from the memfd side and remove global subsystem state if possible.
-Which means the PCI series will depend on the VIFO or iommu series.
-I have some internal alignment with Vipin (for VFIO) and Samiullah
-(for iommu). Here is the new plan for upstream patch submission:
+Unfortunately some device manufacturers (like HP) blindly assume that
+the OS will use this _DSM interface and thus only update the fan speed
+value returned by the _FST control method when sending a notification
+to the ACPI fan device. This results in stale fan speed values being
+reported by the ACPI fan driver [2].
 
-1)  KHO series go first, which is already happening with additional improve=
-ment.
+The first patch performs a simple cleanup in order to reduce the usage
+of the acpi_device struct. The second patch fixes an issue with some
+64-bit ACPI implementations where an invalid value was reported
+instead of the standard ACPI placeholder value (0xFFFFFFFF). The third
+patch fixes an unrelated issue inside the hwmon support code while the
+next two patches add support for the ACPI fan notifications as
+specified in ACPI 11.2.3. The last patch finally adds support for the
+Microsoft _DSM interface.
 
-2) Next is Pasha's LUO series with memfd support, also happening right now.
+All patches where tested with a custom SSDT [3] and the acpi_call [4]
+kernel module and appear to work just fine.
 
-3) Next series will be Vipin's VFIO series with preserving one
-busmaster bit in the config space of the end point vfio device, there
-is no PCI layer involved yet. The VFIO will use some driver trick to
-prevent the native driver from binding to the liveupdate device used
-by VFIO after kexec. After kexec, the VFIO driver validates that the
-busmaster in the PCI config register is already set.
+[1] https://learn.microsoft.com/en-us/windows-hardware/design/device-exper=
+iences/design-guide
+[2] https://github.com/lm-sensors/lm-sensors/issues/506
+[3] https://github.com/Wer-Wolf/acpi-fan-ssdt/blob/master/ssdt-dsm.asl
+[4] https://github.com/nix-community/acpi_call
 
-4) After the VFIO series, the PCI can start to preserve the livedupate
-device by BDF. Avoid the driver auto probe on the livedupate devices.
-At this point the VFIO driver in stage 3 will not need the other
-driver trick to avoid the auto bind of native driver. The PCI layer
-takes the core of that. This series PCI will have very limited
-support, most of the driver callback is not needed, no bridge device
-dependent as well.
+Changes since v1:
+- use acpi_evaluate_dsm_typed() during _DSM initialization
+- send ACPI netlink event when after handling a ACPI notification
 
-5) VFIO device will continue DMA across the kexec. This series will
-require the IOMMU series for DMA mapping support. The PCI will hook up
-with the VFIO and build the list of the liveupdate device, which
-includes the PCI bridge with bus master big preserved as well.
+Armin Wolf (6):
+  ACPI: fan: Use ACPI handle when retrieving _FST
+  ACPI: fan: Workaround for 64-bit firmware bug
+  ACPI: fan: Use platform device for devres-related actions
+  ACPI: fan: Add basic notification support
+  ACPI: fan: Add hwmon notification support
+  ACPI: fan: Add support for Microsoft fan extensions
 
-So I will pause the LUO PCI series a bit to wait for the integration
-with VFIO series.
-Meanwhile, I will continue to fix up the LUO PCI series internally for
-the other feedback I have received:
-- Clean up device info printing, remove raw address value (Greg KH, Jason).
-- Remove the device format string (Greg KH).
-- Remove the liveupdate struct from struct device, move it to the PCI (Greg=
- KH).
-- Remove LUO call back forwarding and hook it up with the VFIO (Jason, Davi=
-d)
-- Drive the PCI from memfd context on VFIO or iommu, no subsystem
-registration. (Jason)
-- up_read(&pci_bus_sem); instead of up_write (Greg KH)
-- Avoid preserving the driver name, just avoid auto-probing the
-liveupdate devices. Let user space do the driver loading in initrd
-(Jason).
+ drivers/acpi/fan.h       |  47 +++++++-
+ drivers/acpi/fan_attr.c  |   2 +-
+ drivers/acpi/fan_core.c  | 254 ++++++++++++++++++++++++++++++++++++---
+ drivers/acpi/fan_hwmon.c |  32 ++---
+ 4 files changed, 302 insertions(+), 33 deletions(-)
 
-That will keep me busy for a while waiting for the VFIO series.
+=2D-=20
+2.39.5
 
-Thanks
-
-Chris
-
-
-On Mon, Sep 29, 2025 at 11:13=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote=
-:
->
-> On Mon, Sep 29, 2025 at 8:04=E2=80=AFAM Bjorn Helgaas <helgaas@kernel.org=
-> wrote:
-> >
-> > On Sat, Sep 27, 2025 at 02:05:38PM -0400, Pasha Tatashin wrote:
-> > > Hi Bjorn,
-> > >
-> > > My latest submission is the following:
-> > > https://lore.kernel.org/all/20250807014442.3829950-1-pasha.tatashin@s=
-oleen.com/
-> > >
-> > > And github repo is in cover letter:
-> > >
-> > > https://github.com/googleprodkernel/linux-liveupdate/tree/luo/v3
-> > >
-> > > It applies cleanly against the mainline without the first three
-> > > patches, as they were already merged.
-> >
-> > Not sure what I'm missing.  I've tried various things but none apply
-> > cleanly:
->
-> Sorry about that. Let me do a refresh of the LUOPCI V3 patch and send
-> out the git repo link as well. The issue is that there are other
-> patches not in the mainline kernel which luopci is dependent on. Using
-> a git repo would be easier to get a working tree.
->
-> Working on it now, please stay tuned.
->
-> Chris
 
