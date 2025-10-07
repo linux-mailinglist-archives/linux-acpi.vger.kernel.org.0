@@ -1,232 +1,168 @@
-Return-Path: <linux-acpi+bounces-17639-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17640-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AED3ABC0633
-	for <lists+linux-acpi@lfdr.de>; Tue, 07 Oct 2025 08:52:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE06ABC0845
+	for <lists+linux-acpi@lfdr.de>; Tue, 07 Oct 2025 09:50:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80CE3189EB53
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 Oct 2025 06:53:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98DED3A5A44
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 Oct 2025 07:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F1323E347;
-	Tue,  7 Oct 2025 06:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A92C244EA1;
+	Tue,  7 Oct 2025 07:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="O8fkMZJ9"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="U4ZEzLNx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6218523D7EB;
-	Tue,  7 Oct 2025 06:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9266226D14
+	for <linux-acpi@vger.kernel.org>; Tue,  7 Oct 2025 07:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759819880; cv=none; b=ACS3z4TEY8mPTkCBbY3u55Pnw95RKVr86Yui1Bq8pE3cin2H0zo7upSkpdi2lvMlxYvvZFAqH1+EzMxOW2BRGKGsI7S5uQGUzS9esnOdlSAVlHtaFOCkb1+ZnHtqBpDVCCQjsbJSbPodYssWEC4gpw7JWiwlKtvF8AAT+ZNInrY=
+	t=1759823413; cv=none; b=WViUMZdqy6ZEggR8iiAwqwXgmeygRnC4nxw8TBkolHQ+lTzJTdUalDET2TPoiT5Y4n9O0mtpPfdxPMWWGn+CgOdv+hUIk9hLaWTR0aa37Wprh2EOq9kkEKpzB12P9NgymO3NdnWtu1tTV0FDt475iAYzLXQsUArNpaMi6A14YT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759819880; c=relaxed/simple;
-	bh=GtbhvKiArLsYQIx3MfRsDS+EuExg22K9a2ED8U/fIoE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=O3ab9JT9CohxaJouONd5InU7+70cPwnEIZ1ZVpL8nlfgdsnheeuPNYIGUQGVAj3vtt4a24MZ9dSUUq5nqgyDx42cRnoBLaUKxbyP/IAeeEDUQ0g2hnPXSSOGNPMiovZ9Xk1xW3Nfvm1p9V93QRRPBsBSolgq4cD0cVLCryv504g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=O8fkMZJ9; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1759819832; x=1760424632; i=spasswolf@web.de;
-	bh=hMv2KA500eT5A2cLBEJygRRyPv5VC2X953xjqw/qJNg=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=O8fkMZJ9iKSTLRbKEjVrQJYeyqxGIZG/OkmsO4QTCNmzIczsdh8pYQ5jsaZd90v9
-	 O+73Yu5QME1Bft9jEUqifhgN6QMdZ8FbJ01K3rZc23YcKgDzAyTApnYs7G/Arifmc
-	 txmD09y/UoL4GX/wCY/8ZfOa/j6aofbcCBcFgYR1T1krj/lprCkeONiG0nuP8+LT+
-	 1e2WgdpZaCQHaREo+pLQLan+UePvUt+aNmhVXE64Df5JzgkHnM0EU+vArWDAFZsdq
-	 3qXRU6XjuluvZbEInTGY0J1/yGZ7j2qQOdZS/WoGcYU1kaE+xUVwA1lBdivVeQLX+
-	 D+UpsLS4dk/WXzRHUw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.0.101] ([95.223.134.88]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MXGKA-1ulgqU07l0-00VCMN; Tue, 07
- Oct 2025 08:50:32 +0200
-Message-ID: <93d21bb6887310d331fa67a3766e47af9669dfc3.camel@web.de>
-Subject: Re: [REGRESSION 00/04] Crash during resume of pcie bridge
-From: Bert Karwatzki <spasswolf@web.de>
-To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, 
-	linux-kernel@vger.kernel.org
-Cc: linux-next@vger.kernel.org, regressions@lists.linux.dev, 
-	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, Mario Limonciello
-	 <superm1@kernel.org>, "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, 
-	spasswolf@web.de
-Date: Tue, 07 Oct 2025 08:50:30 +0200
-In-Reply-To: <e60d2cf59666b6f670996bac80cb948acb1d7b5c.camel@web.de>
-References: <20251006120944.7880-1-spasswolf@web.de>
-		 <232324a9-e82d-40b3-b88b-538947411a24@amd.com>
-	 <e60d2cf59666b6f670996bac80cb948acb1d7b5c.camel@web.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.56.1-1 
+	s=arc-20240116; t=1759823413; c=relaxed/simple;
+	bh=a2Ge5Lhi4YcoqF14Ybp8SwpB/Wf87PchuFaUeETOnqk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ynjm1o3nGL5x8OrmCy6Vrh5KVqyD4OqCiRolUKyYQSoYBX6HK2SD1uWBAZARQJa+CLkAK3XJP7N2/985/c5KevimsUy4HByTEPEeVlv+zER9+bLx2dlM7xQH8BhqjfZqcl9MTtNdndG2R4F9cUvEi6x80lgZFDpBBxL122JctJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=U4ZEzLNx; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-36295d53a10so51862891fa.0
+        for <linux-acpi@vger.kernel.org>; Tue, 07 Oct 2025 00:50:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1759823410; x=1760428210; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=09w9lHrEEbOO/PmdN1FWlSfVU4b3SlEK2hQlHNLV0MA=;
+        b=U4ZEzLNxMioFmDOe9MNYCYAQG6zLptbxlKKFLt0nBzG4Rjcr7JRQ4dATONEGEstHFU
+         oglte4ZKjDxg1gg52kCUhgSxCserMddc+P5rae/SJkjMzJN4k4m/+F9Yr2ScepfX+kAY
+         cCH7WqRtVZQ4/yq+FOWnUS21/3nOWX+zwU8VbdR9oL6gLVgFjtS+BbQtwmdBkCIk3qSD
+         /ceYKTs/p2u61bPfBPV66p/TqHvFCboZ6VXZoHSEbSq0jgZaX8/ecauekSnDtYSTdKwS
+         kHr4+3wyj9Yoq2DuiC8QtQd5logmrfyLOarAkZYfyajQh23Ga6fp53e5ME0qrF0XXAVW
+         1Wew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759823410; x=1760428210;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=09w9lHrEEbOO/PmdN1FWlSfVU4b3SlEK2hQlHNLV0MA=;
+        b=WSacAoc0Lv9PQkr6cANkxd+l3UQwiQZAyzFDfWT0onVeaXZy+wjuq7JB+hj1B/4bI5
+         yO1aeKplsJrCIJZ1PWjazX1IvQfxnK8NFTCwfSk3nL1PZOK8Ygny0uIIGa985WiV+isD
+         wjuzuB7sZ3yly+0yebzwwQ0aNUJPXN0dtUVfcAdRytsDzJ8DCF6KBV+pOz/4fx+oDmY0
+         JBUe3LwHqPMNonANr3c0EZoOI+fap1O/zxsqMNf3PZ/l4oiNTkoanurNFuBU7DMIKlQ7
+         9yvihqV6MaSldBEivMRGzz+DXW5trAD4DDOMCCTjgd1e0qpy75A2YOezFZXmD2Xleyrl
+         gxaw==
+X-Forwarded-Encrypted: i=1; AJvYcCWFOsEPnKA9B61ZEqWJgIOKBUxeFHiP7ndh02zq27IVJHxtMt2ed7v8Fte5nMWi2StDWzPxf8eMSCWp@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBoKa8tHEvIiUffQvF3oNfoEE7gS2R/SzYeEi8WFiCsN9z3ONz
+	1lhcEKdvUOmf6E4Z6+oNRavhM8bKBMT8nkdfGmID2PCOt9TkKchpgf6CCdyJzBM2Xp+VLZEos3b
+	hqKKGDuFu/PvUUPKGY6W6aQqCpeuxh/1DOag7wb+rZA==
+X-Gm-Gg: ASbGncui67CGbaSLwLLpf4w0LgPNP3Y18GJn/2cjEIQh+PExCzQBY/Hm7mbWuZn8bMB
+	DrTsHCzcocAx8ixDDejII6MBN6M9QDUQ4Sc329XJAJx1YEp50+CcPc4JlfGWPh9KUMzWj2jymLv
+	Y5rGJ12FwlvpAKKsP6LqzCeD/YgrfVBLx1xDSrXWjLsy1JgWO0UxUJR5BnzKMhq4k45iss5PAF7
+	xzwe9yXSljCvjoh6zj4dSfctDbfmn2dJemvT1t+KYR0RhiJ0SeKpmgO/JkSa6E=
+X-Google-Smtp-Source: AGHT+IG1iwnLS+Xz6hSGduCNv+VOXrS0Gbd6FPZubNKIBwDOzy3rzHZKHe4qtSL3OM33jVl3ZvQhoSCG64+6cignEoQ=
+X-Received: by 2002:a2e:b888:0:b0:36c:7a86:1a96 with SMTP id
+ 38308e7fff4ca-374c37956d3mr39282561fa.24.1759823408293; Tue, 07 Oct 2025
+ 00:50:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20251002215759.1836706-1-markus.probst@posteo.de>
+ <CAMRc=Me3VLbmRksbrHmOdw8NxN7sxXjeuNFb9=6DzE=uLn0oAA@mail.gmail.com>
+ <7f4057f25594ac3b50993a739af76b7b1430ee6a.camel@posteo.de>
+ <CAMRc=McioBjF3WCBu0ezzuL+JJTiEpF2fz1YpbToRpijpHfAEg@mail.gmail.com> <64dd0bab-6036-4e06-aff5-b0f86a167ada@kernel.org>
+In-Reply-To: <64dd0bab-6036-4e06-aff5-b0f86a167ada@kernel.org>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 7 Oct 2025 09:49:56 +0200
+X-Gm-Features: AS18NWD5EqN4rrNs8G973j5WQFuPIUrgbs26tgW5OlAv2yasQW7dQIDGVk6UKTA
+Message-ID: <CAMRc=Medke+Dr7ti6OpMW6j=RDU0AO19pJUmPa_cvSXyW16OPw@mail.gmail.com>
+Subject: Re: [PATCH] gpio: of: make it possible to reference gpios probed in
+ acpi in device tree
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Markus Probst <markus.probst@posteo.de>, Linus Walleij <linus.walleij@linaro.org>, 
+	Mika Westerberg <westeri@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:P2lTxUYjpSJLpmPegmqbkcyB6sbH+UfSUmWzVDV9JBVg0nVP1n/
- 4H6Fk4fTK58n9InB522qyqur+nTI1XA/dDROjtVjyqHKcqj8W+3D2Jyfm0mLVFiCZSUjI5A
- Dq8UH/Fz5BPV5irPojc8TuSv5pS3OWW2fNpyUx1MCzPUMsninR4iLgSGs++3WrCQ5iy8Ccr
- rU1NZuRNoGfd26MWYN/VQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Dpnenm5dL5I=;6Bd1JKSW2d9/a+Z1liuNly437rD
- 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
 
-Am Montag, dem 06.10.2025 um 18:22 +0200 schrieb Bert Karwatzki:
->=20
-> >=20
-> Even versions that did crash can be stable for 24h of uptime so I think =
-this=C2=A0
-> will take too long.
-> I think I've already chased down the crash to this part of rpm_resume()
-> (I'm currently doing a testrun with more dev_info()s in this part):
->=20
->  skip_parent:
->=20
-> 	if (!strcmp(dev_name(dev), "0000:00:01.1"))
-> 		dev_info(dev, "%s %d\n", __func__, __LINE__); // this is the last repo=
-rted line in netconsole
-> 	if (dev->power.no_callbacks)
-> 		goto no_callback;	/* Assume success. */
->=20
-> 	__update_runtime_status(dev, RPM_RESUMING);
->=20
-> 	callback =3D RPM_GET_CALLBACK(dev, runtime_resume);
->=20
-> 	dev_pm_disable_wake_irq_check(dev, false);
-> 	retval =3D rpm_callback(callback, dev);
-> 	if (retval) {
-> 		__update_runtime_status(dev, RPM_SUSPENDED);
-> 		pm_runtime_cancel_pending(dev);
-> 		dev_pm_enable_wake_irq_check(dev, false);
-> 	} else {
->  no_callback:
->=20
->=20
-> Bert Karwatzki
+On Tue, Oct 7, 2025 at 3:14=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.org=
+> wrote:
+>
+> On 03/10/2025 17:51, Bartosz Golaszewski wrote:
+> > On Fri, Oct 3, 2025 at 10:40=E2=80=AFAM Markus Probst <markus.probst@po=
+steo.de> wrote:
+> >>
+> >> On Fri, 2025-10-03 at 10:03 +0200, Bartosz Golaszewski wrote:
+> >>> On Thu, Oct 2, 2025 at 11:58=E2=80=AFPM Markus Probst
+> >>> <markus.probst@posteo.de> wrote:
+> >>>>
+> >>>> sometimes it is necessary to use both acpi and device tree to
+> >>>> declare
+> >>>
+> >>> This is a rather controversial change so "sometimes" is not
+> >>> convincing
+> >>> me. I would like to see a user of this added in upstream to consider
+> >>> it.
+> >>>
+> >>>> devices. Not every gpio device driver which has an acpi_match_table
+> >>>> has
+> >>>> an of_match table (e.g. amd-pinctrl). Furthermore gpio is an device
+> >>>> which
+> >>>
+> >>> What is the use-case here because I'm unable to wrap my head around
+> >>> it? Referencing devices described in ACPI from DT? How would the
+> >>> associated DT source look like?
+> >> In my specific usecase for the Synology DS923+, there are gpios for
+> >> powering the usb vbus on (powered down by default), also for powering
+> >> on sata disks. An example for a regulator defined in DT using a gpio i=
+n
+> >> ACPI (in this case controlling the power of on of the usb ports):
+> >>
+> >>         gpio: gpio-controller@fed81500 {
+> >>                 acpi-path =3D "\\_SB_.GPIO";
+> >>                 #gpio-cells =3D <2>;
+> >>         };
+> >>
+> >>         vbus1_regulator: fixedregulator@0 {
+> >>                 compatible =3D "regulator-fixed";
+> >>                 regulator-name =3D "vbus1_regulator";
+> >>                 regulator-min-microvolt =3D <5000000>;
+> >>                 regulator-max-microvolt =3D <5000000>;
+> >>                 gpio =3D <&gpio 0x2a 0x01>;
+> >>         };
+> >>
+> >> - Markus Probst
+> >>>
+> >
+> > Krzysztof: Could you please look at this and chime in? Does this make a=
+ny sense?
+>
+>
+> There is no such property as acpi-path and I don't see here any ABI
+> being documented. Nothing in dtschema, either. Nothing in DT spec. I
+> also did not receive this patch. Actually - nothing from
+> markus.probst@posteo.de in mail mailbox.
+>
+> So no clue what is this about, but if you want to use undocumented
+> property then obviously no.
+>
 
-The testrun is already finished the crash occured after 10h and ~700 GPP0 =
-notifies,
-the part of rpm_resume() above was monitored like this:
+I interpret this as a vague proposal of adding a way of referencing
+ACPI nodes from DT source and this is my question: does this make any
+sense? It doesn't to me at first glance but we do sometimes describe
+firmware details in DT so I figured I'd ask you.
 
- skip_parent:
+It seems like Markus found a different solution in the end so it may
+not even be important anymore.
 
-	if (!strcmp(dev_name(dev), "0000:00:01.1"))
-		dev_info(dev, "%s %d\n", __func__, __LINE__);
-	if (dev->power.no_callbacks)
-		goto no_callback;	/* Assume success. */
-
-	if (!strcmp(dev_name(dev), "0000:00:01.1"))
-		dev_info(dev, "%s %d\n", __func__, __LINE__);
-	__update_runtime_status(dev, RPM_RESUMING);
-
-	if (!strcmp(dev_name(dev), "0000:00:01.1"))
-		dev_info(dev, "%s %d\n", __func__, __LINE__);
-	callback =3D RPM_GET_CALLBACK(dev, runtime_resume);
-
-	if (!strcmp(dev_name(dev), "0000:00:01.1"))
-		dev_info(dev, "%s %d callback =3D %px\n", __func__, __LINE__, (void *) c=
-allback);
-	dev_pm_disable_wake_irq_check(dev, false);
-	if (!strcmp(dev_name(dev), "0000:00:01.1"))
-		dev_info(dev, "%s %d\n", __func__, __LINE__);   // This is the last repo=
-rted line!
-	retval =3D rpm_callback(callback, dev);
-	if (!strcmp(dev_name(dev), "0000:00:01.1"))
-		dev_info(dev, "%s %d\n", __func__, __LINE__);
-	if (retval) {
-		if (!strcmp(dev_name(dev), "0000:00:01.1"))
-			dev_info(dev, "%s %d\n", __func__, __LINE__);
-		__update_runtime_status(dev, RPM_SUSPENDED);
-		pm_runtime_cancel_pending(dev);
-		dev_pm_enable_wake_irq_check(dev, false);
-	} else {
- no_callback:
-
-The result is that in the case of the crash rpm_callback() didn't return, =
-so
-I'll continue the investigation in rpm_callback().
-
-The whole calltrace is:
-acpiphp_check_bridge()->pm_runtime_get_sync()->__pm_runtime_resume()->rpm_=
-resume()->rpm_callback()
-
-Bert Karwatzki
+Bartosz
 
