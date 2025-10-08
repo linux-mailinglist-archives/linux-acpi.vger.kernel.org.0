@@ -1,45 +1,45 @@
-Return-Path: <linux-acpi+bounces-17659-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17660-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6356BC5674
-	for <lists+linux-acpi@lfdr.de>; Wed, 08 Oct 2025 16:13:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E3EBC6106
+	for <lists+linux-acpi@lfdr.de>; Wed, 08 Oct 2025 18:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A081F3B6279
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 Oct 2025 14:13:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40452400625
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 Oct 2025 16:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63B7296BC1;
-	Wed,  8 Oct 2025 14:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7428423F422;
+	Wed,  8 Oct 2025 16:46:04 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED5E19F115;
-	Wed,  8 Oct 2025 14:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A7C34BA37;
+	Wed,  8 Oct 2025 16:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759932822; cv=none; b=P38oFtGXM59g2U9Qzrh+OYQ7P0RMiS66mLppVm8/IAzWBppW1dX5UYF1OLDc3iANE+mCXgsIpm8bYXAB5PRchivK2sGSqDpco4uFnTyByWIbo0Sp1CwMz7zlcAaPhanBkUjprq+qoTTnfaTLEF2PSKU3uAzP+bcxTxEFolG/9os=
+	t=1759941964; cv=none; b=Xl4EdQYTdAKzQCwuMUau5Rd/zFmBOpnaRWAYs7zPgsq6iy+f0lDqcbYoGz93RY0Y/d8NpBIGLtspCdRdLeHKuLJdIwAwEhVfCqfD88ZAYo8q+kL3KKy/TPvEC7bXgtO2ALGD57W3+l9q+ozhNVy0GkCvByGX8b+IzRknyLfZxig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759932822; c=relaxed/simple;
-	bh=B/D3kUvY7OMyeVsf9T6JXPJxNREc8Db0eb/ZrW+5kXM=;
+	s=arc-20240116; t=1759941964; c=relaxed/simple;
+	bh=Et3crhlfigLJh//2iS/2JcZzE02zq5Pm8n2vG8zR6qg=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dokyDXwsN1EBBZr6adtHQyTxGGTjYxWDT0yhOwuXdavLxgi24hLxncEZ/paea7yJJnEGq9WMh7UBbJ6tOl8EveD0VDjOBu0V5R84dv3XCeF6wdX/YX2SEJKt+vC/uitV0ogl8dN6/GkbydSwFkUnjCrt3VtcAj4hyoXGL5x0IsA=
+	 MIME-Version:Content-Type; b=UlfpbmpG8VpV8tPewFZvreGkq3Fxq7aDXDAGWaUduW5MklUIv6+N4Mejj6f+wCnxObKeDDsh3QsQ2l6ppcXYTyipu/HpdKD6He3gomRwMmF/sV4LOYW+lE5JzIDeDItz+fHtPKJBrfE/nqjX5HJAjLt4zd2Hy41xkb0/Ne5jr1c=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4chZfv4gGzz6L4vx;
-	Wed,  8 Oct 2025 22:11:03 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4chf1r1fCvz6839B;
+	Thu,  9 Oct 2025 00:42:40 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 964541400DB;
-	Wed,  8 Oct 2025 22:13:36 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 1CCB61400D9;
+	Thu,  9 Oct 2025 00:45:59 +0800 (CST)
 Received: from localhost (10.122.19.247) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 8 Oct
- 2025 15:13:35 +0100
-Date: Wed, 8 Oct 2025 15:13:33 +0100
+ 2025 17:45:54 +0100
+Date: Wed, 8 Oct 2025 17:45:51 +0100
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 To: <dan.j.williams@intel.com>
 CC: Catalin Marinas <catalin.marinas@arm.com>, <james.morse@arm.com>,
@@ -53,13 +53,13 @@ CC: Catalin Marinas <catalin.marinas@arm.com>, <james.morse@arm.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner
 	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
 	<bp@alien8.de>, <x86@kernel.org>, Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH v3 6/8] cache: Support cache maintenance for HiSilicon
- SoC Hydra Home Agent
-Message-ID: <20251008151333.00001b94@huawei.com>
-In-Reply-To: <68bf52fa851d9_75e3100ac@dwillia2-mobl4.notmuch>
+Subject: Re: [PATCH v3 3/8] lib: Support
+ ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+Message-ID: <20251008174551.00000e95@huawei.com>
+In-Reply-To: <68bf43b1dd06f_75e3100ed@dwillia2-mobl4.notmuch>
 References: <20250820102950.175065-1-Jonathan.Cameron@huawei.com>
-	<20250820102950.175065-7-Jonathan.Cameron@huawei.com>
-	<68bf52fa851d9_75e3100ac@dwillia2-mobl4.notmuch>
+	<20250820102950.175065-4-Jonathan.Cameron@huawei.com>
+	<68bf43b1dd06f_75e3100ed@dwillia2-mobl4.notmuch>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -69,112 +69,175 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
  dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Mon, 8 Sep 2025 15:04:42 -0700
+On Mon, 8 Sep 2025 13:59:29 -0700
 dan.j.williams@intel.com wrote:
 
 > Jonathan Cameron wrote:
-> > From: Yushan Wang <wangyushan12@huawei.com>
+> > From: Yicong Yang <yangyicong@hisilicon.com>
 > > 
-> > Hydra Home Agent is a device used to maintain cache coherency. Add support
-> > of explicit cache maintenance operations for it.
+> > ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION provides the mechanism for
+> > invalidating certain memory regions in a cache-incoherent manner. Currently
+> > this is used by NVDIMM and CXL memory drivers in cases where it is
+> > necessary to flush all data from caches by physical address range.
 > > 
-> > Memory resource of HHA conflicts with that of HHA PMU. A workaround is
-> > implemented here by replacing devm_ioremap_resource() to devm_ioremap() to
-> > workaround the resource conflict check.
+> > In some architectures these operations are supported by system components
+> > that may become available only later in boot as they are either present
+> > on a discoverable bus, or via a firmware description of an MMIO interface
+> > (e.g. ACPI DSDT). Provide a framework to handle this case.
+> > 
+> > Architectures can opt in for this support via
+> > CONFIG_GENERIC_CPU_CACHE_MAINTENANCE
+> > 
+> > Add a registration framework. Each driver provides an ops structure and
+> > the first op is Write Back and Invalidate by PA Range. The driver may
+> > over invalidate.
+> > 
+> > An optional completion check operation is also provided. If present
+> > that should be called to ensure that the action has finished.
+> > 
+> > When multiple agents are present in the system each should register with
+> > this framework and the core code will issue the invalidate to all of them
+> > before checking for completion on each. This is done to avoid need for
+> > filtering in the core code which can become complex when interleave,
+> > potentially across different cache coherency hardware is going on, so it
+> > is easier to tell everyone and let those who don't care do nothing.
 > > 
 > > Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> > Co-developed-by: Yicong Yang <yangyicong@hisilicon.com>
-> > Signed-off-by: Yushan Wang <wangyushan12@huawei.com>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
-> [..]
-> > +static int hisi_soc_hha_probe(struct platform_device *pdev)
+> > Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> > v3: Squash all the layering from v2 so that the infrastucture is
+> >     always present.
+> >     Suggestions on naming welcome. Note that the hardware I have
+> >     available supports a much richer set of maintenance operations
+> >     than Write Back and Invalidate, so I'd like a name that
+> >     covers all resonable maintenance operations.
+> >     Use an allocation wrapper macro, based on the fwctl one to
+> >     ensure that the first element of the allocated driver structure
+> >     is a struct cache_coherency_device.
+> >     Thanks to all who provided feedback.
+> > ---
+> >  include/linux/cache_coherency.h |  57 ++++++++++++++
+> >  lib/Kconfig                     |   3 +
+> >  lib/Makefile                    |   2 +
+> >  lib/cache_maint.c               | 128 ++++++++++++++++++++++++++++++++
+> >  4 files changed, 190 insertions(+)
+> > 
+> > diff --git a/include/linux/cache_coherency.h b/include/linux/cache_coherency.h
+> > new file mode 100644
+> > index 000000000000..cb195b17b6e6
+> > --- /dev/null
+> > +++ b/include/linux/cache_coherency.h
+> > @@ -0,0 +1,57 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +/*
+> > + * Cache coherency maintenace operation device drivers
+> > + *
+> > + * Copyright Huawei 2025
+> > + */
+> > +#ifndef _LINUX_CACHE_COHERENCY_H_
+> > +#define _LINUX_CACHE_COHERENCY_H_
+> > +
+> > +#include <linux/list.h>
+> > +#include <linux/types.h>
+> > +
+> > +struct cc_inval_params {
+> > +	phys_addr_t addr;
+> > +	size_t size;
+> > +};
+> > +
+> > +struct cache_coherency_device;
+> > +
+> > +struct coherency_ops {
+> > +	int (*wbinv)(struct cache_coherency_device *ccd, struct cc_inval_params *invp);
+> > +	int (*done)(struct cache_coherency_device *ccd);
+> > +};
+> > +
+> > +struct cache_coherency_device {
+> > +	struct list_head node;
+> > +	const struct coherency_ops *ops;
+> > +};  
+> 
+> Why is this called a device when there is no 'struct device'?
+> 
+> This is just 'cache_coherency_ops'.
+
+That's fair. The device went away as Greg KH quite reasonably didn't like the
+idea of a struct device with no userspace ABI at all.
+
+I'll change the various register / unregister to use terminology
+
+cache_coherency_ops_instance_register() etc to make it clear it
+isn't just a register one global set of ops.
+
+> 
+> Are you sure that this structure does not need something like "priority" or
+> "level" indicator to know where the ops should be sorted in a list? Or is
+> it the responsibility of the arch to make sure that the registration order
+> of the ops structures follows the hierarchy order of the caches?
+
+For all known implementations where we actually need this (so hosts with CXL
+or similar) the implementation is in a device somewhere on the coherency fabric
+that is capable of causing appropriate invalidation messages to be issued
+to all caches to the point where it knows that it there are no copies in
+the wrong state anywhere. In a simple model an offload agent has grabbed
+exclusive ownership of the line and written the content to memory.
+
+The multiple 'device' support is about different cachelines being the
+responsibility of different cache flushing 'devices' (interleave, multiple
+sockets etc), not a single line being flushed from different places.
+
+The PSCI spec alpha (that never went further) did allow for a case where a
+complex timing dance was needed but IIRC even that didn't assume an ordering
+constraint across the various devices.  It envisioned a stop world situation
+where all fetches were disabled until the line was definitely flushed by everyone.
+Thankfully we don't know of any implementation that needs that.
+
+We might need to extend things in future, but for now no ordering needed.
+
+> > diff --git a/lib/cache_maint.c b/lib/cache_maint.c
+> > new file mode 100644
+> > index 000000000000..05d9c5e99941
+> > --- /dev/null
+> > +++ b/lib/cache_maint.c
+> > @@ -0,0 +1,128 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Generic support for Memory System Cache Maintenance operations.
+> > + *
+> > + * Coherency maintenance drivers register with this simple framework that will
+> > + * iterate over each registered instance to first kick off invalidation and
+> > + * then to wait until it is complete.
+> > + *
+> > + * If no implementations are registered yet cpu_cache_has_invalidate_memregion()
+> > + * will return false. If this runs concurrently with unregistration then a
+> > + * race exists but this is no worse than the case where the device responsible
+> > + * for a given memory region has not yet registered.
+> > + */
+> > +#include <linux/cache_coherency.h>
+> > +#include <linux/cleanup.h>
+> > +#include <linux/container_of.h>
+> > +#include <linux/export.h>
+> > +#include <linux/list.h>
+> > +#include <linux/memregion.h>
+> > +#include <linux/module.h>
+> > +#include <linux/rwsem.h>
+> > +#include <linux/slab.h>
+> > +
+> > +static LIST_HEAD(cache_device_list);
+> > +static DECLARE_RWSEM(cache_device_list_lock);
+> > +
+> > +void cache_coherency_device_free(struct cache_coherency_device *ccd)
 > > +{
-> > +	struct hisi_soc_hha *soc_hha;
-> > +	struct resource *mem;
-> > +	int ret;
-> > +
-> > +	soc_hha = cache_coherency_device_alloc(&hha_ops, struct hisi_soc_hha,
-> > +					       ccd);
-> > +	if (!soc_hha)
-> > +		return -ENOMEM;
-> > +
-> > +	platform_set_drvdata(pdev, soc_hha);
-> > +
-> > +	mutex_init(&soc_hha->lock);
-> > +
-> > +	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> > +	if (!mem)
-> > +		return -ENODEV;
-> > +
-> > +	/*
-> > +	 * HHA cache driver share the same register region with HHA uncore PMU
-> > +	 * driver in hardware's perspective, none of them should reserve the
-> > +	 * resource to itself only.  Here exclusive access verification is
-> > +	 * avoided by calling devm_ioremap instead of devm_ioremap_resource to
-> > +	 * allow both drivers to exist at the same time.
-> > +	 */
-> > +	soc_hha->base = ioremap(mem->start, resource_size(mem));
-> > +	if (IS_ERR_OR_NULL(soc_hha->base)) {
-> > +		ret = dev_err_probe(&pdev->dev, PTR_ERR(soc_hha->base),
-> > +				"failed to remap io memory");
-> > +		goto err_free_ccd;
-> > +	}
-> > +
-> > +	ret = cache_coherency_device_register(&soc_hha->ccd);
-> > +	if (ret)
-> > +		goto err_iounmap;
-> > +
-> > +	return 0;
-> > +
-> > +err_iounmap:
-> > +	iounmap(soc_hha->base);
-> > +err_free_ccd:
-> > +	cache_coherency_device_free(&soc_hha->ccd);  
+> > +	kfree(ccd);
+> > +}
+> > +EXPORT_SYMBOL_GPL(cache_coherency_device_free);  
 > 
-> I understand that this scheme works because ccd is the first member and
-> that is forced at alloc the same way fwctl does it. However, fwctl hides
-> confusing code like this behind put_device() in the free path. So I would
-> say if you want to borrow the "_alloc(ops, drv_struct, member)" approach do
-> also hide the "offsetof(drv_struct, member) == 0" in the object release
-> path and not have eye-popping code like:
+> Why do you need a new GPL export wrapper for kfree?
+As per your other comment this will become a kref_put() I think.
 > 
->     cache_coherency_device_free(&soc_hha->ccd)
-> 
-> ...that throws away the allocation side cleverness into a cloud of reader
-> confusion. Either make this an actual "device" or otherwise have a kref.
-> 
-The device option is out because Greg KH was not keen on me using that
-infrastructure when we don't have any userspace ABI. 
-
-Kref seems fine but because we have to pass an explicit release to kref_put()
-we end up either with the odd looking
-
-kfree_put(&soc_hha->cci, cache_coherency_ops_inst_free);
-
-or wrapping it up with a helper along the lines of
-cache_coherency_ops_instance_put(&soc_hha->cci);
-
-That seems reasonable but given there is no real reference counting going on
-(the reference count == 1 from alloc to this call) using an actual kref is
-perhaps overkill because this is really the same as having no kref and
-just implementing.
-
-void cache_coherency_ops_instance_put(struct cache_coherency_ops_inst *cci)
-{
-	kfree(cci);
-}
-
-So other than a rename it is the same as current implementation. :(
-
-So for now I'm thinking have the helper and use a kref even if it's rather
-silly just because it will then behave how people (hopefully) expect it to.
-
-Jonathan
-
-
-
 
 
