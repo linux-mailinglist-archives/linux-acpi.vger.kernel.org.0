@@ -1,128 +1,139 @@
-Return-Path: <linux-acpi+bounces-17664-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17665-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2791BC785E
-	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 08:19:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0162BC8178
+	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 10:43:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 845DE4F0158
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 06:19:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68D1B421972
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 08:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F8C29A9E9;
-	Thu,  9 Oct 2025 06:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C472D2388;
+	Thu,  9 Oct 2025 08:43:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sd1CQWr6"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBF9296BBA;
-	Thu,  9 Oct 2025 06:19:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173112D23BC
+	for <linux-acpi@vger.kernel.org>; Thu,  9 Oct 2025 08:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759990760; cv=none; b=Td8bKL8izc2fSsb5sgnA8ycIystaxmY535xvdnmpDWr8Ev0fdN5jms6Xk9wQ1wQthZfUvgJTkIk5lpaV59V9qwMFB5dawMHZOgHZzXAjT1YPkjKTGMEZnUFrPXj8JY5/VuJlHGH1wnmMURuFkikaKcbjPGE5SmsxmPSBc+kNgdA=
+	t=1759999420; cv=none; b=r/rVYSwGGxVTfkQpjKAlkwVtGdRkLIO/D4mF2+2a/fJClfvWdTDr2/h5heP8yuAFF8ynBjgs7xOuFjvqk44ILNYo05b8pWTAY797jxqGyYma7+MMsZ2HDn0aOW/l/51a8glPaLNyRZ/sGOVSi39LiwIkYkB+6stM5WJTz1lq3pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759990760; c=relaxed/simple;
-	bh=D+Rpim04uRYSosMNek/Y8Z/MaSS/5imcokP5FdEqlYM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Jlj9OiZmBJPJFdyUgD0zqbGYL+dqTgbbKLTaXSpVPBLXEh4ISMABCnUZuCh6davHE/ewxA8EBwcZ7IyF5b0FhfMQ461u0BrH0PHFS7Kssq31qcmeomG1/XvX9VE5D8mdFWM7nGKmVl56KFF1k67i2sNGJrSdEkPa4RKzZeTZ1pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=113.46.200.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4cj07j4Z5hz1prKc;
-	Thu,  9 Oct 2025 14:18:57 +0800 (CST)
-Received: from kwepemr500004.china.huawei.com (unknown [7.202.195.141])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7059F1402C1;
-	Thu,  9 Oct 2025 14:19:14 +0800 (CST)
-Received: from [10.67.121.58] (10.67.121.58) by kwepemr500004.china.huawei.com
- (7.202.195.141) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 9 Oct
- 2025 14:19:13 +0800
-Message-ID: <477505bc-ce6d-409a-820d-55a46c72ab7d@hisilicon.com>
-Date: Thu, 9 Oct 2025 14:19:13 +0800
+	s=arc-20240116; t=1759999420; c=relaxed/simple;
+	bh=oOmLRNO4yxmZr9GGl+AUsKcQlyU35gqHSeHKaWhtPwQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DLTaoTkW4snS3CaUcizGXNuq5eLstR+bMUlvQgi39ue4uckhM1Nj6XuH1HUo/QMcbjWQmiQKVgXnI/nsnTpoaaERCsDLyaHoGE1JUlcm23x++v3edYzEyxg9tolwaVVSopebQkp2tQTM8IkFqbH89XMrX7JkUxOctaFKx9LhWoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sd1CQWr6; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-71d71bcac45so7656137b3.0
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Oct 2025 01:43:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759999416; x=1760604216; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oOmLRNO4yxmZr9GGl+AUsKcQlyU35gqHSeHKaWhtPwQ=;
+        b=Sd1CQWr65JLYzY9EVKrEmyokZCi5vMbs6EjxpG+7QH6YGT3tDWbcej0s4cZgoeqQuS
+         JarC6ZTWUL+kjcHPGBPAUN8Ppb1QBAPtlSxQfjpNRglhJxMMypRIPnB6rYYKLQvZjKiN
+         y72xO5wzZc7AAEZk+IBKqraBb7+6wC4+Imv7nbjEtku9PO6PAKcYEb1vRHgafdvgR9U2
+         dCS1DB4VwniCeBOnc8XLvNltoejI4ecSgvo1PpGG1tSl6PrUxnfallIONRoeLTNOEzbX
+         FvDKAaN4VsNHkaBPKCCqR4S+rBMFmJJlJYY4H+OBfaZXGyq7o1ppfnH/vgJ3jgRm0T4d
+         tz9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759999416; x=1760604216;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oOmLRNO4yxmZr9GGl+AUsKcQlyU35gqHSeHKaWhtPwQ=;
+        b=hP9PP7PMjvoe21/YpR+0vfYYh86VE7M6N9i8O9h5ACP2HarANVS/0mRXrjOw5Io5vs
+         1yyAS/RW9BT9Itay3mjvvTVFwmrGb3QF935osKEZu7egM/jWhP1oThX6sglyAdIvhcDS
+         JTTKTaBuXMu0kYZa9EcKlpow+xSVmQ9gpWhUMhT3PaWzE0rIuM6uGPXct4m0R1zs948O
+         hPSOgD/pg3TXLI6GnJjV+65fb55XJ7wMgu5gzAO98x/6ViHarAT1iQJkjtFsqYJKf2NJ
+         qEpKHERaZHg8mBxFKVuMRZHE1c3ygBWhGVfnEZmYWMxk98tCd4EdvG+ge1h4LT2OluW9
+         JJtg==
+X-Forwarded-Encrypted: i=1; AJvYcCV/uwUXspCEizzlGds9XadFruZmKcHxGcyBhC1r4tAqcMj43FQTMjZuPl6Lu2hoWnGi2lRrkIyi1DXQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKDH/QcR7qtTCwR3SoXmtlMjUe3KVR2CnKkd1M4mhFlDDJwM9O
+	ZHFtGCvO0hoYMjWSe6Ej1kJOJ871JCagul3YqgvZJ5Z11HAyS/d4qSts0rMtjUnRW+uHcwGBZWJ
+	ZbbftzrrDRsH+uCU4RiJmV104GD2sgDs=
+X-Gm-Gg: ASbGncsm3vpxNEfNfUbRCyLO2O3P+73YehbNuAwQ1vKzbf3uNFtp0tt86PASYNODA9l
+	LwocD3UIcDyn+lkmMdppl82DeDcB8JkQGk1PMsKCKm2xSEQ/cr4GOXGrpVLB1ZRlyWf/3lrxk4a
+	bLo9wgLtvjFya7JGNeYfmtmCEh11ADcvinlRRpvBZWZt8tmfeOm+vYAC6wHRl74WNG/8fr9VIV5
+	wORDEDFUVJd7pR6B0qfVOdYURa8pi+CSwkcPLh5mw==
+X-Google-Smtp-Source: AGHT+IHqqt7JHMFlL5DEMxX8/4fuWke6o7x715NV65SuEycRYAp5q8y3uA9SPr+Cccah/gPAgRpT2LfWBS7AmxUm0/4=
+X-Received: by 2002:a05:690e:146:b0:635:4ece:20a9 with SMTP id
+ 956f58d0204a3-63ccb91d5e0mr4410660d50.46.1759999415603; Thu, 09 Oct 2025
+ 01:43:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] cpufreq: CPPC: Rework FIE warning prints and
- cppc_scale_freq_tick()
-To: <viresh.kumar@linaro.org>, <rafael@kernel.org>, <ionela.voinescu@arm.com>,
-	<beata.michalska@arm.com>, <zhenglifeng1@huawei.com>, Prashant Malani
-	<pmalani@google.com>
-CC: <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
-	<jonathan.cameron@huawei.com>
-References: <20250828110212.2108653-1-zhanjie9@hisilicon.com>
- <60f9cafb-2199-4c7b-ba97-7529d0ef5bf8@hisilicon.com>
-Content-Language: en-US
-From: Jie Zhan <zhanjie9@hisilicon.com>
-In-Reply-To: <60f9cafb-2199-4c7b-ba97-7529d0ef5bf8@hisilicon.com>
+References: <20250918152830.438554-1-nschichan@freebox.fr> <20250918195806.6337-1-safinaskar@gmail.com>
+ <CAHNNwZAzecVcJXZmycX063-=p-M5jVkfStfgYVKJruOFo7y9zg@mail.gmail.com>
+ <CAPnZJGDwETQVVURezSRxZB8ZAwBETQ5fwbXyeMpfDLuLW4rVdg@mail.gmail.com> <CAHNNwZC7gC7zaZGiSBhobSAb4m2O1BuoZ4r=SQBF-tCQyuAPvw@mail.gmail.com>
+In-Reply-To: <CAHNNwZC7gC7zaZGiSBhobSAb4m2O1BuoZ4r=SQBF-tCQyuAPvw@mail.gmail.com>
+From: Askar Safin <safinaskar@gmail.com>
+Date: Thu, 9 Oct 2025 11:42:59 +0300
+X-Gm-Features: AS18NWA7xuLtf9pobQHoPGHI9uL9SjsnEaZg-EuuD52zBO81KbUszIYBPPZ5wRY
+Message-ID: <CAPnZJGAp-wG+9wDmmisfpxvFbRtXkG-RipAuZe=fi1BWy-3G-Q@mail.gmail.com>
+Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
+To: Nicolas Schichan <nschichan@freebox.fr>
+Cc: akpm@linux-foundation.org, andy.shevchenko@gmail.com, axboe@kernel.dk, 
+	brauner@kernel.org, cyphar@cyphar.com, devicetree@vger.kernel.org, 
+	ecurtin@redhat.com, email2tema@gmail.com, graf@amazon.com, 
+	gregkh@linuxfoundation.org, hca@linux.ibm.com, hch@lst.de, 
+	hsiangkao@linux.alibaba.com, initramfs@vger.kernel.org, jack@suse.cz, 
+	julian.stecklina@cyberus-technology.de, kees@kernel.org, 
+	linux-acpi@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
+	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, mcgrof@kernel.org, 
+	mingo@redhat.com, monstr@monstr.eu, mzxreary@0pointer.de, 
+	patches@lists.linux.dev, rob@landley.net, sparclinux@vger.kernel.org, 
+	thomas.weissschuh@linutronix.de, thorsten.blum@linux.dev, 
+	torvalds@linux-foundation.org, tytso@mit.edu, viro@zeniv.linux.org.uk, 
+	x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemr500004.china.huawei.com (7.202.195.141)
+Content-Transfer-Encoding: quoted-printable
 
-Hi All,
+On Mon, Sep 22, 2025 at 5:29=E2=80=AFPM Nicolas Schichan <nschichan@freebox=
+.fr> wrote:
+> > Then in September 2026 I will fully remove initrd.
+>
+> Is there a way to find some kind of middle ground here ?
 
-I'm still looking forward to some feedback or tests on this series.
+I still plan to fully remove initrd in September 2026.
+Maintainers will decide whether they will merge my patchset.
+You may try to convince them.
 
-Cheers,
-Jie
+> I can send a patch for that but first I need to sort out my SMTP
+> issues from the other day.
 
-On 9/16/2025 10:58 AM, Jie Zhan wrote:
-> A kindly ping on this.
-> Some feedback would be nice if anyone is not on holiday ;)
-> 
-> Jie
-> 
-> On 8/28/2025 7:02 PM, Jie Zhan wrote:
->> Reading performance feedback counters on offline or low-power idle CPUs may
->> return 0, which is interpreted as -EFAULT.
->>
->> This leads to two issues related to the CPPC FIE:
->>
->> 1. When booting a subset of CPUs in policy->related_cpus (some CPUs under
->> the cpufreq policy is offline), there are warnings of "failed to read perf
->> counters for cpu" during the CPPC FIE initialization.
->>
->> 2. On our platform with the CPC regs in System Memory and a power-down idle
->> state enabled, if the CPPC FIE is registered successfully, there are
->> repeated warnings of "failed to read perf counters" because
->> cppc_scale_freq_workfn() is trying to access the counters of remote CPUs
->> that enters the idle state.
->>
->> To solve the above issues:
->>
->> Patch 1 removes the warning when the CPPC FIE initialization fails to read
->> counters on offline CPUs and changes the log leve to debug.  This can be
->> applied separately.
->>
->> Patch 2 moves the update of FIE arch_freq_scale into ticks for non-PCC regs
->> and maintains the existing mechanism for PCC regs, such that reading
->> counters would be triggered on the local CPU only.  This inherently solves
->> the issue in [1].  We have tested this on Kunpeng SoCs with the CPC regs
->> both in System Memory and FFH.  More tests on other platforms are welcome
->> though.
->> [1] https://lore.kernel.org/linux-pm/20250730032312.167062-3-yubowen8@huawei.com/
->>
->> Changelog:
->>
->> v2:
->> - Update the cover letter and the commit log based on v1 discussion
->> - Update FIE arch_freq_scale in ticks for non-PCC regs
->>
->> v1:
->> https://lore.kernel.org/linux-pm/20250730032312.167062-1-yubowen8@huawei.com/
->>
->> Jie Zhan (2):
->>   cpufreq: CPPC: Don't warn if FIE init fails to read counters
->>   cpufreq: CPPC: Update FIE arch_freq_scale in ticks for non-PCC regs
->>
->>  drivers/cpufreq/cppc_cpufreq.c | 64 +++++++++++++++++++++-------------
->>  1 file changed, 39 insertions(+), 25 deletions(-)
->>
+If you still have mail issues, consider applying for @linux.dev email,
+they are free for Linux devs ( https://linux.dev/ ).
+
+Also, I just tried to test whether your use case is still supported in
+mainline (i. e. uncompressed initrd with root=3D/dev/ram0).
+It turned out that on modern kernels you need to enable
+recently introduced CONFIG_BLK_DEV_WRITE_MOUNTED to
+make this work.
+So, make sure to enable this when upgrading kernel.
+
+--=20
+Askar Safin
 
