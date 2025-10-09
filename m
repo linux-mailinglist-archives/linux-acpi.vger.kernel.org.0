@@ -1,114 +1,126 @@
-Return-Path: <linux-acpi+bounces-17677-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17678-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39CA3BC9A97
-	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 16:59:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E50A8BC9CA2
+	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 17:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16BA33C0185
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 14:59:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 668A61A62E7C
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 15:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076FE2EBBA9;
-	Thu,  9 Oct 2025 14:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9801B1E1DF0;
+	Thu,  9 Oct 2025 15:25:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i7mMO3dD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF0C2EBB89;
-	Thu,  9 Oct 2025 14:59:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BA91DFE26
+	for <linux-acpi@vger.kernel.org>; Thu,  9 Oct 2025 15:25:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760021943; cv=none; b=BclPVV+NloP+gjR7z60w5UBzA6FxG1eZH85xKVgeBaniZjIDwJQWA2taDc9vcScfiTcclcaG742+2HDLIkz0+CGYY/EMKsYf2yidQPXPSLe4PEoVapAD3vrHr6Rv3ngwfUpr4vCCJqYCAZmenvFzjJoKHTg4a2WSvV7n6ENqzDk=
+	t=1760023534; cv=none; b=hQUmdETW9LtfG+K0whIb7Iq1jZKCHoaAObExnaLyHBHKIrFo6Aic1M+nPV9KVr0aV+zaNg6iD1MhkQwwA0oDJE2OyIN3UGaxnI28oKgXGzaDg8wvTBicYatDKy3ox4jelOsjbdIB6DTsMOjCOi7/t3DFbFhwtvOMt+LwQTRHmzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760021943; c=relaxed/simple;
-	bh=MV845+QAB8phKCuhPtan4pCwbZvBXPz7JcyZz9iT/U8=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=imRECNubSbdemb84Tbc8GWYrrmWr44yN5GZGCvlQgwC3ZnD27NRNflleY+uBvpdTF6aVTOYgBVUPPwhIXmYaybqoPyNxPBk3LSRorEzRpZIohxlcrY1uJj7Lwc5sVEUXphAi0WdA1PBhoYZ8Hf9wYpo6lQkYv0Nmi/H9V812QI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cjCfx2j8Wz6L5Ds;
-	Thu,  9 Oct 2025 22:58:17 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3C5CF1402FD;
-	Thu,  9 Oct 2025 22:59:00 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 9 Oct
- 2025 15:58:59 +0100
-Date: Thu, 9 Oct 2025 15:58:58 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Evangelos Petrongonas <epetron@amazon.de>
-CC: Bjorn Helgaas <bhelgaas@google.com>, Alex Williamson
-	<alex.williamson@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>, Len
- Brown <lenb@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, David
- Matlack <dmatlack@google.com>, Vipin Sharma <vipinsh@google.com>, Chris Li
-	<chrisl@kernel.org>, Jason Miu <jasonmiu@google.com>, "Pratyush Yadav"
-	<pratyush@kernel.org>, Stanislav Spassov <stanspas@amazon.de>,
-	<linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <nh-open-source@amazon.com>
-Subject: Re: [RFC PATCH 08/13] pci: Save only spec-defined configuration
- space
-Message-ID: <20251009155858.0000179c@huawei.com>
-In-Reply-To: <93623324232f4ec4dcda830d497ac2890b19215f.1759312886.git.epetron@amazon.de>
-References: <cover.1759312886.git.epetron@amazon.de>
-	<93623324232f4ec4dcda830d497ac2890b19215f.1759312886.git.epetron@amazon.de>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1760023534; c=relaxed/simple;
+	bh=/ups0rdcsbhtlWRIsVepwZKH+PzYyefCRWijmztsG38=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eSzkbBu5CbJnQ/k3cKJ0NuRBeJBusIjzbNlrfB59VFgGxOkF9ZIEd1ubwQW4y5mePxmYK9NJjW34ouGDxusMsfDEFMlC24MwQ4plq2UGzA6hsonPyzRYK1FuAHT5Ci97PVQN4baVeNvek089mO0rchJYWyv/AjBgxJNMCDI16KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i7mMO3dD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268BAC116B1
+	for <linux-acpi@vger.kernel.org>; Thu,  9 Oct 2025 15:25:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760023534;
+	bh=/ups0rdcsbhtlWRIsVepwZKH+PzYyefCRWijmztsG38=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=i7mMO3dD4j35Ge3GxNo6uQLuK2DZ3HINxs+jtEN1TGybsdza808OOeUCgY08yrXw2
+	 VW6iyAbWT5OjTYZ5Iks2S6OStDkve2UCSr2EFsO+OvKnl22+5kNKrWodjdeItWYzTr
+	 7qN0wDtL5Te9tob1LD7s0V73vgMq1GyAFJDHC7jWUgUL37JLv/rZii6WeLWj36xF7O
+	 vZrOz25DBOpiuvWD/P4chTnEkxVdrH4S7WPvIcDQQBRZKJfeYFniRHsRY8zbmHTxSF
+	 gYswlQC9SuCaxL7ENnANCVGw9pbs7KjtpirZT3xX7v3WQojMqb2/A9W1cLn/sNjm8E
+	 YfQxYWbAfvabg==
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-43fb0baa305so562991b6e.3
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Oct 2025 08:25:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVGnNdwpA6Rm9TZGsxvxxwcWsSE45c1Lg7fsj6dUdV3oNq8ok2cQoS5Zg4ffpfCEFZbaVurAzHQrPD+@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyo32JSoDR17bVBXrW9wRMKEHBKfwccv8NfEgexcEHUkgjjWWvt
+	PNBby4GPAsN0qOA1fRXDw61pv039dOY5orVeiDEM/OF5E7JbHsCxh9nw0phDUYa79jn2z3tCeNr
+	v4vxmDraz/bNhbmM1P1q77VqXD8Ld3ag=
+X-Google-Smtp-Source: AGHT+IGu70IFZQLlAO+3P4ybkBQVr1fPOMs/nnzKxe/rtOBJ7ieNtBACYGLI1c7T/YNJWaLDapxP8Kyk8iZDzISReqM=
+X-Received: by 2002:a05:6808:e88:b0:43f:b7f8:e216 with SMTP id
+ 5614622812f47-4417b2d1e98mr3887324b6e.4.1760023533432; Thu, 09 Oct 2025
+ 08:25:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+References: <20251009135646.8899-1-bigalex934@gmail.com>
+In-Reply-To: <20251009135646.8899-1-bigalex934@gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 9 Oct 2025 17:25:21 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0itqy9dXoS4ubq3MPdM2zCBQKah3R5B2SGiJE6auTugBw@mail.gmail.com>
+X-Gm-Features: AS18NWBnRSV55ReCkktNys3L2MAhOlsiQ_YiADq19oGN-jfD9E83LCPjtwGrdHg
+Message-ID: <CAJZ5v0itqy9dXoS4ubq3MPdM2zCBQKah3R5B2SGiJE6auTugBw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: Add absent field_obj null check
+To: Alexey Simakov <bigalex934@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Robert Moore <robert.moore@intel.com>, 
+	Len Brown <lenb@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org, 
+	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	lvc-project@linuxtesting.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 3 Oct 2025 09:00:44 +0000
-Evangelos Petrongonas <epetron@amazon.de> wrote:
+On Thu, Oct 9, 2025 at 3:57=E2=80=AFPM Alexey Simakov <bigalex934@gmail.com=
+> wrote:
+>
+> The acpi_ev_address_space_dispatch function is designed
+> in such way that assignning field_obj to NULL is valid case.
+>
+> Cover the missed execution path with this check.
+>
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>
+> Fixes: 0acf24ad7e10 ("ACPICA: Add support for PCC Opregion special contex=
+t data")
+> Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
 
-> Change PCI configuration space save/restore operations by
-> saving only the regions defined by the PCI specification avoiding any
-> potential side effects of undefined behaviour.
-> 
-> The current implementation saves the entire configuration space for
-> device restore operations, including reserved and undefined regions.
-> This change modifies the save logic to save only architecturally defined
-> configuration space regions and skipping the undefined areas.
-> 
-> This benefits the PCSC hitrate, as a 4byte access to a region where only
-> 2 bytes are cacheable and 2 are undefined, therefore uncached, will lead
-> to a HW access instead.
-> 
-> Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+ACPICA changes need to be submitted to the upstream ACPICA project on
+GitHub as pull requests (PRs).
+
+Once a given PR has been merged upstream, a corresponding Linux patch
+can be sent (with a Link: tag pointing to the original upstream ACPICA
+commit), but it is not necessary to do so because released upstream
+ACPICA material is automatically included into the ACPICA code in
+Linux.
+
 > ---
->  drivers/pci/pci.c | 61 +++++++++++++++++++++++++++++++++++++++++++----
->  1 file changed, 56 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index db940f8fd408..3e99baaaf8cd 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -1752,11 +1752,62 @@ static void pci_restore_pcix_state(struct pci_dev *dev)
->  int pci_save_state(struct pci_dev *dev)
->  {
->  	int i;
-> -	/* XXX: 100% dword access ok here? */
-> -	for (i = 0; i < 16; i++) {
-> -		pci_read_config_dword(dev, i * 4, &dev->saved_config_space[i]);
-> -		pci_dbg(dev, "save config %#04x: %#010x\n",
-> -			i * 4, dev->saved_config_space[i]);
-> +
-> +	if (dev->hdr_type == PCI_HEADER_TYPE_NORMAL) {
-> +		for (i = 0; i < 13; i++) {
-
-Needs basing on the register defines not magic numbers.
-
-Same for other cases.
-
-Jonathan
+>  drivers/acpi/acpica/evregion.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/acpi/acpica/evregion.c b/drivers/acpi/acpica/evregio=
+n.c
+> index fa3475da7ea9..fa01bcd3840d 100644
+> --- a/drivers/acpi/acpica/evregion.c
+> +++ b/drivers/acpi/acpica/evregion.c
+> @@ -163,7 +163,7 @@ acpi_ev_address_space_dispatch(union acpi_operand_obj=
+ect *region_obj,
+>                         return_ACPI_STATUS(AE_NOT_EXIST);
+>                 }
+>
+> -               if (region_obj->region.space_id =3D=3D ACPI_ADR_SPACE_PLA=
+TFORM_COMM) {
+> +               if (field_obj && region_obj->region.space_id =3D=3D ACPI_=
+ADR_SPACE_PLATFORM_COMM) {
+>                         struct acpi_pcc_info *ctx =3D
+>                             handler_desc->address_space.context;
+>
+> --
+> 2.34.1
+>
+> Just FYI, this patch was already merged to github ACPICA repository.
+> Commit hash with correspond changes at ACPICA repository: f421dd9dd897dfd=
+1e0c015afa90cd0de2464e23c
 
