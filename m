@@ -1,126 +1,145 @@
-Return-Path: <linux-acpi+bounces-17678-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17680-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50A8BC9CA2
-	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 17:28:56 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77EEDBC9EBC
+	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 18:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 668A61A62E7C
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 15:28:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DAEFC354274
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 16:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9801B1E1DF0;
-	Thu,  9 Oct 2025 15:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3412ECD34;
+	Thu,  9 Oct 2025 15:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i7mMO3dD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rZQT2jSY"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BA91DFE26
-	for <linux-acpi@vger.kernel.org>; Thu,  9 Oct 2025 15:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00E6220F2C;
+	Thu,  9 Oct 2025 15:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760023534; cv=none; b=hQUmdETW9LtfG+K0whIb7Iq1jZKCHoaAObExnaLyHBHKIrFo6Aic1M+nPV9KVr0aV+zaNg6iD1MhkQwwA0oDJE2OyIN3UGaxnI28oKgXGzaDg8wvTBicYatDKy3ox4jelOsjbdIB6DTsMOjCOi7/t3DFbFhwtvOMt+LwQTRHmzA=
+	t=1760025488; cv=none; b=PIsgoa1yNbL5gKb8Ao3HLWfJeU3xK3EYw3vLIap3ZgoeyT2S0i47zHbwNmzWBwqMjllaAXvxl4CN93N/hlZv+dfVc1MFdRqTi6xUyCQJL6S9Wuqpnel7S67yG1DUMMFVRYcMxiCKh+RP27ZFbMacic8pJiQ3LR2N69jsLRps2rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760023534; c=relaxed/simple;
-	bh=/ups0rdcsbhtlWRIsVepwZKH+PzYyefCRWijmztsG38=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eSzkbBu5CbJnQ/k3cKJ0NuRBeJBusIjzbNlrfB59VFgGxOkF9ZIEd1ubwQW4y5mePxmYK9NJjW34ouGDxusMsfDEFMlC24MwQ4plq2UGzA6hsonPyzRYK1FuAHT5Ci97PVQN4baVeNvek089mO0rchJYWyv/AjBgxJNMCDI16KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i7mMO3dD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268BAC116B1
-	for <linux-acpi@vger.kernel.org>; Thu,  9 Oct 2025 15:25:34 +0000 (UTC)
+	s=arc-20240116; t=1760025488; c=relaxed/simple;
+	bh=6vkLwtVEp5iZ/fddGeer+JB26ijRhHCLJZ0FnDiFV8M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QgOFpBac3KZSRU0qVyDyXyWuZjnMJECBnAnCWnlWyoDnQHh7jFSOdxLRaDlaisflshq+JSuJse5ZIsMLD+gDIpyZAtQ7ZLSdNeocQ+FKr87bBeZJxcfDl7fFrA5isU5R4TAYs3kgvCOeTYDZtJSSbSnXIQtj49Jw54DKd+FsMGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rZQT2jSY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38998C4CEE7;
+	Thu,  9 Oct 2025 15:58:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760023534;
-	bh=/ups0rdcsbhtlWRIsVepwZKH+PzYyefCRWijmztsG38=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=i7mMO3dD4j35Ge3GxNo6uQLuK2DZ3HINxs+jtEN1TGybsdza808OOeUCgY08yrXw2
-	 VW6iyAbWT5OjTYZ5Iks2S6OStDkve2UCSr2EFsO+OvKnl22+5kNKrWodjdeItWYzTr
-	 7qN0wDtL5Te9tob1LD7s0V73vgMq1GyAFJDHC7jWUgUL37JLv/rZii6WeLWj36xF7O
-	 vZrOz25DBOpiuvWD/P4chTnEkxVdrH4S7WPvIcDQQBRZKJfeYFniRHsRY8zbmHTxSF
-	 gYswlQC9SuCaxL7ENnANCVGw9pbs7KjtpirZT3xX7v3WQojMqb2/A9W1cLn/sNjm8E
-	 YfQxYWbAfvabg==
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-43fb0baa305so562991b6e.3
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Oct 2025 08:25:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVGnNdwpA6Rm9TZGsxvxxwcWsSE45c1Lg7fsj6dUdV3oNq8ok2cQoS5Zg4ffpfCEFZbaVurAzHQrPD+@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyo32JSoDR17bVBXrW9wRMKEHBKfwccv8NfEgexcEHUkgjjWWvt
-	PNBby4GPAsN0qOA1fRXDw61pv039dOY5orVeiDEM/OF5E7JbHsCxh9nw0phDUYa79jn2z3tCeNr
-	v4vxmDraz/bNhbmM1P1q77VqXD8Ld3ag=
-X-Google-Smtp-Source: AGHT+IGu70IFZQLlAO+3P4ybkBQVr1fPOMs/nnzKxe/rtOBJ7ieNtBACYGLI1c7T/YNJWaLDapxP8Kyk8iZDzISReqM=
-X-Received: by 2002:a05:6808:e88:b0:43f:b7f8:e216 with SMTP id
- 5614622812f47-4417b2d1e98mr3887324b6e.4.1760023533432; Thu, 09 Oct 2025
- 08:25:33 -0700 (PDT)
+	s=k20201202; t=1760025487;
+	bh=6vkLwtVEp5iZ/fddGeer+JB26ijRhHCLJZ0FnDiFV8M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rZQT2jSY/8MM17nbyGSvHdSUr9rh4M89+k31Rc9chfmwWdaiuHsmNCXmt41lSgk7f
+	 eY6bfz8tAK3S7+ewWHWkvRhFUrp8sBElQYqjURUFBkj3R5A5hX4o3U3YgWjX0SrA+O
+	 vHVYPP+A5lpKabbypSUi5jW3nSbz9Fbz3Yf2y8/s9/N/rdaRsqDNY+eAFV9TMkwBhz
+	 uGaxXhQIRqATxOmYp4569byvWyguytAe/r62iUEKFVghujOHBE/kiUdrCxaTOIJWt6
+	 o2yKpSdtbzbR9eGzmIaZo4LeC6Gau13oA159rwqBfXJfk1M4WZr6ZJO//zoeTqOaUg
+	 ozuBOjtu6QyEw==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Hans de Goede <hansg@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
+	robert.moore@intel.com,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.17-5.4] ACPICA: dispatcher: Use acpi_ds_clear_operands() in acpi_ds_call_control_method()
+Date: Thu,  9 Oct 2025 11:54:36 -0400
+Message-ID: <20251009155752.773732-10-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251009155752.773732-1-sashal@kernel.org>
+References: <20251009155752.773732-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251009135646.8899-1-bigalex934@gmail.com>
-In-Reply-To: <20251009135646.8899-1-bigalex934@gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 9 Oct 2025 17:25:21 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0itqy9dXoS4ubq3MPdM2zCBQKah3R5B2SGiJE6auTugBw@mail.gmail.com>
-X-Gm-Features: AS18NWBnRSV55ReCkktNys3L2MAhOlsiQ_YiADq19oGN-jfD9E83LCPjtwGrdHg
-Message-ID: <CAJZ5v0itqy9dXoS4ubq3MPdM2zCBQKah3R5B2SGiJE6auTugBw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: Add absent field_obj null check
-To: Alexey Simakov <bigalex934@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Robert Moore <robert.moore@intel.com>, 
-	Len Brown <lenb@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	lvc-project@linuxtesting.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.17.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 9, 2025 at 3:57=E2=80=AFPM Alexey Simakov <bigalex934@gmail.com=
-> wrote:
->
-> The acpi_ev_address_space_dispatch function is designed
-> in such way that assignning field_obj to NULL is valid case.
->
-> Cover the missed execution path with this check.
->
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->
-> Fixes: 0acf24ad7e10 ("ACPICA: Add support for PCC Opregion special contex=
-t data")
-> Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
+From: Hans de Goede <hansg@kernel.org>
 
-ACPICA changes need to be submitted to the upstream ACPICA project on
-GitHub as pull requests (PRs).
+[ Upstream commit e9dff11a7a50fcef23fe3e8314fafae6d5641826 ]
 
-Once a given PR has been merged upstream, a corresponding Linux patch
-can be sent (with a Link: tag pointing to the original upstream ACPICA
-commit), but it is not necessary to do so because released upstream
-ACPICA material is automatically included into the ACPICA code in
-Linux.
+When deleting the previous walkstate operand stack
+acpi_ds_call_control_method() was deleting obj_desc->Method.param_count
+operands. But Method.param_count does not necessarily match
+this_walk_state->num_operands, it may be either less or more.
 
-> ---
->  drivers/acpi/acpica/evregion.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/acpica/evregion.c b/drivers/acpi/acpica/evregio=
-n.c
-> index fa3475da7ea9..fa01bcd3840d 100644
-> --- a/drivers/acpi/acpica/evregion.c
-> +++ b/drivers/acpi/acpica/evregion.c
-> @@ -163,7 +163,7 @@ acpi_ev_address_space_dispatch(union acpi_operand_obj=
-ect *region_obj,
->                         return_ACPI_STATUS(AE_NOT_EXIST);
->                 }
->
-> -               if (region_obj->region.space_id =3D=3D ACPI_ADR_SPACE_PLA=
-TFORM_COMM) {
-> +               if (field_obj && region_obj->region.space_id =3D=3D ACPI_=
-ADR_SPACE_PLATFORM_COMM) {
->                         struct acpi_pcc_info *ctx =3D
->                             handler_desc->address_space.context;
->
-> --
-> 2.34.1
->
-> Just FYI, this patch was already merged to github ACPICA repository.
-> Commit hash with correspond changes at ACPICA repository: f421dd9dd897dfd=
-1e0c015afa90cd0de2464e23c
+After correcting the for loop to check `i < this_walk_state->num_operands`
+the code is identical to acpi_ds_clear_operands(), so just outright
+replace the code with acpi_ds_clear_operands() to fix this.
+
+Link: https://github.com/acpica/acpica/commit/53fc0220
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+YES
+- Current cleanup in `drivers/acpi/acpica/dsmethod.c:517` and
+  `drivers/acpi/acpica/dsmethod.c:549` only drops
+  `obj_desc->method.param_count` operands after a call, so when firmware
+  supplies extra arguments the additional entries in
+  `this_walk_state->operands[]` keep their references alive even though
+  `num_operands` is reset—this leaks AML temporaries and can strand
+  namespace refs on every invocation.
+- The call path copies every resolved operand up to the NULL terminator
+  into the callee (`drivers/acpi/acpica/dsmthdat.c:175`), and ACPICA
+  already anticipates AML that passes too many parameters
+  (`drivers/acpi/acpica/nsarguments.c:222`-`245`), so the leak is
+  triggered by real-world firmware and grows with each mis-specified
+  call.
+- Replacing the open-coded loop with
+  `acpi_ds_clear_operands(this_walk_state)` uses the existing helper
+  that already removes all `num_operands` entries
+  (`drivers/acpi/acpica/dsutils.c:383`-`400`) and matches the cleanup
+  used in other dispatcher paths
+  (`drivers/acpi/acpica/dswexec.c:440`-`452`); git history shows the
+  buggy pattern has existed since the original ACPICA import, so the fix
+  is self-contained and low risk for all supported branches.
+
+Next step: queue this patch for the stable ACPICA backport stream so
+kernels inheriting the long-standing leak can be corrected.
+
+ drivers/acpi/acpica/dsmethod.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
+
+diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
+index fef6fb29ece4d..e707a70368026 100644
+--- a/drivers/acpi/acpica/dsmethod.c
++++ b/drivers/acpi/acpica/dsmethod.c
+@@ -546,14 +546,7 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
+ 	 * Delete the operands on the previous walkstate operand stack
+ 	 * (they were copied to new objects)
+ 	 */
+-	for (i = 0; i < obj_desc->method.param_count; i++) {
+-		acpi_ut_remove_reference(this_walk_state->operands[i]);
+-		this_walk_state->operands[i] = NULL;
+-	}
+-
+-	/* Clear the operand stack */
+-
+-	this_walk_state->num_operands = 0;
++	acpi_ds_clear_operands(this_walk_state);
+ 
+ 	ACPI_DEBUG_PRINT((ACPI_DB_DISPATCH,
+ 			  "**** Begin nested execution of [%4.4s] **** WalkState=%p\n",
+-- 
+2.51.0
+
 
