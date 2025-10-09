@@ -1,118 +1,80 @@
-Return-Path: <linux-acpi+bounces-17694-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17698-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDCAABCA6C9
-	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 19:49:31 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA32BCAB29
+	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 21:28:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2E5004F6E41
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 17:49:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 386A54F59DB
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 19:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71154248880;
-	Thu,  9 Oct 2025 17:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9470261B95;
+	Thu,  9 Oct 2025 19:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UQRlecBR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A7E24BD0C;
-	Thu,  9 Oct 2025 17:49:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC5626159E;
+	Thu,  9 Oct 2025 19:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760032152; cv=none; b=BfNF8poaKd21Cl8rQeR9PjWAyedBpY1SSPpcmNVCriWe+rFMpGFJqszFLxhCRMRC/eicoJlFV31jiWr1ONbY6sTMxs3eThtBc+bcdADHCokF8hHAfN2/hdNDEuWd3xYWGCI6BN57FfBgF4sTs6/I2v7Kd7ZMajKge8SqwTrdwYM=
+	t=1760038060; cv=none; b=WLqKIIz2tzi15vAwyKGuFCPw79vd4QgkAJU6OERzFCeLe/a3pLR9yPMvytT/cI+y2zYmAXSepFTjxH0M2c7M/kfe8YD2q85UjsktiLmo44zzC7uMtO2NEWyWkPH1eCnQEZRhu65nnV5rAtQA7w4qv1F9kMKGgyVwcssU7ZG2iEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760032152; c=relaxed/simple;
-	bh=rCCyUL1n8C/LxLIxlKKLczvB0F82tywLO6Pt9q7I8sY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a8XNP42ZsBSTVfhxYfP1jXOr1HBCc5UCSsun1RXf+WabE/0V3OHum/nOVqEj7WOvbAEPps/lXr0EkufVbukwqgXz5Ka9dk+OP5xX1mtHgVK0rMHEyuHDxk/j8PAjZJF1f6LFOSiI4L0r+CDvS8zsq/n35HA2BHJqlO9eUay10HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4A1342641;
-	Thu,  9 Oct 2025 10:49:02 -0700 (PDT)
-Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2EF543F66E;
-	Thu,  9 Oct 2025 10:49:05 -0700 (PDT)
-Message-ID: <d009edc0-651e-4815-89de-19c419ba0183@arm.com>
-Date: Thu, 9 Oct 2025 18:48:56 +0100
+	s=arc-20240116; t=1760038060; c=relaxed/simple;
+	bh=Tp51SK1Bnq6NsOyH8IZ6wtxBO1hLhNNxRyxeKf+f7kk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=h5ywxEveqPvcuzfiKI0BSIs+4CAVOu1t/GEdAkbaOJyl9l1QTNPeoeFqL2F7aIpxWbSWCFHyNKaNAQhdMdOOrKj0WzJCm+pZ/2DO7ZAmdkmF/KVLzt+sFh7i7D1tS8JuG7qcRX4Su287ehVlqe0YrCK+Rq+pQ04Lr9gThnr9haM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UQRlecBR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608A2C4CEE7;
+	Thu,  9 Oct 2025 19:27:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760038060;
+	bh=Tp51SK1Bnq6NsOyH8IZ6wtxBO1hLhNNxRyxeKf+f7kk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UQRlecBRgIeyv2E/o++7BlqxggSA7AZdzKg+09miGcuxxfyevZe5nHC1n68gp3WwU
+	 qzJrPNHlxWj8wWO7HFzrabKeHA5tvZblIuD4YC/uivIj5JaTPArZvpB8tVIWjETvsm
+	 05cEt/mo0FEgIj7cvyKNhO7U4961Oac1ITpA1WRCIM8HwqfnOlo+d9g9Ug7a2yoBS9
+	 0pxYeZ24NXUhS4OoX5KX2KFPFvexZo9UDpf8HJFZdWd2uhPlVy5Qkw6vnZBuvzr1zk
+	 QOYJ/MUCO/eyw8xDVviVbZbauE35POwajiQloK0PIUnmomQcqCGOFy33K3+ZCrYW6E
+	 bWC1i81d+kStw==
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Mario Limonciello <mario.limonciello@amd.com>
+Subject:
+ [PATCH v1 0/3] ACPI: PM: s2idle: Tidy up the code and avoid invoking _DSM
+ unnecessarily
+Date: Thu, 09 Oct 2025 21:25:07 +0200
+Message-ID: <4699399.LvFx2qVVIh@rafael.j.wysocki>
+Organization: Linux Kernel Development
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 24/29] arm_mpam: Track bandwidth counter state for
- overflow and power management
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-acpi@vger.kernel.org,
- D Scott Phillips OS <scott@os.amperecomputing.com>,
- carl@os.amperecomputing.com, lcherian@marvell.com,
- bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
- baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
- Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
- dfustini@baylibre.com, amitsinght@marvell.com,
- David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
- Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- fenghuay@nvidia.com, baisheng.gao@unisoc.com, Rob Herring <robh@kernel.org>,
- Rohit Mathew <rohit.mathew@arm.com>, Rafael Wysocki <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>
-References: <20250910204309.20751-1-james.morse@arm.com>
- <20250910204309.20751-25-james.morse@arm.com>
- <20250912142419.00006c6d@huawei.com>
-Content-Language: en-GB
-From: James Morse <james.morse@arm.com>
-In-Reply-To: <20250912142419.00006c6d@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Jonathan,
+Hi Everyone,
 
-On 12/09/2025 14:24, Jonathan Cameron wrote:
-> On Wed, 10 Sep 2025 20:43:04 +0000
-> James Morse <james.morse@arm.com> wrote:
-> 
->> Bandwidth counters need to run continuously to correctly reflect the
->> bandwidth.
->>
->> The value read may be lower than the previous value read in the case
->> of overflow and when the hardware is reset due to CPU hotplug.
->>
->> Add struct mbwu_state to track the bandwidth counter to allow overflow
->> and power management to be handled.
->>
->> Signed-off-by: James Morse <james.morse@arm.com>
+There is an unused function related to s2idle on x86, so drop it (patch [1/3]).
 
-> Trivial comment inline.  I haven't spent enough time thinking about this
-> to give a proper review so no tags yet.
+Also, some callback functions used in struct platform_s2idle_ops on x86 can
+be made static, so do that (patch [2/3]).
 
->> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
->> index 1543c33c5d6a..eeb62ed94520 100644
->> --- a/drivers/resctrl/mpam_devices.c
->> +++ b/drivers/resctrl/mpam_devices.c
->> @@ -918,6 +918,7 @@ static void gen_msmon_ctl_flt_vals(struct mon_read *m, u32 *ctl_val,
->>  	*ctl_val |= MSMON_CFG_x_CTL_MATCH_PARTID;
->>  
->>  	*flt_val = FIELD_PREP(MSMON_CFG_x_FLT_PARTID, ctx->partid);
->> +
+Finally, the evaluation of LPS0 _DSM Function 1 is useless overhead unless
+printing PM debug messages has been enabled, so rearrange the code to only
+evaluate it when the data produced by it will be used (patch [3/3]).
 
-> Unrelated change.  If it makes sense figure out where to push it back to.
+Please see changelogs of the individual patches for details.
 
-Done. This is may favourite mistake to make with a merge conflict!
+Thanks!
 
 
-Thanks,
 
-James
-
-
->>  	if (m->ctx->match_pmg) {
->>  		*ctl_val |= MSMON_CFG_x_CTL_MATCH_PMG;
->>  		*flt_val |= FIELD_PREP(MSMON_CFG_x_FLT_PMG, ctx->pmg);
-> 
 
