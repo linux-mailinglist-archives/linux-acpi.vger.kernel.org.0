@@ -1,86 +1,89 @@
-Return-Path: <linux-acpi+bounces-17699-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17700-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B409BCAB68
-	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 21:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF71BCB2FB
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 01:21:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 111DC424B03
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 19:36:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DC7B3C7670
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 23:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA9D25742C;
-	Thu,  9 Oct 2025 19:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D71D2882CC;
+	Thu,  9 Oct 2025 23:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sA8QS00E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="diANyS83"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A631B423B;
-	Thu,  9 Oct 2025 19:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17F42877DB;
+	Thu,  9 Oct 2025 23:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760038588; cv=none; b=DwhLKwN++MumwuK5n9CuxJE3+u6NHQ/F9/6Jimb0Uer6bjtUe5tKeaM6ojVTk1VhZHLIH4LyVmi/KR/m9mNOnAPnnXN20ruRR2ulGbPaOj//S8XMjiWZFAMNeZwNXUfJX5gOJBRVJefzuoSbAEr+xaIocc9KSsjcRynj9eoRyB8=
+	t=1760052112; cv=none; b=GhhckfJJS0uQruvy3p1TuF1x0MC2EqhIivnmpcHTwdiEO4CysodFLnHnz/KQmlK/M5cWo5pTBLp4bOITBSPly0udY6r6klKBmKqleYIbWV7koJvLN/w+3TSATj1Yp2jhjqghEvfPJgWxRHCnkbSLYdEgNHk2BdN96K2cytBIbq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760038588; c=relaxed/simple;
-	bh=YKj5/aGCmlE3HaN0xf6ah90FIbtTbrwL50IYyirhpc8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bqg34V4Np0lJ7ld+iXCqWjHEA664LdunHsjEjeigBE9J5eAeRk2FUJl68kXsO54k3JuS4VuYQvxV9NZ9H1ZxaTWjVcuB0OQLygq/4jELRWt3+khGDNT6N2DWpcJNcVkvs/ofik8yBhcHSV+sXetT54fayVl5lUK07fWUM3KwlUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sA8QS00E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC9CC4CEE7;
-	Thu,  9 Oct 2025 19:36:27 +0000 (UTC)
+	s=arc-20240116; t=1760052112; c=relaxed/simple;
+	bh=CoIyQA9k57VzU66YWcKfbRJ6JJw4qxvrKtowVP4IC/c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=MOzq8bYm5OrsA+U3IXdm+Si/9i64LelnkvlCMkTBa9iUR1zc91S9Wm9VuWn17KLMkXKcukDh0oFf1LLiLEtd8696N5ddEypwwrm5htnMYUWN98eqqEFiK8989YlkqDnLP6j3KVVfKI8Rmn37/8FCvvwjxoCM9JvXsRD3l+U3N7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=diANyS83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45565C4CEE7;
+	Thu,  9 Oct 2025 23:21:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760038588;
-	bh=YKj5/aGCmlE3HaN0xf6ah90FIbtTbrwL50IYyirhpc8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sA8QS00EE7SkS4Tf84aAijmI/rw8pVuKaIGAtAUjjz9oZkwutuB5W9T+nWCoGfQCr
-	 uSVxfekDzNlsrUwHEpANUvcFigHU4qTx0s/ccBQlh/LpQLK+Zzk+tDrKhZ+NcA0GrG
-	 TYDJFE8XJEI1XApsDqEKeAPZoAItpnpRS6XAbicYpERzbntbcuwzx/wJcZfMtX4YBi
-	 UkbKngmXzWULTZ+QI16leP2M/k5077tf7GIleC9EEq54WRRxF4znnoAYo+soLCz3Gr
-	 mKMXIULCn35am+HsJ1UfhhsEEFugSJs94TnDXyXfcmZ3NynRby+dhSX1WGXFrF3YSx
-	 cH8f+J1VR9Epw==
-Message-ID: <226584e9-7dca-49c8-a9a0-e7f8b6edd021@kernel.org>
-Date: Thu, 9 Oct 2025 14:36:27 -0500
+	s=k20201202; t=1760052110;
+	bh=CoIyQA9k57VzU66YWcKfbRJ6JJw4qxvrKtowVP4IC/c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=diANyS83OjHEakj4eOJU2n3yks5u5nK8hqkkMTvVAxrHqYLP2ZScE1jg2sJQdgk1Q
+	 ZCAtMGf2uZxR3RwuDx6bSzzWx7r9zwpquuDySquxqzyzBjgajaUjF9lL5Lnp0QpIxD
+	 Kes0gLHNrk6UGrJ5JP9MxyW7MwuUWzWcCs9B2R5GmQWhrc+NvGPd69rqct4h1XAtzb
+	 VlXO8fY7nYUwpZrGHVhEX7Q7FxZyfMs56dB/HuSBSgzyYBDezn+1vtMOTPx5G6SHNv
+	 PomVjOFInb6bTqxnpukKoXAQJGFfTJA6ZpCP9g//4sQC5Gus/ZPzpmkUSNzbk83r1O
+	 piLe9JV1ekGuw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Chris Li <chrisl@kernel.org>
+Cc: Bjorn Helgaas <helgaas@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Bjorn Helgaas <bhelgaas@google.com>,  Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki"
+ <rafael@kernel.org>,  Danilo Krummrich <dakr@kernel.org>,  Len Brown
+ <lenb@kernel.org>,  linux-kernel@vger.kernel.org,
+  linux-pci@vger.kernel.org,  linux-acpi@vger.kernel.org,  David Matlack
+ <dmatlack@google.com>,  Pasha Tatashin <tatashin@google.com>,  Jason Miu
+ <jasonmiu@google.com>,  Vipin Sharma <vipinsh@google.com>,  Saeed Mahameed
+ <saeedm@nvidia.com>,  Adithya Jayachandran <ajayachandra@nvidia.com>,
+  Parav Pandit <parav@nvidia.com>,  William Tu <witu@nvidia.com>,  Mike
+ Rapoport <rppt@kernel.org>,  Jason Gunthorpe <jgg@ziepe.ca>,  Leon
+ Romanovsky <leon@kernel.org>,  skhawaja@google.com
+Subject: Re: [PATCH v2 00/10] LUO: PCI subsystem (phase I)
+In-Reply-To: <CACePvbUJ6mxgCNVy_0PdMP+-98D0Un8peRhsR45mbr9czfMkEA@mail.gmail.com>
+	(Chris Li's message of "Tue, 7 Oct 2025 16:32:12 -0700")
+References: <CA+CK2bAbB8YsheCwLi0ztY5LLWMyQ6He3sbYru697Ogq5+hR+Q@mail.gmail.com>
+	<20250929150425.GA111624@bhelgaas>
+	<CACePvbV+D6nu=gqjavv+hve4tcD+6WxQjC0O9TbNxLCeBhi5nQ@mail.gmail.com>
+	<CACePvbUJ6mxgCNVy_0PdMP+-98D0Un8peRhsR45mbr9czfMkEA@mail.gmail.com>
+Date: Fri, 10 Oct 2025 01:21:46 +0200
+Message-ID: <mafs0a51zmzjp.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/3] ACPI: PM: s2idle: Tidy up the code and avoid
- invoking _DSM unnecessarily
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
- Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-References: <4699399.LvFx2qVVIh@rafael.j.wysocki>
-Content-Language: en-US
-From: Mario Limonciello <superm1@kernel.org>
-In-Reply-To: <4699399.LvFx2qVVIh@rafael.j.wysocki>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 10/9/25 2:25 PM, Rafael J. Wysocki wrote:
-> Hi Everyone,
-> 
-> There is an unused function related to s2idle on x86, so drop it (patch [1/3]).
-> 
-> Also, some callback functions used in struct platform_s2idle_ops on x86 can
-> be made static, so do that (patch [2/3]).
-> 
-> Finally, the evaluation of LPS0 _DSM Function 1 is useless overhead unless
-> printing PM debug messages has been enabled, so rearrange the code to only
-> evaluate it when the data produced by it will be used (patch [3/3]).
-> 
-> Please see changelogs of the individual patches for details.
-> 
-> Thanks!
-> 
-> 
-> 
+On Tue, Oct 07 2025, Chris Li wrote:
 
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+[...]
+> That will keep me busy for a while waiting for the VFIO series.
+
+I recall we talked in one of the biweekly meetings about some sanity
+checking of folios right before reboot (make sure they are right order,
+etc.) under a KEXEC_HANDOVER_DEBUG option. If you have some spare time
+on your hands, would be cool to see some patches for that as well :-)
+
+-- 
+Regards,
+Pratyush Yadav
 
