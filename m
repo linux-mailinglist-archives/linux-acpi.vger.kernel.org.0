@@ -1,242 +1,128 @@
-Return-Path: <linux-acpi+bounces-17663-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17664-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D5C7BC779F
-	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 08:00:58 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2791BC785E
+	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 08:19:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FEE819E60C5
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 06:01:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 845DE4F0158
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 06:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B10E28DF33;
-	Thu,  9 Oct 2025 06:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JR424Y/9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F8C29A9E9;
+	Thu,  9 Oct 2025 06:19:20 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA6828D8D1;
-	Thu,  9 Oct 2025 06:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBF9296BBA;
+	Thu,  9 Oct 2025 06:19:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759989655; cv=none; b=IQqJmEHKvOuSLv+zhzle/kXuFSOc3mxE1d6kCi6bBx94Mg/g5NIfFzXi1OAluWWgXK9HPR1A/9wmCNlK5mq7yxZHIGZPZT2lEa/czUAUd/6Ml1k7eHnuGU9nLqnkvtC9jqn4XwY9pd14OYw5CWWaWfqSOibCAH3dRNfsmoR9+jI=
+	t=1759990760; cv=none; b=Td8bKL8izc2fSsb5sgnA8ycIystaxmY535xvdnmpDWr8Ev0fdN5jms6Xk9wQ1wQthZfUvgJTkIk5lpaV59V9qwMFB5dawMHZOgHZzXAjT1YPkjKTGMEZnUFrPXj8JY5/VuJlHGH1wnmMURuFkikaKcbjPGE5SmsxmPSBc+kNgdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759989655; c=relaxed/simple;
-	bh=FCU4dazMrK0Z5c2f1ZSY/+XJujj304SKOL+Z1DhTSsk=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=pK4AMWKWFVIz7RjZCyu0UPLhV0q5k97cCpDZ+jaRleU0Q26JQU8pgwAvT2Ok205Wvw3zQkgbETMYLEPC3kgxSpmFty/GgAjullhyeCdKFNkVRen6GKckkFFtmDO/N3xJLQfvpns/HL2ZJKbIFm2qb7ggWhAqHCb5V69u0MTNtKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JR424Y/9; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759989653; x=1791525653;
-  h=date:from:to:cc:subject:message-id;
-  bh=FCU4dazMrK0Z5c2f1ZSY/+XJujj304SKOL+Z1DhTSsk=;
-  b=JR424Y/93myRtC3eXofRfVnth+OLGUZAXvAe0dfY1577UTWadYHEMhK5
-   7G/GPN9sDkzECKoPNRk147XxH4smtd5MwmgzN5p/yKhWT7/hXkXAcyGv9
-   fPd1JvwZh8SIjjH6/g1S4dwktq5VlTJByhg77x3+unyZxSspnfmygtDa/
-   P3XNvtbAqRj9k+zmXRlRpddD+tuusvPTjf8zcR8/FrnezKKsty+ZQv3v6
-   iqJkErS/2u17wPaDbKTfuoSrURJHqskIqZoTZYE8QPfWOYmnOdXJAybe2
-   ya0hryvK/GglgWeRvKeL5f9QF7OMtMVDUZDmlCz+bEXKhWr1QmeoD3xVX
-   w==;
-X-CSE-ConnectionGUID: EAJ9yZosQji6hN4zCmfr2Q==
-X-CSE-MsgGUID: QDtjbjE0Q/+WcFS27BIN3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11576"; a="73537201"
-X-IronPort-AV: E=Sophos;i="6.19,215,1754982000"; 
-   d="scan'208";a="73537201"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2025 23:00:52 -0700
-X-CSE-ConnectionGUID: FgMzd0UmRpKi22IiyMqD3A==
-X-CSE-MsgGUID: yjo/WDs6TnSom7Ve7yp9Og==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,215,1754982000"; 
-   d="scan'208";a="180657942"
-Received: from lkp-server01.sh.intel.com (HELO 6a630e8620ab) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 08 Oct 2025 23:00:50 -0700
-Received: from kbuild by 6a630e8620ab with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1v6jho-00002a-0R;
-	Thu, 09 Oct 2025 06:00:48 +0000
-Date: Thu, 09 Oct 2025 14:00:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 8ddd11b0e3d3368e9404fde6b5f21e03dd85b501
-Message-ID: <202510091420.vp1Z41Yv-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	s=arc-20240116; t=1759990760; c=relaxed/simple;
+	bh=D+Rpim04uRYSosMNek/Y8Z/MaSS/5imcokP5FdEqlYM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Jlj9OiZmBJPJFdyUgD0zqbGYL+dqTgbbKLTaXSpVPBLXEh4ISMABCnUZuCh6davHE/ewxA8EBwcZ7IyF5b0FhfMQ461u0BrH0PHFS7Kssq31qcmeomG1/XvX9VE5D8mdFWM7nGKmVl56KFF1k67i2sNGJrSdEkPa4RKzZeTZ1pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4cj07j4Z5hz1prKc;
+	Thu,  9 Oct 2025 14:18:57 +0800 (CST)
+Received: from kwepemr500004.china.huawei.com (unknown [7.202.195.141])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7059F1402C1;
+	Thu,  9 Oct 2025 14:19:14 +0800 (CST)
+Received: from [10.67.121.58] (10.67.121.58) by kwepemr500004.china.huawei.com
+ (7.202.195.141) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 9 Oct
+ 2025 14:19:13 +0800
+Message-ID: <477505bc-ce6d-409a-820d-55a46c72ab7d@hisilicon.com>
+Date: Thu, 9 Oct 2025 14:19:13 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] cpufreq: CPPC: Rework FIE warning prints and
+ cppc_scale_freq_tick()
+To: <viresh.kumar@linaro.org>, <rafael@kernel.org>, <ionela.voinescu@arm.com>,
+	<beata.michalska@arm.com>, <zhenglifeng1@huawei.com>, Prashant Malani
+	<pmalani@google.com>
+CC: <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linuxarm@huawei.com>,
+	<jonathan.cameron@huawei.com>
+References: <20250828110212.2108653-1-zhanjie9@hisilicon.com>
+ <60f9cafb-2199-4c7b-ba97-7529d0ef5bf8@hisilicon.com>
+Content-Language: en-US
+From: Jie Zhan <zhanjie9@hisilicon.com>
+In-Reply-To: <60f9cafb-2199-4c7b-ba97-7529d0ef5bf8@hisilicon.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemr500004.china.huawei.com (7.202.195.141)
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 8ddd11b0e3d3368e9404fde6b5f21e03dd85b501  Merge branch 'pm-cpufreq' into linux-next
+Hi All,
 
-Unverified Warning (likely false positive, kindly check if interested):
+I'm still looking forward to some feedback or tests on this series.
 
-    drivers/base/power/runtime-test.c:182 pm_runtime_error_test() warn: pm_runtime_get_sync() also returns 1 on success
-    drivers/base/power/runtime-test.c:22 pm_runtime_depth_test() warn: pm_runtime_get_sync() also returns 1 on success
-    drivers/base/power/runtime-test.c:78 pm_runtime_idle_test() warn: pm_runtime_get_sync() also returns 1 on success
-    include/linux/pm_runtime.h:631 class_pm_runtime_active_try_constructor() warn: passing zero to 'ERR_PTR'
+Cheers,
+Jie
 
-Warning ids grouped by kconfigs:
-
-recent_errors
-|-- i386-randconfig-141-20251004
-|   |-- drivers-base-power-runtime-test.c-pm_runtime_depth_test()-warn:pm_runtime_get_sync()-also-returns-on-success
-|   |-- drivers-base-power-runtime-test.c-pm_runtime_error_test()-warn:pm_runtime_get_sync()-also-returns-on-success
-|   |-- drivers-base-power-runtime-test.c-pm_runtime_idle_test()-warn:pm_runtime_get_sync()-also-returns-on-success
-|   `-- include-linux-pm_runtime.h-class_pm_runtime_active_try_constructor()-warn:passing-zero-to-ERR_PTR
-`-- x86_64-randconfig-161-20251004
-    `-- include-linux-pm_runtime.h-class_pm_runtime_active_try_constructor()-warn:passing-zero-to-ERR_PTR
-
-elapsed time: 7659m
-
-configs tested: 131
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                     haps_hs_smp_defconfig    gcc-15.1.0
-arc                   randconfig-001-20251004    gcc-8.5.0
-arc                   randconfig-002-20251004    gcc-10.5.0
-arm                              allmodconfig    gcc-15.1.0
-arm                               allnoconfig    clang-22
-arm                              allyesconfig    gcc-15.1.0
-arm                       aspeed_g5_defconfig    gcc-15.1.0
-arm                          gemini_defconfig    clang-20
-arm                            mps2_defconfig    clang-22
-arm                             mxs_defconfig    clang-22
-arm                   randconfig-001-20251004    gcc-8.5.0
-arm                   randconfig-002-20251004    gcc-15.1.0
-arm                   randconfig-003-20251004    gcc-12.5.0
-arm                   randconfig-004-20251004    gcc-11.5.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.1.0
-arm64                 randconfig-001-20251004    clang-20
-arm64                 randconfig-002-20251004    gcc-8.5.0
-arm64                 randconfig-003-20251004    clang-22
-arm64                 randconfig-004-20251004    gcc-15.1.0
-csky                              allnoconfig    gcc-15.1.0
-csky                  randconfig-001-20251004    gcc-15.1.0
-csky                  randconfig-002-20251004    gcc-10.5.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-22
-hexagon                          allyesconfig    clang-22
-hexagon               randconfig-001-20251004    clang-22
-hexagon               randconfig-002-20251004    clang-20
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20251004    gcc-13
-i386        buildonly-randconfig-002-20251004    clang-20
-i386        buildonly-randconfig-003-20251004    clang-20
-i386        buildonly-randconfig-004-20251004    clang-20
-i386        buildonly-randconfig-005-20251004    clang-20
-i386        buildonly-randconfig-006-20251004    clang-20
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-22
-loongarch             randconfig-001-20251004    gcc-15.1.0
-loongarch             randconfig-002-20251004    clang-22
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-m68k                       bvme6000_defconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-mips                           xway_defconfig    clang-22
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20251004    gcc-10.5.0
-nios2                 randconfig-002-20251004    gcc-11.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20251004    gcc-8.5.0
-parisc                randconfig-002-20251004    gcc-13.4.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    clang-22
-powerpc                       ebony_defconfig    clang-22
-powerpc                      ep88xc_defconfig    gcc-15.1.0
-powerpc                 mpc834x_itx_defconfig    clang-16
-powerpc                      pasemi_defconfig    clang-22
-powerpc               randconfig-001-20251004    clang-22
-powerpc               randconfig-002-20251004    gcc-8.5.0
-powerpc               randconfig-003-20251004    clang-22
-powerpc64             randconfig-001-20251004    gcc-14.3.0
-powerpc64             randconfig-002-20251004    clang-22
-powerpc64             randconfig-003-20251004    clang-22
-riscv                            allmodconfig    clang-22
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-22
-riscv                 randconfig-001-20251004    clang-22
-riscv                 randconfig-002-20251004    clang-22
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    clang-22
-s390                  randconfig-001-20251004    gcc-8.5.0
-s390                  randconfig-002-20251004    clang-22
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                    randconfig-001-20251004    gcc-15.1.0
-sh                    randconfig-002-20251004    gcc-15.1.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20251004    gcc-8.5.0
-sparc                 randconfig-002-20251004    gcc-15.1.0
-sparc64                             defconfig    clang-20
-sparc64               randconfig-001-20251004    gcc-14.3.0
-sparc64               randconfig-002-20251004    clang-22
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    gcc-14
-um                                  defconfig    clang-22
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20251004    clang-18
-um                    randconfig-002-20251004    clang-22
-um                           x86_64_defconfig    clang-22
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20251004    gcc-14
-x86_64      buildonly-randconfig-002-20251004    clang-20
-x86_64      buildonly-randconfig-003-20251004    clang-20
-x86_64      buildonly-randconfig-004-20251004    clang-20
-x86_64      buildonly-randconfig-005-20251004    gcc-14
-x86_64      buildonly-randconfig-006-20251004    gcc-14
-x86_64                              defconfig    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20251004    gcc-13.4.0
-xtensa                randconfig-002-20251004    gcc-10.5.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+On 9/16/2025 10:58 AM, Jie Zhan wrote:
+> A kindly ping on this.
+> Some feedback would be nice if anyone is not on holiday ;)
+> 
+> Jie
+> 
+> On 8/28/2025 7:02 PM, Jie Zhan wrote:
+>> Reading performance feedback counters on offline or low-power idle CPUs may
+>> return 0, which is interpreted as -EFAULT.
+>>
+>> This leads to two issues related to the CPPC FIE:
+>>
+>> 1. When booting a subset of CPUs in policy->related_cpus (some CPUs under
+>> the cpufreq policy is offline), there are warnings of "failed to read perf
+>> counters for cpu" during the CPPC FIE initialization.
+>>
+>> 2. On our platform with the CPC regs in System Memory and a power-down idle
+>> state enabled, if the CPPC FIE is registered successfully, there are
+>> repeated warnings of "failed to read perf counters" because
+>> cppc_scale_freq_workfn() is trying to access the counters of remote CPUs
+>> that enters the idle state.
+>>
+>> To solve the above issues:
+>>
+>> Patch 1 removes the warning when the CPPC FIE initialization fails to read
+>> counters on offline CPUs and changes the log leve to debug.  This can be
+>> applied separately.
+>>
+>> Patch 2 moves the update of FIE arch_freq_scale into ticks for non-PCC regs
+>> and maintains the existing mechanism for PCC regs, such that reading
+>> counters would be triggered on the local CPU only.  This inherently solves
+>> the issue in [1].  We have tested this on Kunpeng SoCs with the CPC regs
+>> both in System Memory and FFH.  More tests on other platforms are welcome
+>> though.
+>> [1] https://lore.kernel.org/linux-pm/20250730032312.167062-3-yubowen8@huawei.com/
+>>
+>> Changelog:
+>>
+>> v2:
+>> - Update the cover letter and the commit log based on v1 discussion
+>> - Update FIE arch_freq_scale in ticks for non-PCC regs
+>>
+>> v1:
+>> https://lore.kernel.org/linux-pm/20250730032312.167062-1-yubowen8@huawei.com/
+>>
+>> Jie Zhan (2):
+>>   cpufreq: CPPC: Don't warn if FIE init fails to read counters
+>>   cpufreq: CPPC: Update FIE arch_freq_scale in ticks for non-PCC regs
+>>
+>>  drivers/cpufreq/cppc_cpufreq.c | 64 +++++++++++++++++++++-------------
+>>  1 file changed, 39 insertions(+), 25 deletions(-)
+>>
 
