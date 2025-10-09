@@ -1,45 +1,45 @@
-Return-Path: <linux-acpi+bounces-17675-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17676-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A124BC99F2
-	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 16:50:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C60BC9A67
+	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 16:56:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 138AA3E8153
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 14:49:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A15531884E94
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 14:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CCF2EA753;
-	Thu,  9 Oct 2025 14:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2872A2EB844;
+	Thu,  9 Oct 2025 14:56:39 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7944020B21E;
-	Thu,  9 Oct 2025 14:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D940F1991CA;
+	Thu,  9 Oct 2025 14:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760021367; cv=none; b=PppmtBMwxgMIik4HcJyFu5YO+Ozb6SMZXO/E32ioNgtYCX4ye3fUJpeu/wTPtf+o6QVOyKRHdUW0cnGDe8F6mC08csy9yZL7oiCVSodY9PlJ0pbERZ66M1BC4vwIUYb767c6XmNr2WBy7cZtiU59+4+WzyC+3aSnIzxMMX+05/M=
+	t=1760021799; cv=none; b=lA0q+IlFvtSi+HIJaj7MKqiYUVXniw3WUm0+nd48A9JG3psjiP47iUFXPpwY9y59LrBtjK9DA8E6ZCULMN8yiFzLBKVERHv9U9EeSMn1dcyAl2ZLamqQcEqQVA/Cbdrp6snM8WYcPNw2XCt003Zgwwl1bRynN7DTNH5LzbRFq1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760021367; c=relaxed/simple;
-	bh=9dpjBcmZz5pl+Hj8gon8cXH6oCPxRzysyVS2inFvLos=;
+	s=arc-20240116; t=1760021799; c=relaxed/simple;
+	bh=qHXrB1snGpJQeKTlYr4nFB6g3pR4szYtExQI0VqcDvw=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BKErzglE1Zm/odF1bgACd2T4Vk4SNnhbH8vILodRZtpNQKODyhEnAACRWl/ZprnbTU4eQqM3w/5EZKsvynn9ubVZ8030VAcJhxeG7iu6wSe//fKCALpA6zlcgdWxLq6JJHMuessf68fRiHRnxG3/7OpMXQgZr7UAUqE7b4olkOA=
+	 MIME-Version:Content-Type; b=LUs50TjFWu45ccl70Xwvu3VeXXLxOFFw2fZPkukhgBydy0vJa6K8LaRKY7zAAmdM6dyJfOhxxQbp04okbK3PO2ft3J9eD21nvie/yptwBsHMFswM4F6JEvMAl1Y/7D5tbXYworhi13ZQbDlb25g41fgoTZbbmacQG/A4zTeb0VQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cjCPd6xhLz6L4v1;
-	Thu,  9 Oct 2025 22:46:45 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cjCc638MTz6L5JJ;
+	Thu,  9 Oct 2025 22:55:50 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id CEE9B1402ED;
-	Thu,  9 Oct 2025 22:49:21 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 4A0EC1402FD;
+	Thu,  9 Oct 2025 22:56:33 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 9 Oct
- 2025 15:49:20 +0100
-Date: Thu, 9 Oct 2025 15:49:19 +0100
+ 2025 15:56:32 +0100
+Date: Thu, 9 Oct 2025 15:56:30 +0100
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: Evangelos Petrongonas <epetron@amazon.de>
 CC: Bjorn Helgaas <bhelgaas@google.com>, Alex Williamson
@@ -50,11 +50,12 @@ CC: Bjorn Helgaas <bhelgaas@google.com>, Alex Williamson
 	<pratyush@kernel.org>, Stanislav Spassov <stanspas@amazon.de>,
 	<linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <nh-open-source@amazon.com>
-Subject: Re: [RFC PATCH 06/13] pci: pcsc: handle device resets
-Message-ID: <20251009154919.00000ee2@huawei.com>
-In-Reply-To: <0fa6f46439b535eedaa82c360e1ea19e7f052fca.1759312886.git.epetron@amazon.de>
+Subject: Re: [RFC PATCH 07/13] pci: pcsc: introduce statistic gathering
+ tools
+Message-ID: <20251009155630.00003b8a@huawei.com>
+In-Reply-To: <762a6242ba9688aeb432c738e297cc8d039d0273.1759312886.git.epetron@amazon.de>
 References: <cover.1759312886.git.epetron@amazon.de>
-	<0fa6f46439b535eedaa82c360e1ea19e7f052fca.1759312886.git.epetron@amazon.de>
+	<762a6242ba9688aeb432c738e297cc8d039d0273.1759312886.git.epetron@amazon.de>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -67,130 +68,275 @@ Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
  dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Fri, 3 Oct 2025 09:00:42 +0000
-Evangelos Petrongonas <epetron@amazon.de> wrote:
 
-> The PCI Configuration Space Cache (PCSC) maintains cached values of
-> configuration space registers for performance optimization. When a PCI
-> device is reset or bus operations are dynamically changed, cached values
-> become stale and can cause incorrect behavior. This patch ensures cache
-> coherency by invalidating the PCSC cache in all scenarios where the
-> underlying configuration space values may have changed.
-> 
-> Device Reset Handling:
-> ----------------------
-> When PCI devices are reset, their configuration space registers return
-> to default values. Add pcsc_device_reset() calls after all device reset
-> operations to invalidate stale cached values:
-> 
-> - Function Level Resets (FLR) in `pcie_flr()`
-> - Advanced Features FLR in `pci_af_flr()`
-> - Power Management resets (D3hot->D0 transition) in `pci_pm_reset()`
-> - Device-specific resets in `pci_dev_specific_reset()`
-> - D3cold power state transitions in `__pci_set_power_state()`
-> - ACPI-based resets in `pci_dev_acpi_reset()`
-> - Bus restore operations in `pci_bus_restore_locked()`
-> - Slot restore operations in `pci_slot_restore_locked()`
-> - Secondary bus resets in `pci_bridge_secondary_bus_reset()`
+Mostly suggestions to move away from ifdefs.
 
-cxl bus reset? 
+Jonathan
 
-> 
-> For secondary bus resets, `pcsc_reset_bus_recursively()` invalidates the
-> cache for all devices on the secondary bus and subordinate buses. This
-> also covers hotplug slot reset operations since `pciehp_reset_slot()`
-> calls `pci_bridge_secondary_bus_reset()`.
-> 
-> In addition, functions like `pci_dev_wait` are configured to bypass the
-> cahce and reads the actual HW values.
-
-cache
-
-> 
-> Dynamic Ops Changes:
-> --------------------
-> The patch also addresses cache consistency issues when bus operations
-> are dynamically changed via `pci_bus_set_ops()``. Different ops
-> implementations may return different values for the same registers, and
-> hardware state may have changed while using the different ops. This
-> commit resets the cache for all devices on the affected bus
-> 
-> Implementation Details:
-> -----------------------
-> The cache invalidation clears the cached_bitmask while preserving the
-> cacheable_bitmask, as the configuration space layout remains unchanged
-> after a reset. This allows the cache to be repopulated with fresh values
-> on subsequent configuration space accesses.
-> 
-> Known Limitations:
-> ------------------
-> - There is currently a gap in handling PowerPC secondary bus resets, as
-> the architecture-specific `pcibios_reset_secondary_bus()` can bypass the
-> generic `pci_reset_secondary_bus()` where our cache invalidation occurs.
-> 
-> Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
-> Signed-off-by: Stanislav Spassov <stanspas@amazon.de>
-
-
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index f518cfa266b5..db940f8fd408 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -26,6 +26,7 @@
->  #include <linux/device.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/pci_hotplug.h>
-> +#include <linux/pcsc.h>
->  #include <linux/vmalloc.h>
->  #include <asm/dma.h>
->  #include <linux/aer.h>
-> @@ -1248,11 +1249,19 @@ static int pci_dev_wait(struct pci_dev *dev, char *reset_type, int timeout)
->  		}
+> diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+> index c26162b58365..9b5275ef2d16 100644
+> --- a/drivers/pci/Kconfig
+> +++ b/drivers/pci/Kconfig
+> @@ -50,6 +50,13 @@ config PCSC
+>  	  intercepts configuration space operations and maintains cached
+>  	  copies of register values
 >  
->  		if (root && root->config_rrs_sv) {
-> +#ifdef CONFIG_PCSC
-> +			pcsc_hw_config_read(dev->bus, dev->devfn, PCI_VENDOR_ID, 4, &id);
-> +#else
->  			pci_read_config_dword(dev, PCI_VENDOR_ID, &id);
-> +#endif
->  			if (!pci_bus_rrs_vendor_id(id))
->  				break;
->  		} else {
-> +#ifdef CONFIG_PCSC
-> +			pcsc_hw_config_read(dev->bus, dev->devfn, PCI_COMMAND, 4, &id);
-In the !CONFIG case define this to be pci_read_config_dword()
+> +config PCSC_STATS
+> +	bool "PCI Configuration Space Cache Statistics"
+> +	depends on PCSC
+> +	default n
 
-> +#else
->  			pci_read_config_dword(dev, PCI_COMMAND, &id);
-> +#endif
->  			if (!PCI_POSSIBLE_ERROR(id))
->  				break;
->  		}
+No need, that's what you get if you don't specify a default.
 
->  void __weak pcibios_reset_secondary_bus(struct pci_dev *dev)
-> @@ -5542,6 +5594,9 @@ static void pci_bus_restore_locked(struct pci_bus *bus)
+> +	help
+> +	  This option allows the collection of statistics for the PCSC.
+> +
+>  source "drivers/pci/pcie/Kconfig"
 >  
->  	list_for_each_entry(dev, &bus->devices, bus_list) {
->  		pci_dev_restore(dev);
-> +#ifdef CONFIG_PCSC
-> +		pcsc_device_reset(dev);
-> +#endif
->  		if (dev->subordinate) {
->  			pci_bridge_wait_for_secondary_bus(dev, "bus reset");
->  			pci_bus_restore_locked(dev->subordinate);
-> @@ -5579,6 +5634,9 @@ static void pci_slot_restore_locked(struct pci_slot *slot)
->  		if (!dev->slot || dev->slot != slot)
->  			continue;
->  		pci_dev_restore(dev);
-> +#ifdef CONFIG_PCSC
-> +		pcsc_device_reset(dev);
+>  config PCI_MSI
+> diff --git a/drivers/pci/pcsc.c b/drivers/pci/pcsc.c
+> index 5412dea23446..304239b7ff8a 100644
+> --- a/drivers/pci/pcsc.c
+> +++ b/drivers/pci/pcsc.c
+> @@ -25,9 +25,84 @@ static int __init pcsc_enabled_setup(char *str)
+>  }
+>  __setup("pcsc_enabled=", pcsc_enabled_setup);
+>  
+> +#ifdef CONFIG_PCSC_STATS
+Use IS_ENABLED() on this instead of defines below and let
+dead code removal drop this without needing the ifdefs.
 
-Definitely use a stub for these.
-
+> +struct pcsc_stats {
+> +	/* Operation Counters */
+> +	unsigned long cache_hits;
+> +	unsigned long cache_misses;
+> +	unsigned long uncachable_reads;
+> +	unsigned long writes;
+> +	unsigned long cache_invalidations;
+> +	unsigned long total_reads;
+> +	unsigned long hw_reads;
+> +	unsigned long device_resets;
+> +	u64 total_cache_access_time; /* in milliseconds */
+> +	u64 total_hw_access_time; /* in milliseconds */
+> +	u64 hw_access_time_due_to_misses; /* in milliseconds */
+> +};
 > +#endif
->  		if (dev->subordinate) {
->  			pci_bridge_wait_for_secondary_bus(dev, "slot reset");
->  			pci_bus_restore_locked(dev->subordinate);
+> +
+>  static bool pcsc_initialised;
+>  static atomic_t num_nodes = ATOMIC_INIT(0);
+>  
+> +#ifdef CONFIG_PCSC_STATS
+> +struct pcsc_stats pcsc_stats;
+static?
+> +
+> +static inline void pcsc_count_cache_hit(void)
+> +{
+I'd drop the stubs and do
+	if (IS_ENABLED_CONFIG_PCSC_STATS)) {
+		pcsc_stats.cache_hits++;
+		pcsc_stats.total_reads++;
+	}
+
+Compiler should then figure out they are stubs and drop them for you.
+
+> +	pcsc_stats.cache_hits++;
+> +	pcsc_stats.total_reads++;
+> +}
+
+>  
+>  	if (WARN_ON(!dev || !bus || !word))
+>  		return -EINVAL;
+> @@ -734,7 +813,6 @@ static int pcsc_get_and_insert_multiple(struct pci_dev *dev,
+>  	if (WARN_ON(size != 1 && size != 2 && size != 4))
+>  		return -EINVAL;
+>  
+> -	/* Check bounds */
+Not sure why this is removed here.
+
+>  	if (where + size > PCSC_CFG_SPC_SIZE)
+>  		return -EINVAL;
+>  
+> @@ -746,8 +824,17 @@ static int pcsc_get_and_insert_multiple(struct pci_dev *dev,
+>  			pcsc_get_byte(dev, where + i, &byte_val);
+>  			word_cached |= ((u32)byte_val << (i * 8));
+>  		}
+> +		pcsc_count_cache_hit();
+>  	} else {
+> +#ifdef CONFIG_PCSC_STATS
+> +		start_time = ktime_get();
+> +#endif
+>  		rc = pcsc_hw_config_read(bus, devfn, where, size, &word_cached);
+> +#ifdef CONFIG_PCSC_STATS
+> +		duration = ktime_to_ns(ktime_sub(ktime_get(), start_time));
+> +		pcsc_stats.hw_access_time_due_to_misses += duration;
+> +		pcsc_stats.total_hw_access_time += duration;
+> +#endif
+>  		if (rc) {
+>  			pci_err(dev,
+>  				"%s: Failed to read CFG Space where=%d size=%d",
+> @@ -762,6 +849,7 @@ static int pcsc_get_and_insert_multiple(struct pci_dev *dev,
+>  			byte_val = (word_cached >> (i * 8)) & 0xFF;
+>  			pcsc_update_byte(dev, where + i, byte_val);
+>  		}
+> +		pcsc_count_cache_miss();
+>  	}
+>  
+>  	*word = word_cached;
+> @@ -773,6 +861,17 @@ int pcsc_cached_config_read(struct pci_bus *bus, unsigned int devfn, int where,
+>  {
+>  	int rc;
+>  	struct pci_dev *dev;
+> +#ifdef CONFIG_PCSC_STATS
+> +	ktime_t hw_start_time;
+> +	u64 hw_duration;
+> +#endif
+> +
+> +#ifdef CONFIG_PCSC_STATS
+> +	u64 duration;
+> +	ktime_t start_time;
+> +
+> +	start_time = ktime_get();
+> +#endif
+>  
+>  	if (unlikely(!pcsc_is_initialised()))
+>  		goto read_from_dev;
+> @@ -790,6 +889,10 @@ int pcsc_cached_config_read(struct pci_bus *bus, unsigned int devfn, int where,
+>  	    pcsc_is_access_cacheable(dev, where, size)) {
+>  		rc = pcsc_get_and_insert_multiple(dev, bus, devfn, where, val,
+>  						  size);
+> +#ifdef CONFIG_PCSC_STATS
+As above. Stick this under and IS_ENABLED() and let dead code removal tidy it up.
+
+> +		duration = ktime_to_ns(ktime_sub(ktime_get(), start_time));
+> +		pcsc_stats.total_cache_access_time += duration;
+> +#endif
+>  		if (likely(!rc)) {
+>  			pci_dev_put(dev);
+>  			return 0;
+> @@ -797,11 +900,23 @@ int pcsc_cached_config_read(struct pci_bus *bus, unsigned int devfn, int where,
+>  		/* if reading from the cache failed continue and try reading
+>  		 * from the actual device
+>  		 */
+> +	} else {
+> +		if (dev->hdr_type == PCI_HEADER_TYPE_NORMAL)
+> +			pcsc_count_uncachable_read();
+>  	}
+>  read_from_dev:
+> +#ifdef CONFIG_PCSC_STATS
+> +	hw_start_time = ktime_get();
+> +#endif
+>  	if (dev)
+>  		pci_dev_put(dev);
+> -	return pcsc_hw_config_read(bus, devfn, where, size, val);
+> +	rc = pcsc_hw_config_read(bus, devfn, where, size, val);
+> +#ifdef CONFIG_PCSC_STATS
+> +	hw_duration = ktime_to_ns(ktime_sub(ktime_get(), hw_start_time));
+> +	/* Add timing for uncacheable reads */
+> +	pcsc_stats.total_hw_access_time += hw_duration;
+> +#endif
+> +	return rc;
+>  }
+>  EXPORT_SYMBOL_GPL(pcsc_cached_config_read);
+>  
+> @@ -810,6 +925,11 @@ int pcsc_cached_config_write(struct pci_bus *bus, unsigned int devfn, int where,
+>  {
+>  	int i;
+>  	struct pci_dev *dev;
+> +	int rc;
+> +#ifdef CONFIG_PCSC_STATS
+> +	ktime_t hw_start_time;
+> +	u64 hw_duration;
+> +#endif
+>  
+>  	if (unlikely(!pcsc_is_initialised()))
+>  		goto write_to_dev;
+> @@ -828,12 +948,22 @@ int pcsc_cached_config_write(struct pci_bus *bus, unsigned int devfn, int where,
+>  		if (pcsc_is_access_cacheable(dev, where, size)) {
+>  			for (i = 0; i < size; i++)
+>  				pcsc_set_cached(dev, where + i, false);
+> +			pcsc_count_cache_invalidation();
+>  		}
+>  	}
+>  write_to_dev:
+> +	pcsc_count_write();
+>  	if (dev)
+>  		pci_dev_put(dev);
+> -	return pcsc_hw_config_write(bus, devfn, where, size, val);
+> +#ifdef CONFIG_PCSC_STATS
+> +	hw_start_time = ktime_get();
+> +#endif
+> +	rc = pcsc_hw_config_write(bus, devfn, where, size, val);
+> +#ifdef CONFIG_PCSC_STATS
+> +	hw_duration = ktime_to_ns(ktime_sub(ktime_get(), hw_start_time));
+> +	pcsc_stats.total_hw_access_time += hw_duration;
+> +#endif
+> +	return rc;
+>  }
+>  EXPORT_SYMBOL_GPL(pcsc_cached_config_write);
+>  
+> @@ -851,6 +981,7 @@ int pcsc_device_reset(struct pci_dev *dev)
+>  	 * some of the HWInt values that are going to remain constant after a reset.
+>  	 */
+>  	bitmap_zero(dev->pcsc->cached_bitmask, PCSC_CFG_SPC_SIZE);
+> +	pcsc_count_device_reset();
+>  	return 0;
+>  }
+>  
+> @@ -948,8 +1079,50 @@ static ssize_t pcsc_enabled_store(struct kobject *kobj,
+>  static struct kobj_attribute pcsc_enabled_attribute =
+>  	__ATTR(enabled, 0644, pcsc_enabled_show, pcsc_enabled_store);
+>  
+> +#ifdef CONFIG_PCSC_STATS
+> +static ssize_t pcsc_stats_show(struct kobject *kobj,
+> +			       struct kobj_attribute *attr, char *buf)
+> +{
+> +	return sysfs_emit(
+> +		buf,
+> +		"Cache Hits: %lu\n"
+> +		"Cache Misses: %lu\n"
+> +		"Uncachable Reads: %lu\n"
+> +		"Writes: %lu\n"
+> +		"Cache Invalidations: %lu\n"
+> +		"Device Resets: %lu\n"
+> +		"Total Reads: %lu\n"
+> +		"Hardware Reads: %lu\n"
+> +		"Hit Rate: %lu%%\n"
+> +		"Total Cache Access Time: %llu us\n"
+> +		"Cache Access Time (without HW reads due to Misses): %llu us\n"
+> +		"HW Access Time due to misses: %llu us\n"
+> +		"Total Hardware Access Time: %llu us\n",
+> +		pcsc_stats.cache_hits, pcsc_stats.cache_misses,
+> +		pcsc_stats.uncachable_reads, pcsc_stats.writes,
+> +		pcsc_stats.cache_invalidations, pcsc_stats.device_resets,
+> +		pcsc_stats.total_reads,
+> +		pcsc_stats.hw_reads,
+> +		pcsc_stats.total_reads ?
+> +			      (pcsc_stats.cache_hits * 100) / pcsc_stats.total_reads :
+> +			      0,
+> +		pcsc_stats.total_cache_access_time / 1000,
+> +		(pcsc_stats.total_cache_access_time -
+> +		 pcsc_stats.hw_access_time_due_to_misses) /
+> +			1000,
+> +		pcsc_stats.hw_access_time_due_to_misses / 1000,
+> +		pcsc_stats.total_hw_access_time / 1000);
+> +}
+> +
+This would need a __maybe_unused
+> +static struct kobj_attribute pcsc_stats_attribute =
+> +	__ATTR(stats, 0444, pcsc_stats_show, NULL);
+> +#endif
+> +
+>  static struct attribute *pcsc_attrs[] = {
+>  	&pcsc_enabled_attribute.attr,
+> +#ifdef CONFIG_PCSC_STATS
+And this ifdef can't be as easily avoided.   You could use an
+is_visible but probably not worth it.
+
+> +	&pcsc_stats_attribute.attr,
+> +#endif
+
+>  	NULL,
+>  };
 
 
 
