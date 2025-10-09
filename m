@@ -1,148 +1,139 @@
-Return-Path: <linux-acpi+bounces-17690-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17691-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F08BCA57D
-	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 19:13:28 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B780BCA6B4
+	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 19:48:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91454426FE8
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 17:13:15 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B4F4434FEF9
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 17:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BD323E35B;
-	Thu,  9 Oct 2025 17:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mfZNt8xq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E5E23C4FF;
+	Thu,  9 Oct 2025 17:48:51 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5218A70830
-	for <linux-acpi@vger.kernel.org>; Thu,  9 Oct 2025 17:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3591F7580;
+	Thu,  9 Oct 2025 17:48:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760029988; cv=none; b=Rdii5dw6E349QcWQjwqoHyDl+zey0a9OZO6dLVxWo7qFkVqfJpx/eCaCTKUBCKajYEsd1mJ2h5ragbeYAx29Zpj8R8UZF3iUkzt+IBh4lXVB0kYMosQ/YywKMbjBKMbV3PfPHfF4fxaWdTeMF7oHUEXLAJduPHBuca9Qn2r3y1g=
+	t=1760032131; cv=none; b=pYBWwjLzL2rL4V/tA7wFry7tfqLp7nkn+h20lijqXcVD7ccBQ1MNgScqCZaz07K3T3R+n/RDQ8dZmpsBPE0vL3tUVWcgOvgKaPiDcU80AyC2rLL69/0OfoHtXQuUs/Yv5N4cPiv4/oUaW3DiQXdjRBf/LKcFp9pT3Ju7Uc2oEms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760029988; c=relaxed/simple;
-	bh=bTB6nX2n7XAcSgCZIN5w/wYw1ImzrVTnmr4PGKYcGd0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CNx1Gm5Q6Qoo5BwKzAkW1DYd8BZxz5qH7TUNAZpnqduarXwr6l1i3bDyIaf3o8BjnBj0X9exEDlnJJXV/XcexQ0eiWoN2VmuCr0OZFEKuLA7QXWWxbabbG9rB2KOTfF1vX0DSfFeNCzdCyNDJ8wtWfbWIUFOjHv6ZmAJTjlXwfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mfZNt8xq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE758C2BC86
-	for <linux-acpi@vger.kernel.org>; Thu,  9 Oct 2025 17:13:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760029987;
-	bh=bTB6nX2n7XAcSgCZIN5w/wYw1ImzrVTnmr4PGKYcGd0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mfZNt8xqvdpCTliPpe2xucUF/4/F+DNTSCzJDSRqzoJ6nVbhhZu2FpeU+koIdhrd3
-	 Ke7xBLThovOm7N0AOhkLBYJoWHMSnkKWxlGk/D2VsdDGQd6RwfqvRkT11N1kqoWUmX
-	 lcX3SQc6dpWVnRW8+czBQF21uBUUSQAUayVY7OUPDRHOQ/4sYbjbFtGyN3xD+k/WFN
-	 vdp2pbxAj+NjL7Z+7M1AEfkmXgZf5lSolif3cLj+AdruZzLdOt7ErjxB1Q/ln8mtbu
-	 ODKZBtaw7Lbi1WP1NIE544dOO/B6JuehnOVn1ag/gIr88pLg8G1asfYtncp0ZC7+yH
-	 RAjnjY8z1WUwg==
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-71d6014810fso12174617b3.0
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Oct 2025 10:13:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUQZOqnpVxQHMhjTQgPS0YWni+ktINAIVuKlhG9dygCs4yXL20ZK1XVH5Bz/4NtUXt9X8P+2tO1NX2o@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHXThQgUkcYL2x+gqDNbMvi6QgfAdV9X0jrYIKLwhZ+qlptnXc
-	81I5KGQPXeThrSRd+4VPtBH3wg1JHezX1umytKHmqNDJRzBuNHFImNTkqZ53PtDiuci1EZ67jsF
-	7OhCxBRql6PSeIFCq6uK6mYYKlmgYoH6Sa7QrGELeLA==
-X-Google-Smtp-Source: AGHT+IGvYxKDw71e40j1lde3uPEIM/7eVY+zWC2bZpCm7C1jqNV5j5uAWu76e8vqoG+EQXZTzoREFVL2qq1Yk9qPz+o=
-X-Received: by 2002:a05:690e:3c4:b0:627:4520:1374 with SMTP id
- 956f58d0204a3-63ccb8bb22cmr6753493d50.30.1760029987009; Thu, 09 Oct 2025
- 10:13:07 -0700 (PDT)
+	s=arc-20240116; t=1760032131; c=relaxed/simple;
+	bh=zAQfZNYWFVffiElsOpE8p/vY2sMzBDmMGILBqdJorTg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MhtCfR3Mv0Wgze+K4DfoW/Puen72vNb9gFGooAyg0ps3eO7bl/9gIIvy7Enbv2Xg7NGk971g5OUMfwaTubELF7xGrd/vQPthOg7rzj07nIHY+jROlCZ1h1hzROnaO+wwEIujrsbvqie9pli3YRbubmNeYGTGqAEasssoY+1ilo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B21C91762;
+	Thu,  9 Oct 2025 10:48:40 -0700 (PDT)
+Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 256843F66E;
+	Thu,  9 Oct 2025 10:48:43 -0700 (PDT)
+Message-ID: <a3462502-5732-4eae-b0b3-04fc7f040372@arm.com>
+Date: Thu, 9 Oct 2025 18:48:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+CK2bAbB8YsheCwLi0ztY5LLWMyQ6He3sbYru697Ogq5+hR+Q@mail.gmail.com>
- <20250929150425.GA111624@bhelgaas> <CACePvbV+D6nu=gqjavv+hve4tcD+6WxQjC0O9TbNxLCeBhi5nQ@mail.gmail.com>
- <CACePvbUJ6mxgCNVy_0PdMP+-98D0Un8peRhsR45mbr9czfMkEA@mail.gmail.com> <CALzav=devrsJ2=3bt_=Z7BwT2CE1sv7AGDjh4uCC7mWzD7UR4Q@mail.gmail.com>
-In-Reply-To: <CALzav=devrsJ2=3bt_=Z7BwT2CE1sv7AGDjh4uCC7mWzD7UR4Q@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Thu, 9 Oct 2025 10:12:56 -0700
-X-Gmail-Original-Message-ID: <CACePvbVD1qhRzZTbsxOdvmTsTPPxRGs0qD7QrO1pTWevzqhQGg@mail.gmail.com>
-X-Gm-Features: AS18NWBoA3GL6CZ9-SXewQlQu9-HnJTfh8iTD7RpkM2_ASr3xKBCEkoXrBXHk64
-Message-ID: <CACePvbVD1qhRzZTbsxOdvmTsTPPxRGs0qD7QrO1pTWevzqhQGg@mail.gmail.com>
-Subject: Re: [PATCH v2 00/10] LUO: PCI subsystem (phase I)
-To: David Matlack <dmatlack@google.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, Pasha Tatashin <tatashin@google.com>, 
-	Jason Miu <jasonmiu@google.com>, Vipin Sharma <vipinsh@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Parav Pandit <parav@nvidia.com>, William Tu <witu@nvidia.com>, Mike Rapoport <rppt@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, skhawaja@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 25/29] arm_mpam: Probe for long/lwd mbwu counters
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-acpi@vger.kernel.org,
+ D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com, Rob Herring <robh@kernel.org>,
+ Rohit Mathew <rohit.mathew@arm.com>, Rafael Wysocki <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Ben Horgan <ben.horgan@arm.com>
+References: <20250910204309.20751-1-james.morse@arm.com>
+ <20250910204309.20751-26-james.morse@arm.com>
+ <20250912142724.000026a7@huawei.com>
+Content-Language: en-GB
+From: James Morse <james.morse@arm.com>
+In-Reply-To: <20250912142724.000026a7@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 8, 2025 at 4:01=E2=80=AFPM David Matlack <dmatlack@google.com> =
-wrote:
->
-> On Tue, Oct 7, 2025 at 4:32=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote=
-:
-> >
-> > Thanks to one that provides good feedback on the PCI series.
-> >
-> > I just want to give an update on the state of the LUO PCI series,
-> > based on the feedback I received. The LUO PCI series should be called
-> > from the memfd side and remove global subsystem state if possible.
->
-> By "memfd side" I believe you are referring to LUO fd preservation
-> (likely the VFIO cdev fd).
+Hi Jonathan,
 
-Yes. I haven't taken a closer look at the recent LUO fd preservation
-series. It is on my to do list, now I am depending on it.
+On 12/09/2025 14:27, Jonathan Cameron wrote:
+> On Wed, 10 Sep 2025 20:43:05 +0000
+> James Morse <james.morse@arm.com> wrote:
+>> From: Rohit Mathew <rohit.mathew@arm.com>
+>>
+>> mpam v0.1 and versions above v1.0 support optional long counter for
+>> memory bandwidth monitoring. The MPAMF_MBWUMON_IDR register have fields
+>> indicating support for long counters. As of now, a 44 bit counter
+>> represented by HAS_LONG field (bit 30) and a 63 bit counter represented
+>> by LWD (bit 29) can be optionally integrated. Probe for these counters
+>> and set corresponding feature bits if any of these counters are present.
 
-> > Which means the PCI series will depend on the VIFO or iommu series.
-> > I have some internal alignment with Vipin (for VFIO) and Samiullah
-> > (for iommu). Here is the new plan for upstream patch submission:
-> >
-> > 1)  KHO series go first, which is already happening with additional imp=
-rovement.
-> >
-> > 2) Next is Pasha's LUO series with memfd support, also happening right =
-now.
-> >
-> > 3) Next series will be Vipin's VFIO series with preserving one
-> > busmaster bit in the config space of the end point vfio device, there
-> > is no PCI layer involved yet. The VFIO will use some driver trick to
-> > prevent the native driver from binding to the liveupdate device used
-> > by VFIO after kexec. After kexec, the VFIO driver validates that the
-> > busmaster in the PCI config register is already set.
->
-> Yes. Last we discussed Vipin is planning to just compile out the
-> native driver of the device he is using to test. So we don't expect to
-> need any kernel code changes to unblock basic testing and posting the
-> RFC.
+> I'd like a little more justification of the 'front facing' use for the first
+> feature bit.  To me that seems confusing but I may well be missing why
+> we can't have 3 exclusive features.
+>> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+>> index eeb62ed94520..bae9fa9441dc 100644
+>> --- a/drivers/resctrl/mpam_devices.c
+>> +++ b/drivers/resctrl/mpam_devices.c
+>> @@ -795,7 +795,7 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
+>>  				dev_err_once(dev, "Counters are not usable because not-ready timeout was not provided by firmware.");
+>>  		}
+>>  		if (FIELD_GET(MPAMF_MSMON_IDR_MSMON_MBWU, msmon_features)) {
+>> -			bool hw_managed;
+>> +			bool has_long, hw_managed;
+>>  			u32 mbwumon_idr = mpam_read_partsel_reg(msc, MBWUMON_IDR);
+>>  
+>>  			props->num_mbwu_mon = FIELD_GET(MPAMF_MBWUMON_IDR_NUM_MON, mbwumon_idr);
+>> @@ -805,6 +805,27 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
+>>  			if (FIELD_GET(MPAMF_MBWUMON_IDR_HAS_RWBW, mbwumon_idr))
+>>  				mpam_set_feature(mpam_feat_msmon_mbwu_rwbw, props);
+>>  
+>> +			/*
+>> +			 * Treat long counter and its extension, lwd as mutually
+>> +			 * exclusive feature bits. Though these are dependent
+>> +			 * fields at the implementation level, there would never
+>> +			 * be a need for mpam_feat_msmon_mbwu_44counter (long
+>> +			 * counter) and mpam_feat_msmon_mbwu_63counter (lwd)
+>> +			 * bits to be set together.
+>> +			 *
+>> +			 * mpam_feat_msmon_mbwu isn't treated as an exclusive
+>> +			 * bit as this feature bit would be used as the "front
+>> +			 * facing feature bit" for any checks related to mbwu
+>> +			 * monitors.
 
-Ack.
+> Why do we need such a 'front facing' bit?  Why isn't it sufficient just to
+> add a little helper or macro to find out if mbwu is turned on?
 
->
-> >
-> > 4) After the VFIO series, the PCI can start to preserve the livedupate
-> > device by BDF. Avoid the driver auto probe on the livedupate devices.
-> > At this point the VFIO driver in stage 3 will not need the other
-> > driver trick to avoid the auto bind of native driver. The PCI layer
-> > takes the core of that. This series PCI will have very limited
-> > support, most of the driver callback is not needed, no bridge device
-> > dependent as well.
->
-> I suspect we'll need the new file-lifecycle-bound global state thing
-> that Pasha is working on [1] to accomplish this. So please track
-> LUOv5+ as a dependency for this.
->
-> [1] https://lore.kernel.org/lkml/CA+CK2bB+RdapsozPHe84MP4NVSPLo6vje5hji5M=
-KSg8L6ViAbw@mail.gmail.com/
+(I read Rohit's front-facing as top-level).
 
-Agree, I need to figure out the boiler plate change to hook up PCI to
-the file descriptors.
+I think Rohit thought it would be simpler - there is one feature enum that gets passed in
+from the resctrl glue code saying "I want to read a bandwidth counter", because there
+is only one, and it doesn't care what size. I think Rohit didn't want to touch that code!
 
-Thanks for the clarification.
+As that is really a separate concept, I think its worth handling explicitly:
+mpam_feat_msmon_mbwu means there are counters, and mpam_feat_msmon_mbwu_{31,44,63}counter
+say which ones are supported.
 
-Chris
+The helper you suggest an then pick which one is best.
+
+
+Thanks,
+
+James
 
