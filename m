@@ -1,57 +1,57 @@
-Return-Path: <linux-acpi+bounces-17684-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17685-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F06ABCA065
-	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 18:12:10 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 114B2BCA1D1
+	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 18:18:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8AA013543A7
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 16:09:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 64C884FEC2E
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 16:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783F82F5485;
-	Thu,  9 Oct 2025 16:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3670F2F5A24;
+	Thu,  9 Oct 2025 16:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iFS1l9am"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HqYrkiyn"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE691DDC3F;
-	Thu,  9 Oct 2025 16:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB0221C9E5;
+	Thu,  9 Oct 2025 16:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760025654; cv=none; b=dOCrpAtX0HUfszEcVIrutEHT5McT50JdavRyIQDu8aYOxQcDDRhp6ttrwei/iCMNsz5EVEMxCWtPQ47BPR6P5wYDDoVOVlIeyeYFDnr6+LR+rMgJxYYRqvSUzc1VSGEhxO0/s63hYK3Od5oGCCcQg3V+/eGMTxAImDYiMhKmY3k=
+	t=1760025674; cv=none; b=uXB/6l6FPUV2MY09uncbGvyK9TjzRsVi22WGZrR7bdpiwz5kqhL++wnXRYhkjq2GdaWJkaMv5iDIgXitiM6epPDDKh6VeLP5DhmnJ3yKto5a2LuDWu58z+Bf+oWfVY+9IolipOBap9Jk5XSglcT0KEt+nrMnCz1Oe3mA9Nb1xts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760025654; c=relaxed/simple;
-	bh=BK+UZM68yr7IXxkUdJWYA1qW4Tg3IOKedg+voiWPBvE=;
+	s=arc-20240116; t=1760025674; c=relaxed/simple;
+	bh=GemkRLfESMh2tFr6/xGywQSr+fRi9j9xxLHWBi3E+q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qz/4Lf0bFTLgfwjl4JCCW90oSq07+Rtso9hy3ZWqQhw5tMylGYm6hOYyaS/tetZ1u1/dOOa8hgNw7WpaqNmFGWMH/g4RXhgAIIkoRvl21KCGmqA7L5fDEknPDgOslIk13n7rQe401bG4DVQRCt0wGf4KNUrWZ9ktpm8sSINapA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iFS1l9am; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B33C4CEF8;
-	Thu,  9 Oct 2025 16:00:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gElNNL6t/XJA2l2LExD4Q0dbC5hzNdpehGx0eSF5/rURtudgDsFVqxffsGUWpB4JCBxvxYESU6OCrdynBxCwWaZ08XyxKk3msA0WkaUXUqQdGglL0DSW9vHx4bf16+iPAZw+JUZmdKd5zT7xD61PCmSCBDfgpsq2AsrldwwOfng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HqYrkiyn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0DCC4CEF7;
+	Thu,  9 Oct 2025 16:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760025654;
-	bh=BK+UZM68yr7IXxkUdJWYA1qW4Tg3IOKedg+voiWPBvE=;
+	s=k20201202; t=1760025673;
+	bh=GemkRLfESMh2tFr6/xGywQSr+fRi9j9xxLHWBi3E+q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iFS1l9am7ryN+3i1aUD3KwsAasmX+t24PcylF859q/uPNZ0naUlWQnRRTDYHH/8a+
-	 1rvQi1QuA4GNXpxtms4bzcPUJu3nRJQurBjPItcqqIqm3kReWpDdpdhu6qxmAXq+K6
-	 CT/9dK6/93LOTF0t9DEeSs+3zDCvRxfKNMFXCvSrivdJgPQpG02TMTqAYWVgfJeoJ5
-	 7U5o8/7UCfbhlYhvpJlJJR5SATH3dHSOOGyrMuXJQ11fqSqPGjngm3kef5NUygfN/o
-	 VuU64ifhndaaWwe1IbGcl/eNkHoYf4dklIQGZc8jkY37CEuHTkJ0iseE2VE2UCnCFY
-	 66uFelR7sIk8g==
+	b=HqYrkiynmoeyDlLwPPt41cVpRutGJNgtefHZ5pz3TdJ91gxr56lTL7OsLg0tGdEpp
+	 ff5DLylrmHz7ZHD/NlCIrkLBK+UeeWAuhwt/Ln36I5bX15TJbOZOlaPoYdDaqYBXDC
+	 86k4qhLFqHLGRT3NAerUdIN5rtqS74pRvhcJBf70nHJ55voWjWaUcQrtuDSVesdvkd
+	 MCo1sfA+2Lw7gq98aclxu6cetlMV0ZzRDpZ/G2RuZIjU50hzDtvw9O5J92lXX+Zx9T
+	 CyRwA7l+7gBxyTITH+MebXMmrYkEMGDUWTWlJhM0NeQzI9mgHpxMOpSjiH3eNIjgnj
+	 5m2jhs5SYKsww==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Sam van Kampen <sam@tehsvk.net>,
+Cc: Chen Pei <cp0613@linux.alibaba.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.17-6.12] ACPI: resource: Skip IRQ override on ASUS Vivobook Pro N6506CU
-Date: Thu,  9 Oct 2025 11:56:03 -0400
-Message-ID: <20251009155752.773732-97-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.17-6.12] ACPI: SPCR: Support Precise Baud Rate field
+Date: Thu,  9 Oct 2025 11:56:13 -0400
+Message-ID: <20251009155752.773732-107-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251009155752.773732-1-sashal@kernel.org>
 References: <20251009155752.773732-1-sashal@kernel.org>
@@ -67,241 +67,116 @@ X-stable-base: Linux 6.17.1
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Sam van Kampen <sam@tehsvk.net>
+From: Chen Pei <cp0613@linux.alibaba.com>
 
-[ Upstream commit 3a351de0d9c86e23b9eca25838b19468aab02f38 ]
+[ Upstream commit 4d330fe54145ecfbb657ac01a554fdedf3c1927e ]
 
-Just like the other Vivobooks here, the N6506CU has its keyboard IRQ
-described as ActiveLow in the DSDT, which the kernel overrides to
-EdgeHigh, causing the internal keyboard not to work.
+The Microsoft Serial Port Console Redirection (SPCR) specification
+revision 1.09 comprises additional field: Precise Baud Rate [1].
 
-Add the N6506CU to the irq1_level_low_skip_override[] quirk table to fix
-this.
+It is used to describe non-traditional baud rates (such as those
+used by high-speed UARTs).
 
-Signed-off-by: Sam van Kampen <sam@tehsvk.net>
-Link: https://patch.msgid.link/20250829145221.2294784-2-sam@tehsvk.net
+It contains a specific non-zero baud rate which overrides the value
+of the Configured Baud Rate field. If this field is zero or not
+present, Configured Baud Rate is used.
+
+Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/serports/serial-port-console-redirection-table [1]
+Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
+Link: https://patch.msgid.link/20250913070815.16758-1-cp0613@linux.alibaba.com
+[ rjw: Corrected typo in the subject ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Backport Recommendation: **YES**
+YES
 
-### Executive Summary
+- What it changes and why it matters:
+  - Adds support for the SPCR “Precise Baud Rate” field so the kernel
+    honors non‑standard/high‑speed UART baud rates from firmware. The
+    new logic checks `table->precise_baudrate` and, if non‑zero, uses
+    it; otherwise it falls back to the existing enumerated “Configured
+    Baud Rate” mapping.
+  - Code reference: drivers/acpi/spcr.c:153 adds the explanatory comment
+    and the override logic; drivers/acpi/spcr.c:158 uses `if
+    (table->precise_baudrate) baud_rate = table->precise_baudrate; else
+    switch (table->baud_rate) { ... }`.
+  - Without this, systems that publish a precise baud in SPCR (e.g.,
+    1.5M, 3M, etc.) end up with an incorrect console configuration
+    (typically 115200), breaking or garbling the serial console. This is
+    a user-visible bug in environments that follow SPCR 1.09+.
 
-This commit is an **excellent candidate for stable backporting** and
-has, in fact, **already been backported to stable trees** (commit
-ae61b6b114593). This is a textbook example of the type of hardware
-compatibility fix that the stable kernel process is designed to handle.
+- Scope and risk:
+  - Minimal, self‑contained change in one file (drivers/acpi/spcr.c). It
+    does not alter console selection logic, I/O type decisions, or
+    errata handling; it only sets `baud_rate` earlier when the field is
+    present, leaving the long‑standing switch on `table->baud_rate`
+    unchanged.
+  - No architectural or behavioral changes beyond honoring an existing
+    spec field. No new features; this is a spec‑compliance fix.
 
----
+- Dependencies and compatibility:
+  - Requires the ACPICA header update that introduced the field in
+    `struct acpi_table_spcr`:
+    - Code reference: include/acpi/actbl3.h:124 defines `u32
+      precise_baudrate;` (added by “ACPICA: SPCR: Update the SPCR table
+      to version 4”, present from v6.12 and newer).
+  - For stable trees older than v6.12, this commit will not compile
+    unless that ACPICA update (and its related SPCR struct changes) is
+    backported first. Backporting both together is straightforward and
+    low‑risk, as the header change is additive and this code only reads
+    the new field.
 
-### Detailed Analysis
+- Subtlety to be aware of:
+  - The SPCR spec says the precise field “overrides” when non‑zero; if
+    zero or not present, use the configured enumerated value. The code
+    implements this correctly by falling back to the existing switch
+    when the field is zero (drivers/acpi/spcr.c:158).
+  - As upstream implemented, there is no explicit table-length check
+    before reading `precise_baudrate`. This matches mainline, but when
+    backporting to very old kernels and encountering very old SPCR
+    revisions, maintainers may optionally add a guard using
+    `table->header.length` to be extra defensive. Not required for
+    v6.12+ where the header and field are in place.
 
-#### 1. **What This Commit Does**
+- Stable backport criteria:
+  - Fixes a real, user‑visible issue (misconfigured or non‑functional
+    serial console on systems using SPCR precise baud).
+  - Small and localized change with minimal regression risk.
+  - No architectural churn or new feature exposure.
+  - Touches the ACPI SPCR parsing path only; console setup remains
+    unchanged aside from using the correct baud.
 
-The commit adds a single DMI quirk entry to the
-`irq1_level_low_skip_override[]` table in
-`drivers/acpi/resource.c:510-517`:
+Conclusion: This is a good candidate for stable backport, provided the
+target stable series already contains (or is backported with) the SPCR
+v4 ACPICA header update that defines `precise_baudrate`.
 
-```c
-{
-    /* Asus Vivobook Pro N6506CU* */
-    .matches = {
-        DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-        DMI_MATCH(DMI_BOARD_NAME, "N6506CU"),
-    },
-},
-```
+ drivers/acpi/spcr.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-This 7-line addition prevents the kernel from overriding the ACPI DSDT
-IRQ 1 settings for the ASUS Vivobook Pro N6506CU laptop.
-
-#### 2. **The Problem It Fixes**
-
-**User-facing bug**: The internal keyboard does not work on the N6506CU.
-
-**Technical cause**: The laptop's DSDT (ACPI firmware table) describes
-IRQ 1 (keyboard interrupt) as `Level-Sensitive, ActiveLow`, but the
-kernel's default behavior overrides this to `Edge-High`. This mismatch
-breaks keyboard functionality.
-
-**Solution**: Adding the laptop to the quirk table tells the kernel to
-skip the override and respect the DSDT settings.
-
-#### 3. **Evidence This Should Be Backported**
-
-##### 3.1 Already Backported (Strongest Evidence)
-- **Commit ae61b6b114593** is the stable backport of this mainline
-  commit (3a351de0d9c86)
-- Contains: `[ Upstream commit 3a351de0d9c86 ]`
-- Signed by: `Sasha Levin <sashal@kernel.org>` (stable kernel
-  maintainer)
-- This proves the stable kernel team already determined this is
-  appropriate for backporting
-
-##### 3.2 Consistent Pattern Across Similar Commits
-All similar commits for other N6506M variants have been backported:
-- **N6506MV**: `39912b01dcda7` (stable backport of `7c52c7071bd40`)
-- **N6506MU**: `f4d388559ca6a` (stable backport of `dc41751f9e078`)
-- **N6506MJ**: `fe704c7d88cce` (stable backport of `e2e7f037b400a`)
-
-##### 3.3 Extensive Precedent
-Research found **46 commits** related to `irq1_level_low_skip_override`,
-with many backported to multiple stable branches:
-- X1404VAP: 9 backports across different stable branches
-- X1504VAP: 7 backports
-- Multiple ASUS Vivobook, ExpertBook, and other laptop models
-
-##### 3.4 Explicit Stable Tags in Related Commits
-Similar commits contain: `Cc: All applicable <stable@vger.kernel.org>`
-- Example: commits `2da31ea2a085c` (X1404VAP) and `66d337fede44d`
-  (X1504VAP)
-
-#### 4. **Risk Assessment: MINIMAL**
-
-##### 4.1 Extremely Targeted Scope
-- **Only affects**: ASUS Vivobook Pro N6506CU laptops
-- **DMI matching specificity**: Requires exact match on both:
-  - System Vendor: "ASUSTeK COMPUTER INC."
-  - Board Name: "N6506CU"
-- **False positive risk**: Effectively zero due to specific DMI matching
-
-##### 4.2 Code Analysis
-```c
-static const struct irq_override_cmp override_table[] = {
-    { irq1_level_low_skip_override, 1, ACPI_LEVEL_SENSITIVE,
-ACPI_ACTIVE_LOW, 0, false },
-    ...
-};
-```
-
-The quirk table is checked in `acpi_dev_irq_override()` at
-`drivers/acpi/resource.c:700`. When conditions match:
-- IRQ number == 1
-- Triggering == ACPI_LEVEL_SENSITIVE
-- Polarity == ACPI_ACTIVE_LOW
-- DMI matches N6506CU
-→ Returns `false` (skip override)
-
-**Impact**: Only affects IRQ 1 (keyboard) on this specific laptop model.
-No other systems or IRQs affected.
-
-##### 4.3 No Reverts Found
-Extensive git history search found **zero reverts** of similar quirk
-additions:
-```bash
-git log --all --grep="Revert.*irq1_level_low_skip_override"  # No
-results
-git log --all --grep="Revert.*Vivobook"                      # No
-results
-```
-
-This indicates the approach is stable and reliable.
-
-##### 4.4 Standalone Change
-- **No dependencies**: Commit is self-contained
-- **No prerequisites**: Doesn't require other patches
-- **Clean backport**: Single file change, simple addition to existing
-  table
-
-#### 5. **Stable Kernel Criteria Compliance**
-
-| Criterion | Status | Evidence |
-|-----------|--------|----------|
-| **Fixes important bug** | ✅ YES | Broken keyboard = critical hardware
-failure |
-| **Affects users** | ✅ YES | N6506CU users cannot use internal keyboard
-|
-| **Small and contained** | ✅ YES | 7 lines, single DMI quirk entry |
-| **Low regression risk** | ✅ YES | Only affects one laptop model |
-| **No architectural changes** | ✅ YES | Uses existing quirk mechanism |
-| **No new features** | ✅ YES | Pure hardware compatibility fix |
-| **Well-tested pattern** | ✅ YES | 46+ similar commits, none reverted |
-
-#### 6. **Technical Context**
-
-##### 6.1 Why ACPI IRQ Overrides Exist
-On x86 systems, the kernel typically overrides ACPI DSDT IRQ settings
-because many older BIOSes had incorrect IRQ configurations. The override
-mechanism (via MADT/APIC tables) generally works correctly.
-
-##### 6.2 Why This Laptop Needs the Quirk
-Modern ASUS laptops (particularly Vivobooks and ExpertBooks from
-~2023-2025) have correct DSDT IRQ configurations, but the kernel's
-default override breaks them. The quirk table allows skipping the
-override for specific models where the DSDT is correct.
-
-##### 6.3 Historical Pattern
-The `irq1_level_low_skip_override[]` table was created specifically for
-these cases and has grown to include:
-- MEDION laptops (P15651, S17405, S17413)
-- ASUS Vivobooks (E1404GA, E1504GA, X1404VAP, X1504VAP, X1704VAP,
-  N6506M*, etc.)
-- ASUS ExpertBooks (B1502CBA, B2402*, B2502*)
-- LG Electronics laptops (17U70P, 16T90SP)
-
-All follow the same pattern and have been successfully backported.
-
-#### 7. **Comparison to Reference Criteria**
-
-The commit message states the problem clearly:
-> "Just like the other Vivobooks here, the N6506CU has its keyboard IRQ
-described as ActiveLow in the DSDT, which the kernel overrides to
-EdgeHigh, causing the internal keyboard not to work."
-
-The fix is explicit and follows established precedent:
-> "Add the N6506CU to the irq1_level_low_skip_override[] quirk table to
-fix this."
-
-**This matches the characteristics of commits marked "Backport Status:
-YES"**:
-- Fixes important user-facing bug ✅
-- Minimal code change ✅
-- No architectural modifications ✅
-- Confined to single subsystem ✅
-- Low regression risk ✅
-
----
-
-### Conclusion
-
-**Backport Status: YES**
-
-This commit is an exemplary candidate for stable backporting:
-
-1. **Already backported**: Validates appropriateness
-2. **Critical bug**: Non-functional keyboard
-3. **Minimal risk**: Affects only N6506CU via specific DMI matching
-4. **Small change**: 7-line quirk addition
-5. **Proven pattern**: 46+ similar commits, zero reverts
-6. **Stable criteria**: Meets all requirements
-
-**Recommendation**: Backport to all applicable stable kernel trees where
-ASUS Vivobook hardware support exists (likely 6.1+, 6.6+, 6.12+, 6.17+).
-
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index b1ab192d7a080..ddedb6956a0df 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -510,6 +510,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "N6506M"),
- 		},
- 	},
-+	{
-+		/* Asus Vivobook Pro N6506CU* */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "N6506CU"),
-+		},
-+	},
- 	{
- 		/* LG Electronics 17U70P */
- 		.matches = {
+diff --git a/drivers/acpi/spcr.c b/drivers/acpi/spcr.c
+index cd36a97b0ea2c..fa12e740386de 100644
+--- a/drivers/acpi/spcr.c
++++ b/drivers/acpi/spcr.c
+@@ -146,7 +146,15 @@ int __init acpi_parse_spcr(bool enable_earlycon, bool enable_console)
+ 		goto done;
+ 	}
+ 
+-	switch (table->baud_rate) {
++	/*
++	 * SPCR 1.09 defines Precise Baud Rate Filed contains a specific
++	 * non-zero baud rate which overrides the value of the Configured
++	 * Baud Rate field. If this field is zero or not present, Configured
++	 * Baud Rate is used.
++	 */
++	if (table->precise_baudrate)
++		baud_rate = table->precise_baudrate;
++	else switch (table->baud_rate) {
+ 	case 0:
+ 		/*
+ 		 * SPCR 1.04 defines 0 as a preconfigured state of UART.
 -- 
 2.51.0
 
