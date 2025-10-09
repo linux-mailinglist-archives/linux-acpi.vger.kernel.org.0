@@ -1,127 +1,241 @@
-Return-Path: <linux-acpi+bounces-17671-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17672-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF82DBC963F
-	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 15:58:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CAABC9770
+	for <lists+linux-acpi@lfdr.de>; Thu, 09 Oct 2025 16:17:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6BF7F4EF5DD
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 13:57:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBC303BA9EB
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 Oct 2025 14:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954162E9759;
-	Thu,  9 Oct 2025 13:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eYbfoC62"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12CA2E9EBE;
+	Thu,  9 Oct 2025 14:17:44 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362002E9737
-	for <linux-acpi@vger.kernel.org>; Thu,  9 Oct 2025 13:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F61260590;
+	Thu,  9 Oct 2025 14:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760018277; cv=none; b=MUBClDtUo7xzHmsnQlISXIO+d2cMXAkk52kPtAv/3YJsAL2RFfguPy5i2oTUp6+QCtspcMcySY3uq8ja+OQIi/uVy1qpmc0bmTtw/yLN5Gxkoox2g2JlDUU8pf61pwiGSNA1Ywaclwu2prGFi9puDyoc1Hza/rpX1NgAFgpQKWM=
+	t=1760019464; cv=none; b=krUu82SIcmz4g0dbkcLT7j0OPbnVTedCpEdSDfQK+o+o//gouBqySVYF9BxXoUcHbNyJ/MGG7FBd1zciXMldXw3drWIV/P/JHn/aW1/iL89rOCcr2m2w7rJEiympERiIXQCIsMC08zcLIcF17siTqSaVf8Gjiw4MD6G4BKrkPVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760018277; c=relaxed/simple;
-	bh=aNMJD/jvy4Eo4PisGaBxwtDDj5VIcZ742XhFZPY72NY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FxfbQz+UTwOy9oeKgeynLMCy1L3EnuKmIkX33ikW23i1NpHrv7vLrerhkN9PwjUx9TNvbRt+fhGCYrivsSJRBRfLeFiOJYeaAzG+Vx8ovgdAjBzT8SHLtoa28JvsjTwN/hLlNHVLm+LHxdZOJhzOWZ4EE5oYVtYGMD5JXXcp1qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eYbfoC62; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-57e03279bfeso1388840e87.0
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Oct 2025 06:57:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760018273; x=1760623073; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=A/MGlGn9iIYutzRbmuTIcRdh98fdrcz/bmBvtZd2PYA=;
-        b=eYbfoC62WGqXp7je6bdcNN/hQhsf/sgDakDMzqCG59Mu1xl4zzmN9xZFDJ+zKPGSwH
-         Lz69PC3FUDXoMFD4z6eg31mL7vHN55lAN1AoYjQVmHjzHl8sJyAGC/8Dwz4QGsn2Ybs7
-         ILEJSYkNzA9sbwEf1BYH3JKeLdH0d3qCDWgno1zC8GeKVnT/3tLAcCNMI0/c47UKVwtw
-         8LVlxQWlTUmVURPxmhT8/WYXS0Ld+z3tlSvRPzPCgCk5369kewJn7vN5XNYEjt6e0NRd
-         YjrmV1i0vVy3QozpnGFo4HfZ7LxIAeWlFk0qazfZ/0HGekauil7ujd6KNRmBj/yyohUk
-         z5Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760018273; x=1760623073;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=A/MGlGn9iIYutzRbmuTIcRdh98fdrcz/bmBvtZd2PYA=;
-        b=jXILwERHhI+L6uu518GgTr/yKcLwQuc/BXqC8/UFE5xw1OQHQ4ta/GiCiljctJOL7i
-         7MLva4Jz0aVf0Sa1e0vyIMLDZ1Jquez3HwQmhOXL77KXmLjLysI0/2P0OICmPu77GplV
-         UaHv0yaJR275Gj9BbDpohalGcY4o5aS4KuuvgIZolATTq99tjNjEGiwehZZnkuorHYaQ
-         65JK7ALEYkeJ0t7zFeGX+45UXGLGuhjfzDeMfxb/Gtx3EdSA/rj9+q1qpvw7UTmxQFWA
-         r7LMVWxyvTFX8NsER3LSNywxaRB62W65w3EVgvKUo76EhMAXZno/vAdED61f45aXoYBp
-         hhcw==
-X-Forwarded-Encrypted: i=1; AJvYcCV4Tkt6OCTw3m8DtszaJ0sXlVsHSkmNh2R575eBS7dbdrSzX2eARSTCPPXzijFHGWDNzomLIF6Us7iL@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPp8uKEocjMJapMNWIMG+hbJNstlEm98faEmmRTtU1vSaKsUDA
-	EbYwyl84zt1moURWm4t5kKaByrzQn+HYs3b4T3Uw4do69aQrNx2uCJZm
-X-Gm-Gg: ASbGncsPICQWZVrPoimSKNqLhGmiulyP5auFU9YbORY9ZYgsNKZg+2/GfPGIA2lcH96
-	WaYcPcsUhIYMETbyj5i8+7XeTGS/dFtT1P1YHnfk2betuy0kCPS9NpFofSRGxGdlUkMdaZfS0hy
-	w1nrUzxmfKH9CWmFlbqgkcOZk8iqcuqu8cgTg7VD8QX8JQA6AdDKfY1+Xj0MeLuZ5YWppdnNGCI
-	MGVoPPbuO74ouIVXZ58ujavejSWV4HgcOeZMm6OCVOL036m60inGGkBjq6XTe3fhbI5i6ewyetz
-	/pO7qX35uJB9ylTm40wi+RmbQzzQVsQH/Ldg+gBzsx1wA0gIMKlu3hyVWTtPrvjbXu8zTwwiaVp
-	ceJYR4lGpScfEDhIEs07LOU4/RA2wJqKYpmOrwr5WdjEPOJf2LQvo
-X-Google-Smtp-Source: AGHT+IHA8m/U23aYo0HxP+3yhD2Pn0UWeadCQA7OeCHX4f0bCNRxiynEaIMEXCIiEdfg2ltvNFQ3lQ==
-X-Received: by 2002:a05:6512:3a90:b0:58b:75:8fc6 with SMTP id 2adb3069b0e04-5905e28ba56mr3556064e87.19.1760018273097;
-        Thu, 09 Oct 2025 06:57:53 -0700 (PDT)
-Received: from home-server.lan ([82.208.126.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5907ad9e55esm1066082e87.78.2025.10.09.06.57.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Oct 2025 06:57:52 -0700 (PDT)
-From: Alexey Simakov <bigalex934@gmail.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Alexey Simakov <bigalex934@gmail.com>,
-	Robert Moore <robert.moore@intel.com>,
-	Len Brown <lenb@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH] ACPI: Add absent field_obj null check
-Date: Thu,  9 Oct 2025 16:56:47 +0300
-Message-Id: <20251009135646.8899-1-bigalex934@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1760019464; c=relaxed/simple;
+	bh=H8+grDY8t7OnptbJxsbjpMKVSDaeAt6L4pI7ouKl/Eo=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MDCqgsbO22SAdIu3meq8QzuzGfwEyVU+XdtxHyfaHg1JBtWK5sKCrL5rmUN2mgXatQoNpJhWXBC/DhGMgxYUz0yWsdUXEv8gqppbKjg8WOWILPrBeOO9tfyB/CReOzwWBXImGEwJlYxJsyECfcDeG2GOKIgB6fy05wWHWebIF04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cjBj26gg3z6L4rs;
+	Thu,  9 Oct 2025 22:15:02 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id B5EE21400CA;
+	Thu,  9 Oct 2025 22:17:38 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 9 Oct
+ 2025 15:17:37 +0100
+Date: Thu, 9 Oct 2025 15:17:36 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Evangelos Petrongonas <epetron@amazon.de>
+CC: Bjorn Helgaas <bhelgaas@google.com>, Alex Williamson
+	<alex.williamson@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>, Len
+ Brown <lenb@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, David
+ Matlack <dmatlack@google.com>, Vipin Sharma <vipinsh@google.com>, Chris Li
+	<chrisl@kernel.org>, Jason Miu <jasonmiu@google.com>, "Pratyush Yadav"
+	<pratyush@kernel.org>, Stanislav Spassov <stanspas@amazon.de>,
+	<linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <nh-open-source@amazon.com>
+Subject: Re: [RFC PATCH 03/13] pci: pcsc: infer cacheability of PCI
+ capabilities
+Message-ID: <20251009151736.00002f45@huawei.com>
+In-Reply-To: <fb2f262e4733a56bf0ebd9ef5c9325880aea05cd.1759312886.git.epetron@amazon.de>
+References: <cover.1759312886.git.epetron@amazon.de>
+	<fb2f262e4733a56bf0ebd9ef5c9325880aea05cd.1759312886.git.epetron@amazon.de>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-The acpi_ev_address_space_dispatch function is designed
-in such way that assignning field_obj to NULL is valid case.
+On Fri, 3 Oct 2025 09:00:39 +0000
+Evangelos Petrongonas <epetron@amazon.de> wrote:
 
-Cover the missed execution path with this check.
+> Implement cacheability inference for PCI capabilities to
+> determine which configuration space registers can be safely cached.
+> 
+> The first 64 bytes of PCI configuration space follow a standardized
+> format, allowing straightforward cacheability determination. For
+> capability-specific registers, the implementation traverses the PCI
+> capability list to identify supported capabilities.
+> 
+> Cacheable registers are identified for the following capabilities:
+> - Power Management (PM)
+> - Message Signaled Interrupts (MSI)
+> - Message Signaled Interrupts Extensions (MSI-X)
+> - PCI Express
+> - PCI Advanced Features (AF)
+> - Enhanced Allocation (EA)
+> - Vital Product Data (VPD)
+> - Vendor Specific
+> 
+> The implementation pre-populates the cache with known values including
+> device/vendor IDs and header type to avoid unnecessary configuration
+> space reads during initialization.
+> 
+> We are currently not caching the Command/Status registers.
+> 
+> The cacheability of all capabilities apart from MSI, are straightforward
+> and can be deduced from the spec. Regarding MSI the MSI flags are read
+> and based on this, the cacheability is inferred.
+> 
+> Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+> Signed-off-by: Stanislav Spassov <stanspas@amazon.de>
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+A few minor things below.
 
-Fixes: 0acf24ad7e10 ("ACPICA: Add support for PCC Opregion special context data")
-Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
----
- drivers/acpi/acpica/evregion.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> +
+> +static void infer_capabilities_pointers(struct pci_dev *dev)
+> +{
+> +	u8 pos, cap_id, next_cap;
+> +	u32 val;
+> +	int i;
+> +
+> +	if (pcsc_hw_config_read(dev->bus, dev->devfn, PCI_CAPABILITY_LIST, 1,
+> +				&val) != PCIBIOS_SUCCESSFUL)
+> +		return;
+> +
+> +	pos = (val & 0xFF) & ~0x3;
 
-diff --git a/drivers/acpi/acpica/evregion.c b/drivers/acpi/acpica/evregion.c
-index fa3475da7ea9..fa01bcd3840d 100644
---- a/drivers/acpi/acpica/evregion.c
-+++ b/drivers/acpi/acpica/evregion.c
-@@ -163,7 +163,7 @@ acpi_ev_address_space_dispatch(union acpi_operand_object *region_obj,
- 			return_ACPI_STATUS(AE_NOT_EXIST);
- 		}
- 
--		if (region_obj->region.space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
-+		if (field_obj && region_obj->region.space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
- 			struct acpi_pcc_info *ctx =
- 			    handler_desc->address_space.context;
- 
--- 
-2.34.1
+Given single byte read, shouldn't need the 0xFF masking.
+Might be worth setting val = 0 at declaration though so that the compiler
+can see it is assigned if we reach here.
 
-Just FYI, this patch was already merged to github ACPICA repository.
-Commit hash with correspond changes at ACPICA repository: f421dd9dd897dfd1e0c015afa90cd0de2464e23c
+
+> +
+> +	while (pos) {
+> +		if (pos < 0x40 || pos > 0xFE)
+> +			break;
+> +
+> +		pos &= ~0x3;
+
+I couldn't immediately find a spec statement of the bottom two bits being 0 for
+the next capability pointers.  (There is one for the PCI_CAPABILITY_LIST)
+
+> +		if (pcsc_hw_config_read(dev->bus, dev->devfn, pos, 2, &val) !=
+> +		    PCIBIOS_SUCCESSFUL)
+> +			break;
+> +
+> +		cap_id = val & 0xFF; /* PCI_CAP_LIST_ID */
+> +		next_cap = (val >> 8) & 0xFF; /* PCI_CAP_LIST_NEXT */
+> +
+> +		bitmap_set(dev->pcsc->cachable_bitmask, pos, 2);
+> +		pcsc_update_byte(dev, pos, cap_id); /* PCI_CAP_LIST_ID */
+> +		pcsc_update_byte(dev, pos + 1,
+> +				 next_cap); /* PCI_CAP_LIST_NEXT */
+
+Could you do something like moving the bitmap_set before the pcsc_hw_config_read() and
+cal pcsc_cached_config_read() to fill the cache directly during the read?
+
+> +
+> +		pci_dbg(dev, "Capability ID %#x found at %#x\n", cap_id, pos);
+> +
+> +		/* Check if this is a supported capability and infer cacheability */
+> +		for (i = 0; i < ARRAY_SIZE(PCSC_SUPPORTED_CAPABILITIES); i++) {
+> +			if (cap_id == PCSC_SUPPORTED_CAPABILITIES[i]) {
+> +				infer_capability_cacheability(dev, pos, cap_id);
+> +				break;
+> +			}
+> +		}
+> +
+> +		/* Move to next capability */
+> +		pos = next_cap;
+> +	}
+> +}
+> +
+> +static void infer_cacheability(struct pci_dev *dev)
+> +{
+> +	if (WARN_ON(!dev || !dev->pcsc || !dev->pcsc->cfg_space))
+> +		return;
+> +
+> +	bitmap_zero(dev->pcsc->cachable_bitmask, PCSC_CFG_SPC_SIZE);
+> +
+> +	/* Type 0 Configuration Space Header */
+> +	if (dev->hdr_type == PCI_HEADER_TYPE_NORMAL) {
+Unless you plan to add type 1 very soon I'd flip the logic to reduce
+indent of the code that follows.
+
+
+> +		/*
+> +		 * Mark cacheable registers in the PCI configuration space header.
+> +		 * We cache read-only and rarely changing registers:
+> +		 * - PCI_VENDOR_ID, PCI_DEVICE_ID (0x00-0x03)
+> +		 * - PCI_CLASS_REVISION through PCI_CAPABILITY_LIST (0x08-0x34)
+> +		 *   Includes: CLASS_REVISION, CACHE_LINE_SIZE, LATENCY_TIMER,
+> +		 *   HEADER_TYPE, BIST, BASE_ADDRESS_0-5, CARDBUS_CIS,
+> +		 *   SUBSYSTEM_VENDOR_ID, SUBSYSTEM_ID, ROM_ADDRESS, CAPABILITY_LIST
+> +		 * - PCI_INTERRUPT_LINE through PCI_MAX_LAT (0x3c-0x3f)
+> +		 *   Includes: INTERRUPT_LINE, INTERRUPT_PIN, MIN_GNT, MAX_LAT
+> +		 */
+> +		bitmap_set(dev->pcsc->cachable_bitmask, PCI_VENDOR_ID, 4);
+> +		bitmap_set(dev->pcsc->cachable_bitmask, PCI_CLASS_REVISION, 45);
+For this large range can you derive that 45 as something like
+
+PCI_CAPABILITY_LIST - PCI_CLASS_REVISION + 1
+
+Same applies for the other multifield bitmap sets
+
+
+> +		bitmap_set(dev->pcsc->cachable_bitmask, PCI_INTERRUPT_LINE, 4);
+> +
+> +		/* Pre populate the cache with the values that we already know */
+
+I'm curious - do you have perf numbers to show it's worth writing these 5 bytes
+directly into the cache? Feels like complexity that maybe doesn't belong there
+in initial patch but should come along later in a patch with numbers to support
+the small amount of extra complexity.
+
+> +		pcsc_update_byte(dev, PCI_HEADER_TYPE,
+> +				 dev->hdr_type |
+> +					 (dev->multifunction ? 0x80 : 0));
+> +
+> +		/*
+> +		 * SR-IOV VFs must return 0xFFFF (PCI_ANY_ID) for vendor/device ID
+> +		 * registers per PCIe spec.
+> +		 */
+> +		if (dev->is_virtfn) {
+> +			pcsc_update_byte(dev, PCI_VENDOR_ID, 0xFF);
+> +			pcsc_update_byte(dev, PCI_VENDOR_ID + 1, 0xFF);
+> +			pcsc_update_byte(dev, PCI_DEVICE_ID, 0xFF);
+> +			pcsc_update_byte(dev, PCI_DEVICE_ID + 1, 0xFF);
+> +		} else {
+> +			if (dev->vendor != PCI_ANY_ID) {
+> +				pcsc_update_byte(dev, PCI_VENDOR_ID,
+> +						 dev->vendor & 0xFF);
+> +				pcsc_update_byte(dev, PCI_VENDOR_ID + 1,
+> +						 (dev->vendor >> 8) & 0xFF);
+> +			}
+> +			if (dev->device != PCI_ANY_ID) {
+> +				pcsc_update_byte(dev, PCI_DEVICE_ID,
+> +						 dev->device & 0xFF);
+> +				pcsc_update_byte(dev, PCI_DEVICE_ID + 1,
+> +						 (dev->device >> 8) & 0xFF);
+> +			}
+> +		}
+> +
+> +		infer_capabilities_pointers(dev);
+> +	}
+> +}
+
+
 
