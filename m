@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-17716-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17717-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B81E8BCDFCE
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 18:53:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A83BBCDFD4
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 18:53:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 76E1B4E925E
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 16:53:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B881D5479C0
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 16:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A67E2F999F;
-	Fri, 10 Oct 2025 16:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE4B2F8BEE;
+	Fri, 10 Oct 2025 16:53:29 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41A949620;
-	Fri, 10 Oct 2025 16:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BD62FB99D;
+	Fri, 10 Oct 2025 16:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760115193; cv=none; b=Di2AzBPtyTD8ZcOWynk9BQMxNVgAELMZgzgN6zLmJbSY7cjiOxrUWZch4I8fQW/Wogt/fMkCr8y2QFUNrmVOrf0aP+8EPIl0DEHY3DHCQiBiYYAPL2Sa8dhQCGXUXbtm9e9Xh4lrPTK0i5jRX2xyf6ig1CtfDS3KPcMNjgn9HmE=
+	t=1760115209; cv=none; b=WKNe4xx0MhIKld3FPwm04LMBkOmm6vOuRydcvE/k4UFJ/1jOWv/9dA86+K/MnUjuoZlfEB6RylJ78Su4sTn0/2YllDtjdd1Zelb/xrL3k3oWYATcLXvcSF/YVppNXW6YaB/v7Gi/9eYpHqAN6VymQ4K7elq7N9WlpWfsOwkSA28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760115193; c=relaxed/simple;
-	bh=NvHno/MeFbr57dMbH3NV1tNKl1NOg7uNhF56N3nM4VE=;
+	s=arc-20240116; t=1760115209; c=relaxed/simple;
+	bh=OLzINQnM3CK/H4My4nDZ44YiZjxfmY4mZ0yqqdG5lx0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dXT0vhmmDWIc7YmRIq4CIEZVLIsRVOwFcgmON1lLYbk5BTjJxn55c5ZXmt0KJgQezcKPHOnKuyK3702i6mtjf9Yf1WFu9bS9aTiGxVQKy/KP+cbnANHLs5FuNN2ZDKDqva9ngxE1QaUOqmVeqpJisAb4Q6GeC8h65KIaQwrgFR4=
+	 In-Reply-To:Content-Type; b=u00xeEUavgkeaz9JwmnucDMLOseRxkup+0CuRtlrWuMp9H+1AbJCDMafCOdML1DlrKkP3aHX+ypNTS/ByZrDLRWUTh3jHCJimLv7h4rKe8pC0Kx4dJ/eRXcVeqC+nqdbwC3AqeDbc6dI30+wNlV1WoMTNqG8x1KoxUcwwhjYAvM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C1649153B;
-	Fri, 10 Oct 2025 09:53:01 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0B9EE1596;
+	Fri, 10 Oct 2025 09:53:19 -0700 (PDT)
 Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 30B843F66E;
-	Fri, 10 Oct 2025 09:53:04 -0700 (PDT)
-Message-ID: <de2c78a5-4879-46a4-9869-5bcd0c694302@arm.com>
-Date: Fri, 10 Oct 2025 17:53:02 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6D3073F66E;
+	Fri, 10 Oct 2025 09:53:21 -0700 (PDT)
+Message-ID: <31f11369-c6ef-4a6b-a36e-973128d8f0fd@arm.com>
+Date: Fri, 10 Oct 2025 17:53:19 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,7 +42,7 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 26/29] arm_mpam: Use long MBWU counters if supported
+Subject: Re: [PATCH v2 27/29] arm_mpam: Add helper to reset saved mbwu state
 To: Jonathan Cameron <jonathan.cameron@huawei.com>
 Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-acpi@vger.kernel.org,
@@ -60,44 +60,110 @@ Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>, Ben Horgan <ben.horgan@arm.com>
+ Danilo Krummrich <dakr@kernel.org>
 References: <20250910204309.20751-1-james.morse@arm.com>
- <20250910204309.20751-27-james.morse@arm.com>
- <20250912142929.00003cff@huawei.com>
+ <20250910204309.20751-28-james.morse@arm.com>
+ <20250912143302.00004d0e@huawei.com>
 Content-Language: en-GB
 From: James Morse <james.morse@arm.com>
-In-Reply-To: <20250912142929.00003cff@huawei.com>
+In-Reply-To: <20250912143302.00004d0e@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Jonathan,
 
-On 12/09/2025 14:29, Jonathan Cameron wrote:
-> On Wed, 10 Sep 2025 20:43:06 +0000
+On 12/09/2025 14:33, Jonathan Cameron wrote:
+> On Wed, 10 Sep 2025 20:43:07 +0000
 > James Morse <james.morse@arm.com> wrote:
 > 
->> From: Rohit Mathew <rohit.mathew@arm.com>
+>> resctrl expects to reset the bandwidth counters when the filesystem
+>> is mounted.
 >>
->> If the 44 bit (long) or 63 bit (LWD) counters are detected on probing
->> the RIS, use long/LWD counter instead of the regular 31 bit mbwu
->> counter.
+>> To allow this, add a helper that clears the saved mbwu state. Instead
+>> of cross calling to each CPU that can access the component MSC to
+>> write to the counter, set a flag that causes it to be zero'd on the
+>> the next read. This is easily done by forcing a configuration update.
 >>
->> Only 32bit accesses to the MSC are required to be supported by the
->> spec, but these registers are 64bits. The lower half may overflow
->> into the higher half between two 32bit reads. To avoid this, use
->> a helper that reads the top half multiple times to check for overflow.
->>
->> Signed-off-by: Rohit Mathew <rohit.mathew@arm.com>
->> [morse: merged multiple patches from Rohit]
 >> Signed-off-by: James Morse <james.morse@arm.com>
->> Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+
+> Minor comments inline.
+
+
+>> @@ -1245,6 +1257,37 @@ int mpam_msmon_read(struct mpam_component *comp, struct mon_cfg *ctx,
+>>  	return err;
+>>  }
+>>  
+>> +void mpam_msmon_reset_mbwu(struct mpam_component *comp, struct mon_cfg *ctx)
+>> +{
+>> +	int idx;
+>> +	struct mpam_msc *msc;
+>> +	struct mpam_vmsc *vmsc;
+>> +	struct mpam_msc_ris *ris;
+>> +
+>> +	if (!mpam_is_enabled())
+>> +		return;
+>> +
+>> +	idx = srcu_read_lock(&mpam_srcu);
 > 
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Maybe guard() though it doesn't add that much here.
 
-Thanks!
+'Fixed' already based on your other feedback.
 
-Your push back on the 'front facing' thing in the previous patch made some knock on
-changes here, but I think they're minor.
+
+>> +	list_for_each_entry_rcu(vmsc, &comp->vmsc, comp_list) {
+> 
+> Reason not to use _srcu variants?
+
+Typo - I'd switched it all to srcu because of the pcc thing's need to sleep, but didn't
+fix all these properly.
+
+
+
+>> +		if (!mpam_has_feature(mpam_feat_msmon_mbwu, &vmsc->props))
+>> +			continue;
+>> +
+>> +		msc = vmsc->msc;
+>> +		list_for_each_entry_rcu(ris, &vmsc->ris, vmsc_list) {
+>> +			if (!mpam_has_feature(mpam_feat_msmon_mbwu, &ris->props))
+>> +				continue;
+>> +
+>> +			if (WARN_ON_ONCE(!mpam_mon_sel_lock(msc)))
+>> +				continue;
+>> +
+>> +			ris->mbwu_state[ctx->mon].correction = 0;
+>> +			ris->mbwu_state[ctx->mon].reset_on_next_read = true;
+>> +			mpam_mon_sel_unlock(msc);
+>> +		}
+>> +	}
+>> +	srcu_read_unlock(&mpam_srcu, idx);
+>> +}
+>> +
+>>  static void mpam_reset_msc_bitmap(struct mpam_msc *msc, u16 reg, u16 wd)
+>>  {
+>>  	u32 num_words, msb;
+>> diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
+>> index c190826dfbda..7cbcafe8294a 100644
+>> --- a/drivers/resctrl/mpam_internal.h
+>> +++ b/drivers/resctrl/mpam_internal.h
+>> @@ -223,10 +223,12 @@ struct mon_cfg {
+>>  
+>>  /*
+>>   * Changes to enabled and cfg are protected by the msc->lock.
+>> - * Changes to prev_val and correction are protected by the msc's mon_sel_lock.
+>> + * Changes to reset_on_next_read, prev_val and correction are protected by the
+>> + * msc's mon_sel_lock.
+
+> Getting close to the point where a list of one per line would reduce churn.
+> If you anticipate adding more to this in future I'd definitely consider it.
+> e.g.
+>  * msc's mon_sel_lcok protects:
+>  * - reset_on_next_read
+>  * - prev_val
+>  * - correction
+>  */
+
+It doesn't get expanded further, this is the last patch of the driver. But this is easier
+to read, so I'll do that.
 
 
 Thanks,
