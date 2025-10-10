@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-17721-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17722-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53CEBCDFF5
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 18:54:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D321BCDFEF
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 18:54:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E94E64FFB96
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 16:54:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47B17548725
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 16:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819D82FC01C;
-	Fri, 10 Oct 2025 16:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E9D2FC861;
+	Fri, 10 Oct 2025 16:54:07 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB5F2FC894;
-	Fri, 10 Oct 2025 16:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04AAF2FBE16;
+	Fri, 10 Oct 2025 16:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760115240; cv=none; b=W8Jv2rvZoCus5y4k1viulfST4Iu+lMCmMiwH/4H1cQmRdXDApklmVOSfOeOA2Bzev6+mpFiJakyaJiH7VjghYe42GERiXbT1mwgfiTZTV//DiOCMEfA/pV57zSJSlfh2PinlwFLsGjEcF70UGBSrid9Qtx7v63Ma10fg7eHTnyk=
+	t=1760115247; cv=none; b=iaCsxRhI3Wz9S6GcViV5OwOu3NI2D6Wk/F/Gm3fgqpVCcPf3m/jMAA33qoN66MT/Z0nfbgQjPkqRZcDY/rOVgoQnYXidT/G5zjhsa1XJtPtU2wqOtCZLfGQkt6uVna6IUtn5K4EjBbjxauyzWfc1TMS092qXyqoyvNTf3O7C4+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760115240; c=relaxed/simple;
-	bh=l+L2jqpIIGXviOosZ/ozE/ishm3DCEiYFB7+xHFcgOE=;
+	s=arc-20240116; t=1760115247; c=relaxed/simple;
+	bh=mF4mpWbfi7uwaWEWjpu+E88aO2Y2ucveTDyYIMhCn6k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CoZwdWcyM6qv13rz2CMZeMQRCsyytQzkkyxPnz+EeTMYwiGpBCC1/cuAewPqdwadhtqExcRG/E96+jMfkDKXhU/wlCk4k8l1PL3qx1hhBJ4lhuADr9AycJfUXdD4dzR1ljIR86b/wcnmiusd5NWetyA4lb9bw6xfBMxxlhIaIw8=
+	 In-Reply-To:Content-Type; b=I30tb6dudMetz55nv8Sqflpnf6+H/4RFHJVr8SQZzxji/EMfMnonee+xe5YxejHKScbfE+LoKpiS6KEKrEuD5pU8lN16PWgeAjjz6bsbbhO02cxW8Epx/J+HbmdSkxEYvWJIllO0mPeot0lYbi1t/sV70Dkvpw/zIGRwYiuyDDE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6315E176C;
-	Fri, 10 Oct 2025 09:53:50 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6EA2D1596;
+	Fri, 10 Oct 2025 09:53:56 -0700 (PDT)
 Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D5FC33F66E;
-	Fri, 10 Oct 2025 09:53:52 -0700 (PDT)
-Message-ID: <07e939de-a416-4414-aa38-de1d244ea35f@arm.com>
-Date: Fri, 10 Oct 2025 17:53:50 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AFA4E3F66E;
+	Fri, 10 Oct 2025 09:53:58 -0700 (PDT)
+Message-ID: <68e9365f-17d5-49fd-ad58-e09674b729b6@arm.com>
+Date: Fri, 10 Oct 2025 17:53:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 28/29] arm_mpam: Add kunit test for bitmap reset
-To: Fenghua Yu <fenghuay@nvidia.com>, linux-kernel@vger.kernel.org,
+To: Ben Horgan <ben.horgan@arm.com>, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
 Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  carl@os.amperecomputing.com, lcherian@marvell.com,
@@ -53,8 +53,9 @@ Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  dfustini@baylibre.com, amitsinght@marvell.com,
  David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
  Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- baisheng.gao@unisoc.com, Jonathan Cameron <jonathan.cameron@huawei.com>,
- Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
  Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
  <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
@@ -63,26 +64,38 @@ Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  Danilo Krummrich <dakr@kernel.org>
 References: <20250910204309.20751-1-james.morse@arm.com>
  <20250910204309.20751-29-james.morse@arm.com>
- <cb13db6d-012e-449a-8a70-57e8ca7f0d29@nvidia.com>
+ <848050b3-65d7-4caf-b093-7145eb782a7c@arm.com>
 Content-Language: en-GB
 From: James Morse <james.morse@arm.com>
-In-Reply-To: <cb13db6d-012e-449a-8a70-57e8ca7f0d29@nvidia.com>
+In-Reply-To: <848050b3-65d7-4caf-b093-7145eb782a7c@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Fenghua,
+Hi Ben,
 
-On 26/09/2025 03:35, Fenghua Yu wrote:
-> On 9/10/25 13:43, James Morse wrote:
+On 12/09/2025 17:06, Ben Horgan wrote:
+> On 9/10/25 21:43, James Morse wrote:
 >> The bitmap reset code has been a source of bugs. Add a unit test.
 >>
 >> This currently has to be built in, as the rest of the driver is
 >> builtin.
->>
->> Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Signed-off-by: James Morse <james.morse@arm.com>
+
+>> diff --git a/drivers/resctrl/Kconfig b/drivers/resctrl/Kconfig
+>> index c30532a3a3a4..ef59b3057d5d 100644
+>> --- a/drivers/resctrl/Kconfig
+>> +++ b/drivers/resctrl/Kconfig
+>> @@ -5,10 +5,20 @@ menuconfig ARM64_MPAM_DRIVER
+>>  	  MPAM driver for System IP, e,g. caches and memory controllers.
+>>  
+>>  if ARM64_MPAM_DRIVER
+>> +
 > 
-> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+> Nit: add the empty line in an earlier patch
+
+Fixed,
+
+> Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+
 
 Thanks!
 
