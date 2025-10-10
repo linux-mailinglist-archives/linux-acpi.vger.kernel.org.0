@@ -1,130 +1,158 @@
-Return-Path: <linux-acpi+bounces-17711-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17712-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4304BCBAB0
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 06:58:08 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48131BCC56C
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 11:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02D961890BFA
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 04:58:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E86A334F705
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 09:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1529326E17A;
-	Fri, 10 Oct 2025 04:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C5226A1B5;
+	Fri, 10 Oct 2025 09:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GrdiTzbT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cVRuDebt"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1D8246BA8
-	for <linux-acpi@vger.kernel.org>; Fri, 10 Oct 2025 04:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6FA2690D1;
+	Fri, 10 Oct 2025 09:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760072281; cv=none; b=VCkamEQeEpXZKR7UZLMnwzfzjiuFnLdPFLCSahQ6d55nt7C7PlzAZs0yVxz9qEzKu0aNFeHhdQMo2reqfOEnbvuf9wgXTiwPYx25knHDYkGDbk50TroVXZUPcszLWSiEY3xKEUjwShhrlRdJ9xne+61pIgwSnXnGUbUezGZqm84=
+	t=1760088539; cv=none; b=CUEAx+2OTXuD+j1U/soqc3UZtArr2EDesg8Z7alajiuQFqezdNY1K90R1MRVjVPuLGpK6UglV3vOw356mBZQ2467WDstGydWbn7WdVQJLonlvzcuQAuSBSHC6X+rIV/Vq+AtWE9dSYfhz3ayb1znncROGBthoY1npxsY9mceYTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760072281; c=relaxed/simple;
-	bh=20zVq/I1A85ImSdUuzZ7bh9Qs7dqD4eEIEsQzzw5Ci4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ADa4cN6FZt7RViPRHMlxvAucyzXlFznkPkqVMK+rXqyxFqPZSU8rm1yqaluEMULwEIJgKfw9tg2uAeULRXAiswt5583Ua7yljEAy7L6fNlJc2s5AuN4PfeU+AbFQnJmWPy4Eo+vlaLpt/NjFlPQtoJWDdKBYQlqfx8ciLp8818k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GrdiTzbT; arc=none smtp.client-ip=74.125.224.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-63b960a0a2bso2024997d50.1
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Oct 2025 21:57:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760072278; x=1760677078; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j7qS0AM3lX7OGhXSFEYS6mkC3EKNzPxshbg7hLZcah0=;
-        b=GrdiTzbTpmXrgj0/PjkohCZ6LgFNbxV45gb5L/ZVbzaWKAHJgA12/mfFqFdtOpY72m
-         bZZCyt4k8jRvQo4unsWw4ZeaFcU/eOYR2U/wcLgsvZR/RYdUoV9fmyuViF8Of5PYj/l4
-         634Gm0JHXypxB9ycdlhLckuOP80mjqw4wIO9HLiTQ6purdE8gu3SXgXaNMsYndjRbf75
-         1dPvVv1bpLUsn7UsoLTsiGPIZ2KQmnwtMFB4nrm8RHlzLeSFwrO7OIHtu7G4t0f6Q3Az
-         maevl8wn3jZRwLsUqzTevJOM0Q45hnxhlAkendZd7mXKlZsyaRmG6ugJRYjmZ1sxfyiy
-         qCrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760072278; x=1760677078;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=j7qS0AM3lX7OGhXSFEYS6mkC3EKNzPxshbg7hLZcah0=;
-        b=OnHr/XmxBqdLje0ad97jWukuJhURlCBpb23ySEdAMtvmluEfaPNnRX20mUm5vVWV0E
-         bIHzCHJwtAhZc2LjFHV0BN4shP+pQjNUlXOX9CkcvXmFVHkQToGOhozJQ59RDiiak0y1
-         PTpWkkDUHO9fkz7kTpc4Ld+IEGGM4X2yaEC8222aOjD1Veogmbl2p094WvbMETMbDYYt
-         LIYo5jmqqHmyFixN+eY8B1fz6daNeuTIbGdVgJsMKA0rh6XS6JimiTNIOC3m9P6Q/oLL
-         5k1z6MpkQTQ2XUwtI62g3tVFekF2yVJLvaMLxE+W3kufDGDFAK0QrhK5+Ll4EA8r3jyv
-         1utQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUa0qTHXcYYDbDVp0j7ae3Z0Ec6eQJ2XuCxZaOIOqSbdsgmbY1+mV0pnCvF7T7mdYLzllbbPY7Tq4jT@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtEHC5BBaWfFJn7Y7VC7A6atdpu0mRpUG2shsD2jdGPqu/48WS
-	e639VTRsk0n3Lg5fcxJl5sfY4oo7Ricw7bhMeK7YwoPQCWKn8f1+oZRVCUtznnRj08enH3Ah+Xo
-	zHuiMAJvWKxtXWhvywdkMmy9pKUqS8zw=
-X-Gm-Gg: ASbGncvmFAyND6WQubtbGu2UPQhU3vIVxrlLJv7GoGhNfEDNOqJWGiwOtCqlsD7N/V0
-	GM8Vjoz3lQ0kypOdpp5/fgoVr/R/xlQrvz0DMXVoV1kP4LQF81DIbL1Pj+SRU6MEjca0rg4tjy5
-	yeYNPUJ6i0s/EE5W02/rTChUJF6EY3XdiCdNHVaBzxM0ttcN9BYsKui38Y5ygqdLPoIR/x8pV+r
-	BUocfDRQNBFiNdoUh3FO5PD8g==
-X-Google-Smtp-Source: AGHT+IHqDciv7GAPYfMGdKr9Fwuo5GT168N8GcrpsJ5KozP5HqYqg/LDALxuogvzJXgNCm6zrA+DoCqu7lr8uhQrVc0=
-X-Received: by 2002:a53:5009:0:b0:636:2420:d3ce with SMTP id
- 956f58d0204a3-63ccb93456dmr7466309d50.51.1760072277565; Thu, 09 Oct 2025
- 21:57:57 -0700 (PDT)
+	s=arc-20240116; t=1760088539; c=relaxed/simple;
+	bh=O/7sfg5UlTpCPHWBq3fIuuXqIzy1Z6yLN/gVrlq+5r0=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Y7phIb4cw71AkXS16mp64n+pHx75tnlYEvyITKBODuu0kOXDxXEdrqFPik5FBt7LsDaTg9z6QzGcrMzBqApPjqTyUhPQ46L78PEdcwyNtyAWxAqC/UrxIpX6XVyGsDwbNUpNwwVsvQNbY4rwST+XmwceAPnADut/rIL1vdIRvFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cVRuDebt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80EF2C4CEF1;
+	Fri, 10 Oct 2025 09:28:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760088538;
+	bh=O/7sfg5UlTpCPHWBq3fIuuXqIzy1Z6yLN/gVrlq+5r0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=cVRuDebtQUJBaZ5FXiJhla9PcgDFAm0WLnnYt9+gIJoYcuPfMLJupid2WzCQKAQgO
+	 UZ4vnzYVM8pPkohSamwjB0PcctsUumFMjJh8E2nljNQNO/ggnjCpx1vfpdZ4JATQ6U
+	 67MkqBl9R+Yi2pkPyoAUygmWExJ0QDIsvK/EtIsmnFB0sRdMNvEPx3I/VhRcezsFBQ
+	 jhIlpaawcZgPH8hzgb4VHJCZmuD9g607VOUwQkM1TzwSL/C+oRMMJOWF+bIiudVh1G
+	 O5qom+6NCA8kA3Bl+Zir7CalC0ETRFSSV6TFy1ozBJ0VKSHCdG8bI+bj3RQcJ9gb7d
+	 vtnbpt7h5uv4Q==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1v79Qm-0000000CryE-0DGH;
+	Fri, 10 Oct 2025 09:28:56 +0000
+Date: Fri, 10 Oct 2025 10:28:55 +0100
+Message-ID: <86jz13xfzc.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-acpi@vger.kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob
+ Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	James
+ Clark <james.clark@linaro.org>,
+	Jonathan Cameron
+	<jonathan.cameron@huawei.com>
+Subject: Re: [PATCH v3 13/26] genirq: Factor-in percpu irqaction creation
+In-Reply-To: <46d6bf56-3e7a-92d9-218f-4135d8850be9@huawei.com>
+References: <20250922082833.2038905-1-maz@kernel.org>
+	<20250922082833.2038905-14-maz@kernel.org>
+	<46d6bf56-3e7a-92d9-218f-4135d8850be9@huawei.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CAHNNwZC7gC7zaZGiSBhobSAb4m2O1BuoZ4r=SQBF-tCQyuAPvw@mail.gmail.com>
- <20250925131055.3933381-1-nschichan@freebox.fr>
-In-Reply-To: <20250925131055.3933381-1-nschichan@freebox.fr>
-From: Askar Safin <safinaskar@gmail.com>
-Date: Fri, 10 Oct 2025 07:57:21 +0300
-X-Gm-Features: AS18NWAQwCKadWHXCZjVUBNaD3TaKIilJiJAQzSbvGFaYuFuE8UDpW1_H3riB-k
-Message-ID: <CAPnZJGBPyONjJoM6cskxysDnN4pxWuWJCK5A6TgikR2xHsrN5Q@mail.gmail.com>
-Subject: Re: [PATCH-RFC] init: simplify initrd code (was Re: [PATCH RESEND
- 00/62] initrd: remove classic initrd support).
-To: nschichan@freebox.fr
-Cc: akpm@linux-foundation.org, andy.shevchenko@gmail.com, axboe@kernel.dk, 
-	brauner@kernel.org, cyphar@cyphar.com, devicetree@vger.kernel.org, 
-	ecurtin@redhat.com, email2tema@gmail.com, graf@amazon.com, 
-	gregkh@linuxfoundation.org, hca@linux.ibm.com, hch@lst.de, 
-	hsiangkao@linux.alibaba.com, initramfs@vger.kernel.org, jack@suse.cz, 
-	julian.stecklina@cyberus-technology.de, kees@kernel.org, 
-	linux-acpi@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, 
-	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, mcgrof@kernel.org, 
-	mingo@redhat.com, monstr@monstr.eu, mzxreary@0pointer.de, 
-	patches@lists.linux.dev, rob@landley.net, sparclinux@vger.kernel.org, 
-	thomas.weissschuh@linutronix.de, thorsten.blum@linux.dev, 
-	torvalds@linux-foundation.org, tytso@mit.edu, viro@zeniv.linux.org.uk, 
-	x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: ruanjinjie@huawei.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, tglx@linutronix.de, mark.rutland@arm.com, will@kernel.org, rafael@kernel.org, robh@kernel.org, saravanak@google.com, gregkh@linuxfoundation.org, sven@kernel.org, j@jannau.net, suzuki.poulose@arm.com, james.clark@linaro.org, jonathan.cameron@huawei.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, Sep 25, 2025 at 4:12=E2=80=AFPM <nschichan@freebox.fr> wrote:
-> - drop prompt_ramdisk and ramdisk_start kernel parameters
-> - drop compression support
-> - drop image autodetection, the whole /initrd.image content is now
->   copied into /dev/ram0
-> - remove rd_load_disk() which doesn't seem to be used anywhere.
+On Fri, 10 Oct 2025 04:59:59 +0100,
+Jinjie Ruan <ruanjinjie@huawei.com> wrote:
+>=20
+>=20
+>=20
+> On 2025/9/22 16:28, Marc Zyngier wrote:
+> > Move the code creating a per-cpu irqaction into its own helper, so that
+> > future changes to this code can be kept localised.
+> >=20
+> > At the same time, fix the documentation which appears to say the wrong
+> > thing when it comes to interrupts being automatically enabled
+> > (percpu_devid interrupts never are).
+> >=20
+> > Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > ---
+> >  kernel/irq/manage.c | 40 ++++++++++++++++++++++++----------------
+> >  1 file changed, 24 insertions(+), 16 deletions(-)
+> >=20
+> > diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+> > index c94837382037e..d9ddc30678b5d 100644
+> > --- a/kernel/irq/manage.c
+> > +++ b/kernel/irq/manage.c
+> > @@ -2442,6 +2442,24 @@ int setup_percpu_irq(unsigned int irq, struct ir=
+qaction *act)
+> >  	return retval;
+> >  }
+> > =20
+> > +static
+> > +struct irqaction *create_percpu_irqaction(irq_handler_t handler, unsig=
+ned long flags,
+> > +					  const char *devname, void __percpu *dev_id)
+> > +{
+> > +	struct irqaction *action;
+> > +
+> > +	action =3D kzalloc(sizeof(struct irqaction), GFP_KERNEL);
+> > +	if (!action)
+> > +		return NULL;
+> > +
+> > +	action->handler =3D handler;
+> > +	action->flags =3D flags | IRQF_PERCPU | IRQF_NO_SUSPEND;
+> > +	action->name =3D devname;
+> > +	action->percpu_dev_id =3D dev_id;
+> > +
+> > +	return action;
+> > +}
+>=20
+> This helper could be more universal by consider by distinguishing dev_id
+> and percpu_dev_id=EF=BC=8C so we can use it in request_nmi() and
+> request_threaded_irq() .
 
-I welcome any initrd simplification!
+This would mean either adding extra parameters to this function (ugly)
+or having type confusion by dropping the __percpu attribute (nasty).
 
-> Hopefully my email config is now better and reaches gmail users
-> correctly.
+I'd rather you add a separate helper that deals with non-percpu
+interrupts, and not mess with something that is definitely meant for
+percpu interrupts.
 
-Yes, I got this email.
+Thanks,
 
---
-Askar Safin
+	M.
+
+--=20
+Without deviation from the norm, progress is not possible.
 
