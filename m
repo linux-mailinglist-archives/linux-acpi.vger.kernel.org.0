@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-17725-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17726-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE538BCE010
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 18:55:40 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A225ABCE028
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 18:56:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76BEA548707
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 16:54:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D10F24FFD3E
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 16:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9EC62FC01C;
-	Fri, 10 Oct 2025 16:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E98F2FC893;
+	Fri, 10 Oct 2025 16:54:50 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6331B2FB99D;
-	Fri, 10 Oct 2025 16:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8CF2FB99D;
+	Fri, 10 Oct 2025 16:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760115284; cv=none; b=H3YHUMXTU2Xjx2J5PmP5kuwRX6EguZllMtcdQv86Xac9BsiR8Tbl5pxTYb4ERgEWtgPpjj2/SKMs58iHrxEUVljde0ZwzJERfoh96u6uPqQtPwho+Pko4LwS9/QgdA+kKvsvIYToZ3loxWh2NRuTonU1Z4F7emLtUCxKKjrDXSQ=
+	t=1760115290; cv=none; b=jav9Y1hIeRwwHq+A8Y1qpx/Hp0Nwg1i36bLvWgxUfUk15SzShjMDQs02YK0HEtC0tmDKigfuLxXjAm1+Ez6F/C7YZ+YeAIr2Q1jBYIb2kJlV2vsIjwF1gwiXAyGi+t5stUmKIP/AtPXaZBPu+sMqQ3Yh8NUbJK5YVbk9VHg9d8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760115284; c=relaxed/simple;
-	bh=Mre5NldF57v/qgCv1OBV6PcRmdgEEZG1uzhe703BsnE=;
+	s=arc-20240116; t=1760115290; c=relaxed/simple;
+	bh=OxOChyWRZw/pR7CtPmAB5YnWpcsxS8vPMJhJ/TsOVy4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EosWc8tzdkb4HbHUPQDTsytH5Tmf+sl5CWIW2/AgNi85me0Y/UKDu6GrRlIjx1ppGBqHtdoItTqNSf+8ACZQG+2U+oGRgcBApnEgNIaAZIe34lhsvO9lqMcWu6aaAqnJvdfNg0NEdATFFzyYiESo9HTIJlgQ+QVoTTtaA14iAqU=
+	 In-Reply-To:Content-Type; b=bhdSCooGWWf1jHeWaNKJq4ryabHExprwIeR/KxQZGj04JDm2UXiQ+ofCx7xBWzmHQZZZwvWkIzaTqDO85wn6rLxSXCBfoPBH7qvHvQSaT4sVEHma4iOxUJRlUYTFG16KIo5MXroUt9xFjUMpisoDZPiJwqx9ZcflTSMLBYvFGGk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D20B31596;
-	Fri, 10 Oct 2025 09:54:34 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 41C7C1713;
+	Fri, 10 Oct 2025 09:54:40 -0700 (PDT)
 Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D3C033F66E;
-	Fri, 10 Oct 2025 09:54:35 -0700 (PDT)
-Message-ID: <ddf9b382-f760-4a9b-9f88-f215ef4b7930@arm.com>
-Date: Fri, 10 Oct 2025 17:54:05 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1691A3F66E;
+	Fri, 10 Oct 2025 09:54:42 -0700 (PDT)
+Message-ID: <b2d79768-fb1c-4a15-8a1c-f519bc81eeb7@arm.com>
+Date: Fri, 10 Oct 2025 17:54:11 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 29/29] arm_mpam: Add kunit tests for props_mismatch()
-To: Ben Horgan <ben.horgan@arm.com>, linux-kernel@vger.kernel.org,
+To: Fenghua Yu <fenghuay@nvidia.com>, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
 Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  carl@os.amperecomputing.com, lcherian@marvell.com,
@@ -53,9 +53,8 @@ Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  dfustini@baylibre.com, amitsinght@marvell.com,
  David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
  Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- fenghuay@nvidia.com, baisheng.gao@unisoc.com,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
- <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ baisheng.gao@unisoc.com, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
  Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
  <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
@@ -64,29 +63,26 @@ Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  Danilo Krummrich <dakr@kernel.org>
 References: <20250910204309.20751-1-james.morse@arm.com>
  <20250910204309.20751-30-james.morse@arm.com>
- <2ed1be84-5097-488d-b8ce-7abebf5b9a7e@arm.com>
+ <1c0907cc-5cfe-448e-a308-c347566c1f68@nvidia.com>
 Content-Language: en-GB
 From: James Morse <james.morse@arm.com>
-In-Reply-To: <2ed1be84-5097-488d-b8ce-7abebf5b9a7e@arm.com>
+In-Reply-To: <1c0907cc-5cfe-448e-a308-c347566c1f68@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Ben,
+Hi Fenghua,
 
-On 12/09/2025 17:01, Ben Horgan wrote:
-> On 9/10/25 21:43, James Morse wrote:
+On 26/09/2025 03:36, Fenghua Yu wrote:
+> On 9/10/25 13:43, James Morse wrote:
 >> When features are mismatched between MSC the way features are combined
 >> to the class determines whether resctrl can support this SoC.
 >>
 >> Add some tests to illustrate the sort of thing that is expected to
 >> work, and those that must be removed.
-
-
-> Looks good to me, I checked the tests for v1. I agree with Jonathan that
-> you could make RESET_FAKE_HIEARCHY() a function now that you've changed
-> to use globals.
+>>
+>> Signed-off-by: James Morse <james.morse@arm.com>
 > 
-> Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
 
 
 Thanks!
