@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-17724-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17727-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE01BCDFE8
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 18:54:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 131B0BCE022
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 18:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 215601A6471D
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 16:55:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7D625479DB
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 16:55:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CA72FC024;
-	Fri, 10 Oct 2025 16:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384C82FD1B6;
+	Fri, 10 Oct 2025 16:54:57 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC592FB99D;
-	Fri, 10 Oct 2025 16:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9225B2FC88C;
+	Fri, 10 Oct 2025 16:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760115276; cv=none; b=CwMKjD1SBON/FZSnQ3+QBM1WltWJ/8/hiCaYgHTjiGr89zURM3bnjmJfDD+lvsWs2wMvoZJBX7mhk3D789iwHS99Kfy6dpsvcifUgJ2SIaNbUzZFSDfapsx8lIfcoxLXZUzGpdWchYNr/464nxilL70EZglDldSOwVVTe5pEv9g=
+	t=1760115297; cv=none; b=Hcvhpto33IyG8YfIItjg5pw2/fdPiWr1TTAi7JHrSBHXsKYy/49iMjYiO+zUE+srfI9zdkqDPxFQ0V75e5AYetcW+wzuOCeFr0HKkOdpPSwZQjUqELMnOeK4/UxAhZ028Bi7YCAvi3a10aZyWgB0ZnX+tZnAI75ZMk40FU40aE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760115276; c=relaxed/simple;
-	bh=6yF72+wuOjRJokJK1hGKbPF/1SHbTsmzEdv0rbRr2V4=;
+	s=arc-20240116; t=1760115297; c=relaxed/simple;
+	bh=rzgS5U3wOAz6i7tHimCpHOWZle7PLS21PkU3v7tYq7s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aeBIdgiPRVacPrJpT/AuMrXmNIxdirPH5cxkQ/8Oaw1lnD7hRlslc1eRxzULF2REp1oHiyHSHn9ifjruvj6TqjfApNuYN2pi5GdjGkPCQWRyJ8iaKKxi7udqVhVjUCn8d8JxaR6/RsnQ8fGd2qs4/yPOu3uehqrTW2Y7S2jjfwU=
+	 In-Reply-To:Content-Type; b=dy525qFmWZE7WnaU5MAiTZ3EHasT+doEbChPY1S+k12dSoNywc27U+6no6wEY5eTrRpDSFG/NUJ1fU17qpGwJ1Hw9mApHT8mEvSOu15V5Ve8VA4SRNfISG/VH1zqtFfw8Jeo5p9huo7MT+norB9szP10jLfvZ/UW51zNBFUyvNo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3AEDA153B;
-	Fri, 10 Oct 2025 09:54:27 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F2DCE1713;
+	Fri, 10 Oct 2025 09:54:45 -0700 (PDT)
 Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2D77B3F66E;
-	Fri, 10 Oct 2025 09:54:22 -0700 (PDT)
-Message-ID: <219dff63-11ad-4eb4-8499-2c5085181339@arm.com>
-Date: Fri, 10 Oct 2025 17:54:19 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 912D03F66E;
+	Fri, 10 Oct 2025 09:54:48 -0700 (PDT)
+Message-ID: <c6a34438-ab7e-4bdc-9494-d3ac2574213a@arm.com>
+Date: Fri, 10 Oct 2025 17:54:25 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -44,7 +44,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 01/29] ACPI / PPTT: Add a helper to fill a cpumask from
  a processor container
-To: Stanimir Varbanov <svarbanov@suse.de>, linux-kernel@vger.kernel.org,
+To: Fenghua Yu <fenghuay@nvidia.com>, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
 Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  carl@os.amperecomputing.com, lcherian@marvell.com,
@@ -54,9 +54,8 @@ Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  dfustini@baylibre.com, amitsinght@marvell.com,
  David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
  Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- fenghuay@nvidia.com, baisheng.gao@unisoc.com,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
- <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ baisheng.gao@unisoc.com, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
  Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
  <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
@@ -65,17 +64,17 @@ Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  Danilo Krummrich <dakr@kernel.org>
 References: <20250910204309.20751-1-james.morse@arm.com>
  <20250910204309.20751-2-james.morse@arm.com>
- <3d2252ef-92a2-4717-a472-3e5b275419ce@suse.de>
+ <89d5a73c-2a48-4aec-9249-07c71ca214ec@nvidia.com>
 Content-Language: en-GB
 From: James Morse <james.morse@arm.com>
-In-Reply-To: <3d2252ef-92a2-4717-a472-3e5b275419ce@suse.de>
+In-Reply-To: <89d5a73c-2a48-4aec-9249-07c71ca214ec@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Stan,
+Hi Fenghua,
 
-On 25/09/2025 10:32, Stanimir Varbanov wrote:
-> On 9/10/25 11:42 PM, James Morse wrote:
+On 02/10/2025 04:35, Fenghua Yu wrote:
+> On 9/10/25 13:42, James Morse wrote:
 >> The ACPI MPAM table uses the UID of a processor container specified in
 >> the PPTT to indicate the subset of CPUs and cache topology that can
 >> access each MPAM System Component (MSC).
@@ -86,28 +85,15 @@ On 25/09/2025 10:32, Stanimir Varbanov wrote:
 >> Add a helper to find the processor container by its id, then walk
 >> the possible CPUs to fill a cpumask with the CPUs that have this
 >> processor container as a parent.
-
->> +
->> +/**
->> + * acpi_pptt_get_cpus_from_container() - Populate a cpumask with all CPUs in a
->> + *                                       processor container
->> + * @acpi_cpu_id:	The UID of the processor container.
->> + * @cpus:		The resulting CPU mask.
->> + *
->> + * Find the specified Processor Container, and fill @cpus with all the cpus
->> + * below it.
->> + *
->> + * Not all 'Processor' entries in the PPTT are either a CPU or a Processor
->> + * Container, they may exist purely to describe a Private resource. CPUs
->> + * have to be leaves, so a Processor Container is a non-leaf that has the
->> + * 'ACPI Processor ID valid' flag set.
->> + *
->> + * Return: 0 for a complete walk, or an error if the mask is incomplete.
+>>
+>> CC: Dave Martin <dave.martin@arm.com>
+>> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+>> Signed-off-by: James Morse <james.morse@arm.com>
 > 
-> Leftover, drop this.
+> Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
 
-Good spot - thanks,
 
+Thanks!
 
 James
 
