@@ -1,124 +1,101 @@
-Return-Path: <linux-acpi+bounces-17709-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17710-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2D61BCB9E2
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 06:09:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA4DBCBA1F
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 06:20:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4EBA7352532
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 04:09:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 213CC4052D2
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 Oct 2025 04:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E6F1F63FF;
-	Fri, 10 Oct 2025 04:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7BA91FF5F9;
+	Fri, 10 Oct 2025 04:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nDuL5tqL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BQTDoKiq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3989F1E832A
-	for <linux-acpi@vger.kernel.org>; Fri, 10 Oct 2025 04:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C131FE455
+	for <linux-acpi@vger.kernel.org>; Fri, 10 Oct 2025 04:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760069383; cv=none; b=iQ8DT+us6rBIJqmx9OVNlqdZtE8XVVqF+KQxoGf/Kq9rBuiuCSooOcXi4sYnx0HEJ45pQS6AajaXacPlhgef3/8z/vkyZXJ5H0GO15qt5IBV4osZ0StPdigj7IgmuYoaD7tLQKLKTxVU7R+mRawkZnBrhDeJMRyk3ZL/STQ1wfY=
+	t=1760069978; cv=none; b=niA81w0oHJMOhJmCmmZ9p2CsCV7AcfIcziMUR3o1HKCwwTUi0EnpSy137NoyTeRDEZVGW5/PcB9tqrmJam9pb1he3Ju2Vm3+9vaM3A3mT9//+qjaobIqKC0HueRDI9SKNITkRVBWO/cw6Uy89+ALzlsuBYwUzwHF2qG7PlNDMuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760069383; c=relaxed/simple;
-	bh=QekwWSNZM13jRboBgI+VcoYsXugGuoxwasNpiteDkcg=;
+	s=arc-20240116; t=1760069978; c=relaxed/simple;
+	bh=bJV3A2ztZGaLQ6mgfvyHfdT7NOP/K+k71R0Kusejlnc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CAzb1aUX5x1pklch6k0egCX9K+higcPLyBu9M3v6ERGUAfM6ui/NBLi1o034Yxu8OMDTyyeKUG4tk5J0nYavs+rM0v2lXxbAIKByWAUcugqJ/sL1EyAuW9qSMNG8zWLa2bEkN4k8Jc/6hAMlUuq1Sl2boRnHTlotbmXyEPtMH+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nDuL5tqL; arc=none smtp.client-ip=74.125.224.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-6352c8b683eso1907576d50.2
-        for <linux-acpi@vger.kernel.org>; Thu, 09 Oct 2025 21:09:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760069379; x=1760674179; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QekwWSNZM13jRboBgI+VcoYsXugGuoxwasNpiteDkcg=;
-        b=nDuL5tqLs6F/bqWcdATCSw3q6sR4xH9PojO9qOD+5CVFhCKnIdXYLqb6N9qP3a90AK
-         XcWKwh2rGBNpBKIw4DXxov8U2qs0Dzy6gXk8vFfvDusYiZmPGdnri/OyTQj/4/Q9hjBA
-         AP9cRpfxElOVTqf47iRfDxq23HPr72skNOU/r2V/uYwO0u5rdlLaDJlfE0FHTHhwxXRY
-         CxV+l2MjGbd2BdsN32iKqGDmRkhB4tNQBtMagkevAiwpNidXH4OagDZ/3oHz+Ju9tDVq
-         V/7yZAk0s3YGeHhlLGi653f8C0CT7tXpjc3Ab8zbhGaCEogKGwXedDHs/+NW7Be9ThrK
-         SjAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760069379; x=1760674179;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QekwWSNZM13jRboBgI+VcoYsXugGuoxwasNpiteDkcg=;
-        b=PHuzI0XHHX2ZsdmD7F0t5ZMHItZioiOTj9ADgkcCTcHsEpviLyw0ykJaQTkyOagUHG
-         wwlBjx1bdpUy1oSVfYKMIdAZejDM4h155dFXAZ2JSeU5ZpI5td1s6iqcMnXxD0+FP9zW
-         m1R8ZtFWnq5RZuVJPaNeyidahYT07a4NCMBskX+zA+SPVQgQEI6iCgIsvSiyTCdjpz0v
-         E3BjZ6FRXJqXQvYsN0lnjv7lizj+xVb4B0J3M3mKwNGpTc5KOdBBe8jvKy9jZuMiNG2C
-         RqJlXnER9NfLEyys9ILOSw5fLcXVUPQI9zw0HTDw2EJexRD1ZI3SLHvvbRXnplPTIDUS
-         rHzA==
-X-Forwarded-Encrypted: i=1; AJvYcCX1EIT48vzY9M61ZOV8s69tiIf4VTr/6TlI4TNositWt/dNNBVvvoTMzKtSwGH+/NgJhKPeaJTb1Jdw@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6JBAz7AljeL9RT4/70dBVsO3xW95XaBNzFEIefaOsq2gSf2n9
-	8HWWDc9hYfmYHGGrWY/Jyz74AjJElWWzIDb6Ls76mYimoOKsyiWDfCcpzUKIHE/18DAI57SCdku
-	X+kUG3avNTscqa/ybJnlhpb/Esd1hT54=
-X-Gm-Gg: ASbGncuJ3KqLvBZo/Hju8/J487YEyzCyRK0qJWa858j/oX00JPa16aOYySI8hPIUCl9
-	wl6g0uU9h0lDX8+/hla6ooDnTAim69K8gso4Is/Y0QB9it9Hfk5XRokxa+Li0IZg/97SpMBQZDF
-	0gXGv44BqqcLNdSMfoabj+YnOkQ6EhEOxEFZ13Xvof5FcN3ADXJPpXBAjVWLAjiphmoAQtQlXMb
-	FEAqlnJxUA1BsXx8HphCSRM4zCg1ak9+DMM
-X-Google-Smtp-Source: AGHT+IEKzDZJ3mg1FFWOqowFJqWLj/+dmJPdM199pmmtVcavFH/YLuoH0hEdsvn7dHSOiTNw/3Aomiv0DcOjJivXzrY=
-X-Received: by 2002:a53:e946:0:b0:636:17d6:a30 with SMTP id
- 956f58d0204a3-63ccb82410bmr7618496d50.15.1760069378763; Thu, 09 Oct 2025
- 21:09:38 -0700 (PDT)
+	 To:Cc:Content-Type; b=gazv0W2Nh1iliM1GFk3O//aoaLOl/1iMGghXdKxz75g4sRQWitpO37RdfJ7n74SYaCelm8zxufzUETFJGulRIlYnWMvP9k1EpKc8f02I/Lkz/zh+zJIzgy7jZVvQwHFnA4+kwIwQBVuWKR+yNO/OJUFVaAG0MA5cmW6A+x+vK0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQTDoKiq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5403DC4CEF1
+	for <linux-acpi@vger.kernel.org>; Fri, 10 Oct 2025 04:19:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760069978;
+	bh=bJV3A2ztZGaLQ6mgfvyHfdT7NOP/K+k71R0Kusejlnc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=BQTDoKiqaGFunGsyhh1cbd7kdKT7FDFjTs7auCjOhXVFIujP32wm8NR5H1D0qoO9X
+	 560grcEWL+xo7zPe9VtRzFChsZVCoL1+awasIcTBhFIA1XVXT9RWP8+V8UsT3xPYy3
+	 elf9PI+UPsydclMFBaaOjqgKdMDumtaiG70vJFxJNSTChwgdrzYQbd63b+EAkXU0vd
+	 zugWmoSv7FfkAaPwlDrNWONUSEKezzTneq1TLFPdiVhj/CzytW0xUF4m3/caiaoLo3
+	 rhszQMNCBU/Rsh5xshKWDmEcURG90gtzXSRdaxVLPDYt01bKwl41KEWCabfYYj+79M
+	 gzAcR8tsVnEKg==
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-749399349ddso20168397b3.3
+        for <linux-acpi@vger.kernel.org>; Thu, 09 Oct 2025 21:19:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUPfpll/cKAfeUjXQBGLtnZzfl2T6RDHP4lP1mh5yglEzkAXXoi6SfmE1v3oaqRM5fFrICmsNrpIaFb@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZ5eN1ZfAFpGP8aqPPDW8wud8/QavrfX13xYwroSCJn3Tcq2jP
+	gyIAhIw22C8z5OTG0ujQANz/v17W3QPMTIERGUoYqJzIjFmmub2a+rGX4VpQa6iIPOfWJtIAFgM
+	ysEAJJdsmaRemtcco7IP2aig3dhIZDyskTf87bFgTIg==
+X-Google-Smtp-Source: AGHT+IHLY3NQ877f+Hb/NGw3OlMwCbxviANquhSk208SkinMsbXRBhob17ACKUqhB6hbnqihTyuVE3CPYH0yMCZrPxs=
+X-Received: by 2002:a53:ea91:0:b0:636:fd5:ed02 with SMTP id
+ 956f58d0204a3-63ccb8ee9f6mr8057747d50.45.1760069977672; Thu, 09 Oct 2025
+ 21:19:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250913003842.41944-1-safinaskar@gmail.com> <A08066E1-A57E-4980-B15A-8FB00AC747CC@jrtc27.com>
-In-Reply-To: <A08066E1-A57E-4980-B15A-8FB00AC747CC@jrtc27.com>
-From: Askar Safin <safinaskar@gmail.com>
-Date: Fri, 10 Oct 2025 07:09:02 +0300
-X-Gm-Features: AS18NWDxe32nrD4BfQQFhIe3tEEfxrwgJsYQo_BWhSUPsy5CceSv7QOcZ20roI0
-Message-ID: <CAPnZJGAKmgySY_RK0kmGTgwUh9hw4FSrVR+LoJCbD_RmJZe6RA@mail.gmail.com>
-Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
-To: Jessica Clarke <jrtc27@jrtc27.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, 
-	Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
-	Aleksa Sarai <cyphar@cyphar.com>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
-	Julian Stecklina <julian.stecklina@cyberus-technology.de>, 
-	Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>, 
-	Alexander Graf <graf@amazon.com>, Rob Landley <rob@landley.net>, 
-	Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, x86@kernel.org, 
-	Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org, initramfs@vger.kernel.org, 
-	linux-api@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	"Theodore Y . Ts'o" <tytso@mit.edu>, linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>, 
-	devicetree@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Thorsten Blum <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
+References: <CA+CK2bAbB8YsheCwLi0ztY5LLWMyQ6He3sbYru697Ogq5+hR+Q@mail.gmail.com>
+ <20250929150425.GA111624@bhelgaas> <CACePvbV+D6nu=gqjavv+hve4tcD+6WxQjC0O9TbNxLCeBhi5nQ@mail.gmail.com>
+ <CACePvbUJ6mxgCNVy_0PdMP+-98D0Un8peRhsR45mbr9czfMkEA@mail.gmail.com> <mafs0a51zmzjp.fsf@kernel.org>
+In-Reply-To: <mafs0a51zmzjp.fsf@kernel.org>
+From: Chris Li <chrisl@kernel.org>
+Date: Thu, 9 Oct 2025 21:19:25 -0700
+X-Gmail-Original-Message-ID: <CACePvbW9eSBY7qRz4o6Wqh0Ji0qECrFP+RDxa+nn4aHRTt1zkQ@mail.gmail.com>
+X-Gm-Features: AS18NWCu3_vyHjoCV8Rj_bpQLVkf37Xx7I24e2eNWuCPz2Dl_PLLF000jx8A6IY
+Message-ID: <CACePvbW9eSBY7qRz4o6Wqh0Ji0qECrFP+RDxa+nn4aHRTt1zkQ@mail.gmail.com>
+Subject: Re: [PATCH v2 00/10] LUO: PCI subsystem (phase I)
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, David Matlack <dmatlack@google.com>, 
+	Pasha Tatashin <tatashin@google.com>, Jason Miu <jasonmiu@google.com>, 
+	Vipin Sharma <vipinsh@google.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, skhawaja@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 16, 2025 at 8:08=E2=80=AFPM Jessica Clarke <jrtc27@jrtc27.com> =
-wrote:
-> I strongly suggest picking different names given __builtin_foo is the
-> naming scheme used for GNU C builtins/intrinsics. I leave you and
-> others to bikeshed that one.
+On Thu, Oct 9, 2025 at 4:21=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org>=
+ wrote:
+>
+> On Tue, Oct 07 2025, Chris Li wrote:
+>
+> [...]
+> > That will keep me busy for a while waiting for the VFIO series.
+>
+> I recall we talked in one of the biweekly meetings about some sanity
+> checking of folios right before reboot (make sure they are right order,
+> etc.) under a KEXEC_HANDOVER_DEBUG option. If you have some spare time
+> on your hands, would be cool to see some patches for that as well :-)
 
-Thank you! I will fix this.
+Sure, I will add that to my "nice to have" list. No promised I got
+time to get to it with the PCI. It belong to the KHO series not PCI
+though.
 
---=20
-Askar Safin
+Chris
 
