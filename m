@@ -1,126 +1,173 @@
-Return-Path: <linux-acpi+bounces-17738-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17739-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5240BD34EA
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Oct 2025 15:58:50 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E0BBD5095
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Oct 2025 18:29:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77EDF3AA9D3
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Oct 2025 13:58:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5423834B4A0
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Oct 2025 16:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A6322ACF3;
-	Mon, 13 Oct 2025 13:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cR/pTLT/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE2B243969;
+	Mon, 13 Oct 2025 16:29:23 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE181D5CEA;
-	Mon, 13 Oct 2025 13:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7F1226CFE;
+	Mon, 13 Oct 2025 16:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760363926; cv=none; b=EWxUJDUBXNT+BBUZaYIa+zC6jyi8uAc7hFItT91RM3tc2nOgTUCjMSVg2B1WwFPUG+ZjS7sSiKuzRxhuuDpG6HcPKY/qfFzXsvVk8+db7iZuPdJNd/d3uzIwbOx7ecHzAuBomArxRG4WG3GKPR3kADQSkvt3G3Zp+A9bXik3XpA=
+	t=1760372963; cv=none; b=tdKJ1iGuJudIcd/FL2e1QemhV5KD+hzN/VDZOf4Ivzkmn1mFucvF9HyQQtIEynAmNdwUH2HCuCfUq1Uyi0UxlLS76v+uhzA7bTwSKmex7rfkaYQfS8iDSkbfTnpy418Ev7FJLZVL4oU6B+7wrILxQ62HRaeMLXULYoQeVwB009g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760363926; c=relaxed/simple;
-	bh=sMrKkgG+uTwi5sHHZ4cTtu282VBQzEJvwZ+YmNuz5MA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=J/DEtL0gwJwMZjNHA5J1sSn8S5Y+fCo6q/aGFSSwSUdMsEfp0fKFLdor8SYuPnXSkx4d53aVj4q+6LGZdMJjFypIVsANsMA0ttardbAnPlqrLY3893Lpn6en8x8U/ZScP2I/TAcwNTTVtyn7WQenIEfY9vECnEo3fNN5zVtbJR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cR/pTLT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA587C4CEE7;
-	Mon, 13 Oct 2025 13:58:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760363926;
-	bh=sMrKkgG+uTwi5sHHZ4cTtu282VBQzEJvwZ+YmNuz5MA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=cR/pTLT/vpOrz2kLrwv4bvlqQMcwjn6IYqZ77M8tIyBhGSIjXU3X+Ba6/VNChaLUS
-	 CEeAm+egr1YfRdMKWvhXSh0yilyNV1WupuO++XCypFMdngsyBLKGOTlG1U6VciU4M0
-	 NatKxXbZSLpFve4E67qR7QfTPy55ZSTtGIDs5Cd5qlvoFTHTYSMTOVjJTPd7ol6km2
-	 RCVvDjevQI8YSSsP1eUbTUYs27I0ieyhoz5ldlds8Mc0Aq5Xqw2lHoCUGRgaZMJuEK
-	 6zFI50ZCXW5jfCgBuovWZrCBeAqOkZLGvfM2rk5Ee50TFvugi1fdyAeT3vzVowZM8h
-	 asxk7DceP6u1w==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Jason Miu <jasonmiu@google.com>
-Cc: Chris Li <chrisl@kernel.org>,  Pratyush Yadav <pratyush@kernel.org>,
-  Bjorn Helgaas <helgaas@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Bjorn Helgaas <bhelgaas@google.com>,  Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki"
- <rafael@kernel.org>,  Danilo Krummrich <dakr@kernel.org>,  Len Brown
- <lenb@kernel.org>,  linux-kernel@vger.kernel.org,
-  linux-pci@vger.kernel.org,  linux-acpi@vger.kernel.org,  David Matlack
- <dmatlack@google.com>,  Pasha Tatashin <tatashin@google.com>,  Vipin
- Sharma <vipinsh@google.com>,  Saeed Mahameed <saeedm@nvidia.com>,  Adithya
- Jayachandran <ajayachandra@nvidia.com>,  Parav Pandit <parav@nvidia.com>,
-  William Tu <witu@nvidia.com>,  Mike Rapoport <rppt@kernel.org>,  Jason
- Gunthorpe <jgg@ziepe.ca>,  Leon Romanovsky <leon@kernel.org>,
-  skhawaja@google.com
-Subject: Re: [PATCH v2 00/10] LUO: PCI subsystem (phase I)
-In-Reply-To: <CAHN2nPK34YfrysN+sraiFVjU_9Lw7E-yFVF-9x+nt1OUppZX8Q@mail.gmail.com>
-	(Jason Miu's message of "Fri, 10 Oct 2025 16:49:42 -0700")
-References: <CA+CK2bAbB8YsheCwLi0ztY5LLWMyQ6He3sbYru697Ogq5+hR+Q@mail.gmail.com>
-	<20250929150425.GA111624@bhelgaas>
-	<CACePvbV+D6nu=gqjavv+hve4tcD+6WxQjC0O9TbNxLCeBhi5nQ@mail.gmail.com>
-	<CACePvbUJ6mxgCNVy_0PdMP+-98D0Un8peRhsR45mbr9czfMkEA@mail.gmail.com>
-	<mafs0a51zmzjp.fsf@kernel.org>
-	<CACePvbW9eSBY7qRz4o6Wqh0Ji0qECrFP+RDxa+nn4aHRTt1zkQ@mail.gmail.com>
-	<CAHN2nPK34YfrysN+sraiFVjU_9Lw7E-yFVF-9x+nt1OUppZX8Q@mail.gmail.com>
-Date: Mon, 13 Oct 2025 15:58:41 +0200
-Message-ID: <mafs01pn6nbse.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1760372963; c=relaxed/simple;
+	bh=JGb0RNZsz4c9Vqe8/pPlU1/B31S1U7K/MACGfqfsVCc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hB5CO7GhnvxQ2MhmQ2Q8U1wB/+YbT/RLYUke/FvK6uhgN0mypq2/1n/KYoKbTlAkMj7MH+BwZ9XmQ8uutPRcPI+BE6aJFKwxCZJSOozv9s0qcinJiiS/6cSbYv7HcezGgISx0ToElzWHAIsHPcjj/Zj8sAI+zw2OL26oTTYgTJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 594C0113E;
+	Mon, 13 Oct 2025 09:29:12 -0700 (PDT)
+Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 25ED93F738;
+	Mon, 13 Oct 2025 09:29:15 -0700 (PDT)
+Message-ID: <8c75d1a5-42f8-4adf-a1b1-74aa668b1a30@arm.com>
+Date: Mon, 13 Oct 2025 17:29:13 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 24/29] arm_mpam: Track bandwidth counter state for
+ overflow and power management
+To: Ben Horgan <ben.horgan@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
+Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>
+References: <20250910204309.20751-1-james.morse@arm.com>
+ <20250910204309.20751-25-james.morse@arm.com>
+ <53eddf53-a610-4420-9021-658fdf31aebe@arm.com>
+Content-Language: en-GB
+From: James Morse <james.morse@arm.com>
+In-Reply-To: <53eddf53-a610-4420-9021-658fdf31aebe@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 10 2025, Jason Miu wrote:
+Hi Ben,
 
-> On Thu, Oct 9, 2025 at 9:19=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
+On 12/09/2025 16:55, Ben Horgan wrote:
+> On 9/10/25 21:43, James Morse wrote:
+>> Bandwidth counters need to run continuously to correctly reflect the
+>> bandwidth.
 >>
->> On Thu, Oct 9, 2025 at 4:21=E2=80=AFPM Pratyush Yadav <pratyush@kernel.o=
-rg> wrote:
->> >
->> > On Tue, Oct 07 2025, Chris Li wrote:
->> >
->> > [...]
->> > > That will keep me busy for a while waiting for the VFIO series.
->> >
->> > I recall we talked in one of the biweekly meetings about some sanity
->> > checking of folios right before reboot (make sure they are right order,
->> > etc.) under a KEXEC_HANDOVER_DEBUG option. If you have some spare time
->> > on your hands, would be cool to see some patches for that as well :-)
+>> The value read may be lower than the previous value read in the case
+>> of overflow and when the hardware is reset due to CPU hotplug.
 >>
->> Sure, I will add that to my "nice to have" list. No promised I got
->> time to get to it with the PCI. It belong to the KHO series not PCI
->> though.
->>
+>> Add struct mbwu_state to track the bandwidth counter to allow overflow
+>> and power management to be handled.
 
-Right. It is only a "nice to have", and not a requirement. And certainly
-not for the PCI series.
+>> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+>> index 1543c33c5d6a..eeb62ed94520 100644
+>> --- a/drivers/resctrl/mpam_devices.c
+>> +++ b/drivers/resctrl/mpam_devices.c
+>> @@ -990,20 +992,32 @@ static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
+>>  		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val);
+>>  		mpam_write_monsel_reg(msc, MBWU, 0);
+>>  		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val | MSMON_CFG_x_CTL_EN);
+>> +
+>> +		mbwu_state = &m->ris->mbwu_state[m->ctx->mon];
+>> +		if (mbwu_state)
+>> +			mbwu_state->prev_val = 0;
 
->
-> Hi Pratyush, Chris,
->
-> For the folio sanity check with KEXEC_HANDOVER_DEBUG, I can follow
-> that up. Would you tell me what we like to check before reboot, I may
-> have missed some context. Thanks!
+> What's the if condition doing here?
 
-The idea is to sanity-check the preserved folios in the kexec-reboot
-flow somewhere. The main check discussed was to make sure the folios are
-of the same order as they were preserved with. This will help catch bugs
-where folios might split after being preserved.
+Yes, that looks like cruft....
+It took the address of an array element - how could it be null?!
 
-Maybe we can add some more checks too? Like making sure the folios
-aren't freed after they were preserved. But that condition is a bit
-trickier to catch. But at least the former should be simple enough to
-do as a start.
 
---=20
-Regards,
-Pratyush Yadav
+> The below could make more sense but I don't think you can get here if
+> the allocation fails.
+
+Heh ... only because __allocate_component_cfg() has lost the error value.
+Without the outer/inner locking stuff, its feasible for  __allocate_component_cfg() to
+return the error value directly.
+
+With that fixed, and ignoring a bogus ctx->mon value - I agree you can't get a case where
+this needs checking.
+
+
+I think this was originally testing if the array had been allocated, and its been folded
+wrongly at some point in the past. I assume I kept those bogus tests around as I saw it
+blow up with nonsense num_mbwu_mon - which is something I'll retest.
+
+
+>> +
+>>  		break;
+>>  	default:
+>>  		return;
+>>  	}
+>>  }
+
+>> @@ -2106,6 +2227,35 @@ static int __allocate_component_cfg(struct mpam_component *comp)
+>>  		return -ENOMEM;
+>>  	init_garbage(comp->cfg);
+>>  
+>> +	list_for_each_entry(vmsc, &comp->vmsc, comp_list) {
+>> +		if (!vmsc->props.num_mbwu_mon)
+>> +			continue;
+>> +
+>> +		msc = vmsc->msc;
+>> +		list_for_each_entry(ris, &vmsc->ris, vmsc_list) {
+>> +			if (!ris->props.num_mbwu_mon)
+>> +				continue;
+>> +
+>> +			mbwu_state = kcalloc(ris->props.num_mbwu_mon,
+>> +					     sizeof(*ris->mbwu_state),
+>> +					     GFP_KERNEL);
+>> +			if (!mbwu_state) {
+>> +				__destroy_component_cfg(comp);
+>> +				err = -ENOMEM;
+>> +				break;
+>> +			}
+>> +
+>> +			if (mpam_mon_sel_lock(msc)) {
+>> +				init_garbage(mbwu_state);
+>> +				ris->mbwu_state = mbwu_state;
+>> +				mpam_mon_sel_unlock(msc);
+>> +			}
+> 
+> The if statement is confusing now that mpam_mon_sel_lock()
+> unconditionally returns true.
+
+Sure, but this and the __must_check means all the paths that use this must be able to
+return an error.
+
+This is a churn-or-not trade-off for the inclusion of the firmware-backed support.
+I'd prefer it to be hard to add code-paths that are going to create a lot of work when
+that comes - especially as folk are promising platforms that need this in the coming months.
+
+
+
+Thanks,
+
+James
 
