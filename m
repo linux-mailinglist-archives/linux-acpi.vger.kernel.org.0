@@ -1,94 +1,110 @@
-Return-Path: <linux-acpi+bounces-17944-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17946-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A16C6BED344
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Oct 2025 18:01:58 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A9FBED5B3
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Oct 2025 19:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4DAC18923A4
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Oct 2025 16:02:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4DC7A34D670
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Oct 2025 17:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C9524337B;
-	Sat, 18 Oct 2025 16:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA197262FCD;
+	Sat, 18 Oct 2025 17:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ivk5aZFw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lpC7/fHM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D8C23F417;
-	Sat, 18 Oct 2025 16:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F2325A326;
+	Sat, 18 Oct 2025 17:35:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760803307; cv=none; b=oE5+RGVpFoNDfpsM8aihP+NYiDuXOMtiioy/Bl2XmbZSoh53SUCaeBDBaTUM2YRXFfrjO789StIJsn2SaVJQGr/8IxwdCYhQN0b81/uvKDe2NkLqCNGmTeW80a1fQPye2OjtdsD1g/+yJbSFCQnDq7oX4lBR+EMeebe/m7+Og64=
+	t=1760808911; cv=none; b=ByCH7zF4s/4eMj17dbFDP2CjpKdJ7Sfx6gLzU+V/eITjGW8riFnYtKE79JG51G9Vp5+C5/q7PQPGONXMoM3Wj77UetQWn6B+3mUrjxvvPG6iSoxAE5YBARrjZGfzM44zN+FMnuS+T5qySSi9rRt+lq2xFDm6Kqbrd8UY9G9ClYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760803307; c=relaxed/simple;
-	bh=xdGzVFaydhp9qU3Eq9iqFsHM3rixK5o6FO97hISarJU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=StHdmBGk2IcDwo+N4nrn6X+2tdMm3gObyk2bZcfcryfjc2W7ZPrApLL5ztYU2JtAWlMgBE7unDsbYpeZWL826LfeUmTm+6UXzm3VwFpqxpONMvEbDqK04Bb8xo/acJ3bPq/HcoGS2hqpKrPqVv+lOIsml64nA/uSpUAmvx7yxVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ivk5aZFw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA949C4CEF8;
-	Sat, 18 Oct 2025 16:01:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760803306;
-	bh=xdGzVFaydhp9qU3Eq9iqFsHM3rixK5o6FO97hISarJU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Ivk5aZFwr1PqelJFYqIiLan7RNwSpRgCvimVwLWbZPPSsTaynAydgtRg34dHe4JoM
-	 0OwpoyJB7yuUIYJLSmWXNSbyyOhMIMM+afBQjI9TNZ0Kel5Ib5t9m9Gi6yAUHVZtH/
-	 ezkYhR4FTfzPvoS7yuW8naeqhECKHkctRYhNUnrmxGTTG8DzBhUgdq+aDW5yjs8C7F
-	 dZvke3PXtXRdttUu8eP5CmfNmGrSOU+Mo/K43UQ6EyEcn/1U4zJXV7pQbNARwTuVF3
-	 nr+8I/7k/xyHQj4W2ceUCFZuZZIylEYp+KtAa7xwF1aaFT+vAlwhS8HHptl7Z/iK5o
-	 nY9GmDEUs1ZEQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33E1C39EFBB7;
-	Sat, 18 Oct 2025 16:01:31 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1760808911; c=relaxed/simple;
+	bh=EuIHqk+EuuT5H1FI7GlkxqnL4fl6kFXuPsScQWcJbnQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hTODMOBMoCsbSUd+V68ivDTVQADIj47saQaF8R58DR8IKyE/+ACXStGn2pJQ0HIS7MtG6l0OFcCUn2rftBmJw1SUOYTlcUYHKPKpQyW9I+xXOMew18kyIBHNsQR8yjQn8hqRv/vEcM5ij5196F5AKtZJf1g1qoA4hUOv8SkDzT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lpC7/fHM; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760808910; x=1792344910;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=EuIHqk+EuuT5H1FI7GlkxqnL4fl6kFXuPsScQWcJbnQ=;
+  b=lpC7/fHMiqZ6sd7NKXJ4DithvpNUXb1m8aYGgd7qRaq9HTA55X630FNI
+   U7S0rCdYtHIK1DsQNVDhcEmBPqEPn/B/YEn36l0p5e+yS/jqlS4kXJqip
+   yKdsfAErkuWFaWWcgMQhw+3EF9kXiIXoTCl3wjPsczlIBb4cqqZgZIuf8
+   d6CdO72MD2k+Mlov4T4N0JV8fQJRe509PGut78a7rGvvZuwgQAXQLb24G
+   POWSLezZy6uacNHDQVss2Bevje+2AMGi+hXxY4Mo2OgS8mnffVYSYL+ju
+   hp3O7BvgmAFY+GW0IWWdP5zkKWE6HuqNqu+yG9JRVwvoB6ZC3ZN1LuzaY
+   w==;
+X-CSE-ConnectionGUID: uFDXfObxRIKyEeWAMwVa0A==
+X-CSE-MsgGUID: chwcyplqQ5KkJ4OGGiHvuA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63039370"
+X-IronPort-AV: E=Sophos;i="6.19,239,1754982000"; 
+   d="scan'208";a="63039370"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2025 10:35:09 -0700
+X-CSE-ConnectionGUID: CLjlCa/HRNG8eulfELhDFg==
+X-CSE-MsgGUID: QhNhpGK/SAulV1anUVJC3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,239,1754982000"; 
+   d="scan'208";a="188287992"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.244.194])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2025 10:35:06 -0700
+Received: from andy by ashevche-desk with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1v8Ona-000000002a7-3omB;
+	Mon, 13 Oct 2025 23:05:38 +0300
+Date: Mon, 13 Oct 2025 23:05:38 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Krzysztof Kozlowski <krzk@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH 1/9] software node: read the reference args via the
+ fwnode API
+Message-ID: <aO1bkraNrvHeTQxE@smile.fi.intel.com>
+References: <20251006-reset-gpios-swnodes-v1-0-6d3325b9af42@linaro.org>
+ <20251006-reset-gpios-swnodes-v1-1-6d3325b9af42@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] ACPI: RIMT: Fix unused function warnings when
- CONFIG_IOMMU_API is disabled
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <176080328974.3028979.2139175941358455786.git-patchwork-notify@kernel.org>
-Date: Sat, 18 Oct 2025 16:01:29 +0000
-References: <20251013181947.261759-1-sunilvl@ventanamicro.com>
-In-Reply-To: <20251013181947.261759-1-sunilvl@ventanamicro.com>
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, aou@eecs.berkeley.edu, lkp@intel.com,
- alex@ghiti.fr, rafael@kernel.org, joerg.roedel@amd.com, palmer@dabbelt.com,
- anup@brainfault.org, pjw@kernel.org, lenb@kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251006-reset-gpios-swnodes-v1-1-6d3325b9af42@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hello:
-
-This patch was applied to riscv/linux.git (fixes)
-by Paul Walmsley <pjw@kernel.org>:
-
-On Mon, 13 Oct 2025 23:49:47 +0530 you wrote:
-> When CONFIG_IOMMU_API is disabled, some functions defined outside its
-> conditional scope become unused, triggering compiler warnings reported
-> by the kernel test robot.
+On Mon, Oct 06, 2025 at 03:00:16PM +0200, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > 
-> Move these function definitions inside the #ifdef CONFIG_IOMMU_API block
-> to prevent unused function warnings when the configuration is disabled.
-> 
-> [...]
+> Once we allow software nodes to reference all kinds of firmware nodes,
+> the refnode here will no longer necessarily be a software node so read
+> its proprties going through its fwnode implementation.
 
-Here is the summary with links:
-  - ACPI: RIMT: Fix unused function warnings when CONFIG_IOMMU_API is disabled
-    https://git.kernel.org/riscv/c/e7b969cbe302
+This needs a comment in the code.
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+With Best Regards,
+Andy Shevchenko
 
 
 
