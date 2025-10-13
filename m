@@ -1,173 +1,204 @@
-Return-Path: <linux-acpi+bounces-17739-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17740-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6E0BBD5095
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Oct 2025 18:29:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C6B9BD52EA
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Oct 2025 18:47:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5423834B4A0
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 Oct 2025 16:29:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43BA73C7BF3
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 Oct 2025 16:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE2B243969;
-	Mon, 13 Oct 2025 16:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FB026E708;
+	Mon, 13 Oct 2025 16:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="ea0H0SUR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7F1226CFE;
-	Mon, 13 Oct 2025 16:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45392236FD;
+	Mon, 13 Oct 2025 16:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760372963; cv=none; b=tdKJ1iGuJudIcd/FL2e1QemhV5KD+hzN/VDZOf4Ivzkmn1mFucvF9HyQQtIEynAmNdwUH2HCuCfUq1Uyi0UxlLS76v+uhzA7bTwSKmex7rfkaYQfS8iDSkbfTnpy418Ev7FJLZVL4oU6B+7wrILxQ62HRaeMLXULYoQeVwB009g=
+	t=1760373012; cv=none; b=G+5JHtOrE4t43DP+QchTAtbONE7v46XkCizJUwj85fNbpbig2nLO9y4p2Ujm9lmhKAYRvpW/LdB4ftU9inNtZ3DzTwUEi8mxsWWAmfMuOqVuS/I86NQPaB46ngTdL5ui4tJD4ipJoHu/eR/QrJepDbhvIbdnH9WcPWFnaZfDrpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760372963; c=relaxed/simple;
-	bh=JGb0RNZsz4c9Vqe8/pPlU1/B31S1U7K/MACGfqfsVCc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hB5CO7GhnvxQ2MhmQ2Q8U1wB/+YbT/RLYUke/FvK6uhgN0mypq2/1n/KYoKbTlAkMj7MH+BwZ9XmQ8uutPRcPI+BE6aJFKwxCZJSOozv9s0qcinJiiS/6cSbYv7HcezGgISx0ToElzWHAIsHPcjj/Zj8sAI+zw2OL26oTTYgTJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 594C0113E;
-	Mon, 13 Oct 2025 09:29:12 -0700 (PDT)
-Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 25ED93F738;
-	Mon, 13 Oct 2025 09:29:15 -0700 (PDT)
-Message-ID: <8c75d1a5-42f8-4adf-a1b1-74aa668b1a30@arm.com>
-Date: Mon, 13 Oct 2025 17:29:13 +0100
+	s=arc-20240116; t=1760373012; c=relaxed/simple;
+	bh=45x2Jb4bOksiYc+/gQKshlBk0WTvXWQ0lxteCKoIgwk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=krdHYVhFXduheLUVCnzCFGKcUlo060VZUF1ZbxS2soxS4CvXZpGXd2k8sq8dAcVehv52G1DX8ssCBtL5qVIx4o7Y643W50BeJ+z6NJ2bnHLDQETdON2jdMB4KKv8HkAae0272f1ZC8FzLiCuOdcgEyCgYxe++8KvYkpH0aVR83s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=ea0H0SUR; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1760372988; x=1760977788; i=spasswolf@web.de;
+	bh=nqMyNCBrL+BlSohWKUpwCMTnwvgKLIa0I7oU0sG2VfE=;
+	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=ea0H0SURKVpCNhu8yHfSl6Utd505xo6U+lCaCKtLD/TmSC4qc6YSZIGVBeRK0TAL
+	 LIwmjjJI/OYuLO6HPZaKgQ8VInZ+GzU7/WDFqkicE37BY156qL41xUuhi325QZd2G
+	 Cb5d1IIOpgVe7IWioTYQLLSZD1gasuJP1tKvHjxmy1GdbTbSZ2dYOWwt3K6rAhbSF
+	 1iYeGcFB6q0OtD9/IJxt3v2DqISKhV4PcGshG+rPShlfDECLa79IHMWJf3EMVaqgh
+	 0OD/z8do1dSRCCdfkEJNd78wW2QrF1SE/8l6I2e4wL5l4kFfLsDft0U19G84Wauay
+	 sH7OnA3tgXER5pt+yw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.0.101] ([95.223.134.88]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MIyeG-1up9qo21ko-00R4KJ; Mon, 13
+ Oct 2025 18:29:48 +0200
+Message-ID: <4903e7c36adf377bcca289dbd3528055dc6cfb32.camel@web.de>
+Subject: Re: [REGRESSION 00/04] Crash during resume of pcie bridge
+From: Bert Karwatzki <spasswolf@web.de>
+To: Mario Limonciello <superm1@kernel.org>, linux-kernel@vger.kernel.org
+Cc: linux-next@vger.kernel.org, regressions@lists.linux.dev, 
+	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, Christian
+ =?ISO-8859-1?Q?K=F6nig?=	 <christian.koenig@amd.com>, "Rafael J . Wysocki"
+ <rafael.j.wysocki@intel.com>, 	spasswolf@web.de
+Date: Mon, 13 Oct 2025 18:29:46 +0200
+In-Reply-To: <8edcc464-c467-4e83-a93b-19b92a2cf193@kernel.org>
+References: <20251006120944.7880-1-spasswolf@web.de>
+	 <8edcc464-c467-4e83-a93b-19b92a2cf193@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.56.1-1 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 24/29] arm_mpam: Track bandwidth counter state for
- overflow and power management
-To: Ben Horgan <ben.horgan@arm.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
-Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
- carl@os.amperecomputing.com, lcherian@marvell.com,
- bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
- baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
- Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
- dfustini@baylibre.com, amitsinght@marvell.com,
- David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
- Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- fenghuay@nvidia.com, baisheng.gao@unisoc.com,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
- <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
- Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>
-References: <20250910204309.20751-1-james.morse@arm.com>
- <20250910204309.20751-25-james.morse@arm.com>
- <53eddf53-a610-4420-9021-658fdf31aebe@arm.com>
-Content-Language: en-GB
-From: James Morse <james.morse@arm.com>
-In-Reply-To: <53eddf53-a610-4420-9021-658fdf31aebe@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:43GG+RGVT3i3a/y83/W1ei+fO9suSrJwpqVV1suZxFJViRLeSqz
+ xkBmfjtGrawI3i77v66zpjlxaTET2VHe0liHMuANDp46wTq5VsbFu4dkdOSEjIBBuBdyzW+
+ GtT6/7XQzzqmO97rSNUkJ1gNA363HI/h1ag0hmN3qQa2OS/y9nRRV8xLNzVnnHXEQNSCP2o
+ kuRJnuuqodWaC4/haH2Ew==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:LoPZVms++YQ=;gATdQA/iUlFHEQDdx2TUmwSgu67
+ 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
+ DqH4Q==
 
-Hi Ben,
+Am Dienstag, dem 07.10.2025 um 16:33 -0500 schrieb Mario Limonciello:
+>=20
+> Can you still reproduce with amd_iommu=3Doff?
 
-On 12/09/2025 16:55, Ben Horgan wrote:
-> On 9/10/25 21:43, James Morse wrote:
->> Bandwidth counters need to run continuously to correctly reflect the
->> bandwidth.
->>
->> The value read may be lower than the previous value read in the case
->> of overflow and when the hardware is reset due to CPU hotplug.
->>
->> Add struct mbwu_state to track the bandwidth counter to allow overflow
->> and power management to be handled.
+Reproducing this is at all is very difficult, so I'll try to find the exac=
+t spot
+where things break (i.e. when the pci bus breaks and no more message are t=
+ransmitted
+via netconsole) first. The current state of this search is that the crash =
+occurs in
+pci_pm_runtime_resume(), before pci_fixup_device() is called:
 
->> diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
->> index 1543c33c5d6a..eeb62ed94520 100644
->> --- a/drivers/resctrl/mpam_devices.c
->> +++ b/drivers/resctrl/mpam_devices.c
->> @@ -990,20 +992,32 @@ static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
->>  		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val);
->>  		mpam_write_monsel_reg(msc, MBWU, 0);
->>  		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val | MSMON_CFG_x_CTL_EN);
->> +
->> +		mbwu_state = &m->ris->mbwu_state[m->ctx->mon];
->> +		if (mbwu_state)
->> +			mbwu_state->prev_val = 0;
+static int pci_pm_runtime_resume(struct device *dev)
+{
+	struct pci_dev *pci_dev =3D to_pci_dev(dev);
+	const struct dev_pm_ops *pm =3D dev->driver ? dev->driver->pm : NULL;
+	pci_power_t prev_state =3D pci_dev->current_state;
+	int error =3D 0;
+	// dev_info(dev, "%s =3D %px\n", __func__, (void *) pci_pm_runtime_resume=
+); // remove this so we don't get too much delay
+										  // This was still printed in the case of a crash
+										  // so the crash must happen below
 
-> What's the if condition doing here?
+	/*
+	 * Restoring config space is necessary even if the device is not bound
+	 * to a driver because although we left it in D0, it may have gone to
+	 * D3cold when the bridge above it runtime suspended.
+	 */
+	pci_pm_default_resume_early(pci_dev);
+	if (!strcmp(dev_name(dev), "0000:00:01.1")) // This is the current test.
+		dev_info(dev, "%s %d\n", __func__, __LINE__);
+	pci_resume_ptm(pci_dev);
 
-Yes, that looks like cruft....
-It took the address of an array element - how could it be null?!
+	if (!pci_dev->driver)
+		return 0;
 
+	//if (!strcmp(dev_name(dev), "0000:00:01.1"))         // This was not pri=
+nted when 6.17.0-rc6-next-20250917-gpudebug-00036-g4f7b4067c9ce
+	//	dev_info(dev, "%s %d\n", __func__, __LINE__); // crashed, so the crash=
+ must happen above
+	pci_fixup_device(pci_fixup_resume_early, pci_dev);
+	pci_pm_default_resume(pci_dev);
 
-> The below could make more sense but I don't think you can get here if
-> the allocation fails.
+	if (prev_state =3D=3D PCI_D3cold)
+		pci_pm_bridge_power_up_actions(pci_dev);
 
-Heh ... only because __allocate_component_cfg() has lost the error value.
-Without the outer/inner locking stuff, its feasible for  __allocate_component_cfg() to
-return the error value directly.
+	if (pm && pm->runtime_resume)
+		error =3D pm->runtime_resume(dev);
 
-With that fixed, and ignoring a bogus ctx->mon value - I agree you can't get a case where
-this needs checking.
-
-
-I think this was originally testing if the array had been allocated, and its been folded
-wrongly at some point in the past. I assume I kept those bogus tests around as I saw it
-blow up with nonsense num_mbwu_mon - which is something I'll retest.
-
-
->> +
->>  		break;
->>  	default:
->>  		return;
->>  	}
->>  }
-
->> @@ -2106,6 +2227,35 @@ static int __allocate_component_cfg(struct mpam_component *comp)
->>  		return -ENOMEM;
->>  	init_garbage(comp->cfg);
->>  
->> +	list_for_each_entry(vmsc, &comp->vmsc, comp_list) {
->> +		if (!vmsc->props.num_mbwu_mon)
->> +			continue;
->> +
->> +		msc = vmsc->msc;
->> +		list_for_each_entry(ris, &vmsc->ris, vmsc_list) {
->> +			if (!ris->props.num_mbwu_mon)
->> +				continue;
->> +
->> +			mbwu_state = kcalloc(ris->props.num_mbwu_mon,
->> +					     sizeof(*ris->mbwu_state),
->> +					     GFP_KERNEL);
->> +			if (!mbwu_state) {
->> +				__destroy_component_cfg(comp);
->> +				err = -ENOMEM;
->> +				break;
->> +			}
->> +
->> +			if (mpam_mon_sel_lock(msc)) {
->> +				init_garbage(mbwu_state);
->> +				ris->mbwu_state = mbwu_state;
->> +				mpam_mon_sel_unlock(msc);
->> +			}
-> 
-> The if statement is confusing now that mpam_mon_sel_lock()
-> unconditionally returns true.
-
-Sure, but this and the __must_check means all the paths that use this must be able to
-return an error.
-
-This is a churn-or-not trade-off for the inclusion of the firmware-backed support.
-I'd prefer it to be hard to add code-paths that are going to create a lot of work when
-that comes - especially as folk are promising platforms that need this in the coming months.
+	return error;
+}
 
 
-
-Thanks,
-
-James
+Bert Karwatzki
 
