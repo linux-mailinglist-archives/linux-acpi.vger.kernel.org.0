@@ -1,149 +1,205 @@
-Return-Path: <linux-acpi+bounces-17749-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17750-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B43C0BDB4CB
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Oct 2025 22:44:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D373EBDBB5F
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 00:54:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6D30B4E120B
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 Oct 2025 20:44:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E6DC18A6D29
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 Oct 2025 22:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D232C3274;
-	Tue, 14 Oct 2025 20:44:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IYoNL9S2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692BD187554;
+	Tue, 14 Oct 2025 22:54:33 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415211EDA02
-	for <linux-acpi@vger.kernel.org>; Tue, 14 Oct 2025 20:44:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EDDF17A305;
+	Tue, 14 Oct 2025 22:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760474690; cv=none; b=trDBx76ZcdiPHbPpqWGwfmiBQUUCukeKZV6euaC05wRNX8RA2NePEhZ2vH3M6DlLkvB2jKzNgVnCq+wA1feV48KxSeLLVYMkSKJA7on6rEC3bjMxAXEnnu/lVZYwRigu+A/OlY2mS1HSUWRzXoPEP3Z/l7TbPpCAET7o88i3DF4=
+	t=1760482473; cv=none; b=LbA7buyG22vfFHqqNtOUXy0vVHVaHJOWU1XalC8JzgeURshrr8tvdNtwm8M19Rny+unJbOl9N+p7vXZx7fMilnPTthdlsfUaXo+C/NPyIj/T9F3UFHFlXwThRECQRjzLSFu/SQODuM69vRodHN4fcDXOqUE3pYa3uxtnrGDGTG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760474690; c=relaxed/simple;
-	bh=sk3w75RtyWNWUZvXt6JftS1Ei1J9D/GDQ/pCitVq9j8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lmRUFfPiWoZAStmd6jk401PbtVIwM2zflU55VKq58tZqEfidDv9oV5yzizJQZPkq1XaL8jpw/s3B9ieUn4Hcqu1258BjtuMNfsKBCV/m4zM2lJC4pgkxQnEVFrFF6xEXSM+NnCTJeYkeUUQpYloeMgz4al1C3swVdUwlsjqFZb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IYoNL9S2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DACE4C4CEF9
-	for <linux-acpi@vger.kernel.org>; Tue, 14 Oct 2025 20:44:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760474689;
-	bh=sk3w75RtyWNWUZvXt6JftS1Ei1J9D/GDQ/pCitVq9j8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=IYoNL9S2e1A4E/u7UXKL7LbX+LrqNMgH7a0xnThaZco2HQYIyQ3Y/IlvAXGC8zQXf
-	 +Vs/MiD9nYVGFQGohEfiPuzrCJVmHdE/Q6fI4xet1CRY0/0lcEgtOxa+xAoxsiZSex
-	 3uJ60LKwTUlXBCyCv8fnaA03PsqvbKMhbpgZjVTvA59uCXH9FT87vJsD+wishRVkqE
-	 z1b0h2fmupBNDItA+tc1nn7opABG13H8BaDBP6d4RGVgD+Bl7s3Gkbf+U32EnX7HGL
-	 vcXVMDCdLExWut0dgTyaOpmUrFobCgRGRwGUnNXSdt4qLDF3yDHqxrZgjvMRx4bsj2
-	 wBA9EZMGQYiqQ==
-Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-6361a421b67so6108248d50.2
-        for <linux-acpi@vger.kernel.org>; Tue, 14 Oct 2025 13:44:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWhgqcin1qgLcc0YhzKR4/t8rF2pmEQD3elDGCPSdxgRJXGxL94buBW/ICZWWH8LPMMf14IBWkV+hp3@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrViweKvte34GcJaP/d7oJcegxJyVk0ZouT4VOdT+B5GMT8iAE
-	QTi3VQTfquCHjquiJmxOpY8bgb/42a2hnsAg/eIPfRpRYDSoYZFbiP2wpqt5Ke+zD9QLI6vuxI8
-	E74MQPo1bybtlXFGqG9X3HxUTx2nRmSMgb1/kLfa9qg==
-X-Google-Smtp-Source: AGHT+IFJE1plANafJtInJCscm+heLOGPK8H3e3UnKYtheN5mGgUTBn2x78JByU4wjUGojfILO7wb17BQyddrhRF9+MA=
-X-Received: by 2002:a53:b4c4:0:b0:63c:f5a7:408 with SMTP id
- 956f58d0204a3-63cf5a709c9mr8433411d50.60.1760474689167; Tue, 14 Oct 2025
- 13:44:49 -0700 (PDT)
+	s=arc-20240116; t=1760482473; c=relaxed/simple;
+	bh=Eaw+QU5vhaHi+5xYUVnUTpSyuKHE4vIJbktJ0ZtgiUc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dSgjV8IM1HPJqhWJFqHJM59p1Pz8s354VU+LyIT+H6qco0cyB58Wo5zfUQSh497qBDicAvd41ixfD9yRK8uzuA824oyXViPrZ3gg+GVEhQKHoR47Xgk4b685MDuAQpeTO6TjhrYk9Dci7IaOj9IGNvESykUw2M7hjrrjUdkC90Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 926CB1A32;
+	Tue, 14 Oct 2025 15:54:21 -0700 (PDT)
+Received: from [192.168.20.16] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E989F3F66E;
+	Tue, 14 Oct 2025 15:54:24 -0700 (PDT)
+Message-ID: <57719c05-6470-40c8-8ecf-daa4ad1006da@arm.com>
+Date: Tue, 14 Oct 2025 17:54:14 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+CK2bAbB8YsheCwLi0ztY5LLWMyQ6He3sbYru697Ogq5+hR+Q@mail.gmail.com>
- <20250929150425.GA111624@bhelgaas> <CACePvbV+D6nu=gqjavv+hve4tcD+6WxQjC0O9TbNxLCeBhi5nQ@mail.gmail.com>
- <CACePvbUJ6mxgCNVy_0PdMP+-98D0Un8peRhsR45mbr9czfMkEA@mail.gmail.com>
- <mafs0a51zmzjp.fsf@kernel.org> <CACePvbW9eSBY7qRz4o6Wqh0Ji0qECrFP+RDxa+nn4aHRTt1zkQ@mail.gmail.com>
- <CAHN2nPK34YfrysN+sraiFVjU_9Lw7E-yFVF-9x+nt1OUppZX8Q@mail.gmail.com> <mafs01pn6nbse.fsf@kernel.org>
-In-Reply-To: <mafs01pn6nbse.fsf@kernel.org>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 14 Oct 2025 13:44:37 -0700
-X-Gmail-Original-Message-ID: <CACePvbWw9zWE7drUnaxfGk971Hv3o8WhLyYF74d4hDundhQ4jw@mail.gmail.com>
-X-Gm-Features: AS18NWCZdqV7l4n0ncE9tVNVDPwqC_rRLuITbh1FV52A2zBupxn8n08DI-DoFKE
-Message-ID: <CACePvbWw9zWE7drUnaxfGk971Hv3o8WhLyYF74d4hDundhQ4jw@mail.gmail.com>
-Subject: Re: [PATCH v2 00/10] LUO: PCI subsystem (phase I)
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Jason Miu <jasonmiu@google.com>, Bjorn Helgaas <helgaas@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Len Brown <lenb@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Pasha Tatashin <tatashin@google.com>, 
-	Vipin Sharma <vipinsh@google.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Mike Rapoport <rppt@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, skhawaja@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: PPTT: Dump PPTT table when error detected
+To: Feng Tang <feng.tang@linux.alibaba.com>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Sudeep Holla <sudeep.holla@arm.com>, James Morse <james.morse@arm.com>
+References: <20251014085154.59557-1-feng.tang@linux.alibaba.com>
+Content-Language: en-US
+From: Jeremy Linton <jeremy.linton@arm.com>
+In-Reply-To: <20251014085154.59557-1-feng.tang@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 13, 2025 at 6:58=E2=80=AFAM Pratyush Yadav <pratyush@kernel.org=
-> wrote:
->
-> On Fri, Oct 10 2025, Jason Miu wrote:
->
-> > On Thu, Oct 9, 2025 at 9:19=E2=80=AFPM Chris Li <chrisl@kernel.org> wro=
-te:
-> >>
-> >> On Thu, Oct 9, 2025 at 4:21=E2=80=AFPM Pratyush Yadav <pratyush@kernel=
-.org> wrote:
-> >> >
-> >> > On Tue, Oct 07 2025, Chris Li wrote:
-> >> >
-> >> > [...]
-> >> > > That will keep me busy for a while waiting for the VFIO series.
-> >> >
-> >> > I recall we talked in one of the biweekly meetings about some sanity
-> >> > checking of folios right before reboot (make sure they are right ord=
-er,
-> >> > etc.) under a KEXEC_HANDOVER_DEBUG option. If you have some spare ti=
-me
-> >> > on your hands, would be cool to see some patches for that as well :-=
-)
-> >>
-> >> Sure, I will add that to my "nice to have" list. No promised I got
-> >> time to get to it with the PCI. It belong to the KHO series not PCI
-> >> though.
-> >>
->
-> Right. It is only a "nice to have", and not a requirement. And certainly
-> not for the PCI series.
+Hi,
 
-Ack.
+On 10/14/25 3:51 AM, Feng Tang wrote:
+> There was warning message about PPTT table:
+> "ACPI PPTT: PPTT table found, but unable to locate core 1 (1)",
+> and it in turn caused scheduler warnings when building up the system.
+> It took a while to root cause the problem be related a broken PPTT
+> table which has wrong cache information.
+> 
+> To speedup debugging similar issues, dump the PPTT table when there
+> is warning about it.
+> 
+> The dumped info on a ARM server is like:
+> 
+>      ACPI PPTT: Processors:
+>      P[  0][0x0024]: parent=0x0000 acpi_proc_id=  0 num_res=1 flags=0x11(package)
+>      P[  1][0x005a]: parent=0x0024 acpi_proc_id=  0 num_res=1 flags=0x12()
+>      P[  2][0x008a]: parent=0x005a acpi_proc_id=  0 num_res=3 flags=0x1a(leaf)
+>      P[  3][0x00f2]: parent=0x005a acpi_proc_id=  1 num_res=3 flags=0x1a(leaf)
+>      P[  4][0x015a]: parent=0x005a acpi_proc_id=  2 num_res=3 flags=0x1a(leaf)
+>      ...
+>      ACPI PPTT: Caches:
+>      C[   0][0x0072]: flags=0x7f next_level=0x0000 size=0x4000000  sets=65536  way=16 attribute=0xa  line_size=64
+>      C[   1][0x00aa]: flags=0x7f next_level=0x00da size=0x10000    sets=256    way=4  attribute=0x4  line_size=64
+>      C[   2][0x00c2]: flags=0x7f next_level=0x00da size=0x10000    sets=256    way=4  attribute=0x2  line_size=64
+>      C[   3][0x00da]: flags=0x7f next_level=0x0000 size=0x100000   sets=2048   way=8  attribute=0xa  line_size=64
 
 
-> >
-> > For the folio sanity check with KEXEC_HANDOVER_DEBUG, I can follow
-> > that up. Would you tell me what we like to check before reboot, I may
-> > have missed some context. Thanks!
->
-> The idea is to sanity-check the preserved folios in the kexec-reboot
-> flow somewhere. The main check discussed was to make sure the folios are
-> of the same order as they were preserved with. This will help catch bugs
-> where folios might split after being preserved.
+This is an interesting idea, particularly if the dump is smarter and 
+acts like a linter, but i'm not sure the output right now would have 
+helped with the original problem. In that respect simply sprinkling a 
+lot of pr_debug information around during the parsing might be more 
+helpful to understand the context around parse errors.
 
-Yes, the idea is that, for all folio that has been preserved, remember
-the folio order at the time of pserver_folio. Right before kexec
-reboot, maybe after the freeze() call, the KHO can go though the
-internal list of the preserved folio and verify the folio starting at
-that physical address still has the same order compare to the
-preservation time. In other words, the folio order hasn't change since
-the between preserve_folio() and kexec reboot, for the folio that has
-been preserved.
+I was under the impression doing that was frowned on, as I ended up 
+removing quite a number of them during the initial reviews.
 
-> Maybe we can add some more checks too? Like making sure the folios
-> aren't freed after they were preserved. But that condition is a bit
-> trickier to catch. But at least the former should be simple enough to
-> do as a start.
 
-Agree, we can have more check there. We can also add those additional
-check as follow up patches in the same series or later series. They
-don't have to be done in one go.
+I wonder if simply print_hex_dump'ing the table on certain errors with 
+some acpi=debug like option is just as useful. Particularly if someone 
+writes a better userspace pptt pretty printer, since the iasl output 
+isn't helpful to understand the tree relationships.
 
-Chris
+
+>      ...
+> 
+>  From it, we can see the processor/cache info and the hierarchy relation
+> between them.
+> 
+> Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
+> ---
+>   drivers/acpi/pptt.c | 75 +++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 75 insertions(+)
+> 
+> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> index 54676e3d82dd..e7b48a77a12f 100644
+> --- a/drivers/acpi/pptt.c
+> +++ b/drivers/acpi/pptt.c
+> @@ -498,6 +498,79 @@ static void acpi_pptt_warn_missing(void)
+>   	pr_warn_once("No PPTT table found, CPU and cache topology may be inaccurate\n");
+>   }
+>   
+> +static void acpi_dump_pptt_table(struct acpi_table_header *table_hdr)
+> +{
+> +	struct acpi_subtable_header *entry, *entry_start;
+> +	unsigned long end;
+> +	struct acpi_pptt_processor *cpu;
+> +	struct acpi_pptt_cache *cache;
+> +	u32 entry_sz, i;
+> +	u8 len;
+> +	static bool dumped;
+> +
+> +	/* PPTT table could be pretty big, no need to dump it twice */
+> +	if (dumped)
+> +		return;
+> +	dumped = true;
+> +
+> +	end = (unsigned long)table_hdr + table_hdr->length;
+> +	entry_start = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+> +			     sizeof(struct acpi_table_pptt));
+> +
+> +	pr_info("Processors:\n");
+> +	entry_sz = sizeof(struct acpi_pptt_processor);
+> +	entry = entry_start;
+> +	i = 0;
+> +	while ((unsigned long)entry + entry_sz <= end) {
+> +		len = entry->length;
+> +		if (!len) {
+> +			pr_warn("Invalid zero length subtable\n");
+> +			return;
+> +		}
+> +
+> +		cpu = (struct acpi_pptt_processor *)entry;
+> +		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry, len);
+> +
+> +		if (cpu->header.type != ACPI_PPTT_TYPE_PROCESSOR)
+> +			continue;
+> +
+> +		printk(KERN_INFO "P[%3d][0x%04lx]: parent=0x%04x acpi_proc_id=%3d num_res=%d flags=0x%02x(%s%s%s)\n",
+> +			i++, (unsigned long)cpu - (unsigned long)table_hdr,
+> +			cpu->parent, cpu->acpi_processor_id,
+> +			cpu->number_of_priv_resources, cpu->flags,
+> +			cpu->flags & ACPI_PPTT_PHYSICAL_PACKAGE ? "package" : "",
+> +			cpu->flags & ACPI_PPTT_ACPI_LEAF_NODE ? "leaf" : "",
+> +			cpu->flags & ACPI_PPTT_ACPI_PROCESSOR_IS_THREAD ? ", thread" : ""
+> +			);
+> +
+> +	}
+> +
+> +	pr_info("Caches:\n");
+> +	entry_sz = sizeof(struct acpi_pptt_cache);
+> +	entry = entry_start;
+> +	i = 0;
+> +	while ((unsigned long)entry + entry_sz <= end) {
+> +		len = entry->length;
+> +		if (!len) {
+> +			pr_warn("Invalid zero length subtable\n");
+> +			return;
+> +		}
+> +
+> +		cache = (struct acpi_pptt_cache *)entry;
+> +		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry, len);
+> +
+> +		if (cache->header.type != ACPI_PPTT_TYPE_CACHE)
+> +			continue;
+> +
+> +		printk(KERN_INFO "C[%4d][0x%04lx]: flags=0x%02x next_level=0x%04x size=0x%-8x sets=%-6d way=%-2d attribute=0x%-2x line_size=%d\n",
+> +			i++, (unsigned long)cache - (unsigned long)table_hdr,
+> +			cache->flags, cache->next_level_of_cache, cache->size,
+> +			cache->number_of_sets, cache->associativity,
+> +			cache->attributes, cache->line_size
+> +			);
+> +	}
+> +}
+> +
+>   /**
+>    * topology_get_acpi_cpu_tag() - Find a unique topology value for a feature
+>    * @table: Pointer to the head of the PPTT table
+> @@ -534,6 +607,8 @@ static int topology_get_acpi_cpu_tag(struct acpi_table_header *table,
+>   	}
+>   	pr_warn_once("PPTT table found, but unable to locate core %d (%d)\n",
+>   		    cpu, acpi_cpu_id);
+> +
+> +	acpi_dump_pptt_table(table);
+>   	return -ENOENT;
+>   }
+>   
+
 
