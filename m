@@ -1,53 +1,53 @@
-Return-Path: <linux-acpi+bounces-17762-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17763-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93816BDCF86
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 09:25:57 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 068AEBDCF92
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 09:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E8FED503CC9
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 07:23:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6F931502235
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 07:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C623168E1;
-	Wed, 15 Oct 2025 07:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70B23168EA;
+	Wed, 15 Oct 2025 07:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fqvfc6xH"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JRaO4bYz"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811223161B1;
-	Wed, 15 Oct 2025 07:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB8D3164D4;
+	Wed, 15 Oct 2025 07:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760512702; cv=none; b=V8N6Kzqvn63iAQgRDk4PUTc9O5YJwbft55ftPif08VlKfQ7njRV6UlZ6ZqTjZ9GLGVrLm/0XZKpBoQxFZAYGNzXgVv06dA8CM3iDw0CE+pr/YP2AX5TTCMfxLzXuuY/XWpnGJ2IAymJ3/8WxCZ7fcofzbyFTlEIglZlnEjmjgb4=
+	t=1760512713; cv=none; b=KK5yfr7hx0YJy+PpgCVGteGG5vdp+XD2VZ/aYquyS2bt3zqG0E8Thsxk/f3nKB8q74XL3+esJVgxPqLbABZsasLGqHG41TWkGjjjQYJz8NLRIE18kIg3pX2FA9RuTRJuAwYYwSh+I/WkolfKD/55tzBglwiSI4zQFERIO1EPvZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760512702; c=relaxed/simple;
-	bh=DqoI5TidDmIBqOSdAtBjzMhf9iClAUpHAWhAxcN3vp8=;
+	s=arc-20240116; t=1760512713; c=relaxed/simple;
+	bh=fsEkA9sT0O+b3+lFDQVYTp2zMX1Y5xBEN9bjcddjg9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WbVhtlkl9UwF+mVjeDDUnnBOJK6Xf92GeUnNx5dMu0RHYIJO1haqER8Je5KAfmWYDHgvCDbn6JVB2CYnIpjVsReImUMl+RPeDYJYBXKu6vmPSENR/z+1cgJm+6vQ3eIqmJAV2NYQu4kmwaa+xYHkIGexApNwS4pap/JhehpBwfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fqvfc6xH; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=WgV7QEGZkGx3T4xmDioYcgpoVFHwDWEUGdhFzmDGRwDs6FMqqdqmGBoo2mPqMzex6rKNDWWVJW6AvW3NmL7XaqhE3qagKodgug+XbZniVKDATAji/+ZqJF7NRqywHwxrFCk/mIoQj9bHvFLi9Ii9M4jNNL2paa2C3PoUfg0cq60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JRaO4bYz; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 3D3241A13AB;
-	Wed, 15 Oct 2025 07:18:18 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id AE29F1A13AA;
+	Wed, 15 Oct 2025 07:18:30 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0C584606FA;
-	Wed, 15 Oct 2025 07:18:18 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2AC6E102F22BC;
-	Wed, 15 Oct 2025 09:18:03 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 792F7606F9;
+	Wed, 15 Oct 2025 07:18:30 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C6408102F22AF;
+	Wed, 15 Oct 2025 09:18:15 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1760512694; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1760512707; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=nT1PrzAFh54uaSU05XyjeWtw77LPjL/fGiV8mrNqv1k=;
-	b=fqvfc6xHs6zRQawpRWgyja210yzVAfPWQha8TZ/3pbVZi8QNmxWcA6PC68BSChop6AeUWD
-	szWEwSEdsWkRFA1tunagjaYL8yipSYRRHi92z5U18pjEA+v/6/2NW7z2WRXgtlEpBVyd8d
-	57dOLSBTsQoT+f5EX3CwZRIA7MpjJzW6l/IP5reOOvcYJLn0G5W6+/fOu+fydd42/y4qg8
-	gEs1J8rBEmv/s3g33Zv9OnSzZmYY85YYurBNf4i6C8q8JGvsBx2dKexYxTyYS6PFnfeI73
-	DTou0OgWozndiH82E4vkb4DZB0LjPsC26p6tLmWm2xb9CZM8LgaTT4KrKtZpsQ==
+	bh=XapR7WLR+LqYJDmtqOz+8aG2a7DE7pkUyNlWN34aPr0=;
+	b=JRaO4bYzK+RZhbgcPZkteddx3T4MiiJJ2fig1PU9Scoucq3QZWFuSF28bxmU7k8Ie0ryXx
+	4+m5jhquyqRjTXjVfK4d11p8Mj2qFwaYI9utyYJXeLmq/9a+wjFsBLQRILJbXGKLjkXYoP
+	ZQJCxWNHK9J9m9kckj9s4xKcZxWkokm18hedF+tx1PSwOMrk+VAUB3HvzgCBZtCnO6MUjx
+	HCEHJQ4xXRNLAFtaf/Sc0ChMDdA50700bh094JolnGN5aVvPAdv6YyvOb6vfrtnFV9pa02
+	sNOEYJYgTBiGKAb+51IVXqawxJeZi/r7ggleRnXRTp3r4Ub1hOukueOqiq1mFQ==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Rob Herring <robh@kernel.org>,
@@ -108,9 +108,9 @@ Cc: Wolfram Sang <wsa@kernel.org>,
 	Steen Hegelund <steen.hegelund@microchip.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v4 10/29] pinctrl: cs42l43: Use fw_devlink_set_device()
-Date: Wed, 15 Oct 2025 09:13:57 +0200
-Message-ID: <20251015071420.1173068-11-herve.codina@bootlin.com>
+Subject: [PATCH v4 11/29] cxl/test: Use device_set_node()
+Date: Wed, 15 Oct 2025 09:13:58 +0200
+Message-ID: <20251015071420.1173068-12-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251015071420.1173068-1-herve.codina@bootlin.com>
 References: <20251015071420.1173068-1-herve.codina@bootlin.com>
@@ -123,30 +123,29 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The code set directly fwnode->dev field.
+The code set directly dev->fwnode.
 
-Use the dedicated fw_devlink_set_device() helper to perform this
-operation.
+Use the dedicated helper to perform this operation.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 ---
- drivers/pinctrl/cirrus/pinctrl-cs42l43.c | 2 +-
+ tools/testing/cxl/test/cxl.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/cirrus/pinctrl-cs42l43.c b/drivers/pinctrl/cirrus/pinctrl-cs42l43.c
-index 68abb6d6cecd..3609feabd33d 100644
---- a/drivers/pinctrl/cirrus/pinctrl-cs42l43.c
-+++ b/drivers/pinctrl/cirrus/pinctrl-cs42l43.c
-@@ -566,7 +566,7 @@ static int cs42l43_pin_probe(struct platform_device *pdev)
- 		fwnode = fwnode_get_named_child_node(fwnode, "pinctrl");
+diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
+index 2d135ca533d0..eef6146a13d7 100644
+--- a/tools/testing/cxl/test/cxl.c
++++ b/tools/testing/cxl/test/cxl.c
+@@ -1124,7 +1124,7 @@ static void mock_companion(struct acpi_device *adev, struct device *dev)
+ {
+ 	device_initialize(&adev->dev);
+ 	fwnode_init(&adev->fwnode, NULL);
+-	dev->fwnode = &adev->fwnode;
++	device_set_node(dev, &adev->fwnode);
+ 	adev->fwnode.dev = dev;
+ }
  
- 		if (fwnode && !fwnode->dev)
--			fwnode->dev = priv->dev;
-+			fw_devlink_set_device(fwnode, priv->dev);
- 	}
- 
- 	priv->gpio_chip.fwnode = fwnode;
 -- 
 2.51.0
 
