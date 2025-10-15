@@ -1,53 +1,53 @@
-Return-Path: <linux-acpi+bounces-17777-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17778-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2CB1BDD1B2
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 09:35:07 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E38BDD190
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 09:34:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A10524F83AE
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 07:28:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 979BA5006DA
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 07:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5BE31A05E;
-	Wed, 15 Oct 2025 07:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D9AD322521;
+	Wed, 15 Oct 2025 07:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ERmGopSk"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RDFyXbMY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A3E314D19;
-	Wed, 15 Oct 2025 07:21:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3940B321F51;
+	Wed, 15 Oct 2025 07:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760512870; cv=none; b=Iqwl7JZbRh+x6c9sgpo9DDUAlB/WDMDmtoP1za/Ddw37m5Yr6U8IPGnJkhQL9BBQ5OceKvkf52QACDftHOyBZ0yrvoAKbydudbpkJRTY3AfIc6olscJwp2uu6UwNvTQABmAehUSk7STwnIznC7isy4oMd0J7fmS/GA4PKOCDNGE=
+	t=1760512879; cv=none; b=PsNExeaQmMiU+kr5H3yxtOOFiuJPBOHu5nq3wu7A5PP96DvPD3qKP/j07uChXA0pVY+c1+IEmTRp8MIj7d1T6PSvJ3cMcV3BoPG5k3kMpyItTuTnq9VZw97c9lwKqErDRm26kJBTJFBMgSRQgtWGClyt0SOdOeP/XRaIZvpo6PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760512870; c=relaxed/simple;
-	bh=WgrPjQRL5Y4Q6SPfxDFlOIL1l+YzqPZDbT8iHsFMZDc=;
+	s=arc-20240116; t=1760512879; c=relaxed/simple;
+	bh=ZuHXcIHNvq0FaC27E+Cf07iw95k61K7y0X7fZfDDxPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAPqBfWF2f18U9K4uK2drMKFICsSFpki65LpFDahuS5zMDRjPfny3XaVcpEtz6RPiSqPjjwOB5Pmp7EseZ9r1FAqMmuR2Wo02PldsYnP/F4ZnS00DYuOnCe4FPReuhWKRpqJEt8neeKCcVsKwq0ChZwkq516JAayolVyWyELuYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ERmGopSk; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=U/JynylrTfcun8qL8cNOXDx7HcJplXCNWZYMd2A3ZPCUWEtzNn0cwirfVG4hoMsO+uapiGHTBORyp9060yfIiqOEUM621ps1YRWQ7U3o9P2SpE5hBWVRae5J/TntLFTdJC5gtVJ1dvohpHXziH6CijT7veCf1+B6dCGpDHttSrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RDFyXbMY; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 3819F1A13AF;
-	Wed, 15 Oct 2025 07:21:07 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id C706B4E410C6;
+	Wed, 15 Oct 2025 07:21:15 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 07FD5606FA;
-	Wed, 15 Oct 2025 07:21:07 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4E4CE102F22AF;
-	Wed, 15 Oct 2025 09:20:55 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 96AC4606FA;
+	Wed, 15 Oct 2025 07:21:15 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3E965102F22BB;
+	Wed, 15 Oct 2025 09:21:05 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1760512864; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1760512873; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=NYpbe0tI9s3UA5Q3ouE2IO43FMeX+YbB7AbR355O98k=;
-	b=ERmGopSka5qE78K57EGqFItaT0ZiNQYju6JfROHSmPi5a2zN1Fd4t4gkfZdLWtIEMypnMu
-	8XLSCkushGAaP+2BmT10Ed5DBr/DokBjZDJpijSBIO/SmOINs6rPImwi440aSjcjOzYCLD
-	v0Ht9Q/MeQ8ajvzWE+m6anmLWT+p2/h/7DWaqzS1suwuGPFeYNe9/zjzSxyvmpqH3l7yx0
-	QTCY4QPFxiQE6Qg4fXAMb4cf9sv3i5Al/vWfp2PliWagcRK5VaOoFkZ+qpv/N5gpmTydTl
-	VL6sDt/L06yqPF9gJhGNbk5TSFEZd+MUdB0je0XXaSeTZjHdTf+Ou/Mm7Q8inA==
+	bh=9JXZvba91OCi6kDIuwHaUoggqvl4xIOcDR9HZtTRqa4=;
+	b=RDFyXbMYdDG0XXMjUn/oAMMzuFPSpe4jKPArXKk6Zd3uAUrjmXxMVnB/WOGPuHiQkJy2gW
+	nSuh57o23ptATBWP4xHWS9TGnbF4+Rgi84LQbeQj1SVD5KamFuA1rTJ8LINHxRnPkWZpvC
+	DH1EFwFHVYI6UOFDmmKPo3xL9c/OaHgwmiHLVx24xuBRwB9V9y1r3xcVO097sZKcjjtO1N
+	+Gh8dJp517EG5oHjIiV6zNpDVNuVwL3vTR2+xTM7jwOFa4D61Du9lPV+WT/FzXWNGJ2RMB
+	YwyUg8RJUy56J/SmX9hOOTdQTpPwBRG2jEr5O/fqWPtUuzE8FcxVs3ZwEEChVw==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Rob Herring <robh@kernel.org>,
@@ -108,9 +108,9 @@ Cc: Wolfram Sang <wsa@kernel.org>,
 	Steen Hegelund <steen.hegelund@microchip.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v4 25/29] PCI: Add Microchip LAN9662 PCI Device ID
-Date: Wed, 15 Oct 2025 09:14:12 +0200
-Message-ID: <20251015071420.1173068-26-herve.codina@bootlin.com>
+Subject: [PATCH v4 26/29] misc: lan966x_pci: Introduce board specific data
+Date: Wed, 15 Oct 2025 09:14:13 +0200
+Message-ID: <20251015071420.1173068-27-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251015071420.1173068-1-herve.codina@bootlin.com>
 References: <20251015071420.1173068-1-herve.codina@bootlin.com>
@@ -123,58 +123,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Existing code uses the 0x9660 value (LAN9662 PCI Device ID) in several
-places.
+Only one device-tree overlay (lan966x_evb_lan9662_nic.dtbo) is handled
+and this overlay is directly referenced in lan966x_pci_load_overlay().
 
-Avoid this direct use of the 0x9660 value replacing it by defined PCI
-Device ID.
+This avoid to use the code for an other board.
+
+In order to be more generic and to allow support for other boards (PCI
+Vendor/Device IDs), introduce the lan966x_pci_info structure and attach
+it to PCI Vendor/Device IDs handled by the driver.
+
+This structure contains information related to the PCI board such as
+information related to the dtbo describing the board we have to load.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/misc/lan966x_pci.c | 2 +-
- drivers/pci/quirks.c       | 2 +-
- include/linux/pci_ids.h    | 1 +
- 3 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/misc/lan966x_pci.c | 30 ++++++++++++++++++++++--------
+ 1 file changed, 22 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/misc/lan966x_pci.c b/drivers/misc/lan966x_pci.c
-index b28066c96534..e60ab662b8f3 100644
+index e60ab662b8f3..5fa6af531a53 100644
 --- a/drivers/misc/lan966x_pci.c
 +++ b/drivers/misc/lan966x_pci.c
-@@ -197,7 +197,7 @@ static void lan966x_pci_remove(struct pci_dev *pdev)
+@@ -18,10 +18,6 @@
+ #include <linux/pci_ids.h>
+ #include <linux/slab.h>
+ 
+-/* Embedded dtbo symbols created by cmd_wrap_S_dtb in scripts/Makefile.lib */
+-extern char __dtbo_lan966x_evb_lan9662_nic_begin[];
+-extern char __dtbo_lan966x_evb_lan9662_nic_end[];
+-
+ struct pci_dev_intr_ctrl {
+ 	struct pci_dev *pci_dev;
+ 	struct irq_domain *irq_domain;
+@@ -118,17 +114,23 @@ static int devm_pci_dev_create_intr_ctrl(struct pci_dev *pdev)
+ 	return devm_add_action_or_reset(&pdev->dev, devm_pci_dev_remove_intr_ctrl, intr_ctrl);
  }
  
++struct lan966x_pci_info {
++	void *dtbo_begin;
++	void *dtbo_end;
++};
++
+ struct lan966x_pci {
+ 	struct device *dev;
+ 	int ovcs_id;
++	const struct lan966x_pci_info *info;
+ };
+ 
+ static int lan966x_pci_load_overlay(struct lan966x_pci *data)
+ {
+-	u32 dtbo_size = __dtbo_lan966x_evb_lan9662_nic_end - __dtbo_lan966x_evb_lan9662_nic_begin;
+-	void *dtbo_start = __dtbo_lan966x_evb_lan9662_nic_begin;
++	const struct lan966x_pci_info *info = data->info;
+ 
+-	return of_overlay_fdt_apply(dtbo_start, dtbo_size, &data->ovcs_id, dev_of_node(data->dev));
++	return of_overlay_fdt_apply(info->dtbo_begin, info->dtbo_end - info->dtbo_begin,
++				    &data->ovcs_id, dev_of_node(data->dev));
+ }
+ 
+ static void lan966x_pci_unload_overlay(struct lan966x_pci *data)
+@@ -169,6 +171,9 @@ static int lan966x_pci_probe(struct pci_dev *pdev, const struct pci_device_id *i
+ 
+ 	pci_set_drvdata(pdev, data);
+ 	data->dev = dev;
++	data->info = (const struct lan966x_pci_info *)id->driver_data;
++	if (!data->info)
++		return -EINVAL;
+ 
+ 	ret = lan966x_pci_load_overlay(data);
+ 	if (ret)
+@@ -196,8 +201,17 @@ static void lan966x_pci_remove(struct pci_dev *pdev)
+ 	lan966x_pci_unload_overlay(data);
+ }
+ 
++/* Embedded dtbo symbols created by cmd_wrap_S_dtb in scripts/Makefile.lib */
++extern char __dtbo_lan966x_evb_lan9662_nic_begin[];
++extern char __dtbo_lan966x_evb_lan9662_nic_end[];
++
++static struct lan966x_pci_info evb_lan9662_nic_info = {
++	.dtbo_begin = __dtbo_lan966x_evb_lan9662_nic_begin,
++	.dtbo_end = __dtbo_lan966x_evb_lan9662_nic_end,
++};
++
  static struct pci_device_id lan966x_pci_ids[] = {
--	{ PCI_DEVICE(PCI_VENDOR_ID_EFAR, 0x9660) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_EFAR, PCI_DEVICE_ID_EFAR_LAN9662) },
+-	{ PCI_DEVICE(PCI_VENDOR_ID_EFAR, PCI_DEVICE_ID_EFAR_LAN9662) },
++	{ PCI_DEVICE_DATA(EFAR, LAN9662, &evb_lan9662_nic_info) },
  	{ }
  };
  MODULE_DEVICE_TABLE(pci, lan966x_pci_ids);
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index a3808ab6e92e..f39c0e4de219 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -6316,7 +6316,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa76e, dpc_log_size);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5020, of_pci_make_dev_node);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5021, of_pci_make_dev_node);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_REDHAT, 0x0005, of_pci_make_dev_node);
--DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_EFAR, 0x9660, of_pci_make_dev_node);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_EFAR, PCI_DEVICE_ID_EFAR_LAN9662, of_pci_make_dev_node);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_RPI, PCI_DEVICE_ID_RPI_RP1_C0, of_pci_make_dev_node);
- 
- /*
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 92ffc4373f6d..1aa70a26241a 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -934,6 +934,7 @@
- #define PCI_VENDOR_ID_EFAR		0x1055
- #define PCI_DEVICE_ID_EFAR_SLC90E66_1	0x9130
- #define PCI_DEVICE_ID_EFAR_SLC90E66_3	0x9463
-+#define PCI_DEVICE_ID_EFAR_LAN9662	0x9660
- 
- #define PCI_VENDOR_ID_MOTOROLA		0x1057
- #define PCI_DEVICE_ID_MOTOROLA_MPC105	0x0001
 -- 
 2.51.0
 
