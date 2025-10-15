@@ -1,166 +1,144 @@
-Return-Path: <linux-acpi+bounces-17781-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17782-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F03BDD16C
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 09:33:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43807BDD479
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 10:02:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E89DE1882AC4
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 07:31:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E56C83A7CD7
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 08:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7B8322A24;
-	Wed, 15 Oct 2025 07:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E66E2C21F7;
+	Wed, 15 Oct 2025 08:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="13/95jD2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dH5tCCvS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163B3322A0F;
-	Wed, 15 Oct 2025 07:21:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77262BEFF0;
+	Wed, 15 Oct 2025 08:02:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760512910; cv=none; b=apFJVxh0xGg5lpnrKqlhRGHkij2DGCcSySCVWgzvYbif26tHReZaTc68RVGaHP7JsbZqoybYF26pv9aciTAqVas3SqA15rThA25kv6kHVFUyWWQCsPdR2vAj5zyvtY5ABj4JhrvudI1ofaHjEDmnp6LF065YQ2sdYxDzX1+57j4=
+	t=1760515348; cv=none; b=KFHKIz6B88mExnJz9uH80BUP/DW09+tHSpQ6XvCJGAuo1Ej2FE8ez8L1jW77Q5ImhLxVarYNERSEElsf+qv3+TbxxeRbPLj10H/PgntRLh7p2TAIuckGzaqvVjsps69H4QjnZHsOdTSo2rj31/XN9oxwEDPBjWnAO99aqLyvFlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760512910; c=relaxed/simple;
-	bh=ZzdIgXkVyruSkkb124Jgkm0GwzeDNU9Cpoe/h8aUEvg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kOPZAvtbiz87fmYKVwCAODu0f3fgUtBqiDnQvH/P8AzA1KxWDWzFbkXoEgZ4RIDG6U0dMRV2N2q2yAeKNRuteSUNWm1mCB8Nw2NeJkZDet2GXkGpMsafoQPYyTK5y+XIqyDDm8S6x7VhGNOHPvD2rYhgkinu6pY11NcAmiyjVVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=13/95jD2; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 79C704E410C6;
-	Wed, 15 Oct 2025 07:21:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4C607606FA;
-	Wed, 15 Oct 2025 07:21:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E343D102F22BC;
-	Wed, 15 Oct 2025 09:21:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1760512903; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=x4ZLGkOvm/oVigw1/rloRb4F3nzZJ1Eq9qAeVsAs4fw=;
-	b=13/95jD25xlXmwc7R6cH5utrqLk/HydWkfUY5UAwRu+FW2yl+l+tf7aKeHHHXqhGa3Hh1g
-	C7U5piDWXij4eAwMG3FcMRMZwHFx9KfJf2soJXvwVrFcC1HIt+jFMl8u58jqa+xvMyvycw
-	/OMkrxOgHqBrrRbJYnf9FJhsvLy9LtU/n334Y0Jqzr2yMlD8i+mVYckXutUZApDiv3CGP8
-	CgqY65Ogld37rs6/a29unDJxzrOX8xfqiD0iIFbEkLnPYzFWPtZChkTFRRhoDiDc83dCGN
-	/ecyucff/4m9QfuIOxGqKSwkD68Nenwp720UITVnFX9MCEsPGgluSQvCOiWaFg==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Len Brown <lenb@kernel.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Wolfram Sang <wsa@kernel.org>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	patches@opensource.cirrus.com,
-	linux-gpio@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-spi@vger.kernel.org,
+	s=arc-20240116; t=1760515348; c=relaxed/simple;
+	bh=oMfFYXvGiE25w2JX2q/A2uGGYX6++XuGoMMS7Ksqkag=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Ye0cDZ7Pn8UcwGrG14SY6D35UYRMQHP7Jedl3xPJtraFI+sWYBT3KlnbLbUrJYCimAEDITRpkT0nAV6d7FyC+5fJk34nI+o6Pby2AKGu1BC0f0xnwR+A2p+wo+8qYQY2o0BYeEt4IBN+3P52wlYZzsSuCisjKcCAOWJbYXewuS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dH5tCCvS; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760515347; x=1792051347;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=oMfFYXvGiE25w2JX2q/A2uGGYX6++XuGoMMS7Ksqkag=;
+  b=dH5tCCvSxb59e/GTTeBvdRHsOhON7NdeCt3Wxqo5IvDt8kkAXfQH74eQ
+   Ta0yNBXdWvg2S1ZHr1pqiCNJYSFFXcyHucVO8mLOs7EudP1+Iys0LiuLX
+   +D+vhujmQZjzMc13RuI//TuEAxJDnkICOBp0mWEhWyYGS7qly7qmY2pDe
+   aQGQ6AMYEKTvtFDfMb2djPE8KZB78DrZ60OZxcoAeRX4ZegAseuxhfrvA
+   AdAKN5sA2vrjw+Z0xLo5MWWkh9Cw9XzuuT/EpyD1EbSf1I46tyo3SfjXB
+   8zLRRG2KE/YwBNyOS9wUwR2Zd8FCRfbtrBIJQFZ9CV50DiPVfd27vlPK+
+   Q==;
+X-CSE-ConnectionGUID: 0i5Hgre5TaiBJ8p3+bAGEw==
+X-CSE-MsgGUID: 3gjOwuVaRFi9g/vk3Vogww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11582"; a="61891427"
+X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; 
+   d="scan'208";a="61891427"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 01:02:25 -0700
+X-CSE-ConnectionGUID: xYZcdeLmSUCKMRXlV+YtwQ==
+X-CSE-MsgGUID: AOazhnw0QW64pO9/LqTH7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; 
+   d="scan'208";a="205805322"
+Received: from bnilawar-desk2.iind.intel.com ([10.190.239.41])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 01:02:21 -0700
+From: Badal Nilawar <badal.nilawar@intel.com>
+To: intel-xe@lists.freedesktop.org,
 	linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v4 29/29] misc: lan966x_pci: Add drivers needed to support SFPs in Kconfig help
-Date: Wed, 15 Oct 2025 09:14:16 +0200
-Message-ID: <20251015071420.1173068-30-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251015071420.1173068-1-herve.codina@bootlin.com>
-References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+	linux-pci@vger.kernel.org
+Cc: anshuman.gupta@intel.com,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	bhelgaas@google.com,
+	ilpo.jarvinen@linux.intel.com,
+	lucas.demarchi@intel.com,
+	rodrigo.vivi@intel.com,
+	varun.gupta@intel.com,
+	ville.syrjala@linux.intel.com,
+	uma.shankar@intel.com,
+	karthik.poosa@intel.com
+Subject: [PATCH v5 00/12] VRAM Self Refresh 
+Date: Wed, 15 Oct 2025 13:36:58 +0530
+Message-Id: <20251015080710.1468409-1-badal.nilawar@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Recently, new device-tree nodes were added in the overlay to add support
-for SFPs on LAN966x PCI device.
+Changes in v5:
+  - Added Co-developed by, whereever necessary
+  - Addressed review comments 
+  - Added new patch to handle vrsr in s2idle
+    drm/xe/pm/s2idle: Don't evict user BOs for D3hot and D3cold-VRSR state  
 
-The LAN966X Kconfig help section mentions drivers related to devices
-added based on the overlay description.
+Changes in v4:
+  - Resolved build warnings
 
-Add drivers related to devices described by those new nodes in the
-already existing driver list.
+Changes in v3:
+ PCIe ACPI Patches:
+  - dropped the notifier block code and added patch to allow only one Aux
+    power limit request per root port (Rafael J. Wysocki)
+  - Addressed Review comments (Rafael J. Wysocki, Bjorn Helgaas)
 
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
- drivers/misc/Kconfig | 5 +++++
- 1 file changed, 5 insertions(+)
+ Xe Pacthes:
+  - Addressed Review comments (Bjorn Helgaas)
 
-diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index 3ca09d993a19..c4e6af87c977 100644
---- a/drivers/misc/Kconfig
-+++ b/drivers/misc/Kconfig
-@@ -636,13 +636,18 @@ config MCHP_LAN966X_PCI
- 	  Even if this driver does not depend on those other drivers, in order
- 	  to have a fully functional board, the following drivers are needed:
- 	    - fixed-clock (COMMON_CLK)
-+	    - i2c-mux-pinctrl (I2C_MUX_PINCTRL)
- 	    - lan966x-cpu-syscon (MFD_SYSCON)
-+	    - lan966x-gck (COMMON_CLK_LAN966X)
- 	    - lan966x-miim (MDIO_MSCC_MIIM)
- 	    - lan966x-oic (LAN966X_OIC)
- 	    - lan966x-pinctrl (PINCTRL_OCELOT)
- 	    - lan966x-serdes (PHY_LAN966X_SERDES)
- 	    - lan966x-switch (LAN966X_SWITCH)
- 	    - lan966x-switch-reset (RESET_MCHP_SPARX5)
-+	    - sam9x60-i2c (I2C_AT91)
-+	    - sama5d2-flexcom (MFD_ATMEL_FLEXCOM)
-+	    - sfp (SFP)
- 
- source "drivers/misc/c2port/Kconfig"
- source "drivers/misc/eeprom/Kconfig"
+Anshuman Gupta (6):
+  PCI/ACPI: Add D3cold Aux Power Limit_DSM method
+  PCI/ACPI: Add PERST# Assertion Delay _DSM method
+  drm/xe/vrsr: Detect VRSR Capability
+  drm/xe/vrsr: Refactor d3cold.allowed to a enum
+  drm/xe/pm: D3cold target state
+  drm/xe/vrsr: Enable VRSR
+
+Badal Nilawar (6):
+  PCI/ACPI: Per Root/Switch Downstream Port allow one aux power limit
+    request
+  drm/xe/vrsr: Introduce flag has_vrsr
+  drm/xe/vrsr: Initialize VRSR feature
+  drm/xe/vrsr: Enable VRSR on default VGA boot device
+  drm/xe/pm/s2idle: Don't evict user BOs for D3hot and D3cold-VRSR state
+  drm/xe/vrsr: Introduce a debugfs node named vrsr_capable
+
+ drivers/acpi/scan.c                          |   3 +
+ drivers/gpu/drm/i915/display/intel_display.c |  22 ++
+ drivers/gpu/drm/i915/display/intel_display.h |   1 +
+ drivers/gpu/drm/xe/display/xe_display.c      |  11 +-
+ drivers/gpu/drm/xe/display/xe_display.h      |   2 +
+ drivers/gpu/drm/xe/regs/xe_regs.h            |   3 +
+ drivers/gpu/drm/xe/xe_debugfs.c              |   3 +
+ drivers/gpu/drm/xe/xe_device_types.h         |  12 +-
+ drivers/gpu/drm/xe/xe_pci.c                  |  12 +-
+ drivers/gpu/drm/xe/xe_pci_types.h            |   1 +
+ drivers/gpu/drm/xe/xe_pcode_api.h            |   7 +
+ drivers/gpu/drm/xe/xe_pm.c                   | 231 +++++++++++++++++--
+ drivers/gpu/drm/xe/xe_pm.h                   |  10 +-
+ drivers/pci/pci-acpi.c                       | 189 +++++++++++++++
+ include/acpi/acpi_bus.h                      |   3 +
+ include/linux/pci-acpi.h                     |  18 +-
+ 16 files changed, 494 insertions(+), 34 deletions(-)
+
 -- 
-2.51.0
+2.34.1
 
 
