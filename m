@@ -1,117 +1,107 @@
-Return-Path: <linux-acpi+bounces-17794-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17795-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14181BDD4CD
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 10:03:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A74A4BDD740
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 10:39:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 338CC4EF06B
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 08:03:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59D1C40130E
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 08:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AC626E6F2;
-	Wed, 15 Oct 2025 08:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A472D24BB;
+	Wed, 15 Oct 2025 08:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fG8tNjc4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nxiAAhcy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99AD2D060C;
-	Wed, 15 Oct 2025 08:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3F922A4DA;
+	Wed, 15 Oct 2025 08:39:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760515396; cv=none; b=f1JSvZeQJOI/5FVB3y8I4L9pisIfs4L09Tx10FdyW6NEEmhi38RoVMJi23viwMKhSfkmd6R4ad6Ez4C3m5noHBSzs+lB+HVMy3fWFN2+UdZ4BYbe5vuriQabGpD/GGfV7xe4s8yyugLGt/RNQLqemgXcFaL0K+RhfeHoTR6Mzag=
+	t=1760517562; cv=none; b=kUXsH+Q8C6vlDWyKZGAJuEUoBL0de05JCuKafnbItHE77a+9ftJjRkDYjOizyOGk0Xqqxg4Uc8t5jhtnEDLjLL6Q9NJwzdXHTMeH9IBeA79QPJmz6GwI5R5PvSMfCiBw3sHg++zufWjFd934qJGrkpdWpB0jEB0g0XjfZMF9j0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760515396; c=relaxed/simple;
-	bh=hL6Oj0457W1ccYkzRwwH6dIwpIvldkAXzRJyQpPfUc4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Fd97QqyWmS16tWwPmqxkspLs6gEMcqjCXhrs2yf0QyZxSTDB5bpRkddTGW2QDPi7uIOBzI2t9l21WGqipLRJRcllWGjZqZp6+00yVKRYWCk7LfihXppSNhJHHm0XOUBvPKiY52JCLkzkpIqpzEbzg/1b2WaL7+s4772yuIZ1pFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fG8tNjc4; arc=none smtp.client-ip=192.198.163.18
+	s=arc-20240116; t=1760517562; c=relaxed/simple;
+	bh=4J3LNLN7r+YJT0cz094SwztV9zdCRdVmFZ6/oEC3bjE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mOd2VIjFgkyUclJz9OlhDgip7qCpVZaF0gvtDMR5/B55zgydrIxZSkaGbRJwdCA5xvgipv5hq2g9rqtVvSiYNahoRDXWeQg+/bYyqjlh0maOTdZILJpxKI9zvBvhgm+FkJbVr2rIjh+cym8jzyD8OmvP+gYBjdw2z0Md8+RoPi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nxiAAhcy; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760515395; x=1792051395;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=hL6Oj0457W1ccYkzRwwH6dIwpIvldkAXzRJyQpPfUc4=;
-  b=fG8tNjc418BpxYSJ2qNy7nOEIzFNYgSyRgMSPVu++nx8MOeJhqK6okYh
-   rY8ol7AoqhC9hICiU+4gKe9M5zHiEYNNMzfjhpgZRQdKwq1+NKmynille
-   c2TUBDtGtDZz//KvRPbjM6LFBLc319HmJH9Ufq6eE/1gnH+Fz3DF2To8t
-   cZUL8bg4VNFYLqDhCmpuaR9JwtrbKahUG+pVMF/PSRrZtsTD3ex54iqT3
-   VJjEVm7Hd4uEZIwf9yJgRJHcGQf7gJjCBt6RDvTzmGXHzIUKXvkaa45aY
-   lutRvhPoSDpN3TUXTRzmiPqmqxNmVbP8Z+FSCr8JeKft6+h3lGqTgMfxG
-   w==;
-X-CSE-ConnectionGUID: ZWiqaQ2FQTWRJuG/dzta9g==
-X-CSE-MsgGUID: Dqh2LsuWTgerXelWiZEUdw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11582"; a="61891543"
-X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; 
-   d="scan'208";a="61891543"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 01:03:15 -0700
-X-CSE-ConnectionGUID: C8rnhy7SQFqSxfjI4ZhzAw==
-X-CSE-MsgGUID: bIBj/XW1R8aHi/Vad3RNqQ==
+  t=1760517561; x=1792053561;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4J3LNLN7r+YJT0cz094SwztV9zdCRdVmFZ6/oEC3bjE=;
+  b=nxiAAhcycll3bIf3/UFJQyMEW7L1mrt35XCHzsvH6B9RnoIe0hCu0tu1
+   RDokqEzWMJ3Fs29hvVoB/YOdrTaL0q5Lc/xdMrBJSey1LsblD4PHENsyn
+   FN7JMw1Ei8XQ+F+z7/o0KNdjA2A9AtGNA7rde9uCz6/9CO02GKre/+bal
+   u6wU4mMW56Y/W3CicaPTHpAH0qFWoM22E6EcHITYF78gM0qDSMRIdFdy8
+   8JAR2u2jHoGXrji/N4jqrZAlub8MVwbDdeaWPLPD0/PVS0ZRkc9hrNVcv
+   8uFrEK5eGX/qrC5DQA6toZuQDDnzZ7ox0oKr0fFOzQAC4ryTZWe2IEJus
+   g==;
+X-CSE-ConnectionGUID: 7pY7x7J3R/OLewY2/h5+JQ==
+X-CSE-MsgGUID: BQoCth3gRKeaxKm3hSNCWQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62597162"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="62597162"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 01:39:20 -0700
+X-CSE-ConnectionGUID: 4WloK+3WTNClHtruns9I6w==
+X-CSE-MsgGUID: N5/8nY5hR/aG4FPUZJKBiA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; 
-   d="scan'208";a="205805570"
-Received: from bnilawar-desk2.iind.intel.com ([10.190.239.41])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 01:03:10 -0700
-From: Badal Nilawar <badal.nilawar@intel.com>
-To: intel-xe@lists.freedesktop.org,
-	linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Cc: anshuman.gupta@intel.com,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	bhelgaas@google.com,
-	ilpo.jarvinen@linux.intel.com,
-	lucas.demarchi@intel.com,
-	rodrigo.vivi@intel.com,
-	varun.gupta@intel.com,
-	ville.syrjala@linux.intel.com,
-	uma.shankar@intel.com,
+   d="scan'208";a="182100449"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 01:39:17 -0700
+Date: Wed, 15 Oct 2025 10:39:14 +0200
+From: Raag Jadav <raag.jadav@intel.com>
+To: Badal Nilawar <badal.nilawar@intel.com>
+Cc: intel-xe@lists.freedesktop.org, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, anshuman.gupta@intel.com,
+	rafael@kernel.org, lenb@kernel.org, bhelgaas@google.com,
+	ilpo.jarvinen@linux.intel.com, lucas.demarchi@intel.com,
+	rodrigo.vivi@intel.com, varun.gupta@intel.com,
+	ville.syrjala@linux.intel.com, uma.shankar@intel.com,
 	karthik.poosa@intel.com
-Subject: [PATCH v5 12/12] drm/xe/vrsr: Introduce a debugfs node named vrsr_capable
-Date: Wed, 15 Oct 2025 13:37:10 +0530
-Message-Id: <20251015080710.1468409-13-badal.nilawar@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251015080710.1468409-1-badal.nilawar@intel.com>
+Subject: Re: [PATCH v5 08/12] drm/xe/vrsr: Refactor d3cold.allowed to a enum
+Message-ID: <aO9dsvZ-SmGlEh4T@black.igk.intel.com>
 References: <20251015080710.1468409-1-badal.nilawar@intel.com>
+ <20251015080710.1468409-9-badal.nilawar@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015080710.1468409-9-badal.nilawar@intel.com>
 
-Add a debugfs node named vrsr_capable to check if the device
-supports VRSR.
+On Wed, Oct 15, 2025 at 01:37:06PM +0530, Badal Nilawar wrote:
+> From: Anshuman Gupta <anshuman.gupta@intel.com>
+> 
+> Add xe_d3_state enum to add support for VRAM Self Refresh
+> d3cold state.
+> 
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> Reviewed-by: Karthik Poosa <karthik.poosa@intel.com>
 
-V2: Use debugfs_create_bool for vrsr_capable node (Karthik)
+...
 
-Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
----
- drivers/gpu/drm/xe/xe_debugfs.c | 3 +++
- 1 file changed, 3 insertions(+)
+> @@ -787,7 +787,8 @@ int xe_pm_runtime_resume(struct xe_device *xe)
+>  			goto out;
+>  	}
+>  
+> -	xe_i2c_pm_resume(xe, xe->d3cold.allowed);
+> +	if (xe->d3cold.target_state != XE_D3HOT)
+> +		xe_i2c_pm_resume(xe, true);
 
-diff --git a/drivers/gpu/drm/xe/xe_debugfs.c b/drivers/gpu/drm/xe/xe_debugfs.c
-index 1c3c9557a9bd..11d1942c196d 100644
---- a/drivers/gpu/drm/xe/xe_debugfs.c
-+++ b/drivers/gpu/drm/xe/xe_debugfs.c
-@@ -402,6 +402,9 @@ void xe_debugfs_register(struct xe_device *xe)
- 	debugfs_create_file("disable_late_binding", 0600, root, xe,
- 			    &disable_late_binding_fops);
- 
-+	debugfs_create_bool("vrsr_capable", 0400, root,
-+			    &xe->d3cold.vrsr_capable);
-+
- 	for (mem_type = XE_PL_VRAM0; mem_type <= XE_PL_VRAM1; ++mem_type) {
- 		man = ttm_manager_type(bdev, mem_type);
- 
--- 
-2.34.1
+Does this require an if condition?
 
+Raag
 
