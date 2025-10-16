@@ -1,42 +1,42 @@
-Return-Path: <linux-acpi+bounces-17836-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17837-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6E7BE52EB
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 21:09:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1DCBE52F1
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 21:09:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 953A94FA18C
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 19:09:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D30731AA0F0F
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 19:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0DE24635E;
-	Thu, 16 Oct 2025 19:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6462E252904;
+	Thu, 16 Oct 2025 19:08:56 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E61523D7DF;
-	Thu, 16 Oct 2025 19:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2BF42405E1;
+	Thu, 16 Oct 2025 19:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760641735; cv=none; b=sKHvwnI8l2qs/poR5YaKA7qk/dsnXznaTesVUEYzRR5zDymfPJkpJOIV0z+F+RsoQW37XYZzjfXPSoLLd8fAjtJl709JbHlsDpZMmIkgCgY7vo1XIS6X2e5ZiU21HtNaKggJRNdRhWWXwEZLeDAjiMPAhX8pPuPeKR2pp+SL+vo=
+	t=1760641736; cv=none; b=GooTDw60VNuUU4zFBxITkLRaEZDPAXyyxnNL/b7Azs6jqdcd5qg0h7h09/N+pFdHDPsw5JmheQ5JOpewYVu2igLXdMLuD+9Jm4Tl1wa/g3kN0EiH3p3OR0Sjxt7aBluS7vvKA6MMYkq6oksXhVILjnq6gYFVzd8qbD0W6rBVH9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760641735; c=relaxed/simple;
-	bh=V8rB88qtXmWHi5vXK1iHgPh/KZXkQFJee0Jir6Tkfxk=;
+	s=arc-20240116; t=1760641736; c=relaxed/simple;
+	bh=PpaQ7BCEXv9Ro94oij7wAw/f4BpfXUSkCtsNnzFifvM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sKpN1t7wKpJRcxJ4kCjjhQfxoKWrjMZJLhYk2ucOYbV7stNuRUf108FWiU7uWfrdMkqvo4QRx79ei0SWXY0pSBpXVL7EnpMg2YrmEUrEOxSDNEaRIXS7Icm9OSbcsY9428MRjn+o4s4aifvbmftzjQsBj2NoO7pgWPPK0j0wRaI=
+	 In-Reply-To:To:Cc; b=t62w4zpOvB0V+ae5NEw+Yqv9olnUj0SR1154Uy22GKPdXmfGKY9cO/3fXrCDggfSHxED/yc1I0Q9Ex/NDcFen70ZrOx51uC9cUfuuwKp1WDvhZcrtgK1uam7JkOmKh4dlpr4MDd4SluVfq6VPocQap1LjMHFBU50wVMRQXyBuj4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8595426B9;
-	Thu, 16 Oct 2025 12:08:44 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2BD4426BA;
+	Thu, 16 Oct 2025 12:08:46 -0700 (PDT)
 Received: from e133711.arm.com (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 26B6A3F66E;
-	Thu, 16 Oct 2025 12:08:51 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BEAC03F66E;
+	Thu, 16 Oct 2025 12:08:52 -0700 (PDT)
 From: Sudeep Holla <sudeep.holla@arm.com>
-Date: Thu, 16 Oct 2025 20:08:16 +0100
-Subject: [PATCH 2/6] mailbox: pcc: Wire up ->last_tx_done() for PCC
- channels
+Date: Thu, 16 Oct 2025 20:08:17 +0100
+Subject: [PATCH 3/6] mailbox: pcc: Set txdone_irq/txdone_poll based on PCCT
+ flags
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -44,8 +44,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20251016-pcc_mb_updates-v1-2-0fba69616f69@arm.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251016-pcc_mb_updates-v1-3-0fba69616f69@arm.com>
 References: <20251016-pcc_mb_updates-v1-0-0fba69616f69@arm.com>
 In-Reply-To: <20251016-pcc_mb_updates-v1-0-0fba69616f69@arm.com>
 To: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
@@ -56,51 +56,46 @@ Cc: Sudeep Holla <sudeep.holla@arm.com>,
  Cristian Marussi <cristian.marussi@arm.com>
 X-Mailer: b4 0.14.3
 
-Some PCC users poll for completion between transfers and benefit from
-the knowledge of previous Tx completion check through the mailbox
-framework's ->last_tx_done() op.
+The PCC controller currently enables txdone via IRQ if the PCCT exposes
+platform capability to generate command completion interrupt, but it
+leaves txdone_poll unchanged. Make the behaviour explicit:
 
-Hook up the last_tx_done callback in the PCC mailbox driver so the mailbox
-framework can correctly query the completion status of the last transmitted
-message. This aligns PCC with other controllers that already implement such
-last_tx_done status query.
+  - If ACPI_PCCT_DOORBELL is present, use txdone_irq and disable polling.
+  - Otherwise, disable txdone_irq and fall back to txdone_poll.
 
-No functional change unless callers use ->last_tx_done(). Normal Tx and
-IRQ paths are unchanged. This change just improves synchronization and
-avoids unnecessary timeouts for non-interrupt driven channels by ensuring
-correct completion detection for PCC channels that don’t rely on interrupts.
+Configure the PCC mailbox to use interrupt-based completion for PCC types
+that signal completion via IRQ using TXDONE_BY_IRQ, and fall back to
+polling for others using TXDONE_BY_POLL.
+
+This ensures the PCC driver uses the appropriate completion mechanism
+according to the PCCT table definition and makes the completion mode
+unambiguous avoiding mixed signalling when the platform lacks a doorbell
+flag set.
 
 Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 ---
- drivers/mailbox/pcc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/mailbox/pcc.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index f6714c233f5a..2b690c268cf0 100644
+index 2b690c268cf0..327e022973db 100644
 --- a/drivers/mailbox/pcc.c
 +++ b/drivers/mailbox/pcc.c
-@@ -445,6 +445,13 @@ static int pcc_send_data(struct mbox_chan *chan, void *data)
- 	return ret;
- }
+@@ -791,8 +791,13 @@ static int pcc_mbox_probe(struct platform_device *pdev)
+ 		(unsigned long) pcct_tbl + sizeof(struct acpi_table_pcct));
  
-+static bool pcc_last_tx_done(struct mbox_chan *chan)
-+{
-+	struct pcc_chan_info *pchan = chan->con_priv;
-+
-+	return pcc_mbox_cmd_complete_check(pchan);
-+}
-+
- /**
-  * pcc_startup - Called from Mailbox Controller code. Used here
-  *		to request the interrupt.
-@@ -490,6 +497,7 @@ static const struct mbox_chan_ops pcc_chan_ops = {
- 	.send_data = pcc_send_data,
- 	.startup = pcc_startup,
- 	.shutdown = pcc_shutdown,
-+	.last_tx_done = pcc_last_tx_done,
- };
+ 	acpi_pcct_tbl = (struct acpi_table_pcct *) pcct_tbl;
+-	if (acpi_pcct_tbl->flags & ACPI_PCCT_DOORBELL)
++	if (acpi_pcct_tbl->flags & ACPI_PCCT_DOORBELL) {
+ 		pcc_mbox_ctrl->txdone_irq = true;
++		pcc_mbox_ctrl->txdone_poll = false;
++	} else {
++		pcc_mbox_ctrl->txdone_irq = false;
++		pcc_mbox_ctrl->txdone_poll = true;
++	}
  
- /**
+ 	for (i = 0; i < count; i++) {
+ 		struct pcc_chan_info *pchan = chan_info + i;
 
 -- 
 2.34.1
