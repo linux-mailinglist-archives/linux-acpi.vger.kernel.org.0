@@ -1,179 +1,196 @@
-Return-Path: <linux-acpi+bounces-17829-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17830-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3A6BE4E45
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 19:40:07 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7D5BE4ECC
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 19:54:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DCAF2356848
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 17:40:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DE9B44F5403
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 17:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA5321CA13;
-	Thu, 16 Oct 2025 17:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15E4221F13;
+	Thu, 16 Oct 2025 17:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aq/qfu09"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GkzniORS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010051.outbound.protection.outlook.com [52.101.201.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E56218ADD;
-	Thu, 16 Oct 2025 17:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760636403; cv=none; b=hygMQ6O1R9L9HBpsUi9E9m488yXPUrsCE+w4sNaphxzpRwTNFN7kb09fx71/rE2motXl3eRUh6BlvDW0k1Nap9vNPWksw3L7Xl0Hv1e7isWlKOEJcOI5et3bMKk+4fG0qP1GBlPmpT3Zq3Wg7mqJObvMsOp6V1Rr30SXVeWDssQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760636403; c=relaxed/simple;
-	bh=dEV+1IIB52ehcD6qDGjqoGIjfy3Tv9SSkcBXrJR4Fd0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j4dTsWQ/o2CBltSs0t5uJwql5aQMD7kzvCmr3yKRqGLoMaR+lcDP51NpeQPYot9UfK9nF37VIGYWt2zfiHF2I9QhUf7BnwBeami5lBhhkemv9WxHMnPeVXVafO6TrtrB+q6STIqW+MP3CaViTu4B1ZbwM3WzomopR2Mz+8L0bvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aq/qfu09; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760636401; x=1792172401;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=dEV+1IIB52ehcD6qDGjqoGIjfy3Tv9SSkcBXrJR4Fd0=;
-  b=aq/qfu09jKR5Zo+HDDu8djnD4lmfsnAwQo0ejVe/RtBoX7lFzljja18S
-   V6fF82P5Zbnssmh4WODBEW7SRm66893ClAUqhF2YZkzzGVZZVNnP+EGH6
-   pLaMKiU3RF5R9vx/FYqnoMJAExz8qbeodRMSHp9wixTG4qNQX4HBYicy5
-   gskJKGXMduKZ53QeL+yaRbqaFxIWlW3v/WA0vc/JQ6S8U94qK41g2j/cl
-   EzZnhzs+T6KmDmEolo5R9CW3D6m/hWzyD2wll9BGqvK1X0B/5Wwp0feKl
-   LZmfuCScwgYhbK0Q3sK797wRLa2wcW3LfKQ0cduXX46+JMX9GkyGkigEk
-   Q==;
-X-CSE-ConnectionGUID: SlESKybQQMus5IOk6jTUvQ==
-X-CSE-MsgGUID: NIqDn3HxQZaNrWTHncekrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="66705314"
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
-   d="scan'208";a="66705314"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 10:40:00 -0700
-X-CSE-ConnectionGUID: e6fARCcBQPecAV+t8BGi0g==
-X-CSE-MsgGUID: sUD53FoJSBOigMNvPtqDfw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
-   d="scan'208";a="181728490"
-Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.4]) ([10.125.108.4])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 10:40:00 -0700
-Message-ID: <32ca1961-5ed6-47b5-af0e-70e7e87bba96@intel.com>
-Date: Thu, 16 Oct 2025 10:39:59 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCBC3346A2;
+	Thu, 16 Oct 2025 17:54:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760637258; cv=fail; b=HLKaIsScfUFx/3RchEawry9Ph7G0pufLFRD4JtqyiYOwxzEG3TIVHbmly9HBMY8Oo+XoB+BMkhmmm5lXZpJ3fTqT9IxfrpRO/F/GbD3cI0FElD5O39oohiUeNI0XM0TyWd/mWKYCN26QhS8iXBme3EkCtpSTE0nzCLTPAmZxHnI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760637258; c=relaxed/simple;
+	bh=jRgDOU+xPTRf2JZyhPyJVRMGacK9+g96nx/As7acrCk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=hpD4GEfpVSoD7UTFGJBg5GitzkwGQ3IaPG53e7YZaWjYxUx8zcIK4rOpIMHQn8gU5uG/InC7ZuvdA/ZW83DjzjdBi4MsB+R7P2SMnJnZDVBmY/MUu+IJ+b4utlSrvQAORq7TmQAXzOGSsaLNviO0uy+q/uZkFQSIa0mv1U8gdtQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=GkzniORS; arc=fail smtp.client-ip=52.101.201.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iHRUJKdpfPO58Y+xzRXDgLkMd6KUwnBCZ55SzS8RIbEhwqQ7LLdgfWPl/a2/AM3lxr6w5w/XO0/6gnsWbcfHAUNFgZm0J7eA1xrudUZF4sWfMkahUaqLMUxGt5FzSGfGhw2caqSfNm8IdRnEaHSV/djaRzYm8NitEXCBFA2YpRcVZrtY9tsxQdQggU0xdBst/GhtFYb/975cJGXkxSL0Fh1yYDaUDDt0w+aKKhqUpnrRJnvHQfn41wf29esJBVtJZvYCM7ruVSi1mQ4C4knQI5wD8WlV64SoSGU4fMdqtkjJH1LiwGIKdkCh2Pud8S5wFvT5TQi/S2n1bnvGJrbS1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=41bxc+TlXuRvC8+yq3PDQVbrcaVXIhj83cbwXNdjMS0=;
+ b=iSkYqki/PH6kLy4BH+1i4mGPgn/B8HkLeWLHxpe+/kUalHwwbyjCi9BchHEaiT36q1K4S8tQbEBufgGIHzpIv5VpEoXu6RFry0CrL5inoAVJo1Ten50mYRZFCd2+4cXu9tlYcVSB/9EJJcOwQNz+u7ME8WrJPk54MiHV57ET3HBikS52a9N4vIaVohE2ewN752M6gkDiWeSmrM4YLJxVVwDpkxHCDgMiES0MfnKZKTI0eyvQ8fpSqeG5aPkBc8IAZOZL5E6ZHyLpNsgHx2tLffR9Q6n2DoWXWUkXx5CinBjJLyRDRhvsRs/ZkYXWfKe9OkEqMQdrShX+q8/o0yH1nA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=41bxc+TlXuRvC8+yq3PDQVbrcaVXIhj83cbwXNdjMS0=;
+ b=GkzniORS/qsM4SZIgcXF6hHjyjk40oCqKV7F9Ez4IVTmFbkYw1P1xNzjrspN9+lrQQJGTx9ZKtMO/1mTY19q5mMVLshtGl9XM4sQnKPKmwrYa6qZ53jHx1KtUB+6Eb7NjFyD3aDDYdtgX5Sr8zm8LHBIo24qhT0VOVYlTtEnZw0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB6373.namprd12.prod.outlook.com (2603:10b6:8:a4::7) by
+ CYYPR12MB8964.namprd12.prod.outlook.com (2603:10b6:930:bc::10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9228.12; Thu, 16 Oct 2025 17:54:14 +0000
+Received: from DM4PR12MB6373.namprd12.prod.outlook.com
+ ([fe80::12f7:eff:380b:589f]) by DM4PR12MB6373.namprd12.prod.outlook.com
+ ([fe80::12f7:eff:380b:589f%6]) with mapi id 15.20.9228.012; Thu, 16 Oct 2025
+ 17:54:14 +0000
+Date: Thu, 16 Oct 2025 13:54:09 -0400
+From: Yazen Ghannam <yazen.ghannam@amd.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Tony Luck <tony.luck@intel.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
+	Avadhut Naik <avadhut.naik@amd.com>,
+	John Allen <john.allen@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH 2/3] RAS/AMD/ATL: Require PRM support for future systems
+Message-ID: <20251016175409.GA806407@yaz-khff2.amd.com>
+References: <20251006-wip-atl-prm-v1-0-4a62967fb2b0@amd.com>
+ <20251006-wip-atl-prm-v1-2-4a62967fb2b0@amd.com>
+ <20251016161037.GEaPEY_V0fbmPvspMa@fat_crate.local>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251016161037.GEaPEY_V0fbmPvspMa@fat_crate.local>
+X-ClientProxiedBy: BN0PR04CA0194.namprd04.prod.outlook.com
+ (2603:10b6:408:e9::19) To DM4PR12MB6373.namprd12.prod.outlook.com
+ (2603:10b6:8:a4::7)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] acpi/hmat: Fix lockdep warning for
- hmem_register_resource()
-To: dan.j.williams@intel.com, nvdimm@lists.linux.dev,
- linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc: vishal.l.verma@intel.com, ira.weiny@intel.com, rafael@kernel.org
-References: <20251015162958.11249-1-dave.jiang@intel.com>
- <68f001e4e4a2c_2f8991001a@dwillia2-mobl4.notmuch>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <68f001e4e4a2c_2f8991001a@dwillia2-mobl4.notmuch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB6373:EE_|CYYPR12MB8964:EE_
+X-MS-Office365-Filtering-Correlation-Id: a34b3aae-d6d3-47c9-44de-08de0cdd0463
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Pyb4zBsTLbcUmWGAWBB0NvIKmWv7fRtjqMCTRaj68149y4XfUyu6Vw8NNIZF?=
+ =?us-ascii?Q?224zaWuLBG7PWHm+uicSSnzsDFitjTS2Lgty0ipQbYidiV4Pab+ym3laWUy6?=
+ =?us-ascii?Q?Y+MUY7e9KM4cFUXQ0WkO6J1x6ZNYhLxof1ZWpzOlblUzan+ONCOw7GtthbYT?=
+ =?us-ascii?Q?XWO1yJ0yWwWV0iZXqWPNj4l62EtgPeK2wV2Tm/b9oVB1pST5VNM7icFnUhzf?=
+ =?us-ascii?Q?iJAHp+bYfmfsfBttQeJSepGugv55//TO7Cwz/AEwVN02deN7fuMkBzry4cTX?=
+ =?us-ascii?Q?jGr18KG2/nxvliIL855Vbru+w8YH7gwpvrgLcvgFUKsC9yFNJJw9iw9xpp7E?=
+ =?us-ascii?Q?zyc+kYM1LlZUso/SJ3lYKaqu0f7Rgkj4zPYOfOr5WOnA+IP2GyxslLmNpeT6?=
+ =?us-ascii?Q?UPgLtrOGei46/32o0uRngHAtc2g147jVZ+5ovFdzKT+hUNpRcWRyrW+UeBfF?=
+ =?us-ascii?Q?1r6bYHNSRtvn9uHBZRXCO/l5JbFRDcdfFmDsTe5wG6tudoyhbOSgFj3XGTSA?=
+ =?us-ascii?Q?e/oLakHk/2qoMOhmBSQjj81cZQ/3prp5/e4C7qsp8PP/0bxY27rrxMLHjYuR?=
+ =?us-ascii?Q?aF28vNTbCZEyR3icJKCyhU1c8MrlSStUd4NwEP2Rj8VBTYIvm7coUk0gYm2F?=
+ =?us-ascii?Q?WMfS0y0tp2RrwDQO9bw0eXqgmLeZ53CkDOrjS8oTMXVVwEuMFdkvDW6LebdF?=
+ =?us-ascii?Q?2xT0Xy31EPHyZeXeRqQqLGFRAWQ0jU6JMgLa90sOmlwa4xB7pH5B62FGiB8/?=
+ =?us-ascii?Q?L3vlEOVAJeT/yDL0N2XY+tZ81VKoU2Svwrm+JzpHYoFHbfw6oXxhwbJyBywl?=
+ =?us-ascii?Q?39xjM/qPBxNzTfkABLJGPRLyaV603RrgPL++hw3+UksAvYS45itkCAlTKpay?=
+ =?us-ascii?Q?IdTCjpfnQ2qBBVSedGRhPTwhMsPdjKCVNjXS+jskLY5PEPEIc1hCLHbUwfVN?=
+ =?us-ascii?Q?MLkRHDdUhuS2hREv2RYCBthdETI162B9Et73cdsZYQY4fwDRKZMX/UtUz7K9?=
+ =?us-ascii?Q?jBY2zTdWyQSmduU10N6hfUO89lkO27A4+7Xu9LvQkdt5XPceZmzlc69fba8k?=
+ =?us-ascii?Q?YVaP1IRJ29USJyLrJkM1e2G1ZfP69yP12/tesbLCwrIBJv3fXsl0lT7Xplc7?=
+ =?us-ascii?Q?3bQYwTRXfllgS39ffWs9L3IqCbsSuZTV9lJABOkI+tB4dIcabJ+b8Tg4IveM?=
+ =?us-ascii?Q?Om+5eN5SWkiJh+sEhEMvQQMJBuHBnABASwIIF3rtxVCQXY9RgL/f2TLCoKLr?=
+ =?us-ascii?Q?Z/qA0FnCYVRFVYAluupZuY8CDWUK+TcIPBQ/48j28U7kQm6yX2wfYEVWmaF2?=
+ =?us-ascii?Q?RJG4UUf+QdqTaYBtGqVox5nPzOpSFpmiCTV85/vCKeMFsWeOQ15qQoCnVdAu?=
+ =?us-ascii?Q?gRS8hYsd1bDKXbwSVRRtMQpBd3Vyc0ED92wLUQgYJc3VBqql3nZRUSNFAex1?=
+ =?us-ascii?Q?OhCGaFzi5u9FFF+k2tX7oQnPVvwujXT6?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6373.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?BxLDTvHDPwHDh2F/16t+4Z0nc0gs6z8B5X+w8EJFGDUr+RKlHNP+0JKS1LNI?=
+ =?us-ascii?Q?qsJjY1JJjv38YsHL29hi/oxyJh1vFXgEnCffjGOgx7KHRVLL6iLUUgmGlKbA?=
+ =?us-ascii?Q?Nb2BWCZ0aeH7Bote+BOCy5GxRPzuADWOJz8jPTgUZiGPx7b4Ax7oIb4OnDE4?=
+ =?us-ascii?Q?+myaCjGL8Rz569p2LGnwuH95fOXg97Q764jDsTHAylH1QWZdRA0R8FCm89Fx?=
+ =?us-ascii?Q?engMf9nv+sBpSvRbw+PkY+3UoOKI0CPwEHuPMsoF98WaF2x9OYqn68hlXJR4?=
+ =?us-ascii?Q?fCfZbWiQFd3sthuigyo3bjZniQZoeyu/m6HpSJjD3WUVok6/TRwgBADZzejD?=
+ =?us-ascii?Q?I137cJHx1qFagGq9dVBCXdxD8aAH06PoPlV7tyH4bglhmJgo/foBJe87OcIW?=
+ =?us-ascii?Q?kgDrSViT3/LOkK7aQi/EW6CKwSDlIVEj3LgE0yhB920R425Whm+YqmfYYZW0?=
+ =?us-ascii?Q?MlpzDCcxwga6hKzNlCNtffWtGUERSurtNQ+54Ophlrs47oRTam9Zn2iqvGa+?=
+ =?us-ascii?Q?aW+nyOmKJxczQ5HYjD0j56zq7VC5kig9r/6CgvcE8l4Sco6gmKmvIN97kbWD?=
+ =?us-ascii?Q?Rje0Y9Qhv6iFGppyciAENt67epBA5AC4u3uVxBiz0HhfDC0eshLg8pA3i+We?=
+ =?us-ascii?Q?hwr1Iqqjm6SxtaYGPAxnLThAihpIpMk05NE+KlsqC1v1TMWz4DwOxkLkFbB+?=
+ =?us-ascii?Q?j+bR+/2/EhREev0vP6kMtqhEXHQ8LRoPmVpRQwtNn73qXW659JJRPNrlzdRD?=
+ =?us-ascii?Q?UeKfejYrOOAKzIJB1HM+mj/YNQ0N3JtFETWw0kP9h/9SSVuIkQHDWji+99Zg?=
+ =?us-ascii?Q?n9aWSl3YrL9p4TNZ29FM48eXbucc8p7LEDYhK/UZXW5xp4q4nEuIeot3VUvx?=
+ =?us-ascii?Q?l88J6/UpKPWny+lgup9O4lWhWtzzmgwAJWTaOoti8DTw7RnKE+NKo7qa491R?=
+ =?us-ascii?Q?3IxNeAMR3Pt4J5aHFVannneTiy+jTEenVEgtTIJ4Y3odx2jEXgxuL3WHHISj?=
+ =?us-ascii?Q?x1ZjavQzcDtvZ+L3i0N971HjYt/NrIatRu0KqWAQX3s9mraZCMV4hMm5gogj?=
+ =?us-ascii?Q?Q6zKkm5GircuZXFlGaOOK39qwDedIH9zyt3yeIL/3RqrEdfb8pzFr4l06n9z?=
+ =?us-ascii?Q?9Ra8pRAwImSVS3EFCsy67HBiRiMJRtSK0IhIqbIFszHI1F/k3kmL6KkFt+vZ?=
+ =?us-ascii?Q?uoWKLkmsSOmTrCn8wVplK4E5Da8AiN+OuQhuX/vjpIaCKemE4xJF610Yrx7w?=
+ =?us-ascii?Q?+7EmCHVHTi+KzGTpMbvZMI/0FDHhRS3nZV3Rm2V7XIRY8lf0x4xCJaAcaEU/?=
+ =?us-ascii?Q?7Yc9oJz8//CFx3gZ8vqBASiI5FFECYBmTC2B2GIJKRVl3fV8gnV1Qm2FY+u3?=
+ =?us-ascii?Q?2oxN9UXVU/USTjdtkxNesUpwhTsUdOc3Xj04Z544gmErz90xqQ4VNRcScBSh?=
+ =?us-ascii?Q?RItWLYLl4azf3hIlIeuRWq7CGOEdM3+8Ma20eSO7L72+9jNRVhBwIRyyEbpo?=
+ =?us-ascii?Q?1o3j2BeLjtdXQ+mBj2R2ugIQUtP/lljhAyQAUrl1niWsKlFwT9kxieLcjA8B?=
+ =?us-ascii?Q?cUdt7TGST/PNHh8mkScRSsDCIBepH+37RMlN81Ce?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a34b3aae-d6d3-47c9-44de-08de0cdd0463
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6373.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2025 17:54:13.9649
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JvPVlUk5+86YhNaUTfpoFt3b7paQOc3XVW6BeRoh+fcbPNORuoSHwInue3Tewz1A8ItdvGNeMOSRCJceKieRmQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8964
 
-
-
-On 10/15/25 1:19 PM, dan.j.williams@intel.com wrote:
-> Dave Jiang wrote:
->> The following lockdep splat was observed while kernel auto-online a CXL
->> memory region:
->>
->> ======================================================
->> WARNING: possible circular locking dependency detected
->> 6.17.0djtest+ #53 Tainted: G        W
->> ------------------------------------------------------
->> systemd-udevd/3334 is trying to acquire lock:
->> ffffffff90346188 (hmem_resource_lock){+.+.}-{4:4}, at: hmem_register_resource+0x31/0x50
->>
->> but task is already holding lock:
->> ffffffff90338890 ((node_chain).rwsem){++++}-{4:4}, at: blocking_notifier_call_chain+0x2e/0x70
->>
->> which lock already depends on the new lock.
->> [..]
->> Chain exists of:
->>   hmem_resource_lock --> mem_hotplug_lock --> (node_chain).rwsem
->>
->>  Possible unsafe locking scenario:
->>
->>        CPU0                    CPU1
->>        ----                    ----
->>   rlock((node_chain).rwsem);
->>                                lock(mem_hotplug_lock);
->>                                lock((node_chain).rwsem);
->>   lock(hmem_resource_lock);
->>
->> The lock ordering can cause potential deadlock. There are instances
->> where hmem_resource_lock is taken after (node_chain).rwsem, and vice
->> versa.
->>
->> Remove registering of target devices from the hmat_callback(). By the
->> time the hmat hotplug notifier is being called, there should not be
->> hmem targets that still need to be registered.
->>
->> Fixes: cf8741ac57ed ("ACPI: NUMA: HMAT: Register "soft reserved" memory as an "hmem" device")
->> Link: https://lore.kernel.org/nvdimm/68e46a09c2a07_2980100f3@dwillia2-mobl4.notmuch/
->> Suggested-by: Dan Williams <dan.j.williams@intel.com>
->> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
->> ---
->> v2:
->> - Drop target registering in hmat_callback instead. (Dan)
->> ---
->>  drivers/acpi/numa/hmat.c | 10 ++++++----
->>  1 file changed, 6 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
->> index 5a36d57289b4..5084ae1688f6 100644
->> --- a/drivers/acpi/numa/hmat.c
->> +++ b/drivers/acpi/numa/hmat.c
->> @@ -874,7 +874,8 @@ static void hmat_register_target_devices(struct memory_target *target)
->>  	}
->>  }
->>  
->> -static void hmat_register_target(struct memory_target *target)
->> +static void hmat_register_target(struct memory_target *target,
->> +				 bool register_devices)
->>  {
->>  	int nid = pxm_to_node(target->memory_pxm);
->>  
->> @@ -882,7 +883,8 @@ static void hmat_register_target(struct memory_target *target)
->>  	 * Devices may belong to either an offline or online
->>  	 * node, so unconditionally add them.
->>  	 */
->> -	hmat_register_target_devices(target);
->> +	if (register_devices)
->> +		hmat_register_target_devices(target);
+On Thu, Oct 16, 2025 at 06:10:37PM +0200, Borislav Petkov wrote:
+> On Mon, Oct 06, 2025 at 03:10:26PM +0000, Yazen Ghannam wrote:
+> > Currently, the AMD Address Translation Library will fail to load for
+> > new, unrecognized systems (based on Data Fabric revision). The intention
+> > is to prevent the code from executing on new systems and returning
+> > incorrect results.
+> > 
+> > Recent AMD systems may provide UEFI PRM handlers for address
+> > translation. This is code provided by the platform through BIOS tables.
+> > These are the preferred method for translation, and the Linux native
+> > code can be used as a fallback.
+> > 
+> > Future AMD systems are expected to provide PRM handlers by default. And
+> > Linux native code will not be used.
+> > 
+> > Adjust the ATL init code so that new, unrecognized systems will default
+> > to using PRM handlers only.
+> > 
+> > Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+> > ---
+> >  drivers/ras/amd/atl/internal.h | 10 +++++++++-
+> >  drivers/ras/amd/atl/prm.c      | 10 ++++++++++
+> >  drivers/ras/amd/atl/system.c   | 12 ++++++------
+> >  drivers/ras/amd/atl/umc.c      |  2 +-
+> >  4 files changed, 26 insertions(+), 8 deletions(-)
 > 
-> Why a new flag to pass around and not something like:
+> Try to simplify this this way:
 > 
-> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-> index 5a36d57289b4..9f9f09480765 100644
-> --- a/drivers/acpi/numa/hmat.c
-> +++ b/drivers/acpi/numa/hmat.c
-> @@ -867,6 +867,9 @@ static void hmat_register_target_devices(struct memory_target *target)
->         if (!IS_ENABLED(CONFIG_DEV_DAX_HMEM))
->                 return;
->  
-> +       if (target->registered)
-> +               return;
-> +
-
-So this still triggers the lockdep warning. I don't think it's smart enough to know that it gets around the issue. My changes with a new flag does not trigger the lockdep.
-
-DJ
-
->         for (res = target->memregions.child; res; res = res->sibling) {
->                 int target_nid = pxm_to_node(target->memory_pxm);
->  
+> Drop prm_check() and set prm_only *after* acpi_prm_handler_available() returns
+> true. Then use ->prm_only everywhere instead.
 > 
-> ...?
+> -- 
 
+Okay, I'll work on that and send another revision.
+
+Thanks,
+Yazen
 
