@@ -1,326 +1,214 @@
-Return-Path: <linux-acpi+bounces-17826-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17828-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7121BE4A32
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 18:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86776BE4A8C
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 18:47:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 733B656101C
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 16:39:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4479C4E525C
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 16:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA5B3570B4;
-	Thu, 16 Oct 2025 16:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52F623EA8F;
+	Thu, 16 Oct 2025 16:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ycRUAkB5"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="0A7Gg9lh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012042.outbound.protection.outlook.com [52.101.43.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A75A3570A1;
-	Thu, 16 Oct 2025 16:38:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760632696; cv=fail; b=hPrVfIWFvCkIoQaMcWWljrNTuU0q8uC1pm+gZZ0FPDg0yWUjRyITEeNZgsnwDlYas5YvRUGPGlS+2TZq7nFZF7Mho0CuAg/NbYrG7eM3ocPV84+PG7PAU1z63XjaJqzWGCtcmsE4I3dbGM23OE3hONyb6tEW1tj+m4hBJZSRQoA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760632696; c=relaxed/simple;
-	bh=SoVE4yowg55cmVkEzip3CHbbj//sKTSawmYPq02Srlk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=STUCzBYv0nSVIlz8+aSDAlM82Gvtp5ualloi7TaYDfPhTHg/eujDPfAUJ371J6dpxhTGatRcREjzNQ5BLvBj4BaDSAm9Dlu6AYxYhWL3YxkyUnzo3E0LMoOrmBlB4ZpZe3U5OXRJFwviR6dGu+NUaIuhgUHHYzK1JEB0OLLSkN8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ycRUAkB5; arc=fail smtp.client-ip=52.101.43.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y4mK3jOwFzRHSVpOnisiPuz7tkhWlB30/P6kwIqWBZrcn0Mc0mVOhHQXBWvo5CdvJEQANKYJIbZJR2DKxkEWd9nqpJx81RoTQSz4DoUs3PTNGrIDXRxQhgKuMgkFsq+1AkbuNbinV7d/dfGoTjUhe+1AwyTJl7Ve8iL3LlU6vZPHN4sVwb/+btFze5E6VKOk2mJDdjXVrsipO3E9ULEsjvz65U3dD+kWUKkbS5YKShUsOXcQ6GRMpvWa4JtiDIJNT1ctXoE/1jHwMfFD6fzRZiaAKf76bK6prgTHugA8WohyXHNxsC8n8NuTjSXHrhAWPKhCj5ebdd3b6Q2Q5cnyHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZFA4GWGiwqxAAslG5gXRD25P/3iZzSuEFIrhQewPRVc=;
- b=ZJTryON6E4kTsxPOecal1YzZbT0yENzjpQ96qmqgGKT7qPcbgZhFxWpDJztPgEmao546xX1yhcghDmXkV2Yi5K47JgmiFXQcBZJ4aJ/zIyuBw9SzCWHhfELu6pkHAwiG0JTO6DLC8tl5eXQdDUE5/5Z1jyOJyQ2k0EZiICZ2owcoxdTxqeddAPFlhkNssY9YcZhfeEKr6FWNzZlBkMyjR0g2hoy4In11S/QrCryntoPxRRvKQeIpzhZvX2nSzafhhoQrL6M1dQH/LSis5vReEowzMKKFzKZD9/1JgfEHusDRQPVODjcMHY0xrmUGfQhLPk24bieM9Imp5CzDLOLQCA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZFA4GWGiwqxAAslG5gXRD25P/3iZzSuEFIrhQewPRVc=;
- b=ycRUAkB5lMh4emZNyfRyCGhaamjQsS9e5XR7RjbW+mRchAPGa6QdtgsFGN+2pQLnOHmSVdvD3/mdzO7OBD0NK+298/Y6yLf6l6q4RtVU1FvmlMhZr00M0DV9qk0xVNh5st7lP8i2MBnBdkgwPyUTgL3v2M8ZfLYwVOBZIwa0l2w=
-Received: from BLAP220CA0028.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:32c::33)
- by BL1PR12MB5804.namprd12.prod.outlook.com (2603:10b6:208:394::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.13; Thu, 16 Oct
- 2025 16:38:08 +0000
-Received: from BL02EPF0001A105.namprd05.prod.outlook.com
- (2603:10b6:208:32c:cafe::26) by BLAP220CA0028.outlook.office365.com
- (2603:10b6:208:32c::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9203.10 via Frontend Transport; Thu,
- 16 Oct 2025 16:37:53 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF0001A105.mail.protection.outlook.com (10.167.241.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9228.7 via Frontend Transport; Thu, 16 Oct 2025 16:38:08 +0000
-Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 16 Oct
- 2025 09:38:04 -0700
-From: Yazen Ghannam <yazen.ghannam@amd.com>
-Date: Thu, 16 Oct 2025 16:37:53 +0000
-Subject: [PATCH v7 8/8] x86/mce: Save and use APEI corrected threshold
- limit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1DE262A6
+	for <linux-acpi@vger.kernel.org>; Thu, 16 Oct 2025 16:46:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760633220; cv=none; b=qjobLSe0e0P1ML06EeWpXpTWL6u9NAD9NSWG2Yulkli4ZadOkLqocQzS1v3u7ySTNYQ1zPjNAKIiJSjnrWIufF23RC2vQR94Q3DS9/EFVlm5a6omZVSCnI6ugjhrX4KCXooc8YQFOFn7lRGm6NzbyGU9KofDrF+MGIQdjRncJbE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760633220; c=relaxed/simple;
+	bh=/8ULp8GNitp6ed8PeDWxV3ir/nSGEG1rxOOWV9OZqWQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hxit/tiLVhaGf07AeafoMHcRPOni0E6vA46wbJ2UlzX62OzxVQENz7BrWYQqy4HL0Pj9bh1nPj9BbaQITOVJ/A3gruOhj1BRn5RPDboRfTG81DKtBy5APKM9hF6KrBbOn2l8qsiawoop4TSSBn0+YlAK34ofLlKCl2OUCYZid78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=0A7Gg9lh; arc=none smtp.client-ip=209.85.167.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-43f9cc65f66so558062b6e.2
+        for <linux-acpi@vger.kernel.org>; Thu, 16 Oct 2025 09:46:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1760633217; x=1761238017; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WC9Kf4Woi10vxrnm+xt87b6ePjx84cYka09NWwjNNWA=;
+        b=0A7Gg9lhFCuW9sMBiGBuBCWby4BhJtTI6e1ru5t1h/Sjf9+vApIhL3Uj2S9Eh5s5zO
+         shfFQOyr/EWGKdWFlroW42BOfu6ljhknOhZSj3rYeN30I+OggdfYtx2eaxm37unbcz/a
+         0vH4WvRmfN11HlLhCgbCttNuN/oA1Cq0gTF4LErAHa3MfhR6kvtM/c8GL4NuoYK7DTcD
+         D/hL5MUHML1iesOwzBDvAdHZVszuFaAmYr2sJKxxSMazufnB24W2JFKHyDKb6mFhPSP+
+         rrIIjw3UkowvQiQMnjyd2l+xN8J7Erf3DYtcu3+RI3b3KSLtNPYFiS2dvqodtRSVzmlH
+         YxOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760633217; x=1761238017;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WC9Kf4Woi10vxrnm+xt87b6ePjx84cYka09NWwjNNWA=;
+        b=CgR777idJyqQ+jP8UHbU72XH/w7JxkAupuSd2EDX3H+sA8SCzHxrqqfmNYY8FMCQ5l
+         SujdWqUdNmkQw6iIFO4nQA4J71f/RzDsCfQ8/TFpEkYwkti09OAahiwmb1k/cFt4gls7
+         iPcrMHoCu4tREkJ5o1+9P3n/ve+E0zO374CflFh5c9k7Wwq3luLut1X46RvyTzMjo6Sk
+         GgmSPLFmpMCHHYlQvcYWe0ZgR4DArzBYjyZZ0KTNsirPB65p+59Wd5+0UtF7YDpPno1+
+         5FTZxVrNyEEwupeRIPmSr6AMRwLLr851UyNwiBHy+pb+gShsx/uF3bWPhnJr6pfM8GrS
+         WylA==
+X-Forwarded-Encrypted: i=1; AJvYcCXvupNzJc5l5R7r9WFWAsVQOmFKjO3VFDRxs9fQfmbunYFzLldZAuVbzGYsop0XKQXVHmdABm79K4qa@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywlo4MtzhZv2ENkNufOHVl/xH6zvDjZH0wEtB6eOnQKxdINZikN
+	EEGi2n5OBSLlZiv8QDBd/wMOqonvrO15tpwQQfRS/CGj61gKyEAX4YwfILddAQ1rE6A=
+X-Gm-Gg: ASbGnctoI9IrUlaaro+t4gBCmSJ0clUsl8q4cB+/k1LL+tWF8iYONoAlbfpGiMBb0KC
+	moRu03WyUjBNP7qmXGxPHIK01Ti+DHimvOk6zrH0blAa9e+kFul/1odI4+gdGxoIGMqB/ot7wkD
+	kwzryKw0uRJSOX3TC6bPsXPKkmsXXdiIIaqh+G51K2NeO4DtO+No7BvLANZtrrnwp3ylEH6tMOG
+	9EkvP3Xxif1UmB38NeFfomw4BIb8GTwsdAF6YoITtJ/1ejLgOnxi3hhzqZ1F5KzUeTrSZwC9aRM
+	3GlecliRaIcMyBYrgNK/llOIrh7nzsq4qqtDjybdOKAKhj5SK49atvfG0G9hE24lkmHdYf239Kh
+	VVpF7uBCT/n0SYbV/Jy3eeGKZUt7we1o6/x9Gn5Zqrs8rGTqObgAgnzTgf4GNGUTTGJwjnp0Lc7
+	8sS6Jz52MURIfsORPnq7pQYlusk4pXQjHOrz0ftweBAlAYgxI=
+X-Google-Smtp-Source: AGHT+IGuEWd+8F+VovYJZ3CHXCt5CGxSvLqiDDTdefEfbr49E3wJzWtW8JNbm3BgbVjhnWchRkMr+Q==
+X-Received: by 2002:a05:6808:3a0b:b0:441:d465:7474 with SMTP id 5614622812f47-443a30e1b7emr249948b6e.33.1760633217480;
+        Thu, 16 Oct 2025 09:46:57 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:500:86b5:623:b364:9913? ([2600:8803:e7e4:500:86b5:623:b364:9913])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-441d5f7ebdbsm3144632b6e.18.2025.10.16.09.46.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Oct 2025 09:46:57 -0700 (PDT)
+Message-ID: <cc21a74c-905f-4223-95a8-d747ef763081@baylibre.com>
+Date: Thu, 16 Oct 2025 11:46:56 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20251016-wip-mca-updates-v7-8-5c139a4062cb@amd.com>
-References: <20251016-wip-mca-updates-v7-0-5c139a4062cb@amd.com>
-In-Reply-To: <20251016-wip-mca-updates-v7-0-5c139a4062cb@amd.com>
-To: <x86@kernel.org>, Tony Luck <tony.luck@intel.com>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <linux-edac@vger.kernel.org>,
-	<Smita.KoralahalliChannabasappa@amd.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>, Bert Karwatzki <spasswolf@web.de>,
-	<linux-acpi@vger.kernel.org>, Yazen Ghannam <yazen.ghannam@amd.com>
-X-Mailer: b4 0.15-dev-9b767
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A105:EE_|BL1PR12MB5804:EE_
-X-MS-Office365-Filtering-Correlation-Id: fdd60ba1-09c5-4279-2d01-08de0cd26379
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|36860700013|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OTYvTlRINCs3TU9COWtpMGVuYUZ0TVhtTFpwVTZTeHZiWC9QSzdnQU1QT2pv?=
- =?utf-8?B?Q2hYbnR3WVVIdUVoMkozeFdJOWRob2dMUStYTmpTNmVobUVwKzVVeUsxM3J3?=
- =?utf-8?B?eGZpeWZnUVdOeXBCVkJkZmdjUzBJQXRTT3VvWUdab3BvZytrRDVQWTE1ci8x?=
- =?utf-8?B?cmtQWC9PQVFmSUVzV2JIWXF2QW4vZ2hRMEh6NndrY2g3RVQ0cWhGY3VWWU52?=
- =?utf-8?B?M0xkRUlIaDJpSys4ajRxZUloNWxZYnJ4c0ZUQ01sUm1RTlpvcURwZGg0MFEz?=
- =?utf-8?B?Vk9SMUo1WFdBVVdGOUxnb215cjFuaHJMWi9uaTlETWlYdTBYN1I5Q1JQR0xy?=
- =?utf-8?B?aHBMNzdVT0RsZnE4Nk9vcUJqZ1NJdWhjMWJQeVNjNlFmeUN1Zy9Cay9xaTVX?=
- =?utf-8?B?NGYwZWhkS28rOWgwYVFLODBlVHpCUU9DaFhlbWczcnVQSVZBclJTREluZDh1?=
- =?utf-8?B?cWFzWXFmVC9kYmVpZ05mcm00Qmx3b0NPOXR2L0tyN2hBQnU1dk51NUpUS1cy?=
- =?utf-8?B?STdsTkJrcWt4OUY5bGlTSmRqTXZhbjFxVndYVTh4K2dCVDlYcG5wdFNFaXQw?=
- =?utf-8?B?RTNVV01BTVhDYmd5aEdwSUxWQUJuL2VXUzhkaXhJZVZpZmtFTUNkTjNob0F5?=
- =?utf-8?B?bGdQSnh5ZXpQbk5BVStqTkpJbGVmU0p1dWVqLzZqazVoQlEvNXVQcFlNVTZz?=
- =?utf-8?B?SC9sRVFtaUNMR0hCMGU4UGxMRk00ZXZoREZoZ2EvT1JXQkFhWWN2UjAyYXB0?=
- =?utf-8?B?OFFhZkp5TGJqVHFnYktjSmdSRVJ6cWd3NTBLYjdteU1STU1Majk1bm9ycVRt?=
- =?utf-8?B?Wks1UjM3bGdOZk12aCtCR0g4aVNXTGxqQ01rU0J6eC9HWVh4S0JsVDRKaEo5?=
- =?utf-8?B?cjRiaUdFa3NoZW9LQ1FFNG9jdWtiVkhhTEJJWmhRcW1aYlVkTkxEVHZEbUky?=
- =?utf-8?B?RVZUVSs0Si9zRHpNY0lmLzR1eWI0VmROZ0hzTFBMK1NQWXVPNUhSM0JMR1pl?=
- =?utf-8?B?RzNqZGRnVG5qSW1scTZJZEg1WVZiT3p0QmtIaUlwQm5mbFU2K2ppbEs2YkxQ?=
- =?utf-8?B?WE1KUFlsSUJ0MVNZMytKZkZWWG42QkpZZHFNencxbjk2bExrNDYwVlZ0bUhw?=
- =?utf-8?B?RWF1LzR1NmdoNGhoeFBUeXlnWXRpL2Q4M3dWaFNNRG05Q054Y1hyLzhTY2U2?=
- =?utf-8?B?aDg5S1NOVE95SG5JNnhadGw2NzY5d0VJWkRxNy9nM00wYi9QWGZmMnBTcmc1?=
- =?utf-8?B?ekhPR08rSkFNQUNlc2E3aStTZUlMVkh0bUttNG1lUWl6azlvakNLbmRBcjBk?=
- =?utf-8?B?b3QxQWFHRGxRWDFhZVlhMHZpb1ptWC9iM2VXL3VWNU9aVDR6S3c3TkpNL2li?=
- =?utf-8?B?K0ZPYngvME9ySG1hc3ZsQnlsMlplNVBjS3ZYWDJ0S3c2WVlRUWM2UFArR3RX?=
- =?utf-8?B?RW1qUnZkL0I0Zi9JK2V5dStCZm5kRGFxQnVXU3l1V2lRUE5VcjR4Z01UbnRQ?=
- =?utf-8?B?eG55b1JPbUZyV1pZanZPeDdSNFhzbGMvME1tZzdTSmlNN2tBNmtrdEdPbFYz?=
- =?utf-8?B?K1Y4RWhiOGxyL1hkWGl4czdidFNYZjJIQUVVTnU5eW8wZTM4a0MxditLbEo2?=
- =?utf-8?B?MFpCTzJaL1lrekpSQ3pDVGIxb1E1L3Q0b1QxTjYzeXhhbHZxcTlXWnpJaUhX?=
- =?utf-8?B?V2NDVkJ5UVMwMVAzZDRrRzQ0MDNJRlZLb2NlWmRqWVdTQXNEY2pnK0ppWFlC?=
- =?utf-8?B?MXFES0Rvakg0ZG9jVmNleDEyZjBESXZJNkxWclJNZW1JVVhwc1RzNkNRQlll?=
- =?utf-8?B?MjRlaUlobExxRE5YWEJQd0lOZXZqZVZwWXVDQlA5cTJ3cTJpbFhHM3JZOS9B?=
- =?utf-8?B?d2d1T1JzMHZ0cEtSbDVzdVBxRmZyZThiOTQrNk9PcjBBL2EwWDgwMWRFZldY?=
- =?utf-8?B?RjhqU2RxNjJFaDhzckNlMGg3VDJ4dXB1L0JXdVorOGhBZnc0L1k4cDBVMnZ0?=
- =?utf-8?B?SGhLUWRaUXJjV1lrNitSQnVZVi95NlRRM2NKYStvV1poSVdTTFBWMTRjNTJa?=
- =?utf-8?B?SGFkdjB0dGJaYzNKL0dNVEJHaFpsVVAxd3VMN0FZUVlyTUhKQWwrck9Bb0Vp?=
- =?utf-8?Q?3BdQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700013)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2025 16:38:08.4282
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fdd60ba1-09c5-4279-2d01-08de0cd26379
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A105.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5804
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/3] PM: runtime: Introduce
+ PM_RUNTIME_ACQUIRE_OR_FAIL() macro
+To: Takashi Iwai <tiwai@suse.de>, "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Linux PM <linux-pm@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ Linux PCI <linux-pci@vger.kernel.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Bjorn Helgaas <helgaas@kernel.org>, Zhang Qilong <zhangqilong3@huawei.com>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Frank Li <Frank.Li@nxp.com>,
+ Dhruva Gole <d-gole@ti.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Linux ACPI <linux-acpi@vger.kernel.org>,
+ Dan Williams <dan.j.williams@intel.com>,
+ "Fabio M. De Francesco" <fabio.maria.de.francesco@linux.intel.com>
+References: <3925484.kQq0lBPeGt@rafael.j.wysocki>
+ <3324926.5fSG56mABF@rafael.j.wysocki> <20251016133854.00003669@huawei.com>
+ <CAJZ5v0iOgbkJbdRzgrBUaaYL+S_8BZD7XuXdK5vs2gMG3ug1KA@mail.gmail.com>
+ <87ikge7v01.wl-tiwai@suse.de>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <87ikge7v01.wl-tiwai@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The MCA threshold limit generally is not something that needs to change
-during runtime. It is common for a system administrator to decide on a
-policy for their managed systems.
+On 10/16/25 9:59 AM, Takashi Iwai wrote:
+> On Thu, 16 Oct 2025 15:46:08 +0200,
+> Rafael J. Wysocki wrote:
+>>
+>> On Thu, Oct 16, 2025 at 2:39 PM Jonathan Cameron
+>> <jonathan.cameron@huawei.com> wrote:
+>>>
+>>> On Wed, 15 Oct 2025 16:02:02 +0200
+>>> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+>>>
+>>>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>>
+>>>> There appears to be an emerging pattern in which guard
+>>>> pm_runtime_active_try is used for resuming the given device and
+>>>> incrementing its runtime PM usage counter if the resume has been
+>>>> successful, that is followed by an ACQUIRE_ERR() check on the guard
+>>>> variable and if that triggers, a specific error code is returned, for
+>>>> example:
+>>>>
+>>>>       ACQUIRE(pm_runtime_active_try, pm)(dev);
+>>>>       if (ACQUIRE_ERR(pm_runtime_active_try, &pm))
+>>>>               return -ENXIO
+>>>>
+>>>> Introduce a macro called PM_RUNTIME_ACQUIRE_OR_FAIL() representing the
+>>>> above sequence of statements that can be used to avoid code duplication
+>>>> wherever that sequence would be used.
+>>>>
+>>>> Use this macro right away in the PCI sysfs code where the above pattern
+>>>> is already present.
+>>>>
+>>>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>> ---
+>>>>
+>>>> Admittedly, the new macro is slightly on the edge, but it really helps
+>>>> reduce code duplication, so here it goes.
+>>>
+>>> Fully agree with the 'on the edge'.
+>>>
+>>> This looks somewhat like the some of the earlier attempts to come up with
+>>> a general solution before ACQUIRE().  Linus was fairly clear on his opinion of
+>>> a proposal that looked a bit similar to this
+>>> cond_guard(mutex_intr, return -EINTR, &mutex);
+>>>
+>>> https://lore.kernel.org/all/CAHk-=win7bwWhPJ=iuW4h-sDTqbX6v9_LJnMaO3KxVfPSs81bQ@mail.gmail.com/
+>>>
+>>> +CC a few people who might have better memories of where things went than I do.
+>>>
+>>> The solution you have here has the benefit of clarity that all it can do is
+>>> return the error code.
+>>
+>> Well, I could call the macro PM_RUNTIME_ACQUIRE_OR_RETURN_ERROR(), but
+>> FAIL is just shorter. :-)
+>>
+>> Seriously though, the odd syntax bothers me, but it has come from
+>> looking at the multiple pieces of code that otherwise would have
+>> repeated exactly the same code pattern including the guard name in two
+>> places and the pm variable that has no role beyond guarding.
+> 
+> While I see the benefit of simplification, IMO, embedding a code
+> flow control inside the macro argument makes it really harder to
+> follow.
+> 
+> Is the problem about the messy ACQUIRE_ERR() invocation?  If so, it
+> could be replaced with something shorter (and without extra type),
+> e.g. replace 
+> 	ret = ACQUIRE_ERR(pm_runtime_active_try, &pm);
+> with
+> 	ret = PM_RUNTIME_ACQUIRE_ERR(&pm);
+> 
+> Since all runtime PM guard usage is to the same object, we can have a
+> common macro.
+> 
+> Also, in the past, I thought of a macro like below that stores the
+> error code in the given variable ret:
+> 
+> #define __guard_cond_ret(_name, _var, _ret, _args)	\
+> 	CLASS(_name, _var)(_args);			\
+> 	(_ret) = __guard_err(_name)(&_var)
+> #define guard_cond_ret(_name, _ret, _args) \
+> 	__guard_cond_ret(_name, __UNIQUE_ID(guard), _ret, _args)
+> 
+> ... so that it'd work for runtime PM like:
+> 
+> 	int ret;
+> 
+> 	guard_cond_ret(pm_runtime_active, ret)(dev);
+> 	if (ret)
+> 		return ret;
+> 	
+> Of course, a clear drawback is that the assignment of ret isn't
+> obvious, but the code flow isn't skewed much in this way.
+> 
+> 
+> thanks,
+> 
+> Takashi
 
-If MCA thresholding is OS-managed, then the threshold limit must be set
-at every boot. However, many systems allow the user to set a value in
-their BIOS. And this is reported through an APEI HEST entry even if
-thresholding is not in FW-First mode.
+FWIW, a while back, I suggested something like this where ret was
+a parameter rather than a return value [1]. Linus did not seem to
+be a fan (said it was "disgusting syntax").
 
-Use this value, if available, to set the OS-managed threshold limit.
-Users can still override it through sysfs if desired for testing or
-debug.
+[1]: https://lore.kernel.org/all/CAHk-=whn07tnDosPfn+UcAtWHBcLg=KqA16SHVv0GV4t8P1fHw@mail.gmail.com/
 
-APEI is parsed after MCE is initialized. So reset the thresholding
-blocks later to pick up the threshold limit.
-
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
----
-
-Notes:
-    Link:
-    https://lore.kernel.org/r/20250908-wip-mca-updates-v6-15-eef5d6c74b9c@amd.com
-    
-    v6->v7:
-    * No change.
-    
-    v5->v6:
-    * No change.
-    
-    v4->v5:
-    * No change.
-    
-    v3->v4:
-    * New in v4.
-
- arch/x86/include/asm/mce.h          |  6 ++++++
- arch/x86/kernel/acpi/apei.c         |  2 ++
- arch/x86/kernel/cpu/mce/amd.c       | 18 ++++++++++++++++--
- arch/x86/kernel/cpu/mce/internal.h  |  2 ++
- arch/x86/kernel/cpu/mce/threshold.c | 13 +++++++++++++
- 5 files changed, 39 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
-index 1482648c8508..9652fc11860d 100644
---- a/arch/x86/include/asm/mce.h
-+++ b/arch/x86/include/asm/mce.h
-@@ -309,6 +309,12 @@ DECLARE_PER_CPU(struct mce, injectm);
- /* Disable CMCI/polling for MCA bank claimed by firmware */
- extern void mce_disable_bank(int bank);
- 
-+#ifdef CONFIG_X86_MCE_THRESHOLD
-+void mce_save_apei_thr_limit(u32 thr_limit);
-+#else
-+static inline void mce_save_apei_thr_limit(u32 thr_limit) { }
-+#endif /* CONFIG_X86_MCE_THRESHOLD */
-+
- /*
-  * Exception handler
-  */
-diff --git a/arch/x86/kernel/acpi/apei.c b/arch/x86/kernel/acpi/apei.c
-index 0916f00a992e..e21419e686eb 100644
---- a/arch/x86/kernel/acpi/apei.c
-+++ b/arch/x86/kernel/acpi/apei.c
-@@ -19,6 +19,8 @@ int arch_apei_enable_cmcff(struct acpi_hest_header *hest_hdr, void *data)
- 	if (!cmc->enabled)
- 		return 0;
- 
-+	mce_save_apei_thr_limit(cmc->notify.error_threshold_value);
-+
- 	/*
- 	 * We expect HEST to provide a list of MC banks that report errors
- 	 * in firmware first mode. Otherwise, return non-zero value to
-diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index 7020c5ad4c74..83fad4503b1c 100644
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -489,6 +489,18 @@ static void threshold_restart_bank(unsigned int bank, bool intr_en)
- 	}
- }
- 
-+/* Try to use the threshold limit reported through APEI. */
-+static u16 get_thr_limit(void)
-+{
-+	u32 thr_limit = mce_get_apei_thr_limit();
-+
-+	/* Fallback to old default if APEI limit is not available. */
-+	if (!thr_limit)
-+		return THRESHOLD_MAX;
-+
-+	return min(thr_limit, THRESHOLD_MAX);
-+}
-+
- static void mce_threshold_block_init(struct threshold_block *b, int offset)
- {
- 	struct thresh_restart tr = {
-@@ -497,7 +509,7 @@ static void mce_threshold_block_init(struct threshold_block *b, int offset)
- 		.lvt_off		= offset,
- 	};
- 
--	b->threshold_limit		= THRESHOLD_MAX;
-+	b->threshold_limit		= get_thr_limit();
- 	threshold_restart_block(&tr);
- };
- 
-@@ -1076,7 +1088,7 @@ static int allocate_threshold_blocks(unsigned int cpu, struct threshold_bank *tb
- 	b->address		= address;
- 	b->interrupt_enable	= 0;
- 	b->interrupt_capable	= lvt_interrupt_supported(bank, high);
--	b->threshold_limit	= THRESHOLD_MAX;
-+	b->threshold_limit	= get_thr_limit();
- 
- 	if (b->interrupt_capable) {
- 		default_attrs[2] = &interrupt_enable.attr;
-@@ -1087,6 +1099,8 @@ static int allocate_threshold_blocks(unsigned int cpu, struct threshold_bank *tb
- 
- 	list_add(&b->miscj, &tb->miscj);
- 
-+	mce_threshold_block_init(b, (high & MASK_LVTOFF_HI) >> 20);
-+
- 	err = kobject_init_and_add(&b->kobj, &threshold_ktype, tb->kobj, get_name(cpu, bank, b));
- 	if (err)
- 		goto out_free;
-diff --git a/arch/x86/kernel/cpu/mce/internal.h b/arch/x86/kernel/cpu/mce/internal.h
-index 9920ee5fb34c..a31cf984619c 100644
---- a/arch/x86/kernel/cpu/mce/internal.h
-+++ b/arch/x86/kernel/cpu/mce/internal.h
-@@ -67,6 +67,7 @@ void mce_track_storm(struct mce *mce);
- void mce_inherit_storm(unsigned int bank);
- bool mce_get_storm_mode(void);
- void mce_set_storm_mode(bool storm);
-+u32  mce_get_apei_thr_limit(void);
- #else
- static inline void cmci_storm_begin(unsigned int bank) {}
- static inline void cmci_storm_end(unsigned int bank) {}
-@@ -74,6 +75,7 @@ static inline void mce_track_storm(struct mce *mce) {}
- static inline void mce_inherit_storm(unsigned int bank) {}
- static inline bool mce_get_storm_mode(void) { return false; }
- static inline void mce_set_storm_mode(bool storm) {}
-+static inline u32  mce_get_apei_thr_limit(void) { return 0; }
- #endif
- 
- /*
-diff --git a/arch/x86/kernel/cpu/mce/threshold.c b/arch/x86/kernel/cpu/mce/threshold.c
-index 22930a8fcf9e..ae27911de26d 100644
---- a/arch/x86/kernel/cpu/mce/threshold.c
-+++ b/arch/x86/kernel/cpu/mce/threshold.c
-@@ -13,6 +13,19 @@
- 
- #include "internal.h"
- 
-+static u32 mce_apei_thr_limit;
-+
-+void mce_save_apei_thr_limit(u32 thr_limit)
-+{
-+	mce_apei_thr_limit = thr_limit;
-+	pr_info("HEST: Corrected error threshold limit = %u\n", thr_limit);
-+}
-+
-+u32 mce_get_apei_thr_limit(void)
-+{
-+	return mce_apei_thr_limit;
-+}
-+
- static void default_threshold_interrupt(void)
- {
- 	pr_err("Unexpected threshold interrupt at vector %x\n",
-
--- 
-2.51.0
 
 
