@@ -1,177 +1,196 @@
-Return-Path: <linux-acpi+bounces-17807-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17808-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10AD0BE09EC
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 22:21:50 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13AA6BE2CE1
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 12:31:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0A963AF332
-	for <lists+linux-acpi@lfdr.de>; Wed, 15 Oct 2025 20:21:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B5D4C4E78C8
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 10:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1672BE04D;
-	Wed, 15 Oct 2025 20:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A64621CFF7;
+	Thu, 16 Oct 2025 10:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c10wzr7N"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="lY/NlE/b"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D0C28BA81;
-	Wed, 15 Oct 2025 20:21:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF6F328630;
+	Thu, 16 Oct 2025 10:31:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760559706; cv=none; b=nJbCzQDeAzhSFwn2TgJqZqzylX3Pugjo+s0HOG5tKKRvI3zouKaNNNBEyMXzgZJHXrwghqZBLEyZH3OGNv2Vkft1SIfUqT3vlkgvyTOUV8qf9eVI8G3oRWFqH/dfUI1Du8BECv9CAjD1iu9SXtuaJXmVm3Ne+G2gofDly2EfCzs=
+	t=1760610692; cv=none; b=qZ9eU8pJlxU931hGei6tbho9qxR+IQMNraXzxwC8hmRqPZde9yClKpLXEyfeDj1ABRlMbD1Grfd3yoC/1W5p+87jTp5R9/TJx+2IiyNhmulE6Yj3kqrP2UlcO7HnuQDUxHw/cRbrKPq4N6x75rXUy9us9FNhZ8Ie9R8+Uj/bQ28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760559706; c=relaxed/simple;
-	bh=EcCY2XhDrhiXOAGa7WBT+bi2gS4d3WPElAIa9foGgJo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MKgI48rNDiAF06NqgErhINsEDTmvTTNV7cMrnP/CeVOfluGjlKd8hTguuD4XEv7YpDngTcki/8/WwXB7R/gkPBqKQXAUmo8MrKFxgIOw2wMn+Tx1SgGxLAiwwfmswoSVXrXPhrXml6tS6iyq+VR3/ml9ZpJloJtMI4JSkJqWLdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c10wzr7N; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760559705; x=1792095705;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=EcCY2XhDrhiXOAGa7WBT+bi2gS4d3WPElAIa9foGgJo=;
-  b=c10wzr7NvoA32+Kf+rwXH/skLL8ug92F8iZ+prxwDRDLUvogX+i3jeLZ
-   klsj24RRihJQm5zY5ppi5+qifsuVwRQIYU2eX3XnERVnLRY5RcF+oPhlZ
-   /2I6BEWqDNuY+RRUMGpqVVoqtdGbK8CpomkLLiq9k/+p8I3Fbg7r66F7Y
-   e1n1OE+bPudOTUVxUZCzOzdW6u3CoX3DOeR6GOa/zaEkPsLpcIfX1sBSW
-   fQoI4KvxbMLwb58kPEq3yMKw504aRU53L+DAWxzXiFbkKqoM5Yzzp36Da
-   92cMGh9AWHo8kuYiC7KTHqfBH3Mcq8CwxHvydGh2gjvF7SyO9ICF4tyUB
-   g==;
-X-CSE-ConnectionGUID: TaQdOduNRjClAQ7LaFD7eg==
-X-CSE-MsgGUID: CKrGAWVIRXm9vo0mpskzqQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="66396982"
-X-IronPort-AV: E=Sophos;i="6.19,232,1754982000"; 
-   d="scan'208";a="66396982"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 13:21:44 -0700
-X-CSE-ConnectionGUID: aEA+r6uhTEqOad1Iq+D4/w==
-X-CSE-MsgGUID: 971oLku7SC+x37r/9EBDYg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,232,1754982000"; 
-   d="scan'208";a="182677003"
-Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.111.221]) ([10.125.111.221])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 13:21:42 -0700
-Message-ID: <9671f553-1a45-42ed-8fe2-e45a5ab0e8d1@intel.com>
-Date: Wed, 15 Oct 2025 13:21:41 -0700
+	s=arc-20240116; t=1760610692; c=relaxed/simple;
+	bh=QAFUhoRdFH+O2TBpmIuIh+zAj2Yf6mN2lO7jrmSNEe8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yv5G2uJbqSnmuxCBz0rLgucLLCLUvDDgp7WxNseG6nFNbOHSQB3F9KD8o+xM3QglngaqNJoR9mc3aNf5xD7Un7pWO8s466/ismOMddAX9h9rjOQjuC2mk3ZZQaX+KNEn3zn9l0YvOp8n5xA+wzVMZeqJHRnlVlg+YqxF3OPXz0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=lY/NlE/b; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AE95240E01AB;
+	Thu, 16 Oct 2025 10:31:24 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id CjO_OZbZHhXX; Thu, 16 Oct 2025 10:31:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1760610680; bh=UxTkzxZWRqOwIOCFQgXcutuiJic9xI7p5Uhf9tCak18=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lY/NlE/bP8Uu488fCJhG0VgYb0R1RmofyVlWeYU0XvzJXOtwqnI+xxMcDXjl2A0Pl
+	 6ELFwVzaFEpa8Hry+XC8jnIRWF3YDqcSeRawxxnaTJCQPb4jPJvQtFosFivqcrTsss
+	 HdpxBZnmI6dw76swAIymhgwGB7IxO6t1OROHcIbFL3u5sgabLhNsOfTgJYzayQJR8r
+	 lYyQuWIEhPQC/ZZ+7P8u4d/JAwWKYRnszVzsDdw4gK6KdB8DMN403K0WHxyvYdLagE
+	 PfPidmueKn6PshP/FAV89SYV0jlguwSOYh4915QLvOyFjlaFaD4hWx0tyza+azW7Ah
+	 oeYwG+7IqlCxVPwsJ4fhl7LqhALZZjrNycfQ6g6SI4ukTtFzxVT6wx5OsInC80ktRR
+	 nOER+slSxz8ZYxAhUqJBivxp7sYvMiSWHedt5myWyLkwjP/58eQ1QDHGdIcAXPas6v
+	 JexQQYLu9I1jME/Rldi0WojMbP6915UBKD/cV2iVxm/aj3F4A4P7JJ3eb5lmZxkDmz
+	 0hWzTXQ/H4p5S0mPONWZDPpuh3q1O5ifLAwCghGaJ0BsggbS0GPDzIk4Bgojw6lm7b
+	 Ok44P94ia/XsBtmEMjwOfruDT5DxMkXhRHWof1dTAMRywZPG9ThHIFUpg9DZ51ug5/
+	 DmuV376y+aDKY5bmrbLXff3Y=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 1977140E00DE;
+	Thu, 16 Oct 2025 10:30:45 +0000 (UTC)
+Date: Thu, 16 Oct 2025 12:30:33 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Shiju Jose <shiju.jose@huawei.com>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"mchehab@kernel.org" <mchehab@kernel.org>,
+	Linuxarm <linuxarm@huawei.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>
+Subject: Re: [PATCH v12 1/2] ACPI:RAS2: Add ACPI RAS2 driver
+Message-ID: <20251015223242.GBaPAhCuS7YWqu-aH0@fat_crate.local>
+References: <20250902173043.1796-1-shiju.jose@huawei.com>
+ <20250902173043.1796-2-shiju.jose@huawei.com>
+ <20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local>
+ <9dd5e9d8e9b04a93bd4d882ef5d8b63e@huawei.com>
+ <20250912141155.GAaMQqK4vS8zHd1z4_@fat_crate.local>
+ <9433067c142b45d583eb96587b929878@huawei.com>
+ <20250917162253.GCaMrgXYXq2T4hFI0w@fat_crate.local>
+ <20250917183608.000038c4@huawei.com>
+ <20250919103950.GCaM0y9r6R6b5jfx8z@fat_crate.local>
+ <6ac4ad35975142df986bfcb27d1e9b2c@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] acpi/hmat: Fix lockdep warning for
- hmem_register_resource()
-To: dan.j.williams@intel.com, nvdimm@lists.linux.dev,
- linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc: vishal.l.verma@intel.com, ira.weiny@intel.com, rafael@kernel.org
-References: <20251015162958.11249-1-dave.jiang@intel.com>
- <68f001e4e4a2c_2f8991001a@dwillia2-mobl4.notmuch>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <68f001e4e4a2c_2f8991001a@dwillia2-mobl4.notmuch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <6ac4ad35975142df986bfcb27d1e9b2c@huawei.com>
 
+On Mon, Oct 06, 2025 at 10:37:39AM +0000, Shiju Jose wrote:
+> 1.Scrub rate
+> 1.1. Scrub rate is common across the NUMA node domains.
+> 1.2. Common min scrub rate is max of min scrub rates across nodes.
+> 1.3. Common max scrub rate is min of max scrub rates across nodes.
 
+And you need scrub rate to be per node because...?
 
-On 10/15/25 1:19 PM, dan.j.williams@intel.com wrote:
-> Dave Jiang wrote:
->> The following lockdep splat was observed while kernel auto-online a CXL
->> memory region:
->>
->> ======================================================
->> WARNING: possible circular locking dependency detected
->> 6.17.0djtest+ #53 Tainted: G        W
->> ------------------------------------------------------
->> systemd-udevd/3334 is trying to acquire lock:
->> ffffffff90346188 (hmem_resource_lock){+.+.}-{4:4}, at: hmem_register_resource+0x31/0x50
->>
->> but task is already holding lock:
->> ffffffff90338890 ((node_chain).rwsem){++++}-{4:4}, at: blocking_notifier_call_chain+0x2e/0x70
->>
->> which lock already depends on the new lock.
->> [..]
->> Chain exists of:
->>   hmem_resource_lock --> mem_hotplug_lock --> (node_chain).rwsem
->>
->>  Possible unsafe locking scenario:
->>
->>        CPU0                    CPU1
->>        ----                    ----
->>   rlock((node_chain).rwsem);
->>                                lock(mem_hotplug_lock);
->>                                lock((node_chain).rwsem);
->>   lock(hmem_resource_lock);
->>
->> The lock ordering can cause potential deadlock. There are instances
->> where hmem_resource_lock is taken after (node_chain).rwsem, and vice
->> versa.
->>
->> Remove registering of target devices from the hmat_callback(). By the
->> time the hmat hotplug notifier is being called, there should not be
->> hmem targets that still need to be registered.
->>
->> Fixes: cf8741ac57ed ("ACPI: NUMA: HMAT: Register "soft reserved" memory as an "hmem" device")
->> Link: https://lore.kernel.org/nvdimm/68e46a09c2a07_2980100f3@dwillia2-mobl4.notmuch/
->> Suggested-by: Dan Williams <dan.j.williams@intel.com>
->> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
->> ---
->> v2:
->> - Drop target registering in hmat_callback instead. (Dan)
->> ---
->>  drivers/acpi/numa/hmat.c | 10 ++++++----
->>  1 file changed, 6 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
->> index 5a36d57289b4..5084ae1688f6 100644
->> --- a/drivers/acpi/numa/hmat.c
->> +++ b/drivers/acpi/numa/hmat.c
->> @@ -874,7 +874,8 @@ static void hmat_register_target_devices(struct memory_target *target)
->>  	}
->>  }
->>  
->> -static void hmat_register_target(struct memory_target *target)
->> +static void hmat_register_target(struct memory_target *target,
->> +				 bool register_devices)
->>  {
->>  	int nid = pxm_to_node(target->memory_pxm);
->>  
->> @@ -882,7 +883,8 @@ static void hmat_register_target(struct memory_target *target)
->>  	 * Devices may belong to either an offline or online
->>  	 * node, so unconditionally add them.
->>  	 */
->> -	hmat_register_target_devices(target);
->> +	if (register_devices)
->> +		hmat_register_target_devices(target);
+Why can't it be a system-wide scrub rate?
+
+If the use case appears which needs per-node scrub rate, then you design it
+this way.
+
+Or you already have a valid use case for it which dictates this design?
+
+> 1.4. Scrub rate allowed to change only if NO demand and patrol
+>    scrubbing is in progress
+
+Right.
+
+> 2. Demand scrubbing and Background (patrol) scrubbing
+> 2.1. Background scrubbing request enables BG scrubbing
+>      on all NUMA nodes.
+
+Right.
+
+> 2.2. For, demand scrubbing request 2 options are identified,
+>      with (b) tried. Please suggest the right approach?
+> a) Enable demand scrubbing on all NUMA nodes, hope for
+>      the 'Requested Address Range(INPUT)' field, can use
+>      address set to scrub and PAGE_SIZE(or similar) for all the
+>      nodes.
+
+Why do you need an address range? Why not start scrubbing and have it be
+fire-and-forget?
+
+> b) Enable demand scrubbing on a NUMA node for which
+>      the requested address to scrub is within the PA range of
+>      that node.
 > 
-> Why a new flag to pass around and not something like:
-
-That works. I was tunnel visioned in trying to not mess up the current code flow.
-
-DJ> 
-> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-> index 5a36d57289b4..9f9f09480765 100644
-> --- a/drivers/acpi/numa/hmat.c
-> +++ b/drivers/acpi/numa/hmat.c
-> @@ -867,6 +867,9 @@ static void hmat_register_target_devices(struct memory_target *target)
->         if (!IS_ENABLED(CONFIG_DEV_DAX_HMEM))
->                 return;
->  
-> +       if (target->registered)
-> +               return;
-> +
->         for (res = target->memregions.child; res; res = res->sibling) {
->                 int target_nid = pxm_to_node(target->memory_pxm);
->  
+> 2.3. Demand scrubbing is not allowed when background scrubbing
+>      is in progress.
 > 
-> ...?
+> 2.4. If 2.2. (b) is chosen, should kernel allow BG
+>       scrubbing on rest of the nodes, when demand scrubbing on
+>       some node/s is in progress?
 
+It seems like all scrubbing should be mutually-exclusive... or is there
+a point in scrubbing in parallel...?
+
+> 2.5 The status of the BG scrubbing exposed to the user space
+>     in 'enable_background' sysfs attribute.
+> 
+> 2.6 The status of the demand scrubbing exposed to the
+>        user space in 'addr' sysfs attribute. However when the
+>        demand scrubbing is on multiple/all nodes are in progress,
+>        which demand scrubbing status and address in 'addr' sysfs attribute
+>        as status should be exposed to the user space?
+> a) May be the status of the first detected node with demand scrubbing
+>      is in progress?
+> b) Does not show the status at all, just fail the request if the
+>     demand scrubbing is already in progress on a node/all nodes?
+> c)  Any other suggestion?
+
+First we need a proper granularity defined and then everything will revolve
+around it: should it be system-wide, per-node, does it need to have an address
+range or can it be started and no need for any further user interaction and so
+on and so on...
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
