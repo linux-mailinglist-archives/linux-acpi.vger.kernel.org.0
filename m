@@ -1,240 +1,120 @@
-Return-Path: <linux-acpi+bounces-17833-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17834-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7026EBE52D1
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 21:07:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 990C9BE52DF
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 21:08:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CABF1AA0EBF
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 19:08:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51F96481BF7
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 19:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3448B24635E;
-	Thu, 16 Oct 2025 19:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dd3WmlMk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E50233155;
+	Thu, 16 Oct 2025 19:08:52 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001F5242D70;
-	Thu, 16 Oct 2025 19:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B6643AA4;
+	Thu, 16 Oct 2025 19:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760641632; cv=none; b=XcgMxlee7nBSak0YEuZ43LInpd66CABBOu/ppv3GK5chttu/PzvmZ0YCB+W/ZMuFy+vAaw7usL4CUat6lBl3tLFX3Cbd1h9nPAof4WK0hpky+T5ucFvUhBKGGZG/ONMnfm4kvbnP481XhrewxZiyXFD5LB/Ur2YqDLF+CkTnUDU=
+	t=1760641732; cv=none; b=F7w4YWDr7nPA3M70XNqMW+O9UT9kFRkYuJrMxzpGxK/RVWeOL5Y2nzwzfwnFpuJuwOFmAHmPO5qIGJ41u8aNZTaWet+IRofaGGTYT61JECRavjx0046RwTqhIBCeYYKQSlCEAZ8V5G8O6aImtuzBS2HReaCyX14JGcAJXPSdeeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760641632; c=relaxed/simple;
-	bh=I5GFQ9CYsjyd1tjZWlXho/z0XBSLZ3hEh4t+498uLAo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=in5PwXRbgEAr2q0vavUpcjd3S7wnjWkcCNh+9z7+CZKmHC6rTKBCfIc45hMvaT6Na3XsykUIHeFiGA1EMSDe9SCBmWLdSgkdKjG/X3d6x2/LZneE/bwvxDglVSQIWnc0W/bQkF6M9qIq/JGnzVPxiPPtkLsTZoPJWkUbXTR8ZYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dd3WmlMk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301F4C4CEF1;
-	Thu, 16 Oct 2025 19:07:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760641630;
-	bh=I5GFQ9CYsjyd1tjZWlXho/z0XBSLZ3hEh4t+498uLAo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dd3WmlMkkO3VWVk5MbsO9dj6dUzoIhC8D7UqawEPIjJRDdju/KOCzOhajRqb4hoIU
-	 QSVsYnGa2wbx4ed59Zzk8JB1x9VpQ958ft5YCMInAP0doNztEwQbC62erjiWefuxRQ
-	 zoat/ZyIuKU+ODTXjZCEY3rkmauQYvpvE+6OrXKT8dYCbOACRnrU1dzvRZEsEEFpeG
-	 8TUv6Rw7aB+IHTG9JTRydveMrAjdqboaKo1VUJB6Qm9bSsYPs6r2X7NGKZjpRMx7Y4
-	 9G5FwrvYvGkcdxrykSMc4LVTKYkRmwTpgY+dl+FRvB7BgkFmVJhQQjshaRfyAbmF4F
-	 2nA/nm/M1xAnQ==
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-To: Takashi Iwai <tiwai@suse.de>
-Cc: David Lechner <dlechner@baylibre.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Linux PM <linux-pm@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- Linux PCI <linux-pci@vger.kernel.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Bjorn Helgaas <helgaas@kernel.org>, Zhang Qilong <zhangqilong3@huawei.com>,
- Ulf Hansson <ulf.hansson@linaro.org>, Frank Li <Frank.Li@nxp.com>,
- Dhruva Gole <d-gole@ti.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Linux ACPI <linux-acpi@vger.kernel.org>,
- Dan Williams <dan.j.williams@intel.com>,
- "Fabio M. De Francesco" <fabio.maria.de.francesco@linux.intel.com>
-Subject:
- Re: [PATCH v1 1/3] PM: runtime: Introduce PM_RUNTIME_ACQUIRE_OR_FAIL() macro
-Date: Thu, 16 Oct 2025 21:07:03 +0200
-Message-ID: <12765144.O9o76ZdvQC@rafael.j.wysocki>
-Organization: Linux Kernel Development
-In-Reply-To: <875xce7m11.wl-tiwai@suse.de>
-References:
- <3925484.kQq0lBPeGt@rafael.j.wysocki>
- <cc21a74c-905f-4223-95a8-d747ef763081@baylibre.com>
- <875xce7m11.wl-tiwai@suse.de>
+	s=arc-20240116; t=1760641732; c=relaxed/simple;
+	bh=DGRUdxYMmHlCxMQZWbBBusbPgZXAp8yA1XaYfhg88kU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=lO4a6/WVFwfcx4Ucvd/zjch1v4nwQ7UFQHeBfcnCgGhgD5SpTH2S6YxEHAUY3E7LQ+uhWYfbXeONh3ZufLBpfXQ6nHexEdOJSMZmUOTDKVlasUXZZDccZLykoFxNzK8c6SegmgmzHX+yA9LEKKSNZFMYfcdcvk9xdXsMzuEUus4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4A9321688;
+	Thu, 16 Oct 2025 12:08:41 -0700 (PDT)
+Received: from e133711.arm.com (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E04803F66E;
+	Thu, 16 Oct 2025 12:08:47 -0700 (PDT)
+From: Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 0/6] mailbox: pcc: Refactor and improve initialisation and
+ interrupt handling
+Date: Thu, 16 Oct 2025 20:08:14 +0100
+Message-Id: <20251016-pcc_mb_updates-v1-0-0fba69616f69@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKBC8WgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDA0Mz3YLk5PjcpPjSgpTEktRi3RTLFBMjC0sLUxMDAyWgpoKi1LTMCrC
+ B0bG1tQAMVXqJYAAAAA==
+X-Change-ID: 20251016-pcc_mb_updates-d9d428985400
+To: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Sudeep Holla <sudeep.holla@arm.com>, 
+ Adam Young <admiyo@os.amperecomputing.com>, 
+ Robbie King <robbiek@xsightlabs.com>, Huisong Li <lihuisong@huawei.com>, 
+ Jassi Brar <jassisinghbrar@gmail.com>, 
+ Cristian Marussi <cristian.marussi@arm.com>
+X-Mailer: b4 0.14.3
 
-On Thursday, October 16, 2025 8:13:14 PM CEST Takashi Iwai wrote:
-> On Thu, 16 Oct 2025 18:46:56 +0200,
-> David Lechner wrote:
-> >=20
-> > On 10/16/25 9:59 AM, Takashi Iwai wrote:
-> > > On Thu, 16 Oct 2025 15:46:08 +0200,
-> > > Rafael J. Wysocki wrote:
-> > >>
-> > >> On Thu, Oct 16, 2025 at 2:39=E2=80=AFPM Jonathan Cameron
-> > >> <jonathan.cameron@huawei.com> wrote:
-> > >>>
-> > >>> On Wed, 15 Oct 2025 16:02:02 +0200
-> > >>> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
-> > >>>
-> > >>>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > >>>>
-> > >>>> There appears to be an emerging pattern in which guard
-> > >>>> pm_runtime_active_try is used for resuming the given device and
-> > >>>> incrementing its runtime PM usage counter if the resume has been
-> > >>>> successful, that is followed by an ACQUIRE_ERR() check on the guard
-> > >>>> variable and if that triggers, a specific error code is returned, =
-for
-> > >>>> example:
-> > >>>>
-> > >>>>       ACQUIRE(pm_runtime_active_try, pm)(dev);
-> > >>>>       if (ACQUIRE_ERR(pm_runtime_active_try, &pm))
-> > >>>>               return -ENXIO
-> > >>>>
-> > >>>> Introduce a macro called PM_RUNTIME_ACQUIRE_OR_FAIL() representing=
- the
-> > >>>> above sequence of statements that can be used to avoid code duplic=
-ation
-> > >>>> wherever that sequence would be used.
-> > >>>>
-> > >>>> Use this macro right away in the PCI sysfs code where the above pa=
-ttern
-> > >>>> is already present.
-> > >>>>
-> > >>>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > >>>> ---
-> > >>>>
-> > >>>> Admittedly, the new macro is slightly on the edge, but it really h=
-elps
-> > >>>> reduce code duplication, so here it goes.
-> > >>>
-> > >>> Fully agree with the 'on the edge'.
-> > >>>
-> > >>> This looks somewhat like the some of the earlier attempts to come u=
-p with
-> > >>> a general solution before ACQUIRE().  Linus was fairly clear on his=
- opinion of
-> > >>> a proposal that looked a bit similar to this
-> > >>> cond_guard(mutex_intr, return -EINTR, &mutex);
-> > >>>
-> > >>> https://lore.kernel.org/all/CAHk-=3Dwin7bwWhPJ=3DiuW4h-sDTqbX6v9_LJ=
-nMaO3KxVfPSs81bQ@mail.gmail.com/
-> > >>>
-> > >>> +CC a few people who might have better memories of where things wen=
-t than I do.
-> > >>>
-> > >>> The solution you have here has the benefit of clarity that all it c=
-an do is
-> > >>> return the error code.
-> > >>
-> > >> Well, I could call the macro PM_RUNTIME_ACQUIRE_OR_RETURN_ERROR(), b=
-ut
-> > >> FAIL is just shorter. :-)
-> > >>
-> > >> Seriously though, the odd syntax bothers me, but it has come from
-> > >> looking at the multiple pieces of code that otherwise would have
-> > >> repeated exactly the same code pattern including the guard name in t=
-wo
-> > >> places and the pm variable that has no role beyond guarding.
-> > >=20
-> > > While I see the benefit of simplification, IMO, embedding a code
-> > > flow control inside the macro argument makes it really harder to
-> > > follow.
-> > >=20
-> > > Is the problem about the messy ACQUIRE_ERR() invocation?  If so, it
-> > > could be replaced with something shorter (and without extra type),
-> > > e.g. replace=20
-> > > 	ret =3D ACQUIRE_ERR(pm_runtime_active_try, &pm);
-> > > with
-> > > 	ret =3D PM_RUNTIME_ACQUIRE_ERR(&pm);
-> > >=20
-> > > Since all runtime PM guard usage is to the same object, we can have a
-> > > common macro.
-> > >=20
-> > > Also, in the past, I thought of a macro like below that stores the
-> > > error code in the given variable ret:
-> > >=20
-> > > #define __guard_cond_ret(_name, _var, _ret, _args)	\
-> > > 	CLASS(_name, _var)(_args);			\
-> > > 	(_ret) =3D __guard_err(_name)(&_var)
-> > > #define guard_cond_ret(_name, _ret, _args) \
-> > > 	__guard_cond_ret(_name, __UNIQUE_ID(guard), _ret, _args)
-> > >=20
-> > > ... so that it'd work for runtime PM like:
-> > >=20
-> > > 	int ret;
-> > >=20
-> > > 	guard_cond_ret(pm_runtime_active, ret)(dev);
-> > > 	if (ret)
-> > > 		return ret;
-> > > =09
-> > > Of course, a clear drawback is that the assignment of ret isn't
-> > > obvious, but the code flow isn't skewed much in this way.
-> > >=20
-> > >=20
-> > > thanks,
-> > >=20
-> > > Takashi
-> >=20
-> > FWIW, a while back, I suggested something like this where ret was
-> > a parameter rather than a return value [1]. Linus did not seem to
-> > be a fan (said it was "disgusting syntax").
-> >=20
-> > [1]: https://lore.kernel.org/all/CAHk-=3Dwhn07tnDosPfn+UcAtWHBcLg=3DKqA=
-16SHVv0GV4t8P1fHw@mail.gmail.com/
->=20
-> Yeah, I myself also find it suboptimal, hence it wasn't really
-> proposed...  It's a limit of macro, unfortunately.
+This series refines and stabilizes the PCC mailbox driver to improve
+initialisation order, interrupt handling, and completion signaling.
 
-The macro from the $subject patch can be split along the lines of the appen=
-ded
-patch to avoid the "disgusting syntax" issue, although it then becomes less
-attractive as far as I'm concerned.  It still allows the details unrelated =
-to
-the rest of the code to be hidden though.
+It begins by reverting a previous patch that introduced redundant shared
+buffer management, simplifying the driver and restoring consistency with the
+mailbox core framework. It is essential to have a proper baseline for the
+main changes in the series.
 
-=2D--
- drivers/acpi/acpi_tad.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Subsequent patches add proper completion reporting, clarify completion mode
+selection, and fix subtle sequencing and interrupt issues to ensure
+predictable, robust operation across ACPI-based PCC implementations.
 
-=2D-- a/drivers/acpi/acpi_tad.c
-+++ b/drivers/acpi/acpi_tad.c
-@@ -31,6 +31,12 @@ MODULE_DESCRIPTION("ACPI Time and Alarm
- MODULE_LICENSE("GPL v2");
- MODULE_AUTHOR("Rafael J. Wysocki");
-=20
-+#define PM_RUNTIME_ACQUIRE_ACTIVE(dev)	\
-+	ACQUIRE(pm_runtime_active_try, pm_runtime_active_guard_var)(dev)
-+
-+#define PM_RUNTIME_ACQUIRE_ACTIVE_ERR	\
-+	ACQUIRE_ERR(pm_runtime_active_try, &pm_runtime_active_guard_var)
-+
- /* ACPI TAD capability flags (ACPI 6.2, Section 9.18.2) */
- #define ACPI_TAD_AC_WAKE	BIT(0)
- #define ACPI_TAD_DC_WAKE	BIT(1)
-@@ -264,8 +270,8 @@ static int acpi_tad_wake_set(struct devi
- 	args[0].integer.value =3D timer_id;
- 	args[1].integer.value =3D value;
-=20
-=2D	ACQUIRE(pm_runtime_active_try, pm)(dev);
-=2D	if (ACQUIRE_ERR(pm_runtime_active_try, &pm))
-+	PM_RUNTIME_ACQUIRE_ACTIVE(dev);
-+	if (PM_RUNTIME_ACQUIRE_ACTIVE_ERR)
- 		return -ENXIO;
-=20
- 	status =3D acpi_evaluate_integer(handle, method, &arg_list, &retval);
+Specifically, the series:
+
+1. Removes redundant shared buffer logic, reverting an earlier change that
+   duplicated existing mailbox core features and caused maintenance overhead.
+
+2. Adds ->last_tx_done() support to allow polling clients to verify
+   transmission completion without relying on interrupts.
+
+3. Explicitly configures completion modes (txdone_irq or txdone_poll) based
+   on ACPI PCCT doorbell capability flag, ensuring the correct completion
+   mechanism is chosen for each platform.
+
+4. Marks transmit completion in the IRQ handler by invoking mbox_chan_txdone(),
+   preventing timeouts and ensuring proper synchronization for interrupt-driven
+   transfers.
+
+5. Initializes the shared memory region (SHMEM) before binding clients,
+   preventing race conditions where clients could access uninitialized memory.
+
+6. Clears any pending responder interrupts before enabling IRQs, avoiding
+   spurious or false interrupts during startup.
+
+Together, these updates make the PCC mailbox driver cleaner, more reliable,
+and fully aligned with the mailbox framework's expectations, improving
+determinism and robustness across different hardware platforms.
+
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+---
+Sudeep Holla (6):
+      Revert "mailbox/pcc: support mailbox management of the shared buffer"
+      mailbox: pcc: Wire up ->last_tx_done() for PCC channels
+      mailbox: pcc: Set txdone_irq/txdone_poll based on PCCT flags
+      mailbox: pcc: Mark Tx as complete in PCC IRQ handler
+      mailbox: pcc: Initialize SHMEM before binding the channel with the client
+      mailbox: pcc: Clear any pending responder interrupts before enabling it
+
+ drivers/mailbox/pcc.c | 118 ++++++++++----------------------------------------
+ include/acpi/pcc.h    |  29 -------------
+ 2 files changed, 23 insertions(+), 124 deletions(-)
+---
+base-commit: 7ea30958b3054f5e488fa0b33c352723f7ab3a2a
+change-id: 20251016-pcc_mb_updates-d9d428985400
 
 
+-- 
+Regards,
+Sudeep
 
 
