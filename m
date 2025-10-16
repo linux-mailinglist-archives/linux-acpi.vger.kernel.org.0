@@ -1,115 +1,135 @@
-Return-Path: <linux-acpi+bounces-17844-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17845-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A69BE58CA
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 23:14:56 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73425BE5AA7
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 00:23:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5339E420900
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 21:12:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 527404F3162
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 22:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B14E2E175F;
-	Thu, 16 Oct 2025 21:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CAE22E2296;
+	Thu, 16 Oct 2025 22:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bv5XTbrp"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="oZTMVaCH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F422DE6E9;
-	Thu, 16 Oct 2025 21:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E04F2E03E1
+	for <linux-acpi@vger.kernel.org>; Thu, 16 Oct 2025 22:23:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760649145; cv=none; b=AxZKSWdtyx8Wyq8ZA/hIWKtkbKG30jlALoDLwivP9dEJGoV0UweXvcCgki7zhiO9ODO5zq53VWKZvG34P6Umczv5gvo+o8T6Y3a1/RbUI+7xzIflAZMZC79T5mRvCAwfh/1LiS85KQUQuXyyf/pA9G39JFrqlepolgbX/RUzP7c=
+	t=1760653383; cv=none; b=cCpGSBxcBbAENy9YnOsFECUzDsuHQw+cLRBLRpAvUnDaLPWQxDCT8MUd8bffIFGf6IiPiGFahPRWIQEJLNCxTq7xb4oOXy7GPSFT07Dx9NXTlYCKpjNzY4TKtIe+lI7eF/EHn7tpmFXRTAuwycfPtAqUECu//8A3GetTS76gmqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760649145; c=relaxed/simple;
-	bh=KHK7I670oRMrWGeBaFZ9Bw2rnLfggfRJoEkZ7ISt2A8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SkeA29F0PbcV3gAjRWpaK7PJYvyi6rDPInNHJM3gAb/sV4fUAjpJjyZj9kA6DTqS85p3PqUykiyzH4I2dmpYyMvhG24mYSPIW2inV4/VSJRlwjP5ILB/11aKgzepGHz9zUY1Gy9NaDgkiaOoyGcjJQN68hCrZSxLEEjjMWBF4H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bv5XTbrp; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760649143; x=1792185143;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=KHK7I670oRMrWGeBaFZ9Bw2rnLfggfRJoEkZ7ISt2A8=;
-  b=bv5XTbrpeXEYIB9hfx4YG04CmUIXNY5u0+4CkKBu9HIc0OU+vKs2s8Ju
-   cc/KOoEfMCDDSoD7CpfcQ3raN0+P3Wki7hQojm5ZehniWzI3SM9fkdMjc
-   ghLzqFnv+OGBR7UmiHz5j3Ll2fJkLVbam+CKgjIl58cqK+NHtpIF21i/Y
-   eTgMOVvzMJrrDQj2zaspj/DKYAJ+ZRv5h7n8PysLdJdiBNcHxACC1plZj
-   M1iXNIDGUxTIZnZDxeCNJ7FKyVlGQWfBLEUB9ZtgpIOlbyRCw3eddixq9
-   Fgz5uCvd4/HP+jyqr1KyN/FsHVyL2murRPf2MoLm/q5yJJ2DmvGy0NgcM
-   w==;
-X-CSE-ConnectionGUID: hiieLbcQQ7qSCIWfP7vgLA==
-X-CSE-MsgGUID: q53KAjqKQom2K7xywQ4Tew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="66689174"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="66689174"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 14:12:23 -0700
-X-CSE-ConnectionGUID: NCTAk1dzRqWAbp98wjTmFQ==
-X-CSE-MsgGUID: d6GCJLmVTOeXPIe3tkWpbA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
-   d="scan'208";a="213143132"
-Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.4]) ([10.125.108.4])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 14:12:23 -0700
-Message-ID: <8c65e30c-5273-4098-ab63-cba51563c244@intel.com>
-Date: Thu, 16 Oct 2025 14:12:21 -0700
+	s=arc-20240116; t=1760653383; c=relaxed/simple;
+	bh=3ekii4Padoo4vLo5RlCV8aomTzPPeL5/QviVnlsRBu8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HeSR/vsjuFyLEoBe91+emheN9bJC8mQmnkzJcL0igKQNwBrOES+WVCiAQ5MXyj/Pa+QSV5HWnggCYYgqQXL1wZip2drC7EWPXstC+RT5fbN5nd35NF9sUP/udPbHIRvFur4FIgyFvdUT+k9jLb/jzVqwc+lSCWQU1AbLvDATriI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=oZTMVaCH; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-290b48e09a7so12562195ad.0
+        for <linux-acpi@vger.kernel.org>; Thu, 16 Oct 2025 15:23:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1760653381; x=1761258181; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rkSN+UnBTkzCG3PwDHFkCHOX5m2YbVVWNnREzEnFMow=;
+        b=oZTMVaCHq/k0tx3yiSzxJBt/n2F6POmsgUBNRgGUTwpbiuSjPYj0kDam07TY+m9U1L
+         3MOyijOH4WZe/MFS6ZMdRJbgZ9pX4h/vohe9K3EB9mUKAc9c5AKQmyBLTZy0nxNWshmt
+         Oar3glofJ7e3eRxfjDE/kFEE9TktjK/o8F9JJzLbcCl8/bU8aN/ANIpP7rfWRnwqu0Or
+         2w4Jh8p/GU86eBKLffTZBWRSzl37PrhU5/9rd24zpjrInpFupQ2/2hZbH/bHYnSkaEpG
+         x5EaBspLDoq+pvMxV+6X9Z2qcJNSiHJPo98+lzgQHl8oYyI1XUn4Uh2k82tM6HXOHlpG
+         wJTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760653381; x=1761258181;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rkSN+UnBTkzCG3PwDHFkCHOX5m2YbVVWNnREzEnFMow=;
+        b=L/7YjQ8/qQmpULDSu3WKpf1MXFLxP+HeImoON05n4IzebQAPwdBOmNAF9uvQ6Fe1yg
+         KZowfRgOHAzDDSa9BGQADmMG3ZQ3cjjEVDfOXIPPeQtFxXMh1h8HPQnBo24kC0vIW/AW
+         daCHTWum6TpHkGTQZRkGOiIVf6ILipHheCUhTT1X9Fy0LWsTH3I+v9Dx83ZGHlYptY0q
+         TQpiZeOKt/wOnjmw3A5k/Thu8oYbZh5PRorYbQMjBzDbjNfM2fQB3znoeDmkXUwSenJC
+         hQ7aDx8sma90MtHr1Vi1iEmSoOi+FXOotXa3oNY1khKqc9jqMqFrrUTaDnVEH/oW+MTw
+         GnLA==
+X-Forwarded-Encrypted: i=1; AJvYcCWuKSX8toyDYTK2JD/HofDxex7UxHiLVgp6vnZCy6/gWUuO+TqDvTSSDZ4jiCxG993jvraZ/OpxWaZ+@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmATcMhWA4dPywYxjXs1Silx56tYbLvsULV/5hk4w/25hdx8bh
+	KXSZp2q9b4ncFhRs4dkIJuotfCSfQWHTO37B+62KZNAonzOzbDewTO0Qpa91UPUnOao=
+X-Gm-Gg: ASbGnctmivl/M3+JH3YFksue7vKb/bHyYJdJDoJY+V1jEVmgjH9ldSJNlnT5FSCMLFQ
+	8VnB+e4CTs2jNA5kRGfqkmwfZ3iHfSn7o+D1rvhj7mLhKdUWGfcakARltEtINl585gqo8gVwMCu
+	Ik7OmnLBpliaXlKVkF6W7nREteLoomUpwpiHMU7E4g7lJzcQMa0Bk1D18dSXeTBl0L2zKmY4sWE
+	BOL11yMu7ZKytjw1sBpDCZsArmiwABALgOy2bIlNF/rTOpIE7FqJ/NnBqjrUlBqM9TdEbN2S+bk
+	/Ay/60jVHAJ/yaP2xPOW0IuE8sajk88G7PPpv6ZG998ctuUZCbRHWMrbzaGA8nGak+Y3UEEk8vY
+	gM+Sl2ASCg+eB+YSKNnjEDks8YocM3+ywCZZy3HnyFBQ59O67MlJrQCyIBTpE++XF6usuPU6XxE
+	40JE7u2A==
+X-Google-Smtp-Source: AGHT+IG6Ed2MBjmz0upGafcO94uC04MsCaD920R4+63rtx35D385DHJTV6ADNuxL5fUjZODV+u2KRA==
+X-Received: by 2002:a17:902:ea01:b0:267:d2f9:2327 with SMTP id d9443c01a7336-290c9cf2d88mr20529015ad.27.1760653380873;
+        Thu, 16 Oct 2025 15:23:00 -0700 (PDT)
+Received: from sunil-laptop ([106.51.195.92])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2909934b0b5sm41627735ad.38.2025.10.16.15.22.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Oct 2025 15:23:00 -0700 (PDT)
+Date: Fri, 17 Oct 2025 03:52:53 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: Thomas Richard <thomas.richard@bootlin.com>
+Cc: rafael@kernel.org, regressions@lists.linux.dev, lenb@kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	apatel@ventanamicro.com,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Daniele Cleri <DanieleCleri@aaeon.eu>
+Subject: Re: [REGRESSION] in 6.18-rc1, failed to query a GPIO using a name in
+ ACPI
+Message-ID: <aPFwPR2A0CN6k1Vl@sunil-laptop>
+References: <c321423b-3cdb-41a5-9939-dc5c846cfcd4@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] acpi/hmat: Fix lockdep warning for
- hmem_register_resource()
-To: dan.j.williams@intel.com, nvdimm@lists.linux.dev,
- linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc: vishal.l.verma@intel.com, ira.weiny@intel.com, rafael@kernel.org
-References: <20251015162958.11249-1-dave.jiang@intel.com>
- <68f001e4e4a2c_2f8991001a@dwillia2-mobl4.notmuch>
- <32ca1961-5ed6-47b5-af0e-70e7e87bba96@intel.com>
- <68f1421f4320b_2a2b1004e@dwillia2-mobl4.notmuch>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <68f1421f4320b_2a2b1004e@dwillia2-mobl4.notmuch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c321423b-3cdb-41a5-9939-dc5c846cfcd4@bootlin.com>
 
-
-
-On 10/16/25 12:06 PM, dan.j.williams@intel.com wrote:
-> Dave Jiang wrote:
-> [..]
->>> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
->>> index 5a36d57289b4..9f9f09480765 100644
->>> --- a/drivers/acpi/numa/hmat.c
->>> +++ b/drivers/acpi/numa/hmat.c
->>> @@ -867,6 +867,9 @@ static void hmat_register_target_devices(struct memory_target *target)
->>>         if (!IS_ENABLED(CONFIG_DEV_DAX_HMEM))
->>>                 return;
->>>  
->>> +       if (target->registered)
->>> +               return;
->>> +
->>
->> So this still triggers the lockdep warning. I don't think it's smart
->> enough to know that it gets around the issue. My changes with a new
->> flag does not trigger the lockdep.
+On Thu, Oct 16, 2025 at 02:47:40PM +0200, Thomas Richard wrote:
+> Hello,
 > 
-> You have a case where target->registered is false in the
-> hmat_callback() path? How does that happen?
+> While testing the AAEON UpBoard MFD driver with the v6.18-rc1 release, I
+> noticed a regression. The driver does not probe anymore and I get the
+> following error:
+> 
+> [    1.977831] upboard-fpga AANT0F01:00: error -ENOENT: Failed to
+> initialize FPGA common GPIOs
+> [    1.977854] upboard-fpga AANT0F01:00: probe with driver upboard-fpga
+> failed with error -2
+> 
+> The driver fails to get some GPIOs using a name [1] in the ACPI tables [2].
+> 
+> I did a bisect and I found the commit which introduced the regression:
+> e121be784d35 ("ACPI: property: Refactor acpi_fwnode_get_reference_args()
+> to support nargs_prop")
+> 
+Hi Thomas,
 
-It seems the ELC nodes are not on CPU node and also not generic port nodes. This platform has socket 0 and 1 where the memory targets are registered. However, node 2 and 3 gets hot-plugged and does not target registered at hmat_callback() time. > 
-> ...and the splat is the same hmem_resource lock entanglement?
+Could you please try with below change and see if it resolves the issue?
 
-yes
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 1b997a5497e7..43d5e457814e 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1107,7 +1107,7 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
+                                       size_t num_args,
+                                       struct fwnode_reference_args *args)
+ {
+-       return acpi_fwnode_get_reference_args(fwnode, propname, NULL, index, num_args, args);
++       return acpi_fwnode_get_reference_args(fwnode, propname, NULL, num_args, index, args);
+ }
 
-Yes.
+Thanks,
+Sunil
 
