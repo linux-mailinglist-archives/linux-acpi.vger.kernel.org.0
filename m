@@ -1,161 +1,98 @@
-Return-Path: <linux-acpi+bounces-17809-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17810-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E32BE371F
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 14:39:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA88FBE37A9
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 14:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBFB05830EC
-	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 12:39:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAE39583AE5
+	for <lists+linux-acpi@lfdr.de>; Thu, 16 Oct 2025 12:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE0932D7D9;
-	Thu, 16 Oct 2025 12:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B07332D7E4;
+	Thu, 16 Oct 2025 12:48:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1jgQmlEP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE24432860D;
-	Thu, 16 Oct 2025 12:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0183A2E0B68
+	for <linux-acpi@vger.kernel.org>; Thu, 16 Oct 2025 12:47:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760618342; cv=none; b=TWY4Ly6WO4b4k8Xg0yBNzd0vPXEfOVzbOffedkRCXMKx3Pc0czWodWBHsIk/d9l3jpAnwuenwSaChvdr1ayx3Xrp0NjUJw8PAkHyv2NXQAm0arO7CjyDTbz3MM9N0MlNl6zFchHoyEEPqxx+mb6FqG7abmf86e1q6Sk9GZMDTCU=
+	t=1760618882; cv=none; b=V/1IceWEMmS7o+rtVc+szbkTJ+h0KX4eQnQEg4bbtnoGE0DI6S8AXpqGMyfGKUMUlVFv6DYOq+jO4PACLyBh0+uciy8m2A8R80/AT4hDXaIukwcJ3qWhnwDo+O7vNO97TweJlO0PbDgCL7D2fBAN/l0LsN+60fqtEw/Ux4qjcOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760618342; c=relaxed/simple;
-	bh=wkWj8uPiFcnVkLdKk+neIeiF8L20PMjDW7F62OEEvAE=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MPp0DKVBkkri6fRCAi52TOL6805zEFGHAUB/Pnj/Krmmx1V/GlSH5QxS40rcJMj3b5hMiN0ItU+bqTAceQt8AcnLDoeLIsqsB5vYoEmBQ+RQ4wPXd9EzUWR+qT1TioM6FvNjNXRQvpeB0+YJ9AthBQd2MKVxhCzl1Fn3gAjnYZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cnSCh2sntz6L55l;
-	Thu, 16 Oct 2025 20:37:52 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3B2CA1402FE;
-	Thu, 16 Oct 2025 20:38:57 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 16 Oct
- 2025 13:38:56 +0100
-Date: Thu, 16 Oct 2025 13:38:54 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: Linux PM <linux-pm@vger.kernel.org>, Takashi Iwai <tiwai@suse.de>, LKML
-	<linux-kernel@vger.kernel.org>, Linux PCI <linux-pci@vger.kernel.org>, "Alex
- Williamson" <alex.williamson@redhat.com>, Bjorn Helgaas <helgaas@kernel.org>,
-	Zhang Qilong <zhangqilong3@huawei.com>, Ulf Hansson <ulf.hansson@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>, Dhruva Gole <d-gole@ti.com>, Mika Westerberg
-	<mika.westerberg@linux.intel.com>, "Linux ACPI" <linux-acpi@vger.kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>, David Lechner
-	<dlechner@baylibre.com>, "Fabio M. De Francesco"
-	<fabio.maria.de.francesco@linux.intel.com>
-Subject: Re: [PATCH v1 1/3] PM: runtime: Introduce
- PM_RUNTIME_ACQUIRE_OR_FAIL() macro
-Message-ID: <20251016133854.00003669@huawei.com>
-In-Reply-To: <3324926.5fSG56mABF@rafael.j.wysocki>
-References: <3925484.kQq0lBPeGt@rafael.j.wysocki>
-	<3324926.5fSG56mABF@rafael.j.wysocki>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1760618882; c=relaxed/simple;
+	bh=2VGYIFhCEbg4Av7ThEIru62x0BzDYBfbXS+3ApUDDF4=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=GZBdmnbbLn/asRtWOoyK0FQG8Ag4nBxLXrezXx3tMmVUk9/xjZ2nU+KCt++BoT4UA9C4BqYRwOAnkjWn/l335bJ2vgjlsAvrG41JUQDEmEjpYwUMijjrsf+tgPZ+AjD3V0/TOXnFFSl2zhD5//WOeo2iRE1eI+PcFv+uZoyM7h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1jgQmlEP; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 0C0801A1428
+	for <linux-acpi@vger.kernel.org>; Thu, 16 Oct 2025 12:47:55 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D38F36062C;
+	Thu, 16 Oct 2025 12:47:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CE650102F22EF;
+	Thu, 16 Oct 2025 14:47:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1760618874; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language;
+	bh=bDlImIPnSemLL+2SLF2wFv7SSzHssDb0btu+nU/rJmU=;
+	b=1jgQmlEPos1PB5Fh62MniFagobrgwHnxZS+CfVr/57V9xJEvZoIgBCyh1d1P7947xJeXlG
+	YHcNYBgBcnzE+cIZurnvR/SbogHePnEq0DaRVyTjc8m/ss8BYw5sd79ylaAfyCo6mXyjnv
+	FgKjoFxfKVRDvGrp63upRa/jBNhAyxA1TejJMcdxV5zkwe9uSELiRUM8IcBgmDYWI8rvhl
+	n2C8HMT91RfwJ0njDQh+xYbiQ5s1yp6J9yQrwD3nevQnW6N+PxvOXxe1cCaNukvzqACSfw
+	IDQHsEUuSoK+turinZkaXxTg3C+IkLOOb4gRtuFaug9cOjwCkbCWk7Udp0V7iw==
+Message-ID: <c321423b-3cdb-41a5-9939-dc5c846cfcd4@bootlin.com>
+Date: Thu, 16 Oct 2025 14:47:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+From: Thomas Richard <thomas.richard@bootlin.com>
+Subject: [REGRESSION] in 6.18-rc1, failed to query a GPIO using a name in ACPI
+To: rafael@kernel.org
+Cc: regressions@lists.linux.dev, lenb@kernel.org, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ sunilvl@ventanamicro.com, apatel@ventanamicro.com,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Daniele Cleri <DanieleCleri@aaeon.eu>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, 15 Oct 2025 16:02:02 +0200
-"Rafael J. Wysocki" <rafael@kernel.org> wrote:
+Hello,
 
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> There appears to be an emerging pattern in which guard
-> pm_runtime_active_try is used for resuming the given device and
-> incrementing its runtime PM usage counter if the resume has been
-> successful, that is followed by an ACQUIRE_ERR() check on the guard
-> variable and if that triggers, a specific error code is returned, for
-> example:
-> 
-> 	ACQUIRE(pm_runtime_active_try, pm)(dev);
-> 	if (ACQUIRE_ERR(pm_runtime_active_try, &pm))
-> 		return -ENXIO
-> 
-> Introduce a macro called PM_RUNTIME_ACQUIRE_OR_FAIL() representing the
-> above sequence of statements that can be used to avoid code duplication
-> wherever that sequence would be used.
-> 
-> Use this macro right away in the PCI sysfs code where the above pattern
-> is already present.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
-> 
-> Admittedly, the new macro is slightly on the edge, but it really helps
-> reduce code duplication, so here it goes.
+While testing the AAEON UpBoard MFD driver with the v6.18-rc1 release, I
+noticed a regression. The driver does not probe anymore and I get the
+following error:
 
-Fully agree with the 'on the edge'. 
+[    1.977831] upboard-fpga AANT0F01:00: error -ENOENT: Failed to
+initialize FPGA common GPIOs
+[    1.977854] upboard-fpga AANT0F01:00: probe with driver upboard-fpga
+failed with error -2
 
-This looks somewhat like the some of the earlier attempts to come up with
-a general solution before ACQUIRE().  Linus was fairly clear on his opinion of
-a proposal that looked a bit similar to this
-cond_guard(mutex_intr, return -EINTR, &mutex);
+The driver fails to get some GPIOs using a name [1] in the ACPI tables [2].
 
-https://lore.kernel.org/all/CAHk-=win7bwWhPJ=iuW4h-sDTqbX6v9_LJnMaO3KxVfPSs81bQ@mail.gmail.com/
+I did a bisect and I found the commit which introduced the regression:
+e121be784d35 ("ACPI: property: Refactor acpi_fwnode_get_reference_args()
+to support nargs_prop")
 
-+CC a few people who might have better memories of where things went than I do.
+Best Regards,
 
-The solution you have here has the benefit of clarity that all it can do is
-return the error code.
+Thomas
 
-Thanks,
-
-Jonathan
-
-
-> 
-> Any feedback (good, bad, ugly) will be appreciated.
-> 
-> Thanks!
-> 
-> ---
->  drivers/pci/pci-sysfs.c    |    4 +---
->  include/linux/pm_runtime.h |    5 +++++
->  2 files changed, 6 insertions(+), 3 deletions(-)
-> 
-> --- a/drivers/pci/pci-sysfs.c
-> +++ b/drivers/pci/pci-sysfs.c
-> @@ -1517,9 +1517,7 @@ static ssize_t reset_method_store(struct
->  		return count;
->  	}
->  
-> -	ACQUIRE(pm_runtime_active_try, pm)(dev);
-> -	if (ACQUIRE_ERR(pm_runtime_active_try, &pm))
-> -		return -ENXIO;
-> +	PM_RUNTIME_ACQUIRE_OR_FAIL(dev, -ENXIO);
->  
->  	if (sysfs_streq(buf, "default")) {
->  		pci_init_reset_methods(pdev);
-> --- a/include/linux/pm_runtime.h
-> +++ b/include/linux/pm_runtime.h
-> @@ -637,6 +637,11 @@ DEFINE_GUARD_COND(pm_runtime_active_auto
->  DEFINE_GUARD_COND(pm_runtime_active_auto, _try_enabled,
->  		  pm_runtime_resume_and_get(_T))
->  
-> +#define PM_RUNTIME_ACQUIRE_OR_FAIL(dev, error)		\
-> +	ACQUIRE(pm_runtime_active_try, __pm)(dev);	\
-> +	if (ACQUIRE_ERR(pm_runtime_active_try, &__pm))	\
-> +		return error
-> +
->  /**
->   * pm_runtime_put_sync - Drop device usage counter and run "idle check" if 0.
->   * @dev: Target device.
-> 
-> 
-> 
+[1]
+https://elixir.bootlin.com/linux/v6.17/source/drivers/mfd/upboard-fpga.c#L192
+[2] https://gist.github.com/thom24/2da44ef86eacfa5d2d492ce43fa41aa4
 
 
