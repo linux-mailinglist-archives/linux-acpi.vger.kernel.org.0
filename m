@@ -1,38 +1,38 @@
-Return-Path: <linux-acpi+bounces-17913-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17914-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17EBBBEB568
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 21:07:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E2CBEB55F
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 21:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 600A86E0DB0
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 19:07:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B1211895DD3
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 19:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C910436CDF6;
-	Fri, 17 Oct 2025 18:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96E936CE06;
+	Fri, 17 Oct 2025 18:58:38 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D11F36996C;
-	Fri, 17 Oct 2025 18:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2524436CE03;
+	Fri, 17 Oct 2025 18:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760727513; cv=none; b=otw2AHj1nvLKYVk5M5sNq9ctbmH9UfSGJAOSEC8HptiHvx8tIc3hfxr3v38XUHvFeL+UkodSybh6OUQAnPu+GYRawXmRYecvWY+70AMu5aLjgNeqBh1DMp8dHxF3zH9lajL0TDmrrTA/quQE4Ug+0daqjzkhxMj00WTLRsc4PDQ=
+	t=1760727518; cv=none; b=uov1eww+e+S91bFsojYjxKH565Xv6n4hadn8stbGqmLTowIH7/kTSSfzu1b6fMgm3KS0+teCaMV7h9V/EMyY24LZYD0CJ+vc2RxJoae7ISES0awOIfxtxaC+5HeOXgqnm0vW5p38irHANTeT32OeAGEWvYkGqXuW1ez57DNblfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760727513; c=relaxed/simple;
-	bh=631pSZKrhzjBH8HzzPO5wbm8noF/74larY2Fm9NkEQU=;
+	s=arc-20240116; t=1760727518; c=relaxed/simple;
+	bh=ZDnkddHVA67wGKnfxu2HrHojd6o4rL3MbPoUleD7ePY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=N2ERZzDxz2O3uXD+USbddjZ9VKnW5nnF3sbsEDgPVBeQmrTtb6TnJtk6JeoNCbyXeqJ2buD/uYCjg7TGMHSqe3E/BPZH964GWawrJkpfw6leLUKRIISi++f7mPIhz6deCBynbo6nYIJdcZ2eLaOByQbEEXYpvH9RHBCJdrESwSk=
+	 MIME-Version; b=Xmi60hvUnWsvAuyJQkYgnMzL8SvSHUxQIagD1PQOfAMVW6fBJcHi/4/TM9QHdG5GjN7yvlkp0Mr0/VbLfwoyD4ERfRiPHe9U20lh0l/m8jSiia9qkZq9DIlyOik5jW/WvNgMswRUCLh+rTXZ1CTbeiOJS1c/7XPqXaYClPFGWdQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 666161515;
-	Fri, 17 Oct 2025 11:58:23 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CC03C1595;
+	Fri, 17 Oct 2025 11:58:28 -0700 (PDT)
 Received: from merodach.members.linode.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3D43A3F66E;
-	Fri, 17 Oct 2025 11:58:26 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C9593F66E;
+	Fri, 17 Oct 2025 11:58:31 -0700 (PDT)
 From: James Morse <james.morse@arm.com>
 To: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -70,9 +70,9 @@ Cc: James Morse <james.morse@arm.com>,
 	Jeremy Linton <jeremy.linton@arm.com>,
 	Gavin Shan <gshan@redhat.com>,
 	Ben Horgan <ben.horgan@arm.com>
-Subject: [PATCH v3 16/29] arm_mpam: Add a helper to touch an MSC from any CPU
-Date: Fri, 17 Oct 2025 18:56:32 +0000
-Message-Id: <20251017185645.26604-17-james.morse@arm.com>
+Subject: [PATCH v3 17/29] arm_mpam: Extend reset logic to allow devices to be reset any time
+Date: Fri, 17 Oct 2025 18:56:33 +0000
+Message-Id: <20251017185645.26604-18-james.morse@arm.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20251017185645.26604-1-james.morse@arm.com>
 References: <20251017185645.26604-1-james.morse@arm.com>
@@ -84,91 +84,122 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Resetting RIS entries from the cpuhp callback is easy as the
-callback occurs on the correct CPU. This won't be true for any other
-caller that wants to reset or configure an MSC.
+cpuhp callbacks aren't the only time the MSC configuration may need to
+be reset. Resctrl has an API call to reset a class.
+If an MPAM error interrupt arrives it indicates the driver has
+misprogrammed an MSC. The safest thing to do is reset all the MSCs
+and disable MPAM.
 
-Add a helper that schedules the provided function if necessary.
-
-Callers should take the cpuhp lock to prevent the cpuhp callbacks from
-changing the MSC state.
+Add a helper to reset RIS via their class. Call this from mpam_disable(),
+which can be scheduled from the error interrupt handler.
 
 Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Ben Horgan <ben.horgan@arm.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Reviewed-by: Ben Horgan <ben.horgan@arm.com>
 Tested-by: Fenghua Yu <fenghuay@nvidia.com>
 ---
- drivers/resctrl/mpam_devices.c | 37 +++++++++++++++++++++++++++++++---
- 1 file changed, 34 insertions(+), 3 deletions(-)
+Changes since v2:
+ * Reduced the scop of arguments in mpam_reset_component_locked().
+
+Changes since v1:
+ * more complete use of _srcu helpers.
+ * Use guard macro for srcu.
+ * Dropped a might_sleep() - something else will bark.
+---
+ drivers/resctrl/mpam_devices.c | 58 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 55 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-index 02709b4ae9d4..ec089593acad 100644
+index ec089593acad..545482e112b7 100644
 --- a/drivers/resctrl/mpam_devices.c
 +++ b/drivers/resctrl/mpam_devices.c
-@@ -800,20 +800,51 @@ static void mpam_reset_ris_partid(struct mpam_msc_ris *ris, u16 partid)
- 	mutex_unlock(&msc->part_sel_lock);
- }
+@@ -802,15 +802,13 @@ static void mpam_reset_ris_partid(struct mpam_msc_ris *ris, u16 partid)
  
--static void mpam_reset_ris(struct mpam_msc_ris *ris)
-+/*
-+ * Called via smp_call_on_cpu() to prevent migration, while still being
-+ * pre-emptible.
-+ */
-+static int mpam_reset_ris(void *arg)
+ /*
+  * Called via smp_call_on_cpu() to prevent migration, while still being
+- * pre-emptible.
++ * pre-emptible. Caller must hold mpam_srcu.
+  */
+ static int mpam_reset_ris(void *arg)
  {
  	u16 partid, partid_max;
-+	struct mpam_msc_ris *ris = arg;
+ 	struct mpam_msc_ris *ris = arg;
  
- 	WARN_ON_ONCE(!srcu_read_lock_held((&mpam_srcu)));
- 
+-	WARN_ON_ONCE(!srcu_read_lock_held((&mpam_srcu)));
+-
  	if (ris->in_reset_state)
--		return;
-+		return 0;
+ 		return 0;
  
- 	spin_lock(&partid_max_lock);
- 	partid_max = mpam_partid_max;
- 	spin_unlock(&partid_max_lock);
- 	for (partid = 0; partid < partid_max + 1; partid++)
- 		mpam_reset_ris_partid(ris, partid);
+@@ -1328,8 +1326,56 @@ static void mpam_enable_once(void)
+ 	       mpam_partid_max + 1, mpam_pmg_max + 1);
+ }
+ 
++static void mpam_reset_component_locked(struct mpam_component *comp)
++{
 +
-+	return 0;
++	struct mpam_vmsc *vmsc;
++
++	lockdep_assert_cpus_held();
++
++	guard(srcu)(&mpam_srcu);
++	list_for_each_entry_srcu(vmsc, &comp->vmsc, comp_list,
++				 srcu_read_lock_held(&mpam_srcu)) {
++		struct mpam_msc *msc = vmsc->msc;
++		struct mpam_msc_ris *ris;
++
++		list_for_each_entry_srcu(ris, &vmsc->ris, vmsc_list,
++					 srcu_read_lock_held(&mpam_srcu)) {
++			if (!ris->in_reset_state)
++				mpam_touch_msc(msc, mpam_reset_ris, ris);
++			ris->in_reset_state = true;
++		}
++	}
++}
++
++static void mpam_reset_class_locked(struct mpam_class *class)
++{
++	struct mpam_component *comp;
++
++	lockdep_assert_cpus_held();
++
++	guard(srcu)(&mpam_srcu);
++	list_for_each_entry_srcu(comp, &class->components, class_list,
++				 srcu_read_lock_held(&mpam_srcu))
++		mpam_reset_component_locked(comp);
++}
++
++static void mpam_reset_class(struct mpam_class *class)
++{
++	cpus_read_lock();
++	mpam_reset_class_locked(class);
++	cpus_read_unlock();
 +}
 +
 +/*
-+ * Get the preferred CPU for this MSC. If it is accessible from this CPU,
-+ * this CPU is preferred. This can be preempted/migrated, it will only result
-+ * in more work.
++ * Called in response to an error IRQ.
++ * All of MPAMs errors indicate a software bug, restore any modified
++ * controls to their reset values.
 + */
-+static int mpam_get_msc_preferred_cpu(struct mpam_msc *msc)
-+{
-+	int cpu = raw_smp_processor_id();
-+
-+	if (cpumask_test_cpu(cpu, &msc->accessibility))
-+		return cpu;
-+
-+	return cpumask_first_and(&msc->accessibility, cpu_online_mask);
-+}
-+
-+static int mpam_touch_msc(struct mpam_msc *msc, int (*fn)(void *a), void *arg)
-+{
-+	lockdep_assert_irqs_enabled();
-+	lockdep_assert_cpus_held();
-+	WARN_ON_ONCE(!srcu_read_lock_held((&mpam_srcu)));
-+
-+	return smp_call_on_cpu(mpam_get_msc_preferred_cpu(msc), fn, arg, true);
- }
+ void mpam_disable(struct work_struct *ignored)
+ {
++	int idx;
++	struct mpam_class *class;
+ 	struct mpam_msc *msc, *tmp;
  
- static void mpam_reset_msc(struct mpam_msc *msc, bool online)
-@@ -821,7 +852,7 @@ static void mpam_reset_msc(struct mpam_msc *msc, bool online)
- 	struct mpam_msc_ris *ris;
+ 	mutex_lock(&mpam_cpuhp_state_lock);
+@@ -1339,6 +1385,12 @@ void mpam_disable(struct work_struct *ignored)
+ 	}
+ 	mutex_unlock(&mpam_cpuhp_state_lock);
  
- 	list_for_each_entry_srcu(ris, &msc->ris, msc_list, srcu_read_lock_held(&mpam_srcu)) {
--		mpam_reset_ris(ris);
-+		mpam_touch_msc(msc, &mpam_reset_ris, ris);
- 
- 		/*
- 		 * Set in_reset_state when coming online. The reset state
++	idx = srcu_read_lock(&mpam_srcu);
++	list_for_each_entry_srcu(class, &mpam_classes, classes_list,
++				 srcu_read_lock_held(&mpam_srcu))
++		mpam_reset_class(class);
++	srcu_read_unlock(&mpam_srcu, idx);
++
+ 	mutex_lock(&mpam_list_lock);
+ 	list_for_each_entry_safe(msc, tmp, &mpam_all_msc, all_msc_list)
+ 		mpam_msc_destroy(msc);
 -- 
 2.39.5
 
