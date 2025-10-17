@@ -1,278 +1,121 @@
-Return-Path: <linux-acpi+bounces-17858-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17859-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 372F8BE6F9B
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 09:41:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23BD9BE7484
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 10:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4D9D624522
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 07:41:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2B24188224C
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 08:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15962417D4;
-	Fri, 17 Oct 2025 07:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5762D47ED;
+	Fri, 17 Oct 2025 08:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="HSmqOJ8X"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dV32Q4aY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from esa5.hc1455-7.c3s2.iphmx.com (esa5.hc1455-7.c3s2.iphmx.com [68.232.139.130])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260D723AB98;
-	Fri, 17 Oct 2025 07:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAA22BDC13
+	for <linux-acpi@vger.kernel.org>; Fri, 17 Oct 2025 08:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760686860; cv=none; b=A0JpXzYJbZ8+jiRmqzRtAycZepNc+QaTFHyTWtoxtSOPXBH8LkTCkdQzWiG969BZeTWqK9utMSolIDKHGN2DTsMz5XHoHvytmnLZMc0oRIbf3wtJexgi9dIREgC6DOz8g+pVHJO/bUdxDaqE5T0fnZ/z4RnLiFaALbHhWWa78sU=
+	t=1760691016; cv=none; b=eg1MtXLmSFIeHnlSUnFOkOk5JUX042fHT3RC6tR1EFhmyQ0dX/oh1I+KPHvM0Q63NCtz5yIXe2cv4HGEe8QPw0t7wvI+Nlbsr5TAaSrd37ORZ1W25fo9ntnlEZieBY2yQlGcT7nHBFUO2BzEFcPKATt6EOl84H0oUHfR0PMhajs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760686860; c=relaxed/simple;
-	bh=8Qd4GPH7y8X3pVNHEWQhcSh8umsdNRfLMh7EGnd9YjU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qW1l2/ZHbrioo7t0oSyo7g54MBZ6lSoTZ0sBDBfSn7IBr/ZWilr/k9eFhk2vnzRRcrk5t7RMBlqgma5f0XshRs1vQcumevBdvJ8lDz2mb0U30UnwrCSRk7/GCmua7Y5oAf9sTvpcKmoAqz8G2mMobIc0ZQzfmzLUfsEZvtWUi9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aa.jp.fujitsu.com; spf=pass smtp.mailfrom=aa.jp.fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=HSmqOJ8X; arc=none smtp.client-ip=68.232.139.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aa.jp.fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aa.jp.fujitsu.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1760686858; x=1792222858;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=8Qd4GPH7y8X3pVNHEWQhcSh8umsdNRfLMh7EGnd9YjU=;
-  b=HSmqOJ8XFU8IhkgAJqkxoj5S/QuyiQ1Gt8GOksZc5wAS5ea9YZo7n4tF
-   SOYlR3zXqw6Cu8OZBMFOpa8hBkp/jjDa5hAgUSY0vbz+g77+XqMVZIbjR
-   3nvyr65kknMShbygeky7bQq3ZVV0oA+DDqN9J987bhU0Eygk4LIkd+Xrv
-   BsK8MvFclz/2buGC8KTRFI1wY3uskb54qnaiwuQnPKwIyW9KeCVmfdHO5
-   VUL7UXa0BUlcdLI4XbeGvZ9rtyNPwJMgczG46/JsdqN3+EMePuj+de8+x
-   byo74SETlTutlzzabziRuJXhfbwZYPQQtcDF7dMa9dyVsakQ0NjBzeTnY
-   w==;
-X-CSE-ConnectionGUID: sARsC953Skez1LoeKprIlw==
-X-CSE-MsgGUID: vZ8RIvENRe+eJpngRTaXGQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="215607805"
-X-IronPort-AV: E=Sophos;i="6.19,234,1754924400"; 
-   d="scan'208";a="215607805"
-Received: from unknown (HELO az2uksmgr4.o.css.fujitsu.com) ([52.151.125.128])
-  by esa5.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 16:39:46 +0900
-Received: from az2uksmgm1.o.css.fujitsu.com (unknown [10.151.22.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgr4.o.css.fujitsu.com (Postfix) with ESMTPS id 89962C0056B;
-	Fri, 17 Oct 2025 07:39:46 +0000 (UTC)
-Received: from az2uksmom1.o.css.fujitsu.com (az2uksmom1.o.css.fujitsu.com [10.151.22.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 46826926757;
-	Fri, 17 Oct 2025 07:39:46 +0000 (UTC)
-Received: from sm-arm-grace07.ssoft.mng.com (sm-x86-stp01.soft.fujitsu.com [10.124.178.20])
-	by az2uksmom1.o.css.fujitsu.com (Postfix) with ESMTP id 2F795180157C;
-	Fri, 17 Oct 2025 07:39:41 +0000 (UTC)
-From: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
-Cc: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Subject: [PATCH v4] ACPI: AGDI: Add interrupt signaling mode support
-Date: Fri, 17 Oct 2025 16:39:25 +0900
-Message-ID: <20251017073935.1746365-1-fj1078ii@aa.jp.fujitsu.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1760691016; c=relaxed/simple;
+	bh=s1Yo82IJv4nrT4EzmA6HcScsGLMa+FQA2rYZSctawl8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Cu2BDoieRYTeqAwhY/+FCVfDOJstHq1K8zTN15sn7PdRUG+YGnsbiuJrv13RLE5JfXqY3+g2Y/HCjcvE2i6G8iAW+e24wnKO/Knu/eGzVpbGYCAhIyFrLpcxJ8pN+xbbvr6bOp4+y/rtkUL6Jz54H+bZ3fp28V3G15qYN606QVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dV32Q4aY; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id AA2C71A146C;
+	Fri, 17 Oct 2025 08:50:10 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 76AD3606DB;
+	Fri, 17 Oct 2025 08:50:10 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 95D3A102F233E;
+	Fri, 17 Oct 2025 10:50:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1760691009; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=43pG8BQLKj+x3xmj3cNlrBF7tFn/hLhmRKzHB/XG16o=;
+	b=dV32Q4aYnMf7iwy92cdrKVRoRlNzzYyDMW8PGFHNKguzEYPlmdJ4wxctojfIzdG/3HSggI
+	SSIuEA8H2QRtIwZqkJSyHCF0z4ziL4gJmftYdkUZTJb9LcOBKy+PUK8keG5FDPxLN6LkC1
+	933cQ1f2+ZxbsTwR+iek6cIGQkxlfa4V0ja7IYMe/uzcMfvCWyfutl2bReCpNd7nx2OoNo
+	PZ7RVCB6bSs9JwX6LSf/7RVW+qvg31R5S+CyVE5fQQqpt4gxpQ557bDKNdysakHT5clII0
+	51mHTxh1OqIBr6XBziRyGw6yrMOOvWt85XaE4TKl1CqqusrxTjGbC2iAGoPsAQ==
+Message-ID: <1241f2b6-9b4e-4623-8a83-77db8774ac32@bootlin.com>
+Date: Fri, 17 Oct 2025 10:50:05 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] in 6.18-rc1, failed to query a GPIO using a name in
+ ACPI
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: rafael@kernel.org, regressions@lists.linux.dev, lenb@kernel.org,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ apatel@ventanamicro.com, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Daniele Cleri <DanieleCleri@aaeon.eu>
+References: <c321423b-3cdb-41a5-9939-dc5c846cfcd4@bootlin.com>
+ <aPFwPR2A0CN6k1Vl@sunil-laptop>
+Content-Language: en-US
+From: Thomas Richard <thomas.richard@bootlin.com>
+In-Reply-To: <aPFwPR2A0CN6k1Vl@sunil-laptop>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-AGDI has two types of signaling modes: SDEI and interrupt.
-Currently, the AGDI driver only supports SDEI.
-Therefore, add support for interrupt signaling mode
-The interrupt vector is retrieved from the AGDI table, and call panic
-function when an interrupt occurs.
+On 10/17/25 12:22 AM, Sunil V L wrote:
+> On Thu, Oct 16, 2025 at 02:47:40PM +0200, Thomas Richard wrote:
+>> Hello,
+>>
+>> While testing the AAEON UpBoard MFD driver with the v6.18-rc1 release, I
+>> noticed a regression. The driver does not probe anymore and I get the
+>> following error:
+>>
+>> [    1.977831] upboard-fpga AANT0F01:00: error -ENOENT: Failed to
+>> initialize FPGA common GPIOs
+>> [    1.977854] upboard-fpga AANT0F01:00: probe with driver upboard-fpga
+>> failed with error -2
+>>
+>> The driver fails to get some GPIOs using a name [1] in the ACPI tables [2].
+>>
+>> I did a bisect and I found the commit which introduced the regression:
+>> e121be784d35 ("ACPI: property: Refactor acpi_fwnode_get_reference_args()
+>> to support nargs_prop")
+>>
+> Hi Thomas,
+> 
+> Could you please try with below change and see if it resolves the issue?
+> 
+> diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+> index 1b997a5497e7..43d5e457814e 100644
+> --- a/drivers/acpi/property.c
+> +++ b/drivers/acpi/property.c
+> @@ -1107,7 +1107,7 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
+>                                        size_t num_args,
+>                                        struct fwnode_reference_args *args)
+>  {
+> -       return acpi_fwnode_get_reference_args(fwnode, propname, NULL, index, num_args, args);
+> +       return acpi_fwnode_get_reference_args(fwnode, propname, NULL, num_args, index, args);
+>  }
+> 
 
-Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Signed-off-by: Kazuhiro Abe <fj1078ii@aa.jp.fujitsu.com>
----
-Hanjun, I have addressed all your comments.
-Please review them.
+Hi Sunil,
 
-v3->v4
- - Add a comment to the flags member.
- - Fix agdi_interrupt_probe.
- - Fix agdi_interrupt_remove.
- - Add space in struct initializsation.
- - Delete curly braces.
+Yes your change fixes the issue !!
 
-v3: https://lore.kernel.org/all/20250905042751.945616-1-fj1078ii@aa.jp.fujitsu.com/
-v2->v3
- - Fix bug in the return value of agdi_probe function.
- - Remove unnecessary curly braces in the agdi_remove function.
+Thanks,
 
-v2: https://lore.kernel.org/all/20250829101154.2377800-1-fj1078ii@aa.jp.fujitsu.com/
-v1->v2
- - Remove acpica update since there is no need to update define value
-   for this patch.
----
- drivers/acpi/arm64/agdi.c | 101 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 92 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
-index e0df3daa4abf..feb4b2cb4618 100644
---- a/drivers/acpi/arm64/agdi.c
-+++ b/drivers/acpi/arm64/agdi.c
-@@ -16,7 +16,11 @@
- #include "init.h"
- 
- struct agdi_data {
-+	unsigned char flags; /* AGDI Signaling Mode */
- 	int sdei_event;
-+	unsigned int gsiv;
-+	bool use_nmi;
-+	int irq;
- };
- 
- static int agdi_sdei_handler(u32 sdei_event, struct pt_regs *regs, void *arg)
-@@ -48,6 +52,57 @@ static int agdi_sdei_probe(struct platform_device *pdev,
- 	return 0;
- }
- 
-+static irqreturn_t agdi_interrupt_handler_nmi(int irq, void *dev_id)
-+{
-+	nmi_panic(NULL, "Arm Generic Diagnostic Dump and Reset NMI Interrupt event issued\n");
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t agdi_interrupt_handler_irq(int irq, void *dev_id)
-+{
-+	panic("Arm Generic Diagnostic Dump and Reset Interrupt event issued\n");
-+	return IRQ_HANDLED;
-+}
-+
-+static int agdi_interrupt_probe(struct platform_device *pdev,
-+				struct agdi_data *adata)
-+{
-+	unsigned long irq_flags;
-+	int ret;
-+	int irq;
-+
-+	irq = acpi_register_gsi(NULL, adata->gsiv, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_HIGH);
-+	if (irq < 0) {
-+		dev_err(&pdev->dev, "cannot register GSI#%d (%d)\n", adata->gsiv, irq);
-+		return irq;
-+	}
-+
-+	irq_flags = IRQF_PERCPU | IRQF_NOBALANCING | IRQF_NO_AUTOEN |
-+		    IRQF_NO_THREAD;
-+	/* try NMI first */
-+	ret = request_nmi(irq, &agdi_interrupt_handler_nmi, irq_flags,
-+			  "agdi_interrupt_nmi", NULL);
-+	if (!ret) {
-+		enable_nmi(irq);
-+		adata->irq = irq;
-+		adata->use_nmi = true;
-+		return 0;
-+	}
-+
-+	/* Then try normal interrupt */
-+	ret = request_irq(irq, &agdi_interrupt_handler_irq,
-+			  irq_flags, "agdi_interrupt_irq", NULL);
-+	if (ret) {
-+		dev_err(&pdev->dev, "cannot register IRQ %d\n", ret);
-+		acpi_unregister_gsi(adata->gsiv);
-+		return ret;
-+	}
-+	enable_irq(irq);
-+	adata->irq = irq;
-+
-+	return 0;
-+}
-+
- static int agdi_probe(struct platform_device *pdev)
- {
- 	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
-@@ -55,12 +110,15 @@ static int agdi_probe(struct platform_device *pdev)
- 	if (!adata)
- 		return -EINVAL;
- 
--	return agdi_sdei_probe(pdev, adata);
-+	if (adata->flags & ACPI_AGDI_SIGNALING_MODE)
-+		return agdi_interrupt_probe(pdev, adata);
-+	else
-+		return agdi_sdei_probe(pdev, adata);
- }
- 
--static void agdi_remove(struct platform_device *pdev)
-+static void agdi_sdei_remove(struct platform_device *pdev,
-+			     struct agdi_data *adata)
- {
--	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
- 	int err, i;
- 
- 	err = sdei_event_disable(adata->sdei_event);
-@@ -83,6 +141,30 @@ static void agdi_remove(struct platform_device *pdev)
- 			adata->sdei_event, ERR_PTR(err));
- }
- 
-+static void agdi_interrupt_remove(struct platform_device *pdev,
-+				  struct agdi_data *adata)
-+{
-+	if (adata->irq == -1)
-+		return;
-+
-+	if (adata->use_nmi)
-+		free_nmi(adata->irq, NULL);
-+	else
-+		free_irq(adata->irq, NULL);
-+
-+	acpi_unregister_gsi(adata->gsiv);
-+}
-+
-+static void agdi_remove(struct platform_device *pdev)
-+{
-+	struct agdi_data *adata = dev_get_platdata(&pdev->dev);
-+
-+	if (adata->flags & ACPI_AGDI_SIGNALING_MODE)
-+		agdi_interrupt_remove(pdev, adata);
-+	else
-+		agdi_sdei_remove(pdev, adata);
-+}
-+
- static struct platform_driver agdi_driver = {
- 	.driver = {
- 		.name = "agdi",
-@@ -94,7 +176,7 @@ static struct platform_driver agdi_driver = {
- void __init acpi_agdi_init(void)
- {
- 	struct acpi_table_agdi *agdi_table;
--	struct agdi_data pdata;
-+	struct agdi_data pdata = { 0 };
- 	struct platform_device *pdev;
- 	acpi_status status;
- 
-@@ -103,12 +185,13 @@ void __init acpi_agdi_init(void)
- 	if (ACPI_FAILURE(status))
- 		return;
- 
--	if (agdi_table->flags & ACPI_AGDI_SIGNALING_MODE) {
--		pr_warn("Interrupt signaling is not supported");
--		goto err_put_table;
--	}
-+	if (agdi_table->flags & ACPI_AGDI_SIGNALING_MODE)
-+		pdata.gsiv = agdi_table->gsiv;
-+	else
-+		pdata.sdei_event = agdi_table->sdei_event;
- 
--	pdata.sdei_event = agdi_table->sdei_event;
-+	pdata.irq = -1;
-+	pdata.flags = agdi_table->flags;
- 
- 	pdev = platform_device_register_data(NULL, "agdi", 0, &pdata, sizeof(pdata));
- 	if (IS_ERR(pdev))
--- 
-2.43.0
+Thomas
 
 
