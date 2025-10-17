@@ -1,187 +1,137 @@
-Return-Path: <linux-acpi+bounces-17929-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17930-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF49BEBCBD
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 23:21:17 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D313BEBE63
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Oct 2025 00:16:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D11374EA1F3
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 21:21:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F1CA74E595A
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 22:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA83A330B03;
-	Fri, 17 Oct 2025 21:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD182D4B5A;
+	Fri, 17 Oct 2025 22:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r9eZvfHU"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93C927877D;
-	Fri, 17 Oct 2025 21:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4F7354AC3;
+	Fri, 17 Oct 2025 22:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760736072; cv=none; b=QVBm2nIXLH7FR+kJPCQf1Gt99FOHrZjXC5sxQTJV1h50viJf2x8qT54en1mNbzctR1d9AfEMpMjYGK4ts5LMBazEpd83JufarisMu3e2HqXDin78eSEMwCKm4I/GuPnMDgsA4IJLEd+CGwQ/A4IiMWOP+78J/ylvrA7Ultn+10w=
+	t=1760739382; cv=none; b=a0KsQCs1uUxpKiycKQP+ADWXx+9etbqbEOuKT8yUfsgDhxVUq7VgGG/1fsVLQnj5t8cDU95oRlE++rdv8Zl/MsD74+EWfeO7x5vnFgs7snlkfjar2bNRmUiCZKdYvf5sK7rvWcQvaRfyt2LcFtmjtc27SYguakAgtJiHTOOHyZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760736072; c=relaxed/simple;
-	bh=N57gavoaSd+CKGN5SfMIuLTbn6yGcxKp9axP+lNGvfU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/AOMIc2hvuBATl+Sf9+hHkqlshtO9QNFDSHv8nNpoQxsD6pN7qmw0G0SA12YXNxN5aW22QBixNZ4B+pxo2KXg1QvxtrBwH9VCvQtDsrcuDjaw//xtkhWPGZ6C6iC6bBE22hu61hiW888+/YI698hTCia+TurR/GfI2QehzhRA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F61C4CEF9;
-	Fri, 17 Oct 2025 21:21:11 +0000 (UTC)
-From: Dave Jiang <dave.jiang@intel.com>
-To: nvdimm@lists.linux.dev,
-	linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: dan.j.williams@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	rafael@kernel.org
-Subject: [PATCH v3 2/2] acpi/hmat: Fix lockdep warning for hmem_register_resource()
-Date: Fri, 17 Oct 2025 14:21:05 -0700
-Message-ID: <20251017212105.4069510-3-dave.jiang@intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017212105.4069510-1-dave.jiang@intel.com>
-References: <20251017212105.4069510-1-dave.jiang@intel.com>
+	s=arc-20240116; t=1760739382; c=relaxed/simple;
+	bh=kPhCqHZuNpS145cs5Ndc1SX3JYd9L6ZJoPIkQMXvMRI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R/0wyC97I02eF7ljaVizuQT79IctDDQWVkOdbnNyjWEHlKPmcfzBEW8VbDhv2umRSYFE+AG8X9LKl43VNwSFtB/wGyzdHYdx/2FqoD+tkCTyQDCdQwJmDZ+gl9pb/Wuo8s0CC3MxwB8VMPhQxfNr5FOvOyPC+5JVZAZ/9tz1XH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r9eZvfHU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB8EC4CEE7;
+	Fri, 17 Oct 2025 22:16:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760739382;
+	bh=kPhCqHZuNpS145cs5Ndc1SX3JYd9L6ZJoPIkQMXvMRI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=r9eZvfHU0sppp/CIlQVvsbG7vElW/vPeiUiE0TUPD4+VEVf4cVPmvAAmY/OOVtXpd
+	 +ICgRFDVEa6FDjML2r+tKhZHX45jEFXsGNYJGRXYJrkYbKJoUaJ8ncBfov7a2zIXq+
+	 qHGfmiEcqV3tWhLViZepd/4qojliiN1jiMK43AJ6vex5xlikOlH8xD+BdfwVvOiffg
+	 ouVUNT6V2JdTnECo1zylFZ3EtQ2gGow1uSz3noCnlZxTz2lmT6OeSxlZ91vN8nz6Ub
+	 hOOGY3phXRdrJpKAODdCzZs67qYzq/pxUy9HogrQRYCUT7SEEd+yPAGze4SVGFDc9z
+	 8793pJPiix9Kg==
+Date: Fri, 17 Oct 2025 22:16:20 +0000
+From: Wei Liu <wei.liu@kernel.org>
+To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Chris Oo <cho@microsoft.com>, "Kirill A. Shutemov" <kas@kernel.org>,
+	linux-hyperv@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Ricardo Neri <ricardo.neri@intel.com>
+Subject: Re: [PATCH v6 08/10] x86/smpwakeup: Add a helper get the address of
+ the wakeup mailbox
+Message-ID: <20251017221620.GD614927@liuwe-devbox-debian-v2.local>
+References: <20251016-rneri-wakeup-mailbox-v6-0-40435fb9305e@linux.intel.com>
+ <20251016-rneri-wakeup-mailbox-v6-8-40435fb9305e@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251016-rneri-wakeup-mailbox-v6-8-40435fb9305e@linux.intel.com>
 
-The following lockdep splat was observed while kernel auto-online a CXL
-memory region:
+On Thu, Oct 16, 2025 at 07:57:30PM -0700, Ricardo Neri wrote:
+> A Hyper-V VTL level 2 guest in a TDX environment needs to map the physical
+> page of the ACPI Multiprocessor Wakeup Structure as private (encrypted). It
+> needs to know the physical address of this structure. Add a helper function
+> to retrieve the address.
+> 
+> Reviewed-by: Dexuan Cui <decui@microsoft.com>
+> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+> Suggested-by: Michael Kelley <mhklinux@outlook.com>
+> Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 
-======================================================
-WARNING: possible circular locking dependency detected
-6.17.0djtest+ #53 Tainted: G        W
-------------------------------------------------------
-systemd-udevd/3334 is trying to acquire lock:
-ffffffff90346188 (hmem_resource_lock){+.+.}-{4:4}, at: hmem_register_resource+0x31/0x50
+Can I get an Ack from x86 maintainers?
 
-but task is already holding lock:
-ffffffff90338890 ((node_chain).rwsem){++++}-{4:4}, at: blocking_notifier_call_chain+0x2e/0x70
-
-which lock already depends on the new lock.
-[..]
-Chain exists of:
-  hmem_resource_lock --> mem_hotplug_lock --> (node_chain).rwsem
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  rlock((node_chain).rwsem);
-                               lock(mem_hotplug_lock);
-                               lock((node_chain).rwsem);
-  lock(hmem_resource_lock);
-
-The lock ordering can cause potential deadlock. There are instances
-where hmem_resource_lock is taken after (node_chain).rwsem, and vice
-versa.
-
-Split out the target update section of hmat_register_target() so that
-hmat_callback() only envokes that section instead of attempt to register
-hmem devices that it does not need to.
-
-Fixes: cf8741ac57ed ("ACPI: NUMA: HMAT: Register "soft reserved" memory as a
-n "hmem" device")
-notmuch/
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-
----
-v3:
-- Refactor to split out target device setup vs target update (Dan)
----
- drivers/acpi/numa/hmat.c | 48 ++++++++++++++++++++++------------------
- 1 file changed, 26 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index 1dc73d20d989..ddbdd32e79a8 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -874,28 +874,10 @@ static void hmat_register_target_devices(struct memory_target *target)
- 	}
- }
- 
--static void hmat_register_target(struct memory_target *target)
-+static void hmat_hotplug_target(struct memory_target *target)
- {
- 	int nid = pxm_to_node(target->memory_pxm);
- 
--	/*
--	 * Devices may belong to either an offline or online
--	 * node, so unconditionally add them.
--	 */
--	hmat_register_target_devices(target);
--
--	/*
--	 * Register generic port perf numbers. The nid may not be
--	 * initialized and is still NUMA_NO_NODE.
--	 */
--	scoped_guard(mutex, &target_lock) {
--		if (*(u16 *)target->gen_port_device_handle) {
--			hmat_update_generic_target(target);
--			target->registered = true;
--			return;
--		}
--	}
--
- 	/*
- 	 * Skip offline nodes. This can happen when memory
- 	 * marked EFI_MEMORY_SP, "specific purpose", is applied
-@@ -906,7 +888,7 @@ static void hmat_register_target(struct memory_target *target)
- 	if (nid == NUMA_NO_NODE || !node_online(nid))
- 		return;
- 
--	mutex_lock(&target_lock);
-+	guard(mutex)(&target_lock);
- 	if (!target->registered) {
- 		hmat_register_target_initiators(target);
- 		hmat_register_target_cache(target);
-@@ -914,7 +896,29 @@ static void hmat_register_target(struct memory_target *target)
- 		hmat_register_target_perf(target, ACCESS_COORDINATE_CPU);
- 		target->registered = true;
- 	}
--	mutex_unlock(&target_lock);
-+}
-+
-+static void hmat_register_target(struct memory_target *target)
-+{
-+	/*
-+	 * Devices may belong to either an offline or online
-+	 * node, so unconditionally add them.
-+	 */
-+	hmat_register_target_devices(target);
-+
-+	/*
-+	 * Register generic port perf numbers. The nid may not be
-+	 * initialized and is still NUMA_NO_NODE.
-+	 */
-+	scoped_guard(mutex, &target_lock) {
-+		if (*(u16 *)target->gen_port_device_handle) {
-+			hmat_update_generic_target(target);
-+			target->registered = true;
-+			return;
-+		}
-+	}
-+
-+	hmat_hotplug_target(target);
- }
- 
- static void hmat_register_targets(void)
-@@ -940,7 +944,7 @@ static int hmat_callback(struct notifier_block *self,
- 	if (!target)
- 		return NOTIFY_OK;
- 
--	hmat_register_target(target);
-+	hmat_hotplug_target(target);
- 	return NOTIFY_OK;
- }
- 
--- 
-2.51.0
-
+> ---
+> Changes since v5:
+>  - Added Reviewed-by tag from Dexuan. Thanks!
+> 
+> Changes since v4:
+>  - None
+> 
+> Changes since v3:
+>  - Renamed function to acpi_get_mp_wakeup_mailbox_paddr().
+>  - Added Reviewed-by tag from Michael. Thanks!
+> 
+> Changes since v2:
+>  - Introduced this patch
+> 
+> Changes since v1:
+>  - N/A
+> ---
+>  arch/x86/include/asm/smp.h  | 1 +
+>  arch/x86/kernel/smpwakeup.c | 5 +++++
+>  2 files changed, 6 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+> index 47ac4381a805..71de1963f984 100644
+> --- a/arch/x86/include/asm/smp.h
+> +++ b/arch/x86/include/asm/smp.h
+> @@ -151,6 +151,7 @@ static inline struct cpumask *cpu_l2c_shared_mask(int cpu)
+>  
+>  void acpi_setup_mp_wakeup_mailbox(u64 addr);
+>  struct acpi_madt_multiproc_wakeup_mailbox *acpi_get_mp_wakeup_mailbox(void);
+> +u64 acpi_get_mp_wakeup_mailbox_paddr(void);
+>  
+>  #else /* !CONFIG_SMP */
+>  #define wbinvd_on_cpu(cpu)     wbinvd()
+> diff --git a/arch/x86/kernel/smpwakeup.c b/arch/x86/kernel/smpwakeup.c
+> index 5089bcda615d..f730a66b6fc8 100644
+> --- a/arch/x86/kernel/smpwakeup.c
+> +++ b/arch/x86/kernel/smpwakeup.c
+> @@ -81,3 +81,8 @@ struct acpi_madt_multiproc_wakeup_mailbox *acpi_get_mp_wakeup_mailbox(void)
+>  {
+>  	return acpi_mp_wake_mailbox;
+>  }
+> +
+> +u64 acpi_get_mp_wakeup_mailbox_paddr(void)
+> +{
+> +	return acpi_mp_wake_mailbox_paddr;
+> +}
+> 
+> -- 
+> 2.43.0
+> 
 
