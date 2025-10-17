@@ -1,161 +1,226 @@
-Return-Path: <linux-acpi+bounces-17860-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17861-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E607EBE7DBA
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 11:44:38 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97156BE7E2F
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 11:49:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A89D18872F1
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 09:43:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8169C5410DD
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 09:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687F82D5C92;
-	Fri, 17 Oct 2025 09:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126692BE64F;
+	Fri, 17 Oct 2025 09:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XnbLDmKG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HdMMJD97"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4339D2040B6
-	for <linux-acpi@vger.kernel.org>; Fri, 17 Oct 2025 09:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FE617597
+	for <linux-acpi@vger.kernel.org>; Fri, 17 Oct 2025 09:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760694210; cv=none; b=aabEGLLzAjVo6X3ZPriCQ/BMhNTd3xfWeF0dw6YUeEY2zJzXRG5g9B4WWPlE/yCwYlbwDkLRXoCH3FuZ4YGTI4ZPQyoFXyxb0qej523U76CVjekCpH1UoZia3nYoNZjNTl7y7DnDnwStwttoPA8VTHgjFlAKCce/DrBcNfaGI8E=
+	t=1760694433; cv=none; b=dd4iSg6yxWpteUeGK9PwGm8b7/p2zq/3DHTR2zh53R5862HYPhdy2p3Q6O5aNCsU14ExVbpExifMVntY/jkLdKxqrxjahjhOZyXKg29YMH00EgvdqAtu0m04dDXBmqOxkPLC/BCLsLJv85uxupTekw4RgSSFADG89usQHitzTQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760694210; c=relaxed/simple;
-	bh=pkCI6HFfiRn0R2kWZVx7o4rc4bqqMnfKrsb36bHEddo=;
+	s=arc-20240116; t=1760694433; c=relaxed/simple;
+	bh=HDU1FACluX6LCqIfLVToKdMVxXgddwHgsUQEywEtEwU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mcbLTm2/joO/FCMUr5XtTNb6rlLTQfNYMOXqKCHp+G4Mwe1gNoANLpqtTMyIq7BtNxQ+r3wxM8wT3yu7dJNyEUWcSsJjG+yRlbV1AYhm0yj25HM3Qo03DYxCl2nVBZq9S0vxHa413xNHW7EC1CANb4GK1uZhXs88HRSyLpEZkNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XnbLDmKG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11AFC116D0
-	for <linux-acpi@vger.kernel.org>; Fri, 17 Oct 2025 09:43:29 +0000 (UTC)
+	 To:Cc:Content-Type; b=bttkETjpBHZVx7jNPRHtNFNqoUrH4RH9i4mYUYb6vXkBdDVLS7MDiJXnhpLwCERqcqXYIOKoVedScPp2MhPMBViT2xbyjIP7GQFiWXFwEEvSI3liraEuYcQdaCmMT5GOJv7wHMDe9KMkqQSeSL/CdSkstxYkpu2nMuaciHQwoXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HdMMJD97; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF04DC113D0
+	for <linux-acpi@vger.kernel.org>; Fri, 17 Oct 2025 09:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760694209;
-	bh=pkCI6HFfiRn0R2kWZVx7o4rc4bqqMnfKrsb36bHEddo=;
+	s=k20201202; t=1760694432;
+	bh=HDU1FACluX6LCqIfLVToKdMVxXgddwHgsUQEywEtEwU=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=XnbLDmKG5RnudC+UiGXKohr0V7QpfNa7T2B4ezxb4q260dbsT6Xl71FesMdApZXpw
-	 3zeuJIK6CCywFxO6xcPL8xjtuNzUWAQizCxvq0V92bjnZFcO5rh9E7yuhKzX89c/aX
-	 AqVMiwszMWwL5TqVGio0E2YV8PO4+mlWOMfgbwJiPhVfc1qaTTcQ1QF0DkZzPWdkih
-	 PhwSLq4BFTILe1lcmxhuxdLmZRoSzlkZP41kTpyUTgbGB6T+rYhtERafkf32GwMiN8
-	 xVhxBa31J5pL+YEE0EiqpRZFcCvO79vfl2iuOOX3atZSFVK+R6Xsq2bNMnRp/Ud8IM
-	 MJGl0o2dfzb2g==
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7c28378681cso62145a34.1
-        for <linux-acpi@vger.kernel.org>; Fri, 17 Oct 2025 02:43:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW18rGLRMGuwJxa7GgQJysFTjOY3g2M+CeL4kLqPCjclZaVgLWSVewwYpmPe8DNTLrNj4el0YLmIeUG@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9BeFQ74ItJqHqaov45PvvowUBhURZDs/Os/Ts01IOCHn9Yhwb
-	WuGgp0Dij2JLsD8oOLmKJ2VFx0DFdUOaLNVRh/55nn+kBg+6anO5uTEIc8AnDXT+xZ+i1Tc9fYv
-	9NC7V/JSjIt/s3JZKq+MKeZWai2z/qV8=
-X-Google-Smtp-Source: AGHT+IFb30NmOSO8om+QY7wjx78VOOzA/XC5BsA2TqliME5xYcdEEBmD6YG/6U29lXl8c1d2Hrs83yjqQRrYaDsT33k=
-X-Received: by 2002:a05:6808:1a16:b0:442:20cb:8d18 with SMTP id
- 5614622812f47-443a2fb2b9dmr1312211b6e.42.1760694209205; Fri, 17 Oct 2025
- 02:43:29 -0700 (PDT)
+	b=HdMMJD97cDtRto4/3Mqp8A2yH0kXg+5O2LNBRHNYXRmv1HC0hf0fYXHfddi7IvYEJ
+	 h7r0j5nV2evBXGB0OsrwVK9mOaJAIT/z+iPQe+qxrqOhSWWV3yHO5GNGlORAXdUPoV
+	 ZEsYNIZxLz0MPnhNiPPfPRlSH5RuMTJCtwgNvqsa/8TxcL85FiG+SDILptCYHMYMBn
+	 uCGAG8dTvTg20Qff1lNXlOAZuquXgauTWFSYR4OE20+dOBmTFDQf08buNmXvfOrjdj
+	 /NLdrAYtKr9S6W109qBvrvJ91JiUbe+8EEaQbvdQLhEsxPMwsbjKwCcwfAAKr5/lON
+	 sb8A2R9dE6Big==
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-443a58904efso329092b6e.0
+        for <linux-acpi@vger.kernel.org>; Fri, 17 Oct 2025 02:47:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUJKJZDJT/k3lfUbWoV+BlBm2HxDX1Q9GhfavKBUz5J0v5sRrrSY8SHpS5C+0XPIKrldQsIyEEzSZQ2@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAV/09V/ZqELTUcAHf9VhiZtcQEZtbDQtHLFXQferqcyRG1wgd
+	1xEctAwOSRCvCMXADtSKsISPPWtlPcwP/fKk1QT6DQrxkmojga1id0eWKEFpW0GgaZQSC9BJ2iy
+	qDq/2AdazKzZHtKdIS0OKPYOvjS67xGc=
+X-Google-Smtp-Source: AGHT+IF6Zim4KFjK/5YwE9BLg4NQGMqj3sOP2xD9ENA7fnIjMq+2fpDogmWr3naNZ7Jjzb62XZWXqD1zoRl37XI46rs=
+X-Received: by 2002:a05:6808:1383:b0:439:b9b3:af48 with SMTP id
+ 5614622812f47-443a3144e71mr1265508b6e.51.1760694432040; Fri, 17 Oct 2025
+ 02:47:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <3925484.kQq0lBPeGt@rafael.j.wysocki> <cc21a74c-905f-4223-95a8-d747ef763081@baylibre.com>
- <875xce7m11.wl-tiwai@suse.de> <12765144.O9o76ZdvQC@rafael.j.wysocki>
- <68f14b5b6a92_2a2b10018@dwillia2-mobl4.notmuch> <CAJZ5v0iZJFQeBhA7tM-sWuJDtisvrHGjPPdQHrC-eXXF1xJpbA@mail.gmail.com>
- <68f15c85b1781_2a2010086@dwillia2-mobl4.notmuch>
-In-Reply-To: <68f15c85b1781_2a2010086@dwillia2-mobl4.notmuch>
+References: <20251016-rneri-wakeup-mailbox-v6-0-40435fb9305e@linux.intel.com> <20251016-rneri-wakeup-mailbox-v6-1-40435fb9305e@linux.intel.com>
+In-Reply-To: <20251016-rneri-wakeup-mailbox-v6-1-40435fb9305e@linux.intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 17 Oct 2025 11:43:15 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gKWSdVeT-eKobSe+BedPKZq25adZKdxOgV0z+iOCAyNw@mail.gmail.com>
-X-Gm-Features: AS18NWDmW9zSSD8Q9CCy7XVXUmgMtdJ9aAZX1cxaF4-5gfPljWhkljZlWax6ZH8
-Message-ID: <CAJZ5v0gKWSdVeT-eKobSe+BedPKZq25adZKdxOgV0z+iOCAyNw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/3] PM: runtime: Introduce PM_RUNTIME_ACQUIRE_OR_FAIL()
- macro
-To: dan.j.williams@intel.com
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Takashi Iwai <tiwai@suse.de>, 
-	David Lechner <dlechner@baylibre.com>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
-	Linux PM <linux-pm@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Linux PCI <linux-pci@vger.kernel.org>, Alex Williamson <alex.williamson@redhat.com>, 
-	Bjorn Helgaas <helgaas@kernel.org>, Zhang Qilong <zhangqilong3@huawei.com>, 
-	Ulf Hansson <ulf.hansson@linaro.org>, Frank Li <Frank.Li@nxp.com>, Dhruva Gole <d-gole@ti.com>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	"Fabio M. De Francesco" <fabio.maria.de.francesco@linux.intel.com>
+Date: Fri, 17 Oct 2025 11:46:59 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iB4iZFs8C6EZayLVPbLz50MJ9GEniSHfbP31-yHRg1Bw@mail.gmail.com>
+X-Gm-Features: AS18NWCpLzOnPH0RKu6aTn1sl9Pr7sXnawYuZXgmcYTVDY3oZ6tv4PUbka5tAd4
+Message-ID: <CAJZ5v0iB4iZFs8C6EZayLVPbLz50MJ9GEniSHfbP31-yHRg1Bw@mail.gmail.com>
+Subject: Re: [PATCH v6 01/10] x86/acpi: Add helper functions to setup and
+ access the wakeup mailbox
+To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Rob Herring <robh@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Michael Kelley <mhklinux@outlook.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Saurabh Sengar <ssengar@linux.microsoft.com>, 
+	Chris Oo <cho@microsoft.com>, "Kirill A. Shutemov" <kas@kernel.org>, linux-hyperv@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Ricardo Neri <ricardo.neri@intel.com>, 
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 16, 2025 at 10:59=E2=80=AFPM <dan.j.williams@intel.com> wrote:
+On Fri, Oct 17, 2025 at 4:48=E2=80=AFAM Ricardo Neri
+<ricardo.neri-calderon@linux.intel.com> wrote:
 >
-> Rafael J. Wysocki wrote:
-> > On Thu, Oct 16, 2025 at 9:45=E2=80=AFPM <dan.j.williams@intel.com> wrot=
-e:
-> > >
-> > > Rafael J. Wysocki wrote:
-> > > [..]
-> > > > > > [1]: https://lore.kernel.org/all/CAHk-=3Dwhn07tnDosPfn+UcAtWHBc=
-Lg=3DKqA16SHVv0GV4t8P1fHw@mail.gmail.com/
-> > > > >
-> > > > > Yeah, I myself also find it suboptimal, hence it wasn't really
-> > > > > proposed...  It's a limit of macro, unfortunately.
-> > > >
-> > > > The macro from the $subject patch can be split along the lines of t=
-he appended
-> > > > patch to avoid the "disgusting syntax" issue, although it then beco=
-mes less
-> > > > attractive as far as I'm concerned.  It still allows the details un=
-related to
-> > > > the rest of the code to be hidden though.
-> > > >
-> > > > ---
-> > > >  drivers/acpi/acpi_tad.c |   10 ++++++++--
-> > > >  1 file changed, 8 insertions(+), 2 deletions(-)
-> > > >
-> > > > --- a/drivers/acpi/acpi_tad.c
-> > > > +++ b/drivers/acpi/acpi_tad.c
-> > > > @@ -31,6 +31,12 @@ MODULE_DESCRIPTION("ACPI Time and Alarm
-> > > >  MODULE_LICENSE("GPL v2");
-> > > >  MODULE_AUTHOR("Rafael J. Wysocki");
-> > > >
-> > > > +#define PM_RUNTIME_ACQUIRE_ACTIVE(dev)       \
-> > > > +     ACQUIRE(pm_runtime_active_try, pm_runtime_active_guard_var)(d=
-ev)
-> > > > +
-> > > > +#define PM_RUNTIME_ACQUIRE_ACTIVE_ERR        \
-> > > > +     ACQUIRE_ERR(pm_runtime_active_try, &pm_runtime_active_guard_v=
-ar)
-> > > > +
-> > > >  /* ACPI TAD capability flags (ACPI 6.2, Section 9.18.2) */
-> > > >  #define ACPI_TAD_AC_WAKE     BIT(0)
-> > > >  #define ACPI_TAD_DC_WAKE     BIT(1)
-> > > > @@ -264,8 +270,8 @@ static int acpi_tad_wake_set(struct devi
-> > > >       args[0].integer.value =3D timer_id;
-> > > >       args[1].integer.value =3D value;
-> > > >
-> > > > -     ACQUIRE(pm_runtime_active_try, pm)(dev);
-> > > > -     if (ACQUIRE_ERR(pm_runtime_active_try, &pm))
-> > > > +     PM_RUNTIME_ACQUIRE_ACTIVE(dev);
-> > > > +     if (PM_RUNTIME_ACQUIRE_ACTIVE_ERR)
-> > > >               return -ENXIO;
-> > >
-> > > This defeats one of the other motivations for ACQUIRE() vs
-> > > scoped_cond_guard() in that it drops the error code from
-> > > pm_runtime_active_try.
-> >
-> > No, it doesn't.  PM_RUNTIME_ACQUIRE_ACTIVE_ERR is that error code.  Or
-> > did I misunderstand what you said?
+> In preparation to move the functionality to wake secondary CPUs up from t=
+he
+> ACPI code, add two helper functions.
 >
-> Oh, what I am saying is that pm_runtime_get_active() returns a distinct
-> error code like -EACCES or -EINPROGRESS etc. The
-> PM_RUNTIME_ACQUIRE_ACTIVE_ERR proposal ignores that value and open codes
-> returning -ENXIO.
+> The function acpi_setup_mp_wakeup_mailbox() stores the physical address o=
+f
+> the mailbox and updates the wakeup_secondary_cpu_64() APIC callback.
+>
+> There is a slight change in behavior: now the APIC callback is updated
+> before configuring CPU hotplug offline behavior. This is fine as the APIC
+> callback continues to be updated unconditionally, regardless of the
+> restriction on CPU offlining.
+>
+> The function acpi_madt_multiproc_wakeup_mailbox() returns a pointer to th=
+e
+> mailbox. Use this helper function only in the portions of the code for
+> which the variable acpi_mp_wake_mailbox will be out of scope once it is
+> relocated out of the ACPI directory.
+>
+> The wakeup mailbox is only supported for CONFIG_X86_64 and needed only wi=
+th
+> CONFIG_SMP=3Dy.
+>
+> Reviewed-by: Dexuan Cui <decui@microsoft.com>
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-No, it doesn't.
+This should have been
 
-You can still do
+Acked-by: Rafael J. Wysocki (Intel) <rafael.j.wysocki@intel.com>
 
-ret =3D PM_RUNTIME_ACQUIRE_ACTIVE_ERR;
-if (ret)
-        return ret;
+The "(Intel)" part is missing and I omitted it when I sent the tag.
+Sorry for the confusion.
 
-if the caller needs to know the original resume error code.
-
-The code being updated in the example patch returns -ENXIO, but it
-does so before the change either.
+> Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+> ---
+> Changes since v5:
+>  - Fixed grammar error in the subject of the patch. (Rafael)
+>  - Added Acked-by tag from Rafael. Thanks!
+>  - Added Reviewed-by tag from Dexuan. Thanks!
+>
+> Changes since v4:
+>  - None
+>
+> Changes since v3:
+>  - Squashed the two first patches of the series into one, both introduce
+>    helper functions. (Rafael)
+>  - Renamed setup_mp_wakeup_mailbox() as acpi_setup_mp_wakeup_mailbox().
+>    (Rafael)
+>  - Dropped the function prototype for !CONFIG_X86_64. (Rafael)
+>
+> Changes since v2:
+>  - Introduced this patch.
+>
+> Changes since v1:
+>  - N/A
+> ---
+>  arch/x86/include/asm/smp.h         |  3 +++
+>  arch/x86/kernel/acpi/madt_wakeup.c | 20 +++++++++++++++-----
+>  2 files changed, 18 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+> index 22bfebe6776d..47ac4381a805 100644
+> --- a/arch/x86/include/asm/smp.h
+> +++ b/arch/x86/include/asm/smp.h
+> @@ -149,6 +149,9 @@ static inline struct cpumask *cpu_l2c_shared_mask(int=
+ cpu)
+>         return per_cpu(cpu_l2c_shared_map, cpu);
+>  }
+>
+> +void acpi_setup_mp_wakeup_mailbox(u64 addr);
+> +struct acpi_madt_multiproc_wakeup_mailbox *acpi_get_mp_wakeup_mailbox(vo=
+id);
+> +
+>  #else /* !CONFIG_SMP */
+>  #define wbinvd_on_cpu(cpu)     wbinvd()
+>  static inline void wbinvd_on_all_cpus(void)
+> diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/ma=
+dt_wakeup.c
+> index 6d7603511f52..c3ac5ecf3e7d 100644
+> --- a/arch/x86/kernel/acpi/madt_wakeup.c
+> +++ b/arch/x86/kernel/acpi/madt_wakeup.c
+> @@ -37,6 +37,7 @@ static void acpi_mp_play_dead(void)
+>
+>  static void acpi_mp_cpu_die(unsigned int cpu)
+>  {
+> +       struct acpi_madt_multiproc_wakeup_mailbox *mailbox =3D acpi_get_m=
+p_wakeup_mailbox();
+>         u32 apicid =3D per_cpu(x86_cpu_to_apicid, cpu);
+>         unsigned long timeout;
+>
+> @@ -46,13 +47,13 @@ static void acpi_mp_cpu_die(unsigned int cpu)
+>          *
+>          * BIOS has to clear 'command' field of the mailbox.
+>          */
+> -       acpi_mp_wake_mailbox->apic_id =3D apicid;
+> -       smp_store_release(&acpi_mp_wake_mailbox->command,
+> +       mailbox->apic_id =3D apicid;
+> +       smp_store_release(&mailbox->command,
+>                           ACPI_MP_WAKE_COMMAND_TEST);
+>
+>         /* Don't wait longer than a second. */
+>         timeout =3D USEC_PER_SEC;
+> -       while (READ_ONCE(acpi_mp_wake_mailbox->command) && --timeout)
+> +       while (READ_ONCE(mailbox->command) && --timeout)
+>                 udelay(1);
+>
+>         if (!timeout)
+> @@ -227,7 +228,7 @@ int __init acpi_parse_mp_wake(union acpi_subtable_hea=
+ders *header,
+>
+>         acpi_table_print_madt_entry(&header->common);
+>
+> -       acpi_mp_wake_mailbox_paddr =3D mp_wake->mailbox_address;
+> +       acpi_setup_mp_wakeup_mailbox(mp_wake->mailbox_address);
+>
+>         if (mp_wake->version >=3D ACPI_MADT_MP_WAKEUP_VERSION_V1 &&
+>             mp_wake->header.length >=3D ACPI_MADT_MP_WAKEUP_SIZE_V1) {
+> @@ -243,7 +244,16 @@ int __init acpi_parse_mp_wake(union acpi_subtable_he=
+aders *header,
+>                 acpi_mp_disable_offlining(mp_wake);
+>         }
+>
+> +       return 0;
+> +}
+> +
+> +void __init acpi_setup_mp_wakeup_mailbox(u64 mailbox_paddr)
+> +{
+> +       acpi_mp_wake_mailbox_paddr =3D mailbox_paddr;
+>         apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
+> +}
+>
+> -       return 0;
+> +struct acpi_madt_multiproc_wakeup_mailbox *acpi_get_mp_wakeup_mailbox(vo=
+id)
+> +{
+> +       return acpi_mp_wake_mailbox;
+>  }
+>
+> --
+> 2.43.0
+>
 
