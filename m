@@ -1,38 +1,38 @@
-Return-Path: <linux-acpi+bounces-17898-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17899-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B70BEB4A2
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 20:57:20 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B455BEB4AB
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 20:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6D6D1AE0D8F
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 18:57:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BBD9350527C
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 18:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5352232C955;
-	Fri, 17 Oct 2025 18:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62606332910;
+	Fri, 17 Oct 2025 18:57:18 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88AEF2877C2;
-	Fri, 17 Oct 2025 18:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B535C332904;
+	Fri, 17 Oct 2025 18:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760727433; cv=none; b=Kw5okmCxV5hapk4sNGcg5xiK1dlj5h7eK1U9qWmtK9o8MiPaeGWP1ClwzYgOJrEH5mVssdZ+arxRO9VtzsGgUl5bwWgxp8XKRb5JBpK2f9Sa004CDjMsesnbpKIE2hhJEzks0NL5fxbq5LKXT/DMhq9r6xEjDJcE8nX40XboNZA=
+	t=1760727438; cv=none; b=h7Y3773UbES4Z1KDJLUKsLZyPLPWyxn2ZGEjBXfhEyGj/9fNaA3NWkDlFkvhPi7717nJ2RG/UnpTFUClAUvKLvwx140lRAqv0DPDAr1DzbpfttsjTDcYZQ8slDG98V+WaZOzbsuRve2y6gMYPdU4TR98rGbpKr5xCNhhZWMFP50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760727433; c=relaxed/simple;
-	bh=THyyyRGPe5ZmB6ckvW8A5t95FK2DRf3rJYwnYRvEiKE=;
+	s=arc-20240116; t=1760727438; c=relaxed/simple;
+	bh=crD3J0WbzA16/Tif8c6f6vFKLU0ZT/jo55J86+iBLD8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=d4o6My7rFCnxt3E6O/tXcmo/vbjPvDysyCvEk+PMkJM0lFpgA9xF0c386LXTyTvy7dzc9yPOkgk7KvWyhX85wnYtT2yYbeDcApk01UXLKVLFE+DGEt6wEm2Hz2Fk7tqe834fZ4357rrcML+sUXStBS+5spY78u/RrZmtLIHwCDE=
+	 MIME-Version; b=EThhy3NCFoy2Y2EG48POAqSVMQ8zdHJ7psyQIrF9PMalW9e0prHdBo8A/QlJMuDLL9GBqqKTclIN3i9zJTsILfwD6WFmWl3ARy89MGvEzpkO4uL5EleRcX33Q1KcmPTOy91al64XniqZrt9/gJwiBPpoDNfzxS77FPsUqdSKiKc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 042E71515;
-	Fri, 17 Oct 2025 11:57:03 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3BF0A1595;
+	Fri, 17 Oct 2025 11:57:08 -0700 (PDT)
 Received: from merodach.members.linode.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0185F3F66E;
-	Fri, 17 Oct 2025 11:57:05 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 384753F66E;
+	Fri, 17 Oct 2025 11:57:11 -0700 (PDT)
 From: James Morse <james.morse@arm.com>
 To: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -69,9 +69,9 @@ Cc: James Morse <james.morse@arm.com>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Jeremy Linton <jeremy.linton@arm.com>,
 	Gavin Shan <gshan@redhat.com>
-Subject: [PATCH v3 01/29] ACPI / PPTT: Add a helper to fill a cpumask from a processor container
-Date: Fri, 17 Oct 2025 18:56:17 +0000
-Message-Id: <20251017185645.26604-2-james.morse@arm.com>
+Subject: [PATCH v3 02/29] ACPI / PPTT: Stop acpi_count_levels() expecting callers to clear levels
+Date: Fri, 17 Oct 2025 18:56:18 +0000
+Message-Id: <20251017185645.26604-3-james.morse@arm.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20251017185645.26604-1-james.morse@arm.com>
 References: <20251017185645.26604-1-james.morse@arm.com>
@@ -83,158 +83,94 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The ACPI MPAM table uses the UID of a processor container specified in
-the PPTT to indicate the subset of CPUs and cache topology that can
-access each MPAM System Component (MSC).
+In acpi_count_levels(), the initial value of *levels passed by the
+caller is really an implementation detail of acpi_count_levels(), so it
+is unreasonable to expect the callers of this function to know what to
+pass in for this parameter.  The only sensible initial value is 0,
+which is what the only upstream caller (acpi_get_cache_info()) passes.
 
-This information is not directly useful to the kernel. The equivalent
-cpumask is needed instead.
+Use a local variable for the starting cache level in acpi_count_levels(),
+and pass the result back to the caller via the function return value.
 
-Add a helper to find the processor container by its id, then walk
-the possible CPUs to fill a cpumask with the CPUs that have this
-processor container as a parent.
+Get rid of the levels parameter, which has no remaining purpose.
 
-CC: Dave Martin <dave.martin@arm.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Fix acpi_get_cache_info() to match.
+
+Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
 Tested-by: Fenghua Yu <fenghuay@nvidia.com>
-Signed-off-by: James Morse <james.morse@arm.com>
 ---
 Changes since v2:
- * Grouped two nested if clauses differently to reduce scope of cpu_node.
- * Removed stale comment refering to the return value.
+ * Typo in commit message.
 
 Changes since v1:
- * Replaced commit message with wording from Dave.
- * Fixed a stray plural.
- * Moved further down in the file to make use of get_pptt() helper.
- * Added a break to exit the loop early.
+ * Rewritten commit message from Dave.
+ * Minor changes to kernel doc comment.
+ * Keep the much loved typo.
 
 Changes since RFC:
- * Removed leaf_flag local variable from acpi_pptt_get_cpus_from_container()
-
-Changes since RFC:
- * Dropped has_leaf_flag dodging of acpi_pptt_leaf_node()
- * Added missing : in kernel-doc
- * Made helper return void as this never actually returns an error.
+ * Made acpi_count_levels() return the levels value.
 ---
- drivers/acpi/pptt.c  | 82 ++++++++++++++++++++++++++++++++++++++++++++
- include/linux/acpi.h |  3 ++
- 2 files changed, 85 insertions(+)
+ drivers/acpi/pptt.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-index 54676e3d82dd..58cfa3916a13 100644
+index 58cfa3916a13..63c3a344c075 100644
 --- a/drivers/acpi/pptt.c
 +++ b/drivers/acpi/pptt.c
-@@ -817,3 +817,85 @@ int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
- 	return find_acpi_cpu_topology_tag(cpu, PPTT_ABORT_PACKAGE,
- 					  ACPI_PPTT_ACPI_IDENTICAL);
+@@ -177,14 +177,14 @@ acpi_find_cache_level(struct acpi_table_header *table_hdr,
  }
-+
-+/**
-+ * acpi_pptt_get_child_cpus() - Find all the CPUs below a PPTT processor node
-+ * @table_hdr:		A reference to the PPTT table.
-+ * @parent_node:	A pointer to the processor node in the @table_hdr.
-+ * @cpus:		A cpumask to fill with the CPUs below @parent_node.
-+ *
-+ * Walks up the PPTT from every possible CPU to find if the provided
-+ * @parent_node is a parent of this CPU.
-+ */
-+static void acpi_pptt_get_child_cpus(struct acpi_table_header *table_hdr,
-+				     struct acpi_pptt_processor *parent_node,
-+				     cpumask_t *cpus)
-+{
-+	struct acpi_pptt_processor *cpu_node;
-+	u32 acpi_id;
-+	int cpu;
-+
-+	cpumask_clear(cpus);
-+
-+	for_each_possible_cpu(cpu) {
-+		acpi_id = get_acpi_id_for_cpu(cpu);
-+		cpu_node = acpi_find_processor_node(table_hdr, acpi_id);
-+
-+		while (cpu_node) {
-+			if (cpu_node == parent_node) {
-+				cpumask_set_cpu(cpu, cpus);
-+				break;
-+			}
-+			cpu_node = fetch_pptt_node(table_hdr, cpu_node->parent);
-+		}
-+	}
-+}
-+
-+/**
-+ * acpi_pptt_get_cpus_from_container() - Populate a cpumask with all CPUs in a
-+ *                                       processor container
-+ * @acpi_cpu_id:	The UID of the processor container.
-+ * @cpus:		The resulting CPU mask.
-+ *
-+ * Find the specified Processor Container, and fill @cpus with all the cpus
-+ * below it.
-+ *
-+ * Not all 'Processor' entries in the PPTT are either a CPU or a Processor
-+ * Container, they may exist purely to describe a Private resource. CPUs
-+ * have to be leaves, so a Processor Container is a non-leaf that has the
-+ * 'ACPI Processor ID valid' flag set.
-+ */
-+void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus)
-+{
-+	struct acpi_table_header *table_hdr;
-+	struct acpi_subtable_header *entry;
-+	unsigned long table_end;
-+	u32 proc_sz;
-+
-+	cpumask_clear(cpus);
-+
-+	table_hdr = acpi_get_pptt();
-+	if (!table_hdr)
-+		return;
-+
-+	table_end = (unsigned long)table_hdr + table_hdr->length;
-+	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
-+			     sizeof(struct acpi_table_pptt));
-+	proc_sz = sizeof(struct acpi_pptt_processor);
-+	while ((unsigned long)entry + proc_sz <= table_end) {
-+
-+		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR) {
-+			struct acpi_pptt_processor *cpu_node;
-+
-+			cpu_node = (struct acpi_pptt_processor *)entry;
-+			if (cpu_node->flags & ACPI_PPTT_ACPI_PROCESSOR_ID_VALID &&
-+			    !acpi_pptt_leaf_node(table_hdr, cpu_node) &&
-+			    cpu_node->acpi_processor_id == acpi_cpu_id) {
-+					acpi_pptt_get_child_cpus(table_hdr, cpu_node, cpus);
-+					break;
-+			}
-+		}
-+		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
-+				     entry->length);
-+	}
-+}
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 5ff5d99f6ead..4752ebd48132 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1541,6 +1541,7 @@ int find_acpi_cpu_topology(unsigned int cpu, int level);
- int find_acpi_cpu_topology_cluster(unsigned int cpu);
- int find_acpi_cpu_topology_package(unsigned int cpu);
- int find_acpi_cpu_topology_hetero_id(unsigned int cpu);
-+void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id, cpumask_t *cpus);
- #else
- static inline int acpi_pptt_cpu_is_thread(unsigned int cpu)
- {
-@@ -1562,6 +1563,8 @@ static inline int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
- {
- 	return -EINVAL;
- }
-+static inline void acpi_pptt_get_cpus_from_container(u32 acpi_cpu_id,
-+						     cpumask_t *cpus) { }
- #endif
  
- void acpi_arch_init(void);
+ /**
+- * acpi_count_levels() - Given a PPTT table, and a CPU node, count the cache
+- * levels and split cache levels (data/instruction).
++ * acpi_count_levels() - Given a PPTT table, and a CPU node, count the
++ * total number of levels and split cache levels (data/instruction).
+  * @table_hdr: Pointer to the head of the PPTT table
+  * @cpu_node: processor node we wish to count caches for
+- * @levels: Number of levels if success.
+  * @split_levels:	Number of split cache levels (data/instruction) if
+  *			success. Can by NULL.
+  *
++ * Return: number of levels.
+  * Given a processor node containing a processing unit, walk into it and count
+  * how many levels exist solely for it, and then walk up each level until we hit
+  * the root node (ignore the package level because it may be possible to have
+@@ -192,14 +192,18 @@ acpi_find_cache_level(struct acpi_table_header *table_hdr,
+  * split cache levels (data/instruction) that exist at each level on the way
+  * up.
+  */
+-static void acpi_count_levels(struct acpi_table_header *table_hdr,
+-			      struct acpi_pptt_processor *cpu_node,
+-			      unsigned int *levels, unsigned int *split_levels)
++static int acpi_count_levels(struct acpi_table_header *table_hdr,
++			     struct acpi_pptt_processor *cpu_node,
++			     unsigned int *split_levels)
+ {
++	int starting_level = 0;
++
+ 	do {
+-		acpi_find_cache_level(table_hdr, cpu_node, levels, split_levels, 0, 0);
++		acpi_find_cache_level(table_hdr, cpu_node, &starting_level, split_levels, 0, 0);
+ 		cpu_node = fetch_pptt_node(table_hdr, cpu_node->parent);
+ 	} while (cpu_node);
++
++	return starting_level;
+ }
+ 
+ /**
+@@ -645,7 +649,7 @@ int acpi_get_cache_info(unsigned int cpu, unsigned int *levels,
+ 	if (!cpu_node)
+ 		return -ENOENT;
+ 
+-	acpi_count_levels(table, cpu_node, levels, split_levels);
++	*levels = acpi_count_levels(table, cpu_node, split_levels);
+ 
+ 	pr_debug("Cache Setup: last_level=%d split_levels=%d\n",
+ 		 *levels, split_levels ? *split_levels : -1);
 -- 
 2.39.5
 
