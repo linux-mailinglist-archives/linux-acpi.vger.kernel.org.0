@@ -1,158 +1,141 @@
-Return-Path: <linux-acpi+bounces-17856-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17857-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E2DBE626F
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 04:50:26 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56438BE6E61
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 09:12:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8B33B4FC51B
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 02:50:06 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B63E835AE3F
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 07:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627A4285058;
-	Fri, 17 Oct 2025 02:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269F13112CB;
+	Fri, 17 Oct 2025 07:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="csZCCPVi"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="FyWsD4Uw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FEE2765DF;
-	Fri, 17 Oct 2025 02:48:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4241D3112A0
+	for <linux-acpi@vger.kernel.org>; Fri, 17 Oct 2025 07:12:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760669337; cv=none; b=uzZ4d9TEKvce04d4nFLmr03tNgvr77Vu5mHq//9iN9zzoUiFauISz1VMI8qwHT4bSBtUZR0ryKltiky4V7whgkLZBppiTPGGaQ19kMN5a0r2x0b1nsQeq7tIY1EdyRie0LBlMiLpn8514gglMto3aU7I5XhjOV1y5HuvacnjtEA=
+	t=1760685152; cv=none; b=XjJtYuCGl8/qGtP/aK8gc7pQHm3NuHHBaoOtbgh77UQKPg172Ca7Nw9+oZFbjyFJiGuZNvDnpQDrSAwjZzKUaAyUNgwLQkU2+QcUkQpxVKuoE5yVzUBRn2BQ1R3NE43haH9/QbsgL6IP8ruCW/EzHHUm0BTWoI0MLLw7y7N+bf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760669337; c=relaxed/simple;
-	bh=+KpwtyxJeSfj6pWERQrqIeuq+GTH4DEu4+tOmXkA/Mk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=P5vV67V9fGdUEsYX7lhz9RqTLkCd1QuYViqbz8LNx9xNktggM1dwXn0Fii2IDeTz5IK7JlKqUibpuCLUOSPuC347a+qexiysajOEHMc3IeHJ9X0gLqLHhS0ywe+xVBZ5zGTa9rMT1L0x5gcBhqpy0GsW1vgW0MZNnkC3gLagXJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=csZCCPVi; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760669336; x=1792205336;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=+KpwtyxJeSfj6pWERQrqIeuq+GTH4DEu4+tOmXkA/Mk=;
-  b=csZCCPVi9mxmYXpGC48Fv50QwIdkt4a0+CaioDZMFHG6J1D2yY067KVo
-   InMtG1PCRG4qmfiGmsUt3xvE1S9st5RzvaKpjjb8czgp87bR3bMc3NUKc
-   Lf/9smVCZPY2wQHIJLT8/9loOhljYiH7lFMHB9tQ1Xh0rQ+LPrsxUsEXj
-   v+chiimd7vBcN2+V4Y25h4J1turDov3sNpSyE5VUYGEfIiGzYn2g07q5A
-   H6wP7A3MKyB/UXbZvTtiMT537Pu3qgqb/TvoEmYlQB2vI6a7UxhiLO+Yg
-   DWkkR5AlNfPasqJ2pZwqN0SXlSivbPy2qpAPGvWPZrvzb6Tvy5/KiOITW
-   A==;
-X-CSE-ConnectionGUID: ndk+8wwwQs61g9ph58McQQ==
-X-CSE-MsgGUID: 3UoOmu/cT3qKXU6oxKaDMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="80321943"
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
-   d="scan'208";a="80321943"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 19:48:52 -0700
-X-CSE-ConnectionGUID: 82sa8zURT06iVZCaD2ZeVg==
-X-CSE-MsgGUID: zg8ovszQRze/jYnxfxqwOA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
-   d="scan'208";a="219776587"
-Received: from unknown (HELO [172.25.112.21]) ([172.25.112.21])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 19:48:51 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Date: Thu, 16 Oct 2025 19:57:32 -0700
-Subject: [PATCH v6 10/10] x86/hyperv/vtl: Use the wakeup mailbox to boot
- secondary CPUs
+	s=arc-20240116; t=1760685152; c=relaxed/simple;
+	bh=25YUziEhf9uU4zAhrMwI7Nzd6K8Li1d73QSpIFvWNy0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kBlBZ6VduivYbsgPQZ5rujMOZFfAEiWI2OT5GahS9j/XtLsI324ebdo+RWFms5aBYcS6PG0OwU7ZDHrYkRMTM1UG2Q+7xeGDfgpMYD3RghqfcuXscfjTsDb5u7zNQkZdxhKXtIedFWZxG89CMV8C3hDxt8Z+o8KNYyo1+45liSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=FyWsD4Uw; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-586883eb9fbso1957838e87.1
+        for <linux-acpi@vger.kernel.org>; Fri, 17 Oct 2025 00:12:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1760685148; x=1761289948; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=25YUziEhf9uU4zAhrMwI7Nzd6K8Li1d73QSpIFvWNy0=;
+        b=FyWsD4UwUsYXqKuj+6OHL8sM15xUnl/aRGH9KGC3WPoUXNxbmsrZ7Iqhq4UJhqkevj
+         GE2OUwBSaGqqmRen3P/7lAzvmQk1ujQS2MgKFSmW0LOTtrDNNy/mvfuz+l2BBe1tqjB8
+         Mk6weoPuxdW1lCUq1wDyzTAZtdaUWOS8cQscukLNPhnF5WVA0BUcgNGnJS8Mk6hSLvfb
+         QdPWmaOw9xa5INbayYaoIZtZBjhOlUiC9bEkGyL5s/fRAia5z3iVth4YjQ3o4lnlt69p
+         T2hIPhsvo6Q0jRU11R5LtSH8YpZoo80Lr9Wds5SFkmOITF0SLmjxWh+gczBxHHmEnhk2
+         wyJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760685148; x=1761289948;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=25YUziEhf9uU4zAhrMwI7Nzd6K8Li1d73QSpIFvWNy0=;
+        b=NQcCfQvAykzDYU+RztCJd4pNQJdZo/5R/C21BI9XjUKrla0JCDSqfw1zGWCRSWNU0C
+         /n2eiXn33GlgKjEY+7Bo53vLrTm8SAC+ipYA4VzMYxFNpqn7SVi9vzZDB6cAHlYwy2Z0
+         dMQ2dcyS41BKrNI1sjXc/VUPziTyrOKNrJlhRC3dVd/GW/AcoZ8GbQTJlVxbbXeFPNQw
+         cc8ruy86XhRl8+qS8rwqZ5uRs1aLjJRgEBKPoVHkzFI4lx3cSH0r5cKKwYKuvGlPHDqu
+         kAZHTPku6oXlpV7stanItuCIHNJSjYvnL53rvT3DvniaiTXUOCP3NQmW+3uYTi42QXgZ
+         5JfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWoJfQYnewlfez1k/cxrMFIpuZzFYi5F5bheBudhoYNHG2GTyVpy01Pvmjyzw3rncgx7G8MNOK99aYe@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeJ5LztXaCBLPFF8El7I6qwvxSrpDPgNhfBQZ221Hu/Eu0IDxO
+	bbXi7jpoQuBoiuIrzjUbfKCMFXpIPZZdPNv3m09pgjUz9Jh/LRay4iTChJ9mg3eBWMFNXMWgyQR
+	bI9J3QrpGvKIopxoFZxjxPRlZL42zNUO9NvbXJvcyFK1QaCxSzHcHG4Y=
+X-Gm-Gg: ASbGncsEEvOnTEKXnanXb8TgQ88n4jThT4OjyWxMo4o9mPY+Ss4A3zfabkrj3cWJSsH
+	WS9lVRrIyTJq/MyaH6PqjUVk7h0wNc4esFc5+MY8SmfqiyAeJ1vysph/ISKw60C0PYHR9daGJh7
+	IM7SniBDkx++G0jk4/IwkldzxrMtRfKEvF9fSwzMXQfREiQ32CbxwSO1oF2wireVr2yLeZfaMRE
+	thFvFwLtnaoMHbzgR4AtOV2j1KxShAWjt8ubRjjQrHcoluumyNuvJkEDE8VM+222bARjRFqQEJI
+	1F3YH/OkguICxMyRTjqRejaHW1kidtlCaEnapA==
+X-Google-Smtp-Source: AGHT+IFxsGx5ftXqLpFiYlA84nFq8R9lxAW0hXzt0jnPlbVMKUOA3s65BQF+cV2LW4ytM3YBAr0RQpHCOIZdAc+N9t4=
+X-Received: by 2002:a05:6512:ea8:b0:591:c346:1106 with SMTP id
+ 2adb3069b0e04-591d84cee43mr889809e87.9.1760685148094; Fri, 17 Oct 2025
+ 00:12:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251016-rneri-wakeup-mailbox-v6-10-40435fb9305e@linux.intel.com>
-References: <20251016-rneri-wakeup-mailbox-v6-0-40435fb9305e@linux.intel.com>
-In-Reply-To: <20251016-rneri-wakeup-mailbox-v6-0-40435fb9305e@linux.intel.com>
-To: x86@kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh@kernel.org>, 
- "K. Y. Srinivasan" <kys@microsoft.com>, 
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
- Dexuan Cui <decui@microsoft.com>, Michael Kelley <mhklinux@outlook.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Saurabh Sengar <ssengar@linux.microsoft.com>, 
- Chris Oo <cho@microsoft.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
- linux-hyperv@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Ricardo Neri <ricardo.neri@intel.com>, 
- Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1760669902; l=1993;
- i=ricardo.neri-calderon@linux.intel.com; s=20250602;
- h=from:subject:message-id; bh=+KpwtyxJeSfj6pWERQrqIeuq+GTH4DEu4+tOmXkA/Mk=;
- b=hwZ7BhzWn6VmkFX9QjrX58N7CABFCsTIXACm3eKIoC2mXPqWoS1xEGE5bxiJJTDwC3aL85ivn
- q7ZIekMtslUAIICV5TsuR41eTapQ+O+sHdogpHuTCHyTJCvH1dM20sf
-X-Developer-Key: i=ricardo.neri-calderon@linux.intel.com; a=ed25519;
- pk=NfZw5SyQ2lxVfmNMaMR6KUj3+0OhcwDPyRzFDH9gY2w=
+References: <20251006-reset-gpios-swnodes-v1-0-6d3325b9af42@linaro.org>
+In-Reply-To: <20251006-reset-gpios-swnodes-v1-0-6d3325b9af42@linaro.org>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Fri, 17 Oct 2025 09:12:16 +0200
+X-Gm-Features: AS18NWDblNzpuLCnzeXon3yTi_RZXCYBcRhb_slg09UcNYGLrahNCin0h6f8tMA
+Message-ID: <CAMRc=Me=atAoPSGdTOn32rEHh3djTSVveYg0QYxYdb9yivy5YQ@mail.gmail.com>
+Subject: Re: [PATCH 0/9] reset: rework reset-gpios handling
+To: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The hypervisor is an untrusted entity for TDX guests. It cannot be used
-to boot secondary CPUs. The function hv_vtl_wakeup_secondary_cpu() cannot
-be used.
+On Mon, Oct 6, 2025 at 3:00=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl> =
+wrote:
+>
+> Machine GPIO lookup is a nice, if a bit clunky, mechanism when we have
+> absolutely no idea what the GPIO provider is or when it will be created.
+> However in the case of reset-gpios, we not only know if the chip is
+> there - we also already hold a reference to its firmware node.
+>
+> In this case using fwnode lookup makes more sense. However, since the
+> reset provider is created dynamically, it doesn't have a corresponding
+> firmware node (in this case: an OF-node). That leaves us with software
+> nodes which currently cannot reference other implementations of the
+> fwnode API, only other struct software_node objects. This is a needless
+> limitation as it's imaginable that a dynamic auxiliary device (with a
+> software node attached) would want to reference a real device with an OF
+> node.
+>
+> This series does three things: extends the software node implementation,
+> allowing its properties to reference not only static software nodes but
+> also existing firmware nodes, updates the GPIO property interface to use
+> the reworked swnode macros and finally makes the reset-gpio code the
+> first user by converting the GPIO lookup from machine to swnode.
+>
+> Another user of the software node changes in the future could become the
+> shared GPIO modules that's in the works in parallel[1].
+>
+> Merging strategy: the series is logically split into three parts: driver
+> core, GPIO and reset respectively. However there are build-time
+> dependencies between all three parts so I suggest the reset tree as the
+> right one to take it upstream with an immutable branch provided to
+> driver core and GPIO.
+>
+> [1] https://lore.kernel.org/all/20250924-gpio-shared-v1-0-775e7efeb1a3@li=
+naro.org/
+>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> ---
 
-Instead, the virtual firmware boots the secondary CPUs and places them in
-a state to transfer control to the kernel using the wakeup mailbox. The
-firmware enumerates the mailbox via either an ACPI table or a DeviceTree
-node.
+Are there any comments on the software node part before I respin it
+with Philipp's comments addressed?
 
-If the wakeup mailbox is present, the kernel updates the APIC callback
-wakeup_secondary_cpu_64() to use it.
-
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
----
-Changes since v5:
- - Added Reviewed-by tag from Dexuan. Thanks!
-
-Changes since v4:
- - None
-
-Changes since v3:
- - Added Reviewed-by tag from Michael. Thanks!
-
-Changes since v2:
- - Unconditionally use the wakeup mailbox in a TDX confidential VM.
-   (Michael).
- - Edited the commit message for clarity.
-
-Changes since v1:
- - None
----
- arch/x86/hyperv/hv_vtl.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
-index 4a15de4d5ec2..e866e643b66c 100644
---- a/arch/x86/hyperv/hv_vtl.c
-+++ b/arch/x86/hyperv/hv_vtl.c
-@@ -268,7 +268,15 @@ int __init hv_vtl_early_init(void)
- 		panic("XSAVE has to be disabled as it is not supported by this module.\n"
- 			  "Please add 'noxsave' to the kernel command line.\n");
- 
--	apic_update_callback(wakeup_secondary_cpu_64, hv_vtl_wakeup_secondary_cpu);
-+	/*
-+	 * TDX confidential VMs do not trust the hypervisor and cannot use it to
-+	 * boot secondary CPUs. Instead, they will be booted using the wakeup
-+	 * mailbox if detected during boot. See setup_arch().
-+	 *
-+	 * There is no paravisor present if we are here.
-+	 */
-+	if (!hv_isolation_type_tdx())
-+		apic_update_callback(wakeup_secondary_cpu_64, hv_vtl_wakeup_secondary_cpu);
- 
- 	return 0;
- }
-
--- 
-2.43.0
-
+Bartosz
 
