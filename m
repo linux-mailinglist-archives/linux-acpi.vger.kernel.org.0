@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-17894-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17896-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DF8BEB47B
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 20:53:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D073BEB48D
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 20:54:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B78454EA578
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 18:52:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B88F11AE1BBE
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 18:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EBE3081AD;
-	Fri, 17 Oct 2025 18:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF5230F53E;
+	Fri, 17 Oct 2025 18:53:56 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BC930F53E;
-	Fri, 17 Oct 2025 18:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D562332EA4;
+	Fri, 17 Oct 2025 18:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760727155; cv=none; b=brSSOoMonjcerkpCAXE+jWoSjfwBgFPlsrI/BQZpdJokUXLqFsYLNwgMZ6Nv2hCXJKzlUp3pEOJ2vrTCYuGJyJMDkSi+FdZZ+/BWwa8mTBusci6d56oXJC65sbjvw/sDCWDsXXuDwo8Brd8W/nFDiX40+2cj27QfQvcDYkKXxas=
+	t=1760727236; cv=none; b=XoQqBvTbV5BXW1upJw1V1edBkNyPDuIq/NER8eHQYHsvy+LYaMYelgeR4YA69W0fFTLZgr5K3XLXNiFoMWm07LzfJfIcOQKP0Y+tieirOfq/LxJCXYeb6ZGdtDM/b7WenMdhxkEhqJdY5L/dw6ycf5g/+xLO0AVtRrU/Q4laQqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760727155; c=relaxed/simple;
-	bh=V855upmwPYUGUpSQ7IC8oDzr17VUGKDU1evZBZJF+Wo=;
+	s=arc-20240116; t=1760727236; c=relaxed/simple;
+	bh=QOlmNvUsKhd6u6e0k5iyOXyqQT4bhwZhGl4uKNdAABg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ip7WV6NiHqVRR3Tm2OPv/u1cZvGemRDbjkljgbjXRPFP2zGX+AYNZJpgnIhC/dGnF0g1KC0Zcpa6q6D2b/7Da5Z/86oYzxSkv8UP/5UqDEVX6Rog1hkzlzc14D2WasN3WSyKnepGE8/b+xCE6Dea0yKqV78hx7RkdoAGPo8DSBU=
+	 In-Reply-To:Content-Type; b=Dw97VBTJyeBXTzBIlhTRZ5gnd4h86RBLGOCAIoOqVFRXFvBbfsxWDfWfqhfsMUzkYkb8bfo7tFSKy32lfiuXsvjUcJMiqDZAYRvads3Ngh12Tp/iQVYaUbLl7WNMuHESYNtdr2NtnUi/QiUSY1l+B3Gvt2V5Wmjb+Hkd+e4KLZQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4E5271515;
-	Fri, 17 Oct 2025 11:52:25 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A93AF1515;
+	Fri, 17 Oct 2025 11:53:46 -0700 (PDT)
 Received: from [10.1.197.69] (eglon.cambridge.arm.com [10.1.197.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F01333F66E;
-	Fri, 17 Oct 2025 11:51:52 -0700 (PDT)
-Message-ID: <53ea0ae3-7ae6-4759-b6f4-6249b71a5ab4@arm.com>
-Date: Fri, 17 Oct 2025 19:51:27 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DB1733F66E;
+	Fri, 17 Oct 2025 11:53:48 -0700 (PDT)
+Message-ID: <e1874826-2f18-4fae-b83d-cf099c0cf1e6@arm.com>
+Date: Fri, 17 Oct 2025 19:51:32 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -44,7 +44,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 08/29] arm_mpam: Add the class and component structures
  for firmware described ris
-To: Fenghua Yu <fenghuay@nvidia.com>, linux-kernel@vger.kernel.org,
+To: Gavin Shan <gshan@redhat.com>, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
 Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  carl@os.amperecomputing.com, lcherian@marvell.com,
@@ -54,8 +54,9 @@ Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  dfustini@baylibre.com, amitsinght@marvell.com,
  David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
  Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- baisheng.gao@unisoc.com, Jonathan Cameron <jonathan.cameron@huawei.com>,
- Rob Herring <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
  Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
  Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
  <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
@@ -64,17 +65,17 @@ Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
  Danilo Krummrich <dakr@kernel.org>, Ben Horgan <ben.horgan@arm.com>
 References: <20250910204309.20751-1-james.morse@arm.com>
  <20250910204309.20751-9-james.morse@arm.com>
- <a0afaae6-0b7c-4a94-9b2a-b09c8016922a@nvidia.com>
+ <a66c6df0-f5e7-4704-a341-d34d07b8c6e1@redhat.com>
 Content-Language: en-GB
 From: James Morse <james.morse@arm.com>
-In-Reply-To: <a0afaae6-0b7c-4a94-9b2a-b09c8016922a@nvidia.com>
+In-Reply-To: <a66c6df0-f5e7-4704-a341-d34d07b8c6e1@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Fenghua,
+Hi Gavin,
 
-On 03/10/2025 17:54, Fenghua Yu wrote:
-> On 9/10/25 13:42, James Morse wrote:
+On 07/10/2025 00:13, Gavin Shan wrote:
+> On 9/11/25 6:42 AM, James Morse wrote:
 >> An MSC is a container of resources, each identified by their RIS index.
 >> Some RIS are described by firmware to provide their position in the system.
 >> Others are discovered when the driver probes the hardware.
@@ -92,141 +93,80 @@ On 03/10/2025 17:54, Fenghua Yu wrote:
 >> --- a/drivers/resctrl/mpam_devices.c
 >> +++ b/drivers/resctrl/mpam_devices.c
 
->> +#define add_to_garbage(x)                \
->> +do {                            \
->> +    __typeof__(x) _x = (x);                \
->> +    _x->garbage.to_free = _x;            \
->> +    llist_add(&_x->garbage.llist, &mpam_garbage);    \
->> +} while (0)
->> +static void mpam_free_garbage(void)
+>> +static struct mpam_class *
+>> +mpam_class_get(u8 level_idx, enum mpam_class_types type)
 >> +{
->> +    struct mpam_garbage *iter, *tmp;
->> +    struct llist_node *to_free = llist_del_all(&mpam_garbage);
->> +
-> 
-> Should this be protected by mpam_list_lock and check if the lock is held?
-> 
-> +    lockdep_assert_held(&mpam_list_lock);
-> 
-> Multiple threads may add and free garbage in parallel. Please see later free_garbage() is
-> not protected by any lock.
-
-Indeed - because its using llist instead. That is safe for concurrent use as you can only
-consume the whole list in one go with a cmpxchg(val, NULL). In the event of a race, one
-gets to own the llist and walk throught it - the other sees an empty list.
-
-
-> 
->> +    if (!to_free)
->> +        return;
->> +
->> +    synchronize_srcu(&mpam_srcu);
->> +
->> +    llist_for_each_entry_safe(iter, tmp, to_free, llist) {
->> +        if (iter->pdev)
->> +            devm_kfree(&iter->pdev->dev, iter->to_free);
->> +        else
->> +            kfree(iter->to_free);
->> +    }
->> +}
-
->> +static int mpam_ris_create_locked(struct mpam_msc *msc, u8 ris_idx,
->> +                  enum mpam_class_types type, u8 class_id,
->> +                  int component_id)
->> +{
->> +    int err;
->> +    struct mpam_vmsc *vmsc;
->> +    struct mpam_msc_ris *ris;
+>> +    bool found = false;
 >> +    struct mpam_class *class;
->> +    struct mpam_component *comp;
 >> +
 >> +    lockdep_assert_held(&mpam_list_lock);
 >> +
->> +    if (ris_idx > MPAM_MSC_MAX_NUM_RIS)
->> +        return -EINVAL;
->> +
->> +    if (test_and_set_bit(ris_idx, &msc->ris_idxs))
->> +        return -EBUSY;
->> +
-> 
-> Should setting msc->ris_idxs bit be moved to the end of this function after all error
-> handling paths? The reason is this bit is better to be 0 (or recovered) if any error
-> happens. It's hard to recover it to 0 for each error handling. The easiest way is to set
-> it at the end of the function.
-
-This is an up front test for firmware tables that describe one RIS twice.
-No error recovery is needed as this is all this bitfield is used for.
-
-
->> +    ris = devm_kzalloc(&msc->pdev->dev, sizeof(*ris), GFP_KERNEL);
->> +    if (!ris)
->> +        return -ENOMEM;
->> +    init_garbage(ris);
->> +
->> +    class = mpam_class_get(class_id, type);
->> +    if (IS_ERR(class))
->> +        return PTR_ERR(class);
->> +
->> +    comp = mpam_component_get(class, component_id);
->> +    if (IS_ERR(comp)) {
->> +        if (list_empty(&class->components))
->> +            mpam_class_destroy(class);
->> +        return PTR_ERR(comp);
+>> +    list_for_each_entry(class, &mpam_classes, classes_list) {
+>> +        if (class->type == type && class->level == level_idx) {
+>> +            found = true;
+>> +            break;
+>> +        }
 >> +    }
 >> +
->> +    vmsc = mpam_vmsc_get(comp, msc);
->> +    if (IS_ERR(vmsc)) {
->> +        if (list_empty(&comp->vmsc))
->> +            mpam_comp_destroy(comp);
->> +        return PTR_ERR(vmsc);
->> +    }
+>> +    if (found)
+>> +        return class;
 >> +
->> +    err = mpam_ris_get_affinity(msc, &ris->affinity, type, class, comp);
->> +    if (err) {
->> +        if (list_empty(&vmsc->ris))
->> +            mpam_vmsc_destroy(vmsc);
->> +        return err;
->> +    }
->> +
->> +    ris->ris_idx = ris_idx;
->> +    INIT_LIST_HEAD_RCU(&ris->vmsc_list);
-> 
-> vmsc_list will be used but not initialized. Missing INIT_LIST_HEAD_RCU(&ris->msc_list) here?
-
-Fixed,
-
-
->> +    ris->vmsc = vmsc;
->> +
->> +    cpumask_or(&comp->affinity, &comp->affinity, &ris->affinity);
->> +    cpumask_or(&class->affinity, &class->affinity, &ris->affinity);
->> +    list_add_rcu(&ris->vmsc_list, &vmsc->ris);
->> +
-
-> Setting the msc->ris_idxs here is better to avoid to clear it in each error handling path.
-
-But misses the error it is supposed to catch...
-
-
->> +    return 0;
+>> +    return mpam_class_alloc(level_idx, type);
 >> +}
 >> +
->> @@ -74,10 +469,10 @@ static void mpam_msc_drv_remove(struct platform_device *pdev)
->>           return;
->>         mutex_lock(&mpam_list_lock);
->> -    platform_set_drvdata(pdev, NULL);
->> -    list_del_rcu(&msc->all_msc_list);
->> -    synchronize_srcu(&mpam_srcu);
->> +    mpam_msc_destroy(msc);
->>       mutex_unlock(&mpam_list_lock);
->> +
->> +    mpam_free_garbage();
 > 
-> Should mpam_free_garbage() be protected by mpam_list_lock? It may race with adding
-> garbage. I can see other adding and freeing garbage are protected by mpam_list_lock but
-> not this one.
+> The variable @found can be avoided if the found class can be returned immediately.
+> 
+>     list_for_each_entry(class, &mpam_classes, classes_list) {
+>         if (class->type == type && class->level == level_idx)
+>             return class;
+>     }
+> 
+>     return mpam_class_alloc(level_idx, type);
 
-No - it uses llist and is part of the deferred freeing, it should not need any locks.
+Yes, feedback like this already came from Jonathan.
+
+
+>> +static int mpam_ris_get_affinity(struct mpam_msc *msc, cpumask_t *affinity,
+>> +                 enum mpam_class_types type,
+>> +                 struct mpam_class *class,
+>> +                 struct mpam_component *comp)
+>> +{
+>> +    int err;
+>> +
+>> +    switch (type) {
+>> +    case MPAM_CLASS_CACHE:
+>> +        err = mpam_get_cpumask_from_cache_id(comp->comp_id, class->level,
+>> +                             affinity);
+>> +        if (err)
+>> +            return err;
+>> +
+>> +        if (cpumask_empty(affinity))
+>> +            pr_warn_once("%s no CPUs associated with cache node",
+>> +                     dev_name(&msc->pdev->dev));
+>> +
+>> +        break;
+> 
+> "\n" missed in the error message and dev_warn_once() can be used:
+> 
+>         if (cpumask_empty(affinity))
+>             dev_warn_once(&msc->pdev->dev, "No CPUs associated with cache node\n");
+
+Yup, I'd mopped up most of these but missed this one.
+
+
+>> +    case MPAM_CLASS_MEMORY:
+>> +        get_cpumask_from_node_id(comp->comp_id, affinity);
+>> +        /* affinity may be empty for CPU-less memory nodes */
+>> +        break;
+>> +    case MPAM_CLASS_UNKNOWN:
+>> +        return 0;
+>> +    }
+>> +
+>> +    cpumask_and(affinity, affinity, &msc->accessibility);
+>> +
+>> +    return 0;
+>> +}
 
 
 Thanks,
