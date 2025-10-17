@@ -1,38 +1,38 @@
-Return-Path: <linux-acpi+bounces-17917-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17918-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41496BEB505
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 21:00:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C6D3BEB511
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 21:00:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CB706E60A5
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 18:58:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CD0D6E7155
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 18:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56BAB337B94;
-	Fri, 17 Oct 2025 18:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F3533B947;
+	Fri, 17 Oct 2025 18:59:03 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A653DABE3;
-	Fri, 17 Oct 2025 18:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32588337BB3;
+	Fri, 17 Oct 2025 18:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760727536; cv=none; b=nLcwL0UQL4CV3pMTePde/pw3rn1ZNP52CVZd04XAt1aWfbZy1D85kzfcMHx0g2MsWU40rbi9zkVXV7V8qC2cQNjsKcEqCVCXA9Hmzfqvci9ppjLxGVnmhD3aUnDBB2EbeEHcrPOIn3hU9F3KZ54FtvLjmg898j/R5H0S7K+kfaA=
+	t=1760727543; cv=none; b=DzKGR/JKBat2I6K3PZ4nAQVrviKuxRKXE6iZ0XUEmRRxwwlvUNsuX7EYKwxsHhgllFiIDxuQZiw+K5LFAqN6gPRM4YwO3rhTOYTjN+s853S+Br8G8gOGB563d0679KM1eusVTSjX9yNqxRL6ZZ/yrVuQwNuvUzABbVMxgZB3o8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760727536; c=relaxed/simple;
-	bh=LENoJScp5FxujcIEwYSfW3q0cau2CBRbr8+joE3TXro=;
+	s=arc-20240116; t=1760727543; c=relaxed/simple;
+	bh=gG3r5a0gia/BSkGiHIXSAzfyXYv5lcR8VH12WspFZLg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ck/4jARZhlTkzVyOmnM4MOiI/AZHTCV3sEOMV21rqkzAbMOYYEFbmB7pHQJNXflfOpLeMLQv7hnrYJ5to12zh+TV8iNSLVaIQ0a5BWQozGpAz62GMWdAAGAsyTjLZiWgD5DryTeFdWwNpDPHiJ96jKtUW9ycSL7DMDT8jSaz2sg=
+	 MIME-Version; b=cm/XwpZjT9Qi+iXZM8qKtkhg9IGRjJFK5e2mXFi2kgaeYOFyCCoD8Gy26mA5v+OXFXyGwUs6YSXB8i+yH5M8gtXJAV07klFzKh1pHKlD+lyQ2WXY8hViAs3RF4kamQFiCXCjpd2Z3sx38YztHKo9LlImfRtckhb8eGMIbjTTvRg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ECD281595;
-	Fri, 17 Oct 2025 11:58:44 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A26601595;
+	Fri, 17 Oct 2025 11:58:50 -0700 (PDT)
 Received: from merodach.members.linode.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A1AD93F66E;
-	Fri, 17 Oct 2025 11:58:47 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2B0813F66E;
+	Fri, 17 Oct 2025 11:58:53 -0700 (PDT)
 From: James Morse <james.morse@arm.com>
 To: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -69,11 +69,12 @@ Cc: James Morse <james.morse@arm.com>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Jeremy Linton <jeremy.linton@arm.com>,
 	Gavin Shan <gshan@redhat.com>,
-	Dave Martin <Dave.Martin@arm.com>,
-	Ben Horgan <ben.horgan@arm.com>
-Subject: [PATCH v3 20/29] arm_mpam: Allow configuration to be applied and restored during cpu online
-Date: Fri, 17 Oct 2025 18:56:36 +0000
-Message-Id: <20251017185645.26604-21-james.morse@arm.com>
+	Rohit Mathew <Rohit.Mathew@arm.com>,
+	Zeng Heng <zengheng4@huawei.com>,
+	Dave Martin <Dave.Martin@arm.com>
+Subject: [PATCH v3 21/29] arm_mpam: Probe and reset the rest of the features
+Date: Fri, 17 Oct 2025 18:56:37 +0000
+Message-Id: <20251017185645.26604-22-james.morse@arm.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20251017185645.26604-1-james.morse@arm.com>
 References: <20251017185645.26604-1-james.morse@arm.com>
@@ -85,480 +86,364 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When CPUs come online the MSC's original configuration should be restored.
+MPAM supports more features than are going to be exposed to resctrl.
+For partid other than 0, the reset values of these controls isn't
+known.
 
-Add struct mpam_config to hold the configuration. This has a bitmap of
-features that were modified. Once the maximum partid is known, allocate
-a configuration array for each component, and reprogram each RIS
-configuration from this.
+Discover the rest of the features so they can be reset to avoid any
+side effects when resctrl is in use.
 
+PARTID narrowing allows MSC/RIS to support less configuration space than
+is usable. If this feature is found on a class of device we are likely
+to use, then reduce the partid_max to make it usable. This allows us
+to map a PARTID to itself.
+
+CC: Rohit Mathew <Rohit.Mathew@arm.com>
+CC: Zeng Heng <zengheng4@huawei.com>
 CC: Dave Martin <Dave.Martin@arm.com>
 Signed-off-by: James Morse <james.morse@arm.com>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Ben Horgan <ben.horgan@arm.com>
 Tested-by: Fenghua Yu <fenghuay@nvidia.com>
 ---
 Changes since v2:
- * Call mpam_init_reset_cfg() on alloated config as 0 is not longer correct.
- * init_garbage() on each config - the array has to be freed in one go, but
-   otherwise this looks weird.
- * Use struct initialiser in mpam_init_reset_cfg(),
- * Moved int err definition.
- * Removed srcu lock taking based on squinting at the only caller.
- * Moved config reset to mpam_reset_component_cfg() for re-use in
-   mpam_reset_component_locked(), previous memset() was not enough since zero
-   no longer means reset.
+ * Moved some enum definitions in here.
+ * Whitespace.
 
 Changes since v1:
- * Switched entry_rcu to srcu versions.
-
-Changes since RFC:
- * Added a comment about the ordering around max_partid.
- * Allocate configurations after interrupts are registered to reduce churn.
- * Added mpam_assert_partid_sizes_fixed();
- * Make reset use an all-ones instead of zero config.
+ * Added reset for cassoc.
+ * Added detection of CSU XCL.
 ---
- drivers/resctrl/mpam_devices.c  | 284 +++++++++++++++++++++++++++++---
- drivers/resctrl/mpam_internal.h |  23 +++
- 2 files changed, 287 insertions(+), 20 deletions(-)
+ drivers/resctrl/mpam_devices.c  | 188 ++++++++++++++++++++++++++++++++
+ drivers/resctrl/mpam_internal.h |  22 +++-
+ 2 files changed, 208 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-index ab37ed1fb5de..e990ef67df5b 100644
+index e990ef67df5b..19cc87aba51a 100644
 --- a/drivers/resctrl/mpam_devices.c
 +++ b/drivers/resctrl/mpam_devices.c
-@@ -118,6 +118,17 @@ static inline void init_garbage(struct mpam_garbage *garbage)
- {
- 	init_llist_node(&garbage->llist);
+@@ -229,6 +229,15 @@ static void __mpam_part_sel(u8 ris_idx, u16 partid, struct mpam_msc *msc)
+ 	__mpam_part_sel_raw(partsel, msc);
  }
-+
-+/*
-+ * Once mpam is enabled, new requestors cannot further reduce the available
-+ * partid. Assert that the size is fixed, and new requestors will be turned
-+ * away.
-+ */
-+static void mpam_assert_partid_sizes_fixed(void)
+ 
++static void __mpam_intpart_sel(u8 ris_idx, u16 intpartid, struct mpam_msc *msc)
 +{
-+	WARN_ON_ONCE(!partid_max_published);
++	u32 partsel = FIELD_PREP(MPAMCFG_PART_SEL_RIS, ris_idx) |
++		      FIELD_PREP(MPAMCFG_PART_SEL_PARTID_SEL, intpartid) |
++		      MPAMCFG_PART_SEL_INTERNAL;
++
++	__mpam_part_sel_raw(partsel, msc);
 +}
 +
- static u32 __mpam_read_reg(struct mpam_msc *msc, u16 reg)
+ int mpam_register_requestor(u16 partid_max, u8 pmg_max)
  {
- 	WARN_ON_ONCE(!cpumask_test_cpu(smp_processor_id(), &msc->accessibility));
-@@ -366,12 +377,16 @@ static void mpam_class_destroy(struct mpam_class *class)
- 	add_to_garbage(class);
+ 	guard(spinlock)(&partid_max_lock);
+@@ -650,10 +659,34 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
+ 	struct mpam_msc *msc = ris->vmsc->msc;
+ 	struct device *dev = &msc->pdev->dev;
+ 	struct mpam_props *props = &ris->props;
++	struct mpam_class *class = ris->vmsc->comp->class;
+ 
+ 	lockdep_assert_held(&msc->probe_lock);
+ 	lockdep_assert_held(&msc->part_sel_lock);
+ 
++	/* Cache Capacity Partitioning */
++	if (FIELD_GET(MPAMF_IDR_HAS_CCAP_PART, ris->idr)) {
++		u32 ccap_features = mpam_read_partsel_reg(msc, CCAP_IDR);
++
++		props->cmax_wd = FIELD_GET(MPAMF_CCAP_IDR_CMAX_WD, ccap_features);
++		if (props->cmax_wd &&
++		    FIELD_GET(MPAMF_CCAP_IDR_HAS_CMAX_SOFTLIM, ccap_features))
++			mpam_set_feature(mpam_feat_cmax_softlim, props);
++
++		if (props->cmax_wd &&
++		    !FIELD_GET(MPAMF_CCAP_IDR_NO_CMAX, ccap_features))
++			mpam_set_feature(mpam_feat_cmax_cmax, props);
++
++		if (props->cmax_wd &&
++		    FIELD_GET(MPAMF_CCAP_IDR_HAS_CMIN, ccap_features))
++			mpam_set_feature(mpam_feat_cmax_cmin, props);
++
++		props->cassoc_wd = FIELD_GET(MPAMF_CCAP_IDR_CASSOC_WD, ccap_features);
++		if (props->cassoc_wd &&
++		    FIELD_GET(MPAMF_CCAP_IDR_HAS_CASSOC, ccap_features))
++			mpam_set_feature(mpam_feat_cmax_cassoc, props);
++	}
++
+ 	/* Cache Portion partitioning */
+ 	if (FIELD_GET(MPAMF_IDR_HAS_CPOR_PART, ris->idr)) {
+ 		u32 cpor_features = mpam_read_partsel_reg(msc, CPOR_IDR);
+@@ -676,6 +709,31 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
+ 		props->bwa_wd = FIELD_GET(MPAMF_MBW_IDR_BWA_WD, mbw_features);
+ 		if (props->bwa_wd && FIELD_GET(MPAMF_MBW_IDR_HAS_MAX, mbw_features))
+ 			mpam_set_feature(mpam_feat_mbw_max, props);
++
++		if (props->bwa_wd && FIELD_GET(MPAMF_MBW_IDR_HAS_MIN, mbw_features))
++			mpam_set_feature(mpam_feat_mbw_min, props);
++
++		if (props->bwa_wd && FIELD_GET(MPAMF_MBW_IDR_HAS_PROP, mbw_features))
++			mpam_set_feature(mpam_feat_mbw_prop, props);
++	}
++
++	/* Priority partitioning */
++	if (FIELD_GET(MPAMF_IDR_HAS_PRI_PART, ris->idr)) {
++		u32 pri_features = mpam_read_partsel_reg(msc, PRI_IDR);
++
++		props->intpri_wd = FIELD_GET(MPAMF_PRI_IDR_INTPRI_WD, pri_features);
++		if (props->intpri_wd && FIELD_GET(MPAMF_PRI_IDR_HAS_INTPRI, pri_features)) {
++			mpam_set_feature(mpam_feat_intpri_part, props);
++			if (FIELD_GET(MPAMF_PRI_IDR_INTPRI_0_IS_LOW, pri_features))
++				mpam_set_feature(mpam_feat_intpri_part_0_low, props);
++		}
++
++		props->dspri_wd = FIELD_GET(MPAMF_PRI_IDR_DSPRI_WD, pri_features);
++		if (props->dspri_wd && FIELD_GET(MPAMF_PRI_IDR_HAS_DSPRI, pri_features)) {
++			mpam_set_feature(mpam_feat_dspri_part, props);
++			if (FIELD_GET(MPAMF_PRI_IDR_DSPRI_0_IS_LOW, pri_features))
++				mpam_set_feature(mpam_feat_dspri_part_0_low, props);
++		}
+ 	}
+ 
+ 	/* Performance Monitoring */
+@@ -700,6 +758,9 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
+ 
+ 				mpam_set_feature(mpam_feat_msmon_csu, props);
+ 
++				if (FIELD_GET(MPAMF_CSUMON_IDR_HAS_XCL, csumonidr))
++					mpam_set_feature(mpam_feat_msmon_csu_xcl, props);
++
+ 				/* Is NRDY hardware managed? */
+ 				hw_managed = mpam_ris_hw_probe_hw_nrdy(ris, CSU);
+ 				if (hw_managed)
+@@ -721,6 +782,9 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
+ 			if (props->num_mbwu_mon)
+ 				mpam_set_feature(mpam_feat_msmon_mbwu, props);
+ 
++			if (FIELD_GET(MPAMF_MBWUMON_IDR_HAS_RWBW, mbwumon_idr))
++				mpam_set_feature(mpam_feat_msmon_mbwu_rwbw, props);
++
+ 			/* Is NRDY hardware managed? */
+ 			hw_managed = mpam_ris_hw_probe_hw_nrdy(ris, MBWU);
+ 			if (hw_managed)
+@@ -732,6 +796,21 @@ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
+ 			 */
+ 		}
+ 	}
++
++	/*
++	 * RIS with PARTID narrowing don't have enough storage for one
++	 * configuration per PARTID. If these are in a class we could use,
++	 * reduce the supported partid_max to match the number of intpartid.
++	 * If the class is unknown, just ignore it.
++	 */
++	if (FIELD_GET(MPAMF_IDR_HAS_PARTID_NRW, ris->idr) &&
++	    class->type != MPAM_CLASS_UNKNOWN) {
++		u32 nrwidr = mpam_read_partsel_reg(msc, PARTID_NRW_IDR);
++		u16 partid_max = FIELD_GET(MPAMF_PARTID_NRW_IDR_INTPARTID_MAX, nrwidr);
++
++		mpam_set_feature(mpam_feat_partid_nrw, props);
++		msc->partid_max = min(msc->partid_max, partid_max);
++	}
  }
  
-+static void __destroy_component_cfg(struct mpam_component *comp);
-+
- static void mpam_comp_destroy(struct mpam_component *comp)
+ static int mpam_msc_hw_probe(struct mpam_msc *msc)
+@@ -831,12 +910,28 @@ static void mpam_reset_msc_bitmap(struct mpam_msc *msc, u16 reg, u16 wd)
+ static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
+ 				      struct mpam_config *cfg)
  {
- 	struct mpam_class *class = comp->class;
- 
- 	lockdep_assert_held(&mpam_list_lock);
- 
-+	__destroy_component_cfg(comp);
-+
- 	list_del_rcu(&comp->class_list);
- 	add_to_garbage(comp);
- 
-@@ -812,48 +827,102 @@ static void mpam_reset_msc_bitmap(struct mpam_msc *msc, u16 reg, u16 wd)
- 	__mpam_write_reg(msc, reg, bm);
- }
- 
--static void mpam_reset_ris_partid(struct mpam_msc_ris *ris, u16 partid)
-+/* Called via IPI. Call while holding an SRCU reference */
-+static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
-+				      struct mpam_config *cfg)
- {
++	u32 pri_val = 0;
++	u16 cmax = MPAMCFG_CMAX_CMAX;
  	struct mpam_msc *msc = ris->vmsc->msc;
  	struct mpam_props *rprops = &ris->props;
++	u16 dspri = GENMASK(rprops->dspri_wd, 0);
++	u16 intpri = GENMASK(rprops->intpri_wd, 0);
  
--	WARN_ON_ONCE(!srcu_read_lock_held((&mpam_srcu)));
--
  	mutex_lock(&msc->part_sel_lock);
  	__mpam_part_sel(ris->ris_idx, partid, msc);
  
--	if (mpam_has_feature(mpam_feat_cpor_part, rprops))
--		mpam_reset_msc_bitmap(msc, MPAMCFG_CPBM, rprops->cpbm_wd);
-+	if (mpam_has_feature(mpam_feat_cpor_part, rprops) &&
-+	    mpam_has_feature(mpam_feat_cpor_part, cfg)) {
-+		if (cfg->reset_cpbm)
-+			mpam_reset_msc_bitmap(msc, MPAMCFG_CPBM,
-+					      rprops->cpbm_wd);
-+		else
-+			mpam_write_partsel_reg(msc, CPBM, cfg->cpbm);
++	if (mpam_has_feature(mpam_feat_partid_nrw, rprops)) {
++		/* Update the intpartid mapping */
++		mpam_write_partsel_reg(msc, INTPARTID,
++				       MPAMCFG_INTPARTID_INTERNAL | partid);
++
++		/*
++		 * Then switch to the 'internal' partid to update the
++		 * configuration.
++		 */
++		__mpam_intpart_sel(ris->ris_idx, partid, msc);
 +	}
++
+ 	if (mpam_has_feature(mpam_feat_cpor_part, rprops) &&
+ 	    mpam_has_feature(mpam_feat_cpor_part, cfg)) {
+ 		if (cfg->reset_cpbm)
+@@ -863,6 +958,35 @@ static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
+ 	    mpam_has_feature(mpam_feat_mbw_max, cfg))
+ 		mpam_write_partsel_reg(msc, MBW_MAX, cfg->mbw_max);
  
--	if (mpam_has_feature(mpam_feat_mbw_part, rprops))
--		mpam_reset_msc_bitmap(msc, MPAMCFG_MBW_PBM, rprops->mbw_pbm_bits);
-+	if (mpam_has_feature(mpam_feat_mbw_part, rprops) &&
-+	    mpam_has_feature(mpam_feat_mbw_part, cfg)) {
-+		if (cfg->reset_mbw_pbm)
-+			mpam_reset_msc_bitmap(msc, MPAMCFG_MBW_PBM,
-+					      rprops->mbw_pbm_bits);
-+		else
-+			mpam_write_partsel_reg(msc, MBW_PBM, cfg->mbw_pbm);
++	if (mpam_has_feature(mpam_feat_mbw_prop, rprops) &&
++	    mpam_has_feature(mpam_feat_mbw_prop, cfg))
++		mpam_write_partsel_reg(msc, MBW_PROP, 0);
++
++	if (mpam_has_feature(mpam_feat_cmax_cmax, rprops))
++		mpam_write_partsel_reg(msc, CMAX, cmax);
++
++	if (mpam_has_feature(mpam_feat_cmax_cmin, rprops))
++		mpam_write_partsel_reg(msc, CMIN, 0);
++
++	if (mpam_has_feature(mpam_feat_cmax_cassoc, rprops))
++		mpam_write_partsel_reg(msc, CASSOC, MPAMCFG_CASSOC_CASSOC);
++
++	if (mpam_has_feature(mpam_feat_intpri_part, rprops) ||
++	    mpam_has_feature(mpam_feat_dspri_part, rprops)) {
++		/* aces high? */
++		if (!mpam_has_feature(mpam_feat_intpri_part_0_low, rprops))
++			intpri = 0;
++		if (!mpam_has_feature(mpam_feat_dspri_part_0_low, rprops))
++			dspri = 0;
++
++		if (mpam_has_feature(mpam_feat_intpri_part, rprops))
++			pri_val |= FIELD_PREP(MPAMCFG_PRI_INTPRI, intpri);
++		if (mpam_has_feature(mpam_feat_dspri_part, rprops))
++			pri_val |= FIELD_PREP(MPAMCFG_PRI_DSPRI, dspri);
++
++		mpam_write_partsel_reg(msc, PRI, pri_val);
 +	}
- 
--	if (mpam_has_feature(mpam_feat_mbw_min, rprops))
-+	if (mpam_has_feature(mpam_feat_mbw_min, rprops) &&
-+	    mpam_has_feature(mpam_feat_mbw_min, cfg))
- 		mpam_write_partsel_reg(msc, MBW_MIN, 0);
- 
--	if (mpam_has_feature(mpam_feat_mbw_max, rprops))
--		mpam_write_partsel_reg(msc, MBW_MAX, MPAMCFG_MBW_MAX_MAX);
-+	if (mpam_has_feature(mpam_feat_mbw_max, rprops) &&
-+	    mpam_has_feature(mpam_feat_mbw_max, cfg))
-+		mpam_write_partsel_reg(msc, MBW_MAX, cfg->mbw_max);
- 
++
  	mutex_unlock(&msc->part_sel_lock);
  }
  
-+struct reprogram_ris {
-+	struct mpam_msc_ris *ris;
-+	struct mpam_config *cfg;
-+};
-+
-+/* Call with MSC lock held */
-+static int mpam_reprogram_ris(void *_arg)
-+{
-+	u16 partid, partid_max;
-+	struct reprogram_ris *arg = _arg;
-+	struct mpam_msc_ris *ris = arg->ris;
-+	struct mpam_config *cfg = arg->cfg;
-+
-+	if (ris->in_reset_state)
-+		return 0;
-+
-+	spin_lock(&partid_max_lock);
-+	partid_max = mpam_partid_max;
-+	spin_unlock(&partid_max_lock);
-+	for (partid = 0; partid <= partid_max + 1; partid++)
-+		mpam_reprogram_ris_partid(ris, partid, cfg);
-+
-+	return 0;
+@@ -1297,6 +1421,18 @@ static bool mpam_has_bwa_wd_feature(struct mpam_props *props)
+ 		return true;
+ 	if (mpam_has_feature(mpam_feat_mbw_max, props))
+ 		return true;
++	if (mpam_has_feature(mpam_feat_mbw_prop, props))
++		return true;
++	return false;
 +}
 +
-+static void mpam_init_reset_cfg(struct mpam_config *reset_cfg)
++/* Any of these features mean the CMAX_WD field is valid. */
++static bool mpam_has_cmax_wd_feature(struct mpam_props *props)
 +{
-+	*reset_cfg = (struct mpam_config) {
-+		.cpbm = ~0,
-+		.mbw_pbm = ~0,
-+		.mbw_max = MPAMCFG_MBW_MAX_MAX,
-+
-+		.reset_cpbm = true,
-+		.reset_mbw_pbm = true,
-+	};
-+	bitmap_fill(reset_cfg->features, MPAM_FEATURE_LAST);
-+}
-+
- /*
-  * Called via smp_call_on_cpu() to prevent migration, while still being
-  * pre-emptible. Caller must hold mpam_srcu.
-  */
- static int mpam_reset_ris(void *arg)
- {
--	u16 partid, partid_max;
-+	struct mpam_config reset_cfg;
- 	struct mpam_msc_ris *ris = arg;
-+	struct reprogram_ris reprogram_arg;
- 
- 	if (ris->in_reset_state)
- 		return 0;
- 
--	spin_lock(&partid_max_lock);
--	partid_max = mpam_partid_max;
--	spin_unlock(&partid_max_lock);
--	for (partid = 0; partid < partid_max + 1; partid++)
--		mpam_reset_ris_partid(ris, partid);
-+	mpam_init_reset_cfg(&reset_cfg);
-+
-+	reprogram_arg.ris = ris;
-+	reprogram_arg.cfg = &reset_cfg;
-+
-+	mpam_reprogram_ris(&reprogram_arg);
- 
- 	return 0;
- }
-@@ -897,6 +966,39 @@ static void mpam_reset_msc(struct mpam_msc *msc, bool online)
- 	}
++	if (mpam_has_feature(mpam_feat_cmax_cmax, props))
++		return true;
++	if (mpam_has_feature(mpam_feat_cmax_cmin, props))
++		return true;
+ 	return false;
  }
  
-+static void mpam_reprogram_msc(struct mpam_msc *msc)
-+{
-+	u16 partid;
-+	bool reset;
-+	struct mpam_config *cfg;
-+	struct mpam_msc_ris *ris;
-+
-+	/*
-+	 * No lock for mpam_partid_max as partid_max_published has been
-+	 * set by mpam_enabled(), so the values can no longer change.
-+	 */
-+	mpam_assert_partid_sizes_fixed();
-+
-+	list_for_each_entry_srcu(ris, &msc->ris, msc_list,
-+				 srcu_read_lock_held(&mpam_srcu)) {
-+		if (!mpam_is_enabled() && !ris->in_reset_state) {
-+			mpam_touch_msc(msc, &mpam_reset_ris, ris);
-+			ris->in_reset_state = true;
-+			continue;
-+		}
-+
-+		reset = true;
-+		for (partid = 0; partid <= mpam_partid_max; partid++) {
-+			cfg = &ris->vmsc->comp->cfg[partid];
-+			if (!bitmap_empty(cfg->features, MPAM_FEATURE_LAST))
-+				reset = false;
-+
-+			mpam_reprogram_ris_partid(ris, partid, cfg);
-+		}
-+		ris->in_reset_state = reset;
-+	}
-+}
-+
- static void _enable_percpu_irq(void *_irq)
- {
- 	int *irq = _irq;
-@@ -918,7 +1020,7 @@ static int mpam_cpu_online(unsigned int cpu)
- 			_enable_percpu_irq(&msc->reenable_error_ppi);
- 
- 		if (atomic_fetch_inc(&msc->online_refs) == 0)
--			mpam_reset_msc(msc, true);
-+			mpam_reprogram_msc(msc);
+@@ -1355,6 +1491,23 @@ static void __props_mismatch(struct mpam_props *parent,
+ 		parent->bwa_wd = min(parent->bwa_wd, child->bwa_wd);
  	}
  
- 	return 0;
-@@ -1569,6 +1671,64 @@ static void mpam_unregister_irqs(void)
++	if (alias && !mpam_has_cmax_wd_feature(parent) && mpam_has_cmax_wd_feature(child)) {
++		parent->cmax_wd = child->cmax_wd;
++	} else if (MISMATCHED_HELPER(parent, child, mpam_has_cmax_wd_feature,
++				     cmax_wd, alias)) {
++		pr_debug("%s took the min cmax_wd\n", __func__);
++		parent->cmax_wd = min(parent->cmax_wd, child->cmax_wd);
++	}
++
++	if (CAN_MERGE_FEAT(parent, child, mpam_feat_cmax_cassoc, alias)) {
++		parent->cassoc_wd = child->cassoc_wd;
++	} else if (MISMATCHED_FEAT(parent, child, mpam_feat_cmax_cassoc,
++				   cassoc_wd, alias)) {
++		pr_debug("%s cleared cassoc_wd\n", __func__);
++		mpam_clear_feature(mpam_feat_cmax_cassoc, parent);
++		parent->cassoc_wd = 0;
++	}
++
+ 	/* For num properties, take the minimum */
+ 	if (CAN_MERGE_FEAT(parent, child, mpam_feat_msmon_csu, alias)) {
+ 		parent->num_csu_mon = child->num_csu_mon;
+@@ -1374,6 +1527,41 @@ static void __props_mismatch(struct mpam_props *parent,
+ 					   child->num_mbwu_mon);
  	}
- }
  
-+static void __destroy_component_cfg(struct mpam_component *comp)
-+{
-+	add_to_garbage(comp->cfg);
-+}
-+
-+static void mpam_reset_component_cfg(struct mpam_component *comp)
-+{
-+	int i;
-+
-+	mpam_assert_partid_sizes_fixed();
-+
-+	if (!comp->cfg)
-+		return;
-+
-+	for (i = 0; i < mpam_partid_max + 1; i++)
-+		mpam_init_reset_cfg(&comp->cfg[i]);
-+}
-+
-+static int __allocate_component_cfg(struct mpam_component *comp)
-+{
-+	mpam_assert_partid_sizes_fixed();
-+
-+	if (comp->cfg)
-+		return 0;
-+
-+	comp->cfg = kcalloc(mpam_partid_max + 1, sizeof(*comp->cfg), GFP_KERNEL);
-+	if (!comp->cfg)
-+		return -ENOMEM;
-+
-+	/*
-+	 * The array is free()d in one go, so only cfg[0]'s struture needs
-+	 * to be initialised.
-+	 */
-+	init_garbage(&comp->cfg[0].garbage);
-+
-+	mpam_reset_component_cfg(comp);
-+
-+	return 0;
-+}
-+
-+static int mpam_allocate_config(void)
-+{
-+	struct mpam_class *class;
-+	struct mpam_component *comp;
-+
-+	lockdep_assert_held(&mpam_list_lock);
-+
-+	list_for_each_entry(class, &mpam_classes, classes_list) {
-+		list_for_each_entry(comp, &class->components, class_list) {
-+			int err = __allocate_component_cfg(comp);
-+			if (err)
-+				return err;
-+		}
++	if (CAN_MERGE_FEAT(parent, child, mpam_feat_intpri_part, alias)) {
++		parent->intpri_wd = child->intpri_wd;
++	} else if (MISMATCHED_FEAT(parent, child, mpam_feat_intpri_part,
++				   intpri_wd, alias)) {
++		pr_debug("%s took the min intpri_wd\n", __func__);
++		parent->intpri_wd = min(parent->intpri_wd, child->intpri_wd);
 +	}
 +
-+	return 0;
-+}
-+
- static void mpam_enable_once(void)
- {
- 	int err;
-@@ -1588,15 +1748,25 @@ static void mpam_enable_once(void)
- 	 */
- 	cpus_read_lock();
- 	mutex_lock(&mpam_list_lock);
--	mpam_enable_merge_features(&mpam_classes);
-+	do {
-+		mpam_enable_merge_features(&mpam_classes);
- 
--	err = mpam_register_irqs();
-+		err = mpam_register_irqs();
-+		if (err) {
-+			pr_warn("Failed to register irqs: %d\n", err);
-+			break;
-+		}
- 
-+		err = mpam_allocate_config();
-+		if (err) {
-+			pr_err("Failed to allocate configuration arrays.\n");
-+			break;
-+		}
-+	} while (0);
- 	mutex_unlock(&mpam_list_lock);
- 	cpus_read_unlock();
- 
- 	if (err) {
--		pr_warn("Failed to register irqs: %d\n", err);
- 		mpam_disable_reason = "Failed to enable.";
- 		schedule_work(&mpam_broken_work);
- 		return;
-@@ -1617,6 +1787,9 @@ static void mpam_reset_component_locked(struct mpam_component *comp)
- 	struct mpam_vmsc *vmsc;
- 
- 	lockdep_assert_cpus_held();
-+	mpam_assert_partid_sizes_fixed();
-+
-+	mpam_reset_component_cfg(comp);
- 
- 	guard(srcu)(&mpam_srcu);
- 	list_for_each_entry_srcu(vmsc, &comp->vmsc, comp_list,
-@@ -1717,6 +1890,77 @@ void mpam_enable(struct work_struct *work)
- 		mpam_enable_once();
- }
- 
-+struct mpam_write_config_arg {
-+	struct mpam_msc_ris *ris;
-+	struct mpam_component *comp;
-+	u16 partid;
-+};
-+
-+static int __write_config(void *arg)
-+{
-+	struct mpam_write_config_arg *c = arg;
-+
-+	mpam_reprogram_ris_partid(c->ris, c->partid, &c->comp->cfg[c->partid]);
-+
-+	return 0;
-+}
-+
-+#define maybe_update_config(cfg, feature, newcfg, member, changes) do { \
-+	if (mpam_has_feature(feature, newcfg) &&			\
-+	    (newcfg)->member != (cfg)->member) {			\
-+		(cfg)->member = (newcfg)->member;			\
-+		mpam_set_feature(feature, cfg);				\
-+									\
-+		(changes) = true;					\
-+	}								\
-+} while (0)
-+
-+static bool mpam_update_config(struct mpam_config *cfg,
-+			       const struct mpam_config *newcfg)
-+{
-+	bool has_changes = false;
-+
-+	maybe_update_config(cfg, mpam_feat_cpor_part, newcfg, cpbm, has_changes);
-+	maybe_update_config(cfg, mpam_feat_mbw_part, newcfg, mbw_pbm, has_changes);
-+	maybe_update_config(cfg, mpam_feat_mbw_max, newcfg, mbw_max, has_changes);
-+
-+	return has_changes;
-+}
-+
-+int mpam_apply_config(struct mpam_component *comp, u16 partid,
-+		      struct mpam_config *cfg)
-+{
-+	struct mpam_write_config_arg arg;
-+	struct mpam_msc_ris *ris;
-+	struct mpam_vmsc *vmsc;
-+	struct mpam_msc *msc;
-+
-+	lockdep_assert_cpus_held();
-+
-+	/* Don't pass in the current config! */
-+	WARN_ON_ONCE(&comp->cfg[partid] == cfg);
-+
-+	if (!mpam_update_config(&comp->cfg[partid], cfg))
-+		return 0;
-+
-+	arg.comp = comp;
-+	arg.partid = partid;
-+
-+	guard(srcu)(&mpam_srcu);
-+	list_for_each_entry_srcu(vmsc, &comp->vmsc, comp_list,
-+				 srcu_read_lock_held(&mpam_srcu)) {
-+		msc = vmsc->msc;
-+
-+		list_for_each_entry_srcu(ris, &vmsc->ris, vmsc_list,
-+					 srcu_read_lock_held(&mpam_srcu)) {
-+			arg.ris = ris;
-+			mpam_touch_msc(msc, __write_config, &arg);
-+		}
++	if (CAN_MERGE_FEAT(parent, child, mpam_feat_dspri_part, alias)) {
++		parent->dspri_wd = child->dspri_wd;
++	} else if (MISMATCHED_FEAT(parent, child, mpam_feat_dspri_part,
++				   dspri_wd, alias)) {
++		pr_debug("%s took the min dspri_wd\n", __func__);
++		parent->dspri_wd = min(parent->dspri_wd, child->dspri_wd);
 +	}
 +
-+	return 0;
-+}
++	/* TODO: alias support for these two */
++	/* {int,ds}pri may not have differing 0-low behaviour */
++	if (mpam_has_feature(mpam_feat_intpri_part, parent) &&
++	    (!mpam_has_feature(mpam_feat_intpri_part, child) ||
++	     mpam_has_feature(mpam_feat_intpri_part_0_low, parent) !=
++	     mpam_has_feature(mpam_feat_intpri_part_0_low, child))) {
++		pr_debug("%s cleared intpri_part\n", __func__);
++		mpam_clear_feature(mpam_feat_intpri_part, parent);
++		mpam_clear_feature(mpam_feat_intpri_part_0_low, parent);
++	}
++	if (mpam_has_feature(mpam_feat_dspri_part, parent) &&
++	    (!mpam_has_feature(mpam_feat_dspri_part, child) ||
++	     mpam_has_feature(mpam_feat_dspri_part_0_low, parent) !=
++	     mpam_has_feature(mpam_feat_dspri_part_0_low, child))) {
++		pr_debug("%s cleared dspri_part\n", __func__);
++		mpam_clear_feature(mpam_feat_dspri_part, parent);
++		mpam_clear_feature(mpam_feat_dspri_part_0_low, parent);
++	}
 +
- static int __init mpam_msc_driver_init(void)
- {
- 	if (!system_supports_mpam())
+ 	if (alias) {
+ 		/* Merge features for aliased resources */
+ 		bitmap_or(parent->features, parent->features, child->features, MPAM_FEATURE_LAST);
 diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
-index d492df9a1735..2f2a7369107b 100644
+index 2f2a7369107b..00edee9ebc6c 100644
 --- a/drivers/resctrl/mpam_internal.h
 +++ b/drivers/resctrl/mpam_internal.h
-@@ -182,6 +182,20 @@ struct mpam_class {
- 	struct mpam_garbage	garbage;
+@@ -139,16 +139,30 @@ static inline void mpam_mon_sel_lock_init(struct mpam_msc *msc)
+ 
+ /* Bits for mpam features bitmaps */
+ enum mpam_device_features {
+-	mpam_feat_cpor_part = 0,
++	mpam_feat_cmax_softlim,
++	mpam_feat_cmax_cmax,
++	mpam_feat_cmax_cmin,
++	mpam_feat_cmax_cassoc,
++	mpam_feat_cpor_part,
+ 	mpam_feat_mbw_part,
+ 	mpam_feat_mbw_min,
+ 	mpam_feat_mbw_max,
++	mpam_feat_mbw_prop,
++	mpam_feat_intpri_part,
++	mpam_feat_intpri_part_0_low,
++	mpam_feat_dspri_part,
++	mpam_feat_dspri_part_0_low,
+ 	mpam_feat_msmon,
+ 	mpam_feat_msmon_csu,
++	mpam_feat_msmon_csu_capture,
++	mpam_feat_msmon_csu_xcl,
+ 	mpam_feat_msmon_csu_hw_nrdy,
+ 	mpam_feat_msmon_mbwu,
++	mpam_feat_msmon_mbwu_capture,
++	mpam_feat_msmon_mbwu_rwbw,
+ 	mpam_feat_msmon_mbwu_hw_nrdy,
+-	MPAM_FEATURE_LAST
++	mpam_feat_partid_nrw,
++	MPAM_FEATURE_LAST,
  };
  
-+struct mpam_config {
-+	/* Which configuration values are valid. */
-+	DECLARE_BITMAP(features, MPAM_FEATURE_LAST);
-+
-+	u32	cpbm;
-+	u32	mbw_pbm;
-+	u16	mbw_max;
-+
-+	bool	reset_cpbm;
-+	bool	reset_mbw_pbm;
-+
-+	struct mpam_garbage	garbage;
-+};
-+
- struct mpam_component {
- 	u32			comp_id;
- 
-@@ -190,6 +204,12 @@ struct mpam_component {
- 
- 	cpumask_t		affinity;
- 
-+	/*
-+	 * Array of configuration values, indexed by partid.
-+	 * Read from cpuhp callbacks, hold the cpuhp lock when writing.
-+	 */
-+	struct mpam_config	*cfg;
-+
- 	/* member of mpam_class:components */
- 	struct list_head	class_list;
- 
-@@ -249,6 +269,9 @@ extern u8 mpam_pmg_max;
- void mpam_enable(struct work_struct *work);
- void mpam_disable(struct work_struct *work);
- 
-+int mpam_apply_config(struct mpam_component *comp, u16 partid,
-+		      struct mpam_config *cfg);
-+
- int mpam_get_cpumask_from_cache_id(unsigned long cache_id, u32 cache_level,
- 				   cpumask_t *affinity);
- 
+ struct mpam_props {
+@@ -157,6 +171,10 @@ struct mpam_props {
+ 	u16			cpbm_wd;
+ 	u16			mbw_pbm_bits;
+ 	u16			bwa_wd;
++	u16			cmax_wd;
++	u16			cassoc_wd;
++	u16			intpri_wd;
++	u16			dspri_wd;
+ 	u16			num_csu_mon;
+ 	u16			num_mbwu_mon;
+ };
 -- 
 2.39.5
 
