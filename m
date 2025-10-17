@@ -1,38 +1,38 @@
-Return-Path: <linux-acpi+bounces-17923-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17924-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2891CBEB52C
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 21:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 350F4BEB532
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 21:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 480907C077D
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 19:00:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20CBF7C1057
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 Oct 2025 19:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A29A0337B9D;
-	Fri, 17 Oct 2025 18:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A18133B978;
+	Fri, 17 Oct 2025 18:59:33 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10E833C53C;
-	Fri, 17 Oct 2025 18:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571AF33B976;
+	Fri, 17 Oct 2025 18:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760727567; cv=none; b=iMY9QuAKsPuv9N6SYdNCbq7OXiLKKSkWENEBIcRyR5JUJJ3w6cjXGkTjd3T8V+HKb8HjaFJP6rcVEBtw0CcusrwmshqI6lBq2PD7MfCwJkcXPcLyckeOgXgB0AIGAXUEF38E0W/9jhriGD/uIIiGr1Ow9eU5FNL5khF4vEifTLw=
+	t=1760727572; cv=none; b=N0+M5TH7pbte2r3iiYt5d08KN5efPalzPSFCKMEZqE1KkxR8VFYxULeA2T0Lc/ZJ8mWdCvwDIqDN7WwdiepGHYxygfiDX795GxxwgRwrH4rpmWMXlt0T2LJgcKJap5vfUSbIAogkbwfpq8qc+VL2LeItRrCHI+Gwj+GKPnEeJBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760727567; c=relaxed/simple;
-	bh=an7L7zevAegGfdWDz/9tb667WyGhWvHkQ92vFDswzwE=;
+	s=arc-20240116; t=1760727572; c=relaxed/simple;
+	bh=Dpt6i/tnWpfQ6LIvDiDIXTCIS2tD9fqDKWNVjDUPWlc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EhTToeGCMePgAJA0saK5DQ8CexzI9nOFt9fTbhDgce4JlpZTMeZzhDepfNWNZJ2Y00vADv+7x1Qc5/4xrOibLd83miMwNhuxysdMn25aZMCX6KPfRyvSBIdg19ruRU7MCKcxIAyTGig/CX7Uk30rJmcuVoZjoplwooMsSW5oNxs=
+	 MIME-Version; b=YJt4LBPMRL9y76FBwrwvFeTl8p3rlDbEmoPbl/Dz/mePVC6b2gpqwEJ2WeOKuNWCfP+G9pqEPbFB2SqkOFPcYYnwCf+VXgTTsdNlJQKa2fIDWZDWkzp7YwZ93N7GYf3zgv8jHF1qZT3Sbqm1AFyhSmLA/Vx7z+zpVkUXcpdHdMc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5D3772720;
-	Fri, 17 Oct 2025 11:59:17 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B690E1C2B;
+	Fri, 17 Oct 2025 11:59:22 -0700 (PDT)
 Received: from merodach.members.linode.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 372213F66E;
-	Fri, 17 Oct 2025 11:59:20 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D2AC3F66E;
+	Fri, 17 Oct 2025 11:59:25 -0700 (PDT)
 From: James Morse <james.morse@arm.com>
 To: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -69,10 +69,10 @@ Cc: James Morse <james.morse@arm.com>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Jeremy Linton <jeremy.linton@arm.com>,
 	Gavin Shan <gshan@redhat.com>,
-	Ben Horgan <ben.horgan@arm.com>
-Subject: [PATCH v3 26/29] arm_mpam: Use long MBWU counters if supported
-Date: Fri, 17 Oct 2025 18:56:42 +0000
-Message-Id: <20251017185645.26604-27-james.morse@arm.com>
+	Fenghua Yu <fenghuay@nvdia.com>
+Subject: [PATCH v3 27/29] arm_mpam: Add helper to reset saved mbwu state
+Date: Fri, 17 Oct 2025 18:56:43 +0000
+Message-Id: <20251017185645.26604-28-james.morse@arm.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20251017185645.26604-1-james.morse@arm.com>
 References: <20251017185645.26604-1-james.morse@arm.com>
@@ -84,282 +84,135 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Rohit Mathew <rohit.mathew@arm.com>
+resctrl expects to reset the bandwidth counters when the filesystem
+is mounted.
 
-Now that the larger counter sizes are probed, make use of them.
+To allow this, add a helper that clears the saved mbwu state. Instead
+of cross calling to each CPU that can access the component MSC to
+write to the counter, set a flag that causes it to be zero'd on the
+the next read. This is easily done by forcing a configuration update.
 
-Callers of mpam_msmon_read() may not know (or care!) about the different
-counter sizes. Allow them to specify mpam_feat_msmon_mbwu and have the
-driver pick the counter to use.
-
-Only 32bit accesses to the MSC are required to be supported by the
-spec, but these registers are 64bits. The lower half may overflow
-into the higher half between two 32bit reads. To avoid this, use
-a helper that reads the top half multiple times to check for overflow.
-
-Signed-off-by: Rohit Mathew <rohit.mathew@arm.com>
-[morse: merged multiple patches from Rohit, added explicit counter selection ]
 Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Ben Horgan <ben.horgan@arm.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvdia.com>
 Tested-by: Fenghua Yu <fenghuay@nvidia.com>
 ---
 Changes since v2:
- * Removed mpam_feat_msmon_mbwu as a top-level bit for explicit 31bit counter
-   selection.
- * Allow callers of mpam_msmon_read() to specify mpam_feat_msmon_mbwu and have
-   the driver pick a supported counter size.
- * Rephrased commit message.
-
-Changes since v1:
- * Only clear OFLOW_STATUS_L on MBWU counters.
-
-Changes since RFC:
- * Commit message wrangling.
- * Refer to 31 bit counters as opposed to 32 bit (registers).
+ * Switched to guard and fixed non _srcu list walker.
+ * Made a comment about what is proteted by which lock a list.
 ---
- drivers/resctrl/mpam_devices.c | 134 ++++++++++++++++++++++++++++-----
- 1 file changed, 116 insertions(+), 18 deletions(-)
+ drivers/resctrl/mpam_devices.c  | 46 ++++++++++++++++++++++++++++++++-
+ drivers/resctrl/mpam_internal.h |  7 ++++-
+ 2 files changed, 51 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
-index f4d07234ce10..c207a6d2832c 100644
+index c207a6d2832c..89d4f42168ed 100644
 --- a/drivers/resctrl/mpam_devices.c
 +++ b/drivers/resctrl/mpam_devices.c
-@@ -897,6 +897,48 @@ struct mon_read {
- 	int				err;
- };
- 
-+static bool mpam_ris_has_mbwu_long_counter(struct mpam_msc_ris *ris)
-+{
-+	return (mpam_has_feature(mpam_feat_msmon_mbwu_63counter, &ris->props) ||
-+		mpam_has_feature(mpam_feat_msmon_mbwu_44counter, &ris->props));
-+}
-+
-+static u64 mpam_msc_read_mbwu_l(struct mpam_msc *msc)
-+{
-+	int retry = 3;
-+	u32 mbwu_l_low;
-+	u64 mbwu_l_high1, mbwu_l_high2;
-+
-+	mpam_mon_sel_lock_held(msc);
-+
-+	WARN_ON_ONCE((MSMON_MBWU_L + sizeof(u64)) > msc->mapped_hwpage_sz);
-+	WARN_ON_ONCE(!cpumask_test_cpu(smp_processor_id(), &msc->accessibility));
-+
-+	mbwu_l_high2 = __mpam_read_reg(msc, MSMON_MBWU_L + 4);
-+	do {
-+		mbwu_l_high1 = mbwu_l_high2;
-+		mbwu_l_low = __mpam_read_reg(msc, MSMON_MBWU_L);
-+		mbwu_l_high2 = __mpam_read_reg(msc, MSMON_MBWU_L + 4);
-+
-+		retry--;
-+	} while (mbwu_l_high1 != mbwu_l_high2 && retry > 0);
-+
-+	if (mbwu_l_high1 == mbwu_l_high2)
-+		return (mbwu_l_high1 << 32) | mbwu_l_low;
-+	return MSMON___NRDY_L;
-+}
-+
-+static void mpam_msc_zero_mbwu_l(struct mpam_msc *msc)
-+{
-+	mpam_mon_sel_lock_held(msc);
-+
-+	WARN_ON_ONCE((MSMON_MBWU_L + sizeof(u64)) > msc->mapped_hwpage_sz);
-+	WARN_ON_ONCE(!cpumask_test_cpu(smp_processor_id(), &msc->accessibility));
-+
-+	__mpam_write_reg(msc, MSMON_MBWU_L, 0);
-+	__mpam_write_reg(msc, MSMON_MBWU_L + 4, 0);
-+}
-+
- static void gen_msmon_ctl_flt_vals(struct mon_read *m, u32 *ctl_val,
- 				   u32 *flt_val)
+@@ -1066,9 +1066,11 @@ static u64 mpam_msmon_overflow_val(enum mpam_device_features type)
+ static void __ris_msmon_read(void *arg)
  {
-@@ -924,7 +966,9 @@ static void gen_msmon_ctl_flt_vals(struct mon_read *m, u32 *ctl_val,
- 					       ctx->csu_exclude_clean);
+ 	bool nrdy = false;
++	bool config_mismatch;
+ 	struct mon_read *m = arg;
+ 	u64 now, overflow_val = 0;
+ 	struct mon_cfg *ctx = m->ctx;
++	bool reset_on_next_read = false;
+ 	struct mpam_msc_ris *ris = m->ris;
+ 	struct msmon_mbwu_state *mbwu_state;
+ 	struct mpam_props *rprops = &ris->props;
+@@ -1083,6 +1085,14 @@ static void __ris_msmon_read(void *arg)
+ 		  FIELD_PREP(MSMON_CFG_MON_SEL_RIS, ris->ris_idx);
+ 	mpam_write_monsel_reg(msc, CFG_MON_SEL, mon_sel);
  
- 		break;
--	case mpam_feat_msmon_mbwu:
-+	case mpam_feat_msmon_mbwu_31counter:
-+	case mpam_feat_msmon_mbwu_44counter:
-+	case mpam_feat_msmon_mbwu_63counter:
- 		*ctl_val |= MSMON_CFG_MBWU_CTL_TYPE_MBWU;
- 
- 		if (mpam_has_feature(mpam_feat_msmon_mbwu_rwbw, &m->ris->props))
-@@ -946,7 +990,9 @@ static void read_msmon_ctl_flt_vals(struct mon_read *m, u32 *ctl_val,
- 		*ctl_val = mpam_read_monsel_reg(msc, CFG_CSU_CTL);
- 		*flt_val = mpam_read_monsel_reg(msc, CFG_CSU_FLT);
- 		return;
--	case mpam_feat_msmon_mbwu:
-+	case mpam_feat_msmon_mbwu_31counter:
-+	case mpam_feat_msmon_mbwu_44counter:
-+	case mpam_feat_msmon_mbwu_63counter:
- 		*ctl_val = mpam_read_monsel_reg(msc, CFG_MBWU_CTL);
- 		*flt_val = mpam_read_monsel_reg(msc, CFG_MBWU_FLT);
- 		return;
-@@ -959,6 +1005,9 @@ static void read_msmon_ctl_flt_vals(struct mon_read *m, u32 *ctl_val,
- static void clean_msmon_ctl_val(u32 *cur_ctl)
- {
- 	*cur_ctl &= ~MSMON_CFG_x_CTL_OFLOW_STATUS;
-+
-+	if (FIELD_GET(MSMON_CFG_x_CTL_TYPE, *cur_ctl) == MSMON_CFG_MBWU_CTL_TYPE_MBWU)
-+		*cur_ctl &= ~MSMON_CFG_MBWU_CTL_OFLOW_STATUS_L;
- }
- 
- static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
-@@ -978,10 +1027,15 @@ static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
- 		mpam_write_monsel_reg(msc, CSU, 0);
- 		mpam_write_monsel_reg(msc, CFG_CSU_CTL, ctl_val | MSMON_CFG_x_CTL_EN);
- 		break;
--	case mpam_feat_msmon_mbwu:
-+	case mpam_feat_msmon_mbwu_44counter:
-+	case mpam_feat_msmon_mbwu_63counter:
-+		mpam_msc_zero_mbwu_l(m->ris->vmsc->msc);
-+		fallthrough;
-+	case mpam_feat_msmon_mbwu_31counter:
- 		mpam_write_monsel_reg(msc, CFG_MBWU_FLT, flt_val);
- 		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val);
- 		mpam_write_monsel_reg(msc, MBWU, 0);
-+
- 		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, ctl_val | MSMON_CFG_x_CTL_EN);
- 
- 		mbwu_state = &m->ris->mbwu_state[m->ctx->mon];
-@@ -993,10 +1047,19 @@ static void write_msmon_ctl_flt_vals(struct mon_read *m, u32 ctl_val,
- 	}
- }
- 
--static u64 mpam_msmon_overflow_val(struct mpam_msc_ris *ris)
-+static u64 mpam_msmon_overflow_val(enum mpam_device_features type)
- {
--	/* TODO: scaling, and long counters */
--	return GENMASK_ULL(30, 0);
-+	/* TODO: implement scaling counters */
-+	switch (type) {
-+	case mpam_feat_msmon_mbwu_63counter:
-+		return GENMASK_ULL(62, 0);
-+	case mpam_feat_msmon_mbwu_44counter:
-+		return GENMASK_ULL(43, 0);
-+	case mpam_feat_msmon_mbwu_31counter:
-+		return GENMASK_ULL(30, 0);
-+	default:
-+		return 0;
++	if (m->type == mpam_feat_msmon_mbwu) {
++		mbwu_state = &ris->mbwu_state[ctx->mon];
++		if (mbwu_state) {
++			reset_on_next_read = mbwu_state->reset_on_next_read;
++			mbwu_state->reset_on_next_read = false;
++		}
 +	}
- }
- 
- /* Call with MSC lock held */
-@@ -1037,11 +1100,24 @@ static void __ris_msmon_read(void *arg)
- 			nrdy = now & MSMON___NRDY;
- 		now = FIELD_GET(MSMON___VALUE, now);
- 		break;
--	case mpam_feat_msmon_mbwu:
--		now = mpam_read_monsel_reg(msc, MBWU);
--		if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops))
--			nrdy = now & MSMON___NRDY;
--		now = FIELD_GET(MSMON___VALUE, now);
-+	case mpam_feat_msmon_mbwu_31counter:
-+	case mpam_feat_msmon_mbwu_44counter:
-+	case mpam_feat_msmon_mbwu_63counter:
-+		if (m->type != mpam_feat_msmon_mbwu_31counter) {
-+			now = mpam_msc_read_mbwu_l(msc);
-+			if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops))
-+				nrdy = now & MSMON___NRDY_L;
 +
-+			if (m->type == mpam_feat_msmon_mbwu_63counter)
-+				now = FIELD_GET(MSMON___LWD_VALUE, now);
-+			else
-+				now = FIELD_GET(MSMON___L_VALUE, now);
-+		} else {
-+			now = mpam_read_monsel_reg(msc, MBWU);
-+			if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops))
-+				nrdy = now & MSMON___NRDY;
-+			now = FIELD_GET(MSMON___VALUE, now);
-+		}
+ 	/*
+ 	 * Read the existing configuration to avoid re-writing the same values.
+ 	 * This saves waiting for 'nrdy' on subsequent reads.
+@@ -1090,7 +1100,10 @@ static void __ris_msmon_read(void *arg)
+ 	read_msmon_ctl_flt_vals(m, &cur_ctl, &cur_flt);
+ 	clean_msmon_ctl_val(&cur_ctl);
+ 	gen_msmon_ctl_flt_vals(m, &ctl_val, &flt_val);
+-	if (cur_flt != flt_val || cur_ctl != (ctl_val | MSMON_CFG_x_CTL_EN))
++	config_mismatch = cur_flt != flt_val ||
++			  cur_ctl != (ctl_val | MSMON_CFG_x_CTL_EN);
++
++	if (config_mismatch || reset_on_next_read)
+ 		write_msmon_ctl_flt_vals(m, ctl_val, flt_val);
  
- 		if (nrdy)
- 			break;
-@@ -1050,7 +1126,7 @@ static void __ris_msmon_read(void *arg)
- 
- 		/* Add any pre-overflow value to the mbwu_state->val */
- 		if (mbwu_state->prev_val > now)
--			overflow_val = mpam_msmon_overflow_val(ris) - mbwu_state->prev_val;
-+			overflow_val = mpam_msmon_overflow_val(m->type) - mbwu_state->prev_val;
- 
- 		mbwu_state->prev_val = now;
- 		mbwu_state->correction += overflow_val;
-@@ -1106,13 +1182,26 @@ static int _msmon_read(struct mpam_component *comp, struct mon_read *arg)
- 	return any_err;
+ 	switch (m->type) {
+@@ -1242,6 +1255,37 @@ int mpam_msmon_read(struct mpam_component *comp, struct mon_cfg *ctx,
+ 	return err;
  }
  
-+static enum mpam_device_features mpam_msmon_choose_counter(struct mpam_class *class)
++void mpam_msmon_reset_mbwu(struct mpam_component *comp, struct mon_cfg *ctx)
 +{
-+	struct mpam_props *cprops = &class->props;
++	struct mpam_msc *msc;
++	struct mpam_vmsc *vmsc;
++	struct mpam_msc_ris *ris;
 +
-+	if (mpam_has_feature(mpam_feat_msmon_mbwu_44counter, cprops))
-+		return mpam_feat_msmon_mbwu_44counter;
-+	if (mpam_has_feature(mpam_feat_msmon_mbwu_63counter, cprops))
-+		return mpam_feat_msmon_mbwu_63counter;
++	if (!mpam_is_enabled())
++		return;
 +
-+	return mpam_feat_msmon_mbwu_31counter;
++	guard(srcu)(&mpam_srcu);
++	list_for_each_entry_srcu(vmsc, &comp->vmsc, comp_list,
++				 srcu_read_lock_held(&mpam_srcu)) {
++		if (!mpam_has_feature(mpam_feat_msmon_mbwu, &vmsc->props))
++			continue;
++
++		msc = vmsc->msc;
++		list_for_each_entry_srcu(ris, &vmsc->ris, vmsc_list,
++					 srcu_read_lock_held(&mpam_srcu)) {
++			if (!mpam_has_feature(mpam_feat_msmon_mbwu, &ris->props))
++				continue;
++
++			if (WARN_ON_ONCE(!mpam_mon_sel_lock(msc)))
++				continue;
++
++			ris->mbwu_state[ctx->mon].correction = 0;
++			ris->mbwu_state[ctx->mon].reset_on_next_read = true;
++			mpam_mon_sel_unlock(msc);
++		}
++	}
 +}
 +
- int mpam_msmon_read(struct mpam_component *comp, struct mon_cfg *ctx,
- 		    enum mpam_device_features type, u64 *val)
+ static void mpam_reset_msc_bitmap(struct mpam_msc *msc, u16 reg, u16 wd)
  {
- 	int err;
- 	struct mon_read arg;
- 	u64 wait_jiffies = 0;
--	struct mpam_props *cprops = &comp->class->props;
-+	struct mpam_class *class = comp->class;
-+	struct mpam_props *cprops = &class->props;
+ 	u32 num_words, msb;
+diff --git a/drivers/resctrl/mpam_internal.h b/drivers/resctrl/mpam_internal.h
+index ff38b4bbfc2b..6632699ae814 100644
+--- a/drivers/resctrl/mpam_internal.h
++++ b/drivers/resctrl/mpam_internal.h
+@@ -204,10 +204,14 @@ struct mon_cfg {
  
- 	might_sleep();
+ /*
+  * Changes to enabled and cfg are protected by the msc->lock.
+- * Changes to prev_val and correction are protected by the msc's mon_sel_lock.
++ * The msc's mon_sel_lock protects:
++ * - reset_on_next_read
++ * - prev_val
++ * - correction
+  */
+ struct msmon_mbwu_state {
+ 	bool		enabled;
++	bool		reset_on_next_read;
+ 	struct mon_cfg	cfg;
  
-@@ -1129,9 +1218,12 @@ int mpam_msmon_read(struct mpam_component *comp, struct mon_cfg *ctx,
- 	};
- 	*val = 0;
+ 	/* The value last read from the hardware. Used to detect overflow. */
+@@ -369,6 +373,7 @@ int mpam_apply_config(struct mpam_component *comp, u16 partid,
  
-+	if (type == mpam_feat_msmon_mbwu)
-+		type = mpam_msmon_choose_counter(class);
-+
- 	err = _msmon_read(comp, &arg);
--	if (err == -EBUSY && comp->class->nrdy_usec)
--		wait_jiffies = usecs_to_jiffies(comp->class->nrdy_usec);
-+	if (err == -EBUSY && class->nrdy_usec)
-+		wait_jiffies = usecs_to_jiffies(class->nrdy_usec);
+ int mpam_msmon_read(struct mpam_component *comp, struct mon_cfg *ctx,
+ 		    enum mpam_device_features, u64 *val);
++void mpam_msmon_reset_mbwu(struct mpam_component *comp, struct mon_cfg *ctx);
  
- 	while (wait_jiffies)
- 		wait_jiffies = schedule_timeout_uninterruptible(wait_jiffies);
-@@ -1293,12 +1385,13 @@ static int mpam_restore_mbwu_state(void *_ris)
- 	int i;
- 	struct mon_read mwbu_arg;
- 	struct mpam_msc_ris *ris = _ris;
-+	struct mpam_class *class = ris->vmsc->comp->class;
- 
- 	for (i = 0; i < ris->props.num_mbwu_mon; i++) {
- 		if (ris->mbwu_state[i].enabled) {
- 			mwbu_arg.ris = ris;
- 			mwbu_arg.ctx = &ris->mbwu_state[i].cfg;
--			mwbu_arg.type = mpam_feat_msmon_mbwu;
-+			mwbu_arg.type = mpam_msmon_choose_counter(class);
- 
- 			__ris_msmon_read(&mwbu_arg);
- 		}
-@@ -1333,8 +1426,13 @@ static int mpam_save_mbwu_state(void *arg)
- 		cur_ctl = mpam_read_monsel_reg(msc, CFG_MBWU_CTL);
- 		mpam_write_monsel_reg(msc, CFG_MBWU_CTL, 0);
- 
--		val = mpam_read_monsel_reg(msc, MBWU);
--		mpam_write_monsel_reg(msc, MBWU, 0);
-+		if (mpam_ris_has_mbwu_long_counter(ris)) {
-+			val = mpam_msc_read_mbwu_l(msc);
-+			mpam_msc_zero_mbwu_l(msc);
-+		} else {
-+			val = mpam_read_monsel_reg(msc, MBWU);
-+			mpam_write_monsel_reg(msc, MBWU, 0);
-+		}
- 
- 		cfg->mon = i;
- 		cfg->pmg = FIELD_GET(MSMON_CFG_x_FLT_PMG, cur_flt);
+ int mpam_get_cpumask_from_cache_id(unsigned long cache_id, u32 cache_level,
+ 				   cpumask_t *affinity);
 -- 
 2.39.5
 
