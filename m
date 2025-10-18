@@ -1,53 +1,53 @@
-Return-Path: <linux-acpi+bounces-17942-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17940-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD02BBED177
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Oct 2025 16:23:37 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD873BED15C
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Oct 2025 16:23:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1662134EB70
-	for <lists+linux-acpi@lfdr.de>; Sat, 18 Oct 2025 14:23:24 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3ECE5347CA2
+	for <lists+linux-acpi@lfdr.de>; Sat, 18 Oct 2025 14:23:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93AF42FB99F;
-	Sat, 18 Oct 2025 14:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135FA2EBB9E;
+	Sat, 18 Oct 2025 14:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="aaiiLurW"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Y3QQWzRp"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC002D193B;
-	Sat, 18 Oct 2025 14:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C401F3BA2;
+	Sat, 18 Oct 2025 14:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760797331; cv=none; b=P1lDNbguBrPOQDjvObg1TQb4FMwOSORy1zFe09Odb989hs1f01ehJ71Ee5bRkxWKYk1knwk/kdMJUBl/DbObwGH7aVS+v20ephI0hNmLRi/embrmaS81w9EnhTZLvsS20knUH9Oo3DOvzxbFXu7Zhx1RwlpbN3tfVtNBABOoQds=
+	t=1760797329; cv=none; b=UJKPDvUfuyzmutVChSKA/1zGeMPHokTB3aPie2PHJuvE46IfHlbGMXSk3buLLrat6AiKRp5oXe1ZYYtaTUvMs0Gv3EGIAdULyQ3fyi1DHN1tKt10mTvMVmE7OFfm55ohwAeQ/f+bAlhKodEmOjPAgDVHtRaRCBb2aa8CFNe/aJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760797331; c=relaxed/simple;
-	bh=EqQ8MAIlBeL0HxmwV1J6+SA32Ee7gxWi1w10nll/Jdc=;
+	s=arc-20240116; t=1760797329; c=relaxed/simple;
+	bh=9Yp3lWJoa834+XZ6vTMNTzs2BLUob7J+OnRKmzYu8r0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+iGa3ZA3P/KPS3RoQeQOpUQxqoDeLZ6vShsOiIzdJIVqG0Ko6i88cUyVAl8FCEZAWEswyxq654iAX9cu+QKMvTL9L7p1ttHpEs+fjNiqYakrgMuOihsf7SDOShi9VGSZHv8fkNmM5Nq2+nh1PDI5rnVj7BdXVp04+NCs2fjl2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=aaiiLurW; arc=none smtp.client-ip=148.251.105.195
+	 MIME-Version; b=Sc4D6CluVf9/zh7XtM7gVlkBkO1THPCUbewJdVeitg5jJM1o2rewE7qZx8gwIxlaMLnqUajV550t4cgQhG1GzfwCAlOmWDYoFXZAVVrPf2eA6ni8PlvJ2KfRpozQnsf7KobSLyiVl7qA0S84BTCrGIuQKPT1CSlbLaJ6T/nrlHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Y3QQWzRp; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1760797321;
-	bh=EqQ8MAIlBeL0HxmwV1J6+SA32Ee7gxWi1w10nll/Jdc=;
+	s=mail; t=1760797324;
+	bh=9Yp3lWJoa834+XZ6vTMNTzs2BLUob7J+OnRKmzYu8r0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aaiiLurWhMWtr8LCK/2dqu39r37+fdrvSOENK6GtOv1lP3Eo/QA5FQd+HuWgOLzMe
-	 BB3tDBSZ7eY7SMl97xEqs1hlSfZW4Z0gF2UM2v7/T2+R13/buCJ6in0Wxi277e5Sav
-	 2/rms0efZg56mg0XBt7IjDPfymZWktn0lc8aVeJTfVv+g0AIsPXcB/CsXF/FClibEP
-	 TQvHkzu4dHP9YrjwLGmYyPgtP3kOcuYuTbaG3fDsMb30DU3IWpO35OIVBItjQYLL+x
-	 rF44c5YKdGA+x+7GCeVp3QQBoUdLjTwstVePwRbMsV3TDkbflrQ7nqQoFh+lhxlZ/v
-	 l1Fj4cWRpO+Yg==
+	b=Y3QQWzRpxO5IXGn61zAoOcjSsRL2U/BnlLMfr1ZqcQIkJo8SUdnBE9ixNQqXmS4r8
+	 ZEZPXXCbr+bQKuUAoAE5ZwjiOLeV2kbo5WtHXxBDCuzfzuM2OsNWqpRVAbB+hYoJoX
+	 2g7ETOuTnXtnUZgVHxD7hdg0LJtUhVDXeGaTEH2KZdixmrq7iqJpKZAs+/wtK4/j62
+	 4uqz5ME8UoQcjq7fR3zdbpQwv/sC0K54CycwqzXKP3nSIlEa3/lZ9N5IsKA2YNGU1I
+	 xcyQysrXeTFjgA7k48QwaEsAAr8EvhTyVYAJVpdWumWiG10wCjBQ87q1KcYS+NyRY1
+	 OEi415JhXtxeA==
 Received: from mt.tail9873f4.ts.net (unknown [144.48.130.189])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: usama.anjum)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id C464E17E0DB7;
-	Sat, 18 Oct 2025 16:21:58 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 957E617E124A;
+	Sat, 18 Oct 2025 16:22:01 +0200 (CEST)
 From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Len Brown <lenb@kernel.org>,
@@ -64,9 +64,9 @@ To: "Rafael J. Wysocki" <rafael@kernel.org>,
 Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
 	kernel@collabora.com,
 	superm1@kernel.org
-Subject: [RFC 1/4] PM: hibernate: export hibernation_in_progress()
-Date: Sat, 18 Oct 2025 19:21:04 +0500
-Message-ID: <20251018142114.897445-2-usama.anjum@collabora.com>
+Subject: [RFC 2/4] ACPI: button: Cancel hibernation if button is pressed during hibernation
+Date: Sat, 18 Oct 2025 19:21:05 +0500
+Message-ID: <20251018142114.897445-3-usama.anjum@collabora.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251018142114.897445-1-usama.anjum@collabora.com>
 References: <20251018142114.897445-1-usama.anjum@collabora.com>
@@ -78,47 +78,54 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Export hibernation_in_progress() to be used by other modules. Add its
-signature when hibernation config isn't enabled as well.
+acpi_pm_wakeup_event() is called from acpi_button_notify() which is
+called when power button is pressed. But system doesn't wake up as
+pm_wakeup_dev_event() isn't called with hard parameter set in case of
+hibernation. It gets set only for s2idle cases.
+
+Call acpi_pm_wakeup_event() if power button is pressed and hibernation
+is in progress. Set the hard parameter such that pm_system_wakeup()
+gets called which increments pm_abort_suspend counter. Hence hibernation
+would be cancelled as in hibernation path, this counter is checked if it
+should be aborted.
 
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 ---
- include/linux/suspend.h  | 2 ++
- kernel/power/hibernate.c | 1 +
- 2 files changed, 3 insertions(+)
+ drivers/acpi/button.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/suspend.h b/include/linux/suspend.h
-index b02876f1ae38a..348831cdb60e4 100644
---- a/include/linux/suspend.h
-+++ b/include/linux/suspend.h
-@@ -393,6 +393,7 @@ extern void hibernation_set_ops(const struct platform_hibernation_ops *ops);
- extern int hibernate(void);
- extern bool system_entering_hibernation(void);
- extern bool hibernation_available(void);
-+extern bool hibernation_in_progress(void);
- asmlinkage int swsusp_save(void);
- extern struct pbe *restore_pblist;
- int pfn_is_nosave(unsigned long pfn);
-@@ -412,6 +413,7 @@ static inline void hibernation_set_ops(const struct platform_hibernation_ops *op
- static inline int hibernate(void) { return -ENOSYS; }
- static inline bool system_entering_hibernation(void) { return false; }
- static inline bool hibernation_available(void) { return false; }
-+static inline bool hibernation_in_progress(void) { return false; }
+diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+index 0a70260401882..4a2575c0c44e3 100644
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -20,6 +20,7 @@
+ #include <linux/acpi.h>
+ #include <linux/dmi.h>
+ #include <acpi/button.h>
++#include <linux/suspend.h>
  
- static inline int hibernate_quiet_exec(int (*func)(void *data), void *data) {
- 	return -ENOTSUPP;
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index 14e85ff235512..aadf82f57e868 100644
---- a/kernel/power/hibernate.c
-+++ b/kernel/power/hibernate.c
-@@ -105,6 +105,7 @@ bool hibernation_in_progress(void)
- {
- 	return !atomic_read(&hibernate_atomic);
- }
-+EXPORT_SYMBOL_GPL(hibernation_in_progress);
+ #define ACPI_BUTTON_CLASS		"button"
+ #define ACPI_BUTTON_FILE_STATE		"state"
+@@ -458,11 +459,16 @@ static void acpi_button_notify(acpi_handle handle, u32 event, void *data)
+ 	acpi_pm_wakeup_event(&device->dev);
  
- bool hibernation_available(void)
- {
+ 	button = acpi_driver_data(device);
+-	if (button->suspended || event == ACPI_BUTTON_NOTIFY_WAKE)
+-		return;
+-
+ 	input = button->input;
+ 	keycode = test_bit(KEY_SLEEP, input->keybit) ? KEY_SLEEP : KEY_POWER;
++	if (event == ACPI_BUTTON_NOTIFY_STATUS && keycode == KEY_POWER &&
++	    hibernation_in_progress()) {
++		pm_wakeup_dev_event(&device->dev, 0, true);
++		return;
++	}
++
++	if (button->suspended || event == ACPI_BUTTON_NOTIFY_WAKE)
++		return;
+ 
+ 	input_report_key(input, keycode, 1);
+ 	input_sync(input);
 -- 
 2.47.3
 
