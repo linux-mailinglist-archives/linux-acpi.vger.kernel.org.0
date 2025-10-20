@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-18001-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-18002-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBCFCBF1759
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 15:10:29 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3F8BF1799
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 15:13:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB6653E736A
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 13:10:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1F2674F629D
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 13:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BFD2FB621;
-	Mon, 20 Oct 2025 13:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5BA31DD8A;
+	Mon, 20 Oct 2025 13:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OuBIY3x8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HfT1qpqt"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE30286889;
-	Mon, 20 Oct 2025 13:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8B7320380;
+	Mon, 20 Oct 2025 13:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760965825; cv=none; b=hYjqwl+RMOHxSH9+DqwxL+c0FZVl/BLodfx0qF1TPg5qq2fdXG9Quwnf0IWUthnXOQJuUXyVbVprOwH5iaoZocd+43QM1UQGRgUVQ7fK5fX+bM6+4MKlOdX1GqvBgskCZjkqx1r+kTbEp479fD40GGwjI5oqSmO/zOdOvCl1xNE=
+	t=1760965907; cv=none; b=X7EiXeSi72RR9QocX9kjcBrpM1Abqci+Bnln/JT1It3JVXATWQPtrKJXXi5LnonUCJpGnBROjOzMi2Uhu4itVkbnp2MmUcM0zOgLICDI7OPsPtEYmIypllq60mwvBKimk/Z8tstmDqdYVS0DCSxpdWoc7O4XRsl+wUI1uzh8iNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760965825; c=relaxed/simple;
-	bh=6Pc9UWszhKcAi8/KToVHt002Dk2g1lKSe+WvbjXwVI8=;
+	s=arc-20240116; t=1760965907; c=relaxed/simple;
+	bh=fUrlHPDefya4ZgIR4w8n8xOGcGITTCU/I54LqE8Kxj0=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=FczyDMraP3/dtJUim75jipBB9T78quDfi0dREBb8zJGlh6zkEW+71bCCuyP5/O/T6sUb17FaVhmg0EJWOPSDq/dQ+/IXzngO43EinRK9XStuwV82AqVAosc495ZsMdFzMe1AsZQ7411UZuDzEnqBN8S/WDn6++dvBOwibsBTPTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OuBIY3x8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103DAC4CEF9;
-	Mon, 20 Oct 2025 13:10:20 +0000 (UTC)
+	 References:In-Reply-To; b=GqEvYOsZlApDeRdczbm50w9+jC6JRrJ6sP8r7cFhiUuHA1P2CNf4tkOXF1J5Lns9Jq1NlUJZFWwHA7UOb0AvvU16yveXJRWrB1lVLoI2vV/aR6gjVAp82dSMJU3wnBQ7f8JcWZa5w+wfRV2jd5v/1fRwflPNJjORsehZ3gazfvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HfT1qpqt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A806C116B1;
+	Mon, 20 Oct 2025 13:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760965825;
-	bh=6Pc9UWszhKcAi8/KToVHt002Dk2g1lKSe+WvbjXwVI8=;
+	s=k20201202; t=1760965906;
+	bh=fUrlHPDefya4ZgIR4w8n8xOGcGITTCU/I54LqE8Kxj0=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=OuBIY3x8J5qZzQSjGUxQ4eCjq+K6khoqQ7MYbLGsyu7N/HZvEotU3uBcjoQZXBOCs
-	 561l/M4LCGkVn9ZE3M/FYGOLvGGAtArq3v2gfdSROclpygdXxcOe/wzY2WNYRwes8w
-	 qIh3JVVXN7ccpa2A83St5Um8s+coQ99sIBpPczPl7FuO4CpNrRZI18aiZWiHsNYSMu
-	 40N4qNDOH680/460peDWSbWHSwFvWTNEZRmRiuxysTLGl7jNtQGZ5/YRCIYOw1Fp0I
-	 PJ8KZ1GDgz6JVaLk6puxiGmzA6QZicoJtTb90Xm2GjZ6KXHeNUwhy5ipgY+txvhHOF
-	 IdxDQoxg/q9pA==
+	b=HfT1qpqtoVB8LDASViN+nkWRJDfwbDCIzDhmMl84j2k/X23zDQEV1EAr4JmKYEW8M
+	 5DINVK0AqWx4IsdrLa8C+irbXmdkRGVx/kXzOTV1oCU8P//Wv10O/4iNrdvMeK8g3x
+	 1akXcYdpF0+fszq+6g/7wKIs0x23z2InoSIgSR+V6bbj9TNPn9WGEZeNEW15dSQBBN
+	 ncb6DnvwrnLGwLbUhNMf+pFKcir9LnkKX57s35dAGhiAJpMLnX2J07WWCPa0cQcyN/
+	 1kUjReNIOVxKWBzo695zTeCwqJuaCSmXMNmQ6OZcrwm4dgRtO6jTVMyvsGHPlBbyC8
+	 Kf1+EvehwqJoQ==
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -49,41 +49,42 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 20 Oct 2025 15:10:18 +0200
-Message-Id: <DDN6A90KU2TR.31NIJCY3TEDYG@kernel.org>
-Cc: <linux-acpi@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
+Date: Mon, 20 Oct 2025 15:11:38 +0200
+Message-Id: <DDN6B9VKK6O6.2SHDUYDMJCOG7@kernel.org>
+Cc: <rafael@kernel.org>, <lenb@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+ <dakr@kernel.org>, <linux-acpi@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH] rust: acpi: replace `core::mem::zeroed` with
  `pin_init::zeroed`
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Siyuan Huang" <huangsiyuan@kylinos.cn>, <rafael@kernel.org>,
- <lenb@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <dakr@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Siyuan Huang"
+ <huangsiyuan@kylinos.cn>
 X-Mailer: aerc 0.21.0
 References: <20251020031204.78917-1-huangsiyuan@kylinos.cn>
-In-Reply-To: <20251020031204.78917-1-huangsiyuan@kylinos.cn>
+ <aPXwaDI8RUjMzMKI@google.com>
+In-Reply-To: <aPXwaDI8RUjMzMKI@google.com>
 
-On Mon Oct 20, 2025 at 5:12 AM CEST, Siyuan Huang wrote:
-> All types in `bindings` implement `Zeroable` if they can, so use
-> `pin_init::zeroed` instead of relying on `unsafe` code.
+On Mon Oct 20, 2025 at 10:18 AM CEST, Alice Ryhl wrote:
+> On Mon, Oct 20, 2025 at 11:12:04AM +0800, Siyuan Huang wrote:
+>> All types in `bindings` implement `Zeroable` if they can, so use
+>> `pin_init::zeroed` instead of relying on `unsafe` code.
+>>=20
+>> If this ends up not compiling in the future, something in bindgen or on
+>> the C side changed and is most likely incorrect.
+>>=20
+>> Link: https://github.com/Rust-for-Linux/linux/issues/1189
+>> Suggested-by: Benno Lossin <lossin@kernel.org>
+>> Signed-off-by: Siyuan Huang <huangsiyuan@kylinos.cn>
 >
-> If this ends up not compiling in the future, something in bindgen or on
-> the C side changed and is most likely incorrect.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/1189
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Signed-off-by: Siyuan Huang <huangsiyuan@kylinos.cn>
+> We should make this method accessible under kernel::ffi:: since that's
+> IMO a better path for it for cases like this. It doesn't really have
+> anything to do with pin_init in this use-case.
 
-Thanks, great to see this.
-
-Reviewed-by: Benno Lossin <lossin@kernel.org>
+Yeah, we should do that. I don't have time to do it, so if anyone wants
+to go ahead, please do :)
 
 Cheers,
 Benno
-
-> ---
->  rust/kernel/acpi.rs | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
 
