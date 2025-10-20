@@ -1,179 +1,190 @@
-Return-Path: <linux-acpi+bounces-17967-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17968-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3CCBBF0A44
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 12:46:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE46BF0A53
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 12:46:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BB973A4C7E
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 10:44:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5392C3A48D5
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 10:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557582BE02C;
-	Mon, 20 Oct 2025 10:44:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RTCqGzXr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CF01FBEA2;
+	Mon, 20 Oct 2025 10:45:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6B31F5437;
-	Mon, 20 Oct 2025 10:44:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001C0625;
+	Mon, 20 Oct 2025 10:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760957081; cv=none; b=lltfcdkqcHG0tFfjVEcSK2D3dvlPykm0tAcBXs8G/dGZmOzvQrQiUmlDFWmoNKsIMH30frMyw9e6KypiMIwxuSLi4nrj0AXwJwV5H5czSnFPElmf4pwIFhwNpSLaUdrHDtB+eT6xWae2DFPlVBToF5h8oIz2xsfUkc3tip0pTVI=
+	t=1760957141; cv=none; b=kNPVXAJXvTr0ui3ud0/da0C7YG3YhOYG3VuCZFqTTZlFKY/xdLfqmK0owIvzXdg0OYJoOA/CAdzxreBdjD9rvF8nrPHZU+We7u+pGxC0gbL4xI4LAp4HIrG2xwBLfHPzfao5kv9oE3njakYX33DkeGd09EKf5kjNDU0z3Kvb9b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760957081; c=relaxed/simple;
-	bh=F4Dp7ZQIagEZfQkEK+NkPAeOo1rKX2a9BXZpkTkzXrw=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LlyEQO2fq4jyqk5EWjYkhhWaN4T9uV6fo1/b7kTYA+malQgNqYDLTstQUFMpcRB2nR/jHeX7yLFYI50v/4ZqhuzaK2Hle9i/NhsJbHgaxlWeDExVIs3Y+efp1Cs+z51zvM0+0Z63FhpvCLgh0ff42jKng2RwoLs/zjlZKt2AH7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RTCqGzXr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50BCC4CEF9;
-	Mon, 20 Oct 2025 10:44:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760957080;
-	bh=F4Dp7ZQIagEZfQkEK+NkPAeOo1rKX2a9BXZpkTkzXrw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RTCqGzXrb5mTsz3/Zn76S8LARLm9j6Pg/fZkrU34o9O2onyjXZnrSKqJx/mWr2TL6
-	 NE6q1q2dqWH4yJ/r5rpP70fmac6CdlJUr+CtrtGNYgQ37YROh0hPthK98+dmdEOYfs
-	 y59tOsZsJ7AXpr5MkumOQN2ofAUHZx/X/t7ZK/XVxrPWejYJCkpE4qnnmcQ/NZi8aM
-	 9FfthxwSbaVrxal4GK6HL5WJuS62WYnkOmEbPd1/7kB/EhypdhHRybsAclTUgMlhg9
-	 QyW465poC92pV9OEep/1bZys6B/OnXElD1hrbJ12JBtupvGnJxOXsWYrZf9xGtagHa
-	 UFtR4Ay7fvJEQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vAnNW-0000000FSrX-16MA;
-	Mon, 20 Oct 2025 10:44:38 +0000
-Date: Mon, 20 Oct 2025 11:44:37 +0100
-Message-ID: <86qzuxx36y.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-acpi@vger.kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Mark\
- Rutland" <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	"Rafael J.\
- Wysocki" <rafael@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	"Saravana\
- Kannan" <saravanak@google.com>,
-	Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-	Sven Peter <sven@kernel.org>,
-	Janne Grunau
-	<j@jannau.net>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	James Clark
-	<james.clark@linaro.org>
-Subject: Re: [PATCH v3 04/26] platform: Add firmware-agnostic irq and affinity retrieval interface
-In-Reply-To: <20251009180351.00000d3d@huawei.com>
-References: <20250922082833.2038905-1-maz@kernel.org>
-	<20250922082833.2038905-5-maz@kernel.org>
-	<20251009180351.00000d3d@huawei.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1760957141; c=relaxed/simple;
+	bh=5m9H2gZKzdHPUG97NZYPx0g4bz72wHoii/cqiqml9Gg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mqnGLCyoCcETFR8Q9Nzio0nkwFZQjk0wIxG8nAh0y8CKKdsrJjAwweOBF0Q2e/nAOMNZzo5esME5wqZX2SrTIVJkwzKwyJg7CjuXwRJ+PBlhnvNsgnH8XkOp7MHHs4Mh2f6TuP4gEuewGkoFSDlJ02jNjlWYrti3IUIC7js5t8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6A8081063;
+	Mon, 20 Oct 2025 03:45:31 -0700 (PDT)
+Received: from [10.1.196.46] (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B92943F63F;
+	Mon, 20 Oct 2025 03:45:34 -0700 (PDT)
+Message-ID: <12556653-a26f-4c28-820a-4b5ba1537bc4@arm.com>
+Date: Mon, 20 Oct 2025 11:45:33 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: jonathan.cameron@huawei.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, tglx@linutronix.de, mark.rutland@arm.com, will@kernel.org, rafael@kernel.org, robh@kernel.org, saravanak@google.com, gregkh@linuxfoundation.org, sven@kernel.org, j@jannau.net, suzuki.poulose@arm.com, james.clark@linaro.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 04/29] ACPI / PPTT: Add a helper to fill a cpumask from
+ a cache_id
+To: James Morse <james.morse@arm.com>, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org
+Cc: D Scott Phillips OS <scott@os.amperecomputing.com>,
+ carl@os.amperecomputing.com, lcherian@marvell.com,
+ bobo.shaobowang@huawei.com, tan.shaopeng@fujitsu.com,
+ baolin.wang@linux.alibaba.com, Jamie Iles <quic_jiles@quicinc.com>,
+ Xin Hao <xhao@linux.alibaba.com>, peternewman@google.com,
+ dfustini@baylibre.com, amitsinght@marvell.com,
+ David Hildenbrand <david@redhat.com>, Dave Martin <dave.martin@arm.com>,
+ Koba Ko <kobak@nvidia.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ fenghuay@nvidia.com, baisheng.gao@unisoc.com,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Rob Herring
+ <robh@kernel.org>, Rohit Mathew <rohit.mathew@arm.com>,
+ Rafael Wysocki <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>,
+ Gavin Shan <gshan@redhat.com>
+References: <20251017185645.26604-1-james.morse@arm.com>
+ <20251017185645.26604-5-james.morse@arm.com>
+From: Ben Horgan <ben.horgan@arm.com>
+Content-Language: en-US
+In-Reply-To: <20251017185645.26604-5-james.morse@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, 09 Oct 2025 18:03:51 +0100,
-Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
+Hi James,
+
+On 10/17/25 19:56, James Morse wrote:
+> MPAM identifies CPUs by the cache_id in the PPTT cache structure.
 > 
-> On Mon, 22 Sep 2025 09:28:11 +0100
-> Marc Zyngier <maz@kernel.org> wrote:
+> The driver needs to know which CPUs are associated with the cache.
+> The CPUs may not all be online, so cacheinfo does not have the
+> information.
 > 
-> > Expand platform_get_irq_optional() to also return an affinity if
-> > available, renaming it to platform_get_irq_affinity() in the
-> > process.
-> > 
-> > platform_get_irq_optional() is preserved with its current semantics
-> > by calling into the new helper with a NULL affinity pointer.
-> > 
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Add a helper to pull this information out of the PPTT.
 > 
-> Maybe a breadcrumb of a comment for those of us who can't be bothered
-> to figure out why this needs the ifndef CONFIG_SPARC?
-
-The main issue is that SPARC, despite using OpenFirmware, does not use
-the OF infrastructure (which is basically DT only). This means that
-SPARC has its own firmware interface and parses interrupts its own
-way, storing them as archdata in the device. Sad state of things,
-unfortunately.
-
-> Otherwise a question on whether it's worth spinning a fwnode.h handler
-> to hide away the fwnode type in get_irq_affinity.
-> I think not given the complexity already there for the platform device
-> irq stuff, but thought I'd mention it.
-
-I don't think it'd be worth the hassle at this stage. The platform
-code is already a weird mix of DT and ACPI, without any clear
-delineation.
-
-If we wanted to do something useful, we'd split that into generic code
-on one side (the actual Linux platform device code), and the firmware
-specific backend. The main problem is to find a common abstraction,
-and ISTR that people found that rather hard, hence the current state.
-
+> CC: Rohit Mathew <Rohit.Mathew@arm.com>
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+> Tested-by: Fenghua Yu <fenghuay@nvidia.com>
+> ---
+> Changes since v2:
+>  * Removed stray cleanup useage in preference for acpi_get_pptt().
+>  * Removed WARN_ON_ONCE() for symmetry with other helpers.
+>  * Dropped restriction on unified caches.
 > 
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-
-Thanks for that.
-
-> > ---
-> >  drivers/base/platform.c         | 60 +++++++++++++++++++++++++++------
-> >  include/linux/platform_device.h |  2 ++
-> >  2 files changed, 52 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> > index 09450349cf323..3a058f63ef0d3 100644
-> > --- a/drivers/base/platform.c
-> > +++ b/drivers/base/platform.c
-> > @@ -150,25 +150,37 @@ devm_platform_ioremap_resource_byname(struct platform_device *pdev,
-> >  EXPORT_SYMBOL_GPL(devm_platform_ioremap_resource_byname);
-> >  #endif /* CONFIG_HAS_IOMEM */
-> >  
-> > +static const struct cpumask *get_irq_affinity(struct platform_device *dev,
-> > +					      unsigned int num)
-> > +{
-> > +	const struct cpumask *mask = NULL;
-> > +#ifndef CONFIG_SPARC
-> > +	struct fwnode_handle *fwnode = dev_fwnode(&dev->dev);
-> > +
-> > +	if (is_of_node(fwnode))
-> > +		mask = of_irq_get_affinity(to_of_node(fwnode), num);
-> > +	else if (is_acpi_device_node(fwnode))
-> > +		mask = acpi_irq_get_affinity(ACPI_HANDLE_FWNODE(fwnode), num);
+> Changes since v1:
+>  * Added punctuation to the commit message.
+>  * Removed a comment about an alternative implementaion.
+>  * Made the loop continue with a warning if a CPU is missing from the PPTT.
 > 
-> Not sure how useful it will be more generally, but maybe use fwnode.h and
-> appropriate callback rather than opencoding here?
+> Changes since RFC:
+>  * acpi_count_levels() now returns a value.
+>  * Converted the table-get stuff to use Jonathan's cleanup helper.
+>  * Dropped Sudeep's Review tag due to the cleanup change.
+> ---
+>  drivers/acpi/pptt.c  | 64 ++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/acpi.h |  6 +++++
+>  2 files changed, 70 insertions(+)
 > 
-> Mind you the extra handling in existing platform_get_irq_optional()
-> for corner cases doesn't really fit with that model.
+> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> index 50c8f2a3c927..2f86f58699a6 100644
+> --- a/drivers/acpi/pptt.c
+> +++ b/drivers/acpi/pptt.c
+> @@ -985,3 +985,67 @@ int find_acpi_cache_level_from_id(u32 cache_id)
+>  
+>  	return -ENOENT;
+>  }
+> +
+> +/**
+> + * acpi_pptt_get_cpumask_from_cache_id() - Get the cpus associated with the
+> + *					   specified cache
+> + * @cache_id: The id field of the cache
+> + * @cpus: Where to build the cpumask
+> + *
+> + * Determine which CPUs are below this cache in the PPTT. This allows the property
+> + * to be found even if the CPUs are offline.
+> + *
+> + * The PPTT table must be rev 3 or later,
+> + *
+> + * Return: -ENOENT if the PPTT doesn't exist, or the cache cannot be found.
+> + * Otherwise returns 0 and sets the cpus in the provided cpumask.
+> + */
+> +int acpi_pptt_get_cpumask_from_cache_id(u32 cache_id, cpumask_t *cpus)
+> +{
+> +	int level, cpu;
+> +	u32 acpi_cpu_id;
+> +	struct acpi_pptt_cache *cache;
+> +	struct acpi_table_header *table;
+> +	struct acpi_pptt_cache_v1 *cache_v1;
+> +	struct acpi_pptt_processor *cpu_node;
+> +
+> +	cpumask_clear(cpus);
+> +
+> +	table = acpi_get_pptt();
+> +	if (!table)
+> +		return -ENOENT;
+> +
+> +	if (table->revision < 3)
+> +		return -ENOENT;
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		acpi_cpu_id = get_acpi_id_for_cpu(cpu);
+> +		cpu_node = acpi_find_processor_node(table, acpi_cpu_id);
+> +		if (!cpu_node)
+> +			continue;
+> +
+> +		/* Start at 1 for L1 */
+> +		level = 1;
+> +		cache = acpi_find_any_type_cache_node(table, acpi_cpu_id, level,
+> +						      &cpu_node);
+> +		while (cache) {
+> +			cache_v1 = ACPI_ADD_PTR(struct acpi_pptt_cache_v1,
+> +						cache, sizeof(*cache));
+> +			if (!cache)
+> +				continue;
+> +
+> +			cache_v1 = ACPI_ADD_PTR(struct acpi_pptt_cache_v1,
+> +						cache, sizeof(*cache));
+> +
+> +			if (cache->flags & ACPI_PPTT_CACHE_ID_VALID &&
+> +			    cache_v1->cache_id == cache_id)
+> +				cpumask_set_cpu(cpu, cpus);
+> +
+> +			level++;
 
-Indeed, and I find that fwnode.h is currently completely
-FW-independent.  I'd rather keep it that way and not expose these
-shenanigans outside of the support code *unless* we have a good reason
-to do so.
+Same comment as for the previous patch. You are bumping the level
+without considering if there is another cache at that level.
 
-Cheers,
+> +			cache = acpi_find_any_type_cache_node(table, acpi_cpu_id,
+> +							      level, &cpu_node);
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+Thanks,
 
-	M.
+Ben
 
--- 
-Without deviation from the norm, progress is not possible.
 
