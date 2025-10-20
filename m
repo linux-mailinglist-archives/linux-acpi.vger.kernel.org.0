@@ -1,124 +1,111 @@
-Return-Path: <linux-acpi+bounces-17956-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-17957-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F145CBEF28E
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 05:13:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A66BBEF343
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 05:46:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 06F414EAD18
-	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 03:12:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07EC73BC699
+	for <lists+linux-acpi@lfdr.de>; Mon, 20 Oct 2025 03:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1AF8248176;
-	Mon, 20 Oct 2025 03:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996A11E3762;
+	Mon, 20 Oct 2025 03:46:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="oJPTzsWT"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89851F63CD;
-	Mon, 20 Oct 2025 03:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7811429DB64;
+	Mon, 20 Oct 2025 03:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760929944; cv=none; b=LqDToMh+Q4CfpruO1WTczm7rZd5eHRPS+YVR0qJ7W7USASl2lFjHp3TEKPA0AfPY+5lXZLV7MEy0z8P7IDG+penGKr8muhpMtVsjtV5aEQX+kIqrLUu4U3cpddL78CmmqeGaQxES8+j/zZs+HX4UzyLs3TYIOij/ehhyMFmzVuE=
+	t=1760932008; cv=none; b=eeRMGCdy4NhOY88RL70L+IwkVZZHiFTrye227Vz9LTT25qjcQYjh9sIsj8Qisvqs/UDbSIfZllhhLsZKIjBXUGnm4ZAZ/Ow07u3Ue0/hrk2HBw2nrAQLIvcFHXY9OJcLBbawLdu6YS+17k3OxBQjbe6ges72Tqyfe9Kw6PloQk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760929944; c=relaxed/simple;
-	bh=f6IuFtSaQiz8+JQHGBTlFmc5TjNx/7yBYYh3Vm2K3FQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pRoDiBQx7ZyQC+qJPrOgIHz6/y9jw2EqJf7Q/BCCSYKBKP3BZjD7upHBkoGA6LKIPIOGZoG0uWQCtPKUhtLEcsbZI3GKBWb0nv5jK9VvJETmBXrYRWI0GFWXA7F5FzPKYEOIjDnjFExK60En7FlUPPzOmpwpp4zsRMDqdrehKZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 8febad8ead6211f0a38c85956e01ac42-20251020
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_UNTRUSTED, SA_UNFAMILIAR
-	SN_UNTRUSTED, SN_UNFAMILIAR, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
-	UD_TRUSTED
-X-CID-UNFAMILIAR: 1
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:c28fa9b8-aaa1-4d53-b79b-a1a5ae9da1b0,IP:10,U
-	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:8,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:38
-X-CID-INFO: VERSION:1.3.6,REQID:c28fa9b8-aaa1-4d53-b79b-a1a5ae9da1b0,IP:10,URL
-	:0,TC:0,Content:-5,EDM:25,RT:0,SF:8,FILE:0,BULK:0,RULE:Release_HamU,ACTION
-	:release,TS:38
-X-CID-META: VersionHash:a9d874c,CLOUDID:c5a9f3683d2c2f19ed87449a4201ed05,BulkI
-	D:25102011121004M9IT46,BulkQuantity:0,Recheck:0,SF:16|19|24|38|44|66|78|10
-	2|850,TC:nil,Content:0|50,EDM:5,IP:-2,URL:1,File:nil,RT:nil,Bulk:nil,QS:ni
-	l,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:
-	0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_USA,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,
-	TF_CID_SPAM_ULS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 8febad8ead6211f0a38c85956e01ac42-20251020
-X-User: huangsiyuan@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <huangsiyuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 2112434053; Mon, 20 Oct 2025 11:12:08 +0800
-From: Siyuan Huang <huangsiyuan@kylinos.cn>
-To: rafael@kernel.org,
-	lenb@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Siyuan Huang <huangsiyuan@kylinos.cn>
-Subject: [PATCH] rust: acpi: replace `core::mem::zeroed` with `pin_init::zeroed`
-Date: Mon, 20 Oct 2025 11:12:04 +0800
-Message-Id: <20251020031204.78917-1-huangsiyuan@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1760932008; c=relaxed/simple;
+	bh=iABrdS59ZBU4YHTm5ISf0PfyxAAqtPHL1MA1HLeuBqE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=dwSOLDbt2SaO1DTZH+GMhAZYlqytJNe/VqDlC5tI5yB/SQPmHfHIrcomA3yBvHuZ6XPTiuMKulBM8HVsyOwzGBctxnDF+NywCordMyAJ5zbqwOjQ01z9FaGuOzPWrzB00Ha03EdOcsPmd7N1lYxh5wl7QH+gv+pzOkHd0+TGUxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=oJPTzsWT; arc=none smtp.client-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=bDZQiErnIgzXG7MxUHsOCjYVCCcjyBfq4X2AfDHmv7U=;
+	b=oJPTzsWTk2+N6N+1nrMFIqWn+foijoQW6PZTsAv2la39dooU9ZBzjqlc8d/Z7WybLEfZn7HVA
+	S+jV+KgD5zpMQyzjkhDczOS+oGMse3hbeJjYo5GSvMB3cwC7dWkKyHoMKfkmg0yZsX5dBkx5mk2
+	pnwljSBYQunvAlVDM9kjclQ=
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4cqhDW1HR5z1cyQv;
+	Mon, 20 Oct 2025 11:46:19 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5FA62140142;
+	Mon, 20 Oct 2025 11:46:42 +0800 (CST)
+Received: from kwepemn100009.china.huawei.com (7.202.194.112) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 20 Oct 2025 11:46:42 +0800
+Received: from [10.67.121.59] (10.67.121.59) by kwepemn100009.china.huawei.com
+ (7.202.194.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 20 Oct
+ 2025 11:46:41 +0800
+Message-ID: <6b3ca901-025d-44b8-9558-6ad5a491807e@huawei.com>
+Date: Mon, 20 Oct 2025 11:46:37 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] Revert "mailbox/pcc: support mailbox management of
+ the shared buffer"
+To: Sudeep Holla <sudeep.holla@arm.com>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: Adam Young <admiyo@os.amperecomputing.com>, Robbie King
+	<robbiek@xsightlabs.com>, Jassi Brar <jassisinghbrar@gmail.com>, "Cristian
+ Marussi" <cristian.marussi@arm.com>
+References: <20251016-pcc_mb_updates-v1-0-0fba69616f69@arm.com>
+ <20251016-pcc_mb_updates-v1-1-0fba69616f69@arm.com>
+From: "lihuisong (C)" <lihuisong@huawei.com>
+In-Reply-To: <20251016-pcc_mb_updates-v1-1-0fba69616f69@arm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemn100009.china.huawei.com (7.202.194.112)
 
-All types in `bindings` implement `Zeroable` if they can, so use
-`pin_init::zeroed` instead of relying on `unsafe` code.
 
-If this ends up not compiling in the future, something in bindgen or on
-the C side changed and is most likely incorrect.
-
-Link: https://github.com/Rust-for-Linux/linux/issues/1189
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Signed-off-by: Siyuan Huang <huangsiyuan@kylinos.cn>
----
- rust/kernel/acpi.rs | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/rust/kernel/acpi.rs b/rust/kernel/acpi.rs
-index 7ae317368b00..f9488be9249c 100644
---- a/rust/kernel/acpi.rs
-+++ b/rust/kernel/acpi.rs
-@@ -42,9 +42,7 @@ pub const fn new(id: &'static CStr) -> Self {
-             "ID exceeds 16 bytes"
-         );
-         let src = id.as_bytes_with_nul();
--        // Replace with `bindings::acpi_device_id::default()` once stabilized for `const`.
--        // SAFETY: FFI type is valid to be zero-initialized.
--        let mut acpi: bindings::acpi_device_id = unsafe { core::mem::zeroed() };
-+        let mut acpi: bindings::acpi_device_id = pin_init::zeroed();
-         let mut i = 0;
-         while i < src.len() {
-             acpi.id[i] = src[i];
--- 
-2.25.1
-
+在 2025/10/17 3:08, Sudeep Holla 写道:
+> This reverts commit 5378bdf6a611a32500fccf13d14156f219bb0c85.
+>
+> Commit 5378bdf6a611 ("mailbox/pcc: support mailbox management of the shared buffer")
+> attempted to introduce generic helpers for managing the PCC shared memory,
+> but it largely duplicates functionality already provided by the mailbox
+> core and leaves gaps:
+>
+> 1. TX preparation: The mailbox framework already supports this via
+>    ->tx_prepare callback for mailbox clients. The patch adds
+>    pcc_write_to_buffer() and expects clients to toggle pchan->chan.manage_writes,
+>    but no drivers set manage_writes, so pcc_write_to_buffer() has no users.
+>
+> 2. RX handling: Data reception is already delivered through
+>     mbox_chan_received_data() and client ->rx_callback. The patch adds an
+>     optional pchan->chan.rx_alloc, which again has no users and duplicates
+>     the existing path.
+>
+> 3. Completion handling: While adding last_tx_done is directionally useful,
+>     the implementation only covers Type 3/4 and fails to handle the absence
+>     of a command_complete register, so it is incomplete for other types.
+>
+> Given the duplication and incomplete coverage, revert this change. Any new
+> requirements should be addressed in focused follow-ups rather than bundling
+> multiple behavioral changes together.
+>
+> Fixes: 5378bdf6a611 ("mailbox/pcc: support mailbox management of the shared buffer")
+> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Yeah, there are some duplications. I remember I also mentioned before.
+Acked-by: lihuisong@huawei.com
 
